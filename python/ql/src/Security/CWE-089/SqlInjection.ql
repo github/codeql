@@ -2,7 +2,7 @@
  * @name SQL query built from user-controlled sources
  * @description Building a SQL query from user-controlled sources is vulnerable to insertion of
  *              malicious SQL code by the user.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id py/sql-injection
@@ -12,6 +12,7 @@
  */
 
 import python
+import semmle.python.security.Paths
 
 /* Sources */
 import semmle.python.web.HttpRequest
@@ -22,7 +23,7 @@ import semmle.python.web.django.Db
 import semmle.python.web.django.Model
 
 
-from TaintSource src, TaintSink sink
-where src.flowsToSink(sink)
+from TaintedNode srcnode, TaintedNode sinknode, TaintSource src, TaintSink sink
+where src.flowsToSink(sink) and srcnode.getNode() = src and sinknode.getNode() = sink
 
-select sink, "This SQL query depends on $@.", src, "a user-provided value"
+select sink, srcnode, sinknode, "This SQL query depends on $@.", src, "a user-provided value"

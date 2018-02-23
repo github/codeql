@@ -675,6 +675,27 @@ class TaintedNode extends TTaintedNode {
 
 }
 
+class TaintedNodeSource extends TaintedNode {
+
+    TaintedNodeSource() {
+        this.getNode().(TaintSource).isSourceOf(this.getTaintKind(), this.getContext())
+    }
+
+    /** Holds if taint can flow from this source to sink `sink` */
+    final predicate flowsTo(TaintedNodeSink sink) {
+        this.getASuccessor*() = sink
+    }
+
+}
+
+class TaintedNodeSink extends TaintedNode {
+
+    TaintedNodeSink() {
+        this.getNode().(TaintSink).sinks(this.getTaintKind())
+    }
+
+}
+
 /** This module contains the implementation of taint-flow.
  * It is recommended that users use the `TaintedNode` class, rather than using this module directly
  * as the interface of this module may change without warning.

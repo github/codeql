@@ -2,7 +2,7 @@
  * @name Code injection
  * @description Interpreting unsanitized user input as code allows a malicious user arbitrary
  *              code execution.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @sub-severity high
  * @precision high
@@ -15,6 +15,7 @@
  */
 
 import python
+import semmle.python.security.Paths
 
 /* Sources */
 import semmle.python.web.HttpRequest
@@ -23,7 +24,7 @@ import semmle.python.web.HttpRequest
 import semmle.python.security.injection.Exec
 
 
-from TaintSource src, TaintSink sink
-where src.flowsToSink(sink)
+from TaintedNode srcnode, TaintedNode sinknode, TaintSource src, TaintSink sink
+where src.flowsToSink(sink) and srcnode.getNode() = src and sinknode.getNode() = sink
 
-select sink, "$@ flows to here and is interpreted as code.", src, "User-provided value"
+select sink, srcnode, sinknode, "$@ flows to here and is interpreted as code.", src, "User-provided value"

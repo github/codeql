@@ -2,7 +2,7 @@
  * @name Uncontrolled command line
  * @description Using externally controlled strings in a command line may allow a malicious
  *              user to change the meaning of the command.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @sub-severity high
  * @precision high
@@ -15,6 +15,7 @@
  */
 
 import python
+import semmle.python.security.Paths
 
 /* Sources */
 import semmle.python.web.HttpRequest
@@ -22,7 +23,7 @@ import semmle.python.web.HttpRequest
 /* Sinks */
 import semmle.python.security.injection.Command
 
-from TaintSource src, TaintSink sink
-where src.flowsToSink(sink)
+from TaintedNode srcnode, TaintedNode sinknode, TaintSource src, TaintSink sink
+where src.flowsToSink(sink) and srcnode.getNode() = src and sinknode.getNode() = sink
 
-select sink, "This command depends on $@.", src, "a user-provided value"
+select sink, srcnode, sinknode, "This command depends on $@.", src, "a user-provided value"

@@ -2,7 +2,7 @@
  * @name URL redirection from remote source
  * @description URL redirection based on unvalidated user input
  *              may cause redirection to malicious web sites.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @sub-severity low
  * @id py/url-redirection
@@ -12,7 +12,7 @@
  */
 
 import python
-
+import semmle.python.security.Paths
 
 import semmle.python.web.HttpRedirect
 import semmle.python.web.HttpRequest
@@ -28,8 +28,8 @@ class UntrustedPrefixStringKind extends UntrustedStringKind {
 
 }
 
-from TaintSource src, TaintSink sink
-where src.flowsToSink(sink)
+from TaintedNode srcnode, TaintedNode sinknode, TaintSource src, TaintSink sink
+where src.flowsToSink(sink) and srcnode.getNode() = src and sinknode.getNode() = sink
 
-select sink, "Untrusted URL redirection due to $@.", src, "a user-provided value"
+select sink, srcnode, sinknode, "Untrusted URL redirection due to $@.", src, "a user-provided value"
 

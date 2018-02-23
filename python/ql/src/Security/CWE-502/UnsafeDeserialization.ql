@@ -1,7 +1,7 @@
 /**
  * @name Deserializing untrusted input
  * @description Deserializing user-controlled data may allow attackers to execute arbitrary code.
- * @kind problem
+ * @kind path-problem
  * @id py/unsafe-deserialization
  * @problem.severity error
  * @sub-severity high
@@ -14,6 +14,7 @@ import python
 
 // Sources -- Any untrusted input
 import semmle.python.web.HttpRequest
+import semmle.python.security.Paths
 
 // Flow -- untrusted string
 import semmle.python.security.strings.Untrusted
@@ -23,8 +24,8 @@ import semmle.python.security.injection.Pickle
 import semmle.python.security.injection.Marshal
 import semmle.python.security.injection.Yaml
 
-from TaintSource src, TaintSink sink
 
-where src.flowsToSink(sink)
+from TaintedNode srcnode, TaintedNode sinknode, TaintSource src, TaintSink sink
+where src.flowsToSink(sink) and srcnode.getNode() = src and sinknode.getNode() = sink
 
-select sink, "Deserializing of $@.", src, "untrusted input"
+select sink, srcnode, sinknode, "Deserializing of $@.", src, "untrusted input"
