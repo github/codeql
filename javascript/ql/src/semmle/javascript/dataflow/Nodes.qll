@@ -20,32 +20,67 @@ class ParameterNode extends DataFlow::DefaultSourceNode {
 }
 
 /** A data flow node corresponding to a function invocation (with or without `new`). */
-class InvokeNode extends DataFlow::ValueNode, DataFlow::DefaultSourceNode {
-  override InvokeExpr astNode;
+class InvokeNode extends DataFlow::DefaultSourceNode {
+  DataFlow::Impl::InvokeNodeDef impl;
+
+  InvokeNode() { this = impl }
 
   /** Gets the name of the function or method being invoked, if it can be determined. */
   string getCalleeName() {
-    result = astNode.getCalleeName()
+    result = impl.getCalleeName()
+  }
+
+  /** DEPRECATED: Use `getCalleeNode()` instead. */
+  deprecated
+  DataFlow::Node getCallee() {
+    result = getCalleeNode()
   }
 
   /** Gets the data flow node specifying the function to be called. */
-  DataFlow::ValueNode getCallee() {
-    result = DataFlow::valueNode(astNode.getCallee())
+  DataFlow::Node getCalleeNode() {
+    result = impl.getCalleeNode()
   }
 
-  /** Gets the data flow node corresponding to the `i`th argument of this invocation. */
-  DataFlow::ValueNode getArgument(int i) {
-    result = DataFlow::valueNode(astNode.getArgument(i))
+  /**
+   * Gets the data flow node corresponding to the `i`th argument of this invocation.
+   *
+   * For direct calls, this is the `i`th argument to the call itself: for instance,
+   * for a call `f(x, y)`, the 0th argument node is `x` and the first argument node is `y`.
+   *
+   * For reflective calls using `call`, the 0th argument to the call denotes the
+   * receiver, so argument positions are shifted by one: for instance, for a call
+   * `f.call(x, y, z)`, the 0th argument node is `y` and the first argument node is `z`,
+   * while `x` is not an argument node at all.
+   *
+   * For reflective calls using `apply` we cannot, in general, tell which argument
+   * occurs at which position, so this predicate is not defined for such calls.
+   *
+   * Note that this predicate is not defined for arguments following a spread
+   * argument: for instance, for a call `f(x, ...y, z)`, the 0th argument node is `x`,
+   * but the position of `z` cannot be determined, hence there are no first and second
+   * argument nodes.
+   */
+  DataFlow::Node getArgument(int i) {
+    result = impl.getArgument(i)
   }
 
   /** Gets the data flow node corresponding to an argument of this invocation. */
-  DataFlow::ValueNode getAnArgument() {
-    result = getArgument(_)
+  DataFlow::Node getAnArgument() {
+    result = impl.getAnArgument()
   }
 
-  /** Gets the number of arguments of this invocation. */
+  /** Gets the data flow node corresponding to the last argument of this invocation. */
+  DataFlow::Node getLastArgument() {
+    result = getArgument(getNumArgument()-1)
+  }
+
+  /** Gets the number of arguments of this invocation, if it can be determined. */
   int getNumArgument() {
-    result = astNode.getNumArgument()
+    result = impl.getNumArgument()
+  }
+
+  Function getEnclosingFunction() {
+    result = getBasicBlock().getContainer()
   }
 
   /** Gets a function passed as the `i`th argument of this invocation. */
@@ -63,16 +98,73 @@ class InvokeNode extends DataFlow::ValueNode, DataFlow::DefaultSourceNode {
       obj.hasPropertyWrite(name, result)
     )
   }
+
+  /** Gets an abstract value representing possible callees of this call site. */
+  cached AbstractValue getACalleeValue() {
+    result = impl.getCalleeNode().analyze().getAValue()
+  }
+
+  /** Gets a potential callee based on dataflow analysis results. */
+  private Function getACalleeFromDataflow() {
+    result = getACalleeValue().(AbstractCallable).getFunction()
+  }
+
+  /** Gets a potential callee of this call site. */
+  Function getACallee() {
+    result = getACalleeFromDataflow()
+    or
+    not exists(getACalleeFromDataflow()) and
+    result = impl.(DataFlow::Impl::ExplicitInvokeNode).asExpr().(InvokeExpr).getResolvedCallee()
+  }
+
+  /**
+   * Holds if the approximation of possible callees for this call site is
+   * affected by the given analysis incompleteness `cause`.
+   */
+  predicate isIndefinite(DataFlow::Incompleteness cause) {
+    getACalleeValue().isIndefinite(cause)
+  }
+
+  /**
+   * Holds if our approximation of possible callees for this call site is
+   * likely to be imprecise.
+   *
+   * We currently track one specific source of imprecision: call
+   * resolution relies on flow through global variables, and the flow
+   * analysis finds possible callees that are not functions.
+   * This usually means that a global variable is used in multiple
+   * independent contexts, so tracking flow through it leads to
+   * imprecision.
+   */
+  predicate isImprecise() {
+    isIndefinite("global") and
+    exists (DefiniteAbstractValue v | v = getACalleeValue() |
+      not v instanceof AbstractCallable
+    )
+  }
+
+  /**
+   * Holds if our approximation of possible callees for this call site is
+   * likely to be incomplete.
+   */
+  predicate isIncomplete() {
+    // the flow analysis identifies a source of incompleteness other than
+    // global flow (which usually leads to imprecision rather than incompleteness)
+    any (DataFlow::Incompleteness cause | isIndefinite(cause)) != "global"
+  }
+
+  /**
+   * Holds if our approximation of possible callees for this call site is
+   * likely to be imprecise or incomplete.
+   */
+  predicate isUncertain() {
+    isImprecise() or isIncomplete()
+  }
 }
 
 /** A data flow node corresponding to a function call without `new`. */
 class CallNode extends InvokeNode {
-  override CallExpr astNode;
-}
-
-/** A data flow node corresponding to a method call. */
-class MethodCallNode extends CallNode {
-  override MethodCallExpr astNode;
+  override DataFlow::Impl::CallNodeDef impl;
 
   /**
    * Gets the data flow node corresponding to the receiver expression of this method call.
@@ -80,11 +172,16 @@ class MethodCallNode extends CallNode {
    * For example, the receiver of `x.m()` is `x`.
    */
   DataFlow::Node getReceiver() {
-    result = DataFlow::valueNode(astNode.getReceiver())
+    result = impl.getReceiver()
   }
+}
+
+/** A data flow node corresponding to a method call. */
+class MethodCallNode extends CallNode {
+  override DataFlow::Impl::MethodCallNodeDef impl;
 
   /** Gets the name of the invoked method, if it can be determined. */
-  string getMethodName() { result = astNode.getMethodName() }
+  string getMethodName() { result = impl.getMethodName() }
 
   /**
    * Holds if this data flow node calls method `methodName` on receiver node `receiver`.
@@ -98,7 +195,7 @@ class MethodCallNode extends CallNode {
 
 /** A data flow node corresponding to a `new` expression. */
 class NewNode extends InvokeNode {
-  override NewExpr astNode;
+  override DataFlow::Impl::NewNodeDef impl;
 }
 
 /** A data flow node corresponding to a `this` expression. */

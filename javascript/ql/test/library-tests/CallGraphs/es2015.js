@@ -27,3 +27,10 @@ class OtherSub extends PseudoClass {
     console.log(this.x);
   }
 }
+
+function sum(x, y, z) {
+  return x+y+z;
+}
+sum(...[1, 2, 3]);
+sum(1, ...[2, 3]);
+sum(1, ...[2], 3);

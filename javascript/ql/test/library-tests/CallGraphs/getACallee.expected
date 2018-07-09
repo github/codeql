@@ -9,10 +9,16 @@
 | es2015.js:10:5:10:22 | arguments.callee() | es2015.js:8:2:12:1 | functio ... \\n  };\\n} |
 | es2015.js:16:5:16:11 | super() | es2015.js:2:14:4:3 | () {\\n   ... ");\\n  } |
 | es2015.js:26:5:26:11 | super() | es2015.js:20:1:22:1 | functio ... = 42;\\n} |
+| es2015.js:34:1:34:17 | sum(...[1, 2, 3]) | es2015.js:31:1:33:1 | functio ... +y+z;\\n} |
+| es2015.js:35:1:35:17 | sum(1, ...[2, 3]) | es2015.js:31:1:33:1 | functio ... +y+z;\\n} |
+| es2015.js:36:1:36:17 | sum(1, ...[2], 3) | es2015.js:31:1:33:1 | functio ... +y+z;\\n} |
 | m.js:2:1:2:11 | exports.f() | m.js:1:13:1:25 | function() {} |
 | m.js:3:1:3:18 | module.exports.f() | m.js:1:13:1:25 | function() {} |
 | n.js:2:1:2:5 | m.f() | m.js:1:13:1:25 | function() {} |
 | n.js:5:1:5:6 | m2.f() | m2.js:2:6:2:18 | function() {} |
+| reflection.js:7:1:7:22 | reflective call | reflection.js:1:1:3:1 | functio ...  x+y;\\n} |
+| reflection.js:8:1:8:25 | add.app ... 3, 19]) | reflection.js:5:15:5:39 | functio ... n 56; } |
+| reflection.js:8:1:8:25 | reflective call | reflection.js:1:1:3:1 | functio ...  x+y;\\n} |
 | tst.js:6:1:6:3 | f() | tst.js:1:1:1:15 | function f() {} |
 | tst.js:7:1:7:3 | g() | tst.js:2:9:2:21 | function() {} |
 | tst.js:8:1:8:3 | h() | tst.js:3:5:3:17 | function() {} |
@@ -38,3 +44,5 @@
 | tst.js:60:15:60:21 | new A() | tst.js:44:1:44:15 | function A() {} |
 | tst.js:64:13:64:19 | new B() | tst.js:50:1:50:15 | function B() {} |
 | tst.js:66:5:66:9 | b.f() | tst.js:65:11:65:23 | function() {} |
+| tst.js:69:1:69:10 | globalfn() | tst3.js:1:1:1:22 | functio ... fn() {} |
+| tst.js:70:1:70:11 | globalfn2() | tst3.js:2:1:2:23 | functio ... n2() {} |

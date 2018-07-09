@@ -16,13 +16,13 @@ import javascript
 /**
  * Holds if call site `cs` may invoke function `callee` as specified by `how`.
  */
-predicate calls(CallSite cs, Function callee, string how) {
+predicate calls(DataFlow::InvokeNode cs, Function callee, string how) {
   callee = cs.getACallee() and
   (
-    cs instanceof CallExpr and not cs instanceof SuperCall and
+    cs instanceof DataFlow::CallNode and not cs.asExpr() instanceof SuperCall and
     how = "as a function"
     or
-    cs instanceof NewExpr and
+    cs instanceof DataFlow::NewNode and
     how = "using 'new'"
   )
 }
@@ -31,7 +31,7 @@ predicate calls(CallSite cs, Function callee, string how) {
  * Holds if call site `cs` may illegally invoke function `callee` as specified by `how`;
  * `calleeDesc` describes what kind of function `callee` is.
  */
-predicate illegalInvocation(CallSite cs, Function callee, string calleeDesc, string how) {
+predicate illegalInvocation(DataFlow::InvokeNode cs, Function callee, string calleeDesc, string how) {
   calls(cs, callee, how) and
   (
     how = "as a function" and
@@ -44,15 +44,16 @@ predicate illegalInvocation(CallSite cs, Function callee, string calleeDesc, str
 }
 
 /**
- * Holds if `ce` has at least one call target that isn't a constructor.
+ * Holds if `ce` is a call with at least one call target that isn't a constructor.
  */
-predicate isCallToFunction(CallExpr ce) {
-  exists (Function f | f = ce.(CallSite).getACallee() |
+predicate isCallToFunction(DataFlow::InvokeNode ce) {
+  ce instanceof DataFlow::CallNode and
+  exists (Function f | f = ce.getACallee() |
     not f instanceof Constructor
   )
 }
 
-from CallSite cs, Function callee, string calleeDesc, string how
+from DataFlow::InvokeNode cs, Function callee, string calleeDesc, string how
 where illegalInvocation(cs, callee, calleeDesc, how) and
       // filter out some easy cases
       not isCallToFunction(cs) and

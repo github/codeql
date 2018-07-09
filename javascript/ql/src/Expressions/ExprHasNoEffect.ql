@@ -121,8 +121,7 @@ predicate noSideEffects(Expr e) {
   e.isPure()
   or
   // `new Error(...)`, `new SyntaxError(...)`, etc.
-  e instanceof NewExpr and
-  forex (Function f | f = e.(CallSite).getACallee() |
+  forex (Function f | f = e.flow().(DataFlow::NewNode).getACallee() |
     f.(ExternalType).getASupertype*().getName() = "Error"
   )
 }

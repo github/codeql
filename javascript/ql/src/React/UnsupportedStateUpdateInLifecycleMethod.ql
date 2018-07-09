@@ -14,17 +14,17 @@ import javascript
 /**
  * A call that invokes a method on its own receiver.
  */
-class CallOnSelf extends CallExpr {
+class CallOnSelf extends DataFlow::CallNode {
 
   CallOnSelf() {
     exists (Function binder |
       binder = getEnclosingFunction().getThisBinder() |
       exists (DataFlow::ThisNode thiz |
-        this = thiz.getAMethodCall(_).asExpr() and
+        this = thiz.getAMethodCall(_) and
         thiz.getBinder().getAstNode() = binder
       )
       or
-      this.(CallSite).getACallee().(ArrowFunctionExpr).getThisBinder() = binder
+      this.getACallee().(ArrowFunctionExpr).getThisBinder() = binder
     )
   }
 
@@ -32,7 +32,7 @@ class CallOnSelf extends CallExpr {
    * Gets a `CallOnSelf` in the callee of this call.
    */
   CallOnSelf getACalleCallOnSelf() {
-    result.getEnclosingFunction() = this.(CallSite).getACallee()
+    result.getEnclosingFunction() = this.getACallee()
   }
 
 }
@@ -55,15 +55,15 @@ class UnconditionalCallOnSelf extends CallOnSelf {
 /**
  * Holds if `call` is guaranteed to occur in its enclosing function, unless an exception occurs.
  */
-predicate isUnconditionalCall(CallExpr call) {
+predicate isUnconditionalCall(DataFlow::CallNode call) {
   exists (ReachableBasicBlock callBlock, ReachableBasicBlock entryBlock |
     callBlock.postDominates(entryBlock) and
-    callBlock.getANode() = call and
+    callBlock = call.getBasicBlock() and
     entryBlock = call.getEnclosingFunction().getEntryBB()
   )
 }
 
-predicate isStateUpdateMethodCall(MethodCallExpr mce) {
+predicate isStateUpdateMethodCall(DataFlow::MethodCallNode mce) {
   exists (string updateMethodName |
     updateMethodName = "setState" or
     updateMethodName = "replaceState" or
@@ -111,7 +111,8 @@ class StateUpdateVolatileMethod extends Function {
 
 }
 
-from StateUpdateVolatileMethod root, CallOnSelf initCall, MethodCallExpr stateUpdate, string callDescription
+from StateUpdateVolatileMethod root, CallOnSelf initCall, DataFlow::MethodCallNode stateUpdate,
+     string callDescription
 where initCall.getEnclosingFunction() = root and
       stateUpdate = initCall.getACalleCallOnSelf*() and
       isStateUpdateMethodCall(stateUpdate) and

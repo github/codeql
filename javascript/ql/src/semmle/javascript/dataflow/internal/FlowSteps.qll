@@ -20,13 +20,11 @@ predicate shouldTrackProperties(AbstractValue obj) {
 /**
  * Holds if `invk` may invoke `f`.
  */
-predicate calls(InvokeExpr invk, Function f) {
-  exists (CallSite cs | cs = invk |
-    if cs.isIndefinite("global") then
-      (f = cs.getACallee() and f.getFile() = invk.getFile())
-    else
-      f = cs.getACallee()
-  )
+predicate calls(DataFlow::InvokeNode invk, Function f) {
+  if invk.isIndefinite("global") then
+    (f = invk.getACallee() and f.getFile() = invk.getFile())
+  else
+    f = invk.getACallee()
 }
 
 /**
@@ -65,11 +63,11 @@ predicate localFlowStep(DataFlow::Node pred, DataFlow::Node succ,
  * Holds if `arg` is passed as an argument into parameter `parm`
  * through invocation `invk` of function `f`.
  */
-predicate argumentPassing(DataFlow::ValueNode invk, DataFlow::ValueNode arg, Function f, Parameter parm) {
-  exists (int i, CallSite cs |
-    cs = invk.asExpr() and calls(cs, f) and
+predicate argumentPassing(DataFlow::InvokeNode invk, DataFlow::ValueNode arg, Function f, Parameter parm) {
+  calls(invk, f) and
+  exists (int i |
     f.getParameter(i) = parm and not parm.isRestParameter() and
-    arg = cs.getArgumentNode(i)
+    arg = invk.getArgument(i)
   )
 }
 
@@ -92,7 +90,7 @@ predicate callStep(DataFlow::Node pred, DataFlow::Node succ) {
 predicate returnStep(DataFlow::Node pred, DataFlow::Node succ) {
   exists (Function f |
     returnExpr(f, pred, _) and
-    calls(succ.asExpr(), f)
+    calls(succ, f)
   )
 }
 

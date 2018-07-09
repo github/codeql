@@ -9,7 +9,7 @@ class CallToObjectDefineProperty extends DataFlow::MethodCallNode {
   CallToObjectDefineProperty() {
     exists (GlobalVariable obj |
       obj.getName() = "Object" and
-      astNode.calls(obj.getAnAccess(), "defineProperty")
+      calls(DataFlow::valueNode(obj.getAnAccess()), "defineProperty")
     )
   }
 

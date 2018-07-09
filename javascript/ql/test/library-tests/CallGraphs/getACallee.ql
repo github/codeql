@@ -1,4 +1,4 @@
 import javascript
 
-from CallSite c
+from DataFlow::InvokeNode c
 select c, c.getACallee()

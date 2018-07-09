@@ -65,3 +65,6 @@ C.prototype.g = function() {};
     b.f = function() {};
     b.f();
 });
+
+globalfn();
+globalfn2();

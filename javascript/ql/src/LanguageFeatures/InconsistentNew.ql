@@ -22,8 +22,8 @@ import semmle.javascript.RestrictedLocations
  * have to call itself using `new`, so that is what we look for.
  */
 predicate guardsAgainstMissingNew(Function f) {
-  exists (CallSite new |
-    new.(NewExpr).getEnclosingFunction() = f and
+  exists (DataFlow::NewNode new |
+    new.asExpr().getEnclosingFunction() = f and
     f = new.getACallee()
   )
 }
@@ -34,13 +34,13 @@ predicate guardsAgainstMissingNew(Function f) {
  * is only suggested as a potential callee due to imprecise analysis of global
  * variables and is not, in fact, a viable callee at all.
  */
-predicate calls(CallSite cs, Function callee, int imprecision) {
+predicate calls(DataFlow::InvokeNode cs, Function callee, int imprecision) {
   callee = cs.getACallee() and
   (
     // if global flow was used to derive the callee, we may be imprecise
     if cs.isIndefinite("global") then
       // callees within the same file are probably genuine
-      callee.getFile() = cs.(Locatable).getFile() and imprecision = 0
+      callee.getFile() = cs.getFile() and imprecision = 0
       or
       // calls to global functions declared in an externs file are fairly
       // safe as well
@@ -58,11 +58,11 @@ predicate calls(CallSite cs, Function callee, int imprecision) {
  * Gets a function that may be invoked at `cs`, preferring callees that
  * are less likely to be derived due to analysis imprecision.
  */
-Function getALikelyCallee(CallSite cs) {
+Function getALikelyCallee(DataFlow::InvokeNode cs) {
   calls(cs, result, min(int p | calls(cs, _, p)))
 }
 
-from Function f, NewExpr new, CallExpr call
+from Function f, DataFlow::NewNode new, DataFlow::CallNode call
 where // externs are special, so don't flag them
       not f.inExternsFile() and
       // illegal constructor calls are flagged by query 'Illegal invocation',
@@ -71,11 +71,11 @@ where // externs are special, so don't flag them
       f = getALikelyCallee(new) and
       f = getALikelyCallee(call) and
       not guardsAgainstMissingNew(f) and
-      not new.(CallSite).isUncertain() and
-      not call.(CallSite).isUncertain() and
+      not new.isUncertain() and
+      not call.isUncertain() and
       // super constructor calls behave more like `new`, so don't flag them
-      not call instanceof SuperCall and
-      // reflective calls provide an explicit receiver object, so don't flag them either
-      not call instanceof ReflectiveCallSite
+      not call.asExpr() instanceof SuperCall and
+      // don't flag if there is a receiver object
+      not exists(call.getReceiver())
 select (FirstLineOf)f, capitalize(f.describe()) + " is invoked as a constructor here $@, " +
       "and as a normal function here $@.", new, new.toString(), call, call.toString()

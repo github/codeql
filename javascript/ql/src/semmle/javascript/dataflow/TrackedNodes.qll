@@ -123,7 +123,7 @@ private module NodeTracking {
      or
      exists (SsaDefinition prevDef, SsaDefinition def |
        pred = DataFlow::ssaDefinitionNode(prevDef) and
-       calls(invk.asExpr(), f) and captures(f, prevDef, def) and
+       calls(invk, f) and captures(f, prevDef, def) and
        succ = DataFlow::ssaDefinitionNode(def)
      )
     )

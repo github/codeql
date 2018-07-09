@@ -55,9 +55,9 @@ int numRet(Function f) {
  */
 predicate isDualUseConstructor(Function f) {
   numRet(f) = 1 and
-  exists (ReturnStmt ret, NewExpr new | ret.getContainer() = f |
-    new = ret.getExpr().stripParens() and
-    new.(CallSite).getACallee() = f
+  exists (ReturnStmt ret, DataFlow::NewNode new | ret.getContainer() = f |
+    new.asExpr() = ret.getExpr().stripParens() and
+    new.getACallee() = f
   )
 }
 
