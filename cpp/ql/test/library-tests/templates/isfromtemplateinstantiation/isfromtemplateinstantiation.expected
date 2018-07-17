@@ -116,13 +116,32 @@
 | isfromtemplateinstantiation.cpp:134:29:134:29 | Outer<int>::operator=(const Outer<int> &) | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<int> |
 | isfromtemplateinstantiation.cpp:134:29:134:29 | declaration of operator= | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<int> |
 | isfromtemplateinstantiation.cpp:134:29:134:29 | declaration of operator= | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<int> |
+| isfromtemplateinstantiation.cpp:135:31:135:31 | Outer<T>::Inner<long>::operator=(Inner<long> &&) | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<int> |
 | isfromtemplateinstantiation.cpp:135:31:135:31 | Outer<T>::Inner<long>::operator=(Inner<long> &&) | isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<long> |
+| isfromtemplateinstantiation.cpp:135:31:135:31 | Outer<T>::Inner<long>::operator=(const Inner<long> &) | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<int> |
 | isfromtemplateinstantiation.cpp:135:31:135:31 | Outer<T>::Inner<long>::operator=(const Inner<long> &) | isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<long> |
+| isfromtemplateinstantiation.cpp:135:31:135:31 | Outer<int>::Inner<long>::operator=(Inner<long> &&) | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<int> |
+| isfromtemplateinstantiation.cpp:135:31:135:31 | Outer<int>::Inner<long>::operator=(Inner<long> &&) | isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<long> |
+| isfromtemplateinstantiation.cpp:135:31:135:31 | Outer<int>::Inner<long>::operator=(const Inner<long> &) | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<int> |
+| isfromtemplateinstantiation.cpp:135:31:135:31 | Outer<int>::Inner<long>::operator=(const Inner<long> &) | isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<long> |
+| isfromtemplateinstantiation.cpp:135:31:135:31 | declaration of operator= | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<int> |
+| isfromtemplateinstantiation.cpp:135:31:135:31 | declaration of operator= | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<int> |
 | isfromtemplateinstantiation.cpp:135:31:135:31 | declaration of operator= | isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<long> |
 | isfromtemplateinstantiation.cpp:135:31:135:31 | declaration of operator= | isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<long> |
+| isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<U> | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<int> |
+| isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<long> | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<int> |
+| isfromtemplateinstantiation.cpp:135:31:135:35 | definition of Inner<U> | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<int> |
+| isfromtemplateinstantiation.cpp:136:7:136:7 | definition of x | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<int> |
+| isfromtemplateinstantiation.cpp:136:7:136:7 | definition of x | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<int> |
 | isfromtemplateinstantiation.cpp:136:7:136:7 | definition of x | isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<long> |
+| isfromtemplateinstantiation.cpp:136:7:136:7 | x | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<int> |
+| isfromtemplateinstantiation.cpp:136:7:136:7 | x | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<int> |
 | isfromtemplateinstantiation.cpp:136:7:136:7 | x | isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<long> |
+| isfromtemplateinstantiation.cpp:137:7:137:7 | definition of y | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<int> |
+| isfromtemplateinstantiation.cpp:137:7:137:7 | definition of y | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<int> |
 | isfromtemplateinstantiation.cpp:137:7:137:7 | definition of y | isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<long> |
+| isfromtemplateinstantiation.cpp:137:7:137:7 | y | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<int> |
+| isfromtemplateinstantiation.cpp:137:7:137:7 | y | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<int> |
 | isfromtemplateinstantiation.cpp:137:7:137:7 | y | isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<long> |
 | load.cpp:13:7:13:7 | basic_text_iprimitive<std_istream_mockup>::basic_text_iprimitive(basic_text_iprimitive<std_istream_mockup> &&) | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
 | load.cpp:13:7:13:7 | basic_text_iprimitive<std_istream_mockup>::basic_text_iprimitive(const basic_text_iprimitive<std_istream_mockup> &) | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
