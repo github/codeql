@@ -1,0 +1,34 @@
+| (member (instance (member (root https://www.npmjs.com/package/bluebird) Promise)) exec) | src/bluebird/index.js:2:15:2:18 | exec | true |
+| (member (instance (member (root https://www.npmjs.com/package/bluebird) Promise)) then) | src/bluebird/index.js:5:26:7:1 | functio ... ull);\\n} | true |
+| (member (instance (member (root https://www.npmjs.com/package/m2) default)) m) | src/m2/main.js:11:4:13:3 | (x) {\\n  ... e);\\n  } | true |
+| (member (instance (member (root https://www.npmjs.com/package/m2) default)) name) | src/m2/main.js:8:17:8:20 | name | true |
+| (member (member (parameter (member (root https://www.npmjs.com/package/m2) foo) 0) x) y) | src/m3/tst2.js:3:6:3:8 | "?" | false |
+| (member (member (root https://www.npmjs.com/package/m2) default) s) | src/m2/main.js:15:11:15:27 | (y) { return y; } | true |
+| (member (parameter (member (root https://www.npmjs.com/package/m2) foo) 0) x) | src/m3/tst2.js:5:10:5:10 | o | false |
+| (member (parameter (member (root https://www.npmjs.com/package/m2) foo) 0) z) | src/m2/main.js:3:9:3:12 | "hi" | true |
+| (member (root https://www.npmjs.com/package/bluebird) Promise) | src/bluebird/index.js:9:19:9:25 | Promise | true |
+| (member (root https://www.npmjs.com/package/m2) default) | src/m2/main.js:6:16:16:1 | class { ...  y; }\\n} | true |
+| (member (root https://www.npmjs.com/package/m2) foo) | src/m2/main.js:1:8:4:1 | functio ... "hi";\\n} | true |
+| (member (root https://www.npmjs.com/package/m4) foo) | src/m4/index.js:1:15:1:28 | function(x) {} | true |
+| (parameter (member (instance (member (root https://www.npmjs.com/package/m2) default)) m) 0) | src/m3/tst3.js:4:15:4:18 | "hi" | false |
+| (parameter (member (instance (member (root https://www.npmjs.com/package/m2) default)) s) 0) | src/m3/tst3.js:5:15:5:21 | "there" | false |
+| (parameter (member (instance (root https://www.npmjs.com/package/m2)) m) 0) | src/m3/tst3.js:4:15:4:18 | "hi" | false |
+| (parameter (member (instance (root https://www.npmjs.com/package/m2)) s) 0) | src/m3/tst3.js:5:15:5:21 | "there" | false |
+| (parameter (member (member (root https://www.npmjs.com/package/m2) default) m) 0) | src/m3/tst3.js:2:5:2:8 | "hi" | false |
+| (parameter (member (member (root https://www.npmjs.com/package/m2) default) s) 0) | src/m3/tst3.js:3:5:3:11 | "there" | false |
+| (parameter (member (return (member (root https://www.npmjs.com/package/m2) default)) m) 0) | src/m3/tst3.js:4:15:4:18 | "hi" | false |
+| (parameter (member (return (member (root https://www.npmjs.com/package/m2) default)) s) 0) | src/m3/tst3.js:5:15:5:21 | "there" | false |
+| (parameter (member (return (root https://www.npmjs.com/package/m2)) m) 0) | src/m3/tst3.js:4:15:4:18 | "hi" | false |
+| (parameter (member (return (root https://www.npmjs.com/package/m2)) s) 0) | src/m3/tst3.js:5:15:5:21 | "there" | false |
+| (parameter (member (root https://www.npmjs.com/package/m2) default) 0) | src/m3/tst3.js:4:7:4:10 | "me" | false |
+| (parameter (member (root https://www.npmjs.com/package/m2) default) 0) | src/m3/tst3.js:5:7:5:10 | "me" | false |
+| (parameter (member (root https://www.npmjs.com/package/m2) foo) 0) | src/m3/tst2.js:5:5:5:12 | { x: o } | false |
+| (parameter (member (root https://www.npmjs.com/package/m2) m) 0) | src/m3/tst3.js:2:5:2:8 | "hi" | false |
+| (parameter (member (root https://www.npmjs.com/package/m2) s) 0) | src/m3/tst3.js:3:5:3:11 | "there" | false |
+| (parameter (parameter (member (instance (member (root https://www.npmjs.com/package/bluebird) Promise)) then) 1) 0) | src/bluebird/index.js:6:12:6:15 | null | true |
+| (parameter (root https://www.npmjs.com/package/m1) 0) | src/m3/index.js:3:46:3:60 | "Hello, world!" | false |
+| (parameter (root https://www.npmjs.com/package/m2) 0) | src/m3/tst3.js:4:7:4:10 | "me" | false |
+| (parameter (root https://www.npmjs.com/package/m2) 0) | src/m3/tst3.js:5:7:5:10 | "me" | false |
+| (return (member (member (root https://www.npmjs.com/package/m2) default) s)) | src/m2/main.js:15:24:15:24 | y | true |
+| (return (root https://www.npmjs.com/package/m1)) | src/m1/index.js:1:25:1:25 | x | true |
+| (root https://www.npmjs.com/package/m1) | src/m1/index.js:1:18:1:25 | (x) => x | true |
