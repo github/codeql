@@ -167,14 +167,13 @@ import com.semmle.util.trap.TrapWriter;
 public class AutoBuild {
 	private final ExtractorOutputConfig outputConfig;
 	private final ITrapCache trapCache;
-	private Set<Path> includes = new LinkedHashSet<>();
-	private Set<Path> excludes = new LinkedHashSet<>();
+	private final Set<Path> includes = new LinkedHashSet<>();
+	private final Set<Path> excludes = new LinkedHashSet<>();
 	private ProjectLayout filters;
 	private final Path LGTM_SRC, SEMMLE_DIST;
 	private final TypeScriptMode typeScriptMode;
 	private final String defaultEncoding;
 	private ExtractorState extractorState;
-	private long timedLogMessageStart = 0;
 
 	public AutoBuild() {
 		this.LGTM_SRC = toRealPath(getPathFromEnvVar("LGTM_SRC"));
@@ -502,9 +501,9 @@ public class AutoBuild {
 		Set<Path> extractedFiles = new LinkedHashSet<>();
 		for (Path projectPath : tsconfigFiles) {
 			File projectFile = projectPath.toFile();
-			logBeginProcess("Opening project " + projectFile);
+			long start = logBeginProcess("Opening project " + projectFile);
 			ParsedProject project = tsParser.openProject(projectFile);
-			logEndProcess();
+			logEndProcess(start);
 			// Extract all files belonging to this project which are also matched
 			// by our include/exclude filters.
 			List<File> typeScriptFiles = new ArrayList<File>();
@@ -605,9 +604,9 @@ public class AutoBuild {
 			return;
 		}
 
-		logBeginProcess("Extracting " + file);
+		long start = logBeginProcess("Extracting " + file);
 		extractor.extract(f);
-		logEndProcess();
+		logEndProcess(start);
 	}
 
 	private void warn(String msg) {
@@ -615,15 +614,15 @@ public class AutoBuild {
 		System.err.flush();
 	}
 
-	private void logBeginProcess(String message) {
+	private long logBeginProcess(String message) {
 		System.out.print(message + "...");
 		System.out.flush();
-		this.timedLogMessageStart = System.nanoTime();
+		return System.nanoTime();
 	}
 
-	private void logEndProcess() {
+	private void logEndProcess(long timedLogMessageStart) {
 		long end = System.nanoTime();
-		int milliseconds = (int) ((end - this.timedLogMessageStart) / 1000000);
+		int milliseconds = (int) ((end - timedLogMessageStart) / 1000000);
 		System.out.println(" done (" + milliseconds + " ms)");
 	}
 

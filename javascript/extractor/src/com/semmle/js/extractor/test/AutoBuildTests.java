@@ -103,7 +103,7 @@ public class AutoBuildTests {
 				}
 
 				@Override
-				public void extractTypeScriptFiles(List<File> files, Set<Path> extractedFiles, FileExtractor extractor) throws IOException {
+				public void extractTypeScriptFiles(java.util.List<File> files, java.util.Set<Path> extractedFiles, FileExtractor extractor, ExtractorState extractorState) {
 					for (File f : files) {
 						actual.add(f.toString());
 					}
