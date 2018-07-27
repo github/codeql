@@ -43,12 +43,7 @@ module CodeInjection {
 
     override predicate isAdditionalTaintStep(DataFlow::Node src, DataFlow::Node trg) {
       // HTML sanitizers are insufficient protection against code injection
-      exists(CallExpr htmlSanitizer, string calleeName |
-        calleeName = htmlSanitizer.getCalleeName() and
-        calleeName.regexpMatch("(?i).*html.*") and
-        calleeName.regexpMatch("(?i).*(saniti[sz]|escape|strip).*") and
-        trg.asExpr() = htmlSanitizer and src.asExpr() = htmlSanitizer.getArgument(0)
-      )
+      src = trg.(HtmlSanitizerCall).getInput()
     }
   }
 
