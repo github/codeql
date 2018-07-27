@@ -506,4 +506,231 @@ module NodeJSLib {
     }
   }
 
+  /**
+   * A data flow node that is an HTTP or HTTPS client request made by a Node.js server, for example `http.request(url)`.
+   */
+  abstract class ClientRequest extends DataFlow::DefaultSourceNode {
+    /**
+     * Gets the options object or string URL used to make the request.
+     */
+    abstract DataFlow::Node getOptions();
+  }
+  
+  /**
+   * A data flow node that is an HTTP or HTTPS client request made by a Node.js server, for example `http.request(url)`.
+   */
+  private class HttpRequest extends ClientRequest {
+    HttpRequest() {
+      exists(string protocol |
+        (
+          protocol = "http" or
+          protocol = "https"
+        )
+        and
+        this = DataFlow::moduleImport(protocol).getAMemberCall("request")
+      )
+    }
+    
+    override DataFlow::Node getOptions() {
+      result = this.(DataFlow::MethodCallNode).getArgument(0)
+    }
+  }
+  
+  /**
+   * A data flow node that is an HTTP or HTTPS client request made by a Node.js process, for example `https.get(url)`.
+   */
+  private class HttpGet extends ClientRequest {
+    HttpGet() {
+      exists(string protocol |
+        (
+          protocol = "http" or
+          protocol = "https"
+        )
+        and
+        this = DataFlow::moduleImport(protocol).getAMemberCall("get")
+      )
+    }
+    
+    override DataFlow::Node getOptions() {
+      result = this.(DataFlow::MethodCallNode).getArgument(0)
+    }
+  }
+  
+  /**
+   * A data flow node that is the parameter of a result callback for an HTTP or HTTPS request made by a Node.js process, for example `res` in `https.request(url, (res) => {})`.
+   */
+  private class ClientRequestCallbackParam extends DataFlow::ParameterNode, RemoteFlowSource {
+    ClientRequestCallbackParam() {
+      exists(ClientRequest req |
+        this = req.(DataFlow::MethodCallNode).getCallback(1).getParameter(0)
+      )
+    }
+    
+    override string getSourceType() {
+      result = "ClientRequest callback parameter"
+    }
+  }
+  
+  /**
+   * A data flow node that is the parameter of a data callback for an HTTP or HTTPS request made by a Node.js process, for example `body` in `http.request(url, (res) => {res.on('data', (body) => {})})`.
+   */
+  private class ClientRequestCallbackData extends RemoteFlowSource {
+    ClientRequestCallbackData() {
+      exists(ClientRequestCallbackParam rcp, DataFlow::MethodCallNode mcn |
+        rcp.getAMethodCall("on") = mcn and
+        mcn.getArgument(0).mayHaveStringValue("data") and
+        this = mcn.getCallback(1).getParameter(0)
+      )
+    }
+    
+    override string getSourceType() {
+      result = "http.request data parameter"
+    }
+  }
+  
+  
+  /**
+   * A data flow node that is registered as a callback for an HTTP or HTTPS request made by a Node.js process, for example the function `handler` in `http.request(url).on(message, handler)`.
+   */
+  class ClientRequestHandler extends DataFlow::FunctionNode {
+    string handledEvent;
+    ClientRequest clientRequest;
+    
+    ClientRequestHandler() {
+      exists(DataFlow::MethodCallNode mcn |
+        clientRequest.getAMethodCall("on") = mcn and
+        mcn.getArgument(0).mayHaveStringValue(handledEvent) and
+        flowsTo(mcn.getArgument(1))
+      )
+    }
+    
+    /**
+     * Gets the name of an event this callback is registered for.
+     */
+    string getAHandledEvent() {
+      result = handledEvent
+    }
+    
+    /**
+     * Gets a request this callback is registered for.
+     */
+    ClientRequest getClientRequest() {
+      result = clientRequest
+    }
+  }
+  
+  /**
+   * A data flow node that is the parameter of a response callback for an HTTP or HTTPS request made by a Node.js process, for example `res` in `http.request(url).on('response', (res) => {})`.
+   */
+  private class ClientRequestResponseEvent extends RemoteFlowSource, DataFlow::ParameterNode {
+    ClientRequestResponseEvent() {
+      exists(ClientRequestHandler handler |
+        this = handler.getParameter(0) and
+        handler.getAHandledEvent() = "response"
+      )
+    }
+    
+    override string getSourceType() {
+      result = "ClientRequest response event"
+    }
+  }
+  
+  /**
+   * A data flow node that is the parameter of a data callback for an HTTP or HTTPS request made by a Node.js process, for example `chunk` in `http.request(url).on('response', (res) => {res.on('data', (chunk) => {})})`.
+   */
+  private class ClientRequestDataEvent extends RemoteFlowSource {
+    ClientRequestDataEvent() {
+      exists(DataFlow::MethodCallNode mcn, ClientRequestResponseEvent cr |
+        cr.getAMethodCall("on") = mcn and
+        mcn.getArgument(0).mayHaveStringValue("data") and
+        this = mcn.getCallback(1).getParameter(0)
+      )
+    }
+    
+    override string getSourceType() {
+      result = "ClientRequest data event"
+    }
+  }
+  
+  /**
+   * A data flow node that is a login callback for an HTTP or HTTPS request made by a Node.js process.
+   */
+  private class ClientRequestLoginHandler extends ClientRequestHandler {
+    ClientRequestLoginHandler() {
+      getAHandledEvent() = "login"
+    }
+  }
+  
+  /**
+   * A data flow node that is a parameter of a login callback for an HTTP or HTTPS request made by a Node.js process, for example `res` in `http.request(url).on('login', (res, callback) => {})`.
+   */
+  private class ClientRequestLoginEvent extends RemoteFlowSource {
+    ClientRequestLoginEvent() {
+      exists(ClientRequestLoginHandler handler |
+        this = handler.getParameter(0)
+      )
+    }
+    
+    override string getSourceType() {
+      result = "ClientRequest login event"
+    }
+  }
+  
+  /**
+   * A data flow node that is the login callback provided by an HTTP or HTTPS request made by a Node.js process, for example `callback` in `http.request(url).on('login', (res, callback) => {})`.
+   */
+  class ClientRequestLoginCallback extends DataFlow::ParameterNode {
+    ClientRequestLoginCallback() {
+      exists(ClientRequestLoginHandler handler |
+        this = handler.getParameter(1)
+      )
+    }
+  }
+  
+  /**
+   * A data flow node that is the username passed to the login callback provided by an HTTP or HTTPS request made by a Node.js process, for example `username` in `http.request(url).on('login', (res, cb) => {cb(username, password)})`.
+   */
+  private class ClientRequestLoginUsername extends CredentialsExpr {
+    ClientRequestLoginUsername() {
+      exists(ClientRequestLoginCallback callback |
+        this = callback.getACall().getArgument(0).asExpr()
+      )
+    }
+    
+    override string getCredentialsKind() {
+      result = "Node.js http(s) client login username"
+    }
+  }
+  
+  /**
+   * A data flow node that is the password passed to the login callback provided by an HTTP or HTTPS request made by a Node.js process, for example `password` in `http.request(url).on('login', (res, cb) => {cb(username, password)})`. 
+   */
+  private class ClientRequestLoginPassword extends CredentialsExpr {
+    ClientRequestLoginPassword() {
+      exists(ClientRequestLoginCallback callback |
+        this = callback.getACall().getArgument(1).asExpr()
+      )
+    }
+    
+    override string getCredentialsKind() {
+      result = "Node.js http(s) client login password"
+    }
+  }
+
+  
+  /**
+   * A data flow node that is the parameter of an error callback for an HTTP or HTTPS request made by a Node.js process, for example `err` in `http.request(url).on('error', (err) => {})`.
+   */
+  private class ClientRequestErrorEvent extends RemoteFlowSource {
+    ClientRequestErrorEvent() {
+      exists(ClientRequestHandler handler |
+        this = handler.getParameter(0) and
+        handler.getAHandledEvent() = "error"
+      )
+    }
+    
+    override string getSourceType() {
+      result = "ClientRequest error event"
+    }
+  }
 }
