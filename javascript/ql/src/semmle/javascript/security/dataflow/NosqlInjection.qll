@@ -55,36 +55,6 @@ module NosqlInjection {
     RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
   }
 
-  /**
-   * A taint tracking configuration for tracking user input that flows
-   * into a call to `JSON.parse`.
-   */
-  private class RemoteJsonTrackingConfig extends TaintTracking::Configuration {
-    RemoteJsonTrackingConfig() {
-      this = "RemoteJsonTrackingConfig"
-    }
-
-    override predicate isSource(DataFlow::Node nd) {
-      nd instanceof RemoteFlowSource
-    }
-
-    override predicate isSink(DataFlow::Node nd) {
-      nd.asExpr() = any(JsonParseCall c).getArgument(0)
-    }
-  }
-
-  /**
-   * A call to `JSON.parse` where the argument is user-provided.
-   */
-  class RemoteJson extends Source, DataFlow::ValueNode {
-    RemoteJson() {
-      exists (DataFlow::Node parsedArg |
-        parsedArg.asExpr() = astNode.(JsonParseCall).getArgument(0) and
-        any(RemoteJsonTrackingConfig cfg).hasFlow(_, parsedArg)
-      )
-    }
-  }
-
   /** An expression interpreted as a NoSQL query, viewed as a sink. */
   class NosqlQuerySink extends Sink, DataFlow::ValueNode {
     override NoSQL::Query astNode;
