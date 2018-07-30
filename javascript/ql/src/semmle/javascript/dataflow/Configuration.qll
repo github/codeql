@@ -246,7 +246,7 @@ class TaintKind = FlowLabel;
 /**
  * A standard flow label, that is, either `FlowLabel::data()` or `FlowLabel::taint()`.
  */
-private class StandardFlowLabel extends FlowLabel {
+class StandardFlowLabel extends FlowLabel {
   StandardFlowLabel() { this = "data" or this = "taint" }
 }
 
@@ -789,6 +789,11 @@ class PathNode extends TPathNode {
 
   /** Gets the underlying data flow tracking configuration of this path node. */
   DataFlow::Configuration getConfiguration() { result = cfg }
+
+  /** Gets the summary of the path underlying this path node. */
+  PathSummary getPathSummary() {
+    result = summary
+  }
 
   /** Gets a successor node of this path node. */
   PathNode getASuccessor() {

@@ -285,6 +285,11 @@ class PathSummary extends TPathSummary {
   /** Indicates whether the path represented by this summary contains any call steps. */
   boolean hasCall() { result = hasCall }
 
+  /** Gets the flow label describing the value at the start of this flow path. */
+  FlowLabel getStartLabel() {
+    result = start
+  }
+
   /** Gets the flow label describing the value at the end of this flow path. */
   FlowLabel getEndLabel() { result = end }
 
