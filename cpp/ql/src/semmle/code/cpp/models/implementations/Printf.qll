@@ -12,7 +12,8 @@ class Printf extends FormattingFunction {
       hasGlobalName("wprintf") or
       hasGlobalName("wprintf_s") or
       hasGlobalName("g_printf")
-    )
+    ) and
+    not hasDefinition()
   }
 
   override int getFormatParameterIndex() { result=0 }
@@ -26,7 +27,15 @@ class Printf extends FormattingFunction {
  * The standard functions `fprintf`, `fwprintf` and their glib variants.
  */
 class Fprintf extends FormattingFunction {
-  Fprintf() { this instanceof TopLevelFunction and (hasGlobalName("fprintf") or hasGlobalName("fwprintf") or hasGlobalName("g_fprintf"))}
+  Fprintf() {
+    this instanceof TopLevelFunction and
+    (
+      hasGlobalName("fprintf") or
+      hasGlobalName("fwprintf") or
+      hasGlobalName("g_fprintf")
+    ) and
+    not hasDefinition()
+  }
 
   override int getFormatParameterIndex() { result=1 }
   override predicate isWideCharDefault() { hasGlobalName("fwprintf") }
@@ -47,7 +56,8 @@ class Sprintf extends FormattingFunction {
       hasGlobalName("g_strdup_printf") or
       hasGlobalName("g_sprintf") or
       hasGlobalName("__builtin___sprintf_chk")
-    )
+    ) and
+    not hasDefinition()
   }
 
   override predicate isWideCharDefault() {
@@ -100,7 +110,8 @@ class Snprintf extends FormattingFunction {
       or hasGlobalName("g_snprintf")
       or hasGlobalName("wnsprintf")
       or hasGlobalName("__builtin___snprintf_chk")
-    )
+    ) and
+    not hasDefinition()
   }
 
   override int getFormatParameterIndex() {
@@ -133,10 +144,13 @@ class Snprintf extends FormattingFunction {
    * in the buffer.
    */
   predicate returnsFullFormatLength() {
-    hasGlobalName("snprintf") or
-    hasGlobalName("g_snprintf") or
-    hasGlobalName("__builtin___snprintf_chk") or
-    hasGlobalName("snprintf_s")
+    (
+      hasGlobalName("snprintf") or
+      hasGlobalName("g_snprintf") or
+      hasGlobalName("__builtin___snprintf_chk") or
+      hasGlobalName("snprintf_s")
+    ) and
+    not hasDefinition()
   }
 
   override int getSizeParameterIndex() {
@@ -158,7 +172,8 @@ class StringCchPrintf extends FormattingFunction {
       or hasGlobalName("StringCbPrintfEx")
       or hasGlobalName("StringCbPrintf_l")
       or hasGlobalName("StringCbPrintf_lEx")
-    )
+    ) and
+    not hasDefinition()
   }
 
   override int getFormatParameterIndex() {
@@ -187,7 +202,8 @@ class Syslog extends FormattingFunction {
   Syslog() {
     this instanceof TopLevelFunction and (
       hasGlobalName("syslog")
-    )
+    ) and
+    not hasDefinition()
   }
 
   override int getFormatParameterIndex() { result=1 }

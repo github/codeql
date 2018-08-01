@@ -28,6 +28,15 @@ class AttributeFormattingFunction extends FormattingFunction {
   }
 }
 
+Type getAPrimitiveVariadicFormatterWideType() {
+  exists(TopLevelFunction f, int formatParamIndex |
+    primitiveVariadicFormatter(f, formatParamIndex, true) and
+    result = f.getParameter(formatParamIndex).getType().getUnspecifiedType() and
+    result.(PointerType).getBaseType().getSize() != 1 and
+    f.hasDefinition()
+  )
+}
+
 /**
  * A standard function such as `vprintf` that has a format parameter
  * and a variable argument list of type `va_arg`.
@@ -722,7 +731,13 @@ class FormatLiteral extends Literal {
 
   private Type getConversionType5(int n) {
     exists(string cnv | cnv = this.getEffectiveStringConversionChar(n) |
-      cnv="S" and result.(PointerType).getBaseType().hasName("wchar_t") 
+      cnv="S" and
+      (
+        result = getAPrimitiveVariadicFormatterWideType()
+        or
+        not exists(getAPrimitiveVariadicFormatterWideType()) and
+        result.(PointerType).getBaseType().hasName("wchar_t")
+      )
     )
   }
 
