@@ -28,6 +28,10 @@ class AttributeFormattingFunction extends FormattingFunction {
   }
 }
 
+/**
+ * A type that is used as a format string by a wide variadic formatter such as
+ * `vwprintf`.
+ */
 Type getAPrimitiveVariadicFormatterWideType() {
   exists(TopLevelFunction f, int formatParamIndex |
     primitiveVariadicFormatter(f, formatParamIndex, true) and
