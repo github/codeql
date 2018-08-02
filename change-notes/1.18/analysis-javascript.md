@@ -17,7 +17,13 @@
   - [forge](https://github.com/digitalbazaar/forge)
   - [MySQL2](https://github.com/sidorares/node-mysql2)
   - [q](http://documentup.com/kriskowal/q/)
-  
+  - [fast-json-parse](https://github.com/mcollina/fast-json-parse)
+  - [json-parse-better-errors](https://github.com/zkat/json-parse-better-errors)
+  - [json-parse-safe](https://github.com/joaquimserafim/json-parse-safe)
+  - [json-safe-parse](https://github.com/bahamas10/node-json-safe-parse)
+  - [parse-json](https://github.com/sindresorhus/parse-json)
+  - [safe-json-parse](https://github.com/Raynos/safe-json-parse)
+
 ## New queries
 
 | **Query**                   | **Tags**  | **Purpose**                                                        |
@@ -43,3 +49,4 @@
 ## Changes to QL libraries
 
 * HTTP header names are now always normalized to lower case to reflect the fact that they are case insensitive. In particular, the result of `HeaderDefinition.getAHeaderName`, and the first parameter of `HeaderDefinition.defines`, `ExplicitHeaderDefinition.definesExplicitly` and `RouteHandler.getAResponseHeader` is now always a lower-case string.
+* The class `JsonParseCall` has been deprecated. Use `JsonParserCall` instead.
