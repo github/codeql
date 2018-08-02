@@ -1,4 +1,4 @@
-/** Provides classed for assertions. */
+/** Provides classes for assertions. */
 private import semmle.code.csharp.frameworks.system.Diagnostics
 private import semmle.code.csharp.frameworks.test.VisualStudio
 

@@ -1,4 +1,6 @@
-class StaticArrayFix
+using System.Collections.ObjectModel;
+
+class Good
 {
     public static readonly ReadOnlyCollection<string> Foo
         = new ReadOnlyCollection<string>(new string[] { "hello", "world" });
