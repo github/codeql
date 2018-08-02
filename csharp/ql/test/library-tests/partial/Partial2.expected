@@ -1,0 +1,6 @@
+| Partial.cs:1:15:1:15 | A | Partial.cs:3:18:3:18 | M |
+| Partial.cs:1:15:1:15 | A | Partial.cs:4:17:4:18 | M2 |
+| Partial.cs:1:15:1:15 | A | Partial.cs:10:17:10:18 | M3 |
+| Partial.cs:7:15:7:15 | A | Partial.cs:3:18:3:18 | M |
+| Partial.cs:7:15:7:15 | A | Partial.cs:4:17:4:18 | M2 |
+| Partial.cs:7:15:7:15 | A | Partial.cs:10:17:10:18 | M3 |

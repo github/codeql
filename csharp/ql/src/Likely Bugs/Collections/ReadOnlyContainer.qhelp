@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Code that queries the contents of a collection (such as <code>ContainsKey</code>
+or <code>Count</code>) is invoked on an object that is known to be empty. Such queries
+do not return interesting results, and may indicate missing code or a logic error. 
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Either remove the collection if it is unnecessary, or ensure that it contains the
+correct data. 
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following example code is supposed to return the name of the day, but does not work
+because the collection <code>daysOfWeek</code> is never populated. When this code is run, an 
+<code>ArgumentOutOfRangeException</code> exception is thrown.
+</p> 
+
+<sample src="ReadOnlyContainer.cs" />
+
+<p>
+This problem is fixed by populating the variable <code>daysOfWeek</code> with the correct data.
+</p>
+
+<sample src="ReadOnlyContainerFix.cs" />
+
+</example>
+</qhelp>

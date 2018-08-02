@@ -1,0 +1,9 @@
+| IntMultToLong.c:4:10:4:14 | ... * ... | Cast to 'long long' before multiplication to avoid potential overflow. |
+| IntMultToLong.c:7:16:7:20 | ... * ... | Cast to 'long long' before multiplication to avoid potential overflow. |
+| IntMultToLong.c:18:19:18:23 | ... * ... | Cast to 'double' before multiplication to avoid potential overflow. |
+| IntMultToLong.c:21:19:21:29 | ... * ... | Cast to 'double' before multiplication to avoid potential overflow. |
+| IntMultToLong.c:38:19:38:23 | ... * ... | Cast to 'double' before multiplication to avoid potential overflow. |
+| IntMultToLong.c:59:20:59:31 | ... * ... | Cast to 'double' before multiplication to avoid potential overflow. |
+| IntMultToLong.c:61:23:61:33 | ... * ... | Cast to 'long long' before multiplication to avoid potential overflow. |
+| IntMultToLong.c:63:23:63:40 | ... * ... | Cast to 'long long' before multiplication to avoid potential overflow. |
+| IntMultToLong.c:75:9:75:13 | ... * ... | Cast to 'size_t' before multiplication to avoid potential overflow. |

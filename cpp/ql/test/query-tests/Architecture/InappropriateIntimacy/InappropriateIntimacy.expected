@@ -1,0 +1,2 @@
+| a.c:0:0:0:0 | a.c | File is too closely tied to $@ (22 dependencies one way and 21 the other). | b.c:0:0:0:0 | b.c | b.c |
+| c.cpp:0:0:0:0 | c.cpp | File is too closely tied to $@ (22 dependencies one way and 21 the other). | d.cpp:0:0:0:0 | d.cpp | d.cpp |

@@ -1,0 +1,8 @@
+| test.cpp:7:6:7:10 | + ... | + | UnaryArithmeticOperation, UnaryPlusExpr |
+| test.cpp:7:8:7:9 | - ... | - | UnaryArithmeticOperation, UnaryMinusExpr |
+| test.cpp:8:2:8:4 | ... ++ | ++ | CrementOperation, IncrementOperation, PostfixCrementOperation, UnaryArithmeticOperation |
+| test.cpp:9:7:9:8 | & ... | & | AddressOfExpr, getAddressable() = i |
+| test.cpp:10:2:10:6 | * ... | * | PointerDereferenceExpr |
+| test.cpp:10:3:10:6 | ... -- | -- | CrementOperation, DecrementOperation, PostfixCrementOperation, UnaryArithmeticOperation |
+| test.cpp:11:2:11:4 | ++ ... | ++ | CrementOperation, IncrementOperation, PrefixCrementOperation, UnaryArithmeticOperation |
+| test.cpp:12:2:12:4 | -- ... | -- | CrementOperation, DecrementOperation, PrefixCrementOperation, UnaryArithmeticOperation |

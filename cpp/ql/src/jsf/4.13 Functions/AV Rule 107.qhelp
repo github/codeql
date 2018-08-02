@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+This rule finds functions that are declared in a block. 
+It is confusing to declare a function at block scope, and the visibility of the function is not what would be expected.
+<code>extern</code> function declarations inside a block, which are allowed in C, are particularly confusing, as the scope
+of the declaration is the entire file, not just the block where it was declared.
+</p>
+
+
+</overview>
+<recommendation>
+<p>
+Declare the function in file scope to prevent any confusion as to its visibility.
+</p>
+
+</recommendation>
+<example><sample src="AV Rule 107.cpp" />
+
+
+
+</example>
+<references>
+
+<li>
+  AV Rule 107, <em>Joint Strike Fighter Air Vehicle C++ Coding Standards</em>. Lockheed Martin Corporation, 2005.
+</li>
+<li>
+  MISRA C++ Rule 3-1-2, <em>Guidelines for the use of the C++ language in critical systems</em>. The Motor Industry Software Reliability Associate, 2008.
+</li>
+
+
+</references>
+</qhelp>

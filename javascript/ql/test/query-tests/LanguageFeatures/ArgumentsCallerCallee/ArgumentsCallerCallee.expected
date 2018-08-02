@@ -1,0 +1,2 @@
+| tst.js:4:11:4:26 | arguments.callee | Avoid using arguments.caller and arguments.callee. |
+| tst.js:12:9:12:24 | arguments.caller | Avoid using arguments.caller and arguments.callee. |

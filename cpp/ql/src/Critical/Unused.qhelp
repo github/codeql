@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+This rule finds variables that are assigned a value but are never read. This is usually an indication of a variable that has been orphaned
+due to changes in code, or a defect in the code due to the omission of the unused variable. The unused variables should be
+removed to avoid misuse.
+</p>
+
+
+</overview>
+<recommendation>
+<p>
+Examine the code to see if the variable should really be unused, and remove it if it is.
+</p>
+
+</recommendation>
+<example><sample src="Unused.cpp" />
+
+
+
+
+</example>
+</qhelp>

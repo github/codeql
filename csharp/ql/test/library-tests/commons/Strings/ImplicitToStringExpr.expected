@@ -1,0 +1,17 @@
+| Strings.cs:12:17:12:17 | access to local variable o |
+| Strings.cs:13:14:13:14 | access to local variable o |
+| Strings.cs:16:19:16:19 | access to local variable o |
+| Strings.cs:17:32:17:32 | access to local variable o |
+| Strings.cs:18:47:18:47 | access to local variable o |
+| Strings.cs:18:50:18:50 | access to local variable o |
+| Strings.cs:18:53:18:53 | access to local variable o |
+| Strings.cs:18:56:18:56 | access to local variable o |
+| Strings.cs:21:30:21:30 | access to local variable o |
+| Strings.cs:22:45:22:45 | access to local variable o |
+| Strings.cs:22:48:22:48 | access to local variable o |
+| Strings.cs:22:51:22:51 | access to local variable o |
+| Strings.cs:22:54:22:54 | access to local variable o |
+| Strings.cs:25:23:25:26 | true |
+| Strings.cs:26:27:26:27 | 0 |
+| Strings.cs:28:31:28:31 | access to local variable o |
+| Strings.cs:30:23:30:23 | access to local variable o |

@@ -1,0 +1,196 @@
+/**
+ * Provides classes and predicates for identifying sensitive data and methods for security.
+ *
+ * 'Sensitive' data in general is anything that should not be sent around in unencrypted form. This
+ * library tries to guess where sensitive data may either be stored in a variable or produced by a
+ * method.
+ *
+ * In addition, there are methods that ought not to be executed or not in a fashion that the user
+ * can control. This includes authorization methods such as logins, and sending of data, etc.
+ */
+
+import javascript
+
+/** A regular expression that identifies strings that look like they represent secret data that are not passwords. */
+private string suspiciousNonPassword() {
+  result = "(?is).*(secret|account|accnt|(?<!un)trusted).*"
+}
+/** A regular expression that identifies strings that look like they represent secret data that are passwords. */
+private string suspiciousPassword() {
+  result = "(?is).*(password|passwd).*"
+}
+
+/** A regular expression that identifies strings that look like they represent secret data. */
+private string suspicious() {
+  result = suspiciousPassword() or result = suspiciousNonPassword()
+}
+
+/**
+ * A string for `match` that identifies strings that look like they represent secret data that is
+ * hashed or encrypted.
+ */
+private string nonSuspicious() {
+  result = "(?is).*(hash|(?<!un)encrypted|\\bcrypt\\b).*"
+}
+
+/** An expression that might contain sensitive data. */
+abstract class SensitiveExpr extends Expr {
+  /** Gets a human-readable description of this expression for use in alert messages. */
+  abstract string describe();
+}
+
+/** A function call that might produce sensitive data. */
+class SensitiveCall extends SensitiveExpr, InvokeExpr {
+  SensitiveCall() {
+    this.getCalleeName() instanceof SensitiveDataFunctionName or
+    // This is particularly to pick up methods with an argument like "password", which
+    // may indicate a lookup.
+    exists(string s | this.getAnArgument().mayHaveStringValue(s) |
+      s.regexpMatch(suspicious()) and
+      not s.regexpMatch(nonSuspicious())
+    )
+  }
+
+  override string describe() {
+    result = "a call to " + getCalleeName()
+  }
+}
+
+/** An access to a variable or property that might contain sensitive data. */
+abstract class SensitiveVariableAccess extends SensitiveExpr {
+  string name;
+
+  SensitiveVariableAccess() {
+    this.(VarAccess).getName() = name
+    or
+    exists (DataFlow::PropRead pr |
+      this = pr.asExpr() and
+      pr.getPropertyName() = name
+    )
+  }
+
+  override string describe() {
+    result = "an access to " + name
+  }
+}
+
+/** A write to a location that might contain sensitive data. */
+abstract class SensitiveWrite extends DataFlow::Node { }
+
+/** A write to a variable or property that might contain sensitive data. */
+private class BasicSensitiveWrite extends SensitiveWrite {
+
+  BasicSensitiveWrite() {
+    exists (string name |
+      name.regexpMatch(suspicious()) and
+      not name.regexpMatch(nonSuspicious()) |
+      exists (DataFlow::PropWrite pwn |
+        pwn.getPropertyName() = name and
+        pwn.getRhs() = this
+      ) or
+      exists (VarDef v |
+        v.getAVariable().getName() = name |
+        if exists (v.getSource()) then
+          v.getSource() = this.asExpr()
+        else
+          exists (SsaExplicitDefinition ssa |
+            DataFlow::ssaDefinitionNode(ssa) = this and
+            ssa.getDef() = v
+          )
+      )
+    )
+  }
+
+}
+
+/** An access to a variable or property that might contain sensitive data. */
+private class BasicSensitiveVariableAccess extends SensitiveVariableAccess {
+
+  BasicSensitiveVariableAccess() {
+    name.regexpMatch(suspicious()) and not name.regexpMatch(nonSuspicious())
+  }
+
+}
+
+/** A function name that suggests it may be sensitive. */
+abstract class SensitiveFunctionName extends string {
+  SensitiveFunctionName() {
+    this = any(Function f).getName() or
+    this = any(Property p).getName() or
+    this = any(PropAccess pacc).getPropertyName()
+  }
+}
+
+/** A function name that suggests it may produce sensitive data. */
+abstract class SensitiveDataFunctionName extends SensitiveFunctionName {}
+
+/** A method that might return sensitive data, based on the name. */
+class CredentialsFunctionName extends SensitiveDataFunctionName {
+  CredentialsFunctionName() {
+    this.regexpMatch(suspicious())
+  }
+}
+
+/**
+ * A sensitive action, such as transfer of sensitive data.
+ */
+abstract class SensitiveAction extends DataFlow::Node { }
+
+/** A call that may perform authorization. */
+class AuthorizationCall extends SensitiveAction, DataFlow::CallNode {
+
+  AuthorizationCall() {
+    exists(string s | s = astNode.getCalleeName() |
+      // name contains `login` or `auth`, but not as part of `loginfo` or `unauth`;
+      // also exclude `author`
+      s.regexpMatch("(?i).*(login(?!fo)|(?<!un)auth(?!or\\b)).*") and
+      // but it does not start with `get` or `set`
+      not s.regexpMatch("(?i)(get|set).*")
+    )
+  }
+
+}
+
+/**
+ * Classes for expressions containing cleartext passwords.
+ */
+private module CleartextPasswords {
+
+  bindingset[name]
+  private predicate isCleartextPasswordIndicator(string name) {
+    name.regexpMatch(suspiciousPassword()) and
+    not name.regexpMatch(nonSuspicious())
+  }
+
+  /** An expression that might contain a cleartext password. */
+  abstract class CleartextPasswordExpr extends SensitiveExpr { }
+
+  /** A function name that suggests it may produce a cleartext password. */
+  private class CleartextPasswordDataFunctionName extends SensitiveDataFunctionName {
+    CleartextPasswordDataFunctionName() {
+      isCleartextPasswordIndicator(this)
+    }
+  }
+
+  /** A call that might return a cleartext password. */
+  private class CleartextPasswordCallExpr extends CleartextPasswordExpr, SensitiveCall {
+    CleartextPasswordCallExpr() {
+      this.getCalleeName() instanceof CleartextPasswordDataFunctionName or
+      // This is particularly to pick up methods with an argument like "password", which
+      // may indicate a lookup.
+      exists (string s |
+        this.getAnArgument().mayHaveStringValue(s) and
+        isCleartextPasswordIndicator(s)
+      )
+    }
+  }
+
+  /** An access to a variable or property that might contain a cleartext password. */
+  private class CleartextPasswordLookupExpr extends CleartextPasswordExpr, SensitiveVariableAccess {
+    CleartextPasswordLookupExpr() {
+      isCleartextPasswordIndicator(name)
+    }
+  }
+
+}
+import CleartextPasswords

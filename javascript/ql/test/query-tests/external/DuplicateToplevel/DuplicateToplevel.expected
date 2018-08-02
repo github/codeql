@@ -1,0 +1,2 @@
+| a.js:1:1:1:1 | <toplevel> | 100% of statements in this script are duplicated in $@. | b.js:1:1:1:1 | <toplevel> | another script |
+| b.js:1:1:1:1 | <toplevel> | 100% of statements in this script are duplicated in $@. | a.js:1:1:1:1 | <toplevel> | another script |

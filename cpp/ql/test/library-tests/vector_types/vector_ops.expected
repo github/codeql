@@ -1,0 +1,2 @@
+| vector_types.cpp:16:16:16:41 | ... == ... | == | file://:0:0:0:0 | __attribute((vector_size(16))) char |
+| vector_types.cpp:21:10:21:18 | ... < ... | < | file://:0:0:0:0 | __attribute((vector_size(16))) int |

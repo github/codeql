@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Creating a <code>StringBuilder</code> in the body of a loop is inefficient. 
+It is more efficient to create the <code>StringBuilder</code> before the loop and 
+reuse the same instance for each iteration. Use the 
+<code>Clear</code> method to reset the <code>StringBuilder</code>, which reuses
+its internal buffer and is more efficient. This is particularly important in 
+performance-critical code.</p>
+</overview>
+
+<recommendation>
+<p>
+Create the <code>StringBuilder</code> before the loop, and call the <code>Clear</code> method
+within the loop to clear the internal buffer.
+</p>
+</recommendation>
+
+<example>
+<p>The following example creates a new <code>StringBuilder</code> in the body of the loop.
+</p>
+<sample src="StringBuilderInLoop.cs" />
+
+<p>The code has been rewritten so that the same <code>StringBuilder</code> is used for every
+iteration of the loop.</p>
+<sample src="StringBuilderInLoopFix.cs" />
+</example>
+
+<references>
+  <li>MSDN: <a href="http://msdn.microsoft.com/en-us/library/system.text.stringbuilder.aspx">StringBuilder</a>.</li>
+</references>
+</qhelp>

@@ -1,0 +1,512 @@
+| BoxedInt::BoxedInt | false | 70 | 70 | BoxedInt |
+| BoxedInt::BoxedInt | false | 75 | 75 | this |
+| BoxedInt::BoxedInt | false | 76 | 76 | m_ptr |
+| BoxedInt::BoxedInt | false | 80 | 80 | x |
+| BoxedInt::BoxedInt | false | 82 | 82 | new |
+| BoxedInt::BoxedInt | false | 84 | 84 | ... = ... |
+| BoxedInt::BoxedInt | false | 86 | 86 | ExprStmt |
+| BoxedInt::BoxedInt | false | 88 | 88 | return ... |
+| BoxedInt::BoxedInt | false | 90 | 90 | { ... } |
+| BoxedInt::BoxedInt | false | 134 | 134 | BoxedInt |
+| BoxedInt::BoxedInt | true | 75 | 76 |  |
+| BoxedInt::BoxedInt | true | 76 | 84 |  |
+| BoxedInt::BoxedInt | true | 80 | 82 |  |
+| BoxedInt::BoxedInt | true | 82 | 75 |  |
+| BoxedInt::BoxedInt | true | 84 | 88 |  |
+| BoxedInt::BoxedInt | true | 86 | 80 |  |
+| BoxedInt::BoxedInt | true | 88 | 70 |  |
+| BoxedInt::BoxedInt | true | 90 | 86 |  |
+| BoxedInt::operator int | false | 112 | 112 | operator int |
+| BoxedInt::operator int | false | 116 | 116 | this |
+| BoxedInt::operator int | false | 117 | 117 | m_ptr |
+| BoxedInt::operator int | false | 119 | 119 | * ... |
+| BoxedInt::operator int | false | 121 | 121 | return ... |
+| BoxedInt::operator int | false | 123 | 123 | { ... } |
+| BoxedInt::operator int | true | 116 | 117 |  |
+| BoxedInt::operator int | true | 117 | 119 |  |
+| BoxedInt::operator int | true | 119 | 112 |  |
+| BoxedInt::operator int | true | 121 | 116 |  |
+| BoxedInt::operator int | true | 123 | 121 |  |
+| BoxedInt::operator= | false | 132 | 132 | operator= |
+| BoxedInt::~BoxedInt | false | 93 | 93 | ~BoxedInt |
+| BoxedInt::~BoxedInt | false | 100 | 100 | this |
+| BoxedInt::~BoxedInt | false | 101 | 101 | m_ptr |
+| BoxedInt::~BoxedInt | false | 103 | 103 | delete |
+| BoxedInt::~BoxedInt | false | 105 | 105 | ExprStmt |
+| BoxedInt::~BoxedInt | false | 107 | 107 | return ... |
+| BoxedInt::~BoxedInt | false | 109 | 109 | { ... } |
+| BoxedInt::~BoxedInt | true | 100 | 101 |  |
+| BoxedInt::~BoxedInt | true | 101 | 103 |  |
+| BoxedInt::~BoxedInt | true | 103 | 107 |  |
+| BoxedInt::~BoxedInt | true | 105 | 100 |  |
+| BoxedInt::~BoxedInt | true | 107 | 93 |  |
+| BoxedInt::~BoxedInt | true | 109 | 105 |  |
+| NonTrivial::operator= | false | 799 | 799 | operator= |
+| NonTrivial::~NonTrivial | false | 480 | 480 | ~NonTrivial |
+| NonTrivial::~NonTrivial | false | 788 | 788 | return ... |
+| NonTrivial::~NonTrivial | false | 790 | 790 | { ... } |
+| NonTrivial::~NonTrivial | true | 788 | 480 |  |
+| NonTrivial::~NonTrivial | true | 790 | 788 |  |
+| __va_list_tag::operator= | false | 54 | 54 | operator= |
+| __va_list_tag::operator= | false | 60 | 60 | operator= |
+| early_return | false | 506 | 506 | early_return |
+| early_return | false | 513 | 513 | declaration |
+| early_return | false | 515 | 515 | x |
+| early_return | false | 517 | 517 | (bool)... |
+| early_return | false | 522 | 522 | declaration |
+| early_return | false | 524 | 524 | return ... |
+| early_return | false | 526 | 526 | { ... } |
+| early_return | false | 528 | 528 | if (...) ...  |
+| early_return | false | 533 | 533 | declaration |
+| early_return | false | 535 | 535 | return ... |
+| early_return | false | 537 | 537 | { ... } |
+| early_return | false | 539 | 539 | before |
+| early_return | false | 541 | 541 | call to before.~NonTrivial |
+| early_return | false | 542 | 542 | after |
+| early_return | false | 543 | 543 | call to after.~NonTrivial |
+| early_return | false | 544 | 544 | inner |
+| early_return | false | 546 | 546 | call to inner.~NonTrivial |
+| early_return | false | 547 | 547 | inner |
+| early_return | false | 548 | 548 | call to inner.~NonTrivial |
+| early_return | true | 513 | 528 |  |
+| early_return | true | 515 | 526 | T |
+| early_return | true | 515 | 533 | F |
+| early_return | true | 522 | 524 |  |
+| early_return | true | 524 | 547 |  |
+| early_return | true | 526 | 522 |  |
+| early_return | true | 528 | 515 |  |
+| early_return | true | 533 | 535 |  |
+| early_return | true | 535 | 542 |  |
+| early_return | true | 537 | 513 |  |
+| early_return | true | 539 | 541 |  |
+| early_return | true | 541 | 506 |  |
+| early_return | true | 542 | 543 |  |
+| early_return | true | 543 | 539 |  |
+| early_return | true | 544 | 546 |  |
+| early_return | true | 546 | 533 |  |
+| early_return | true | 547 | 548 |  |
+| early_return | true | 548 | 539 |  |
+| early_throw | false | 551 | 551 | early_throw |
+| early_throw | false | 558 | 558 | declaration |
+| early_throw | false | 560 | 560 | x |
+| early_throw | false | 562 | 562 | (bool)... |
+| early_throw | false | 567 | 567 | declaration |
+| early_throw | false | 569 | 569 | re-throw exception  |
+| early_throw | false | 571 | 571 | ExprStmt |
+| early_throw | false | 573 | 573 | { ... } |
+| early_throw | false | 575 | 575 | if (...) ...  |
+| early_throw | false | 580 | 580 | declaration |
+| early_throw | false | 582 | 582 | return ... |
+| early_throw | false | 584 | 584 | { ... } |
+| early_throw | false | 586 | 586 | before |
+| early_throw | false | 588 | 588 | call to before.~NonTrivial |
+| early_throw | false | 589 | 589 | after |
+| early_throw | false | 590 | 590 | call to after.~NonTrivial |
+| early_throw | false | 591 | 591 | inner |
+| early_throw | false | 593 | 593 | call to inner.~NonTrivial |
+| early_throw | false | 594 | 594 | before |
+| early_throw | false | 595 | 595 | call to before.~NonTrivial |
+| early_throw | false | 596 | 596 | inner |
+| early_throw | false | 597 | 597 | call to inner.~NonTrivial |
+| early_throw | true | 558 | 575 |  |
+| early_throw | true | 560 | 573 | T |
+| early_throw | true | 560 | 580 | F |
+| early_throw | true | 567 | 571 |  |
+| early_throw | true | 569 | 596 |  |
+| early_throw | true | 571 | 569 |  |
+| early_throw | true | 573 | 567 |  |
+| early_throw | true | 575 | 560 |  |
+| early_throw | true | 580 | 582 |  |
+| early_throw | true | 582 | 589 |  |
+| early_throw | true | 584 | 558 |  |
+| early_throw | true | 586 | 588 |  |
+| early_throw | true | 588 | 551 |  |
+| early_throw | true | 589 | 590 |  |
+| early_throw | true | 590 | 586 |  |
+| early_throw | true | 591 | 593 |  |
+| early_throw | true | 593 | 580 |  |
+| early_throw | true | 594 | 595 |  |
+| early_throw | true | 595 | 551 |  |
+| early_throw | true | 596 | 597 |  |
+| early_throw | true | 597 | 594 |  |
+| for_decl_bind | false | 353 | 353 | for_decl_bind |
+| for_decl_bind | false | 358 | 358 | call to BoxedInt |
+| for_decl_bind | false | 360 | 360 | x |
+| for_decl_bind | false | 362 | 362 | - ... |
+| for_decl_bind | false | 364 | 364 | initializer for init |
+| for_decl_bind | false | 369 | 369 | call to operator int |
+| for_decl_bind | false | 371 | 371 | call to BoxedInt |
+| for_decl_bind | false | 373 | 373 | x |
+| for_decl_bind | false | 375 | 375 | initializer for bi |
+| for_decl_bind | false | 379 | 379 | bi |
+| for_decl_bind | false | 381 | 381 | (bool)... |
+| for_decl_bind | false | 382 | 382 | (condition decl) |
+| for_decl_bind | false | 384 | 384 | x |
+| for_decl_bind | false | 386 | 386 | ++ ... |
+| for_decl_bind | false | 388 | 388 | ExprStmt |
+| for_decl_bind | false | 390 | 390 | { ... } |
+| for_decl_bind | false | 392 | 392 | declaration |
+| for_decl_bind | false | 394 | 394 | x |
+| for_decl_bind | false | 398 | 398 | 2 |
+| for_decl_bind | false | 399 | 399 | ... *= ... |
+| for_decl_bind | false | 401 | 401 | for(...;...;...) ... |
+| for_decl_bind | false | 403 | 403 | x |
+| for_decl_bind | false | 405 | 405 | -- ... |
+| for_decl_bind | false | 407 | 407 | ExprStmt |
+| for_decl_bind | false | 409 | 409 | return ... |
+| for_decl_bind | false | 411 | 411 | { ... } |
+| for_decl_bind | false | 413 | 413 | init |
+| for_decl_bind | false | 415 | 415 | call to init.~BoxedInt |
+| for_decl_bind | false | 416 | 416 | bi |
+| for_decl_bind | false | 418 | 418 | call to bi.~BoxedInt |
+| for_decl_bind | false | 419 | 419 | bi |
+| for_decl_bind | false | 420 | 420 | call to bi.~BoxedInt |
+| for_decl_bind | true | 358 | 373 |  |
+| for_decl_bind | true | 360 | 362 |  |
+| for_decl_bind | true | 362 | 358 |  |
+| for_decl_bind | true | 364 | 360 |  |
+| for_decl_bind | true | 371 | 382 |  |
+| for_decl_bind | true | 373 | 371 |  |
+| for_decl_bind | true | 382 | 390 | T |
+| for_decl_bind | true | 382 | 416 | F |
+| for_decl_bind | true | 384 | 386 |  |
+| for_decl_bind | true | 386 | 394 |  |
+| for_decl_bind | true | 388 | 384 |  |
+| for_decl_bind | true | 390 | 388 |  |
+| for_decl_bind | true | 392 | 364 |  |
+| for_decl_bind | true | 394 | 398 |  |
+| for_decl_bind | true | 398 | 399 |  |
+| for_decl_bind | true | 399 | 419 |  |
+| for_decl_bind | true | 401 | 392 |  |
+| for_decl_bind | true | 403 | 405 |  |
+| for_decl_bind | true | 405 | 409 |  |
+| for_decl_bind | true | 407 | 403 |  |
+| for_decl_bind | true | 409 | 353 |  |
+| for_decl_bind | true | 411 | 401 |  |
+| for_decl_bind | true | 413 | 415 |  |
+| for_decl_bind | true | 415 | 407 |  |
+| for_decl_bind | true | 416 | 418 |  |
+| for_decl_bind | true | 418 | 413 |  |
+| for_decl_bind | true | 419 | 420 |  |
+| for_decl_bind | true | 420 | 373 |  |
+| for_loop_scope | false | 600 | 600 | for_loop_scope |
+| for_loop_scope | false | 607 | 607 | declaration |
+| for_loop_scope | false | 612 | 612 | x |
+| for_loop_scope | false | 616 | 616 | 10 |
+| for_loop_scope | false | 617 | 617 | ... < ... |
+| for_loop_scope | false | 622 | 622 | declaration |
+| for_loop_scope | false | 624 | 624 | { ... } |
+| for_loop_scope | false | 626 | 626 | declaration |
+| for_loop_scope | false | 628 | 628 | x |
+| for_loop_scope | false | 630 | 630 | ++ ... |
+| for_loop_scope | false | 632 | 632 | for(...;...;...) ... |
+| for_loop_scope | false | 634 | 634 | return ... |
+| for_loop_scope | false | 636 | 636 | { ... } |
+| for_loop_scope | false | 638 | 638 | outer_scope |
+| for_loop_scope | false | 640 | 640 | call to outer_scope.~NonTrivial |
+| for_loop_scope | false | 641 | 641 | for_scope |
+| for_loop_scope | false | 643 | 643 | call to for_scope.~NonTrivial |
+| for_loop_scope | false | 644 | 644 | inner_scope |
+| for_loop_scope | false | 646 | 646 | call to inner_scope.~NonTrivial |
+| for_loop_scope | true | 607 | 632 |  |
+| for_loop_scope | true | 612 | 616 |  |
+| for_loop_scope | true | 616 | 617 |  |
+| for_loop_scope | true | 617 | 624 | T |
+| for_loop_scope | true | 617 | 641 | F |
+| for_loop_scope | true | 622 | 644 |  |
+| for_loop_scope | true | 624 | 622 |  |
+| for_loop_scope | true | 626 | 612 |  |
+| for_loop_scope | true | 628 | 630 |  |
+| for_loop_scope | true | 630 | 612 |  |
+| for_loop_scope | true | 632 | 626 |  |
+| for_loop_scope | true | 634 | 638 |  |
+| for_loop_scope | true | 636 | 607 |  |
+| for_loop_scope | true | 638 | 640 |  |
+| for_loop_scope | true | 640 | 600 |  |
+| for_loop_scope | true | 641 | 643 |  |
+| for_loop_scope | true | 643 | 634 |  |
+| for_loop_scope | true | 644 | 646 |  |
+| for_loop_scope | true | 646 | 628 |  |
+| gotos | false | 664 | 664 | gotos |
+| gotos | false | 674 | 674 | declaration |
+| gotos | false | 676 | 676 | x |
+| gotos | false | 678 | 678 | (bool)... |
+| gotos | false | 682 | 682 | goto ... |
+| gotos | false | 684 | 684 | if (...) ...  |
+| gotos | false | 686 | 686 | x |
+| gotos | false | 688 | 688 | ++ ... |
+| gotos | false | 690 | 690 | initializer for y |
+| gotos | false | 698 | 698 | declaration |
+| gotos | false | 700 | 700 | label ...: |
+| gotos | false | 702 | 702 | declaration |
+| gotos | false | 704 | 704 | y |
+| gotos | false | 706 | 706 | (bool)... |
+| gotos | false | 710 | 710 | goto ... |
+| gotos | false | 712 | 712 | if (...) ...  |
+| gotos | false | 714 | 714 | declaration |
+| gotos | false | 716 | 716 | { ... } |
+| gotos | false | 718 | 718 | label ...: |
+| gotos | false | 720 | 720 | x |
+| gotos | false | 722 | 722 | -- ... |
+| gotos | false | 724 | 724 | ExprStmt |
+| gotos | false | 726 | 726 | return ... |
+| gotos | false | 728 | 728 | { ... } |
+| gotos | false | 730 | 730 | nt1 |
+| gotos | false | 732 | 732 | call to nt1.~NonTrivial |
+| gotos | false | 733 | 733 | nt2 |
+| gotos | false | 735 | 735 | call to nt2.~NonTrivial |
+| gotos | false | 736 | 736 | nt3 |
+| gotos | false | 737 | 737 | call to nt3.~NonTrivial |
+| gotos | false | 738 | 738 | nt2 |
+| gotos | false | 739 | 739 | call to nt2.~NonTrivial |
+| gotos | true | 674 | 684 |  |
+| gotos | true | 676 | 682 | T |
+| gotos | true | 676 | 716 | F |
+| gotos | true | 682 | 700 |  |
+| gotos | true | 684 | 676 |  |
+| gotos | true | 686 | 688 |  |
+| gotos | true | 688 | 700 |  |
+| gotos | true | 690 | 686 |  |
+| gotos | true | 698 | 690 |  |
+| gotos | true | 698 | 700 |  |
+| gotos | true | 700 | 702 |  |
+| gotos | true | 702 | 712 |  |
+| gotos | true | 704 | 710 | T |
+| gotos | true | 704 | 714 | F |
+| gotos | true | 710 | 738 |  |
+| gotos | true | 712 | 704 |  |
+| gotos | true | 714 | 736 |  |
+| gotos | true | 716 | 698 |  |
+| gotos | true | 718 | 724 |  |
+| gotos | true | 720 | 722 |  |
+| gotos | true | 722 | 726 |  |
+| gotos | true | 724 | 720 |  |
+| gotos | true | 726 | 730 |  |
+| gotos | true | 728 | 674 |  |
+| gotos | true | 730 | 732 |  |
+| gotos | true | 732 | 664 |  |
+| gotos | true | 733 | 735 |  |
+| gotos | true | 735 | 718 |  |
+| gotos | true | 736 | 737 |  |
+| gotos | true | 737 | 733 |  |
+| gotos | true | 738 | 739 |  |
+| gotos | true | 739 | 718 |  |
+| if_decl_bind | false | 144 | 144 | if_decl_bind |
+| if_decl_bind | false | 151 | 151 | call to operator int |
+| if_decl_bind | false | 153 | 153 | call to BoxedInt |
+| if_decl_bind | false | 155 | 155 | x |
+| if_decl_bind | false | 157 | 157 | initializer for bi |
+| if_decl_bind | false | 161 | 161 | bi |
+| if_decl_bind | false | 163 | 163 | (bool)... |
+| if_decl_bind | false | 164 | 164 | (condition decl) |
+| if_decl_bind | false | 166 | 166 | bi |
+| if_decl_bind | false | 168 | 168 | m_ptr |
+| if_decl_bind | false | 170 | 170 | * ... |
+| if_decl_bind | false | 172 | 172 | ++ ... |
+| if_decl_bind | false | 174 | 174 | ExprStmt |
+| if_decl_bind | false | 176 | 176 | { ... } |
+| if_decl_bind | false | 178 | 178 | bi |
+| if_decl_bind | false | 180 | 180 | m_ptr |
+| if_decl_bind | false | 182 | 182 | * ... |
+| if_decl_bind | false | 184 | 184 | -- ... |
+| if_decl_bind | false | 186 | 186 | ExprStmt |
+| if_decl_bind | false | 188 | 188 | { ... } |
+| if_decl_bind | false | 190 | 190 | if (...) ...  |
+| if_decl_bind | false | 192 | 192 | x |
+| if_decl_bind | false | 196 | 196 | 1 |
+| if_decl_bind | false | 197 | 197 | ... = ... |
+| if_decl_bind | false | 199 | 199 | ExprStmt |
+| if_decl_bind | false | 201 | 201 | return ... |
+| if_decl_bind | false | 203 | 203 | { ... } |
+| if_decl_bind | false | 205 | 205 | bi |
+| if_decl_bind | false | 207 | 207 | call to bi.~BoxedInt |
+| if_decl_bind | true | 153 | 164 |  |
+| if_decl_bind | true | 155 | 153 |  |
+| if_decl_bind | true | 164 | 176 | T |
+| if_decl_bind | true | 164 | 188 | F |
+| if_decl_bind | true | 166 | 168 |  |
+| if_decl_bind | true | 168 | 170 |  |
+| if_decl_bind | true | 170 | 172 |  |
+| if_decl_bind | true | 172 | 205 |  |
+| if_decl_bind | true | 174 | 166 |  |
+| if_decl_bind | true | 176 | 174 |  |
+| if_decl_bind | true | 178 | 180 |  |
+| if_decl_bind | true | 180 | 182 |  |
+| if_decl_bind | true | 182 | 184 |  |
+| if_decl_bind | true | 184 | 205 |  |
+| if_decl_bind | true | 186 | 178 |  |
+| if_decl_bind | true | 188 | 186 |  |
+| if_decl_bind | true | 190 | 155 |  |
+| if_decl_bind | true | 192 | 197 |  |
+| if_decl_bind | true | 196 | 192 |  |
+| if_decl_bind | true | 197 | 201 |  |
+| if_decl_bind | true | 199 | 196 |  |
+| if_decl_bind | true | 201 | 144 |  |
+| if_decl_bind | true | 203 | 190 |  |
+| if_decl_bind | true | 205 | 207 |  |
+| if_decl_bind | true | 207 | 199 |  |
+| never_destructs | false | 648 | 648 | never_destructs |
+| never_destructs | false | 654 | 654 | declaration |
+| never_destructs | false | 656 | 656 | label ...: |
+| never_destructs | false | 658 | 658 | goto ... |
+| never_destructs | false | 660 | 660 | { ... } |
+| never_destructs | true | 654 | 656 |  |
+| never_destructs | true | 656 | 658 |  |
+| never_destructs | true | 658 | 656 |  |
+| never_destructs | true | 660 | 654 |  |
+| operator delete | false | 97 | 97 | operator delete |
+| operator new | false | 78 | 78 | operator new |
+| simple | false | 464 | 464 | simple |
+| simple | false | 471 | 471 | declaration |
+| simple | false | 473 | 473 | return ... |
+| simple | false | 475 | 475 | { ... } |
+| simple | false | 477 | 477 | nt |
+| simple | false | 479 | 479 | call to nt.~NonTrivial |
+| simple | true | 471 | 473 |  |
+| simple | true | 473 | 477 |  |
+| simple | true | 475 | 471 |  |
+| simple | true | 477 | 479 |  |
+| simple | true | 479 | 464 |  |
+| simple2 | false | 482 | 482 | simple2 |
+| simple2 | false | 488 | 488 | declaration |
+| simple2 | false | 493 | 493 | declaration |
+| simple2 | false | 495 | 495 | return ... |
+| simple2 | false | 497 | 497 | { ... } |
+| simple2 | false | 499 | 499 | one |
+| simple2 | false | 501 | 501 | call to one.~NonTrivial |
+| simple2 | false | 502 | 502 | two |
+| simple2 | false | 503 | 503 | call to two.~NonTrivial |
+| simple2 | true | 488 | 493 |  |
+| simple2 | true | 493 | 495 |  |
+| simple2 | true | 495 | 502 |  |
+| simple2 | true | 497 | 488 |  |
+| simple2 | true | 499 | 501 |  |
+| simple2 | true | 501 | 482 |  |
+| simple2 | true | 502 | 503 |  |
+| simple2 | true | 503 | 499 |  |
+| switch_decl_bind | false | 210 | 210 | switch_decl_bind |
+| switch_decl_bind | false | 215 | 215 | call to operator int |
+| switch_decl_bind | false | 217 | 217 | call to BoxedInt |
+| switch_decl_bind | false | 219 | 219 | x |
+| switch_decl_bind | false | 221 | 221 | initializer for bi |
+| switch_decl_bind | false | 225 | 225 | bi |
+| switch_decl_bind | false | 227 | 227 | (condition decl) |
+| switch_decl_bind | false | 231 | 231 | 0 |
+| switch_decl_bind | false | 232 | 232 | case ...: |
+| switch_decl_bind | false | 234 | 234 | bi |
+| switch_decl_bind | false | 236 | 236 | m_ptr |
+| switch_decl_bind | false | 238 | 238 | * ... |
+| switch_decl_bind | false | 240 | 240 | -- ... |
+| switch_decl_bind | false | 242 | 242 | ExprStmt |
+| switch_decl_bind | false | 244 | 244 | break; |
+| switch_decl_bind | false | 248 | 248 | 1 |
+| switch_decl_bind | false | 249 | 249 | case ...: |
+| switch_decl_bind | false | 251 | 251 | bi |
+| switch_decl_bind | false | 253 | 253 | m_ptr |
+| switch_decl_bind | false | 255 | 255 | * ... |
+| switch_decl_bind | false | 257 | 257 | ++ ... |
+| switch_decl_bind | false | 259 | 259 | ExprStmt |
+| switch_decl_bind | false | 261 | 261 | break; |
+| switch_decl_bind | false | 263 | 263 | default:  |
+| switch_decl_bind | false | 265 | 265 | bi |
+| switch_decl_bind | false | 267 | 267 | m_ptr |
+| switch_decl_bind | false | 269 | 269 | * ... |
+| switch_decl_bind | false | 273 | 273 | 2 |
+| switch_decl_bind | false | 274 | 274 | ... /= ... |
+| switch_decl_bind | false | 276 | 276 | ExprStmt |
+| switch_decl_bind | false | 278 | 278 | { ... } |
+| switch_decl_bind | false | 280 | 280 | switch (...) ...  |
+| switch_decl_bind | false | 282 | 282 | label ...: |
+| switch_decl_bind | false | 284 | 284 | x |
+| switch_decl_bind | false | 288 | 288 | 1 |
+| switch_decl_bind | false | 289 | 289 | ... = ... |
+| switch_decl_bind | false | 291 | 291 | ExprStmt |
+| switch_decl_bind | false | 293 | 293 | return ... |
+| switch_decl_bind | false | 295 | 295 | { ... } |
+| switch_decl_bind | false | 297 | 297 | bi |
+| switch_decl_bind | false | 299 | 299 | call to bi.~BoxedInt |
+| switch_decl_bind | false | 300 | 300 | bi |
+| switch_decl_bind | false | 301 | 301 | call to bi.~BoxedInt |
+| switch_decl_bind | false | 302 | 302 | bi |
+| switch_decl_bind | false | 303 | 303 | call to bi.~BoxedInt |
+| switch_decl_bind | true | 217 | 227 |  |
+| switch_decl_bind | true | 219 | 217 |  |
+| switch_decl_bind | true | 227 | 278 |  |
+| switch_decl_bind | true | 232 | 242 |  |
+| switch_decl_bind | true | 234 | 236 |  |
+| switch_decl_bind | true | 236 | 238 |  |
+| switch_decl_bind | true | 238 | 240 |  |
+| switch_decl_bind | true | 240 | 244 |  |
+| switch_decl_bind | true | 242 | 234 |  |
+| switch_decl_bind | true | 244 | 302 |  |
+| switch_decl_bind | true | 249 | 259 |  |
+| switch_decl_bind | true | 251 | 253 |  |
+| switch_decl_bind | true | 253 | 255 |  |
+| switch_decl_bind | true | 255 | 257 |  |
+| switch_decl_bind | true | 257 | 261 |  |
+| switch_decl_bind | true | 259 | 251 |  |
+| switch_decl_bind | true | 261 | 300 |  |
+| switch_decl_bind | true | 263 | 276 |  |
+| switch_decl_bind | true | 265 | 267 |  |
+| switch_decl_bind | true | 267 | 269 |  |
+| switch_decl_bind | true | 269 | 273 |  |
+| switch_decl_bind | true | 273 | 274 |  |
+| switch_decl_bind | true | 274 | 297 |  |
+| switch_decl_bind | true | 276 | 265 |  |
+| switch_decl_bind | true | 278 | 232 |  |
+| switch_decl_bind | true | 278 | 249 |  |
+| switch_decl_bind | true | 278 | 263 |  |
+| switch_decl_bind | true | 280 | 219 |  |
+| switch_decl_bind | true | 282 | 291 |  |
+| switch_decl_bind | true | 284 | 289 |  |
+| switch_decl_bind | true | 288 | 284 |  |
+| switch_decl_bind | true | 289 | 293 |  |
+| switch_decl_bind | true | 291 | 288 |  |
+| switch_decl_bind | true | 293 | 210 |  |
+| switch_decl_bind | true | 295 | 280 |  |
+| switch_decl_bind | true | 297 | 299 |  |
+| switch_decl_bind | true | 299 | 282 |  |
+| switch_decl_bind | true | 300 | 301 |  |
+| switch_decl_bind | true | 301 | 282 |  |
+| switch_decl_bind | true | 302 | 303 |  |
+| switch_decl_bind | true | 303 | 282 |  |
+| while_decl_bind | false | 306 | 306 | while_decl_bind |
+| while_decl_bind | false | 311 | 311 | call to operator int |
+| while_decl_bind | false | 313 | 313 | call to BoxedInt |
+| while_decl_bind | false | 315 | 315 | x |
+| while_decl_bind | false | 317 | 317 | initializer for bi |
+| while_decl_bind | false | 321 | 321 | bi |
+| while_decl_bind | false | 323 | 323 | (bool)... |
+| while_decl_bind | false | 324 | 324 | (condition decl) |
+| while_decl_bind | false | 326 | 326 | x |
+| while_decl_bind | false | 328 | 328 | -- ... |
+| while_decl_bind | false | 330 | 330 | ExprStmt |
+| while_decl_bind | false | 332 | 332 | { ... } |
+| while_decl_bind | false | 334 | 334 | while (...) ... |
+| while_decl_bind | false | 336 | 336 | x |
+| while_decl_bind | false | 338 | 338 | ++ ... |
+| while_decl_bind | false | 340 | 340 | ExprStmt |
+| while_decl_bind | false | 342 | 342 | return ... |
+| while_decl_bind | false | 344 | 344 | { ... } |
+| while_decl_bind | false | 346 | 346 | bi |
+| while_decl_bind | false | 348 | 348 | call to bi.~BoxedInt |
+| while_decl_bind | false | 349 | 349 | bi |
+| while_decl_bind | false | 350 | 350 | call to bi.~BoxedInt |
+| while_decl_bind | true | 313 | 324 |  |
+| while_decl_bind | true | 315 | 313 |  |
+| while_decl_bind | true | 324 | 332 | T |
+| while_decl_bind | true | 324 | 346 | F |
+| while_decl_bind | true | 326 | 328 |  |
+| while_decl_bind | true | 328 | 349 |  |
+| while_decl_bind | true | 330 | 326 |  |
+| while_decl_bind | true | 332 | 330 |  |
+| while_decl_bind | true | 334 | 315 |  |
+| while_decl_bind | true | 336 | 338 |  |
+| while_decl_bind | true | 338 | 342 |  |
+| while_decl_bind | true | 340 | 336 |  |
+| while_decl_bind | true | 342 | 306 |  |
+| while_decl_bind | true | 344 | 334 |  |
+| while_decl_bind | true | 346 | 348 |  |
+| while_decl_bind | true | 348 | 340 |  |
+| while_decl_bind | true | 349 | 350 |  |
+| while_decl_bind | true | 350 | 315 |  |

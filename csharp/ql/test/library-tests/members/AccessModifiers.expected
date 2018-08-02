@@ -1,0 +1,12 @@
+| Members.cs:4:11:4:15 | Class | internal |
+| Members.cs:7:15:7:25 | NestedClass | private |
+| Members.cs:10:14:10:19 | Method | private |
+| Members.cs:13:20:13:25 | Class2 | internal |
+| Members.cs:15:23:15:34 | NestedClass2 | private |
+| Members.cs:17:22:17:28 | Method2 | private |
+| Members.cs:21:15:21:23 | Interface | internal |
+| Members.cs:23:24:23:33 | Interface2 | internal |
+| Members.cs:26:10:26:13 | Enum | internal |
+| Members.cs:28:10:28:14 | Enum2 | internal |
+| Members.cs:31:12:31:17 | Struct | internal |
+| Members.cs:33:12:33:18 | Struct2 | internal |

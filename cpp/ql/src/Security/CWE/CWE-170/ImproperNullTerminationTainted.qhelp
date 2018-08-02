@@ -1,0 +1,49 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p> Built-in C string functions such as <code>strcpy</code> require that their
+input string arguments are null terminated. If the input string arguments are
+not null terminated, these functions will read/write beyond the length of the
+buffer containing the string, resulting in either buffer over-read or buffer
+overflow, respectively.
+</p>
+
+</overview>
+<recommendation>
+
+<p> Always guard against user-controlled strings that may not be null terminated.
+Otherwise, an attacker may be able to supply input without null termination.
+</p>
+
+</recommendation>
+<example>
+<p>In this example, a string is read from a file using the <code>read</code>
+function. Because the value may be user-controlled, the string may not be
+null terminated, in which case the call to <code>strcpy</code> will perform
+a buffer overwrite on <code>cpy</code>, potentially resulting in a program
+crash.
+</p>
+
+<sample src="ImproperNullTerminationTaintedBad.cpp" />
+
+<p>In the revised example, the number of bytes read is recorded in the variable
+<code>count</code>. In addition to checking that the read succeeds (the condition
+<code>count &gt;= 0</code>), a null terminator is inserted before the call to
+<code>strcpy</code>.
+</p>
+
+<sample src="ImproperNullTerminationTaintedGood.cpp" />
+
+
+</example>
+<references>
+
+  <li>B. Chess and J. West, <em>Secure Programming with Static Analysis</em>, 6.2 Maintaining the Null Terminator. Addison-Wesley. 2007.</li>
+  <li>Linux Programmer's Manual: <a href="http://man7.org/linux/man-pages/man2/read.2.html">READ(2)</a>, <a href="http://man7.org/linux/man-pages/man3/strncpy.3.html">STRCPY(3)</a>.</li>
+
+</references>
+</qhelp>

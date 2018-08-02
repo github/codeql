@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+This rule looks at functions that return a <code>FILE*</code>, but may return an error value before actually closing the resource.
+This can occur when an operation performed on the open descriptor fails, and the function returns with an error before closing the open resource. An improperly handled error may cause the function to leak file descriptors.
+</p> 
+
+<include src="dataFlowWarning.qhelp" />
+
+</overview>
+<recommendation>
+<p>Ensure that the function frees all the resources it acquired when an error occurs.</p>
+
+</recommendation>
+<example><sample src="FileMayNotBeClosed.cpp" />
+
+
+
+
+</example>
+</qhelp>

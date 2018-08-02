@@ -1,0 +1,50 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+This metric measures the number of statements in a file.
+</p>
+
+<p>
+If there are too many statements in a file, it is generally
+for one of two reasons:
+</p>
+
+<ul>
+<li>
+One or more individual functions in the file contain too many statements,
+making them hard to understand, difficult to check and a common source of defects.
+These functions typically lack cohesion because they are trying to do too many things.
+</li>
+
+<li>
+The file contains too many functions, which generally indicates that it is
+trying to do too much, either at the interface or implementation level or
+both. It can be difficult for readers to understand because there is a
+confusing list of operations.
+</li>
+</ul>
+
+</overview>
+<recommendation>
+
+<p>
+Long individual functions should be refactored into multiple, smaller parts. Files that
+contain many functions should be split up into smaller, more coherent units.
+</p>
+
+
+</recommendation>
+<references>
+
+
+<li>
+M. Fowler. <em>Refactoring</em>. Addison-Wesley, 1999.
+</li>
+
+
+
+</references>
+</qhelp>

@@ -1,0 +1,10 @@
+| AV Rule 193.c:10:2:10:11 | case ...: | AV Rule 193: Every non-empty case clause in a switch statement shall be terminated with a break statement. |
+| AV Rule 193.c:36:2:36:9 | default:  | AV Rule 193: Every non-empty case clause in a switch statement shall be terminated with a break statement. |
+| nested.c:20:9:20:15 | case ...: | AV Rule 193: Every non-empty case clause in a switch statement shall be terminated with a break statement. |
+| nested.c:25:13:25:20 | default:  | AV Rule 193: Every non-empty case clause in a switch statement shall be terminated with a break statement. |
+| test.c:6:9:6:15 | case ...: | AV Rule 193: Every non-empty case clause in a switch statement shall be terminated with a break statement. |
+| test.c:27:9:27:15 | case ...: | AV Rule 193: Every non-empty case clause in a switch statement shall be terminated with a break statement. |
+| test.c:34:9:34:16 | default:  | AV Rule 193: Every non-empty case clause in a switch statement shall be terminated with a break statement. |
+| test.c:48:9:48:15 | case ...: | AV Rule 193: Every non-empty case clause in a switch statement shall be terminated with a break statement. |
+| test.c:62:9:62:16 | case ...: | AV Rule 193: Every non-empty case clause in a switch statement shall be terminated with a break statement. |
+| test.c:71:9:71:15 | case ...: | AV Rule 193: Every non-empty case clause in a switch statement shall be terminated with a break statement. |

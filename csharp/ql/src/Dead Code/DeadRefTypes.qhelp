@@ -1,0 +1,24 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This rule detects classes that are not public and not used. These classes are redundant as they cannot be accessed from 
+outside the project.</p>
+
+</overview>
+<recommendation>
+<p>These classes should either be used where appropriate or removed.</p>
+
+</recommendation>
+<example>
+<p>In this example the "Person" class is private so it can only be used in the class it is nested in but it is never used.</p>
+<sample src="DeadRefTypes.cs" />
+
+</example>
+<references>
+
+  <li>MSDN, Code Analysis for Managed Code, <a href="http://msdn.microsoft.com/en-us/library/ms182265.aspx">CA1812: Avoid uninstantiated internal classes</a>.</li>
+
+</references>
+</qhelp>

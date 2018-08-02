@@ -1,0 +1,50 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+JavaScript functions can access their arguments by position (rather than by parameter name)
+through the special <code>arguments</code> object. However, if a function declares a parameter
+or local variable named <code>arguments</code>, or assigns a new value to <code>arguments</code>,
+then the <code>arguments</code> object is no longer available. This is confusing and makes code
+hard to understand, so it should be avoided.
+</p>
+
+<p>
+Also note that many popular JavaScript engines (such as V8, which is used by Google Chrome and
+Node.js) do not support optimization of functions that assign to <code>arguments</code>, so such
+functions will run more slowly.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Rename the variable to something else.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, the <code>arguments</code> parameter of function <code>f</code> shadows the
+special <code>arguments</code> variable. As a result, the <code>arguments</code> object cannot be
+accessed inside <code>f</code>. To the casual reader, the test <code>x === arguments[0]</code> may look
+redundant, since normally <code>arguments[0]</code> refers to the first argument (<code>x</code> in this
+case), which would make the test trivially true. This is not the case here, however, since
+<code>arguments[0]</code> refers to the first element of the array passed in as the second
+argument.
+</p>
+
+<sample src="examples/ArgumentsRedefined.js" />
+
+</example>
+<references>
+
+
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions_and_function_scope/arguments">arguments</a>.</li>
+<li>Petka Antonov: <a href="https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#3-managing-arguments">Optimization killers</a>.</li>
+
+</references>
+</qhelp>

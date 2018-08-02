@@ -1,0 +1,4 @@
+| choose_expr.c:3:13:3:42 | __builtin_choose_expr |
+| varargs.c:7:5:7:32 | __builtin_va_start |
+| varargs.c:9:13:9:37 | __builtin_va_arg |
+| varargs.c:11:5:11:24 | __builtin_va_end |

@@ -1,0 +1,10 @@
+| file://:0:0:0:0 |  |  |
+| test'.c:0:0:0:0 | test'.c | CFile |
+| test'.h:0:0:0:0 | test'.h | HeaderFile |
+| test.CPP:0:0:0:0 | test.CPP | CppFile |
+| test.H:0:0:0:0 | test.H | HeaderFile |
+| test.abc:0:0:0:0 | test.abc |  |
+| test.c++:0:0:0:0 | test.c++ | CppFile |
+| test.c:0:0:0:0 | test.c | CFile |
+| test.hpp:0:0:0:0 | test.hpp | HeaderFile |
+| test:0:0:0:0 | test | HeaderFile |

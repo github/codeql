@@ -1,0 +1,3 @@
+| regressions.cs:7:13:7:13 | access to local variable x | write |
+| regressions.cs:8:9:8:9 | access to local variable x | read |
+| regressions.cs:9:17:9:17 | access to local variable x | read |

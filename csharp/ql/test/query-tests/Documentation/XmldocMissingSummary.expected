@@ -1,0 +1,2 @@
+| documentation.cs:33:16:33:22 | method2 | Documentation should have a summary. |
+| documentation.cs:106:24:106:33 | method4 | Documentation should have a summary. |

@@ -1,0 +1,6 @@
+| a.cpp:4:5:4:12 | call to A |
+| a.cpp:5:1:5:1 | call to ~A |
+| a.h:6:8:6:8 | call to Base |
+| a.h:6:8:6:8 | call to ~Base |
+| b.cpp:4:5:4:10 | call to A |
+| b.cpp:5:1:5:1 | call to ~A |

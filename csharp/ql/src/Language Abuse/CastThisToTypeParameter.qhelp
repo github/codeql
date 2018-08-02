@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Casting <code>this</code> to a type parameter may indicate an implicit type constraint. That is, 
+the programmer wanted to express that <code>this</code> can be converted to the type parameter but 
+could not find an appropriate way to do so. Instead, they rely on derived type to implement the 
+correct interface.</p>
+
+</overview>
+<recommendation>
+<p>The solution is to enforce the constraint using the mechanism of an abstract property on the base 
+type. Each derived type must then implement this property, which makes the constraint checkable by 
+the compiler and removes the need for a cast.</p>
+
+</recommendation>
+<example>
+<p>In this example the programmer is relying on any concrete implementations of <code>BaseNode
+</code> to follow the correct design pattern. <code>Derived1</code> does but <code>Derived2</code> 
+does not. The program will still compile but will crash if an attempt is made to access the <code>
+Root</code> property of an instance of <code>Derived2</code>.</p>
+<sample src="CastThisToTypeParameter.cs" />
+
+<p>It would be better to enforce this using an abstract property.</p>
+<sample src="CastThisToTypeParameterFix.cs" />
+</example>
+</qhelp>

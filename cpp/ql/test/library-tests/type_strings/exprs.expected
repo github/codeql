@@ -1,0 +1,83 @@
+| type_strings.cpp:6:59:6:60 | 10 | int | int |
+| type_strings.cpp:11:39:11:41 | 120 | char | char |
+| type_strings.cpp:18:12:18:14 | 99 | char | char |
+| type_strings.cpp:23:28:23:35 | & ... | ..(*)(..) | pointer to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:23:29:23:35 | someFun | ..()(..) | function returning {char} with arguments (int,int) |
+| type_strings.cpp:24:29:24:35 | (reference to) | ..(&)(..) | reference to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:24:29:24:35 | someFun | ..()(..) | function returning {char} with arguments (int,int) |
+| type_strings.cpp:25:5:25:5 | c | char | char |
+| type_strings.cpp:25:5:25:16 | ... = ... | char | char |
+| type_strings.cpp:25:9:25:10 | fp | ..(*)(..) | pointer to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:25:9:25:16 | call to expression | char | char |
+| type_strings.cpp:25:12:25:12 | 4 | int | int |
+| type_strings.cpp:25:15:25:15 | 5 | int | int |
+| type_strings.cpp:26:5:26:5 | c | char | char |
+| type_strings.cpp:26:5:26:19 | ... = ... | char | char |
+| type_strings.cpp:26:9:26:13 | (...) | ..(*)(..) | pointer to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:26:9:26:19 | call to expression | char | char |
+| type_strings.cpp:26:10:26:12 | * ... | ..(*)(..) | pointer to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:26:11:26:12 | fp | ..(*)(..) | pointer to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:26:15:26:15 | 4 | int | int |
+| type_strings.cpp:26:18:26:18 | 5 | int | int |
+| type_strings.cpp:27:5:27:5 | c | char | char |
+| type_strings.cpp:27:5:27:22 | ... = ... | char | char |
+| type_strings.cpp:27:9:27:16 | (...) | ..(*)(..) | pointer to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:27:9:27:22 | call to expression | char | char |
+| type_strings.cpp:27:10:27:15 | * ... | ..(*)(..) | pointer to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:27:11:27:15 | (...) | ..(*)(..) | pointer to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:27:12:27:14 | * ... | ..(*)(..) | pointer to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:27:13:27:14 | fp | ..(*)(..) | pointer to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:27:18:27:18 | 4 | int | int |
+| type_strings.cpp:27:21:27:21 | 5 | int | int |
+| type_strings.cpp:28:5:28:5 | c | char | char |
+| type_strings.cpp:28:5:28:25 | ... = ... | char | char |
+| type_strings.cpp:28:9:28:19 | (...) | ..(*)(..) | pointer to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:28:9:28:25 | call to expression | char | char |
+| type_strings.cpp:28:10:28:18 | * ... | ..(*)(..) | pointer to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:28:11:28:18 | (...) | ..(*)(..) | pointer to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:28:12:28:17 | * ... | ..(*)(..) | pointer to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:28:13:28:17 | (...) | ..(*)(..) | pointer to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:28:14:28:16 | * ... | ..(*)(..) | pointer to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:28:15:28:16 | fp | ..(*)(..) | pointer to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:28:21:28:21 | 4 | int | int |
+| type_strings.cpp:28:24:28:24 | 5 | int | int |
+| type_strings.cpp:29:5:29:5 | c | char | char |
+| type_strings.cpp:29:5:29:21 | ... = ... | char | char |
+| type_strings.cpp:29:9:29:15 | (...) | ..(*)(..) | pointer to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:29:9:29:21 | call to expression | char | char |
+| type_strings.cpp:29:10:29:14 | * ... | ..(*)(..) | pointer to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:29:11:29:14 | * ... | ..(*)(..) | pointer to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:29:12:29:14 | * ... | ..(*)(..) | pointer to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:29:13:29:14 | fp | ..(*)(..) | pointer to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:29:17:29:17 | 4 | int | int |
+| type_strings.cpp:29:20:29:20 | 5 | int | int |
+| type_strings.cpp:30:5:30:5 | c | char | char |
+| type_strings.cpp:30:5:30:17 | ... = ... | char | char |
+| type_strings.cpp:30:9:30:11 | (reference dereference) | ..(*)(..) | pointer to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:30:9:30:11 | fp2 | ..(&)(..) | reference to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:30:9:30:17 | call to expression | char | char |
+| type_strings.cpp:30:13:30:13 | 4 | int | int |
+| type_strings.cpp:30:16:30:16 | 5 | int | int |
+| type_strings.cpp:31:5:31:5 | c | char | char |
+| type_strings.cpp:31:5:31:20 | ... = ... | char | char |
+| type_strings.cpp:31:9:31:14 | (...) | ..(*)(..) | pointer to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:31:9:31:20 | call to expression | char | char |
+| type_strings.cpp:31:10:31:13 | * ... | ..(*)(..) | pointer to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:31:11:31:13 | (reference dereference) | ..(*)(..) | pointer to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:31:11:31:13 | fp2 | ..(&)(..) | reference to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:31:16:31:16 | 4 | int | int |
+| type_strings.cpp:31:19:31:19 | 5 | int | int |
+| type_strings.cpp:32:5:32:5 | c | char | char |
+| type_strings.cpp:32:5:32:22 | ... = ... | char | char |
+| type_strings.cpp:32:9:32:16 | (...) | ..(*)(..) | pointer to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:32:9:32:22 | call to expression | char | char |
+| type_strings.cpp:32:10:32:15 | * ... | ..(*)(..) | pointer to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:32:11:32:15 | * ... | ..(*)(..) | pointer to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:32:12:32:15 | * ... | ..(*)(..) | pointer to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:32:13:32:15 | (reference dereference) | ..(*)(..) | pointer to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:32:13:32:15 | fp2 | ..(&)(..) | reference to {function returning {char} with arguments (int,int)} |
+| type_strings.cpp:32:18:32:18 | 4 | int | int |
+| type_strings.cpp:32:21:32:21 | 5 | int | int |
+| type_strings.cpp:35:8:35:9 | 10 | int | int |
+| type_strings.cpp:35:12:35:13 | 20 | int | int |
+| type_strings.cpp:35:16:35:17 | 30 | int | int |

@@ -1,0 +1,1 @@
+| bad.js:14:7:14:23 | $compile(element) | This call to $compile may cause double compilation of 'element'. |

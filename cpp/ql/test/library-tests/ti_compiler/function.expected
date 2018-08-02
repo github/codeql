@@ -1,0 +1,2 @@
+| ti.c:2:11:2:12 | f1 | file://:0:0:0:0 | char far * | pointer to {far {char}} |
+| ti.c:6:11:6:12 | f2 | file://:0:0:0:0 | char far * | pointer to {far {char}} |

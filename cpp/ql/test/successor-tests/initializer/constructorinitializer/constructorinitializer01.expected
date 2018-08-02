@@ -1,0 +1,18 @@
+| constructorinitializer | constructorinitializer.cpp:1:7:1:7 | C | 1 | 1 | constructorinitializer.cpp:1:7:1:7 | constructorinitializer.cpp:1:7:1:7 | constructorinitializer.cpp:1:7:1:7 | C | <none> |
+| constructorinitializer | constructorinitializer.cpp:1:7:1:7 | C | 1 | 1 | constructorinitializer.cpp:1:7:1:7 | constructorinitializer.cpp:1:7:1:7 | constructorinitializer.cpp:1:7:1:7 | C | <none> |
+| constructorinitializer | constructorinitializer.cpp:1:7:1:7 | operator= | 1 | 1 | constructorinitializer.cpp:1:7:1:7 | constructorinitializer.cpp:1:7:1:7 | constructorinitializer.cpp:1:7:1:7 | operator= | <none> |
+| constructorinitializer | constructorinitializer.cpp:1:7:1:7 | operator= | 1 | 1 | constructorinitializer.cpp:1:7:1:7 | constructorinitializer.cpp:1:7:1:7 | constructorinitializer.cpp:1:7:1:7 | operator= | <none> |
+| constructorinitializer | constructorinitializer.cpp:3:3:3:3 | C | 3 | 1 | constructorinitializer.cpp:3:3:3:3 | constructorinitializer.cpp:3:3:3:3 | constructorinitializer.cpp:3:3:3:3 | C | <none> |
+| constructorinitializer | constructorinitializer.cpp:6:6:6:6 | f | 6 | 1 | constructorinitializer.cpp:6:10:9:1 | constructorinitializer.cpp:6:10:9:1 | constructorinitializer.cpp:6:10:9:1 | { ... } | declaration |
+| constructorinitializer | constructorinitializer.cpp:6:6:6:6 | f | 6 | 13 | constructorinitializer.cpp:6:6:6:6 | constructorinitializer.cpp:6:6:6:6 | constructorinitializer.cpp:6:6:6:6 | f | <none> |
+| constructorinitializer | constructorinitializer.cpp:6:6:6:6 | f | 7 | 2 | constructorinitializer.cpp:7:2:7:16 | constructorinitializer.cpp:7:2:7:16 | constructorinitializer.cpp:7:2:7:16 | declaration | declaration |
+| constructorinitializer | constructorinitializer.cpp:6:6:6:6 | f | 8 | 3 | constructorinitializer.cpp:8:2:8:19 | constructorinitializer.cpp:8:2:8:19 | constructorinitializer.cpp:8:2:8:19 | declaration | initializer for c |
+| constructorinitializer | constructorinitializer.cpp:6:6:6:6 | f | 8 | 4 | constructorinitializer.cpp:8:6:8:18 | constructorinitializer.cpp:8:6:8:18 | constructorinitializer.cpp:8:6:8:18 | initializer for c | i |
+| constructorinitializer | constructorinitializer.cpp:6:6:6:6 | f | 8 | 5 | constructorinitializer.cpp:8:6:8:6 | constructorinitializer.cpp:8:6:8:6 | constructorinitializer.cpp:8:6:8:6 | i | j |
+| constructorinitializer | constructorinitializer.cpp:6:6:6:6 | f | 8 | 6 | constructorinitializer.cpp:8:10:8:10 | constructorinitializer.cpp:8:10:8:10 | constructorinitializer.cpp:8:10:8:10 | j | ... + ... |
+| constructorinitializer | constructorinitializer.cpp:6:6:6:6 | f | 8 | 7 | constructorinitializer.cpp:8:6:8:10 | constructorinitializer.cpp:8:6:8:10 | constructorinitializer.cpp:8:6:8:10 | ... + ... | k |
+| constructorinitializer | constructorinitializer.cpp:6:6:6:6 | f | 8 | 8 | constructorinitializer.cpp:8:13:8:13 | constructorinitializer.cpp:8:13:8:13 | constructorinitializer.cpp:8:13:8:13 | k | l |
+| constructorinitializer | constructorinitializer.cpp:6:6:6:6 | f | 8 | 9 | constructorinitializer.cpp:8:17:8:17 | constructorinitializer.cpp:8:17:8:17 | constructorinitializer.cpp:8:17:8:17 | l | ... - ... |
+| constructorinitializer | constructorinitializer.cpp:6:6:6:6 | f | 8 | 10 | constructorinitializer.cpp:8:13:8:17 | constructorinitializer.cpp:8:13:8:17 | constructorinitializer.cpp:8:13:8:17 | ... - ... | call to C |
+| constructorinitializer | constructorinitializer.cpp:6:6:6:6 | f | 8 | 11 | constructorinitializer.cpp:8:6:8:18 | constructorinitializer.cpp:8:6:8:18 | constructorinitializer.cpp:8:6:8:18 | call to C | return ... |
+| constructorinitializer | constructorinitializer.cpp:6:6:6:6 | f | 9 | 12 | constructorinitializer.cpp:9:1:9:1 | constructorinitializer.cpp:9:1:9:1 | constructorinitializer.cpp:9:1:9:1 | return ... | f |

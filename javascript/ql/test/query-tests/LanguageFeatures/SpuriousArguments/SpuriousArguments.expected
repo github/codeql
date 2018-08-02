@@ -1,0 +1,9 @@
+| es2015.js:4:16:4:17 | 23 | Superfluous argument passed to $@. | es2015.js:2:14:2:32 | (x) { this.x = x; } | constructor of class Class1 |
+| es2015.js:17:11:17:12 | 42 | Superfluous argument passed to $@. | es2015.js:15:13:15:12 | () {} | default constructor of class Other |
+| es2015.js:21:3:21:13 | 42 | Superfluous arguments passed to $@. | tst.js:1:1:4:1 | functio ... x+19;\\n} | function f |
+| globals.js:15:13:15:13 | x | Superfluous argument passed to $@. | globals.js:9:1:9:25 | functio ... al() {} | function otherglobal |
+| thisparameter.ts:4:11:4:12 | 45 | Superfluous argument passed to $@. | thisparameter.ts:1:1:1:38 | functio ... ber) {} | function foo |
+| tst.js:11:3:11:5 | g() | Superfluous argument passed to $@. | tst.js:1:1:4:1 | functio ... x+19;\\n} | function f |
+| tst.js:33:15:33:18 | 2 | Superfluous arguments passed to $@. | externs.js:34:1:34:27 | functio ... str) {} | function String |
+| tst.js:37:4:37:5 | 42 | Superfluous argument passed to $@. | tst.js:38:4:38:16 | function() {} | anonymous function |
+| tst.js:46:19:46:20 | 10 | Superfluous argument passed to $@. | externs.js:36:1:36:27 | functio ... num) {} | function parseFloat |

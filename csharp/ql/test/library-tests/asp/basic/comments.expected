@@ -1,0 +1,2 @@
+| test.aspx:16:1:16:21 | <!-- ... --> | client comment | client |
+| test.aspx:17:1:17:22 | <%-- ... --%> | server comment | server |

@@ -1,0 +1,138 @@
+| f | false | 54 | 54 | f\ntest.c:2:5:2:5 |
+| f | false | 65 | 65 | 0\ntest.c:3:17:3:18 |
+| f | false | 66 | 66 | initializer for result\ntest.c:3:17:3:18 |
+| f | false | 69 | 69 | declaration\ntest.c:3:5:3:19 |
+| f | false | 71 | 71 | i\ntest.c:4:9:4:9 |
+| f | false | 75 | 75 | 0\ntest.c:4:14:4:14 |
+| f | false | 76 | 76 | ... != ...\ntest.c:4:9:4:14 |
+| f | false | 78 | 78 | result\ntest.c:5:9:5:14 |
+| f | false | 80 | 80 | ... ++\ntest.c:5:9:5:16 |
+| f | false | 82 | 82 | ExprStmt\ntest.c:5:9:5:17 |
+| f | false | 84 | 84 | i\ntest.c:6:16:6:16 |
+| f | false | 88 | 88 | 10\ntest.c:6:20:6:21 |
+| f | false | 89 | 89 | ... < ...\ntest.c:6:16:6:21 |
+| f | false | 91 | 91 | i\ntest.c:7:17:7:17 |
+| f | false | 93 | 93 | ... ++\ntest.c:7:17:7:19 |
+| f | false | 97 | 97 | 5\ntest.c:7:24:7:24 |
+| f | false | 98 | 98 | ... == ...\ntest.c:7:17:7:24 |
+| f | false | 100 | 100 | result\ntest.c:8:17:8:22 |
+| f | false | 104 | 104 | 7\ntest.c:8:26:8:26 |
+| f | false | 105 | 105 | ... = ...\ntest.c:8:17:8:26 |
+| f | false | 107 | 107 | ExprStmt\ntest.c:8:17:8:27 |
+| f | false | 109 | 109 | break;\ntest.c:9:17:9:22 |
+| f | false | 111 | 111 | { ... }\ntest.c:7:27:10:13 |
+| f | false | 113 | 113 | if (...) ... \ntest.c:7:13:10:13 |
+| f | false | 115 | 115 | { ... }\ntest.c:6:24:11:9 |
+| f | false | 117 | 117 | while (...) ...\ntest.c:6:9:11:9 |
+| f | false | 119 | 119 | label ...:\ntest.c:11:9:11:9 |
+| f | false | 121 | 121 | { ... }\ntest.c:4:17:12:5 |
+| f | false | 123 | 123 | if (...) ... \ntest.c:4:5:12:5 |
+| f | false | 125 | 125 | result\ntest.c:13:12:13:17 |
+| f | false | 127 | 127 | return ...\ntest.c:13:5:13:18 |
+| f | false | 129 | 129 | { ... }\ntest.c:2:14:14:1 |
+| f | true | 65 | 123 |  |
+| f | true | 66 | 65 |  |
+| f | true | 69 | 66 |  |
+| f | true | 71 | 75 |  |
+| f | true | 75 | 76 |  |
+| f | true | 76 | 121 | T |
+| f | true | 76 | 127 | F |
+| f | true | 78 | 80 |  |
+| f | true | 80 | 117 |  |
+| f | true | 82 | 78 |  |
+| f | true | 84 | 88 |  |
+| f | true | 88 | 89 |  |
+| f | true | 89 | 115 | T |
+| f | true | 89 | 119 | F |
+| f | true | 91 | 93 |  |
+| f | true | 93 | 97 |  |
+| f | true | 97 | 98 |  |
+| f | true | 98 | 84 | F |
+| f | true | 98 | 111 | T |
+| f | true | 100 | 105 |  |
+| f | true | 104 | 100 |  |
+| f | true | 105 | 109 |  |
+| f | true | 107 | 104 |  |
+| f | true | 109 | 119 |  |
+| f | true | 111 | 107 |  |
+| f | true | 113 | 91 |  |
+| f | true | 115 | 113 |  |
+| f | true | 117 | 84 |  |
+| f | true | 119 | 127 |  |
+| f | true | 121 | 82 |  |
+| f | true | 123 | 71 |  |
+| f | true | 125 | 54 |  |
+| f | true | 127 | 125 |  |
+| f | true | 129 | 69 |  |
+| f_for | false | 131 | 131 | f_for\ntest.c:16:6:16:10 |
+| f_for | false | 142 | 142 | 0\ntest.c:18:12:18:13 |
+| f_for | false | 143 | 143 | initializer for x\ntest.c:18:12:18:13 |
+| f_for | false | 146 | 146 | declaration\ntest.c:17:5:17:10 |
+| f_for | false | 148 | 148 | declaration\ntest.c:18:5:18:14 |
+| f_for | false | 150 | 150 | i\ntest.c:20:16:20:16 |
+| f_for | false | 154 | 154 | 10\ntest.c:20:20:20:21 |
+| f_for | false | 155 | 155 | ... < ...\ntest.c:20:16:20:21 |
+| f_for | false | 157 | 157 | i\ntest.c:21:13:21:13 |
+| f_for | false | 161 | 161 | 5\ntest.c:21:18:21:18 |
+| f_for | false | 162 | 162 | ... == ...\ntest.c:21:13:21:18 |
+| f_for | false | 164 | 164 | continue;\ntest.c:22:13:22:21 |
+| f_for | false | 166 | 166 | { ... }\ntest.c:21:21:23:9 |
+| f_for | false | 168 | 168 | if (...) ... \ntest.c:21:9:23:9 |
+| f_for | false | 170 | 170 | i\ntest.c:24:13:24:13 |
+| f_for | false | 174 | 174 | 7\ntest.c:24:18:24:18 |
+| f_for | false | 175 | 175 | ... == ...\ntest.c:24:13:24:18 |
+| f_for | false | 177 | 177 | break;\ntest.c:25:13:25:18 |
+| f_for | false | 179 | 179 | { ... }\ntest.c:24:21:26:9 |
+| f_for | false | 181 | 181 | if (...) ... \ntest.c:24:9:26:9 |
+| f_for | false | 183 | 183 | x\ntest.c:27:9:27:9 |
+| f_for | false | 185 | 185 | ... ++\ntest.c:27:9:27:11 |
+| f_for | false | 187 | 187 | ExprStmt\ntest.c:27:9:27:12 |
+| f_for | false | 189 | 189 | label ...:\ntest.c:20:5:20:5 |
+| f_for | false | 191 | 191 | { ... }\ntest.c:20:29:28:5 |
+| f_for | false | 193 | 193 | i\ntest.c:20:9:20:9 |
+| f_for | false | 197 | 197 | 0\ntest.c:20:13:20:13 |
+| f_for | false | 198 | 198 | ... = ...\ntest.c:20:9:20:13 |
+| f_for | false | 200 | 200 | ExprStmt\ntest.c:20:9:20:14 |
+| f_for | false | 202 | 202 | i\ntest.c:20:24:20:24 |
+| f_for | false | 204 | 204 | ... ++\ntest.c:20:24:20:26 |
+| f_for | false | 206 | 206 | for(...;...;...) ...\ntest.c:20:5:28:5 |
+| f_for | false | 208 | 208 | label ...:\ntest.c:28:5:28:5 |
+| f_for | false | 210 | 210 | return ...\ntest.c:29:1:29:1 |
+| f_for | false | 212 | 212 | { ... }\ntest.c:16:18:29:1 |
+| f_for | true | 142 | 206 |  |
+| f_for | true | 143 | 142 |  |
+| f_for | true | 146 | 148 |  |
+| f_for | true | 148 | 143 |  |
+| f_for | true | 150 | 154 |  |
+| f_for | true | 154 | 155 |  |
+| f_for | true | 155 | 191 | T |
+| f_for | true | 155 | 208 | F |
+| f_for | true | 157 | 161 |  |
+| f_for | true | 161 | 162 |  |
+| f_for | true | 162 | 166 | T |
+| f_for | true | 162 | 181 | F |
+| f_for | true | 164 | 189 |  |
+| f_for | true | 166 | 164 |  |
+| f_for | true | 168 | 157 |  |
+| f_for | true | 170 | 174 |  |
+| f_for | true | 174 | 175 |  |
+| f_for | true | 175 | 179 | T |
+| f_for | true | 175 | 187 | F |
+| f_for | true | 177 | 208 |  |
+| f_for | true | 179 | 177 |  |
+| f_for | true | 181 | 170 |  |
+| f_for | true | 183 | 185 |  |
+| f_for | true | 185 | 189 |  |
+| f_for | true | 187 | 183 |  |
+| f_for | true | 189 | 202 |  |
+| f_for | true | 191 | 168 |  |
+| f_for | true | 193 | 198 |  |
+| f_for | true | 197 | 193 |  |
+| f_for | true | 198 | 150 |  |
+| f_for | true | 200 | 197 |  |
+| f_for | true | 202 | 204 |  |
+| f_for | true | 204 | 150 |  |
+| f_for | true | 206 | 200 |  |
+| f_for | true | 208 | 210 |  |
+| f_for | true | 210 | 131 |  |
+| f_for | true | 212 | 146 |  |

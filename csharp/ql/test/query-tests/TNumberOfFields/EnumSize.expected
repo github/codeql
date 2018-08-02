@@ -1,0 +1,3 @@
+| EnumSize.cs:47:18:47:24 | MyClass | 3 |
+| EnumSize.cs:4:17:4:42 | WLAN_HOSTED_NETWORK_REASON | 0 |
+| EnumSize.cs:37:17:37:48 | WLAN_HOSTED_NETWORK_REASON_SHORT | 0 |

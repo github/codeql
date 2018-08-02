@@ -1,0 +1,8 @@
+| tst2.js:4:3:6:3 | getX: f ... .x;\\n  } | This property is duplicated $@. | tst2.js:12:3:14:3 | getX: f ... .x;\\n  } | here |
+| tst.js:2:3:2:16 | "key": "value" | This property is duplicated $@. | tst.js:5:3:5:16 | "key": "value" | here |
+| tst.js:4:3:4:14 | "1": "value" | This property is duplicated $@. | tst.js:11:3:11:12 | 1: "value" | here |
+| tst.js:5:3:5:16 | "key": "value" | This property is duplicated $@. | tst.js:6:3:6:16 | 'key': "value" | here |
+| tst.js:6:3:6:16 | 'key': "value" | This property is duplicated $@. | tst.js:7:3:7:14 | key: "value" | here |
+| tst.js:7:3:7:14 | key: "value" | This property is duplicated $@. | tst.js:8:3:8:19 | \\u006bey: "value" | here |
+| tst.js:8:3:8:19 | \\u006bey: "value" | This property is duplicated $@. | tst.js:9:3:9:21 | "\\u006bey": "value" | here |
+| tst.js:9:3:9:21 | "\\u006bey": "value" | This property is duplicated $@. | tst.js:10:3:10:19 | "\\x6bey": "value" | here |

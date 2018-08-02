@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Programmers often use <code>as</code> to iterate over a collection of one type of element that 
+may contain some elements of another - possibly more specific - type. For example, <code>&lt;B&gt;
+</code> might refer to a collection of objects, some of which refer to an instance of <code>D</code>
+, a class derived from <code>B</code>. Programmers often write a loop to iterate over the collection 
+and coerce each <code>B</code> in turn to <code>D</code> before using it.</p>
+
+</overview>
+<recommendation>
+<p>This pattern works well and is also available as the <code>OfType</code> method in LINQ. It is 
+better to use a library method in preference to writing your own pattern unless you have a specific 
+need for a custom version. In particular, this makes the code easier to read by expressing the 
+intent better and reducing the number of distinct variables in scope within the loop.</p>
+
+</recommendation>
+<example>
+<p>In this example the programmer is only interested in the items in the array that are <code>Dog
+</code>s.</p>
+<sample src="MissedOfTypeOpportunity.cs" />
+
+<p>This can be expressed far better by using the <code>OfType</code> method.</p>
+<sample src="MissedOfTypeOpportunityFix.cs" />
+
+</example>
+<references>
+
+  <li>MSDN: <a href="http://msdn.microsoft.com/en-us/library/bb360913.aspx">Enumerable.OfType&lt;TResult&gt; Method</a>.</li>
+
+
+</references>
+</qhelp>

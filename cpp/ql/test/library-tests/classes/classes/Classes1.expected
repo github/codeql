@@ -1,0 +1,11 @@
+| Classes.ms.cpp:1:7:1:7 | A | ----- |
+| Classes.ms.cpp:6:7:6:7 | B | ----- |
+| Classes.ms.cpp:10:7:10:7 | C | ----- |
+| Classes.ms.cpp:14:7:14:7 | D | ----- |
+| Classes.ms.cpp:20:7:20:10 | E | ----- |
+| Classes.ms.cpp:24:8:24:8 | G | ----- |
+| Classes.ms.cpp:33:7:33:13 | F | ----- |
+| classes.cpp:2:7:2:8 | C1 | final |
+| classes.cpp:5:7:5:8 | C2 | final |
+| more_classes.cpp:2:7:2:8 | D1 | ----- |
+| more_classes.cpp:5:7:5:8 | D2 | final |

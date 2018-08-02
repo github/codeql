@@ -1,0 +1,17 @@
+| cpp.cpp:22:18:22:18 | call to operator!= | cpp.cpp:24:1:24:1 | return ... |
+| ms.cpp:8:15:8:15 | j | ms.cpp:2:6:2:18 | ms_try_except |
+| test.c:3:9:3:9 | x | test.c:6:1:6:1 | return ... |
+| test.c:3:14:3:14 | y | test.c:6:1:6:1 | return ... |
+| test.c:9:9:9:9 | x | test.c:9:14:9:14 | y |
+| test.c:9:14:9:14 | y | test.c:12:1:12:1 | return ... |
+| test.c:15:9:15:9 | x | test.c:15:14:15:14 | y |
+| test.c:15:14:15:14 | y | test.c:18:1:18:1 | return ... |
+| test.c:21:9:21:9 | x | test.c:21:17:21:17 | z |
+| test.c:21:13:21:13 | y | test.c:24:1:24:1 | return ... |
+| test.c:21:17:21:17 | z | test.c:24:1:24:1 | return ... |
+| test.c:33:14:33:14 | i | test.c:34:1:34:1 | return ... |
+| test.c:44:9:44:9 | x | test.c:47:1:47:1 | return ... |
+| test.c:57:9:57:9 | 0 | test.c:60:5:60:13 | return ... |
+| test.c:65:11:65:11 | b | test.c:68:3:68:11 | return ... |
+| test.c:73:6:73:6 | 0 | test.c:73:11:73:11 | b |
+| test.c:73:11:73:11 | b | test.c:76:3:76:11 | return ... |

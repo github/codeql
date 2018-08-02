@@ -1,0 +1,5 @@
+| UseBraces.cs:33:9:34:16 | if (...) ... | Missing braces? Inspect indentation of $@. | UseBraces.cs:34:18:34:21 | ...; | the control flow successor |
+| UseBraces.cs:63:9:68:16 | if (...) ... | Missing braces? Inspect indentation of $@. | UseBraces.cs:68:18:68:21 | ...; | the control flow successor |
+| UseBraces.cs:88:9:89:16 | while (...) ... | Missing braces? Inspect indentation of $@. | UseBraces.cs:89:18:89:21 | ...; | the control flow successor |
+| UseBraces.cs:117:9:118:16 | for (...;...;...) ... | Missing braces? Inspect indentation of $@. | UseBraces.cs:118:18:118:21 | ...; | the control flow successor |
+| UseBraces.cs:137:9:138:16 | foreach (... ... in ...) ... | Missing braces? Inspect indentation of $@. | UseBraces.cs:138:18:138:21 | ...; | the control flow successor |

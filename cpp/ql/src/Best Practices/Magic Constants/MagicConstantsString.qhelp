@@ -1,0 +1,49 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A <i>magic string</i> is a string literal (for example, <code>"SELECT"</code>,
+<code>"127.0.0.1"</code>) that is used in the middle of a block of code without
+explanation. It is considered good practice to avoid magic strings by assigning
+the strings to named constants and using the named constants instead. The
+reasons for this are twofold:</p>
+
+<ol>
+<li>A string in isolation can be inexplicable to later programmers, whereas a
+named constant (such as <code>SMTP_HELO</code>) is more readily understood.
+</li>
+<li>Using the same named constant in many places, makes the code much easier to
+update if the requirements change (for example, a protocol is updated).
+</li>
+</ol>
+
+<p>This rule finds magic strings for which there is no pre-existing named
+constant.</p>
+
+
+</overview>
+<recommendation>
+
+<p>Consider replacing the magic string with a new named constant.</p>
+
+</recommendation>
+<references>
+
+
+<li>
+<a href="http://en.wikipedia.org/wiki/Magic_string">Magic string (Wikipedia)</a>
+</li>
+<li>
+  Mats Henricson and Erik Nyquist, <i>Industrial Strength C++</i>, published by Prentice Hall PTR (1997). 
+  Chapter 5: Object Life Cycle, Rec 5.4 (<a href="http://mongers.org/industrial-c++/">PDF</a>).
+</li>
+<li>
+  <a href="https://www.securecoding.cert.org/confluence/display/c/DCL06-C.+Use+meaningful+symbolic+constants+to+represent+literal+values">DCL06-C. Use meaningful symbolic constants to represent literal values</a>
+</li>
+
+
+</references>
+</qhelp>

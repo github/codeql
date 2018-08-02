@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+A syntactically ill-formed regular expression may be interpreted differently on different platforms and
+may even lead to a runtime error.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Examine the regular expression to see whether it contains any typos and correct them.
+</p>
+
+</recommendation>
+<example>
+<p>
+In the following example, the regular expression <code>p{</code> is not well-formed: <code>{</code>
+begins a range quantifier of the form <code>{n,m}</code> specifying that the previous character is
+repeated between <code>n</code> and <code>m</code> times, but here it is not followed by anything.
+Most browsers will interpret this pattern as matching the literal string <code>"p{"</code>, but this
+is not guaranteed by the ECMAScript standard.
+</p>
+
+<sample src="examples/MalformedRegExp.js" />
+
+<p>
+To ensure portability, the opening curly brace should be escaped like this: <code>/p\{/</code>.
+</p>
+
+</example>
+<references>
+
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions">JavaScript Regular Expressions</a>.</li>
+
+</references>
+</qhelp>

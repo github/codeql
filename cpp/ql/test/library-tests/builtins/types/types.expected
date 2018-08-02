@@ -1,0 +1,7 @@
+| file://:0:0:0:0 | fp_offset | file://:0:0:0:0 | unsigned int |
+| file://:0:0:0:0 | gp_offset | file://:0:0:0:0 | unsigned int |
+| file://:0:0:0:0 | overflow_arg_area | file://:0:0:0:0 | void * |
+| file://:0:0:0:0 | reg_save_area | file://:0:0:0:0 | void * |
+| types.c:2:12:2:14 | d32 | file://:0:0:0:0 | _Decimal32 |
+| types.c:3:12:3:14 | d64 | file://:0:0:0:0 | _Decimal64 |
+| types.c:4:13:4:16 | d128 | file://:0:0:0:0 | _Decimal128 |

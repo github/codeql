@@ -1,0 +1,5 @@
+| constant | dependency-resolution.js:9:31:9:40 | 'constant' |
+| factory | dependency-resolution.js:4:20:4:32 | 'constructed' |
+| provider | dependency-resolution.js:11:25:11:34 | 'provided' |
+| service | dependency-resolution.js:6:29:6:50 | functio ... e () {} |
+| value | dependency-resolution.js:8:25:8:31 | 'value' |

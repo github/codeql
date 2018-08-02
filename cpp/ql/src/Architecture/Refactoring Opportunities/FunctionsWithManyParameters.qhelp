@@ -1,0 +1,25 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This rule finds functions with many parameters. Passing too many parameters to a function is a sign that the function
+is not cohesive (i.e. lacks a single purpose). These functions could be split into smaller, more cohesive functions.</p>
+
+</overview>
+<recommendation>
+<p>These functions could probably be refactored by wrapping related parameters into <code>struct</code>s.</p>
+
+</recommendation>
+<example><sample src="FunctionsWithManyParameters.cpp" />
+
+
+
+
+</example>
+<references>
+<li>S. McConnell. <em>Code Complete, 2d ed</em>. Microsoft Press, 2004.</li>
+</references>
+</qhelp>

@@ -1,0 +1,14 @@
+| 2 | sal.cpp:4:40:4:43 | pBuf | sal.cpp:2:2:2:2 | SA_Pre | 0 | Null | SA_No |
+| 2 | sal.cpp:4:40:4:43 | pBuf | sal.cpp:2:2:2:2 | SA_Pre | 1 | ValidBytes | "cb" |
+| 3 | sal.cpp:4:40:4:43 | pBuf | sal.cpp:3:2:3:2 | SA_Pre | 0 | Deref | 1 |
+| 3 | sal.cpp:4:40:4:43 | pBuf | sal.cpp:3:2:3:2 | SA_Pre | 1 | Valid | SA_Yes |
+| 4 | sal.cpp:4:40:4:43 | pBuf | sal.cpp:4:2:4:2 | SA_Pre | 0 | Deref | 1 |
+| 4 | sal.cpp:4:40:4:43 | pBuf | sal.cpp:4:2:4:2 | SA_Pre | 1 | Access | SA_Read |
+| 7 | sal.cpp:13:51:13:54 | pBuf | sal.cpp:7:12:7:12 | SAL_pre | -1 |  |  |
+| 8 | sal.cpp:13:51:13:54 | pBuf | sal.cpp:8:12:8:12 | SAL_valid | -1 |  |  |
+| 9 | sal.cpp:13:51:13:54 | pBuf | sal.cpp:9:12:9:12 | SAL_pre | -1 |  |  |
+| 10 | sal.cpp:13:51:13:54 | pBuf | sal.cpp:10:12:10:12 | SAL_deref | -1 |  |  |
+| 11 | sal.cpp:13:51:13:54 | pBuf | sal.cpp:11:12:11:12 | SAL_readonly | -1 |  |  |
+| 12 | sal.cpp:13:51:13:54 | pBuf | sal.cpp:12:12:12:12 | SAL_pre | -1 |  |  |
+| 13 | sal.cpp:13:51:13:54 | pBuf | sal.cpp:13:12:13:12 | SAL_readableTo(byteCount(cb)) | -1 |  |  |
+| 15 | sal.cpp:15:37:15:77 | thisIsWhyAttributeNamesAreHashedInFullIds | sal.cpp:15:23:15:23 | {#foo} | -1 |  |  |

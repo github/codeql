@@ -1,0 +1,27 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Code should be restricted to very simple control flow constructs;
+in particular, the <tt>goto</tt> statement should not be used.
+Simpler control flow translates into stronger capabilities for
+analysis and often results in improved code clarity.</p>
+
+</overview>
+<recommendation>
+<p>Usually it is clearer to re-write uses of the <tt>goto</tt> statement
+in terms of the more structured control-flow constructs like
+<tt>if</tt>/<tt>else</tt>, <tt>switch</tt> statements or loops in
+conjunction with <tt>break</tt> or <tt>continue</tt>.</p>
+
+</recommendation>
+<example><sample src="UseOfGoto.c" />
+
+
+
+
+</example>
+</qhelp>

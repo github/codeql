@@ -1,0 +1,9 @@
+| defdestructordeleteexpr.cpp:3:10:6:1 | { ... } | defdestructordeleteexpr.cpp:4:2:4:16 | declaration |
+| defdestructordeleteexpr.cpp:4:2:4:16 | declaration | defdestructordeleteexpr.cpp:4:8:4:15 | initializer for c |
+| defdestructordeleteexpr.cpp:4:8:4:15 | initializer for c | defdestructordeleteexpr.cpp:4:9:4:15 | 0 |
+| defdestructordeleteexpr.cpp:4:9:4:15 | 0 | defdestructordeleteexpr.cpp:4:9:4:15 | new |
+| defdestructordeleteexpr.cpp:4:9:4:15 | new | defdestructordeleteexpr.cpp:5:2:5:10 | ExprStmt |
+| defdestructordeleteexpr.cpp:5:2:5:9 | delete | defdestructordeleteexpr.cpp:6:1:6:1 | return ... |
+| defdestructordeleteexpr.cpp:5:2:5:10 | ExprStmt | defdestructordeleteexpr.cpp:5:9:5:9 | c |
+| defdestructordeleteexpr.cpp:5:9:5:9 | c | defdestructordeleteexpr.cpp:5:2:5:9 | delete |
+| defdestructordeleteexpr.cpp:6:1:6:1 | return ... | defdestructordeleteexpr.cpp:3:6:3:6 | f |

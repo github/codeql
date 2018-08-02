@@ -1,0 +1,2 @@
+| tst.html:9:66:9:78 | return false; | Return statement outside function. |
+| tst.js:2:1:2:10 | return 42; | Return statement outside function. |

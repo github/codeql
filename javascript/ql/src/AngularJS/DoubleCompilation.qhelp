@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+The AngularJS compiler processes (parts of) the DOM, determining which directives match
+which DOM elements, and then applies the directives to the elements. Each DOM element
+should only be compiled once, otherwise unexpected behavior may result.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Only compile new DOM elements.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example (adapted from the AngularJS developer guide) shows a directive
+that adds a tooltip to a DOM element, and then compiles the entire element to
+apply nested directives.
+</p>
+
+<sample src="examples/DoubleCompilation.js"/>
+
+<p>
+This is problematic, since it will recompile all of <code>element</code>, including
+parts that have already been compiled.
+</p>
+
+<p>
+Instead, only the new element should be compiled:
+</p>
+
+<sample src="examples/DoubleCompilationGood.js"/>
+</example>
+
+<references>
+<li>AngularJS Developer Guide: <a href="https://docs.angularjs.org/guide/compiler#double-compilation-and-how-to-avoid-it">Double Compilation, and how to avoid it</a>.</li>
+</references>
+</qhelp>

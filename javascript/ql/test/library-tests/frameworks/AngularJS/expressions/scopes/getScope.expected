@@ -1,0 +1,15 @@
+| tst2.html:2 | (NgVarExpr: directiveDuplicateScopePropAccess) | isolate scope for myDirective2 |
+| tst2.html:2 | (NgVarExpr: directiveDuplicateScopePropAccess) | scope in tst2.html |
+| tst.html:3 | (NgVarExpr: n1) | scope for <input>...</> |
+| tst.html:3 | (NgVarExpr: n1) | scope in tst.html |
+| tst.html:4 | (NgVarExpr: n2) | scope for <button>...</> |
+| tst.html:4 | (NgVarExpr: n2) | scope in tst.html |
+| tst.html:5 | (NgVarExpr: n3) | scope in tst.html |
+| tst.html:5 | (NgVarExpr: n4) | scope in tst.html |
+| tst.html:9 | (NgVarExpr: mnsc) | scope in tst.html |
+| tst.html:12 | (NgVarExpr: directiveScopeProp) | scope for <my-directive>...</> |
+| tst.html:12 | (NgVarExpr: directiveScopeProp) | scope in tst.html |
+| tst.html:15 | (NgVarExpr: directiveDuplicateScopePropAccess) | isolate scope for myDirective1 |
+| tst.html:15 | (NgVarExpr: directiveDuplicateScopePropAccess) | scope in tst.html |
+| tst.js:25 | (NgVarExpr: templateScopeProp) | isolate scope for myTemplateDirective |
+| tst.js:25 | (NgVarExpr: templateScopeProp) | scope in tst.html |

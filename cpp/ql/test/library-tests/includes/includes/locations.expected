@@ -1,0 +1,7 @@
+| bar.h:0:0:0:0 | bar.h:0:0:0:0 |
+| file://:0:0:0:0 | file://:0:0:0:0 |
+| file://:0:0:0:0 | file://:0:0:0:0 |
+| file://:0:0:0:0 | file://:0:0:0:0 |
+| includes.c:0:0:0:0 | includes.c:0:0:0:0 |
+| includes.c:2:1:2:15 | includes.c:2:1:2:15 |
+| includes.c:4:1:4:16 | includes.c:4:1:4:16 |

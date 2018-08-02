@@ -1,0 +1,56 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+If a database query (such as a SQL or NoSQL query) is built from
+user-provided data without sufficient sanitization, a malicious user
+may be able to run malicious database queries.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Most database connector libraries offer a way of safely
+embedding untrusted data into a query by means of query parameters
+or prepared statements.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following example, assume the function <code>handler</code> is
+an HTTP request handler in a web application, whose parameter
+<code>req</code> contains the request object.
+</p>
+
+<p>
+The handler constructs two copies of the same SQL query involving
+user input taken from the request object, once unsafely using
+string concatenation, and once safely using query parameters.
+</p>
+
+<p>
+In the first case, the query string <code>query1</code> is built by
+directly concatenating a user-supplied request parameter with some
+string literals. The parameter may include quote characters, so this
+code is vulnerable to a SQL injection attack.
+</p>
+
+<p>
+In the second case, the parameter is embedded into the query string
+<code>query2</code> using query parameters. In this example, we use
+the API offered by the <code>pg</code> Postgres database connector
+library, but other libraries offer similar features. This version is
+immune to injection attacks.
+</p>
+
+<sample src="examples/SqlInjection.js" />
+</example>
+
+<references>
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/SQL_injection">SQL injection</a>.</li>
+</references>
+</qhelp>

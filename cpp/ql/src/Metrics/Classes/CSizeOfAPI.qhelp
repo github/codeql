@@ -1,0 +1,97 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+This metric measures the number of public functions for each public class.
+</p>
+
+<p>
+A class with too many public functions is generally trying to do too much,
+either at the interface or implementation level or both. 
+It can be difficult for readers to understand because there is a
+confusing list of operations. Such classes often lack cohesion and are prime candidates for refactoring.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Classes have wide interfaces for a variety of different reasons, and the
+appropriate fix is different in each case:
+</p>
+
+<ul>
+
+<li>
+The class may be too large in general, and taking on more responsibilities
+than it should (see [Martin] for more on responsibilities). In this case,
+the solution is to identify each of the different responsibilities the class
+is taking on, and split it into multiple classes, e.g. using the 'Extract
+Class' refactoring from [Fowler].
+</li>
+
+<li>
+There may be lots of duplication within the class itself, that is, the actions of 
+some of the public functions may overlap. In this case, the solution
+is to redesign the interface so that each new public function has a single,
+unique responsibility.
+</li>
+
+<li>
+The class may be quite small at the implementation level, but trying to
+provide its user with a wide range of 'utility' functions that don't actually
+need to be part of the class. (A classic example of this is the
+<code>std::string</code> class in the C++ Standard Library.) As [Sutter]
+observes, there are at least two key problems with this approach:
+
+<ul>
+<li>
+It may be possible to generalize some of the utility functions beyond the
+narrow context of the class in question -- by bundling them with the class,
+the class author reduces the scope for functionality reuse.
+</li>
+
+<li>
+It's usually impossible for the class author to know every possible
+operation that the user might want to perform on the class, so the public
+interface will inherently be incomplete. New utility functions will end up
+having a different syntax to the privileged public functions in the class,
+negatively impacting on code consistency.
+</li>
+</ul>
+
+To refactor a class like this, simply move its utility functions elsewhere,
+paring its public interface down to the bare minimum.
+</li>
+
+<li>
+The class may be a base class in a badly-designed inheritance hierarchy.
+Such classes have many public functions to support features that
+are only used by one or two of their descendants. In this situation, the
+solution is to redesign the hierarchy, possibly by refactoring it into a
+component-based architecture.
+</li>
+
+</ul>
+
+
+
+</recommendation>
+<references>
+
+
+<li>
+M. Fowler. <em>Refactoring</em> pp. 65, 122-5. Addison-Wesley, 1999.
+</li>
+<li>
+R. Martin. <a href="https://drive.google.com/file/d/0ByOwmqah_nuGNHEtcU5OekdDMkk/view">The Single Responsibility Principle</a>. Published online.
+</li>
+<li>
+H. Sutter. <a href="http://www.gotw.ca/gotw/084.htm">GotW #84: Monoliths "Unstrung"</a>. Published online, 2002.
+</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,14 @@
+| tst.js:11:5:11:12 | call3(); | tst.js:1:1:1:0 | entry node of functio ... ll();\\n} |
+| tst.js:11:5:11:12 | call3(); | tst.js:5:9:5:16 | guard: someCond is false |
+| tst.js:11:5:11:12 | call3(); | tst.js:5:9:5:16 | guard: someCond is true |
+| tst.js:17:15:19:5 | {\\n      ... ;\\n    } | tst.js:1:1:1:0 | entry node of functio ... ll();\\n} |
+| tst.js:17:15:19:5 | {\\n      ... ;\\n    } | tst.js:5:9:5:16 | guard: someCond is false |
+| tst.js:17:15:19:5 | {\\n      ... ;\\n    } | tst.js:5:9:5:16 | guard: someCond is true |
+| tst.js:17:15:19:5 | {\\n      ... ;\\n    } | tst.js:11:5:11:12 | call3(); |
+| tst.js:17:15:19:5 | {\\n      ... ;\\n    } | tst.js:15:7:17:5 | catch(e ... ;\\n    } |
+| tst.js:26:2:26:1 | exit node of functio ... ll();\\n} | tst.js:1:1:1:0 | entry node of functio ... ll();\\n} |
+| tst.js:26:2:26:1 | exit node of functio ... ll();\\n} | tst.js:5:9:5:16 | guard: someCond is false |
+| tst.js:26:2:26:1 | exit node of functio ... ll();\\n} | tst.js:5:9:5:16 | guard: someCond is true |
+| tst.js:26:2:26:1 | exit node of functio ... ll();\\n} | tst.js:11:5:11:12 | call3(); |
+| tst.js:26:2:26:1 | exit node of functio ... ll();\\n} | tst.js:15:7:17:5 | catch(e ... ;\\n    } |
+| tst.js:26:2:26:1 | exit node of functio ... ll();\\n} | tst.js:17:15:19:5 | {\\n      ... ;\\n    } |

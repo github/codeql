@@ -1,0 +1,1 @@
+| tst.js:2:13:2:23 | for(i in a) | For-in comprehension blocks are a non-standard language feature. |

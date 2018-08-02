@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Directly evaluating user input (for example, an HTTP request parameter) as code without properly
+sanitizing the input first allows an attacker arbitrary code execution. This can occur when user
+input is treated as JavaScript, or passed to a framework which interprets it as an expression to be
+evaluated. Examples include AngularJS expressions or JQuery selectors.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Avoid including user input in any expression which may be dynamically evaluated. If user input must
+be included, use context-specific escaping before
+including it. It is important that the correct escaping is used for the type of evaluation that will
+occur.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example shows part of the page URL being evaluated as JavaScript code. This allows an
+attacker to provide JavaScript within the URL. If an attacker can persuade a user to click on a link
+to such a URL, the attacker can evaluate arbitrary JavaScript in the browser of the user to,
+for example, steal cookies containing session information.
+</p>
+
+<sample src="examples/CodeInjection.js" />
+</example>
+
+<references>
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/Code_Injection">Code Injection</a>.
+</li>
+<li>
+Wikipedia: <a href="https://en.wikipedia.org/wiki/Code_injection">Code Injection</a>.
+</li>
+</references>
+</qhelp>

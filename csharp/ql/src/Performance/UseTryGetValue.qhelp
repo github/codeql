@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Using the <code>ContainsKey</code> method to check whether a dictionary contains a value before getting the value
+is inefficient because it performs two operations on the dictionary. It is simpler and more
+efficient to combine the operations using the <code>TryGetValue</code> method.</p>
+
+</overview>
+
+<recommendation>
+<p>Replace the two operations with a single call to <code>TryGetValue</code>.</p>
+
+</recommendation>
+
+<example>
+<p>This code first checks whether <code>ip</code> is in the <code>hostnames</code> table, before
+looking up the value.</p>
+<sample src="UseTryGetValue.cs" />
+
+<p>This code performs the same function as the example above, but uses <code>TryGetValue</code>, 
+which makes it is more efficient.</p>
+
+<sample src="UseTryGetValueFix.cs" />
+
+</example>
+
+<references>
+
+  <li>MSDN:
+    <a href="https://msdn.microsoft.com/en-us/library/kw5aaea4(v=vs.110).aspx">ContainsKey Method</a>,
+    <a href="https://msdn.microsoft.com/en-us/library/bb347013(v=vs.110).aspx">TryGetValue Method</a>.
+  </li>
+
+</references>
+</qhelp>

@@ -1,0 +1,75 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+	<overview>
+		<p>
+			Using a cryptographically weak pseudo-random number generator to generate a security-sensitive value,
+			such as a password, makes it easier for an attacker to predict the value.
+		</p>
+		<p>
+			Pseudo-random number generators generate a sequence of numbers that only approximates the properties
+			of random numbers. The sequence is not truly random because it is completely determined by a
+			relatively small set of initial values, the seed. If the random number generator is
+			cryptographically weak, then this sequence may be easily predictable through outside observations.
+		</p>
+
+	</overview>
+	<recommendation>
+		<p>
+			Use a cryptographically secure pseudo-random number generator if the output is to be used in a
+			security-sensitive context. As a rule of thumb, a value should be considered "security-sensitive"
+			if predicting it would allow the attacker to perform an action that they would otherwise be unable
+			to perform. For example, if an attacker could predict the random password generated for a new user,
+			they would be able to log in as that new user.
+		</p>
+
+		<p>
+
+			For JavaScript on the NodeJS platform,
+			<code>crypto.getRandomBytes</code> provides a cryptographically secure
+			pseudo-random byte generator. Note that the conversion from bytes to
+			numbers can introduce bias that breaks the security.
+
+		</p>
+
+		<p>
+
+			For JavaScript in the browser,
+			<code>RandomSource.getRandomValues</code> provides a cryptographically
+			secure pseudo-random number generator.
+
+		</p>
+
+	</recommendation>
+
+	<example>
+
+		<p>
+			The following examples show different ways of generating a password.
+		</p>
+
+		<p>
+			In the first case, we generate a fresh password by appending a random integer to the end of a static
+			string. The random number generator used (<code>Math.random</code>) is not cryptographically secure,
+			so it may be possible for an attacker to predict the generated password.
+		</p>
+
+		<sample src="examples/InsecureRandomness.js" />
+
+		<p>
+			In the second example, a cryptographically secure random number generator is used for the same
+			purpose. In this case, it is much harder to predict the generated integers.
+		</p>
+
+		<sample src="examples/InsecureRandomness_fixed.js" />
+
+
+	</example>
+
+	<references>
+		<li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Pseudorandom_number_generator">Pseudo-random number generator</a>.</li>
+		<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/API/RandomSource/getRandomValues">RandomSource.getRandomValues</a>.</li>
+		<li>NodeJS: <a href="https://nodejs.org/api/crypto.html#crypto_crypto_randombytes_size_callback">crypto.randomBytes</a></li>
+	</references>
+</qhelp>

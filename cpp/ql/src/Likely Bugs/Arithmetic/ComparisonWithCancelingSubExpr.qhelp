@@ -1,0 +1,22 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>
+      If a comparison contains multiple linear sub-expressions which
+      cancel each other out, then the comparison can be simplified by
+      removing them. This may be indicative of a coding error.
+    </p>
+  </overview>
+  <recommendation>
+    <p>
+      Check that the redundant sub-expressions are not the result of a
+      coding error. If not, then simplify the comparison by removing
+      them.
+    </p>
+  </recommendation>
+  <example>
+    <sample src="ComparisonWithCancelingSubExprExample.cpp" />
+  </example>
+</qhelp>

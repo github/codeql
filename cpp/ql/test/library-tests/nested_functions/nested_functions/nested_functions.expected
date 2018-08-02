@@ -1,0 +1,19 @@
+| file://:0:0:0:0 | operator= | file://:0:0:0:0 | __va_list_tag & | <none> |
+| file://:0:0:0:0 | operator= | file://:0:0:0:0 | __va_list_tag & | <none> |
+| nested_functions.c:6:5:6:8 | main | file://:0:0:0:0 | int | <none> |
+| nested_functions.c:9:9:9:9 | g | file://:0:0:0:0 | int | nested_functions.c:13:9:13:9 call to g |
+| nested_functions.c:22:6:22:6 | h | file://:0:0:0:0 | void | <none> |
+| nested_functions.c:25:11:25:11 | g | file://:0:0:0:0 | float | nested_functions.c:29:9:29:9 call to g |
+| nested_functions.c:32:6:32:8 | bad | file://:0:0:0:0 | void | <none> |
+| nested_functions.c:35:9:35:9 | g | file://:0:0:0:0 | int | nested_functions.c:35:9:35:9 call to g |
+| nested_functions.c:39:6:39:8 | f_a | file://:0:0:0:0 | void | <none> |
+| nested_functions.c:44:8:44:10 | f_c | file://:0:0:0:0 | void | <none> |
+| nested_functions.c:52:6:52:8 | f_b | file://:0:0:0:0 | void | <none> |
+| nested_functions.cpp:2:7:2:7 | operator= | file://:0:0:0:0 | myClass & | <none> |
+| nested_functions.cpp:2:7:2:7 | operator= | file://:0:0:0:0 | myClass & | <none> |
+| nested_functions.cpp:5:7:5:14 | myMethod | file://:0:0:0:0 | void | <none> |
+| nested_functions.cpp:6:8:6:23 | myNestedFunction | file://:0:0:0:0 | void | <none> |
+| nested_functions.cpp:23:7:23:9 | f_a | file://:0:0:0:0 | void | <none> |
+| nested_functions.cpp:28:9:28:11 | f_c | file://:0:0:0:0 | void | <none> |
+| nested_functions.cpp:30:9:30:11 | f_d | file://:0:0:0:0 | void | <none> |
+| nested_functions.cpp:36:7:36:9 | f_b | file://:0:0:0:0 | void | <none> |

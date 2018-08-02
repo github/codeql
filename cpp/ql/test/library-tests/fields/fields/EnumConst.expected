@@ -1,0 +1,4 @@
+| fields.cpp:1:6:1:9 | Type | fields.cpp:1:13:1:13 | S | getDeclaringEnum() |
+| fields.cpp:1:6:1:9 | Type | fields.cpp:1:13:1:13 | S | getType() |
+| fields.cpp:1:6:1:9 | Type | fields.cpp:1:16:1:16 | I | getDeclaringEnum() |
+| fields.cpp:1:6:1:9 | Type | fields.cpp:1:16:1:16 | I | getType() |

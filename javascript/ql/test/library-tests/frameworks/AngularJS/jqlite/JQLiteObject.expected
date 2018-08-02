@@ -1,0 +1,9 @@
+| e1 | tst.js:2:14:2:23 | $("<div>") |
+| e2 | tst.js:6:18:6:41 | angular ... <div>') |
+| e3 | tst.js:7:18:7:29 | $rootElement |
+| e4 | tst.js:8:18:8:26 | $document |
+| e5 | tst.js:13:26:13:32 | element |
+| e6 | tst.js:16:26:16:32 | element |
+| e7 | tst.js:18:30:18:36 | element |
+| e8 | tst.js:22:26:22:32 | element |
+| e9 | tst.js:25:26:25:32 | element |

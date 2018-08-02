@@ -1,0 +1,49 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+<code>for</code>-<code>in</code> blocks in array comprehensions are a Mozilla-specific
+language extensions that is no longer supported even by SpiderMonkey, and is unlikely to be included
+in future ECMAScript standards. This language feature should not be used.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+The <code>for</code>-<code>in</code> block can be replaced by a (standards-compliant)
+<code>for</code>-<code>of</code> block iterating over a list of property names obtained, for example,
+from <code>Object.keys</code>.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following contrived example, a <code>for</code>-<code>in</code> block is used to iterate
+over the keys <code>i</code> of an array and construct an array of strings of the form
+<code>"v = a[i]"</code>, where <code>v</code> is the value of <code>a[i]</code>.
+</p>
+
+<sample src="examples/ForInComprehensionBlocks.js" />
+
+<p>
+The example can be rewritten to use a <code>for</code>-<code>of</code> block iterating over
+<code>Object.keys(a)</code> instead.
+</p>
+
+<sample src="examples/ForInComprehensionBlocksGood.js" />
+
+<p>
+Note that <code>Object.keys</code> only includes own properties, not properties inherited from a
+prototype. If the latter behavior is needed, the array comprehension should be replaced by a
+<code>for</code>-<code>in</code> loop that imperatively populates the result array.
+</p>
+
+</example>
+<references>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Array_comprehensions#Differences_to_the_older_JS1.7.2FJS1.8_comprehensions">Array comprehensions: Differences to the older JS1.7.2/JS1.8 comprehensions</a>.</li>
+</references>
+</qhelp>

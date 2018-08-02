@@ -1,0 +1,1 @@
+| bad/Web.config:4:5:7:7 | debug=true | The 'debug' flag is set for an ASP.NET configuration file. |

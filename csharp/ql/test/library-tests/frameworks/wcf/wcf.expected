@@ -1,0 +1,3 @@
+| WCF.cs:44:21:44:29 | Operation | WCF.cs:20:18:20:27 | SampleData | WCF.cs:23:23:23:29 | AString |
+| WCF.cs:44:21:44:29 | Operation | WCF.cs:20:18:20:27 | SampleData | WCF.cs:27:20:27:24 | AnInt |
+| WCF.cs:44:21:44:29 | Operation | WCF.cs:20:18:20:27 | SampleData | WCF.cs:30:33:30:37 | AList |

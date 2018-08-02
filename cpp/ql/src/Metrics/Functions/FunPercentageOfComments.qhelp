@@ -1,0 +1,27 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This metric measures the percentage of lines in an function that contain a comment or
+are part of a multi-line comment.</p>
+
+<p>Having a low comment ratio is an indication that a function does not have sufficient
+documentation.</p>
+
+</overview>
+<recommendation>
+<p>Start by adding documentation to functions that are used from other parts of the code. Then document large complex functions, as they benefit most from documentation.</p>
+
+</recommendation>
+<references>
+
+<li>
+  <a href="http://en.wikibooks.org/wiki/C%2B%2B_Programming/Programming_Languages/C%2B%2B/Code/Style_Conventions#Comments">C++ Programming, Coding style conventions</a>
+</li>
+<li>
+  <a href="http://en.wikipedia.org/wiki/Comment_%28computer_programming%29#Need_for_comments">Wikipedia: Need for comments</a>
+</li>
+
+</references>
+</qhelp>

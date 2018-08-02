@@ -1,0 +1,24 @@
+| arguments.cs:27:15:27:15 | 2 | 0 |
+| arguments.cs:28:12:28:12 | access to local variable x | 0 |
+| arguments.cs:28:19:28:19 | access to local variable x | 2 |
+| arguments.cs:28:26:28:26 | access to local variable x | 1 |
+| arguments.cs:29:27:29:27 | access to local variable x | 0 |
+| arguments.cs:29:34:29:34 | access to local variable x | 2 |
+| arguments.cs:29:41:29:41 | access to local variable x | 1 |
+| arguments.cs:30:30:30:31 | 10 | 0 |
+| arguments.cs:30:37:30:37 | 5 | 0 |
+| arguments.cs:35:12:35:12 | 0 | 0 |
+| arguments.cs:35:15:35:15 | 1 | 0 |
+| arguments.cs:35:18:35:18 | 2 | 0 |
+| arguments.cs:36:12:36:12 | 0 | 0 |
+| arguments.cs:36:15:36:32 | array creation of type Int32[] | 0 |
+| arguments.cs:37:18:37:18 | 1 | 0 |
+| arguments.cs:37:24:37:24 | 0 | 0 |
+| arguments.cs:38:12:38:12 | 0 | 0 |
+| arguments.cs:38:15:38:18 | access to parameter args | 0 |
+| arguments.cs:39:18:39:21 | access to parameter args | 0 |
+| arguments.cs:39:27:39:27 | 0 | 0 |
+| arguments.cs:40:18:40:35 | array creation of type Int32[] | 0 |
+| arguments.cs:40:41:40:41 | 0 | 0 |
+| arguments.cs:45:12:45:32 | array creation of type Object[] | 0 |
+| arguments.cs:45:35:45:38 | null | 0 |

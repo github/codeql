@@ -1,0 +1,2 @@
+| Test.cs:18:38:18:60 | object creation of type XmlReaderSettings | Test.cs:19:34:19:52 | access to constant Parse | DTD processing enabled in settings |
+| Test.cs:18:38:18:60 | object creation of type XmlReaderSettings | Test.cs:20:32:20:51 | object creation of type XmlUrlResolver | insecure resolver set in settings |

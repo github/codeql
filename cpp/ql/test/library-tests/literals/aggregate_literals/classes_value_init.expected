@@ -1,0 +1,3 @@
+| aggregate_literals.c:26:31:26:36 | {...} | aggregate_literals.c:1:8:1:17 | someStruct | aggregate_literals.c:3:9:3:9 | j |
+| aggregate_literals_cpp.cpp:24:29:24:37 | {...} | aggregate_literals_cpp.cpp:1:8:1:26 | StructWithBitfields | aggregate_literals_cpp.cpp:10:18:10:18 | c |
+| aggregate_literals_cpp.cpp:27:26:27:28 | {...} | aggregate_literals_cpp.cpp:13:7:13:22 | UnionWithMethods | aggregate_literals_cpp.cpp:18:12:18:12 | d |

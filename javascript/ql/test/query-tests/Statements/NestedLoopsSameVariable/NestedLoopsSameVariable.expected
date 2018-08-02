@@ -1,0 +1,1 @@
+| tst.js:3:16:3:18 | i>5 | This for statement uses the same loop variable as an enclosing $@. | tst.js:1:1:9:1 | for (va ... , k);\\n} | for statement |

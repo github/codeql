@@ -1,0 +1,5 @@
+| ClassDoesNotImplementEquals.cs:4:7:4:15 | Incorrect | Class 'Incorrect' does not implement Equals(object), but it implements $@. | ClassDoesNotImplementEquals.cs:6:33:6:34 | == | operator == |
+| ClassDoesNotImplementEquals.cs:24:7:24:24 | IncorrectOverrides | Class 'IncorrectOverrides' does not implement Equals(object), but it implements $@. | ClassDoesNotImplementEquals.cs:26:33:26:34 | == | operator == |
+| ClassDoesNotImplementEquals.cs:24:7:24:24 | IncorrectOverrides | Class 'IncorrectOverrides' does not implement Equals(object), but it is called $@. | ClassDoesNotImplementEquals.cs:42:17:42:53 | call to method Equals | here |
+| ClassDoesNotImplementEquals.cs:50:7:50:17 | MyEquatable | Class 'MyEquatable' does not implement Equals(object), but it implements $@. | ClassDoesNotImplementEquals.cs:52:17:52:22 | Equals | IEquatable<MyEquatable>.Equals |
+| ClassDoesNotImplementEqualsBad.cs:24:11:24:21 | GasolineCar | Class 'GasolineCar' does not implement Equals(object), but it is called $@. | ClassDoesNotImplementEqualsBad.cs:38:38:38:54 | call to method Equals | here |

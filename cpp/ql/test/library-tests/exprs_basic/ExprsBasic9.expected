@@ -1,0 +1,6 @@
+| exprs_basic1.cpp:16:2:16:15 | ... = ... | 0 |
+| exprs_basic1.cpp:16:2:16:15 | ... = ... | 1 |
+| exprs_basic1.cpp:17:2:17:15 | ... = ... | 0 |
+| exprs_basic1.cpp:17:2:17:15 | ... = ... | 1 |
+| exprs_basic1.cpp:31:2:31:19 | ... = ... | 0 |
+| exprs_basic1.cpp:31:2:31:19 | ... = ... | 1 |

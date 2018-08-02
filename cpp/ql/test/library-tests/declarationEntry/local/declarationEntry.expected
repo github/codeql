@@ -1,0 +1,72 @@
+| test.cpp:3:8:3:16 | declaration of myStruct1 | TopLevel |
+| test.cpp:3:8:3:16 | myStruct1 |  |
+| test.cpp:4:19:4:28 | declaration of myTypedef1 | TopLevel |
+| test.cpp:4:19:4:28 | myTypedef1 |  |
+| test.cpp:6:16:6:24 | declaration of myStruct2 |  |
+| test.cpp:6:16:6:24 | myStruct2 |  |
+| test.cpp:6:26:6:35 | declaration of myTypedef2 | TopLevel |
+| test.cpp:6:26:6:35 | myTypedef2 |  |
+| test.cpp:8:8:8:16 | declaration of myStruct3 | TopLevel |
+| test.cpp:8:8:8:16 | myStruct3 |  |
+| test.cpp:9:6:9:12 | declaration of myFunc3 |  |
+| test.cpp:9:6:9:12 | myFunc3 |  |
+| test.cpp:9:25:9:29 | declaration of param |  |
+| test.cpp:9:25:9:29 | param |  |
+| test.cpp:11:6:11:12 | declaration of myFunc4 |  |
+| test.cpp:11:6:11:12 | myFunc4 |  |
+| test.cpp:11:21:11:29 | declaration of myStruct4 |  |
+| test.cpp:11:21:11:29 | myStruct4 |  |
+| test.cpp:11:32:11:36 | declaration of param |  |
+| test.cpp:11:32:11:36 | param |  |
+| test.cpp:13:6:13:12 | definition of myFunc5 |  |
+| test.cpp:13:6:13:12 | myFunc5 |  |
+| test.cpp:13:21:13:29 | declaration of myStruct5 |  |
+| test.cpp:13:21:13:29 | myStruct5 |  |
+| test.cpp:13:32:13:36 | definition of param |  |
+| test.cpp:13:32:13:36 | param |  |
+| test.cpp:16:8:16:16 | declaration of myStruct6 | TopLevel |
+| test.cpp:16:8:16:16 | myStruct6 |  |
+| test.cpp:17:6:17:12 | declaration of myFunc6 |  |
+| test.cpp:17:6:17:12 | myFunc6 |  |
+| test.cpp:17:32:17:36 | declaration of param |  |
+| test.cpp:17:32:17:36 | param |  |
+| test.cpp:19:8:19:16 | declaration of myStruct7 |  |
+| test.cpp:19:8:19:16 | myStruct7 |  |
+| test.cpp:19:19:19:25 | declaration of myFunc7 |  |
+| test.cpp:19:19:19:25 | myFunc7 |  |
+| test.cpp:21:6:21:13 | declaration of myFunc8a |  |
+| test.cpp:21:6:21:13 | myFunc8a |  |
+| test.cpp:21:22:21:30 | declaration of myStruct8 |  |
+| test.cpp:21:22:21:30 | myStruct8 |  |
+| test.cpp:21:33:21:37 | declaration of param |  |
+| test.cpp:21:33:21:37 | param |  |
+| test.cpp:22:6:22:13 | declaration of myFunc8b |  |
+| test.cpp:22:6:22:13 | myFunc8b |  |
+| test.cpp:22:33:22:37 | declaration of param |  |
+| test.cpp:22:33:22:37 | param |  |
+| test.cpp:24:6:24:12 | definition of myFunc9 |  |
+| test.cpp:24:6:24:12 | myFunc9 |  |
+| test.cpp:25:9:25:17 | declaration of myStruct9 |  |
+| test.cpp:25:9:25:17 | myStruct9 |  |
+| test.cpp:28:7:28:7 | declaration of operator= |  |
+| test.cpp:28:7:28:7 | declaration of operator= |  |
+| test.cpp:28:7:28:7 | operator= |  |
+| test.cpp:28:7:28:7 | operator= |  |
+| test.cpp:28:7:28:14 | definition of myClass1 | TopLevel |
+| test.cpp:28:7:28:14 | myClass1 |  |
+| test.cpp:30:9:30:18 | declaration of myStruct10 |  |
+| test.cpp:30:9:30:18 | myStruct10 |  |
+| test.cpp:33:17:33:17 | T |  |
+| test.cpp:33:17:33:17 | definition of T |  |
+| test.cpp:33:26:33:41 | declaration of myTemplateClass1<T> | TopLevel |
+| test.cpp:33:26:33:41 | myTemplateClass1<T> |  |
+| test.cpp:35:7:35:7 | declaration of operator= |  |
+| test.cpp:35:7:35:7 | declaration of operator= |  |
+| test.cpp:35:7:35:7 | operator= |  |
+| test.cpp:35:7:35:7 | operator= |  |
+| test.cpp:35:7:35:14 | definition of myClass2 | TopLevel |
+| test.cpp:35:7:35:14 | myClass2 |  |
+| test.cpp:37:18:37:18 | T |  |
+| test.cpp:37:18:37:18 | definition of T |  |
+| test.cpp:37:27:37:42 | declaration of myTemplateClass2<T> |  |
+| test.cpp:37:27:37:42 | myTemplateClass2<T> |  |

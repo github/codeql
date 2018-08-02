@@ -1,0 +1,53 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+  <overview>
+    <p>
+      AngularJS has built-in support for dependency injection:
+      components can simply list the names of the services they depend
+      on, and AngularJS will provide appropriate instances and pass
+      them as arguments at runtime.
+    </p>
+
+    <p>
+      Each injected service has a kind, this kind influences which
+      components the service is compatible with.
+    </p>
+  </overview>
+
+  <recommendation>
+    <p>
+      Ensure that declared dependencies have the right kind for the
+      component they are injected into.
+    </p>
+  </recommendation>
+
+  <example>
+    <p>
+      The following example shows a <code>config</code>-method that
+      lists a dependency on a service named <code>year</code>.
+
+      Later, a service of kind <code>value</code> is defined with the
+      name <code>year</code>.
+
+      This is not allowed, since <code>config</code>-methods can only
+      be injected with services of kind <code>provider</code> or
+      <code>constant</code>.
+    </p>
+
+    <sample src="examples/IncompatibleService.js"/>
+
+    <p>
+      To solve this problem, the <code>year</code> service has to be
+      of kind <code>constant</code>.
+    </p>
+
+    <sample src="examples/IncompatibleService-fixed.js"/>
+  </example>
+
+  <references>
+    <li>AngularJS Developer Guide: <a href="https://docs.angularjs.org/guide/di">Dependency Injection</a>.</li>
+  </references>
+</qhelp>

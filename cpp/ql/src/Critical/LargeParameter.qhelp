@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+This rule finds parameters greater than (for example) 64 bytes in size that are passed by value to function calls. It is not good practice to put large objects
+on the stack, as widespread use of this anti-pattern throughout a software project can easily lead to stack overflows. Performance-wise,
+the initial copy to the stack is more likely than not to be more expensive than any cost due to indirection caused accessing the object 
+through a pointer. In terms of security, an overrun on an array in an object copied to the stack is a much greater risk than one that happens
+on the heap. 
+</p>
+<p>
+In C++, there is the added cost of calling the constructor and destructor of the object being passed as well as those of any other objects that it 
+(recursively) contains. 
+</p>
+
+</overview>
+<recommendation>
+<p>Pass the address of the object instead. There is usually no good reason for putting anything large on the stack.</p>
+
+</recommendation>
+<example><sample src="LargeParameter.cpp" />
+
+
+
+</example>
+<references>
+
+<li>
+  S. Meyers. <em>Effective C++ 3d ed.</em> pp 86-90. Addison-Wesley Professional, 2005.
+</li>
+
+
+</references>
+</qhelp>

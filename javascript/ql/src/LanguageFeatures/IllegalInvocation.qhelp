@@ -1,0 +1,64 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Class methods and arrow functions must not be invoked using <code>new</code>, and
+attempting to do so will result in a runtime error.
+</p>
+
+<p>
+Conversely, constructors can only be invoked using <code>new</code> or
+<code>super(...)</code>, and attempting to invoke them as a normal function
+will result in a runtime error.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Correct the invocation in question by adding or removing <code>new</code>
+as appropriate.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following example, <code>Point</code> is a class, but on line 8 it is
+invoked without <code>new</code>. This will lead to a runtime error.
+</p>
+
+<sample language="javascript">
+class Point {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+}
+
+let p = Point(23, 42);
+</sample>
+
+<p>
+Instead, <code>new</code> should be used:
+</p>
+
+<sample language="javascript">
+class Point {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+}
+
+let p = new Point(23, 42);
+</sample>
+</example>
+
+<references>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/constructor">Constructors</a>.</li>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions">Arrow functions</a>.</li>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions">Method definitions</a>.</li>
+</references>
+</qhelp>

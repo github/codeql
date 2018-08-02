@@ -1,0 +1,1 @@
+| tst.js:5:9:5:21 | yield index++ | This yield expression is contained in $@ which is not marked as a generator. | tst.js:1:1:1:8 | function | function idMaker |

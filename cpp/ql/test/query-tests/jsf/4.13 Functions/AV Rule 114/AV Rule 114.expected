@@ -1,0 +1,5 @@
+| test.c:8:5:8:14 | declaration | Function f2 should return a value of type int but does not return a value here |
+| test.c:25:9:25:14 | ExprStmt | Function f4 should return a value of type int but does not return a value here |
+| test.c:39:9:39:14 | ExprStmt | Function f6 should return a value of type int but does not return a value here |
+| test.cpp:16:1:18:1 | { ... } | Function g2 should return a value of type MyValue but does not return a value here |
+| test.cpp:48:2:48:26 | if (...) ...  | Function g7 should return a value of type MyValue but does not return a value here |

@@ -1,0 +1,9 @@
+| SqlInjection.cs:39:50:39:55 | access to local variable query1 | Query might include code from $@. | SqlInjection.cs:38:21:38:35 | access to field categoryTextBox | this ASP.NET user input |
+| SqlInjection.cs:74:56:74:61 | access to local variable query1 | Query might include code from $@. | SqlInjection.cs:38:21:38:35 | access to field categoryTextBox | this ASP.NET user input |
+| SqlInjection.cs:74:56:74:61 | access to local variable query1 | Query might include code from $@. | SqlInjection.cs:49:62:49:76 | access to field categoryTextBox | this ASP.NET user input |
+| SqlInjection.cs:74:56:74:61 | access to local variable query1 | Query might include code from $@. | SqlInjection.cs:61:62:61:76 | access to field categoryTextBox | this ASP.NET user input |
+| SqlInjection.cs:74:56:74:61 | access to local variable query1 | Query might include code from $@. | SqlInjection.cs:73:33:73:47 | access to field categoryTextBox | this ASP.NET user input |
+| SqlInjection.cs:75:55:75:60 | access to local variable query1 | Query might include code from $@. | SqlInjection.cs:38:21:38:35 | access to field categoryTextBox | this ASP.NET user input |
+| SqlInjection.cs:75:55:75:60 | access to local variable query1 | Query might include code from $@. | SqlInjection.cs:49:62:49:76 | access to field categoryTextBox | this ASP.NET user input |
+| SqlInjection.cs:75:55:75:60 | access to local variable query1 | Query might include code from $@. | SqlInjection.cs:61:62:61:76 | access to field categoryTextBox | this ASP.NET user input |
+| SqlInjection.cs:75:55:75:60 | access to local variable query1 | Query might include code from $@. | SqlInjection.cs:73:33:73:47 | access to field categoryTextBox | this ASP.NET user input |

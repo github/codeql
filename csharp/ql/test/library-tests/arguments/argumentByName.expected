@@ -1,0 +1,19 @@
+| arguments.cs:27:9:27:16 | call to method f1 | arguments.cs:27:15:27:15 | 2 | y |
+| arguments.cs:28:9:28:27 | call to method f2 | arguments.cs:28:12:28:12 | access to local variable x | x |
+| arguments.cs:28:9:28:27 | call to method f2 | arguments.cs:28:19:28:19 | access to local variable x | y |
+| arguments.cs:28:9:28:27 | call to method f2 | arguments.cs:28:26:28:26 | access to local variable x | z |
+| arguments.cs:29:9:29:42 | object creation of type ArgumentsTest | arguments.cs:29:27:29:27 | access to local variable x | x |
+| arguments.cs:29:9:29:42 | object creation of type ArgumentsTest | arguments.cs:29:34:29:34 | access to local variable x | y |
+| arguments.cs:29:9:29:42 | object creation of type ArgumentsTest | arguments.cs:29:41:29:41 | access to local variable x | z |
+| arguments.cs:30:9:30:38 | object creation of type ArgumentsTest | arguments.cs:30:30:30:31 | 10 | y |
+| arguments.cs:30:9:30:38 | object creation of type ArgumentsTest | arguments.cs:30:37:30:37 | 5 | x |
+| arguments.cs:35:9:35:19 | call to method f3 | arguments.cs:35:12:35:12 | 0 | o |
+| arguments.cs:36:9:36:33 | call to method f3 | arguments.cs:36:12:36:12 | 0 | o |
+| arguments.cs:36:9:36:33 | call to method f3 | arguments.cs:36:15:36:32 | array creation of type Int32[] | args |
+| arguments.cs:37:9:37:25 | call to method f3 | arguments.cs:37:24:37:24 | 0 | o |
+| arguments.cs:38:9:38:19 | call to method f3 | arguments.cs:38:12:38:12 | 0 | o |
+| arguments.cs:38:9:38:19 | call to method f3 | arguments.cs:38:15:38:18 | access to parameter args | args |
+| arguments.cs:39:9:39:28 | call to method f3 | arguments.cs:39:18:39:21 | access to parameter args | args |
+| arguments.cs:39:9:39:28 | call to method f3 | arguments.cs:39:27:39:27 | 0 | o |
+| arguments.cs:40:9:40:42 | call to method f3 | arguments.cs:40:18:40:35 | array creation of type Int32[] | args |
+| arguments.cs:40:9:40:42 | call to method f3 | arguments.cs:40:41:40:41 | 0 | o |

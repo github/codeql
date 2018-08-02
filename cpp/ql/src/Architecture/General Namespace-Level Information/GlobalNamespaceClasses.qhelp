@@ -1,0 +1,22 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This query finds classes that belong to no namespace</p>
+
+</overview>
+<section title="How to Address the Query Results">
+<p>If there are too many classes that belong to no namespace, consider creating namespaces to get a better project structure.</p>
+
+
+
+
+
+</section>
+<references>
+
+</references>
+</qhelp>

@@ -1,0 +1,83 @@
+| comments1.cs:1:1:2:46 | // ... | 2 | comments1.cs:1:1:1:23 | // ... | Start of comment1.cs | // Start of comment1.cs | SinglelineComment |
+| comments1.cs:1:1:2:46 | // ... | 2 | comments1.cs:2:1:2:46 | // ... | This tests the basic types of comment block | // This tests the basic types of comment block | SinglelineComment |
+| comments1.cs:4:1:4:25 | // ... | 1 | comments1.cs:4:1:4:25 | // ... | 1) Basic comment types | // 1) Basic comment types | SinglelineComment |
+| comments1.cs:6:1:6:24 | // ... | 1 | comments1.cs:6:1:6:24 | // ... | A single-line comment | // A single-line comment | SinglelineComment |
+| comments1.cs:8:1:8:18 | /// ... | 1 | comments1.cs:8:1:8:18 | /// ... | An XML comment | /// An XML comment | XmlComment |
+| comments1.cs:11:1:11:25 | /* ... */ | 1 | comments1.cs:11:1:11:25 | /* ... */ | A multiline comment | /* A multiline comment */ | MultilineComment |
+| comments1.cs:14:1:14:20 | // ... | 1 | comments1.cs:14:1:14:20 | // ... | 2) Comment blocks | // 2) Comment blocks | SinglelineComment |
+| comments1.cs:16:1:16:38 | // ... | 1 | comments1.cs:16:1:16:38 | // ... | A line on its own is a commentblock | // A line on its own is a commentblock | SinglelineComment |
+| comments1.cs:18:1:19:31 | // ... | 2 | comments1.cs:18:1:18:21 | // ... | Two lines together | // Two lines together | SinglelineComment |
+| comments1.cs:18:1:19:31 | // ... | 2 | comments1.cs:19:1:19:31 | // ... | are in the same commentblock | // are in the same commentblock | SinglelineComment |
+| comments1.cs:21:1:23:15 | // ... | 3 | comments1.cs:21:1:21:14 | // ... | Three lines | // Three lines | SinglelineComment |
+| comments1.cs:21:1:23:15 | // ... | 3 | comments1.cs:22:1:22:14 | // ... | in the same | // in the same | SinglelineComment |
+| comments1.cs:21:1:23:15 | // ... | 3 | comments1.cs:23:1:23:15 | // ... | commentblock | // commentblock | SinglelineComment |
+| comments1.cs:25:1:25:43 | /* ... */ | 2 | comments1.cs:25:1:25:15 | /* ... */ | This is a | /* This is a */ | MultilineComment |
+| comments1.cs:25:1:25:43 | /* ... */ | 2 | comments1.cs:25:18:25:43 | /* ... */ | single comment block | /* single comment block */ | MultilineComment |
+| comments1.cs:27:1:29:13 | /* ... */ | 3 | comments1.cs:27:1:27:12 | /* ... */ | This is a | /* This is a | MultilineComment |
+| comments1.cs:27:1:29:13 | /* ... */ | 3 | comments1.cs:28:1:28:17 | /* ... */ | true multiline |    true multiline | MultilineComment |
+| comments1.cs:27:1:29:13 | /* ... */ | 3 | comments1.cs:29:1:29:13 | /* ... */ | comment |    comment */ | MultilineComment |
+| comments1.cs:31:1:33:30 | // ... | 3 | comments1.cs:31:1:31:21 | // ... | These three lines, | // These three lines, | SinglelineComment |
+| comments1.cs:31:1:33:30 | // ... | 3 | comments1.cs:32:1:32:61 | /* ... */ | even though they are using different commenting styles, | /* even though they are using different commenting styles, */ | MultilineComment |
+| comments1.cs:31:1:33:30 | // ... | 3 | comments1.cs:33:1:33:30 | /// ... | form a single commentblock | /// form a single commentblock | XmlComment |
+| comments1.cs:37:5:39:41 | /* ... */ | 3 | comments1.cs:37:5:37:6 | /* ... */ |  | /* | MultilineComment |
+| comments1.cs:37:5:39:41 | /* ... */ | 3 | comments1.cs:38:1:38:6 | /* ... */ |  |     */ | MultilineComment |
+| comments1.cs:37:5:39:41 | /* ... */ | 3 | comments1.cs:39:5:39:41 | // ... | This is not the same comment block | // This is not the same comment block | SinglelineComment |
+| comments1.cs:40:13:41:51 | // ... | 2 | comments1.cs:40:13:40:27 | // ... | as this line | // as this line | SinglelineComment |
+| comments1.cs:40:13:41:51 | // ... | 2 | comments1.cs:41:13:41:51 | // ... | because they are offset differently. | // because they are offset differently. | SinglelineComment |
+| comments1.cs:43:15:43:36 | // ... | 1 | comments1.cs:43:15:43:36 | // ... | These are different | // These are different | SinglelineComment |
+| comments1.cs:44:15:44:32 | // ... | 1 | comments1.cs:44:15:44:32 | // ... | comment blocks. | // comment blocks. | SinglelineComment |
+| comments1.cs:47:1:47:21 | // ... | 1 | comments1.cs:47:1:47:21 | // ... | End of comment1.cs | // End of comment1.cs | SinglelineComment |
+| comments2.cs:1:1:2:15 | // ... | 2 | comments2.cs:1:1:1:23 | // ... | Start of comment2.cs | // Start of comment2.cs | SinglelineComment |
+| comments2.cs:1:1:2:15 | // ... | 2 | comments2.cs:2:1:2:15 | // ... | Unassociated | // Unassociated | SinglelineComment |
+| comments2.cs:5:27:5:41 | // ... | 1 | comments2.cs:5:27:5:41 | // ... | Unassociated | // Unassociated | SinglelineComment |
+| comments2.cs:8:1:8:15 | // ... | 1 | comments2.cs:8:1:8:15 | // ... | Unassociated | // Unassociated | SinglelineComment |
+| comments2.cs:10:1:10:6 | /// ... | 1 | comments2.cs:10:1:10:6 | /// ... | C2 | /// C2 | XmlComment |
+| comments2.cs:13:17:13:25 | // ... | 1 | comments2.cs:13:17:13:25 | // ... | field1 | // field1 | SinglelineComment |
+| comments2.cs:14:17:14:25 | // ... | 1 | comments2.cs:14:17:14:25 | // ... | field2 | // field2 | SinglelineComment |
+| comments2.cs:16:5:16:9 | // ... | 1 | comments2.cs:16:5:16:9 | // ... | C2 | // C2 | SinglelineComment |
+| comments2.cs:18:5:18:8 | // ... | 1 | comments2.cs:18:5:18:8 | // ... | f | // f | SinglelineComment |
+| comments2.cs:21:9:21:16 | // ... | 1 | comments2.cs:21:9:21:16 | // ... | {...} | // {...} | SinglelineComment |
+| comments2.cs:23:15:23:21 | // ... | 1 | comments2.cs:23:15:23:21 | // ... | ...; | // ...; | SinglelineComment |
+| comments2.cs:25:9:25:15 | // ... | 1 | comments2.cs:25:9:25:15 | // ... | ...; | // ...; | SinglelineComment |
+| comments2.cs:31:9:31:15 | // ... | 1 | comments2.cs:31:9:31:15 | // ... | ...; | // ...; | SinglelineComment |
+| comments2.cs:33:9:33:16 | // ... | 1 | comments2.cs:33:9:33:16 | // ... | {...} | // {...} | SinglelineComment |
+| comments2.cs:36:9:36:16 | // ... | 1 | comments2.cs:36:9:36:16 | // ... | {...} | // {...} | SinglelineComment |
+| comments2.cs:39:5:39:9 | // ... | 1 | comments2.cs:39:5:39:9 | // ... | C3 | // C3 | SinglelineComment |
+| comments2.cs:42:9:42:13 | // ... | 1 | comments2.cs:42:9:42:13 | // ... | C3 | // C3 | SinglelineComment |
+| comments2.cs:45:5:45:9 | // ... | 1 | comments2.cs:45:5:45:9 | // ... | C2 | // C2 | SinglelineComment |
+| comments2.cs:47:5:47:9 | // ... | 1 | comments2.cs:47:5:47:9 | // ... | S1 | // S1 | SinglelineComment |
+| comments2.cs:50:9:50:13 | // ... | 1 | comments2.cs:50:9:50:13 | // ... | S1 | // S1 | SinglelineComment |
+| comments2.cs:52:28:52:35 | // ... | 1 | comments2.cs:52:28:52:35 | // ... | {...} | // {...} | SinglelineComment |
+| comments2.cs:53:13:53:17 | // ... | 1 | comments2.cs:53:13:53:17 | // ... | S1 | // S1 | SinglelineComment |
+| comments2.cs:55:13:55:20 | // ... | 1 | comments2.cs:55:13:55:20 | // ... | {...} | // {...} | SinglelineComment |
+| comments2.cs:56:11:56:18 | // ... | 1 | comments2.cs:56:11:56:18 | // ... | {...} | // {...} | SinglelineComment |
+| comments2.cs:58:5:58:9 | // ... | 1 | comments2.cs:58:5:58:9 | // ... | S1 | // S1 | SinglelineComment |
+| comments2.cs:60:5:60:13 | // ... | 1 | comments2.cs:60:5:60:13 | // ... | Values | // Values | SinglelineComment |
+| comments2.cs:63:9:63:17 | // ... | 1 | comments2.cs:63:9:63:17 | // ... | Values | // Values | SinglelineComment |
+| comments2.cs:65:9:65:16 | // ... | 1 | comments2.cs:65:9:65:16 | // ... | First | // First | SinglelineComment |
+| comments2.cs:66:17:66:24 | // ... | 1 | comments2.cs:66:17:66:24 | // ... | First | // First | SinglelineComment |
+| comments2.cs:67:17:67:25 | // ... | 1 | comments2.cs:67:17:67:25 | // ... | Second | // Second | SinglelineComment |
+| comments2.cs:69:9:70:10 | // ... | 2 | comments2.cs:69:9:69:17 | // ... | Values | // Values | SinglelineComment |
+| comments2.cs:69:9:70:10 | // ... | 2 | comments2.cs:70:9:70:10 | // ... |  | // | SinglelineComment |
+| comments2.cs:72:9:72:16 | // ... | 1 | comments2.cs:72:9:72:16 | // ... | Third | // Third | SinglelineComment |
+| comments2.cs:75:9:75:17 | // ... | 1 | comments2.cs:75:9:75:17 | // ... | Values | // Values | SinglelineComment |
+| comments2.cs:78:5:78:21 | // ... | 1 | comments2.cs:78:5:78:21 | // ... | C2 Constructor | // C2 Constructor | SinglelineComment |
+| comments2.cs:79:10:79:26 | // ... | 1 | comments2.cs:79:10:79:26 | // ... | C2 Constructor | // C2 Constructor | SinglelineComment |
+| comments2.cs:81:9:81:16 | // ... | 1 | comments2.cs:81:9:81:16 | // ... | {...} | // {...} | SinglelineComment |
+| comments2.cs:84:5:84:10 | // ... | 1 | comments2.cs:84:5:84:10 | // ... | ~C2 | // ~C2 | SinglelineComment |
+| comments2.cs:85:11:85:16 | // ... | 1 | comments2.cs:85:11:85:16 | // ... | ~C2 | // ~C2 | SinglelineComment |
+| comments2.cs:89:5:89:8 | // ... | 1 | comments2.cs:89:5:89:8 | // ... | + | // + | SinglelineComment |
+| comments2.cs:90:46:90:49 | // ... | 1 | comments2.cs:90:46:90:49 | // ... | + | // + | SinglelineComment |
+| comments2.cs:96:15:96:18 | // ... | 1 | comments2.cs:96:15:96:18 | // ... | x | // x | SinglelineComment |
+| comments2.cs:97:13:97:16 | // ... | 1 | comments2.cs:97:13:97:16 | // ... | y | // y | SinglelineComment |
+| comments2.cs:102:5:102:8 | // ... | 1 | comments2.cs:102:5:102:8 | // ... | D | // D | SinglelineComment |
+| comments2.cs:103:31:104:34 | // ... | 2 | comments2.cs:103:31:103:34 | // ... | D | // D | SinglelineComment |
+| comments2.cs:103:31:104:34 | // ... | 2 | comments2.cs:104:31:104:34 | // ... | D | // D | SinglelineComment |
+| comments2.cs:106:5:106:8 | // ... | 1 | comments2.cs:106:5:106:8 | // ... | E | // E | SinglelineComment |
+| comments2.cs:107:23:108:26 | // ... | 2 | comments2.cs:107:23:107:26 | // ... | E | // E | SinglelineComment |
+| comments2.cs:107:23:108:26 | // ... | 2 | comments2.cs:108:23:108:26 | // ... | E | // E | SinglelineComment |
+| comments2.cs:118:5:118:21 | // ... | 1 | comments2.cs:118:5:118:21 | // ... | GenericClass<> | // GenericClass<> | SinglelineComment |
+| comments2.cs:121:17:121:20 | // ... | 1 | comments2.cs:121:17:121:20 | // ... | f | // f | SinglelineComment |
+| comments2.cs:124:5:124:16 | // ... | 1 | comments2.cs:124:5:124:16 | // ... | GenericFn | // GenericFn | SinglelineComment |
+| comments2.cs:127:20:127:23 | // ... | 1 | comments2.cs:127:20:127:23 | // ... | x | // x | SinglelineComment |
+| comments2.cs:132:1:132:21 | // ... | 1 | comments2.cs:132:1:132:21 | // ... | End of comment2.cs | // End of comment2.cs | SinglelineComment |

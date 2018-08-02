@@ -1,0 +1,12 @@
+| ctorinits.cpp:11:8:11:8 | ~NoisyPair | 0 | DestructorFieldDestruction | ctorinits.cpp:11:8:11:8 | destructor field destruction of m_snd | 1 |
+| ctorinits.cpp:11:8:11:8 | ~NoisyPair | 1 | DestructorFieldDestruction | ctorinits.cpp:11:8:11:8 | destructor field destruction of m_fst | 1 |
+| ctorinits.cpp:21:8:21:8 | ~NoisyTriple | 0 | DestructorFieldDestruction | ctorinits.cpp:21:8:21:8 | destructor field destruction of m_third | 1 |
+| ctorinits.cpp:21:8:21:8 | ~NoisyTriple | 1 | DestructorDirectDestruction | ctorinits.cpp:21:8:21:8 | call to ~NoisyPair | 0 |
+| ctorinits.cpp:29:2:29:10 | ~ArrayInt | 0 | DestructorFieldDestruction | ctorinits.cpp:29:15:29:15 | destructor field destruction of m_array | 1 |
+| ctorinits.cpp:81:8:81:8 | ~VD | 0 | DestructorVirtualDestruction | ctorinits.cpp:81:8:81:8 | call to ~VB | 0 |
+| ctorinits.cpp:87:3:87:23 | ~VirtualAndNonVirtual | 0 | DestructorDirectDestruction | ctorinits.cpp:88:3:88:3 | call to ~VB | 0 |
+| ctorinits.cpp:87:3:87:23 | ~VirtualAndNonVirtual | 1 | DestructorDirectDestruction | ctorinits.cpp:88:3:88:3 | call to ~VD | 0 |
+| ctorinits.cpp:87:3:87:23 | ~VirtualAndNonVirtual | 2 | DestructorVirtualDestruction | ctorinits.cpp:88:3:88:3 | call to ~VB | 0 |
+| ctorinits.cpp:95:3:95:34 | ~AllYourVirtualBaseAreBelongToUs | 0 | DestructorDirectDestruction | ctorinits.cpp:96:3:96:3 | call to ~VirtualAndNonVirtual | 0 |
+| ctorinits.cpp:95:3:95:34 | ~AllYourVirtualBaseAreBelongToUs | 1 | DestructorDirectDestruction | ctorinits.cpp:96:3:96:3 | call to ~VD | 0 |
+| ctorinits.cpp:95:3:95:34 | ~AllYourVirtualBaseAreBelongToUs | 2 | DestructorVirtualDestruction | ctorinits.cpp:96:3:96:3 | call to ~VB | 0 |

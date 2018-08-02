@@ -1,0 +1,5 @@
+| ExponentialRegex.cs:9:55:9:83 | "^(([a-z])+.)+[A-Z]([a-z])+$" |
+| ExponentialRegex.cs:17:19:17:31 | "^([a-z]+)+$" |
+| ExponentialRegex.cs:18:19:18:31 | "^([a-z]*)*$" |
+| ExponentialRegex.cs:21:19:21:130 | "^([a-zA-Z0-9])(([\\-.]\|[_]+)?([a-zA-Z0-9]+))*(@){1}[a-z0-9]+[.]{1}(([a-z]{2,3})\|([a-z]{2,3}[.]{1}[a-z]{2,3}))$" |
+| ExponentialRegex.cs:29:19:29:31 | "^([a-z]+)+$" |

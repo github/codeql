@@ -1,0 +1,14 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>If a variable is dereferenced, and the variable may have a null value on some execution paths 
+leading to the dereferencing, the dereferencing may result in a <code>NullReferenceException</code>.
+</p>
+
+</overview>
+<recommendation>
+<p>Examine the code to check for possible errors.</p>
+</recommendation>
+</qhelp>

@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+This rule finds integer values that are first used to index an array and
+subsequently tested for being negative. If it is relevant to perform this test
+at all then it should probably happen <em>before</em> the indexing, not
+after. Otherwise, if the value is negative then the program will have failed
+before performing the test.
+</p>
+<include src="dataFlowWarning.qhelp" />
+
+</overview>
+<recommendation>
+<p>
+See if the value needs checking before being used as array index. Double-check
+if the value is derived from user input. If the value clearly cannot be
+negative then the negativity test is redundant and can be removed.
+</p>
+
+</recommendation>
+<example>
+<sample src="LateNegativeTest.cpp" />
+
+
+
+
+
+</example>
+</qhelp>

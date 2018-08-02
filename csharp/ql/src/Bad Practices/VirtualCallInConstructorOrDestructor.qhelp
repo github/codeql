@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Virtual calls or accesses in a constructor or destructor might not behave as expected. The 
+constructor for the base class is always executed first, but in the context of the runtime type of 
+the object. If a method is overridden in a sub type then that overridden method can be called from 
+the constructor of the base type. This can lead to the methods of a class being called before the 
+constructor of the class, which can have unexpected consequences.</p>
+
+</overview>
+<recommendation>
+<p>Carefully check the virtual calls or accesses to make sure they will behave as expected. If 
+possible, eliminate the virtual calls.</p>
+
+</recommendation>
+<example>
+<p>In this example <code>DClass.Method()</code> is called before the <code>DClass</code> constructor is called. 
+This is a problem because <code>DClass</code>'s version of <code>Method()</code> is not expecting to be 
+called before the constructor.</p>
+<sample src="VirtualCallInConstructorOrDestructor.cs" />
+
+<p>This example outputs the following:</p>
+<pre>Base constructor called.
+D method called. Ready for method to be called? No
+D constructor called.</pre>
+</example>
+</qhelp>

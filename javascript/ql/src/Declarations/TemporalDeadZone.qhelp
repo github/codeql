@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+The scope of a variable declared with <code>let</code> is its innermost enclosing block statement, loop or
+function. Unlike variables declared with <code>var</code>, variables declared with <code>let</code> are not
+hoisted to the top of their scope, giving rise to a region of code where the variable is in scope, but not
+declared yet. Accessing a <code>let</code>-bound variable inside this so-called "temporal dead zone"
+is permitted by some legacy implementations, but is illegal in ECMAScript 2015.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Move the <code>let</code> declaration to the beginning of its scope.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, <code>x</code> is initialized before its declaration:
+</p>
+
+<sample src="examples/TemporalDeadZone.js" />
+
+<p>
+The declaration should be moved as follows:
+</p>
+
+<sample src="examples/TemporalDeadZoneGood.js" />
+
+</example>
+<references>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let#Temporal_dead_zone_and_errors_with_let">Temporal dead zone and errors with let</a>.</li>
+</references>
+</qhelp>

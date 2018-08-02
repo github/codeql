@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Character classes in regular expressions represent sets of characters, so there is no need to specify
+the same character twice in one character class. Duplicate characters in character classes are at best
+useless, and may even indicate a latent bug.
+</p>
+
+</overview>
+<recommendation>
+
+<p>If the character was accidentally duplicated, remove it. If the character class was meant to be a
+group, replace the brackets with parentheses.</p>
+
+
+</recommendation>
+<example>
+<p>
+In the following example, the character class <code>[password|pwd]</code> contains two instances each
+of the characters <code>d</code>, <code>p</code>, <code>s</code>, and <code>w</code>. The programmer
+most likely meant to write <code>(password|pwd)</code> (a pattern that matches either the string
+<code>"password"</code> or the string <code>"pwd"</code>), and accidentally mistyped the enclosing
+brackets.
+</p>
+
+<sample src="examples/DuplicateCharacterInCharacterClass.js" />
+
+<p>
+To fix this problem, the regular expression should be rewritten to <code>/(password|pwd) =/</code>.
+</p>
+
+</example>
+<references>
+
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions">JavaScript Regular Expressions</a>.</li>
+
+</references>
+</qhelp>

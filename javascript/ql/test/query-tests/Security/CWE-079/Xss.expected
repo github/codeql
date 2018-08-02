@@ -1,0 +1,56 @@
+| jquery.js:4:5:4:11 | tainted | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:33 | document.location | user-provided value |
+| jquery.js:7:5:7:34 | "<div i ... + "\\">" | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:33 | document.location | user-provided value |
+| jquery.js:8:18:8:34 | "XSS: " + tainted | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:33 | document.location | user-provided value |
+| string-manipulations.js:3:16:3:32 | document.location | Cross-site scripting vulnerability due to $@. | string-manipulations.js:3:16:3:32 | document.location | user-provided value |
+| string-manipulations.js:4:16:4:37 | documen ... on.href | Cross-site scripting vulnerability due to $@. | string-manipulations.js:4:16:4:32 | document.location | user-provided value |
+| string-manipulations.js:5:16:5:47 | documen ... lueOf() | Cross-site scripting vulnerability due to $@. | string-manipulations.js:5:16:5:32 | document.location | user-provided value |
+| string-manipulations.js:6:16:6:43 | documen ... f.sup() | Cross-site scripting vulnerability due to $@. | string-manipulations.js:6:16:6:32 | document.location | user-provided value |
+| string-manipulations.js:7:16:7:51 | documen ... rCase() | Cross-site scripting vulnerability due to $@. | string-manipulations.js:7:16:7:32 | document.location | user-provided value |
+| string-manipulations.js:8:16:8:48 | documen ... mLeft() | Cross-site scripting vulnerability due to $@. | string-manipulations.js:8:16:8:32 | document.location | user-provided value |
+| string-manipulations.js:9:16:9:58 | String. ... n.href) | Cross-site scripting vulnerability due to $@. | string-manipulations.js:9:36:9:52 | document.location | user-provided value |
+| string-manipulations.js:10:16:10:45 | String( ... n.href) | Cross-site scripting vulnerability due to $@. | string-manipulations.js:10:23:10:39 | document.location | user-provided value |
+| translate.js:9:27:9:50 | searchP ... 'term') | Cross-site scripting vulnerability due to $@. | translate.js:6:16:6:32 | document.location | user-provided value |
+| tst.js:5:18:5:23 | target | Cross-site scripting vulnerability due to $@. | tst.js:2:16:2:32 | document.location | user-provided value |
+| tst.js:8:18:8:126 | "<OPTIO ... PTION>" | Cross-site scripting vulnerability due to $@. | tst.js:8:37:8:53 | document.location | user-provided value |
+| tst.js:12:5:12:42 | '<div s ...  'px">' | Cross-site scripting vulnerability due to $@. | tst.js:2:16:2:32 | document.location | user-provided value |
+| tst.js:20:18:20:35 | params.get('name') | Cross-site scripting vulnerability due to $@. | tst.js:19:25:19:41 | document.location | user-provided value |
+| tst.js:24:18:24:41 | searchP ... 'name') | Cross-site scripting vulnerability due to $@. | tst.js:2:16:2:32 | document.location | user-provided value |
+| tst.js:29:18:29:23 | target | Cross-site scripting vulnerability due to $@. | tst.js:31:5:31:21 | document.location | user-provided value |
+| tst.js:37:16:37:20 | bar() | Cross-site scripting vulnerability due to $@. | tst.js:34:10:34:26 | document.location | user-provided value |
+| tst.js:43:16:43:44 | baz(doc ... search) | Cross-site scripting vulnerability due to $@. | tst.js:43:20:43:36 | document.location | user-provided value |
+| tst.js:49:16:49:45 | wrap(do ... search) | Cross-site scripting vulnerability due to $@. | tst.js:49:21:49:37 | document.location | user-provided value |
+| tst.js:57:16:57:45 | chop(do ... search) | Cross-site scripting vulnerability due to $@. | tst.js:57:21:57:37 | document.location | user-provided value |
+| tst.js:59:16:59:45 | chop(do ... search) | Cross-site scripting vulnerability due to $@. | tst.js:59:21:59:37 | document.location | user-provided value |
+| tst.js:61:16:61:32 | wrap(chop(bar())) | Cross-site scripting vulnerability due to $@. | tst.js:34:10:34:26 | document.location | user-provided value |
+| tst.js:65:18:65:18 | s | Cross-site scripting vulnerability due to $@. | tst.js:67:25:67:41 | document.location | user-provided value |
+| tst.js:65:18:65:18 | s | Cross-site scripting vulnerability due to $@. | tst.js:68:25:68:41 | document.location | user-provided value |
+| tst.js:71:16:71:20 | bar() | Cross-site scripting vulnerability due to $@. | tst.js:34:10:34:26 | document.location | user-provided value |
+| tst.js:76:20:76:20 | x | Cross-site scripting vulnerability due to $@. | tst.js:73:3:73:19 | document.location | user-provided value |
+| tst.js:80:49:80:72 | documen ... .search | Cross-site scripting vulnerability due to $@. | tst.js:80:49:80:65 | document.location | user-provided value |
+| tst.js:84:26:84:49 | documen ... .search | Cross-site scripting vulnerability due to $@. | tst.js:84:26:84:42 | document.location | user-provided value |
+| tst.js:85:25:85:48 | documen ... .search | Cross-site scripting vulnerability due to $@. | tst.js:85:25:85:41 | document.location | user-provided value |
+| tst.js:87:33:87:56 | documen ... .search | Cross-site scripting vulnerability due to $@. | tst.js:87:33:87:49 | document.location | user-provided value |
+| tst.js:88:32:88:55 | documen ... .search | Cross-site scripting vulnerability due to $@. | tst.js:88:32:88:48 | document.location | user-provided value |
+| tst.js:93:39:93:62 | documen ... .search | Cross-site scripting vulnerability due to $@. | tst.js:93:39:93:55 | document.location | user-provided value |
+| tst.js:99:30:99:53 | documen ... .search | Cross-site scripting vulnerability due to $@. | tst.js:99:30:99:46 | document.location | user-provided value |
+| tst.js:105:25:105:48 | documen ... .search | Cross-site scripting vulnerability due to $@. | tst.js:105:25:105:41 | document.location | user-provided value |
+| tst.js:113:18:113:18 | v | Cross-site scripting vulnerability due to $@. | tst.js:110:11:110:27 | document.location | user-provided value |
+| tst.js:148:49:148:49 | v | Cross-site scripting vulnerability due to $@. | tst.js:145:29:145:43 | window.location | user-provided value |
+| tst.js:152:29:152:46 | xssSourceService() | Cross-site scripting vulnerability due to $@. | tst.js:155:40:155:54 | window.location | user-provided value |
+| tst.js:177:28:177:33 | target | Cross-site scripting vulnerability due to $@. | tst.js:174:18:174:34 | document.location | user-provided value |
+| tst.js:183:31:183:37 | tainted | Cross-site scripting vulnerability due to $@. | tst.js:181:19:181:35 | document.location | user-provided value |
+| tst.js:185:42:185:48 | tainted | Cross-site scripting vulnerability due to $@. | tst.js:181:19:181:35 | document.location | user-provided value |
+| tst.js:186:33:186:39 | tainted | Cross-site scripting vulnerability due to $@. | tst.js:181:19:181:35 | document.location | user-provided value |
+| tst.js:188:54:188:60 | tainted | Cross-site scripting vulnerability due to $@. | tst.js:181:19:181:35 | document.location | user-provided value |
+| tst.js:189:45:189:51 | tainted | Cross-site scripting vulnerability due to $@. | tst.js:181:19:181:35 | document.location | user-provided value |
+| tst.js:196:67:196:73 | tainted | Cross-site scripting vulnerability due to $@. | tst.js:194:19:194:35 | document.location | user-provided value |
+| tst.js:197:67:197:73 | tainted | Cross-site scripting vulnerability due to $@. | tst.js:194:19:194:35 | document.location | user-provided value |
+| tst.js:209:28:209:46 | this.state.tainted1 | Cross-site scripting vulnerability due to $@. | tst.js:194:19:194:35 | document.location | user-provided value |
+| tst.js:210:28:210:46 | this.state.tainted2 | Cross-site scripting vulnerability due to $@. | tst.js:194:19:194:35 | document.location | user-provided value |
+| tst.js:211:28:211:46 | this.state.tainted3 | Cross-site scripting vulnerability due to $@. | tst.js:194:19:194:35 | document.location | user-provided value |
+| tst.js:215:32:215:49 | prevState.tainted4 | Cross-site scripting vulnerability due to $@. | tst.js:194:19:194:35 | document.location | user-provided value |
+| tst.js:222:28:222:46 | this.props.tainted1 | Cross-site scripting vulnerability due to $@. | tst.js:194:19:194:35 | document.location | user-provided value |
+| tst.js:223:28:223:46 | this.props.tainted2 | Cross-site scripting vulnerability due to $@. | tst.js:194:19:194:35 | document.location | user-provided value |
+| tst.js:224:28:224:46 | this.props.tainted3 | Cross-site scripting vulnerability due to $@. | tst.js:194:19:194:35 | document.location | user-provided value |
+| tst.js:228:32:228:49 | prevProps.tainted4 | Cross-site scripting vulnerability due to $@. | tst.js:194:19:194:35 | document.location | user-provided value |
+| tst.js:248:60:248:82 | this.st ... Tainted | Cross-site scripting vulnerability due to $@. | tst.js:194:19:194:35 | document.location | user-provided value |

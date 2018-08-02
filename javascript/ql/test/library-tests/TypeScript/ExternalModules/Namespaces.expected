@@ -1,0 +1,2 @@
+| tst.ts:8:1:8:14 | namespace X {} | X |
+| tst.ts:9:1:9:11 | module Y {} | Y |

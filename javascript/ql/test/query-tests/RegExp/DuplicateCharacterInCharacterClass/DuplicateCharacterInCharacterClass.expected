@@ -1,0 +1,9 @@
+| tst.js:1:4:1:4 | o | Character 'o' is repeated $@ in the same character class. | tst.js:1:5:1:5 | o | here |
+| tst.js:4:3:4:3 | ? | Character '?' is repeated $@ in the same character class. | tst.js:4:4:4:4 | ? | here |
+| tst.js:5:3:5:8 | \\u003F | Character '\\u003F' is repeated $@ in the same character class. | tst.js:5:9:5:14 | \\u003f | here |
+| tst.js:6:3:6:8 | \\u003F | Character '\\u003F' is repeated $@ in the same character class. | tst.js:6:9:6:9 | ? | here |
+| tst.js:7:3:7:6 | \\x3f | Character '\\x3f' is repeated $@ in the same character class. | tst.js:7:7:7:12 | \\u003f | here |
+| tst.js:8:3:8:3 | a | Character 'a' is repeated $@ in the same character class. | tst.js:8:4:8:4 | a | here |
+| tst.js:8:3:8:3 | a | Character 'a' is repeated $@ in the same character class. | tst.js:8:5:8:5 | a | here |
+| tst.js:9:3:9:6 | \\x0a | Character '\\x0a' is repeated $@ in the same character class. | tst.js:9:7:9:10 | \\x0a | here |
+| tst.js:10:3:10:8 | \\u000a | Character '\\u000a' is repeated $@ in the same character class. | tst.js:10:9:10:10 | \\n | here |

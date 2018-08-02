@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+  The method <code>GetHashCode()</code> on an integer simply returns the original value of the integer.
+  This method call is therefore redundant, inefficient, and obscures the logic of the hash function.
+  Several of the built-in types have this behavior, including <code>int</code>, <code>uint</code>,
+  <code>short</code>, <code>ushort</code>, <code>long</code>, <code>ulong</code>, <code>byte</code> and <code>sbyte</code>.
+</p>
+
+</overview>
+<recommendation>
+<p>Remove the call to <code>GetHashCode()</code>, and review the hash function.</p>
+
+</recommendation>
+
+<example>
+<p>
+  The following hash function has two problems. Firstly, the calls to <code>GetHashCode()</code> are redundant,
+  and secondly, the hash function generates too many collisions.
+</p>
+
+<sample src="IntGetHashCode.cs" />
+
+<p>
+  These problems are resolved by removing the redundant calls to <code>GetHashCode()</code>, and
+  by changing the hash function to generate fewer collisions.
+</p>
+
+<sample src="IntGetHashCodeFix.cs" />
+
+</example>
+
+<references>
+
+  <li>MSDN, C# Reference, <a href="https://msdn.microsoft.com/en-us/library/system.object.gethashcode.aspx">Object.GetHashCode Method</a>.</li>
+
+</references>
+</qhelp>

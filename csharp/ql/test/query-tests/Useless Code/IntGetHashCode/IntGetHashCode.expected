@@ -1,0 +1,8 @@
+| IntGetHashCode.cs:6:9:6:35 | call to method GetHashCode | Calling GetHashCode() on type uint is redundant. |
+| IntGetHashCode.cs:7:9:7:34 | call to method GetHashCode | Calling GetHashCode() on type int is redundant. |
+| IntGetHashCode.cs:8:9:8:35 | call to method GetHashCode | Calling GetHashCode() on type long is redundant. |
+| IntGetHashCode.cs:9:9:9:36 | call to method GetHashCode | Calling GetHashCode() on type ulong is redundant. |
+| IntGetHashCode.cs:10:9:10:36 | call to method GetHashCode | Calling GetHashCode() on type short is redundant. |
+| IntGetHashCode.cs:11:9:11:37 | call to method GetHashCode | Calling GetHashCode() on type ushort is redundant. |
+| IntGetHashCode.cs:12:9:12:35 | call to method GetHashCode | Calling GetHashCode() on type byte is redundant. |
+| IntGetHashCode.cs:13:9:13:36 | call to method GetHashCode | Calling GetHashCode() on type sbyte is redundant. |

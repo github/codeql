@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Most <code>for...in</code> and <code>for...of</code> statements use their iteration variable in
+the loop body, unless they simply count the number of iterations by incrementing a
+loop counter in the loop body, or check whether the loop body is executed at all. Loops that
+do not use their iteration variable but do not fall into one of these two categories may indicate
+a logic error or typo.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Carefully check whether the loop variable should be used. If the variable is genuinely not being
+used and the code is correct, consider renaming the variable to <code>_</code> or
+<code>unused</code> to indicate to readers of the code that it is intentionally unused.
+</p>
+
+</recommendation>
+<example>
+<p>
+In this example, the <code>for...of</code> loop iteration variable <code>x</code> is never used. It
+appears that the function is intended to count how many elements of the array <code>xs</code>
+satisfy the filter predicate <code>p</code>, but the programmer forgot to actually pass
+<code>x</code> as an argument to <code>p</code>.
+</p>
+
+<sample src="examples/SuspiciousUnusedLoopIterationVariable.js" />
+
+<p>
+To fix this issue, the call <code>p()</code> should be replaced by <code>p(x)</code>.
+</p>
+
+</example>
+<references>
+    <li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in">for...in</a>.</li>
+    <li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of">for...of</a>.</li>
+</references>
+</qhelp>

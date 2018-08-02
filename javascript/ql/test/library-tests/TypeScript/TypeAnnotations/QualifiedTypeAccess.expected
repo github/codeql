@@ -1,0 +1,5 @@
+| tst.ts:63:19:63:21 | N.I | tst.ts:63:19:63:19 | N | tst.ts:63:21:63:21 | I |
+| tst.ts:64:20:64:24 | N.M.I | tst.ts:64:20:64:22 | N.M | tst.ts:64:24:64:24 | I |
+| tst.ts:66:18:66:32 | N.InnerGeneric1 | tst.ts:66:18:66:18 | N | tst.ts:66:20:66:32 | InnerGeneric1 |
+| tst.ts:67:18:67:34 | N.M.InnerGeneric2 | tst.ts:67:18:67:20 | N.M | tst.ts:67:22:67:34 | InnerGeneric2 |
+| tst.ts:68:26:68:40 | N.InnerGeneric1 | tst.ts:68:26:68:26 | N | tst.ts:68:28:68:40 | InnerGeneric1 |

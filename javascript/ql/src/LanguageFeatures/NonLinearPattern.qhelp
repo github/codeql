@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+If the same pattern variable is bound multiple times in the same object or array pattern, the last
+binding overwrites all of the earlier ones. This is most likely unintended and should be avoided.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Rename the pattern variables to have different names. In an array pattern, elements that do not need
+to be bound can be omitted.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, the function <code>distanceFromOrigin</code> uses an array pattern to decompose
+its argument <code>point</code>. The pattern binds <code>x</code> twice: first, <code>x</code> is
+bound to <code>point[0]</code>, the first element of <code>point</code>; this binding is then immediately
+overwritten by a binding to <code>point[1]</code>, which is probably unintended.
+</p>
+
+<sample src="examples/NonLinearPattern.js" />
+
+<p>
+From context, it appears that the second binding should have been for variable <code>y</code> like this:
+</p>
+
+<sample src="examples/NonLinearPatternGood.js" />
+
+</example>
+<references>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment">Destructuring assignment</a>.</li>
+</references>
+</qhelp>

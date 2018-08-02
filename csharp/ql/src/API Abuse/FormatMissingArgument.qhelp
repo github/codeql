@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Formatting methods (such as <code>String.Format()</code>) that are missing arguments will 
+throw the exception <code>System.FormatException</code>. This is caused by the format 
+string not matching the actual arguments supplied or an incorrect format string.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Supply the correct number of arguments to the format method, or change the format string 
+to use the correct arguments.
+</p>
+</recommendation>
+
+<example>
+<p>
+Here are two examples where the call to <code>String.Format()</code> is missing arguments.
+</p>
+<sample src="FormatMissingArgumentBad.cs"/>
+<ul>
+  <li>On line 5, the second argument (<code>last</code>) is not supplied.</li>
+  <li>On line 6, the format items are numbered <code>{1}</code> and <code>{2}</code>,
+    instead of <code>{0}</code> and <code>{1}</code> as they should be.</li>
+</ul>
+
+<p>
+In the revised example, both arguments are supplied.
+</p>
+<sample src="FormatMissingArgumentGood.cs"/>
+</example>
+
+<references>
+  <li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/system.string.format.aspx">String.Format Method</a>.</li>
+  <li>Microsoft: <a href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/composite-formatting">Composite Formatting</a>.</li>
+</references>
+</qhelp>

@@ -1,0 +1,3 @@
+| string_literals.c:2:12:2:17 | test |
+| string_literals.c:3:12:3:19 | test\n |
+| string_literals.c:4:12:4:23 | a\tb\nc\\d |

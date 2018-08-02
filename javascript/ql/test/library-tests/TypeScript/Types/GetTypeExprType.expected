@@ -1,0 +1,74 @@
+| boolean-type.ts:3:12:3:15 | true | true |
+| boolean-type.ts:4:12:4:15 | true | true |
+| boolean-type.ts:4:12:4:22 | true \| true | true |
+| boolean-type.ts:4:19:4:22 | true | true |
+| boolean-type.ts:6:13:6:17 | false | false |
+| boolean-type.ts:7:13:7:17 | false | false |
+| boolean-type.ts:7:13:7:25 | false \| false | false |
+| boolean-type.ts:7:21:7:25 | false | false |
+| boolean-type.ts:9:15:9:21 | boolean | boolean |
+| boolean-type.ts:10:15:10:18 | true | true |
+| boolean-type.ts:10:15:10:26 | true \| false | boolean |
+| boolean-type.ts:10:22:10:26 | false | false |
+| boolean-type.ts:11:15:11:19 | false | false |
+| boolean-type.ts:11:15:11:26 | false \| true | boolean |
+| boolean-type.ts:11:23:11:26 | true | true |
+| boolean-type.ts:13:15:13:21 | boolean | boolean |
+| boolean-type.ts:13:15:13:31 | boolean \| boolean | boolean |
+| boolean-type.ts:13:25:13:31 | boolean | boolean |
+| boolean-type.ts:14:15:14:21 | boolean | boolean |
+| boolean-type.ts:14:15:14:28 | boolean \| true | boolean |
+| boolean-type.ts:14:25:14:28 | true | true |
+| boolean-type.ts:15:15:15:19 | false | false |
+| boolean-type.ts:15:15:15:29 | false \| boolean | boolean |
+| boolean-type.ts:15:23:15:29 | boolean | boolean |
+| tst.ts:3:13:3:18 | number | number |
+| tst.ts:9:13:9:18 | string | string |
+| tst.ts:14:20:14:25 | string | string |
+| tst.ts:14:31:14:36 | string | string |
+| tst.ts:14:40:14:45 | string | string |
+| tst.ts:16:17:16:22 | number | number |
+| tst.ts:16:28:16:33 | number | number |
+| tst.ts:16:37:16:42 | number | number |
+| tst.ts:20:29:20:34 | string | string |
+| tst.ts:24:12:24:17 | number | number |
+| tst.ts:24:12:24:19 | number[] | number[] |
+| tst.ts:26:15:26:24 | () => void | () => void |
+| tst.ts:26:21:26:24 | void | void |
+| tst.ts:27:20:27:28 | undefined | undefined |
+| tst.ts:28:15:28:18 | null | null |
+| tst.ts:29:16:29:26 | () => never | () => never |
+| tst.ts:29:22:29:26 | never | never |
+| tst.ts:30:17:30:22 | symbol | symbol |
+| tst.ts:31:25:31:37 | unique symbol | unique symbol |
+| tst.ts:32:17:32:22 | object | any |
+| tst.ts:33:19:33:24 | string | string |
+| tst.ts:33:19:33:38 | string & {x: string} | string & { x: string; } |
+| tst.ts:33:28:33:38 | {x: string} | { x: string; } |
+| tst.ts:33:32:33:37 | string | string |
+| tst.ts:34:12:34:27 | [number, string] | [number, string] |
+| tst.ts:34:13:34:18 | number | number |
+| tst.ts:34:21:34:26 | string | string |
+| type_alias.ts:1:6:1:6 | B | boolean |
+| type_alias.ts:1:10:1:16 | boolean | boolean |
+| type_alias.ts:3:8:3:8 | B | boolean |
+| type_definitions.ts:3:11:3:11 | I | I<S> |
+| type_definitions.ts:3:13:3:13 | S | S |
+| type_definitions.ts:4:6:4:6 | S | S |
+| type_definitions.ts:6:8:6:8 | I | I<S> |
+| type_definitions.ts:6:8:6:16 | I<number> | I<number> |
+| type_definitions.ts:6:10:6:15 | number | number |
+| type_definitions.ts:8:9:8:9 | T | T |
+| type_definitions.ts:9:6:9:6 | T | T |
+| type_definitions.ts:11:8:11:8 | C | C<T> |
+| type_definitions.ts:11:8:11:16 | C<number> | C<number> |
+| type_definitions.ts:11:10:11:15 | number | number |
+| type_definitions.ts:16:12:16:16 | Color | Color |
+| type_definitions.ts:19:8:19:24 | EnumWithOneMember | EnumWithOneMember |
+| type_definitions.ts:21:6:21:10 | Alias | T[] |
+| type_definitions.ts:21:12:21:12 | T | T |
+| type_definitions.ts:21:17:21:17 | T | T |
+| type_definitions.ts:21:17:21:19 | T[] | T[] |
+| type_definitions.ts:22:26:22:30 | Alias | T[] |
+| type_definitions.ts:22:26:22:38 | Alias<number> | number[] |
+| type_definitions.ts:22:32:22:37 | number | number |

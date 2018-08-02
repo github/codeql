@@ -1,0 +1,2 @@
+| documentation.cs:83:11:83:19 | Class4<> | Documentation specifies an invalid type parameter name $@. | documentation.cs:82:5:82:48 | /// ... | X |
+| documentation.cs:98:10:98:24 | method5 | Documentation specifies an invalid type parameter name $@. | documentation.cs:96:5:96:54 | /// ... | T0 |

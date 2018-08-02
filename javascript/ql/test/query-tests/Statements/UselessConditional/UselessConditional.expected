@@ -1,0 +1,12 @@
+| UselessConditional.js:5:7:5:12 | !lines | This expression always evaluates to false. |
+| UselessConditional.js:12:34:12:79 | (v = ne ... k] = v) | This logical 'and' expression can be replaced with a comma expression. |
+| UselessConditional.js:17:9:17:9 | a | Variable 'a' always evaluates to false here. |
+| UselessConditional.js:18:9:18:9 | b | Variable 'b' always evaluates to false here. |
+| UselessConditional.js:21:9:21:9 | a | Variable 'a' always evaluates to false here. |
+| UselessConditional.js:22:9:22:9 | b | Variable 'b' always evaluates to false here. |
+| UselessConditional.js:26:6:26:6 | x | Variable 'x' always evaluates to true here. |
+| UselessConditional.js:27:7:27:13 | new X() | This expression always evaluates to true. |
+| UselessConditional.js:28:7:28:7 | x | Variable 'x' always evaluates to true here. |
+| UselessConditional.js:29:8:29:8 | x | Variable 'x' always evaluates to true here. |
+| UselessConditional.js:30:8:30:14 | new X() | This expression always evaluates to true. |
+| UselessConditional.js:33:7:33:7 | x | Variable 'x' always evaluates to false here. |

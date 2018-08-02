@@ -1,0 +1,17 @@
+| simple.cpp:6:2:6:2 | call to f | 1 | 1 | reachable |  |
+| simple.cpp:8:2:8:12 | __assume(...) | 1 | 0 | reachable |  |
+| simple.cpp:10:2:10:2 | call to g | 1 | 1 |  |  |
+| simple.cpp:16:2:16:2 | call to i | 1 | 1 | reachable |  |
+| simple.cpp:17:2:17:2 | call to h | 1 | 0 | reachable |  |
+| simple.cpp:18:2:18:2 | call to j | 1 | 1 |  |  |
+| switch.cpp:11:4:11:10 | call to doThing | 1 | 1 | reachable | unassigned ptr |
+| switch.cpp:13:4:13:10 | call to doThing | 1 | 1 | reachable |  |
+| switch.cpp:16:4:16:10 | call to doThing | 1 | 1 | reachable | unassigned ptr |
+| switch.cpp:18:4:18:10 | call to doThing | 1 | 1 | reachable |  |
+| switch.cpp:21:4:21:14 | __assume(...) | 1 | 0 | reachable | unassigned ptr |
+| switch.cpp:29:2:29:8 | call to doThing | 1 | 1 |  |  |
+| switch.cpp:39:4:39:10 | call to doThing | 1 | 1 | reachable | unassigned ptr |
+| switch.cpp:41:4:41:10 | call to doThing | 1 | 1 | reachable |  |
+| switch.cpp:44:4:44:10 | call to doThing | 1 | 1 | reachable | unassigned ptr |
+| switch.cpp:46:4:46:10 | call to doThing | 1 | 1 | reachable |  |
+| switch.cpp:50:2:50:8 | call to doThing | 1 | 1 | reachable | unassigned ptr |

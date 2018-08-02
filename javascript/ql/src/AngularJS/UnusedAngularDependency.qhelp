@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+  <p>
+    When a function is dependency-injected in AngularJS, the
+    dependencies can be accessed through the function's parameters.
+
+    Unused dependencies are confusing, and they potentially bloat the
+    application footprint.
+  </p>
+</overview>
+
+<recommendation>
+  <p>
+    Do not include dependencies that are not used by a dependency-injected function.
+  </p>
+</recommendation>
+
+<example>
+<p>
+The following example shows an AngularJS controller with more dependencies than parameters.
+</p>
+
+<sample src="examples/UnusedAngularDependency.js"/>
+
+<p>
+This is problematic, since the <code>depB</code> dependency is unused.
+</p>
+
+</example>
+
+<references>
+<li>AngularJS Developer Guide: <a href="https://docs.angularjs.org/guide/di">Dependency Injection</a>.</li>
+</references>
+</qhelp>

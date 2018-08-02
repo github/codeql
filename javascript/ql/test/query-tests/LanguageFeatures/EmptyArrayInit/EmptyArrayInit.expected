@@ -1,0 +1,3 @@
+| tst.js:4:11:4:13 | [1, , 2] | Avoid omitted array elements. |
+| tst.js:6:14:6:16 | [1, 2, ,] | Avoid omitted array elements. |
+| tst.js:7:9:7:10 | [,1] | Avoid omitted array elements. |

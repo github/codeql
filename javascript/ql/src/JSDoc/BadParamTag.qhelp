@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+JSDoc comments for functions and constructors should use the <code>@param</code> tag to describe the available
+parameters. Each <code>@param</code> tag should include both the name of the documented parameter and a
+description of its meaning and use. A missing name or description makes the tag much less useful and may
+indicate badly maintained code.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Add the missing items to the <code>@param</code> tag.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, the constructor <code>Message</code> has a JSDoc comment containing two
+<code>@param</code> tags for its two parameters, both of which are missing descriptions.
+</p>
+
+<sample src="examples/BadParamTag.js" />
+
+</example>
+<references>
+
+
+<li>Use JSDoc: <a href="http://usejsdoc.org/tags-param.html">The @param tag</a>.</li>
+
+
+</references>
+</qhelp>

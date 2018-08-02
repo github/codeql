@@ -1,0 +1,28 @@
+/**
+ * @name Container contents are never accessed
+ * @description A collection or map whose contents are never queried or accessed is useless.
+ * @kind problem
+ * @problem.severity error
+ * @precision high
+ * @id cs/unused-collection
+ * @tags maintainability
+ *       useless-code
+ *       external/cwe/cwe-561
+ */
+
+import csharp
+import Collection
+
+from Variable v
+where isCollectionType(v.getType())
+  and (v instanceof LocalVariable or v = any(Field f | f.isEffectivelyPrivate() or f.isEffectivelyInternal()))
+  and forex(Access a |
+    a = v.getAnAccess() |
+    a = any(ModifierMethodCall m).getQualifier() or
+    a = any(Assignment ass | ass.getRValue() instanceof ObjectCreation).getLValue()
+  )
+  and not v = any(ForeachStmt fs).getVariable()
+  and not v = any(IsPatternExpr ipe).getVariableDeclExpr().getVariable()
+  and not v = any(TypeCase tc).getVariableDeclExpr().getVariable()
+  and not v = any(Attribute a).getTarget()
+select v, "The contents of this container are never accessed."

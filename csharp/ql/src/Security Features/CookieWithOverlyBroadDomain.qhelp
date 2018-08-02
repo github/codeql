@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This rule finds cookies with an overly broad domain. Cookies with an overly broad domain, such 
+as ".mybank.com", can be accessed by all web applications deployed on this domain and its 
+sub-domains. A cookie with sensitive data, but with too broad a domain, could hence be read and 
+tampered with by a less secure and untrusted application.</p>
+
+</overview>
+<recommendation>
+<p>Precisely define the domain of the web application for which this cookie is valid.</p>
+
+</recommendation>
+<example>
+<p>In this example <code>cookie1</code> is accessible from online-bank.com. <code>cookie2</code> is 
+accessible from ebanking.online-bank.com and any subdomains of ebanking.online-bank.com.</p>
+<sample src="CookieWithOverlyBroadDomain.cs" />
+
+<p>In the following example <code>cookie</code> is only accessible from ebanking.online-bank.com 
+which is much more secure.</p>
+<sample src="CookieWithOverlyBroadDomainFix.cs" />
+
+</example>
+<references>
+
+  <li>MSDN: <a href="http://msdn.microsoft.com/en-us/library/system.web.httpcookie.domain.aspx">HttpCookie.Domain Property</a>.</li>
+
+</references>
+</qhelp>

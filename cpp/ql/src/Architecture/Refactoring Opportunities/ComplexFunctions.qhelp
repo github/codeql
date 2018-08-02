@@ -1,0 +1,22 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This rule finds functions that make too many calls. Having too many dependencies makes a function vulnerable to
+changes and defects in those dependencies, and is also a sign that the function lacks cohesion (i.e. lacks a single purpose).
+These functions can be split into smaller, more cohesive functions.</p>
+
+</overview>
+<recommendation>
+<p>Splitting these functions would increase maintainability and readability.</p>
+
+</recommendation>
+
+
+<references>
+<li>W. Stevens, G. Myers, L. Constantine, <em>Structured Design</em>, IBM Systems Journal, 13 (2), 115-139, 1974.
+
+</li></references></qhelp>

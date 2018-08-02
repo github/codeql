@@ -1,0 +1,5 @@
+| tinyforstmt | tinyforstmt.c:1:6:1:6 | f | 1 | 1 | tinyforstmt.c:1:10:5:1 | tinyforstmt.c:1:10:5:1 | tinyforstmt.c:1:10:5:1 | { ... } | 2: for(...;...;...) ... |
+| tinyforstmt | tinyforstmt.c:1:6:1:6 | f | 2 | 2 | tinyforstmt.c:2:5:4:5 | tinyforstmt.c:2:5:4:5 | tinyforstmt.c:2:5:4:5 | for(...;...;...) ... | 2: { ... } |
+| tinyforstmt | tinyforstmt.c:1:6:1:6 | f | 2 | 4 | tinyforstmt.c:2:14:4:5 | tinyforstmt.c:2:14:4:5 | tinyforstmt.c:2:14:4:5 | { ... } | 3: ; |
+| tinyforstmt | tinyforstmt.c:1:6:1:6 | f | 3 | 1 | tinyforstmt.c:1:6:1:6 | tinyforstmt.c:1:6:1:6 | tinyforstmt.c:1:6:1:6 | f | <none> |
+| tinyforstmt | tinyforstmt.c:1:6:1:6 | f | 3 | 4 | tinyforstmt.c:3:9:3:9 | tinyforstmt.c:3:9:3:9 | tinyforstmt.c:3:9:3:9 | ; | 2: { ... } |

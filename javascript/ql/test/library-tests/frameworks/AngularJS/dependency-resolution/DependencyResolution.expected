@@ -1,0 +1,7 @@
+| dependency-resolution.js:15:14:15:69 | functio ... tant){} | constant |
+| dependency-resolution.js:15:14:15:69 | functio ... tant){} | decorator |
+| dependency-resolution.js:15:14:15:69 | functio ... tant){} | factory |
+| dependency-resolution.js:15:14:15:69 | functio ... tant){} | service |
+| dependency-resolution.js:15:14:15:69 | functio ... tant){} | value |
+| dependency-resolution.js:16:17:16:36 | function(provider){} | provider |
+| dependency-resolution.js:16:17:16:36 | function(provider){} | providerProvider |

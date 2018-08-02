@@ -1,0 +1,15 @@
+{
+  "name": "test",
+  "dependencies": {
+    "foo": "*"
+  },
+  "devDependencies": {
+    "bar": "*"
+  },
+  "optionalDependencies": {
+    "baz": ">=1.0"
+  },
+  "peerDependencies": {
+    "react": "*"
+  }
+}

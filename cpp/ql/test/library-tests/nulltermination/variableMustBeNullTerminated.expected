@@ -1,0 +1,10 @@
+| test.c:94:16:94:19 | data |
+| test.c:99:9:99:12 | data |
+| test.c:100:17:100:20 | data |
+| test.c:101:9:101:14 | buffer |
+| test.c:101:17:101:20 | data |
+| test.c:102:9:102:12 | data |
+| test.c:103:9:103:12 | data |
+| test.c:103:15:103:20 | buffer |
+| test.c:104:16:104:19 | data |
+| test.c:109:16:109:19 | data |

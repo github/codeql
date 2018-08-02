@@ -1,0 +1,6 @@
+| regression.cs:51:18:51:33 | ActualDeadMethod | Unused method (or method called from dead method only) |
+| regression.cs:60:18:60:37 | NotDynamicallyCalled | Unused method (or method called from dead method only) |
+| regression.cs:77:10:77:19 | DeadCaller | Unused method (or method called from dead method only) |
+| regression.cs:84:10:84:23 | DeadGeneric | Unused method (or method called from dead method only) |
+| regression.cs:105:10:105:21 | DeadGeneric1 | Unused method (or method called from dead method only) |
+| regression.cs:110:10:110:24 | DeadGeneric2 | Unused method (or method called from dead method only) |

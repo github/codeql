@@ -1,0 +1,66 @@
+| CSharp7.cs:51:22:51:23 | t1 | string |
+| CSharp7.cs:52:19:52:20 | t2 | string |
+| CSharp7.cs:53:13:53:14 | t3 | string |
+| CSharp7.cs:57:30:57:31 | t4 | string |
+| CSharp7.cs:58:13:58:14 | t5 | string |
+| CSharp7.cs:71:14:71:14 | x | int |
+| CSharp7.cs:71:21:71:21 | y | int |
+| CSharp7.cs:72:13:72:13 | z | (int, int) |
+| CSharp7.cs:77:14:77:14 | a | int |
+| CSharp7.cs:77:22:77:22 | b | int |
+| CSharp7.cs:77:29:77:29 | c | int |
+| CSharp7.cs:79:14:79:14 | i | string |
+| CSharp7.cs:79:17:79:17 | j | int |
+| CSharp7.cs:89:13:89:14 | t1 | (string, string) |
+| CSharp7.cs:90:14:90:15 | t2 | string |
+| CSharp7.cs:90:22:90:23 | t3 | string |
+| CSharp7.cs:91:13:91:14 | t4 | string |
+| CSharp7.cs:92:13:92:14 | t5 | string |
+| CSharp7.cs:97:13:97:14 | m1 | (int, string) |
+| CSharp7.cs:98:13:98:14 | m2 | (int, (string, int)) |
+| CSharp7.cs:103:13:103:14 | m1 | string |
+| CSharp7.cs:104:13:104:14 | m2 | (string, int) |
+| CSharp7.cs:109:14:109:15 | m1 | string |
+| CSharp7.cs:109:22:109:23 | m2 | (int, int) |
+| CSharp7.cs:110:16:110:17 | m3 | string |
+| CSharp7.cs:111:13:111:14 | m4 | int |
+| CSharp7.cs:111:17:111:18 | m5 | int |
+| CSharp7.cs:113:13:113:14 | m6 | int |
+| CSharp7.cs:114:14:114:15 | m7 | string |
+| CSharp7.cs:114:23:114:24 | m8 | int |
+| CSharp7.cs:114:31:114:32 | m9 | int |
+| CSharp7.cs:115:13:115:15 | m10 | int |
+| CSharp7.cs:119:13:119:15 | m11 | int |
+| CSharp7.cs:122:16:122:18 | m12 | string |
+| CSharp7.cs:123:16:123:18 | m13 | string |
+| CSharp7.cs:135:19:135:20 | f4 | Func<int> |
+| CSharp7.cs:139:24:139:25 | f5 | Func<int, int> |
+| CSharp7.cs:176:16:176:18 | src | string |
+| CSharp7.cs:181:13:181:17 | sink1 | string |
+| CSharp7.cs:182:13:182:17 | sink2 | string |
+| CSharp7.cs:183:13:183:17 | sink3 | string |
+| CSharp7.cs:191:13:191:14 | v1 | int |
+| CSharp7.cs:192:17:192:18 | r1 | int |
+| CSharp7.cs:193:13:193:17 | array | int[] |
+| CSharp7.cs:196:17:196:18 | r2 | int |
+| CSharp7.cs:197:17:197:18 | r3 | int |
+| CSharp7.cs:199:17:199:18 | r4 | int |
+| CSharp7.cs:224:14:224:14 | x | int |
+| CSharp7.cs:225:17:225:17 | y | double |
+| CSharp7.cs:225:32:225:32 | z | bool |
+| CSharp7.cs:233:16:233:16 | o | object |
+| CSharp7.cs:234:22:234:23 | i1 | int |
+| CSharp7.cs:238:30:238:31 | s1 | string |
+| CSharp7.cs:245:27:245:28 | v1 | object |
+| CSharp7.cs:253:22:253:23 | i2 | int |
+| CSharp7.cs:256:22:256:23 | i3 | int |
+| CSharp7.cs:259:25:259:26 | s2 | string |
+| CSharp7.cs:265:22:265:23 | v2 | object |
+| CSharp7.cs:278:13:278:16 | dict | Dictionary<int, string> |
+| CSharp7.cs:279:13:279:16 | list | IEnumerable<(int, string)> |
+| CSharp7.cs:281:23:281:23 | a | int |
+| CSharp7.cs:281:33:281:33 | b | string |
+| CSharp7.cs:283:23:283:23 | a | int |
+| CSharp7.cs:283:30:283:30 | b | string |
+| CSharp7.cs:285:23:285:23 | a | int |
+| CSharp7.cs:285:26:285:26 | b | string |

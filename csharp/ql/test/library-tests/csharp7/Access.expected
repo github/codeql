@@ -1,0 +1,12 @@
+| CSharp7.cs:51:22:51:23 | String t1 | write |
+| CSharp7.cs:52:19:52:20 | String t2 | write |
+| CSharp7.cs:53:13:53:14 | access to local variable t3 | write |
+| CSharp7.cs:53:18:53:19 | access to local variable t1 | read |
+| CSharp7.cs:54:15:54:16 | access to local variable t1 | write |
+| CSharp7.cs:55:9:55:10 | access to local variable t3 | write |
+| CSharp7.cs:55:14:55:15 | access to local variable t1 | read |
+| CSharp7.cs:56:9:56:10 | access to local variable t3 | write |
+| CSharp7.cs:56:14:56:15 | access to local variable t2 | read |
+| CSharp7.cs:57:30:57:31 | String t4 | write |
+| CSharp7.cs:58:13:58:14 | access to local variable t5 | write |
+| CSharp7.cs:58:18:58:19 | access to local variable t4 | read |

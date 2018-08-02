@@ -1,0 +1,7 @@
+| typeid.cpp:28:32:28:47 | typeid ... | file://:0:0:0:0 | Base * | typeid.cpp:28:39:28:46 | base_ptr |
+| typeid.cpp:29:32:29:50 | typeid ... | file://:0:0:0:0 | Derived * | typeid.cpp:29:39:29:49 | derived_ptr |
+| typeid.cpp:30:32:30:55 | typeid ... | file://:0:0:0:0 | Base * | typeid.cpp:30:39:30:54 | base_derived_ptr |
+| typeid.cpp:31:32:31:43 | typeid ... | typeid.cpp:9:7:9:10 | Base |  |  |
+| typeid.cpp:32:32:32:46 | typeid ... | typeid.cpp:17:7:17:13 | Derived |  |  |
+| typeid.cpp:33:32:33:41 | typeid ... | file://:0:0:0:0 | unsigned short | typeid.cpp:33:39:33:40 | us |
+| typeid.cpp:34:32:34:53 | typeid ... | file://:0:0:0:0 | unsigned short |  |  |

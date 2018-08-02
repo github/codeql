@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+This rule finds unsigned values that are being negated. Behavior is undefined in such cases.
+Negating integer values produces the two's complement of that number, which cannot represent negative
+values of large unsigned values (values where the sign bit is used) and are most likely to be interpreted 
+as a smaller positive integer instead.
+</p>
+
+
+</overview>
+<recommendation>
+<p>
+Do not negate unsigned values.
+</p>
+
+</recommendation>
+<example><sample src="AV Rule 165.cpp" />
+
+
+
+</example>
+<references>
+
+<li>AV Rule 165, <em>Joint Strike Fighter Air Vehicle C++ Coding Standards</em>. Lockheed Martin Corporation, 2005.
+</li></references></qhelp>

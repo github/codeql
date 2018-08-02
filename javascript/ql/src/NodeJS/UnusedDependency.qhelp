@@ -1,0 +1,73 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Specifying an unused dependency in <code>package.json</code> may make packages harder to install.
+The unused dependency will still be downloaded by npm, and if it conflicts with another package
+installation will become difficult or impossible.
+</p>
+<p>
+Dependencies on packages that are only used during development (such as testing frameworks or
+linters) should be listed under <code>devDependencies</code> rather than <code>dependencies</code>,
+since they are not required for deployment.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Remove the unused dependency.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, the <code>package.json</code> file specifies dependencies on both
+<code>acorn</code> and <code>esprima</code>, but in fact only <code>acorn</code> is used.
+The dependency on <code>esprima</code> can simply be removed.
+</p>
+
+<sample src="examples/UnusedDependency.js" />
+
+<p>
+As another example, the following <code>package.json</code> file specifies a dependency on
+<code>eslint-plugin-babel</code>, a plugin for a popular linter:
+</p>
+
+<sample language="javascript">
+{
+  "name": "another-example-package",
+  "version": "0.1.0",
+  "dependencies": {
+    "eslint-plugin-babel": "3.3.0"
+  }
+}
+</sample>
+
+<p>
+Since this dependency is only used during development, it should instead be listed under
+<code>devDependencies</code>:
+</p>
+
+<sample language="javascript">
+{
+  "name": "another-example-package",
+  "version": "0.1.0",
+  "devDependencies": {
+    "eslint-plugin-babel": "3.3.0"
+  }
+}
+</sample>
+
+</example>
+<references>
+
+
+<li>NPM Manual: <a href="https://www.npmjs.org/doc/files/package.json.html">package.json</a>.</li>
+
+
+</references>
+</qhelp>

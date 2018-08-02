@@ -1,0 +1,4 @@
+| Assignments.cs:6:9:6:14 | ... += ... | Assignments.cs:6:9:6:9 | access to local variable x | Assignments.cs:6:14:6:14 | 1 |
+| Assignments.cs:9:9:9:14 | ... -= ... | Assignments.cs:9:9:9:9 | access to local variable d | Assignments.cs:9:14:9:14 | 2 |
+| Assignments.cs:12:9:12:17 | ... += ... | Assignments.cs:12:9:12:9 | access to local variable a | Assignments.cs:12:14:12:17 | this access |
+| Assignments.cs:14:9:14:35 | ... += ... | Assignments.cs:14:9:14:13 | access to event Event | Assignments.cs:14:18:14:35 | (...) => ... |

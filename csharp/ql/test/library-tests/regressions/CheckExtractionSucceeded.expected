@@ -1,0 +1,3 @@
+| 16 | Program.cs:16:13:16:44 | call to method Create | Func<String,IDisposable> |
+| 77 | Program.cs:77:13:77:24 | call to method f | Int32 |
+| 77 | Program.cs:77:29:77:40 | call to method f | Int32 |

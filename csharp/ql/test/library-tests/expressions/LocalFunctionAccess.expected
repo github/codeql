@@ -1,0 +1,3 @@
+| MethodAccess.cs:8:20:8:21 | access to local function M1 |
+| expressions.cs:197:25:197:37 | access to local function LocalFunction |
+| expressions.cs:198:19:198:31 | access to local function LocalFunction |

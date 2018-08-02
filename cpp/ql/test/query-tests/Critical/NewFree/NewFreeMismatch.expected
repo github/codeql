@@ -1,0 +1,14 @@
+| test.cpp:36:2:36:17 | delete | There is a malloc/delete mismatch between this delete and the corresponding $@. | test.cpp:27:18:27:23 | call to malloc | malloc |
+| test.cpp:41:2:41:5 | call to free | There is a new/free mismatch between this free and the corresponding $@. | test.cpp:26:7:26:17 | new | new |
+| test.cpp:68:3:68:11 | delete | There is a malloc/delete mismatch between this delete and the corresponding $@. | test.cpp:64:28:64:33 | call to malloc | malloc |
+| test.cpp:75:3:75:6 | call to free | There is a new/free mismatch between this free and the corresponding $@. | test.cpp:71:17:71:27 | new | new |
+| test.cpp:76:3:76:6 | call to free | There is a new/free mismatch between this free and the corresponding $@. | test.cpp:72:17:72:31 | new[] | new[] |
+| test.cpp:91:3:91:11 | delete | There is a malloc/delete mismatch between this delete and the corresponding $@. | test.cpp:88:28:88:36 | call to my_malloc | malloc |
+| test.cpp:99:3:99:11 | call to my_delete | There is a malloc/delete mismatch between this delete and the corresponding $@. | test.cpp:96:28:96:33 | call to malloc | malloc |
+| test.cpp:138:2:138:9 | delete | There is a malloc/delete mismatch between this delete and the corresponding $@. | test.cpp:135:12:135:22 | call to my_malloc_2 | malloc |
+| test.cpp:155:2:155:9 | delete | There is a malloc/delete mismatch between this delete and the corresponding $@. | test.cpp:152:12:152:22 | call to my_malloc_3 | malloc |
+| test.cpp:232:2:232:9 | delete | There is a malloc/delete mismatch between this delete and the corresponding $@. | test.cpp:226:7:226:12 | call to malloc | malloc |
+| test.cpp:233:2:233:12 | delete[] | There is a malloc/delete mismatch between this delete[] and the corresponding $@. | test.cpp:226:7:226:12 | call to malloc | malloc |
+| test.cpp:235:2:235:5 | call to free | There is a new/free mismatch between this free and the corresponding $@. | test.cpp:227:7:227:13 | new | new |
+| test.cpp:239:2:239:5 | call to free | There is a new/free mismatch between this free and the corresponding $@. | test.cpp:228:7:228:17 | new[] | new[] |
+| test.cpp:272:3:272:6 | call to free | There is a new/free mismatch between this free and the corresponding $@. | test.cpp:265:7:265:13 | new | new |

@@ -1,0 +1,14 @@
+| PossibleLossOfPrecision.cs:14:13:14:17 | ... / ... | Possible loss of precision: any fraction will be lost. |
+| PossibleLossOfPrecision.cs:15:13:15:17 | ... / ... | Possible loss of precision: any fraction will be lost. |
+| PossibleLossOfPrecision.cs:16:13:16:18 | ... / ... | Possible loss of precision: any fraction will be lost. |
+| PossibleLossOfPrecision.cs:17:13:17:18 | ... / ... | Possible loss of precision: any fraction will be lost. |
+| PossibleLossOfPrecision.cs:18:13:18:17 | ... / ... | Possible loss of precision: any fraction will be lost. |
+| PossibleLossOfPrecision.cs:19:13:19:17 | ... / ... | Possible loss of precision: any fraction will be lost. |
+| PossibleLossOfPrecision.cs:20:13:20:17 | ... / ... | Possible loss of precision: any fraction will be lost. |
+| PossibleLossOfPrecision.cs:21:13:21:17 | ... / ... | Possible loss of precision: any fraction will be lost. |
+| PossibleLossOfPrecision.cs:22:19:22:23 | ... / ... | Possible loss of precision: any fraction will be lost. |
+| PossibleLossOfPrecision.cs:23:20:23:24 | ... / ... | Possible loss of precision: any fraction will be lost. |
+| PossibleLossOfPrecision.cs:24:17:24:21 | ... / ... | Possible loss of precision: any fraction will be lost. |
+| PossibleLossOfPrecision.cs:25:18:25:22 | ... / ... | Possible loss of precision: any fraction will be lost. |
+| PossibleLossOfPrecision.cs:33:15:33:19 | ... * ... | Possible overflow: result of integer multiplication cast to decimal. |
+| PossibleLossOfPrecision.cs:34:25:34:51 | ... * ... | Possible overflow: result of integer multiplication cast to decimal. |

@@ -1,0 +1,9 @@
+| initializer | initializer.c:1:6:1:6 | f | 1 | 1 | initializer.c:1:10:4:1 | initializer.c:1:10:4:1 | initializer.c:1:10:4:1 | { ... } | declaration |
+| initializer | initializer.c:1:6:1:6 | f | 1 | 9 | initializer.c:1:6:1:6 | initializer.c:1:6:1:6 | initializer.c:1:6:1:6 | f | <none> |
+| initializer | initializer.c:1:6:1:6 | f | 2 | 2 | initializer.c:2:2:2:10 | initializer.c:2:2:2:10 | initializer.c:2:2:2:10 | declaration | declaration |
+| initializer | initializer.c:1:6:1:6 | f | 3 | 3 | initializer.c:3:2:3:15 | initializer.c:3:2:3:15 | initializer.c:3:2:3:15 | declaration | initializer for i |
+| initializer | initializer.c:1:6:1:6 | f | 3 | 4 | initializer.c:3:9:3:14 | initializer.c:3:9:3:14 | initializer.c:3:9:3:14 | initializer for i | a |
+| initializer | initializer.c:1:6:1:6 | f | 3 | 5 | initializer.c:3:10:3:10 | initializer.c:3:10:3:10 | initializer.c:3:10:3:10 | a | b |
+| initializer | initializer.c:1:6:1:6 | f | 3 | 6 | initializer.c:3:14:3:14 | initializer.c:3:14:3:14 | initializer.c:3:14:3:14 | b | ... + ... |
+| initializer | initializer.c:1:6:1:6 | f | 3 | 7 | initializer.c:3:10:3:14 | initializer.c:3:10:3:14 | initializer.c:3:10:3:14 | ... + ... | return ... |
+| initializer | initializer.c:1:6:1:6 | f | 4 | 8 | initializer.c:4:1:4:1 | initializer.c:4:1:4:1 | initializer.c:4:1:4:1 | return ... | f |

@@ -1,0 +1,17 @@
+| mssql1.js:7:40:7:72 | select  ... e id =  |
+| mssql1.js:7:75:7:79 | value |
+| mssql2.js:5:15:5:34 | 'select 1 as number' |
+| mssql2.js:13:15:13:66 | 'create ...  table' |
+| mysql1.js:13:18:13:43 | 'SELECT ... lution' |
+| mysql1.js:18:18:22:1 | {\\n    s ... vid']\\n} |
+| mysql2.js:12:12:12:37 | 'SELECT ... lution' |
+| mysql2tst.js:14:3:14:62 | 'SELECT ... ` > 45' |
+| mysql2tst.js:23:3:23:56 | 'SELECT ... e` > ?' |
+| mysql3.js:14:20:14:52 | 'SELECT ... etable' |
+| mysql4.js:14:18:14:20 | sql |
+| postgres1.js:37:21:37:24 | text |
+| postgres2.js:30:16:30:41 | 'SELECT ... number' |
+| postgres3.js:15:16:15:40 | 'SELECT ... s name' |
+| sequelize2.js:10:17:10:118 | 'SELECT ... Y name' |
+| sequelize.js:8:17:8:118 | 'SELECT ... Y name' |
+| sqlite.js:7:8:7:45 | "UPDATE ... id = ?" |

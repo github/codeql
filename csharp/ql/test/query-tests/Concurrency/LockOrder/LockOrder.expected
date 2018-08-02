@@ -1,0 +1,10 @@
+| LockOrder.cs:9:18:9:29 | lock (...) {...} | Inconsistent lock sequence. The locks b and a are locked in a different sequence $@. | LockOrder.cs:10:18:10:29 | lock (...) {...} | here |
+| LockOrder.cs:9:18:9:29 | lock (...) {...} | Inconsistent lock sequence. The locks b and a are locked in a different sequence $@. | LockOrder.cs:11:18:11:29 | lock (...) {...} | here |
+| LockOrder.cs:10:18:10:29 | lock (...) {...} | Inconsistent lock sequence. The locks a and b are locked in a different sequence $@. | LockOrder.cs:9:18:9:29 | lock (...) {...} | here |
+| LockOrder.cs:10:18:10:29 | lock (...) {...} | Inconsistent lock sequence. The locks a and b are locked in a different sequence $@. | LockOrder.cs:12:18:12:29 | lock (...) {...} | here |
+| LockOrder.cs:11:18:11:29 | lock (...) {...} | Inconsistent lock sequence. The locks a and b are locked in a different sequence $@. | LockOrder.cs:9:18:9:29 | lock (...) {...} | here |
+| LockOrder.cs:11:18:11:29 | lock (...) {...} | Inconsistent lock sequence. The locks a and b are locked in a different sequence $@. | LockOrder.cs:12:18:12:29 | lock (...) {...} | here |
+| LockOrder.cs:12:18:12:29 | lock (...) {...} | Inconsistent lock sequence. The locks b and a are locked in a different sequence $@. | LockOrder.cs:10:18:10:29 | lock (...) {...} | here |
+| LockOrder.cs:12:18:12:29 | lock (...) {...} | Inconsistent lock sequence. The locks b and a are locked in a different sequence $@. | LockOrder.cs:11:18:11:29 | lock (...) {...} | here |
+| LockOrder.cs:13:18:13:29 | lock (...) {...} | Inconsistent lock sequence. The locks c and b are locked in a different sequence $@. | LockOrder.cs:14:18:14:29 | lock (...) {...} | here |
+| LockOrder.cs:14:18:14:29 | lock (...) {...} | Inconsistent lock sequence. The locks b and c are locked in a different sequence $@. | LockOrder.cs:13:18:13:29 | lock (...) {...} | here |

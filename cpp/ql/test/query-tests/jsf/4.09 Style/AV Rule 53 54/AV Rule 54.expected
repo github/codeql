@@ -1,0 +1,2 @@
+| test.CPP:0:0:0:0 | test.CPP | AV Rule 53: Implementation files will always have a file name extension of .cpp. |
+| test.c++:0:0:0:0 | test.c++ | AV Rule 53: Implementation files will always have a file name extension of .cpp. |

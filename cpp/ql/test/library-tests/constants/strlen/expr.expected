@@ -1,0 +1,4 @@
+| strlen.cpp:11:39:11:48 | array to pointer conversion |
+| strlen.cpp:11:39:11:48 | file.ext |
+| strlen.cpp:12:35:12:40 | call to strlen |
+| strlen.cpp:12:42:12:43 | fn |

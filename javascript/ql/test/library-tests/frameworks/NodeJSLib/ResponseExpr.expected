@@ -1,0 +1,10 @@
+| src/http.js:7:3:7:5 | res | src/http.js:4:32:10:1 | functio ... .foo;\\n} |
+| src/http.js:13:3:13:5 | res | src/http.js:12:19:16:1 | functio ... ar");\\n} |
+| src/http.js:14:3:14:5 | res | src/http.js:12:19:16:1 | functio ... ar");\\n} |
+| src/http.js:15:3:15:5 | res | src/http.js:12:19:16:1 | functio ... ar");\\n} |
+| src/http.js:29:3:29:5 | res | src/http.js:28:19:31:1 | functio ... r2");\\n} |
+| src/http.js:30:3:30:5 | res | src/http.js:28:19:31:1 | functio ... r2");\\n} |
+| src/https.js:7:3:7:5 | res | src/https.js:4:33:10:1 | functio ... .foo;\\n} |
+| src/https.js:13:3:13:5 | res | src/https.js:12:20:16:1 | functio ... ar");\\n} |
+| src/https.js:14:3:14:5 | res | src/https.js:12:20:16:1 | functio ... ar");\\n} |
+| src/https.js:15:3:15:5 | res | src/https.js:12:20:16:1 | functio ... ar");\\n} |

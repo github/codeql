@@ -1,0 +1,7 @@
+{
+  "name": "subsub",
+  "version": "0.2.0",
+  "dependencies": {
+    "lib1": "1.0.3"
+  }
+}

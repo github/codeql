@@ -1,0 +1,51 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+This metric measures the number of lines of code for each class.
+</p>
+
+<p>
+Large classes can be problematic:
+</p>
+
+<ul>
+<li>
+They can be hard to understand and maintain, even with good tool support.
+</li>
+
+<li>
+They often arise as a result of bundling many unrelated things into the same
+class, and so can be a symptom of weak class cohesion.
+</li>
+</ul>
+
+</overview>
+<recommendation>
+
+<p>
+Classes are generally too large because they are taking on more responsibilities
+than they should (see [Martin] for more on responsibilities). In general, the
+solution is to identify each of the different responsibilities the class is
+taking on, and split them out into multiple classes, e.g. using the 'Extract
+Class' refactoring from [Fowler].
+</p>
+
+
+
+</recommendation>
+<references>
+
+
+<li>
+M. Fowler. <em>Refactoring</em> pp. 65, 122-5. Addison-Wesley, 1999.
+</li>
+<li>
+R. Martin. <a href="https://drive.google.com/file/d/0ByOwmqah_nuGNHEtcU5OekdDMkk/view">The Single Responsibility Principle</a>. Published online.
+</li>
+
+
+</references>
+</qhelp>

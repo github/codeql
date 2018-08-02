@@ -1,0 +1,12 @@
+| ConstantConditionBad.cs:5:16:5:20 | ... > ... | Condition always evaluates to 'false'. |
+| ConstantConditionalExpressionCondition.cs:11:22:11:34 | ... == ... | Condition always evaluates to 'true'. |
+| ConstantConditionalExpressionCondition.cs:12:21:12:25 | false | Condition always evaluates to 'false'. |
+| ConstantConditionalExpressionCondition.cs:13:21:13:30 | ... == ... | Condition always evaluates to 'true'. |
+| ConstantForCondition.cs:9:29:9:33 | false | Condition always evaluates to 'false'. |
+| ConstantForCondition.cs:11:29:11:34 | ... == ... | Condition always evaluates to 'false'. |
+| ConstantIfCondition.cs:11:17:11:29 | ... == ... | Condition always evaluates to 'true'. |
+| ConstantIfCondition.cs:14:17:14:21 | false | Condition always evaluates to 'false'. |
+| ConstantIfCondition.cs:17:17:17:26 | ... == ... | Condition always evaluates to 'true'. |
+| ConstantWhileCondition.cs:12:20:12:32 | ... == ... | Condition always evaluates to 'true'. |
+| ConstantWhileCondition.cs:16:20:16:24 | false | Condition always evaluates to 'false'. |
+| ConstantWhileCondition.cs:24:20:24:29 | ... == ... | Condition always evaluates to 'true'. |

@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Methods with the <code>[Obsolete]</code> attribute are obsolete and should not be used. 
+Obsolete methods are no longer supported and maintained, may not work correctly, and may be removed in the future.</p>
+
+</overview>
+<recommendation>
+<p>Replace the method call with a call to a different method. The <code>[Obsolete]</code>
+attribute should suggest a replacement method to call. If the <code>[Obsolete]</code> attribute 
+does not suggest a replacement, then read the class documentation and list of methods to find
+a suitable replacement.</p>
+
+</recommendation>
+<example>
+<p>The following example shows some code which calls an obsolete method in a <code>Logger</code> class.
+The <code>Log</code> method has the attribute 
+<code>[Obsolete("Use Log(LogLevel level, string s) instead")]</code>
+showing that it is obsolete.</p>
+
+<sample src="CallToObsoleteMethodBad.cs" />
+
+<p>The code is fixed by calling a different method in the <code>Logger</code> class as suggested
+by the attribute.</p>
+
+<sample src="CallToObsoleteMethodGood.cs" />
+
+</example>
+<references>
+
+  <li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/system.obsoleteattribute(v=vs.110).aspx">ObsoleteAttribute Class</a>.</li>
+
+
+</references>
+</qhelp>

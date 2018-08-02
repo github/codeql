@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>When the class of the object on which <code>Equals(object)</code> is called does not define its own 
+<code>Equals(object)</code> method, an <code>Equals(object)</code> method defined in one of its base
+classes will be called instead. In the worst case, the <code>Equals(object)</code> method of
+<code>System.Object</code> will be called, resulting in a reference equality check. This is probably
+not what was intended.</p>
+
+<p>Classes that implement the <code>==</code> operator should also override the <code>Equals(object)</code>
+method, because otherwise the two forms of equality will behave differently, leading to unexpected behavior.</p>
+</overview>
+<recommendation>
+<p>Implement an <code>Equals(object)</code> method for the highlighted class. Examine subclasses of the
+class highlighted to determine if they should implement their own equals method too.</p>
+
+</recommendation>
+<example>
+<p>The output of this example states that "car1 does equal car2" despite the fact that one is a 
+leaded version and one is an unleaded version. This is because the <code>GasolineCar</code> class 
+is inheriting <code>Equals(object)</code> from <code>Car</code> and that method states that two
+<code>Car</code>s are equal if their make and model are the same.</p>
+<sample src="ClassDoesNotImplementEqualsBad.cs" />
+
+<p>
+In the revised example, <code>GasolineCar</code> overrides <code>Equals(object)</code>, and the output
+is "car1 does not equal car2", as expected.
+</p>
+<sample src="ClassDoesNotImplementEqualsGood.cs" />
+</example>
+
+<references>
+  <li>Microsoft: <a href="https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/equality-operators">Equality Operators</a>, 
+  <a href="https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/statements-expressions-operators/equality-comparisons">Equality Comparisons (C# Programming Guide)</a>.</li>
+</references>
+
+</qhelp>

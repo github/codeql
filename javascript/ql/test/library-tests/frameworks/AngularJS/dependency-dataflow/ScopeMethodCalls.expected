@@ -1,0 +1,5 @@
+| test.js:3:9:3:22 | $scope.call1() |
+| test.js:8:13:8:26 | $scope.call2() |
+| test.js:20:9:20:21 | scope.call4() |
+| test.js:24:13:24:25 | scope.call5() |
+| test.js:34:17:34:29 | scope.call6() |

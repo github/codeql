@@ -1,0 +1,27 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This rule finds pointer dereferences that do not check the pointer for nullness, while the same pointer is checked for nullness in other
+places in the code. It is most likely that the nullness check was omitted, and that a NULL pointer dereference can occur.
+Dereferencing a null pointer and attempting to modify its contents can lead to anything from a segfault to corrupting
+important system data (i.e. the interrupt table in some architectures).
+</p>
+
+<include src="pointsToWarning.qhelp" />
+
+</overview>
+<recommendation>
+<p>Make the nullness check on the pointer consistent across all dereferences.</p>
+
+</recommendation>
+<example><sample src="InconsistentNullnessTesting.cpp" />
+
+
+
+
+</example>
+</qhelp>

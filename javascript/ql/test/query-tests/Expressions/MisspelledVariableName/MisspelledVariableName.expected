@@ -1,0 +1,5 @@
+| MisspelledVariableName.js:2:40:2:45 | lenght | 'lenght' may be a typo for variable $@. | MisspelledVariableName.js:2:19:2:24 | length | length |
+| tst.js:2:10:2:20 | errorMesage | 'errorMesage' may be a typo for variable $@. | tst.js:1:12:1:23 | errorMessage | errorMessage |
+| tst.js:6:10:6:21 | errorMessage | 'errorMessage' may be a typo for variable $@. | tst.js:5:12:5:22 | errorMesage | errorMesage |
+| tst.js:11:12:11:22 | errorMesage | 'errorMesage' may be a typo for variable $@. | tst.js:9:12:9:23 | errorMessage | errorMessage |
+| tst.js:17:5:17:16 | errorMessage | 'errorMessage' may be a typo for variable $@. | tst.js:15:12:15:22 | errorMesage | errorMesage |

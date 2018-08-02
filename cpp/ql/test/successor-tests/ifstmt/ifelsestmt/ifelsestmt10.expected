@@ -1,0 +1,12 @@
+| 0 | ifelsestmt.c:29:22:35:1 | { ... } | 1 | ifelsestmt.c:30:3:33:8 | if (...) ...  |
+| 1 | ifelsestmt.c:30:3:33:8 | if (...) ...  | 1 | ifelsestmt.c:30:6:30:6 | 1 |
+| 1 | ifelsestmt.c:30:6:30:6 | 1 | -1 | file://:0:0:0:0 | { ... } |
+| 2 | ifelsestmt.c:31:5:31:7 | label ...: | 2 | ifelsestmt.c:31:8:31:8 | ; |
+| 2 | ifelsestmt.c:31:8:31:8 | ; | 5 | ifelsestmt.c:34:3:34:5 | label ...: |
+| 4 | ifelsestmt.c:33:5:33:7 | label ...: | 4 | ifelsestmt.c:33:8:33:8 | ; |
+| 4 | ifelsestmt.c:33:8:33:8 | ; | 5 | ifelsestmt.c:34:3:34:5 | label ...: |
+| 5 | ifelsestmt.c:34:3:34:5 | label ...: | 5 | ifelsestmt.c:34:6:34:6 | ; |
+| 5 | ifelsestmt.c:34:6:34:6 | ; | 6 | ifelsestmt.c:35:1:35:1 | return ... |
+| 6 | ifelsestmt.c:35:1:35:1 | return ... | 0 | ifelsestmt.c:29:6:29:18 | always_true_2 |
+| -1 | file://:0:0:0:0 | { ... } | 2 | ifelsestmt.c:31:5:31:7 | label ...: |
+| -1 | file://:0:0:0:0 | { ... } | 4 | ifelsestmt.c:33:5:33:7 | label ...: |

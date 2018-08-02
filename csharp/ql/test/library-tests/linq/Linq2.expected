@@ -1,0 +1,26 @@
+| queries.cs:14:17:14:22 | ... == ... | queries.cs:14:17:14:17 | access to local variable a |
+| queries.cs:14:17:14:22 | ... == ... | queries.cs:14:22:14:22 | 2 |
+| queries.cs:14:17:14:32 | ... \|\| ... | queries.cs:14:17:14:22 | ... == ... |
+| queries.cs:14:17:14:32 | ... \|\| ... | queries.cs:14:27:14:32 | ... == ... |
+| queries.cs:14:27:14:32 | ... == ... | queries.cs:14:27:14:27 | access to local variable a |
+| queries.cs:14:27:14:32 | ... == ... | queries.cs:14:32:14:32 | 3 |
+| queries.cs:16:18:16:22 | ... + ... | queries.cs:16:18:16:18 | access to local variable a |
+| queries.cs:16:18:16:22 | ... + ... | queries.cs:16:22:16:22 | 1 |
+| queries.cs:19:22:19:27 | ... == ... | queries.cs:19:22:19:22 | access to parameter a |
+| queries.cs:19:22:19:27 | ... == ... | queries.cs:19:27:19:27 | 2 |
+| queries.cs:19:22:19:37 | ... \|\| ... | queries.cs:19:22:19:27 | ... == ... |
+| queries.cs:19:22:19:37 | ... \|\| ... | queries.cs:19:32:19:37 | ... == ... |
+| queries.cs:19:32:19:37 | ... == ... | queries.cs:19:32:19:32 | access to parameter a |
+| queries.cs:19:32:19:37 | ... == ... | queries.cs:19:37:19:37 | 3 |
+| queries.cs:21:23:21:27 | ... + ... | queries.cs:21:23:21:23 | access to parameter a |
+| queries.cs:21:23:21:27 | ... + ... | queries.cs:21:27:21:27 | 1 |
+| queries.cs:26:22:26:26 | ... + ... | queries.cs:26:22:26:22 | access to local variable b |
+| queries.cs:26:22:26:26 | ... + ... | queries.cs:26:22:26:22 | access to local variable b |
+| queries.cs:26:22:26:26 | ... + ... | queries.cs:26:26:26:26 | 1 |
+| queries.cs:26:22:26:26 | ... + ... | queries.cs:26:26:26:26 | 1 |
+| queries.cs:33:22:33:26 | ... + ... | queries.cs:33:22:33:22 | access to local variable b |
+| queries.cs:33:22:33:26 | ... + ... | queries.cs:33:22:33:22 | access to local variable b |
+| queries.cs:33:22:33:26 | ... + ... | queries.cs:33:26:33:26 | 1 |
+| queries.cs:33:22:33:26 | ... + ... | queries.cs:33:26:33:26 | 1 |
+| queries.cs:34:19:34:26 | ... * ... | queries.cs:34:19:34:22 | access to local variable next |
+| queries.cs:34:19:34:26 | ... * ... | queries.cs:34:26:34:26 | 2 |

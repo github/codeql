@@ -1,0 +1,31 @@
+| tst.js:5:9:5:19 | /x/.test(v) | ExampleConfiguration | false | tst.js:5:18:5:18 | v |
+| tst.js:5:9:5:19 | /x/.test(v) | ExampleConfiguration | true | tst.js:5:18:5:18 | v |
+| tst.js:11:9:11:20 | v.match(/x/) | ExampleConfiguration | false | tst.js:11:9:11:9 | v |
+| tst.js:11:9:11:20 | v.match(/x/) | ExampleConfiguration | true | tst.js:11:9:11:9 | v |
+| tst.js:23:9:23:27 | o.hasOwnProperty(v) | ExampleConfiguration | true | tst.js:23:26:23:26 | v |
+| tst.js:35:9:35:14 | v in o | ExampleConfiguration | true | tst.js:35:9:35:9 | v |
+| tst.js:47:9:47:25 | o[v] == undefined | ExampleConfiguration | false | tst.js:47:11:47:11 | v |
+| tst.js:47:9:47:25 | o[v] == undefined | ExampleConfiguration | true | tst.js:47:9:47:12 | o[v] |
+| tst.js:53:9:53:26 | undefined === o[v] | ExampleConfiguration | false | tst.js:53:25:53:25 | v |
+| tst.js:53:9:53:26 | undefined === o[v] | ExampleConfiguration | true | tst.js:53:23:53:26 | o[v] |
+| tst.js:59:9:59:26 | o[v] !== undefined | ExampleConfiguration | false | tst.js:59:9:59:12 | o[v] |
+| tst.js:59:9:59:26 | o[v] !== undefined | ExampleConfiguration | true | tst.js:59:11:59:11 | v |
+| tst.js:71:9:71:26 | o.indexOf(v) == -1 | ExampleConfiguration | false | tst.js:71:19:71:19 | v |
+| tst.js:71:9:71:26 | o.indexOf(v) == -1 | ExampleConfiguration | true | tst.js:71:9:71:20 | o.indexOf(v) |
+| tst.js:77:9:77:27 | -1 === o.indexOf(v) | ExampleConfiguration | false | tst.js:77:26:77:26 | v |
+| tst.js:77:9:77:27 | -1 === o.indexOf(v) | ExampleConfiguration | true | tst.js:77:16:77:27 | o.indexOf(v) |
+| tst.js:83:9:83:27 | o.indexOf(v) !== -1 | ExampleConfiguration | false | tst.js:83:9:83:20 | o.indexOf(v) |
+| tst.js:83:9:83:27 | o.indexOf(v) !== -1 | ExampleConfiguration | true | tst.js:83:19:83:19 | v |
+| tst.js:95:9:95:21 | o.contains(v) | ExampleConfiguration | true | tst.js:95:20:95:20 | v |
+| tst.js:107:9:107:16 | o.has(v) | ExampleConfiguration | true | tst.js:107:15:107:15 | v |
+| tst.js:119:9:119:21 | o.includes(v) | ExampleConfiguration | true | tst.js:119:20:119:20 | v |
+| tst.js:131:9:131:27 | o.hasOwnProperty(v) | ExampleConfiguration | true | tst.js:131:26:131:26 | v |
+| tst.js:133:16:133:36 | o.hasOw ... ty(v.p) | ExampleConfiguration | true | tst.js:133:33:133:35 | v.p |
+| tst.js:135:16:135:38 | o.hasOw ... (v.p.q) | ExampleConfiguration | true | tst.js:135:33:135:37 | v.p.q |
+| tst.js:137:16:137:36 | o.hasOw ... ty(v.p) | ExampleConfiguration | true | tst.js:137:33:137:35 | v.p |
+| tst.js:139:16:139:41 | o.hasOw ... "p.q"]) | ExampleConfiguration | true | tst.js:139:33:139:40 | v["p.q"] |
+| tst.js:148:9:148:27 | v == "white-listed" | ExampleConfiguration | true | tst.js:148:9:148:9 | v |
+| tst.js:154:9:154:27 | "white-listed" != v | ExampleConfiguration | false | tst.js:154:27:154:27 | v |
+| tst.js:160:9:160:30 | v === " ... sted-1" | ExampleConfiguration | true | tst.js:160:9:160:9 | v |
+| tst.js:160:35:160:56 | v === " ... sted-2" | ExampleConfiguration | true | tst.js:160:35:160:35 | v |
+| tst.js:166:9:166:16 | v == !!0 | ExampleConfiguration | true | tst.js:166:9:166:9 | v |

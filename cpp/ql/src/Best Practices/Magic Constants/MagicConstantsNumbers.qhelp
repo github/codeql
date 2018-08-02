@@ -1,0 +1,50 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A <i>magic number</i> is a numeric literal (for example, <code>8080</code>,
+<code>2048</code>) that is used in the middle of a block of code without
+explanation. It is considered good practice to avoid magic numbers by assigning
+the numbers to named constants and using the named constants instead. The
+reasons for this are twofold:</p>
+
+<ol>
+<li>A number in isolation can be inexplicable to later programmers, whereas a
+named constant (such as <code>MAX_GUESTS</code>) is more readily understood.
+</li>
+<li>Using the same named constant in many places, makes the code much easier to
+update if the requirements change (for example, one more guest is permitted).
+</li>
+</ol>
+
+<p>This rule finds magic numbers for which there is no pre-existing named
+constant (for example, the line marked (4) below).</p>
+
+</overview>
+<recommendation>
+<p>Consider creating a <code>const</code> or a macro to encapsulate the literal, 
+then replace all the relevant occurrences in the code.</p>
+
+</recommendation>
+<example><sample src="MagicConstantsNumbers.cpp" />
+
+</example>
+<references>
+
+<li>
+<a href="http://en.wikipedia.org/wiki/Magic_number_%28programming%29#Unnamed_numerical_constants">Magic number (Wikipedia)</a>
+</li>
+<li>
+  Mats Henricson and Erik Nyquist, <i>Industrial Strength C++</i>, published by Prentice Hall PTR (1997). 
+  Chapter 5: Object Life Cycle, Rec 5.4 (<a href="http://mongers.org/industrial-c++/">PDF</a>).
+</li>
+<li>
+  <a href="https://www.securecoding.cert.org/confluence/display/c/DCL06-C.+Use+meaningful+symbolic+constants+to+represent+literal+values">DCL06-C. Use meaningful symbolic constants to represent literal values</a>
+</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Naming a local variable or parameter after an existing member in the same class is confusing.
+It could lead to accesses or assignments to the local variable that should have been to the
+corresponding member.</p>
+
+</overview>
+<recommendation>
+<p>For clarity, it may be better to rename the local variable to avoid shadowing.</p>
+
+</recommendation>
+<example>
+<p>In this example, the local variable <code>title</code> shadows the member field of the same name.
+This leads to a mistaken reference to <code>title</code> when assigning the <code>message</code> 
+string. The reference should really have been to <code>this.title</code>.</p>
+<sample src="LocalScopeVariableShadowsMemberBad.cs" />
+</example>
+<example>
+<p>In the revised example, the local variable has been renamed to <code>boxTitle</code>, and the assignment
+to <code>message</code> is updated accordingly.</p>
+<sample src="LocalScopeVariableShadowsMemberGood.cs" />
+</example>
+</qhelp>

@@ -1,0 +1,14 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>A switch selector is useless if it always evaluates to the same constant at runtime. This 
+impedes readability and maintainability unnecessarily, by making the control-flow of the method 
+more difficult to read than it should be.</p>
+
+</overview>
+<recommendation>
+<p>Remove the useless switch selector and all cases that will never be reached.</p>
+</recommendation>
+</qhelp>

@@ -1,0 +1,11 @@
+| express.js:7:16:7:34 | req.param("target") | Untrusted URL redirection due to $@. | express.js:7:16:7:34 | req.param("target") | user-provided value |
+| express.js:12:26:12:44 | req.param("target") | Untrusted URL redirection due to $@. | express.js:12:26:12:44 | req.param("target") | user-provided value |
+| express.js:33:18:33:23 | target | Untrusted URL redirection due to $@. | express.js:27:16:27:34 | req.param("target") | user-provided value |
+| express.js:35:16:35:21 | target | Untrusted URL redirection due to $@. | express.js:27:16:27:34 | req.param("target") | user-provided value |
+| express.js:44:16:44:108 | (req.pa ... ntacts" | Untrusted URL redirection due to $@. | express.js:44:69:44:87 | req.param('action') | user-provided value |
+| express.js:78:16:78:43 | `${req. ... )}/foo` | Untrusted URL redirection due to $@. | express.js:78:19:78:37 | req.param("target") | user-provided value |
+| express.js:94:18:94:23 | target | Untrusted URL redirection due to $@. | express.js:87:16:87:34 | req.param("target") | user-provided value |
+| express.js:101:16:101:21 | target | Untrusted URL redirection due to $@. | express.js:87:16:87:34 | req.param("target") | user-provided value |
+| node.js:7:34:7:39 | target | Untrusted URL redirection due to $@. | node.js:6:26:6:32 | req.url | user-provided value |
+| node.js:15:34:15:45 | '/' + target | Untrusted URL redirection due to $@. | node.js:11:26:11:32 | req.url | user-provided value |
+| node.js:32:34:32:55 | target  ... =" + me | Untrusted URL redirection due to $@. | node.js:29:26:29:32 | req.url | user-provided value |

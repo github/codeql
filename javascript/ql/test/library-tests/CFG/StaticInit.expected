@@ -1,0 +1,16 @@
+| classDecorators.ts:14:3:14:25 | static  ... ld = 4; | Field initializer occurs after its class is created |
+| classes.js:8:12:8:24 | static x = 5; | Field initializer occurs after its class is created |
+| classes.js:9:12:9:24 | static x = 5; | Field initializer occurs after its class is created |
+| classes.js:14:22:14:34 | static x = 5; | Field initializer occurs after its class is created |
+| classes.js:15:23:15:35 | static x = 5; | Field initializer occurs after its class is created |
+| classes.js:20:15:20:27 | static x = 5; | Field initializer occurs after its class is created |
+| classes.js:21:15:21:27 | static x = 5; | Field initializer occurs after its class is created |
+| classes.js:26:25:26:37 | static x = 5; | Field initializer occurs after its class is created |
+| classes.js:27:25:27:37 | static x = 5; | Field initializer occurs after its class is created |
+| classes.js:32:13:32:25 | static x = 5; | Field initializer occurs after its class is created |
+| classes.js:33:13:33:25 | static x = 5; | Field initializer occurs after its class is created |
+| classes.js:38:23:38:35 | static x = 5; | Field initializer occurs after its class is created |
+| classes.js:39:23:39:35 | static x = 5; | Field initializer occurs after its class is created |
+| staticFields.js:2:3:2:28 | static  ... ew C(); | Field initializer occurs after its class is created |
+| staticFieldsTS.ts:2:3:2:31 | static  ... ew C(); | Field initializer occurs after its class is created |
+| staticFieldsTS.ts:6:3:6:31 | static  ... ew D(); | Field initializer occurs after its class is created |

@@ -1,0 +1,19 @@
+| arguments.cs:5:30:5:30 | x | arguments.cs:30:37:30:37 | 5 |
+| arguments.cs:5:41:5:41 | y | arguments.cs:30:30:30:31 | 10 |
+| arguments.cs:9:30:9:30 | x | arguments.cs:29:27:29:27 | access to local variable x |
+| arguments.cs:9:41:9:41 | y | arguments.cs:29:34:29:34 | access to local variable x |
+| arguments.cs:9:52:9:52 | z | arguments.cs:29:41:29:41 | access to local variable x |
+| arguments.cs:14:28:14:28 | y | arguments.cs:27:15:27:15 | 2 |
+| arguments.cs:18:17:18:17 | x | arguments.cs:28:12:28:12 | access to local variable x |
+| arguments.cs:18:28:18:28 | y | arguments.cs:28:19:28:19 | access to local variable x |
+| arguments.cs:18:39:18:39 | z | arguments.cs:28:26:28:26 | access to local variable x |
+| arguments.cs:33:17:33:17 | o | arguments.cs:35:12:35:12 | 0 |
+| arguments.cs:33:17:33:17 | o | arguments.cs:36:12:36:12 | 0 |
+| arguments.cs:33:17:33:17 | o | arguments.cs:37:24:37:24 | 0 |
+| arguments.cs:33:17:33:17 | o | arguments.cs:38:12:38:12 | 0 |
+| arguments.cs:33:17:33:17 | o | arguments.cs:39:27:39:27 | 0 |
+| arguments.cs:33:17:33:17 | o | arguments.cs:40:41:40:41 | 0 |
+| arguments.cs:33:33:33:36 | args | arguments.cs:36:15:36:32 | array creation of type Int32[] |
+| arguments.cs:33:33:33:36 | args | arguments.cs:38:15:38:18 | access to parameter args |
+| arguments.cs:33:33:33:36 | args | arguments.cs:39:18:39:21 | access to parameter args |
+| arguments.cs:33:33:33:36 | args | arguments.cs:40:18:40:35 | array creation of type Int32[] |

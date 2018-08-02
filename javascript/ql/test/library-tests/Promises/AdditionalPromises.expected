@@ -1,0 +1,7 @@
+| additional-promises.js:2:13:2:57 | new Pin ... ct) {}) |
+| promises.js:3:17:5:4 | new Pro ... );\\n  }) |
+| promises.js:10:18:17:4 | new Pro ... );\\n  }) |
+| promises.js:33:19:35:6 | new Pro ... \\n    }) |
+| promises.js:43:19:45:6 | Q.Promi ... \\n    }) |
+| promises.js:53:19:53:41 | Promise ... source) |
+| promises.js:62:19:62:41 | Promise ... source) |

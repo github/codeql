@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+A condition that always evaluates to <code>true</code> or always evaluates to <code>false</code>
+can be removed, thereby simplifying the program logic. If the condition is a loop condition,
+consider rewriting the loop using bounded iteration (for example, a <code>foreach</code> loop),
+if possible.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Avoid constant conditions where possible, and either eliminate the conditions or replace them.
+</p>
+
+</recommendation>
+
+<example>
+<p>
+In the following example, the condition <code>a &gt; a</code> is constantly false, so <code>Max(x, y)</code>
+always returns <code>x</code>.
+</p>
+<sample src="ConstantConditionBad.cs" />
+
+<p>
+The revised example replaces the condition with <code>a &gt; b</code>.
+</p>
+<sample src="ConstantConditionGood.cs" />
+
+</example>
+
+</qhelp>

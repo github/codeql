@@ -1,0 +1,20 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Leftover entry points in web applications can be exploited by an attacker to enter a deployed 
+web application through a way that was not intended and probably not even considered. Static <code>
+Main(..)</code> methods are typical leftover entry points that can prove harmful to your web 
+application. </p>
+
+</overview>
+<recommendation>
+<p>Remove debug code if your web application is in production.</p>
+
+</recommendation>
+<references>
+
+
+</references>
+</qhelp>

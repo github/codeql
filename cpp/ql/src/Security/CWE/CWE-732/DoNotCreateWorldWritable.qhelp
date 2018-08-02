@@ -1,0 +1,50 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+When you create a file, take care to give it the most restrictive permissions possible. A typical
+mistake is to create the file with world-writable permissions. This can allow an attacker to write to the file, which can give them
+unexpected control over the program.
+</p>
+</overview>
+<recommendation>
+<p>
+Files should usually be created with write permissions only for the current user. If broader permissions are needed, including
+the users' group should be sufficient. It is very rare that a file needs to be world-writable, and care should be taken not
+to make assumptions about the contents of any such file.
+</p>
+
+<p>
+On Unix systems, it is possible for the user who runs the program to restrict file creation permissions using <code>umask</code>. However,
+a program should not assume that the user will set an <code>umask</code>, and should still set restrictive permissions by default.
+</p>
+</recommendation>
+<example>
+<p>
+This example shows two ways of writing a default configuration file. Software often does this to provide the user with a convenient
+starting point for defining their own configuration. However, configuration files can also control important aspects of the software's behavior,
+so it is important that they cannot be controlled by an attacker.
+</p>
+
+<p>
+The first example creates the default configuration file with the usual "default" Unix permissions, <code>0666</code>. This makes the 
+file world-writable, so that an attacker could write in their own configuration that would be read by the program. The second example uses
+more restrictive permissions: a combination of the standard Unix constants <code>S_IWUSR</code> and <code>S_IRUSR</code> which means that
+only the current user will have read and write access to the file.
+</p>
+
+<sample src="DoNotCreateWorldWritable.c" />
+
+</example>
+<references>
+
+<li>The CERT Oracle Secure Coding Standard for C:
+  <a href="https://www.securecoding.cert.org/confluence/display/c/FIO06-C.+Create+files+with+appropriate+access+permissions">
+    FIO06-C. Create files with appropriate access permissions
+  </a>.
+</li>
+
+</references>
+</qhelp>

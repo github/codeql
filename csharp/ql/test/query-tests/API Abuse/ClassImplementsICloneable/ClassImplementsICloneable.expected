@@ -1,0 +1,2 @@
+| ClassImplementsICloneableBad.cs:11:11:11:17 | Shallow | Class 'Shallow' implements 'ICloneable'. |
+| ClassImplementsICloneableBad.cs:20:11:20:14 | Deep | Class 'Deep' implements 'ICloneable'. |

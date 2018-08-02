@@ -1,0 +1,2 @@
+| tst.js:3:5:3:13 | arguments | Redefinition of arguments. |
+| tst.js:7:7:7:15 | arguments | Redefinition of arguments. |

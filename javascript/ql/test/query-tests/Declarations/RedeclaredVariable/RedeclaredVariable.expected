@@ -1,0 +1,8 @@
+| sameNameForFunctionAndVariable.js:2:10:2:13 | fun1 | This variable has already been declared $@. | sameNameForFunctionAndVariable.js:1:5:1:8 | fun1 | here |
+| sameNameForFunctionAndVariable.js:7:5:7:8 | fun2 | This variable has already been declared $@. | sameNameForFunctionAndVariable.js:5:10:5:13 | fun2 | here |
+| tst3.js:9:10:9:10 | f | This variable has already been declared $@. | tst3.js:3:10:3:10 | f | here |
+| tst4.js:3:7:3:7 | x | This variable has already been declared $@. | tst4.js:2:7:2:7 | x | here |
+| tst4.js:7:7:7:7 | x | This variable has already been declared $@. | tst4.js:6:12:6:12 | x | here |
+| tst4.js:12:12:12:12 | i | This variable has already been declared $@. | tst4.js:11:7:11:7 | i | here |
+| tst4.js:19:7:19:7 | y | This variable has already been declared $@. | tst4.js:17:7:17:7 | y | here |
+| tst4.js:22:5:22:5 | g | This variable has already been declared $@. | tst4.js:6:10:6:10 | g | here |

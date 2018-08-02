@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Relying on <code>HttpRequest</code> to provide access to a particular server variable is not 
+safe as it can be overridden by the client. The <code>HttpRequest</code> class implements an 
+indexer to provide a simplified, combined access to its <code>QueryString</code>, <code>Form</code>
+, <code>Cookies</code>, or <code> ServerVariables</code> collections, in that particular order. 
+When searching for a variable, the first match is returned: <code>QueryString</code> parameters 
+hence supersede values from forms, cookies and server variables, and so on. This is a serious 
+attack vector since an attacker could inject a value in the query string that you do not expect, 
+and which supersedes the value of the server variable you were actually trying to check.</p>
+
+</overview>
+<recommendation>
+<p>Explicitly restrict the search to the <code>ServerVariables</code> collection.</p>
+
+</recommendation>
+<example>
+<p>In this example the server attempts to ensure the user is using an HTTPS connection. Because the 
+programmer used the <code>HttpRequest</code> indexer, URLs like <code>
+http://www.example.org/?HTTPS=ON</code> appear to be from a secure connection even though they are 
+not.</p>
+<sample src="ValueShadowingServerVariable.cs" />
+
+<p>This can be easily fixed by explicitly specifying that we are looking for a server variable.</p>
+<sample src="ValueShadowingServerVariableFix.cs" />
+
+</example>
+<references>
+
+  <li>MSDN: <a href="http://msdn.microsoft.com/en-us/library/system.web.httprequest.item(v=VS.100).aspx">HttpRequest.Item</a>.</li>
+  <li>MSDN: <a href="http://msdn.microsoft.com/en-us/library/ms524602.aspx">IIS Server Variables</a>.</li>
+
+</references>
+</qhelp>

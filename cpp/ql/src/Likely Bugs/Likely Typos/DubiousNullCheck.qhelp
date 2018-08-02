@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>The expression <code>&amp;foo-&gt;bar</code> gets the address of <code>foo</code>'s member <code>bar</code>, which is
+the address of <code>foo</code> plus the offset of the <code>bar</code> member. If said offset is non-zero, then the
+expression <code>&amp;foo-&gt;bar</code> only equals <code>NULL</code> when the address of <code>foo</code> is negative.
+While this is not impossible, it can only happen if <code>foo</code> is a negative integer explicitly cast to a
+pointer, or if <code>foo</code> is a pointer into kernel-mode address space. As neither of these cases are particularly
+likely, the <code>NULL</code>-check is dubious.</p>
+
+</overview>
+<recommendation>
+<p>Either the <code>NULL</code>-check is entirely redundant, or the wrong thing is being checked against <code>NULL</code>.
+In the former case, the check can be replaced with boolean <code>true</code> or <code>false</code>, and then the surrounding
+context can be simplified. In the latter case, consider which sub-expressions might be <code>NULL</code>, and test them
+instead. In particular, simply removing the ampersand may yield a more suitable expression to test.</p>
+
+</recommendation>
+<example>
+<sample language="cpp">
+struct person {
+  int id;
+  char* name;
+};
+
+bool hasName(person* p) {
+  return  p       != NULL  // This check is sensible,
+      &amp;&amp;  p-&gt;name != NULL  // as is this one.
+      &amp;&amp; &amp;p-&gt;name != NULL; // But this check is dubious.
+}
+</sample>
+
+</example>
+</qhelp>

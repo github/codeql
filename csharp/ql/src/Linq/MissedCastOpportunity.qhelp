@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Casts are often used when you iterate over a collection of elements of a type that is known to 
+contain only elements of a different type (possibly more specific). For example, <code>List&lt;Animal
+&gt; </code> might refer to a collection of instances of <code>Dog</code>, a class derived from 
+<code> Animal</code>. Programmers often write a loop to iterate over the collection and cast each 
+<code> Animal</code> in turn to <code>Dog</code> before using it</p>
+
+</overview>
+<recommendation>
+<p>This pattern works well and is also available as the <code>Cast</code> method in LINQ. It is 
+better to use a library method in preference to writing your own pattern unless you have a specific 
+need for a custom version. In particular, this makes the code easier to read by expressing the 
+intent better and reducing the number of distinct variables in scope within the loop. It is 
+important to remember that Cast will throw a InvalidCastException if any of the elements cannot be 
+cast. (If you are not sure that all of the elements have the expected type, and you only want to 
+operate on the ones that do, then consider using <code>OfType</code> instead.)</p>
+
+</recommendation>
+<example>
+<p>In this example, each element in the array of <code>Animal</code>'s is cast to <code>Dog</code>.
+</p>
+<sample src="MissedCastOpportunity.cs" />
+
+<p>This could be written better using LINQ's cast method to cast the whole list and then iterate 
+over that.</p>
+<sample src="MissedCastOpportunityFix.cs" />
+
+</example>
+<references>
+
+  <li>MSDN: <a href="http://msdn.microsoft.com/en-us/library/bb341406.aspx">Enumerable.Cast&lt;TResult&gt; Method</a>.</li>
+
+
+</references>
+</qhelp>

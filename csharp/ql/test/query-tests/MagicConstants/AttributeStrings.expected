@@ -1,0 +1,1 @@
+| AttributeStrings.cs:6:34:6:48 | "Hello, World!" | Magic constant: literal 'Hello, World!' is repeated 22 times and should be encapsulated in a constant. |

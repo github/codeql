@@ -1,0 +1,17 @@
+| A.cs:15:13:15:15 | access to local variable not | Variable $@ is always null here. | A.cs:12:16:12:18 | not | not |
+| A.cs:30:15:30:33 | access to local variable synchronized_always | Variable $@ is always null here. | A.cs:29:16:29:34 | synchronized_always | synchronized_always |
+| A.cs:77:31:77:39 | access to local variable do_always | Variable $@ is always null here. | A.cs:74:16:74:24 | do_always | do_always |
+| A.cs:111:31:111:42 | access to local variable while_always | Variable $@ is always null here. | A.cs:108:16:108:27 | while_always | while_always |
+| A.cs:129:9:129:18 | access to local variable array_null | Variable $@ is always null here. | A.cs:128:15:128:24 | array_null | array_null |
+| A.cs:149:31:149:39 | access to local variable if_always | Variable $@ is always null here. | A.cs:146:16:146:24 | if_always | if_always |
+| A.cs:169:27:169:32 | access to local variable for_ok | Variable $@ is always null here. | A.cs:163:16:163:21 | for_ok | for_ok |
+| A.cs:174:31:174:40 | access to local variable for_always | Variable $@ is always null here. | A.cs:172:21:172:30 | for_always | for_always |
+| A.cs:191:27:191:37 | access to local variable arrayaccess | Variable $@ is always null here. | A.cs:186:15:186:25 | arrayaccess | arrayaccess |
+| A.cs:192:27:192:37 | access to local variable fieldaccess | Variable $@ is always null here. | A.cs:187:18:187:28 | fieldaccess | fieldaccess |
+| A.cs:193:28:193:39 | access to local variable methodaccess | Variable $@ is always null here. | A.cs:188:16:188:27 | methodaccess | methodaccess |
+| A.cs:194:27:194:36 | access to local variable methodcall | Variable $@ is always null here. | A.cs:189:16:189:25 | methodcall | methodcall |
+| A.cs:247:31:247:44 | access to local variable eq_call_always | Variable $@ is always null here. | A.cs:241:11:241:24 | eq_call_always | eq_call_always |
+| A.cs:258:31:258:45 | access to local variable neq_call_always | Variable $@ is always null here. | A.cs:244:11:244:25 | neq_call_always | neq_call_always |
+| Assert.cs:25:27:25:27 | access to local variable s | Variable $@ is always null here. | Assert.cs:20:16:20:16 | s | s |
+| Assert.cs:31:27:31:27 | access to local variable s | Variable $@ is always null here. | Assert.cs:20:16:20:16 | s | s |
+| Assert.cs:37:27:37:27 | access to local variable s | Variable $@ is always null here. | Assert.cs:20:16:20:16 | s | s |

@@ -1,0 +1,1 @@
+| MissingAntiForgeryTokenValidation.cs:8:25:8:29 | Login | Method 'Login' handles a POST request without performing CSRF token validation. |

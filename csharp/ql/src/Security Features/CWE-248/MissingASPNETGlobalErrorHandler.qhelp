@@ -1,0 +1,50 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+<code>Web.config</code> files that set the <code>customErrors</code> mode to <code>Off</code> and
+do not provide an <code>Application_Error</code> method in the <code>global.asax.cs</code> file
+rely on the default error pages, which leak information such as stack traces.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Set the <code>customErrors</code> to <code>On</code> to prevent the default error page from being
+displayed, or to <code>RemoteOnly</code> to only show the default error page when the application
+is accessed locally. Alternatively, provide an implementation of the <code>Application_Error</code>
+method in the <code>global.asax.cs</code> page.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following example shows a <code>Web.config</code> file in which the custom errors mode has been
+set to <code>Off</code>.
+</p>
+
+<sample src="BadWeb.config" />
+
+<p>
+This can be fixed either by specifying a different mode, such as <code>On</code>, in the
+<code>Web.config</code> file:
+</p>
+
+<sample src="GoodWeb.config" />
+
+<p>
+or by defining an <code>Application_Error</code> method in the <code>global.asax.cs</code> file:
+</p>
+
+<sample src="global.asax.cs" />
+
+</example>
+<references>
+
+</references>
+</qhelp>

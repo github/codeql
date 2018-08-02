@@ -1,0 +1,21 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Checking the type of an object on its type's name is not robust to future changes, and may allow 
+an attacker to inject a malicious class.</p>
+
+</overview>
+<recommendation>
+<p>Implement a check of the object's type that is not solely based on its class name.</p>
+
+</recommendation>
+<example>
+<p>In this example the type of the account is checked purely based on class name and is not 
+reliable.</p>
+
+<p>It would be more appropriate to check the type of <code>account</code> like so:</p>
+<sample src="ErroneousClassCompareFix.cs" />
+</example>
+</qhelp>

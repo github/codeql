@@ -1,0 +1,2 @@
+| ForeachCapture.cs:14:23:14:31 | (...) => ... | Function which may be stored in $@ captures variable $@ | ForeachCapture.cs:7:22:7:27 | event1 | event1 | ForeachCapture.cs:11:22:11:24 | arg | arg |
+| ForeachCapture.cs:24:30:24:38 | (...) => ... | Function which may be stored in $@ captures variable $@ | ForeachCapture.cs:41:22:41:28 | actions | actions | ForeachCapture.cs:11:22:11:24 | arg | arg |

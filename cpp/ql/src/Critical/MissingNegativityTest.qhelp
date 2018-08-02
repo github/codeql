@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+This rule finds pointer arithmetic expressions that use a value returned from a function before the value is checked to be positive.
+Most pointer arithmetic and almost all array element accesses use a positive value for offsets. A negative value is more likely than not
+a defect in the returning function. Checking pointer offsets (particularly if they derive from user input) is necessary to avoid 
+buffer overruns.
+</p>
+
+<p>
+The rules only looks at return values of functions that may return a negative value (not all functions).
+</p>
+
+
+<include src="dataFlowWarning.qhelp" />
+
+</overview>
+<recommendation>
+<p>
+Check the function and see whether it needs to check the value to be positive.
+</p>
+
+</recommendation>
+<example>
+<sample src="MissingNegativityTest.cpp" />
+
+
+
+
+
+
+</example>
+</qhelp>

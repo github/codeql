@@ -1,0 +1,9 @@
+| test.cpp:10:9:10:26 | static_cast<C *>... |
+| test.cpp:10:9:10:26 | static_cast<T *>... |
+| test.cpp:10:9:10:32 | (vacuous destructor call) |
+| test.cpp:10:9:10:32 | call to expression |
+| test.cpp:10:25:10:25 | t |
+| test.cpp:10:25:10:25 | t |
+| test.cpp:10:29:10:30 | Unknown literal |
+| test.cpp:15:13:15:13 | call to f |
+| test.cpp:15:15:15:21 | m |

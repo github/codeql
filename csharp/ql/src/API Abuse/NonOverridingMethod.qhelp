@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>It is generally very easy to make sure you are overriding the method you intend in C# - you use 
+the <code>override</code> keyword and the compiler will detect any errors you make. However, it is 
+still possible to add methods that appear to override something but do not override because they do 
+not use the <code>override</code> keyword or are misspelt. Methods of this type are confusing to 
+other programmers and may act unexpectedly.</p>
+
+</overview>
+<recommendation>
+<p>The appropriate solution involves carefully examining the method in question: if it should be 
+overriding another method, change it accordingly; if not, rename or remove it to avoid further 
+confusion.</p>
+
+</recommendation>
+<example>
+<p>In the following example, the <code>Sub</code> class introduces the <code>Foo()</code> method,
+but hides <code>Super.Foo()</code> instead of overriding it.
+</p>
+<sample src="NonOverridingMethodBad.cs" />
+
+</example>
+<example>
+<p>In the revised example, <code>Sub.Foo()</code> overrides <code>Super.Foo()</code>.
+</p>
+<sample src="NonOverridingMethodGood.cs" />
+
+</example>
+<references>
+
+  <li>Microsoft: <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/override">override (C# Reference)</a>.</li>
+
+</references>
+</qhelp>

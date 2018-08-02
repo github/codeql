@@ -1,0 +1,11 @@
+| child_process-test.js:17:13:17:15 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:18:17:18:19 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:19:17:19:19 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:20:21:20:23 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:21:14:21:16 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:22:18:22:20 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:23:13:23:15 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:25:13:25:31 | "foo" + cmd + "bar" | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:39:5:39:31 | cp.spaw ...  cmd ]) | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:44:5:44:34 | cp.exec ... , args) | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
+| child_process-test.js:50:3:50:21 | cp.spawn(cmd, args) | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |

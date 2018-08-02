@@ -1,0 +1,6 @@
+| d/tst.js:1:1:1:14 | functio ... s[1];\\n} | 100% of statements in function f are duplicated in $@. | d/tst.js:12:1:12:14 | functio ... s[1];\\n} | function g |
+| d/tst.js:1:1:1:14 | functio ... s[1];\\n} | 100% of statements in function f are duplicated in $@. | d/tst.js:23:10:23:21 | functio ... s[1];\\n} | function g2 |
+| d/tst.js:12:1:12:14 | functio ... s[1];\\n} | 100% of statements in function g are duplicated in $@. | d/tst.js:1:1:1:14 | functio ... s[1];\\n} | function f |
+| d/tst.js:12:1:12:14 | functio ... s[1];\\n} | 100% of statements in function g are duplicated in $@. | d/tst.js:23:10:23:21 | functio ... s[1];\\n} | function g2 |
+| d/tst.js:23:10:23:21 | functio ... s[1];\\n} | 100% of statements in function g2 are duplicated in $@. | d/tst.js:1:1:1:14 | functio ... s[1];\\n} | function f |
+| d/tst.js:23:10:23:21 | functio ... s[1];\\n} | 100% of statements in function g2 are duplicated in $@. | d/tst.js:12:1:12:14 | functio ... s[1];\\n} | function g |

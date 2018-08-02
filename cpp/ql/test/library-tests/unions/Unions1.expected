@@ -1,0 +1,3 @@
+| unions.cpp:4:8:4:12 | Entry | struct |  |
+| unions.cpp:13:7:13:11 | Value | struct | union |
+| unions.cpp:19:8:19:22 | EntryWithMethod | struct |  |

@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+The <code>debugger</code> statement should only be used during debugging, and should not appear in production code.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Remove all <code>debugger</code> statements.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following implementation of Quicksort contains a <code>debugger</code> statement which can be removed without
+affecting the program's functionality.
+</p>
+
+<sample src="examples/DebuggerStatement.js" />
+
+</example>
+<references>
+
+
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/debugger">The debugger statement</a>.</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+It is very common to check whether a number is within the bounds of an array or string
+using a comparison of form <tt>i &lt; array.length</tt>, and later perform an indexing
+access <tt>array[i]</tt>.
+
+If this comparison is mistyped as <tt>i &lt; array</tt>, a type coercion will be performed,
+which almost never has the intended effect.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Check if one of the operands is an array or a string, and make sure to compare against its <tt>length</tt>,
+not against the value itself.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example shows a mistyped loop condition <tt>i &lt; array</tt>:
+</p>
+<sample src="examples/MissingDotLengthInComparison.js" />
+<p>
+If the above is executed with <tt>array</tt> set to <tt>[3,5,7]</tt>, the loop will not run at all.
+The error can be corrected by changing the loop condition to <tt>i &lt; array.length</tt>:
+</p>
+<sample src="examples/MissingDotLengthInComparisonGood.js" />
+</example>
+
+<references>
+<li>Mozilla Developer Network:
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/length">Array.length</a>
+</li>
+</references>
+
+</qhelp>

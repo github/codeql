@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp SYSTEM "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Rethrowing an exception variable will lose the stack trace in the original exception, and 
+replace it with the stack trace from the <code>throw</code> statement.
+This will make debugging the root cause of the exception more difficult, for example
+if the stack trace is written to a log file.
+</p> 
+
+</overview>
+<recommendation>
+<p>
+Consider using <code>throw;</code> to rethrow the original exception. Not only is this simpler, 
+but it will retain the original stack information.
+</p>
+
+</recommendation>
+<example>
+<p>This example shows an exception handler which sets the status to <code>UnexpectedException</code>
+if an exception is thrown. However it throws <code>ex</code> which discards the original
+stack trace containing the source of the error.
+</p>
+
+<sample src="RethrowException.cs" />
+
+<p>The fix is to replace the <code>throw</code> statement as follows:</p>
+<sample src="RethrowExceptionFix.cs" />
+
+<p>Since the variable <code>ex</code> is no longer needed, the catch variable has been removed.</p>
+
+</example>
+<references>
+
+	<li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/ms173163.aspx">Creating and Throwing Exceptions (C# Programming Guide)</a>.</li>
+	<li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/1ah5wsex.aspx">throw (C# Reference)</a>.</li>
+
+</references>
+</qhelp>

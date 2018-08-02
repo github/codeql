@@ -1,0 +1,2 @@
+| PointlessComparison.c:106:7:106:12 | ... >= ... | Pointless comparison of unsigned value to zero. |
+| PointlessComparison.c:242:16:242:34 | ... >= ... | Pointless comparison of unsigned value to zero. |

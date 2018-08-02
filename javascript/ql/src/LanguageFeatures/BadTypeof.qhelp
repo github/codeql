@@ -1,0 +1,55 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+In ECMAScript 5, the <code>typeof</code> operator returns one of the following six type tags:
+<code>"undefined"</code>, <code>"boolean"</code>, <code>"number"</code>, <code>"string"</code>,
+<code>"object"</code>, <code>"function"</code>. In ECMAScript 2015, it may additionally return
+<code>"symbol"</code>, while on older versions of Internet Explorer it may return
+<code>"unknown"</code> or <code>"date"</code> in certain situations. Comparing it against
+any other string literal is therefore useless.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Carefully examine the comparison in question. If the type tag is simply misspelled, correct it.
+In some cases, the type tag returned by <code>typeof</code> is not sufficiently precise, so
+you may have to use other type test functions.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following code snippet tries to determine whether <code>a</code> is an array:
+</p>
+
+<sample src="examples/BadTypeof.js" />
+
+<p>
+Note that <code>typeof</code> is not precise enough to distinguish arrays from other objects,
+since it returns the type tag <code>"object"</code> for both. ECMAScript 5-compatible platforms
+provide a library function <code>Array.isArray</code> that can be used instead:
+</p>
+
+<sample src="examples/BadTypeofGood.js" />
+
+<p>
+On older platforms, you can use the technique explained on the
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray#Compatibility">Mozilla Developer Network</a>.
+</p>
+
+</example>
+<references>
+
+
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof">typeof</a>.</li>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray">Array.isArray()</a>.</li>
+
+
+</references>
+</qhelp>

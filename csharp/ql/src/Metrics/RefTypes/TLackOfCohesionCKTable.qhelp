@@ -1,0 +1,61 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<fragment>
+<table>
+  <tbody>
+    <tr>
+      <th>Common Properties?</th>
+      <th>methodA</th>
+      <th>methodB</th>
+      <th>methodC</th>
+      <th>methodD</th>
+      <th>methodE</th>
+    </tr>
+    <tr>
+      <th>methodA</th>
+      <td>--</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+    </tr>
+    <tr>
+      <th>methodB</th>
+      <td>N</td>
+      <td>--</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+    </tr>
+    <tr>
+      <th>methodC</th>
+      <td>N</td>
+      <td>N</td>
+      <td>--</td>
+      <td>N</td>
+      <td>N</td>
+    </tr>
+    <tr>
+      <th>methodD</th>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>--</td>
+      <td>Y</td>
+    </tr>
+    <tr>
+      <th>methodE</th>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>Y</td>
+      <td>--</td>
+    </tr>
+  </tbody>
+</table>
+
+
+</fragment>
+</qhelp>

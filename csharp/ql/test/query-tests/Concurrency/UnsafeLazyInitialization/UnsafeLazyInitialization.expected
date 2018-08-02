@@ -1,0 +1,3 @@
+| UnsafeLazyInitialization.cs:13:9:22:9 | if (...) ... | Field $@ should be 'volatile' for this double-checked lock. | UnsafeLazyInitialization.cs:5:19:5:22 | obj1 | obj1 |
+| UnsafeLazyInitialization.cs:25:9:30:17 | if (...) ... | Field $@ should be 'volatile' for this double-checked lock. | UnsafeLazyInitialization.cs:5:19:5:22 | obj1 | obj1 |
+| UnsafeLazyInitialization.cs:33:9:33:46 | if (...) ... | Field $@ should be 'volatile' for this double-checked lock. | UnsafeLazyInitialization.cs:7:17:7:21 | cond1 | cond1 |

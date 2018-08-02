@@ -1,0 +1,5 @@
+| test.c:2:1:2:22 | // commented out code; | This comment appears to contain commented-out code |
+| test.c:4:1:7:8 | // some; | This comment appears to contain commented-out code |
+| test.c:9:1:13:8 | // also; | This comment appears to contain commented-out code |
+| test.c:21:1:26:2 | /*\n    some;\n    commented;\n    out;\n    code;\n*/ | This comment appears to contain commented-out code |
+| test.c:28:1:34:2 | /*\n    also;\n    this\n    is;\n    commented-out\n    code;\n*/ | This comment appears to contain commented-out code |

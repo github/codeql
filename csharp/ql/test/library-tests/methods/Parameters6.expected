@@ -1,0 +1,2 @@
+| methods.cs:157:40:157:40 | b | methods.cs:157:44:157:45 | 12 | 12 |
+| methods.cs:157:55:157:55 | c | methods.cs:157:59:157:70 | object creation of type Double | 0 |

@@ -1,0 +1,3 @@
+| CSharp7.cs:234:13:234:23 | ... is ... | CSharp7.cs:234:18:234:20 | access to type Int32 | Int32 | CSharp7.cs:234:18:234:23 | Int32 i1 | false |
+| CSharp7.cs:238:18:238:31 | ... is ... | CSharp7.cs:238:23:238:28 | access to type String | String | CSharp7.cs:238:23:238:31 | String s1 | false |
+| CSharp7.cs:245:18:245:28 | ... is ... | CSharp7.cs:245:23:245:25 | access to type Object | Object | CSharp7.cs:245:23:245:28 | Object v1 | true |

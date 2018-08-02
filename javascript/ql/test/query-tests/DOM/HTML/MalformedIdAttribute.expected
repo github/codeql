@@ -1,0 +1,5 @@
+| AmbiguousIdAttributeGood.html:8:5:8:19 | id=invalid id | The value of the id attribute must not contain any space characters. |
+| AmbiguousIdAttributeGood.html:9:5:9:19 | id=invalid id | The value of the id attribute must not contain any space characters. |
+| MalformedIdAttribute.html:1:6:1:27 | id=heading important | The value of the id attribute must not contain any space characters. |
+| tst.js:12:6:12:10 | id="" | The value of the id attribute must contain at least one character. |
+| tst.js:13:6:13:13 | id="a b" | The value of the id attribute must not contain any space characters. |

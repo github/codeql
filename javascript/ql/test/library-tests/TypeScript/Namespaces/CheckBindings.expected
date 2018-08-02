@@ -1,0 +1,5 @@
+| tst.ts:81:3:81:44 | resolve ... hared') | outerShared resolves to 'global.outerShared' but should resolve to 'Shared.outerShared' |
+| tst.ts:83:3:83:38 | resolve ... dowed') | shadowed resolves to 'global.shadowed' but should resolve to 'Shared.shadowed' |
+| tst.ts:87:3:87:44 | resolve ... hared') | outerShared resolves to 'global.outerShared' but should resolve to 'Shared.outerShared' |
+| tst.ts:88:3:88:50 | resolve ... hared') | innerShared resolves to 'global.innerShared' but should resolve to 'Shared.Inner.innerShared' |
+| tst.ts:89:3:89:44 | resolve ... dowed') | shadowed resolves to 'global.shadowed' but should resolve to 'Shared.Inner.shadowed' |

@@ -1,0 +1,1 @@
+| void_bug.cpp:6:1:6:1 | call to ~VoidBug | file://:0:0:0:0 | void |

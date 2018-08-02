@@ -1,0 +1,7 @@
+| DisposeNotCalledOnException.cs:50:9:50:21 | call to method Dispose | Dispose missed if exception is thrown by $@. | DisposeNotCalledOnException.cs:49:9:49:18 | call to method Open | call to method Open |
+| DisposeNotCalledOnException.cs:55:9:55:21 | call to method Dispose | Dispose missed if exception is thrown by $@. | DisposeNotCalledOnException.cs:54:9:54:19 | call to method Throw1 | call to method Throw1 |
+| DisposeNotCalledOnException.cs:60:9:60:21 | call to method Dispose | Dispose missed if exception is thrown by $@. | DisposeNotCalledOnException.cs:59:9:59:19 | call to method Throw2 | call to method Throw2 |
+| DisposeNotCalledOnExceptionBad.cs:14:9:14:21 | call to method Dispose | Dispose missed if exception is thrown by $@. | DisposeNotCalledOnExceptionBad.cs:12:19:12:37 | call to method ExecuteReader | call to method ExecuteReader |
+| DisposeNotCalledOnExceptionBad.cs:15:9:15:22 | call to method Dispose | Dispose missed if exception is thrown by $@. | DisposeNotCalledOnExceptionBad.cs:9:9:9:19 | call to method Open | call to method Open |
+| DisposeNotCalledOnExceptionBad.cs:15:9:15:22 | call to method Dispose | Dispose missed if exception is thrown by $@. | DisposeNotCalledOnExceptionBad.cs:12:19:12:37 | call to method ExecuteReader | call to method ExecuteReader |
+| DisposeNotCalledOnExceptionBad.cs:15:9:15:22 | call to method Dispose | Dispose missed if exception is thrown by $@. | DisposeNotCalledOnExceptionBad.cs:14:9:14:21 | call to method Dispose | call to method Dispose |

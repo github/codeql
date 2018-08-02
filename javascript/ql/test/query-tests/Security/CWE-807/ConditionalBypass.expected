@@ -1,0 +1,12 @@
+| tst.js:9:8:9:26 | req.params.shutDown | This condition guards a sensitive $@, but $@ controls it. | tst.js:11:9:11:22 | process.exit() | action | tst.js:9:8:9:26 | req.params.shutDown | a user-provided value |
+| tst.js:14:9:14:30 | req.coo ... inThing | This condition guards a sensitive $@, but $@ controls it. | tst.js:16:9:16:17 | o.login() | action | tst.js:14:9:14:19 | req.cookies | a user-provided value |
+| tst.js:31:9:31:10 | v3 | This condition guards a sensitive $@, but $@ controls it. | tst.js:33:9:33:22 | process.exit() | action | tst.js:30:17:30:27 | req.cookies | a user-provided value |
+| tst.js:37:13:37:32 | req.cookies.cookieId | This condition guards a sensitive $@, but $@ controls it. | tst.js:39:13:39:26 | process.exit() | action | tst.js:37:13:37:23 | req.cookies | a user-provided value |
+| tst.js:43:9:43:28 | req.cookies.cookieId | This condition guards a sensitive $@, but $@ controls it. | tst.js:46:13:46:26 | process.exit() | action | tst.js:43:9:43:19 | req.cookies | a user-provided value |
+| tst.js:50:8:50:23 | req.params.login | This condition guards a sensitive $@, but $@ controls it. | tst.js:54:9:54:15 | login() | action | tst.js:50:8:50:23 | req.params.login | a user-provided value |
+| tst.js:65:8:65:23 | req.params.login | This condition guards a sensitive $@, but $@ controls it. | tst.js:67:9:67:15 | login() | action | tst.js:65:8:65:23 | req.params.login | a user-provided value |
+| tst.js:70:9:70:53 | req.coo ... questId | This condition guards a sensitive $@, but $@ controls it. | tst.js:72:9:72:22 | process.exit() | action | tst.js:70:9:70:19 | req.cookies | a user-provided value |
+| tst.js:70:9:70:53 | req.coo ... questId | This condition guards a sensitive $@, but $@ controls it. | tst.js:72:9:72:22 | process.exit() | action | tst.js:70:34:70:53 | req.params.requestId | a user-provided value |
+| tst.js:76:9:76:10 | v1 | This condition guards a sensitive $@, but $@ controls it. | tst.js:78:9:78:22 | process.exit() | action | tst.js:75:14:75:24 | req.cookies | a user-provided value |
+| tst.js:76:9:76:10 | v1 | This condition guards a sensitive $@, but $@ controls it. | tst.js:78:9:78:22 | process.exit() | action | tst.js:75:39:75:58 | req.params.requestId | a user-provided value |
+| tst.js:90:9:90:41 | req.coo ... secret" | This condition guards a sensitive $@, but $@ controls it. | tst.js:92:9:92:22 | process.exit() | action | tst.js:90:9:90:19 | req.cookies | a user-provided value |

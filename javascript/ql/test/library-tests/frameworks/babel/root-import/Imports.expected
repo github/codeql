@@ -1,0 +1,9 @@
+| tst1/index.js:1:1:1:20 | import f from '~/a'; | tst1/a.js:1:1:2:0 | <toplevel> |
+| tst1/nested/tst.js:1:1:1:20 | import f from '~/a'; | tst1/a.js:1:1:2:0 | <toplevel> |
+| tst2/index.js:1:1:1:23 | import  ... /b.js'; | tst2/src/js/b.js:1:1:2:0 | <toplevel> |
+| tst2/index.js:2:1:2:20 | import f from '#/a'; | tst1/a.js:1:1:2:0 | <toplevel> |
+| tst2/index.js:2:1:2:20 | import f from '#/a'; | tst1/index.js:1:1:2:0 | <toplevel> |
+| tst3/index.js:1:1:1:30 | import  ... /b.js'; | tst3/src/b.js:1:1:2:0 | <toplevel> |
+| tst4/index.js:1:1:1:23 | import  ... /b.js'; | tst4/src/js/b.js:1:1:2:0 | <toplevel> |
+| tst4/index.js:2:1:2:20 | import f from '#/a'; | tst1/a.js:1:1:2:0 | <toplevel> |
+| tst4/index.js:2:1:2:20 | import f from '#/a'; | tst1/index.js:1:1:2:0 | <toplevel> |

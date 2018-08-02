@@ -1,0 +1,5 @@
+| tst.js:18:1:18:43 | <a href ... ple</a> | External links without noopener/noreferrer are a potential security risk. |
+| tst.js:19:1:19:58 | <a href ... ple</a> | External links without noopener/noreferrer are a potential security risk. |
+| tst.js:20:1:20:51 | <a data ... ple</a> | External links without noopener/noreferrer are a potential security risk. |
+| tst.js:33:12:33:39 | $("<a/> ... X}}" }) | External links without noopener/noreferrer are a potential security risk. |
+| tst.js:42:12:42:20 | $("<a/>") | External links without noopener/noreferrer are a potential security risk. |

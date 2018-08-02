@@ -1,0 +1,1 @@
+extractor_flags: --microsoft /Zc:wchar_t- --edg --target --edg win64

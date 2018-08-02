@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>C and C++ do not have built-in bounds checking for array indexing
+expressions such as <code>x[i]</code>.  If <code>i</code> is out of
+bounds then the program will read/write whatever data happens to be at
+that address. An attacker who is able to control the value
+of <code>i</code> might be able to read or modify data which they are
+not authorized to access.
+</p>
+</overview>
+
+<recommendation>
+<p>Always check the bounds of array indexing expressions, especially
+if the index value is derived from user-controlled data.</p>
+</recommendation>
+
+<example>
+
+<p>In this example, a string is read from a socket and converted to
+an <code>int</code>. This <code>int</code> is then used to index
+the <code>data</code> array. Because the index value is a
+user-controlled value, it could be out of bounds.</p>
+
+<sample src="ImproperArrayIndexValidationBad.c" />
+
+<p>Below, the problem has been fixed by adding a guard:</p>
+
+<sample src="ImproperArrayIndexValidationGood.c" />
+
+</example>
+<references>
+
+</references>
+</qhelp>

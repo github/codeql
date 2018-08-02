@@ -1,0 +1,18 @@
+| file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | __va_list_tag |
+| file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | fp_offset |
+| file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | gp_offset |
+| file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | operator= |
+| file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | operator= |
+| file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | overflow_arg_area |
+| file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | reg_save_area |
+| file://:0:0:0:0 | B | namespaces.cpp:32:7:32:7 | x |
+| namespaces.cpp:11:13:11:13 | C::D | file://:0:0:0:0 | p#0 |
+| namespaces.cpp:11:13:11:13 | C::D | file://:0:0:0:0 | p#0 |
+| namespaces.cpp:11:13:11:13 | C::D | namespaces.cpp:13:17:13:17 | f |
+| namespaces.cpp:11:13:11:13 | C::D | namespaces.cpp:15:12:15:12 | E |
+| namespaces.cpp:11:13:11:13 | C::D | namespaces.cpp:15:12:15:12 | operator= |
+| namespaces.cpp:11:13:11:13 | C::D | namespaces.cpp:15:12:15:12 | operator= |
+| namespaces.cpp:11:13:11:13 | C::D | namespaces.cpp:17:12:17:12 | g |
+| namespaces.cpp:11:13:11:13 | C::D | namespaces.cpp:17:18:17:18 | p |
+| namespaces.cpp:11:13:11:13 | C::D | namespaces.cpp:18:12:18:12 | a |
+| namespaces.cpp:11:13:11:13 | C::D | namespaces.cpp:20:13:20:13 | b |

@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Classes that implement <code>IDisposable</code> and have members of <code>IDisposable</code> type
+should also declare/override <code>Dispose()</code>.
+</p>
+
+</overview>
+<recommendation>
+<p>Override the <code>Dispose()</code> method.</p>
+
+</recommendation>
+<example>
+<p>In the following example, <code>Bad</code> extends the <code>IDisposable</code> class <code>BadBase</code>,
+but does not override <code>Dispose()</code>.
+</p>
+<sample src="MissingDisposeMethodBad.cs" />
+
+<p>In the revised example, <code>Good</code> overrides <code>Dispose()</code>.
+</p>
+<sample src="MissingDisposeMethodGood.cs" />
+
+</example>
+<references>
+
+  <li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/system.idisposable.aspx">IDisposable Interface</a>.</li>
+
+</references>
+</qhelp>

@@ -1,0 +1,6 @@
+| foreach.js:4:1:6:1 | for eac ... item;\\n} | Use for of statements instead of for each statements. |
+| jscript.js:1:1:1:28 | functio ... ad() {} | Use standard method definitions instead of double colon method declarations. |
+| letExpr.js:3:13:3:38 | let (x  ... ) x + y | Use let declarations instead of let expressions. |
+| letStmt.js:3:1:5:1 | let (x  ... + y);\\n} | Use let declarations instead of let statements. |
+| postfixComprehension.js:2:15:2:38 | [i*i fo ... mbers)] | Use prefix comprehensions instead of postfix comprehensions. |
+| tst.js:2:15:2:31 | function(x) x * x | Use arrow expressions instead of expression closures. |

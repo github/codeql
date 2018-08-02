@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The <code>c_str</code> method of <code>std::string</code> returns a
+raw pointer to the memory buffer owned by
+the <code>std::string</code>. The pointer is only safe to use while
+the <code>std::string</code> is still in scope. When
+the <code>std::string</code> goes out of scope, its destructor is
+called and the memory is deallocated, so it is no longer safe to use
+the pointer.</p>
+</overview>
+
+<example><sample src="ReturnCstrOfLocalStdStringBad.cpp" /></example>
+
+<recommendation>
+<p>
+Avoid using C-strings. It is much safer to use
+<code>std::string</code> throughout the codebase, because then the
+memory will be automatically managed.
+</p>
+<p>If C-strings must be used, then be very careful to make sure that
+there are no pointers to the string that can outlive the lifetime of
+the string. For example, if the C-string is stack-allocated then it
+unsafe to store a pointer to the string anywhere on the heap unless
+you are sure that the heap memory will be deallocated before the end
+of the function.
+</p>
+</recommendation>
+
+<example><sample src="ReturnCstrOfLocalStdStringGood.cpp" /></example>
+
+<references>
+<li>cplusplus.com: <a href="http://www.cplusplus.com/reference/string/string/c_str/">std::string::c_str</a></li>
+<li>stackoverflow.com: <a href="https://stackoverflow.com/questions/6456359/what-is-stdstringc-str-lifetime/6456408">What
+is std::string::c_str() lifetime?</a></li>
+</references>
+</qhelp>

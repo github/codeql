@@ -1,0 +1,5 @@
+| aggregate_literals.c:24:29:24:61 | {...} | file://:0:0:0:0 | someStruct[2] | 0 | aggregate_literals.c:24:31:24:44 | {...} |
+| aggregate_literals.c:24:29:24:61 | {...} | file://:0:0:0:0 | someStruct[2] | 1 | aggregate_literals.c:24:47:24:60 | {...} |
+| aggregate_literals.c:30:20:30:28 | {...} | file://:0:0:0:0 | int[2] | 0 | aggregate_literals.c:30:23:30:23 | x |
+| aggregate_literals.c:30:20:30:28 | {...} | file://:0:0:0:0 | int[2] | 1 | aggregate_literals.c:30:26:30:26 | y |
+| aggregate_literals.c:32:20:32:25 | {...} | file://:0:0:0:0 | int[2] | 0 | aggregate_literals.c:32:23:32:23 | x |

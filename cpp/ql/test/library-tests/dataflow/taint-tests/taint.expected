@@ -1,0 +1,13 @@
+| taint.cpp:8:8:8:13 | clean1 | taint.cpp:4:27:4:33 | source1 |
+| taint.cpp:16:8:16:14 | source1 | taint.cpp:12:22:12:27 | call to source |
+| taint.cpp:17:8:17:16 | ++ ... | taint.cpp:12:22:12:27 | call to source |
+| taint.cpp:41:7:41:13 | global7 | taint.cpp:35:12:35:17 | call to source |
+| taint.cpp:42:7:42:13 | global8 | taint.cpp:35:12:35:17 | call to source |
+| taint.cpp:43:7:43:13 | global9 | taint.cpp:37:22:37:27 | call to source |
+| taint.cpp:129:7:129:9 | * ... | taint.cpp:120:11:120:16 | call to source |
+| taint.cpp:134:7:134:9 | * ... | taint.cpp:120:11:120:16 | call to source |
+| taint.cpp:137:7:137:9 | * ... | taint.cpp:120:11:120:16 | call to source |
+| taint.cpp:151:7:151:12 | call to select | taint.cpp:151:20:151:25 | call to source |
+| taint.cpp:167:8:167:13 | call to source | taint.cpp:167:8:167:13 | call to source |
+| taint.cpp:168:8:168:14 | tainted | taint.cpp:164:19:164:24 | call to source |
+| taint.cpp:181:8:181:9 | * ... | taint.cpp:185:11:185:16 | call to source |

@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Methods should not be duplicated at more than one place in the program. Duplicating code makes it harder to update 
+should a change need to be made. It also makes the code harder to read.</p>
+
+</overview>
+<recommendation>
+<p>Determining how to address this issue requires some consideration. If the duplicate methods are in the same class 
+then it is normally possible to just remove one and replace all references to that method by references to the other 
+method. If the methods are in different classes then there might be a need to create a superclass that 
+contains the method, which both classes inherit. If it is not logical to create a superclass the method 
+could be moved into a separate utility class.</p>
+
+</recommendation>
+<example>
+<p>In this example the Toolbox and the Window class both have the same move method. In this case it would be logical to 
+put this method as well as the x and y properties into a new superclass that Toolbox and Window extend.</p>
+<sample src="DuplicateMethod.cs" />
+
+</example>
+<section title="Fixing Using a Superclass">
+<p>The example could be easily fixed by moving the x and y properties as well as the move method to a parent class. Note 
+that the x and y properties have to be changed to protected if they are accessed from the Toolbox and Window classes.</p>
+<sample src="DuplicateMethodFix.cs" />
+
+</section>
+<references>
+
+  <li>Elmar Juergens, Florian Deissenboeck, Benjamin Hummel and Stefan Wagner. <em>Do Code Clones Matter?</em>. 2009.</li>
+
+</references>
+</qhelp>

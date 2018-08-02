@@ -1,0 +1,9 @@
+| a.js:4:9:4:25 | require('./b.js') | b.js:0:0:0:0 | b.js |
+| b.js:4:9:4:25 | require('./a.js') | a.js:0:0:0:0 | a.js |
+| main.js:3:9:3:25 | require('./a.js') | a.js:0:0:0:0 | a.js |
+| main.js:4:9:4:25 | require('./b.js') | b.js:0:0:0:0 | b.js |
+| selfimport.js:1:1:1:23 | require ... mport') | selfimport.js:0:0:0:0 | selfimport.js |
+| test1/a.js:1:1:1:27 | require ... ner/a') | test2/inner/a.js:0:0:0:0 | test2/inner/a.js |
+| test1/a.js:2:1:2:14 | require('./b') | test1/b.js:0:0:0:0 | test1/b.js |
+| test1/b.js:1:1:1:27 | require ... ner/a') | test2/inner/a.js:0:0:0:0 | test2/inner/a.js |
+| test2/inner/a.js:1:1:1:24 | require ... st1/a') | test1/a.js:0:0:0:0 | test1/a.js |

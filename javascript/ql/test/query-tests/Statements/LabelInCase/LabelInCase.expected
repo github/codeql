@@ -1,0 +1,1 @@
+| nonCaseLabelInSwitch.js:4:3:4:7 | case2 | Non-case labels in switch statements are confusing. |

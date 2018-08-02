@@ -1,0 +1,3 @@
+| constant_func.cpp:1:5:1:18 | IR: ReturnConstant | 7 |
+| constant_func.cpp:5:5:5:21 | IR: ReturnConstantPhi | 7 |
+| constant_func.cpp:25:5:25:25 | IR: ReturnConstantPhiLoop | 7 |

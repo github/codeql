@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+This rule finds <code>delete[]</code> expressions that are using a pointer that points to memory
+allocated using the <code>new</code> operator. Behavior in such cases is undefined and should
+be avoided.
+</p>
+
+<p>
+The <code>new</code> operator allocates memory for just <em>one</em> object, then calls that object's constructor, and <code>delete</code>
+does the opposite. The array <code>delete[]</code> operator, however, expects the pointer to be pointing to the first element of
+an array (which could have header data specifying the length of the array) and would attempt to call the destructor on each 
+element of the 'array', which would likely lead to a segfault due to the invalid header data.
+</p>
+
+<include src="pointsToWarning.qhelp" />
+
+</overview>
+<recommendation>
+<p>
+Use the <code>delete</code> operator when freeing memory allocated with <code>new</code>.
+</p>
+
+</recommendation>
+<example><sample src="NewDeleteArrayMismatch.cpp" />
+
+
+
+</example>
+<references>
+<li>S. Meyers. <em>Effective C++ 3d ed.</em> pp 73-75. Addison-Wesley Professional, 2005.</li>
+</references>
+</qhelp>

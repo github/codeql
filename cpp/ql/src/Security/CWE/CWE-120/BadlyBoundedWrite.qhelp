@@ -1,0 +1,25 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The program performs a buffer copy or write operation with an incorrect upper limit on the size of the copy.  A sufficiently long input will overflow the target buffer.  In addition to causing program instability, techniques exist which may allow an attacker to use this vulnerability to execute arbitrary code.</p>
+
+</overview>
+<recommendation>
+<p>Use preprocessor defines to specify the size of buffers, and use the same defines as arguments to <code>strncpy</code>, <code>snprintf</code> etc.  This technique will ensure that buffer sizes are always specified correctly so that no overflow occurs.</p>
+
+</recommendation>
+<example>
+<sample src="BadlyBoundedWrite.c" />
+
+<p>In this example, the developer has used <code>snprintf</code> to control the maximum number of characters that can be written to <code>buffer</code>.  Unfortunately, perhaps due to modifications since the code was first written, a limited buffer overrun can still occur because the size argument to <code>snprintf</code> is larger than the actual size of the buffer.</p>
+
+<p>To fix the problem, either the second argument to <code>snprintf</code> should be changed to 80, or the buffer extended to 256 characters.  A further improvement is to use a preprocessor define so that the size is only specified in one place, potentially preventing future recurrence of this issue.</p>
+
+</example>
+<references>
+
+
+</references>
+</qhelp>

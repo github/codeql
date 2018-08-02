@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Some websites are internationalized, meaning they are implemented
+in a way that supports translation and adaption into multiple natural languages.
+For such a website, it is an error to embed English text directly into the page.</p>
+</overview>
+
+<recommendation>
+<p>Consider whether the text needs to be translated for each language
+the website supports. If so, then the text should be replaced by
+a code expression that retrieves the appropriate translation of the text.</p>
+</recommendation>
+
+<example>
+<p>In the following example, the English word "Amount" is included directly
+in the page.</p>
+<sample src="NonInternationalizedTextBad.aspx" />
+<p>
+The revised example makes use of a hypothetical "I18n" library that is
+used to retrieve the translation of a given string of text into whichever
+language is currently in effect. The correct internationalization library
+to use will depend on the website, and might not be called exactly "I18n".
+</p>
+<sample src="NonInternationalizedTextGood.aspx" />
+</example>
+
+<references>
+<li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/ms973868.aspx">Introduction to ASP.NET and Web Forms</a>,
+<a href="https://msdn.microsoft.com/en-us/library/fy30at8h(v=vs.100).aspx">ASP.NET Page Syntax</a>.</li>
+<li>W3C: <a href="http://www.w3.org/standards/webdesign/i18n">Internationalization</a>,
+<a href="http://www.w3.org/International/questions/qa-i18n">Localization vs. Internationalization</a>.</li>
+</references>
+</qhelp>

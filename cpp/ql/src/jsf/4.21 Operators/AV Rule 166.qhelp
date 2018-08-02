@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+This rule finds <code>sizeof</code> expressions that have a parameter with side-effects. <code>sizeof</code> only
+uses the type of the parameter, so the parameter will not be evaluated. In the C99 standard, using <code>sizeof</code> on
+expressions with dynamic arrays may or may not evaluate the side-effect, so it is better to avoid it completely.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Simplify the <code>sizeof</code> parameter to use only the subexpression that is of the type you need.
+</p>
+
+</recommendation>
+<example><sample src="AV Rule 166.cpp" />
+
+</example>
+<references>
+
+<li>
+  AV Rule 166, <em>Joint Strike Fighter Air Vehicle C++ Coding Standards</em>. Lockheed Martin Corporation, 2005.
+</li>
+<li>
+  Tutorialspoint - The C++ Programming Language: <a href="http://www.tutorialspoint.com/cplusplus/cpp_sizeof_operator.htm">C++ sizeof Operator</a>
+</li>
+
+
+</references>
+</qhelp>

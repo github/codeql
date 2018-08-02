@@ -1,0 +1,3 @@
+| tst.js:2:1:2:8 | typeof a | The result of this 'typeof' expression is compared to '$@', but the two can never be equal. | tst.js:2:14:2:20 | 'array' | array |
+| tst.js:19:9:19:16 | typeof a | The result of this 'typeof' expression is compared to '$@', but the two can never be equal. | tst.js:23:6:23:11 | 'null' | null |
+| tst.js:33:2:33:9 | typeof a | The result of this 'typeof' expression is compared to '$@', but the two can never be equal. | tst.js:33:16:33:22 | 'array' | array |

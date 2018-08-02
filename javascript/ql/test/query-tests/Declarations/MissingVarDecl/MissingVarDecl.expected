@@ -1,0 +1,6 @@
+| test.js:6:7:6:7 | i | Variable i is used like a local variable, but is missing a declaration. |
+| test.js:14:7:14:7 | i | Variable i is used like a local variable, but is missing a declaration. |
+| test.js:23:2:23:2 | y | Variable y is used like a local variable, but is missing a declaration. |
+| test.js:54:10:54:10 | z | Variable z is used like a local variable, but is missing a declaration. |
+| test.js:60:6:60:6 | y | Variable y is used like a local variable, but is missing a declaration. |
+| test.js:66:2:66:2 | z | Variable z is used like a local variable, but is missing a declaration. |

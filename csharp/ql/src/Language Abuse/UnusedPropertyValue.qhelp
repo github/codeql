@@ -1,0 +1,53 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Ignoring the value assigned to a property causes confusion and can lead to
+unexpected results. A user of the class would expect different results depending on the
+value assigned to the property, but when the value is ignored, then this does not happen.</p>
+
+<p>There are generally three situations where this occurs:</p>
+
+<ol>
+  <li>The property is not intended to be assigned to. In this case, the caller expects the assignment
+    to have some effect, but it does not.</li>
+  <li>The property represents a particular state using a <code>bool</code>. In this case, the caller 
+    might expect that setting the property to <code>false</code> would have a different effect than
+    setting it to <code>true</code>.</li>
+  <li>The property is virtual or overridden. In this case, it is possible for some of the 
+    derived classes to use the property, but other classes to ignore it.
+    For this reason, virtual and overridden properties are excluded from the results.</li> 
+</ol>
+
+</overview>
+<recommendation>
+<p>Empty setters (<code>set</code> with an empty body) should simply be removed.</p>
+
+<p>Where the setter does not use the assigned value, replace <code>set</code> with a method 
+that does not take a parameter. Alternatively, change the implementation of <code>set</code> 
+to use the assigned value, or to throw an exception if the assigned value is invalid.</p>
+
+</recommendation>
+<example>
+<p>The following example shows two cases where <code>set</code> ignores the assigned value.
+In the first case, the property does not support <code>set</code>, so the implementation
+is empty. In the second case, the <code>set</code> code has the same effect for all
+assigned values.</p>
+
+<sample src="UnusedPropertyValue.cs" />
+
+<p>The first of these problems can be fixed by simply removing the empty <code>set</code>.
+The second problem can be fixed by implementing the functionality in a method instead of 
+in a property.</p>
+
+<sample src="UnusedPropertyValueFix.cs" />
+
+</example>
+<references>
+
+  <li>MSDN, C# Programming Guide: <a href="http://msdn.microsoft.com/en-us/library/w86s7x04.aspx">Using Properties</a>.</li>
+
+
+</references>
+</qhelp>

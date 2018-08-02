@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Fields are automatically given a default value when declared. If they are never assigned then they will 
+always have their default value.</p>
+
+</overview>
+<recommendation>
+<p>Check if an assignment to the field has been accidentally omitted. If it hasn't then consider removing the 
+variable or explicitly initializing the field to its default value.</p>
+
+</recommendation>
+<example>
+<p>In this example the programmer has forgotten to initialize the "name" field. This is the kind of mistake that this rule 
+can detect.</p>
+<sample src="NonAssignedFields.cs" />
+
+</example>
+<references>
+
+  <li>MSDN, C# Reference, <a href="http://msdn.microsoft.com/en-us/library/03b5270t(v=vs.71).aspx">Compiler Warning (level 4) CS0649</a>.</li>
+
+</references>
+</qhelp>

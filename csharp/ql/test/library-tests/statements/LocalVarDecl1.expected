@@ -1,0 +1,1 @@
+| statements.cs:30:21:30:36 | MainLocalVarDecl | statements.cs:32:13:32:18 | ... ...; | statements.cs:32:17:32:17 | Int32 a |

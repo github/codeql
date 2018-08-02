@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Misspelled identifiers make code harder to read and understand. In a dynamically typed
+language like JavaScript, they may also indicate a bug where a reference to a property
+was accidentally misspelled.
+</p>
+<p>
+Note that this rule does not flag misspellings of local variable names, which are instead
+highlighted by the rule 'Misspelled variable name'.
+</p>
+</overview>
+<recommendation>
+
+<p>
+Correct the misspelling.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following code snippet attempts to loop over an array <code>ids</code> in order
+to update DOM nodes referenced by the elements of the array. Note, however, that the
+upper bound of the loop is specified as <code>ids.lenght</code>, a typo for
+<code>ids.length</code>. At runtime, <code>ids.lenght</code> will evaluate to
+<code>undefined</code>, so the check <code>i &lt; ids.lenght</code> will always fail,
+and the loop body is never executed.
+</p>
+
+<sample src="examples/MisspelledIdentifier.js" />
+
+<p>
+The misspelling should be corrected by replacing <code>lenght</code> with
+<code>length</code>.
+</p>
+
+</example>
+</qhelp>

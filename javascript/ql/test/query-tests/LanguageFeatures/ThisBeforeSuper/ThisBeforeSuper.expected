@@ -1,0 +1,12 @@
+| invalid.js:5:40:5:43 | this | The super constructor must be called before using 'this'. |
+| invalid.js:6:40:6:43 | this | The super constructor must be called before using 'this'. |
+| invalid.js:7:40:7:46 | super.c | The super constructor must be called before using 'super'. |
+| invalid.js:8:40:8:43 | this | The super constructor must be called before using 'this'. |
+| invalid.js:9:40:9:43 | this | The super constructor must be called before using 'this'. |
+| invalid.js:10:40:10:46 | super.c | The super constructor must be called before using 'super'. |
+| invalid.js:11:46:11:49 | this | The super constructor must be called before using 'this'. |
+| invalid.js:12:46:12:49 | this | The super constructor must be called before using 'this'. |
+| invalid.js:13:46:13:52 | super.c | The super constructor must be called before using 'super'. |
+| invalid.js:14:99:14:102 | this | The super constructor must be called before using 'this'. |
+| invalid.js:15:76:15:79 | this | The super constructor must be called before using 'this'. |
+| invalid.js:16:56:16:59 | this | The super constructor must be called before using 'this'. |

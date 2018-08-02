@@ -1,0 +1,27 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This rule finds expressions of the form <code>x >= 0</code> where <code>x</code> is an unsigned value. This comparison is pointless as it will always yield <code>1</code>.</p>
+
+</overview>
+<recommendation>
+<p>Check the expression to see whether a different semantics was intended.</p>
+
+</recommendation>
+<example><sample src="UnsignedGEZero.cpp" />
+
+</example>
+<references>
+
+<li>
+  <a href="http://www.cplusplus.com/doc/tutorial/variables/">Variables. Data types.</a>
+</li>
+
+
+
+</references>
+</qhelp>

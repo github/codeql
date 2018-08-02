@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>The C++ <code>throw</code> expression can take several forms. One form throws a new exception, whereas the
+other re-throws the current exception. In the latter case, if there is no current exception, then the program
+will be terminated. Presence of a re-throw outside of an exception handling context is often caused by the
+programmer not knowing what kind of exception to throw.</p>
+
+</overview>
+<recommendation>
+<p>The <code>throw</code> expression should be changed to throw a particular type of exception.</p>
+
+</recommendation>
+<example>
+<sample language="cpp">
+void bad() {
+  /* ... */
+  if(error_condition)
+    throw;
+}
+
+void good() {
+  /* ... */
+  if(error_condition)
+    throw std::exception("Something went wrong.");
+}
+</sample>
+
+</example>
+<references>
+
+  <li>Open Standards: <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3337.pdf">Standard for Programming Language C++, draft n3337</a> [except.throw], clause 9, page 380.</li>
+
+
+</references>
+</qhelp>

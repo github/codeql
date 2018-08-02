@@ -1,0 +1,6 @@
+| unused_static_functions.cpp:19:13:19:14 | f2 | Static function f2 is unreachable | unused_static_functions.cpp:19:13:19:14 | f2 | f2 |
+| unused_static_functions.cpp:33:13:33:14 | f5 | Static function f5 is unreachable ($@ must be removed at the same time) | unused_static_functions.cpp:34:13:34:14 | f6 | f6 |
+| unused_static_functions.cpp:34:13:34:14 | f6 | Static function f6 is unreachable ($@ must be removed at the same time) | unused_static_functions.cpp:33:13:33:14 | f5 | f5 |
+| used_by_var_ref.c:8:13:8:13 | g | Static function g is unreachable ($@ must be removed at the same time) | used_by_var_ref.c:13:16:13:17 | n2 | n2 |
+| used_by_var_ref.c:10:13:10:13 | i | Static function i is unreachable ($@ must be removed at the same time) | used_by_var_ref.c:20:13:20:13 | k | k |
+| used_by_var_ref.c:20:13:20:13 | k | Static function k is unreachable | used_by_var_ref.c:20:13:20:13 | k | k |

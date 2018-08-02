@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Loops can contain multiple exit conditions, either directly in the loop
+condition or as guards around <code>break</code> or <code>return</code>
+statements. If none of the exit conditions can ever be satisfied, then
+the loop will never terminate. A program containing an infinite loop
+could be vulnerable to a denial of service attack if it is possible for
+an attacker to trigger the loop.
+</p>
+</overview>
+
+<recommendation>
+<p>
+When writing a loop that is intended to terminate, make sure that all the
+necessary exit conditions can be satisfied and that loop termination is clear.
+</p>
+</recommendation>
+
+<example>
+
+<p>
+The following example shows an infinite loop. The value of
+variable <code>i</code> is always zero, so the condition guarding the
+<code>break</code> is always false.
+</p>
+
+<sample src="InfiniteLoopBad.c" />
+
+<p>The error has been fixed below by incrementing <code>i</code> in
+the body of the loop.
+</p>
+
+<sample src="InfiniteLoopGood.c" />
+
+</example>
+<references>
+
+</references>
+</qhelp>

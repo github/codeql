@@ -1,0 +1,1 @@
+| CallToGCCollectBad.cs:7:9:7:20 | call to method Collect | Call to 'GC.Collect()'. |

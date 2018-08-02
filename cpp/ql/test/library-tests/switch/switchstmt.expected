@@ -1,0 +1,34 @@
+| switch.c:3:5:10:5 | switch (...) ...  | 3 | switch.c:3:12:3:12 | x | getExpr |
+| switch.c:3:5:10:5 | switch (...) ...  | 3 | switch.c:3:15:10:5 | { ... } | getStmt |
+| switch.c:3:5:10:5 | switch (...) ...  | 4 | switch.c:4:5:4:11 | case ...: | getASwitchCase |
+| switch.c:3:5:10:5 | switch (...) ...  | 6 | switch.c:6:5:6:11 | case ...: | getASwitchCase |
+| switch.c:3:5:10:5 | switch (...) ...  | 8 | switch.c:8:5:8:12 | default:  | getASwitchCase |
+| switch.c:3:5:10:5 | switch (...) ...  | 8 | switch.c:8:5:8:12 | default:  | getDefaultCase |
+| switch.c:17:5:26:5 | switch (...) ...  | 17 | switch.c:17:13:17:13 | y | getExpr |
+| switch.c:17:5:26:5 | switch (...) ...  | 17 | switch.c:17:16:26:5 | { ... } | getStmt |
+| switch.c:17:5:26:5 | switch (...) ...  | 18 | switch.c:18:5:18:11 | case ...: | getASwitchCase |
+| switch.c:17:5:26:5 | switch (...) ...  | 20 | switch.c:20:5:20:11 | case ...: | getASwitchCase |
+| switch.c:17:5:26:5 | switch (...) ...  | 23 | switch.c:23:5:23:11 | case ...: | getASwitchCase |
+| switch.c:28:5:29:5 | switch (...) ...  | 28 | switch.c:28:13:28:13 | y | getExpr |
+| switch.c:28:5:29:5 | switch (...) ...  | 28 | switch.c:28:16:29:5 | { ... } | getStmt |
+| switch.c:31:5:44:2 | switch (...) ...  | 31 | switch.c:31:13:31:13 | y | getExpr |
+| switch.c:31:5:44:2 | switch (...) ...  | 31 | switch.c:31:16:44:2 | { ... } | getStmt |
+| switch.c:31:5:44:2 | switch (...) ...  | 32 | switch.c:32:2:32:8 | case ...: | getASwitchCase |
+| switch.c:31:5:44:2 | switch (...) ...  | 34 | switch.c:34:2:34:8 | case ...: | getASwitchCase |
+| switch.c:31:5:44:2 | switch (...) ...  | 38 | switch.c:38:2:38:8 | case ...: | getASwitchCase |
+| switch.c:46:2:51:2 | switch (...) ...  | 46 | switch.c:46:10:46:10 | y | getExpr |
+| switch.c:46:2:51:2 | switch (...) ...  | 46 | switch.c:46:13:51:2 | { ... } | getStmt |
+| switch.c:46:2:51:2 | switch (...) ...  | 47 | switch.c:47:2:47:8 | case ...: | getASwitchCase |
+| switch.c:46:2:51:2 | switch (...) ...  | 48 | switch.c:48:2:48:8 | case ...: | getASwitchCase |
+| switch.c:46:2:51:2 | switch (...) ...  | 50 | switch.c:50:2:50:8 | case ...: | getASwitchCase |
+| switch.cpp:5:5:8:5 | switch (...) ...  | 5 | switch.cpp:5:12:5:12 | x | getExpr |
+| switch.cpp:5:5:8:5 | switch (...) ...  | 5 | switch.cpp:5:15:8:5 | { ... } | getStmt |
+| switch.cpp:5:5:8:5 | switch (...) ...  | 6 | switch.cpp:6:5:6:12 | default:  | getASwitchCase |
+| switch.cpp:5:5:8:5 | switch (...) ...  | 6 | switch.cpp:6:5:6:12 | default:  | getDefaultCase |
+| switch_gnu99.c:3:5:12:5 | switch (...) ...  | 3 | switch_gnu99.c:3:12:3:12 | x | getExpr |
+| switch_gnu99.c:3:5:12:5 | switch (...) ...  | 3 | switch_gnu99.c:3:15:12:5 | { ... } | getStmt |
+| switch_gnu99.c:3:5:12:5 | switch (...) ...  | 4 | switch_gnu99.c:4:5:4:11 | case ...: | getASwitchCase |
+| switch_gnu99.c:3:5:12:5 | switch (...) ...  | 6 | switch_gnu99.c:6:5:6:11 | case ...: | getASwitchCase |
+| switch_gnu99.c:3:5:12:5 | switch (...) ...  | 8 | switch_gnu99.c:8:5:8:17 | case ...: | getASwitchCase |
+| switch_gnu99.c:3:5:12:5 | switch (...) ...  | 10 | switch_gnu99.c:10:5:10:12 | default:  | getASwitchCase |
+| switch_gnu99.c:3:5:12:5 | switch (...) ...  | 10 | switch_gnu99.c:10:5:10:12 | default:  | getDefaultCase |

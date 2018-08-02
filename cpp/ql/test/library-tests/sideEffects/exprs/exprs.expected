@@ -1,0 +1,53 @@
+| exprs.c:6:3:6:3 | i | isPure |  |  |
+| exprs.c:6:3:6:7 | ... = ... |  | mayBeImpure |  |
+| exprs.c:6:7:6:7 | 0 | isPure |  |  |
+| exprs.c:7:3:7:3 | i | isPure |  |  |
+| exprs.c:7:3:7:8 | ... < ... | isPure |  |  |
+| exprs.c:7:7:7:8 | 10 | isPure |  |  |
+| exprs.c:8:3:8:5 | ++ ... |  | mayBeImpure |  |
+| exprs.c:8:3:9:5 | ... , ... |  | mayBeImpure |  |
+| exprs.c:8:5:8:5 | i | isPure |  |  |
+| exprs.c:9:3:9:5 | ++ ... |  | mayBeImpure |  |
+| exprs.c:9:5:9:5 | p | isPure |  |  |
+| exprs.c:12:12:12:12 | p | isPure |  |  |
+| exprs.cpp:7:10:7:16 | (...) | isPure |  |  |
+| exprs.cpp:7:10:7:16 | (reference to) | isPure |  |  |
+| exprs.cpp:7:11:7:15 | * ... | isPure |  |  |
+| exprs.cpp:7:12:7:15 | this | isPure |  |  |
+| exprs.cpp:12:3:12:3 | v | isPure |  |  |
+| exprs.cpp:12:3:12:5 | ... -- |  | mayBeImpure | mayBeGloballyImpure |
+| exprs.cpp:13:10:13:16 | (...) | isPure |  |  |
+| exprs.cpp:13:10:13:16 | (reference to) | isPure |  |  |
+| exprs.cpp:13:11:13:15 | * ... | isPure |  |  |
+| exprs.cpp:13:12:13:15 | this | isPure |  |  |
+| exprs.cpp:23:2:23:2 | call to operator++ | isPure |  |  |
+| exprs.cpp:23:2:23:6 | (reference dereference) | isPure |  |  |
+| exprs.cpp:23:4:23:5 | mi | isPure |  |  |
+| exprs.cpp:24:2:24:2 | call to operator-- |  | mayBeImpure | mayBeGloballyImpure |
+| exprs.cpp:24:2:24:6 | (reference dereference) |  | mayBeImpure | mayBeGloballyImpure |
+| exprs.cpp:24:4:24:5 | mi | isPure |  |  |
+| exprs.cpp:32:2:32:2 | call to operator++ | isPure |  |  |
+| exprs.cpp:32:2:32:2 | call to operator++ | isPure |  |  |
+| exprs.cpp:32:2:32:2 | call to operator++ | isPure |  |  |
+| exprs.cpp:32:2:32:6 | (reference dereference) | isPure |  |  |
+| exprs.cpp:32:2:32:6 | (reference dereference) | isPure |  |  |
+| exprs.cpp:32:2:32:6 | (reference dereference) | isPure |  |  |
+| exprs.cpp:32:4:32:5 | mi | isPure |  |  |
+| exprs.cpp:32:4:32:5 | mi | isPure |  |  |
+| exprs.cpp:32:4:32:5 | mi | isPure |  |  |
+| exprs.cpp:33:2:33:4 | ++ ... |  | mayBeImpure | mayBeGloballyImpure |
+| exprs.cpp:33:2:33:4 | ++ ... |  | mayBeImpure | mayBeGloballyImpure |
+| exprs.cpp:33:2:33:4 | ++ ... |  | mayBeImpure | mayBeGloballyImpure |
+| exprs.cpp:33:4:33:4 | i | isPure |  |  |
+| exprs.cpp:33:4:33:4 | i | isPure |  |  |
+| exprs.cpp:33:4:33:4 | i | isPure |  |  |
+| exprs.cpp:34:2:34:2 | call to operator++ | isPure |  |  |
+| exprs.cpp:34:2:34:4 | ++ ... |  | mayBeImpure | mayBeGloballyImpure |
+| exprs.cpp:34:2:34:4 | ++ ... |  | mayBeImpure | mayBeGloballyImpure |
+| exprs.cpp:34:2:34:5 | (reference dereference) | isPure |  |  |
+| exprs.cpp:34:4:34:4 | t | isPure |  |  |
+| exprs.cpp:34:4:34:4 | t | isPure |  |  |
+| exprs.cpp:34:4:34:4 | t | isPure |  |  |
+| exprs.cpp:38:2:38:31 | call to myTemplateFunction |  | mayBeImpure | mayBeGloballyImpure |
+| exprs.cpp:39:2:39:24 | call to myTemplateFunction |  | mayBeImpure | mayBeGloballyImpure |
+| file://:0:0:0:0 | this | isPure |  |  |

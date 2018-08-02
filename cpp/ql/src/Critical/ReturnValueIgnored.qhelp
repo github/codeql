@@ -1,0 +1,47 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+This rule finds calls to a function that ignore the return value. A function call is only marked 
+as a violation if at least 80% of the total calls to that function check the return value. Not 
+checking a return value is a common source of defects from standard library functions like <code>malloc</code> or <code>fread</code>.
+These functions return the status information and the return values should always be checked 
+to see if the operation succeeded before operating on any data modified or resources allocated by these functions.
+</p>
+
+<p>
+This rule uses a white/blacklist of functions the value of which can always be ignored (e.g. <code>select</code>) and those
+that should always be checked (e.g. <code>fgets</code>). These list can be modified to suit a particular codebase. 
+</p>
+
+</overview>
+<recommendation>
+<p>
+Check the return value of functions that return status information.
+</p>
+
+</recommendation>
+<example>
+<sample src="ReturnValueIgnored.cpp" />
+
+</example>
+<references>
+
+<li>
+  M. Henricson and E. Nyquist, <i>Industrial Strength C++</i>, Chapter 12: Error handling. Prentice Hall PTR, 1997 (<a href="http://mongers.org/industrial-c++/">available online</a>).
+</li>
+<li>
+  The CERT C Secure Coding Standard: <a href="https://www.securecoding.cert.org/confluence/display/perl/EXP32-PL.+Do+not+ignore+function+return+values">EXP32-PL. Do not ignore function return values</a>.
+</li>
+
+
+
+
+
+
+</references>
+</qhelp>

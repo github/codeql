@@ -1,0 +1,5 @@
+| test.cpp:6:10:6:10 | a |
+| test.cpp:6:13:6:13 | b |
+| test.cpp:6:16:6:16 | c |
+| test.cpp:6:19:6:19 | d |
+| test.cpp:7:21:7:22 | p3 |

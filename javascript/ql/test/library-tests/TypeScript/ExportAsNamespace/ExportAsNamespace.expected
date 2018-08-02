@@ -1,0 +1,1 @@
+| tst.d.ts:2:1:2:24 | export  ... ce bar; | tst.d.ts:2:21:2:23 | bar |

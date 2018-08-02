@@ -1,0 +1,17 @@
+| Modifiers.cs:7:9:7:9 | C | internal |
+| Modifiers.cs:9:16:9:16 | C | internal |
+| Modifiers.cs:12:14:12:15 | M1 | internal |
+| Modifiers.cs:14:22:14:23 | M2 | internal |
+| Modifiers.cs:16:24:16:25 | M3 | internal |
+| Modifiers.cs:18:35:18:36 | M4 | internal |
+| Modifiers.cs:21:20:21:21 | M5 | internal |
+| Modifiers.cs:24:22:24:23 | C1 | internal |
+| Modifiers.cs:26:20:26:21 | C1 | internal |
+| Modifiers.cs:26:20:26:21 | C1 | private |
+| Modifiers.cs:29:34:29:35 | C2 | internal |
+| Modifiers.cs:31:23:31:24 | C2 | internal |
+| Modifiers.cs:33:22:33:23 | M2 | internal |
+| Modifiers.cs:35:34:35:35 | M6 | internal |
+| Modifiers.cs:41:20:41:21 | F1 | internal |
+| Modifiers.cs:43:26:43:27 | F2 | internal |
+| Modifiers.cs:47:30:47:31 | F4 | internal |

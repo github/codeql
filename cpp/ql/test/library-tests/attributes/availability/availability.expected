@@ -1,0 +1,16 @@
+| f | 0 | availability.c:2:42:2:47 | macosx |
+| f | 1 | availability.c:2:49:2:58 | introduced |
+| f | 2 | availability.c:2:60:2:63 | 10.4 |
+| f | 3 | availability.c:2:65:2:74 | deprecated |
+| f | 4 | availability.c:2:76:2:79 | 10.6 |
+| f | 5 | availability.c:2:81:2:89 | obsoleted |
+| f | 6 | availability.c:2:91:2:94 | 10.7 |
+| g | 0 | availability.c:6:42:6:44 | ios |
+| g | 1 | availability.c:6:46:6:56 | unavailable |
+| g | 2 | availability.c:6:58:6:64 | message |
+| g | 3 | availability.c:6:66:6:88 | "Woah, don\\'t use this." |
+| tententhree | 0 | availability.c:11:52:11:57 | macosx |
+| tententhree | 1 | availability.c:11:59:11:68 | introduced |
+| tententhree | 2 | availability.c:11:70:11:76 | 10.10.3 |
+| tententhree | 3 | availability.c:11:78:11:84 | message |
+| tententhree | 4 | availability.c:11:88:11:106 | "TenTenThree" |

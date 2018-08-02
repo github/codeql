@@ -1,0 +1,51 @@
+| comments1.cs:8:1:8:18 | /// ... | comments1.cs:9:7:9:7 | C | An XML comment |
+| comments1.cs:37:5:39:41 | /* ... */ | comments1.cs:40:9:40:9 | x |  |
+| comments1.cs:40:13:41:51 | // ... | comments1.cs:40:9:40:9 | x | as this line |
+| comments1.cs:43:15:43:36 | // ... | comments1.cs:43:9:43:9 | y | These are different |
+| comments1.cs:44:15:44:32 | // ... | comments1.cs:44:9:44:9 | z | comment blocks. |
+| comments2.cs:10:1:10:6 | /// ... | comments2.cs:11:7:11:8 | C2 | C2 |
+| comments2.cs:13:17:13:25 | // ... | comments2.cs:13:9:13:14 | field1 | field1 |
+| comments2.cs:14:17:14:25 | // ... | comments2.cs:14:9:14:14 | field2 | field2 |
+| comments2.cs:16:5:16:9 | // ... | comments2.cs:11:7:11:8 | C2 | C2 |
+| comments2.cs:18:5:18:8 | // ... | comments2.cs:19:10:19:10 | f | f |
+| comments2.cs:21:9:21:16 | // ... | comments2.cs:20:5:27:5 | {...} | {...} |
+| comments2.cs:23:15:23:21 | // ... | comments2.cs:23:9:23:12 | ...; | ...; |
+| comments2.cs:25:9:25:15 | // ... | comments2.cs:26:9:26:13 | ...; | ...; |
+| comments2.cs:31:9:31:15 | // ... | comments2.cs:32:9:32:18 | ... ...; | ...; |
+| comments2.cs:33:9:33:16 | // ... | comments2.cs:30:5:37:5 | {...} | {...} |
+| comments2.cs:36:9:36:16 | // ... | comments2.cs:30:5:37:5 | {...} | {...} |
+| comments2.cs:39:5:39:9 | // ... | comments2.cs:40:11:40:12 | C3 | C3 |
+| comments2.cs:42:9:42:13 | // ... | comments2.cs:40:11:40:12 | C3 | C3 |
+| comments2.cs:45:5:45:9 | // ... | comments2.cs:11:7:11:8 | C2 | C2 |
+| comments2.cs:47:5:47:9 | // ... | comments2.cs:48:12:48:13 | S1 | S1 |
+| comments2.cs:50:9:50:13 | // ... | comments2.cs:48:12:48:13 | S1 | S1 |
+| comments2.cs:52:28:52:35 | // ... | comments2.cs:52:13:52:26 | {...} | {...} |
+| comments2.cs:53:13:53:17 | // ... | comments2.cs:53:9:53:11 | set_S1 | S1 |
+| comments2.cs:55:13:55:20 | // ... | comments2.cs:54:9:56:9 | {...} | {...} |
+| comments2.cs:56:11:56:18 | // ... | comments2.cs:54:9:56:9 | {...} | {...} |
+| comments2.cs:58:5:58:9 | // ... | comments2.cs:48:12:48:13 | S1 | S1 |
+| comments2.cs:60:5:60:13 | // ... | comments2.cs:61:10:61:15 | Values | Values |
+| comments2.cs:63:9:63:17 | // ... | comments2.cs:61:10:61:15 | Values | Values |
+| comments2.cs:65:9:65:16 | // ... | comments2.cs:66:9:66:13 | First | First |
+| comments2.cs:66:17:66:24 | // ... | comments2.cs:66:9:66:13 | First | First |
+| comments2.cs:67:17:67:25 | // ... | comments2.cs:67:9:67:14 | Second | Second |
+| comments2.cs:69:9:70:10 | // ... | comments2.cs:61:10:61:15 | Values | Values |
+| comments2.cs:72:9:72:16 | // ... | comments2.cs:73:9:73:13 | Third | Third |
+| comments2.cs:75:9:75:17 | // ... | comments2.cs:61:10:61:15 | Values | Values |
+| comments2.cs:78:5:78:21 | // ... | comments2.cs:79:5:79:6 | C2 | C2 Constructor |
+| comments2.cs:79:10:79:26 | // ... | comments2.cs:79:5:79:6 | C2 | C2 Constructor |
+| comments2.cs:81:9:81:16 | // ... | comments2.cs:80:5:82:5 | {...} | {...} |
+| comments2.cs:84:5:84:10 | // ... | comments2.cs:85:6:85:7 | ~C2 | ~C2 |
+| comments2.cs:85:11:85:16 | // ... | comments2.cs:85:6:85:7 | ~C2 | ~C2 |
+| comments2.cs:89:5:89:8 | // ... | comments2.cs:90:32:90:32 | + | + |
+| comments2.cs:90:46:90:49 | // ... | comments2.cs:90:43:90:43 | b | + |
+| comments2.cs:96:15:96:18 | // ... | comments2.cs:96:11:96:11 | x | x |
+| comments2.cs:97:13:97:16 | // ... | comments2.cs:97:11:97:11 | y | y |
+| comments2.cs:102:5:102:8 | // ... | comments2.cs:103:26:103:26 | D | D |
+| comments2.cs:103:31:104:34 | // ... | comments2.cs:103:26:103:26 | D | D |
+| comments2.cs:106:5:106:8 | // ... | comments2.cs:107:20:107:20 | E | E |
+| comments2.cs:107:23:108:26 | // ... | comments2.cs:107:20:107:20 | E | E |
+| comments2.cs:118:5:118:21 | // ... | comments2.cs:119:11:119:25 | GenericClass<> | GenericClass<> |
+| comments2.cs:121:17:121:20 | // ... | comments2.cs:121:13:121:13 | f | f |
+| comments2.cs:124:5:124:16 | // ... | comments2.cs:125:9:125:20 | GenericFn | GenericFn |
+| comments2.cs:127:20:127:23 | // ... | comments2.cs:127:9:127:18 | ... ...; | x |

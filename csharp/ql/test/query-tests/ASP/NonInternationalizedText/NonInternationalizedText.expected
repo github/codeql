@@ -1,0 +1,2 @@
+| NonInternationalizedTextBad.aspx:5:4:5:11 | Amount:  | This text has not been internationalized. |
+| test.aspx:5:4:5:30 | This text is plain English. | This text has not been internationalized. |

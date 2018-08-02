@@ -1,0 +1,10 @@
+| a.js:1:1:11:1 | <toplevel> |
+| a.js:5:1:6:1 | function f() {\\n} |
+| a.js:9:1:11:1 | functio ... ict';\\n} |
+| b.js:8:1:13:1 | functio ... {\\n  }\\n} |
+| b.js:11:3:12:3 | function h() {\\n  } |
+| b.js:19:4:19:18 | function k() {} |
+| b.js:22:14:22:32 | () { this.x = 42; } |
+| b.js:24:4:24:22 | () { this.x = 23; } |
+| c.js:1:1:7:1 | <toplevel> |
+| c.js:6:1:7:1 | function f() {\\n} |

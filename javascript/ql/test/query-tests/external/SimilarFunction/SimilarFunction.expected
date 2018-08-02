@@ -1,0 +1,4 @@
+| tst.js:1:1:1:18 | functio ...  = x;\\n} | 92% of statements in function f are similar to statements in $@. | tst.js:17:1:17:18 | functio ...  = a;\\n} | function g |
+| tst.js:1:1:1:18 | functio ...  = x;\\n} | 92% of statements in function f are similar to statements in $@. | tst.js:33:9:33:24 | functio ...  = a;\\n} | function h |
+| tst.js:17:1:17:18 | functio ...  = a;\\n} | 92% of statements in function g are similar to statements in $@. | tst.js:1:1:1:18 | functio ...  = x;\\n} | function f |
+| tst.js:33:9:33:24 | functio ...  = a;\\n} | 92% of statements in function h are similar to statements in $@. | tst.js:1:1:1:18 | functio ...  = x;\\n} | function f |

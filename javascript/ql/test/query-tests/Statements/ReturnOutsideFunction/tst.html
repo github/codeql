@@ -1,0 +1,14 @@
+<html>
+<head>
+    <title>Test</title>
+    <script>
+        function validateForm() { return true; }
+    </script>
+</head>
+<body>
+<form name="f" onSubmit="validateForm(this);" action="javascript:return false;" method="post" enctype="multipart/form-data">
+</form>
+<form name="g" onsubmit="return validateForm(this);" method="post">
+</form>
+</body>
+</html>

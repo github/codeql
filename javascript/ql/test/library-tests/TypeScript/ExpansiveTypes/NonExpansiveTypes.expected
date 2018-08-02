@@ -1,0 +1,36 @@
+| After in leading_into_expansion.ts | has properties |
+| AfterX in used_from_expansion.ts | has properties |
+| Array in global scope | has properties |
+| Before in leading_into_expansion.ts | has properties |
+| BeforeX in used_from_expansion.ts | has properties |
+| Box in shared_non_expansive.ts | has properties |
+| Box in through_non_expansive.ts | has properties |
+| C in expansive_class.ts | has properties |
+| ConcatArray in global scope | has properties |
+| Expand in through_non_expansive.ts | has properties |
+| ExpandUsingObjectLiteral in expansive_object_literal.ts | has properties |
+| Expansive in leading_into_expansion.ts | has properties |
+| Expansive in simple.ts | has properties |
+| ExpansiveA in mutual.ts | has properties |
+| ExpansiveA in mutual_multigraph.ts | has properties |
+| ExpansiveB in mutual.ts | has properties |
+| ExpansiveB in mutual_multigraph.ts | has properties |
+| ExpansiveByInference in expansive_by_inference.ts | has properties |
+| ExpansiveC in mutual.ts | has properties |
+| ExpansiveC in mutual_multigraph.ts | has properties |
+| ExpansiveConstructSignature in expansive_signature.ts | has properties |
+| ExpansiveD in mutual.ts | has properties |
+| ExpansiveD in mutual_multigraph.ts | has properties |
+| ExpansiveFunctionType in expansive_signature.ts | has properties |
+| ExpansiveMethod in expansive_signature.ts | has properties |
+| ExpansiveParameter in expansive_signature.ts | has properties |
+| ExpansiveSignature in expansive_signature.ts | has properties |
+| ExpansiveX in used_from_expansion.ts | has properties |
+| Function in global scope | has properties |
+| Intl.CollatorOptions in global scope | has properties |
+| Intl.NumberFormatOptions in global scope | has properties |
+| NonExpansive in shared_non_expansive.ts | has properties |
+| Object in global scope | has properties |
+| RegExp in global scope | has properties |
+| RegExpExecArray in global scope | has properties |
+| RegExpMatchArray in global scope | has properties |

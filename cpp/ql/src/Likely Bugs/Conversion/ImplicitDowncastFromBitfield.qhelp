@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A bitfield may be unintentionally truncated when implicitly cast to an
+integer type storing fewer bits.  This can lead to inaccurate iteration or
+allocation when the bitfield is used to count elements of a data structure, or
+to loss of information stored in the upper portion of the bitfield.</p>
+</overview>
+<recommendation>
+<p>Use the bitfield with a wider integer type, or use an explicit cast if the
+truncation is intended.</p>
+</recommendation>
+
+<example>
+<p>In the following example, a bitfield is accessed both through a method that
+truncates it and through direct field access.  This results in a buffer
+overflow in the for loop.</p>
+
+<sample src="ImplicitDowncastFromBitfield.c" />
+
+</example>
+
+<references>
+<li>
+  <a href="http://en.cppreference.com/w/cpp/language/bit_field">cpp-reference.com: Bit field</a>
+</li>
+<li>
+ <a href="http://en.cppreference.com/w/cpp/language/implicit_conversion">cpp-reference.com: Implicit conversion</a>
+</li>
+<li>
+  <a href="https://cwe.mitre.org/data/definitions/681.html">https://cwe.mitre.org/data/definitions/681.html</a>
+</li>
+</references>
+
+</qhelp>

@@ -1,0 +1,4 @@
+| duplicate_functions.cpp:3:6:3:10 | definition of Void1 | Function Void1 is duplicated at $@. | duplicate_functions.cpp:14:6:14:10 | definition of Void2 | duplicate_functions.cpp:14 |
+| duplicate_functions.cpp:14:6:14:10 | definition of Void2 | Function Void2 is duplicated at $@. | duplicate_functions.cpp:3:6:3:10 | definition of Void1 | duplicate_functions.cpp:3 |
+| duplicate_functions.cpp:25:5:25:8 | definition of Int1 | Function Int1 is duplicated at $@. | duplicate_functions.cpp:37:5:37:8 | definition of Int2 | duplicate_functions.cpp:37 |
+| duplicate_functions.cpp:37:5:37:8 | definition of Int2 | Function Int2 is duplicated at $@. | duplicate_functions.cpp:25:5:25:8 | definition of Int1 | duplicate_functions.cpp:25 |

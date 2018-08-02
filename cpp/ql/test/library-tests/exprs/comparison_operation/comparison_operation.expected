@@ -1,0 +1,20 @@
+| test.cpp:6:6:6:11 | ... == ... | EQExpr |
+| test.cpp:6:6:6:11 | ... == ... | EqualityOperation |
+| test.cpp:7:6:7:11 | ... != ... | EqualityOperation |
+| test.cpp:7:6:7:11 | ... != ... | NEExpr |
+| test.cpp:8:6:8:10 | ... < ... | LTExpr |
+| test.cpp:8:6:8:10 | ... < ... | RelationalOperation |
+| test.cpp:8:6:8:10 | ... < ... | getGreaterOperand() = 1 |
+| test.cpp:8:6:8:10 | ... < ... | getLesserOperand() = x |
+| test.cpp:9:6:9:10 | ... > ... | GTExpr |
+| test.cpp:9:6:9:10 | ... > ... | RelationalOperation |
+| test.cpp:9:6:9:10 | ... > ... | getGreaterOperand() = x |
+| test.cpp:9:6:9:10 | ... > ... | getLesserOperand() = 1 |
+| test.cpp:10:6:10:11 | ... <= ... | LEExpr |
+| test.cpp:10:6:10:11 | ... <= ... | RelationalOperation |
+| test.cpp:10:6:10:11 | ... <= ... | getGreaterOperand() = 1 |
+| test.cpp:10:6:10:11 | ... <= ... | getLesserOperand() = x |
+| test.cpp:11:6:11:11 | ... >= ... | GEExpr |
+| test.cpp:11:6:11:11 | ... >= ... | RelationalOperation |
+| test.cpp:11:6:11:11 | ... >= ... | getGreaterOperand() = x |
+| test.cpp:11:6:11:11 | ... >= ... | getLesserOperand() = 1 |

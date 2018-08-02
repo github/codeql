@@ -1,0 +1,1 @@
+| Test.cs:13:50:13:84 | access to indexer | $@ flows to here and is loaded insecurely as XML (DTD processing is enabled with an insecure resolver). | Test.cs:13:50:13:72 | access to property QueryString | User-provided value |

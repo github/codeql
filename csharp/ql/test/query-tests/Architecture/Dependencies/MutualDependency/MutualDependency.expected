@@ -1,0 +1,1 @@
+| MutualDependencyBad.cs:3:19:3:26 | BadModel | This type and type $@ are mutually dependent. | MutualDependencyBad.cs:25:19:25:25 | BadView | BadView |

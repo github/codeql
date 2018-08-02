@@ -1,0 +1,7 @@
+| methods.cs:145:40:145:40 | c | methods.cs:145:44:145:44 | 1 | 1 |
+| methods.cs:145:51:145:51 | d | methods.cs:145:55:145:55 | 2 | 2 |
+| methods.cs:145:65:145:65 | e | methods.cs:145:69:145:77 | ... + ... | ab |
+| methods.cs:153:45:153:45 | x | methods.cs:153:49:153:53 | "abc" | abc |
+| methods.cs:153:63:153:63 | y | methods.cs:153:67:153:78 | object creation of type Double | 0 |
+| methods.cs:159:36:159:36 | y | methods.cs:159:40:159:40 | 0 | 0 |
+| methods.cs:159:36:159:36 | y | methods.cs:159:40:159:40 | 0 | 0 |

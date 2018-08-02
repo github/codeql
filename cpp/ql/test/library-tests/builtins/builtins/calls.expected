@@ -1,0 +1,4 @@
+| atomic.cpp:3:10:3:27 | call to __atomic_fetch_add_4 |
+| atomic.cpp:8:10:8:27 | call to __atomic_fetch_add_1 |
+| atomic.cpp:13:10:13:29 | call to __atomic_fetch_add_4 |
+| atomic.cpp:18:10:18:29 | call to __atomic_fetch_add_1 |

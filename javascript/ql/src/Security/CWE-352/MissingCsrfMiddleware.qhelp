@@ -1,0 +1,62 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+<overview>
+	<p>
+
+		Websites that rely on cookie-based authentication may be vulnerable to cross-site
+		request forgery (CSRF).  Specifically, a state-changing request should include a
+		secret token so the request can't be forged by an attacker.
+		Otherwise, unwanted requests can be submitted on behalf of a user who visits
+		a malicious website.
+
+	</p>
+	<p>
+
+		This is typically mitigated by embedding a session-specific secret token in each request.
+		This token is then checked as an additional authentication measure.
+		A malicious website should have no way of guessing the correct token to embed in the request.
+
+	</p>
+</overview>
+
+<recommendation>
+	<p>
+
+		Use a middleware package such as <code>csurf</code> to protect against CSRF attacks.
+
+	</p>
+</recommendation>
+
+<example>
+	<p>
+
+		In the example below, the server authenticates users before performing the <code>changeEmail</code> POST action:
+
+	</p>
+
+	<sample src="examples/MissingCsrfMiddlewareBad.js"/>
+
+	<p>
+
+		This is not secure. An attacker can submit a POST <code>changeEmail</code> request on behalf
+		of a user who visited a malicious website.  Since authentication happens without any action from the user,
+		the <code>changeEmail</code> action would be executed, despite not being initiated by the user.
+
+	</p>
+
+	<p>
+
+		This vulnerability can be mitigated by installing a CSRF protecting middleware handler:
+
+	</p>
+
+	<sample src="examples/MissingCsrfMiddlewareGood.js"/>
+</example>
+
+<references>
+	<li>OWASP: <a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)">Cross-Site Request Forgery (CSRF)</a></li>
+</references>
+</qhelp>

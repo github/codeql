@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+It is dangerous to use the result of a virtual method call in pointer arithmetic without validation
+if external users can provide their own implementation of the virtual method. For example, if
+the analyzed project is distributed as a library or framework, then the end-user could provide a new
+implementation that returns any value.
+</p>
+</overview>
+<recommendation>
+<p>
+Always validate the result of virtual methods calls before performing pointer arithmetic to avoid
+reading or writing outside the bounds of an allocated buffer.
+</p>
+</recommendation>
+<example>
+<p>
+In this example, we write to a given element of an array, using an instance of the
+<code>PossiblyOverridableClass</code> to determine which element to write to.
+</p>
+<p>
+In the first case, the <code>GetElementNumber</code> method is called, and the result is used in
+pointer arithmetic without any validation. If the user can define a subtype of
+<code>PossiblyOverridableClass</code>, they can create an implementation of
+<code>GetElementNumber</code> that returns an invalid element number. This would lead to a write
+occurring outside the bounds of the <code>charArray</code>.
+</p>
+<p>
+In the second case, the result of <code>GetElementNumber</code> is stored, and confirmed to be
+within the bounds of the array. Note that it is not sufficient to check that it is smaller than the
+length. We must also ensure that it's greater than zero, to prevent writes to locations before the
+buffer as well as afterwards.
+</p>
+<sample src="LocalUnvalidatedArithmetic.cs" />
+
+</example>
+<references>
+
+<li>Microsoft: <a href="https://msdn.microsoft.com/en-us/library/t2yzs44b.aspx">Unsafe Code and Pointers</a>.</li>
+
+</references>
+</qhelp>

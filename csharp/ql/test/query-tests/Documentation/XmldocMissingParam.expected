@@ -1,0 +1,4 @@
+| documentation.cs:33:28:33:29 | p1 | Parameter should be documented. |
+| documentation.cs:33:36:33:37 | p2 | Parameter should be documented. |
+| documentation.cs:106:39:106:40 | p1 | Parameter should be documented. |
+| documentation.cs:106:47:106:48 | p2 | Parameter should be documented. |

@@ -1,0 +1,10 @@
+# editor and OS artifacts
+*~
+.DS_STORE
+
+# query compilation caches
+.cache
+
+# qltest projects and artifacts
+*/ql/test/**/*.testproj
+*/ql/test/**/*.actual

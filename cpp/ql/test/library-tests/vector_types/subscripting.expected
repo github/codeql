@@ -1,0 +1,8 @@
+| vector_types.cpp:11:17:11:20 | access to array | file://:0:0:0:0 | float | vector_types.cpp:6:15:6:17 | v4f | file://:0:0:0:0 | int |
+| vector_types.cpp:11:23:11:26 | access to array | file://:0:0:0:0 | float | vector_types.cpp:6:15:6:17 | v4f | file://:0:0:0:0 | int |
+| vector_types.cpp:11:29:11:32 | access to array | file://:0:0:0:0 | float | vector_types.cpp:6:15:6:17 | v4f | file://:0:0:0:0 | int |
+| vector_types.cpp:11:35:11:38 | access to array | file://:0:0:0:0 | float | vector_types.cpp:6:15:6:17 | v4f | file://:0:0:0:0 | int |
+| vector_types.cpp:29:37:29:45 | access to array | file://:0:0:0:0 | float | file://:0:0:0:0 | float[4] | file://:0:0:0:0 | int |
+| vector_types.cpp:32:56:32:60 | access to array | file://:0:0:0:0 | float | file://:0:0:0:0 | __attribute((vector_size(8))) float | file://:0:0:0:0 | int |
+| vector_types.cpp:32:63:32:67 | access to array | file://:0:0:0:0 | float | file://:0:0:0:0 | __attribute((vector_size(8))) float | file://:0:0:0:0 | int |
+| vector_types.cpp:36:33:36:42 | access to array | file://:0:0:0:0 | double | file://:0:0:0:0 | double[2] | file://:0:0:0:0 | int |

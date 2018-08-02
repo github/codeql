@@ -1,0 +1,3 @@
+| tst.js:5:2:5:14 | width = width | This expression assigns variable width to itself. |
+| tst.js:24:1:24:19 | array[1] = array[1] | This expression assigns element 1 to itself. |
+| tst.js:27:1:27:9 | o.x = o.x | This expression assigns property x to itself. |

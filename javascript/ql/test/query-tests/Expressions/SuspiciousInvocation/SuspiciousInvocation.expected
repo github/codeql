@@ -1,0 +1,3 @@
+| SuspiciousInvocation.js:11:5:11:58 | error(" ... status) | Callee is not a function: it has type undefined. |
+| namespace.ts:23:1:23:3 | g() | Callee is not a function: it has type object. |
+| super.js:11:5:11:11 | super() | Callee is not a function: it has type number. |

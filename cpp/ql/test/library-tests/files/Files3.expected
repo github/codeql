@@ -1,0 +1,3 @@
+| files1.cpp | files1.cpp:4:6:4:9 | swap |
+| files1.h | files1.cpp:4:6:4:9 | swap |
+| files2.cpp | files2.cpp:3:6:3:6 | g |

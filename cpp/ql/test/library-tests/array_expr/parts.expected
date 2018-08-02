@@ -1,0 +1,4 @@
+| getArrayBase | array_expr.c:3:10:3:12 | arr |
+| getArrayBase | array_expr.c:3:21:3:23 | arr |
+| getArrayOffset | array_expr.c:3:14:3:14 | 0 |
+| getArrayOffset | array_expr.c:3:19:3:19 | 0 |

@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This query finds namespaces that have an abstractness greater than 0.20.</p>
+
+<p>Abstractness measures the proportion of abstract types in
+      a package relative to the total number of types in that package.
+      A highly abstract package (where the metric value is close 1)
+      that is furthermore instable is likely to be useless: the
+      class hierarchy has been over-engineered, and all those
+      abstract types are not heavily used.</p>
+
+</overview>
+<section title="How to Address the Query Results">
+<p>Try to simplify the class hierarchy.</p>
+
+
+
+
+
+</section>
+<references>
+
+</references>
+</qhelp>

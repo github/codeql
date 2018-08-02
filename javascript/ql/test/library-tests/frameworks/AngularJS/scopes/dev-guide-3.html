@@ -1,0 +1,18 @@
+<!-- Adapted from the AngularJS Developer Guide (https://docs.angularjs.org/guide),
+which is licensed under the MIT license; see file LICENSE in parent directory. -->
+<div ng-controller="EventController">
+  Root scope <tt>MyEvent</tt> count: {{count}}
+  <ul>
+    <li ng-repeat="i in [1]" ng-controller="EventController">  <!-- ScopeProperty -->
+      <button ng-click="$emit('MyEvent')">$emit('MyEvent')</button>  <!-- RootScopeProperty -->
+      <button ng-click="$broadcast('MyEvent')">$broadcast('MyEvent')</button> <!-- RootScopeProperty -->
+      <br>
+      Middle scope <tt>MyEvent</tt> count: {{count}} <!-- ScopeProperty -->
+      <ul>
+        <li ng-repeat="item in [1, 2]" ng-controller="EventController">  <!-- ScopeProperty -->
+          Leaf scope <tt>MyEvent</tt> count: {{count}}  <!-- ScopeProperty -->
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>

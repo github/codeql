@@ -1,0 +1,52 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Some statements in JavaScript do not have to be terminated by an explicit semicolon; the parser will
+implicitly insert a semicolon when it encounters a newline character in such situations. This is a
+dangerous feature since it can mask subtle errors and confuse readers; it should not be relied on.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Make the implicitly inserted semicolon explicit.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following code snippet, the programmer most likely intended to return an object literal with
+a single property <code>status</code>.
+</p>
+
+<sample src="examples/SemicolonInsertion.js" />
+
+<p>
+However, since there is a newline after the <code>return</code> keyword, the parser inserts an implicit
+semicolon after <code>return</code>; the object literal is then interpreted as a block containing
+a single statement with the label <code>status</code>. Since it comes right after a <code>return</code>,
+this block is, of course, never executed, and instead of returning an object literal the function
+now returns <code>undefined</code>.
+</p>
+
+<p>
+To fix this bug, the opening curly brace of the object literal should be put on the same line as the
+<code>return</code> keyword:
+</p>
+
+<sample src="examples/SemicolonInsertionGood.js" />
+
+</example>
+<references>
+
+
+<li>D. Crockford, <i>JavaScript: The Good Parts</i>, Appendix A.3. O'Reilly, 2008.</li>
+
+
+</references>
+</qhelp>

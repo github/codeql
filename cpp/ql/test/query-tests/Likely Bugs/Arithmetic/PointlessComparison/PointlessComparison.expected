@@ -1,0 +1,34 @@
+| ConstVirtual.cpp:24:7:24:11 | ... > ... | Comparison is always false because i <= -1. |
+| PointlessComparison.c:7:9:7:14 | ... < ... | Comparison is always true because i <= 15. |
+| PointlessComparison.c:8:9:8:15 | ... <= ... | Comparison is always true because i <= 15. |
+| PointlessComparison.c:9:9:9:14 | ... > ... | Comparison is always false because i <= 15. |
+| PointlessComparison.c:10:9:10:15 | ... >= ... | Comparison is always false because i <= 15. |
+| PointlessComparison.c:11:9:11:15 | ... == ... | Comparison is always false because i <= 15. |
+| PointlessComparison.c:12:9:12:15 | ... != ... | Comparison is always true because i <= 15. |
+| PointlessComparison.c:14:9:14:14 | ... < ... | Comparison is always false because i >= 0. |
+| PointlessComparison.c:15:9:15:15 | ... <= ... | Comparison is always false because i >= 0. |
+| PointlessComparison.c:16:9:16:14 | ... > ... | Comparison is always true because i >= 0. |
+| PointlessComparison.c:17:9:17:15 | ... >= ... | Comparison is always true because i >= 0. |
+| PointlessComparison.c:18:9:18:15 | ... == ... | Comparison is always false because i >= 0. |
+| PointlessComparison.c:19:9:19:15 | ... != ... | Comparison is always true because i >= 0. |
+| PointlessComparison.c:38:9:38:14 | ... < ... | Comparison is always true because i <= 15. |
+| PointlessComparison.c:39:9:39:15 | ... <= ... | Comparison is always true because i <= 15. |
+| PointlessComparison.c:40:9:40:14 | ... > ... | Comparison is always false because i <= 15. |
+| PointlessComparison.c:41:9:41:15 | ... >= ... | Comparison is always false because i <= 15. |
+| PointlessComparison.c:42:9:42:15 | ... == ... | Comparison is always false because i <= 15. |
+| PointlessComparison.c:43:9:43:15 | ... != ... | Comparison is always true because i <= 15. |
+| PointlessComparison.c:45:9:45:14 | ... < ... | Comparison is always false because i >= 0. |
+| PointlessComparison.c:46:9:46:15 | ... <= ... | Comparison is always false because i >= 0. |
+| PointlessComparison.c:47:9:47:14 | ... > ... | Comparison is always true because i >= 0. |
+| PointlessComparison.c:48:9:48:15 | ... >= ... | Comparison is always true because i >= 0. |
+| PointlessComparison.c:49:9:49:15 | ... == ... | Comparison is always false because i >= 0. |
+| PointlessComparison.c:50:9:50:15 | ... != ... | Comparison is always true because i >= 0. |
+| PointlessComparison.c:65:9:65:13 | ... < ... | Comparison is always true because i <= 3. |
+| PointlessComparison.c:103:7:103:11 | ... < ... | Comparison is always false because a >= 0. |
+| PointlessComparison.c:107:18:107:22 | ... < ... | Comparison is always false because c >= 0. |
+| PointlessComparison.c:116:12:116:16 | ... < ... | Comparison is always true because a <= 0 and 6 <= b. |
+| PointlessComparison.c:119:12:119:16 | ... > ... | Comparison is always false because a <= 100 and 106 <= b. |
+| PointlessComparison.c:126:12:126:18 | ... >= ... | Comparison is always true because a >= 20. |
+| PointlessComparison.c:129:12:129:16 | ... > ... | Comparison is always false because a <= 3. |
+| PointlessComparison.c:197:7:197:11 | ... < ... | Comparison is always false because x >= 0. |
+| RegressionTests.cpp:57:7:57:22 | ... <= ... | Comparison is always true because * ... <= 4294967295. |

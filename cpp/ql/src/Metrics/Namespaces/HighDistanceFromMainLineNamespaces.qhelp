@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This query finds namespaces that do not have a good balance between abstractness and stability.</p>
+
+<p>This measure intends to capture the trade-off between abstractness
+      and instability: the ideal situation occurs when the sum of
+      abstractness and instability is one. That is, a package is
+      completely abstract and stable (abstractness=1 and instability=0)
+      or it is concrete and instable (abstractness=0 and instability=1).
+      We thus measure the distance from that ideal situation.</p>
+
+</overview>
+<section title="How to Address the Query Results">
+<p />
+
+
+
+
+
+</section>
+<references>
+
+</references>
+</qhelp>

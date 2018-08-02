@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The purpose of implementing the <code>ICloneable</code> interface is to advertise that 
+instances of your class can be cloned, but there are a number of good reasons why doing so is 
+generally a bad idea.</p>
+
+<p>First, the semantics of <code>ICloneable.Clone()</code> are not well-specified. The 
+documentation states that it "creates a new object that is a copy of the current 
+instance", but it then fails to specify what is meant by "copy". This poses a problem, because 
+there are two general ways in which an object can be copied, either deeply or shallowly (a deep 
+copy clones an object and all the objects it references recursively, whereas a shallow copy only 
+clones the top of the object graph - see example below). Since <code>ICloneable</code> does not 
+specify which type of copying should be performed, different implementing classes tend to pick one 
+or the other arbitrarily, making it impossible to call <code>Clone()</code> with any certainty in 
+general about what will happen - the method is thus useless.</p>
+
+<p>A further problem with <code>ICloneable</code> is that if a class implements it, all of its 
+subtypes must implement it as well, as must all of the types of its members if a deep copy is being 
+implemented. Not only does this make using <code>ICloneable</code> rather viral, but also rather 
+error-prone, because it is very easy to forget to override <code>Clone()</code> in subtypes. As 
+such, using <code>ICloneable</code> is widely discouraged.</p>
+
+</overview>
+<recommendation>
+<p>Define your own <code>Clone()</code> or <code>Copy()</code> methods and document whether they perform deep or shallow copying.</p>
+
+</recommendation>
+<example>
+<sample src="ClassImplementsICloneableBad.cs" />
+
+</example>
+<references>
+
+  <li>MSDN, <a href="https://msdn.microsoft.com/en-us/library/system.icloneable.aspx">ICloneable Interface</a>.</li>
+  <li>B Wagner, <em>Effective C#: 50 Specific Ways to Improve Your C#</em> (Second Edition), Item 32: Avoid ICloneable.</li>
+
+
+</references>
+</qhelp>

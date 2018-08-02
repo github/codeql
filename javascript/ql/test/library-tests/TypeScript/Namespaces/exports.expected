@@ -1,0 +1,10 @@
+| tst.ts:36:20:36:24 | Inner |
+| tst.ts:57:14:57:24 | outerShared |
+| tst.ts:58:14:58:21 | shadowed |
+| tst.ts:60:20:60:24 | Inner |
+| tst.ts:61:16:61:26 | innerShared |
+| tst.ts:62:16:62:23 | shadowed |
+| tst.ts:63:16:63:16 | y |
+| tst.ts:76:16:76:24 | badExport |
+| tst.ts:86:18:86:22 | Inner |
+| tst.ts:92:18:92:28 | NotExported |

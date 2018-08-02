@@ -1,0 +1,24 @@
+| CompareIdenticalValues.cs:16:13:16:27 | ... == ... | Comparison of identical values. |
+| CompareIdenticalValues.cs:17:13:17:27 | ... == ... | Comparison of identical values. |
+| CompareIdenticalValues.cs:25:13:25:18 | ... == ... | Comparison is equivalent to using !double.IsNaN() |
+| CompareIdenticalValues.cs:26:13:26:18 | ... <= ... | Comparison of identical values. |
+| CompareIdenticalValues.cs:27:13:27:18 | ... >= ... | Comparison of identical values. |
+| CompareIdenticalValues.cs:28:13:28:18 | ... != ... | Comparison is equivalent to using double.IsNaN() |
+| CompareIdenticalValues.cs:29:13:29:17 | ... > ... | Comparison of identical values. |
+| CompareIdenticalValues.cs:30:13:30:17 | ... < ... | Comparison of identical values. |
+| CompareIdenticalValues.cs:33:13:33:18 | ... == ... | Comparison is equivalent to using !float.IsNaN() |
+| CompareIdenticalValues.cs:34:13:34:18 | ... <= ... | Comparison of identical values. |
+| CompareIdenticalValues.cs:35:13:35:18 | ... >= ... | Comparison of identical values. |
+| CompareIdenticalValues.cs:36:13:36:18 | ... != ... | Comparison is equivalent to using float.IsNaN() |
+| CompareIdenticalValues.cs:37:13:37:17 | ... > ... | Comparison of identical values. |
+| CompareIdenticalValues.cs:38:13:38:17 | ... < ... | Comparison of identical values. |
+| CompareIdenticalValues.cs:45:9:45:29 | call to method Equals | Comparison of identical values. |
+| CompareIdenticalValues.cs:46:9:46:66 | call to method Equals | Comparison of identical values. |
+| CompareIdenticalValues.cs:50:13:50:27 | ... == ... | Comparison of identical values. |
+| CompareIdenticalValues.cs:51:9:51:20 | call to method Equals | Comparison of identical values. |
+| CompareIdenticalValues.cs:58:13:58:24 | ... == ... | Comparison of identical values. |
+| CompareIdenticalValues.cs:60:13:60:37 | ... == ... | Comparison of identical values. |
+| CompareIdenticalValues.cs:63:13:63:44 | ... == ... | Comparison of identical values. |
+| CompareIdenticalValues.cs:78:9:78:29 | call to method ReferenceEquals | Comparison of identical values. |
+| CompareIdenticalValues.cs:83:9:83:29 | call to method ReferenceEquals | Comparison of identical values. |
+| CompareIdenticalValues.cs:88:9:88:29 | call to method ReferenceEquals | Comparison of identical values. |

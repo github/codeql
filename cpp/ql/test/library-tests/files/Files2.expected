@@ -1,0 +1,8 @@
+| CFile      | C | --- | c.c |
+| CppFile    | - | C++ | files1.cpp |
+| CppFile    | - | C++ | files2.cpp |
+| HeaderFile | - | --- | files1.h |
+| MetricFile | - | --- | files1.h |
+| MetricFile | - | C++ | files1.cpp |
+| MetricFile | - | C++ | files2.cpp |
+| MetricFile | C | --- | c.c |

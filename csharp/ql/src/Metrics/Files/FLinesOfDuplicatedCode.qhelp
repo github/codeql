@@ -1,0 +1,30 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+A file that contains many lines that are duplicated within the code base is problematic
+for a number of reasons.
+</p>
+
+</overview>
+<include src="DuplicationProblems.qhelp" />
+
+<recommendation>
+
+<p>
+Refactor files with lots of duplicated code to extract the common code into
+shared classes and assemblies.
+</p>
+
+</recommendation>
+<references> 
+
+
+<li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Duplicate_code">Duplicate code</a>.</li>
+<li>M. Fowler, <em>Refactoring</em>. Addison-Wesley, 1999.</li>
+
+
+</references>
+</qhelp>

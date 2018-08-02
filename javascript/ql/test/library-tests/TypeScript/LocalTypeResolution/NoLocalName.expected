@@ -1,0 +1,2 @@
+| tst.ts:47:17:47:30 | UnresolvedType | has no local type name (which is ok) |
+| tst.ts:50:15:50:19 | Array | has no local type name (which is ok) |

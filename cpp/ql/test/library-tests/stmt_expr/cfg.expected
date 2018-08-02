@@ -1,0 +1,42 @@
+| 4 | 1 | { ... } | maxint3 | 5 | return ... |
+| 5 | 2 | return ... | ----- | 5 | { ... } |
+| 5 | 3 | { ... } | ----- | 5 | declaration |
+| 5 | 4 | declaration | ----- | 5 | initializer for _a |
+| 5 | 5 | initializer for _a | ----- | 5 | { ... } |
+| 5 | 6 | { ... } | ----- | 5 | declaration |
+| 5 | 7 | declaration | ----- | 5 | initializer for _a |
+| 5 | 8 | initializer for _a | ----- | 5 | a |
+| 5 | 9 | a | ----- | 5 | initializer for _b |
+| 5 | 10 | initializer for _b | ----- | 5 | b |
+| 5 | 11 | b | ----- | 5 | ExprStmt |
+| 5 | 12 | ExprStmt | ----- | 5 | ... ? ... : ... |
+| 5 | 13 | ... ? ... : ... | ----- | 5 | _a |
+| 5 | 14 | _a | ----- | 5 | _b |
+| 5 | 15 | _b | ----- | 5 | ... > ... |
+| 5 | 16 | ... > ... | ----- | 5 | _a |
+| 5 | 16 | ... > ... | ----- | 5 | _b |
+| 5 | 17 | _a | ----- | 5 | (statement expression) |
+| 5 | 17 | _b | ----- | 5 | (statement expression) |
+| 5 | 19 | (statement expression) | ----- | 5 | initializer for _b |
+| 5 | 20 | initializer for _b | ----- | 5 | c |
+| 5 | 21 | c | ----- | 5 | ExprStmt |
+| 5 | 22 | ExprStmt | ----- | 5 | ... ? ... : ... |
+| 5 | 23 | ... ? ... : ... | ----- | 5 | _a |
+| 5 | 24 | _a | ----- | 5 | _b |
+| 5 | 25 | _b | ----- | 5 | ... > ... |
+| 5 | 26 | ... > ... | ----- | 5 | _a |
+| 5 | 26 | ... > ... | ----- | 5 | _b |
+| 5 | 27 | _a | ----- | 5 | (statement expression) |
+| 5 | 27 | _b | ----- | 5 | (statement expression) |
+| 5 | 29 | (statement expression) | ----- | 4 | maxint3 |
+| 10 | 1 | { ... } | g1 | 11 | return ... |
+| 11 | 2 | return ... | ----- | 11 | { ... } |
+| 11 | 3 | { ... } | ----- | 11 | ExprStmt |
+| 11 | 4 | ExprStmt | ----- | 11 | d |
+| 11 | 5 | d | ----- | 11 | call to D |
+| 11 | 6 | call to D | ----- | 11 | (statement expression) |
+| 11 | 7 | (statement expression) | ----- | 10 | g1 |
+| 14 | 1 | { ... } | g2 | 15 | return ... |
+| 15 | 2 | return ... | ----- | 15 | d |
+| 15 | 3 | d | ----- | 15 | call to D |
+| 15 | 4 | call to D | ----- | 14 | g2 |

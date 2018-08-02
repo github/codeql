@@ -1,0 +1,64 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+In JavaScript, primitive values such as numbers and strings are immutable.
+Assigning to a property of a primitive value has, in general, no effect,
+while attempting to manipulate such a property using
+<code>Object.defineProperty</code> will result in a runtime error.
+</p>
+
+<p>
+There is one exception: assigning to a property for which a setter
+has been defined on the corresponding prototype object (such as
+<code>Number.prototype</code> or <code>String.prototype</code>)
+will invoke the setter function.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Carefully examine the assignment in question. A common mistake is
+trying to change the contents of a string by treating it as an array
+of characters and assigning to its elements. This has no effect, since
+strings are immutable in JavaScript. Instead, a new string should be
+created using string concatenation.
+</p>
+
+<p>
+Assignments that rely on setters on prototype objects may work as
+intended, but this behavior is subtle and hard to understand, and
+therefore should be avoided.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following code snippet tries to pad the string <code>s</code>
+to a length divisible by eight by mutating its characters:
+</p>
+
+<sample language="javascript">
+for (var i=s.length; i%8; ++i)
+  s[i] = ' ';
+</sample>
+
+<p>
+This approach will not work because strings are immutable in JavaScript.
+Instead, string concatenation should be used to pad the string:
+</p>
+
+<sample language="javascript">
+for (var i=s.length; i%8; ++i)
+  s += ' ';
+</sample>
+</example>
+
+<references>
+<li>Ecma International, <a href="http://www.ecma-international.org/ecma-262/7.0/#prod-AssignmentExpression">ECMAScript 2016 Language Specification, Section 12.15: Assignment Operators</a>.</li>
+<li>Ecma International, <a href="http://www.ecma-international.org/ecma-262/7.0/#sec-object.defineproperty">ECMAScript 2016 Language Specification, Section 19.1.2.4: Object.defineProperty</a>.</li>
+</references>
+</qhelp>

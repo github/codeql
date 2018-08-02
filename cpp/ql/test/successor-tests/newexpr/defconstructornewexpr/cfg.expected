@@ -1,0 +1,7 @@
+| defconstructornewexpr | defconstructornewexpr.cpp:1:7:1:7 | operator= | 1 | 1 | defconstructornewexpr.cpp:1:7:1:7 | defconstructornewexpr.cpp:1:7:1:7 | defconstructornewexpr.cpp:1:7:1:7 | operator= | <none> |
+| defconstructornewexpr | defconstructornewexpr.cpp:1:7:1:7 | operator= | 1 | 1 | defconstructornewexpr.cpp:1:7:1:7 | defconstructornewexpr.cpp:1:7:1:7 | defconstructornewexpr.cpp:1:7:1:7 | operator= | <none> |
+| defconstructornewexpr | defconstructornewexpr.cpp:3:6:3:6 | f | 3 | 1 | defconstructornewexpr.cpp:3:10:6:1 | defconstructornewexpr.cpp:3:10:6:1 | defconstructornewexpr.cpp:3:10:6:1 | { ... } | 4: ExprStmt |
+| defconstructornewexpr | defconstructornewexpr.cpp:3:6:3:6 | f | 4 | 2 | defconstructornewexpr.cpp:4:2:4:7 | defconstructornewexpr.cpp:4:2:4:7 | defconstructornewexpr.cpp:4:2:4:7 | ExprStmt | 4: new |
+| defconstructornewexpr | defconstructornewexpr.cpp:3:6:3:6 | f | 4 | 3 | defconstructornewexpr.cpp:4:2:4:6 | defconstructornewexpr.cpp:4:2:4:6 | defconstructornewexpr.cpp:4:2:4:6 | new | 5: return ... |
+| defconstructornewexpr | defconstructornewexpr.cpp:3:6:3:6 | f | 5 | 4 | defconstructornewexpr.cpp:5:3:5:9 | defconstructornewexpr.cpp:5:3:5:9 | defconstructornewexpr.cpp:5:3:5:9 | return ... | 5: f |
+| defconstructornewexpr | defconstructornewexpr.cpp:3:6:3:6 | f | 5 | 5 | defconstructornewexpr.cpp:3:6:3:6 | defconstructornewexpr.cpp:3:6:3:6 | defconstructornewexpr.cpp:3:6:3:6 | f | <none> |

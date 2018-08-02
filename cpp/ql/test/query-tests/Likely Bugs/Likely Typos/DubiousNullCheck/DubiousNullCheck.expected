@@ -1,0 +1,4 @@
+| DubiousNullCheck.cpp:13:10:13:17 | & ... | This will only be NULL if p == -8. |
+| DubiousNullCheck.cpp:29:10:29:16 | & ... | This will only be NULL if ptr == -8. |
+| DubiousNullCheck.cpp:31:10:31:18 | & ... | This will only be NULL if ptr == -8. |
+| DubiousNullCheck.cpp:33:10:33:17 | & ... | This will only be NULL if ref == -8. |

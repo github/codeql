@@ -1,0 +1,15 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>If the left hand operand of a null-coalescing operator always evaluates to <code>null</code> the 
+null-coalescing operation is useless. The whole expression will always evaluate to the right hand 
+operand at runtime. This impedes readability and maintainability unnecessarily, by making the code 
+more difficult to read than it should be.</p>
+
+</overview>
+<recommendation>
+<p>Remove the useless null-coalescing expression and any potential dead code associated with it.</p>
+</recommendation>
+</qhelp>

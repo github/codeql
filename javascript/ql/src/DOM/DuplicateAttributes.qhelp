@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+According to the HTML5 standard, an HTML element must not have two or more attributes with
+the same name. If the attribute values are the same, this is most likely harmless, but it
+may indicate a copy-paste mistake.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Inspect the element in question and delete all but one of the redundant attributes.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following HTML snippet contains an anchor element with a redundant <code>href</code>
+attribute:
+</p>
+
+<sample src="examples/DuplicateAttributes.html"/>
+
+<p>
+The redundancy can be resolved by deleting one of the attributes:
+</p>
+
+<sample src="examples/DuplicateAttributesGood.html"/>
+</example>
+
+<references>
+<li>HTML5 Standard: <a href="https://www.w3.org/TR/html5/syntax.html#attributes-0">8.1.2.3 Attributes</a>.</li>
+</references>
+
+</qhelp>

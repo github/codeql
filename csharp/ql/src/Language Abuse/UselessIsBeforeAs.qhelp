@@ -1,0 +1,33 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The C# <code>as</code> operator is equivalent to testing if an object is of a specific type with 
+<code>is</code> and then performing a cast or returning null depending on the result. Performing an 
+<code>is</code> check before calling <code>as</code> is completely redundant because an <code>is
+</code> check is performed twice.</p>
+
+</overview>
+<recommendation>
+<p>Just use <code>as</code> on its own and then perform a null check on the result to determine if 
+the cast was successful. Note in passing that it is no better to replace the 'as' with a cast, 
+since that also does a type test internally.</p>
+
+</recommendation>
+<example>
+<p>In this example two type checks are performed for <code>a</code> against <code>Rectangle</code>.
+</p>
+<sample src="UselessIsBeforeAs.cs" />
+
+<p>Here is the same function performed more efficiently by omitting the extra type check.</p>
+<sample src="UselessIsBeforeAsFix.cs" />
+
+</example>
+<references>
+
+  <li>MSDN: <a href="http://msdn.microsoft.com/en-us/library/scekt9xw(v=vs.71).aspx">is</a></li>
+  <li>MSDN: <a href="http://msdn.microsoft.com/en-us/library/cscsdfbt(v=vs.71).aspx">as</a></li>
+
+</references>
+</qhelp>

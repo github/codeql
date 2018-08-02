@@ -1,0 +1,8 @@
+| 0 | Foo && | p#0 |
+| 0 | const Foo & | p#0 |
+| 6 | Foo | x |
+| 8 | const char * | y |
+| 10 | int | z |
+| 17 | Foo | p#0 |
+| 19 | const char * | p#0 |
+| 21 | int | p#0 |

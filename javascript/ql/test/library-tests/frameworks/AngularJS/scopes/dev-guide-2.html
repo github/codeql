@@ -1,0 +1,12 @@
+<!-- Adapted from the AngularJS Developer Guide (https://docs.angularjs.org/guide),
+which is licensed under the MIT license; see file LICENSE in parent directory. -->
+<div class="show-scope-demo">
+  <div ng-controller="GreetController">
+    Hello {{name}}! <!-- ScopeProperty -->
+  </div>
+  <div ng-controller="ListController">
+    <ol>
+      <li ng-repeat="name in names">{{name}} from {{department}}</li> <!-- ScopeProperty, RootScopeProperty -->
+    </ol>
+  </div>
+</div>

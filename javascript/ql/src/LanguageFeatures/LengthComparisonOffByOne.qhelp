@@ -1,0 +1,47 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Reading an array element from an index that is greater than the array length always returns
+<code>undefined</code>. If the index is compared to the array length using the less-than-or-equal
+operator <code>&lt;=</code> instead of the less-than operator <code>&lt;</code>, the index could be
+out of bounds, which may not be intentional and may adversely affect performance.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Use less-than (<code>&lt;</code>) rather than less-than-or-equal (<code>&lt;=</code>) when comparing
+a potential index against the array length. For loops that iterate over every element in an array,
+use a <code>for...of</code> loop or the <code>forEach</code> method instead of explicitly iterating
+over all indices.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example shows a function that intends to check whether an array <code>a</code>
+contains an element <code>elt</code> by iterating over its elements and comparing them to
+<code>elt</code>. However, the terminating condition of the loop is incorrectly
+specified as <code>i &lt;= a.length</code>, not <code>i &lt; a.length</code>, so <code>elt</code>
+will additionally be compared against the value <code>undefined</code> read from index
+<code>a.length</code>, meaning that the function considers every array to contain
+<code>undefined</code>:
+</p>
+
+<sample src="examples/LengthComparisonOffByOne.js"/>
+
+<p>
+The problem can be fixed by using less-than instead of less-than-or-equals:
+</p>
+
+<sample src="examples/LengthComparisonOffByOneGood.js"/>
+</example>
+
+<references>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/length">Array.length</a></li>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach">Array.forEach</a></li>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of">for...of</a></li>
+</references>
+</qhelp>

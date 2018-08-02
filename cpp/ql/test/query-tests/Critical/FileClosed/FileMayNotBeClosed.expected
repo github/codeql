@@ -1,0 +1,3 @@
+| file.c:8:15:8:19 | call to fopen | The file opened here may not be closed at $@. | file.c:12:13:12:19 | return ... | this exit point |
+| file.c:18:15:18:19 | call to fopen | The file opened here may not be closed at $@. | file.c:22:13:22:24 | return ... | this exit point |
+| file.c:66:5:66:34 | ... = ... | The file opened here may not be closed at $@. | file.c:74:5:74:13 | return ... | this exit point |

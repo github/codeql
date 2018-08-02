@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Most popular JavaScript platforms support <code>const</code> declarations, although this feature is not
+part of the ECMAScript 5 standard. Assigning a new value to a variable that is declared <code>const</code>
+does not result in an error on current platforms, and simply has no effect. Relying on this behavior is
+error-prone, particularly since ECMAScript 2015 prohibits such assignments.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+If the variable genuinely needs to be reassigned, change its declaration from <code>const</code> to
+<code>var</code>, or merge the assignment into the variable declaration, if possible. Otherwise, remove
+the spurious assignment.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, <code>loc</code> is initialized to <code>null</code>, and then set to
+either <code>"here"</code> or <code>"there"</code>, depending on the value of variable <code>dist</code>.
+Most current platforms, however, will ignore the assignments entirely, so <code>loc</code> will retain
+its original value <code>null</code>.
+</p>
+
+<sample src="examples/AssignmentToConst.js" />
+
+<p>
+Instead, the assignments to <code>loc</code> can be merged into its declaration like this:
+</p>
+
+<sample src="examples/AssignmentToConstGood.js" />
+
+</example>
+<references>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/const">const</a>.</li>
+</references>
+</qhelp>

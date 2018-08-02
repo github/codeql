@@ -1,0 +1,7 @@
+| captures.cpp:3:6:3:6 | x | explicit |
+| captures.cpp:3:9:3:12 | (captured this) | explicit |
+| captures.cpp:3:9:3:12 | x | explicit |
+| captures.cpp:10:7:10:7 | (captured this) | implicit |
+| captures.cpp:10:9:10:9 | (captured this) | implicit |
+| captures.cpp:10:9:10:9 | x | implicit |
+| end_pos.cpp:9:17:9:18 | ii | explicit |

@@ -1,0 +1,12 @@
+| methods.cs:118:44:118:55 | call to method ToInt32 | 0 | methods.cs:118:52:118:54 | "0" |
+| methods.cs:127:34:127:52 | call to method Slice | 0 | methods.cs:127:34:127:40 | access to local variable strings |
+| methods.cs:127:34:127:52 | call to method Slice | 1 | methods.cs:127:48:127:48 | 1 |
+| methods.cs:127:34:127:52 | call to method Slice | 2 | methods.cs:127:51:127:51 | 2 |
+| methods.cs:129:42:129:52 | call to method ToInt32 | 0 | methods.cs:129:42:129:42 | access to local variable s |
+| methods.cs:132:13:132:34 | call to method ToInt32 | 0 | methods.cs:132:32:132:33 | "" |
+| methods.cs:132:13:132:34 | call to method ToInt32 | -1 | methods.cs:132:13:132:22 | access to type Extensions |
+| methods.cs:134:13:134:49 | call to method ToBool | 0 | methods.cs:134:31:134:36 | "true" |
+| methods.cs:134:13:134:49 | call to method ToBool | 1 | methods.cs:134:39:134:48 | delegate creation of type Func<String,Boolean> |
+| methods.cs:134:13:134:49 | call to method ToBool | -1 | methods.cs:134:13:134:22 | access to type Extensions |
+| methods.cs:180:20:180:39 | call to method SkipTwo | 0 | methods.cs:180:20:180:23 | access to parameter list |
+| methods.cs:180:20:180:39 | call to method SkipTwo | 1 | methods.cs:180:38:180:38 | access to parameter i |

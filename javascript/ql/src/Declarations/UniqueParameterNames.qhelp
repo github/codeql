@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+In non-strict mode, JavaScript allows a function to have several parameters with the same name, where
+later parameters shadow earlier parameters. This is an error-prone feature which makes code hard to
+understand and should be avoided.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Rename the parameters to have different names.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, function <code>f</code> has two parameters named <code>x</code>, the
+second one presumably being a typo for <code>y</code>. Since no parameter <code>y</code> is declared,
+the use of <code>y</code> in the body of <code>f</code> refers to a global variable of that name, if
+it exists.
+</p>
+
+<sample src="examples/UniqueParameterNames.js" />
+
+<p>
+Duplicate parameter names are illegal in strict mode.
+</p>
+
+</example>
+<references>
+
+
+<li>Ecma International, <i>ECMAScript Language Definition</i>, 5.1 Edition, Annex C. ECMA, 2011.</li>
+
+
+</references>
+</qhelp>

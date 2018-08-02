@@ -1,0 +1,15 @@
+/**
+ * @name Class hierarchies
+ * @description Shows classes and their base classes.
+ * @kind graph
+ * @id cpp/architecture/class-hierarchies
+ * @graph.layout organic
+ * @workingset jhotdraw
+ * @result succeed 48
+ * @result_ondemand succeed 48
+ */
+import cpp
+
+from Class s
+where s.fromSource()
+select s, s.getABaseClass()

@@ -1,0 +1,12 @@
+{
+  "babel": {
+    "plugins": [
+      ["babel-plugin-root-import", [{
+          "rootPathSuffix": "src/js"
+        }, {
+          "rootPathPrefix": "#",
+          "rootPathSuffix": "../tst1"
+        }]]
+    ]
+  }
+}

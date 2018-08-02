@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This metric measures the amount of time (in milliseconds) spent compiling a C/C++ file, including time spent processing all files included by the pre-processor.</p>
+
+<p>Files that take too long to build usually have too many includes. </p>
+
+</overview>
+<recommendation>
+<p>Files that take a long time to build should be checked to see if they are including only the necessary files in order to reduce build time.</p>
+
+</recommendation>
+<references>
+
+<li>
+  <a href="http://msdn.microsoft.com/en-us/library/36k2cdd4%28v=VS.80%29.aspx">The #include Directive</a>
+</li>
+<li>
+  <a href="http://gcc.gnu.org/onlinedocs/cpp/Include-Operation.html#Include-Operation">Include operation</a>
+</li>
+<li>
+  <a href="http://www.drdobbs.com/cpp/c-compilation-speed/228701711">C++ Compilation Speed</a>
+</li>
+
+
+</references>
+</qhelp>

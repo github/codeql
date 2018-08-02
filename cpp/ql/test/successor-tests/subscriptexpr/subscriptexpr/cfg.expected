@@ -1,0 +1,33 @@
+| revsubscriptexpr | revsubscriptexpr.c:1:6:1:6 | g | 1 | 1 | revsubscriptexpr.c:1:10:5:1 | revsubscriptexpr.c:1:10:5:1 | revsubscriptexpr.c:1:10:5:1 | { ... } | 2: declaration |
+| revsubscriptexpr | revsubscriptexpr.c:1:6:1:6 | g | 2 | 1 | revsubscriptexpr.c:2:11:2:11 | revsubscriptexpr.c:2:11:2:11 | revsubscriptexpr.c:2:11:2:11 | 5 | <none> |
+| revsubscriptexpr | revsubscriptexpr.c:1:6:1:6 | g | 2 | 2 | revsubscriptexpr.c:2:2:2:13 | revsubscriptexpr.c:2:2:2:13 | revsubscriptexpr.c:2:2:2:13 | declaration | 3: declaration |
+| revsubscriptexpr | revsubscriptexpr.c:1:6:1:6 | g | 3 | 3 | revsubscriptexpr.c:3:2:3:13 | revsubscriptexpr.c:3:2:3:13 | revsubscriptexpr.c:3:2:3:13 | declaration | 4: ExprStmt |
+| revsubscriptexpr | revsubscriptexpr.c:1:6:1:6 | g | 4 | 1 | revsubscriptexpr.c:4:6:4:12 | revsubscriptexpr.c:4:6:4:12 | revsubscriptexpr.c:4:6:4:12 | (...) | <none> |
+| revsubscriptexpr | revsubscriptexpr.c:1:6:1:6 | g | 4 | 1 | revsubscriptexpr.c:4:6:4:15 | revsubscriptexpr.c:4:6:4:15 | revsubscriptexpr.c:4:6:4:15 | (int)... | <none> |
+| revsubscriptexpr | revsubscriptexpr.c:1:6:1:6 | g | 4 | 1 | revsubscriptexpr.c:4:14:4:14 | revsubscriptexpr.c:4:14:4:14 | revsubscriptexpr.c:4:14:4:14 | array to pointer conversion | <none> |
+| revsubscriptexpr | revsubscriptexpr.c:1:6:1:6 | g | 4 | 4 | revsubscriptexpr.c:4:2:4:16 | revsubscriptexpr.c:4:2:4:16 | revsubscriptexpr.c:4:2:4:16 | ExprStmt | 4: x |
+| revsubscriptexpr | revsubscriptexpr.c:1:6:1:6 | g | 4 | 5 | revsubscriptexpr.c:4:14:4:14 | revsubscriptexpr.c:4:14:4:14 | revsubscriptexpr.c:4:14:4:14 | x | 4: a |
+| revsubscriptexpr | revsubscriptexpr.c:1:6:1:6 | g | 4 | 6 | revsubscriptexpr.c:4:7:4:7 | revsubscriptexpr.c:4:7:4:7 | revsubscriptexpr.c:4:7:4:7 | a | 4: b |
+| revsubscriptexpr | revsubscriptexpr.c:1:6:1:6 | g | 4 | 7 | revsubscriptexpr.c:4:11:4:11 | revsubscriptexpr.c:4:11:4:11 | revsubscriptexpr.c:4:11:4:11 | b | 4: ... + ... |
+| revsubscriptexpr | revsubscriptexpr.c:1:6:1:6 | g | 4 | 8 | revsubscriptexpr.c:4:7:4:11 | revsubscriptexpr.c:4:7:4:11 | revsubscriptexpr.c:4:7:4:11 | ... + ... | 4: access to array |
+| revsubscriptexpr | revsubscriptexpr.c:1:6:1:6 | g | 4 | 9 | revsubscriptexpr.c:4:6:4:15 | revsubscriptexpr.c:4:6:4:15 | revsubscriptexpr.c:4:6:4:15 | access to array | 4: i |
+| revsubscriptexpr | revsubscriptexpr.c:1:6:1:6 | g | 4 | 10 | revsubscriptexpr.c:4:2:4:2 | revsubscriptexpr.c:4:2:4:2 | revsubscriptexpr.c:4:2:4:2 | i | 4: ... = ... |
+| revsubscriptexpr | revsubscriptexpr.c:1:6:1:6 | g | 4 | 11 | revsubscriptexpr.c:4:2:4:15 | revsubscriptexpr.c:4:2:4:15 | revsubscriptexpr.c:4:2:4:15 | ... = ... | 5: return ... |
+| revsubscriptexpr | revsubscriptexpr.c:1:6:1:6 | g | 5 | 12 | revsubscriptexpr.c:5:1:5:1 | revsubscriptexpr.c:5:1:5:1 | revsubscriptexpr.c:5:1:5:1 | return ... | 5: g |
+| revsubscriptexpr | revsubscriptexpr.c:1:6:1:6 | g | 5 | 13 | revsubscriptexpr.c:1:6:1:6 | revsubscriptexpr.c:1:6:1:6 | revsubscriptexpr.c:1:6:1:6 | g | <none> |
+| subscriptexpr | subscriptexpr.c:1:6:1:6 | f | 1 | 1 | subscriptexpr.c:1:10:5:1 | subscriptexpr.c:1:10:5:1 | subscriptexpr.c:1:10:5:1 | { ... } | 2: declaration |
+| subscriptexpr | subscriptexpr.c:1:6:1:6 | f | 2 | 1 | subscriptexpr.c:2:11:2:11 | subscriptexpr.c:2:11:2:11 | subscriptexpr.c:2:11:2:11 | 5 | <none> |
+| subscriptexpr | subscriptexpr.c:1:6:1:6 | f | 2 | 2 | subscriptexpr.c:2:2:2:13 | subscriptexpr.c:2:2:2:13 | subscriptexpr.c:2:2:2:13 | declaration | 3: declaration |
+| subscriptexpr | subscriptexpr.c:1:6:1:6 | f | 3 | 3 | subscriptexpr.c:3:2:3:13 | subscriptexpr.c:3:2:3:13 | subscriptexpr.c:3:2:3:13 | declaration | 4: ExprStmt |
+| subscriptexpr | subscriptexpr.c:1:6:1:6 | f | 4 | 1 | subscriptexpr.c:4:6:4:6 | subscriptexpr.c:4:6:4:6 | subscriptexpr.c:4:6:4:6 | array to pointer conversion | <none> |
+| subscriptexpr | subscriptexpr.c:1:6:1:6 | f | 4 | 1 | subscriptexpr.c:4:6:4:13 | subscriptexpr.c:4:6:4:13 | subscriptexpr.c:4:6:4:13 | (int)... | <none> |
+| subscriptexpr | subscriptexpr.c:1:6:1:6 | f | 4 | 4 | subscriptexpr.c:4:2:4:14 | subscriptexpr.c:4:2:4:14 | subscriptexpr.c:4:2:4:14 | ExprStmt | 4: x |
+| subscriptexpr | subscriptexpr.c:1:6:1:6 | f | 4 | 5 | subscriptexpr.c:4:6:4:6 | subscriptexpr.c:4:6:4:6 | subscriptexpr.c:4:6:4:6 | x | 4: a |
+| subscriptexpr | subscriptexpr.c:1:6:1:6 | f | 4 | 6 | subscriptexpr.c:4:8:4:8 | subscriptexpr.c:4:8:4:8 | subscriptexpr.c:4:8:4:8 | a | 4: b |
+| subscriptexpr | subscriptexpr.c:1:6:1:6 | f | 4 | 7 | subscriptexpr.c:4:12:4:12 | subscriptexpr.c:4:12:4:12 | subscriptexpr.c:4:12:4:12 | b | 4: ... + ... |
+| subscriptexpr | subscriptexpr.c:1:6:1:6 | f | 4 | 8 | subscriptexpr.c:4:8:4:12 | subscriptexpr.c:4:8:4:12 | subscriptexpr.c:4:8:4:12 | ... + ... | 4: access to array |
+| subscriptexpr | subscriptexpr.c:1:6:1:6 | f | 4 | 9 | subscriptexpr.c:4:6:4:13 | subscriptexpr.c:4:6:4:13 | subscriptexpr.c:4:6:4:13 | access to array | 4: i |
+| subscriptexpr | subscriptexpr.c:1:6:1:6 | f | 4 | 10 | subscriptexpr.c:4:2:4:2 | subscriptexpr.c:4:2:4:2 | subscriptexpr.c:4:2:4:2 | i | 4: ... = ... |
+| subscriptexpr | subscriptexpr.c:1:6:1:6 | f | 4 | 11 | subscriptexpr.c:4:2:4:13 | subscriptexpr.c:4:2:4:13 | subscriptexpr.c:4:2:4:13 | ... = ... | 5: return ... |
+| subscriptexpr | subscriptexpr.c:1:6:1:6 | f | 5 | 12 | subscriptexpr.c:5:1:5:1 | subscriptexpr.c:5:1:5:1 | subscriptexpr.c:5:1:5:1 | return ... | 5: f |
+| subscriptexpr | subscriptexpr.c:1:6:1:6 | f | 5 | 13 | subscriptexpr.c:1:6:1:6 | subscriptexpr.c:1:6:1:6 | subscriptexpr.c:1:6:1:6 | f | <none> |

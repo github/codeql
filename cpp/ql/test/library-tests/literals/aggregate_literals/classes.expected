@@ -1,0 +1,16 @@
+| aggregate_literals.c:17:31:20:5 | {...} | aggregate_literals.c:1:8:1:17 | someStruct | aggregate_literals.c:2:9:2:9 | i | aggregate_literals.c:18:14:18:18 | ... + ... |
+| aggregate_literals.c:17:31:20:5 | {...} | aggregate_literals.c:1:8:1:17 | someStruct | aggregate_literals.c:3:9:3:9 | j | aggregate_literals.c:18:14:18:18 | ... + ... |
+| aggregate_literals.c:22:31:22:47 | {...} | aggregate_literals.c:1:8:1:17 | someStruct | aggregate_literals.c:2:9:2:9 | i | aggregate_literals.c:22:34:22:38 | ... + ... |
+| aggregate_literals.c:22:31:22:47 | {...} | aggregate_literals.c:1:8:1:17 | someStruct | aggregate_literals.c:3:9:3:9 | j | aggregate_literals.c:22:41:22:45 | ... - ... |
+| aggregate_literals.c:24:31:24:44 | {...} | aggregate_literals.c:1:8:1:17 | someStruct | aggregate_literals.c:2:9:2:9 | i | aggregate_literals.c:24:32:24:36 | ... + ... |
+| aggregate_literals.c:24:31:24:44 | {...} | aggregate_literals.c:1:8:1:17 | someStruct | aggregate_literals.c:3:9:3:9 | j | aggregate_literals.c:24:39:24:43 | ... - ... |
+| aggregate_literals.c:24:47:24:60 | {...} | aggregate_literals.c:1:8:1:17 | someStruct | aggregate_literals.c:2:9:2:9 | i | aggregate_literals.c:24:48:24:52 | ... * ... |
+| aggregate_literals.c:24:47:24:60 | {...} | aggregate_literals.c:1:8:1:17 | someStruct | aggregate_literals.c:3:9:3:9 | j | aggregate_literals.c:24:55:24:59 | ... / ... |
+| aggregate_literals.c:26:31:26:36 | {...} | aggregate_literals.c:1:8:1:17 | someStruct | aggregate_literals.c:2:9:2:9 | i | aggregate_literals.c:26:34:26:34 | x |
+| aggregate_literals.c:36:29:36:34 | {...} | aggregate_literals.c:11:7:11:15 | someUnion | aggregate_literals.c:12:9:12:9 | n | aggregate_literals.c:36:32:36:32 | x |
+| aggregate_literals_cpp.cpp:23:29:23:40 | {...} | aggregate_literals_cpp.cpp:1:8:1:26 | StructWithBitfields | aggregate_literals_cpp.cpp:4:18:4:18 | a | aggregate_literals_cpp.cpp:23:32:23:32 | x |
+| aggregate_literals_cpp.cpp:23:29:23:40 | {...} | aggregate_literals_cpp.cpp:1:8:1:26 | StructWithBitfields | aggregate_literals_cpp.cpp:8:18:8:18 | b | aggregate_literals_cpp.cpp:23:35:23:35 | y |
+| aggregate_literals_cpp.cpp:23:29:23:40 | {...} | aggregate_literals_cpp.cpp:1:8:1:26 | StructWithBitfields | aggregate_literals_cpp.cpp:10:18:10:18 | c | aggregate_literals_cpp.cpp:23:38:23:38 | z |
+| aggregate_literals_cpp.cpp:24:29:24:37 | {...} | aggregate_literals_cpp.cpp:1:8:1:26 | StructWithBitfields | aggregate_literals_cpp.cpp:4:18:4:18 | a | aggregate_literals_cpp.cpp:24:32:24:32 | x |
+| aggregate_literals_cpp.cpp:24:29:24:37 | {...} | aggregate_literals_cpp.cpp:1:8:1:26 | StructWithBitfields | aggregate_literals_cpp.cpp:8:18:8:18 | b | aggregate_literals_cpp.cpp:24:35:24:35 | y |
+| aggregate_literals_cpp.cpp:26:26:26:31 | {...} | aggregate_literals_cpp.cpp:13:7:13:22 | UnionWithMethods | aggregate_literals_cpp.cpp:18:12:18:12 | d | aggregate_literals_cpp.cpp:26:29:26:29 | x |

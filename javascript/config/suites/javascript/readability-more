@@ -1,0 +1,5 @@
++ semmlecode-javascript-queries/Declarations/DeclBeforeUse.ql: /Readability/Declarations
++ semmlecode-javascript-queries/Declarations/RedeclaredVariable.ql: /Readability/Declarations
++ semmlecode-javascript-queries/Declarations/TooManyParameters.ql: /Readability/Declarations
++ semmlecode-javascript-queries/LanguageFeatures/EmptyArrayInit.ql: /Readability/Language Features
++ semmlecode-javascript-queries/RegExp/BackspaceEscape.ql: /Readability/Regular Expressions

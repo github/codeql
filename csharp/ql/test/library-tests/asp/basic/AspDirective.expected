@@ -1,0 +1,7 @@
+| script.aspx:1:1:1:75 | <%@Page ...%> | ClassName | script.aspx:1:60:1:72 | "Test.Script" |
+| script.aspx:1:1:1:75 | <%@Page ...%> | Inherits | script.aspx:1:33:1:48 | "CodeBehindPage" |
+| script.aspx:1:1:1:75 | <%@Page ...%> | Language | script.aspx:1:19:1:22 | "C#" |
+| test.aspx:1:1:1:56 | <%@Page ...%> | Inherits | test.aspx:1:33:1:53 | "Test.CodeBehindPage" |
+| test.aspx:1:1:1:56 | <%@Page ...%> | Language | test.aspx:1:19:1:22 | "C#" |
+| userControl.ascx:1:1:1:51 | <%@Control ...%> | AutoEventWireup | userControl.ascx:1:43:1:48 | "true" |
+| userControl.ascx:1:1:1:51 | <%@Control ...%> | Language | userControl.ascx:1:22:1:25 | "C#" |

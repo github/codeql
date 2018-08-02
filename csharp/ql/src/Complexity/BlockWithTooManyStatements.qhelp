@@ -1,0 +1,20 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Some blocks of code have too many complex statements (branching statements and loops). These blocks are prime candidates for 
+refactoring.</p>
+
+</overview>
+<recommendation>
+<p>Consider whether it would be better to extract some of the complex statements to their own methods.</p>
+
+</recommendation>
+<references>
+
+  <li>William C. Wake, <em>Refactoring Workbook</em>, Addison-Wesley Professional, 2004.</li>
+  <li>Martin Fowler, <em>Refactoring: Improving the Design of Existing Code</em>, Addison-Wesley Professional, 1999.</li>
+
+</references>
+</qhelp>

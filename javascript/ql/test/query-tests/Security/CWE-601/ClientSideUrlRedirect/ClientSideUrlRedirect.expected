@@ -1,0 +1,9 @@
+| tst2.js:4:21:4:55 | href.su ... '?')+1) | Untrusted URL redirection due to $@. | tst2.js:4:21:4:55 | href.su ... '?')+1) | user-provided value |
+| tst6.js:4:21:4:28 | redirect | Untrusted URL redirection due to $@. | tst6.js:2:18:2:45 | $locati ... irect') | user-provided value |
+| tst6.js:6:17:6:24 | redirect | Untrusted URL redirection due to $@. | tst6.js:2:18:2:45 | $locati ... irect') | user-provided value |
+| tst6.js:8:21:8:56 | $locati ... + "foo" | Untrusted URL redirection due to $@. | tst6.js:8:21:8:48 | $locati ... irect') | user-provided value |
+| tst7.js:2:12:2:35 | documen ... .search | Untrusted URL redirection due to $@. | tst7.js:2:12:2:35 | documen ... .search | user-provided value |
+| tst7.js:5:27:5:50 | documen ... .search | Untrusted URL redirection due to $@. | tst7.js:5:27:5:50 | documen ... .search | user-provided value |
+| tst9.js:2:21:2:55 | documen ... ring(1) | Untrusted URL redirection due to $@. | tst9.js:2:21:2:42 | documen ... on.hash | user-provided value |
+| tst9.js:2:21:2:55 | documen ... ring(1) | Untrusted URL redirection due to $@. | tst9.js:2:21:2:55 | documen ... ring(1) | user-provided value |
+| tst.js:2:19:2:72 | /.*redi ... ref)[1] | Untrusted URL redirection due to $@. | tst.js:2:19:2:69 | /.*redi ... n.href) | user-provided value |

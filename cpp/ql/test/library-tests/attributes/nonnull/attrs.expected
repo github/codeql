@@ -1,0 +1,4 @@
+| nonnull.c:3:28:3:34 | nonnull | 1 |
+| nonnull.c:3:28:3:34 | nonnull | 2 |
+| nonnull.c:6:28:6:34 | nonnull | empty argument |
+| nonnull.c:9:28:9:34 | nonnull | <none> |

@@ -1,0 +1,9 @@
+| A.cs:85:31:85:39 | access to local variable do_maybe1 | Variable $@ may be null here. | A.cs:82:16:82:24 | do_maybe1 | do_maybe1 |
+| A.cs:92:31:92:38 | access to local variable do_maybe | Variable $@ may be null here. | A.cs:89:16:89:23 | do_maybe | do_maybe |
+| A.cs:120:31:120:41 | access to local variable while_maybe | Variable $@ may be null here. | A.cs:117:16:117:26 | while_maybe | while_maybe |
+| A.cs:158:27:158:34 | access to local variable if_maybe | Variable $@ may be null here. | A.cs:153:16:153:23 | if_maybe | if_maybe |
+| A.cs:180:31:180:39 | access to local variable for_maybe | Variable $@ may be null here. | A.cs:178:21:178:29 | for_maybe | for_maybe |
+| Forwarding.cs:36:31:36:31 | access to local variable s | Variable $@ may be null here. | Forwarding.cs:7:16:7:16 | s | s |
+| Forwarding.cs:40:27:40:27 | access to local variable s | Variable $@ may be null here. | Forwarding.cs:7:16:7:16 | s | s |
+| GuardedString.cs:35:31:35:31 | access to local variable s | Variable $@ may be null here. | GuardedString.cs:7:16:7:16 | s | s |
+| StringConcatenation.cs:16:17:16:17 | access to local variable s | Variable $@ may be null here. | StringConcatenation.cs:14:16:14:16 | s | s |

@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Explicitly forcing garbage collection is not efficient and is almost never necessary outside of 
+benchmarking scenarios.</p>
+
+</overview>
+<recommendation>
+<p>Remove the explicit call to <code>GC.Collect()</code> and run a memory profiler to optimize your 
+application's memory usage. If your application uses unmanaged resources and calls <code>
+GC.Collect()</code> to force finalizers to run, it is better to implement the <code>IDisposable
+</code> pattern and use <code>try</code>/<code>finally</code> clauses to make sure that unmanaged
+resources are disposed of even if an exception interrupts your application.</p>
+
+</recommendation>
+<example>
+<sample src="CallToGCCollectBad.cs" />
+
+</example>
+<references>
+
+  <li>MSDN: <a href="http://msdn.microsoft.com/en-us/library/system.idisposable.aspx">The IDisposable interface</a>.</li>
+  <li>Microsoft: <a href="https://docs.microsoft.com/en-us/visualstudio/profiling/memory-usage">Profile Memory Usage in Visual Studio</a>.</li>
+
+</references>
+</qhelp>

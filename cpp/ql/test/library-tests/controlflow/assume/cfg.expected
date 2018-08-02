@@ -1,0 +1,110 @@
+| simple | f | 2 | 1 | simple.cpp:2:6:2:6 | f | <none> |
+| simple | g | 3 | 1 | simple.cpp:3:6:3:6 | g | <none> |
+| simple | h | 4 | 4 | simple.cpp:4:6:4:6 | h | <none> |
+| simple | h | 5 | 1 | simple.cpp:5:1:11:1 | { ... } | ExprStmt |
+| simple | h | 6 | 2 | simple.cpp:6:2:6:5 | ExprStmt | call to f |
+| simple | h | 6 | 3 | simple.cpp:6:2:6:2 | call to f | ExprStmt |
+| simple | h | 8 | 1 | simple.cpp:8:11:8:11 | 0 | <none> |
+| simple | h | 8 | 1 | simple.cpp:8:11:8:11 | (bool)... | <none> |
+| simple | h | 8 | 4 | simple.cpp:8:2:8:13 | ExprStmt | __assume(...) |
+| simple | h | 8 | 5 | simple.cpp:8:2:8:12 | __assume(...) | <none> |
+| simple | h | 10 | 1 | simple.cpp:10:2:10:5 | ExprStmt | call to g |
+| simple | h | 10 | 2 | simple.cpp:10:2:10:2 | call to g | return ... |
+| simple | h | 11 | 3 | simple.cpp:11:1:11:1 | return ... | h |
+| simple | i | 12 | 1 | simple.cpp:12:6:12:6 | i | <none> |
+| simple | j | 13 | 1 | simple.cpp:13:6:13:6 | j | <none> |
+| simple | k | 14 | 4 | simple.cpp:14:6:14:6 | k | <none> |
+| simple | k | 15 | 1 | simple.cpp:15:1:19:1 | { ... } | ExprStmt |
+| simple | k | 16 | 2 | simple.cpp:16:2:16:5 | ExprStmt | call to i |
+| simple | k | 16 | 3 | simple.cpp:16:2:16:2 | call to i | ExprStmt |
+| simple | k | 17 | 4 | simple.cpp:17:2:17:5 | ExprStmt | call to h |
+| simple | k | 17 | 5 | simple.cpp:17:2:17:2 | call to h | <none> |
+| simple | k | 18 | 1 | simple.cpp:18:2:18:5 | ExprStmt | call to j |
+| simple | k | 18 | 2 | simple.cpp:18:2:18:2 | call to j | return ... |
+| simple | k | 19 | 3 | simple.cpp:19:1:19:1 | return ... | k |
+| switch | doThing | 2 | 1 | switch.cpp:2:6:2:12 | doThing | <none> |
+| switch | switchTest1 | 4 | 37 | switch.cpp:4:6:4:16 | switchTest1 | <none> |
+| switch | switchTest1 | 5 | 1 | switch.cpp:5:1:30:1 | { ... } | declaration |
+| switch | switchTest1 | 6 | 2 | switch.cpp:6:2:6:10 | declaration | declaration |
+| switch | switchTest1 | 7 | 3 | switch.cpp:7:2:7:10 | declaration | switch (...) ...  |
+| switch | switchTest1 | 9 | 4 | switch.cpp:9:2:27:2 | switch (...) ...  | i |
+| switch | switchTest1 | 9 | 5 | switch.cpp:9:10:9:10 | i | { ... } |
+| switch | switchTest1 | 9 | 6 | switch.cpp:9:13:27:2 | { ... } | case ...: |
+| switch | switchTest1 | 9 | 6 | switch.cpp:9:13:27:2 | { ... } | default:  |
+| switch | switchTest1 | 10 | 1 | switch.cpp:10:8:10:8 | 1 | <none> |
+| switch | switchTest1 | 10 | 7 | switch.cpp:10:3:10:9 | case ...: | ExprStmt |
+| switch | switchTest1 | 11 | 8 | switch.cpp:11:4:11:16 | ExprStmt | ptr |
+| switch | switchTest1 | 11 | 9 | switch.cpp:11:12:11:14 | ptr | call to doThing |
+| switch | switchTest1 | 11 | 10 | switch.cpp:11:4:11:10 | call to doThing | ExprStmt |
+| switch | switchTest1 | 12 | 11 | switch.cpp:12:4:12:12 | ExprStmt | x |
+| switch | switchTest1 | 12 | 12 | switch.cpp:12:11:12:11 | x | & ... |
+| switch | switchTest1 | 12 | 13 | switch.cpp:12:10:12:11 | & ... | ptr |
+| switch | switchTest1 | 12 | 14 | switch.cpp:12:4:12:6 | ptr | ... = ... |
+| switch | switchTest1 | 12 | 15 | switch.cpp:12:4:12:11 | ... = ... | ExprStmt |
+| switch | switchTest1 | 13 | 16 | switch.cpp:13:4:13:16 | ExprStmt | ptr |
+| switch | switchTest1 | 13 | 17 | switch.cpp:13:12:13:14 | ptr | call to doThing |
+| switch | switchTest1 | 13 | 18 | switch.cpp:13:4:13:10 | call to doThing | return ... |
+| switch | switchTest1 | 14 | 19 | switch.cpp:14:4:14:10 | return ... | switchTest1 |
+| switch | switchTest1 | 15 | 1 | switch.cpp:15:8:15:8 | 2 | <none> |
+| switch | switchTest1 | 15 | 7 | switch.cpp:15:3:15:9 | case ...: | ExprStmt |
+| switch | switchTest1 | 16 | 8 | switch.cpp:16:4:16:16 | ExprStmt | ptr |
+| switch | switchTest1 | 16 | 9 | switch.cpp:16:12:16:14 | ptr | call to doThing |
+| switch | switchTest1 | 16 | 10 | switch.cpp:16:4:16:10 | call to doThing | ExprStmt |
+| switch | switchTest1 | 17 | 11 | switch.cpp:17:4:17:12 | ExprStmt | y |
+| switch | switchTest1 | 17 | 12 | switch.cpp:17:11:17:11 | y | & ... |
+| switch | switchTest1 | 17 | 13 | switch.cpp:17:10:17:11 | & ... | ptr |
+| switch | switchTest1 | 17 | 14 | switch.cpp:17:4:17:6 | ptr | ... = ... |
+| switch | switchTest1 | 17 | 15 | switch.cpp:17:4:17:11 | ... = ... | ExprStmt |
+| switch | switchTest1 | 18 | 16 | switch.cpp:18:4:18:16 | ExprStmt | ptr |
+| switch | switchTest1 | 18 | 17 | switch.cpp:18:12:18:14 | ptr | call to doThing |
+| switch | switchTest1 | 18 | 18 | switch.cpp:18:4:18:10 | call to doThing | return ... |
+| switch | switchTest1 | 19 | 19 | switch.cpp:19:4:19:10 | return ... | switchTest1 |
+| switch | switchTest1 | 20 | 7 | switch.cpp:20:3:20:10 | default:  | ExprStmt |
+| switch | switchTest1 | 21 | 1 | switch.cpp:21:13:21:13 | 0 | <none> |
+| switch | switchTest1 | 21 | 1 | switch.cpp:21:13:21:13 | (bool)... | <none> |
+| switch | switchTest1 | 21 | 8 | switch.cpp:21:4:21:15 | ExprStmt | __assume(...) |
+| switch | switchTest1 | 21 | 9 | switch.cpp:21:4:21:14 | __assume(...) | <none> |
+| switch | switchTest1 | 29 | 1 | switch.cpp:29:2:29:14 | ExprStmt | ptr |
+| switch | switchTest1 | 29 | 2 | switch.cpp:29:10:29:12 | ptr | call to doThing |
+| switch | switchTest1 | 29 | 3 | switch.cpp:29:2:29:8 | call to doThing | return ... |
+| switch | switchTest1 | 30 | 4 | switch.cpp:30:1:30:1 | return ... | switchTest1 |
+| switch | switchTest2 | 32 | 37 | switch.cpp:32:6:32:16 | switchTest2 | <none> |
+| switch | switchTest2 | 33 | 1 | switch.cpp:33:1:51:1 | { ... } | declaration |
+| switch | switchTest2 | 34 | 2 | switch.cpp:34:2:34:10 | declaration | declaration |
+| switch | switchTest2 | 35 | 3 | switch.cpp:35:2:35:10 | declaration | switch (...) ...  |
+| switch | switchTest2 | 37 | 4 | switch.cpp:37:2:48:2 | switch (...) ...  | i |
+| switch | switchTest2 | 37 | 5 | switch.cpp:37:10:37:10 | i | { ... } |
+| switch | switchTest2 | 37 | 6 | switch.cpp:37:13:48:2 | { ... } | ExprStmt |
+| switch | switchTest2 | 37 | 6 | switch.cpp:37:13:48:2 | { ... } | case ...: |
+| switch | switchTest2 | 38 | 1 | switch.cpp:38:8:38:8 | 1 | <none> |
+| switch | switchTest2 | 38 | 7 | switch.cpp:38:3:38:9 | case ...: | ExprStmt |
+| switch | switchTest2 | 39 | 8 | switch.cpp:39:4:39:16 | ExprStmt | ptr |
+| switch | switchTest2 | 39 | 9 | switch.cpp:39:12:39:14 | ptr | call to doThing |
+| switch | switchTest2 | 39 | 10 | switch.cpp:39:4:39:10 | call to doThing | ExprStmt |
+| switch | switchTest2 | 40 | 11 | switch.cpp:40:4:40:12 | ExprStmt | x |
+| switch | switchTest2 | 40 | 12 | switch.cpp:40:11:40:11 | x | & ... |
+| switch | switchTest2 | 40 | 13 | switch.cpp:40:10:40:11 | & ... | ptr |
+| switch | switchTest2 | 40 | 14 | switch.cpp:40:4:40:6 | ptr | ... = ... |
+| switch | switchTest2 | 40 | 15 | switch.cpp:40:4:40:11 | ... = ... | ExprStmt |
+| switch | switchTest2 | 41 | 16 | switch.cpp:41:4:41:16 | ExprStmt | ptr |
+| switch | switchTest2 | 41 | 17 | switch.cpp:41:12:41:14 | ptr | call to doThing |
+| switch | switchTest2 | 41 | 18 | switch.cpp:41:4:41:10 | call to doThing | return ... |
+| switch | switchTest2 | 42 | 19 | switch.cpp:42:4:42:10 | return ... | switchTest2 |
+| switch | switchTest2 | 43 | 1 | switch.cpp:43:8:43:8 | 2 | <none> |
+| switch | switchTest2 | 43 | 7 | switch.cpp:43:3:43:9 | case ...: | ExprStmt |
+| switch | switchTest2 | 44 | 8 | switch.cpp:44:4:44:16 | ExprStmt | ptr |
+| switch | switchTest2 | 44 | 9 | switch.cpp:44:12:44:14 | ptr | call to doThing |
+| switch | switchTest2 | 44 | 10 | switch.cpp:44:4:44:10 | call to doThing | ExprStmt |
+| switch | switchTest2 | 45 | 11 | switch.cpp:45:4:45:12 | ExprStmt | y |
+| switch | switchTest2 | 45 | 12 | switch.cpp:45:11:45:11 | y | & ... |
+| switch | switchTest2 | 45 | 13 | switch.cpp:45:10:45:11 | & ... | ptr |
+| switch | switchTest2 | 45 | 14 | switch.cpp:45:4:45:6 | ptr | ... = ... |
+| switch | switchTest2 | 45 | 15 | switch.cpp:45:4:45:11 | ... = ... | ExprStmt |
+| switch | switchTest2 | 46 | 16 | switch.cpp:46:4:46:16 | ExprStmt | ptr |
+| switch | switchTest2 | 46 | 17 | switch.cpp:46:12:46:14 | ptr | call to doThing |
+| switch | switchTest2 | 46 | 18 | switch.cpp:46:4:46:10 | call to doThing | return ... |
+| switch | switchTest2 | 47 | 19 | switch.cpp:47:4:47:10 | return ... | switchTest2 |
+| switch | switchTest2 | 50 | 7 | switch.cpp:50:2:50:14 | ExprStmt | ptr |
+| switch | switchTest2 | 50 | 8 | switch.cpp:50:10:50:12 | ptr | call to doThing |
+| switch | switchTest2 | 50 | 9 | switch.cpp:50:2:50:8 | call to doThing | return ... |
+| switch | switchTest2 | 51 | 10 | switch.cpp:51:1:51:1 | return ... | switchTest2 |

@@ -1,0 +1,41 @@
+newExprs
+| allocators.cpp:49:3:49:9 | new | int | operator new(unsigned long) -> void * | 4 | 4 |  |
+| allocators.cpp:50:3:50:15 | new | int | operator new(size_t, float) -> void * | 4 | 4 |  |
+| allocators.cpp:51:3:51:11 | new | int | operator new(unsigned long) -> void * | 4 | 4 |  |
+| allocators.cpp:52:3:52:14 | new | String | operator new(unsigned long) -> void * | 8 | 8 |  |
+| allocators.cpp:53:3:53:27 | new | String | operator new(size_t, float) -> void * | 8 | 8 |  |
+| allocators.cpp:54:3:54:17 | new | Overaligned | operator new(unsigned long, align_val_t) -> void * | 256 | 128 | aligned |
+| allocators.cpp:55:3:55:25 | new | Overaligned | operator new(size_t, align_val_t, float) -> void * | 256 | 128 | aligned |
+| allocators.cpp:107:3:107:18 | new | FailedInit | FailedInit::operator new(size_t) -> void * | 1 | 1 |  |
+| allocators.cpp:109:3:109:35 | new | FailedInitOveraligned | FailedInitOveraligned::operator new(size_t, align_val_t, float) -> void * | 128 | 128 | aligned |
+newArrayExprs
+| allocators.cpp:68:3:68:12 | new[] | int | operator new[](unsigned long) -> void * | 4 | 4 |  |
+| allocators.cpp:69:3:69:18 | new[] | int | operator new[](size_t, float) -> void * | 4 | 4 |  |
+| allocators.cpp:70:3:70:15 | new[] | String | operator new[](unsigned long) -> void * | 8 | 8 |  |
+| allocators.cpp:71:3:71:20 | new[] | Overaligned | operator new[](unsigned long, align_val_t) -> void * | 256 | 128 | aligned |
+| allocators.cpp:72:3:72:16 | new[] | String | operator new[](unsigned long) -> void * | 8 | 8 |  |
+| allocators.cpp:108:3:108:19 | new[] | FailedInit | FailedInit::operator new[](size_t) -> void * | 1 | 1 |  |
+| allocators.cpp:110:3:110:37 | new[] | FailedInitOveraligned | FailedInitOveraligned::operator new[](size_t, align_val_t, float) -> void * | 128 | 128 | aligned |
+newExprDeallocators
+| allocators.cpp:52:3:52:14 | new | String | operator delete(void *, unsigned long) -> void | 8 | 8 | sized  |
+| allocators.cpp:53:3:53:27 | new | String | operator delete(void *, float) -> void | 8 | 8 |   |
+| allocators.cpp:107:3:107:18 | new | FailedInit | FailedInit::operator delete(void *, size_t) -> void | 1 | 1 | sized  |
+| allocators.cpp:109:3:109:35 | new | FailedInitOveraligned | FailedInitOveraligned::operator delete(void *, align_val_t, float) -> void | 128 | 128 |  aligned |
+newArrayExprDeallocators
+| allocators.cpp:70:3:70:15 | new[] | String | operator delete[](void *, unsigned long) -> void | 8 | 8 | sized  |
+| allocators.cpp:72:3:72:16 | new[] | String | operator delete[](void *, unsigned long) -> void | 8 | 8 | sized  |
+| allocators.cpp:108:3:108:19 | new[] | FailedInit | FailedInit::operator delete[](void *, size_t) -> void | 1 | 1 | sized  |
+| allocators.cpp:110:3:110:37 | new[] | FailedInitOveraligned | FailedInitOveraligned::operator delete[](void *, align_val_t, float) -> void | 128 | 128 |  aligned |
+deleteExprs
+| allocators.cpp:59:3:59:35 | delete | int | operator delete(void *, unsigned long) -> void | 4 | 4 | sized  |
+| allocators.cpp:60:3:60:38 | delete | String | operator delete(void *, unsigned long) -> void | 8 | 8 | sized  |
+| allocators.cpp:61:3:61:44 | delete | SizedDealloc | SizedDealloc::operator delete(void *, size_t) -> void | 32 | 1 | sized  |
+| allocators.cpp:62:3:62:43 | delete | Overaligned | operator delete(void *, unsigned long, align_val_t) -> void | 256 | 128 | sized aligned |
+| allocators.cpp:64:3:64:44 | delete | const String | operator delete(void *, unsigned long) -> void | 8 | 8 | sized  |
+deleteArrayExprs
+| allocators.cpp:78:3:78:37 | delete[] | int | operator delete[](void *, unsigned long) -> void | 4 | 4 | sized  |
+| allocators.cpp:79:3:79:40 | delete[] | String | operator delete[](void *, unsigned long) -> void | 8 | 8 | sized  |
+| allocators.cpp:80:3:80:46 | delete[] | SizedDealloc | SizedDealloc::operator delete[](void *, size_t) -> void | 32 | 1 | sized  |
+| allocators.cpp:81:3:81:45 | delete[] | Overaligned | operator delete[](void *, unsigned long, align_val_t) -> void | 256 | 128 | sized aligned |
+| allocators.cpp:82:3:82:49 | delete[] | PolymorphicBase | operator delete[](void *, unsigned long) -> void | 8 | 8 | sized  |
+| allocators.cpp:83:3:83:23 | delete[] | int | operator delete[](void *, unsigned long) -> void | 4 | 4 | sized  |

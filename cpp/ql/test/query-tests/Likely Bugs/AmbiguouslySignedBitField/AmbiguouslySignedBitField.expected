@@ -1,0 +1,5 @@
+| test.cpp:12:6:12:11 | nosign | Bit field nosign of type int should have explicitly unsigned integral, explicitly signed integral, or enumeration type. |
+| test.cpp:19:7:19:16 | nosignchar | Bit field nosignchar of type char should have explicitly unsigned integral, explicitly signed integral, or enumeration type. |
+| test.cpp:20:8:20:18 | nosignshort | Bit field nosignshort of type short should have explicitly unsigned integral, explicitly signed integral, or enumeration type. |
+| test.cpp:21:18:21:30 | nosigntypedef | Bit field nosigntypedef of type int should have explicitly unsigned integral, explicitly signed integral, or enumeration type. |
+| test.cpp:23:15:23:25 | nosignconst | Bit field nosignconst of type const int should have explicitly unsigned integral, explicitly signed integral, or enumeration type. |

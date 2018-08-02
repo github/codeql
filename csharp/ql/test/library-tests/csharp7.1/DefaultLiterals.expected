@@ -1,0 +1,7 @@
+| csharp71.cs:7:17:7:23 | default | 0 |
+| csharp71.cs:7:30:7:41 | default(...) | 0 |
+| csharp71.cs:8:18:8:24 | default | 0 |
+| csharp71.cs:14:13:14:19 | default | 0 |
+| csharp71.cs:15:20:15:26 | default | null |
+| csharp71.cs:16:18:16:24 | default | false |
+| csharp71.cs:17:20:17:26 | default | 0 |

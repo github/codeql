@@ -1,0 +1,3 @@
+| tst.ts:1:1:1:16 | type A = number; | tst.ts:1:6:1:6 | A | 0 | tst.ts:1:10:1:15 | number |
+| tst.ts:2:1:2:16 | type B<T> = T[]; | tst.ts:2:6:2:6 | B | 1 | tst.ts:2:13:2:15 | T[] |
+| tst.ts:8:10:8:20 | type C = A; | tst.ts:8:15:8:15 | C | 0 | tst.ts:8:19:8:19 | A |

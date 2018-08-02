@@ -1,0 +1,253 @@
+function test() {
+  var target = document.location.search
+
+  // NOT OK
+  $('myId').html(target)
+
+  // NOT OK
+  document.write("<OPTION value=1>"+document.location.href.substring(document.location.href.indexOf("default=")+8)+"</OPTION>");
+  document.write("<OPTION value=2>English</OPTION>");
+
+  // NOT OK
+  $('<div style="width:' + target + 'px">');
+
+  // OK
+  $('<div style="width:' + +target + 'px">');
+  $('<div style="width:' + parseInt(target) + 'px">');
+
+  // NOT OK
+  let params = (new URL(document.location)).searchParams;
+  $('name').html(params.get('name'));
+
+  // NOT OK
+  var searchParams = new URLSearchParams(target.substring(1));
+  $('name').html(searchParams.get('name'));
+}
+
+function foo(target) {
+ // NOT OK
+  $('myId').html(target);
+}
+foo(document.location.search);
+
+function bar() {
+  return document.location.search;
+}
+// NOT OK
+$('myId').html(bar());
+
+function baz(x) {
+  return x;
+}
+// NOT OK
+$('myId').html(baz(document.location.search));
+
+function wrap(s) {
+  return "<div>" + s + "</div>";
+}
+// NOT OK
+$('myId').html(wrap(document.location.search));
+
+function chop(s) {
+  if (s)
+    return s.substr(1);
+  return "";
+}
+// NOT OK
+$('myId').html(chop(document.location.search));
+// NOT OK (duplicated to test precision of flow tracking)
+$('myId').html(chop(document.location.search));
+// NOT OK
+$('myId').html(wrap(chop(bar())));
+
+function dangerouslySetInnerHtml(s) {
+  // NOT OK
+  $('myId').html(s);
+}
+dangerouslySetInnerHtml(document.location.search);
+dangerouslySetInnerHtml(document.location.search);
+
+// NOT OK
+$('myId').html(bar());
+
+[,document.location.search].forEach(function(x) {
+  if (x)
+    // NOT OK
+    $('myId').html(x);
+});
+
+// NOT OK
+let s = <span dangerouslySetInnerHTML={{__html: document.location.search}}/>;
+
+angular.module('myApp', [])
+    .service("myService", function($sce, $other) {
+        $sce.trustAsHtml(document.location.search); // NOT OK
+        $sce.trustAsCss(document.location.search); // NOT OK
+        $sce.trustAsUNKNOWN(document.location.search); // OK
+        $sce.trustAs($sce.HTML, document.location.search); // NOT OK
+        $sce.trustAs($sce.CSS, document.location.search); // NOT OK
+        $sce.trustAs(UNKNOWN, document.location.search); // OK
+        $other.trustAsHtml(document.location.search); // OK
+    })
+    .service("myService2", function() {
+        angular.element('<div>').html(document.location.search); // NOT OK
+        angular.element('<div>').html('SAFE'); // OK
+    })
+    .directive('myCustomer', function() {
+        return {
+            link: function(scope, element){
+                element.html(document.location.search); // NOT OK
+                element.html('SAFE'); // OK
+            }
+        };
+    })
+    .service("myService3", function() {
+        angular.element(document.location.search); // NOT OK
+        angular.element('SAFE'); // OK
+    })
+
+function tst() {
+  var v = document.location.search.substr(1);
+
+  // NOT OK
+  document.write(v);
+
+  if (/^\d+$/.test(v)) {
+    // OK
+    document.write(v);
+  }
+
+  if ((m = /^\d+$/.exec(v))) {
+    // OK
+    document.write(v);
+  }
+
+  if (v.match(/^\d+$/)) {
+      // OK
+      document.write(v);
+  }
+
+  if (v.match("^\\d+$")) {
+      // OK
+      document.write(v);
+  }
+
+  if (!(/\d+/.test(v)))
+    return;
+
+  // OK
+  document.write(v);
+}
+
+function angularJSServices() {
+    angular.module('myApp', [])
+        .factory("xssSource_to_service", ["xssSinkService1", function(xssSinkService1) {
+            xssSinkService1(window.location.search);
+        }])
+        .factory("xssSinkService1", function(){
+            return function(v){ $("<div>").html(v); } // NOT OK
+        })
+
+        .factory("xssSource_from_service", ["xssSourceService", function(xssSourceService){
+            $("<div>").html(xssSourceService()); // NOT OK
+        }])
+        .factory("xssSourceService", function(){
+            return function() { return window.location.search };
+        })
+
+        .factory("innocentSource_to_service", ["xssSinkService2", function(xssSinkService2) {
+            xssSinkService2("innocent");
+        }])
+        .factory("xssSinkService2", function(){
+            return function(v){ $("<div>").html(v); } // OK
+        })
+
+        .factory("innocentSource_from_service", ["innocentSourceService", function(innocentSourceService){
+            $("<div>").html(innocentSourceService()); // OK
+        }])
+        .factory("innocentSourceService", function(){
+            return function() { return "innocent" };
+        })
+}
+
+function testDOMParser() {
+    var target = document.location.search
+
+    var parser = new DOMParser();
+    parser.parseFromString(target, "application/xml"); // NOT OK
+}
+
+function references() {
+    var tainted = document.location.search;
+
+    document.body.innerHTML = tainted; // NOT OK
+
+    document.createElement().innerHTML = tainted; // NOT OK
+    createElement().innerHTML = tainted; // NOT OK
+
+    document.getElementsByClassName()[0].innerHTML = tainted; // NOT OK
+    getElementsByClassName()[0].innerHTML = tainted; // NOT OK
+    getElementsByClassName().item().innerHTML = tainted; // NOT OK, but not supported
+}
+
+function react(){
+    var tainted = document.location.search;
+
+    React.createElement("div", {dangerouslySetInnerHTML: {__html: tainted}}); // NOT OK
+    React.createFactory("div")({dangerouslySetInnerHTML: {__html: tainted}}); // NOT OK
+
+    class C1 extends React.Component {
+        constructor() {
+            this.state.tainted1 = tainted;
+            this.state.notTainted = dbLookup();
+            this.setState(() => ({ tainted2: tainted }))
+            this.state = { tainted3: tainted }
+            this.state.tainted4 = tainted;
+        }
+
+        test() {
+            $('myId').html(this.state.tainted1); // NOT OK
+            $('myId').html(this.state.tainted2); // NOT OK
+            $('myId').html(this.state.tainted3); // NOT OK
+            $('myId').html(this.state.notTainted); // OK
+
+            this.setState(prevState => {
+                $('myId').html(prevState.tainted4) // NOT OK
+            });
+        }
+    }
+
+    class C2 extends React.Component {
+        test() {
+            $('myId').html(this.props.tainted1); // NOT OK
+            $('myId').html(this.props.tainted2); // NOT OK
+            $('myId').html(this.props.tainted3); // NOT OK
+            $('myId').html(this.props.notTainted); // OK
+
+            this.setState((prevState, prevProps) => {
+                $('myId').html(prevProps.tainted4) // NOT OK
+            });
+        }
+    }
+
+    C2.defaultProps = { tainted1: tainted };
+
+    (<C2 tainted2={tainted}/>);
+
+    new C2({tainted3: tainted});
+    new C2({tainted4: tainted});
+
+    // realistic example
+    class C3 extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state.stateTainted = props.propTainted;
+        }
+
+        render() {
+            return <span dangerouslySetInnerHTML={{__html: this.state.stateTainted}}/>;
+        }
+    }
+
+    (<C3 propTainted={tainted}/>);
+}

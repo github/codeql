@@ -1,0 +1,20 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>If two classes share a lot of each other's methods then there is a lot of unnecessary code duplication. 
+This makes it difficult to make changes in future and makes the code harder to read.</p>
+
+</overview>
+<recommendation>
+<p>If a duplicate class has been included by mistake then remove it. Otherwise consider making a common 
+superclass for both classes or even making one of the classes a superclass of the other.</p>
+
+</recommendation>
+<references>
+
+  <li>Elmar Juergens, Florian Deissenboeck, Benjamin Hummel and Stefan Wagner. <em>Do Code Clones Matter?</em>. 2009.</li>
+
+</references>
+</qhelp>

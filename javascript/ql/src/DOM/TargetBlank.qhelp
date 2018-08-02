@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+HTML links that open in a new tab or window allow the target page to access the DOM
+of the origin page using <code>window.opener</code> unless link type <code>noopener</code>
+or <code>noreferrer</code> is specified. This is a potential security risk.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Specify the link type by adding an attribute <code>rel="noopener noreferrer"</code>.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, a JSX element is created that corresponds to an HTML
+link opening the URL <code>http://example.com</code> in a new tab. Since it does
+not specify a link type, that page will be able to access the DOM of the origin page.
+</p>
+
+<sample src="examples/TargetBlank.js" />
+
+<p>
+To fix this vulnerability, add a <code>rel</code> attribute:
+</p>
+
+<sample src="examples/TargetBlankGood.js" />
+
+</example>
+<references>
+<li>Mathias Bynens: <a href="https://mathiasbynens.github.io/rel-noopener/">About rel=noopener</a>.</li>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a">HTML Anchor Element</a>.</li>
+</references>
+</qhelp>

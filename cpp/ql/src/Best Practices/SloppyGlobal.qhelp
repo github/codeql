@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+This rule finds global variables which have a name of length three characters or less. It is particularly important to use descriptive names for global variables. Use of a clear naming convention for global variables helps document their use, avoids pollution of the namespace and reduces the risk of shadowing with local variables.
+</p>
+
+
+</overview>
+<recommendation>
+<p>
+Review the purpose of the each global variable flagged by this rule and update each name to reflect the purpose of the variable.
+</p>
+
+</recommendation>
+<references>
+
+<li>
+  Mats Henricson and Erik Nyquist, <i>Industrial Strength C++</i>, published by Prentice Hall PTR (1997). 
+  Chapter 1: Naming, Rec 1.1 (<a href="http://mongers.org/industrial-c++/">PDF</a>).
+</li>
+<li>
+  <a href="http://www.learncpp.com/cpp-tutorial/42-global-variables/">Global variables</a>.
+</li>
+
+
+</references>
+</qhelp>

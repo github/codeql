@@ -1,0 +1,23 @@
+| test.c:15:3:15:18 | ... = ... | test.c:15:3:15:8 | buffer |
+| test.c:22:11:22:34 | ... = ... | test.c:22:24:22:27 | args |
+| test.c:23:5:23:15 | ... = ... | test.c:23:6:23:8 | ptr |
+| test.c:36:3:36:12 | call to addNullAsm | test.c:36:14:36:19 | buffer |
+| test.c:41:3:41:13 | call to expression | test.c:41:7:41:12 | buffer |
+| test.c:48:2:48:10 | ... = ... | test.c:48:3:48:6 | data |
+| test.c:49:2:49:15 | ... = ... | test.c:49:3:49:6 | data |
+| test.c:52:2:52:12 | ... = ... | test.c:52:2:52:5 | data |
+| test.c:55:16:55:19 | data | test.c:55:16:55:19 | data |
+| test.c:56:2:56:13 | ... = ... | test.c:56:2:56:6 | data2 |
+| test.c:59:2:59:14 | ... = ... | test.c:59:11:59:14 | data |
+| test.c:60:2:60:18 | ... = ... | test.c:60:11:60:14 | data |
+| test.c:63:2:63:7 | call to strcpy | test.c:63:9:63:12 | data |
+| test.c:64:2:64:8 | call to addNull | test.c:64:10:64:13 | data |
+| test.c:65:2:65:15 | call to addNullVarargs | test.c:65:20:65:23 | data |
+| test.c:66:2:66:11 | call to addNullAsm | test.c:66:13:66:16 | data |
+| test.c:67:2:67:15 | call to addNullWrapper | test.c:67:17:67:20 | data |
+| test.c:68:2:68:23 | call to addNullFunctionPointer | test.c:68:25:68:28 | data |
+| test.c:86:2:86:13 | ... = ... | test.c:86:2:86:6 | data2 |
+| test.c:100:2:100:7 | call to strcpy | test.c:100:9:100:14 | buffer |
+| test.c:108:2:108:21 | ... = ... | test.c:108:2:108:5 | data |
+| test.c:114:2:114:18 | call to strlenWrapperSafe | test.c:114:20:114:23 | data |
+| test.c:115:2:115:7 | call to strcpy | test.c:115:9:115:12 | data |

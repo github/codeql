@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+This rule finds bit fields with members that are not explicitly declared to be unsigned.
+The sign of plain char, short, int, or long bit field is implementation-specific, and declaring
+them all to be unsigned removes the ambiguity and ensures portability.
+</p>
+
+
+</overview>
+<recommendation>
+<p>
+Declare all members of the bit field to be unsigned.
+</p>
+
+</recommendation>
+<example><sample src="AV Rule 154.cpp" />
+
+
+
+</example>
+<references>
+
+
+<li>
+  AV Rule 154, <em>Joint Strike Fighter Air Vehicle C++ Coding Standards</em>. Lockheed Martin Corporation, 2005.
+</li>
+<li>
+  <a href="http://en.cppreference.com/w/cpp/language/bit_field">C++ Bit Fields</a>
+</li>
+
+
+</references>
+</qhelp>

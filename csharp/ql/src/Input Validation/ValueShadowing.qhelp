@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Relying on <code>HttpRequest</code> to provide access to a particular client variable is not 
+safe. The <code>HttpRequest</code> class implements an indexer to provide a simplified, combined 
+access to its <code>QueryString</code>, <code>Form</code>, <code>Cookies</code>, or <code> 
+ServerVariables</code> collections, in that particular order. When searching for a variable, the 
+first match is returned: <code>QueryString</code> parameters hence supersede values from forms, 
+cookies and server variables, and so on. This is a serious attack vector since an attacker could 
+inject a value in the query string that you do not expect, and which supersedes the value of a more 
+trusted collection.</p>
+
+</overview>
+<recommendation>
+<p>Explicitly restrict the search to one of the <code>QueryString</code>, <code>Form</code> or 
+<code>Cookies</code> collections.</p>
+
+</recommendation>
+<example>
+<p>In this example an attempt has been made to prevent cross site request forgery attacks by 
+comparing a cookie set by the server with a form variable sent by the user. The problem is that if 
+the user did not send a form variable called <code>csrf</code> then the collection will fall back 
+to using the cookie value, making it look like a forged request was initiated by the user.</p>
+<sample src="ValueShadowing.cs" />
+
+<p>This can be easily fixed by explicitly specifying that we are looking for a form variable.</p>
+<sample src="ValueShadowingFix.cs" />
+
+</example>
+<references>
+
+  <li>MSDN: <a href="http://msdn.microsoft.com/en-us/library/system.web.httprequest.item(v=VS.100).aspx">HttpRequest.Item</a>.</li>
+
+</references>
+</qhelp>

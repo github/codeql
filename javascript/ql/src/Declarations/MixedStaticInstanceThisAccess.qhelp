@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+A method of a class can be either a static method or an instance method.
+For a static method, the value of <code>this</code> is the enclosing class.
+For an instance method, the value of <code>this</code> is the object instance itself.
+It is therefore not possible to refer to a static method from an instance method using <code>this</code>, and vice versa.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+A reference to an instance method from within a static method needs to be qualified with an instance of the class, and not <code>this</code>.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following code snippet, the <code>bar</code> method is an instance method and it attempts to use the static <code>baz</code> method through <code>this</code>.
+That is not possible, so the call will fail at runtime.
+</p>
+
+<sample src="examples/staticInstance.js" />
+
+<p>
+The code should be changed to use the enclosing class instead of <code>this</code>: <code>Foo.baz(42)</code>.
+</p>
+
+</example>
+<references>
+
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static">Classes and static methods</a>.</li>
+
+</references>
+</qhelp>

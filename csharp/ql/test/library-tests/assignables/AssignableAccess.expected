@@ -1,0 +1,110 @@
+| Assignables.cs:9:36:9:36 | access to parameter i | Assignables.cs:9:18:9:18 | i | read |
+| Assignables.cs:13:13:13:20 | access to local variable variable | Assignables.cs:13:13:13:20 | variable | write |
+| Assignables.cs:14:9:14:16 | access to local variable variable | Assignables.cs:13:13:13:20 | variable | write |
+| Assignables.cs:14:20:14:28 | access to parameter parameter | Assignables.cs:11:16:11:24 | parameter | read |
+| Assignables.cs:15:9:15:16 | access to local variable variable | Assignables.cs:13:13:13:20 | variable | read |
+| Assignables.cs:15:9:15:16 | access to local variable variable | Assignables.cs:13:13:13:20 | variable | write |
+| Assignables.cs:16:9:16:17 | access to parameter parameter | Assignables.cs:11:16:11:24 | parameter | write |
+| Assignables.cs:16:21:16:25 | access to field Field | Assignables.cs:5:9:5:13 | Field | read |
+| Assignables.cs:17:9:17:17 | access to parameter parameter | Assignables.cs:11:16:11:24 | parameter | read |
+| Assignables.cs:17:9:17:17 | access to parameter parameter | Assignables.cs:11:16:11:24 | parameter | write |
+| Assignables.cs:18:9:18:13 | access to field Field | Assignables.cs:5:9:5:13 | Field | write |
+| Assignables.cs:18:17:18:24 | access to property Property | Assignables.cs:6:9:6:16 | Property | read |
+| Assignables.cs:19:9:19:13 | access to field Field | Assignables.cs:5:9:5:13 | Field | read |
+| Assignables.cs:19:9:19:13 | access to field Field | Assignables.cs:5:9:5:13 | Field | write |
+| Assignables.cs:20:9:20:16 | access to property Property | Assignables.cs:6:9:6:16 | Property | write |
+| Assignables.cs:20:20:20:33 | access to indexer | Assignables.cs:9:9:9:12 | Item | read |
+| Assignables.cs:20:25:20:32 | access to local variable variable | Assignables.cs:13:13:13:20 | variable | read |
+| Assignables.cs:21:9:21:16 | access to property Property | Assignables.cs:6:9:6:16 | Property | read |
+| Assignables.cs:21:9:21:16 | access to property Property | Assignables.cs:6:9:6:16 | Property | write |
+| Assignables.cs:22:22:22:29 | access to local variable callback | Assignables.cs:22:22:22:29 | callback | write |
+| Assignables.cs:23:9:23:13 | access to event Event | Assignables.cs:8:24:8:28 | Event | write |
+| Assignables.cs:23:18:23:25 | access to local variable callback | Assignables.cs:22:22:22:29 | callback | read |
+| Assignables.cs:24:9:24:13 | access to event Event | Assignables.cs:8:24:8:28 | Event | read |
+| Assignables.cs:25:9:25:13 | access to event Event | Assignables.cs:8:24:8:28 | Event | write |
+| Assignables.cs:25:18:25:25 | access to local variable callback | Assignables.cs:22:22:22:29 | callback | read |
+| Assignables.cs:26:9:26:22 | access to indexer | Assignables.cs:9:9:9:12 | Item | write |
+| Assignables.cs:26:14:26:21 | access to property Property | Assignables.cs:6:9:6:16 | Property | read |
+| Assignables.cs:26:26:26:33 | access to local variable variable | Assignables.cs:13:13:13:20 | variable | read |
+| Assignables.cs:27:9:27:19 | access to indexer | Assignables.cs:9:9:9:12 | Item | read |
+| Assignables.cs:27:9:27:19 | access to indexer | Assignables.cs:9:9:9:12 | Item | write |
+| Assignables.cs:27:14:27:18 | access to field Field | Assignables.cs:5:9:5:13 | Field | read |
+| Assignables.cs:28:17:28:24 | access to local variable variable | Assignables.cs:13:13:13:20 | variable | write |
+| Assignables.cs:29:17:29:21 | access to field Field | Assignables.cs:5:9:5:13 | Field | write |
+| Assignables.cs:30:20:30:27 | access to local variable variable | Assignables.cs:13:13:13:20 | variable | read |
+| Assignables.cs:30:34:30:38 | access to field Field | Assignables.cs:5:9:5:13 | Field | read |
+| Assignables.cs:30:34:30:38 | access to field Field | Assignables.cs:5:9:5:13 | Field | write |
+| Assignables.cs:31:22:31:29 | access to local variable variable | Assignables.cs:13:13:13:20 | variable | read |
+| Assignables.cs:31:36:31:40 | access to field Field | Assignables.cs:5:9:5:13 | Field | read |
+| Assignables.cs:31:36:31:40 | access to field Field | Assignables.cs:5:9:5:13 | Field | write |
+| Assignables.cs:32:16:32:23 | access to local variable variable | Assignables.cs:13:13:13:20 | variable | read |
+| Assignables.cs:32:30:32:34 | access to field Field | Assignables.cs:5:9:5:13 | Field | read |
+| Assignables.cs:33:29:33:33 | access to field Field | Assignables.cs:5:9:5:13 | Field | read |
+| Assignables.cs:33:29:33:33 | access to field Field | Assignables.cs:5:9:5:13 | Field | write |
+| Assignables.cs:33:40:33:44 | access to field Field | Assignables.cs:5:9:5:13 | Field | read |
+| Assignables.cs:33:40:33:44 | access to field Field | Assignables.cs:5:9:5:13 | Field | write |
+| Assignables.cs:38:9:38:9 | access to parameter o | Assignables.cs:36:22:36:22 | o | write |
+| Assignables.cs:43:13:43:13 | access to parameter b | Assignables.cs:41:43:41:43 | b | read |
+| Assignables.cs:44:13:44:13 | access to parameter y | Assignables.cs:41:35:41:35 | y | write |
+| Assignables.cs:44:17:44:17 | access to parameter x | Assignables.cs:41:26:41:26 | x | read |
+| Assignables.cs:46:24:46:24 | access to parameter x | Assignables.cs:41:26:41:26 | x | read |
+| Assignables.cs:46:31:46:31 | access to parameter y | Assignables.cs:41:35:41:35 | y | read |
+| Assignables.cs:46:31:46:31 | access to parameter y | Assignables.cs:41:35:41:35 | y | write |
+| Assignables.cs:51:13:51:13 | access to parameter x | Assignables.cs:49:27:49:27 | x | read |
+| Assignables.cs:51:17:51:17 | access to parameter y | Assignables.cs:49:38:49:38 | y | read |
+| Assignables.cs:52:13:52:13 | access to parameter y | Assignables.cs:49:38:49:38 | y | write |
+| Assignables.cs:52:17:52:17 | access to parameter x | Assignables.cs:49:27:49:27 | x | read |
+| Assignables.cs:57:13:57:13 | access to parameter x | Assignables.cs:55:34:55:34 | x | read |
+| Assignables.cs:57:17:57:17 | access to parameter y | Assignables.cs:55:45:55:45 | y | read |
+| Assignables.cs:58:13:58:13 | access to parameter x | Assignables.cs:55:34:55:34 | x | write |
+| Assignables.cs:60:13:60:13 | access to parameter y | Assignables.cs:55:45:55:45 | y | write |
+| Assignables.cs:69:27:69:28 | access to parameter ss | Assignables.cs:67:69:67:70 | ss | read |
+| Assignables.cs:73:21:73:24 | access to local variable temp | Assignables.cs:73:21:73:24 | temp | write |
+| Assignables.cs:73:28:73:28 | access to local variable s | Assignables.cs:69:22:69:22 | s | read |
+| Assignables.cs:84:10:84:10 | access to local variable x | Assignables.cs:83:14:83:14 | x | write |
+| Assignables.cs:84:14:84:14 | access to local variable b | Assignables.cs:83:23:83:23 | b | write |
+| Assignables.cs:84:17:84:17 | access to local variable s | Assignables.cs:83:33:83:33 | s | write |
+| Assignables.cs:85:10:85:10 | access to local variable x | Assignables.cs:83:14:83:14 | x | write |
+| Assignables.cs:85:14:85:14 | access to local variable b | Assignables.cs:83:23:83:23 | b | write |
+| Assignables.cs:85:17:85:17 | access to local variable s | Assignables.cs:83:33:83:33 | s | write |
+| Assignables.cs:86:40:86:44 | access to local variable tuple | Assignables.cs:86:40:86:44 | tuple | write |
+| Assignables.cs:87:10:87:17 | access to property Property | Assignables.cs:6:9:6:16 | Property | write |
+| Assignables.cs:87:20:87:26 | access to indexer | Assignables.cs:9:9:9:12 | Item | write |
+| Assignables.cs:88:10:88:10 | access to local variable x | Assignables.cs:83:14:83:14 | x | write |
+| Assignables.cs:88:14:88:14 | access to local variable b | Assignables.cs:83:23:83:23 | b | write |
+| Assignables.cs:88:17:88:17 | access to local variable x | Assignables.cs:83:14:83:14 | x | write |
+| Assignables.cs:89:10:89:10 | access to local variable b | Assignables.cs:83:23:83:23 | b | write |
+| Assignables.cs:89:14:89:14 | access to local variable x | Assignables.cs:83:14:83:14 | x | write |
+| Assignables.cs:89:17:89:17 | access to local variable x | Assignables.cs:83:14:83:14 | x | write |
+| Assignables.cs:99:13:99:13 | access to local variable i | Assignables.cs:99:13:99:13 | i | write |
+| Assignables.cs:100:14:100:14 | access to local variable p | Assignables.cs:100:14:100:14 | p | write |
+| Assignables.cs:100:19:100:19 | access to local variable i | Assignables.cs:99:13:99:13 | i | read |
+| Assignables.cs:100:19:100:19 | access to local variable i | Assignables.cs:99:13:99:13 | i | write |
+| Assignables.cs:101:10:101:10 | access to local variable p | Assignables.cs:100:14:100:14 | p | read |
+| Assignables.cs:104:44:104:44 | access to parameter i | Assignables.cs:104:25:104:25 | i | write |
+| Assignables.cs:104:51:104:51 | access to parameter s | Assignables.cs:104:39:104:39 | s | write |
+| Assignables.cs:109:16:109:16 | access to local variable s | Assignables.cs:109:16:109:16 | s | write |
+| Assignables.cs:110:29:110:29 | access to local variable i | Assignables.cs:108:13:108:13 | i | write |
+| Assignables.cs:110:36:110:36 | access to local variable s | Assignables.cs:109:16:109:16 | s | read |
+| Assignables.cs:110:36:110:36 | access to local variable s | Assignables.cs:109:16:109:16 | s | write |
+| Assignables.cs:116:13:116:13 | access to local variable s | Assignables.cs:116:13:116:13 | s | write |
+| Assignables.cs:117:9:117:9 | access to local variable s | Assignables.cs:116:13:116:13 | s | write |
+| Discards.cs:7:9:7:9 | access to parameter x | Discards.cs:5:30:5:30 | x | write |
+| Discards.cs:20:32:20:32 | Boolean z | Discards.cs:20:32:20:32 | z | write |
+| Discards.cs:25:27:25:30 | access to parameter args | Discards.cs:23:27:23:30 | args | read |
+| Discards.cs:32:17:32:17 | access to parameter o | Discards.cs:30:24:30:24 | o | read |
+| Finally.cs:7:13:7:13 | access to local variable i | Finally.cs:7:13:7:13 | i | write |
+| Finally.cs:10:17:10:17 | access to parameter b | Finally.cs:5:16:5:16 | b | read |
+| Finally.cs:15:13:15:13 | access to local variable i | Finally.cs:7:13:7:13 | i | write |
+| Finally.cs:17:16:17:16 | access to local variable i | Finally.cs:7:13:7:13 | i | read |
+| Patterns.cs:7:16:7:16 | access to local variable o | Patterns.cs:7:16:7:16 | o | write |
+| Patterns.cs:8:13:8:13 | access to local variable o | Patterns.cs:7:16:7:16 | o | read |
+| Patterns.cs:10:38:10:39 | access to local variable i1 | Patterns.cs:8:22:8:23 | i1 | read |
+| Patterns.cs:12:18:12:18 | access to local variable o | Patterns.cs:7:16:7:16 | o | read |
+| Patterns.cs:14:41:14:42 | access to local variable s1 | Patterns.cs:12:30:12:31 | s1 | read |
+| Patterns.cs:16:18:16:18 | access to local variable o | Patterns.cs:7:16:7:16 | o | read |
+| Patterns.cs:20:17:20:17 | access to local variable o | Patterns.cs:7:16:7:16 | o | read |
+| Patterns.cs:24:30:24:31 | access to local variable i2 | Patterns.cs:24:22:24:23 | i2 | read |
+| Patterns.cs:25:47:25:48 | access to local variable i2 | Patterns.cs:24:22:24:23 | i2 | read |
+| Patterns.cs:28:42:28:43 | access to local variable i3 | Patterns.cs:27:22:27:23 | i3 | read |
+| Patterns.cs:31:45:31:46 | access to local variable s2 | Patterns.cs:30:25:30:26 | s2 | read |

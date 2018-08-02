@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>When an ordering is introduced on instances of a class by making the class implement the <code>
+IComparable</code> interface, it is sensible to ensure that for all instances <code>c1</code> and 
+<code>c2</code>, <code>c1.CompareTo(c2) == 0</code> &hArr; <code>c1.Equals(c2)</code>. Classes that 
+implement <code>IComparable.CompareTo</code> but inherit <code>Equals</code>, rather than 
+overriding it to match the <code>CompareTo</code> implementation, generally violate this 
+assumption, which can lead to confusion when the class is used.</p>
+
+<blockquote>
+  <p>If the type implements IComparable, it should override Equals.</p>
+  <p><em>- Microsoft: <a href="http://msdn.microsoft.com/en-us/library/ms173147(v=vs.80).aspx">Guidelines for Overloading Equals() and Operator ==</a></em></p>
+</blockquote>
+
+</overview>
+<recommendation>
+<p>A class that implements <code>CompareTo</code> should generally also override <code>Equals</code>
+ in order to provide a consistent implementation.</p>
+
+</recommendation>
+<example>
+<p>The following example outputs:</p>
+<pre>Comparing a1 with a2: 0
+a1 equals a2: False</pre>
+<p>This is obviously not desirable as shows an inconsistency between the behavior of <code>CompareTo</code> and the behavior of <code>Equals</code>.
+</p><sample src="InconsistentCompareTo.cs" />
+
+</example>
+<references>
+
+  <li>MSDN: <a href="http://msdn.microsoft.com/en-us/library/system.icomparable.compareto.aspx">IComparable.CompareTo Method</a>.</li>
+
+</references>
+</qhelp>

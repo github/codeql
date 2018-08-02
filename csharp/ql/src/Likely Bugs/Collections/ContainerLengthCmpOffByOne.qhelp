@@ -1,0 +1,50 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+An indexing operation against a collection, string or array should use an index at most one less
+than the length. If the index to be accessed is compared to be less than or equal to the length
+(<code>&lt;=</code>), instead of less than the length (<code>&lt;</code>), the index could be out
+of bounds.
+</p>
+</overview>
+<recommendation>
+
+<p>
+Use less than (<code>&lt;</code>) rather than less than or equals (<code>&lt;=</code>) when
+comparing a potential index against a length. For loops that iterate over every element in an array
+or collection, prefer to use the <code>foreach</code> syntax instead of looping over explicit
+indexes.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following example shows two methods which identify whether a value appears in a comma-separated
+list of values.
+</p>
+<p>
+In the first example, a loop using an index variable - <code>i</code> - is used to iterate over the
+elements in the comma-separated list. However, the terminating condition of the loop is incorrectly
+specified as <code>i &lt;= values.Length</code>. This condition will succeed if <code>i</code> is equal
+to <code>values.Length</code>, but the access <code>values[i]</code> in the body of the loop
+will fail because the index is out of bounds.
+</p>
+<p>
+One potential solution would be to replace <code>i &lt;= values.Length</code> with
+<code>i &lt; values.Length</code>. However, arrays in C# can also be used in <code>foreach</code>
+loops. This is shown in the second example. This circumvents the need to specify an index at all,
+and therefore prevents errors where the index is out of bounds.
+</p>
+
+<sample src="ContainerLengthCmpOffByOne.cs" />
+
+</example>
+<references>
+
+</references>
+</qhelp>

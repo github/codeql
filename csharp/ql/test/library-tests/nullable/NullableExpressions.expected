@@ -1,0 +1,16 @@
+| 5 | 13 | nullable.cs:5:9:6:24 | if (...) ... | nullable.cs:5:13:5:21 | ... == ... | Boolean |
+| 5 | 13 | nullable.cs:5:13:5:21 | ... == ... | nullable.cs:5:13:5:13 | access to parameter x | Nullable<Int32> |
+| 5 | 18 | nullable.cs:5:13:5:21 | ... == ... | nullable.cs:5:18:5:21 | null | null |
+| 6 | 20 | nullable.cs:6:13:6:24 | return ...; | nullable.cs:6:20:6:23 | null | null |
+| 7 | 13 | nullable.cs:7:9:8:16 | if (...) ... | nullable.cs:7:13:7:18 | ... == ... | Boolean |
+| 7 | 13 | nullable.cs:7:13:7:18 | ... == ... | nullable.cs:7:13:7:13 | access to parameter x | Nullable<Int32> |
+| 7 | 18 | nullable.cs:7:13:7:18 | ... == ... | nullable.cs:7:18:7:18 | (...) ... | Nullable<Int32> |
+| 7 | 18 | nullable.cs:7:18:7:18 | (...) ... | nullable.cs:7:18:7:18 | 3 | Int32 |
+| 8 | 13 | nullable.cs:8:13:8:15 | ...++ | nullable.cs:8:13:8:13 | access to parameter x | Nullable<Int32> |
+| 8 | 13 | nullable.cs:8:13:8:16 | ...; | nullable.cs:8:13:8:15 | ...++ | Nullable<Int32> |
+| 9 | 9 | nullable.cs:9:9:9:14 | ... = ... | nullable.cs:9:9:9:9 | access to parameter x | Nullable<Int32> |
+| 9 | 9 | nullable.cs:9:9:9:15 | ...; | nullable.cs:9:9:9:14 | ... = ... | Nullable<Int32> |
+| 9 | 13 | nullable.cs:9:9:9:14 | ... = ... | nullable.cs:9:13:9:14 | -... | Nullable<Int32> |
+| 9 | 14 | nullable.cs:9:13:9:14 | -... | nullable.cs:9:14:9:14 | access to parameter x | Nullable<Int32> |
+| 10 | 16 | nullable.cs:10:9:10:17 | return ...; | nullable.cs:10:16:10:16 | (...) ... | Nullable<Double> |
+| 10 | 16 | nullable.cs:10:16:10:16 | (...) ... | nullable.cs:10:16:10:16 | access to parameter x | Nullable<Int32> |

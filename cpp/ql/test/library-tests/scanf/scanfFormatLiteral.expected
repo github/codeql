@@ -1,0 +1,5 @@
+| test.c:18:2:18:6 | call to scanf | 0 | s | 0 | 0 |
+| test.c:19:2:19:7 | call to fscanf | 0 | s | 10 | 10 |
+| test.c:19:2:19:7 | call to fscanf | 1 | i | 0 | 0 |
+| test.c:20:2:20:7 | call to sscanf | 0 | s | 0 | 0 |
+| test.c:21:2:21:8 | call to swscanf | 0 | s | 10 | 10 |

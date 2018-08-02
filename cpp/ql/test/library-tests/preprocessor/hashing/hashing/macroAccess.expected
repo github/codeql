@@ -1,0 +1,5 @@
+| h.h:2:13:2:13 | A | a.c:2:1:2:9 | #define A |
+| h.h:2:26:2:26 | B | b.c:2:1:2:9 | #define B |
+| loch.h:4:9:4:23 | __off_t_defined | loca.c:3:1:3:23 | #define __off_t_defined |
+| loch.h:4:9:4:23 | __off_t_defined | lochx.h:4:1:4:23 | #define __off_t_defined |
+| lochx.h:2:9:2:23 | __off_t_defined | loca.c:3:1:3:23 | #define __off_t_defined |

@@ -1,0 +1,9 @@
+| ODASA-6115.cpp:2:8:2:27 | __is_integral_helper<X> |
+| ODASA-6115.cpp:6:8:6:37 | __is_integral_helper<char16_t> |
+| ODASA-6115.cpp:10:8:10:43 | __is_integral_helper<unsigned short> |
+| file://:0:0:0:0 | __va_list_tag |
+| test.cpp:2:8:2:8 | X |
+| test.cpp:4:12:4:12 | Y<T> |
+| test.cpp:4:12:4:12 | Y<T> |
+| test.cpp:7:8:7:8 | Z |
+| test.cpp:9:12:9:12 | S<T> |

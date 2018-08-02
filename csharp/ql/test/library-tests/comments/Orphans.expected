@@ -1,0 +1,16 @@
+| comments1.cs:1:1:2:46 | // ... |
+| comments1.cs:4:1:4:25 | // ... |
+| comments1.cs:6:1:6:24 | // ... |
+| comments1.cs:11:1:11:25 | /* ... */ |
+| comments1.cs:14:1:14:20 | // ... |
+| comments1.cs:16:1:16:38 | // ... |
+| comments1.cs:18:1:19:31 | // ... |
+| comments1.cs:21:1:23:15 | // ... |
+| comments1.cs:25:1:25:43 | /* ... */ |
+| comments1.cs:27:1:29:13 | /* ... */ |
+| comments1.cs:31:1:33:30 | // ... |
+| comments1.cs:47:1:47:21 | // ... |
+| comments2.cs:1:1:2:15 | // ... |
+| comments2.cs:5:27:5:41 | // ... |
+| comments2.cs:8:1:8:15 | // ... |
+| comments2.cs:132:1:132:21 | // ... |

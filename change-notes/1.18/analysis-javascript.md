@@ -1,0 +1,45 @@
+# Improvements to JavaScript analysis
+
+## General improvements
+
+* Additional heuristics have been added to `semmle.javascript.heuristics`. Add `import semmle.javascript.heuristics.all` to a query in order to activate all of the heuristics at once.
+
+* Modelling of data flow through destructuring assignments has been improved. This may give additional results for the security queries and other queries that rely on data flow.
+
+* Support for popular libraries has been improved. Consequently, queries may produce more results on code bases that use the following libraries:
+  - [bluebird](http://bluebirdjs.com)
+  - [browserid-crypto](https://github.com/mozilla/browserid-crypto)
+  - [cookie-parser](https://github.com/expressjs/cookie-parser)
+  - [cookie-session](https://github.com/expressjs/cookie-session)
+  - [crypto-js](https://github.com/https://github.com/brix/crypto-js)
+  - [express-jwt](https://github.com/auth0/express-jwt)
+  - [express-session](https://github.com/expressjs/session)
+  - [forge](https://github.com/digitalbazaar/forge)
+  - [MySQL2](https://github.com/sidorares/node-mysql2)
+  - [q](http://documentup.com/kriskowal/q/)
+  
+## New queries
+
+| **Query**                   | **Tags**  | **Purpose**                                                        |
+|-----------------------------|-----------|--------------------------------------------------------------------|
+| Disabling Electron webSecurity (`js/disabling-electron-websecurity`) | security, frameworks/electron | Highlights Electron browser objects that are created with the `webSecurity` property set to false. Results shown on LGTM by default. |
+| Enabling Electron allowRunningInsecureContent (`js/enabling-electron-insecure-content`) | security, frameworks/electron | Highlights Electron browser objects that are created with the `allowRunningInsecureContent` property set to true. Results shown on LGTM by default. |
+| Use of externally-controlled format string (`js/tainted-format-string`) | security, external/cwe/cwe-134 | Highlights format strings containing user-provided data, indicating a violation of [CWE-134](https://cwe.mitre.org/data/definitions/134.html). Results shown on LGTM by default. |
+
+## Changes to existing queries
+
+| **Query**                  | **Expected impact**    | **Change**                                                       |
+|----------------------------|------------------------|------------------------------------------------------------------|
+| Arguments redefined | Fewer results | This rule previously also flagged redefinitions of `eval`. This was an oversight that is now fixed. |
+| CORS misconfiguration for credentials transfer | More true-positive results | This rule now treats header names case-insensitively. |
+| Hard-coded credentials | More true-positive results | This rule now recognizes secret cryptographic keys. |
+| Insecure randomness | More true-positive results | This rule now recognizes secret cryptographic keys. |
+| Missing X-Frame-Options HTTP header | Fewer false-positive results | This rule now treats header names case-insensitively. |
+| Reflected cross-site scripting | Fewer false-positive results | This rule now treats header names case-insensitively. |
+| Server-side URL redirect | More true-positive results | This rule now treats header names case-insensitively. |
+| Uncontrolled command line | More true-positive results | This rule now recognizes indirect command injection through `sh -c` and similar. |
+| Unused variable | Fewer results | This rule no longer flags class expressions that could be made anonymous. While technically true, these results are not interesting. |
+
+## Changes to QL libraries
+
+* HTTP header names are now always normalized to lower case to reflect the fact that they are case insensitive. In particular, the result of `HeaderDefinition.getAHeaderName`, and the first parameter of `HeaderDefinition.defines`, `ExplicitHeaderDefinition.definesExplicitly` and `RouteHandler.getAResponseHeader` is now always a lower-case string.
