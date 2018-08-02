@@ -39,7 +39,7 @@ module Electron {
   }
   
   /**
-   * A data flow node with a TypeScript type  indicating it is an Electron `BrowserWindow`
+   * A data flow node with a TypeScript type indicating it is an Electron `BrowserWindow`
    */
   class TypedBrowserWindow extends BrowserObject {
     TypedBrowserWindow() {
@@ -48,7 +48,7 @@ module Electron {
   }
   
   /**
-   * A data flow node with a TypeScript type  indicating it is an Electron `BrowserView`
+   * A data flow node with a TypeScript type indicating it is an Electron `BrowserView`
    */
   class TypedBrowserView extends BrowserObject {
     TypedBrowserView() {
@@ -67,7 +67,7 @@ module Electron {
   /**
    * A data flow node that is the `webContents` property of an Electron browser object
    */
-  cached class WebContents extends DataFlow::Node {
+  cached class WebContents extends DataFlow::TrackedNode {
     cached WebContents() {
       exists(BrowserObject bo |
         bo.flowsTo(this.(DataFlow::PropRead).getBase())
@@ -403,7 +403,7 @@ module Electron {
     
     WebContentsSendMessage() {
       exists(WebContents wc, DataFlow::MethodCallNode mc |
-        wc.(DataFlow::PropRead).flowsTo(mc.getReceiver()) and
+        wc.flowsTo(mc.getReceiver()) and
         this = mc.getArgument(1) and
         channel = mc.getArgument(0) and
         mc.getCalleeName() = "send"
@@ -419,7 +419,7 @@ module Electron {
     }
   }
   /**
-   * Holds if `pred` flows to `succ` via the Electron IPC channel `channel`
+   * Holds if `pred` flows to `succ` via the Electron IPC channel `channel`, as determined from local string values.
    */
   predicate ipcSimpleFlowStep(DataFlow::Node pred, DataFlow::Node succ, string channel) {
     exists(IPCRendererCallback callback |
