@@ -6,18 +6,27 @@ module Electron {
    */
   class WebPreferences extends DataFlow::ObjectLiteralNode {
     WebPreferences() {
-      exists(NewBrowserObject bo | this = bo.getOptionArgument(0, "webPreferences").getALocalSource())
+      exists(NewBrowserObject bo | this = bo.getWebPreferences().getALocalSource())
     }
   }
   
-
-  abstract class BrowserObject extends DataFlow::Node {
+  /**
+   * a data flow node that is an Electron `BrowserView` or `BrowserWindow`
+   */
+  abstract class BrowserObject extends DataFlow::TrackedNode {
   }
   
   /**
    * A data flow node that creates a new `BrowserWindow` or `BrowserView`.
    */
-  abstract class NewBrowserObject extends BrowserObject, DataFlow::NewNode {
+  abstract class NewBrowserObject extends BrowserObject {
+    NewBrowserObject() {
+      this instanceof DataFlow::NewNode
+    }
+    
+    DataFlow::Node getWebPreferences() {
+      result = this.(DataFlow::NewNode).getOptionArgument(0, "webPreferences")
+    }
   }
   
   /**
@@ -29,12 +38,23 @@ module Electron {
     }
   }
   
+  /**
+   * A data flow node with a TypeScript type  indicating it is an Electron `BrowserWindow`
+   */
   class TypedBrowserWindow extends BrowserObject {
     TypedBrowserWindow() {
       this.asExpr().getType().toString() = "BrowserWindow"
     }
   }
   
+  /**
+   * A data flow node with a TypeScript type  indicating it is an Electron `BrowserView`
+   */
+  class TypedBrowserView extends BrowserObject {
+    TypedBrowserView() {
+      this.asExpr().getType().toString() = "BrowserView"
+    }
+  }
   /**
    * A data flow node that creates a new `BrowserView`.
    */
@@ -44,31 +64,13 @@ module Electron {
     }
   }
   
-  class BrowserToWebContentsConfiguration extends Configuration2::Configuration {
-    BrowserToWebContentsConfiguration() {
-      this = "BrowserToWebContentsConfiguration"
-    }
-    
-    override predicate isSource(DataFlow::Node node) {
-      node instanceof BrowserObject
-    }
-    
-    override predicate isSink(DataFlow::Node node) {
-      exists(DataFlow::PropRead read |
-       read.getPropertyName() = "webContents" and
-       node = read.getBase()
-     )
-    }
-  }
-  
   /**
    * A data flow node that is the `webContents` property of an Electron browser object
    */
   cached class WebContents extends DataFlow::Node {
     cached WebContents() {
-      exists(BrowserToWebContentsConfiguration cfg, DataFlow::Node base |
-        cfg.hasFlow(_, base) and
-        base = this.(DataFlow::PropRead).getBase()
+      exists(BrowserObject bo |
+        bo.flowsTo(this.(DataFlow::PropRead).getBase())
       )
     }
   }
@@ -466,3 +468,4 @@ module Electron {
     }
   }
 }
+
