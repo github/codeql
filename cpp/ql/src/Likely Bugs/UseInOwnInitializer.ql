@@ -27,4 +27,7 @@ where init.getDeclaration() = v
       va = mi.getExpr()
     )
   )
+  and not (
+    va.getEnclosingStmt().isInMacroExpansion()
+  )
 select va, v.getName() + " is used in its own initializer."
