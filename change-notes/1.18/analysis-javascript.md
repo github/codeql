@@ -14,14 +14,14 @@
   - [crypto-js](https://github.com/https://github.com/brix/crypto-js)
   - [express-jwt](https://github.com/auth0/express-jwt)
   - [express-session](https://github.com/expressjs/session)
-  - [forge](https://github.com/digitalbazaar/forge)
-  - [MySQL2](https://github.com/sidorares/node-mysql2)
-  - [q](http://documentup.com/kriskowal/q/)
   - [fast-json-parse](https://github.com/mcollina/fast-json-parse)
+  - [forge](https://github.com/digitalbazaar/forge)
   - [json-parse-better-errors](https://github.com/zkat/json-parse-better-errors)
   - [json-parse-safe](https://github.com/joaquimserafim/json-parse-safe)
   - [json-safe-parse](https://github.com/bahamas10/node-json-safe-parse)
+  - [MySQL2](https://github.com/sidorares/node-mysql2)
   - [parse-json](https://github.com/sindresorhus/parse-json)
+  - [q](http://documentup.com/kriskowal/q/)
   - [safe-json-parse](https://github.com/Raynos/safe-json-parse)
 
 ## New queries
