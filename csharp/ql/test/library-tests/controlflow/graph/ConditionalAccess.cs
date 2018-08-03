@@ -17,6 +17,13 @@ class ConditionalAccess
     }
 
     string M6(string s1, string s2) => s1?.CommaJoinWith(s2);
+
+    void M7(int i)
+    {
+        var j = ((string)null)?.Length;
+        var s = ((int?)i)?.ToString();
+        s = ""?.CommaJoinWith(s);
+    }
 }
 
 static class Ext

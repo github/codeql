@@ -52,5 +52,61 @@ class Switch
         }
     }
 
+    void M5()
+    {
+        switch (1 + 2)
+        {
+            case 2 :
+              break;
+            case 3 :
+              break;
+        }
+    }
+
+    void M6(string s)
+    {
+        switch ((object)s)
+        {
+            case int _ :
+              break;
+            case "" :
+              break;
+        }
+    }
+
+    bool M7(int i, int j)
+    {
+        switch (i)
+        {
+            case 1 :
+              return true;
+            case 2 :
+              if (j > 2)
+                break;
+              return true;
+        }
+        return false;
+    }
+
+    bool M8(object o)
+    {
+        switch (o)
+        {
+            case int _ :
+              return true;
+        }
+        return false;
+    }
+
+    int M9(string s)
+    {
+        switch (s?.Length)
+        {
+            case 0 : return 0;
+            case 1 : return 1;
+        }
+        return -1;
+    }
+
     static bool Throw() => throw new Exception();
 }
