@@ -14,7 +14,7 @@ class LinkTarget extends @link_target {
    * Gets the file which was built.
    */
   File getBinary() {
-    link_targets(this, result)
+    link_targets(this, unresolveElement(result))
   }
 
   /**
@@ -37,7 +37,7 @@ class LinkTarget extends @link_target {
    * to this link target.
    */
   Function getAFunction() {
-    link_parent(result, this)
+    link_parent(unresolveElement(result), this)
   }
 
   /**
@@ -45,7 +45,7 @@ class LinkTarget extends @link_target {
    * translation units which contributed to this link target.
    */
   Class getAClass() {
-    link_parent(result, this)
+    link_parent(unresolveElement(result), this)
   }
 }
 

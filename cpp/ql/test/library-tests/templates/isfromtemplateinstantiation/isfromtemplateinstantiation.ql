@@ -21,8 +21,8 @@ class ParameterMonkeyPatch extends Parameter {
 
 from Element e, Element ti
 where e.getLocation().getStartLine() != 0 // unhelpful
-and not (function_instantiation(e, _) and e = ti) // trivial
-and not (class_instantiation(e, _) and e = ti) // trivial
-and not (variable_instantiation(e, _) and e = ti) // trivial
+and not (function_instantiation(unresolveElement(e), _) and e = ti) // trivial
+and not (class_instantiation(unresolveElement(e), _) and e = ti) // trivial
+and not (variable_instantiation(unresolveElement(e), _) and e = ti) // trivial
 and e.isFromTemplateInstantiation(ti)
 select e, ti

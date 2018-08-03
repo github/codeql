@@ -61,7 +61,7 @@ predicate lvalue(Element e) {
   or
   e.(Expr).getConversion() instanceof ArrayToPointerConversion
   or
-  exists(ParenthesisExpr paren | exprconv(e, paren) and lvalue(paren))
+  exists(ParenthesisExpr paren | exprconv(unresolveElement(e), unresolveElement(paren)) and lvalue(paren))
   or
   exists(Cast c | lvalue(c) and e.(Expr).getConversion() = c)
   or
@@ -127,6 +127,10 @@ predicate pointerValue(Expr e) {
      t instanceof ReferenceType))
 }
 
+private predicate pointerEntity(@element src, @element dest) {
+  pointer(mkElement(src), mkElement(dest))
+}
+
 /**
  * The source is a pointer to the destination.
  */
@@ -157,7 +161,7 @@ predicate pointer(Element src, Element dest)
     src = ae.getArrayOffset().getFullyConverted() and pointerValue(src))
   or
   exists(ReferenceDereferenceExpr deref | not(lvalue(deref)) and
-    dest = deref and exprconv(src, deref))
+    dest = deref and exprconv(unresolveElement(src), unresolveElement(deref)))
   or
   exists(AggregateLiteral agg | not(lvalue(dest)) and
     agg.getType().getUnderlyingType() instanceof ArrayType and
@@ -172,6 +176,10 @@ predicate pointer(Element src, Element dest)
   //
   // add more cases here
   //
+}
+
+private predicate flowEntity(@element src, @element dest) {
+  flow(mkElement(src), mkElement(dest))
 }
 
 /**
@@ -224,17 +232,17 @@ predicate flow(Element src, Element dest)
   or
   exists(Cast c | src = c.getExpr() and dest = c)
   or
-  exists(ReferenceToExpr toref | exprconv(src, toref) and dest = toref)
+  exists(ReferenceToExpr toref | exprconv(unresolveElement(src), unresolveElement(toref)) and dest = toref)
   or
   exists(ReferenceDereferenceExpr deref | lvalue(deref) and
-    dest = deref and exprconv(src, deref))
+    dest = deref and exprconv(unresolveElement(src), unresolveElement(deref)))
   or
-  exists(ArrayToPointerConversion conv | exprconv(src, conv) and dest = conv)
+  exists(ArrayToPointerConversion conv | exprconv(unresolveElement(src), unresolveElement(conv)) and dest = conv)
   or
   exists(ParenthesisExpr paren |
     // these can appear on the LHS of an assignment
-    (exprconv(src, paren) and dest = paren) or
-    (exprconv(dest, paren) and src = paren))
+    (exprconv(unresolveElement(src), unresolveElement(paren)) and dest = paren) or
+    (exprconv(unresolveElement(dest), unresolveElement(paren)) and src = paren))
   or
   exists(ConditionalExpr cond | dest = cond and
     ( src = cond.getThen().getFullyConverted() or
@@ -249,7 +257,7 @@ predicate flow(Element src, Element dest)
   exists(CommaExpr comma | dest = comma and
     src = comma.getRightOperand().getFullyConverted())
   or
-  exists(ParenthesisExpr paren | dest = paren and exprconv(src, paren))
+  exists(ParenthesisExpr paren | dest = paren and exprconv(unresolveElement(src), unresolveElement(paren)))
   or
   // "vtable" for new-expressions
   exists(NewExpr new | src = new and dest = new.getAllocatedType())
@@ -437,6 +445,10 @@ predicate virtualRet(Expr receiver, VirtualFunction called, string retlabel, Fun
   and called.isVirtual() and retlabel = "+ret"
 }
 
+private predicate compoundEdgeEntity(@element parent, @element element, string label, @element other, int kind) {
+  compoundEdge(mkElement(parent), mkElement(element), label, mkElement(other), kind)
+}
+
 /**
  * This relation combines all pointer and flow relations that
  * go to or from a compound set.
@@ -504,7 +516,7 @@ predicate compoundEdge(Element parent, Element element, string label, Element ot
  */
 cached 
 predicate pointstoinfo(int parent, @element elem, string label, int ptset) =
-  collapse(flow/2, pointer/2, compoundEdge/5, location/1)(parent, elem, label, ptset)
+  collapse(flowEntity/2, pointerEntity/2, compoundEdgeEntity/5, locationEntity/1)(parent, elem, label, ptset)
 
 /**
  * Which elements are in which points-to sets.
@@ -539,7 +551,7 @@ predicate children(int parentset, string label, int childset)
  */
 predicate childrenByElement(int parentset, Element label, int childset)
 {
-  pointstoinfo(parentset, label, "--element--", childset)
+  pointstoinfo(parentset, unresolveElement(label), "--element--", childset)
 }
 
 /**
@@ -551,6 +563,10 @@ pragma[noopt]
 predicate parentSetFor(int cset, @element expr)
 {
   exists(string s | s = "" and pointstoinfo(cset, expr, s, _))
+}
+
+private predicate locationEntity(@element location) {
+  location(mkElement(location))
 }
 
 /**
@@ -583,7 +599,7 @@ private int interestingSet()
 {
   exists(PointsToExpr e |
     e.interesting() and
-    pointstosets(result, e)
+    pointstosets(result, unresolveElement(e))
   ) or (
     setflow(result, interestingSet())
   )
@@ -600,7 +616,7 @@ predicate setlocations(int set, @element location)
   set = interestingSet() and
   (
     (
-      location(location) and pointstosets(set, location)
+      location(mkElement(location)) and pointstosets(set, location)
     ) or
     exists(int middle | setlocations(middle, location) and setflow(middle, set))
   )
@@ -617,7 +633,7 @@ class PointsToExpr extends Expr
   pragma[noopt]
   Element pointsTo()
   {
-    this.interesting() and exists(int set | pointstosets(set, this) and setlocations(set, result))
+    this.interesting() and exists(int set, @element thisEntity, @element resultEntity | thisEntity = unresolveElement(this) and pointstosets(set, thisEntity) and setlocations(set, resultEntity) and resultEntity = unresolveElement(result))
   }
 
   float confidence() { result = 1.0 / count(this.pointsTo()) }
@@ -631,6 +647,6 @@ class PointsToExpr extends Expr
  */
 predicate anythingPointsTo(Element elem)
 {
-  location(elem) and pointstosets(interestingSet(), elem)
+  location(elem) and pointstosets(interestingSet(), unresolveElement(elem))
 }
 

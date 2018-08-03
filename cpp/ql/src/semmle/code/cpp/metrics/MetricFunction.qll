@@ -12,17 +12,17 @@ class MetricFunction extends Function {
 
   /** Gets the number of lines in this function. */
   int getNumberOfLines() {
-    numlines(this,result,_,_)
+    numlines(unresolveElement(this),result,_,_)
   }
 
   /** Gets the number of lines of code in this function. */
   int getNumberOfLinesOfCode() {
-    numlines(this,_,result,_)
+    numlines(unresolveElement(this),_,result,_)
   }
 
   /** Gets the number of lines of comments in this function. */
   int getNumberOfLinesOfComments() {
-    numlines(this,_,_,result)
+    numlines(unresolveElement(this),_,_,result)
   }
 
   /** Gets the ratio of lines of comments to total lines in this function (between 0.0 and 1.0). */

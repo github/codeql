@@ -6,7 +6,7 @@ import semmle.code.cpp.Struct
  */
 class Union extends Struct  {
 
-  Union() { usertypes(this,_,3)  }
+  Union() { usertypes(unresolveElement(this),_,3)  }
 
   override string explain() { result =  "union " + this.getName() }
 

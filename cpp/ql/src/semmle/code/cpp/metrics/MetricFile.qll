@@ -22,17 +22,17 @@ class MetricFile extends File {
 
   /** Gets the number of lines in this file. */
   int getNumberOfLines() {
-    numlines(this,result,_,_)
+    numlines(unresolveElement(this),result,_,_)
   }
 
   /** Gets the number of lines of code in this file. */
   int getNumberOfLinesOfCode() {
-    numlines(this,_,result,_)
+    numlines(unresolveElement(this),_,result,_)
   }
 
   /** Gets the number of lines of comments in this file. */
   int getNumberOfLinesOfComments() {
-    numlines(this,_,_,result)
+    numlines(unresolveElement(this),_,_,result)
   }
 
   /** Gets the number of incoming file dependencies. */

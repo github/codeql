@@ -80,8 +80,8 @@ where impureExprInDisallowedContext(e) and
       not e.isCompilerGenerated() and
       // A few cases that are always ok
       not e instanceof Conversion and
-      not exists(@ctorinit ci | e = ci) and
-      not exists(@dtordestruct dd | e = dd) and
+      not exists(@ctorinit ci | e = mkElement(ci)) and
+      not exists(@dtordestruct dd | e = mkElement(dd)) and
       // Avoid flagging nested expressions
       not impureExprInDisallowedContext(e.getParent+())
 select e.findRootCause(), "AV Rule 204: A single operation with side-effects shall only be used in certain contexts."

@@ -31,7 +31,7 @@ private cached module Cached {
     // then the node is the start of a new primitive basic block.
     or
     strictcount (ControlFlowNode pred, ControlFlowNode other
-    | successors_extended(pred,node) and successors_extended(pred,other)) > 1
+    | successors_extended(unresolveElement(pred),unresolveElement(node)) and successors_extended(unresolveElement(pred),unresolveElement(other))) > 1
 
     // If the node has zero predecessors then it is the start of
     // a BB. However, the C++ AST contains many nodes with zero
@@ -39,17 +39,17 @@ private cached module Cached {
     // the CFG. So we exclude all of those trivial BBs by requiring
     // that the node have at least one successor.
     or
-    (not successors_extended(_, node) and successors_extended(node, _))
+    (not successors_extended(_, unresolveElement(node)) and successors_extended(unresolveElement(node), _))
   }
 
   /** Holds if `node` is the `pos`th control-flow node in primitive basic block `bb`. */
   cached
   predicate primitive_basic_block_member(ControlFlowNode node, PrimitiveBasicBlock bb, int pos) {
-    (node = bb and pos = 0)
+    (node = mkElement(bb) and pos = 0)
     or
-    (not (node instanceof PrimitiveBasicBlock) and
+    (not (unresolveElement(node) instanceof PrimitiveBasicBlock) and
      exists (ControlFlowNode pred
-     | successors_extended(pred,node)
+     | successors_extended(unresolveElement(pred),unresolveElement(node))
      | primitive_basic_block_member(pred, bb, pos - 1)))
   }
 
@@ -64,7 +64,7 @@ private cached module Cached {
   predicate primitive_bb_successor(PrimitiveBasicBlock pred, PrimitiveBasicBlock succ) {
     exists(ControlFlowNode last |
       primitive_basic_block_member(last, pred, primitive_bb_length(pred)-1) and
-      successors_extended(last, succ)
+      successors_extended(unresolveElement(last), succ)
     )
   }
 }
@@ -76,7 +76,7 @@ private cached module Cached {
 class PrimitiveBasicBlock extends @cfgnode {
 
   PrimitiveBasicBlock() {
-    primitive_basic_block_entry_node(this)
+    primitive_basic_block_entry_node(mkElement(this))
   }
 
   /** Gets a textual representation of this element. */

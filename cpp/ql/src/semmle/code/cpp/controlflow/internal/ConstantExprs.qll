@@ -63,8 +63,8 @@ private predicate nonAnalyzableFunction(Function f) {
  */
 private predicate impossibleFalseEdge(Expr condition, @cfgnode succ) {
   conditionAlwaysTrue(condition)
-  and falsecond(condition,succ)
-  and not truecond(condition,succ)
+  and falsecond(unresolveElement(condition),succ)
+  and not truecond(unresolveElement(condition),succ)
 }
 
 /**
@@ -72,8 +72,8 @@ private predicate impossibleFalseEdge(Expr condition, @cfgnode succ) {
  */
 private predicate impossibleTrueEdge(Expr condition, @cfgnode succ) {
   conditionAlwaysFalse(condition)
-  and truecond(condition,succ)
-  and not falsecond(condition,succ)
+  and truecond(unresolveElement(condition),succ)
+  and not falsecond(unresolveElement(condition),succ)
 }
 
 /**
@@ -93,7 +93,7 @@ private int switchCaseRangeEnd(SwitchCase sc) {
  */
 private @cfgnode getASwitchExpr(SwitchStmt switch, Block switchBlock) {
   switch.getStmt() = switchBlock and
-  successors_extended(result, switchBlock)
+  successors_extended(result, unresolveElement(switchBlock))
 }
 
 /**
@@ -111,7 +111,7 @@ private predicate impossibleSwitchEdge(Block switchBlock, SwitchCase sc) {
      and forall(@cfgnode n |
                 n = getASwitchExpr(switch, switchBlock) |
                 exists(int switchValue |
-                       switchValue = getSwitchValue(n)
+                       switchValue = getSwitchValue(mkElement(n))
                        and (switchValue < sc.getExpr().(CompileTimeConstantInt).getIntValue() or
                             switchValue > switchCaseRangeEnd(sc)))))
 }
@@ -130,7 +130,7 @@ private predicate impossibleDefaultSwitchEdge(Block switchBlock, DefaultCase dc)
                 n = getASwitchExpr(switch, switchBlock) |
                 exists(SwitchCase sc, int val |
                        sc.getSwitchStmt() = switch and
-                       val = getSwitchValue(n) and
+                       val = getSwitchValue(mkElement(n)) and
                        val >= sc.getExpr().(CompileTimeConstantInt).getIntValue() and
                        val <= switchCaseRangeEnd(sc))))
 }
@@ -140,9 +140,9 @@ private predicate impossibleDefaultSwitchEdge(Block switchBlock, DefaultCase dc)
  * (at least) one such target must be potentially returning.
  */
 private predicate possiblePredecessor(@cfgnode pred) {
-  not exists(pred.(FunctionCall).getTarget())
+  not exists(mkElement(pred).(FunctionCall).getTarget())
   or
-  potentiallyReturningFunctionCall(pred)
+  potentiallyReturningFunctionCall(mkElement(pred))
 }
 
 /**
@@ -153,11 +153,11 @@ private predicate possiblePredecessor(@cfgnode pred) {
 cached predicate successors_adapted(@cfgnode pred, @cfgnode succ) {
   successors_extended(pred, succ)
   and possiblePredecessor(pred)
-  and not impossibleFalseEdge(pred, succ)
-  and not impossibleTrueEdge(pred, succ)
-  and not impossibleSwitchEdge(pred, succ)
-  and not impossibleDefaultSwitchEdge(pred, succ)
-  and not getOptions().exprExits(pred)
+  and not impossibleFalseEdge(mkElement(pred), succ)
+  and not impossibleTrueEdge(mkElement(pred), succ)
+  and not impossibleSwitchEdge(mkElement(pred), mkElement(succ))
+  and not impossibleDefaultSwitchEdge(mkElement(pred), mkElement(succ))
+  and not getOptions().exprExits(mkElement(pred))
 }
 
 private predicate compileTimeConstantInt(Expr e, int val) {
@@ -708,9 +708,9 @@ library class ConditionEvaluator extends ExprEvaluator {
   ConditionEvaluator() { this = 0 }
 
   override predicate interesting(Expr e) {
-    falsecond(e, _)
+    falsecond(unresolveElement(e), _)
     or
-    truecond(e, _)
+    truecond(unresolveElement(e), _)
   }
 }
 
@@ -719,7 +719,7 @@ library class SwitchEvaluator extends ExprEvaluator {
   SwitchEvaluator() { this = 1 }
 
   override predicate interesting(Expr e) {
-    e = getASwitchExpr(_, _)
+    e = mkElement(getASwitchExpr(_, _))
   }
 }
 

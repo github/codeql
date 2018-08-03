@@ -6,12 +6,12 @@ private import semmle.code.cpp.internal.Type
  */
 class TypedefType extends UserType {
 
-  TypedefType() { usertypes(this,_,5) }
+  TypedefType() { usertypes(unresolveElement(this),_,5) }
 
   /**
    * Gets the base type of this typedef type.
    */
-  Type getBaseType() { typedefbase(this,unresolve(result)) }
+  Type getBaseType() { typedefbase(unresolveElement(this),unresolveElement(result)) }
 
   override Type getUnderlyingType() { result = this.getBaseType().getUnderlyingType() }
 

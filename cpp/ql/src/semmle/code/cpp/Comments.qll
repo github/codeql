@@ -6,9 +6,9 @@ import semmle.code.cpp.Element
  */
 class Comment extends Locatable, @comment {
   override string toString() { result = this.getContents() }
-  override Location getLocation() { comments(this,_,result) }
-  string getContents() { comments(this,result,_) }
-  Element getCommentedElement() { commentbinding(this,result) }
+  override Location getLocation() { comments(unresolveElement(this),_,result) }
+  string getContents() { comments(unresolveElement(this),result,_) }
+  Element getCommentedElement() { commentbinding(unresolveElement(this),unresolveElement(result)) }
 }
 
 /**

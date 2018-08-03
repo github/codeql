@@ -14,7 +14,7 @@ class NameQualifier extends NameQualifiableElement, @namequalifier {
 
   /** Gets a location for this name qualifier. */
   override Location getLocation() {
-    namequalifiers(this,_,_,result)
+    namequalifiers(unresolveElement(this),_,_,result)
   }
 
   /**
@@ -23,7 +23,7 @@ class NameQualifier extends NameQualifiableElement, @namequalifier {
    * `N2::` has a name qualifier `N1::` in the chain `N1::N2::f()`.
    */
   override NameQualifier getNameQualifier() {
-    namequalifiers(result,this,_,_)
+    namequalifiers(unresolveElement(result),unresolveElement(this),_,_)
   }
 
   /**
@@ -31,7 +31,7 @@ class NameQualifier extends NameQualifiableElement, @namequalifier {
    * in `N::f()`.
    */
   NameQualifiableElement getQualifiedElement() {
-    namequalifiers(this,result,_,_)
+    namequalifiers(unresolveElement(this),unresolveElement(result),_,_)
   }
 
   /**
@@ -40,7 +40,7 @@ class NameQualifier extends NameQualifiableElement, @namequalifier {
    */
   NameQualifyingElement getQualifyingElement() {
     exists (NameQualifyingElement nqe
-    | namequalifiers(this,_,nqe,_) and
+    | namequalifiers(unresolveElement(this),_,unresolveElement(nqe),_) and
       if nqe instanceof SpecialNameQualifyingElement
         then (exists (Access a
               | a = getQualifiedElement() and
@@ -54,7 +54,7 @@ class NameQualifier extends NameQualifiableElement, @namequalifier {
 
   override string toString() {
     exists (NameQualifyingElement nqe
-    | namequalifiers(this,_,nqe,_)
+    | namequalifiers(unresolveElement(this),_,unresolveElement(nqe),_)
       and result = nqe.getName() + "::")
   }
 }
@@ -69,7 +69,7 @@ class NameQualifier extends NameQualifiableElement, @namequalifier {
 class NameQualifiableElement extends Element, @namequalifiableelement {
   /** Gets the name qualifier associated with this element. */
   NameQualifier getNameQualifier() {
-    namequalifiers(result,this,_,_)
+    namequalifiers(unresolveElement(result),unresolveElement(this),_,_)
   }
 
   /**
@@ -89,7 +89,7 @@ class NameQualifiableElement extends Element, @namequalifiableelement {
   predicate hasSuperQualifiedName() {
     exists(NameQualifier nq, SpecialNameQualifyingElement snqe |
       nq = getNameQualifier*()
-      and namequalifiers(nq,_,snqe,_)
+      and namequalifiers(unresolveElement(nq),_,unresolveElement(snqe),_)
       and snqe.getName() = "__super"
     )
   }
@@ -106,7 +106,7 @@ class NameQualifyingElement extends Element, @namequalifyingelement {
    * `NameQualifyingElement` and `X::` is the `NameQualifier`.
    */
   NameQualifier getANameQualifier() {
-    namequalifiers(result,_,this,_)
+    namequalifiers(unresolveElement(result),_,unresolveElement(this),_)
   }
 
   /** Gets the name of this namespace or user-defined type. */
@@ -121,6 +121,6 @@ class NameQualifyingElement extends Element, @namequalifyingelement {
 library class SpecialNameQualifyingElement extends NameQualifyingElement, @specialnamequalifyingelement {
   /** Gets the name of this special qualifying element. */
   override string getName() {
-    specialnamequalifyingelements(this,result)
+    specialnamequalifyingelements(unresolveElement(this),result)
   }
 }

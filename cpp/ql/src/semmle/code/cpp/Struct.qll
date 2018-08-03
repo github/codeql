@@ -6,7 +6,7 @@ import semmle.code.cpp.Class
  */
 class Struct extends Class {
 
-  Struct() { usertypes(this,_,1) or usertypes(this,_,3) }
+  Struct() { usertypes(unresolveElement(this),_,1) or usertypes(unresolveElement(this),_,3) }
 
   override string explain() { result =  "struct " + this.getName() }
 

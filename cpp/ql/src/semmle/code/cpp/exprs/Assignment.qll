@@ -102,7 +102,7 @@ class AssignAndExpr extends AssignBitwiseOperation, @assignandexpr {
 /**
  * A non-overloaded `|=` assignment expression.
  */
-class AssignOrExpr extends AssignBitwiseOperation, @assignorexpr   {
+class AssignOrExpr extends AssignBitwiseOperation, @assignorexpr {
   override string getOperator() { result = "|=" }
 }
 
@@ -116,14 +116,14 @@ class AssignXorExpr extends AssignBitwiseOperation, @assignxorexpr {
 /**
  * A non-overloaded `<<=` assignment expression.
  */
-class AssignLShiftExpr extends AssignBitwiseOperation, @assignlshiftexpr  {
+class AssignLShiftExpr extends AssignBitwiseOperation, @assignlshiftexpr {
   override string getOperator() { result = "<<=" }
 }
 
 /**
  * A non-overloaded `>>=` assignment expression.
  */
-class AssignRShiftExpr extends AssignBitwiseOperation, @assignrshiftexpr  {
+class AssignRShiftExpr extends AssignBitwiseOperation, @assignrshiftexpr {
   override string getOperator() { result = ">>=" }
 }
 
@@ -152,7 +152,7 @@ class ConditionDeclExpr extends Expr, @condition_decl {
   Expr getExpr() { result = this.getChild(0) }
 
   /** Gets the variable that is declared. */
-  Variable getVariable() { condition_decl_bind(this,result) }
+  Variable getVariable() { condition_decl_bind(unresolveElement(this),unresolveElement(result)) }
 
   override string toString() { result = "(condition decl)" }
 }

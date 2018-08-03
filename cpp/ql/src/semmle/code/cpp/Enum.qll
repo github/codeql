@@ -7,7 +7,7 @@ private import semmle.code.cpp.internal.Type
 class Enum extends UserType, IntegralOrEnumType {
   /** Gets an enumerator of this enumeration. */
   EnumConstant getAnEnumConstant() { result.getDeclaringEnum() = this }
-  EnumConstant getEnumConstant(int index) { enumconstants(result,this,index,_,_,_) }
+  EnumConstant getEnumConstant(int index) { enumconstants(unresolveElement(result),unresolveElement(this),index,_,_,_) }
 
   /**
    * Gets a descriptive string for the enum. This method is only intended to
@@ -24,7 +24,7 @@ class Enum extends UserType, IntegralOrEnumType {
    * For example: `enum E : int`.
    */
   predicate hasExplicitUnderlyingType() {
-    derivations(_, this, _, _, _)
+    derivations(_, unresolveElement(this), _, _, _)
   }
 
   /**
@@ -32,7 +32,7 @@ class Enum extends UserType, IntegralOrEnumType {
    * For example: `int` in `enum E : int`.
    */
   Type getExplicitUnderlyingType() {
-    derivations(_, this, _, result, _)
+    derivations(_, unresolveElement(this), _, unresolveElement(result), _)
   }
 }
 
@@ -72,7 +72,7 @@ class NestedEnum extends Enum {
  */
 class ScopedEnum extends Enum {
   ScopedEnum() {
-    usertypes(this,_,13)
+    usertypes(unresolveElement(this),_,13)
   }
 }
 
@@ -83,11 +83,11 @@ class ScopedEnum extends Enum {
  *
  * Enumerators are also knowns as enumeration constants.
  */
-class EnumConstant extends @enumconstant, Declaration {
+class EnumConstant extends Declaration, @enumconstant {
   /**
    * Gets the enumeration of which this enumerator is a member.
    */
-  Enum getDeclaringEnum() { enumconstants(this,result,_,_,_,_) }
+  Enum getDeclaringEnum() { enumconstants(unresolveElement(this),unresolveElement(result),_,_,_,_) }
 
   override Class getDeclaringType() {
     result = this.getDeclaringEnum().getDeclaringType()
@@ -96,7 +96,7 @@ class EnumConstant extends @enumconstant, Declaration {
   /**
    * Gets the name of this enumerator.
    */
-  override string getName() { enumconstants(this,_,_,_,result,_) }
+  override string getName() { enumconstants(unresolveElement(this),_,_,_,result,_) }
 
   /**
    * Gets the value that this enumerator is initialized to, as a
@@ -106,13 +106,13 @@ class EnumConstant extends @enumconstant, Declaration {
   string getValue() { result = this.getInitializer().getExpr().getValue() }
 
   /** Gets the type of this enumerator. */
-  Type getType() { enumconstants(this,_,_,unresolve(result),_,_) }
+  Type getType() { enumconstants(unresolveElement(this),_,_,unresolveElement(result),_,_) }
 
   /** Gets the location of a declaration of this enumerator. */
   override Location getADeclarationLocation() { result = this.getDefinitionLocation() }
 
   /** Gets the location of the definition of this enumerator. */
-  override Location getDefinitionLocation() { enumconstants(this,_,_,_,_,result) }
+  override Location getDefinitionLocation() { enumconstants(unresolveElement(this),_,_,_,_,result) }
 
   /** Gets the location of the definition of this enumerator. */
   override Location getLocation() { result = this.getDefinitionLocation() }
@@ -124,7 +124,7 @@ class EnumConstant extends @enumconstant, Declaration {
   EnumConstantAccess getAnAccess() { result.getTarget() = this }
 
   /** Gets a specifier of this enumerator. */
-  override Specifier getASpecifier() { varspecifiers(this,result) }
+  override Specifier getASpecifier() { varspecifiers(unresolveElement(this),unresolveElement(result)) }
 
   /**
    * An attribute of this enumerator.
@@ -133,6 +133,6 @@ class EnumConstant extends @enumconstant, Declaration {
    * which is only supported by Clang.
    */
   Attribute getAnAttribute() {
-    varattributes(this, result)
+    varattributes(unresolveElement(this), unresolveElement(result))
   }
 }

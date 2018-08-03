@@ -9,12 +9,8 @@ private import semmle.code.cpp.internal.Type
  * `Enum`, and `TypedefType`.
  */
 class UserType extends Type, Declaration, NameQualifyingElement, AccessHolder, @usertype {
-  UserType() {
-    isClass(this) implies this = resolve(_)
-  }
-
   /** the name of this type */
-  override string getName() { usertypes(this,result,_) }
+  override string getName() { usertypes(unresolveElement(this),result,_) }
 
   /** the simple name of this type, without any template parameters */
   string getSimpleName() {
@@ -22,7 +18,7 @@ class UserType extends Type, Declaration, NameQualifyingElement, AccessHolder, @
   }
 
   override predicate hasName(string name) {
-    usertypes(this,name,_)
+    usertypes(unresolveElement(this),name,_)
   }
   predicate isAnonymous() {
     getName().matches("(unnamed%")
@@ -43,8 +39,8 @@ class UserType extends Type, Declaration, NameQualifyingElement, AccessHolder, @
   }
 
   override TypeDeclarationEntry getADeclarationEntry() {
-    if type_decls(_, unresolve(this), _) then
-      type_decls(result, unresolve(this), _)
+    if type_decls(_, unresolveElement(this), _) then
+      type_decls(unresolveElement(result), unresolveElement(this), _)
     else
       exists(Class t | this.(Class).isConstructedFrom(t) and result = t.getADeclarationEntry())
   }
@@ -68,7 +64,7 @@ class UserType extends Type, Declaration, NameQualifyingElement, AccessHolder, @
 
   /** Gets the function that directly encloses this type (if any). */
   Function getEnclosingFunction() {
-    enclosingfunction(this,result)
+    enclosingfunction(unresolveElement(this),unresolveElement(result))
   }
 
   /** Whether this is a local type (i.e. a type that has a directly-enclosing function). */
@@ -100,15 +96,15 @@ class TypeDeclarationEntry extends DeclarationEntry, @type_decl {
   /**
    * The type which is being declared or defined.
    */
-  override Type getType() { type_decls(this,unresolve(result),_) }
+  override Type getType() { type_decls(unresolveElement(this),unresolveElement(result),_) }
 
-  override Location getLocation() { type_decls(this,_,result) }
-  override predicate isDefinition() { type_def(this) }
+  override Location getLocation() { type_decls(unresolveElement(this),_,result) }
+  override predicate isDefinition() { type_def(unresolveElement(this)) }
   override string getASpecifier() { none() }
 
   /**
    * A top level type declaration entry is not declared within a function, function declaration,
    * class or typedef.
    */
-  predicate isTopLevel() { type_decl_top(this) }
+  predicate isTopLevel() { type_decl_top(unresolveElement(this)) }
 }

@@ -3,8 +3,8 @@ import semmle.code.cpp.controlflow.ControlFlowGraph
 /**
  * A C/C++ declaration initializer.
  */
-class Initializer extends @initialiser, ControlFlowNode {
-  override Location getLocation() { initialisers(this,_,_,result) }
+class Initializer extends ControlFlowNode, @initialiser {
+  override Location getLocation() { initialisers(unresolveElement(this),_,_,result) }
 
   /** Holds if this initializer is explicit in the source. */
   override predicate fromSource() {
@@ -20,10 +20,10 @@ class Initializer extends @initialiser, ControlFlowNode {
   }
 
   /** Gets the variable or enum constant being initialized. */
-  Declaration getDeclaration() { initialisers(this,result,_,_) }
+  Declaration getDeclaration() { initialisers(unresolveElement(this),unresolveElement(result),_,_) }
 
   /** Gets the initializing expression. */
-  Expr getExpr() { initialisers(this,_,result,_) }
+  Expr getExpr() { initialisers(unresolveElement(this),_,unresolveElement(result),_) }
 
   /** Gets the function containing this control-flow node. */
   override Function getControlFlowScope() {

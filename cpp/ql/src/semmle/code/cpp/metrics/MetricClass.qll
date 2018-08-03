@@ -432,7 +432,7 @@ predicate dependsOnClassSimple(Class source, Class dest) {
 
 
     // a class depends on the types of its member variables
-    or exists(MemberVariable v, Type t | v.getDeclaringType() = source and v.getType() = t and t.refersTo(dest))
+    or exists(MemberVariable v, Type t | v.getDeclaringType() = source and v.getType() = t and t.refersTo(dest) and v instanceof MemberVariable)
 
     // a class depends on the return types of its member functions
     or exists(MemberFunction f, Type t | f.getDeclaringType() = source and f instanceof MemberFunction and f.getType() = t and t.refersTo(dest))
@@ -471,7 +471,8 @@ predicate dependsOnClassSimple(Class source, Class dest) {
       and fa.getEnclosingFunction() = f
       and fa.getTarget() = mf
       and mf.getDeclaringType() = dest
-      and mf instanceof MemberFunction)
+      and mf instanceof MemberFunction
+      and fa instanceof FunctionAccess)
 
     // a class depends on classes for which its member functions are accessed from a member variable initializer
     or exists(MemberVariable v, FunctionAccess fa, MemberFunction mf |
@@ -480,6 +481,7 @@ predicate dependsOnClassSimple(Class source, Class dest) {
       and fa.getEnclosingVariable() = v
       and fa.getTarget() = mf
       and mf.getDeclaringType() = dest
+      and fa instanceof FunctionAccess
       and mf instanceof MemberFunction)
 
     // a class depends on classes for which its member variables are accessed from a member function

@@ -114,7 +114,7 @@ module FlowVar_internal {
   predicate blockVarDefinedByVariable(
       SubBasicBlock sbb, LocalScopeVariable v)
   {
-    sbb = v.(Parameter).getFunction().getEntryPoint()
+    mkElement(sbb) = v.(Parameter).getFunction().getEntryPoint()
     or
     exists(DeclStmt declStmt |
       declStmt.getDeclaration(_) = v.(LocalVariable) and
@@ -131,11 +131,11 @@ module FlowVar_internal {
     or
     TBlockVar(SubBasicBlock sbb, Variable v) {
       not fullySupportedSsaVariable(v) and
-      reachable(sbb) and
+      reachable(mkElement(sbb)) and
       (
         initializer(sbb.getANode(), v, _)
         or
-        assignmentLikeOperation(sbb, v, _)
+        assignmentLikeOperation(mkElement(sbb), v, _)
         or
         blockVarDefinedByVariable(sbb, v)
       )
@@ -233,7 +233,7 @@ module FlowVar_internal {
 
     override predicate definedByExpr(Expr e, ControlFlowNode node) {
       assignmentLikeOperation(node, v, e) and
-      node = sbb
+      node = mkElement(sbb)
       or
       initializer(node, v, e) and
       node = sbb.getANode()
@@ -310,7 +310,7 @@ module FlowVar_internal {
     }
 
     private predicate bbInLoop(BasicBlock bb) {
-      bbDominates(this.(Loop).getStmt(), bb)
+      bbDominates(unresolveElement(this.(Loop).getStmt()), bb)
       or
       bbInLoopCondition(bb)
     }
@@ -328,7 +328,7 @@ module FlowVar_internal {
       (
         // For the type of loop we are interested in, the body is always a
         // basic block.
-        bb = this.(Loop).getStmt() and
+        mkElement(bb) = this.(Loop).getStmt() and
         v = this.getARelevantVariable()
         or
         reachesWithoutAssignment(bb.getAPredecessor(), v) and
@@ -369,7 +369,7 @@ module FlowVar_internal {
       mid = getAReachedBlockVarSBB(start) and
       result = mid.getASuccessor() and
       not skipLoop(mid, result, sbbDef, v) and
-      not assignmentLikeOperation(result, v, _)
+      not assignmentLikeOperation(mkElement(result), v, _)
     )
   }
 
@@ -522,7 +522,7 @@ module FlowVar_internal {
     DataFlowSubBasicBlockCutNode() {
       exists(Variable v |
         not fullySupportedSsaVariable(v) and
-        assignmentLikeOperation(this, v, _)
+        assignmentLikeOperation(mkElement(this), v, _)
         // It is not necessary to cut the basic blocks at `Initializer` nodes
         // because the affected variable can have no _other_ value before its
         // initializer. It is not necessary to cut basic blocks at procedure

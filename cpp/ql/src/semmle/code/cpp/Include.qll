@@ -14,7 +14,7 @@ class Include extends PreprocessorDirective, @ppd_include {
   string getIncludeText() { result = getHead() }
 
   /** Gets the file directly included by this `#include`. */
-  File getIncludedFile() { includes(this, result) }
+  File getIncludedFile() { includes(unresolveElement(this), unresolveElement(result)) }
 
   /**
    * Gets a file which might be transitively included by this `#include`.

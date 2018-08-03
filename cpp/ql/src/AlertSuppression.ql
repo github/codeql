@@ -56,12 +56,12 @@ class SuppressionComment extends CppStyleComment {
  */
 class SuppressionScope extends @comment {
   SuppressionScope() {
-    this instanceof SuppressionComment
+    mkElement(this) instanceof SuppressionComment
   }
 
   /** Gets a suppression comment with this scope. */
   SuppressionComment getSuppressionComment() {
-    result = this
+    result = mkElement(this)
   }
 
   /**
@@ -72,7 +72,7 @@ class SuppressionScope extends @comment {
   * [LGTM locations](https://lgtm.com/help/ql/locations).
   */
   predicate hasLocationInfo(string filepath, int startline, int startcolumn, int endline, int endcolumn) {
-    this.(SuppressionComment).covers(filepath, startline, startcolumn, endline, endcolumn)
+    mkElement(this).(SuppressionComment).covers(filepath, startline, startcolumn, endline, endcolumn)
   }
 
   /** Gets a textual representation of this element. */

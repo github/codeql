@@ -33,7 +33,7 @@ class FriendDecl extends Declaration, @frienddecl {
   override Location getDefinitionLocation() { result = this.getLocation() }
 
   /** Gets the location of this friend declaration. */
-  override Location getLocation() { frienddecls(this,_,_,result) }
+  override Location getLocation() { frienddecls(unresolveElement(this),_,_,result) }
 
   /** Gets a descriptive string for this friend declaration. */
   override string getName() {
@@ -51,13 +51,13 @@ class FriendDecl extends Declaration, @frienddecl {
    * Gets the target of this friend declaration.
    * For example: `X` in `class A { friend class X }`.
    */
-  AccessHolder getFriend() { frienddecls(this,_,result,_) }
+  AccessHolder getFriend() { frienddecls(unresolveElement(this),_,unresolveElement(result),_) }
 
   /**
    * Gets the declaring class (also known as the befriending class).
    * For example: `A` in `class A { friend class X }`.
    */
-  Class getDeclaringClass() { frienddecls(this,unresolve(result),_,_) }
+  Class getDeclaringClass() { frienddecls(unresolveElement(this),unresolveElement(result),_,_) }
 
   /* Holds if this declaration is a top-level declaration. */
   override predicate isTopLevel() { none() }

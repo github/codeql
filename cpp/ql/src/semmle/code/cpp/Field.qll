@@ -8,14 +8,14 @@ import semmle.code.cpp.exprs.Access
 class Field extends MemberVariable {
 
   Field() {
-    fieldoffsets(this,_,_)
+    fieldoffsets(unresolveElement(this),_,_)
   }
 
   /**
    * Gets the offset of this field in bytes from the start of its declaring
    * type (on the machine where facts were extracted).
    */
-  int getByteOffset() { fieldoffsets(this,result,_) }
+  int getByteOffset() { fieldoffsets(unresolveElement(this),result,_) }
 
   /**
    * Gets the byte offset within `mostDerivedClass` of each occurence of this
@@ -70,13 +70,13 @@ class Field extends MemberVariable {
  * Syntactically, this looks like `int x : 3` in `struct S { int x : 3; };`.
  */
 class BitField extends Field {
-  BitField() { bitfield(this,_,_) }
+  BitField() { bitfield(unresolveElement(this),_,_) }
 
   /**
    * Gets the size of this bitfield in bits (on the machine where facts
    * were extracted).
    */
-  int getNumBits() { bitfield(this,result,_) }
+  int getNumBits() { bitfield(unresolveElement(this),result,_) }
 
   /**
    * Gets the value which appeared after the colon in the bitfield
@@ -88,13 +88,13 @@ class BitField extends Field {
    * `getNumBits` will give 32, whereas `getDeclaredNumBits` will give
    * 1234.
    */
-  int getDeclaredNumBits() { bitfield(this,_,result) }
+  int getDeclaredNumBits() { bitfield(unresolveElement(this),_,result) }
 
   /**
    * Gets the offset of this bitfield in bits from the byte identified by
    * getByteOffset (on the machine where facts were extracted).
    */
-  int getBitOffset() { fieldoffsets(this,_,result) }
+  int getBitOffset() { fieldoffsets(unresolveElement(this),_,result) }
 
   predicate isAnonymous() {
     hasName("(unnamed bitfield)")

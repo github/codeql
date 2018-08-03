@@ -9,13 +9,13 @@ class Macro extends PreprocessorDirective, @ppd_define {
    * Gets the head of this macro. For example, `MAX(x,y)` in
    * `#define MAX(x,y) (((x)>(y))?(x):(y))`.
    */
-  override string getHead() { preproctext(this,result,_) }
+  override string getHead() { preproctext(unresolveElement(this),result,_) }
 
   /**
    * Gets the body of this macro. For example, `(((x)>(y))?(x):(y))` in
    * `#define MAX(x,y) (((x)>(y))?(x):(y))`.
    */
-  string getBody() { preproctext(this,_,result) }
+  string getBody() { preproctext(unresolveElement(this),_,result) }
 
   /** Gets an invocation of this macro. */
   MacroInvocation getAnInvocation() { result.getMacro() = this }
@@ -59,7 +59,7 @@ class Macro extends PreprocessorDirective, @ppd_define {
  */
 class MacroAccess extends Locatable, @macroinvocation {
   /** Gets the macro being invoked. */
-  Macro getMacro() { macroinvocations(this,result,_,_) }
+  Macro getMacro() { macroinvocations(unresolveElement(this),unresolveElement(result),_,_) }
 
   /**
    * Gets the location of the outermost macro access that triggered this macro
@@ -78,7 +78,7 @@ class MacroAccess extends Locatable, @macroinvocation {
    * a `#define` directive or inside an argument to another macro.
    */
   Location getActualLocation() {
-    macroinvocations(this,_,result,_)
+    macroinvocations(unresolveElement(this),_,result,_)
   }
 
   /**
@@ -111,7 +111,7 @@ class MacroAccess extends Locatable, @macroinvocation {
    * There is only a single invocation even though `c` occurs twice; this is an
    * optimization for efficiency.
    */
-  MacroInvocation getParentInvocation() { macroparent(this,result) }
+  MacroInvocation getParentInvocation() { macroparent(unresolveElement(this),unresolveElement(result)) }
 
   /**
    * Gets the outermost `MacroAccess` along the chain of `getParentInvocation`.
@@ -137,14 +137,14 @@ class MacroAccess extends Locatable, @macroinvocation {
  */
 class MacroInvocation extends MacroAccess {
   MacroInvocation() {
-    macroinvocations(this,_,_,1)
+    macroinvocations(unresolveElement(this),_,_,1)
   }
 
   /**
    * Gets an element that occurs in this macro invocation or a nested macro
    * invocation.
    */
-  Locatable getAnExpandedElement() { inmacroexpansion(result,this) }
+  Locatable getAnExpandedElement() { inmacroexpansion(unresolveElement(result),unresolveElement(this)) }
 
   /**
    * Gets an element that is (partially) affected by a macro
@@ -153,7 +153,7 @@ class MacroInvocation extends MacroAccess {
    * well.
    */
   Locatable getAnAffectedElement() {
-    inmacroexpansion(result,this) or macrolocationbind(this, result.getLocation())
+    inmacroexpansion(unresolveElement(result),unresolveElement(this)) or macrolocationbind(unresolveElement(this), result.getLocation())
   }
 
   /**
@@ -224,7 +224,7 @@ class MacroInvocation extends MacroAccess {
    * Use `getExpandedArgument` to get the expanded form.
    */
   string getUnexpandedArgument(int i) {
-    macro_argument_unexpanded(this, i, result)
+    macro_argument_unexpanded(unresolveElement(this), i, result)
   }
 
   /**
@@ -238,7 +238,7 @@ class MacroInvocation extends MacroAccess {
    * differences between expanded and unexpanded arguments.
    */
   string getExpandedArgument(int i) {
-    macro_argument_expanded(this, i, result)
+    macro_argument_expanded(unresolveElement(this), i, result)
   }
 }
 
@@ -291,7 +291,7 @@ predicate macroLocation(Location l) {
 
 /** Holds if `element` is in the expansion of a macro. */
 predicate inMacroExpansion(Locatable element) {
-  inmacroexpansion(element,_) or
+  inmacroexpansion(unresolveElement(element),_) or
   (macroLocation(element.getLocation()) and
    not topLevelMacroAccess(element))
 }
@@ -317,7 +317,7 @@ predicate inSystemMacroExpansion(Locatable element) {
 /** Holds if `element` is affected by a macro. */
 predicate affectedByMacro(Locatable element) {
   inMacroExpansion(element) or
-  affectedbymacroexpansion(element,_)
+  affectedbymacroexpansion(unresolveElement(element),_)
 }
 
 /** Holds if there is a macro invocation on line `line` of file `f`. */

@@ -36,12 +36,12 @@ class Literal extends Expr, @literal {
  */
 class LabelLiteral extends Literal {
   LabelLiteral() {
-    jumpinfo(this,_,_)
+    jumpinfo(unresolveElement(this),_,_)
   }
 
   /** Gets the corresponding label statement. */
   LabelStmt getLabel() {
-    jumpinfo(this,_,result)
+    jumpinfo(unresolveElement(this),_,unresolveElement(result))
   }
 }
 

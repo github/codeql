@@ -14,7 +14,7 @@ class Specifier extends Element, @specifier {
   }
 
   /** Gets the name of this specifier. */
-  string getName() { specifiers(this,result) }
+  string getName() { specifiers(unresolveElement(this),result) }
 
   /** Holds if the name of this specifier is `name`. */
   predicate hasName(string name) { name = this.getName() }
@@ -114,9 +114,9 @@ class Attribute extends Element, @attribute {
    * Note that the name does not include the namespace. For example, the
    * name of `[[clang::fallthrough]]` is "fallthrough".
    */
-  string getName() { attributes(this, _, result, _, _) }
+  string getName() { attributes(unresolveElement(this), _, result, _, _) }
 
-  override Location getLocation() { attributes(this, _, _, _, result) }
+  override Location getLocation() { attributes(unresolveElement(this), _, _, _, result) }
 
   /** Holds if the name of this attribute is `name`. */
   predicate hasName(string name) { name = this.getName() }
@@ -152,7 +152,7 @@ class StdAttribute extends Attribute, @stdattribute {
    * As examples, this is "" for `[[carries_dependency]]`, and "clang" for
    * `[[clang::fallthrough]]`.
    */
-  string getNamespace() { attributes(this, _, _, result, _) }
+  string getNamespace() { attributes(unresolveElement(this), _, _, result, _) }
 
   /**
    * Holds if this attribute has the given namespace and name.
@@ -249,7 +249,7 @@ class AttributeArgument extends Element, @attribute_arg {
    * have a named argument.
    */
   string getName() {
-    attribute_arg_name(this, result)
+    attribute_arg_name(unresolveElement(this), result)
   }
 
   /**
@@ -257,7 +257,7 @@ class AttributeArgument extends Element, @attribute_arg {
    * a string or a number.
    */
   string getValueText() {
-    attribute_arg_value(this, result)
+    attribute_arg_value(unresolveElement(this), result)
   }
 
   /**
@@ -271,14 +271,14 @@ class AttributeArgument extends Element, @attribute_arg {
    * Gets the value of this argument, if its value is a type.
    */
   Type getValueType() {
-    attribute_arg_type(this, unresolve(result))
+    attribute_arg_type(unresolveElement(this), unresolveElement(result))
   }
 
   /**
    * Gets the attribute to which this is an argument.
    */
   Attribute getAttribute() {
-    attribute_args(this, _, result, _, _)
+    attribute_args(unresolveElement(this), _, unresolveElement(result), _, _)
   }
 
   /**
@@ -286,21 +286,21 @@ class AttributeArgument extends Element, @attribute_arg {
    * attribute's argument list.
    */
   int getIndex() {
-    attribute_args(this, _, _, result, _)
+    attribute_args(unresolveElement(this), _, _, result, _)
   }
 
   override Location getLocation() {
-    attribute_args(this, _, _, _, result)
+    attribute_args(unresolveElement(this), _, _, _, result)
   }
 
   override string toString() {
-    if exists (@attribute_arg_empty self | self = this)
+    if exists (@attribute_arg_empty self | mkElement(self) = this)
       then result = "empty argument"
       else exists (string prefix, string tail
            | (if exists(getName())
                 then prefix = getName() + "="
                 else prefix = "") and
-             (if exists (@attribute_arg_type self | self = this)
+             (if exists (@attribute_arg_type self | mkElement(self) = this)
                 then tail = getValueType().getName()
                 else tail = getValueText()) and
              result = prefix + tail)

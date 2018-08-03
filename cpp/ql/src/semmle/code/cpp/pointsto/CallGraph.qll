@@ -16,14 +16,14 @@ class TargetPointsToExpr extends PointsToExpr {
   // resolve a virtual-call where this is the qualifier
   VirtualFunction resolve()
   {
-    pointstosets(this.resolveToSet(), result)
+    pointstosets(this.resolveToSet(), unresolveElement(result))
   }
 
   int resolveToSet()
   {
     exists(int cset, VirtualFunction static |
       this.interesting() and
-      parentSetFor(cset, this) and
+      parentSetFor(cset, unresolveElement(this)) and
       static = this.staticTarget() and
       childrenByElement(cset, static, result)
     )   

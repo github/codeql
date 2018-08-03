@@ -29,7 +29,7 @@ predicate var_definition(LocalScopeVariable v, ControlFlowNode node) {
        else definition(v, node))
     or
     v instanceof Parameter and exists(BasicBlock b | b.getStart() = node and not exists(b.getAPredecessor()) and
-                                      b = v.(Parameter).getFunction().getEntryPoint())
+                                      mkElement(b) = v.(Parameter).getFunction().getEntryPoint())
 }
 
 /**
@@ -251,7 +251,7 @@ cached library class SSAHelper extends int {
      * `(node, v)`.
      */
     cached string toString(ControlFlowNode node, LocalScopeVariable v) {
-        if phi_node(v, (BasicBlock)node) then
+        if phi_node(v, (BasicBlock)unresolveElement(node)) then
             result = "SSA phi(" + v.getName() + ")"
         else
             (ssa_defn(v, node, _, _) and result = "SSA def(" + v.getName() + ")")

@@ -3,12 +3,12 @@ import semmle.code.cpp.dataflow.DataFlow
 
 class EdgeToExcept extends AdditionalControlFlowEdge {
   EdgeToExcept() {
-    this instanceof Call and
-    exists(getNearestTryExceptParent(this))
+    mkElement(this) instanceof Call and
+    exists(getNearestTryExceptParent(mkElement(this)))
   }
 
   override ControlFlowNode getAnEdgeTarget() {
-    result = getNearestTryExceptParent(this).getExcept()
+    result = getNearestTryExceptParent(mkElement(this)).getExcept()
   }
 }
 

@@ -31,7 +31,7 @@ class Namespace extends NameQualifyingElement, @namespace {
   }
 
   /** Gets the simple name of this namespace. */
-  override string getName() { namespaces(this,result) }
+  override string getName() { namespaces(unresolveElement(this),result) }
 
   /** Holds if this element is named `name`. */
   predicate hasName(string name) { name = this.getName() }
@@ -56,15 +56,15 @@ class Namespace extends NameQualifyingElement, @namespace {
 
   /** Gets the parent namespace, if any. */
   Namespace getParentNamespace() {
-    namespacembrs(result,this) or
-    (not namespacembrs(_, this) and result instanceof GlobalNamespace)
+    namespacembrs(unresolveElement(result),unresolveElement(this)) or
+    (not namespacembrs(_, unresolveElement(this)) and result instanceof GlobalNamespace)
   }
 
   /** Gets a child declaration of this namespace. */
-  Declaration getADeclaration() { namespacembrs(this,result) }
+  Declaration getADeclaration() { namespacembrs(unresolveElement(this),unresolveElement(result)) }
 
   /** Gets a child namespace of this namespace. */
-  Namespace getAChildNamespace() { namespacembrs(this,result) }
+  Namespace getAChildNamespace() { namespacembrs(unresolveElement(this),unresolveElement(result)) }
 
   /** Holds if this namespace may be from source. */
   override predicate fromSource() { this.getADeclaration().fromSource() }
@@ -106,7 +106,7 @@ class NamespaceDeclarationEntry extends Locatable, @namespace_decl {
    * is a one-to-many relationship between `Namespace` and
    * `NamespaceDeclarationEntry`.
    */
-  Namespace getNamespace() { namespace_decls(this,result,_,_) }
+  Namespace getNamespace() { namespace_decls(unresolveElement(this),unresolveElement(result),_,_) }
 
   override string toString() { result = this.getNamespace().toString() }
 
@@ -120,20 +120,20 @@ class NamespaceDeclarationEntry extends Locatable, @namespace_decl {
    * For anonymous declarations, such as "namespace { ... }", this will
    * give the "namespace" token.
    */
-  override Location getLocation() { namespace_decls(this,_,result,_) }
+  override Location getLocation() { namespace_decls(unresolveElement(this),_,result,_) }
 
   /**
    * Gets the location of the namespace declaration entry's body. For
    * example: the "{ ... }" in "namespace N { ... }".
    */
-  Location getBodyLocation() { namespace_decls(this,_,_,result) }
+  Location getBodyLocation() { namespace_decls(unresolveElement(this),_,_,result) }
 }
 
 /**
  * A C++ `using` directive or `using` declaration.
  */
 abstract class UsingEntry extends Locatable, @using {
-  override Location getLocation() { usings(this,_,result) }
+  override Location getLocation() { usings(unresolveElement(this),_,result) }
 }
 
 /**
@@ -142,13 +142,13 @@ abstract class UsingEntry extends Locatable, @using {
  *   `using std::string;`
  */
 class UsingDeclarationEntry extends UsingEntry {
-  UsingDeclarationEntry() { not exists(Namespace n | usings(this,n,_)) }
+  UsingDeclarationEntry() { not exists(Namespace n | usings(unresolveElement(this),unresolveElement(n),_)) }
 
   /**
    * Gets the declaration that is referenced by this using declaration. For
    * example, `std::string` in `using std::string`.
    */
-  Declaration getDeclaration() { usings(this,result,_) }
+  Declaration getDeclaration() { usings(unresolveElement(this),unresolveElement(result),_) }
 
   override string toString() {
     result = "using " + this.getDeclaration().toString()
@@ -161,13 +161,13 @@ class UsingDeclarationEntry extends UsingEntry {
  *   `using namespace std;`
  */
 class UsingDirectiveEntry extends UsingEntry {
-  UsingDirectiveEntry() { exists(Namespace n | usings(this,n,_)) }
+  UsingDirectiveEntry() { exists(Namespace n | usings(unresolveElement(this),unresolveElement(n),_)) }
 
   /**
    * Gets the namespace that is referenced by this using directive. For
    * example, `std` in `using namespace std`.
    */
-  Namespace getNamespace() { usings(this,result,_) }
+  Namespace getNamespace() { usings(unresolveElement(this),unresolveElement(result),_) }
 
   override string toString() {
     result = "using namespace " + this.getNamespace().toString()
@@ -200,14 +200,14 @@ class GlobalNamespace extends Namespace {
     not result instanceof ProxyClass and
     not result instanceof TemplateParameter and
     not result instanceof LocalVariable and
-    not namespacembrs(_, result) and
+    not namespacembrs(_, unresolveElement(result)) and
     not result.isMember()
   }
 
   /** Gets a child namespace of the global namespace. */
   override Namespace getAChildNamespace() {
     suppressWarningForUnused(this) and
-    not (namespacembrs(result, _))
+    not (namespacembrs(unresolveElement(result), _))
   }
 
   override Namespace getParentNamespace() {

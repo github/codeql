@@ -61,12 +61,12 @@ private ControlFlowNode nodeWithPossibleSideEffect() {
   or
   // If the lhs of an assignment is not analyzable by SSA, then
   // we need to treat the assignment as having a possible side-effect.
-  (result instanceof Assignment and not result instanceof SsaDefinition)
+  (result instanceof Assignment and not unresolveElement(result) instanceof SsaDefinition)
   or
-  (result instanceof CrementOperation and not result instanceof SsaDefinition)
+  (result instanceof CrementOperation and not unresolveElement(result) instanceof SsaDefinition)
   or
   exists (LocalVariable v
-  | result = v.getInitializer().getExpr() and not result instanceof SsaDefinition)
+  | result = v.getInitializer().getExpr() and not unresolveElement(result) instanceof SsaDefinition)
   or
   result instanceof AsmStmt
 }

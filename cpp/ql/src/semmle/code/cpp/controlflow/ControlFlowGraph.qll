@@ -29,7 +29,7 @@ private import semmle.code.cpp.controlflow.internal.ConstantExprs
  */
 class ControlFlowNode extends Locatable, @cfgnode {
 
-  ControlFlowNode getASuccessor() { successors_adapted(this,result) }
+  ControlFlowNode getASuccessor() { successors_adapted(unresolveElement(this),unresolveElement(result)) }
 
   ControlFlowNode getAPredecessor() { this = result.getASuccessor() }
 
@@ -54,7 +54,7 @@ class ControlFlowNode extends Locatable, @cfgnode {
    * taken when this expression is true.
    */
   ControlFlowNode getATrueSuccessor() {
-    truecond(this,result) and result = getASuccessor()
+    truecond(unresolveElement(this),unresolveElement(result)) and result = getASuccessor()
   }
 
   /**
@@ -62,7 +62,7 @@ class ControlFlowNode extends Locatable, @cfgnode {
    * taken when this expression is false.
    */
   ControlFlowNode getAFalseSuccessor() {
-    falsecond(this,result) and result = getASuccessor()
+    falsecond(unresolveElement(this),unresolveElement(result)) and result = getASuccessor()
   }
 
   BasicBlock getBasicBlock() {
@@ -86,7 +86,7 @@ private cached module Cached {
     exists(Function f | f.getEntryPoint() = n)
     or
     // Okay to use successors_extended directly here
-    (not successors_extended(_,n) and not successors_extended(n,_))
+    (not successors_extended(_,unresolveElement(n)) and not successors_extended(unresolveElement(n),_))
     or
     reachable(n.getAPredecessor())
     or
@@ -158,7 +158,7 @@ abstract class AdditionalControlFlowEdge extends @cfgnode {
   /** Gets a target node of this edge, where the source node is `this`. */
   abstract ControlFlowNode getAnEdgeTarget();
 
-  string toString() { result = this.(ControlFlowNode).toString() }
+  string toString() { result = mkElement(this).(ControlFlowNode).toString() }
 }
 
 /**
@@ -169,5 +169,5 @@ abstract class AdditionalControlFlowEdge extends @cfgnode {
 predicate successors_extended(@cfgnode source, @cfgnode target) {
   successors(source, target)
   or
-  source.(AdditionalControlFlowEdge).getAnEdgeTarget() = target
+  source.(AdditionalControlFlowEdge).getAnEdgeTarget() = mkElement(target)
 }

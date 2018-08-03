@@ -22,7 +22,7 @@ abstract class SubBasicBlockCutNode extends @cfgnode {
     // Some control-flow nodes are not in any basic block. This includes
     // `Conversion`s, expressions that are evaluated at compile time, default
     // arguments, and `Function`s without implementation.
-    exists(this.(ControlFlowNode).getBasicBlock())
+    exists(mkElement(this).(ControlFlowNode).getBasicBlock())
   }
   string toString() { result = "SubBasicBlockCutNode" }
 }
@@ -45,7 +45,7 @@ class SubBasicBlock extends @cfgnode {
 
   /** Gets the basic block in which this `SubBasicBlock` is contained. */
   BasicBlock getBasicBlock() {
-    result = this.(ControlFlowNode).getBasicBlock()
+    result = mkElement(this).(ControlFlowNode).getBasicBlock()
   }
 
   /**
@@ -73,9 +73,9 @@ class SubBasicBlock extends @cfgnode {
    */
   int getPosInBasicBlock(BasicBlock bb) {
     exists(int nodePos, int rnk |
-      bb = this.(ControlFlowNode).getBasicBlock() and
-      this = bb.getNode(nodePos) and
-      nodePos = rank[rnk](int i | exists(SubBasicBlock n | n = bb.getNode(i))) and
+      bb = mkElement(this).(ControlFlowNode).getBasicBlock() and
+      mkElement(this) = bb.getNode(nodePos) and
+      nodePos = rank[rnk](int i | exists(SubBasicBlock n | mkElement(n) = bb.getNode(i))) and
       result = rnk - 1
     )
   }
@@ -97,7 +97,7 @@ class SubBasicBlock extends @cfgnode {
    */
   ControlFlowNode getNode(int pos) {
     exists(BasicBlock bb | bb = this.getBasicBlock() |
-      exists(int thisPos | this = bb.getNode(thisPos) |
+      exists(int thisPos | mkElement(this) = bb.getNode(thisPos) |
         result = bb.getNode(thisPos + pos) and
         pos >= 0 and
         pos < this.getNumberOfNodes()
@@ -148,13 +148,13 @@ class SubBasicBlock extends @cfgnode {
    */
   int getNumberOfNodes() {
     exists(BasicBlock bb | bb = this.getBasicBlock() |
-      exists(int thisPos | this = bb.getNode(thisPos) |
+      exists(int thisPos | mkElement(this) = bb.getNode(thisPos) |
         this.lastInBB() and
         result = bb.length() - thisPos
         or
         exists(SubBasicBlock succ, int succPos |
           succ.getPosInBasicBlock(bb) = this.getPosInBasicBlock(bb) + 1 and
-          bb.getNode(succPos) = succ and
+          bb.getNode(succPos) = mkElement(succ) and
           result = succPos - thisPos
         )
       )
@@ -168,7 +168,7 @@ class SubBasicBlock extends @cfgnode {
 
   /** Gets the first control-flow node in this `SubBasicBlock`. */
   ControlFlowNode getStart() {
-    result = this
+    result = mkElement(this)
   }
 
   pragma[noinline]

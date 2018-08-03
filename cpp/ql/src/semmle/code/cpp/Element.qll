@@ -2,13 +2,27 @@ import semmle.code.cpp.Location
 private import semmle.code.cpp.Enclosing
 private import semmle.code.cpp.internal.Type
 
+cached @element resolveElement(@element e) {
+  if isClass(e)
+  then result = resolve(e)
+  else result = e
+}
+
+cached Element mkElement(@element e) {
+  result = resolveElement(e)
+}
+
+cached @element unresolveElement(Element e) {
+  resolveElement(result) = e
+}
+
 /**
  * A C/C++ element. This class is the base class for all C/C++
  * elements, such as functions, classes, expressions, and so on.
  */
 class Element extends @element {
   Element() {
-    isElement(this)
+    this = resolveElement(_)
   }
 
   /** Gets a textual representation of this element. */
@@ -111,7 +125,7 @@ class Element extends @element {
     // result instanceof block|function
     or
     exists (Block b
-    | this = b and blockscope(b, result))
+    | this = b and blockscope(unresolveElement(b), unresolveElement(result)))
     or
     exists (TemplateFunction tf
     | this = tf.getATemplateArgument() and result = tf)
@@ -122,7 +136,7 @@ class Element extends @element {
     | this = s and result = s.getParent())
 
     or
-    using_container(result, this)
+    using_container(unresolveElement(result), unresolveElement(this))
   }
 
   /**
@@ -144,17 +158,17 @@ class Element extends @element {
   }
 
   private Element getEnclosingElementPref() {
-    enclosingfunction(this, result) or
+    enclosingfunction(unresolveElement(this), unresolveElement(result)) or
     result.(Function) = stmtEnclosingElement(this) or
     this.(LocalScopeVariable).getFunction() = result or
-    enumconstants(this, result, _, _, _, _) or
-    derivations(this, result, _, _, _) or
-    stmtparents(this, _, result) or
-    exprparents(this, _, result) or
-    namequalifiers(this, result, _, _) or
-    initialisers(this, result, _, _) or
-    exprconv(result, this) or
-    param_decl_bind(this,_,result)
+    enumconstants(unresolveElement(this), unresolveElement(result), _, _, _, _) or
+    derivations(unresolveElement(this), unresolveElement(result), _, _, _) or
+    stmtparents(unresolveElement(this), _, unresolveElement(result)) or
+    exprparents(unresolveElement(this), _, unresolveElement(result)) or
+    namequalifiers(unresolveElement(this), unresolveElement(result), _, _) or
+    initialisers(unresolveElement(this), unresolveElement(result), _, _) or
+    exprconv(unresolveElement(result), unresolveElement(this)) or
+    param_decl_bind(unresolveElement(this),_,unresolveElement(result))
   }
 
   /** Gets the closest `Element` enclosing this one. */
@@ -167,7 +181,7 @@ class Element extends @element {
         or
         result = exprEnclosingElement(this)
         or
-        var_decls(this, result, _, _, _)
+        var_decls(unresolveElement(this), unresolveElement(result), _, _, _)
       )
     )
   }
@@ -216,13 +230,13 @@ private predicate isFromTemplateInstantiationRec(Element e, Element instantiatio
 }
 
 private predicate isFromUninstantiatedTemplateRec(Element e, Element template) {
-  is_class_template(template) and
+  is_class_template(unresolveElement(template)) and
   e = template
   or
-  is_function_template(template) and
+  is_function_template(unresolveElement(template)) and
   e = template
   or
-  is_variable_template(template) and
+  is_variable_template(unresolveElement(template)) and
   e = template
   or
   isFromUninstantiatedTemplateRec(e.getEnclosingElement(), template)
@@ -233,7 +247,7 @@ private predicate isFromUninstantiatedTemplateRec(Element e, Element template) {
  */
 class StaticAssert extends Locatable, @static_assert {
   override string toString() { result = "static_assert(..., \"" + getMessage() + "\")" }
-  Expr getCondition()    { static_asserts(this, result, _, _) }
-  string getMessage()    { static_asserts(this, _, result, _) }
-  override Location getLocation() { static_asserts(this, _, _, result) }
+  Expr getCondition()    { static_asserts(unresolveElement(this), unresolveElement(result), _, _) }
+  string getMessage()    { static_asserts(unresolveElement(this), _, result, _) }
+  override Location getLocation() { static_asserts(unresolveElement(this), _, _, result) }
 }

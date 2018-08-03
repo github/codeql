@@ -15,7 +15,7 @@ abstract class XMLLocatable extends @xmllocatable {
    */
   predicate hasLocationInfo(string filepath, int startline, int startcolumn, int endline, int endcolumn) {
     exists(File f, Location l | l = this.getLocation() |
-      locations_default(l,f,startline,startcolumn,endline,endcolumn) and
+      locations_default(l,unresolveElement(f),startline,startcolumn,endline,endcolumn) and
       filepath = f.getAbsolutePath()
     )
   }
@@ -94,7 +94,7 @@ class XMLParent extends @xmlparent {
 }
 
 /** An XML file. */
-class XMLFile extends XMLParent, File {
+class XMLFile extends XMLParent {
   XMLFile() {
     xmlEncoding(this,_)
   }
