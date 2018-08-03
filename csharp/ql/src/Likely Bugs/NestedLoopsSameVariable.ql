@@ -19,7 +19,7 @@ import semmle.code.csharp.commons.StructuralComparison as SC
 /** A structural comparison configuration for comparing the conditions of nested `for` loops. */
 class NestedForConditions extends SC::StructuralComparisonConfiguration {
   NestedForConditions() { this = "Compare nested for conditions" }
-  
+
   override predicate candidate(Element e1, Element e2) {
     exists(NestedForLoopSameVariable nested |
       e1 = nested.getInnerForStmt().getCondition() and

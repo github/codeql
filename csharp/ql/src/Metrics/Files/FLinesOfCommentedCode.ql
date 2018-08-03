@@ -10,12 +10,12 @@
  * @tags maintainability
  *       documentation
  */
- 
+
 import csharp
 
 from SourceFile f, int n
-where n = count(CommentLine line | 
-  exists(CommentBlock block | 
+where n = count(CommentLine line |
+  exists(CommentBlock block |
     block.getLocation().getFile() = f and
     line = block.getAProbableCodeLine())
   )

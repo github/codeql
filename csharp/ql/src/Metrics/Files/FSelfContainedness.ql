@@ -15,16 +15,16 @@ import semmle.code.csharp.metrics.Coupling
 /* Self-containedness on file level */
 from File f, float selfContaindness, int efferentSourceCoupling, int efferentCoupling
 
-where efferentSourceCoupling = count(File g| 
-                                     exists(RefType c| c.fromSource() and c.getFile() = g and 
+where efferentSourceCoupling = count(File g|
+                                     exists(RefType c| c.fromSource() and c.getFile() = g and
                                                      exists(RefType d| d.fromSource() and d.getFile()= f and depends(d,c))
                                             )
-                                     ) 
-  and efferentCoupling = count(File g| 
-                               exists(RefType c| c.getFile() = g and 
+                                     )
+  and efferentCoupling = count(File g|
+                               exists(RefType c| c.getFile() = g and
                                                exists(RefType d| d.fromSource() and d.getFile() = f and depends(d,c))
                                             )
-                                     ) 
+                                     )
 and if efferentCoupling = 0 then selfContaindness = 100 else
        selfContaindness = 100*(float)efferentSourceCoupling/efferentCoupling
 
