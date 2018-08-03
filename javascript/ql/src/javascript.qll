@@ -23,6 +23,7 @@ import semmle.javascript.Functions
 import semmle.javascript.HTML
 import semmle.javascript.JSDoc
 import semmle.javascript.JSON
+import semmle.javascript.JsonParsers
 import semmle.javascript.JSX
 import semmle.javascript.Lines
 import semmle.javascript.Locations
