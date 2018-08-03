@@ -9,18 +9,13 @@ private import Completion
 /**
  * A control flow node.
  *
- * Either a callable entry node (`CallableEntryNode`), a callable
- * exit node (`CallableExitNode`), a normal control flow node
- * (`NormalControlFlowNode`), or a split node for a control flow
- * element that belongs to a `finally` block (`FinallySplitControlFlowNode`).
+ * Either a callable entry node (`CallableEntryNode`), a callable exit node
+ * (`CallableExitNode`), a control flow node for a control flow element, that is,
+ * an expression or a statement (`ControlFlowElementNode`).
  *
- * A control flow node is a node in the control flow graph (CFG).
- * Most control flow nodes can be mapped to a control flow element
- * (`ControlFlowElement`) via `getElement()`, the exception being
- * callable entry nodes (`CallableEntryNode`) and callable exit nodes
- * (`CallableExitNode`). There is a many-to-one relationship between
- * `ControlFlowNode`s and `ControlFlowElement`s. This allows control
- * flow splitting, for example modeling the control flow through
+ * A control flow node is a node in the control flow graph (CFG). There is a
+ * many-to-one relationship between `ControlFlowElementNode`s and `ControlFlowElement`s.
+ * This allows control flow splitting, for example modeling the control flow through
  * `finally` blocks.
  */
 class ControlFlowNode extends TControlFlowNode {
@@ -52,14 +47,15 @@ class ControlFlowNode extends TControlFlowNode {
    * Example:
    *
    * ```
-   * int M(string s) {
-   *   if (s == null)
-   *     throw new ArgumentNullException(nameof(s));
-   *   return s.Length;
+   * int M(string s)
+   * {
+   *     if (s == null)
+   *         throw new ArgumentNullException(nameof(s));
+   *     return s.Length;
    * }
    * ```
    *
-   * The node on line 2 dominates the node on line 4 (all paths from the
+   * The node on line 3 dominates the node on line 5 (all paths from the
    * entry point of `M` to `return s.Length;` must go through the null check).
    *
    * This predicate is *reflexive*, so for example `if (s == null)` dominates
@@ -82,14 +78,15 @@ class ControlFlowNode extends TControlFlowNode {
    * Example:
    *
    * ```
-   * int M(string s) {
-   *   if (s == null)
-   *     throw new ArgumentNullException(nameof(s));
-   *   return s.Length;
+   * int M(string s)
+   * {
+   *     if (s == null)
+   *         throw new ArgumentNullException(nameof(s));
+   *     return s.Length;
    * }
    * ```
    *
-   * The node on line 2 strictly dominates the node on line 4
+   * The node on line 3 strictly dominates the node on line 5
    * (all paths from the entry point of `M` to `return s.Length;` must go
    * through the null check).
    */
@@ -115,22 +112,25 @@ class ControlFlowNode extends TControlFlowNode {
    * Example:
    *
    * ```
-   * int M(string s) {
-   *   try {
-   *     return s.Length;
-   *   }
-   *   finally {
-   *     Console.WriteLine("M");
-   *   }
+   * int M(string s)
+   * {
+   *     try
+   *     {
+   *         return s.Length;
+   *     }
+   *     finally
+   *     {
+   *         Console.WriteLine("M");
+   *     }
    * }
    * ```
    *
-   * The node on line 6 post-dominates the node on line 3 (all paths to the
+   * The node on line 9 post-dominates the node on line 5 (all paths to the
    * exit point of `M` from `return s.Length;` must go through the `WriteLine`
    * call).
    *
-   * This predicate is *reflexive*, so for example
-   * `Console.WriteLine("M");` post-dominates itself.
+   * This predicate is *reflexive*, so for example `Console.WriteLine("M");`
+   * post-dominates itself.
    */
   pragma [inline] // potentially very large predicate, so must be inlined
   predicate postDominates(ControlFlowNode that) {
@@ -149,17 +149,20 @@ class ControlFlowNode extends TControlFlowNode {
    * Example:
    *
    * ```
-   * int M(string s) {
-   *   try {
-   *     return s.Length;
-   *   }
-   *   finally {
-   *     Console.WriteLine("M");
-   *   }
+   * int M(string s)
+   * {
+   *     try
+   *     {
+   *         return s.Length;
+   *     }
+   *     finally
+   *     {
+   *          Console.WriteLine("M");
+   *     }
    * }
    * ```
    *
-   * The node on line 6 strictly post-dominates the node on line 3 (all
+   * The node on line 9 strictly post-dominates the node on line 5 (all
    * paths to the exit point of `M` from `return s.Length;` must go through
    * the `WriteLine` call).
    */
@@ -202,7 +205,7 @@ class ControlFlowNode extends TControlFlowNode {
    *
    * ```
    * if (x < 0)
-   *   x = -x;
+   *     x = -x;
    * ```
    *
    * The node on line 2 is an immediate `true` successor of the node
@@ -222,7 +225,7 @@ class ControlFlowNode extends TControlFlowNode {
    *
    * ```
    * if (!(x >= 0))
-   *   x = -x;
+   *     x = -x;
    * ```
    *
    * The node on line 2 is an immediate `false` successor of the node
@@ -313,50 +316,78 @@ class CallableExitNode extends ControlFlowNode, TCallableExit {
   }
 }
 
-/** A node for a control flow element. */
-class NormalControlFlowNode extends ControlFlowNode, TNode {
-  override ControlFlowElement getElement() { this = TNode(result) }
+/**
+ * A node for a control flow element, that is, an expression or a statement.
+ *
+ * Each control flow element maps to zero or more `ControlFlowElementNode`s:
+ * zero when the element is in unreachable (dead) code, and multiple when there
+ * are different splits for the element.
+ */
+class ControlFlowElementNode extends ControlFlowNode, TNode {
+  private Splits splits;
+  private ControlFlowElement cfe;
 
-  override string toString() { result = getElement().toString() }
-}
-
-/** A split node for a control flow element that belongs to a `finally` block. */
-class FinallySplitControlFlowNode extends ControlFlowNode, TFinallySplitNode {
-  /** Gets the split type that this `finally` node belongs to. */
-  FinallySplitType getSplitType() {
-    this = TFinallySplitNode(_, result)
+  ControlFlowElementNode() {
+    this = TNode(cfe, splits)
   }
 
   override ControlFlowElement getElement() {
-    this = TFinallySplitNode(result, _)
-  }
-
-  /** Gets the try statement that this `finally` node belongs to. */
-  TryStmt getTryStmt() {
-    getElement() = getAFinallyDescendant(result)
+    result = cfe
   }
 
   override string toString() {
-    result = "[finally: " + getSplitType().toString() + "] " + getElement().toString()
+    exists(string s |
+      s = splits.toString() |
+      if s = "" then
+        result = cfe.toString()
+      else
+        result = "[" + s + "] " + cfe.toString()
+    )
+  }
+
+  /** Gets a split for this control flow node, if any. */
+  Split getASplit() {
+    result = splits.getASplit()
+  }
+}
+
+class Split = SplitImpl;
+
+class FinallySplit = FinallySplitting::FinallySplitImpl;
+
+/**
+ * DEPRECATED: Use `ControlFlowElementNode` instead.
+ *
+ * A node for a control flow element.
+ */
+deprecated
+class NormalControlFlowNode extends ControlFlowElementNode {
+  NormalControlFlowNode() {
+    forall(FinallySplit s |
+      s = this.getASplit() |
+      s.getType() instanceof ControlFlowEdgeSuccessor
+    )
   }
 }
 
 /**
- * Gets a descendant that belongs to the `finally` block of try
- * statement `try`.
+ * DEPRECATED: Use `ControlFlowElementNode` instead.
+ *
+ * A split node for a control flow element that belongs to a `finally` block.
  */
-private ControlFlowElement getAFinallyDescendant(TryStmt try) {
-  result = try.getFinally()
-  or
-  exists(ControlFlowElement mid |
-    mid = getAFinallyDescendant(try) and
-    result = mid.getAChild() and
-    mid.getEnclosingCallable() = result.getEnclosingCallable() and
-    not exists(TryStmt nestedTry |
-      result = nestedTry.getFinally() and
-      nestedTry != try
+deprecated
+class FinallySplitControlFlowNode extends ControlFlowElementNode {
+  FinallySplitControlFlowNode() {
+    exists(FinallySplitting::FinallySplitType type |
+      type = this.getASplit().(FinallySplit).getType() |
+      not type instanceof ControlFlowEdgeSuccessor
     )
-  )
+  }
+
+  /** Gets the try statement that this `finally` node belongs to. */
+  TryStmt getTryStmt() {
+    this.getElement() = FinallySplitting::getAFinallyDescendant(result)
+  }
 }
 
 /** The type of an edge in the control flow graph. */
@@ -393,9 +424,9 @@ abstract class ControlFlowEdgeConditional extends ControlFlowEdgeType { }
  *
  * ```
  * if (x < 0)
- *   return 0;
+ *     return 0;
  * else
- *   return 1;
+ *     return 1;
  * ```
  *
  * has a control flow graph containing Boolean edges:
@@ -475,10 +506,10 @@ class ControlFlowEdgeNullness extends ControlFlowEdgeConditional, TNullnessEdge 
  *
  * ```
  * switch (x) {
- *   case 0 :
- *     return 0;
- *    default :
- *      return 1;
+ *     case 0 :
+ *         return 0;
+ *     default :
+ *         return 1;
  * }
  * ```
  *
@@ -525,8 +556,9 @@ class ControlFlowEdgeMatching extends ControlFlowEdgeConditional, TMatchingEdge 
  * For example, this program fragment:
  *
  * ```
- * foreach (var arg in args) {
- *   yield return arg;
+ * foreach (var arg in args)
+ * {
+ *     yield return arg;
  * }
  * yield return "";
  * ```
@@ -575,8 +607,9 @@ class ControlFlowEdgeEmptiness extends ControlFlowEdgeConditional, TEmptinessEdg
  * Example:
  *
  * ```
- * void M() {
- *   return;
+ * void M()
+ * {
+ *     return;
  * }
  * ```
  *
@@ -597,12 +630,14 @@ class ControlFlowEdgeReturn extends ControlFlowEdgeType, TReturnEdge {
  * Example:
  *
  * ```
- * int M(int x) {
- *   while (true) {
- *     if (x++ > 10)
- *       break;
- *   }
- *   return x;
+ * int M(int x)
+ * {
+ *     while (true)
+ *     {
+ *         if (x++ > 10)
+ *             break;
+ *     }
+ *     return x;
  * }
  * ```
  *
@@ -623,12 +658,13 @@ class ControlFlowEdgeBreak extends ControlFlowEdgeType, TBreakEdge {
  * Example:
  *
  * ```
- * int M(int x) {
- *   while (true) {
- *     if (x++ < 10)
- *       continue;
- *   }
- *   return x;
+ * int M(int x)
+ * {
+ *     while (true) {
+ *         if (x++ < 10)
+ *             continue;
+ *     }
+ *     return x;
  * }
  * ```
  *
@@ -648,12 +684,14 @@ class ControlFlowEdgeContinue extends ControlFlowEdgeType, TContinueEdge {
  * Example:
  *
  * ```
- * int M(int x) {
- *   while (true) {
- *     if (x++ > 10)
- *       goto Return;
- *   }
- *   Return: return x;
+ * int M(int x)
+ * {
+ *     while (true)
+ *     {
+ *         if (x++ > 10)
+ *             goto Return;
+ *     }
+ *     Return: return x;
  * }
  * ```
  *
@@ -677,10 +715,11 @@ class ControlFlowEdgeGotoLabel extends ControlFlowEdgeType, TGotoLabelEdge {
  * Example:
  *
  * ```
- * switch (x) {
- *   case 0  : return 1;
- *   case 1  : goto case 0;
- *   default : return -1;
+ * switch (x)
+ * {
+ *     case 0  : return 1;
+ *     case 1  : goto case 0;
+ *     default : return -1;
  * }
  * ```
  *
@@ -704,10 +743,11 @@ class ControlFlowEdgeGotoCase extends ControlFlowEdgeType, TGotoCaseEdge {
  * Example:
  *
  * ```
- * switch (x) {
- *   case 0  : return 1;
- *   case 1  : goto default;
- *   default : return -1;
+ * switch (x)
+ * {
+ *     case 0  : return 1;
+ *     case 1  : goto default;
+ *     default : return -1;
  * }
  * ```
  *
@@ -728,10 +768,11 @@ class ControlFlowEdgeGotoDefault extends ControlFlowEdgeType, TGotoDefaultEdge {
  * Example:
  *
  * ```
- * int M(string s) {
- *   if (s == null)
- *     throw new ArgumentNullException(nameof(s));
- *   return s.Length;
+ * int M(string s)
+ * {
+ *     if (s == null)
+ *         throw new ArgumentNullException(nameof(s));
+ *     return s.Length;
  * }
  * ```
  *
@@ -747,20 +788,6 @@ class ControlFlowEdgeException extends ControlFlowEdgeType, TExceptionEdge {
 
   override predicate matchesCompletion(Completion c) {
     c.(ThrowCompletion).getExceptionClass() = getExceptionClass()
-  }
-}
-
-/**
- * The type of a split `finally` node.
- *
- * The type represents one of the possible ways of entering a `finally`
- * block. For example, if a `try` statement ends with a `return` statement,
- * then the `finally` block must end with a `return` as well (provided that
- * the `finally` block exits normally).
- */
-class FinallySplitType extends ControlFlowEdgeType {
-  FinallySplitType() {
-    not this instanceof ControlFlowEdgeBoolean
   }
 }
 
@@ -1421,205 +1448,205 @@ module Internal {
       c.isValidFor(result)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastStandardElementGetNonLastChildElement(StandardElement se, int i, Completion c) {
       result = last(se.getNonLastChildElement(i), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastThrowExprExpr(ThrowExpr te, Completion c) {
       result = last(te.getExpr(), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastLogicalNotExprOperand(LogicalNotExpr lne, Completion c) {
       result = last(lne.getOperand(), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastLogicalAndExprLeftOperand(LogicalAndExpr lae, Completion c) {
       result = last(lae.getLeftOperand(), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastLogicalAndExprRightOperand(LogicalAndExpr lae, Completion c) {
       result = last(lae.getRightOperand(), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastLogicalOrExprLeftOperand(LogicalOrExpr loe, Completion c) {
       result = last(loe.getLeftOperand(), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastLogicalOrExprRightOperand(LogicalOrExpr loe, Completion c) {
       result = last(loe.getRightOperand(), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastNullCoalescingExprLeftOperand(NullCoalescingExpr nce, Completion c) {
       result = last(nce.getLeftOperand(), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastNullCoalescingExprRightOperand(NullCoalescingExpr nce, Completion c) {
       result = last(nce.getRightOperand(), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastConditionalExprCondition(ConditionalExpr ce, Completion c) {
       result = last(ce.getCondition(), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastConditionalExprThen(ConditionalExpr ce, Completion c) {
       result = last(ce.getThen(), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastConditionalExprElse(ConditionalExpr ce, Completion c) {
       result = last(ce.getElse(), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastAssignOperationWithExpandedAssignmentExpandedAssignment(AssignOperationWithExpandedAssignment a, Completion c) {
       result = last(a.getExpandedAssignment(), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastConditionalQualifiableExprChildExpr(ConditionalQualifiableExpr cqe, int i, Completion c) {
       result = last(cqe.getChildExpr(i), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastObjectCreationArgument(ObjectCreation oc, int i, Completion c) {
       result = last(oc.getArgument(i), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastObjectCreationInitializer(ObjectCreation oc, Completion c) {
       result = last(oc.getInitializer(), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastArrayCreationInitializer(ArrayCreation ac, Completion c) {
       result = last(ac.getInitializer(), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastArrayCreationLengthArgument(ArrayCreation ac, int i, Completion c) {
       not ac.isImplicitlySized() and
       result = last(ac.getLengthArgument(i), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastIfStmtCondition(IfStmt is, Completion c) {
       result = last(is.getCondition(), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastIfStmtThen(IfStmt is, Completion c) {
       result = last(is.getThen(), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastIfStmtElse(IfStmt is, Completion c) {
       result = last(is.getElse(), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastSwitchStmtCondition(SwitchStmt ss, Completion c) {
       result = last(ss.getCondition(), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastSwitchStmtStmt(SwitchStmt ss, int i, Completion c) {
       result = last(ss.getStmt(i), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastSwitchStmtCaseStmt(SwitchStmt ss, int i, Completion c) {
       result = last(ss.getStmt(i).(ConstCase).getStmt(), c) or
       result = last(ss.getStmt(i).(TypeCase).getStmt(), c) or
       result = last(ss.getStmt(i).(DefaultCase), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastConstCaseExpr(ConstCase cc, Completion c) {
       result = last(cc.getExpr(), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastConstCaseStmt(ConstCase cc, Completion c) {
       result = last(cc.getStmt(), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastTypeCaseCondition(TypeCase tc, Completion c) {
       result = last(tc.getCondition(), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastTypeCaseVariableDeclExpr(TypeCase tc, Completion c) {
       result = last(tc.getVariableDeclExpr(), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastTypeCaseStmt(TypeCase tc, Completion c) {
       result = last(tc.getStmt(), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastLoopStmtCondition(LoopStmt ls, Completion c) {
       result = last(ls.getCondition(), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastLoopStmtBody(LoopStmt ls, Completion c) {
       result = last(ls.getBody(), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastForeachStmtIterableExpr(ForeachStmt fs, Completion c) {
       result = last(fs.getIterableExpr(), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastForeachStmtVariableDeclExpr(ForeachStmt fs, Completion c) {
       result = last(fs.getVariableDeclExpr(), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastJumpStmtChild(JumpStmt js, Completion c) {
       result = last(js.getChild(0), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     ControlFlowElement lastTryStmtFinally(TryStmt ts, Completion c) {
       result = last(ts.getFinally(), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastTryStmtBlock(TryStmt ts, Completion c) {
       result = last(ts.getBlock(), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastTryStmtCatchClause(TryStmt ts, Completion c) {
       result = last(ts.getACatchClause(), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastStandardExprLastChildElement(StandardExpr se, Completion c) {
       result = last(se.getLastChildElement(), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastForStmtUpdate(ForStmt fs, int i, Completion c) {
       result = last(fs.getUpdate(i), c)
     }
 
-    pragma [noinline,nomagic]
+    pragma [nomagic]
     private ControlFlowElement lastForStmtInitializer(ForStmt fs, int i, Completion c) {
       result = last(fs.getInitializer(i), c)
     }
@@ -2213,372 +2240,562 @@ module Internal {
       not exists(fs.getCondition()) and
       result = fs.getBody()
     }
+
+    /**
+     * Gets the control flow element that is first executed when entering
+     * callable `c`.
+     */
+    ControlFlowElement succEntry(Callable c) {
+      if exists(c.(Constructor).getInitializer()) then
+        result = first(c.(Constructor).getInitializer())
+      else
+        result = first(c.getBody())
+    }
+
+    /**
+     * Gets the callable that is exited when `cfe` finishes with completion `c`,
+     * if any.
+     */
+    Callable succExit(ControlFlowElement cfe, Completion c) {
+      cfe = last(result.getBody(), c) and
+      not c instanceof GotoCompletion
+    }
   }
   import Successor
 
   /**
    * Provides classes and predicates relevant for splitting the control flow graph.
-   * Currently, only `finally` nodes are split.
    */
   private module Splitting {
     /**
-     * Gets a split type used to represent normal splitting for `finally`
-     * nodes, and no splitting for non`-finally` nodes.
+     * A split for a control flow element. For example, a tag that determines how to
+     * continue execution after leaving a `finally` block.
      */
-    FinallySplitType getNormalSplit() {
-      result instanceof ControlFlowEdgeSuccessor
+    class SplitImpl extends TSplit {
+      /** Gets a textual representation of this split. */
+      string toString() { none() }
+    
+      /**
+       * INTERNAL: Do not use.
+       *
+       * Holds if this split applies to control flow element `cfe`.
+       */
+      final predicate appliesTo(ControlFlowElement cfe) {
+        this.hasEntry(_, cfe, _)
+        or
+        exists(ControlFlowElement pred |
+          this.appliesTo(pred) |
+          this.hasSuccessor(pred, cfe, _)
+        )
+      }
+    
+      /**
+       * INTERNAL: Do not use.
+       *
+       * Holds if this split is entered when control passes from `pred` to `succ` with
+       * completion `c`.
+       */
+      // Invariant: `hasEntry(pred, succ, c) implies succ = Successor::succ(pred, c)`
+      predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+        none()
+      }
+    
+      /**
+       * INTERNAL: Do not use.
+       *
+       * Holds if this split is left when control passes from `pred` to `succ` with
+       * completion `c`.
+       */
+      // Invariant: `hasExit(pred, succ, c) implies succ = Successor::succ(pred, c)`
+      predicate hasExit(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+        none()
+      }
+    
+      /**
+       * INTERNAL: Do not use.
+       *
+       * Holds if this split is left when control passes from `pred` out of the enclosing
+       * callable with completion `c`.
+       */
+      // Invariant: `hasExit(pred, c) implies pred.getEnclosingCallable() = Successor::succExit(pred, c)`
+      predicate hasExit(ControlFlowElement pred, Completion c) {
+        none()
+      }
+    
+      /**
+       * INTERNAL: Do not use.
+       *
+       * Holds if this split is maintained when control passes from `pred` to `succ` with
+       * completion `c`.
+       */
+      // Invariant: `hasSuccessor(pred, succ, c) implies succ = Successor::succ(pred, c)`
+      predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+        none()
+      }
+    }
+
+    module FinallySplitting {
+      /**
+       * The type of a split `finally` node.
+       *
+       * The type represents one of the possible ways of entering a `finally`
+       * block. For example, if a `try` statement ends with a `return` statement,
+       * then the `finally` block must end with a `return` as well (provided that
+       * the `finally` block exits normally).
+       */
+      class FinallySplitType extends ControlFlowEdgeType {
+        FinallySplitType() {
+          not this instanceof ControlFlowEdgeConditional
+        }
+
+        /** Holds if this split type matches entry into a `finally` block with completion `c`. */
+        predicate isSplitForEntryCompletion(Completion c) {
+          if c instanceof NormalCompletion then
+            // If the entry into the `finally` block completes with any normal completion,
+            // it simply means normal execution after the `finally` block
+            this instanceof ControlFlowEdgeSuccessor
+          else
+            this.matchesCompletion(c)
+        }
+      }
+
+      /**
+       * Gets a descendant that belongs to the `finally` block of try statement
+       * `try`.
+       */
+      ControlFlowElement getAFinallyDescendant(TryStmt try) {
+        result = try.getFinally()
+        or
+        exists(ControlFlowElement mid |
+          mid = getAFinallyDescendant(try) and
+          result = mid.getAChild() and
+          mid.getEnclosingCallable() = result.getEnclosingCallable() and
+          not exists(TryStmt nestedTry |
+            result = nestedTry.getFinally() and
+            nestedTry != try
+          )
+        )
+      }
+
+      /** A control flow element that belongs to a `finally` block. */
+      private class FinallyControlFlowElement extends ControlFlowElement {
+        FinallyControlFlowElement() {
+          this = getAFinallyDescendant(_)
+        }
+
+        /** Holds if this node is the entry node in the `finally` block it belongs to. */
+        predicate isEntryNode() {
+          exists(TryStmt try |
+            this = getAFinallyDescendant(try) |
+            this = first(try.getFinally())
+          )
+        }
+
+        /**
+         * Holds if this node is a last element in the `finally` block belonging to
+         * `try` statement `try`, with completion `c`.
+         */
+        predicate isExitNode(TryStmt try, Completion c) {
+          this = getAFinallyDescendant(try) and
+          this = lastTryStmtFinally(try, c)
+        }
+      }
+
+      /** A control flow element that does not belong to a `finally` block. */
+      private class NonFinallyControlFlowElement extends ControlFlowElement {
+        NonFinallyControlFlowElement() {
+          not this = getAFinallyDescendant(_)
+        }
+      }
+
+      /**
+       * A split for elements belonging to a `finally` block, which determines how to
+       * continue execution after leaving the `finally` block. For example, in
+       *
+       * ```
+       * try
+       * {
+       *     if (!M())
+       *         throw new Exception();
+       * }
+       * finally
+       * {
+       *     Log.Write("M failed");
+       * }
+       * ```
+       *
+       * all control flow nodes in the `finally` block have two splits: one representing
+       * normal execution of the `try` block (when `M()` returns `true`), and one
+       * representing exceptional execution of the `try` block (when `M()` returns `false`).
+       */
+      class FinallySplitImpl extends Split, TFinallySplit {
+        private FinallySplitType type;
+
+        FinallySplitImpl() { this = TFinallySplit(type) }
+
+        /**
+         * Gets the type of this `finally` split, that is, how to continue execution after the
+         * `finally` block.
+         */
+        FinallySplitType getType() {
+          result = type
+        }
+
+        override string toString() {
+          if type instanceof ControlFlowEdgeSuccessor then
+            result = ""
+          else
+            result = "finally: " + type.toString()
+        }
+
+        override predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+          succ.(FinallyControlFlowElement).isEntryNode() and
+          succ = succ(pred, c) and
+          type.isSplitForEntryCompletion(c) and
+          (
+            // Abnormal entry must enter the correct splitting
+            not c instanceof NormalCompletion
+            or
+            // Normal entry only when not entering a nested `finally` block; in that case,
+            // the outer split must be maintained (see `hasSuccessor()`)
+            pred instanceof NonFinallyControlFlowElement
+          )
+        }
+
+        /**
+         * Holds if this split applies to control flow element `pred`, where `pred`
+         * is a valid predecessor.
+         */
+        private predicate appliesToPredecessor(ControlFlowElement pred) {
+          this.appliesTo(pred) and
+          (exists(succ(pred, _)) or exists(succExit(pred, _)))
+        }
+
+        /** Holds if `pred` may exit this split with completion `c`. */
+        private predicate exit(ControlFlowElement pred, Completion c) {
+          this.appliesToPredecessor(pred) and
+          exists(TryStmt try |
+            pred = last(try, c) |
+            if pred.(FinallyControlFlowElement).isExitNode(try, c) then (
+              // Finally block can itself exit with completion `c`: either `c` must
+              // match this split, `c` must be an abnormal completion, or this split
+              // does not require another completion to be recovered
+              type.matchesCompletion(c)
+              or
+              not c instanceof NormalCompletion
+              or
+              type instanceof ControlFlowEdgeSuccessor
+            ) else (
+              // Finally block can exit with completion `c` derived from try/catch
+              // block: must match this split
+              type.matchesCompletion(c) and
+              not type instanceof ControlFlowEdgeSuccessor
+            )
+          )
+        }
+
+        override predicate hasExit(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+          this.appliesToPredecessor(pred) and
+          succ = succ(pred, c) and
+          (
+            // Entering a nested `finally` block abnormally means that we should exit this split
+            succ.(FinallyControlFlowElement).isEntryNode() and
+            not c instanceof NormalCompletion
+            or
+            exit(pred, c)
+            or
+            exit(pred, any(BreakCompletion bc)) and
+            c instanceof BreakNormalCompletion
+          )
+        }
+
+        override predicate hasExit(ControlFlowElement pred, Completion c) {
+          exists(succExit(pred, c)) and
+          (
+            exit(pred, c)
+            or
+            exit(pred, any(BreakCompletion bc)) and
+            c instanceof BreakNormalCompletion
+          )
+        }
+
+        override predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+          this.appliesToPredecessor(pred) and
+          succ = succ(pred, c) and
+          succ = any(FinallyControlFlowElement fcfe |
+            if fcfe.isEntryNode() then
+              // Entering a nested `finally` block normally must remember the outer split
+              c instanceof NormalCompletion
+            else
+              // Staying in the same `finally` block should maintain this split
+              not this.hasEntry(pred, succ, c)
+          )
+        }
+      }
     }
 
     /**
-     * A block of control flow elements where the spliting is guaranteed
-     * to remain unchanged.
+     * Gets an integer representing the kind of split `s`. The kind is used
+     * to make an arbitrary order on splits.
      */
-    class SameSplitBlock extends ControlFlowElement {
-      SameSplitBlock() {
-        startsSplit(TControlFlowElementWrapper(this))
+    private int getSplitKind(Split s) {
+      s = TFinallySplit(_) and result = 0
+    }
+
+    /** Gets the rank of `split` among all the splits that apply to `cfe`. */
+    int getSplitRank(Split split, ControlFlowElement cfe) {
+      split.appliesTo(cfe) and
+      getSplitKind(split) = rank[result](int i |
+        i = getSplitKind(any(Split s | s.appliesTo(cfe)))
+      )
+    }
+
+    /**
+     * A set of control flow node splits. The set is represented by a list of splits,
+     * ordered by rank.
+     */
+    class Splits extends TSplits {
+      /**
+       * Holds if this subset of splits, `s_n ::  ... s_1 :: NIL`, applies to control
+       * flow element `cfe`. That is, `i = getSplitRank(s_i, cfe)`, for `i = 1 .. n`,
+       * and `rnk = getSplitRank(s_n)`.
+       */
+      private predicate appliesToSub(ControlFlowElement cfe, int rnk) {
+        exists(Split last |
+          this = TSplitsCons(last, TSplitsNil()) |
+          rnk = getSplitRank(last, cfe) and
+          rnk = 1
+        )
+        or
+        exists(Split head, Splits tail |
+          this = TSplitsCons(head, tail) |
+          tail.appliesToSub(cfe, rnk - 1) and
+          rnk = getSplitRank(head, cfe)
+        )
+      }
+
+      /** Holds if this set of splits applies to control flow element `cfe`. */
+      predicate appliesTo(ControlFlowElement cfe) {
+        this = TSplitsNil() and
+        not exists(Split s | s.appliesTo(cfe))
+        or
+        this.appliesToSub(cfe, max(getSplitRank(_, cfe)))
+      }
+
+      /** Gets a textual representation of this set of splits. */
+      string toString() {
+        this = TSplitsNil() and
+        result = ""
+        or
+        exists(Split head, Splits tail, string res |
+          this = TSplitsCons(head, tail) |
+          res = tail.toString() and
+          if res = "" then
+            result = head.toString()
+          else
+            result = head.toString() + ", " + res
+        )
+      }
+
+      /** Gets a split belonging to this set of splits. */
+      Split getASplit() {
+        exists(Split head, Splits tail |
+          this = TSplitsCons(head, tail) |
+          result = head
+          or
+          result = tail.getASplit()
+        )
+      }
+    }
+
+    /**
+     * Holds if `succ` with splits `succSplits` is the first element that is executed
+     * when entering callable `pred`.
+     */
+    pragma [noinline]
+    predicate succEntrySplits(Callable pred, ControlFlowElement succ, Splits succSplits, ControlFlowEdgeType t) {
+      succ = succEntry(pred) and
+      t instanceof ControlFlowEdgeSuccessor and
+      succSplits = TSplitsNil() // initially no splits
+    }
+
+    pragma [noinline]
+    private predicate succSplits0(ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits, Completion c) {
+      succ = succ(pred, c) and
+      predSplits.appliesTo(pred) and
+      succSplits.appliesTo(succ)
+    }
+
+    pragma [noinline]
+    private predicate succSplits1(ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits, Completion c) {
+      succSplits0(pred, predSplits, succ, succSplits, c) and
+      // Each successor split must be either newly entered into, or must be
+      // passed over from a predecessor split
+      forall(Split succSplit |
+        succSplit = succSplits.getASplit() |
+        succSplit.hasEntry(pred, succ, c)
+        or
+        exists(Split predSplit |
+          predSplit = predSplits.getASplit() |
+          succSplit = predSplit and
+          predSplit.hasSuccessor(pred, succ, c)
+        )
+      )
+    }
+
+    /**
+     * Holds if `succ` with splits `succSplits` is a successor of type `t` for `pred`
+     * with splits `predSplits`.
+     */
+    predicate succSplits(ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits, ControlFlowEdgeType t) {
+      exists(Completion c |
+        t.matchesCompletion(c) |
+        succSplits1(pred, predSplits, succ, succSplits, c) and
+        // Enter a new split when required
+        forall(Split split |
+          split.hasEntry(pred, succ, c) |
+          succSplits.getASplit() = split
+        ) and
+        // Each predecessor split must be either passed over as a successor split,
+        // or must be left (possibly entering a new split)
+        forall(Split predSplit |
+          predSplit = predSplits.getASplit() |
+          predSplit.hasSuccessor(pred, succ, c) and
+          predSplit = succSplits.getASplit()
+          or
+          predSplit.hasExit(pred, succ, c) and
+          forall(Split succSplit |
+            succSplit = succSplits.getASplit() |
+            getSplitKind(succSplit) != getSplitKind(predSplit)
+            or
+            succSplit.hasEntry(pred, succ, c)
+          )
+        )
+      )
+    }
+
+    /**
+     * Holds if `pred` with splits `predSplits` can exit the enclosing callable
+     * `succ` with type `t`.
+     */
+    predicate succExitSplits(ControlFlowElement pred, Splits predSplits, Callable succ, ControlFlowEdgeType t) {
+      exists(Completion c |
+        t.matchesCompletion(c) |
+        succ = succExit(pred, c) and
+        predSplits.appliesTo(pred) and
+        forall(Split predSplit |
+          predSplit = predSplits.getASplit() |
+          predSplit.hasExit(pred, c)
+        )
+      )
+    }
+  }
+  import Splitting
+
+  /** Provides logic for calculating reachable control flow nodes. */
+  module Reachability {
+    private predicate startsSplits(ControlFlowElement cfe) {
+      cfe = succEntry(_)
+      or
+      exists(Split s |
+        s.hasEntry(_, cfe, _)
+        or
+        s.hasExit(_, cfe, _)
+      )
+    }
+
+    private predicate intraSplitsSucc(ControlFlowElement pred, ControlFlowElement succ) {
+      succ = succ(pred, _) and
+      not startsSplits(succ)
+    }
+
+    private predicate splitsBlockContains(ControlFlowElement start, ControlFlowElement cfe) =
+      fastTC(intraSplitsSucc/2)(start, cfe)
+
+    /**
+     * A block of control flow elements where the set of splits is guaranteed
+     * to remain unchanged, represented by the first element in the block.
+     */
+    class SameSplitsBlock extends ControlFlowElement {
+      SameSplitsBlock() {
+        startsSplits(this)
       }
 
       /** Gets a control flow element in this block. */
       ControlFlowElement getAnElement() {
-        splitBlockContains(TControlFlowElementWrapper(this), TControlFlowElementWrapper(result)) or
+        splitsBlockContains(this, result)
+        or
         result = this
       }
 
-      /** Gets a successor block, where the splitting may be different. */
-      SameSplitBlock getASuccessor(FinallySplitType predSplitType, FinallySplitType succSplitType) {
+      /** Gets a successor block, where the splits may be different. */
+      SameSplitsBlock getASuccessor(Splits predSplits, Splits succSplits) {
         exists(ControlFlowElement pred |
-          pred = getAnElement() |
-          predSplitType = getNormalSplit() and
-          (
-            succByTypeNonFinallyNonFinally(pred, _, result) and
-            succSplitType = getNormalSplit()
-            or
-            succByTypeNonFinallyFinally(pred, _, result, succSplitType)
-          )
-          or
-          succByTypeFinallyNonFinally(pred, predSplitType, _, result) and
-          succSplitType = getNormalSplit()
-          or
-          succByTypeFinallyFinally(pred, predSplitType, _, result, succSplitType)
+          pred = this.getAnElement() |
+          succSplits(pred, predSplits, result, succSplits, _)
         )
       }
 
       /**
-       * Holds if this block with the given splitting `splitType` is reachable
-       * from a callable entry point.
+       * Holds if the elements of this block are reachable from a callable entry
+       * point, with the splits `splits`.
        */
-      predicate isReachable(FinallySplitType splitType) {
+      predicate isReachable(Splits splits) {
         // Base case
-        succCallableEntry(_, this) and
-        splitType = getNormalSplit()
+        succEntrySplits(_, this, splits, _)
         or
         // Recursive case
-        exists(SameSplitBlock pred, FinallySplitType predSplitType |
-          pred.isReachable(predSplitType) |
-          this = pred.getASuccessor(predSplitType, splitType)
+        exists(SameSplitsBlock pred, Splits predSplits |
+          pred.isReachable(predSplits) |
+          this = pred.getASuccessor(predSplits, splits)
         )
       }
-    }
-
-    // A temporary fix to get the right join-order in `SameSplitBlock::getAnElement()`
-    private newtype ControlFlowElementWrapper =
-      TControlFlowElementWrapper(ControlFlowElement cfe)
-
-    private ControlFlowElement unwrap(ControlFlowElementWrapper cfew) {
-      cfew = TControlFlowElementWrapper(result)
-    }
-
-    private predicate startsSplit(ControlFlowElementWrapper node) {
-      unwrap(node) = any(ControlFlowElement cfe |
-        succCallableEntry(_, cfe)
-        or
-        cfe.(FinallyControlFlowElement).isEntryNode()
-        or
-        exists(ControlFlowElement pred |
-          pred = getAFinallyDescendant(_) |
-          cfe = succ(pred, _) and
-          not cfe = getAFinallyDescendant(_)
-        )
-      )
-    }
-
-    private predicate intraSplitSucc(ControlFlowElementWrapper pred, ControlFlowElementWrapper succ) {
-      succ = TControlFlowElementWrapper(succ(unwrap(pred), _)) and
-      not startsSplit(succ)
-    }
-
-    private predicate splitBlockContains(ControlFlowElementWrapper bbStart, ControlFlowElementWrapper cfn) =
-      boundedFastTC(intraSplitSucc/2, startsSplit/1)(bbStart, cfn)
-
-    private class NonFinallyControlFlowElement extends ControlFlowElement {
-      NonFinallyControlFlowElement() {
-        not this = getAFinallyDescendant(_)
-      }
-    }
-
-    /** Holds if split type `splitType` matches entry into a `finally` block with completion `c`. */
-    private predicate isSplitForEntryCompletion(FinallySplitType splitType, Completion c) {
-      if c instanceof ConditionalCompletion then
-        // If the entry into the `finally` block completes with a conditional completion,
-        // it simply means normal execution after the `finally` block
-        splitType instanceof ControlFlowEdgeSuccessor
-      else if c instanceof BreakNormalCompletion then
-        // If the entry into the `finally` block completes with a normal completion,
-        // as a result of a loop inside the `try` block being terminated with a
-        // `break`, it simply means normal execution after the `finally` block
-        splitType instanceof ControlFlowEdgeSuccessor
-      else
-        splitType.matchesCompletion(c)
-    }
-
-    /**
-     * Holds if `cfe` is a `finally` node belonging to try statement `try`,
-     * where we need to split `cfe` on split type `splitType`.
-     */
-    private predicate isSplitForFinallyNode(FinallySplitType splitType, TryStmt try, ControlFlowElement cfe) {
-      // Base case: entry node in a `finally` block
-      isFinallyEntryType(splitType, try, cfe)
-      or
-      /* Recursive case: successor of another `finally` node that is
-       * still in the `finally` block.
-       *
-       * Example:
-       *
-       * ```
-       * try {
-       *   ...
-       * }
-       * finally {
-       *   Console.WriteLine("Finally");
-       * }
-       * Console.WriteLine("After finally");
-       * ```
-       *
-       * - `pred = { ... }` is a finally node because of the base case,
-       *   therefore so is `cfe = "Finally"`.
-       * - `pred = "Finally"` is a finally node because of the recursive case,
-       *   therefore so is `cfe = Console.WriteLine("Finally")`.
-       * - `pred = Console.WriteLine("Finally")` is a finally node because of the
-       *   recursive case, however, `cfe = "After finally"` is not, because it is
-       *   not in the `finally` block.
-       */
-      exists(ControlFlowElement pred |
-        isSplitForFinallyNode(splitType, try, pred) and
-        ControlFlowGraph::Internal::succ(pred, _) = cfe and
-        cfe = getAFinallyDescendant(try)
-      )
-    }
-
-    /**
-     * Holds if `cfe` is an entry node in the `finally` block of try statement
-     * `try`, where we can enter `cfe` with split type `splitType`.
-     */
-    private predicate isFinallyEntryType(FinallySplitType splitType, TryStmt try, ControlFlowElement cfe) {
-      cfe = ControlFlowGraph::Internal::first(try.getFinally())
-      and
-      exists(ControlFlowElement pred, Completion c |
-        ControlFlowGraph::Internal::succ(pred, c) = cfe |
-        /* A predecessor can enter the `finally` block with a completion that matches
-         * this type
-         */
-        isSplitForEntryCompletion(splitType, c)
-        or
-        /* In case of a nested `finally` block, the nodes must inherit the splitting
-         * from the parent `finally` block. Example:
-         *
-         * ```
-         * try {
-         *   if (...) return;
-         *   if (...) throw new Exception();
-         * }
-         * finally {
-         *   try {
-         *     ...
-         *   }
-         *   finally {
-         *     ...
-         *   }
-         * }
-         * ```
-         *
-         * The outer finally block (lines 5--12) is split on types `ControlFlowEdgeSuccessor`,
-         * `ControlFlowEdgeReturn`, and `ControlFlowEdgeException`. The inner block
-         * (lines 9--11) needs to inherit these splittings in order to be able to recover the
-         * completion of the outer `try` statement, in case the inner `try` does not
-         * exit abnormally.
-         */
-        isSplitForFinallyNode(splitType, _, pred)
-      )
-    }
-
-    private class FinallyControlFlowElement extends ControlFlowElement {
-      FinallyControlFlowElement() {
-        this = getAFinallyDescendant(_)
-      }
-
-      /**
-       * Holds if `splitType` is a relevant split type for this `finally` node.
-       *
-       * This predicate is used to make the `succByTypeFinally*` predicates smaller
-       * (pure optimization: irrelevant splittings would have been removed in the
-       * pruned control flow graph via `isReachable` had this predicate not been
-       * used).
-       */
-      predicate isRelevantSplitType(FinallySplitType splitType) {
-        isSplitForFinallyNode(splitType, _, this)
-      }
-
-      /** Holds if this node is the entry node in the `finally` block it belongs to. */
-      predicate isEntryNode() {
-        exists(TryStmt try |
-          this = getAFinallyDescendant(try) and
-          this = first(try.getFinally())
-        )
-      }
-    }
-
-    // Successor relation for callable entry points
-    predicate succCallableEntry(Callable pred, NonFinallyControlFlowElement succ) {
-      if exists(pred.(Constructor).getInitializer()) then
-        succ = first(pred.(Constructor).getInitializer())
-      else
-        succ = first(pred.getBody())
-    }
-
-    // Successor relation for non-`finally` to callable exit nodes
-    predicate succByTypeNonFinallyCallableExit(NonFinallyControlFlowElement pred, ControlFlowEdgeType t, Callable succ) {
-      exists(Completion c |
-        pred = last(succ.getBody(), c) |
-        c.isValidCallableExitCompletion() and
-        t.matchesCompletion(c)
-      )
-    }
-
-    // Successor relation for non-`finally` to non-`finally` nodes
-    predicate succByTypeNonFinallyNonFinally(NonFinallyControlFlowElement pred, ControlFlowEdgeType t, NonFinallyControlFlowElement succ) {
-      exists(Completion c |
-        succ = succ(pred, c) |
-        t.matchesCompletion(c)
-      )
-    }
-
-    // Successor relation for non-`finally` to `finally` nodes
-    predicate succByTypeNonFinallyFinally(NonFinallyControlFlowElement pred, ControlFlowEdgeType t, FinallyControlFlowElement succ, FinallySplitType succSplitType) {
-      exists(Completion c |
-        succ = succ(pred, c) |
-        // Entering a `finally` node must respect the split type
-        isSplitForEntryCompletion(succSplitType, c) and
-        t.matchesCompletion(c)
-      )
-    }
-
-    /**
-     * Holds if `cfe` is a last element in the `finally` block belonging to
-     * `try` statement `try`, with completion `c`
-     */
-    private predicate isLastInFinally(TryStmt try, ControlFlowElement cfe, Completion c) {
-      cfe = getAFinallyDescendant(try) and
-      cfe = lastTryStmtFinally(try, c)
-    }
-
-    // Successor relation for `finally` to callable exit nodes
-    predicate succByTypeFinallyCallableExit(FinallyControlFlowElement pred, FinallySplitType predSplitType, ControlFlowEdgeType t, Callable succ) {
-      exists(Completion c |
-        t.matchesCompletion(c) and
-        pred.isRelevantSplitType(predSplitType) and
-        pred = last(succ.getBody(), c) and
-        c.isValidCallableExitCompletion()
-        |
-        // No splitting: any completion inside the `finally` block is valid
-        isLastInFinally(_, pred, c) and
-        predSplitType instanceof ControlFlowEdgeSuccessor
-        or
-        // Splitting: completion must respect the split type
-        predSplitType.matchesCompletion(c)
-        or
-        // Ignore splitting: The `finally` block can itself complete abnormally
-        isLastInFinally(_, pred, c) and
-        not c instanceof NormalCompletion
-      )
-    }
-
-    // Successor relation for `finally` to non-`finally` nodes
-    predicate succByTypeFinallyNonFinally(FinallyControlFlowElement pred, FinallySplitType predSplitType, ControlFlowEdgeType t, NonFinallyControlFlowElement succ) {
-      exists(Completion c |
-        t.matchesCompletion(c) and
-        pred.isRelevantSplitType(predSplitType) and
-        succ = succ(pred, c)
-        |
-        // No splitting: any completion inside the `finally` block is valid
-        isLastInFinally(_, pred, c) and
-        predSplitType instanceof ControlFlowEdgeSuccessor
-        or
-        // Splitting: completion must respect the split type
-        predSplitType.matchesCompletion(c)
-        or
-        // Ignore splitting: The `finally` block can itself complete abnormally
-        isLastInFinally(_, pred, c) and
-        not c instanceof NormalCompletion
-      )
-    }
-
-    // Successor relation for `finally` to `finally` nodes
-    predicate succByTypeFinallyFinally(FinallyControlFlowElement pred, FinallySplitType predSplitType, ControlFlowEdgeType t, FinallyControlFlowElement succ, FinallySplitType succSplitType) {
-      exists(Completion c |
-        t.matchesCompletion(c) |
-        succByTypeFinallyFinally0(pred, predSplitType, c, succ, succSplitType)
-      )
-    }
-
-    pragma [noinline]
-    predicate succByTypeFinallyFinally0(FinallyControlFlowElement pred, FinallySplitType predSplitType, Completion c, FinallyControlFlowElement succ, FinallySplitType succSplitType) {
-      pred.isRelevantSplitType(predSplitType) and
-      succ = succ(pred, c) and
-      if succ.isEntryNode() then
-        if c instanceof NormalCompletion then
-          // Entering a nested `finally` block normally must remember the outer splitting
-          succSplitType = predSplitType
-        else
-          // Entering a nested `finally` abnormally must enter the correct splitting
-          isSplitForEntryCompletion(succSplitType, c)
-      else
-        // Staying in the same `finally` block must stay in the same splitting
-        succSplitType = predSplitType
     }
   }
-  private import Splitting
 
   private cached module Cached {
+    cached
+    newtype TSplit =
+      TFinallySplit(FinallySplitting::FinallySplitType type)
+
+    cached
+    newtype TSplits =
+      TSplitsNil()
+      or
+      TSplitsCons(Split head, Splits tail) {
+        exists(int rnk, ControlFlowElement cfe |
+          rnk = getSplitRank(head, cfe) |
+          rnk = 1 and
+          tail = TSplitsNil()
+          or
+          exists(Split tailHead |
+            tail = TSplitsCons(tailHead, _) |
+            rnk - 1 = getSplitRank(tailHead, cfe)
+          )
+        )
+      }
+
     /**
      * Internal representation of control flow nodes in the control flow graph.
-     * The control flow graph is pruned for unreachable nodes and `finally` nodes
-     * are split where relevant.
+     * The control flow graph is pruned for unreachable nodes.
      */
     cached
     newtype TControlFlowNode =
       TCallableEntry(Callable c) {
-        succCallableEntry(c, _)
+        succEntrySplits(c, _, _, _)
       }
       or
       TCallableExit(Callable c) {
-        exists(SameSplitBlock b |
+        exists(Reachability::SameSplitsBlock b |
           b.isReachable(_) |
-          b.getAnElement() = last(c.getBody(), _)
+          succExitSplits(b.getAnElement(), _, c, _)
         )
       }
       or
-      TNode(ControlFlowElement cfe) {
-        exists(SameSplitBlock b |
-          b.isReachable(getNormalSplit()) |
+      TNode(ControlFlowElement cfe, Splits splits) {
+        exists(Reachability::SameSplitsBlock b |
+          b.isReachable(splits) |
           cfe = b.getAnElement()
-        )
-      }
-      or
-      TFinallySplitNode(ControlFlowElement cfe, FinallySplitType splitType) {
-        exists(SameSplitBlock b |
-          b.isReachable(splitType) |
-          cfe = b.getAnElement() and
-          not splitType = getNormalSplit()
         )
       }
 
@@ -2622,52 +2839,21 @@ module Internal {
     /** Gets a successor node of a given flow type, if any. */
     cached
     ControlFlowNode getASuccessorByType(ControlFlowNode pred, ControlFlowEdgeType t) {
-      exists(CallableEntryNode predNode, NormalControlFlowNode succNode |
-        predNode = pred |
-        succNode = result and
-        succCallableEntry(predNode.getCallable(), succNode.getElement()) and
-        t instanceof ControlFlowEdgeSuccessor
+      // Callable entry node -> callable body
+      exists(ControlFlowElement succElement, Splits succSplits |
+        result = TNode(succElement, succSplits) |
+        succEntrySplits(pred.(CallableEntryNode).getCallable(), succElement, succSplits, t)
       )
       or
-      exists(NormalControlFlowNode predNode |
-        predNode = pred |
-        exists(CallableExitNode succNode |
-          succNode = result |
-          succByTypeNonFinallyCallableExit(predNode.getElement(), t, succNode.getCallable()) or
-          succByTypeFinallyCallableExit(predNode.getElement(), getNormalSplit(), t, succNode.getCallable())
-        )
+      exists(ControlFlowElement predElement, Splits predSplits |
+        pred = TNode(predElement, predSplits) |
+        // Element node -> callable exit
+        succExitSplits(predElement, predSplits, result.(CallableExitNode).getCallable(), t)
         or
-        exists(NormalControlFlowNode succNode |
-          succNode = result |
-          succByTypeNonFinallyNonFinally(predNode.getElement(), t, succNode.getElement()) or
-          succByTypeNonFinallyFinally(predNode.getElement(), t, succNode.getElement(), getNormalSplit()) or
-          succByTypeFinallyNonFinally(predNode.getElement(), getNormalSplit(), t, succNode.getElement()) or
-          succByTypeFinallyFinally(predNode.getElement(), getNormalSplit(), t, succNode.getElement(), getNormalSplit())
-        )
-        or
-        exists(FinallySplitControlFlowNode succNode |
-          succNode = result |
-          succByTypeNonFinallyFinally(predNode.getElement(), t, succNode.getElement(), succNode.getSplitType()) or
-          succByTypeFinallyFinally(predNode.getElement(), getNormalSplit(), t, succNode.getElement(), succNode.getSplitType())
-        )
-      )
-      or
-      exists(FinallySplitControlFlowNode predNode |
-        predNode = pred |
-        exists(CallableExitNode succNode |
-          succNode = result |
-          succByTypeFinallyCallableExit(predNode.getElement(), predNode.getSplitType(), t, succNode.getCallable())
-        )
-        or
-        exists(NormalControlFlowNode succNode |
-          succNode = result |
-          succByTypeFinallyNonFinally(predNode.getElement(), predNode.getSplitType(), t, succNode.getElement()) or
-          succByTypeFinallyFinally(predNode.getElement(), predNode.getSplitType(), t, succNode.getElement(), getNormalSplit())
-        )
-        or
-        exists(FinallySplitControlFlowNode succNode |
-          succNode = result |
-          succByTypeFinallyFinally(predNode.getElement(), predNode.getSplitType(), t, succNode.getElement(), succNode.getSplitType())
+        // Element node -> element node
+        exists(ControlFlowElement succElement, Splits succSplits |
+          result = TNode(succElement, succSplits) |
+          succSplits(predElement, predSplits, succElement, succSplits, t)
         )
       )
     }

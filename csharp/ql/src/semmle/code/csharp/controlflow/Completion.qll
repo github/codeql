@@ -123,11 +123,6 @@ class Completion extends TCompletion {
     this instanceof NormalCompletion or
     this instanceof ContinueCompletion
   }
-
-  /** Holds if this completion is a valid completion for exiting a callable. */
-  predicate isValidCallableExitCompletion() {
-    not this instanceof GotoCompletion
-  }
 }
 
 /** Holds if expression `e` has the Boolean constant value `value`. */
