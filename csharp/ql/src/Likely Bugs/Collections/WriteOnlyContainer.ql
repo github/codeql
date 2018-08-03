@@ -11,10 +11,10 @@
  */
 
 import csharp
-import Collection
+import semmle.code.csharp.commons.Collections
 
 from Variable v
-where isCollectionType(v.getType())
+where v.getType() instanceof CollectionType
   and (v instanceof LocalVariable or v = any(Field f | f.isEffectivelyPrivate() or f.isEffectivelyInternal()))
   and forex(Access a |
     a = v.getAnAccess() |

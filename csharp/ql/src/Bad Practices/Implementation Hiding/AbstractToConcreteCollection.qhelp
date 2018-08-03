@@ -12,8 +12,8 @@ more difficult to change which implementation you are using at a later date.</p>
 
 </recommendation>
 <example>
-<p>The example shows casting from an ICollection to a List. This should be avoided where possible.</p>
-<sample src="AbstractToConcreteCollection.cs" />
+<p>The example shows casting from an <code>IEnumerable&lt;string&gt;</code> to a <code>List&lt;string&gt;</code>. This should be avoided where possible.</p>
+<sample src="AbstractToConcreteCollectionBad.cs" />
 
 </example>
 <references>

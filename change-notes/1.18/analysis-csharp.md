@@ -15,6 +15,7 @@
 
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
+| [Exposing internal representation (cs/expose-implementation)] | Different results | The query has been rewritten, based on the equivalent Java query. |
 | Local scope variable shadows member (cs/local-shadows-member) | maintainability, readability | Replaces the existing queries [Local variable shadows class member (cs/local-shadows-class-member)](https://help.semmle.com/wiki/display/CSHARP/Local+variable+shadows+class+member), [Local variable shadows struct member (cs/local-shadows-struct-member)](https://help.semmle.com/wiki/display/CSHARP/Local+variable+shadows+struct+member), [Parameter shadows class member (cs/parameter-shadows-class-member)](https://help.semmle.com/wiki/display/CSHARP/Parameter+shadows+class+member), and [Parameter shadows struct member (cs/parameter-shadows-struct-member)](https://help.semmle.com/wiki/display/CSHARP/Parameter+shadows+struct+member). |
 
 ## Changes to existing queries

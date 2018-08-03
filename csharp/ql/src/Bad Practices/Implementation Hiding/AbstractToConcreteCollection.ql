@@ -1,8 +1,8 @@
 /**
  * @name Cast from abstract to concrete collection
- * @description Finds casts from an abstract collection to a concrete implementation
- *              type. This makes the code brittle; it is best to program against the
- *              abstract collection interfaces only.
+ * @description A cast from an abstract collection to a concrete implementation type
+ *              makes the code brittle; it is best to program against the abstract
+ *              collection interface only.
  * @kind problem
  * @problem.severity warning
  * @precision medium
@@ -13,20 +13,25 @@
  *       external/cwe/cwe-485
  */
 import csharp
+import semmle.code.csharp.frameworks.system.Collections
+import semmle.code.csharp.frameworks.system.collections.Generic
 
-/** A sub-interface of Collection */
+/** A collection interface. */
 class CollectionInterface extends Interface {
   CollectionInterface() {
-    exists(string name |
-           this.getSourceDeclaration().getABaseType*().getName() = name and
-           (   name.matches("ICollection<%>")
-            or name="ICollection")
+    exists(Interface i |
+      i = this.getABaseInterface*() |
+      i instanceof SystemCollectionsICollectionInterface or
+      i.getSourceDeclaration() instanceof SystemCollectionsGenericICollectionInterface or
+      i instanceof SystemCollectionsIEnumerableInterface or
+      i.getSourceDeclaration() instanceof SystemCollectionsGenericIEnumerableTInterface
     )
   }
 }
 
 from CastExpr e, Class c, CollectionInterface i
-where e.getType() = c and
-      e.getExpr().getType().(RefType).getSourceDeclaration() = i
-select e, "Questionable cast from abstract " + i.getName()
-            + " to concrete implementation " + c.getName() + "."
+where e.getType() = c
+  and e.getExpr().getType() = i
+  and c.isImplicitlyConvertibleTo(i)
+select e, "Questionable cast from abstract '" + i.getName()
+            + "' to concrete implementation '" + c.getName() + "'."

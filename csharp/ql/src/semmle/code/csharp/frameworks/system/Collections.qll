@@ -77,3 +77,10 @@ class SystemCollectionsIEnumeratorInterface extends SystemCollectionsInterface {
 /** DEPRECATED. Gets the `System.Collections.IEnumerator` interface. */
 deprecated
 SystemCollectionsIEnumeratorInterface getSystemCollectionsIEnumeratorInterface() { any() }
+
+/** The `System.Collections.ICollection` interface. */
+class SystemCollectionsICollectionInterface extends SystemCollectionsInterface {
+  SystemCollectionsICollectionInterface() {
+    this.hasName("ICollection")
+  }
+}

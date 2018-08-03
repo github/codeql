@@ -158,3 +158,10 @@ class SystemCollectionsGenericKeyValuePairStruct extends SystemCollectionsGeneri
 /** DEPRECATED. Gets the `System.Collections.Generic.KeyValuePair<TKey, TValue>` structure. */
 deprecated
 SystemCollectionsGenericKeyValuePairStruct getSystemCollectionsGenericKeyValuePairStruct() { any() }
+
+/** The `System.Collections.Generic.ICollection<>` interface. */
+class SystemCollectionsGenericICollectionInterface extends SystemCollectionsGenericUnboundGenericInterface {
+  SystemCollectionsGenericICollectionInterface() {
+    this.hasName("ICollection<>")
+  }
+}

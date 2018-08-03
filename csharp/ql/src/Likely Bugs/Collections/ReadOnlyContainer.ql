@@ -12,12 +12,12 @@
  */
 
 import csharp
-import Collection
+import semmle.code.csharp.commons.Collections
 
 from Variable v
 where
   v.fromSource()
-  and isCollectionType(v.getType())
+  and v.getType() instanceof CollectionType
 
   // Publics might get assigned elsewhere
   and (v instanceof LocalVariable or v.(Field).isPrivate())
@@ -26,12 +26,12 @@ where
   and forall( AssignableDefinition d | v = d.getTarget() | d.getSource() instanceof EmptyCollectionCreation )
 
   // All accesses do not add data.
-  and forex( Access a | v.getAnAccess()=a | noAddAccess(a) or emptyCollectionAssignment(a) )
+  and forex( Access a | v.getAnAccess()=a | a instanceof NoAddAccess or a instanceof EmptyInitializationAccess)
 
   // Attributes indicate some kind of reflection
   and (not exists( Attribute a | v=a.getTarget() ))
 
   // There is at least one non-assignment access
-  and noAddAccess(v.getAnAccess())
+  and v.getAnAccess() instanceof NoAddAccess
 select v, "The contents of this container are never initialized."
 
