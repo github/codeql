@@ -11,8 +11,8 @@
 import csharp
 
 from ValueOrRefType t, int n
-where t.isSourceDeclaration() 
-  and n = count(Stmt s | s.getEnclosingCallable().getDeclaringType() = t 
+where t.isSourceDeclaration()
+  and n = count(Stmt s | s.getEnclosingCallable().getDeclaringType() = t
                    and s != s.getEnclosingCallable().getAChild()) // we do not count the top-level block
 select t, n
 order by n desc

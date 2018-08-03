@@ -62,7 +62,7 @@ abstract class UnbracedControlStmt extends Stmt
     getSuccessorStmt() = result
     and getBlockStmt(this) = getBlockStmt(result)
   }
-  
+
   private Location getBodyLocation() {
     result = getBody().getLocation()
   }

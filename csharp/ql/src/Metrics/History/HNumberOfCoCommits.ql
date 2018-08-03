@@ -11,7 +11,7 @@ import csharp
 import external.VCS
 
 int committedFiles(Commit commit) {
-	result = count(commit.getAnAffectedFile())
+  result = count(commit.getAnAffectedFile())
 }
 
 from File f
