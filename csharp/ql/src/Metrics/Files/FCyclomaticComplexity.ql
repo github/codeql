@@ -7,7 +7,7 @@
  * @metricAggregate avg max
  * @tags testability
  *       complexity
- * @deprecated
+ * @id cs/average-cyclomatic-complexity-per-file
  */
 import csharp
 

@@ -6,7 +6,7 @@
  * @metricType file
  * @metricAggregate avg sum max
  * @tags maintainability
- * @deprecated
+ * @id cs/classes-per-file
  */
 import csharp
 

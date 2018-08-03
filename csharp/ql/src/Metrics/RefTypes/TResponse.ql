@@ -7,7 +7,7 @@
  * @metricAggregate avg max
  * @tags maintainability
  *       complexity
- * @deprecated
+ * @id cs/response-per-type
  */
 import csharp
 

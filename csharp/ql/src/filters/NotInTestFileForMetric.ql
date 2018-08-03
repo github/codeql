@@ -2,7 +2,7 @@
  * @name Filter: only keep results that are outside of test files
  * @description Exclude results in test files.
  * @kind treemap
- * @deprecated
+ * @id cs/test-file-metric-filter
  */
 import csharp
 import semmle.code.csharp.frameworks.Test

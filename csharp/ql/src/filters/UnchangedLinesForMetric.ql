@@ -2,7 +2,7 @@
  * @name Filter: only keep results from source that have not changed since the base line
  * @description Complement of ChangedLinesForMetric.ql.
  * @kind treemap
- * @deprecated
+ * @id cs/unchanged-lines-metric-filter
  */
 import csharp
 import external.ExternalArtifact

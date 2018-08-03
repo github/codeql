@@ -6,7 +6,7 @@
  * @metricType reftype
  * @metricAggregate avg sum max
  * @tags maintainability
- * @deprecated
+ * @id cs/properties-per-type
  */
 import csharp
 

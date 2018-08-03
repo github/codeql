@@ -6,7 +6,7 @@
  * @metricType reftype
  * @metricAggregate sum
  * @tags reliability
- * @deprecated
+ * @id cs/externs-per-type
  */
 
 import csharp

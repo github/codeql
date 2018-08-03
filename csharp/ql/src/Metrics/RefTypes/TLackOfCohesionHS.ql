@@ -6,7 +6,7 @@
  * @metricType reftype
  * @metricAggregate avg max
  * @tags modularity
- * @deprecated
+ * @id cs/lack-of-cohesion-hs
  */
 import csharp
 

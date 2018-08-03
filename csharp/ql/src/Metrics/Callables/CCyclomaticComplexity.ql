@@ -8,7 +8,7 @@
  * @tags testability
  *       complexity
  *       maintainability
- * @deprecated
+ * @id cs/cyclomatic-complexity-per-function
  */
 import csharp
 

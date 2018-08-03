@@ -7,7 +7,7 @@
  * @metricAggregate avg sum max
  * @tags maintainability
  *       documentation
- * @deprecated
+ * @id cs/lines-of-comment-per-function
  */
 import csharp
 

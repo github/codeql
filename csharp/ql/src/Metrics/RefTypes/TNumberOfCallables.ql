@@ -6,7 +6,7 @@
  * @metricType reftype
  * @metricAggregate avg sum max
  * @tags maintainability
- * @deprecated
+ * @id cs/functions-per-type
  */
 import csharp
 

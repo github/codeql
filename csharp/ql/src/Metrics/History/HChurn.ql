@@ -5,7 +5,7 @@
  * @treemap.warnOn highValues
  * @metricType file
  * @metricAggregate avg sum max
- * @deprecated
+ * @id cs/vcs/churn-per-file
  */
 import csharp
 import external.VCS

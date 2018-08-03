@@ -5,7 +5,7 @@
  * @treemap.warnOn highValues
  * @metricType file
  * @metricAggregate avg min max
- * @deprecated
+ * @id cs/vcs/recommits-per-file
  */
 import csharp
 import external.VCS

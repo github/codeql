@@ -5,7 +5,7 @@
  * @treemap.warnOn highValues
  * @metricType reftype
  * @metricAggregate avg sum max
- * @deprecated
+ * @id cs/nonconst-fields-per-type
  */
 import csharp
 
