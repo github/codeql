@@ -887,6 +887,7 @@
 | Switch.cs:78:5:89:5 | {...} | Switch.cs:86:15:86:26 | return ...; | return |
 | Switch.cs:78:5:89:5 | {...} | Switch.cs:88:9:88:21 | return ...; | return |
 | Switch.cs:79:9:87:9 | switch (...) {...} | Switch.cs:82:15:82:26 | return ...; | return |
+| Switch.cs:79:9:87:9 | switch (...) {...} | Switch.cs:83:18:83:18 | 2 | no-match |
 | Switch.cs:79:9:87:9 | switch (...) {...} | Switch.cs:85:17:85:22 | break; | normal (break) |
 | Switch.cs:79:9:87:9 | switch (...) {...} | Switch.cs:86:15:86:26 | return ...; | return |
 | Switch.cs:79:17:79:17 | access to parameter i | Switch.cs:79:17:79:17 | access to parameter i | normal |
@@ -1127,6 +1128,7 @@
 | cflow.cs:33:35:33:35 | access to local variable i | cflow.cs:33:35:33:35 | access to local variable i | normal |
 | cflow.cs:38:5:68:5 | {...} | cflow.cs:64:21:64:55 | throw ...; | throw(NullReferenceException) |
 | cflow.cs:38:5:68:5 | {...} | cflow.cs:67:9:67:17 | return ...; | return |
+| cflow.cs:39:9:50:9 | switch (...) {...} | cflow.cs:47:18:47:18 | 3 | no-match |
 | cflow.cs:39:9:50:9 | switch (...) {...} | cflow.cs:49:17:49:22 | break; | normal (break) |
 | cflow.cs:39:17:39:17 | access to parameter a | cflow.cs:39:17:39:17 | access to parameter a | normal |
 | cflow.cs:41:13:41:19 | case ...: | cflow.cs:41:18:41:18 | 1 | no-match |
@@ -1171,6 +1173,7 @@
 | cflow.cs:57:17:57:52 | ...; | cflow.cs:57:17:57:51 | call to method WriteLine | normal |
 | cflow.cs:57:35:57:50 | "Not the answer" | cflow.cs:57:35:57:50 | "Not the answer" | normal |
 | cflow.cs:58:17:58:22 | break; | cflow.cs:58:17:58:22 | break; | break |
+| cflow.cs:60:9:66:9 | switch (...) {...} | cflow.cs:62:18:62:18 | 0 | no-match |
 | cflow.cs:60:9:66:9 | switch (...) {...} | cflow.cs:64:21:64:55 | throw ...; | throw(NullReferenceException) |
 | cflow.cs:60:9:66:9 | switch (...) {...} | cflow.cs:65:17:65:22 | break; | normal (break) |
 | cflow.cs:60:17:60:32 | call to method Parse | cflow.cs:60:17:60:32 | call to method Parse | normal |

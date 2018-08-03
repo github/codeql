@@ -1252,6 +1252,13 @@ module Internal {
         not c instanceof GotoDefaultCompletion and
         not c instanceof GotoCaseCompletion
         or
+        // Last case exits with a non-match
+        exists(int last |
+          last = max(int i | exists(ss.getCase(i))) |
+          result = lastConstCaseNoMatch(ss.getCase(last), c) or
+          result = lastTypeCaseNoMatch(ss.getCase(last), c)
+        )
+        or
         // Last statement exits with any non-break completion
         exists(int last |
           last = max(int i | exists(ss.getStmt(i))) |
@@ -1262,8 +1269,7 @@ module Internal {
       or
       cfe = any(ConstCase cc |
         // Case expression exits with a non-match
-        result = lastConstCaseExpr(cc, c) and
-        c = any(MatchingCompletion mc | not mc.isMatch())
+        result = lastConstCaseNoMatch(cc, c)
         or
         // Case expression exits abnormally
         result = lastConstCaseExpr(cc, c) and
@@ -1275,8 +1281,7 @@ module Internal {
       or
       cfe = any(TypeCase tc |
         // Type test exits with a non-match
-        result = tc.getTypeAccess() and
-        c = any(MatchingCompletion mc | not mc.isMatch())
+        result = lastTypeCaseNoMatch(tc, c)
         or
         // Condition exists with a `false` completion
         result = lastTypeCaseCondition(tc, c) and
@@ -1403,6 +1408,17 @@ module Internal {
         result = nrc and
         c = nrc.getTarget().(NonReturningCallable).getACallCompletion()
       )
+    }
+
+    private ControlFlowElement lastConstCaseNoMatch(ConstCase cc, MatchingCompletion c) {
+      result = lastConstCaseExpr(cc, c) and
+      not c.isMatch()
+    }
+
+    private ControlFlowElement lastTypeCaseNoMatch(TypeCase tc, MatchingCompletion c) {
+      result = tc.getTypeAccess() and
+      not c.isMatch() and
+      c.isValidFor(result)
     }
 
     pragma [noinline,nomagic]
@@ -1935,7 +1951,7 @@ module Internal {
         or
         // Flow from last element of switch expression to first element of first statement
         cfe = lastSwitchStmtCondition(ss, c) and
-        c instanceof SimpleCompletion and
+        c instanceof NormalCompletion and
         result = first(ss.getStmt(0))
         or
         // Flow from last element of non-`case` statement `i` to first element of statement `i+1`
@@ -2123,7 +2139,7 @@ module Internal {
       exists(ForeachStmt fs |
         // Flow from last element of iterator expression to emptiness test
         cfe = lastForeachStmtIterableExpr(fs, c) and
-        c instanceof SimpleCompletion and
+        c instanceof NormalCompletion and
         result = fs
         or
         // Flow from emptiness test to first element of variable declaration/loop body

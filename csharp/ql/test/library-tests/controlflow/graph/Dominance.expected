@@ -375,12 +375,11 @@
 | post | Foreach.cs:14:27:14:30 | access to parameter args | Foreach.cs:13:5:16:5 | {...} |
 | post | Foreach.cs:18:10:18:11 | exit M3 | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... |
 | post | Foreach.cs:19:5:22:5 | {...} | Foreach.cs:18:10:18:11 | enter M3 |
+| post | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:20:29:20:38 | call to method ToArray |
 | post | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:20:43:20:68 | call to method Empty |
 | post | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:21:11:21:11 | ; |
 | post | Foreach.cs:20:27:20:27 | access to parameter e | Foreach.cs:20:27:20:68 | ... ?? ... |
 | post | Foreach.cs:20:27:20:68 | ... ?? ... | Foreach.cs:19:5:22:5 | {...} |
-| post | Foreach.cs:20:43:20:68 | call to method Empty | Foreach.cs:20:27:20:27 | access to parameter e |
-| post | Foreach.cs:20:43:20:68 | call to method Empty | Foreach.cs:20:29:20:38 | call to method ToArray |
 | post | Foreach.cs:21:11:21:11 | ; | Foreach.cs:20:22:20:22 | String x |
 | post | Initializers.cs:6:5:6:16 | exit Initializers | Initializers.cs:6:28:6:30 | {...} |
 | post | Initializers.cs:6:28:6:30 | {...} | Initializers.cs:6:5:6:16 | enter Initializers |
@@ -691,7 +690,6 @@
 | post | Switch.cs:81:18:81:18 | 1 | Switch.cs:81:13:81:20 | case ...: |
 | post | Switch.cs:82:15:82:26 | return ...; | Switch.cs:82:22:82:25 | true |
 | post | Switch.cs:83:18:83:18 | 2 | Switch.cs:83:13:83:20 | case ...: |
-| post | Switch.cs:84:15:85:22 | if (...) ... | Switch.cs:83:18:83:18 | 2 |
 | post | Switch.cs:84:19:84:19 | access to parameter j | Switch.cs:84:15:85:22 | if (...) ... |
 | post | Switch.cs:84:19:84:23 | ... > ... | Switch.cs:84:23:84:23 | 2 |
 | post | Switch.cs:84:23:84:23 | 2 | Switch.cs:84:19:84:19 | access to parameter j |
@@ -713,7 +711,7 @@
 | post | Switch.cs:102:5:109:5 | {...} | Switch.cs:101:9:101:10 | enter M9 |
 | post | Switch.cs:103:9:107:9 | switch (...) {...} | Switch.cs:102:5:109:5 | {...} |
 | post | Switch.cs:103:17:103:17 | access to parameter s | Switch.cs:103:9:107:9 | switch (...) {...} |
-| post | Switch.cs:103:19:103:25 | access to property Length | Switch.cs:103:17:103:17 | access to parameter s |
+| post | Switch.cs:105:13:105:20 | case ...: | Switch.cs:103:17:103:17 | access to parameter s |
 | post | Switch.cs:105:13:105:20 | case ...: | Switch.cs:103:19:103:25 | access to property Length |
 | post | Switch.cs:105:18:105:18 | 0 | Switch.cs:105:13:105:20 | case ...: |
 | post | Switch.cs:105:22:105:30 | return ...; | Switch.cs:105:29:105:29 | 0 |
@@ -896,9 +894,9 @@
 | post | cflow.cs:47:13:47:19 | case ...: | cflow.cs:44:18:44:18 | 2 |
 | post | cflow.cs:47:18:47:18 | 3 | cflow.cs:47:13:47:19 | case ...: |
 | post | cflow.cs:48:17:48:38 | call to method WriteLine | cflow.cs:48:35:48:37 | "3" |
-| post | cflow.cs:48:17:48:39 | ...; | cflow.cs:47:18:47:18 | 3 |
 | post | cflow.cs:48:35:48:37 | "3" | cflow.cs:48:17:48:39 | ...; |
 | post | cflow.cs:49:17:49:22 | break; | cflow.cs:48:17:48:38 | call to method WriteLine |
+| post | cflow.cs:51:9:59:9 | switch (...) {...} | cflow.cs:47:18:47:18 | 3 |
 | post | cflow.cs:51:9:59:9 | switch (...) {...} | cflow.cs:49:17:49:22 | break; |
 | post | cflow.cs:51:17:51:17 | access to parameter a | cflow.cs:51:9:59:9 | switch (...) {...} |
 | post | cflow.cs:53:13:53:20 | case ...: | cflow.cs:51:17:51:17 | access to parameter a |
@@ -917,7 +915,6 @@
 | post | cflow.cs:60:27:60:31 | this access | cflow.cs:60:9:66:9 | switch (...) {...} |
 | post | cflow.cs:62:13:62:19 | case ...: | cflow.cs:60:17:60:32 | call to method Parse |
 | post | cflow.cs:62:18:62:18 | 0 | cflow.cs:62:13:62:19 | case ...: |
-| post | cflow.cs:63:17:64:55 | if (...) ... | cflow.cs:62:18:62:18 | 0 |
 | post | cflow.cs:63:21:63:34 | !... | cflow.cs:63:17:64:55 | if (...) ... |
 | post | cflow.cs:63:23:63:27 | access to field Field | cflow.cs:63:23:63:27 | this access |
 | post | cflow.cs:63:23:63:27 | this access | cflow.cs:63:21:63:34 | !... |
@@ -2081,7 +2078,6 @@
 | pre | Foreach.cs:20:27:20:27 | access to parameter e | Foreach.cs:20:29:20:38 | call to method ToArray |
 | pre | Foreach.cs:20:27:20:27 | access to parameter e | Foreach.cs:20:43:20:68 | call to method Empty |
 | pre | Foreach.cs:20:27:20:68 | ... ?? ... | Foreach.cs:20:27:20:27 | access to parameter e |
-| pre | Foreach.cs:20:43:20:68 | call to method Empty | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... |
 | pre | Initializers.cs:6:5:6:16 | enter Initializers | Initializers.cs:6:28:6:30 | {...} |
 | pre | Initializers.cs:6:28:6:30 | {...} | Initializers.cs:6:5:6:16 | exit Initializers |
 | pre | Initializers.cs:8:10:8:10 | enter M | Initializers.cs:9:5:12:5 | {...} |
@@ -2405,12 +2401,12 @@
 | pre | Switch.cs:82:22:82:25 | true | Switch.cs:82:15:82:26 | return ...; |
 | pre | Switch.cs:83:13:83:20 | case ...: | Switch.cs:83:18:83:18 | 2 |
 | pre | Switch.cs:83:18:83:18 | 2 | Switch.cs:84:15:85:22 | if (...) ... |
+| pre | Switch.cs:83:18:83:18 | 2 | Switch.cs:88:16:88:20 | false |
 | pre | Switch.cs:84:15:85:22 | if (...) ... | Switch.cs:84:19:84:19 | access to parameter j |
 | pre | Switch.cs:84:19:84:19 | access to parameter j | Switch.cs:84:23:84:23 | 2 |
 | pre | Switch.cs:84:19:84:23 | ... > ... | Switch.cs:85:17:85:22 | break; |
 | pre | Switch.cs:84:19:84:23 | ... > ... | Switch.cs:86:22:86:25 | true |
 | pre | Switch.cs:84:23:84:23 | 2 | Switch.cs:84:19:84:23 | ... > ... |
-| pre | Switch.cs:85:17:85:22 | break; | Switch.cs:88:16:88:20 | false |
 | pre | Switch.cs:86:22:86:25 | true | Switch.cs:86:15:86:26 | return ...; |
 | pre | Switch.cs:88:16:88:20 | false | Switch.cs:88:9:88:21 | return ...; |
 | pre | Switch.cs:91:10:91:11 | enter M8 | Switch.cs:92:5:99:5 | {...} |
@@ -2426,7 +2422,7 @@
 | pre | Switch.cs:102:5:109:5 | {...} | Switch.cs:103:9:107:9 | switch (...) {...} |
 | pre | Switch.cs:103:9:107:9 | switch (...) {...} | Switch.cs:103:17:103:17 | access to parameter s |
 | pre | Switch.cs:103:17:103:17 | access to parameter s | Switch.cs:103:19:103:25 | access to property Length |
-| pre | Switch.cs:103:19:103:25 | access to property Length | Switch.cs:105:13:105:20 | case ...: |
+| pre | Switch.cs:103:17:103:17 | access to parameter s | Switch.cs:105:13:105:20 | case ...: |
 | pre | Switch.cs:105:13:105:20 | case ...: | Switch.cs:105:18:105:18 | 0 |
 | pre | Switch.cs:105:18:105:18 | 0 | Switch.cs:105:29:105:29 | 0 |
 | pre | Switch.cs:105:18:105:18 | 0 | Switch.cs:106:13:106:20 | case ...: |
@@ -2614,10 +2610,10 @@
 | pre | cflow.cs:46:27:46:27 | 1 | cflow.cs:46:17:46:28 | goto case ...; |
 | pre | cflow.cs:47:13:47:19 | case ...: | cflow.cs:47:18:47:18 | 3 |
 | pre | cflow.cs:47:18:47:18 | 3 | cflow.cs:48:17:48:39 | ...; |
+| pre | cflow.cs:47:18:47:18 | 3 | cflow.cs:51:9:59:9 | switch (...) {...} |
 | pre | cflow.cs:48:17:48:38 | call to method WriteLine | cflow.cs:49:17:49:22 | break; |
 | pre | cflow.cs:48:17:48:39 | ...; | cflow.cs:48:35:48:37 | "3" |
 | pre | cflow.cs:48:35:48:37 | "3" | cflow.cs:48:17:48:38 | call to method WriteLine |
-| pre | cflow.cs:49:17:49:22 | break; | cflow.cs:51:9:59:9 | switch (...) {...} |
 | pre | cflow.cs:51:9:59:9 | switch (...) {...} | cflow.cs:51:17:51:17 | access to parameter a |
 | pre | cflow.cs:51:17:51:17 | access to parameter a | cflow.cs:53:13:53:20 | case ...: |
 | pre | cflow.cs:53:13:53:20 | case ...: | cflow.cs:53:18:53:19 | 42 |
@@ -2636,6 +2632,7 @@
 | pre | cflow.cs:60:27:60:31 | this access | cflow.cs:60:27:60:31 | access to field Field |
 | pre | cflow.cs:62:13:62:19 | case ...: | cflow.cs:62:18:62:18 | 0 |
 | pre | cflow.cs:62:18:62:18 | 0 | cflow.cs:63:17:64:55 | if (...) ... |
+| pre | cflow.cs:62:18:62:18 | 0 | cflow.cs:67:16:67:16 | access to parameter a |
 | pre | cflow.cs:63:17:64:55 | if (...) ... | cflow.cs:63:21:63:34 | !... |
 | pre | cflow.cs:63:21:63:34 | !... | cflow.cs:63:23:63:27 | this access |
 | pre | cflow.cs:63:23:63:27 | access to field Field | cflow.cs:63:32:63:33 | "" |
@@ -2644,7 +2641,6 @@
 | pre | cflow.cs:63:23:63:33 | ... == ... | cflow.cs:65:17:65:22 | break; |
 | pre | cflow.cs:63:32:63:33 | "" | cflow.cs:63:23:63:33 | ... == ... |
 | pre | cflow.cs:64:27:64:54 | object creation of type NullReferenceException | cflow.cs:64:21:64:55 | throw ...; |
-| pre | cflow.cs:65:17:65:22 | break; | cflow.cs:67:16:67:16 | access to parameter a |
 | pre | cflow.cs:67:16:67:16 | access to parameter a | cflow.cs:67:9:67:17 | return ...; |
 | pre | cflow.cs:70:18:70:18 | enter M | cflow.cs:71:5:82:5 | {...} |
 | pre | cflow.cs:71:5:82:5 | {...} | cflow.cs:72:9:73:19 | if (...) ... |

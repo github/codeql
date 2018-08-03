@@ -304,6 +304,7 @@
 | Foreach.cs:20:27:20:27 | access to parameter e | Foreach.cs:20:29:20:38 | call to method ToArray | semmle.label | non-null |
 | Foreach.cs:20:27:20:27 | access to parameter e | Foreach.cs:20:43:20:68 | call to method Empty | semmle.label | null |
 | Foreach.cs:20:27:20:68 | ... ?? ... | Foreach.cs:20:27:20:27 | access to parameter e | semmle.label | successor |
+| Foreach.cs:20:29:20:38 | call to method ToArray | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | semmle.label | non-null |
 | Foreach.cs:20:29:20:38 | call to method ToArray | Foreach.cs:20:43:20:68 | call to method Empty | semmle.label | null |
 | Foreach.cs:20:43:20:68 | call to method Empty | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | semmle.label | successor |
 | Foreach.cs:21:11:21:11 | ; | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | semmle.label | successor |
@@ -625,6 +626,7 @@
 | Switch.cs:82:22:82:25 | true | Switch.cs:82:15:82:26 | return ...; | semmle.label | successor |
 | Switch.cs:83:13:83:20 | case ...: | Switch.cs:83:18:83:18 | 2 | semmle.label | successor |
 | Switch.cs:83:18:83:18 | 2 | Switch.cs:84:15:85:22 | if (...) ... | semmle.label | match |
+| Switch.cs:83:18:83:18 | 2 | Switch.cs:88:16:88:20 | false | semmle.label | no-match |
 | Switch.cs:84:15:85:22 | if (...) ... | Switch.cs:84:19:84:19 | access to parameter j | semmle.label | successor |
 | Switch.cs:84:19:84:19 | access to parameter j | Switch.cs:84:23:84:23 | 2 | semmle.label | successor |
 | Switch.cs:84:19:84:23 | ... > ... | Switch.cs:85:17:85:22 | break; | semmle.label | true |
@@ -644,6 +646,7 @@
 | Switch.cs:102:5:109:5 | {...} | Switch.cs:103:9:107:9 | switch (...) {...} | semmle.label | successor |
 | Switch.cs:103:9:107:9 | switch (...) {...} | Switch.cs:103:17:103:17 | access to parameter s | semmle.label | successor |
 | Switch.cs:103:17:103:17 | access to parameter s | Switch.cs:103:19:103:25 | access to property Length | semmle.label | non-null |
+| Switch.cs:103:17:103:17 | access to parameter s | Switch.cs:105:13:105:20 | case ...: | semmle.label | null |
 | Switch.cs:103:19:103:25 | access to property Length | Switch.cs:105:13:105:20 | case ...: | semmle.label | successor |
 | Switch.cs:105:13:105:20 | case ...: | Switch.cs:105:18:105:18 | 0 | semmle.label | successor |
 | Switch.cs:105:18:105:18 | 0 | Switch.cs:105:29:105:29 | 0 | semmle.label | match |
@@ -832,6 +835,7 @@
 | cflow.cs:46:27:46:27 | 1 | cflow.cs:46:17:46:28 | goto case ...; | semmle.label | successor |
 | cflow.cs:47:13:47:19 | case ...: | cflow.cs:47:18:47:18 | 3 | semmle.label | successor |
 | cflow.cs:47:18:47:18 | 3 | cflow.cs:48:17:48:39 | ...; | semmle.label | match |
+| cflow.cs:47:18:47:18 | 3 | cflow.cs:51:9:59:9 | switch (...) {...} | semmle.label | no-match |
 | cflow.cs:48:17:48:38 | call to method WriteLine | cflow.cs:49:17:49:22 | break; | semmle.label | successor |
 | cflow.cs:48:17:48:39 | ...; | cflow.cs:48:35:48:37 | "3" | semmle.label | successor |
 | cflow.cs:48:35:48:37 | "3" | cflow.cs:48:17:48:38 | call to method WriteLine | semmle.label | successor |
@@ -856,6 +860,7 @@
 | cflow.cs:60:27:60:31 | this access | cflow.cs:60:27:60:31 | access to field Field | semmle.label | successor |
 | cflow.cs:62:13:62:19 | case ...: | cflow.cs:62:18:62:18 | 0 | semmle.label | successor |
 | cflow.cs:62:18:62:18 | 0 | cflow.cs:63:17:64:55 | if (...) ... | semmle.label | match |
+| cflow.cs:62:18:62:18 | 0 | cflow.cs:67:16:67:16 | access to parameter a | semmle.label | no-match |
 | cflow.cs:63:17:64:55 | if (...) ... | cflow.cs:63:21:63:34 | !... | semmle.label | successor |
 | cflow.cs:63:21:63:34 | !... | cflow.cs:63:23:63:27 | this access | semmle.label | successor |
 | cflow.cs:63:23:63:27 | access to field Field | cflow.cs:63:32:63:33 | "" | semmle.label | successor |

@@ -217,15 +217,19 @@
 | Switch.cs:77:10:77:11 | enter M7 | Switch.cs:81:18:81:18 | 1 | 6 |
 | Switch.cs:77:10:77:11 | exit M7 | Switch.cs:77:10:77:11 | exit M7 | 1 |
 | Switch.cs:82:22:82:25 | true | Switch.cs:82:15:82:26 | return ...; | 2 |
-| Switch.cs:83:13:83:20 | case ...: | Switch.cs:84:19:84:23 | ... > ... | 6 |
-| Switch.cs:85:17:85:22 | break; | Switch.cs:88:9:88:21 | return ...; | 3 |
+| Switch.cs:83:13:83:20 | case ...: | Switch.cs:83:18:83:18 | 2 | 2 |
+| Switch.cs:84:15:85:22 | if (...) ... | Switch.cs:84:19:84:23 | ... > ... | 4 |
+| Switch.cs:85:17:85:22 | break; | Switch.cs:85:17:85:22 | break; | 1 |
 | Switch.cs:86:22:86:25 | true | Switch.cs:86:15:86:26 | return ...; | 2 |
+| Switch.cs:88:16:88:20 | false | Switch.cs:88:9:88:21 | return ...; | 2 |
 | Switch.cs:91:10:91:11 | enter M8 | Switch.cs:95:18:95:20 | access to type Int32 | 6 |
 | Switch.cs:91:10:91:11 | exit M8 | Switch.cs:91:10:91:11 | exit M8 | 1 |
 | Switch.cs:96:22:96:25 | true | Switch.cs:96:15:96:26 | return ...; | 2 |
 | Switch.cs:98:16:98:20 | false | Switch.cs:98:9:98:21 | return ...; | 2 |
-| Switch.cs:101:9:101:10 | enter M9 | Switch.cs:105:18:105:18 | 0 | 7 |
+| Switch.cs:101:9:101:10 | enter M9 | Switch.cs:103:17:103:17 | access to parameter s | 4 |
 | Switch.cs:101:9:101:10 | exit M9 | Switch.cs:101:9:101:10 | exit M9 | 1 |
+| Switch.cs:103:19:103:25 | access to property Length | Switch.cs:103:19:103:25 | access to property Length | 1 |
+| Switch.cs:105:13:105:20 | case ...: | Switch.cs:105:18:105:18 | 0 | 2 |
 | Switch.cs:105:29:105:29 | 0 | Switch.cs:105:22:105:30 | return ...; | 2 |
 | Switch.cs:106:13:106:20 | case ...: | Switch.cs:106:18:106:18 | 1 | 2 |
 | Switch.cs:106:29:106:29 | 1 | Switch.cs:106:22:106:30 | return ...; | 2 |
@@ -265,12 +269,16 @@
 | cflow.cs:42:17:42:39 | ...; | cflow.cs:43:17:43:28 | goto case ...; | 5 |
 | cflow.cs:44:13:44:19 | case ...: | cflow.cs:44:18:44:18 | 2 | 2 |
 | cflow.cs:45:17:45:39 | ...; | cflow.cs:46:17:46:28 | goto case ...; | 5 |
-| cflow.cs:47:13:47:19 | case ...: | cflow.cs:53:18:53:19 | 42 | 10 |
+| cflow.cs:47:13:47:19 | case ...: | cflow.cs:47:18:47:18 | 3 | 2 |
+| cflow.cs:48:17:48:39 | ...; | cflow.cs:49:17:49:22 | break; | 4 |
+| cflow.cs:51:9:59:9 | switch (...) {...} | cflow.cs:53:18:53:19 | 42 | 4 |
 | cflow.cs:54:17:54:48 | ...; | cflow.cs:55:17:55:22 | break; | 4 |
 | cflow.cs:56:13:56:20 | default: | cflow.cs:58:17:58:22 | break; | 5 |
-| cflow.cs:60:9:66:9 | switch (...) {...} | cflow.cs:63:23:63:33 | ... == ... | 12 |
+| cflow.cs:60:9:66:9 | switch (...) {...} | cflow.cs:62:18:62:18 | 0 | 6 |
+| cflow.cs:63:17:64:55 | if (...) ... | cflow.cs:63:23:63:33 | ... == ... | 6 |
 | cflow.cs:64:27:64:54 | object creation of type NullReferenceException | cflow.cs:64:21:64:55 | throw ...; | 2 |
-| cflow.cs:65:17:65:22 | break; | cflow.cs:67:9:67:17 | return ...; | 3 |
+| cflow.cs:65:17:65:22 | break; | cflow.cs:65:17:65:22 | break; | 1 |
+| cflow.cs:67:16:67:16 | access to parameter a | cflow.cs:67:9:67:17 | return ...; | 2 |
 | cflow.cs:70:18:70:18 | enter M | cflow.cs:72:13:72:21 | ... == ... | 6 |
 | cflow.cs:70:18:70:18 | exit M | cflow.cs:70:18:70:18 | exit M | 1 |
 | cflow.cs:73:13:73:19 | return ...; | cflow.cs:73:13:73:19 | return ...; | 1 |
