@@ -81,11 +81,11 @@ class Completion extends TCompletion {
     or
     if mustHaveBooleanCompletion(cfe) then
       exists(boolean value |
-        isConstant(cfe, value) |
+        isBooleanConstant(cfe, value) |
         this = TBooleanCompletion(value, value)
       )
       or
-      not isConstant(cfe, _) and
+      not isBooleanConstant(cfe, _) and
       exists(boolean b | this = TBooleanCompletion(b, b))
       or
       // Corner case: In `if (x ?? y) { ... }`, `x` must have both a `true`
@@ -94,8 +94,20 @@ class Completion extends TCompletion {
       mustHaveNullnessCompletion(cfe) and
       this = TNullnessCompletion(true)
     else if mustHaveNullnessCompletion(cfe) then
+      exists(boolean value |
+        isNullnessConstant(cfe, value) |
+        this = TNullnessCompletion(value)
+      )
+      or
+      not isNullnessConstant(cfe, _) and
       this = TNullnessCompletion(_)
-    else if mustHaveMatchingCompletion(cfe) then
+    else if mustHaveMatchingCompletion(_, cfe) then
+      exists(boolean value |
+        isMatchingConstant(cfe, value) |
+        this = TMatchingCompletion(value)
+      )
+      or
+      not isMatchingConstant(cfe, _) and
       this = TMatchingCompletion(_)
     else if mustHaveEmptinessCompletion(cfe) then
       this = TEmptinessCompletion(_)
@@ -118,14 +130,82 @@ class Completion extends TCompletion {
   }
 }
 
-private predicate isConstant(Expr e, boolean value) {
-  e.getValue() = "true" and
-  value = true
-  or
-  e.getValue() = "false" and
-  value = false
-  or
-  isConstantComparison(e, value)
+/** Holds if expression `e` has the Boolean constant value `value`. */
+private predicate isBooleanConstant(Expr e, boolean value) {
+  mustHaveBooleanCompletion(e) and
+  (
+    e.getValue() = "true" and
+    value = true
+    or
+    e.getValue() = "false" and
+    value = false
+    or
+    isConstantComparison(e, value)
+  )
+}
+
+/**
+ * Holds if expression `e` is constantly `null` (`value = true`) or constantly
+ * non-`null` (`value = false`).
+ */
+private predicate isNullnessConstant(Expr e, boolean value) {
+  mustHaveNullnessCompletion(e) and
+  exists(Expr stripped |
+    stripped = e.stripCasts() |
+    stripped.getType() = any(ValueType t |
+      not t instanceof NullableType and
+      // Extractor bug: the type of `x?.Length` is reported as `int`, but it should
+      // be `int?`
+      not getQualifier*(stripped).(QualifiableExpr).isConditional()
+    ) and
+    value = false
+    or
+    stripped instanceof NullLiteral and
+    value = true
+    or
+    stripped.hasValue() and
+    not stripped instanceof NullLiteral and
+    value = false
+  )
+}
+
+private Expr getQualifier(QualifiableExpr e) {
+  // `e.getQualifier()` does not work for calls to extension methods
+  result = e.getChildExpr(-1)
+}
+
+/**
+ * Holds if expression `e` constantly matches (`value = true`) or constantly
+ * non-matches (`value = false`).
+ */
+private predicate isMatchingConstant(Expr e, boolean value) {
+  exists(SwitchStmt ss |
+    mustHaveMatchingCompletion(ss, e) |
+    exists(Expr stripped |
+      stripped = ss.getCondition().stripCasts() |
+      exists(ConstCase cc, string strippedValue |
+        cc = ss.getAConstCase() and
+        e = cc.getExpr() and
+        strippedValue = stripped.getValue() |
+        if strippedValue = e.getValue() then
+          value = true
+        else
+          value = false
+      )
+      or
+      exists(TypeCase tc, Type t, Type strippedType |
+        tc = ss.getATypeCase() |
+        e = tc.getTypeAccess() and
+        t = e.getType() and
+        strippedType = stripped.getType() and
+        not t.isImplicitlyConvertibleTo(strippedType) and
+        not t instanceof Interface and
+        not t.containsTypeParameters() and
+        not strippedType.containsTypeParameters() and
+        value = false
+      )
+    )
+  )
 }
 
 /** A control flow element that is inside a `try` block. */
@@ -325,12 +405,10 @@ private predicate inNullnessContext(Expr e, boolean isNullnessCompletionForParen
  * Holds if a normal completion of `e` must be a matching completion. Thats is,
  * whether `e` determines a match in a `switch` statement.
  */
-private predicate mustHaveMatchingCompletion(Expr e) {
-  exists(SwitchStmt ss |
-    e = ss.getAConstCase().getExpr()
-    or
-    e = ss.getATypeCase().getTypeAccess() // use type access to represent the type test
-  )
+private predicate mustHaveMatchingCompletion(SwitchStmt ss, Expr e) {
+  e = ss.getAConstCase().getExpr()
+  or
+  e = ss.getATypeCase().getTypeAccess() // use type access to represent the type test
 }
 
 /**

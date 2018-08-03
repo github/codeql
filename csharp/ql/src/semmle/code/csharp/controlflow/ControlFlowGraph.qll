@@ -2022,6 +2022,7 @@ module Internal {
         c instanceof SimpleCompletion
         or
         cfe = tc.getTypeAccess() and
+        c.isValidFor(cfe) and
         c = any(MatchingCompletion mc |
           if mc.isMatch() then
             if exists(tc.getVariableDeclExpr()) then
