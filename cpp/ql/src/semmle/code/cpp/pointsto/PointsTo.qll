@@ -633,7 +633,7 @@ class PointsToExpr extends Expr
   pragma[noopt]
   Element pointsTo()
   {
-    this.interesting() and exists(int set, @element thisEntity, @element resultEntity | thisEntity = unresolveElement(this) and pointstosets(set, thisEntity) and setlocations(set, resultEntity) and resultEntity = unresolveElement(result))
+    this.interesting() and exists(int set, @element thisEntity, @element resultEntity | thisEntity = underlyingElement(this) and pointstosets(set, thisEntity) and setlocations(set, resultEntity) and resultEntity = unresolveElement(result))
   }
 
   float confidence() { result = 1.0 / count(this.pointsTo()) }

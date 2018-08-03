@@ -23,7 +23,7 @@ class TargetPointsToExpr extends PointsToExpr {
   {
     exists(int cset, VirtualFunction static |
       this.interesting() and
-      parentSetFor(cset, unresolveElement(this)) and
+      parentSetFor(cset, underlyingElement(this)) and
       static = this.staticTarget() and
       childrenByElement(cset, static, result)
     )   

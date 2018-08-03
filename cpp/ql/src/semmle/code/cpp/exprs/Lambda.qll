@@ -22,7 +22,7 @@ class LambdaExpression extends Expr, @lambdaexpr {
    * Gets the nth implicitly or explicitly captured value of this lambda expression.
    */
   LambdaCapture getCapture(int index) {
-    lambda_capture(result, unresolveElement(this), index, _, _, _)
+    lambda_capture(result, underlyingElement(this), index, _, _, _)
   }
 
   /**
@@ -34,14 +34,14 @@ class LambdaExpression extends Expr, @lambdaexpr {
    *   - "=" if capture-by-value is the default for implicit captures.
    */
   string getDefaultCaptureMode() {
-    lambdas(unresolveElement(this), result, _)
+    lambdas(underlyingElement(this), result, _)
   }
 
   /**
    * Holds if the return type (of the call operator of the resulting object) was explicitly specified.
    */
   predicate returnTypeIsExplicit() {
-    lambdas(unresolveElement(this), _, true)
+    lambdas(underlyingElement(this), _, true)
   }
 
   /**

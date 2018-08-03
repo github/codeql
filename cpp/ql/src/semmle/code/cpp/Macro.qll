@@ -9,13 +9,13 @@ class Macro extends PreprocessorDirective, @ppd_define {
    * Gets the head of this macro. For example, `MAX(x,y)` in
    * `#define MAX(x,y) (((x)>(y))?(x):(y))`.
    */
-  override string getHead() { preproctext(unresolveElement(this),result,_) }
+  override string getHead() { preproctext(underlyingElement(this),result,_) }
 
   /**
    * Gets the body of this macro. For example, `(((x)>(y))?(x):(y))` in
    * `#define MAX(x,y) (((x)>(y))?(x):(y))`.
    */
-  string getBody() { preproctext(unresolveElement(this),_,result) }
+  string getBody() { preproctext(underlyingElement(this),_,result) }
 
   /** Gets an invocation of this macro. */
   MacroInvocation getAnInvocation() { result.getMacro() = this }
@@ -59,7 +59,7 @@ class Macro extends PreprocessorDirective, @ppd_define {
  */
 class MacroAccess extends Locatable, @macroinvocation {
   /** Gets the macro being invoked. */
-  Macro getMacro() { macroinvocations(unresolveElement(this),unresolveElement(result),_,_) }
+  Macro getMacro() { macroinvocations(underlyingElement(this),unresolveElement(result),_,_) }
 
   /**
    * Gets the location of the outermost macro access that triggered this macro
@@ -78,7 +78,7 @@ class MacroAccess extends Locatable, @macroinvocation {
    * a `#define` directive or inside an argument to another macro.
    */
   Location getActualLocation() {
-    macroinvocations(unresolveElement(this),_,result,_)
+    macroinvocations(underlyingElement(this),_,result,_)
   }
 
   /**
@@ -111,7 +111,7 @@ class MacroAccess extends Locatable, @macroinvocation {
    * There is only a single invocation even though `c` occurs twice; this is an
    * optimization for efficiency.
    */
-  MacroInvocation getParentInvocation() { macroparent(unresolveElement(this),unresolveElement(result)) }
+  MacroInvocation getParentInvocation() { macroparent(underlyingElement(this),unresolveElement(result)) }
 
   /**
    * Gets the outermost `MacroAccess` along the chain of `getParentInvocation`.
@@ -137,14 +137,14 @@ class MacroAccess extends Locatable, @macroinvocation {
  */
 class MacroInvocation extends MacroAccess {
   MacroInvocation() {
-    macroinvocations(unresolveElement(this),_,_,1)
+    macroinvocations(underlyingElement(this),_,_,1)
   }
 
   /**
    * Gets an element that occurs in this macro invocation or a nested macro
    * invocation.
    */
-  Locatable getAnExpandedElement() { inmacroexpansion(unresolveElement(result),unresolveElement(this)) }
+  Locatable getAnExpandedElement() { inmacroexpansion(unresolveElement(result),underlyingElement(this)) }
 
   /**
    * Gets an element that is (partially) affected by a macro
@@ -153,7 +153,7 @@ class MacroInvocation extends MacroAccess {
    * well.
    */
   Locatable getAnAffectedElement() {
-    inmacroexpansion(unresolveElement(result),unresolveElement(this)) or macrolocationbind(unresolveElement(this), result.getLocation())
+    inmacroexpansion(unresolveElement(result),underlyingElement(this)) or macrolocationbind(underlyingElement(this), result.getLocation())
   }
 
   /**
@@ -224,7 +224,7 @@ class MacroInvocation extends MacroAccess {
    * Use `getExpandedArgument` to get the expanded form.
    */
   string getUnexpandedArgument(int i) {
-    macro_argument_unexpanded(unresolveElement(this), i, result)
+    macro_argument_unexpanded(underlyingElement(this), i, result)
   }
 
   /**
@@ -238,7 +238,7 @@ class MacroInvocation extends MacroAccess {
    * differences between expanded and unexpanded arguments.
    */
   string getExpandedArgument(int i) {
-    macro_argument_expanded(unresolveElement(this), i, result)
+    macro_argument_expanded(underlyingElement(this), i, result)
   }
 }
 

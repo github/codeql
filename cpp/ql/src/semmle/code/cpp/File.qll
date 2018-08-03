@@ -127,7 +127,7 @@ abstract class Container extends Locatable, @container {
 
   /** Gets the parent container of this file or folder, if any. */
   Container getParentContainer() {
-    containerparent(unresolveElement(result), unresolveElement(this))
+    containerparent(unresolveElement(result), underlyingElement(this))
   }
 
   /** Gets a file or sub-folder in this container. */
@@ -179,7 +179,7 @@ abstract class Container extends Locatable, @container {
  */
 class Folder extends Container, @folder {
   override string getAbsolutePath() {
-    folders(unresolveElement(this), result, _)
+    folders(underlyingElement(this), result, _)
   }
 
   override Location getLocation() {
@@ -200,7 +200,7 @@ class Folder extends Container, @folder {
    * Gets the name of this folder.
    */
   deprecated
-  string getName() { folders(unresolveElement(this),result,_) }
+  string getName() { folders(underlyingElement(this),result,_) }
 
   /**
    * DEPRECATED: use `getAbsolutePath` instead.
@@ -223,7 +223,7 @@ class Folder extends Container, @folder {
   deprecated
   string getShortName() {
     exists (string longnameRaw, string longname
-    | folders(unresolveElement(this),_,longnameRaw) and
+    | folders(underlyingElement(this),_,longnameRaw) and
       longname = longnameRaw.replaceAll("\\", "/")
     | exists (int index
       | result = longname.splitAt("/", index) and
@@ -235,7 +235,7 @@ class Folder extends Container, @folder {
    * Gets the parent folder.
    */
   deprecated
-  Folder getParent() { containerparent(unresolveElement(result),unresolveElement(this)) }
+  Folder getParent() { containerparent(unresolveElement(result),underlyingElement(this)) }
 }
 
 /**
@@ -252,7 +252,7 @@ class Folder extends Container, @folder {
  */
 class File extends Container, @file {
   override string getAbsolutePath() {
-    files(unresolveElement(this), result, _, _, _)
+    files(underlyingElement(this), result, _, _, _)
   }
 
   override string toString() {
@@ -274,12 +274,12 @@ class File extends Container, @file {
 
   /** Holds if this file was compiled as C (at any point). */
   predicate compiledAsC() {
-    fileannotations(unresolveElement(this),1,"compiled as c","1")
+    fileannotations(underlyingElement(this),1,"compiled as c","1")
   }
 
   /** Holds if this file was compiled as C++ (at any point). */
   predicate compiledAsCpp() {
-    fileannotations(unresolveElement(this),1,"compiled as c++","1")
+    fileannotations(underlyingElement(this),1,"compiled as c++","1")
   }
 
   /**
@@ -333,14 +333,14 @@ class File extends Container, @file {
    * Gets the folder which contains this file.
    */
   deprecated
-  Folder getParent() { containerparent(unresolveElement(result),unresolveElement(this)) }
+  Folder getParent() { containerparent(unresolveElement(result),underlyingElement(this)) }
 
   /**
    * Holds if this file may be from source. This predicate holds for all files
    * except the dummy file, whose name is the empty string, which contains
    * declarations that are built into the compiler.
    */
-  override predicate fromSource() { numlines(unresolveElement(this),_,_,_) }
+  override predicate fromSource() { numlines(underlyingElement(this),_,_,_) }
 
   /**
    * Holds if this file may be from a library.
@@ -359,7 +359,7 @@ class File extends Container, @file {
    * "/usr/home/me/myprogram.c".
    */
   deprecated
-  string getName() { files(unresolveElement(this),result,_,_,_) }
+  string getName() { files(underlyingElement(this),result,_,_,_) }
 
   /**
    * DEPRECATED: Use `getAbsolutePath` instead.
@@ -391,7 +391,7 @@ class File extends Container, @file {
    * "tar.gz", while `getExtension` will have the result "gz".
    */
   string getExtensions() {
-    files(unresolveElement(this),_,_,result,_)
+    files(underlyingElement(this),_,_,result,_)
   }
 
   /**
@@ -424,7 +424,7 @@ class File extends Container, @file {
    * for example, for "file.tar.gz", this predicate will have the result
    * "file", while `getStem` will have the result "file.tar".
    */
-  string getShortName() { files(unresolveElement(this),_,result,_,_) }
+  string getShortName() { files(underlyingElement(this),_,result,_,_) }
 }
 
 

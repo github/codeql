@@ -16,6 +16,10 @@ cached @element unresolveElement(Element e) {
   resolveElement(result) = e
 }
 
+cached @element underlyingElement(Element e) {
+  result = e
+}
+
 /**
  * A C/C++ element. This class is the base class for all C/C++
  * elements, such as functions, classes, expressions, and so on.
@@ -136,7 +140,7 @@ class Element extends @element {
     | this = s and result = s.getParent())
 
     or
-    using_container(unresolveElement(result), unresolveElement(this))
+    using_container(unresolveElement(result), underlyingElement(this))
   }
 
   /**
@@ -158,17 +162,17 @@ class Element extends @element {
   }
 
   private Element getEnclosingElementPref() {
-    enclosingfunction(unresolveElement(this), unresolveElement(result)) or
+    enclosingfunction(underlyingElement(this), unresolveElement(result)) or
     result.(Function) = stmtEnclosingElement(this) or
     this.(LocalScopeVariable).getFunction() = result or
-    enumconstants(unresolveElement(this), unresolveElement(result), _, _, _, _) or
-    derivations(unresolveElement(this), unresolveElement(result), _, _, _) or
-    stmtparents(unresolveElement(this), _, unresolveElement(result)) or
-    exprparents(unresolveElement(this), _, unresolveElement(result)) or
-    namequalifiers(unresolveElement(this), unresolveElement(result), _, _) or
-    initialisers(unresolveElement(this), unresolveElement(result), _, _) or
-    exprconv(unresolveElement(result), unresolveElement(this)) or
-    param_decl_bind(unresolveElement(this),_,unresolveElement(result))
+    enumconstants(underlyingElement(this), unresolveElement(result), _, _, _, _) or
+    derivations(underlyingElement(this), unresolveElement(result), _, _, _) or
+    stmtparents(underlyingElement(this), _, unresolveElement(result)) or
+    exprparents(underlyingElement(this), _, unresolveElement(result)) or
+    namequalifiers(underlyingElement(this), unresolveElement(result), _, _) or
+    initialisers(underlyingElement(this), unresolveElement(result), _, _) or
+    exprconv(unresolveElement(result), underlyingElement(this)) or
+    param_decl_bind(underlyingElement(this),_,unresolveElement(result))
   }
 
   /** Gets the closest `Element` enclosing this one. */
@@ -181,7 +185,7 @@ class Element extends @element {
         or
         result = exprEnclosingElement(this)
         or
-        var_decls(unresolveElement(this), unresolveElement(result), _, _, _)
+        var_decls(underlyingElement(this), unresolveElement(result), _, _, _)
       )
     )
   }
@@ -247,7 +251,7 @@ private predicate isFromUninstantiatedTemplateRec(Element e, Element template) {
  */
 class StaticAssert extends Locatable, @static_assert {
   override string toString() { result = "static_assert(..., \"" + getMessage() + "\")" }
-  Expr getCondition()    { static_asserts(unresolveElement(this), unresolveElement(result), _, _) }
-  string getMessage()    { static_asserts(unresolveElement(this), _, result, _) }
-  override Location getLocation() { static_asserts(unresolveElement(this), _, _, result) }
+  Expr getCondition()    { static_asserts(underlyingElement(this), unresolveElement(result), _, _) }
+  string getMessage()    { static_asserts(underlyingElement(this), _, result, _) }
+  override Location getLocation() { static_asserts(underlyingElement(this), _, _, result) }
 }

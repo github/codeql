@@ -8,8 +8,8 @@ import semmle.code.cpp.Element
  */
 class PreprocessorDirective extends Locatable, @preprocdirect {
   override string toString() { result = "Preprocessor directive" }
-  override Location getLocation() { preprocdirects(unresolveElement(this),_,result) }
-  string getHead() { preproctext(unresolveElement(this),result,_) }
+  override Location getLocation() { preprocdirects(underlyingElement(this),_,result) }
+  string getHead() { preproctext(underlyingElement(this),result,_) }
 
   /**
    * Gets a preprocessor branching directive whose condition affects
@@ -49,7 +49,7 @@ abstract class PreprocessorBranchDirective extends PreprocessorDirective {
     result = (PreprocessorIf)this or
     result = (PreprocessorIfdef)this or
     result = (PreprocessorIfndef)this or
-    preprocpair(unresolveElement(result), unresolveElement(this))
+    preprocpair(unresolveElement(result), underlyingElement(this))
   }
 
   /**
@@ -106,7 +106,7 @@ class PreprocessorBranch extends PreprocessorBranchDirective, @ppd_branch {
    * condition and subsequently took the branch.
    */
   predicate wasTaken() {
-    preproctrue(unresolveElement(this))
+    preproctrue(underlyingElement(this))
   }
 
   /**
@@ -117,7 +117,7 @@ class PreprocessorBranch extends PreprocessorBranchDirective, @ppd_branch {
    * `#else` was taken instead.
    */
   predicate wasNotTaken() {
-    preprocfalse(unresolveElement(this))
+    preprocfalse(underlyingElement(this))
   }
 
   /**

@@ -102,20 +102,20 @@ class Parameter extends LocalScopeVariable, @parameter {
    * Gets the function to which this parameter belongs, if it is a function
    * parameter.
    */
-  override Function getFunction() { params(unresolveElement(this),unresolveElement(result),_,_) }
+  override Function getFunction() { params(underlyingElement(this),unresolveElement(result),_,_) }
 
   /**
    * Gets the catch block to which this parameter belongs, if it is a catch
    * block parameter.
    */
-  Block getCatchBlock() { params(unresolveElement(this),unresolveElement(result),_,_) }
+  Block getCatchBlock() { params(underlyingElement(this),unresolveElement(result),_,_) }
 
   /**
    * Gets the zero-based index of this parameter.
    *
    * For catch block parameters, this is always zero.
    */
-  int getIndex() { params(unresolveElement(this),_,result,_) }
+  int getIndex() { params(underlyingElement(this),_,result,_) }
 
   /**
    * Gets the type of this parameter.
@@ -124,7 +124,7 @@ class Parameter extends LocalScopeVariable, @parameter {
    * as they are syntactic sugar for parameters of pointer type. The
    * result is an array type for such parameters.
    */
-  override Type getType() { params(unresolveElement(this),_,_,unresolveElement(result)) }
+  override Type getType() { params(underlyingElement(this),_,_,unresolveElement(result)) }
 
   /**
    * Gets the canonical location, or locations, of this parameter.

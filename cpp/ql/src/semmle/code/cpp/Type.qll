@@ -46,7 +46,7 @@ class Type extends Locatable, @type {
   // inherits from both Type and Declaration and must override it to resolve
   // the ambiguity.
   Specifier getASpecifier() {
-    typespecifiers(unresolveElement(this),unresolveElement(result))
+    typespecifiers(underlyingElement(this),unresolveElement(result))
     or
     result = this.internal_getAnAdditionalSpecifier()
   }
@@ -54,7 +54,7 @@ class Type extends Locatable, @type {
   /**
    * Gets an attribute of this type.
    */
-  Attribute getAnAttribute() { typeattributes(unresolveElement(this),unresolveElement(result)) }
+  Attribute getAnAttribute() { typeattributes(underlyingElement(this),unresolveElement(result)) }
 
   /**
    * Internal -- should be `protected` when QL supports such a flag. Subtypes
@@ -98,7 +98,7 @@ class Type extends Locatable, @type {
    *
    * For example, starting with `const i64* const` in the context of `typedef long long i64;`, this predicate will return `long long*`.
    */
-  Type getUnspecifiedType() { unspecifiedtype(unresolveElement(this), unresolveElement(result)) }
+  Type getUnspecifiedType() { unspecifiedtype(underlyingElement(this), unresolveElement(result)) }
 
   /**
    * Gets this type after any top-level specifiers and typedefs have been stripped.
@@ -111,18 +111,18 @@ class Type extends Locatable, @type {
    * Gets the size of this type in bytes.
    */
   int getSize() {
-       builtintypes(unresolveElement(this), _, _, result, _, _)
-    or pointerishsize(unresolveElement(this), result, _)
-    or usertypesize(unresolveElement(this), result, _)
+       builtintypes(underlyingElement(this), _, _, result, _, _)
+    or pointerishsize(underlyingElement(this), result, _)
+    or usertypesize(underlyingElement(this), result, _)
   }
 
   /**
    * Gets the alignment of this type in bytes.
    */
   int getAlignment() {
-       builtintypes(unresolveElement(this), _, _, _, _, result)
-    or pointerishsize(unresolveElement(this), _, result)
-    or usertypesize(unresolveElement(this), _, result)
+       builtintypes(underlyingElement(this), _, _, _, _, result)
+    or pointerishsize(underlyingElement(this), _, result)
+    or usertypesize(underlyingElement(this), _, result)
   }
 
   /**
@@ -306,7 +306,7 @@ class Type extends Locatable, @type {
 class BuiltInType extends Type, @builtintype {
   override string toString() { result = this.getName() }
 
-  override string getName() { builtintypes(unresolveElement(this),result,_,_,_,_) }
+  override string getName() { builtintypes(underlyingElement(this),result,_,_,_,_) }
 
   override string explain() { result = this.getName() }
 
@@ -318,7 +318,7 @@ class BuiltInType extends Type, @builtintype {
  */
 class ErroneousType extends BuiltInType {
 
-  ErroneousType() { builtintypes(unresolveElement(this),_,1,_,_,_) }
+  ErroneousType() { builtintypes(underlyingElement(this),_,1,_,_,_) }
 
 }
 
@@ -327,7 +327,7 @@ class ErroneousType extends BuiltInType {
  */
 class UnknownType extends BuiltInType {
 
-  UnknownType() { builtintypes(unresolveElement(this),_,2,_,_,_) }
+  UnknownType() { builtintypes(underlyingElement(this),_,2,_,_,_) }
 
 }
 
@@ -342,7 +342,7 @@ private predicate isArithmeticType(@builtintype type, int kind) {
  */
 class ArithmeticType extends BuiltInType {
   ArithmeticType() {
-    isArithmeticType(unresolveElement(this), _)
+    isArithmeticType(underlyingElement(this), _)
   }
 }
 
@@ -357,14 +357,14 @@ class IntegralOrEnumType extends Type {
   IntegralOrEnumType() {
     // Integral type
     exists(int kind |
-      isArithmeticType(unresolveElement(this), kind) and
+      isArithmeticType(underlyingElement(this), kind) and
       (kind < 24 or kind = 33 or (35 <= kind and kind <= 37) or
         kind = 43 or kind = 44)
     ) or
     // Enum type
     (
-      usertypes(unresolveElement(this), _, 4) or
-      usertypes(unresolveElement(this), _, 13)
+      usertypes(underlyingElement(this), _, 4) or
+      usertypes(underlyingElement(this), _, 13)
     )
   }
 }
@@ -375,33 +375,33 @@ class IntegralOrEnumType extends Type {
 class IntegralType extends ArithmeticType, IntegralOrEnumType {
   /** Holds if this integral type is signed. */
   predicate isSigned() {
-    builtintypes(unresolveElement(this),_,_,_,-1,_)
+    builtintypes(underlyingElement(this),_,_,_,-1,_)
   }
 
   /** Holds if this integral type is unsigned. */
   predicate isUnsigned() {
-    builtintypes(unresolveElement(this),_,_,_,1,_)
+    builtintypes(underlyingElement(this),_,_,_,1,_)
   }
 
   /** Holds if this integral type is explicitly signed. */
   predicate isExplicitlySigned() {
-    builtintypes(unresolveElement(this),_,7,_,_,_) or builtintypes(unresolveElement(this),_,10,_,_,_) or builtintypes(unresolveElement(this),_,13,_,_,_) or
-    builtintypes(unresolveElement(this),_,16,_,_,_) or builtintypes(unresolveElement(this),_,19,_,_,_) or
-    builtintypes(unresolveElement(this),_,37,_,_,_)
+    builtintypes(underlyingElement(this),_,7,_,_,_) or builtintypes(underlyingElement(this),_,10,_,_,_) or builtintypes(underlyingElement(this),_,13,_,_,_) or
+    builtintypes(underlyingElement(this),_,16,_,_,_) or builtintypes(underlyingElement(this),_,19,_,_,_) or
+    builtintypes(underlyingElement(this),_,37,_,_,_)
   }
 
   /** Holds if this integral type is explicitly unsigned. */
   predicate isExplicitlyUnsigned() {
-    builtintypes(unresolveElement(this),_,6,_,_,_) or builtintypes(unresolveElement(this),_,9,_,_,_) or builtintypes(unresolveElement(this),_,12,_,_,_) or
-    builtintypes(unresolveElement(this),_,15,_,_,_) or builtintypes(unresolveElement(this),_,18,_,_,_) or
-    builtintypes(unresolveElement(this),_,36,_,_,_)
+    builtintypes(underlyingElement(this),_,6,_,_,_) or builtintypes(underlyingElement(this),_,9,_,_,_) or builtintypes(underlyingElement(this),_,12,_,_,_) or
+    builtintypes(underlyingElement(this),_,15,_,_,_) or builtintypes(underlyingElement(this),_,18,_,_,_) or
+    builtintypes(underlyingElement(this),_,36,_,_,_)
   }
 
   /** Holds if this integral type is implicitly signed. */
   predicate isImplicitlySigned() {
-    builtintypes(unresolveElement(this),_,5,_,-1,_) or builtintypes(unresolveElement(this),_,8,_,-1,_) or builtintypes(unresolveElement(this),_,11,_,-1,_) or
-    builtintypes(unresolveElement(this),_,14,_,-1,_) or builtintypes(unresolveElement(this),_,17,_,-1,_) or
-    builtintypes(unresolveElement(this),_,35,_,-1,_)
+    builtintypes(underlyingElement(this),_,5,_,-1,_) or builtintypes(underlyingElement(this),_,8,_,-1,_) or builtintypes(underlyingElement(this),_,11,_,-1,_) or
+    builtintypes(underlyingElement(this),_,14,_,-1,_) or builtintypes(underlyingElement(this),_,17,_,-1,_) or
+    builtintypes(underlyingElement(this),_,35,_,-1,_)
   }
 
   /**
@@ -409,12 +409,12 @@ class IntegralType extends ArithmeticType, IntegralOrEnumType {
    * example on a `short`, this would give the type `unsigned short`.
    */
   IntegralType getUnsigned() {
-       (builtintypes(unresolveElement(this),_, 5,_,_,_) or builtintypes(unresolveElement(this),_, 6,_,_,_) or builtintypes(unresolveElement(this),_, 7,_,_,_)) and builtintypes(unresolveElement(result),_, 6,_,_,_)
-    or (builtintypes(unresolveElement(this),_, 8,_,_,_) or builtintypes(unresolveElement(this),_, 9,_,_,_) or builtintypes(unresolveElement(this),_,10,_,_,_)) and builtintypes(unresolveElement(result),_, 9,_,_,_)
-    or (builtintypes(unresolveElement(this),_,11,_,_,_) or builtintypes(unresolveElement(this),_,12,_,_,_) or builtintypes(unresolveElement(this),_,13,_,_,_)) and builtintypes(unresolveElement(result),_,12,_,_,_)
-    or (builtintypes(unresolveElement(this),_,14,_,_,_) or builtintypes(unresolveElement(this),_,15,_,_,_) or builtintypes(unresolveElement(this),_,16,_,_,_)) and builtintypes(unresolveElement(result),_,15,_,_,_)
-    or (builtintypes(unresolveElement(this),_,17,_,_,_) or builtintypes(unresolveElement(this),_,18,_,_,_) or builtintypes(unresolveElement(this),_,19,_,_,_)) and builtintypes(unresolveElement(result),_,18,_,_,_)
-    or (builtintypes(unresolveElement(this),_,35,_,_,_) or builtintypes(unresolveElement(this),_,36,_,_,_) or builtintypes(unresolveElement(this),_,37,_,_,_)) and builtintypes(unresolveElement(result),_,36,_,_,_)
+       (builtintypes(underlyingElement(this),_, 5,_,_,_) or builtintypes(underlyingElement(this),_, 6,_,_,_) or builtintypes(underlyingElement(this),_, 7,_,_,_)) and builtintypes(unresolveElement(result),_, 6,_,_,_)
+    or (builtintypes(underlyingElement(this),_, 8,_,_,_) or builtintypes(underlyingElement(this),_, 9,_,_,_) or builtintypes(underlyingElement(this),_,10,_,_,_)) and builtintypes(unresolveElement(result),_, 9,_,_,_)
+    or (builtintypes(underlyingElement(this),_,11,_,_,_) or builtintypes(underlyingElement(this),_,12,_,_,_) or builtintypes(underlyingElement(this),_,13,_,_,_)) and builtintypes(unresolveElement(result),_,12,_,_,_)
+    or (builtintypes(underlyingElement(this),_,14,_,_,_) or builtintypes(underlyingElement(this),_,15,_,_,_) or builtintypes(underlyingElement(this),_,16,_,_,_)) and builtintypes(unresolveElement(result),_,15,_,_,_)
+    or (builtintypes(underlyingElement(this),_,17,_,_,_) or builtintypes(underlyingElement(this),_,18,_,_,_) or builtintypes(underlyingElement(this),_,19,_,_,_)) and builtintypes(unresolveElement(result),_,18,_,_,_)
+    or (builtintypes(underlyingElement(this),_,35,_,_,_) or builtintypes(underlyingElement(this),_,36,_,_,_) or builtintypes(underlyingElement(this),_,37,_,_,_)) and builtintypes(unresolveElement(result),_,36,_,_,_)
   }
 }
 
@@ -423,7 +423,7 @@ class IntegralType extends ArithmeticType, IntegralOrEnumType {
  */
 class BoolType extends IntegralType {
 
-  BoolType() { builtintypes(unresolveElement(this),_,4,_,_,_) }
+  BoolType() { builtintypes(underlyingElement(this),_,4,_,_,_) }
 
 }
 
@@ -437,7 +437,7 @@ abstract class CharType extends IntegralType { }
  */
 class PlainCharType extends CharType {
   PlainCharType() {
-    builtintypes(unresolveElement(this),_,5,_,_,_)
+    builtintypes(underlyingElement(this),_,5,_,_,_)
   }
 }
 
@@ -446,7 +446,7 @@ class PlainCharType extends CharType {
  */
 class UnsignedCharType extends CharType {
   UnsignedCharType() {
-    builtintypes(unresolveElement(this),_,6,_,_,_)
+    builtintypes(underlyingElement(this),_,6,_,_,_)
   }
 }
 
@@ -455,7 +455,7 @@ class UnsignedCharType extends CharType {
  */
 class SignedCharType extends CharType {
   SignedCharType() {
-    builtintypes(unresolveElement(this),_,7,_,_,_)
+    builtintypes(underlyingElement(this),_,7,_,_,_)
   }
 }
 
@@ -465,7 +465,7 @@ class SignedCharType extends CharType {
 class ShortType extends IntegralType {
 
   ShortType() {
-    builtintypes(unresolveElement(this),_,8,_,_,_) or builtintypes(unresolveElement(this),_,9,_,_,_) or builtintypes(unresolveElement(this),_,10,_,_,_)
+    builtintypes(underlyingElement(this),_,8,_,_,_) or builtintypes(underlyingElement(this),_,9,_,_,_) or builtintypes(underlyingElement(this),_,10,_,_,_)
   }
 
 }
@@ -476,7 +476,7 @@ class ShortType extends IntegralType {
 class IntType extends IntegralType {
 
   IntType() {
-    builtintypes(unresolveElement(this),_,11,_,_,_) or builtintypes(unresolveElement(this),_,12,_,_,_) or builtintypes(unresolveElement(this),_,13,_,_,_)
+    builtintypes(underlyingElement(this),_,11,_,_,_) or builtintypes(underlyingElement(this),_,12,_,_,_) or builtintypes(underlyingElement(this),_,13,_,_,_)
   }
 
 }
@@ -487,7 +487,7 @@ class IntType extends IntegralType {
 class LongType extends IntegralType {
 
   LongType() {
-    builtintypes(unresolveElement(this),_,14,_,_,_) or builtintypes(unresolveElement(this),_,15,_,_,_) or builtintypes(unresolveElement(this),_,16,_,_,_)
+    builtintypes(underlyingElement(this),_,14,_,_,_) or builtintypes(underlyingElement(this),_,15,_,_,_) or builtintypes(underlyingElement(this),_,16,_,_,_)
   }
 
 }
@@ -498,7 +498,7 @@ class LongType extends IntegralType {
 class LongLongType extends IntegralType {
 
   LongLongType() {
-    builtintypes(unresolveElement(this),_,17,_,_,_) or builtintypes(unresolveElement(this),_,18,_,_,_) or builtintypes(unresolveElement(this),_,19,_,_,_)
+    builtintypes(underlyingElement(this),_,17,_,_,_) or builtintypes(underlyingElement(this),_,18,_,_,_) or builtintypes(underlyingElement(this),_,19,_,_,_)
   }
 
 }
@@ -509,7 +509,7 @@ class LongLongType extends IntegralType {
 class Int128Type extends IntegralType {
 
   Int128Type() {
-    builtintypes(unresolveElement(this),_,35,_,_,_) or builtintypes(unresolveElement(this),_,36,_,_,_) or builtintypes(unresolveElement(this),_,37,_,_,_)
+    builtintypes(underlyingElement(this),_,35,_,_,_) or builtintypes(underlyingElement(this),_,36,_,_,_) or builtintypes(underlyingElement(this),_,37,_,_,_)
   }
 
 }
@@ -520,7 +520,7 @@ class Int128Type extends IntegralType {
 class FloatingPointType extends ArithmeticType {
 
   FloatingPointType() {
-    exists(int kind | builtintypes(unresolveElement(this),_,kind,_,_,_) and ((kind >= 24 and kind <= 32) or (kind = 38)))
+    exists(int kind | builtintypes(underlyingElement(this),_,kind,_,_,_) and ((kind >= 24 and kind <= 32) or (kind = 38)))
   }
 
 }
@@ -530,7 +530,7 @@ class FloatingPointType extends ArithmeticType {
  */
 class FloatType extends FloatingPointType {
 
-  FloatType() { builtintypes(unresolveElement(this),_,24,_,_,_) }
+  FloatType() { builtintypes(underlyingElement(this),_,24,_,_,_) }
 
 }
 
@@ -539,7 +539,7 @@ class FloatType extends FloatingPointType {
  */
 class DoubleType extends FloatingPointType {
 
-  DoubleType() { builtintypes(unresolveElement(this),_,25,_,_,_) }
+  DoubleType() { builtintypes(underlyingElement(this),_,25,_,_,_) }
 
 }
 
@@ -548,7 +548,7 @@ class DoubleType extends FloatingPointType {
  */
 class LongDoubleType extends FloatingPointType {
 
-  LongDoubleType() { builtintypes(unresolveElement(this),_,26,_,_,_) }
+  LongDoubleType() { builtintypes(underlyingElement(this),_,26,_,_,_) }
 
 }
 
@@ -557,7 +557,7 @@ class LongDoubleType extends FloatingPointType {
  */
 class Float128Type extends FloatingPointType {
 
-  Float128Type() { builtintypes(unresolveElement(this),_,38,_,_,_) }
+  Float128Type() { builtintypes(underlyingElement(this),_,38,_,_,_) }
 
 }
 
@@ -566,7 +566,7 @@ class Float128Type extends FloatingPointType {
  */
 class Decimal32Type extends FloatingPointType {
 
-  Decimal32Type() { builtintypes(unresolveElement(this),_,40,_,_,_) }
+  Decimal32Type() { builtintypes(underlyingElement(this),_,40,_,_,_) }
 
 }
 
@@ -575,7 +575,7 @@ class Decimal32Type extends FloatingPointType {
  */
 class Decimal64Type extends FloatingPointType {
 
-  Decimal64Type() { builtintypes(unresolveElement(this),_,41,_,_,_) }
+  Decimal64Type() { builtintypes(underlyingElement(this),_,41,_,_,_) }
 
 }
 
@@ -584,7 +584,7 @@ class Decimal64Type extends FloatingPointType {
  */
 class Decimal128Type extends FloatingPointType {
 
-  Decimal128Type() { builtintypes(unresolveElement(this),_,42,_,_,_) }
+  Decimal128Type() { builtintypes(underlyingElement(this),_,42,_,_,_) }
 
 }
 
@@ -593,7 +593,7 @@ class Decimal128Type extends FloatingPointType {
  */
 class VoidType extends BuiltInType {
 
-  VoidType() { builtintypes(unresolveElement(this),_,3,_,_,_) }
+  VoidType() { builtintypes(underlyingElement(this),_,3,_,_,_) }
 
 }
 
@@ -602,7 +602,7 @@ class VoidType extends BuiltInType {
  */
 class WideCharType extends IntegralType {
 
-  WideCharType() { builtintypes(unresolveElement(this),_,33,_,_,_) }
+  WideCharType() { builtintypes(underlyingElement(this),_,33,_,_,_) }
 
 }
 
@@ -611,7 +611,7 @@ class WideCharType extends IntegralType {
  */
 class Char16Type extends IntegralType {
 
-  Char16Type() { builtintypes(unresolveElement(this),_,43,_,_,_) }
+  Char16Type() { builtintypes(underlyingElement(this),_,43,_,_,_) }
 
 }
 
@@ -620,7 +620,7 @@ class Char16Type extends IntegralType {
  */
 class Char32Type extends IntegralType {
 
-  Char32Type() { builtintypes(unresolveElement(this),_,44,_,_,_) }
+  Char32Type() { builtintypes(underlyingElement(this),_,44,_,_,_) }
 
 }
 
@@ -634,7 +634,7 @@ class Char32Type extends IntegralType {
  * Instead, this is the unspeakable type given by `decltype(nullptr)`.
  */
 class NullPointerType extends BuiltInType {
-  NullPointerType() { builtintypes(unresolveElement(this),_,34,_,_,_) }
+  NullPointerType() { builtintypes(underlyingElement(this),_,34,_,_,_) }
 }
 
 /**
@@ -646,7 +646,7 @@ class NullPointerType extends BuiltInType {
 class DerivedType extends Type, @derivedtype {
   override string toString() { result = this.getName() }
 
-  override string getName() { derivedtypes(unresolveElement(this),result,_,_) }
+  override string getName() { derivedtypes(underlyingElement(this),result,_,_) }
 
   /**
    * Gets the base type of this derived type.
@@ -654,7 +654,7 @@ class DerivedType extends Type, @derivedtype {
    * This predicate strips off one level of decoration from a type. For example, it returns `char*` for the PointerType `char**`,
    * `const int` for the ReferenceType `const int&amp;`, and `long` for the SpecifiedType `volatile long`.
    */
-  Type getBaseType() { derivedtypes(unresolveElement(this),_,_,unresolveElement(result)) }
+  Type getBaseType() { derivedtypes(underlyingElement(this),_,_,unresolveElement(result)) }
 
   override predicate refersToDirectly(Type t) { t = this.getBaseType() }
 
@@ -700,14 +700,14 @@ class Decltype extends Type, @decltype {
    * The expression whose type is being obtained by this decltype.
    */
   Expr getExpr() {
-    decltypes(unresolveElement(this), unresolveElement(result), _, _)
+    decltypes(underlyingElement(this), unresolveElement(result), _, _)
   }
 
   /**
    * The type immediately yielded by this decltype.
    */
   Type getBaseType() {
-    decltypes(unresolveElement(this), _, unresolveElement(result), _)
+    decltypes(underlyingElement(this), _, unresolveElement(result), _)
   }
 
   /**
@@ -721,7 +721,7 @@ class Decltype extends Type, @decltype {
    * Consult the C++11 standard for more details.
    */
   predicate parenthesesWouldChangeMeaning() {
-    decltypes(unresolveElement(this), _, _, true)
+    decltypes(underlyingElement(this), _, _, true)
   }
 
   override Type getUnderlyingType() {
@@ -794,7 +794,7 @@ class Decltype extends Type, @decltype {
  */
 class PointerType extends DerivedType {
 
-  PointerType() { derivedtypes(unresolveElement(this),_,1,_) }
+  PointerType() { derivedtypes(underlyingElement(this),_,1,_) }
 
   override int getPointerIndirectionLevel() {
     result = 1 + this.getBaseType().getPointerIndirectionLevel()
@@ -817,7 +817,7 @@ class PointerType extends DerivedType {
  */
 class ReferenceType extends DerivedType {
 
-  ReferenceType() { derivedtypes(unresolveElement(this),_,2,_) or derivedtypes(unresolveElement(this),_,8,_) }
+  ReferenceType() { derivedtypes(underlyingElement(this),_,2,_) or derivedtypes(underlyingElement(this),_,8,_) }
 
   override int getPointerIndirectionLevel() {
     result = getBaseType().getPointerIndirectionLevel()
@@ -842,14 +842,14 @@ class ReferenceType extends DerivedType {
  * A C++11 lvalue reference type (e.g. int&amp;).
  */
 class LValueReferenceType extends ReferenceType {
-  LValueReferenceType() { derivedtypes(unresolveElement(this),_,2,_) }
+  LValueReferenceType() { derivedtypes(underlyingElement(this),_,2,_) }
 }
 
 /**
  * A C++11 rvalue reference type (e.g. int&amp;&amp;).
  */
 class RValueReferenceType extends ReferenceType {
-  RValueReferenceType() { derivedtypes(unresolveElement(this),_,8,_) }
+  RValueReferenceType() { derivedtypes(underlyingElement(this),_,8,_) }
 
   override string explain() { result = "rvalue " + super.explain() }
 }
@@ -859,7 +859,7 @@ class RValueReferenceType extends ReferenceType {
  */
 class SpecifiedType extends DerivedType {
 
-  SpecifiedType() { derivedtypes(unresolveElement(this),_,3,_) }
+  SpecifiedType() { derivedtypes(underlyingElement(this),_,3,_) }
 
   override int getSize() { result = this.getBaseType().getSize() }
 
@@ -901,14 +901,14 @@ class SpecifiedType extends DerivedType {
  */
 class ArrayType extends DerivedType {
 
-  ArrayType() { derivedtypes(unresolveElement(this),_,4,_) }
+  ArrayType() { derivedtypes(underlyingElement(this),_,4,_) }
 
-  predicate hasArraySize() { arraysizes(unresolveElement(this),_,_,_) }
-  int getArraySize() { arraysizes(unresolveElement(this),result,_,_) }
+  predicate hasArraySize() { arraysizes(underlyingElement(this),_,_,_) }
+  int getArraySize() { arraysizes(underlyingElement(this),result,_,_) }
 
-  int getByteSize() { arraysizes(unresolveElement(this),_,result,_) }
+  int getByteSize() { arraysizes(underlyingElement(this),_,result,_) }
 
-  override int getAlignment() { arraysizes(unresolveElement(this), _, _, result) }
+  override int getAlignment() { arraysizes(underlyingElement(this), _, _, result) }
 
   /**
    * Gets the size of this array (only valid for arrays declared to be of a constant
@@ -941,7 +941,7 @@ class ArrayType extends DerivedType {
  */
 class GNUVectorType extends DerivedType {
 
-  GNUVectorType() { derivedtypes(unresolveElement(this),_,5,_) }
+  GNUVectorType() { derivedtypes(underlyingElement(this),_,5,_) }
 
   /**
    * Get the number of elements in this vector type.
@@ -952,7 +952,7 @@ class GNUVectorType extends DerivedType {
    * the number of elements is the value in the attribute divided by the size
    * of a single element.
    */
-  int getNumElements() { arraysizes(unresolveElement(this),result,_,_) }
+  int getNumElements() { arraysizes(underlyingElement(this),result,_,_) }
 
   /**
    * Gets the size, in bytes, of this vector type.
@@ -963,9 +963,9 @@ class GNUVectorType extends DerivedType {
    * attribute, the byte size is the value in the attribute multiplied by the
    * byte size of a single element.
    */
-  override int getSize() { arraysizes(unresolveElement(this),_,result,_) }
+  override int getSize() { arraysizes(underlyingElement(this),_,result,_) }
 
-  override int getAlignment() { arraysizes(unresolveElement(this), _, _, result) }
+  override int getAlignment() { arraysizes(underlyingElement(this), _, _, result) }
 
   override string explain() { result = "GNU " + getNumElements() + " element vector of {" + this.getBaseType().explain() + "}" }
 
@@ -978,7 +978,7 @@ class GNUVectorType extends DerivedType {
  */
 class FunctionPointerType extends FunctionPointerIshType {
   FunctionPointerType() {
-    derivedtypes(unresolveElement(this),_,6,_)
+    derivedtypes(underlyingElement(this),_,6,_)
   }
 
   override int getPointerIndirectionLevel() {
@@ -993,7 +993,7 @@ class FunctionPointerType extends FunctionPointerIshType {
  */
 class FunctionReferenceType extends FunctionPointerIshType {
   FunctionReferenceType() {
-    derivedtypes(unresolveElement(this),_,7,_)
+    derivedtypes(underlyingElement(this),_,7,_)
   }
 
   override int getPointerIndirectionLevel() {
@@ -1011,7 +1011,7 @@ class FunctionReferenceType extends FunctionPointerIshType {
  */
 class BlockType extends FunctionPointerIshType {
   BlockType() {
-    derivedtypes(unresolveElement(this),_,10,_)
+    derivedtypes(underlyingElement(this),_,10,_)
   }
 
   override int getPointerIndirectionLevel() {
@@ -1026,24 +1026,24 @@ class BlockType extends FunctionPointerIshType {
  */
 class FunctionPointerIshType extends DerivedType {
   FunctionPointerIshType() {
-    derivedtypes(unresolveElement(this),_,6, _) or
-    derivedtypes(unresolveElement(this),_,7, _) or
-    derivedtypes(unresolveElement(this),_,10,_)
+    derivedtypes(underlyingElement(this),_,6, _) or
+    derivedtypes(underlyingElement(this),_,7, _) or
+    derivedtypes(underlyingElement(this),_,10,_)
   }
 
   /** the return type of this function pointer type */
   Type getReturnType() {
-    exists(RoutineType t | derivedtypes(unresolveElement(this),_,_,unresolveElement(t)) and result = t.getReturnType())
+    exists(RoutineType t | derivedtypes(underlyingElement(this),_,_,unresolveElement(t)) and result = t.getReturnType())
   }
 
   /** the type of the ith argument of this function pointer type */
   Type getParameterType(int i) {
-    exists(RoutineType t | derivedtypes(unresolveElement(this),_,_,unresolveElement(t)) and result = t.getParameterType(i))
+    exists(RoutineType t | derivedtypes(underlyingElement(this),_,_,unresolveElement(t)) and result = t.getParameterType(i))
   }
 
   /** the type of an argument of this function pointer type */
   Type getAParameterType() {
-    exists(RoutineType t | derivedtypes(unresolveElement(this),_,_,unresolveElement(t)) and result = t.getAParameterType())
+    exists(RoutineType t | derivedtypes(underlyingElement(this),_,_,unresolveElement(t)) and result = t.getAParameterType())
   }
 
   /** the number of arguments of this function pointer type */
@@ -1070,10 +1070,10 @@ class PointerToMemberType extends Type, @ptrtomember {
   override string getName() { result = "..:: *" }
 
   /** the base type of this pointer to member type */
-  Type getBaseType() { ptrtomembers(unresolveElement(this),unresolveElement(result),_) }
+  Type getBaseType() { ptrtomembers(underlyingElement(this),unresolveElement(result),_) }
 
   /** the class referred by this pointer to member type */
-  Type getClass() { ptrtomembers(unresolveElement(this),_,unresolveElement(result)) }
+  Type getClass() { ptrtomembers(underlyingElement(this),_,unresolveElement(result)) }
 
   override predicate refersToDirectly(Type t) {
     t = this.getBaseType() or
@@ -1102,11 +1102,11 @@ class RoutineType extends Type, @routinetype {
 
   override string getName() { result = "..()(..)" }
 
-  Type getParameterType(int n) { routinetypeargs(unresolveElement(this),n,unresolveElement(result)) }
+  Type getParameterType(int n) { routinetypeargs(underlyingElement(this),n,unresolveElement(result)) }
 
-  Type getAParameterType() { routinetypeargs(unresolveElement(this),_,unresolveElement(result)) }
+  Type getAParameterType() { routinetypeargs(underlyingElement(this),_,unresolveElement(result)) }
 
-  Type getReturnType() { routinetypes(unresolveElement(this), unresolveElement(result)) }
+  Type getReturnType() { routinetypes(underlyingElement(this), unresolveElement(result)) }
 
   override string explain() {
       result = "function returning {" + this.getReturnType().explain() +
@@ -1153,9 +1153,9 @@ class RoutineType extends Type, @routinetype {
  */
 class TemplateParameter extends UserType
 {
-  TemplateParameter() { usertypes(unresolveElement(this), _, 7) or usertypes(unresolveElement(this), _, 8) }
+  TemplateParameter() { usertypes(underlyingElement(this), _, 7) or usertypes(underlyingElement(this), _, 8) }
 
-  override string getName() { usertypes(unresolveElement(this), result, _) }
+  override string getName() { usertypes(underlyingElement(this), result, _) }
 
   override predicate involvesTemplateParameter() {
     any()
@@ -1166,7 +1166,7 @@ class TemplateParameter extends UserType
 class TemplateTemplateParameter extends TemplateParameter
 {
   TemplateTemplateParameter() {
-    usertypes(unresolveElement(this), _, 8)
+    usertypes(underlyingElement(this), _, 8)
   }
 }
 
@@ -1175,7 +1175,7 @@ class TemplateTemplateParameter extends TemplateParameter
  */
 class AutoType extends TemplateParameter
 {
-  AutoType() { usertypes(unresolveElement(this), "auto", 7) }
+  AutoType() { usertypes(underlyingElement(this), "auto", 7) }
 
   override Location getLocation() {
     suppressUnusedThis(this) and
@@ -1209,8 +1209,8 @@ class TypeMention extends Locatable, @type_mention {
   /**
    * Gets the type being referenced by this type mention.
    */
-  Type getMentionedType() { type_mentions(unresolveElement(this), unresolveElement(result), _, _) }
+  Type getMentionedType() { type_mentions(underlyingElement(this), unresolveElement(result), _, _) }
   
-  override Location getLocation() { type_mentions(unresolveElement(this), _, result, _)}
+  override Location getLocation() { type_mentions(underlyingElement(this), _, result, _)}
 }
 

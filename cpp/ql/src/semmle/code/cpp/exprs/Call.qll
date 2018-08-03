@@ -146,7 +146,7 @@ abstract class Call extends Expr, NameQualifiableElement {
  */
 class FunctionCall extends Call, @funbindexpr {
   FunctionCall() {
-    iscall(unresolveElement(this),_)
+    iscall(underlyingElement(this),_)
   }
 
   /** Gets an explicit template argument for this call. */
@@ -167,8 +167,8 @@ class FunctionCall extends Call, @funbindexpr {
 
   /** Gets the number of explicit template arguments for this call. */
   int getNumberOfExplicitTemplateArguments() {
-    if numtemplatearguments(unresolveElement(this),_) then
-      numtemplatearguments(unresolveElement(this),result)
+    if numtemplatearguments(underlyingElement(this),_) then
+      numtemplatearguments(underlyingElement(this),result)
     else
       result = 0
   }
@@ -193,7 +193,7 @@ class FunctionCall extends Call, @funbindexpr {
 
   /** Holds if a template argument list was provided for this call. */
   predicate hasTemplateArgumentList() {
-    numtemplatearguments(unresolveElement(this),_)
+    numtemplatearguments(underlyingElement(this),_)
   }
 
   /**
@@ -240,7 +240,7 @@ class FunctionCall extends Call, @funbindexpr {
    * In the case of virtual function calls, the result is the most-specific function in the override tree (as
    * determined by the compiler) such that the target at runtime will be one of result.getAnOverridingFunction*().
    */
-  override Function getTarget() { funbind(unresolveElement(this),unresolveElement(result)) }
+  override Function getTarget() { funbind(underlyingElement(this),unresolveElement(result)) }
  
   /**
    * Gets the type of this expression, that is, the return type of the function being called.
@@ -253,7 +253,7 @@ class FunctionCall extends Call, @funbindexpr {
    * Note that this holds even in cases where a sufficiently clever compiler could perform static dispatch.
    */
   predicate isVirtual() {
-    iscall(unresolveElement(this),1)
+    iscall(underlyingElement(this),1)
   }
 
   /**
@@ -261,7 +261,7 @@ class FunctionCall extends Call, @funbindexpr {
    * found by any other means.
    */
   predicate isOnlyFoundByADL() {
-    iscall(unresolveElement(this),2)
+    iscall(underlyingElement(this),2)
   }
 
   /** Gets a textual representation of this function call. */
@@ -477,7 +477,7 @@ class ConstructorDelegationInit extends ConstructorBaseInit, @ctordelegatinginit
  */
 class ConstructorFieldInit extends ConstructorInit, @ctorfieldinit {
   /** Gets the field being initialized. */
-  Field getTarget() { varbind(unresolveElement(this),unresolveElement(result)) }
+  Field getTarget() { varbind(underlyingElement(this),unresolveElement(result)) }
  
   /**
    * Gets the expression to which the field is initialized.
@@ -536,7 +536,7 @@ class DestructorVirtualDestruction extends DestructorBaseDestruction, @dtorvirtu
  */
 class DestructorFieldDestruction extends DestructorDestruction, @dtorfielddestruct {
   /** Gets the field being destructed. */
-  Field getTarget() { varbind(unresolveElement(this),unresolveElement(result)) }
+  Field getTarget() { varbind(underlyingElement(this),unresolveElement(result)) }
  
   /** Gets the compiler-generated call to the variable's destructor. */
   DestructorCall getExpr() { result = this.getChild(0) }

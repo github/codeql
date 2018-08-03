@@ -152,7 +152,7 @@ class ConditionDeclExpr extends Expr, @condition_decl {
   Expr getExpr() { result = this.getChild(0) }
 
   /** Gets the variable that is declared. */
-  Variable getVariable() { condition_decl_bind(unresolveElement(this),unresolveElement(result)) }
+  Variable getVariable() { condition_decl_bind(underlyingElement(this),unresolveElement(result)) }
 
   override string toString() { result = "(condition decl)" }
 }

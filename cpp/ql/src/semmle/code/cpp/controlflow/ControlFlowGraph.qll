@@ -29,7 +29,7 @@ private import semmle.code.cpp.controlflow.internal.ConstantExprs
  */
 class ControlFlowNode extends Locatable, @cfgnode {
 
-  ControlFlowNode getASuccessor() { successors_adapted(unresolveElement(this),unresolveElement(result)) }
+  ControlFlowNode getASuccessor() { successors_adapted(underlyingElement(this),unresolveElement(result)) }
 
   ControlFlowNode getAPredecessor() { this = result.getASuccessor() }
 
@@ -54,7 +54,7 @@ class ControlFlowNode extends Locatable, @cfgnode {
    * taken when this expression is true.
    */
   ControlFlowNode getATrueSuccessor() {
-    truecond(unresolveElement(this),unresolveElement(result)) and result = getASuccessor()
+    truecond(underlyingElement(this),unresolveElement(result)) and result = getASuccessor()
   }
 
   /**
@@ -62,7 +62,7 @@ class ControlFlowNode extends Locatable, @cfgnode {
    * taken when this expression is false.
    */
   ControlFlowNode getAFalseSuccessor() {
-    falsecond(unresolveElement(this),unresolveElement(result)) and result = getASuccessor()
+    falsecond(underlyingElement(this),unresolveElement(result)) and result = getASuccessor()
   }
 
   BasicBlock getBasicBlock() {

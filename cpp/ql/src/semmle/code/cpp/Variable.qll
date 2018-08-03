@@ -30,10 +30,10 @@ class Variable extends Declaration, @variable {
    * this variable, such as `const` and `volatile`, are instead accessed
    * through `this.getType().getASpecifier()`.
    */
-  override Specifier getASpecifier() { varspecifiers(unresolveElement(this),unresolveElement(result)) }
+  override Specifier getASpecifier() { varspecifiers(underlyingElement(this),unresolveElement(result)) }
 
   /** Gets an attribute of this variable. */
-  Attribute getAnAttribute() { varattributes(unresolveElement(this),unresolveElement(result)) }
+  Attribute getAnAttribute() { varattributes(underlyingElement(this),unresolveElement(result)) }
 
   /** Holds if this variable is `const`. */
   predicate isConst() { this.getType().isConst() }
@@ -67,13 +67,13 @@ class Variable extends Declaration, @variable {
    *
    *   `const auto& c = container;`
    */
-  Type getTypeWithAuto() { autoderivation(unresolveElement(this), unresolveElement(result)) }
+  Type getTypeWithAuto() { autoderivation(underlyingElement(this), unresolveElement(result)) }
 
   /**
    * Holds if the type of this variable is declared using the C++ `auto`
    * keyword.
    */
-  predicate declaredUsingAutoType() { autoderivation(unresolveElement(this), _) }
+  predicate declaredUsingAutoType() { autoderivation(underlyingElement(this), _) }
 
   override VariableDeclarationEntry getADeclarationEntry() {
     result.getDeclaration() = this
@@ -127,7 +127,7 @@ class Variable extends Declaration, @variable {
    * variable or from a variable nested in a template class.
    */
   predicate isConstructedFrom(Variable v) {
-    variable_instantiation(unresolveElement(this), unresolveElement(v))
+    variable_instantiation(underlyingElement(this), unresolveElement(v))
   }
 
   /**
@@ -143,7 +143,7 @@ class Variable extends Declaration, @variable {
    * template variable.
    */
   Type getTemplateArgument(int index) {
-    variable_template_argument(unresolveElement(this), index, unresolveElement(result))
+    variable_template_argument(underlyingElement(this), index, unresolveElement(result))
   }
 
   /**
@@ -154,7 +154,7 @@ class Variable extends Declaration, @variable {
    *
    *    `for (char c : str) { ... }`
    */
-  predicate isCompilerGenerated() { compgenerated(unresolveElement(this)) }
+  predicate isCompilerGenerated() { compgenerated(underlyingElement(this)) }
 }
 
 /**
@@ -166,7 +166,7 @@ class VariableDeclarationEntry extends DeclarationEntry, @var_decl {
   /**
    * Gets the variable which is being declared or defined.
    */
-  Variable getVariable() { var_decls(unresolveElement(this),unresolveElement(result),_,_,_) }
+  Variable getVariable() { var_decls(underlyingElement(this),unresolveElement(result),_,_,_) }
 
   /**
    * Gets the name, if any, used for the variable at this declaration or
@@ -185,14 +185,14 @@ class VariableDeclarationEntry extends DeclarationEntry, @var_decl {
    *    int f(int y) { return y; }
    *    ```
    */
-  override string getName() { var_decls(unresolveElement(this),_,_,result,_) and result != "" }
+  override string getName() { var_decls(underlyingElement(this),_,_,result,_) and result != "" }
 
   /**
    * Gets the type of the variable which is being declared or defined.
    */
-  override Type getType() { var_decls(unresolveElement(this),_,unresolveElement(result),_,_) }
+  override Type getType() { var_decls(underlyingElement(this),_,unresolveElement(result),_,_) }
 
-  override Location getLocation() { var_decls(unresolveElement(this),_,_,_,result) }
+  override Location getLocation() { var_decls(underlyingElement(this),_,_,_,result) }
 
   /**
    * Holds if this is a definition of a variable.
@@ -202,9 +202,9 @@ class VariableDeclarationEntry extends DeclarationEntry, @var_decl {
    * this holds precisely when the enclosing `FunctionDeclarationEntry` is
    * a definition.
    */
-  override predicate isDefinition() { var_def(unresolveElement(this)) }
+  override predicate isDefinition() { var_def(underlyingElement(this)) }
 
-  override string getASpecifier() { var_decl_specifiers(unresolveElement(this),result) }
+  override string getASpecifier() { var_decl_specifiers(underlyingElement(this),result) }
 }
 
 /**
@@ -212,20 +212,20 @@ class VariableDeclarationEntry extends DeclarationEntry, @var_decl {
  * of a C/C++ function.
  */
 class ParameterDeclarationEntry extends VariableDeclarationEntry {
-  ParameterDeclarationEntry() { param_decl_bind(unresolveElement(this),_,_) }
+  ParameterDeclarationEntry() { param_decl_bind(underlyingElement(this),_,_) }
 
   /**
    * Gets the function declaration or definition which this parameter
    * description is part of.
    */
   FunctionDeclarationEntry getFunctionDeclarationEntry() {
-    param_decl_bind(unresolveElement(this),_,unresolveElement(result))
+    param_decl_bind(underlyingElement(this),_,unresolveElement(result))
   }
 
   /**
    * Gets the zero-based index of this parameter.
    */
-  int getIndex() { param_decl_bind(unresolveElement(this),result,_) }
+  int getIndex() { param_decl_bind(underlyingElement(this),result,_) }
 
   override string toString() {
     if exists(getName())
@@ -286,9 +286,9 @@ deprecated class StackVariable extends Variable {
  * scope [N4140 3.3.3], but is not a function parameter.
  */
 class LocalVariable extends LocalScopeVariable, @localvariable {
-  override string getName() { localvariables(unresolveElement(this),_,result) }
+  override string getName() { localvariables(underlyingElement(this),_,result) }
 
-  override Type getType() { localvariables(unresolveElement(this),unresolveElement(result),_) }
+  override Type getType() { localvariables(underlyingElement(this),unresolveElement(result),_) }
 
   override Function getFunction() {
     exists(DeclStmt s | s.getADeclaration() = this and s.getEnclosingFunction() = result)
@@ -299,9 +299,9 @@ class LocalVariable extends LocalScopeVariable, @localvariable {
  * A C/C++ variable which has global scope or namespace scope.
  */
 class GlobalOrNamespaceVariable extends Variable, @globalvariable {
-  override string getName() { globalvariables(unresolveElement(this),_,result) }
+  override string getName() { globalvariables(underlyingElement(this),_,result) }
 
-  override Type getType() { globalvariables(unresolveElement(this),unresolveElement(result),_) }
+  override Type getType() { globalvariables(underlyingElement(this),unresolveElement(result),_) }
 
   override Element getEnclosingElement() { none() }
 }
@@ -311,7 +311,7 @@ class GlobalOrNamespaceVariable extends Variable, @globalvariable {
  */
 class NamespaceVariable extends GlobalOrNamespaceVariable {
   NamespaceVariable() {
-    exists(Namespace n | namespacembrs(unresolveElement(n), unresolveElement(this)))
+    exists(Namespace n | namespacembrs(unresolveElement(n), underlyingElement(this)))
   }
 }
 
@@ -348,7 +348,7 @@ class MemberVariable extends Variable, @membervariable {
   /** Holds if this member is public. */
   predicate isPublic() { this.hasSpecifier("public") }
 
-  override string getName() { membervariables(unresolveElement(this),_,result) }
+  override string getName() { membervariables(underlyingElement(this),_,result) }
 
   override Type getType() {
     if (strictcount(this.getAType()) = 1) then (
@@ -366,7 +366,7 @@ class MemberVariable extends Variable, @membervariable {
     getADeclarationEntry().hasSpecifier("mutable")
   }
 
-  private Type getAType() { membervariables(unresolveElement(this),unresolveElement(result),_) }
+  private Type getAType() { membervariables(underlyingElement(this),unresolveElement(result),_) }
 }
 
 /**
@@ -391,7 +391,7 @@ class FunctionPointerMemberVariable extends MemberVariable {
  * A C++14 variable template.
  */
 class TemplateVariable extends Variable {
-  TemplateVariable() { is_variable_template(unresolveElement(this)) }
+  TemplateVariable() { is_variable_template(underlyingElement(this)) }
   Variable getAnInstantiation() { result.isConstructedFrom(this) }
 }
 
