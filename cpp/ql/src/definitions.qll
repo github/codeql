@@ -186,7 +186,7 @@ Top definitionOf(Top e, string kind) {
       not exists(MacroInvocation mi, Location l1, Location l2 |
         l1 = e.(Include).getLocation() and
         l2 = mi.getLocation() and
-        l1.getFile() = l2.getFile() and
+        l1.getContainer() = l2.getContainer() and
         l1.getStartLine() = l2.getStartLine()
         // (an #include directive must be always on it's own line)
       )
