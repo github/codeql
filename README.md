@@ -4,7 +4,8 @@ This open source repository contains the standard QL libraries and queries that 
 
 ## How do I learn QL and run queries?
 
-LGTM has [extensive documentation](https://lgtm.com/help/ql/introduction-to-ql) on getting started writing QL, and also has an [interactive query console](https://lgtm.com/help/lgtm/using-query-console)  that allows you to try out your queries on any open-source project that's currently being analysed.
+LGTM has [extensive documentation](https://lgtm.com/help/ql/introduction-to-ql) on getting started with writing QL.
+You can use the [interactive query console](https://lgtm.com/help/lgtm/using-query-console) or the [QL for Eclipse](https://lgtm.com/help/lgtm/running-queries-ide) plugin to try out your queries on any open-source project that's currently being analysed.
 
 ## Contributing
 
