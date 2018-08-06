@@ -7,11 +7,15 @@
 Unused local variables make code hard to read and understand. Any computation used to initialize
 an unused variable is wasted, which may lead to performance problems.
 </p>
+<p>
+Similarly, unused imports and unused functions or classes can be confusing. They may even be
+a symptom of a bug caused, for example, by an incomplete refactoring.
+</p>
 
 </overview>
 <recommendation>
 
-<p>Remove the unused variable.</p>
+<p>Remove the unused program element.</p>
 
 </recommendation>
 <example>
