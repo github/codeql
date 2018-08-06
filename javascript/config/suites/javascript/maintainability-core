@@ -7,6 +7,5 @@
 + semmlecode-javascript-queries/LanguageFeatures/DeleteVar.ql: /Maintainability/Language Features
 + semmlecode-javascript-queries/LanguageFeatures/ExpressionClosures.ql: /Maintainability/Language Features
 + semmlecode-javascript-queries/LanguageFeatures/ForInComprehensionBlocks.ql: /Maintainability/Language Features
-+ semmlecode-javascript-queries/LanguageFeatures/HTMLComments.ql: /Maintainability/Language Features
 + semmlecode-javascript-queries/LanguageFeatures/YieldInNonGenerator.ql: /Maintainability/Language Features
 + semmlecode-javascript-queries/Performance/ReDoS.ql: /Maintainability/Performance
