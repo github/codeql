@@ -7,7 +7,7 @@
  * @metricAggregate avg max
  * @tags modularity
  *       maintainability
- * @deprecated
+ * @id cs/type-specialization-index
  */
 import csharp
 

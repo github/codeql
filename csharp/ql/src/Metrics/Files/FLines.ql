@@ -5,7 +5,7 @@
  * @treemap.warnOn highValues
  * @metricType file
  * @metricAggregate avg sum max
- * @deprecated
+ * @id cs/lines-per-file
  */
 import csharp
 

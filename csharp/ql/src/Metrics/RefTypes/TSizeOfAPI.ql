@@ -7,7 +7,7 @@
  * @metricAggregate avg sum max
  * @tags testability
  *       modularity
- * @deprecated
+ * @id cs/public-functions-per-type
  */
 import csharp
 

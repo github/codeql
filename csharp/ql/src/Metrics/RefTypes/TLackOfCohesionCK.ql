@@ -7,7 +7,7 @@
  * @metricAggregate avg max
  * @tags modularity
  *       maintainability
- * @deprecated
+ * @id cs/lack-of-cohesion-ck
  */
 import csharp
 

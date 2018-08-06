@@ -7,7 +7,7 @@
  * @metricAggregate avg max
  * @tags changeability
  *       modularity
- * @deprecated
+ * @id cs/incoming-type-dependencies
  */
 import csharp
 

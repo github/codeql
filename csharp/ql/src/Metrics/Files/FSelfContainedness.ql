@@ -7,7 +7,7 @@
  * @metricAggregate avg max
  * @tags portability
  *       modularity
- * @deprecated
+ * @id cs/source-dependency-ratio-per-file
  */
 import csharp
 import semmle.code.csharp.metrics.Coupling

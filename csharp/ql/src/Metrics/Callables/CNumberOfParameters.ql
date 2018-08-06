@@ -8,7 +8,7 @@
  * @tags testability
  *       complexity
  *       maintainability
- * @deprecated
+ * @id cs/parameters-per-function
  */
 import csharp
 

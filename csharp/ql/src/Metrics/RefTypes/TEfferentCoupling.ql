@@ -8,7 +8,7 @@
  * @tags testability
  *       modularity
  *       maintainability
- * @deprecated
+ * @id cs/outgoing-type-dependencies
  */
 import csharp
 

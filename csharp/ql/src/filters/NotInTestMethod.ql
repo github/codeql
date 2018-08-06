@@ -2,7 +2,7 @@
  * @name Filter: only keep results that are outside of test methods
  * @description Exclude results in test methods.
  * @kind problem
- * @deprecated
+ * @id cs/test-method-filter
  */
 import csharp
 import semmle.code.csharp.frameworks.Test

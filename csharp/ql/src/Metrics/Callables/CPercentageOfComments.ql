@@ -7,7 +7,7 @@
  * @metricAggregate avg max
  * @tags maintainability
  *       documentation
- * @deprecated
+ * @id cs/comment-ratio-per-type
  */
 import csharp
 

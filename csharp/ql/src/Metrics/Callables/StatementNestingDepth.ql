@@ -7,7 +7,7 @@
  * @metricAggregate avg max
  * @tags maintainability
  *       complexity
- * @deprecated
+ * @id cs/statement-nesting-depth-per-function
  */
 import csharp
 
