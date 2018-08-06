@@ -60,3 +60,6 @@ app2.get('/:path', bruteforce.prevent, expensiveHandler1); // OK
 var app3 = express();
 var limiter = require('express-limiter')(app3);
 app3.get('/:path', expensiveHandler1); // OK
+
+express().get('/:path', function(req, res) { verifyUser(req); });  // NOT OK
+express().get('/:path', RateLimit(), function(req, res) { verifyUser(req); });  // OK
