@@ -1,3 +1,4 @@
+| TaintedPath-es6.js:10:26:10:45 | join("public", path) | This path depends on $@. | TaintedPath-es6.js:7:20:7:26 | req.url | a user-provided value |
 | TaintedPath.js:12:29:12:32 | path | This path depends on $@. | TaintedPath.js:9:24:9:30 | req.url | a user-provided value |
 | TaintedPath.js:15:29:15:48 | "/home/user/" + path | This path depends on $@. | TaintedPath.js:9:24:9:30 | req.url | a user-provided value |
 | TaintedPath.js:19:33:19:36 | path | This path depends on $@. | TaintedPath.js:9:24:9:30 | req.url | a user-provided value |

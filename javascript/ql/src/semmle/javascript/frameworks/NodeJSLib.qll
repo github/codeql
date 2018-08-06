@@ -17,13 +17,18 @@ module NodeJSLib {
   }
 
   /**
+   * Gets a reference to a member of the 'process' object.
+   */
+  private DataFlow::SourceNode processMember(string member) {
+    result = process().getAPropertyRead(member) or
+    result = DataFlow::moduleMember("process", member)
+  }
+
+  /**
    * Holds if `call` is an invocation of `http.createServer` or `https.createServer`.
    */
   predicate isCreateServer(CallExpr call) {
-    exists (string name |
-      name = "http" or name = "https" |
-      call = DataFlow::moduleMember(name, "createServer").getAnInvocation().asExpr()
-    )
+    call = DataFlow::moduleMember(HTTP::httpOrHttps(), "createServer").getAnInvocation().asExpr()
   }
 
   /**
@@ -234,30 +239,27 @@ module NodeJSLib {
   /**
    * A call to a path-module method that preserves taint.
    */
-  private class PathFlowTarget extends TaintTracking::AdditionalTaintStep, DataFlow::ValueNode {
-    override CallExpr astNode;
-    Expr tainted;
+  private class PathFlowTarget extends TaintTracking::AdditionalTaintStep, DataFlow::CallNode {
+    DataFlow::Node tainted;
 
     PathFlowTarget() {
-      exists (DataFlow::ModuleImportNode pathModule, string methodName |
-        pathModule.getPath() = "path" and
-        this = pathModule.getAMemberCall(methodName) |
+      exists (string methodName | this = DataFlow::moduleMember("path", methodName).getACall() |
         // getters
-        (methodName = "basename" and tainted = astNode.getArgument(0)) or
-        (methodName = "dirname" and tainted = astNode.getArgument(0)) or
-        (methodName = "extname" and tainted = astNode.getArgument(0)) or
+        (methodName = "basename" and tainted = getArgument(0)) or
+        (methodName = "dirname" and tainted = getArgument(0)) or
+        (methodName = "extname" and tainted = getArgument(0)) or
 
         // transformers
-        (methodName = "join" and tainted = astNode.getAnArgument()) or
-        (methodName = "normalize" and tainted = astNode.getArgument(0)) or
-        (methodName = "relative" and tainted = astNode.getArgument([0..1])) or
-        (methodName = "resolve" and tainted = astNode.getAnArgument()) or
-        (methodName = "toNamespacedPath" and tainted = astNode.getArgument(0))
+        (methodName = "join" and tainted = getAnArgument()) or
+        (methodName = "normalize" and tainted = getArgument(0)) or
+        (methodName = "relative" and tainted = getArgument([0..1])) or
+        (methodName = "resolve" and tainted = getAnArgument()) or
+        (methodName = "toNamespacedPath" and tainted = getArgument(0))
       )
     }
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred.asExpr() = tainted and succ = this
+      pred = tainted and succ = this
     }
 
   }
@@ -294,13 +296,7 @@ module NodeJSLib {
   class Credentials extends CredentialsExpr {
 
     Credentials() {
-      exists (CallExpr call |
-        exists (DataFlow::ModuleImportNode http |
-          http.getPath() = "http" or http.getPath() = "https" |
-          call = http.getAMemberCall("request").asExpr()
-        ) and
-        call.hasOptionArgument(0, "auth", this)
-      )
+      this = DataFlow::moduleMember(HTTP::httpOrHttps(), "request").getACall().getOptionArgument(0, "auth").asExpr()
     }
 
     override string getCredentialsKind() {
@@ -318,7 +314,7 @@ module NodeJSLib {
     ProcessTermination() {
       this = DataFlow::moduleImport("exit").getAnInvocation()
       or
-      this = process().getAMemberCall("exit")
+      this = processMember("exit").getACall()
     }
 
   }
@@ -344,19 +340,18 @@ module NodeJSLib {
   /**
    * A call to a method from module `fs` or `graceful-fs`.
    */
-  private class NodeJSFileSystemAccess extends FileSystemAccess, DataFlow::ValueNode {
-    override MethodCallExpr astNode;
+  private class NodeJSFileSystemAccess extends FileSystemAccess, DataFlow::CallNode {
+    string methodName;
 
     NodeJSFileSystemAccess() {
-      exists (DataFlow::ModuleImportNode fs |
-        fs.getPath() = "fs" or fs.getPath() = "graceful-fs" |
-        this = fs.getAMemberCall(_)
+      exists (string moduleName | this = DataFlow::moduleMember(moduleName, methodName).getACall() |
+        moduleName = "fs" or moduleName = "graceful-fs"
       )
     }
 
     override DataFlow::Node getAPathArgument() {
-      exists (int i | fsFileParam(astNode.getMethodName(), i) |
-        result = DataFlow::valueNode(astNode.getArgument(i))
+      exists (int i | fsFileParam(methodName, i) |
+        result = getArgument(i)
       )
     }
   }

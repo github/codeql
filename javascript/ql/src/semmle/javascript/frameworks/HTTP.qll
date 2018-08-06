@@ -126,6 +126,13 @@ module HTTP {
   }
 
   /**
+   * Gets the string `http` or `https`.
+   */
+  string httpOrHttps() {
+    result = "http" or result = "https"
+  }
+
+  /**
    * An expression whose value is sent as (part of) the body of an HTTP response.
    */
   abstract class ResponseBody extends Expr {
