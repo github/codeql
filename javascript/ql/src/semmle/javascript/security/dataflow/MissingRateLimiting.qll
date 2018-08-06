@@ -131,7 +131,7 @@ abstract class RateLimiter extends Express::RouteHandlerExpr {
  */
 class ExpressRateLimit extends RateLimiter {
   ExpressRateLimit() {
-    DataFlow::moduleImport("express-rate-limit").getAnInstantiation().flowsToExpr(this)
+    DataFlow::moduleImport("express-rate-limit").getAnInvocation().flowsToExpr(this)
   }
 }
 
