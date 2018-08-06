@@ -1,5 +1,5 @@
 import javascript
 
 from DataFlow::Node n
-where n = url::url()
+where n = url::urlMember(_)
 select n

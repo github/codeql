@@ -1,5 +1,5 @@
 import javascript
 
 from DataFlow::Node n
-where n = querystringify::querystringify()
+where n = querystringify::querystringifyMember(_)
 select n

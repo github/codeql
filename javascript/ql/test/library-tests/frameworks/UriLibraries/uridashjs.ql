@@ -1,5 +1,5 @@
 import javascript
 
 from DataFlow::Node n
-where n = uridashjs::uridashjs()
+where n = uridashjs::uridashjsMember(_)
 select n
