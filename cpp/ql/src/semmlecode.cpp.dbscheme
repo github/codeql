@@ -543,19 +543,60 @@ enumconstants(
 @localscopevariable = @localvariable | @parameter;
 
 /*
-  Built-in types are the fundamental types, i.e., integral, floating, and void.
-  kind(1) = error, kind(2) = unknown, kind(3) = void, kind(4) = boolean,
-  kind(5) = char, kind(6) = unsigned char, kind(7) = signed char
-  kind(8) = short, kind(9) = unsigned short, kind(10) = signed short
-  kind(11) = int, kind(12) = unsigned int, kind(13) = signed int,
-  kind(14) = long, kind(15) = unsigned long, kind(16) = signed long,
-  kind(17) = long long, kind(18) = unsigned long long, kind(19) = signed long long,
-  kind(20) = __int8, kind(21) = __int16, kind(22) = __int32, kind(23) = __int64, // Microsoft specific
-  kind(24) = float, kind(25) = double, kind(26) = long double,
-  kind(27) = _Complex float, kind(28) = _Complex double, kind(29) = _Complex long double, //C99 specific
-  kind(30) = _Imaginary float, kind(31) = _Imaginary double, kind(32) = _Imaginary long double, //C99 specific
-  kind(33) = wchar_t, // MS specific
-  kind(34) = decltype(nullptr), // C++11
+  Built-in types are the fundamental types, e.g., integral, floating, and void.
+
+  case @builtintype.kind of
+    1 = error
+  | 2 = unknown
+  | 3 = void
+  | 4 = boolean
+  | 5 = char
+  | 6 = unsigned_char
+  | 7 = signed_char
+  | 8 = short
+  | 9 = unsigned_short
+  | 10 = signed_short
+  | 11 = int
+  | 12 = unsigned_int
+  | 13 = signed_int
+  | 14 = long
+  | 15 = unsigned_long
+  | 16 = signed_long
+  | 17 = long_long
+  | 18 = unsigned_long_long
+  | 19 = signed_long_long
+  | 20 = __int8                 // Microsoft-specific
+  | 21 = __int16                // Microsoft-specific
+  | 22 = __int32                // Microsoft-specific
+  | 23 = __int64                // Microsoft-specific
+  | 24 = float
+  | 25 = double
+  | 26 = long_double
+  | 27 = _Complex_float         // C99-specific
+  | 28 = _Complex_double        // C99-specific
+  | 29 = _Complex_long double   // C99-specific
+  | 30 = _Imaginary_float       // C99-specific
+  | 31 = _Imaginary_double      // C99-specific
+  | 32 = _Imaginary_long_double // C99-specific
+  | 33 = wchar_t                // Microsoft-specific
+  | 34 = decltype_nullptr       // C++11
+  | 35 = __int128
+  | 36 = unsigned___int128
+  | 37 = signed___int128
+  | 38 = __float128
+  | 39 = _Complex___float128
+  | 40 = _Decimal32
+  | 41 = _Decimal64
+  | 42 = _Decimal128
+  | 43 = char16_t
+  | 44 = char32_t
+  | 45 = _Float32
+  | 46 = _Float32x
+  | 47 = _Float64
+  | 48 = _Float64x
+  | 49 = _Float128
+  | 50 = _Float128x
+  ;
 */
 builtintypes(
     unique int id: @builtintype,
