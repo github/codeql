@@ -308,7 +308,8 @@ class ExportNamedDeclaration extends ExportDeclaration, @exportnameddeclaration 
       result = op.(NamespaceDeclaration).getId() or
       result = op.(EnumDeclaration).getIdentifier() or
       result = op.(InterfaceDeclaration).getIdentifier() or
-      result = op.(TypeAliasDeclaration).getIdentifier()
+      result = op.(TypeAliasDeclaration).getIdentifier() or
+      result = op.(ImportEqualsDeclaration).getId()
     )
   }
 

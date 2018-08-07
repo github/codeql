@@ -43,8 +43,8 @@ private predicate defn(ControlFlowNode def, Expr lhs, AST::ValueNode rhs) {
   exists (EnumDeclaration ed | def = ed.getIdentifier() |
     lhs = def and rhs = ed
   ) or
-  exists (ImportEqualsDeclaration i | def = i.getId() |
-    lhs = def and rhs = i.getImportedEntity()
+  exists (ImportEqualsDeclaration i | def = i |
+    lhs = i.getId() and rhs = i.getImportedEntity()
   ) or
   exists (EnumMember member | def = member.getIdentifier() |
     lhs = def and rhs = member.getInitializer()
