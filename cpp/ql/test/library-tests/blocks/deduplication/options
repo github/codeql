@@ -1,1 +1,1 @@
-extractor_flags: -fblocks
+semmle-extractor-options: -fblocks

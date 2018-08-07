@@ -1,1 +1,1 @@
-extractor_flags = --microsoft
+semmle-extractor-options: --microsoft

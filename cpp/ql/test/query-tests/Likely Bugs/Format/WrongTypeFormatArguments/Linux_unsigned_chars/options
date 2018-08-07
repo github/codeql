@@ -1,1 +1,1 @@
-extractor_flags: --edg --unsigned_chars
+semmle-extractor-options: --edg --unsigned_chars

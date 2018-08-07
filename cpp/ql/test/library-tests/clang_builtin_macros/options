@@ -1,1 +1,1 @@
-extractor_flags: --edg --clang
+semmle-extractor-options: --edg --clang

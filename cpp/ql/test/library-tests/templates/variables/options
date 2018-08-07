@@ -1,1 +1,1 @@
-extractor_flags: -std=c++14
+semmle-extractor-options: -std=c++14
