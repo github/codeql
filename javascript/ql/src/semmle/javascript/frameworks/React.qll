@@ -192,10 +192,8 @@ abstract class ReactComponent extends ASTNode {
    * constructor of this component.
    */
   DataFlow::SourceNode getACandidatePropsSource() {
-    exists (DataFlow::InvokeNode call |
-      getComponentCreatorSource().flowsTo(call.getCallee()) and
-      result.flowsTo(call.getArgument(0))
-    ) or
+    result.flowsTo(getComponentCreatorSource().getAnInvocation().getArgument(0))
+    or
     result = getADefaultPropsSource()
   }
 

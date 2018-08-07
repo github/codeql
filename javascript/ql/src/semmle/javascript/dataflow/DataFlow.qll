@@ -29,6 +29,9 @@ module DataFlow {
   or TDestructuringPatternNode(DestructuringPattern dp)
   or TElementPatternNode(ArrayPattern ap, Expr p) { p = ap.getElement(_) }
   or TElementNode(ArrayExpr arr, Expr e) { e = arr.getAnElement() }
+  or TReflectiveCallNode(MethodCallExpr ce, string kind) {
+       ce.getMethodName() = kind and (kind = "call" or kind = "apply")
+     }
 
   /**
    * A node in the data flow graph.
@@ -367,6 +370,30 @@ module DataFlow {
   }
 
   /**
+   * A node in the data flow graph which corresponds to the reflective call performed
+   * by a `.call` or `.apply` invocation.
+   */
+  private class ReflectiveCallNode extends Node, TReflectiveCallNode {
+    MethodCallExpr call;
+    string kind;
+
+    ReflectiveCallNode() { this = TReflectiveCallNode(call, kind) }
+
+    override BasicBlock getBasicBlock() {
+      result = call.getBasicBlock()
+    }
+
+    override predicate hasLocationInfo(string filepath, int startline, int startcolumn,
+                                       int endline, int endcolumn) {
+      call.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+
+    override string toString() {
+      result = "reflective call"
+    }
+  }
+
+  /**
    * A data flow node that reads or writes an object property or class member.
    *
    * The default subclasses do not model global variable references or variable
@@ -641,6 +668,146 @@ module DataFlow {
     override Expr getPropertyNameExpr() { none() }
 
     override string getPropertyName() { none() }
+  }
+
+  /**
+   * Provides classes representing various kinds of calls.
+   *
+   * Subclass the classes in this module to introduce new kinds of calls. If you want to
+   * refine the behaviour of the analysis on existing kinds of calls, subclass `InvokeNode`
+   * instead.
+   */
+  module Impl {
+    /**
+     * A data flow node representing a function invocation, either explicitly or reflectively,
+     * and either with or without `new`.
+     */
+    abstract class InvokeNodeDef extends DataFlow::Node {
+      /** Gets the name of the function or method being invoked, if it can be determined. */
+      abstract string getCalleeName();
+
+      /** Gets the data flow node specifying the function to be called. */
+      abstract DataFlow::Node getCalleeNode();
+
+      /** Gets the data flow node corresponding to the `i`th argument of this invocation. */
+      abstract DataFlow::Node getArgument(int i);
+
+      /** Gets the data flow node corresponding to an argument of this invocation. */
+      abstract DataFlow::Node getAnArgument();
+
+      /** Gets the number of arguments of this invocation, if it can be determined. */
+      abstract int getNumArgument();
+    }
+
+    /**
+     * A data flow node representing a function call without `new`, either explicitly or
+     * reflectively.
+     */
+    abstract class CallNodeDef extends InvokeNodeDef {
+      /** Gets the data flow node corresponding to the receiver of this call, if any. */
+      DataFlow::Node getReceiver() { none() }
+    }
+
+    /**
+     * A data flow node representing a method call.
+     */
+    abstract class MethodCallNodeDef extends CallNodeDef {
+      /** Gets the name of the method being invoked, if it can be determined. */
+      abstract string getMethodName();
+    }
+
+    /**
+     * A data flow node representing a function invocation with `new`.
+     */
+    abstract class NewNodeDef extends InvokeNodeDef {
+    }
+
+    /**
+     * A data flow node representing an explicit (that is, non-reflective) function invocation.
+     */
+    class ExplicitInvokeNode extends InvokeNodeDef, DataFlow::ValueNode {
+      override InvokeExpr astNode;
+
+      override string getCalleeName() {
+        result = astNode.getCalleeName()
+      }
+
+      override DataFlow::Node getCalleeNode() {
+        result = DataFlow::valueNode(astNode.getCallee())
+      }
+
+      override DataFlow::Node getArgument(int i) {
+        not astNode.isSpreadArgument([0..i]) and result = DataFlow::valueNode(astNode.getArgument(i))
+      }
+
+      override DataFlow::Node getAnArgument() {
+        exists (Expr arg | arg = astNode.getAnArgument() |
+          not arg instanceof SpreadElement and
+          result = DataFlow::valueNode(arg)
+        )
+      }
+
+      override int getNumArgument() {
+        not astNode.isSpreadArgument(_) and result = astNode.getNumArgument()
+      }
+    }
+
+    /**
+     * A data flow node representing an explicit (that is, non-reflective) function call.
+     */
+    private class ExplicitCallNode extends CallNodeDef, ExplicitInvokeNode {
+      override CallExpr astNode;
+    }
+
+    /**
+     * A data flow node representing an explicit (that is, non-reflective) method call.
+     */
+    private class ExplicitMethodCallNode extends MethodCallNodeDef, ExplicitCallNode {
+      override MethodCallExpr astNode;
+      override DataFlow::Node getReceiver() { result = DataFlow::valueNode(astNode.getReceiver()) }
+      override string getMethodName() { result = astNode.getMethodName() }
+    }
+
+    /**
+     * A data flow node representing a `new` expression.
+     */
+    private class ExplicitNewNode extends NewNodeDef, ExplicitInvokeNode {
+      override NewExpr astNode;
+    }
+
+    /**
+     * A data flow node representing a reflective function call.
+     */
+    private class ReflectiveCallNodeDef extends CallNodeDef {
+      ExplicitMethodCallNode originalCall;
+      string kind;
+
+      ReflectiveCallNodeDef() {
+        this = TReflectiveCallNode(originalCall.asExpr(), kind)
+      }
+
+      override string getCalleeName() { none() }
+
+      override DataFlow::Node getCalleeNode() {
+        result = originalCall.getReceiver()
+      }
+
+      override DataFlow::Node getReceiver() {
+        result = originalCall.getArgument(0)
+      }
+
+      override DataFlow::Node getArgument(int i) {
+        i >= 0 and kind = "call" and result = originalCall.getArgument(i+1)
+      }
+
+      override DataFlow::Node getAnArgument() {
+        kind = "call" and result = originalCall.getAnArgument() and result != getReceiver()
+      }
+
+      override int getNumArgument() {
+        result >= 0 and kind = "call" and result = originalCall.getNumArgument()-1
+      }
+    }
   }
 
   /**

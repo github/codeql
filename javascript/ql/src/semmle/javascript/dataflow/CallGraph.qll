@@ -6,11 +6,13 @@ import javascript
 private import InferredTypes
 
 /**
+ * DEPRECATED: Use `DataFlow::InvokeNode` instead.
+ *
  * A function call or `new` expression, with information about its potential callees.
  *
  * Both direct calls and reflective calls using `call` or `apply` are modelled.
  */
-class CallSite extends @invokeexpr {
+deprecated class CallSite extends @invokeexpr {
   InvokeExpr invk;
 
   CallSite() { invk = this }
@@ -120,7 +122,7 @@ class CallSite extends @invokeexpr {
 /**
  * A reflective function call using `call` or `apply`.
  */
-class ReflectiveCallSite extends CallSite {
+deprecated class ReflectiveCallSite extends CallSite {
   DataFlow::AnalyzedNode callee;
   string callMode;
 

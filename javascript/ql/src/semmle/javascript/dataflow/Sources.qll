@@ -125,7 +125,7 @@ abstract class SourceNode extends DataFlow::Node {
    */
   DataFlow::CallNode getAMethodCall(string methodName) {
     exists (PropAccess pacc |
-      pacc = result.getCallee().asExpr().stripParens() and
+      pacc = result.getCalleeNode().asExpr().stripParens() and
       flowsToExpr(pacc.getBase()) and
       pacc.getPropertyName() = methodName
     )
@@ -142,7 +142,7 @@ abstract class SourceNode extends DataFlow::Node {
    * Gets an invocation (with our without `new`) of this node.
    */
   DataFlow::InvokeNode getAnInvocation() {
-    flowsTo(result.getCallee())
+    flowsTo(result.getCalleeNode())
   }
 
   /**
@@ -182,7 +182,6 @@ class DefaultSourceNode extends SourceNode {
       astNode instanceof PropAccess or
       astNode instanceof Function or
       astNode instanceof ClassDefinition or
-      astNode instanceof InvokeExpr or
       astNode instanceof ObjectExpr or
       astNode instanceof ArrayExpr or
       astNode instanceof JSXNode or
@@ -197,5 +196,7 @@ class DefaultSourceNode extends SourceNode {
     )
     or
     DataFlow::parameterNode(this, _)
+    or
+    this instanceof DataFlow::Impl::InvokeNodeDef
   }
 }

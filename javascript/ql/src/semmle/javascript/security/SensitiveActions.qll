@@ -140,7 +140,7 @@ abstract class SensitiveAction extends DataFlow::Node { }
 class AuthorizationCall extends SensitiveAction, DataFlow::CallNode {
 
   AuthorizationCall() {
-    exists(string s | s = astNode.getCalleeName() |
+    exists(string s | s = getCalleeName() |
       // name contains `login` or `auth`, but not as part of `loginfo` or `unauth`;
       // also exclude `author`
       s.regexpMatch("(?i).*(login(?!fo)|(?<!un)auth(?!or\\b)).*") and

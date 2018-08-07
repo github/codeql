@@ -13,3 +13,5 @@ var o = {
 };
 
 otherglobal(x); // NOT OK: can never refer to function on line 12
+otherglobal.call(null, x); // NOT OK
+otherglobal.call(null, x, y); // NOT OK
