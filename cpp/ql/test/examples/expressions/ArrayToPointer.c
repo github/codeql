@@ -2,7 +2,7 @@ struct S {
 	char* name;
 };
 
-void v()
+void ArrayToPointer()
 {
   char c[] = "hello";
   struct S s;

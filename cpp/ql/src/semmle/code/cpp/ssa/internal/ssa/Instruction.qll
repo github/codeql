@@ -90,8 +90,132 @@ class Instruction extends Construction::TInstruction {
     this = Construction::MkInstruction(funcIR, opcode, ast, instructionTag, resultType, glvalue)
   }
 
-  string toString() {
-    result = opcode.toString()
+  final string toString() {
+    result = getResultString() + " = " + getOperationString() + " " + getOperandsString()
+  }
+
+  /**
+   * Gets a string describing the operation of this instruction. This includes
+   * the opcode and the immediate value, if any. For example:
+   *
+   * VariableAddress[x]
+   */
+  final string getOperationString() {
+    if exists(getImmediateString()) then
+      result = opcode.toString() + "[" + getImmediateString() + "]"
+    else
+      result = opcode.toString()
+  }
+
+  /**
+   * Gets a string describing the immediate value of this instruction, if any.
+   */
+  string getImmediateString() {
+    none()
+  }
+
+  private string getResultPrefix() {
+    if resultType instanceof VoidType then
+      result = "v"
+    else if hasMemoryResult() then
+      if isResultModeled() then
+        result = "m"
+      else
+        result = "mu"
+    else
+      result = "r"
+  }
+
+  /**
+   * Gets the zero-based index of this instruction within its block. This is
+   * used by debugging and printing code only.
+   */
+  int getDisplayIndexInBlock() {
+    exists(IRBlock block |
+      block = getBlock() and
+      (
+        exists(int index, int phiCount |
+          phiCount = count(block.getAPhiInstruction()) and
+          this = block.getInstruction(index) and
+          result = index + phiCount
+        ) or
+        (
+          this instanceof PhiInstruction and
+          this = rank[result + 1](PhiInstruction phiInstr |
+            phiInstr = block.getAPhiInstruction() |
+            phiInstr order by phiInstr.getUniqueId()
+          )
+        )
+      )
+    )
+  }
+
+  bindingset[type]
+  private string getValueCategoryString(string type) {
+    if isGLValue() then
+      result = "glval<" + type + ">"
+    else
+      result = type
+  }
+
+  private string getResultTypeString() {
+    exists(string valcat |
+      valcat = getValueCategoryString(resultType.toString()) and
+      if resultType instanceof UnknownType and exists(getResultSize()) then
+        result = valcat + "[" + getResultSize().toString() + "]"
+      else
+        result = valcat
+    )
+  }
+
+  /**
+   * Gets a human-readable string that uniquely identifies this instruction
+   * within the function. This string is used to refer to this instruction when
+   * printing IR dumps.
+   *
+   * Example: `r1_1`
+   */
+  string getResultId() {
+    result = getResultPrefix() + getBlock().getDisplayIndex().toString() + "_" +
+      getDisplayIndexInBlock().toString()
+  }
+
+  /**
+   * Gets a string describing the result of this instruction, suitable for
+   * display in IR dumps. This consists of the result ID plus the type of the
+   * result.
+   *
+   * Example: `r1_1(int*)`
+   */
+  final string getResultString() {
+    result = getResultId() + "(" + getResultTypeString() + ")"
+  }
+
+  /**
+   * Gets a string describing the specified operand, suitable for display in IR
+   * dumps. This consists of the result ID of the instruction consumed by the
+   * operand, plus a label identifying the operand kind.
+   *
+   * For example: `this:r3_5`
+   */
+  string getOperandString(OperandTag tag) {
+    exists(Instruction operand |
+      operand = getOperand(tag) and
+      result = tag.getLabel() + operand.getResultId()
+    )
+  }
+
+  /**
+   * Gets a string describing the operands of this instruction, suitable for
+   * display in IR dumps.
+   *
+   * Example: `func:r3_4, this:r3_5`
+   */
+  string getOperandsString() {
+    result = concat(OperandTag tag, Instruction operand |
+      operand = getOperand(tag) |
+      tag.getLabel() + operand.getResultId(), ", " order by tag.getSortOrder()
+    )
   }
 
   /**
@@ -312,8 +436,8 @@ class VariableInstruction extends Instruction {
     var = Construction::getInstructionVariable(this)
   }
 
-  override final string toString() {
-    result = super.toString() + "[" + var.toString() + "]"
+  override final string getImmediateString() {
+    result = var.toString()
   }
 
   final IRVariable getVariable() {
@@ -328,8 +452,8 @@ class FieldInstruction extends Instruction {
     field = Construction::getInstructionField(this)
   }
 
-  override final string toString() {
-    result = super.toString() + "[" + field.toString() + "]"
+  override final string getImmediateString() {
+    result = field.toString()
   }
 
   final Field getField() {
@@ -344,8 +468,8 @@ class FunctionInstruction extends Instruction {
     funcSymbol = Construction::getInstructionFunction(this)
   }
 
-  override final string toString() {
-    result = super.toString() + "[" + funcSymbol.toString() + "]"
+  override final string getImmediateString() {
+    result = funcSymbol.toString()
   }
 
   final Function getFunctionSymbol() {
@@ -360,8 +484,8 @@ class ConstantValueInstruction extends Instruction {
     value = Construction::getInstructionConstantValue(this)
   }
 
-  override final string toString() {
-    result = super.toString() + "[" + value + "]"
+  override final string getImmediateString() {
+    result = value
   }
 
   final string getValue() {
@@ -534,10 +658,8 @@ class StringConstantInstruction extends Instruction {
     value = Construction::getInstructionStringLiteral(this)
   }
 
-  override final string toString() {
-    result = super.toString() + "[" + 
-      value.getValueText().replaceAll("\n", " ").replaceAll("\r", "").replaceAll("\t", " ") +
-      "]"
+  override final string getImmediateString() {
+    result = value.getValueText().replaceAll("\n", " ").replaceAll("\r", "").replaceAll("\t", " ")
   }
 
   final StringLiteral getValue() {
@@ -627,8 +749,8 @@ class PointerArithmeticInstruction extends BinaryInstruction {
     elementSize = Construction::getInstructionElementSize(this)
   }
 
-  override final string toString() {
-    result = super.toString() + "[" + elementSize.toString() + "]"
+  override final string getImmediateString() {
+    result = elementSize.toString()
   }
 
   final int getElementSize() {
@@ -688,8 +810,8 @@ class InheritanceConversionInstruction extends UnaryInstruction {
     Construction::getInstructionInheritance(this, baseClass, derivedClass)
   }
 
-  override final string toString() {
-    result = super.toString() + "[" + derivedClass.toString() + " : " + baseClass.toString() + "]"
+  override final string getImmediateString() {
+    result = derivedClass.toString() + " : " + baseClass.toString()
   }
 
   /**
@@ -908,8 +1030,8 @@ class CatchByTypeInstruction extends CatchInstruction {
     exceptionType = Construction::getInstructionExceptionType(this)
   }
 
-  final override string toString() {
-    result = super.toString() + "[" + exceptionType.toString() + "]"
+  final override string getImmediateString() {
+    result = exceptionType.toString()
   }
 
   /**
@@ -942,6 +1064,10 @@ class UnmodeledDefinitionInstruction extends Instruction {
 class UnmodeledUseInstruction extends Instruction {
   UnmodeledUseInstruction() {
     opcode instanceof Opcode::UnmodeledUse
+  }
+
+  override string getOperandsString() {
+    result = "mu*"
   }
 
   override final MemoryAccessKind getOperandMemoryAccess(OperandTag tag) {

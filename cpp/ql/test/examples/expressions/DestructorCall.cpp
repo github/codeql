@@ -8,7 +8,7 @@ class D {
 public:
 };
 
-void v(C *c, D *d) {
+void DestructorCall(C *c, D *d) {
   delete c;
   delete d;
 }

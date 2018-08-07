@@ -1,3 +1,3 @@
-int& v(int *i) {
+int& ReferenceTo(int *i) {
   return *i;
 }

@@ -34,7 +34,12 @@ private newtype TOperandTag =
  */
 abstract class OperandTag extends TOperandTag {
    abstract string toString();
+
    abstract int getSortOrder();
+
+   string getLabel() {
+     result = ""
+   }
 }
 
 // Note: individual subtypes are listed in the order that the operands should
@@ -237,6 +242,10 @@ class ThisArgumentOperand extends ArgumentOperand, TThisArgumentOperand {
   override final int getSortOrder() {
     result = 10
   }
+
+  override final string getLabel() {
+    result = "this:"
+  }
 }
 
 ThisArgumentOperand thisArgumentOperand() {
@@ -286,7 +295,11 @@ class PhiOperand extends OperandTag, TPhiOperand {
   }
 
   override final int getSortOrder() {
-    result = 11
+    result = 11 + getPredecessorBlock().getDisplayIndex()
+  }
+
+  override final string getLabel() {
+    result = "from " + getPredecessorBlock().getDisplayIndex().toString() + ":"
   }
 
   final IRBlock getPredecessorBlock() {

@@ -15,6 +15,6 @@ class Base {
 class Derived : public Base {
 };
 
-void v(Base *bp) {
+void TypeId(Base *bp) {
   const char *name = typeid(bp).name();
 }
