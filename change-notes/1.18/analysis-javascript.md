@@ -40,6 +40,7 @@
 | CORS misconfiguration for credentials transfer | More true-positive results | This rule now treats header names case-insensitively. |
 | Hard-coded credentials | More true-positive results | This rule now recognizes secret cryptographic keys. |
 | Insecure randomness | More true-positive results | This rule now recognizes secret cryptographic keys. |
+| Missing rate limiting | More true-positive results, fewer false-positive results | This rule now recognizes additional rate limiters and expensive route handlers. | 
 | Missing X-Frame-Options HTTP header | Fewer false-positive results | This rule now treats header names case-insensitively. |
 | Reflected cross-site scripting | Fewer false-positive results | This rule now treats header names case-insensitively. |
 | Server-side URL redirect | More true-positive results | This rule now treats header names case-insensitively. |

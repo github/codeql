@@ -6,3 +6,4 @@
 | tst.js:36:20:36:36 | expensiveHandler2 | This route handler performs $@, but is not rate-limited. | tst.js:15:40:15:73 | fs.writ ... quest") | a file system access |
 | tst.js:37:20:37:36 | expensiveHandler3 | This route handler performs $@, but is not rate-limited. | tst.js:16:40:16:70 | child_p ... /true") | a system command |
 | tst.js:38:20:38:36 | expensiveHandler4 | This route handler performs $@, but is not rate-limited. | tst.js:17:40:17:83 | connect ... ution') | a database access |
+| tst.js:64:25:64:63 | functio ... req); } | This route handler performs $@, but is not rate-limited. | tst.js:64:46:64:60 | verifyUser(req) | authorization |
