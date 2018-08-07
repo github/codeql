@@ -1,1 +1,1 @@
-extractor_flags: --edg --target --edg win64
+semmle-extractor-options: --edg --target --edg win64

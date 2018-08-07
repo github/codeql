@@ -1,1 +1,1 @@
-extractor_flags: -std=c99
+semmle-extractor-options: -std=c99

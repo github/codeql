@@ -1,2 +1,2 @@
-extractor_flags: --edg --anachronisms
+semmle-extractor-options: --edg --anachronisms
 

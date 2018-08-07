@@ -1,1 +1,1 @@
-extractor_flags: --microsoft --microsoft_version 1700
+semmle-extractor-options: --microsoft --microsoft_version 1700

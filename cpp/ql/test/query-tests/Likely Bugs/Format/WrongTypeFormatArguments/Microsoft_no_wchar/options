@@ -1,1 +1,1 @@
-extractor_flags: --microsoft /Zc:wchar_t- --edg --target --edg win64
+semmle-extractor-options: --microsoft /Zc:wchar_t- --edg --target --edg win64

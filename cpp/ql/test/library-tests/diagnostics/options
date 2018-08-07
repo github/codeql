@@ -1,1 +1,1 @@
-extractor_flags: --expect_errors
+semmle-extractor-options: --expect_errors

@@ -1,1 +1,1 @@
-extractor_flags: --edg --microsoft
+semmle-extractor-options: --edg --microsoft

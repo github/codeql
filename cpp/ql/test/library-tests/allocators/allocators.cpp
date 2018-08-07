@@ -1,4 +1,4 @@
-// extractor_flags: -std=c++17
+// semmle-extractor-options: -std=c++17
 typedef unsigned long size_t;
 namespace std {
   enum class align_val_t : size_t {};

@@ -1,1 +1,1 @@
-extractor_flags: --edg --ti
+semmle-extractor-options: --edg --ti
