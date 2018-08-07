@@ -26,7 +26,6 @@
 | [Variable used in its own initializer] | Fewer false positive results | Results where a macro is used to indicate deliberate uninitialization are now excluded |
 | [Assignment where comparison was intended] | Fewer false positive results | Results are no longer reported if the variable is not yet defined. |
 | [Comparison where assignment was intended] | More correct results | "This query now includes results where an overloaded `operator==` is used in the wrong context. |
-| [ Wrong type of arguments to formatting function] | Fewer false positive results | The size of wide characters in formatting functions is now determined from custom definitions of wide string formatting functions. |
 
 ## Changes to QL libraries
 
