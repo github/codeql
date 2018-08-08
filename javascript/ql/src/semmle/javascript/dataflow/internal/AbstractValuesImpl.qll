@@ -6,6 +6,7 @@
 
 import semmle.javascript.dataflow.AbstractValues
 private import semmle.javascript.dataflow.InferredTypes
+import semmle.javascript.dataflow.DefinedCustomAbstractValues
 
 /** An abstract value inferred by the flow analysis. */
 cached newtype TAbstractValue =
@@ -101,6 +102,9 @@ cached newtype TAbstractValue =
   or
   /** A custom abstract value induced by `tag`. */
   TCustomAbstractValue(CustomAbstractValueTag tag)
+  or
+  /** A custom abstract value induced by `def`. */
+  TDefinedCustomAbstractValue(CustomAbstractValueDefinition def)
 
 /**
  * Gets a definite abstract value with the given type.
