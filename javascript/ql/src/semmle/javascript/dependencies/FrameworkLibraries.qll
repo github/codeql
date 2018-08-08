@@ -817,6 +817,33 @@ private class RequireJS extends FrameworkLibraryWithGenericURL, FrameworkLibrary
 }
 
 /**
+ * A copy of the Microsoft ApplicationInsights framework.
+ */
+private class ApplicationInsightsInstance extends FrameworkLibraryInstance {
+  string version;
+
+  ApplicationInsightsInstance() {
+    version = this.(TopLevel).getFile().getAbsolutePath().regexpCapture(any(ApplicationInsights t).getAURLRegex(), 1)
+  }
+
+  override predicate info(FrameworkLibrary fl, string v) {
+    fl instanceof ApplicationInsights and
+    version = v
+  }
+}
+
+/**
+ * The Microsoft ApplicationInsights framework.
+ */
+private class ApplicationInsights extends FrameworkLibraryWithURLRegex {
+  ApplicationInsights() { this = "ApplicationInsights" }
+
+  override string getAURLRegex() {
+    result = ".*(?:^|/)ai\\.(" + semverRegex() + ")-build\\d+\\.js"
+  }
+}
+
+/**
  * A `FrameworkLibraryReference` that refers to a recognised `FrameworkLibraryInstance`,
  * that is, a `<script>` tag where the `src` attribute can be resolved to a local file
  * that is recognised as an instance of a framework library.
