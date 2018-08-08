@@ -1,7 +1,7 @@
 class SelfAssignment
 {
     private int i;
-    public TestableTest(int i)
+    public SelfAssignment(int i)
     {
         i = i;
     }
