@@ -44,6 +44,7 @@
 | Missing X-Frame-Options HTTP header | Fewer false-positive results | This rule now treats header names case-insensitively. |
 | Reflected cross-site scripting | Fewer false-positive results | This rule now treats header names case-insensitively. |
 | Server-side URL redirect | More true-positive results | This rule now treats header names case-insensitively. |
+| Superfluous trailing arguments | Fewer false-positive results | This rule now ignores calls to some empty functions. |
 | Uncontrolled command line | More true-positive results | This rule now recognizes indirect command injection through `sh -c` and similar. |
 | Unused variable | Fewer results | This rule no longer flags class expressions that could be made anonymous. While technically true, these results are not interesting. |
 

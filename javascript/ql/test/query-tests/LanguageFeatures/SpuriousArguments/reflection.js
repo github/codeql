@@ -1,5 +1,5 @@
-function f0() {}
-function f1(x) {}
+function f0() {return;}
+function f1(x) {return;}
 
 f0.call();
 f0.call(this);
