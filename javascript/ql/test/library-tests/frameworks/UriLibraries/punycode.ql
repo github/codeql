@@ -1,5 +1,5 @@
 import javascript
 
 from DataFlow::Node n
-where n = punycode::punycode()
+where n = punycode::punycodeMember(_)
 select n

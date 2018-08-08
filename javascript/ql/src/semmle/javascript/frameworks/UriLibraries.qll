@@ -96,8 +96,15 @@ module uridashjs {
   /**
    * Gets a data flow source node for the uridashjs library.
    */
-  DataFlow::SourceNode uridashjs() {
+  deprecated DataFlow::SourceNode uridashjs() {
     result = DataFlow::moduleImport("uri-js")
+  }
+
+  /**
+   * Gets a data flow source node for member `name` of the uridashjs library.
+   */
+  DataFlow::SourceNode uridashjsMember(string name) {
+    result = DataFlow::moduleMember("uri-js", name)
   }
 
   /**
@@ -113,7 +120,7 @@ module uridashjs {
         name = "serialize" or
         name = "resolve" or
         name = "normalize" |
-        this = uridashjs().getAMemberCall(name) and
+        this = uridashjsMember(name).getACall() and
         src = getAnArgument()
       )
     }
@@ -133,8 +140,15 @@ module punycode {
   /**
    * Gets a data flow source node for the punycode library.
    */
-  DataFlow::SourceNode punycode() {
+  deprecated DataFlow::SourceNode punycode() {
     result = DataFlow::moduleImport("punycode")
+  }
+
+  /**
+   * Gets a data flow source node for member `name` of the punycode library.
+   */
+  DataFlow::SourceNode punycodeMember(string name) {
+    result = DataFlow::moduleMember("punycode", name)
   }
 
   /**
@@ -150,7 +164,7 @@ module punycode {
         name = "encode" or
         name = "toUnicode" or
         name = "toASCII" |
-        this = punycode().getAMemberCall(name) and
+        this = punycodeMember(name).getACall() and
         src = getAnArgument()
       )
     }
@@ -216,8 +230,15 @@ module querystringify {
   /**
    * Gets a data flow source node for the querystringify library.
    */
-  DataFlow::SourceNode querystringify() {
+  deprecated DataFlow::SourceNode querystringify() {
     result = DataFlow::moduleImport("querystringify")
+  }
+
+  /**
+   * Gets a data flow source node for member `name` of the querystringify library.
+   */
+  DataFlow::SourceNode querystringifyMember(string name) {
+    result = DataFlow::moduleMember("querystringify", name)
   }
 
   /**
@@ -231,7 +252,7 @@ module querystringify {
       exists (string name |
         name = "parse" or
         name = "stringify" |
-        this = querystringify().getAMemberCall(name) and
+        this = querystringifyMember(name).getACall() and
         src = getAnArgument()
       )
     }
@@ -251,8 +272,16 @@ module querydashstring {
   /**
    * Gets a data flow source node for the query-string library.
    */
-  DataFlow::SourceNode querydashstring() {
+  deprecated DataFlow::SourceNode querydashstring() {
     result = DataFlow::moduleImport("query-string")
+  }
+
+
+  /**
+   * Gets a data flow source node for member `name` of the query-string library.
+   */
+  DataFlow::SourceNode querydashstringMember(string name) {
+    result = DataFlow::moduleMember("query-string", name)
   }
 
   /**
@@ -268,7 +297,7 @@ module querydashstring {
         name = "extract" or
         name = "parseUrl" or
         name = "stringify" |
-        this = querydashstring().getAMemberCall(name) and
+        this = querydashstringMember(name).getACall() and
         src = getAnArgument()
       )
     }
@@ -288,8 +317,16 @@ module url {
   /**
    * Gets a data flow source node for the url library.
    */
-  DataFlow::SourceNode url() {
+  deprecated DataFlow::SourceNode url() {
     result = DataFlow::moduleImport("url")
+  }
+
+
+  /**
+   * Gets a data flow source node for member `name` of the url library.
+   */
+  DataFlow::SourceNode urlMember(string name) {
+    result = DataFlow::moduleMember("url", name)
   }
 
   /**
@@ -304,7 +341,7 @@ module url {
         name = "parse" or
         name = "format" or
         name = "resolve" |
-        this = url().getAMemberCall(name) and
+        this = urlMember(name).getACall() and
         src = getAnArgument()
       )
     }
@@ -324,8 +361,15 @@ module querystring {
   /**
    * Gets a data flow source node for the querystring library.
    */
-  DataFlow::SourceNode querystring() {
+  deprecated DataFlow::SourceNode querystring() {
     result = DataFlow::moduleImport("querystring")
+  }
+
+  /**
+   * Gets a data flow source node for member `name` of the querystring library.
+   */
+  DataFlow::SourceNode querystringMember(string name) {
+    result = DataFlow::moduleMember("querystring", name)
   }
 
   /**
@@ -341,7 +385,7 @@ module querystring {
         name = "unescape" or
         name = "parse" or
         name = "stringify" |
-        this = querystring().getAMemberCall(name) and
+        this = querystringMember(name).getACall() and
         src = getAnArgument()
       )
     }

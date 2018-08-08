@@ -6,6 +6,7 @@
 | query-string.js:5:5:5:26 | querySt ... ract(x) | query-string.js:5:25:5:25 | x | query-string.js:5:5:5:26 | querySt ... ract(x) |
 | query-string.js:7:5:7:27 | querySt ... eUrl(x) | query-string.js:7:26:7:26 | x | query-string.js:7:5:7:27 | querySt ... eUrl(x) |
 | query-string.js:9:5:9:28 | querySt ... gify(x) | query-string.js:9:27:9:27 | x | query-string.js:9:5:9:28 | querySt ... gify(x) |
+| query-string_import.js:3:1:3:8 | parse(x) | query-string_import.js:3:7:3:7 | x | query-string_import.js:3:1:3:8 | parse(x) |
 | querystring.js:3:9:3:29 | queryst ... cape(x) | querystring.js:3:28:3:28 | x | querystring.js:3:9:3:29 | queryst ... cape(x) |
 | querystring.js:5:5:5:24 | querystring.parse(x) | querystring.js:5:23:5:23 | x | querystring.js:5:5:5:24 | querystring.parse(x) |
 | querystring.js:7:5:7:28 | queryst ... gify(x) | querystring.js:7:27:7:27 | x | querystring.js:7:5:7:28 | queryst ... gify(x) |

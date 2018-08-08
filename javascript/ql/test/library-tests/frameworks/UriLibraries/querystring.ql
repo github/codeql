@@ -1,5 +1,5 @@
 import javascript
 
 from DataFlow::Node n
-where n = querystring::querystring()
+where n = querystring::querystringMember(_)
 select n

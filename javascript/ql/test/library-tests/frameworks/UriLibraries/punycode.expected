@@ -1,1 +1,4 @@
-| punycode.js:1:16:1:34 | require("punycode") |
+| punycode.js:3:9:3:23 | punycode.decode |
+| punycode.js:5:5:5:19 | punycode.encode |
+| punycode.js:7:5:7:22 | punycode.toUnicode |
+| punycode.js:9:5:9:20 | punycode.toASCII |
