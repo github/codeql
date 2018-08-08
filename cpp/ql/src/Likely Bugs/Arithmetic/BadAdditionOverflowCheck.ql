@@ -13,7 +13,6 @@
  *       security
  *       external/cwe/190
  *       external/cwe/192
- * 
  */
 
 import cpp
