@@ -224,6 +224,10 @@ class ImportEqualsDeclaration extends Stmt, @importequalsdeclaration {
   Expr getImportedEntity() {
     result = getChildExpr(1)
   }
+
+  override ControlFlowNode getFirstControlFlowNode() {
+    result = getId()
+  }
 }
 
 /**
