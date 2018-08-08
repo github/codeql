@@ -20,7 +20,8 @@
 | ConditionalAccess.cs:9:9:9:10 | M4 | ConditionalAccess.cs:9:25:9:38 | ... ?? ... |
 | ConditionalAccess.cs:11:9:11:10 | M5 | ConditionalAccess.cs:12:5:17:5 | {...} |
 | ConditionalAccess.cs:19:12:19:13 | M6 | ConditionalAccess.cs:19:40:19:41 | access to parameter s1 |
-| ConditionalAccess.cs:24:26:24:38 | CommaJoinWith | ConditionalAccess.cs:24:70:24:71 | access to parameter s1 |
+| ConditionalAccess.cs:21:10:21:11 | M7 | ConditionalAccess.cs:22:5:26:5 | {...} |
+| ConditionalAccess.cs:31:26:31:38 | CommaJoinWith | ConditionalAccess.cs:31:70:31:71 | access to parameter s1 |
 | ExitMethods.cs:6:10:6:11 | M1 | ExitMethods.cs:7:5:10:5 | {...} |
 | ExitMethods.cs:12:10:12:11 | M2 | ExitMethods.cs:13:5:16:5 | {...} |
 | ExitMethods.cs:18:10:18:11 | M3 | ExitMethods.cs:19:5:22:5 | {...} |
@@ -38,8 +39,9 @@
 | Extensions.cs:10:24:10:29 | ToBool | Extensions.cs:11:5:13:5 | {...} |
 | Extensions.cs:15:23:15:33 | CallToInt32 | Extensions.cs:15:48:15:50 | "0" |
 | Extensions.cs:20:17:20:20 | Main | Extensions.cs:21:5:26:5 | {...} |
-| Foreach.cs:3:10:3:11 | M1 | Foreach.cs:4:5:7:5 | {...} |
-| Foreach.cs:9:10:9:11 | M2 | Foreach.cs:10:5:13:5 | {...} |
+| Foreach.cs:6:10:6:11 | M1 | Foreach.cs:7:5:10:5 | {...} |
+| Foreach.cs:12:10:12:11 | M2 | Foreach.cs:13:5:16:5 | {...} |
+| Foreach.cs:18:10:18:11 | M3 | Foreach.cs:19:5:22:5 | {...} |
 | Initializers.cs:6:5:6:16 | Initializers | Initializers.cs:6:28:6:30 | {...} |
 | Initializers.cs:8:10:8:10 | M | Initializers.cs:9:5:12:5 | {...} |
 | NullCoalescing.cs:3:9:3:10 | M1 | NullCoalescing.cs:3:23:3:28 | ... ?? ... |
@@ -47,6 +49,7 @@
 | NullCoalescing.cs:7:12:7:13 | M3 | NullCoalescing.cs:7:40:7:53 | ... ?? ... |
 | NullCoalescing.cs:9:12:9:13 | M4 | NullCoalescing.cs:9:36:9:58 | ... ?? ... |
 | NullCoalescing.cs:11:9:11:10 | M5 | NullCoalescing.cs:11:43:11:68 | ... ? ... : ... |
+| NullCoalescing.cs:13:10:13:11 | M6 | NullCoalescing.cs:14:5:18:5 | {...} |
 | Patterns.cs:5:10:5:13 | Test | Patterns.cs:6:5:43:5 | {...} |
 | Qualifiers.cs:7:16:7:21 | Method | Qualifiers.cs:7:28:7:31 | null |
 | Qualifiers.cs:8:23:8:34 | StaticMethod | Qualifiers.cs:8:41:8:44 | null |
@@ -55,7 +58,12 @@
 | Switch.cs:10:10:10:11 | M2 | Switch.cs:11:5:33:5 | {...} |
 | Switch.cs:35:10:35:11 | M3 | Switch.cs:36:5:42:5 | {...} |
 | Switch.cs:44:10:44:11 | M4 | Switch.cs:45:5:53:5 | {...} |
-| Switch.cs:55:17:55:21 | Throw | Switch.cs:55:34:55:48 | object creation of type Exception |
+| Switch.cs:55:10:55:11 | M5 | Switch.cs:56:5:64:5 | {...} |
+| Switch.cs:66:10:66:11 | M6 | Switch.cs:67:5:75:5 | {...} |
+| Switch.cs:77:10:77:11 | M7 | Switch.cs:78:5:89:5 | {...} |
+| Switch.cs:91:10:91:11 | M8 | Switch.cs:92:5:99:5 | {...} |
+| Switch.cs:101:9:101:10 | M9 | Switch.cs:102:5:109:5 | {...} |
+| Switch.cs:111:17:111:21 | Throw | Switch.cs:111:34:111:48 | object creation of type Exception |
 | TypeAccesses.cs:3:10:3:10 | M | TypeAccesses.cs:4:5:9:5 | {...} |
 | VarDecls.cs:5:18:5:19 | M1 | VarDecls.cs:6:5:11:5 | {...} |
 | VarDecls.cs:13:12:13:13 | M2 | VarDecls.cs:14:5:17:5 | {...} |

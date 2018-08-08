@@ -70,7 +70,8 @@
 | ConditionalAccess.cs:19:12:19:13 | enter M6 | ConditionalAccess.cs:19:40:19:41 | access to parameter s1 | 2 |
 | ConditionalAccess.cs:19:12:19:13 | exit M6 | ConditionalAccess.cs:19:12:19:13 | exit M6 | 1 |
 | ConditionalAccess.cs:19:58:19:59 | access to parameter s2 | ConditionalAccess.cs:19:43:19:60 | call to method CommaJoinWith | 2 |
-| ConditionalAccess.cs:24:26:24:38 | enter CommaJoinWith | ConditionalAccess.cs:24:26:24:38 | exit CommaJoinWith | 7 |
+| ConditionalAccess.cs:21:10:21:11 | enter M7 | ConditionalAccess.cs:21:10:21:11 | exit M7 | 20 |
+| ConditionalAccess.cs:31:26:31:38 | enter CommaJoinWith | ConditionalAccess.cs:31:26:31:38 | exit CommaJoinWith | 7 |
 | ExitMethods.cs:6:10:6:11 | enter M1 | ExitMethods.cs:6:10:6:11 | exit M1 | 7 |
 | ExitMethods.cs:12:10:12:11 | enter M2 | ExitMethods.cs:12:10:12:11 | exit M2 | 7 |
 | ExitMethods.cs:18:10:18:11 | enter M3 | ExitMethods.cs:18:10:18:11 | exit M3 | 6 |
@@ -102,14 +103,20 @@
 | Extensions.cs:10:24:10:29 | enter ToBool | Extensions.cs:10:24:10:29 | exit ToBool | 7 |
 | Extensions.cs:15:23:15:33 | enter CallToInt32 | Extensions.cs:15:23:15:33 | exit CallToInt32 | 4 |
 | Extensions.cs:20:17:20:20 | enter Main | Extensions.cs:20:17:20:20 | exit Main | 19 |
-| Foreach.cs:3:10:3:11 | enter M1 | Foreach.cs:5:29:5:32 | access to parameter args | 3 |
-| Foreach.cs:3:10:3:11 | exit M1 | Foreach.cs:3:10:3:11 | exit M1 | 1 |
-| Foreach.cs:5:9:6:13 | foreach (... ... in ...) ... | Foreach.cs:5:9:6:13 | foreach (... ... in ...) ... | 1 |
-| Foreach.cs:5:22:5:24 | String arg | Foreach.cs:6:13:6:13 | ; | 2 |
-| Foreach.cs:9:10:9:11 | enter M2 | Foreach.cs:11:27:11:30 | access to parameter args | 3 |
-| Foreach.cs:9:10:9:11 | exit M2 | Foreach.cs:9:10:9:11 | exit M2 | 1 |
-| Foreach.cs:11:9:12:13 | foreach (... ... in ...) ... | Foreach.cs:11:9:12:13 | foreach (... ... in ...) ... | 1 |
-| Foreach.cs:12:13:12:13 | ; | Foreach.cs:12:13:12:13 | ; | 1 |
+| Foreach.cs:6:10:6:11 | enter M1 | Foreach.cs:8:29:8:32 | access to parameter args | 3 |
+| Foreach.cs:6:10:6:11 | exit M1 | Foreach.cs:6:10:6:11 | exit M1 | 1 |
+| Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | 1 |
+| Foreach.cs:8:22:8:24 | String arg | Foreach.cs:9:13:9:13 | ; | 2 |
+| Foreach.cs:12:10:12:11 | enter M2 | Foreach.cs:14:27:14:30 | access to parameter args | 3 |
+| Foreach.cs:12:10:12:11 | exit M2 | Foreach.cs:12:10:12:11 | exit M2 | 1 |
+| Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | 1 |
+| Foreach.cs:15:13:15:13 | ; | Foreach.cs:15:13:15:13 | ; | 1 |
+| Foreach.cs:18:10:18:11 | enter M3 | Foreach.cs:20:27:20:27 | access to parameter e | 4 |
+| Foreach.cs:18:10:18:11 | exit M3 | Foreach.cs:18:10:18:11 | exit M3 | 1 |
+| Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | 1 |
+| Foreach.cs:20:22:20:22 | String x | Foreach.cs:21:11:21:11 | ; | 2 |
+| Foreach.cs:20:29:20:38 | call to method ToArray | Foreach.cs:20:29:20:38 | call to method ToArray | 1 |
+| Foreach.cs:20:43:20:68 | call to method Empty | Foreach.cs:20:43:20:68 | call to method Empty | 1 |
 | Initializers.cs:6:5:6:16 | enter Initializers | Initializers.cs:6:5:6:16 | exit Initializers | 3 |
 | Initializers.cs:8:10:8:10 | enter M | Initializers.cs:8:10:8:10 | exit M | 23 |
 | NullCoalescing.cs:3:9:3:10 | enter M1 | NullCoalescing.cs:3:23:3:23 | access to parameter i | 3 |
@@ -129,13 +136,13 @@
 | NullCoalescing.cs:9:41:9:41 | access to parameter s | NullCoalescing.cs:9:41:9:41 | access to parameter s | 1 |
 | NullCoalescing.cs:9:45:9:45 | access to parameter s | NullCoalescing.cs:9:45:9:45 | access to parameter s | 1 |
 | NullCoalescing.cs:9:51:9:58 | ... ?? ... | NullCoalescing.cs:9:51:9:52 | "" | 2 |
-| NullCoalescing.cs:9:57:9:58 | "" | NullCoalescing.cs:9:57:9:58 | "" | 1 |
 | NullCoalescing.cs:11:9:11:10 | enter M5 | NullCoalescing.cs:11:44:11:45 | access to parameter b1 | 4 |
 | NullCoalescing.cs:11:9:11:10 | exit M5 | NullCoalescing.cs:11:9:11:10 | exit M5 | 1 |
 | NullCoalescing.cs:11:51:11:58 | ... && ... | NullCoalescing.cs:11:51:11:52 | access to parameter b2 | 2 |
 | NullCoalescing.cs:11:57:11:58 | access to parameter b3 | NullCoalescing.cs:11:57:11:58 | access to parameter b3 | 1 |
 | NullCoalescing.cs:11:64:11:64 | 0 | NullCoalescing.cs:11:64:11:64 | 0 | 1 |
 | NullCoalescing.cs:11:68:11:68 | 1 | NullCoalescing.cs:11:68:11:68 | 1 | 1 |
+| NullCoalescing.cs:13:10:13:11 | enter M6 | NullCoalescing.cs:13:10:13:11 | exit M6 | 21 |
 | Patterns.cs:5:10:5:13 | enter Test | Patterns.cs:8:13:8:23 | ... is ... | 10 |
 | Patterns.cs:9:9:11:9 | {...} | Patterns.cs:10:13:10:42 | call to method WriteLine | 6 |
 | Patterns.cs:12:14:18:9 | if (...) ... | Patterns.cs:12:18:12:31 | ... is ... | 4 |
@@ -184,7 +191,31 @@
 | Switch.cs:50:13:50:39 | case Boolean: | Switch.cs:50:18:50:21 | access to type Boolean | 2 |
 | Switch.cs:50:30:50:30 | access to parameter o | Switch.cs:50:30:50:38 | ... != ... | 3 |
 | Switch.cs:51:17:51:22 | break; | Switch.cs:51:17:51:22 | break; | 1 |
-| Switch.cs:55:17:55:21 | enter Throw | Switch.cs:55:17:55:21 | exit Throw | 4 |
+| Switch.cs:55:10:55:11 | enter M5 | Switch.cs:55:10:55:11 | exit M5 | 12 |
+| Switch.cs:66:10:66:11 | enter M6 | Switch.cs:72:18:72:19 | "" | 9 |
+| Switch.cs:66:10:66:11 | exit M6 | Switch.cs:66:10:66:11 | exit M6 | 1 |
+| Switch.cs:73:15:73:20 | break; | Switch.cs:73:15:73:20 | break; | 1 |
+| Switch.cs:77:10:77:11 | enter M7 | Switch.cs:81:18:81:18 | 1 | 6 |
+| Switch.cs:77:10:77:11 | exit M7 | Switch.cs:77:10:77:11 | exit M7 | 1 |
+| Switch.cs:82:22:82:25 | true | Switch.cs:82:15:82:26 | return ...; | 2 |
+| Switch.cs:83:13:83:20 | case ...: | Switch.cs:83:18:83:18 | 2 | 2 |
+| Switch.cs:84:15:85:22 | if (...) ... | Switch.cs:84:19:84:23 | ... > ... | 4 |
+| Switch.cs:85:17:85:22 | break; | Switch.cs:85:17:85:22 | break; | 1 |
+| Switch.cs:86:22:86:25 | true | Switch.cs:86:15:86:26 | return ...; | 2 |
+| Switch.cs:88:16:88:20 | false | Switch.cs:88:9:88:21 | return ...; | 2 |
+| Switch.cs:91:10:91:11 | enter M8 | Switch.cs:95:18:95:20 | access to type Int32 | 6 |
+| Switch.cs:91:10:91:11 | exit M8 | Switch.cs:91:10:91:11 | exit M8 | 1 |
+| Switch.cs:96:22:96:25 | true | Switch.cs:96:15:96:26 | return ...; | 2 |
+| Switch.cs:98:16:98:20 | false | Switch.cs:98:9:98:21 | return ...; | 2 |
+| Switch.cs:101:9:101:10 | enter M9 | Switch.cs:103:17:103:17 | access to parameter s | 4 |
+| Switch.cs:101:9:101:10 | exit M9 | Switch.cs:101:9:101:10 | exit M9 | 1 |
+| Switch.cs:103:19:103:25 | access to property Length | Switch.cs:103:19:103:25 | access to property Length | 1 |
+| Switch.cs:105:13:105:20 | case ...: | Switch.cs:105:18:105:18 | 0 | 2 |
+| Switch.cs:105:29:105:29 | 0 | Switch.cs:105:22:105:30 | return ...; | 2 |
+| Switch.cs:106:13:106:20 | case ...: | Switch.cs:106:18:106:18 | 1 | 2 |
+| Switch.cs:106:29:106:29 | 1 | Switch.cs:106:22:106:30 | return ...; | 2 |
+| Switch.cs:108:17:108:17 | 1 | Switch.cs:108:9:108:18 | return ...; | 3 |
+| Switch.cs:111:17:111:21 | enter Throw | Switch.cs:111:17:111:21 | exit Throw | 4 |
 | TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:7:13:7:22 | ... is ... | 16 |
 | TypeAccesses.cs:7:25:7:25 | ; | TypeAccesses.cs:7:25:7:25 | ; | 1 |
 | TypeAccesses.cs:8:9:8:28 | ... ...; | TypeAccesses.cs:3:10:3:10 | exit M | 5 |
@@ -219,12 +250,16 @@
 | cflow.cs:42:17:42:39 | ...; | cflow.cs:43:17:43:28 | goto case ...; | 5 |
 | cflow.cs:44:13:44:19 | case ...: | cflow.cs:44:18:44:18 | 2 | 2 |
 | cflow.cs:45:17:45:39 | ...; | cflow.cs:46:17:46:28 | goto case ...; | 5 |
-| cflow.cs:47:13:47:19 | case ...: | cflow.cs:53:18:53:19 | 42 | 10 |
+| cflow.cs:47:13:47:19 | case ...: | cflow.cs:47:18:47:18 | 3 | 2 |
+| cflow.cs:48:17:48:39 | ...; | cflow.cs:49:17:49:22 | break; | 4 |
+| cflow.cs:51:9:59:9 | switch (...) {...} | cflow.cs:53:18:53:19 | 42 | 4 |
 | cflow.cs:54:17:54:48 | ...; | cflow.cs:55:17:55:22 | break; | 4 |
 | cflow.cs:56:13:56:20 | default: | cflow.cs:58:17:58:22 | break; | 5 |
-| cflow.cs:60:9:66:9 | switch (...) {...} | cflow.cs:63:23:63:33 | ... == ... | 12 |
+| cflow.cs:60:9:66:9 | switch (...) {...} | cflow.cs:62:18:62:18 | 0 | 6 |
+| cflow.cs:63:17:64:55 | if (...) ... | cflow.cs:63:23:63:33 | ... == ... | 6 |
 | cflow.cs:64:27:64:54 | object creation of type NullReferenceException | cflow.cs:64:21:64:55 | throw ...; | 2 |
-| cflow.cs:65:17:65:22 | break; | cflow.cs:67:9:67:17 | return ...; | 3 |
+| cflow.cs:65:17:65:22 | break; | cflow.cs:65:17:65:22 | break; | 1 |
+| cflow.cs:67:16:67:16 | access to parameter a | cflow.cs:67:9:67:17 | return ...; | 2 |
 | cflow.cs:70:18:70:18 | enter M | cflow.cs:72:13:72:21 | ... == ... | 6 |
 | cflow.cs:70:18:70:18 | exit M | cflow.cs:70:18:70:18 | exit M | 1 |
 | cflow.cs:73:13:73:19 | return ...; | cflow.cs:73:13:73:19 | return ...; | 1 |

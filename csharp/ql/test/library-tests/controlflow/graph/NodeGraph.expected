@@ -256,12 +256,31 @@
 | ConditionalAccess.cs:19:40:19:41 | access to parameter s1 | ConditionalAccess.cs:19:58:19:59 | access to parameter s2 | semmle.label | non-null |
 | ConditionalAccess.cs:19:43:19:60 | call to method CommaJoinWith | ConditionalAccess.cs:19:12:19:13 | exit M6 | semmle.label | successor |
 | ConditionalAccess.cs:19:58:19:59 | access to parameter s2 | ConditionalAccess.cs:19:43:19:60 | call to method CommaJoinWith | semmle.label | successor |
-| ConditionalAccess.cs:24:26:24:38 | enter CommaJoinWith | ConditionalAccess.cs:24:70:24:71 | access to parameter s1 | semmle.label | successor |
-| ConditionalAccess.cs:24:70:24:71 | access to parameter s1 | ConditionalAccess.cs:24:75:24:78 | ", " | semmle.label | successor |
-| ConditionalAccess.cs:24:70:24:78 | ... + ... | ConditionalAccess.cs:24:82:24:83 | access to parameter s2 | semmle.label | successor |
-| ConditionalAccess.cs:24:70:24:83 | ... + ... | ConditionalAccess.cs:24:26:24:38 | exit CommaJoinWith | semmle.label | successor |
-| ConditionalAccess.cs:24:75:24:78 | ", " | ConditionalAccess.cs:24:70:24:78 | ... + ... | semmle.label | successor |
-| ConditionalAccess.cs:24:82:24:83 | access to parameter s2 | ConditionalAccess.cs:24:70:24:83 | ... + ... | semmle.label | successor |
+| ConditionalAccess.cs:21:10:21:11 | enter M7 | ConditionalAccess.cs:22:5:26:5 | {...} | semmle.label | successor |
+| ConditionalAccess.cs:22:5:26:5 | {...} | ConditionalAccess.cs:23:9:23:39 | ... ...; | semmle.label | successor |
+| ConditionalAccess.cs:23:9:23:39 | ... ...; | ConditionalAccess.cs:23:13:23:13 | access to local variable j | semmle.label | successor |
+| ConditionalAccess.cs:23:13:23:13 | access to local variable j | ConditionalAccess.cs:23:26:23:29 | null | semmle.label | successor |
+| ConditionalAccess.cs:23:13:23:38 | Nullable<Int32> j = ... | ConditionalAccess.cs:24:9:24:38 | ... ...; | semmle.label | successor |
+| ConditionalAccess.cs:23:18:23:29 | (...) ... | ConditionalAccess.cs:23:13:23:38 | Nullable<Int32> j = ... | semmle.label | null |
+| ConditionalAccess.cs:23:26:23:29 | null | ConditionalAccess.cs:23:18:23:29 | (...) ... | semmle.label | successor |
+| ConditionalAccess.cs:24:9:24:38 | ... ...; | ConditionalAccess.cs:24:13:24:13 | access to local variable s | semmle.label | successor |
+| ConditionalAccess.cs:24:13:24:13 | access to local variable s | ConditionalAccess.cs:24:24:24:24 | access to parameter i | semmle.label | successor |
+| ConditionalAccess.cs:24:13:24:37 | String s = ... | ConditionalAccess.cs:25:9:25:33 | ...; | semmle.label | successor |
+| ConditionalAccess.cs:24:18:24:24 | (...) ... | ConditionalAccess.cs:24:27:24:37 | call to method ToString | semmle.label | non-null |
+| ConditionalAccess.cs:24:24:24:24 | access to parameter i | ConditionalAccess.cs:24:18:24:24 | (...) ... | semmle.label | successor |
+| ConditionalAccess.cs:24:27:24:37 | call to method ToString | ConditionalAccess.cs:24:13:24:37 | String s = ... | semmle.label | successor |
+| ConditionalAccess.cs:25:9:25:9 | access to local variable s | ConditionalAccess.cs:25:13:25:14 | "" | semmle.label | successor |
+| ConditionalAccess.cs:25:9:25:32 | ... = ... | ConditionalAccess.cs:21:10:21:11 | exit M7 | semmle.label | successor |
+| ConditionalAccess.cs:25:9:25:33 | ...; | ConditionalAccess.cs:25:9:25:9 | access to local variable s | semmle.label | successor |
+| ConditionalAccess.cs:25:13:25:14 | "" | ConditionalAccess.cs:25:31:25:31 | access to local variable s | semmle.label | non-null |
+| ConditionalAccess.cs:25:16:25:32 | call to method CommaJoinWith | ConditionalAccess.cs:25:9:25:32 | ... = ... | semmle.label | successor |
+| ConditionalAccess.cs:25:31:25:31 | access to local variable s | ConditionalAccess.cs:25:16:25:32 | call to method CommaJoinWith | semmle.label | successor |
+| ConditionalAccess.cs:31:26:31:38 | enter CommaJoinWith | ConditionalAccess.cs:31:70:31:71 | access to parameter s1 | semmle.label | successor |
+| ConditionalAccess.cs:31:70:31:71 | access to parameter s1 | ConditionalAccess.cs:31:75:31:78 | ", " | semmle.label | successor |
+| ConditionalAccess.cs:31:70:31:78 | ... + ... | ConditionalAccess.cs:31:82:31:83 | access to parameter s2 | semmle.label | successor |
+| ConditionalAccess.cs:31:70:31:83 | ... + ... | ConditionalAccess.cs:31:26:31:38 | exit CommaJoinWith | semmle.label | successor |
+| ConditionalAccess.cs:31:75:31:78 | ", " | ConditionalAccess.cs:31:70:31:78 | ... + ... | semmle.label | successor |
+| ConditionalAccess.cs:31:82:31:83 | access to parameter s2 | ConditionalAccess.cs:31:70:31:83 | ... + ... | semmle.label | successor |
 | ExitMethods.cs:6:10:6:11 | enter M1 | ExitMethods.cs:7:5:10:5 | {...} | semmle.label | successor |
 | ExitMethods.cs:7:5:10:5 | {...} | ExitMethods.cs:8:9:8:25 | ...; | semmle.label | successor |
 | ExitMethods.cs:8:9:8:24 | call to method ErrorMaybe | ExitMethods.cs:9:9:9:15 | return ...; | semmle.label | successor |
@@ -391,19 +410,31 @@
 | Extensions.cs:25:9:25:34 | ...; | Extensions.cs:25:9:25:14 | "true" | semmle.label | successor |
 | Extensions.cs:25:23:25:32 | access to method Parse | Extensions.cs:25:23:25:32 | delegate creation of type Func<String,Boolean> | semmle.label | successor |
 | Extensions.cs:25:23:25:32 | delegate creation of type Func<String,Boolean> | Extensions.cs:25:9:25:33 | call to method ToBool | semmle.label | successor |
-| Foreach.cs:3:10:3:11 | enter M1 | Foreach.cs:4:5:7:5 | {...} | semmle.label | successor |
-| Foreach.cs:4:5:7:5 | {...} | Foreach.cs:5:29:5:32 | access to parameter args | semmle.label | successor |
-| Foreach.cs:5:9:6:13 | foreach (... ... in ...) ... | Foreach.cs:3:10:3:11 | exit M1 | semmle.label | empty |
-| Foreach.cs:5:9:6:13 | foreach (... ... in ...) ... | Foreach.cs:5:22:5:24 | String arg | semmle.label | non-empty |
-| Foreach.cs:5:22:5:24 | String arg | Foreach.cs:6:13:6:13 | ; | semmle.label | successor |
-| Foreach.cs:5:29:5:32 | access to parameter args | Foreach.cs:5:9:6:13 | foreach (... ... in ...) ... | semmle.label | successor |
-| Foreach.cs:6:13:6:13 | ; | Foreach.cs:5:9:6:13 | foreach (... ... in ...) ... | semmle.label | successor |
-| Foreach.cs:9:10:9:11 | enter M2 | Foreach.cs:10:5:13:5 | {...} | semmle.label | successor |
-| Foreach.cs:10:5:13:5 | {...} | Foreach.cs:11:27:11:30 | access to parameter args | semmle.label | successor |
-| Foreach.cs:11:9:12:13 | foreach (... ... in ...) ... | Foreach.cs:9:10:9:11 | exit M2 | semmle.label | empty |
-| Foreach.cs:11:9:12:13 | foreach (... ... in ...) ... | Foreach.cs:12:13:12:13 | ; | semmle.label | non-empty |
-| Foreach.cs:11:27:11:30 | access to parameter args | Foreach.cs:11:9:12:13 | foreach (... ... in ...) ... | semmle.label | successor |
-| Foreach.cs:12:13:12:13 | ; | Foreach.cs:11:9:12:13 | foreach (... ... in ...) ... | semmle.label | successor |
+| Foreach.cs:6:10:6:11 | enter M1 | Foreach.cs:7:5:10:5 | {...} | semmle.label | successor |
+| Foreach.cs:7:5:10:5 | {...} | Foreach.cs:8:29:8:32 | access to parameter args | semmle.label | successor |
+| Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | Foreach.cs:6:10:6:11 | exit M1 | semmle.label | empty |
+| Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | Foreach.cs:8:22:8:24 | String arg | semmle.label | non-empty |
+| Foreach.cs:8:22:8:24 | String arg | Foreach.cs:9:13:9:13 | ; | semmle.label | successor |
+| Foreach.cs:8:29:8:32 | access to parameter args | Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | semmle.label | successor |
+| Foreach.cs:9:13:9:13 | ; | Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | semmle.label | successor |
+| Foreach.cs:12:10:12:11 | enter M2 | Foreach.cs:13:5:16:5 | {...} | semmle.label | successor |
+| Foreach.cs:13:5:16:5 | {...} | Foreach.cs:14:27:14:30 | access to parameter args | semmle.label | successor |
+| Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | Foreach.cs:12:10:12:11 | exit M2 | semmle.label | empty |
+| Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | Foreach.cs:15:13:15:13 | ; | semmle.label | non-empty |
+| Foreach.cs:14:27:14:30 | access to parameter args | Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | semmle.label | successor |
+| Foreach.cs:15:13:15:13 | ; | Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | semmle.label | successor |
+| Foreach.cs:18:10:18:11 | enter M3 | Foreach.cs:19:5:22:5 | {...} | semmle.label | successor |
+| Foreach.cs:19:5:22:5 | {...} | Foreach.cs:20:27:20:68 | ... ?? ... | semmle.label | successor |
+| Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:18:10:18:11 | exit M3 | semmle.label | empty |
+| Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:20:22:20:22 | String x | semmle.label | non-empty |
+| Foreach.cs:20:22:20:22 | String x | Foreach.cs:21:11:21:11 | ; | semmle.label | successor |
+| Foreach.cs:20:27:20:27 | access to parameter e | Foreach.cs:20:29:20:38 | call to method ToArray | semmle.label | non-null |
+| Foreach.cs:20:27:20:27 | access to parameter e | Foreach.cs:20:43:20:68 | call to method Empty | semmle.label | null |
+| Foreach.cs:20:27:20:68 | ... ?? ... | Foreach.cs:20:27:20:27 | access to parameter e | semmle.label | successor |
+| Foreach.cs:20:29:20:38 | call to method ToArray | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | semmle.label | non-null |
+| Foreach.cs:20:29:20:38 | call to method ToArray | Foreach.cs:20:43:20:68 | call to method Empty | semmle.label | null |
+| Foreach.cs:20:43:20:68 | call to method Empty | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | semmle.label | successor |
+| Foreach.cs:21:11:21:11 | ; | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | semmle.label | successor |
 | Initializers.cs:6:5:6:16 | enter Initializers | Initializers.cs:6:28:6:30 | {...} | semmle.label | successor |
 | Initializers.cs:6:28:6:30 | {...} | Initializers.cs:6:5:6:16 | exit Initializers | semmle.label | successor |
 | Initializers.cs:8:10:8:10 | enter M | Initializers.cs:9:5:12:5 | {...} | semmle.label | successor |
@@ -460,9 +491,7 @@
 | NullCoalescing.cs:9:45:9:45 | access to parameter s | NullCoalescing.cs:9:12:9:13 | exit M4 | semmle.label | non-null |
 | NullCoalescing.cs:9:45:9:45 | access to parameter s | NullCoalescing.cs:9:51:9:58 | ... ?? ... | semmle.label | null |
 | NullCoalescing.cs:9:51:9:52 | "" | NullCoalescing.cs:9:12:9:13 | exit M4 | semmle.label | non-null |
-| NullCoalescing.cs:9:51:9:52 | "" | NullCoalescing.cs:9:57:9:58 | "" | semmle.label | null |
 | NullCoalescing.cs:9:51:9:58 | ... ?? ... | NullCoalescing.cs:9:51:9:52 | "" | semmle.label | successor |
-| NullCoalescing.cs:9:57:9:58 | "" | NullCoalescing.cs:9:12:9:13 | exit M4 | semmle.label | successor |
 | NullCoalescing.cs:11:9:11:10 | enter M5 | NullCoalescing.cs:11:43:11:68 | ... ? ... : ... | semmle.label | successor |
 | NullCoalescing.cs:11:43:11:68 | ... ? ... : ... | NullCoalescing.cs:11:44:11:59 | ... ?? ... | semmle.label | successor |
 | NullCoalescing.cs:11:44:11:45 | access to parameter b1 | NullCoalescing.cs:11:51:11:58 | ... && ... | semmle.label | null |
@@ -476,6 +505,26 @@
 | NullCoalescing.cs:11:57:11:58 | access to parameter b3 | NullCoalescing.cs:11:68:11:68 | 1 | semmle.label | false |
 | NullCoalescing.cs:11:64:11:64 | 0 | NullCoalescing.cs:11:9:11:10 | exit M5 | semmle.label | successor |
 | NullCoalescing.cs:11:68:11:68 | 1 | NullCoalescing.cs:11:9:11:10 | exit M5 | semmle.label | successor |
+| NullCoalescing.cs:13:10:13:11 | enter M6 | NullCoalescing.cs:14:5:18:5 | {...} | semmle.label | successor |
+| NullCoalescing.cs:14:5:18:5 | {...} | NullCoalescing.cs:15:9:15:32 | ... ...; | semmle.label | successor |
+| NullCoalescing.cs:15:9:15:32 | ... ...; | NullCoalescing.cs:15:13:15:13 | access to local variable j | semmle.label | successor |
+| NullCoalescing.cs:15:13:15:13 | access to local variable j | NullCoalescing.cs:15:17:15:31 | ... ?? ... | semmle.label | successor |
+| NullCoalescing.cs:15:13:15:31 | Int32 j = ... | NullCoalescing.cs:16:9:16:26 | ... ...; | semmle.label | successor |
+| NullCoalescing.cs:15:17:15:26 | (...) ... | NullCoalescing.cs:15:31:15:31 | 0 | semmle.label | null |
+| NullCoalescing.cs:15:17:15:31 | ... ?? ... | NullCoalescing.cs:15:23:15:26 | null | semmle.label | successor |
+| NullCoalescing.cs:15:23:15:26 | null | NullCoalescing.cs:15:17:15:26 | (...) ... | semmle.label | successor |
+| NullCoalescing.cs:15:31:15:31 | 0 | NullCoalescing.cs:15:13:15:31 | Int32 j = ... | semmle.label | successor |
+| NullCoalescing.cs:16:9:16:26 | ... ...; | NullCoalescing.cs:16:13:16:13 | access to local variable s | semmle.label | successor |
+| NullCoalescing.cs:16:13:16:13 | access to local variable s | NullCoalescing.cs:16:17:16:25 | ... ?? ... | semmle.label | successor |
+| NullCoalescing.cs:16:13:16:25 | String s = ... | NullCoalescing.cs:17:9:17:25 | ...; | semmle.label | successor |
+| NullCoalescing.cs:16:17:16:18 | "" | NullCoalescing.cs:16:13:16:25 | String s = ... | semmle.label | non-null |
+| NullCoalescing.cs:16:17:16:25 | ... ?? ... | NullCoalescing.cs:16:17:16:18 | "" | semmle.label | successor |
+| NullCoalescing.cs:17:9:17:9 | access to local variable j | NullCoalescing.cs:17:13:17:24 | ... ?? ... | semmle.label | successor |
+| NullCoalescing.cs:17:9:17:24 | ... = ... | NullCoalescing.cs:13:10:13:11 | exit M6 | semmle.label | successor |
+| NullCoalescing.cs:17:9:17:25 | ...; | NullCoalescing.cs:17:9:17:9 | access to local variable j | semmle.label | successor |
+| NullCoalescing.cs:17:13:17:19 | (...) ... | NullCoalescing.cs:17:9:17:24 | ... = ... | semmle.label | non-null |
+| NullCoalescing.cs:17:13:17:24 | ... ?? ... | NullCoalescing.cs:17:19:17:19 | access to parameter i | semmle.label | successor |
+| NullCoalescing.cs:17:19:17:19 | access to parameter i | NullCoalescing.cs:17:13:17:19 | (...) ... | semmle.label | successor |
 | Patterns.cs:5:10:5:13 | enter Test | Patterns.cs:6:5:43:5 | {...} | semmle.label | successor |
 | Patterns.cs:6:5:43:5 | {...} | Patterns.cs:7:9:7:24 | ... ...; | semmle.label | successor |
 | Patterns.cs:7:9:7:24 | ... ...; | Patterns.cs:7:16:7:16 | access to local variable o | semmle.label | successor |
@@ -717,9 +766,83 @@
 | Switch.cs:50:30:50:38 | ... != ... | Switch.cs:51:17:51:22 | break; | semmle.label | true |
 | Switch.cs:50:35:50:38 | null | Switch.cs:50:30:50:38 | ... != ... | semmle.label | successor |
 | Switch.cs:51:17:51:22 | break; | Switch.cs:44:10:44:11 | exit M4 | semmle.label | break |
-| Switch.cs:55:17:55:21 | enter Throw | Switch.cs:55:34:55:48 | object creation of type Exception | semmle.label | successor |
-| Switch.cs:55:28:55:48 | throw ... | Switch.cs:55:17:55:21 | exit Throw | semmle.label | exception(Exception) |
-| Switch.cs:55:34:55:48 | object creation of type Exception | Switch.cs:55:28:55:48 | throw ... | semmle.label | successor |
+| Switch.cs:55:10:55:11 | enter M5 | Switch.cs:56:5:64:5 | {...} | semmle.label | successor |
+| Switch.cs:56:5:64:5 | {...} | Switch.cs:57:9:63:9 | switch (...) {...} | semmle.label | successor |
+| Switch.cs:57:9:63:9 | switch (...) {...} | Switch.cs:57:17:57:17 | 1 | semmle.label | successor |
+| Switch.cs:57:17:57:17 | 1 | Switch.cs:57:21:57:21 | 2 | semmle.label | successor |
+| Switch.cs:57:17:57:21 | ... + ... | Switch.cs:59:13:59:20 | case ...: | semmle.label | successor |
+| Switch.cs:57:21:57:21 | 2 | Switch.cs:57:17:57:21 | ... + ... | semmle.label | successor |
+| Switch.cs:59:13:59:20 | case ...: | Switch.cs:59:18:59:18 | 2 | semmle.label | successor |
+| Switch.cs:59:18:59:18 | 2 | Switch.cs:61:13:61:20 | case ...: | semmle.label | no-match |
+| Switch.cs:61:13:61:20 | case ...: | Switch.cs:61:18:61:18 | 3 | semmle.label | successor |
+| Switch.cs:61:18:61:18 | 3 | Switch.cs:62:15:62:20 | break; | semmle.label | match |
+| Switch.cs:62:15:62:20 | break; | Switch.cs:55:10:55:11 | exit M5 | semmle.label | break |
+| Switch.cs:66:10:66:11 | enter M6 | Switch.cs:67:5:75:5 | {...} | semmle.label | successor |
+| Switch.cs:67:5:75:5 | {...} | Switch.cs:68:9:74:9 | switch (...) {...} | semmle.label | successor |
+| Switch.cs:68:9:74:9 | switch (...) {...} | Switch.cs:68:25:68:25 | access to parameter s | semmle.label | successor |
+| Switch.cs:68:17:68:25 | (...) ... | Switch.cs:70:13:70:24 | case Int32: | semmle.label | successor |
+| Switch.cs:68:25:68:25 | access to parameter s | Switch.cs:68:17:68:25 | (...) ... | semmle.label | successor |
+| Switch.cs:70:13:70:24 | case Int32: | Switch.cs:70:18:70:20 | access to type Int32 | semmle.label | successor |
+| Switch.cs:70:18:70:20 | access to type Int32 | Switch.cs:72:13:72:21 | case ...: | semmle.label | no-match |
+| Switch.cs:72:13:72:21 | case ...: | Switch.cs:72:18:72:19 | "" | semmle.label | successor |
+| Switch.cs:72:18:72:19 | "" | Switch.cs:66:10:66:11 | exit M6 | semmle.label | no-match |
+| Switch.cs:72:18:72:19 | "" | Switch.cs:73:15:73:20 | break; | semmle.label | match |
+| Switch.cs:73:15:73:20 | break; | Switch.cs:66:10:66:11 | exit M6 | semmle.label | break |
+| Switch.cs:77:10:77:11 | enter M7 | Switch.cs:78:5:89:5 | {...} | semmle.label | successor |
+| Switch.cs:78:5:89:5 | {...} | Switch.cs:79:9:87:9 | switch (...) {...} | semmle.label | successor |
+| Switch.cs:79:9:87:9 | switch (...) {...} | Switch.cs:79:17:79:17 | access to parameter i | semmle.label | successor |
+| Switch.cs:79:17:79:17 | access to parameter i | Switch.cs:81:13:81:20 | case ...: | semmle.label | successor |
+| Switch.cs:81:13:81:20 | case ...: | Switch.cs:81:18:81:18 | 1 | semmle.label | successor |
+| Switch.cs:81:18:81:18 | 1 | Switch.cs:82:22:82:25 | true | semmle.label | match |
+| Switch.cs:81:18:81:18 | 1 | Switch.cs:83:13:83:20 | case ...: | semmle.label | no-match |
+| Switch.cs:82:15:82:26 | return ...; | Switch.cs:77:10:77:11 | exit M7 | semmle.label | return |
+| Switch.cs:82:22:82:25 | true | Switch.cs:82:15:82:26 | return ...; | semmle.label | successor |
+| Switch.cs:83:13:83:20 | case ...: | Switch.cs:83:18:83:18 | 2 | semmle.label | successor |
+| Switch.cs:83:18:83:18 | 2 | Switch.cs:84:15:85:22 | if (...) ... | semmle.label | match |
+| Switch.cs:83:18:83:18 | 2 | Switch.cs:88:16:88:20 | false | semmle.label | no-match |
+| Switch.cs:84:15:85:22 | if (...) ... | Switch.cs:84:19:84:19 | access to parameter j | semmle.label | successor |
+| Switch.cs:84:19:84:19 | access to parameter j | Switch.cs:84:23:84:23 | 2 | semmle.label | successor |
+| Switch.cs:84:19:84:23 | ... > ... | Switch.cs:85:17:85:22 | break; | semmle.label | true |
+| Switch.cs:84:19:84:23 | ... > ... | Switch.cs:86:22:86:25 | true | semmle.label | false |
+| Switch.cs:84:23:84:23 | 2 | Switch.cs:84:19:84:23 | ... > ... | semmle.label | successor |
+| Switch.cs:85:17:85:22 | break; | Switch.cs:88:16:88:20 | false | semmle.label | break |
+| Switch.cs:86:15:86:26 | return ...; | Switch.cs:77:10:77:11 | exit M7 | semmle.label | return |
+| Switch.cs:86:22:86:25 | true | Switch.cs:86:15:86:26 | return ...; | semmle.label | successor |
+| Switch.cs:88:9:88:21 | return ...; | Switch.cs:77:10:77:11 | exit M7 | semmle.label | return |
+| Switch.cs:88:16:88:20 | false | Switch.cs:88:9:88:21 | return ...; | semmle.label | successor |
+| Switch.cs:91:10:91:11 | enter M8 | Switch.cs:92:5:99:5 | {...} | semmle.label | successor |
+| Switch.cs:92:5:99:5 | {...} | Switch.cs:93:9:97:9 | switch (...) {...} | semmle.label | successor |
+| Switch.cs:93:9:97:9 | switch (...) {...} | Switch.cs:93:17:93:17 | access to parameter o | semmle.label | successor |
+| Switch.cs:93:17:93:17 | access to parameter o | Switch.cs:95:13:95:24 | case Int32: | semmle.label | successor |
+| Switch.cs:95:13:95:24 | case Int32: | Switch.cs:95:18:95:20 | access to type Int32 | semmle.label | successor |
+| Switch.cs:95:18:95:20 | access to type Int32 | Switch.cs:96:22:96:25 | true | semmle.label | match |
+| Switch.cs:95:18:95:20 | access to type Int32 | Switch.cs:98:16:98:20 | false | semmle.label | no-match |
+| Switch.cs:96:15:96:26 | return ...; | Switch.cs:91:10:91:11 | exit M8 | semmle.label | return |
+| Switch.cs:96:22:96:25 | true | Switch.cs:96:15:96:26 | return ...; | semmle.label | successor |
+| Switch.cs:98:9:98:21 | return ...; | Switch.cs:91:10:91:11 | exit M8 | semmle.label | return |
+| Switch.cs:98:16:98:20 | false | Switch.cs:98:9:98:21 | return ...; | semmle.label | successor |
+| Switch.cs:101:9:101:10 | enter M9 | Switch.cs:102:5:109:5 | {...} | semmle.label | successor |
+| Switch.cs:102:5:109:5 | {...} | Switch.cs:103:9:107:9 | switch (...) {...} | semmle.label | successor |
+| Switch.cs:103:9:107:9 | switch (...) {...} | Switch.cs:103:17:103:17 | access to parameter s | semmle.label | successor |
+| Switch.cs:103:17:103:17 | access to parameter s | Switch.cs:103:19:103:25 | access to property Length | semmle.label | non-null |
+| Switch.cs:103:17:103:17 | access to parameter s | Switch.cs:105:13:105:20 | case ...: | semmle.label | null |
+| Switch.cs:103:19:103:25 | access to property Length | Switch.cs:105:13:105:20 | case ...: | semmle.label | successor |
+| Switch.cs:105:13:105:20 | case ...: | Switch.cs:105:18:105:18 | 0 | semmle.label | successor |
+| Switch.cs:105:18:105:18 | 0 | Switch.cs:105:29:105:29 | 0 | semmle.label | match |
+| Switch.cs:105:18:105:18 | 0 | Switch.cs:106:13:106:20 | case ...: | semmle.label | no-match |
+| Switch.cs:105:22:105:30 | return ...; | Switch.cs:101:9:101:10 | exit M9 | semmle.label | return |
+| Switch.cs:105:29:105:29 | 0 | Switch.cs:105:22:105:30 | return ...; | semmle.label | successor |
+| Switch.cs:106:13:106:20 | case ...: | Switch.cs:106:18:106:18 | 1 | semmle.label | successor |
+| Switch.cs:106:18:106:18 | 1 | Switch.cs:106:29:106:29 | 1 | semmle.label | match |
+| Switch.cs:106:18:106:18 | 1 | Switch.cs:108:17:108:17 | 1 | semmle.label | no-match |
+| Switch.cs:106:22:106:30 | return ...; | Switch.cs:101:9:101:10 | exit M9 | semmle.label | return |
+| Switch.cs:106:29:106:29 | 1 | Switch.cs:106:22:106:30 | return ...; | semmle.label | successor |
+| Switch.cs:108:9:108:18 | return ...; | Switch.cs:101:9:101:10 | exit M9 | semmle.label | return |
+| Switch.cs:108:16:108:17 | -... | Switch.cs:108:9:108:18 | return ...; | semmle.label | successor |
+| Switch.cs:108:17:108:17 | 1 | Switch.cs:108:16:108:17 | -... | semmle.label | successor |
+| Switch.cs:111:17:111:21 | enter Throw | Switch.cs:111:34:111:48 | object creation of type Exception | semmle.label | successor |
+| Switch.cs:111:28:111:48 | throw ... | Switch.cs:111:17:111:21 | exit Throw | semmle.label | exception(Exception) |
+| Switch.cs:111:34:111:48 | object creation of type Exception | Switch.cs:111:28:111:48 | throw ... | semmle.label | successor |
 | TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:4:5:9:5 | {...} | semmle.label | successor |
 | TypeAccesses.cs:4:5:9:5 | {...} | TypeAccesses.cs:5:9:5:26 | ... ...; | semmle.label | successor |
 | TypeAccesses.cs:5:9:5:26 | ... ...; | TypeAccesses.cs:5:13:5:13 | access to local variable s | semmle.label | successor |
@@ -909,6 +1032,7 @@
 | cflow.cs:46:27:46:27 | 1 | cflow.cs:46:17:46:28 | goto case ...; | semmle.label | successor |
 | cflow.cs:47:13:47:19 | case ...: | cflow.cs:47:18:47:18 | 3 | semmle.label | successor |
 | cflow.cs:47:18:47:18 | 3 | cflow.cs:48:17:48:39 | ...; | semmle.label | match |
+| cflow.cs:47:18:47:18 | 3 | cflow.cs:51:9:59:9 | switch (...) {...} | semmle.label | no-match |
 | cflow.cs:48:17:48:38 | call to method WriteLine | cflow.cs:49:17:49:22 | break; | semmle.label | successor |
 | cflow.cs:48:17:48:39 | ...; | cflow.cs:48:35:48:37 | "3" | semmle.label | successor |
 | cflow.cs:48:35:48:37 | "3" | cflow.cs:48:17:48:38 | call to method WriteLine | semmle.label | successor |
@@ -933,6 +1057,7 @@
 | cflow.cs:60:27:60:31 | this access | cflow.cs:60:27:60:31 | access to field Field | semmle.label | successor |
 | cflow.cs:62:13:62:19 | case ...: | cflow.cs:62:18:62:18 | 0 | semmle.label | successor |
 | cflow.cs:62:18:62:18 | 0 | cflow.cs:63:17:64:55 | if (...) ... | semmle.label | match |
+| cflow.cs:62:18:62:18 | 0 | cflow.cs:67:16:67:16 | access to parameter a | semmle.label | no-match |
 | cflow.cs:63:17:64:55 | if (...) ... | cflow.cs:63:21:63:34 | !... | semmle.label | successor |
 | cflow.cs:63:21:63:34 | !... | cflow.cs:63:23:63:27 | this access | semmle.label | successor |
 | cflow.cs:63:23:63:27 | access to field Field | cflow.cs:63:32:63:33 | "" | semmle.label | successor |

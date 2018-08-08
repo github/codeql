@@ -82,6 +82,8 @@
 | 78 | 16 | ExitMethods.cs:78:16:78:25 | ... != ... | true | 78 | 29 | ExitMethods.cs:78:29:78:29 | 1 |
 | 83 | 16 | ExitMethods.cs:83:16:83:30 | call to method Contains | false | 83 | 38 | ExitMethods.cs:83:38:83:38 | 1 |
 | 83 | 16 | ExitMethods.cs:83:16:83:30 | call to method Contains | true | 83 | 34 | ExitMethods.cs:83:34:83:34 | 0 |
+| 84 | 19 | Switch.cs:84:19:84:23 | ... > ... | false | 86 | 22 | Switch.cs:86:22:86:25 | true |
+| 84 | 19 | Switch.cs:84:19:84:23 | ... > ... | true | 85 | 17 | Switch.cs:85:17:85:22 | break; |
 | 86 | 13 | cflow.cs:86:13:86:21 | ... != ... | false | 84 | 18 | cflow.cs:84:18:84:19 | exit M2 |
 | 86 | 13 | cflow.cs:86:13:86:21 | ... != ... | true | 86 | 26 | cflow.cs:86:26:86:26 | access to parameter s |
 | 86 | 26 | cflow.cs:86:26:86:37 | ... > ... | false | 84 | 18 | cflow.cs:84:18:84:19 | exit M2 |

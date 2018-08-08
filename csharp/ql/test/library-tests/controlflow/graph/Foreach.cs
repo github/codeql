@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq;
+
 class Foreach
 {
     void M1(string[] args)
@@ -10,5 +13,11 @@ class Foreach
     {
         foreach (var _ in args)
             ;
+    }
+
+    void M3(IEnumerable<string> e)
+    {
+        foreach (var x in e?.ToArray() ?? Enumerable.Empty<string>())
+          ;
     }
 }

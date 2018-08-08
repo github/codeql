@@ -14,39 +14,111 @@
 import csharp
 import semmle.code.csharp.commons.Assertions
 import semmle.code.csharp.commons.Constants
+import ControlFlowGraph
 
-/** A condition of an `if` statement or a conditional expression. */
-private class IfCondition extends Expr {
-  IfCondition() {
-    this = any(IfStmt is).getCondition() or
-    this = any(ConditionalExpr ce).getCondition()
+/** A constant condition. */
+abstract class ConstantCondition extends Expr {
+  /** Gets the alert message for this constant condition. */
+  abstract string getMessage();
+
+  /** Holds if this constant condition is white-listed. */
+  predicate isWhiteListed() { none() }
+}
+
+/** A constant Boolean condition. */
+class ConstantBooleanCondition extends ConstantCondition {
+  boolean b;
+
+  ConstantBooleanCondition() {
+    isConstantCondition(this, b)
+  }
+
+  override string getMessage() {
+    result = "Condition always evaluates to '" + b + "'."
+  }
+
+  override predicate isWhiteListed() {
+    // E.g. `x ?? false`
+    this.(BoolLiteral) = any(NullCoalescingExpr nce).getRightOperand()
   }
 }
 
-/** A loop condition */
-private class LoopCondition extends Expr {
-  LoopCondition() {
+/** A constant condition in an `if` statement or a conditional expression. */
+class ConstantIfCondition extends ConstantBooleanCondition {
+  ConstantIfCondition() {
+    this = any(IfStmt is).getCondition().getAChildExpr*() or
+    this = any(ConditionalExpr ce).getCondition().getAChildExpr*()
+  }
+
+  override predicate isWhiteListed() {
+    ConstantBooleanCondition.super.isWhiteListed()
+    or
+    // It is a common pattern to use a local constant/constant field to control
+    // whether code parts must be executed or not
+    this instanceof AssignableRead
+  }
+}
+
+/** A constant loop condition. */
+class ConstantLoopCondition extends ConstantBooleanCondition {
+  ConstantLoopCondition() {
     this = any(LoopStmt ls).getCondition()
   }
+
+  override predicate isWhiteListed() {
+    // Clearly intentional infinite loops are allowed
+    this.(BoolLiteral).getBoolValue() = true
+  }
 }
 
-/** Holds if `e` is a conditional expression that is allowed to be constant. */
-predicate isWhiteListed(Expr e) {
-  // It is a common pattern to use a local constant/constant field to control
-  // whether code parts must be executed or not
-  e = any(IfCondition ic).getAChildExpr*() and
-  e instanceof AssignableRead
-  or
-  // Clearly intentional infinite loops are allowed
-  e instanceof LoopCondition and
-  e.(BoolLiteral).getBoolValue() = true
-  or
-  // E.g. `x ?? false`
-  e.(BoolLiteral) = any(NullCoalescingExpr nce).getRightOperand()
+/** A constant nullness condition. */
+class ConstantNullnessCondition extends ConstantCondition {
+  boolean b;
+
+  ConstantNullnessCondition() {
+    forex(ControlFlowNode cfn |
+      cfn = this.getAControlFlowNode() |
+      exists(ControlFlowEdgeNullness t |
+        exists(cfn.getASuccessorByType(t)) |
+        if t.isNull() then b = true else b = false
+      ) and
+      strictcount(ControlFlowEdgeType t | exists(cfn.getASuccessorByType(t))) = 1
+    )
+  }
+
+  override string getMessage() {
+    if b = true then
+      result = "Expression is always 'null'."
+    else
+      result = "Expression is never 'null'."
+  }
 }
 
-from Expr e, boolean b
-where isConstantCondition(e, b)
-  and not isWhiteListed(e)
-  and not isExprInAssertion(e)
-select e, "Condition always evaluates to '" + b + "'."
+/** A constant matching condition. */
+class ConstantMatchingCondition extends ConstantCondition {
+  boolean b;
+
+  ConstantMatchingCondition() {
+    forex(ControlFlowNode cfn |
+      cfn = this.getAControlFlowNode() |
+      exists(ControlFlowEdgeMatching t |
+        exists(cfn.getASuccessorByType(t)) |
+        if t.isMatch() then b = true else b = false
+      ) and
+      strictcount(ControlFlowEdgeType t | exists(cfn.getASuccessorByType(t))) = 1
+    )
+  }
+
+  override string getMessage() {
+    if b = true then
+      result = "Pattern always matches."
+    else
+      result = "Pattern never matches."
+  }
+}
+
+from ConstantCondition c, string msg
+where msg = c.getMessage()
+  and not c.isWhiteListed()
+  and not isExprInAssertion(c)
+select c, msg
