@@ -9,6 +9,7 @@
 + semmlecode-javascript-queries/Security/CWE-134/TaintedFormatString.ql: /Security/CWE/CWE-134
 + semmlecode-javascript-queries/Security/CWE-209/StackTraceExposure.ql: /Security/CWE/CWE-209
 + semmlecode-javascript-queries/Security/CWE-312/CleartextStorage.ql: /Security/CWE/CWE-312
++ semmlecode-javascript-queries/Security/CWE-312/CleartextLogging.ql: /Security/CWE/CWE-312
 + semmlecode-javascript-queries/Security/CWE-313/PasswordInConfigurationFile.ql: /Security/CWE/CWE-313
 + semmlecode-javascript-queries/Security/CWE-327/BrokenCryptoAlgorithm.ql: /Security/CWE/CWE-327
 + semmlecode-javascript-queries/Security/CWE-338/InsecureRandomness.ql: /Security/CWE/CWE-338

@@ -22,6 +22,15 @@ sensitive information.
 In general, decrypt sensitive information only at the point where it is
 necessary for it to be used in cleartext.
 </p>
+
+<p>
+
+Be aware that external processes often store the <code>standard
+out</code> and <code>standard error</code> streams of the application,
+causing logged sensitive information to be stored as well.
+
+</p>
+
 </recommendation>
 
 <example>
