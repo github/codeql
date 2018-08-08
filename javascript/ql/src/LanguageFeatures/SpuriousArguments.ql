@@ -83,5 +83,14 @@ class SpuriousArguments extends Expr {
 
 from SpuriousArguments args, Function f, string arguments
 where f = args.getCall().getACallee() and
-      if args.getCount() = 1 then arguments = "argument" else arguments = "arguments"
+      if args.getCount() = 1 then arguments = "argument" else arguments = "arguments" and
+      (
+        // exclude empty functions, they are probably commented out debug utilities ...
+        exists(f.getABodyStmt()) or
+        // ... but include: constructors, arrows and externals/ambients
+        f instanceof Constructor or // unlikely to be a debug utility
+        f instanceof ArrowFunctionExpr or // cannot be empty
+        f instanceof ExternalFunction or // always empty
+        f.isAmbient() // always empty
+      )
 select args, "Superfluous " + arguments + " passed to $@.", f, f.describe()
