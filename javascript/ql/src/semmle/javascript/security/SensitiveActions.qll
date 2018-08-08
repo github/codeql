@@ -11,27 +11,37 @@
 
 import javascript
 
-/** A regular expression that identifies strings that look like they represent secret data that are not passwords. */
-private string suspiciousNonPassword() {
-  result = "(?is).*(secret|account|accnt|(?<!un)trusted).*"
-}
-/** A regular expression that identifies strings that look like they represent secret data that are passwords. */
-private string suspiciousPassword() {
-  result = "(?is).*(password|passwd).*"
-}
-
-/** A regular expression that identifies strings that look like they represent secret data. */
-private string suspicious() {
-  result = suspiciousPassword() or result = suspiciousNonPassword()
-}
-
 /**
- * A string for `match` that identifies strings that look like they represent secret data that is
- * hashed or encrypted.
+ * Provides heuristics for identifying names related to sensitive information.
+ *
+ * INTERNAL: Do not use directly.
  */
-private string nonSuspicious() {
-  result = "(?is).*(hash|(?<!un)encrypted|\\bcrypt\\b).*"
+module HeuristicNames {
+
+  /** A regular expression that identifies strings that look like they represent secret data that are not passwords. */
+  string suspiciousNonPassword() {
+    result = "(?is).*(secret|account|accnt|(?<!un)trusted).*"
+  }
+  /** A regular expression that identifies strings that look like they represent secret data that are passwords. */
+  string suspiciousPassword() {
+    result = "(?is).*(password|passwd).*"
+  }
+
+  /** A regular expression that identifies strings that look like they represent secret data. */
+  string suspicious() {
+    result = suspiciousPassword() or result = suspiciousNonPassword()
+  }
+
+  /**
+   * A regular expression that identifies strings that look like they represent data that is
+   * hashed or encrypted.
+   */
+  string nonSuspicious() {
+    result = "(?is).*(redact|censor|obfuscate|hash|md5|sha|((?<!un)(en))?(crypt|code)).*"
+  }
+
 }
+private import HeuristicNames
 
 /** An expression that might contain sensitive data. */
 abstract class SensitiveExpr extends Expr {
