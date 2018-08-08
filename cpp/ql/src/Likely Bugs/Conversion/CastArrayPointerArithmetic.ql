@@ -9,6 +9,7 @@
  * @precision high
  * @tags correctness
  *       reliability
+ *       security
  *       external/cwe/cwe-119
  *       external/cwe/cwe-843
  * @id cpp/upcast-array-pointer-arithmetic

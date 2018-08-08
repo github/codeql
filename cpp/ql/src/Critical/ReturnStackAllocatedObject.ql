@@ -9,6 +9,7 @@
  * @id cpp/return-stack-allocated-object
  * @problem.severity warning
  * @tags reliability
+ *       security
  *       external/cwe/cwe-562
  */
 import semmle.code.cpp.pointsto.PointsTo

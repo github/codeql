@@ -7,6 +7,8 @@
  * @id cpp/self-assignment-check
  * @problem.severity warning
  * @tags reliability
+ *       security
+ *       external/cwe/cwe-826
  */
 import cpp
 

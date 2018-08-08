@@ -10,6 +10,10 @@
  * @id cpp/bad-addition-overflow-check
  * @tags reliability
  *       correctness
+ *       security
+ *       external/cwe/190
+ *       external/cwe/192
+ * 
  */
 
 import cpp
