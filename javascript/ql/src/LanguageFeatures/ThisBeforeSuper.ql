@@ -11,6 +11,7 @@
  */
 
 import javascript
+import semmle.javascript.RestrictedLocations
 
 /**
  * Holds if `e` is an expression of the given `kind` that must be guarded by a
@@ -59,4 +60,4 @@ where needsGuard(e, kind) and unguarded(e, ctor) and
         sc.getBinder() = ctor and
         sc.getEnclosingFunction() != ctor
       )
-select ctor, "The super constructor must be called before using '$@'.", e, kind
+select (FirstLineOf)ctor, "The super constructor must be called before using '$@'.", e, kind
