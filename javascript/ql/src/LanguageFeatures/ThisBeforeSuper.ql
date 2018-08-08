@@ -59,4 +59,4 @@ where needsGuard(e, kind) and unguarded(e, ctor) and
         sc.getBinder() = ctor and
         sc.getEnclosingFunction() != ctor
       )
-select e, "The super constructor must be called before using '" + kind + "'."
+select ctor, "The super constructor must be called before using '$@'.", e, kind
