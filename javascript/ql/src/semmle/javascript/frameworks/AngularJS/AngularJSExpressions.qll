@@ -592,7 +592,7 @@ class NgSingleFilter extends TNgSingleFilter, NgAstNode {
    * Gets the `i`th argument expression of this filter call.
    */
   NgExpr getArgument(int i) {
-    result = getChild(1).(NgFilterArgument).getElement(i)
+    result = getChild(0).(NgFilterArgument).getElement(i)
   }
 
 }
