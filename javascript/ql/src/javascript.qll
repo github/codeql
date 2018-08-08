@@ -58,6 +58,7 @@ import semmle.javascript.frameworks.DigitalOcean
 import semmle.javascript.frameworks.Electron
 import semmle.javascript.frameworks.jQuery
 import semmle.javascript.frameworks.LodashUnderscore
+import semmle.javascript.frameworks.Logging
 import semmle.javascript.frameworks.HttpFrameworks
 import semmle.javascript.frameworks.NoSQL
 import semmle.javascript.frameworks.PkgCloud

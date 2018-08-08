@@ -1,0 +1,17 @@
+| tst.js:3:1:3:26 | console ... ", arg) | tst.js:3:13:3:20 | "msg %s" |
+| tst.js:3:1:3:26 | console ... ", arg) | tst.js:3:23:3:25 | arg |
+| tst.js:4:1:4:28 | console ... ", arg) | tst.js:4:15:4:22 | "msg %s" |
+| tst.js:4:1:4:28 | console ... ", arg) | tst.js:4:25:4:27 | arg |
+| tst.js:5:1:5:28 | console ... ", arg) | tst.js:5:15:5:22 | "msg %s" |
+| tst.js:5:1:5:28 | console ... ", arg) | tst.js:5:25:5:27 | arg |
+| tst.js:7:1:7:34 | require ... ", arg) | tst.js:7:21:7:28 | "msg %s" |
+| tst.js:7:1:7:34 | require ... ", arg) | tst.js:7:31:7:33 | arg |
+| tst.js:9:1:9:38 | require ... ", arg) | tst.js:9:25:9:32 | "msg %s" |
+| tst.js:9:1:9:38 | require ... ", arg) | tst.js:9:35:9:37 | arg |
+| tst.js:11:1:11:73 | require ...  other) | tst.js:11:50:11:63 | "msg with arg" |
+| tst.js:12:1:12:53 | require ... ", arg) | tst.js:12:40:12:47 | "msg %s" |
+| tst.js:12:1:12:53 | require ... ", arg) | tst.js:12:50:12:52 | arg |
+| tst.js:14:1:14:48 | require ... ", arg) | tst.js:14:35:14:42 | "msg %s" |
+| tst.js:14:1:14:48 | require ... ", arg) | tst.js:14:45:14:47 | arg |
+| tst.js:16:1:16:35 | console ... ", arg) | tst.js:16:22:16:29 | "msg %s" |
+| tst.js:16:1:16:35 | console ... ", arg) | tst.js:16:32:16:34 | arg |
