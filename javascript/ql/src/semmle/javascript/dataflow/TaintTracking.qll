@@ -365,7 +365,9 @@ module TaintTracking {
             name = "trimRight" or
             // sorted, interesting, properties of Object.prototype
             name = "toString" or
-            name = "valueOf"
+            name = "valueOf" or
+            // sorted, interesting, properties of Array.prototype
+            name = "join"
           ) or
           exists (int i | pred.asExpr() = astNode.(MethodCallExpr).getArgument(i) |
             name = "concat" or
