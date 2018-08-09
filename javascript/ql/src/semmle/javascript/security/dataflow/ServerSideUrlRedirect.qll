@@ -34,33 +34,23 @@ module ServerSideUrlRedirect {
       )
     }
   }
-
-  /**
-   * Gets the left operand of `nd` if it is a concatenation.
-   */
-  private DataFlow::Node getPrefixOperand(DataFlow::Node nd) {
-    exists (Expr e | e instanceof AddExpr or e instanceof AssignAddExpr |
-      nd = DataFlow::valueNode(e) and
-      result = DataFlow::valueNode(e.getChildExpr(0))
-    )
-  }
   
   /**
    * Gets a node that is transitively reachable from `nd` along prefix predecessor edges.
    */
   private DataFlow::Node prefixCandidate(Sink sink) {
     result = sink or
-    result = getPrefixOperand(prefixCandidate(sink)) or
-    result = prefixCandidate(sink).getAPredecessor()
+    result = prefixCandidate(sink).getAPredecessor() or
+    result = StringConcatenation::getFirstOperand(prefixCandidate(sink))
   }
-  
+
   /**
    * Gets an expression that may end up being a prefix of the string concatenation `nd`.
    */
   private Expr getAPrefix(Sink sink) {
     exists (DataFlow::Node prefix |
       prefix = prefixCandidate(sink) and
-      not exists(getPrefixOperand(prefix)) and
+      not exists(StringConcatenation::getFirstOperand(prefix)) and
       not exists(prefix.getAPredecessor()) and
       result = prefix.asExpr()
     )

@@ -304,6 +304,47 @@ class ArrayLiteralNode extends DataFlow::ValueNode, DataFlow::DefaultSourceNode 
 
 }
 
+/** A data flow node corresponding to a `new Array()` or `Array()` invocation. */
+class ArrayConstructorInvokeNode extends DataFlow::InvokeNode {
+  ArrayConstructorInvokeNode() {
+    getCallee() = DataFlow::globalVarRef("Array")
+  }
+
+  /** Gets the `i`th initial element of this array, if one is provided. */
+  DataFlow::ValueNode getElement(int i) {
+    getNumArgument() > 1 and // A single-argument invocation specifies the array length, not an element.
+    result = getArgument(i)
+  }
+
+  /** Gets an initial element of this array, if one is provided. */
+  DataFlow::ValueNode getAnElement() {
+    getNumArgument() > 1 and
+    result = getAnArgument()
+  }
+}
+
+/**
+ * A data flow node corresponding to the creation or a new array, either through an array literal
+ * or an invocation of the `Array` constructor.
+ */
+class ArrayCreationNode extends DataFlow::ValueNode, DataFlow::DefaultSourceNode {
+  ArrayCreationNode() {
+    this instanceof ArrayLiteralNode or
+    this instanceof ArrayConstructorInvokeNode
+  }
+
+  /** Gets the `i`th initial element of this array, if one is provided. */
+  DataFlow::ValueNode getElement(int i) {
+    result = this.(ArrayLiteralNode).getElement(i) or
+    result = this.(ArrayConstructorInvokeNode).getElement(i)
+  }
+
+  /** Gets an initial element of this array, if one if provided. */
+  DataFlow::ValueNode getAnElement() {
+    result = getElement(_)
+  }
+}
+
 /**
  * A data flow node corresponding to a `default` import from a module, or a
  * (AMD or CommonJS) `require` of a module.
