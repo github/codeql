@@ -269,8 +269,8 @@ class Instruction extends Construction::TInstruction {
     // Register results are always in SSA form.
     not hasMemoryResult() or
     // An unmodeled result will have a use on the `UnmodeledUse` instruction.
-    not exists(UnmodeledUseOperand useTag |
-      hasUse(_, useTag)
+    not exists(Instruction useInstr, UnmodeledUseOperand useTag |
+      this = useInstr.getOperand(useTag)
     )
   }
 
@@ -302,14 +302,6 @@ class Instruction extends Construction::TInstruction {
    */
   final Instruction getAPredecessor() {
     result = getPredecessor(_)
-  }
-
-  /**
-   * Holds if the result of this instruction is consumed by `useInstruction` as
-   * an operand with tag `useTag`.
-   */
-  final predicate hasUse(Instruction useInstruction, OperandTag useTag) {
-    this = useInstruction.getOperand(useTag)
   }
 }
 
