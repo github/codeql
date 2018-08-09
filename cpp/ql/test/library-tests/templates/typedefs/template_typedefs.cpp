@@ -12,10 +12,10 @@ void functions() {
   b(static_cast<my_int>(0));
   c<int>(0);
   d<my_int>(0);
-  
+
   e<int>(0);
   e<my_int>(0);
-  
+
   f<my_int>(0);
   f<int>(0);
 }
@@ -27,6 +27,7 @@ template <typename TD> struct D {};
 template <typename TE> struct E {};
 template <typename TF> struct F {};
 template <typename TG> struct G {};
+template <typename TH> struct H {};
 
 struct S { int x; };
 typedef S S_t;
@@ -34,18 +35,27 @@ typedef S S_t;
 typedef C<int> C1;
 typedef D<my_int> D1;
 
+template <typename TZ>
+using Z = TZ;
+
 void types() {
   A<int>* a;
   B<my_int>* b;
   C1 c;
   D1 d;
-  
+
   E<int> e1;
   E<my_int> e2;
-  
+  E<Z<int>> e3;
+
   F<my_int> f1;
   F<int> f2;
-  
+  F<Z<int>> f3;
+
+  H<Z<int>> h1;
+  H<my_int> h2;
+  H<int> h3;
+
   G<my_int*> g1;
   G<const my_int* const> g2;
   G<my_int**&> g3;
