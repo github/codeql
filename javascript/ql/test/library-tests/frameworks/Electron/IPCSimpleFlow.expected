@@ -1,0 +1,4 @@
+| electron.js:7:30:7:35 | 'pong' | electron.js:16:33:16:35 | arg | reply |
+| electron.js:12:23:12:28 | 'pong' | electron.js:22:1:22:36 | ipcRend ... 'ping') | sync |
+| electron.js:20:27:20:32 | 'ping' | electron.js:6:29:6:31 | arg | async |
+| electron.js:22:30:22:35 | 'ping' | electron.js:11:28:11:30 | arg | sync |
