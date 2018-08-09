@@ -9,6 +9,7 @@
  * @id cpp/too-many-format-arguments
  * @tags reliability
  *       correctness
+ *       security
  */
 import cpp
 

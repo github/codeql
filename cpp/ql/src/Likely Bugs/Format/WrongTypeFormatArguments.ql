@@ -8,6 +8,7 @@
  * @id cpp/wrong-type-format-argument
  * @tags reliability
  *       correctness
+ *       security
  *       external/cwe/cwe-686
  */
 

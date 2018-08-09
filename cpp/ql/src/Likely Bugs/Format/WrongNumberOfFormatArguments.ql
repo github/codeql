@@ -8,6 +8,7 @@
  * @id cpp/wrong-number-format-arguments
  * @tags reliability
  *       correctness
+ *       security
  *       external/cwe/cwe-685
  */
 import cpp
