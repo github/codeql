@@ -21,3 +21,10 @@ class A41 extends B1 { constructor() { if (a) super(); this.a(); } }
 class B2 { constructor() { throw ""; } }
 class A42 extends B2 { constructor() { try { super(); } finally { this.a; } } }
 class A43 extends B2 { constructor() { try { super(); } catch (err) { } this.a; } }
+
+class A44 extends B1 {
+    constructor() {
+        this.p1 = 0;
+        this.p2 = 0;
+    }
+}
