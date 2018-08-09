@@ -106,8 +106,19 @@ where repl.getMethodName() = "replace" and
       (
        not old.(RegExpLiteral).isGlobal() and
        msg = "This replaces only the first occurrence of " + old + "." and
-       // only flag if this is likely to be a sanitizer
-       getAMatchedString(old) = metachar() and
+       // only flag if this is likely to be a sanitizer or URL encoder or decoder
+       exists (string m | m = getAMatchedString(old) |
+         // sanitizer
+         m = metachar()
+         or
+         exists (string urlEscapePattern | urlEscapePattern = "(%[0-9A-Fa-f]{2})+" |
+           // URL decoder
+           m.regexpMatch(urlEscapePattern)
+           or
+           // URL encoder
+           repl.getArgument(1).getStringValue().regexpMatch(urlEscapePattern)
+         )
+       ) and
        // don't flag replace operations in a loop
        not DataFlow::valueNode(repl.getReceiver()) = DataFlow::valueNode(repl).getASuccessor+()
        or
