@@ -47,12 +47,12 @@ private Element getRealParent(Expr expr) {
 }
 
 /**
- * Holds if `expr` should be ignored for the purposes of code generation due to
- * some property of `expr` itself. Unlike `ignoreExpr()`, this predicate does
- * not ignore an expression solely because it is a descendant of an ignored
- * element.
+ * Holds if `expr` and all of its descendants should be ignored for the purposes
+ * of IR generation due to some property of `expr` itself. Unlike
+ * `ignoreExpr()`, this predicate does not ignore an expression solely because
+ * it is a descendant of an ignored element.
  */
-private predicate ignoreExprLocal(Expr expr) {
+private predicate ignoreExprAndDescendants(Expr expr) {
   // Ignore parentless expressions
   not exists(getRealParent(expr)) or
   // Ignore the constants in SwitchCase, since their values are embedded in the
@@ -65,23 +65,32 @@ private predicate ignoreExprLocal(Expr expr) {
   // node as its qualifier, but that `FieldAccess` does not have a child of its own.
   // We'll ignore that `FieldAccess`, and supply the receiver as part of the calling
   // context, much like we do with constructor calls.
-  expr.getParent().(DestructorCall).getParent() instanceof DestructorFieldDestruction
+  expr.getParent().(DestructorCall).getParent() instanceof DestructorFieldDestruction or
+  exists(NewArrayExpr newExpr |
+    // REVIEW: Ignore initializers for `NewArrayExpr` until we determine how to
+    // represent them.
+    newExpr.getInitializer().getFullyConverted() = expr
+  )
+}
+
+/**
+ * Holds if `expr` (not including its descendants) should be ignored for the
+ * purposes of IR generation.
+ */
+private predicate ignoreExprOnly(Expr expr) {
+  exists(NewOrNewArrayExpr newExpr |
+    // Ignore the allocator call, because we always synthesize it. Don't ignore
+    // its arguments, though, because we use them as part of the synthesis.
+    newExpr.getAllocatorCall() = expr
+  )
 }
 
 /**
  * Holds if `expr` should be ignored for the purposes of IR generation.
  */
 private predicate ignoreExpr(Expr expr) {
-  ignoreExprLocal(expr) or
-  // Ignore all descendants of ignored elements as well.
-  ignoreElement(getRealParent(expr))
-}
-
-/**
- * Holds if `element` should be ignored for the purposes of IR generation.
- */
-private predicate ignoreElement(Element element) {
-  ignoreExpr(element.(Expr))
+  ignoreExprOnly(expr) or
+  ignoreExprAndDescendants(getRealParent*(expr))
 }
 
 /**
@@ -216,6 +225,9 @@ newtype TTranslatedElement =
       exists(ConstructorFieldInit fieldInit |
         fieldInit.getExpr().getFullyConverted() = expr
       ) or
+      exists(NewExpr newExpr |
+        newExpr.getInitializer().getFullyConverted() = expr
+      ) or
       exists(ThrowExpr throw |
         throw.getExpr().getFullyConverted() = expr
       )
@@ -298,6 +310,14 @@ newtype TTranslatedElement =
     exists(DeclStmt declStmt |
       declStmt.getADeclarationEntry() = entry
     )
+  } or
+  // An allocator call in a `new` or `new[]` expression
+  TTranslatedAllocatorCall(NewOrNewArrayExpr newExpr) {
+    not ignoreExpr(newExpr)
+  } or
+  // An allocation size for a `new` or `new[]` expression
+  TTranslatedAllocationSize(NewOrNewArrayExpr newExpr) {
+    not ignoreExpr(newExpr)
   }
 
 /**

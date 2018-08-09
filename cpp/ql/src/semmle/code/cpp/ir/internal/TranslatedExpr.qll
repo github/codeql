@@ -16,18 +16,27 @@ TranslatedExpr getTranslatedExpr(Expr expr) {
   result.producesExprResult()
 }
 
-abstract class TranslatedExpr extends TranslatedElement {
+/**
+ * The IR translation of an expression that was either directly present in the
+ * AST as an `Expr` (`TranslatedExpr`) or was synthesized from something other
+ * than an `Expr` .
+ */
+abstract class TranslatedOrSynthesizedExpr extends TranslatedElement {
+  /**
+   * Gets the instruction that produces the result of the expression.
+   */
+  abstract Instruction getResult();
+}
+
+/**
+ * The IR translation of some part of an expression. This could be the
+ * expression itself (`TranslatedExpr`), or some other construct synthesized
+ * from an `Expr` (e.g. `TranslatedAllocatorCall`).
+ */
+abstract class TranslatedFromExpr extends TranslatedElement {
   Expr expr;
 
-  override final string toString() {
-    result = expr.toString()
-  }
-
   override final Locatable getAST() {
-    result = expr
-  }
-
-  final Expr getExpr() {
     result = expr
   }
 
@@ -35,15 +44,30 @@ abstract class TranslatedExpr extends TranslatedElement {
     result = expr.getEnclosingFunction()
   }
 
+  /**
+   * Gets the `TranslatedFunction` containing this expression.
+   */
   final TranslatedFunction getEnclosingFunction() {
     result = getTranslatedFunction(expr.getEnclosingFunction())
+  }
+}
+
+/**
+ * The IR translation of an expression.
+ */
+abstract class TranslatedExpr extends TranslatedOrSynthesizedExpr,
+    TranslatedFromExpr {
+  override final string toString() {
+    result = expr.toString()
+  }
+
+  final Expr getExpr() {
+    result = expr
   }
 
   final Type getResultType() {
     result = expr.getType().getUnspecifiedType()
   }
-
-  abstract Instruction getResult();
 
   /**
    * Holds if this `TranslatedExpr` produces the final result of the original
@@ -1707,26 +1731,11 @@ class TranslatedAssignOperation extends TranslatedAssignment {
 }
 
 /**
- * Represents the IR translation of a call to a function.
+ * The IR translation of a call to a function. The call may be from an actual
+ * call in the source code, or could be a call that is part of the translation
+ * of a higher-level constructor (e.g. the allocator call in a `NewExpr`).
  */
-abstract class TranslatedCall extends TranslatedNonConstantExpr {
-  Call call;
-
-  TranslatedCall() {
-    expr = call
-  }
-
-  override final Instruction getFirstInstruction() {
-    if exists(getQualifier()) then
-      result = getQualifier().getFirstInstruction()
-    else
-      result = getFirstCallTargetInstruction()
-  }
-
-  override final Instruction getResult() {
-    result = getInstruction(CallTag())
-  }
-
+abstract class TranslatedCall extends TranslatedOrSynthesizedExpr {
   override final TranslatedElement getChild(int id) {
     // We choose the child's id in the order of evaluation.
     // The qualifier is evaluated before the call target, because the value of
@@ -1737,6 +1746,21 @@ abstract class TranslatedCall extends TranslatedNonConstantExpr {
     result = getArgument(id)
   }
 
+  override final Instruction getFirstInstruction() {
+    if exists(getQualifier()) then
+      result = getQualifier().getFirstInstruction()
+    else
+      result = getFirstCallTargetInstruction()
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
+    Type resultType, boolean isGLValue) {
+    tag = CallTag() and
+    opcode instanceof Opcode::Invoke and
+    resultType = getCallResultType() and
+    isGLValue = false
+  }
+  
   override Instruction getChildSuccessor(TranslatedElement child) {
     (
       child = getQualifier() and
@@ -1755,14 +1779,6 @@ abstract class TranslatedCall extends TranslatedNonConstantExpr {
     )
   }
 
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-    Type resultType, boolean isGLValue) {
-    tag = CallTag() and
-    opcode instanceof Opcode::Invoke and
-    resultType = call.getType().getUnspecifiedType() and
-    isGLValue = false
-  }
-  
   override Instruction getInstructionSuccessor(InstructionTag tag,
     EdgeKind kind) {
     kind instanceof GotoEdge and
@@ -1789,12 +1805,14 @@ abstract class TranslatedCall extends TranslatedNonConstantExpr {
     )
   }
 
-  /**
-   * Holds if the call has any arguments, not counting the `this` argument.
-   */
-  final predicate hasArguments() {
-    exists(call.getArgument(0))
+  override final Instruction getResult() {
+    result = getInstruction(CallTag())
   }
+
+  /**
+   * Gets the result type of the call.
+   */
+  abstract Type getCallResultType();
 
   /**
    * Holds if the call has a `this` argument.
@@ -1834,9 +1852,7 @@ abstract class TranslatedCall extends TranslatedNonConstantExpr {
    * Gets the `TranslatedExpr` for the qualifier of the call (i.e. the value
    * that is passed as the `this` argument.
    */
-  final TranslatedExpr getQualifier() {
-    result = getTranslatedExpr(call.getQualifier().getFullyConverted())
-  }
+  abstract TranslatedExpr getQualifier();
 
   /**
    * Gets the instruction whose result value is the `this` argument of the call.
@@ -1852,9 +1868,7 @@ abstract class TranslatedCall extends TranslatedNonConstantExpr {
    * Gets the argument with the specified `index`. Does not include the `this`
    * argument.
    */
-  final TranslatedExpr getArgument(int index) {
-    result = getTranslatedExpr(call.getArgument(index).getFullyConverted())
-  }
+  abstract TranslatedOrSynthesizedExpr getArgument(int index);
 
   /**
    * If there are any arguments, gets the first instruction of the first
@@ -1866,12 +1880,287 @@ abstract class TranslatedCall extends TranslatedNonConstantExpr {
     else
       result = getInstruction(CallTag())
   }
+
+  /**
+   * Holds if the call has any arguments, not counting the `this` argument.
+   */
+  abstract predicate hasArguments();
+}
+
+/**
+ * The IR translation of the allocation size argument passed to `operator new`
+ * in a `new` expression.
+ *
+ * We have to synthesize this because not all `NewExpr` nodes have an allocator
+ * call, and even the ones that do pass an `ErrorExpr` as the argument.
+ */
+abstract class TranslatedAllocationSize extends TranslatedOrSynthesizedExpr,
+    TranslatedFromExpr, TTranslatedAllocationSize {
+  NewOrNewArrayExpr newExpr;
+  
+  TranslatedAllocationSize() {
+    this = TTranslatedAllocationSize(newExpr) and
+    expr = newExpr
+  }
+
+  override final string toString() {
+    result = "Allocation size for " + newExpr.toString()
+  }
+
+  override final Instruction getResult() {
+    result = getInstruction(AllocationSizeTag())
+  }
+}
+
+TranslatedAllocationSize getTranslatedAllocationSize(NewOrNewArrayExpr newExpr) {
+  result.getAST() = newExpr
+}
+
+/**
+ * The IR translation of a constant allocation size.
+ *
+ * The allocation size for a `new` expression is always a constant. The
+ * allocation size for a `new[]` expression is a constant if the array extent
+ * is a compile-time constant.
+ */
+class TranslatedConstantAllocationSize extends TranslatedAllocationSize {
+  TranslatedConstantAllocationSize() {
+    not exists(newExpr.(NewArrayExpr).getExtent())
+  }
+
+  override final Instruction getFirstInstruction() {
+    result = getInstruction(AllocationSizeTag())
+  }
+
+  override final predicate hasInstruction(Opcode opcode, InstructionTag tag,
+      Type resultType, boolean isGLValue) {
+    tag = AllocationSizeTag() and
+    opcode instanceof Opcode::Constant and
+    resultType = newExpr.getAllocator().getParameter(0).getType().getUnspecifiedType() and
+    isGLValue = false
+  }
+
+  override final Instruction getInstructionSuccessor(InstructionTag tag,
+      EdgeKind kind) {
+    tag = AllocationSizeTag() and
+    kind instanceof GotoEdge and
+    result = getParent().getChildSuccessor(this)
+  }
+
+  override final TranslatedElement getChild(int id) {
+    none()
+  }
+
+  override final Instruction getChildSuccessor(TranslatedElement child) {
+    none()
+  }
+
+  override final string getInstructionConstantValue(InstructionTag tag) {
+    tag = AllocationSizeTag() and
+    result = newExpr.getAllocatedType().getSize().toString()
+  }
+}
+
+/**
+ * The IR translation of a non-constant allocation size.
+ *
+ * This class is used for the allocation size of a `new[]` expression where the
+ * array extent is not known at compile time. It performs the multiplication of
+ * the extent by the element size.
+ */
+class TranslatedNonConstantAllocationSize extends TranslatedAllocationSize {
+  NewArrayExpr newArrayExpr;
+
+  TranslatedNonConstantAllocationSize() {
+    newArrayExpr = newExpr and
+    exists(newArrayExpr.getExtent())
+  }
+
+  override final Instruction getFirstInstruction() {
+    result = getExtent().getFirstInstruction()
+  }
+
+  override final predicate hasInstruction(Opcode opcode, InstructionTag tag,
+      Type resultType, boolean isGLValue) {
+    isGLValue = false and
+    resultType = newExpr.getAllocator().getParameter(0).getType().getUnspecifiedType() and
+    (
+      // Convert the extent to `size_t`, because the AST doesn't do this already.
+      tag = AllocationExtentConvertTag() and opcode instanceof Opcode::Convert or
+      tag = AllocationElementSizeTag() and opcode instanceof Opcode::Constant or
+      tag = AllocationSizeTag() and opcode instanceof Opcode::Mul // REVIEW: Overflow?
+    )
+  }
+
+  override final Instruction getInstructionSuccessor(InstructionTag tag,
+      EdgeKind kind) {
+    kind instanceof GotoEdge and
+    (
+      (
+        tag = AllocationExtentConvertTag() and
+        result = getInstruction(AllocationElementSizeTag())
+      ) or
+      (
+        tag = AllocationElementSizeTag() and
+        result = getInstruction(AllocationSizeTag())
+      ) or
+      (
+        tag = AllocationSizeTag() and
+        result = getParent().getChildSuccessor(this)
+      )
+    )
+  }
+
+  override final TranslatedElement getChild(int id) {
+    id = 0 and result = getExtent()
+  }
+
+  override final Instruction getChildSuccessor(TranslatedElement child) {
+    child = getExtent() and
+    result = getInstruction(AllocationExtentConvertTag())
+  }
+
+  override final string getInstructionConstantValue(InstructionTag tag) {
+    tag = AllocationElementSizeTag() and
+    result = newArrayExpr.getAllocatedElementType().getSize().toString()
+  }
+
+  override final Instruction getInstructionOperand(InstructionTag tag,
+      OperandTag operandTag) {
+    (
+      tag = AllocationSizeTag() and
+      (
+        operandTag instanceof LeftOperand and result = getInstruction(AllocationExtentConvertTag()) or
+        operandTag instanceof RightOperand and result = getInstruction(AllocationElementSizeTag())
+      )
+    ) or
+    (
+      tag = AllocationExtentConvertTag() and
+      operandTag instanceof UnaryOperand and
+      result = getExtent().getResult()
+    )
+  }
+
+  private TranslatedExpr getExtent() {
+    result = getTranslatedExpr(newArrayExpr.getExtent().getFullyConverted())
+  }
+}
+
+/**
+ * The IR translation of a call to `operator new` as part of a `new` or `new[]`
+ * expression.
+ */
+class TranslatedAllocatorCall extends TTranslatedAllocatorCall, TranslatedCall,
+    TranslatedFromExpr {
+  NewOrNewArrayExpr newExpr;
+
+  TranslatedAllocatorCall() {
+    this = TTranslatedAllocatorCall(newExpr) and
+    expr = newExpr
+  }
+
+  override final string toString() {
+    result = "Allocator call for " + newExpr.toString()
+  }
+
+  override final Instruction getFirstCallTargetInstruction() {
+    result = getInstruction(CallTargetTag())
+  }
+
+  override final Instruction getCallTargetResult() {
+    result = getInstruction(CallTargetTag())
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
+      Type resultType, boolean isGLValue) {
+    TranslatedCall.super.hasInstruction(opcode, tag, resultType, isGLValue) or
+    (
+      tag = CallTargetTag() and
+      opcode instanceof Opcode::FunctionAddress and
+      resultType instanceof BoolType and //HACK
+      isGLValue = false
+    )
+  }
+  
+  override Instruction getInstructionSuccessor(InstructionTag tag,
+      EdgeKind kind) {
+    result = TranslatedCall.super.getInstructionSuccessor(tag, kind) or
+    (
+      tag = CallTargetTag() and
+      kind instanceof GotoEdge and
+      result = getFirstArgumentOrCallInstruction()
+    )
+  }
+
+  override Function getInstructionFunction(InstructionTag tag) {
+    tag = CallTargetTag() and result = newExpr.getAllocator()
+  }
+
+  override final Type getCallResultType() {
+    result = newExpr.getAllocator().getType().getUnspecifiedType()
+  }
+
+  override final TranslatedExpr getQualifier() {
+    none()
+  }
+
+  override final predicate hasArguments() {
+    // All allocator calls have at least one argument.
+    any()
+  }
+
+  override final TranslatedOrSynthesizedExpr getArgument(int index) {
+    // If the allocator is the default operator new(void*), there will be no
+    // allocator call in the AST. Otherwise, there will be an allocator call
+    // that includes all arguments to the allocator, including the size,
+    // alignment (if any), and placement args. However, the size argument is
+    // an error node, so we need to provide the correct size argument in any
+    // case.
+    if index = 0 then
+      result = getTranslatedAllocationSize(newExpr)
+    else if(index = 1 and newExpr.hasAlignedAllocation()) then
+      result = getTranslatedExpr(newExpr.getAlignmentArgument())
+    else
+      result = getTranslatedExpr(newExpr.getAllocatorCall().getArgument(index))
+  }
+}
+
+TranslatedAllocatorCall getTranslatedAllocatorCall(NewOrNewArrayExpr newExpr) {
+  result.getAST() = newExpr
+}
+
+/**
+ * The IR translation of a call to a function.
+ */
+abstract class TranslatedCallExpr extends TranslatedNonConstantExpr,
+    TranslatedCall {
+  Call call;
+
+  TranslatedCallExpr() {
+    expr = call
+  }
+
+  override final Type getCallResultType() {
+    result = getResultType()
+  }
+
+  override final predicate hasArguments() {
+    exists(call.getArgument(0))
+  }
+
+  override final TranslatedExpr getQualifier() {
+    result = getTranslatedExpr(call.getQualifier().getFullyConverted())
+  }
+
+  override final TranslatedOrSynthesizedExpr getArgument(int index) {
+    result = getTranslatedExpr(call.getArgument(index).getFullyConverted())
+  }
 }
 
 /**
  * Represents the IR translation of a call through a function pointer.
  */
-class TranslatedExprCall extends TranslatedCall {
+class TranslatedExprCall extends TranslatedCallExpr {
   ExprCall exprCall;
 
   TranslatedExprCall() {
@@ -1886,7 +2175,7 @@ class TranslatedExprCall extends TranslatedCall {
 /**
  * Represents the IR translation of a direct function call.
  */
-class TranslatedFunctionCall extends TranslatedCall {
+class TranslatedFunctionCall extends TranslatedCallExpr {
   FunctionCall funcCall;
 
   TranslatedFunctionCall() {
@@ -2496,5 +2785,105 @@ class TranslatedVarArgCopy extends TranslatedBuiltInOperation {
 
   override final Opcode getOpcode() {
     result instanceof Opcode::VarArgCopy
+  }
+}
+
+/**
+ * The IR translation of a `new` or `new[]` expression.
+ */
+abstract class TranslatedNewOrNewArrayExpr extends TranslatedNonConstantExpr,
+    InitializationContext {
+  NewOrNewArrayExpr newExpr;
+
+  TranslatedNewOrNewArrayExpr() {
+    expr = newExpr
+  }
+
+  override final TranslatedElement getChild(int id) {
+    id = 0 and result = getAllocatorCall() or
+    id = 1 and result = getInitialization()
+  }
+
+  override final predicate hasInstruction(Opcode opcode, InstructionTag tag,
+      Type resultType, boolean isGLValue) {
+    tag = OnlyInstructionTag() and
+    opcode instanceof Opcode::Convert and
+    resultType = getResultType() and
+    isGLValue = false
+  }
+
+  override final Instruction getFirstInstruction() {
+    result = getAllocatorCall().getFirstInstruction()
+  }
+
+  override final Instruction getResult() {
+    result = getInstruction(OnlyInstructionTag())
+  }
+
+  override final Instruction getInstructionSuccessor(InstructionTag tag,
+      EdgeKind kind) {
+    kind instanceof GotoEdge and
+    tag = OnlyInstructionTag() and
+    if exists(getInitialization()) then
+      result = getInitialization().getFirstInstruction()
+    else
+      result = getParent().getChildSuccessor(this)
+  }
+
+  override final Instruction getChildSuccessor(TranslatedElement child) {
+    child = getAllocatorCall() and result = getInstruction(OnlyInstructionTag()) or
+    child = getInitialization() and result = getParent().getChildSuccessor(this)
+  }
+
+  override final Instruction getInstructionOperand(InstructionTag tag,
+      OperandTag operandTag) {
+    tag = OnlyInstructionTag() and
+    operandTag instanceof UnaryOperand and
+    result = getAllocatorCall().getResult()
+  }
+  
+  override final Instruction getTargetAddress() {
+    result = getInstruction(OnlyInstructionTag())
+  }
+
+  private TranslatedAllocatorCall getAllocatorCall() {
+    result = getTranslatedAllocatorCall(newExpr)
+  }
+
+  abstract TranslatedInitialization getInitialization();
+}
+
+/**
+ * The IR translation of a `new` expression.
+ */
+class TranslatedNewExpr extends TranslatedNewOrNewArrayExpr {
+  TranslatedNewExpr() {
+    newExpr instanceof NewExpr
+  }
+
+  override final Type getTargetType() {
+    result = newExpr.getAllocatedType().getUnspecifiedType()
+  }
+
+  override final TranslatedInitialization getInitialization() {
+    result = getTranslatedInitialization(newExpr.(NewExpr).getInitializer())
+  }
+}
+
+/**
+ * The IR translation of a `new[]` expression.
+ */
+class TranslatedNewArrayExpr extends TranslatedNewOrNewArrayExpr {
+  TranslatedNewArrayExpr() {
+    newExpr instanceof NewArrayExpr
+  }
+
+  override final Type getTargetType() {
+    result = newExpr.getAllocatedType().getUnspecifiedType()
+  }
+
+  override final TranslatedInitialization getInitialization() {
+    // REVIEW: Figure out how we want to model array initialization in the IR.
+    none()
   }
 }
