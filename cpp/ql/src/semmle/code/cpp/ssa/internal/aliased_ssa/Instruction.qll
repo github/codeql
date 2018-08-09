@@ -66,6 +66,13 @@ module InstructionSanity {
     count(instr.getOperand(tag)) > 1 and
     not tag instanceof UnmodeledUseOperand
   }
+
+  query predicate operandAcrossFunctions(
+    Instruction op, Instruction operand, OperandTag tag
+  ) {
+    operand = op.getOperand(tag) and
+    operand.getFunctionIR() != op.getFunctionIR()
+  }
 }
 
 /**
@@ -302,7 +309,6 @@ class Instruction extends Construction::TInstruction {
    * an operand with tag `useTag`.
    */
   final predicate hasUse(Instruction useInstruction, OperandTag useTag) {
-    useInstruction.getFunctionIR() = funcIR and
     this = useInstruction.getOperand(useTag)
   }
 }
