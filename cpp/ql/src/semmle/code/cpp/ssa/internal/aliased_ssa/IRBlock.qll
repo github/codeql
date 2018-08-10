@@ -22,21 +22,48 @@ private predicate startsBasicBlock(Instruction instr) {
   )
 }
 
-private newtype TIRBlock =
-  MkIRBlock(Instruction firstInstr) {
-    startsBasicBlock(firstInstr)
+private predicate isEntryBlock(TIRBlock block) {
+  block = MkIRBlock(any(EnterFunctionInstruction enter))
+}
+
+private import Cached
+private cached module Cached {
+  cached newtype TIRBlock =
+    MkIRBlock(Instruction firstInstr) {
+      startsBasicBlock(firstInstr)
+    }
+
+  cached Instruction getInstruction(TIRBlock block, int index) {
+    index = 0 and block = MkIRBlock(result) or
+    (
+      index > 0 and
+      not startsBasicBlock(result) and
+      exists(Instruction predecessor, GotoEdge edge |
+        predecessor = getInstruction(block, index - 1) and
+        result = predecessor.getSuccessor(edge)
+      )
+    )
   }
 
-cached private predicate isEntryBlock(IRBlock block) {
-  block.getFirstInstruction() instanceof EnterFunctionInstruction
-}
+  cached int getInstructionCount(TIRBlock block) {
+    result = strictcount(getInstruction(block, _))
+  }
 
-cached private predicate blockSuccessor(IRBlock pred, IRBlock succ) {
-  succ = pred.getASuccessor()
-}
+  cached predicate blockSuccessor(TIRBlock pred, TIRBlock succ, EdgeKind kind) {
+    exists(Instruction predLast, Instruction succFirst |
+      predLast = getInstruction(pred, getInstructionCount(pred) - 1) and
+      succFirst = predLast.getSuccessor(kind) and
+      succ = MkIRBlock(succFirst)
+    )
+  }
 
-private predicate blockImmediatelyDominates(IRBlock dominator, IRBlock block) =
-  idominance(isEntryBlock/1, blockSuccessor/2)(_, dominator, block)
+  cached predicate blockSuccessor(TIRBlock pred, TIRBlock succ) {
+    blockSuccessor(pred, succ, _)
+  }
+
+  cached predicate blockImmediatelyDominates(TIRBlock dominator, TIRBlock block) =
+    idominance(isEntryBlock/1, blockSuccessor/2)(_, dominator, block)
+}
 
 class IRBlock extends TIRBlock {
   Instruction firstInstr;
@@ -57,16 +84,8 @@ class IRBlock extends TIRBlock {
     result = firstInstr.getUniqueId()
   }
   
-  final cached Instruction getInstruction(int index) {
-    index = 0 and result = firstInstr or
-    (
-      index > 0 and
-      not startsBasicBlock(result) and
-      exists(Instruction predecessor, GotoEdge edge |
-        predecessor = getInstruction(index - 1) and
-        result = predecessor.getSuccessor(edge)
-      )
-    )
+  final Instruction getInstruction(int index) {
+    result = getInstruction(this, index)
   }
 
   final PhiInstruction getAPhiInstruction() {
@@ -100,15 +119,15 @@ class IRBlock extends TIRBlock {
   }
 
   final IRBlock getASuccessor() {
-    result.getFirstInstruction() = getLastInstruction().getASuccessor()
+    blockSuccessor(this, result)
   }
 
   final IRBlock getAPredecessor() {
-    firstInstr = result.getLastInstruction().getASuccessor()
+    blockSuccessor(result, this)
   }
 
   final IRBlock getSuccessor(EdgeKind kind) {
-    result.getFirstInstruction() = getLastInstruction().getSuccessor(kind)
+    blockSuccessor(this, result, kind)
   }
 
   final predicate immediatelyDominates(IRBlock block) {
