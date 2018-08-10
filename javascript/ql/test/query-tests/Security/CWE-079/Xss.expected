@@ -1,6 +1,8 @@
 | jquery.js:4:5:4:11 | tainted | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:33 | document.location | user-provided value |
 | jquery.js:7:5:7:34 | "<div i ... + "\\">" | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:33 | document.location | user-provided value |
 | jquery.js:8:18:8:34 | "XSS: " + tainted | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:33 | document.location | user-provided value |
+| react-native.js:8:18:8:24 | tainted | Cross-site scripting vulnerability due to $@. | react-native.js:7:17:7:33 | req.param("code") | user-provided value |
+| react-native.js:9:27:9:33 | tainted | Cross-site scripting vulnerability due to $@. | react-native.js:7:17:7:33 | req.param("code") | user-provided value |
 | string-manipulations.js:3:16:3:32 | document.location | Cross-site scripting vulnerability due to $@. | string-manipulations.js:3:16:3:32 | document.location | user-provided value |
 | string-manipulations.js:4:16:4:37 | documen ... on.href | Cross-site scripting vulnerability due to $@. | string-manipulations.js:4:16:4:32 | document.location | user-provided value |
 | string-manipulations.js:5:16:5:47 | documen ... lueOf() | Cross-site scripting vulnerability due to $@. | string-manipulations.js:5:16:5:32 | document.location | user-provided value |

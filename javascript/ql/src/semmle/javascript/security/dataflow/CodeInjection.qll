@@ -115,6 +115,21 @@ module CodeInjection {
       )
     }
   }
+
+  /**
+   * An expression which is injected as JavaScript into a React Native `WebView`.
+   */
+  class WebViewInjectedJavaScriptSink extends Sink {
+    WebViewInjectedJavaScriptSink() {
+      exists (ReactNative::WebViewElement webView |
+        // `injectedJavaScript` property of React Native `WebView`
+        this = webView.getAPropertyWrite("injectedJavaScript").getRhs()
+        or
+        // argument to `injectJavascript` method of React Native `WebView`
+        this = webView.getAMethodCall("injectJavaScript").getArgument(0)
+      )
+    }
+  }
 }
 
 /** DEPRECATED: Use `CodeInjection::Source` instead. */

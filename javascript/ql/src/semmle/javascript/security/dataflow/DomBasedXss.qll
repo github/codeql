@@ -117,6 +117,13 @@ module DomBasedXss {
         pw.interpretsValueAsHTML() and
         this = DataFlow::valueNode(pw.getRhs())
       )
+      or
+      // `html` or `source.html` properties of React Native `WebView`
+      exists (ReactNative::WebViewElement webView, DataFlow::SourceNode source |
+        source = webView or
+        source = webView.getAPropertyWrite("source").getRhs().getALocalSource() |
+        this = source.getAPropertyWrite("html").getRhs()
+      )
     }
   }
 
