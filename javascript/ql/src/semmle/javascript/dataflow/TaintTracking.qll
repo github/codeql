@@ -207,6 +207,13 @@ module TaintTracking {
           this = DataFlow::parameterNode(p) and
           pred.asExpr() = m.getReceiver()
         )
+        or
+        // `array.map` with tainted return value in callback
+        exists (MethodCallExpr m, Function f |
+          this.asExpr() = m and
+          m.getMethodName() = "map" and
+          m.getArgument(0) = f and // Require the argument to be a closure to avoid spurious call/return flow
+          pred = f.getAReturnedExpr().flow())
       )
       or
       // reading from a tainted object yields a tainted result
