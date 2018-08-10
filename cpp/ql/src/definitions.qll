@@ -102,15 +102,16 @@ private predicate constructorCallStartLoc(ConstructorCall cc, File f, int line, 
 
 /**
  * Holds if `f`, `line`, `column` indicate the start character
- * of `tm`. 
+ * of `tm`, which mentions `t`.
  */
-private predicate typeMentionStartLoc(TypeMention tm, File f, int line, int column) {
+private predicate typeMentionStartLoc(TypeMention tm, Type t, File f, int line, int column) {
   exists(Location l |
     l = tm.getLocation() and
     l.getFile() = f and
     l.getStartLine() = line and
     l.getStartColumn() = column
-  )
+  ) and
+  t = tm.getMentionedType()
 }
 
 /**
@@ -119,7 +120,7 @@ private predicate typeMentionStartLoc(TypeMention tm, File f, int line, int colu
 private cached predicate constructorCallTypeMention(ConstructorCall cc, TypeMention tm) {
   exists(File f, int line, int column |
     constructorCallStartLoc(cc, f, line, column) and
-    typeMentionStartLoc(tm, f, line, column)
+    typeMentionStartLoc(tm, _, f, line, column)
   )
 }
 
@@ -155,15 +156,16 @@ Top definitionOf(Top e, string kind) {
       kind = "T" and
       e.(TypeMention).getMentionedType() = result and
       not constructorCallTypeMention(_, e) and // handled elsewhere
-
-      // multiple mentions can be generated when a typedef is used.  Exclude
-      // all but the originating typedef.
-      not exists(TypeMention tm, File f, int startline, int startcol |
-        typeMentionStartLoc(e, f, startline, startcol) and
-        typeMentionStartLoc(tm, f, startline, startcol) and
-        (
-          e.(TypeMention).getMentionedType() = tm.getMentionedType().(TypedefType).getBaseType() or
-          e.(TypeMention).getMentionedType() = tm.getMentionedType().(TypedefType).getBaseType().(SpecifiedType).getBaseType()
+      // Multiple type mentions can be generated when a typedef is used, and
+      // in such cases we want to exclude all but the originating typedef.
+      not exists(Type secondary |
+        exists(TypeMention tm, File f, int startline, int startcol |
+          typeMentionStartLoc(e, result, f, startline, startcol) and
+          typeMentionStartLoc(tm, secondary, f, startline, startcol) and
+          (
+            result = secondary.(TypedefType).getBaseType() or
+            result = secondary.(TypedefType).getBaseType().(SpecifiedType).getBaseType()
+          )
         )
       )
     ) or (
