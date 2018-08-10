@@ -59,7 +59,7 @@ cached private module Cached {
   }
 
   private Instruction getNewInstruction(OldIR::Instruction instr) {
-    result.getTag() = WrappedInstructionTag(instr)
+    getOldInstruction(result) = instr
   }
 
   private PhiInstruction getPhiInstruction(Function func, OldIR::IRBlock oldBlock,
