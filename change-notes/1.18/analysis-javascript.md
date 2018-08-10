@@ -21,6 +21,7 @@
   - [json-safe-parse](https://github.com/bahamas10/node-json-safe-parse)
   - [MySQL2](https://github.com/sidorares/node-mysql2)
   - [parse-json](https://github.com/sindresorhus/parse-json)
+  - [React Native](https://facebook.github.io/react-native/)
   - [q](http://documentup.com/kriskowal/q/)
   - [safe-json-parse](https://github.com/Raynos/safe-json-parse)
 
