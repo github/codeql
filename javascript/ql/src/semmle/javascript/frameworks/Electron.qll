@@ -13,13 +13,13 @@ module Electron {
   /**
    * a data flow node that is an Electron `BrowserView` or `BrowserWindow`
    */
-  abstract class BrowserObject extends DataFlow::TrackedNode {
+  abstract class BrowserObject extends DataFlow::Node {
   }
   
   /**
    * A data flow node that creates a new `BrowserWindow` or `BrowserView`.
    */
-  abstract class NewBrowserObject extends BrowserObject {
+  abstract class NewBrowserObject extends BrowserObject, DataFlow::TrackedNode {
     NewBrowserObject() {
       this instanceof DataFlow::NewNode
     }
@@ -67,10 +67,14 @@ module Electron {
   /**
    * A data flow node that is the `webContents` property of an Electron browser object
    */
-  cached class WebContents extends DataFlow::TrackedNode {
-    cached WebContents() {
+  class WebContents extends DataFlow::TrackedNode {
+    WebContents() {
       exists(BrowserObject bo |
-        bo.flowsTo(this.(DataFlow::PropRead).getBase())
+        bo = (this.(DataFlow::PropRead).getBase())
+      )
+      or
+      exists(NewBrowserObject nbo |
+        nbo.flowsTo(this.(DataFlow::PropRead).getBase())
       )
     }
   }
@@ -422,30 +426,35 @@ module Electron {
    * Holds if `pred` flows to `succ` via the Electron IPC channel `channel`, as determined from local string values.
    */
   predicate ipcSimpleFlowStep(DataFlow::Node pred, DataFlow::Node succ, string channel) {
+    // match `message` in `ipcRenderer.on('some-channel', (event, message) => {})` with `message` in `ipcMain.send('some-channel', message)`
     exists(IPCRendererCallback callback |
       succ = callback.getParameter(1) and
       channel = callback.getChannelValue() and
       channel = pred.(IPCMainMessage).getChannelValue()
     )
     or
+    // match `message` in `ipcMain.on('some-channel', (event, message) => {})` with `message` in `ipcRenderer.send('some-channel', message)`
     exists(IPCMainCallback callback |
       succ = callback.getParameter(1) and
       channel = callback.getChannelValue() and
       channel = pred.(IPCRendererMessage).getChannelValue()
     )
     or
+    // match `ipcRenderer.sendSync('some-channel', message )` with `reply` in `ipcMain.on('some-channel', (event, message) => {event.returnValue = reply})`
     exists(IPCRendererSendSync sendSync |
       succ = sendSync and
       channel = sendSync.getChannelValue() and
       channel = pred.(IPCMainSyncReplyMessage).getChannelValue()
     )
     or
+    // match `ipcMain.sendSync('some-channel', message )` with `reply` in `ipcRenderer.on('some-channel', (event, message) => {event.returnValue = reply})`
     exists(IPCMainSendSync sendSync |
       succ = sendSync and
       channel = sendSync.getChannelValue() and
       channel = pred.(IPCRendererSyncReplyMessage).getChannelValue()
     )
     or
+    // match `message` in `ipcRenderer.on('some-channel', (event, message) => {})` with `message` in `browser.webContents.send('some-channel', message)`
     exists(IPCRendererCallback callback |
       succ = callback.getParameter(1) and
       channel = callback.getChannelValue() and
@@ -456,13 +465,13 @@ module Electron {
   /**
    * An additional flow step  via an Electron IPC message.
    */
-  cached class IPCAdditionalFlowStep extends DataFlow::AdditionalFlowStep {
-    cached IPCAdditionalFlowStep() {
+  class IPCAdditionalFlowStep extends DataFlow::AdditionalFlowStep {
+    IPCAdditionalFlowStep() {
       this instanceof IPCMainMessage or
       this instanceof IPCRendererMessage
     }
     
-    cached override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       this = pred and
       ipcSimpleFlowStep(pred, succ, _)
     }
