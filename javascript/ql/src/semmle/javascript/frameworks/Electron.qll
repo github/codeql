@@ -11,7 +11,7 @@ module Electron {
   }
   
   /**
-   * a data flow node that is an Electron `BrowserView` or `BrowserWindow`
+   * A data flow node that is an Electron `BrowserView` or `BrowserWindow`.
    */
   abstract class BrowserObject extends DataFlow::Node {
   }
@@ -103,14 +103,14 @@ module Electron {
     }
     
     /**
-     * A data flow node that is the channel the callback is listening on.
+     * Gets the data flow node that is the channel the callback is listening on.
      */
     DataFlow::Node getChannel() {
       result = channel
     }
     
     /**
-     * The string value that is the channel the callback is listening on.
+     * Gets the string value that is the channel the callback is listening on.
      */
     string getChannelValue() {
       result = channel.asExpr().getStringValue()
@@ -122,12 +122,12 @@ module Electron {
    */
   abstract class IPCMainMessage extends DataFlow::ValueNode {
     /**
-     * A data flow node that is the channel the message is sent on.
+     * Gets the data flow node that is the channel the message is sent on.
      */
     abstract DataFlow::Node getChannel();
     
     /**
-     * The string value that is the channel the message is sent on.
+     * Gets the string value that is the channel the message is sent on.
      */
     abstract string getChannelValue();
   }
@@ -235,7 +235,7 @@ module Electron {
   }
   
   /**
-   * A data flow node that is registered as an Electron IPC callback in the main process.
+   * A data flow node that is registered as an Electron IPC callback in the renderer process.
    */
   class IPCRendererCallback extends DataFlow::FunctionNode {
     DataFlow::Node channel;
@@ -249,14 +249,14 @@ module Electron {
     }
     
     /**
-     * A data flow node that is the channel the callback is listening on.
+     * Gets the data flow node that is the channel the callback is listening on.
      */
     DataFlow::Node getChannel() {
       result = channel
     }
     
     /**
-     * The string value that is the channel the callback is listening on.
+     * Gets the string value that is the channel the callback is listening on.
      */
     string getChannelValue() {
       result = channel.asExpr().getStringValue()
@@ -264,22 +264,22 @@ module Electron {
   }
   
   /**
-   * A data flow node that is sent as an Electron IPC message from the main process.
+   * A data flow node that is sent as an Electron IPC message from the renderer process.
    */
   abstract class IPCRendererMessage extends DataFlow::ValueNode {
     /**
-     * A data flow node that is the channel the message is sent on.
+     * Gets the data flow node that is the channel the message is sent on.
      */
     abstract DataFlow::Node getChannel();
     
     /**
-     * The string value that is the channel the message is sent on.
+     * Gets the string value that is the channel the message is sent on.
      */
     abstract string getChannelValue();
   }
   
   /**
-   * A data flow node that is sent as an initial Electron IPC message from the main process.
+   * A data flow node that is sent as an initial Electron IPC message from the renderer process.
    */
   class IPCRendererSentMessage extends IPCRendererMessage {
     DataFlow::Node channel;
@@ -306,7 +306,7 @@ module Electron {
   }
   
   /**
-   * A data flow node that is sent as an asynchronous Electron IPC reply from the main process.
+   * A data flow node that is sent as an asynchronous Electron IPC reply from the renderer process.
    */
   class IPCRendererAsyncReplyMessage extends IPCRendererMessage {
     DataFlow::Node channel;
@@ -329,7 +329,7 @@ module Electron {
   }
 
   /**
-   * A data flow node that is sent as a synchronous Electron IPC message from the main process.
+   * A data flow node that is sent as a synchronous Electron IPC message from the renderer process.
    */
   class IPCRendererSyncReplyMessage extends DataFlow::Node {
     DataFlow::Node channel;
@@ -351,7 +351,7 @@ module Electron {
   }
   
   /**
-   * A data flow node that is a call to a synchronous Electron IPC method in the main process.
+   * A data flow node that is a call to a synchronous Electron IPC method in the renderer process.
    */
   class IPCRendererSendSync extends DataFlow::MethodCallNode {
     DataFlow::Node channel;
