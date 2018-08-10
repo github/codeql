@@ -1,3 +1,4 @@
 missingOperand
 unexpectedOperand
 duplicateOperand
+operandAcrossFunctions

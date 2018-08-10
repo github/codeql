@@ -160,7 +160,7 @@ predicate operandEscapes(Instruction instr, OperandTag tag) {
 predicate resultEscapes(Instruction instr) {
   // The result escapes if it has at least one use that escapes.
   exists(Instruction useInstr, OperandTag useOperandTag |
-    instr.hasUse(useInstr, useOperandTag) and
+    useInstr.getOperand(useOperandTag) = instr and
     operandEscapes(useInstr, useOperandTag)
   )
 }
