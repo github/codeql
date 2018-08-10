@@ -27,7 +27,7 @@ The top-level logic will be clearer if each complex statement is extracted to a 
   M. Fowler. <em>Refactoring</em> Addison-Wesley, 1999.
 </li>
 <li>
-  <a href="en.wikipedia.org/wiki/Code_refactoring">Wikipedia: Code refactoring</a>
+  <a href="https://en.wikipedia.org/wiki/Code_refactoring">Wikipedia: Code refactoring</a>
 </li>
 <li>
   Microsoft Patterns &amp; Practices Team. <a href="http://msdn.microsoft.com/en-us/library/ee658117.aspx">Architectural Patterns and Styles</a> <em>Microsoft Application Architecture Guide, 2nd Edition.</em> Microsoft Press, 2009.
