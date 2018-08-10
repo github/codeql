@@ -15,6 +15,9 @@ abstract class HtmlSanitizerCall extends DataFlow::CallNode {
   abstract DataFlow::Node getInput();
 }
 
+/**
+ * Matches HTML sanitizers from known NPM packages as well as home-made sanitizers (matched by name).
+ */
 private class DefaultHtmlSanitizerCall extends HtmlSanitizerCall {
   DefaultHtmlSanitizerCall() {
     exists (DataFlow::SourceNode callee | this = callee.getACall() |
