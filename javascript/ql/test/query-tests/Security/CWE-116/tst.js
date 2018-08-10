@@ -37,6 +37,14 @@ function bad9(s) {
   return s.replace(/"/g, "\\\"");  // NOT OK
 }
 
+function bad10(s) {
+  return s.replace("/", "%2F"); // NOT OK
+}
+
+function bad11(s) {
+  return s.replace("%25", "%"); // NOT OK
+}
+
 
 function good1(s) {
   while (s.indexOf("'") > 0)
@@ -91,6 +99,10 @@ function flowifyComments(s) {
   return s.replace(/#/g, '💩'); // OK
 }
 
+function good11(s) {
+  return s.replace("%d", "42");
+}
+
 app.get('/some/path', function(req, res) {
   let untrusted = req.param("p");
 
@@ -106,6 +118,8 @@ app.get('/some/path', function(req, res) {
   bad7(untrusted);
   bad8(untrusted);
   bad9(untrusted);
+  bad10(untrusted);
+  bad11(untrusted);
 
   good1(untrusted);
   good2(untrusted);
@@ -118,4 +132,5 @@ app.get('/some/path', function(req, res) {
   good9(untrusted);
   good10(untrusted);
   flowifyComments(untrusted);
+  good11(untrusted);
 });
