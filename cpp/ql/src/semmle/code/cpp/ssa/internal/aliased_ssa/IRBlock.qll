@@ -1,91 +1,31 @@
 private import IRInternal
+private import Construction::OldIR as OldIR
 import Instruction
-import cpp
 import semmle.code.cpp.ir.EdgeKind
 
-private predicate startsBasicBlock(Instruction instr) {
-  not instr instanceof PhiInstruction and
-  (
-    count(Instruction predecessor |
-      instr = predecessor.getASuccessor()
-    ) != 1 or  // Multiple predecessors or no predecessor
-    exists(Instruction predecessor |
-      instr = predecessor.getASuccessor() and
-      strictcount(Instruction other |
-        other = predecessor.getASuccessor()
-      ) > 1
-    ) or  // Predecessor has multiple successors
-    exists(Instruction predecessor, EdgeKind kind |
-      instr = predecessor.getSuccessor(kind) and
-      not kind instanceof GotoEdge
-    )  // Incoming edge is not a GotoEdge
-  )
-}
-
-private predicate isEntryBlock(TIRBlock block) {
-  block = MkIRBlock(any(EnterFunctionInstruction enter))
-}
-
-private import Cached
-private cached module Cached {
-  cached newtype TIRBlock =
-    MkIRBlock(Instruction firstInstr) {
-      startsBasicBlock(firstInstr)
-    }
-
-  cached Instruction getInstruction(TIRBlock block, int index) {
-    index = 0 and block = MkIRBlock(result) or
-    (
-      index > 0 and
-      not startsBasicBlock(result) and
-      exists(Instruction predecessor, GotoEdge edge |
-        predecessor = getInstruction(block, index - 1) and
-        result = predecessor.getSuccessor(edge)
-      )
-    )
-  }
-
-  cached int getInstructionCount(TIRBlock block) {
-    result = strictcount(getInstruction(block, _))
-  }
-
-  cached predicate blockSuccessor(TIRBlock pred, TIRBlock succ, EdgeKind kind) {
-    exists(Instruction predLast, Instruction succFirst |
-      predLast = getInstruction(pred, getInstructionCount(pred) - 1) and
-      succFirst = predLast.getSuccessor(kind) and
-      succ = MkIRBlock(succFirst)
-    )
-  }
-
-  cached predicate blockSuccessor(TIRBlock pred, TIRBlock succ) {
-    blockSuccessor(pred, succ, _)
-  }
-
-  cached predicate blockImmediatelyDominates(TIRBlock dominator, TIRBlock block) =
-    idominance(isEntryBlock/1, blockSuccessor/2)(_, dominator, block)
-}
+cached newtype TIRBlock = MkIRBlock(OldIR::IRBlock oldBlock)
 
 class IRBlock extends TIRBlock {
-  Instruction firstInstr;
+  OldIR::IRBlock oldBlock;
 
   IRBlock() {
-    this = MkIRBlock(firstInstr)
+    this = MkIRBlock(oldBlock)
   }
 
   final string toString() {
-    result = firstInstr.toString()
+    result = oldBlock.toString()
   }
 
   final Location getLocation() {
-    result = getFirstInstruction().getLocation()
+    result = oldBlock.getLocation()
   }
-  
+
   final string getUniqueId() {
-    result = firstInstr.getUniqueId()
+    result = oldBlock.getUniqueId()
   }
-  
+
   final Instruction getInstruction(int index) {
-    result = getInstruction(this, index)
+    Construction::getOldInstruction(result) = oldBlock.getInstruction(index)
   }
 
   final PhiInstruction getAPhiInstruction() {
@@ -99,43 +39,47 @@ class IRBlock extends TIRBlock {
   }
 
   final Instruction getFirstInstruction() {
-    result = firstInstr
+    Construction::getOldInstruction(result) = oldBlock.getFirstInstruction()
   }
 
   final Instruction getLastInstruction() {
-    result = getInstruction(getInstructionCount() - 1)
+    Construction::getOldInstruction(result) = oldBlock.getLastInstruction()
   }
 
   final int getInstructionCount() {
-    result = strictcount(getInstruction(_))
+    result = oldBlock.getInstructionCount()
   }
 
   final FunctionIR getFunctionIR() {
-    result = firstInstr.getFunctionIR()
+    result = getFirstInstruction().getFunctionIR()
   }
 
   final Function getFunction() {
-    result = firstInstr.getFunction()
+    result = getFirstInstruction().getFunction()
   }
 
   final IRBlock getASuccessor() {
-    blockSuccessor(this, result)
+    result = MkIRBlock(oldBlock.getASuccessor())
   }
 
   final IRBlock getAPredecessor() {
-    blockSuccessor(result, this)
+    result.getASuccessor() = this
   }
 
   final IRBlock getSuccessor(EdgeKind kind) {
-    blockSuccessor(this, result, kind)
+    result = MkIRBlock(oldBlock.getSuccessor(kind))
   }
 
   final predicate immediatelyDominates(IRBlock block) {
-    blockImmediatelyDominates(this, block)
+    oldBlock.immediatelyDominates(block.getOldBlock())
   }
 
   final predicate strictlyDominates(IRBlock block) {
-    blockImmediatelyDominates+(this, block)
+    // This is recomputed from scratch rather than reusing the corresponding
+    // predicate of `getOldBlock` because `getOldBlock.strictlyDominates/1` may
+    // at run time be a compactly stored transitive closure that we don't want
+    // to risk materializing in order to join with `MkIRBlock`.
+    immediatelyDominates+(block)
   }
 
   final predicate dominates(IRBlock block) {
@@ -146,5 +90,9 @@ class IRBlock extends TIRBlock {
   final IRBlock dominanceFrontier() {
     dominates(result.getAPredecessor()) and
     not strictlyDominates(result)
+  }
+
+  private OldIR::IRBlock getOldBlock() {
+    result = oldBlock
   }
 }

@@ -1,4 +1,3 @@
-private import IRInternal
 import Instruction
 import cpp
 import semmle.code.cpp.ir.EdgeKind
@@ -89,8 +88,7 @@ class IRBlock extends TIRBlock {
   }
 
   final PhiInstruction getAPhiInstruction() {
-    Construction::getPhiInstructionBlockStart(result) =
-      getFirstInstruction()
+    none()
   }
 
   final Instruction getAnInstruction() {
