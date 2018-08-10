@@ -38,6 +38,7 @@ class FunctionIR extends TFunctionIR {
   /**
    * Gets the entry point for this function.
    */
+  pragma[noinline]
   final EnterFunctionInstruction getEnterFunctionInstruction() {
     result.getFunctionIR() = this
   }
@@ -45,10 +46,12 @@ class FunctionIR extends TFunctionIR {
   /**
    * Gets the exit point for this function.
    */
+  pragma[noinline]
   final ExitFunctionInstruction getExitFunctionInstruction() {
     result.getFunctionIR() = this
   }
 
+  pragma[noinline]
   final UnmodeledDefinitionInstruction getUnmodeledDefinitionInstruction() {
     result.getFunctionIR() = this
   }
@@ -56,6 +59,7 @@ class FunctionIR extends TFunctionIR {
   /**
    * Gets the single return instruction for this function.
    */
+  pragma[noinline]
   final ReturnInstruction getReturnInstruction() {
     result.getFunctionIR() = this
   }
@@ -64,6 +68,7 @@ class FunctionIR extends TFunctionIR {
    * Gets the variable used to hold the return value of this function. If this
    * function does not return a value, this predicate does not hold.
    */
+  pragma[noinline]
   final IRReturnVariable getReturnVariable() {
     result.getFunctionIR() = this
   }
@@ -71,6 +76,7 @@ class FunctionIR extends TFunctionIR {
   /**
    * Gets the block containing the entry point of this function.
    */  
+  pragma[noinline]
   final IRBlock getEntryBlock() {
     result.getFirstInstruction() = getEnterFunctionInstruction()
   }
