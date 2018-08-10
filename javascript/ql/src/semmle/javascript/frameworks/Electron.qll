@@ -96,10 +96,9 @@ module Electron {
     
     IPCMainCallback() {
       exists(IPCMain ipcMain, DataFlow::MethodCallNode mc |
-        ipcMain.flowsTo(mc.getReceiver()) and
+        mc = ipcMain.getAMemberCall("on") and
         this.flowsTo(mc.getArgument(1)) and
-        channel = mc.getArgument(0) and
-        mc.getCalleeName() = "on"
+        channel = mc.getArgument(0)
       )
     }
     
@@ -141,14 +140,13 @@ module Electron {
     
     IPCMainSentMessage() {
       exists(IPCMain ipcMain, DataFlow::MethodCallNode mc |
-        ipcMain.flowsTo(mc.getReceiver()) and
-        this = mc.getArgument(1) and
-        channel = mc.getArgument(0) and
         (
-          mc.getCalleeName() = "send"
+          ipcMain.getAMemberCall("send") = mc
           or
-          mc.getCalleeName() = "sendSync"
-        )
+          ipcMain.getAMemberCall("sendSync") = mc
+        ) and
+        this = mc.getArgument(1) and
+        channel = mc.getArgument(0)
       )
     }
     
@@ -162,22 +160,15 @@ module Electron {
   }
   
   /**
-   * A data flow node that is sent as an Electron IPC reply from the main process.
-   */
-  abstract class IPCMainReplyMessage extends IPCMainMessage {
-  }
-  
-  /**
    * A data flow node that is sent as an asynchronous Electron IPC reply from the main process.
    */
-  class IPCMainAsyncReplyMessage extends IPCMainReplyMessage {
+  class IPCMainAsyncReplyMessage extends IPCMainMessage {
     DataFlow::Node channel;
     
     IPCMainAsyncReplyMessage() {
       exists(IPCMainCallback callback, DataFlow::MethodCallNode mc |
-        callback.getParameter(0).getAPropertyRead("sender").flowsTo(mc.getReceiver()) and
+        mc = callback.getParameter(0).getAPropertyRead("sender").getAMemberCall("send") and
         this = mc.getArgument(1) and
-        mc.getCalleeName() = "send" and
         channel = mc.getArgument(0)
       )
     }
@@ -194,38 +185,13 @@ module Electron {
   /**
    * A data flow node that is sent as a synchronous Electron IPC message from the main process.
    */
-  class IPCMainSyncReplyMessage extends IPCMainReplyMessage {
+  class IPCMainSyncReplyMessage extends DataFlow::Node {
     DataFlow::Node channel;
     
     IPCMainSyncReplyMessage() {
-      exists(IPCMainCallback callback, DataFlow::PropWrite write |
-        callback.getParameter(0).flowsTo(write.getBase()) and
-        this = write.getRhs() and
-        write.getPropertyName() = "returnValue" and
+      exists(IPCMainCallback callback |
+        this = callback.getParameter(0).getAPropertyWrite("returnValue").getRhs() and
         channel = callback.getChannel()
-      )
-    }
-    
-    override DataFlow::Node getChannel() {
-      result = channel
-    }
-    
-    override string getChannelValue() {
-      result = channel.asExpr().getStringValue()
-    }
-  }
-  
-  /**
-   * A data flow node that is a call to a synchronous Electron IPC method in the main process.
-   */
-  class IPCMainSendSync extends DataFlow::MethodCallNode {
-    DataFlow::Node channel;
-    
-    IPCMainSendSync() {
-      exists(IPCMain ipcMain |
-        ipcMain.flowsTo(this.getReceiver()) and
-        this.getCalleeName() = "sendSync" and
-        this.getArgument(0) = channel
       )
     }
     
@@ -239,6 +205,27 @@ module Electron {
   }
   
   /**
+   * A data flow node that is a call to a synchronous Electron IPC method in the main process.
+   */
+  class IPCMainSendSync extends DataFlow::MethodCallNode {
+    DataFlow::Node channel;
+    
+    IPCMainSendSync() {
+      exists(IPCMain ipcMain |
+        this = ipcMain.getAMemberCall("sendSync") and
+        channel = this.getArgument(0)
+      )
+    }
+    
+    DataFlow::Node getChannel() {
+      result = channel
+    }
+    
+    string getChannelValue() {
+      result = channel.asExpr().getStringValue()
+    }
+  }
+    /**
    * A data flow node that imports `electron.ipcRenderer`.
    */
   class IPCRenderer extends DataFlow::SourceNode {
@@ -248,17 +235,16 @@ module Electron {
   }
   
   /**
-   * A data flow node that is registered as an Electron IPC callback in a renderer process.
+   * A data flow node that is registered as an Electron IPC callback in the main process.
    */
   class IPCRendererCallback extends DataFlow::FunctionNode {
     DataFlow::Node channel;
     
     IPCRendererCallback() {
       exists(IPCRenderer ipcRenderer, DataFlow::MethodCallNode mc |
-        ipcRenderer.flowsTo(mc.getReceiver()) and
+        mc = ipcRenderer.getAMemberCall("on") and
         this.flowsTo(mc.getArgument(1)) and
-        channel = mc.getArgument(0) and
-        mc.getCalleeName() = "on"
+        channel = mc.getArgument(0)
       )
     }
     
@@ -278,7 +264,7 @@ module Electron {
   }
   
   /**
-   * A data flow node that is sent as an Electron IPC message from a renderer process.
+   * A data flow node that is sent as an Electron IPC message from the main process.
    */
   abstract class IPCRendererMessage extends DataFlow::ValueNode {
     /**
@@ -293,50 +279,19 @@ module Electron {
   }
   
   /**
-   * A data flow node that is sent as an initial Electron IPC message from a renderer process.
+   * A data flow node that is sent as an initial Electron IPC message from the main process.
    */
   class IPCRendererSentMessage extends IPCRendererMessage {
     DataFlow::Node channel;
     
     IPCRendererSentMessage() {
       exists(IPCRenderer ipcRenderer, DataFlow::MethodCallNode mc |
-        ipcRenderer.flowsTo(mc.getReceiver()) and
-        this = mc.getArgument(1) and
-        channel = mc.getArgument(0) and
         (
-          mc.getCalleeName() = "send"
+          ipcRenderer.getAMemberCall("send") = mc
           or
-          mc.getCalleeName() = "sendSync"
-        )
-      )
-    }
-    
-    override DataFlow::Node getChannel() {
-      result = channel
-    }
-    
-    override string getChannelValue() {
-      result = channel.asExpr().getStringValue()
-    }
-  }
-  
-  /**
-   * A data flow node that is sent as an Electron IPC reply from a renderer process.
-   */
-  abstract class IPCRendererReplyMessage extends IPCRendererMessage {
-  }
-  
-  /**
-   * A data flow node that is sent as an asynchronous Electron IPC reply from a renderer process.
-   */
-  class IPCRendererAsyncReplyMessage extends IPCRendererReplyMessage {
-    DataFlow::Node channel;
-    
-    IPCRendererAsyncReplyMessage() {
-      exists(IPCRendererCallback callback, DataFlow::MethodCallNode mc |
-        callback.getParameter(0).getAPropertyRead("sender").flowsTo(mc.getReceiver()) and
+          ipcRenderer.getAMemberCall("sendSync") = mc
+        ) and
         this = mc.getArgument(1) and
-        mc.getCalleeName() = "send" and
         channel = mc.getArgument(0)
       )
     }
@@ -350,19 +305,17 @@ module Electron {
     }
   }
   
-
   /**
-   * A data flow node that is sent as a synchronous Electron IPC message from a renderer process.
+   * A data flow node that is sent as an asynchronous Electron IPC reply from the main process.
    */
-  class IPCRendererSyncReplyMessage extends IPCRendererReplyMessage {
+  class IPCRendererAsyncReplyMessage extends IPCRendererMessage {
     DataFlow::Node channel;
     
-    IPCRendererSyncReplyMessage() {
-      exists(IPCRendererCallback callback, DataFlow::PropWrite write |
-        callback.getParameter(0).flowsTo(write.getBase()) and
-        this = write.getRhs() and
-        write.getPropertyName() = "returnValue" and
-        channel = callback.getChannel()
+    IPCRendererAsyncReplyMessage() {
+      exists(IPCRendererCallback callback, DataFlow::MethodCallNode mc |
+        mc = callback.getParameter(0).getAPropertyRead("sender").getAMemberCall("send") and
+        this = mc.getArgument(1) and
+        channel = mc.getArgument(0)
       )
     }
     
@@ -374,18 +327,39 @@ module Electron {
       result = channel.asExpr().getStringValue()
     }
   }
+
+  /**
+   * A data flow node that is sent as a synchronous Electron IPC message from the main process.
+   */
+  class IPCRendererSyncReplyMessage extends DataFlow::Node {
+    DataFlow::Node channel;
+    
+    IPCRendererSyncReplyMessage() {
+      exists(IPCRendererCallback callback |
+        this = callback.getParameter(0).getAPropertyWrite("returnValue").getRhs() and
+        channel = callback.getChannel()
+      )
+    }
+    
+    DataFlow::Node getChannel() {
+      result = channel
+    }
+    
+    string getChannelValue() {
+      result = channel.asExpr().getStringValue()
+    }
+  }
   
   /**
-   * A data flow node that is a call to a synchronous Electron IPC method in a renderer process.
+   * A data flow node that is a call to a synchronous Electron IPC method in the main process.
    */
   class IPCRendererSendSync extends DataFlow::MethodCallNode {
     DataFlow::Node channel;
     
     IPCRendererSendSync() {
       exists(IPCRenderer ipcRenderer |
-        ipcRenderer.flowsTo(this.getReceiver()) and
-        this.getCalleeName() = "sendSync" and
-        this.getArgument(0) = channel
+        this = ipcRenderer.getAMemberCall("sendSync") and
+        channel = this.getArgument(0)
       )
     }
     
@@ -426,39 +400,32 @@ module Electron {
    * Holds if `pred` flows to `succ` via the Electron IPC channel `channel`, as determined from local string values.
    */
   predicate ipcSimpleFlowStep(DataFlow::Node pred, DataFlow::Node succ, string channel) {
-    // match `message` in `ipcRenderer.on('some-channel', (event, message) => {})` with `message` in `ipcMain.send('some-channel', message)`
+    // match a message sent from the main thread with a callback parameter in the renderer thread
     exists(IPCRendererCallback callback |
       succ = callback.getParameter(1) and
       channel = callback.getChannelValue() and
       channel = pred.(IPCMainMessage).getChannelValue()
     )
     or
-    // match `message` in `ipcMain.on('some-channel', (event, message) => {})` with `message` in `ipcRenderer.send('some-channel', message)`
+    // match a message sent from the renderer thread with a callback parameter in the main thread
     exists(IPCMainCallback callback |
       succ = callback.getParameter(1) and
       channel = callback.getChannelValue() and
       channel = pred.(IPCRendererMessage).getChannelValue()
     )
     or
-    // match `ipcRenderer.sendSync('some-channel', message )` with `reply` in `ipcMain.on('some-channel', (event, message) => {event.returnValue = reply})`
+    // match a synchronous reply sent from the main thread with a `sendSync` call in the renderer thread
     exists(IPCRendererSendSync sendSync |
       succ = sendSync and
       channel = sendSync.getChannelValue() and
       channel = pred.(IPCMainSyncReplyMessage).getChannelValue()
     )
     or
-    // match `ipcMain.sendSync('some-channel', message )` with `reply` in `ipcRenderer.on('some-channel', (event, message) => {event.returnValue = reply})`
+    // match a synchronous reply sent from the renderer thread with a `sendSync` call in the main thread
     exists(IPCMainSendSync sendSync |
       succ = sendSync and
       channel = sendSync.getChannelValue() and
       channel = pred.(IPCRendererSyncReplyMessage).getChannelValue()
-    )
-    or
-    // match `message` in `ipcRenderer.on('some-channel', (event, message) => {})` with `message` in `browser.webContents.send('some-channel', message)`
-    exists(IPCRendererCallback callback |
-      succ = callback.getParameter(1) and
-      channel = callback.getChannelValue() and
-      channel = pred.(WebContentsSendMessage).asExpr().getStringValue()
     )
   }
   
