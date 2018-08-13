@@ -39,6 +39,7 @@
 | b.js:19:5:19:6 | z3 | b.js:19:10:19:18 | c_default | file://:0:0:0:0 | indefinite value (import) |
 | b.js:22:5:22:6 | z4 | b.js:22:10:22:12 | foo | file://:0:0:0:0 | indefinite value (import) |
 | b.js:22:5:22:6 | z4 | b.js:22:10:22:12 | foo | file://:0:0:0:0 | non-empty, non-numeric string |
+| b.js:25:5:25:6 | z5 | b.js:25:10:25:14 | stuff | file://:0:0:0:0 | indefinite value (call) |
 | b.js:25:5:25:6 | z5 | b.js:25:10:25:14 | stuff | file://:0:0:0:0 | indefinite value (import) |
 | b.js:28:5:28:6 | z6 | b.js:28:10:28:14 | setX2 | a.js:3:8:5:1 | function setX |
 | b.js:31:5:31:6 | z7 | b.js:31:10:31:10 | A | ts.ts:1:16:1:25 | class A |
