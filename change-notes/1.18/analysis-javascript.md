@@ -6,6 +6,8 @@
 
 * Modelling of data flow through destructuring assignments has been improved. This may give additional results for the security queries and other queries that rely on data flow.
 
+* Modelling of global variables has been improved. This may give more true-positive results and fewer false-positive results for a variety of queries.
+
 * Modelling of taint flow through the array operations `map` and `join` has been improved. This may give additional results for the security queries.
 
 * Support for popular libraries has been improved. Consequently, queries may produce more results on code bases that use the following libraries:
@@ -31,6 +33,7 @@
   - [extend2](https://github.com/eggjs/extend2)
   - [fast-json-parse](https://github.com/mcollina/fast-json-parse)
   - [forge](https://github.com/digitalbazaar/forge)
+  - [global](https://www.npmjs.com/package/global)
   - [he](https://github.com/mathiasbynens/he)
   - [html-entities](https://github.com/mdevils/node-html-entities)
   - [jquery](https://jquery.com)
