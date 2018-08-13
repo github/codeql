@@ -1,0 +1,2 @@
+| Test.cs:19:13:19:17 | access to local variable store | Do not add certificates to root certificate store |
+| Test.cs:28:13:28:17 | access to local variable store | Do not add certificates to root certificate store |
