@@ -184,7 +184,7 @@ module Electron {
     }
   
     /**
-     * A data flow node that is sent as a synchronous Electron IPC message from the main process.
+     * A data flow node that is sent as a synchronous Electron IPC reply from the main process.
      */
     class MainSyncReplyMessage extends DataFlow::Node {
       DataFlow::Node channel;
@@ -330,7 +330,7 @@ module Electron {
     }
   
     /**
-     * A data flow node that is sent as a synchronous Electron IPC message from the renderer process.
+     * A data flow node that is sent as a synchronous Electron IPC reply from the renderer process.
      */
     class RendererSyncReplyMessage extends DataFlow::Node {
       DataFlow::Node channel;
