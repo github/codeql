@@ -43,7 +43,7 @@ module Electron {
    */
   class TypedBrowserWindow extends BrowserObject {
     TypedBrowserWindow() {
-      this.asExpr().getType().toString() = "BrowserWindow"
+      this.asExpr().getType().hasUnderlyingType("electron", "BrowserWindow")
     }
   }
   
@@ -52,7 +52,7 @@ module Electron {
    */
   class TypedBrowserView extends BrowserObject {
     TypedBrowserView() {
-      this.asExpr().getType().toString() = "BrowserView"
+      this.asExpr().getType().hasUnderlyingType("electron", "BrowserView")
     }
   }
   /**
