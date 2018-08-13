@@ -8,8 +8,6 @@
  * @tags reliability
  *       correctness
  *       types
- *       security
- *       external/cwe/cwe-843
  */
 import cpp
 
