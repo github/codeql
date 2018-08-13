@@ -21,6 +21,7 @@ import semmle.javascript.Externs
 import semmle.javascript.Files
 import semmle.javascript.Functions
 import semmle.javascript.HTML
+import semmle.javascript.HtmlSanitizers
 import semmle.javascript.JSDoc
 import semmle.javascript.JSON
 import semmle.javascript.JsonParsers
