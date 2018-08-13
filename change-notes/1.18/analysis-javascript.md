@@ -44,6 +44,7 @@
   - [object.assign](https://github.com/ljharb/object.assign)
   - [object.defaults](https://github.com/jonschlinkert/object.defaults)
   - [parse-json](https://github.com/sindresorhus/parse-json)
+  - [React Native](https://facebook.github.io/react-native/)
   - [q](http://documentup.com/kriskowal/q/)
   - [ramda](https://ramdajs.com)
   - [safe-json-parse](https://github.com/Raynos/safe-json-parse)

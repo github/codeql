@@ -62,6 +62,7 @@ import semmle.javascript.frameworks.HttpFrameworks
 import semmle.javascript.frameworks.NoSQL
 import semmle.javascript.frameworks.PkgCloud
 import semmle.javascript.frameworks.React
+import semmle.javascript.frameworks.ReactNative
 import semmle.javascript.frameworks.Request
 import semmle.javascript.frameworks.SQL
 import semmle.javascript.frameworks.UriLibraries

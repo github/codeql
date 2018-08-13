@@ -9,3 +9,5 @@
 | node.js:7:34:7:39 | target | Untrusted URL redirection due to $@. | node.js:6:26:6:32 | req.url | user-provided value |
 | node.js:15:34:15:45 | '/' + target | Untrusted URL redirection due to $@. | node.js:11:26:11:32 | req.url | user-provided value |
 | node.js:32:34:32:55 | target  ... =" + me | Untrusted URL redirection due to $@. | node.js:29:26:29:32 | req.url | user-provided value |
+| react-native.js:8:17:8:23 | tainted | Untrusted URL redirection due to $@. | react-native.js:7:17:7:33 | req.param("code") | user-provided value |
+| react-native.js:9:26:9:32 | tainted | Untrusted URL redirection due to $@. | react-native.js:7:17:7:33 | req.param("code") | user-provided value |

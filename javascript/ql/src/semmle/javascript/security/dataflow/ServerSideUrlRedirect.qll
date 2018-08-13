@@ -140,6 +140,20 @@ module ServerSideUrlRedirect {
       outcome = true
     }
   }
+
+  /**
+   * A URL attribute for a React Native `WebView`.
+   */
+  class WebViewUrlSink extends Sink {
+    WebViewUrlSink() {
+      // `url` or `source.uri` properties of React Native `WebView`
+      exists (ReactNative::WebViewElement webView, DataFlow::SourceNode source, string prop |
+        source = webView and prop = "url" or
+        source = webView.getAPropertyWrite("source").getRhs().getALocalSource() and prop = "uri" |
+        this = source.getAPropertyWrite(prop).getRhs()
+      )
+    }
+  }
 }
 
 /** DEPRECATED: Use `ServerSideUrlRedirect::Source` instead. */
