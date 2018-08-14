@@ -1,0 +1,3 @@
+# CWE-772: Missing Release of Resource after Effective Lifetime
++ semmlecode-cpp-queries/Critical/NewFreeMismatch.ql: /CWE/CWE-772
+    @name Mismatching new/free or malloc/delete (CWE-772)
