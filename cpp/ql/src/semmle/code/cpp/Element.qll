@@ -154,8 +154,6 @@ class Element extends @element {
     namequalifiers(this, result, _, _) or
     initialisers(this, result, _, _) or
     exprconv(result, this) or
-    this = result.(MacroAccess).getParentInvocation() or
-    result = this.(MacroInvocation).getExpr() or // macroinvocation -> outer Expr
     param_decl_bind(this,_,result)
   }
 
@@ -165,17 +163,6 @@ class Element extends @element {
     (
       not exists(getEnclosingElementPref()) and
       (
-        // macroinvocation -> all enclosed elements
-        inmacroexpansion(result, this)
-        or
-        macrolocationbind(
-          this.(MacroInvocation),
-          result.(VariableDeclarationEntry).getLocation())
-        or
-        macrolocationbind(
-          this.(MacroInvocation),
-          result.(FunctionDeclarationEntry).getLocation())
-        or
         this = result.(Class).getAMember()
         or
         result = exprEnclosingElement(this)
@@ -225,8 +212,7 @@ private predicate isFromTemplateInstantiationRec(Element e, Element instantiatio
   instantiation.(Variable).isConstructedFrom(_) and
   e = instantiation
   or
-  isFromTemplateInstantiationRec(e.getEnclosingElement(), instantiation) and
-  not e instanceof MacroAccess
+  isFromTemplateInstantiationRec(e.getEnclosingElement(), instantiation)
 }
 
 private predicate isFromUninstantiatedTemplateRec(Element e, Element template) {
@@ -239,8 +225,7 @@ private predicate isFromUninstantiatedTemplateRec(Element e, Element template) {
   is_variable_template(template) and
   e = template
   or
-  isFromUninstantiatedTemplateRec(e.getEnclosingElement(), template) and
-  not e instanceof MacroAccess
+  isFromUninstantiatedTemplateRec(e.getEnclosingElement(), template)
 }
 
 /**
