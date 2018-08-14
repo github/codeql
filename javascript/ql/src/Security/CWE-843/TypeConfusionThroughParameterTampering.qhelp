@@ -15,7 +15,7 @@
 
 			However, sanitizing request parameters assuming they have type
 			<code>String</code> and using the builtin string methods such as
-			<code>String.prototye.indexOf</code> is susceptible to type confusion
+			<code>String.prototype.indexOf</code> is susceptible to type confusion
 			attacks.
 
 			In a type confusion attack, an attacker tampers with an HTTP request
