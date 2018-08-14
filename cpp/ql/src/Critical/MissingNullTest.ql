@@ -5,6 +5,7 @@
  * @id cpp/missing-null-test
  * @problem.severity recommendation
  * @tags reliability
+ *       security
  *       external/cwe/cwe-476
  */
 import cpp

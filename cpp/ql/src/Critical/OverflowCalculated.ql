@@ -5,6 +5,7 @@
  * @id cpp/overflow-calculated
  * @problem.severity warning
  * @tags reliability
+ *       security
  *       external/cwe/cwe-131
  *       external/cwe/cwe-120
  */

@@ -10,6 +10,7 @@
  * @precision medium
  * @tags reliability
  *       correctness
+ *       security
  *       external/cwe/cwe-676
  */
 import cpp

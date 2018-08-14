@@ -5,6 +5,7 @@
  * @id cpp/inconsistent-nullness-testing
  * @problem.severity warning
  * @tags reliability
+ *       security
  *       external/cwe/cwe-476
  */
 import cpp

@@ -5,6 +5,7 @@
  * @id cpp/global-use-before-init
  * @problem.severity warning
  * @tags reliability
+ *       security
  *       external/cwe/cwe-457
  */
 import cpp

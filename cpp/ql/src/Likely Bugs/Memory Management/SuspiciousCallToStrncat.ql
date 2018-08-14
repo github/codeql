@@ -8,6 +8,7 @@
  * @id cpp/unsafe-strncat
  * @tags reliability
  *       correctness
+ *       security
  *       external/cwe/cwe-676
  *       external/cwe/cwe-119
  *       external/cwe/cwe-251

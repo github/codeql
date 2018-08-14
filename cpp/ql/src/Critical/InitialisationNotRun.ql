@@ -5,6 +5,7 @@
  * @id cpp/initialization-not-run
  * @problem.severity warning
  * @tags reliability
+ *       security
  *       external/cwe/cwe-456
  */
 import cpp

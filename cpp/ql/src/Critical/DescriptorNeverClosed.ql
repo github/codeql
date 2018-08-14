@@ -5,6 +5,7 @@
  * @id cpp/descriptor-never-closed
  * @problem.severity warning
  * @tags efficiency
+ *       security
  *       external/cwe/cwe-775
  */
 import semmle.code.cpp.pointsto.PointsTo
