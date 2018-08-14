@@ -1,4 +1,4 @@
-﻿// semmle-extractor-options: /nostdlib /noconfig /r:${env.windir}\Microsoft.NET\Framework64\v4.0.30319\mscorlib.dll /r:${env.windir}\Microsoft.NET\Framework64\v4.0.30319\System.dll /r:${env.windir}\Microsoft.NET\Framework64\v4.0.30319\System.IO.Compression.dll /r:${env.windir}\Microsoft.NET\Framework64\v4.0.30319\System.IO.Compression.FileSystem.dll
+﻿// semmle-extractor-options: /r:System.IO.Compression.dll /r:System.IO.Compression.FileSystem.dll /r:System.IO.Compression.ZipFile.dll /r:System.IO.FileSystem.dll
 using System;
 using System.IO;
 using System.IO.Compression;
