@@ -207,6 +207,13 @@ module TaintTracking {
           this = DataFlow::parameterNode(p) and
           pred.asExpr() = m.getReceiver()
         )
+        or
+        // `array.map` with tainted return value in callback
+        exists (MethodCallExpr m, Function f |
+          this.asExpr() = m and
+          m.getMethodName() = "map" and
+          m.getArgument(0) = f and // Require the argument to be a closure to avoid spurious call/return flow
+          pred = f.getAReturnedExpr().flow())
       )
       or
       // reading from a tainted object yields a tainted result
@@ -365,7 +372,9 @@ module TaintTracking {
             name = "trimRight" or
             // sorted, interesting, properties of Object.prototype
             name = "toString" or
-            name = "valueOf"
+            name = "valueOf" or
+            // sorted, interesting, properties of Array.prototype
+            name = "join"
           ) or
           exists (int i | pred.asExpr() = astNode.(MethodCallExpr).getArgument(i) |
             name = "concat" or
