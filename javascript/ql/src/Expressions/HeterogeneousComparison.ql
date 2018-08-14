@@ -4,7 +4,7 @@
  *              the same type will always yield 'false', and an inequality comparison will always
  *              yield 'true'.
  * @kind problem
- * @problem.severity error
+ * @problem.severity warning
  * @id js/comparison-between-incompatible-types
  * @tags reliability
  *       correctness

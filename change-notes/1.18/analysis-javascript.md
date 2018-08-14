@@ -81,6 +81,7 @@
 | **Query**                  | **Expected impact**    | **Change**                                                       |
 |----------------------------|------------------------|------------------------------------------------------------------|
 | Arguments redefined | Fewer results | This rule previously also flagged redefinitions of `eval`. This was an oversight that is now fixed. |
+| Comparison between inconvertible types | Lower severity | The severity of this rule has been revised to "warning". |
 | CORS misconfiguration for credentials transfer | More true-positive results | This rule now treats header names case-insensitively. |
 | Hard-coded credentials | More true-positive results | This rule now recognizes secret cryptographic keys. |
 | Incomplete sanitization | More true-positive results | This rule now recognizes incomplete URL encoding and decoding. |
