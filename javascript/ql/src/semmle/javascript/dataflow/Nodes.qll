@@ -220,16 +220,37 @@ class GlobalVarRefNode extends DataFlow::ValueNode, DataFlow::DefaultSourceNode 
 }
 
 /**
+ * Gets a data flow node corresponding to an access to the global object, including
+ * `this` expressions outside functions, references to global variables `window`
+ * and `global`, and uses of the `global` npm package.
+ */
+DataFlow::SourceNode globalObjectRef() {
+  // top-level `this`
+  exists (ThisNode globalThis | result = globalThis |
+    not exists(globalThis.getBinder())
+  )
+  or
+  // DOM
+  result = globalVarRef("window") or
+  // Node.js
+  result = globalVarRef("global") or
+  // `require("global")`
+  result = moduleImport("global")
+}
+
+/**
  * Gets a data flow node corresponding to an access to global variable `name`,
- * either directly or through `window` or `global`.
+ * either directly, through `window` or `global`, or through the `global` npm package.
  */
 pragma[nomagic]
 DataFlow::SourceNode globalVarRef(string name) {
-  result.(GlobalVarRefNode).getName() = name or
-  // DOM environment
-  result = globalVarRef("window").getAPropertyReference(name) or
-  // Node.js environment
-  result = globalVarRef("global").getAPropertyReference(name)
+  result.(GlobalVarRefNode).getName() = name
+  or
+  result = globalObjectRef().getAPropertyReference(name)
+  or
+  // `require("global/document")` or `require("global/window")`
+  (name = "document" or name = "window") and
+  result = moduleImport("global/" + name)
 }
 
 /** A data flow node corresponding to a function definition. */
