@@ -1,52 +1,11 @@
 private import IRInternal
+private import IRBlockConstruction
 import Instruction
-import cpp
 import semmle.code.cpp.ir.EdgeKind
 
-private predicate startsBasicBlock(Instruction instr) {
-  not instr instanceof PhiInstruction and
-  (
-    count(Instruction predecessor |
-      instr = predecessor.getASuccessor()
-    ) != 1 or  // Multiple predecessors or no predecessor
-    exists(Instruction predecessor |
-      instr = predecessor.getASuccessor() and
-      strictcount(Instruction other |
-        other = predecessor.getASuccessor()
-      ) > 1
-    ) or  // Predecessor has multiple successors
-    exists(Instruction predecessor, EdgeKind kind |
-      instr = predecessor.getSuccessor(kind) and
-      not kind instanceof GotoEdge
-    )  // Incoming edge is not a GotoEdge
-  )
-}
-
-private newtype TIRBlock =
-  MkIRBlock(Instruction firstInstr) {
-    startsBasicBlock(firstInstr)
-  }
-
-cached private predicate isEntryBlock(IRBlock block) {
-  block.getFirstInstruction() instanceof EnterFunctionInstruction
-}
-
-cached private predicate blockSuccessor(IRBlock pred, IRBlock succ) {
-  succ = pred.getASuccessor()
-}
-
-private predicate blockImmediatelyDominates(IRBlock dominator, IRBlock block) =
-  idominance(isEntryBlock/1, blockSuccessor/2)(_, dominator, block)
-
 class IRBlock extends TIRBlock {
-  Instruction firstInstr;
-
-  IRBlock() {
-    this = MkIRBlock(firstInstr)
-  }
-
   final string toString() {
-    result = firstInstr.toString()
+    result = getFirstInstruction(this).toString()
   }
 
   final Location getLocation() {
@@ -54,24 +13,15 @@ class IRBlock extends TIRBlock {
   }
   
   final string getUniqueId() {
-    result = firstInstr.getUniqueId()
+    result = getFirstInstruction(this).getUniqueId()
   }
   
-  final cached Instruction getInstruction(int index) {
-    index = 0 and result = firstInstr or
-    (
-      index > 0 and
-      not startsBasicBlock(result) and
-      exists(Instruction predecessor, GotoEdge edge |
-        predecessor = getInstruction(index - 1) and
-        result = predecessor.getSuccessor(edge)
-      )
-    )
+  final Instruction getInstruction(int index) {
+    result = getInstruction(this, index)
   }
 
   final PhiInstruction getAPhiInstruction() {
-    Construction::getPhiInstructionBlockStart(result) =
-      getFirstInstruction()
+    Construction::getPhiInstructionBlockStart(result) = getFirstInstruction()
   }
 
   final Instruction getAnInstruction() {
@@ -80,7 +30,7 @@ class IRBlock extends TIRBlock {
   }
 
   final Instruction getFirstInstruction() {
-    result = firstInstr
+    result = getFirstInstruction(this)
   }
 
   final Instruction getLastInstruction() {
@@ -92,23 +42,23 @@ class IRBlock extends TIRBlock {
   }
 
   final FunctionIR getFunctionIR() {
-    result = firstInstr.getFunctionIR()
+    result = getFirstInstruction(this).getFunctionIR()
   }
 
   final Function getFunction() {
-    result = firstInstr.getFunction()
+    result = getFirstInstruction(this).getFunction()
   }
 
   final IRBlock getASuccessor() {
-    result.getFirstInstruction() = getLastInstruction().getASuccessor()
+    blockSuccessor(this, result)
   }
 
   final IRBlock getAPredecessor() {
-    firstInstr = result.getLastInstruction().getASuccessor()
+    blockSuccessor(result, this)
   }
 
   final IRBlock getSuccessor(EdgeKind kind) {
-    result.getFirstInstruction() = getLastInstruction().getSuccessor(kind)
+    blockSuccessor(this, result, kind)
   }
 
   final predicate immediatelyDominates(IRBlock block) {

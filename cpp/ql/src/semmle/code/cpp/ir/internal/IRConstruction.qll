@@ -1,7 +1,6 @@
 import cpp
 import semmle.code.cpp.ir.IR
 private import InstructionTag
-private import Opcode
 private import TempVariableTag
 private import TranslatedElement
 private import TranslatedFunction
