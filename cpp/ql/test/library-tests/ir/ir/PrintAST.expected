@@ -5900,3 +5900,60 @@ ir.cpp:
 #  897|               Type = __va_list_tag[1]
 #  897|               ValueCategory = lvalue
 #  898|     8: return ...
+#  900| CastToVoid(int) -> void
+#  900|   params: 
+#  900|     0: x
+#  900|         Type = int
+#  900|   body: { ... }
+#  901|     0: ExprStmt
+#  901|       0: (void)...
+#  901|           Conversion = conversion to void
+#  901|           Type = void
+#  901|           ValueCategory = prvalue
+#  901|         expr: x
+#  901|             Type = int
+#  901|             ValueCategory = lvalue
+#  902|     1: return ...
+#  904| ConstantConditions(int) -> void
+#  904|   params: 
+#  904|     0: x
+#  904|         Type = int
+#  904|   body: { ... }
+#  905|     0: declaration
+#  905|       0: definition of a
+#  905|           Type = bool
+#  905|         init: initializer for a
+#  905|           expr: ... && ...
+#  905|               Type = bool
+#  905|               Value = 1
+#  905|               ValueCategory = prvalue
+#  905|             0: 1
+#  905|                 Type = bool
+#  905|                 Value = 1
+#  905|                 ValueCategory = prvalue
+#  905|             1: 1
+#  905|                 Type = bool
+#  905|                 Value = 1
+#  905|                 ValueCategory = prvalue
+#  906|     1: declaration
+#  906|       0: definition of b
+#  906|           Type = int
+#  906|         init: initializer for b
+#  906|           expr: ... ? ... : ...
+#  906|               Type = int
+#  906|               ValueCategory = prvalue
+#  906|             0: (...)
+#  906|                 Type = bool
+#  906|                 Value = 1
+#  906|                 ValueCategory = prvalue
+#  906|               expr: 1
+#  906|                   Type = bool
+#  906|                   Value = 1
+#  906|                   ValueCategory = prvalue
+#  906|             1: x
+#  906|                 Type = int
+#  906|                 ValueCategory = prvalue(load)
+#  906|             2: x
+#  906|                 Type = int
+#  906|                 ValueCategory = prvalue(load)
+#  907|     2: return ...

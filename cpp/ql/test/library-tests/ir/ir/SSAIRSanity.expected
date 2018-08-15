@@ -1,4 +1,6 @@
 missingOperand
 unexpectedOperand
 duplicateOperand
+missingPhiOperands
+instructionWithoutSuccessor
 operandAcrossFunctions

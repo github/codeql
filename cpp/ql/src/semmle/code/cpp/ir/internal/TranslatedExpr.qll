@@ -1127,6 +1127,19 @@ abstract class TranslatedSingleInstructionConversion extends TranslatedConversio
 }
 
 /**
+ * The translation of an explicit cast to `void`.
+ */
+class TranslatedVoidConversion extends TranslatedSingleInstructionConversion {
+  TranslatedVoidConversion() {
+    conv instanceof VoidConversion
+  }
+
+  override Opcode getOpcode() {
+    result instanceof Opcode::ConvertToVoid
+  }
+}
+
+/**
  * Represents the translation of a conversion expression that generates a
  * `Convert` instruction.
  */

@@ -89,7 +89,8 @@ private predicate ignoreElement(Element element) {
  * a value.
  */
 private predicate isNativeCondition(Expr expr) {
-  expr instanceof BinaryLogicalOperation
+  expr instanceof BinaryLogicalOperation and
+  not expr.isConstant()
 }
 
 /**
@@ -101,7 +102,8 @@ private predicate isFlexibleCondition(Expr expr) {
     expr instanceof ParenthesisExpr or
     expr instanceof NotExpr
   ) and
-  usedAsCondition(expr)
+  usedAsCondition(expr) and
+  not expr.isConstant()
 }
 
 /**

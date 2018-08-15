@@ -293,6 +293,20 @@ class BoolConversion extends Cast {
 }
 
 /**
+ * A conversion to `void`.
+ */
+class VoidConversion extends Cast {
+  VoidConversion() {
+    conversionkinds(this, 0) and
+    getType().getUnspecifiedType() instanceof VoidType
+  }
+
+  override string getSemanticConversionString() {
+    result = "conversion to void"
+  }
+}
+
+/**
  * A conversion between two pointers or glvalues related by inheritance. The
  * base class will always be either a direct base class of the derived class,
  * or a virtual base class of the derived class. A conversion to an indirect

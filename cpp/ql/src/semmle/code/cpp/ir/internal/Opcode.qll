@@ -33,6 +33,7 @@ private newtype TOpcode =
   TPointerSub() or
   TPointerDiff() or
   TConvert() or
+  TConvertToVoid() or
   TConvertToBase() or
   TConvertToVirtualBase() or
   TConvertToDerived() or
@@ -125,6 +126,7 @@ module Opcode {
   class PointerSub extends PointerOffsetOpcode, TPointerSub { override final string toString() { result = "PointerSub" } }
   class PointerDiff extends PointerArithmeticOpcode, TPointerDiff { override final string toString() { result = "PointerDiff" } }
   class Convert extends UnaryOpcode, TConvert { override final string toString() { result = "Convert" } }
+  class ConvertToVoid extends UnaryOpcode, TConvertToVoid { override final string toString() { result = "ConvertToVoid" } }
   class ConvertToBase extends UnaryOpcode, TConvertToBase { override final string toString() { result = "ConvertToBase" } }
   class ConvertToVirtualBase extends UnaryOpcode, TConvertToVirtualBase { override final string toString() { result = "ConvertToVirtualBase" } }
   class ConvertToDerived extends UnaryOpcode, TConvertToDerived { override final string toString() { result = "ConvertToDerived" } }
