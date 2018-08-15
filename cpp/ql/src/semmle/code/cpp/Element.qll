@@ -8,15 +8,15 @@ cached @element resolveElement(@element e) {
   else result = e
 }
 
-cached Element mkElement(@element e) {
+Element mkElement(@element e) {
   result = resolveElement(e)
 }
 
-cached @element unresolveElement(Element e) {
+@element unresolveElement(Element e) {
   resolveElement(result) = e
 }
 
-cached @element underlyingElement(Element e) {
+@element underlyingElement(Element e) {
   result = e
 }
 
