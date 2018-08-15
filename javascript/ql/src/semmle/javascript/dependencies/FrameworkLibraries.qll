@@ -844,6 +844,41 @@ private class ApplicationInsights extends FrameworkLibraryWithURLRegex {
 }
 
 /**
+ * The twitter-text framework.
+ */
+private class TwitterText extends FrameworkLibraryWithGenericURL, FrameworkLibraryWithMarkerComment {
+  TwitterText() { this = "twitter-text" }
+
+  override string getAMarkerCommentRegex() {
+    result = "(?s).*twitter-text\\s*(<VERSION>).*"
+  }
+}
+
+/**
+ * The classic version of twitter-text, as seen in the wild.
+ */
+private class TwitterTextClassic extends FrameworkLibraryWithURLRegex {
+  TwitterTextClassic() { this = "twitter-text" }
+
+  override string getAURLRegex() {
+    result = ".*(?:^|/)twitter_text" + variantRegex() + "\\.js"
+  }
+}
+
+/**
+ * A copy of twitter-text.
+ */
+private class TwitterTextClassicInstance extends FrameworkLibraryInstance {
+  TwitterTextClassicInstance() {
+    this.(TopLevel).getFile().getAbsolutePath().regexpMatch(any(TwitterTextClassic t).getAURLRegex())
+  }
+  override predicate info(FrameworkLibrary fl, string v) {
+    fl instanceof TwitterTextClassic and
+    v = ""
+  }
+}
+
+/**
  * A `FrameworkLibraryReference` that refers to a recognised `FrameworkLibraryInstance`,
  * that is, a `<script>` tag where the `src` attribute can be resolved to a local file
  * that is recognised as an instance of a framework library.
