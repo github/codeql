@@ -223,8 +223,8 @@ void DynamicCast() {
   PolymorphicBase* pb = &b;
   PolymorphicDerived* pd = &d;
 
-  // These two casts are represented as BaseClassCasts because they can be resolved at compile time.
-  pb = dynamic_cast<PolymorphicBase*>(pd);  
+  // These two casts were previously represented as BaseClassCasts because they were resolved at compile time, but the front-end no longer performs this optimization.
+  pb = dynamic_cast<PolymorphicBase*>(pd);
   PolymorphicBase& rb = dynamic_cast<PolymorphicBase&>(d);
 
   pd = dynamic_cast<PolymorphicDerived*>(pb);

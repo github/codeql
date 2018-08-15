@@ -5583,8 +5583,8 @@ ir.cpp:
 #  857|         0: pb
 #  857|             Type = PolymorphicBase *
 #  857|             ValueCategory = lvalue
-#  857|         1: (PolymorphicBase *)...
-#  857|             Conversion = base class conversion
+#  857|         1: dynamic_cast<PolymorphicBase *>...
+#  857|             Conversion = dynamic_cast
 #  857|             Type = PolymorphicBase *
 #  857|             ValueCategory = prvalue
 #  857|           expr: pd
@@ -5597,8 +5597,8 @@ ir.cpp:
 #  858|           expr: (reference to)
 #  858|               Type = PolymorphicBase &
 #  858|               ValueCategory = prvalue
-#  858|             expr: (PolymorphicBase)...
-#  858|                 Conversion = base class conversion
+#  858|             expr: dynamic_cast<PolymorphicBase>...
+#  858|                 Conversion = dynamic_cast
 #  858|                 Type = PolymorphicBase
 #  858|                 ValueCategory = lvalue
 #  858|               expr: d
