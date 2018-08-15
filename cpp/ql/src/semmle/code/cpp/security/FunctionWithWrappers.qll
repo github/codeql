@@ -139,10 +139,14 @@ abstract class FunctionWithWrappers extends Function {
    */
   predicate outermostWrapperFunctionCall(Expr arg, string callChain)
   {
-    exists(Function func, Call call, int argIndex |
-      func = resolveCall(call)
-      and this.wrapperFunction(func, argIndex, callChain)
-      and not wrapperFunctionStep(call.getEnclosingFunction(), _, func, argIndex)
+    exists(Function targetFunc, Call call, int argIndex |
+      targetFunc = resolveCall(call)
+      and this.wrapperFunction(targetFunc, argIndex, callChain)
+      and (
+        exists(Function sourceFunc | sourceFunc = call.getEnclosingFunction() |
+          not wrapperFunctionStep(sourceFunc, _, targetFunc, argIndex)
+        ) or not exists(call.getEnclosingFunction())
+      )
       and arg = call.getArgument(argIndex)
     )
   }
