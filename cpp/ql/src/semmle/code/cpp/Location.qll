@@ -8,9 +8,7 @@ class Location extends @location {
 
   /** Gets the container corresponding to this location. */
   Container getContainer() {
-    locations_default(this,result,_,_,_,_) or
-    locations_stmt(this,result,_,_,_,_) or
-    locations_expr(this,result,_,_,_,_)
+    this.fullLocationInfo(result, _, _, _, _)
   }
 
   /** Gets the file corresponding to this location, if any. */
@@ -20,30 +18,22 @@ class Location extends @location {
 
   /** Gets the start line of this location. */
   int getStartLine() {
-    locations_default(this,_,result,_,_,_) or
-    locations_stmt(this,_,result,_,_,_) or
-    locations_expr(this,_,result,_,_,_)
-  }
-
-  /** Gets the end line of this location. */
-  int getEndLine() {
-    locations_default(this,_,_,_,result,_) or
-    locations_stmt(this,_,_,_,result,_) or
-    locations_expr(this,_,_,_,result,_)
+    this.fullLocationInfo(_, result, _, _, _)
   }
 
   /** Gets the start column of this location. */
   int getStartColumn() {
-    locations_default(this,_,_,result,_,_) or
-    locations_stmt(this,_,_,result,_,_) or
-    locations_expr(this,_,_,result,_,_)
+    this.fullLocationInfo(_, _, result, _, _)
+  }
+
+  /** Gets the end line of this location. */
+  int getEndLine() {
+    this.fullLocationInfo(_, _, _, result, _)
   }
 
   /** Gets the end column of this location. */
   int getEndColumn() {
-    locations_default(this,_,_,_,_,result) or
-    locations_stmt(this,_,_,_,_,result) or
-    locations_expr(this,_,_,_,_,result)
+    this.fullLocationInfo(_, _, _, _, result)
   }
 
   /**
@@ -58,6 +48,20 @@ class Location extends @location {
     )
   }
 
+  /**
+   * Holds if this element is in the specified container.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline`.
+   *
+   * This predicate is similar to `hasLocationInfo`, but exposes the `Container`
+   * entity, rather than merely its path.
+   */
+  predicate fullLocationInfo(
+    Container container, int startline, int startcolumn, int endline, int endcolumn) {
+    locations_default(this, container, startline,  startcolumn, endline, endcolumn) or
+    locations_expr(this, container, startline,  startcolumn, endline, endcolumn) or
+    locations_stmt(this, container, startline,  startcolumn, endline, endcolumn)
+  }
 
   /**
    * Holds if this element is at the specified location.
@@ -68,7 +72,9 @@ class Location extends @location {
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn) {
-    none()
+    exists(Container f
+    | this.fullLocationInfo(f,startline,startcolumn,endline,endcolumn)
+    | filepath = f.getAbsolutePath())
   }
 
   /** Holds if `this` comes on a line strictly before `l`. */
@@ -108,34 +114,13 @@ class Location extends @location {
  * A location of an element. Not used for expressions or statements, which
  * instead use LocationExpr and LocationStmt respectively.
  */
-library class LocationDefault extends Location, @location_default {
-  override predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn) {
-    exists(Container f
-    | locations_default(this,f,startline,startcolumn,endline,endcolumn)
-    | filepath = f.getAbsolutePath())
-  }
-}
+library class LocationDefault extends Location, @location_default {}
 
 /** A location of a statement. */
-library class LocationStmt extends Location, @location_stmt {
-  override predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn) {
-    exists(Container f
-    | locations_stmt(this,f,startline,startcolumn,endline,endcolumn)
-    | filepath = f.getAbsolutePath())
-  }
-}
+library class LocationStmt extends Location, @location_stmt {}
 
 /** A location of an expression. */
-library class LocationExpr extends Location, @location_expr {
-  override predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn) {
-    exists(Container f
-    | locations_expr(this,f,startline,startcolumn,endline,endcolumn)
-    | filepath = f.getAbsolutePath())
-  }
-}
+library class LocationExpr extends Location, @location_expr {}
 
 /**
  * Gets the length of the longest line in file `f`.
