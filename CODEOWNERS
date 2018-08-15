@@ -1,3 +1,2 @@
-/cpp/ @Semmle/cpp
 /csharp/ @Semmle/cs
 /javascript/ @Semmle/js
