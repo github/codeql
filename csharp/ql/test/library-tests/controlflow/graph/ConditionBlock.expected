@@ -3,30 +3,30 @@
 | BreakInTry.cs:26:21:26:31 | ... == ... | BreakInTry.cs:27:21:27:26 | break; | true |
 | BreakInTry.cs:26:21:26:31 | ... == ... | BreakInTry.cs:30:13:33:13 | {...} | false |
 | BreakInTry.cs:26:21:26:31 | ... == ... | BreakInTry.cs:32:21:32:21 | ; | false |
-| BreakInTry.cs:26:21:26:31 | ... == ... | BreakInTry.cs:32:21:32:21 | [break] ; | true |
+| BreakInTry.cs:26:21:26:31 | ... == ... | BreakInTry.cs:32:21:32:21 | [finally: break] ; | true |
 | BreakInTry.cs:31:21:31:32 | ... == ... | BreakInTry.cs:32:21:32:21 | ; | true |
-| BreakInTry.cs:31:21:31:32 | [break] ... == ... | BreakInTry.cs:32:21:32:21 | [break] ; | true |
+| BreakInTry.cs:31:21:31:32 | [finally: break] ... == ... | BreakInTry.cs:32:21:32:21 | [finally: break] ; | true |
 | BreakInTry.cs:42:17:42:28 | ... == ... | BreakInTry.cs:43:17:43:23 | return ...; | true |
 | BreakInTry.cs:42:17:42:28 | ... == ... | BreakInTry.cs:46:9:52:9 | {...} | false |
-| BreakInTry.cs:42:17:42:28 | ... == ... | BreakInTry.cs:47:13:51:13 | [return] foreach (... ... in ...) ... | true |
+| BreakInTry.cs:42:17:42:28 | ... == ... | BreakInTry.cs:47:13:51:13 | [finally: return] foreach (... ... in ...) ... | true |
 | BreakInTry.cs:42:17:42:28 | ... == ... | BreakInTry.cs:47:13:51:13 | foreach (... ... in ...) ... | false |
 | BreakInTry.cs:42:17:42:28 | ... == ... | BreakInTry.cs:47:26:47:28 | String arg | false |
-| BreakInTry.cs:42:17:42:28 | ... == ... | BreakInTry.cs:47:26:47:28 | [return] String arg | true |
-| BreakInTry.cs:42:17:42:28 | ... == ... | BreakInTry.cs:50:21:50:26 | [return] break; | true |
+| BreakInTry.cs:42:17:42:28 | ... == ... | BreakInTry.cs:47:26:47:28 | [finally: return] String arg | true |
+| BreakInTry.cs:42:17:42:28 | ... == ... | BreakInTry.cs:50:21:50:26 | [finally: return] break; | true |
 | BreakInTry.cs:42:17:42:28 | ... == ... | BreakInTry.cs:50:21:50:26 | break; | false |
 | BreakInTry.cs:42:17:42:28 | ... == ... | BreakInTry.cs:53:7:53:7 | ; | false |
 | BreakInTry.cs:49:21:49:31 | ... == ... | BreakInTry.cs:50:21:50:26 | break; | true |
-| BreakInTry.cs:49:21:49:31 | [return] ... == ... | BreakInTry.cs:50:21:50:26 | [return] break; | true |
+| BreakInTry.cs:49:21:49:31 | [finally: return] ... == ... | BreakInTry.cs:50:21:50:26 | [finally: return] break; | true |
 | BreakInTry.cs:60:17:60:28 | ... == ... | BreakInTry.cs:61:17:61:23 | return ...; | true |
 | BreakInTry.cs:60:17:60:28 | ... == ... | BreakInTry.cs:64:9:70:9 | {...} | false |
-| BreakInTry.cs:60:17:60:28 | ... == ... | BreakInTry.cs:65:13:69:13 | [return] foreach (... ... in ...) ... | true |
+| BreakInTry.cs:60:17:60:28 | ... == ... | BreakInTry.cs:65:13:69:13 | [finally: return] foreach (... ... in ...) ... | true |
 | BreakInTry.cs:60:17:60:28 | ... == ... | BreakInTry.cs:65:13:69:13 | foreach (... ... in ...) ... | false |
 | BreakInTry.cs:60:17:60:28 | ... == ... | BreakInTry.cs:65:26:65:28 | String arg | false |
-| BreakInTry.cs:60:17:60:28 | ... == ... | BreakInTry.cs:65:26:65:28 | [return] String arg | true |
-| BreakInTry.cs:60:17:60:28 | ... == ... | BreakInTry.cs:68:21:68:26 | [return] break; | true |
+| BreakInTry.cs:60:17:60:28 | ... == ... | BreakInTry.cs:65:26:65:28 | [finally: return] String arg | true |
+| BreakInTry.cs:60:17:60:28 | ... == ... | BreakInTry.cs:68:21:68:26 | [finally: return] break; | true |
 | BreakInTry.cs:60:17:60:28 | ... == ... | BreakInTry.cs:68:21:68:26 | break; | false |
 | BreakInTry.cs:67:21:67:31 | ... == ... | BreakInTry.cs:68:21:68:26 | break; | true |
-| BreakInTry.cs:67:21:67:31 | [return] ... == ... | BreakInTry.cs:68:21:68:26 | [return] break; | true |
+| BreakInTry.cs:67:21:67:31 | [finally: return] ... == ... | BreakInTry.cs:68:21:68:26 | [finally: return] break; | true |
 | ConditionalAccess.cs:13:13:13:25 | ... > ... | ConditionalAccess.cs:14:20:14:20 | 0 | true |
 | ConditionalAccess.cs:13:13:13:25 | ... > ... | ConditionalAccess.cs:16:20:16:20 | 1 | false |
 | ExitMethods.cs:54:13:54:13 | access to parameter b | ExitMethods.cs:55:19:55:33 | object creation of type Exception | true |
@@ -141,18 +141,18 @@
 | cflow.cs:207:16:207:20 | ... > ... | cflow.cs:215:17:216:26 | if (...) ... | true |
 | cflow.cs:207:16:207:20 | ... > ... | cflow.cs:216:21:216:26 | break; | true |
 | cflow.cs:207:16:207:20 | ... > ... | cflow.cs:219:13:229:13 | {...} | true |
-| cflow.cs:207:16:207:20 | ... > ... | cflow.cs:223:25:223:46 | [break] throw ...; | true |
-| cflow.cs:207:16:207:20 | ... > ... | cflow.cs:223:25:223:46 | [continue] throw ...; | true |
-| cflow.cs:207:16:207:20 | ... > ... | cflow.cs:223:25:223:46 | [return] throw ...; | true |
+| cflow.cs:207:16:207:20 | ... > ... | cflow.cs:223:25:223:46 | [finally: break] throw ...; | true |
+| cflow.cs:207:16:207:20 | ... > ... | cflow.cs:223:25:223:46 | [finally: continue] throw ...; | true |
+| cflow.cs:207:16:207:20 | ... > ... | cflow.cs:223:25:223:46 | [finally: return] throw ...; | true |
 | cflow.cs:207:16:207:20 | ... > ... | cflow.cs:223:25:223:46 | throw ...; | true |
-| cflow.cs:207:16:207:20 | ... > ... | cflow.cs:223:31:223:45 | [break] object creation of type Exception | true |
-| cflow.cs:207:16:207:20 | ... > ... | cflow.cs:223:31:223:45 | [continue] object creation of type Exception | true |
-| cflow.cs:207:16:207:20 | ... > ... | cflow.cs:223:31:223:45 | [return] object creation of type Exception | true |
+| cflow.cs:207:16:207:20 | ... > ... | cflow.cs:223:31:223:45 | [finally: break] object creation of type Exception | true |
+| cflow.cs:207:16:207:20 | ... > ... | cflow.cs:223:31:223:45 | [finally: continue] object creation of type Exception | true |
+| cflow.cs:207:16:207:20 | ... > ... | cflow.cs:223:31:223:45 | [finally: return] object creation of type Exception | true |
 | cflow.cs:207:16:207:20 | ... > ... | cflow.cs:223:31:223:45 | object creation of type Exception | true |
-| cflow.cs:207:16:207:20 | ... > ... | cflow.cs:226:17:228:17 | [break] {...} | true |
-| cflow.cs:207:16:207:20 | ... > ... | cflow.cs:226:17:228:17 | [continue] {...} | true |
-| cflow.cs:207:16:207:20 | ... > ... | cflow.cs:226:17:228:17 | [exception(Exception)] {...} | true |
-| cflow.cs:207:16:207:20 | ... > ... | cflow.cs:226:17:228:17 | [return] {...} | true |
+| cflow.cs:207:16:207:20 | ... > ... | cflow.cs:226:17:228:17 | [finally: break] {...} | true |
+| cflow.cs:207:16:207:20 | ... > ... | cflow.cs:226:17:228:17 | [finally: continue] {...} | true |
+| cflow.cs:207:16:207:20 | ... > ... | cflow.cs:226:17:228:17 | [finally: exception(Exception)] {...} | true |
+| cflow.cs:207:16:207:20 | ... > ... | cflow.cs:226:17:228:17 | [finally: return] {...} | true |
 | cflow.cs:207:16:207:20 | ... > ... | cflow.cs:226:17:228:17 | {...} | true |
 | cflow.cs:211:21:211:26 | ... == ... | cflow.cs:212:21:212:27 | return ...; | true |
 | cflow.cs:211:21:211:26 | ... == ... | cflow.cs:213:17:214:29 | if (...) ... | false |
@@ -160,51 +160,51 @@
 | cflow.cs:211:21:211:26 | ... == ... | cflow.cs:215:17:216:26 | if (...) ... | false |
 | cflow.cs:211:21:211:26 | ... == ... | cflow.cs:216:21:216:26 | break; | false |
 | cflow.cs:211:21:211:26 | ... == ... | cflow.cs:219:13:229:13 | {...} | false |
-| cflow.cs:211:21:211:26 | ... == ... | cflow.cs:223:25:223:46 | [break] throw ...; | false |
-| cflow.cs:211:21:211:26 | ... == ... | cflow.cs:223:25:223:46 | [continue] throw ...; | false |
-| cflow.cs:211:21:211:26 | ... == ... | cflow.cs:223:25:223:46 | [return] throw ...; | true |
+| cflow.cs:211:21:211:26 | ... == ... | cflow.cs:223:25:223:46 | [finally: break] throw ...; | false |
+| cflow.cs:211:21:211:26 | ... == ... | cflow.cs:223:25:223:46 | [finally: continue] throw ...; | false |
+| cflow.cs:211:21:211:26 | ... == ... | cflow.cs:223:25:223:46 | [finally: return] throw ...; | true |
 | cflow.cs:211:21:211:26 | ... == ... | cflow.cs:223:25:223:46 | throw ...; | false |
-| cflow.cs:211:21:211:26 | ... == ... | cflow.cs:223:31:223:45 | [break] object creation of type Exception | false |
-| cflow.cs:211:21:211:26 | ... == ... | cflow.cs:223:31:223:45 | [continue] object creation of type Exception | false |
-| cflow.cs:211:21:211:26 | ... == ... | cflow.cs:223:31:223:45 | [return] object creation of type Exception | true |
+| cflow.cs:211:21:211:26 | ... == ... | cflow.cs:223:31:223:45 | [finally: break] object creation of type Exception | false |
+| cflow.cs:211:21:211:26 | ... == ... | cflow.cs:223:31:223:45 | [finally: continue] object creation of type Exception | false |
+| cflow.cs:211:21:211:26 | ... == ... | cflow.cs:223:31:223:45 | [finally: return] object creation of type Exception | true |
 | cflow.cs:211:21:211:26 | ... == ... | cflow.cs:223:31:223:45 | object creation of type Exception | false |
-| cflow.cs:211:21:211:26 | ... == ... | cflow.cs:226:17:228:17 | [break] {...} | false |
-| cflow.cs:211:21:211:26 | ... == ... | cflow.cs:226:17:228:17 | [continue] {...} | false |
-| cflow.cs:211:21:211:26 | ... == ... | cflow.cs:226:17:228:17 | [return] {...} | true |
+| cflow.cs:211:21:211:26 | ... == ... | cflow.cs:226:17:228:17 | [finally: break] {...} | false |
+| cflow.cs:211:21:211:26 | ... == ... | cflow.cs:226:17:228:17 | [finally: continue] {...} | false |
+| cflow.cs:211:21:211:26 | ... == ... | cflow.cs:226:17:228:17 | [finally: return] {...} | true |
 | cflow.cs:211:21:211:26 | ... == ... | cflow.cs:226:17:228:17 | {...} | false |
 | cflow.cs:213:21:213:26 | ... == ... | cflow.cs:214:21:214:29 | continue; | true |
 | cflow.cs:213:21:213:26 | ... == ... | cflow.cs:215:17:216:26 | if (...) ... | false |
 | cflow.cs:213:21:213:26 | ... == ... | cflow.cs:216:21:216:26 | break; | false |
 | cflow.cs:213:21:213:26 | ... == ... | cflow.cs:219:13:229:13 | {...} | false |
-| cflow.cs:213:21:213:26 | ... == ... | cflow.cs:223:25:223:46 | [break] throw ...; | false |
-| cflow.cs:213:21:213:26 | ... == ... | cflow.cs:223:25:223:46 | [continue] throw ...; | true |
+| cflow.cs:213:21:213:26 | ... == ... | cflow.cs:223:25:223:46 | [finally: break] throw ...; | false |
+| cflow.cs:213:21:213:26 | ... == ... | cflow.cs:223:25:223:46 | [finally: continue] throw ...; | true |
 | cflow.cs:213:21:213:26 | ... == ... | cflow.cs:223:25:223:46 | throw ...; | false |
-| cflow.cs:213:21:213:26 | ... == ... | cflow.cs:223:31:223:45 | [break] object creation of type Exception | false |
-| cflow.cs:213:21:213:26 | ... == ... | cflow.cs:223:31:223:45 | [continue] object creation of type Exception | true |
+| cflow.cs:213:21:213:26 | ... == ... | cflow.cs:223:31:223:45 | [finally: break] object creation of type Exception | false |
+| cflow.cs:213:21:213:26 | ... == ... | cflow.cs:223:31:223:45 | [finally: continue] object creation of type Exception | true |
 | cflow.cs:213:21:213:26 | ... == ... | cflow.cs:223:31:223:45 | object creation of type Exception | false |
-| cflow.cs:213:21:213:26 | ... == ... | cflow.cs:226:17:228:17 | [break] {...} | false |
-| cflow.cs:213:21:213:26 | ... == ... | cflow.cs:226:17:228:17 | [continue] {...} | true |
+| cflow.cs:213:21:213:26 | ... == ... | cflow.cs:226:17:228:17 | [finally: break] {...} | false |
+| cflow.cs:213:21:213:26 | ... == ... | cflow.cs:226:17:228:17 | [finally: continue] {...} | true |
 | cflow.cs:213:21:213:26 | ... == ... | cflow.cs:226:17:228:17 | {...} | false |
 | cflow.cs:215:21:215:26 | ... == ... | cflow.cs:216:21:216:26 | break; | true |
 | cflow.cs:215:21:215:26 | ... == ... | cflow.cs:219:13:229:13 | {...} | false |
-| cflow.cs:215:21:215:26 | ... == ... | cflow.cs:223:25:223:46 | [break] throw ...; | true |
+| cflow.cs:215:21:215:26 | ... == ... | cflow.cs:223:25:223:46 | [finally: break] throw ...; | true |
 | cflow.cs:215:21:215:26 | ... == ... | cflow.cs:223:25:223:46 | throw ...; | false |
-| cflow.cs:215:21:215:26 | ... == ... | cflow.cs:223:31:223:45 | [break] object creation of type Exception | true |
+| cflow.cs:215:21:215:26 | ... == ... | cflow.cs:223:31:223:45 | [finally: break] object creation of type Exception | true |
 | cflow.cs:215:21:215:26 | ... == ... | cflow.cs:223:31:223:45 | object creation of type Exception | false |
-| cflow.cs:215:21:215:26 | ... == ... | cflow.cs:226:17:228:17 | [break] {...} | true |
+| cflow.cs:215:21:215:26 | ... == ... | cflow.cs:226:17:228:17 | [finally: break] {...} | true |
 | cflow.cs:215:21:215:26 | ... == ... | cflow.cs:226:17:228:17 | {...} | false |
 | cflow.cs:222:25:222:30 | ... == ... | cflow.cs:223:25:223:46 | throw ...; | true |
 | cflow.cs:222:25:222:30 | ... == ... | cflow.cs:223:31:223:45 | object creation of type Exception | true |
 | cflow.cs:222:25:222:30 | ... == ... | cflow.cs:226:17:228:17 | {...} | false |
-| cflow.cs:222:25:222:30 | [break] ... == ... | cflow.cs:223:25:223:46 | [break] throw ...; | true |
-| cflow.cs:222:25:222:30 | [break] ... == ... | cflow.cs:223:31:223:45 | [break] object creation of type Exception | true |
-| cflow.cs:222:25:222:30 | [break] ... == ... | cflow.cs:226:17:228:17 | [break] {...} | false |
-| cflow.cs:222:25:222:30 | [continue] ... == ... | cflow.cs:223:25:223:46 | [continue] throw ...; | true |
-| cflow.cs:222:25:222:30 | [continue] ... == ... | cflow.cs:223:31:223:45 | [continue] object creation of type Exception | true |
-| cflow.cs:222:25:222:30 | [continue] ... == ... | cflow.cs:226:17:228:17 | [continue] {...} | false |
-| cflow.cs:222:25:222:30 | [return] ... == ... | cflow.cs:223:25:223:46 | [return] throw ...; | true |
-| cflow.cs:222:25:222:30 | [return] ... == ... | cflow.cs:223:31:223:45 | [return] object creation of type Exception | true |
-| cflow.cs:222:25:222:30 | [return] ... == ... | cflow.cs:226:17:228:17 | [return] {...} | false |
+| cflow.cs:222:25:222:30 | [finally: break] ... == ... | cflow.cs:223:25:223:46 | [finally: break] throw ...; | true |
+| cflow.cs:222:25:222:30 | [finally: break] ... == ... | cflow.cs:223:31:223:45 | [finally: break] object creation of type Exception | true |
+| cflow.cs:222:25:222:30 | [finally: break] ... == ... | cflow.cs:226:17:228:17 | [finally: break] {...} | false |
+| cflow.cs:222:25:222:30 | [finally: continue] ... == ... | cflow.cs:223:25:223:46 | [finally: continue] throw ...; | true |
+| cflow.cs:222:25:222:30 | [finally: continue] ... == ... | cflow.cs:223:31:223:45 | [finally: continue] object creation of type Exception | true |
+| cflow.cs:222:25:222:30 | [finally: continue] ... == ... | cflow.cs:226:17:228:17 | [finally: continue] {...} | false |
+| cflow.cs:222:25:222:30 | [finally: return] ... == ... | cflow.cs:223:25:223:46 | [finally: return] throw ...; | true |
+| cflow.cs:222:25:222:30 | [finally: return] ... == ... | cflow.cs:223:31:223:45 | [finally: return] object creation of type Exception | true |
+| cflow.cs:222:25:222:30 | [finally: return] ... == ... | cflow.cs:226:17:228:17 | [finally: return] {...} | false |
 | cflow.cs:234:17:234:33 | ... == ... | cflow.cs:235:17:235:23 | return ...; | true |
 | cflow.cs:234:17:234:33 | ... == ... | cflow.cs:236:13:237:49 | if (...) ... | false |
 | cflow.cs:234:17:234:33 | ... == ... | cflow.cs:236:17:236:28 | access to property Length | false |
@@ -213,33 +213,33 @@
 | cflow.cs:234:17:234:33 | ... == ... | cflow.cs:237:23:237:48 | object creation of type OutOfMemoryException | false |
 | cflow.cs:234:17:234:33 | ... == ... | cflow.cs:240:9:245:9 | {...} | false |
 | cflow.cs:234:17:234:33 | ... == ... | cflow.cs:242:17:242:41 | ...; | false |
-| cflow.cs:234:17:234:33 | ... == ... | cflow.cs:242:17:242:41 | [exception(OutOfMemoryException)] ...; | false |
-| cflow.cs:234:17:234:33 | ... == ... | cflow.cs:242:17:242:41 | [return] ...; | true |
-| cflow.cs:234:17:234:33 | ... == ... | cflow.cs:243:13:244:37 | [exception(OutOfMemoryException)] if (...) ... | false |
-| cflow.cs:234:17:234:33 | ... == ... | cflow.cs:243:13:244:37 | [return] if (...) ... | true |
+| cflow.cs:234:17:234:33 | ... == ... | cflow.cs:242:17:242:41 | [finally: exception(OutOfMemoryException)] ...; | false |
+| cflow.cs:234:17:234:33 | ... == ... | cflow.cs:242:17:242:41 | [finally: return] ...; | true |
+| cflow.cs:234:17:234:33 | ... == ... | cflow.cs:243:13:244:37 | [finally: exception(OutOfMemoryException)] if (...) ... | false |
+| cflow.cs:234:17:234:33 | ... == ... | cflow.cs:243:13:244:37 | [finally: return] if (...) ... | true |
 | cflow.cs:234:17:234:33 | ... == ... | cflow.cs:243:13:244:37 | if (...) ... | false |
 | cflow.cs:234:17:234:33 | ... == ... | cflow.cs:244:17:244:37 | ...; | false |
-| cflow.cs:234:17:234:33 | ... == ... | cflow.cs:244:17:244:37 | [exception(OutOfMemoryException)] ...; | false |
-| cflow.cs:234:17:234:33 | ... == ... | cflow.cs:244:17:244:37 | [return] ...; | true |
+| cflow.cs:234:17:234:33 | ... == ... | cflow.cs:244:17:244:37 | [finally: exception(OutOfMemoryException)] ...; | false |
+| cflow.cs:234:17:234:33 | ... == ... | cflow.cs:244:17:244:37 | [finally: return] ...; | true |
 | cflow.cs:236:17:236:33 | ... == ... | cflow.cs:237:17:237:49 | throw ...; | true |
 | cflow.cs:236:17:236:33 | ... == ... | cflow.cs:237:23:237:48 | object creation of type OutOfMemoryException | true |
 | cflow.cs:236:17:236:33 | ... == ... | cflow.cs:240:9:245:9 | {...} | false |
 | cflow.cs:236:17:236:33 | ... == ... | cflow.cs:242:17:242:41 | ...; | false |
-| cflow.cs:236:17:236:33 | ... == ... | cflow.cs:242:17:242:41 | [exception(OutOfMemoryException)] ...; | true |
-| cflow.cs:236:17:236:33 | ... == ... | cflow.cs:243:13:244:37 | [exception(OutOfMemoryException)] if (...) ... | true |
+| cflow.cs:236:17:236:33 | ... == ... | cflow.cs:242:17:242:41 | [finally: exception(OutOfMemoryException)] ...; | true |
+| cflow.cs:236:17:236:33 | ... == ... | cflow.cs:243:13:244:37 | [finally: exception(OutOfMemoryException)] if (...) ... | true |
 | cflow.cs:236:17:236:33 | ... == ... | cflow.cs:243:13:244:37 | if (...) ... | false |
 | cflow.cs:236:17:236:33 | ... == ... | cflow.cs:244:17:244:37 | ...; | false |
-| cflow.cs:236:17:236:33 | ... == ... | cflow.cs:244:17:244:37 | [exception(OutOfMemoryException)] ...; | true |
+| cflow.cs:236:17:236:33 | ... == ... | cflow.cs:244:17:244:37 | [finally: exception(OutOfMemoryException)] ...; | true |
 | cflow.cs:241:19:241:35 | ... == ... | cflow.cs:242:17:242:41 | ...; | false |
-| cflow.cs:241:19:241:35 | [exception(Exception)] ... == ... | cflow.cs:242:17:242:41 | [exception(Exception)] ...; | false |
-| cflow.cs:241:19:241:35 | [exception(NullReferenceException)] ... == ... | cflow.cs:242:17:242:41 | [exception(NullReferenceException)] ...; | false |
-| cflow.cs:241:19:241:35 | [exception(OutOfMemoryException)] ... == ... | cflow.cs:242:17:242:41 | [exception(OutOfMemoryException)] ...; | false |
-| cflow.cs:241:19:241:35 | [return] ... == ... | cflow.cs:242:17:242:41 | [return] ...; | false |
+| cflow.cs:241:19:241:35 | [finally: exception(Exception)] ... == ... | cflow.cs:242:17:242:41 | [finally: exception(Exception)] ...; | false |
+| cflow.cs:241:19:241:35 | [finally: exception(NullReferenceException)] ... == ... | cflow.cs:242:17:242:41 | [finally: exception(NullReferenceException)] ...; | false |
+| cflow.cs:241:19:241:35 | [finally: exception(OutOfMemoryException)] ... == ... | cflow.cs:242:17:242:41 | [finally: exception(OutOfMemoryException)] ...; | false |
+| cflow.cs:241:19:241:35 | [finally: return] ... == ... | cflow.cs:242:17:242:41 | [finally: return] ...; | false |
 | cflow.cs:243:17:243:32 | ... > ... | cflow.cs:244:17:244:37 | ...; | true |
-| cflow.cs:243:17:243:32 | [exception(Exception)] ... > ... | cflow.cs:244:17:244:37 | [exception(Exception)] ...; | true |
-| cflow.cs:243:17:243:32 | [exception(NullReferenceException)] ... > ... | cflow.cs:244:17:244:37 | [exception(NullReferenceException)] ...; | true |
-| cflow.cs:243:17:243:32 | [exception(OutOfMemoryException)] ... > ... | cflow.cs:244:17:244:37 | [exception(OutOfMemoryException)] ...; | true |
-| cflow.cs:243:17:243:32 | [return] ... > ... | cflow.cs:244:17:244:37 | [return] ...; | true |
+| cflow.cs:243:17:243:32 | [finally: exception(Exception)] ... > ... | cflow.cs:244:17:244:37 | [finally: exception(Exception)] ...; | true |
+| cflow.cs:243:17:243:32 | [finally: exception(NullReferenceException)] ... > ... | cflow.cs:244:17:244:37 | [finally: exception(NullReferenceException)] ...; | true |
+| cflow.cs:243:17:243:32 | [finally: exception(OutOfMemoryException)] ... > ... | cflow.cs:244:17:244:37 | [finally: exception(OutOfMemoryException)] ...; | true |
+| cflow.cs:243:17:243:32 | [finally: return] ... > ... | cflow.cs:244:17:244:37 | [finally: return] ...; | true |
 | cflow.cs:251:16:251:21 | ... < ... | cflow.cs:248:10:248:12 | exit For | false |
 | cflow.cs:251:16:251:21 | ... < ... | cflow.cs:252:13:252:33 | ...; | true |
 | cflow.cs:251:16:251:21 | ... < ... | cflow.cs:254:9:259:9 | for (...;...;...) ... | false |

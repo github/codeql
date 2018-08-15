@@ -337,7 +337,7 @@ class FinallySplitControlFlowNode extends ControlFlowNode, TFinallySplitNode {
   }
 
   override string toString() {
-    result = "[" + getSplitType().toString() + "] " + getElement().toString()
+    result = "[finally: " + getSplitType().toString() + "] " + getElement().toString()
   }
 }
 

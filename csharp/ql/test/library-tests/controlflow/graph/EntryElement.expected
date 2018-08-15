@@ -1090,7 +1090,11 @@
 | cflow.cs:195:9:197:9 | {...} | cflow.cs:195:9:197:9 | {...} |
 | cflow.cs:196:13:196:18 | throw ...; | cflow.cs:196:13:196:18 | throw ...; |
 | cflow.cs:198:9:200:9 | catch (...) {...} | cflow.cs:198:9:200:9 | catch (...) {...} |
-| cflow.cs:198:33:198:37 | false | cflow.cs:198:33:198:37 | false |
+| cflow.cs:198:26:198:26 | Exception e | cflow.cs:198:26:198:26 | Exception e |
+| cflow.cs:198:35:198:35 | access to local variable e | cflow.cs:198:35:198:35 | access to local variable e |
+| cflow.cs:198:35:198:43 | access to property Message | cflow.cs:198:35:198:35 | access to local variable e |
+| cflow.cs:198:35:198:51 | ... != ... | cflow.cs:198:35:198:35 | access to local variable e |
+| cflow.cs:198:48:198:51 | null | cflow.cs:198:48:198:51 | null |
 | cflow.cs:199:9:200:9 | {...} | cflow.cs:199:9:200:9 | {...} |
 | cflow.cs:202:9:204:9 | {...} | cflow.cs:202:9:204:9 | {...} |
 | cflow.cs:203:13:203:40 | call to method WriteLine | cflow.cs:203:31:203:39 | "Finally" |

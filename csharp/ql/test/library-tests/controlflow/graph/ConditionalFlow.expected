@@ -53,13 +53,13 @@
 | 30 | 22 | cflow.cs:30:22:30:31 | ... == ... | true | 31 | 17 | cflow.cs:31:17:31:42 | ...; |
 | 31 | 21 | BreakInTry.cs:31:21:31:32 | ... == ... | false | 22 | 9 | BreakInTry.cs:22:9:34:9 | foreach (... ... in ...) ... |
 | 31 | 21 | BreakInTry.cs:31:21:31:32 | ... == ... | true | 32 | 21 | BreakInTry.cs:32:21:32:21 | ; |
-| 31 | 21 | BreakInTry.cs:31:21:31:32 | [break] ... == ... | true | 32 | 21 | BreakInTry.cs:32:21:32:21 | [break] ; |
+| 31 | 21 | BreakInTry.cs:31:21:31:32 | [finally: break] ... == ... | true | 32 | 21 | BreakInTry.cs:32:21:32:21 | [finally: break] ; |
 | 42 | 17 | BreakInTry.cs:42:17:42:28 | ... == ... | false | 46 | 9 | BreakInTry.cs:46:9:52:9 | {...} |
 | 42 | 17 | BreakInTry.cs:42:17:42:28 | ... == ... | true | 43 | 17 | BreakInTry.cs:43:17:43:23 | return ...; |
 | 49 | 21 | BreakInTry.cs:49:21:49:31 | ... == ... | false | 47 | 13 | BreakInTry.cs:47:13:51:13 | foreach (... ... in ...) ... |
 | 49 | 21 | BreakInTry.cs:49:21:49:31 | ... == ... | true | 50 | 21 | BreakInTry.cs:50:21:50:26 | break; |
-| 49 | 21 | BreakInTry.cs:49:21:49:31 | [return] ... == ... | false | 47 | 13 | BreakInTry.cs:47:13:51:13 | [return] foreach (... ... in ...) ... |
-| 49 | 21 | BreakInTry.cs:49:21:49:31 | [return] ... == ... | true | 50 | 21 | BreakInTry.cs:50:21:50:26 | [return] break; |
+| 49 | 21 | BreakInTry.cs:49:21:49:31 | [finally: return] ... == ... | false | 47 | 13 | BreakInTry.cs:47:13:51:13 | [finally: return] foreach (... ... in ...) ... |
+| 49 | 21 | BreakInTry.cs:49:21:49:31 | [finally: return] ... == ... | true | 50 | 21 | BreakInTry.cs:50:21:50:26 | [finally: return] break; |
 | 50 | 30 | Switch.cs:50:30:50:38 | ... != ... | false | 44 | 10 | Switch.cs:44:10:44:11 | exit M4 |
 | 50 | 30 | Switch.cs:50:30:50:38 | ... != ... | true | 51 | 17 | Switch.cs:51:17:51:22 | break; |
 | 54 | 13 | ExitMethods.cs:54:13:54:13 | access to parameter b | false | 52 | 17 | ExitMethods.cs:52:17:52:26 | exit ErrorMaybe |
@@ -72,8 +72,8 @@
 | 63 | 23 | cflow.cs:63:23:63:33 | ... == ... | true | 65 | 17 | cflow.cs:65:17:65:22 | break; |
 | 67 | 21 | BreakInTry.cs:67:21:67:31 | ... == ... | false | 65 | 13 | BreakInTry.cs:65:13:69:13 | foreach (... ... in ...) ... |
 | 67 | 21 | BreakInTry.cs:67:21:67:31 | ... == ... | true | 68 | 21 | BreakInTry.cs:68:21:68:26 | break; |
-| 67 | 21 | BreakInTry.cs:67:21:67:31 | [return] ... == ... | false | 65 | 13 | BreakInTry.cs:65:13:69:13 | [return] foreach (... ... in ...) ... |
-| 67 | 21 | BreakInTry.cs:67:21:67:31 | [return] ... == ... | true | 68 | 21 | BreakInTry.cs:68:21:68:26 | [return] break; |
+| 67 | 21 | BreakInTry.cs:67:21:67:31 | [finally: return] ... == ... | false | 65 | 13 | BreakInTry.cs:65:13:69:13 | [finally: return] foreach (... ... in ...) ... |
+| 67 | 21 | BreakInTry.cs:67:21:67:31 | [finally: return] ... == ... | true | 68 | 21 | BreakInTry.cs:68:21:68:26 | [finally: return] break; |
 | 72 | 13 | cflow.cs:72:13:72:21 | ... == ... | false | 74 | 9 | cflow.cs:74:9:81:9 | if (...) ... |
 | 72 | 13 | cflow.cs:72:13:72:21 | ... == ... | true | 73 | 13 | cflow.cs:73:13:73:19 | return ...; |
 | 74 | 13 | cflow.cs:74:13:74:24 | ... > ... | false | 79 | 9 | cflow.cs:79:9:81:9 | {...} |
@@ -112,32 +112,32 @@
 | 215 | 21 | cflow.cs:215:21:215:26 | ... == ... | true | 216 | 21 | cflow.cs:216:21:216:26 | break; |
 | 222 | 25 | cflow.cs:222:25:222:30 | ... == ... | false | 226 | 17 | cflow.cs:226:17:228:17 | {...} |
 | 222 | 25 | cflow.cs:222:25:222:30 | ... == ... | true | 223 | 31 | cflow.cs:223:31:223:45 | object creation of type Exception |
-| 222 | 25 | cflow.cs:222:25:222:30 | [break] ... == ... | false | 226 | 17 | cflow.cs:226:17:228:17 | [break] {...} |
-| 222 | 25 | cflow.cs:222:25:222:30 | [break] ... == ... | true | 223 | 31 | cflow.cs:223:31:223:45 | [break] object creation of type Exception |
-| 222 | 25 | cflow.cs:222:25:222:30 | [continue] ... == ... | false | 226 | 17 | cflow.cs:226:17:228:17 | [continue] {...} |
-| 222 | 25 | cflow.cs:222:25:222:30 | [continue] ... == ... | true | 223 | 31 | cflow.cs:223:31:223:45 | [continue] object creation of type Exception |
-| 222 | 25 | cflow.cs:222:25:222:30 | [return] ... == ... | false | 226 | 17 | cflow.cs:226:17:228:17 | [return] {...} |
-| 222 | 25 | cflow.cs:222:25:222:30 | [return] ... == ... | true | 223 | 31 | cflow.cs:223:31:223:45 | [return] object creation of type Exception |
+| 222 | 25 | cflow.cs:222:25:222:30 | [finally: break] ... == ... | false | 226 | 17 | cflow.cs:226:17:228:17 | [finally: break] {...} |
+| 222 | 25 | cflow.cs:222:25:222:30 | [finally: break] ... == ... | true | 223 | 31 | cflow.cs:223:31:223:45 | [finally: break] object creation of type Exception |
+| 222 | 25 | cflow.cs:222:25:222:30 | [finally: continue] ... == ... | false | 226 | 17 | cflow.cs:226:17:228:17 | [finally: continue] {...} |
+| 222 | 25 | cflow.cs:222:25:222:30 | [finally: continue] ... == ... | true | 223 | 31 | cflow.cs:223:31:223:45 | [finally: continue] object creation of type Exception |
+| 222 | 25 | cflow.cs:222:25:222:30 | [finally: return] ... == ... | false | 226 | 17 | cflow.cs:226:17:228:17 | [finally: return] {...} |
+| 222 | 25 | cflow.cs:222:25:222:30 | [finally: return] ... == ... | true | 223 | 31 | cflow.cs:223:31:223:45 | [finally: return] object creation of type Exception |
 | 234 | 17 | cflow.cs:234:17:234:33 | ... == ... | false | 236 | 13 | cflow.cs:236:13:237:49 | if (...) ... |
 | 234 | 17 | cflow.cs:234:17:234:33 | ... == ... | true | 235 | 17 | cflow.cs:235:17:235:23 | return ...; |
 | 236 | 17 | cflow.cs:236:17:236:33 | ... == ... | false | 240 | 9 | cflow.cs:240:9:245:9 | {...} |
 | 236 | 17 | cflow.cs:236:17:236:33 | ... == ... | true | 237 | 23 | cflow.cs:237:23:237:48 | object creation of type OutOfMemoryException |
 | 241 | 19 | cflow.cs:241:19:241:35 | ... == ... | false | 242 | 17 | cflow.cs:242:17:242:41 | ...; |
 | 241 | 19 | cflow.cs:241:19:241:35 | ... == ... | true | 243 | 13 | cflow.cs:243:13:244:37 | if (...) ... |
-| 241 | 19 | cflow.cs:241:19:241:35 | [exception(Exception)] ... == ... | false | 242 | 17 | cflow.cs:242:17:242:41 | [exception(Exception)] ...; |
-| 241 | 19 | cflow.cs:241:19:241:35 | [exception(Exception)] ... == ... | true | 243 | 13 | cflow.cs:243:13:244:37 | [exception(Exception)] if (...) ... |
-| 241 | 19 | cflow.cs:241:19:241:35 | [exception(NullReferenceException)] ... == ... | false | 242 | 17 | cflow.cs:242:17:242:41 | [exception(NullReferenceException)] ...; |
-| 241 | 19 | cflow.cs:241:19:241:35 | [exception(NullReferenceException)] ... == ... | true | 243 | 13 | cflow.cs:243:13:244:37 | [exception(NullReferenceException)] if (...) ... |
-| 241 | 19 | cflow.cs:241:19:241:35 | [exception(OutOfMemoryException)] ... == ... | false | 242 | 17 | cflow.cs:242:17:242:41 | [exception(OutOfMemoryException)] ...; |
-| 241 | 19 | cflow.cs:241:19:241:35 | [exception(OutOfMemoryException)] ... == ... | true | 243 | 13 | cflow.cs:243:13:244:37 | [exception(OutOfMemoryException)] if (...) ... |
-| 241 | 19 | cflow.cs:241:19:241:35 | [return] ... == ... | false | 242 | 17 | cflow.cs:242:17:242:41 | [return] ...; |
-| 241 | 19 | cflow.cs:241:19:241:35 | [return] ... == ... | true | 243 | 13 | cflow.cs:243:13:244:37 | [return] if (...) ... |
+| 241 | 19 | cflow.cs:241:19:241:35 | [finally: exception(Exception)] ... == ... | false | 242 | 17 | cflow.cs:242:17:242:41 | [finally: exception(Exception)] ...; |
+| 241 | 19 | cflow.cs:241:19:241:35 | [finally: exception(Exception)] ... == ... | true | 243 | 13 | cflow.cs:243:13:244:37 | [finally: exception(Exception)] if (...) ... |
+| 241 | 19 | cflow.cs:241:19:241:35 | [finally: exception(NullReferenceException)] ... == ... | false | 242 | 17 | cflow.cs:242:17:242:41 | [finally: exception(NullReferenceException)] ...; |
+| 241 | 19 | cflow.cs:241:19:241:35 | [finally: exception(NullReferenceException)] ... == ... | true | 243 | 13 | cflow.cs:243:13:244:37 | [finally: exception(NullReferenceException)] if (...) ... |
+| 241 | 19 | cflow.cs:241:19:241:35 | [finally: exception(OutOfMemoryException)] ... == ... | false | 242 | 17 | cflow.cs:242:17:242:41 | [finally: exception(OutOfMemoryException)] ...; |
+| 241 | 19 | cflow.cs:241:19:241:35 | [finally: exception(OutOfMemoryException)] ... == ... | true | 243 | 13 | cflow.cs:243:13:244:37 | [finally: exception(OutOfMemoryException)] if (...) ... |
+| 241 | 19 | cflow.cs:241:19:241:35 | [finally: return] ... == ... | false | 242 | 17 | cflow.cs:242:17:242:41 | [finally: return] ...; |
+| 241 | 19 | cflow.cs:241:19:241:35 | [finally: return] ... == ... | true | 243 | 13 | cflow.cs:243:13:244:37 | [finally: return] if (...) ... |
 | 243 | 17 | cflow.cs:243:17:243:32 | ... > ... | false | 146 | 10 | cflow.cs:146:10:146:19 | exit TryFinally |
 | 243 | 17 | cflow.cs:243:17:243:32 | ... > ... | true | 244 | 17 | cflow.cs:244:17:244:37 | ...; |
-| 243 | 17 | cflow.cs:243:17:243:32 | [exception(Exception)] ... > ... | true | 244 | 17 | cflow.cs:244:17:244:37 | [exception(Exception)] ...; |
-| 243 | 17 | cflow.cs:243:17:243:32 | [exception(NullReferenceException)] ... > ... | true | 244 | 17 | cflow.cs:244:17:244:37 | [exception(NullReferenceException)] ...; |
-| 243 | 17 | cflow.cs:243:17:243:32 | [exception(OutOfMemoryException)] ... > ... | true | 244 | 17 | cflow.cs:244:17:244:37 | [exception(OutOfMemoryException)] ...; |
-| 243 | 17 | cflow.cs:243:17:243:32 | [return] ... > ... | true | 244 | 17 | cflow.cs:244:17:244:37 | [return] ...; |
+| 243 | 17 | cflow.cs:243:17:243:32 | [finally: exception(Exception)] ... > ... | true | 244 | 17 | cflow.cs:244:17:244:37 | [finally: exception(Exception)] ...; |
+| 243 | 17 | cflow.cs:243:17:243:32 | [finally: exception(NullReferenceException)] ... > ... | true | 244 | 17 | cflow.cs:244:17:244:37 | [finally: exception(NullReferenceException)] ...; |
+| 243 | 17 | cflow.cs:243:17:243:32 | [finally: exception(OutOfMemoryException)] ... > ... | true | 244 | 17 | cflow.cs:244:17:244:37 | [finally: exception(OutOfMemoryException)] ...; |
+| 243 | 17 | cflow.cs:243:17:243:32 | [finally: return] ... > ... | true | 244 | 17 | cflow.cs:244:17:244:37 | [finally: return] ...; |
 | 251 | 16 | cflow.cs:251:16:251:21 | ... < ... | false | 254 | 9 | cflow.cs:254:9:259:9 | for (...;...;...) ... |
 | 251 | 16 | cflow.cs:251:16:251:21 | ... < ... | true | 252 | 13 | cflow.cs:252:13:252:33 | ...; |
 | 257 | 17 | cflow.cs:257:17:257:22 | ... > ... | false | 254 | 18 | cflow.cs:254:18:254:18 | access to local variable x |
