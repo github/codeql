@@ -352,8 +352,8 @@ class ControlFlowElementNode extends ControlFlowNode, TNode {
 }
 
 class Split = SplitImpl;
-
 class FinallySplit = FinallySplitting::FinallySplitImpl;
+class ExceptionHandlerSplit = ExceptionHandlerSplitting::ExceptionHandlerSplitImpl;
 
 /**
  * DEPRECATED: Use `ControlFlowElementNode` instead.
@@ -882,24 +882,17 @@ module Internal {
         not this instanceof TypeCase and
         not this instanceof LoopStmt and
         not this instanceof TryStmt and
+        not this instanceof SpecificCatchClause and
         not this instanceof JumpStmt
       }
 
       override ControlFlowElement getChildElement(int i) {
-        not this instanceof CatchClause and
         not this instanceof FixedStmt and
         not this instanceof UsingStmt and
         result = this.getChild(i)
         or
         this = any(GeneralCatchClause gcc |
           i = 0 and result = gcc.getBlock()
-        )
-        or
-        this = any(SpecificCatchClause scc |
-          exists(int j |
-            j = rank[i + 1](int k | exists(getSpecificCatchClauseChild(scc, k)) | k) |
-            result = getSpecificCatchClauseChild(scc, j)
-          )
         )
         or
         this = any(FixedStmt fs |
@@ -924,14 +917,6 @@ module Internal {
           )
         )
       }
-    }
-
-    private ControlFlowElement getSpecificCatchClauseChild(SpecificCatchClause scc, int i) {
-      i = 0 and result = scc.getVariableDeclExpr()
-      or
-      i = 1 and result = scc.getFilterClause()
-      or
-      i = 2 and result = scc.getBlock()
     }
 
     /**
@@ -1085,6 +1070,7 @@ module Internal {
         this instanceof ConstCase or
         this instanceof TypeCase or
         this instanceof TryStmt or
+        this instanceof SpecificCatchClause or
         (this instanceof LoopStmt and not this instanceof ForeachStmt) or
         this instanceof LogicalNotExpr or
         this instanceof LogicalAndExpr or
@@ -1394,10 +1380,38 @@ module Internal {
         result = lastTryStmtFinally(ts, c) and
         not c instanceof NormalCompletion
         or
-        // If there is no `finally` block, last elements are from the body or
-        // any of the `catch` clauses
+        // If there is no `finally` block, last elements are from the body, from
+        // the blocks of one of the `catch` clauses, or from the last `catch` clause
         not ts.hasFinally() and
         result = getBlockOrCatchFinallyPred(ts, c)
+      )
+      or
+      cfe = any(SpecificCatchClause scc |
+        // Last element of `catch` block
+        result = lastCatchClauseBlock(cfe, c)
+        or
+        (
+          if scc.isLast() then (
+            // Last `catch` clause inherits throw completions from the `try` block,
+            // when the clause does not match
+            throwMayBeUncaught(scc, c) and
+            (
+              // Incompatible exception type: clause itself
+              result = scc
+              or
+              // Incompatible filter
+              result = lastSpecificCatchClauseFilterClause(scc, _)
+            )
+          ) else (
+            // Incompatible exception type: clause itself
+            result = scc and
+            c = any(MatchingCompletion mc | not mc.isMatch())
+            or
+            // Incompatible filter
+            result = lastSpecificCatchClauseFilterClause(scc, c) and
+            c instanceof FalseCompletion
+          )
+        )
       )
       or
       cfe = any(JumpStmt js |
@@ -1632,8 +1646,18 @@ module Internal {
     }
 
     pragma [nomagic]
-    private ControlFlowElement lastTryStmtCatchClause(TryStmt ts, Completion c) {
-      result = last(ts.getACatchClause(), c)
+    ControlFlowElement lastTryStmtCatchClause(TryStmt ts, int i, Completion c) {
+      result = last(ts.getCatchClause(i), c)
+    }
+
+    pragma [nomagic]
+    private ControlFlowElement lastSpecificCatchClauseFilterClause(SpecificCatchClause scc, Completion c) {
+      result = last(scc.getFilterClause(), c)
+    }
+
+    pragma [nomagic]
+    private ControlFlowElement lastCatchClauseBlock(CatchClause cc, Completion c) {
+      result = last(cc.getBlock(), c)
     }
 
     pragma [nomagic]
@@ -1652,35 +1676,47 @@ module Internal {
     }
 
     /**
-     * Gets a last element from the `try` block of this `try` statement that may
-     * finish with completion `c`, such that control may be transferred to the
-     * `finally` block (if it exists).
-     */
-    private ControlFlowElement getBlockFinallyPred(TryStmt ts, Completion c) {
-      result = lastTryStmtBlock(ts, c)
-      and
-      (
-        // Any non-throw completion will always continue to the `finally` block
-        not c instanceof ThrowCompletion
-        or
-        // A throw completion will only continue to the `finally` block if it is
-        // definitely not handled by a `catch` clause
-        exists(ExceptionClass ec |
-          ec = c.(ThrowCompletion).getExceptionClass() and
-          not ts.definitelyHandles(ec, _)
-        )
-      )
-    }
-
-    /**
      * Gets a last element from a `try` or `catch` block of this `try` statement
      * that may finish with completion `c`, such that control may be transferred
      * to the `finally` block (if it exists).
      */
-    pragma [noinline]
+    pragma [nomagic]
     private ControlFlowElement getBlockOrCatchFinallyPred(TryStmt ts, Completion c) {
-      result = getBlockFinallyPred(ts, c) or
-      result = lastTryStmtCatchClause(ts, c)
+      result = lastTryStmtBlock(ts, c) and
+      (
+        // Any non-throw completion from the `try` block will always continue directly
+        // to the `finally` block
+        not c instanceof ThrowCompletion
+        or
+        // Any completion from the `try` block will continue to the `finally` block
+        // when there are no catch clauses
+        not exists(ts.getACatchClause())
+      )
+      or
+      // Last element from any of the `catch` clause blocks continues to the `finally` block
+      result = lastCatchClauseBlock(ts.getACatchClause(), c)
+      or
+      // Last element of last `catch` clause continues to the `finally` block
+      exists(int last |
+        ts.getCatchClause(last).isLast() |
+        result = lastTryStmtCatchClause(ts, last, c)
+      )
+    }
+
+    /**
+     * Holds if the `try` block that catch clause `scc` belongs to may throw an
+     * exception of type `c`, where no `catch` clause is guaranteed to catch it.
+     * The catch clause `last` is the last catch clause in the `try` statement
+     * that it belongs to.
+     */
+    pragma [nomagic]
+    private predicate throwMayBeUncaught(SpecificCatchClause last, ThrowCompletion c) {
+      exists(TryStmt ts |
+        ts = last.getTryStmt() and
+        exists(lastTryStmtBlock(ts, c)) and
+        not ts.definitelyHandles(c.getExceptionClass(), _) and
+        last.isLast()
+      )
     }
 
     /**
@@ -2197,16 +2233,83 @@ module Internal {
         result = first(ts.getBlock()) and
         c instanceof SimpleCompletion
         or
-        // Flow from last element of body to first element of a relevant `catch` clause
-        exists(ExceptionClass ec |
-          cfe = lastTryStmtBlock(ts, c) and
-          ec = c.(ThrowCompletion).getExceptionClass() and
-          result = first(ts.getAnExceptionHandler(ec))
+        // Flow from last element of body to first `catch` clause
+        exists(getAThrownException(ts, cfe, c)) and
+        result = first(ts.getCatchClause(0))
+        or
+        exists(SpecificCatchClause scc, int i |
+          scc = ts.getCatchClause(i) |
+          cfe = scc and
+          scc = lastTryStmtCatchClause(ts, i, c) and
+          (
+            // Flow from one `catch` clause to the next
+            result = first(ts.getCatchClause(i + 1)) and
+            c = any(MatchingCompletion mc | not mc.isMatch())
+            or
+            // Flow from last `catch` clause to first element of `finally` block
+            ts.getCatchClause(i).isLast() and
+            result = first(ts.getFinally()) and
+            c instanceof ThrowCompletion // inherited from `try` block
+          )
+          or
+          cfe = lastTryStmtCatchClause(ts, i, c) and
+          cfe = lastSpecificCatchClauseFilterClause(scc, _) and
+          (
+            // Flow from last element of `catch` clause filter to next `catch` clause
+            result = first(ts.getCatchClause(i + 1)) and
+            c instanceof FalseCompletion
+            or
+            // Flow from last element of `catch` clause filter, of last clause, to first
+            // element of `finally` block
+            ts.getCatchClause(i).isLast() and
+            result = first(ts.getFinally()) and
+            c instanceof ThrowCompletion // inherited from `try` block
+          )
+          or
+          // Flow from last element of a `catch` block to first element of `finally` block
+          cfe = lastCatchClauseBlock(scc, c) and
+          result = first(ts.getFinally())
         )
         or
-        // Flow into the `finally` block
-        cfe = getBlockOrCatchFinallyPred(ts, c) and
-        result = first(ts.getFinally())
+        // Flow from last element of `try` block to first element of `finally` block
+        cfe = lastTryStmtBlock(ts, c) and
+        result = first(ts.getFinally()) and
+        (
+          c instanceof ThrowCompletion
+          implies
+          not exists(ts.getACatchClause())
+        )
+      )
+      or
+      exists(SpecificCatchClause scc |
+        // Flow from catch clause to variable declaration/filter clause/block
+        cfe = scc and
+        c.(MatchingCompletion).isMatch() and
+        exists(ControlFlowElement next |
+          result = first(next) |
+          if exists(scc.getVariableDeclExpr()) then
+            next = scc.getVariableDeclExpr()
+          else if exists(scc.getFilterClause()) then
+            next = scc.getFilterClause()
+          else
+            next = scc.getBlock()
+        )
+        or
+        // Flow from variable declaration to filter clause/block
+        cfe = last(scc.getVariableDeclExpr(), c) and
+        c instanceof SimpleCompletion and
+        exists(ControlFlowElement next |
+          result = first(next) |
+          if exists(scc.getFilterClause()) then
+            next = scc.getFilterClause()
+          else
+            next = scc.getBlock()
+        )
+        or
+        // Flow from filter to block
+        cfe = last(scc.getFilterClause(), c) and
+        c instanceof TrueCompletion and
+        result = first(scc.getBlock())
       )
       or
       // Post-order: flow from last element of child to statement itself
@@ -2229,6 +2332,15 @@ module Internal {
         not cfe = getBlockOrCatchFinallyPred(any(TryStmt ts | ts.hasFinally()), _) and
         result = first(glc.getGotoStmt().getTarget())
       )
+    }
+
+    /**
+     * Gets an exception type that is thrown by `cfe` in the block of `try` statement
+     * `ts`. Throw completion `c` matches the exception type.
+     */
+    ExceptionClass getAThrownException(TryStmt ts, ControlFlowElement cfe, ThrowCompletion c) {
+      cfe = lastTryStmtBlock(ts, c) and
+      result = c.getExceptionClass()
     }
 
     /**
@@ -2274,7 +2386,7 @@ module Internal {
     class SplitImpl extends TSplit {
       /** Gets a textual representation of this split. */
       string toString() { none() }
-    
+
       /**
        * INTERNAL: Do not use.
        *
@@ -2288,7 +2400,7 @@ module Internal {
           this.hasSuccessor(pred, cfe, _)
         )
       }
-    
+
       /**
        * INTERNAL: Do not use.
        *
@@ -2299,7 +2411,7 @@ module Internal {
       predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
         none()
       }
-    
+
       /**
        * INTERNAL: Do not use.
        *
@@ -2310,7 +2422,7 @@ module Internal {
       predicate hasExit(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
         none()
       }
-    
+
       /**
        * INTERNAL: Do not use.
        *
@@ -2321,7 +2433,7 @@ module Internal {
       predicate hasExit(ControlFlowElement pred, Completion c) {
         none()
       }
-    
+
       /**
        * INTERNAL: Do not use.
        *
@@ -2534,12 +2646,173 @@ module Internal {
       }
     }
 
+    module ExceptionHandlerSplitting {
+      private newtype TMatch = TAlways() or TMaybe() or TNever()
+
+      /**
+       * A split for elements belonging to a `catch` clause, which determines the type of
+       * exception to handle. For example, in
+       *
+       * ```
+       * try
+       * {
+       *     if (M() > 0)
+       *         throw new ArgumentException();
+       *     else if (M() < 0)
+       *         throw new ArithmeticException("negative");
+       *     else
+       *         return;
+       * }
+       * catch (ArgumentException e)
+       * {
+       *     Log.Write("M() positive");
+       * }
+       * catch (ArithmeticException e) when (e.Message != null)
+       * {
+       *     Log.Write($"M() {e.Message}");
+       * }
+       * ```
+       *
+       * all control flow nodes in
+       * ```
+       * catch (ArgumentException e)
+       * ```
+       * and
+       * ```
+       * catch (ArithmeticException e) when (e.Message != null)
+       * ```
+       * have two splits: one representing the `try` block throwing an `ArgumentException`,
+       * and one representing the `try` block throwing an `ArithmeticException`.
+       */
+      class ExceptionHandlerSplitImpl extends Split, TExceptionHandlerSplit {
+        private ExceptionClass ec;
+
+        ExceptionHandlerSplitImpl() {
+          this = TExceptionHandlerSplit(ec)
+        }
+
+        override string toString() {
+          result = "exception: " + ec.toString()
+        }
+
+        override predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+          // Entry into first catch clause
+          exists(TryStmt ts |
+            ec = getAThrownException(ts, pred, c) |
+            succ = succ(pred, c) and
+            succ = ts.getCatchClause(0).(SpecificCatchClause)
+          )
+        }
+
+        /**
+         * Holds if this split applies to catch clause `scc`. The parameter `match`
+         * indicates whether the catch clause `scc` may match the exception type of
+         * this split.
+         */
+        private predicate appliesToCatchClause(SpecificCatchClause scc, TMatch match) {
+          exists(TryStmt ts |
+            ec = getAThrownException(ts, _, _) and
+            scc = ts.getACatchClause() |
+            if scc.getCaughtExceptionType() = ec.getABaseType*() then
+              match = TAlways()
+            else if scc.getCaughtExceptionType() = ec.getASubType+() then
+              match = TMaybe()
+            else
+              match = TNever()
+          )
+        }
+
+        /**
+         * Holds if this split applies to control flow element `pred`, where `pred`
+         * is a valid predecessor with completion `c`.
+         */
+        private predicate appliesToPredecessor(ControlFlowElement pred, Completion c) {
+          this.appliesTo(pred) and
+          (exists(succ(pred, c)) or exists(succExit(pred, c))) and
+          (
+            pred instanceof SpecificCatchClause
+            implies
+            pred = any(SpecificCatchClause scc |
+              if c instanceof MatchingCompletion then
+                exists(TMatch match |
+                  this.appliesToCatchClause(scc, match) |
+                  c = any(MatchingCompletion mc |
+                    if mc.isMatch() then
+                      match != TNever()
+                    else
+                      match != TAlways()
+                  )
+                )
+              else (
+                (scc.isLast() and c instanceof ThrowCompletion)
+                implies
+                exists(TMatch match |
+                  this.appliesToCatchClause(scc, match) |
+                  match != TAlways()
+                )
+              )
+            )
+          )
+        }
+
+        /**
+         * Holds if this split applies to `pred`, and `pred` may exit this split
+         * with throw completion `c`, because it belongs to the last `catch` clause
+         * in a `try` statement.
+         */
+        private predicate hasLastExit(ControlFlowElement pred, ThrowCompletion c) {
+          this.appliesToPredecessor(pred, c) and
+          exists(TryStmt ts, SpecificCatchClause scc, int last |
+            pred = lastTryStmtCatchClause(ts, last, c) |
+            ts.getCatchClause(last) = scc and
+            scc.isLast() and
+            c.getExceptionClass() = ec
+          )
+        }
+
+        override predicate hasExit(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+          this.appliesToPredecessor(pred, c) and
+          succ = succ(pred, c) and
+          (
+            // Exit out to `catch` clause block
+            succ = first(any(SpecificCatchClause scc).getBlock())
+            or
+            // Exit out to a general `catch` clause
+            succ instanceof GeneralCatchClause
+            or
+            // Exit out from last `catch` clause (no catch clauses match)
+            this.hasLastExit(pred, c)
+          )
+        }
+
+        override predicate hasExit(ControlFlowElement pred, Completion c) {
+          // Exit out from last `catch` clause (no catch clauses match)
+          this.hasLastExit(pred, c) and
+          exists(succExit(pred, c))
+        }
+
+        override predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+          this.appliesToPredecessor(pred, c) and
+          succ = succ(pred, c) and
+          not succ = first(any(SpecificCatchClause scc).getBlock()) and
+          not succ instanceof GeneralCatchClause and
+          not exists(TryStmt ts, SpecificCatchClause scc, int last |
+            pred = lastTryStmtCatchClause(ts, last, c) |
+            ts.getCatchClause(last) = scc and
+            scc.isLast()
+          )
+        }
+      }
+    }
+
     /**
      * Gets an integer representing the kind of split `s`. The kind is used
      * to make an arbitrary order on splits.
      */
     private int getSplitKind(Split s) {
       s = TFinallySplit(_) and result = 0
+      or
+      s = TExceptionHandlerSplit(_) and result = 1
     }
 
     /** Gets the rank of `split` among all the splits that apply to `cfe`. */
@@ -2757,6 +3030,8 @@ module Internal {
     cached
     newtype TSplit =
       TFinallySplit(FinallySplitting::FinallySplitType type)
+      or
+      TExceptionHandlerSplit(ExceptionClass ec)
 
     cached
     newtype TSplits =

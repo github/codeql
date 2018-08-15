@@ -101,7 +101,11 @@
 | 110 | 20 | cflow.cs:110:20:110:23 | true | true | 111 | 13 | cflow.cs:111:13:113:13 | {...} |
 | 127 | 32 | cflow.cs:127:32:127:44 | ... == ... | false | 127 | 53 | cflow.cs:127:53:127:57 | this access |
 | 127 | 32 | cflow.cs:127:32:127:44 | ... == ... | true | 127 | 48 | cflow.cs:127:48:127:49 | "" |
+| 162 | 48 | cflow.cs:162:48:162:51 | [exception: Exception] true | true | 163 | 9 | cflow.cs:163:9:165:9 | {...} |
 | 170 | 21 | cflow.cs:170:21:170:24 | true | true | 170 | 27 | cflow.cs:170:27:170:32 | throw ...; |
+| 194 | 48 | cflow.cs:194:48:194:51 | [exception: Exception] true | true | 195 | 9 | cflow.cs:195:9:197:9 | {...} |
+| 198 | 35 | cflow.cs:198:35:198:51 | [exception: Exception] ... != ... | true | 199 | 9 | cflow.cs:199:9:200:9 | {...} |
+| 198 | 35 | cflow.cs:198:35:198:51 | [exception: OutOfMemoryException] ... != ... | true | 199 | 9 | cflow.cs:199:9:200:9 | {...} |
 | 207 | 16 | cflow.cs:207:16:207:20 | ... > ... | false | 232 | 9 | cflow.cs:232:9:245:9 | try {...} ... |
 | 207 | 16 | cflow.cs:207:16:207:20 | ... > ... | true | 208 | 9 | cflow.cs:208:9:230:9 | {...} |
 | 211 | 21 | cflow.cs:211:21:211:26 | ... == ... | false | 213 | 17 | cflow.cs:213:17:214:29 | if (...) ... |

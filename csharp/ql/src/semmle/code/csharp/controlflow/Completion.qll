@@ -101,7 +101,7 @@ class Completion extends TCompletion {
       or
       not isNullnessConstant(cfe, _) and
       this = TNullnessCompletion(_)
-    else if mustHaveMatchingCompletion(_, cfe) then
+    else if mustHaveMatchingCompletion(cfe) then
       exists(boolean value |
         isMatchingConstant(cfe, value) |
         this = TMatchingCompletion(value)
@@ -314,6 +314,11 @@ private predicate inBooleanContext(Expr e, boolean isBooleanCompletionForParent)
     isBooleanCompletionForParent = false
   )
   or
+  exists(SpecificCatchClause scc |
+    scc.getFilterClause() = e |
+    isBooleanCompletionForParent = false
+  )
+  or
   exists(LogicalNotExpr lne |
     lne.getAnOperand() = e |
     inBooleanContext(lne, _) and
@@ -396,14 +401,20 @@ private predicate inNullnessContext(Expr e, boolean isNullnessCompletionForParen
   )
 }
 
-/**
- * Holds if a normal completion of `e` must be a matching completion. Thats is,
- * whether `e` determines a match in a `switch` statement.
- */
-private predicate mustHaveMatchingCompletion(SwitchStmt ss, Expr e) {
-  e = ss.getAConstCase().getExpr()
+private predicate mustHaveMatchingCompletion(SwitchStmt ss, ControlFlowElement cfe) {
+  cfe = ss.getAConstCase().getExpr()
   or
-  e = ss.getATypeCase().getTypeAccess() // use type access to represent the type test
+  cfe = ss.getATypeCase().getTypeAccess() // use type access to represent the type test
+}
+
+/**
+ * Holds if a normal completion of `cfe` must be a matching completion. Thats is,
+ * whether `cfe` determines a match in a `switch` statement or `catch` clause.
+ */
+private predicate mustHaveMatchingCompletion(ControlFlowElement cfe) {
+  mustHaveMatchingCompletion(_, cfe)
+  or
+  cfe instanceof SpecificCatchClause
 }
 
 /**

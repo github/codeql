@@ -278,9 +278,9 @@
 | post | ExitMethods.cs:40:13:40:30 | call to method ErrorAlways | ExitMethods.cs:40:25:40:29 | false |
 | post | ExitMethods.cs:40:13:40:31 | ...; | ExitMethods.cs:39:9:41:9 | {...} |
 | post | ExitMethods.cs:40:25:40:29 | false | ExitMethods.cs:40:13:40:31 | ...; |
-| post | ExitMethods.cs:43:9:45:9 | {...} | ExitMethods.cs:42:9:45:9 | catch (...) {...} |
+| post | ExitMethods.cs:43:9:45:9 | {...} | ExitMethods.cs:42:9:45:9 | [exception: ArgumentException] catch (...) {...} |
 | post | ExitMethods.cs:44:13:44:19 | return ...; | ExitMethods.cs:43:9:45:9 | {...} |
-| post | ExitMethods.cs:47:9:49:9 | {...} | ExitMethods.cs:46:9:49:9 | catch (...) {...} |
+| post | ExitMethods.cs:47:9:49:9 | {...} | ExitMethods.cs:46:9:49:9 | [exception: Exception] catch (...) {...} |
 | post | ExitMethods.cs:48:13:48:19 | return ...; | ExitMethods.cs:47:9:49:9 | {...} |
 | post | ExitMethods.cs:52:17:52:26 | exit ErrorMaybe | ExitMethods.cs:54:13:54:13 | access to parameter b |
 | post | ExitMethods.cs:52:17:52:26 | exit ErrorMaybe | ExitMethods.cs:55:13:55:34 | throw ...; |
@@ -1109,12 +1109,11 @@
 | post | cflow.cs:158:9:161:9 | {...} | cflow.cs:157:9:187:9 | try {...} ... |
 | post | cflow.cs:159:13:159:38 | ...; | cflow.cs:158:9:161:9 | {...} |
 | post | cflow.cs:159:31:159:36 | "Try2" | cflow.cs:159:13:159:38 | ...; |
-| post | cflow.cs:162:38:162:39 | IOException ex | cflow.cs:162:9:165:9 | catch (...) {...} |
-| post | cflow.cs:162:48:162:51 | true | cflow.cs:162:38:162:39 | IOException ex |
-| post | cflow.cs:163:9:165:9 | {...} | cflow.cs:162:48:162:51 | true |
+| post | cflow.cs:162:48:162:51 | [exception: Exception] true | cflow.cs:162:38:162:39 | [exception: Exception] IOException ex |
+| post | cflow.cs:163:9:165:9 | {...} | cflow.cs:162:48:162:51 | [exception: Exception] true |
 | post | cflow.cs:164:13:164:18 | throw ...; | cflow.cs:163:9:165:9 | {...} |
-| post | cflow.cs:166:41:166:42 | ArgumentException ex | cflow.cs:166:9:176:9 | catch (...) {...} |
-| post | cflow.cs:167:9:176:9 | {...} | cflow.cs:166:41:166:42 | ArgumentException ex |
+| post | cflow.cs:166:9:176:9 | [exception: OutOfMemoryException] catch (...) {...} | cflow.cs:162:9:165:9 | [exception: OutOfMemoryException] catch (...) {...} |
+| post | cflow.cs:167:9:176:9 | {...} | cflow.cs:166:41:166:42 | [exception: Exception] ArgumentException ex |
 | post | cflow.cs:168:13:175:13 | try {...} ... | cflow.cs:167:9:176:9 | {...} |
 | post | cflow.cs:169:13:171:13 | {...} | cflow.cs:168:13:175:13 | try {...} ... |
 | post | cflow.cs:170:17:170:32 | if (...) ... | cflow.cs:169:13:171:13 | {...} |
@@ -1124,7 +1123,9 @@
 | post | cflow.cs:174:17:174:44 | [finally: exception(ArgumentException)] throw ...; | cflow.cs:174:23:174:43 | [finally: exception(ArgumentException)] object creation of type Exception |
 | post | cflow.cs:174:23:174:43 | [finally: exception(ArgumentException)] object creation of type Exception | cflow.cs:174:37:174:42 | [finally: exception(ArgumentException)] "Boo!" |
 | post | cflow.cs:174:37:174:42 | [finally: exception(ArgumentException)] "Boo!" | cflow.cs:173:13:175:13 | [finally: exception(ArgumentException)] {...} |
-| post | cflow.cs:178:9:179:9 | {...} | cflow.cs:177:9:179:9 | catch (...) {...} |
+| post | cflow.cs:177:9:179:9 | [exception: OutOfMemoryException] catch (...) {...} | cflow.cs:166:9:176:9 | [exception: OutOfMemoryException] catch (...) {...} |
+| post | cflow.cs:178:9:179:9 | {...} | cflow.cs:177:9:179:9 | [exception: Exception] catch (...) {...} |
+| post | cflow.cs:178:9:179:9 | {...} | cflow.cs:177:9:179:9 | [exception: OutOfMemoryException] catch (...) {...} |
 | post | cflow.cs:185:9:187:9 | [finally: exception(Exception)] {...} | cflow.cs:174:17:174:44 | [finally: exception(ArgumentException)] throw ...; |
 | post | cflow.cs:185:9:187:9 | [finally: exception(IOException)] {...} | cflow.cs:164:13:164:18 | throw ...; |
 | post | cflow.cs:185:9:187:9 | [finally: return] {...} | cflow.cs:160:13:160:19 | return ...; |
@@ -1145,16 +1146,20 @@
 | post | cflow.cs:190:9:193:9 | {...} | cflow.cs:189:9:204:9 | try {...} ... |
 | post | cflow.cs:191:13:191:38 | ...; | cflow.cs:190:9:193:9 | {...} |
 | post | cflow.cs:191:31:191:36 | "Try3" | cflow.cs:191:13:191:38 | ...; |
-| post | cflow.cs:194:38:194:39 | IOException ex | cflow.cs:194:9:197:9 | catch (...) {...} |
-| post | cflow.cs:194:48:194:51 | true | cflow.cs:194:38:194:39 | IOException ex |
-| post | cflow.cs:195:9:197:9 | {...} | cflow.cs:194:48:194:51 | true |
+| post | cflow.cs:194:48:194:51 | [exception: Exception] true | cflow.cs:194:38:194:39 | [exception: Exception] IOException ex |
+| post | cflow.cs:195:9:197:9 | {...} | cflow.cs:194:48:194:51 | [exception: Exception] true |
 | post | cflow.cs:196:13:196:18 | throw ...; | cflow.cs:195:9:197:9 | {...} |
-| post | cflow.cs:198:26:198:26 | Exception e | cflow.cs:198:9:200:9 | catch (...) {...} |
-| post | cflow.cs:198:35:198:35 | access to local variable e | cflow.cs:198:26:198:26 | Exception e |
-| post | cflow.cs:198:35:198:43 | access to property Message | cflow.cs:198:35:198:35 | access to local variable e |
-| post | cflow.cs:198:35:198:51 | ... != ... | cflow.cs:198:48:198:51 | null |
-| post | cflow.cs:198:48:198:51 | null | cflow.cs:198:35:198:43 | access to property Message |
-| post | cflow.cs:199:9:200:9 | {...} | cflow.cs:198:35:198:51 | ... != ... |
+| post | cflow.cs:198:9:200:9 | [exception: OutOfMemoryException] catch (...) {...} | cflow.cs:194:9:197:9 | [exception: OutOfMemoryException] catch (...) {...} |
+| post | cflow.cs:198:26:198:26 | [exception: Exception] Exception e | cflow.cs:198:9:200:9 | [exception: Exception] catch (...) {...} |
+| post | cflow.cs:198:26:198:26 | [exception: OutOfMemoryException] Exception e | cflow.cs:198:9:200:9 | [exception: OutOfMemoryException] catch (...) {...} |
+| post | cflow.cs:198:35:198:35 | [exception: Exception] access to local variable e | cflow.cs:198:26:198:26 | [exception: Exception] Exception e |
+| post | cflow.cs:198:35:198:35 | [exception: OutOfMemoryException] access to local variable e | cflow.cs:198:26:198:26 | [exception: OutOfMemoryException] Exception e |
+| post | cflow.cs:198:35:198:43 | [exception: Exception] access to property Message | cflow.cs:198:35:198:35 | [exception: Exception] access to local variable e |
+| post | cflow.cs:198:35:198:43 | [exception: OutOfMemoryException] access to property Message | cflow.cs:198:35:198:35 | [exception: OutOfMemoryException] access to local variable e |
+| post | cflow.cs:198:35:198:51 | [exception: Exception] ... != ... | cflow.cs:198:48:198:51 | [exception: Exception] null |
+| post | cflow.cs:198:35:198:51 | [exception: OutOfMemoryException] ... != ... | cflow.cs:198:48:198:51 | [exception: OutOfMemoryException] null |
+| post | cflow.cs:198:48:198:51 | [exception: Exception] null | cflow.cs:198:35:198:43 | [exception: Exception] access to property Message |
+| post | cflow.cs:198:48:198:51 | [exception: OutOfMemoryException] null | cflow.cs:198:35:198:43 | [exception: OutOfMemoryException] access to property Message |
 | post | cflow.cs:202:9:204:9 | [finally: exception(IOException)] {...} | cflow.cs:196:13:196:18 | throw ...; |
 | post | cflow.cs:202:9:204:9 | [finally: return] {...} | cflow.cs:192:13:192:19 | return ...; |
 | post | cflow.cs:202:9:204:9 | {...} | cflow.cs:199:9:200:9 | {...} |
@@ -1971,13 +1976,13 @@
 | pre | ExitMethods.cs:37:5:50:5 | {...} | ExitMethods.cs:38:9:49:9 | try {...} ... |
 | pre | ExitMethods.cs:38:9:49:9 | try {...} ... | ExitMethods.cs:39:9:41:9 | {...} |
 | pre | ExitMethods.cs:39:9:41:9 | {...} | ExitMethods.cs:40:13:40:31 | ...; |
-| pre | ExitMethods.cs:40:13:40:30 | call to method ErrorAlways | ExitMethods.cs:42:9:45:9 | catch (...) {...} |
-| pre | ExitMethods.cs:40:13:40:30 | call to method ErrorAlways | ExitMethods.cs:46:9:49:9 | catch (...) {...} |
+| pre | ExitMethods.cs:40:13:40:30 | call to method ErrorAlways | ExitMethods.cs:42:9:45:9 | [exception: ArgumentException] catch (...) {...} |
+| pre | ExitMethods.cs:40:13:40:30 | call to method ErrorAlways | ExitMethods.cs:42:9:45:9 | [exception: Exception] catch (...) {...} |
 | pre | ExitMethods.cs:40:13:40:31 | ...; | ExitMethods.cs:40:25:40:29 | false |
 | pre | ExitMethods.cs:40:25:40:29 | false | ExitMethods.cs:40:13:40:30 | call to method ErrorAlways |
-| pre | ExitMethods.cs:42:9:45:9 | catch (...) {...} | ExitMethods.cs:43:9:45:9 | {...} |
+| pre | ExitMethods.cs:42:9:45:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:46:9:49:9 | [exception: Exception] catch (...) {...} |
 | pre | ExitMethods.cs:43:9:45:9 | {...} | ExitMethods.cs:44:13:44:19 | return ...; |
-| pre | ExitMethods.cs:46:9:49:9 | catch (...) {...} | ExitMethods.cs:47:9:49:9 | {...} |
+| pre | ExitMethods.cs:46:9:49:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:47:9:49:9 | {...} |
 | pre | ExitMethods.cs:47:9:49:9 | {...} | ExitMethods.cs:48:13:48:19 | return ...; |
 | pre | ExitMethods.cs:52:17:52:26 | enter ErrorMaybe | ExitMethods.cs:53:5:56:5 | {...} |
 | pre | ExitMethods.cs:53:5:56:5 | {...} | ExitMethods.cs:54:9:55:34 | if (...) ... |
@@ -2814,19 +2819,22 @@
 | pre | cflow.cs:157:9:187:9 | try {...} ... | cflow.cs:158:9:161:9 | {...} |
 | pre | cflow.cs:158:9:161:9 | {...} | cflow.cs:159:13:159:38 | ...; |
 | pre | cflow.cs:159:13:159:37 | call to method WriteLine | cflow.cs:160:13:160:19 | return ...; |
-| pre | cflow.cs:159:13:159:37 | call to method WriteLine | cflow.cs:162:9:165:9 | catch (...) {...} |
-| pre | cflow.cs:159:13:159:37 | call to method WriteLine | cflow.cs:166:9:176:9 | catch (...) {...} |
+| pre | cflow.cs:159:13:159:37 | call to method WriteLine | cflow.cs:162:9:165:9 | [exception: Exception] catch (...) {...} |
 | pre | cflow.cs:159:13:159:38 | ...; | cflow.cs:159:31:159:36 | "Try2" |
 | pre | cflow.cs:159:31:159:36 | "Try2" | cflow.cs:159:13:159:37 | call to method WriteLine |
-| pre | cflow.cs:159:31:159:36 | "Try2" | cflow.cs:177:9:179:9 | catch (...) {...} |
+| pre | cflow.cs:159:31:159:36 | "Try2" | cflow.cs:162:9:165:9 | [exception: OutOfMemoryException] catch (...) {...} |
 | pre | cflow.cs:160:13:160:19 | return ...; | cflow.cs:185:9:187:9 | [finally: return] {...} |
-| pre | cflow.cs:162:9:165:9 | catch (...) {...} | cflow.cs:162:38:162:39 | IOException ex |
-| pre | cflow.cs:162:38:162:39 | IOException ex | cflow.cs:162:48:162:51 | true |
-| pre | cflow.cs:162:48:162:51 | true | cflow.cs:163:9:165:9 | {...} |
+| pre | cflow.cs:162:9:165:9 | [exception: Exception] catch (...) {...} | cflow.cs:162:38:162:39 | [exception: Exception] IOException ex |
+| pre | cflow.cs:162:9:165:9 | [exception: Exception] catch (...) {...} | cflow.cs:166:9:176:9 | [exception: Exception] catch (...) {...} |
+| pre | cflow.cs:162:9:165:9 | [exception: OutOfMemoryException] catch (...) {...} | cflow.cs:166:9:176:9 | [exception: OutOfMemoryException] catch (...) {...} |
+| pre | cflow.cs:162:38:162:39 | [exception: Exception] IOException ex | cflow.cs:162:48:162:51 | [exception: Exception] true |
+| pre | cflow.cs:162:48:162:51 | [exception: Exception] true | cflow.cs:163:9:165:9 | {...} |
 | pre | cflow.cs:163:9:165:9 | {...} | cflow.cs:164:13:164:18 | throw ...; |
 | pre | cflow.cs:164:13:164:18 | throw ...; | cflow.cs:185:9:187:9 | [finally: exception(IOException)] {...} |
-| pre | cflow.cs:166:9:176:9 | catch (...) {...} | cflow.cs:166:41:166:42 | ArgumentException ex |
-| pre | cflow.cs:166:41:166:42 | ArgumentException ex | cflow.cs:167:9:176:9 | {...} |
+| pre | cflow.cs:166:9:176:9 | [exception: Exception] catch (...) {...} | cflow.cs:166:41:166:42 | [exception: Exception] ArgumentException ex |
+| pre | cflow.cs:166:9:176:9 | [exception: Exception] catch (...) {...} | cflow.cs:177:9:179:9 | [exception: Exception] catch (...) {...} |
+| pre | cflow.cs:166:9:176:9 | [exception: OutOfMemoryException] catch (...) {...} | cflow.cs:177:9:179:9 | [exception: OutOfMemoryException] catch (...) {...} |
+| pre | cflow.cs:166:41:166:42 | [exception: Exception] ArgumentException ex | cflow.cs:167:9:176:9 | {...} |
 | pre | cflow.cs:167:9:176:9 | {...} | cflow.cs:168:13:175:13 | try {...} ... |
 | pre | cflow.cs:168:13:175:13 | try {...} ... | cflow.cs:169:13:171:13 | {...} |
 | pre | cflow.cs:169:13:171:13 | {...} | cflow.cs:170:17:170:32 | if (...) ... |
@@ -2837,7 +2845,6 @@
 | pre | cflow.cs:174:17:174:44 | [finally: exception(ArgumentException)] throw ...; | cflow.cs:185:9:187:9 | [finally: exception(Exception)] {...} |
 | pre | cflow.cs:174:23:174:43 | [finally: exception(ArgumentException)] object creation of type Exception | cflow.cs:174:17:174:44 | [finally: exception(ArgumentException)] throw ...; |
 | pre | cflow.cs:174:37:174:42 | [finally: exception(ArgumentException)] "Boo!" | cflow.cs:174:23:174:43 | [finally: exception(ArgumentException)] object creation of type Exception |
-| pre | cflow.cs:177:9:179:9 | catch (...) {...} | cflow.cs:178:9:179:9 | {...} |
 | pre | cflow.cs:178:9:179:9 | {...} | cflow.cs:185:9:187:9 | {...} |
 | pre | cflow.cs:185:9:187:9 | [finally: exception(Exception)] {...} | cflow.cs:186:13:186:41 | [finally: exception(Exception)] ...; |
 | pre | cflow.cs:185:9:187:9 | [finally: exception(IOException)] {...} | cflow.cs:186:13:186:41 | [finally: exception(IOException)] ...; |
@@ -2855,24 +2862,30 @@
 | pre | cflow.cs:189:9:204:9 | try {...} ... | cflow.cs:190:9:193:9 | {...} |
 | pre | cflow.cs:190:9:193:9 | {...} | cflow.cs:191:13:191:38 | ...; |
 | pre | cflow.cs:191:13:191:37 | call to method WriteLine | cflow.cs:192:13:192:19 | return ...; |
-| pre | cflow.cs:191:13:191:37 | call to method WriteLine | cflow.cs:194:9:197:9 | catch (...) {...} |
-| pre | cflow.cs:191:13:191:37 | call to method WriteLine | cflow.cs:198:9:200:9 | catch (...) {...} |
-| pre | cflow.cs:191:13:191:37 | call to method WriteLine | cflow.cs:202:9:204:9 | [finally: exception(Exception)] {...} |
+| pre | cflow.cs:191:13:191:37 | call to method WriteLine | cflow.cs:194:9:197:9 | [exception: Exception] catch (...) {...} |
 | pre | cflow.cs:191:13:191:38 | ...; | cflow.cs:191:31:191:36 | "Try3" |
 | pre | cflow.cs:191:31:191:36 | "Try3" | cflow.cs:191:13:191:37 | call to method WriteLine |
-| pre | cflow.cs:191:31:191:36 | "Try3" | cflow.cs:202:9:204:9 | [finally: exception(OutOfMemoryException)] {...} |
+| pre | cflow.cs:191:31:191:36 | "Try3" | cflow.cs:194:9:197:9 | [exception: OutOfMemoryException] catch (...) {...} |
 | pre | cflow.cs:192:13:192:19 | return ...; | cflow.cs:202:9:204:9 | [finally: return] {...} |
-| pre | cflow.cs:194:9:197:9 | catch (...) {...} | cflow.cs:194:38:194:39 | IOException ex |
-| pre | cflow.cs:194:38:194:39 | IOException ex | cflow.cs:194:48:194:51 | true |
-| pre | cflow.cs:194:48:194:51 | true | cflow.cs:195:9:197:9 | {...} |
+| pre | cflow.cs:194:9:197:9 | [exception: Exception] catch (...) {...} | cflow.cs:194:38:194:39 | [exception: Exception] IOException ex |
+| pre | cflow.cs:194:9:197:9 | [exception: Exception] catch (...) {...} | cflow.cs:198:9:200:9 | [exception: Exception] catch (...) {...} |
+| pre | cflow.cs:194:9:197:9 | [exception: OutOfMemoryException] catch (...) {...} | cflow.cs:198:9:200:9 | [exception: OutOfMemoryException] catch (...) {...} |
+| pre | cflow.cs:194:38:194:39 | [exception: Exception] IOException ex | cflow.cs:194:48:194:51 | [exception: Exception] true |
+| pre | cflow.cs:194:48:194:51 | [exception: Exception] true | cflow.cs:195:9:197:9 | {...} |
 | pre | cflow.cs:195:9:197:9 | {...} | cflow.cs:196:13:196:18 | throw ...; |
 | pre | cflow.cs:196:13:196:18 | throw ...; | cflow.cs:202:9:204:9 | [finally: exception(IOException)] {...} |
-| pre | cflow.cs:198:9:200:9 | catch (...) {...} | cflow.cs:198:26:198:26 | Exception e |
-| pre | cflow.cs:198:26:198:26 | Exception e | cflow.cs:198:35:198:35 | access to local variable e |
-| pre | cflow.cs:198:35:198:35 | access to local variable e | cflow.cs:198:35:198:43 | access to property Message |
-| pre | cflow.cs:198:35:198:43 | access to property Message | cflow.cs:198:48:198:51 | null |
-| pre | cflow.cs:198:35:198:51 | ... != ... | cflow.cs:199:9:200:9 | {...} |
-| pre | cflow.cs:198:48:198:51 | null | cflow.cs:198:35:198:51 | ... != ... |
+| pre | cflow.cs:198:9:200:9 | [exception: Exception] catch (...) {...} | cflow.cs:198:26:198:26 | [exception: Exception] Exception e |
+| pre | cflow.cs:198:9:200:9 | [exception: OutOfMemoryException] catch (...) {...} | cflow.cs:198:26:198:26 | [exception: OutOfMemoryException] Exception e |
+| pre | cflow.cs:198:26:198:26 | [exception: Exception] Exception e | cflow.cs:198:35:198:35 | [exception: Exception] access to local variable e |
+| pre | cflow.cs:198:26:198:26 | [exception: OutOfMemoryException] Exception e | cflow.cs:198:35:198:35 | [exception: OutOfMemoryException] access to local variable e |
+| pre | cflow.cs:198:35:198:35 | [exception: Exception] access to local variable e | cflow.cs:198:35:198:43 | [exception: Exception] access to property Message |
+| pre | cflow.cs:198:35:198:35 | [exception: OutOfMemoryException] access to local variable e | cflow.cs:198:35:198:43 | [exception: OutOfMemoryException] access to property Message |
+| pre | cflow.cs:198:35:198:43 | [exception: Exception] access to property Message | cflow.cs:198:48:198:51 | [exception: Exception] null |
+| pre | cflow.cs:198:35:198:43 | [exception: OutOfMemoryException] access to property Message | cflow.cs:198:48:198:51 | [exception: OutOfMemoryException] null |
+| pre | cflow.cs:198:35:198:51 | [exception: Exception] ... != ... | cflow.cs:202:9:204:9 | [finally: exception(Exception)] {...} |
+| pre | cflow.cs:198:35:198:51 | [exception: OutOfMemoryException] ... != ... | cflow.cs:202:9:204:9 | [finally: exception(OutOfMemoryException)] {...} |
+| pre | cflow.cs:198:48:198:51 | [exception: Exception] null | cflow.cs:198:35:198:51 | [exception: Exception] ... != ... |
+| pre | cflow.cs:198:48:198:51 | [exception: OutOfMemoryException] null | cflow.cs:198:35:198:51 | [exception: OutOfMemoryException] ... != ... |
 | pre | cflow.cs:199:9:200:9 | {...} | cflow.cs:202:9:204:9 | {...} |
 | pre | cflow.cs:202:9:204:9 | [finally: exception(Exception)] {...} | cflow.cs:203:13:203:41 | [finally: exception(Exception)] ...; |
 | pre | cflow.cs:202:9:204:9 | [finally: exception(IOException)] {...} | cflow.cs:203:13:203:41 | [finally: exception(IOException)] ...; |

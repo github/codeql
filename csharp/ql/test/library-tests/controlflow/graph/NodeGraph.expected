@@ -313,15 +313,16 @@
 | ExitMethods.cs:37:5:50:5 | {...} | ExitMethods.cs:38:9:49:9 | try {...} ... | semmle.label | successor |
 | ExitMethods.cs:38:9:49:9 | try {...} ... | ExitMethods.cs:39:9:41:9 | {...} | semmle.label | successor |
 | ExitMethods.cs:39:9:41:9 | {...} | ExitMethods.cs:40:13:40:31 | ...; | semmle.label | successor |
-| ExitMethods.cs:40:13:40:30 | call to method ErrorAlways | ExitMethods.cs:42:9:45:9 | catch (...) {...} | semmle.label | exception(ArgumentException) |
-| ExitMethods.cs:40:13:40:30 | call to method ErrorAlways | ExitMethods.cs:42:9:45:9 | catch (...) {...} | semmle.label | exception(Exception) |
-| ExitMethods.cs:40:13:40:30 | call to method ErrorAlways | ExitMethods.cs:46:9:49:9 | catch (...) {...} | semmle.label | exception(Exception) |
+| ExitMethods.cs:40:13:40:30 | call to method ErrorAlways | ExitMethods.cs:42:9:45:9 | [exception: ArgumentException] catch (...) {...} | semmle.label | exception(ArgumentException) |
+| ExitMethods.cs:40:13:40:30 | call to method ErrorAlways | ExitMethods.cs:42:9:45:9 | [exception: Exception] catch (...) {...} | semmle.label | exception(Exception) |
 | ExitMethods.cs:40:13:40:31 | ...; | ExitMethods.cs:40:25:40:29 | false | semmle.label | successor |
 | ExitMethods.cs:40:25:40:29 | false | ExitMethods.cs:40:13:40:30 | call to method ErrorAlways | semmle.label | successor |
-| ExitMethods.cs:42:9:45:9 | catch (...) {...} | ExitMethods.cs:43:9:45:9 | {...} | semmle.label | successor |
+| ExitMethods.cs:42:9:45:9 | [exception: ArgumentException] catch (...) {...} | ExitMethods.cs:43:9:45:9 | {...} | semmle.label | match |
+| ExitMethods.cs:42:9:45:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:43:9:45:9 | {...} | semmle.label | match |
+| ExitMethods.cs:42:9:45:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:46:9:49:9 | [exception: Exception] catch (...) {...} | semmle.label | no-match |
 | ExitMethods.cs:43:9:45:9 | {...} | ExitMethods.cs:44:13:44:19 | return ...; | semmle.label | successor |
 | ExitMethods.cs:44:13:44:19 | return ...; | ExitMethods.cs:36:10:36:11 | exit M6 | semmle.label | return |
-| ExitMethods.cs:46:9:49:9 | catch (...) {...} | ExitMethods.cs:47:9:49:9 | {...} | semmle.label | successor |
+| ExitMethods.cs:46:9:49:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:47:9:49:9 | {...} | semmle.label | match |
 | ExitMethods.cs:47:9:49:9 | {...} | ExitMethods.cs:48:13:48:19 | return ...; | semmle.label | successor |
 | ExitMethods.cs:48:13:48:19 | return ...; | ExitMethods.cs:36:10:36:11 | exit M6 | semmle.label | return |
 | ExitMethods.cs:52:17:52:26 | enter ErrorMaybe | ExitMethods.cs:53:5:56:5 | {...} | semmle.label | successor |
@@ -1261,20 +1262,22 @@
 | cflow.cs:157:9:187:9 | try {...} ... | cflow.cs:158:9:161:9 | {...} | semmle.label | successor |
 | cflow.cs:158:9:161:9 | {...} | cflow.cs:159:13:159:38 | ...; | semmle.label | successor |
 | cflow.cs:159:13:159:37 | call to method WriteLine | cflow.cs:160:13:160:19 | return ...; | semmle.label | successor |
-| cflow.cs:159:13:159:37 | call to method WriteLine | cflow.cs:162:9:165:9 | catch (...) {...} | semmle.label | exception(Exception) |
-| cflow.cs:159:13:159:37 | call to method WriteLine | cflow.cs:166:9:176:9 | catch (...) {...} | semmle.label | exception(Exception) |
-| cflow.cs:159:13:159:37 | call to method WriteLine | cflow.cs:177:9:179:9 | catch (...) {...} | semmle.label | exception(Exception) |
+| cflow.cs:159:13:159:37 | call to method WriteLine | cflow.cs:162:9:165:9 | [exception: Exception] catch (...) {...} | semmle.label | exception(Exception) |
 | cflow.cs:159:13:159:38 | ...; | cflow.cs:159:31:159:36 | "Try2" | semmle.label | successor |
 | cflow.cs:159:31:159:36 | "Try2" | cflow.cs:159:13:159:37 | call to method WriteLine | semmle.label | successor |
-| cflow.cs:159:31:159:36 | "Try2" | cflow.cs:177:9:179:9 | catch (...) {...} | semmle.label | exception(OutOfMemoryException) |
+| cflow.cs:159:31:159:36 | "Try2" | cflow.cs:162:9:165:9 | [exception: OutOfMemoryException] catch (...) {...} | semmle.label | exception(OutOfMemoryException) |
 | cflow.cs:160:13:160:19 | return ...; | cflow.cs:185:9:187:9 | [finally: return] {...} | semmle.label | return |
-| cflow.cs:162:9:165:9 | catch (...) {...} | cflow.cs:162:38:162:39 | IOException ex | semmle.label | successor |
-| cflow.cs:162:38:162:39 | IOException ex | cflow.cs:162:48:162:51 | true | semmle.label | successor |
-| cflow.cs:162:48:162:51 | true | cflow.cs:163:9:165:9 | {...} | semmle.label | successor |
+| cflow.cs:162:9:165:9 | [exception: Exception] catch (...) {...} | cflow.cs:162:38:162:39 | [exception: Exception] IOException ex | semmle.label | match |
+| cflow.cs:162:9:165:9 | [exception: Exception] catch (...) {...} | cflow.cs:166:9:176:9 | [exception: Exception] catch (...) {...} | semmle.label | no-match |
+| cflow.cs:162:9:165:9 | [exception: OutOfMemoryException] catch (...) {...} | cflow.cs:166:9:176:9 | [exception: OutOfMemoryException] catch (...) {...} | semmle.label | no-match |
+| cflow.cs:162:38:162:39 | [exception: Exception] IOException ex | cflow.cs:162:48:162:51 | [exception: Exception] true | semmle.label | successor |
+| cflow.cs:162:48:162:51 | [exception: Exception] true | cflow.cs:163:9:165:9 | {...} | semmle.label | true |
 | cflow.cs:163:9:165:9 | {...} | cflow.cs:164:13:164:18 | throw ...; | semmle.label | successor |
 | cflow.cs:164:13:164:18 | throw ...; | cflow.cs:185:9:187:9 | [finally: exception(IOException)] {...} | semmle.label | exception(IOException) |
-| cflow.cs:166:9:176:9 | catch (...) {...} | cflow.cs:166:41:166:42 | ArgumentException ex | semmle.label | successor |
-| cflow.cs:166:41:166:42 | ArgumentException ex | cflow.cs:167:9:176:9 | {...} | semmle.label | successor |
+| cflow.cs:166:9:176:9 | [exception: Exception] catch (...) {...} | cflow.cs:166:41:166:42 | [exception: Exception] ArgumentException ex | semmle.label | match |
+| cflow.cs:166:9:176:9 | [exception: Exception] catch (...) {...} | cflow.cs:177:9:179:9 | [exception: Exception] catch (...) {...} | semmle.label | no-match |
+| cflow.cs:166:9:176:9 | [exception: OutOfMemoryException] catch (...) {...} | cflow.cs:177:9:179:9 | [exception: OutOfMemoryException] catch (...) {...} | semmle.label | no-match |
+| cflow.cs:166:41:166:42 | [exception: Exception] ArgumentException ex | cflow.cs:167:9:176:9 | {...} | semmle.label | successor |
 | cflow.cs:167:9:176:9 | {...} | cflow.cs:168:13:175:13 | try {...} ... | semmle.label | successor |
 | cflow.cs:168:13:175:13 | try {...} ... | cflow.cs:169:13:171:13 | {...} | semmle.label | successor |
 | cflow.cs:169:13:171:13 | {...} | cflow.cs:170:17:170:32 | if (...) ... | semmle.label | successor |
@@ -1285,7 +1288,8 @@
 | cflow.cs:174:17:174:44 | [finally: exception(ArgumentException)] throw ...; | cflow.cs:185:9:187:9 | [finally: exception(Exception)] {...} | semmle.label | exception(Exception) |
 | cflow.cs:174:23:174:43 | [finally: exception(ArgumentException)] object creation of type Exception | cflow.cs:174:17:174:44 | [finally: exception(ArgumentException)] throw ...; | semmle.label | successor |
 | cflow.cs:174:37:174:42 | [finally: exception(ArgumentException)] "Boo!" | cflow.cs:174:23:174:43 | [finally: exception(ArgumentException)] object creation of type Exception | semmle.label | successor |
-| cflow.cs:177:9:179:9 | catch (...) {...} | cflow.cs:178:9:179:9 | {...} | semmle.label | successor |
+| cflow.cs:177:9:179:9 | [exception: Exception] catch (...) {...} | cflow.cs:178:9:179:9 | {...} | semmle.label | match |
+| cflow.cs:177:9:179:9 | [exception: OutOfMemoryException] catch (...) {...} | cflow.cs:178:9:179:9 | {...} | semmle.label | match |
 | cflow.cs:178:9:179:9 | {...} | cflow.cs:185:9:187:9 | {...} | semmle.label | successor |
 | cflow.cs:185:9:187:9 | [finally: exception(Exception)] {...} | cflow.cs:186:13:186:41 | [finally: exception(Exception)] ...; | semmle.label | successor |
 | cflow.cs:185:9:187:9 | [finally: exception(IOException)] {...} | cflow.cs:186:13:186:41 | [finally: exception(IOException)] ...; | semmle.label | successor |
@@ -1306,24 +1310,32 @@
 | cflow.cs:189:9:204:9 | try {...} ... | cflow.cs:190:9:193:9 | {...} | semmle.label | successor |
 | cflow.cs:190:9:193:9 | {...} | cflow.cs:191:13:191:38 | ...; | semmle.label | successor |
 | cflow.cs:191:13:191:37 | call to method WriteLine | cflow.cs:192:13:192:19 | return ...; | semmle.label | successor |
-| cflow.cs:191:13:191:37 | call to method WriteLine | cflow.cs:194:9:197:9 | catch (...) {...} | semmle.label | exception(Exception) |
-| cflow.cs:191:13:191:37 | call to method WriteLine | cflow.cs:198:9:200:9 | catch (...) {...} | semmle.label | exception(Exception) |
-| cflow.cs:191:13:191:37 | call to method WriteLine | cflow.cs:202:9:204:9 | [finally: exception(Exception)] {...} | semmle.label | exception(Exception) |
+| cflow.cs:191:13:191:37 | call to method WriteLine | cflow.cs:194:9:197:9 | [exception: Exception] catch (...) {...} | semmle.label | exception(Exception) |
 | cflow.cs:191:13:191:38 | ...; | cflow.cs:191:31:191:36 | "Try3" | semmle.label | successor |
 | cflow.cs:191:31:191:36 | "Try3" | cflow.cs:191:13:191:37 | call to method WriteLine | semmle.label | successor |
-| cflow.cs:191:31:191:36 | "Try3" | cflow.cs:202:9:204:9 | [finally: exception(OutOfMemoryException)] {...} | semmle.label | exception(OutOfMemoryException) |
+| cflow.cs:191:31:191:36 | "Try3" | cflow.cs:194:9:197:9 | [exception: OutOfMemoryException] catch (...) {...} | semmle.label | exception(OutOfMemoryException) |
 | cflow.cs:192:13:192:19 | return ...; | cflow.cs:202:9:204:9 | [finally: return] {...} | semmle.label | return |
-| cflow.cs:194:9:197:9 | catch (...) {...} | cflow.cs:194:38:194:39 | IOException ex | semmle.label | successor |
-| cflow.cs:194:38:194:39 | IOException ex | cflow.cs:194:48:194:51 | true | semmle.label | successor |
-| cflow.cs:194:48:194:51 | true | cflow.cs:195:9:197:9 | {...} | semmle.label | successor |
+| cflow.cs:194:9:197:9 | [exception: Exception] catch (...) {...} | cflow.cs:194:38:194:39 | [exception: Exception] IOException ex | semmle.label | match |
+| cflow.cs:194:9:197:9 | [exception: Exception] catch (...) {...} | cflow.cs:198:9:200:9 | [exception: Exception] catch (...) {...} | semmle.label | no-match |
+| cflow.cs:194:9:197:9 | [exception: OutOfMemoryException] catch (...) {...} | cflow.cs:198:9:200:9 | [exception: OutOfMemoryException] catch (...) {...} | semmle.label | no-match |
+| cflow.cs:194:38:194:39 | [exception: Exception] IOException ex | cflow.cs:194:48:194:51 | [exception: Exception] true | semmle.label | successor |
+| cflow.cs:194:48:194:51 | [exception: Exception] true | cflow.cs:195:9:197:9 | {...} | semmle.label | true |
 | cflow.cs:195:9:197:9 | {...} | cflow.cs:196:13:196:18 | throw ...; | semmle.label | successor |
 | cflow.cs:196:13:196:18 | throw ...; | cflow.cs:202:9:204:9 | [finally: exception(IOException)] {...} | semmle.label | exception(IOException) |
-| cflow.cs:198:9:200:9 | catch (...) {...} | cflow.cs:198:26:198:26 | Exception e | semmle.label | successor |
-| cflow.cs:198:26:198:26 | Exception e | cflow.cs:198:35:198:35 | access to local variable e | semmle.label | successor |
-| cflow.cs:198:35:198:35 | access to local variable e | cflow.cs:198:35:198:43 | access to property Message | semmle.label | successor |
-| cflow.cs:198:35:198:43 | access to property Message | cflow.cs:198:48:198:51 | null | semmle.label | successor |
-| cflow.cs:198:35:198:51 | ... != ... | cflow.cs:199:9:200:9 | {...} | semmle.label | successor |
-| cflow.cs:198:48:198:51 | null | cflow.cs:198:35:198:51 | ... != ... | semmle.label | successor |
+| cflow.cs:198:9:200:9 | [exception: Exception] catch (...) {...} | cflow.cs:198:26:198:26 | [exception: Exception] Exception e | semmle.label | match |
+| cflow.cs:198:9:200:9 | [exception: OutOfMemoryException] catch (...) {...} | cflow.cs:198:26:198:26 | [exception: OutOfMemoryException] Exception e | semmle.label | match |
+| cflow.cs:198:26:198:26 | [exception: Exception] Exception e | cflow.cs:198:35:198:35 | [exception: Exception] access to local variable e | semmle.label | successor |
+| cflow.cs:198:26:198:26 | [exception: OutOfMemoryException] Exception e | cflow.cs:198:35:198:35 | [exception: OutOfMemoryException] access to local variable e | semmle.label | successor |
+| cflow.cs:198:35:198:35 | [exception: Exception] access to local variable e | cflow.cs:198:35:198:43 | [exception: Exception] access to property Message | semmle.label | successor |
+| cflow.cs:198:35:198:35 | [exception: OutOfMemoryException] access to local variable e | cflow.cs:198:35:198:43 | [exception: OutOfMemoryException] access to property Message | semmle.label | successor |
+| cflow.cs:198:35:198:43 | [exception: Exception] access to property Message | cflow.cs:198:48:198:51 | [exception: Exception] null | semmle.label | successor |
+| cflow.cs:198:35:198:43 | [exception: OutOfMemoryException] access to property Message | cflow.cs:198:48:198:51 | [exception: OutOfMemoryException] null | semmle.label | successor |
+| cflow.cs:198:35:198:51 | [exception: Exception] ... != ... | cflow.cs:199:9:200:9 | {...} | semmle.label | true |
+| cflow.cs:198:35:198:51 | [exception: Exception] ... != ... | cflow.cs:202:9:204:9 | [finally: exception(Exception)] {...} | semmle.label | exception(Exception) |
+| cflow.cs:198:35:198:51 | [exception: OutOfMemoryException] ... != ... | cflow.cs:199:9:200:9 | {...} | semmle.label | true |
+| cflow.cs:198:35:198:51 | [exception: OutOfMemoryException] ... != ... | cflow.cs:202:9:204:9 | [finally: exception(OutOfMemoryException)] {...} | semmle.label | exception(OutOfMemoryException) |
+| cflow.cs:198:48:198:51 | [exception: Exception] null | cflow.cs:198:35:198:51 | [exception: Exception] ... != ... | semmle.label | successor |
+| cflow.cs:198:48:198:51 | [exception: OutOfMemoryException] null | cflow.cs:198:35:198:51 | [exception: OutOfMemoryException] ... != ... | semmle.label | successor |
 | cflow.cs:199:9:200:9 | {...} | cflow.cs:202:9:204:9 | {...} | semmle.label | successor |
 | cflow.cs:202:9:204:9 | [finally: exception(Exception)] {...} | cflow.cs:203:13:203:41 | [finally: exception(Exception)] ...; | semmle.label | successor |
 | cflow.cs:202:9:204:9 | [finally: exception(IOException)] {...} | cflow.cs:203:13:203:41 | [finally: exception(IOException)] ...; | semmle.label | successor |

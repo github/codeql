@@ -971,6 +971,8 @@ class TryStmt extends Stmt, @try_stmt {
  * general `catch` clause (`GeneralCatchClause`).
  */
 class CatchClause extends Stmt, @catch {
+  /** Gets the `try` statement that this `catch` clause belongs to. */
+  TryStmt getTryStmt() { result.getACatchClause() = this }
 
   /** Gets the block of this `catch` clause. */
   BlockStmt getBlock() { result.getParent() = this }
@@ -1007,6 +1009,15 @@ class CatchClause extends Stmt, @catch {
 
   /** Holds if this `catch` clause has a filter. */
   predicate hasFilterClause() { exists(getFilterClause()) }
+
+  /** Holds if this is the last `catch` clause in the `try` statement that it belongs to. */
+  predicate isLast() {
+    exists(TryStmt ts, int last |
+      ts = this.getTryStmt() and
+      last = max(int i | exists(ts.getCatchClause(i))) and
+      this = ts.getCatchClause(last)
+    )
+  }
 }
 
 /**
