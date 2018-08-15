@@ -1,6 +1,8 @@
 isFromUninstantiatedTemplate
-| file://:0:0:0:0 | Unknown literal | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
-| file://:0:0:0:0 | Unknown literal | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| file://:0:0:0:0 | 0 | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| file://:0:0:0:0 | 0 | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| file://:0:0:0:0 | (int)... | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| file://:0:0:0:0 | (int)... | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
 | file://:0:0:0:0 | declaration of 1st parameter | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
 | file://:0:0:0:0 | declaration of 1st parameter | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
 | file://:0:0:0:0 | initializer for MyClassEnumConst | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
