@@ -791,12 +791,6 @@ varspecifiers(
     int spec_id: @specifier ref
 );
 
-@specifiable = @type
-             | @function
-             | @variable
-             | @enumconstant
-             | @frienddecl;
-
 attributes(
     unique int id: @attribute,
     int kind: int ref,
@@ -953,7 +947,6 @@ frienddecls(
            | @attribute
            | @attribute_arg;
 
-@scope = @stmt | @function | @namedscope;
 @namedscope = @namespace | @usertype;
 
 @element = @locatable
@@ -1471,7 +1464,6 @@ lambda_capture(
 @varbindexpr = @varaccess | @ctorfieldinit | @dtorfielddestruct;
 @addressable = @function | @variable ;
 @accessible = @addressable | @enumconstant ;
-@callable = @function | @variable; // only for variables with routine types
 
 stmts(
     unique int id: @stmt,
