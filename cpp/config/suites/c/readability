@@ -1,0 +1,35 @@
+# READABILITY
+  # Expressions
++ semmlecode-cpp-queries/Likely Bugs/Arithmetic/ComparisonPrecedence.ql: /Readability/Expressions
++ semmlecode-cpp-queries/Likely Bugs/Arithmetic/UnsignedGEZero.ql: /Readability/Expressions
++ semmlecode-cpp-queries/Likely Bugs/Arithmetic/PointlessComparison.ql: /Readability/Expressions
++ semmlecode-cpp-queries/Likely Bugs/Arithmetic/PointlessSelfComparison.ql: /Readability/Expressions
++ semmlecode-cpp-queries/Likely Bugs/Arithmetic/ComparisonWithCancelingSubExpr.ql: /Readability/Expressions
+  # Control Flow
++ semmlecode-cpp-queries/Best Practices/Likely Errors/EmptyBlock.ql: /Readability/Control Flow 
++ semmlecode-cpp-queries/Likely Bugs/Likely Typos/FutileConditional.ql: /Readability/Control Flow
++ semmlecode-cpp-queries/Likely Bugs/Likely Typos/DubiousNullCheck.ql: /Readability/Control Flow
++ semmlecode-cpp-queries/jsf/4.24 Control Flow Structures/AV Rule 197.ql: /Readability/Control Flow # Avoid floats in for loops
++ semmlecode-cpp-queries/jsf/4.24 Control Flow Structures/AV Rule 201.ql: /Readability/Control Flow # For loop variable changed in body
++ semmlecode-cpp-queries/jsf/4.24 Control Flow Structures/AV Rule 196.ql: /Readability/Control Flow # No trivial switch statements
++ semmlecode-cpp-queries/Likely Bugs/ShortLoopVarName.ql: /Readability/Control Flow
+  # Declarations
++ semmlecode-cpp-queries/Best Practices/Hiding/LocalVariableHidesGlobalVariable.ql: /Readability/Declarations
++ semmlecode-cpp-queries/Best Practices/Hiding/DeclarationHidesParameter.ql: /Readability/Declarations
++ semmlecode-cpp-queries/Best Practices/Hiding/DeclarationHidesVariable.ql: /Readability/Declarations
++ semmlecode-cpp-queries/jsf/4.13 Functions/AV Rule 107.ql: /Readability/Declarations # Function declared in block
++ semmlecode-cpp-queries/Critical/LargeParameter.ql: /Readability/Declarations
+  # Size
++ semmlecode-cpp-queries/Best Practices/SwitchLongCase.ql: /Readability/Size
++ semmlecode-cpp-queries/Best Practices/BlockWithTooManyStatements.ql: /Readability/Size
++ semmlecode-cpp-queries/Best Practices/ComplexCondition.ql: /Readability/Size
+  # Safe Language
++ semmlecode-cpp-queries/Likely Bugs/AmbiguouslySignedBitField.ql: /Readability/Safe Language # Ambiguously signed bit-field member
++ semmlecode-cpp-queries/jsf/4.17 Types/AV Rule 148.ql: /Readability/Safe Language # Use of integer where enum is preferred
++ semmlecode-cpp-queries/jsf/4.16 Initialization/AV Rule 145.ql: /Readability/Safe Language # Enum initialisation
++ semmlecode-cpp-queries/jsf/4.10 Classes/AV Rule 97.ql: /Readability/Safe Language # No arrays in interfaces
++ semmlecode-cpp-queries/Likely Bugs/ReturnConstType.ql: /Readability/Safe Language
++ semmlecode-cpp-queries/jsf/4.13 Functions/AV Rule 114.ql: /Readability/Safe Language
+     @name Missing return statement
++ semmlecode-cpp-queries/Best Practices/UseOfGoto.ql: /Readability/Safe Language
+

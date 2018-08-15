@@ -1,0 +1,3 @@
+# CWE-732: Incorrect Permission Assignment for Critical Resource
++ semmlecode-cpp-queries/Security/CWE/CWE-732/DoNotCreateWorldWritable.ql: /CWE/CWE-732
+    @name File created without restricting permissions (CWE-732)

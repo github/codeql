@@ -1,0 +1,9 @@
+# CWE-772: Missing Release of Resource after Effective Lifetime
++ semmlecode-cpp-queries/Critical/FileMayNotBeClosed.ql: /CWE/CWE-772
+    @name Open file may not be closed (CWE-772)
++ semmlecode-cpp-queries/Critical/FileNeverClosed.ql: /CWE/CWE-772
+    @name Open file is not closed (CWE-772)
++ semmlecode-cpp-queries/Critical/MemoryMayNotBeFreed.ql: /CWE/CWE-772
+    @name Memory may not be freed (CWE-772)
++ semmlecode-cpp-queries/Critical/MemoryNeverFreed.ql: /CWE/CWE-772
+    @name Memory is never freed (CWE-772)
