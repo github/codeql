@@ -11,6 +11,9 @@ private import semmle.code.csharp.frameworks.system.web.Services
 private import semmle.code.csharp.frameworks.system.web.ui.WebControls
 private import semmle.code.csharp.frameworks.WCF
 private import semmle.code.csharp.frameworks.microsoft.Owin
+private import microsoft.code.csharp.frameworks.microsoft.Primitives
+private import microsoft.code.csharp.frameworks.microsoft.AspNetCore
+
 
 /** A data flow source of remote user input. */
 abstract class RemoteFlowSource extends DataFlow::Node {
@@ -186,4 +189,47 @@ class ActionMethodParameter extends RemoteFlowSource, DataFlow::ParameterNode {
 
   override
   string getSourceType() { result = "ASP.NET MVC action method parameter" }
+}
+
+/** A data flow source of remote user input (ASP.NET Core). */
+abstract class AspNetCoreRemoteFlowSource extends RemoteFlowSource { }
+
+
+/** A data flow source of remote user input (ASP.NET query collection). */
+class AspNetCoreQueryRemoteFlowSource extends AspNetCoreRemoteFlowSource, DataFlow::ExprNode {
+  AspNetCoreQueryRemoteFlowSource() {
+    exists(ValueOrRefType t, Call c, Access ac |
+      t instanceof MicrosoftAspNetCoreHttpHttpRequest or
+      t instanceof MicrosoftAspNetCoreHttpQueryCollection or
+      t instanceof MicrosoftAspNetCoreHttpQueryString |
+        this.getExpr() = c and
+        c.getTarget().getDeclaringType() = t
+      or
+        this.asExpr() = ac and
+        ac.getTarget().getDeclaringType() = t
+      or 
+        c.getTarget().getDeclaringType().hasQualifiedName("Microsoft.AspNetCore.Http", "IQueryCollection") and
+        c.getTarget().getName() = "TryGetValue" and
+        this.asExpr() = c.getArgumentForName("value")
+    )
+  }
+
+  override
+  string getSourceType() { result = "ASP.NET Core query string" }
+}
+
+/**
+ * A parameter to an Mvc controller action method, viewed as a source of remote user input.
+ */
+class AspNetCoreActionMethodParameter extends RemoteFlowSource, DataFlow::ParameterNode {
+  AspNetCoreActionMethodParameter() {
+    exists(Parameter p |
+      p = this.getParameter() and
+      p.fromSource() |
+      p = any(MicrosoftAspNetCoreMvcController c).getAnActionMethod().getAParameter()
+    )
+  }
+
+  override
+  string getSourceType() { result = "ASP.NET Core MVC action method parameter" }
 }
