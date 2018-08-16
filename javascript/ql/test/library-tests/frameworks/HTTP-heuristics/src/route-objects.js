@@ -58,3 +58,4 @@ function wrap(f){
     }
 }
 app[route3.method](route3.url, wrap(route3.handler));
+confuse(wrap); // confuse the type inference

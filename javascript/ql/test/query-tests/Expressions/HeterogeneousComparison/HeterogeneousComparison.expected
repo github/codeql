@@ -46,3 +46,5 @@
 | tst.js:208:5:208:6 | t5 | Variable 't5' cannot be of type function or regular expression, but it is compared to $@ of type function or regular expression. | tst.js:208:12:208:13 | t2 | variable 't2' |
 | tst.js:209:5:209:6 | t3 | Variable 't3' is of type function, object or regular expression, but it is compared to $@ of type boolean, null, number, string or undefined. | tst.js:209:12:209:13 | t5 | variable 't5' |
 | tst.js:210:5:210:6 | t5 | Variable 't5' is of type boolean, null, number, string or undefined, but it is compared to $@ of type function, object or regular expression. | tst.js:210:12:210:13 | t3 | variable 't3' |
+| tst.js:225:13:225:14 | xy | Variable 'xy' is of type undefined, but it is compared to $@ of type string. | tst.js:225:20:225:24 | "foo" | an expression |
+| tst.js:233:5:233:5 | x | Variable 'x' is of type object, but it is compared to $@ of type number. | tst.js:233:11:233:12 | 42 | an expression |

@@ -26,7 +26,6 @@
 | tst.js:65:3:65:10 | yield 42 | yield |
 | tst.js:66:13:66:25 | function.sent | yield |
 | tst.js:68:12:68:14 | h() | call |
-| tst.js:69:1:69:9 | iter.next | call |
 | tst.js:69:1:69:9 | iter.next | heap |
 | tst.js:69:1:69:13 | iter.next(23) | call |
 | tst.js:72:3:72:11 | await p() | await |

@@ -212,4 +212,25 @@ function l() {
 
 1n == 1; // OK
 
+(function tooGeneralLocalFunctions(){
+    function f1(x) {
+        if (x === "foo") { // OK, whitelisted
+
+        }
+    }
+    f1(undefined);
+
+    function f2(x, y) {
+        var xy = o.q? x: y;
+        if (xy === "foo") { // NOT OK (not whitelisted like above)
+
+        }
+    }
+    f2(undefined, undefined);
+})();
+
+function f(...x) {
+    x === 42
+};
+
 // semmle-extractor-options: --experimental

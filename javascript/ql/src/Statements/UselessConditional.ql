@@ -14,6 +14,7 @@
 
 import javascript
 import semmle.javascript.RestrictedLocations
+import semmle.javascript.dataflow.Refinements
 
 /**
  * Holds if `va` is a defensive truthiness check that may be worth keeping, even if it
@@ -63,18 +64,51 @@ predicate isConstant(Expr e) {
 }
 
 /**
+ * Holds if `e` directly uses a parameter's initial value as passed in from the caller.
+ */
+predicate isInitialParameterUse(Expr e) {
+  exists (SimpleParameter p, SsaExplicitDefinition ssa |
+    ssa.getAContributingVarDef() = p and
+    ssa.getVariable().getAUse() = e and
+    not p.isRestParameter()
+  )
+  or
+  isInitialParameterUse(e.(LogNotExpr).getOperand())
+}
+
+/**
+ * Holds if `e` directly uses the returned value from a function call that returns a constant boolean value.
+ */
+predicate isConstantBooleanReturnValue(Expr e) {
+  exists (DataFlow::CallNode call |
+    exists (call.analyze().getTheBooleanValue()) |
+    e = call.asExpr() or
+    exists (SsaExplicitDefinition ssa |
+      ssa.getDef().getSource() = call.asExpr() and
+      ssa.getVariable().getAUse() = e
+    )
+  )
+  or
+  isConstantBooleanReturnValue(e.(LogNotExpr).getOperand())
+}
+
+/**
  * Holds if `e` is an expression that should not be flagged as a useless condition.
  *
- * We currently whitelist three kinds of expressions:
+ * We currently whitelist these kinds of expressions:
  *
  *   - constants (including references to literal constants);
  *   - negations of constants;
- *   - defensive checks.
+ *   - defensive checks;
+ *   - parameters, as passed in from the caller;
+ *   - constant boolean returned values
  */
 predicate whitelist(Expr e) {
   isConstant(e) or
   isConstant(e.(LogNotExpr).getOperand()) or
-  isDefensiveInit(e)
+  isDefensiveInit(e) or
+  isInitialParameterUse(e) or
+  isConstantBooleanReturnValue(e)
 }
 
 /**
