@@ -4,7 +4,7 @@
 
 This document describes how to format the QL code in this repository, covering aspects such as layout, white-space, naming and documentation. Adhering to consistent standards makes code easier to read and maintain. Of course, these are only guidelines, and can be overridden as the need arises on a case-by-case basis. Where existing code deviates from these guidelines, prefer consistency with the surrounding code.
 
-Words in *italic* are defined in the [Glossary](#Glossary).
+Words in *italic* are defined in the [Glossary](#glossary).
 
 ## Indentation
 1. *Always* use 2 spaces for indentation.
@@ -175,7 +175,7 @@ private predicate foo(Expr e, Expr p) {
 1. Short or single letter names for parameters and *quantifiers* *may* be used provided that they are sufficiently clear.
 1. Use names as they are used in the target-language specification.
 
-For example,
+Examples:
 
 ```ql
 /** ... */
@@ -214,13 +214,13 @@ class Type extends ... {
 1. For multi-line documentation, the `/**` and `*/` are written on separate lines. There is a `*` preceding each comment line, aligned on the first `*`.
 1. Library files (`.qll` files) *should* be documented with QLDoc.
 1. Query files, except for tests, *must* have a QLDoc query documentation comment.
-1. Documentation *should* be appropriate for users of the library. Put documentation for maintainers in non-documentation comments.
+1. Documentation *should* be appropriate for users of the library. Put documentation for maintainers in normal comments.
 1. Predicates that do not have a result *should* be documented `/** Holds if ... */`
 1. Predicates that have a result *should* be documented `/** Gets ... */`
 1. All predicate parameters *should* be referred to in the predicate documentation.
 1. Reference names, such as types and parameters, using backticks `` ` ``.
 1. Give examples of code in the target language, enclosed in ```` ``` ````  or `` ` ``.
-1. Classes *should* be documented in the singular, e.g. `/* An expression. */`
+1. Classes *should* be documented in the singular, for example `/* An expression. */`
 1. Where a class denotes a generic concept with subclasses, list those subclasses.
 1. Declarations that are deprecated *should* be documented as `DEPRECATED: ...`
 1. Declarations that are for internal use *should* be documented as `INTERNAL: Do not use`.
@@ -278,7 +278,7 @@ deprecated Expr getInitializer()
 1. Write the `and` at the end of the line. This also applies in `where` clauses.
 1. *Prefer* to write the `or` keyword on its own line.
 1. The `or` keyword *may* be written at the end of a line, or within a line, provided that it has no unparenthesised `and` operands.
-1. Single-line formulas *may* be used in order to save space or add clarity, particularly in the body of a *quantifier/aggregation*. 
+1. Single-line formulas *may* be used in order to save space or add clarity, particularly in the *body* of a *quantifier/aggregation*. 
 1. *Avoid* additional brackets to clarify the precedence of `not`, `and` and `or`.
 1. *Always* clarify the precedence of `implies` with brackets.
 1. *Always* clarify the precedence of `if`-`then`-`else` with brackets.
