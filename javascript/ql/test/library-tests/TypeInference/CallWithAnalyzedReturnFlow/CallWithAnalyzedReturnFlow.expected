@@ -1,0 +1,6 @@
+| tst.js:1:1:1:16 | (function(){})() | tst.js:1:2:1:13 | function(){} | file://:0:0:0:0 | undefined |
+| tst.js:2:1:2:25 | (functi ... n; })() | tst.js:2:2:2:22 | functio ... turn; } | file://:0:0:0:0 | undefined |
+| tst.js:3:1:3:30 | (functi ... e; })() | tst.js:3:2:3:27 | functio ... true; } | file://:0:0:0:0 | true |
+| tst.js:4:1:4:51 | (functi ... e; })() | tst.js:4:2:4:48 | functio ... alse; } | file://:0:0:0:0 | false |
+| tst.js:4:1:4:51 | (functi ... e; })() | tst.js:4:2:4:48 | functio ... alse; } | file://:0:0:0:0 | true |
+| tst.js:5:1:5:27 | (functi ... x; })() | tst.js:5:2:5:24 | functio ... rn x; } | file://:0:0:0:0 | indefinite value (global) |

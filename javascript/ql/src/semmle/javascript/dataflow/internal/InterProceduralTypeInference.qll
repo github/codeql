@@ -199,3 +199,47 @@ private class IIFEWithAnalyzedReturnFlow extends CallWithAnalyzedReturnFlow {
   }
   
 }
+
+/** A function that only is used locally, making it amenable to type inference. */
+class LocalFunction extends Function {
+
+  DataFlow::Impl::ExplicitInvokeNode invk;
+
+  LocalFunction() {
+    this instanceof FunctionDeclStmt and
+    exists (LocalVariable v, Expr callee |
+      callee = invk.getCalleeNode().asExpr() and
+      v = getVariable() and
+      v.getAnAccess() = callee and
+      forall(VarAccess o | o = v.getAnAccess() | o = callee) and
+      not exists(v.getAnAssignedExpr()) and
+      not exists(ExportDeclaration export | export.exportsAs(v, _))
+    ) and
+    // if the function is non-strict and its `arguments` object is accessed, we
+    // also assume that there may be other calls (through `arguments.callee`)
+    (isStrict() or not usesArgumentsObject())
+  }
+
+  /** Gets an invocation of this function. */
+  DataFlow::InvokeNode getAnInvocation() {
+    result = invk
+  }
+
+}
+
+/**
+ * Enables inter-procedural type inference for a call to a `LocalFunction`.
+ */
+private class LocalFunctionCallWithAnalyzedReturnFlow extends CallWithAnalyzedReturnFlow {
+
+  LocalFunction f;
+
+  LocalFunctionCallWithAnalyzedReturnFlow() {
+    this = f.getAnInvocation()
+  }
+
+  override Function getAFunction() {
+    result = f
+  }
+
+}

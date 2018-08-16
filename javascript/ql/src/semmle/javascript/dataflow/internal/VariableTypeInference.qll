@@ -725,3 +725,24 @@ private class IIFEWithAnalyzedParameters extends CallWithAnalyzedParameters {
   }
 
 }
+
+/**
+ * Enables inter-procedural type inference for `LocalFunction`.
+ */
+private class LocalFunctionWithAnalyzedParameters extends CallWithAnalyzedParameters {
+
+  LocalFunction local;
+
+  LocalFunctionWithAnalyzedParameters() {
+    this = local
+  }
+
+  override DataFlow::InvokeNode getAnInvocation() {
+    result = local.getAnInvocation()
+  }
+
+  override predicate isIncomplete(DataFlow::Incompleteness cause) {
+    none()
+  }
+
+}
