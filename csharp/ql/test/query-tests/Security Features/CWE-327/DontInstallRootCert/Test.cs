@@ -55,5 +55,19 @@ namespace RootCert
             store.Remove(new X509Certificate2(X509Certificate2.CreateFromCertFile(file)));
             store.Close();
         }
+
+        public void InstallRoorCertRange()
+        {
+            string file1 = "mytest1.pfx"; // Contains name of certificate file
+            string file2 = "mytest2.pfx"; // Contains name of certificate file
+            var certCollection = new X509Certificate2[] { 
+                new X509Certificate2(X509Certificate2.CreateFromCertFile(file1)), 
+                new X509Certificate2(X509Certificate2.CreateFromCertFile(file2)),
+            };
+            X509Store store = new X509Store(StoreName.Root, StoreLocation.CurrentUser);
+            store.Open(OpenFlags.ReadWrite);
+            store.AddRange(new X509Certificate2Collection(certCollection));
+            store.Close();
+        }
     }
 }
