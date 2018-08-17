@@ -121,6 +121,7 @@
 | objlit.js:37:11:37:12 | x5 | objlit.js:37:16:37:21 | this.f | boolean, class, date, function, null, number, object, regular expression,string or undefined |
 | objlit.js:38:11:38:12 | x6 | objlit.js:38:16:38:21 | this.h | boolean, class, date, function, null, number, object, regular expression,string or undefined |
 | objlit.js:43:7:43:8 | o3 | objlit.js:43:12:45:3 | {\\n    _ ...  o2\\n  } | object |
+| reexport/client/src/index.js:2:5:2:8 | test | reexport/client/src/index.js:2:12:2:15 | data | string |
 | refinements.js:3:7:3:8 | x1 | refinements.js:3:12:3:12 | g | undefined |
 | refinements.js:5:9:5:10 | x2 | refinements.js:5:14:5:14 | g |  |
 | refinements.js:7:7:7:8 | x3 | refinements.js:7:12:7:12 | g | undefined |
