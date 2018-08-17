@@ -16,6 +16,7 @@ abstract class TrackedNode extends DataFlow::Node {
    * Holds if this node flows into `sink` in zero or more (possibly
    * inter-procedural) steps.
    */
+  pragma[nomagic]
   predicate flowsTo(DataFlow::Node sink) {
     NodeTracking::flowsTo(this, sink, _)
   }

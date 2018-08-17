@@ -130,11 +130,13 @@ module Koa {
   class ContextExpr extends Expr {
     ContextSource src;
 
+    pragma[nomagic]
     ContextExpr() { src.flowsTo(DataFlow::valueNode(this)) }
 
     /**
      * Gets the route handler that provides this response.
      */
+    pragma[nomagic]
     RouteHandler getRouteHandler() {
       result = src.getRouteHandler()
     }

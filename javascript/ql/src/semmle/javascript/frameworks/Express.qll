@@ -62,6 +62,7 @@ module Express {
   /**
    * Holds if `e` may refer to the given `router` object.
    */
+  pragma[nomagic]
   private predicate isRouter(Expr e, RouterDefinition router) {
     router.flowsTo(e)
     or

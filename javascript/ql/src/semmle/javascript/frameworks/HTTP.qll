@@ -218,6 +218,7 @@ module HTTP {
      * Gets an expression that contains a request object handled
      * by this handler.
      */
+    pragma[nomagic]
     RequestExpr getARequestExpr() {
       result.getRouteHandler() = this
     }
@@ -326,6 +327,7 @@ module HTTP {
 
       StandardRequestExpr() { src.flowsTo(DataFlow::valueNode(this)) }
 
+      pragma[nomagic]
       override RouteHandler getRouteHandler() {
         result = src.getRouteHandler()
       }
@@ -369,6 +371,7 @@ module HTTP {
       /**
        * Gets a route handler that is defined by this setup.
        */
+      pragma[nomagic]
       abstract DataFlow::SourceNode getARouteHandler();
 
       /**
