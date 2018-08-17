@@ -174,8 +174,9 @@ string getTypeDescription(string message1, string message2, int complexity1, int
  * Holds if `e` directly uses a parameter's initial value as passed in from the caller.
  */
 predicate isInitialParameterUse(Expr e) {
+  // unlike `SimpleParameter.getAnInitialUse` this will not include uses we have refinement information for
   exists (SimpleParameter p, SsaExplicitDefinition ssa |
-    ssa.getAContributingVarDef() = p and
+    ssa.getDef() = p and
     ssa.getVariable().getAUse() = e and
     not p.isRestParameter()
   )

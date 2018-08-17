@@ -191,7 +191,7 @@ private class IIFEWithAnalyzedReturnFlow extends CallWithAnalyzedReturnFlow {
   ImmediatelyInvokedFunctionExpr iife;
   
   IIFEWithAnalyzedReturnFlow() {
-    this.asExpr() = iife.getInvocation()
+    astNode = iife.getInvocation()
   }
   
   override Function getAFunction() {
