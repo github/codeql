@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This document describes how to format the QL code in this repository, covering aspects such as layout, white-space, naming and documentation. Adhering to consistent standards makes code easier to read and maintain. Of course, these are only guidelines, and can be overridden as the need arises on a case-by-case basis. Where existing code deviates from these guidelines, prefer consistency with the surrounding code.
+This document describes how to format the QL code you contribute to this repository. It covers aspects such as layout, white-space, naming and documentation. Adhering to consistent standards makes code easier to read and maintain. Of course, these are only guidelines, and can be overridden as the need arises on a case-by-case basis. Where existing code deviates from these guidelines, prefer consistency with the surrounding code.
 
 Words in *italic* are defined in the [Glossary](#glossary).
 
@@ -10,12 +10,12 @@ Words in *italic* are defined in the [Glossary](#glossary).
 1. *Always* use 2 spaces for indentation.
 1. *Always* indent:
    - the *body* of a module, newtype, class or predicate,
-   - the second and subsequent lines after a line break used to split a long line,
+   - the second and subsequent lines after you use a line break to split a long line,
    - the *body* of a `from`, `where` or `select` clause where it spans multiple lines,
    - the *body* of a *quantifier* that spans multiple lines.
 
 
-Examples:
+### Examples
 
 ```ql
 module Helpers {
@@ -47,7 +47,7 @@ select c, "This call to '$@' is deprecated because " + reason + ".",
    - before each declaration, except for the first declaration in a *body*,
    - before the `from`-`where`-`select` section in a query file.
 1. *Avoid* two or more adjacent blank lines.
-1. There *must* be a new line after the *annotations* `cached`, `deprecated`, `pragma`, `language` and `bindingset`.
+1. There *must* be a new line after the *annotations* `cached`, `deprecated`, `pragma`, `language` and `bindingset`. Other *annotations* do not have a new line.
 1. There *should not* be additional blank lines within a predicate.
 1. There *may* be a new line:
    - immediately after the `from`, `where` or `select` keywords in a query,
@@ -55,7 +55,7 @@ select c, "This call to '$@' is deprecated because " + reason + ".",
 1. *Avoid* other line breaks in declarations, other than to break long lines.
 1. When operands of *binary operators* span two lines, the operator *should* be placed at the end of the first line.
 
-Examples:
+### Examples
 
 ```ql
 cached
@@ -80,12 +80,6 @@ select main, "This is the program entry point."
 
 ```ql
 from Method main
-where main.getName() = "Main"
-select main, "This is the program entry point." 
-```
-
-```ql
-from Method main
 where
   main.getName() = "Main" and
   main.getNumberOfParameters() = 0
@@ -97,6 +91,13 @@ select main, "Main method has no parameters."
   then result = "public"
   else result = "private"
 ```	
+
+```ql
+  if x.isPublic() then
+    result = "public"
+  else
+    result = "private"
+```
 
 ```ql
   if
@@ -113,8 +114,7 @@ select main, "Main method has no parameters."
 1. Braces of empty blocks *may* be placed on a single line, with a single space separating the braces.
 1. Short predicates, not exceeding the maximum line width, *may* be placed on a single line, with a space following the opening brace and preceding the closing brace.
 
-
-For example,
+### Examples
 
 ```ql
 class ThrowException extends ThrowExpr {
@@ -146,7 +146,7 @@ class ThrowException extends ThrowExpr {
 1. *Do not* use tabs.
 
 
-For example,
+### Examples
 
 ```ql
 cached
@@ -174,8 +174,9 @@ private predicate foo(Expr e, Expr p) {
 1. *Avoid* short or single-letter names for classes, predicates and fields.
 1. Short or single letter names for parameters and *quantifiers* *may* be used provided that they are sufficiently clear.
 1. Use names as they are used in the target-language specification.
+1. Use American English.
 
-Examples:
+### Examples
 
 ```ql
 /** ... */
@@ -205,16 +206,25 @@ class Type extends ... {
 ```
 
 ## Documentation
+
+General requirements:
+
 1. Documentation *must* adhere to the [QLDoc specification](https://help.semmle.com/QL/QLDocSpecification.html).
-1. Public declarations *must* be documented.
-1. Non-public declarations *should* be documented.
-1. Declarations in query files *should* be documented.
 1. Use `/** ... */` for documentation, even for single line comments.
 1. For single-line documentation, the `/**` and `*/` are written on the same line as the comment.
 1. For multi-line documentation, the `/**` and `*/` are written on separate lines. There is a `*` preceding each comment line, aligned on the first `*`.
-1. Library files (`.qll` files) *should* be documented with QLDoc.
-1. Query files, except for tests, *must* have a QLDoc query documentation comment.
-1. Documentation *should* be appropriate for users of the library. Put documentation for maintainers in normal comments.
+1. Use full sentences, with capital letters and full stops.
+1. Use American English.
+1. Documentation comments *should* be appropriate for users of the code.
+1. Documentation for maintainers of the code *must* use normal comments.
+
+Documenting specific items:
+
+1. Public declarations *must* be documented.
+1. Non-public declarations *should* be documented.
+1. Declarations in query files *should* be documented.
+1. Library files (`.qll` files) *should* be have a documentation comment at the top of the file.
+1. Query files, except for tests, *must* have a QLDoc query documentation comment at the top of the file.
 1. Predicates that do not have a result *should* be documented `/** Holds if ... */`
 1. Predicates that have a result *should* be documented `/** Gets ... */`
 1. All predicate parameters *should* be referred to in the predicate documentation.
@@ -224,10 +234,8 @@ class Type extends ... {
 1. Where a class denotes a generic concept with subclasses, list those subclasses.
 1. Declarations that are deprecated *should* be documented as `DEPRECATED: ...`
 1. Declarations that are for internal use *should* be documented as `INTERNAL: Do not use`.
-1. Use full sentences, with capital letters and full stops.
 
-
-Examples:
+### Examples
 
 ```ql
 /** Provides logic for determining constant expressions. */
@@ -278,10 +286,10 @@ deprecated Expr getInitializer()
 1. Write the `and` at the end of the line. This also applies in `where` clauses.
 1. *Prefer* to write the `or` keyword on its own line.
 1. The `or` keyword *may* be written at the end of a line, or within a line, provided that it has no unparenthesised `and` operands.
-1. Single-line formulas *may* be used in order to save space or add clarity, particularly in the *body* of a *quantifier/aggregation*. 
-1. *Avoid* additional brackets to clarify the precedence of `not`, `and` and `or`.
-1. *Always* clarify the precedence of `implies` with brackets.
-1. *Always* clarify the precedence of `if`-`then`-`else` with brackets.
+1. Single-line formulas *may* be used in order to save space or add clarity, particularly in the *body* of a *quantifier/aggregation*.
+1. *Always* use brackets to clarify the precedence of:
+   - `implies`,
+   - `if`-`then`-`else`.
 1. Parenthesised formulas *can* be written:
    - within a single line. There *should not* be an additional space following the opening parenthesis or preceding the closing parenthesis.
    - spanning multiple lines. The opening parenthesis *should* be placed at the end of the preceding line, the body should be indented one level, and the closing bracket should be placed on a new line at the outer indentation.
@@ -293,12 +301,12 @@ deprecated Expr getInitializer()
    - with the *body* after the `if`/`then`/`else` keyword,
    - with the *body* indented on the next line.
    - *Always* parenthesise the `else` part if it is a compound formula.
-1. The `and` and `else` keywords *may* be placed on the same line as the a closing parenthesis.
+1. The `and` and `else` keywords *may* be placed on the same line as the closing parenthesis.
 1. The `and` and `else` keywords *may* be "cuddled": `) else (`
 1. *Always* qualify *calls* to predicates of the same class with `this`.
 2. *Prefer* postfix casts `a.(Expr)` to prefix casts `(Expr)a`.
 
-Examples:
+### Examples
 
 ```ql
   argumentType.isImplicitlyConvertibleTo(parameterType)
@@ -391,44 +399,22 @@ Examples:
 ```
 
 ## Glossary
-*[annotation](https://help.semmle.com/QL/QLLanguageSpecification.html#annotations)*:
-An additional specifier used to modify a declaration, such as `private`, `override`, `deprecated`, `pragma`, `bindingset`, or `cached`.
 
-*body*:
-The text inside `{ }`, `( )`, or each section of an `if`-`then`-`else` or `from`-`where`-`select`.
-
-*binary operator*:
-An operator with two operands, such as comparison operators, `and`, `or`, `implies`, or arithmetic operators.
-
-*call*:
-A *formula* that invokes a predicate, e.g. `this.isStatic()` or `calls(a,b)`.
-
-
-*[conjunct](https://help.semmle.com/QL/QLLanguageSpecification.html#conjunctions)*:
-A formula that is an operand to an `and`.
-
-
-*declaration*:
-A class, module, predicate, field or newtype.
-
-
-*[disjunct](https://help.semmle.com/QL/QLLanguageSpecification.html#disjunctions)*:
-A formula that is an operand to an `or`.
-
-*[formula](https://help.semmle.com/QL/QLLanguageSpecification.html#formulas)*:
-A logical expression, such as `A = B`, a *call*, a *quantifier*, `and`, `or`, `not`, 'in` or `instanceof`.
-
-*should/should not/avoid/prefer*:
-Adhere to this rule wherever possible, where it makes sense.
-
-*may/can*:
-This is a reasonable alternative, to be used with discretion.
-
-*must/always/do not*:
-Always adhere to this rule.
-
-*[quantifier/aggregation](https://help.semmle.com/QL/QLLanguageSpecification.html#aggregations)*:
-`exists`, `count`, `strictcount`, `any`, `forall`, `forex` and so on.
-
-*variable*:
-A parameter to a predicate, a field, a from variable, or a variable introduced by a *quantifier* or *aggregation*.
+|-------------|----------|
+| Phrase      | Meaning  |
+|-------------|----------|
+| *[annotation](https://help.semmle.com/QL/QLLanguageSpecification.html#annotations)* |
+An additional specifier used to modify a declaration, such as `private`, `override`, `deprecated`, `pragma`, `bindingset`, or `cached`. |
+| *body* | The text inside `{ }`, `( )`, or each section of an `if`-`then`-`else` or `from`-`where`-`select`. |
+| *binary operator* | An operator with two operands, such as comparison operators, `and`, `or`, `implies`, or arithmetic operators. |
+| *call* | A *formula* that invokes a predicate, e.g. `this.isStatic()` or `calls(a,b)`. |
+| *[conjunct](https://help.semmle.com/QL/QLLanguageSpecification.html#conjunctions)* | A formula that is an operand to an `and`. |
+| *declaration* | A class, module, predicate, field or newtype. |
+| *[disjunct](https://help.semmle.com/QL/QLLanguageSpecification.html#disjunctions)* | A formula that is an operand to an `or`. |
+| *[formula](https://help.semmle.com/QL/QLLanguageSpecification.html#formulas)* | A logical expression, such as `A = B`, a *call*, a *quantifier*, `and`, `or`, `not`, 'in` or `instanceof`. |
+| *should/should not/avoid/prefer* | Adhere to this rule wherever possible, where it makes sense. |
+| *may/can* | This is a reasonable alternative, to be used with discretion. |
+| *must/always/do not* | Always adhere to this rule. |
+| *[quantifier/aggregation](https://help.semmle.com/QL/QLLanguageSpecification.html#aggregations)* | `exists`, `count`, `strictcount`, `any`, `forall`, `forex` and so on. |
+| *variable* | A parameter to a predicate, a field, a from variable, or a variable introduced by a *quantifier* or *aggregation*. |
+|-------------|----------|
