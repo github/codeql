@@ -400,11 +400,9 @@ deprecated Expr getInitializer()
 
 ## Glossary
 
-|-------------|----------|
 | Phrase      | Meaning  |
 |-------------|----------|
-| *[annotation](https://help.semmle.com/QL/QLLanguageSpecification.html#annotations)* |
-An additional specifier used to modify a declaration, such as `private`, `override`, `deprecated`, `pragma`, `bindingset`, or `cached`. |
+| *[annotation](https://help.semmle.com/QL/QLLanguageSpecification.html#annotations)* | An additional specifier used to modify a declaration, such as `private`, `override`, `deprecated`, `pragma`, `bindingset`, or `cached`. |
 | *body* | The text inside `{ }`, `( )`, or each section of an `if`-`then`-`else` or `from`-`where`-`select`. |
 | *binary operator* | An operator with two operands, such as comparison operators, `and`, `or`, `implies`, or arithmetic operators. |
 | *call* | A *formula* that invokes a predicate, e.g. `this.isStatic()` or `calls(a,b)`. |
@@ -417,4 +415,3 @@ An additional specifier used to modify a declaration, such as `private`, `overri
 | *must/always/do not* | Always adhere to this rule. |
 | *[quantifier/aggregation](https://help.semmle.com/QL/QLLanguageSpecification.html#aggregations)* | `exists`, `count`, `strictcount`, `any`, `forall`, `forex` and so on. |
 | *variable* | A parameter to a predicate, a field, a from variable, or a variable introduced by a *quantifier* or *aggregation*. |
-|-------------|----------|
