@@ -41,6 +41,33 @@
 | BreakInTry.cs:65:26:65:28 | [finally: return] String arg | BreakInTry.cs:67:21:67:31 | [finally: return] ... == ... | 6 |
 | BreakInTry.cs:68:21:68:26 | [finally: return] break; | BreakInTry.cs:68:21:68:26 | [finally: return] break; | 1 |
 | BreakInTry.cs:68:21:68:26 | break; | BreakInTry.cs:68:21:68:26 | break; | 1 |
+| CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:9:17:9:28 | ... == ... | 8 |
+| CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:5:10:5:11 | exit M1 | 1 |
+| CatchInFinally.cs:10:17:10:50 | throw ...; | CatchInFinally.cs:16:21:16:31 | [finally: exception(ArgumentNullException)] access to property Length | 7 |
+| CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | 1 |
+| CatchInFinally.cs:13:9:27:9 | [finally: exception(Exception)] {...} | CatchInFinally.cs:16:21:16:31 | [finally: exception(Exception)] access to property Length | 6 |
+| CatchInFinally.cs:13:9:27:9 | {...} | CatchInFinally.cs:16:21:16:31 | access to property Length | 6 |
+| CatchInFinally.cs:16:36:16:36 | 1 | CatchInFinally.cs:16:21:16:36 | ... == ... | 2 |
+| CatchInFinally.cs:16:36:16:36 | [finally: exception(ArgumentNullException)] 1 | CatchInFinally.cs:16:21:16:36 | [finally: exception(ArgumentNullException)] ... == ... | 2 |
+| CatchInFinally.cs:16:36:16:36 | [finally: exception(Exception)] 1 | CatchInFinally.cs:16:21:16:36 | [finally: exception(Exception)] ... == ... | 2 |
+| CatchInFinally.cs:17:21:17:45 | [finally: exception(ArgumentNullException)] throw ...; | CatchInFinally.cs:17:21:17:45 | [finally: exception(ArgumentNullException)] throw ...; | 1 |
+| CatchInFinally.cs:17:21:17:45 | [finally: exception(Exception)] throw ...; | CatchInFinally.cs:17:21:17:45 | [finally: exception(Exception)] throw ...; | 1 |
+| CatchInFinally.cs:17:21:17:45 | throw ...; | CatchInFinally.cs:17:21:17:45 | throw ...; | 1 |
+| CatchInFinally.cs:17:41:17:43 | "1" | CatchInFinally.cs:17:27:17:44 | object creation of type Exception | 2 |
+| CatchInFinally.cs:17:41:17:43 | [finally: exception(ArgumentNullException)] "1" | CatchInFinally.cs:17:27:17:44 | [finally: exception(ArgumentNullException)] object creation of type Exception | 2 |
+| CatchInFinally.cs:17:41:17:43 | [finally: exception(Exception)] "1" | CatchInFinally.cs:17:27:17:44 | [finally: exception(Exception)] object creation of type Exception | 2 |
+| CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(ArgumentNullException)] catch (...) {...} | CatchInFinally.cs:19:39:19:54 | [exception: Exception, finally: exception(ArgumentNullException)] ... == ... | 6 |
+| CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(Exception)] catch (...) {...} | CatchInFinally.cs:19:39:19:54 | [exception: Exception, finally: exception(Exception)] ... == ... | 6 |
+| CatchInFinally.cs:19:13:22:13 | [exception: Exception] catch (...) {...} | CatchInFinally.cs:19:39:19:54 | [exception: Exception] ... == ... | 6 |
+| CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] catch (...) {...} | CatchInFinally.cs:19:39:19:54 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] ... == ... | 6 |
+| CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(Exception)] catch (...) {...} | CatchInFinally.cs:19:39:19:54 | [exception: NullReferenceException, finally: exception(Exception)] ... == ... | 6 |
+| CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException] catch (...) {...} | CatchInFinally.cs:19:39:19:54 | [exception: NullReferenceException] ... == ... | 6 |
+| CatchInFinally.cs:20:13:22:13 | [finally: exception(ArgumentNullException)] {...} | CatchInFinally.cs:21:17:21:42 | [finally: exception(ArgumentNullException)] call to method WriteLine | 6 |
+| CatchInFinally.cs:20:13:22:13 | [finally: exception(Exception)] {...} | CatchInFinally.cs:21:17:21:42 | [finally: exception(Exception)] call to method WriteLine | 6 |
+| CatchInFinally.cs:20:13:22:13 | {...} | CatchInFinally.cs:21:17:21:42 | call to method WriteLine | 6 |
+| CatchInFinally.cs:23:13:26:13 | [finally: exception(ArgumentNullException)] catch {...} | CatchInFinally.cs:25:17:25:37 | [finally: exception(ArgumentNullException)] call to method WriteLine | 5 |
+| CatchInFinally.cs:23:13:26:13 | [finally: exception(Exception)] catch {...} | CatchInFinally.cs:25:17:25:37 | [finally: exception(Exception)] call to method WriteLine | 5 |
+| CatchInFinally.cs:23:13:26:13 | catch {...} | CatchInFinally.cs:25:17:25:37 | call to method WriteLine | 5 |
 | CompileTimeOperators.cs:5:9:5:15 | enter Default | CompileTimeOperators.cs:5:9:5:15 | exit Default | 5 |
 | CompileTimeOperators.cs:10:9:10:14 | enter Sizeof | CompileTimeOperators.cs:10:9:10:14 | exit Sizeof | 5 |
 | CompileTimeOperators.cs:15:10:15:15 | enter Typeof | CompileTimeOperators.cs:15:10:15:15 | exit Typeof | 5 |

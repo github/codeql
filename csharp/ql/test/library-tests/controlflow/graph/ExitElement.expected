@@ -187,6 +187,89 @@
 | BreakInTry.cs:67:21:67:31 | ... == ... | BreakInTry.cs:67:21:67:31 | ... == ... | true/true |
 | BreakInTry.cs:67:28:67:31 | null | BreakInTry.cs:67:28:67:31 | null | normal |
 | BreakInTry.cs:68:21:68:26 | break; | BreakInTry.cs:68:21:68:26 | break; | break |
+| CatchInFinally.cs:6:5:28:5 | {...} | CatchInFinally.cs:16:21:16:36 | ... == ... | false/false |
+| CatchInFinally.cs:6:5:28:5 | {...} | CatchInFinally.cs:16:21:16:36 | ... == ... | throw(ArgumentNullException) |
+| CatchInFinally.cs:6:5:28:5 | {...} | CatchInFinally.cs:16:21:16:36 | ... == ... | throw(Exception) |
+| CatchInFinally.cs:6:5:28:5 | {...} | CatchInFinally.cs:21:17:21:42 | call to method WriteLine | normal |
+| CatchInFinally.cs:6:5:28:5 | {...} | CatchInFinally.cs:21:17:21:42 | call to method WriteLine | throw(ArgumentNullException) |
+| CatchInFinally.cs:6:5:28:5 | {...} | CatchInFinally.cs:21:17:21:42 | call to method WriteLine | throw(Exception) |
+| CatchInFinally.cs:6:5:28:5 | {...} | CatchInFinally.cs:25:17:25:37 | call to method WriteLine | normal |
+| CatchInFinally.cs:6:5:28:5 | {...} | CatchInFinally.cs:25:17:25:37 | call to method WriteLine | throw(ArgumentNullException) |
+| CatchInFinally.cs:6:5:28:5 | {...} | CatchInFinally.cs:25:17:25:37 | call to method WriteLine | throw(Exception) |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:16:21:16:36 | ... == ... | false/false |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:16:21:16:36 | ... == ... | throw(ArgumentNullException) |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:16:21:16:36 | ... == ... | throw(Exception) |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:21:17:21:42 | call to method WriteLine | normal |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:21:17:21:42 | call to method WriteLine | throw(ArgumentNullException) |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:21:17:21:42 | call to method WriteLine | throw(Exception) |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:25:17:25:37 | call to method WriteLine | normal |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:25:17:25:37 | call to method WriteLine | throw(ArgumentNullException) |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:25:17:25:37 | call to method WriteLine | throw(Exception) |
+| CatchInFinally.cs:8:9:11:9 | {...} | CatchInFinally.cs:9:17:9:28 | ... == ... | false/false |
+| CatchInFinally.cs:8:9:11:9 | {...} | CatchInFinally.cs:10:17:10:50 | throw ...; | throw(ArgumentNullException) |
+| CatchInFinally.cs:8:9:11:9 | {...} | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | throw(Exception) |
+| CatchInFinally.cs:9:13:10:50 | if (...) ... | CatchInFinally.cs:9:17:9:28 | ... == ... | false/false |
+| CatchInFinally.cs:9:13:10:50 | if (...) ... | CatchInFinally.cs:10:17:10:50 | throw ...; | throw(ArgumentNullException) |
+| CatchInFinally.cs:9:13:10:50 | if (...) ... | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | throw(Exception) |
+| CatchInFinally.cs:9:17:9:20 | access to parameter args | CatchInFinally.cs:9:17:9:20 | access to parameter args | normal |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:9:17:9:28 | ... == ... | false/false |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:9:17:9:28 | ... == ... | true/true |
+| CatchInFinally.cs:9:25:9:28 | null | CatchInFinally.cs:9:25:9:28 | null | normal |
+| CatchInFinally.cs:10:17:10:50 | throw ...; | CatchInFinally.cs:10:17:10:50 | throw ...; | throw(ArgumentNullException) |
+| CatchInFinally.cs:10:17:10:50 | throw ...; | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | throw(Exception) |
+| CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | normal |
+| CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | throw(Exception) |
+| CatchInFinally.cs:13:9:27:9 | {...} | CatchInFinally.cs:16:21:16:36 | ... == ... | false/false |
+| CatchInFinally.cs:13:9:27:9 | {...} | CatchInFinally.cs:21:17:21:42 | call to method WriteLine | normal |
+| CatchInFinally.cs:13:9:27:9 | {...} | CatchInFinally.cs:25:17:25:37 | call to method WriteLine | normal |
+| CatchInFinally.cs:14:13:26:13 | try {...} ... | CatchInFinally.cs:16:21:16:36 | ... == ... | false/false |
+| CatchInFinally.cs:14:13:26:13 | try {...} ... | CatchInFinally.cs:21:17:21:42 | call to method WriteLine | normal |
+| CatchInFinally.cs:14:13:26:13 | try {...} ... | CatchInFinally.cs:25:17:25:37 | call to method WriteLine | normal |
+| CatchInFinally.cs:15:13:18:13 | {...} | CatchInFinally.cs:16:21:16:31 | access to property Length | throw(Exception) |
+| CatchInFinally.cs:15:13:18:13 | {...} | CatchInFinally.cs:16:21:16:31 | access to property Length | throw(NullReferenceException) |
+| CatchInFinally.cs:15:13:18:13 | {...} | CatchInFinally.cs:16:21:16:36 | ... == ... | false/false |
+| CatchInFinally.cs:15:13:18:13 | {...} | CatchInFinally.cs:17:21:17:45 | throw ...; | throw(Exception) |
+| CatchInFinally.cs:15:13:18:13 | {...} | CatchInFinally.cs:17:27:17:44 | object creation of type Exception | throw(Exception) |
+| CatchInFinally.cs:16:17:17:45 | if (...) ... | CatchInFinally.cs:16:21:16:31 | access to property Length | throw(Exception) |
+| CatchInFinally.cs:16:17:17:45 | if (...) ... | CatchInFinally.cs:16:21:16:31 | access to property Length | throw(NullReferenceException) |
+| CatchInFinally.cs:16:17:17:45 | if (...) ... | CatchInFinally.cs:16:21:16:36 | ... == ... | false/false |
+| CatchInFinally.cs:16:17:17:45 | if (...) ... | CatchInFinally.cs:17:21:17:45 | throw ...; | throw(Exception) |
+| CatchInFinally.cs:16:17:17:45 | if (...) ... | CatchInFinally.cs:17:27:17:44 | object creation of type Exception | throw(Exception) |
+| CatchInFinally.cs:16:21:16:24 | access to parameter args | CatchInFinally.cs:16:21:16:24 | access to parameter args | normal |
+| CatchInFinally.cs:16:21:16:31 | access to property Length | CatchInFinally.cs:16:21:16:31 | access to property Length | normal |
+| CatchInFinally.cs:16:21:16:31 | access to property Length | CatchInFinally.cs:16:21:16:31 | access to property Length | throw(Exception) |
+| CatchInFinally.cs:16:21:16:31 | access to property Length | CatchInFinally.cs:16:21:16:31 | access to property Length | throw(NullReferenceException) |
+| CatchInFinally.cs:16:21:16:36 | ... == ... | CatchInFinally.cs:16:21:16:31 | access to property Length | throw(Exception) |
+| CatchInFinally.cs:16:21:16:36 | ... == ... | CatchInFinally.cs:16:21:16:31 | access to property Length | throw(NullReferenceException) |
+| CatchInFinally.cs:16:21:16:36 | ... == ... | CatchInFinally.cs:16:21:16:36 | ... == ... | false/false |
+| CatchInFinally.cs:16:21:16:36 | ... == ... | CatchInFinally.cs:16:21:16:36 | ... == ... | true/true |
+| CatchInFinally.cs:16:36:16:36 | 1 | CatchInFinally.cs:16:36:16:36 | 1 | normal |
+| CatchInFinally.cs:17:21:17:45 | throw ...; | CatchInFinally.cs:17:21:17:45 | throw ...; | throw(Exception) |
+| CatchInFinally.cs:17:21:17:45 | throw ...; | CatchInFinally.cs:17:27:17:44 | object creation of type Exception | throw(Exception) |
+| CatchInFinally.cs:17:27:17:44 | object creation of type Exception | CatchInFinally.cs:17:27:17:44 | object creation of type Exception | normal |
+| CatchInFinally.cs:17:27:17:44 | object creation of type Exception | CatchInFinally.cs:17:27:17:44 | object creation of type Exception | throw(Exception) |
+| CatchInFinally.cs:17:41:17:43 | "1" | CatchInFinally.cs:17:41:17:43 | "1" | normal |
+| CatchInFinally.cs:17:41:17:43 | "1" | CatchInFinally.cs:17:41:17:43 | "1" | throw(OutOfMemoryException) |
+| CatchInFinally.cs:19:13:22:13 | catch (...) {...} | CatchInFinally.cs:19:13:22:13 | catch (...) {...} | no-match |
+| CatchInFinally.cs:19:13:22:13 | catch (...) {...} | CatchInFinally.cs:19:39:19:54 | ... == ... | false/false |
+| CatchInFinally.cs:19:13:22:13 | catch (...) {...} | CatchInFinally.cs:21:17:21:42 | call to method WriteLine | normal |
+| CatchInFinally.cs:19:30:19:30 | Exception e | CatchInFinally.cs:19:30:19:30 | Exception e | normal |
+| CatchInFinally.cs:19:39:19:39 | access to local variable e | CatchInFinally.cs:19:39:19:39 | access to local variable e | normal |
+| CatchInFinally.cs:19:39:19:47 | access to property Message | CatchInFinally.cs:19:39:19:47 | access to property Message | normal |
+| CatchInFinally.cs:19:39:19:54 | ... == ... | CatchInFinally.cs:19:39:19:54 | ... == ... | false/false |
+| CatchInFinally.cs:19:39:19:54 | ... == ... | CatchInFinally.cs:19:39:19:54 | ... == ... | true/true |
+| CatchInFinally.cs:19:52:19:54 | "1" | CatchInFinally.cs:19:52:19:54 | "1" | normal |
+| CatchInFinally.cs:20:13:22:13 | {...} | CatchInFinally.cs:21:17:21:42 | call to method WriteLine | normal |
+| CatchInFinally.cs:21:17:21:42 | call to method WriteLine | CatchInFinally.cs:21:17:21:42 | call to method WriteLine | normal |
+| CatchInFinally.cs:21:17:21:43 | ...; | CatchInFinally.cs:21:17:21:42 | call to method WriteLine | normal |
+| CatchInFinally.cs:21:35:21:38 | access to parameter args | CatchInFinally.cs:21:35:21:38 | access to parameter args | normal |
+| CatchInFinally.cs:21:35:21:41 | access to array element | CatchInFinally.cs:21:35:21:41 | access to array element | normal |
+| CatchInFinally.cs:21:40:21:40 | 0 | CatchInFinally.cs:21:40:21:40 | 0 | normal |
+| CatchInFinally.cs:23:13:26:13 | catch {...} | CatchInFinally.cs:25:17:25:37 | call to method WriteLine | normal |
+| CatchInFinally.cs:24:13:26:13 | {...} | CatchInFinally.cs:25:17:25:37 | call to method WriteLine | normal |
+| CatchInFinally.cs:25:17:25:37 | call to method WriteLine | CatchInFinally.cs:25:17:25:37 | call to method WriteLine | normal |
+| CatchInFinally.cs:25:17:25:38 | ...; | CatchInFinally.cs:25:17:25:37 | call to method WriteLine | normal |
+| CatchInFinally.cs:25:35:25:36 | "" | CatchInFinally.cs:25:35:25:36 | "" | normal |
 | CompileTimeOperators.cs:6:5:8:5 | {...} | CompileTimeOperators.cs:7:9:7:28 | return ...; | return |
 | CompileTimeOperators.cs:7:9:7:28 | return ...; | CompileTimeOperators.cs:7:9:7:28 | return ...; | return |
 | CompileTimeOperators.cs:7:16:7:27 | default(...) | CompileTimeOperators.cs:7:16:7:27 | default(...) | normal |

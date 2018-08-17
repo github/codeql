@@ -24,6 +24,74 @@
 | BreakInTry.cs:58:9:70:9 | try {...} ... | BreakInTry.cs:67:21:67:31 | [finally: return] ... == ... |
 | BreakInTry.cs:58:9:70:9 | try {...} ... | BreakInTry.cs:67:28:67:31 | [finally: return] null |
 | BreakInTry.cs:58:9:70:9 | try {...} ... | BreakInTry.cs:68:21:68:26 | [finally: return] break; |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:13:9:27:9 | [finally: exception(ArgumentNullException)] {...} |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:13:9:27:9 | [finally: exception(Exception)] {...} |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:14:13:26:13 | [finally: exception(ArgumentNullException)] try {...} ... |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:14:13:26:13 | [finally: exception(Exception)] try {...} ... |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:15:13:18:13 | [finally: exception(ArgumentNullException)] {...} |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:15:13:18:13 | [finally: exception(Exception)] {...} |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:16:17:17:45 | [finally: exception(ArgumentNullException)] if (...) ... |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:16:17:17:45 | [finally: exception(Exception)] if (...) ... |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:16:21:16:24 | [finally: exception(ArgumentNullException)] access to parameter args |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:16:21:16:24 | [finally: exception(Exception)] access to parameter args |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:16:21:16:31 | [finally: exception(ArgumentNullException)] access to property Length |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:16:21:16:31 | [finally: exception(Exception)] access to property Length |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:16:21:16:36 | [finally: exception(ArgumentNullException)] ... == ... |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:16:21:16:36 | [finally: exception(Exception)] ... == ... |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:16:36:16:36 | [finally: exception(ArgumentNullException)] 1 |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:16:36:16:36 | [finally: exception(Exception)] 1 |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:17:21:17:45 | [finally: exception(ArgumentNullException)] throw ...; |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:17:21:17:45 | [finally: exception(Exception)] throw ...; |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:17:27:17:44 | [finally: exception(ArgumentNullException)] object creation of type Exception |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:17:27:17:44 | [finally: exception(Exception)] object creation of type Exception |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:17:41:17:43 | [finally: exception(ArgumentNullException)] "1" |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:17:41:17:43 | [finally: exception(Exception)] "1" |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(ArgumentNullException)] catch (...) {...} |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(Exception)] catch (...) {...} |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] catch (...) {...} |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(Exception)] catch (...) {...} |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:19:30:19:30 | [exception: Exception, finally: exception(ArgumentNullException)] Exception e |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:19:30:19:30 | [exception: Exception, finally: exception(Exception)] Exception e |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:19:30:19:30 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] Exception e |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:19:30:19:30 | [exception: NullReferenceException, finally: exception(Exception)] Exception e |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:19:39:19:39 | [exception: Exception, finally: exception(ArgumentNullException)] access to local variable e |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:19:39:19:39 | [exception: Exception, finally: exception(Exception)] access to local variable e |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:19:39:19:39 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] access to local variable e |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:19:39:19:39 | [exception: NullReferenceException, finally: exception(Exception)] access to local variable e |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:19:39:19:47 | [exception: Exception, finally: exception(ArgumentNullException)] access to property Message |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:19:39:19:47 | [exception: Exception, finally: exception(Exception)] access to property Message |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:19:39:19:47 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] access to property Message |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:19:39:19:47 | [exception: NullReferenceException, finally: exception(Exception)] access to property Message |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:19:39:19:54 | [exception: Exception, finally: exception(ArgumentNullException)] ... == ... |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:19:39:19:54 | [exception: Exception, finally: exception(Exception)] ... == ... |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:19:39:19:54 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] ... == ... |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:19:39:19:54 | [exception: NullReferenceException, finally: exception(Exception)] ... == ... |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:19:52:19:54 | [exception: Exception, finally: exception(ArgumentNullException)] "1" |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:19:52:19:54 | [exception: Exception, finally: exception(Exception)] "1" |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:19:52:19:54 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] "1" |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:19:52:19:54 | [exception: NullReferenceException, finally: exception(Exception)] "1" |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:20:13:22:13 | [finally: exception(ArgumentNullException)] {...} |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:20:13:22:13 | [finally: exception(Exception)] {...} |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:21:17:21:42 | [finally: exception(ArgumentNullException)] call to method WriteLine |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:21:17:21:42 | [finally: exception(Exception)] call to method WriteLine |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:21:17:21:43 | [finally: exception(ArgumentNullException)] ...; |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:21:17:21:43 | [finally: exception(Exception)] ...; |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:21:35:21:38 | [finally: exception(ArgumentNullException)] access to parameter args |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:21:35:21:38 | [finally: exception(Exception)] access to parameter args |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:21:35:21:41 | [finally: exception(ArgumentNullException)] access to array element |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:21:35:21:41 | [finally: exception(Exception)] access to array element |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:21:40:21:40 | [finally: exception(ArgumentNullException)] 0 |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:21:40:21:40 | [finally: exception(Exception)] 0 |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:23:13:26:13 | [finally: exception(ArgumentNullException)] catch {...} |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:23:13:26:13 | [finally: exception(Exception)] catch {...} |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:24:13:26:13 | [finally: exception(ArgumentNullException)] {...} |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:24:13:26:13 | [finally: exception(Exception)] {...} |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:25:17:25:37 | [finally: exception(ArgumentNullException)] call to method WriteLine |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:25:17:25:37 | [finally: exception(Exception)] call to method WriteLine |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:25:17:25:38 | [finally: exception(ArgumentNullException)] ...; |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:25:17:25:38 | [finally: exception(Exception)] ...; |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:25:35:25:36 | [finally: exception(ArgumentNullException)] "" |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:25:35:25:36 | [finally: exception(Exception)] "" |
 | CompileTimeOperators.cs:30:9:38:9 | try {...} ... | CompileTimeOperators.cs:36:9:38:9 | [finally: goto(End)] {...} |
 | CompileTimeOperators.cs:30:9:38:9 | try {...} ... | CompileTimeOperators.cs:37:13:37:40 | [finally: goto(End)] call to method WriteLine |
 | CompileTimeOperators.cs:30:9:38:9 | try {...} ... | CompileTimeOperators.cs:37:13:37:41 | [finally: goto(End)] ...; |

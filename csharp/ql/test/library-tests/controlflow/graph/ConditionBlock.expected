@@ -27,6 +27,37 @@
 | BreakInTry.cs:60:17:60:28 | ... == ... | BreakInTry.cs:68:21:68:26 | break; | false |
 | BreakInTry.cs:67:21:67:31 | ... == ... | BreakInTry.cs:68:21:68:26 | break; | true |
 | BreakInTry.cs:67:21:67:31 | [finally: return] ... == ... | BreakInTry.cs:68:21:68:26 | [finally: return] break; | true |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:10:17:10:50 | throw ...; | true |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | true |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:13:9:27:9 | [finally: exception(Exception)] {...} | true |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:13:9:27:9 | {...} | false |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:16:36:16:36 | 1 | false |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:16:36:16:36 | [finally: exception(ArgumentNullException)] 1 | true |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:16:36:16:36 | [finally: exception(Exception)] 1 | true |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:17:21:17:45 | [finally: exception(ArgumentNullException)] throw ...; | true |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:17:21:17:45 | [finally: exception(Exception)] throw ...; | true |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:17:21:17:45 | throw ...; | false |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:17:41:17:43 | "1" | false |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:17:41:17:43 | [finally: exception(ArgumentNullException)] "1" | true |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:17:41:17:43 | [finally: exception(Exception)] "1" | true |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(ArgumentNullException)] catch (...) {...} | true |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(Exception)] catch (...) {...} | true |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:19:13:22:13 | [exception: Exception] catch (...) {...} | false |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] catch (...) {...} | true |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(Exception)] catch (...) {...} | true |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException] catch (...) {...} | false |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:20:13:22:13 | [finally: exception(ArgumentNullException)] {...} | true |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:20:13:22:13 | [finally: exception(Exception)] {...} | true |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:20:13:22:13 | {...} | false |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:23:13:26:13 | [finally: exception(ArgumentNullException)] catch {...} | true |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:23:13:26:13 | [finally: exception(Exception)] catch {...} | true |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:23:13:26:13 | catch {...} | false |
+| CatchInFinally.cs:16:21:16:36 | ... == ... | CatchInFinally.cs:17:21:17:45 | throw ...; | true |
+| CatchInFinally.cs:16:21:16:36 | ... == ... | CatchInFinally.cs:17:41:17:43 | "1" | true |
+| CatchInFinally.cs:16:21:16:36 | [finally: exception(ArgumentNullException)] ... == ... | CatchInFinally.cs:17:21:17:45 | [finally: exception(ArgumentNullException)] throw ...; | true |
+| CatchInFinally.cs:16:21:16:36 | [finally: exception(ArgumentNullException)] ... == ... | CatchInFinally.cs:17:41:17:43 | [finally: exception(ArgumentNullException)] "1" | true |
+| CatchInFinally.cs:16:21:16:36 | [finally: exception(Exception)] ... == ... | CatchInFinally.cs:17:21:17:45 | [finally: exception(Exception)] throw ...; | true |
+| CatchInFinally.cs:16:21:16:36 | [finally: exception(Exception)] ... == ... | CatchInFinally.cs:17:41:17:43 | [finally: exception(Exception)] "1" | true |
 | ConditionalAccess.cs:13:13:13:25 | ... > ... | ConditionalAccess.cs:14:20:14:20 | 0 | true |
 | ConditionalAccess.cs:13:13:13:25 | ... > ... | ConditionalAccess.cs:16:20:16:20 | 1 | false |
 | ExitMethods.cs:54:13:54:13 | access to parameter b | ExitMethods.cs:55:19:55:33 | object creation of type Exception | true |

@@ -89,6 +89,65 @@
 | post | BreakInTry.cs:65:26:65:28 | [finally: return] String arg | BreakInTry.cs:65:26:65:28 | [finally: return] String arg |
 | post | BreakInTry.cs:68:21:68:26 | [finally: return] break; | BreakInTry.cs:68:21:68:26 | [finally: return] break; |
 | post | BreakInTry.cs:68:21:68:26 | break; | BreakInTry.cs:68:21:68:26 | break; |
+| post | CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:5:10:5:11 | enter M1 |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:5:10:5:11 | enter M1 |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:5:10:5:11 | exit M1 |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:10:17:10:50 | throw ...; |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:13:9:27:9 | [finally: exception(Exception)] {...} |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:13:9:27:9 | {...} |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:16:36:16:36 | 1 |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:16:36:16:36 | [finally: exception(ArgumentNullException)] 1 |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:16:36:16:36 | [finally: exception(Exception)] 1 |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:17:21:17:45 | [finally: exception(ArgumentNullException)] throw ...; |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:17:21:17:45 | [finally: exception(Exception)] throw ...; |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:17:21:17:45 | throw ...; |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:17:41:17:43 | "1" |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:17:41:17:43 | [finally: exception(ArgumentNullException)] "1" |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:17:41:17:43 | [finally: exception(Exception)] "1" |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(ArgumentNullException)] catch (...) {...} |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(Exception)] catch (...) {...} |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:19:13:22:13 | [exception: Exception] catch (...) {...} |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] catch (...) {...} |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(Exception)] catch (...) {...} |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException] catch (...) {...} |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:20:13:22:13 | [finally: exception(ArgumentNullException)] {...} |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:20:13:22:13 | [finally: exception(Exception)] {...} |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:20:13:22:13 | {...} |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:23:13:26:13 | [finally: exception(ArgumentNullException)] catch {...} |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:23:13:26:13 | [finally: exception(Exception)] catch {...} |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:23:13:26:13 | catch {...} |
+| post | CatchInFinally.cs:10:17:10:50 | throw ...; | CatchInFinally.cs:10:17:10:50 | throw ...; |
+| post | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException |
+| post | CatchInFinally.cs:13:9:27:9 | [finally: exception(Exception)] {...} | CatchInFinally.cs:13:9:27:9 | [finally: exception(Exception)] {...} |
+| post | CatchInFinally.cs:13:9:27:9 | {...} | CatchInFinally.cs:13:9:27:9 | {...} |
+| post | CatchInFinally.cs:16:36:16:36 | 1 | CatchInFinally.cs:16:36:16:36 | 1 |
+| post | CatchInFinally.cs:16:36:16:36 | [finally: exception(ArgumentNullException)] 1 | CatchInFinally.cs:16:36:16:36 | [finally: exception(ArgumentNullException)] 1 |
+| post | CatchInFinally.cs:16:36:16:36 | [finally: exception(Exception)] 1 | CatchInFinally.cs:16:36:16:36 | [finally: exception(Exception)] 1 |
+| post | CatchInFinally.cs:17:21:17:45 | [finally: exception(ArgumentNullException)] throw ...; | CatchInFinally.cs:17:21:17:45 | [finally: exception(ArgumentNullException)] throw ...; |
+| post | CatchInFinally.cs:17:21:17:45 | [finally: exception(Exception)] throw ...; | CatchInFinally.cs:17:21:17:45 | [finally: exception(Exception)] throw ...; |
+| post | CatchInFinally.cs:17:21:17:45 | throw ...; | CatchInFinally.cs:17:21:17:45 | throw ...; |
+| post | CatchInFinally.cs:17:41:17:43 | "1" | CatchInFinally.cs:17:41:17:43 | "1" |
+| post | CatchInFinally.cs:17:41:17:43 | [finally: exception(ArgumentNullException)] "1" | CatchInFinally.cs:17:41:17:43 | [finally: exception(ArgumentNullException)] "1" |
+| post | CatchInFinally.cs:17:41:17:43 | [finally: exception(Exception)] "1" | CatchInFinally.cs:17:41:17:43 | [finally: exception(Exception)] "1" |
+| post | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(ArgumentNullException)] catch (...) {...} | CatchInFinally.cs:17:21:17:45 | [finally: exception(ArgumentNullException)] throw ...; |
+| post | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(ArgumentNullException)] catch (...) {...} | CatchInFinally.cs:17:41:17:43 | [finally: exception(ArgumentNullException)] "1" |
+| post | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(ArgumentNullException)] catch (...) {...} | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(ArgumentNullException)] catch (...) {...} |
+| post | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(Exception)] catch (...) {...} | CatchInFinally.cs:17:21:17:45 | [finally: exception(Exception)] throw ...; |
+| post | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(Exception)] catch (...) {...} | CatchInFinally.cs:17:41:17:43 | [finally: exception(Exception)] "1" |
+| post | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(Exception)] catch (...) {...} | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(Exception)] catch (...) {...} |
+| post | CatchInFinally.cs:19:13:22:13 | [exception: Exception] catch (...) {...} | CatchInFinally.cs:17:21:17:45 | throw ...; |
+| post | CatchInFinally.cs:19:13:22:13 | [exception: Exception] catch (...) {...} | CatchInFinally.cs:17:41:17:43 | "1" |
+| post | CatchInFinally.cs:19:13:22:13 | [exception: Exception] catch (...) {...} | CatchInFinally.cs:19:13:22:13 | [exception: Exception] catch (...) {...} |
+| post | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] catch (...) {...} | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] catch (...) {...} |
+| post | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(Exception)] catch (...) {...} | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(Exception)] catch (...) {...} |
+| post | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException] catch (...) {...} | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException] catch (...) {...} |
+| post | CatchInFinally.cs:20:13:22:13 | [finally: exception(ArgumentNullException)] {...} | CatchInFinally.cs:20:13:22:13 | [finally: exception(ArgumentNullException)] {...} |
+| post | CatchInFinally.cs:20:13:22:13 | [finally: exception(Exception)] {...} | CatchInFinally.cs:20:13:22:13 | [finally: exception(Exception)] {...} |
+| post | CatchInFinally.cs:20:13:22:13 | {...} | CatchInFinally.cs:20:13:22:13 | {...} |
+| post | CatchInFinally.cs:23:13:26:13 | [finally: exception(ArgumentNullException)] catch {...} | CatchInFinally.cs:23:13:26:13 | [finally: exception(ArgumentNullException)] catch {...} |
+| post | CatchInFinally.cs:23:13:26:13 | [finally: exception(Exception)] catch {...} | CatchInFinally.cs:23:13:26:13 | [finally: exception(Exception)] catch {...} |
+| post | CatchInFinally.cs:23:13:26:13 | catch {...} | CatchInFinally.cs:23:13:26:13 | catch {...} |
 | post | CompileTimeOperators.cs:5:9:5:15 | enter Default | CompileTimeOperators.cs:5:9:5:15 | enter Default |
 | post | CompileTimeOperators.cs:10:9:10:14 | enter Sizeof | CompileTimeOperators.cs:10:9:10:14 | enter Sizeof |
 | post | CompileTimeOperators.cs:15:10:15:15 | enter Typeof | CompileTimeOperators.cs:15:10:15:15 | enter Typeof |
@@ -1139,6 +1198,105 @@
 | pre | BreakInTry.cs:65:26:65:28 | [finally: return] String arg | BreakInTry.cs:68:21:68:26 | [finally: return] break; |
 | pre | BreakInTry.cs:68:21:68:26 | [finally: return] break; | BreakInTry.cs:68:21:68:26 | [finally: return] break; |
 | pre | BreakInTry.cs:68:21:68:26 | break; | BreakInTry.cs:68:21:68:26 | break; |
+| pre | CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:5:10:5:11 | enter M1 |
+| pre | CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:5:10:5:11 | exit M1 |
+| pre | CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:10:17:10:50 | throw ...; |
+| pre | CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException |
+| pre | CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:13:9:27:9 | [finally: exception(Exception)] {...} |
+| pre | CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:13:9:27:9 | {...} |
+| pre | CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:16:36:16:36 | 1 |
+| pre | CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:16:36:16:36 | [finally: exception(ArgumentNullException)] 1 |
+| pre | CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:16:36:16:36 | [finally: exception(Exception)] 1 |
+| pre | CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:17:21:17:45 | [finally: exception(ArgumentNullException)] throw ...; |
+| pre | CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:17:21:17:45 | [finally: exception(Exception)] throw ...; |
+| pre | CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:17:21:17:45 | throw ...; |
+| pre | CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:17:41:17:43 | "1" |
+| pre | CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:17:41:17:43 | [finally: exception(ArgumentNullException)] "1" |
+| pre | CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:17:41:17:43 | [finally: exception(Exception)] "1" |
+| pre | CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(ArgumentNullException)] catch (...) {...} |
+| pre | CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(Exception)] catch (...) {...} |
+| pre | CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:19:13:22:13 | [exception: Exception] catch (...) {...} |
+| pre | CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] catch (...) {...} |
+| pre | CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(Exception)] catch (...) {...} |
+| pre | CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException] catch (...) {...} |
+| pre | CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:20:13:22:13 | [finally: exception(ArgumentNullException)] {...} |
+| pre | CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:20:13:22:13 | [finally: exception(Exception)] {...} |
+| pre | CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:20:13:22:13 | {...} |
+| pre | CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:23:13:26:13 | [finally: exception(ArgumentNullException)] catch {...} |
+| pre | CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:23:13:26:13 | [finally: exception(Exception)] catch {...} |
+| pre | CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:23:13:26:13 | catch {...} |
+| pre | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:5:10:5:11 | exit M1 |
+| pre | CatchInFinally.cs:10:17:10:50 | throw ...; | CatchInFinally.cs:10:17:10:50 | throw ...; |
+| pre | CatchInFinally.cs:10:17:10:50 | throw ...; | CatchInFinally.cs:16:36:16:36 | [finally: exception(ArgumentNullException)] 1 |
+| pre | CatchInFinally.cs:10:17:10:50 | throw ...; | CatchInFinally.cs:17:21:17:45 | [finally: exception(ArgumentNullException)] throw ...; |
+| pre | CatchInFinally.cs:10:17:10:50 | throw ...; | CatchInFinally.cs:17:41:17:43 | [finally: exception(ArgumentNullException)] "1" |
+| pre | CatchInFinally.cs:10:17:10:50 | throw ...; | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(ArgumentNullException)] catch (...) {...} |
+| pre | CatchInFinally.cs:10:17:10:50 | throw ...; | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] catch (...) {...} |
+| pre | CatchInFinally.cs:10:17:10:50 | throw ...; | CatchInFinally.cs:20:13:22:13 | [finally: exception(ArgumentNullException)] {...} |
+| pre | CatchInFinally.cs:10:17:10:50 | throw ...; | CatchInFinally.cs:23:13:26:13 | [finally: exception(ArgumentNullException)] catch {...} |
+| pre | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | CatchInFinally.cs:10:17:10:50 | throw ...; |
+| pre | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException |
+| pre | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | CatchInFinally.cs:13:9:27:9 | [finally: exception(Exception)] {...} |
+| pre | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | CatchInFinally.cs:16:36:16:36 | [finally: exception(ArgumentNullException)] 1 |
+| pre | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | CatchInFinally.cs:16:36:16:36 | [finally: exception(Exception)] 1 |
+| pre | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | CatchInFinally.cs:17:21:17:45 | [finally: exception(ArgumentNullException)] throw ...; |
+| pre | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | CatchInFinally.cs:17:21:17:45 | [finally: exception(Exception)] throw ...; |
+| pre | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | CatchInFinally.cs:17:41:17:43 | [finally: exception(ArgumentNullException)] "1" |
+| pre | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | CatchInFinally.cs:17:41:17:43 | [finally: exception(Exception)] "1" |
+| pre | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(ArgumentNullException)] catch (...) {...} |
+| pre | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(Exception)] catch (...) {...} |
+| pre | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] catch (...) {...} |
+| pre | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(Exception)] catch (...) {...} |
+| pre | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | CatchInFinally.cs:20:13:22:13 | [finally: exception(ArgumentNullException)] {...} |
+| pre | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | CatchInFinally.cs:20:13:22:13 | [finally: exception(Exception)] {...} |
+| pre | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | CatchInFinally.cs:23:13:26:13 | [finally: exception(ArgumentNullException)] catch {...} |
+| pre | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | CatchInFinally.cs:23:13:26:13 | [finally: exception(Exception)] catch {...} |
+| pre | CatchInFinally.cs:13:9:27:9 | [finally: exception(Exception)] {...} | CatchInFinally.cs:13:9:27:9 | [finally: exception(Exception)] {...} |
+| pre | CatchInFinally.cs:13:9:27:9 | [finally: exception(Exception)] {...} | CatchInFinally.cs:16:36:16:36 | [finally: exception(Exception)] 1 |
+| pre | CatchInFinally.cs:13:9:27:9 | [finally: exception(Exception)] {...} | CatchInFinally.cs:17:21:17:45 | [finally: exception(Exception)] throw ...; |
+| pre | CatchInFinally.cs:13:9:27:9 | [finally: exception(Exception)] {...} | CatchInFinally.cs:17:41:17:43 | [finally: exception(Exception)] "1" |
+| pre | CatchInFinally.cs:13:9:27:9 | [finally: exception(Exception)] {...} | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(Exception)] catch (...) {...} |
+| pre | CatchInFinally.cs:13:9:27:9 | [finally: exception(Exception)] {...} | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(Exception)] catch (...) {...} |
+| pre | CatchInFinally.cs:13:9:27:9 | [finally: exception(Exception)] {...} | CatchInFinally.cs:20:13:22:13 | [finally: exception(Exception)] {...} |
+| pre | CatchInFinally.cs:13:9:27:9 | [finally: exception(Exception)] {...} | CatchInFinally.cs:23:13:26:13 | [finally: exception(Exception)] catch {...} |
+| pre | CatchInFinally.cs:13:9:27:9 | {...} | CatchInFinally.cs:13:9:27:9 | {...} |
+| pre | CatchInFinally.cs:13:9:27:9 | {...} | CatchInFinally.cs:16:36:16:36 | 1 |
+| pre | CatchInFinally.cs:13:9:27:9 | {...} | CatchInFinally.cs:17:21:17:45 | throw ...; |
+| pre | CatchInFinally.cs:13:9:27:9 | {...} | CatchInFinally.cs:17:41:17:43 | "1" |
+| pre | CatchInFinally.cs:13:9:27:9 | {...} | CatchInFinally.cs:19:13:22:13 | [exception: Exception] catch (...) {...} |
+| pre | CatchInFinally.cs:13:9:27:9 | {...} | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException] catch (...) {...} |
+| pre | CatchInFinally.cs:13:9:27:9 | {...} | CatchInFinally.cs:20:13:22:13 | {...} |
+| pre | CatchInFinally.cs:13:9:27:9 | {...} | CatchInFinally.cs:23:13:26:13 | catch {...} |
+| pre | CatchInFinally.cs:16:36:16:36 | 1 | CatchInFinally.cs:16:36:16:36 | 1 |
+| pre | CatchInFinally.cs:16:36:16:36 | 1 | CatchInFinally.cs:17:21:17:45 | throw ...; |
+| pre | CatchInFinally.cs:16:36:16:36 | 1 | CatchInFinally.cs:17:41:17:43 | "1" |
+| pre | CatchInFinally.cs:16:36:16:36 | [finally: exception(ArgumentNullException)] 1 | CatchInFinally.cs:16:36:16:36 | [finally: exception(ArgumentNullException)] 1 |
+| pre | CatchInFinally.cs:16:36:16:36 | [finally: exception(ArgumentNullException)] 1 | CatchInFinally.cs:17:21:17:45 | [finally: exception(ArgumentNullException)] throw ...; |
+| pre | CatchInFinally.cs:16:36:16:36 | [finally: exception(ArgumentNullException)] 1 | CatchInFinally.cs:17:41:17:43 | [finally: exception(ArgumentNullException)] "1" |
+| pre | CatchInFinally.cs:16:36:16:36 | [finally: exception(Exception)] 1 | CatchInFinally.cs:16:36:16:36 | [finally: exception(Exception)] 1 |
+| pre | CatchInFinally.cs:16:36:16:36 | [finally: exception(Exception)] 1 | CatchInFinally.cs:17:21:17:45 | [finally: exception(Exception)] throw ...; |
+| pre | CatchInFinally.cs:16:36:16:36 | [finally: exception(Exception)] 1 | CatchInFinally.cs:17:41:17:43 | [finally: exception(Exception)] "1" |
+| pre | CatchInFinally.cs:17:21:17:45 | [finally: exception(ArgumentNullException)] throw ...; | CatchInFinally.cs:17:21:17:45 | [finally: exception(ArgumentNullException)] throw ...; |
+| pre | CatchInFinally.cs:17:21:17:45 | [finally: exception(Exception)] throw ...; | CatchInFinally.cs:17:21:17:45 | [finally: exception(Exception)] throw ...; |
+| pre | CatchInFinally.cs:17:21:17:45 | throw ...; | CatchInFinally.cs:17:21:17:45 | throw ...; |
+| pre | CatchInFinally.cs:17:41:17:43 | "1" | CatchInFinally.cs:17:21:17:45 | throw ...; |
+| pre | CatchInFinally.cs:17:41:17:43 | "1" | CatchInFinally.cs:17:41:17:43 | "1" |
+| pre | CatchInFinally.cs:17:41:17:43 | [finally: exception(ArgumentNullException)] "1" | CatchInFinally.cs:17:21:17:45 | [finally: exception(ArgumentNullException)] throw ...; |
+| pre | CatchInFinally.cs:17:41:17:43 | [finally: exception(ArgumentNullException)] "1" | CatchInFinally.cs:17:41:17:43 | [finally: exception(ArgumentNullException)] "1" |
+| pre | CatchInFinally.cs:17:41:17:43 | [finally: exception(Exception)] "1" | CatchInFinally.cs:17:21:17:45 | [finally: exception(Exception)] throw ...; |
+| pre | CatchInFinally.cs:17:41:17:43 | [finally: exception(Exception)] "1" | CatchInFinally.cs:17:41:17:43 | [finally: exception(Exception)] "1" |
+| pre | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(ArgumentNullException)] catch (...) {...} | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(ArgumentNullException)] catch (...) {...} |
+| pre | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(Exception)] catch (...) {...} | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(Exception)] catch (...) {...} |
+| pre | CatchInFinally.cs:19:13:22:13 | [exception: Exception] catch (...) {...} | CatchInFinally.cs:19:13:22:13 | [exception: Exception] catch (...) {...} |
+| pre | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] catch (...) {...} | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] catch (...) {...} |
+| pre | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(Exception)] catch (...) {...} | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(Exception)] catch (...) {...} |
+| pre | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException] catch (...) {...} | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException] catch (...) {...} |
+| pre | CatchInFinally.cs:20:13:22:13 | [finally: exception(ArgumentNullException)] {...} | CatchInFinally.cs:20:13:22:13 | [finally: exception(ArgumentNullException)] {...} |
+| pre | CatchInFinally.cs:20:13:22:13 | [finally: exception(Exception)] {...} | CatchInFinally.cs:20:13:22:13 | [finally: exception(Exception)] {...} |
+| pre | CatchInFinally.cs:20:13:22:13 | {...} | CatchInFinally.cs:20:13:22:13 | {...} |
+| pre | CatchInFinally.cs:23:13:26:13 | [finally: exception(ArgumentNullException)] catch {...} | CatchInFinally.cs:23:13:26:13 | [finally: exception(ArgumentNullException)] catch {...} |
+| pre | CatchInFinally.cs:23:13:26:13 | [finally: exception(Exception)] catch {...} | CatchInFinally.cs:23:13:26:13 | [finally: exception(Exception)] catch {...} |
+| pre | CatchInFinally.cs:23:13:26:13 | catch {...} | CatchInFinally.cs:23:13:26:13 | catch {...} |
 | pre | CompileTimeOperators.cs:5:9:5:15 | enter Default | CompileTimeOperators.cs:5:9:5:15 | enter Default |
 | pre | CompileTimeOperators.cs:10:9:10:14 | enter Sizeof | CompileTimeOperators.cs:10:9:10:14 | enter Sizeof |
 | pre | CompileTimeOperators.cs:15:10:15:15 | enter Typeof | CompileTimeOperators.cs:15:10:15:15 | enter Typeof |

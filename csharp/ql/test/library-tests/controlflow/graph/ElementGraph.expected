@@ -131,6 +131,47 @@
 | BreakInTry.cs:67:21:67:31 | ... == ... | BreakInTry.cs:65:13:69:13 | foreach (... ... in ...) ... | semmle.label | false |
 | BreakInTry.cs:67:21:67:31 | ... == ... | BreakInTry.cs:68:21:68:26 | break; | semmle.label | true |
 | BreakInTry.cs:67:28:67:31 | null | BreakInTry.cs:67:21:67:31 | ... == ... | semmle.label | successor |
+| CatchInFinally.cs:6:5:28:5 | {...} | CatchInFinally.cs:7:9:27:9 | try {...} ... | semmle.label | successor |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:8:9:11:9 | {...} | semmle.label | successor |
+| CatchInFinally.cs:8:9:11:9 | {...} | CatchInFinally.cs:9:13:10:50 | if (...) ... | semmle.label | successor |
+| CatchInFinally.cs:9:13:10:50 | if (...) ... | CatchInFinally.cs:9:17:9:20 | access to parameter args | semmle.label | successor |
+| CatchInFinally.cs:9:17:9:20 | access to parameter args | CatchInFinally.cs:9:25:9:28 | null | semmle.label | successor |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | semmle.label | true |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:13:9:27:9 | {...} | semmle.label | false |
+| CatchInFinally.cs:9:25:9:28 | null | CatchInFinally.cs:9:17:9:28 | ... == ... | semmle.label | successor |
+| CatchInFinally.cs:10:17:10:50 | throw ...; | CatchInFinally.cs:13:9:27:9 | {...} | semmle.label | exception(ArgumentNullException) |
+| CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | CatchInFinally.cs:10:17:10:50 | throw ...; | semmle.label | successor |
+| CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | CatchInFinally.cs:13:9:27:9 | {...} | semmle.label | exception(Exception) |
+| CatchInFinally.cs:13:9:27:9 | {...} | CatchInFinally.cs:14:13:26:13 | try {...} ... | semmle.label | successor |
+| CatchInFinally.cs:14:13:26:13 | try {...} ... | CatchInFinally.cs:15:13:18:13 | {...} | semmle.label | successor |
+| CatchInFinally.cs:15:13:18:13 | {...} | CatchInFinally.cs:16:17:17:45 | if (...) ... | semmle.label | successor |
+| CatchInFinally.cs:16:17:17:45 | if (...) ... | CatchInFinally.cs:16:21:16:24 | access to parameter args | semmle.label | successor |
+| CatchInFinally.cs:16:21:16:24 | access to parameter args | CatchInFinally.cs:16:21:16:31 | access to property Length | semmle.label | successor |
+| CatchInFinally.cs:16:21:16:31 | access to property Length | CatchInFinally.cs:16:36:16:36 | 1 | semmle.label | successor |
+| CatchInFinally.cs:16:21:16:31 | access to property Length | CatchInFinally.cs:19:13:22:13 | catch (...) {...} | semmle.label | exception(Exception) |
+| CatchInFinally.cs:16:21:16:31 | access to property Length | CatchInFinally.cs:19:13:22:13 | catch (...) {...} | semmle.label | exception(NullReferenceException) |
+| CatchInFinally.cs:16:21:16:36 | ... == ... | CatchInFinally.cs:17:41:17:43 | "1" | semmle.label | true |
+| CatchInFinally.cs:16:36:16:36 | 1 | CatchInFinally.cs:16:21:16:36 | ... == ... | semmle.label | successor |
+| CatchInFinally.cs:17:21:17:45 | throw ...; | CatchInFinally.cs:19:13:22:13 | catch (...) {...} | semmle.label | exception(Exception) |
+| CatchInFinally.cs:17:27:17:44 | object creation of type Exception | CatchInFinally.cs:17:21:17:45 | throw ...; | semmle.label | successor |
+| CatchInFinally.cs:17:27:17:44 | object creation of type Exception | CatchInFinally.cs:19:13:22:13 | catch (...) {...} | semmle.label | exception(Exception) |
+| CatchInFinally.cs:17:41:17:43 | "1" | CatchInFinally.cs:17:27:17:44 | object creation of type Exception | semmle.label | successor |
+| CatchInFinally.cs:19:13:22:13 | catch (...) {...} | CatchInFinally.cs:19:30:19:30 | Exception e | semmle.label | match |
+| CatchInFinally.cs:19:30:19:30 | Exception e | CatchInFinally.cs:19:39:19:39 | access to local variable e | semmle.label | successor |
+| CatchInFinally.cs:19:39:19:39 | access to local variable e | CatchInFinally.cs:19:39:19:47 | access to property Message | semmle.label | successor |
+| CatchInFinally.cs:19:39:19:47 | access to property Message | CatchInFinally.cs:19:52:19:54 | "1" | semmle.label | successor |
+| CatchInFinally.cs:19:39:19:54 | ... == ... | CatchInFinally.cs:20:13:22:13 | {...} | semmle.label | true |
+| CatchInFinally.cs:19:39:19:54 | ... == ... | CatchInFinally.cs:23:13:26:13 | catch {...} | semmle.label | false |
+| CatchInFinally.cs:19:52:19:54 | "1" | CatchInFinally.cs:19:39:19:54 | ... == ... | semmle.label | successor |
+| CatchInFinally.cs:20:13:22:13 | {...} | CatchInFinally.cs:21:17:21:43 | ...; | semmle.label | successor |
+| CatchInFinally.cs:21:17:21:43 | ...; | CatchInFinally.cs:21:35:21:38 | access to parameter args | semmle.label | successor |
+| CatchInFinally.cs:21:35:21:38 | access to parameter args | CatchInFinally.cs:21:40:21:40 | 0 | semmle.label | successor |
+| CatchInFinally.cs:21:35:21:41 | access to array element | CatchInFinally.cs:21:17:21:42 | call to method WriteLine | semmle.label | successor |
+| CatchInFinally.cs:21:40:21:40 | 0 | CatchInFinally.cs:21:35:21:41 | access to array element | semmle.label | successor |
+| CatchInFinally.cs:23:13:26:13 | catch {...} | CatchInFinally.cs:24:13:26:13 | {...} | semmle.label | successor |
+| CatchInFinally.cs:24:13:26:13 | {...} | CatchInFinally.cs:25:17:25:38 | ...; | semmle.label | successor |
+| CatchInFinally.cs:25:17:25:38 | ...; | CatchInFinally.cs:25:35:25:36 | "" | semmle.label | successor |
+| CatchInFinally.cs:25:35:25:36 | "" | CatchInFinally.cs:25:17:25:37 | call to method WriteLine | semmle.label | successor |
 | CompileTimeOperators.cs:6:5:8:5 | {...} | CompileTimeOperators.cs:7:16:7:27 | default(...) | semmle.label | successor |
 | CompileTimeOperators.cs:7:16:7:27 | default(...) | CompileTimeOperators.cs:7:9:7:28 | return ...; | semmle.label | successor |
 | CompileTimeOperators.cs:11:5:13:5 | {...} | CompileTimeOperators.cs:12:16:12:26 | sizeof(..) | semmle.label | successor |

@@ -5,6 +5,8 @@
 | 7 | 13 | TypeAccesses.cs:7:13:7:22 | ... is ... | true | 7 | 25 | TypeAccesses.cs:7:25:7:25 | ; |
 | 8 | 13 | Patterns.cs:8:13:8:23 | ... is ... | false | 12 | 14 | Patterns.cs:12:14:18:9 | if (...) ... |
 | 8 | 13 | Patterns.cs:8:13:8:23 | ... is ... | true | 9 | 9 | Patterns.cs:9:9:11:9 | {...} |
+| 9 | 17 | CatchInFinally.cs:9:17:9:28 | ... == ... | false | 13 | 9 | CatchInFinally.cs:13:9:27:9 | {...} |
+| 9 | 17 | CatchInFinally.cs:9:17:9:28 | ... == ... | true | 10 | 23 | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException |
 | 9 | 21 | BreakInTry.cs:9:21:9:31 | ... == ... | false | 7 | 13 | BreakInTry.cs:7:13:11:13 | foreach (... ... in ...) ... |
 | 9 | 21 | BreakInTry.cs:9:21:9:31 | ... == ... | true | 10 | 21 | BreakInTry.cs:10:21:10:26 | break; |
 | 9 | 37 | NullCoalescing.cs:9:37:9:37 | access to parameter b | false | 9 | 45 | NullCoalescing.cs:9:45:9:45 | access to parameter s |
@@ -27,6 +29,22 @@
 | 15 | 17 | BreakInTry.cs:15:17:15:28 | ... == ... | true | 16 | 17 | BreakInTry.cs:16:17:16:17 | ; |
 | 16 | 18 | Patterns.cs:16:18:16:28 | ... is ... | false | 20 | 9 | Patterns.cs:20:9:38:9 | switch (...) {...} |
 | 16 | 18 | Patterns.cs:16:18:16:28 | ... is ... | true | 17 | 9 | Patterns.cs:17:9:18:9 | {...} |
+| 16 | 21 | CatchInFinally.cs:16:21:16:36 | ... == ... | false | 5 | 10 | CatchInFinally.cs:5:10:5:11 | exit M1 |
+| 16 | 21 | CatchInFinally.cs:16:21:16:36 | ... == ... | true | 17 | 41 | CatchInFinally.cs:17:41:17:43 | "1" |
+| 16 | 21 | CatchInFinally.cs:16:21:16:36 | [finally: exception(ArgumentNullException)] ... == ... | true | 17 | 41 | CatchInFinally.cs:17:41:17:43 | [finally: exception(ArgumentNullException)] "1" |
+| 16 | 21 | CatchInFinally.cs:16:21:16:36 | [finally: exception(Exception)] ... == ... | true | 17 | 41 | CatchInFinally.cs:17:41:17:43 | [finally: exception(Exception)] "1" |
+| 19 | 39 | CatchInFinally.cs:19:39:19:54 | [exception: Exception, finally: exception(ArgumentNullException)] ... == ... | false | 23 | 13 | CatchInFinally.cs:23:13:26:13 | [finally: exception(ArgumentNullException)] catch {...} |
+| 19 | 39 | CatchInFinally.cs:19:39:19:54 | [exception: Exception, finally: exception(ArgumentNullException)] ... == ... | true | 20 | 13 | CatchInFinally.cs:20:13:22:13 | [finally: exception(ArgumentNullException)] {...} |
+| 19 | 39 | CatchInFinally.cs:19:39:19:54 | [exception: Exception, finally: exception(Exception)] ... == ... | false | 23 | 13 | CatchInFinally.cs:23:13:26:13 | [finally: exception(Exception)] catch {...} |
+| 19 | 39 | CatchInFinally.cs:19:39:19:54 | [exception: Exception, finally: exception(Exception)] ... == ... | true | 20 | 13 | CatchInFinally.cs:20:13:22:13 | [finally: exception(Exception)] {...} |
+| 19 | 39 | CatchInFinally.cs:19:39:19:54 | [exception: Exception] ... == ... | false | 23 | 13 | CatchInFinally.cs:23:13:26:13 | catch {...} |
+| 19 | 39 | CatchInFinally.cs:19:39:19:54 | [exception: Exception] ... == ... | true | 20 | 13 | CatchInFinally.cs:20:13:22:13 | {...} |
+| 19 | 39 | CatchInFinally.cs:19:39:19:54 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] ... == ... | false | 23 | 13 | CatchInFinally.cs:23:13:26:13 | [finally: exception(ArgumentNullException)] catch {...} |
+| 19 | 39 | CatchInFinally.cs:19:39:19:54 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] ... == ... | true | 20 | 13 | CatchInFinally.cs:20:13:22:13 | [finally: exception(ArgumentNullException)] {...} |
+| 19 | 39 | CatchInFinally.cs:19:39:19:54 | [exception: NullReferenceException, finally: exception(Exception)] ... == ... | false | 23 | 13 | CatchInFinally.cs:23:13:26:13 | [finally: exception(Exception)] catch {...} |
+| 19 | 39 | CatchInFinally.cs:19:39:19:54 | [exception: NullReferenceException, finally: exception(Exception)] ... == ... | true | 20 | 13 | CatchInFinally.cs:20:13:22:13 | [finally: exception(Exception)] {...} |
+| 19 | 39 | CatchInFinally.cs:19:39:19:54 | [exception: NullReferenceException] ... == ... | false | 23 | 13 | CatchInFinally.cs:23:13:26:13 | catch {...} |
+| 19 | 39 | CatchInFinally.cs:19:39:19:54 | [exception: NullReferenceException] ... == ... | true | 20 | 13 | CatchInFinally.cs:20:13:22:13 | {...} |
 | 21 | 21 | Switch.cs:21:21:21:29 | ... == ... | false | 23 | 27 | Switch.cs:23:27:23:27 | 0 |
 | 21 | 21 | Switch.cs:21:21:21:29 | ... == ... | true | 22 | 21 | Switch.cs:22:21:22:27 | return ...; |
 | 22 | 18 | cflow.cs:22:18:22:23 | ... < ... | false | 24 | 9 | cflow.cs:24:9:34:9 | for (...;...;...) ... |
