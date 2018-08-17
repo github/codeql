@@ -5,7 +5,7 @@ typedef __builtin_va_list __gnuc_va_list;
 #define va_copy(d,s)	__builtin_va_copy(d,s)
 typedef __gnuc_va_list va_list;
 
-void output(const char *text, ...) {
+void VarArgs(const char *text, ...) {
   va_list args;
   va_start(args, text);
   va_end (args);

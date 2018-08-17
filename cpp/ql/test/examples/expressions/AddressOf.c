@@ -1,3 +1,3 @@
-void v(int i) {
+void AddressOf(int i) {
   int *j = &i;
 }

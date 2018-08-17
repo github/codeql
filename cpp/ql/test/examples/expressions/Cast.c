@@ -1,3 +1,3 @@
-void v(char *c, void *v) {
+void Cast(char *c, void *v) {
   c = (char *)v;
 }

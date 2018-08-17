@@ -1,175 +1,239 @@
 private import IRImpl
 import cpp
 
-private int getInstructionIndexInBlock(Instruction instr) {
-  exists(IRBlock block |
-    block = instr.getBlock() and
+private newtype TPrintableIRNode =
+  TPrintableFunctionIR(FunctionIR funcIR) or
+  TPrintableIRBlock(IRBlock block) or
+  TPrintableInstruction(Instruction instr)
+
+/**
+ * A node to be emitted in the IR graph.
+ */
+abstract class PrintableIRNode extends TPrintableIRNode {
+  abstract string toString();
+
+  /**
+   * Gets the location to be emitted for the node.
+   */
+  abstract Location getLocation();
+
+  /**
+   * Gets the label to be emitted for the node.
+   */
+  abstract string getLabel();
+
+  /**
+   * Gets the order in which the node appears in its parent node.
+   */
+  abstract int getOrder();
+
+  /**
+   * Gets the parent of this node.
+   */
+  abstract PrintableIRNode getParent();
+  
+  /**
+   * Gets the kind of graph represented by this node ("graph" or "tree").
+   */
+  string getGraphKind() {
+    none()
+  }
+
+  /**
+   * Holds if this node should always be rendered as text, even in a graphical
+   * viewer.
+   */
+  predicate forceText() {
+    none()
+  }
+
+  /**
+   * Gets the value of the node property with the specified key.
+   */
+  string getProperty(string key) {
+    key = "semmle.label" and result = getLabel() or
+    key = "semmle.order" and result = getOrder().toString() or
+    key = "semmle.graphKind" and result = getGraphKind() or
+    key = "semmle.forceText" and forceText() and result = "true"
+  }
+}
+
+/**
+ * An IR graph node representing a `FunctionIR` object.
+ */
+class PrintableFunctionIR extends PrintableIRNode, TPrintableFunctionIR {
+  FunctionIR funcIR;
+
+  PrintableFunctionIR() {
+    this = TPrintableFunctionIR(funcIR)
+  }
+
+  override string toString() {
+    result = funcIR.toString()
+  }
+
+  override Location getLocation() {
+    result = funcIR.getLocation()
+  }
+
+  override string getLabel() {
+    result = funcIR.getFunction().getFullSignature()
+  }
+
+  override int getOrder() {
+    this = rank[result + 1](PrintableFunctionIR orderedFunc, Location location |
+      location = orderedFunc.getFunctionIR().getLocation() |
+      orderedFunc order by location.getFile().getURL(), location.getStartLine(),
+        location.getStartColumn(), orderedFunc.getLabel()
+    )
+  }
+
+  override final PrintableIRNode getParent() {
+    none()
+  }
+
+  final FunctionIR getFunctionIR() {
+    result = funcIR
+  }
+}
+
+/**
+ * An IR graph node representing an `IRBlock` object.
+ */
+class PrintableIRBlock extends PrintableIRNode, TPrintableIRBlock {
+  IRBlock block;
+
+  PrintableIRBlock() {
+    this = TPrintableIRBlock(block)
+  }
+
+  override string toString() {
+    result = getLabel()
+  }
+
+  override Location getLocation() {
+    result = block.getLocation()
+  }
+
+  override string getLabel() {
+    result = "Block " + block.getDisplayIndex().toString()
+  }
+
+  override int getOrder() {
+    result = block.getDisplayIndex()
+  }
+
+  override final string getGraphKind() {
+    result = "tree"
+  }
+
+  override final predicate forceText() {
+    any()
+  }
+
+  override final PrintableFunctionIR getParent() {
+    result.getFunctionIR() = block.getFunctionIR()
+  }
+
+  final IRBlock getBlock() {
+    result = block
+  }
+}
+
+/**
+ * An IR graph node representing an `Instruction`.
+ */
+class PrintableInstruction extends PrintableIRNode, TPrintableInstruction {
+  Instruction instr;
+
+  PrintableInstruction() {
+    this = TPrintableInstruction(instr)
+  }
+
+  override string toString() {
+    result = instr.toString()
+  }
+
+  override Location getLocation() {
+    result = instr.getLocation()
+  }
+
+  override string getLabel() {
+    exists(IRBlock block |
+      instr = block.getAnInstruction() and
+      exists(string resultString, string operationString, string operandsString,
+        int resultWidth, int operationWidth |
+        resultString = instr.getResultString() and
+        operationString = instr.getOperationString() and
+        operandsString = instr.getOperandsString() and
+        columnWidths(block, resultWidth, operationWidth) and
+        result = resultString + getPaddingString(resultWidth - resultString.length()) +
+          " = " + operationString + getPaddingString(operationWidth - operationString.length()) +
+          " : " + operandsString
+      )
+    )
+  }
+
+  override int getOrder() {
+    result = instr.getDisplayIndexInBlock()
+  }
+
+  override final PrintableIRBlock getParent() {
+    result.getBlock() = instr.getBlock()
+  }
+
+  final Instruction getInstruction() {
+    result = instr
+  }
+}
+
+private predicate columnWidths(IRBlock block, int resultWidth, int operationWidth) {
+  resultWidth = max(Instruction instr | instr.getBlock() = block | instr.getResultString().length()) and
+  operationWidth = max(Instruction instr | instr.getBlock() = block | instr.getOperationString().length())
+}
+
+private int maxColumnWidth() {
+  result = max(Instruction instr, int width |
+    width = instr.getResultString().length() or
+    width = instr.getOperationString().length() or
+    width = instr.getOperandsString().length()  |
+    width)
+}
+
+private string getPaddingString(int n) {
+  n = 0 and result = "" or
+  n > 0 and n <= maxColumnWidth() and result = getPaddingString(n - 1) + " "
+}
+
+query predicate nodes(PrintableIRNode node, string key, string value) {
+  value = node.getProperty(key)
+}
+
+private int getSuccessorIndex(IRBlock pred, IRBlock succ) {
+  succ = rank[result + 1](IRBlock aSucc, EdgeKind kind |
+    aSucc = pred.getSuccessor(kind) |
+    aSucc order by kind.toString()
+  )
+}
+
+query predicate edges(PrintableIRBlock pred, PrintableIRBlock succ, string key, string value) {
+  exists(EdgeKind kind, IRBlock predBlock, IRBlock succBlock |
+    predBlock = pred.getBlock() and
+    succBlock = succ.getBlock() and
+    predBlock.getSuccessor(kind) = succBlock and
     (
-      exists(int index, int phiCount |
-        phiCount = count(block.getAPhiInstruction()) and
-        instr = block.getInstruction(index) and
-        result = index + phiCount
+      (
+        key = "semmle.label" and
+        value = kind.toString()
       ) or
       (
-        instr instanceof PhiInstruction and
-        instr = rank[result + 1](PhiInstruction phiInstr |
-          phiInstr = block.getAPhiInstruction() |
-          phiInstr order by phiInstr.getUniqueId()
-        )
+        key = "semmle.order" and
+        value = getSuccessorIndex(predBlock, succBlock).toString()
       )
     )
   )
 }
 
-private string getInstructionResultId(Instruction instr) {
-  result = getResultPrefix(instr) + getBlockId(instr.getBlock()) + "_" +
-    getInstructionIndexInBlock(instr).toString()
-}
-
-private string getResultPrefix(Instruction instr) {
-  if instr.hasMemoryResult() then
-    if instr.isResultModeled() then
-      result = "@m"
-    else
-      result = "@mu"
-  else
-    result = "@r"
-}
-
-/**
- * Gets the identifier of the specified function scope.
- * Currently just returns the signature of the function.
- */
-private string getScopeId(Function func) {
-  result = func.getFullSignature()
-}
-
-/**
- * Gets the unique identifier of the block within its function.
- * Currently returns a string representation of an integer in the range
- * [0..numBlocks - 1].
- */
-private string getBlockId(IRBlock block) {
-  exists(int rankIndex |
-    block = rank[rankIndex + 1](IRBlock funcBlock |
-      funcBlock.getFunction() = block.getFunction() |
-      funcBlock order by funcBlock.getUniqueId()
-    ) and
-    result = rankIndex.toString()
-  )
-}
-
-/**
- * Prints the full signature and qualified name for each scope. This is primarily
- * so that post-processing tools can identify function overloads, which will have
- * different signatures but the same qualified name.
- */
-query predicate printIRGraphScopes(string scopeId, string qualifiedName) {
-  exists(FunctionIR ir, Function func |
-    func = ir.getFunction() and
-    scopeId = getScopeId(func) and
-    qualifiedName = func.getQualifiedName()
-  )
-}
-
-query predicate printIRGraphNodes(string scopeId, string blockId, string label, string location) {
-  exists(IRBlock block |
-    scopeId = getScopeId(block.getFunction()) and
-    blockId = getBlockId(block) and
-    label = "" and
-    location = ""
-  )
-}
-
-query predicate printIRGraphInstructions(string scopeId, string blockId,
-  string id, string label, string location) {
-  exists(IRBlock block, Instruction instr |
-    instr = block.getAnInstruction() and
-    label = instr.toString() and
-    location = instr.getLocation().toString() and
-    scopeId = getScopeId(block.getFunction()) and
-    blockId = getBlockId(block) and
-    id = getInstructionIndexInBlock(instr).toString()
-  )
-}
-
-query predicate printIRGraphEdges(string scopeId,
-  string predecessorId, string successorId, string label) {
-  exists(IRBlock predecessor, IRBlock successor, EdgeKind kind |
-    scopeId = getScopeId(predecessor.getFunction()) and
-    predecessor.getSuccessor(kind) = successor and
-    predecessorId = getBlockId(predecessor) and
-    successorId = getBlockId(successor) and
-    label = kind.toString()
-  )
-}
-
-private string getValueCategoryString(Instruction instr) {
-  if instr.isGLValue() then
-    result = "glval:"
-  else
-    result = ""
-}
-
-private string getResultTypeString(Instruction instr) {
-  exists(Type resultType, string valcat |
-    resultType = instr.getResultType() and
-    valcat = getValueCategoryString(instr) and
-    if resultType instanceof UnknownType and exists(instr.getResultSize()) then
-      result = valcat + resultType.toString() + "[" + instr.getResultSize().toString() + "]"
-    else
-      result = valcat + resultType.toString()
-  )
-}
-
-query predicate printIRGraphDestinationOperands(string scopeId, string blockId,
-  string instructionId, int operandId, string label) {
-  exists(IRBlock block, Instruction instr |
-    block.getAnInstruction() = instr and
-    scopeId = getScopeId(block.getFunction()) and
-    blockId = getBlockId(block) and
-    instructionId = getInstructionIndexInBlock(instr).toString() and
-    not instr.getResultType() instanceof VoidType and
-    operandId = 0 and
-    label = getInstructionResultId(instr) + 
-      "(" + getResultTypeString(instr) + ")"
-  )
-}
-
-private string getOperandTagLabel(OperandTag tag) {
-  (
-    tag instanceof PhiOperand and
-    result = "from " + getBlockId(tag.(PhiOperand).getPredecessorBlock()) + ": "
-  )
-  or (
-    tag instanceof ThisArgumentOperand and
-    result = "this:"
-  )
-  or (
-    not tag instanceof PhiOperand and
-    not tag instanceof ThisArgumentOperand and
-    result = ""
-  )
-}
-
-query predicate printIRGraphSourceOperands(string scopeId, string blockId,
-  string instructionId, int operandId, string label) {
-  exists(IRBlock block, Instruction instr |
-    block.getAnInstruction() = instr and
-    blockId = getBlockId(block) and
-    scopeId = getScopeId(block.getFunction()) and
-    instructionId = getInstructionIndexInBlock(instr).toString() and
-    if (instr instanceof UnmodeledUseInstruction) then (
-      operandId = 0 and
-      label = "@mu*"
-    )
-    else (
-      exists(OperandTag tag, Instruction operandInstr |
-        operandInstr = instr.getOperand(tag) and
-        operandId = tag.getSortOrder() and
-        label = getOperandTagLabel(tag) + 
-          getInstructionResultId(operandInstr)
-      )
-    )
-  )
+query predicate parents(PrintableIRNode child, PrintableIRNode parent) {
+  parent = child.getParent()
 }

@@ -1,3 +1,3 @@
-void v(int *i, int j) {
+void PointerDereference(int *i, int j) {
   j = *i;
 }

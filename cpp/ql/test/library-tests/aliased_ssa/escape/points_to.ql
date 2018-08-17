@@ -8,4 +8,4 @@ where
     resultPointsTo(instr, var, bitOffset) and
     pointsTo = var.toString() + getBitOffsetString(bitOffset)
   )
-select instr, pointsTo
+select instr.getLocation().toString(), instr.getOperationString(), pointsTo

@@ -3,7 +3,7 @@ class F {
   public:
   F() { } 
 };
-void f(int i) {
+void Throw(int i) {
   try {
     if(i)
       throw E();
