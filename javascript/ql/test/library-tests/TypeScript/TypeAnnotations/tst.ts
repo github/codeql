@@ -118,3 +118,14 @@ function hasThisParam(this: void, x: number, y: string) {}
 interface InterfaceWithThisParam {
   hasThisParam(this: InterfaceWithThisParam);
 }
+
+var importedType: import("type");
+var importedTypeGeneric: import("type")<string>;
+var importedQualifiedType: import("namespace").Foo;
+var importedQualifiedTypeGeneric: import("namespace").Foo<string>;
+var importedTypeof: typeof import("value");
+var importedQualifiedTypeof: typeof import("value").x;
+var importedQualifiedTypeWhitespace: import(
+  'awkard-namespace'
+  )
+  .bar;
