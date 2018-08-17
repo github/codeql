@@ -36,12 +36,9 @@ module ServerSideUrlRedirect {
   }
 
   /**
-   * Gets a "prefix predecessor" of `nd`, that is, either a normal data flow predecessor
-   * or the left operand of `nd` if it is a concatenation.
+   * Gets the left operand of `nd` if it is a concatenation.
    */
-  private DataFlow::Node prefixPred(DataFlow::Node nd) {
-    result = nd.getAPredecessor()
-    or
+  private DataFlow::Node getPrefixOperand(DataFlow::Node nd) {
     exists (Expr e | e instanceof AddExpr or e instanceof AssignAddExpr |
       nd = DataFlow::valueNode(e) and
       result = DataFlow::valueNode(e.getChildExpr(0))
@@ -53,7 +50,8 @@ module ServerSideUrlRedirect {
    */
   private DataFlow::Node prefixCandidate(Sink sink) {
     result = sink or
-    result = prefixPred(prefixCandidate(sink))
+    result = getPrefixOperand(prefixCandidate(sink)) or
+    result = prefixCandidate(sink).getAPredecessor()
   }
   
   /**
@@ -62,7 +60,8 @@ module ServerSideUrlRedirect {
   private Expr getAPrefix(Sink sink) {
     exists (DataFlow::Node prefix |
       prefix = prefixCandidate(sink) and
-      not exists(prefixPred(prefix)) and
+      not exists(getPrefixOperand(prefix)) and
+      not exists(prefix.getAPredecessor()) and
       result = prefix.asExpr()
     )
   }
