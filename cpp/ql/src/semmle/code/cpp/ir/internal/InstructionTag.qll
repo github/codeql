@@ -17,8 +17,6 @@ private predicate elementIsInitialized(int elementIndex) {
 
 newtype TInstructionTag =
   OnlyInstructionTag() or  // Single instruction (not including implicit Load)
-  InitializerUninitializedTag() or  // Source expression of initializer
-  ParameterInitializerTag() or
   InitializeThisTag() or
   InitializerVariableAddressTag() or
   InitializerLoadStringTag() or
@@ -88,8 +86,6 @@ newtype TInstructionTag =
  */
 string getInstructionTagId(TInstructionTag tag) {
   tag = OnlyInstructionTag() and result = "Only" or  // Single instruction (not including implicit Load)
-  tag = InitializerUninitializedTag() and result = "InitUninit" or  // Source expression of initializer
-  tag = ParameterInitializerTag() and result = "ParamInit" or
   tag = InitializerVariableAddressTag() and result = "InitVarAddr" or
   tag = InitializerStoreTag() and result = "InitStore" or
   tag = AssignOperationLoadTag() and result = "AssignOpLoad" or

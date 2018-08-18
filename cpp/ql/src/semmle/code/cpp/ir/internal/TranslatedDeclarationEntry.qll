@@ -98,8 +98,8 @@ abstract class TranslatedVariableDeclaration extends
 
 /**
  * Represents the IR translation of a local variable with no initializer. The
- * generated IR stores the result of an `Uninitialized` instruction into the
- * variable.
+ * generated IR stores into the variable using an `Uninitialized` instruction,
+ * rather than a `Store`.
  */
 class TranslatedUninitializedVariable extends
   TranslatedVariableDeclaration {
@@ -127,12 +127,6 @@ class TranslatedUninitializedVariable extends
     ) or
     ( 
       tag = InitializerStoreTag() and
-      opcode instanceof Opcode::Store and
-      resultType = var.getType().getUnspecifiedType() and
-      isGLValue = false
-    ) or
-    (
-      tag = InitializerUninitializedTag() and
       opcode instanceof Opcode::Uninitialized and
       resultType = var.getType().getUnspecifiedType() and
       isGLValue = false
@@ -145,10 +139,6 @@ class TranslatedUninitializedVariable extends
     (
       (
         tag = InitializerVariableAddressTag() and
-        result = getInstruction(InitializerUninitializedTag())
-      ) or
-      (
-        tag = InitializerUninitializedTag() and
         result = getInstruction(InitializerStoreTag())
       ) or
       (
@@ -169,11 +159,7 @@ class TranslatedUninitializedVariable extends
       (
         operandTag instanceof LoadStoreAddressOperand and
         result = getInstruction(InitializerVariableAddressTag())
-      ) or
-      (
-        operandTag instanceof CopySourceOperand and
-        result = getInstruction(InitializerUninitializedTag())
-      )
+      ) 
     )
   }
 

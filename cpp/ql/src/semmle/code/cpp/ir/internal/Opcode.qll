@@ -92,8 +92,8 @@ abstract class BuiltInOpcode extends Opcode {}
 
 module Opcode {
   class NoOp extends Opcode, TNoOp { override final string toString() { result = "NoOp" } }
-  class Uninitialized extends Opcode, TUninitialized { override final string toString() { result = "Uninitialized" } }
-  class InitializeParameter extends Opcode, TInitializeParameter { override final string toString() { result = "InitializeParameter" } }
+  class Uninitialized extends MemoryAccessOpcode, TUninitialized { override final string toString() { result = "Uninitialized" } }
+  class InitializeParameter extends MemoryAccessOpcode, TInitializeParameter { override final string toString() { result = "InitializeParameter" } }
   class InitializeThis extends Opcode, TInitializeThis { override final string toString() { result = "InitializeThis" } }
   class EnterFunction extends Opcode, TEnterFunction { override final string toString() { result = "EnterFunction" } }
   class ExitFunction extends Opcode, TExitFunction { override final string toString() { result = "ExitFunction" } }
