@@ -1,8 +1,3 @@
-/**
- * @kind graph
- * @id nodegraph
- */
-
 import csharp
 import semmle.code.csharp.controlflow.ControlFlowGraph
 
