@@ -3855,7 +3855,7 @@ ir.cpp:
 #  900|     r0_3(glval<int>) = VariableAddress[x]     : 
 #  900|     mu0_4(int)       = Store                  : r0_3, r0_2
 #  901|     r0_5(glval<int>) = VariableAddress[x]     : 
-#  901|     v0_6(void)       = ConvertToVoid          : r0_5
+#  901|     v0_6(void)       = Convert                : r0_5
 #  902|     v0_7(void)       = NoOp                   : 
 #  900|     v0_8(void)       = ReturnVoid             : 
 #  900|     v0_9(void)       = UnmodeledUse           : mu*
