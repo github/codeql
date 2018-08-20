@@ -58,7 +58,7 @@
 | macroinvocations.cpp:123:10:123:19 | MACRO_EXPR | macroinvocations.cpp:123:10:123:19 | 2 | getAGeneratedElement() getAnAffectedElement() getAnExpandedElement() |
 | macroinvocations.cpp:123:10:123:19 | MACRO_EXPR | macroinvocations.cpp:123:10:123:19 | 3 | getAGeneratedElement() getAnAffectedElement() getAnExpandedElement() |
 | macroinvocations.cpp:123:10:123:19 | MACRO_EXPR | macroinvocations.cpp:123:10:123:19 | 4 | getAGeneratedElement() getAnAffectedElement() getAnExpandedElement() |
-| macroinvocations.cpp:123:10:123:19 | MACRO_EXPR | macroinvocations.cpp:123:10:123:19 | (...) | getAGeneratedElement() getAnAffectedElement() getAnExpandedElement() getExpr() |
-| macroinvocations.cpp:123:10:123:19 | MACRO_EXPR | macroinvocations.cpp:123:10:123:19 | (...) | getAGeneratedElement() getAnAffectedElement() getAnExpandedElement() getExpr() |
+| macroinvocations.cpp:123:10:123:19 | MACRO_EXPR | macroinvocations.cpp:123:10:123:19 | (...) | getAGeneratedElement() getAnAffectedElement() getAnExpandedElement() |
+| macroinvocations.cpp:123:10:123:19 | MACRO_EXPR | macroinvocations.cpp:123:10:123:19 | (...) | getAGeneratedElement() getAnAffectedElement() getAnExpandedElement() |
 | macroinvocations.cpp:123:10:123:19 | MACRO_EXPR | macroinvocations.cpp:123:10:123:19 | ... * ... | getAGeneratedElement() getAnAffectedElement() getAnExpandedElement() getExpr() |
 | macroinvocations.cpp:123:10:123:19 | MACRO_EXPR | macroinvocations.cpp:123:10:123:19 | ... + ... | getAGeneratedElement() getAnAffectedElement() getAnExpandedElement() |
