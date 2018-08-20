@@ -165,10 +165,9 @@ module CleartextLogging {
 
     ObjectPasswordPropertySource() {
       exists (DataFlow::PropWrite write |
-        write.getPropertyName() = name and
         name.regexpMatch(suspiciousPassword()) and
         not name.regexpMatch(nonSuspicious()) and
-        this.(DataFlow::SourceNode).flowsTo(write.getBase()) and
+        write = this.(DataFlow::SourceNode).getAPropertyWrite(name) and
         // avoid safe values assigned to presumably unsafe names
         not write.getRhs() instanceof NonCleartextPassword
       )
@@ -190,13 +189,11 @@ module CleartextLogging {
       (
         this.asExpr().(VarAccess).getName() = name
         or
-        exists (DataFlow::PropRead read, DataFlow::Node base |
-          this = read and
-          base = read.getBase() and
-          read.getPropertyName() = name and
+        exists (DataFlow::SourceNode base |
+          this = base.getAPropertyRead(name) and
           // avoid safe values assigned to presumably unsafe names
           exists (DataFlow::SourceNode baseObj | baseObj.flowsTo(base) |
-            not baseObj.getAPropertyWrite(name).getRhs() instanceof NonCleartextPassword
+            not base.getAPropertyWrite(name).getRhs() instanceof NonCleartextPassword
           )
         )
       )
