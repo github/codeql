@@ -17,15 +17,23 @@ abstract class PrintfStyleCall extends DataFlow::CallNode {
    * Gets the ith argument to the format string.
    */
   abstract DataFlow::Node getFormatArgument(int i);
+
+  /**
+   * Holds if this call returns the formatted string.
+   */
+  abstract predicate returnsFormatted();
 }
 
 private class LibraryFormatter extends PrintfStyleCall {
 
   int formatIndex;
 
+  boolean returns;
+
   LibraryFormatter() {
     // built-in Node.js functions
     exists (string mod, string meth |
+      returns = false and
       mod = "console" and (
         (
           meth = "debug" or
@@ -40,6 +48,7 @@ private class LibraryFormatter extends PrintfStyleCall {
         meth = "assert" and formatIndex = 1
       )
       or
+      returns = true and
       mod = "util" and (
         (meth = "format" or meth = "log") and formatIndex = 0
         or
@@ -53,7 +62,7 @@ private class LibraryFormatter extends PrintfStyleCall {
       this = DataFlow::globalVarRef(mod).getAMemberCall(meth)
     )
     or
-    (
+    returns = true and (
       // https://www.npmjs.com/package/printf
       this = DataFlow::moduleImport("printf").getACall() and
       formatIndex in [0..1]
@@ -91,4 +100,9 @@ private class LibraryFormatter extends PrintfStyleCall {
     i >= 0 and
     result = getArgument(formatIndex + 1 + i)
   }
+
+  override predicate returnsFormatted() {
+    returns = true
+  }
+
 }
