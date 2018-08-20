@@ -686,6 +686,9 @@ class TypeExpr extends ExprOrType, @typeexpr {
   /** Holds if this is the `object` type. */
   predicate isObjectKeyword() { none() }
 
+  /** Holds if this is the `unknown` type. */
+  predicate isUnknownKeyword() { none() }
+
   /** Gets this type expression, with any surrounding parentheses removed. */
   override TypeExpr stripParens() {
     result = this
@@ -725,6 +728,7 @@ private class KeywordTypeExpr extends @keywordtypeexpr, TypeExpr {
   override predicate isSymbol() { getName() = "symbol" }
   override predicate isUniqueSymbol() { getName() = "unique symbol" }
   override predicate isObjectKeyword() { getName() = "object" }
+  override predicate isUnknownKeyword() { getName() = "unknown" }
 }
 
 /**
