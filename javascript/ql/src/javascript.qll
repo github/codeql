@@ -66,6 +66,7 @@ import semmle.javascript.frameworks.React
 import semmle.javascript.frameworks.ReactNative
 import semmle.javascript.frameworks.Request
 import semmle.javascript.frameworks.SQL
+import semmle.javascript.frameworks.StringFormatters
 import semmle.javascript.frameworks.UriLibraries
 import semmle.javascript.frameworks.XmlParsers
 import semmle.javascript.frameworks.xUnit
