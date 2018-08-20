@@ -128,58 +128,18 @@ private class AnalyzedThisInPropertyFunction extends AnalyzedThisExpr {
 }
 
 /**
- * Holds if the execution of function `f` may complete normally without
- * encountering a `return` or `throw` statement.
- *
- * Note that this is an overapproximation, that is, the predicate may hold
- * of functions that cannot actually complete normally, since it does not
- * account for `finally` blocks and does not check reachability.
- */
-predicate mayReturnImplicitly(Function f) {
-  exists (ConcreteControlFlowNode final |
-    final.getContainer() = f and
-    final.isAFinalNode() and
-    not final instanceof ReturnStmt and
-    not final instanceof ThrowStmt
-  )
-}
-
-/**
  * A call with inter-procedural type inference for the return value.
  */
-abstract class CallWithAnalyzedReturnFlow extends DataFlow::CallNode, DataFlow::AnalyzedValueNode {
+abstract class CallWithAnalyzedReturnFlow extends DataFlow::AnalyzedValueNode {
 
   /**
    * Gets a called function.
    */
-  abstract Function getAFunction();
-  
-  /**
-   * Gets a return value for this call.
-   */
-  AbstractValue getAReturnValue() {
-    exists (Function f | f = getAFunction() |
-      if f.isGenerator() or f.isAsync() then
-        result = TAbstractOtherObject()
-      else (
-        // explicit return value
-        result = f.getAReturnedExpr().analyze().getALocalValue()
-        or
-        // implicit return value
-        (
-          // either because execution of the function may terminate normally
-          mayReturnImplicitly(f)
-          or
-          // or because there is a bare `return;` statement
-          exists (ReturnStmt ret | ret = f.getAReturnStmt() | not exists(ret.getExpr()))
-        ) and
-        result = TAbstractUndefined()
-      )
-    )
-  }
+  abstract AnalyzedFunction getACallee();
 
   override AbstractValue getALocalValue() {
-    result = getAReturnValue()
+    result = getACallee().getAReturnValue() and
+    not this instanceof DataFlow::NewNode
   }
 }
 
@@ -194,8 +154,8 @@ private class IIFEWithAnalyzedReturnFlow extends CallWithAnalyzedReturnFlow {
     astNode = iife.getInvocation()
   }
   
-  override Function getAFunction() {
-    result = iife
+  override AnalyzedFunction getACallee() {
+    result = iife.analyze()
   }
   
 }
@@ -238,8 +198,8 @@ private class LocalFunctionCallWithAnalyzedReturnFlow extends CallWithAnalyzedRe
     this = f.getAnInvocation()
   }
 
-  override Function getAFunction() {
-    result = f
+  override AnalyzedFunction getACallee() {
+    result = f.analyze()
   }
 
 }
