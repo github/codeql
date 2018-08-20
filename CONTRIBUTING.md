@@ -4,6 +4,8 @@ We welcome contributions to our standard library and standard checks, got an ide
 
 Before we accept your pull request, we will require that you have agreed to our Contributor License Agreement, this is not something that you need to do before you submit your pull request, but until you've done so, we will be unable to accept your contribution.
 
+Please read our [QL Style Guide](docs/ql-style-guide.md) for information on how to format QL code in this repository.
+
 ## Using your personal data
 
 If you contribute to this project, we will record your name and email
