@@ -2,20 +2,45 @@ import semmle.code.cpp.Location
 private import semmle.code.cpp.Enclosing
 private import semmle.code.cpp.internal.Type
 
-cached @element resolveElement(@element e) {
+/**
+ * Get the `@element` that represents this `@element`.
+ * Normally this will simply be `e`, but sometimes it is not.
+ * For example, for an incomplete struct `e` the result may be a
+ * complete struct with the same name.
+ */
+private cached @element resolveElement(@element e) {
   if isClass(e)
   then result = resolve(e)
   else result = e
 }
 
+/**
+ * Get the `Element` that represents this `@element`.
+ * Normally this will simply be a cast of `e`, but sometimes it is not.
+ * For example, for an incomplete struct `e` the result may be a
+ * complete struct with the same name.
+ */
 Element mkElement(@element e) {
   result = resolveElement(e)
 }
 
+/**
+ * Get an `@element` that resolves to the `Element`. This should
+ * normally only be called from member predicates, where `e` is not
+ * `this` and you need the result for an argument to a database
+ * extensional.
+ * See `underlyingElement` for when `e` is `this`.
+ */
 @element unresolveElement(Element e) {
   resolveElement(result) = e
 }
 
+/**
+ * Get the `@element` that this `Element` extends. This should normally
+ * only be called from member predicates, where `e` is `this` and you
+ * need the result for an argument to a database extensional.
+ * See `unresolveElement` for when `e` is `this`.
+ */
 @element underlyingElement(Element e) {
   result = e
 }
