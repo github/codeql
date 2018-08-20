@@ -27,77 +27,102 @@ module ZipSlip {
     }
 
     override predicate isSource(DataFlow::Node source) {
-      exists(PropertyAccess pa |
-        source.asExpr() = archiveFullName(pa)
-      )
+      source instanceof Source
     }
 
     override predicate isSink(DataFlow::Node sink) {
-      exists(MethodCall mc |
-        sink.asExpr() = compressionExtractToFileArgument(mc) or
-        sink.asExpr() = fileOpenArgument(mc)
-      )
-      or
-      exists(ObjectCreation oc |
-        sink.asExpr() = streamConstructorArgument(oc) or
-        sink.asExpr() = fileInfoConstructorArgument(oc)
-      )
+      sink instanceof Sink
     }
 
     override predicate isSanitizer(DataFlow::Node node) {
-      exists(MethodCall mc |
-        node.asExpr() = fileNameExtraction(mc) or
-        node.asExpr() = stringCheck(mc)
+      node instanceof Sanitizer
+    }
+  }
+
+  /** An access to the `FullName` property of a `ZipArchiveEntry`. */
+  class ArchiveFullNameSource extends Source {
+    ArchiveFullNameSource() {
+      exists(PropertyAccess pa |
+        this.asExpr() = pa |
+        pa.getTarget().getDeclaringType().hasQualifiedName("System.IO.Compression.ZipArchiveEntry") and
+        pa.getTarget().getName() = "FullName" 
       )
     }
   }
 
-  // access to full name of the archive item
-  Expr archiveFullName(PropertyAccess pa) {
-    pa.getTarget().getDeclaringType().hasQualifiedName("System.IO.Compression.ZipArchiveEntry") and
-    pa.getTarget().getName() = "FullName" and
-    result = pa
+  /** An argument to the `ExtractToFile` extension method. */
+  class ExtractToFileArgSink extends Sink {
+    ExtractToFileArgSink() {
+      exists(MethodCall mc |
+        mc.getTarget().hasQualifiedName("System.IO.Compression.ZipFileExtensions", "ExtractToFile") and
+        this.asExpr() = mc.getArgumentForName("destinationFileName")
+      )
+    }
   }
 
-  // argument to extract to file extension method
-  Expr compressionExtractToFileArgument(MethodCall mc) {
-    mc.getTarget().hasQualifiedName("System.IO.Compression.ZipFileExtensions", "ExtractToFile") and
-    result = mc.getArgumentForName("destinationFileName")
+  /** A path argument to a `File.Open`, `File.OpenWrite` or `File.Create` method call. */
+  class FileOpenArgSink extends Sink {
+    FileOpenArgSink() {
+      exists(MethodCall mc |
+        mc.getTarget().hasQualifiedName("System.IO.File", "Open") or
+        mc.getTarget().hasQualifiedName("System.IO.File", "OpenWrite") or
+        mc.getTarget().hasQualifiedName("System.IO.File", "Create") |
+        this.asExpr() = mc.getArgumentForName("path")
+      )
+    }
   }
 
-  // File Stream created from tainted file name through File.Open/File.Create
-  Expr fileOpenArgument(MethodCall mc) {
-    (
-      mc.getTarget().hasQualifiedName("System.IO.File", "Open") or
-      mc.getTarget().hasQualifiedName("System.IO.File", "OpenWrite") or
-      mc.getTarget().hasQualifiedName("System.IO.File", "Create")
-    ) and
-    result = mc.getArgumentForName("path")
+  /** A path argument to a call to the `FileStream` constructor. */
+  class FileStreamArgSink extends Sink {
+    FileStreamArgSink() {
+      exists(ObjectCreation oc |
+        oc.getTarget().getDeclaringType().hasQualifiedName("System.IO.FileStream") |
+        this.asExpr() = oc.getArgumentForName("path")
+      )
+    }
   }
 
-  // File Stream created from tainted file name passed directly to the constructor
-  Expr streamConstructorArgument(ObjectCreation oc) {
-    oc.getTarget().getDeclaringType().hasQualifiedName("System.IO.FileStream") and
-    result = oc.getArgumentForName("path")
+  /**
+   * A path argument to a call to the `FileStream` constructor.
+   *
+   * This constructor can accept a tainted file name and subsequently be used to open a file stream.
+   */
+  class FileInfoArgSink extends Sink {
+    FileInfoArgSink() {
+      exists(ObjectCreation oc |
+        oc.getTarget().getDeclaringType().hasQualifiedName("System.IO.FileInfo") |
+        this.asExpr() = oc.getArgumentForName("fileName")
+      )
+    }
   }
 
-  // constructor to FileInfo can take tainted file name and subsequently be used to open file stream
-  Expr fileInfoConstructorArgument(ObjectCreation oc) {
-    oc.getTarget().getDeclaringType().hasQualifiedName("System.IO.FileInfo") and
-    result = oc.getArgumentForName("fileName")
-  }
-  // extracting just file name, not the full path
-  Expr fileNameExtraction(MethodCall mc) {
-    mc.getTarget().hasQualifiedName("System.IO.Path", "GetFileName") and
-    result = mc.getAnArgument()
+  /**
+   * An argument to GetFileName.
+   *
+   * This is considered a sanitizer because it extracts the just the file name, not the full path.
+   */
+  class GetFileNameSanitizer extends Sanitizer {
+    GetFileNameSanitizer() {
+      exists(MethodCall mc |
+        mc.getTarget().hasQualifiedName("System.IO.Path", "GetFileName") |
+        this.asExpr() = mc.getAnArgument()
+      )
+    }
   }
 
-  // Checks the string for relative path, or checks the destination folder for whitelisted/target path, etc.
-  Expr stringCheck(MethodCall mc) {
-    (
-       mc.getTarget().hasQualifiedName("System.String", "StartsWith") or
-       mc.getTarget().hasQualifiedName("System.String", "Substring")
-    ) and
-    result = mc.getQualifier()
+  /**
+   * A qualifier in a call to `StartsWith` or `Substring` string method.
+   *
+   * A call to a String method such as `StartsWith` or `Substring` can indicate a check for a
+   * relative path, or a check against the destination folder for whitelisted/target path, etc.
+   */
+  class StringCheckSanitizer extends Sanitizer {
+    StringCheckSanitizer() {
+      exists(MethodCall mc |
+        mc.getTarget().hasQualifiedName("System.String", "StartsWith") or
+        mc.getTarget().hasQualifiedName("System.String", "Substring") |
+        this.asExpr() = mc.getQualifier()
+      )
+    }
   }
 }
