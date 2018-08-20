@@ -12,12 +12,14 @@
 | IR: CallMin | 1 |
 | IR: CallNestedTemplateFunc | 1 |
 | IR: CallViaFuncPtr | 1 |
+| IR: CastToVoid | 1 |
 | IR: Comma | 1 |
 | IR: CompoundAssignment | 1 |
 | IR: ConditionValues | 13 |
 | IR: Conditional | 4 |
 | IR: Conditional_LValue | 4 |
 | IR: Conditional_Void | 4 |
+| IR: ConstantConditions | 4 |
 | IR: Constants | 1 |
 | IR: Continue | 6 |
 | IR: DeclareObject | 1 |

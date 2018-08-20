@@ -67,6 +67,40 @@ module InstructionSanity {
     not tag instanceof UnmodeledUseOperand
   }
 
+  /**
+   * Holds if `Phi` instruction `instr` is missing an operand corresponding to
+   * the predecessor block `pred`.
+   */
+  query predicate missingPhiOperand(PhiInstruction instr, IRBlock pred) {
+    pred = instr.getBlock().getAPredecessor() and
+    not exists(PhiOperand operand |
+      exists(instr.getOperand(operand)) and
+      operand.getPredecessorBlock() = pred
+    )
+  }
+
+  /**
+   * Holds if an instruction, other than `ExitFunction`, has no successors.
+   */
+  query predicate instructionWithoutSuccessor(Instruction instr) {
+    not exists(instr.getASuccessor()) and
+    not instr instanceof ExitFunctionInstruction and
+    // Phi instructions aren't linked into the instruction-level flow graph.
+    not instr instanceof PhiInstruction
+  }
+
+  /**
+   * Holds if a `Phi` instruction is present in a block with fewer than two
+   * predecessors.
+   */
+  query predicate unnecessaryPhiInstruction(PhiInstruction instr) {
+    count(instr.getBlock().getAPredecessor()) < 2
+  }
+
+  /**
+   * Holds if instruction `op` consumes an operand `operand` that was defined in
+   * a different function.
+   */
   query predicate operandAcrossFunctions(
     Instruction op, Instruction operand, OperandTag tag
   ) {
@@ -296,8 +330,7 @@ class Instruction extends Construction::TInstruction {
 
   /**
    * Gets the size of the result produced by this instruction, in bytes. If the
-   * instruction does not produce a result, or if the result does not have a
-   * known constant size, this predicate does not hold.
+   * result does not have a known constant size, this predicate does not hold.
    *
    * If `this.isGLValue()` holds for this instruction, the value of
    * `getResultSize()` will always be the size of a pointer.
@@ -312,7 +345,6 @@ class Instruction extends Construction::TInstruction {
     else if resultType instanceof UnknownType then
       result = Construction::getInstructionResultSize(this)
     else (
-      not resultType instanceof VoidType and
       result = resultType.getSize()
     )
   }

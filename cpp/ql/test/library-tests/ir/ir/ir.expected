@@ -3826,3 +3826,56 @@ ir.cpp:
 #  888|     v0_40(void)                    = ReturnVoid             : 
 #  888|     v0_41(void)                    = UnmodeledUse           : mu*
 #  888|     v0_42(void)                    = ExitFunction           : 
+
+#  900| CastToVoid(int) -> void
+#  900|   Block 0
+#  900|     v0_0(void)       = EnterFunction          : 
+#  900|     mu0_1(unknown)   = UnmodeledDefinition    : 
+#  900|     r0_2(int)        = InitializeParameter[x] : 
+#  900|     r0_3(glval<int>) = VariableAddress[x]     : 
+#  900|     mu0_4(int)       = Store                  : r0_3, r0_2
+#  901|     r0_5(glval<int>) = VariableAddress[x]     : 
+#  901|     v0_6(void)       = Convert                : r0_5
+#  902|     v0_7(void)       = NoOp                   : 
+#  900|     v0_8(void)       = ReturnVoid             : 
+#  900|     v0_9(void)       = UnmodeledUse           : mu*
+#  900|     v0_10(void)      = ExitFunction           : 
+
+#  904| ConstantConditions(int) -> void
+#  904|   Block 0
+#  904|     v0_0(void)        = EnterFunction          : 
+#  904|     mu0_1(unknown)    = UnmodeledDefinition    : 
+#  904|     r0_2(int)         = InitializeParameter[x] : 
+#  904|     r0_3(glval<int>)  = VariableAddress[x]     : 
+#  904|     mu0_4(int)        = Store                  : r0_3, r0_2
+#  905|     r0_5(glval<bool>) = VariableAddress[a]     : 
+#  905|     r0_6(bool)        = Constant[1]            : 
+#  905|     mu0_7(bool)       = Store                  : r0_5, r0_6
+#  906|     r0_8(glval<int>)  = VariableAddress[b]     : 
+#  906|     r0_9(bool)        = Constant[1]            : 
+#  906|     v0_10(void)       = ConditionalBranch      : r0_9
+#-----|   False -> Block 3
+#-----|   True -> Block 2
+
+#  906|   Block 1
+#  906|     r1_0(glval<int>) = VariableAddress[#temp906:11] : 
+#  906|     r1_1(int)        = Load                         : r1_0, mu0_1
+#  906|     mu1_2(int)       = Store                        : r0_8, r1_1
+#  907|     v1_3(void)       = NoOp                         : 
+#  904|     v1_4(void)       = ReturnVoid                   : 
+#  904|     v1_5(void)       = UnmodeledUse                 : mu*
+#  904|     v1_6(void)       = ExitFunction                 : 
+
+#  906|   Block 2
+#  906|     r2_0(glval<int>) = VariableAddress[x]           : 
+#  906|     r2_1(int)        = Load                         : r2_0, mu0_1
+#  906|     r2_2(glval<int>) = VariableAddress[#temp906:11] : 
+#  906|     mu2_3(int)       = Store                        : r2_2, r2_1
+#-----|   Goto -> Block 1
+
+#  906|   Block 3
+#  906|     r3_0(glval<int>) = VariableAddress[x]           : 
+#  906|     r3_1(int)        = Load                         : r3_0, mu0_1
+#  906|     r3_2(glval<int>) = VariableAddress[#temp906:11] : 
+#  906|     mu3_3(int)       = Store                        : r3_2, r3_1
+#-----|   Goto -> Block 1

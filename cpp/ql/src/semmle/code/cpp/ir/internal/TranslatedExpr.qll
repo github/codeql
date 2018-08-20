@@ -1139,7 +1139,8 @@ class TranslatedSimpleConversion extends TranslatedSingleInstructionConversion {
     conv instanceof IntegralToPointerConversion or
     conv instanceof GlvalueConversion or
     conv instanceof ArrayToPointerConversion or
-    conv instanceof PrvalueAdjustmentConversion
+    conv instanceof PrvalueAdjustmentConversion or
+    conv instanceof VoidConversion
   }
 
   override Opcode getOpcode() {

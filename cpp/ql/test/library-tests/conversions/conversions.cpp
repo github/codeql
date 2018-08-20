@@ -235,3 +235,16 @@ void FuncPtrConversions(int(*pfn)(int), void* p) {
   p = (void*)pfn;
   pfn = (int(*)(int))p;
 }
+
+int Func();
+
+void ConversionsToVoid() {
+  int x;
+  (void)x;
+  static_cast<void>(x);
+  (void)Func();
+  static_cast<void>(Func());
+  (void)1;
+  static_cast<void>(1);
+}
+

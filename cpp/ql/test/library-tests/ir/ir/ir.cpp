@@ -896,3 +896,12 @@ void VarArgUsage(int x, ...) {
   __builtin_va_end(args);
   __builtin_va_end(args2);
 }
+
+void CastToVoid(int x) {
+  (void)x;
+}
+
+void ConstantConditions(int x) {
+  bool a = true && true;
+  int b = (true) ? x : x;
+}
