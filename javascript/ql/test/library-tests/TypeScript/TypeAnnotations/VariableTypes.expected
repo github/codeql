@@ -69,3 +69,5 @@
 | tst.ts:126:5:126:18 | importedTypeof | importedTypeof | tst.ts:126:21:126:42 | typeof  ... value") |
 | tst.ts:127:5:127:27 | importe ... dTypeof | importedQualifiedTypeof | tst.ts:127:30:127:53 | typeof  ... lue").x |
 | tst.ts:128:5:128:35 | importe ... tespace | importedQualifiedTypeWhitespace | tst.ts:131:4:131:6 | bar |
+| tst.ts:133:5:133:28 | tupleWi ... Element | tupleWithOptionalElement | tst.ts:133:31:133:55 | [number ... umber?] |
+| tst.ts:134:5:134:14 | emptyTuple | emptyTuple | tst.ts:134:17:134:18 | [] |

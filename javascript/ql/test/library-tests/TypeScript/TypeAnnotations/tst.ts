@@ -129,3 +129,6 @@ var importedQualifiedTypeWhitespace: import(
   'awkard-namespace'
   )
   .bar;
+
+let tupleWithOptionalElement: [number, string, number?];
+let emptyTuple: [];

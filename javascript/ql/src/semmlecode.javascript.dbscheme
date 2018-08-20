@@ -556,7 +556,9 @@ case @typeexpr.kind of
 | 29 = @infertypeexpr
 | 30 = @importtypeaccess
 | 31 = @importnamespaceaccess
-| 32 = @importvartypeaccess;
+| 32 = @importvartypeaccess
+| 33 = @optionaltypeexpr
+;
 
 @typeref = @typeaccess | @typedecl;
 @typeidentifier = @typedecl | @localtypeaccess | @typelabel | @localvartypeaccess | @localnamespaceaccess;
