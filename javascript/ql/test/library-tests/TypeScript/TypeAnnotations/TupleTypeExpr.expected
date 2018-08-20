@@ -6,3 +6,8 @@
 | tst.ts:133:31:133:55 | [number ... umber?] | 0 | 3 | tst.ts:133:32:133:37 | number |
 | tst.ts:133:31:133:55 | [number ... umber?] | 1 | 3 | tst.ts:133:40:133:45 | string |
 | tst.ts:133:31:133:55 | [number ... umber?] | 2 | 3 | tst.ts:133:48:133:54 | number? |
+| tst.ts:135:27:135:47 | [number ... ring[]] | 0 | 2 | tst.ts:135:28:135:33 | number |
+| tst.ts:135:27:135:47 | [number ... ring[]] | 1 | 2 | tst.ts:135:36:135:46 | ...string[] |
+| tst.ts:136:39:136:68 | [number ... mber[]] | 0 | 3 | tst.ts:136:40:136:45 | number |
+| tst.ts:136:39:136:68 | [number ... mber[]] | 1 | 3 | tst.ts:136:48:136:54 | string? |
+| tst.ts:136:39:136:68 | [number ... mber[]] | 2 | 3 | tst.ts:136:57:136:67 | ...number[] |

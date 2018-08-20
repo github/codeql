@@ -132,3 +132,5 @@ var importedQualifiedTypeWhitespace: import(
 
 let tupleWithOptionalElement: [number, string, number?];
 let emptyTuple: [];
+let tupleWithRestElement: [number, ...string[]];
+let tupleWithOptionalAndRestElements: [number, string?, ...number[]];

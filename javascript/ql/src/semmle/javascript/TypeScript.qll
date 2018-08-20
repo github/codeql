@@ -1082,6 +1082,17 @@ class OptionalTypeExpr extends @optionaltypeexpr, TypeExpr {
 }
 
 /**
+ * A rest element in a tuple type, such as `...string[]` in `[number, ...string[]]`.
+ */
+class RestTypeExpr extends @resttypeexpr, TypeExpr {
+  /** Gets the type `T[]` in `...T[]`, such as `string[]` in `[number, ...string[]]`. */
+  TypeExpr getArrayType() { result = getChildTypeExpr(0) }
+
+  /** Gets the type `T` in `...T[]`, such as `string` in `[number, ...string[]]`. */
+  TypeExpr getElementType() { result = getArrayType().(ArrayTypeExpr).getElementType() }
+}
+
+/**
  * A possibly qualified name that refers to a variable from inside a type.
  *
  * This can occur as

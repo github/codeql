@@ -558,6 +558,7 @@ case @typeexpr.kind of
 | 31 = @importnamespaceaccess
 | 32 = @importvartypeaccess
 | 33 = @optionaltypeexpr
+| 34 = @resttypeexpr
 ;
 
 @typeref = @typeaccess | @typedecl;
