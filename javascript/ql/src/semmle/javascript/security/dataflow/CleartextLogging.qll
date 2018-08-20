@@ -1,5 +1,5 @@
 /**
- * Provides a dataflow tracking configuration for reasoning about cleartext logging of sensitive information.
+ * Provides a dataflow tracking configuration for reasoning about clear-text logging of sensitive information.
  */
 import javascript
 private import semmle.javascript.dataflow.InferredTypes
@@ -7,7 +7,7 @@ private import semmle.javascript.security.SensitiveActions::HeuristicNames
 
 module CleartextLogging {
   /**
-   * A data flow source for cleartext logging of sensitive information.
+   * A data flow source for clear-text logging of sensitive information.
    */
   abstract class Source extends DataFlow::Node {
     /** Gets a string that describes the type of this data flow source. */
@@ -15,21 +15,21 @@ module CleartextLogging {
   }
 
   /**
-   * A data flow sink for cleartext logging of sensitive information.
+   * A data flow sink for clear-text logging of sensitive information.
    */
   abstract class Sink extends DataFlow::Node { }
 
   /**
-   * A barrier for cleartext logging of sensitive information.
+   * A barrier for clear-text logging of sensitive information.
    */
   abstract class Barrier extends DataFlow::Node { }
 
   /**
-   * A dataflow tracking configuration for cleartext logging of sensitive information.
+   * A dataflow tracking configuration for clear-text logging of sensitive information.
    *
    * This configuration identifies flows from `Source`s, which are sources of
    * sensitive data, to `Sink`s, which is an abstract class representing all
-   * the places sensitive data may be stored in cleartext. Additional sources or sinks can be
+   * the places sensitive data may be stored in clear-text. Additional sources or sinks can be
    * added either by extending the relevant class, or by subclassing this configuration itself,
    * and amending the sources and sinks.
    */
@@ -95,7 +95,7 @@ module CleartextLogging {
   }
 
   /**
-   * A data flow node that does not contain a clear text password, according to its syntactic name.
+   * A data flow node that does not contain a clear-text password, according to its syntactic name.
    */
   private class NameGuidedNonCleartextPassword extends NonCleartextPassword {
 
@@ -129,7 +129,7 @@ module CleartextLogging {
   }
 
   /**
-   * A data flow node that receives flow that is not a clear text password.
+   * A data flow node that receives flow that is not a clear-text password.
    */
   private class NonCleartextPasswordFlow extends NonCleartextPassword {
 
@@ -151,14 +151,14 @@ module CleartextLogging {
   }
 
   /**
-   * A data flow node that does not contain a clear text password.
+   * A data flow node that does not contain a clear-text password.
    */
   private abstract class NonCleartextPassword extends DataFlow::Node { }
 
   /**
    * An object with a property that may contain password information
    *
-   * This is a source since `toString()` on this object will show the property value.
+   * This is a source since `console.log(obj)` will show the properties of `obj`.
    */
   private class ObjectPasswordPropertySource extends DataFlow::ValueNode, Source {
     string name;

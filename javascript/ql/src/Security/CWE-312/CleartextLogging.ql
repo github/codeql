@@ -1,11 +1,11 @@
 /**
- * @name Clear text logging of sensitive information
- * @description Sensitive information logged without encryption or hashing can expose it to an
- *              attacker.
+ * @name Clear-text logging of sensitive information
+ * @description Logging sensitive information without encryption or hashing can
+ *              expose it to an attacker.
  * @kind problem
  * @problem.severity error
  * @precision high
- * @id js/cleartext-logging
+ * @id js/clear-text-logging
  * @tags security
  *       external/cwe/cwe-312
  *       external/cwe/cwe-315

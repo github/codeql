@@ -16,8 +16,10 @@ abstract class LoggerCall extends DataFlow::CallNode {
 
 }
 
+/**
+ * Gets a log level name that is used in RFC5424, `npm`, `console`.
+ */
 private string getAStandardLoggerMethodName() {
-  // log level names used in RFC5424, `npm`, `console`
   result = "crit" or
   result = "debug" or
   result = "error" or
@@ -32,7 +34,7 @@ private string getAStandardLoggerMethodName() {
 }
 
 /**
- * Provides classes for working the builtin NodeJS/Browser `console`.
+ * Provides classes for working the builtin Node.js/Browser `console`.
  */
 private module Console {
 

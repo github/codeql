@@ -22,6 +22,7 @@ module HeuristicNames {
   string suspiciousNonPassword() {
     result = "(?is).*(secret|account|accnt|(?<!un)trusted).*"
   }
+
   /** A regular expression that identifies strings that look like they represent secret data that are passwords. */
   string suspiciousPassword() {
     result = "(?is).*(password|passwd).*"

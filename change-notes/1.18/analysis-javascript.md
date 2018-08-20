@@ -28,7 +28,7 @@
 
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
-| Clear text logging of sensitive information (`js/cleartext-logging`) | security, external/cwe/cwe-312, external/cwe/cwe-315, external/cwe/cwe-359 | Highlights logging of sensitive information, indicating a violation of [CWE-312](https://cwe.mitre.org/data/definitions/312.html). Results shown on lgtm by default. |
+| Clear-text logging of sensitive information (`js/clear-text-logging`) | security, external/cwe/cwe-312, external/cwe/cwe-315, external/cwe/cwe-359 | Highlights logging of sensitive information, indicating a violation of [CWE-312](https://cwe.mitre.org/data/definitions/312.html). Results shown on LGTM by default. |
 | Disabling Electron webSecurity (`js/disabling-electron-websecurity`) | security, frameworks/electron | Highlights Electron browser objects that are created with the `webSecurity` property set to false. Results shown on LGTM by default. |
 | Enabling Electron allowRunningInsecureContent (`js/enabling-electron-insecure-content`) | security, frameworks/electron | Highlights Electron browser objects that are created with the `allowRunningInsecureContent` property set to true. Results shown on LGTM by default. |
 | Use of externally-controlled format string (`js/tainted-format-string`) | security, external/cwe/cwe-134 | Highlights format strings containing user-provided data, indicating a violation of [CWE-134](https://cwe.mitre.org/data/definitions/134.html). Results shown on LGTM by default. |

@@ -15,7 +15,7 @@ which are stored on the machine of the end-user.
 <p>
 Ensure that sensitive information is always encrypted before being stored.
 If possible, avoid placing sensitive information in cookies altogether.
-Instead, prefer storing, in the cookie, a key that can be used to lookup the
+Instead, prefer storing, in the cookie, a key that can be used to look up the
 sensitive information.
 </p>
 <p>
