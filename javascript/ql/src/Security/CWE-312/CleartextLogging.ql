@@ -31,25 +31,8 @@ predicate inBrowserEnvironment(TopLevel tl) {
   )
 }
 
-/**
- * Holds if `sink` only is reachable in a "test" environment.
- */
-predicate inTestEnvironment(Sink sink) {
-  exists (IfStmt guard, Identifier id |
-    // heuristic: a deliberate environment choice by the programmer related to passwords implies a test environment
-    id.getName().regexpMatch("(?i).*(test|develop|production).*") and
-    id.(Expr).getParentExpr*() = guard.getCondition() and
-    (
-      guard.getAControlledStmt() = sink.asExpr().getEnclosingStmt() or
-      guard.getAControlledStmt().(BlockStmt).getAChildStmt() = sink.asExpr().getEnclosingStmt()
-    )
-  )
-}
-
 from Configuration cfg, Source source, DataFlow::Node sink
 where cfg.hasFlow(source, sink) and
       // ignore logging to the browser console (even though it is not a good practice)
-      not inBrowserEnvironment(sink.asExpr().getTopLevel()) and
-      // ignore logging when testing
-      not inTestEnvironment(sink)
+      not inBrowserEnvironment(sink.asExpr().getTopLevel())
 select sink, "Sensitive data returned by $@ is logged here.", source, source.describe()

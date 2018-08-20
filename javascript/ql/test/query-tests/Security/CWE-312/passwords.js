@@ -90,24 +90,24 @@
     console.log("Password is: " + redact('password', password));
 
     if (environment.isTestEnv()) {
-        console.log("Password is: " + password); // OK
+        console.log("Password is: " + password); // OK, but still flagged
     }
 
     if (environment.is(TEST)) {
         // NB: for security reasons, we only log passwords in test environments
-        console.log("Password is: " + password); // OK
+        console.log("Password is: " + password); // OK, but still flagged
     }
 
 
     if (x.test(y)) {
         f();
         // ...
-        console.log("Password is: " + password); // NOT OK, but not flagged
+        console.log("Password is: " + password); // NOT OK
         // ...
     }
 
     if (environment.isTestEnv())
-        console.log("Password is: " + password); // OK
+        console.log("Password is: " + password); // OK, but still flagged
 
     if (x.test(y)) {
         if (f()) {
@@ -116,7 +116,7 @@
     }
 
     if (!environment.isProduction()) {
-        console.log("Password is: " + password); // OK
+        console.log("Password is: " + password); // OK, but still flagged
     }
 
     console.log(name + ", " + password.toString()); // NOT OK
