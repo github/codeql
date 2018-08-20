@@ -17,6 +17,40 @@ http.createServer(function(req, res) {
 
 http.request({ auth: "auth" });
 
+function makeClientRequests() {
+    var req = http.request({}, (response) => {
+      response.statusCode;
+      response.on('data', (chunk) => {
+        chunk[0];
+      })
+    })
+    var post = http.request({url: 'https://example.com', method: 'POST'});
+    
+    post.on('response', (response) => {
+      response.on('data', (chunk) => {
+        chunk[0];
+      });
+    });
+    
+    post.on('redirect', (redirect) => { // Electron-specific APIs, not present on Node.js ClientRequests
+      redirect.statusCode;
+      post.followRedirect();
+    });
+    
+    post.on('login', (authInfo, callback) => {
+      authInfo.host;
+      callback('username', 'password');
+    });
+    
+    post.on('error', (error) => {
+      error.something;
+    });
+    
+    post.setHeader('referer', 'https://example.com');
+    post.write('stuff');
+    post.end('more stuff');
+}
+
 function getHandler() {
     return function(req,res){}
 }
