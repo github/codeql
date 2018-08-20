@@ -96,7 +96,7 @@ module ZipSlip {
   }
 
   /**
-   * An argument to `GetFileName`.
+   * An call to `GetFileName`.
    *
    * This is considered a sanitizer because it extracts just the file name, not the full path.
    */
@@ -110,16 +110,30 @@ module ZipSlip {
   }
 
   /**
-   * A qualifier in a call to `StartsWith` or `Substring` string method.
+   * A call to Substring.
    *
-   * A call to a String method such as `StartsWith` or `Substring` can indicate a check for a
+   * This is considered a sanitizer because `Substring` may be used to extract a single component
+   * of a path to avoid ZipSlip.
+   */
+  class SubstringSanitizer extends Sanitizer {
+    SubstringSanitizer() {
+      exists(MethodCall mc |
+        mc.getTarget().hasQualifiedName("System.String", "Substring") |
+        this.asExpr() = mc
+      )
+    }
+  }
+
+  /**
+   * A qualifier in a call to `StartsWith` string method.
+   *
+   * A call to a String method such as `StartsWith` can indicate a check for a
    * relative path, or a check against the destination folder for whitelisted/target path, etc.
    */
   class StringCheckSanitizer extends Sanitizer {
     StringCheckSanitizer() {
       exists(MethodCall mc |
-        mc.getTarget().hasQualifiedName("System.String", "StartsWith") or
-        mc.getTarget().hasQualifiedName("System.String", "Substring") |
+        mc.getTarget().hasQualifiedName("System.String", "StartsWith") |
         this.asExpr() = mc.getQualifier()
       )
     }
