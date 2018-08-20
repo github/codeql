@@ -9,7 +9,7 @@ You can use the [interactive query console](https://lgtm.com/help/lgtm/using-que
 
 ## Contributing
 
-We welcome contributions to our standard library and standard checks. Do you have an idea for a new check, or how to improve an existing query? Then please go ahead and open a pull request! Before you do, though, please take the time to read our [contributing guidelines](CONTRIBUTING.md).
+We welcome contributions to our standard library and standard checks. Do you have an idea for a new check, or how to improve an existing query? Then please go ahead and open a pull request! Before you do, though, please take the time to read our [contributing guidelines](CONTRIBUTING.md) and [QL style guide](docs/ql-style-guide.md).
 
 ## License
 
