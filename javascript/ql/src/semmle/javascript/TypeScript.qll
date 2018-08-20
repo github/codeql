@@ -2166,7 +2166,7 @@ class TupleType extends ArrayType, @tupletype {
   }
 
   /**
-   * Gets the number of elements in this tuple type.
+   * Gets the number of elements in this tuple type, including optional elements and the rest element.
    */
   int getNumElementType() {
     result = count(int i | exists(getElementType(i)))
@@ -2180,6 +2180,31 @@ class TupleType extends ArrayType, @tupletype {
    */
   PlainArrayType getUnderlyingArrayType() {
     result.getArrayElementType() = getArrayElementType()
+  }
+
+  /**
+   * Gets the number of required tuple elements, that is, excluding optional and rest elements.
+   *
+   * For example, the minimum length of `[number, string?, ...number[]]` is 1.
+   */
+  int getMinimumLength() {
+    tuple_type_min_length(this, result)
+  }
+
+  /**
+   * Holds if this tuple type ends with a rest element, such as `[number, ...string[]]`.
+   */
+  predicate hasRestElement() {
+    tuple_type_rest(this)
+  }
+
+  /**
+   * Gets the type of the rest element, if there is one.
+   *
+   * For example, the rest element of `[number, ...string[]]` is `string`.
+   */
+  Type getRestElementType() {
+    hasRestElement() and result = getElementType(getNumElementType() - 1)
   }
 }
 

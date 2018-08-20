@@ -738,6 +738,15 @@ self_types(
   int selfType: @typereference ref
 );
 
+tuple_type_min_length(
+  unique int typ: @type ref,
+  int minLength: int ref
+);
+
+tuple_type_rest(
+  unique int typ: @type ref
+);
+
 // comments
 comments (unique int id: @comment,
           int kind: int ref,
