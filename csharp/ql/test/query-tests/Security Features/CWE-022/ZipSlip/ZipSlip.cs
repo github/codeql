@@ -8,8 +8,7 @@ namespace ZipSlip
     class Program
     {
 
-        public static void UnzipFileByFile(ZipArchive archive,
-                                       string destDirectory)
+        public static void UnzipFileByFile(ZipArchive archive, string destDirectory)
         {
             foreach (var entry in archive.Entries)
             {
@@ -115,7 +114,7 @@ namespace ZipSlip
                     // GOOD: the path is checked in this extension method
                     archive.ExtractToDirectory(targetPath);
 
-		    UnzipToStream(file, targetPath);
+                    UnzipToStream(file, targetPath);
                 }
             }
         }
