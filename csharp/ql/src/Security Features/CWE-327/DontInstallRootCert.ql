@@ -32,5 +32,5 @@ class AddCertToRootStoreConfig extends DataFlow::Configuration {
 
 from Expr oc, Expr mc, AddCertToRootStoreConfig config
 where config.hasFlow(DataFlow::exprNode(oc), DataFlow::exprNode(mc))
-select mc, "Certificate added to the root certificate store. Do not add certificates to root certificate store."  
+select mc, "Certificate added to the root certificate store."
 
