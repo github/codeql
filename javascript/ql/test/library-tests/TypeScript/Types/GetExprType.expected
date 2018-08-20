@@ -75,6 +75,11 @@
 | tst.ts:33:5:33:16 | intersection | string & { x: string; } |
 | tst.ts:33:29:33:29 | x | string |
 | tst.ts:34:5:34:9 | tuple | [number, string] |
+| tst.ts:36:5:36:28 | tupleWi ... Element | [number, string, number?] |
+| tst.ts:37:5:37:14 | emptyTuple | [] |
+| tst.ts:38:5:38:24 | tupleWithRestElement | [number, ...string[]] |
+| tst.ts:39:5:39:36 | tupleWi ... lements | [number, string?, ...number[]] |
+| tst.ts:40:5:40:15 | unknownType | unknown |
 | type_alias.ts:3:5:3:5 | b | boolean |
 | type_definition_objects.ts:1:13:1:17 | dummy | typeof dummy.ts |
 | type_definition_objects.ts:1:24:1:32 | "./dummy" | any |
