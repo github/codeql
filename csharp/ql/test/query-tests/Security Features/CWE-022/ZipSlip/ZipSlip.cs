@@ -31,7 +31,15 @@ namespace ZipSlip
                     string destFilePath = Path.Combine(destDirectory, fullPath);
                     entry.ExtractToFile(destFilePath, true);
 
-                    // GOOD: some check on destination.
+                    // BAD: destFilePath isn't fully resolved, so may still contain ..
+                    if (destFilePath.StartsWith(destDirectory))
+                        entry.ExtractToFile(destFilePath, true);
+
+                    // BAD
+                    destFilePath = Path.GetFullPath(Path.Combine(destDirectory, fullPath));
+                    entry.ExtractToFile(destFilePath, true);
+
+                    // GOOD: a check for StartsWith against a fully resolved path
                     if (destFilePath.StartsWith(destDirectory))
                         entry.ExtractToFile(destFilePath, true);
                 }
@@ -115,7 +123,7 @@ namespace ZipSlip
                     // GOOD: the path is checked in this extension method
                     archive.ExtractToDirectory(targetPath);
 
-		    UnzipToStream(file, targetPath);
+                    UnzipToStream(file, targetPath);
                 }
             }
         }

@@ -4,6 +4,8 @@
 import csharp
 
 module ZipSlip {
+  import semmle.code.csharp.controlflow.Guards
+
   /**
    * A data flow source for unsafe zip extraction.
    */
@@ -125,16 +127,26 @@ module ZipSlip {
   }
 
   /**
-   * A qualifier in a call to `StartsWith` string method.
+   * An expression which is guarded by a call to `StartsWith`.
    *
    * A call to a String method such as `StartsWith` can indicate a check for a
    * relative path, or a check against the destination folder for whitelisted/target path, etc.
    */
   class StringCheckSanitizer extends Sanitizer {
     StringCheckSanitizer() {
-      exists(MethodCall mc |
-        mc.getTarget().hasQualifiedName("System.String", "StartsWith") |
-        this.asExpr() = mc.getQualifier()
+      exists(GuardedExpr ge, MethodCall mc, Expr startsWithQualifier |
+        ge = this.asExpr() and
+        ge.isGuardedBy(mc, startsWithQualifier, true) |
+        mc.getTarget().hasQualifiedName("System.String", "StartsWith") and
+        mc.getQualifier() = startsWithQualifier and
+        /*
+         * A StartsWith check against Path.Combine is not sufficient, because the ".." elements have
+         * not yet been resolved.
+         */
+        not exists(MethodCall combineCall |
+          combineCall.getTarget().hasQualifiedName("System.IO.Path", "Combine") and
+          DataFlow::localFlow(DataFlow::exprNode(combineCall), DataFlow::exprNode(startsWithQualifier))
+        )
       )
     }
   }
