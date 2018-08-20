@@ -32,3 +32,9 @@ const uniqueSymbolType: unique symbol = null;
 let objectType: object;
 let intersection: string & {x: string};
 let tuple: [number, string];
+
+let tupleWithOptionalElement: [number, string, number?];
+let emptyTuple: [];
+let tupleWithRestElement: [number, ...string[]];
+let tupleWithOptionalAndRestElements: [number, string?, ...number[]];
+let unknownType: unknown;

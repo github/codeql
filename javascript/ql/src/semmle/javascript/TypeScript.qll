@@ -2189,6 +2189,11 @@ class TupleType extends ArrayType, @tupletype {
 class AnyType extends Type, @anytype {}
 
 /**
+ * The predefined `unknown` type.
+ */
+class UnknownType extends Type, @unknowntype {}
+
+/**
  * The predefined `string` type.
  */
 class StringType extends Type, @stringtype {}

@@ -610,6 +610,7 @@ case @type.kind of
 | 20 = @thistype
 | 21 = @numberliteraltype
 | 22 = @stringliteraltype
+| 23 = @unknowntype
 ;
 
 @booleanliteraltype = @truetype | @falsetype;
