@@ -101,3 +101,4 @@
 * HTTP header names are now always normalized to lower case to reflect the fact that they are case insensitive. In particular, the result of `HeaderDefinition.getAHeaderName`, and the first parameter of `HeaderDefinition.defines`, `ExplicitHeaderDefinition.definesExplicitly` and `RouteHandler.getAResponseHeader` is now always a lower-case string.
 * The class `JsonParseCall` has been deprecated. Use `JsonParserCall` instead.
 * The handling of spread arguments in the data flow library has been changed: `DataFlow::InvokeNode.getArgument(i)` is now only defined when there is no spread argument at or before argument position `i`, and similarly `InvokeNode.getNumArgument` is only defined for invocations without spread arguments.
+* HTTP and HTTPS requests made using the Node.js `http.request` and `https.request` APIs and the Electron `Electron.net.request` and `Electron.ClientRequest` APIs are modeled as `RemoteFlowSources`.
