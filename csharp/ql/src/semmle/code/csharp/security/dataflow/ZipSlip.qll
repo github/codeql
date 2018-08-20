@@ -4,6 +4,54 @@
 import csharp
 
 module ZipSlip {
+
+  /**
+   * A data flow source for unsafe zip extraction.
+   */
+  abstract class Source extends DataFlow::Node { }
+
+  /**
+   * A data flow sink for unsafe zip extraction.
+   */
+  abstract class Sink extends DataFlow::ExprNode { }
+
+  /**
+   * A sanitizer for unsafe zipe extraction.
+   */
+  abstract class Sanitizer extends DataFlow::ExprNode { }
+
+  /** A taint tracking configuration for ZipSlip */
+  class ZipSlipTaintTrackingConfiguration extends TaintTracking::Configuration {
+    ZipSlipTaintTrackingConfiguration() {
+      this = "ZipSlipTaintTracking"
+    }
+
+    override predicate isSource(DataFlow::Node source) {
+      exists(PropertyAccess pa |
+        source.asExpr() = archiveFullName(pa)
+      )
+    }
+
+    override predicate isSink(DataFlow::Node sink) {
+      exists(MethodCall mc |
+        sink.asExpr() = compressionExtractToFileArgument(mc) or
+        sink.asExpr() = fileOpenArgument(mc)
+      )
+      or
+      exists(ObjectCreation oc |
+        sink.asExpr() = streamConstructorArgument(oc) or
+        sink.asExpr() = fileInfoConstructorArgument(oc)
+      )
+    }
+
+    override predicate isSanitizer(DataFlow::Node node) {
+      exists(MethodCall mc |
+        node.asExpr() = fileNameExtraction(mc) or
+        node.asExpr() = stringCheck(mc)
+      )
+    }
+  }
+
   // access to full name of the archive item
   Expr archiveFullName(PropertyAccess pa) {
     pa.getTarget().getDeclaringType().hasQualifiedName("System.IO.Compression.ZipArchiveEntry") and
@@ -51,37 +99,5 @@ module ZipSlip {
        mc.getTarget().hasQualifiedName("System.String", "Substring")
     ) and
     result = mc.getQualifier()
-  }
-
-  // Taint tracking configuration for ZipSlip
-  class ZipSlipTaintTrackingConfiguration extends TaintTracking::Configuration {
-    ZipSlipTaintTrackingConfiguration() {
-      this = "ZipSlipTaintTracking"
-    }
-
-    override predicate isSource(DataFlow::Node source) {
-      exists(PropertyAccess pa |
-        source.asExpr() = archiveFullName(pa)
-      )
-    }
-
-    override predicate isSink(DataFlow::Node sink) {
-      exists(MethodCall mc |
-        sink.asExpr() = compressionExtractToFileArgument(mc) or
-        sink.asExpr() = fileOpenArgument(mc)
-      )
-      or
-      exists(ObjectCreation oc |
-        sink.asExpr() = streamConstructorArgument(oc) or
-        sink.asExpr() = fileInfoConstructorArgument(oc)
-      )
-    }
-
-    override predicate isSanitizer(DataFlow::Node node) {
-      exists(MethodCall mc |
-        node.asExpr() = fileNameExtraction(mc) or
-        node.asExpr() = stringCheck(mc)
-      )
-    }
   }
 }
