@@ -104,7 +104,7 @@ module ZipSlip {
     GetFileNameSanitizer() {
       exists(MethodCall mc |
         mc.getTarget().hasQualifiedName("System.IO.Path", "GetFileName") |
-        this.asExpr() = mc.getAnArgument()
+        this.asExpr() = mc
       )
     }
   }
