@@ -62,3 +62,10 @@
 | tst.ts:114:5:114:15 | mappedType2 | mappedType2 | tst.ts:114:18:114:41 | { [K in ... umber } |
 | tst.ts:116:35:116:35 | x | x | tst.ts:116:38:116:43 | number |
 | tst.ts:116:46:116:46 | y | y | tst.ts:116:49:116:54 | string |
+| tst.ts:122:5:122:16 | importedType | importedType | tst.ts:122:19:122:32 | import("type") |
+| tst.ts:123:5:123:23 | importedTypeGeneric | importedTypeGeneric | tst.ts:123:26:123:47 | import( ... string> |
+| tst.ts:124:5:124:25 | importe ... iedType | importedQualifiedType | tst.ts:124:48:124:50 | Foo |
+| tst.ts:125:5:125:32 | importe ... Generic | importedQualifiedTypeGeneric | tst.ts:125:35:125:65 | import( ... string> |
+| tst.ts:126:5:126:18 | importedTypeof | importedTypeof | tst.ts:126:21:126:42 | typeof  ... value") |
+| tst.ts:127:5:127:27 | importe ... dTypeof | importedQualifiedTypeof | tst.ts:127:30:127:53 | typeof  ... lue").x |
+| tst.ts:128:5:128:35 | importe ... tespace | importedQualifiedTypeWhitespace | tst.ts:131:4:131:6 | bar |

@@ -553,15 +553,19 @@ case @typeexpr.kind of
 | 26 = @qualifiednamespaceaccess
 | 27 = @mappedtypeexpr
 | 28 = @conditionaltypeexpr
-| 29 = @infertypeexpr;
+| 29 = @infertypeexpr
+| 30 = @importtypeaccess
+| 31 = @importnamespaceaccess
+| 32 = @importvartypeaccess;
 
 @typeref = @typeaccess | @typedecl;
 @typeidentifier = @typedecl | @localtypeaccess | @typelabel | @localvartypeaccess | @localnamespaceaccess;
 @typeexpr_parent = @expr | @stmt | @property | @typeexpr;
 @literaltypeexpr = @stringliteraltypeexpr | @numberliteraltypeexpr | @booleanliteraltypeexpr;
-@typeaccess = @localtypeaccess | @qualifiedtypeaccess;
-@vartypeaccess = @localvartypeaccess | @qualifiedvartypeaccess | @thisvartypeaccess;
-@namespaceaccess = @localnamespaceaccess | @qualifiednamespaceaccess;
+@typeaccess = @localtypeaccess | @qualifiedtypeaccess | @importtypeaccess;
+@vartypeaccess = @localvartypeaccess | @qualifiedvartypeaccess | @thisvartypeaccess | @importvartypeaccess;
+@namespaceaccess = @localnamespaceaccess | @qualifiednamespaceaccess | @importnamespaceaccess;
+@importtypeexpr = @importtypeaccess | @importnamespaceaccess | @importvartypeaccess;
 
 @functiontypeexpr = @plainfunctiontypeexpr | @constructortypeexpr;
 

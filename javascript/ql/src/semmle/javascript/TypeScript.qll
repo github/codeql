@@ -1397,6 +1397,58 @@ class QualifiedNamespaceAccess extends NamespaceAccess, @qualifiednamespaceacces
 }
 
 /**
+ * An import inside a type annotation, such as in `import("http").ServerRequest`.
+ */
+class ImportTypeExpr extends TypeExpr, @importtypeexpr {
+  /**
+   * Gets the string literal with the imported path, such as `"http"` in `import("http")`.
+   */
+  TypeExpr getPathExpr() {
+    result = getChildTypeExpr(0)
+  }
+
+  /**
+   * Gets the unresolved path string, such as `http` in `import("http")`.
+   */
+  string getPath() {
+    result = getPathExpr().(StringLiteralTypeExpr).getValue()
+  }
+
+  /** Holds if this import is used in the context of a type, such as in `let x: import("foo")`. */
+  predicate isTypeAccess() {
+    this instanceof @importtypeaccess
+  }
+
+  /** Holds if this import is used in the context of a namespace, such as in `let x: import("http").ServerRequest"`. */
+  predicate isNamespaceAccess() {
+    this instanceof @importnamespaceaccess
+  }
+
+  /** Holds if this import is used in the context of a variable type, such as `let x: typeof import("fs")`. */
+  predicate isVarTypeAccess() {
+    this instanceof @importvartypeaccess
+  }
+}
+
+/**
+ * An import used in the context of a type, such as in `let x: import("foo")`.
+ */
+class ImportTypeAccess extends TypeAccess, ImportTypeExpr, @importtypeaccess {
+}
+
+/**
+ * An import used in the context of a namespace inside a type annotation, such as in `let x: import("http").ServerRequest`.
+ */
+class ImportNamespaceAccess extends NamespaceAccess, ImportTypeExpr, @importnamespaceaccess {
+}
+
+/**
+ * An import used in the context of a variable type, such as in `let x: typeof import("fs")`.
+ */
+class ImportVarTypeAccess extends VarTypeAccess, ImportTypeExpr, @importvartypeaccess {
+}
+
+/**
  * A TypeScript enum declaration, such as the following declaration:
  * ```
  * enum Color { red = 1, green, blue }
