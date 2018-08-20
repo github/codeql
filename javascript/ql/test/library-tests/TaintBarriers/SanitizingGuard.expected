@@ -29,3 +29,5 @@
 | tst.js:160:9:160:30 | v === " ... sted-1" | ExampleConfiguration | true | tst.js:160:9:160:9 | v |
 | tst.js:160:35:160:56 | v === " ... sted-2" | ExampleConfiguration | true | tst.js:160:35:160:35 | v |
 | tst.js:166:9:166:16 | v == !!0 | ExampleConfiguration | true | tst.js:166:9:166:9 | v |
+| tst.js:184:9:184:21 | ~o.indexOf(v) | ExampleConfiguration | true | tst.js:184:20:184:20 | v |
+| tst.js:190:10:190:22 | ~o.indexOf(v) | ExampleConfiguration | true | tst.js:190:21:190:21 | v |

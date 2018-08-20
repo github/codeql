@@ -176,3 +176,21 @@ function customSanitizer() {
     v = SANITIZE(v);
     SINK(v);
 }
+
+function BitwiseIndexOfCheckSanitizer () {
+    var v = SOURCE();
+    SINK(v);
+
+    if (~o.indexOf(v)) {
+        SINK(v);
+    } else {
+        SINK(v);
+    }
+
+    if (!~o.indexOf(v)) {
+        SINK(v);
+    } else {
+        SINK(v);
+    }
+
+}

@@ -612,6 +612,26 @@ module TaintTracking {
 
   }
 
+  /** A check of the form `if(~o.indexOf(x))`, which sanitizes `x` in its "then" branch. */
+  class BitwiseIndexOfSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
+    MethodCallExpr indexOf;
+    override BitNotExpr astNode;
+
+    BitwiseIndexOfSanitizer() {
+      astNode.getOperand() = indexOf and
+      indexOf.getMethodName() = "indexOf"
+    }
+
+    override predicate sanitizes(boolean outcome, Expr e) {
+      outcome = true and
+      e = indexOf.getArgument(0)
+    }
+
+    override predicate appliesTo(Configuration cfg) {
+      any()
+    }
+
+  }
 
   /** A check of the form `if(x == 'some-constant')`, which sanitizes `x` in its "then" branch. */
   class ConstantComparison extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
