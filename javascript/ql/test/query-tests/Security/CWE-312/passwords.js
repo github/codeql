@@ -119,4 +119,6 @@
         console.log("Password is: " + password); // OK
     }
 
+    console.log(name + ", " + password.toString()); // NOT OK
+    console.log(name + ", " + password.valueOf()); // NOT OK
 });

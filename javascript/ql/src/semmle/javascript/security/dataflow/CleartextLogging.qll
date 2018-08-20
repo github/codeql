@@ -52,30 +52,11 @@ module CleartextLogging {
     }
 
     override predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node trg) {
-      // A taint propagating data flow edge arising from string operations
-      exists (AST::ValueNode astNode |
-        astNode = trg.(DataFlow::ValueNode).getAstNode() |
-        // addition propagates
-        astNode.(AddExpr).getAnOperand() = src.asExpr() or
-        astNode.(AssignAddExpr).getAChildExpr() = src.asExpr() or
-        exists (SsaExplicitDefinition ssa |
-          astNode = ssa.getVariable().getAUse() and
-          src.asExpr().(AssignAddExpr) = ssa.getDef()
-        )
-        or
-        // templating propagates
-        astNode.(TemplateLiteral).getAnElement() = src.asExpr()
-        or
-        // other string operations that propagate
-        exists (string name | name = astNode.(MethodCallExpr).getMethodName() |
-          src.asExpr() = astNode.(MethodCallExpr).getReceiver() and
-          (
-            // sorted, interesting, properties of Object.prototype
-            name = "toString" or
-            name = "valueOf"
-          )
-        )
-      )
+      any (TaintTracking::StringConcatenationTaintStep s).step(src, trg)
+      or
+      exists (string name | name = "toString" or name = "valueOf" |
+        src.(DataFlow::SourceNode).getAMethodCall(name) = trg
+      ) 
       or
       // A taint propagating data flow edge through objects: a tainted write taints the entire object.
       exists (DataFlow::PropWrite write |
