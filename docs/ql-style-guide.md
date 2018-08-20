@@ -9,10 +9,10 @@ Words in *italic* are defined in the [Glossary](#glossary).
 ## Indentation
 1. *Always* use 2 spaces for indentation.
 1. *Always* indent:
-   - the *body* of a module, newtype, class or predicate,
-   - the second and subsequent lines after you use a line break to split a long line,
-   - the *body* of a `from`, `where` or `select` clause where it spans multiple lines,
-   - the *body* of a *quantifier* that spans multiple lines.
+   - The *body* of a module, newtype, class or predicate
+   - The second and subsequent lines after you use a line break to split a long line
+   - The *body* of a `from`, `where` or `select` clause where it spans multiple lines
+   - The *body* of a *quantifier* that spans multiple lines
 
 
 ### Examples
@@ -43,15 +43,15 @@ select c, "This call to '$@' is deprecated because " + reason + ".",
 1. Lines *must not* exceed 100 characters.
 1. Long lines *should* be split with a line break, and the following lines *must* be indented one level until the next "regular" line break.
 1. There *should* be a single blank line:
-   - between the file documentation and the first `import`,
-   - before each declaration, except for the first declaration in a *body*,
-   - before the `from`-`where`-`select` section in a query file.
+   - Between the file documentation and the first `import`
+   - Before each declaration, except for the first declaration in a *body*
+   - Before the `from`-`where`-`select` section in a query file
 1. *Avoid* two or more adjacent blank lines.
 1. There *must* be a new line after the *annotations* `cached`, `deprecated`, `pragma`, `language` and `bindingset`. Other *annotations* do not have a new line.
 1. There *should not* be additional blank lines within a predicate.
 1. There *may* be a new line:
-   - immediately after the `from`, `where` or `select` keywords in a query,
-   - immediately after `if`, `then`, or `else` keywords. The `then` and `else` parts *should* be consistent.
+   - Immediately after the `from`, `where` or `select` keywords in a query.
+   - Immediately after `if`, `then`, or `else` keywords. The `then` and `else` parts *should* be consistent.
 1. *Avoid* other line breaks in declarations, other than to break long lines.
 1. When operands of *binary operators* span two lines, the operator *should* be placed at the end of the first line.
 
@@ -109,7 +109,7 @@ select main, "Main method has no parameters."
 ```
 
 ## Braces
-1. Braces follow "Stroustrup" style: The opening `{` *must* be placed at the end of the preceding line.
+1. Braces follow [Stroustrup](https://en.wikipedia.org/wiki/Indentation_style#Variant:_Stroustrup) style. The opening `{` *must* be placed at the end of the preceding line.
 1. The closing `}` *must* be placed on its own line, indented to the outer level, or be on the same line as the opening `{`.
 1. Braces of empty blocks *may* be placed on a single line, with a single space separating the braces.
 1. Short predicates, not exceeding the maximum line width, *may* be placed on a single line, with a space following the opening brace and preceding the closing brace.
@@ -128,19 +128,19 @@ class ThrowException extends ThrowExpr {
 
 ## Spaces
 1. There *must* be a space or line break:
-   - surrounding each `=` and `|`,
-   - after each comma.
+   - Surrounding each `=` and `|`
+   - After each `,`
 1. There *should* be a space or line break:
-   - surrounding each *binary operator*, which *must* be balanced,
-   - surrounding `..` in a range.
-   - Exceptions to this are to save space or to improve readability.
+   - Surrounding each *binary operator*, which *must* be balanced
+   - Surrounding `..` in a range
+   - Exceptions to this may be made to save space or to improve readability.
 1. *Avoid* other spaces, for example:
-   - after a *quantifier/aggregation* keyword,
-   - after the predicate name in a *call*,
-   - inside brackets used for *calls*, single-line quantifiers, and parenthesised formulas,
-   - surrounding a `.`,
-   - inside the opening or closing `[ ]` In a range expression,
-   - inside casts `a.(X)`.
+   - After a *quantifier/aggregation* keyword
+   - After the predicate name in a *call*
+   - Inside brackets used for *calls*, single-line quantifiers, and parenthesised formulas
+   - Surrounding a `.`
+   - Inside the opening or closing `[ ]` in a range expression
+   - Inside casts `a.(X)`
 1. *Avoid* multiple spaces, except for indentation, and *avoid* additional indentation to align formulas, parameters or arguments.
 1. *Do not* put whitespace on blank lines, or trailing on the end of a line.
 1. *Do not* use tabs.
@@ -159,18 +159,18 @@ private predicate foo(Expr e, Expr p) {
 ```
 
 ## Naming
-1. Use PascalCase for:
-   - `class` names,
-   - `module` names,
-   - `newtype` names.
-1. Use camelCase for:
-   - predicate names,
-   - variable names.
+1. Use [PascalCase](http://wiki.c2.com/?PascalCase) for:
+   - `class` names
+   - `module` names
+   - `newtype` names
+1. Use [camelCase](https://en.wikipedia.org/wiki/Camel_case) for:
+   - Predicate names
+   - Variable names
 1. Newtype predicate names *should* begin with `T`.
-1. *Avoid* underscores in names.
 1. Predicates that have a result *should* be named `get...`
 1. Predicates that can return multiple results *should* be named `getA...` or `getAn...`
 1. Predicates that don't have a result or parameters *should* be named `is...` or `has...`
+1. *Avoid* underscores in names.
 1. *Avoid* short or single-letter names for classes, predicates and fields.
 1. Short or single letter names for parameters and *quantifiers* *may* be used provided that they are sufficiently clear.
 1. Use names as they are used in the target-language specification.
@@ -218,7 +218,7 @@ General requirements:
 1. Documentation comments *should* be appropriate for users of the code.
 1. Documentation for maintainers of the code *must* use normal comments.
 
-Documenting specific items:
+Documentation for specific items:
 
 1. Public declarations *must* be documented.
 1. Non-public declarations *should* be documented.
@@ -288,18 +288,18 @@ deprecated Expr getInitializer()
 1. The `or` keyword *may* be written at the end of a line, or within a line, provided that it has no unparenthesised `and` operands.
 1. Single-line formulas *may* be used in order to save space or add clarity, particularly in the *body* of a *quantifier/aggregation*.
 1. *Always* use brackets to clarify the precedence of:
-   - `implies`,
-   - `if`-`then`-`else`.
+   - `implies`
+   - `if`-`then`-`else`
 1. Parenthesised formulas *can* be written:
-   - within a single line. There *should not* be an additional space following the opening parenthesis or preceding the closing parenthesis.
-   - spanning multiple lines. The opening parenthesis *should* be placed at the end of the preceding line, the body should be indented one level, and the closing bracket should be placed on a new line at the outer indentation.
+   - Within a single line. There *should not* be an additional space following the opening parenthesis or preceding the closing parenthesis.
+   - Spanning multiple lines. The opening parenthesis *should* be placed at the end of the preceding line, the body should be indented one level, and the closing bracket should be placed on a new line at the outer indentation.
 1. *Quantifiers/aggregations* *can* be written:
-   - within a single line. In this case, there is no space to the inside of the parentheses, or after the quantifier keyword.
-   - across multiple lines. In this case, type declarations are on the same line as the quantifier, the `|` *may* be at the end of the line, or *may* be on its own line, and the body of the quantifier *must* be indented one level. The closing `)` is written on a new line, at the outer indentation.
+   - Within a single line. In this case, there is no space to the inside of the parentheses, or after the quantifier keyword.
+   - Across multiple lines. In this case, type declarations are on the same line as the quantifier, the `|` *may* be at the end of the line, or *may* be on its own line, and the body of the quantifier *must* be indented one level. The closing `)` is written on a new line, at the outer indentation.
 1. `if`-`then`-`else` *can* be written:
-   - on a single line,
-   - with the *body* after the `if`/`then`/`else` keyword,
-   - with the *body* indented on the next line.
+   - On a single line
+   - With the *body* after the `if`/`then`/`else` keyword
+   - With the *body* indented on the next line
    - *Always* parenthesise the `else` part if it is a compound formula.
 1. The `and` and `else` keywords *may* be placed on the same line as the closing parenthesis.
 1. The `and` and `else` keywords *may* be "cuddled": `) else (`
