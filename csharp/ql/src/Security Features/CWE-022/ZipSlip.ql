@@ -7,6 +7,7 @@
  * @kind problem
  * @id cs/zipslip
  * @problem.severity error
+ * @precision high
  * @tags security
  *       external/cwe/cwe-022
  */
