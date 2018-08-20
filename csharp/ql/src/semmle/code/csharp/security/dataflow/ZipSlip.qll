@@ -21,8 +21,8 @@ module ZipSlip {
   abstract class Sanitizer extends DataFlow::ExprNode { }
 
   /** A taint tracking configuration for ZipSlip */
-  class ZipSlipTaintTrackingConfiguration extends TaintTracking::Configuration {
-    ZipSlipTaintTrackingConfiguration() {
+  class TaintTrackingConfiguration extends TaintTracking::Configuration {
+    TaintTrackingConfiguration() {
       this = "ZipSlipTaintTracking"
     }
 

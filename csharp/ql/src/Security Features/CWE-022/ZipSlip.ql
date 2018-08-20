@@ -12,6 +12,6 @@
 import csharp
 import semmle.code.csharp.security.dataflow.ZipSlip::ZipSlip
 
-from ZipSlipTaintTrackingConfiguration zipTaintTracking, DataFlow::Node source, DataFlow::Node sink
+from TaintTrackingConfiguration zipTaintTracking, DataFlow::Node source, DataFlow::Node sink
 where zipTaintTracking.hasFlow(source, sink)
 select sink, "Make sure to sanitize relative archive item path before creating path for file extraction if the source of $@ is untrusted", source, "zip archive"
