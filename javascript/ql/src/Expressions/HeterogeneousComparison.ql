@@ -185,9 +185,7 @@ predicate isInitialParameterUse(Expr e) {
 /**
  * Holds if `e` is an expression that should not be considered in a heterogeneous comparison.
  *
- * We currently whitelist these kinds of expressions:
- *
- *   - parameters, as passed in from the caller
+ * We currently whitelist expressions that rely on inter-procedural parameter information.
  */
 predicate whitelist(Expr e) {
   isInitialParameterUse(e)

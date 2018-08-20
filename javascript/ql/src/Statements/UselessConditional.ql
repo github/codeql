@@ -64,7 +64,7 @@ predicate isConstant(Expr e) {
 }
 
 /**
- * Holds if `e` directly uses a parameter's initial value as passed in from the caller.
+ * Holds if `e` directly uses a parameter's negated or initial value as passed in from the caller.
  */
 predicate isInitialParameterUse(Expr e) {
   // unlike `SimpleParameter.getAnInitialUse` this will not include uses we have refinement information for
@@ -103,8 +103,8 @@ predicate isConstantBooleanReturnValue(Expr e) {
  *   - constants (including references to literal constants);
  *   - negations of constants;
  *   - defensive checks;
- *   - parameters, as passed in from the caller;
- *   - constant boolean returned values
+ *   - expressions that rely on inter-procedural parameter information;
+ *   - constant boolean returned values.
  */
 predicate whitelist(Expr e) {
   isConstant(e) or
