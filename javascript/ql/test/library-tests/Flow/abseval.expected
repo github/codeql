@@ -221,6 +221,7 @@
 | objlit.js:38:11:38:12 | x6 | objlit.js:38:16:38:21 | this.h | file://:0:0:0:0 | indefinite value (heap) |
 | objlit.js:38:11:38:12 | x6 | objlit.js:38:16:38:21 | this.h | objlit.js:41:10:41:22 | anonymous function |
 | objlit.js:43:7:43:8 | o3 | objlit.js:43:12:45:3 | {\\n    _ ...  o2\\n  } | objlit.js:43:12:45:3 | object literal |
+| reexport/client/src/index.js:2:5:2:8 | test | reexport/client/src/index.js:2:12:2:15 | data | file://:0:0:0:0 | non-empty, non-numeric string |
 | refinements.js:3:7:3:8 | x1 | refinements.js:3:12:3:12 | g | file://:0:0:0:0 | undefined |
 | refinements.js:7:7:7:8 | x3 | refinements.js:7:12:7:12 | g | file://:0:0:0:0 | undefined |
 | refinements.js:11:7:11:7 | a | refinements.js:11:11:11:72 | Math.ra ... ' : 42) | file://:0:0:0:0 | non-empty, non-numeric string |

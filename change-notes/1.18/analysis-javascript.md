@@ -8,6 +8,8 @@
 
 * Modelling of global variables has been improved. This may give more true-positive results and fewer false-positive results for a variety of queries.
 
+* Modelling of re-export declarations has been improved. This may result in fewer false-positive results for a variety of queries.
+
 * Modelling of taint flow through the array operations `map` and `join` has been improved. This may give additional results for the security queries.
 
 * Support for popular libraries has been improved. Consequently, queries may produce more results on code bases that use the following libraries:

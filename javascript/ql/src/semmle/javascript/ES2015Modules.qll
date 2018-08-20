@@ -428,22 +428,39 @@ class ExportSpecifier extends Expr, @exportspecifier {
   string getExportedName() { result = getExported().getName() }
 }
 
-/** A named export specifier. */
+/**
+ * A named export specifier, for example `v` in `export { v }`.
+ */
 class NamedExportSpecifier extends ExportSpecifier, @namedexportspecifier {
 }
 
-/** A default export specifier. */
+/**
+ * A default export specifier, for example `default` in `export default 42`,
+ * or `v` in `export v from "mod"`.
+ */
 class ExportDefaultSpecifier extends ExportSpecifier, @exportdefaultspecifier {
-  override string getLocalName() {
-    getExportDeclaration() instanceof ReExportDeclaration and result = "default"
-  }
-
   override string getExportedName() {
     result = "default"
   }
 }
 
-/** A namespace export specifier. */
+/**
+ * A default export specifier in a re-export declaration, for example `v` in
+ * `export v from "mod"`.
+ */
+class ReExportDefaultSpecifier extends ExportDefaultSpecifier {
+  ReExportDefaultSpecifier() {
+    getExportDeclaration() instanceof ReExportDeclaration
+  }
+
+  override string getLocalName() { result = "default" }
+
+  override string getExportedName() { result = getExported().getName() }
+}
+
+/**
+ * A namespace export specifier, for example `*` in `export * from "mod"`.
+ */
 class ExportNamespaceSpecifier extends ExportSpecifier, @exportnamespacespecifier {
 }
 
