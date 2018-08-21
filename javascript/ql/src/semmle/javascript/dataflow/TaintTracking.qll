@@ -409,6 +409,27 @@ module TaintTracking {
   }
 
   /**
+   * A taint propagating data flow edge arising from string formatting.
+   */
+  private class StringFormattingTaintStep extends AdditionalTaintStep {
+    
+    PrintfStyleCall call;
+    
+    StringFormattingTaintStep() {
+      this = call and
+      call.returnsFormatted()
+    }
+    
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      succ = this and (
+        pred = call.getFormatString()
+        or
+        pred = call.getFormatArgument(_)
+      )
+    }
+  }
+
+  /**
    * A taint propagating data flow edge arising from JSON unparsing.
    */
   private class JsonStringifyTaintStep extends AdditionalTaintStep, DataFlow::MethodCallNode {
