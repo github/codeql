@@ -8,8 +8,7 @@
 
 ## General improvements
 
-> Changes that affect alerts in many files or from many queries
-> For example, changes to file classification
+* Control flow analysis has been improved for `catch` clauses with filters.
 
 ## New queries
 
