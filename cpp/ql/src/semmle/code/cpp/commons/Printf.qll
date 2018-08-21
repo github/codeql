@@ -30,14 +30,20 @@ class AttributeFormattingFunction extends FormattingFunction {
 
 /**
  * A type that is used as a format string by a wide variadic formatter such as
- * `vwprintf`.
+ * `vwprintf` or by a user-defined formatting function with the GNU `format`
+ * attribute.
  */
-Type getAPrimitiveVariadicFormatterWideType() {
+Type getAFormatterWideType() {
   exists(TopLevelFunction f, int formatParamIndex |
     primitiveVariadicFormatter(f, formatParamIndex, true) and
     result = f.getParameter(formatParamIndex).getType().getUnspecifiedType() and
     result.(PointerType).getBaseType().getSize() != 1 and
     f.hasDefinition()
+  )
+  or
+  exists(AttributeFormattingFunction f, int formatParamIndex |
+    result = f.getParameter(formatParamIndex).getType().getUnspecifiedType() and
+    result.(PointerType).getBaseType().getSize() != 1
   )
 }
 
@@ -737,9 +743,9 @@ class FormatLiteral extends Literal {
     exists(string cnv | cnv = this.getEffectiveStringConversionChar(n) |
       cnv="S" and
       (
-        result = getAPrimitiveVariadicFormatterWideType()
+        result = getAFormatterWideType()
         or
-        not exists(getAPrimitiveVariadicFormatterWideType()) and
+        not exists(getAFormatterWideType()) and
         result.(PointerType).getBaseType().hasName("wchar_t")
       )
     )
