@@ -192,7 +192,7 @@ class Folder extends Container, @folder {
    * Gets the URL of this folder.
    */
   deprecated override string getURL() {
-    result = "folder://" + getAbsolutePath()
+    result = "file://" + this.getAbsolutePath() + ":0:0:0:0"
   }
 
   /**
