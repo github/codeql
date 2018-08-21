@@ -178,7 +178,8 @@ class MacroInvocation extends MacroAccess {
    */
   Expr getExpr() {
     result = getAnExpandedElement() and
-    not (result.getParent() = getAnExpandedElement())
+    not (result.getParent() = getAnExpandedElement()) and
+    not result instanceof Conversion
   }
 
   /**
