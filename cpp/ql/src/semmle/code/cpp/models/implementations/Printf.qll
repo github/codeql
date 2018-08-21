@@ -13,7 +13,7 @@ class Printf extends FormattingFunction {
       hasGlobalName("wprintf_s") or
       hasGlobalName("g_printf")
     ) and
-    not hasDefinition()
+    not exists(getADeclarationEntry().getFile().getRelativePath())
   }
 
   override int getFormatParameterIndex() { result=0 }
@@ -34,7 +34,7 @@ class Fprintf extends FormattingFunction {
       hasGlobalName("fwprintf") or
       hasGlobalName("g_fprintf")
     ) and
-    not hasDefinition()
+    not exists(getADeclarationEntry().getFile().getRelativePath())
   }
 
   override int getFormatParameterIndex() { result=1 }
@@ -57,7 +57,7 @@ class Sprintf extends FormattingFunction {
       hasGlobalName("g_sprintf") or
       hasGlobalName("__builtin___sprintf_chk")
     ) and
-    not hasDefinition()
+    not exists(getADeclarationEntry().getFile().getRelativePath())
   }
 
   override predicate isWideCharDefault() {
@@ -111,7 +111,7 @@ class Snprintf extends FormattingFunction {
       or hasGlobalName("wnsprintf")
       or hasGlobalName("__builtin___snprintf_chk")
     ) and
-    not hasDefinition()
+    not exists(getADeclarationEntry().getFile().getRelativePath())
   }
 
   override int getFormatParameterIndex() {
@@ -150,7 +150,7 @@ class Snprintf extends FormattingFunction {
       hasGlobalName("__builtin___snprintf_chk") or
       hasGlobalName("snprintf_s")
     ) and
-    not hasDefinition()
+    not exists(getADeclarationEntry().getFile().getRelativePath())
   }
 
   override int getSizeParameterIndex() {
@@ -173,7 +173,7 @@ class StringCchPrintf extends FormattingFunction {
       or hasGlobalName("StringCbPrintf_l")
       or hasGlobalName("StringCbPrintf_lEx")
     ) and
-    not hasDefinition()
+    not exists(getADeclarationEntry().getFile().getRelativePath())
   }
 
   override int getFormatParameterIndex() {
