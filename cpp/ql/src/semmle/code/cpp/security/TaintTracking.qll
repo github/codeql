@@ -521,12 +521,12 @@ private predicate methodReturningReceiver(MemberFunction method) {
 Function resolveCall(Call call) {
   result = call.getTarget()
   or
-  result = call.(DataSensitiveCallExpr).resolve()
+  result = unresolveElement(call).(DataSensitiveCallExpr).resolve()
 }
 
 /** A data sensitive call expression. */
 library abstract class DataSensitiveCallExpr extends @expr {
-  DataSensitiveCallExpr() { not unreachable(this) }
+  DataSensitiveCallExpr() { not unreachable(mkElement(this)) }
 
   abstract Expr getSrc();
   cached abstract Function resolve();
@@ -556,23 +556,27 @@ library abstract class DataSensitiveCallExpr extends @expr {
 }
 
 /** Call through a function pointer. */
-library class DataSensitiveExprCall extends DataSensitiveCallExpr, ExprCall {
-  override Expr getSrc() { result = getExpr() }
+library class DataSensitiveExprCall extends DataSensitiveCallExpr {
+  DataSensitiveExprCall() {
+    mkElement(this) instanceof ExprCall
+  }
+
+  override Expr getSrc() { result = mkElement(this).(ExprCall).getExpr() }
 
   override Function resolve() {
     exists(FunctionAccess fa | flowsFrom(fa, true) | result = fa.getTarget())
   }
 
-  override string toString() { result = ExprCall.super.toString() }
+  override string toString() { result = mkElement(this).toString() }
 }
 
 /** Call to a virtual function. */
-library class DataSensitiveOverriddenFunctionCall extends DataSensitiveCallExpr, FunctionCall {
+library class DataSensitiveOverriddenFunctionCall extends DataSensitiveCallExpr {
   DataSensitiveOverriddenFunctionCall() {
-    exists(getTarget().(VirtualFunction).getAnOverridingFunction())
+    exists(mkElement(this).(FunctionCall).getTarget().(VirtualFunction).getAnOverridingFunction())
   }
 
-  override Expr getSrc() { result = getQualifier() }
+  override Expr getSrc() { result = mkElement(this).(FunctionCall).getQualifier() }
 
   override MemberFunction resolve() {
     exists(NewExpr new |
@@ -580,11 +584,11 @@ library class DataSensitiveOverriddenFunctionCall extends DataSensitiveCallExpr,
       and
       memberFunctionFromNewExpr(new, result)
       and
-      result.overrides*(getTarget().(VirtualFunction))
+      result.overrides*(mkElement(this).(FunctionCall).getTarget().(VirtualFunction))
     )
   }
 
-  override string toString() { result = FunctionCall.super.toString() }
+  override string toString() { result = mkElement(this).toString() }
 }
 
 private predicate memberFunctionFromNewExpr(NewExpr new, MemberFunction f) {

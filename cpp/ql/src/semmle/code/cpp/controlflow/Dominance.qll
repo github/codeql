@@ -28,6 +28,11 @@ predicate functionEntry(ControlFlowNode entry) {
     and not hasMultiScopeNode(function))
 }
 
+/** Holds if `entry` is the entry point of a function. */
+predicate functionEntryBB(@cfgnode entry) {
+  functionEntry(mkElement(entry))
+}
+
 /**
  * Holds if `dest` is an immediate successor of `src` in the control-flow graph.
  */
@@ -65,7 +70,7 @@ predicate dominates(ControlFlowNode dominator, ControlFlowNode node) {
  * Holds if `dominator` is an immediate dominator of `node` in the control-flow
  * graph of basic blocks.
  */
-predicate bbIDominates(BasicBlock dom, BasicBlock node) = idominance(functionEntry/1, bb_successor/2)(_, dom, node)
+predicate bbIDominates(BasicBlock dom, BasicBlock node) = idominance(functionEntryBB/1, bb_successor/2)(_, dom, node)
 
 /**
  * Holds if `dominator` is a strict dominator of `node` in the control-flow

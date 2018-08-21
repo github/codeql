@@ -11,6 +11,6 @@ string functionName(Function f) {
 }
 
 from string resource, int ntotal, int ncode, int ncomment
-where exists(File f | f.getShortName() = resource and numlines(f, ntotal, ncode, ncomment))
-   or exists(Function f | functionName(f) = resource and numlines(f, ntotal, ncode, ncomment))
+where exists(File f | f.getShortName() = resource and numlines(unresolveElement(f), ntotal, ncode, ncomment))
+   or exists(Function f | functionName(f) = resource and numlines(unresolveElement(f), ntotal, ncode, ncomment))
 select resource, ntotal, ncode, ncomment

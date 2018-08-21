@@ -144,20 +144,20 @@ predicate defDependsOnDef(
   or
   exists (
     AssignAddExpr assignAdd, RangeSsaDefinition nextDef
-  | def = assignAdd and
+  | mkElement(def) = assignAdd and
     assignAdd.getLValue() = nextDef.getAUse(v)
   | defDependsOnDef(nextDef, v, srcDef, srcVar) or
     exprDependsOnDef(assignAdd.getRValue(), srcDef, srcVar))
   or
   exists (
     AssignSubExpr assignSub, RangeSsaDefinition nextDef
-  | def = assignSub and
+  | mkElement(def) = assignSub and
     assignSub.getLValue() = nextDef.getAUse(v)
   | defDependsOnDef(nextDef, v, srcDef, srcVar) or
     exprDependsOnDef(assignSub.getRValue(), srcDef, srcVar))
   or
   exists (CrementOperation crem
-  | def = crem and
+  | mkElement(def) = crem and
     crem.getOperand() = v.getAnAccess() and
     exprDependsOnDef(crem.getOperand(), srcDef, srcVar))
   or
@@ -278,10 +278,10 @@ private
 predicate assignmentDef(RangeSsaDefinition def, LocalScopeVariable v, Expr expr) {
   v.getType().getUnspecifiedType() instanceof ArithmeticType
   and
-  ((def = v.getInitializer().getExpr() and def = expr)
+  ((mkElement(def) = v.getInitializer().getExpr() and mkElement(def) = expr)
    or
    exists(AssignExpr assign
-   | def = assign and
+   | mkElement(def) = assign and
      assign.getLValue() = v.getAnAccess() and
      expr = assign.getRValue()))
 }
@@ -845,7 +845,7 @@ float getDefLowerBoundsImpl(RangeSsaDefinition def, LocalScopeVariable v) {
   or
   exists (
     AssignAddExpr assignAdd, RangeSsaDefinition nextDef, float lhsLB, float rhsLB
-  | def = assignAdd and
+  | mkElement(def) = assignAdd and
     assignAdd.getLValue() = nextDef.getAUse(v) and
     lhsLB = getDefLowerBounds(nextDef, v) and
     rhsLB = getFullyConvertedLowerBounds(assignAdd.getRValue()) and
@@ -853,20 +853,20 @@ float getDefLowerBoundsImpl(RangeSsaDefinition def, LocalScopeVariable v) {
   or
   exists (
     AssignSubExpr assignSub, RangeSsaDefinition nextDef, float lhsLB, float rhsUB
-  | def = assignSub and
+  | mkElement(def) = assignSub and
     assignSub.getLValue() = nextDef.getAUse(v) and
     lhsLB = getDefLowerBounds(nextDef, v) and
     rhsUB = getFullyConvertedUpperBounds(assignSub.getRValue()) and
     result = lhsLB - rhsUB)
   or
   exists (IncrementOperation incr, float newLB
-  | def = incr and
+  | mkElement(def) = incr and
     incr.getOperand() = v.getAnAccess() and
     newLB = getFullyConvertedLowerBounds(incr.getOperand()) and
     result = newLB+1)
   or
   exists (DecrementOperation decr, float newLB
-  | def = decr and
+  | mkElement(def) = decr and
     decr.getOperand() = v.getAnAccess() and
     newLB = getFullyConvertedLowerBounds(decr.getOperand()) and
     result = newLB-1)
@@ -888,7 +888,7 @@ float getDefUpperBoundsImpl(RangeSsaDefinition def, LocalScopeVariable v) {
   or
   exists (
     AssignAddExpr assignAdd, RangeSsaDefinition nextDef, float lhsUB, float rhsUB
-  | def = assignAdd and
+  | mkElement(def) = assignAdd and
     assignAdd.getLValue() = nextDef.getAUse(v) and
     lhsUB = getDefUpperBounds(nextDef, v) and
     rhsUB = getFullyConvertedUpperBounds(assignAdd.getRValue()) and
@@ -896,20 +896,20 @@ float getDefUpperBoundsImpl(RangeSsaDefinition def, LocalScopeVariable v) {
   or
   exists (
     AssignSubExpr assignSub, RangeSsaDefinition nextDef, float lhsUB, float rhsLB
-  | def = assignSub and
+  | mkElement(def) = assignSub and
     assignSub.getLValue() = nextDef.getAUse(v) and
     lhsUB = getDefUpperBounds(nextDef, v) and
     rhsLB = getFullyConvertedLowerBounds(assignSub.getRValue()) and
     result = lhsUB - rhsLB)
   or
   exists (IncrementOperation incr, float newUB
-  | def = incr and
+  | mkElement(def) = incr and
     incr.getOperand() = v.getAnAccess() and
     newUB = getFullyConvertedUpperBounds(incr.getOperand()) and
     result = newUB+1)
   or
   exists (DecrementOperation decr, float newUB
-  | def = decr and
+  | mkElement(def) = decr and
     decr.getOperand() = v.getAnAccess() and
     newUB = getFullyConvertedUpperBounds(decr.getOperand()) and
     result = newUB-1)

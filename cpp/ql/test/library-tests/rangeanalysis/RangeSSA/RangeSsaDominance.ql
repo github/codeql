@@ -13,9 +13,9 @@ import semmle.code.cpp.rangeanalysis.RangeSSA
 select
 count(RangeSsaDefinition d, LocalScopeVariable v, Expr u |
       d.getAUse(v) = u and
-      not exists(BasicBlock bd, BasicBlock bu | bd.contains((ControlFlowNode)d) and bu.contains(u) |  
+      not exists(BasicBlock bd, BasicBlock bu | bd.contains(mkElement(d).(ControlFlowNode)) and bu.contains(u) |
              bbStrictlyDominates(bd, bu)
              or
-             exists(int i, int j | bd = bu and bd.getNode(i) = d and bu.getNode(j) = u and i <= j)
+             exists(int i, int j | bd = bu and bd.getNode(i) = mkElement(d) and bu.getNode(j) = u and i <= j)
           )
 )

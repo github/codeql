@@ -42,15 +42,6 @@ cached private module Cached {
   }
 
   /**
-   * Gets a type from the database for which `t` is a complete definition.
-   */
-  cached @type unresolve(Type t) {
-    if isClass(t)
-    then resolve(result) = t
-    else result = t
-  }
-
-  /**
    * Holds if `t` is a struct, class, union, or template.
    */
   cached predicate isClass(@usertype t) {

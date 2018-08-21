@@ -30,5 +30,5 @@ predicate isSuccessor(boolean isEdge, BasicBlock x, BasicBlock y, string label) 
 
 from boolean isEdge, BasicBlock x, BasicBlock y, string label
 where isNode(isEdge, x, y, label) or isSuccessor(isEdge, x, y, label)
-select scope(x), isEdge, x, y, label
+select scope(mkElement(x)), isEdge, x, y, label
 

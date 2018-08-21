@@ -23,10 +23,10 @@ cached Element exprEnclosingElement(Expr e) {
                          else if i.getDeclaration() instanceof Parameter
                          then result = i.getDeclaration().(Parameter).getFunction()
                          else result = i.getDeclaration()) or
-  exists(Expr anc | expr_ancestor(e, anc) and result = exprEnclosingElement(anc)) or
-  exists(Stmt anc | expr_ancestor(e, anc) and result = stmtEnclosingElement(anc)) or
+  exists(Expr anc | expr_ancestor(unresolveElement(e), unresolveElement(anc)) and result = exprEnclosingElement(anc)) or
+  exists(Stmt anc | expr_ancestor(unresolveElement(e), unresolveElement(anc)) and result = stmtEnclosingElement(anc)) or
   exists(DeclarationEntry de |
-         expr_ancestor(e, de) and
+         expr_ancestor(unresolveElement(e), unresolveElement(de)) and
          if exists(DeclStmt ds | de = ds.getADeclarationEntry())
          then exists(DeclStmt ds |
                      de = ds.getADeclarationEntry() and

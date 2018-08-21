@@ -24,7 +24,7 @@ class Commit extends @svnentry {
   string getMessage() { svnentrymsg(this, result) }
 
   string getAnAffectedFilePath(string action) {
-    exists(File rawFile | svnaffectedfiles(this, rawFile, action) |
+    exists(File rawFile | svnaffectedfiles(this, unresolveElement(rawFile), action) |
       result = rawFile.getAbsolutePath()
     )
   }
@@ -34,7 +34,7 @@ class Commit extends @svnentry {
   File getAnAffectedFile(string action) {
     // Workaround for incorrect keys in SVN data
     exists(File svnFile | svnFile.getAbsolutePath() = result.getAbsolutePath() |
-      svnaffectedfiles(this,svnFile,action)
+      svnaffectedfiles(this,unresolveElement(svnFile),action)
     )
     and exists(result.getMetrics().getNumberOfLinesOfCode())
   }
@@ -44,7 +44,7 @@ class Commit extends @svnentry {
   private predicate churnForFile(File f, int added, int deleted) {
     // Workaround for incorrect keys in SVN data
     exists(File svnFile | svnFile.getAbsolutePath() = f.getAbsolutePath() |
-      svnchurn(this,svnFile,added,deleted)
+      svnchurn(this,unresolveElement(svnFile),added,deleted)
     )
     and exists(f.getMetrics().getNumberOfLinesOfCode())
   }

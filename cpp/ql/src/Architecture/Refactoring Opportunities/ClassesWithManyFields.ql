@@ -13,7 +13,7 @@ import cpp
 
 string kindstr(Class c)
 {
-  exists(int kind | usertypes(c, _, kind) |
+  exists(int kind | usertypes(unresolveElement(c), _, kind) |
     (kind = 1 and result = "Struct") or
     (kind = 2 and result = "Class") or
     (kind = 6 and result = "Template class")
@@ -48,21 +48,22 @@ predicate masterVde(VariableDeclarationEntry master, VariableDeclarationEntry vd
 
 class VariableDeclarationGroup extends @var_decl {
   VariableDeclarationGroup() {
-    not previousVde(_, this)
+    not previousVde(_, mkElement(this))
   }
   Class getClass() {
-    vdeInfo(this, result, _, _)
+    vdeInfo(mkElement(this), result, _, _)
   }
 
   // pragma[noopt] since otherwise the two locationInfo relations get join-ordered
   // after each other
   pragma[noopt]
   predicate hasLocationInfo(string path, int startline, int startcol, int endline, int endcol) {
-    exists(VariableDeclarationEntry last, Location lstart, Location lend |
-      masterVde(this, last) and
+    exists(Element thisElement, VariableDeclarationEntry last, Location lstart, Location lend |
+      thisElement = mkElement(this) and
+      masterVde(thisElement, last) and
       this instanceof VariableDeclarationGroup and
       not previousVde(last, _) and
-      exists(VariableDeclarationEntry vde | vde=this and vde instanceof VariableDeclarationEntry and vde.getLocation() = lstart) and
+      exists(VariableDeclarationEntry vde | vde=mkElement(this) and vde instanceof VariableDeclarationEntry and vde.getLocation() = lstart) and
       last.getLocation() = lend and
       lstart.hasLocationInfo(path, startline, startcol, _, _) and
       lend.hasLocationInfo(path, _, _, endline, endcol)
@@ -70,15 +71,15 @@ class VariableDeclarationGroup extends @var_decl {
   }
 
   string toString() {
-    if previousVde(this, _) then
+    if previousVde(mkElement(this), _) then
       result = "group of "
              + strictcount(string name
                          | exists(VariableDeclarationEntry vde
-                                | masterVde(this, vde) and
+                                | masterVde(mkElement(this), vde) and
                                   name = vde.getName()))
              + " fields here"
     else
-      result = "declaration of " + this.(VariableDeclarationEntry).getVariable().getName()
+      result = "declaration of " + mkElement(this).(VariableDeclarationEntry).getVariable().getName()
   }
 }
 

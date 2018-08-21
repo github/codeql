@@ -29,7 +29,7 @@ predicate failedLock(MutexType t, BasicBlock lockblock, BasicBlock failblock) {
   exists (ControlFlowNode lock |
     lock = lockblock.getEnd() and
     lock = t.getLockAccess() and
-    lock.getAFalseSuccessor() = failblock
+    lock.getAFalseSuccessor() = mkElement(failblock)
   )
 }
 

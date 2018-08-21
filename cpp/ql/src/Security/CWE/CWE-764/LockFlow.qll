@@ -27,7 +27,7 @@ predicate tryLockCondition(VariableAccess access,
     (cond = call.getParent*() and
      cond.isCondition() and
      failNode = cond.getASuccessor() and
-     failNode instanceof BasicBlockWithReturn))
+     unresolveElement(failNode) instanceof BasicBlockWithReturn))
 }
 
 /**

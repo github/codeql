@@ -169,7 +169,7 @@ predicate stackPointerFlowsToDef(
   or
   // Increment/decrement operators.
   exists (VariableAccess access
-  | access = def.(CrementOperation).getOperand() and
+  | access = mkElement(def).(CrementOperation).getOperand() and
     var = access.getTarget() and
     stackPointerFlowsToUse(access, useType, source, isLocal))
   or
@@ -205,7 +205,7 @@ predicate stackReferenceFlowsToDef_Impl(
   or
   // Increment/decrement operators.
   exists (VariableAccess access
-  | access = def.(CrementOperation).getOperand() and
+  | access = mkElement(def).(CrementOperation).getOperand() and
     var = access.getTarget() and
     stackReferenceFlowsToUse(access, useType, source, isLocal))
   or

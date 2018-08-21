@@ -12,6 +12,6 @@
 import cpp
 
 from File f, int comments, int total
-where f.fromSource() and numlines(f, total, _, comments) and total > 0
+where f.fromSource() and numlines(unresolveElement(f), total, _, comments) and total > 0
 select f, 100.0 * (comments.(float) / total.(float)) as ratio
 order by ratio desc
