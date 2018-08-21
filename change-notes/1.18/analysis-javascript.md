@@ -12,6 +12,8 @@
 
 * Modelling of taint flow through the array operations `map` and `join` has been improved. This may give additional results for the security queries.
 
+* The taint tracking library recognizes more ways in which taint propagates. In particular, some flow through string formatters is now recognized.
+
 * Support for popular libraries has been improved. Consequently, queries may produce more results on code bases that use the following libraries:
   - [bluebird](http://bluebirdjs.com)
   - [browserid-crypto](https://github.com/mozilla/browserid-crypto)
@@ -35,6 +37,7 @@
   - [extend2](https://github.com/eggjs/extend2)
   - [fast-json-parse](https://github.com/mcollina/fast-json-parse)
   - [forge](https://github.com/digitalbazaar/forge)
+  - [format-util](https://github.com/tmpfs/format-util)
   - [global](https://www.npmjs.com/package/global)
   - [he](https://github.com/mathiasbynens/he)
   - [html-entities](https://github.com/mdevils/node-html-entities)
@@ -56,13 +59,17 @@
   - [object.assign](https://github.com/ljharb/object.assign)
   - [object.defaults](https://github.com/jonschlinkert/object.defaults)
   - [parse-json](https://github.com/sindresorhus/parse-json)
-  - [React Native](https://facebook.github.io/react-native/)
+  - [printf](https://github.com/adaltas/node-printf)
+  - [printj](https://github.com/SheetJS/printj)
   - [q](http://documentup.com/kriskowal/q/)
   - [ramda](https://ramdajs.com)
+  - [React Native](https://facebook.github.io/react-native/)
   - [safe-json-parse](https://github.com/Raynos/safe-json-parse)
   - [sanitize](https://github.com/pocketly/node-sanitize)
   - [sanitizer](https://github.com/theSmaw/Caja-HTML-Sanitizer)
   - [smart-extend](https://github.com/danielkalen/smart-extend)
+  - [sprintf.js](https://github.com/alexei/sprintf.js)
+  - [string-template](https://github.com/Matt-Esch/string-template)
   - [underscore](https://underscorejs.org)
   - [util-extend](https://github.com/isaacs/util-extend)
   - [utils-merge](https://github.com/jaredhanson/utils-merge)
