@@ -323,7 +323,7 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
   }
 
   override final Instruction getFirstInstruction() {
-    result = getInstruction(ParameterInitializerTag())
+    result = getInstruction(InitializerVariableAddressTag())
   }
 
   override final TranslatedElement getChild(int id) {
@@ -334,10 +334,6 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
     EdgeKind kind) {
     kind instanceof GotoEdge and
     (
-      (
-        tag = ParameterInitializerTag() and
-        result = getInstruction(InitializerVariableAddressTag())
-      ) or
       (
         tag = InitializerVariableAddressTag() and
         result = getInstruction(InitializerStoreTag())
@@ -356,12 +352,6 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
   override final predicate hasInstruction(Opcode opcode, InstructionTag tag,
     Type resultType, boolean isGLValue) {
     (
-      tag = ParameterInitializerTag() and
-      opcode instanceof Opcode::InitializeParameter and
-      resultType = param.getType().getUnspecifiedType() and
-      isGLValue = false
-    ) or
-    (
       tag = InitializerVariableAddressTag() and
       opcode instanceof Opcode::VariableAddress and
       resultType = param.getType().getUnspecifiedType() and
@@ -369,7 +359,7 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
     ) or
     (
       tag = InitializerStoreTag() and
-      opcode instanceof Opcode::Store and
+      opcode instanceof Opcode::InitializeParameter and
       resultType = param.getType().getUnspecifiedType() and
       isGLValue = false
     )
@@ -377,7 +367,7 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
 
   override final IRVariable getInstructionVariable(InstructionTag tag) {
     (
-      tag = ParameterInitializerTag() or
+      tag = InitializerStoreTag() or
       tag = InitializerVariableAddressTag()
     ) and
     result = getIRUserVariable(getFunction(), param)
@@ -390,10 +380,6 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
       (
         operandTag instanceof LoadStoreAddressOperand and
         result = getInstruction(InitializerVariableAddressTag())
-      ) or
-      (
-        operandTag instanceof CopySourceOperand and
-        result = getInstruction(ParameterInitializerTag())
       )
     )
   }
