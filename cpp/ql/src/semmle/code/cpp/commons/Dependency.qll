@@ -345,7 +345,7 @@ private predicate dependsOnFull(DependsSource src, Symbol dest, int category) {
  */
 private
 predicate dependency_functionUse(Element src, Function dest) {
-  funbind(src, dest)
+  funbind(unresolveElement(src), unresolveElement(dest))
 }
 
 /**
@@ -407,7 +407,7 @@ Type typeUsedBy(Element src) {
   ) or (
     result = src.(SizeofTypeOperator).getTypeOperand()
   ) or exists(Function f |
-    funbind(src, f) and result = f.getATemplateArgument()
+    funbind(unresolveElement(src), unresolveElement(f)) and result = f.getATemplateArgument()
   ) or (
     result = src.(NewExpr).getType() and not result.(Class).hasConstructor()
   ) or (

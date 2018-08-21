@@ -19,9 +19,9 @@ An approximation of this definition is classes with pure virtual functions and l
 */
 class InterfaceClass extends Class {
   InterfaceClass() {
-     exists(MemberFunction m | m.getDeclaringType() = this and not compgenerated(m))
+     exists(MemberFunction m | m.getDeclaringType() = this and not compgenerated(unresolveElement(m)))
     and
-     forall(MemberFunction m | m.getDeclaringType() = this and not compgenerated(m) | m instanceof PureVirtualFunction)
+     forall(MemberFunction m | m.getDeclaringType() = this and not compgenerated(unresolveElement(m)) | m instanceof PureVirtualFunction)
     and
      count(MemberVariable v | v.getDeclaringType() = this) < 3
   }

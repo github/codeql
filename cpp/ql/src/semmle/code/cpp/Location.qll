@@ -58,9 +58,9 @@ class Location extends @location {
    */
   predicate fullLocationInfo(
     Container container, int startline, int startcolumn, int endline, int endcolumn) {
-    locations_default(this, container, startline,  startcolumn, endline, endcolumn) or
-    locations_expr(this, container, startline,  startcolumn, endline, endcolumn) or
-    locations_stmt(this, container, startline,  startcolumn, endline, endcolumn)
+    locations_default(this, unresolveElement(container), startline,  startcolumn, endline, endcolumn) or
+    locations_expr(this, unresolveElement(container), startline,  startcolumn, endline, endcolumn) or
+    locations_stmt(this, unresolveElement(container), startline,  startcolumn, endline, endcolumn)
   }
 
   /**

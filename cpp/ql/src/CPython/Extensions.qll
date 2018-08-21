@@ -3,12 +3,9 @@ import CPython.ArgParse
 
 
 /* Root class of all 'C' objects */
-abstract class CObject extends @element {
+abstract class CObject extends Element {
 
     abstract string getTrapID();
-
-    /** Gets a textual representation of this element. */
-    abstract string toString();
 }
 
 

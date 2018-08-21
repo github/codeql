@@ -66,7 +66,7 @@ class Library extends LibraryT {
       result = lib.getAFile()
     ) or exists(@external_package ep |
       this = LibraryTExternalPackage(ep, _, _) and
-      header_to_external_package(result, ep)
+      header_to_external_package(unresolveElement(result), ep)
     )
   }
 }

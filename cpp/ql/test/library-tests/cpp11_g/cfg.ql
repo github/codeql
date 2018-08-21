@@ -3,7 +3,7 @@ import semmle.code.cpp.exprs.ObjectiveC
 
 string arguments(Function f, int i) {
   (result = "," and i = -1) or
-  (result = "" and i = min(int j | function_template_argument(f, j, _)) - 1) or
+  (result = "" and i = min(int j | function_template_argument(unresolveElement(f), j, _)) - 1) or
   (result = arguments(f, i - 1) + "," + f.getTemplateArgument(i).toString())
 }
 

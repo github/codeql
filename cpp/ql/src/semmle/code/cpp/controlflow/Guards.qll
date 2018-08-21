@@ -93,12 +93,12 @@ class GuardCondition extends Expr {
         exists(BasicBlock thisblock
         | thisblock.contains(this)
         | exists(BasicBlock succ
-          | testIsTrue = true and succ = this.getATrueSuccessor() or
-            testIsTrue = false and succ = this.getAFalseSuccessor()
+          | testIsTrue = true and mkElement(succ) = this.getATrueSuccessor() or
+            testIsTrue = false and mkElement(succ) = this.getAFalseSuccessor()
           | bbDominates(succ, controlled) and
             forall(BasicBlock pred
             | pred.getASuccessor() = succ
-            | pred = thisblock or bbDominates(succ, pred) or not reachable(pred))))
+            | pred = thisblock or bbDominates(succ, pred) or not reachable(mkElement(pred)))))
     }
 }
 

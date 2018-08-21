@@ -309,7 +309,7 @@ abstract class AccessHolder extends Declaration {
     isDirectPublicBaseOf*(base, derived)
     or
     exists(DirectAccessHolder n |
-      this.getEnclosingAccessHolder*() = n and
+      this.getEnclosingAccessHolder*() = mkElement(n) and
       // Derivations using (4.2) or (4.3) at least once.
       n.thisCanAccessClassTrans(base, derived)
     )
@@ -379,7 +379,7 @@ abstract class AccessHolder extends Declaration {
     everyoneCouldAccessMember(memberClass, memberAccess, derived)
     or
     exists(DirectAccessHolder n |
-      this.getEnclosingAccessHolder*() = n and
+      this.getEnclosingAccessHolder*() = mkElement(n) and
       // Any other derivation.
       n.thisCouldAccessMember(memberClass, memberAccess, derived)
     )
@@ -398,9 +398,9 @@ abstract class AccessHolder extends Declaration {
  */
 private class DirectAccessHolder extends @declaration {
   DirectAccessHolder() {
-    this instanceof Class
+    mkElement(this) instanceof Class
     or
-    exists(FriendDecl fd | fd.getFriend() = this)
+    exists(FriendDecl fd | fd.getFriend() = mkElement(this))
   }
 
   /**
@@ -486,7 +486,7 @@ private class DirectAccessHolder extends @declaration {
     )
     or
     // Rule (5.4) followed by Rule (5.2)
-    exists(Class between | this.(AccessHolder).canAccessClass(between, derived) |
+    exists(Class between | mkElement(this).(AccessHolder).canAccessClass(between, derived) |
         between.accessOfBaseMember(memberClass, memberAccess)
                .hasName("private") and
         this.isFriendOfOrEqualTo(between)
@@ -539,12 +539,12 @@ private class DirectAccessHolder extends @declaration {
   }
 
   private predicate isFriendOfOrEqualTo(Class c) {
-    exists(FriendDecl fd | fd.getDeclaringClass() = c | this = fd.getFriend())
+    exists(FriendDecl fd | fd.getDeclaringClass() = c | mkElement(this) = fd.getFriend())
     or
-    this = c
+    mkElement(this) = c
   }
 
-  string toString() { result = this.(Declaration).toString() }
+  string toString() { result = mkElement(this).(Declaration).toString() }
 }
 
 /**

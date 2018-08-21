@@ -91,7 +91,7 @@ class SimilarBlock extends Copy, @similarity
 
 FunctionDeclarationEntry sourceMethod() {
   result.isDefinition() and
-  exists(result.getLocation()) and numlines(result.getFunction(),_,_,_)
+  exists(result.getLocation()) and numlines(unresolveElement(result.getFunction()),_,_,_)
 }
 
 int numberOfSourceMethods(Class c) {
