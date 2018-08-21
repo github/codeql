@@ -73,3 +73,4 @@
 | tst.ts:134:5:134:14 | emptyTuple | emptyTuple | tst.ts:134:17:134:18 | [] |
 | tst.ts:135:5:135:24 | tupleWithRestElement | tupleWithRestElement | tst.ts:135:27:135:47 | [number ... ring[]] |
 | tst.ts:136:5:136:36 | tupleWi ... lements | tupleWithOptionalAndRestElements | tst.ts:136:39:136:68 | [number ... mber[]] |
+| tst.ts:137:5:137:15 | unknownType | unknownType | tst.ts:137:18:137:24 | unknown |
