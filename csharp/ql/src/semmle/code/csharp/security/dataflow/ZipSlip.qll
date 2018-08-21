@@ -4,7 +4,6 @@
 import csharp
 
 module ZipSlip {
-
   /**
    * A data flow source for unsafe zip extraction.
    */
@@ -97,9 +96,9 @@ module ZipSlip {
   }
 
   /**
-   * An argument to GetFileName.
+   * An argument to `GetFileName`.
    *
-   * This is considered a sanitizer because it extracts the just the file name, not the full path.
+   * This is considered a sanitizer because it extracts just the file name, not the full path.
    */
   class GetFileNameSanitizer extends Sanitizer {
     GetFileNameSanitizer() {
