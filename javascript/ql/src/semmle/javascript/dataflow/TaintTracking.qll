@@ -587,14 +587,14 @@ module TaintTracking {
 
   }
 
-  /** A check of the form `if(o.indexOf(x) != -1)`, which sanitizes `x` in its "then" branch. */
+  /** A check of the form `if(whitelist.indexOf(x) != -1)`, which sanitizes `x` in its "then" branch. */
   class IndexOfSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
     MethodCallExpr indexOf;
     override EqualityTest astNode;
 
     IndexOfSanitizer() {
       exists (Expr index | astNode.hasOperands(indexOf, index) |
-        // one operand is of the form `o.indexOf(x)`
+        // one operand is of the form `whitelist.indexOf(x)`
         indexOf.getMethodName() = "indexOf" and
         // and the other one is -1
         index.getIntValue() = -1
@@ -612,7 +612,11 @@ module TaintTracking {
 
   }
 
-  /** A check of the form `if(~o.indexOf(x))`, which sanitizes `x` in its "then" branch. */
+  /** 
+   * A check of the form `if(~whitelist.indexOf(x))`, which sanitizes `x` in its "then" branch.
+   * 
+   * This sanitizer is equivalent to `if(whitelist.indexOf(x) != -1)`, since `~n = 0` iff `n = -1`.
+   */
   class BitwiseIndexOfSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
     MethodCallExpr indexOf;
     override BitNotExpr astNode;
