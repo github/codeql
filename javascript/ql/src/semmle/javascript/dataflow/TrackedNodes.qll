@@ -144,8 +144,20 @@ private module NodeTracking {
     or
     exists (DataFlow::Node mid, PathSummary oldSummary, PathSummary newSummary |
       reachableFromInput(f, invk, input, mid, oldSummary) and
-      flowStep(mid, nd, newSummary) and
-      summary = oldSummary.append(newSummary)
+      extendingFlowStep(mid, oldSummary, nd, newSummary)
+    )
+  }
+
+  /**
+   * Holds if there is a (value-preserving) flow step from `pred` to `succ` under `cfg`, and
+   * the path summary of that step can be appended to `oldSummary` to yield `newSummary`.
+   */
+  pragma[noinline]
+  private predicate extendingFlowStep(DataFlow::Node pred,
+                      PathSummary oldSummary, DataFlow::Node succ, PathSummary newSummary) {
+    exists (PathSummary stepSummary |
+      flowStep(pred, succ, stepSummary) and
+      newSummary = oldSummary.append(stepSummary)
     )
   }
 
@@ -186,10 +198,9 @@ private module NodeTracking {
                                            PathSummary summary) {
     storeStep(rhs, nd, prop, summary)
     or
-    exists (DataFlow::Node mid, PathSummary oldSummary, PathSummary newSummary |
+    exists (DataFlow::Node mid, PathSummary oldSummary |
       reachableFromStoreBase(prop, rhs, mid, oldSummary) and
-      flowStep(mid, nd, newSummary) and
-      summary = oldSummary.append(newSummary)
+      extendingFlowStep(mid, oldSummary, nd, summary)
     )
     or
     nestedPropFlow(prop, rhs, nd, summary)
@@ -197,7 +208,7 @@ private module NodeTracking {
 
   /**
    * Holds if `rhs` is the right-hand side of a write to property `outerProp` and some read of
-   * another property `innerProp` is reachable from the base of that,
+   * another property `innerProp` is reachable from the base of that write,
    * and from the base of that inner read we can reach a read `succ` of the same property `innerProp`,
    * such that the path from `rhs` to `succ` is summarized by `summary`.
    *
@@ -253,9 +264,7 @@ private module NodeTracking {
     or
     exists (DataFlow::Node mid, PathSummary oldSummary, PathSummary newSummary |
       reachableFromLoadBase(prop, read, mid, oldSummary) and
-      flowStep(mid, nd, newSummary) and
-      newSummary.valuePreserving() = true and
-      summary = oldSummary.append(newSummary)
+      extendingFlowStep(mid, oldSummary, nd, newSummary)
     )
   }
 

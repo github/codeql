@@ -430,10 +430,23 @@ private predicate reachableFromInput(Function f, DataFlow::Node invk,
   callInputStep(f, invk, input, nd, cfg) and
   summary = PathSummary::empty()
   or
-  exists (DataFlow::Node mid, PathSummary oldSummary, PathSummary newSummary |
+  exists (DataFlow::Node mid, PathSummary oldSummary |
     reachableFromInput(f, invk, input, mid, cfg, oldSummary) and
-    flowStep(mid, cfg, nd, newSummary) and
-    summary = oldSummary.append(newSummary)
+    extendingTaintStep(mid, cfg, oldSummary, nd, summary)
+  )
+}
+
+/**
+ * Holds if there is a (not necessarily value-preserving) flow step from `pred` to `succ` under
+ * `cfg`, and the path summary of that step can be appended to `oldSummary` to yield `newSummary`.
+ */
+pragma[noinline]
+private predicate extendingTaintStep(DataFlow::Node pred, DataFlow::Configuration cfg,
+                                    PathSummary oldSummary, DataFlow::Node succ,
+                                    PathSummary newSummary) {
+  exists (PathSummary stepSummary |
+    flowStep(pred, cfg, succ, stepSummary) and
+    newSummary = oldSummary.append(stepSummary)
   )
 }
 
@@ -478,11 +491,9 @@ private predicate reachableFromStoreBase(string prop, DataFlow::Node rhs, DataFl
   isRelevant(rhs, cfg) and
   storeStep(rhs, nd, prop, cfg, summary)
   or
-  exists (DataFlow::Node mid, PathSummary oldSummary, PathSummary newSummary |
+  exists (DataFlow::Node mid, PathSummary oldSummary |
     reachableFromStoreBase(prop, rhs, mid, cfg, oldSummary) and
-    flowStep(mid, cfg, nd, newSummary) and
-    newSummary.valuePreserving() = true and
-    summary = oldSummary.append(newSummary)
+    extendingFlowStep(mid, cfg, oldSummary, nd, summary)
   )
   or
   nestedPropFlow(prop, rhs, nd, cfg, summary)
@@ -544,11 +555,23 @@ private predicate reachableFromLoadBase(string prop, DataFlow::Node read, DataFl
   reverseLoadStep(read, nd, prop) and
   summary = PathSummary::empty()
   or
-  exists (DataFlow::Node mid, PathSummary oldSummary, PathSummary newSummary |
+  exists (DataFlow::Node mid, PathSummary oldSummary |
     reachableFromLoadBase(prop, read, mid, cfg, oldSummary) and
-    flowStep(mid, cfg, nd, newSummary) and
-    newSummary.valuePreserving() = true and
-    summary = oldSummary.append(newSummary)
+    extendingFlowStep(mid, cfg, oldSummary, nd, summary)
+  )
+}
+
+/**
+ * Holds if there is a (value-preserving) flow step from `pred` to `succ` under `cfg`, and
+ * the path summary of that step can be appended to `oldSummary` to yield `newSummary`.
+ */
+pragma[noinline]
+private predicate extendingFlowStep(DataFlow::Node pred, DataFlow::Configuration cfg,
+                      PathSummary oldSummary, DataFlow::Node succ, PathSummary newSummary) {
+  exists (PathSummary stepSummary |
+    flowStep(pred, cfg, succ, stepSummary) and
+    stepSummary.valuePreserving() = true and
+    newSummary = oldSummary.append(stepSummary)
   )
 }
 
