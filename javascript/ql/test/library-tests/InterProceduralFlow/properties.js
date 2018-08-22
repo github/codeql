@@ -18,3 +18,12 @@ function f(x) {
 var yet_another_source = "tainted as well";
 window.foo = yet_another_source;
 var yet_another_sink = window.foo;
+
+(function() {
+  var other_source = "also tainted";
+  var b = new B();
+  b.p.q = other_source;
+  var sink3 = b;
+  var sink4 = b.p;
+  var sink5 = b.p.q;
+});

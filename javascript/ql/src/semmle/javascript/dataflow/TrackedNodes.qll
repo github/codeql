@@ -104,6 +104,8 @@ private module NodeTracking {
       basicStoreStep(mid, nd, _)
       or
       loadStep(mid, nd, _)
+      or
+      reverseLoadStep(mid, nd, _)
     )
   }
 
@@ -187,6 +189,72 @@ private module NodeTracking {
     exists (DataFlow::Node mid, PathSummary oldSummary, PathSummary newSummary |
       reachableFromStoreBase(prop, rhs, mid, oldSummary) and
       flowStep(mid, nd, newSummary) and
+      summary = oldSummary.append(newSummary)
+    )
+    or
+    nestedPropFlow(prop, rhs, nd, summary)
+  }
+
+  /**
+   * Holds if `rhs` is the right-hand side of a write to property `outerProp` and some read of
+   * another property `innerProp` is reachable from the base of that,
+   * and from the base of that inner read we can reach a read `succ` of the same property `innerProp`,
+   * such that the path from `rhs` to `succ` is summarized by `summary`.
+   *
+   * Example:
+   *
+   * ```
+   * let root = new A();
+   * let base = root.innerProp;
+   * base.outerProp = rhs;
+   * let succ = root.innerProp;
+   * ```
+   */
+  private predicate nestedPropFlow(string outerProp, DataFlow::Node rhs, DataFlow::Node succ,
+                                   PathSummary summary) {
+    exists (DataFlow::PropRead nestedRead, PathSummary oldSummary |
+      reachableFromStoreBase(outerProp, rhs, nestedRead, oldSummary) and
+      loadLoadPair(nestedRead, succ, oldSummary, summary)
+    )
+  }
+
+  /**
+  * Holds if `load` is a read of some property `innerProp` from which we can reach a read `succ` of the same
+  * property `innerProp`, and the concatenation of `oldSummary` with the summary
+  * of that path is `summary`.
+   *
+   * Example:
+   *
+   * ```
+   * let root = A();
+   * let load = root.innerProp;
+   * let succ = root.innerProp;
+   * ```
+  */
+  pragma[noinline]
+  private predicate loadLoadPair(DataFlow::PropRead load, DataFlow::Node succ,
+                                 PathSummary oldSummary, PathSummary summary) {
+    exists (string innerProp, DataFlow::Node nd, PathSummary newSummary |
+      reachableFromLoadBase(innerProp, load, nd, newSummary) and
+      loadStep(nd, succ, innerProp) and
+      summary = oldSummary.append(newSummary)
+    )
+  }
+
+  /**
+   * Holds if `read` is a read of property `prop`, and `nd` is reachable from the base of that read
+   * (possibly through callees) along a path summarized by `summary`.
+   */
+  private predicate reachableFromLoadBase(string prop, DataFlow::Node read, DataFlow::Node nd,
+                                          PathSummary summary) {
+    reachableFromStoreBase(_, _, read, _) and
+    reverseLoadStep(read, nd, prop) and
+    summary = PathSummary::empty()
+    or
+    exists (DataFlow::Node mid, PathSummary oldSummary, PathSummary newSummary |
+      reachableFromLoadBase(prop, read, mid, oldSummary) and
+      flowStep(mid, nd, newSummary) and
+      newSummary.valuePreserving() = true and
       summary = oldSummary.append(newSummary)
     )
   }

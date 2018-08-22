@@ -209,6 +209,24 @@ predicate loadStep(DataFlow::Node pred, DataFlow::PropRead succ, string prop) {
 }
 
 /**
+ * Holds if there is a "reverse load" step from `pred` to `succ` under property `prop`,
+ * that is, `pred` is a read of property `prop` from (a data flow node reachable from)
+ * `succ`.
+ *
+ * For example, for this code snippet:
+ *
+ * ```
+ * var a = new A();
+ * a.p;
+ * ```
+ *
+ * there is a reverse load step from `a.p` to `new A()` under property `prop`.
+ */
+predicate reverseLoadStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
+  pred = succ.getAPropertyRead(prop)
+}
+
+/**
  * A utility class that is equivalent to `boolean` but does not require type joining.
  */
 class Boolean extends boolean {
