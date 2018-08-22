@@ -170,6 +170,27 @@ string getTypeDescription(string message1, string message2, int complexity1, int
     result = message1
 }
 
+/**
+ * Holds if `e` directly uses a parameter's initial value as passed in from the caller.
+ */
+predicate isInitialParameterUse(Expr e) {
+  // unlike `SimpleParameter.getAnInitialUse` this will not include uses we have refinement information for
+  exists (SimpleParameter p, SsaExplicitDefinition ssa |
+    ssa.getDef() = p and
+    ssa.getVariable().getAUse() = e and
+    not p.isRestParameter()
+  )
+}
+
+/**
+ * Holds if `e` is an expression that should not be considered in a heterogeneous comparison.
+ *
+ * We currently whitelist expressions that rely on inter-procedural parameter information.
+ */
+predicate whitelist(Expr e) {
+  isInitialParameterUse(e)
+}
+
 from ASTNode cmp,
      DataFlow::AnalyzedNode left, DataFlow::AnalyzedNode right,
      string leftTypes, string rightTypes,
@@ -177,6 +198,8 @@ from ASTNode cmp,
      int leftTypeCount, int rightTypeCount ,
      string leftTypeDescription, string rightTypeDescription
 where isHeterogeneousComparison(cmp, left, right, leftTypes, rightTypes) and
+      not whitelist(left.asExpr()) and
+      not whitelist(right.asExpr()) and
       leftExprDescription = capitalize(getDescription(left.asExpr(), "this expression")) and
       rightExprDescription = getDescription(right.asExpr(), "an expression") and
       leftTypeCount = strictcount(left.getAType()) and

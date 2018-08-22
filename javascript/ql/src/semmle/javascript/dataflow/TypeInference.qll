@@ -239,3 +239,52 @@ class AnalyzedModule extends TopLevel {
     )
   }
 }
+
+/**
+ * Flow analysis for functions.
+ */
+class AnalyzedFunction extends DataFlow::AnalyzedValueNode {
+  override Function astNode;
+
+  override AbstractValue getALocalValue() { result = TAbstractFunction(astNode) }
+
+  /**
+   * Gets a return value for a call to this function.
+   */
+  AbstractValue getAReturnValue() {
+    if astNode.isGenerator() or astNode.isAsync() then
+      result = TAbstractOtherObject()
+    else (
+      // explicit return value
+      result = astNode.getAReturnedExpr().analyze().getALocalValue()
+      or
+      // implicit return value
+      (
+        // either because execution of the function may terminate normally
+        mayReturnImplicitly()
+        or
+        // or because there is a bare `return;` statement
+        exists (ReturnStmt ret | ret = astNode.getAReturnStmt() | not exists(ret.getExpr()))
+      ) and
+      result = TAbstractUndefined()
+    )
+  }
+
+  /**
+   * Holds if the execution of this function may complete normally without
+   * encountering a `return` or `throw` statement.
+   *
+   * Note that this is an overapproximation, that is, the predicate may hold
+   * of functions that cannot actually complete normally, since it does not
+   * account for `finally` blocks and does not check reachability.
+   */
+  private predicate mayReturnImplicitly() {
+    exists (ConcreteControlFlowNode final |
+      final.getContainer() = astNode and
+      final.isAFinalNode() and
+      not final instanceof ReturnStmt and
+      not final instanceof ThrowStmt
+    )
+  }
+
+}

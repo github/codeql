@@ -90,15 +90,6 @@ private class AnalyzedArrayComprehensionExpr extends DataFlow::AnalyzedValueNode
 }
 
 /**
- * Flow analysis for functions.
- */
-private class AnalyzedFunction extends DataFlow::AnalyzedValueNode {
-  override Function astNode;
-
-  override AbstractValue getALocalValue() { result = TAbstractFunction(astNode) }
-}
-
-/**
  * Flow analysis for class declarations.
  */
 private class AnalyzedClassDefinition extends DataFlow::AnalyzedValueNode {

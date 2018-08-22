@@ -44,4 +44,44 @@ async function awaitFlow(){
     }
 }
 
+(function(){
+    function knownF() {
+        return false;
+    }
+    var known = knownF();
+    if (known)
+        return;
+    if (known)
+        return;
+
+    var unknown = unknownF();
+    if (unknown)
+        return;
+    if (unknown) // NOT OK
+        return;
+});
+
+(function (...x) {
+    x || y // NOT OK
+});
+
+(function() {
+    function f1(x) {
+        x || y // NOT OK, but whitelisted
+    }
+    f1(true);
+
+    function f2(x) {
+        while (true)
+            x || y // NOT OK
+    }
+    f2(true);
+
+    function f3(x) {
+        (function(){
+            x || y // NOT OK
+        });
+    }
+    f3(true);
+});
 // semmle-extractor-options: --experimental

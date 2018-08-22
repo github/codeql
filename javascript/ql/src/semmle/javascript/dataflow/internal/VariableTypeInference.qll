@@ -112,47 +112,43 @@ class AnalyzedVarDef extends VarDef {
 }
 
 /**
- * Flow analysis for simple IIFE parameters.
+ * Flow analysis for simple parameters of selected functions.
  */
-private class AnalyzedIIFEParameter extends AnalyzedVarDef, @vardecl {
-  AnalyzedIIFEParameter() {
-    exists (ImmediatelyInvokedFunctionExpr iife, int parmIdx |
-      this = iife.getParameter(parmIdx) |
-      // we cannot track flow into rest parameters...
-      not this.(Parameter).isRestParameter() and
-      // ...nor flow out of spread arguments
-      exists (int argIdx | argIdx = parmIdx + iife.getArgumentOffset() |
-        not iife.isSpreadArgument([0..argIdx])
-      )
+private class AnalyzedParameter extends AnalyzedVarDef, @vardecl {
+  AnalyzedParameter() {
+    exists (FunctionWithAnalyzedParameters f, int parmIdx |
+      this = f.getParameter(parmIdx) |
+      // we cannot track flow into rest parameters
+      not this.(Parameter).isRestParameter()
     )
   }
 
-  /** Gets the IIFE this is a parameter of. */
-  ImmediatelyInvokedFunctionExpr getIIFE() {
+  /** Gets the function this is a parameter of. */
+  FunctionWithAnalyzedParameters getFunction() {
     this = result.getAParameter()
   }
 
   override DataFlow::AnalyzedNode getRhs() {
-    getIIFE().argumentPassing(this, result.asExpr()) or
+    getFunction().argumentPassing(this, result.asExpr()) or
     result = this.(Parameter).getDefault().analyze()
   }
 
   override AbstractValue getAnRhsValue() {
-    result = AnalyzedVarDef.super.getAnRhsValue() or
-    not getIIFE().argumentPassing(this, _) and result = TAbstractUndefined()
+    result = AnalyzedVarDef.super.getAnRhsValue()
+    or
+    not getFunction().mayReceiveArgument(this) and
+    result = TAbstractUndefined()
   }
 
   override predicate isIncomplete(DataFlow::Incompleteness cause) {
-    exists (ImmediatelyInvokedFunctionExpr iife | iife = getIIFE() |
-      // if the IIFE has a name and that name is referenced, we conservatively
-      // assume that there may be other calls than the direct one
-      exists (iife.getVariable().getAnAccess()) and cause = "call" or
-      // if the IIFE is non-strict and its `arguments` object is accessed, we
-      // also assume that there may be other calls (through `arguments.callee`)
-      not iife.isStrict() and
-      exists (iife.getArgumentsVariable().getAnAccess()) and cause = "call"
+    getFunction().isIncomplete(cause) or
+    (
+      not getFunction().argumentPassing(this, _) and
+      getFunction().mayReceiveArgument(this) and
+      cause = "call"
     )
   }
+  
 }
 
 /**
@@ -649,4 +645,104 @@ private class NamespaceExportVarFlow extends DataFlow::AnalyzedValueNode {
   }
 
   override AbstractValue getALocalValue() { result = TIndefiniteAbstractValue("namespace") }
+}
+
+/**
+ * A function with inter-procedural type inference for its parameters.
+ */
+abstract class FunctionWithAnalyzedParameters extends Function {
+
+  /**
+   * Holds if `p` is a parameter of this function and `arg` is
+   * the corresponding argument.
+   */
+  abstract predicate argumentPassing(SimpleParameter p, Expr arg);
+
+  /**
+   * Holds if `p` is a parameter of this function that may receive a value from an argument.
+   */
+  abstract predicate mayReceiveArgument(Parameter p);
+
+  /**
+   * Holds if flow analysis results for the parameters may be incomplete
+   * due to the given `cause`.
+   */
+  abstract predicate isIncomplete(DataFlow::Incompleteness cause);
+
+}
+
+private abstract class CallWithAnalyzedParameters extends FunctionWithAnalyzedParameters {
+
+  /**
+   * Gets an invocation of this function.
+   */
+  abstract DataFlow::InvokeNode getAnInvocation();
+
+  override predicate argumentPassing(SimpleParameter p, Expr arg) {
+    exists (DataFlow::InvokeNode invk, int argIdx |
+      invk = getAnInvocation() |
+      p = getParameter(argIdx) and not p.isRestParameter() and
+      arg = invk.getArgument(argIdx).asExpr()
+    )
+  }
+
+  override predicate mayReceiveArgument(Parameter p) {
+    exists (DataFlow::InvokeNode invk, int argIdx |
+      invk = getAnInvocation() and
+      p = getParameter(argIdx) |
+      exists (invk.getArgument(argIdx))
+      or
+      invk.asExpr().(InvokeExpr).isSpreadArgument([0..argIdx])
+    )
+  }
+
+}
+
+/**
+ * Flow analysis for simple parameters of IIFEs.
+ */
+private class IIFEWithAnalyzedParameters extends CallWithAnalyzedParameters {
+
+  ImmediatelyInvokedFunctionExpr iife;
+
+  IIFEWithAnalyzedParameters() {
+    this = iife and
+    iife.getInvocationKind() = "direct"
+  }
+
+  override DataFlow::InvokeNode getAnInvocation() {
+    result = iife.getInvocation().flow()
+  }
+
+  override predicate isIncomplete(DataFlow::Incompleteness cause) {
+    // if the IIFE has a name and that name is referenced, we conservatively
+    // assume that there may be other calls than the direct one
+    exists (iife.getVariable().getAnAccess()) and cause = "call" or
+    // if the IIFE is non-strict and its `arguments` object is accessed, we
+    // also assume that there may be other calls (through `arguments.callee`)
+    not iife.isStrict() and
+    exists (iife.getArgumentsVariable().getAnAccess()) and cause = "call"
+  }
+
+}
+
+/**
+ * Enables inter-procedural type inference for `LocalFunction`.
+ */
+private class LocalFunctionWithAnalyzedParameters extends CallWithAnalyzedParameters {
+
+  LocalFunction local;
+
+  LocalFunctionWithAnalyzedParameters() {
+    this = local
+  }
+
+  override DataFlow::InvokeNode getAnInvocation() {
+    result = local.getAnInvocation()
+  }
+
+  override predicate isIncomplete(DataFlow::Incompleteness cause) {
+    none()
+  }
+
 }

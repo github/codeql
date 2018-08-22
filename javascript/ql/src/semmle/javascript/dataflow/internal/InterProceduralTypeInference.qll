@@ -8,69 +8,6 @@ import javascript
 import AbstractValuesImpl
 
 /**
- * Flow analysis for immediately-invoked function expressions (IIFEs).
- */
-private class IifeReturnFlow extends DataFlow::AnalyzedValueNode {
-  ImmediatelyInvokedFunctionExpr iife;
-
-  IifeReturnFlow() {
-    astNode = (CallExpr)iife.getInvocation()
-  }
-
-  override AbstractValue getALocalValue() {
-    result = getAReturnValue(iife)
-  }
-}
-
-/**
- * Gets a return value for the immediately-invoked function expression `f`.
- */
-private AbstractValue getAReturnValue(ImmediatelyInvokedFunctionExpr f) {
-  // explicit return value
-  result = f.getAReturnedExpr().analyze().getALocalValue()
-  or
-  // implicit return value
-  (
-    // either because execution of the function may terminate normally
-    mayReturnImplicitly(f)
-    or
-    // or because there is a bare `return;` statement
-    exists (ReturnStmt ret | ret = f.getAReturnStmt() | not exists(ret.getExpr()))
-  ) and
-  result = getDefaultReturnValue(f)
-}
-
-
-/**
- * Holds if the execution of function `f` may complete normally without
- * encountering a `return` or `throw` statement.
- *
- * Note that this is an overapproximation, that is, the predicate may hold
- * of functions that cannot actually complete normally, since it does not
- * account for `finally` blocks and does not check reachability.
- */
-private predicate mayReturnImplicitly(Function f) {
-  exists (ConcreteControlFlowNode final |
-    final.getContainer() = f and
-    final.isAFinalNode() and
-    not final instanceof ReturnStmt and
-    not final instanceof ThrowStmt
-  )
-}
-
-/**
- * Gets the default return value for immediately-invoked function expression `f`,
- * that is, the value that `f` returns if its execution terminates without
- * encountering an explicit `return` statement.
- */
-private AbstractValue getDefaultReturnValue(ImmediatelyInvokedFunctionExpr f) {
-  if f.isGenerator() or f.isAsync() then
-    result = TAbstractOtherObject()
-  else
-    result = TAbstractUndefined()
-}
-
-/**
  * Flow analysis for `this` expressions inside functions.
  */
 private abstract class AnalyzedThisExpr extends DataFlow::AnalyzedValueNode, DataFlow::ThisNode {
@@ -190,3 +127,79 @@ private class AnalyzedThisInPropertyFunction extends AnalyzedThisExpr {
   }
 }
 
+/**
+ * A call with inter-procedural type inference for the return value.
+ */
+abstract class CallWithAnalyzedReturnFlow extends DataFlow::AnalyzedValueNode {
+
+  /**
+   * Gets a called function.
+   */
+  abstract AnalyzedFunction getACallee();
+
+  override AbstractValue getALocalValue() {
+    result = getACallee().getAReturnValue() and
+    not this instanceof DataFlow::NewNode
+  }
+}
+
+/**
+ * Flow analysis for the return value of IIFEs.
+ */
+private class IIFEWithAnalyzedReturnFlow extends CallWithAnalyzedReturnFlow {
+  
+  ImmediatelyInvokedFunctionExpr iife;
+  
+  IIFEWithAnalyzedReturnFlow() {
+    astNode = iife.getInvocation()
+  }
+  
+  override AnalyzedFunction getACallee() {
+    result = iife.analyze()
+  }
+  
+}
+
+/** A function that only is used locally, making it amenable to type inference. */
+class LocalFunction extends Function {
+
+  DataFlow::Impl::ExplicitInvokeNode invk;
+
+  LocalFunction() {
+    this instanceof FunctionDeclStmt and
+    exists (LocalVariable v, Expr callee |
+      callee = invk.getCalleeNode().asExpr() and
+      v = getVariable() and
+      v.getAnAccess() = callee and
+      forall(VarAccess o | o = v.getAnAccess() | o = callee) and
+      not exists(v.getAnAssignedExpr()) and
+      not exists(ExportDeclaration export | export.exportsAs(v, _))
+    ) and
+    // if the function is non-strict and its `arguments` object is accessed, we
+    // also assume that there may be other calls (through `arguments.callee`)
+    (isStrict() or not usesArgumentsObject())
+  }
+
+  /** Gets an invocation of this function. */
+  DataFlow::InvokeNode getAnInvocation() {
+    result = invk
+  }
+
+}
+
+/**
+ * Enables inter-procedural type inference for a call to a `LocalFunction`.
+ */
+private class LocalFunctionCallWithAnalyzedReturnFlow extends CallWithAnalyzedReturnFlow {
+
+  LocalFunction f;
+
+  LocalFunctionCallWithAnalyzedReturnFlow() {
+    this = f.getAnInvocation()
+  }
+
+  override AnalyzedFunction getACallee() {
+    result = f.analyze()
+  }
+
+}

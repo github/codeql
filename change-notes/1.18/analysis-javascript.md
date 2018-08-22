@@ -16,6 +16,8 @@
 
 * The taint tracking library now recognizes additional sanitization patterns. This may give fewer false-positive results for the security queries.
 
+* Type inference for simple function calls has been improved. This may give additional results for queries that rely on type inference.
+
 * Support for popular libraries has been improved. Consequently, queries may produce more results on code bases that use the following libraries:
   - [bluebird](http://bluebirdjs.com)
   - [browserid-crypto](https://github.com/mozilla/browserid-crypto)
@@ -92,6 +94,7 @@
 | **Query**                  | **Expected impact**    | **Change**                                                       |
 |----------------------------|------------------------|------------------------------------------------------------------|
 | Arguments redefined | Fewer results | This rule previously also flagged redefinitions of `eval`. This was an oversight that is now fixed. |
+| Comparison between inconvertible types | Fewer results | This rule now flags fewer comparisons involving parameters. |
 | Comparison between inconvertible types | Lower severity | The severity of this rule has been revised to "warning". |
 | CORS misconfiguration for credentials transfer | More true-positive results | This rule now treats header names case-insensitively. |
 | Hard-coded credentials | More true-positive results | This rule now recognizes secret cryptographic keys. |
@@ -106,6 +109,8 @@
 | Unused variable | Fewer results | This rule no longer flags class expressions that could be made anonymous. While technically true, these results are not interesting. |
 | Unused variable | Renamed | This rule has been renamed to "Unused variable, import, function or class" to reflect the fact that it flags different kinds of unused program elements. |
 | Use of incompletely initialized object| Fewer results | This rule now flags the constructor instead its errorneous `this` or `super` expressions. |
+| Useless conditional | Fewer results | This rule no longer flags uses of boolean return values. | 
+| Useless conditional | Fewer results | This rule now flags fewer comparisons involving parameters. | 
 
 ## Changes to QL libraries
 
