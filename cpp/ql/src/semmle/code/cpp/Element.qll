@@ -39,7 +39,7 @@ Element mkElement(@element e) {
  * Get the `@element` that this `Element` extends. This should normally
  * only be called from member predicates, where `e` is `this` and you
  * need the result for an argument to a database extensional.
- * See `unresolveElement` for when `e` is `this`.
+ * See `unresolveElement` for when `e` is not `this`.
  */
 @element underlyingElement(Element e) {
   result = e
