@@ -15,13 +15,22 @@ which are stored on the machine of the end-user.
 <p>
 Ensure that sensitive information is always encrypted before being stored.
 If possible, avoid placing sensitive information in cookies altogether.
-Instead, prefer storing, in the cookie, a key that can be used to lookup the
+Instead, prefer storing, in the cookie, a key that can be used to look up the
 sensitive information.
 </p>
 <p>
 In general, decrypt sensitive information only at the point where it is
 necessary for it to be used in cleartext.
 </p>
+
+<p>
+
+Be aware that external processes often store the <code>standard
+out</code> and <code>standard error</code> streams of the application,
+causing logged sensitive information to be stored as well.
+
+</p>
+
 </recommendation>
 
 <example>

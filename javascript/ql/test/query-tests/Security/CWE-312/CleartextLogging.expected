@@ -1,0 +1,26 @@
+| passwords.js:2:17:2:24 | password | Sensitive data returned by $@ is logged here. | passwords.js:2:17:2:24 | password | an access to password |
+| passwords.js:3:17:3:26 | o.password | Sensitive data returned by $@ is logged here. | passwords.js:3:17:3:26 | o.password | an access to password |
+| passwords.js:4:17:4:29 | getPassword() | Sensitive data returned by $@ is logged here. | passwords.js:4:17:4:29 | getPassword() | a call to getPassword |
+| passwords.js:5:17:5:31 | o.getPassword() | Sensitive data returned by $@ is logged here. | passwords.js:5:17:5:31 | o.getPassword() | a call to getPassword |
+| passwords.js:8:21:8:21 | x | Sensitive data returned by $@ is logged here. | passwords.js:10:11:10:18 | password | an access to password |
+| passwords.js:12:18:12:25 | password | Sensitive data returned by $@ is logged here. | passwords.js:12:18:12:25 | password | an access to password |
+| passwords.js:14:17:14:38 | name +  ... assword | Sensitive data returned by $@ is logged here. | passwords.js:14:31:14:38 | password | an access to password |
+| passwords.js:16:17:16:38 | `${name ... sword}` | Sensitive data returned by $@ is logged here. | passwords.js:16:29:16:36 | password | an access to password |
+| passwords.js:21:17:21:20 | obj1 | Sensitive data returned by $@ is logged here. | passwords.js:18:16:20:5 | {\\n      ... x\\n    } | an access to password |
+| passwords.js:26:17:26:20 | obj2 | Sensitive data returned by $@ is logged here. | passwords.js:24:12:24:19 | password | an access to password |
+| passwords.js:29:17:29:20 | obj3 | Sensitive data returned by $@ is logged here. | passwords.js:30:14:30:21 | password | an access to password |
+| passwords.js:78:17:78:38 | temp.en ... assword | Sensitive data returned by $@ is logged here. | passwords.js:77:37:77:53 | req.body.password | an access to password |
+| passwords.js:81:17:81:31 | `pw: ${secret}` | Sensitive data returned by $@ is logged here. | passwords.js:80:18:80:25 | password | an access to password |
+| passwords.js:93:21:93:46 | "Passwo ... assword | Sensitive data returned by $@ is logged here. | passwords.js:93:39:93:46 | password | an access to password |
+| passwords.js:98:21:98:46 | "Passwo ... assword | Sensitive data returned by $@ is logged here. | passwords.js:98:39:98:46 | password | an access to password |
+| passwords.js:105:21:105:46 | "Passwo ... assword | Sensitive data returned by $@ is logged here. | passwords.js:105:39:105:46 | password | an access to password |
+| passwords.js:110:21:110:46 | "Passwo ... assword | Sensitive data returned by $@ is logged here. | passwords.js:110:39:110:46 | password | an access to password |
+| passwords.js:114:25:114:50 | "Passwo ... assword | Sensitive data returned by $@ is logged here. | passwords.js:114:43:114:50 | password | an access to password |
+| passwords.js:119:21:119:46 | "Passwo ... assword | Sensitive data returned by $@ is logged here. | passwords.js:119:39:119:46 | password | an access to password |
+| passwords.js:122:17:122:49 | name +  ... tring() | Sensitive data returned by $@ is logged here. | passwords.js:122:31:122:38 | password | an access to password |
+| passwords.js:123:17:123:48 | name +  ... lueOf() | Sensitive data returned by $@ is logged here. | passwords.js:123:31:123:38 | password | an access to password |
+| passwords_in_server_1.js:6:13:6:20 | password | Sensitive data returned by $@ is logged here. | passwords_in_server_1.js:6:13:6:20 | password | an access to password |
+| passwords_in_server_2.js:3:13:3:20 | password | Sensitive data returned by $@ is logged here. | passwords_in_server_2.js:3:13:3:20 | password | an access to password |
+| passwords_in_server_3.js:2:13:2:20 | password | Sensitive data returned by $@ is logged here. | passwords_in_server_3.js:2:13:2:20 | password | an access to password |
+| passwords_in_server_4.js:2:13:2:20 | password | Sensitive data returned by $@ is logged here. | passwords_in_server_4.js:2:13:2:20 | password | an access to password |
+| passwords_in_server_5.js:8:17:8:17 | x | Sensitive data returned by $@ is logged here. | passwords_in_server_5.js:4:7:4:24 | req.query.password | an access to password |

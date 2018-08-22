@@ -316,13 +316,12 @@ module TaintTracking {
   }
 
   /**
-   * A taint propagating data flow edge arising from string append and other string
-   * operations defined in the standard library.
+   * A taint propagating data flow edge arising from string concatenations.
    *
-   * Note that since we cannot easily distinguish string append from addition, we consider
-   * any `+` operation to propagate taint.
+   * Note that since we cannot easily distinguish string append from addition,
+   * we consider any `+` operation to propagate taint.
    */
-  private class StringManipulationTaintStep extends AdditionalTaintStep, DataFlow::ValueNode {
+  class StringConcatenationTaintStep extends AdditionalTaintStep, DataFlow::ValueNode {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       succ = this and
       (
@@ -336,8 +335,19 @@ module TaintTracking {
         or
         // templating propagates taint
         astNode.(TemplateLiteral).getAnElement() = pred.asExpr()
-        or
-        // other string operations that propagate taint
+      )
+    }
+  }
+  
+  /**
+   * A taint propagating data flow edge arising from string manipulation 
+   * functions defined in the standard library.
+   */
+  private class StringManipulationTaintStep extends AdditionalTaintStep, DataFlow::ValueNode {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      succ = this and
+      (
+        // string operations that propagate taint
         exists (string name | name = astNode.(MethodCallExpr).getMethodName() |
           pred.asExpr() = astNode.(MethodCallExpr).getReceiver() and
           ( // sorted, interesting, properties of String.prototype
