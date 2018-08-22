@@ -31,3 +31,8 @@
 | tst.js:166:9:166:16 | v == !!0 | ExampleConfiguration | true | tst.js:166:9:166:9 | v |
 | tst.js:184:9:184:21 | ~o.indexOf(v) | ExampleConfiguration | true | tst.js:184:20:184:20 | v |
 | tst.js:190:10:190:22 | ~o.indexOf(v) | ExampleConfiguration | true | tst.js:190:21:190:21 | v |
+| tst.js:202:9:202:26 | o.indexOf(v) <= -1 | ExampleConfiguration | false | tst.js:202:19:202:19 | v |
+| tst.js:208:9:208:25 | o.indexOf(v) >= 0 | ExampleConfiguration | true | tst.js:208:19:208:19 | v |
+| tst.js:214:9:214:24 | o.indexOf(v) < 0 | ExampleConfiguration | false | tst.js:214:19:214:19 | v |
+| tst.js:220:9:220:25 | o.indexOf(v) > -1 | ExampleConfiguration | true | tst.js:220:19:220:19 | v |
+| tst.js:226:9:226:26 | -1 >= o.indexOf(v) | ExampleConfiguration | false | tst.js:226:25:226:25 | v |

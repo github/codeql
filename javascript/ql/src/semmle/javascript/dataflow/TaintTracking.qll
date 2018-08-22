@@ -643,6 +643,60 @@ module TaintTracking {
 
   }
 
+  /**
+   * A less-than or greater-than expression
+   */
+  private class ExclusiveRelationalComparison extends RelationalComparison {
+    ExclusiveRelationalComparison() {
+      this instanceof LTExpr or
+      this instanceof GTExpr
+    }
+  }
+
+  /** 
+   * A check of the form `if(whitelist.indexOf(x) >= 0)`, which sanitizes `x` in its "then" branch. 
+   *
+   * Similar relational checks are also supported.
+   */
+  class RelationalIndexOfSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
+    MethodCallExpr indexOf;
+    override RelationalComparison astNode;
+    boolean polarity;
+
+    RelationalIndexOfSanitizer() {
+      exists (Expr lesser, Expr greater |
+        astNode.getLesserOperand() = lesser and
+        astNode.getGreaterOperand() = greater and
+        indexOf.getMethodName() = "indexOf" |
+        polarity = true and
+        greater = indexOf and
+        (
+          lesser.getIntValue() = 0 
+          or
+          lesser.getIntValue() = -1 and astNode instanceof ExclusiveRelationalComparison
+        )
+        or 
+        polarity = false and
+        lesser = indexOf and
+        (
+          greater.getIntValue() = -1
+          or
+          greater.getIntValue() = 0 and astNode instanceof ExclusiveRelationalComparison
+        )
+      )
+    }
+
+    override predicate sanitizes(boolean outcome, Expr e) {
+      outcome = polarity and
+      e = indexOf.getArgument(0)
+    }
+
+    override predicate appliesTo(Configuration cfg) {
+      any()
+    }
+
+  }
+
   /** 
    * A check of the form `if(~whitelist.indexOf(x))`, which sanitizes `x` in its "then" branch.
    * 

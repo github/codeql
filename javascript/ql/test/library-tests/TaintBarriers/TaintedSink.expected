@@ -28,3 +28,9 @@
 | tst.js:182:10:182:10 | v | tst.js:181:13:181:20 | SOURCE() |
 | tst.js:187:14:187:14 | v | tst.js:181:13:181:20 | SOURCE() |
 | tst.js:191:14:191:14 | v | tst.js:181:13:181:20 | SOURCE() |
+| tst.js:200:10:200:10 | v | tst.js:199:13:199:20 | SOURCE() |
+| tst.js:203:14:203:14 | v | tst.js:199:13:199:20 | SOURCE() |
+| tst.js:211:14:211:14 | v | tst.js:199:13:199:20 | SOURCE() |
+| tst.js:215:14:215:14 | v | tst.js:199:13:199:20 | SOURCE() |
+| tst.js:223:14:223:14 | v | tst.js:199:13:199:20 | SOURCE() |
+| tst.js:227:14:227:14 | v | tst.js:199:13:199:20 | SOURCE() |
