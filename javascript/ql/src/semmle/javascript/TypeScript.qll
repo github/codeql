@@ -686,6 +686,9 @@ class TypeExpr extends ExprOrType, @typeexpr {
   /** Holds if this is the `object` type. */
   predicate isObjectKeyword() { none() }
 
+  /** Holds if this is the `unknown` type. */
+  predicate isUnknownKeyword() { none() }
+
   /** Gets this type expression, with any surrounding parentheses removed. */
   override TypeExpr stripParens() {
     result = this
@@ -725,6 +728,7 @@ private class KeywordTypeExpr extends @keywordtypeexpr, TypeExpr {
   override predicate isSymbol() { getName() = "symbol" }
   override predicate isUniqueSymbol() { getName() = "unique symbol" }
   override predicate isObjectKeyword() { getName() = "object" }
+  override predicate isUnknownKeyword() { getName() = "unknown" }
 }
 
 /**
@@ -1071,6 +1075,25 @@ class IsTypeExpr extends @istypeexpr, TypeExpr {
    * Gets the type `T` in `E is T`.
    */
   TypeExpr getPredicateType() { result = this.getChildTypeExpr(1) }
+}
+
+/**
+ * An optional type element in a tuple type, such as `number?` in `[string, number?]`.
+ */
+class OptionalTypeExpr extends @optionaltypeexpr, TypeExpr {
+  /** Gets the type `T` in `T?` */
+  TypeExpr getElementType() { result = getChildTypeExpr(0) }
+}
+
+/**
+ * A rest element in a tuple type, such as `...string[]` in `[number, ...string[]]`.
+ */
+class RestTypeExpr extends @resttypeexpr, TypeExpr {
+  /** Gets the type `T[]` in `...T[]`, such as `string[]` in `[number, ...string[]]`. */
+  TypeExpr getArrayType() { result = getChildTypeExpr(0) }
+
+  /** Gets the type `T` in `...T[]`, such as `string` in `[number, ...string[]]`. */
+  TypeExpr getElementType() { result = getArrayType().(ArrayTypeExpr).getElementType() }
 }
 
 /**
@@ -2143,7 +2166,7 @@ class TupleType extends ArrayType, @tupletype {
   }
 
   /**
-   * Gets the number of elements in this tuple type.
+   * Gets the number of elements in this tuple type, including optional elements and the rest element.
    */
   int getNumElementType() {
     result = count(int i | exists(getElementType(i)))
@@ -2158,12 +2181,42 @@ class TupleType extends ArrayType, @tupletype {
   PlainArrayType getUnderlyingArrayType() {
     result.getArrayElementType() = getArrayElementType()
   }
+
+  /**
+   * Gets the number of required tuple elements, that is, excluding optional and rest elements.
+   *
+   * For example, the minimum length of `[number, string?, ...number[]]` is 1.
+   */
+  int getMinimumLength() {
+    tuple_type_min_length(this, result)
+  }
+
+  /**
+   * Holds if this tuple type ends with a rest element, such as `[number, ...string[]]`.
+   */
+  predicate hasRestElement() {
+    tuple_type_rest(this)
+  }
+
+  /**
+   * Gets the type of the rest element, if there is one.
+   *
+   * For example, the rest element of `[number, ...string[]]` is `string`.
+   */
+  Type getRestElementType() {
+    hasRestElement() and result = getElementType(getNumElementType() - 1)
+  }
 }
 
 /**
  * The predefined `any` type.
  */
 class AnyType extends Type, @anytype {}
+
+/**
+ * The predefined `unknown` type.
+ */
+class UnknownType extends Type, @unknowntype {}
 
 /**
  * The predefined `string` type.

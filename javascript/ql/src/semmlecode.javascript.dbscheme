@@ -556,7 +556,10 @@ case @typeexpr.kind of
 | 29 = @infertypeexpr
 | 30 = @importtypeaccess
 | 31 = @importnamespaceaccess
-| 32 = @importvartypeaccess;
+| 32 = @importvartypeaccess
+| 33 = @optionaltypeexpr
+| 34 = @resttypeexpr
+;
 
 @typeref = @typeaccess | @typedecl;
 @typeidentifier = @typedecl | @localtypeaccess | @typelabel | @localvartypeaccess | @localnamespaceaccess;
@@ -607,6 +610,7 @@ case @type.kind of
 | 20 = @thistype
 | 21 = @numberliteraltype
 | 22 = @stringliteraltype
+| 23 = @unknowntype
 ;
 
 @booleanliteraltype = @truetype | @falsetype;
@@ -732,6 +736,15 @@ base_type_names(
 self_types(
   int typeName: @symbol ref,
   int selfType: @typereference ref
+);
+
+tuple_type_min_length(
+  unique int typ: @type ref,
+  int minLength: int ref
+);
+
+tuple_type_rest(
+  unique int typ: @type ref
 );
 
 // comments

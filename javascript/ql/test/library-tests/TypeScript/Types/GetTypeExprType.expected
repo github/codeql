@@ -49,6 +49,25 @@
 | tst.ts:34:12:34:27 | [number, string] | [number, string] |
 | tst.ts:34:13:34:18 | number | number |
 | tst.ts:34:21:34:26 | string | string |
+| tst.ts:36:31:36:55 | [number ... umber?] | [number, string, number?] |
+| tst.ts:36:32:36:37 | number | number |
+| tst.ts:36:40:36:45 | string | string |
+| tst.ts:36:48:36:53 | number | number |
+| tst.ts:36:48:36:54 | number? | number |
+| tst.ts:37:17:37:18 | [] | [] |
+| tst.ts:38:27:38:47 | [number ... ring[]] | [number, ...string[]] |
+| tst.ts:38:28:38:33 | number | number |
+| tst.ts:38:36:38:46 | ...string[] | string[] |
+| tst.ts:38:39:38:44 | string | string |
+| tst.ts:38:39:38:46 | string[] | string[] |
+| tst.ts:39:39:39:68 | [number ... mber[]] | [number, string?, ...number[]] |
+| tst.ts:39:40:39:45 | number | number |
+| tst.ts:39:48:39:53 | string | string |
+| tst.ts:39:48:39:54 | string? | string |
+| tst.ts:39:57:39:67 | ...number[] | number[] |
+| tst.ts:39:60:39:65 | number | number |
+| tst.ts:39:60:39:67 | number[] | number[] |
+| tst.ts:40:18:40:24 | unknown | unknown |
 | type_alias.ts:1:6:1:6 | B | boolean |
 | type_alias.ts:1:10:1:16 | boolean | boolean |
 | type_alias.ts:3:8:3:8 | B | boolean |
