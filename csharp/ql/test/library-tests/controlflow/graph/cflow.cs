@@ -195,7 +195,7 @@ public class ControlFlow
         {
             throw;  // Go to the finally block
         }
-        catch (Exception) when (false)
+        catch (Exception e) when (e.Message != null)
         {
         }
         finally

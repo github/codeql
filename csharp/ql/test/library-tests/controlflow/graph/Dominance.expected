@@ -94,20 +94,20 @@
 | post | BreakInTry.cs:26:21:26:23 | access to local variable arg | BreakInTry.cs:26:17:27:26 | if (...) ... |
 | post | BreakInTry.cs:26:21:26:31 | ... == ... | BreakInTry.cs:26:28:26:31 | null |
 | post | BreakInTry.cs:26:28:26:31 | null | BreakInTry.cs:26:21:26:23 | access to local variable arg |
-| post | BreakInTry.cs:30:13:33:13 | [break] {...} | BreakInTry.cs:27:21:27:26 | break; |
-| post | BreakInTry.cs:31:17:32:21 | [break] if (...) ... | BreakInTry.cs:30:13:33:13 | [break] {...} |
+| post | BreakInTry.cs:30:13:33:13 | [finally: break] {...} | BreakInTry.cs:27:21:27:26 | break; |
+| post | BreakInTry.cs:31:17:32:21 | [finally: break] if (...) ... | BreakInTry.cs:30:13:33:13 | [finally: break] {...} |
 | post | BreakInTry.cs:31:17:32:21 | if (...) ... | BreakInTry.cs:30:13:33:13 | {...} |
-| post | BreakInTry.cs:31:21:31:24 | [break] access to parameter args | BreakInTry.cs:31:17:32:21 | [break] if (...) ... |
+| post | BreakInTry.cs:31:21:31:24 | [finally: break] access to parameter args | BreakInTry.cs:31:17:32:21 | [finally: break] if (...) ... |
 | post | BreakInTry.cs:31:21:31:24 | access to parameter args | BreakInTry.cs:31:17:32:21 | if (...) ... |
 | post | BreakInTry.cs:31:21:31:32 | ... == ... | BreakInTry.cs:31:29:31:32 | null |
-| post | BreakInTry.cs:31:21:31:32 | [break] ... == ... | BreakInTry.cs:31:29:31:32 | [break] null |
-| post | BreakInTry.cs:31:29:31:32 | [break] null | BreakInTry.cs:31:21:31:24 | [break] access to parameter args |
+| post | BreakInTry.cs:31:21:31:32 | [finally: break] ... == ... | BreakInTry.cs:31:29:31:32 | [finally: break] null |
+| post | BreakInTry.cs:31:29:31:32 | [finally: break] null | BreakInTry.cs:31:21:31:24 | [finally: break] access to parameter args |
 | post | BreakInTry.cs:31:29:31:32 | null | BreakInTry.cs:31:21:31:24 | access to parameter args |
 | post | BreakInTry.cs:35:7:35:7 | ; | BreakInTry.cs:22:9:34:9 | foreach (... ... in ...) ... |
-| post | BreakInTry.cs:35:7:35:7 | ; | BreakInTry.cs:31:21:31:32 | [break] ... == ... |
-| post | BreakInTry.cs:35:7:35:7 | ; | BreakInTry.cs:32:21:32:21 | [break] ; |
-| post | BreakInTry.cs:38:10:38:11 | exit M3 | BreakInTry.cs:47:13:51:13 | [return] foreach (... ... in ...) ... |
-| post | BreakInTry.cs:38:10:38:11 | exit M3 | BreakInTry.cs:50:21:50:26 | [return] break; |
+| post | BreakInTry.cs:35:7:35:7 | ; | BreakInTry.cs:31:21:31:32 | [finally: break] ... == ... |
+| post | BreakInTry.cs:35:7:35:7 | ; | BreakInTry.cs:32:21:32:21 | [finally: break] ; |
+| post | BreakInTry.cs:38:10:38:11 | exit M3 | BreakInTry.cs:47:13:51:13 | [finally: return] foreach (... ... in ...) ... |
+| post | BreakInTry.cs:38:10:38:11 | exit M3 | BreakInTry.cs:50:21:50:26 | [finally: return] break; |
 | post | BreakInTry.cs:38:10:38:11 | exit M3 | BreakInTry.cs:53:7:53:7 | ; |
 | post | BreakInTry.cs:39:5:54:5 | {...} | BreakInTry.cs:38:10:38:11 | enter M3 |
 | post | BreakInTry.cs:40:9:52:9 | try {...} ... | BreakInTry.cs:39:5:54:5 | {...} |
@@ -116,26 +116,26 @@
 | post | BreakInTry.cs:42:17:42:20 | access to parameter args | BreakInTry.cs:42:13:43:23 | if (...) ... |
 | post | BreakInTry.cs:42:17:42:28 | ... == ... | BreakInTry.cs:42:25:42:28 | null |
 | post | BreakInTry.cs:42:25:42:28 | null | BreakInTry.cs:42:17:42:20 | access to parameter args |
-| post | BreakInTry.cs:46:9:52:9 | [return] {...} | BreakInTry.cs:43:17:43:23 | return ...; |
-| post | BreakInTry.cs:47:13:51:13 | [return] foreach (... ... in ...) ... | BreakInTry.cs:47:33:47:36 | [return] access to parameter args |
+| post | BreakInTry.cs:46:9:52:9 | [finally: return] {...} | BreakInTry.cs:43:17:43:23 | return ...; |
+| post | BreakInTry.cs:47:13:51:13 | [finally: return] foreach (... ... in ...) ... | BreakInTry.cs:47:33:47:36 | [finally: return] access to parameter args |
 | post | BreakInTry.cs:47:13:51:13 | foreach (... ... in ...) ... | BreakInTry.cs:47:33:47:36 | access to parameter args |
-| post | BreakInTry.cs:47:33:47:36 | [return] access to parameter args | BreakInTry.cs:46:9:52:9 | [return] {...} |
+| post | BreakInTry.cs:47:33:47:36 | [finally: return] access to parameter args | BreakInTry.cs:46:9:52:9 | [finally: return] {...} |
 | post | BreakInTry.cs:47:33:47:36 | access to parameter args | BreakInTry.cs:46:9:52:9 | {...} |
-| post | BreakInTry.cs:48:13:51:13 | [return] {...} | BreakInTry.cs:47:26:47:28 | [return] String arg |
+| post | BreakInTry.cs:48:13:51:13 | [finally: return] {...} | BreakInTry.cs:47:26:47:28 | [finally: return] String arg |
 | post | BreakInTry.cs:48:13:51:13 | {...} | BreakInTry.cs:47:26:47:28 | String arg |
-| post | BreakInTry.cs:49:17:50:26 | [return] if (...) ... | BreakInTry.cs:48:13:51:13 | [return] {...} |
+| post | BreakInTry.cs:49:17:50:26 | [finally: return] if (...) ... | BreakInTry.cs:48:13:51:13 | [finally: return] {...} |
 | post | BreakInTry.cs:49:17:50:26 | if (...) ... | BreakInTry.cs:48:13:51:13 | {...} |
-| post | BreakInTry.cs:49:21:49:23 | [return] access to local variable arg | BreakInTry.cs:49:17:50:26 | [return] if (...) ... |
+| post | BreakInTry.cs:49:21:49:23 | [finally: return] access to local variable arg | BreakInTry.cs:49:17:50:26 | [finally: return] if (...) ... |
 | post | BreakInTry.cs:49:21:49:23 | access to local variable arg | BreakInTry.cs:49:17:50:26 | if (...) ... |
 | post | BreakInTry.cs:49:21:49:31 | ... == ... | BreakInTry.cs:49:28:49:31 | null |
-| post | BreakInTry.cs:49:21:49:31 | [return] ... == ... | BreakInTry.cs:49:28:49:31 | [return] null |
-| post | BreakInTry.cs:49:28:49:31 | [return] null | BreakInTry.cs:49:21:49:23 | [return] access to local variable arg |
+| post | BreakInTry.cs:49:21:49:31 | [finally: return] ... == ... | BreakInTry.cs:49:28:49:31 | [finally: return] null |
+| post | BreakInTry.cs:49:28:49:31 | [finally: return] null | BreakInTry.cs:49:21:49:23 | [finally: return] access to local variable arg |
 | post | BreakInTry.cs:49:28:49:31 | null | BreakInTry.cs:49:21:49:23 | access to local variable arg |
 | post | BreakInTry.cs:53:7:53:7 | ; | BreakInTry.cs:47:13:51:13 | foreach (... ... in ...) ... |
 | post | BreakInTry.cs:53:7:53:7 | ; | BreakInTry.cs:50:21:50:26 | break; |
-| post | BreakInTry.cs:56:10:56:11 | exit M4 | BreakInTry.cs:65:13:69:13 | [return] foreach (... ... in ...) ... |
+| post | BreakInTry.cs:56:10:56:11 | exit M4 | BreakInTry.cs:65:13:69:13 | [finally: return] foreach (... ... in ...) ... |
 | post | BreakInTry.cs:56:10:56:11 | exit M4 | BreakInTry.cs:65:13:69:13 | foreach (... ... in ...) ... |
-| post | BreakInTry.cs:56:10:56:11 | exit M4 | BreakInTry.cs:68:21:68:26 | [return] break; |
+| post | BreakInTry.cs:56:10:56:11 | exit M4 | BreakInTry.cs:68:21:68:26 | [finally: return] break; |
 | post | BreakInTry.cs:56:10:56:11 | exit M4 | BreakInTry.cs:68:21:68:26 | break; |
 | post | BreakInTry.cs:57:5:71:5 | {...} | BreakInTry.cs:56:10:56:11 | enter M4 |
 | post | BreakInTry.cs:58:9:70:9 | try {...} ... | BreakInTry.cs:57:5:71:5 | {...} |
@@ -144,21 +144,122 @@
 | post | BreakInTry.cs:60:17:60:20 | access to parameter args | BreakInTry.cs:60:13:61:23 | if (...) ... |
 | post | BreakInTry.cs:60:17:60:28 | ... == ... | BreakInTry.cs:60:25:60:28 | null |
 | post | BreakInTry.cs:60:25:60:28 | null | BreakInTry.cs:60:17:60:20 | access to parameter args |
-| post | BreakInTry.cs:64:9:70:9 | [return] {...} | BreakInTry.cs:61:17:61:23 | return ...; |
-| post | BreakInTry.cs:65:13:69:13 | [return] foreach (... ... in ...) ... | BreakInTry.cs:65:33:65:36 | [return] access to parameter args |
+| post | BreakInTry.cs:64:9:70:9 | [finally: return] {...} | BreakInTry.cs:61:17:61:23 | return ...; |
+| post | BreakInTry.cs:65:13:69:13 | [finally: return] foreach (... ... in ...) ... | BreakInTry.cs:65:33:65:36 | [finally: return] access to parameter args |
 | post | BreakInTry.cs:65:13:69:13 | foreach (... ... in ...) ... | BreakInTry.cs:65:33:65:36 | access to parameter args |
-| post | BreakInTry.cs:65:33:65:36 | [return] access to parameter args | BreakInTry.cs:64:9:70:9 | [return] {...} |
+| post | BreakInTry.cs:65:33:65:36 | [finally: return] access to parameter args | BreakInTry.cs:64:9:70:9 | [finally: return] {...} |
 | post | BreakInTry.cs:65:33:65:36 | access to parameter args | BreakInTry.cs:64:9:70:9 | {...} |
-| post | BreakInTry.cs:66:13:69:13 | [return] {...} | BreakInTry.cs:65:26:65:28 | [return] String arg |
+| post | BreakInTry.cs:66:13:69:13 | [finally: return] {...} | BreakInTry.cs:65:26:65:28 | [finally: return] String arg |
 | post | BreakInTry.cs:66:13:69:13 | {...} | BreakInTry.cs:65:26:65:28 | String arg |
-| post | BreakInTry.cs:67:17:68:26 | [return] if (...) ... | BreakInTry.cs:66:13:69:13 | [return] {...} |
+| post | BreakInTry.cs:67:17:68:26 | [finally: return] if (...) ... | BreakInTry.cs:66:13:69:13 | [finally: return] {...} |
 | post | BreakInTry.cs:67:17:68:26 | if (...) ... | BreakInTry.cs:66:13:69:13 | {...} |
-| post | BreakInTry.cs:67:21:67:23 | [return] access to local variable arg | BreakInTry.cs:67:17:68:26 | [return] if (...) ... |
+| post | BreakInTry.cs:67:21:67:23 | [finally: return] access to local variable arg | BreakInTry.cs:67:17:68:26 | [finally: return] if (...) ... |
 | post | BreakInTry.cs:67:21:67:23 | access to local variable arg | BreakInTry.cs:67:17:68:26 | if (...) ... |
 | post | BreakInTry.cs:67:21:67:31 | ... == ... | BreakInTry.cs:67:28:67:31 | null |
-| post | BreakInTry.cs:67:21:67:31 | [return] ... == ... | BreakInTry.cs:67:28:67:31 | [return] null |
-| post | BreakInTry.cs:67:28:67:31 | [return] null | BreakInTry.cs:67:21:67:23 | [return] access to local variable arg |
+| post | BreakInTry.cs:67:21:67:31 | [finally: return] ... == ... | BreakInTry.cs:67:28:67:31 | [finally: return] null |
+| post | BreakInTry.cs:67:28:67:31 | [finally: return] null | BreakInTry.cs:67:21:67:23 | [finally: return] access to local variable arg |
 | post | BreakInTry.cs:67:28:67:31 | null | BreakInTry.cs:67:21:67:23 | access to local variable arg |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:16:21:16:36 | ... == ... |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:16:21:16:36 | [finally: exception(ArgumentNullException)] ... == ... |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:16:21:16:36 | [finally: exception(Exception)] ... == ... |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:21:17:21:42 | [finally: exception(ArgumentNullException)] call to method WriteLine |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:21:17:21:42 | [finally: exception(Exception)] call to method WriteLine |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:21:17:21:42 | call to method WriteLine |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:25:17:25:37 | [finally: exception(ArgumentNullException)] call to method WriteLine |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:25:17:25:37 | [finally: exception(Exception)] call to method WriteLine |
+| post | CatchInFinally.cs:5:10:5:11 | exit M1 | CatchInFinally.cs:25:17:25:37 | call to method WriteLine |
+| post | CatchInFinally.cs:6:5:28:5 | {...} | CatchInFinally.cs:5:10:5:11 | enter M1 |
+| post | CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:6:5:28:5 | {...} |
+| post | CatchInFinally.cs:8:9:11:9 | {...} | CatchInFinally.cs:7:9:27:9 | try {...} ... |
+| post | CatchInFinally.cs:9:13:10:50 | if (...) ... | CatchInFinally.cs:8:9:11:9 | {...} |
+| post | CatchInFinally.cs:9:17:9:20 | access to parameter args | CatchInFinally.cs:9:13:10:50 | if (...) ... |
+| post | CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:9:25:9:28 | null |
+| post | CatchInFinally.cs:9:25:9:28 | null | CatchInFinally.cs:9:17:9:20 | access to parameter args |
+| post | CatchInFinally.cs:13:9:27:9 | [finally: exception(ArgumentNullException)] {...} | CatchInFinally.cs:10:17:10:50 | throw ...; |
+| post | CatchInFinally.cs:14:13:26:13 | [finally: exception(ArgumentNullException)] try {...} ... | CatchInFinally.cs:13:9:27:9 | [finally: exception(ArgumentNullException)] {...} |
+| post | CatchInFinally.cs:14:13:26:13 | [finally: exception(Exception)] try {...} ... | CatchInFinally.cs:13:9:27:9 | [finally: exception(Exception)] {...} |
+| post | CatchInFinally.cs:14:13:26:13 | try {...} ... | CatchInFinally.cs:13:9:27:9 | {...} |
+| post | CatchInFinally.cs:15:13:18:13 | [finally: exception(ArgumentNullException)] {...} | CatchInFinally.cs:14:13:26:13 | [finally: exception(ArgumentNullException)] try {...} ... |
+| post | CatchInFinally.cs:15:13:18:13 | [finally: exception(Exception)] {...} | CatchInFinally.cs:14:13:26:13 | [finally: exception(Exception)] try {...} ... |
+| post | CatchInFinally.cs:15:13:18:13 | {...} | CatchInFinally.cs:14:13:26:13 | try {...} ... |
+| post | CatchInFinally.cs:16:17:17:45 | [finally: exception(ArgumentNullException)] if (...) ... | CatchInFinally.cs:15:13:18:13 | [finally: exception(ArgumentNullException)] {...} |
+| post | CatchInFinally.cs:16:17:17:45 | [finally: exception(Exception)] if (...) ... | CatchInFinally.cs:15:13:18:13 | [finally: exception(Exception)] {...} |
+| post | CatchInFinally.cs:16:17:17:45 | if (...) ... | CatchInFinally.cs:15:13:18:13 | {...} |
+| post | CatchInFinally.cs:16:21:16:24 | [finally: exception(ArgumentNullException)] access to parameter args | CatchInFinally.cs:16:17:17:45 | [finally: exception(ArgumentNullException)] if (...) ... |
+| post | CatchInFinally.cs:16:21:16:24 | [finally: exception(Exception)] access to parameter args | CatchInFinally.cs:16:17:17:45 | [finally: exception(Exception)] if (...) ... |
+| post | CatchInFinally.cs:16:21:16:24 | access to parameter args | CatchInFinally.cs:16:17:17:45 | if (...) ... |
+| post | CatchInFinally.cs:16:21:16:31 | [finally: exception(ArgumentNullException)] access to property Length | CatchInFinally.cs:16:21:16:24 | [finally: exception(ArgumentNullException)] access to parameter args |
+| post | CatchInFinally.cs:16:21:16:31 | [finally: exception(Exception)] access to property Length | CatchInFinally.cs:16:21:16:24 | [finally: exception(Exception)] access to parameter args |
+| post | CatchInFinally.cs:16:21:16:31 | access to property Length | CatchInFinally.cs:16:21:16:24 | access to parameter args |
+| post | CatchInFinally.cs:16:21:16:36 | ... == ... | CatchInFinally.cs:16:36:16:36 | 1 |
+| post | CatchInFinally.cs:16:21:16:36 | [finally: exception(ArgumentNullException)] ... == ... | CatchInFinally.cs:16:36:16:36 | [finally: exception(ArgumentNullException)] 1 |
+| post | CatchInFinally.cs:16:21:16:36 | [finally: exception(Exception)] ... == ... | CatchInFinally.cs:16:36:16:36 | [finally: exception(Exception)] 1 |
+| post | CatchInFinally.cs:17:27:17:44 | [finally: exception(ArgumentNullException)] object creation of type Exception | CatchInFinally.cs:17:41:17:43 | [finally: exception(ArgumentNullException)] "1" |
+| post | CatchInFinally.cs:17:27:17:44 | [finally: exception(Exception)] object creation of type Exception | CatchInFinally.cs:17:41:17:43 | [finally: exception(Exception)] "1" |
+| post | CatchInFinally.cs:17:27:17:44 | object creation of type Exception | CatchInFinally.cs:17:41:17:43 | "1" |
+| post | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(ArgumentNullException)] catch (...) {...} | CatchInFinally.cs:17:21:17:45 | [finally: exception(ArgumentNullException)] throw ...; |
+| post | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(ArgumentNullException)] catch (...) {...} | CatchInFinally.cs:17:27:17:44 | [finally: exception(ArgumentNullException)] object creation of type Exception |
+| post | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(Exception)] catch (...) {...} | CatchInFinally.cs:17:21:17:45 | [finally: exception(Exception)] throw ...; |
+| post | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(Exception)] catch (...) {...} | CatchInFinally.cs:17:27:17:44 | [finally: exception(Exception)] object creation of type Exception |
+| post | CatchInFinally.cs:19:13:22:13 | [exception: Exception] catch (...) {...} | CatchInFinally.cs:17:21:17:45 | throw ...; |
+| post | CatchInFinally.cs:19:13:22:13 | [exception: Exception] catch (...) {...} | CatchInFinally.cs:17:27:17:44 | object creation of type Exception |
+| post | CatchInFinally.cs:19:30:19:30 | [exception: Exception, finally: exception(ArgumentNullException)] Exception e | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(ArgumentNullException)] catch (...) {...} |
+| post | CatchInFinally.cs:19:30:19:30 | [exception: Exception, finally: exception(Exception)] Exception e | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(Exception)] catch (...) {...} |
+| post | CatchInFinally.cs:19:30:19:30 | [exception: Exception] Exception e | CatchInFinally.cs:19:13:22:13 | [exception: Exception] catch (...) {...} |
+| post | CatchInFinally.cs:19:30:19:30 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] Exception e | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] catch (...) {...} |
+| post | CatchInFinally.cs:19:30:19:30 | [exception: NullReferenceException, finally: exception(Exception)] Exception e | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(Exception)] catch (...) {...} |
+| post | CatchInFinally.cs:19:30:19:30 | [exception: NullReferenceException] Exception e | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException] catch (...) {...} |
+| post | CatchInFinally.cs:19:39:19:39 | [exception: Exception, finally: exception(ArgumentNullException)] access to local variable e | CatchInFinally.cs:19:30:19:30 | [exception: Exception, finally: exception(ArgumentNullException)] Exception e |
+| post | CatchInFinally.cs:19:39:19:39 | [exception: Exception, finally: exception(Exception)] access to local variable e | CatchInFinally.cs:19:30:19:30 | [exception: Exception, finally: exception(Exception)] Exception e |
+| post | CatchInFinally.cs:19:39:19:39 | [exception: Exception] access to local variable e | CatchInFinally.cs:19:30:19:30 | [exception: Exception] Exception e |
+| post | CatchInFinally.cs:19:39:19:39 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] access to local variable e | CatchInFinally.cs:19:30:19:30 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] Exception e |
+| post | CatchInFinally.cs:19:39:19:39 | [exception: NullReferenceException, finally: exception(Exception)] access to local variable e | CatchInFinally.cs:19:30:19:30 | [exception: NullReferenceException, finally: exception(Exception)] Exception e |
+| post | CatchInFinally.cs:19:39:19:39 | [exception: NullReferenceException] access to local variable e | CatchInFinally.cs:19:30:19:30 | [exception: NullReferenceException] Exception e |
+| post | CatchInFinally.cs:19:39:19:47 | [exception: Exception, finally: exception(ArgumentNullException)] access to property Message | CatchInFinally.cs:19:39:19:39 | [exception: Exception, finally: exception(ArgumentNullException)] access to local variable e |
+| post | CatchInFinally.cs:19:39:19:47 | [exception: Exception, finally: exception(Exception)] access to property Message | CatchInFinally.cs:19:39:19:39 | [exception: Exception, finally: exception(Exception)] access to local variable e |
+| post | CatchInFinally.cs:19:39:19:47 | [exception: Exception] access to property Message | CatchInFinally.cs:19:39:19:39 | [exception: Exception] access to local variable e |
+| post | CatchInFinally.cs:19:39:19:47 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] access to property Message | CatchInFinally.cs:19:39:19:39 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] access to local variable e |
+| post | CatchInFinally.cs:19:39:19:47 | [exception: NullReferenceException, finally: exception(Exception)] access to property Message | CatchInFinally.cs:19:39:19:39 | [exception: NullReferenceException, finally: exception(Exception)] access to local variable e |
+| post | CatchInFinally.cs:19:39:19:47 | [exception: NullReferenceException] access to property Message | CatchInFinally.cs:19:39:19:39 | [exception: NullReferenceException] access to local variable e |
+| post | CatchInFinally.cs:19:39:19:54 | [exception: Exception, finally: exception(ArgumentNullException)] ... == ... | CatchInFinally.cs:19:52:19:54 | [exception: Exception, finally: exception(ArgumentNullException)] "1" |
+| post | CatchInFinally.cs:19:39:19:54 | [exception: Exception, finally: exception(Exception)] ... == ... | CatchInFinally.cs:19:52:19:54 | [exception: Exception, finally: exception(Exception)] "1" |
+| post | CatchInFinally.cs:19:39:19:54 | [exception: Exception] ... == ... | CatchInFinally.cs:19:52:19:54 | [exception: Exception] "1" |
+| post | CatchInFinally.cs:19:39:19:54 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] ... == ... | CatchInFinally.cs:19:52:19:54 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] "1" |
+| post | CatchInFinally.cs:19:39:19:54 | [exception: NullReferenceException, finally: exception(Exception)] ... == ... | CatchInFinally.cs:19:52:19:54 | [exception: NullReferenceException, finally: exception(Exception)] "1" |
+| post | CatchInFinally.cs:19:39:19:54 | [exception: NullReferenceException] ... == ... | CatchInFinally.cs:19:52:19:54 | [exception: NullReferenceException] "1" |
+| post | CatchInFinally.cs:19:52:19:54 | [exception: Exception, finally: exception(ArgumentNullException)] "1" | CatchInFinally.cs:19:39:19:47 | [exception: Exception, finally: exception(ArgumentNullException)] access to property Message |
+| post | CatchInFinally.cs:19:52:19:54 | [exception: Exception, finally: exception(Exception)] "1" | CatchInFinally.cs:19:39:19:47 | [exception: Exception, finally: exception(Exception)] access to property Message |
+| post | CatchInFinally.cs:19:52:19:54 | [exception: Exception] "1" | CatchInFinally.cs:19:39:19:47 | [exception: Exception] access to property Message |
+| post | CatchInFinally.cs:19:52:19:54 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] "1" | CatchInFinally.cs:19:39:19:47 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] access to property Message |
+| post | CatchInFinally.cs:19:52:19:54 | [exception: NullReferenceException, finally: exception(Exception)] "1" | CatchInFinally.cs:19:39:19:47 | [exception: NullReferenceException, finally: exception(Exception)] access to property Message |
+| post | CatchInFinally.cs:19:52:19:54 | [exception: NullReferenceException] "1" | CatchInFinally.cs:19:39:19:47 | [exception: NullReferenceException] access to property Message |
+| post | CatchInFinally.cs:21:17:21:42 | [finally: exception(ArgumentNullException)] call to method WriteLine | CatchInFinally.cs:21:35:21:41 | [finally: exception(ArgumentNullException)] access to array element |
+| post | CatchInFinally.cs:21:17:21:42 | [finally: exception(Exception)] call to method WriteLine | CatchInFinally.cs:21:35:21:41 | [finally: exception(Exception)] access to array element |
+| post | CatchInFinally.cs:21:17:21:42 | call to method WriteLine | CatchInFinally.cs:21:35:21:41 | access to array element |
+| post | CatchInFinally.cs:21:17:21:43 | ...; | CatchInFinally.cs:20:13:22:13 | {...} |
+| post | CatchInFinally.cs:21:17:21:43 | [finally: exception(ArgumentNullException)] ...; | CatchInFinally.cs:20:13:22:13 | [finally: exception(ArgumentNullException)] {...} |
+| post | CatchInFinally.cs:21:17:21:43 | [finally: exception(Exception)] ...; | CatchInFinally.cs:20:13:22:13 | [finally: exception(Exception)] {...} |
+| post | CatchInFinally.cs:21:35:21:38 | [finally: exception(ArgumentNullException)] access to parameter args | CatchInFinally.cs:21:17:21:43 | [finally: exception(ArgumentNullException)] ...; |
+| post | CatchInFinally.cs:21:35:21:38 | [finally: exception(Exception)] access to parameter args | CatchInFinally.cs:21:17:21:43 | [finally: exception(Exception)] ...; |
+| post | CatchInFinally.cs:21:35:21:38 | access to parameter args | CatchInFinally.cs:21:17:21:43 | ...; |
+| post | CatchInFinally.cs:21:35:21:41 | [finally: exception(ArgumentNullException)] access to array element | CatchInFinally.cs:21:40:21:40 | [finally: exception(ArgumentNullException)] 0 |
+| post | CatchInFinally.cs:21:35:21:41 | [finally: exception(Exception)] access to array element | CatchInFinally.cs:21:40:21:40 | [finally: exception(Exception)] 0 |
+| post | CatchInFinally.cs:21:35:21:41 | access to array element | CatchInFinally.cs:21:40:21:40 | 0 |
+| post | CatchInFinally.cs:21:40:21:40 | 0 | CatchInFinally.cs:21:35:21:38 | access to parameter args |
+| post | CatchInFinally.cs:21:40:21:40 | [finally: exception(ArgumentNullException)] 0 | CatchInFinally.cs:21:35:21:38 | [finally: exception(ArgumentNullException)] access to parameter args |
+| post | CatchInFinally.cs:21:40:21:40 | [finally: exception(Exception)] 0 | CatchInFinally.cs:21:35:21:38 | [finally: exception(Exception)] access to parameter args |
+| post | CatchInFinally.cs:24:13:26:13 | [finally: exception(ArgumentNullException)] {...} | CatchInFinally.cs:23:13:26:13 | [finally: exception(ArgumentNullException)] catch {...} |
+| post | CatchInFinally.cs:24:13:26:13 | [finally: exception(Exception)] {...} | CatchInFinally.cs:23:13:26:13 | [finally: exception(Exception)] catch {...} |
+| post | CatchInFinally.cs:24:13:26:13 | {...} | CatchInFinally.cs:23:13:26:13 | catch {...} |
+| post | CatchInFinally.cs:25:17:25:37 | [finally: exception(ArgumentNullException)] call to method WriteLine | CatchInFinally.cs:25:35:25:36 | [finally: exception(ArgumentNullException)] "" |
+| post | CatchInFinally.cs:25:17:25:37 | [finally: exception(Exception)] call to method WriteLine | CatchInFinally.cs:25:35:25:36 | [finally: exception(Exception)] "" |
+| post | CatchInFinally.cs:25:17:25:37 | call to method WriteLine | CatchInFinally.cs:25:35:25:36 | "" |
+| post | CatchInFinally.cs:25:17:25:38 | ...; | CatchInFinally.cs:24:13:26:13 | {...} |
+| post | CatchInFinally.cs:25:17:25:38 | [finally: exception(ArgumentNullException)] ...; | CatchInFinally.cs:24:13:26:13 | [finally: exception(ArgumentNullException)] {...} |
+| post | CatchInFinally.cs:25:17:25:38 | [finally: exception(Exception)] ...; | CatchInFinally.cs:24:13:26:13 | [finally: exception(Exception)] {...} |
+| post | CatchInFinally.cs:25:35:25:36 | "" | CatchInFinally.cs:25:17:25:38 | ...; |
+| post | CatchInFinally.cs:25:35:25:36 | [finally: exception(ArgumentNullException)] "" | CatchInFinally.cs:25:17:25:38 | [finally: exception(ArgumentNullException)] ...; |
+| post | CatchInFinally.cs:25:35:25:36 | [finally: exception(Exception)] "" | CatchInFinally.cs:25:17:25:38 | [finally: exception(Exception)] ...; |
 | post | CompileTimeOperators.cs:5:9:5:15 | exit Default | CompileTimeOperators.cs:7:9:7:28 | return ...; |
 | post | CompileTimeOperators.cs:6:5:8:5 | {...} | CompileTimeOperators.cs:5:9:5:15 | enter Default |
 | post | CompileTimeOperators.cs:7:9:7:28 | return ...; | CompileTimeOperators.cs:7:16:7:27 | default(...) |
@@ -180,11 +281,11 @@
 | post | CompileTimeOperators.cs:30:9:38:9 | try {...} ... | CompileTimeOperators.cs:29:5:41:5 | {...} |
 | post | CompileTimeOperators.cs:31:9:34:9 | {...} | CompileTimeOperators.cs:30:9:38:9 | try {...} ... |
 | post | CompileTimeOperators.cs:32:13:32:21 | goto ...; | CompileTimeOperators.cs:31:9:34:9 | {...} |
-| post | CompileTimeOperators.cs:36:9:38:9 | [goto(End)] {...} | CompileTimeOperators.cs:32:13:32:21 | goto ...; |
-| post | CompileTimeOperators.cs:37:13:37:40 | [goto(End)] call to method WriteLine | CompileTimeOperators.cs:37:31:37:39 | [goto(End)] "Finally" |
-| post | CompileTimeOperators.cs:37:13:37:41 | [goto(End)] ...; | CompileTimeOperators.cs:36:9:38:9 | [goto(End)] {...} |
-| post | CompileTimeOperators.cs:37:31:37:39 | [goto(End)] "Finally" | CompileTimeOperators.cs:37:13:37:41 | [goto(End)] ...; |
-| post | CompileTimeOperators.cs:40:9:40:11 | End: | CompileTimeOperators.cs:37:13:37:40 | [goto(End)] call to method WriteLine |
+| post | CompileTimeOperators.cs:36:9:38:9 | [finally: goto(End)] {...} | CompileTimeOperators.cs:32:13:32:21 | goto ...; |
+| post | CompileTimeOperators.cs:37:13:37:40 | [finally: goto(End)] call to method WriteLine | CompileTimeOperators.cs:37:31:37:39 | [finally: goto(End)] "Finally" |
+| post | CompileTimeOperators.cs:37:13:37:41 | [finally: goto(End)] ...; | CompileTimeOperators.cs:36:9:38:9 | [finally: goto(End)] {...} |
+| post | CompileTimeOperators.cs:37:31:37:39 | [finally: goto(End)] "Finally" | CompileTimeOperators.cs:37:13:37:41 | [finally: goto(End)] ...; |
+| post | CompileTimeOperators.cs:40:9:40:11 | End: | CompileTimeOperators.cs:37:13:37:40 | [finally: goto(End)] call to method WriteLine |
 | post | CompileTimeOperators.cs:40:14:40:37 | call to method WriteLine | CompileTimeOperators.cs:40:32:40:36 | "End" |
 | post | CompileTimeOperators.cs:40:14:40:38 | ...; | CompileTimeOperators.cs:40:9:40:11 | End: |
 | post | CompileTimeOperators.cs:40:32:40:36 | "End" | CompileTimeOperators.cs:40:14:40:38 | ...; |
@@ -278,9 +379,9 @@
 | post | ExitMethods.cs:40:13:40:30 | call to method ErrorAlways | ExitMethods.cs:40:25:40:29 | false |
 | post | ExitMethods.cs:40:13:40:31 | ...; | ExitMethods.cs:39:9:41:9 | {...} |
 | post | ExitMethods.cs:40:25:40:29 | false | ExitMethods.cs:40:13:40:31 | ...; |
-| post | ExitMethods.cs:43:9:45:9 | {...} | ExitMethods.cs:42:9:45:9 | catch (...) {...} |
+| post | ExitMethods.cs:43:9:45:9 | {...} | ExitMethods.cs:42:9:45:9 | [exception: ArgumentException] catch (...) {...} |
 | post | ExitMethods.cs:44:13:44:19 | return ...; | ExitMethods.cs:43:9:45:9 | {...} |
-| post | ExitMethods.cs:47:9:49:9 | {...} | ExitMethods.cs:46:9:49:9 | catch (...) {...} |
+| post | ExitMethods.cs:47:9:49:9 | {...} | ExitMethods.cs:46:9:49:9 | [exception: Exception] catch (...) {...} |
 | post | ExitMethods.cs:48:13:48:19 | return ...; | ExitMethods.cs:47:9:49:9 | {...} |
 | post | ExitMethods.cs:52:17:52:26 | exit ErrorMaybe | ExitMethods.cs:54:13:54:13 | access to parameter b |
 | post | ExitMethods.cs:52:17:52:26 | exit ErrorMaybe | ExitMethods.cs:55:13:55:34 | throw ...; |
@@ -1070,105 +1171,114 @@
 | post | cflow.cs:144:50:144:51 | "" | cflow.cs:144:46:144:46 | (...) ... |
 | post | cflow.cs:144:56:144:58 | exit set_Item | cflow.cs:144:60:144:62 | {...} |
 | post | cflow.cs:144:60:144:62 | {...} | cflow.cs:144:56:144:58 | enter set_Item |
-| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:154:13:154:40 | [exception(Exception)] call to method WriteLine |
-| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:154:13:154:40 | [exception(OutOfMemoryException)] call to method WriteLine |
-| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:186:13:186:40 | [exception(Exception)] call to method WriteLine |
-| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:186:13:186:40 | [exception(IOException)] call to method WriteLine |
-| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:186:13:186:40 | [return] call to method WriteLine |
-| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:203:13:203:40 | [exception(Exception)] call to method WriteLine |
-| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:203:13:203:40 | [exception(IOException)] call to method WriteLine |
-| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:203:13:203:40 | [exception(OutOfMemoryException)] call to method WriteLine |
-| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:203:13:203:40 | [return] call to method WriteLine |
-| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:227:21:227:23 | [exception(Exception)] ...-- |
-| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:227:21:227:23 | [return] ...-- |
+| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:154:13:154:40 | [finally: exception(Exception)] call to method WriteLine |
+| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:154:13:154:40 | [finally: exception(OutOfMemoryException)] call to method WriteLine |
+| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:186:13:186:40 | [finally: exception(Exception)] call to method WriteLine |
+| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:186:13:186:40 | [finally: exception(IOException)] call to method WriteLine |
+| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:186:13:186:40 | [finally: return] call to method WriteLine |
+| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:203:13:203:40 | [finally: exception(Exception)] call to method WriteLine |
+| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:203:13:203:40 | [finally: exception(IOException)] call to method WriteLine |
+| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:203:13:203:40 | [finally: exception(OutOfMemoryException)] call to method WriteLine |
+| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:203:13:203:40 | [finally: return] call to method WriteLine |
+| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:227:21:227:23 | [finally: exception(Exception)] ...-- |
+| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:227:21:227:23 | [finally: return] ...-- |
 | post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:243:17:243:32 | ... > ... |
-| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:243:17:243:32 | [exception(Exception)] ... > ... |
-| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:243:17:243:32 | [exception(NullReferenceException)] ... > ... |
-| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:243:17:243:32 | [exception(OutOfMemoryException)] ... > ... |
-| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:243:17:243:32 | [return] ... > ... |
-| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:244:17:244:36 | [exception(Exception)] call to method WriteLine |
-| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:244:17:244:36 | [exception(NullReferenceException)] call to method WriteLine |
-| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:244:17:244:36 | [exception(OutOfMemoryException)] call to method WriteLine |
-| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:244:17:244:36 | [return] call to method WriteLine |
+| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:243:17:243:32 | [finally: exception(Exception)] ... > ... |
+| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:243:17:243:32 | [finally: exception(NullReferenceException)] ... > ... |
+| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:243:17:243:32 | [finally: exception(OutOfMemoryException)] ... > ... |
+| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:243:17:243:32 | [finally: return] ... > ... |
+| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:244:17:244:36 | [finally: exception(Exception)] call to method WriteLine |
+| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:244:17:244:36 | [finally: exception(NullReferenceException)] call to method WriteLine |
+| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:244:17:244:36 | [finally: exception(OutOfMemoryException)] call to method WriteLine |
+| post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:244:17:244:36 | [finally: return] call to method WriteLine |
 | post | cflow.cs:146:10:146:19 | exit TryFinally | cflow.cs:244:17:244:36 | call to method WriteLine |
 | post | cflow.cs:147:5:246:5 | {...} | cflow.cs:146:10:146:19 | enter TryFinally |
 | post | cflow.cs:148:9:155:9 | try {...} ... | cflow.cs:147:5:246:5 | {...} |
 | post | cflow.cs:149:9:151:9 | {...} | cflow.cs:148:9:155:9 | try {...} ... |
 | post | cflow.cs:150:13:150:38 | ...; | cflow.cs:149:9:151:9 | {...} |
 | post | cflow.cs:150:31:150:36 | "Try1" | cflow.cs:150:13:150:38 | ...; |
-| post | cflow.cs:154:13:154:40 | [exception(Exception)] call to method WriteLine | cflow.cs:154:31:154:39 | [exception(Exception)] "Finally" |
-| post | cflow.cs:154:13:154:40 | [exception(OutOfMemoryException)] call to method WriteLine | cflow.cs:154:31:154:39 | [exception(OutOfMemoryException)] "Finally" |
+| post | cflow.cs:154:13:154:40 | [finally: exception(Exception)] call to method WriteLine | cflow.cs:154:31:154:39 | [finally: exception(Exception)] "Finally" |
+| post | cflow.cs:154:13:154:40 | [finally: exception(OutOfMemoryException)] call to method WriteLine | cflow.cs:154:31:154:39 | [finally: exception(OutOfMemoryException)] "Finally" |
 | post | cflow.cs:154:13:154:40 | call to method WriteLine | cflow.cs:154:31:154:39 | "Finally" |
 | post | cflow.cs:154:13:154:41 | ...; | cflow.cs:153:9:155:9 | {...} |
-| post | cflow.cs:154:13:154:41 | [exception(Exception)] ...; | cflow.cs:153:9:155:9 | [exception(Exception)] {...} |
-| post | cflow.cs:154:13:154:41 | [exception(OutOfMemoryException)] ...; | cflow.cs:153:9:155:9 | [exception(OutOfMemoryException)] {...} |
+| post | cflow.cs:154:13:154:41 | [finally: exception(Exception)] ...; | cflow.cs:153:9:155:9 | [finally: exception(Exception)] {...} |
+| post | cflow.cs:154:13:154:41 | [finally: exception(OutOfMemoryException)] ...; | cflow.cs:153:9:155:9 | [finally: exception(OutOfMemoryException)] {...} |
 | post | cflow.cs:154:31:154:39 | "Finally" | cflow.cs:154:13:154:41 | ...; |
-| post | cflow.cs:154:31:154:39 | [exception(Exception)] "Finally" | cflow.cs:154:13:154:41 | [exception(Exception)] ...; |
-| post | cflow.cs:154:31:154:39 | [exception(OutOfMemoryException)] "Finally" | cflow.cs:154:13:154:41 | [exception(OutOfMemoryException)] ...; |
+| post | cflow.cs:154:31:154:39 | [finally: exception(Exception)] "Finally" | cflow.cs:154:13:154:41 | [finally: exception(Exception)] ...; |
+| post | cflow.cs:154:31:154:39 | [finally: exception(OutOfMemoryException)] "Finally" | cflow.cs:154:13:154:41 | [finally: exception(OutOfMemoryException)] ...; |
 | post | cflow.cs:157:9:187:9 | try {...} ... | cflow.cs:154:13:154:40 | call to method WriteLine |
 | post | cflow.cs:158:9:161:9 | {...} | cflow.cs:157:9:187:9 | try {...} ... |
 | post | cflow.cs:159:13:159:38 | ...; | cflow.cs:158:9:161:9 | {...} |
 | post | cflow.cs:159:31:159:36 | "Try2" | cflow.cs:159:13:159:38 | ...; |
-| post | cflow.cs:162:38:162:39 | IOException ex | cflow.cs:162:9:165:9 | catch (...) {...} |
-| post | cflow.cs:162:48:162:51 | true | cflow.cs:162:38:162:39 | IOException ex |
-| post | cflow.cs:163:9:165:9 | {...} | cflow.cs:162:48:162:51 | true |
+| post | cflow.cs:162:48:162:51 | [exception: Exception] true | cflow.cs:162:38:162:39 | [exception: Exception] IOException ex |
+| post | cflow.cs:163:9:165:9 | {...} | cflow.cs:162:48:162:51 | [exception: Exception] true |
 | post | cflow.cs:164:13:164:18 | throw ...; | cflow.cs:163:9:165:9 | {...} |
-| post | cflow.cs:166:41:166:42 | ArgumentException ex | cflow.cs:166:9:176:9 | catch (...) {...} |
-| post | cflow.cs:167:9:176:9 | {...} | cflow.cs:166:41:166:42 | ArgumentException ex |
+| post | cflow.cs:166:9:176:9 | [exception: OutOfMemoryException] catch (...) {...} | cflow.cs:162:9:165:9 | [exception: OutOfMemoryException] catch (...) {...} |
+| post | cflow.cs:167:9:176:9 | {...} | cflow.cs:166:41:166:42 | [exception: Exception] ArgumentException ex |
 | post | cflow.cs:168:13:175:13 | try {...} ... | cflow.cs:167:9:176:9 | {...} |
 | post | cflow.cs:169:13:171:13 | {...} | cflow.cs:168:13:175:13 | try {...} ... |
 | post | cflow.cs:170:17:170:32 | if (...) ... | cflow.cs:169:13:171:13 | {...} |
 | post | cflow.cs:170:21:170:24 | true | cflow.cs:170:17:170:32 | if (...) ... |
 | post | cflow.cs:170:27:170:32 | throw ...; | cflow.cs:170:21:170:24 | true |
-| post | cflow.cs:173:13:175:13 | [exception(ArgumentException)] {...} | cflow.cs:170:27:170:32 | throw ...; |
-| post | cflow.cs:174:17:174:44 | [exception(ArgumentException)] throw ...; | cflow.cs:174:23:174:43 | [exception(ArgumentException)] object creation of type Exception |
-| post | cflow.cs:174:23:174:43 | [exception(ArgumentException)] object creation of type Exception | cflow.cs:174:37:174:42 | [exception(ArgumentException)] "Boo!" |
-| post | cflow.cs:174:37:174:42 | [exception(ArgumentException)] "Boo!" | cflow.cs:173:13:175:13 | [exception(ArgumentException)] {...} |
-| post | cflow.cs:178:9:179:9 | {...} | cflow.cs:177:9:179:9 | catch (...) {...} |
-| post | cflow.cs:185:9:187:9 | [exception(Exception)] {...} | cflow.cs:174:17:174:44 | [exception(ArgumentException)] throw ...; |
-| post | cflow.cs:185:9:187:9 | [exception(IOException)] {...} | cflow.cs:164:13:164:18 | throw ...; |
-| post | cflow.cs:185:9:187:9 | [return] {...} | cflow.cs:160:13:160:19 | return ...; |
+| post | cflow.cs:173:13:175:13 | [finally: exception(ArgumentException)] {...} | cflow.cs:170:27:170:32 | throw ...; |
+| post | cflow.cs:174:17:174:44 | [finally: exception(ArgumentException)] throw ...; | cflow.cs:174:23:174:43 | [finally: exception(ArgumentException)] object creation of type Exception |
+| post | cflow.cs:174:23:174:43 | [finally: exception(ArgumentException)] object creation of type Exception | cflow.cs:174:37:174:42 | [finally: exception(ArgumentException)] "Boo!" |
+| post | cflow.cs:174:37:174:42 | [finally: exception(ArgumentException)] "Boo!" | cflow.cs:173:13:175:13 | [finally: exception(ArgumentException)] {...} |
+| post | cflow.cs:177:9:179:9 | [exception: OutOfMemoryException] catch (...) {...} | cflow.cs:166:9:176:9 | [exception: OutOfMemoryException] catch (...) {...} |
+| post | cflow.cs:178:9:179:9 | {...} | cflow.cs:177:9:179:9 | [exception: Exception] catch (...) {...} |
+| post | cflow.cs:178:9:179:9 | {...} | cflow.cs:177:9:179:9 | [exception: OutOfMemoryException] catch (...) {...} |
+| post | cflow.cs:185:9:187:9 | [finally: exception(Exception)] {...} | cflow.cs:174:17:174:44 | [finally: exception(ArgumentException)] throw ...; |
+| post | cflow.cs:185:9:187:9 | [finally: exception(IOException)] {...} | cflow.cs:164:13:164:18 | throw ...; |
+| post | cflow.cs:185:9:187:9 | [finally: return] {...} | cflow.cs:160:13:160:19 | return ...; |
 | post | cflow.cs:185:9:187:9 | {...} | cflow.cs:178:9:179:9 | {...} |
-| post | cflow.cs:186:13:186:40 | [exception(Exception)] call to method WriteLine | cflow.cs:186:31:186:39 | [exception(Exception)] "Finally" |
-| post | cflow.cs:186:13:186:40 | [exception(IOException)] call to method WriteLine | cflow.cs:186:31:186:39 | [exception(IOException)] "Finally" |
-| post | cflow.cs:186:13:186:40 | [return] call to method WriteLine | cflow.cs:186:31:186:39 | [return] "Finally" |
+| post | cflow.cs:186:13:186:40 | [finally: exception(Exception)] call to method WriteLine | cflow.cs:186:31:186:39 | [finally: exception(Exception)] "Finally" |
+| post | cflow.cs:186:13:186:40 | [finally: exception(IOException)] call to method WriteLine | cflow.cs:186:31:186:39 | [finally: exception(IOException)] "Finally" |
+| post | cflow.cs:186:13:186:40 | [finally: return] call to method WriteLine | cflow.cs:186:31:186:39 | [finally: return] "Finally" |
 | post | cflow.cs:186:13:186:40 | call to method WriteLine | cflow.cs:186:31:186:39 | "Finally" |
 | post | cflow.cs:186:13:186:41 | ...; | cflow.cs:185:9:187:9 | {...} |
-| post | cflow.cs:186:13:186:41 | [exception(Exception)] ...; | cflow.cs:185:9:187:9 | [exception(Exception)] {...} |
-| post | cflow.cs:186:13:186:41 | [exception(IOException)] ...; | cflow.cs:185:9:187:9 | [exception(IOException)] {...} |
-| post | cflow.cs:186:13:186:41 | [return] ...; | cflow.cs:185:9:187:9 | [return] {...} |
+| post | cflow.cs:186:13:186:41 | [finally: exception(Exception)] ...; | cflow.cs:185:9:187:9 | [finally: exception(Exception)] {...} |
+| post | cflow.cs:186:13:186:41 | [finally: exception(IOException)] ...; | cflow.cs:185:9:187:9 | [finally: exception(IOException)] {...} |
+| post | cflow.cs:186:13:186:41 | [finally: return] ...; | cflow.cs:185:9:187:9 | [finally: return] {...} |
 | post | cflow.cs:186:31:186:39 | "Finally" | cflow.cs:186:13:186:41 | ...; |
-| post | cflow.cs:186:31:186:39 | [exception(Exception)] "Finally" | cflow.cs:186:13:186:41 | [exception(Exception)] ...; |
-| post | cflow.cs:186:31:186:39 | [exception(IOException)] "Finally" | cflow.cs:186:13:186:41 | [exception(IOException)] ...; |
-| post | cflow.cs:186:31:186:39 | [return] "Finally" | cflow.cs:186:13:186:41 | [return] ...; |
+| post | cflow.cs:186:31:186:39 | [finally: exception(Exception)] "Finally" | cflow.cs:186:13:186:41 | [finally: exception(Exception)] ...; |
+| post | cflow.cs:186:31:186:39 | [finally: exception(IOException)] "Finally" | cflow.cs:186:13:186:41 | [finally: exception(IOException)] ...; |
+| post | cflow.cs:186:31:186:39 | [finally: return] "Finally" | cflow.cs:186:13:186:41 | [finally: return] ...; |
 | post | cflow.cs:189:9:204:9 | try {...} ... | cflow.cs:186:13:186:40 | call to method WriteLine |
 | post | cflow.cs:190:9:193:9 | {...} | cflow.cs:189:9:204:9 | try {...} ... |
 | post | cflow.cs:191:13:191:38 | ...; | cflow.cs:190:9:193:9 | {...} |
 | post | cflow.cs:191:31:191:36 | "Try3" | cflow.cs:191:13:191:38 | ...; |
-| post | cflow.cs:194:38:194:39 | IOException ex | cflow.cs:194:9:197:9 | catch (...) {...} |
-| post | cflow.cs:194:48:194:51 | true | cflow.cs:194:38:194:39 | IOException ex |
-| post | cflow.cs:195:9:197:9 | {...} | cflow.cs:194:48:194:51 | true |
+| post | cflow.cs:194:48:194:51 | [exception: Exception] true | cflow.cs:194:38:194:39 | [exception: Exception] IOException ex |
+| post | cflow.cs:195:9:197:9 | {...} | cflow.cs:194:48:194:51 | [exception: Exception] true |
 | post | cflow.cs:196:13:196:18 | throw ...; | cflow.cs:195:9:197:9 | {...} |
-| post | cflow.cs:198:33:198:37 | false | cflow.cs:198:9:200:9 | catch (...) {...} |
-| post | cflow.cs:199:9:200:9 | {...} | cflow.cs:198:33:198:37 | false |
-| post | cflow.cs:202:9:204:9 | [exception(IOException)] {...} | cflow.cs:196:13:196:18 | throw ...; |
-| post | cflow.cs:202:9:204:9 | [return] {...} | cflow.cs:192:13:192:19 | return ...; |
+| post | cflow.cs:198:9:200:9 | [exception: OutOfMemoryException] catch (...) {...} | cflow.cs:194:9:197:9 | [exception: OutOfMemoryException] catch (...) {...} |
+| post | cflow.cs:198:26:198:26 | [exception: Exception] Exception e | cflow.cs:198:9:200:9 | [exception: Exception] catch (...) {...} |
+| post | cflow.cs:198:26:198:26 | [exception: OutOfMemoryException] Exception e | cflow.cs:198:9:200:9 | [exception: OutOfMemoryException] catch (...) {...} |
+| post | cflow.cs:198:35:198:35 | [exception: Exception] access to local variable e | cflow.cs:198:26:198:26 | [exception: Exception] Exception e |
+| post | cflow.cs:198:35:198:35 | [exception: OutOfMemoryException] access to local variable e | cflow.cs:198:26:198:26 | [exception: OutOfMemoryException] Exception e |
+| post | cflow.cs:198:35:198:43 | [exception: Exception] access to property Message | cflow.cs:198:35:198:35 | [exception: Exception] access to local variable e |
+| post | cflow.cs:198:35:198:43 | [exception: OutOfMemoryException] access to property Message | cflow.cs:198:35:198:35 | [exception: OutOfMemoryException] access to local variable e |
+| post | cflow.cs:198:35:198:51 | [exception: Exception] ... != ... | cflow.cs:198:48:198:51 | [exception: Exception] null |
+| post | cflow.cs:198:35:198:51 | [exception: OutOfMemoryException] ... != ... | cflow.cs:198:48:198:51 | [exception: OutOfMemoryException] null |
+| post | cflow.cs:198:48:198:51 | [exception: Exception] null | cflow.cs:198:35:198:43 | [exception: Exception] access to property Message |
+| post | cflow.cs:198:48:198:51 | [exception: OutOfMemoryException] null | cflow.cs:198:35:198:43 | [exception: OutOfMemoryException] access to property Message |
+| post | cflow.cs:202:9:204:9 | [finally: exception(IOException)] {...} | cflow.cs:196:13:196:18 | throw ...; |
+| post | cflow.cs:202:9:204:9 | [finally: return] {...} | cflow.cs:192:13:192:19 | return ...; |
 | post | cflow.cs:202:9:204:9 | {...} | cflow.cs:199:9:200:9 | {...} |
-| post | cflow.cs:203:13:203:40 | [exception(Exception)] call to method WriteLine | cflow.cs:203:31:203:39 | [exception(Exception)] "Finally" |
-| post | cflow.cs:203:13:203:40 | [exception(IOException)] call to method WriteLine | cflow.cs:203:31:203:39 | [exception(IOException)] "Finally" |
-| post | cflow.cs:203:13:203:40 | [exception(OutOfMemoryException)] call to method WriteLine | cflow.cs:203:31:203:39 | [exception(OutOfMemoryException)] "Finally" |
-| post | cflow.cs:203:13:203:40 | [return] call to method WriteLine | cflow.cs:203:31:203:39 | [return] "Finally" |
+| post | cflow.cs:203:13:203:40 | [finally: exception(Exception)] call to method WriteLine | cflow.cs:203:31:203:39 | [finally: exception(Exception)] "Finally" |
+| post | cflow.cs:203:13:203:40 | [finally: exception(IOException)] call to method WriteLine | cflow.cs:203:31:203:39 | [finally: exception(IOException)] "Finally" |
+| post | cflow.cs:203:13:203:40 | [finally: exception(OutOfMemoryException)] call to method WriteLine | cflow.cs:203:31:203:39 | [finally: exception(OutOfMemoryException)] "Finally" |
+| post | cflow.cs:203:13:203:40 | [finally: return] call to method WriteLine | cflow.cs:203:31:203:39 | [finally: return] "Finally" |
 | post | cflow.cs:203:13:203:40 | call to method WriteLine | cflow.cs:203:31:203:39 | "Finally" |
 | post | cflow.cs:203:13:203:41 | ...; | cflow.cs:202:9:204:9 | {...} |
-| post | cflow.cs:203:13:203:41 | [exception(Exception)] ...; | cflow.cs:202:9:204:9 | [exception(Exception)] {...} |
-| post | cflow.cs:203:13:203:41 | [exception(IOException)] ...; | cflow.cs:202:9:204:9 | [exception(IOException)] {...} |
-| post | cflow.cs:203:13:203:41 | [exception(OutOfMemoryException)] ...; | cflow.cs:202:9:204:9 | [exception(OutOfMemoryException)] {...} |
-| post | cflow.cs:203:13:203:41 | [return] ...; | cflow.cs:202:9:204:9 | [return] {...} |
+| post | cflow.cs:203:13:203:41 | [finally: exception(Exception)] ...; | cflow.cs:202:9:204:9 | [finally: exception(Exception)] {...} |
+| post | cflow.cs:203:13:203:41 | [finally: exception(IOException)] ...; | cflow.cs:202:9:204:9 | [finally: exception(IOException)] {...} |
+| post | cflow.cs:203:13:203:41 | [finally: exception(OutOfMemoryException)] ...; | cflow.cs:202:9:204:9 | [finally: exception(OutOfMemoryException)] {...} |
+| post | cflow.cs:203:13:203:41 | [finally: return] ...; | cflow.cs:202:9:204:9 | [finally: return] {...} |
 | post | cflow.cs:203:31:203:39 | "Finally" | cflow.cs:203:13:203:41 | ...; |
-| post | cflow.cs:203:31:203:39 | [exception(Exception)] "Finally" | cflow.cs:203:13:203:41 | [exception(Exception)] ...; |
-| post | cflow.cs:203:31:203:39 | [exception(IOException)] "Finally" | cflow.cs:203:13:203:41 | [exception(IOException)] ...; |
-| post | cflow.cs:203:31:203:39 | [exception(OutOfMemoryException)] "Finally" | cflow.cs:203:13:203:41 | [exception(OutOfMemoryException)] ...; |
-| post | cflow.cs:203:31:203:39 | [return] "Finally" | cflow.cs:203:13:203:41 | [return] ...; |
+| post | cflow.cs:203:31:203:39 | [finally: exception(Exception)] "Finally" | cflow.cs:203:13:203:41 | [finally: exception(Exception)] ...; |
+| post | cflow.cs:203:31:203:39 | [finally: exception(IOException)] "Finally" | cflow.cs:203:13:203:41 | [finally: exception(IOException)] ...; |
+| post | cflow.cs:203:31:203:39 | [finally: exception(OutOfMemoryException)] "Finally" | cflow.cs:203:13:203:41 | [finally: exception(OutOfMemoryException)] ...; |
+| post | cflow.cs:203:31:203:39 | [finally: return] "Finally" | cflow.cs:203:13:203:41 | [finally: return] ...; |
 | post | cflow.cs:206:9:206:19 | ... ...; | cflow.cs:203:13:203:40 | call to method WriteLine |
 | post | cflow.cs:206:13:206:13 | access to local variable i | cflow.cs:206:9:206:19 | ... ...; |
 | post | cflow.cs:206:13:206:18 | Int32 i = ... | cflow.cs:206:17:206:18 | 10 |
@@ -1176,7 +1286,7 @@
 | post | cflow.cs:207:9:230:9 | while (...) ... | cflow.cs:206:13:206:18 | Int32 i = ... |
 | post | cflow.cs:207:16:207:16 | access to local variable i | cflow.cs:207:9:230:9 | while (...) ... |
 | post | cflow.cs:207:16:207:16 | access to local variable i | cflow.cs:227:21:227:23 | ...-- |
-| post | cflow.cs:207:16:207:16 | access to local variable i | cflow.cs:227:21:227:23 | [continue] ...-- |
+| post | cflow.cs:207:16:207:16 | access to local variable i | cflow.cs:227:21:227:23 | [finally: continue] ...-- |
 | post | cflow.cs:207:16:207:20 | ... > ... | cflow.cs:207:20:207:20 | 0 |
 | post | cflow.cs:207:20:207:20 | 0 | cflow.cs:207:16:207:16 | access to local variable i |
 | post | cflow.cs:209:13:229:13 | try {...} ... | cflow.cs:208:9:230:9 | {...} |
@@ -1191,57 +1301,57 @@
 | post | cflow.cs:215:21:215:21 | access to local variable i | cflow.cs:215:17:216:26 | if (...) ... |
 | post | cflow.cs:215:21:215:26 | ... == ... | cflow.cs:215:26:215:26 | 2 |
 | post | cflow.cs:215:26:215:26 | 2 | cflow.cs:215:21:215:21 | access to local variable i |
-| post | cflow.cs:219:13:229:13 | [break] {...} | cflow.cs:216:21:216:26 | break; |
-| post | cflow.cs:219:13:229:13 | [continue] {...} | cflow.cs:214:21:214:29 | continue; |
-| post | cflow.cs:219:13:229:13 | [return] {...} | cflow.cs:212:21:212:27 | return ...; |
-| post | cflow.cs:220:17:228:17 | [break] try {...} ... | cflow.cs:219:13:229:13 | [break] {...} |
-| post | cflow.cs:220:17:228:17 | [continue] try {...} ... | cflow.cs:219:13:229:13 | [continue] {...} |
-| post | cflow.cs:220:17:228:17 | [return] try {...} ... | cflow.cs:219:13:229:13 | [return] {...} |
+| post | cflow.cs:219:13:229:13 | [finally: break] {...} | cflow.cs:216:21:216:26 | break; |
+| post | cflow.cs:219:13:229:13 | [finally: continue] {...} | cflow.cs:214:21:214:29 | continue; |
+| post | cflow.cs:219:13:229:13 | [finally: return] {...} | cflow.cs:212:21:212:27 | return ...; |
+| post | cflow.cs:220:17:228:17 | [finally: break] try {...} ... | cflow.cs:219:13:229:13 | [finally: break] {...} |
+| post | cflow.cs:220:17:228:17 | [finally: continue] try {...} ... | cflow.cs:219:13:229:13 | [finally: continue] {...} |
+| post | cflow.cs:220:17:228:17 | [finally: return] try {...} ... | cflow.cs:219:13:229:13 | [finally: return] {...} |
 | post | cflow.cs:220:17:228:17 | try {...} ... | cflow.cs:219:13:229:13 | {...} |
-| post | cflow.cs:221:17:224:17 | [break] {...} | cflow.cs:220:17:228:17 | [break] try {...} ... |
-| post | cflow.cs:221:17:224:17 | [continue] {...} | cflow.cs:220:17:228:17 | [continue] try {...} ... |
-| post | cflow.cs:221:17:224:17 | [return] {...} | cflow.cs:220:17:228:17 | [return] try {...} ... |
+| post | cflow.cs:221:17:224:17 | [finally: break] {...} | cflow.cs:220:17:228:17 | [finally: break] try {...} ... |
+| post | cflow.cs:221:17:224:17 | [finally: continue] {...} | cflow.cs:220:17:228:17 | [finally: continue] try {...} ... |
+| post | cflow.cs:221:17:224:17 | [finally: return] {...} | cflow.cs:220:17:228:17 | [finally: return] try {...} ... |
 | post | cflow.cs:221:17:224:17 | {...} | cflow.cs:220:17:228:17 | try {...} ... |
-| post | cflow.cs:222:21:223:46 | [break] if (...) ... | cflow.cs:221:17:224:17 | [break] {...} |
-| post | cflow.cs:222:21:223:46 | [continue] if (...) ... | cflow.cs:221:17:224:17 | [continue] {...} |
-| post | cflow.cs:222:21:223:46 | [return] if (...) ... | cflow.cs:221:17:224:17 | [return] {...} |
+| post | cflow.cs:222:21:223:46 | [finally: break] if (...) ... | cflow.cs:221:17:224:17 | [finally: break] {...} |
+| post | cflow.cs:222:21:223:46 | [finally: continue] if (...) ... | cflow.cs:221:17:224:17 | [finally: continue] {...} |
+| post | cflow.cs:222:21:223:46 | [finally: return] if (...) ... | cflow.cs:221:17:224:17 | [finally: return] {...} |
 | post | cflow.cs:222:21:223:46 | if (...) ... | cflow.cs:221:17:224:17 | {...} |
-| post | cflow.cs:222:25:222:25 | [break] access to local variable i | cflow.cs:222:21:223:46 | [break] if (...) ... |
-| post | cflow.cs:222:25:222:25 | [continue] access to local variable i | cflow.cs:222:21:223:46 | [continue] if (...) ... |
-| post | cflow.cs:222:25:222:25 | [return] access to local variable i | cflow.cs:222:21:223:46 | [return] if (...) ... |
+| post | cflow.cs:222:25:222:25 | [finally: break] access to local variable i | cflow.cs:222:21:223:46 | [finally: break] if (...) ... |
+| post | cflow.cs:222:25:222:25 | [finally: continue] access to local variable i | cflow.cs:222:21:223:46 | [finally: continue] if (...) ... |
+| post | cflow.cs:222:25:222:25 | [finally: return] access to local variable i | cflow.cs:222:21:223:46 | [finally: return] if (...) ... |
 | post | cflow.cs:222:25:222:25 | access to local variable i | cflow.cs:222:21:223:46 | if (...) ... |
 | post | cflow.cs:222:25:222:30 | ... == ... | cflow.cs:222:30:222:30 | 3 |
-| post | cflow.cs:222:25:222:30 | [break] ... == ... | cflow.cs:222:30:222:30 | [break] 3 |
-| post | cflow.cs:222:25:222:30 | [continue] ... == ... | cflow.cs:222:30:222:30 | [continue] 3 |
-| post | cflow.cs:222:25:222:30 | [return] ... == ... | cflow.cs:222:30:222:30 | [return] 3 |
+| post | cflow.cs:222:25:222:30 | [finally: break] ... == ... | cflow.cs:222:30:222:30 | [finally: break] 3 |
+| post | cflow.cs:222:25:222:30 | [finally: continue] ... == ... | cflow.cs:222:30:222:30 | [finally: continue] 3 |
+| post | cflow.cs:222:25:222:30 | [finally: return] ... == ... | cflow.cs:222:30:222:30 | [finally: return] 3 |
 | post | cflow.cs:222:30:222:30 | 3 | cflow.cs:222:25:222:25 | access to local variable i |
-| post | cflow.cs:222:30:222:30 | [break] 3 | cflow.cs:222:25:222:25 | [break] access to local variable i |
-| post | cflow.cs:222:30:222:30 | [continue] 3 | cflow.cs:222:25:222:25 | [continue] access to local variable i |
-| post | cflow.cs:222:30:222:30 | [return] 3 | cflow.cs:222:25:222:25 | [return] access to local variable i |
-| post | cflow.cs:226:17:228:17 | [exception(Exception)] {...} | cflow.cs:223:25:223:46 | [break] throw ...; |
-| post | cflow.cs:226:17:228:17 | [exception(Exception)] {...} | cflow.cs:223:25:223:46 | [continue] throw ...; |
-| post | cflow.cs:226:17:228:17 | [exception(Exception)] {...} | cflow.cs:223:25:223:46 | [return] throw ...; |
-| post | cflow.cs:226:17:228:17 | [exception(Exception)] {...} | cflow.cs:223:25:223:46 | throw ...; |
-| post | cflow.cs:226:17:228:17 | [exception(Exception)] {...} | cflow.cs:223:31:223:45 | [break] object creation of type Exception |
-| post | cflow.cs:226:17:228:17 | [exception(Exception)] {...} | cflow.cs:223:31:223:45 | [continue] object creation of type Exception |
-| post | cflow.cs:226:17:228:17 | [exception(Exception)] {...} | cflow.cs:223:31:223:45 | [return] object creation of type Exception |
-| post | cflow.cs:226:17:228:17 | [exception(Exception)] {...} | cflow.cs:223:31:223:45 | object creation of type Exception |
-| post | cflow.cs:227:21:227:21 | [break] access to local variable i | cflow.cs:227:21:227:24 | [break] ...; |
-| post | cflow.cs:227:21:227:21 | [continue] access to local variable i | cflow.cs:227:21:227:24 | [continue] ...; |
-| post | cflow.cs:227:21:227:21 | [exception(Exception)] access to local variable i | cflow.cs:227:21:227:24 | [exception(Exception)] ...; |
-| post | cflow.cs:227:21:227:21 | [return] access to local variable i | cflow.cs:227:21:227:24 | [return] ...; |
+| post | cflow.cs:222:30:222:30 | [finally: break] 3 | cflow.cs:222:25:222:25 | [finally: break] access to local variable i |
+| post | cflow.cs:222:30:222:30 | [finally: continue] 3 | cflow.cs:222:25:222:25 | [finally: continue] access to local variable i |
+| post | cflow.cs:222:30:222:30 | [finally: return] 3 | cflow.cs:222:25:222:25 | [finally: return] access to local variable i |
+| post | cflow.cs:226:17:228:17 | [finally: exception(Exception)] {...} | cflow.cs:223:25:223:46 | [finally: break] throw ...; |
+| post | cflow.cs:226:17:228:17 | [finally: exception(Exception)] {...} | cflow.cs:223:25:223:46 | [finally: continue] throw ...; |
+| post | cflow.cs:226:17:228:17 | [finally: exception(Exception)] {...} | cflow.cs:223:25:223:46 | [finally: return] throw ...; |
+| post | cflow.cs:226:17:228:17 | [finally: exception(Exception)] {...} | cflow.cs:223:25:223:46 | throw ...; |
+| post | cflow.cs:226:17:228:17 | [finally: exception(Exception)] {...} | cflow.cs:223:31:223:45 | [finally: break] object creation of type Exception |
+| post | cflow.cs:226:17:228:17 | [finally: exception(Exception)] {...} | cflow.cs:223:31:223:45 | [finally: continue] object creation of type Exception |
+| post | cflow.cs:226:17:228:17 | [finally: exception(Exception)] {...} | cflow.cs:223:31:223:45 | [finally: return] object creation of type Exception |
+| post | cflow.cs:226:17:228:17 | [finally: exception(Exception)] {...} | cflow.cs:223:31:223:45 | object creation of type Exception |
+| post | cflow.cs:227:21:227:21 | [finally: break] access to local variable i | cflow.cs:227:21:227:24 | [finally: break] ...; |
+| post | cflow.cs:227:21:227:21 | [finally: continue] access to local variable i | cflow.cs:227:21:227:24 | [finally: continue] ...; |
+| post | cflow.cs:227:21:227:21 | [finally: exception(Exception)] access to local variable i | cflow.cs:227:21:227:24 | [finally: exception(Exception)] ...; |
+| post | cflow.cs:227:21:227:21 | [finally: return] access to local variable i | cflow.cs:227:21:227:24 | [finally: return] ...; |
 | post | cflow.cs:227:21:227:21 | access to local variable i | cflow.cs:227:21:227:24 | ...; |
 | post | cflow.cs:227:21:227:23 | ...-- | cflow.cs:227:21:227:21 | access to local variable i |
-| post | cflow.cs:227:21:227:23 | [break] ...-- | cflow.cs:227:21:227:21 | [break] access to local variable i |
-| post | cflow.cs:227:21:227:23 | [continue] ...-- | cflow.cs:227:21:227:21 | [continue] access to local variable i |
-| post | cflow.cs:227:21:227:23 | [exception(Exception)] ...-- | cflow.cs:227:21:227:21 | [exception(Exception)] access to local variable i |
-| post | cflow.cs:227:21:227:23 | [return] ...-- | cflow.cs:227:21:227:21 | [return] access to local variable i |
+| post | cflow.cs:227:21:227:23 | [finally: break] ...-- | cflow.cs:227:21:227:21 | [finally: break] access to local variable i |
+| post | cflow.cs:227:21:227:23 | [finally: continue] ...-- | cflow.cs:227:21:227:21 | [finally: continue] access to local variable i |
+| post | cflow.cs:227:21:227:23 | [finally: exception(Exception)] ...-- | cflow.cs:227:21:227:21 | [finally: exception(Exception)] access to local variable i |
+| post | cflow.cs:227:21:227:23 | [finally: return] ...-- | cflow.cs:227:21:227:21 | [finally: return] access to local variable i |
 | post | cflow.cs:227:21:227:24 | ...; | cflow.cs:226:17:228:17 | {...} |
-| post | cflow.cs:227:21:227:24 | [break] ...; | cflow.cs:226:17:228:17 | [break] {...} |
-| post | cflow.cs:227:21:227:24 | [continue] ...; | cflow.cs:226:17:228:17 | [continue] {...} |
-| post | cflow.cs:227:21:227:24 | [exception(Exception)] ...; | cflow.cs:226:17:228:17 | [exception(Exception)] {...} |
-| post | cflow.cs:227:21:227:24 | [return] ...; | cflow.cs:226:17:228:17 | [return] {...} |
-| post | cflow.cs:232:9:245:9 | try {...} ... | cflow.cs:227:21:227:23 | [break] ...-- |
+| post | cflow.cs:227:21:227:24 | [finally: break] ...; | cflow.cs:226:17:228:17 | [finally: break] {...} |
+| post | cflow.cs:227:21:227:24 | [finally: continue] ...; | cflow.cs:226:17:228:17 | [finally: continue] {...} |
+| post | cflow.cs:227:21:227:24 | [finally: exception(Exception)] ...; | cflow.cs:226:17:228:17 | [finally: exception(Exception)] {...} |
+| post | cflow.cs:227:21:227:24 | [finally: return] ...; | cflow.cs:226:17:228:17 | [finally: return] {...} |
+| post | cflow.cs:232:9:245:9 | try {...} ... | cflow.cs:227:21:227:23 | [finally: break] ...-- |
 | post | cflow.cs:233:9:238:9 | {...} | cflow.cs:232:9:245:9 | try {...} ... |
 | post | cflow.cs:234:13:235:23 | if (...) ... | cflow.cs:233:9:238:9 | {...} |
 | post | cflow.cs:234:17:234:21 | access to field Field | cflow.cs:234:17:234:21 | this access |
@@ -1250,103 +1360,103 @@
 | post | cflow.cs:236:17:236:21 | access to field Field | cflow.cs:236:17:236:21 | this access |
 | post | cflow.cs:236:17:236:21 | this access | cflow.cs:236:13:237:49 | if (...) ... |
 | post | cflow.cs:236:17:236:33 | ... == ... | cflow.cs:236:33:236:33 | 1 |
-| post | cflow.cs:240:9:245:9 | [exception(OutOfMemoryException)] {...} | cflow.cs:237:17:237:49 | throw ...; |
-| post | cflow.cs:240:9:245:9 | [return] {...} | cflow.cs:235:17:235:23 | return ...; |
-| post | cflow.cs:241:13:242:41 | [exception(Exception)] if (...) ... | cflow.cs:240:9:245:9 | [exception(Exception)] {...} |
-| post | cflow.cs:241:13:242:41 | [exception(NullReferenceException)] if (...) ... | cflow.cs:240:9:245:9 | [exception(NullReferenceException)] {...} |
-| post | cflow.cs:241:13:242:41 | [exception(OutOfMemoryException)] if (...) ... | cflow.cs:240:9:245:9 | [exception(OutOfMemoryException)] {...} |
-| post | cflow.cs:241:13:242:41 | [return] if (...) ... | cflow.cs:240:9:245:9 | [return] {...} |
+| post | cflow.cs:240:9:245:9 | [finally: exception(OutOfMemoryException)] {...} | cflow.cs:237:17:237:49 | throw ...; |
+| post | cflow.cs:240:9:245:9 | [finally: return] {...} | cflow.cs:235:17:235:23 | return ...; |
+| post | cflow.cs:241:13:242:41 | [finally: exception(Exception)] if (...) ... | cflow.cs:240:9:245:9 | [finally: exception(Exception)] {...} |
+| post | cflow.cs:241:13:242:41 | [finally: exception(NullReferenceException)] if (...) ... | cflow.cs:240:9:245:9 | [finally: exception(NullReferenceException)] {...} |
+| post | cflow.cs:241:13:242:41 | [finally: exception(OutOfMemoryException)] if (...) ... | cflow.cs:240:9:245:9 | [finally: exception(OutOfMemoryException)] {...} |
+| post | cflow.cs:241:13:242:41 | [finally: return] if (...) ... | cflow.cs:240:9:245:9 | [finally: return] {...} |
 | post | cflow.cs:241:13:242:41 | if (...) ... | cflow.cs:240:9:245:9 | {...} |
 | post | cflow.cs:241:17:241:36 | !... | cflow.cs:241:13:242:41 | if (...) ... |
-| post | cflow.cs:241:17:241:36 | [exception(Exception)] !... | cflow.cs:241:13:242:41 | [exception(Exception)] if (...) ... |
-| post | cflow.cs:241:17:241:36 | [exception(NullReferenceException)] !... | cflow.cs:241:13:242:41 | [exception(NullReferenceException)] if (...) ... |
-| post | cflow.cs:241:17:241:36 | [exception(OutOfMemoryException)] !... | cflow.cs:241:13:242:41 | [exception(OutOfMemoryException)] if (...) ... |
-| post | cflow.cs:241:17:241:36 | [return] !... | cflow.cs:241:13:242:41 | [return] if (...) ... |
-| post | cflow.cs:241:19:241:23 | [exception(Exception)] access to field Field | cflow.cs:241:19:241:23 | [exception(Exception)] this access |
-| post | cflow.cs:241:19:241:23 | [exception(Exception)] this access | cflow.cs:241:17:241:36 | [exception(Exception)] !... |
-| post | cflow.cs:241:19:241:23 | [exception(NullReferenceException)] access to field Field | cflow.cs:241:19:241:23 | [exception(NullReferenceException)] this access |
-| post | cflow.cs:241:19:241:23 | [exception(NullReferenceException)] this access | cflow.cs:241:17:241:36 | [exception(NullReferenceException)] !... |
-| post | cflow.cs:241:19:241:23 | [exception(OutOfMemoryException)] access to field Field | cflow.cs:241:19:241:23 | [exception(OutOfMemoryException)] this access |
-| post | cflow.cs:241:19:241:23 | [exception(OutOfMemoryException)] this access | cflow.cs:241:17:241:36 | [exception(OutOfMemoryException)] !... |
-| post | cflow.cs:241:19:241:23 | [return] access to field Field | cflow.cs:241:19:241:23 | [return] this access |
-| post | cflow.cs:241:19:241:23 | [return] this access | cflow.cs:241:17:241:36 | [return] !... |
+| post | cflow.cs:241:17:241:36 | [finally: exception(Exception)] !... | cflow.cs:241:13:242:41 | [finally: exception(Exception)] if (...) ... |
+| post | cflow.cs:241:17:241:36 | [finally: exception(NullReferenceException)] !... | cflow.cs:241:13:242:41 | [finally: exception(NullReferenceException)] if (...) ... |
+| post | cflow.cs:241:17:241:36 | [finally: exception(OutOfMemoryException)] !... | cflow.cs:241:13:242:41 | [finally: exception(OutOfMemoryException)] if (...) ... |
+| post | cflow.cs:241:17:241:36 | [finally: return] !... | cflow.cs:241:13:242:41 | [finally: return] if (...) ... |
+| post | cflow.cs:241:19:241:23 | [finally: exception(Exception)] access to field Field | cflow.cs:241:19:241:23 | [finally: exception(Exception)] this access |
+| post | cflow.cs:241:19:241:23 | [finally: exception(Exception)] this access | cflow.cs:241:17:241:36 | [finally: exception(Exception)] !... |
+| post | cflow.cs:241:19:241:23 | [finally: exception(NullReferenceException)] access to field Field | cflow.cs:241:19:241:23 | [finally: exception(NullReferenceException)] this access |
+| post | cflow.cs:241:19:241:23 | [finally: exception(NullReferenceException)] this access | cflow.cs:241:17:241:36 | [finally: exception(NullReferenceException)] !... |
+| post | cflow.cs:241:19:241:23 | [finally: exception(OutOfMemoryException)] access to field Field | cflow.cs:241:19:241:23 | [finally: exception(OutOfMemoryException)] this access |
+| post | cflow.cs:241:19:241:23 | [finally: exception(OutOfMemoryException)] this access | cflow.cs:241:17:241:36 | [finally: exception(OutOfMemoryException)] !... |
+| post | cflow.cs:241:19:241:23 | [finally: return] access to field Field | cflow.cs:241:19:241:23 | [finally: return] this access |
+| post | cflow.cs:241:19:241:23 | [finally: return] this access | cflow.cs:241:17:241:36 | [finally: return] !... |
 | post | cflow.cs:241:19:241:23 | access to field Field | cflow.cs:241:19:241:23 | this access |
 | post | cflow.cs:241:19:241:23 | this access | cflow.cs:241:17:241:36 | !... |
-| post | cflow.cs:241:19:241:30 | [exception(Exception)] access to property Length | cflow.cs:241:19:241:23 | [exception(Exception)] access to field Field |
-| post | cflow.cs:241:19:241:30 | [exception(NullReferenceException)] access to property Length | cflow.cs:241:19:241:23 | [exception(NullReferenceException)] access to field Field |
-| post | cflow.cs:241:19:241:30 | [exception(OutOfMemoryException)] access to property Length | cflow.cs:241:19:241:23 | [exception(OutOfMemoryException)] access to field Field |
-| post | cflow.cs:241:19:241:30 | [return] access to property Length | cflow.cs:241:19:241:23 | [return] access to field Field |
+| post | cflow.cs:241:19:241:30 | [finally: exception(Exception)] access to property Length | cflow.cs:241:19:241:23 | [finally: exception(Exception)] access to field Field |
+| post | cflow.cs:241:19:241:30 | [finally: exception(NullReferenceException)] access to property Length | cflow.cs:241:19:241:23 | [finally: exception(NullReferenceException)] access to field Field |
+| post | cflow.cs:241:19:241:30 | [finally: exception(OutOfMemoryException)] access to property Length | cflow.cs:241:19:241:23 | [finally: exception(OutOfMemoryException)] access to field Field |
+| post | cflow.cs:241:19:241:30 | [finally: return] access to property Length | cflow.cs:241:19:241:23 | [finally: return] access to field Field |
 | post | cflow.cs:241:19:241:30 | access to property Length | cflow.cs:241:19:241:23 | access to field Field |
 | post | cflow.cs:241:19:241:35 | ... == ... | cflow.cs:241:35:241:35 | 0 |
-| post | cflow.cs:241:19:241:35 | [exception(Exception)] ... == ... | cflow.cs:241:35:241:35 | [exception(Exception)] 0 |
-| post | cflow.cs:241:19:241:35 | [exception(NullReferenceException)] ... == ... | cflow.cs:241:35:241:35 | [exception(NullReferenceException)] 0 |
-| post | cflow.cs:241:19:241:35 | [exception(OutOfMemoryException)] ... == ... | cflow.cs:241:35:241:35 | [exception(OutOfMemoryException)] 0 |
-| post | cflow.cs:241:19:241:35 | [return] ... == ... | cflow.cs:241:35:241:35 | [return] 0 |
+| post | cflow.cs:241:19:241:35 | [finally: exception(Exception)] ... == ... | cflow.cs:241:35:241:35 | [finally: exception(Exception)] 0 |
+| post | cflow.cs:241:19:241:35 | [finally: exception(NullReferenceException)] ... == ... | cflow.cs:241:35:241:35 | [finally: exception(NullReferenceException)] 0 |
+| post | cflow.cs:241:19:241:35 | [finally: exception(OutOfMemoryException)] ... == ... | cflow.cs:241:35:241:35 | [finally: exception(OutOfMemoryException)] 0 |
+| post | cflow.cs:241:19:241:35 | [finally: return] ... == ... | cflow.cs:241:35:241:35 | [finally: return] 0 |
 | post | cflow.cs:241:35:241:35 | 0 | cflow.cs:241:19:241:30 | access to property Length |
-| post | cflow.cs:241:35:241:35 | [exception(Exception)] 0 | cflow.cs:241:19:241:30 | [exception(Exception)] access to property Length |
-| post | cflow.cs:241:35:241:35 | [exception(NullReferenceException)] 0 | cflow.cs:241:19:241:30 | [exception(NullReferenceException)] access to property Length |
-| post | cflow.cs:241:35:241:35 | [exception(OutOfMemoryException)] 0 | cflow.cs:241:19:241:30 | [exception(OutOfMemoryException)] access to property Length |
-| post | cflow.cs:241:35:241:35 | [return] 0 | cflow.cs:241:19:241:30 | [return] access to property Length |
-| post | cflow.cs:242:17:242:40 | [exception(Exception)] call to method WriteLine | cflow.cs:242:35:242:39 | [exception(Exception)] access to field Field |
-| post | cflow.cs:242:17:242:40 | [exception(NullReferenceException)] call to method WriteLine | cflow.cs:242:35:242:39 | [exception(NullReferenceException)] access to field Field |
-| post | cflow.cs:242:17:242:40 | [exception(OutOfMemoryException)] call to method WriteLine | cflow.cs:242:35:242:39 | [exception(OutOfMemoryException)] access to field Field |
-| post | cflow.cs:242:17:242:40 | [return] call to method WriteLine | cflow.cs:242:35:242:39 | [return] access to field Field |
+| post | cflow.cs:241:35:241:35 | [finally: exception(Exception)] 0 | cflow.cs:241:19:241:30 | [finally: exception(Exception)] access to property Length |
+| post | cflow.cs:241:35:241:35 | [finally: exception(NullReferenceException)] 0 | cflow.cs:241:19:241:30 | [finally: exception(NullReferenceException)] access to property Length |
+| post | cflow.cs:241:35:241:35 | [finally: exception(OutOfMemoryException)] 0 | cflow.cs:241:19:241:30 | [finally: exception(OutOfMemoryException)] access to property Length |
+| post | cflow.cs:241:35:241:35 | [finally: return] 0 | cflow.cs:241:19:241:30 | [finally: return] access to property Length |
+| post | cflow.cs:242:17:242:40 | [finally: exception(Exception)] call to method WriteLine | cflow.cs:242:35:242:39 | [finally: exception(Exception)] access to field Field |
+| post | cflow.cs:242:17:242:40 | [finally: exception(NullReferenceException)] call to method WriteLine | cflow.cs:242:35:242:39 | [finally: exception(NullReferenceException)] access to field Field |
+| post | cflow.cs:242:17:242:40 | [finally: exception(OutOfMemoryException)] call to method WriteLine | cflow.cs:242:35:242:39 | [finally: exception(OutOfMemoryException)] access to field Field |
+| post | cflow.cs:242:17:242:40 | [finally: return] call to method WriteLine | cflow.cs:242:35:242:39 | [finally: return] access to field Field |
 | post | cflow.cs:242:17:242:40 | call to method WriteLine | cflow.cs:242:35:242:39 | access to field Field |
-| post | cflow.cs:242:35:242:39 | [exception(Exception)] access to field Field | cflow.cs:242:35:242:39 | [exception(Exception)] this access |
-| post | cflow.cs:242:35:242:39 | [exception(Exception)] this access | cflow.cs:242:17:242:41 | [exception(Exception)] ...; |
-| post | cflow.cs:242:35:242:39 | [exception(NullReferenceException)] access to field Field | cflow.cs:242:35:242:39 | [exception(NullReferenceException)] this access |
-| post | cflow.cs:242:35:242:39 | [exception(NullReferenceException)] this access | cflow.cs:242:17:242:41 | [exception(NullReferenceException)] ...; |
-| post | cflow.cs:242:35:242:39 | [exception(OutOfMemoryException)] access to field Field | cflow.cs:242:35:242:39 | [exception(OutOfMemoryException)] this access |
-| post | cflow.cs:242:35:242:39 | [exception(OutOfMemoryException)] this access | cflow.cs:242:17:242:41 | [exception(OutOfMemoryException)] ...; |
-| post | cflow.cs:242:35:242:39 | [return] access to field Field | cflow.cs:242:35:242:39 | [return] this access |
-| post | cflow.cs:242:35:242:39 | [return] this access | cflow.cs:242:17:242:41 | [return] ...; |
+| post | cflow.cs:242:35:242:39 | [finally: exception(Exception)] access to field Field | cflow.cs:242:35:242:39 | [finally: exception(Exception)] this access |
+| post | cflow.cs:242:35:242:39 | [finally: exception(Exception)] this access | cflow.cs:242:17:242:41 | [finally: exception(Exception)] ...; |
+| post | cflow.cs:242:35:242:39 | [finally: exception(NullReferenceException)] access to field Field | cflow.cs:242:35:242:39 | [finally: exception(NullReferenceException)] this access |
+| post | cflow.cs:242:35:242:39 | [finally: exception(NullReferenceException)] this access | cflow.cs:242:17:242:41 | [finally: exception(NullReferenceException)] ...; |
+| post | cflow.cs:242:35:242:39 | [finally: exception(OutOfMemoryException)] access to field Field | cflow.cs:242:35:242:39 | [finally: exception(OutOfMemoryException)] this access |
+| post | cflow.cs:242:35:242:39 | [finally: exception(OutOfMemoryException)] this access | cflow.cs:242:17:242:41 | [finally: exception(OutOfMemoryException)] ...; |
+| post | cflow.cs:242:35:242:39 | [finally: return] access to field Field | cflow.cs:242:35:242:39 | [finally: return] this access |
+| post | cflow.cs:242:35:242:39 | [finally: return] this access | cflow.cs:242:17:242:41 | [finally: return] ...; |
 | post | cflow.cs:242:35:242:39 | access to field Field | cflow.cs:242:35:242:39 | this access |
 | post | cflow.cs:242:35:242:39 | this access | cflow.cs:242:17:242:41 | ...; |
-| post | cflow.cs:243:13:244:37 | [exception(Exception)] if (...) ... | cflow.cs:241:19:241:35 | [exception(Exception)] ... == ... |
-| post | cflow.cs:243:13:244:37 | [exception(Exception)] if (...) ... | cflow.cs:242:17:242:40 | [exception(Exception)] call to method WriteLine |
-| post | cflow.cs:243:13:244:37 | [exception(NullReferenceException)] if (...) ... | cflow.cs:241:19:241:35 | [exception(NullReferenceException)] ... == ... |
-| post | cflow.cs:243:13:244:37 | [exception(NullReferenceException)] if (...) ... | cflow.cs:242:17:242:40 | [exception(NullReferenceException)] call to method WriteLine |
-| post | cflow.cs:243:13:244:37 | [exception(OutOfMemoryException)] if (...) ... | cflow.cs:241:19:241:35 | [exception(OutOfMemoryException)] ... == ... |
-| post | cflow.cs:243:13:244:37 | [exception(OutOfMemoryException)] if (...) ... | cflow.cs:242:17:242:40 | [exception(OutOfMemoryException)] call to method WriteLine |
-| post | cflow.cs:243:13:244:37 | [return] if (...) ... | cflow.cs:241:19:241:35 | [return] ... == ... |
-| post | cflow.cs:243:13:244:37 | [return] if (...) ... | cflow.cs:242:17:242:40 | [return] call to method WriteLine |
+| post | cflow.cs:243:13:244:37 | [finally: exception(Exception)] if (...) ... | cflow.cs:241:19:241:35 | [finally: exception(Exception)] ... == ... |
+| post | cflow.cs:243:13:244:37 | [finally: exception(Exception)] if (...) ... | cflow.cs:242:17:242:40 | [finally: exception(Exception)] call to method WriteLine |
+| post | cflow.cs:243:13:244:37 | [finally: exception(NullReferenceException)] if (...) ... | cflow.cs:241:19:241:35 | [finally: exception(NullReferenceException)] ... == ... |
+| post | cflow.cs:243:13:244:37 | [finally: exception(NullReferenceException)] if (...) ... | cflow.cs:242:17:242:40 | [finally: exception(NullReferenceException)] call to method WriteLine |
+| post | cflow.cs:243:13:244:37 | [finally: exception(OutOfMemoryException)] if (...) ... | cflow.cs:241:19:241:35 | [finally: exception(OutOfMemoryException)] ... == ... |
+| post | cflow.cs:243:13:244:37 | [finally: exception(OutOfMemoryException)] if (...) ... | cflow.cs:242:17:242:40 | [finally: exception(OutOfMemoryException)] call to method WriteLine |
+| post | cflow.cs:243:13:244:37 | [finally: return] if (...) ... | cflow.cs:241:19:241:35 | [finally: return] ... == ... |
+| post | cflow.cs:243:13:244:37 | [finally: return] if (...) ... | cflow.cs:242:17:242:40 | [finally: return] call to method WriteLine |
 | post | cflow.cs:243:13:244:37 | if (...) ... | cflow.cs:241:19:241:35 | ... == ... |
 | post | cflow.cs:243:13:244:37 | if (...) ... | cflow.cs:242:17:242:40 | call to method WriteLine |
-| post | cflow.cs:243:17:243:21 | [exception(Exception)] access to field Field | cflow.cs:243:17:243:21 | [exception(Exception)] this access |
-| post | cflow.cs:243:17:243:21 | [exception(Exception)] this access | cflow.cs:243:13:244:37 | [exception(Exception)] if (...) ... |
-| post | cflow.cs:243:17:243:21 | [exception(NullReferenceException)] access to field Field | cflow.cs:243:17:243:21 | [exception(NullReferenceException)] this access |
-| post | cflow.cs:243:17:243:21 | [exception(NullReferenceException)] this access | cflow.cs:243:13:244:37 | [exception(NullReferenceException)] if (...) ... |
-| post | cflow.cs:243:17:243:21 | [exception(OutOfMemoryException)] access to field Field | cflow.cs:243:17:243:21 | [exception(OutOfMemoryException)] this access |
-| post | cflow.cs:243:17:243:21 | [exception(OutOfMemoryException)] this access | cflow.cs:243:13:244:37 | [exception(OutOfMemoryException)] if (...) ... |
-| post | cflow.cs:243:17:243:21 | [return] access to field Field | cflow.cs:243:17:243:21 | [return] this access |
-| post | cflow.cs:243:17:243:21 | [return] this access | cflow.cs:243:13:244:37 | [return] if (...) ... |
+| post | cflow.cs:243:17:243:21 | [finally: exception(Exception)] access to field Field | cflow.cs:243:17:243:21 | [finally: exception(Exception)] this access |
+| post | cflow.cs:243:17:243:21 | [finally: exception(Exception)] this access | cflow.cs:243:13:244:37 | [finally: exception(Exception)] if (...) ... |
+| post | cflow.cs:243:17:243:21 | [finally: exception(NullReferenceException)] access to field Field | cflow.cs:243:17:243:21 | [finally: exception(NullReferenceException)] this access |
+| post | cflow.cs:243:17:243:21 | [finally: exception(NullReferenceException)] this access | cflow.cs:243:13:244:37 | [finally: exception(NullReferenceException)] if (...) ... |
+| post | cflow.cs:243:17:243:21 | [finally: exception(OutOfMemoryException)] access to field Field | cflow.cs:243:17:243:21 | [finally: exception(OutOfMemoryException)] this access |
+| post | cflow.cs:243:17:243:21 | [finally: exception(OutOfMemoryException)] this access | cflow.cs:243:13:244:37 | [finally: exception(OutOfMemoryException)] if (...) ... |
+| post | cflow.cs:243:17:243:21 | [finally: return] access to field Field | cflow.cs:243:17:243:21 | [finally: return] this access |
+| post | cflow.cs:243:17:243:21 | [finally: return] this access | cflow.cs:243:13:244:37 | [finally: return] if (...) ... |
 | post | cflow.cs:243:17:243:21 | access to field Field | cflow.cs:243:17:243:21 | this access |
 | post | cflow.cs:243:17:243:21 | this access | cflow.cs:243:13:244:37 | if (...) ... |
-| post | cflow.cs:243:17:243:28 | [exception(Exception)] access to property Length | cflow.cs:243:17:243:21 | [exception(Exception)] access to field Field |
-| post | cflow.cs:243:17:243:28 | [exception(NullReferenceException)] access to property Length | cflow.cs:243:17:243:21 | [exception(NullReferenceException)] access to field Field |
-| post | cflow.cs:243:17:243:28 | [exception(OutOfMemoryException)] access to property Length | cflow.cs:243:17:243:21 | [exception(OutOfMemoryException)] access to field Field |
-| post | cflow.cs:243:17:243:28 | [return] access to property Length | cflow.cs:243:17:243:21 | [return] access to field Field |
+| post | cflow.cs:243:17:243:28 | [finally: exception(Exception)] access to property Length | cflow.cs:243:17:243:21 | [finally: exception(Exception)] access to field Field |
+| post | cflow.cs:243:17:243:28 | [finally: exception(NullReferenceException)] access to property Length | cflow.cs:243:17:243:21 | [finally: exception(NullReferenceException)] access to field Field |
+| post | cflow.cs:243:17:243:28 | [finally: exception(OutOfMemoryException)] access to property Length | cflow.cs:243:17:243:21 | [finally: exception(OutOfMemoryException)] access to field Field |
+| post | cflow.cs:243:17:243:28 | [finally: return] access to property Length | cflow.cs:243:17:243:21 | [finally: return] access to field Field |
 | post | cflow.cs:243:17:243:28 | access to property Length | cflow.cs:243:17:243:21 | access to field Field |
 | post | cflow.cs:243:17:243:32 | ... > ... | cflow.cs:243:32:243:32 | 0 |
-| post | cflow.cs:243:17:243:32 | [exception(Exception)] ... > ... | cflow.cs:243:32:243:32 | [exception(Exception)] 0 |
-| post | cflow.cs:243:17:243:32 | [exception(NullReferenceException)] ... > ... | cflow.cs:243:32:243:32 | [exception(NullReferenceException)] 0 |
-| post | cflow.cs:243:17:243:32 | [exception(OutOfMemoryException)] ... > ... | cflow.cs:243:32:243:32 | [exception(OutOfMemoryException)] 0 |
-| post | cflow.cs:243:17:243:32 | [return] ... > ... | cflow.cs:243:32:243:32 | [return] 0 |
+| post | cflow.cs:243:17:243:32 | [finally: exception(Exception)] ... > ... | cflow.cs:243:32:243:32 | [finally: exception(Exception)] 0 |
+| post | cflow.cs:243:17:243:32 | [finally: exception(NullReferenceException)] ... > ... | cflow.cs:243:32:243:32 | [finally: exception(NullReferenceException)] 0 |
+| post | cflow.cs:243:17:243:32 | [finally: exception(OutOfMemoryException)] ... > ... | cflow.cs:243:32:243:32 | [finally: exception(OutOfMemoryException)] 0 |
+| post | cflow.cs:243:17:243:32 | [finally: return] ... > ... | cflow.cs:243:32:243:32 | [finally: return] 0 |
 | post | cflow.cs:243:32:243:32 | 0 | cflow.cs:243:17:243:28 | access to property Length |
-| post | cflow.cs:243:32:243:32 | [exception(Exception)] 0 | cflow.cs:243:17:243:28 | [exception(Exception)] access to property Length |
-| post | cflow.cs:243:32:243:32 | [exception(NullReferenceException)] 0 | cflow.cs:243:17:243:28 | [exception(NullReferenceException)] access to property Length |
-| post | cflow.cs:243:32:243:32 | [exception(OutOfMemoryException)] 0 | cflow.cs:243:17:243:28 | [exception(OutOfMemoryException)] access to property Length |
-| post | cflow.cs:243:32:243:32 | [return] 0 | cflow.cs:243:17:243:28 | [return] access to property Length |
-| post | cflow.cs:244:17:244:36 | [exception(Exception)] call to method WriteLine | cflow.cs:244:35:244:35 | [exception(Exception)] 1 |
-| post | cflow.cs:244:17:244:36 | [exception(NullReferenceException)] call to method WriteLine | cflow.cs:244:35:244:35 | [exception(NullReferenceException)] 1 |
-| post | cflow.cs:244:17:244:36 | [exception(OutOfMemoryException)] call to method WriteLine | cflow.cs:244:35:244:35 | [exception(OutOfMemoryException)] 1 |
-| post | cflow.cs:244:17:244:36 | [return] call to method WriteLine | cflow.cs:244:35:244:35 | [return] 1 |
+| post | cflow.cs:243:32:243:32 | [finally: exception(Exception)] 0 | cflow.cs:243:17:243:28 | [finally: exception(Exception)] access to property Length |
+| post | cflow.cs:243:32:243:32 | [finally: exception(NullReferenceException)] 0 | cflow.cs:243:17:243:28 | [finally: exception(NullReferenceException)] access to property Length |
+| post | cflow.cs:243:32:243:32 | [finally: exception(OutOfMemoryException)] 0 | cflow.cs:243:17:243:28 | [finally: exception(OutOfMemoryException)] access to property Length |
+| post | cflow.cs:243:32:243:32 | [finally: return] 0 | cflow.cs:243:17:243:28 | [finally: return] access to property Length |
+| post | cflow.cs:244:17:244:36 | [finally: exception(Exception)] call to method WriteLine | cflow.cs:244:35:244:35 | [finally: exception(Exception)] 1 |
+| post | cflow.cs:244:17:244:36 | [finally: exception(NullReferenceException)] call to method WriteLine | cflow.cs:244:35:244:35 | [finally: exception(NullReferenceException)] 1 |
+| post | cflow.cs:244:17:244:36 | [finally: exception(OutOfMemoryException)] call to method WriteLine | cflow.cs:244:35:244:35 | [finally: exception(OutOfMemoryException)] 1 |
+| post | cflow.cs:244:17:244:36 | [finally: return] call to method WriteLine | cflow.cs:244:35:244:35 | [finally: return] 1 |
 | post | cflow.cs:244:17:244:36 | call to method WriteLine | cflow.cs:244:35:244:35 | 1 |
 | post | cflow.cs:244:35:244:35 | 1 | cflow.cs:244:17:244:37 | ...; |
-| post | cflow.cs:244:35:244:35 | [exception(Exception)] 1 | cflow.cs:244:17:244:37 | [exception(Exception)] ...; |
-| post | cflow.cs:244:35:244:35 | [exception(NullReferenceException)] 1 | cflow.cs:244:17:244:37 | [exception(NullReferenceException)] ...; |
-| post | cflow.cs:244:35:244:35 | [exception(OutOfMemoryException)] 1 | cflow.cs:244:17:244:37 | [exception(OutOfMemoryException)] ...; |
-| post | cflow.cs:244:35:244:35 | [return] 1 | cflow.cs:244:17:244:37 | [return] ...; |
+| post | cflow.cs:244:35:244:35 | [finally: exception(Exception)] 1 | cflow.cs:244:17:244:37 | [finally: exception(Exception)] ...; |
+| post | cflow.cs:244:35:244:35 | [finally: exception(NullReferenceException)] 1 | cflow.cs:244:17:244:37 | [finally: exception(NullReferenceException)] ...; |
+| post | cflow.cs:244:35:244:35 | [finally: exception(OutOfMemoryException)] 1 | cflow.cs:244:17:244:37 | [finally: exception(OutOfMemoryException)] ...; |
+| post | cflow.cs:244:35:244:35 | [finally: return] 1 | cflow.cs:244:17:244:37 | [finally: return] ...; |
 | post | cflow.cs:248:10:248:12 | exit For | cflow.cs:275:32:275:41 | ... < ... |
 | post | cflow.cs:249:5:279:5 | {...} | cflow.cs:248:10:248:12 | enter For |
 | post | cflow.cs:250:9:250:18 | ... ...; | cflow.cs:249:5:279:5 | {...} |
@@ -1614,7 +1724,7 @@
 | post | cflow.cs:358:17:358:37 | ...; | cflow.cs:357:13:357:20 | default: |
 | post | cflow.cs:358:35:358:35 | 0 | cflow.cs:358:17:358:37 | ...; |
 | post | cflow.cs:359:17:359:22 | break; | cflow.cs:358:17:358:36 | call to method WriteLine |
-| post | cflow.cs:363:49:363:53 | exit Yield | cflow.cs:377:13:377:41 | [return] call to method WriteLine |
+| post | cflow.cs:363:49:363:53 | exit Yield | cflow.cs:377:13:377:41 | [finally: return] call to method WriteLine |
 | post | cflow.cs:364:5:379:5 | {...} | cflow.cs:363:49:363:53 | enter Yield |
 | post | cflow.cs:365:9:365:23 | yield return ...; | cflow.cs:365:22:365:22 | 0 |
 | post | cflow.cs:365:22:365:22 | 0 | cflow.cs:364:5:379:5 | {...} |
@@ -1633,10 +1743,10 @@
 | post | cflow.cs:370:9:378:9 | try {...} ... | cflow.cs:366:25:366:30 | ... < ... |
 | post | cflow.cs:371:9:374:9 | {...} | cflow.cs:370:9:378:9 | try {...} ... |
 | post | cflow.cs:372:13:372:24 | yield break; | cflow.cs:371:9:374:9 | {...} |
-| post | cflow.cs:376:9:378:9 | [return] {...} | cflow.cs:372:13:372:24 | yield break; |
-| post | cflow.cs:377:13:377:41 | [return] call to method WriteLine | cflow.cs:377:31:377:40 | [return] "not dead" |
-| post | cflow.cs:377:13:377:42 | [return] ...; | cflow.cs:376:9:378:9 | [return] {...} |
-| post | cflow.cs:377:31:377:40 | [return] "not dead" | cflow.cs:377:13:377:42 | [return] ...; |
+| post | cflow.cs:376:9:378:9 | [finally: return] {...} | cflow.cs:372:13:372:24 | yield break; |
+| post | cflow.cs:377:13:377:41 | [finally: return] call to method WriteLine | cflow.cs:377:31:377:40 | [finally: return] "not dead" |
+| post | cflow.cs:377:13:377:42 | [finally: return] ...; | cflow.cs:376:9:378:9 | [finally: return] {...} |
+| post | cflow.cs:377:31:377:40 | [finally: return] "not dead" | cflow.cs:377:13:377:42 | [finally: return] ...; |
 | post | cflow.cs:384:5:384:18 | exit ControlFlowSub | cflow.cs:384:31:384:33 | {...} |
 | post | cflow.cs:384:24:384:27 | call to constructor ControlFlow | cflow.cs:384:5:384:18 | enter ControlFlowSub |
 | post | cflow.cs:384:31:384:33 | {...} | cflow.cs:384:24:384:27 | call to constructor ControlFlow |
@@ -1648,23 +1758,23 @@
 | post | cflow.cs:388:34:388:34 | access to parameter i | cflow.cs:388:5:388:18 | enter ControlFlowSub |
 | post | cflow.cs:388:34:388:45 | call to method ToString | cflow.cs:388:34:388:34 | access to parameter i |
 | post | cflow.cs:388:48:388:50 | {...} | cflow.cs:388:29:388:32 | call to constructor ControlFlowSub |
-| post | cflow.cs:393:10:393:10 | exit M | cflow.cs:401:13:401:44 | [exception(Exception)] throw ...; |
-| post | cflow.cs:393:10:393:10 | exit M | cflow.cs:401:13:401:44 | [exception(OutOfMemoryException)] throw ...; |
+| post | cflow.cs:393:10:393:10 | exit M | cflow.cs:401:13:401:44 | [finally: exception(Exception)] throw ...; |
+| post | cflow.cs:393:10:393:10 | exit M | cflow.cs:401:13:401:44 | [finally: exception(OutOfMemoryException)] throw ...; |
 | post | cflow.cs:393:10:393:10 | exit M | cflow.cs:401:13:401:44 | throw ...; |
 | post | cflow.cs:394:5:405:5 | {...} | cflow.cs:393:10:393:10 | enter M |
 | post | cflow.cs:395:9:403:9 | try {...} ... | cflow.cs:394:5:405:5 | {...} |
 | post | cflow.cs:396:9:398:9 | {...} | cflow.cs:395:9:403:9 | try {...} ... |
 | post | cflow.cs:397:13:397:37 | ...; | cflow.cs:396:9:398:9 | {...} |
 | post | cflow.cs:397:31:397:35 | "Try" | cflow.cs:397:13:397:37 | ...; |
-| post | cflow.cs:401:13:401:44 | [exception(Exception)] throw ...; | cflow.cs:401:19:401:43 | [exception(Exception)] object creation of type ArgumentException |
-| post | cflow.cs:401:13:401:44 | [exception(OutOfMemoryException)] throw ...; | cflow.cs:401:19:401:43 | [exception(OutOfMemoryException)] object creation of type ArgumentException |
+| post | cflow.cs:401:13:401:44 | [finally: exception(Exception)] throw ...; | cflow.cs:401:19:401:43 | [finally: exception(Exception)] object creation of type ArgumentException |
+| post | cflow.cs:401:13:401:44 | [finally: exception(OutOfMemoryException)] throw ...; | cflow.cs:401:19:401:43 | [finally: exception(OutOfMemoryException)] object creation of type ArgumentException |
 | post | cflow.cs:401:13:401:44 | throw ...; | cflow.cs:401:19:401:43 | object creation of type ArgumentException |
-| post | cflow.cs:401:19:401:43 | [exception(Exception)] object creation of type ArgumentException | cflow.cs:401:41:401:42 | [exception(Exception)] "" |
-| post | cflow.cs:401:19:401:43 | [exception(OutOfMemoryException)] object creation of type ArgumentException | cflow.cs:401:41:401:42 | [exception(OutOfMemoryException)] "" |
+| post | cflow.cs:401:19:401:43 | [finally: exception(Exception)] object creation of type ArgumentException | cflow.cs:401:41:401:42 | [finally: exception(Exception)] "" |
+| post | cflow.cs:401:19:401:43 | [finally: exception(OutOfMemoryException)] object creation of type ArgumentException | cflow.cs:401:41:401:42 | [finally: exception(OutOfMemoryException)] "" |
 | post | cflow.cs:401:19:401:43 | object creation of type ArgumentException | cflow.cs:401:41:401:42 | "" |
 | post | cflow.cs:401:41:401:42 | "" | cflow.cs:400:9:403:9 | {...} |
-| post | cflow.cs:401:41:401:42 | [exception(Exception)] "" | cflow.cs:400:9:403:9 | [exception(Exception)] {...} |
-| post | cflow.cs:401:41:401:42 | [exception(OutOfMemoryException)] "" | cflow.cs:400:9:403:9 | [exception(OutOfMemoryException)] {...} |
+| post | cflow.cs:401:41:401:42 | [finally: exception(Exception)] "" | cflow.cs:400:9:403:9 | [finally: exception(Exception)] {...} |
+| post | cflow.cs:401:41:401:42 | [finally: exception(OutOfMemoryException)] "" | cflow.cs:400:9:403:9 | [finally: exception(OutOfMemoryException)] {...} |
 | post | cflow.cs:410:12:410:12 | exit M | cflow.cs:410:38:410:41 | delegate call |
 | post | cflow.cs:410:38:410:38 | access to parameter f | cflow.cs:410:12:410:12 | enter M |
 | post | cflow.cs:410:38:410:41 | delegate call | cflow.cs:410:40:410:40 | 0 |
@@ -1783,16 +1893,16 @@
 | pre | BreakInTry.cs:26:21:26:31 | ... == ... | BreakInTry.cs:27:21:27:26 | break; |
 | pre | BreakInTry.cs:26:21:26:31 | ... == ... | BreakInTry.cs:30:13:33:13 | {...} |
 | pre | BreakInTry.cs:26:28:26:31 | null | BreakInTry.cs:26:21:26:31 | ... == ... |
-| pre | BreakInTry.cs:27:21:27:26 | break; | BreakInTry.cs:30:13:33:13 | [break] {...} |
-| pre | BreakInTry.cs:30:13:33:13 | [break] {...} | BreakInTry.cs:31:17:32:21 | [break] if (...) ... |
+| pre | BreakInTry.cs:27:21:27:26 | break; | BreakInTry.cs:30:13:33:13 | [finally: break] {...} |
+| pre | BreakInTry.cs:30:13:33:13 | [finally: break] {...} | BreakInTry.cs:31:17:32:21 | [finally: break] if (...) ... |
 | pre | BreakInTry.cs:30:13:33:13 | {...} | BreakInTry.cs:31:17:32:21 | if (...) ... |
-| pre | BreakInTry.cs:31:17:32:21 | [break] if (...) ... | BreakInTry.cs:31:21:31:24 | [break] access to parameter args |
+| pre | BreakInTry.cs:31:17:32:21 | [finally: break] if (...) ... | BreakInTry.cs:31:21:31:24 | [finally: break] access to parameter args |
 | pre | BreakInTry.cs:31:17:32:21 | if (...) ... | BreakInTry.cs:31:21:31:24 | access to parameter args |
-| pre | BreakInTry.cs:31:21:31:24 | [break] access to parameter args | BreakInTry.cs:31:29:31:32 | [break] null |
+| pre | BreakInTry.cs:31:21:31:24 | [finally: break] access to parameter args | BreakInTry.cs:31:29:31:32 | [finally: break] null |
 | pre | BreakInTry.cs:31:21:31:24 | access to parameter args | BreakInTry.cs:31:29:31:32 | null |
 | pre | BreakInTry.cs:31:21:31:32 | ... == ... | BreakInTry.cs:32:21:32:21 | ; |
-| pre | BreakInTry.cs:31:21:31:32 | [break] ... == ... | BreakInTry.cs:32:21:32:21 | [break] ; |
-| pre | BreakInTry.cs:31:29:31:32 | [break] null | BreakInTry.cs:31:21:31:32 | [break] ... == ... |
+| pre | BreakInTry.cs:31:21:31:32 | [finally: break] ... == ... | BreakInTry.cs:32:21:32:21 | [finally: break] ; |
+| pre | BreakInTry.cs:31:29:31:32 | [finally: break] null | BreakInTry.cs:31:21:31:32 | [finally: break] ... == ... |
 | pre | BreakInTry.cs:31:29:31:32 | null | BreakInTry.cs:31:21:31:32 | ... == ... |
 | pre | BreakInTry.cs:35:7:35:7 | ; | BreakInTry.cs:20:10:20:11 | exit M2 |
 | pre | BreakInTry.cs:38:10:38:11 | enter M3 | BreakInTry.cs:39:5:54:5 | {...} |
@@ -1804,25 +1914,25 @@
 | pre | BreakInTry.cs:42:17:42:28 | ... == ... | BreakInTry.cs:43:17:43:23 | return ...; |
 | pre | BreakInTry.cs:42:17:42:28 | ... == ... | BreakInTry.cs:46:9:52:9 | {...} |
 | pre | BreakInTry.cs:42:25:42:28 | null | BreakInTry.cs:42:17:42:28 | ... == ... |
-| pre | BreakInTry.cs:43:17:43:23 | return ...; | BreakInTry.cs:46:9:52:9 | [return] {...} |
-| pre | BreakInTry.cs:46:9:52:9 | [return] {...} | BreakInTry.cs:47:33:47:36 | [return] access to parameter args |
+| pre | BreakInTry.cs:43:17:43:23 | return ...; | BreakInTry.cs:46:9:52:9 | [finally: return] {...} |
+| pre | BreakInTry.cs:46:9:52:9 | [finally: return] {...} | BreakInTry.cs:47:33:47:36 | [finally: return] access to parameter args |
 | pre | BreakInTry.cs:46:9:52:9 | {...} | BreakInTry.cs:47:33:47:36 | access to parameter args |
-| pre | BreakInTry.cs:47:13:51:13 | [return] foreach (... ... in ...) ... | BreakInTry.cs:47:26:47:28 | [return] String arg |
+| pre | BreakInTry.cs:47:13:51:13 | [finally: return] foreach (... ... in ...) ... | BreakInTry.cs:47:26:47:28 | [finally: return] String arg |
 | pre | BreakInTry.cs:47:13:51:13 | foreach (... ... in ...) ... | BreakInTry.cs:47:26:47:28 | String arg |
 | pre | BreakInTry.cs:47:13:51:13 | foreach (... ... in ...) ... | BreakInTry.cs:53:7:53:7 | ; |
 | pre | BreakInTry.cs:47:26:47:28 | String arg | BreakInTry.cs:48:13:51:13 | {...} |
-| pre | BreakInTry.cs:47:26:47:28 | [return] String arg | BreakInTry.cs:48:13:51:13 | [return] {...} |
-| pre | BreakInTry.cs:47:33:47:36 | [return] access to parameter args | BreakInTry.cs:47:13:51:13 | [return] foreach (... ... in ...) ... |
+| pre | BreakInTry.cs:47:26:47:28 | [finally: return] String arg | BreakInTry.cs:48:13:51:13 | [finally: return] {...} |
+| pre | BreakInTry.cs:47:33:47:36 | [finally: return] access to parameter args | BreakInTry.cs:47:13:51:13 | [finally: return] foreach (... ... in ...) ... |
 | pre | BreakInTry.cs:47:33:47:36 | access to parameter args | BreakInTry.cs:47:13:51:13 | foreach (... ... in ...) ... |
-| pre | BreakInTry.cs:48:13:51:13 | [return] {...} | BreakInTry.cs:49:17:50:26 | [return] if (...) ... |
+| pre | BreakInTry.cs:48:13:51:13 | [finally: return] {...} | BreakInTry.cs:49:17:50:26 | [finally: return] if (...) ... |
 | pre | BreakInTry.cs:48:13:51:13 | {...} | BreakInTry.cs:49:17:50:26 | if (...) ... |
-| pre | BreakInTry.cs:49:17:50:26 | [return] if (...) ... | BreakInTry.cs:49:21:49:23 | [return] access to local variable arg |
+| pre | BreakInTry.cs:49:17:50:26 | [finally: return] if (...) ... | BreakInTry.cs:49:21:49:23 | [finally: return] access to local variable arg |
 | pre | BreakInTry.cs:49:17:50:26 | if (...) ... | BreakInTry.cs:49:21:49:23 | access to local variable arg |
-| pre | BreakInTry.cs:49:21:49:23 | [return] access to local variable arg | BreakInTry.cs:49:28:49:31 | [return] null |
+| pre | BreakInTry.cs:49:21:49:23 | [finally: return] access to local variable arg | BreakInTry.cs:49:28:49:31 | [finally: return] null |
 | pre | BreakInTry.cs:49:21:49:23 | access to local variable arg | BreakInTry.cs:49:28:49:31 | null |
 | pre | BreakInTry.cs:49:21:49:31 | ... == ... | BreakInTry.cs:50:21:50:26 | break; |
-| pre | BreakInTry.cs:49:21:49:31 | [return] ... == ... | BreakInTry.cs:50:21:50:26 | [return] break; |
-| pre | BreakInTry.cs:49:28:49:31 | [return] null | BreakInTry.cs:49:21:49:31 | [return] ... == ... |
+| pre | BreakInTry.cs:49:21:49:31 | [finally: return] ... == ... | BreakInTry.cs:50:21:50:26 | [finally: return] break; |
+| pre | BreakInTry.cs:49:28:49:31 | [finally: return] null | BreakInTry.cs:49:21:49:31 | [finally: return] ... == ... |
 | pre | BreakInTry.cs:49:28:49:31 | null | BreakInTry.cs:49:21:49:31 | ... == ... |
 | pre | BreakInTry.cs:56:10:56:11 | enter M4 | BreakInTry.cs:57:5:71:5 | {...} |
 | pre | BreakInTry.cs:57:5:71:5 | {...} | BreakInTry.cs:58:9:70:9 | try {...} ... |
@@ -1833,25 +1943,130 @@
 | pre | BreakInTry.cs:60:17:60:28 | ... == ... | BreakInTry.cs:61:17:61:23 | return ...; |
 | pre | BreakInTry.cs:60:17:60:28 | ... == ... | BreakInTry.cs:64:9:70:9 | {...} |
 | pre | BreakInTry.cs:60:25:60:28 | null | BreakInTry.cs:60:17:60:28 | ... == ... |
-| pre | BreakInTry.cs:61:17:61:23 | return ...; | BreakInTry.cs:64:9:70:9 | [return] {...} |
-| pre | BreakInTry.cs:64:9:70:9 | [return] {...} | BreakInTry.cs:65:33:65:36 | [return] access to parameter args |
+| pre | BreakInTry.cs:61:17:61:23 | return ...; | BreakInTry.cs:64:9:70:9 | [finally: return] {...} |
+| pre | BreakInTry.cs:64:9:70:9 | [finally: return] {...} | BreakInTry.cs:65:33:65:36 | [finally: return] access to parameter args |
 | pre | BreakInTry.cs:64:9:70:9 | {...} | BreakInTry.cs:65:33:65:36 | access to parameter args |
-| pre | BreakInTry.cs:65:13:69:13 | [return] foreach (... ... in ...) ... | BreakInTry.cs:65:26:65:28 | [return] String arg |
+| pre | BreakInTry.cs:65:13:69:13 | [finally: return] foreach (... ... in ...) ... | BreakInTry.cs:65:26:65:28 | [finally: return] String arg |
 | pre | BreakInTry.cs:65:13:69:13 | foreach (... ... in ...) ... | BreakInTry.cs:65:26:65:28 | String arg |
 | pre | BreakInTry.cs:65:26:65:28 | String arg | BreakInTry.cs:66:13:69:13 | {...} |
-| pre | BreakInTry.cs:65:26:65:28 | [return] String arg | BreakInTry.cs:66:13:69:13 | [return] {...} |
-| pre | BreakInTry.cs:65:33:65:36 | [return] access to parameter args | BreakInTry.cs:65:13:69:13 | [return] foreach (... ... in ...) ... |
+| pre | BreakInTry.cs:65:26:65:28 | [finally: return] String arg | BreakInTry.cs:66:13:69:13 | [finally: return] {...} |
+| pre | BreakInTry.cs:65:33:65:36 | [finally: return] access to parameter args | BreakInTry.cs:65:13:69:13 | [finally: return] foreach (... ... in ...) ... |
 | pre | BreakInTry.cs:65:33:65:36 | access to parameter args | BreakInTry.cs:65:13:69:13 | foreach (... ... in ...) ... |
-| pre | BreakInTry.cs:66:13:69:13 | [return] {...} | BreakInTry.cs:67:17:68:26 | [return] if (...) ... |
+| pre | BreakInTry.cs:66:13:69:13 | [finally: return] {...} | BreakInTry.cs:67:17:68:26 | [finally: return] if (...) ... |
 | pre | BreakInTry.cs:66:13:69:13 | {...} | BreakInTry.cs:67:17:68:26 | if (...) ... |
-| pre | BreakInTry.cs:67:17:68:26 | [return] if (...) ... | BreakInTry.cs:67:21:67:23 | [return] access to local variable arg |
+| pre | BreakInTry.cs:67:17:68:26 | [finally: return] if (...) ... | BreakInTry.cs:67:21:67:23 | [finally: return] access to local variable arg |
 | pre | BreakInTry.cs:67:17:68:26 | if (...) ... | BreakInTry.cs:67:21:67:23 | access to local variable arg |
-| pre | BreakInTry.cs:67:21:67:23 | [return] access to local variable arg | BreakInTry.cs:67:28:67:31 | [return] null |
+| pre | BreakInTry.cs:67:21:67:23 | [finally: return] access to local variable arg | BreakInTry.cs:67:28:67:31 | [finally: return] null |
 | pre | BreakInTry.cs:67:21:67:23 | access to local variable arg | BreakInTry.cs:67:28:67:31 | null |
 | pre | BreakInTry.cs:67:21:67:31 | ... == ... | BreakInTry.cs:68:21:68:26 | break; |
-| pre | BreakInTry.cs:67:21:67:31 | [return] ... == ... | BreakInTry.cs:68:21:68:26 | [return] break; |
-| pre | BreakInTry.cs:67:28:67:31 | [return] null | BreakInTry.cs:67:21:67:31 | [return] ... == ... |
+| pre | BreakInTry.cs:67:21:67:31 | [finally: return] ... == ... | BreakInTry.cs:68:21:68:26 | [finally: return] break; |
+| pre | BreakInTry.cs:67:28:67:31 | [finally: return] null | BreakInTry.cs:67:21:67:31 | [finally: return] ... == ... |
 | pre | BreakInTry.cs:67:28:67:31 | null | BreakInTry.cs:67:21:67:31 | ... == ... |
+| pre | CatchInFinally.cs:5:10:5:11 | enter M1 | CatchInFinally.cs:6:5:28:5 | {...} |
+| pre | CatchInFinally.cs:6:5:28:5 | {...} | CatchInFinally.cs:7:9:27:9 | try {...} ... |
+| pre | CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:8:9:11:9 | {...} |
+| pre | CatchInFinally.cs:8:9:11:9 | {...} | CatchInFinally.cs:9:13:10:50 | if (...) ... |
+| pre | CatchInFinally.cs:9:13:10:50 | if (...) ... | CatchInFinally.cs:9:17:9:20 | access to parameter args |
+| pre | CatchInFinally.cs:9:17:9:20 | access to parameter args | CatchInFinally.cs:9:25:9:28 | null |
+| pre | CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException |
+| pre | CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:13:9:27:9 | {...} |
+| pre | CatchInFinally.cs:9:25:9:28 | null | CatchInFinally.cs:9:17:9:28 | ... == ... |
+| pre | CatchInFinally.cs:10:17:10:50 | throw ...; | CatchInFinally.cs:13:9:27:9 | [finally: exception(ArgumentNullException)] {...} |
+| pre | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | CatchInFinally.cs:10:17:10:50 | throw ...; |
+| pre | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | CatchInFinally.cs:13:9:27:9 | [finally: exception(Exception)] {...} |
+| pre | CatchInFinally.cs:13:9:27:9 | [finally: exception(ArgumentNullException)] {...} | CatchInFinally.cs:14:13:26:13 | [finally: exception(ArgumentNullException)] try {...} ... |
+| pre | CatchInFinally.cs:13:9:27:9 | [finally: exception(Exception)] {...} | CatchInFinally.cs:14:13:26:13 | [finally: exception(Exception)] try {...} ... |
+| pre | CatchInFinally.cs:13:9:27:9 | {...} | CatchInFinally.cs:14:13:26:13 | try {...} ... |
+| pre | CatchInFinally.cs:14:13:26:13 | [finally: exception(ArgumentNullException)] try {...} ... | CatchInFinally.cs:15:13:18:13 | [finally: exception(ArgumentNullException)] {...} |
+| pre | CatchInFinally.cs:14:13:26:13 | [finally: exception(Exception)] try {...} ... | CatchInFinally.cs:15:13:18:13 | [finally: exception(Exception)] {...} |
+| pre | CatchInFinally.cs:14:13:26:13 | try {...} ... | CatchInFinally.cs:15:13:18:13 | {...} |
+| pre | CatchInFinally.cs:15:13:18:13 | [finally: exception(ArgumentNullException)] {...} | CatchInFinally.cs:16:17:17:45 | [finally: exception(ArgumentNullException)] if (...) ... |
+| pre | CatchInFinally.cs:15:13:18:13 | [finally: exception(Exception)] {...} | CatchInFinally.cs:16:17:17:45 | [finally: exception(Exception)] if (...) ... |
+| pre | CatchInFinally.cs:15:13:18:13 | {...} | CatchInFinally.cs:16:17:17:45 | if (...) ... |
+| pre | CatchInFinally.cs:16:17:17:45 | [finally: exception(ArgumentNullException)] if (...) ... | CatchInFinally.cs:16:21:16:24 | [finally: exception(ArgumentNullException)] access to parameter args |
+| pre | CatchInFinally.cs:16:17:17:45 | [finally: exception(Exception)] if (...) ... | CatchInFinally.cs:16:21:16:24 | [finally: exception(Exception)] access to parameter args |
+| pre | CatchInFinally.cs:16:17:17:45 | if (...) ... | CatchInFinally.cs:16:21:16:24 | access to parameter args |
+| pre | CatchInFinally.cs:16:21:16:24 | [finally: exception(ArgumentNullException)] access to parameter args | CatchInFinally.cs:16:21:16:31 | [finally: exception(ArgumentNullException)] access to property Length |
+| pre | CatchInFinally.cs:16:21:16:24 | [finally: exception(Exception)] access to parameter args | CatchInFinally.cs:16:21:16:31 | [finally: exception(Exception)] access to property Length |
+| pre | CatchInFinally.cs:16:21:16:24 | access to parameter args | CatchInFinally.cs:16:21:16:31 | access to property Length |
+| pre | CatchInFinally.cs:16:21:16:31 | [finally: exception(ArgumentNullException)] access to property Length | CatchInFinally.cs:16:36:16:36 | [finally: exception(ArgumentNullException)] 1 |
+| pre | CatchInFinally.cs:16:21:16:31 | [finally: exception(ArgumentNullException)] access to property Length | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(ArgumentNullException)] catch (...) {...} |
+| pre | CatchInFinally.cs:16:21:16:31 | [finally: exception(ArgumentNullException)] access to property Length | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] catch (...) {...} |
+| pre | CatchInFinally.cs:16:21:16:31 | [finally: exception(Exception)] access to property Length | CatchInFinally.cs:16:36:16:36 | [finally: exception(Exception)] 1 |
+| pre | CatchInFinally.cs:16:21:16:31 | [finally: exception(Exception)] access to property Length | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(Exception)] catch (...) {...} |
+| pre | CatchInFinally.cs:16:21:16:31 | [finally: exception(Exception)] access to property Length | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(Exception)] catch (...) {...} |
+| pre | CatchInFinally.cs:16:21:16:31 | access to property Length | CatchInFinally.cs:16:36:16:36 | 1 |
+| pre | CatchInFinally.cs:16:21:16:31 | access to property Length | CatchInFinally.cs:19:13:22:13 | [exception: Exception] catch (...) {...} |
+| pre | CatchInFinally.cs:16:21:16:31 | access to property Length | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException] catch (...) {...} |
+| pre | CatchInFinally.cs:16:21:16:36 | ... == ... | CatchInFinally.cs:17:41:17:43 | "1" |
+| pre | CatchInFinally.cs:16:21:16:36 | [finally: exception(ArgumentNullException)] ... == ... | CatchInFinally.cs:17:41:17:43 | [finally: exception(ArgumentNullException)] "1" |
+| pre | CatchInFinally.cs:16:21:16:36 | [finally: exception(Exception)] ... == ... | CatchInFinally.cs:17:41:17:43 | [finally: exception(Exception)] "1" |
+| pre | CatchInFinally.cs:16:36:16:36 | 1 | CatchInFinally.cs:16:21:16:36 | ... == ... |
+| pre | CatchInFinally.cs:16:36:16:36 | [finally: exception(ArgumentNullException)] 1 | CatchInFinally.cs:16:21:16:36 | [finally: exception(ArgumentNullException)] ... == ... |
+| pre | CatchInFinally.cs:16:36:16:36 | [finally: exception(Exception)] 1 | CatchInFinally.cs:16:21:16:36 | [finally: exception(Exception)] ... == ... |
+| pre | CatchInFinally.cs:17:27:17:44 | [finally: exception(ArgumentNullException)] object creation of type Exception | CatchInFinally.cs:17:21:17:45 | [finally: exception(ArgumentNullException)] throw ...; |
+| pre | CatchInFinally.cs:17:27:17:44 | [finally: exception(Exception)] object creation of type Exception | CatchInFinally.cs:17:21:17:45 | [finally: exception(Exception)] throw ...; |
+| pre | CatchInFinally.cs:17:27:17:44 | object creation of type Exception | CatchInFinally.cs:17:21:17:45 | throw ...; |
+| pre | CatchInFinally.cs:17:41:17:43 | "1" | CatchInFinally.cs:17:27:17:44 | object creation of type Exception |
+| pre | CatchInFinally.cs:17:41:17:43 | [finally: exception(ArgumentNullException)] "1" | CatchInFinally.cs:17:27:17:44 | [finally: exception(ArgumentNullException)] object creation of type Exception |
+| pre | CatchInFinally.cs:17:41:17:43 | [finally: exception(Exception)] "1" | CatchInFinally.cs:17:27:17:44 | [finally: exception(Exception)] object creation of type Exception |
+| pre | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(ArgumentNullException)] catch (...) {...} | CatchInFinally.cs:19:30:19:30 | [exception: Exception, finally: exception(ArgumentNullException)] Exception e |
+| pre | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(Exception)] catch (...) {...} | CatchInFinally.cs:19:30:19:30 | [exception: Exception, finally: exception(Exception)] Exception e |
+| pre | CatchInFinally.cs:19:13:22:13 | [exception: Exception] catch (...) {...} | CatchInFinally.cs:19:30:19:30 | [exception: Exception] Exception e |
+| pre | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] catch (...) {...} | CatchInFinally.cs:19:30:19:30 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] Exception e |
+| pre | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(Exception)] catch (...) {...} | CatchInFinally.cs:19:30:19:30 | [exception: NullReferenceException, finally: exception(Exception)] Exception e |
+| pre | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException] catch (...) {...} | CatchInFinally.cs:19:30:19:30 | [exception: NullReferenceException] Exception e |
+| pre | CatchInFinally.cs:19:30:19:30 | [exception: Exception, finally: exception(ArgumentNullException)] Exception e | CatchInFinally.cs:19:39:19:39 | [exception: Exception, finally: exception(ArgumentNullException)] access to local variable e |
+| pre | CatchInFinally.cs:19:30:19:30 | [exception: Exception, finally: exception(Exception)] Exception e | CatchInFinally.cs:19:39:19:39 | [exception: Exception, finally: exception(Exception)] access to local variable e |
+| pre | CatchInFinally.cs:19:30:19:30 | [exception: Exception] Exception e | CatchInFinally.cs:19:39:19:39 | [exception: Exception] access to local variable e |
+| pre | CatchInFinally.cs:19:30:19:30 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] Exception e | CatchInFinally.cs:19:39:19:39 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] access to local variable e |
+| pre | CatchInFinally.cs:19:30:19:30 | [exception: NullReferenceException, finally: exception(Exception)] Exception e | CatchInFinally.cs:19:39:19:39 | [exception: NullReferenceException, finally: exception(Exception)] access to local variable e |
+| pre | CatchInFinally.cs:19:30:19:30 | [exception: NullReferenceException] Exception e | CatchInFinally.cs:19:39:19:39 | [exception: NullReferenceException] access to local variable e |
+| pre | CatchInFinally.cs:19:39:19:39 | [exception: Exception, finally: exception(ArgumentNullException)] access to local variable e | CatchInFinally.cs:19:39:19:47 | [exception: Exception, finally: exception(ArgumentNullException)] access to property Message |
+| pre | CatchInFinally.cs:19:39:19:39 | [exception: Exception, finally: exception(Exception)] access to local variable e | CatchInFinally.cs:19:39:19:47 | [exception: Exception, finally: exception(Exception)] access to property Message |
+| pre | CatchInFinally.cs:19:39:19:39 | [exception: Exception] access to local variable e | CatchInFinally.cs:19:39:19:47 | [exception: Exception] access to property Message |
+| pre | CatchInFinally.cs:19:39:19:39 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] access to local variable e | CatchInFinally.cs:19:39:19:47 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] access to property Message |
+| pre | CatchInFinally.cs:19:39:19:39 | [exception: NullReferenceException, finally: exception(Exception)] access to local variable e | CatchInFinally.cs:19:39:19:47 | [exception: NullReferenceException, finally: exception(Exception)] access to property Message |
+| pre | CatchInFinally.cs:19:39:19:39 | [exception: NullReferenceException] access to local variable e | CatchInFinally.cs:19:39:19:47 | [exception: NullReferenceException] access to property Message |
+| pre | CatchInFinally.cs:19:39:19:47 | [exception: Exception, finally: exception(ArgumentNullException)] access to property Message | CatchInFinally.cs:19:52:19:54 | [exception: Exception, finally: exception(ArgumentNullException)] "1" |
+| pre | CatchInFinally.cs:19:39:19:47 | [exception: Exception, finally: exception(Exception)] access to property Message | CatchInFinally.cs:19:52:19:54 | [exception: Exception, finally: exception(Exception)] "1" |
+| pre | CatchInFinally.cs:19:39:19:47 | [exception: Exception] access to property Message | CatchInFinally.cs:19:52:19:54 | [exception: Exception] "1" |
+| pre | CatchInFinally.cs:19:39:19:47 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] access to property Message | CatchInFinally.cs:19:52:19:54 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] "1" |
+| pre | CatchInFinally.cs:19:39:19:47 | [exception: NullReferenceException, finally: exception(Exception)] access to property Message | CatchInFinally.cs:19:52:19:54 | [exception: NullReferenceException, finally: exception(Exception)] "1" |
+| pre | CatchInFinally.cs:19:39:19:47 | [exception: NullReferenceException] access to property Message | CatchInFinally.cs:19:52:19:54 | [exception: NullReferenceException] "1" |
+| pre | CatchInFinally.cs:19:52:19:54 | [exception: Exception, finally: exception(ArgumentNullException)] "1" | CatchInFinally.cs:19:39:19:54 | [exception: Exception, finally: exception(ArgumentNullException)] ... == ... |
+| pre | CatchInFinally.cs:19:52:19:54 | [exception: Exception, finally: exception(Exception)] "1" | CatchInFinally.cs:19:39:19:54 | [exception: Exception, finally: exception(Exception)] ... == ... |
+| pre | CatchInFinally.cs:19:52:19:54 | [exception: Exception] "1" | CatchInFinally.cs:19:39:19:54 | [exception: Exception] ... == ... |
+| pre | CatchInFinally.cs:19:52:19:54 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] "1" | CatchInFinally.cs:19:39:19:54 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] ... == ... |
+| pre | CatchInFinally.cs:19:52:19:54 | [exception: NullReferenceException, finally: exception(Exception)] "1" | CatchInFinally.cs:19:39:19:54 | [exception: NullReferenceException, finally: exception(Exception)] ... == ... |
+| pre | CatchInFinally.cs:19:52:19:54 | [exception: NullReferenceException] "1" | CatchInFinally.cs:19:39:19:54 | [exception: NullReferenceException] ... == ... |
+| pre | CatchInFinally.cs:20:13:22:13 | [finally: exception(ArgumentNullException)] {...} | CatchInFinally.cs:21:17:21:43 | [finally: exception(ArgumentNullException)] ...; |
+| pre | CatchInFinally.cs:20:13:22:13 | [finally: exception(Exception)] {...} | CatchInFinally.cs:21:17:21:43 | [finally: exception(Exception)] ...; |
+| pre | CatchInFinally.cs:20:13:22:13 | {...} | CatchInFinally.cs:21:17:21:43 | ...; |
+| pre | CatchInFinally.cs:21:17:21:43 | ...; | CatchInFinally.cs:21:35:21:38 | access to parameter args |
+| pre | CatchInFinally.cs:21:17:21:43 | [finally: exception(ArgumentNullException)] ...; | CatchInFinally.cs:21:35:21:38 | [finally: exception(ArgumentNullException)] access to parameter args |
+| pre | CatchInFinally.cs:21:17:21:43 | [finally: exception(Exception)] ...; | CatchInFinally.cs:21:35:21:38 | [finally: exception(Exception)] access to parameter args |
+| pre | CatchInFinally.cs:21:35:21:38 | [finally: exception(ArgumentNullException)] access to parameter args | CatchInFinally.cs:21:40:21:40 | [finally: exception(ArgumentNullException)] 0 |
+| pre | CatchInFinally.cs:21:35:21:38 | [finally: exception(Exception)] access to parameter args | CatchInFinally.cs:21:40:21:40 | [finally: exception(Exception)] 0 |
+| pre | CatchInFinally.cs:21:35:21:38 | access to parameter args | CatchInFinally.cs:21:40:21:40 | 0 |
+| pre | CatchInFinally.cs:21:35:21:41 | [finally: exception(ArgumentNullException)] access to array element | CatchInFinally.cs:21:17:21:42 | [finally: exception(ArgumentNullException)] call to method WriteLine |
+| pre | CatchInFinally.cs:21:35:21:41 | [finally: exception(Exception)] access to array element | CatchInFinally.cs:21:17:21:42 | [finally: exception(Exception)] call to method WriteLine |
+| pre | CatchInFinally.cs:21:35:21:41 | access to array element | CatchInFinally.cs:21:17:21:42 | call to method WriteLine |
+| pre | CatchInFinally.cs:21:40:21:40 | 0 | CatchInFinally.cs:21:35:21:41 | access to array element |
+| pre | CatchInFinally.cs:21:40:21:40 | [finally: exception(ArgumentNullException)] 0 | CatchInFinally.cs:21:35:21:41 | [finally: exception(ArgumentNullException)] access to array element |
+| pre | CatchInFinally.cs:21:40:21:40 | [finally: exception(Exception)] 0 | CatchInFinally.cs:21:35:21:41 | [finally: exception(Exception)] access to array element |
+| pre | CatchInFinally.cs:23:13:26:13 | [finally: exception(ArgumentNullException)] catch {...} | CatchInFinally.cs:24:13:26:13 | [finally: exception(ArgumentNullException)] {...} |
+| pre | CatchInFinally.cs:23:13:26:13 | [finally: exception(Exception)] catch {...} | CatchInFinally.cs:24:13:26:13 | [finally: exception(Exception)] {...} |
+| pre | CatchInFinally.cs:23:13:26:13 | catch {...} | CatchInFinally.cs:24:13:26:13 | {...} |
+| pre | CatchInFinally.cs:24:13:26:13 | [finally: exception(ArgumentNullException)] {...} | CatchInFinally.cs:25:17:25:38 | [finally: exception(ArgumentNullException)] ...; |
+| pre | CatchInFinally.cs:24:13:26:13 | [finally: exception(Exception)] {...} | CatchInFinally.cs:25:17:25:38 | [finally: exception(Exception)] ...; |
+| pre | CatchInFinally.cs:24:13:26:13 | {...} | CatchInFinally.cs:25:17:25:38 | ...; |
+| pre | CatchInFinally.cs:25:17:25:38 | ...; | CatchInFinally.cs:25:35:25:36 | "" |
+| pre | CatchInFinally.cs:25:17:25:38 | [finally: exception(ArgumentNullException)] ...; | CatchInFinally.cs:25:35:25:36 | [finally: exception(ArgumentNullException)] "" |
+| pre | CatchInFinally.cs:25:17:25:38 | [finally: exception(Exception)] ...; | CatchInFinally.cs:25:35:25:36 | [finally: exception(Exception)] "" |
+| pre | CatchInFinally.cs:25:35:25:36 | "" | CatchInFinally.cs:25:17:25:37 | call to method WriteLine |
+| pre | CatchInFinally.cs:25:35:25:36 | [finally: exception(ArgumentNullException)] "" | CatchInFinally.cs:25:17:25:37 | [finally: exception(ArgumentNullException)] call to method WriteLine |
+| pre | CatchInFinally.cs:25:35:25:36 | [finally: exception(Exception)] "" | CatchInFinally.cs:25:17:25:37 | [finally: exception(Exception)] call to method WriteLine |
 | pre | CompileTimeOperators.cs:5:9:5:15 | enter Default | CompileTimeOperators.cs:6:5:8:5 | {...} |
 | pre | CompileTimeOperators.cs:6:5:8:5 | {...} | CompileTimeOperators.cs:7:16:7:27 | default(...) |
 | pre | CompileTimeOperators.cs:7:9:7:28 | return ...; | CompileTimeOperators.cs:5:9:5:15 | exit Default |
@@ -1872,11 +2087,11 @@
 | pre | CompileTimeOperators.cs:29:5:41:5 | {...} | CompileTimeOperators.cs:30:9:38:9 | try {...} ... |
 | pre | CompileTimeOperators.cs:30:9:38:9 | try {...} ... | CompileTimeOperators.cs:31:9:34:9 | {...} |
 | pre | CompileTimeOperators.cs:31:9:34:9 | {...} | CompileTimeOperators.cs:32:13:32:21 | goto ...; |
-| pre | CompileTimeOperators.cs:32:13:32:21 | goto ...; | CompileTimeOperators.cs:36:9:38:9 | [goto(End)] {...} |
-| pre | CompileTimeOperators.cs:36:9:38:9 | [goto(End)] {...} | CompileTimeOperators.cs:37:13:37:41 | [goto(End)] ...; |
-| pre | CompileTimeOperators.cs:37:13:37:40 | [goto(End)] call to method WriteLine | CompileTimeOperators.cs:40:9:40:11 | End: |
-| pre | CompileTimeOperators.cs:37:13:37:41 | [goto(End)] ...; | CompileTimeOperators.cs:37:31:37:39 | [goto(End)] "Finally" |
-| pre | CompileTimeOperators.cs:37:31:37:39 | [goto(End)] "Finally" | CompileTimeOperators.cs:37:13:37:40 | [goto(End)] call to method WriteLine |
+| pre | CompileTimeOperators.cs:32:13:32:21 | goto ...; | CompileTimeOperators.cs:36:9:38:9 | [finally: goto(End)] {...} |
+| pre | CompileTimeOperators.cs:36:9:38:9 | [finally: goto(End)] {...} | CompileTimeOperators.cs:37:13:37:41 | [finally: goto(End)] ...; |
+| pre | CompileTimeOperators.cs:37:13:37:40 | [finally: goto(End)] call to method WriteLine | CompileTimeOperators.cs:40:9:40:11 | End: |
+| pre | CompileTimeOperators.cs:37:13:37:41 | [finally: goto(End)] ...; | CompileTimeOperators.cs:37:31:37:39 | [finally: goto(End)] "Finally" |
+| pre | CompileTimeOperators.cs:37:31:37:39 | [finally: goto(End)] "Finally" | CompileTimeOperators.cs:37:13:37:40 | [finally: goto(End)] call to method WriteLine |
 | pre | CompileTimeOperators.cs:40:9:40:11 | End: | CompileTimeOperators.cs:40:14:40:38 | ...; |
 | pre | CompileTimeOperators.cs:40:14:40:37 | call to method WriteLine | CompileTimeOperators.cs:28:10:28:10 | exit M |
 | pre | CompileTimeOperators.cs:40:14:40:38 | ...; | CompileTimeOperators.cs:40:32:40:36 | "End" |
@@ -1967,13 +2182,13 @@
 | pre | ExitMethods.cs:37:5:50:5 | {...} | ExitMethods.cs:38:9:49:9 | try {...} ... |
 | pre | ExitMethods.cs:38:9:49:9 | try {...} ... | ExitMethods.cs:39:9:41:9 | {...} |
 | pre | ExitMethods.cs:39:9:41:9 | {...} | ExitMethods.cs:40:13:40:31 | ...; |
-| pre | ExitMethods.cs:40:13:40:30 | call to method ErrorAlways | ExitMethods.cs:42:9:45:9 | catch (...) {...} |
-| pre | ExitMethods.cs:40:13:40:30 | call to method ErrorAlways | ExitMethods.cs:46:9:49:9 | catch (...) {...} |
+| pre | ExitMethods.cs:40:13:40:30 | call to method ErrorAlways | ExitMethods.cs:42:9:45:9 | [exception: ArgumentException] catch (...) {...} |
+| pre | ExitMethods.cs:40:13:40:30 | call to method ErrorAlways | ExitMethods.cs:42:9:45:9 | [exception: Exception] catch (...) {...} |
 | pre | ExitMethods.cs:40:13:40:31 | ...; | ExitMethods.cs:40:25:40:29 | false |
 | pre | ExitMethods.cs:40:25:40:29 | false | ExitMethods.cs:40:13:40:30 | call to method ErrorAlways |
-| pre | ExitMethods.cs:42:9:45:9 | catch (...) {...} | ExitMethods.cs:43:9:45:9 | {...} |
+| pre | ExitMethods.cs:42:9:45:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:46:9:49:9 | [exception: Exception] catch (...) {...} |
 | pre | ExitMethods.cs:43:9:45:9 | {...} | ExitMethods.cs:44:13:44:19 | return ...; |
-| pre | ExitMethods.cs:46:9:49:9 | catch (...) {...} | ExitMethods.cs:47:9:49:9 | {...} |
+| pre | ExitMethods.cs:46:9:49:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:47:9:49:9 | {...} |
 | pre | ExitMethods.cs:47:9:49:9 | {...} | ExitMethods.cs:48:13:48:19 | return ...; |
 | pre | ExitMethods.cs:52:17:52:26 | enter ErrorMaybe | ExitMethods.cs:53:5:56:5 | {...} |
 | pre | ExitMethods.cs:53:5:56:5 | {...} | ExitMethods.cs:54:9:55:34 | if (...) ... |
@@ -2792,96 +3007,108 @@
 | pre | cflow.cs:147:5:246:5 | {...} | cflow.cs:148:9:155:9 | try {...} ... |
 | pre | cflow.cs:148:9:155:9 | try {...} ... | cflow.cs:149:9:151:9 | {...} |
 | pre | cflow.cs:149:9:151:9 | {...} | cflow.cs:150:13:150:38 | ...; |
-| pre | cflow.cs:150:13:150:37 | call to method WriteLine | cflow.cs:153:9:155:9 | [exception(Exception)] {...} |
+| pre | cflow.cs:150:13:150:37 | call to method WriteLine | cflow.cs:153:9:155:9 | [finally: exception(Exception)] {...} |
 | pre | cflow.cs:150:13:150:37 | call to method WriteLine | cflow.cs:153:9:155:9 | {...} |
 | pre | cflow.cs:150:13:150:38 | ...; | cflow.cs:150:31:150:36 | "Try1" |
 | pre | cflow.cs:150:31:150:36 | "Try1" | cflow.cs:150:13:150:37 | call to method WriteLine |
-| pre | cflow.cs:150:31:150:36 | "Try1" | cflow.cs:153:9:155:9 | [exception(OutOfMemoryException)] {...} |
-| pre | cflow.cs:153:9:155:9 | [exception(Exception)] {...} | cflow.cs:154:13:154:41 | [exception(Exception)] ...; |
-| pre | cflow.cs:153:9:155:9 | [exception(OutOfMemoryException)] {...} | cflow.cs:154:13:154:41 | [exception(OutOfMemoryException)] ...; |
+| pre | cflow.cs:150:31:150:36 | "Try1" | cflow.cs:153:9:155:9 | [finally: exception(OutOfMemoryException)] {...} |
+| pre | cflow.cs:153:9:155:9 | [finally: exception(Exception)] {...} | cflow.cs:154:13:154:41 | [finally: exception(Exception)] ...; |
+| pre | cflow.cs:153:9:155:9 | [finally: exception(OutOfMemoryException)] {...} | cflow.cs:154:13:154:41 | [finally: exception(OutOfMemoryException)] ...; |
 | pre | cflow.cs:153:9:155:9 | {...} | cflow.cs:154:13:154:41 | ...; |
 | pre | cflow.cs:154:13:154:40 | call to method WriteLine | cflow.cs:157:9:187:9 | try {...} ... |
 | pre | cflow.cs:154:13:154:41 | ...; | cflow.cs:154:31:154:39 | "Finally" |
-| pre | cflow.cs:154:13:154:41 | [exception(Exception)] ...; | cflow.cs:154:31:154:39 | [exception(Exception)] "Finally" |
-| pre | cflow.cs:154:13:154:41 | [exception(OutOfMemoryException)] ...; | cflow.cs:154:31:154:39 | [exception(OutOfMemoryException)] "Finally" |
+| pre | cflow.cs:154:13:154:41 | [finally: exception(Exception)] ...; | cflow.cs:154:31:154:39 | [finally: exception(Exception)] "Finally" |
+| pre | cflow.cs:154:13:154:41 | [finally: exception(OutOfMemoryException)] ...; | cflow.cs:154:31:154:39 | [finally: exception(OutOfMemoryException)] "Finally" |
 | pre | cflow.cs:154:31:154:39 | "Finally" | cflow.cs:154:13:154:40 | call to method WriteLine |
-| pre | cflow.cs:154:31:154:39 | [exception(Exception)] "Finally" | cflow.cs:154:13:154:40 | [exception(Exception)] call to method WriteLine |
-| pre | cflow.cs:154:31:154:39 | [exception(OutOfMemoryException)] "Finally" | cflow.cs:154:13:154:40 | [exception(OutOfMemoryException)] call to method WriteLine |
+| pre | cflow.cs:154:31:154:39 | [finally: exception(Exception)] "Finally" | cflow.cs:154:13:154:40 | [finally: exception(Exception)] call to method WriteLine |
+| pre | cflow.cs:154:31:154:39 | [finally: exception(OutOfMemoryException)] "Finally" | cflow.cs:154:13:154:40 | [finally: exception(OutOfMemoryException)] call to method WriteLine |
 | pre | cflow.cs:157:9:187:9 | try {...} ... | cflow.cs:158:9:161:9 | {...} |
 | pre | cflow.cs:158:9:161:9 | {...} | cflow.cs:159:13:159:38 | ...; |
 | pre | cflow.cs:159:13:159:37 | call to method WriteLine | cflow.cs:160:13:160:19 | return ...; |
-| pre | cflow.cs:159:13:159:37 | call to method WriteLine | cflow.cs:162:9:165:9 | catch (...) {...} |
-| pre | cflow.cs:159:13:159:37 | call to method WriteLine | cflow.cs:166:9:176:9 | catch (...) {...} |
+| pre | cflow.cs:159:13:159:37 | call to method WriteLine | cflow.cs:162:9:165:9 | [exception: Exception] catch (...) {...} |
 | pre | cflow.cs:159:13:159:38 | ...; | cflow.cs:159:31:159:36 | "Try2" |
 | pre | cflow.cs:159:31:159:36 | "Try2" | cflow.cs:159:13:159:37 | call to method WriteLine |
-| pre | cflow.cs:159:31:159:36 | "Try2" | cflow.cs:177:9:179:9 | catch (...) {...} |
-| pre | cflow.cs:160:13:160:19 | return ...; | cflow.cs:185:9:187:9 | [return] {...} |
-| pre | cflow.cs:162:9:165:9 | catch (...) {...} | cflow.cs:162:38:162:39 | IOException ex |
-| pre | cflow.cs:162:38:162:39 | IOException ex | cflow.cs:162:48:162:51 | true |
-| pre | cflow.cs:162:48:162:51 | true | cflow.cs:163:9:165:9 | {...} |
+| pre | cflow.cs:159:31:159:36 | "Try2" | cflow.cs:162:9:165:9 | [exception: OutOfMemoryException] catch (...) {...} |
+| pre | cflow.cs:160:13:160:19 | return ...; | cflow.cs:185:9:187:9 | [finally: return] {...} |
+| pre | cflow.cs:162:9:165:9 | [exception: Exception] catch (...) {...} | cflow.cs:162:38:162:39 | [exception: Exception] IOException ex |
+| pre | cflow.cs:162:9:165:9 | [exception: Exception] catch (...) {...} | cflow.cs:166:9:176:9 | [exception: Exception] catch (...) {...} |
+| pre | cflow.cs:162:9:165:9 | [exception: OutOfMemoryException] catch (...) {...} | cflow.cs:166:9:176:9 | [exception: OutOfMemoryException] catch (...) {...} |
+| pre | cflow.cs:162:38:162:39 | [exception: Exception] IOException ex | cflow.cs:162:48:162:51 | [exception: Exception] true |
+| pre | cflow.cs:162:48:162:51 | [exception: Exception] true | cflow.cs:163:9:165:9 | {...} |
 | pre | cflow.cs:163:9:165:9 | {...} | cflow.cs:164:13:164:18 | throw ...; |
-| pre | cflow.cs:164:13:164:18 | throw ...; | cflow.cs:185:9:187:9 | [exception(IOException)] {...} |
-| pre | cflow.cs:166:9:176:9 | catch (...) {...} | cflow.cs:166:41:166:42 | ArgumentException ex |
-| pre | cflow.cs:166:41:166:42 | ArgumentException ex | cflow.cs:167:9:176:9 | {...} |
+| pre | cflow.cs:164:13:164:18 | throw ...; | cflow.cs:185:9:187:9 | [finally: exception(IOException)] {...} |
+| pre | cflow.cs:166:9:176:9 | [exception: Exception] catch (...) {...} | cflow.cs:166:41:166:42 | [exception: Exception] ArgumentException ex |
+| pre | cflow.cs:166:9:176:9 | [exception: Exception] catch (...) {...} | cflow.cs:177:9:179:9 | [exception: Exception] catch (...) {...} |
+| pre | cflow.cs:166:9:176:9 | [exception: OutOfMemoryException] catch (...) {...} | cflow.cs:177:9:179:9 | [exception: OutOfMemoryException] catch (...) {...} |
+| pre | cflow.cs:166:41:166:42 | [exception: Exception] ArgumentException ex | cflow.cs:167:9:176:9 | {...} |
 | pre | cflow.cs:167:9:176:9 | {...} | cflow.cs:168:13:175:13 | try {...} ... |
 | pre | cflow.cs:168:13:175:13 | try {...} ... | cflow.cs:169:13:171:13 | {...} |
 | pre | cflow.cs:169:13:171:13 | {...} | cflow.cs:170:17:170:32 | if (...) ... |
 | pre | cflow.cs:170:17:170:32 | if (...) ... | cflow.cs:170:21:170:24 | true |
 | pre | cflow.cs:170:21:170:24 | true | cflow.cs:170:27:170:32 | throw ...; |
-| pre | cflow.cs:170:27:170:32 | throw ...; | cflow.cs:173:13:175:13 | [exception(ArgumentException)] {...} |
-| pre | cflow.cs:173:13:175:13 | [exception(ArgumentException)] {...} | cflow.cs:174:37:174:42 | [exception(ArgumentException)] "Boo!" |
-| pre | cflow.cs:174:17:174:44 | [exception(ArgumentException)] throw ...; | cflow.cs:185:9:187:9 | [exception(Exception)] {...} |
-| pre | cflow.cs:174:23:174:43 | [exception(ArgumentException)] object creation of type Exception | cflow.cs:174:17:174:44 | [exception(ArgumentException)] throw ...; |
-| pre | cflow.cs:174:37:174:42 | [exception(ArgumentException)] "Boo!" | cflow.cs:174:23:174:43 | [exception(ArgumentException)] object creation of type Exception |
-| pre | cflow.cs:177:9:179:9 | catch (...) {...} | cflow.cs:178:9:179:9 | {...} |
+| pre | cflow.cs:170:27:170:32 | throw ...; | cflow.cs:173:13:175:13 | [finally: exception(ArgumentException)] {...} |
+| pre | cflow.cs:173:13:175:13 | [finally: exception(ArgumentException)] {...} | cflow.cs:174:37:174:42 | [finally: exception(ArgumentException)] "Boo!" |
+| pre | cflow.cs:174:17:174:44 | [finally: exception(ArgumentException)] throw ...; | cflow.cs:185:9:187:9 | [finally: exception(Exception)] {...} |
+| pre | cflow.cs:174:23:174:43 | [finally: exception(ArgumentException)] object creation of type Exception | cflow.cs:174:17:174:44 | [finally: exception(ArgumentException)] throw ...; |
+| pre | cflow.cs:174:37:174:42 | [finally: exception(ArgumentException)] "Boo!" | cflow.cs:174:23:174:43 | [finally: exception(ArgumentException)] object creation of type Exception |
 | pre | cflow.cs:178:9:179:9 | {...} | cflow.cs:185:9:187:9 | {...} |
-| pre | cflow.cs:185:9:187:9 | [exception(Exception)] {...} | cflow.cs:186:13:186:41 | [exception(Exception)] ...; |
-| pre | cflow.cs:185:9:187:9 | [exception(IOException)] {...} | cflow.cs:186:13:186:41 | [exception(IOException)] ...; |
-| pre | cflow.cs:185:9:187:9 | [return] {...} | cflow.cs:186:13:186:41 | [return] ...; |
+| pre | cflow.cs:185:9:187:9 | [finally: exception(Exception)] {...} | cflow.cs:186:13:186:41 | [finally: exception(Exception)] ...; |
+| pre | cflow.cs:185:9:187:9 | [finally: exception(IOException)] {...} | cflow.cs:186:13:186:41 | [finally: exception(IOException)] ...; |
+| pre | cflow.cs:185:9:187:9 | [finally: return] {...} | cflow.cs:186:13:186:41 | [finally: return] ...; |
 | pre | cflow.cs:185:9:187:9 | {...} | cflow.cs:186:13:186:41 | ...; |
 | pre | cflow.cs:186:13:186:40 | call to method WriteLine | cflow.cs:189:9:204:9 | try {...} ... |
 | pre | cflow.cs:186:13:186:41 | ...; | cflow.cs:186:31:186:39 | "Finally" |
-| pre | cflow.cs:186:13:186:41 | [exception(Exception)] ...; | cflow.cs:186:31:186:39 | [exception(Exception)] "Finally" |
-| pre | cflow.cs:186:13:186:41 | [exception(IOException)] ...; | cflow.cs:186:31:186:39 | [exception(IOException)] "Finally" |
-| pre | cflow.cs:186:13:186:41 | [return] ...; | cflow.cs:186:31:186:39 | [return] "Finally" |
+| pre | cflow.cs:186:13:186:41 | [finally: exception(Exception)] ...; | cflow.cs:186:31:186:39 | [finally: exception(Exception)] "Finally" |
+| pre | cflow.cs:186:13:186:41 | [finally: exception(IOException)] ...; | cflow.cs:186:31:186:39 | [finally: exception(IOException)] "Finally" |
+| pre | cflow.cs:186:13:186:41 | [finally: return] ...; | cflow.cs:186:31:186:39 | [finally: return] "Finally" |
 | pre | cflow.cs:186:31:186:39 | "Finally" | cflow.cs:186:13:186:40 | call to method WriteLine |
-| pre | cflow.cs:186:31:186:39 | [exception(Exception)] "Finally" | cflow.cs:186:13:186:40 | [exception(Exception)] call to method WriteLine |
-| pre | cflow.cs:186:31:186:39 | [exception(IOException)] "Finally" | cflow.cs:186:13:186:40 | [exception(IOException)] call to method WriteLine |
-| pre | cflow.cs:186:31:186:39 | [return] "Finally" | cflow.cs:186:13:186:40 | [return] call to method WriteLine |
+| pre | cflow.cs:186:31:186:39 | [finally: exception(Exception)] "Finally" | cflow.cs:186:13:186:40 | [finally: exception(Exception)] call to method WriteLine |
+| pre | cflow.cs:186:31:186:39 | [finally: exception(IOException)] "Finally" | cflow.cs:186:13:186:40 | [finally: exception(IOException)] call to method WriteLine |
+| pre | cflow.cs:186:31:186:39 | [finally: return] "Finally" | cflow.cs:186:13:186:40 | [finally: return] call to method WriteLine |
 | pre | cflow.cs:189:9:204:9 | try {...} ... | cflow.cs:190:9:193:9 | {...} |
 | pre | cflow.cs:190:9:193:9 | {...} | cflow.cs:191:13:191:38 | ...; |
 | pre | cflow.cs:191:13:191:37 | call to method WriteLine | cflow.cs:192:13:192:19 | return ...; |
-| pre | cflow.cs:191:13:191:37 | call to method WriteLine | cflow.cs:194:9:197:9 | catch (...) {...} |
-| pre | cflow.cs:191:13:191:37 | call to method WriteLine | cflow.cs:198:9:200:9 | catch (...) {...} |
-| pre | cflow.cs:191:13:191:37 | call to method WriteLine | cflow.cs:202:9:204:9 | [exception(Exception)] {...} |
+| pre | cflow.cs:191:13:191:37 | call to method WriteLine | cflow.cs:194:9:197:9 | [exception: Exception] catch (...) {...} |
 | pre | cflow.cs:191:13:191:38 | ...; | cflow.cs:191:31:191:36 | "Try3" |
 | pre | cflow.cs:191:31:191:36 | "Try3" | cflow.cs:191:13:191:37 | call to method WriteLine |
-| pre | cflow.cs:191:31:191:36 | "Try3" | cflow.cs:202:9:204:9 | [exception(OutOfMemoryException)] {...} |
-| pre | cflow.cs:192:13:192:19 | return ...; | cflow.cs:202:9:204:9 | [return] {...} |
-| pre | cflow.cs:194:9:197:9 | catch (...) {...} | cflow.cs:194:38:194:39 | IOException ex |
-| pre | cflow.cs:194:38:194:39 | IOException ex | cflow.cs:194:48:194:51 | true |
-| pre | cflow.cs:194:48:194:51 | true | cflow.cs:195:9:197:9 | {...} |
+| pre | cflow.cs:191:31:191:36 | "Try3" | cflow.cs:194:9:197:9 | [exception: OutOfMemoryException] catch (...) {...} |
+| pre | cflow.cs:192:13:192:19 | return ...; | cflow.cs:202:9:204:9 | [finally: return] {...} |
+| pre | cflow.cs:194:9:197:9 | [exception: Exception] catch (...) {...} | cflow.cs:194:38:194:39 | [exception: Exception] IOException ex |
+| pre | cflow.cs:194:9:197:9 | [exception: Exception] catch (...) {...} | cflow.cs:198:9:200:9 | [exception: Exception] catch (...) {...} |
+| pre | cflow.cs:194:9:197:9 | [exception: OutOfMemoryException] catch (...) {...} | cflow.cs:198:9:200:9 | [exception: OutOfMemoryException] catch (...) {...} |
+| pre | cflow.cs:194:38:194:39 | [exception: Exception] IOException ex | cflow.cs:194:48:194:51 | [exception: Exception] true |
+| pre | cflow.cs:194:48:194:51 | [exception: Exception] true | cflow.cs:195:9:197:9 | {...} |
 | pre | cflow.cs:195:9:197:9 | {...} | cflow.cs:196:13:196:18 | throw ...; |
-| pre | cflow.cs:196:13:196:18 | throw ...; | cflow.cs:202:9:204:9 | [exception(IOException)] {...} |
-| pre | cflow.cs:198:9:200:9 | catch (...) {...} | cflow.cs:198:33:198:37 | false |
-| pre | cflow.cs:198:33:198:37 | false | cflow.cs:199:9:200:9 | {...} |
+| pre | cflow.cs:196:13:196:18 | throw ...; | cflow.cs:202:9:204:9 | [finally: exception(IOException)] {...} |
+| pre | cflow.cs:198:9:200:9 | [exception: Exception] catch (...) {...} | cflow.cs:198:26:198:26 | [exception: Exception] Exception e |
+| pre | cflow.cs:198:9:200:9 | [exception: OutOfMemoryException] catch (...) {...} | cflow.cs:198:26:198:26 | [exception: OutOfMemoryException] Exception e |
+| pre | cflow.cs:198:26:198:26 | [exception: Exception] Exception e | cflow.cs:198:35:198:35 | [exception: Exception] access to local variable e |
+| pre | cflow.cs:198:26:198:26 | [exception: OutOfMemoryException] Exception e | cflow.cs:198:35:198:35 | [exception: OutOfMemoryException] access to local variable e |
+| pre | cflow.cs:198:35:198:35 | [exception: Exception] access to local variable e | cflow.cs:198:35:198:43 | [exception: Exception] access to property Message |
+| pre | cflow.cs:198:35:198:35 | [exception: OutOfMemoryException] access to local variable e | cflow.cs:198:35:198:43 | [exception: OutOfMemoryException] access to property Message |
+| pre | cflow.cs:198:35:198:43 | [exception: Exception] access to property Message | cflow.cs:198:48:198:51 | [exception: Exception] null |
+| pre | cflow.cs:198:35:198:43 | [exception: OutOfMemoryException] access to property Message | cflow.cs:198:48:198:51 | [exception: OutOfMemoryException] null |
+| pre | cflow.cs:198:35:198:51 | [exception: Exception] ... != ... | cflow.cs:202:9:204:9 | [finally: exception(Exception)] {...} |
+| pre | cflow.cs:198:35:198:51 | [exception: OutOfMemoryException] ... != ... | cflow.cs:202:9:204:9 | [finally: exception(OutOfMemoryException)] {...} |
+| pre | cflow.cs:198:48:198:51 | [exception: Exception] null | cflow.cs:198:35:198:51 | [exception: Exception] ... != ... |
+| pre | cflow.cs:198:48:198:51 | [exception: OutOfMemoryException] null | cflow.cs:198:35:198:51 | [exception: OutOfMemoryException] ... != ... |
 | pre | cflow.cs:199:9:200:9 | {...} | cflow.cs:202:9:204:9 | {...} |
-| pre | cflow.cs:202:9:204:9 | [exception(Exception)] {...} | cflow.cs:203:13:203:41 | [exception(Exception)] ...; |
-| pre | cflow.cs:202:9:204:9 | [exception(IOException)] {...} | cflow.cs:203:13:203:41 | [exception(IOException)] ...; |
-| pre | cflow.cs:202:9:204:9 | [exception(OutOfMemoryException)] {...} | cflow.cs:203:13:203:41 | [exception(OutOfMemoryException)] ...; |
-| pre | cflow.cs:202:9:204:9 | [return] {...} | cflow.cs:203:13:203:41 | [return] ...; |
+| pre | cflow.cs:202:9:204:9 | [finally: exception(Exception)] {...} | cflow.cs:203:13:203:41 | [finally: exception(Exception)] ...; |
+| pre | cflow.cs:202:9:204:9 | [finally: exception(IOException)] {...} | cflow.cs:203:13:203:41 | [finally: exception(IOException)] ...; |
+| pre | cflow.cs:202:9:204:9 | [finally: exception(OutOfMemoryException)] {...} | cflow.cs:203:13:203:41 | [finally: exception(OutOfMemoryException)] ...; |
+| pre | cflow.cs:202:9:204:9 | [finally: return] {...} | cflow.cs:203:13:203:41 | [finally: return] ...; |
 | pre | cflow.cs:202:9:204:9 | {...} | cflow.cs:203:13:203:41 | ...; |
 | pre | cflow.cs:203:13:203:40 | call to method WriteLine | cflow.cs:206:9:206:19 | ... ...; |
 | pre | cflow.cs:203:13:203:41 | ...; | cflow.cs:203:31:203:39 | "Finally" |
-| pre | cflow.cs:203:13:203:41 | [exception(Exception)] ...; | cflow.cs:203:31:203:39 | [exception(Exception)] "Finally" |
-| pre | cflow.cs:203:13:203:41 | [exception(IOException)] ...; | cflow.cs:203:31:203:39 | [exception(IOException)] "Finally" |
-| pre | cflow.cs:203:13:203:41 | [exception(OutOfMemoryException)] ...; | cflow.cs:203:31:203:39 | [exception(OutOfMemoryException)] "Finally" |
-| pre | cflow.cs:203:13:203:41 | [return] ...; | cflow.cs:203:31:203:39 | [return] "Finally" |
+| pre | cflow.cs:203:13:203:41 | [finally: exception(Exception)] ...; | cflow.cs:203:31:203:39 | [finally: exception(Exception)] "Finally" |
+| pre | cflow.cs:203:13:203:41 | [finally: exception(IOException)] ...; | cflow.cs:203:31:203:39 | [finally: exception(IOException)] "Finally" |
+| pre | cflow.cs:203:13:203:41 | [finally: exception(OutOfMemoryException)] ...; | cflow.cs:203:31:203:39 | [finally: exception(OutOfMemoryException)] "Finally" |
+| pre | cflow.cs:203:13:203:41 | [finally: return] ...; | cflow.cs:203:31:203:39 | [finally: return] "Finally" |
 | pre | cflow.cs:203:31:203:39 | "Finally" | cflow.cs:203:13:203:40 | call to method WriteLine |
-| pre | cflow.cs:203:31:203:39 | [exception(Exception)] "Finally" | cflow.cs:203:13:203:40 | [exception(Exception)] call to method WriteLine |
-| pre | cflow.cs:203:31:203:39 | [exception(IOException)] "Finally" | cflow.cs:203:13:203:40 | [exception(IOException)] call to method WriteLine |
-| pre | cflow.cs:203:31:203:39 | [exception(OutOfMemoryException)] "Finally" | cflow.cs:203:13:203:40 | [exception(OutOfMemoryException)] call to method WriteLine |
-| pre | cflow.cs:203:31:203:39 | [return] "Finally" | cflow.cs:203:13:203:40 | [return] call to method WriteLine |
+| pre | cflow.cs:203:31:203:39 | [finally: exception(Exception)] "Finally" | cflow.cs:203:13:203:40 | [finally: exception(Exception)] call to method WriteLine |
+| pre | cflow.cs:203:31:203:39 | [finally: exception(IOException)] "Finally" | cflow.cs:203:13:203:40 | [finally: exception(IOException)] call to method WriteLine |
+| pre | cflow.cs:203:31:203:39 | [finally: exception(OutOfMemoryException)] "Finally" | cflow.cs:203:13:203:40 | [finally: exception(OutOfMemoryException)] call to method WriteLine |
+| pre | cflow.cs:203:31:203:39 | [finally: return] "Finally" | cflow.cs:203:13:203:40 | [finally: return] call to method WriteLine |
 | pre | cflow.cs:206:9:206:19 | ... ...; | cflow.cs:206:13:206:13 | access to local variable i |
 | pre | cflow.cs:206:13:206:13 | access to local variable i | cflow.cs:206:17:206:18 | 10 |
 | pre | cflow.cs:206:13:206:18 | Int32 i = ... | cflow.cs:207:9:230:9 | while (...) ... |
@@ -2899,82 +3126,82 @@
 | pre | cflow.cs:211:21:211:26 | ... == ... | cflow.cs:212:21:212:27 | return ...; |
 | pre | cflow.cs:211:21:211:26 | ... == ... | cflow.cs:213:17:214:29 | if (...) ... |
 | pre | cflow.cs:211:26:211:26 | 0 | cflow.cs:211:21:211:26 | ... == ... |
-| pre | cflow.cs:212:21:212:27 | return ...; | cflow.cs:219:13:229:13 | [return] {...} |
+| pre | cflow.cs:212:21:212:27 | return ...; | cflow.cs:219:13:229:13 | [finally: return] {...} |
 | pre | cflow.cs:213:17:214:29 | if (...) ... | cflow.cs:213:21:213:21 | access to local variable i |
 | pre | cflow.cs:213:21:213:21 | access to local variable i | cflow.cs:213:26:213:26 | 1 |
 | pre | cflow.cs:213:21:213:26 | ... == ... | cflow.cs:214:21:214:29 | continue; |
 | pre | cflow.cs:213:21:213:26 | ... == ... | cflow.cs:215:17:216:26 | if (...) ... |
 | pre | cflow.cs:213:26:213:26 | 1 | cflow.cs:213:21:213:26 | ... == ... |
-| pre | cflow.cs:214:21:214:29 | continue; | cflow.cs:219:13:229:13 | [continue] {...} |
+| pre | cflow.cs:214:21:214:29 | continue; | cflow.cs:219:13:229:13 | [finally: continue] {...} |
 | pre | cflow.cs:215:17:216:26 | if (...) ... | cflow.cs:215:21:215:21 | access to local variable i |
 | pre | cflow.cs:215:21:215:21 | access to local variable i | cflow.cs:215:26:215:26 | 2 |
 | pre | cflow.cs:215:21:215:26 | ... == ... | cflow.cs:216:21:216:26 | break; |
 | pre | cflow.cs:215:21:215:26 | ... == ... | cflow.cs:219:13:229:13 | {...} |
 | pre | cflow.cs:215:26:215:26 | 2 | cflow.cs:215:21:215:26 | ... == ... |
-| pre | cflow.cs:216:21:216:26 | break; | cflow.cs:219:13:229:13 | [break] {...} |
-| pre | cflow.cs:219:13:229:13 | [break] {...} | cflow.cs:220:17:228:17 | [break] try {...} ... |
-| pre | cflow.cs:219:13:229:13 | [continue] {...} | cflow.cs:220:17:228:17 | [continue] try {...} ... |
-| pre | cflow.cs:219:13:229:13 | [return] {...} | cflow.cs:220:17:228:17 | [return] try {...} ... |
+| pre | cflow.cs:216:21:216:26 | break; | cflow.cs:219:13:229:13 | [finally: break] {...} |
+| pre | cflow.cs:219:13:229:13 | [finally: break] {...} | cflow.cs:220:17:228:17 | [finally: break] try {...} ... |
+| pre | cflow.cs:219:13:229:13 | [finally: continue] {...} | cflow.cs:220:17:228:17 | [finally: continue] try {...} ... |
+| pre | cflow.cs:219:13:229:13 | [finally: return] {...} | cflow.cs:220:17:228:17 | [finally: return] try {...} ... |
 | pre | cflow.cs:219:13:229:13 | {...} | cflow.cs:220:17:228:17 | try {...} ... |
-| pre | cflow.cs:220:17:228:17 | [break] try {...} ... | cflow.cs:221:17:224:17 | [break] {...} |
-| pre | cflow.cs:220:17:228:17 | [continue] try {...} ... | cflow.cs:221:17:224:17 | [continue] {...} |
-| pre | cflow.cs:220:17:228:17 | [return] try {...} ... | cflow.cs:221:17:224:17 | [return] {...} |
+| pre | cflow.cs:220:17:228:17 | [finally: break] try {...} ... | cflow.cs:221:17:224:17 | [finally: break] {...} |
+| pre | cflow.cs:220:17:228:17 | [finally: continue] try {...} ... | cflow.cs:221:17:224:17 | [finally: continue] {...} |
+| pre | cflow.cs:220:17:228:17 | [finally: return] try {...} ... | cflow.cs:221:17:224:17 | [finally: return] {...} |
 | pre | cflow.cs:220:17:228:17 | try {...} ... | cflow.cs:221:17:224:17 | {...} |
-| pre | cflow.cs:221:17:224:17 | [break] {...} | cflow.cs:222:21:223:46 | [break] if (...) ... |
-| pre | cflow.cs:221:17:224:17 | [continue] {...} | cflow.cs:222:21:223:46 | [continue] if (...) ... |
-| pre | cflow.cs:221:17:224:17 | [return] {...} | cflow.cs:222:21:223:46 | [return] if (...) ... |
+| pre | cflow.cs:221:17:224:17 | [finally: break] {...} | cflow.cs:222:21:223:46 | [finally: break] if (...) ... |
+| pre | cflow.cs:221:17:224:17 | [finally: continue] {...} | cflow.cs:222:21:223:46 | [finally: continue] if (...) ... |
+| pre | cflow.cs:221:17:224:17 | [finally: return] {...} | cflow.cs:222:21:223:46 | [finally: return] if (...) ... |
 | pre | cflow.cs:221:17:224:17 | {...} | cflow.cs:222:21:223:46 | if (...) ... |
-| pre | cflow.cs:222:21:223:46 | [break] if (...) ... | cflow.cs:222:25:222:25 | [break] access to local variable i |
-| pre | cflow.cs:222:21:223:46 | [continue] if (...) ... | cflow.cs:222:25:222:25 | [continue] access to local variable i |
-| pre | cflow.cs:222:21:223:46 | [return] if (...) ... | cflow.cs:222:25:222:25 | [return] access to local variable i |
+| pre | cflow.cs:222:21:223:46 | [finally: break] if (...) ... | cflow.cs:222:25:222:25 | [finally: break] access to local variable i |
+| pre | cflow.cs:222:21:223:46 | [finally: continue] if (...) ... | cflow.cs:222:25:222:25 | [finally: continue] access to local variable i |
+| pre | cflow.cs:222:21:223:46 | [finally: return] if (...) ... | cflow.cs:222:25:222:25 | [finally: return] access to local variable i |
 | pre | cflow.cs:222:21:223:46 | if (...) ... | cflow.cs:222:25:222:25 | access to local variable i |
-| pre | cflow.cs:222:25:222:25 | [break] access to local variable i | cflow.cs:222:30:222:30 | [break] 3 |
-| pre | cflow.cs:222:25:222:25 | [continue] access to local variable i | cflow.cs:222:30:222:30 | [continue] 3 |
-| pre | cflow.cs:222:25:222:25 | [return] access to local variable i | cflow.cs:222:30:222:30 | [return] 3 |
+| pre | cflow.cs:222:25:222:25 | [finally: break] access to local variable i | cflow.cs:222:30:222:30 | [finally: break] 3 |
+| pre | cflow.cs:222:25:222:25 | [finally: continue] access to local variable i | cflow.cs:222:30:222:30 | [finally: continue] 3 |
+| pre | cflow.cs:222:25:222:25 | [finally: return] access to local variable i | cflow.cs:222:30:222:30 | [finally: return] 3 |
 | pre | cflow.cs:222:25:222:25 | access to local variable i | cflow.cs:222:30:222:30 | 3 |
 | pre | cflow.cs:222:25:222:30 | ... == ... | cflow.cs:223:31:223:45 | object creation of type Exception |
 | pre | cflow.cs:222:25:222:30 | ... == ... | cflow.cs:226:17:228:17 | {...} |
-| pre | cflow.cs:222:25:222:30 | [break] ... == ... | cflow.cs:223:31:223:45 | [break] object creation of type Exception |
-| pre | cflow.cs:222:25:222:30 | [break] ... == ... | cflow.cs:226:17:228:17 | [break] {...} |
-| pre | cflow.cs:222:25:222:30 | [continue] ... == ... | cflow.cs:223:31:223:45 | [continue] object creation of type Exception |
-| pre | cflow.cs:222:25:222:30 | [continue] ... == ... | cflow.cs:226:17:228:17 | [continue] {...} |
-| pre | cflow.cs:222:25:222:30 | [return] ... == ... | cflow.cs:223:31:223:45 | [return] object creation of type Exception |
-| pre | cflow.cs:222:25:222:30 | [return] ... == ... | cflow.cs:226:17:228:17 | [return] {...} |
+| pre | cflow.cs:222:25:222:30 | [finally: break] ... == ... | cflow.cs:223:31:223:45 | [finally: break] object creation of type Exception |
+| pre | cflow.cs:222:25:222:30 | [finally: break] ... == ... | cflow.cs:226:17:228:17 | [finally: break] {...} |
+| pre | cflow.cs:222:25:222:30 | [finally: continue] ... == ... | cflow.cs:223:31:223:45 | [finally: continue] object creation of type Exception |
+| pre | cflow.cs:222:25:222:30 | [finally: continue] ... == ... | cflow.cs:226:17:228:17 | [finally: continue] {...} |
+| pre | cflow.cs:222:25:222:30 | [finally: return] ... == ... | cflow.cs:223:31:223:45 | [finally: return] object creation of type Exception |
+| pre | cflow.cs:222:25:222:30 | [finally: return] ... == ... | cflow.cs:226:17:228:17 | [finally: return] {...} |
 | pre | cflow.cs:222:30:222:30 | 3 | cflow.cs:222:25:222:30 | ... == ... |
-| pre | cflow.cs:222:30:222:30 | [break] 3 | cflow.cs:222:25:222:30 | [break] ... == ... |
-| pre | cflow.cs:222:30:222:30 | [continue] 3 | cflow.cs:222:25:222:30 | [continue] ... == ... |
-| pre | cflow.cs:222:30:222:30 | [return] 3 | cflow.cs:222:25:222:30 | [return] ... == ... |
-| pre | cflow.cs:223:31:223:45 | [break] object creation of type Exception | cflow.cs:223:25:223:46 | [break] throw ...; |
-| pre | cflow.cs:223:31:223:45 | [continue] object creation of type Exception | cflow.cs:223:25:223:46 | [continue] throw ...; |
-| pre | cflow.cs:223:31:223:45 | [return] object creation of type Exception | cflow.cs:223:25:223:46 | [return] throw ...; |
+| pre | cflow.cs:222:30:222:30 | [finally: break] 3 | cflow.cs:222:25:222:30 | [finally: break] ... == ... |
+| pre | cflow.cs:222:30:222:30 | [finally: continue] 3 | cflow.cs:222:25:222:30 | [finally: continue] ... == ... |
+| pre | cflow.cs:222:30:222:30 | [finally: return] 3 | cflow.cs:222:25:222:30 | [finally: return] ... == ... |
+| pre | cflow.cs:223:31:223:45 | [finally: break] object creation of type Exception | cflow.cs:223:25:223:46 | [finally: break] throw ...; |
+| pre | cflow.cs:223:31:223:45 | [finally: continue] object creation of type Exception | cflow.cs:223:25:223:46 | [finally: continue] throw ...; |
+| pre | cflow.cs:223:31:223:45 | [finally: return] object creation of type Exception | cflow.cs:223:25:223:46 | [finally: return] throw ...; |
 | pre | cflow.cs:223:31:223:45 | object creation of type Exception | cflow.cs:223:25:223:46 | throw ...; |
-| pre | cflow.cs:226:17:228:17 | [break] {...} | cflow.cs:227:21:227:24 | [break] ...; |
-| pre | cflow.cs:226:17:228:17 | [continue] {...} | cflow.cs:227:21:227:24 | [continue] ...; |
-| pre | cflow.cs:226:17:228:17 | [exception(Exception)] {...} | cflow.cs:227:21:227:24 | [exception(Exception)] ...; |
-| pre | cflow.cs:226:17:228:17 | [return] {...} | cflow.cs:227:21:227:24 | [return] ...; |
+| pre | cflow.cs:226:17:228:17 | [finally: break] {...} | cflow.cs:227:21:227:24 | [finally: break] ...; |
+| pre | cflow.cs:226:17:228:17 | [finally: continue] {...} | cflow.cs:227:21:227:24 | [finally: continue] ...; |
+| pre | cflow.cs:226:17:228:17 | [finally: exception(Exception)] {...} | cflow.cs:227:21:227:24 | [finally: exception(Exception)] ...; |
+| pre | cflow.cs:226:17:228:17 | [finally: return] {...} | cflow.cs:227:21:227:24 | [finally: return] ...; |
 | pre | cflow.cs:226:17:228:17 | {...} | cflow.cs:227:21:227:24 | ...; |
-| pre | cflow.cs:227:21:227:21 | [break] access to local variable i | cflow.cs:227:21:227:23 | [break] ...-- |
-| pre | cflow.cs:227:21:227:21 | [continue] access to local variable i | cflow.cs:227:21:227:23 | [continue] ...-- |
-| pre | cflow.cs:227:21:227:21 | [exception(Exception)] access to local variable i | cflow.cs:227:21:227:23 | [exception(Exception)] ...-- |
-| pre | cflow.cs:227:21:227:21 | [return] access to local variable i | cflow.cs:227:21:227:23 | [return] ...-- |
+| pre | cflow.cs:227:21:227:21 | [finally: break] access to local variable i | cflow.cs:227:21:227:23 | [finally: break] ...-- |
+| pre | cflow.cs:227:21:227:21 | [finally: continue] access to local variable i | cflow.cs:227:21:227:23 | [finally: continue] ...-- |
+| pre | cflow.cs:227:21:227:21 | [finally: exception(Exception)] access to local variable i | cflow.cs:227:21:227:23 | [finally: exception(Exception)] ...-- |
+| pre | cflow.cs:227:21:227:21 | [finally: return] access to local variable i | cflow.cs:227:21:227:23 | [finally: return] ...-- |
 | pre | cflow.cs:227:21:227:21 | access to local variable i | cflow.cs:227:21:227:23 | ...-- |
 | pre | cflow.cs:227:21:227:24 | ...; | cflow.cs:227:21:227:21 | access to local variable i |
-| pre | cflow.cs:227:21:227:24 | [break] ...; | cflow.cs:227:21:227:21 | [break] access to local variable i |
-| pre | cflow.cs:227:21:227:24 | [continue] ...; | cflow.cs:227:21:227:21 | [continue] access to local variable i |
-| pre | cflow.cs:227:21:227:24 | [exception(Exception)] ...; | cflow.cs:227:21:227:21 | [exception(Exception)] access to local variable i |
-| pre | cflow.cs:227:21:227:24 | [return] ...; | cflow.cs:227:21:227:21 | [return] access to local variable i |
+| pre | cflow.cs:227:21:227:24 | [finally: break] ...; | cflow.cs:227:21:227:21 | [finally: break] access to local variable i |
+| pre | cflow.cs:227:21:227:24 | [finally: continue] ...; | cflow.cs:227:21:227:21 | [finally: continue] access to local variable i |
+| pre | cflow.cs:227:21:227:24 | [finally: exception(Exception)] ...; | cflow.cs:227:21:227:21 | [finally: exception(Exception)] access to local variable i |
+| pre | cflow.cs:227:21:227:24 | [finally: return] ...; | cflow.cs:227:21:227:21 | [finally: return] access to local variable i |
 | pre | cflow.cs:232:9:245:9 | try {...} ... | cflow.cs:233:9:238:9 | {...} |
 | pre | cflow.cs:233:9:238:9 | {...} | cflow.cs:234:13:235:23 | if (...) ... |
 | pre | cflow.cs:234:13:235:23 | if (...) ... | cflow.cs:234:17:234:21 | this access |
 | pre | cflow.cs:234:17:234:21 | access to field Field | cflow.cs:234:17:234:28 | access to property Length |
-| pre | cflow.cs:234:17:234:21 | access to field Field | cflow.cs:240:9:245:9 | [exception(NullReferenceException)] {...} |
+| pre | cflow.cs:234:17:234:21 | access to field Field | cflow.cs:240:9:245:9 | [finally: exception(NullReferenceException)] {...} |
 | pre | cflow.cs:234:17:234:21 | this access | cflow.cs:234:17:234:21 | access to field Field |
 | pre | cflow.cs:234:17:234:28 | access to property Length | cflow.cs:234:33:234:33 | 0 |
-| pre | cflow.cs:234:17:234:28 | access to property Length | cflow.cs:240:9:245:9 | [exception(Exception)] {...} |
+| pre | cflow.cs:234:17:234:28 | access to property Length | cflow.cs:240:9:245:9 | [finally: exception(Exception)] {...} |
 | pre | cflow.cs:234:17:234:33 | ... == ... | cflow.cs:235:17:235:23 | return ...; |
 | pre | cflow.cs:234:17:234:33 | ... == ... | cflow.cs:236:13:237:49 | if (...) ... |
 | pre | cflow.cs:234:33:234:33 | 0 | cflow.cs:234:17:234:33 | ... == ... |
-| pre | cflow.cs:235:17:235:23 | return ...; | cflow.cs:240:9:245:9 | [return] {...} |
+| pre | cflow.cs:235:17:235:23 | return ...; | cflow.cs:240:9:245:9 | [finally: return] {...} |
 | pre | cflow.cs:236:13:237:49 | if (...) ... | cflow.cs:236:17:236:21 | this access |
 | pre | cflow.cs:236:17:236:21 | access to field Field | cflow.cs:236:17:236:28 | access to property Length |
 | pre | cflow.cs:236:17:236:21 | this access | cflow.cs:236:17:236:21 | access to field Field |
@@ -2982,108 +3209,108 @@
 | pre | cflow.cs:236:17:236:33 | ... == ... | cflow.cs:237:23:237:48 | object creation of type OutOfMemoryException |
 | pre | cflow.cs:236:17:236:33 | ... == ... | cflow.cs:240:9:245:9 | {...} |
 | pre | cflow.cs:236:33:236:33 | 1 | cflow.cs:236:17:236:33 | ... == ... |
-| pre | cflow.cs:237:17:237:49 | throw ...; | cflow.cs:240:9:245:9 | [exception(OutOfMemoryException)] {...} |
+| pre | cflow.cs:237:17:237:49 | throw ...; | cflow.cs:240:9:245:9 | [finally: exception(OutOfMemoryException)] {...} |
 | pre | cflow.cs:237:23:237:48 | object creation of type OutOfMemoryException | cflow.cs:237:17:237:49 | throw ...; |
-| pre | cflow.cs:240:9:245:9 | [exception(Exception)] {...} | cflow.cs:241:13:242:41 | [exception(Exception)] if (...) ... |
-| pre | cflow.cs:240:9:245:9 | [exception(NullReferenceException)] {...} | cflow.cs:241:13:242:41 | [exception(NullReferenceException)] if (...) ... |
-| pre | cflow.cs:240:9:245:9 | [exception(OutOfMemoryException)] {...} | cflow.cs:241:13:242:41 | [exception(OutOfMemoryException)] if (...) ... |
-| pre | cflow.cs:240:9:245:9 | [return] {...} | cflow.cs:241:13:242:41 | [return] if (...) ... |
+| pre | cflow.cs:240:9:245:9 | [finally: exception(Exception)] {...} | cflow.cs:241:13:242:41 | [finally: exception(Exception)] if (...) ... |
+| pre | cflow.cs:240:9:245:9 | [finally: exception(NullReferenceException)] {...} | cflow.cs:241:13:242:41 | [finally: exception(NullReferenceException)] if (...) ... |
+| pre | cflow.cs:240:9:245:9 | [finally: exception(OutOfMemoryException)] {...} | cflow.cs:241:13:242:41 | [finally: exception(OutOfMemoryException)] if (...) ... |
+| pre | cflow.cs:240:9:245:9 | [finally: return] {...} | cflow.cs:241:13:242:41 | [finally: return] if (...) ... |
 | pre | cflow.cs:240:9:245:9 | {...} | cflow.cs:241:13:242:41 | if (...) ... |
-| pre | cflow.cs:241:13:242:41 | [exception(Exception)] if (...) ... | cflow.cs:241:17:241:36 | [exception(Exception)] !... |
-| pre | cflow.cs:241:13:242:41 | [exception(NullReferenceException)] if (...) ... | cflow.cs:241:17:241:36 | [exception(NullReferenceException)] !... |
-| pre | cflow.cs:241:13:242:41 | [exception(OutOfMemoryException)] if (...) ... | cflow.cs:241:17:241:36 | [exception(OutOfMemoryException)] !... |
-| pre | cflow.cs:241:13:242:41 | [return] if (...) ... | cflow.cs:241:17:241:36 | [return] !... |
+| pre | cflow.cs:241:13:242:41 | [finally: exception(Exception)] if (...) ... | cflow.cs:241:17:241:36 | [finally: exception(Exception)] !... |
+| pre | cflow.cs:241:13:242:41 | [finally: exception(NullReferenceException)] if (...) ... | cflow.cs:241:17:241:36 | [finally: exception(NullReferenceException)] !... |
+| pre | cflow.cs:241:13:242:41 | [finally: exception(OutOfMemoryException)] if (...) ... | cflow.cs:241:17:241:36 | [finally: exception(OutOfMemoryException)] !... |
+| pre | cflow.cs:241:13:242:41 | [finally: return] if (...) ... | cflow.cs:241:17:241:36 | [finally: return] !... |
 | pre | cflow.cs:241:13:242:41 | if (...) ... | cflow.cs:241:17:241:36 | !... |
 | pre | cflow.cs:241:17:241:36 | !... | cflow.cs:241:19:241:23 | this access |
-| pre | cflow.cs:241:17:241:36 | [exception(Exception)] !... | cflow.cs:241:19:241:23 | [exception(Exception)] this access |
-| pre | cflow.cs:241:17:241:36 | [exception(NullReferenceException)] !... | cflow.cs:241:19:241:23 | [exception(NullReferenceException)] this access |
-| pre | cflow.cs:241:17:241:36 | [exception(OutOfMemoryException)] !... | cflow.cs:241:19:241:23 | [exception(OutOfMemoryException)] this access |
-| pre | cflow.cs:241:17:241:36 | [return] !... | cflow.cs:241:19:241:23 | [return] this access |
-| pre | cflow.cs:241:19:241:23 | [exception(Exception)] access to field Field | cflow.cs:241:19:241:30 | [exception(Exception)] access to property Length |
-| pre | cflow.cs:241:19:241:23 | [exception(Exception)] this access | cflow.cs:241:19:241:23 | [exception(Exception)] access to field Field |
-| pre | cflow.cs:241:19:241:23 | [exception(NullReferenceException)] access to field Field | cflow.cs:241:19:241:30 | [exception(NullReferenceException)] access to property Length |
-| pre | cflow.cs:241:19:241:23 | [exception(NullReferenceException)] this access | cflow.cs:241:19:241:23 | [exception(NullReferenceException)] access to field Field |
-| pre | cflow.cs:241:19:241:23 | [exception(OutOfMemoryException)] access to field Field | cflow.cs:241:19:241:30 | [exception(OutOfMemoryException)] access to property Length |
-| pre | cflow.cs:241:19:241:23 | [exception(OutOfMemoryException)] this access | cflow.cs:241:19:241:23 | [exception(OutOfMemoryException)] access to field Field |
-| pre | cflow.cs:241:19:241:23 | [return] access to field Field | cflow.cs:241:19:241:30 | [return] access to property Length |
-| pre | cflow.cs:241:19:241:23 | [return] this access | cflow.cs:241:19:241:23 | [return] access to field Field |
+| pre | cflow.cs:241:17:241:36 | [finally: exception(Exception)] !... | cflow.cs:241:19:241:23 | [finally: exception(Exception)] this access |
+| pre | cflow.cs:241:17:241:36 | [finally: exception(NullReferenceException)] !... | cflow.cs:241:19:241:23 | [finally: exception(NullReferenceException)] this access |
+| pre | cflow.cs:241:17:241:36 | [finally: exception(OutOfMemoryException)] !... | cflow.cs:241:19:241:23 | [finally: exception(OutOfMemoryException)] this access |
+| pre | cflow.cs:241:17:241:36 | [finally: return] !... | cflow.cs:241:19:241:23 | [finally: return] this access |
+| pre | cflow.cs:241:19:241:23 | [finally: exception(Exception)] access to field Field | cflow.cs:241:19:241:30 | [finally: exception(Exception)] access to property Length |
+| pre | cflow.cs:241:19:241:23 | [finally: exception(Exception)] this access | cflow.cs:241:19:241:23 | [finally: exception(Exception)] access to field Field |
+| pre | cflow.cs:241:19:241:23 | [finally: exception(NullReferenceException)] access to field Field | cflow.cs:241:19:241:30 | [finally: exception(NullReferenceException)] access to property Length |
+| pre | cflow.cs:241:19:241:23 | [finally: exception(NullReferenceException)] this access | cflow.cs:241:19:241:23 | [finally: exception(NullReferenceException)] access to field Field |
+| pre | cflow.cs:241:19:241:23 | [finally: exception(OutOfMemoryException)] access to field Field | cflow.cs:241:19:241:30 | [finally: exception(OutOfMemoryException)] access to property Length |
+| pre | cflow.cs:241:19:241:23 | [finally: exception(OutOfMemoryException)] this access | cflow.cs:241:19:241:23 | [finally: exception(OutOfMemoryException)] access to field Field |
+| pre | cflow.cs:241:19:241:23 | [finally: return] access to field Field | cflow.cs:241:19:241:30 | [finally: return] access to property Length |
+| pre | cflow.cs:241:19:241:23 | [finally: return] this access | cflow.cs:241:19:241:23 | [finally: return] access to field Field |
 | pre | cflow.cs:241:19:241:23 | access to field Field | cflow.cs:241:19:241:30 | access to property Length |
 | pre | cflow.cs:241:19:241:23 | this access | cflow.cs:241:19:241:23 | access to field Field |
-| pre | cflow.cs:241:19:241:30 | [exception(Exception)] access to property Length | cflow.cs:241:35:241:35 | [exception(Exception)] 0 |
-| pre | cflow.cs:241:19:241:30 | [exception(NullReferenceException)] access to property Length | cflow.cs:241:35:241:35 | [exception(NullReferenceException)] 0 |
-| pre | cflow.cs:241:19:241:30 | [exception(OutOfMemoryException)] access to property Length | cflow.cs:241:35:241:35 | [exception(OutOfMemoryException)] 0 |
-| pre | cflow.cs:241:19:241:30 | [return] access to property Length | cflow.cs:241:35:241:35 | [return] 0 |
+| pre | cflow.cs:241:19:241:30 | [finally: exception(Exception)] access to property Length | cflow.cs:241:35:241:35 | [finally: exception(Exception)] 0 |
+| pre | cflow.cs:241:19:241:30 | [finally: exception(NullReferenceException)] access to property Length | cflow.cs:241:35:241:35 | [finally: exception(NullReferenceException)] 0 |
+| pre | cflow.cs:241:19:241:30 | [finally: exception(OutOfMemoryException)] access to property Length | cflow.cs:241:35:241:35 | [finally: exception(OutOfMemoryException)] 0 |
+| pre | cflow.cs:241:19:241:30 | [finally: return] access to property Length | cflow.cs:241:35:241:35 | [finally: return] 0 |
 | pre | cflow.cs:241:19:241:30 | access to property Length | cflow.cs:241:35:241:35 | 0 |
 | pre | cflow.cs:241:19:241:35 | ... == ... | cflow.cs:242:17:242:41 | ...; |
 | pre | cflow.cs:241:19:241:35 | ... == ... | cflow.cs:243:13:244:37 | if (...) ... |
-| pre | cflow.cs:241:19:241:35 | [exception(Exception)] ... == ... | cflow.cs:242:17:242:41 | [exception(Exception)] ...; |
-| pre | cflow.cs:241:19:241:35 | [exception(Exception)] ... == ... | cflow.cs:243:13:244:37 | [exception(Exception)] if (...) ... |
-| pre | cflow.cs:241:19:241:35 | [exception(NullReferenceException)] ... == ... | cflow.cs:242:17:242:41 | [exception(NullReferenceException)] ...; |
-| pre | cflow.cs:241:19:241:35 | [exception(NullReferenceException)] ... == ... | cflow.cs:243:13:244:37 | [exception(NullReferenceException)] if (...) ... |
-| pre | cflow.cs:241:19:241:35 | [exception(OutOfMemoryException)] ... == ... | cflow.cs:242:17:242:41 | [exception(OutOfMemoryException)] ...; |
-| pre | cflow.cs:241:19:241:35 | [exception(OutOfMemoryException)] ... == ... | cflow.cs:243:13:244:37 | [exception(OutOfMemoryException)] if (...) ... |
-| pre | cflow.cs:241:19:241:35 | [return] ... == ... | cflow.cs:242:17:242:41 | [return] ...; |
-| pre | cflow.cs:241:19:241:35 | [return] ... == ... | cflow.cs:243:13:244:37 | [return] if (...) ... |
+| pre | cflow.cs:241:19:241:35 | [finally: exception(Exception)] ... == ... | cflow.cs:242:17:242:41 | [finally: exception(Exception)] ...; |
+| pre | cflow.cs:241:19:241:35 | [finally: exception(Exception)] ... == ... | cflow.cs:243:13:244:37 | [finally: exception(Exception)] if (...) ... |
+| pre | cflow.cs:241:19:241:35 | [finally: exception(NullReferenceException)] ... == ... | cflow.cs:242:17:242:41 | [finally: exception(NullReferenceException)] ...; |
+| pre | cflow.cs:241:19:241:35 | [finally: exception(NullReferenceException)] ... == ... | cflow.cs:243:13:244:37 | [finally: exception(NullReferenceException)] if (...) ... |
+| pre | cflow.cs:241:19:241:35 | [finally: exception(OutOfMemoryException)] ... == ... | cflow.cs:242:17:242:41 | [finally: exception(OutOfMemoryException)] ...; |
+| pre | cflow.cs:241:19:241:35 | [finally: exception(OutOfMemoryException)] ... == ... | cflow.cs:243:13:244:37 | [finally: exception(OutOfMemoryException)] if (...) ... |
+| pre | cflow.cs:241:19:241:35 | [finally: return] ... == ... | cflow.cs:242:17:242:41 | [finally: return] ...; |
+| pre | cflow.cs:241:19:241:35 | [finally: return] ... == ... | cflow.cs:243:13:244:37 | [finally: return] if (...) ... |
 | pre | cflow.cs:241:35:241:35 | 0 | cflow.cs:241:19:241:35 | ... == ... |
-| pre | cflow.cs:241:35:241:35 | [exception(Exception)] 0 | cflow.cs:241:19:241:35 | [exception(Exception)] ... == ... |
-| pre | cflow.cs:241:35:241:35 | [exception(NullReferenceException)] 0 | cflow.cs:241:19:241:35 | [exception(NullReferenceException)] ... == ... |
-| pre | cflow.cs:241:35:241:35 | [exception(OutOfMemoryException)] 0 | cflow.cs:241:19:241:35 | [exception(OutOfMemoryException)] ... == ... |
-| pre | cflow.cs:241:35:241:35 | [return] 0 | cflow.cs:241:19:241:35 | [return] ... == ... |
+| pre | cflow.cs:241:35:241:35 | [finally: exception(Exception)] 0 | cflow.cs:241:19:241:35 | [finally: exception(Exception)] ... == ... |
+| pre | cflow.cs:241:35:241:35 | [finally: exception(NullReferenceException)] 0 | cflow.cs:241:19:241:35 | [finally: exception(NullReferenceException)] ... == ... |
+| pre | cflow.cs:241:35:241:35 | [finally: exception(OutOfMemoryException)] 0 | cflow.cs:241:19:241:35 | [finally: exception(OutOfMemoryException)] ... == ... |
+| pre | cflow.cs:241:35:241:35 | [finally: return] 0 | cflow.cs:241:19:241:35 | [finally: return] ... == ... |
 | pre | cflow.cs:242:17:242:41 | ...; | cflow.cs:242:35:242:39 | this access |
-| pre | cflow.cs:242:17:242:41 | [exception(Exception)] ...; | cflow.cs:242:35:242:39 | [exception(Exception)] this access |
-| pre | cflow.cs:242:17:242:41 | [exception(NullReferenceException)] ...; | cflow.cs:242:35:242:39 | [exception(NullReferenceException)] this access |
-| pre | cflow.cs:242:17:242:41 | [exception(OutOfMemoryException)] ...; | cflow.cs:242:35:242:39 | [exception(OutOfMemoryException)] this access |
-| pre | cflow.cs:242:17:242:41 | [return] ...; | cflow.cs:242:35:242:39 | [return] this access |
-| pre | cflow.cs:242:35:242:39 | [exception(Exception)] access to field Field | cflow.cs:242:17:242:40 | [exception(Exception)] call to method WriteLine |
-| pre | cflow.cs:242:35:242:39 | [exception(Exception)] this access | cflow.cs:242:35:242:39 | [exception(Exception)] access to field Field |
-| pre | cflow.cs:242:35:242:39 | [exception(NullReferenceException)] access to field Field | cflow.cs:242:17:242:40 | [exception(NullReferenceException)] call to method WriteLine |
-| pre | cflow.cs:242:35:242:39 | [exception(NullReferenceException)] this access | cflow.cs:242:35:242:39 | [exception(NullReferenceException)] access to field Field |
-| pre | cflow.cs:242:35:242:39 | [exception(OutOfMemoryException)] access to field Field | cflow.cs:242:17:242:40 | [exception(OutOfMemoryException)] call to method WriteLine |
-| pre | cflow.cs:242:35:242:39 | [exception(OutOfMemoryException)] this access | cflow.cs:242:35:242:39 | [exception(OutOfMemoryException)] access to field Field |
-| pre | cflow.cs:242:35:242:39 | [return] access to field Field | cflow.cs:242:17:242:40 | [return] call to method WriteLine |
-| pre | cflow.cs:242:35:242:39 | [return] this access | cflow.cs:242:35:242:39 | [return] access to field Field |
+| pre | cflow.cs:242:17:242:41 | [finally: exception(Exception)] ...; | cflow.cs:242:35:242:39 | [finally: exception(Exception)] this access |
+| pre | cflow.cs:242:17:242:41 | [finally: exception(NullReferenceException)] ...; | cflow.cs:242:35:242:39 | [finally: exception(NullReferenceException)] this access |
+| pre | cflow.cs:242:17:242:41 | [finally: exception(OutOfMemoryException)] ...; | cflow.cs:242:35:242:39 | [finally: exception(OutOfMemoryException)] this access |
+| pre | cflow.cs:242:17:242:41 | [finally: return] ...; | cflow.cs:242:35:242:39 | [finally: return] this access |
+| pre | cflow.cs:242:35:242:39 | [finally: exception(Exception)] access to field Field | cflow.cs:242:17:242:40 | [finally: exception(Exception)] call to method WriteLine |
+| pre | cflow.cs:242:35:242:39 | [finally: exception(Exception)] this access | cflow.cs:242:35:242:39 | [finally: exception(Exception)] access to field Field |
+| pre | cflow.cs:242:35:242:39 | [finally: exception(NullReferenceException)] access to field Field | cflow.cs:242:17:242:40 | [finally: exception(NullReferenceException)] call to method WriteLine |
+| pre | cflow.cs:242:35:242:39 | [finally: exception(NullReferenceException)] this access | cflow.cs:242:35:242:39 | [finally: exception(NullReferenceException)] access to field Field |
+| pre | cflow.cs:242:35:242:39 | [finally: exception(OutOfMemoryException)] access to field Field | cflow.cs:242:17:242:40 | [finally: exception(OutOfMemoryException)] call to method WriteLine |
+| pre | cflow.cs:242:35:242:39 | [finally: exception(OutOfMemoryException)] this access | cflow.cs:242:35:242:39 | [finally: exception(OutOfMemoryException)] access to field Field |
+| pre | cflow.cs:242:35:242:39 | [finally: return] access to field Field | cflow.cs:242:17:242:40 | [finally: return] call to method WriteLine |
+| pre | cflow.cs:242:35:242:39 | [finally: return] this access | cflow.cs:242:35:242:39 | [finally: return] access to field Field |
 | pre | cflow.cs:242:35:242:39 | access to field Field | cflow.cs:242:17:242:40 | call to method WriteLine |
 | pre | cflow.cs:242:35:242:39 | this access | cflow.cs:242:35:242:39 | access to field Field |
-| pre | cflow.cs:243:13:244:37 | [exception(Exception)] if (...) ... | cflow.cs:243:17:243:21 | [exception(Exception)] this access |
-| pre | cflow.cs:243:13:244:37 | [exception(NullReferenceException)] if (...) ... | cflow.cs:243:17:243:21 | [exception(NullReferenceException)] this access |
-| pre | cflow.cs:243:13:244:37 | [exception(OutOfMemoryException)] if (...) ... | cflow.cs:243:17:243:21 | [exception(OutOfMemoryException)] this access |
-| pre | cflow.cs:243:13:244:37 | [return] if (...) ... | cflow.cs:243:17:243:21 | [return] this access |
+| pre | cflow.cs:243:13:244:37 | [finally: exception(Exception)] if (...) ... | cflow.cs:243:17:243:21 | [finally: exception(Exception)] this access |
+| pre | cflow.cs:243:13:244:37 | [finally: exception(NullReferenceException)] if (...) ... | cflow.cs:243:17:243:21 | [finally: exception(NullReferenceException)] this access |
+| pre | cflow.cs:243:13:244:37 | [finally: exception(OutOfMemoryException)] if (...) ... | cflow.cs:243:17:243:21 | [finally: exception(OutOfMemoryException)] this access |
+| pre | cflow.cs:243:13:244:37 | [finally: return] if (...) ... | cflow.cs:243:17:243:21 | [finally: return] this access |
 | pre | cflow.cs:243:13:244:37 | if (...) ... | cflow.cs:243:17:243:21 | this access |
-| pre | cflow.cs:243:17:243:21 | [exception(Exception)] access to field Field | cflow.cs:243:17:243:28 | [exception(Exception)] access to property Length |
-| pre | cflow.cs:243:17:243:21 | [exception(Exception)] this access | cflow.cs:243:17:243:21 | [exception(Exception)] access to field Field |
-| pre | cflow.cs:243:17:243:21 | [exception(NullReferenceException)] access to field Field | cflow.cs:243:17:243:28 | [exception(NullReferenceException)] access to property Length |
-| pre | cflow.cs:243:17:243:21 | [exception(NullReferenceException)] this access | cflow.cs:243:17:243:21 | [exception(NullReferenceException)] access to field Field |
-| pre | cflow.cs:243:17:243:21 | [exception(OutOfMemoryException)] access to field Field | cflow.cs:243:17:243:28 | [exception(OutOfMemoryException)] access to property Length |
-| pre | cflow.cs:243:17:243:21 | [exception(OutOfMemoryException)] this access | cflow.cs:243:17:243:21 | [exception(OutOfMemoryException)] access to field Field |
-| pre | cflow.cs:243:17:243:21 | [return] access to field Field | cflow.cs:243:17:243:28 | [return] access to property Length |
-| pre | cflow.cs:243:17:243:21 | [return] this access | cflow.cs:243:17:243:21 | [return] access to field Field |
+| pre | cflow.cs:243:17:243:21 | [finally: exception(Exception)] access to field Field | cflow.cs:243:17:243:28 | [finally: exception(Exception)] access to property Length |
+| pre | cflow.cs:243:17:243:21 | [finally: exception(Exception)] this access | cflow.cs:243:17:243:21 | [finally: exception(Exception)] access to field Field |
+| pre | cflow.cs:243:17:243:21 | [finally: exception(NullReferenceException)] access to field Field | cflow.cs:243:17:243:28 | [finally: exception(NullReferenceException)] access to property Length |
+| pre | cflow.cs:243:17:243:21 | [finally: exception(NullReferenceException)] this access | cflow.cs:243:17:243:21 | [finally: exception(NullReferenceException)] access to field Field |
+| pre | cflow.cs:243:17:243:21 | [finally: exception(OutOfMemoryException)] access to field Field | cflow.cs:243:17:243:28 | [finally: exception(OutOfMemoryException)] access to property Length |
+| pre | cflow.cs:243:17:243:21 | [finally: exception(OutOfMemoryException)] this access | cflow.cs:243:17:243:21 | [finally: exception(OutOfMemoryException)] access to field Field |
+| pre | cflow.cs:243:17:243:21 | [finally: return] access to field Field | cflow.cs:243:17:243:28 | [finally: return] access to property Length |
+| pre | cflow.cs:243:17:243:21 | [finally: return] this access | cflow.cs:243:17:243:21 | [finally: return] access to field Field |
 | pre | cflow.cs:243:17:243:21 | access to field Field | cflow.cs:243:17:243:28 | access to property Length |
 | pre | cflow.cs:243:17:243:21 | this access | cflow.cs:243:17:243:21 | access to field Field |
-| pre | cflow.cs:243:17:243:28 | [exception(Exception)] access to property Length | cflow.cs:243:32:243:32 | [exception(Exception)] 0 |
-| pre | cflow.cs:243:17:243:28 | [exception(NullReferenceException)] access to property Length | cflow.cs:243:32:243:32 | [exception(NullReferenceException)] 0 |
-| pre | cflow.cs:243:17:243:28 | [exception(OutOfMemoryException)] access to property Length | cflow.cs:243:32:243:32 | [exception(OutOfMemoryException)] 0 |
-| pre | cflow.cs:243:17:243:28 | [return] access to property Length | cflow.cs:243:32:243:32 | [return] 0 |
+| pre | cflow.cs:243:17:243:28 | [finally: exception(Exception)] access to property Length | cflow.cs:243:32:243:32 | [finally: exception(Exception)] 0 |
+| pre | cflow.cs:243:17:243:28 | [finally: exception(NullReferenceException)] access to property Length | cflow.cs:243:32:243:32 | [finally: exception(NullReferenceException)] 0 |
+| pre | cflow.cs:243:17:243:28 | [finally: exception(OutOfMemoryException)] access to property Length | cflow.cs:243:32:243:32 | [finally: exception(OutOfMemoryException)] 0 |
+| pre | cflow.cs:243:17:243:28 | [finally: return] access to property Length | cflow.cs:243:32:243:32 | [finally: return] 0 |
 | pre | cflow.cs:243:17:243:28 | access to property Length | cflow.cs:243:32:243:32 | 0 |
 | pre | cflow.cs:243:17:243:32 | ... > ... | cflow.cs:244:17:244:37 | ...; |
-| pre | cflow.cs:243:17:243:32 | [exception(Exception)] ... > ... | cflow.cs:244:17:244:37 | [exception(Exception)] ...; |
-| pre | cflow.cs:243:17:243:32 | [exception(NullReferenceException)] ... > ... | cflow.cs:244:17:244:37 | [exception(NullReferenceException)] ...; |
-| pre | cflow.cs:243:17:243:32 | [exception(OutOfMemoryException)] ... > ... | cflow.cs:244:17:244:37 | [exception(OutOfMemoryException)] ...; |
-| pre | cflow.cs:243:17:243:32 | [return] ... > ... | cflow.cs:244:17:244:37 | [return] ...; |
+| pre | cflow.cs:243:17:243:32 | [finally: exception(Exception)] ... > ... | cflow.cs:244:17:244:37 | [finally: exception(Exception)] ...; |
+| pre | cflow.cs:243:17:243:32 | [finally: exception(NullReferenceException)] ... > ... | cflow.cs:244:17:244:37 | [finally: exception(NullReferenceException)] ...; |
+| pre | cflow.cs:243:17:243:32 | [finally: exception(OutOfMemoryException)] ... > ... | cflow.cs:244:17:244:37 | [finally: exception(OutOfMemoryException)] ...; |
+| pre | cflow.cs:243:17:243:32 | [finally: return] ... > ... | cflow.cs:244:17:244:37 | [finally: return] ...; |
 | pre | cflow.cs:243:32:243:32 | 0 | cflow.cs:243:17:243:32 | ... > ... |
-| pre | cflow.cs:243:32:243:32 | [exception(Exception)] 0 | cflow.cs:243:17:243:32 | [exception(Exception)] ... > ... |
-| pre | cflow.cs:243:32:243:32 | [exception(NullReferenceException)] 0 | cflow.cs:243:17:243:32 | [exception(NullReferenceException)] ... > ... |
-| pre | cflow.cs:243:32:243:32 | [exception(OutOfMemoryException)] 0 | cflow.cs:243:17:243:32 | [exception(OutOfMemoryException)] ... > ... |
-| pre | cflow.cs:243:32:243:32 | [return] 0 | cflow.cs:243:17:243:32 | [return] ... > ... |
+| pre | cflow.cs:243:32:243:32 | [finally: exception(Exception)] 0 | cflow.cs:243:17:243:32 | [finally: exception(Exception)] ... > ... |
+| pre | cflow.cs:243:32:243:32 | [finally: exception(NullReferenceException)] 0 | cflow.cs:243:17:243:32 | [finally: exception(NullReferenceException)] ... > ... |
+| pre | cflow.cs:243:32:243:32 | [finally: exception(OutOfMemoryException)] 0 | cflow.cs:243:17:243:32 | [finally: exception(OutOfMemoryException)] ... > ... |
+| pre | cflow.cs:243:32:243:32 | [finally: return] 0 | cflow.cs:243:17:243:32 | [finally: return] ... > ... |
 | pre | cflow.cs:244:17:244:37 | ...; | cflow.cs:244:35:244:35 | 1 |
-| pre | cflow.cs:244:17:244:37 | [exception(Exception)] ...; | cflow.cs:244:35:244:35 | [exception(Exception)] 1 |
-| pre | cflow.cs:244:17:244:37 | [exception(NullReferenceException)] ...; | cflow.cs:244:35:244:35 | [exception(NullReferenceException)] 1 |
-| pre | cflow.cs:244:17:244:37 | [exception(OutOfMemoryException)] ...; | cflow.cs:244:35:244:35 | [exception(OutOfMemoryException)] 1 |
-| pre | cflow.cs:244:17:244:37 | [return] ...; | cflow.cs:244:35:244:35 | [return] 1 |
+| pre | cflow.cs:244:17:244:37 | [finally: exception(Exception)] ...; | cflow.cs:244:35:244:35 | [finally: exception(Exception)] 1 |
+| pre | cflow.cs:244:17:244:37 | [finally: exception(NullReferenceException)] ...; | cflow.cs:244:35:244:35 | [finally: exception(NullReferenceException)] 1 |
+| pre | cflow.cs:244:17:244:37 | [finally: exception(OutOfMemoryException)] ...; | cflow.cs:244:35:244:35 | [finally: exception(OutOfMemoryException)] 1 |
+| pre | cflow.cs:244:17:244:37 | [finally: return] ...; | cflow.cs:244:35:244:35 | [finally: return] 1 |
 | pre | cflow.cs:244:35:244:35 | 1 | cflow.cs:244:17:244:36 | call to method WriteLine |
-| pre | cflow.cs:244:35:244:35 | [exception(Exception)] 1 | cflow.cs:244:17:244:36 | [exception(Exception)] call to method WriteLine |
-| pre | cflow.cs:244:35:244:35 | [exception(NullReferenceException)] 1 | cflow.cs:244:17:244:36 | [exception(NullReferenceException)] call to method WriteLine |
-| pre | cflow.cs:244:35:244:35 | [exception(OutOfMemoryException)] 1 | cflow.cs:244:17:244:36 | [exception(OutOfMemoryException)] call to method WriteLine |
-| pre | cflow.cs:244:35:244:35 | [return] 1 | cflow.cs:244:17:244:36 | [return] call to method WriteLine |
+| pre | cflow.cs:244:35:244:35 | [finally: exception(Exception)] 1 | cflow.cs:244:17:244:36 | [finally: exception(Exception)] call to method WriteLine |
+| pre | cflow.cs:244:35:244:35 | [finally: exception(NullReferenceException)] 1 | cflow.cs:244:17:244:36 | [finally: exception(NullReferenceException)] call to method WriteLine |
+| pre | cflow.cs:244:35:244:35 | [finally: exception(OutOfMemoryException)] 1 | cflow.cs:244:17:244:36 | [finally: exception(OutOfMemoryException)] call to method WriteLine |
+| pre | cflow.cs:244:35:244:35 | [finally: return] 1 | cflow.cs:244:17:244:36 | [finally: return] call to method WriteLine |
 | pre | cflow.cs:248:10:248:12 | enter For | cflow.cs:249:5:279:5 | {...} |
 | pre | cflow.cs:249:5:279:5 | {...} | cflow.cs:250:9:250:18 | ... ...; |
 | pre | cflow.cs:250:9:250:18 | ... ...; | cflow.cs:250:13:250:13 | access to local variable x |
@@ -3372,11 +3599,11 @@
 | pre | cflow.cs:368:26:368:26 | access to local variable i | cflow.cs:368:13:368:27 | yield return ...; |
 | pre | cflow.cs:370:9:378:9 | try {...} ... | cflow.cs:371:9:374:9 | {...} |
 | pre | cflow.cs:371:9:374:9 | {...} | cflow.cs:372:13:372:24 | yield break; |
-| pre | cflow.cs:372:13:372:24 | yield break; | cflow.cs:376:9:378:9 | [return] {...} |
-| pre | cflow.cs:376:9:378:9 | [return] {...} | cflow.cs:377:13:377:42 | [return] ...; |
-| pre | cflow.cs:377:13:377:41 | [return] call to method WriteLine | cflow.cs:363:49:363:53 | exit Yield |
-| pre | cflow.cs:377:13:377:42 | [return] ...; | cflow.cs:377:31:377:40 | [return] "not dead" |
-| pre | cflow.cs:377:31:377:40 | [return] "not dead" | cflow.cs:377:13:377:41 | [return] call to method WriteLine |
+| pre | cflow.cs:372:13:372:24 | yield break; | cflow.cs:376:9:378:9 | [finally: return] {...} |
+| pre | cflow.cs:376:9:378:9 | [finally: return] {...} | cflow.cs:377:13:377:42 | [finally: return] ...; |
+| pre | cflow.cs:377:13:377:41 | [finally: return] call to method WriteLine | cflow.cs:363:49:363:53 | exit Yield |
+| pre | cflow.cs:377:13:377:42 | [finally: return] ...; | cflow.cs:377:31:377:40 | [finally: return] "not dead" |
+| pre | cflow.cs:377:31:377:40 | [finally: return] "not dead" | cflow.cs:377:13:377:41 | [finally: return] call to method WriteLine |
 | pre | cflow.cs:384:5:384:18 | enter ControlFlowSub | cflow.cs:384:24:384:27 | call to constructor ControlFlow |
 | pre | cflow.cs:384:24:384:27 | call to constructor ControlFlow | cflow.cs:384:31:384:33 | {...} |
 | pre | cflow.cs:384:31:384:33 | {...} | cflow.cs:384:5:384:18 | exit ControlFlowSub |
@@ -3392,20 +3619,20 @@
 | pre | cflow.cs:394:5:405:5 | {...} | cflow.cs:395:9:403:9 | try {...} ... |
 | pre | cflow.cs:395:9:403:9 | try {...} ... | cflow.cs:396:9:398:9 | {...} |
 | pre | cflow.cs:396:9:398:9 | {...} | cflow.cs:397:13:397:37 | ...; |
-| pre | cflow.cs:397:13:397:36 | call to method WriteLine | cflow.cs:400:9:403:9 | [exception(Exception)] {...} |
+| pre | cflow.cs:397:13:397:36 | call to method WriteLine | cflow.cs:400:9:403:9 | [finally: exception(Exception)] {...} |
 | pre | cflow.cs:397:13:397:36 | call to method WriteLine | cflow.cs:400:9:403:9 | {...} |
 | pre | cflow.cs:397:13:397:37 | ...; | cflow.cs:397:31:397:35 | "Try" |
 | pre | cflow.cs:397:31:397:35 | "Try" | cflow.cs:397:13:397:36 | call to method WriteLine |
-| pre | cflow.cs:397:31:397:35 | "Try" | cflow.cs:400:9:403:9 | [exception(OutOfMemoryException)] {...} |
-| pre | cflow.cs:400:9:403:9 | [exception(Exception)] {...} | cflow.cs:401:41:401:42 | [exception(Exception)] "" |
-| pre | cflow.cs:400:9:403:9 | [exception(OutOfMemoryException)] {...} | cflow.cs:401:41:401:42 | [exception(OutOfMemoryException)] "" |
+| pre | cflow.cs:397:31:397:35 | "Try" | cflow.cs:400:9:403:9 | [finally: exception(OutOfMemoryException)] {...} |
+| pre | cflow.cs:400:9:403:9 | [finally: exception(Exception)] {...} | cflow.cs:401:41:401:42 | [finally: exception(Exception)] "" |
+| pre | cflow.cs:400:9:403:9 | [finally: exception(OutOfMemoryException)] {...} | cflow.cs:401:41:401:42 | [finally: exception(OutOfMemoryException)] "" |
 | pre | cflow.cs:400:9:403:9 | {...} | cflow.cs:401:41:401:42 | "" |
-| pre | cflow.cs:401:19:401:43 | [exception(Exception)] object creation of type ArgumentException | cflow.cs:401:13:401:44 | [exception(Exception)] throw ...; |
-| pre | cflow.cs:401:19:401:43 | [exception(OutOfMemoryException)] object creation of type ArgumentException | cflow.cs:401:13:401:44 | [exception(OutOfMemoryException)] throw ...; |
+| pre | cflow.cs:401:19:401:43 | [finally: exception(Exception)] object creation of type ArgumentException | cflow.cs:401:13:401:44 | [finally: exception(Exception)] throw ...; |
+| pre | cflow.cs:401:19:401:43 | [finally: exception(OutOfMemoryException)] object creation of type ArgumentException | cflow.cs:401:13:401:44 | [finally: exception(OutOfMemoryException)] throw ...; |
 | pre | cflow.cs:401:19:401:43 | object creation of type ArgumentException | cflow.cs:401:13:401:44 | throw ...; |
 | pre | cflow.cs:401:41:401:42 | "" | cflow.cs:401:19:401:43 | object creation of type ArgumentException |
-| pre | cflow.cs:401:41:401:42 | [exception(Exception)] "" | cflow.cs:401:19:401:43 | [exception(Exception)] object creation of type ArgumentException |
-| pre | cflow.cs:401:41:401:42 | [exception(OutOfMemoryException)] "" | cflow.cs:401:19:401:43 | [exception(OutOfMemoryException)] object creation of type ArgumentException |
+| pre | cflow.cs:401:41:401:42 | [finally: exception(Exception)] "" | cflow.cs:401:19:401:43 | [finally: exception(Exception)] object creation of type ArgumentException |
+| pre | cflow.cs:401:41:401:42 | [finally: exception(OutOfMemoryException)] "" | cflow.cs:401:19:401:43 | [finally: exception(OutOfMemoryException)] object creation of type ArgumentException |
 | pre | cflow.cs:410:12:410:12 | enter M | cflow.cs:410:38:410:38 | access to parameter f |
 | pre | cflow.cs:410:38:410:38 | access to parameter f | cflow.cs:410:40:410:40 | 0 |
 | pre | cflow.cs:410:38:410:41 | delegate call | cflow.cs:410:12:410:12 | exit M |
