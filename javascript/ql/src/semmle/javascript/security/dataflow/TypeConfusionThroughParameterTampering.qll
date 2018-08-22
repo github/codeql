@@ -108,13 +108,13 @@ module TypeConfusionThroughParameterTampering {
             read.asExpr() = cond.getTest()
           )
           or
-          exists (EqualityTest eq, Expr zero |
+          exists (Comparison cmp, Expr zero |
             zero.getIntValue() = 0 and
-            eq.hasOperands(read.asExpr(), zero)
+            cmp.hasOperands(read.asExpr(), zero)
           )
           or
-          exists (LogNotExpr eq |
-            eq.getOperand() = read.asExpr()
+          exists (LogNotExpr neg |
+            neg.getOperand() = read.asExpr()
           )
         )
       )

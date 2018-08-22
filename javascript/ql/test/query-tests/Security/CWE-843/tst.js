@@ -54,7 +54,8 @@ express().get('/some/path/:foo', function(req, res) {
 express().get('/some/path/:foo', function(req, res) {
     if (req.query.path.length) {} // OK
     req.query.path.length == 0; // OK
-    !req.query.path.length == 0; // OK
+    !req.query.path.length; // OK
+    req.query.path.length > 0; // OK
 });
 
 express().get('/some/path/:foo', function(req, res) {
