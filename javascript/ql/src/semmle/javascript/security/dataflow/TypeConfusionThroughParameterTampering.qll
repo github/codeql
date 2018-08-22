@@ -101,7 +101,22 @@ module TypeConfusionThroughParameterTampering {
 
     LengthAccess() {
       exists (DataFlow::PropRead read |
-        read.accesses(this, "length")
+        read.accesses(this, "length") and
+        // exclude truthiness checks on the length: an array/string confusion can not control an emptiness check
+        not (
+          exists (ConditionGuardNode cond |
+            read.asExpr() = cond.getTest()
+          )
+          or
+          exists (EqualityTest eq, Expr zero |
+            zero.getIntValue() = 0 and
+            eq.hasOperands(read.asExpr(), zero)
+          )
+          or
+          exists (LogNotExpr eq |
+            eq.getOperand() = read.asExpr()
+          )
+        )
       )
     }
 
