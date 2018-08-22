@@ -238,6 +238,17 @@ class Require extends CallExpr, Import {
   }
 }
 
+/** parameter of 'get' method callback on the require('http'/'https') import */
+Parameter getRequireHttpGetCallbackArg () {
+  exists(CallExpr source, Variable http, CallExpr getCall | 
+     source.getCalleeName() = "require" and
+     http.getAnAssignedExpr() = source and
+     (source.getArgument(0).getStringValue() = "http" or source.getArgument(0).getStringValue() = "https" ) and
+     getCall.getCalleeName() = "get" and 
+     getCall.getReceiver()  = http.getAnAccess() |
+     result = getCall.getArgument(1).(Function).getParameter(0))
+}
+
 /** A literal path expression appearing in a `require` import. */
 private class LiteralRequiredPath extends PathExprInModule, ConstantString {
   LiteralRequiredPath() {

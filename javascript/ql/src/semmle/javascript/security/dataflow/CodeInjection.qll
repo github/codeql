@@ -44,6 +44,9 @@ module CodeInjection {
     override predicate isAdditionalTaintStep(DataFlow::Node src, DataFlow::Node trg) {
       // HTML sanitizers are insufficient protection against code injection
       src = trg.(HtmlSanitizerCall).getInput()
+      or 
+      (src.asExpr() = getRequireHttpGetCallbackArg().getAVariable().getAReference() and 
+       trg.asExpr() = getOnDataEventCallbackArg().getAVariable().getAReference())
     }
   }
 
@@ -60,7 +63,7 @@ module CodeInjection {
       isDocumentURL(astNode)
     }
   }
-
+  
   /**
    * An expression which may be interpreted as an AngularJS expression.
    */
@@ -69,7 +72,7 @@ module CodeInjection {
       any(AngularJS::AngularJSCall call).interpretsArgumentAsCode(this.asExpr())
     }
   }
-
+  
   /**
    * An expression which may be evaluated as JavaScript in NodeJS using the 
    * `vm` module.
@@ -124,6 +127,18 @@ module CodeInjection {
         this = webView.getAMethodCall("injectJavaScript").getArgument(0)
       )
     }
+  }
+  
+  /** parameter of On('data') event when called back from 'get' method */
+  Parameter getOnDataEventCallbackArg () {
+    exists (CallExpr getCall, CallExpr onEvent, Variable incomingMessage, VarRef incomingMessageRef |
+      getCall.getCalleeName() = "get" and 
+      incomingMessageRef = incomingMessage.getAReference() and
+      incomingMessageRef = getCall.getArgument(1).(Function).getParameter(0) and
+      onEvent.getCalleeName() = "on" and
+      onEvent.getArgument(0).getStringValue() = "data" and
+      incomingMessage.getAnAccess() = onEvent.getReceiver() |
+      result = onEvent.getArgument(1).(Function).getParameter(0))
   }
 }
 

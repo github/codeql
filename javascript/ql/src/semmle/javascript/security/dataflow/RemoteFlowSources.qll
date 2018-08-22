@@ -26,3 +26,14 @@ private class DocumentCookieSource extends RemoteFlowSource, DataFlow::ValueNode
     result = "document.cookie"
   }
 }
+  
+/** A source of content download via NodeJS require.get(), considered as a flow source for code injection. */
+private class NodeJSRequireSource extends RemoteFlowSource {
+  NodeJSRequireSource() { 
+    this.asExpr() = getRequireHttpGetCallbackArg ()
+  }
+ 
+  override string getSourceType() {
+    result = "require(\"http(s)\").get(\"callback\")"
+  }
+}
