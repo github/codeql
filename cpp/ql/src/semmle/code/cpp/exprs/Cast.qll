@@ -297,7 +297,7 @@ class BoolConversion extends Cast {
  */
 class VoidConversion extends Cast {
   VoidConversion() {
-    conversionkinds(this, 0) and
+    conversionkinds(underlyingElement(this), 0) and
     getType().getUnspecifiedType() instanceof VoidType
   }
 
