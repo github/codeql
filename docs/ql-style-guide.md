@@ -47,7 +47,7 @@ select c, "This call to '$@' is deprecated because " + reason + ".",
    - Before each declaration, except for the first declaration in a *body*
    - Before the `from`-`where`-`select` section in a query file
 1. *Avoid* two or more adjacent blank lines.
-1. There *must* be a new line after the *annotations* `cached`, `deprecated`, `pragma`, `language` and `bindingset`. Other *annotations* do not have a new line.
+1. There *must* be a new line after the *annotations* `cached`, `pragma`, `language` and `bindingset`. Other *annotations* do not have a new line.
 1. There *should not* be additional blank lines within a predicate.
 1. There *may* be a new line:
    - Immediately after the `from`, `where` or `select` keywords in a query.
@@ -409,7 +409,7 @@ deprecated Expr getInitializer()
 | *[conjunct](https://help.semmle.com/QL/QLLanguageSpecification.html#conjunctions)* | A formula that is an operand to an `and`. |
 | *declaration* | A class, module, predicate, field or newtype. |
 | *[disjunct](https://help.semmle.com/QL/QLLanguageSpecification.html#disjunctions)* | A formula that is an operand to an `or`. |
-| *[formula](https://help.semmle.com/QL/QLLanguageSpecification.html#formulas)* | A logical expression, such as `A = B`, a *call*, a *quantifier*, `and`, `or`, `not`, 'in` or `instanceof`. |
+| *[formula](https://help.semmle.com/QL/QLLanguageSpecification.html#formulas)* | A logical expression, such as `A = B`, a *call*, a *quantifier*, `and`, `or`, `not`, `in` or `instanceof`. |
 | *should/should not/avoid/prefer* | Adhere to this rule wherever possible, where it makes sense. |
 | *may/can* | This is a reasonable alternative, to be used with discretion. |
 | *must/always/do not* | Always adhere to this rule. |
