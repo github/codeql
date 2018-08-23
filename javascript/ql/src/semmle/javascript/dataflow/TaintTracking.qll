@@ -643,16 +643,6 @@ module TaintTracking {
 
   }
 
-  /**
-   * A less-than or greater-than expression
-   */
-  private class ExclusiveRelationalComparison extends RelationalComparison {
-    ExclusiveRelationalComparison() {
-      this instanceof LTExpr or
-      this instanceof GTExpr
-    }
-  }
-
   /** 
    * A check of the form `if(whitelist.indexOf(x) >= 0)`, which sanitizes `x` in its "then" branch. 
    *
@@ -671,9 +661,9 @@ module TaintTracking {
         polarity = true and
         greater = indexOf and
         (
-          lesser.getIntValue() = 0 
+          lesser.getIntValue() >= 0
           or
-          lesser.getIntValue() = -1 and astNode instanceof ExclusiveRelationalComparison
+          lesser.getIntValue() = -1 and not astNode.isInclusive()
         )
         or 
         polarity = false and
@@ -681,7 +671,7 @@ module TaintTracking {
         (
           greater.getIntValue() = -1
           or
-          greater.getIntValue() = 0 and astNode instanceof ExclusiveRelationalComparison
+          greater.getIntValue() = 0 and not astNode.isInclusive()
         )
       )
     }
