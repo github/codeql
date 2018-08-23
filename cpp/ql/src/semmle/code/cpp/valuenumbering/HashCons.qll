@@ -41,9 +41,11 @@ import cpp
 
 /** Used to represent the hash-cons of an expression. */
 private cached newtype HCBase =
-  HC_IntConst(int val, Type t) { mk_IntConst(val,t,_) }
+  HC_IntLiteral(int val, Type t) { mk_IntLiteral(val,t,_) }
   or
-  HC_FloatConst(float val, Type t) { mk_FloatConst(val,t,_) }
+  HC_FloatLiteral(float val, Type t) { mk_FloatLiteral(val,t,_) }
+  or
+  HC_StringLiteral(string val, Type t) {mk_StringLiteral(val,t,_)}
   or
   HC_Variable(Variable x) {
      mk_Variable(x, _)
@@ -106,8 +108,9 @@ class HC extends HCBase {
 
   /** Gets the kind of the HC. This can be useful for debugging. */
   string getKind() {
-    if this instanceof HC_IntConst then result = "IntConst" else
-    if this instanceof HC_FloatConst then result = "FloatConst" else
+    if this instanceof HC_IntLiteral then result = "IntLiteral" else
+    if this instanceof HC_FloatLiteral then result = "FloatLiteral" else
+    if this instanceof HC_StringLiteral then result = "StringLiteral" else
     if this instanceof HC_Variable then result = "Variable" else
     if this instanceof HC_FieldAccess then result = "FieldAccess" else
     if this instanceof HC_Deref then result = "Deref" else
@@ -144,33 +147,45 @@ class HC extends HCBase {
   }
 }
 
-private predicate analyzableIntConst(Expr e) {
+private predicate analyzableIntLiteral(Literal e) {
   strictcount (e.getValue().toInt()) = 1 and
   strictcount (e.getType().getUnspecifiedType()) = 1
 }
 
-private predicate mk_IntConst(int val, Type t, Expr e) {
-  analyzableIntConst(e) and
+private predicate mk_IntLiteral(int val, Type t, Expr e) {
+  analyzableIntLiteral(e) and
   val = e.getValue().toInt() and
-  t = e.getType().getUnspecifiedType()
+  t = e.getType().getUnspecifiedType() and
+  t instanceof IntegralType
 }
-
-private predicate analyzableFloatConst(Expr e) {
+private predicate analyzableFloatLiteral(Literal e) {
   strictcount (e.getValue().toFloat()) = 1 and
-  strictcount (e.getType().getUnspecifiedType()) = 1 and
-  not analyzableIntConst(e)
+  strictcount (e.getType().getUnspecifiedType()) = 1
 }
 
-private predicate mk_FloatConst(float val, Type t, Expr e) {
-  analyzableFloatConst(e) and
+private predicate mk_FloatLiteral(float val, Type t, Expr e) {
+  analyzableFloatLiteral(e) and
   val = e.getValue().toFloat() and
-  t = e.getType().getUnspecifiedType()
+  t = e.getType().getUnspecifiedType() and
+  t instanceof FloatingPointType
+}
+
+private predicate analyzableStringLiteral(Literal e) {
+  strictcount(e.getValue()) = 1 and
+  strictcount(e.getType().getUnspecifiedType()) = 1
+}
+
+private predicate mk_StringLiteral(string val, Type t, Expr e) {
+  analyzableStringLiteral(e) and
+  val = e.getValue() and
+  t = e.getType().getUnspecifiedType() and
+  t.(ArrayType).getBaseType() instanceof CharType
+  
 }
 
 private predicate analyzableDotFieldAccess(DotFieldAccess access) {
   strictcount (access.getTarget()) = 1 and
-  strictcount (access.getQualifier().getFullyConverted()) = 1 and
-  not analyzableConst(access)
+  strictcount (access.getQualifier().getFullyConverted()) = 1
 }
 
 private predicate mk_DotFieldAccess(
@@ -182,8 +197,7 @@ private predicate mk_DotFieldAccess(
 
 private predicate analyzablePointerFieldAccess(PointerFieldAccess access) {
   strictcount (access.getTarget()) = 1 and
-  strictcount (access.getQualifier().getFullyConverted()) = 1 and
-  not analyzableConst(access)
+  strictcount (access.getQualifier().getFullyConverted()) = 1
 }
 
 private predicate mk_PointerFieldAccess(
@@ -208,8 +222,7 @@ private predicate mk_PointerFieldAccess_with_deref(
 private predicate analyzableImplicitThisFieldAccess(
   ImplicitThisFieldAccess access) {
   strictcount (access.getTarget()) = 1 and
-  strictcount (access.getEnclosingFunction()) = 1 and
-  not analyzableConst(access)
+  strictcount (access.getEnclosingFunction()) = 1
 }
 
 private predicate mk_ImplicitThisFieldAccess(
@@ -238,8 +251,7 @@ private predicate mk_ImplicitThisFieldAccess_with_deref(
 
 private predicate analyzableVariable(VariableAccess access) {
   not (access instanceof FieldAccess) and
-  strictcount (access.getTarget()) = 1 and
-  not analyzableConst(access)
+  strictcount (access.getTarget()) = 1
 }
 
 private predicate mk_Variable(Variable x, VariableAccess access) {
@@ -249,8 +261,7 @@ private predicate mk_Variable(Variable x, VariableAccess access) {
 
 private predicate analyzableConversion(Conversion conv) {
   strictcount (conv.getType().getUnspecifiedType()) = 1 and
-  strictcount (conv.getExpr()) = 1 and
-  not analyzableConst(conv)
+  strictcount (conv.getExpr()) = 1
 }
 
 private predicate mk_Conversion(Type t, HC child, Conversion conv) {
@@ -263,8 +274,7 @@ private predicate analyzableBinaryOp(BinaryOperation op) {
   op.isPure() and
   strictcount (op.getLeftOperand().getFullyConverted()) = 1 and
   strictcount (op.getRightOperand().getFullyConverted()) = 1 and
-  strictcount (op.getOperator()) = 1 and
-  not analyzableConst(op)
+  strictcount (op.getOperator()) = 1
 }
 
 private predicate mk_BinaryOp(
@@ -279,8 +289,7 @@ private predicate analyzableUnaryOp(UnaryOperation op) {
   not (op instanceof PointerDereferenceExpr) and
   op.isPure() and
   strictcount (op.getOperand().getFullyConverted()) = 1 and
-  strictcount (op.getOperator()) = 1 and
-  not analyzableConst(op)
+  strictcount (op.getOperator()) = 1
 }
 
 private predicate mk_UnaryOp(HC child, string opname, UnaryOperation op) {
@@ -290,8 +299,7 @@ private predicate mk_UnaryOp(HC child, string opname, UnaryOperation op) {
 }
 
 private predicate analyzableThisExpr(ThisExpr thisExpr) {
-  strictcount(thisExpr.getEnclosingFunction()) = 1 and
-  not analyzableConst(thisExpr)
+  strictcount(thisExpr.getEnclosingFunction()) = 1
 }
 
 private predicate mk_ThisExpr(Function fcn, ThisExpr thisExpr) {
@@ -301,8 +309,7 @@ private predicate mk_ThisExpr(Function fcn, ThisExpr thisExpr) {
 
 private predicate analyzableArrayAccess(ArrayExpr ae) {
   strictcount (ae.getArrayBase().getFullyConverted()) = 1 and
-  strictcount (ae.getArrayOffset().getFullyConverted()) = 1 and
-  not analyzableConst(ae)
+  strictcount (ae.getArrayOffset().getFullyConverted()) = 1
 }
 
 private predicate mk_ArrayAccess(
@@ -314,8 +321,7 @@ private predicate mk_ArrayAccess(
 
 private predicate analyzablePointerDereferenceExpr(
   PointerDereferenceExpr deref) {
-  strictcount (deref.getOperand().getFullyConverted()) = 1 and
-  not analyzableConst(deref)
+  strictcount (deref.getOperand().getFullyConverted()) = 1
 }
 
 private predicate mk_Deref(
@@ -327,12 +333,16 @@ private predicate mk_Deref(
 /** Gets the hash-cons of expression `e`. */
 cached HC hashCons(Expr e) {
   exists (int val, Type t
-  | mk_IntConst(val, t, e) and
-    result = HC_IntConst(val, t))
+  | mk_IntLiteral(val, t, e) and
+    result = HC_IntLiteral(val, t))
   or
   exists (float val, Type t
-  | mk_FloatConst(val, t, e) and
-    result = HC_FloatConst(val, t))
+  | mk_FloatLiteral(val, t, e) and
+    result = HC_FloatLiteral(val, t))
+  or
+  exists (string val, Type t
+  | mk_StringLiteral(val, t, e) and
+    result = HC_StringLiteral(val, t))
   or
   // Variable with no SSA information.
   exists (Variable x
@@ -377,12 +387,6 @@ cached HC hashCons(Expr e) {
   or
   (not analyzableExpr(e,_) and result = HC_Unanalyzable(e))
 }
-
-private predicate analyzableConst(Expr e) {
-  analyzableIntConst(e) or
-  analyzableFloatConst(e)
-}
-
 /**
  * Holds if the expression is explicitly handled by `hashCons`.
  * Unanalyzable expressions still need to be given a hash-cons,
@@ -390,7 +394,9 @@ private predicate analyzableConst(Expr e) {
  * expression.
  */
 predicate analyzableExpr(Expr e, string kind) {
-  (analyzableConst(e) and kind = "Const") or
+  (analyzableIntLiteral(e) and kind = "IntLiteral") or
+  (analyzableFloatLiteral(e) and kind = "FloatLiteral") or
+  (analyzableStringLiteral(e) and kind = "StringLiteral") or
   (analyzableDotFieldAccess(e) and kind = "DotFieldAccess") or
   (analyzablePointerFieldAccess(e) and kind = "PointerFieldAccess") or
   (analyzableImplicitThisFieldAccess(e) and kind = "ImplicitThisFieldAccess") or
