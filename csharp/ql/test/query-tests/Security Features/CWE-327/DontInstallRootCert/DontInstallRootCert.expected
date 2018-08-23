@@ -1,0 +1,3 @@
+| Test.cs:20:13:20:17 | access to local variable store | Certificate added to the root certificate store. |
+| Test.cs:30:13:30:17 | access to local variable store | Certificate added to the root certificate store. |
+| Test.cs:75:13:75:17 | access to local variable store | Certificate added to the root certificate store. |
