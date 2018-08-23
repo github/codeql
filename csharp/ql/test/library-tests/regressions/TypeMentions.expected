@@ -39,3 +39,9 @@
 | Program.cs:69:5:69:8 | Boolean |
 | Program.cs:69:16:69:18 | Int32 |
 | Program.cs:75:5:75:7 | Int32 |
+| Program.cs:89:16:89:18 | Int32 |
+| Program.cs:89:16:89:18 | Int32 |
+| Program.cs:89:16:89:19 | Nullable<Int32> |
+| Program.cs:89:16:89:19 | Nullable<Int32> |
+| Program.cs:92:5:92:8 | Void |
+| Program.cs:94:13:94:17 | Point |

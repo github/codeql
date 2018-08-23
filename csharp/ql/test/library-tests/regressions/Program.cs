@@ -81,3 +81,16 @@ class Designations
         return 0;
     }
 }
+
+class LiteralConversions
+{
+    struct Point
+    {
+        public int? x, y;
+    }
+
+    void F()
+    {
+        new Point { x=1, y=2 };
+    }
+}
