@@ -98,3 +98,22 @@ void test06(int x) {
   x++; // x is matched but x++ is not matched?
 }
 
+// literals
+void test07() {
+  int x = 1;
+  x = 1;
+  x = 2;
+  x = 2;
+  x = 1 + 2;
+  x = 1 + 2;
+
+  char *str = "1";
+  str = "1";
+  str = "2";
+  str = "2";
+
+  float y = 0.0;
+  y = 0.0;
+  y = 0.1;
+  y = 0.1;
+}
