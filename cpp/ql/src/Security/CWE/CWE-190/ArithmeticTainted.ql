@@ -21,7 +21,7 @@ predicate taintedVarAccess(Expr origin, VariableAccess va) {
   tainted(origin, va)
 }
 
-from Expr origin, BinaryArithmeticOperation op, VariableAccess va, string effect
+from Expr origin, Operation op, VariableAccess va, string effect
 where taintedVarAccess(origin, va)
   and op.getAnOperand() = va
   and
