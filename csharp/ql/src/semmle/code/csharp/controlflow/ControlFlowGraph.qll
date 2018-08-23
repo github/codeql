@@ -1714,7 +1714,13 @@ module Internal {
       exists(TryStmt ts |
         ts = last.getTryStmt() and
         exists(lastTryStmtBlock(ts, c)) and
-        not ts.definitelyHandles(c.getExceptionClass(), _) and
+        not ts.getACatchClause() instanceof GeneralCatchClause and
+        forall(SpecificCatchClause scc |
+          scc = ts.getACatchClause() |
+          scc.hasFilterClause()
+          or
+          not c.getExceptionClass().getABaseType*() = scc.getCaughtExceptionType()
+        ) and
         last.isLast()
       )
     }
