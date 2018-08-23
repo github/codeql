@@ -164,7 +164,7 @@ predicate ignoreLoad(Expr expr) {
 
 newtype TTranslatedElement =
   // An expression that is not being consumed as a condition
-  TTranslatedNonLoadExpr(Expr expr) {
+  TTranslatedValueExpr(Expr expr) {
     not ignoreExpr(expr) and
     not isNativeCondition(expr) and
     not isFlexibleCondition(expr)

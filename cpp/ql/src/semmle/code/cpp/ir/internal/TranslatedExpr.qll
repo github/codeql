@@ -17,24 +17,41 @@ TranslatedExpr getTranslatedExpr(Expr expr) {
 }
 
 /**
- * The IR translation of an expression that was either directly present in the
- * AST as an `Expr` (`TranslatedExpr`) or was synthesized from something other
- * than an `Expr` .
+ * The IR translation of some part of an expression. 
+ * A single `Expr` may consist of multiple `TranslatedExpr` objects. Every
+ * `Expr` has a single `TranslatedCoreExpr`, which produces the result of the
+ * expression before any implicit lvalue-to-rvalue conversion. Any expression
+ * with an lvalue-to-rvalue conversion will also have a `TranslatedLoad` to
+ * perform that conversion on the original result. A few expressions have
+ * additional `TranslatedExpr` objects that compute intermediate values, such
+ * as the `TranslatedAllocatorCall` and `TranslatedAllocationSize` within the
+ * translation of a `NewExpr`.
  */
-abstract class TranslatedOrSynthesizedExpr extends TranslatedElement {
+abstract class TranslatedExpr extends TranslatedElement {
+  Expr expr;
+
   /**
    * Gets the instruction that produces the result of the expression.
    */
   abstract Instruction getResult();
-}
 
-/**
- * The IR translation of some part of an expression. This could be the
- * expression itself (`TranslatedExpr`), or some other construct synthesized
- * from an `Expr` (e.g. `TranslatedAllocatorCall`).
- */
-abstract class TranslatedFromExpr extends TranslatedElement {
-  Expr expr;
+  /**
+   * Holds if this `TranslatedExpr` produces the final result of the original
+   * expression from the AST.
+   *
+   * For example, in `y = x;`, the TranslatedLoad for the VariableAccess `x`
+   * produces the result of that VariableAccess expression, but the
+   * TranslatedVariableAccess for `x` does not. The TranslatedVariableAccess
+   * for `y` does produce its result, however, because there is no load on `y`.
+   */
+  abstract predicate producesExprResult();
+
+  /**
+   * Gets the type of the result produced by this expression.
+   */
+  final Type getResultType() {
+    result = expr.getType().getUnspecifiedType()
+  }
 
   override final Locatable getAST() {
     result = expr
@@ -42,6 +59,13 @@ abstract class TranslatedFromExpr extends TranslatedElement {
 
   override final Function getFunction() {
     result = expr.getEnclosingFunction()
+  }
+
+  /**
+   * Gets the expression from which this `TranslatedExpr` is generated.
+   */
+  final Expr getExpr() {
+    result = expr
   }
 
   /**
@@ -53,34 +77,17 @@ abstract class TranslatedFromExpr extends TranslatedElement {
 }
 
 /**
- * The IR translation of an expression.
+ * The IR translation of the "core"  part of an expression. This is the part of
+ * the expression that produces the result value of the expression, before any
+ * lvalue-to-rvalue conversion on the result. Every expression has a single
+ * `TranslatedCoreExpr`.
  */
-abstract class TranslatedExpr extends TranslatedOrSynthesizedExpr,
-    TranslatedFromExpr {
+abstract class TranslatedCoreExpr extends TranslatedExpr {
   override final string toString() {
     result = expr.toString()
   }
 
-  final Expr getExpr() {
-    result = expr
-  }
-
-  final Type getResultType() {
-    result = expr.getType().getUnspecifiedType()
-  }
-
-  /**
-   * Holds if this `TranslatedExpr` produces the final result of the original
-   * expression from the AST.
-   *
-   * For example, in `y = x;`, the TranslatedLoad for the VariableAccess `x`
-   * produces the result of that VariableAccess expression, but the
-   * TranslatedVariableAccess for `x` does not. The TranslatedVariableAccess
-   * for `y` does produce its result, however, because there is no load on `y`.
-   */
-  final predicate producesExprResult() {
-    // A load always produces the result of the expression.
-    this instanceof TranslatedLoad or
+  override final predicate producesExprResult() {
     // If there's no load, then this is the only TranslatedExpr for this
     // expression.
     not expr.hasLValueToRValueConversion() or
@@ -110,7 +117,7 @@ abstract class TranslatedExpr extends TranslatedOrSynthesizedExpr,
   }
 }
 
-class TranslatedConditionValue extends TranslatedExpr, ConditionContext,
+class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
   TTranslatedConditionValue {
   TranslatedConditionValue() {
     this = TTranslatedConditionValue(expr)
@@ -286,9 +293,17 @@ class TranslatedConditionValue extends TranslatedExpr, ConditionContext,
   }
 }
 
+/**
+ * IR translation of an implicit lvalue-to-rvalue conversion on the result of
+ * an expression.
+ */
 class TranslatedLoad extends TranslatedExpr, TTranslatedLoad {
   TranslatedLoad() {
     this = TTranslatedLoad(expr)
+  }
+
+  override string toString() {
+    result = "Load of " + expr.toString()
   }
 
   override Instruction getFirstInstruction() {
@@ -303,8 +318,11 @@ class TranslatedLoad extends TranslatedExpr, TTranslatedLoad {
     Type resultType, boolean isGLValue) {
     tag = LoadTag() and
     opcode instanceof Opcode::Load and
-    resultType = getResultType() and
-    isGLValue = isResultGLValue()
+    resultType = expr.getType().getUnspecifiedType() and
+    if expr.isGLValueCategory() then
+      isGLValue = true
+    else
+      isGLValue = false
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag,
@@ -337,8 +355,13 @@ class TranslatedLoad extends TranslatedExpr, TTranslatedLoad {
     )
   }
 
-  private TranslatedExpr getOperand() {
-    result.getExpr() = expr and not result instanceof TranslatedLoad
+  override final predicate producesExprResult() {
+    // A load always produces the result of the expression.
+    any()
+  }
+
+  private TranslatedCoreExpr getOperand() {
+    result.getExpr() = expr
   }
 }
 
@@ -930,21 +953,24 @@ class TranslatedFunctionAccess extends TranslatedNonConstantExpr {
   }
 }
 
-abstract class TranslatedNonLoadExpr extends TranslatedExpr,
-  TTranslatedNonLoadExpr {
-  TranslatedNonLoadExpr() {
-    this = TTranslatedNonLoadExpr(expr)
-  }
-}
-
-abstract class TranslatedNonConstantExpr extends TranslatedNonLoadExpr {
+/**
+ * IR translation of an expression whose value is not known at compile time.
+ */
+abstract class TranslatedNonConstantExpr extends TranslatedCoreExpr {
   TranslatedNonConstantExpr() {
+    this = TTranslatedValueExpr(expr) and
     not expr.isConstant()
   }
 }
 
-abstract class TranslatedConstantExpr extends TranslatedNonLoadExpr {
+/**
+ * IR translation of an expression with a compile-time constant value. This
+ * includes not only literals, but also "integral constant expressions" (e.g.
+ * `1 + 2`).
+ */
+abstract class TranslatedConstantExpr extends TranslatedCoreExpr {
   TranslatedConstantExpr() {
+    this = TTranslatedValueExpr(expr) and
     expr.isConstant()
   }
 
@@ -1022,7 +1048,15 @@ class TranslatedStringLiteral extends TranslatedConstantExpr {
   }
 }
 
-abstract class TranslatedValueExpr extends TranslatedNonConstantExpr {
+/**
+ * IR translation of an expression that performs a single operation on its
+ * operands and returns the result.
+ */
+abstract class TranslatedSingleInstructionExpr extends
+    TranslatedNonConstantExpr {
+  /**
+   * Gets the `Opcode` of the operation to be performed.
+   */
   abstract Opcode getOpcode();
 
   override final predicate hasInstruction(Opcode opcode, InstructionTag tag,
@@ -1038,7 +1072,7 @@ abstract class TranslatedValueExpr extends TranslatedNonConstantExpr {
   }
 }
 
-class TranslatedUnaryExpr extends TranslatedValueExpr {
+class TranslatedUnaryExpr extends TranslatedSingleInstructionExpr {
   TranslatedUnaryExpr() {
     expr instanceof NotExpr or
     expr instanceof ComplementExpr or
@@ -1323,7 +1357,10 @@ private Opcode comparisonOpcode(ComparisonOperation expr) {
   expr instanceof GEExpr and result instanceof Opcode::CompareGE
 }
 
-class TranslatedBinaryOperation extends TranslatedValueExpr {
+/**
+ * IR translation of a simple binary operation.
+ */
+class TranslatedBinaryOperation extends TranslatedSingleInstructionExpr {
   TranslatedBinaryOperation() {
     expr instanceof BinaryArithmeticOperation or
     expr instanceof BinaryBitwiseOperation or
@@ -1735,7 +1772,7 @@ class TranslatedAssignOperation extends TranslatedAssignment {
  * call in the source code, or could be a call that is part of the translation
  * of a higher-level constructor (e.g. the allocator call in a `NewExpr`).
  */
-abstract class TranslatedCall extends TranslatedOrSynthesizedExpr {
+abstract class TranslatedCall extends TranslatedExpr {
   override final TranslatedElement getChild(int id) {
     // We choose the child's id in the order of evaluation.
     // The qualifier is evaluated before the call target, because the value of
@@ -1868,7 +1905,7 @@ abstract class TranslatedCall extends TranslatedOrSynthesizedExpr {
    * Gets the argument with the specified `index`. Does not include the `this`
    * argument.
    */
-  abstract TranslatedOrSynthesizedExpr getArgument(int index);
+  abstract TranslatedExpr getArgument(int index);
 
   /**
    * If there are any arguments, gets the first instruction of the first
@@ -1894,8 +1931,8 @@ abstract class TranslatedCall extends TranslatedOrSynthesizedExpr {
  * We have to synthesize this because not all `NewExpr` nodes have an allocator
  * call, and even the ones that do pass an `ErrorExpr` as the argument.
  */
-abstract class TranslatedAllocationSize extends TranslatedOrSynthesizedExpr,
-    TranslatedFromExpr, TTranslatedAllocationSize {
+abstract class TranslatedAllocationSize extends TranslatedExpr,
+    TTranslatedAllocationSize {
   NewOrNewArrayExpr newExpr;
   
   TranslatedAllocationSize() {
@@ -1905,6 +1942,10 @@ abstract class TranslatedAllocationSize extends TranslatedOrSynthesizedExpr,
 
   override final string toString() {
     result = "Allocation size for " + newExpr.toString()
+  }
+
+  override final predicate producesExprResult() {
+    none()
   }
 
   override final Instruction getResult() {
@@ -2050,8 +2091,8 @@ class TranslatedNonConstantAllocationSize extends TranslatedAllocationSize {
  * The IR translation of a call to `operator new` as part of a `new` or `new[]`
  * expression.
  */
-class TranslatedAllocatorCall extends TTranslatedAllocatorCall, TranslatedCall,
-    TranslatedFromExpr {
+class TranslatedAllocatorCall extends TTranslatedAllocatorCall,
+    TranslatedCall {
   NewOrNewArrayExpr newExpr;
 
   TranslatedAllocatorCall() {
@@ -2061,6 +2102,10 @@ class TranslatedAllocatorCall extends TTranslatedAllocatorCall, TranslatedCall,
 
   override final string toString() {
     result = "Allocator call for " + newExpr.toString()
+  }
+
+  override final predicate producesExprResult() {
+    none()
   }
 
   override final Instruction getFirstCallTargetInstruction() {
@@ -2109,7 +2154,7 @@ class TranslatedAllocatorCall extends TTranslatedAllocatorCall, TranslatedCall,
     any()
   }
 
-  override final TranslatedOrSynthesizedExpr getArgument(int index) {
+  override final TranslatedExpr getArgument(int index) {
     // If the allocator is the default operator new(void*), there will be no
     // allocator call in the AST. Otherwise, there will be an allocator call
     // that includes all arguments to the allocator, including the size,
@@ -2152,7 +2197,7 @@ abstract class TranslatedCallExpr extends TranslatedNonConstantExpr,
     result = getTranslatedExpr(call.getQualifier().getFullyConverted())
   }
 
-  override final TranslatedOrSynthesizedExpr getArgument(int index) {
+  override final TranslatedExpr getArgument(int index) {
     result = getTranslatedExpr(call.getArgument(index).getFullyConverted())
   }
 }
