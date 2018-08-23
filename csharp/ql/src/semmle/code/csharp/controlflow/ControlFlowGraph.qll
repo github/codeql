@@ -2967,6 +2967,11 @@ module Internal {
 
   /** Provides logic for calculating reachable control flow nodes. */
   module Reachability {
+    /**
+     * Holds if `cfe` is a control flow element where the set of possible splits may
+     * be different from the set of possible splits for one of `cfe`'s predecessors.
+     * That is, `cfe` starts a new block of elements with the same set of splits.
+     */
     private predicate startsSplits(ControlFlowElement cfe) {
       cfe = succEntry(_)
       or
