@@ -1,7 +1,7 @@
 /**
  * @name Cyclomatic complexity of functions
  * @description Methods with a large number of possible execution paths might be difficult to understand.
- * @kind table
+ * @kind treemap
  * @treemap.warnOn highValues
  * @metricType callable
  * @metricAggregate avg max sum
