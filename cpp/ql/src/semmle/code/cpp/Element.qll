@@ -1,6 +1,6 @@
 import semmle.code.cpp.Location
 private import semmle.code.cpp.Enclosing
-private import semmle.code.cpp.internal.Type
+private import semmle.code.cpp.internal.ResolveClass
 
 /**
  * Get the `@element` that represents this `@element`.

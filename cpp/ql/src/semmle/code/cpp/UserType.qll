@@ -2,7 +2,7 @@ import semmle.code.cpp.Declaration
 import semmle.code.cpp.Type
 import semmle.code.cpp.Member
 import semmle.code.cpp.Function
-private import semmle.code.cpp.internal.Type
+private import semmle.code.cpp.internal.ResolveClass
 
 /**
  * A C/C++ user-defined type. Examples include `Class`, `Struct`, `Union`,

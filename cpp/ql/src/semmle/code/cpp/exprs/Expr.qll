@@ -1,7 +1,7 @@
 
 import semmle.code.cpp.Element
 private import semmle.code.cpp.Enclosing
-private import semmle.code.cpp.internal.Type
+private import semmle.code.cpp.internal.ResolveClass
 
 /**
  * A C/C++ expression.

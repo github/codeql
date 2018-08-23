@@ -5,7 +5,7 @@ import semmle.code.cpp.Parameter
 import semmle.code.cpp.exprs.Call
 import semmle.code.cpp.metrics.MetricFunction
 import semmle.code.cpp.Linkage
-private import semmle.code.cpp.internal.Type
+private import semmle.code.cpp.internal.ResolveClass
 
 /**
  * A C/C++ function [N4140 8.3.5]. Both member functions and non-member
