@@ -94,7 +94,7 @@ class XMLParent extends @xmlparent {
 }
 
 /** An XML file. */
-class XMLFile extends XMLParent {
+class XMLFile extends XMLParent, File {
   XMLFile() {
     xmlEncoding(this,_)
   }
