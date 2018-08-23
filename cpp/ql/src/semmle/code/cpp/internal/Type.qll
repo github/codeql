@@ -35,7 +35,7 @@ cached private module Cached {
    * multiple complete classes have the same name, this predicate may have
    * multiple results.
    */
-  cached @usertype resolve(@usertype c) {
+  cached @usertype resolveClass(@usertype c) {
     hasCompleteTwin(c, result)
     or
     (not hasCompleteTwin(c, _) and result = c)
@@ -47,9 +47,5 @@ cached private module Cached {
   cached predicate isClass(@usertype t) {
     (usertypes(t,_,1) or usertypes(t,_,2) or usertypes(t,_,3) or usertypes(t,_,6)
     or usertypes(t,_,10) or usertypes(t,_,11) or usertypes(t,_,12))
-  }
-
-  cached predicate isElement(@element e) {
-    isClass(e) implies e = resolve(_)
   }
 }

@@ -10,7 +10,7 @@ private import semmle.code.cpp.internal.Type
  */
 private cached @element resolveElement(@element e) {
   if isClass(e)
-  then result = resolve(e)
+  then result = resolveClass(e)
   else result = e
 }
 
