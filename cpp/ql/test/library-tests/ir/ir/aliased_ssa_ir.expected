@@ -1556,58 +1556,58 @@ ir.cpp:
 
 #  372| Call() -> void
 #  372|   Block 0
-#  372|     v0_0(void)     = EnterFunction             : 
-#  372|     mu0_1(unknown) = UnmodeledDefinition       : 
-#  373|     r0_2(bool)     = FunctionAddress[VoidFunc] : 
-#  373|     v0_3(void)     = Invoke                    : r0_2
-#  374|     v0_4(void)     = NoOp                      : 
-#  372|     v0_5(void)     = ReturnVoid                : 
-#  372|     v0_6(void)     = UnmodeledUse              : mu*
-#  372|     v0_7(void)     = ExitFunction              : 
+#  372|     v0_0(void)           = EnterFunction             : 
+#  372|     mu0_1(unknown)       = UnmodeledDefinition       : 
+#  373|     r0_2(glval<unknown>) = FunctionAddress[VoidFunc] : 
+#  373|     v0_3(void)           = Invoke                    : r0_2
+#  374|     v0_4(void)           = NoOp                      : 
+#  372|     v0_5(void)           = ReturnVoid                : 
+#  372|     v0_6(void)           = UnmodeledUse              : mu*
+#  372|     v0_7(void)           = ExitFunction              : 
 
 #  376| CallAdd(int, int) -> int
 #  376|   Block 0
-#  376|     v0_0(void)        = EnterFunction            : 
-#  376|     mu0_1(unknown)    = UnmodeledDefinition      : 
-#  376|     r0_2(glval<int>)  = VariableAddress[x]       : 
-#  376|     m0_3(int)         = InitializeParameter[x]   : r0_2
-#  376|     r0_4(glval<int>)  = VariableAddress[y]       : 
-#  376|     m0_5(int)         = InitializeParameter[y]   : r0_4
-#  377|     r0_6(glval<int>)  = VariableAddress[#return] : 
-#  377|     r0_7(bool)        = FunctionAddress[Add]     : 
-#  377|     r0_8(glval<int>)  = VariableAddress[x]       : 
-#  377|     r0_9(int)         = Load                     : r0_8, m0_3
-#  377|     r0_10(glval<int>) = VariableAddress[y]       : 
-#  377|     r0_11(int)        = Load                     : r0_10, m0_5
-#  377|     r0_12(int)        = Invoke                   : r0_7, r0_9, r0_11
-#  377|     m0_13(int)        = Store                    : r0_6, r0_12
-#  376|     r0_14(glval<int>) = VariableAddress[#return] : 
-#  376|     v0_15(void)       = ReturnValue              : r0_14, m0_13
-#  376|     v0_16(void)       = UnmodeledUse             : mu*
-#  376|     v0_17(void)       = ExitFunction             : 
+#  376|     v0_0(void)           = EnterFunction            : 
+#  376|     mu0_1(unknown)       = UnmodeledDefinition      : 
+#  376|     r0_2(glval<int>)     = VariableAddress[x]       : 
+#  376|     m0_3(int)            = InitializeParameter[x]   : r0_2
+#  376|     r0_4(glval<int>)     = VariableAddress[y]       : 
+#  376|     m0_5(int)            = InitializeParameter[y]   : r0_4
+#  377|     r0_6(glval<int>)     = VariableAddress[#return] : 
+#  377|     r0_7(glval<unknown>) = FunctionAddress[Add]     : 
+#  377|     r0_8(glval<int>)     = VariableAddress[x]       : 
+#  377|     r0_9(int)            = Load                     : r0_8, m0_3
+#  377|     r0_10(glval<int>)    = VariableAddress[y]       : 
+#  377|     r0_11(int)           = Load                     : r0_10, m0_5
+#  377|     r0_12(int)           = Invoke                   : r0_7, r0_9, r0_11
+#  377|     m0_13(int)           = Store                    : r0_6, r0_12
+#  376|     r0_14(glval<int>)    = VariableAddress[#return] : 
+#  376|     v0_15(void)          = ReturnValue              : r0_14, m0_13
+#  376|     v0_16(void)          = UnmodeledUse             : mu*
+#  376|     v0_17(void)          = ExitFunction             : 
 
 #  380| Comma(int, int) -> int
 #  380|   Block 0
-#  380|     v0_0(void)        = EnterFunction             : 
-#  380|     mu0_1(unknown)    = UnmodeledDefinition       : 
-#  380|     r0_2(glval<int>)  = VariableAddress[x]        : 
-#  380|     m0_3(int)         = InitializeParameter[x]    : r0_2
-#  380|     r0_4(glval<int>)  = VariableAddress[y]        : 
-#  380|     m0_5(int)         = InitializeParameter[y]    : r0_4
-#  381|     r0_6(glval<int>)  = VariableAddress[#return]  : 
-#  381|     r0_7(bool)        = FunctionAddress[VoidFunc] : 
-#  381|     v0_8(void)        = Invoke                    : r0_7
-#  381|     r0_9(bool)        = FunctionAddress[CallAdd]  : 
-#  381|     r0_10(glval<int>) = VariableAddress[x]        : 
-#  381|     r0_11(int)        = Load                      : r0_10, m0_3
-#  381|     r0_12(glval<int>) = VariableAddress[y]        : 
-#  381|     r0_13(int)        = Load                      : r0_12, m0_5
-#  381|     r0_14(int)        = Invoke                    : r0_9, r0_11, r0_13
-#  381|     m0_15(int)        = Store                     : r0_6, r0_14
-#  380|     r0_16(glval<int>) = VariableAddress[#return]  : 
-#  380|     v0_17(void)       = ReturnValue               : r0_16, m0_15
-#  380|     v0_18(void)       = UnmodeledUse              : mu*
-#  380|     v0_19(void)       = ExitFunction              : 
+#  380|     v0_0(void)           = EnterFunction             : 
+#  380|     mu0_1(unknown)       = UnmodeledDefinition       : 
+#  380|     r0_2(glval<int>)     = VariableAddress[x]        : 
+#  380|     m0_3(int)            = InitializeParameter[x]    : r0_2
+#  380|     r0_4(glval<int>)     = VariableAddress[y]        : 
+#  380|     m0_5(int)            = InitializeParameter[y]    : r0_4
+#  381|     r0_6(glval<int>)     = VariableAddress[#return]  : 
+#  381|     r0_7(glval<unknown>) = FunctionAddress[VoidFunc] : 
+#  381|     v0_8(void)           = Invoke                    : r0_7
+#  381|     r0_9(glval<unknown>) = FunctionAddress[CallAdd]  : 
+#  381|     r0_10(glval<int>)    = VariableAddress[x]        : 
+#  381|     r0_11(int)           = Load                      : r0_10, m0_3
+#  381|     r0_12(glval<int>)    = VariableAddress[y]        : 
+#  381|     r0_13(int)           = Load                      : r0_12, m0_5
+#  381|     r0_14(int)           = Invoke                    : r0_9, r0_11, r0_13
+#  381|     m0_15(int)           = Store                     : r0_6, r0_14
+#  380|     r0_16(glval<int>)    = VariableAddress[#return]  : 
+#  380|     v0_17(void)          = ReturnValue               : r0_16, m0_15
+#  380|     v0_18(void)          = UnmodeledUse              : mu*
+#  380|     v0_19(void)          = ExitFunction              : 
 
 #  384| Switch(int) -> void
 #  384|   Block 0
@@ -2113,13 +2113,13 @@ ir.cpp:
 #  492|     v1_3(void) = ExitFunction : 
 
 #  493|   Block 2
-#  493|     r2_0(bool) = FunctionAddress[VoidFunc] : 
-#  493|     v2_1(void) = Invoke                    : r2_0
+#  493|     r2_0(glval<unknown>) = FunctionAddress[VoidFunc] : 
+#  493|     v2_1(void)           = Invoke                    : r2_0
 #-----|   Goto -> Block 1
 
 #  493|   Block 3
-#  493|     r3_0(bool) = FunctionAddress[VoidFunc] : 
-#  493|     v3_1(void) = Invoke                    : r3_0
+#  493|     r3_0(glval<unknown>) = FunctionAddress[VoidFunc] : 
+#  493|     v3_1(void)           = Invoke                    : r3_0
 #-----|   Goto -> Block 1
 
 #  496| Nullptr() -> void
@@ -2519,7 +2519,7 @@ ir.cpp:
 #  584|   Block 0
 #  584|     v0_0(void)           = EnterFunction                   : 
 #  584|     mu0_1(unknown)       = UnmodeledDefinition             : 
-#  585|     r0_2(bool)           = FunctionAddress[VarArgFunction] : 
+#  585|     r0_2(glval<unknown>) = FunctionAddress[VarArgFunction] : 
 #  585|     r0_3(glval<char[6]>) = StringConstant["%d %s"]         : 
 #  585|     r0_4(char *)         = Convert                         : r0_3
 #  585|     r0_5(int)            = Constant[1]                     : 
@@ -2557,19 +2557,19 @@ ir.cpp:
 #  615|     v0_0(void)            = EnterFunction                 : 
 #  615|     mu0_1(unknown)        = UnmodeledDefinition           : 
 #  616|     r0_2(glval<String>)   = VariableAddress[s1]           : 
-#  616|     r0_3(bool)            = FunctionAddress[String]       : 
+#  616|     r0_3(glval<unknown>)  = FunctionAddress[String]       : 
 #  616|     v0_4(void)            = Invoke                        : r0_3, this:r0_2
 #  617|     r0_5(glval<String>)   = VariableAddress[s2]           : 
-#  617|     r0_6(bool)            = FunctionAddress[String]       : 
+#  617|     r0_6(glval<unknown>)  = FunctionAddress[String]       : 
 #  617|     r0_7(glval<char[6]>)  = StringConstant["hello"]       : 
 #  617|     r0_8(char *)          = Convert                       : r0_7
 #  617|     v0_9(void)            = Invoke                        : r0_6, this:r0_5, r0_8
 #  618|     r0_10(glval<String>)  = VariableAddress[s3]           : 
-#  618|     r0_11(bool)           = FunctionAddress[ReturnObject] : 
+#  618|     r0_11(glval<unknown>) = FunctionAddress[ReturnObject] : 
 #  618|     r0_12(String)         = Invoke                        : r0_11
 #  618|     m0_13(String)         = Store                         : r0_10, r0_12
 #  619|     r0_14(glval<String>)  = VariableAddress[s4]           : 
-#  619|     r0_15(bool)           = FunctionAddress[String]       : 
+#  619|     r0_15(glval<unknown>) = FunctionAddress[String]       : 
 #  619|     r0_16(glval<char[5]>) = StringConstant["test"]        : 
 #  619|     r0_17(char *)         = Convert                       : r0_16
 #  619|     v0_18(void)           = Invoke                        : r0_15, this:r0_14, r0_17
@@ -2591,16 +2591,16 @@ ir.cpp:
 #  623|     r0_8(glval<String &>)  = VariableAddress[r]     : 
 #  623|     r0_9(String &)         = Load                   : r0_8, m0_3
 #  623|     r0_10(glval<String>)   = Convert                : r0_9
-#  623|     r0_11(bool)            = FunctionAddress[c_str] : 
+#  623|     r0_11(glval<unknown>)  = FunctionAddress[c_str] : 
 #  623|     r0_12(char *)          = Invoke                 : r0_11, this:r0_10
 #  624|     r0_13(glval<String *>) = VariableAddress[p]     : 
 #  624|     r0_14(String *)        = Load                   : r0_13, m0_5
 #  624|     r0_15(String *)        = Convert                : r0_14
-#  624|     r0_16(bool)            = FunctionAddress[c_str] : 
+#  624|     r0_16(glval<unknown>)  = FunctionAddress[c_str] : 
 #  624|     r0_17(char *)          = Invoke                 : r0_16, this:r0_15
 #  625|     r0_18(glval<String>)   = VariableAddress[s]     : 
 #  625|     r0_19(glval<String>)   = Convert                : r0_18
-#  625|     r0_20(bool)            = FunctionAddress[c_str] : 
+#  625|     r0_20(glval<unknown>)  = FunctionAddress[c_str] : 
 #  625|     r0_21(char *)          = Invoke                 : r0_20, this:r0_19
 #  626|     v0_22(void)            = NoOp                   : 
 #  622|     v0_23(void)            = ReturnVoid             : 
@@ -2695,25 +2695,25 @@ ir.cpp:
 
 #  652| C::MethodCalls() -> void
 #  652|   Block 0
-#  652|     v0_0(void)     = EnterFunction                           : 
-#  652|     mu0_1(unknown) = UnmodeledDefinition                     : 
-#  652|     r0_2(glval<C>) = InitializeThis                          : 
-#  653|     r0_3(C *)      = CopyValue                               : r0_2
-#  653|     r0_4(bool)     = FunctionAddress[InstanceMemberFunction] : 
-#  653|     r0_5(int)      = Constant[0]                             : 
-#  653|     r0_6(int)      = Invoke                                  : r0_4, this:r0_3, r0_5
-#  654|     r0_7(C *)      = CopyValue                               : r0_2
-#  654|     r0_8(bool)     = FunctionAddress[InstanceMemberFunction] : 
-#  654|     r0_9(int)      = Constant[1]                             : 
-#  654|     r0_10(int)     = Invoke                                  : r0_8, this:r0_7, r0_9
-#-----|     r0_11(C *)     = CopyValue                               : r0_2
-#  655|     r0_12(bool)    = FunctionAddress[InstanceMemberFunction] : 
-#  655|     r0_13(int)     = Constant[2]                             : 
-#  655|     r0_14(int)     = Invoke                                  : r0_12, this:r0_11, r0_13
-#  656|     v0_15(void)    = NoOp                                    : 
-#  652|     v0_16(void)    = ReturnVoid                              : 
-#  652|     v0_17(void)    = UnmodeledUse                            : mu*
-#  652|     v0_18(void)    = ExitFunction                            : 
+#  652|     v0_0(void)            = EnterFunction                           : 
+#  652|     mu0_1(unknown)        = UnmodeledDefinition                     : 
+#  652|     r0_2(glval<C>)        = InitializeThis                          : 
+#  653|     r0_3(C *)             = CopyValue                               : r0_2
+#  653|     r0_4(glval<unknown>)  = FunctionAddress[InstanceMemberFunction] : 
+#  653|     r0_5(int)             = Constant[0]                             : 
+#  653|     r0_6(int)             = Invoke                                  : r0_4, this:r0_3, r0_5
+#  654|     r0_7(C *)             = CopyValue                               : r0_2
+#  654|     r0_8(glval<unknown>)  = FunctionAddress[InstanceMemberFunction] : 
+#  654|     r0_9(int)             = Constant[1]                             : 
+#  654|     r0_10(int)            = Invoke                                  : r0_8, this:r0_7, r0_9
+#-----|     r0_11(C *)            = CopyValue                               : r0_2
+#  655|     r0_12(glval<unknown>) = FunctionAddress[InstanceMemberFunction] : 
+#  655|     r0_13(int)            = Constant[2]                             : 
+#  655|     r0_14(int)            = Invoke                                  : r0_12, this:r0_11, r0_13
+#  656|     v0_15(void)           = NoOp                                    : 
+#  652|     v0_16(void)           = ReturnVoid                              : 
+#  652|     v0_17(void)           = UnmodeledUse                            : mu*
+#  652|     v0_18(void)           = ExitFunction                            : 
 
 #  658| C::C() -> void
 #  658|   Block 0
@@ -2724,7 +2724,7 @@ ir.cpp:
 #  659|     r0_4(int)             = Constant[1]             : 
 #  659|     mu0_5(int)            = Store                   : r0_3, r0_4
 #  663|     r0_6(glval<String>)   = FieldAddress[m_b]       : r0_2
-#  663|     r0_7(bool)            = FunctionAddress[String] : 
+#  663|     r0_7(glval<unknown>)  = FunctionAddress[String] : 
 #  663|     v0_8(void)            = Invoke                  : r0_7, this:r0_6
 #  660|     r0_9(glval<char>)     = FieldAddress[m_c]       : r0_2
 #  660|     r0_10(char)           = Constant[3]             : 
@@ -2733,7 +2733,7 @@ ir.cpp:
 #  661|     r0_13(void *)         = Constant[0]             : 
 #  661|     mu0_14(void *)        = Store                   : r0_12, r0_13
 #  662|     r0_15(glval<String>)  = FieldAddress[m_f]       : r0_2
-#  662|     r0_16(bool)           = FunctionAddress[String] : 
+#  662|     r0_16(glval<unknown>) = FunctionAddress[String] : 
 #  662|     r0_17(glval<char[5]>) = StringConstant["test"]  : 
 #  662|     r0_18(char *)         = Convert                 : r0_17
 #  662|     v0_19(void)           = Invoke                  : r0_16, this:r0_15, r0_18
@@ -2784,7 +2784,7 @@ ir.cpp:
 #  687|     r0_9(int &)            = Load                             : r0_8, m0_6
 #  687|     m0_10(int &)           = Store                            : r0_7, r0_9
 #  688|     r0_11(glval<String &>) = VariableAddress[r3]              : 
-#  688|     r0_12(bool)            = FunctionAddress[ReturnReference] : 
+#  688|     r0_12(glval<unknown>)  = FunctionAddress[ReturnReference] : 
 #  688|     r0_13(String &)        = Invoke                           : r0_12
 #  688|     r0_14(glval<String>)   = Convert                          : r0_13
 #  688|     m0_15(String &)        = Store                            : r0_11, r0_14
@@ -2879,24 +2879,24 @@ ir.cpp:
 
 #  708| CallMin(int, int) -> int
 #  708|   Block 0
-#  708|     v0_0(void)        = EnterFunction            : 
-#  708|     mu0_1(unknown)    = UnmodeledDefinition      : 
-#  708|     r0_2(glval<int>)  = VariableAddress[x]       : 
-#  708|     m0_3(int)         = InitializeParameter[x]   : r0_2
-#  708|     r0_4(glval<int>)  = VariableAddress[y]       : 
-#  708|     m0_5(int)         = InitializeParameter[y]   : r0_4
-#  709|     r0_6(glval<int>)  = VariableAddress[#return] : 
-#  709|     r0_7(bool)        = FunctionAddress[min]     : 
-#  709|     r0_8(glval<int>)  = VariableAddress[x]       : 
-#  709|     r0_9(int)         = Load                     : r0_8, m0_3
-#  709|     r0_10(glval<int>) = VariableAddress[y]       : 
-#  709|     r0_11(int)        = Load                     : r0_10, m0_5
-#  709|     r0_12(int)        = Invoke                   : r0_7, r0_9, r0_11
-#  709|     m0_13(int)        = Store                    : r0_6, r0_12
-#  708|     r0_14(glval<int>) = VariableAddress[#return] : 
-#  708|     v0_15(void)       = ReturnValue              : r0_14, m0_13
-#  708|     v0_16(void)       = UnmodeledUse             : mu*
-#  708|     v0_17(void)       = ExitFunction             : 
+#  708|     v0_0(void)           = EnterFunction            : 
+#  708|     mu0_1(unknown)       = UnmodeledDefinition      : 
+#  708|     r0_2(glval<int>)     = VariableAddress[x]       : 
+#  708|     m0_3(int)            = InitializeParameter[x]   : r0_2
+#  708|     r0_4(glval<int>)     = VariableAddress[y]       : 
+#  708|     m0_5(int)            = InitializeParameter[y]   : r0_4
+#  709|     r0_6(glval<int>)     = VariableAddress[#return] : 
+#  709|     r0_7(glval<unknown>) = FunctionAddress[min]     : 
+#  709|     r0_8(glval<int>)     = VariableAddress[x]       : 
+#  709|     r0_9(int)            = Load                     : r0_8, m0_3
+#  709|     r0_10(glval<int>)    = VariableAddress[y]       : 
+#  709|     r0_11(int)           = Load                     : r0_10, m0_5
+#  709|     r0_12(int)           = Invoke                   : r0_7, r0_9, r0_11
+#  709|     m0_13(int)           = Store                    : r0_6, r0_12
+#  708|     r0_14(glval<int>)    = VariableAddress[#return] : 
+#  708|     v0_15(void)          = ReturnValue              : r0_14, m0_13
+#  708|     v0_16(void)          = UnmodeledUse             : mu*
+#  708|     v0_17(void)          = ExitFunction             : 
 
 #  715| Outer<long>::Func<void *, char>(void *, char) -> long
 #  715|   Block 0
@@ -2916,19 +2916,19 @@ ir.cpp:
 
 #  720| CallNestedTemplateFunc() -> double
 #  720|   Block 0
-#  720|     v0_0(void)          = EnterFunction            : 
-#  720|     mu0_1(unknown)      = UnmodeledDefinition      : 
-#  721|     r0_2(glval<double>) = VariableAddress[#return] : 
-#  721|     r0_3(bool)          = FunctionAddress[Func]    : 
-#  721|     r0_4(void *)        = Constant[0]              : 
-#  721|     r0_5(char)          = Constant[111]            : 
-#  721|     r0_6(long)          = Invoke                   : r0_3, r0_4, r0_5
-#  721|     r0_7(double)        = Convert                  : r0_6
-#  721|     m0_8(double)        = Store                    : r0_2, r0_7
-#  720|     r0_9(glval<double>) = VariableAddress[#return] : 
-#  720|     v0_10(void)         = ReturnValue              : r0_9, m0_8
-#  720|     v0_11(void)         = UnmodeledUse             : mu*
-#  720|     v0_12(void)         = ExitFunction             : 
+#  720|     v0_0(void)           = EnterFunction            : 
+#  720|     mu0_1(unknown)       = UnmodeledDefinition      : 
+#  721|     r0_2(glval<double>)  = VariableAddress[#return] : 
+#  721|     r0_3(glval<unknown>) = FunctionAddress[Func]    : 
+#  721|     r0_4(void *)         = Constant[0]              : 
+#  721|     r0_5(char)           = Constant[111]            : 
+#  721|     r0_6(long)           = Invoke                   : r0_3, r0_4, r0_5
+#  721|     r0_7(double)         = Convert                  : r0_6
+#  721|     m0_8(double)         = Store                    : r0_2, r0_7
+#  720|     r0_9(glval<double>)  = VariableAddress[#return] : 
+#  720|     v0_10(void)          = ReturnValue              : r0_9, m0_8
+#  720|     v0_11(void)          = UnmodeledUse             : mu*
+#  720|     v0_12(void)          = ExitFunction             : 
 
 #  724| TryCatch(bool) -> void
 #  724|   Block 0
@@ -2989,7 +2989,7 @@ ir.cpp:
 
 #  731|   Block 7
 #  731|     r7_0(glval<String>)   = VariableAddress[#throw731:19]   : 
-#  731|     r7_1(bool)            = FunctionAddress[String]         : 
+#  731|     r7_1(glval<unknown>)  = FunctionAddress[String]         : 
 #  731|     r7_2(glval<char[14]>) = StringConstant["String object"] : 
 #  731|     r7_3(char *)          = Convert                         : r7_2
 #  731|     v7_4(void)            = Invoke                          : r7_1, this:r7_0, r7_3
@@ -3008,14 +3008,14 @@ ir.cpp:
 #-----|   Goto -> Block 10
 
 #  735|   Block 10
-#  735|     r10_0(glval<char *>) = VariableAddress[s]           : 
-#  735|     m10_1(char *)        = InitializeParameter[s]       : r10_0
-#  736|     r10_2(glval<String>) = VariableAddress[#throw736:5] : 
-#  736|     r10_3(bool)          = FunctionAddress[String]      : 
-#  736|     r10_4(glval<char *>) = VariableAddress[s]           : 
-#  736|     r10_5(char *)        = Load                         : r10_4, m10_1
-#  736|     v10_6(void)          = Invoke                       : r10_3, this:r10_2, r10_5
-#  736|     v10_7(void)          = ThrowValue                   : r10_2, mu0_1
+#  735|     r10_0(glval<char *>)  = VariableAddress[s]           : 
+#  735|     m10_1(char *)         = InitializeParameter[s]       : r10_0
+#  736|     r10_2(glval<String>)  = VariableAddress[#throw736:5] : 
+#  736|     r10_3(glval<unknown>) = FunctionAddress[String]      : 
+#  736|     r10_4(glval<char *>)  = VariableAddress[s]           : 
+#  736|     r10_5(char *)         = Load                         : r10_4, m10_1
+#  736|     v10_6(void)           = Invoke                       : r10_3, this:r10_2, r10_5
+#  736|     v10_7(void)           = ThrowValue                   : r10_2, mu0_1
 #-----|   Exception -> Block 2
 
 #  738|   Block 11
@@ -3041,18 +3041,18 @@ ir.cpp:
 
 #  745| Base::Base(const Base &) -> void
 #  745|   Block 0
-#  745|     v0_0(void)          = EnterFunction            : 
-#  745|     mu0_1(unknown)      = UnmodeledDefinition      : 
-#  745|     r0_2(glval<Base>)   = InitializeThis           : 
-#-----|     r0_3(glval<Base &>) = VariableAddress[p#0]     : 
-#-----|     m0_4(Base &)        = InitializeParameter[p#0] : r0_3
-#  745|     r0_5(glval<String>) = FieldAddress[base_s]     : r0_2
-#  745|     r0_6(bool)          = FunctionAddress[String]  : 
-#  745|     v0_7(void)          = Invoke                   : r0_6, this:r0_5
-#  745|     v0_8(void)          = NoOp                     : 
-#  745|     v0_9(void)          = ReturnVoid               : 
-#  745|     v0_10(void)         = UnmodeledUse             : mu*
-#  745|     v0_11(void)         = ExitFunction             : 
+#  745|     v0_0(void)           = EnterFunction            : 
+#  745|     mu0_1(unknown)       = UnmodeledDefinition      : 
+#  745|     r0_2(glval<Base>)    = InitializeThis           : 
+#-----|     r0_3(glval<Base &>)  = VariableAddress[p#0]     : 
+#-----|     m0_4(Base &)         = InitializeParameter[p#0] : r0_3
+#  745|     r0_5(glval<String>)  = FieldAddress[base_s]     : r0_2
+#  745|     r0_6(glval<unknown>) = FunctionAddress[String]  : 
+#  745|     v0_7(void)           = Invoke                   : r0_6, this:r0_5
+#  745|     v0_8(void)           = NoOp                     : 
+#  745|     v0_9(void)           = ReturnVoid               : 
+#  745|     v0_10(void)          = UnmodeledUse             : mu*
+#  745|     v0_11(void)          = ExitFunction             : 
 
 #  745| Base::operator=(const Base &) -> Base &
 #  745|   Block 0
@@ -3063,7 +3063,7 @@ ir.cpp:
 #-----|     m0_4(Base &)         = InitializeParameter[p#0]   : r0_3
 #-----|     r0_5(Base *)         = CopyValue                  : r0_2
 #-----|     r0_6(glval<String>)  = FieldAddress[base_s]       : r0_5
-#  745|     r0_7(bool)           = FunctionAddress[operator=] : 
+#  745|     r0_7(glval<unknown>) = FunctionAddress[operator=] : 
 #-----|     r0_8(glval<Base &>)  = VariableAddress[p#0]       : 
 #-----|     r0_9(Base &)         = Load                       : r0_8, m0_4
 #-----|     r0_10(glval<String>) = FieldAddress[base_s]       : r0_9
@@ -3078,29 +3078,29 @@ ir.cpp:
 
 #  748| Base::Base() -> void
 #  748|   Block 0
-#  748|     v0_0(void)          = EnterFunction           : 
-#  748|     mu0_1(unknown)      = UnmodeledDefinition     : 
-#  748|     r0_2(glval<Base>)   = InitializeThis          : 
-#  748|     r0_3(glval<String>) = FieldAddress[base_s]    : r0_2
-#  748|     r0_4(bool)          = FunctionAddress[String] : 
-#  748|     v0_5(void)          = Invoke                  : r0_4, this:r0_3
-#  749|     v0_6(void)          = NoOp                    : 
-#  748|     v0_7(void)          = ReturnVoid              : 
-#  748|     v0_8(void)          = UnmodeledUse            : mu*
-#  748|     v0_9(void)          = ExitFunction            : 
+#  748|     v0_0(void)           = EnterFunction           : 
+#  748|     mu0_1(unknown)       = UnmodeledDefinition     : 
+#  748|     r0_2(glval<Base>)    = InitializeThis          : 
+#  748|     r0_3(glval<String>)  = FieldAddress[base_s]    : r0_2
+#  748|     r0_4(glval<unknown>) = FunctionAddress[String] : 
+#  748|     v0_5(void)           = Invoke                  : r0_4, this:r0_3
+#  749|     v0_6(void)           = NoOp                    : 
+#  748|     v0_7(void)           = ReturnVoid              : 
+#  748|     v0_8(void)           = UnmodeledUse            : mu*
+#  748|     v0_9(void)           = ExitFunction            : 
 
 #  750| Base::~Base() -> void
 #  750|   Block 0
-#  750|     v0_0(void)          = EnterFunction            : 
-#  750|     mu0_1(unknown)      = UnmodeledDefinition      : 
-#  750|     r0_2(glval<Base>)   = InitializeThis           : 
-#  751|     v0_3(void)          = NoOp                     : 
-#  751|     r0_4(glval<String>) = FieldAddress[base_s]     : r0_2
-#  751|     r0_5(bool)          = FunctionAddress[~String] : 
-#  751|     v0_6(void)          = Invoke                   : r0_5, this:r0_4
-#  750|     v0_7(void)          = ReturnVoid               : 
-#  750|     v0_8(void)          = UnmodeledUse             : mu*
-#  750|     v0_9(void)          = ExitFunction             : 
+#  750|     v0_0(void)           = EnterFunction            : 
+#  750|     mu0_1(unknown)       = UnmodeledDefinition      : 
+#  750|     r0_2(glval<Base>)    = InitializeThis           : 
+#  751|     v0_3(void)           = NoOp                     : 
+#  751|     r0_4(glval<String>)  = FieldAddress[base_s]     : r0_2
+#  751|     r0_5(glval<unknown>) = FunctionAddress[~String] : 
+#  751|     v0_6(void)           = Invoke                   : r0_5, this:r0_4
+#  750|     v0_7(void)           = ReturnVoid               : 
+#  750|     v0_8(void)           = UnmodeledUse             : mu*
+#  750|     v0_9(void)           = ExitFunction             : 
 
 #  754| Middle::operator=(const Middle &) -> Middle &
 #  754|   Block 0
@@ -3111,14 +3111,14 @@ ir.cpp:
 #-----|     m0_4(Middle &)         = InitializeParameter[p#0]     : r0_3
 #-----|     r0_5(Middle *)         = CopyValue                    : r0_2
 #-----|     r0_6(Base *)           = ConvertToBase[Middle : Base] : r0_5
-#  754|     r0_7(bool)             = FunctionAddress[operator=]   : 
+#  754|     r0_7(glval<unknown>)   = FunctionAddress[operator=]   : 
 #-----|     r0_8(glval<Middle &>)  = VariableAddress[p#0]         : 
 #-----|     r0_9(Middle &)         = Load                         : r0_8, m0_4
 #-----|     r0_10(Base *)          = ConvertToBase[Middle : Base] : r0_9
 #  754|     r0_11(Base &)          = Invoke                       : r0_7, this:r0_6, r0_10
 #-----|     r0_12(Middle *)        = CopyValue                    : r0_2
 #-----|     r0_13(glval<String>)   = FieldAddress[middle_s]       : r0_12
-#  754|     r0_14(bool)            = FunctionAddress[operator=]   : 
+#  754|     r0_14(glval<unknown>)  = FunctionAddress[operator=]   : 
 #-----|     r0_15(glval<Middle &>) = VariableAddress[p#0]         : 
 #-----|     r0_16(Middle &)        = Load                         : r0_15, m0_4
 #-----|     r0_17(glval<String>)   = FieldAddress[middle_s]       : r0_16
@@ -3133,35 +3133,35 @@ ir.cpp:
 
 #  757| Middle::Middle() -> void
 #  757|   Block 0
-#  757|     v0_0(void)          = EnterFunction                : 
-#  757|     mu0_1(unknown)      = UnmodeledDefinition          : 
-#  757|     r0_2(glval<Middle>) = InitializeThis               : 
-#  757|     r0_3(glval<Base>)   = ConvertToBase[Middle : Base] : r0_2
-#  757|     r0_4(bool)          = FunctionAddress[Base]        : 
-#  757|     v0_5(void)          = Invoke                       : r0_4, this:r0_3
-#  757|     r0_6(glval<String>) = FieldAddress[middle_s]       : r0_2
-#  757|     r0_7(bool)          = FunctionAddress[String]      : 
-#  757|     v0_8(void)          = Invoke                       : r0_7, this:r0_6
-#  758|     v0_9(void)          = NoOp                         : 
-#  757|     v0_10(void)         = ReturnVoid                   : 
-#  757|     v0_11(void)         = UnmodeledUse                 : mu*
-#  757|     v0_12(void)         = ExitFunction                 : 
+#  757|     v0_0(void)           = EnterFunction                : 
+#  757|     mu0_1(unknown)       = UnmodeledDefinition          : 
+#  757|     r0_2(glval<Middle>)  = InitializeThis               : 
+#  757|     r0_3(glval<Base>)    = ConvertToBase[Middle : Base] : r0_2
+#  757|     r0_4(glval<unknown>) = FunctionAddress[Base]        : 
+#  757|     v0_5(void)           = Invoke                       : r0_4, this:r0_3
+#  757|     r0_6(glval<String>)  = FieldAddress[middle_s]       : r0_2
+#  757|     r0_7(glval<unknown>) = FunctionAddress[String]      : 
+#  757|     v0_8(void)           = Invoke                       : r0_7, this:r0_6
+#  758|     v0_9(void)           = NoOp                         : 
+#  757|     v0_10(void)          = ReturnVoid                   : 
+#  757|     v0_11(void)          = UnmodeledUse                 : mu*
+#  757|     v0_12(void)          = ExitFunction                 : 
 
 #  759| Middle::~Middle() -> void
 #  759|   Block 0
-#  759|     v0_0(void)          = EnterFunction                : 
-#  759|     mu0_1(unknown)      = UnmodeledDefinition          : 
-#  759|     r0_2(glval<Middle>) = InitializeThis               : 
-#  760|     v0_3(void)          = NoOp                         : 
-#  760|     r0_4(glval<String>) = FieldAddress[middle_s]       : r0_2
-#  760|     r0_5(bool)          = FunctionAddress[~String]     : 
-#  760|     v0_6(void)          = Invoke                       : r0_5, this:r0_4
-#  760|     r0_7(glval<Base>)   = ConvertToBase[Middle : Base] : r0_2
-#  760|     r0_8(bool)          = FunctionAddress[~Base]       : 
-#  760|     v0_9(void)          = Invoke                       : r0_8, this:r0_7
-#  759|     v0_10(void)         = ReturnVoid                   : 
-#  759|     v0_11(void)         = UnmodeledUse                 : mu*
-#  759|     v0_12(void)         = ExitFunction                 : 
+#  759|     v0_0(void)           = EnterFunction                : 
+#  759|     mu0_1(unknown)       = UnmodeledDefinition          : 
+#  759|     r0_2(glval<Middle>)  = InitializeThis               : 
+#  760|     v0_3(void)           = NoOp                         : 
+#  760|     r0_4(glval<String>)  = FieldAddress[middle_s]       : r0_2
+#  760|     r0_5(glval<unknown>) = FunctionAddress[~String]     : 
+#  760|     v0_6(void)           = Invoke                       : r0_5, this:r0_4
+#  760|     r0_7(glval<Base>)    = ConvertToBase[Middle : Base] : r0_2
+#  760|     r0_8(glval<unknown>) = FunctionAddress[~Base]       : 
+#  760|     v0_9(void)           = Invoke                       : r0_8, this:r0_7
+#  759|     v0_10(void)          = ReturnVoid                   : 
+#  759|     v0_11(void)          = UnmodeledUse                 : mu*
+#  759|     v0_12(void)          = ExitFunction                 : 
 
 #  763| Derived::operator=(const Derived &) -> Derived &
 #  763|   Block 0
@@ -3172,14 +3172,14 @@ ir.cpp:
 #-----|     m0_4(Derived &)         = InitializeParameter[p#0]        : r0_3
 #-----|     r0_5(Derived *)         = CopyValue                       : r0_2
 #-----|     r0_6(Middle *)          = ConvertToBase[Derived : Middle] : r0_5
-#  763|     r0_7(bool)              = FunctionAddress[operator=]      : 
+#  763|     r0_7(glval<unknown>)    = FunctionAddress[operator=]      : 
 #-----|     r0_8(glval<Derived &>)  = VariableAddress[p#0]            : 
 #-----|     r0_9(Derived &)         = Load                            : r0_8, m0_4
 #-----|     r0_10(Middle *)         = ConvertToBase[Derived : Middle] : r0_9
 #  763|     r0_11(Middle &)         = Invoke                          : r0_7, this:r0_6, r0_10
 #-----|     r0_12(Derived *)        = CopyValue                       : r0_2
 #-----|     r0_13(glval<String>)    = FieldAddress[derived_s]         : r0_12
-#  763|     r0_14(bool)             = FunctionAddress[operator=]      : 
+#  763|     r0_14(glval<unknown>)   = FunctionAddress[operator=]      : 
 #-----|     r0_15(glval<Derived &>) = VariableAddress[p#0]            : 
 #-----|     r0_16(Derived &)        = Load                            : r0_15, m0_4
 #-----|     r0_17(glval<String>)    = FieldAddress[derived_s]         : r0_16
@@ -3198,10 +3198,10 @@ ir.cpp:
 #  766|     mu0_1(unknown)       = UnmodeledDefinition             : 
 #  766|     r0_2(glval<Derived>) = InitializeThis                  : 
 #  766|     r0_3(glval<Middle>)  = ConvertToBase[Derived : Middle] : r0_2
-#  766|     r0_4(bool)           = FunctionAddress[Middle]         : 
+#  766|     r0_4(glval<unknown>) = FunctionAddress[Middle]         : 
 #  766|     v0_5(void)           = Invoke                          : r0_4, this:r0_3
 #  766|     r0_6(glval<String>)  = FieldAddress[derived_s]         : r0_2
-#  766|     r0_7(bool)           = FunctionAddress[String]         : 
+#  766|     r0_7(glval<unknown>) = FunctionAddress[String]         : 
 #  766|     v0_8(void)           = Invoke                          : r0_7, this:r0_6
 #  767|     v0_9(void)           = NoOp                            : 
 #  766|     v0_10(void)          = ReturnVoid                      : 
@@ -3215,10 +3215,10 @@ ir.cpp:
 #  768|     r0_2(glval<Derived>) = InitializeThis                  : 
 #  769|     v0_3(void)           = NoOp                            : 
 #  769|     r0_4(glval<String>)  = FieldAddress[derived_s]         : r0_2
-#  769|     r0_5(bool)           = FunctionAddress[~String]        : 
+#  769|     r0_5(glval<unknown>) = FunctionAddress[~String]        : 
 #  769|     v0_6(void)           = Invoke                          : r0_5, this:r0_4
 #  769|     r0_7(glval<Middle>)  = ConvertToBase[Derived : Middle] : r0_2
-#  769|     r0_8(bool)           = FunctionAddress[~Middle]        : 
+#  769|     r0_8(glval<unknown>) = FunctionAddress[~Middle]        : 
 #  769|     v0_9(void)           = Invoke                          : r0_8, this:r0_7
 #  768|     v0_10(void)          = ReturnVoid                      : 
 #  768|     v0_11(void)          = UnmodeledUse                    : mu*
@@ -3230,10 +3230,10 @@ ir.cpp:
 #  775|     mu0_1(unknown)         = UnmodeledDefinition             : 
 #  775|     r0_2(glval<MiddleVB1>) = InitializeThis                  : 
 #  775|     r0_3(glval<Base>)      = ConvertToBase[MiddleVB1 : Base] : r0_2
-#  775|     r0_4(bool)             = FunctionAddress[Base]           : 
+#  775|     r0_4(glval<unknown>)   = FunctionAddress[Base]           : 
 #  775|     v0_5(void)             = Invoke                          : r0_4, this:r0_3
 #  775|     r0_6(glval<String>)    = FieldAddress[middlevb1_s]       : r0_2
-#  775|     r0_7(bool)             = FunctionAddress[String]         : 
+#  775|     r0_7(glval<unknown>)   = FunctionAddress[String]         : 
 #  775|     v0_8(void)             = Invoke                          : r0_7, this:r0_6
 #  776|     v0_9(void)             = NoOp                            : 
 #  775|     v0_10(void)            = ReturnVoid                      : 
@@ -3247,10 +3247,10 @@ ir.cpp:
 #  777|     r0_2(glval<MiddleVB1>) = InitializeThis                  : 
 #  778|     v0_3(void)             = NoOp                            : 
 #  778|     r0_4(glval<String>)    = FieldAddress[middlevb1_s]       : r0_2
-#  778|     r0_5(bool)             = FunctionAddress[~String]        : 
+#  778|     r0_5(glval<unknown>)   = FunctionAddress[~String]        : 
 #  778|     v0_6(void)             = Invoke                          : r0_5, this:r0_4
 #  778|     r0_7(glval<Base>)      = ConvertToBase[MiddleVB1 : Base] : r0_2
-#  778|     r0_8(bool)             = FunctionAddress[~Base]          : 
+#  778|     r0_8(glval<unknown>)   = FunctionAddress[~Base]          : 
 #  778|     v0_9(void)             = Invoke                          : r0_8, this:r0_7
 #  777|     v0_10(void)            = ReturnVoid                      : 
 #  777|     v0_11(void)            = UnmodeledUse                    : mu*
@@ -3262,10 +3262,10 @@ ir.cpp:
 #  784|     mu0_1(unknown)         = UnmodeledDefinition             : 
 #  784|     r0_2(glval<MiddleVB2>) = InitializeThis                  : 
 #  784|     r0_3(glval<Base>)      = ConvertToBase[MiddleVB2 : Base] : r0_2
-#  784|     r0_4(bool)             = FunctionAddress[Base]           : 
+#  784|     r0_4(glval<unknown>)   = FunctionAddress[Base]           : 
 #  784|     v0_5(void)             = Invoke                          : r0_4, this:r0_3
 #  784|     r0_6(glval<String>)    = FieldAddress[middlevb2_s]       : r0_2
-#  784|     r0_7(bool)             = FunctionAddress[String]         : 
+#  784|     r0_7(glval<unknown>)   = FunctionAddress[String]         : 
 #  784|     v0_8(void)             = Invoke                          : r0_7, this:r0_6
 #  785|     v0_9(void)             = NoOp                            : 
 #  784|     v0_10(void)            = ReturnVoid                      : 
@@ -3279,10 +3279,10 @@ ir.cpp:
 #  786|     r0_2(glval<MiddleVB2>) = InitializeThis                  : 
 #  787|     v0_3(void)             = NoOp                            : 
 #  787|     r0_4(glval<String>)    = FieldAddress[middlevb2_s]       : r0_2
-#  787|     r0_5(bool)             = FunctionAddress[~String]        : 
+#  787|     r0_5(glval<unknown>)   = FunctionAddress[~String]        : 
 #  787|     v0_6(void)             = Invoke                          : r0_5, this:r0_4
 #  787|     r0_7(glval<Base>)      = ConvertToBase[MiddleVB2 : Base] : r0_2
-#  787|     r0_8(bool)             = FunctionAddress[~Base]          : 
+#  787|     r0_8(glval<unknown>)   = FunctionAddress[~Base]          : 
 #  787|     v0_9(void)             = Invoke                          : r0_8, this:r0_7
 #  786|     v0_10(void)            = ReturnVoid                      : 
 #  786|     v0_11(void)            = UnmodeledUse                    : mu*
@@ -3294,16 +3294,16 @@ ir.cpp:
 #  793|     mu0_1(unknown)         = UnmodeledDefinition                  : 
 #  793|     r0_2(glval<DerivedVB>) = InitializeThis                       : 
 #  793|     r0_3(glval<Base>)      = ConvertToBase[DerivedVB : Base]      : r0_2
-#  793|     r0_4(bool)             = FunctionAddress[Base]                : 
+#  793|     r0_4(glval<unknown>)   = FunctionAddress[Base]                : 
 #  793|     v0_5(void)             = Invoke                               : r0_4, this:r0_3
 #  793|     r0_6(glval<MiddleVB1>) = ConvertToBase[DerivedVB : MiddleVB1] : r0_2
-#  793|     r0_7(bool)             = FunctionAddress[MiddleVB1]           : 
+#  793|     r0_7(glval<unknown>)   = FunctionAddress[MiddleVB1]           : 
 #  793|     v0_8(void)             = Invoke                               : r0_7, this:r0_6
 #  793|     r0_9(glval<MiddleVB2>) = ConvertToBase[DerivedVB : MiddleVB2] : r0_2
-#  793|     r0_10(bool)            = FunctionAddress[MiddleVB2]           : 
+#  793|     r0_10(glval<unknown>)  = FunctionAddress[MiddleVB2]           : 
 #  793|     v0_11(void)            = Invoke                               : r0_10, this:r0_9
 #  793|     r0_12(glval<String>)   = FieldAddress[derivedvb_s]            : r0_2
-#  793|     r0_13(bool)            = FunctionAddress[String]              : 
+#  793|     r0_13(glval<unknown>)  = FunctionAddress[String]              : 
 #  793|     v0_14(void)            = Invoke                               : r0_13, this:r0_12
 #  794|     v0_15(void)            = NoOp                                 : 
 #  793|     v0_16(void)            = ReturnVoid                           : 
@@ -3317,16 +3317,16 @@ ir.cpp:
 #  795|     r0_2(glval<DerivedVB>)  = InitializeThis                       : 
 #  796|     v0_3(void)              = NoOp                                 : 
 #  796|     r0_4(glval<String>)     = FieldAddress[derivedvb_s]            : r0_2
-#  796|     r0_5(bool)              = FunctionAddress[~String]             : 
+#  796|     r0_5(glval<unknown>)    = FunctionAddress[~String]             : 
 #  796|     v0_6(void)              = Invoke                               : r0_5, this:r0_4
 #  796|     r0_7(glval<MiddleVB2>)  = ConvertToBase[DerivedVB : MiddleVB2] : r0_2
-#  796|     r0_8(bool)              = FunctionAddress[~MiddleVB2]          : 
+#  796|     r0_8(glval<unknown>)    = FunctionAddress[~MiddleVB2]          : 
 #  796|     v0_9(void)              = Invoke                               : r0_8, this:r0_7
 #  796|     r0_10(glval<MiddleVB1>) = ConvertToBase[DerivedVB : MiddleVB1] : r0_2
-#  796|     r0_11(bool)             = FunctionAddress[~MiddleVB1]          : 
+#  796|     r0_11(glval<unknown>)   = FunctionAddress[~MiddleVB1]          : 
 #  796|     v0_12(void)             = Invoke                               : r0_11, this:r0_10
 #  796|     r0_13(glval<Base>)      = ConvertToBase[DerivedVB : Base]      : r0_2
-#  796|     r0_14(bool)             = FunctionAddress[~Base]               : 
+#  796|     r0_14(glval<unknown>)   = FunctionAddress[~Base]               : 
 #  796|     v0_15(void)             = Invoke                               : r0_14, this:r0_13
 #  795|     v0_16(void)             = ReturnVoid                           : 
 #  795|     v0_17(void)             = UnmodeledUse                         : mu*
@@ -3337,13 +3337,13 @@ ir.cpp:
 #  799|     v0_0(void)                 = EnterFunction                          : 
 #  799|     mu0_1(unknown)             = UnmodeledDefinition                    : 
 #  800|     r0_2(glval<Base>)          = VariableAddress[b]                     : 
-#  800|     r0_3(bool)                 = FunctionAddress[Base]                  : 
+#  800|     r0_3(glval<unknown>)       = FunctionAddress[Base]                  : 
 #  800|     v0_4(void)                 = Invoke                                 : r0_3, this:r0_2
 #  801|     r0_5(glval<Middle>)        = VariableAddress[m]                     : 
-#  801|     r0_6(bool)                 = FunctionAddress[Middle]                : 
+#  801|     r0_6(glval<unknown>)       = FunctionAddress[Middle]                : 
 #  801|     v0_7(void)                 = Invoke                                 : r0_6, this:r0_5
 #  802|     r0_8(glval<Derived>)       = VariableAddress[d]                     : 
-#  802|     r0_9(bool)                 = FunctionAddress[Derived]               : 
+#  802|     r0_9(glval<unknown>)       = FunctionAddress[Derived]               : 
 #  802|     v0_10(void)                = Invoke                                 : r0_9, this:r0_8
 #  804|     r0_11(glval<Base *>)       = VariableAddress[pb]                    : 
 #  804|     r0_12(glval<Base>)         = VariableAddress[b]                     : 
@@ -3355,21 +3355,21 @@ ir.cpp:
 #  806|     r0_18(glval<Derived>)      = VariableAddress[d]                     : 
 #  806|     m0_19(Derived *)           = Store                                  : r0_17, r0_18
 #  808|     r0_20(glval<Base>)         = VariableAddress[b]                     : 
-#  808|     r0_21(bool)                = FunctionAddress[operator=]             : 
+#  808|     r0_21(glval<unknown>)      = FunctionAddress[operator=]             : 
 #  808|     r0_22(glval<Middle>)       = VariableAddress[m]                     : 
 #  808|     r0_23(glval<Base>)         = ConvertToBase[Middle : Base]           : r0_22
 #  808|     r0_24(Base &)              = Invoke                                 : r0_21, this:r0_20, r0_23
 #  809|     r0_25(glval<Base>)         = VariableAddress[b]                     : 
-#  809|     r0_26(bool)                = FunctionAddress[operator=]             : 
-#  809|     r0_27(bool)                = FunctionAddress[Base]                  : 
+#  809|     r0_26(glval<unknown>)      = FunctionAddress[operator=]             : 
+#  809|     r0_27(glval<unknown>)      = FunctionAddress[Base]                  : 
 #  809|     r0_28(glval<Middle>)       = VariableAddress[m]                     : 
 #  809|     r0_29(glval<Base>)         = ConvertToBase[Middle : Base]           : r0_28
 #  809|     v0_30(void)                = Invoke                                 : r0_27, r0_29
 #  809|     r0_31(Base)                = Convert                                : v0_30
 #  809|     r0_32(Base &)              = Invoke                                 : r0_26, this:r0_25, r0_31
 #  810|     r0_33(glval<Base>)         = VariableAddress[b]                     : 
-#  810|     r0_34(bool)                = FunctionAddress[operator=]             : 
-#  810|     r0_35(bool)                = FunctionAddress[Base]                  : 
+#  810|     r0_34(glval<unknown>)      = FunctionAddress[operator=]             : 
+#  810|     r0_35(glval<unknown>)      = FunctionAddress[Base]                  : 
 #  810|     r0_36(glval<Middle>)       = VariableAddress[m]                     : 
 #  810|     r0_37(glval<Base>)         = ConvertToBase[Middle : Base]           : r0_36
 #  810|     v0_38(void)                = Invoke                                 : r0_35, r0_37
@@ -3396,13 +3396,13 @@ ir.cpp:
 #  814|     r0_59(glval<Base *>)       = VariableAddress[pb]                    : 
 #  814|     m0_60(Base *)              = Store                                  : r0_59, r0_58
 #  816|     r0_61(glval<Middle>)       = VariableAddress[m]                     : 
-#  816|     r0_62(bool)                = FunctionAddress[operator=]             : 
+#  816|     r0_62(glval<unknown>)      = FunctionAddress[operator=]             : 
 #  816|     r0_63(glval<Base>)         = VariableAddress[b]                     : 
 #  816|     r0_64(glval<Middle>)       = ConvertToDerived[Middle : Base]        : r0_63
 #  816|     r0_65(glval<Middle>)       = Convert                                : r0_64
 #  816|     r0_66(Middle &)            = Invoke                                 : r0_62, this:r0_61, r0_65
 #  817|     r0_67(glval<Middle>)       = VariableAddress[m]                     : 
-#  817|     r0_68(bool)                = FunctionAddress[operator=]             : 
+#  817|     r0_68(glval<unknown>)      = FunctionAddress[operator=]             : 
 #  817|     r0_69(glval<Base>)         = VariableAddress[b]                     : 
 #  817|     r0_70(glval<Middle>)       = ConvertToDerived[Middle : Base]        : r0_69
 #  817|     r0_71(glval<Middle>)       = Convert                                : r0_70
@@ -3423,14 +3423,14 @@ ir.cpp:
 #  820|     r0_86(glval<Middle *>)     = VariableAddress[pm]                    : 
 #  820|     m0_87(Middle *)            = Store                                  : r0_86, r0_85
 #  822|     r0_88(glval<Base>)         = VariableAddress[b]                     : 
-#  822|     r0_89(bool)                = FunctionAddress[operator=]             : 
+#  822|     r0_89(glval<unknown>)      = FunctionAddress[operator=]             : 
 #  822|     r0_90(glval<Derived>)      = VariableAddress[d]                     : 
 #  822|     r0_91(glval<Middle>)       = ConvertToBase[Derived : Middle]        : r0_90
 #  822|     r0_92(glval<Base>)         = ConvertToBase[Middle : Base]           : r0_91
 #  822|     r0_93(Base &)              = Invoke                                 : r0_89, this:r0_88, r0_92
 #  823|     r0_94(glval<Base>)         = VariableAddress[b]                     : 
-#  823|     r0_95(bool)                = FunctionAddress[operator=]             : 
-#  823|     r0_96(bool)                = FunctionAddress[Base]                  : 
+#  823|     r0_95(glval<unknown>)      = FunctionAddress[operator=]             : 
+#  823|     r0_96(glval<unknown>)      = FunctionAddress[Base]                  : 
 #  823|     r0_97(glval<Derived>)      = VariableAddress[d]                     : 
 #  823|     r0_98(glval<Middle>)       = ConvertToBase[Derived : Middle]        : r0_97
 #  823|     r0_99(glval<Base>)         = ConvertToBase[Middle : Base]           : r0_98
@@ -3438,8 +3438,8 @@ ir.cpp:
 #  823|     r0_101(Base)               = Convert                                : v0_100
 #  823|     r0_102(Base &)             = Invoke                                 : r0_95, this:r0_94, r0_101
 #  824|     r0_103(glval<Base>)        = VariableAddress[b]                     : 
-#  824|     r0_104(bool)               = FunctionAddress[operator=]             : 
-#  824|     r0_105(bool)               = FunctionAddress[Base]                  : 
+#  824|     r0_104(glval<unknown>)     = FunctionAddress[operator=]             : 
+#  824|     r0_105(glval<unknown>)     = FunctionAddress[Base]                  : 
 #  824|     r0_106(glval<Derived>)     = VariableAddress[d]                     : 
 #  824|     r0_107(glval<Middle>)      = ConvertToBase[Derived : Middle]        : r0_106
 #  824|     r0_108(glval<Base>)        = ConvertToBase[Middle : Base]           : r0_107
@@ -3470,14 +3470,14 @@ ir.cpp:
 #  828|     r0_133(glval<Base *>)      = VariableAddress[pb]                    : 
 #  828|     m0_134(Base *)             = Store                                  : r0_133, r0_132
 #  830|     r0_135(glval<Derived>)     = VariableAddress[d]                     : 
-#  830|     r0_136(bool)               = FunctionAddress[operator=]             : 
+#  830|     r0_136(glval<unknown>)     = FunctionAddress[operator=]             : 
 #  830|     r0_137(glval<Base>)        = VariableAddress[b]                     : 
 #  830|     r0_138(glval<Middle>)      = ConvertToDerived[Middle : Base]        : r0_137
 #  830|     r0_139(glval<Derived>)     = ConvertToDerived[Derived : Middle]     : r0_138
 #  830|     r0_140(glval<Derived>)     = Convert                                : r0_139
 #  830|     r0_141(Derived &)          = Invoke                                 : r0_136, this:r0_135, r0_140
 #  831|     r0_142(glval<Derived>)     = VariableAddress[d]                     : 
-#  831|     r0_143(bool)               = FunctionAddress[operator=]             : 
+#  831|     r0_143(glval<unknown>)     = FunctionAddress[operator=]             : 
 #  831|     r0_144(glval<Base>)        = VariableAddress[b]                     : 
 #  831|     r0_145(glval<Middle>)      = ConvertToDerived[Middle : Base]        : r0_144
 #  831|     r0_146(glval<Derived>)     = ConvertToDerived[Derived : Middle]     : r0_145
@@ -3537,7 +3537,7 @@ ir.cpp:
 #  846|     mu0_1(unknown)                  = UnmodeledDefinition                                 : 
 #  846|     r0_2(glval<PolymorphicDerived>) = InitializeThis                                      : 
 #  846|     r0_3(glval<PolymorphicBase>)    = ConvertToBase[PolymorphicDerived : PolymorphicBase] : r0_2
-#  846|     r0_4(bool)                      = FunctionAddress[PolymorphicBase]                    : 
+#  846|     r0_4(glval<unknown>)            = FunctionAddress[PolymorphicBase]                    : 
 #  846|     v0_5(void)                      = Invoke                                              : r0_4, this:r0_3
 #  846|     v0_6(void)                      = NoOp                                                : 
 #  846|     v0_7(void)                      = ReturnVoid                                          : 
@@ -3551,7 +3551,7 @@ ir.cpp:
 #  846|     r0_2(glval<PolymorphicDerived>) = InitializeThis                                      : 
 #-----|     v0_3(void)                      = NoOp                                                : 
 #  846|     r0_4(glval<PolymorphicBase>)    = ConvertToBase[PolymorphicDerived : PolymorphicBase] : r0_2
-#  846|     r0_5(bool)                      = FunctionAddress[~PolymorphicBase]                   : 
+#  846|     r0_5(glval<unknown>)            = FunctionAddress[~PolymorphicBase]                   : 
 #  846|     v0_6(void)                      = Invoke                                              : r0_5, this:r0_4
 #  846|     v0_7(void)                      = ReturnVoid                                          : 
 #  846|     v0_8(void)                      = UnmodeledUse                                        : mu*
@@ -3562,10 +3562,10 @@ ir.cpp:
 #  849|     v0_0(void)                         = EnterFunction                                       : 
 #  849|     mu0_1(unknown)                     = UnmodeledDefinition                                 : 
 #  850|     r0_2(glval<PolymorphicBase>)       = VariableAddress[b]                                  : 
-#-----|     r0_3(bool)                         = FunctionAddress[PolymorphicBase]                    : 
+#-----|     r0_3(glval<unknown>)               = FunctionAddress[PolymorphicBase]                    : 
 #-----|     v0_4(void)                         = Invoke                                              : r0_3, this:r0_2
 #  851|     r0_5(glval<PolymorphicDerived>)    = VariableAddress[d]                                  : 
-#  851|     r0_6(bool)                         = FunctionAddress[PolymorphicDerived]                 : 
+#  851|     r0_6(glval<unknown>)               = FunctionAddress[PolymorphicDerived]                 : 
 #  851|     v0_7(void)                         = Invoke                                              : r0_6, this:r0_5
 #  853|     r0_8(glval<PolymorphicBase *>)     = VariableAddress[pb]                                 : 
 #  853|     r0_9(glval<PolymorphicBase>)       = VariableAddress[b]                                  : 
@@ -3611,7 +3611,7 @@ ir.cpp:
 #  867|     v0_0(void)           = EnterFunction           : 
 #  867|     mu0_1(unknown)       = UnmodeledDefinition     : 
 #  867|     r0_2(glval<String>)  = InitializeThis          : 
-#  868|     r0_3(bool)           = FunctionAddress[String] : 
+#  868|     r0_3(glval<unknown>) = FunctionAddress[String] : 
 #  868|     r0_4(glval<char[1]>) = StringConstant[""]      : 
 #  868|     r0_5(char *)         = Convert                 : r0_4
 #  868|     v0_6(void)           = Invoke                  : r0_3, this:r0_2, r0_5
@@ -3788,42 +3788,42 @@ ir.cpp:
 #  940|   Block 0
 #  940|     v0_0(void)            = EnterFunction                 : 
 #  940|     mu0_1(unknown)        = UnmodeledDefinition           : 
-#  941|     r0_2(bool)            = FunctionAddress[operator new] : 
+#  941|     r0_2(glval<unknown>)  = FunctionAddress[operator new] : 
 #  941|     r0_3(unsigned long)   = Constant[4]                   : 
 #  941|     r0_4(void *)          = Invoke                        : r0_2, r0_3
 #  941|     r0_5(int *)           = Convert                       : r0_4
-#  942|     r0_6(bool)            = FunctionAddress[operator new] : 
+#  942|     r0_6(glval<unknown>)  = FunctionAddress[operator new] : 
 #  942|     r0_7(unsigned long)   = Constant[4]                   : 
 #  942|     r0_8(float)           = Constant[1.0]                 : 
 #  942|     r0_9(void *)          = Invoke                        : r0_6, r0_7, r0_8
 #  942|     r0_10(int *)          = Convert                       : r0_9
-#  943|     r0_11(bool)           = FunctionAddress[operator new] : 
+#  943|     r0_11(glval<unknown>) = FunctionAddress[operator new] : 
 #  943|     r0_12(unsigned long)  = Constant[4]                   : 
 #  943|     r0_13(void *)         = Invoke                        : r0_11, r0_12
 #  943|     r0_14(int *)          = Convert                       : r0_13
 #  943|     r0_15(int)            = Constant[0]                   : 
 #  943|     mu0_16(int)           = Store                         : r0_14, r0_15
-#  944|     r0_17(bool)           = FunctionAddress[operator new] : 
+#  944|     r0_17(glval<unknown>) = FunctionAddress[operator new] : 
 #  944|     r0_18(unsigned long)  = Constant[8]                   : 
 #  944|     r0_19(void *)         = Invoke                        : r0_17, r0_18
 #  944|     r0_20(String *)       = Convert                       : r0_19
-#  944|     r0_21(bool)           = FunctionAddress[String]       : 
+#  944|     r0_21(glval<unknown>) = FunctionAddress[String]       : 
 #  944|     v0_22(void)           = Invoke                        : r0_21, this:r0_20
-#  945|     r0_23(bool)           = FunctionAddress[operator new] : 
+#  945|     r0_23(glval<unknown>) = FunctionAddress[operator new] : 
 #  945|     r0_24(unsigned long)  = Constant[8]                   : 
 #  945|     r0_25(float)          = Constant[1.0]                 : 
 #  945|     r0_26(void *)         = Invoke                        : r0_23, r0_24, r0_25
 #  945|     r0_27(String *)       = Convert                       : r0_26
-#  945|     r0_28(bool)           = FunctionAddress[String]       : 
+#  945|     r0_28(glval<unknown>) = FunctionAddress[String]       : 
 #  945|     r0_29(glval<char[6]>) = StringConstant["hello"]       : 
 #  945|     r0_30(char *)         = Convert                       : r0_29
 #  945|     v0_31(void)           = Invoke                        : r0_28, this:r0_27, r0_30
-#  946|     r0_32(bool)           = FunctionAddress[operator new] : 
+#  946|     r0_32(glval<unknown>) = FunctionAddress[operator new] : 
 #  946|     r0_33(unsigned long)  = Constant[256]                 : 
 #  946|     r0_34(align_val_t)    = Constant[128]                 : 
 #  946|     r0_35(void *)         = Invoke                        : r0_32, r0_33, r0_34
 #  946|     r0_36(Overaligned *)  = Convert                       : r0_35
-#  947|     r0_37(bool)           = FunctionAddress[operator new] : 
+#  947|     r0_37(glval<unknown>) = FunctionAddress[operator new] : 
 #  947|     r0_38(unsigned long)  = Constant[256]                 : 
 #  947|     r0_39(align_val_t)    = Constant[128]                 : 
 #  947|     r0_40(float)          = Constant[1.0]                 : 
@@ -3842,11 +3842,11 @@ ir.cpp:
 #  950|     mu0_1(unknown)                       = UnmodeledDefinition             : 
 #  950|     r0_2(glval<int>)                     = VariableAddress[n]              : 
 #  950|     m0_3(int)                            = InitializeParameter[n]          : r0_2
-#  951|     r0_4(bool)                           = FunctionAddress[operator new[]] : 
+#  951|     r0_4(glval<unknown>)                 = FunctionAddress[operator new[]] : 
 #  951|     r0_5(unsigned long)                  = Constant[40]                    : 
 #  951|     r0_6(void *)                         = Invoke                          : r0_4, r0_5
 #  951|     r0_7(int *)                          = Convert                         : r0_6
-#  952|     r0_8(bool)                           = FunctionAddress[operator new[]] : 
+#  952|     r0_8(glval<unknown>)                 = FunctionAddress[operator new[]] : 
 #  952|     r0_9(glval<int>)                     = VariableAddress[n]              : 
 #  952|     r0_10(int)                           = Load                            : r0_9, m0_3
 #  952|     r0_11(unsigned long)                 = Convert                         : r0_10
@@ -3854,7 +3854,7 @@ ir.cpp:
 #  952|     r0_13(unsigned long)                 = Mul                             : r0_11, r0_12
 #  952|     r0_14(void *)                        = Invoke                          : r0_8, r0_13
 #  952|     r0_15(int *)                         = Convert                         : r0_14
-#  953|     r0_16(bool)                          = FunctionAddress[operator new[]] : 
+#  953|     r0_16(glval<unknown>)                = FunctionAddress[operator new[]] : 
 #  953|     r0_17(glval<int>)                    = VariableAddress[n]              : 
 #  953|     r0_18(int)                           = Load                            : r0_17, m0_3
 #  953|     r0_19(unsigned long)                 = Convert                         : r0_18
@@ -3863,7 +3863,7 @@ ir.cpp:
 #  953|     r0_22(float)                         = Constant[1.0]                   : 
 #  953|     r0_23(void *)                        = Invoke                          : r0_16, r0_21, r0_22
 #  953|     r0_24(int *)                         = Convert                         : r0_23
-#  954|     r0_25(bool)                          = FunctionAddress[operator new[]] : 
+#  954|     r0_25(glval<unknown>)                = FunctionAddress[operator new[]] : 
 #  954|     r0_26(glval<int>)                    = VariableAddress[n]              : 
 #  954|     r0_27(int)                           = Load                            : r0_26, m0_3
 #  954|     r0_28(unsigned long)                 = Convert                         : r0_27
@@ -3871,7 +3871,7 @@ ir.cpp:
 #  954|     r0_30(unsigned long)                 = Mul                             : r0_28, r0_29
 #  954|     r0_31(void *)                        = Invoke                          : r0_25, r0_30
 #  954|     r0_32(String *)                      = Convert                         : r0_31
-#  955|     r0_33(bool)                          = FunctionAddress[operator new[]] : 
+#  955|     r0_33(glval<unknown>)                = FunctionAddress[operator new[]] : 
 #  955|     r0_34(glval<int>)                    = VariableAddress[n]              : 
 #  955|     r0_35(int)                           = Load                            : r0_34, m0_3
 #  955|     r0_36(unsigned long)                 = Convert                         : r0_35
@@ -3880,13 +3880,13 @@ ir.cpp:
 #  955|     r0_39(align_val_t)                   = Constant[128]                   : 
 #  955|     r0_40(void *)                        = Invoke                          : r0_33, r0_38, r0_39
 #  955|     r0_41(Overaligned *)                 = Convert                         : r0_40
-#  956|     r0_42(bool)                          = FunctionAddress[operator new[]] : 
+#  956|     r0_42(glval<unknown>)                = FunctionAddress[operator new[]] : 
 #  956|     r0_43(unsigned long)                 = Constant[2560]                  : 
 #  956|     r0_44(align_val_t)                   = Constant[128]                   : 
 #  956|     r0_45(float)                         = Constant[1.0]                   : 
 #  956|     r0_46(void *)                        = Invoke                          : r0_42, r0_43, r0_44, r0_45
 #  956|     r0_47(Overaligned *)                 = Convert                         : r0_46
-#  957|     r0_48(bool)                          = FunctionAddress[operator new[]] : 
+#  957|     r0_48(glval<unknown>)                = FunctionAddress[operator new[]] : 
 #  957|     r0_49(glval<int>)                    = VariableAddress[n]              : 
 #  957|     r0_50(int)                           = Load                            : r0_49, m0_3
 #  957|     r0_51(unsigned long)                 = Convert                         : r0_50
@@ -3894,7 +3894,7 @@ ir.cpp:
 #  957|     r0_53(unsigned long)                 = Mul                             : r0_51, r0_52
 #  957|     r0_54(void *)                        = Invoke                          : r0_48, r0_53
 #  957|     r0_55(DefaultCtorWithDefaultParam *) = Convert                         : r0_54
-#  958|     r0_56(bool)                          = FunctionAddress[operator new[]] : 
+#  958|     r0_56(glval<unknown>)                = FunctionAddress[operator new[]] : 
 #  958|     r0_57(glval<int>)                    = VariableAddress[n]              : 
 #  958|     r0_58(int)                           = Load                            : r0_57, m0_3
 #  958|     r0_59(unsigned long)                 = Convert                         : r0_58

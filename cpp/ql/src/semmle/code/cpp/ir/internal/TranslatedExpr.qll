@@ -2088,26 +2088,11 @@ class TranslatedNonConstantAllocationSize extends TranslatedAllocationSize {
 }
 
 /**
- * The IR translation of a call to `operator new` as part of a `new` or `new[]`
- * expression.
+ * IR translation of a direct call to a specific function. Used for both
+ * explicit calls (`TranslatedFunctionCall`) and implicit calls
+ * (`TranslatedAllocatorCall`).
  */
-class TranslatedAllocatorCall extends TTranslatedAllocatorCall,
-    TranslatedCall {
-  NewOrNewArrayExpr newExpr;
-
-  TranslatedAllocatorCall() {
-    this = TTranslatedAllocatorCall(newExpr) and
-    expr = newExpr
-  }
-
-  override final string toString() {
-    result = "Allocator call for " + newExpr.toString()
-  }
-
-  override final predicate producesExprResult() {
-    none()
-  }
-
+abstract class TranslatedDirectCall extends TranslatedCall {
   override final Instruction getFirstCallTargetInstruction() {
     result = getInstruction(CallTargetTag())
   }
@@ -2122,8 +2107,11 @@ class TranslatedAllocatorCall extends TTranslatedAllocatorCall,
     (
       tag = CallTargetTag() and
       opcode instanceof Opcode::FunctionAddress and
-      resultType instanceof BoolType and //HACK
-      isGLValue = false
+      // The database does not contain a `FunctionType` for a function unless
+      // its address was taken, so we'll just use glval<Unknown> instead of
+      // glval<FunctionType>.
+      resultType instanceof UnknownType and
+      isGLValue = true
     )
   }
   
@@ -2135,6 +2123,28 @@ class TranslatedAllocatorCall extends TTranslatedAllocatorCall,
       kind instanceof GotoEdge and
       result = getFirstArgumentOrCallInstruction()
     )
+  }
+}
+
+/**
+ * The IR translation of a call to `operator new` as part of a `new` or `new[]`
+ * expression.
+ */
+class TranslatedAllocatorCall extends TTranslatedAllocatorCall,
+    TranslatedDirectCall {
+  NewOrNewArrayExpr newExpr;
+
+  TranslatedAllocatorCall() {
+    this = TTranslatedAllocatorCall(newExpr) and
+    expr = newExpr
+  }
+
+  override final string toString() {
+    result = "Allocator call for " + newExpr.toString()
+  }
+
+  override final predicate producesExprResult() {
+    none()
   }
 
   override Function getInstructionFunction(InstructionTag tag) {
@@ -2220,40 +2230,11 @@ class TranslatedExprCall extends TranslatedCallExpr {
 /**
  * Represents the IR translation of a direct function call.
  */
-class TranslatedFunctionCall extends TranslatedCallExpr {
+class TranslatedFunctionCall extends TranslatedCallExpr, TranslatedDirectCall {
   FunctionCall funcCall;
 
   TranslatedFunctionCall() {
     expr = funcCall
-  }
-
-  override final Instruction getFirstCallTargetInstruction() {
-    result = getInstruction(CallTargetTag())
-  }
-
-  override final Instruction getCallTargetResult() {
-    result = getInstruction(CallTargetTag())
-  }
-
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-    Type resultType, boolean isGLValue) {
-    super.hasInstruction(opcode, tag, resultType, isGLValue) or
-    (
-      tag = CallTargetTag() and
-      opcode instanceof Opcode::FunctionAddress and
-      resultType instanceof BoolType and //HACK
-      isGLValue = false
-    )
-  }
-  
-  override Instruction getInstructionSuccessor(InstructionTag tag,
-    EdgeKind kind) {
-    result = super.getInstructionSuccessor(tag, kind) or
-    (
-      tag = CallTargetTag() and
-      kind instanceof GotoEdge and
-      result = getFirstArgumentOrCallInstruction()
-    )
   }
 
   override Function getInstructionFunction(InstructionTag tag) {
