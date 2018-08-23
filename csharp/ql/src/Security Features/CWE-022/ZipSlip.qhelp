@@ -46,18 +46,18 @@ directory, aborting if this is not true.</li>
 <example>
 
 <p>In this example, a file path taken from a zip archive item entry is combined with a
-destination directory, and the result is used as the destination file path without verifying that
+destination directory. The result is used as the destination file path without verifying that
 the result is within the destination directory. If provided with a zip file containing an archive
-path like <code>..\sneaky-file</code>, then this file would be written outside of the destination
+path like <code>..\sneaky-file</code>, then this file would be written outside the destination
 directory.</p>
 
 <sample src="ZipSlipBad.cs" />
 
-<p>In order to fix this vulnerability, we need to make three changes. Firstly, we need to resolve any
+<p>To fix this vulnerability, we need to make three changes. Firstly, we need to resolve any
 directory traversal or other special characters in the path by using <code>Path.GetFullPath</code>.
 Secondly, we need to identify the destination output directory, again using
 <code>Path.GetFullPath</code>, this time on the output directory. Finally, we need to ensure that
-the resolved output starts with the resolved destination directory, and throw and exception if this
+the resolved output starts with the resolved destination directory, and throw an exception if this
 is not the case.</p>
 
 <sample src="ZipSlipGood.cs" />

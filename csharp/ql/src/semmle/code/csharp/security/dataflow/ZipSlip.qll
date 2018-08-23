@@ -1,5 +1,5 @@
 /**
- * Provides a taint-tracking configuration for reasoning about unsafe zip extraction.
+ * Provides a taint tracking configuration for reasoning about unsafe zip extraction.
  */
 import csharp
 
@@ -15,11 +15,11 @@ module ZipSlip {
   abstract class Sink extends DataFlow::ExprNode { }
 
   /**
-   * A sanitizer for unsafe zipe extraction.
+   * A sanitizer for unsafe zip extraction.
    */
   abstract class Sanitizer extends DataFlow::ExprNode { }
 
-  /** A taint tracking configuration for ZipSlip */
+  /** A taint tracking configuration for Zip Slip */
   class TaintTrackingConfiguration extends TaintTracking::Configuration {
     TaintTrackingConfiguration() {
       this = "ZipSlipTaintTracking"
@@ -59,7 +59,7 @@ module ZipSlip {
     }
   }
 
-  /** A path argument to a `File.Open`, `File.OpenWrite` or `File.Create` method call. */
+  /** A path argument to a `File.Open`, `File.OpenWrite`, or `File.Create` method call. */
   class FileOpenArgSink extends Sink {
     FileOpenArgSink() {
       exists(MethodCall mc |

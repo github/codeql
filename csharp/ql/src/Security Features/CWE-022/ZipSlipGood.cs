@@ -9,7 +9,7 @@ class Good
         string destFileName = Path.GetFullPath(Path.Combine(destDirectory, entry.FullName));
         string fullDestDirPath = Path.GetFullPath(destDirectory + Path.DirectorySeparatorChar);
         if (!destFileName.StartsWith(fullDestDirPath)) {
-            throw new System.InvalidOperationException("Entry is outside of the target dir: " +
+            throw new System.InvalidOperationException("Entry is outside the target dir: " +
                                                                                  destFileName);
         }
         entry.ExtractToFile(destFileName);
