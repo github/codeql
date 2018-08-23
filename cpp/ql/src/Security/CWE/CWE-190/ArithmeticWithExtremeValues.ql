@@ -35,18 +35,18 @@ predicate isMinValue(MacroInvocationExpr mie) {
 
 class SecurityOptionsArith extends SecurityOptions {
   override predicate isUserInput(Expr expr, string cause) {
-    (isMaxValue(expr) and cause = "max value") or
-    (isMinValue(expr) and cause = "min value")
+    (isMaxValue(expr) and cause = "overflow") or
+    (isMinValue(expr) and cause = "underflow")
   }
 }
 
-predicate taintedVarAccess(Expr origin, VariableAccess va) {
-  isUserInput(origin, _) and
+predicate taintedVarAccess(Expr origin, VariableAccess va, string cause) {
+  isUserInput(origin, cause) and
   tainted(origin, va)
 }
 
 from Expr origin, Operation op, VariableAccess va, string effect
-where taintedVarAccess(origin, va)
+where taintedVarAccess(origin, va, effect)
   and op.getAnOperand() = va
   and
   (
