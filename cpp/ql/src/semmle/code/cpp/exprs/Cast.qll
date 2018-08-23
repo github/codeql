@@ -1,5 +1,5 @@
 import semmle.code.cpp.exprs.Expr
-private import semmle.code.cpp.internal.Type
+private import semmle.code.cpp.internal.ResolveClass
 
 /**
  * A C/C++ cast expression or similar unary expression that doesn't affect the logical value of its operand.

@@ -1,7 +1,7 @@
 import semmle.code.cpp.Element
 import semmle.code.cpp.exprs.Access
 import semmle.code.cpp.Initializer
-private import semmle.code.cpp.internal.Type
+private import semmle.code.cpp.internal.ResolveClass
 
 /**
  * A C/C++ variable.

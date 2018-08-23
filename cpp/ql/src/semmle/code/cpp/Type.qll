@@ -1,7 +1,7 @@
 import semmle.code.cpp.Element
 import semmle.code.cpp.Member
 import semmle.code.cpp.Function
-private import semmle.code.cpp.internal.Type
+private import semmle.code.cpp.internal.ResolveClass
 
 /**
  * A C/C++ type.

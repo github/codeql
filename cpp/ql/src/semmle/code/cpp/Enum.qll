@@ -1,5 +1,5 @@
 import semmle.code.cpp.Type
-private import semmle.code.cpp.internal.Type
+private import semmle.code.cpp.internal.ResolveClass
 
 /**
  * A C/C++ enum [N4140 7.2].

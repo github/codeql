@@ -1,6 +1,6 @@
 import semmle.code.cpp.Location
 import semmle.code.cpp.Declaration
-private import semmle.code.cpp.internal.Type
+private import semmle.code.cpp.internal.ResolveClass
 
 /**
  * A C/C++ function parameter or catch block parameter.

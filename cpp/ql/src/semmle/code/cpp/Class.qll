@@ -2,7 +2,7 @@ import semmle.code.cpp.Type
 import semmle.code.cpp.UserType
 import semmle.code.cpp.metrics.MetricClass
 import semmle.code.cpp.Linkage
-private import semmle.code.cpp.internal.Type
+private import semmle.code.cpp.internal.ResolveClass
 
 /**
  * A class type [N4140 9].

@@ -1,5 +1,5 @@
 import semmle.code.cpp.Element
-private import semmle.code.cpp.internal.Type
+private import semmle.code.cpp.internal.ResolveClass
 
 /**
  * A C/C++ specifier: `friend`, `auto`, `register`, `static`, `extern`,

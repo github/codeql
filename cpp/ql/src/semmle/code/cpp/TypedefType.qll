@@ -1,5 +1,5 @@
 import semmle.code.cpp.Type
-private import semmle.code.cpp.internal.Type
+private import semmle.code.cpp.internal.ResolveClass
 
 /**
  * A C/C++ typedef type. See 4.9.1.
