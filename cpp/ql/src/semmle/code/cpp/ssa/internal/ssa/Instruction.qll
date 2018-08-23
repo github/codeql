@@ -195,8 +195,11 @@ class Instruction extends Construction::TInstruction {
   private string getResultTypeString() {
     exists(string valcat |
       valcat = getValueCategoryString(resultType.toString()) and
-      if resultType instanceof UnknownType and exists(getResultSize()) then
+      if (resultType instanceof UnknownType and
+          not isGLValue() and
+          exists(getResultSize())) then (
         result = valcat + "[" + getResultSize().toString() + "]"
+      )
       else
         result = valcat
     )

@@ -43,6 +43,9 @@ newtype TInstructionTag =
   SwitchBranchTag() or
   CallTargetTag() or
   CallTag() or
+  AllocationSizeTag() or
+  AllocationElementSizeTag() or
+  AllocationExtentConvertTag() or
   ValueConditionConditionalBranchTag() or
   ConditionValueTrueTempAddressTag() or
   ConditionValueTrueConstantTag() or
@@ -88,11 +91,15 @@ string getInstructionTagId(TInstructionTag tag) {
   tag = OnlyInstructionTag() and result = "Only" or  // Single instruction (not including implicit Load)
   tag = InitializerVariableAddressTag() and result = "InitVarAddr" or
   tag = InitializerStoreTag() and result = "InitStore" or
+  tag = ZeroPadStringConstantTag() and result = "ZeroPadConst" or
+  tag = ZeroPadStringElementIndexTag() and result = "ZeroPadElemIndex" or
+  tag = ZeroPadStringElementAddressTag() and result = "ZeroPadElemAddr" or
+  tag = ZeroPadStringStoreTag() and result = "ZeroPadStore" or
   tag = AssignOperationLoadTag() and result = "AssignOpLoad" or
   tag = AssignOperationConvertLeftTag() and result = "AssignOpConvLeft" or
   tag = AssignOperationOpTag() and result = "AssignOpOp" or
   tag = AssignOperationConvertResultTag() and result = "AssignOpConvRes" or
-  tag = AssignmentStoreTag() and result = "AssigStore" or
+  tag = AssignmentStoreTag() and result = "AssignStore" or
   tag = CrementLoadTag() and result = "CrementLoad" or
   tag = CrementConstantTag() and result = "CrementConst" or
   tag = CrementOpTag() and result = "CrementOp" or
@@ -106,6 +113,9 @@ string getInstructionTagId(TInstructionTag tag) {
   tag = SwitchBranchTag() and result = "SwitchBranch" or
   tag = CallTargetTag() and result = "CallTarget" or
   tag = CallTag() and result = "Call" or
+  tag = AllocationSizeTag() and result = "AllocSize" or
+  tag = AllocationElementSizeTag() and result = "AllocElemSize" or
+  tag = AllocationExtentConvertTag() and result = "AllocExtConv" or
   tag = ValueConditionConditionalBranchTag() and result = "ValCondCondBranch" or
   tag = ConditionValueTrueTempAddressTag() and result = "CondValTrueTempAddr" or
   tag = ConditionValueTrueConstantTag() and result = "CondValTrueConst" or

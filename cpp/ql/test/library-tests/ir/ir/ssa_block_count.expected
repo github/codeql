@@ -70,6 +70,8 @@
 | IR: MiddleVB2 | 1 |
 | IR: NestedInitList | 1 |
 | IR: Nullptr | 1 |
+| IR: OperatorNew | 1 |
+| IR: OperatorNewArray | 1 |
 | IR: Parameters | 1 |
 | IR: PointerCompare | 1 |
 | IR: PointerCrement | 1 |

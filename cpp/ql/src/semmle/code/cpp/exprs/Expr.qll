@@ -581,24 +581,13 @@ class ReferenceDereferenceExpr extends Conversion, @ref_indirect {
 }
 
 /**
- * A C++ `new` (non-array) expression.
+ * A C++ `new` or `new[]` expression.
  */
-class NewExpr extends Expr, @new_expr {
-  override string toString() { result = "new" }
-
+class NewOrNewArrayExpr extends Expr, @any_new_expr {
   override int getPrecedence() { result = 15 }
 
   /**
-   * Gets the type that is being allocated.
-   *
-   * For example, for `new int` the result is `int`.
-   */
-  Type getAllocatedType() {
-    new_allocated_type(underlyingElement(this), unresolveElement(result))
-  }
-
-  /**
-   * Gets the `operator new` that allocates storage.
+   * Gets the `operator new` or `operator new[]` that allocates storage.
    */
   Function getAllocator() {
     expr_allocator(underlyingElement(this), unresolveElement(result), _)
@@ -610,6 +599,21 @@ class NewExpr extends Expr, @new_expr {
    */
   predicate hasAlignedAllocation() {
     expr_allocator(underlyingElement(this), _, 1)
+  }
+
+  /**
+   * Gets the alignment argument passed to the allocation function, if any.
+   */
+  Expr getAlignmentArgument() {
+    hasAlignedAllocation() and
+    (
+      // If we have an allocator call, the alignment is the second argument to
+      // that call.
+      result = getAllocatorCall().getArgument(1) or
+      // Otherwise, the alignment winds up as child number 3 of the `new`
+      // itself.
+      result = getChild(3)
+    )
   }
 
   /**
@@ -653,6 +657,30 @@ class NewExpr extends Expr, @new_expr {
   }
 
   /**
+   * Gets the type that is being allocated.
+   *
+   * For example, for `new int` the result is `int`.
+   * For `new int[5]` the result is `int[5]`.
+   */
+  abstract Type getAllocatedType();
+}
+
+/**
+ * A C++ `new` (non-array) expression.
+ */
+class NewExpr extends NewOrNewArrayExpr, @new_expr {
+  override string toString() { result = "new" }
+
+  /**
+   * Gets the type that is being allocated.
+   *
+   * For example, for `new int` the result is `int`.
+   */
+  override Type getAllocatedType() {
+    new_allocated_type(underlyingElement(this), unresolveElement(result))
+  }
+
+  /**
    * Gets the call or expression that initializes the allocated object, if any.
    *
    * As examples, for `new int(4)`, this will be `4`, and for `new std::vector(4)`, this will
@@ -664,17 +692,15 @@ class NewExpr extends Expr, @new_expr {
 /**
  * A C++ `new[]` (array) expression.
  */
-class NewArrayExpr extends Expr, @new_array_expr {
+class NewArrayExpr extends NewOrNewArrayExpr, @new_array_expr {
   override string toString() { result = "new[]" }
-
-  override int getPrecedence() { result = 15 }
 
   /**
    * Gets the type that is being allocated.
    *
    * For example, for `new int[5]` the result is `int[5]`.
    */
-  Type getAllocatedType() {
+  override Type getAllocatedType() {
     new_array_allocated_type(underlyingElement(this), unresolveElement(result))
   }
 
@@ -683,56 +709,6 @@ class NewArrayExpr extends Expr, @new_array_expr {
    */
   Type getAllocatedElementType() {
     result = getType().getUnderlyingType().(PointerType).getBaseType()
-  }
-
-  /**
-   * Gets the `operator new[]` that allocates storage.
-   */
-  Function getAllocator() {
-    expr_allocator(underlyingElement(this), unresolveElement(result), _)
-  }
-
-  /**
-   * Holds if the allocation function is the version that expects an alignment
-   * argument of type `std::align_val_t`.
-   */
-  predicate hasAlignedAllocation() {
-    expr_allocator(underlyingElement(this), _, 1)
-  }
-
-  /**
-   * Gets the call to a non-default `operator new[]` that allocates storage for the array, if any.
-   *
-   * If the default `operator new[]` is used, then there will be no call.
-   */
-  FunctionCall getAllocatorCall() { result = this.getChild(0) }
-
-  /**
-   * Gets the `operator delete` that deallocates storage if the initialization
-   * throws an exception, if any.
-   */
-  Function getDeallocator() {
-    expr_deallocator(underlyingElement(this), unresolveElement(result), _)
-  }
-
-  /**
-   * Holds if the deallocation function expects a size argument.
-   */
-  predicate hasSizedDeallocation() {
-    exists(int form |
-      expr_deallocator(underlyingElement(this), _, form) and
-      form.bitAnd(1) != 0  // Bit zero is the "size" bit
-    )
-  }
-
-  /**
-   * Holds if the deallocation function expects an alignment argument.
-   */
-  predicate hasAlignedDeallocation() {
-    exists(int form |
-      expr_deallocator(underlyingElement(this), _, form) and
-      form.bitAnd(2) != 0  // Bit one is the "alignment" bit
-    )
   }
 
   /**

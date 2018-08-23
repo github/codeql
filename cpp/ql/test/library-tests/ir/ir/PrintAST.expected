@@ -2,6 +2,38 @@
 #-----|   params: 
 #-----| __va_list_tag::operator=() -> __va_list_tag &
 #-----|   params: 
+#-----| operator new(unsigned long) -> void *
+#-----|   params: 
+#-----|     0: p#0
+#-----|         Type = unsigned long
+#-----| operator delete(void *, unsigned long) -> void
+#-----|   params: 
+#-----|     0: p#0
+#-----|         Type = void *
+#-----|     1: p#1
+#-----|         Type = unsigned long
+#-----| operator new(unsigned long, align_val_t) -> void *
+#-----|   params: 
+#-----|     0: p#0
+#-----|         Type = unsigned long
+#-----|     1: p#1
+#-----|         Type = align_val_t
+#-----| operator new[](unsigned long) -> void *
+#-----|   params: 
+#-----|     0: p#0
+#-----|         Type = unsigned long
+#-----| operator delete[](void *, unsigned long) -> void
+#-----|   params: 
+#-----|     0: p#0
+#-----|         Type = void *
+#-----|     1: p#1
+#-----|         Type = unsigned long
+#-----| operator new[](unsigned long, align_val_t) -> void *
+#-----|   params: 
+#-----|     0: p#0
+#-----|         Type = unsigned long
+#-----|     1: p#1
+#-----|         Type = align_val_t
 ir.cpp:
 #    1| Constants() -> void
 #    1|   params: 
@@ -5957,3 +5989,317 @@ ir.cpp:
 #  906|                 Type = int
 #  906|                 ValueCategory = prvalue(load)
 #  907|     2: return ...
+#  915| operator new(size_t, float) -> void *
+#  915|   params: 
+#  915|     0: p#0
+#  915|         Type = size_t
+#  915|     1: p#1
+#  915|         Type = float
+#  916| operator new[](size_t, float) -> void *
+#  916|   params: 
+#  916|     0: p#0
+#  916|         Type = size_t
+#  916|     1: p#1
+#  916|         Type = float
+#  917| operator new(size_t, align_val_t, float) -> void *
+#  917|   params: 
+#  917|     0: p#0
+#  917|         Type = size_t
+#  917|     1: p#1
+#  917|         Type = align_val_t
+#  917|     2: p#2
+#  917|         Type = float
+#  918| operator new[](size_t, align_val_t, float) -> void *
+#  918|   params: 
+#  918|     0: p#0
+#  918|         Type = size_t
+#  918|     1: p#1
+#  918|         Type = align_val_t
+#  918|     2: p#2
+#  918|         Type = float
+#  919| operator delete(void *, float) -> void
+#  919|   params: 
+#  919|     0: p#0
+#  919|         Type = void *
+#  919|     1: p#1
+#  919|         Type = float
+#  920| operator delete[](void *, float) -> void
+#  920|   params: 
+#  920|     0: p#0
+#  920|         Type = void *
+#  920|     1: p#1
+#  920|         Type = float
+#  921| operator delete(void *, align_val_t, float) -> void
+#  921|   params: 
+#  921|     0: p#0
+#  921|         Type = void *
+#  921|     1: p#1
+#  921|         Type = align_val_t
+#  921|     2: p#2
+#  921|         Type = float
+#  922| operator delete[](void *, align_val_t, float) -> void
+#  922|   params: 
+#  922|     0: p#0
+#  922|         Type = void *
+#  922|     1: p#1
+#  922|         Type = align_val_t
+#  922|     2: p#2
+#  922|         Type = float
+#  924| SizedDealloc::operator=(SizedDealloc &&) -> SizedDealloc &
+#  924|   params: 
+#-----|     0: p#0
+#-----|         Type = SizedDealloc &&
+#  924| SizedDealloc::operator=(const SizedDealloc &) -> SizedDealloc &
+#  924|   params: 
+#-----|     0: p#0
+#-----|         Type = const SizedDealloc &
+#  926| SizedDealloc::operator new(size_t) -> void *
+#  926|   params: 
+#  926|     0: p#0
+#  926|         Type = size_t
+#  927| SizedDealloc::operator new[](size_t) -> void *
+#  927|   params: 
+#  927|     0: p#0
+#  927|         Type = size_t
+#  928| SizedDealloc::operator delete(void *, size_t) -> void
+#  928|   params: 
+#  928|     0: p#0
+#  928|         Type = void *
+#  928|     1: p#1
+#  928|         Type = size_t
+#  929| SizedDealloc::operator delete[](void *, size_t) -> void
+#  929|   params: 
+#  929|     0: p#0
+#  929|         Type = void *
+#  929|     1: p#1
+#  929|         Type = size_t
+#  932| Overaligned::operator=(Overaligned &&) -> Overaligned &
+#  932|   params: 
+#-----|     0: p#0
+#-----|         Type = Overaligned &&
+#  932| Overaligned::operator=(const Overaligned &) -> Overaligned &
+#  932|   params: 
+#-----|     0: p#0
+#-----|         Type = const Overaligned &
+#  936| DefaultCtorWithDefaultParam::DefaultCtorWithDefaultParam(DefaultCtorWithDefaultParam &&) -> void
+#  936|   params: 
+#-----|     0: p#0
+#-----|         Type = DefaultCtorWithDefaultParam &&
+#  936| DefaultCtorWithDefaultParam::DefaultCtorWithDefaultParam(const DefaultCtorWithDefaultParam &) -> void
+#  936|   params: 
+#-----|     0: p#0
+#-----|         Type = const DefaultCtorWithDefaultParam &
+#  936| DefaultCtorWithDefaultParam::operator=(DefaultCtorWithDefaultParam &&) -> DefaultCtorWithDefaultParam &
+#  936|   params: 
+#-----|     0: p#0
+#-----|         Type = DefaultCtorWithDefaultParam &&
+#  936| DefaultCtorWithDefaultParam::operator=(const DefaultCtorWithDefaultParam &) -> DefaultCtorWithDefaultParam &
+#  936|   params: 
+#-----|     0: p#0
+#-----|         Type = const DefaultCtorWithDefaultParam &
+#  937| DefaultCtorWithDefaultParam::DefaultCtorWithDefaultParam(double) -> void
+#  937|   params: 
+#  937|     0: d
+#  937|         Type = double
+#  940| OperatorNew() -> void
+#  940|   params: 
+#  940|   body: { ... }
+#  941|     0: ExprStmt
+#  941|       0: new
+#  941|           Type = int *
+#  941|           ValueCategory = prvalue
+#  942|     1: ExprStmt
+#  942|       0: new
+#  942|           Type = int *
+#  942|           ValueCategory = prvalue
+#  942|         0: call to operator new
+#  942|             Type = void *
+#  942|             ValueCategory = prvalue
+#  942|           0: <error expr>
+#  942|               Type = unsigned long
+#  942|               ValueCategory = prvalue
+#  942|           1: 1.0
+#  942|               Type = float
+#  942|               Value = 1.0
+#  942|               ValueCategory = prvalue
+#  943|     2: ExprStmt
+#  943|       0: new
+#  943|           Type = int *
+#  943|           ValueCategory = prvalue
+#  943|         1: 0
+#  943|             Type = int
+#  943|             Value = 0
+#  943|             ValueCategory = prvalue
+#  944|     3: ExprStmt
+#  944|       0: new
+#  944|           Type = String *
+#  944|           ValueCategory = prvalue
+#  944|         1: call to String
+#  944|             Type = void
+#  944|             ValueCategory = prvalue
+#  945|     4: ExprStmt
+#  945|       0: new
+#  945|           Type = String *
+#  945|           ValueCategory = prvalue
+#  945|         0: call to operator new
+#  945|             Type = void *
+#  945|             ValueCategory = prvalue
+#  945|           0: <error expr>
+#  945|               Type = unsigned long
+#  945|               ValueCategory = prvalue
+#  945|           1: 1.0
+#  945|               Type = float
+#  945|               Value = 1.0
+#  945|               ValueCategory = prvalue
+#  945|         1: call to String
+#  945|             Type = void
+#  945|             ValueCategory = prvalue
+#  945|           0: array to pointer conversion
+#  945|               Type = const char *
+#  945|               ValueCategory = prvalue
+#  945|             expr: hello
+#  945|                 Type = const char[6]
+#  945|                 Value = "hello"
+#  945|                 ValueCategory = lvalue
+#  946|     5: ExprStmt
+#  946|       0: new
+#  946|           Type = Overaligned *
+#  946|           ValueCategory = prvalue
+#  946|         3: 128
+#  946|             Type = align_val_t
+#  946|             Value = 128
+#  946|             ValueCategory = prvalue
+#  947|     6: ExprStmt
+#  947|       0: new
+#  947|           Type = Overaligned *
+#  947|           ValueCategory = prvalue
+#  947|         0: call to operator new
+#  947|             Type = void *
+#  947|             ValueCategory = prvalue
+#  947|           0: <error expr>
+#  947|               Type = unsigned long
+#  947|               ValueCategory = prvalue
+#  947|           1: 128
+#  947|               Type = align_val_t
+#  947|               Value = 128
+#  947|               ValueCategory = prvalue
+#  947|           2: 1.0
+#  947|               Type = float
+#  947|               Value = 1.0
+#  947|               ValueCategory = prvalue
+#  947|         1: 0
+#  947|             Type = Overaligned
+#  947|             Value = 0
+#  947|             ValueCategory = prvalue
+#  948|     7: return ...
+#  950| OperatorNewArray(int) -> void
+#  950|   params: 
+#  950|     0: n
+#  950|         Type = int
+#  950|   body: { ... }
+#  951|     0: ExprStmt
+#  951|       0: new[]
+#  951|           Type = int *
+#  951|           ValueCategory = prvalue
+#  952|     1: ExprStmt
+#  952|       0: new[]
+#  952|           Type = int *
+#  952|           ValueCategory = prvalue
+#  952|         2: n
+#  952|             Type = int
+#  952|             ValueCategory = prvalue(load)
+#  953|     2: ExprStmt
+#  953|       0: new[]
+#  953|           Type = int *
+#  953|           ValueCategory = prvalue
+#  953|         0: call to operator new[]
+#  953|             Type = void *
+#  953|             ValueCategory = prvalue
+#  953|           0: <error expr>
+#  953|               Type = unsigned long
+#  953|               ValueCategory = prvalue
+#  953|           1: 1.0
+#  953|               Type = float
+#  953|               Value = 1.0
+#  953|               ValueCategory = prvalue
+#  953|         2: n
+#  953|             Type = int
+#  953|             ValueCategory = prvalue(load)
+#  954|     3: ExprStmt
+#  954|       0: new[]
+#  954|           Type = String *
+#  954|           ValueCategory = prvalue
+#  954|         1: {...}
+#  954|             Type = String[]
+#  954|             ValueCategory = prvalue
+#  954|           0: call to String
+#  954|               Type = void
+#  954|               ValueCategory = prvalue
+#  954|         2: n
+#  954|             Type = int
+#  954|             ValueCategory = prvalue(load)
+#  955|     4: ExprStmt
+#  955|       0: new[]
+#  955|           Type = Overaligned *
+#  955|           ValueCategory = prvalue
+#  955|         2: n
+#  955|             Type = int
+#  955|             ValueCategory = prvalue(load)
+#  955|         3: 128
+#  955|             Type = align_val_t
+#  955|             Value = 128
+#  955|             ValueCategory = prvalue
+#  956|     5: ExprStmt
+#  956|       0: new[]
+#  956|           Type = Overaligned *
+#  956|           ValueCategory = prvalue
+#  956|         0: call to operator new[]
+#  956|             Type = void *
+#  956|             ValueCategory = prvalue
+#  956|           0: <error expr>
+#  956|               Type = unsigned long
+#  956|               ValueCategory = prvalue
+#  956|           1: 128
+#  956|               Type = align_val_t
+#  956|               Value = 128
+#  956|               ValueCategory = prvalue
+#  956|           2: 1.0
+#  956|               Type = float
+#  956|               Value = 1.0
+#  956|               ValueCategory = prvalue
+#  957|     6: ExprStmt
+#  957|       0: new[]
+#  957|           Type = DefaultCtorWithDefaultParam *
+#  957|           ValueCategory = prvalue
+#  957|         1: {...}
+#  957|             Type = DefaultCtorWithDefaultParam[]
+#  957|             ValueCategory = prvalue
+#  957|           0: call to DefaultCtorWithDefaultParam
+#  957|               Type = void
+#  957|               ValueCategory = prvalue
+#  957|         2: n
+#  957|             Type = int
+#  957|             ValueCategory = prvalue(load)
+#  958|     7: ExprStmt
+#  958|       0: new[]
+#  958|           Type = int *
+#  958|           ValueCategory = prvalue
+#  958|         1: {...}
+#  958|             Type = int[3]
+#  958|             ValueCategory = prvalue
+#  958|           0: 0
+#  958|               Type = int
+#  958|               Value = 0
+#  958|               ValueCategory = prvalue
+#  958|           1: 1
+#  958|               Type = int
+#  958|               Value = 1
+#  958|               ValueCategory = prvalue
+#  958|           2: 2
+#  958|               Type = int
+#  958|               Value = 2
+#  958|               ValueCategory = prvalue
+#  958|         2: n
+#  958|             Type = int
+#  958|             ValueCategory = prvalue(load)
+#  959|     8: return ...
