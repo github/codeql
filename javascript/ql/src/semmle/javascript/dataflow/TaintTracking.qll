@@ -648,7 +648,7 @@ module TaintTracking {
    *
    * Similar relational checks are also supported.
    */
-  class RelationalIndexOfSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
+  private class RelationalIndexOfSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
     MethodCallExpr indexOf;
     override RelationalComparison astNode;
     boolean polarity;
@@ -692,7 +692,7 @@ module TaintTracking {
    * 
    * This sanitizer is equivalent to `if(whitelist.indexOf(x) != -1)`, since `~n = 0` iff `n = -1`.
    */
-  class BitwiseIndexOfSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
+  private class BitwiseIndexOfSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
     MethodCallExpr indexOf;
     override BitNotExpr astNode;
 
