@@ -1793,7 +1793,7 @@ abstract class TranslatedCall extends TranslatedExpr {
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
     Type resultType, boolean isGLValue) {
     tag = CallTag() and
-    opcode instanceof Opcode::Invoke and
+    opcode instanceof Opcode::Call and
     resultType = getCallResultType() and
     isGLValue = false
   }
