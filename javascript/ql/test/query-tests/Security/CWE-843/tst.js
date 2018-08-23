@@ -50,3 +50,22 @@ express().get('/some/path/:foo', function(req, res) {
     var foo = req.params.foo;
     foo.indexOf(); // OK
 });
+
+express().get('/some/path/:foo', function(req, res) {
+    if (req.query.path.length) {} // OK
+    req.query.path.length == 0; // OK
+    !req.query.path.length; // OK
+    req.query.path.length > 0; // OK
+});
+
+express().get('/some/path/:foo', function(req, res) {
+    let p = req.query.path;
+
+    if (typeof p !== 'string') {
+      return;
+    }
+
+    while (p.length) { // OK
+      p = p.substr(1);
+    }
+});
