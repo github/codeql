@@ -98,7 +98,7 @@ module ZipSlip {
   }
 
   /**
-   * An call to `GetFileName`.
+   * A call to `GetFileName`.
    *
    * This is considered a sanitizer because it extracts just the file name, not the full path.
    */
@@ -127,10 +127,10 @@ module ZipSlip {
   }
 
   /**
-   * An expression which is guarded by a call to `StartsWith`.
+   * An expression which is guarded by a call to `String.StartsWith`.
    *
-   * A call to a String method such as `StartsWith` can indicate a check for a
-   * relative path, or a check against the destination folder for whitelisted/target path, etc.
+   * A call to the method `String.StartsWith` can indicate the the tainted path value is being
+   * validated to ensure that it occurs within a permitted output path.
    */
   class StringCheckSanitizer extends Sanitizer {
     StringCheckSanitizer() {
