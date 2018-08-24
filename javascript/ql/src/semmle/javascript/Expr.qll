@@ -1545,6 +1545,14 @@ class RelationalComparison extends Comparison {
   Expr getGreaterOperand() {
     result = getAnOperand() and result != getLesserOperand()
   }
+
+  /**
+   * Holds if this is a comparison with `<=` or `>=`.
+   */
+  predicate isInclusive() {
+    this instanceof LEExpr or
+    this instanceof GEExpr
+  }
 }
 
 /** A (pre or post) increment expression. */

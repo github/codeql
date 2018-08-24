@@ -644,11 +644,55 @@ module TaintTracking {
   }
 
   /** 
+   * A check of the form `if(whitelist.indexOf(x) >= 0)`, which sanitizes `x` in its "then" branch. 
+   *
+   * Similar relational checks are also supported.
+   */
+  private class RelationalIndexOfSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
+    MethodCallExpr indexOf;
+    override RelationalComparison astNode;
+    boolean polarity;
+
+    RelationalIndexOfSanitizer() {
+      exists (Expr lesser, Expr greater |
+        astNode.getLesserOperand() = lesser and
+        astNode.getGreaterOperand() = greater and
+        indexOf.getMethodName() = "indexOf" |
+        polarity = true and
+        greater = indexOf and
+        (
+          lesser.getIntValue() >= 0
+          or
+          lesser.getIntValue() = -1 and not astNode.isInclusive()
+        )
+        or 
+        polarity = false and
+        lesser = indexOf and
+        (
+          greater.getIntValue() = -1
+          or
+          greater.getIntValue() = 0 and not astNode.isInclusive()
+        )
+      )
+    }
+
+    override predicate sanitizes(boolean outcome, Expr e) {
+      outcome = polarity and
+      e = indexOf.getArgument(0)
+    }
+
+    override predicate appliesTo(Configuration cfg) {
+      any()
+    }
+
+  }
+
+  /** 
    * A check of the form `if(~whitelist.indexOf(x))`, which sanitizes `x` in its "then" branch.
    * 
    * This sanitizer is equivalent to `if(whitelist.indexOf(x) != -1)`, since `~n = 0` iff `n = -1`.
    */
-  class BitwiseIndexOfSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
+  private class BitwiseIndexOfSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
     MethodCallExpr indexOf;
     override BitNotExpr astNode;
 

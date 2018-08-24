@@ -194,3 +194,39 @@ function BitwiseIndexOfCheckSanitizer () {
     }
 
 }
+
+function RelationalIndexOfCheckSanitizer () {
+    var v = SOURCE();
+    SINK(v);
+
+    if (o.indexOf(v) <= -1) {
+        SINK(v);
+    } else {
+        SINK(v);
+    }
+
+    if (o.indexOf(v) >= 0) {
+        SINK(v);
+    } else {
+        SINK(v);
+    }
+
+    if (o.indexOf(v) < 0) {
+        SINK(v);
+    } else {
+        SINK(v);
+    }
+
+    if (o.indexOf(v) > -1) {
+        SINK(v);
+    } else {
+        SINK(v);
+    }
+
+    if (-1 >= o.indexOf(v)) {
+        SINK(v);
+    } else {
+        SINK(v);
+    }
+
+}

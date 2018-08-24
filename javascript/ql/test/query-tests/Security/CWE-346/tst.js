@@ -51,3 +51,19 @@ probalyAServer.on('request', (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", null); // NOT OK (but not detected)
     res.setHeader("Access-Control-Allow-Credentials", true);
 });
+
+server.on('request', (req, res) => {
+    let origin = url.parse(req.url, true).query.origin;
+    if (ALLOWED_ORIGINS.indexOf(origin) !== -1) {
+        res.setHeader("Access-Control-Allow-Origin", origin); // OK, sanitized origin
+        res.setHeader("Access-Control-Allow-Credentials", true);
+    }
+});
+
+server.on('request', (req, res) => {
+    let origin = url.parse(req.url, true).query.origin;
+    if (ALLOWED_ORIGINS.indexOf(origin) >= 0) {
+        res.setHeader("Access-Control-Allow-Origin", origin); // OK, sanitized origin
+        res.setHeader("Access-Control-Allow-Credentials", true);
+    }
+});
