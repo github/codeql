@@ -47,6 +47,10 @@
         "cpp/ql/src/semmle/code/cpp/ssa/internal/ssa/SimpleSSA.qll",
         "cpp/ql/src/semmle/code/cpp/ssa/internal/aliased_ssa/SimpleSSA.qll"
     ],
+    "C++ SSA IRBlockConstruction": [
+        "cpp/ql/src/semmle/code/cpp/ssa/internal/ssa/IRBlockConstruction.qll",
+        "cpp/ql/src/semmle/code/cpp/ssa/internal/aliased_ssa/IRBlockConstruction.qll"
+    ],
     "C++ SSA SSAConstruction": [
         "cpp/ql/src/semmle/code/cpp/ssa/internal/ssa/SSAConstruction.qll",
         "cpp/ql/src/semmle/code/cpp/ssa/internal/aliased_ssa/SSAConstruction.qll"
