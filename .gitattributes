@@ -11,3 +11,4 @@
 *.ql eol=lf
 *.qll eol=lf
 *.qlref eol=lf
+*.dbscheme eol=lf
