@@ -34,10 +34,14 @@ class ControlFlowNode extends Locatable, @cfgnode {
   ControlFlowNode getAPredecessor() { this = result.getASuccessor() }
 
   /** Gets the function containing this control-flow node. */
-  abstract Function getControlFlowScope();
+  Function getControlFlowScope() {
+    none() // overridden in subclasses
+  }
 
   /** Gets the smallest statement containing this control-flow node. */
-  abstract Stmt getEnclosingStmt();
+  Stmt getEnclosingStmt() {
+    none() // overridden in subclasses
+  }
 
   /**
    * Holds if this node is the top-level expression of a conditional statement,
