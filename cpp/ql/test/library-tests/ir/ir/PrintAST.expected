@@ -2,15 +2,21 @@
 #-----|   params: 
 #-----| __va_list_tag::operator=() -> __va_list_tag &
 #-----|   params: 
-#-----| operator new(unsigned long) -> void *
-#-----|   params: 
-#-----|     0: p#0
-#-----|         Type = unsigned long
 #-----| operator delete(void *, unsigned long) -> void
 #-----|   params: 
 #-----|     0: p#0
 #-----|         Type = void *
 #-----|     1: p#1
+#-----|         Type = unsigned long
+#-----| operator delete[](void *, unsigned long) -> void
+#-----|   params: 
+#-----|     0: p#0
+#-----|         Type = void *
+#-----|     1: p#1
+#-----|         Type = unsigned long
+#-----| operator new(unsigned long) -> void *
+#-----|   params: 
+#-----|     0: p#0
 #-----|         Type = unsigned long
 #-----| operator new(unsigned long, align_val_t) -> void *
 #-----|   params: 
@@ -21,12 +27,6 @@
 #-----| operator new[](unsigned long) -> void *
 #-----|   params: 
 #-----|     0: p#0
-#-----|         Type = unsigned long
-#-----| operator delete[](void *, unsigned long) -> void
-#-----|   params: 
-#-----|     0: p#0
-#-----|         Type = void *
-#-----|     1: p#1
 #-----|         Type = unsigned long
 #-----| operator new[](unsigned long, align_val_t) -> void *
 #-----|   params: 

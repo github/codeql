@@ -40,6 +40,26 @@ private Location getRepresentativeLocation(Locatable ast) {
 }
 
 /**
+ * Computes the sort keys to sort the given AST node by location. An AST without
+ * a location gets an empty file name and a zero line and column number.
+ */
+private predicate locationSortKeys(Locatable ast, string file, int line,
+    int column) {
+  if exists(getRepresentativeLocation(ast)) then (
+    exists(Location loc |
+      loc = getRepresentativeLocation(ast) and
+      file = loc.getFile().toString() and
+      line = loc.getStartLine() and
+      column = loc.getStartColumn()
+    )
+  ) else (
+    file = "" and
+    line = 0 and
+    column = 0
+  )
+}
+
+/**
  * Most nodes are just a wrapper around `Locatable`, but we do synthesize new
  * nodes for things like parameter lists and constructor init lists.
  */
@@ -482,12 +502,14 @@ class FunctionNode extends ASTNode {
   }
 
   private int getOrder() {
-    this = rank[result](FunctionNode node, Function function, Location loc |
-      node.getAST() = function and loc = getRepresentativeLocation(function) |
+    this = rank[result](FunctionNode node, Function function, string file, 
+        int line, int column |
+      node.getAST() = function and
+      locationSortKeys(function, file, line, column) |
       node order by 
-        loc.getFile().toString(),
-        loc.getStartLine(),
-        loc.getStartColumn(),
+        file,
+        line,
+        column,
         function.getFullSignature()
     )
   }
