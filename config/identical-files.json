@@ -1,0 +1,58 @@
+{
+    "C++ IR Instruction": [
+        "cpp/ql/src/semmle/code/cpp/ir/internal/Instruction.qll",
+        "cpp/ql/src/semmle/code/cpp/ssa/internal/ssa/Instruction.qll",
+        "cpp/ql/src/semmle/code/cpp/ssa/internal/aliased_ssa/Instruction.qll"
+    ],
+    "C++ IR IRBlock": [
+        "cpp/ql/src/semmle/code/cpp/ir/internal/IRBlock.qll",
+        "cpp/ql/src/semmle/code/cpp/ssa/internal/ssa/IRBlock.qll",
+        "cpp/ql/src/semmle/code/cpp/ssa/internal/aliased_ssa/IRBlock.qll"
+    ],
+    "C++ IR IRVariable": [
+        "cpp/ql/src/semmle/code/cpp/ir/internal/IRVariable.qll",
+        "cpp/ql/src/semmle/code/cpp/ssa/internal/ssa/IRVariable.qll",
+        "cpp/ql/src/semmle/code/cpp/ssa/internal/aliased_ssa/IRVariable.qll"
+    ],
+    "C++ IR FunctionIR": [
+        "cpp/ql/src/semmle/code/cpp/ir/internal/FunctionIR.qll",
+        "cpp/ql/src/semmle/code/cpp/ssa/internal/ssa/FunctionIR.qll",
+        "cpp/ql/src/semmle/code/cpp/ssa/internal/aliased_ssa/FunctionIR.qll"
+    ],
+    "C++ IR OperandTag": [
+        "cpp/ql/src/semmle/code/cpp/ir/internal/OperandTag.qll",
+        "cpp/ql/src/semmle/code/cpp/ssa/internal/ssa/OperandTag.qll",
+        "cpp/ql/src/semmle/code/cpp/ssa/internal/aliased_ssa/OperandTag.qll"
+    ],
+    "C++ IR IRImpl": [
+        "cpp/ql/src/semmle/code/cpp/ir/internal/IRImpl.qll",
+        "cpp/ql/src/semmle/code/cpp/ssa/internal/ssa/IRImpl.qll",
+        "cpp/ql/src/semmle/code/cpp/ssa/internal/aliased_ssa/IRImpl.qll"
+    ],
+    "C++ IR IRSanityImpl": [
+        "cpp/ql/src/semmle/code/cpp/ir/internal/IRSanityImpl.qll",
+        "cpp/ql/src/semmle/code/cpp/ssa/internal/ssa/IRSanityImpl.qll",
+        "cpp/ql/src/semmle/code/cpp/ssa/internal/aliased_ssa/IRSanityImpl.qll"
+    ],
+    "C++ IR PrintIRImpl": [
+        "cpp/ql/src/semmle/code/cpp/ir/internal/PrintIRImpl.qll",
+        "cpp/ql/src/semmle/code/cpp/ssa/internal/ssa/PrintIRImpl.qll",
+        "cpp/ql/src/semmle/code/cpp/ssa/internal/aliased_ssa/PrintIRImpl.qll"
+    ],
+    "C++ SSA AliasAnalysis": [
+        "cpp/ql/src/semmle/code/cpp/ssa/internal/ssa/AliasAnalysis.qll",
+        "cpp/ql/src/semmle/code/cpp/ssa/internal/aliased_ssa/AliasAnalysis.qll"
+    ],
+    "C++ SSA SimpleSSA": [
+        "cpp/ql/src/semmle/code/cpp/ssa/internal/ssa/SimpleSSA.qll",
+        "cpp/ql/src/semmle/code/cpp/ssa/internal/aliased_ssa/SimpleSSA.qll"
+    ],
+    "C++ SSA IRBlockConstruction": [
+        "cpp/ql/src/semmle/code/cpp/ssa/internal/ssa/IRBlockConstruction.qll",
+        "cpp/ql/src/semmle/code/cpp/ssa/internal/aliased_ssa/IRBlockConstruction.qll"
+    ],
+    "C++ SSA SSAConstruction": [
+        "cpp/ql/src/semmle/code/cpp/ssa/internal/ssa/SSAConstruction.qll",
+        "cpp/ql/src/semmle/code/cpp/ssa/internal/aliased_ssa/SSAConstruction.qll"
+    ]
+}
