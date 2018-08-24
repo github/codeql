@@ -2,14 +2,14 @@
 #-----|   params: 
 #-----| __va_list_tag::operator=() -> __va_list_tag &
 #-----|   params: 
-#-----| operator new(unsigned long) -> void *
-#-----|   params: 
-#-----|     0: p#0
-#-----|         Type = unsigned long
 #-----| operator delete(void *) -> void
 #-----|   params: 
 #-----|     0: p#0
 #-----|         Type = void *
+#-----| operator new(unsigned long) -> void *
+#-----|   params: 
+#-----|     0: p#0
+#-----|         Type = unsigned long
 AddressOf.c:
 #    1| AddressOf(int) -> void
 #    1|   params: 
