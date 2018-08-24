@@ -80,10 +80,25 @@ private cached newtype HCBase =
     mk_ArrayAccess(x,i,_)
   }
   or
+  HC_NonmemberFunctionCall(Function fcn, HC_Args args) {
+    mk_NonmemberFunctionCall(fcn, args, _)
+  }
+  or
+  HC_MemberFunctionCall(Function trg, HC qual, HC_Args args) {
+    mk_MemberFunctionCall(trg, qual, args, _)
+  }
+  or
   // Any expression that is not handled by the cases above is
   // given a unique number based on the expression itself.
   HC_Unanalyzable(Expr e) { not analyzableExpr(e,_) }
 
+private cached newtype HC_Args =
+  HC_EmptyArgs(Function fcn) {
+    any()
+  }
+  or HC_ArgCons(Function fcn, HC hc, int i, HC_Args list) {
+    mk_ArgCons(fcn, hc, i, list, _)
+  }
 /**
  * HC is the hash-cons of an expression. The relationship between `Expr`
  * and `HC` is many-to-one: every `Expr` has exactly one `HC`, but multiple
@@ -120,6 +135,8 @@ class HC extends HCBase {
     if this instanceof HC_UnaryOp then result = "UnaryOp" else
     if this instanceof HC_ArrayAccess then result = "ArrayAccess" else
     if this instanceof HC_Unanalyzable then result = "Unanalyzable" else
+    if this instanceof HC_NonmemberFunctionCall then result = "NonmemberFunctionCall" else
+    if this instanceof HC_MemberFunctionCall then result = "MemberFunctionCall" else
     result = "error"
   }
 
@@ -329,6 +346,116 @@ private predicate mk_Deref(
   p = hashCons(deref.getOperand().getFullyConverted())
 }
 
+private predicate analyzableNonmemberFunctionCall(
+  FunctionCall fc) {
+  forall(int i | exists(fc.getArgument(i)) | strictcount(fc.getArgument(i)) = 1) and
+  strictcount(fc.getTarget()) = 1 and
+  not fc.getTarget().isMember()
+}
+
+private predicate mk_NonmemberFunctionCall(
+  Function fcn,
+  HC_Args args,
+  FunctionCall fc
+) {
+  fc.getTarget() = fcn and
+  analyzableNonmemberFunctionCall(fc) and
+  (
+    exists(HC head, HC_Args tail |
+      args = HC_ArgCons(fcn, head, fc.getNumberOfArguments() - 1, tail) and
+      mk_ArgCons(fcn, head, fc.getNumberOfArguments() - 1, tail, fc)
+    )
+    or
+    fc.getNumberOfArguments() = 0 and
+    args = HC_EmptyArgs(fcn)
+  )
+}
+
+private predicate analyzableMemberFunctionCall(
+  FunctionCall fc) {
+  forall(int i | exists(fc.getArgument(i)) | strictcount(fc.getArgument(i)) = 1) and
+  strictcount(fc.getTarget()) = 1 and
+  strictcount(fc.getQualifier()) = 1
+}
+
+private predicate analyzableFunctionCall(
+  FunctionCall fc
+) {
+  analyzableNonmemberFunctionCall(fc)
+  or
+  analyzableMemberFunctionCall(fc)
+}
+
+private predicate mk_MemberFunctionCall(
+  Function fcn,
+  HC qual,
+  HC_Args args,
+  FunctionCall fc
+) {
+  fc.getTarget() = fcn and
+  analyzableMemberFunctionCall(fc) and
+  hashCons(fc.getQualifier()) = qual and
+  (
+    exists(HC head, HC_Args tail |
+      args = HC_ArgCons(fcn, head, fc.getNumberOfArguments() - 1, tail) and
+      mk_ArgCons(fcn, head, fc.getNumberOfArguments() - 1, tail, fc)
+    )
+    or
+    fc.getNumberOfArguments() = 0 and
+    args = HC_EmptyArgs(fcn)
+  )
+}
+
+/*
+private predicate   analyzableImplicitThisFunctionCall(FunctionCall fc) {
+  forall(int i | exists(fc.getArgument(i)) | strictcount(fc.getArgument(i)) = 1) and
+  strictcount(fc.getTarget()) = 1 and
+  fc.getQualifier().(ThisExpr).isCompilerGenerated() and
+  fc.getTarget().isMember()
+}
+
+private predicate mk_ImplicitThisFunctionCall(Function fcn, Function targ, HC_Args args, FunctionCall fc) {
+  analyzableImplicitThisFunctionCall(fc) and
+  fc.getTarget() = targ and
+  fc.getEnclosingFunction() = fcn and
+  analyzableImplicitThisFunctionCall(fc) and
+  (
+    exists(HC head, HC_Args tail |
+      args = HC_ArgCons(targ, head, fc.getNumberOfArguments() - 1, tail) and
+      mk_ArgCons(targ, head, fc.getNumberOfArguments() - 1, tail, fc)
+    )
+    or
+    fc.getNumberOfArguments() = 0 and
+    args = HC_EmptyArgs(targ)
+  )
+}
+
+private predicate mk_ImplicitThisFunctionCall_with_qualifier(
+  Function fcn,
+  Function targ,
+  HC qual,
+  HC_Args args,
+  FunctionCall fc) {
+  mk_ImplicitThisFunctionCall(fcn, targ, args, fc) and
+  qual = HC_ThisExpr(fcn)
+}
+*/
+private predicate mk_ArgCons(Function fcn, HC hc, int i, HC_Args list, FunctionCall fc) {
+  analyzableFunctionCall(fc) and
+  fc.getTarget() = fcn and
+  hc = hashCons(fc.getArgument(i).getFullyConverted()) and
+  (
+    exists(HC head, HC_Args tail |
+      list = HC_ArgCons(fcn, head, i - 1, tail) and
+      mk_ArgCons(fcn, head, i - 1, tail, fc) and
+      i > 0
+    )
+    or
+    i = 0 and
+    list = HC_EmptyArgs(fcn)
+  )
+}
+
 /** Gets the hash-cons of expression `e`. */
 cached HC hashCons(Expr e) {
   exists (int val, Type t
@@ -384,6 +511,17 @@ cached HC hashCons(Expr e) {
   | mk_Deref(p, e) and
     result = HC_Deref(p))
   or
+  exists(Function fcn, HC_Args args
+  | mk_NonmemberFunctionCall(fcn, args, e) and
+    result = HC_NonmemberFunctionCall(fcn, args)
+  )
+  or
+  exists(Function fcn, HC qual, HC_Args args
+  | mk_MemberFunctionCall(fcn, qual, args, e) and
+    result = HC_MemberFunctionCall(fcn, qual, args)
+  )
+
+  or
   (not analyzableExpr(e,_) and result = HC_Unanalyzable(e))
 }
 /**
@@ -405,5 +543,7 @@ predicate analyzableExpr(Expr e, string kind) {
   (analyzableUnaryOp(e) and kind = "UnaryOp") or
   (analyzableThisExpr(e) and kind = "ThisExpr") or
   (analyzableArrayAccess(e) and kind = "ArrayAccess") or
-  (analyzablePointerDereferenceExpr(e) and kind = "PointerDereferenceExpr")
+  (analyzablePointerDereferenceExpr(e) and kind = "PointerDereferenceExpr") or
+  (analyzableNonmemberFunctionCall(e) and kind = "NonmemberFunctionCall") or
+  (analyzableMemberFunctionCall(e) and kind = "MemberFunctionCall")
 }

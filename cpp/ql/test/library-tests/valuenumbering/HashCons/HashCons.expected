@@ -1,3 +1,4 @@
+| file://:0:0:0:0 | this | 0:c0-c0 141:c23-c26 |
 | test.cpp:5:3:5:3 | x | 5:c3-c3 6:c3-c3 7:c7-c7 |
 | test.cpp:5:7:5:8 | p0 | 5:c7-c8 6:c7-c8 |
 | test.cpp:5:7:5:13 | ... + ... | 5:c7-c13 6:c7-c13 |
@@ -30,6 +31,8 @@
 | test.cpp:56:13:56:16 | (int)... | 56:c13-c16 56:c31-c34 59:c9-c12 |
 | test.cpp:56:13:56:16 | * ... | 56:c13-c16 56:c31-c34 59:c9-c12 |
 | test.cpp:62:5:62:10 | result | 62:c5-c10 65:c10-c15 |
+| test.cpp:77:20:77:28 | call to getAValue | 77:c20-c28 80:c9-c17 |
+| test.cpp:77:20:77:30 | (signed short)... | 77:c20-c30 80:c9-c19 |
 | test.cpp:79:7:79:7 | v | 79:c7-c7 80:c5-c5 |
 | test.cpp:79:11:79:14 | vals | 79:c11-c14 79:c24-c27 |
 | test.cpp:92:11:92:11 | x | 92:c11-c11 93:c10-c10 |
@@ -51,3 +54,12 @@
 | test.cpp:116:3:116:3 | y | 116:c3-c3 117:c3-c3 118:c3-c3 |
 | test.cpp:117:7:117:9 | 0.10000000000000001 | 117:c7-c9 118:c7-c9 |
 | test.cpp:117:7:117:9 | (float)... | 117:c7-c9 118:c7-c9 |
+| test.cpp:122:3:122:8 | call to test07 | 122:c3-c8 123:c3-c8 |
+| test.cpp:125:3:125:11 | call to my_strspn | 125:c3-c11 126:c3-c11 |
+| test.cpp:125:13:125:17 | array to pointer conversion | 125:c13-c17 126:c13-c17 129:c20-c24 |
+| test.cpp:125:13:125:17 | foo | 125:c13-c17 126:c13-c17 129:c20-c24 |
+| test.cpp:125:20:125:24 | array to pointer conversion | 125:c20-c24 126:c20-c24 129:c13-c17 |
+| test.cpp:125:20:125:24 | bar | 125:c20-c24 126:c20-c24 129:c13-c17 |
+| test.cpp:141:12:141:17 | call to getInt | 141:c12-c17 141:c29-c34 |
+| test.cpp:146:10:146:11 | ih | 146:c10-c11 146:c31-c32 |
+| test.cpp:146:13:146:25 | call to getDoubledInt | 146:c13-c25 146:c34-c46 |

@@ -117,3 +117,31 @@ void test07() {
   y = 0.1;
   y = 0.1;
 }
+
+void test08() {
+  test07();
+  test07();
+
+  my_strspn("foo", "bar");
+  my_strspn("foo", "bar");
+
+
+  my_strspn("bar", "foo");
+}
+
+class IntHolder {
+  int myInt;
+
+  int getInt() {
+    return myInt;
+  }
+
+public:
+  int getDoubledInt() {
+    return getInt() + this->getInt();
+  }
+};
+
+int quadrupleInt(IntHolder ih) {
+  return ih.getDoubledInt() + ih.getDoubledInt();
+}

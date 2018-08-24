@@ -1,7 +1,7 @@
 import cpp
 import semmle.code.cpp.valuenumbering.HashCons
 
-// Every expression should have exactly one GVN.
+// Every expression should have exactly one HC.
 // So this query should have zero results.
 from Expr e
 where count(hashCons(e)) != 1
