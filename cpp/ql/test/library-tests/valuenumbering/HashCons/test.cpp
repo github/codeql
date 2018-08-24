@@ -95,7 +95,7 @@ int regression_test00() {
 
 void test06(int x) {
   x++;
-  x++; // x is matched but x++ is not matched?
+  x++; // x++ is matched
 }
 
 // literals

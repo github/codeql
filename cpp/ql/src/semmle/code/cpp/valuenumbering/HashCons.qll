@@ -287,7 +287,6 @@ private predicate mk_BinaryOp(
 
 private predicate analyzableUnaryOp(UnaryOperation op) {
   not (op instanceof PointerDereferenceExpr) and
-  op.isPure() and
   strictcount (op.getOperand().getFullyConverted()) = 1 and
   strictcount (op.getOperator()) = 1
 }
