@@ -21,14 +21,13 @@ import cpp
  * split in more places than either library expects, but nothing should break
  * as a direct result of that.
  */
-abstract class SubBasicBlockCutNode extends @cfgnode {
+abstract class SubBasicBlockCutNode extends ControlFlowNode {
   SubBasicBlockCutNode() {
     // Some control-flow nodes are not in any basic block. This includes
     // `Conversion`s, expressions that are evaluated at compile time, default
     // arguments, and `Function`s without implementation.
-    exists(mkElement(this).(ControlFlowNode).getBasicBlock())
+    exists(this.getBasicBlock())
   }
-  string toString() { result = "SubBasicBlockCutNode" }
 }
 
 /**
@@ -40,7 +39,7 @@ abstract class SubBasicBlockCutNode extends @cfgnode {
  * therefore extend `SubBasicBlockCutNode` to direct where basic blocks will be
  * split up.
  */
-class SubBasicBlock extends @cfgnode {
+class SubBasicBlock extends ControlFlowNodeBase {
   SubBasicBlock() {
     this instanceof BasicBlock
     or
@@ -49,7 +48,7 @@ class SubBasicBlock extends @cfgnode {
 
   /** Gets the basic block in which this `SubBasicBlock` is contained. */
   BasicBlock getBasicBlock() {
-    result = mkElement(this).(ControlFlowNode).getBasicBlock()
+    result = this.(ControlFlowNode).getBasicBlock()
   }
 
   /**
@@ -77,9 +76,9 @@ class SubBasicBlock extends @cfgnode {
    */
   int getPosInBasicBlock(BasicBlock bb) {
     exists(int nodePos, int rnk |
-      bb = mkElement(this).(ControlFlowNode).getBasicBlock() and
-      mkElement(this) = bb.getNode(nodePos) and
-      nodePos = rank[rnk](int i | exists(SubBasicBlock n | mkElement(n) = bb.getNode(i))) and
+      bb = this.(ControlFlowNode).getBasicBlock() and
+      this = bb.getNode(nodePos) and
+      nodePos = rank[rnk](int i | exists(SubBasicBlock n | n = bb.getNode(i))) and
       result = rnk - 1
     )
   }
@@ -101,7 +100,7 @@ class SubBasicBlock extends @cfgnode {
    */
   ControlFlowNode getNode(int pos) {
     exists(BasicBlock bb | bb = this.getBasicBlock() |
-      exists(int thisPos | mkElement(this) = bb.getNode(thisPos) |
+      exists(int thisPos | this = bb.getNode(thisPos) |
         result = bb.getNode(thisPos + pos) and
         pos >= 0 and
         pos < this.getNumberOfNodes()
@@ -123,8 +122,6 @@ class SubBasicBlock extends @cfgnode {
   SubBasicBlock getAPredecessor() {
     result.getASuccessor() = this
   }
-
-  string toString() { result = "SubBasicBlock" }
 
   /**
    * Gets a node such that the control-flow edge `(this, result)` may be taken
@@ -152,13 +149,13 @@ class SubBasicBlock extends @cfgnode {
    */
   int getNumberOfNodes() {
     exists(BasicBlock bb | bb = this.getBasicBlock() |
-      exists(int thisPos | mkElement(this) = bb.getNode(thisPos) |
+      exists(int thisPos | this = bb.getNode(thisPos) |
         this.lastInBB() and
         result = bb.length() - thisPos
         or
         exists(SubBasicBlock succ, int succPos |
           succ.getPosInBasicBlock(bb) = this.getPosInBasicBlock(bb) + 1 and
-          bb.getNode(succPos) = mkElement(succ) and
+          bb.getNode(succPos) = succ and
           result = succPos - thisPos
         )
       )
@@ -172,7 +169,7 @@ class SubBasicBlock extends @cfgnode {
 
   /** Gets the first control-flow node in this `SubBasicBlock`. */
   ControlFlowNode getStart() {
-    result = mkElement(this)
+    result = this
   }
 
   pragma[noinline]

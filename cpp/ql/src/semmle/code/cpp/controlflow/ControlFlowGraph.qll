@@ -27,9 +27,8 @@ private import semmle.code.cpp.controlflow.internal.ConstantExprs
  * function, or to the exit point of the function if there is no such
  * `Handler`. There are no edges from function calls to `Handler`s.
  */
-class ControlFlowNode extends Locatable, @cfgnode {
-
-  ControlFlowNode getASuccessor() { successors_adapted(underlyingElement(this),unresolveElement(result)) }
+class ControlFlowNode extends Locatable, ControlFlowNodeBase {
+  ControlFlowNode getASuccessor() { successors_adapted(this, result) }
 
   ControlFlowNode getAPredecessor() { this = result.getASuccessor() }
 
@@ -58,7 +57,8 @@ class ControlFlowNode extends Locatable, @cfgnode {
    * taken when this expression is true.
    */
   ControlFlowNode getATrueSuccessor() {
-    truecond(underlyingElement(this),unresolveElement(result)) and result = getASuccessor()
+    truecond_base(this, result) and
+    result = getASuccessor()
   }
 
   /**
@@ -66,7 +66,8 @@ class ControlFlowNode extends Locatable, @cfgnode {
    * taken when this expression is false.
    */
   ControlFlowNode getAFalseSuccessor() {
-    falsecond(underlyingElement(this),unresolveElement(result)) and result = getASuccessor()
+    falsecond_base(this,result) and
+    result = getASuccessor()
   }
 
   BasicBlock getBasicBlock() {
@@ -90,7 +91,7 @@ private cached module Cached {
     exists(Function f | f.getEntryPoint() = n)
     or
     // Okay to use successors_extended directly here
-    (not successors_extended(_,unresolveElement(n)) and not successors_extended(unresolveElement(n),_))
+    (not successors_extended(_,n) and not successors_extended(n,_))
     or
     reachable(n.getAPredecessor())
     or
@@ -143,6 +144,25 @@ private predicate loopConditionAlwaysUponEntry(ControlFlowNode loop, Expr condit
 }
 
 /**
+ * An element that is convertible to `ControlFlowNode`. This class is similar
+ * to `ControlFlowNode` except that is has no member predicates apart from
+ * those inherited from `Locatable`.
+ *
+ * This class can be used as base class for classes that want to inherit the
+ * extent of `ControlFlowNode` without inheriting its public member predicates.
+ */
+class ControlFlowNodeBase extends Locatable, @cfgnode {
+}
+
+predicate truecond_base(ControlFlowNodeBase n1, ControlFlowNodeBase n2) {
+  truecond(unresolveElement(n1), unresolveElement(n2))
+}
+
+predicate falsecond_base(ControlFlowNodeBase n1, ControlFlowNodeBase n2) {
+  falsecond(unresolveElement(n1), unresolveElement(n2))
+}
+
+/**
  * An abstract class that can be extended to add additional edges to the
  * control-flow graph. Instances of this class correspond to the source nodes
  * of such edges, and the predicate `getAnEdgeTarget` should be overridden to
@@ -158,11 +178,9 @@ private predicate loopConditionAlwaysUponEntry(ControlFlowNode loop, Expr condit
  * appear to be unreachable. See the documentation on `ControlFlowNode` for
  * more information about the control-flow graph.
  */
-abstract class AdditionalControlFlowEdge extends @cfgnode {
+abstract class AdditionalControlFlowEdge extends ControlFlowNodeBase {
   /** Gets a target node of this edge, where the source node is `this`. */
-  abstract ControlFlowNode getAnEdgeTarget();
-
-  string toString() { result = mkElement(this).(ControlFlowNode).toString() }
+  abstract ControlFlowNodeBase getAnEdgeTarget();
 }
 
 /**
@@ -170,8 +188,9 @@ abstract class AdditionalControlFlowEdge extends @cfgnode {
  * the extractor-generated control-flow graph or in a subclass of
  * `AdditionalControlFlowEdge`. Use this relation instead of `successors`.
  */
-predicate successors_extended(@cfgnode source, @cfgnode target) {
-  successors(source, target)
+predicate successors_extended(
+    ControlFlowNodeBase source, ControlFlowNodeBase target) {
+  successors(unresolveElement(source), unresolveElement(target))
   or
-  source.(AdditionalControlFlowEdge).getAnEdgeTarget() = mkElement(target)
+  source.(AdditionalControlFlowEdge).getAnEdgeTarget() = target
 }

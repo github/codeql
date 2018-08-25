@@ -11,9 +11,9 @@ private import semmle.code.cpp.dataflow.EscapesTree
  */
 predicate definitionUsePair(SemanticStackVariable var, Expr def, Expr use) {
   exists(Use u |
-    mkElement(u) = use
+    u = use
     and
-    unresolveElement(def).(Def).reaches(true, var, u)
+    def.(Def).reaches(true, var, u)
     and
     u.getVariable(false) = var
   )
@@ -24,7 +24,7 @@ predicate definitionUsePair(SemanticStackVariable var, Expr def, Expr use) {
  * is a definition or use, without crossing definitions of the same variable.
  */
 predicate definitionReaches(Expr def, Expr node) {
-  unresolveElement(def).(Def).reaches(true, _, (DefOrUse)unresolveElement(node))
+  def.(Def).reaches(true, _, (DefOrUse)node)
 }
 
 private predicate hasAddressOfAccess(SemanticStackVariable var) {
@@ -61,9 +61,9 @@ predicate useUsePair(SemanticStackVariable var, Expr first, Expr second) {
   not definition(var, first)
   and
   exists(Use u |
-    mkElement(u) = second
+    u = second
     and
-    unresolveElement(first).(Use).reaches(false, var, u)
+    first.(Use).reaches(false, var, u)
     and
     u.getVariable(false) = var
   )
@@ -76,19 +76,19 @@ predicate useUsePair(SemanticStackVariable var, Expr first, Expr second) {
 predicate parameterUsePair(Parameter p, VariableAccess va) {
   not parameterIsOverwritten(_, p) and va.getTarget() = p
   or
-  exists(ParameterDef pd | pd.reaches(true, p, (Use)unresolveElement(va)))
+  exists(ParameterDef pd | pd.reaches(true, p, (Use)va))
 }
 
 /**
  * Utility class: A definition or use of a stack variable.
  */
 library
-class DefOrUse extends @cfgnode {
+class DefOrUse extends ControlFlowNodeBase {
   DefOrUse() {
     // Uninstantiated templates are purely syntax, and only on instantiation
     // will they be complete with information about types, conversions, call
     // targets, etc.
-    not mkElement(this).isFromUninstantiatedTemplate(_)
+    not this.isFromUninstantiatedTemplate(_)
   }
 
   /**
@@ -104,7 +104,7 @@ class DefOrUse extends @cfgnode {
   pragma[noinline]
   private predicate reaches_helper(boolean isDef, SemanticStackVariable v, BasicBlock bb, int i) {
     getVariable(isDef) = v and
-    bb.getNode(i) = mkElement(this)
+    bb.getNode(i) = this
   }
 
   /**
@@ -140,24 +140,21 @@ class DefOrUse extends @cfgnode {
     exists(BasicBlock bb, int i |
       getVariable(isDef) = v
       and
-      bb.getNode(i) = mkElement(this)
+      bb.getNode(i) = this
       and
       j = min(int k | bbBarrierAt(bb, k, v, _) and k > i)
     )
   }
-
-  /** Gets a textual representation of this element. */
-  string toString() { result = "DefOrUse" }
 }
 
 library
 class Def extends DefOrUse {
   Def() {
-    definition(_, mkElement(this))
+    definition(_, this)
   }
 
   override SemanticStackVariable getVariable(boolean isDef) {
-    definition(result, mkElement(this)) and isDef = true
+    definition(result, this) and isDef = true
   }
 }
 
@@ -172,11 +169,11 @@ class ParameterDef extends DefOrUse {
   ParameterDef() {
     // Optimization: parameters that are not overwritten do not require
     // reachability analysis
-    exists(Function f | parameterIsOverwritten(f, _) | mkElement(this) = f.getEntryPoint())
+    exists(Function f | parameterIsOverwritten(f, _) | this = f.getEntryPoint())
   }
 
   override SemanticStackVariable getVariable(boolean isDef) {
-    exists(Function f | parameterIsOverwritten(f, result) | mkElement(this) = f.getEntryPoint())
+    exists(Function f | parameterIsOverwritten(f, result) | this = f.getEntryPoint())
     and
     isDef = true
   }
@@ -185,22 +182,22 @@ class ParameterDef extends DefOrUse {
 library
 class Use extends DefOrUse {
   Use() {
-    useOfVar(_, mkElement(this))
+    useOfVar(_, this)
   }
 
   override SemanticStackVariable getVariable(boolean isDef) {
-    useOfVar(result, mkElement(this)) and isDef = false
+    useOfVar(result, this) and isDef = false
   }
 }
 
 private predicate bbUseAt(BasicBlock bb, int i, SemanticStackVariable v, Use use) {
-  bb.getNode(i) = mkElement(use)
+  bb.getNode(i) = use
   and
   use.getVariable(false) = v
 }
 
 private predicate bbDefAt(BasicBlock bb, int i, SemanticStackVariable v, Def def) {
-  bb.getNode(i) = mkElement(def)
+  bb.getNode(i) = def
   and
   def.getVariable(true) = v
 }
@@ -403,8 +400,8 @@ predicate useOfVarActual(SemanticStackVariable v, VariableAccess use) {
 private predicate excludeReachesFunction(Function f) {
   exists(int defOrUses |
     defOrUses =
-      count(Def def | mkElement(def).(ControlFlowNode).getControlFlowScope() = f) +
-      count(Use use | mkElement(use).(ControlFlowNode).getControlFlowScope() = f) and
+      count(Def def | def.(ControlFlowNode).getControlFlowScope() = f) +
+      count(Use use | use.(ControlFlowNode).getControlFlowScope() = f) and
     defOrUses >= 13000
   )
 }

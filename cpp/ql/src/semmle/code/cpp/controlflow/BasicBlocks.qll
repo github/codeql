@@ -60,7 +60,7 @@ private cached module Cached {
   private predicate non_primitive_basic_block_entry_node(ControlFlowNode node) {
     not primitive_basic_block_entry_node(node) and
     not exists(node.getAPredecessor()) and
-    successors_extended(unresolveElement(node), _)
+    successors_extended(node, _)
   }
 
   /**
@@ -80,7 +80,7 @@ private cached module Cached {
    * reuse predicates already computed for `PrimitiveBasicBlocks`.
    */
   private predicate equalsPrimitiveBasicBlock(BasicBlock bb) {
-    primitive_basic_block_entry_node(mkElement(bb))
+    primitive_basic_block_entry_node(bb)
     and
     not exists(int i |
       i > 0 and
@@ -96,11 +96,11 @@ private cached module Cached {
   }
 
   private predicate non_primitive_basic_block_member(ControlFlowNode node, BasicBlock bb, int pos) {
-    (not equalsPrimitiveBasicBlock(bb) and node = mkElement(bb) and pos = 0)
+    (not equalsPrimitiveBasicBlock(bb) and node = bb and pos = 0)
     or
-    (not (unresolveElement(node) instanceof BasicBlock) and
+    (not (node instanceof BasicBlock) and
      exists (ControlFlowNode pred
-     | successors_extended(unresolveElement(pred),unresolveElement(node))
+     | successors_extended(pred, node)
      | non_primitive_basic_block_member(pred, bb, pos - 1)))
   }
 
@@ -117,7 +117,7 @@ private cached module Cached {
   predicate bb_successor_cached(BasicBlock pred, BasicBlock succ) {
     exists(ControlFlowNode last |
       basic_block_member(last, pred, bb_length(pred)-1) and
-      last.getASuccessor() = mkElement(succ)
+      last.getASuccessor() = succ
     )
   }
 }
@@ -143,15 +143,10 @@ predicate bb_successor = bb_successor_cached/2;
  *    A - B < C - D  AB is a basic block and CD is a basic block (B has two outgoing edges)
  * ```
  */
-class BasicBlock extends @cfgnode {
+class BasicBlock extends ControlFlowNodeBase {
 
   BasicBlock() {
-    basic_block_entry_node(mkElement(this))
-  }
-
-  /** Gets a textual representation of this element. */
-  string toString() {
-    result = "BasicBlock"
+    basic_block_entry_node(this)
   }
 
   predicate contains(ControlFlowNode node) {
@@ -187,7 +182,7 @@ class BasicBlock extends @cfgnode {
   }
 
   ControlFlowNode getStart() {
-    result = mkElement(this)
+    result = this
   }
 
   /** Gets the number of `ControlFlowNode`s in this basic block. */
@@ -248,9 +243,9 @@ class BasicBlock extends @cfgnode {
    * point or a `catch` clause of a reachable `try` statement.
    */
   predicate isReachable() {
-    exists(Function f | f.getBlock() = mkElement(this))
+    exists(Function f | f.getBlock() = this)
     or
-    exists(TryStmt t, BasicBlock tryblock | mkElement(this) = t.getACatchClause() and tryblock.isReachable() and tryblock.contains(t))
+    exists(TryStmt t, BasicBlock tryblock | this = t.getACatchClause() and tryblock.isReachable() and tryblock.contains(t))
     or
     exists(BasicBlock pred | pred.getASuccessor() = this and pred.isReachable())
   }
@@ -272,7 +267,7 @@ predicate unreachable(ControlFlowNode n) {
  */
 class EntryBasicBlock extends BasicBlock {
   EntryBasicBlock() {
-    exists (Function f | mkElement(this) = f.getEntryPoint())
+    exists (Function f | this = f.getEntryPoint())
   }
 }
 

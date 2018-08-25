@@ -18,10 +18,10 @@ library class StandardSSA extends SSAHelper {
  * from analysis. `SsaDefinition`s are not generated in locations that are
  * statically seen to be unreachable.
  */
-class SsaDefinition extends @cfgnode {
+class SsaDefinition extends ControlFlowNodeBase {
 
     SsaDefinition() {
-        exists(StandardSSA x | x.ssa_defn(_, (ControlFlowNode)mkElement(this), _, _))
+        exists(StandardSSA x | x.ssa_defn(_, this, _, _))
     }
 
     /**
@@ -29,12 +29,7 @@ class SsaDefinition extends @cfgnode {
      * this definition.
      */
     LocalScopeVariable getAVariable() {
-        exists(StandardSSA x | x.ssa_defn(result, (ControlFlowNode)mkElement(this), _, _))
-    }
-
-    /** Gets a textual representation of this element. */
-    string toString() {
-        result = "SSA definition"
+        exists(StandardSSA x | x.ssa_defn(result, this, _, _))
     }
 
     /**
@@ -42,12 +37,12 @@ class SsaDefinition extends @cfgnode {
      * (this, v).
      */
     string toString(LocalScopeVariable v) {
-        exists(StandardSSA x | result = x.toString((ControlFlowNode)mkElement(this), v))
+        exists(StandardSSA x | result = x.toString(this, v))
     }
 
     /** Gets a use of the SSA variable represented by the pair (this, v). */
     VariableAccess getAUse(LocalScopeVariable v) {
-        exists(StandardSSA x | result = x.getAUse((ControlFlowNode)mkElement(this), v))
+        exists(StandardSSA x | result = x.getAUse(this, v))
     }
 
     /**
@@ -63,7 +58,7 @@ class SsaDefinition extends @cfgnode {
      * the node where control flow is joined from multiple paths.
      */
     ControlFlowNode getDefinition() {
-        result = mkElement(this)
+        result = this
     }
 
     BasicBlock getBasicBlock() {
@@ -75,13 +70,9 @@ class SsaDefinition extends @cfgnode {
         exists(StandardSSA x | x.phi_node(v, (BasicBlock)this))
     }
 
-    Location getLocation() {
-        result = mkElement(this).(ControlFlowNode).getLocation()
-    }
-
     /** Holds if the SSA variable `(this, p)` is defined by parameter `p`. */
     predicate definedByParameter(Parameter p) {
-        mkElement(this) = p.getFunction().getEntryPoint()
+        this = p.getFunction().getEntryPoint()
     }
 
     /**
@@ -133,7 +124,7 @@ class SsaDefinition extends @cfgnode {
 
     /** Holds if `(this, v)` reaches the end of basic block `b`. */
     predicate reachesEndOfBB(LocalScopeVariable v, BasicBlock b) {
-        exists(StandardSSA x | x.ssaDefinitionReachesEndOfBB(v, (ControlFlowNode)mkElement(this), b))
+        exists(StandardSSA x | x.ssaDefinitionReachesEndOfBB(v, this, b))
     }
 
     /**

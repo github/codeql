@@ -1,5 +1,6 @@
 import cpp
 private import PrimitiveBasicBlocks
+private class Node = ControlFlowNodeBase;
 
 /** A call to a function known not to return. */
 predicate aborting(FunctionCall c) {
@@ -61,19 +62,19 @@ private predicate nonAnalyzableFunction(Function f) {
 /**
  * If a condition is provably true, then control-flow edges to its false successors are impossible.
  */
-private predicate impossibleFalseEdge(Expr condition, @cfgnode succ) {
+private predicate impossibleFalseEdge(Expr condition, Node succ) {
   conditionAlwaysTrue(condition)
-  and falsecond(unresolveElement(condition),succ)
-  and not truecond(unresolveElement(condition),succ)
+  and falsecond_base(condition,succ)
+  and not truecond_base(condition,succ)
 }
 
 /**
  * If a condition is provably false, then control-flow edges to its true successors are impossible.
  */
-private predicate impossibleTrueEdge(Expr condition, @cfgnode succ) {
+private predicate impossibleTrueEdge(Expr condition, Node succ) {
   conditionAlwaysFalse(condition)
-  and truecond(unresolveElement(condition),succ)
-  and not falsecond(unresolveElement(condition),succ)
+  and truecond_base(condition,succ)
+  and not falsecond_base(condition,succ)
 }
 
 /**
@@ -91,9 +92,9 @@ private int switchCaseRangeEnd(SwitchCase sc) {
  * body `switchBlock`. There may be several such expressions: for example, if
  * the condition is `(x ? y : z)` then the result is {`y`, `z`}.
  */
-private @cfgnode getASwitchExpr(SwitchStmt switch, Block switchBlock) {
+private Node getASwitchExpr(SwitchStmt switch, Block switchBlock) {
   switch.getStmt() = switchBlock and
-  successors_extended(result, unresolveElement(switchBlock))
+  successors_extended(result, switchBlock)
 }
 
 /**
@@ -108,10 +109,10 @@ private predicate impossibleSwitchEdge(Block switchBlock, SwitchCase sc) {
      and switch.getStmt() = switchBlock
          // If all of the successors have known values, and none of those
          // values are in our range, then this edge is impossible.
-     and forall(@cfgnode n |
+     and forall(Node n |
                 n = getASwitchExpr(switch, switchBlock) |
                 exists(int switchValue |
-                       switchValue = getSwitchValue(mkElement(n))
+                       switchValue = getSwitchValue(n)
                        and (switchValue < sc.getExpr().(CompileTimeConstantInt).getIntValue() or
                             switchValue > switchCaseRangeEnd(sc)))))
 }
@@ -126,11 +127,11 @@ private predicate impossibleDefaultSwitchEdge(Block switchBlock, DefaultCase dc)
      and switch.getStmt() = switchBlock
          // If all of the successors lead to other switch cases
          // then this edge is impossible.
-     and forall(@cfgnode n |
+     and forall(Node n |
                 n = getASwitchExpr(switch, switchBlock) |
                 exists(SwitchCase sc, int val |
                        sc.getSwitchStmt() = switch and
-                       val = getSwitchValue(mkElement(n)) and
+                       val = getSwitchValue(n) and
                        val >= sc.getExpr().(CompileTimeConstantInt).getIntValue() and
                        val <= switchCaseRangeEnd(sc))))
 }
@@ -139,10 +140,10 @@ private predicate impossibleDefaultSwitchEdge(Block switchBlock, DefaultCase dc)
  * If `pred` is a function call with (at least) one function target,
  * (at least) one such target must be potentially returning.
  */
-private predicate possiblePredecessor(@cfgnode pred) {
-  not exists(mkElement(pred).(FunctionCall).getTarget())
+private predicate possiblePredecessor(Node pred) {
+  not exists(pred.(FunctionCall).getTarget())
   or
-  potentiallyReturningFunctionCall(mkElement(pred))
+  potentiallyReturningFunctionCall(pred)
 }
 
 /**
@@ -150,14 +151,14 @@ private predicate possiblePredecessor(@cfgnode pred) {
  * impossible control-flow edges - flow will never occur along these
  * edges, so it is safe (and indeed sensible) to remove them.
  */
-cached predicate successors_adapted(@cfgnode pred, @cfgnode succ) {
+cached predicate successors_adapted(Node pred, Node succ) {
   successors_extended(pred, succ)
   and possiblePredecessor(pred)
-  and not impossibleFalseEdge(mkElement(pred), succ)
-  and not impossibleTrueEdge(mkElement(pred), succ)
-  and not impossibleSwitchEdge(mkElement(pred), mkElement(succ))
-  and not impossibleDefaultSwitchEdge(mkElement(pred), mkElement(succ))
-  and not getOptions().exprExits(mkElement(pred))
+  and not impossibleFalseEdge(pred, succ)
+  and not impossibleTrueEdge(pred, succ)
+  and not impossibleSwitchEdge(pred, succ)
+  and not impossibleDefaultSwitchEdge(pred, succ)
+  and not getOptions().exprExits(pred)
 }
 
 private predicate compileTimeConstantInt(Expr e, int val) {
@@ -708,9 +709,9 @@ library class ConditionEvaluator extends ExprEvaluator {
   ConditionEvaluator() { this = 0 }
 
   override predicate interesting(Expr e) {
-    falsecond(unresolveElement(e), _)
+    falsecond_base(e, _)
     or
-    truecond(unresolveElement(e), _)
+    truecond_base(e, _)
   }
 }
 
@@ -719,7 +720,7 @@ library class SwitchEvaluator extends ExprEvaluator {
   SwitchEvaluator() { this = 1 }
 
   override predicate interesting(Expr e) {
-    e = mkElement(getASwitchExpr(_, _))
+    e = getASwitchExpr(_, _)
   }
 }
 
@@ -734,7 +735,7 @@ library class LoopEntryConditionEvaluator extends ExprEvaluator {
   abstract override predicate interesting(Expr e);
 
   /** Holds if `cfn` is the entry point of the loop for which `e` is the condition. */
-  abstract predicate isLoopEntry(Expr e, ControlFlowNode cfn);
+  abstract predicate isLoopEntry(Expr e, Node cfn);
 
   /** Holds if `s` is the loop body guarded by the condition `e`. */
   abstract predicate isLoopBody(Expr e, StmtParent s);
@@ -798,7 +799,7 @@ library class LoopEntryConditionEvaluator extends ExprEvaluator {
   }
 
   private predicate loopEntryAt(PrimitiveBasicBlock bb, int pos, Expr e) {
-    exists(ControlFlowNode cfn |
+    exists(Node cfn |
       bb.getNode(pos) = cfn and
       isLoopEntry(e, cfn)
     )
@@ -912,7 +913,7 @@ library class WhileLoopEntryConditionEvaluator extends LoopEntryConditionEvaluat
     exists(WhileStmt while | e = while.getCondition())
   }
 
-  override predicate isLoopEntry(Expr e, ControlFlowNode cfn) {
+  override predicate isLoopEntry(Expr e, Node cfn) {
     cfn.(WhileStmt).getCondition() = e
   }
 
@@ -932,7 +933,7 @@ library class ForLoopEntryConditionEvaluator extends LoopEntryConditionEvaluator
     exists(ForStmt for | e = for.getCondition())
   }
 
-  override predicate isLoopEntry(Expr e, ControlFlowNode cfn) {
+  override predicate isLoopEntry(Expr e, Node cfn) {
     cfn.(ForStmt).getCondition() = e
   }
 

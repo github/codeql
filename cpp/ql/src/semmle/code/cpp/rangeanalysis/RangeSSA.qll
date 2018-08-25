@@ -52,9 +52,9 @@ private predicate guardCondition(
 }
 
 private predicate guardSuccessor(ComparisonOperation guard, boolean branch, BasicBlock succ) {
-    (branch = true and mkElement(succ) = guard.getATrueSuccessor())
+    (branch = true and succ = guard.getATrueSuccessor())
     or
-    (branch = false and mkElement(succ) = guard.getAFalseSuccessor())
+    (branch = false and succ = guard.getAFalseSuccessor())
 }
 
 /**
@@ -64,10 +64,10 @@ private predicate guardSuccessor(ComparisonOperation guard, boolean branch, Basi
  * can be coincident, due to the presence of parameter definitions and phi
  * nodes.
  */
-class RangeSsaDefinition extends @cfgnode {
+class RangeSsaDefinition extends ControlFlowNodeBase {
 
     RangeSsaDefinition() {
-        exists(RangeSSA x | x.ssa_defn(_, (ControlFlowNode)mkElement(this), _, _))
+        exists(RangeSSA x | x.ssa_defn(_, this, _, _))
     }
 
     /**
@@ -75,11 +75,7 @@ class RangeSsaDefinition extends @cfgnode {
      * this definition.
      */
     LocalScopeVariable getAVariable() {
-        exists(RangeSSA x | x.ssa_defn(result, (ControlFlowNode)mkElement(this), _, _))
-    }
-
-    string toString() {
-        result = "SSA definition"
+        exists(RangeSSA x | x.ssa_defn(result, this, _, _))
     }
 
     /**
@@ -87,17 +83,17 @@ class RangeSsaDefinition extends @cfgnode {
      * (this, v).
      */
     string toString(LocalScopeVariable v) {
-        exists(RangeSSA x | result = x.toString((ControlFlowNode)mkElement(this), v))
+        exists(RangeSSA x | result = x.toString(this, v))
     }
 
     /** Gets a use of the SSA variable represented by the pair (this, v) */
     VariableAccess getAUse(LocalScopeVariable v) {
-        exists(RangeSSA x | result = x.getAUse((ControlFlowNode)mkElement(this), v))
+        exists(RangeSSA x | result = x.getAUse(this, v))
     }
 
     /** Gets the control flow node for this definition */
     ControlFlowNode getDefinition() {
-        result = mkElement(this)
+        result = this
     }
 
     BasicBlock getBasicBlock() {
@@ -117,13 +113,9 @@ class RangeSsaDefinition extends @cfgnode {
         guard_defn(v, guard, this, branch)
     }
 
-    Location getLocation() {
-        result = mkElement(this).(ControlFlowNode).getLocation()
-    }
-
     /** Whether this definition is from a parameter */
     predicate definedByParameter(Parameter p) {
-        mkElement(this) = p.getFunction().getEntryPoint()
+        this = p.getFunction().getEntryPoint()
     }
 
     RangeSsaDefinition getAPhiInput(LocalScopeVariable v) {
@@ -174,6 +166,6 @@ class RangeSsaDefinition extends @cfgnode {
     }
 
     predicate reachesEndOfBB(LocalScopeVariable v, BasicBlock b) {
-        exists(RangeSSA x | x.ssaDefinitionReachesEndOfBB(v, (ControlFlowNode)mkElement(this), b))
+        exists(RangeSSA x | x.ssaDefinitionReachesEndOfBB(v, this, b))
     }
 }
