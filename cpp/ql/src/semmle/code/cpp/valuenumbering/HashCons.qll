@@ -288,7 +288,6 @@ private predicate mk_Conversion(Type t, HC child, Conversion conv) {
 }
 
 private predicate analyzableBinaryOp(BinaryOperation op) {
-  op.isPure() and
   strictcount (op.getLeftOperand().getFullyConverted()) = 1 and
   strictcount (op.getRightOperand().getFullyConverted()) = 1 and
   strictcount (op.getOperator()) = 1

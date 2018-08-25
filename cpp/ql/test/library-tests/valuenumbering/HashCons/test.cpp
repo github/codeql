@@ -138,10 +138,16 @@ class IntHolder {
 
 public:
   int getDoubledInt() {
-    return getInt() + this->getInt();
+    return getInt() + this->getInt(); // getInt() and this->getInt() should be the same
   }
 };
 
-int quadrupleInt(IntHolder ih) {
+int test09(IntHolder ih) {
   return ih.getDoubledInt() + ih.getDoubledInt();
+}
+
+int test10(int x) {
+  x++ + x++;
+  x++ + x++; // same as above
+  return ++x; // ++x is not the same as x++
 }
