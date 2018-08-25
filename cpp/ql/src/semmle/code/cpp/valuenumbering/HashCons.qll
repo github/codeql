@@ -92,6 +92,7 @@ private cached newtype HCBase =
   // given a unique number based on the expression itself.
   HC_Unanalyzable(Expr e) { not analyzableExpr(e,_) }
 
+/** Used to implement hash-consing of argument lists  */
 private cached newtype HC_Args =
   HC_EmptyArgs(Function fcn) {
     any()
@@ -377,14 +378,6 @@ private predicate analyzableMemberFunctionCall(
   strictcount(fc.getQualifier()) = 1
 }
 
-private predicate analyzableFunctionCall(
-  FunctionCall fc
-) {
-  analyzableNonmemberFunctionCall(fc)
-  or
-  analyzableMemberFunctionCall(fc)
-}
-
 private predicate mk_MemberFunctionCall(
   Function fcn,
   HC qual,
@@ -405,40 +398,18 @@ private predicate mk_MemberFunctionCall(
   )
 }
 
-/*
-private predicate   analyzableImplicitThisFunctionCall(FunctionCall fc) {
-  forall(int i | exists(fc.getArgument(i)) | strictcount(fc.getArgument(i)) = 1) and
-  strictcount(fc.getTarget()) = 1 and
-  fc.getQualifier().(ThisExpr).isCompilerGenerated() and
-  fc.getTarget().isMember()
+private predicate analyzableFunctionCall(
+  FunctionCall fc
+) {
+  analyzableNonmemberFunctionCall(fc)
+  or
+  analyzableMemberFunctionCall(fc)
 }
 
-private predicate mk_ImplicitThisFunctionCall(Function fcn, Function targ, HC_Args args, FunctionCall fc) {
-  analyzableImplicitThisFunctionCall(fc) and
-  fc.getTarget() = targ and
-  fc.getEnclosingFunction() = fcn and
-  analyzableImplicitThisFunctionCall(fc) and
-  (
-    exists(HC head, HC_Args tail |
-      args = HC_ArgCons(targ, head, fc.getNumberOfArguments() - 1, tail) and
-      mk_ArgCons(targ, head, fc.getNumberOfArguments() - 1, tail, fc)
-    )
-    or
-    fc.getNumberOfArguments() = 0 and
-    args = HC_EmptyArgs(targ)
-  )
-}
-
-private predicate mk_ImplicitThisFunctionCall_with_qualifier(
-  Function fcn,
-  Function targ,
-  HC qual,
-  HC_Args args,
-  FunctionCall fc) {
-  mk_ImplicitThisFunctionCall(fcn, targ, args, fc) and
-  qual = HC_ThisExpr(fcn)
-}
-*/
+/**
+ * Holds if `fc` is a call to `fcn`, `fc`'s first `i-1` arguments have hash-cons
+ * `list`, and `fc`'s `i`th argument has hash-cons `hc`
+ */
 private predicate mk_ArgCons(Function fcn, HC hc, int i, HC_Args list, FunctionCall fc) {
   analyzableFunctionCall(fc) and
   fc.getTarget() = fcn and
