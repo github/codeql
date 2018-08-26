@@ -29,7 +29,7 @@
 | test.cpp:7:8:7:10 | IsX<X> |
 | test.cpp:7:8:7:10 | definition of IsX<X> |
 | test.cpp:8:23:8:27 | Value |
-| test.cpp:8:23:8:27 | declaration of Value |
+| test.cpp:8:23:8:27 | definition of Value |
 | test.cpp:8:31:8:35 | 0 |
 | test.cpp:8:31:8:35 | initializer for Value |
 | test.cpp:11:10:11:11 | mention of EC |
@@ -43,7 +43,7 @@
 | test.cpp:17:8:17:9 | IX<X> |
 | test.cpp:17:8:17:9 | definition of IX<X> |
 | test.cpp:18:21:18:25 | Value |
-| test.cpp:18:21:18:25 | declaration of Value |
+| test.cpp:18:21:18:25 | definition of Value |
 | test.cpp:18:29:18:32 | EC:: |
 | test.cpp:18:29:18:33 | V |
 | test.cpp:18:29:18:33 | initializer for Value |

@@ -2,8 +2,8 @@
 |  | gp_offset | <no initialiser value> |
 |  | overflow_arg_area | <no initialiser value> |
 |  | reg_save_area | <no initialiser value> |
-| extended.c | has_nullptr_e | 1 |
-| extended.c | has_nullptr_f | 1 |
+| extended.cpp | has_nullptr_e | 1 |
+| extended.cpp | has_nullptr_f | 1 |
 | gcc492.c | has_include | 1 |
 | gcc492.c | has_macro_include | 1 |
 | gcc492.c | has_missing_include | 0 |

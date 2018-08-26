@@ -137,8 +137,8 @@
 | conversions.cpp:207:7:207:31 | reinterpret_cast<long>... | pointer to integral conversion | prval | long | void * |
 | conversions.cpp:208:7:208:14 | (void *)... | integral to pointer conversion | prval | void * | long |
 | conversions.cpp:209:7:209:32 | reinterpret_cast<void *>... | integral to pointer conversion | prval | void * | long |
-| conversions.cpp:227:8:227:41 | (PolymorphicBase *)... | base class conversion | prval | PolymorphicBase * | PolymorphicDerived * |
-| conversions.cpp:228:25:228:57 | (PolymorphicBase)... | base class conversion | lval | PolymorphicBase | PolymorphicDerived |
+| conversions.cpp:227:8:227:41 | dynamic_cast<PolymorphicBase *>... | dynamic_cast | prval | PolymorphicBase * | PolymorphicDerived * |
+| conversions.cpp:228:25:228:57 | dynamic_cast<PolymorphicBase>... | dynamic_cast | lval | PolymorphicBase | PolymorphicDerived |
 | conversions.cpp:230:8:230:44 | dynamic_cast<PolymorphicDerived *>... | dynamic_cast | prval | PolymorphicDerived * | PolymorphicBase * |
 | conversions.cpp:231:28:231:63 | dynamic_cast<PolymorphicDerived>... | dynamic_cast | lval | PolymorphicDerived | PolymorphicBase |
 | conversions.cpp:235:7:235:16 | (void *)... | pointer conversion | prval | void * | ..(*)(..) |
