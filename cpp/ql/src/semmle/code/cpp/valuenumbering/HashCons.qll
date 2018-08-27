@@ -47,6 +47,8 @@ private cached newtype HCBase =
   or
   HC_StringLiteral(string val, Type t) {mk_StringLiteral(val,t,_)}
   or
+  HC_Nullptr() {mk_Nullptr(_)}
+  or
   HC_Variable(Variable x) {
      mk_Variable(x, _)
   }
@@ -167,30 +169,42 @@ class HC extends HCBase {
 
 private predicate analyzableIntLiteral(Literal e) {
   strictcount (e.getValue().toInt()) = 1 and
-  strictcount (e.getType().getUnspecifiedType()) = 1
+  strictcount (e.getType().getUnspecifiedType()) = 1 and
+  e.getType().getUnspecifiedType() instanceof IntegralType
 }
 
 private predicate mk_IntLiteral(int val, Type t, Expr e) {
   analyzableIntLiteral(e) and
   val = e.getValue().toInt() and
-  t = e.getType().getUnspecifiedType() and
-  t instanceof IntegralType
+  t = e.getType().getUnspecifiedType()
 }
+
+
 private predicate analyzableFloatLiteral(Literal e) {
   strictcount (e.getValue().toFloat()) = 1 and
-  strictcount (e.getType().getUnspecifiedType()) = 1
+  strictcount (e.getType().getUnspecifiedType()) = 1 and
+  e.getType().getUnspecifiedType() instanceof FloatingPointType
 }
 
 private predicate mk_FloatLiteral(float val, Type t, Expr e) {
   analyzableFloatLiteral(e) and
   val = e.getValue().toFloat() and
-  t = e.getType().getUnspecifiedType() and
-  t instanceof FloatingPointType
+  t = e.getType().getUnspecifiedType()
+}
+
+private predicate analyzableNullptr(NullValue e) {
+  strictcount (e.getType().getUnspecifiedType()) = 1 and
+  e.getType() instanceof NullPointerType
+}
+
+private predicate mk_Nullptr(Expr e) {
+  analyzableNullptr(e)
 }
 
 private predicate analyzableStringLiteral(Literal e) {
   strictcount(e.getValue()) = 1 and
-  strictcount(e.getType().getUnspecifiedType()) = 1
+  strictcount(e.getType().getUnspecifiedType()) = 1 and
+  e.getType().getUnspecifiedType().(ArrayType).getBaseType() instanceof CharType
 }
 
 private predicate mk_StringLiteral(string val, Type t, Expr e) {
@@ -348,9 +362,9 @@ private predicate mk_Deref(
 
 private predicate analyzableNonmemberFunctionCall(
   FunctionCall fc) {
-  forall(int i | exists(fc.getArgument(i)) | strictcount(fc.getArgument(i)) = 1) and
+  forall(int i | exists(fc.getArgument(i)) | strictcount(fc.getArgument(i).getFullyConverted()) = 1) and
   strictcount(fc.getTarget()) = 1 and
-  not fc.getTarget().isMember()
+  not exists(fc.getQualifier())
 }
 
 private predicate mk_NonmemberFunctionCall(
@@ -373,9 +387,9 @@ private predicate mk_NonmemberFunctionCall(
 
 private predicate analyzableMemberFunctionCall(
   FunctionCall fc) {
-  forall(int i | exists(fc.getArgument(i)) | strictcount(fc.getArgument(i)) = 1) and
+  forall(int i | exists(fc.getArgument(i)) | strictcount(fc.getArgument(i).getFullyConverted()) = 1) and
   strictcount(fc.getTarget()) = 1 and
-  strictcount(fc.getQualifier()) = 1
+  strictcount(fc.getQualifier().getFullyConverted()) = 1
 }
 
 private predicate mk_MemberFunctionCall(
@@ -386,7 +400,7 @@ private predicate mk_MemberFunctionCall(
 ) {
   fc.getTarget() = fcn and
   analyzableMemberFunctionCall(fc) and
-  hashCons(fc.getQualifier()) = qual and
+  hashCons(fc.getQualifier().getFullyConverted()) = qual and
   (
     exists(HC head, HC_Args tail |
       args = HC_ArgCons(fcn, head, fc.getNumberOfArguments() - 1, tail) and
@@ -490,6 +504,11 @@ cached HC hashCons(Expr e) {
   | mk_MemberFunctionCall(fcn, qual, args, e) and
     result = HC_MemberFunctionCall(fcn, qual, args)
   )
+  or
+  (
+    mk_Nullptr(e) and
+    result = HC_Nullptr()
+  )
 
   or
   (not analyzableExpr(e,_) and result = HC_Unanalyzable(e))
@@ -504,6 +523,7 @@ predicate analyzableExpr(Expr e, string kind) {
   (analyzableIntLiteral(e) and kind = "IntLiteral") or
   (analyzableFloatLiteral(e) and kind = "FloatLiteral") or
   (analyzableStringLiteral(e) and kind = "StringLiteral") or
+  (analyzableNullptr(e) and kind = "Nullptr") or
   (analyzableDotFieldAccess(e) and kind = "DotFieldAccess") or
   (analyzablePointerFieldAccess(e) and kind = "PointerFieldAccess") or
   (analyzableImplicitThisFieldAccess(e) and kind = "ImplicitThisFieldAccess") or

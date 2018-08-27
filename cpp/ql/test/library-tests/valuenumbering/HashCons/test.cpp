@@ -151,3 +151,8 @@ int test10(int x) {
   x++ + x++; // same as above
   return ++x; // ++x is not the same as x++
 }
+
+void* test11() {
+  nullptr == nullptr;
+  return nullptr;
+}
