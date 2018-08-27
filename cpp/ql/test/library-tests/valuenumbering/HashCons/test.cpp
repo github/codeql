@@ -172,3 +172,15 @@ int test12() {
   e1x1 == e2x2;
   return e1x2;
 }
+
+#define SQUARE(x)  ((x) * (x))
+
+int test13(int y) {
+  return SQUARE(y + 1);
+}
+
+#define SQUARE(x) x * x
+
+int test14(int y) {
+  return SQUARE(y);
+}

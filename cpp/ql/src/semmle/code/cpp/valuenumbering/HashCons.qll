@@ -55,13 +55,13 @@ private cached newtype HCBase =
      mk_Variable(x, _)
   }
   or
-  HC_FieldAccess(HC s, Field f) {
+  HC_FieldAccess(HashCons s, Field f) {
     mk_DotFieldAccess(s,f,_) or
     mk_PointerFieldAccess_with_deref(s,f,_) or
     mk_ImplicitThisFieldAccess_with_deref(s,f,_)
   }
   or
-  HC_Deref(HC p) {
+  HC_Deref(HashCons p) {
     mk_Deref(p,_) or
     mk_PointerFieldAccess(p,_,_) or
     mk_ImplicitThisFieldAccess_with_qualifier(p,_,_)
@@ -72,15 +72,15 @@ private cached newtype HCBase =
     mk_ImplicitThisFieldAccess(fcn,_,_)
   }
   or
-  HC_Conversion(Type t, HC child) { mk_Conversion(t, child, _) }
+  HC_Conversion(Type t, HashCons child) { mk_Conversion(t, child, _) }
   or
-  HC_BinaryOp(HC lhs, HC rhs, string opname) {
+  HC_BinaryOp(HashCons lhs, HashCons rhs, string opname) {
     mk_BinaryOp(lhs, rhs, opname, _)
   }
   or
-  HC_UnaryOp(HC child, string opname) { mk_UnaryOp(child, opname, _) }
+  HC_UnaryOp(HashCons child, string opname) { mk_UnaryOp(child, opname, _) }
   or
-  HC_ArrayAccess(HC x, HC i) {
+  HC_ArrayAccess(HashCons x, HashCons i) {
     mk_ArrayAccess(x,i,_)
   }
   or
@@ -88,7 +88,7 @@ private cached newtype HCBase =
     mk_NonmemberFunctionCall(fcn, args, _)
   }
   or
-  HC_MemberFunctionCall(Function trg, HC qual, HC_Args args) {
+  HC_MemberFunctionCall(Function trg, HashCons qual, HC_Args args) {
     mk_MemberFunctionCall(trg, qual, args, _)
   }
   or
@@ -101,11 +101,11 @@ private cached newtype HC_Args =
   HC_EmptyArgs(Function fcn) {
     any()
   }
-  or HC_ArgCons(Function fcn, HC hc, int i, HC_Args list) {
+  or HC_ArgCons(Function fcn, HashCons hc, int i, HC_Args list) {
     mk_ArgCons(fcn, hc, i, list, _)
   }
 /**
- * HC is the hash-cons of an expression. The relationship between `Expr`
+ * HashCons is the hash-cons of an expression. The relationship between `Expr`
  * and `HC` is many-to-one: every `Expr` has exactly one `HC`, but multiple
  * expressions can have the same `HC`. If two expressions have the same
  * `HC`, it means that they are structurally equal. The `HC` is an opaque
@@ -118,9 +118,7 @@ private cached newtype HC_Args =
  * expression with this `HC` and using its `toString` and `getLocation`
  * methods.
  */
-class HC extends HCBase {
-  HC() { this instanceof HCBase }
-
+class HashCons extends HCBase {
   /** Gets an expression that has this HC. */
   Expr getAnExpr() {
     this = hashCons(result)
@@ -234,7 +232,7 @@ private predicate analyzableDotFieldAccess(DotFieldAccess access) {
 }
 
 private predicate mk_DotFieldAccess(
-  HC qualifier, Field target, DotFieldAccess access) {
+  HashCons qualifier, Field target, DotFieldAccess access) {
   analyzableDotFieldAccess(access) and
   target = access.getTarget() and
   qualifier = hashCons(access.getQualifier().getFullyConverted())
@@ -246,9 +244,9 @@ private predicate analyzablePointerFieldAccess(PointerFieldAccess access) {
 }
 
 private predicate mk_PointerFieldAccess(
-  HC qualifier, Field target,
+  HashCons qualifier, Field target,
   PointerFieldAccess access) {
-   analyzablePointerFieldAccess(access) and
+  analyzablePointerFieldAccess(access) and
   target = access.getTarget() and
   qualifier = hashCons(access.getQualifier().getFullyConverted())
 }
@@ -257,38 +255,35 @@ private predicate mk_PointerFieldAccess(
  * `obj->field` is equivalent to `(*obj).field`, so we need to wrap an
  * extra `HC_Deref` around the qualifier.
  */
-private predicate mk_PointerFieldAccess_with_deref(
-  HC new_qualifier, Field target, PointerFieldAccess access) {
-  exists (HC qualifier
+private predicate mk_PointerFieldAccess_with_deref (HashCons new_qualifier, Field target,
+  PointerFieldAccess access) {
+  exists (HashCons qualifier
   | mk_PointerFieldAccess(qualifier, target, access) and
     new_qualifier = HC_Deref(qualifier))
 }
 
-private predicate analyzableImplicitThisFieldAccess(
-  ImplicitThisFieldAccess access) {
+private predicate analyzableImplicitThisFieldAccess(ImplicitThisFieldAccess access) {
   strictcount (access.getTarget()) = 1 and
   strictcount (access.getEnclosingFunction()) = 1
 }
 
-private predicate mk_ImplicitThisFieldAccess(
-  Function fcn, Field target,
+private predicate mk_ImplicitThisFieldAccess(Function fcn, Field target,
   ImplicitThisFieldAccess access) {
   analyzableImplicitThisFieldAccess(access) and
   target = access.getTarget() and
   fcn = access.getEnclosingFunction()
 }
 
-private predicate mk_ImplicitThisFieldAccess_with_qualifier(
-  HC qualifier, Field target,
+private predicate mk_ImplicitThisFieldAccess_with_qualifier( HashCons qualifier, Field target,
   ImplicitThisFieldAccess access) {
   exists (Function fcn
   | mk_ImplicitThisFieldAccess(fcn, target, access) and
     qualifier = HC_ThisExpr(fcn))
 }
 
-private predicate mk_ImplicitThisFieldAccess_with_deref(
-  HC new_qualifier, Field target, ImplicitThisFieldAccess access) {
-  exists (HC qualifier
+private predicate mk_ImplicitThisFieldAccess_with_deref(HashCons new_qualifier, Field target,
+  ImplicitThisFieldAccess access) {
+  exists (HashCons qualifier
   | mk_ImplicitThisFieldAccess_with_qualifier(
       qualifier, target, access) and
     new_qualifier = HC_Deref(qualifier))
@@ -309,7 +304,7 @@ private predicate analyzableConversion(Conversion conv) {
   strictcount (conv.getExpr()) = 1
 }
 
-private predicate mk_Conversion(Type t, HC child, Conversion conv) {
+private predicate mk_Conversion(Type t, HashCons child, Conversion conv) {
   analyzableConversion(conv) and
   t = conv.getType().getUnspecifiedType() and
   child = hashCons(conv.getExpr())
@@ -321,8 +316,7 @@ private predicate analyzableBinaryOp(BinaryOperation op) {
   strictcount (op.getOperator()) = 1
 }
 
-private predicate mk_BinaryOp(
-  HC lhs, HC rhs, string opname, BinaryOperation op) {
+private predicate mk_BinaryOp(HashCons lhs, HashCons rhs, string opname, BinaryOperation op) {
   analyzableBinaryOp(op) and
   lhs = hashCons(op.getLeftOperand().getFullyConverted()) and
   rhs = hashCons(op.getRightOperand().getFullyConverted()) and
@@ -335,7 +329,7 @@ private predicate analyzableUnaryOp(UnaryOperation op) {
   strictcount (op.getOperator()) = 1
 }
 
-private predicate mk_UnaryOp(HC child, string opname, UnaryOperation op) {
+private predicate mk_UnaryOp(HashCons child, string opname, UnaryOperation op) {
   analyzableUnaryOp(op) and
   child = hashCons(op.getOperand().getFullyConverted()) and
   opname = op.getOperator()
@@ -355,40 +349,36 @@ private predicate analyzableArrayAccess(ArrayExpr ae) {
   strictcount (ae.getArrayOffset().getFullyConverted()) = 1
 }
 
-private predicate mk_ArrayAccess(
-  HC base, HC offset, ArrayExpr ae) {
+private predicate mk_ArrayAccess(HashCons base, HashCons offset, ArrayExpr ae) {
   analyzableArrayAccess(ae) and
   base = hashCons(ae.getArrayBase().getFullyConverted()) and
   offset = hashCons(ae.getArrayOffset().getFullyConverted())
 }
 
-private predicate analyzablePointerDereferenceExpr(
-  PointerDereferenceExpr deref) {
+private predicate analyzablePointerDereferenceExpr(PointerDereferenceExpr deref) {
   strictcount (deref.getOperand().getFullyConverted()) = 1
 }
 
-private predicate mk_Deref(
-  HC p, PointerDereferenceExpr deref) {
+private predicate mk_Deref(HashCons p, PointerDereferenceExpr deref) {
   analyzablePointerDereferenceExpr(deref) and
   p = hashCons(deref.getOperand().getFullyConverted())
 }
 
-private predicate analyzableNonmemberFunctionCall(
-  FunctionCall fc) {
-  forall(int i | exists(fc.getArgument(i)) | strictcount(fc.getArgument(i).getFullyConverted()) = 1) and
+private predicate analyzableNonmemberFunctionCall(FunctionCall fc) {
+  forall(int i |
+    exists(fc.getArgument(i)) |
+    strictcount(fc.getArgument(i).getFullyConverted()) = 1
+  ) and
   strictcount(fc.getTarget()) = 1 and
   not exists(fc.getQualifier())
 }
 
-private predicate mk_NonmemberFunctionCall(
-  Function fcn,
-  HC_Args args,
-  FunctionCall fc
+private predicate mk_NonmemberFunctionCall(Function fcn, HC_Args args, FunctionCall fc
 ) {
   fc.getTarget() = fcn and
   analyzableNonmemberFunctionCall(fc) and
   (
-    exists(HC head, HC_Args tail |
+    exists(HashCons head, HC_Args tail |
       args = HC_ArgCons(fcn, head, fc.getNumberOfArguments() - 1, tail) and
       mk_ArgCons(fcn, head, fc.getNumberOfArguments() - 1, tail, fc)
     )
@@ -400,14 +390,17 @@ private predicate mk_NonmemberFunctionCall(
 
 private predicate analyzableMemberFunctionCall(
   FunctionCall fc) {
-  forall(int i | exists(fc.getArgument(i)) | strictcount(fc.getArgument(i).getFullyConverted()) = 1) and
+  forall(int i |
+  exists(fc.getArgument(i)) |
+    strictcount(fc.getArgument(i).getFullyConverted()) = 1
+  ) and
   strictcount(fc.getTarget()) = 1 and
   strictcount(fc.getQualifier().getFullyConverted()) = 1
 }
 
 private predicate mk_MemberFunctionCall(
   Function fcn,
-  HC qual,
+  HashCons qual,
   HC_Args args,
   FunctionCall fc
 ) {
@@ -415,7 +408,7 @@ private predicate mk_MemberFunctionCall(
   analyzableMemberFunctionCall(fc) and
   hashCons(fc.getQualifier().getFullyConverted()) = qual and
   (
-    exists(HC head, HC_Args tail |
+    exists(HashCons head, HC_Args tail |
       args = HC_ArgCons(fcn, head, fc.getNumberOfArguments() - 1, tail) and
       mk_ArgCons(fcn, head, fc.getNumberOfArguments() - 1, tail, fc)
     )
@@ -434,15 +427,15 @@ private predicate analyzableFunctionCall(
 }
 
 /**
- * Holds if `fc` is a call to `fcn`, `fc`'s first `i-1` arguments have hash-cons
- * `list`, and `fc`'s `i`th argument has hash-cons `hc`
+ * Holds if `fc` is a call to `fcn`, `fc`'s first `i` arguments have hash-cons
+ * `list`, and `fc`'s argument at index `i` has hash-cons `hc`.
  */
-private predicate mk_ArgCons(Function fcn, HC hc, int i, HC_Args list, FunctionCall fc) {
+private predicate mk_ArgCons(Function fcn, HashCons hc, int i, HC_Args list, FunctionCall fc) {
   analyzableFunctionCall(fc) and
   fc.getTarget() = fcn and
   hc = hashCons(fc.getArgument(i).getFullyConverted()) and
   (
-    exists(HC head, HC_Args tail |
+    exists(HashCons head, HC_Args tail |
       list = HC_ArgCons(fcn, head, i - 1, tail) and
       mk_ArgCons(fcn, head, i - 1, tail, fc) and
       i > 0
@@ -454,7 +447,7 @@ private predicate mk_ArgCons(Function fcn, HC hc, int i, HC_Args list, FunctionC
 }
 
 /** Gets the hash-cons of expression `e`. */
-cached HC hashCons(Expr e) {
+cached HashCons hashCons(Expr e) {
   exists (int val, Type t
   | mk_IntLiteral(val, t, e) and
     result = HC_IntLiteral(val, t))
@@ -471,20 +464,19 @@ cached HC hashCons(Expr e) {
   | mk_StringLiteral(val, t, e) and
     result = HC_StringLiteral(val, t))
   or
-  // Variable with no SSA information.
   exists (Variable x
   | mk_Variable(x, e) and
     result = HC_Variable(x))
   or
-  exists (HC qualifier, Field target
+  exists (HashCons qualifier, Field target
   | mk_DotFieldAccess(qualifier, target, e) and
     result = HC_FieldAccess(qualifier, target))
   or
-  exists (HC qualifier, Field target
+  exists (HashCons qualifier, Field target
   | mk_PointerFieldAccess_with_deref(qualifier, target, e) and
     result = HC_FieldAccess(qualifier, target))
   or
-  exists (HC qualifier, Field target
+  exists (HashCons qualifier, Field target
   | mk_ImplicitThisFieldAccess_with_deref(qualifier, target, e) and
     result = HC_FieldAccess(qualifier, target))
   or
@@ -492,23 +484,23 @@ cached HC hashCons(Expr e) {
   | mk_ThisExpr(fcn, e) and
     result = HC_ThisExpr(fcn))
   or
-  exists (Type t, HC child
+  exists (Type t, HashCons child
   | mk_Conversion(t, child, e) and
     result = HC_Conversion(t, child))
   or
-  exists (HC lhs, HC rhs, string opname
+  exists (HashCons lhs, HashCons rhs, string opname
   | mk_BinaryOp(lhs, rhs, opname, e) and
     result = HC_BinaryOp(lhs, rhs, opname))
   or
-  exists (HC child, string opname
+  exists (HashCons child, string opname
   | mk_UnaryOp(child, opname, e) and
     result = HC_UnaryOp(child, opname))
   or
-  exists (HC x, HC i
+  exists (HashCons x, HashCons i
   | mk_ArrayAccess(x, i, e) and
     result = HC_ArrayAccess(x, i))
   or
-  exists (HC p
+  exists (HashCons p
   | mk_Deref(p, e) and
     result = HC_Deref(p))
   or
@@ -517,7 +509,7 @@ cached HC hashCons(Expr e) {
     result = HC_NonmemberFunctionCall(fcn, args)
   )
   or
-  exists(Function fcn, HC qual, HC_Args args
+  exists(Function fcn, HashCons qual, HC_Args args
   | mk_MemberFunctionCall(fcn, qual, args, e) and
     result = HC_MemberFunctionCall(fcn, qual, args)
   )

@@ -1,7 +1,7 @@
 import cpp
 import semmle.code.cpp.valuenumbering.HashCons
 
-from HC h
+from HashCons h
 where strictcount(h.getAnExpr()) > 1
 select
   h,
