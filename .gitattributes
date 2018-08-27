@@ -1,0 +1,17 @@
+# The following file types will be normalized to LF line endings in the Git
+# database, and will keep those LF line endings in the working tree even on
+# Windows. Any other files will have whatever line endings they had when they
+# were committed. If you add new entries below, you should renormalize the
+# affected files by running the following from the root of this repo (requires
+# Git 2.16 or greater):
+#
+# git add --renormalize .
+# git status  [just to show what files were renormalized]
+# git commit -m "Normalize line endings"
+#
+# Also, please update .editorconfig to handle any new entries as well.
+*.ql eol=lf
+*.qll eol=lf
+*.qlref eol=lf
+*.dbscheme eol=lf
+*.qhelp eol=lf
