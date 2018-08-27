@@ -43,6 +43,8 @@ import cpp
 private cached newtype HCBase =
   HC_IntLiteral(int val, Type t) { mk_IntLiteral(val,t,_) }
   or
+  HC_EnumConstantAccess(EnumConstant val, Type t) { mk_EnumConstantAccess(val,t,_) }
+  or
   HC_FloatLiteral(float val, Type t) { mk_FloatLiteral(val,t,_) }
   or
   HC_StringLiteral(string val, Type t) {mk_StringLiteral(val,t,_)}
@@ -179,6 +181,17 @@ private predicate mk_IntLiteral(int val, Type t, Expr e) {
   t = e.getType().getUnspecifiedType()
 }
 
+private predicate analyzableEnumConstantAccess(EnumConstantAccess e) {
+  strictcount (e.getValue().toInt()) = 1 and
+  strictcount (e.getType().getUnspecifiedType()) = 1 and
+  e.getType().getUnspecifiedType() instanceof Enum
+}
+
+private predicate mk_EnumConstantAccess(EnumConstant val, Type t, Expr e) {
+  analyzableEnumConstantAccess(e) and
+  val = e.(EnumConstantAccess).getTarget() and
+  t = e.getType().getUnspecifiedType()
+}
 
 private predicate analyzableFloatLiteral(Literal e) {
   strictcount (e.getValue().toFloat()) = 1 and
@@ -446,6 +459,10 @@ cached HC hashCons(Expr e) {
   | mk_IntLiteral(val, t, e) and
     result = HC_IntLiteral(val, t))
   or
+  exists (EnumConstant val, Type t
+  | mk_EnumConstantAccess(val, t, e) and
+    result = HC_EnumConstantAccess(val, t))
+  or
   exists (float val, Type t
   | mk_FloatLiteral(val, t, e) and
     result = HC_FloatLiteral(val, t))
@@ -521,6 +538,7 @@ cached HC hashCons(Expr e) {
  */
 predicate analyzableExpr(Expr e, string kind) {
   (analyzableIntLiteral(e) and kind = "IntLiteral") or
+  (analyzableEnumConstantAccess(e) and kind = "EnumConstantAccess") or
   (analyzableFloatLiteral(e) and kind = "FloatLiteral") or
   (analyzableStringLiteral(e) and kind = "StringLiteral") or
   (analyzableNullptr(e) and kind = "Nullptr") or

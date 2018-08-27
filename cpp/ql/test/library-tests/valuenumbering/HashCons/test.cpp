@@ -156,3 +156,19 @@ void* test11() {
   nullptr == nullptr;
   return nullptr;
 }
+
+enum t1 {
+  e1x1 = 1,
+  e1x2 = 2
+};
+
+enum t2 {
+  e2x1 = 1,
+  e2x2 = 2
+};
+
+int test12() {
+  e1x1 == e2x1;
+  e1x1 == e2x2;
+  return e1x2;
+}
