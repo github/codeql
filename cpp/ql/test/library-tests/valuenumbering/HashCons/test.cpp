@@ -114,8 +114,8 @@ void test07() {
 
   float y = 0.0;
   y = 0.0;
-  y = 0.1;
-  y = 0.1;
+  y = 0.5;
+  y = 0.5;
 }
 
 void test08() {
