@@ -53,6 +53,7 @@ import semmle.javascript.frameworks.AngularJS
 import semmle.javascript.frameworks.AWS
 import semmle.javascript.frameworks.Azure
 import semmle.javascript.frameworks.Babel
+import semmle.javascript.frameworks.ComposedFunctions
 import semmle.javascript.frameworks.Credentials
 import semmle.javascript.frameworks.CryptoLibraries
 import semmle.javascript.frameworks.DigitalOcean

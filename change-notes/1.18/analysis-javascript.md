@@ -21,6 +21,7 @@
 * Support for popular libraries has been improved. Consequently, queries may produce more results on code bases that use the following libraries:
   - [bluebird](http://bluebirdjs.com)
   - [browserid-crypto](https://github.com/mozilla/browserid-crypto)
+  - [compose-function](https://github.com/stoeffel/compose-function)
   - [cookie-parser](https://github.com/expressjs/cookie-parser)
   - [cookie-session](https://github.com/expressjs/cookie-session)
   - [crypto-js](https://github.com/https://github.com/brix/crypto-js)
@@ -50,6 +51,7 @@
   - [json-parse-better-errors](https://github.com/zkat/json-parse-better-errors)
   - [json-parse-safe](https://github.com/joaquimserafim/json-parse-safe)
   - [json-safe-parse](https://github.com/bahamas10/node-json-safe-parse)
+  - [just-compose](https://github.com/angus-c/just)
   - [just-extend](https://github.com/angus-c/just)
   - [lodash](https://lodash.com)
   - [merge-deep](https://github.com/jonschlinkert/merge-deep)
