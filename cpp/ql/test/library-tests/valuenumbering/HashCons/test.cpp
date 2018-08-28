@@ -184,3 +184,90 @@ int test13(int y) {
 int test14(int y) {
   return SQUARE(y);
 }
+
+typedef struct {
+  int x;
+  char y;
+} padded_t;
+
+typedef struct {
+  int x;
+} int_holder;
+
+typedef unsigned long size_t;
+
+void *malloc(size_t size);
+
+int test15(int x) {
+  sizeof(padded_t);
+  alignof(padded_t);
+  sizeof(padded_t);
+  sizeof(int_holder) + sizeof(int);
+  alignof(int_holder) + alignof(int_holder);
+
+  int_holder holder = {x: x};
+  sizeof(holder.x) + sizeof(holder.x);
+  sizeof(x);
+  alignof(x) + alignof(x);
+}
+
+static void *operator new(size_t size) {
+  return malloc(size);
+}
+
+static void *operator new(size_t size, void *placement) {
+  return placement;
+}
+
+static void *operator new(size_t size, size_t alignment, void *placement) {
+  return placement;
+}
+
+static void *operator new(size_t size, size_t alignment) {
+  return malloc(size);
+}
+
+static void *operator new[](size_t size) {
+  return malloc(size);
+}
+
+static void *operator new[](size_t size, void *placement) {
+  return placement;
+}
+
+static void *operator new[](size_t size, size_t alignment, void *placement) {
+  return placement;
+}
+
+static void *operator new[](size_t size, size_t alignment) {
+  return malloc(size);
+}
+
+void test16() {
+  new int(1);
+  new int(1);
+  new int(2);
+
+  int x;
+
+  char *ptr1 = new char[sizeof(int)];
+  char *ptr2 = new char[sizeof(int)];
+
+  new(ptr1) IntHolder;
+  new(ptr1) IntHolder;
+  new(ptr2) IntHolder;
+
+  new(32, ptr1) IntHolder;
+  new(32, ptr1) IntHolder;
+  new(32, ptr2) IntHolder;
+
+  new(32) IntHolder;
+  new(32) IntHolder;
+
+  new(32) IntHolder[10];
+  new(32) IntHolder[10];
+
+  new(32) int[2] {1, 2};
+  new(32) int[2] {1, 2};
+  new(32) int[2] {3, 4};
+}

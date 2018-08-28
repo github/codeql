@@ -2,9 +2,9 @@
  * Provides an implementation of Hash consing.
  * See https://en.wikipedia.org/wiki/Hash_consing
  *
- * The predicate `hashCons` converts an expression into a `HC`, which is an
+ * The predicate `hashCons` converts an expression into a `HashCons`, which is an
  * abstract type presenting the hash-cons of the expression. If two
- * expressions have the same `HC` then they are structurally equal.
+ * expressions have the same `HashCons` then they are structurally equal.
  *
  * Important note: this library ignores the possibility that the value of
  * an expression might change between one occurrence and the next. For
@@ -92,18 +92,51 @@ private cached newtype HCBase =
     mk_MemberFunctionCall(trg, qual, args, _)
   }
   or
+  HC_NewExpr(Type t, HC_Alloc alloc, HC_Init init) {
+    mk_NewExpr(t, alloc, init, _, _)
+  }  or
+  HC_NewArrayExpr(Type t, HC_Alloc alloc, HC_Init init) {
+    mk_NewArrayExpr(t, alloc, init, _, _)
+  }
+  or
+  HC_SizeofType(Type t) {mk_SizeofType(t, _)}
+  or
+  HC_SizeofExpr(HashCons child) {mk_SizeofExpr(child, _)}
+  or
+  HC_AlignofType(Type t) {mk_AlignofType(t, _)}
+  or
+  HC_AlignofExpr(HashCons child) {mk_AlignofExpr(child, _)}
+  or
   // Any expression that is not handled by the cases above is
   // given a unique number based on the expression itself.
   HC_Unanalyzable(Expr e) { not analyzableExpr(e,_) }
 
+/** Used to implement hash-consing of `new` placement argument lists  */
+private newtype HC_Alloc =
+  HC_EmptyAllocArgs(Function fcn) {
+    exists(NewOrNewArrayExpr n |
+      n.getAllocator() = fcn
+    ) 
+  }
+  or HC_AllocArgCons(Function fcn, HashCons hc, int i, HC_Alloc list, boolean aligned) {
+    mk_AllocArgCons(fcn, hc, i, list, aligned, _)
+  }
+  or
+  HC_NoAlloc()
+private newtype HC_Init =
+  HC_NoInit()
+  or
+  HC_HasInit(HashCons hc) {mk_HasInit(hc, _)}
+
 /** Used to implement hash-consing of argument lists  */
-private cached newtype HC_Args =
+private newtype HC_Args =
   HC_EmptyArgs(Function fcn) {
     any()
   }
   or HC_ArgCons(Function fcn, HashCons hc, int i, HC_Args list) {
     mk_ArgCons(fcn, hc, i, list, _)
   }
+
 /**
  * HashCons is the hash-cons of an expression. The relationship between `Expr`
  * and `HC` is many-to-one: every `Expr` has exactly one `HC`, but multiple
@@ -127,8 +160,10 @@ class HashCons extends HCBase {
   /** Gets the kind of the HC. This can be useful for debugging. */
   string getKind() {
     if this instanceof HC_IntLiteral then result = "IntLiteral" else
+    if this instanceof HC_EnumConstantAccess then result = "EnumConstantAccess" else
     if this instanceof HC_FloatLiteral then result = "FloatLiteral" else
     if this instanceof HC_StringLiteral then result = "StringLiteral" else
+    if this instanceof HC_Nullptr then result = "Nullptr" else 
     if this instanceof HC_Variable then result = "Variable" else
     if this instanceof HC_FieldAccess then result = "FieldAccess" else
     if this instanceof HC_Deref then result = "Deref" else
@@ -140,6 +175,12 @@ class HashCons extends HCBase {
     if this instanceof HC_Unanalyzable then result = "Unanalyzable" else
     if this instanceof HC_NonmemberFunctionCall then result = "NonmemberFunctionCall" else
     if this instanceof HC_MemberFunctionCall then result = "MemberFunctionCall" else
+    if this instanceof HC_NewExpr then result = "NewExpr" else
+    if this instanceof HC_NewArrayExpr then result = "NewArrayExpr" else
+    if this instanceof HC_SizeofType then result = "SizeofTypeOperator" else
+    if this instanceof HC_SizeofExpr then result = "SizeofExprOperator" else
+    if this instanceof HC_AlignofType then result = "AlignofTypeOperator" else
+    if this instanceof HC_AlignofExpr then result = "AlignofExprOperator" else
     result = "error"
   }
 
@@ -446,6 +487,195 @@ private predicate mk_ArgCons(Function fcn, HashCons hc, int i, HC_Args list, Fun
   )
 }
 
+
+/**
+ * Holds if `fc` is a call to `fcn`, `fc`'s first `i` arguments have hash-cons
+ * `list`, and `fc`'s argument at index `i` has hash-cons `hc`.
+ */
+private predicate mk_AllocArgCons(Function fcn, HashCons hc, int i, HC_Alloc list, boolean aligned, FunctionCall fc) {
+  analyzableFunctionCall(fc) and
+  fc.getTarget() = fcn and
+  hc = hashCons(fc.getArgument(i).getFullyConverted()) and
+  (
+    exists(HashCons head, HC_Alloc tail |
+      list = HC_AllocArgCons(fcn, head, i - 1, tail, aligned) and
+      mk_AllocArgCons(fcn, head, i - 1, tail, aligned, fc) and
+      (
+        aligned = true and
+        i > 2
+        or
+        aligned = false and
+        i > 1
+      )
+    )
+    or
+    (
+      aligned = true and
+      i = 2
+      or
+      aligned = false and
+      i = 1
+    ) and
+    list = HC_EmptyAllocArgs(fcn)
+  )
+}
+
+private predicate mk_HasInit(HashCons hc, NewOrNewArrayExpr new) {
+  hc = hashCons(new.(NewExpr).getInitializer()) or
+  hc = hashCons(new.(NewArrayExpr).getInitializer())
+}
+
+private predicate analyzableNewExpr(NewExpr new) {
+  strictcount(new.getAllocatedType()) = 1 and
+  (
+    not exists(new.getAllocatorCall())
+    or
+    strictcount(new.getAllocatorCall()) = 1
+  ) and (
+    not exists(new.getInitializer())
+    or
+    strictcount(new.getInitializer()) = 1
+  )
+}
+
+private predicate mk_NewExpr(Type t, HC_Alloc alloc, HC_Init init, boolean aligned, NewExpr new) {
+  analyzableNewExpr(new) and
+  t = new.getAllocatedType() and
+  (
+    new.hasAlignedAllocation() and
+    aligned = true
+    or
+    not new.hasAlignedAllocation() and
+    aligned = false
+  )
+  and
+  (
+    exists(FunctionCall fc, HashCons head, HC_Alloc tail |
+      fc = new.getAllocatorCall() and
+      alloc = HC_AllocArgCons(fc.getTarget(), head, fc.getNumberOfArguments() - 1, tail, aligned) and
+      mk_AllocArgCons(fc.getTarget(), head, fc.getNumberOfArguments() - 1, tail, aligned, fc)
+    )
+    or
+    exists(FunctionCall fc |
+      fc = new.getAllocatorCall() and
+      (
+        aligned = true and
+        fc.getNumberOfArguments() = 2
+        or
+        aligned = false and
+        fc.getNumberOfArguments() = 1
+      ) and
+      alloc = HC_EmptyAllocArgs(fc.getTarget())
+    )
+    or
+    not exists(new.getAllocatorCall()) and
+    alloc = HC_NoAlloc()
+  )
+  and
+  (
+    init = HC_HasInit(hashCons(new.getInitializer()))
+    or
+    not exists(new.getInitializer()) and
+    init = HC_NoInit()
+  )
+}
+
+private predicate analyzableNewArrayExpr(NewArrayExpr new) {
+  strictcount(new.getAllocatedType().getUnspecifiedType()) = 1 and
+  strictcount(new.getAllocatedType().getUnspecifiedType()) = 1 and
+  (
+    not exists(new.getAllocatorCall())
+    or
+    strictcount(new.getAllocatorCall().getFullyConverted()) = 1
+  ) and (
+    not exists(new.getInitializer())
+    or
+    strictcount(new.getInitializer().getFullyConverted()) = 1
+  )
+}
+
+private predicate mk_NewArrayExpr(Type t, HC_Alloc alloc, HC_Init init, boolean aligned,
+  NewArrayExpr new) {
+  analyzableNewArrayExpr(new) and
+  t = new.getAllocatedType() and
+  (
+    new.hasAlignedAllocation() and
+    aligned = true
+    or
+    not new.hasAlignedAllocation() and
+    aligned = false
+  )
+  and
+  (
+    exists(FunctionCall fc, HashCons head, HC_Alloc tail |
+      fc = new.getAllocatorCall() and
+      alloc = HC_AllocArgCons(fc.getTarget(), head, fc.getNumberOfArguments() - 1, tail, aligned) and
+      mk_AllocArgCons(fc.getTarget(), head, fc.getNumberOfArguments() - 1, tail, aligned, fc)
+    )
+    or
+    exists(FunctionCall fc |
+      fc = new.getAllocatorCall() and
+      (
+        aligned = true and
+        fc.getNumberOfArguments() = 2
+        or
+        aligned = false and
+        fc.getNumberOfArguments() = 1
+      ) and
+      alloc = HC_EmptyAllocArgs(fc.getTarget())
+    )
+    or
+    not exists(new.getAllocatorCall()) and
+    alloc = HC_NoAlloc()
+  )
+  and
+  (
+    init = HC_HasInit(hashCons(new.getInitializer()))
+    or
+    not exists(new.getInitializer()) and
+    init = HC_NoInit()
+  )
+}
+
+private predicate analyzableSizeofType(SizeofTypeOperator e) {
+  strictcount(e.getType().getUnspecifiedType()) = 1 and
+  strictcount(e.getTypeOperand()) = 1
+}
+
+private predicate mk_SizeofType(Type t, SizeofTypeOperator e) {
+  analyzableSizeofType(e) and
+  t = e.getTypeOperand()
+}
+
+private predicate analyzableSizeofExpr(Expr e) {
+  e instanceof SizeofExprOperator and
+  strictcount(e.getAChild().getFullyConverted()) = 1
+}
+
+private predicate mk_SizeofExpr(HashCons child, SizeofExprOperator e) {
+  analyzableSizeofExpr(e) and
+  child = hashCons(e.getAChild())
+}
+
+private predicate analyzableAlignofType(AlignofTypeOperator e) {
+  strictcount(e.getType().getUnspecifiedType()) = 1 and
+  strictcount(e.getTypeOperand()) = 1
+}
+
+private predicate mk_AlignofType(Type t, AlignofTypeOperator e) {
+  analyzableAlignofType(e) and
+  t = e.getTypeOperand()
+}
+
+private predicate analyzableAlignofExpr(AlignofExprOperator e) {
+  strictcount(e.getExprOperand()) = 1
+}
+
+private predicate mk_AlignofExpr(HashCons child, AlignofExprOperator e) {
+  analyzableAlignofExpr(e) and
+  child = hashCons(e.getAChild())
+}
+
 /** Gets the hash-cons of expression `e`. */
 cached HashCons hashCons(Expr e) {
   exists (int val, Type t
@@ -514,6 +744,36 @@ cached HashCons hashCons(Expr e) {
     result = HC_MemberFunctionCall(fcn, qual, args)
   )
   or
+  exists(Type t, HC_Alloc alloc, HC_Init init, boolean aligned
+  | mk_NewExpr(t, alloc, init, aligned, e) and
+    result = HC_NewExpr(t, alloc, init)
+  )
+  or
+  exists(Type t, HC_Alloc alloc, HC_Init init, boolean aligned
+  | mk_NewArrayExpr(t, alloc, init, aligned, e) and
+    result = HC_NewArrayExpr(t, alloc, init)
+  )
+  or
+  exists(Type t
+  | mk_SizeofType(t, e) and
+    result = HC_SizeofType(t)
+  )
+  or
+  exists(HashCons child
+  | mk_SizeofExpr(child, e) and
+    result = HC_SizeofExpr(child)
+  )
+  or
+  exists(Type t
+  | mk_AlignofType(t, e) and
+    result = HC_AlignofType(t)
+  )
+  or
+  exists(HashCons child
+  | mk_AlignofExpr(child, e) and
+    result = HC_AlignofExpr(child)
+  )
+  or
   (
     mk_Nullptr(e) and
     result = HC_Nullptr()
@@ -545,5 +805,11 @@ predicate analyzableExpr(Expr e, string kind) {
   (analyzableArrayAccess(e) and kind = "ArrayAccess") or
   (analyzablePointerDereferenceExpr(e) and kind = "PointerDereferenceExpr") or
   (analyzableNonmemberFunctionCall(e) and kind = "NonmemberFunctionCall") or
-  (analyzableMemberFunctionCall(e) and kind = "MemberFunctionCall")
+  (analyzableMemberFunctionCall(e) and kind = "MemberFunctionCall") or
+  (analyzableNewExpr(e) and kind = "NewExpr") or
+  (analyzableNewArrayExpr(e) and kind = "NewArrayExpr") or
+  (analyzableSizeofType(e) and kind = "SizeofTypeOperator") or
+  (analyzableSizeofExpr(e) and kind = "SizeofExprOperator") or
+  (analyzableAlignofType(e) and kind = "AlignofTypeOperator") or
+  (analyzableAlignofExpr(e) and kind = "AlignofExprOperator")
 }
