@@ -521,16 +521,15 @@ private predicate methodReturningReceiver(MemberFunction method) {
 Function resolveCall(Call call) {
   result = call.getTarget()
   or
-  result = unresolveElement(call).(DataSensitiveCallExpr).resolve()
+  result = call.(DataSensitiveCallExpr).resolve()
 }
 
 /** A data sensitive call expression. */
-library abstract class DataSensitiveCallExpr extends @expr {
-  DataSensitiveCallExpr() { not unreachable(mkElement(this)) }
+library abstract class DataSensitiveCallExpr extends Expr {
+  DataSensitiveCallExpr() { not unreachable(this) }
 
   abstract Expr getSrc();
   cached abstract Function resolve();
-  abstract string toString();
 
   /**
    * Whether `src` can flow to this call expression.
@@ -556,27 +555,21 @@ library abstract class DataSensitiveCallExpr extends @expr {
 }
 
 /** Call through a function pointer. */
-library class DataSensitiveExprCall extends DataSensitiveCallExpr {
-  DataSensitiveExprCall() {
-    mkElement(this) instanceof ExprCall
-  }
-
-  override Expr getSrc() { result = mkElement(this).(ExprCall).getExpr() }
+library class DataSensitiveExprCall extends DataSensitiveCallExpr, ExprCall {
+  override Expr getSrc() { result = getExpr() }
 
   override Function resolve() {
     exists(FunctionAccess fa | flowsFrom(fa, true) | result = fa.getTarget())
   }
-
-  override string toString() { result = mkElement(this).toString() }
 }
 
 /** Call to a virtual function. */
-library class DataSensitiveOverriddenFunctionCall extends DataSensitiveCallExpr {
+library class DataSensitiveOverriddenFunctionCall extends DataSensitiveCallExpr, FunctionCall {
   DataSensitiveOverriddenFunctionCall() {
-    exists(mkElement(this).(FunctionCall).getTarget().(VirtualFunction).getAnOverridingFunction())
+    exists(getTarget().(VirtualFunction).getAnOverridingFunction())
   }
 
-  override Expr getSrc() { result = mkElement(this).(FunctionCall).getQualifier() }
+  override Expr getSrc() { result = getQualifier() }
 
   override MemberFunction resolve() {
     exists(NewExpr new |
@@ -584,11 +577,9 @@ library class DataSensitiveOverriddenFunctionCall extends DataSensitiveCallExpr 
       and
       memberFunctionFromNewExpr(new, result)
       and
-      result.overrides*(mkElement(this).(FunctionCall).getTarget().(VirtualFunction))
+      result.overrides*(getTarget().(VirtualFunction))
     )
   }
-
-  override string toString() { result = mkElement(this).toString() }
 }
 
 private predicate memberFunctionFromNewExpr(NewExpr new, MemberFunction f) {
