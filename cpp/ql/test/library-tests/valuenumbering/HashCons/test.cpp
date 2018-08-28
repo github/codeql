@@ -260,6 +260,7 @@ void test16() {
   new(32, ptr1) IntHolder;
   new(32, ptr1) IntHolder;
   new(32, ptr2) IntHolder;
+  new(16, ptr1) IntHolder;
 
   new(32) IntHolder;
   new(32) IntHolder;

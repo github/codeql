@@ -92,11 +92,11 @@ private cached newtype HCBase =
     mk_MemberFunctionCall(trg, qual, args, _)
   }
   or
-  HC_NewExpr(Type t, HC_Alloc alloc, HC_Init init) {
-    mk_NewExpr(t, alloc, init, _, _)
+  HC_NewExpr(Type t, HC_Alloc alloc, HC_Init init, HC_Align align) {
+    mk_NewExpr(t, alloc, init, align, _, _)
   }  or
-  HC_NewArrayExpr(Type t, HC_Alloc alloc, HC_Init init) {
-    mk_NewArrayExpr(t, alloc, init, _, _)
+  HC_NewArrayExpr(Type t, HC_Alloc alloc, HC_Init init, HC_Align align) {
+    mk_NewArrayExpr(t, alloc, init, align, _, _)
   }
   or
   HC_SizeofType(Type t) {mk_SizeofType(t, _)}
@@ -123,10 +123,17 @@ private newtype HC_Alloc =
   }
   or
   HC_NoAlloc()
+
+/** Used to implement optional init on `new` expressions */
 private newtype HC_Init =
   HC_NoInit()
   or
   HC_HasInit(HashCons hc) {mk_HasInit(hc, _)}
+
+private newtype HC_Align = 
+  HC_NoAlign()
+  or
+  HC_HasAlign(HashCons hc) {mk_HasAlign(hc, _)}
 
 /** Used to implement hash-consing of argument lists  */
 private newtype HC_Args =
@@ -525,6 +532,10 @@ private predicate mk_HasInit(HashCons hc, NewOrNewArrayExpr new) {
   hc = hashCons(new.(NewArrayExpr).getInitializer())
 }
 
+private predicate mk_HasAlign(HashCons hc, NewOrNewArrayExpr new) {
+  hc = hashCons(new.getAlignmentArgument())
+}
+
 private predicate analyzableNewExpr(NewExpr new) {
   strictcount(new.getAllocatedType()) = 1 and
   (
@@ -538,14 +549,16 @@ private predicate analyzableNewExpr(NewExpr new) {
   )
 }
 
-private predicate mk_NewExpr(Type t, HC_Alloc alloc, HC_Init init, boolean aligned, NewExpr new) {
+private predicate mk_NewExpr(Type t, HC_Alloc alloc, HC_Init init, HC_Align align, boolean aligned,
+  NewExpr new) {
   analyzableNewExpr(new) and
   t = new.getAllocatedType() and
   (
-    new.hasAlignedAllocation() and
+    align = HC_HasAlign(hashCons(new.getAlignmentArgument())) and
     aligned = true
     or
     not new.hasAlignedAllocation() and
+    align = HC_NoAlign() and
     aligned = false
   )
   and
@@ -594,15 +607,16 @@ private predicate analyzableNewArrayExpr(NewArrayExpr new) {
   )
 }
 
-private predicate mk_NewArrayExpr(Type t, HC_Alloc alloc, HC_Init init, boolean aligned,
-  NewArrayExpr new) {
+private predicate mk_NewArrayExpr(Type t, HC_Alloc alloc, HC_Init init, HC_Align align,
+  boolean aligned, NewArrayExpr new) {
   analyzableNewArrayExpr(new) and
   t = new.getAllocatedType() and
   (
-    new.hasAlignedAllocation() and
+    align = HC_HasAlign(hashCons(new.getAlignmentArgument())) and
     aligned = true
     or
     not new.hasAlignedAllocation() and
+    align = HC_NoAlign() and
     aligned = false
   )
   and
@@ -744,14 +758,14 @@ cached HashCons hashCons(Expr e) {
     result = HC_MemberFunctionCall(fcn, qual, args)
   )
   or
-  exists(Type t, HC_Alloc alloc, HC_Init init, boolean aligned
-  | mk_NewExpr(t, alloc, init, aligned, e) and
-    result = HC_NewExpr(t, alloc, init)
+  exists(Type t, HC_Alloc alloc, HC_Init init, HC_Align align, boolean aligned
+  | mk_NewExpr(t, alloc, init, align, aligned, e) and
+    result = HC_NewExpr(t, alloc, init, align)
   )
   or
-  exists(Type t, HC_Alloc alloc, HC_Init init, boolean aligned
-  | mk_NewArrayExpr(t, alloc, init, aligned, e) and
-    result = HC_NewArrayExpr(t, alloc, init)
+  exists(Type t, HC_Alloc alloc, HC_Init init, HC_Align align, boolean aligned
+  | mk_NewArrayExpr(t, alloc, init, align, aligned, e) and
+    result = HC_NewArrayExpr(t, alloc, init, align)
   )
   or
   exists(Type t
