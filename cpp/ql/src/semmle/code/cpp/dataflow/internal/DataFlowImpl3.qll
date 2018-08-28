@@ -237,7 +237,7 @@
   private predicate storeCandFwd1(Content f, Configuration config) {
     exists(Node mid, Node node |
       not config.isBarrier(node) and
-      useFieldFlow(unbind(config)) and
+      useFieldFlow(config) and
       nodeCandFwd1(mid, _, config) and
       store(mid, f, node)
     )
@@ -312,7 +312,7 @@
    */
   private predicate readCand1(Content f, Configuration config) {
     exists(Node mid, Node node |
-      useFieldFlow(unbind(config)) and
+      useFieldFlow(config) and
       nodeCandFwd1(node, true, unbind(config)) and
       read(node, f, mid) and
       storeCandFwd1(f, unbind(config)) and
@@ -548,7 +548,7 @@
    */
   private predicate storeCandFwd2(Content f, Configuration config) {
     exists(Node mid, Node node |
-      useFieldFlow(unbind(config)) and
+      useFieldFlow(config) and
       nodeCand1(node, true, unbind(config)) and
       nodeCandFwd2(mid, _, _, config) and
       store(mid, f, node) and
@@ -616,7 +616,7 @@
    */
   private predicate readCand2(Content f, Configuration config) {
     exists(Node mid, Node node |
-      useFieldFlow(unbind(config)) and
+      useFieldFlow(config) and
       nodeCandFwd2(node, _, true, unbind(config)) and
       read(node, f, mid) and
       storeCandFwd2(f, unbind(config)) and
