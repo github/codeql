@@ -47,23 +47,14 @@ class SuppressionComment extends CppStyleComment {
 
   /** Gets the scope of this suppression. */
   SuppressionScope getScope() {
-    this = result.getSuppressionComment()
+    result = this
   }
 }
 
 /**
  * The scope of an alert suppression comment.
  */
-class SuppressionScope extends @comment {
-  SuppressionScope() {
-    mkElement(this) instanceof SuppressionComment
-  }
-
-  /** Gets a suppression comment with this scope. */
-  SuppressionComment getSuppressionComment() {
-    result = mkElement(this)
-  }
-
+class SuppressionScope extends SuppressionComment {
   /**
   * Holds if this element is at the specified location.
   * The location spans column `startcolumn` of line `startline` to
@@ -72,12 +63,7 @@ class SuppressionScope extends @comment {
   * [LGTM locations](https://lgtm.com/help/ql/locations).
   */
   predicate hasLocationInfo(string filepath, int startline, int startcolumn, int endline, int endcolumn) {
-    mkElement(this).(SuppressionComment).covers(filepath, startline, startcolumn, endline, endcolumn)
-  }
-
-  /** Gets a textual representation of this element. */
-  string toString() {
-    result = this.getSuppressionComment().toString()
+    this.covers(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 
