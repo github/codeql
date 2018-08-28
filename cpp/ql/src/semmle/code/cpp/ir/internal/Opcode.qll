@@ -46,7 +46,7 @@ private newtype TOpcode =
   TStringConstant() or
   TConditionalBranch() or
   TSwitch() or
-  TInvoke() or
+  TCall() or
   TCatchByType() or
   TCatchAny() or
   TThrowValue() or
@@ -138,7 +138,7 @@ module Opcode {
   class StringConstant extends Opcode, TStringConstant { override final string toString() { result = "StringConstant" } }
   class ConditionalBranch extends OpcodeWithCondition, TConditionalBranch { override final string toString() { result = "ConditionalBranch" } }
   class Switch extends OpcodeWithCondition, TSwitch { override final string toString() { result = "Switch" } }
-  class Invoke extends Opcode, TInvoke { override final string toString() { result = "Invoke" } }
+  class Call extends Opcode, TCall { override final string toString() { result = "Call" } }
   class CatchByType extends CatchOpcode, TCatchByType { override final string toString() { result = "CatchByType" } }
   class CatchAny extends CatchOpcode, TCatchAny { override final string toString() { result = "CatchAny" } }
   class ThrowValue extends ThrowOpcode, MemoryAccessOpcode, TThrowValue { override final string toString() { result = "ThrowValue" } }

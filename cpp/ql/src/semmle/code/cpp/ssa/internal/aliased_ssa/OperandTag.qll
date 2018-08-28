@@ -202,7 +202,7 @@ UnmodeledUseOperand unmodeledUseOperand() {
 }
 
 /**
- * The operand representing the target function of an `Invoke` instruction.
+ * The operand representing the target function of an `Call` instruction.
  */
 class CallTargetOperand extends OperandTag, TCallTargetOperand {
   override final string toString() {

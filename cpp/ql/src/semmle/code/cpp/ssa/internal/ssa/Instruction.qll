@@ -36,7 +36,7 @@ module InstructionSanity {
         opcode instanceof Opcode::ReturnValue and tag instanceof ReturnValueOperand or
         opcode instanceof Opcode::ThrowValue and tag instanceof ExceptionOperand or
         opcode instanceof Opcode::UnmodeledUse and tag instanceof UnmodeledUseOperand or
-        opcode instanceof Opcode::Invoke and tag instanceof CallTargetOperand
+        opcode instanceof Opcode::Call and tag instanceof CallTargetOperand
       )
     )
   }
@@ -54,7 +54,7 @@ module InstructionSanity {
   query predicate unexpectedOperand(Instruction instr, OperandTag tag) {
     exists(instr.getOperand(tag)) and
     not expectsOperand(instr, tag) and
-    not (instr instanceof InvokeInstruction and tag instanceof ArgumentOperand) and
+    not (instr instanceof CallInstruction and tag instanceof ArgumentOperand) and
     not (instr instanceof BuiltInInstruction and tag instanceof PositionalArgumentOperand) and
     not (instr instanceof PhiInstruction and tag instanceof PhiOperand)
   }
@@ -987,9 +987,9 @@ class SwitchInstruction extends Instruction {
   }
 }
 
-class InvokeInstruction extends Instruction {
-  InvokeInstruction() {
-    opcode instanceof Opcode::Invoke
+class CallInstruction extends Instruction {
+  CallInstruction() {
+    opcode instanceof Opcode::Call
   }
 
   final Instruction getCallTarget() {
