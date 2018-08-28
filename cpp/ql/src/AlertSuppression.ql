@@ -77,7 +77,7 @@ class SuppressionScope extends @comment {
 
   /** Gets a textual representation of this element. */
   string toString() {
-    result = "suppression range"
+    result = this.getSuppressionComment().toString()
   }
 }
 
