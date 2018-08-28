@@ -35,8 +35,8 @@ predicate isMinValue(MacroInvocationExpr mie) {
 
 class SecurityOptionsArith extends SecurityOptions {
   override predicate isUserInput(Expr expr, string cause) {
-    (isMaxValue(expr) and cause = "overflow") or
-    (isMinValue(expr) and cause = "underflow")
+    (isMaxValue(expr) and cause = "max value") or
+    (isMinValue(expr) and cause = "min value")
   }
 }
 
@@ -45,13 +45,24 @@ predicate taintedVarAccess(Expr origin, VariableAccess va, string cause) {
   tainted(origin, va)
 }
 
-from Expr origin, Operation op, VariableAccess va, string effect
-where taintedVarAccess(origin, va, effect)
+predicate causeEffectCorrespond(string cause, string effect) {
+  (
+    cause = "max value" and
+    effect = "overflow"
+  ) or (
+    cause = "min value" and
+    effect = "underflow"
+  )
+}
+
+from Expr origin, Operation op, VariableAccess va, string cause, string effect
+where taintedVarAccess(origin, va, cause)
   and op.getAnOperand() = va
   and
   (
     (missingGuardAgainstUnderflow(op, va) and effect = "underflow") or
     (missingGuardAgainstOverflow(op, va) and effect = "overflow")
-  )
+  ) and
+  causeEffectCorrespond(cause, effect)
 select va, "$@ flows to here and is used in arithmetic, potentially causing an " + effect + ".",
   origin, "Extreme value"
