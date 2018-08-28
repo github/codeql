@@ -135,3 +135,21 @@ private class SimplePropertyProjection extends CustomPropertyProjection {
   override predicate isSingletonProjection() { singleton = true }
 
 }
+
+/**
+ * A taint step for a property projection.
+ */
+private class PropertyProjectionTaintStep extends TaintTracking::AdditionalTaintStep {
+
+  PropertyProjection projection;
+
+  PropertyProjectionTaintStep() {
+    projection = this
+  }
+
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    // reading from a tainted object yields a tainted result
+    this = succ and
+    pred = projection.getObject()
+  }
+}

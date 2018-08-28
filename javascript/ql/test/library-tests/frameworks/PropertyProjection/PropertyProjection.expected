@@ -9,3 +9,7 @@
 | tst.js:17:1:17:16 | dottie.get(o, s) | tst.js:17:12:17:12 | o | tst.js:17:15:17:15 | s | true |
 | tst.js:19:1:19:15 | dotty.get(o, s) | tst.js:19:11:19:11 | o | tst.js:19:14:19:14 | s | true |
 | tst.js:20:1:20:18 | dotty.search(o, s) | tst.js:20:14:20:14 | o | tst.js:20:17:20:17 | s | false |
+| tst.js:27:10:27:30 | _.pick( ... ted, s) | tst.js:27:17:27:26 | notTainted | tst.js:27:29:27:29 | s | false |
+| tst.js:28:10:28:29 | _.get(notTainted, s) | tst.js:28:16:28:25 | notTainted | tst.js:28:28:28:28 | s | true |
+| tst.js:32:10:32:27 | _.pick(tainted, s) | tst.js:32:17:32:23 | tainted | tst.js:32:26:32:26 | s | false |
+| tst.js:33:10:33:26 | _.get(tainted, s) | tst.js:33:16:33:22 | tainted | tst.js:33:25:33:25 | s | true |

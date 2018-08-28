@@ -18,3 +18,17 @@ dottie.get(o, s);
 
 dotty.get(o, s);
 dotty.search(o, s);
+
+(function(){
+    var source = SOURCE();
+
+    SINK(source);
+
+    SINK(_.pick(notTainted, s));
+    SINK(_.get(notTainted, s));
+
+    var tainted = {};
+    tainted[x] = source;
+    SINK(_.pick(tainted, s));
+    SINK(_.get(tainted, s));
+});
