@@ -56,20 +56,23 @@ private cached newtype HCBase =
   }
   or
   HC_FieldAccess(HashCons s, Field f) {
-    mk_DotFieldAccess(s,f,_) or
-    mk_PointerFieldAccess_with_deref(s,f,_) or
-    mk_ImplicitThisFieldAccess_with_deref(s,f,_)
+    mk_DotFieldAccess(s,f,_)
   }
   or
   HC_Deref(HashCons p) {
-    mk_Deref(p,_) or
-    mk_PointerFieldAccess(p,_,_) or
-    mk_ImplicitThisFieldAccess_with_qualifier(p,_,_)
+    mk_Deref(p,_)
+  }
+  or
+  HC_PointerFieldAccess(HashCons qual, Field target) {
+    mk_PointerFieldAccess(qual, target, _)
   }
   or
   HC_ThisExpr(Function fcn) {
-    mk_ThisExpr(fcn,_) or
-    mk_ImplicitThisFieldAccess(fcn,_,_)
+    mk_ThisExpr(fcn,_)
+  }
+  or
+  HC_ImplicitThisFieldAccess (Function fcn, Field target){
+    mk_ImplicitThisFieldAccess(fcn, target, _)
   }
   or
   HC_Conversion(Type t, HashCons child) { mk_Conversion(t, child, _) }
@@ -368,17 +371,6 @@ private predicate mk_PointerFieldAccess(
   qualifier = hashCons(access.getQualifier().getFullyConverted())
 }
 
-/*
- * `obj->field` is equivalent to `(*obj).field`, so we need to wrap an
- * extra `HC_Deref` around the qualifier.
- */
-private predicate mk_PointerFieldAccess_with_deref (HashCons new_qualifier, Field target,
-  PointerFieldAccess access) {
-  exists (HashCons qualifier
-  | mk_PointerFieldAccess(qualifier, target, access) and
-    new_qualifier = HC_Deref(qualifier))
-}
-
 private predicate analyzableImplicitThisFieldAccess(ImplicitThisFieldAccess access) {
   strictcount (access.getTarget()) = 1 and
   strictcount (access.getEnclosingFunction()) = 1
@@ -389,21 +381,6 @@ private predicate mk_ImplicitThisFieldAccess(Function fcn, Field target,
   analyzableImplicitThisFieldAccess(access) and
   target = access.getTarget() and
   fcn = access.getEnclosingFunction()
-}
-
-private predicate mk_ImplicitThisFieldAccess_with_qualifier( HashCons qualifier, Field target,
-  ImplicitThisFieldAccess access) {
-  exists (Function fcn
-  | mk_ImplicitThisFieldAccess(fcn, target, access) and
-    qualifier = HC_ThisExpr(fcn))
-}
-
-private predicate mk_ImplicitThisFieldAccess_with_deref(HashCons new_qualifier, Field target,
-  ImplicitThisFieldAccess access) {
-  exists (HashCons qualifier
-  | mk_ImplicitThisFieldAccess_with_qualifier(
-      qualifier, target, access) and
-    new_qualifier = HC_Deref(qualifier))
 }
 
 private predicate analyzableVariable(VariableAccess access) {
@@ -976,12 +953,12 @@ cached HashCons hashCons(Expr e) {
     result = HC_FieldAccess(qualifier, target))
   or
   exists (HashCons qualifier, Field target
-  | mk_PointerFieldAccess_with_deref(qualifier, target, e) and
-    result = HC_FieldAccess(qualifier, target))
+  | mk_PointerFieldAccess(qualifier, target, e) and
+    result = HC_PointerFieldAccess(qualifier, target))
   or
-  exists (HashCons qualifier, Field target
-  | mk_ImplicitThisFieldAccess_with_deref(qualifier, target, e) and
-    result = HC_FieldAccess(qualifier, target))
+  exists (Function fcn, Field target
+  | mk_ImplicitThisFieldAccess(fcn, target, e) and
+    result = HC_ImplicitThisFieldAccess(fcn, target))
   or
   exists (Function fcn
   | mk_ThisExpr(fcn, e) and
