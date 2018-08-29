@@ -1,5 +1,5 @@
 | aggregate_literals.c:17:31:20:5 | {...} | aggregate_literals.c:1:8:1:17 | someStruct | aggregate_literals.c:2:9:2:9 | i | aggregate_literals.c:18:14:18:18 | ... + ... |
-| aggregate_literals.c:17:31:20:5 | {...} | aggregate_literals.c:1:8:1:17 | someStruct | aggregate_literals.c:3:9:3:9 | j | aggregate_literals.c:18:14:18:18 | ... + ... |
+| aggregate_literals.c:17:31:20:5 | {...} | aggregate_literals.c:1:8:1:17 | someStruct | aggregate_literals.c:3:9:3:9 | j | aggregate_literals.c:19:14:19:18 | ... - ... |
 | aggregate_literals.c:22:31:22:47 | {...} | aggregate_literals.c:1:8:1:17 | someStruct | aggregate_literals.c:2:9:2:9 | i | aggregate_literals.c:22:34:22:38 | ... + ... |
 | aggregate_literals.c:22:31:22:47 | {...} | aggregate_literals.c:1:8:1:17 | someStruct | aggregate_literals.c:3:9:3:9 | j | aggregate_literals.c:22:41:22:45 | ... - ... |
 | aggregate_literals.c:24:31:24:44 | {...} | aggregate_literals.c:1:8:1:17 | someStruct | aggregate_literals.c:2:9:2:9 | i | aggregate_literals.c:24:32:24:36 | ... + ... |
