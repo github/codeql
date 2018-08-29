@@ -315,3 +315,23 @@ void test19(int *x, int *y) {
   y[0];
   y[1];
 }
+
+void test20(int *x, int *y) {
+  void (*test_18_p)() = &test18;
+  void (*test_17_p)() = &test17;
+  void (*test_19_p)(int *, int *) = &test19;
+  test_18_p();
+  test_18_p();
+  test_17_p();
+
+  test_19_p(x, y);
+  test_19_p(x, y);
+  test_19_p(y, x);
+}
+
+void test21(int x, int y) {
+  x == y ? x : y;
+  x == y ? x : y;
+  y == x ? x : y;
+  x == y ? y : x;
+}

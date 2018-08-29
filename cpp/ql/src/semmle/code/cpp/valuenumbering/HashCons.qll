@@ -87,6 +87,9 @@ private cached newtype HCBase =
   HC_NonmemberFunctionCall(Function fcn, HC_Args args) {
     mk_NonmemberFunctionCall(fcn, args, _)
   }
+  or HC_ExprCall(HashCons hc, HC_Args args) {
+    mk_ExprCall(hc, args, _)
+  }
   or
   HC_MemberFunctionCall(Function trg, HashCons qual, HC_Args args) {
     mk_MemberFunctionCall(trg, qual, args, _)
@@ -107,6 +110,12 @@ private cached newtype HCBase =
   or
   HC_AlignofExpr(HashCons child) {mk_AlignofExpr(child, _)}
   or
+  HC_UuidofOperator(Type t) {mk_UuidofOperator(t, _)}
+  or
+  HC_TypeidType(Type t) {mk_TypeidType(t, _)}
+  or
+  HC_TypeidExpr(HashCons child) {mk_TypeidExpr(child, _)}
+  or
   HC_ClassAggregateLiteral(Class c, HC_Fields hcf) {
     mk_ClassAggregateLiteral(c, hcf, _)
   }
@@ -122,6 +131,14 @@ private cached newtype HCBase =
   HC_ThrowExpr(HashCons child) {mk_ThrowExpr(child, _)}
   or
   HC_ReThrowExpr()
+  or
+  HC_ConditionalExpr(HashCons cond, HashCons trueHC, HashCons falseHC) {
+    mk_ConditionalExpr(cond, trueHC, falseHC, _)
+  }
+  or
+  HC_NoExceptExpr(HashCons child) {
+    mk_NoExceptExpr(child, _)
+  }
   or
   // Any expression that is not handled by the cases above is
   // given a unique number based on the expression itself.
@@ -153,11 +170,11 @@ private newtype HC_Align =
 
 /** Used to implement hash-consing of argument lists  */
 private newtype HC_Args =
-  HC_EmptyArgs(Function fcn) {
+  HC_EmptyArgs() {
     any()
   }
-  or HC_ArgCons(Function fcn, HashCons hc, int i, HC_Args list) {
-    mk_ArgCons(fcn, hc, i, list, _)
+  or HC_ArgCons(HashCons hc, int i, HC_Args list) {
+    mk_ArgCons(hc, i, list, _)
   }
 
 /**
@@ -228,12 +245,18 @@ class HashCons extends HCBase {
     if this instanceof HC_SizeofExpr then result = "SizeofExprOperator" else
     if this instanceof HC_AlignofType then result = "AlignofTypeOperator" else
     if this instanceof HC_AlignofExpr then result = "AlignofExprOperator" else
+    if this instanceof HC_UuidofOperator then result = "UuidofOperator" else
+    if this instanceof HC_TypeidType then result = "TypeidType" else
+    if this instanceof HC_TypeidExpr then result = "TypeidExpr" else
     if this instanceof HC_ArrayAggregateLiteral then result = "ArrayAggregateLiteral" else
     if this instanceof HC_ClassAggregateLiteral then result = "ClassAggreagateLiteral" else
     if this instanceof HC_DeleteExpr then result = "DeleteExpr" else
     if this instanceof HC_DeleteArrayExpr then result = "DeleteArrayExpr" else
     if this instanceof HC_ThrowExpr then result = "ThrowExpr" else
     if this instanceof HC_ReThrowExpr then result = "ReThrowExpr" else
+    if this instanceof HC_ExprCall then result = "ExprCall" else
+    if this instanceof HC_ConditionalExpr then result = "ConditionalExpr" else
+    if this instanceof HC_NoExceptExpr then result = "NoExceptExpr" else
     result = "error"
   }
 
@@ -473,19 +496,40 @@ private predicate mk_NonmemberFunctionCall(Function fcn, HC_Args args, FunctionC
   analyzableNonmemberFunctionCall(fc) and
   (
     exists(HashCons head, HC_Args tail |
-      args = HC_ArgCons(fcn, head, fc.getNumberOfArguments() - 1, tail) and
-      mk_ArgCons(fcn, head, fc.getNumberOfArguments() - 1, tail, fc)
+      args = HC_ArgCons(head, fc.getNumberOfArguments() - 1, tail) and
+      mk_ArgCons(head, fc.getNumberOfArguments() - 1, tail, fc)
     )
     or
     fc.getNumberOfArguments() = 0 and
-    args = HC_EmptyArgs(fcn)
+    args = HC_EmptyArgs()
+  )
+}
+
+private predicate analyzableExprCall(ExprCall ec) {
+  forall(int i |
+    exists(ec.getArgument(i)) |
+    strictcount(ec.getArgument(i).getFullyConverted()) = 1
+  ) and
+  strictcount(ec.getExpr().getFullyConverted()) = 1
+}
+
+private predicate mk_ExprCall(HashCons hc, HC_Args args, ExprCall ec) {
+  hc.getAnExpr() = ec.getExpr() and
+  (
+    exists(HashCons head, HC_Args tail |
+      args = HC_ArgCons(head, ec.getNumberOfArguments() - 1, tail) and
+      mk_ArgCons(head, ec.getNumberOfArguments() - 1, tail, ec)
+    )
+    or
+    ec.getNumberOfArguments() = 0 and
+    args = HC_EmptyArgs()
   )
 }
 
 private predicate analyzableMemberFunctionCall(
   FunctionCall fc) {
   forall(int i |
-  exists(fc.getArgument(i)) |
+    exists(fc.getArgument(i)) |
     strictcount(fc.getArgument(i).getFullyConverted()) = 1
   ) and
   strictcount(fc.getTarget()) = 1 and
@@ -503,40 +547,39 @@ private predicate mk_MemberFunctionCall(
   hashCons(fc.getQualifier().getFullyConverted()) = qual and
   (
     exists(HashCons head, HC_Args tail |
-      args = HC_ArgCons(fcn, head, fc.getNumberOfArguments() - 1, tail) and
-      mk_ArgCons(fcn, head, fc.getNumberOfArguments() - 1, tail, fc)
+      args = HC_ArgCons(head, fc.getNumberOfArguments() - 1, tail) and
+      mk_ArgCons(head, fc.getNumberOfArguments() - 1, tail, fc)
     )
     or
     fc.getNumberOfArguments() = 0 and
-    args = HC_EmptyArgs(fcn)
+    args = HC_EmptyArgs()
   )
 }
 
-private predicate analyzableFunctionCall(
-  FunctionCall fc
-) {
-  analyzableNonmemberFunctionCall(fc)
+private predicate analyzableCall(Call c) {
+  analyzableNonmemberFunctionCall(c)
   or
-  analyzableMemberFunctionCall(fc)
+  analyzableMemberFunctionCall(c)
+  or
+  analyzableExprCall(c)
 }
 
 /**
  * Holds if `fc` is a call to `fcn`, `fc`'s first `i` arguments have hash-cons
  * `list`, and `fc`'s argument at index `i` has hash-cons `hc`.
  */
-private predicate mk_ArgCons(Function fcn, HashCons hc, int i, HC_Args list, FunctionCall fc) {
-  analyzableFunctionCall(fc) and
-  fc.getTarget() = fcn and
-  hc = hashCons(fc.getArgument(i).getFullyConverted()) and
+private predicate mk_ArgCons(HashCons hc, int i, HC_Args list,Call c) {
+  analyzableCall(c) and
+  hc = hashCons(c.getArgument(i).getFullyConverted()) and
   (
     exists(HashCons head, HC_Args tail |
-      list = HC_ArgCons(fcn, head, i - 1, tail) and
-      mk_ArgCons(fcn, head, i - 1, tail, fc) and
+      list = HC_ArgCons(head, i - 1, tail) and
+      mk_ArgCons(head, i - 1, tail, c) and
       i > 0
     )
     or
     i = 0 and
-    list = HC_EmptyArgs(fcn)
+    list = HC_EmptyArgs()
   )
 }
 
@@ -545,14 +588,15 @@ private predicate mk_ArgCons(Function fcn, HashCons hc, int i, HC_Args list, Fun
  * Holds if `fc` is a call to `fcn`, `fc`'s first `i` arguments have hash-cons
  * `list`, and `fc`'s argument at index `i` has hash-cons `hc`.
  */
-private predicate mk_AllocArgCons(Function fcn, HashCons hc, int i, HC_Alloc list, boolean aligned, FunctionCall fc) {
-  analyzableFunctionCall(fc) and
-  fc.getTarget() = fcn and
-  hc = hashCons(fc.getArgument(i).getFullyConverted()) and
+private predicate mk_AllocArgCons(Function fcn, HashCons hc, int i, HC_Alloc list, boolean aligned,
+  Call c) {
+  analyzableCall(c) and
+  c.getTarget() = fcn and
+  hc = hashCons(c.getArgument(i).getFullyConverted()) and
   (
     exists(HashCons head, HC_Alloc tail |
       list = HC_AllocArgCons(fcn, head, i - 1, tail, aligned) and
-      mk_AllocArgCons(fcn, head, i - 1, tail, aligned, fc) and
+      mk_AllocArgCons(fcn, head, i - 1, tail, aligned, c) and
       (
         aligned = true and
         i > 2
@@ -735,6 +779,34 @@ private predicate mk_SizeofExpr(HashCons child, SizeofExprOperator e) {
   child = hashCons(e.getAChild())
 }
 
+private predicate analyzableUuidofOperator(UuidofOperator e) {
+  strictcount(e.getTypeOperand()) = 1
+}
+
+private predicate mk_UuidofOperator(Type t, UuidofOperator e) {
+  analyzableUuidofOperator(e) and
+  t = e.getTypeOperand()
+}
+
+private predicate analyzableTypeidType(TypeidOperator e) {
+  strictcount(e.getAChild()) = 0
+}
+
+private predicate mk_TypeidType(Type t, TypeidOperator e) {
+  analyzableTypeidType(e) and
+  t = e.getResultType()
+}
+
+private predicate analyzableTypeidExpr(Expr e) {
+  e instanceof TypeidOperator and
+  strictcount(e.getAChild().getFullyConverted()) = 1
+}
+
+private predicate mk_TypeidExpr(HashCons child, TypeidOperator e) {
+  analyzableTypeidExpr(e) and
+  child = hashCons(e.getAChild())
+}
+
 private predicate analyzableAlignofType(AlignofTypeOperator e) {
   strictcount(e.getType().getUnspecifiedType()) = 1 and
   strictcount(e.getTypeOperand()) = 1
@@ -851,6 +923,30 @@ private predicate mk_ReThrowExpr(ReThrowExpr te) {
   any()
 }
 
+private predicate analyzableConditionalExpr(ConditionalExpr ce) {
+  strictcount(ce.getCondition().getFullyConverted()) = 1 and
+  strictcount(ce.getThen().getFullyConverted()) = 1 and
+  strictcount(ce.getElse().getFullyConverted()) = 1
+}
+
+private predicate mk_ConditionalExpr(HashCons cond, HashCons trueHc, HashCons falseHc,
+  ConditionalExpr ce) {
+  analyzableConditionalExpr(ce) and
+  cond.getAnExpr() = ce.getCondition() and
+  trueHc.getAnExpr() = ce.getThen() and
+  falseHc.getAnExpr() = ce.getElse()
+}
+
+private predicate analyzableNoExceptExpr(NoExceptExpr nee) {
+  strictcount(nee.getAChild().getFullyConverted()) = 1
+}
+
+private predicate mk_NoExceptExpr(HashCons child, NoExceptExpr nee) {
+  analyzableNoExceptExpr(nee) and
+  nee.getExpr() = child.getAnExpr().getFullyConverted()
+}
+
+
 /** Gets the hash-cons of expression `e`. */
 cached HashCons hashCons(Expr e) {
   exists (int val, Type t
@@ -914,6 +1010,11 @@ cached HashCons hashCons(Expr e) {
     result = HC_NonmemberFunctionCall(fcn, args)
   )
   or
+  exists(HashCons hc, HC_Args args
+  | mk_ExprCall(hc, args, e) and
+    result = HC_ExprCall(hc, args)
+  )
+  or
   exists(Function fcn, HashCons qual, HC_Args args
   | mk_MemberFunctionCall(fcn, qual, args, e) and
     result = HC_MemberFunctionCall(fcn, qual, args)
@@ -937,6 +1038,16 @@ cached HashCons hashCons(Expr e) {
   exists(HashCons child
   | mk_SizeofExpr(child, e) and
     result = HC_SizeofExpr(child)
+  )
+  or
+  exists(Type t
+  | mk_TypeidType(t, e) and
+    result = HC_TypeidType(t)
+  )
+  or
+  exists(HashCons child
+  | mk_TypeidExpr(child, e) and
+    result = HC_TypeidExpr(child)
   )
   or
   exists(Type t
@@ -979,6 +1090,11 @@ cached HashCons hashCons(Expr e) {
     result = HC_ReThrowExpr()
   )
   or
+  exists(HashCons cond, HashCons thenHC, HashCons elseHC
+  | mk_ConditionalExpr(cond, thenHC, elseHC, e) and
+    result = HC_ConditionalExpr(cond, thenHC, elseHC)
+  )
+  or
   (
     mk_Nullptr(e) and
     result = HC_Nullptr()
@@ -1011,16 +1127,22 @@ predicate analyzableExpr(Expr e, string kind) {
   (analyzablePointerDereferenceExpr(e) and kind = "PointerDereferenceExpr") or
   (analyzableNonmemberFunctionCall(e) and kind = "NonmemberFunctionCall") or
   (analyzableMemberFunctionCall(e) and kind = "MemberFunctionCall") or
+  (analyzableExprCall(e) and kind = "ExprCall") or
   (analyzableNewExpr(e) and kind = "NewExpr") or
   (analyzableNewArrayExpr(e) and kind = "NewArrayExpr") or
   (analyzableSizeofType(e) and kind = "SizeofTypeOperator") or
   (analyzableSizeofExpr(e) and kind = "SizeofExprOperator") or
   (analyzableAlignofType(e) and kind = "AlignofTypeOperator") or
   (analyzableAlignofExpr(e) and kind = "AlignofExprOperator") or
+  (analyzableUuidofOperator(e) and kind = "UuidofOperator") or
+  (analyzableTypeidType(e) and kind = "TypeidType") or
+  (analyzableTypeidExpr(e) and kind = "TypeidExpr") or
   (analyzableClassAggregateLiteral(e) and kind = "ClassAggregateLiteral") or
   (analyzableArrayAggregateLiteral(e) and kind = "ArrayAggregateLiteral") or
   (analyzableDeleteExpr(e) and kind = "DeleteExpr") or
   (analyzableDeleteArrayExpr(e) and kind = "DeleteArrayExpr") or
   (analyzableThrowExpr(e) and kind = "ThrowExpr") or
-  (analyzableReThrowExpr(e) and kind = "ReThrowExpr")
+  (analyzableReThrowExpr(e) and kind = "ReThrowExpr") or
+  (analyzableConditionalExpr(e) and kind = "ConditionalExpr") or
+  (analyzableNoExceptExpr(e) and kind = "NoExceptExpr")
 }
