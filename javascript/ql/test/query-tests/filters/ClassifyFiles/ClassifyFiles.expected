@@ -1,5 +1,7 @@
 | ai.1.2.3-build0123.js:0:0:0:0 | ai.1.2.3-build0123.js | library |
 | bundle-directive.js:0:0:0:0 | bundle-directive.js | generated |
+| data.js:0:0:0:0 | data.js | generated |
+| exported-data.js:0:0:0:0 | exported-data.js | generated |
 | jison-lex.js:0:0:0:0 | jison-lex.js | generated |
 | jison.js:0:0:0:0 | jison.js | generated |
 | jquery-datatables.js:0:0:0:0 | jquery-datatables.js | library |

@@ -100,6 +100,21 @@ private predicate hasManyInvocations(TopLevel tl) {
 }
 
 /**
+ * Holds if `f` is side effect free, and full of primitive literals, which is often a sign of generated data code.
+ */
+private predicate isData(File f) {
+  // heuristic: `f` has more than 1000 primitive literal expressions ...
+  count(SyntacticConstants::PrimitiveLiteralConstant e | e.getFile() = f) > 1000 and
+  // ... but no expressions with side effects ...
+  not exists (Expr e |
+    e.getFile() = f and
+    e.isImpure() and
+    // ... except for variable initializers
+    not e instanceof VariableDeclarator
+  )
+}
+
+/**
  * Holds if `tl` looks like it contains generated code.
  */
 predicate isGenerated(TopLevel tl) {
@@ -108,7 +123,8 @@ predicate isGenerated(TopLevel tl) {
   tl instanceof GWTGeneratedTopLevel or
   tl instanceof DartGeneratedTopLevel or
   exists (GeneratedCodeMarkerComment gcmc | tl = gcmc.getTopLevel()) or
-  hasManyInvocations(tl)
+  hasManyInvocations(tl) or
+  isData(tl.getFile())
 }
 
 /**
