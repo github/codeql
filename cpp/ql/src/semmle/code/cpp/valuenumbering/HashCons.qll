@@ -107,6 +107,14 @@ private cached newtype HCBase =
   or
   HC_AlignofExpr(HashCons child) {mk_AlignofExpr(child, _)}
   or
+  HC_ClassAggregateLiteral(Class c, HC_Fields hcf) {
+    mk_ClassAggregateLiteral(c, hcf, _)
+  }
+  or
+  HC_ArrayAggregateLiteral(Type t, HC_Array hca) {
+    mk_ArrayAggregateLiteral(t, hca, _)
+  }
+  or
   // Any expression that is not handled by the cases above is
   // given a unique number based on the expression itself.
   HC_Unanalyzable(Expr e) { not analyzableExpr(e,_) }
@@ -144,6 +152,30 @@ private newtype HC_Args =
     mk_ArgCons(fcn, hc, i, list, _)
   }
 
+/**
+ * Used to implement hash-consing of struct initizializers.
+ */
+private newtype HC_Fields =
+  HC_EmptyFields(Class c) {
+    exists(ClassAggregateLiteral cal |
+      c = cal.getType().getUnspecifiedType()
+    )
+  }
+  or
+  HC_FieldCons(Class c, int i, Field f, HashCons hc, HC_Fields hcf) {
+   mk_FieldCons(c, i, f, hc, hcf, _)
+  }
+
+private newtype HC_Array =
+  HC_EmptyArray(Type t) {
+    exists(ArrayAggregateLiteral aal |
+      aal.getType() = t
+    )
+  }
+  or
+  HC_ArrayCons(Type t, int i, HashCons hc, HC_Array hca) {
+    mk_ArrayCons(t, i, hc, hca, _)
+  }
 /**
  * HashCons is the hash-cons of an expression. The relationship between `Expr`
  * and `HC` is many-to-one: every `Expr` has exactly one `HC`, but multiple
@@ -188,6 +220,8 @@ class HashCons extends HCBase {
     if this instanceof HC_SizeofExpr then result = "SizeofExprOperator" else
     if this instanceof HC_AlignofType then result = "AlignofTypeOperator" else
     if this instanceof HC_AlignofExpr then result = "AlignofExprOperator" else
+    if this instanceof HC_ArrayAggregateLiteral then result = "ArrayAggregateLiteral" else
+    if this instanceof HC_ClassAggregateLiteral then result = "ClassAggreagateLiteral" else
     result = "error"
   }
 
@@ -690,6 +724,87 @@ private predicate mk_AlignofExpr(HashCons child, AlignofExprOperator e) {
   child = hashCons(e.getAChild())
 }
 
+private predicate mk_FieldCons(Class c, int i, Field f, HashCons hc, HC_Fields hcf,
+  ClassAggregateLiteral cal) {
+  analyzableClassAggregateLiteral(cal) and
+  cal.getType().getUnspecifiedType() = c and
+  exists(Expr e |
+    e = cal.getFieldExpr(f).getFullyConverted() and
+    e = cal.getChild(i).getFullyConverted() and
+    hc = hashCons(e) and
+    (
+      exists(HashCons head, Field f2, HC_Fields tail |
+        hcf = HC_FieldCons(c, i-1, f2, head, tail) and
+        cal.getChild(i-1).getFullyConverted() = cal.getFieldExpr(f2).getFullyConverted() and
+        mk_FieldCons(c, i-1, f2, head, tail, cal)
+        
+      )
+      or
+      i = 0 and
+      hcf = HC_EmptyFields(c)
+    )
+  )
+}
+
+private predicate analyzableClassAggregateLiteral(ClassAggregateLiteral cal) {
+  forall(int i |
+    exists(cal.getChild(i)) |
+    strictcount(cal.getChild(i).getFullyConverted()) = 1 and
+    strictcount(Field f | cal.getChild(i) = cal.getFieldExpr(f)) = 1
+  )
+}
+
+private predicate mk_ClassAggregateLiteral(Class c, HC_Fields hcf, ClassAggregateLiteral cal) {
+  analyzableClassAggregateLiteral(cal) and
+  c = cal.getType().getUnspecifiedType() and
+  (
+    exists(HC_Fields tail, Expr e, Field f |
+      e = cal.getChild(cal.getNumChild() - 1).getFullyConverted() and
+      e = cal.getFieldExpr(f).getFullyConverted() and
+      hcf = HC_FieldCons(c, cal.getNumChild() - 1, f, hashCons(e), tail) and
+      mk_FieldCons(c, cal.getNumChild() - 1, f, hashCons(e), tail, cal)
+    )
+    or
+    cal.getNumChild() = 0 and
+    hcf = HC_EmptyFields(c)
+  )
+}
+
+private predicate analyzableArrayAggregateLiteral(ArrayAggregateLiteral aal) {
+  forall(int i |
+    exists(aal.getChild(i)) |
+    strictcount(aal.getChild(i).getFullyConverted()) = 1
+  )
+}
+
+private predicate mk_ArrayCons(Type t, int i, HashCons hc, HC_Array hca, ArrayAggregateLiteral aal) {
+  t = aal.getType().getUnspecifiedType() and
+  hc = hashCons(aal.getChild(i)) and
+  (
+    exists(HC_Array tail, HashCons head |
+      hca = HC_ArrayCons(t, i - 1, head, tail) and
+      mk_ArrayCons(t, i-1, head, tail, aal)
+    )
+    or
+    i = 0 and
+    hca = HC_EmptyArray(t)
+  )
+}
+
+private predicate mk_ArrayAggregateLiteral(Type t, HC_Array hca, ArrayAggregateLiteral aal) {
+  t = aal.getType().getUnspecifiedType() and
+  (
+    exists(HashCons head, HC_Array tail |
+      hca = HC_ArrayCons(t, aal.getNumChild() - 1, head, tail) and
+      mk_ArrayCons(t, aal.getNumChild() - 1, head, tail, aal)
+    )
+    or
+    aal.getNumChild() = 0 and
+    hca = HC_EmptyArray(t)
+  )
+}
+
+
 /** Gets the hash-cons of expression `e`. */
 cached HashCons hashCons(Expr e) {
   exists (int val, Type t
@@ -788,6 +903,16 @@ cached HashCons hashCons(Expr e) {
     result = HC_AlignofExpr(child)
   )
   or
+  exists(Class c, HC_Fields hfc
+  | mk_ClassAggregateLiteral(c, hfc, e) and
+    result = HC_ClassAggregateLiteral(c, hfc)
+  )
+  or
+  exists(Type t, HC_Array hca
+  | mk_ArrayAggregateLiteral(t, hca, e) and
+    result = HC_ArrayAggregateLiteral(t, hca)
+  )
+  or
   (
     mk_Nullptr(e) and
     result = HC_Nullptr()
@@ -825,5 +950,8 @@ predicate analyzableExpr(Expr e, string kind) {
   (analyzableSizeofType(e) and kind = "SizeofTypeOperator") or
   (analyzableSizeofExpr(e) and kind = "SizeofExprOperator") or
   (analyzableAlignofType(e) and kind = "AlignofTypeOperator") or
-  (analyzableAlignofExpr(e) and kind = "AlignofExprOperator")
+  (analyzableAlignofExpr(e) and kind = "AlignofExprOperator") or
+  (analyzableClassAggregateLiteral(e) and kind = "ClassAggregateLiteral") or
+  (analyzableArrayAggregateLiteral(e) and kind = "ArrayAggregateLiteral")
+  
 }

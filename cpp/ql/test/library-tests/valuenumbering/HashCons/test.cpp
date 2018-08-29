@@ -271,4 +271,29 @@ void test16() {
   new(32) int[2] {1, 2};
   new(32) int[2] {1, 2};
   new(32) int[2] {3, 4};
+  new(32) int[2] {1, 1};
+  new(32) int[2] {2, 2};
+
+  new(32) int[2] {};
+  new(32) int[2] {};
+}
+
+typedef struct point{
+  int x;
+  int y;
+} point_t;
+
+void test17() {
+  point_t p1 = {
+    1,
+    2
+  };
+  point_t p2 = {
+    1,
+    2
+  };
+  point_t p3 = {
+    2,
+    1
+  };
 }
