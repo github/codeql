@@ -113,6 +113,10 @@ class RangeSsaDefinition extends ControlFlowNodeBase {
         guard_defn(v, guard, this, branch)
     }
 
+    Location getLocation() {
+        result = this.(ControlFlowNode).getLocation()
+    }
+
     /** Whether this definition is from a parameter */
     predicate definedByParameter(Parameter p) {
         this = p.getFunction().getEntryPoint()

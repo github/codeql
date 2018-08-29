@@ -46,16 +46,29 @@ Element mkElement(@element e) {
 }
 
 /**
- * A C/C++ element. This class is the base class for all C/C++
- * elements, such as functions, classes, expressions, and so on.
+ * A C/C++ element with no member predicates other than `toString`. Not for
+ * general use. This class does not define a location, so classes wanting to
+ * change their location without affecting other classes can extend
+ * `ElementBase` instead of `Element` to create a new rootdef for `getURL`,
+ * `getLocation`, or `hasLocationInfo`.
  */
-class Element extends @element {
-  Element() {
+class ElementBase extends @element {
+  ElementBase() {
     this = resolveElement(_)
   }
 
   /** Gets a textual representation of this element. */
   string toString() { none() }
+}
+
+/**
+ * A C/C++ element. This class is the base class for all C/C++
+ * elements, such as functions, classes, expressions, and so on.
+ */
+class Element extends ElementBase {
+  Element() {
+    this = resolveElement(_)
+  }
 
   /** Gets the primary file where this element occurs. */
   File getFile() { result = this.getLocation().getFile() }

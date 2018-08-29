@@ -146,12 +146,12 @@ private predicate loopConditionAlwaysUponEntry(ControlFlowNode loop, Expr condit
 /**
  * An element that is convertible to `ControlFlowNode`. This class is similar
  * to `ControlFlowNode` except that is has no member predicates apart from
- * those inherited from `Locatable`.
+ * `toString`.
  *
  * This class can be used as base class for classes that want to inherit the
  * extent of `ControlFlowNode` without inheriting its public member predicates.
  */
-class ControlFlowNodeBase extends Locatable, @cfgnode {
+class ControlFlowNodeBase extends ElementBase, @cfgnode {
 }
 
 predicate truecond_base(ControlFlowNodeBase n1, ControlFlowNodeBase n2) {

@@ -88,7 +88,7 @@ class DefOrUse extends ControlFlowNodeBase {
     // Uninstantiated templates are purely syntax, and only on instantiation
     // will they be complete with information about types, conversions, call
     // targets, etc.
-    not this.isFromUninstantiatedTemplate(_)
+    not this.(ControlFlowNode).isFromUninstantiatedTemplate(_)
   }
 
   /**

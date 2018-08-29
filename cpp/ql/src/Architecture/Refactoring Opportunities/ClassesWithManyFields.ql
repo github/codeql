@@ -46,8 +46,9 @@ predicate masterVde(VariableDeclarationEntry master, VariableDeclarationEntry vd
   exists(VariableDeclarationEntry previous | previousVde(previous, vde) and masterVde(master, previous))
 }
 
-class VariableDeclarationGroup extends VariableDeclarationEntry {
+class VariableDeclarationGroup extends ElementBase {
   VariableDeclarationGroup() {
+    this instanceof VariableDeclarationEntry and
     not previousVde(_, this)
   }
   Class getClass() {
@@ -62,7 +63,7 @@ class VariableDeclarationGroup extends VariableDeclarationEntry {
       masterVde(this, last) and
       this instanceof VariableDeclarationGroup and
       not previousVde(last, _) and
-      this.getLocation() = lstart and
+      exists(VariableDeclarationEntry vde | vde=this and vde instanceof VariableDeclarationEntry and vde.getLocation() = lstart) and
       last.getLocation() = lend and
       lstart.hasLocationInfo(path, startline, startcol, _, _) and
       lend.hasLocationInfo(path, _, _, endline, endcol)
@@ -78,7 +79,7 @@ class VariableDeclarationGroup extends VariableDeclarationEntry {
                                   name = vde.getName()))
              + " fields here"
     else
-      result = "declaration of " + this.getVariable().getName()
+      result = "declaration of " + this.(VariableDeclarationEntry).getVariable().getName()
   }
 }
 

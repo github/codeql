@@ -70,6 +70,10 @@ class SsaDefinition extends ControlFlowNodeBase {
         exists(StandardSSA x | x.phi_node(v, (BasicBlock)this))
     }
 
+    Location getLocation() {
+        result = this.(ControlFlowNode).getLocation()
+    }
+
     /** Holds if the SSA variable `(this, p)` is defined by parameter `p`. */
     predicate definedByParameter(Parameter p) {
         this = p.getFunction().getEntryPoint()
