@@ -297,3 +297,12 @@ void test17() {
     1
   };
 }
+
+void test18() {
+  throw 1;
+  throw 1;
+  throw 2;
+  throw 2;
+  throw;
+  throw;
+}

@@ -119,6 +119,10 @@ private cached newtype HCBase =
   or
   HC_DeleteArrayExpr(HashCons child) {mk_DeleteArrayExpr(child, _)}
   or
+  HC_ThrowExpr(HashCons child) {mk_ThrowExpr(child, _)}
+  or
+  HC_ReThrowExpr()
+  or
   // Any expression that is not handled by the cases above is
   // given a unique number based on the expression itself.
   HC_Unanalyzable(Expr e) { not analyzableExpr(e,_) }
@@ -228,6 +232,8 @@ class HashCons extends HCBase {
     if this instanceof HC_ClassAggregateLiteral then result = "ClassAggreagateLiteral" else
     if this instanceof HC_DeleteExpr then result = "DeleteExpr" else
     if this instanceof HC_DeleteArrayExpr then result = "DeleteArrayExpr" else
+    if this instanceof HC_ThrowExpr then result = "ThrowExpr" else
+    if this instanceof HC_ReThrowExpr then result = "ReThrowExpr" else
     result = "error"
   }
 
@@ -828,6 +834,23 @@ private predicate mk_ArrayAggregateLiteral(Type t, HC_Array hca, ArrayAggregateL
   )
 }
 
+private predicate analyzableThrowExpr(ThrowExpr te) {
+  strictcount(te.getExpr().getFullyConverted()) = 1
+}
+
+private predicate mk_ThrowExpr(HashCons hc, ThrowExpr te) {
+  analyzableThrowExpr(te) and
+  hc.getAnExpr() = te.getExpr().getFullyConverted()
+}
+
+private predicate analyzableReThrowExpr(ReThrowExpr rte) {
+  any()
+}
+
+private predicate mk_ReThrowExpr(ReThrowExpr te) {
+  any()
+}
+
 /** Gets the hash-cons of expression `e`. */
 cached HashCons hashCons(Expr e) {
   exists (int val, Type t
@@ -946,6 +969,16 @@ cached HashCons hashCons(Expr e) {
     result = HC_DeleteArrayExpr(child)
   )
   or
+  exists(HashCons child
+  | mk_ThrowExpr(child, e) and
+    result = HC_ThrowExpr(child)
+  )
+  or
+  (
+    mk_ReThrowExpr(e) and
+    result = HC_ReThrowExpr()
+  )
+  or
   (
     mk_Nullptr(e) and
     result = HC_Nullptr()
@@ -987,5 +1020,7 @@ predicate analyzableExpr(Expr e, string kind) {
   (analyzableClassAggregateLiteral(e) and kind = "ClassAggregateLiteral") or
   (analyzableArrayAggregateLiteral(e) and kind = "ArrayAggregateLiteral") or
   (analyzableDeleteExpr(e) and kind = "DeleteExpr") or
-  (analyzableDeleteArrayExpr(e) and kind = "DeleteArrayExpr")
+  (analyzableDeleteArrayExpr(e) and kind = "DeleteArrayExpr") or
+  (analyzableThrowExpr(e) and kind = "ThrowExpr") or
+  (analyzableReThrowExpr(e) and kind = "ReThrowExpr")
 }
