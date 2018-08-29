@@ -24,6 +24,14 @@ module ClientSideUrlRedirect {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
+   * A flow label for values that represent the URL of the current document, and
+   * hence are only partially user-controlled.
+   */
+  class DocumentUrl extends DataFlow::FlowLabel {
+    DocumentUrl() { this = "document.url" }
+  }
+
+  /**
    * A taint-tracking configuration for reasoning about unvalidated URL redirections.
    */
   class Configuration extends TaintTracking::Configuration {
@@ -35,24 +43,37 @@ module ClientSideUrlRedirect {
       source instanceof Source
     }
 
+    override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel lbl) {
+      source instanceof RemoteFlowSource and
+      lbl = DataFlow::FlowLabel::taint()
+      or
+      isDocumentURL(source.asExpr()) and
+      lbl instanceof DocumentUrl
+    }
+
     override predicate isSink(DataFlow::Node sink) {
       sink instanceof Sink
     }
 
+    override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel f) {
+      sink instanceof UrlSink and
+      f = DataFlow::FlowLabel::taint()
+    }
+
     override predicate isSanitizer(DataFlow::Node node) {
       super.isSanitizer(node) or
-      isSafeLocationProperty(node.asExpr()) or
       node instanceof Sanitizer
     }
 
     override predicate isSanitizer(DataFlow::Node source, DataFlow::Node sink) {
       sanitizingPrefixEdge(source, sink)
     }
-  }
 
-  /** A source of remote user input, considered as a flow source for unvalidated URL redirects. */
-  class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
+    override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel f, DataFlow::FlowLabel g) {
+      queryAccess(pred, succ) and
+      f instanceof DocumentUrl and
+      g = DataFlow::FlowLabel::taint()
+    }
   }
 
   /**
@@ -84,39 +105,13 @@ module ClientSideUrlRedirect {
     )
   }
 
-  /**
-   * A taint tracking configuration for identifying accesses of the query string of the current URL.
-   */
-  private class LocationHrefDataFlowConfiguration extends TaintTracking::Configuration {
-    LocationHrefDataFlowConfiguration() {
-      this = "LocationHrefDataFlowConfiguration"
-    }
-
-    override predicate isSource(DataFlow::Node source) {
-      isDocumentURL(source.asExpr())
-    }
-
-    override predicate isSink(DataFlow::Node sink) {
-      queryAccess(sink, _)
-    }
-  }
-
-  /**
-   * An access of the query string of the current URL.
-   */
-  class LocationSearchSource extends Source {
-    LocationSearchSource() {
-      exists(LocationHrefDataFlowConfiguration cfg, DataFlow::Node nd |
-        cfg.hasFlow(_, nd) and
-        queryAccess(nd, this)
-      )
-    }
+  abstract class UrlSink extends DataFlow::Node {
   }
 
   /**
    * A sink which is used to set the window location.
    */
-  class LocationSink extends Sink, DataFlow::ValueNode {
+  class LocationSink extends UrlSink, DataFlow::ValueNode {
     LocationSink() {
       // A call to a `window.navigate` or `window.open`
       exists (string name |
@@ -157,7 +152,7 @@ module ClientSideUrlRedirect {
   /**
    * An expression that may be interpreted as the URL of a script.
    */
-  abstract class ScriptUrlSink extends Sink {
+  abstract class ScriptUrlSink extends UrlSink {
   }
 
   /**
