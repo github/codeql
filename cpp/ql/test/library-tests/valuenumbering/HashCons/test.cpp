@@ -306,3 +306,12 @@ void test18() {
   throw;
   throw;
 }
+
+void test19(int *x, int *y) {
+  x[0];
+  x[0];
+  x[1];
+  x[1];
+  y[0];
+  y[1];
+}
