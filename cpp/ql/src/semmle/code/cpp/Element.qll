@@ -66,10 +66,6 @@ class ElementBase extends @element {
  * elements, such as functions, classes, expressions, and so on.
  */
 class Element extends ElementBase {
-  Element() {
-    this = resolveElement(_)
-  }
-
   /** Gets the primary file where this element occurs. */
   File getFile() { result = this.getLocation().getFile() }
 
