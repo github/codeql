@@ -253,12 +253,12 @@ void test16() {
   char *ptr1 = new char[sizeof(int)];
   char *ptr2 = new char[sizeof(int)];
 
-  new(ptr1) IntHolder;
-  new(ptr1) IntHolder;
-  new(ptr2) IntHolder;
+  delete new(ptr1) IntHolder;
+  delete new(ptr1) IntHolder;
+  delete new(ptr2) IntHolder;
 
-  new(32, ptr1) IntHolder;
-  new(32, ptr1) IntHolder;
+  delete new(32, ptr1) IntHolder;
+  delete[] new(32, ptr1) IntHolder;
   new(32, ptr2) IntHolder;
   new(16, ptr1) IntHolder;
 
@@ -268,9 +268,9 @@ void test16() {
   new(32) IntHolder[10];
   new(32) IntHolder[10];
 
-  new(32) int[2] {1, 2};
-  new(32) int[2] {1, 2};
-  new(32) int[2] {3, 4};
+  delete[] new(32) int[2] {1, 2};
+  delete[] new(32) int[2] {1, 2};
+  delete[] new(32) int[2] {3, 4};
   new(32) int[2] {1, 1};
   new(32) int[2] {2, 2};
 

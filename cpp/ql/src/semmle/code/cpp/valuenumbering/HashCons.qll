@@ -115,6 +115,10 @@ private cached newtype HCBase =
     mk_ArrayAggregateLiteral(t, hca, _)
   }
   or
+  HC_DeleteExpr(HashCons child) {mk_DeleteExpr(child, _)}
+  or
+  HC_DeleteArrayExpr(HashCons child) {mk_DeleteArrayExpr(child, _)}
+  or
   // Any expression that is not handled by the cases above is
   // given a unique number based on the expression itself.
   HC_Unanalyzable(Expr e) { not analyzableExpr(e,_) }
@@ -222,6 +226,8 @@ class HashCons extends HCBase {
     if this instanceof HC_AlignofExpr then result = "AlignofExprOperator" else
     if this instanceof HC_ArrayAggregateLiteral then result = "ArrayAggregateLiteral" else
     if this instanceof HC_ClassAggregateLiteral then result = "ClassAggreagateLiteral" else
+    if this instanceof HC_DeleteExpr then result = "DeleteExpr" else
+    if this instanceof HC_DeleteArrayExpr then result = "DeleteArrayExpr" else
     result = "error"
   }
 
@@ -685,6 +691,24 @@ private predicate mk_NewArrayExpr(Type t, HC_Alloc alloc, HC_Init init, HC_Align
   )
 }
 
+private predicate analyzableDeleteExpr(DeleteExpr e) {
+  strictcount(e.getAChild().getFullyConverted()) = 1
+}
+
+private predicate mk_DeleteExpr(HashCons hc, DeleteExpr e) {
+  analyzableDeleteExpr(e) and
+  hc = hashCons(e.getAChild().getFullyConverted())
+}
+
+private predicate analyzableDeleteArrayExpr(DeleteArrayExpr e) {
+  strictcount(e.getAChild().getFullyConverted()) = 1
+}
+
+private predicate mk_DeleteArrayExpr(HashCons hc, DeleteArrayExpr e) {
+  analyzableDeleteArrayExpr(e) and
+  hc = hashCons(e.getAChild().getFullyConverted())
+}
+
 private predicate analyzableSizeofType(SizeofTypeOperator e) {
   strictcount(e.getType().getUnspecifiedType()) = 1 and
   strictcount(e.getTypeOperand()) = 1
@@ -804,7 +828,6 @@ private predicate mk_ArrayAggregateLiteral(Type t, HC_Array hca, ArrayAggregateL
   )
 }
 
-
 /** Gets the hash-cons of expression `e`. */
 cached HashCons hashCons(Expr e) {
   exists (int val, Type t
@@ -913,6 +936,16 @@ cached HashCons hashCons(Expr e) {
     result = HC_ArrayAggregateLiteral(t, hca)
   )
   or
+  exists(HashCons child
+  | mk_DeleteExpr(child, e) and
+    result = HC_DeleteExpr(child)
+  )
+  or
+  exists(HashCons child
+  | mk_DeleteArrayExpr(child, e) and
+    result = HC_DeleteArrayExpr(child)
+  )
+  or
   (
     mk_Nullptr(e) and
     result = HC_Nullptr()
@@ -952,6 +985,7 @@ predicate analyzableExpr(Expr e, string kind) {
   (analyzableAlignofType(e) and kind = "AlignofTypeOperator") or
   (analyzableAlignofExpr(e) and kind = "AlignofExprOperator") or
   (analyzableClassAggregateLiteral(e) and kind = "ClassAggregateLiteral") or
-  (analyzableArrayAggregateLiteral(e) and kind = "ArrayAggregateLiteral")
-  
+  (analyzableArrayAggregateLiteral(e) and kind = "ArrayAggregateLiteral") or
+  (analyzableDeleteExpr(e) and kind = "DeleteExpr") or
+  (analyzableDeleteArrayExpr(e) and kind = "DeleteArrayExpr")
 }
