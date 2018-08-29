@@ -487,11 +487,12 @@ private predicate reachableFromInput(Function f, DataFlow::Node invk,
  * configuration `cfg`, possibly through callees.
  */
 private predicate flowThroughCall(DataFlow::Node input, DataFlow::Node invk,
-                                  DataFlow::Configuration cfg, boolean valuePreserving) {
+                                  DataFlow::Configuration cfg, PathSummary summary) {
   exists (Function f, DataFlow::ValueNode ret |
     ret.asExpr() = f.getAReturnedExpr() and
     calls(invk, f) and // Do not consider partial calls
-    reachableFromInput(f, invk, input, ret, cfg, PathSummary::level(valuePreserving))
+    reachableFromInput(f, invk, input, ret, cfg, summary) and
+    not cfg.isBarrier(ret, invk)
   )
 }
 
@@ -557,10 +558,7 @@ private predicate flowStep(DataFlow::Node pred, DataFlow::Configuration cfg,
    or
    // Flow through a function that returns a value that depends on one of its arguments
    // or a captured variable
-   exists (boolean valuePreserving |
-     flowThroughCall(pred, succ, cfg, valuePreserving) and
-     summary = PathSummary::level(valuePreserving)
-   )
+   flowThroughCall(pred, succ, cfg, summary)
    or
    // Flow through a property write/read pair
    flowThroughProperty(pred, succ, cfg, summary)

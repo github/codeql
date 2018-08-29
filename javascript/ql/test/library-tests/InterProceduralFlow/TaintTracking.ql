@@ -22,6 +22,12 @@ class TestTaintTrackingConfiguration extends TaintTracking::Configuration {
   override predicate isSanitizer(DataFlow::Node src, DataFlow::Node snk) {
     src = src and
     snk.asExpr().(PropAccess).getPropertyName() = "notTracked"
+    or
+    exists (Function f |
+      f.getName().matches("%noReturnTracking%") and
+      src = f.getAReturnedExpr().flow() and
+      snk.(DataFlow::InvokeNode).getACallee() = f
+    )
   }
 }
 
