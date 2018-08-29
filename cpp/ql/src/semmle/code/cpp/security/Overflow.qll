@@ -4,7 +4,7 @@ import semmle.code.cpp.controlflow.Dominance
 /* Guarding */
 
 /** is the size of this use guarded using 'abs'? */
-predicate guardedAbs(BinaryArithmeticOperation e, Expr use) {
+predicate guardedAbs(Operation e, Expr use) {
   exists(FunctionCall fc |
     fc.getTarget().getName() = "abs" |
     fc.getArgument(0).getAChild*() = use
@@ -13,7 +13,7 @@ predicate guardedAbs(BinaryArithmeticOperation e, Expr use) {
 }
 
 /** is the size of this use guarded to be less than something? */
-predicate guardedLesser(BinaryArithmeticOperation e, Expr use) {
+predicate guardedLesser(Operation e, Expr use) {
   exists(IfStmt c, RelationalOperation guard |
     use = guard.getLesserOperand().getAChild*() and
     guard = c.getControllingExpr().getAChild*() and
@@ -33,7 +33,7 @@ predicate guardedLesser(BinaryArithmeticOperation e, Expr use) {
 }
 
 /** is the size of this use guarded to be greater than something? */
-predicate guardedGreater(BinaryArithmeticOperation e, Expr use) {
+predicate guardedGreater(Operation e, Expr use) {
   exists(IfStmt c, RelationalOperation guard |
     use = guard.getGreaterOperand().getAChild*() and
     guard = c.getControllingExpr().getAChild*() and
@@ -58,11 +58,13 @@ VariableAccess varUse(LocalScopeVariable v) {
 }
 
 /** is e not guarded against overflow by use? */
-predicate missingGuardAgainstOverflow(BinaryArithmeticOperation e, VariableAccess use) {
+predicate missingGuardAgainstOverflow(Operation e, VariableAccess use) {
   use = e.getAnOperand() and
   exists(LocalScopeVariable v | use.getTarget() = v |
     // overflow possible if large
     (e instanceof AddExpr and not guardedLesser(e, varUse(v))) or
+    (e instanceof AssignAddExpr and not guardedLesser(e, varUse(v))) or
+    (e instanceof IncrementOperation and not guardedLesser(e, varUse(v)) and v.getType().getUnspecifiedType() instanceof IntegralType) or     
     // overflow possible if large or small
     (e instanceof MulExpr and
       not (guardedLesser(e, varUse(v)) and guardedGreater(e, varUse(v))))
@@ -70,12 +72,14 @@ predicate missingGuardAgainstOverflow(BinaryArithmeticOperation e, VariableAcces
 }
 
 /** is e not guarded against underflow by use? */
-predicate missingGuardAgainstUnderflow(BinaryArithmeticOperation e, VariableAccess use) {
+predicate missingGuardAgainstUnderflow(Operation e, VariableAccess use) {
   use = e.getAnOperand() and
   exists(LocalScopeVariable v | use.getTarget() = v |
     // underflow possible if use is left operand and small
-    (e instanceof SubExpr and
-      (use = e.getLeftOperand() and not guardedGreater(e, varUse(v)))) or
+    (use = e.(SubExpr).getLeftOperand() and not guardedGreater(e, varUse(v))) or
+    (use = e.(AssignSubExpr).getLValue() and not guardedGreater(e, varUse(v))) or
+    // underflow possible if small
+    (e instanceof DecrementOperation and not guardedGreater(e, varUse(v)) and v.getType().getUnspecifiedType() instanceof IntegralType) or
     // underflow possible if large or small
     (e instanceof MulExpr and
       not (guardedLesser(e, varUse(v)) and guardedGreater(e, varUse(v))))

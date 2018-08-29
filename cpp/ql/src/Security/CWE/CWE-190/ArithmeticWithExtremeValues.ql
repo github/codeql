@@ -40,18 +40,29 @@ class SecurityOptionsArith extends SecurityOptions {
   }
 }
 
-predicate taintedVarAccess(Expr origin, VariableAccess va) {
-  isUserInput(origin, _) and
+predicate taintedVarAccess(Expr origin, VariableAccess va, string cause) {
+  isUserInput(origin, cause) and
   tainted(origin, va)
 }
 
-from Expr origin, BinaryArithmeticOperation op, VariableAccess va, string effect
-where taintedVarAccess(origin, va)
+predicate causeEffectCorrespond(string cause, string effect) {
+  (
+    cause = "max value" and
+    effect = "overflow"
+  ) or (
+    cause = "min value" and
+    effect = "underflow"
+  )
+}
+
+from Expr origin, Operation op, VariableAccess va, string cause, string effect
+where taintedVarAccess(origin, va, cause)
   and op.getAnOperand() = va
   and
   (
     (missingGuardAgainstUnderflow(op, va) and effect = "underflow") or
     (missingGuardAgainstOverflow(op, va) and effect = "overflow")
-  )
+  ) and
+  causeEffectCorrespond(cause, effect)
 select va, "$@ flows to here and is used in arithmetic, potentially causing an " + effect + ".",
   origin, "Extreme value"

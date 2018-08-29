@@ -26,7 +26,11 @@
 | [Variable used in its own initializer] | Fewer false positive results | Results where a macro is used to indicate deliberate uninitialization are now excluded |
 | [Assignment where comparison was intended] | Fewer false positive results | Results are no longer reported if the variable is not yet defined. |
 | [Comparison where assignment was intended] | More correct results | "This query now includes results where an overloaded `operator==` is used in the wrong context. |
-
+| [User-controlled data in arithmetic expression] | More correct results | Increment / decrement / addition assignment / subtraction assignment operations are now understood as arithmetic operations in this query. |
+| [Uncontrolled data in arithmetic expression] | More correct results | Increment / decrement / addition assignment / subtraction assignment operations are now understood as arithmetic operations in this query. |
+| [Use of extreme values in arithmetic expression] | More correct results | Increment / decrement / addition assignment / subtraction assignment operations are now understood as arithmetic operations in this query. |
+| [Use of extreme values in arithmetic expression] | Fewer false positives | The query now considers whether a particular expression might cause an overflow of minimum or maximum values only. |
+ 
 ## Changes to QL libraries
 
 * *Series of bullet points*

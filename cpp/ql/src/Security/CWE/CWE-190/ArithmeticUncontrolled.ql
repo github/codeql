@@ -46,7 +46,7 @@ predicate guardedByAssignDiv(Expr origin) {
          tainted(origin, va) and div.getLValue() = va)
 }
 
-from Expr origin, BinaryArithmeticOperation op, VariableAccess va, string effect
+from Expr origin, Operation op, VariableAccess va, string effect
 where taintedVarAccess(origin, va)
   and op.getAnOperand() = va
   and
