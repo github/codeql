@@ -1400,6 +1400,18 @@ new_array_allocated_type(
     int type_id: @type ref
 );
 
+aggregate_field_init(
+    unique int aggregate: @aggregateliteral ref,
+    int initializer: @expr ref,
+    int field: @membervariable ref
+);
+
+aggregate_array_init(
+    unique int aggregate: @aggregateliteral ref,
+    int initializer: @expr ref,
+    int element_index: int ref
+);
+
 @ctorinit = @ctordirectinit
           | @ctorvirtualinit
           | @ctorfieldinit
