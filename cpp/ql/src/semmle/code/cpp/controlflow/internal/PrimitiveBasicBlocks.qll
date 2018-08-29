@@ -43,15 +43,31 @@ private cached module Cached {
     (not successors_extended(_, node) and successors_extended(node, _))
   }
 
+  pragma[noinline]
+  private predicate member_step(Node n1, Node n2) {
+    successors_extended(n1, n2) and
+    not n2 instanceof PrimitiveBasicBlock
+  }
+
+  private int getMemberIndex(Node node) {
+    primitive_basic_block_entry_node(node) and
+    result = 0
+    or
+    exists(Node prev |
+      member_step(prev, node) and
+      result = getMemberIndex(prev) + 1
+    )
+  }
+
+  private predicate isMember(Node node, PrimitiveBasicBlock bb) {
+    member_step*(bb, node)
+  }
+
   /** Holds if `node` is the `pos`th control-flow node in primitive basic block `bb`. */
   cached
   predicate primitive_basic_block_member(Node node, PrimitiveBasicBlock bb, int pos) {
-    (node = bb and pos = 0)
-    or
-    (not (node instanceof PrimitiveBasicBlock) and
-     exists (Node pred
-     | successors_extended(pred, node)
-     | primitive_basic_block_member(pred, bb, pos - 1)))
+    pos = getMemberIndex(node) and
+    isMember(node, bb)
   }
 
   /** Gets the number of control-flow nodes in the primitive basic block `bb`. */
