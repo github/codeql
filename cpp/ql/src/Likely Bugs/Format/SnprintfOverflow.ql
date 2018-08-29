@@ -98,7 +98,7 @@ predicate flowsToDefImpl(
   or
   // `x++`
   exists (CrementOperation crem
-  | mkElement(def) = crem and
+  | def = crem and
     crem.getOperand() = v.getAnAccess() and
     flowsToExpr(source, crem.getOperand(), pathMightOverflow))
   or

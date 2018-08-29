@@ -46,40 +46,40 @@ predicate masterVde(VariableDeclarationEntry master, VariableDeclarationEntry vd
   exists(VariableDeclarationEntry previous | previousVde(previous, vde) and masterVde(master, previous))
 }
 
-class VariableDeclarationGroup extends @var_decl {
+class VariableDeclarationGroup extends ElementBase {
   VariableDeclarationGroup() {
-    not previousVde(_, mkElement(this))
+    this instanceof VariableDeclarationEntry and
+    not previousVde(_, this)
   }
   Class getClass() {
-    vdeInfo(mkElement(this), result, _, _)
+    vdeInfo(this, result, _, _)
   }
 
   // pragma[noopt] since otherwise the two locationInfo relations get join-ordered
   // after each other
   pragma[noopt]
   predicate hasLocationInfo(string path, int startline, int startcol, int endline, int endcol) {
-    exists(Element thisElement, VariableDeclarationEntry last, Location lstart, Location lend |
-      thisElement = mkElement(this) and
-      masterVde(thisElement, last) and
+    exists(VariableDeclarationEntry last, Location lstart, Location lend |
+      masterVde(this, last) and
       this instanceof VariableDeclarationGroup and
       not previousVde(last, _) and
-      exists(VariableDeclarationEntry vde | vde=mkElement(this) and vde instanceof VariableDeclarationEntry and vde.getLocation() = lstart) and
+      exists(VariableDeclarationEntry vde | vde=this and vde instanceof VariableDeclarationEntry and vde.getLocation() = lstart) and
       last.getLocation() = lend and
       lstart.hasLocationInfo(path, startline, startcol, _, _) and
       lend.hasLocationInfo(path, _, _, endline, endcol)
     )
   }
 
-  string toString() {
-    if previousVde(mkElement(this), _) then
+  string describeGroup() {
+    if previousVde(this, _) then
       result = "group of "
              + strictcount(string name
                          | exists(VariableDeclarationEntry vde
-                                | masterVde(mkElement(this), vde) and
+                                | masterVde(this, vde) and
                                   name = vde.getName()))
              + " fields here"
     else
-      result = "declaration of " + mkElement(this).(VariableDeclarationEntry).getVariable().getName()
+      result = "declaration of " + this.(VariableDeclarationEntry).getVariable().getName()
   }
 }
 
@@ -111,4 +111,4 @@ where n = strictcount(string fieldName
       c = vdg.getClass() and
       if c.hasOneVariableGroup() then suffix = "" else suffix = " - see $@"
 select c, kindstr(c) + " " + c.getName() + " has " + n + " fields, which is too many" + suffix + ".",
-       vdg, vdg.toString()
+       vdg, vdg.describeGroup()

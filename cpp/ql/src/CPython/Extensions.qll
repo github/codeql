@@ -77,11 +77,6 @@ class PythonClass extends Variable, CObject {
          /* This needs to be kept in sync with extractor-python/semmle/passes/type.py */
          result = "C_type$" + this.getTpName()
     }
-
-    /** Gets a textual representation of this element. */
-    override string toString() {
-        result = Variable.super.toString()
-    }
 }
 
 /**
@@ -518,12 +513,6 @@ class PythonExtensionFunction extends Function {
 }
 
 class TypedPythonExtensionProperty extends PythonGetSetTableEntry, CObject {
-
-    override
-    string toString() {
-        result = PythonGetSetTableEntry.super.toString()
-    }
-
     PythonClass getPropertyType() {
         result = py_return_type(this.getGetter())
     }

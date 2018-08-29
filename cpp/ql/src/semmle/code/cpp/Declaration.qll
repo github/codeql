@@ -309,7 +309,7 @@ abstract class AccessHolder extends Declaration {
     isDirectPublicBaseOf*(base, derived)
     or
     exists(DirectAccessHolder n |
-      this.getEnclosingAccessHolder*() = mkElement(n) and
+      this.getEnclosingAccessHolder*() = n and
       // Derivations using (4.2) or (4.3) at least once.
       n.thisCanAccessClassTrans(base, derived)
     )
@@ -379,7 +379,7 @@ abstract class AccessHolder extends Declaration {
     everyoneCouldAccessMember(memberClass, memberAccess, derived)
     or
     exists(DirectAccessHolder n |
-      this.getEnclosingAccessHolder*() = mkElement(n) and
+      this.getEnclosingAccessHolder*() = n and
       // Any other derivation.
       n.thisCouldAccessMember(memberClass, memberAccess, derived)
     )
@@ -396,11 +396,11 @@ abstract class AccessHolder extends Declaration {
  * `DirectAccessHolder`s. If a `DirectAccessHolder` contains an `AccessHolder`,
  * then the contained `AccessHolder` inherits its access rights.
  */
-private class DirectAccessHolder extends @declaration {
+private class DirectAccessHolder extends Element {
   DirectAccessHolder() {
-    mkElement(this) instanceof Class
+    this instanceof Class
     or
-    exists(FriendDecl fd | fd.getFriend() = mkElement(this))
+    exists(FriendDecl fd | fd.getFriend() = this)
   }
 
   /**
@@ -486,7 +486,7 @@ private class DirectAccessHolder extends @declaration {
     )
     or
     // Rule (5.4) followed by Rule (5.2)
-    exists(Class between | mkElement(this).(AccessHolder).canAccessClass(between, derived) |
+    exists(Class between | this.(AccessHolder).canAccessClass(between, derived) |
         between.accessOfBaseMember(memberClass, memberAccess)
                .hasName("private") and
         this.isFriendOfOrEqualTo(between)
@@ -539,12 +539,10 @@ private class DirectAccessHolder extends @declaration {
   }
 
   private predicate isFriendOfOrEqualTo(Class c) {
-    exists(FriendDecl fd | fd.getDeclaringClass() = c | mkElement(this) = fd.getFriend())
+    exists(FriendDecl fd | fd.getDeclaringClass() = c | this = fd.getFriend())
     or
-    mkElement(this) = c
+    this = c
   }
-
-  string toString() { result = mkElement(this).(Declaration).toString() }
 }
 
 /**
