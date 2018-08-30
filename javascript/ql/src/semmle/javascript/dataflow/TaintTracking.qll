@@ -214,6 +214,9 @@ module TaintTracking {
           m.getMethodName() = "map" and
           m.getArgument(0) = f and // Require the argument to be a closure to avoid spurious call/return flow
           pred = f.getAReturnedExpr().flow())
+        or
+        // `array.push(e)`: if `e` is tainted, then so is `array`
+        succ.(DataFlow::SourceNode).getAMethodCall("push").getAnArgument() = pred
       )
       or
       // reading from a tainted object yields a tainted result
@@ -505,6 +508,19 @@ module TaintTracking {
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       pred = source and succ = this
+    }
+  }
+
+  /**
+   * A taint propagating data flow edge arising from sorting.
+   */
+  private class SortTaintStep extends AdditionalTaintStep, DataFlow::MethodCallNode {
+    SortTaintStep() {
+      getMethodName() = "sort"
+    }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      pred = getReceiver() and succ = this
     }
   }
 
