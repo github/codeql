@@ -704,7 +704,7 @@ private predicate mk_UuidofOperator(Type t, UuidofOperator e) {
 }
 
 private predicate analyzableTypeidType(TypeidOperator e) {
-  strictcount(e.getAChild()) = 0
+  count(e.getAChild()) = 0
 }
 
 private predicate mk_TypeidType(Type t, TypeidOperator e) {
