@@ -1,8 +1,8 @@
 import cpp
-import semmle.code.cpp.ir.IR
+import semmle.code.cpp.ir.internal.raw_ir.IRImpl
+private import semmle.code.cpp.ir.internal.Opcode
+private import semmle.code.cpp.ir.internal.TempVariableTag
 private import InstructionTag
-private import Opcode
-private import TempVariableTag
 private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedInitialization

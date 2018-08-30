@@ -1,6 +1,6 @@
 import cpp
+private import semmle.code.cpp.ir.internal.Opcode
 private import InstructionTag
-private import Opcode
 private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedFunction

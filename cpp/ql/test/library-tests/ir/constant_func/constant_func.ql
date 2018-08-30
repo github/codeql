@@ -1,6 +1,6 @@
 import default
-import semmle.code.cpp.ssa.SSAIR
-import semmle.code.cpp.ssa.internal.IntegerConstant
+import semmle.code.cpp.ir.SSAIR
+import semmle.code.cpp.ir.internal.IntegerConstant
 
 language[monotonicAggregates]
 IntValue getConstantValue(Instruction instr) {

@@ -1,1 +1,1 @@
-semmle/code/cpp/ssa/AliasedSSAIRSanity.ql
+semmle/code/cpp/ir/AliasedSSAIRSanity.ql

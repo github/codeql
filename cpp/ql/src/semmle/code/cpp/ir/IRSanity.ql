@@ -5,4 +5,4 @@
  * @id cpp/ir-sanity-check
  */
 
-import internal.IRSanityImpl
+import internal.raw_ir.IRSanityImpl

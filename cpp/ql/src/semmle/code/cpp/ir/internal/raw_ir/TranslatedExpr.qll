@@ -1,7 +1,7 @@
 import cpp
+private import semmle.code.cpp.ir.internal.Opcode
+private import semmle.code.cpp.ir.internal.TempVariableTag
 private import InstructionTag
-private import Opcode
-private import TempVariableTag
 private import TranslatedCondition
 private import TranslatedElement
 private import TranslatedFunction

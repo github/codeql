@@ -2,7 +2,7 @@ import SimpleSSAInternal
 import cpp
 import Alias
 import IR
-import semmle.code.cpp.ssa.internal.Overlap
+import semmle.code.cpp.ir.internal.Overlap
 
 private newtype TVirtualVariable =
   MkVirtualVariable(IRVariable var) {
