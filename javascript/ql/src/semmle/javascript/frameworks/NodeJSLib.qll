@@ -336,6 +336,17 @@ module NodeJSLib {
     )
   }
 
+  /**
+   * A member `member` from module `fs` or its drop-in replacements `graceful-fs` or `fs-extra`.
+   */
+  private DataFlow::SourceNode fsModuleMember(string member) {
+    exists (string moduleName |
+      moduleName = "fs" or
+      moduleName = "graceful-fs" or
+      moduleName = "fs-extra" |
+      result = DataFlow::moduleMember(moduleName, member)
+    )
+  }
 
   /**
    * A call to a method from module `fs`, `graceful-fs` or `fs-extra`.
@@ -344,9 +355,7 @@ module NodeJSLib {
     string methodName;
 
     NodeJSFileSystemAccess() {
-      exists (string moduleName | this = DataFlow::moduleMember(moduleName, methodName).getACall() |
-        moduleName = "fs" or moduleName = "graceful-fs" or moduleName = "fs-extra"
-      )
+      this = fsModuleMember(methodName).getACall()
     }
 
     override DataFlow::Node getAPathArgument() {
