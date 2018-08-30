@@ -1,1 +1,1 @@
-import internal.aliased_ssa_ir.PrintIRImpl
+import internal.aliased_ssa_ir.PrintIR

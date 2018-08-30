@@ -5,4 +5,4 @@
  * @id cpp/ssa-ir-sanity-check
  */
 
-import internal.ssa_ir.IRSanityImpl
+import internal.ssa_ir.IRSanity

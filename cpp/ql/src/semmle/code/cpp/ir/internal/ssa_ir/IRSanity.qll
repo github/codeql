@@ -1,3 +1,3 @@
-private import IRImpl
+private import IR
 import InstructionSanity
 

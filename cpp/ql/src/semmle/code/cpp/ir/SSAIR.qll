@@ -1,1 +1,1 @@
-import internal.ssa_ir.IRImpl
+import internal.ssa_ir.IR

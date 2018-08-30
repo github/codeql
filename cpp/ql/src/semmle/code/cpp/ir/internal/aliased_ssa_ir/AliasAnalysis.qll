@@ -1,6 +1,6 @@
 private import AliasAnalysisInternal
 import cpp
-private import IR
+private import InputIR
 private import semmle.code.cpp.ir.internal.IntegerConstant as Ints
 
 private class IntValue = Ints::IntValue;

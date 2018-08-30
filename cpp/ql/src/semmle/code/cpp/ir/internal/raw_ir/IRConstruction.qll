@@ -1,5 +1,5 @@
 import cpp
-import semmle.code.cpp.ir.internal.raw_ir.IRImpl
+import semmle.code.cpp.ir.internal.raw_ir.IR
 private import semmle.code.cpp.ir.internal.TempVariableTag
 private import InstructionTag
 private import TranslatedElement

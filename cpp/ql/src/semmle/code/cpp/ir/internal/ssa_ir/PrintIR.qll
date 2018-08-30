@@ -1,4 +1,4 @@
-private import IRImpl
+private import IR
 import cpp
 
 private newtype TPrintableIRNode =

@@ -1,7 +1,7 @@
 import SimpleSSAInternal
 import cpp
 import Alias
-import IR
+private import InputIR
 import semmle.code.cpp.ir.internal.Overlap
 
 private newtype TVirtualVariable =

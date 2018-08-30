@@ -5,4 +5,4 @@
  * @id cpp/aliased-ssa-ir-sanity-check
  */
 
-import internal.aliased_ssa_ir.IRSanityImpl
+import internal.aliased_ssa_ir.IRSanity
