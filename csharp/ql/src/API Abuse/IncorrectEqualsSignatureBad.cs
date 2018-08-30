@@ -1,3 +1,5 @@
+using System;
+
 class Bad
 {
     private int id;
