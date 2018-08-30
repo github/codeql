@@ -422,19 +422,19 @@ private predicate basicFlowStep(DataFlow::Node pred, DataFlow::Node succ, PathSu
    or
    // Flow through properties of objects
    propertyFlowStep(pred, succ) and
-   summary = PathSummary::level(true)
+   summary = PathSummary::level()
    or
    // Flow through global variables
    globalFlowStep(pred, succ) and
-   summary = PathSummary::level(true)
+   summary = PathSummary::level()
    or
    // Flow into function
    callStep(pred, succ) and
-   summary = PathSummary::call(true)
+   summary = PathSummary::call()
    or
    // Flow out of function
    returnStep(pred, succ) and
-   summary = PathSummary::return(true)
+   summary = PathSummary::return()
   )
 }
 
@@ -540,7 +540,7 @@ private predicate reachableFromInput(Function f, DataFlow::Node invk,
                                      DataFlow::Node input, DataFlow::Node nd,
                                      DataFlow::Configuration cfg, PathSummary summary) {
   callInputStep(f, invk, input, nd, cfg) and
-  summary = PathSummary::empty()
+  summary = PathSummary::level()
   or
   exists (DataFlow::Node mid, PathSummary oldSummary, PathSummary newSummary |
     reachableFromInput(f, invk, input, mid, cfg, oldSummary) and
@@ -571,7 +571,7 @@ private predicate flowThroughCall(DataFlow::Node input, DataFlow::Node invk,
 private predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop,
                             DataFlow::Configuration cfg, PathSummary summary) {
   basicStoreStep(pred, succ, prop) and
-  summary = PathSummary::level(true)
+  summary = PathSummary::level()
   or
   exists (Function f, DataFlow::Node mid, DataFlow::SourceNode base |
     // `f` stores its parameter `pred` in property `prop` of a value that it returns,
@@ -677,7 +677,7 @@ private predicate onPath(DataFlow::Node nd, DataFlow::Configuration cfg,
   reachableFromSource(nd, cfg, summary1) and
   isSink(nd, cfg, summary1.getEndLabel()) and
   not cfg.isBarrier(nd) and
-  summary2 = PathSummary::empty()
+  summary2 = PathSummary::level()
   or
   exists (DataFlow::Node mid, PathSummary newSummary, PathSummary oldSummary |
     onPath(mid, cfg, _, oldSummary) and

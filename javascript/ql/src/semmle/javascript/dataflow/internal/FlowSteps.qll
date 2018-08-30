@@ -323,47 +323,29 @@ class PathSummary extends TPathSummary {
 
 module PathSummary {
   /**
-   * Gets a summary describing an empty path.
+   * Gets a summary describing a path without any calls or returns.
    */
-  PathSummary empty() {
-    result = level(true)
-  }
-
-  private PathSummary mkPathSummary(boolean hasCall, boolean hasReturn, Boolean valuePreserving) {
-    exists (FlowLabel start, FlowLabel end |
-      if valuePreserving = false then
-        end = FlowLabel::taint()
-      else
-        start = end
-    |
-      result = MkPathSummary(hasCall, hasReturn, start, end)
+  PathSummary level() {
+    exists (FlowLabel lbl |
+      result = MkPathSummary(false, false, lbl, lbl)
     )
   }
 
   /**
-   * Gets a summary describing a path without any calls or returns.
-   * `valuePreserving` indicates whether the path preserves the value of its
-   * start node or only its taintedness.
-   */
-  PathSummary level(Boolean valuePreserving) {
-    result = mkPathSummary(false, false, valuePreserving)
-  }
-
-  /**
    * Gets a summary describing a path with one or more calls, but no returns.
-   * `valuePreserving` indicates whether the path preserves the value of its
-   * start node or only its taintedness.
    */
-  PathSummary call(Boolean valuePreserving) {
-    result = mkPathSummary(false, true, valuePreserving)
+  PathSummary call() {
+    exists (FlowLabel lbl |
+      result = MkPathSummary(false, true, lbl, lbl)
+    )
   }
 
   /**
    * Gets a summary describing a path with one or more returns, but no calls.
-   * `valuePreserving` indicates whether the path preserves the value of its
-   * start node or only its taintedness.
    */
-  PathSummary return(Boolean valuePreserving) {
-    result = mkPathSummary(true, false, valuePreserving)
+  PathSummary return() {
+    exists (FlowLabel lbl |
+      result = MkPathSummary(true, false, lbl, lbl)
+    )
   }
 }
