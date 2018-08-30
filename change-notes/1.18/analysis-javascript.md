@@ -19,7 +19,7 @@
 * Type inference for simple function calls has been improved. This may give additional results for queries that rely on type inference.
 
 * Support for popular libraries has been improved. Consequently, queries may produce more results on code bases that use the following libraries:
-  - [bluebird](http://bluebirdjs.com)
+  - [bluebird](https://bluebirdjs.com)
   - [browserid-crypto](https://github.com/mozilla/browserid-crypto)
   - [cookie-parser](https://github.com/expressjs/cookie-parser)
   - [cookie-session](https://github.com/expressjs/cookie-session)
@@ -42,7 +42,7 @@
   - [fast-json-parse](https://github.com/mcollina/fast-json-parse)
   - [forge](https://github.com/digitalbazaar/forge)
   - [format-util](https://github.com/tmpfs/format-util)
-  - [global](https://www.npmjs.com/package/global)
+  - [global](https://github.com/Raynos/global)
   - [he](https://github.com/mathiasbynens/he)
   - [html-entities](https://github.com/mdevils/node-html-entities)
   - [jquery](https://jquery.com)
@@ -65,7 +65,7 @@
   - [parse-json](https://github.com/sindresorhus/parse-json)
   - [printf](https://github.com/adaltas/node-printf)
   - [printj](https://github.com/SheetJS/printj)
-  - [q](http://documentup.com/kriskowal/q/)
+  - [q](https://documentup.com/kriskowal/q/)
   - [ramda](https://ramdajs.com)
   - [React Native](https://facebook.github.io/react-native/)
   - [safe-json-parse](https://github.com/Raynos/safe-json-parse)
