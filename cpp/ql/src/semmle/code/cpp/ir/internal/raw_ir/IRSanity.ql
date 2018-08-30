@@ -1,8 +1,8 @@
 /**
- * @name Aliased SSA IR Sanity Check
+ * @name Raw IR Sanity Check
  * @description Performs sanity checks on the Intermediate Representation. This query should have no results. 
  * @kind problem
- * @id cpp/aliased-ssa-ir-sanity-check
+ * @id cpp/raw-ir-sanity-check
  */
 
-import internal.aliased_ssa_ir.IRSanity
+import IRSanity

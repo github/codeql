@@ -5,4 +5,4 @@
  * @kind graph
  */
 
-import PrintAliasedSSAIR
+import PrintIR
