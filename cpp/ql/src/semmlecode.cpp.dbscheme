@@ -1441,12 +1441,20 @@ new_array_allocated_type(
     int type_id: @type ref
 );
 
+/**
+ * The field being initialized by an initializer expression within an aggregate
+ * initializer for a class/struct/union.
+ */
 aggregate_field_init(
     unique int aggregate: @aggregateliteral ref,
     int initializer: @expr ref,
     int field: @membervariable ref
 );
 
+/**
+ * The index of the element being initialized by an initializer expression
+ * within an aggregate initializer for an array.
+ */
 aggregate_array_init(
     unique int aggregate: @aggregateliteral ref,
     int initializer: @expr ref,
