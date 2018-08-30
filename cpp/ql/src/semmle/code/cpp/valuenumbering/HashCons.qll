@@ -197,7 +197,7 @@ private newtype HC_Fields =
 private newtype HC_Array =
   HC_EmptyArray(Type t) {
     exists(ArrayAggregateLiteral aal |
-      aal.getType() = t
+      aal.getType().getUnspecifiedType() = t
     )
   }
   or
@@ -602,20 +602,13 @@ private predicate mk_HasInit(HashCons hc, NewOrNewArrayExpr new) {
 }
 
 private predicate mk_HasAlign(HashCons hc, NewOrNewArrayExpr new) {
-  hc = hashCons(new.getAlignmentArgument())
+  hc = hashCons(new.getAlignmentArgument().getFullyConverted())
 }
 
 private predicate analyzableNewExpr(NewExpr new) {
   strictcount(new.getAllocatedType()) = 1 and
-  (
-    not exists(new.getAllocatorCall())
-    or
-    strictcount(new.getAllocatorCall()) = 1
-  ) and (
-    not exists(new.getInitializer())
-    or
-    strictcount(new.getInitializer()) = 1
-  )
+  count(new.getAllocatorCall().getFullyConverted()) <= 1 and
+  count(new.getInitializer().getFullyConverted()) <= 1
 }
 
 private predicate mk_NewExpr(Type t, HC_Alloc alloc, HC_Init init, HC_Align align, boolean aligned,
@@ -623,7 +616,7 @@ private predicate mk_NewExpr(Type t, HC_Alloc alloc, HC_Init init, HC_Align alig
   analyzableNewExpr(new) and
   t = new.getAllocatedType() and
   (
-    align = HC_HasAlign(hashCons(new.getAlignmentArgument())) and
+    align = HC_HasAlign(hashCons(new.getAlignmentArgument().getFullyConverted())) and
     aligned = true
     or
     not new.hasAlignedAllocation() and
@@ -664,16 +657,8 @@ private predicate mk_NewExpr(Type t, HC_Alloc alloc, HC_Init init, HC_Align alig
 
 private predicate analyzableNewArrayExpr(NewArrayExpr new) {
   strictcount(new.getAllocatedType().getUnspecifiedType()) = 1 and
-  strictcount(new.getAllocatedType().getUnspecifiedType()) = 1 and
-  (
-    not exists(new.getAllocatorCall())
-    or
-    strictcount(new.getAllocatorCall().getFullyConverted()) = 1
-  ) and (
-    not exists(new.getInitializer())
-    or
-    strictcount(new.getInitializer().getFullyConverted()) = 1
-  )
+  count(new.getAllocatorCall().getFullyConverted()) <= 1 and
+  count(new.getInitializer().getFullyConverted()) <= 1
 }
 
 private predicate mk_NewArrayExpr(Type t, HC_Alloc alloc, HC_Init init, HC_Align align,
@@ -681,7 +666,7 @@ private predicate mk_NewArrayExpr(Type t, HC_Alloc alloc, HC_Init init, HC_Align
   analyzableNewArrayExpr(new) and
   t = new.getAllocatedType() and
   (
-    align = HC_HasAlign(hashCons(new.getAlignmentArgument())) and
+    align = HC_HasAlign(hashCons(new.getAlignmentArgument().getFullyConverted())) and
     aligned = true
     or
     not new.hasAlignedAllocation() and
