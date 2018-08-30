@@ -496,8 +496,7 @@ private predicate mk_NonmemberFunctionCall(Function fcn, HC_Args args, FunctionC
   analyzableNonmemberFunctionCall(fc) and
   (
     exists(HashCons head, HC_Args tail |
-      args = HC_ArgCons(head, fc.getNumberOfArguments() - 1, tail) and
-      mk_ArgCons(head, fc.getNumberOfArguments() - 1, tail, fc)
+      mk_ArgConsInner(head, tail, fc.getNumberOfArguments() - 1, args, fc)
     )
     or
     fc.getNumberOfArguments() = 0 and
@@ -517,8 +516,7 @@ private predicate mk_ExprCall(HashCons hc, HC_Args args, ExprCall ec) {
   hc.getAnExpr() = ec.getExpr() and
   (
     exists(HashCons head, HC_Args tail |
-      args = HC_ArgCons(head, ec.getNumberOfArguments() - 1, tail) and
-      mk_ArgCons(head, ec.getNumberOfArguments() - 1, tail, ec)
+      mk_ArgConsInner(head, tail, ec.getNumberOfArguments() - 1, args, ec)
     )
     or
     ec.getNumberOfArguments() = 0 and
@@ -547,8 +545,7 @@ private predicate mk_MemberFunctionCall(
   hashCons(fc.getQualifier().getFullyConverted()) = qual and
   (
     exists(HashCons head, HC_Args tail |
-      args = HC_ArgCons(head, fc.getNumberOfArguments() - 1, tail) and
-      mk_ArgCons(head, fc.getNumberOfArguments() - 1, tail, fc)
+      mk_ArgConsInner(head, tail, fc.getNumberOfArguments() - 1, args, fc)
     )
     or
     fc.getNumberOfArguments() = 0 and
@@ -568,13 +565,12 @@ private predicate analyzableCall(Call c) {
  * Holds if `fc` is a call to `fcn`, `fc`'s first `i` arguments have hash-cons
  * `list`, and `fc`'s argument at index `i` has hash-cons `hc`.
  */
-private predicate mk_ArgCons(HashCons hc, int i, HC_Args list,Call c) {
+private predicate mk_ArgCons(HashCons hc, int i, HC_Args list, Call c) {
   analyzableCall(c) and
   hc = hashCons(c.getArgument(i).getFullyConverted()) and
   (
     exists(HashCons head, HC_Args tail |
-      list = HC_ArgCons(head, i - 1, tail) and
-      mk_ArgCons(head, i - 1, tail, c) and
+      mk_ArgConsInner(head, tail, i-1, list, c) and
       i > 0
     )
     or
@@ -583,6 +579,12 @@ private predicate mk_ArgCons(HashCons hc, int i, HC_Args list,Call c) {
   )
 }
 
+// avoid a join ordering issue
+pragma[noopt]
+private predicate mk_ArgConsInner(HashCons head, HC_Args tail, int i, HC_Args list, Call c) {
+  list = HC_ArgCons(head, i, tail) and
+  mk_ArgCons(head, i, tail, c)
+}
 
 /**
  * Holds if `fc` is a call to `fcn`, `fc`'s first `i` arguments have hash-cons
