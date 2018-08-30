@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>An <code>import</code> statement that is not necessary (because no part
+of the file that it is in uses any imported type) should be avoided. Although
+importing too many types does not affect performance, redundant <code>import</code> statements 
+introduce unnecessary and undesirable dependencies in the code. If an imported type is
+renamed or deleted, the source code cannot be compiled because the
+<code>import</code> statement cannot be resolved.</p>
+
+<p>Unnecessary <code>import</code> statements are often an indication of incomplete refactoring.</p>
+
+</overview>
+<recommendation>
+
+<p>Avoid including an <code>import</code> statement that is not needed. Many modern IDEs have
+automated support for doing this, typically under the
+name 'Organize imports'. This sorts the <code>import</code> statements and
+removes any that are not used, and it is good practice to run such a
+command before every commit.</p>
+
+</recommendation>
+<references>
+
+
+<li>
+Help - Eclipse Platform:
+<a href="http://help.eclipse.org/indigo/index.jsp?topic=%2Forg.eclipse.jdt.doc.user%2Freference%2Fpreferences%2Fjava%2Fcompiler%2Fref-preferences-errors-warnings.htm">Java Compiler Errors/Warnings Preferences</a>.
+</li>
+
+
+</references>
+</qhelp>

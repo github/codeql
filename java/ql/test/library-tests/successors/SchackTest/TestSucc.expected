@@ -1,0 +1,73 @@
+| SchackTest.java:1:14:1:23 | stmt | SchackTest.java:1:14:1:23 | super(...) |
+| SchackTest.java:1:14:1:23 | super(...) | SchackTest.java:1:14:1:23 | SchackTest |
+| SchackTest.java:2:8:2:10 | stmt | SchackTest.java:2:8:2:10 | super(...) |
+| SchackTest.java:2:8:2:10 | super(...) | SchackTest.java:2:8:2:10 | ExA |
+| SchackTest.java:3:8:3:10 | stmt | SchackTest.java:3:8:3:10 | super(...) |
+| SchackTest.java:3:8:3:10 | super(...) | SchackTest.java:3:8:3:10 | ExB |
+| SchackTest.java:5:18:24:2 | stmt | SchackTest.java:6:3:23:3 | stmt |
+| SchackTest.java:6:3:23:3 | stmt | SchackTest.java:6:7:17:3 | stmt |
+| SchackTest.java:6:7:17:3 | stmt | SchackTest.java:7:4:15:4 | stmt |
+| SchackTest.java:7:4:15:4 | stmt | SchackTest.java:7:8:12:4 | stmt |
+| SchackTest.java:7:8:12:4 | stmt | SchackTest.java:8:5:8:13 | stmt |
+| SchackTest.java:8:5:8:13 | stmt | SchackTest.java:8:9:8:9 | x |
+| SchackTest.java:8:9:8:9 | x | SchackTest.java:8:12:8:12 | 1 |
+| SchackTest.java:8:9:8:12 | ... == ... | SchackTest.java:9:12:9:20 | new ExA(...) |
+| SchackTest.java:8:9:8:12 | ... == ... | SchackTest.java:10:5:10:13 | stmt |
+| SchackTest.java:8:12:8:12 | 1 | SchackTest.java:8:9:8:12 | ... == ... |
+| SchackTest.java:9:6:9:21 | stmt | SchackTest.java:12:14:15:4 | stmt |
+| SchackTest.java:9:12:9:20 | new ExA(...) | SchackTest.java:9:6:9:21 | stmt |
+| SchackTest.java:9:12:9:20 | new ExA(...) | SchackTest.java:12:14:15:4 | stmt |
+| SchackTest.java:10:5:10:13 | stmt | SchackTest.java:10:9:10:9 | x |
+| SchackTest.java:10:9:10:9 | x | SchackTest.java:10:12:10:12 | 2 |
+| SchackTest.java:10:9:10:12 | ... == ... | SchackTest.java:11:6:11:12 | stmt |
+| SchackTest.java:10:9:10:12 | ... == ... | SchackTest.java:12:14:15:4 | stmt |
+| SchackTest.java:10:12:10:12 | 2 | SchackTest.java:10:9:10:12 | ... == ... |
+| SchackTest.java:11:6:11:12 | stmt | SchackTest.java:12:14:15:4 | stmt |
+| SchackTest.java:12:14:15:4 | stmt | SchackTest.java:13:5:13:14 | stmt |
+| SchackTest.java:13:5:13:14 | stmt | SchackTest.java:13:9:13:13 | bar(...) |
+| SchackTest.java:13:9:13:13 | bar(...) | SchackTest.java:14:6:14:42 | stmt |
+| SchackTest.java:13:9:13:13 | bar(...) | SchackTest.java:16:4:16:41 | stmt |
+| SchackTest.java:13:9:13:13 | bar(...) | SchackTest.java:17:5:17:17 | stmt |
+| SchackTest.java:13:9:13:13 | bar(...) | SchackTest.java:19:5:19:17 | stmt |
+| SchackTest.java:13:9:13:13 | bar(...) | SchackTest.java:21:13:23:3 | stmt |
+| SchackTest.java:14:6:14:15 | System.out | SchackTest.java:14:25:14:40 | "true successor" |
+| SchackTest.java:14:6:14:41 | println(...) | SchackTest.java:16:4:16:41 | stmt |
+| SchackTest.java:14:6:14:41 | println(...) | SchackTest.java:17:5:17:17 | stmt |
+| SchackTest.java:14:6:14:41 | println(...) | SchackTest.java:21:13:23:3 | stmt |
+| SchackTest.java:14:6:14:42 | stmt | SchackTest.java:14:6:14:15 | System.out |
+| SchackTest.java:14:25:14:40 | "true successor" | SchackTest.java:14:6:14:41 | println(...) |
+| SchackTest.java:16:4:16:13 | System.out | SchackTest.java:16:23:16:39 | "false successor" |
+| SchackTest.java:16:4:16:40 | println(...) | SchackTest.java:21:13:23:3 | stmt |
+| SchackTest.java:16:4:16:41 | stmt | SchackTest.java:16:4:16:13 | System.out |
+| SchackTest.java:16:23:16:39 | "false successor" | SchackTest.java:16:4:16:40 | println(...) |
+| SchackTest.java:17:5:17:17 | stmt | SchackTest.java:17:16:17:16 | e |
+| SchackTest.java:17:16:17:16 | e | SchackTest.java:17:19:19:3 | stmt |
+| SchackTest.java:17:19:19:3 | stmt | SchackTest.java:18:4:18:41 | stmt |
+| SchackTest.java:18:4:18:13 | System.out | SchackTest.java:18:23:18:39 | "false successor" |
+| SchackTest.java:18:4:18:40 | println(...) | SchackTest.java:21:13:23:3 | stmt |
+| SchackTest.java:18:4:18:41 | stmt | SchackTest.java:18:4:18:13 | System.out |
+| SchackTest.java:18:23:18:39 | "false successor" | SchackTest.java:18:4:18:40 | println(...) |
+| SchackTest.java:19:5:19:17 | stmt | SchackTest.java:19:16:19:16 | e |
+| SchackTest.java:19:16:19:16 | e | SchackTest.java:19:19:21:3 | stmt |
+| SchackTest.java:19:19:21:3 | stmt | SchackTest.java:20:4:20:74 | stmt |
+| SchackTest.java:20:4:20:13 | System.out | SchackTest.java:20:23:20:72 | "successor (but neither true nor false successor)" |
+| SchackTest.java:20:4:20:73 | println(...) | SchackTest.java:21:13:23:3 | stmt |
+| SchackTest.java:20:4:20:74 | stmt | SchackTest.java:20:4:20:13 | System.out |
+| SchackTest.java:20:23:20:72 | "successor (but neither true nor false successor)" | SchackTest.java:20:4:20:73 | println(...) |
+| SchackTest.java:21:13:23:3 | stmt | SchackTest.java:22:4:22:41 | stmt |
+| SchackTest.java:22:4:22:13 | System.out | SchackTest.java:22:23:22:39 | "false successor" |
+| SchackTest.java:22:4:22:40 | println(...) | SchackTest.java:5:7:5:9 | foo |
+| SchackTest.java:22:4:22:41 | stmt | SchackTest.java:22:4:22:13 | System.out |
+| SchackTest.java:22:23:22:39 | "false successor" | SchackTest.java:22:4:22:40 | println(...) |
+| SchackTest.java:26:35:30:2 | stmt | SchackTest.java:27:3:27:25 | stmt |
+| SchackTest.java:27:3:27:25 | stmt | SchackTest.java:27:7:27:19 | random(...) |
+| SchackTest.java:27:7:27:19 | random(...) | SchackTest.java:27:23:27:24 | .5 |
+| SchackTest.java:27:7:27:24 | ... > ... | SchackTest.java:28:10:28:18 | new ExB(...) |
+| SchackTest.java:27:7:27:24 | ... > ... | SchackTest.java:29:10:29:22 | random(...) |
+| SchackTest.java:27:23:27:24 | .5 | SchackTest.java:27:7:27:24 | ... > ... |
+| SchackTest.java:28:4:28:19 | stmt | SchackTest.java:26:18:26:20 | bar |
+| SchackTest.java:28:10:28:18 | new ExB(...) | SchackTest.java:28:4:28:19 | stmt |
+| SchackTest.java:29:3:29:28 | stmt | SchackTest.java:26:18:26:20 | bar |
+| SchackTest.java:29:10:29:22 | random(...) | SchackTest.java:29:26:29:27 | .3 |
+| SchackTest.java:29:10:29:27 | ... > ... | SchackTest.java:29:3:29:28 | stmt |
+| SchackTest.java:29:26:29:27 | .3 | SchackTest.java:29:10:29:27 | ... > ... |

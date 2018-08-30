@@ -1,0 +1,6 @@
+| Test.java:36:47:36:52 | query1 | Query might not neutralize special characters in $@. | Test.java:35:8:35:15 | category | this expression |
+| Test.java:44:62:44:67 | query3 | Query might not neutralize special characters in $@. | Test.java:43:8:43:15 | category | this expression |
+| Test.java:56:47:56:61 | querySbToString | Query might not neutralize special characters in $@. | Test.java:52:19:52:26 | category | this expression |
+| Test.java:75:47:75:60 | queryFromField | Query might not neutralize special characters in $@. | Test.java:74:8:74:19 | categoryName | this expression |
+| Test.java:85:47:85:61 | querySbToString | Query might not neutralize special characters in $@. | Test.java:81:19:81:30 | categoryName | this expression |
+| Test.java:95:47:95:62 | querySb2ToString | Query might not neutralize special characters in $@. | Test.java:91:46:91:57 | categoryName | this expression |

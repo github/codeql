@@ -1,0 +1,72 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>For each primitive type, such as <code>int</code> or <code>double</code>,
+there is a corresponding <em>boxed</em> reference type, such as <code>Integer</code> or
+<code>Double</code>. These boxed versions differ from their primitive equivalents
+because they can hold an undefined <code>null</code> element in addition to numeric (or other) values,
+and there can be more than one instance of a boxed type representing the same value.
+</p>
+
+<p>In Java 5 and later, automated boxing and unboxing conversions have been added to the language.
+Although these automated conversions reduce the verbosity of the code, they can hide potential problems.
+Such problems include performance issues because of unnecessary object creation, and confusion of boxed
+types with their primitive equivalents.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Generally, you should use primitive types (boolean, byte, char, short, int, long, float, double)
+in preference to boxed types (Boolean, Byte, Character, Short, Integer, Long, Float,
+Double), whenever there is a choice. Exceptions are when a primitive value is used in
+collections and other parameterized types, or
+when a <code>null</code> value is explicitly used to represent an undefined value.
+</p>
+<p>Where they cannot be avoided, perform boxing and unboxing conversions explicitly to avoid
+possible confusion of boxed types and their primitive equivalents. In cases where boxing conversions cause
+performance issues, use primitive types instead.
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, declaring the variable <code>sum</code> to have boxed type
+<code>Long</code> causes it to be unboxed and reboxed during execution of the statement inside the
+loop.</p>
+
+<sample src="AutoBoxing.java" />
+
+<p>To avoid this inefficiency, declare <code>sum</code> to have primitive type <code>long</code>
+instead.</p>
+
+</example>
+<references>
+
+
+<li>
+  J. Bloch, <em>Effective Java (second edition)</em>,
+  Item 49.
+  Addison-Wesley, 2008.
+</li>
+<li>
+Help - Eclipse Platform:
+<a href="http://help.eclipse.org/indigo/index.jsp?topic=%2Forg.eclipse.jdt.doc.user%2Freference%2Fpreferences%2Fjava%2Fcompiler%2Fref-preferences-errors-warnings.htm">Java Compiler Errors/Warnings Preferences</a>.
+</li>
+<li>
+  Java Language Specification:
+  <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-5.html#jls-5.1.7">5.1.7 Boxing Conversion</a>.
+</li>
+<li>
+  Java SE Documentation:
+  <a href="http://docs.oracle.com/javase/6/docs/technotes/guides/language/autoboxing.html">Autoboxing</a>.
+</li>
+
+
+</references>
+</qhelp>

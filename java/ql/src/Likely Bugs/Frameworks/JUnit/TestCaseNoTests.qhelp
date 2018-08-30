@@ -1,0 +1,53 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+A JUnit 3.8 test case class (that is, a non-abstract class that is a subtype of <code>junit.framework.TestCase</code>)
+should contain test methods, and each method must have the correct signature to be used by JUnit.
+Otherwise, the JUnit test runner will fail with an error message.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Ensure that the test case class contains some test methods, and that each method is of the form:
+</p>
+
+<pre>
+public void testXXX() {
+  // ...
+}
+</pre>
+
+<p>Note that the method name must start with <code>test</code> and the method must not take any 
+parameters.</p>
+
+<p>If the test case class is intended strictly for subclassing by other test case classes, consider
+making it abstract to document this intention. It will then no longer be flagged by this query.</p>
+
+<p>This rule applies only to JUnit 3.8-style test case classes. In JUnit 4, it is no longer required 
+to extend <code>junit.framework.TestCase</code> to mark test methods.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, <code>TestCaseNoTests38</code> does not contain any valid JUnit test
+methods. However, <code>MyTests</code> contains two valid JUnit test methods.</p>
+
+<sample src="TestCaseNoTests.java" />
+
+</example>
+<references>
+
+
+<li>
+JUnit: <a href="http://junit.sourceforge.net/junit3.8.1/doc/cookbook/cookbook.htm">JUnit Cookbook</a>.
+</li>
+
+
+</references>
+</qhelp>

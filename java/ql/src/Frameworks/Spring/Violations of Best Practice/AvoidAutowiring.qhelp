@@ -1,0 +1,78 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+Using Spring autowiring can make it difficult to see what beans get passed to constructors or setters. The Spring Framework Reference
+documentation cites the following disadvantages of autowiring:
+</p>
+
+<ul>
+  <li>
+    Explicit dependencies in <code>property</code> and <code>constructor-arg</code> settings always override autowiring. You cannot autowire so-called
+    <em>simple</em> properties such as primitives, <code>Strings</code>, and
+    <code>Classes</code> (and arrays of such simple properties). This limitation is by design.
+  </li>
+  <li>
+    Autowiring is less exact than explicit wiring. Although ... Spring is careful to avoid guessing in case of ambiguity that 
+    might have unexpected results, the relationships between your Spring-managed objects are no longer documented explicitly.
+  </li>
+  <li>
+    Wiring information may not be available to tools that may generate documentation from a Spring container.
+  </li>
+  <li>
+    Multiple bean definitions within the container may match the type specified by the setter method or constructor 
+    argument to be autowired. For arrays, collections, or Maps, this is not necessarily a problem. However for 
+    dependencies that expect a single value, this ambiguity is not arbitrarily resolved. If no unique bean definition is available, an exception is thrown.
+  </li>
+</ul>
+
+</overview>
+<recommendation>
+<p>
+The Spring Framework Reference documentation suggests the following ways to address problems with autowired beans:
+</p>
+<ul>
+  <li>
+  Abandon autowiring in favor of explicit wiring.
+  </li>
+  <li>
+  Avoid autowiring for a bean definition by setting its <code>autowire-candidate</code> attributes to <code>false</code>.
+  </li>
+  <li>
+  Designate a single bean definition as the primary candidate by setting the <code>primary</code> attribute of its <code>&lt;bean/&gt;</code> element to true.
+  </li>
+  <li>
+  If you are using Java 5 or later, implement the more fine-grained control available with annotation-based configuration.
+  </li>
+</ul>
+
+
+</recommendation>
+<example>
+
+<p>The following example shows a bean, <code>autoWiredOrderService</code>, that is defined using 
+autowiring, and an improved version of the bean, <code>orderService</code>, that is defined using
+explicit wiring.</p>
+
+<sample src="AvoidAutowiring.xml" />
+
+</example>
+<references>
+
+
+<li>
+Spring Framework Reference Documentation 3.0:
+<a href="http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/beans.html#beans-autowired-exceptions">3.4.5.1 Limitations and disadvantages of autowiring</a>.
+</li>
+<li>
+ONJava:
+<a href="http://onjava.com/pub/a/onjava/2006/01/25/spring-xml-configuration-best-practices.html?page=1">Twelve Best Practices For Spring XML Configurations</a>.
+</li>
+
+
+</references>
+</qhelp>

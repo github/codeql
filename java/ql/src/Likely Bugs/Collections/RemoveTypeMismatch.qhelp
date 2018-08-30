@@ -1,0 +1,61 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>The <code>remove</code> method of the <code>Collection</code> interface 
+has an argument of type <code>Object</code>. Therefore, you can try to remove an object 
+of any type from a collection, regardless of the collection's element type. However, 
+although you can call <code>remove</code> with an argument of a different type than that of the collection, 
+it is unlikely that the collection actually 
+contains an object of this type.
+</p>
+
+<p>Similar considerations apply to other container modification methods, such as <code>Map.remove</code>,
+where the argument may also have type <code>Object</code>.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that you use the correct argument with a call to <code>remove</code>.
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, although the argument to <code>contains</code> is an integer, the code 
+does not result in a type error because the argument to <code>remove</code> does not have to match 
+the type of the elements of <code>list</code>. However, the argument is unlikely to be found and 
+removed (and the body of the <code>if</code> statement is therefore not executed), so it is probably
+a typographical error: the argument should be enclosed in quotation marks.
+</p> 
+
+<sample src="RemoveTypeMismatch.java" />
+
+<p>
+Note that you must take particular care when working with collections over boxed types,
+as illustrated in the following example. The first call to <code>remove</code> fails
+because you cannot compare two boxed numeric primitives of different types, in this case <code>Short(1)</code>
+(in <code>set</code>) and <code>Integer(1)</code> (the argument). Therefore, <code>remove</code>
+cannot find the item to remove. The second call to <code>remove</code> succeeds because you can 
+compare <code>Short(1)</code> and <code>Short(1)</code>. Therefore, <code>remove</code> can find the 
+item to remove.
+</p>
+
+<sample src="RemoveTypeMismatch2.java" />
+
+</example>
+<references>
+
+
+<li>
+  Java API Documentation:
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html#remove%28java.lang.Object%29">Collection.remove</a>.
+</li>
+
+
+</references>
+</qhelp>

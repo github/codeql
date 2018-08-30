@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Assigning the maximum or minimum value for a type to a variable of that type and then using the
+variable in calculations may cause overflows.</p>
+
+</overview>
+<recommendation>
+
+<p>Before using the variable, ensure that it is reassigned a value that does not cause an overflow,
+or use a wider type to do the arithmetic.</p>
+
+</recommendation>
+<example>
+
+<p>In this example, assigning <code>Long.MAX_VALUE</code> to a variable and adding one causes
+an overflow. However, casting to a <code>long</code> beforehand ensures that the arithmetic
+is done in the wider type, and so does not overflow.</p>
+
+<sample src="ArithmeticWithExtremeValues.java" />
+
+</example>
+<references>
+
+<li>The CERT Oracle Secure Coding Standard for Java:
+  <a href="https://www.securecoding.cert.org/confluence/display/java/NUM00-J.+Detect+or+prevent+integer+overflow">NUM00-J. Detect or prevent integer overflow</a>.</li>
+
+
+
+<!--  LocalWords:  CWE
+ -->
+
+</references>
+</qhelp>

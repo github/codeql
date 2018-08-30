@@ -1,0 +1,51 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Static fields of type <code>java.text.DateFormat</code> or its descendants
+should be avoided because the class <code>DateFormat</code> is not thread-safe.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Use instance fields instead and synchronize access where necessary.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, <code>DateFormattingThread</code> declares a static field <code>dateF</code>
+of type <code>DateFormat</code>. When instances of <code>DateFormattingThread</code> are created 
+and run by <code>DateFormatThreadUnsafe</code>, erroneous results are output because <code>dateF</code>
+is shared by all instances of <code>DateFormattingThread</code>.</p>
+
+<sample src="DateFormatThreadUnsafe.java" />
+
+<p>In the following modification of the above example, <code>DateFormattingThread</code> declares an
+<i>instance</i> field <code>dateF</code> of type <code>DateFormat</code>. When instances of 
+<code>DateFormattingThread</code> are created and run by <code>DateFormatThreadUnsafeFix</code>, 
+correct results are output because there is a separate instance of <code>dateF</code> for each 
+instance of <code>DateFormattingThread</code>.</p>
+
+<sample src="DateFormatThreadUnsafeGood.java" />
+
+</example>
+<references>
+
+
+<li>
+  Java API Documentation:
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/text/DateFormat.html#synchronization">java.text.DateFormat synchronization</a>.
+</li>
+
+
+<!-- LINKS NO LONGER VALID:
+<p>Sun Bug Report: <a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6178997">Doc: it's not explicitly documented java.util.Calendar serialization are thread-unsafe</a></p>
+<p>Sun Bug Report: <a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6231579">ArrayIndexOutOfBoundsException in BaseCalendar</a></p>
+-->
+
+</references>
+</qhelp>

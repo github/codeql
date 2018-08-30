@@ -1,0 +1,6 @@
+| literals/Literals.java:6:22:6:37 | "literal string" |
+| literals/Literals.java:22:22:22:38 | "hello" + "world" |
+| literals/Literals.java:23:24:23:47 | "hello" + ", " + "world" |
+| literals/Literals.java:24:23:24:52 | "hello" + ", " + "world" + "!" |
+| literals/Literals.java:25:22:25:36 | "hello,\\tworld" |
+| literals/Literals.java:26:30:26:48 | "hello,\\u0009world" |

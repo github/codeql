@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+A cast is unnecessary if the type of the operand is already the same as the type that is being cast to.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Avoid including unnecessary casts.
+</p>
+
+</recommendation>
+<example>
+<p>In the following example, casting <code>i</code> to an <code>Integer</code> is not necessary. It 
+is already an <code>Integer</code>.</p>
+<sample src="UnnecessaryCast.java" />
+
+<p>To fix the code, delete <code>(Integer)</code> on the right-hand side of the assignment on line 4.</p>
+
+</example>
+<references>
+
+
+<li>
+Help - Eclipse Platform:
+<a href="http://help.eclipse.org/indigo/index.jsp?topic=%2Forg.eclipse.jdt.doc.user%2Freference%2Fpreferences%2Fjava%2Fcompiler%2Fref-preferences-errors-warnings.htm">Java Compiler Errors/Warnings Preferences</a>.
+</li>
+
+
+</references>
+</qhelp>

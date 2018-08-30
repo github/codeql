@@ -1,0 +1,95 @@
+| <clinit> | 1 | Test.java:20:2:20:9 | FloorWax |
+| <clinit> | 1 | Test.java:20:12:20:18 | Topping |
+| <clinit> | 1 | Test.java:20:21:20:28 | Biscuits |
+| checkIdentifier | 1 | Validation.java:7:12:7:16 | i |
+| checkIdentifier | 1 | Validation.java:7:16:7:16 | 0 |
+| checkIdentifier | 1 | Validation.java:7:19:7:19 | i |
+| checkIdentifier | 1 | Validation.java:7:19:7:33 | ... < ... |
+| checkIdentifier | 1 | Validation.java:7:23:7:24 | id |
+| checkIdentifier | 1 | Validation.java:7:23:7:33 | length(...) |
+| checkIdentifier | 1 | Validation.java:7:36:7:36 | i |
+| checkIdentifier | 1 | Validation.java:7:36:7:38 | ...++ |
+| checkIdentifier | 2 | Validation.java:8:9:8:24 | c |
+| checkIdentifier | 2 | Validation.java:8:13:8:14 | id |
+| checkIdentifier | 2 | Validation.java:8:13:8:24 | charAt(...) |
+| checkIdentifier | 2 | Validation.java:8:23:8:23 | i |
+| checkIdentifier | 3 | Validation.java:9:8:9:29 | !... |
+| checkIdentifier | 3 | Validation.java:9:9:9:29 | isLetter(...) |
+| checkIdentifier | 3 | Validation.java:9:28:9:28 | c |
+| checkIdentifier | 4 | Validation.java:10:32:10:53 | "Invalid identifier: " |
+| checkIdentifier | 4 | Validation.java:10:32:10:58 | ... + ... |
+| checkIdentifier | 4 | Validation.java:10:57:10:58 | id |
+| controlledStrings | 4 | Test.java:114:26:114:79 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| controlledStrings | 4 | Test.java:114:26:115:17 | ... + ... |
+| controlledStrings | 4 | Test.java:114:26:115:38 | ... + ... |
+| controlledStrings | 5 | Test.java:115:8:115:17 | categoryId |
+| controlledStrings | 5 | Test.java:115:21:115:38 | "' ORDER BY PRICE" |
+| controlledStrings | 6 | Test.java:116:47:116:58 | queryWithInt |
+| controlledStrings | 12 | Test.java:122:27:122:80 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| controlledStrings | 12 | Test.java:122:27:123:23 | ... + ... |
+| controlledStrings | 12 | Test.java:122:27:123:44 | ... + ... |
+| controlledStrings | 13 | Test.java:123:8:123:23 | Category.Topping |
+| controlledStrings | 13 | Test.java:123:27:123:44 | "' ORDER BY PRICE" |
+| controlledStrings | 14 | Test.java:124:47:124:59 | queryWithEnum |
+| controlledStrings | 20 | Test.java:130:35:130:88 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| controlledStrings | 20 | Test.java:130:35:131:34 | ... + ... |
+| controlledStrings | 20 | Test.java:130:35:131:55 | ... + ... |
+| controlledStrings | 21 | Test.java:131:8:131:23 | Category.Topping |
+| controlledStrings | 21 | Test.java:131:8:131:34 | toString(...) |
+| controlledStrings | 21 | Test.java:131:38:131:55 | "' ORDER BY PRICE" |
+| controlledStrings | 22 | Test.java:132:47:132:67 | queryWithEnumToString |
+| controlledStrings | 28 | Test.java:138:32:138:85 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| controlledStrings | 28 | Test.java:138:32:139:27 | ... + ... |
+| controlledStrings | 28 | Test.java:138:32:139:48 | ... + ... |
+| controlledStrings | 29 | Test.java:139:8:139:27 | getName(...) |
+| controlledStrings | 29 | Test.java:139:31:139:48 | "' ORDER BY PRICE" |
+| controlledStrings | 30 | Test.java:140:47:140:64 | queryWithClassName |
+| controlledStrings | 36 | Test.java:146:38:146:91 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| controlledStrings | 36 | Test.java:146:38:147:33 | ... + ... |
+| controlledStrings | 36 | Test.java:146:38:147:54 | ... + ... |
+| controlledStrings | 37 | Test.java:147:8:147:33 | getSimpleName(...) |
+| controlledStrings | 37 | Test.java:147:37:147:54 | "' ORDER BY PRICE" |
+| controlledStrings | 39 | Test.java:149:20:149:43 | queryWithClassSimpleName |
+| controlledStrings | 44 | Test.java:154:37:154:90 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| controlledStrings | 44 | Test.java:154:37:155:34 | ... + ... |
+| controlledStrings | 44 | Test.java:154:37:155:55 | ... + ... |
+| controlledStrings | 45 | Test.java:155:8:155:34 | toString(...) |
+| controlledStrings | 45 | Test.java:155:24:155:33 | categoryId |
+| controlledStrings | 45 | Test.java:155:38:155:55 | "' ORDER BY PRICE" |
+| controlledStrings | 46 | Test.java:156:47:156:69 | queryWithDoubleToString |
+| good | 3 | Test.java:102:27:102:27 | 1 |
+| good | 4 | Test.java:103:20:103:88 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY=? ORDER BY PRICE" |
+| good | 5 | Test.java:104:62:104:67 | query2 |
+| good | 6 | Test.java:105:24:105:24 | 1 |
+| tableNames | 4 | Test.java:164:32:164:56 | "SELECT ITEM,PRICE FROM " |
+| tableNames | 5 | Test.java:165:8:165:55 | " WHERE ITEM_CATEGORY='Biscuits' ORDER BY PRICE" |
+| tableNames | 10 | Test.java:170:33:170:57 | "SELECT ITEM,PRICE FROM " |
+| tableNames | 15 | Test.java:175:33:175:62 | "SELECT ITEM,PRICE" + " FROM " |
+| tableNames | 21 | Test.java:181:30:181:30 | 1 |
+| tableNames | 23 | Test.java:183:36:183:60 | "SELECT ITEM,PRICE FROM " |
+| tableNames | 25 | Test.java:185:8:185:55 | " WHERE ITEM_CATEGORY='Biscuits' ORDER BY PRICE" |
+| tainted | 3 | Test.java:32:27:32:27 | 1 |
+| tainted | 5 | Test.java:34:20:34:73 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| tainted | 6 | Test.java:35:19:35:36 | "' ORDER BY PRICE" |
+| tainted | 12 | Test.java:41:27:41:27 | 1 |
+| tainted | 13 | Test.java:42:20:42:73 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| tainted | 14 | Test.java:43:19:43:36 | "' ORDER BY PRICE" |
+| tainted | 20 | Test.java:49:27:49:27 | 1 |
+| tainted | 22 | Test.java:51:19:51:72 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| tainted | 24 | Test.java:53:19:53:36 | "' ORDER BY PRICE" |
+| tainted | 31 | Test.java:60:27:60:27 | 1 |
+| tainted | 32 | Test.java:61:31:61:38 | category |
+| tainted | 34 | Test.java:63:20:63:73 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| tainted | 34 | Test.java:63:20:64:15 | ... + ... |
+| tainted | 34 | Test.java:63:20:64:36 | ... + ... |
+| tainted | 35 | Test.java:64:8:64:15 | category |
+| tainted | 35 | Test.java:64:19:64:36 | "' ORDER BY PRICE" |
+| tainted | 36 | Test.java:65:47:65:52 | query1 |
+| unescaped | 4 | Test.java:73:28:73:81 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| unescaped | 5 | Test.java:74:23:74:40 | "' ORDER BY PRICE" |
+| unescaped | 11 | Test.java:80:19:80:72 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| unescaped | 13 | Test.java:82:19:82:36 | "' ORDER BY PRICE" |
+| unescaped | 21 | Test.java:90:20:90:52 | "SELECT ITEM,PRICE FROM PRODUCT " |
+| unescaped | 22 | Test.java:91:20:91:42 | "WHERE ITEM_CATEGORY='" |
+| unescaped | 22 | Test.java:91:61:91:64 | "' " |
+| unescaped | 23 | Test.java:92:20:92:35 | "ORDER BY PRICE" |

@@ -1,0 +1,32 @@
+| Test.java:29:22:29:28 | tainted | 3 | Test.java:32:22:32:25 | args |
+| Test.java:29:22:29:28 | tainted | 3 | Test.java:32:22:32:28 | ...[...] |
+| Test.java:29:22:29:28 | tainted | 5 | Test.java:34:20:35:15 | ... + ... |
+| Test.java:29:22:29:28 | tainted | 5 | Test.java:34:20:35:36 | ... + ... |
+| Test.java:29:22:29:28 | tainted | 6 | Test.java:35:8:35:15 | category |
+| Test.java:29:22:29:28 | tainted | 7 | Test.java:36:47:36:52 | query1 |
+| Test.java:29:22:29:28 | tainted | 12 | Test.java:41:22:41:25 | args |
+| Test.java:29:22:29:28 | tainted | 12 | Test.java:41:22:41:28 | ...[...] |
+| Test.java:29:22:29:28 | tainted | 13 | Test.java:42:20:43:15 | ... + ... |
+| Test.java:29:22:29:28 | tainted | 13 | Test.java:42:20:43:36 | ... + ... |
+| Test.java:29:22:29:28 | tainted | 14 | Test.java:43:8:43:15 | category |
+| Test.java:29:22:29:28 | tainted | 15 | Test.java:44:62:44:67 | query3 |
+| Test.java:29:22:29:28 | tainted | 20 | Test.java:49:22:49:25 | args |
+| Test.java:29:22:29:28 | tainted | 20 | Test.java:49:22:49:28 | ...[...] |
+| Test.java:29:22:29:28 | tainted | 23 | Test.java:52:4:52:27 | append(...) |
+| Test.java:29:22:29:28 | tainted | 23 | Test.java:52:19:52:26 | category |
+| Test.java:29:22:29:28 | tainted | 25 | Test.java:54:29:54:46 | toString(...) |
+| Test.java:29:22:29:28 | tainted | 27 | Test.java:56:47:56:61 | querySbToString |
+| Test.java:29:22:29:28 | tainted | 31 | Test.java:60:22:60:25 | args |
+| Test.java:29:22:29:28 | tainted | 31 | Test.java:60:22:60:28 | ...[...] |
+| Test.java:99:22:99:25 | good | 3 | Test.java:102:22:102:25 | args |
+| Test.java:99:22:99:25 | good | 3 | Test.java:102:22:102:28 | ...[...] |
+| Test.java:99:22:99:25 | good | 6 | Test.java:105:27:105:34 | category |
+| Test.java:160:22:160:31 | tableNames | 21 | Test.java:181:25:181:28 | args |
+| Test.java:160:22:160:31 | tableNames | 21 | Test.java:181:25:181:31 | ...[...] |
+| Test.java:160:22:160:31 | tableNames | 23 | Test.java:183:36:184:18 | ... + ... |
+| Test.java:160:22:160:31 | tableNames | 23 | Test.java:183:36:185:55 | ... + ... |
+| Test.java:160:22:160:31 | tableNames | 24 | Test.java:184:8:184:18 | userTabName |
+| Test.java:160:22:160:31 | tableNames | 26 | Test.java:186:47:186:68 | queryWithUserTableName |
+| Test.java:190:21:190:24 | main | 1 | Test.java:191:11:191:14 | args |
+| Test.java:190:21:190:24 | main | 3 | Test.java:193:8:193:11 | args |
+| Test.java:190:21:190:24 | main | 5 | Test.java:195:14:195:17 | args |

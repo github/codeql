@@ -1,0 +1,5 @@
+| Example.java:4:18:4:24 | Example | List | 1 |
+| Example.java:4:18:4:24 | Example | Set | 1 |
+| Example.java:4:27:4:27 | A | Object | 1 |
+| Example.java:5:19:5:30 | InnerExample | Example | 2 |
+| Example.java:5:19:5:30 | InnerExample | Set | 1 |

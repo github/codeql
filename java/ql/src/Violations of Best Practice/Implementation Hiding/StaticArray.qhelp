@@ -1,0 +1,62 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Constant values are typically represented by
+public, static, final
+fields. When defining several related constants, it is
+sometimes tempting to define a public, static, final
+field with an array type, and initialize it with a list
+of all the different constant values.</p>
+
+<p>However, the <code>final</code> keyword applies only
+to the field itself (that is, the array reference),
+and not to the contents of the array. This means that the field
+always refers to the same array instance, but each
+element of the array may be modified freely. This possibly
+invalidates important assumptions of client code.</p>
+
+</overview>
+<recommendation>
+
+<p>Where possible, avoid declaring array constants. If
+there are only a few constant values, consider using
+a named constant for each one, or defining them in an <code>enum</code> type.</p>
+
+<p>If you genuinely need to
+refer to a long list of constants with the same name and
+an index, consider replacing the array constant with a
+constant of type <code>List</code> to which you assign
+an unmodifiable collection. See the example for ways of
+achieving this.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, <code>public static final</code> applies only to <code>RGB</code> itself,
+not the constants that it contains.</p>
+
+<sample src="StaticArray.java" />
+
+<p>The following example shows examples of ways to declare constants that avoid this problem.</p>
+
+<sample src="StaticArrayGood.java" />
+
+</example>
+<references>
+
+<li>
+  J. Bloch,
+  <em>Effective Java (second edition)</em>, p. 70.
+  Addison-Wesley, 2008.
+</li>
+<li>  Java Language Specification:
+  <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-4.html#jls-4.12.4">4.12.4 final Variables</a>.
+</li>
+
+
+</references>
+</qhelp>

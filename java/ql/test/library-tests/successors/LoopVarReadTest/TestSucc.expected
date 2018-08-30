@@ -1,0 +1,28 @@
+| LoopVarReadTest.java:3:14:3:28 | stmt | LoopVarReadTest.java:3:14:3:28 | super(...) |
+| LoopVarReadTest.java:3:14:3:28 | super(...) | LoopVarReadTest.java:3:14:3:28 | LoopVarReadTest |
+| LoopVarReadTest.java:5:2:15:2 | stmt | LoopVarReadTest.java:6:3:6:12 | stmt |
+| LoopVarReadTest.java:6:3:6:12 | stmt | LoopVarReadTest.java:6:11:6:11 | 2 |
+| LoopVarReadTest.java:6:7:6:11 | x | LoopVarReadTest.java:7:3:7:33 | stmt |
+| LoopVarReadTest.java:6:11:6:11 | 2 | LoopVarReadTest.java:6:7:6:11 | x |
+| LoopVarReadTest.java:7:3:7:33 | stmt | LoopVarReadTest.java:7:16:7:16 | 0 |
+| LoopVarReadTest.java:7:12:7:16 | y | LoopVarReadTest.java:7:19:7:19 | y |
+| LoopVarReadTest.java:7:16:7:16 | 0 | LoopVarReadTest.java:7:12:7:16 | y |
+| LoopVarReadTest.java:7:19:7:19 | y | LoopVarReadTest.java:7:23:7:24 | 10 |
+| LoopVarReadTest.java:7:19:7:24 | ... < ... | LoopVarReadTest.java:8:3:10:3 | stmt |
+| LoopVarReadTest.java:7:19:7:24 | ... < ... | LoopVarReadTest.java:12:3:12:13 | stmt |
+| LoopVarReadTest.java:7:23:7:24 | 10 | LoopVarReadTest.java:7:19:7:24 | ... < ... |
+| LoopVarReadTest.java:7:27:7:27 | y | LoopVarReadTest.java:7:32:7:32 | x |
+| LoopVarReadTest.java:7:27:7:32 | ...+=... | LoopVarReadTest.java:7:19:7:19 | y |
+| LoopVarReadTest.java:7:32:7:32 | x | LoopVarReadTest.java:7:27:7:32 | ...+=... |
+| LoopVarReadTest.java:8:3:10:3 | stmt | LoopVarReadTest.java:9:4:9:29 | stmt |
+| LoopVarReadTest.java:9:4:9:13 | System.out | LoopVarReadTest.java:9:23:9:27 | "Foo" |
+| LoopVarReadTest.java:9:4:9:28 | println(...) | LoopVarReadTest.java:7:27:7:27 | y |
+| LoopVarReadTest.java:9:4:9:29 | stmt | LoopVarReadTest.java:9:4:9:13 | System.out |
+| LoopVarReadTest.java:9:23:9:27 | "Foo" | LoopVarReadTest.java:9:4:9:28 | println(...) |
+| LoopVarReadTest.java:12:3:12:13 | stmt | LoopVarReadTest.java:12:11:12:12 | 10 |
+| LoopVarReadTest.java:12:7:12:12 | q | LoopVarReadTest.java:14:3:14:28 | stmt |
+| LoopVarReadTest.java:12:11:12:12 | 10 | LoopVarReadTest.java:12:7:12:12 | q |
+| LoopVarReadTest.java:14:3:14:12 | System.out | LoopVarReadTest.java:14:22:14:26 | "foo" |
+| LoopVarReadTest.java:14:3:14:27 | println(...) | LoopVarReadTest.java:4:21:4:28 | testLoop |
+| LoopVarReadTest.java:14:3:14:28 | stmt | LoopVarReadTest.java:14:3:14:12 | System.out |
+| LoopVarReadTest.java:14:22:14:26 | "foo" | LoopVarReadTest.java:14:3:14:27 | println(...) |

@@ -1,0 +1,51 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+Using <code>Math.abs</code> on the result of a call to <code>Random.nextInt()</code> (or <code>Random.nextLong()</code>) is not guaranteed to
+return a non-negative number. <code>Random.nextInt()</code> can return <code>Integer.MIN_VALUE</code>, which when passed to <code>Math.abs</code>
+results in the same value, <code>Integer.MIN_VALUE</code>. (Because of the two's-complement representation of integers in Java, the positive equivalent of <code>Integer.MIN_VALUE</code>
+cannot be represented in the same number of bits.) The case for <code>Random.nextLong()</code> is similar.
+</p>
+
+</overview>
+<recommendation>
+<p>
+If a non-negative random integer is required, use <code>Random.nextInt(int)</code> instead, and use <code>Integer.MAX_VALUE</code> as its parameter.
+The values that might be returned do not include <code>Integer.MAX_VALUE</code> itself, but this solution is likely to be sufficient for most purposes.
+</p>
+
+<p>Another solution is to increment the value of <code>Random.nextInt()</code> by one, if it is negative, before passing the result to
+<code>Math.abs</code>. This solution has the advantage that <code>0</code> has the same probability as other numbers.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, <code>mayBeNegativeInt</code>
+is negative if <code>nextInt</code> returns <code>Integer.MIN_VALUE</code>.
+The example shows how using the two solutions described above means that <code>positiveInt</code> is always assigned a positive number.</p>
+
+<sample src="BadAbsOfRandom.java" />
+
+</example>
+<references>
+
+
+<li>
+Java API Documentation:
+<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Math.html#abs%28int%29">Math.abs(int)</a>,
+<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Math.html#abs%28long%29">Math.abs(long)</a>,
+<a href="http://docs.oracle.com/javase/6/docs/api/java/util/Random.html">Random</a>.
+</li>
+<li>
+Java Language Specification, 3rd ed:
+<a href="https://docs.oracle.com/javase/specs/jls/se6/html/typesValues.html#4.2.1">4.2.1 Integral Types and Values</a>.
+</li>
+
+
+</references>
+</qhelp>

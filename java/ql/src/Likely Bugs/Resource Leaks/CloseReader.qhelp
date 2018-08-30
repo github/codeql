@@ -1,0 +1,62 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A subclass of <code>Reader</code> or <code>InputStream</code> that is opened for reading
+but not closed may cause a resource leak. 
+</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that the resource is always closed to avoid a resource leak. Note that, because of exceptions,
+it is safest to close a resource in a <code>finally</code> block. (However, this is unnecessary for
+subclasses of <code>StringReader</code> and <code>ByteArrayInputStream</code>.)
+</p>
+
+<p>For Java 7 or later, the recommended way to close resources that implement <code>java.lang.AutoCloseable</code>
+is to declare them within a <code>try-with-resources</code> statement, so that they are closed implicitly.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the resource <code>br</code> is opened but not closed.</p>
+
+<sample src="CloseReader.java" />
+
+<p>In the following example, the resource <code>br</code> is opened in a <code>try</code> block and 
+later closed in a <code>finally</code> block.</p>
+
+<sample src="CloseReaderGood.java" />
+
+<p>Note that nested class instance creation expressions of <code>Reader</code>s or <code>InputStream</code>s
+are not safe to use if the constructor of the outer expression may throw an exception. In the following
+example, the <code>InputStreamReader</code> may throw an exception, in which case the inner <code>FileInputStream</code>
+is not closed.
+</p>
+
+<sample src="CloseReaderNested.java" />
+
+<p>
+In this case, the inner expression needs to be assigned to a local variable and closed separately, as shown below.
+</p>
+
+<sample src="CloseReaderNestedGood.java" />
+
+</example>
+<references>
+
+
+<li>
+  IBM developerWorks: <a href="http://www.ibm.com/developerworks/java/library/j-jtp03216/index.html">Java theory and practice: Good housekeeping practices</a>. 
+</li>
+<li>
+  The Java Tutorials: <a href="http://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html">The try-with-resources Statement</a>.
+</li>
+
+
+</references>
+</qhelp>

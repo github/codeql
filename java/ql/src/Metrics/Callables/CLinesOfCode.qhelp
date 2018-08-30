@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+A method that contains a high number of lines of code has a number of problems:</p>
+
+<ul>
+<li>It can be difficult to understand, difficult to check, and a common source of defects 
+(particularly towards the end of the method, because few people read that far).</li>
+<li>It is likely to lack cohesion because it has too many responsibilities.</li>
+<li>It increases the risk of introducing new defects during routine code changes.</li>
+</ul>
+
+</overview>
+<recommendation>
+
+<p>
+Break up long methods into smaller methods by extracting
+parts of their functionality into simpler methods, for example by using the 'Extract
+Method' refactoring from [Fowler]. As an approximate guide, a method should fit on one screen or 
+side of Letter/A4 paper. 
+</p>
+
+
+
+</recommendation>
+<references>
+
+
+<li>
+M. Fowler, <em>Refactoring</em>, pp. 89-95. Addison-Wesley, 1999.
+</li>
+
+
+</references>
+</qhelp>

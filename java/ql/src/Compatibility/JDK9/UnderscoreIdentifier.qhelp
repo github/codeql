@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+The underscore character is a reserved keyword in Java 9 and
+therefore disallowed as a one-character identifier.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Rename any identifiers that consist of a one-character underscore.
+</p>
+
+</recommendation>
+<references>
+
+
+<li>
+Oracle JDK Documentation:
+<a href="https://docs.oracle.com/javase/9/migrate/toc.htm">Oracle JDK 9 Migration Guide</a>.
+</li>
+<li>
+JDK Bug System:
+<a href="https://bugs.openjdk.java.net/browse/JDK-8061549">Disallow _ as a one-character identifier</a>.
+</li>
+
+
+</references>
+</qhelp>

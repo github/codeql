@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>If the same operation
+(for example, <code>free</code>, <code>delete</code>, <code>close</code>)
+is usually performed on the result of a method call,
+any instances where it is not performed
+may be misuses of the API, leading to resource leaks or other problems.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that the same operation is performed on the result of <i>all</i> calls to a particular
+method, if appropriate.
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example of good usage, the result of the call to <code>writer.prepareAppendValue</code> is
+assigned to <code>outValue</code>, and later <code>close</code> is called on <code>outValue</code>.
+Any instances where <code>close</code> is <i>not</i> called may cause resource leaks.</p>
+
+<sample src="InconsistentCallOnResult.java" />
+
+</example>
+</qhelp>

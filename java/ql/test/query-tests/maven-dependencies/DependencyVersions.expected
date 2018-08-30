@@ -1,0 +1,5 @@
+| my-project/pom.xml:17:5:21:18 | dependency | com.semmle:another-project | 1.0 |
+| my-project/pom.xml:22:5:26:18 | dependency | commons-lang:commons-lang | 2.6 |
+| my-project/pom.xml:27:5:31:18 | dependency | semmle-test:semmle-test | 1.0 |
+| pom.xml:19:7:23:20 | dependency | commons-lang:commons-lang | 2.6 |
+| pom.xml:24:7:28:20 | dependency | semmle-test:semmle-test | 0.1 |

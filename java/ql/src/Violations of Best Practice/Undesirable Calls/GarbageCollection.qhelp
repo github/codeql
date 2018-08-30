@@ -1,0 +1,50 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+You should avoid making calls to explicit garbage collection methods (<code>Runtime.gc</code> and <code>System.gc</code>). The calls are not
+guaranteed to trigger garbage collection, and they may also trigger unnecessary garbage collection passes that lead to decreased
+performance.
+</p>
+
+</overview>
+<recommendation>
+
+<p>It is better to let the Java Virtual Machine (JVM) handle garbage collection. If it becomes necessary to control how the JVM handles memory, it is better to use the
+JVM's memory and garbage collection options (for example, <code>-Xmx</code>, <code>-XX:NewRatio</code>, <code>-XX:Use*GC</code>) than to trigger
+garbage collection in the application.</p> 
+
+<p>The memory management classes that are used by Real-Time Java are an exception to this rule, 
+because they are designed to handle garbage collection differently from the JVM default.</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows code that makes connection requests, and tries to trigger garbage
+collection after it has processed each request.</p>
+
+<sample src="GarbageCollection.java" />
+
+<p>It is better to remove the call to <code>System.gc</code> and rely on the JVM to dispose of the 
+connection.</p>
+
+</example>
+<references>
+
+
+<li>
+  Java 6 API Documentation:
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/System.html#gc%28%29">System.gc()</a>.
+</li>
+<li>
+  Oracle Technology Network:
+  <a href="http://www.oracle.com/technetwork/java/javase/gc-tuning-6-140523.html">Java SE 6 HotSpot Virtual Machine Garbage Collection Tuning</a>.
+</li>
+
+
+</references>
+</qhelp>

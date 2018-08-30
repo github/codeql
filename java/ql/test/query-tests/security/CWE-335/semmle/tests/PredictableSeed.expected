@@ -1,0 +1,4 @@
+| Test.java:28:3:28:19 | nextInt(...) | Usage of a SecureRandom number generator seeded with a $@. | Test.java:11:16:11:41 | currentTimeMillis(...) | predictable value |
+| Test.java:28:22:28:38 | nextInt(...) | Usage of a SecureRandom number generator seeded with a $@. | Test.java:12:16:12:32 | nanoTime(...) | predictable value |
+| Test.java:32:3:32:19 | nextInt(...) | Usage of a SecureRandom number generator seeded with a $@. | Test.java:31:72:31:77 | 12345L | predictable value |
+| Test.java:37:3:37:23 | nextInt(...) | Usage of a SecureRandom number generator seeded with a $@. | Test.java:36:23:36:28 | 12345L | predictable value |

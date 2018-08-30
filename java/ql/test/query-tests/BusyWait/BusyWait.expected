@@ -1,0 +1,2 @@
+| BusyWaits.java:4:4:4:19 | stmt | Prefer wait/notify or java.util.concurrent to communicate between threads. |
+| BusyWaits.java:10:5:10:39 | stmt | Prefer wait/notify or java.util.concurrent to communicate between threads. |

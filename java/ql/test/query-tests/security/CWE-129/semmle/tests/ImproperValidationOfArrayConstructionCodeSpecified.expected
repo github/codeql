@@ -1,0 +1,1 @@
+| Test.java:91:30:91:30 | 0 | The $@ is accessed here, but the array is initialized using $@ which may be zero. | Test.java:88:19:88:31 | new int[] | array | Test.java:86:16:86:16 | 0 | literal value 0 |

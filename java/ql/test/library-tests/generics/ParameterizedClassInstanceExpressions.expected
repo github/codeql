@@ -1,0 +1,2 @@
+| generics/A.java:13:26:13:54 | new HashMap<String,Object>(...) | 0 | generics/A.java:13:38:13:43 | String |
+| generics/A.java:13:26:13:54 | new HashMap<String,Object>(...) | 1 | generics/A.java:13:46:13:51 | Object |

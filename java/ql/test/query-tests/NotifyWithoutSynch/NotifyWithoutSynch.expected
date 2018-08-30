@@ -1,0 +1,10 @@
+| Test.java:10:3:10:8 | wait(...) | Calling wait on an unsynchronized object. |
+| Test.java:18:3:18:10 | notify(...) | Calling notify on an unsynchronized object. |
+| Test.java:26:3:26:13 | notifyAll(...) | Calling notifyAll on an unsynchronized object. |
+| Test.java:52:3:52:13 | wait(...) | Calling wait on an unsynchronized object. |
+| Test.java:56:3:56:13 | wait(...) | Calling wait on an unsynchronized object. |
+| Test.java:61:4:61:14 | wait(...) | Calling wait on an unsynchronized object. |
+| Test.java:67:4:67:14 | wait(...) | Calling wait on an unsynchronized object. |
+| Test.java:72:3:72:13 | wait(...) | Calling wait on an unsynchronized object. |
+| Test.java:77:4:77:14 | wait(...) | Calling wait on an unsynchronized object. |
+| Test.java:114:3:114:8 | wait(...) | Calling wait on an unsynchronized object. |

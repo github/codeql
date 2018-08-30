@@ -1,0 +1,1 @@
+public interface IAmAlsoOK extends java.util.Collection<Number> {}

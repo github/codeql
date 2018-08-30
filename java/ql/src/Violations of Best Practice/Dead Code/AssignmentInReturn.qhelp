@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>An assignment is an expression. The value of an assignment expression
+is the value assigned to the variable. This can be useful, for example, when
+initializing two or more variables at once (for example, <code>a = b = 0;</code>).
+However, assigning to a local variable in the expression of a return statement
+is redundant because that value can never be read.</p>
+
+</overview>
+<recommendation>
+
+<p>Remove the redundant assignment from the <code>return</code> statement, leaving just the
+right-hand side of the assignment.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, consider the second assignment to <code>ret</code>. The variable goes
+out of scope when the method returns, and the value assigned to it is never read. Therefore,
+the assignment is redundant. Instead, the last line of the method can be changed to
+<code>return Math.max(ret, c);</code></p>
+
+<sample src="AssignmentInReturn.java" />
+
+</example>
+<references>
+
+
+<li>
+Java Language Specification:
+<a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-14.html#jls-14.17">
+14.17 The return Statement</a>,
+<a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-15.html#jls-15.26">
+15.26 Assignment Operators</a>.
+</li>
+
+
+</references>
+</qhelp>

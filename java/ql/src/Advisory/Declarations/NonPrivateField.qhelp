@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A non-final or non-static field that is not declared <code>private</code>,
+but is not accessed outside of its declaring type, may decrease code maintainability. This is because
+a field that is accessible from outside the class that it is declared in tends to restrict the class 
+to a particular implementation.
+</p>
+
+</overview>
+<recommendation>
+
+<p>In the spirit of encapsulation, it is generally advisable to choose the
+most restrictive access modifier (<code>private</code>) for a field, unless
+there is a good reason to increase its visibility.
+</p>
+
+</recommendation>
+<references>
+
+
+<li>
+  J. Bloch, <em>Effective Java (second edition)</em>, 
+  Item 13.
+  Addison-Wesley, 2008.
+</li>
+<li>
+  The Java Tutorials:
+  <a href="http://docs.oracle.com/javase/tutorial/java/javaOO/accesscontrol.html">Controlling Access to Members of a Class</a>.
+</li>
+
+
+</references>
+</qhelp>

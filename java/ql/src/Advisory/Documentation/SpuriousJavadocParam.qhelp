@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+Javadoc comments for public methods and constructors should use the <code>@param</code> tag to describe the available
+parameters. If the comment includes any empty, incorrect or outdated parameter names then this will make 
+the documentation more difficult to read.
+</p>
+
+</overview>
+<recommendation>
+
+<p>The Javadoc comment for a method or constructor should always use non-empty <code>@param</code> values that match actual parameter or type parameter names.</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows good and bad Javadoc comments that use the <code>@param</code> tag.</p>
+
+<sample src="SpuriousJavadocParam.java" />
+
+</example>
+<references>
+
+
+<li>
+  Help - Eclipse Platform:
+  <a href="http://help.eclipse.org/indigo/topic/org.eclipse.jdt.doc.user/reference/preferences/java/compiler/ref-preferences-javadoc.htm">Java Compiler Javadoc Preferences</a>.
+</li>
+<li>
+  Java SE Documentation:
+  <a href="http://www.oracle.com/technetwork/java/javase/documentation/index-137868.html#@param">How to Write Doc Comments for the Javadoc Tool</a>,
+  <a href="http://docs.oracle.com/javase/7/docs/technotes/tools/windows/javadoc.html#param">The Java API Documentation Generator</a>
+</li>
+
+
+</references>
+</qhelp>

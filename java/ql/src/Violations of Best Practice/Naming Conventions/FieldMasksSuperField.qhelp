@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A field that has the same name as a field in a superclass <em>hides</em> the field in the superclass.
+Such hiding might be unintentional, especially if there are no references to the hidden field using
+the <code>super</code> qualifier. In any case, it makes code more difficult to read.</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that any hiding is intentional. For clarity, it may be better to rename the field in the
+subclass.</p>
+
+</recommendation>
+<example>
+<p>In the following example, the programmer unintentionally added an <code>age</code> field to <code>Employee</code>, which
+hides the <code>age</code> field in <code>Person</code>. The constructor in <code>Person</code> sets the <code>age
+</code> field in <code>Person</code> to 20 but the <code>age</code> field in <code>Employee</code>  
+is still 0. This means that the program outputs 0, which is probably not what was intended.</p>
+<sample src="FieldMasksSuperField.java" />
+<p>To fix this, delete the declaration of <code>age</code> on line 11.</p>
+</example>
+<references>
+
+
+<li>
+Help - Eclipse Platform:
+<a href="http://help.eclipse.org/indigo/index.jsp?topic=%2Forg.eclipse.jdt.doc.user%2Freference%2Fpreferences%2Fjava%2Fcompiler%2Fref-preferences-errors-warnings.htm">Java Compiler Errors/Warnings Preferences</a>.
+</li>
+<li>
+The Java Tutorials:
+<a href="http://docs.oracle.com/javase/tutorial/java/IandI/hidevariables.html">Hiding Fields</a>.
+</li>
+
+
+</references>
+</qhelp>

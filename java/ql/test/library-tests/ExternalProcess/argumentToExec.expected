@@ -1,0 +1,10 @@
+| Test.java:7:22:7:26 | "cmd" |
+| Test.java:14:22:14:25 | args |
+| Test.java:19:20:19:24 | "cmd" |
+| Test.java:27:20:27:23 | args |
+| Test.java:31:29:31:43 | "cmd arg1 arg2" |
+| Test.java:35:29:35:66 | new String[] |
+| Test.java:48:43:48:46 | line |
+| Test.java:55:43:55:46 | line |
+| Test.java:62:24:62:40 | "/p /h some.file" |
+| Test.java:69:24:69:40 | "/p /h some.file" |

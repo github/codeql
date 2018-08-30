@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A method named <code>tostring</code> may be a typographical error.
+<code>toString</code> (different capitalization) may have been intended instead.</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that any such method is intended to have this name. Even if it is, it may be better to 
+rename it to avoid confusion with the inherited method <code>Object.toString</code>.</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows a method named <code>tostring</code>. It may be better to rename it.</p>
+
+<sample src="ToStringTypo.java" />
+
+</example>
+<references>
+
+
+<li>
+Java 2 Platform, Standard Edition 5.0, API Specification:
+<a href="http://docs.oracle.com/javase/1.5.0/docs/api/java/lang/Object.html#toString()">
+toString</a>.
+</li>
+
+
+</references>
+</qhelp>

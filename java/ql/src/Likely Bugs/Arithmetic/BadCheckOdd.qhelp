@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Avoid using <code>x % 2 == 1</code> or <code>x % 2 > 0</code>
+to check whether a number <code>x</code> is odd, or 
+<code>x % 2 != 1</code> to check whether it is even.
+Such code does not work for negative numbers. 
+For example, <code>-5 % 2</code> equals <code>-1</code>, not <code>1</code>.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Consider using <code>x % 2 != 0</code> to check for odd and <code>x % 2 == 0</code> to check for even.
+</p>
+
+</recommendation>
+<example>
+<p>-9 is an odd number but this example does not detect it as one. This is because <code>-9 % 2
+</code> is -1, not 1.</p>
+<sample src="BadCheckOdd.java" />
+
+<p>It would be better to check if the number is even and then invert that check.</p>
+<sample src="BadCheckOddGood.java" />
+
+</example>
+<references>
+
+
+<li>
+  J. Bloch and N. Gafter, <em>Java Puzzlers: Traps, Pitfalls, and Corner Cases</em>, Puzzle 1. Addison-Wesley, 2005.
+</li>
+<li>
+  The Java Language Specification:
+  <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-15.html#jls-15.17.3">Remainder Operator %</a>.
+</li>
+
+
+</references>
+</qhelp>

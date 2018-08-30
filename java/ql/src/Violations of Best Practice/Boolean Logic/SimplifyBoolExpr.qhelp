@@ -1,0 +1,91 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+There are a number of boolean expression patterns that can easily be rewritten
+to make them simpler.
+Boolean expressions involving comparisons with boolean literals,
+ternary conditionals with a boolean literal as one of the results,
+double negations, or negated comparisons can all be changed to
+equivalent and simpler expressions.
+</p>
+</overview>
+
+<recommendation>
+<p>
+If <code>A</code> and <code>B</code> are expressions of boolean type, you can
+simplify them using the rewrites shown below. These rewrites are equally suitable
+for the primitive type <code>boolean</code> and the boxed type <code>Boolean</code>.
+</p>
+<table><tbody>
+<tr><th>Expression</th><th></th><th>Simplified expression</th><th></th></tr>
+<tr><td><code>A == true</code></td><td></td><td><code>A</code></td><td>(*)</td></tr>
+<tr><td><code>A != false</code></td><td></td><td><code>A</code></td><td>(*)</td></tr>
+<tr><td><code>A == false</code></td><td></td><td><code>!A</code></td><td></td></tr>
+<tr><td><code>A != true</code></td><td></td><td><code>!A</code></td><td></td></tr>
+<tr><td><code>A ? true : B</code></td><td></td><td><code>A || B</code></td><td></td></tr>
+<tr><td><code>A ? B : false</code></td><td></td><td><code>A &amp;&amp; B</code></td><td></td></tr>
+<tr><td><code>A ? B : true</code></td><td></td><td><code>!A || B</code></td><td></td></tr>
+<tr><td><code>A ? false : B</code></td><td></td><td><code>!A &amp;&amp; B</code></td><td></td></tr>
+<tr><td><code>A ? true : false</code></td><td></td><td><code>A</code></td><td>(*)</td></tr>
+<tr><td><code>A ? false : true</code></td><td></td><td><code>!A</code></td><td></td></tr>
+<tr><td><code>!!A</code></td><td></td><td><code>A</code></td><td>(*)</td></tr>
+</tbody></table>
+<p>
+Note that all of these rewrites yield completely equivalent code, except
+possibly for those marked with (*) when <code>A</code> has type <code>Boolean</code>.
+These can depend on the context if <code>null</code>
+values are involved.  This is because a comparison or test of a
+<code>Boolean</code> will perform an automatic unboxing conversion that throws a
+<code>NullPointerException</code> if <code>null</code> is encountered, so the rewrites marked
+(*) are only completely equivalent if the surrounding context of the expression unboxes the value, for
+example by occurring as the condition in an <code>if</code> statement.
+</p>
+
+<p>
+In addition to the rewrites above, negated comparisons can also be simplified in the following way:
+</p>
+<table><tbody>
+<tr><th>Expression</th><th></th><th>Simplified expression</th></tr>
+<tr><td><code>!(A == B)</code></td><td></td><td><code>A != B</code></td></tr>
+<tr><td><code>!(A != B)</code></td><td></td><td><code>A == B</code></td></tr>
+<tr><td><code>!(A &lt; B)</code></td><td></td><td><code>A >= B</code></td></tr>
+<tr><td><code>!(A > B)</code></td><td></td><td><code>A &lt;= B</code></td></tr>
+<tr><td><code>!(A &lt;= B)</code></td><td></td><td><code>A > B</code></td></tr>
+<tr><td><code>!(A >= B)</code></td><td></td><td><code>A &lt; B</code></td></tr>
+</tbody></table>
+
+</recommendation>
+
+<example>
+<p>
+In the following example the method <code>f2</code> is a straightforward
+simplification of <code>f1</code>; they will both throw a <code>NullPointerException</code> if
+a <code>null</code> is encountered.
+A similar rewrite of <code>g1</code> would however result in a method with a different meaning,
+and a rewrite along the lines of <code>g2</code> might be more appropriate.
+
+In any case, care should be taken to ensure correct behavior for
+<code>null</code> values when the boxed type <code>Boolean</code> is used.
+</p>
+
+<sample src="SimplifyBoolExpr.java" />
+</example>
+
+<references>
+
+<li>
+The Java Language Specification:
+<a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-15.html#jls-15.15.6">Logical Complement Operator !</a>,
+<a href="https://docs.oracle.com/javase/specs/jls/se7/html/jls-15.html#jls-15.21.2">Boolean Equality Operators == and !=</a>,
+<a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-15.html#jls-15.23">Conditional-And Operator &amp;&amp;</a>,
+<a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-15.html#jls-15.24">Conditional-Or Operator ||</a>,
+<a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-15.html#jls-15.25">Conditional Operator ? :</a>.
+</li>
+
+</references>
+
+</qhelp>

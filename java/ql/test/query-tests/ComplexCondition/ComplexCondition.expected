@@ -1,0 +1,2 @@
+| ComplexCondition.java:3:9:5:22 | ... \|\| ... | Complex condition: too many logical operations in this expression. |
+| ComplexCondition.java:8:14:8:65 | ... \|\| ... | Complex condition: too many logical operations in this expression. |

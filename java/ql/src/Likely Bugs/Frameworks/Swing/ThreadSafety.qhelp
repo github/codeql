@@ -1,0 +1,110 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+Because Swing components are not thread-safe (that is, they do not support concurrent access from multiple 
+threads), Swing has a rule that states that method calls on Swing components that have been 
+<em>realized</em> (see below) must be made from a special thread known as the 
+<em>event-dispatching thread</em>. Failure to observe this rule may result in multiple threads 
+accessing a Swing component concurrently, with the potential for deadlocks, race conditions and other
+errors related to multi-threading.</p>
+
+<p>A component is considered <em>realized</em> if its <code>paint</code> method has been, or could 
+be, called at this point. Realization is triggered according to the following rules:
+</p>
+
+<ul>
+<li>
+A top-level window is realized if <code>setVisible(true)</code>,
+<code>show</code> or <code>pack</code> is called on it.
+</li>
+<li>
+Realizing a container realizes the components it contains.
+</li>
+</ul>
+
+<p>
+There are a few exceptions to the rule. These are documented
+more fully in [The Swing Connection] but the key exceptions are:
+</p> 
+
+<ul>
+<li>
+It is safe to call the <code>repaint</code>, <code>revalidate</code> and
+<code>invalidate</code> methods on a Swing component from any thread.
+</li>
+<li>
+It is safe to add and remove listeners from any thread. Therefore, any method of the
+form <code>add*Listener</code> or <code>remove*Listener</code> is thread-safe.
+</li>
+</ul>
+
+</overview>
+<recommendation>
+
+<p>
+Ensure that method calls on Swing components are made from the event-dispatching thread. If you need 
+to call a method on a Swing component from another thread, you must do so using the event-dispatching 
+thread. Swing provides a <code>SwingUtilities</code> class that you can use to ask the 
+event-dispatching thread to run arbitrary code on your components, by calling one of
+two methods. Each method takes a <code>Runnable</code> as its only argument:
+</p>
+
+<ul>
+<li>
+<code>SwingUtilities.invokeLater</code> asks the event-dispatching thread to
+run some code and then immediately returns (that is, it is non-blocking). The code
+is run at some indeterminate time in the future, but the thread that calls
+<code>invokeLater</code> does not wait for it.
+</li>
+<li>
+<code>SwingUtilities.invokeAndWait</code> asks the event-dispatching thread to
+run some code and then waits for it to complete (that is, it is blocking).
+</li>
+</ul>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, there is a call from the main thread to a method, <code>setTitle</code>, on the 
+<code>MyFrame</code> object after the object has been realized by the <code>setVisible(true)</code> call.
+This represents an unsafe call to a Swing method from a thread other than the
+event-dispatching thread.
+</p>
+
+<sample src="ThreadSafety.java" />
+
+<p>In the following modified example, the call to <code>setTitle</code> is instead called from 
+within a call to <code>invokeLater</code>.
+</p>
+
+<sample src="ThreadSafetyGood.java" />
+
+</example>
+<references>
+
+
+<li>
+D. Flanagan, <em>Java Foundation Classes in a Nutshell</em>, p.28. O'Reilly, 1999.
+</li>
+<li>
+Java Developer's Journal:
+<a href="http://www2.sys-con.com/itsg/virtualcd/java/archives/0605/ford/index.html">Building Thread-Safe GUIs with Swing</a>.
+</li>
+<li>
+The Java Tutorials:
+<a href="http://docs.oracle.com/javase/tutorial/uiswing/concurrency/index.html">Concurrency in Swing</a>.
+</li>
+<li>
+The Swing Connection:
+<a href="http://www.comp.nus.edu.sg/~cs3283/ftp/Java/swingConnect/archive/tech_topics_arch/threads/threads.html">Threads and Swing</a>.
+</li>
+
+
+</references>
+</qhelp>

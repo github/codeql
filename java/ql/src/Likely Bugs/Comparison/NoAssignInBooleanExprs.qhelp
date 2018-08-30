@@ -1,0 +1,47 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>The assignment operator (<code>=</code>) can easily be confused with the
+equality operator (<code>==</code>), and can make a Boolean expression more difficult to understand. 
+Consequently, assignments in Boolean expressions should be avoided.</p>
+
+<p>Some useful idioms are an exception to this rule, such as checking that some bytes have been read 
+from an input-stream, as shown in the <code>readConfiguration</code> method in the example below. 
+More precisely, an assignment is allowed in a Boolean expression if the result of the assignment is 
+compared to another value.</p>
+
+</overview>
+<recommendation>
+
+<p>Consider structuring the condition so that the side-effects are moved outside of the
+condition, possibly splitting the condition into several separate tests.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, consider the rather confusing assignment to <code>restart</code> in the 
+<code>notify</code> method. The assignment should be performed outside of the condition instead.</p>
+
+<sample src="NoAssignInBooleanExprs.java" />
+
+</example>
+<references>
+
+
+<li>
+Help - Eclipse Platform:
+<a href="http://help.eclipse.org/indigo/index.jsp?topic=%2Forg.eclipse.jdt.doc.user%2Freference%2Fpreferences%2Fjava%2Fcompiler%2Fref-preferences-errors-warnings.htm">Java Compiler Errors/Warnings Preferences</a>.
+</li>
+<li>
+Java Language Specification:
+<a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-15.html#jls-15.21">15.21 Equality Operators</a>,
+<a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-15.html#jls-15.26">15.26 Assignment Operators</a>.
+</li>
+
+
+</references>
+</qhelp>

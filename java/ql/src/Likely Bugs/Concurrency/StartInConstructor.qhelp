@@ -1,0 +1,49 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Starting a thread within a constructor may cause unexpected results. If the class is extended, 
+the thread may start before the subclass constructor has completed its initialization, 
+which may not be intended.</p>
+
+</overview>
+<recommendation>
+
+<p>Avoid starting threads in constructors.
+Typically, the constructor of a class only <i>constructs</i> the thread object, 
+and a separate <code>start</code> method should be provided to <i>start</i> the thread object
+created by the constructor.
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, because the <code>Test</code> constructor implicitly calls the
+<code>Super</code> constructor, the thread created in the <code>Super</code> constructor may start 
+before <code>this.name</code> has been initialized. Therefore, the program may
+output "hello " followed by a null string. 
+</p>
+
+<sample src="StartInConstructor.java" />
+
+<p>In the following modified example, the thread created in the <code>Super</code> constructor is not started
+within the constructor; <code>main</code> starts the thread after <code>this.name</code> has been 
+initialized. This results in the program outputting "hello my friend".</p>
+
+<sample src="StartInConstructorGood.java" />
+ 
+</example>
+<references>
+
+
+<li>
+  IBM developerWorks:
+  <a href="http://www.ibm.com/developerworks/java/library/j-jtp0618/index.html#4">Don't start threads from within constructors</a>.
+</li>
+
+
+</references>
+</qhelp>

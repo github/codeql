@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+The Java API documentation states that, for an object <code>x</code>, the general intent of the <code>clone</code> method is for it to 
+satisfy the following three properties:
+</p>
+<ul>
+  <li><code>x.clone() != x</code> (the cloned object is a different object instance)</li>
+  <li><code>x.clone().getClass() == x.getClass()</code> (the cloned object is the same type as the source object)</li>
+  <li><code>x.clone().equals(x)</code> (the cloned object has the same 'contents' as the source object)</li>
+</ul>
+<p>
+For the cloned object to be of the same type as the source object, non-final classes must call <code>super.clone</code> and that 
+call must eventually reach <code>Object.clone</code>, which creates an instance of the right type. If it were to create a new object 
+using a constructor, a subclass that does not implement the <code>clone</code> method returns an object of the wrong type.
+In addition, all of the class's supertypes that also override <code>clone</code> must call <code>super.clone</code>. Otherwise, it never
+reaches <code>Object.clone</code> and creates an object of the incorrect type.
+</p>
+<p>
+However, as <code>Object.clone</code> only does a shallow copy of the fields of an object, any <code>Cloneable</code> objects
+that have a "deep structure" (for example, objects that use an array or <code>Collection</code>) must take the clone that results from the call to <code>super.clone</code> 
+and assign explicitly created copies of the structure to the clone's fields. This means that the cloned instance
+does not share its internal state with the source object. If it <i>did</i> share its internal state, any changes made in the cloned object would also affect 
+the internal state of the source object, probably causing unintended behavior.
+</p>
+<p>
+One added complication is that <code>clone</code> cannot modify values in final fields, which would be already set by the call
+to <code>super.clone</code>. Some fields must be made non-final to correctly implement the <code>clone</code> method.
+</p>
+
+
+</overview>
+</qhelp>

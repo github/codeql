@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>If a field is mostly accessed in a synchronized context, but occasionally accessed in a non-synchronized way, 
+the non-synchronized accesses may lead to race conditions.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that the non-synchronized field accesses are made synchronized, if required.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, <code>counter</code> is accessed in a synchronized way in 
+<i>all but one</i> cases. If <code>modifyCounter</code> is called by a large number of threads that
+are running concurrently, the value of <code>counter</code> at the end of each call may not be zero. 
+This is because the non-synchronized statement could be interleaved with updates to the counter that 
+are performed by the other threads.</p>
+
+<sample src="InconsistentAccess.java" />
+
+<p>To correct this, the last statement of <code>modifyCounter</code> should be enclosed in a 
+<code>synchronized</code> statement.</p>
+
+</example>
+<references>
+
+
+<li>
+  The Java Language Specification:
+  <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-17.html#jls-17.1">Synchronization</a>.
+</li>
+
+
+</references>
+</qhelp>

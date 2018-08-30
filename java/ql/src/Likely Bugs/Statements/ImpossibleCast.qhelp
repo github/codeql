@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Some downcasts on arrays will fail at runtime.
+An object <code>a</code> with dynamic type <code>A[]</code> cannot be cast to <code>B[]</code>, 
+where <code>B</code> is a subtype of <code>A</code>,
+even if all the elements of <code>a</code> can be cast to <code>B</code>. 
+</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that the array creation expression constructs an array object of the right type.</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows an assignment that throws a <code>ClassCastException</code> at runtime.</p>
+
+<sample language="java">String[] strs = (String[])new Object[]{ "hello", "world" };</sample>
+
+<p>To avoid the exception, a <code>String</code> array should be created instead.</p>
+
+<sample language="java">String[] strs = new String[]{ "hello", "world" };</sample>
+
+</example>
+<references>
+
+
+<li>
+  The Java Language Specification:
+  <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-5.html#jls-5.5.3">Checked Casts at Run Time</a>,
+  <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-5.html#jls-5.5.1">Reference Type Casting</a>,
+  <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-4.html#jls-4.10.3">Subtyping among Array Types</a>.
+</li>
+
+
+</references>
+</qhelp>

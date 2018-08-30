@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+Shortcut forms, introduced in Spring 1.2, allow nested <code>value</code> elements to instead be defined as attributes in the enclosing
+<code>property</code> entry. This leads to shorter XML bean configurations that are easier to read.
+</p>
+
+</overview>
+<recommendation>
+<p>
+When possible, use the shortcut form for defining bean property values.
+</p>
+
+<p>Note that this does <em>not</em> apply to <code>idref</code> elements, which are the preferred form of referring to another bean. These do not have a shortcut form
+that can still be checked by the XML parser.
+</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows how a bean that is defined using shortcut forms is more concise than
+the same bean defined using nested <code>value</code> elements.</p>
+
+<sample src="UseShortcutForms.xml" />
+
+</example>
+<references>
+
+
+<li>
+ONJava:
+<a href="http://www.onjava.com/pub/a/onjava/2006/01/25/spring-xml-configuration-best-practices.html?page=1">Twelve Best Practices for Spring XML Configurations</a>. 
+</li>
+<li>
+Spring Framework Reference Documentation 3.0:
+<a href="http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/beans.html#beans-value-element">3.4.2.1 Straight values (primitives, Strings, and so on)</a>.
+</li>
+
+
+</references>
+</qhelp>

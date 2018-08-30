@@ -1,0 +1,57 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Passing a character to the constructor of <code>StringBuffer</code> or <code>StringBuilder</code>
+is probably intended to insert the character into the newly created buffer. In fact, however, the
+character value is converted to an integer and interpreted as the buffer's initial capacity, which
+may yield unexpected results.</p>
+
+</overview>
+<example>
+
+<p>The following example shows a class representing points in two-dimensional Cartesian coordinates.
+The <code>toString</code> method uses a <code>StringBuffer</code> to construct a human-readable
+representation of the form <code>(x, y)</code>, where <code>x</code> and <code>y</code> are the
+point's coordinates.</p>
+
+<p>However, the opening parenthesis is passed to the <code>StringBuffer</code> constructor as character
+literal. Instead of being used to initialise the buffer's contents, the character is converted to the
+integer value 40 and interpreted as the buffer's initial capacity. Thus, the string representation
+returned by <code>toString</code> will be missing the opening parenthesis. (Note that passing a character
+to <code>append</code>, on the other hand, is unproblematic.)</p>
+
+<sample src="StringBufferCharInit.java" />
+
+</example>
+<recommendation>
+
+<p>If the character used to initialize the buffer is a character literal, simply replace it with the
+corresponding string literal. So, in our example, replace <code>new StringBuffer('(')</code> with
+<code>new StringBuffer("(")</code>. If the character is not a literal value, use method
+<code>String.valueOf</code> to convert it to a string.</p>
+
+</recommendation>
+<references>
+
+
+<li>
+J. Bloch and N. Gafter, <em>Java Puzzlers: Traps, Pitfalls, and Corner Cases</em>, Puzzle 23.
+Addison-Wesley, 2005.
+</li>
+<li>
+NetBeans IDE: <a href="http://wiki.netbeans.org/Java_Hints">Java Hints</a>
+</li>
+<li>
+PMD: <a href="http://pmd.sourceforge.net/pmd-4.2.6/rules/strings.html">Rule StringBufferInstantiationWithChar</a>
+</li>
+<li>
+Java API:
+<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/StringBuffer.html">java.lang.StringBuffer</a>,
+<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/StringBuilder.html">java.lang.StringBuilder</a>.
+</li>
+
+
+</references>
+</qhelp>

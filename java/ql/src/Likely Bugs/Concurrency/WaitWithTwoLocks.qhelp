@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Calling <code>Object.wait</code> while two locks are held
+may cause deadlock, because only one lock is released by <code>wait</code>.
+</p>
+
+</overview>
+<recommendation>
+
+<p>See if one of the locks should continue to be held while waiting for a condition on the other
+lock. If not, release one of the locks before calling <code>Object.wait</code>.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example of the problem, <code>printText</code> locks both <code>idLock</code> and
+<code>textLock</code> before it reads the value of <code>text</code>. It
+then calls <code>textLock.wait</code>, which releases the lock on <code>textLock</code>.
+However, <code>setText</code> needs to lock <code>idLock</code> but it cannot because
+<code>idLock</code> is still locked by <code>printText</code>. Thus, deadlock is caused.</p>
+
+<sample src="WaitWithTwoLocks.java" />
+
+<p>In the following modification of the above example, <code>id</code> and <code>text</code> are
+included in the class <code>Message</code>. The method <code>printText</code>
+synchronizes on the field <code>message</code> before it reads the value of <code>message.text</code>. It then calls
+<code>message.wait</code>, which releases the lock on <code>message</code>.
+This enables <code>setText</code> to lock <code>message</code> so that it
+can proceed.</p>
+
+<sample src="WaitWithTwoLocksGood.java" />
+
+</example>
+<references>
+
+
+    <li>Java API Documentation: <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html#wait%28%29">Object.wait()</a>.</li>
+
+
+
+</references>
+</qhelp>

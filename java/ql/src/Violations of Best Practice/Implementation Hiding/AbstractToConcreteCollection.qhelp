@@ -1,0 +1,59 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Most collections in the Java standard library are defined by an abstract interface
+(for example <code>java.util.List</code> or <code>java.util.Set</code>), which is
+implemented by a range of concrete classes and a range of wrappers. Normally, except
+when constructing an object, it is better to use the abstract types because this avoids
+assumptions about what the implementation is.</p>
+
+<p>A cast from an abstract to a concrete collection
+makes the code brittle by ensuring it works only for one possible
+implementation class and not others. Usually, such casts are
+either an indication of over-reliance on concrete implementation types, or of the
+fact that the wrong abstract type was used.</p>
+
+</overview>
+<recommendation>
+
+<p>It is usually best to use the abstract type consistently in variable, field and parameter
+declarations.</p>
+
+<p>There may be individual exceptions. For example, it is common to declare variables
+as <code>LinkedHashSet</code> rather than <code>Set</code> when the iteration order
+matters and only the <code>LinkedHashSet</code> implementation provides the right
+behavior.</p>
+
+</recommendation>
+<example>
+
+<p>The following example illustrates a situation where the wrong abstract type is used.
+The <code>List</code> interface does not provide a <code>poll</code> method, so
+the original code casts <code>queue</code> down to the concrete type <code>LinkedList</code>, which
+does. To avoid this downcasting, simply use the correct abstract type for this method, namely
+<code>Queue</code>. This documents the intent of the programmer and allows for various implementations
+of queues to be used by clients of this method.</p>
+
+<sample src="AbstractToConcreteCollection.java" />
+
+</example>
+<references>
+
+
+<li>
+  J. Bloch, <em>Effective Java (second edition)</em>,
+  Item 52.
+  Addison-Wesley, 2008.
+</li>
+<li>
+  Java 6 API Specification:
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html">Collection</a>.
+</li>
+
+
+</references>
+</qhelp>

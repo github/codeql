@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+A serializable class that uses the <code>serialVersionUID</code> field to act as an object version number must declare the field
+to be <code>final</code>, <code>static</code>, and of type <code>long</code> for it to be used by the Java serialization framework.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Make sure that the <code>serialVersionUID</code> field in a serialized class is final, static, and of type <code>long</code>.
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, <code>WrongNote</code> defines <code>serialVersionUID</code> using the wrong
+type, so that it is not used by the Java serialization framework. However, <code>Note</code> defines it correctly
+so that it is used by the framework.</p>
+ 
+<sample src="IncorrectSerialVersionUID.java" />
+
+</example>
+<references>
+
+
+<li>
+  Java API Documentation:
+  <a href="http://docs.oracle.com/javase/1.5.0/docs/api/java/io/Serializable.html">Serializable</a>.
+</li>
+<li>
+  JavaWorld: <a href="http://www.javaworld.com/javaworld/jw-02-2006/jw-0227-control.html?page=1">Ensure proper version control for serialized objects</a>.
+</li>
+
+
+</references>
+</qhelp>

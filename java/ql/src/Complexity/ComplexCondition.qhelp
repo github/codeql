@@ -1,0 +1,53 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>In general, very complex conditions are difficult to write and read, and increase the chance
+of defects.</p>
+
+</overview>
+<recommendation>
+
+<p>Firstly, a condition can often be simplified by changing other parts of the
+code to initialize variables more consistently. For example, is
+there a semantic difference between <code>id</code> being <code>null</code> and
+having zero-length? If not, choosing one sentinel value and using it
+consistently simplifies most uses of that variable.</p>
+
+<p>Secondly, extracting part of a condition into a Boolean-valued method can simplify the condition
+and also allow code reuse, with all its benefits.</p>
+
+<p>Thirdly, assigning each subcondition of the condition to a local variable, and then using the variables in 
+the condition instead can simplify the condition.</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows a complex condition found
+in a real program used by millions of people. The condition is so confusing that even the programmer 
+who wrote it is not sure if he got it right (see the <code>TODO</code> comment).</p>
+
+<sample src="ComplexCondition.java" />
+
+<p>The condition can be simplified by extracting parts of the condition into Boolean-valued methods.
+These methods are then used in the condition.</p>
+
+<sample src="ComplexConditionGood.java" />
+
+</example>
+<references>
+
+
+<li>
+R. C. Martin, <em>Clean Code: A Handbook of Agile Software Craftsmanship</em>, &sect;17.G28. Prentice Hall, 2008.
+</li>
+<li>
+S. McConnell, <em>Code Complete: A Practical Handbook of Software Construction</em>. Microsoft Press, 2004.
+</li>
+
+
+</references>
+</qhelp>

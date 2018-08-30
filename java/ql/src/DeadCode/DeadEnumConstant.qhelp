@@ -1,0 +1,55 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Enum constants that are never used at runtime are redundant and should be removed.
+</p>
+<include src="DeadCodeSummary.qhelp"/>
+<p>
+An enum constant is considered dead if at runtime it is never used, or only used in comparisons. Any
+enum constant which is not dead is considered to be "live".
+</p>
+<p>
+An enum constant that is only used in a comparison is considered dead because the comparison will
+always produce the same result. This is because no variable holds the value of the enum constant,
+so the comparison of any variable against the constant will always return the same result.
+</p>
+<include src="DeadCodeDetails.qhelp"/>
+</overview>
+<recommendation>
+<p>
+Before making any changes, confirm that the enum constant is not required by verifying that the
+enum constant is never used. This confirmation is necessary because there may be project-specific
+frameworks or techniques which can introduce hidden dependencies. If this project is for a library,
+then consider whether the enum constant is part of the external API, and may be used in external
+projects that are not included in the snapshot.
+</p>
+<p>
+After confirming that the enum constant is not required, remove the enum constant. You will also
+need to remove any references to this enum constant, which may, in turn, require removing other dead
+code.
+</p>
+<include src="DeadCodeExtraEntryPoints.qhelp"/>
+</recommendation>
+<example>
+<p>
+In the following example, we have an enum class called <code>Result</code>, intended to report the
+result of some operation:
+</p>
+<sample src="DeadEnumConstant.java" />
+<p>
+The method <code>runOperation</code> performs some operation, and returns a <code>Result</code>
+depending on whether the operation succeeded. However, it only returns either <code>SUCCESS</code>
+or <code>FAILURE</code>, and never <code>ERROR</code>. The <code>main</code> method calls
+<code>runOperation</code>, and checks whether the returned result is the <code>ERROR</code>.
+However, this check will always return the same result - <code>false</code>. This is because the
+<code>operationResult</code> can never hold <code>ERROR</code>, because <code>ERROR</code> is never
+stored or returned anywhere in the program. Therefore, <code>ERROR</code> is dead and can be removed,
+along with the comparison check, and the <code>exit(1);</code>.
+</p>
+</example>
+<include src="DeadCodeReferences.qhelp" />
+</qhelp>

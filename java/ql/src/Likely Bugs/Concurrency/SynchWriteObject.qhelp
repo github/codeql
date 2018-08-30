@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Classes with a synchronized <code>writeObject</code> method 
+but no other synchronized methods usually lack a sufficient level of synchronization.
+If any mutable state of this class can be modified without proper synchronization,
+the serialization using the <code>writeObject</code> method may result in an inconsistent state.
+</p>
+
+</overview>
+<recommendation>
+
+<p>See if synchronization is necessary 
+on methods other than <code>writeOject</code> to make the class thread-safe.
+Any methods that access or modify the state of an object of this class 
+should usually be synchronized as well.
+</p>
+
+</recommendation>
+<references>
+
+
+<li>
+  The Java Language Specification:
+  <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-17.html#jls-17.1">Synchronization</a>.
+</li>
+
+
+</references>
+</qhelp>

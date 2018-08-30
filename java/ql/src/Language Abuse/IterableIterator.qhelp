@@ -1,0 +1,68 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<include src="IterableOverview.qhelp" />
+
+<recommendation>
+<p>
+When working with custom implementations of <code>Iterator&lt;T&gt;</code> it
+is easy to add <code>implements Iterable&lt;T&gt;</code> and a simple
+<code>return this;</code> implementation of <code>iterator()</code> to support
+the for-each syntax.  This can, however, hide subtle bugs and is
+therefore not recommended.  It is better to separate the two and use a main
+representation that only implements <code>Iterable&lt;T&gt;</code> without
+containing any iteration state.  This object can then return a short-lived
+<code>Iterator&lt;T&gt;</code> each time it needs to be traversed.
+</p>
+<p>
+If this refactoring is undesirable for some reason, then the
+<code>iterator()</code> method should at the very least throw an exception if
+called more than once.
+</p>
+
+</recommendation>
+
+<example>
+<p>
+The following example does not distinguish the iterable from its iterator, and
+therefore causes the second loop to terminate immediately without any effect.
+</p>
+<sample src="IterableIteratorBad.java" />
+
+<p>
+The best solution is a refactoring along the following lines where
+<code>Iterable</code> classes are used to pass around references to data.  This
+allows the <code>Iterator</code> instances to be short-lived and avoids the
+sharing of iteration state.
+</p>
+<sample src="IterableIteratorGood1.java" />
+
+<p>
+If a refactoring, as described above, is too cumbersome or is otherwise
+undesirable, then a guard can be inserted, as shown below.  Using a guard
+ensures that multiple iteration fails early, making it easier to find any related bugs.
+This solution is less ideal than the
+refactoring above, but nevertheless an improvement over the original.
+</p>
+<sample src="IterableIteratorGood2.java" />
+
+</example>
+
+<references>
+
+<li>
+The Java Language Specification:
+<a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-14.html#jls-14.14.2">The enhanced for statement</a>.
+</li>
+<li>
+The Java API Specification:
+<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Iterable.html">Interface Iterable&lt;T&gt;</a>,
+<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Iterator.html">Interface Iterator&lt;T&gt;</a>,
+<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/DirectoryStream.html">Interface DirectoryStream&lt;T&gt;</a>.
+</li>
+
+</references>
+
+</qhelp>

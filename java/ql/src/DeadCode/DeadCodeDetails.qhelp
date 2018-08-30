@@ -1,0 +1,24 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<fragment>
+<p>
+A class, method, or field may be dead even if it has dependencies from other parts of the program,
+if those dependencies are from code that is also considered to be dead. We can also consider this
+from the opposite side - an element is live, if and only if there is an entry point - such as a
+<code>main</code> method - that eventually calls the method, reads the field or constructs the class.
+</p>
+<p>
+When identifying dead code, we make an assumption that the snapshot of the project includes all
+possible callers of the code. If the project is a library project, this may not be the case, and
+code may be flagged as dead when it is only used by other projects not included in the snapshot.
+</p>
+<p>
+You can customize the results by defining additional "entry points" or by identifying fields that
+are accessed using reflection. You may also wish to "whitelist" classes, methods or fields that
+should be excluded from the results. Please refer to the Semmle documentation for more information.
+</p>
+</fragment>
+</qhelp>

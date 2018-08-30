@@ -1,0 +1,17 @@
+| A.java:4:11:4:17 | new C(...) | A.java:6:10:6:12 | b.c |
+| A.java:11:11:11:18 | new C1(...) | A.java:12:10:12:16 | get(...) |
+| A.java:13:17:13:23 | new C(...) | A.java:13:10:13:31 | get(...) |
+| A.java:19:21:19:28 | new C2(...) | A.java:21:10:21:13 | b2.c |
+| A.java:27:25:27:32 | new C2(...) | A.java:29:10:29:13 | b2.c |
+| A.java:48:11:48:17 | new A(...) | A.java:55:12:55:20 | (...).a |
+| A.java:69:11:69:17 | new C(...) | A.java:74:10:74:12 | b.c |
+| A.java:80:13:80:19 | new C(...) | A.java:89:10:89:14 | d.b.c |
+| A.java:80:13:80:19 | new C(...) | A.java:90:10:90:12 | b.c |
+| A.java:81:24:81:30 | new B(...) | A.java:88:10:88:12 | d.b |
+| A.java:86:11:86:17 | new B(...) | A.java:88:10:88:12 | d.b |
+| A.java:94:11:94:17 | new B(...) | A.java:100:10:100:26 | l3.next.next.head |
+| A.java:94:11:94:17 | new B(...) | A.java:103:12:103:17 | l.head |
+| B.java:4:14:4:23 | new Elem(...) | B.java:7:10:7:22 | b2.box1.elem1 |
+| B.java:4:14:4:23 | new Elem(...) | B.java:8:10:8:22 | b2.box1.elem2 |
+| B.java:12:14:12:23 | new Elem(...) | B.java:15:10:15:22 | b2.box1.elem1 |
+| B.java:12:14:12:23 | new Elem(...) | B.java:16:10:16:22 | b2.box1.elem2 |
