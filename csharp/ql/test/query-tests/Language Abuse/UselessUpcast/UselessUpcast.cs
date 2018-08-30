@@ -3,9 +3,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static StaticMethods;
 
 interface I1 { int Foo(); }
 interface I2 { float Foo(); }
+interface I3 : I2 { }
+interface I4 : I3 { }
 
 class A : I1, I2
 {
@@ -42,7 +45,7 @@ class Tests
     void Fn(B a) { }
     void Fn2(A a) { }
 
-    void Fn(string[] args)
+    void Test1(string[] args)
     {
         A a = new A();
         B b = new B();
@@ -73,6 +76,59 @@ class Tests
 
         var act = (Action) (() => { }); // GOOD
 
-        var objects = args.Select(s => (object)s); // GOOD
+        var objects = args.Select(arg => (object)arg); // GOOD
+
+        M1((A)b); // GOOD: disambiguate targets from `StaticMethods`
+        StaticMethods.M1((A)b); // GOOD: disambiguate targets from `StaticMethods`
+
+        void M2(A _) { }
+        M2((A)b); // BAD: local functions cannot be overloaded
     }
+
+    static void M2(A _) { }
+
+    void Test2(B b)
+    {
+        // BAD: even though `StaticMethods` has an `M2`, only overloads in
+        // `Tests` are taken into account
+        M2((A)b);
+    }
+
+    class Nested
+    {
+        static void M2(B _) { }
+
+        static void Test(C c)
+        {
+            // BAD: even though `StaticMethods` and `Tests` have `M2`s, only
+            // overloads in `Nested` are taken into account
+            M2((B)c);
+        }
+    }
+}
+
+static class IExtensions
+{
+    public static void M1(this I2 i) { }
+
+    public static void M1(this I3 i) =>
+        M1((I2)i); // GOOD
+
+    public static void M1(I4 i)
+    {
+        M1((I3)i); // GOOD
+        ((I3)i).M1(); // GOOD
+    }
+
+    public static void M2(I2 i) { }
+
+    public static void M2(this I3 i) =>
+        M2((I2)i); // GOOD
+}
+
+static class StaticMethods
+{
+   public static void M1(A _) { }
+   public static void M1(B _) { }
+   public static void M2(B _) { }
 }

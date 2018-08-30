@@ -12,25 +12,61 @@
 
 import csharp
 
-/** A callable that is not an extension method. */
-private class NonExtensionMethod extends Callable {
-  NonExtensionMethod() {
-    not this instanceof ExtensionMethod
+/** A static callable. */
+class StaticCallable extends Callable {
+  StaticCallable() {
+    this.(Modifiable).isStatic()
   }
 }
 
-/** Holds if non-extension callable `c` is a member of type `t` with name `name`. */
+/** An instance callable, that is, a non-static callable. */
+class InstanceCallable extends Callable {
+  InstanceCallable() {
+    not this instanceof StaticCallable
+  }
+}
+
+/** A call to a static callable. */
+class StaticCall extends Call {
+  StaticCall() {
+    this.getTarget() instanceof StaticCallable and
+    not this = any(ExtensionMethodCall emc | not emc.isOrdinaryStaticCall())
+  }
+}
+
+/** Holds `t` has instance callable `c` as a member, with name `name`. */
 pragma [noinline]
-private predicate hasCallable(ValueOrRefType t, NonExtensionMethod c, string name) {
+predicate hasInstanceCallable(ValueOrRefType t, InstanceCallable c, string name) {
   t.hasMember(c) and
   name = c.getName()
 }
 
 /** Holds if extension method `m` is a method on `t` with name `name`. */
 pragma [noinline]
-private predicate hasExtensionMethod(ValueOrRefType t, ExtensionMethod m, string name) {
+predicate hasExtensionMethod(ValueOrRefType t, ExtensionMethod m, string name) {
   t.isImplicitlyConvertibleTo(m.getExtendedType()) and
   name = m.getName()
+}
+
+/** Holds `t` has static callable `c` as a member, with name `name`. */
+pragma [noinline]
+predicate hasStaticCallable(ValueOrRefType t, StaticCallable c, string name) {
+  t.hasMember(c) and
+  name = c.getName()
+}
+
+/** Gets the minimum number of arguments required to call `c`. */
+int getMinimumArguments(Callable c) {
+  result = count(Parameter p |
+    p =  c.getAParameter() and
+    not p.hasDefaultValue()
+  )
+}
+
+/** Gets the maximum number of arguments allowed to call `c`, if any. */
+int getMaximumArguments(Callable c) {
+  not c.getAParameter().isParams() and
+  result = c.getNumberOfParameters()
 }
 
 /** An explicit upcast. */
@@ -56,47 +92,74 @@ class ExplicitUpcast extends ExplicitCast {
     )
   }
 
-  pragma [noinline]
-  private predicate isDisambiguatingNonExtensionMethod0(NonExtensionMethod target, ValueOrRefType t) {
-    exists(Call c |
+  /** Holds if this upcast may be used to disambiguate the target of an instance call. */
+  pragma [nomagic]
+  private predicate isDisambiguatingInstanceCall(InstanceCallable other, int args) {
+    exists(Call c, InstanceCallable target, ValueOrRefType t |
       this.isArgument(c, target) |
+      t = c.(QualifiableExpr).getQualifier().getType() and
+      hasInstanceCallable(t, other, target.getName()) and
+      args = c.getNumberOfArguments() and
+      other != target
+    )
+  }
+
+  /** Holds if this upcast may be used to disambiguate the target of an extension method call. */
+  pragma [nomagic]
+  private predicate isDisambiguatingExtensionCall(ExtensionMethod other, int args) {
+    exists(ExtensionMethodCall c, ExtensionMethod target, ValueOrRefType t |
+      this.isArgument(c, target) |
+      not c.isOrdinaryStaticCall() and
+      t = target.getParameter(0).getType() and
+      hasExtensionMethod(t, other, target.getName()) and
+      args = c.getNumberOfArguments() and
+      other != target
+    )
+  }
+
+  pragma [nomagic]
+  private predicate isDisambiguatingStaticCall0(StaticCall c, StaticCallable target, ValueOrRefType t) {
+    this.isArgument(c, target) and
+    (
       t = c.(QualifiableExpr).getQualifier().getType()
       or
-      not exists(c.(QualifiableExpr).getQualifier()) and
+      not c.(QualifiableExpr).hasQualifier() and
       t = target.getDeclaringType()
     )
   }
 
-  /**
-   * Holds if this upcast may be used to affect call resolution in a non-extension
-   * method call.
-   */
-  private predicate isDisambiguatingNonExtensionMethodCall() {
-    exists(NonExtensionMethod target, NonExtensionMethod other, ValueOrRefType t |
-      this.isDisambiguatingNonExtensionMethod0(target, t) |
-      hasCallable(t, other, target.getName()) and
+  /** Holds if this upcast may be used to disambiguate the target of a static call. */
+  pragma [nomagic]
+  private predicate isDisambiguatingStaticCall(StaticCallable other, int args) {
+    exists(StaticCall c, StaticCallable target, ValueOrRefType t |
+      this.isDisambiguatingStaticCall0(c, target, t) |
+      hasStaticCallable(t, other, target.getName()) and
+      args = c.getNumberOfArguments() and
       other != target
     )
   }
 
-  /**
-   * Holds if this upcast may be used to affect call resolution in an extension
-   * method call.
-   */
-  private predicate isDisambiguatingExtensionMethodCall() {
-    exists(Call c, ExtensionMethod target, ExtensionMethod other, ValueOrRefType t |
-      this.isArgument(c, target) |
-      t = c.getArgument(0).getType() and
-      hasExtensionMethod(t, other, target.getName()) and
-      other != target
+  /** Holds if this upcast may be used to disambiguate the target of a call. */
+  private predicate isDisambiguatingCall() {
+    exists(Callable other, int args |
+      this.isDisambiguatingInstanceCall(other, args)
+      or
+      this.isDisambiguatingExtensionCall(other, args)
+      or
+      this.isDisambiguatingStaticCall(other, args)
+      |
+      args >= getMinimumArguments(other) and
+      (
+        not exists(getMaximumArguments(other))
+        or
+        args <= getMaximumArguments(other)
+      )
     )
   }
 
   /** Holds if this is a useful upcast. */
   predicate isUseful() {
-    this.isDisambiguatingNonExtensionMethodCall()
-    or
-    this.isDisambiguatingExtensionMethodCall()
+    this.isDisambiguatingCall()
     or
     this = any(Call c).(QualifiableExpr).getQualifier() and
     dest instanceof Interface
