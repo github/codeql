@@ -98,11 +98,17 @@ private cached newtype HCBase =
     mk_MemberFunctionCall(trg, qual, args, _)
   }
   or
-  HC_NewExpr(Type t, HC_Alloc alloc, HC_Init init, HC_Align align) {
-    mk_NewExpr(t, alloc, init, align, _, _)
-  }  or
-  HC_NewArrayExpr(Type t, HC_Alloc alloc, HC_Init init, HC_Align align) {
-    mk_NewArrayExpr(t, alloc, init, align, _, _)
+  // Hack to get around argument 0 of allocator calls being an error expression
+  HC_AllocatorArgZero(Type t) {
+    mk_AllocatorArgZero(t, _)
+  }
+  or
+  HC_NewExpr(Type t, HC_Alloc alloc, HC_Init init) {
+    mk_NewExpr(t, alloc, init, _)
+  }
+  or
+  HC_NewArrayExpr(Type t, HC_Alloc alloc, HC_Extent extent, HC_Init init) {
+    mk_NewArrayExpr(t, alloc, extent, init, _)
   }
   or
   HC_SizeofType(Type t) {mk_SizeofType(t, _)}
@@ -147,30 +153,27 @@ private cached newtype HCBase =
   // given a unique number based on the expression itself.
   HC_Unanalyzable(Expr e) { not analyzableExpr(e,_) }
 
-/** Used to implement hash-consing of `new` placement argument lists  */
-private newtype HC_Alloc =
-  HC_EmptyAllocArgs(Function fcn) {
-    exists(NewOrNewArrayExpr n |
-      n.getAllocator() = fcn
-    ) 
-  }
-  or HC_AllocArgCons(Function fcn, HashCons hc, int i, HC_Alloc list, boolean aligned) {
-    mk_AllocArgCons(fcn, hc, i, list, aligned, _)
-  }
-  or
-  HC_NoAlloc()
-
 /** Used to implement optional init on `new` expressions */
 private newtype HC_Init =
   HC_NoInit()
   or
   HC_HasInit(HashCons hc) {mk_HasInit(hc, _)}
 
-private newtype HC_Align = 
-  HC_NoAlign()
+/**
+ * Used to implement optional allocator call on `new` expressions
+ */
+private newtype HC_Alloc =
+  HC_NoAlloc()
   or
-  HC_HasAlign(HashCons hc) {mk_HasAlign(hc, _)}
-
+  HC_HasAlloc(HashCons hc) {mk_HasAlloc(hc, _)}
+  
+/**
+ * Used to implement optional extent expression on `new[]` exprtessions
+ */
+private newtype HC_Extent =
+  HC_NoExtent()
+  or
+  HC_HasExtent(HashCons hc) {mk_HasExtent(hc, _)}
 /** Used to implement hash-consing of argument lists  */
 private newtype HC_Args =
   HC_EmptyArgs() {
@@ -260,6 +263,7 @@ class HashCons extends HCBase {
     if this instanceof HC_ExprCall then result = "ExprCall" else
     if this instanceof HC_ConditionalExpr then result = "ConditionalExpr" else
     if this instanceof HC_NoExceptExpr then result = "NoExceptExpr" else
+    if this instanceof HC_AllocatorArgZero then result = "AllocatorArgZero" else
     result = "error"
   }
 
@@ -563,94 +567,57 @@ private predicate mk_ArgConsInner(HashCons head, HC_Args tail, int i, HC_Args li
   mk_ArgCons(head, i, tail, c)
 }
 
-/**
- * Holds if `fc` is a call to `fcn`, `fc`'s first `i` arguments have hash-cons
- * `list`, and `fc`'s argument at index `i` has hash-cons `hc`.
+/* 
+ * The 0th argument of an allocator call in a new expression is always an error expression;
+ * this works around it 
  */
-private predicate mk_AllocArgCons(Function fcn, HashCons hc, int i, HC_Alloc list, boolean aligned,
-  Call c) {
-  analyzableCall(c) and
-  c.getTarget() = fcn and
-  hc = hashCons(c.getArgument(i).getFullyConverted()) and
-  (
-    exists(HashCons head, HC_Alloc tail |
-      list = HC_AllocArgCons(fcn, head, i - 1, tail, aligned) and
-      mk_AllocArgCons(fcn, head, i - 1, tail, aligned, c) and
-      (
-        aligned = true and
-        i > 2
-        or
-        aligned = false and
-        i > 1
-      )
-    )
-    or
-    (
-      aligned = true and
-      i = 2
-      or
-      aligned = false and
-      i = 1
-    ) and
-    list = HC_EmptyAllocArgs(fcn)
+private predicate analyzableAllocatorArgZero(ErrorExpr e) {
+  exists(NewOrNewArrayExpr new |
+    new.getAllocatorCall().getChild(0) = e
+  )
+}
+
+private predicate mk_AllocatorArgZero(Type t, ErrorExpr e) {
+  exists(NewOrNewArrayExpr new |
+    new.getAllocatorCall().getChild(0) = e and
+    t = new.getType().getUnspecifiedType()
   )
 }
 
 private predicate mk_HasInit(HashCons hc, NewOrNewArrayExpr new) {
-  hc = hashCons(new.(NewExpr).getInitializer()) or
-  hc = hashCons(new.(NewArrayExpr).getInitializer())
+  hc = hashCons(new.(NewExpr).getInitializer().getFullyConverted()) or
+  hc = hashCons(new.(NewArrayExpr).getInitializer().getFullyConverted())
 }
 
-private predicate mk_HasAlign(HashCons hc, NewOrNewArrayExpr new) {
-  hc = hashCons(new.getAlignmentArgument().getFullyConverted())
+private predicate mk_HasAlloc(HashCons hc, NewOrNewArrayExpr new) {
+  hc = hashCons(new.(NewExpr).getAllocatorCall().getFullyConverted()) or
+  hc = hashCons(new.(NewArrayExpr).getAllocatorCall().getFullyConverted())
+}
+
+private predicate mk_HasExtent(HashCons hc, NewArrayExpr new) {
+  hc = hashCons(new.(NewArrayExpr).getExtent().getFullyConverted())
 }
 
 private predicate analyzableNewExpr(NewExpr new) {
-  strictcount(new.getAllocatedType()) = 1 and
+  strictcount(new.getAllocatedType().getUnspecifiedType()) = 1 and
   count(new.getAllocatorCall().getFullyConverted()) <= 1 and
   count(new.getInitializer().getFullyConverted()) <= 1
 }
 
-private predicate mk_NewExpr(Type t, HC_Alloc alloc, HC_Init init, HC_Align align, boolean aligned,
-  NewExpr new) {
+private predicate mk_NewExpr(Type t, HC_Alloc alloc, HC_Init init, NewExpr new) {
   analyzableNewExpr(new) and
-  t = new.getAllocatedType() and
+  t = new.getAllocatedType().getUnspecifiedType() and
   (
-    align = HC_HasAlign(hashCons(new.getAlignmentArgument().getFullyConverted())) and
-    aligned = true
+    alloc = HC_HasAlloc(hashCons(new.getAllocatorCall().getFullyConverted()))
     or
-    not new.hasAlignedAllocation() and
-    align = HC_NoAlign() and
-    aligned = false
-  )
-  and
-  (
-    exists(FunctionCall fc, HashCons head, HC_Alloc tail |
-      fc = new.getAllocatorCall() and
-      alloc = HC_AllocArgCons(fc.getTarget(), head, fc.getNumberOfArguments() - 1, tail, aligned) and
-      mk_AllocArgCons(fc.getTarget(), head, fc.getNumberOfArguments() - 1, tail, aligned, fc)
-    )
-    or
-    exists(FunctionCall fc |
-      fc = new.getAllocatorCall() and
-      (
-        aligned = true and
-        fc.getNumberOfArguments() = 2
-        or
-        aligned = false and
-        fc.getNumberOfArguments() = 1
-      ) and
-      alloc = HC_EmptyAllocArgs(fc.getTarget())
-    )
-    or
-    not exists(new.getAllocatorCall()) and
+    not exists(new.getAllocatorCall().getFullyConverted()) and
     alloc = HC_NoAlloc()
   )
   and
   (
-    init = HC_HasInit(hashCons(new.getInitializer()))
+    init = HC_HasInit(hashCons(new.getInitializer().getFullyConverted()))
     or
-    not exists(new.getInitializer()) and
+    not exists(new.getInitializer().getFullyConverted()) and
     init = HC_NoInit()
   )
 }
@@ -658,50 +625,34 @@ private predicate mk_NewExpr(Type t, HC_Alloc alloc, HC_Init init, HC_Align alig
 private predicate analyzableNewArrayExpr(NewArrayExpr new) {
   strictcount(new.getAllocatedType().getUnspecifiedType()) = 1 and
   count(new.getAllocatorCall().getFullyConverted()) <= 1 and
-  count(new.getInitializer().getFullyConverted()) <= 1
+  count(new.getInitializer().getFullyConverted()) <= 1 and
+  count(new.(NewArrayExpr).getExtent().getFullyConverted()) <= 1
 }
 
-private predicate mk_NewArrayExpr(Type t, HC_Alloc alloc, HC_Init init, HC_Align align,
-  boolean aligned, NewArrayExpr new) {
+private predicate mk_NewArrayExpr(Type t, HC_Alloc alloc, HC_Extent extent, HC_Init init, NewArrayExpr new) {
   analyzableNewArrayExpr(new) and
   t = new.getAllocatedType() and
+  
   (
-    align = HC_HasAlign(hashCons(new.getAlignmentArgument().getFullyConverted())) and
-    aligned = true
+    alloc = HC_HasAlloc(hashCons(new.getAllocatorCall().getFullyConverted()))
     or
-    not new.hasAlignedAllocation() and
-    align = HC_NoAlign() and
-    aligned = false
-  )
-  and
-  (
-    exists(FunctionCall fc, HashCons head, HC_Alloc tail |
-      fc = new.getAllocatorCall() and
-      alloc = HC_AllocArgCons(fc.getTarget(), head, fc.getNumberOfArguments() - 1, tail, aligned) and
-      mk_AllocArgCons(fc.getTarget(), head, fc.getNumberOfArguments() - 1, tail, aligned, fc)
-    )
-    or
-    exists(FunctionCall fc |
-      fc = new.getAllocatorCall() and
-      (
-        aligned = true and
-        fc.getNumberOfArguments() = 2
-        or
-        aligned = false and
-        fc.getNumberOfArguments() = 1
-      ) and
-      alloc = HC_EmptyAllocArgs(fc.getTarget())
-    )
-    or
-    not exists(new.getAllocatorCall()) and
+    not exists(new.getAllocatorCall().getFullyConverted()) and
     alloc = HC_NoAlloc()
   )
   and
   (
-    init = HC_HasInit(hashCons(new.getInitializer()))
+    init = HC_HasInit(hashCons(new.getInitializer().getFullyConverted()))
     or
-    not exists(new.getInitializer()) and
+    not exists(new.getInitializer().getFullyConverted()) and
     init = HC_NoInit()
+  )
+  and
+  
+  (
+    extent = HC_HasExtent(hashCons(new.getExtent().getFullyConverted()))
+    or
+    not exists(new.getExtent().getFullyConverted()) and
+    extent = HC_NoExtent()
   )
 }
 
@@ -984,14 +935,20 @@ cached HashCons hashCons(Expr e) {
     result = HC_MemberFunctionCall(fcn, qual, args)
   )
   or
-  exists(Type t, HC_Alloc alloc, HC_Init init, HC_Align align, boolean aligned
-  | mk_NewExpr(t, alloc, init, align, aligned, e) and
-    result = HC_NewExpr(t, alloc, init, align)
+  // works around an extractor issue class
+  exists(Type t
+  | mk_AllocatorArgZero(t, e) and
+    result = HC_AllocatorArgZero(t)
   )
   or
-  exists(Type t, HC_Alloc alloc, HC_Init init, HC_Align align, boolean aligned
-  | mk_NewArrayExpr(t, alloc, init, align, aligned, e) and
-    result = HC_NewArrayExpr(t, alloc, init, align)
+  exists(Type t, HC_Alloc alloc, HC_Init init
+  | mk_NewExpr(t, alloc, init, e) and
+    result = HC_NewExpr(t, alloc, init)
+  )
+  or
+  exists(Type t, HC_Alloc alloc, HC_Extent extent, HC_Init init
+  | mk_NewArrayExpr(t, alloc, extent, init, e) and
+    result = HC_NewArrayExpr(t, alloc, extent, init)
   )
   or
   exists(Type t
@@ -1108,5 +1065,6 @@ predicate analyzableExpr(Expr e, string kind) {
   (analyzableThrowExpr(e) and kind = "ThrowExpr") or
   (analyzableReThrowExpr(e) and kind = "ReThrowExpr") or
   (analyzableConditionalExpr(e) and kind = "ConditionalExpr") or
-  (analyzableNoExceptExpr(e) and kind = "NoExceptExpr")
+  (analyzableNoExceptExpr(e) and kind = "NoExceptExpr") or
+  (analyzableAllocatorArgZero(e) and kind = "AllocatorArgZero")
 }

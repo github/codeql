@@ -211,10 +211,6 @@ int test15(int x) {
   alignof(x) + alignof(x);
 }
 
-static void *operator new(size_t size) {
-  return malloc(size);
-}
-
 static void *operator new(size_t size, void *placement) {
   return placement;
 }
@@ -224,10 +220,6 @@ static void *operator new(size_t size, size_t alignment, void *placement) {
 }
 
 static void *operator new(size_t size, size_t alignment) {
-  return malloc(size);
-}
-
-static void *operator new[](size_t size) {
   return malloc(size);
 }
 
@@ -243,7 +235,7 @@ static void *operator new[](size_t size, size_t alignment) {
   return malloc(size);
 }
 
-void test16() {
+void test16(int y, int z) {
   new int(1);
   new int(1);
   new int(2);
@@ -276,6 +268,11 @@ void test16() {
 
   new(32) int[2] {};
   new(32) int[2] {};
+  new(32) int[3] {};
+
+  new int[x];
+  new int[x];
+  new int[z];
 }
 
 typedef struct point{
