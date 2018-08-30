@@ -338,14 +338,14 @@ module NodeJSLib {
 
 
   /**
-   * A call to a method from module `fs` or `graceful-fs`.
+   * A call to a method from module `fs`, `graceful-fs` or `fs-extra`.
    */
   private class NodeJSFileSystemAccess extends FileSystemAccess, DataFlow::CallNode {
     string methodName;
 
     NodeJSFileSystemAccess() {
       exists (string moduleName | this = DataFlow::moduleMember(moduleName, methodName).getACall() |
-        moduleName = "fs" or moduleName = "graceful-fs"
+        moduleName = "fs" or moduleName = "graceful-fs" or moduleName = "fs-extra"
       )
     }
 
