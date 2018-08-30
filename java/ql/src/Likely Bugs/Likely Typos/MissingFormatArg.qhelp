@@ -1,0 +1,27 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<include src="FormatStringsOverview.qhelp" />
+
+<recommendation>
+<p>
+  Supply the correct number of arguments to the format method, or change the format string
+  to use the correct arguments.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example supplies only one argument to be formatted, but the
+format string refers to two arguments, so this will throw an
+<code>IllegalFormatException</code>.
+</p>
+<sample src="MissingFormatArgBad.java" />
+
+</example>
+
+<include src="FormatStringsRefs.qhelp" />
+
+</qhelp>

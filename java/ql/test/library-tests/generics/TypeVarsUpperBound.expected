@@ -1,0 +1,6 @@
+| file://:0:0:0:0 | ? | Object |
+| file://:0:0:0:0 | ? extends Float | Float |
+| file://:0:0:0:0 | ? extends Object | Object |
+| file://:0:0:0:0 | ? super Double | Object |
+| generics/A.java:6:16:6:16 | T | Object |
+| generics/A.java:16:9:16:24 | V | Number |

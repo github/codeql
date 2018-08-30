@@ -1,0 +1,3 @@
+| Test.java:24:11:24:24 | new File(...) | $@ flows to here and is used in a path. | Test.java:19:18:19:38 | getHostName(...) | User-provided value |
+| Test.java:27:11:27:25 | get(...) | $@ flows to here and is used in a path. | Test.java:19:18:19:38 | getHostName(...) | User-provided value |
+| Test.java:30:11:30:48 | getPath(...) | $@ flows to here and is used in a path. | Test.java:19:18:19:38 | getHostName(...) | User-provided value |

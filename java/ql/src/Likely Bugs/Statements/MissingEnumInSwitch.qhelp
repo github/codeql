@@ -1,0 +1,47 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A <code>switch</code> statement that is based on a variable with an <code>enum</code> type should either have a default case
+or handle all possible constants of that <code>enum</code> type. Handling all but one or two
+<code>enum</code> constants is usually a coding mistake.</p>
+
+</overview>
+<recommendation>
+
+<p>If there are only a handful of missing cases, add them to the end of the
+<code>switch</code> statement. If there are many cases that do not need to be handled individually,
+add a default case to handle them.</p>
+
+<p>If there are some <code>enum</code> constants that should never occur in this particular part of
+the code, then program defensively by adding cases for those constants and explicitly throwing an
+exception (rather than just having no cases for those constants).</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the case for 'YES' is missing. Therefore, if <code>answer</code> is
+'YES', an exception is thrown at run time. To fix this, a case for 'YES' should be added.</p>
+
+<sample src="MissingEnumInSwitch.java" />
+
+</example>
+<references>
+
+
+<li>
+Help - Eclipse Platform:
+<a href="http://help.eclipse.org/indigo/index.jsp?topic=%2Forg.eclipse.jdt.doc.user%2Freference%2Fpreferences%2Fjava%2Fcompiler%2Fref-preferences-errors-warnings.htm">Java Compiler Errors/Warnings Preferences</a>.
+</li>
+<li>
+Java Language Specification:
+<a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-8.html#jls-8.9">8.9 Enums</a>,
+<a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-14.html#jls-14.11">14.11 The switch Statement</a>.
+</li>
+
+
+</references>
+</qhelp>

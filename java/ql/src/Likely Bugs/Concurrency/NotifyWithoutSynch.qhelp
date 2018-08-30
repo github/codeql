@@ -1,0 +1,54 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>The methods <code>notify</code>, <code>notifyAll</code>, and <code>wait</code>
+ should only be called by a thread that is the owner of the object's monitor
+ (intrinsic lock). In other words, the methods should only be called from within
+ a synchronized statement or method. Otherwise the method call will throw
+ <code>IllegalMonitorStateException</code>.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that calls to <code>notify</code>, <code>notifyAll</code>,
+ or <code>wait</code> are called from within a synchronized statement or method.
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the methods <code>produce</code> and <code>consume</code> use
+<code>wait</code> and <code>notifyAll</code> to communicate. However, the <code>consume</code>
+ method is not synchronized, so the calls to <code>wait</code> and <code>notifyAll</code> will
+ always throw an exception.</p>
+
+<sample src="NotifyWithoutSynch.java" />
+
+<p>To fix this example, add the <code>synchronized</code> keyword to the
+  declaration of the <code>consume</code> method.</p>
+
+</example>
+<references>
+
+
+<li>
+  J. Bloch.
+  <em>Effective Java (second edition)</em>, p. 276.
+  Addison-Wesley, 2008.
+</li>
+<li>
+  Java API Documentation:
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html#notify%28%29">notify()</a>,
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html#notifyAll%28%29">notifyAll()</a>,
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html#wait%28%29">wait()</a>,
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html#wait%28long%29">wait(long)</a>.
+</li>
+
+
+</references>
+</qhelp>

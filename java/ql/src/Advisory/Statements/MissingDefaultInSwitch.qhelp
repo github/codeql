@@ -1,0 +1,47 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+A <code>switch</code> statement without a <code>default</code> case may allow execution to 'fall 
+through' silently, if no cases are matched.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+In a <code>switch</code> statement that is based on a variable of a non-enumerated type, include a 
+<code>default</code> case to prevent execution from falling through silently when no cases are matched. 
+If the <code>default</code> case is intended to be unreachable code, it is advisable that it throws a
+<code>RuntimeException</code> to alert the user of an internal error.
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the <code>switch</code> statement outputs the menu choice that the user
+has made. However, if the user does not choose 1, 2, or 3, execution falls through silently.</p>
+
+<sample src="MissingDefaultInSwitch.java" />
+
+<p>In the following modified example, the <code>switch</code> statement includes a 
+<code>default</code> case, to allow for the user making an invalid menu choice.</p>
+
+<sample src="MissingDefaultInSwitchGood.java" />
+
+</example>
+<references>
+
+
+<li>
+  Java SE Documentation:
+  <a href="http://www.oracle.com/technetwork/java/javase/documentation/codeconventions-142311.html#468">7.8 switch Statements</a>.
+</li>
+
+
+</references>
+</qhelp>

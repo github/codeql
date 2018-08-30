@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Code where each statement is defined on a separate line is much easier for programmers to read than code where multiple statements are defined on the same line.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Separate statements by a newline character.
+</p>
+
+</recommendation>
+<references>
+
+
+<li>
+  Java SE Documentation:
+  <a href="http://www.oracle.com/technetwork/java/javase/documentation/codeconventions-142311.html#431">7.1 Simple Statements</a>.
+</li>
+
+
+</references>
+</qhelp>

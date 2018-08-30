@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Classes that define an <code>equals</code> method whose parameter type is not <code>Object</code>
+<i>overload</i> the <code>Object.equals</code> method instead of <i>overriding</i> it. This may not be intended.</p> 
+
+</overview>
+<recommendation>
+
+<p>To <i>override</i> the <code>Object.equals</code> method,   
+the parameter of the <code>equals</code> method must have type <code>Object</code>.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the definition of class <code>BadPoint</code> does not override the <code>Object.equals</code> method.
+This means that <code>p.equals(q)</code> resolves to the default definition of <code>Object.equals</code> and
+returns <code>false</code>. Class <code>GoodPoint</code> correctly overrides <code>Object.equals</code>,
+so that <code>r.equals(s)</code> returns <code>true</code>.</p>
+
+<sample src="CovariantEquals.java" />
+
+</example>
+<references>
+
+
+    <li>J. Bloch, <em>Effective Java (second edition)</em>, Item 8. Addison-Wesley, 2008.</li>
+    <li>The Java Language Specification:
+  <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-8.html#jls-8.4.8.1">Overriding (by Instance Methods)</a>,
+  <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-8.html#jls-8.4.9">Overloading</a>.</li>
+    <li>The Java Tutorials: <a href="http://docs.oracle.com/javase/tutorial/java/IandI/override.html">Overriding and Hiding Methods</a>.</li>
+
+
+<!-- A related issue is examined by the query <a href="MissingInstanceOfInEquals.html">Equals Method Does Not Inspect Argument Type</a>. -->
+
+</references>
+</qhelp>

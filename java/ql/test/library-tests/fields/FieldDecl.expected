@@ -1,0 +1,7 @@
+| fields/FieldTest.java:4:9:4:32 | float ff, ...; | 0/3 | fields/FieldTest.java:4:15:4:16 | ff |
+| fields/FieldTest.java:4:9:4:32 | float ff, ...; | 1/3 | fields/FieldTest.java:4:19:4:19 | g |
+| fields/FieldTest.java:4:9:4:32 | float ff, ...; | 2/3 | fields/FieldTest.java:4:29:4:31 | hhh |
+| fields/FieldTest.java:5:9:5:39 | Object obj, ...; | 0/2 | fields/FieldTest.java:5:23:5:25 | obj |
+| fields/FieldTest.java:5:9:5:39 | Object obj, ...; | 1/2 | fields/FieldTest.java:5:35:5:38 | obj2 |
+| fields/FieldTest.java:6:9:6:58 | List<> l, ...; | 0/2 | fields/FieldTest.java:6:54:6:54 | l |
+| fields/FieldTest.java:6:9:6:58 | List<> l, ...; | 1/2 | fields/FieldTest.java:6:57:6:57 | m |

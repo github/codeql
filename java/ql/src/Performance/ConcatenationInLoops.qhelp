@@ -1,0 +1,57 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>When string concatenation is performed using the "+" operator, the compiler
+translates this operation to a suitable manipulation, possibly constructing
+several intermediate strings. In general, because strings are immutable, at least
+one new string has to be constructed to hold the result.</p>
+
+<p>Building up a string one piece at a time in a loop requires a new string on every iteration, 
+repeatedly copying longer and longer prefixes to fresh string
+objects. As a result, performance can be severely degraded.</p>
+
+</overview>
+<recommendation>
+<p>Whenever a string is constructed using a loop that iterates more than just a
+few times, it is usually better to create a <code>StringBuffer</code> or
+<code>StringBuilder</code> object and append to that. Because such buffers are based on
+mutable character arrays, which do not require a new string to be created for each concatenation,
+they can reduce the cost of repeatedly growing the string.</p>
+
+<p>To choose between <code>StringBuffer</code> and <code>StringBuilder</code>,
+check if the new buffer object can possibly be accessed by several different threads
+while in use. If multi-thread safety is required, use a <code>StringBuffer</code>. For
+purely local string buffers, you can avoid the overhead of synchronization by using a
+<code>StringBuilder</code>.</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows a simple test that measures the time taken to construct a string. 
+It constructs the same string of 65,536 binary digits, character-by-character, first by repeatedly 
+appending to a string, and then by using a <code>StringBuilder</code>. The second method is three 
+orders of magnitude faster.</p> 
+
+<sample src="ConcatenationInLoops.java" />   
+
+</example>
+<references>
+
+<li>
+  J. Bloch, <em>Effective Java (second edition)</em>,
+  Item 51.
+  Addison-Wesley, 2008.
+</li>
+<li>
+  Java Platform, Standard Edition 6, API Specification:
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/StringBuffer.html">StringBuffer</a>,
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/StringBuilder.html">StringBuilder</a>.
+</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,16 @@
+<!--AVOID: Using the 'name' attribute disables checking of bean references at XML parse time-->
+<bean name="dao" class="documentation.examples.spring.DAO"/>
+
+<bean id="orderService" class="documentation.examples.spring.OrderService">
+	<!--The XML parser cannot catch this typo-->
+	<property name="dao" ref="da0"/>
+</bean>
+
+
+<!--GOOD: Using the 'id' attribute enables checking of bean references at XML parse time-->
+<bean id="dao" class="documentation.examples.spring.DAO"/>
+
+<bean id="orderService" class="documentation.examples.spring.OrderService">
+	<!--The XML parser can catch this typo-->
+	<property name="dao" ref="da0"/>
+</bean>

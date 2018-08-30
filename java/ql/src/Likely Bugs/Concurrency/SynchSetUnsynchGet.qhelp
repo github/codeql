@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>If a class has a synchronized <code>set</code> method and a similarly-named <code>get</code> 
+method is not also synchronized, calls to the <code>get</code> method may not return a consistent 
+state for the object.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Synchronize read operations as well as write operations. You should usually synchronize the 
+<code>get</code> method.
+</p>
+
+</recommendation>
+<references>
+
+
+<li>
+  The Java Language Specification:
+  <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-17.html#jls-17.1">Synchronization</a>.
+</li>
+
+
+</references>
+</qhelp>

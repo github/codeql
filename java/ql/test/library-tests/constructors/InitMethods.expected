@@ -1,0 +1,4 @@
+| constructors/A.java:14:31:14:45 | "static string" | constructors/A.java:3:14:3:14 | <clinit> |
+| constructors/A.java:15:26:15:42 | "instance string" | constructors/A.java:3:14:3:14 | <obinit> |
+| constructors/A.java:18:22:18:31 | "<obinit>" | constructors/A.java:3:14:3:14 | <obinit> |
+| constructors/A.java:22:22:22:31 | "<clinit>" | constructors/A.java:3:14:3:14 | <clinit> |

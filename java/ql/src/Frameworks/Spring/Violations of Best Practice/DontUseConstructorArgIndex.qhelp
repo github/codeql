@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+Using type matching instead of index matching in a Spring <code>constructor-arg</code> element produces a more readable bean definition
+and is less vulnerable to being broken by a change to the constructor of the bean's underlying class. Index matching
+should be used only if type matching is not sufficient to remove ambiguity in the constructor arguments.
+</p>
+
+</overview>
+<recommendation>
+<p>
+The bean definition's <code>constructor-arg</code> elements should use type matching instead of index matching.
+</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows a bean, <code>billingService1</code>, whose <code>constructor-arg</code> 
+elements use index matching, and an improved version of the bean, <code>billingService2</code>, 
+whose <code>constructor-arg</code> elements use type matching.</p>
+
+<sample src="DontUseConstructorArgIndex.xml" />
+
+</example>
+<references>
+
+
+<li>
+Spring Framework Reference Documentation 3.0:
+<a href="http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/beans.html#beans-constructor-injection">3.4.1.1 Constructor-based dependency injection</a>.
+</li>
+<li>
+ONJava:
+<a href="http://onjava.com/pub/a/onjava/2006/01/25/spring-xml-configuration-best-practices.html?page=2">Twelve Best Practices For Spring XML Configurations</a>.
+</li>
+
+
+</references>
+</qhelp>

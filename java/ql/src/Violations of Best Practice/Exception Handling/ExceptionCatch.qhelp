@@ -1,0 +1,51 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Catching <code>Throwable</code> or <code>Exception</code> is dangerous 
+because these can include an <code>Error</code> such as <code>OutOfMemoryError</code>
+or a <code>RuntimeException</code> such as <code>ArrayIndexOutOfBoundsException</code>.
+These should normally be propagated to the outermost level because they generally
+indicate a program state from which normal operation cannot be recovered.</p>
+
+</overview>
+<recommendation>
+
+<p>It is usually best to ensure that exceptions that are caught in a <code>catch</code> clause
+are as specific as possible to avoid inadvertently suppressing more serious problems.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the <code>catch</code> clause in the first <code>try</code> block 
+catches <code>Throwable</code>. However, when performing read operations on a 
+<code>FileInputStream</code> within a <code>try</code> block, the corresponding <code>catch</code> 
+clause should normally catch <code>IOException</code> instead. This is shown in the second, modified 
+<code>try</code> block.
+</p>
+
+<sample src="ExceptionCatch.java" />
+
+</example>
+<references>
+
+
+<li>
+  J. Bloch and N. Gafter, <em>Java Puzzlers: Traps, Pitfalls, and Corner Cases</em>, 
+  Puzzle 44.
+  Addison-Wesley, 2005.
+</li>
+<li>
+  Java Platform, Standard Edition 6, API Specification:
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Throwable.html">Throwable</a>,
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Error.html">Error</a>,
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Exception.html">Exception</a>,
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/RuntimeException.html">RuntimeException</a>.
+</li>
+
+
+</references>
+</qhelp>

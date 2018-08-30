@@ -1,0 +1,88 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Many methods in the Java Development Kit (for examples, see the references below) 
+return status values (for example, as an <code>int</code>) to indicate 
+whether the method execution finished normally. They may return an 
+error code if the method did not finish normally.
+If the method result is not checked, exceptional method executions 
+may cause subsequent code to fail.
+</p>
+
+</overview>
+<recommendation>
+
+<p>You should insert additional code to check the return value and take appropriate action.</p>
+
+</recommendation>
+<example>
+
+<p>
+The following example uses the <code>java.io.InputStream.read</code> method to 
+read 16 bytes from an input stream and store them in an array.
+However, <code>read</code> may not actually be able to read as many
+bytes as requested, for example because the stream is exhausted. 
+Therefore, the code should not simply rely on the array <code>b</code> being filled with 
+precisely 16 bytes from the input stream.
+Instead, the code should check the method's return value, which indicates the number of bytes actually read.</p>
+
+<sample src="IgnoreExceptionalReturn.java" />
+
+</example>
+<references>
+
+
+<li>
+    CERT Secure Coding Standards: <a href="https://www.securecoding.cert.org/confluence/display/java/EXP00-J.+Do+not+ignore+values+returned+by+methods">
+        EXP00-J. Do not ignore values returned by methods</a>.
+</li>
+<li>
+  Java API Documentation, java.util.Queue: <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Queue.html#offer%28E%29">
+    offer</a>.
+</li>
+<li>
+  Java API Documentation, java.util.concurrent.BlockingQueue: <a href="http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/BlockingQueue.html#offer%28E,%20long,%20java.util.concurrent.TimeUnit%29">
+    offer</a>.
+</li>
+<li>
+  Java API Documentation, java.util.concurrent.locks.Condition: <a href="http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/locks/Condition.html#await%28long,%20java.util.concurrent.TimeUnit%29">
+    await</a>, 
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/locks/Condition.html#awaitUntil%28java.util.Date%29">
+    awaitUntil</a>,
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/locks/Condition.html#awaitNanos%28long%29">
+    awaitNanos</a>.
+</li>
+<li>
+  Java API Documentation, java.io.File: <a href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html#createNewFile%28%29">
+    createNewFile</a>,
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html#delete%28%29">
+    delete</a>,
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html#mkdir%28%29">
+    mkdir</a>,
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html#renameTo%28java.io.File%29">
+    renameTo</a>,
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html#setLastModified%28long%29">
+    setLastModified</a>,
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html#setReadOnly%28%29">
+    setReadOnly</a>,
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html#setWritable%28boolean%29">
+    setWritable(boolean)</a>,
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html#setWritable%28boolean,%20boolean%29">
+    setWritable(boolean, boolean)</a>.
+</li>
+<li>
+  Java API Documentation, java.io.InputStream: <a href="http://docs.oracle.com/javase/6/docs/api/java/io/InputStream.html#skip%28long%29">
+    skip</a>,
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/io/InputStream.html#read%28byte[]%29">
+    read(byte[])</a>,
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/io/InputStream.html#read%28byte[],%20int,%20int%29">
+    read(byte[], int, int)</a>.
+</li>
+
+
+</references>
+</qhelp>

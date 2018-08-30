@@ -1,0 +1,50 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+A <code>clone</code> method that is overridden in a subclass should call <code>super.clone</code>.
+Not doing so causes the subclass <code>clone</code> to return an object of the wrong type, which violates
+the contract for <code>Cloneable</code>.
+</p>
+
+</overview>
+<include src="MissingCloneDetails.qhelp" />
+
+<recommendation>
+<p>
+Every clone method should always use <code>super.clone</code> to construct the cloned object. This ensures that the cloned object
+is ultimately constructed by <code>Object.clone</code>, which uses reflection to ensure that an object of the correct
+runtime type is created.
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the attempt to clone <code>WrongEmployee</code> fails because
+<code>super.clone</code> is implemented incorrectly in its superclass <code>WrongPerson</code>.</p>
+
+<sample src="MissingCallToSuperCloneBad.java" />
+
+<p>However, in the following modified example, the attempt to clone <code>Employee</code> succeeds 
+because <code>super.clone</code> is implemented correctly in its superclass <code>Person</code>.</p>
+
+<sample src="MissingCallToSuperCloneGood.java" />
+
+</example>
+<references>
+
+
+<li>
+  J. Bloch, <em>Effective Java (second edition)</em>, Item 11. Addison-Wesley, 2008.
+</li>
+<li>
+  Java 6 API Specification: <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html#clone%28%29">Object.clone()</a>.
+</li>
+
+
+</references>
+</qhelp>

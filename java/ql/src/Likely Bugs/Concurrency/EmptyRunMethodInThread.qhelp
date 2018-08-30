@@ -1,0 +1,57 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>New threads can be defined using one of the following alternatives:</p>
+
+<ul>
+    <li>By extending the <code>Thread</code> class and overriding its <code>run</code> method.</li>
+    <li>By passing an argument of type <code>Runnable</code> to the constructor of the <code>Thread</code> class.</li>
+</ul>
+
+<p>Thread instances that are defined using another approach are likely to have no effect.</p>
+
+</overview>
+<recommendation>
+
+<p>To avoid empty thread instances, define new threads using one of the following alternatives:</p>
+
+<ul>
+    <li>By extending the <code>Thread</code> class and overriding its <code>run</code> method.</li>
+    <li>By passing an argument of type <code>Runnable</code> to the constructor of the 
+  <code>Thread</code> class.</li>
+</ul>
+
+</recommendation>
+<example>
+
+<p>In the following example, class <code>Bad</code> shows the definition of a thread that has no effect.</p>
+
+<sample src="EmptyRunMethodInThread.java" />
+
+<p>In the following example, class <code>GoodWithOverride</code> shows how to extend the 
+<code>Thread</code> class and override its <code>run</code> method, and class 
+<code>GoodWithRunnable</code> shows how to pass an argument of type <code>Runnable</code> to the 
+constructor of the <code>Thread</code> class.
+
+</p><sample src="EmptyRunMethodInThreadGood.java" />
+
+</example>
+<references>
+
+
+<li>
+  Java API Documentation:
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Thread.html">Thread</a>.
+</li>
+<li>
+  The Java Tutorials:
+  <a href="http://docs.oracle.com/javase/tutorial/essential/concurrency/runthread.html">Defining and Starting a Thread</a>.
+</li>
+
+
+</references>
+</qhelp>

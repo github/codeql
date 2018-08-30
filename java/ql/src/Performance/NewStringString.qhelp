@@ -1,0 +1,47 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>The <code>String</code> class is immutable, which means that there is
+no way to change the string that it represents. Consequently, there is rarely a
+need to copy a <code>String</code> object or construct a new instance based on
+an existing string, for example by writing something like <code>String hello =
+new String("hello")</code>. Furthermore, this practice is not memory efficient.</p>
+
+</overview>
+<recommendation>
+<p>The copied string is functionally indistinguishable from the argument that
+was passed into the <code>String</code> constructor, so you can simply omit the constructor call and 
+use the argument passed into it directly. Unless an explicit copy of the argument string is needed, 
+this is a safe transformation.</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows three cases of copying a string using the <code>String</code> 
+constructor, which is inefficient. In each case, simply removing the constructor call 
+<code>new String</code> and leaving the argument results in better code and less
+memory churn.</p>
+
+<sample src="NewStringString.java" />
+
+</example>
+<references>
+
+
+<li>
+  J. Bloch, <em>Effective Java (second edition)</em>,
+  Item 5.
+  Addison-Wesley, 2008.
+</li>
+<li>
+  Java Platform, Standard Edition 6, API Specification:
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html#String%28java.lang.String%29">String(String)</a>.
+</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,2 @@
+| Test.java:23:14:23:14 | i | Field i never assigned non-null value, yet it is read at $@. | Test.java:24:29:24:29 | i | Test.java:24 |
+| Test.java:31:14:31:14 | i | Field i never assigned non-null value, yet it is read at $@. | Test.java:32:29:32:29 | i | Test.java:32 |

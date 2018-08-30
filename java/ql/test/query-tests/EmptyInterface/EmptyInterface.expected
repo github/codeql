@@ -1,0 +1,3 @@
+| IAmBad.java:1:18:1:23 | IAmBad | Do not use empty interfaces; put some of the behavior in the interface or (better) an abstract superclass. |
+| IAmBadAsWell.java:1:18:1:29 | IAmBadAsWell | Do not use empty interfaces; put some of the behavior in the interface or (better) an abstract superclass. |
+| IAmBadToo.java:1:18:1:26 | IAmBadToo | Do not use empty interfaces; put some of the behavior in the interface or (better) an abstract superclass. |

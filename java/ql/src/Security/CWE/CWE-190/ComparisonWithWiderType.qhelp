@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>In a loop condition, comparison of a value of a narrow type with a value of a wide type may 
+always evaluate to <code>true</code> if the wider value is sufficiently large (or small). This is
+because the narrower value may overflow. This can lead to an infinite loop.</p>
+
+</overview>
+<recommendation>
+
+<p>Change the types of the compared values so that the value on the narrower side of the
+comparison is at least as wide as the value it is being compared with.</p>
+
+</recommendation>
+<example>
+
+<p>In this example, <code>bytesReceived</code> is compared against <code>MAXGET</code> in a 
+<code>while</code> loop. However, <code>bytesReceived</code> is a <code>short</code>, and 
+<code>MAXGET</code> is a <code>long</code>. Because <code>MAXGET</code> is larger than 
+<code>Short.MAX_VALUE</code>, the loop condition is always <code>true</code>, so the loop never 
+terminates.</p>
+
+<p>This problem is avoided in the 'GOOD' case because <code>bytesReceived2</code> is a 
+<code>long</code>, which is as wide as the type of <code>MAXGET</code>.</p>
+
+<sample src="ComparisonWithWiderType.java" />
+
+</example>
+<references>
+
+<li>The CERT Oracle Secure Coding Standard for Java:
+  <a href="https://www.securecoding.cert.org/confluence/display/java/NUM00-J.+Detect+or+prevent+integer+overflow">NUM00-J. Detect or prevent integer overflow</a>.</li>
+
+
+
+<!--  LocalWords:  CWE
+ -->
+
+</references>
+</qhelp>

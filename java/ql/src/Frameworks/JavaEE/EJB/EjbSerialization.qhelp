@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+The Enterprise JavaBeans 3.0 core specification, Section 21.1.2, states:
+</p>
+
+<blockquote>
+<p>
+The enterprise bean must not attempt to use the subclass and object substitution features of the
+Java Serialization Protocol.
+</p>
+<p>
+Allowing the enterprise bean to use these functions could compromise security.
+</p>
+</blockquote>
+
+</overview>
+<references>
+
+
+<li>
+  <a href="http://jcp.org/aboutJava/communityprocess/final/jsr220/index.html">
+  JSR-220 Enterprise JavaBeans 3.0 Final Release</a> (ejbcore),
+  Section 21.1.2 Programming Restrictions
+</li>
+
+
+</references>
+</qhelp>

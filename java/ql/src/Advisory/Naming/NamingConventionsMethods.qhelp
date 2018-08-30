@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A method name that begins with an uppercase letter does not follow standard
+naming conventions, which decreases code readability. For example, <code>Getbackground</code>.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Begin the method name with a lowercase letter and use camel case: capitalize the first letter of each word within
+the method name. For example, <code>getBackground</code>.
+</p>
+
+</recommendation>
+<references>
+
+
+<li>
+  J. Bloch, <em>Effective Java (second edition)</em>,
+  Item 56.
+  Addison-Wesley, 2008.
+</li>
+<li>
+  Java Language Specification:
+  <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-6.html#jls-6.1">6.1. Declarations</a>.
+</li>
+<li>
+  Java SE Documentation:
+  <a href="http://www.oracle.com/technetwork/java/javase/documentation/codeconventions-135099.html#367">9 - Naming Conventions</a>.
+</li>
+
+
+</references>
+</qhelp>

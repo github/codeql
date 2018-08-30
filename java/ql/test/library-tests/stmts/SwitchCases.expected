@@ -1,0 +1,6 @@
+| stmts/A.java:6:3:6:10 | stmt |
+| stmts/A.java:8:3:8:10 | stmt |
+| stmts/A.java:10:3:10:10 | stmt |
+| stmts/B.java:21:5:21:12 | stmt |
+| stmts/B.java:23:5:23:12 | stmt |
+| stmts/B.java:25:5:25:12 | stmt |

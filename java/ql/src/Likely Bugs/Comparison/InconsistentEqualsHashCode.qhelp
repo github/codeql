@@ -1,0 +1,56 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A class that overrides only one of <code>equals</code> and <code>hashCode</code>
+is likely to violate the contract of the <code>hashCode</code> method. The contract
+requires that <code>hashCode</code> gives the same integer result for any two equal objects.
+Not enforcing this property may cause unexpected results when storing and
+retrieving objects of such a class in a hashing data structure.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Usually, both methods should be overridden to ensure that they are consistent.
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the class <code>InconsistentEqualsHashCode</code> overrides 
+<code>hashCode</code> but not <code>equals</code>.</p>
+
+<sample src="InconsistentEqualsHashCode.java" />
+
+<p>In the following example, the class <code>InconsistentEqualsHashCodeFix</code> overrides both
+<code>hashCode</code> and <code>equals</code>.</p>
+
+<sample src="InconsistentEqualsHashCodeGood.java" />
+
+</example>
+<references>
+
+
+<li>
+  J. Bloch, <em>Effective Java (second edition)</em>, Item 9. Addison-Wesley, 2008.
+</li>
+<li>
+  Java API Documentation:
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html#equals%28java.lang.Object%29">Object.equals</a>,
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html#hashCode%28%29">Object.hashCode</a>.
+</li>
+<li>
+  IBM developerWorks: <a href="http://www.ibm.com/developerworks/java/library/j-jtp05273/index.html">Java theory and practice: Hashing it out</a>.
+</li>
+<li>
+Help - Eclipse Platform:
+<a href="http://help.eclipse.org/indigo/index.jsp?topic=%2Forg.eclipse.jdt.doc.user%2Freference%2Fpreferences%2Fjava%2Fcompiler%2Fref-preferences-errors-warnings.htm">Java Compiler Errors/Warnings Preferences</a>.
+</li>
+
+
+</references>
+</qhelp>

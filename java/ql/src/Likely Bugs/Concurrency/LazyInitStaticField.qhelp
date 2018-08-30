@@ -1,0 +1,50 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>The tactic of initializing a static field the first time it is used, known as "lazy initialization", can be problematic
+in a multi-threaded context when used without proper synchronization. If a separate thread starts executing before the field is initialized,
+the thread may see an incompletely initialized object.
+</p>
+
+</overview>
+<recommendation>
+
+<p>If lazy initialization is desirable for performance reasons, the best solution is usually to
+declare the enclosing method <code>synchronized</code>. Otherwise, avoid lazy initialization and
+initialize static fields using static initializers. A third possibility is to declare the field
+<code>volatile</code> and use the double-checked locking idiom as explained in the article
+referenced below. As the article points out, it is crucial to declare the field
+<code>volatile</code>: double-checked locking by itself is <i>not</i> correct under the Java
+memory model.
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the static field <code>resource</code> is initialized without
+synchronization.</p>
+
+<sample src="LazyInitStaticField.java" />
+
+<p>In the following modification of the above example, <code>Singleton</code> uses the recommended
+approach of using a static initializer to initialize <code>resource</code>.</p>
+
+<sample src="LazyInitStaticFieldGood.java" />
+
+</example>
+<references>
+
+
+    <li>University of Maryland Department of Computer Science: <a href="http://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html">The "Double-Checked Locking is Broken" Declaration</a>.</li>
+
+
+<!--
+<p>Wikipedia article on the <a href="http://en.wikipedia.org/wiki/Double-checked_locking">Double-Checked Locking Pattern</a></p>
+-->
+
+</references>
+</qhelp>

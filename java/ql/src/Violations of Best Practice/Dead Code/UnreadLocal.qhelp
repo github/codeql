@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A local variable that is never read is useless.</p>
+
+<p>As a matter of good practice, there should be no unused or useless code. It makes the program
+more difficult to understand and maintain, and can waste a programmer's time.</p>
+
+</overview>
+<recommendation>
+
+<p>This rule applies to variables that are never used as well as variables that are only
+written to but never read. In both cases, ensure that no operations are missing that would use the 
+local variable. If appropriate, simply remove the declaration. However, if the variable is
+written to, ensure that any side-effects in the assignments are retained. (For further
+details, see the example.)</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the local variable <code>oldQuantity</code> is assigned a value but
+never read. In the fixed version of the example, the variable is removed but the call to 
+<code>items.put</code> in the assignment is retained.</p>
+
+<sample src="UnreadLocal.java" />
+
+</example>
+<references>
+
+
+<li>
+Help - Eclipse Platform:
+<a href="http://help.eclipse.org/indigo/index.jsp?topic=%2Forg.eclipse.jdt.doc.user%2Freference%2Fpreferences%2Fjava%2Fcompiler%2Fref-preferences-errors-warnings.htm">Java Compiler Errors/Warnings Preferences</a>.
+</li>
+
+
+</references>
+</qhelp>

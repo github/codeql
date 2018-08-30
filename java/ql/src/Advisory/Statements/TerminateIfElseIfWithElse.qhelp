@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+An <code>if-else-if</code> statement without a terminating <code>else</code>
+clause may allow execution to 'fall through' silently, if none of the <code>if</code> clauses are
+matched.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Include a terminating <code>else</code> clause to <code>if-else-if</code> statements
+to prevent execution from falling through silently. If the terminating <code>else</code> clause is 
+intended to be unreachable code, it is advisable that it throws a <code>RuntimeException</code> to 
+alert the user of an internal error.
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the <code>if</code> statement outputs the grade that is achieved depending on the
+test score. However, if the score is less than 60, execution falls through silently.</p>
+
+<sample src="TerminateIfElseIfWithElse.java" />
+
+<p>In the following modified example, the <code>if</code> statement includes a terminating
+<code>else</code> clause, to allow for scores that are less than 60.</p>
+
+<sample src="TerminateIfElseIfWithElseGood.java" />
+
+</example>
+<references>
+
+
+<li>
+  Java SE Documentation:
+  <a href="http://www.oracle.com/technetwork/java/javase/documentation/codeconventions-142311.html#449">7.4 if, if-else, if else-if else Statements</a>.
+</li>
+
+
+</references>
+</qhelp>

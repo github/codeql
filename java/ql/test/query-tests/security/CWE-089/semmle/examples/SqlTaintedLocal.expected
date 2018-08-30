@@ -1,0 +1,4 @@
+| Test.java:36:47:36:52 | query1 | Query might include code from $@. | Test.java:190:26:190:38 | args | this user input |
+| Test.java:44:62:44:67 | query3 | Query might include code from $@. | Test.java:190:26:190:38 | args | this user input |
+| Test.java:56:47:56:61 | querySbToString | Query might include code from $@. | Test.java:190:26:190:38 | args | this user input |
+| Test.java:186:47:186:68 | queryWithUserTableName | Query might include code from $@. | Test.java:190:26:190:38 | args | this user input |

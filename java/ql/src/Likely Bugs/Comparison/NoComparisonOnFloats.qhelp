@@ -1,0 +1,54 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+Equality tests on floating point values
+may lead to unexpected results because of arithmetic imprecision.
+For example, the expression <code>23.42f==23.42</code>
+evaluates to <code>false</code>.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Instead of testing for <i>exact equality</i> between floating point values, check that the 
+difference between the values is within an appropriate error margin.</p>
+
+<p>Alternatively, if you do not want any inaccuracy when testing for equality, use one of the 
+following instead of floating point values:</p>
+<ul>
+    <li><code>BigDecimal</code> class. This can store decimal values with higher precision.</li>
+    <li><code>long</code> type. Because this is an integer type, you must convert any decimal values
+    to whole values. For example, represent $1.43 as 143 cents.</li>
+</ul>
+
+</recommendation>
+<example>
+<p>In the following example, <code>(0.1 + 0.2) == 0.3</code> evaluates to <code>false</code>, even
+though you would expect it to evaluate to <code>true</code>. This is because of the imprecision of 
+floating point data types.</p>
+<sample src="NoComparisonOnFloats.java" />
+
+<p>In the following improved example, the test for equality is performed by calculating the difference
+between the two values, and checking if the difference is within the error margin, <code>EPSILON</code>.</p>
+<sample src="NoComparisonOnFloatsGood.java" />
+
+</example>
+<references>
+
+
+<li>
+J. Bloch, <em>Effective Java (second edition)</em>, Item 48. Addison-Wesley, 2008.
+</li>
+<li>
+Numerical Computation Guide: 
+(<a href="http://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html">What Every Computer Scientist Should Know About Floating-Point Arithmetic</a>).
+</li>
+
+
+</references>
+</qhelp>

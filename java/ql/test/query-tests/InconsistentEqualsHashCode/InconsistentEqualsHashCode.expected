@@ -1,0 +1,2 @@
+| Test.java:19:7:19:14 | NoEquals | Class NoEquals overrides $@ but not equals. | Test.java:21:13:21:20 | hashCode | hashCode |
+| Test.java:26:7:26:16 | NoHashCode | Class NoHashCode overrides $@ but not hashCode. | Test.java:28:17:28:22 | equals | equals |

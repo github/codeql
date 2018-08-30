@@ -1,0 +1,47 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Calling <code>Thread.sleep</code> with a lock held may lead to very poor performance
+or even deadlock. This is because <code>Thread.sleep</code> does not cause a thread to release its locks.</p>
+
+</overview>
+<recommendation>
+
+<p>
+<code>Thread.sleep</code> should be called only outside of a <code>synchronized</code> block.
+However, a better way for threads to yield execution time to other threads may be to use either of 
+the following solutions:</p>
+
+<ul>
+    <li>The <code>java.util.concurrent</code> library</li>
+    <li>The <code>wait</code> and <code>notifyAll</code> methods</li> 
+</ul>
+
+</recommendation>
+<example>
+
+<p>In the following example of the problem, two threads, <code>StorageThread</code> and <code>OtherThread</code>,
+are started. Both threads output a message to show that they have started but then 
+<code>StorageThread</code> locks <code>counter</code> and goes to sleep. The lock prevents 
+<code>OtherThread</code> from locking <code>counter</code>, so it has to wait until 
+<code>StorageThread</code> has woken up and unlocked <code>counter</code> before it can continue.</p>
+
+<sample src="SleepWithLock.java" />
+
+<p>To avoid this problem, <code>StorageThread</code> should call <code>Thread.sleep</code> outside 
+the <code>synchronized</code> block instead, so that <code>counter</code> is unlocked.</p>
+
+</example>
+<references>
+
+
+    <li>Java API Documentation: <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Thread.html#sleep%28long%29">Thread.sleep()</a>,
+    <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html#wait%28%29">Object.wait()</a>,
+    <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html#notifyAll%28%29">Object.notifyAll()</a>,
+    <a href="http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/package-summary.html#package_description">java.util.concurrent</a>.</li>
+
+
+</references>
+</qhelp>

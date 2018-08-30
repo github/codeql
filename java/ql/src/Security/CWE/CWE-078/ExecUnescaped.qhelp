@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Code that builds a command line by concatenating strings that have
+been entered by a user allows the user to execute malicious code.</p>
+
+</overview>
+<recommendation>
+
+<p>Execute external commands using an array of strings rather than a
+single string. By using an array, many possible vulnerabilities in the
+formatting of the string are avoided.</p>
+
+
+</recommendation>
+<example>
+
+<p>In the following example, <code>latlonCoords</code> contains a string 
+that has been entered by a user but not validated by the program. This
+allows the user to, for example, append an ampersand (&amp;) followed by the command for
+a malicious program to the end of the string. The ampersand instructs
+Windows to execute another program. In the block marked 'BAD', <code>latlonCoords</code>
+is passed to <code>exec</code> as part of a concatenated string, which allows more than one
+command to be executed. However, in the block marked 'GOOD', <code>latlonCoords</code>
+is passed as part of an array, which means that <code>exec</code> treats it only as
+an argument.</p>
+
+<sample src="ExecUnescaped.java" />
+
+</example>
+<references>
+
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/Command_Injection">Command Injection</a>.
+</li>
+<li>The CERT Oracle Secure Coding Standard for Java:
+  <a href="https://www.securecoding.cert.org/confluence/display/java/IDS07-J.+Sanitize+untrusted+data+passed+to+the+Runtime.exec%28%29+method">IDS07-J. Sanitize untrusted data passed to the Runtime.exec() method</a>.</li>
+
+
+
+<!--  LocalWords:  CWE untrusted unsanitized Runtime
+ -->
+
+</references>
+</qhelp>

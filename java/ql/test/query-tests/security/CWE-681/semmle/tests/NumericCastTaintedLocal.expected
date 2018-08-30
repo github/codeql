@@ -1,0 +1,1 @@
+| Test.java:21:17:21:25 | (...)... | $@ flows to here and is cast to a narrower type, potentially causing truncation. | Test.java:11:28:11:36 | System.in | User-provided value |

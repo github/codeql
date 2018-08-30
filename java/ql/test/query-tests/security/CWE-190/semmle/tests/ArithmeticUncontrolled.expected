@@ -1,0 +1,2 @@
+| Test.java:209:17:209:24 | ... + ... | $@ flows to here and is used in arithmetic, potentially causing an overflow. | Test.java:205:14:205:57 | nextInt(...) | Uncontrolled value |
+| Test.java:240:37:240:46 | ... + ... | $@ flows to here and is used in arithmetic, potentially causing an overflow. | Test.java:205:14:205:57 | nextInt(...) | Uncontrolled value |

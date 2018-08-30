@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>It is bad practice to have methods in a class with names that differ
+only in their capitalization. This can be confusing and lead to mistakes.</p>
+
+</overview>
+<recommendation>
+
+<p>Name the methods to make the distinction between them
+clear.</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows a class that contains two methods: <code>toUri</code> and
+<code>toURI</code>. One or both of them should be renamed.</p>
+
+<sample src="ConfusingMethodNames.java" />
+
+</example>
+<references>
+
+
+<li>
+R. C. Martin, <em>Clean Code: A Handbook of Agile Software Craftsmanship</em>, 17.N4. Prentice Hall, 2008.
+</li>
+
+
+</references>
+</qhelp>

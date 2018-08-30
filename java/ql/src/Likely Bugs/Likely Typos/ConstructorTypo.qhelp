@@ -1,0 +1,55 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A method that has the same name as its declaring type may be intended to be a constructor, not a
+method.</p>
+
+</overview>
+<example>
+
+<p>The following example shows how the singleton design pattern is often misimplemented. The 
+programmer intends the constructor of <code>MasterSingleton</code> to
+be protected so that it cannot be instantiated (because the
+singleton instance should be retrieved using <code>getInstance</code>).
+However, the programmer accidentally wrote <code>void</code> in front of the
+constructor name, which makes it a method rather than a constructor.</p>
+
+<sample src="ConstructorTypo.java" />
+
+</example>
+<recommendation>
+
+<p>Ensure that methods that have the same name as their declaring type are intended to be
+methods. Even if they are intended to be methods, it may be better to rename them to avoid
+confusion.</p>
+
+</recommendation>
+<references>
+
+
+<li>
+  J. Bloch and N. Gafter, <em>Java Puzzlers: Traps, Pitfalls, and Corner Cases</em>, Puzzle 63.
+  Addison-Wesley, 2005.
+</li>
+<li>
+E. Gamma, R. Helm, R. Johnson, J. Vlissides,
+<em>Design Patterns: Elements of Reusable Objection-Oriented Software</em>,
+&sect;3. Addison-Wesley Longman Publishing Co. Inc., 1995.
+</li>
+<li>
+Help - Eclipse Platform:
+<a href="http://help.eclipse.org/indigo/index.jsp?topic=%2Forg.eclipse.jdt.doc.user%2Freference%2Fpreferences%2Fjava%2Fcompiler%2Fref-preferences-errors-warnings.htm">Java Compiler Errors/Warnings Preferences</a>.
+</li>
+<li>
+Java Language Specification:
+<a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-8.html#jls-8.4">8.4 Method Declarations</a>,
+<a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-8.html#jls-8.8">8.8 Constructor Declarations</a>.
+</li>
+
+
+</references>
+</qhelp>

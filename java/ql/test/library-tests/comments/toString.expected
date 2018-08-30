@@ -1,0 +1,20 @@
+| Test.java:1:1:4:3 | /** A JavaDoc comment ... */ |
+| Test.java:6:2:6:45 | /** A JavaDoc comment with a single line. */ |
+| Test.java:8:3:8:26 | // a single-line comment |
+| Test.java:9:3:9:32 | // another single-line comment |
+| Test.java:12:2:14:4 | /* A block comment ... */ |
+| Test.java:16:2:16:42 | /* A block comment with a single line. */ |
+| Test.java:18:2:18:69 | // an end-of-line comment with a spurious trailing comment marker */ |
+| Test.java:19:2:19:59 | // an end-of-line comment with trailing whitespace         |
+| Test.java:20:2:20:49 | //an end-of-line comment without a leading space |
+| Test.java:21:17:21:61 | // an end-of-line comment with preceding code |
+| TestWindows.java:1:1:4:3 | /** A JavaDoc comment ... */ |
+| TestWindows.java:6:2:6:45 | /** A JavaDoc comment with a single line. */ |
+| TestWindows.java:8:3:8:27 | // a single-line comment |
+| TestWindows.java:9:3:9:33 | // another single-line comment |
+| TestWindows.java:12:2:14:4 | /* A block comment ... */ |
+| TestWindows.java:16:2:16:42 | /* A block comment with a single line. */ |
+| TestWindows.java:18:2:18:70 | // an end-of-line comment with a spurious trailing comment marker */ |
+| TestWindows.java:19:2:19:60 | // an end-of-line comment with trailing whitespace         |
+| TestWindows.java:20:2:20:50 | //an end-of-line comment without a leading space |
+| TestWindows.java:21:17:21:62 | // an end-of-line comment with preceding code |

@@ -1,0 +1,49 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The <code>String.format</code> method and related methods, like <code>PrintStream.printf</code> and
+<code>Formatter.format</code>, all accept a format string that is used to format the trailing
+arguments to the format call by providing inline format specifiers. If the format string contains
+unsanitized input from an untrusted source, then that string may contain extra format specifiers that
+cause an exception to be thrown or information to be leaked.</p>
+
+<p>The Java standard library implementation for the format methods throws an exception if either the
+format specifier does not match the type of the argument, or if there are too few or too many
+arguments. If unsanitized input is used in the format string, it may contain invalid extra format
+specifiers which cause an exception to be thrown.</p>
+
+<p>Positional format specifiers may be used to access an argument to the format call by position.
+Unsanitized input in the format string may use a positional format specifier to access information
+that was not intended to be visible. For example, when formatting a Calendar instance we may intend
+to print only the year, but a user-specified format string may include a specifier to access the month
+and day.</p>
+
+</overview>
+<recommendation>
+<p>If the argument passed as a format string is meant to be a plain string rather than a format string,
+then pass <code>%s</code> as the format string, and pass the original argument as the sole trailing
+argument.</p>
+
+</recommendation>
+<example>
+<p>The following program is meant to check a card security code for a stored credit card:</p>
+<sample src="ExternallyControlledFormatString.java" />
+<p>However, in the first format call it uses the cardSecurityCode provided by the user in a format
+string. If the user includes a format specifier in the cardSecurityCode field, they may be able to
+cause an exception to be thrown, or to be able to access extra information about the stored card
+expiration date.</p>
+<p>The second format call shows the correct approach. The user-provided value is passed as an
+argument to the format call. This prevents any format specifiers in the user provided value from
+being evaluated.</p>
+</example>
+
+<references>
+
+<li>CERT Java Coding Standard: <a href="https://www.securecoding.cert.org/confluence/display/java/IDS06-J.+Exclude+unsanitized+user+input+from+format+strings">IDS06-J. Exclude unsanitized user input from format strings</a>.</li>
+<li>Java SE Documentation: <a href="https://docs.oracle.com/javase/tutorial/java/data/numberformat.html">Formatting Numeric Print Output</a>.</li>
+<li>Java API: <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html">Formatter</a>.</li>
+
+</references>
+</qhelp>

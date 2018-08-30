@@ -1,0 +1,6 @@
+| LazyInits.java:98:4:98:25 | ...=... | Incorrect lazy initialization of static field $@: Missing synchronization. | LazyInits.java:95:27:95:30 | bad1 | bad1 |
+| LazyInits.java:108:6:108:27 | ...=... | Incorrect lazy initialization of static field $@: Bad synchronization. | LazyInits.java:103:27:103:30 | bad2 | bad2 |
+| LazyInits.java:120:6:120:27 | ...=... | Incorrect lazy initialization of static field $@: Bad synchronization. | LazyInits.java:115:27:115:30 | bad3 | bad3 |
+| LazyInits.java:132:6:132:27 | ...=... | Incorrect lazy initialization of static field $@: The field must be volatile. | LazyInits.java:127:27:127:30 | bad4 | bad4 |
+| LazyInits.java:144:6:144:27 | ...=... | Incorrect lazy initialization of static field $@: The field must be volatile. | LazyInits.java:139:27:139:30 | bad5 | bad5 |
+| LazyInits.java:156:6:156:27 | ...=... | Incorrect lazy initialization of static field $@: Bad synchronization. | LazyInits.java:151:36:151:39 | bad6 | bad6 |

@@ -1,0 +1,6 @@
+| MissedTernaryOpportunityTest.java:6:3:6:13 | stmt | Both branches of this 'if' statement return - consider using '?' to express intent better. |
+| MissedTernaryOpportunityTest.java:32:3:32:13 | stmt | Both branches of this 'if' statement write to the same variable - consider using '?' to express intent better. |
+| MissedTernaryOpportunityTest.java:74:9:74:19 | stmt | Both branches of this 'if' statement return - consider using '?' to express intent better. |
+| MissedTernaryOpportunityTest.java:133:9:133:18 | stmt | Both branches of this 'if' statement write to the same variable - consider using '?' to express intent better. |
+| MissedTernaryOpportunityTest.java:145:13:145:23 | stmt | Both branches of this 'if' statement return - consider using '?' to express intent better. |
+| MissedTernaryOpportunityTest.java:155:13:155:23 | stmt | Both branches of this 'if' statement return - consider using '?' to express intent better. |

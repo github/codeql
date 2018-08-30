@@ -1,0 +1,59 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+A class that contains a high number of fields may indicate the following problems:
+</p>
+
+<ul>
+<li>The class may be too big or have too many responsibilities.</li>
+<li>Several of the fields may be part of the same abstraction.</li>
+</ul>
+
+</overview>
+<recommendation>
+
+<p>
+The solution depends on the reason for the high number of fields:
+</p>
+
+<ul>
+<li>
+If the class is too big, you should split it into multiple smaller classes.
+</li>
+
+<li>
+<p>
+If several of the fields are part of the same abstraction, you should
+group them into a separate class, using the 'Extract Class' refactoring described
+in [Fowler].
+</p>
+</li>
+</ul>
+
+</recommendation>
+<example>
+
+<p>In the following example, class <code>Person</code> contains a number of fields.</p>
+
+<sample src="TNumberOfFields.java" />
+
+<p>
+This can be refactored by grouping fields that are part of the same abstraction into new classes
+<code>Name</code> and <code>Address</code>.</p>
+
+<sample src="TNumberOfFieldsGood.java" />
+
+</example>
+<references>
+
+
+<li>
+M. Fowler, <em>Refactoring</em>. Addison-Wesley, 1999.
+</li>
+
+
+</references>
+</qhelp>

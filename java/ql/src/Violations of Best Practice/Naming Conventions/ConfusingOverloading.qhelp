@@ -1,0 +1,51 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Overloaded method declarations that have the same number of parameters may be confusing
+if none of the corresponding pairs of parameter types is substantially different. A pair of 
+parameter types A and B is substantially different if A cannot be cast to B and B cannot be cast
+to A. If the parameter types are not substantially different then the programmer may assume that the method with parameter type A is called when in fact 
+the method with parameter type B is called.</p>
+
+</overview>
+<recommendation>
+
+<p>It is generally best to avoid
+declaring overloaded methods with the same number of parameters, unless at least one of
+the corresponding parameter pairs is substantially different.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+Declaring overloaded methods <code>process(Object obj)</code> and <code>process(String s)</code>
+is confusing because the parameter types are not substantially different. It is clearer to declare 
+methods with different names: <code>processObject(Object obj)</code> and 
+<code>processString(String s)</code>.</p>
+
+<p>In contrast, declaring overloaded methods <code>process(Object obj, String s)</code> and
+<code>process(String s, int i)</code> is not as confusing because the second parameters of each
+method are substantially different.</p>
+
+</example>
+<references>
+
+
+<li>
+  J. Bloch, <em>Effective Java (second edition)</em>, 
+  Item 41. 
+  Addison-Wesley, 2008.
+</li>
+<li>
+  Java Language Specification:
+  <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-15.html#jls-15.12">15.12 Method Invocation Expressions</a>.
+</li>
+
+
+</references>
+</qhelp>

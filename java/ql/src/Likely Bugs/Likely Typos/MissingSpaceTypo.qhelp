@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Splitting a long string literal over multiple lines can often aid readability,
+but this also makes it difficult to notice whether a space is missing where the
+strings are concatenated.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Check the string literal to see whether it has the intended text.
+In particular, look for missing spaces near line breaks.
+</p>
+
+</recommendation>
+
+<example>
+<p>
+The following example shows a text literal that is split over two lines and
+omits a space character between the two words at the line break.
+</p>
+<sample src="MissingSpaceTypoBad.java" />
+
+</example>
+
+<references>
+
+<li>
+Java Language Specification:
+<a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-3.html#jls-3.10.5">String Literals</a>.
+</li>
+
+</references>
+
+</qhelp>

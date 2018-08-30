@@ -1,0 +1,54 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Calls to the <code>notify</code> method rather than <code>notifyAll</code>
+may fail to wake up the correct thread if an object's monitor (intrinsic lock) is used for
+multiple conditions. <code>notify</code> only wakes up a single arbitrary thread that
+is waiting on the object's monitor, whereas <code>notifyAll</code>
+wakes up all such threads.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that the call to <code>notify</code>
+instead of <code>notifyAll</code> is a correct and desirable optimization.
+If not, call <code>notifyAll</code> instead.
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the methods <code>produce</code> and <code>consume</code> both use
+<code>notify</code> to tell any waiting threads that an object has been added or removed from the buffer.
+However, this means that only <i>one</i> thread is notified. The woken-up thread might not be able to proceed
+due to its condition being false, immediately going back to the waiting state. As a result no progress is made.</p>
+
+<sample src="NotifyNotNotifyAll.java" />
+
+<p>When using <code>notifyAll</code> instead of <code>notify</code>, <i>all</i> threads are notified,
+and if there are any threads that could proceed, we can be sure that at least one of them will do so.
+</p>
+
+</example>
+<references>
+
+
+<li>
+  J. Bloch.
+  <em>Effective Java (second edition)</em>, p. 277.
+  Addison-Wesley, 2008.
+</li>
+<li>
+  Java API Documentation:
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html#notify%28%29">notify()</a>,
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html#notifyAll%28%29">notifyAll()</a>.
+</li>
+
+
+</references>
+</qhelp>

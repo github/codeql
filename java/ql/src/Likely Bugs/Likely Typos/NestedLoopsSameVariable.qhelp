@@ -1,0 +1,30 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>The behavior of nested loops in which the iteration variable is the same for both loops
+is difficult to understand because the inner loop affects the iteration variable of the outer loop. 
+This is probably a typographical error.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that a different iteration variable is used for each loop.
+</p>
+
+</recommendation>
+<references>
+
+
+<li>
+  The Java Language Specification:
+  <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-14.html#jls-14.14.1">The basic for Statement</a>.
+</li>
+
+
+</references>
+</qhelp>

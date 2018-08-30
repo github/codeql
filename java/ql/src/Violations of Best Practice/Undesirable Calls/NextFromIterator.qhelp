@@ -1,0 +1,49 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+    
+
+<overview>
+<p>Iterator implementations with a <code>hasNext</code> method that
+calls the <code>next</code> method are most likely incorrect. This is because <code>next</code> 
+changes the iterator's position to the next element and returns that element, which is unlikely to
+be desirable in the implementation of <code>hasNext</code>.</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that any calls to <code>next</code> from 
+within <code>hasNext</code> are legitimate. 
+The <code>hasNext</code> method should indicate whether there are
+further elements remaining in the iteration without changing the iterator's state by calling
+<code>next</code>.
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, which outputs the contents of a string, <code>hasNext</code> calls 
+<code>next</code>, which has the effect of changing the iterator's position. Given that 
+<code>main</code> also calls <code>next</code> when it outputs an item, some items are skipped and 
+only half the items are output.</p>
+
+<sample src="NextFromIterator.java" />
+
+<p>Instead, the implementation of <code>hasNext</code> should use another way of indicating whether
+there are further elements in the string without calling <code>next</code>. For example, <code>hasNext</code>
+could check the underlying array directly to see if there is an element at the next position.</p>
+
+</example>
+<references>
+
+
+<li>
+  Java API Documentation:  
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html#hasNext%28%29">Iterator.hasNext()</a>,
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html#next%28%29">Iterator.next()</a>.
+</li>
+
+
+</references>
+</qhelp>

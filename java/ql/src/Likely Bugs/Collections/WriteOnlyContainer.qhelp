@@ -1,0 +1,53 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+If the contents of a collection or map are never accessed in any way, then it is useless and
+the code that updates it is effectively dead code. Often, such objects are left over from
+an incomplete refactoring, or they indicate an underlying logic error.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Either remove the collection/map if it is genuinely unnecessary, or ensure that its
+elements are accessed.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example code, the <code>reachable</code> method determines whether a node in
+a tree is reachable from <code>ROOT</code>. It maintains a set <code>reachableNodes</code>,
+which contains all nodes that have previously been found to be reachable. Most likely, this set
+is meant to act as a cache to avoid spurious recomputation, but as it stands the code never checks
+whether any node is contained in the set.
+</p> 
+
+<sample src="WriteOnlyContainer.java" />
+
+<p>
+In the following modification of the above example, <code>reachable</code> checks the cache
+to see whether the node has already been considered.
+</p>
+
+<sample src="WriteOnlyContainerGood.java" />
+
+</example>
+<references>
+
+
+<li>
+  Java API Documentation:
+  <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Collection.html">Collection</a>,
+  <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Map.html">Map</a>.
+</li>
+
+
+</references>
+</qhelp>

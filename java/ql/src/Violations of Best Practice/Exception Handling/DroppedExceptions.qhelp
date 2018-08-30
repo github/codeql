@@ -1,0 +1,62 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>You should not drop an exception, because it
+indicates that an unusual program state has been reached.
+This usually requires corrective actions to be performed to recover
+from the exceptional state and try to resume normal program operation.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+You should do one of the following:</p>
+
+<ul>
+    <li>Catch and handle the exception.</li>
+    <li>Throw the exception to the outermost level of nesting.</li>
+</ul>
+
+<p>Note that usually you should catch and handle a checked exception, but you can throw an 
+unchecked exception to the outermost level.
+</p>
+
+<p>There is occasionally a valid reason for ignoring an exception. In such cases, 
+you should document the reason to improve the readability of the code. Alternatively, 
+you can implement a static method with an empty body to handle these exceptions. 
+Instead of dropping the exception altogether, you can then pass it to the static method with 
+a string explaining the reason for ignoring it.</p> 
+
+</recommendation>
+<section title="Examples">
+<p>The following example shows a dropped exception.</p>
+<sample src="DroppedExceptions.java" />
+
+<p>The following example adds a comment to document why the exception may be ignored.</p>
+<sample src="DroppedExceptions-comment.java" />
+
+<p>The following example shows how you can improve code readability by defining a new utility method.</p>
+<sample src="DroppedExceptions-ignore.java" />
+
+<p>The following example shows the exception being passed to <code>ignore</code> with a comment.</p>
+<sample src="DroppedExceptions-good.java" />
+
+</section>
+<references>
+
+
+<li>
+  J. Bloch, <em>Effective Java (second edition)</em>, Item 65. Addison-Wesley, 2008.
+</li>
+<li>
+  The Java Tutorials: <a href="http://docs.oracle.com/javase/tutorial/essential/exceptions/runtime.html">Unchecked Exceptions - The Controversy</a>.
+</li>
+
+
+</references>
+</qhelp>

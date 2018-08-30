@@ -1,0 +1,64 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+  <p>
+    The classes <code>java.io.OutputStream</code>
+    and <code>java.io.FilterOutputStream</code> only require
+    subclasses to implement the method <code>write(byte b)</code>.
+    Typically, uses of <code>OutputStream</code>s will not write
+    single bytes, but an array via the <code>write(byte[] b, int off,
+    int len)</code> method. The default implementation of this method,
+    which you are not required to override,
+    calls <code>write(byte b)</code> for each byte in the array. If
+    this method involves I/O, such as accessing the network or disk,
+    this is likely to incur significant overhead.
+  </p>
+</overview>
+
+<recommendation>
+  <p>
+    Always provide an implementation of the <code>write(byte[] b, int
+      off, int len)</code> method.
+  </p>
+</recommendation>
+
+<example>
+
+  <p>
+    The following example shows a subclass
+    of <code>OutputStream</code> that simply wraps
+    a <code>DigestOutputStream</code> to confirm that the data it
+    writes to a file has the expected MD5 hash. Without an
+    implementation of <code>write(byte[] b, int off, int len)</code>
+    this will be very slow, because it makes a call
+    to <code>DigestOutputStream.write(byte b)</code>
+    and <code>FileOutputStream.write(byte b)</code> for each byte
+    written.
+  </p>
+
+  <sample src="InefficientOutputStreamBad.java" />
+
+  <p>
+    The example can be updated to use a more efficient method. In this
+    case, calls to <code>write(byte[] b, int off, int len)</code> are
+    simply forwarded to <code>DigestOutputStream.write(byte[] b, int
+    off, int len)</code>.
+  </p>
+
+  <sample src="InefficientOutputStreamGood.java" />
+
+</example>
+
+<references>
+
+<li>
+  Java Platform, Standard Edition 8, API Documentation:
+  <a href="http://docs.oracle.com/javase/8/docs/api/java/io/OutputStream.html#write-byte:A-int-int-">OutputStream.write(byte[] b, int off, int len)</a>,
+  <a href="http://docs.oracle.com/javase/8/docs/api/java/io/FilterOutputStream.html#write-byte:A-int-int-">FilterOutputStream.write(byte[] b, int off, int len)</a>.
+</li>
+
+</references>
+</qhelp>

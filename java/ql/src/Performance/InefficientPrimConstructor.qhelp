@@ -1,0 +1,62 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Primitive values (for example <code>int</code>, <code>float</code>, <code>boolean</code>) 
+all have corresponding reference types known as <em>boxed types</em>
+(for example <code>Integer</code>, <code>Float</code>, <code>Boolean</code>). These boxed types
+can be used when an actual object is required. While they all provide
+constructors that take a primitive value of the appropriate type, it is usually considered
+bad practice to call those constructors directly.</p>
+
+<p>Each boxed type provides a static <code>valueOf</code> method
+that takes an argument of the appropriate primitive type and returns an object representing
+it. The advantage of calling <code>valueOf</code> over calling a constructor is that it allows for 
+some caching of instances. By reusing these cached instances instead of 
+constructing new heap objects all the time, a significant amount of garbage collector effort can be saved.</p>
+
+</overview>
+<recommendation>
+
+<p>In almost all circumstances, a call of, for example, <code>Integer.valueOf(42)</code> can be 
+used instead of <code>new Integer(42)</code>.</p>
+
+<p>Note that sometimes you can rely on Java's
+<em>autoboxing</em> feature, which implicitly calls <code>valueOf</code>. For details, see the
+example.</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows the three ways of creating a new integer. In the autoboxing example,
+the zero is autoboxed to an <code>Integer</code> because the constructor <code>Account</code> takes
+an argument of this type.</p>
+
+<sample src="InefficientPrimConstructor.java" />
+
+</example>
+<references>
+
+
+<li>
+  J. Bloch, <em>Effective Java (second edition)</em>,
+  Items 1 and 5.
+  Addison-Wesley, 2008.
+</li>
+<li>
+  Java Platform, Standard Edition 6, API Documentation:  
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Boolean.html#valueOf%28boolean%29">Boolean.valueOf()</a>,
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Byte.html#valueOf%28byte%29">Byte.valueOf()</a>,
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Short.html#valueOf%28short%29">Short.valueOf()</a>,
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Integer.html#valueOf%28int%29">Integer.valueOf()</a>,
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Long.html#valueOf%28long%29">Long.valueOf()</a>,
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Float.html#valueOf%28float%29">Float.valueOf()</a>,
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Double.html#valueOf%28double%29">Double.valueOf()</a>.
+</li>
+
+
+</references>
+</qhelp>

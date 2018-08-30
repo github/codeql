@@ -1,0 +1,60 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+Code should not synchronize on a variable or field of a boxed type (for example
+<code>Integer</code>, <code>Boolean</code>) or of type <code>String</code> since
+it is likely to contain an object that is used throughout the program. For example,
+<code>Boolean.TRUE</code> holds a single instance that will be used in many places 
+throughout the program: whenever <code>true</code> is autoboxed or a call to 
+<code>Boolean.valueOf</code> is made with <code>true</code> as an argument the 
+same instance of <code>Boolean</code> is returned. It is therefore likely that 
+two classes synchronizing on a field of type <code>Boolean</code> will end up
+synchronizing on the same object. This may lead to deadlock or threads being 
+blocked unnecessarily.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Synchronize on a specific lock object instead of using an object with a boxed type.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, the intention is to allow <code>ThreadA</code> and 
+<code>ThreadB</code> to run at the same time. Unfortunately, 
+<code>ThreadA.lock</code> and <code>ThreadB.lock</code> both refer to the same
+object (that is, the interned value of the <code>String</code>
+<code>"lock"</code>) so the synchronized blocks in their run methods can not be
+executed concurrently.
+</p>
+
+<sample src="SynchOnBoxedType.java" />
+
+<p>
+In the following example, the approach recommended above is shown. A separate
+lock object is created for each thread allowing them to execute concurrently.
+</p>
+
+<sample src="SynchOnBoxedTypeGood.java" />
+
+</example>
+<references>
+
+
+<li>
+  The CERT Oracle Secure Coding Standard for Java:
+  <a href="https://www.securecoding.cert.org/confluence/display/java/LCK01-J.+Do+not+synchronize+on+objects+that+may+be+reused">LCK01-J. Do not synchronize on objects that may be reused</a>,
+</li>
+
+
+</references>
+</qhelp>

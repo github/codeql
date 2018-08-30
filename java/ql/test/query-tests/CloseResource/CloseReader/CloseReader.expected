@@ -1,0 +1,2 @@
+| CloseReader.java:11:42:11:71 | new FileReader(...) | This FileReader is not always closed on method exit. |
+| CloseReader.java:44:6:44:40 | new FileInputStream(...) | This FileInputStream is not always closed on method exit. |

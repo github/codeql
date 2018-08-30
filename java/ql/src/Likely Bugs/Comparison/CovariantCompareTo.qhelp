@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Classes that implement <code>Comparable&lt;T&gt;</code> and define 
+a <code>compareTo</code> method whose parameter type is not <code>T</code>
+<i>overload</i> the <code>compareTo</code> method instead of <i>overriding</i> it. This may not be intended. 
+</p>
+
+</overview>
+<example>
+
+<p>In the following example, the call to <code>compareTo</code> on line 17 calls the method
+defined in class <code>Super</code>, instead of the method defined in class <code>Sub</code>, because 
+the type of <code>a</code> and <code>b</code> is <code>Super</code>. This may not be the method that
+the programmer intended.</p>
+
+<sample src="CovariantCompareTo.java" />
+
+</example>
+<recommendation>
+
+<p>To <i>override</i> the <code>Comparable&lt;T&gt;.compareTo</code> method,   
+the parameter of <code>compareTo</code> must have type <code>T</code>.
+</p>
+
+<p>In the example above, this means that the type of the parameter of <code>Sub.compareTo</code> should be changed
+to <code>Super</code>.</p>
+
+</recommendation>
+<references>
+
+
+    <li>J. Bloch, <em>Effective Java (second edition)</em>, Item 12. Addison-Wesley, 2008.</li>
+    <li>The Java Language Specification:
+  <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-8.html#jls-8.4.8.1">Overriding (by Instance Methods)</a>,
+  <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-8.html#jls-8.4.9">Overloading</a>.</li>
+    <li>The Java Tutorials: <a href="http://docs.oracle.com/javase/tutorial/java/IandI/override.html">Overriding and Hiding Methods</a>.</li>
+
+
+</references>
+</qhelp>

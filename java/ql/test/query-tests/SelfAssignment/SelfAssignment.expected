@@ -1,0 +1,1 @@
+| Test.java:6:3:6:7 | ...=... | This assigns the variable x to itself and has no effect. |

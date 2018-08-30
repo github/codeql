@@ -1,0 +1,51 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+A serializable class that is a subclass of a non-serializable class cannot be deserialized if its
+superclass does not declare a no-argument constructor. The Java serialization framework uses the no-argument constructor when it initializes the 
+object instance that is created during deserialization. Deserialization fails with an <code>InvalidClassException</code> if 
+its superclass does not declare a no-argument constructor.
+</p>
+
+<p>The Java Development Kit API documentation states:</p>
+
+<blockquote>
+<p>To allow subtypes of non-serializable classes to be serialized, the subtype may assume responsibility for saving and restoring the state of 
+the supertype's public, protected, and (if accessible) package fields. The subtype may assume this responsibility only if the class it 
+extends has an accessible no-arg constructor to initialize the class's state. It is an error to declare a class <code>Serializable</code> if this 
+is not the case. The error will be detected at runtime. </p>
+</blockquote>
+
+</overview>
+<recommendation>
+<p>Make sure that every non-serializable class that is extended by a serializable class has a no-argument constructor.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the class <code>WrongSubItem</code> cannot be deserialized because its 
+superclass <code>WrongItem</code> does not declare a no-argument constructor. However, the class 
+<code>SubItem</code> <em>can</em> be serialized because it declares a no-argument constructor.</p>
+<sample src="MissingVoidConstructorsOnSerializable.java" />
+
+</example>
+<references>
+
+
+<li>
+Java API Documentation:
+<a href="http://docs.oracle.com/javase/6/docs/api/java/io/Serializable.html">Serializable</a>.
+</li>
+<li>
+  J. Bloch, <em>Effective Java (second edition)</em>, Item 74.
+  Addison-Wesley, 2008.
+</li>
+
+
+</references>
+</qhelp>

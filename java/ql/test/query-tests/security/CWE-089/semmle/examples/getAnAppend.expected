@@ -1,0 +1,9 @@
+| tainted | 21 | Test.java:50:4:50:47 | StringBuilder querySb | 22 | Test.java:51:4:51:73 | append(...) | Test.java:51:19:51:72 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| tainted | 21 | Test.java:50:4:50:47 | StringBuilder querySb | 23 | Test.java:52:4:52:27 | append(...) | Test.java:52:19:52:26 | category |
+| tainted | 21 | Test.java:50:4:50:47 | StringBuilder querySb | 24 | Test.java:53:4:53:37 | append(...) | Test.java:53:19:53:36 | "' ORDER BY PRICE" |
+| unescaped | 10 | Test.java:79:4:79:47 | StringBuilder querySb | 11 | Test.java:80:4:80:73 | append(...) | Test.java:80:19:80:72 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| unescaped | 10 | Test.java:79:4:79:47 | StringBuilder querySb | 12 | Test.java:81:4:81:31 | append(...) | Test.java:81:19:81:30 | categoryName |
+| unescaped | 10 | Test.java:79:4:79:47 | StringBuilder querySb | 13 | Test.java:82:4:82:37 | append(...) | Test.java:82:19:82:36 | "' ORDER BY PRICE" |
+| unescaped | 20 | Test.java:89:4:89:48 | StringBuilder querySb2 | 21 | Test.java:90:4:90:53 | append(...) | Test.java:90:20:90:52 | "SELECT ITEM,PRICE FROM PRODUCT " |
+| unescaped | 20 | Test.java:89:4:89:48 | StringBuilder querySb2 | 22 | Test.java:91:4:91:65 | append(...) | Test.java:91:20:91:64 | ... + ... |
+| unescaped | 20 | Test.java:89:4:89:48 | StringBuilder querySb2 | 23 | Test.java:92:4:92:36 | append(...) | Test.java:92:20:92:35 | "ORDER BY PRICE" |

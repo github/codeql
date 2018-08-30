@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+Java 9 removes access to various unsupported JDK-internal APIs by default.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Examine the use of unsupported JDK-internal APIs and consider replacing them with supported APIs
+as recommended in the references.
+</p>
+
+</recommendation>
+<references>
+
+
+<li>
+Oracle JDK Documentation:
+<a href="https://docs.oracle.com/javase/9/migrate/toc.htm">Oracle JDK 9 Migration Guide</a>.
+</li>
+<li>
+OpenJDK Documentation:
+<a href="https://wiki.openjdk.java.net/display/JDK8/Java+Dependency+Analysis+Tool">Java Dependency Analysis Tool</a>,
+<a href="http://openjdk.java.net/jeps/260">JEP 260: Encapsulate Most Internal APIs</a>,
+<a href="http://openjdk.java.net/jeps/261">JEP 261: Module System</a>.
+</li>
+
+
+</references>
+</qhelp>

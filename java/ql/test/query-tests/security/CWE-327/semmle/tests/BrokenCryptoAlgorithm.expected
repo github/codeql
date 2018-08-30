@@ -1,0 +1,2 @@
+| Test.java:19:20:19:50 | getInstance(...) | Cryptographic algorithm $@ is weak and should not be used. | Test.java:19:45:19:49 | "DES" | "DES" |
+| Test.java:42:14:42:38 | getInstance(...) | Cryptographic algorithm $@ is weak and should not be used. | Test.java:42:33:42:37 | "RC2" | "RC2" |

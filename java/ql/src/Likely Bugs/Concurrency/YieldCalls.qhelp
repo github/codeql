@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>The method <code>Thread.yield</code> is a non-portable and underspecified operation. 
+It may have no effect, and is not a reliable way to prevent a thread from taking up too much execution time. 
+</p>
+
+</overview>
+<recommendation>
+
+<p>Use alternative ways of preventing a thread from taking up too much execution time.
+Communication between threads should normally be implemented using some form of waiting for a notification using
+the <code>wait</code> and <code>notifyAll</code> methods or by using the <code>java.util.concurrent</code> library. 
+</p>
+<p>
+In some cases, calls to <code>Thread.sleep</code> may be appropriate to temporarily cease execution
+(provided there is no possibility for race conditions), but this is not generally recommended.
+</p>
+
+</recommendation>
+<references>
+
+
+<li>
+  J. Bloch, <em>Effective Java (second edition)</em>, Item 72. Addison-Wesley, 2008.
+</li>
+<li>
+  Java API Documentation:
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Thread.html#yield%28%29">Thread.yield()</a>,
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html#wait%28%29">Object.wait()</a>,
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html#notifyAll%28%29">Object.notifyAll()</a>, 
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/package-summary.html">java.util.concurrent</a>, 
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Thread.html#sleep%28long%29">Thread.sleep()</a>.
+</li>
+
+
+</references>
+</qhelp>

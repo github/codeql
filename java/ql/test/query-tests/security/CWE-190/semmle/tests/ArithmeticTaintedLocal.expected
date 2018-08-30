@@ -1,0 +1,9 @@
+| ArithmeticTainted.java:32:17:32:25 | ... + ... | $@ flows to here and is used in arithmetic, potentially causing an overflow. | ArithmeticTainted.java:17:46:17:54 | System.in | User-provided value |
+| ArithmeticTainted.java:40:17:40:25 | ... - ... | $@ flows to here and is used in arithmetic, potentially causing an underflow. | ArithmeticTainted.java:17:46:17:54 | System.in | User-provided value |
+| ArithmeticTainted.java:50:17:50:24 | ... + ... | $@ flows to here and is used in arithmetic, potentially causing an overflow. | ArithmeticTainted.java:17:46:17:54 | System.in | User-provided value |
+| ArithmeticTainted.java:71:17:71:27 | ... + ... | $@ flows to here and is used in arithmetic, potentially causing an overflow. | ArithmeticTainted.java:17:46:17:54 | System.in | User-provided value |
+| ArithmeticTainted.java:95:37:95:46 | ... + ... | $@ flows to here and is used in arithmetic, potentially causing an overflow. | ArithmeticTainted.java:17:46:17:54 | System.in | User-provided value |
+| ArithmeticTainted.java:127:3:127:8 | ...++ | $@ flows to here and is used in arithmetic, potentially causing an overflow. | ArithmeticTainted.java:17:46:17:54 | System.in | User-provided value |
+| ArithmeticTainted.java:131:3:131:8 | ++... | $@ flows to here and is used in arithmetic, potentially causing an overflow. | ArithmeticTainted.java:17:46:17:54 | System.in | User-provided value |
+| ArithmeticTainted.java:135:3:135:8 | ...-- | $@ flows to here and is used in arithmetic, potentially causing an underflow. | ArithmeticTainted.java:17:46:17:54 | System.in | User-provided value |
+| ArithmeticTainted.java:139:3:139:8 | --... | $@ flows to here and is used in arithmetic, potentially causing an underflow. | ArithmeticTainted.java:17:46:17:54 | System.in | User-provided value |

@@ -1,0 +1,4 @@
+| literals/Literals.java:8:22:8:25 | 456L |
+| literals/Literals.java:15:18:15:38 | -9223372036854775808l |
+| literals/Literals.java:17:23:17:42 | 9223372036854775807l |
+| literals/Literals.java:19:22:19:40 | 0x8000000000000000L |

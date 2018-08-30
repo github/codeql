@@ -1,0 +1,7 @@
+| reflection/ReflectiveAccess.java:6:27:6:40 | TestAnnotation | reflection/ReflectiveAccess.java:13:91:13:98 | Class<A> |
+| reflection/ReflectiveAccess.java:6:27:6:40 | TestAnnotation | reflection/ReflectiveAccess.java:14:50:14:64 | annotationClass |
+| reflection/ReflectiveAccess.java:6:27:6:40 | TestAnnotation | reflection/ReflectiveAccess.java:22:34:22:53 | TestAnnotation.class |
+| reflection/ReflectiveAccess.java:10:22:10:30 | TestClass | reflection/ReflectiveAccess.java:14:10:14:34 | classContainingAnnotation |
+| reflection/ReflectiveAccess.java:10:22:10:30 | TestClass | reflection/ReflectiveAccess.java:18:24:18:77 | forName(...) |
+| reflection/ReflectiveAccess.java:10:22:10:30 | TestClass | reflection/ReflectiveAccess.java:20:3:20:11 | testClass |
+| reflection/ReflectiveAccess.java:10:22:10:30 | TestClass | reflection/ReflectiveAccess.java:22:17:22:31 | TestClass.class |

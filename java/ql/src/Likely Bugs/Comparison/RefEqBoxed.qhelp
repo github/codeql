@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Comparing two boxed primitive values using <code>==</code> or
+<code>!=</code> compares object identity, which may not be intended.</p>
+
+</overview>
+<recommendation>
+
+<p>Usually, you should compare non-primitive objects, for example boxed primitive values, by using 
+their <code>equals</code> methods.</p>
+
+</recommendation>
+<example>
+
+<p>With the following definition, the method call <code>refEq(new Integer(2), new Integer(2))</code> returns <code>false</code> 
+because the objects are not identical.</p>
+
+<sample src="RefEqBoxedBad.java" />
+
+<p>With the following definition, the method call <code>realEq(new Integer(2), new Integer(2))</code> 
+returns <code>true</code> because the objects contain equal values.</p>
+
+<sample src="RefEqBoxed.java" />
+
+</example>
+<references>
+
+
+<li>
+  J. Bloch and N. Gafter, <em>Java Puzzlers: Traps, Pitfalls, and Corner Cases</em>, Puzzle 32. Addison-Wesley, 2005.
+</li>
+<li>
+  Java API Documentation:
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html#equals%28java.lang.Object%29">Object.equals()</a>,
+  <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Integer.html#equals%28java.lang.Object%29">Integer.equals()</a>.
+</li>
+
+
+</references>
+</qhelp>

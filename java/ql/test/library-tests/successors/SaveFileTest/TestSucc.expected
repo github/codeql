@@ -1,0 +1,103 @@
+| SaveFileTest.java:11:14:11:25 | stmt | SaveFileTest.java:11:14:11:25 | super(...) |
+| SaveFileTest.java:11:14:11:25 | super(...) | SaveFileTest.java:11:14:11:25 | SaveFileTest |
+| SaveFileTest.java:15:2:55:2 | stmt | SaveFileTest.java:17:3:17:25 | stmt |
+| SaveFileTest.java:17:3:17:25 | stmt | SaveFileTest.java:17:21:17:24 | path |
+| SaveFileTest.java:17:10:17:24 | savePath | SaveFileTest.java:18:3:18:27 | stmt |
+| SaveFileTest.java:17:21:17:24 | path | SaveFileTest.java:17:10:17:24 | savePath |
+| SaveFileTest.java:18:3:18:27 | stmt | SaveFileTest.java:18:7:18:10 | path |
+| SaveFileTest.java:18:7:18:10 | path | SaveFileTest.java:18:23:18:25 | "/" |
+| SaveFileTest.java:18:7:18:26 | startsWith(...) | SaveFileTest.java:19:3:21:3 | stmt |
+| SaveFileTest.java:18:7:18:26 | startsWith(...) | SaveFileTest.java:24:3:24:33 | stmt |
+| SaveFileTest.java:18:23:18:25 | "/" | SaveFileTest.java:18:7:18:26 | startsWith(...) |
+| SaveFileTest.java:19:3:21:3 | stmt | SaveFileTest.java:20:4:20:32 | stmt |
+| SaveFileTest.java:20:4:20:31 | ...=... | SaveFileTest.java:24:3:24:33 | stmt |
+| SaveFileTest.java:20:4:20:32 | stmt | SaveFileTest.java:20:15:20:18 | path |
+| SaveFileTest.java:20:15:20:18 | path | SaveFileTest.java:20:30:20:30 | 1 |
+| SaveFileTest.java:20:15:20:31 | substring(...) | SaveFileTest.java:20:4:20:31 | ...=... |
+| SaveFileTest.java:20:30:20:30 | 1 | SaveFileTest.java:20:15:20:31 | substring(...) |
+| SaveFileTest.java:24:3:24:33 | stmt | SaveFileTest.java:24:27:24:31 | "foo" |
+| SaveFileTest.java:24:8:24:32 | dirPath | SaveFileTest.java:25:3:26:16 | stmt |
+| SaveFileTest.java:24:18:24:32 | new File(...) | SaveFileTest.java:24:8:24:32 | dirPath |
+| SaveFileTest.java:24:27:24:31 | "foo" | SaveFileTest.java:24:18:24:32 | new File(...) |
+| SaveFileTest.java:25:3:26:16 | stmt | SaveFileTest.java:25:28:25:34 | dirPath |
+| SaveFileTest.java:25:8:26:15 | saveFile | SaveFileTest.java:28:3:28:33 | stmt |
+| SaveFileTest.java:25:19:26:15 | new File(...) | SaveFileTest.java:25:8:26:15 | saveFile |
+| SaveFileTest.java:25:28:25:34 | dirPath | SaveFileTest.java:25:28:25:52 | getAbsolutePath(...) |
+| SaveFileTest.java:25:28:25:52 | getAbsolutePath(...) | SaveFileTest.java:25:56:25:69 | File.separator |
+| SaveFileTest.java:25:28:25:69 | ... + ... | SaveFileTest.java:26:7:26:14 | savePath |
+| SaveFileTest.java:25:28:26:14 | ... + ... | SaveFileTest.java:25:19:26:15 | new File(...) |
+| SaveFileTest.java:25:56:25:69 | File.separator | SaveFileTest.java:25:28:25:69 | ... + ... |
+| SaveFileTest.java:26:7:26:14 | savePath | SaveFileTest.java:25:28:26:14 | ... + ... |
+| SaveFileTest.java:28:3:28:33 | stmt | SaveFileTest.java:28:28:28:31 | 8192 |
+| SaveFileTest.java:28:10:28:32 | buffer | SaveFileTest.java:29:3:29:20 | stmt |
+| SaveFileTest.java:28:19:28:32 | new byte[] | SaveFileTest.java:28:10:28:32 | buffer |
+| SaveFileTest.java:28:28:28:31 | 8192 | SaveFileTest.java:28:19:28:32 | new byte[] |
+| SaveFileTest.java:29:3:29:20 | stmt | SaveFileTest.java:29:19:29:19 | 0 |
+| SaveFileTest.java:29:7:29:19 | bytesRead | SaveFileTest.java:30:3:30:26 | stmt |
+| SaveFileTest.java:29:19:29:19 | 0 | SaveFileTest.java:29:7:29:19 | bytesRead |
+| SaveFileTest.java:30:3:30:26 | stmt | SaveFileTest.java:30:22:30:25 | null |
+| SaveFileTest.java:30:16:30:25 | bos | SaveFileTest.java:31:3:53:3 | stmt |
+| SaveFileTest.java:30:22:30:25 | null | SaveFileTest.java:30:16:30:25 | bos |
+| SaveFileTest.java:31:3:53:3 | stmt | SaveFileTest.java:32:3:41:3 | stmt |
+| SaveFileTest.java:32:3:41:3 | stmt | SaveFileTest.java:33:4:33:40 | stmt |
+| SaveFileTest.java:33:4:33:39 | ...=... | SaveFileTest.java:34:4:34:55 | stmt |
+| SaveFileTest.java:33:4:33:40 | stmt | SaveFileTest.java:33:31:33:38 | saveFile |
+| SaveFileTest.java:33:10:33:39 | new FileOutputStream(...) | SaveFileTest.java:33:4:33:39 | ...=... |
+| SaveFileTest.java:33:10:33:39 | new FileOutputStream(...) | SaveFileTest.java:41:5:41:23 | stmt |
+| SaveFileTest.java:33:10:33:39 | new FileOutputStream(...) | SaveFileTest.java:45:3:53:3 | stmt |
+| SaveFileTest.java:33:31:33:38 | saveFile | SaveFileTest.java:33:10:33:39 | new FileOutputStream(...) |
+| SaveFileTest.java:34:4:34:55 | stmt | SaveFileTest.java:34:24:34:25 | is |
+| SaveFileTest.java:34:11:34:54 | ... != ... | SaveFileTest.java:35:4:37:4 | stmt |
+| SaveFileTest.java:34:11:34:54 | ... != ... | SaveFileTest.java:39:4:40:41 | stmt |
+| SaveFileTest.java:34:12:34:47 | ...=... | SaveFileTest.java:34:54:34:54 | 1 |
+| SaveFileTest.java:34:24:34:25 | is | SaveFileTest.java:34:32:34:37 | buffer |
+| SaveFileTest.java:34:24:34:47 | read(...) | SaveFileTest.java:34:12:34:47 | ...=... |
+| SaveFileTest.java:34:24:34:47 | read(...) | SaveFileTest.java:41:5:41:23 | stmt |
+| SaveFileTest.java:34:24:34:47 | read(...) | SaveFileTest.java:45:3:53:3 | stmt |
+| SaveFileTest.java:34:32:34:37 | buffer | SaveFileTest.java:34:40:34:40 | 0 |
+| SaveFileTest.java:34:40:34:40 | 0 | SaveFileTest.java:34:43:34:46 | 8192 |
+| SaveFileTest.java:34:43:34:46 | 8192 | SaveFileTest.java:34:24:34:47 | read(...) |
+| SaveFileTest.java:34:53:34:54 | -... | SaveFileTest.java:34:11:34:54 | ... != ... |
+| SaveFileTest.java:34:54:34:54 | 1 | SaveFileTest.java:34:53:34:54 | -... |
+| SaveFileTest.java:35:4:37:4 | stmt | SaveFileTest.java:36:5:36:36 | stmt |
+| SaveFileTest.java:36:5:36:7 | bos | SaveFileTest.java:36:15:36:20 | buffer |
+| SaveFileTest.java:36:5:36:35 | write(...) | SaveFileTest.java:34:24:34:25 | is |
+| SaveFileTest.java:36:5:36:35 | write(...) | SaveFileTest.java:41:5:41:23 | stmt |
+| SaveFileTest.java:36:5:36:35 | write(...) | SaveFileTest.java:45:3:53:3 | stmt |
+| SaveFileTest.java:36:5:36:36 | stmt | SaveFileTest.java:36:5:36:7 | bos |
+| SaveFileTest.java:36:15:36:20 | buffer | SaveFileTest.java:36:23:36:23 | 0 |
+| SaveFileTest.java:36:23:36:23 | 0 | SaveFileTest.java:36:26:36:34 | bytesRead |
+| SaveFileTest.java:36:26:36:34 | bytesRead | SaveFileTest.java:36:5:36:35 | write(...) |
+| SaveFileTest.java:39:4:39:13 | System.out | SaveFileTest.java:39:23:39:54 | "The file has been written to [" |
+| SaveFileTest.java:39:4:40:40 | println(...) | SaveFileTest.java:41:5:41:23 | stmt |
+| SaveFileTest.java:39:4:40:40 | println(...) | SaveFileTest.java:45:3:53:3 | stmt |
+| SaveFileTest.java:39:4:40:41 | stmt | SaveFileTest.java:39:4:39:13 | System.out |
+| SaveFileTest.java:39:23:39:54 | "The file has been written to [" | SaveFileTest.java:40:8:40:15 | saveFile |
+| SaveFileTest.java:39:23:40:33 | ... + ... | SaveFileTest.java:40:37:40:39 | "]" |
+| SaveFileTest.java:39:23:40:39 | ... + ... | SaveFileTest.java:39:4:40:40 | println(...) |
+| SaveFileTest.java:40:8:40:15 | saveFile | SaveFileTest.java:40:8:40:33 | getAbsolutePath(...) |
+| SaveFileTest.java:40:8:40:33 | getAbsolutePath(...) | SaveFileTest.java:39:23:40:33 | ... + ... |
+| SaveFileTest.java:40:8:40:33 | getAbsolutePath(...) | SaveFileTest.java:41:5:41:23 | stmt |
+| SaveFileTest.java:40:8:40:33 | getAbsolutePath(...) | SaveFileTest.java:45:3:53:3 | stmt |
+| SaveFileTest.java:40:37:40:39 | "]" | SaveFileTest.java:39:23:40:39 | ... + ... |
+| SaveFileTest.java:41:5:41:23 | stmt | SaveFileTest.java:41:22:41:22 | e |
+| SaveFileTest.java:41:22:41:22 | e | SaveFileTest.java:42:3:44:3 | stmt |
+| SaveFileTest.java:42:3:44:3 | stmt | SaveFileTest.java:43:26:43:47 | "ERROR uploading file" |
+| SaveFileTest.java:43:4:43:52 | stmt | SaveFileTest.java:45:3:53:3 | stmt |
+| SaveFileTest.java:43:10:43:51 | new IOException(...) | SaveFileTest.java:43:4:43:52 | stmt |
+| SaveFileTest.java:43:26:43:47 | "ERROR uploading file" | SaveFileTest.java:43:50:43:50 | e |
+| SaveFileTest.java:43:50:43:50 | e | SaveFileTest.java:43:10:43:51 | new IOException(...) |
+| SaveFileTest.java:45:3:53:3 | stmt | SaveFileTest.java:46:4:52:4 | stmt |
+| SaveFileTest.java:46:4:52:4 | stmt | SaveFileTest.java:47:4:50:4 | stmt |
+| SaveFileTest.java:47:4:50:4 | stmt | SaveFileTest.java:48:5:48:16 | stmt |
+| SaveFileTest.java:48:5:48:7 | bos | SaveFileTest.java:48:5:48:15 | flush(...) |
+| SaveFileTest.java:48:5:48:15 | flush(...) | SaveFileTest.java:49:5:49:16 | stmt |
+| SaveFileTest.java:48:5:48:15 | flush(...) | SaveFileTest.java:50:6:50:30 | stmt |
+| SaveFileTest.java:48:5:48:16 | stmt | SaveFileTest.java:48:5:48:7 | bos |
+| SaveFileTest.java:49:5:49:7 | bos | SaveFileTest.java:49:5:49:15 | close(...) |
+| SaveFileTest.java:49:5:49:15 | close(...) | SaveFileTest.java:12:14:12:21 | saveFile |
+| SaveFileTest.java:49:5:49:15 | close(...) | SaveFileTest.java:50:6:50:30 | stmt |
+| SaveFileTest.java:49:5:49:16 | stmt | SaveFileTest.java:49:5:49:7 | bos |
+| SaveFileTest.java:50:6:50:30 | stmt | SaveFileTest.java:50:23:50:29 | ignored |
+| SaveFileTest.java:50:23:50:29 | ignored | SaveFileTest.java:51:4:52:4 | stmt |
+| SaveFileTest.java:51:4:52:4 | stmt | SaveFileTest.java:12:14:12:21 | saveFile |

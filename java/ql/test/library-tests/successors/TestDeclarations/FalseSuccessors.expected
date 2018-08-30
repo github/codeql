@@ -1,0 +1,3 @@
+| TestDeclarations.java:10:8:10:14 | ... > ... | TestDeclarations.java:15:4:15:15 | stmt |
+| TestDeclarations.java:15:8:15:14 | ... == ... | TestDeclarations.java:17:4:17:15 | stmt |
+| TestDeclarations.java:17:8:17:14 | ... == ... | TestDeclarations.java:7:9:7:12 | true |

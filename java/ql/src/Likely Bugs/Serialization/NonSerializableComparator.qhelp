@@ -1,0 +1,57 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+A class that implements <code>java.util.Comparator</code> and is used to
+construct a sorted collection needs to be serializable.
+An ordered collection (such as a <code>java.util.TreeMap</code>) that is constructed
+using a comparator serializes successfully only if the comparator is serializable.
+</p>
+
+<p>
+The <code>Collection</code>s in the Java Standard Library that require a comparator
+(<code>TreeSet</code>, <code>TreeMap</code>, <code>PriorityQueue</code>) all call
+<code>ObjectOutputStream.defaultWriteObject</code>, which tries to serialize every 
+non-static, non-transient field in the class. As the comparator 
+is stored in a field in these collections, the attempt to serialize a non-serializable 
+comparator throws a <code>java.io.NotSerializableException</code>.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Comparators should be serializable if they are used in sorted collections that 
+may be serialized. In most cases, simply changing the comparator so it also implements
+<code>Serializable</code> is enough. Comparators that have 
+internal state may require additional changes (for example, custom <code>writeObject</code> and 
+<code>readObject</code> methods). In these cases, it is best to follow general best practices
+for serializable objects (see references below).
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, <code>WrongComparator</code> is not serializable because it does not 
+implement <code>Serializable</code>. However, <code>StringComparator</code> is serializable because 
+it does implement <code>Serializable</code>.
+
+</p><sample src="NonSerializableComparator.java" />
+
+</example>
+<references>
+
+
+<li>
+Java API Documentation:
+<a href="http://docs.oracle.com/javase/6/docs/api/java/util/Comparator.html">Comparator</a>,
+<a href="http://docs.oracle.com/javase/6/docs/api/java/io/ObjectOutputStream.html">ObjectOutputStream</a>,
+<a href="http://docs.oracle.com/javase/6/docs/api/java/io/Serializable.html">Serializable</a>.
+</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,53 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>If a variable is dereferenced, and the variable may have a <code>null</code>
+value on some execution paths leading to the dereferencing, the dereferencing
+may result in a <code>NullPointerException</code>.
+</p>
+<p>
+A variable may also be implicitly dereferenced if its type is a boxed primitive
+type, and the variable occurs in a context in which implicit unboxing occurs.
+Note that the conditional operator unboxes its second and third operands when
+one of them is a primitive type and the other is the corresponding boxed type.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that the variable does not have a <code>null</code> value when it is dereferenced.
+</p>
+
+</recommendation>
+<example>
+<p>
+In the following example, the use of the conditional operator causes implicit
+unboxing, since the integer literal has type <code>int</code>.
+If the parameter <code>p</code> is ever
+<code>null</code> then a <code>NullPointerException</code> will occur.
+</p>
+
+<sample src="NullMaybe.java" />
+
+<p>
+If the implicit unboxing is unintentional, it can be prevented by making sure
+that both branches of the conditional operator have the same type.
+</p>
+</example>
+<references>
+
+<li>
+Java Tutorial:
+<a href="https://docs.oracle.com/javase/tutorial/java/data/autoboxing.html">Autoboxing and Unboxing</a>.
+</li>
+<li>
+Java Specification:
+<a href="https://docs.oracle.com/javase/specs/jls/se7/html/jls-15.html#jls-15.25">Conditional Operator ? :</a>.
+</li>
+
+</references>
+</qhelp>

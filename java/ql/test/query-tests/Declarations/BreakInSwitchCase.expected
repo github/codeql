@@ -1,0 +1,2 @@
+| Test.java:14:4:14:10 | stmt | Switch case may fall through to the next case. Use a break or return to terminate this case. |
+| Test.java:20:4:20:10 | stmt | Switch case may fall through to the next case. Use a break or return to terminate this case. |

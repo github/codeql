@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Sensitive information that is stored unencrypted is accessible to an attacker who gains access to the
+storage.</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that sensitive information is always encrypted before being stored. It may be wise
+to encrypt information before it is put into a heap data structure (such as <code>Java.util.Properties</code>)
+that may be written to disk later. Objects that are serializable or marshallable should also always contain
+encrypted information unless you are certain that they are not ever going to be serialized.</p>
+
+<p>In general, decrypt sensitive information only at the point where it is necessary for it to be used in
+cleartext.</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows two ways of storing user credentials in a cookie. In the 'BAD' case,
+the credentials are simply stored in cleartext. In the 'GOOD' case, the credentials are hashed before 
+storing them.</p>
+
+<sample src="CleartextStorage.java" />
+
+</example>
+<references>
+
+<li>The CERT Oracle Secure Coding Standard for Java:
+  <a href="https://www.securecoding.cert.org/confluence/display/java/SER03-J.+Do+not+serialize+unencrypted+sensitive+data">SER03-J. Do not serialize unencrypted, sensitive data</a>.</li>
+<li>M. Dowd, J. McDonald and J. Schuhm, <i>The Art of Software Security Assessment</i>, 1st Edition, Chapter 2 - 'Common Vulnerabilities of Encryption', p. 43. Addison Wesley, 2006.</li> 
+<li>M. Howard and D. LeBlanc, <i>Writing Secure Code</i>, 2nd Edition, Chapter 9 - 'Protecting Secret Data', p. 299. Microsoft, 2002.</li>
+
+
+
+<!--  LocalWords:  CWE
+ -->
+
+</references>
+</qhelp>

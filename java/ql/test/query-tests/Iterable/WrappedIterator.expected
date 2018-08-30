@@ -1,0 +1,2 @@
+| Test.java:12:21:12:36 | new Iterable<String>(...) { ... } | This class implements Iterable, but does not appear to support multiple iterations, since its iterator method always returns an iterator based on the same $@. | Test.java:13:30:13:30 | i | iterator |
+| Test.java:75:19:75:34 | ValueIterableBad | This class implements Iterable, but does not support multiple iterations, since its iterator method always returns the same $@. | Test.java:76:27:76:34 | iterator | iterator |

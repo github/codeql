@@ -1,0 +1,30 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A local variable that is never accessed nor initialized
+is typically a leftover from old refactorings or a sign of incomplete or pending
+code changes.</p>
+
+</overview>
+<recommendation>
+
+<p>If an unused variable is a leftover from old refactorings, you should just remove it. If it indicates
+incomplete or pending code changes, finish making the changes and remove the variable if it is not
+needed.</p>
+
+</recommendation>
+<references>
+
+
+<li>
+Help - Eclipse Platform:
+<a href="http://help.eclipse.org/indigo/index.jsp?topic=%2Forg.eclipse.jdt.doc.user%2Freference%2Fpreferences%2Fjava%2Fcompiler%2Fref-preferences-errors-warnings.htm">Java Compiler Errors/Warnings Preferences</a>.
+</li>
+
+
+</references>
+</qhelp>
