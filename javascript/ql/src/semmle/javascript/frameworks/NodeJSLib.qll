@@ -366,6 +366,22 @@ module NodeJSLib {
   }
 
   /**
+   * A data flow node that contains one or more file names from the local file system.
+   */
+  private class NodeJSFileNameSource extends FileNameSource {
+
+    NodeJSFileNameSource() {
+      exists (string name |
+        name = "readdir" or
+        name = "realpath" |
+        this = fsModuleMember(name).getACall().getCallback([1..2]).getParameter(1) or
+        this = fsModuleMember(name + "Sync").getACall()
+      )
+    }
+
+  }
+  
+  /**
    * A call to a method from module `child_process`.
    */
   private class ChildProcessMethodCall extends SystemCommandExecution, DataFlow::CallNode {
