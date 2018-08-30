@@ -30,6 +30,13 @@ abstract class FileSystemAccess extends DataFlow::Node {
 }
 
 /**
+ * A data flow node that contains a file name or an array of file names from the local file system.
+ */
+abstract class FileNameSource extends DataFlow::Node {
+
+}
+
+/**
  * A data flow node that performs a database access.
  */
 abstract class DatabaseAccess extends DataFlow::Node {
