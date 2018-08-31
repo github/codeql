@@ -4,7 +4,7 @@
  *              not validated can cause overflows.
  * @kind problem
  * @problem.severity warning
- * @precision medium
+ * @precision low
  * @id cpp/tainted-arithmetic
  * @tags security
  *       external/cwe/cwe-190
