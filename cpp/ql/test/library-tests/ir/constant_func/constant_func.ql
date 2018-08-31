@@ -1,5 +1,5 @@
 import default
-import semmle.code.cpp.ir.internal.ssa_ir.IR
+import semmle.code.cpp.ir.IR
 import semmle.code.cpp.ir.internal.IntegerConstant
 
 language[monotonicAggregates]
