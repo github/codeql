@@ -5,7 +5,7 @@
 | file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | operator= | __va_list_tag::operator= |
 | file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | overflow_arg_area | __va_list_tag::overflow_arg_area |
 | file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | reg_save_area | __va_list_tag::reg_save_area |
-| file://:0:0:0:0 | B | namespaces.cpp:32:7:32:7 | x | <none> |
+| file://:0:0:0:0 | B | namespaces.cpp:32:7:32:7 | x | B::x |
 | namespaces.cpp:11:13:11:13 | C::D | file://:0:0:0:0 | p#0 | <none> |
 | namespaces.cpp:11:13:11:13 | C::D | file://:0:0:0:0 | p#0 | <none> |
 | namespaces.cpp:11:13:11:13 | C::D | namespaces.cpp:13:17:13:17 | f | C::D::f |
