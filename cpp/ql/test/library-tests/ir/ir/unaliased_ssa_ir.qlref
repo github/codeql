@@ -1,1 +1,1 @@
-semmle/code/cpp/ir/internal/unaliased_ssa/PrintIR.ql
+semmle/code/cpp/ir/implementation/unaliased_ssa/PrintIR.ql

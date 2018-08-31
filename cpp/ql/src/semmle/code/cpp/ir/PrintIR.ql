@@ -5,4 +5,4 @@
  * @kind graph
  */
 
-import internal.aliased_ssa.PrintIR
+import implementation.aliased_ssa.PrintIR
