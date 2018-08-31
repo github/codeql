@@ -704,7 +704,8 @@ private predicate mk_UuidofOperator(Type t, UuidofOperator e) {
 }
 
 private predicate analyzableTypeidType(TypeidOperator e) {
-  count(e.getAChild()) = 0
+  count(e.getAChild()) = 0 and
+  strictcount(e.getResultType()) = 1
 }
 
 private predicate mk_TypeidType(Type t, TypeidOperator e) {
@@ -858,7 +859,7 @@ private predicate analyzableNoExceptExpr(NoExceptExpr nee) {
 
 private predicate mk_NoExceptExpr(HashCons child, NoExceptExpr nee) {
   analyzableNoExceptExpr(nee) and
-  nee.getExpr() = child.getAnExpr().getFullyConverted()
+  nee.getExpr().getFullyConverted() = child.getAnExpr()
 }
 
 
