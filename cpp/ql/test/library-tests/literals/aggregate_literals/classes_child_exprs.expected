@@ -1,0 +1,35 @@
+| aggregate_literals.c:17:31:20:5 | {...} | aggregate_literals.c:1:8:1:17 | someStruct | 0 | aggregate_literals.c:18:14:18:18 | ... + ... | aggregate_literals.c:2:9:2:9 | i |
+| aggregate_literals.c:17:31:20:5 | {...} | aggregate_literals.c:1:8:1:17 | someStruct | 1 | aggregate_literals.c:19:14:19:18 | ... - ... | aggregate_literals.c:3:9:3:9 | j |
+| aggregate_literals.c:22:31:22:47 | {...} | aggregate_literals.c:1:8:1:17 | someStruct | 0 | aggregate_literals.c:22:34:22:38 | ... + ... | aggregate_literals.c:2:9:2:9 | i |
+| aggregate_literals.c:22:31:22:47 | {...} | aggregate_literals.c:1:8:1:17 | someStruct | 1 | aggregate_literals.c:22:41:22:45 | ... - ... | aggregate_literals.c:3:9:3:9 | j |
+| aggregate_literals.c:24:31:24:44 | {...} | aggregate_literals.c:1:8:1:17 | someStruct | 0 | aggregate_literals.c:24:32:24:36 | ... + ... | aggregate_literals.c:2:9:2:9 | i |
+| aggregate_literals.c:24:31:24:44 | {...} | aggregate_literals.c:1:8:1:17 | someStruct | 1 | aggregate_literals.c:24:39:24:43 | ... - ... | aggregate_literals.c:3:9:3:9 | j |
+| aggregate_literals.c:24:47:24:60 | {...} | aggregate_literals.c:1:8:1:17 | someStruct | 0 | aggregate_literals.c:24:48:24:52 | ... * ... | aggregate_literals.c:2:9:2:9 | i |
+| aggregate_literals.c:24:47:24:60 | {...} | aggregate_literals.c:1:8:1:17 | someStruct | 1 | aggregate_literals.c:24:55:24:59 | ... / ... | aggregate_literals.c:3:9:3:9 | j |
+| aggregate_literals.c:26:31:26:36 | {...} | aggregate_literals.c:1:8:1:17 | someStruct | 0 | aggregate_literals.c:26:34:26:34 | x | aggregate_literals.c:2:9:2:9 | i |
+| aggregate_literals.c:28:31:28:41 | {...} | aggregate_literals.c:1:8:1:17 | someStruct | 0 | aggregate_literals.c:28:39:28:39 | y | aggregate_literals.c:3:9:3:9 | j |
+| aggregate_literals.c:36:29:36:34 | {...} | aggregate_literals.c:11:7:11:15 | someUnion | 0 | aggregate_literals.c:36:32:36:32 | x | aggregate_literals.c:12:9:12:9 | n |
+| aggregate_literals.c:37:29:37:39 | {...} | aggregate_literals.c:11:7:11:15 | someUnion | 0 | aggregate_literals.c:37:37:37:37 | x | aggregate_literals.c:12:9:12:9 | n |
+| aggregate_literals.c:38:29:38:41 | {...} | aggregate_literals.c:11:7:11:15 | someUnion | 0 | aggregate_literals.c:38:37:38:39 | 5.0 | aggregate_literals.c:13:12:13:12 | d |
+| aggregate_literals.c:50:38:69:3 | {...} | aggregate_literals.c:41:8:41:20 | complexStruct | 0 | aggregate_literals.c:51:11:55:5 | {...} | aggregate_literals.c:43:9:43:10 | as |
+| aggregate_literals.c:50:38:69:3 | {...} | aggregate_literals.c:41:8:41:20 | complexStruct | 1 | aggregate_literals.c:56:10:56:11 | 42 | aggregate_literals.c:45:9:45:9 | z |
+| aggregate_literals.c:50:38:69:3 | {...} | aggregate_literals.c:41:8:41:20 | complexStruct | 2 | aggregate_literals.c:57:13:67:5 | {...} | aggregate_literals.c:44:28:44:31 | soss |
+| aggregate_literals.c:58:13:61:7 | {...} | aggregate_literals.c:6:8:6:22 | someOtherStruct | 0 | aggregate_literals.c:59:14:59:16 | ... + ... | aggregate_literals.c:7:9:7:9 | a |
+| aggregate_literals.c:58:13:61:7 | {...} | aggregate_literals.c:6:8:6:22 | someOtherStruct | 1 | aggregate_literals.c:60:14:60:16 | ... - ... | aggregate_literals.c:8:9:8:9 | b |
+| aggregate_literals.c:62:13:65:7 | {...} | aggregate_literals.c:6:8:6:22 | someOtherStruct | 0 | aggregate_literals.c:63:14:63:16 | ... * ... | aggregate_literals.c:8:9:8:9 | b |
+| aggregate_literals.c:62:13:65:7 | {...} | aggregate_literals.c:6:8:6:22 | someOtherStruct | 1 | aggregate_literals.c:64:14:64:16 | ... / ... | aggregate_literals.c:7:9:7:9 | a |
+| aggregate_literals.c:72:38:101:3 | {...} | aggregate_literals.c:41:8:41:20 | complexStruct | 0 | aggregate_literals.c:73:5:83:5 | {...} | aggregate_literals.c:42:23:42:25 | sss |
+| aggregate_literals.c:72:38:101:3 | {...} | aggregate_literals.c:41:8:41:20 | complexStruct | 1 | aggregate_literals.c:84:5:88:5 | {...} | aggregate_literals.c:43:9:43:10 | as |
+| aggregate_literals.c:72:38:101:3 | {...} | aggregate_literals.c:41:8:41:20 | complexStruct | 2 | aggregate_literals.c:89:5:99:5 | {...} | aggregate_literals.c:44:28:44:31 | soss |
+| aggregate_literals.c:74:7:77:7 | {...} | aggregate_literals.c:1:8:1:17 | someStruct | 0 | aggregate_literals.c:75:9:75:9 | x | aggregate_literals.c:2:9:2:9 | i |
+| aggregate_literals.c:74:7:77:7 | {...} | aggregate_literals.c:1:8:1:17 | someStruct | 1 | aggregate_literals.c:76:9:76:9 | y | aggregate_literals.c:3:9:3:9 | j |
+| aggregate_literals.c:78:7:81:7 | {...} | aggregate_literals.c:1:8:1:17 | someStruct | 0 | aggregate_literals.c:79:9:79:11 | ... + ... | aggregate_literals.c:2:9:2:9 | i |
+| aggregate_literals.c:90:7:93:7 | {...} | aggregate_literals.c:6:8:6:22 | someOtherStruct | 0 | aggregate_literals.c:91:9:91:11 | 123 | aggregate_literals.c:7:9:7:9 | a |
+| aggregate_literals.c:90:7:93:7 | {...} | aggregate_literals.c:6:8:6:22 | someOtherStruct | 1 | aggregate_literals.c:92:9:92:11 | ... + ... | aggregate_literals.c:8:9:8:9 | b |
+| aggregate_literals.c:94:7:97:7 | {...} | aggregate_literals.c:6:8:6:22 | someOtherStruct | 0 | aggregate_literals.c:95:9:95:9 | x | aggregate_literals.c:7:9:7:9 | a |
+| aggregate_literals_cpp.cpp:23:29:23:40 | {...} | aggregate_literals_cpp.cpp:1:8:1:26 | StructWithBitfields | 0 | aggregate_literals_cpp.cpp:23:32:23:32 | x | aggregate_literals_cpp.cpp:4:18:4:18 | a |
+| aggregate_literals_cpp.cpp:23:29:23:40 | {...} | aggregate_literals_cpp.cpp:1:8:1:26 | StructWithBitfields | 1 | aggregate_literals_cpp.cpp:23:35:23:35 | y | aggregate_literals_cpp.cpp:8:18:8:18 | b |
+| aggregate_literals_cpp.cpp:23:29:23:40 | {...} | aggregate_literals_cpp.cpp:1:8:1:26 | StructWithBitfields | 2 | aggregate_literals_cpp.cpp:23:38:23:38 | z | aggregate_literals_cpp.cpp:10:18:10:18 | c |
+| aggregate_literals_cpp.cpp:24:29:24:37 | {...} | aggregate_literals_cpp.cpp:1:8:1:26 | StructWithBitfields | 0 | aggregate_literals_cpp.cpp:24:32:24:32 | x | aggregate_literals_cpp.cpp:4:18:4:18 | a |
+| aggregate_literals_cpp.cpp:24:29:24:37 | {...} | aggregate_literals_cpp.cpp:1:8:1:26 | StructWithBitfields | 1 | aggregate_literals_cpp.cpp:24:35:24:35 | y | aggregate_literals_cpp.cpp:8:18:8:18 | b |
+| aggregate_literals_cpp.cpp:26:26:26:31 | {...} | aggregate_literals_cpp.cpp:13:7:13:22 | UnionWithMethods | 0 | aggregate_literals_cpp.cpp:26:29:26:29 | x | aggregate_literals_cpp.cpp:18:12:18:12 | d |

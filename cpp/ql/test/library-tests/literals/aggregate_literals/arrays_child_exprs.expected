@@ -1,0 +1,17 @@
+| aggregate_literals.c:24:29:24:61 | {...} | file://:0:0:0:0 | someStruct[2] | 0 | aggregate_literals.c:24:31:24:44 | {...} | 0 |
+| aggregate_literals.c:24:29:24:61 | {...} | file://:0:0:0:0 | someStruct[2] | 1 | aggregate_literals.c:24:47:24:60 | {...} | 1 |
+| aggregate_literals.c:30:20:30:28 | {...} | file://:0:0:0:0 | int[2] | 0 | aggregate_literals.c:30:23:30:23 | x | 0 |
+| aggregate_literals.c:30:20:30:28 | {...} | file://:0:0:0:0 | int[2] | 1 | aggregate_literals.c:30:26:30:26 | y | 1 |
+| aggregate_literals.c:32:20:32:25 | {...} | file://:0:0:0:0 | int[2] | 0 | aggregate_literals.c:32:23:32:23 | x | 0 |
+| aggregate_literals.c:34:20:34:31 | {...} | file://:0:0:0:0 | int[2] | 0 | aggregate_literals.c:34:29:34:29 | y | 1 |
+| aggregate_literals.c:51:11:55:5 | {...} | file://:0:0:0:0 | int[3] | 0 | aggregate_literals.c:52:13:52:13 | x | 2 |
+| aggregate_literals.c:51:11:55:5 | {...} | file://:0:0:0:0 | int[3] | 1 | aggregate_literals.c:53:13:53:13 | y | 0 |
+| aggregate_literals.c:51:11:55:5 | {...} | file://:0:0:0:0 | int[3] | 2 | aggregate_literals.c:54:7:54:9 | ... + ... | 1 |
+| aggregate_literals.c:57:13:67:5 | {...} | file://:0:0:0:0 | someOtherStruct[3] | 0 | aggregate_literals.c:58:13:61:7 | {...} | 1 |
+| aggregate_literals.c:57:13:67:5 | {...} | file://:0:0:0:0 | someOtherStruct[3] | 1 | aggregate_literals.c:62:13:65:7 | {...} | 0 |
+| aggregate_literals.c:73:5:83:5 | {...} | file://:0:0:0:0 | someStruct[3] | 0 | aggregate_literals.c:74:7:77:7 | {...} | 0 |
+| aggregate_literals.c:73:5:83:5 | {...} | file://:0:0:0:0 | someStruct[3] | 1 | aggregate_literals.c:78:7:81:7 | {...} | 1 |
+| aggregate_literals.c:84:5:88:5 | {...} | file://:0:0:0:0 | int[3] | 0 | aggregate_literals.c:85:7:85:8 | 99 | 0 |
+| aggregate_literals.c:84:5:88:5 | {...} | file://:0:0:0:0 | int[3] | 1 | aggregate_literals.c:86:7:86:9 | ... * ... | 1 |
+| aggregate_literals.c:89:5:99:5 | {...} | file://:0:0:0:0 | someOtherStruct[3] | 0 | aggregate_literals.c:90:7:93:7 | {...} | 0 |
+| aggregate_literals.c:89:5:99:5 | {...} | file://:0:0:0:0 | someOtherStruct[3] | 1 | aggregate_literals.c:94:7:97:7 | {...} | 1 |

@@ -22,7 +22,7 @@ union UnionWithMethods {
 void Init(int x, int y, int z) {
     StructWithBitfields s1 = { x, y, z };
     StructWithBitfields s2 = { x, y };  // s2.c is value initialized
-
+    StructWithBitfields s3 = {};        // s3   is value initialized
     UnionWithMethods u1 = { x };
     UnionWithMethods u2 = {};
 }
