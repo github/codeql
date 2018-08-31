@@ -1,6 +1,5 @@
 /** Provides logic for determining constant expressions. */
 import csharp
-private import ControlFlowGraph
 private import semmle.code.csharp.commons.ComparisonTest
 private import semmle.code.csharp.commons.StructuralComparison as StructuralComparison
 
@@ -8,10 +7,10 @@ private import semmle.code.csharp.commons.StructuralComparison as StructuralComp
  * Holds if `e` is a condition that always evaluates to Boolean value `b`.
  */
 predicate isConstantCondition(Expr e, boolean b) {
-  forex(ControlFlowNode cfn |
+  forex(ControlFlow::Node cfn |
     cfn = e.getAControlFlowNode() |
-    exists(cfn.getASuccessorByType(any(ControlFlowEdgeBoolean t | t.getValue() = b))) and
-    strictcount(ControlFlowEdgeType t | exists(cfn.getASuccessorByType(t))) = 1
+    exists(cfn.getASuccessorByType(any(ControlFlow::SuccessorTypes::BooleanSuccessor t | t.getValue() = b))) and
+    strictcount(ControlFlow::SuccessorType t | exists(cfn.getASuccessorByType(t))) = 1
   )
 }
 

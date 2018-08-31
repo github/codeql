@@ -13,7 +13,6 @@
 
 import csharp
 import semmle.code.csharp.commons.ComparisonTest
-import semmle.code.csharp.controlflow.ControlFlowGraph::ControlFlowGraph
 import semmle.code.csharp.commons.StructuralComparison as SC
 
 /** A structural comparison configuration for comparing the conditions of nested `for` loops. */
@@ -87,13 +86,13 @@ class NestedForLoopSameVariable extends ForStmt {
   }
 
   /** Finds elements inside the outer loop that are no longer guarded by the loop invariant. */
-  private ControlFlowNode getAnUnguardedNode()
+  private ControlFlow::Node getAnUnguardedNode()
   {
     result.getElement().getParent+() = getOuterForStmt().getBody() and
     (
       result = this.getCondition().(ControlFlowElement).getAControlFlowExitNode().getAFalseSuccessor()
       or
-      exists(ControlFlowNode mid | mid = getAnUnguardedNode() |
+      exists(ControlFlow::Node mid | mid = getAnUnguardedNode() |
         mid.getASuccessor() = result and
         not exists(getAComparisonTest(result.getElement()))
       )

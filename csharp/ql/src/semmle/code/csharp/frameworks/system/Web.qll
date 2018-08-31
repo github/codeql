@@ -77,7 +77,7 @@ class SystemWebHttpRequestClass extends SystemWebClass {
     and
     result.hasName("Url")
     and
-    result.getType() = getSystemUriClass()
+    result.getType() instanceof SystemUriClass
   }
 }
 

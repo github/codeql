@@ -12,11 +12,11 @@
 import csharp
 import semmle.code.csharp.frameworks.System
 
-predicate nodeBeforeParameterAccess(ControlFlowGraph::ControlFlowNode node)
+predicate nodeBeforeParameterAccess(ControlFlow::Node node)
 {
   exists(EqualsMethod equals | equals.getBody() = node.getElement())
   or
-  exists(EqualsMethod equals, Parameter param, ControlFlowGraph::ControlFlowNode mid |
+  exists(EqualsMethod equals, Parameter param, ControlFlow::Node mid |
     equals.getParameter(0) = param and
     equals.getAChild*() = mid.getElement() and
     nodeBeforeParameterAccess(mid) and

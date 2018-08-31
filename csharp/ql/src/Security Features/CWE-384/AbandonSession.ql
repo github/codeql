@@ -12,10 +12,9 @@
  */
 
 import csharp
-import ControlFlowGraph
 import semmle.code.csharp.frameworks.system.web.Security
 
-predicate loginMethod(Method m, ControlFlowEdgeType flowFrom)
+predicate loginMethod(Method m, ControlFlow::SuccessorType flowFrom)
 {
     (
       m = any(SystemWebSecurityMembershipClass c).getValidateUserMethod()
@@ -23,11 +22,11 @@ predicate loginMethod(Method m, ControlFlowEdgeType flowFrom)
       m = any(SystemWebSecurityFormsAuthenticationClass c).getAuthenticateMethod()
     )
     and
-    flowFrom.(ControlFlowEdgeBoolean).getValue()=true
+    flowFrom.(ControlFlow::SuccessorTypes::BooleanSuccessor).getValue()=true
   or
     m = any(SystemWebSecurityFormsAuthenticationClass c).getSignOutMethod()
     and
-    flowFrom instanceof ControlFlowEdgeSuccessor
+    flowFrom instanceof ControlFlow::SuccessorTypes::NormalSuccessor
 }
 
 /** The `System.Web.SessionState.HttpSessionState` class. */
@@ -62,14 +61,14 @@ predicate sessionUse(MemberAccess ma)
 }
 
 /** A control flow step that is not sanitised by a call to clear the session. */
-predicate controlStep(ControlFlowNode s1, ControlFlowNode s2)
+predicate controlStep(ControlFlow::Node s1, ControlFlow::Node s2)
 {
   s2 = s1.getASuccessor()
   and
   not sessionEndMethod(s2.getElement().(MethodCall).getTarget())
 }
 
-from ControlFlowNode loginCall, Method loginMethod, ControlFlowNode sessionUse, ControlFlowEdgeType fromLoginFlow
+from ControlFlow::Node loginCall, Method loginMethod, ControlFlow::Node sessionUse, ControlFlow::SuccessorType fromLoginFlow
 where loginMethod = loginCall.getElement().(MethodCall).getTarget()
   and loginMethod(loginMethod, fromLoginFlow)
   and sessionUse(sessionUse.getElement())

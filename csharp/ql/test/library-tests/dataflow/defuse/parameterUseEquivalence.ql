@@ -1,11 +1,10 @@
 import csharp
-import semmle.code.csharp.controlflow.ControlFlowGraph
 
 /** "Naive" parameter-use implementation. */
-predicate parameterReaches(Parameter p, ControlFlowNode cfn) {
+predicate parameterReaches(Parameter p, ControlFlow::Node cfn) {
   cfn = p.getCallable().getEntryPoint().getASuccessor()
   or
-  exists(ControlFlowNode mid |
+  exists(ControlFlow::Node mid |
     parameterReaches(p, mid) |
     not mid = any(AssignableDefinition ad | ad.getTarget() = p and ad.isCertain()).getAControlFlowNode() and
     cfn = mid.getASuccessor()

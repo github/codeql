@@ -9,7 +9,7 @@ class ExternalDefect extends @externalDefect, Element {
 
   float getSeverity() { externalDefects(this, _, _, _, result) }
 
-  Location getLocation() { externalDefects(this,_,result,_,_) }
+  override Location getLocation() { externalDefects(this,_,result,_,_) }
 
   override string toString() {
     result = getQueryPath() + ": " + getLocation() + " - " + getMessage()
@@ -22,7 +22,7 @@ class ExternalMetric extends @externalMetric, Element {
 
   float getValue() { externalMetrics(this, _, _, result) }
 
-  Location getLocation() { externalMetrics(this,_,result,_) }
+  override Location getLocation() { externalMetrics(this,_,result,_) }
 
   override string toString() {
     result = getQueryPath() + ": " + getLocation() + " - " + getValue()

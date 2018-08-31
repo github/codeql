@@ -40,7 +40,7 @@ module SsaChecks {
   import Ssa
 
   predicate nonUniqueSsaDef(AssignableRead read, string m) {
-    exists(ControlFlowNode cfn |
+    exists(ControlFlow::Node cfn |
       strictcount(Definition def | def.getAReadAtNode(cfn) = read) > 1
     )
     and
@@ -48,7 +48,7 @@ module SsaChecks {
   }
 
   predicate notDominatedByDef(AssignableRead read, string m) {
-    exists(Definition def, BasicBlock bb, ControlFlowNode rnode, ControlFlowNode dnode, int i |
+    exists(Definition def, BasicBlock bb, ControlFlow::Node rnode, ControlFlow::Node dnode, int i |
       def.getAReadAtNode(rnode) = read |
       def.definesAt(bb, i) and
       dnode = bb.getNode(max(int j | j = i or j = 0)) and
@@ -82,12 +82,10 @@ module SsaChecks {
 }
 
 module CfgChecks {
-  import ControlFlowGraph
-
   predicate multipleSuccessors(ControlFlowElement cfe, string m) {
-    exists(ControlFlowNode cfn |
+    exists(ControlFlow::Node cfn |
       cfn = cfe.getAControlFlowNode() |
-      strictcount(cfn.getASuccessorByType(any(ControlFlowEdgeSuccessor e))) > 1 and
+      strictcount(cfn.getASuccessorByType(any(ControlFlow::SuccessorTypes::NormalSuccessor e))) > 1 and
       m = "Multiple (non-conditional/exceptional) successors"
     )
   }
