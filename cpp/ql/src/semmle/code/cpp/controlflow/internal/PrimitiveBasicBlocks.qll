@@ -43,12 +43,13 @@ private cached module Cached {
     (not successors_extended(_, node) and successors_extended(node, _))
   }
 
-  pragma[noinline]
+  /** Holds if `n2` follows `n1` in a `PrimitiveBasicBlock`. */
   private predicate member_step(Node n1, Node n2) {
     successors_extended(n1, n2) and
     not n2 instanceof PrimitiveBasicBlock
   }
 
+  /** Returns the index of `node` in its `PrimitiveBasicBlock`. */
   private int getMemberIndex(Node node) {
     primitive_basic_block_entry_node(node) and
     result = 0
@@ -59,15 +60,11 @@ private cached module Cached {
     )
   }
 
-  private predicate isMember(Node node, PrimitiveBasicBlock bb) {
-    member_step*(bb, node)
-  }
-
   /** Holds if `node` is the `pos`th control-flow node in primitive basic block `bb`. */
   cached
   predicate primitive_basic_block_member(Node node, PrimitiveBasicBlock bb, int pos) {
     pos = getMemberIndex(node) and
-    isMember(node, bb)
+    member_step*(bb, node)
   }
 
   /** Gets the number of control-flow nodes in the primitive basic block `bb`. */
