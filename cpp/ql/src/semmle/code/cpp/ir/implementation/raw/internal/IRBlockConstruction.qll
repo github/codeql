@@ -32,15 +32,29 @@ private cached module Cached {
       startsBasicBlock(firstInstr)
     }
 
+  /** Holds if `i2` follows `i1` in a `IRBlock`. */
+  private predicate adjacentInBlock(Instruction i1, Instruction i2) {
+    exists(GotoEdge edgeKind | i2 = i1.getSuccessor(edgeKind)) and
+    not startsBasicBlock(i2)
+  }
+
+  /** Gets the index of `i` in its `IRBlock`. */
+  private int getMemberIndex(Instruction i) {
+    startsBasicBlock(i) and
+    result = 0
+    or
+    exists(Instruction iPrev |
+      adjacentInBlock(iPrev, i) and
+      result = getMemberIndex(iPrev) + 1
+    )
+  }
+
+  /** Holds if `i` is the `index`th instruction in `block`. */
   cached Instruction getInstruction(TIRBlock block, int index) {
-    index = 0 and block = MkIRBlock(result) or
-    (
-      index > 0 and
-      not startsBasicBlock(result) and
-      exists(Instruction predecessor, GotoEdge edge |
-        predecessor = getInstruction(block, index - 1) and
-        result = predecessor.getSuccessor(edge)
-      )
+    exists(Instruction first |
+      block = MkIRBlock(first) and
+      index = getMemberIndex(result) and
+      adjacentInBlock*(first, result)
     )
   }
 
