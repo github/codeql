@@ -1,4 +1,4 @@
 import javascript
 
-from UrlRequest r
+from ClientRequest r
 select r, r.getUrl()

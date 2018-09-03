@@ -1,8 +1,8 @@
 /**
- * Provides classes for modelling URL requests.
+ * Provides classes for modelling the client-side of a URL request.
  *
- * Subclass `UrlRequest` to refine the behavior of the analysis on existing URL requests.
- * Subclass `CustomUrlRequest` to introduce new kinds of URL requests.
+ * Subclass `ClientRequest` to refine the behavior of the analysis on existing client requests.
+ * Subclass `CustomClientRequest` to introduce new kinds of client requests.
  */
 
 import javascript
@@ -10,7 +10,7 @@ import javascript
 /**
  * A call that performs a request to a URL.
  */
-class CustomUrlRequest extends DataFlow::CallNode {
+class CustomClientRequest extends DataFlow::CallNode {
 
   /**
    * Gets the URL of the request.
@@ -21,11 +21,11 @@ class CustomUrlRequest extends DataFlow::CallNode {
 /**
  * A call that performs a request to a URL.
  */
-class UrlRequest extends DataFlow::CallNode {
+class ClientRequest extends DataFlow::CallNode {
 
-  CustomUrlRequest custom;
+  CustomClientRequest custom;
 
-  UrlRequest() {
+  ClientRequest() {
     this = custom
   }
 
@@ -55,7 +55,7 @@ private string urlPropertyName() {
 /**
  * A model of a URL request in the `request` library.
  */
-private class RequestUrlRequest extends CustomUrlRequest {
+private class RequestUrlRequest extends CustomClientRequest {
 
   DataFlow::Node url;
 
@@ -88,7 +88,7 @@ private class RequestUrlRequest extends CustomUrlRequest {
 /**
  * A model of a URL request in the `axios` library.
  */
-private class AxiosUrlRequest extends CustomUrlRequest {
+private class AxiosUrlRequest extends CustomClientRequest {
 
   DataFlow::Node url;
 
@@ -117,7 +117,7 @@ private class AxiosUrlRequest extends CustomUrlRequest {
 /**
  * A model of a URL request in an implementation of the `fetch` API.
  */
-private class FetchUrlRequest extends CustomUrlRequest {
+private class FetchUrlRequest extends CustomClientRequest {
 
   DataFlow::Node url;
 
@@ -145,38 +145,10 @@ private class FetchUrlRequest extends CustomUrlRequest {
 
 }
 
-
-/**
- * A model of a URL request in the Node.js `http` library.
- */
-private class NodeHttpUrlRequest extends CustomUrlRequest {
-
-  DataFlow::Node url;
-
-  NodeHttpUrlRequest() {
-    exists (string moduleName, DataFlow::SourceNode callee |
-      this = callee.getACall() |
-      (moduleName = "http" or moduleName = "https") and
-      (
-        callee = DataFlow::moduleMember(moduleName, httpMethodName())
-        or
-        callee = DataFlow::moduleMember(moduleName, "request") 
-      ) and
-      url = getArgument(0)
-    )
-  }
-
-  override DataFlow::Node getUrl() {
-    result = url
-  }
-
-}
-
-
 /**
  * A model of a URL request in the `got` library.
  */
-private class GotUrlRequest extends CustomUrlRequest {
+private class GotUrlRequest extends CustomClientRequest {
 
   DataFlow::Node url;
 
@@ -201,7 +173,7 @@ private class GotUrlRequest extends CustomUrlRequest {
 /**
  * A model of a URL request in the `superagent` library.
  */
-private class SuperAgentUrlRequest extends CustomUrlRequest {
+private class SuperAgentUrlRequest extends CustomClientRequest {
 
   DataFlow::Node url;
 

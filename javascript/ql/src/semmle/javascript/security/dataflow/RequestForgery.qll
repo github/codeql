@@ -68,11 +68,11 @@ module RequestForgery {
   /**
    * The URL of a URL request, viewed as a sink for request forgery.
    */
-  private class UrlRequestUrlAsSink extends Sink {
+  private class ClientRequestUrlAsSink extends Sink {
 
-    UrlRequest request;
+    ClientRequest request;
 
-    UrlRequestUrlAsSink() {
+    ClientRequestUrlAsSink() {
       this = request.getUrl()
     }
 

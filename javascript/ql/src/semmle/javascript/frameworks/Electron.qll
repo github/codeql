@@ -37,12 +37,12 @@ module Electron {
   /**
    * A Node.js-style HTTP or HTTPS request made using an Electron module.
    */
-  abstract class ClientRequest extends NodeJSLib::ClientRequest {}
+  abstract class ElectronClientRequest extends NodeJSLib::NodeJSClientRequest {}
   
   /**
    * A Node.js-style HTTP or HTTPS request made using `electron.net`, for example `net.request(url)`.
    */
-  private class NetRequest extends ClientRequest {
+  private class NetRequest extends ElectronClientRequest {
     NetRequest() {
       this = DataFlow::moduleMember("electron", "net").getAMemberCall("request")
     }
@@ -56,7 +56,7 @@ module Electron {
   /**
    * A Node.js-style HTTP or HTTPS request made using `electron.client`, for example `new client(url)`.
    */
-  private class NewClientRequest extends ClientRequest {
+  private class NewClientRequest extends ElectronClientRequest {
     NewClientRequest() {
       this = DataFlow::moduleMember("electron", "ClientRequest").getAnInstantiation()
     }
@@ -75,12 +75,12 @@ module Electron {
       exists(NodeJSLib::ClientRequestHandler handler |
         this = handler.getParameter(0) and
         handler.getAHandledEvent() = "redirect" and
-        handler.getClientRequest() instanceof ClientRequest
+        handler.getClientRequest() instanceof ElectronClientRequest
       )
     }
     
     override string getSourceType() {
-      result = "Electron ClientRequest redirect event"
+      result = "ElectronClientRequest redirect event"
     }
   }
 }
