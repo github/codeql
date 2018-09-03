@@ -669,21 +669,18 @@ private predicate reachableFromSource(DataFlow::Node nd, DataFlow::Configuration
 
 /**
  * Holds if `nd` can be reached from a source under `cfg`, and in turn a sink is
- * reachable from `nd`. The path from the source to `nd` is summarized by `summary1`,
- * the path from `nd` to the sink is summarized by `summary2`.
+ * reachable from `nd`, where the path from the source to `nd` is summarized by `summary`.
  */
 private predicate onPath(DataFlow::Node nd, DataFlow::Configuration cfg,
-                         PathSummary summary1, PathSummary summary2) {
-  reachableFromSource(nd, cfg, summary1) and
-  isSink(nd, cfg, summary1.getEndLabel()) and
-  not cfg.isBarrier(nd) and
-  summary2 = PathSummary::level()
+                         PathSummary summary) {
+  reachableFromSource(nd, cfg, summary) and
+  isSink(nd, cfg, summary.getEndLabel()) and
+  not cfg.isBarrier(nd)
   or
-  exists (DataFlow::Node mid, PathSummary newSummary, PathSummary oldSummary |
-    onPath(mid, cfg, _, oldSummary) and
-    flowStep(nd, cfg, mid, newSummary) and
-    reachableFromSource(nd, cfg, summary1) and
-    summary2 = oldSummary.prepend(newSummary)
+  exists (DataFlow::Node mid, PathSummary stepSummary |
+    reachableFromSource(nd, cfg, summary) and
+    flowStep(nd, cfg, mid, stepSummary) and
+    onPath(mid, cfg, summary.append(stepSummary))
   )
 }
 
@@ -692,7 +689,7 @@ private predicate onPath(DataFlow::Node nd, DataFlow::Configuration cfg,
  */
 private newtype TPathNode =
   MkPathNode(DataFlow::Node nd, DataFlow::Configuration cfg, PathSummary summary) {
-    onPath(nd, cfg, summary, _)
+    onPath(nd, cfg, summary)
   }
 
 /**
