@@ -103,4 +103,4 @@ where t1 = me.getType().getUnderlyingType() and
         ) and
         e.(Literal).getType().getSize() = t2.getSize()
       )
-select me, "Cast to '" + me.getFullyConverted().getType().toString() + "' before multiplication to avoid potential overflow."
+select me, "Multiplication result may overflow '" + me.getType().toString() + "' before it is converted to '" + me.getFullyConverted().getType().toString() + "'. Consider casting before multiplication to avoid potential overflow."
