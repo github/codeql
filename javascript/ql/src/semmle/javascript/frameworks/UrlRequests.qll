@@ -84,23 +84,7 @@ private class DefaultUrlRequest extends CustomUrlRequest {
           url = getArgument(0) and not exists (getOptionArgument(1, "baseUrl")) 
         )
       )
-      or
-      (
-        (
-          moduleName = "node-fetch" or
-          moduleName = "cross-fetch" or
-          moduleName = "isomorphic-fetch"
-        ) and
-        callee = DataFlow::moduleImport(moduleName) and
-        url = getArgument(0)
-      )
     )
-    or
-    (
-      this = DataFlow::globalVarRef("fetch").getACall() and
-      url = getArgument(0)
-    )
-
   }
 
   override DataFlow::Node getUrl() {
@@ -163,6 +147,37 @@ private class AxiosUrlRequest extends CustomUrlRequest {
         url = getArgument(0) or
         url = getOptionArgument([0..2], urlPropertyName()) // slightly over-approximate, in the name of simplicity
       )
+    )
+  }
+
+  override DataFlow::Node getUrl() {
+    result = url
+  }
+
+}
+
+/**
+ * A model of a URL request in an implementation of the `fetch` API.
+ */
+private class FetchUrlRequest extends CustomUrlRequest {
+
+  DataFlow::Node url;
+
+  FetchUrlRequest() {
+    exists (string moduleName, DataFlow::SourceNode callee |
+      this = callee.getACall() |
+      (
+        moduleName = "node-fetch" or
+        moduleName = "cross-fetch" or
+        moduleName = "isomorphic-fetch"
+      ) and
+      callee = DataFlow::moduleImport(moduleName) and
+      url = getArgument(0)
+    )
+    or
+    (
+      this = DataFlow::globalVarRef("fetch").getACall() and
+      url = getArgument(0)
     )
   }
 
