@@ -31,6 +31,8 @@
   - [deepmerge](https://github.com/KyleAMathews/deepmerge)
   - [defaults-deep](https://github.com/jonschlinkert/defaults-deep)
   - [defaults](https://github.com/tmpvar/defaults)
+  - [dottie](https://github.com/mickhansen/dottie.js)
+  - [dotty](https://github.com/deoxxa/dotty)
   - [ent](https://github.com/substack/node-ent)
   - [entities](https://github.com/fb55/node-entities)
   - [escape-goat](https://github.com/sindresorhus/escape-goat)

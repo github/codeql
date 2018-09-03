@@ -63,6 +63,7 @@ import semmle.javascript.frameworks.Logging
 import semmle.javascript.frameworks.HttpFrameworks
 import semmle.javascript.frameworks.NoSQL
 import semmle.javascript.frameworks.PkgCloud
+import semmle.javascript.frameworks.PropertyProjection
 import semmle.javascript.frameworks.React
 import semmle.javascript.frameworks.ReactNative
 import semmle.javascript.frameworks.Request
