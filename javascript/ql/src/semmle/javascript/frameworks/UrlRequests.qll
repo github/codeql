@@ -75,19 +75,6 @@ private class DefaultUrlRequest extends CustomUrlRequest {
       )
       or
       (
-        moduleName = "axios" and
-        (
-          callee = DataFlow::moduleImport(moduleName) or
-          callee = DataFlow::moduleMember(moduleName, httpMethodName()) or
-          callee = DataFlow::moduleMember(moduleName, "request")
-        ) and
-        (
-          url = getArgument(0) or
-          url = getOptionArgument([0..2], urlPropertyName()) // slightly over-approximate, in the name of simplicity
-        )
-      )
-      or
-      (
         moduleName = "got" and
         (
           callee = DataFlow::moduleImport(moduleName) or
@@ -146,6 +133,35 @@ private class RequestUrlRequest extends CustomUrlRequest {
       (
         url = getArgument(0) or
         url = getOptionArgument(0, urlPropertyName())
+      )
+    )
+  }
+
+  override DataFlow::Node getUrl() {
+    result = url
+  }
+
+}
+
+/**
+ * A model of a URL request in the `axios` library.
+ */
+private class AxiosUrlRequest extends CustomUrlRequest {
+
+  DataFlow::Node url;
+
+  AxiosUrlRequest() {
+    exists (string moduleName, DataFlow::SourceNode callee |
+      this = callee.getACall() |
+      moduleName = "axios" and
+      (
+        callee = DataFlow::moduleImport(moduleName) or
+        callee = DataFlow::moduleMember(moduleName, httpMethodName()) or
+        callee = DataFlow::moduleMember(moduleName, "request")
+      ) and
+      (
+        url = getArgument(0) or
+        url = getOptionArgument([0..2], urlPropertyName()) // slightly over-approximate, in the name of simplicity
       )
     )
   }
