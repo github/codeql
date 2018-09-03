@@ -502,7 +502,7 @@ module NodeJSLib {
   }
 
   /**
-   * A data flow node that is an HTTP or HTTPS client request made by a Node.js server, for example `http.request(url)`.
+   * A data flow node that is an HTTP or HTTPS client request made by a Node.js application, for example `http.request(url)`.
    */
   abstract class NodeJSClientRequest extends DataFlow::DefaultSourceNode {
 
