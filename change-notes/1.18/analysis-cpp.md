@@ -36,3 +36,4 @@
 * Fixes for aggregate initializers using designators:
   * `ClassAggregateLiteral.getFieldExpr()` previously assumed initializer expressions appeared in the same order as the declaration order of the fields, causing it to associate the expressions with the wrong fields when using designated initializers. This has been fixed.
   * `ArrayAggregateLiteral.getElementExpr()` previously assumed initializer expressions appeared in the same order as the corresponding array elements, causing it to associate the expressions with the wrong array elements when using designated initializers. This has been fixed.
+* `Element.getEnclosingElement()` no longer includes macro accesses in its results. To explore parents and children of macro accesses, use the relevant member predicates on `MacroAccess` or `MacroInvocation`.
