@@ -103,7 +103,7 @@
 | Comparison between inconvertible types | Lower severity | The severity of this rule has been revised to "warning". |
 | CORS misconfiguration for credentials transfer | More true-positive results | This rule now treats header names case-insensitively. |
 | Hard-coded credentials | More true-positive results | This rule now recognizes secret cryptographic keys. |
-| Incomplete sanitization | More true-positive results | This rule now recognizes incomplete URL encoding and decoding. |
+| Incomplete string escaping or encoding | Better name, more true-positive results | This rule has been renamed to more clearly reflect its purpose. Also, it now recognizes incomplete URL encoding and decoding. |
 | Insecure randomness | More true-positive results | This rule now recognizes secret cryptographic keys. |
 | Missing rate limiting | More true-positive results, fewer false-positive results | This rule now recognizes additional rate limiters and expensive route handlers. | 
 | Missing X-Frame-Options HTTP header | Fewer false-positive results | This rule now treats header names case-insensitively. |
