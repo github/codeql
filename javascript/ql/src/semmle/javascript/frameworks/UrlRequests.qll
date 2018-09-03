@@ -69,12 +69,6 @@ private class DefaultUrlRequest extends CustomUrlRequest {
       )
       or
       (
-        (moduleName = "http" or moduleName = "https") and
-        callee = DataFlow::moduleMember(moduleName, httpMethodName()) and
-        url = getArgument(0)
-      )
-      or
-      (
         moduleName = "got" and
         (
           callee = DataFlow::moduleImport(moduleName) or
@@ -177,6 +171,29 @@ private class FetchUrlRequest extends CustomUrlRequest {
     or
     (
       this = DataFlow::globalVarRef("fetch").getACall() and
+      url = getArgument(0)
+    )
+  }
+
+  override DataFlow::Node getUrl() {
+    result = url
+  }
+
+}
+
+
+/**
+ * A model of a URL request in the Node.js `http` library.
+ */
+private class NodeHttpUrlRequest extends CustomUrlRequest {
+
+  DataFlow::Node url;
+
+  NodeHttpUrlRequest() {
+    exists (string moduleName, DataFlow::SourceNode callee |
+      this = callee.getACall() |
+      (moduleName = "http" or moduleName = "https") and
+      callee = DataFlow::moduleMember(moduleName, httpMethodName()) and
       url = getArgument(0)
     )
   }
