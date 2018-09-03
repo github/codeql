@@ -67,17 +67,6 @@ private class DefaultUrlRequest extends CustomUrlRequest {
         callee = DataFlow::moduleMember(moduleName, httpMethodName()) and
         url = getArgument(0)
       )
-      or
-      (
-        moduleName = "got" and
-        (
-          callee = DataFlow::moduleImport(moduleName) or
-          callee = DataFlow::moduleMember(moduleName, "stream")
-        ) and
-        (
-          url = getArgument(0) and not exists (getOptionArgument(1, "baseUrl")) 
-        )
-      )
     )
   }
 
@@ -195,6 +184,32 @@ private class NodeHttpUrlRequest extends CustomUrlRequest {
       (moduleName = "http" or moduleName = "https") and
       callee = DataFlow::moduleMember(moduleName, httpMethodName()) and
       url = getArgument(0)
+    )
+  }
+
+  override DataFlow::Node getUrl() {
+    result = url
+  }
+
+}
+
+
+/**
+ * A model of a URL request in the `got` library.
+ */
+private class GotUrlRequest extends CustomUrlRequest {
+
+  DataFlow::Node url;
+
+  GotUrlRequest() {
+    exists (string moduleName, DataFlow::SourceNode callee |
+      this = callee.getACall() |
+      moduleName = "got" and
+      (
+        callee = DataFlow::moduleImport(moduleName) or
+        callee = DataFlow::moduleMember(moduleName, "stream")
+      ) and
+      url = getArgument(0) and not exists (getOptionArgument(1, "baseUrl"))
     )
   }
 
