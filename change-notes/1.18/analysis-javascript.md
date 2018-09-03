@@ -10,7 +10,7 @@
 
 * Modelling of re-export declarations has been improved. This may result in fewer false-positive results for a variety of queries.
 
-* Modelling of taint flow through the array operations `map` and `join` has been improved. This may give additional results for the security queries.
+* Modelling of taint flow through array operations has been improved. This may give additional results for the security queries.
 
 * The taint tracking library recognizes more ways in which taint propagates. In particular, some flow through string formatters is now recognized. This may give additional results for the security queries.
 
