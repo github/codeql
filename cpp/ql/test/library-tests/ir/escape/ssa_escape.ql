@@ -1,12 +1,11 @@
 import default
-import semmle.code.cpp.ssa.internal.ssa.AliasAnalysis
-import semmle.code.cpp.ir.IR
+import semmle.code.cpp.ir.implementation.aliased_ssa.internal.AliasAnalysis
+import semmle.code.cpp.ir.implementation.unaliased_ssa.IR
 
 predicate shouldEscape(IRAutomaticUserVariable var) {
   exists(string name |
     name = var.getVariable().getName() and
-    name.matches("no_%") and
-    not name.matches("no_ssa_%")
+    name.matches("no_%")
   )
 }
 

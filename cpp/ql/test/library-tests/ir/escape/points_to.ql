@@ -1,6 +1,6 @@
 import default
-import semmle.code.cpp.ssa.internal.ssa.AliasAnalysis
-import semmle.code.cpp.ir.IR
+import semmle.code.cpp.ir.implementation.unaliased_ssa.internal.AliasAnalysis
+import semmle.code.cpp.ir.implementation.raw.IR
 
 from Instruction instr, string pointsTo
 where

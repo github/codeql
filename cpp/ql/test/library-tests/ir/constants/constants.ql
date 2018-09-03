@@ -1,5 +1,5 @@
 import cpp
-import semmle.code.cpp.ssa.internal.IntegerConstant as Ints
+import semmle.code.cpp.ir.internal.IntegerConstant as Ints
 
 bindingset[n]
 string resultString(int n) {
