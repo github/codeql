@@ -157,7 +157,11 @@ private class NodeHttpUrlRequest extends CustomUrlRequest {
     exists (string moduleName, DataFlow::SourceNode callee |
       this = callee.getACall() |
       (moduleName = "http" or moduleName = "https") and
-      callee = DataFlow::moduleMember(moduleName, httpMethodName()) and
+      (
+        callee = DataFlow::moduleMember(moduleName, httpMethodName())
+        or
+        callee = DataFlow::moduleMember(moduleName, "request") 
+      ) and
       url = getArgument(0)
     )
   }
