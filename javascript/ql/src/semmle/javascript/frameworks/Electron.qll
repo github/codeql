@@ -33,29 +33,51 @@ module Electron {
       this = DataFlow::moduleMember("electron", "BrowserView").getAnInstantiation()
     }
   }
-  
+
   /**
    * A Node.js-style HTTP or HTTPS request made using an Electron module.
    */
-  abstract class ElectronClientRequest extends NodeJSLib::NodeJSClientRequest {}
+  abstract class CustomElectronClientRequest extends NodeJSLib::CustomNodeJSClientRequest {}
+
+  /**
+   * A Node.js-style HTTP or HTTPS request made using an Electron module.
+   */
+  class ElectronClientRequest extends NodeJSLib::NodeJSClientRequest {
+
+    ElectronClientRequest() {
+      this instanceof CustomElectronClientRequest
+    }
+
+  }
   
   /**
    * A Node.js-style HTTP or HTTPS request made using `electron.net`, for example `net.request(url)`.
    */
-  private class NetRequest extends ElectronClientRequest {
+  private class NetRequest extends CustomElectronClientRequest {
     NetRequest() {
       this = DataFlow::moduleMember("electron", "net").getAMemberCall("request")
     }
+
+    override DataFlow::Node getUrl() {
+      result = getArgument(0) or
+      result = getOptionArgument(0, "url")
+    }
+
   }
-  
-  
+
   /**
    * A Node.js-style HTTP or HTTPS request made using `electron.client`, for example `new client(url)`.
    */
-  private class NewClientRequest extends ElectronClientRequest {
+  private class NewClientRequest extends CustomElectronClientRequest {
     NewClientRequest() {
       this = DataFlow::moduleMember("electron", "ClientRequest").getAnInstantiation()
     }
+
+    override DataFlow::Node getUrl() {
+      result = getArgument(0) or
+      result = getOptionArgument(0, "url")
+    }
+
   }
   
     

@@ -6,7 +6,7 @@ import express from 'express';
 import axios from 'axios';
 import got from 'got';
 import nodeFetch from 'node-fetch';
-
+import {ClientRequest, net} from 'electron';
 (function() {
     request(url);
 
@@ -36,4 +36,11 @@ import nodeFetch from 'node-fetch';
 
     nodeFetch(url);
 
+    net.request(url);
+
+    net.request({ url: url });
+
+    new ClientRequest(url);
+
+    new ClientRequest({ url: url });
 });
