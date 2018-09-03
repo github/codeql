@@ -46,10 +46,6 @@ module Electron {
     NetRequest() {
       this = DataFlow::moduleMember("electron", "net").getAMemberCall("request")
     }
-    
-    override DataFlow::Node getOptions() {
-      result = this.(DataFlow::MethodCallNode).getArgument(0)
-    }
   }
   
   
@@ -59,10 +55,6 @@ module Electron {
   private class NewClientRequest extends ElectronClientRequest {
     NewClientRequest() {
       this = DataFlow::moduleMember("electron", "ClientRequest").getAnInstantiation()
-    }
-    
-    override DataFlow::Node getOptions() {
-      result = this.(DataFlow::NewNode).getArgument(0)
     }
   }
   

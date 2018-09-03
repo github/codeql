@@ -506,10 +506,6 @@ module NodeJSLib {
    */
   abstract class NodeJSClientRequest extends DataFlow::DefaultSourceNode {
 
-    /**
-     * Gets the options object or string URL used to make the request.
-     */
-    abstract DataFlow::Node getOptions();
   }
   
   /**
@@ -536,9 +532,6 @@ module NodeJSLib {
       result = url
     }
 
-    override DataFlow::Node getOptions() {
-      result = this.(DataFlow::MethodCallNode).getArgument(0)
-    }
   }
   
   /**
