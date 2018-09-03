@@ -38,6 +38,21 @@ class UrlRequest extends DataFlow::CallNode {
 }
 
 /**
+ * Gets name of an HTTP request method, in all-lowercase.
+ */
+private string httpMethodName() {
+  result = any(HTTP::RequestMethodName m).toLowerCase()
+}
+
+/**
+ * Gets the name of a property that likely contains a  URL value.
+ */
+private string urlPropertyName() {
+  result = "uri" or
+  result = "url"
+}
+
+/**
  * A simple model of common URL request libraries.
  */
 private class DefaultUrlRequest extends CustomUrlRequest {
@@ -45,9 +60,7 @@ private class DefaultUrlRequest extends CustomUrlRequest {
   DataFlow::Node url;
 
   DefaultUrlRequest() {
-    exists (string moduleName, DataFlow::SourceNode callee, string httpMethodName, string urlName |
-      httpMethodName = any(HTTP::RequestMethodName m).toLowerCase() and
-      (urlName = "url" or urlName = "uri") and // slightly over-approximate, in the name of simplicity
+    exists (string moduleName, DataFlow::SourceNode callee |
       this = callee.getACall() |
       (
         (
@@ -58,23 +71,23 @@ private class DefaultUrlRequest extends CustomUrlRequest {
         ) and
         (
           callee = DataFlow::moduleImport(moduleName) or
-          callee = DataFlow::moduleMember(moduleName, httpMethodName)
+          callee = DataFlow::moduleMember(moduleName, httpMethodName())
         ) and
         (
           url = getArgument(0) or
-          url = getOptionArgument(0, urlName)
+          url = getOptionArgument(0, urlPropertyName())
         )
       )
       or
       (
         moduleName = "superagent" and
-        callee = DataFlow::moduleMember(moduleName, httpMethodName) and
+        callee = DataFlow::moduleMember(moduleName, httpMethodName()) and
         url = getArgument(0)
       )
       or
       (
         (moduleName = "http" or moduleName = "https") and
-        callee = DataFlow::moduleMember(moduleName, httpMethodName) and
+        callee = DataFlow::moduleMember(moduleName, httpMethodName()) and
         url = getArgument(0)
       )
       or
@@ -82,12 +95,12 @@ private class DefaultUrlRequest extends CustomUrlRequest {
         moduleName = "axios" and
         (
           callee = DataFlow::moduleImport(moduleName) or
-          callee = DataFlow::moduleMember(moduleName, httpMethodName) or
+          callee = DataFlow::moduleMember(moduleName, httpMethodName()) or
           callee = DataFlow::moduleMember(moduleName, "request")
         ) and
         (
           url = getArgument(0) or
-          url = getOptionArgument([0..2], urlName) // slightly over-approximate, in the name of simplicity
+          url = getOptionArgument([0..2], urlPropertyName()) // slightly over-approximate, in the name of simplicity
         )
       )
       or
