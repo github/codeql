@@ -335,10 +335,6 @@ class GlobalVariable extends GlobalOrNamespaceVariable {
  * variables, use `Field` instead of `MemberVariable`.
  */
 class MemberVariable extends Variable, @membervariable {
-  MemberVariable() {
-    this.isMember()
-  }
-
   /** Holds if this member is private. */
   predicate isPrivate() { this.hasSpecifier("private") }
 
