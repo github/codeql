@@ -63,23 +63,6 @@ private class DefaultUrlRequest extends CustomUrlRequest {
     exists (string moduleName, DataFlow::SourceNode callee |
       this = callee.getACall() |
       (
-        (
-          moduleName = "request" or
-          moduleName = "request-promise" or
-          moduleName = "request-promise-any" or
-          moduleName = "request-promise-native"
-        ) and
-        (
-          callee = DataFlow::moduleImport(moduleName) or
-          callee = DataFlow::moduleMember(moduleName, httpMethodName())
-        ) and
-        (
-          url = getArgument(0) or
-          url = getOptionArgument(0, urlPropertyName())
-        )
-      )
-      or
-      (
         moduleName = "superagent" and
         callee = DataFlow::moduleMember(moduleName, httpMethodName()) and
         url = getArgument(0)
@@ -131,6 +114,40 @@ private class DefaultUrlRequest extends CustomUrlRequest {
       url = getArgument(0)
     )
 
+  }
+
+  override DataFlow::Node getUrl() {
+    result = url
+  }
+
+}
+
+
+/**
+ * A model of a URL request in the `request` library.
+ */
+private class RequestUrlRequest extends CustomUrlRequest {
+
+  DataFlow::Node url;
+
+  RequestUrlRequest() {
+    exists (string moduleName, DataFlow::SourceNode callee |
+      this = callee.getACall() |
+      (
+        moduleName = "request" or
+        moduleName = "request-promise" or
+        moduleName = "request-promise-any" or
+        moduleName = "request-promise-native"
+      ) and
+      (
+        callee = DataFlow::moduleImport(moduleName) or
+        callee = DataFlow::moduleMember(moduleName, httpMethodName())
+      ) and
+      (
+        url = getArgument(0) or
+        url = getOptionArgument(0, urlPropertyName())
+      )
+    )
   }
 
   override DataFlow::Node getUrl() {
