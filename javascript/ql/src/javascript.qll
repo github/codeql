@@ -54,6 +54,7 @@ import semmle.javascript.frameworks.AWS
 import semmle.javascript.frameworks.Azure
 import semmle.javascript.frameworks.Babel
 import semmle.javascript.frameworks.ComposedFunctions
+import semmle.javascript.frameworks.ClientRequests
 import semmle.javascript.frameworks.Credentials
 import semmle.javascript.frameworks.CryptoLibraries
 import semmle.javascript.frameworks.DigitalOcean
@@ -71,7 +72,6 @@ import semmle.javascript.frameworks.Request
 import semmle.javascript.frameworks.SQL
 import semmle.javascript.frameworks.StringFormatters
 import semmle.javascript.frameworks.UriLibraries
-import semmle.javascript.frameworks.UrlRequests
 import semmle.javascript.frameworks.XmlParsers
 import semmle.javascript.frameworks.xUnit
 import semmle.javascript.linters.ESLint
