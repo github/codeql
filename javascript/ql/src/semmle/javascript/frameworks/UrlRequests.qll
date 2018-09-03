@@ -53,31 +53,6 @@ private string urlPropertyName() {
 }
 
 /**
- * A simple model of common URL request libraries.
- */
-private class DefaultUrlRequest extends CustomUrlRequest {
-
-  DataFlow::Node url;
-
-  DefaultUrlRequest() {
-    exists (string moduleName, DataFlow::SourceNode callee |
-      this = callee.getACall() |
-      (
-        moduleName = "superagent" and
-        callee = DataFlow::moduleMember(moduleName, httpMethodName()) and
-        url = getArgument(0)
-      )
-    )
-  }
-
-  override DataFlow::Node getUrl() {
-    result = url
-  }
-
-}
-
-
-/**
  * A model of a URL request in the `request` library.
  */
 private class RequestUrlRequest extends CustomUrlRequest {
@@ -210,6 +185,28 @@ private class GotUrlRequest extends CustomUrlRequest {
         callee = DataFlow::moduleMember(moduleName, "stream")
       ) and
       url = getArgument(0) and not exists (getOptionArgument(1, "baseUrl"))
+    )
+  }
+
+  override DataFlow::Node getUrl() {
+    result = url
+  }
+
+}
+
+/**
+ * A model of a URL request in the `superagent` library.
+ */
+private class SuperAgentUrlRequest extends CustomUrlRequest {
+
+  DataFlow::Node url;
+
+  SuperAgentUrlRequest() {
+    exists (string moduleName, DataFlow::SourceNode callee |
+      this = callee.getACall() |
+      moduleName = "superagent" and
+      callee = DataFlow::moduleMember(moduleName, httpMethodName()) and
+      url = getArgument(0)
     )
   }
 
