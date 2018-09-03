@@ -36,3 +36,9 @@ namespace B {
 namespace std {
 
 }
+
+int globalInt;
+
+void globalIntUser(void) {
+    extern int globalInt;
+}
