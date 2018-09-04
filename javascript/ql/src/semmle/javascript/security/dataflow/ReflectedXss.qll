@@ -53,6 +53,13 @@ module ReflectedXss {
     }
   }
 
+  /** A file name, considered as a flow source for reflected XSS. */
+  class FileNameSourceAsSource extends Source {
+    FileNameSourceAsSource() {
+      this instanceof FileNameSource
+    }
+  }
+
   /**
    * An expression that is sent as part of an HTTP response, considered as an XSS sink.
    *
