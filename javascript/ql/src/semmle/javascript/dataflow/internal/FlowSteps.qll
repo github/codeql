@@ -305,6 +305,22 @@ class PathSummary extends TPathSummary {
   }
 
   /**
+   * Gets the summary for the path obtained by appending `that` to `this`, where
+   * `that` must be a path mapping `data` to `data` (in other words, it must be
+   * a value-preserving path).
+   */
+  PathSummary appendValuePreserving(PathSummary that) {
+    exists (Boolean hasReturn2, Boolean hasCall2 |
+      that = MkPathSummary(hasReturn2, hasCall2, FlowLabel::data(), FlowLabel::data()) |
+      result = MkPathSummary(hasReturn.booleanOr(hasReturn2),
+                             hasCall.booleanOr(hasCall2),
+                             start, end) and
+      // avoid constructing invalid paths
+      not (hasCall = true and hasReturn2 = true)
+    )
+  }
+
+  /**
    * Gets the summary for the path obtained by appending `this` to `that`.
    */
   PathSummary prepend(PathSummary that) {

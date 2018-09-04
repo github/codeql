@@ -595,8 +595,7 @@ private predicate reachableFromStoreBase(string prop, DataFlow::Node rhs, DataFl
   exists (DataFlow::Node mid, PathSummary oldSummary, PathSummary newSummary |
     reachableFromStoreBase(prop, rhs, mid, cfg, oldSummary) and
     flowStep(mid, cfg, nd, newSummary) and
-    newSummary.getEndLabel() = FlowLabel::data() and
-    summary = oldSummary.append(newSummary)
+    summary = oldSummary.appendValuePreserving(newSummary)
   )
 }
 
