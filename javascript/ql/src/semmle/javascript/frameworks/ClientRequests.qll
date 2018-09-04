@@ -10,7 +10,7 @@ import javascript
 /**
  * A call that performs a request to a URL.
  */
-class CustomClientRequest extends DataFlow::InvokeNode {
+abstract class CustomClientRequest extends DataFlow::InvokeNode {
 
   /**
    * Gets the URL of the request.

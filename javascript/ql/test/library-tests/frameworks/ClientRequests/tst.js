@@ -43,4 +43,8 @@ import {ClientRequest, net} from 'electron';
     new ClientRequest(url);
 
     new ClientRequest({ url: url });
+
+    unknown(url);
+
+    unknown({ url:url });
 });

@@ -1,4 +1,4 @@
 import javascript
 
 from ClientRequest r
-select r
+select r, r.getUrl()
