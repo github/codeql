@@ -40,9 +40,9 @@
 
 			The following example shows an HTTP request parameter
 			being used directly in a URL request without validating the input,
-			which facilitate an SSRF attack. The request
-			<code>http.get(...)</code> is vulnerable since an attacker can choose
-			the value of <code>target</code> to be anything he wants. For
+			which facilitates an SSRF attack. The request
+			<code>http.get(...)</code> is vulnerable since attackers can choose
+			the value of <code>target</code> to be anything they want. For
 			instance, the attacker can choose
 			<code>"internal.example.com/#"</code> as the target, causing the URL
 			used in the request to be
