@@ -316,7 +316,8 @@ class PathSummary extends TPathSummary {
     exists (string withReturn, string withCall |
       (if hasReturn = true then withReturn = "with" else withReturn = "without") and
       (if hasCall = true then withCall = "with" else withCall = "without") |
-      result = "forward path " + withReturn + " return steps and " + withCall + " call steps"
+      result = "path " + withReturn + " return steps and " + withCall + " call steps " +
+               "transforming " + start + " into " + end
     )
   }
 }
