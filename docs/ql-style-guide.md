@@ -54,6 +54,7 @@ select c, "This call to '$@' is deprecated because " + reason + ".",
    - Immediately after `if`, `then`, or `else` keywords. The `then` and `else` parts *should* be consistent.
 1. *Avoid* other line breaks in declarations, other than to break long lines.
 1. When operands of *binary operators* span two lines, the operator *should* be placed at the end of the first line.
+1. If the parameter list needs to be broken across multiple lines then there must *must* be a line break after the opening `(`, the parameter declarations indented one level, and the `) {` on its own line at the outer indentation.
 
 ### Examples
 
@@ -65,9 +66,11 @@ private int getNumberOfParameters() {
 ```
 
 ```ql
-predicate methodStats(string qualifiedName, string name,
-  int numberOfParameters, int numberOfStatements, int numberOfExpressions,
-  int linesOfCode, int nestingDepth, int numberOfBranches) {
+predicate methodStats(
+  string qualifiedName, string name, int numberOfParameters,
+  int numberOfStatements, int numberOfExpressions, int linesOfCode,
+  int nestingDepth, int numberOfBranches
+) {
   ...
 }
 ```
@@ -285,17 +288,21 @@ deprecated Expr getInitializer()
 1. *Prefer* one *conjunct* per line.
 1. Write the `and` at the end of the line. This also applies in `where` clauses.
 1. *Prefer* to write the `or` keyword on its own line.
-1. The `or` keyword *may* be written at the end of a line, or within a line, provided that it has no unparenthesised `and` operands.
+1. The `or` keyword *may* be written at the end of a line, or within a line, provided that it has no `and` operands.
 1. Single-line formulas *may* be used in order to save space or add clarity, particularly in the *body* of a *quantifier/aggregation*.
 1. *Always* use brackets to clarify the precedence of:
    - `implies`
    - `if`-`then`-`else`
+1. *Avoid* using brackets to clarify the precedence of:
+   - `not`
+   - `and`
+   - `or`
 1. Parenthesised formulas *can* be written:
    - Within a single line. There *should not* be an additional space following the opening parenthesis or preceding the closing parenthesis.
    - Spanning multiple lines. The opening parenthesis *should* be placed at the end of the preceding line, the body should be indented one level, and the closing bracket should be placed on a new line at the outer indentation.
 1. *Quantifiers/aggregations* *can* be written:
    - Within a single line. In this case, there is no space to the inside of the parentheses, or after the quantifier keyword.
-   - Across multiple lines. In this case, type declarations are on the same line as the quantifier, the `|` *may* be at the end of the line, or *may* be on its own line, and the body of the quantifier *must* be indented one level. The closing `)` is written on a new line, at the outer indentation.
+   - Across multiple lines. In this case, type declarations are on the same line as the quantifier with the `|` at the end of the same line as the quantifier, the second `|` *must* be at the end of the same line as the quantifier or on its own line at the outer indentation, and the body of the quantifier *must* be indented one level. The closing `)` is written on a new line, at the outer indentation. If the type declarations need to be broken across multiple lines then there must *must* be a line break after the opening `(`, the type declarations indented one level, and the first `|` on its own line at the outer indentation.
 1. `if`-`then`-`else` *can* be written:
    - On a single line
    - With the *body* after the `if`/`then`/`else` keyword
@@ -360,7 +367,8 @@ deprecated Expr getInitializer()
 
 ```ql
   exists(Type qualifierType |
-    this.hasNonExactQualifierType(qualifierType) |
+    this.hasNonExactQualifierType(qualifierType)
+  |
     result = getANonExactQualifierSubType(qualifierType)
   )
 ```	
