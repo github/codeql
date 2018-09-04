@@ -53,7 +53,7 @@ private string urlPropertyName() {
 }
 
 /**
- * A model of a URL request in the `request` library.
+ * A model of a URL request made using the `request` library.
  */
 private class RequestUrlRequest extends CustomClientRequest {
 
@@ -86,7 +86,7 @@ private class RequestUrlRequest extends CustomClientRequest {
 }
 
 /**
- * A model of a URL request in the `axios` library.
+ * A model of a URL request made using the `axios` library.
  */
 private class AxiosUrlRequest extends CustomClientRequest {
 
@@ -103,7 +103,8 @@ private class AxiosUrlRequest extends CustomClientRequest {
       ) and
       (
         url = getArgument(0) or
-        url = getOptionArgument([0..2], urlPropertyName()) // slightly over-approximate, in the name of simplicity
+        // depends on the method name and the call arity, over-approximating slightly in the name of simplicity
+        url = getOptionArgument([0..2], urlPropertyName())
       )
     )
   }
@@ -115,7 +116,7 @@ private class AxiosUrlRequest extends CustomClientRequest {
 }
 
 /**
- * A model of a URL request in an implementation of the `fetch` API.
+ * A model of a URL request made using an implementation of the `fetch` API.
  */
 private class FetchUrlRequest extends CustomClientRequest {
 
@@ -146,7 +147,7 @@ private class FetchUrlRequest extends CustomClientRequest {
 }
 
 /**
- * A model of a URL request in the `got` library.
+ * A model of a URL request made using the `got` library.
  */
 private class GotUrlRequest extends CustomClientRequest {
 
@@ -171,7 +172,7 @@ private class GotUrlRequest extends CustomClientRequest {
 }
 
 /**
- * A model of a URL request in the `superagent` library.
+ * A model of a URL request made using the `superagent` library.
  */
 private class SuperAgentUrlRequest extends CustomClientRequest {
 

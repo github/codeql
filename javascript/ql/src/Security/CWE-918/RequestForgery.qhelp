@@ -6,7 +6,7 @@
 	<overview>
 		<p>
 
-			Directly incorporating user input into a remote request
+			Directly incorporating user input into an HTTP request
 			without validating the input can facilitate different kinds of request
 			forgery attacks, where the attacker essentially controls the request.
 
