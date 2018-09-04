@@ -5,6 +5,7 @@
  * @kind problem
  * @id cpp/integer-overflow-tainted
  * @problem.severity warning
+ * @precision low
  * @tags security
  *       external/cwe/cwe-190
  *       external/cwe/cwe-197
