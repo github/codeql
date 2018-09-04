@@ -1094,7 +1094,7 @@ module Ssa {
 
     private module SimpleDelegateAnalysis {
       private import semmle.code.csharp.dataflow.DelegateDataFlow
-      private import semmle.code.csharp.dataflow.DataFlowInternal
+      private import semmle.code.csharp.dataflow.internal.Steps
       private import semmle.code.csharp.frameworks.system.linq.Expressions
 
       /**
@@ -1124,7 +1124,7 @@ module Ssa {
       }
 
       private predicate delegateFlowStep(Expr pred, Expr succ) {
-        DataFlowInternal::stepClosed(pred, succ)
+        Steps::stepClosed(pred, succ)
         or
         exists(Call call, Callable callable |
           callable.getSourceDeclaration().canReturn(pred) and
