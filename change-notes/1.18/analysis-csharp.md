@@ -47,7 +47,7 @@
   - `CallableExitNode` has been renamed to `ControlFlow::Nodes::ExitNode`.
   - `ControlFlowEdgeType` has been renamed to `ControlFlow::SuccessorType`.
   - `ControlFlowEdgeSuccessor` has been renamed to `ControlFlow::SuccessorTypes::NormalSuccessor`.
-  - `ControlFlowEdgeConditional has been renamed to ControlFlow::SuccessorTypes::ConditionalSuccessor`.
+  - `ControlFlowEdgeConditional` has been renamed to `ControlFlow::SuccessorTypes::ConditionalSuccessor`.
   - `ControlFlowEdgeBoolean` has been renamed to `ControlFlow::SuccessorTypes::BooleanSuccessor`.
   - `ControlFlowEdgeNullness` has been renamed to `ControlFlow::SuccessorTypes::NullnessSuccessor`.
   - `ControlFlowEdgeMatching` has been renamed to `ControlFlow::SuccessorTypes::MatchingSuccessor`.
