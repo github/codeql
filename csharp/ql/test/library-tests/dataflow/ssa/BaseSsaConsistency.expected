@@ -1,0 +1,42 @@
+| Capture.cs:35:13:35:13 | access to local variable z | Capture.cs:29:13:29:17 | Int32 z = ... |
+| Capture.cs:39:13:39:13 | access to parameter i | Capture.cs:6:16:6:16 | i |
+| Capture.cs:40:13:40:13 | access to local variable x | Capture.cs:8:13:8:17 | Int32 x = ... |
+| Capture.cs:45:13:45:13 | access to local variable x | Capture.cs:43:9:43:13 | ... = ... |
+| Capture.cs:47:13:47:13 | access to local variable x | Capture.cs:43:9:43:13 | ... = ... |
+| Capture.cs:54:9:54:9 | access to parameter a | Capture.cs:50:20:50:20 | a |
+| Capture.cs:62:13:62:13 | access to local variable i | Capture.cs:59:13:59:17 | Int32 i = ... |
+| Capture.cs:78:13:78:13 | access to local variable i | Capture.cs:75:13:75:17 | Int32 i = ... |
+| Capture.cs:137:13:137:13 | access to local variable c | Capture.cs:130:13:130:18 | Int32 c = ... |
+| Capture.cs:145:13:145:13 | access to local variable d | Capture.cs:139:13:139:18 | Int32 d = ... |
+| Capture.cs:177:17:177:17 | access to local variable h | Capture.cs:171:13:171:17 | ... = ... |
+| Capture.cs:237:34:237:34 | access to local variable i | Capture.cs:232:9:232:13 | ... = ... |
+| DefUse.cs:14:17:14:17 | access to local variable y | DefUse.cs:6:14:6:19 | Int64 y = ... |
+| DefUse.cs:20:17:20:17 | access to parameter w | DefUse.cs:3:26:3:26 | w |
+| DefUse.cs:23:13:23:13 | access to local variable y | DefUse.cs:13:13:13:18 | ... = ... |
+| DefUse.cs:23:13:23:13 | access to local variable y | DefUse.cs:18:13:18:18 | ... = ... |
+| DefUse.cs:24:13:24:13 | access to parameter w | DefUse.cs:19:13:19:18 | ... = ... |
+| DefUse.cs:42:13:42:13 | access to local variable y | DefUse.cs:28:13:28:18 | ... = ... |
+| DefUse.cs:42:13:42:13 | access to local variable y | DefUse.cs:39:13:39:18 | ... = ... |
+| DefUse.cs:80:30:80:31 | access to local variable x1 | DefUse.cs:79:13:79:18 | Int32 x1 = ... |
+| DefUse.cs:98:16:98:17 | access to local variable x5 | DefUse.cs:97:13:97:18 | Int32 x5 = ... |
+| DefUse.cs:98:16:98:17 | access to local variable x5 | DefUse.cs:101:13:101:23 | ... = ... |
+| DefUse.cs:182:13:182:13 | access to parameter i | DefUse.cs:170:9:170:13 | ... = ... |
+| Example.cs:25:13:25:13 | access to parameter p | Example.cs:18:16:18:16 | p |
+| Example.cs:25:13:25:13 | access to parameter p | Example.cs:23:13:23:17 | ... = ... |
+| Fields.cs:50:13:50:13 | access to local variable f | Fields.cs:30:13:30:28 | Fields f = ... |
+| Fields.cs:50:13:50:13 | access to local variable f | Fields.cs:49:13:49:28 | ... = ... |
+| Fields.cs:52:13:52:13 | access to local variable f | Fields.cs:30:13:30:28 | Fields f = ... |
+| Fields.cs:52:13:52:13 | access to local variable f | Fields.cs:49:13:49:28 | ... = ... |
+| Properties.cs:50:13:50:13 | access to local variable f | Properties.cs:30:13:30:32 | Properties f = ... |
+| Properties.cs:50:13:50:13 | access to local variable f | Properties.cs:49:13:49:32 | ... = ... |
+| Properties.cs:52:13:52:13 | access to local variable f | Properties.cs:30:13:30:32 | Properties f = ... |
+| Properties.cs:52:13:52:13 | access to local variable f | Properties.cs:49:13:49:32 | ... = ... |
+| Properties.cs:63:16:63:16 | access to parameter i | Properties.cs:61:23:61:23 | i |
+| Test.cs:14:19:14:19 | access to local variable x | Test.cs:8:13:8:17 | Int32 x = ... |
+| Test.cs:20:13:20:13 | access to local variable y | Test.cs:9:13:9:13 | Int32 y |
+| Test.cs:24:13:24:13 | access to local variable z | Test.cs:15:13:15:17 | ... = ... |
+| Test.cs:24:13:24:13 | access to local variable z | Test.cs:22:13:22:17 | ... = ... |
+| Test.cs:25:20:25:20 | access to local variable y | Test.cs:31:13:31:18 | ... = ... |
+| Test.cs:34:25:34:25 | access to local variable i | Test.cs:34:18:34:22 | Int32 i = ... |
+| Test.cs:34:25:34:25 | access to local variable i | Test.cs:34:33:34:35 | ...++ |
+| Tuples.cs:24:13:24:13 | access to local variable x | Tuples.cs:23:9:23:37 | ... = ... |
