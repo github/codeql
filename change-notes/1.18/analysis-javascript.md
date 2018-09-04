@@ -108,6 +108,7 @@
 | Missing rate limiting | More true-positive results, fewer false-positive results | This rule now recognizes additional rate limiters and expensive route handlers. | 
 | Missing X-Frame-Options HTTP header | Fewer false-positive results | This rule now treats header names case-insensitively. |
 | Reflected cross-site scripting | Fewer false-positive results | This rule now treats header names case-insensitively. |
+| Semicolon insertion | Fewer results | This rule now ignores TypeScript files as it did not work correctly. |
 | Server-side URL redirect | More true-positive results | This rule now treats header names case-insensitively. |
 | Superfluous trailing arguments | Fewer false-positive results | This rule now ignores calls to some empty functions. |
 | Type confusion through parameter tampering | Fewer false-positive results | This rule no longer flags emptiness checks. |
