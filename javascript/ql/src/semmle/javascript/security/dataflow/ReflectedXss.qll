@@ -53,7 +53,7 @@ module ReflectedXss {
     }
   }
 
-  /** A source of file name input, considered as a flow source for reflected XSS. */
+  /** A file name, considered as a flow source for reflected XSS. */
   class FileNameSourceAsSource extends Source {
     FileNameSourceAsSource() {
       this instanceof FileNameSource
