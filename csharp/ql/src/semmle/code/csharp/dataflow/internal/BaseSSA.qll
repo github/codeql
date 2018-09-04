@@ -7,21 +7,39 @@ import csharp
  */
 module BaseSsa {
   private import ControlFlowGraph
+  private import AssignableDefinitions
+
+  private class SimpleLocalScopeVariable extends LocalScopeVariable {
+    SimpleLocalScopeVariable() {
+      not exists(AssignableDefinition def1, AssignableDefinition def2 |
+        def1.getTarget() = this and
+        def2.getTarget() = this and
+        def1.getEnclosingCallable() != def2.getEnclosingCallable()
+      )
+    }
+  }
 
   /**
    * Holds if the `i`th node of basic block `bb` is assignable definition `def`,
    * targeting local scope variable `v`.
    */
-  private predicate defAt(BasicBlock bb, int i, AssignableDefinition def, LocalScopeVariable v) {
+  private predicate defAt(BasicBlock bb, int i, AssignableDefinition def, SimpleLocalScopeVariable v) {
     bb.getNode(i) = def.getAControlFlowNode() and
-    v = def.getTarget()
+    v = def.getTarget() and
+    // In cases like `(x, x) = (0, 1)`, we discard the first (dead) definition of `x`
+    not exists(TupleAssignmentDefinition tdef, TupleAssignmentDefinition other |
+      tdef = def |
+      other.getAssignment() = tdef.getAssignment() and
+      other.getEvaluationOrder() > tdef.getEvaluationOrder() and
+      other.getTarget() = v
+    )
   }
 
   /**
    * Holds if basic block `bb` would need to start with a phi node for local scope
    * variable `v` in an SSA representation.
    */
-  private predicate needsPhiNode(BasicBlock bb, LocalScopeVariable v) {
+  private predicate needsPhiNode(BasicBlock bb, SimpleLocalScopeVariable v) {
     exists(BasicBlock def |
       def.inDominanceFrontier(bb) |
       defAt(def, _, _, v) or
@@ -36,7 +54,7 @@ module BaseSsa {
    * either a read (when `k` is `SsaRead()`) or a write including phi nodes
    * (when `k` is `SsaDef()`).
    */
-  private predicate ssaRef(BasicBlock bb, int i, LocalScopeVariable v, SsaRefKind k) {
+  private predicate ssaRef(BasicBlock bb, int i, SimpleLocalScopeVariable v, SsaRefKind k) {
     bb.getNode(i).getElement() = v.getAnAccess().(VariableRead) and
     k = SsaRead()
     or
@@ -52,7 +70,7 @@ module BaseSsa {
    * Gets the (1-based) rank of the reference to `v` at the `i`th node of basic
    * block `bb`, which has the given reference kind `k`.
    */
-  private int ssaRefRank(BasicBlock bb, int i, LocalScopeVariable v, SsaRefKind k) {
+  private int ssaRefRank(BasicBlock bb, int i, SimpleLocalScopeVariable v, SsaRefKind k) {
     i = rank[result](int j | ssaRef(bb, j, v, _)) and
     ssaRef(bb, i, v, k)
   }
@@ -62,7 +80,7 @@ module BaseSsa {
    * `bb` reaches the reference at rank `rnk`, without passing through another
    * definition of `v`, including phi nodes.
    */
-  private predicate defReachesRank(BasicBlock bb, AssignableDefinition def, LocalScopeVariable v, int rnk) {
+  private predicate defReachesRank(BasicBlock bb, AssignableDefinition def, SimpleLocalScopeVariable v, int rnk) {
     exists(int i |
       rnk = ssaRefRank(bb, i, v, SsaDef()) |
       defAt(bb, i, def, v)
@@ -77,7 +95,7 @@ module BaseSsa {
    * basic block `bb` without passing through another definition of `v`, including
    * phi nodes.
    */
-  private predicate reachesEndOf(AssignableDefinition def, LocalScopeVariable v, BasicBlock bb) {
+  private predicate reachesEndOf(AssignableDefinition def, SimpleLocalScopeVariable v, BasicBlock bb) {
     exists(int rnk |
       defReachesRank(bb, def, v, rnk) and
       rnk = max(ssaRefRank(bb, _, v, _))
@@ -94,7 +112,7 @@ module BaseSsa {
    * Gets a read of the SSA definition for variable `v` at definition `def`. That is,
    * a read that is guaranteed to read the value assigned at definition `def`.
    */
-  cached AssignableRead getARead(AssignableDefinition def, LocalScopeVariable v) {
+  cached AssignableRead getARead(AssignableDefinition def, SimpleLocalScopeVariable v) {
     exists(BasicBlock bb, int i, int rnk |
       result.getTarget() = v and
       result.getAControlFlowNode() = bb.getNode(i) and
@@ -103,7 +121,7 @@ module BaseSsa {
       defReachesRank(bb, def, v, rnk)
       or
       reachesEndOf(def, v, bb.getAPredecessor()) and
-      not ssaRefRank(bb, i, v, SsaDef()) < rnk
+      not ssaRefRank(bb, _, v, SsaDef()) < rnk
     )
   }
 }
