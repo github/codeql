@@ -5,8 +5,7 @@
 | Capture.cs:8:13:8:13 | x | Capture.cs:19:24:23:13 | SSA capture def(x) | Capture.cs:21:21:21:21 | access to local variable x |
 | Capture.cs:8:13:8:13 | x | Capture.cs:38:9:38:11 | SSA call def(x) | Capture.cs:40:13:40:13 | access to local variable x |
 | Capture.cs:8:13:8:13 | x | Capture.cs:43:9:43:13 | SSA def(x) | Capture.cs:44:11:44:11 | access to local variable x |
-| Capture.cs:8:13:8:13 | x | Capture.cs:44:9:44:12 | SSA call def(x) | Capture.cs:45:13:45:13 | access to local variable x |
-| Capture.cs:8:13:8:13 | x | Capture.cs:46:9:46:13 | SSA call def(x) | Capture.cs:47:13:47:13 | access to local variable x |
+| Capture.cs:8:13:8:13 | x | Capture.cs:44:9:44:12 | SSA call def(x) | Capture.cs:47:13:47:13 | access to local variable x |
 | Capture.cs:10:16:10:16 | a | Capture.cs:10:16:27:9 | SSA def(a) | Capture.cs:46:12:46:12 | access to local variable a |
 | Capture.cs:17:17:17:17 | y | Capture.cs:17:17:17:21 | SSA def(y) | Capture.cs:26:17:26:17 | access to local variable y |
 | Capture.cs:17:17:17:17 | y | Capture.cs:19:24:23:13 | SSA capture def(y) | Capture.cs:22:21:22:21 | access to local variable y |
