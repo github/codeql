@@ -27,11 +27,11 @@ module BaseSsa {
     bb.getNode(i) = def.getAControlFlowNode() and
     v = def.getTarget() and
     // In cases like `(x, x) = (0, 1)`, we discard the first (dead) definition of `x`
-    not exists(TupleAssignmentDefinition tdef, TupleAssignmentDefinition other |
-      tdef = def |
-      other.getAssignment() = tdef.getAssignment() and
-      other.getEvaluationOrder() > tdef.getEvaluationOrder() and
-      other.getTarget() = v
+    not exists(TupleAssignmentDefinition first, TupleAssignmentDefinition second |
+      first = def |
+      second.getAssignment() = first.getAssignment() and
+      second.getEvaluationOrder() > first.getEvaluationOrder() and
+      second.getTarget() = v
     )
   }
 

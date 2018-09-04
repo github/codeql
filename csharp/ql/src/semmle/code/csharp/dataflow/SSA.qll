@@ -119,11 +119,11 @@ module Ssa {
       ad.getAControlFlowNode() = bb.getNode(i)
       and
       // In cases like `(x, x) = (0, 1)`, we discard the first (dead) definition of `x`
-      not exists(TupleAssignmentDefinition tdef, TupleAssignmentDefinition other |
-        tdef = ad |
-        other.getAssignment() = tdef.getAssignment() and
-        other.getEvaluationOrder() > tdef.getEvaluationOrder() and
-        other = v.getADefinition()
+      not exists(TupleAssignmentDefinition first, TupleAssignmentDefinition second |
+        first = ad |
+        second.getAssignment() = first.getAssignment() and
+        second.getEvaluationOrder() > first.getEvaluationOrder() and
+        second = v.getADefinition()
       )
       and
       // In cases like `M(out x, out x)`, there is no inherent evaluation order, so we
