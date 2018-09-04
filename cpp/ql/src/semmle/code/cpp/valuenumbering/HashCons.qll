@@ -748,14 +748,13 @@ private predicate mk_FieldCons(Class c, int i, Field f, HashCons hc, HC_Fields h
   cal.getType().getUnspecifiedType() = c and
   exists(Expr e |
     e = cal.getFieldExpr(f).getFullyConverted() and
-    e = cal.getChild(i).getFullyConverted() and
+    f.getInitializationOrder() = i and
     hc = hashCons(e) and
     (
       exists(HashCons head, Field f2, HC_Fields tail |
         hcf = HC_FieldCons(c, i-1, f2, head, tail) and
-        cal.getChild(i-1).getFullyConverted() = cal.getFieldExpr(f2).getFullyConverted() and
+        f2.getInitializationOrder() = i-1 and
         mk_FieldCons(c, i-1, f2, head, tail, cal)
-        
       )
       or
       i = 0 and
@@ -777,7 +776,7 @@ private predicate mk_ClassAggregateLiteral(Class c, HC_Fields hcf, ClassAggregat
   c = cal.getType().getUnspecifiedType() and
   (
     exists(HC_Fields tail, Expr e, Field f |
-      e = cal.getChild(cal.getNumChild() - 1).getFullyConverted() and
+      f.getInitializationOrder() = cal.getNumChild() - 1 and
       e = cal.getFieldExpr(f).getFullyConverted() and
       hcf = HC_FieldCons(c, cal.getNumChild() - 1, f, hashCons(e), tail) and
       mk_FieldCons(c, cal.getNumChild() - 1, f, hashCons(e), tail, cal)
