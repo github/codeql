@@ -1155,8 +1155,6 @@ class TemplateParameter extends UserType
 {
   TemplateParameter() { usertypes(underlyingElement(this), _, 7) or usertypes(underlyingElement(this), _, 8) }
 
-  override string getName() { usertypes(underlyingElement(this), result, _) }
-
   override predicate involvesTemplateParameter() {
     any()
   }
