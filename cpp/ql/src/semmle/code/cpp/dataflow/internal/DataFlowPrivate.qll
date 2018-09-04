@@ -128,7 +128,7 @@ predicate readStep(Node node1, Content f, Node node2) {
  * numeric conversions, and otherwise the erasure is used.
  */
 RefType getErasedRepr(Type t) {
-  t = t and // silence compiler warning
+  suppressUnusedThis(t) and
   result instanceof VoidType // stub implementation
 }
 
@@ -140,6 +140,8 @@ pragma[inline]
 predicate compatibleTypes(Type t1, Type t2) {
   any() // stub implementation
 }
+
+private predicate suppressUnusedThis(Type t) { any() }
 
 //////////////////////////////////////////////////////////////////////////////
 // Java QL library compatibility wrappers
