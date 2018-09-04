@@ -83,8 +83,7 @@ class PrintableFunctionIR extends PrintableIRNode, TPrintableFunctionIR {
   override int getOrder() {
     this = rank[result + 1](PrintableFunctionIR orderedFunc, Location location |
       location = orderedFunc.getFunctionIR().getLocation() |
-      orderedFunc order by location.getFile().getAbsolutePath(),
-        location.getStartLine(),
+      orderedFunc order by location.getFile().getAbsolutePath(), location.getStartLine(),
         location.getStartColumn(), orderedFunc.getLabel()
     )
   }
