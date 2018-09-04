@@ -149,11 +149,7 @@ class ExplicitUpcast extends ExplicitCast {
       this.isDisambiguatingStaticCall(other, args)
       |
       args >= getMinimumArguments(other) and
-      (
-        not exists(getMaximumArguments(other))
-        or
-        args <= getMaximumArguments(other)
-      )
+      not args > getMaximumArguments(other)
     )
   }
 
