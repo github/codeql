@@ -1,3 +1,5 @@
+using System;
+
 class Good
 {
     private int id;
@@ -12,7 +14,7 @@ class Good
 
     public override bool Equals(object o)
     {
-        if (o is Good g && g.GetType() = typeof(Good))
+        if (o is Good g && g.GetType() == typeof(Good))
             return this.Equals(g);
         return false;
     }
