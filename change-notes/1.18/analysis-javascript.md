@@ -85,6 +85,8 @@
   - [xss](https://github.com/leizongmin/js-xss)
   - [xtend](https://github.com/Raynos/xtend)
 
+* Handling of ambient TypeScript code has been improved. As a result, fewer false positives will be reported in `.d.ts` files.
+
 ## New queries
 
 | **Query**                   | **Tags**  | **Purpose**                                                        |
