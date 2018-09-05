@@ -250,7 +250,26 @@ class SwitchStmt extends SelectionStmt, @switch_stmt {
  * A `case` statement. Either a constant case (`ConstCase`), a type matching
  * case (`TypeCase`), or a `default` case (`DefaultCase`).
  */
-class CaseStmt extends Stmt, @case { }
+class CaseStmt extends Stmt, @case
+{
+  /**
+   * Gets the condition on this case, if any. For example, the type case on line 3
+   * has no condition, and the type case on line 4 has condition `s.Length>0`, in
+   *
+   * ```
+   * switch(p)
+   * {
+   *     case int i:
+   *     case string s when s.Length>0:
+   *         break;
+   *     ...
+   * }
+   * ```
+   */
+  Expr getCondition() {
+    result = getChild(2)
+  }
+}
 
 /**
  * A constant case of a `switch` statement, for example `case OpCode.Nop:`
@@ -280,15 +299,16 @@ class ConstCase extends LabeledStmt, CaseStmt {
 }
 
 /**
- * A type matching case in a `switch` statement, for example `case int i:` on line 2 or
- * `case string s when s.Length>0:` on line 3 in
+ * A type matching case in a `switch` statement, for example `case int i:` on line 3 or
+ * `case string s when s.Length>0:` on line 4 in
  *
  * ```
- * switch(p) {
- *   case int i:
- *   case string s when s.Length>0:
- *     break;
- *   ...
+ * switch(p)
+ * {
+ *     case int i:
+ *     case string s when s.Length>0:
+ *         break;
+ *     ...
  * }
  * ```
  */
@@ -348,23 +368,6 @@ class TypeCase extends LabeledStmt, CaseStmt {
    */
   Type getCheckedType() {
     result = getTypeAccess().getType()
-  }
-
-  /**
-   * Gets the condition on this case, if any. For example, the type case on line 2
-   * has no condition, and the type case on line 3 has condition `s.Length>0`, in
-   *
-   * ```
-   * switch(p) {
-   *   case int i:
-   *   case string s when s.Length>0:
-   *     break;
-   *   ...
-   * }
-   * ```
-   */
-  Expr getCondition() {
-    result = getChild(2)
   }
 
   override string toString() {

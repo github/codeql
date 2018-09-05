@@ -309,7 +309,7 @@ private predicate inBooleanContext(Expr e, boolean isBooleanCompletionForParent)
     isBooleanCompletionForParent = false
   )
   or
-  exists(TypeCase tc |
+  exists(CaseStmt tc |
     tc.getCondition() = e |
     isBooleanCompletionForParent = false
   )
