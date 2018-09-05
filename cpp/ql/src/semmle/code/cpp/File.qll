@@ -162,7 +162,7 @@ abstract class Container extends Locatable, @container {
    *
    * This is the absolute path of the container.
    */
-  string toString() {
+  override string toString() {
     result = getAbsolutePath()
   }
 }

@@ -20,6 +20,10 @@ sanitization. In the latter case, preceding a meta-character with a backslash le
 backslash being escaped, but the meta-character appearing un-escaped, which again makes the
 sanitization ineffective.
 </p>
+<p>
+Even if the escaped string is not used in a security-critical context, incomplete escaping may
+still have undesirable effects, such as badly rendered or confusing output.
+</p>
 </overview>
 
 <recommendation>

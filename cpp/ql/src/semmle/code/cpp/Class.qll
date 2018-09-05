@@ -566,7 +566,7 @@ class Class extends UserType {
    * The alignment of this type in bytes (on the machine where facts were
    * extracted).
    */
-  int getAlignment() { usertypesize(underlyingElement(this),_,result) }
+  override int getAlignment() { usertypesize(underlyingElement(this),_,result) }
 
   /**
    * Holds if this class is constructed from another class as a result of

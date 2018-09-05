@@ -1,7 +1,7 @@
 /**
- * @name Incomplete sanitization
- * @description A sanitizer that does not replace or escape all occurrences of a
- *              problematic substring may be ineffective.
+ * @name Incomplete string escaping or encoding
+ * @description A string transformer that does not replace or escape all occurrences of a
+ *              meta-character may be ineffective.
  * @kind problem
  * @problem.severity warning
  * @precision high
@@ -16,9 +16,6 @@ import javascript
 
 /**
  * Gets a character that is commonly used as a meta-character.
- *
- * We heuristically assume that string replacements involving one of these
- * characters are meant to be sanitizers.
  */
 string metachar() {
   result = "'\"\\&<>\n\r\t*|{}[]%$".charAt(_)
@@ -75,7 +72,7 @@ predicate isBackslashEscape(MethodCallExpr mce, RegExpLiteral re) {
 }
 
 /**
- * Holds if data flowing into `nd` has no unescaped backslashes.
+ * Holds if data flowing into `nd` has no un-escaped backslashes.
  */
 predicate allBackslashesEscaped(DataFlow::Node nd) {
   // `JSON.stringify` escapes backslashes

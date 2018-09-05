@@ -8,7 +8,6 @@
 | Capture.cs:8:13:8:13 | x | Capture.cs:38:9:38:11 | SSA call def(x) |
 | Capture.cs:8:13:8:13 | x | Capture.cs:43:9:43:13 | SSA def(x) |
 | Capture.cs:8:13:8:13 | x | Capture.cs:44:9:44:12 | SSA call def(x) |
-| Capture.cs:8:13:8:13 | x | Capture.cs:46:9:46:13 | SSA call def(x) |
 | Capture.cs:10:16:10:16 | a | Capture.cs:10:16:27:9 | SSA def(a) |
 | Capture.cs:17:17:17:17 | y | Capture.cs:17:17:17:21 | SSA def(y) |
 | Capture.cs:17:17:17:17 | y | Capture.cs:19:24:23:13 | SSA capture def(y) |

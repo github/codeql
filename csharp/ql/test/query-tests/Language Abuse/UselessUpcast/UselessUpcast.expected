@@ -1,4 +1,7 @@
-| UselessUpcast.cs:51:13:51:16 | (...) ... | There is no need to upcast from $@ to $@ - the conversion can be done implicitly. | UselessUpcast.cs:17:7:17:7 | B | B | UselessUpcast.cs:10:7:10:7 | A | A |
-| UselessUpcast.cs:57:14:57:17 | (...) ... | There is no need to upcast from $@ to $@ - the conversion can be done implicitly. | UselessUpcast.cs:17:7:17:7 | B | B | UselessUpcast.cs:10:7:10:7 | A | A |
-| UselessUpcast.cs:66:13:66:16 | (...) ... | There is no need to upcast from $@ to $@ - the conversion can be done implicitly. | UselessUpcast.cs:17:7:17:7 | B | B | UselessUpcast.cs:10:7:10:7 | A | A |
+| UselessUpcast.cs:54:13:54:16 | (...) ... | There is no need to upcast from $@ to $@ - the conversion can be done implicitly. | UselessUpcast.cs:20:7:20:7 | B | B | UselessUpcast.cs:13:7:13:7 | A | A |
+| UselessUpcast.cs:60:14:60:17 | (...) ... | There is no need to upcast from $@ to $@ - the conversion can be done implicitly. | UselessUpcast.cs:20:7:20:7 | B | B | UselessUpcast.cs:13:7:13:7 | A | A |
+| UselessUpcast.cs:69:13:69:16 | (...) ... | There is no need to upcast from $@ to $@ - the conversion can be done implicitly. | UselessUpcast.cs:20:7:20:7 | B | B | UselessUpcast.cs:13:7:13:7 | A | A |
+| UselessUpcast.cs:85:12:85:15 | (...) ... | There is no need to upcast from $@ to $@ - the conversion can be done implicitly. | UselessUpcast.cs:20:7:20:7 | B | B | UselessUpcast.cs:13:7:13:7 | A | A |
+| UselessUpcast.cs:94:12:94:15 | (...) ... | There is no need to upcast from $@ to $@ - the conversion can be done implicitly. | UselessUpcast.cs:20:7:20:7 | B | B | UselessUpcast.cs:13:7:13:7 | A | A |
+| UselessUpcast.cs:105:16:105:19 | (...) ... | There is no need to upcast from $@ to $@ - the conversion can be done implicitly. | UselessUpcast.cs:27:7:27:7 | C | C | UselessUpcast.cs:20:7:20:7 | B | B |
 | UselessUpcastBad.cs:9:23:9:32 | (...) ... | There is no need to upcast from $@ to $@ - the conversion can be done implicitly. | UselessUpcastBad.cs:4:11:4:13 | Sub | Sub | UselessUpcastBad.cs:3:11:3:15 | Super | Super |

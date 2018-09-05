@@ -9,7 +9,7 @@ import csharp
 private import RuntimeCallable
 private import OverridableCallable
 private import semmle.code.csharp.Conversion
-private import semmle.code.csharp.dataflow.DataFlowInternal
+private import semmle.code.csharp.dataflow.internal.Steps
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.Reflection
 
@@ -145,8 +145,8 @@ private module Internal {
    * using simple data flow.
    */
   private Expr getAMethodCallArgSource(MethodCallArg e) {
-    DataFlowInternal::stepOpen*(result, e) and
-    not DataFlowInternal::stepOpen(_, result)
+    Steps::stepOpen*(result, e) and
+    not Steps::stepOpen(_, result)
   }
 
   /**
@@ -302,7 +302,7 @@ private module Internal {
     }
 
     private predicate stepExpr0(Expr succ, Expr pred) {
-      DataFlowInternal::stepOpen(pred, succ)
+      Steps::stepOpen(pred, succ)
       or
       exists(Assignable a |
         a instanceof Field or

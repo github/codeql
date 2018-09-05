@@ -1,2 +1,5 @@
 | tst.js:2:13:2:20 | source() | tst.js:4:10:4:10 | x |
 | tst.js:2:13:2:20 | source() | tst.js:5:10:5:22 | "/" + x + "!" |
+| tst.js:2:13:2:20 | source() | tst.js:14:10:14:17 | x.sort() |
+| tst.js:2:13:2:20 | source() | tst.js:17:10:17:10 | a |
+| tst.js:2:13:2:20 | source() | tst.js:19:10:19:10 | a |

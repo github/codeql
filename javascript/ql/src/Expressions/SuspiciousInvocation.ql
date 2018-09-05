@@ -15,5 +15,6 @@ private import semmle.javascript.dataflow.InferredTypes
 
 from InvokeExpr invk, DataFlow::AnalyzedNode callee
 where callee.asExpr() = invk.getCallee() and
-      forex (InferredType tp | tp = callee.getAType() | tp != TTFunction() and tp != TTClass())
+      forex (InferredType tp | tp = callee.getAType() | tp != TTFunction() and tp != TTClass()) and
+      not invk.isAmbient()
 select invk, "Callee is not a function: it has type " + callee.ppTypes() + "."
