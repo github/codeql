@@ -189,11 +189,11 @@ private module FormatFlow {
   private class FormatConfiguration extends DataFlow::Configuration {
     FormatConfiguration() { this = "format" }
 
-    predicate isSource(DataFlow::Node n) {
+    override predicate isSource(DataFlow::Node n) {
       n.asExpr() instanceof StringLiteral
     }
 
-    predicate isSink(DataFlow::Node n) {
+    override predicate isSink(DataFlow::Node n) {
       exists(FormatCall c | n.asExpr() = c.getFormatExpr())
     }
   }

@@ -11,7 +11,7 @@ import Expr
  * (`BinaryArithmeticOperation`).
  */
 class ArithmeticOperation extends Operation, @arith_op_expr {
-  string getOperator() { none() }
+  override string getOperator() { none() }
 }
 
 /**

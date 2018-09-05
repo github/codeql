@@ -5,8 +5,7 @@
 import csharp
 
 module Ssa {
-  class BasicBlock = ControlFlowGraph::BasicBlock;
-  class ControlFlowNode = ControlFlowGraph::ControlFlowNode;
+  class BasicBlock = ControlFlow::BasicBlock;
 
   private module SourceVariableImpl {
     private import AssignableDefinitions
@@ -207,7 +206,7 @@ module Ssa {
      * Holds if the `i`th node `node` of basic block `bb` reads source variable `v`.
      * The read at `node` is of kind `rk`.
      */
-    predicate variableRead(BasicBlock bb, int i, SourceVariable v, ControlFlowNode node, ReadKind rk) {
+    predicate variableRead(BasicBlock bb, int i, SourceVariable v, ControlFlow::Node node, ReadKind rk) {
       v.getAnAccess().(AssignableRead) = node.getElement() and
       node = bb.getNode(i) and
       rk = ActualRead()
@@ -222,7 +221,7 @@ module Ssa {
       rk = RefReadBeforeWrite()
     }
 
-    private predicate outRefExitRead(ControlFlowGraph::ExitBasicBlock ebb, int i, LocalScopeSourceVariable v, ControlFlowGraph::CallableExitNode node) {
+    private predicate outRefExitRead(ControlFlow::BasicBlocks::ExitBlock ebb, int i, LocalScopeSourceVariable v, ControlFlow::Nodes::ExitNode node) {
       exists(LocalScopeVariable lsv |
         lsv = v.getAssignable() and
         ebb.getNode(i) = node and
@@ -231,7 +230,7 @@ module Ssa {
       )
     }
 
-    private predicate capturedVarExitRead(ControlFlowGraph::ExitBasicBlock ebb, int i, LocalScopeSourceVariable v, ControlFlowGraph::CallableExitNode node) {
+    private predicate capturedVarExitRead(ControlFlow::BasicBlocks::ExitBlock ebb, int i, LocalScopeSourceVariable v, ControlFlow::Nodes::ExitNode node) {
       exists(BasicBlock bb |
         variableDefinition(bb, _, v, _) |
         ebb.getNode(i) = node and
@@ -240,7 +239,7 @@ module Ssa {
       )
     }
 
-    private predicate refReadBeforeWrite(BasicBlock bb, int i, LocalScopeSourceVariable v, ControlFlowNode node) {
+    private predicate refReadBeforeWrite(BasicBlock bb, int i, LocalScopeSourceVariable v, ControlFlow::Node node) {
       exists(AssignableDefinitions::AssignmentDefinition def, LocalVariable lv |
         def.getTarget() = lv and
         lv.isRef() and
@@ -692,7 +691,7 @@ module Ssa {
      * same basic block without crossing another SSA definition of `v`.
      * The read at `node` is of kind `rk`.
      */
-    private predicate ssaDefReachesReadWithinBlock(TrackedVar v, TrackedDefinition def, ControlFlowNode read, ReadKind rk) {
+    private predicate ssaDefReachesReadWithinBlock(TrackedVar v, TrackedDefinition def, ControlFlow::Node read, ReadKind rk) {
       exists(BasicBlock bb, int rankix, int i |
         ssaDefReachesRank(bb, def, rankix, v) and
         rankix = ssaRefRank(bb, i, v, SsaRead()) and
@@ -873,7 +872,7 @@ module Ssa {
        * The read at `node` is of kind `rk`.
        */
       cached
-      predicate ssaDefReachesRead(TrackedVar v, TrackedDefinition def, ControlFlowNode read, ReadKind rk) {
+      predicate ssaDefReachesRead(TrackedVar v, TrackedDefinition def, ControlFlow::Node read, ReadKind rk) {
         ssaDefReachesReadWithinBlock(v, def, read, rk)
         or
         exists(BasicBlock bb |
@@ -1615,7 +1614,7 @@ module Ssa {
      * `c` may read the value of the captured variable.
      */
     private predicate capturerReads(Callable c, LocalScopeVariable v) {
-      exists(ControlFlowGraph::EntryBasicBlock ebb, LocalScopeSourceVariable lssv |
+      exists(ControlFlow::BasicBlocks::EntryBlock ebb, LocalScopeSourceVariable lssv |
         liveAtEntry(ebb, lssv, _) |
         v = lssv.getAssignable() and
         c = ebb.getCallable() and
@@ -1873,7 +1872,7 @@ module Ssa {
         )
       }
       or
-      TSsaImplicitEntryDef(TrackedVar v, ControlFlowGraph::EntryBasicBlock ebb) {
+      TSsaImplicitEntryDef(TrackedVar v, ControlFlow::BasicBlocks::EntryBlock ebb) {
         liveAtEntry(ebb, v, _)
         and
         exists(Callable c |
@@ -1921,7 +1920,7 @@ module Ssa {
         bb.getNode(i + 1) = v.getAnAccess().(AssignableRead).getAControlFlowNode()
       }
       or
-      TPhiNode(TrackedVar v, ControlFlowGraph::JoinBlock bb) {
+      TPhiNode(TrackedVar v, ControlFlow::BasicBlocks::JoinBlock bb) {
         liveAtEntry(bb, v, _)
         and
         exists(BasicBlock bb1, Definition def |
@@ -2067,7 +2066,7 @@ module Ssa {
      * - The reads of `this.Field` on lines 10 and 11 can be reached from the phi
      *   node between lines 9 and 10.
      */
-    AssignableRead getAReadAtNode(ControlFlowNode cfn) {
+    AssignableRead getAReadAtNode(ControlFlow::Node cfn) {
       ssaDefReachesRead(_, this, cfn, _) and
       result.getAControlFlowNode() = cfn
     }
@@ -2250,7 +2249,7 @@ module Ssa {
      * parameter may remain unchanged throughout the rest of the enclosing callable.
      */
     predicate isLiveOutRefParameterDefinition(Parameter p) {
-      exists(Definition def, ControlFlowNode read, SourceVariable v |
+      exists(Definition def, ControlFlow::Node read, SourceVariable v |
         this = def.getAnUltimateDefinition() |
         ssaDefReachesRead(v, def, read, OutRefExitRead()) and
         v.getAssignable() = p
@@ -2371,7 +2370,7 @@ module Ssa {
   class ImplicitEntryDefinition extends ImplicitDefinition, TSsaImplicitEntryDef {
     /** Gets the callable that this entry definition belongs to. */
     Callable getCallable() {
-      exists(ControlFlowGraph::EntryBasicBlock ebb |
+      exists(ControlFlow::BasicBlocks::EntryBlock ebb |
         this = TSsaImplicitEntryDef(_, ebb) and
         result = ebb.getCallable()
       )
@@ -2533,7 +2532,7 @@ module Ssa {
      * does not exist in the source program.
      */
     override Location getLocation() {
-      exists(ControlFlowGraph::JoinBlock bb |
+      exists(ControlFlow::BasicBlocks::JoinBlock bb |
         this = TPhiNode(_, bb) and
         result = bb.getFirstNode().getLocation()
       )

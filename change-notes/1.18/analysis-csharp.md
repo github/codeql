@@ -41,3 +41,21 @@
 ## Changes to QL libraries
 
 * A new non-member predicate `mayBeDisposed()` can be used to determine if a variable is potentially disposed inside a library. It will analyse the CIL code in the library to determine this.
+* Several control flow graph entities have been renamed (the old names still exist for backwards compatibility):
+  - `ControlFlowNode` has been renamed to `ControlFlow::Node`.
+  - `CallableEntryNode` has been renamed to `ControlFlow::Nodes::EntryNode`.
+  - `CallableExitNode` has been renamed to `ControlFlow::Nodes::ExitNode`.
+  - `ControlFlowEdgeType` has been renamed to `ControlFlow::SuccessorType`.
+  - `ControlFlowEdgeSuccessor` has been renamed to `ControlFlow::SuccessorTypes::NormalSuccessor`.
+  - `ControlFlowEdgeConditional` has been renamed to `ControlFlow::SuccessorTypes::ConditionalSuccessor`.
+  - `ControlFlowEdgeBoolean` has been renamed to `ControlFlow::SuccessorTypes::BooleanSuccessor`.
+  - `ControlFlowEdgeNullness` has been renamed to `ControlFlow::SuccessorTypes::NullnessSuccessor`.
+  - `ControlFlowEdgeMatching` has been renamed to `ControlFlow::SuccessorTypes::MatchingSuccessor`.
+  - `ControlFlowEdgeEmptiness` has been renamed to `ControlFlow::SuccessorTypes::EmptinessSuccessor`.
+  - `ControlFlowEdgeReturn` has been renamed to `ControlFlow::SuccessorTypes::ReturnSuccessor`.
+  - `ControlFlowEdgeBreak` has been renamed to `ControlFlow::SuccessorTypes::BreakSuccessor`.
+  - `ControlFlowEdgeContinue` has been renamed to `ControlFlow::SuccessorTypes::ContinueSuccessor`.
+  - `ControlFlowEdgeGotoLabel` has been renamed to `ControlFlow::SuccessorTypes::GotoLabelSuccessor`.
+  - `ControlFlowEdgeGotoCase` has been renamed to `ControlFlow::SuccessorTypes::GotoCaseSuccessor`.
+  - `ControlFlowEdgeGotoDefault` has been renamed to `ControlFlow::SuccessorTypes::GotoDefaultSuccessor`.
+  - `ControlFlowEdgeException` has been renamed to `ControlFlow::SuccessorTypes::ExceptionSuccessor`.

@@ -99,20 +99,20 @@ class BasicBlock extends TBasicBlockStart {
   }
 
   /** Gets the control flow node at a specific (zero-indexed) position in this basic block. */
-  ControlFlowGraph::ControlFlowNode getNode(int pos) { bbIndex(getFirstNode(), result, pos) }
+  ControlFlow::Node getNode(int pos) { bbIndex(getFirstNode(), result, pos) }
 
   /** Gets a control flow node in this basic block. */
-  ControlFlowGraph::ControlFlowNode getANode() {
+  ControlFlow::Node getANode() {
     result = getNode(_)
   }
 
   /** Gets the first control flow node in this basic block. */
-  ControlFlowGraph::ControlFlowNode getFirstNode() {
+  ControlFlow::Node getFirstNode() {
     this = TBasicBlockStart(result)
   }
 
   /** Gets the last control flow node in this basic block. */
-  ControlFlowGraph::ControlFlowNode getLastNode() {
+  ControlFlow::Node getLastNode() {
     result = getNode(length() - 1)
   }
 
@@ -326,22 +326,22 @@ class BasicBlock extends TBasicBlockStart {
 private cached module Internal {
   /** Internal representation of basic blocks. */
   cached newtype TBasicBlock =
-    TBasicBlockStart(ControlFlowGraph::ControlFlowNode cfn) { startsBB(cfn) }
+    TBasicBlockStart(ControlFlow::Node cfn) { startsBB(cfn) }
 
   /** Holds if `cfn` starts a new basic block. */
-  private predicate startsBB(ControlFlowGraph::ControlFlowNode cfn) {
+  private predicate startsBB(ControlFlow::Node cfn) {
     not exists(cfn.getAPredecessor()) and exists(cfn.getASuccessor())
     or
     cfn.isJoin()
     or
-    exists(ControlFlowGraph::ControlFlowNode pred | pred = cfn.getAPredecessor() | strictcount(pred.getASuccessor()) > 1)
+    exists(ControlFlow::Node pred | pred = cfn.getAPredecessor() | strictcount(pred.getASuccessor()) > 1)
   }
 
   /**
    * Holds if `succ` is a control flow successor of `pred` within
    * the same basic block.
    */
-  private predicate intraBBSucc(ControlFlowGraph::ControlFlowNode pred, ControlFlowGraph::ControlFlowNode succ) {
+  private predicate intraBBSucc(ControlFlow::Node pred, ControlFlow::Node succ) {
     succ = pred.getASuccessor() and
     not startsBB(succ)
   }
@@ -353,7 +353,7 @@ private cached module Internal {
    * that starts a basic block to `cfn` along the `intraBBSucc` relation.
    */
   cached
-  predicate bbIndex(ControlFlowGraph::ControlFlowNode bbStart, ControlFlowGraph::ControlFlowNode cfn, int i) =
+  predicate bbIndex(ControlFlow::Node bbStart, ControlFlow::Node cfn, int i) =
     shortestDistances(startsBB/1, intraBBSucc/2)(bbStart, cfn, i)
 
   /**
@@ -395,7 +395,7 @@ class EntryBasicBlock extends BasicBlock {
 
 /** Holds if `bb` is an entry basic block. */
 private predicate entryBB(BasicBlock bb) {
-  bb.getFirstNode() instanceof ControlFlowGraph::CallableEntryNode
+  bb.getFirstNode() instanceof ControlFlow::Nodes::EntryNode
 }
 
 /**
@@ -408,7 +408,7 @@ class ExitBasicBlock extends BasicBlock {
 
 /** Holds if `bb` is an exit basic block. */
 private predicate exitBB(BasicBlock bb) {
-  bb.getLastNode() instanceof ControlFlowGraph::CallableExitNode
+  bb.getLastNode() instanceof ControlFlow::Nodes::ExitNode
 }
 
 /**

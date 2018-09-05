@@ -6,7 +6,7 @@ import csharp
  * Provides a simple SSA implementation for local scope variables.
  */
 module BaseSsa {
-  private import ControlFlowGraph
+  private import ControlFlow
   private import AssignableDefinitions
 
   private class SimpleLocalScopeVariable extends LocalScopeVariable {

@@ -1,7 +1,6 @@
 import csharp
-import semmle.code.csharp.controlflow.ControlFlowGraph
 
-from ControlFlowNode dom, ControlFlowNode node, string s
+from ControlFlow::Node dom, ControlFlow::Node node, string s
 where
   dom.strictlyDominates(node) and dom.getASuccessor() = node and s = "pre"
   or

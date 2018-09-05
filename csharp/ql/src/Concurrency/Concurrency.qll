@@ -102,17 +102,17 @@ class LockStmtBlock extends LockedBlock
     exists( LockStmt s | this=s.getBlock() )
   }
 
-  predicate isLockThis()
+  override predicate isLockThis()
   {
     exists( LockStmt s | this=s.getBlock() and s.isLockThis() )
   }
 
-  Variable getLockVariable()
+  override Variable getLockVariable()
   {
     exists( LockStmt s | this=s.getBlock() and result=s.getLockVariable() )
   }
 
-  Type getLockTypeObject()
+  override Type getLockTypeObject()
   {
     exists( LockStmt s | this=s.getBlock() and result=s.getLockTypeObject() )
   }
@@ -138,17 +138,17 @@ class SynchronizedMethodBlock extends LockedBlock
   {
     exists( SynchronizedMethod m | this=m.getStatementBody() )
   }
-  predicate isLockThis()
+  override predicate isLockThis()
   {
     exists( SynchronizedMethod m | this=m.getStatementBody() and m.isLockThis() )
   }
 
-  Variable getLockVariable()
+  override Variable getLockVariable()
   {
     none()
   }
 
-  Type getLockTypeObject()
+  override Type getLockTypeObject()
   {
     exists( SynchronizedMethod m | this=m.getStatementBody() and result=m.getLockTypeObject() )
   }

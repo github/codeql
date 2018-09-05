@@ -18,12 +18,10 @@
  */
 
 import csharp
-private import ControlFlowGraph
 private import semmle.code.csharp.commons.Assertions
 private import semmle.code.csharp.commons.ComparisonTest
 private import semmle.code.csharp.controlflow.Guards
 private import semmle.code.csharp.dataflow.SSA
-private import semmle.code.csharp.controlflow.ControlFlowGraph
 private import semmle.code.csharp.frameworks.System
 
 /** An expression that may be `null`. */
@@ -412,7 +410,7 @@ private Expr failureIsNonNullTest(LocalScopeVariable var) {
  * Gets an immediate successor node of the conditional node `cfgnode` where
  * the condition implies that the variable `var` is `null`.
  */
-private ControlFlowNode nullBranchKill(LocalScopeVariable var, ControlFlowNode cfgnode) {
+private ControlFlow::Node nullBranchKill(LocalScopeVariable var, ControlFlow::Node cfgnode) {
   (cfgnode.getElement() = nullTest(var) and result = cfgnode.getATrueSuccessor())
   or
   (cfgnode.getElement() = failureIsNullTest(var) and result = cfgnode.getAFalseSuccessor())
@@ -422,17 +420,17 @@ private ControlFlowNode nullBranchKill(LocalScopeVariable var, ControlFlowNode c
  * Gets an immediate successor node of the conditional node `cfgnode` where
  * the condition implies that the variable `var` is non-`null`.
  */
-private ControlFlowNode nonNullBranchKill(LocalScopeVariable var, ControlFlowNode cfgnode) {
+private ControlFlow::Node nonNullBranchKill(LocalScopeVariable var, ControlFlow::Node cfgnode) {
   (cfgnode.getElement() = nonNullTest(var) and result = cfgnode.getATrueSuccessor())
   or
   (cfgnode.getElement() = failureIsNonNullTest(var) and result = cfgnode.getAFalseSuccessor())
 }
 
 /** Gets a node where the variable `var` may be `null`. */
-ControlFlowNode maybeNullNode(LocalScopeVariable var) {
+ControlFlow::Node maybeNullNode(LocalScopeVariable var) {
   result = nullDef(var).getAControlFlowNode().getASuccessor()
   or
-  exists(ControlFlowNode mid |
+  exists(ControlFlow::Node mid |
     mid = maybeNullNode(var) and
     not mid.getElement() = nonNullDef(var) and
     mid.getASuccessor() = result and
@@ -441,10 +439,10 @@ ControlFlowNode maybeNullNode(LocalScopeVariable var) {
 }
 
 /** Gets a node where the variable `var` may be non-`null`. */
-ControlFlowNode maybeNonNullNode(LocalScopeVariable var) {
+ControlFlow::Node maybeNonNullNode(LocalScopeVariable var) {
   result = nonNullDef(var).getAControlFlowNode().getASuccessor()
   or
-  exists(ControlFlowNode mid |
+  exists(ControlFlow::Node mid |
     mid = maybeNonNullNode(var) and
     not mid.getElement() = nullDef(var) and
     mid.getASuccessor() = result and
