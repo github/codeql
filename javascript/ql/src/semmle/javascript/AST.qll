@@ -208,6 +208,11 @@ class TopLevel extends @toplevel, StmtContainer {
   override string toString() {
     result = "<toplevel>"
   }
+
+  override predicate isAmbient() {
+    getFile().getFileType().isTypeScript() and
+    getFile().getBaseName().matches("%.d.ts")
+  }
 }
 
 /**

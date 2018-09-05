@@ -10,7 +10,7 @@
 
 * Modelling of re-export declarations has been improved. This may result in fewer false-positive results for a variety of queries.
 
-* Modelling of taint flow through the array operations `map` and `join` has been improved. This may give additional results for the security queries.
+* Modelling of taint flow through array operations has been improved. This may give additional results for the security queries.
 
 * The taint tracking library recognizes more ways in which taint propagates. In particular, some flow through string formatters is now recognized. This may give additional results for the security queries.
 
@@ -85,6 +85,8 @@
   - [xss](https://github.com/leizongmin/js-xss)
   - [xtend](https://github.com/Raynos/xtend)
 
+* Handling of ambient TypeScript code has been improved. As a result, fewer false positives will be reported in `.d.ts` files.
+
 ## New queries
 
 | **Query**                   | **Tags**  | **Purpose**                                                        |
@@ -103,7 +105,7 @@
 | Comparison between inconvertible types | Lower severity | The severity of this rule has been revised to "warning". |
 | CORS misconfiguration for credentials transfer | More true-positive results | This rule now treats header names case-insensitively. |
 | Hard-coded credentials | More true-positive results | This rule now recognizes secret cryptographic keys. |
-| Incomplete sanitization | More true-positive results | This rule now recognizes incomplete URL encoding and decoding. |
+| Incomplete string escaping or encoding | Better name, more true-positive results | This rule has been renamed to more clearly reflect its purpose. Also, it now recognizes incomplete URL encoding and decoding. |
 | Insecure randomness | More true-positive results | This rule now recognizes secret cryptographic keys. |
 | Missing rate limiting | More true-positive results, fewer false-positive results | This rule now recognizes additional rate limiters and expensive route handlers. | 
 | Missing X-Frame-Options HTTP header | Fewer false-positive results | This rule now treats header names case-insensitively. |
@@ -122,6 +124,6 @@
 
 * HTTP and HTTPS requests made using the Node.js `http.request` and `https.request` APIs and the Electron `Electron.net.request` and `Electron.ClientRequest` APIs are modeled as `RemoteFlowSources`.
 * HTTP header names are now always normalized to lower case to reflect the fact that they are case insensitive. In particular, the result of `HeaderDefinition.getAHeaderName`, and the first parameter of `HeaderDefinition.defines`, `ExplicitHeaderDefinition.definesExplicitly` and `RouteHandler.getAResponseHeader` is now always a lower-case string.
-* New AST nodes for TypeScript 2.9 features have been added.
+* New AST nodes have been added for TypeScript 2.9 and 3.0 features.
 * The class `JsonParseCall` has been deprecated. Use `JsonParserCall` instead.
 * The handling of spread arguments in the data flow library has been changed: `DataFlow::InvokeNode.getArgument(i)` is now only defined when there is no spread argument at or before argument position `i`, and similarly `InvokeNode.getNumArgument` is only defined for invocations without spread arguments.
