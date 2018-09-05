@@ -1,6 +1,6 @@
 var express = require('express');
 var app = express();
-
+var URI = reuires("urijs");
 app.get('/findKey', function(req, res) {
   var key = req.param("key"), input = req.param("input");
 
@@ -46,4 +46,8 @@ app.get('/findKey', function(req, res) {
   likelyString.search(input); // NOT OK
   maybeString.search(input); // NOT OK
   notString.search(input); // OK
+
+  URI(`${protocol}://${host}${path}`).search(input); // OK, but still flagged
+  URI(`${protocol}://${host}${path}`).search(input).href(); // OK
+  unknown.search(input).unknown; // OK
 });
