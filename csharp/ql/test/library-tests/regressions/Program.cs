@@ -81,3 +81,28 @@ class Designations
         return 0;
     }
 }
+
+class WhileIs
+{
+    void Test()
+    {
+        object x = null;
+        while(x is string s)
+        {
+            var y = s;
+        }
+    }
+}
+
+class ObjectInitializerType
+{
+    struct Point
+    {
+        public object Name;
+    }
+
+    void F()
+    {
+        new Point() { Name = "Bob" };
+    }
+}
