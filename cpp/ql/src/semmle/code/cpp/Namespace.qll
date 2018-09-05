@@ -190,11 +190,6 @@ class GlobalNamespace extends Namespace {
 
   override Declaration getADeclaration() {
     suppressWarningForUnused(this) and
-    not exists(DeclStmt d |
-      d.getADeclaration() = result and
-      not result instanceof Function
-    ) and
-    not exists(ConditionDeclExpr cde | cde.getVariable() = result) and
     result.isTopLevel() and
     not namespacembrs(_, unresolveElement(result))
   }

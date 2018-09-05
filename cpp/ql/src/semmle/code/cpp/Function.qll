@@ -17,19 +17,6 @@ private import semmle.code.cpp.internal.ResolveClass
  * in more detail in `Declaration.qll`.
  */
 class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
-
-  /**
-   * Gets the name of this function.
-   *
-   * This name doesn't include a namespace or any argument types, so both
-   * `::open()` and `::std::ifstream::open(...)` have the same name.
-   *
-   * To get the name including the namespace, use `getQualifiedName` or
-   * `hasQualifiedName`.
-   *
-   * To test whether a function has a particular name in the global
-   * namespace, use `hasGlobalName`.
-   */
   override string getName() { functions(underlyingElement(this),result,_) }
 
   /**
