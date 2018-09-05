@@ -1,10 +1,8 @@
 | in | Capture.cs:6:16:6:16 | i | Capture.cs:6:16:6:16 | SSA param(i) | Capture.cs:10:20:27:9 | SSA capture def(i) | Capture.cs:38:9:38:11 | delegate call |
 | in | Capture.cs:6:16:6:16 | i | Capture.cs:6:16:6:16 | SSA param(i) | Capture.cs:10:20:27:9 | SSA capture def(i) | Capture.cs:44:9:44:12 | call to method M |
-| in | Capture.cs:6:16:6:16 | i | Capture.cs:6:16:6:16 | SSA param(i) | Capture.cs:10:20:27:9 | SSA capture def(i) | Capture.cs:46:9:46:13 | call to method M2 |
 | in | Capture.cs:8:13:8:13 | x | Capture.cs:8:13:8:17 | SSA def(x) | Capture.cs:19:24:23:13 | SSA capture def(x) | Capture.cs:38:9:38:11 | delegate call |
 | in | Capture.cs:8:13:8:13 | x | Capture.cs:15:13:15:17 | SSA def(x) | Capture.cs:19:24:23:13 | SSA capture def(x) | Capture.cs:25:13:25:15 | delegate call |
 | in | Capture.cs:8:13:8:13 | x | Capture.cs:43:9:43:13 | SSA def(x) | Capture.cs:19:24:23:13 | SSA capture def(x) | Capture.cs:44:9:44:12 | call to method M |
-| in | Capture.cs:8:13:8:13 | x | Capture.cs:43:9:43:13 | SSA def(x) | Capture.cs:19:24:23:13 | SSA capture def(x) | Capture.cs:46:9:46:13 | call to method M2 |
 | in | Capture.cs:17:17:17:17 | y | Capture.cs:17:17:17:21 | SSA def(y) | Capture.cs:19:24:23:13 | SSA capture def(y) | Capture.cs:25:13:25:15 | delegate call |
 | in | Capture.cs:59:13:59:13 | i | Capture.cs:59:13:59:17 | SSA def(i) | Capture.cs:60:31:60:38 | SSA capture def(i) | Capture.cs:61:9:61:25 | call to method Select |
 | in | Capture.cs:67:13:67:13 | c | Capture.cs:67:13:67:19 | SSA def(c) | Capture.cs:68:32:68:49 | SSA capture def(c) | Capture.cs:68:18:68:50 | call to method Where |
@@ -31,7 +29,6 @@
 | out | Capture.cs:6:16:6:16 | i | Capture.cs:13:13:13:17 | SSA def(i) | Capture.cs:38:9:38:11 | SSA call def(i) | Capture.cs:38:9:38:11 | delegate call |
 | out | Capture.cs:8:13:8:13 | x | Capture.cs:15:13:15:17 | SSA def(x) | Capture.cs:38:9:38:11 | SSA call def(x) | Capture.cs:38:9:38:11 | delegate call |
 | out | Capture.cs:8:13:8:13 | x | Capture.cs:15:13:15:17 | SSA def(x) | Capture.cs:44:9:44:12 | SSA call def(x) | Capture.cs:44:9:44:12 | call to method M |
-| out | Capture.cs:8:13:8:13 | x | Capture.cs:15:13:15:17 | SSA def(x) | Capture.cs:46:9:46:13 | SSA call def(x) | Capture.cs:46:9:46:13 | call to method M2 |
 | out | Capture.cs:29:13:29:13 | z | Capture.cs:30:28:30:32 | SSA def(z) | Capture.cs:32:9:32:11 | SSA call def(z) | Capture.cs:32:9:32:11 | delegate call |
 | out | Capture.cs:50:20:50:20 | a | Capture.cs:52:28:52:40 | SSA def(a) | Capture.cs:53:9:53:11 | SSA call def(a) | Capture.cs:53:9:53:11 | delegate call |
 | out | Capture.cs:59:13:59:13 | i | Capture.cs:60:36:60:38 | SSA def(i) | Capture.cs:61:9:61:25 | SSA call def(i) | Capture.cs:61:9:61:25 | call to method Select |
