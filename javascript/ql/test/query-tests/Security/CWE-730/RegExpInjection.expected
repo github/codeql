@@ -10,4 +10,5 @@
 | RegExpInjection.js:45:20:45:24 | input | This regular expression is constructed from a $@. | RegExpInjection.js:5:39:5:56 | req.param("input") | user-provided value |
 | RegExpInjection.js:46:23:46:27 | input | This regular expression is constructed from a $@. | RegExpInjection.js:5:39:5:56 | req.param("input") | user-provided value |
 | RegExpInjection.js:47:22:47:26 | input | This regular expression is constructed from a $@. | RegExpInjection.js:5:39:5:56 | req.param("input") | user-provided value |
+| RegExpInjection.js:50:46:50:50 | input | This regular expression is constructed from a $@. | RegExpInjection.js:5:39:5:56 | req.param("input") | user-provided value |
 | tst.js:3:16:3:35 | "^"+ data.name + "$" | This regular expression is constructed from a $@. | tst.js:1:46:1:46 | e | user-provided value |
