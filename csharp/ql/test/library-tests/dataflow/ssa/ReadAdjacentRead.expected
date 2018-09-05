@@ -1,5 +1,6 @@
 | Capture.cs:6:16:6:16 | i | Capture.cs:8:17:8:17 | access to parameter i | Capture.cs:33:13:33:13 | access to parameter i |
 | Capture.cs:8:13:8:13 | x | Capture.cs:16:17:16:17 | access to local variable x | Capture.cs:17:21:17:21 | access to local variable x |
+| Capture.cs:8:13:8:13 | x | Capture.cs:45:13:45:13 | access to local variable x | Capture.cs:47:13:47:13 | access to local variable x |
 | Capture.cs:10:16:10:16 | a | Capture.cs:38:9:38:9 | access to local variable a | Capture.cs:46:12:46:12 | access to local variable a |
 | Capture.cs:65:45:65:51 | strings | Capture.cs:68:18:68:24 | access to parameter strings | Capture.cs:70:9:70:15 | access to parameter strings |
 | Consistency.cs:5:9:5:13 | Field | Consistency.cs:26:13:26:19 | access to field Field | Consistency.cs:27:13:27:19 | access to field Field |

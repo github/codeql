@@ -62,8 +62,14 @@ predicate verifiedRealloc(FunctionCall reallocCall, Variable v, ControlFlowNode 
       // a realloc followed by a null check at 'node' (return the non-null
       // successor, i.e. where the realloc is confirmed to have succeeded)
       newV.getAnAssignedValue() = reallocCall and
-      node.(AnalysedExpr).getNonNullSuccessor(newV) = verified
+      node.(AnalysedExpr).getNonNullSuccessor(newV) = verified and
       // note: this case uses naive flow logic (getAnAssignedValue).
+
+      // special case: if the result of the 'realloc' is assigned to the
+      // same variable, we don't descriminate properly between the old
+      // and the new allocation; better to not consider this a free at
+      // all in that case.
+      newV != v
     ) or (
       // a realloc(ptr, 0), which always succeeds and frees
       // (return the realloc itself)

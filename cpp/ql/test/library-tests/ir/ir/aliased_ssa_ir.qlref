@@ -1,1 +1,1 @@
-semmle/code/cpp/ssa/PrintAliasedSSAIR.ql
+semmle/code/cpp/ir/PrintIR.ql
