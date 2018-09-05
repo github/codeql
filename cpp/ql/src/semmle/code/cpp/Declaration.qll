@@ -62,7 +62,7 @@ abstract class Declaration extends Locatable, @declaration {
     | c = this and
       result = c.getDeclaringEnum().getQualifiedName() + "::" + c.getName())
     or
-    exists (GlobalVariable v, string s1, string s2
+    exists (GlobalOrNamespaceVariable v, string s1, string s2
     | v = this and
       s2 = v.getNamespace().getQualifiedName() and
       s1 = v.getName()

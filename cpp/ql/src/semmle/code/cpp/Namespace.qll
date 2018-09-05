@@ -195,13 +195,8 @@ class GlobalNamespace extends Namespace {
       not result instanceof Function
     ) and
     not exists(ConditionDeclExpr cde | cde.getVariable() = result) and
-    not exists(Enum e | e.getAnEnumConstant() = result) and
-    not result instanceof Parameter and
-    not result instanceof ProxyClass and
-    not result instanceof TemplateParameter and
-    not result instanceof LocalVariable and
-    not namespacembrs(_, unresolveElement(result)) and
-    not result.isMember()
+    result.isTopLevel() and
+    not namespacembrs(_, unresolveElement(result))
   }
 
   /** Gets a child namespace of the global namespace. */

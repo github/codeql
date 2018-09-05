@@ -3,9 +3,14 @@ import PrintfLike
 private import TaintTracking
 
 private
+bindingset[index]
 string toCause(Function func, int index)
 {
-  result = func.getQualifiedName() + "(" + func.getParameter(index).getName() + ")"
+  result = func.getQualifiedName() + "(" + func.getParameter(index).getName() + ")" or
+  (
+    not exists(func.getParameter(index).getName()) and
+    result = func.getQualifiedName() + "(arg " + index + ")"
+  )
 }
 
 /**

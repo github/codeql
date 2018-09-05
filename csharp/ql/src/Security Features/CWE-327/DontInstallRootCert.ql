@@ -13,14 +13,14 @@ import semmle.code.csharp.dataflow.DataFlow::DataFlow
 
 class AddCertToRootStoreConfig extends DataFlow::Configuration {
   AddCertToRootStoreConfig() { this = "Adding Certificate To Root Store" }
- 
-  override predicate isSource(DataFlow::Node source) {     
-    exists(ObjectCreation oc | oc = source.asExpr() | 
+
+  override predicate isSource(DataFlow::Node source) {
+    exists(ObjectCreation oc | oc = source.asExpr() |
       oc.getType().(RefType).hasQualifiedName("System.Security.Cryptography.X509Certificates.X509Store") and
       oc.getArgument(0).(Access).getTarget().hasName("Root")
     )
   }
- 
+
   override predicate isSink(DataFlow::Node sink) {
     exists(MethodCall mc |
       (mc.getTarget().hasQualifiedName("System.Security.Cryptography.X509Certificates.X509Store", "Add") or

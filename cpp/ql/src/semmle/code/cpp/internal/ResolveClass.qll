@@ -17,7 +17,7 @@ private predicate existsIncompleteWithName(string name, @usertype c) {
 }
 
 /**
- * Holds if `c` is an imcomplete class, and there exists a complete class `d`
+ * Holds if `c` is an incomplete class, and there exists a complete class `d`
  * with the same name.
  */
 private predicate hasCompleteTwin(@usertype c, @usertype d) {
