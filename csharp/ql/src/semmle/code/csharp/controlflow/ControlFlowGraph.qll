@@ -1275,6 +1275,14 @@ module ControlFlow {
           or
           // Case statement exits with any completion
           result = lastConstCaseStmt(cc, c)
+          or
+          // Condition exists with a `false` completion
+          result = lastCaseCondition(cc, c) and
+          c instanceof FalseCompletion
+          or
+          // Condition exists abnormally
+          result = lastCaseCondition(cc, c) and
+          not c instanceof NormalCompletion
         )
         or
         cfe = any(TypeCase tc |
@@ -1282,11 +1290,11 @@ module ControlFlow {
           result = lastTypeCaseNoMatch(tc, c)
           or
           // Condition exists with a `false` completion
-          result = lastTypeCaseCondition(tc, c) and
+          result = lastCaseCondition(tc, c) and
           c instanceof FalseCompletion
           or
           // Condition exists abnormally
-          result = lastTypeCaseCondition(tc, c) and
+          result = lastCaseCondition(tc, c) and
           not c instanceof NormalCompletion
           or
           // Case statement exits with any completion
@@ -1581,7 +1589,7 @@ module ControlFlow {
       }
 
       pragma [nomagic]
-      private ControlFlowElement lastTypeCaseCondition(TypeCase tc, Completion c) {
+      private ControlFlowElement lastCaseCondition(CaseStmt tc, Completion c) {
         result = last(tc.getCondition(), c)
       }
 
@@ -2032,9 +2040,9 @@ module ControlFlow {
           )
           or
           // Flow from last element of condition to next case
-          exists(TypeCase tc, int i |
+          exists(CaseStmt tc, int i |
             tc = ss.getCase(i) |
-            cfe = lastTypeCaseCondition(tc, c) and
+            cfe = lastCaseCondition(tc, c) and
             c instanceof FalseCompletion and
             result = first(ss.getCase(i + 1))
           )
@@ -2064,8 +2072,19 @@ module ControlFlow {
           c instanceof SimpleCompletion
           or
           // Flow from last element of case expression to first element of statement
+          not exists(cc.getCondition()) and
           cfe = lastConstCaseExpr(cc, c) and
           c.(MatchingCompletion).isMatch() and
+          result = first(cc.getStmt())
+          or
+          // Flow from the last element of case expression to the condition
+          cfe = lastConstCaseExpr(cc, c) and
+          c.(MatchingCompletion).isMatch() and
+          result = first(cc.getCondition())
+          or
+          // Flow from last element of case condition to first element of statement
+          cfe = lastCaseCondition(cc, c) and
+          c instanceof TrueCompletion and
           result = first(cc.getStmt())
         )
         or
@@ -2105,7 +2124,7 @@ module ControlFlow {
             result = first(tc.getStmt())
           or
           // Flow from condition to first element of statement
-          cfe = lastTypeCaseCondition(tc, c) and
+          cfe = lastCaseCondition(tc, c) and
           c instanceof TrueCompletion and
           result = first(tc.getStmt())
         )
