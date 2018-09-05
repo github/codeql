@@ -4,7 +4,8 @@ private class Node = ControlFlowNodeBase;
 
 /** A call to a function known not to return. */
 predicate aborting(FunctionCall c) {
-  not potentiallyReturningFunctionCall(c)
+  not callRequiringRecursiveAnalysis(c) and
+  abortingFunction(c.getTarget())
 }
 
 /**
@@ -12,24 +13,7 @@ predicate aborting(FunctionCall c) {
  * exits the program or longjmps to another location.
  */
 predicate abortingFunction(Function f) {
-  not potentiallyReturningFunction(f)
-}
-
-/** A function call that *may* return; if in doubt, we assume it may. */
-private predicate potentiallyReturningFunctionCall(FunctionCall fc) {
-  potentiallyReturningFunction(fc.getTarget()) or fc.isVirtual()
-}
-
-/** A function that *may* return; if in doubt, we assume it may. */
-private predicate potentiallyReturningFunction(Function f) {
-  not getOptions().exits(f)
-  and
-  (
-    nonAnalyzableFunction(f)
-    or
-    // otherwise the exit-point of `f` must be reachable
-    reachable(f)
-  )
+   not reachable(f)
 }
 
 /**
@@ -56,6 +40,32 @@ private predicate nonAnalyzableFunction(Function f) {
     (bb1 = bb2 and pos2 > pos1)
     or
     bb1.getASuccessor+() = bb2
+  )
+}
+
+
+private predicate callRequiringRecursiveAnalysis(FunctionCall call) {
+  // The call _has_ a target that's analyzable, and the call is not virtual
+  exists(Function f | f = call.getTarget() |
+    not nonAnalyzableFunction(f)
+  ) and
+  not call.isVirtual()
+}
+
+predicate reachableNode(Node n)
+{
+  exists(Function f | f.getEntryPoint() = n)
+  or
+  n instanceof CatchBlock
+  or
+  exists(Node pred |
+    successors_before_adapted(pred, n) and
+    reachableNode(pred) and
+    (
+      not callRequiringRecursiveAnalysis(pred)
+      or
+      reachableNode(pred.(Call).getTarget())
+    )
   )
 }
 
@@ -137,28 +147,18 @@ private predicate impossibleDefaultSwitchEdge(Block switchBlock, DefaultCase dc)
 }
 
 /**
- * If `pred` is a function call with (at least) one function target,
- * (at least) one such target must be potentially returning.
- */
-private predicate possiblePredecessor(Node pred) {
-  not exists(pred.(FunctionCall).getTarget())
-  or
-  potentiallyReturningFunctionCall(pred)
-}
-
-/**
  * An adapted version of the `successors_extended` relation that excludes
- * impossible control-flow edges - flow will never occur along these
+ * locally impossible control-flow edges - flow will never occur along these
  * edges, so it is safe (and indeed sensible) to remove them.
  */
-cached predicate successors_adapted(Node pred, Node succ) {
+predicate successors_before_adapted(Node pred, Node succ) {
   successors_extended(pred, succ)
-  and possiblePredecessor(pred)
   and not impossibleFalseEdge(pred, succ)
   and not impossibleTrueEdge(pred, succ)
   and not impossibleSwitchEdge(pred, succ)
   and not impossibleDefaultSwitchEdge(pred, succ)
   and not getOptions().exprExits(pred)
+  and not getOptions().exits(pred.(Call).getTarget())
 }
 
 private predicate compileTimeConstantInt(Expr e, int val) {
