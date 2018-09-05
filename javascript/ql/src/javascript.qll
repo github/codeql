@@ -59,6 +59,7 @@ import semmle.javascript.frameworks.Credentials
 import semmle.javascript.frameworks.CryptoLibraries
 import semmle.javascript.frameworks.DigitalOcean
 import semmle.javascript.frameworks.Electron
+import semmle.javascript.frameworks.Files
 import semmle.javascript.frameworks.jQuery
 import semmle.javascript.frameworks.LodashUnderscore
 import semmle.javascript.frameworks.Logging
