@@ -9,9 +9,7 @@
 | test.cpp:2:7:2:7 | operator= | MyEnumClass::operator= |
 | test.cpp:2:7:2:17 | MyEnumClass | MyEnumClass |
 | test.cpp:4:10:4:15 | MyEnum | MyEnumClass::MyEnum |
-| test.cpp:5:9:5:9 | A | MyEnumClass::A |
 | test.cpp:5:9:5:9 | A | MyEnumClass::MyEnum::A |
-| test.cpp:6:9:6:9 | B | MyEnumClass::B |
 | test.cpp:6:9:6:9 | B | MyEnumClass::MyEnum::B |
 | test.cpp:10:34:10:34 | v | v |
 | test.cpp:12:7:12:7 | MyClass2 | MyClass2::MyClass2 |
