@@ -1714,7 +1714,13 @@ module Internal {
       exists(TryStmt ts |
         ts = last.getTryStmt() and
         exists(lastTryStmtBlock(ts, c)) and
-        not ts.definitelyHandles(c.getExceptionClass(), _) and
+        not ts.getACatchClause() instanceof GeneralCatchClause and
+        forall(SpecificCatchClause scc |
+          scc = ts.getACatchClause() |
+          scc.hasFilterClause()
+          or
+          not c.getExceptionClass().getABaseType*() = scc.getCaughtExceptionType()
+        ) and
         last.isLast()
       )
     }
@@ -2967,6 +2973,11 @@ module Internal {
 
   /** Provides logic for calculating reachable control flow nodes. */
   module Reachability {
+    /**
+     * Holds if `cfe` is a control flow element where the set of possible splits may
+     * be different from the set of possible splits for one of `cfe`'s predecessors.
+     * That is, `cfe` starts a new block of elements with the same set of splits.
+     */
     private predicate startsSplits(ControlFlowElement cfe) {
       cfe = succEntry(_)
       or

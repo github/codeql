@@ -31,5 +31,6 @@ predicate namespaceOrConstEnumAccess(VarAccess e) {
 from PropAccess pacc, DataFlow::AnalyzedNode base
 where base.asExpr() = pacc.getBase() and
       forex (InferredType tp | tp = base.getAType() | tp = TTNull() or tp = TTUndefined()) and
-      not namespaceOrConstEnumAccess(pacc.getBase())
+      not namespaceOrConstEnumAccess(pacc.getBase()) and
+      not pacc.isAmbient()
 select pacc, "The base expression of this property access is always " + base.ppTypes() + "."

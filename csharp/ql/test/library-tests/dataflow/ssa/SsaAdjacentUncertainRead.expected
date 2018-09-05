@@ -17,7 +17,6 @@ WARNING: Predicate getAFirstUncertainRead has been deprecated and may be removed
 | Capture.cs:38:9:38:11 | SSA call def(x) | Capture.cs:40:13:40:13 | access to local variable x |
 | Capture.cs:43:9:43:13 | SSA def(x) | Capture.cs:44:11:44:11 | access to local variable x |
 | Capture.cs:44:9:44:12 | SSA call def(x) | Capture.cs:45:13:45:13 | access to local variable x |
-| Capture.cs:46:9:46:13 | SSA call def(x) | Capture.cs:47:13:47:13 | access to local variable x |
 | Capture.cs:50:20:50:20 | SSA param(a) | Capture.cs:54:9:54:9 | access to parameter a |
 | Capture.cs:52:16:52:43 | SSA def(b) | Capture.cs:53:9:53:9 | access to local variable b |
 | Capture.cs:53:9:53:11 | SSA call def(a) | Capture.cs:54:9:54:9 | access to parameter a |
