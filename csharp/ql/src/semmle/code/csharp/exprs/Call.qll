@@ -357,7 +357,7 @@ class ExtensionMethodCall extends MethodCall {
   override Expr getArgument(int i) {
     exists(int j |
       result = this.getChildExpr(j) |
-      if isOrdinaryCall() then
+      if isOrdinaryStaticCall() then
         (j = i and j >= 0)
       else
         (j = i - 1 and j >= -1)
@@ -381,7 +381,7 @@ class ExtensionMethodCall extends MethodCall {
    * }
    * ```
    */
-  private predicate isOrdinaryCall() {
+  predicate isOrdinaryStaticCall() {
     not exists(this.getChildExpr(-1)) // `Ext(i)` case above
     or
     exists(this.getQualifier()) // `Extensions.Ext(i)` case above
