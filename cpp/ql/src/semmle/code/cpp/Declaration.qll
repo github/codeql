@@ -87,11 +87,24 @@ abstract class Declaration extends Locatable, @declaration {
 
   override string toString() { result = this.getName() }
 
-  /** Gets the name of this declaration. */
+  /**
+   * Gets the name of this declaration.
+   *
+   * This name doesn't include a namespace or any argument types, so
+   * for example both functions `::open()` and `::std::ifstream::open(...)`
+   * have the same name.
+   *
+   * To get the name including the namespace, use `getQualifiedName` or
+   * `hasQualifiedName`.
+   *
+   * To test whether this declaration has a particular name in the global
+   * namespace, use `hasGlobalName`.
+   */
   abstract string getName();
+  /** Holds if this declaration has the given name. */
   predicate hasName(string name) { name = this.getName() }
 
-  /** Holds if this element has the given name in the global namespace. */
+  /** Holds if this declaration has the given name in the global namespace. */
   predicate hasGlobalName(string name) {
     hasName(name)
     and getNamespace() instanceof GlobalNamespace

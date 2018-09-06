@@ -69,7 +69,13 @@ module RegExpInjection {
         mce.getReceiver().analyze().getAType() = TTString() and
         mce.getMethodName() = methodName |
         (methodName = "match" and this.asExpr() = mce.getArgument(0) and mce.getNumArgument() = 1) or
-        (methodName = "search" and this.asExpr() = mce.getArgument(0) and mce.getNumArgument() = 1)
+        (
+           methodName = "search" and
+           this.asExpr() = mce.getArgument(0) and
+           mce.getNumArgument() = 1 and
+           // `String.prototype.search` returns a number, so exclude chained accesses
+           not exists(PropAccess p | p.getBase() = mce)
+        )
       )
     }
 
