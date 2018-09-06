@@ -32,9 +32,9 @@ predicate calls(DataFlow::InvokeNode invk, Function f) {
  *
  * This only holds for explicitly modeled partial calls.
  */
-predicate partiallyCalls(DataFlow::AdditionalPartialInvokeNode invk, DataFlow::Node callback, Function f) {
+private predicate partiallyCalls(DataFlow::AdditionalPartialInvokeNode invk, DataFlow::AnalyzedNode callback, Function f) {
   invk.isPartialArgument(callback, _, _) and
-  exists (AbstractFunction callee | callee = callback.analyze().getAValue() |
+  exists (AbstractFunction callee | callee = callback.getAValue() |
     if invk.isIndefinite("global") then
       (f = callee.getFunction() and f.getFile() = invk.getFile())
     else
