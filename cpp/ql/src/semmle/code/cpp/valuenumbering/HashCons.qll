@@ -277,7 +277,8 @@ class HashCons extends HCBase {
     result =
        min(Expr e
        | this = hashCons(e)
-       | e order by e.getLocation().toString())
+       | e order by exampleLocationString(e.getLocation()), e.getLocation().getStartColumn(),
+           e.getLocation().getEndLine(), e.getLocation().getEndColumn())
   }
 
   /** Gets a textual representation of this element. */
@@ -289,6 +290,17 @@ class HashCons extends HCBase {
   Location getLocation() {
     result = exampleExpr().getLocation()
   }
+}
+
+/**
+ * Gets the absolute path of a known location or "~" for an unknown location. This ensures that
+ * expressions with unknown locations are ordered after expressions with known locations when
+ * selecting an example expression for a HashCons value.
+ */
+private string exampleLocationString(Location l) {
+  if l instanceof UnknownLocation
+  then result = "~"
+  else result = l.getFile().getAbsolutePath()
 }
 
 private predicate analyzableIntLiteral(Literal e) {
