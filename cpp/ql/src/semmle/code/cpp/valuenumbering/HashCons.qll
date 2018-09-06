@@ -255,7 +255,7 @@ class HashCons extends HCBase {
     if this instanceof HC_TypeidType then result = "TypeidType" else
     if this instanceof HC_TypeidExpr then result = "TypeidExpr" else
     if this instanceof HC_ArrayAggregateLiteral then result = "ArrayAggregateLiteral" else
-    if this instanceof HC_ClassAggregateLiteral then result = "ClassAggreagateLiteral" else
+    if this instanceof HC_ClassAggregateLiteral then result = "ClassAggregateLiteral" else
     if this instanceof HC_DeleteExpr then result = "DeleteExpr" else
     if this instanceof HC_DeleteArrayExpr then result = "DeleteArrayExpr" else
     if this instanceof HC_ThrowExpr then result = "ThrowExpr" else
@@ -464,7 +464,7 @@ private predicate mk_Deref(HashCons p, PointerDereferenceExpr deref) {
 
 private predicate analyzableNonmemberFunctionCall(FunctionCall fc) {
   forall(int i |
-    exists(fc.getArgument(i)) |
+    i in [0..fc.getNumberOfArguments()-1] |
     strictcount(fc.getArgument(i).getFullyConverted()) = 1
   ) and
   strictcount(fc.getTarget()) = 1 and
@@ -487,7 +487,7 @@ private predicate mk_NonmemberFunctionCall(Function fcn, HC_Args args, FunctionC
 
 private predicate analyzableExprCall(ExprCall ec) {
   forall(int i |
-    exists(ec.getArgument(i)) |
+    i in [0..ec.getNumberOfArguments()-1] |
     strictcount(ec.getArgument(i).getFullyConverted()) = 1
   ) and
   strictcount(ec.getExpr().getFullyConverted()) = 1
@@ -508,7 +508,7 @@ private predicate mk_ExprCall(HashCons hc, HC_Args args, ExprCall ec) {
 private predicate analyzableMemberFunctionCall(
   FunctionCall fc) {
   forall(int i |
-    exists(fc.getArgument(i)) |
+    i in [0..fc.getNumberOfArguments()-1] |
     strictcount(fc.getArgument(i).getFullyConverted()) = 1
   ) and
   strictcount(fc.getTarget()) = 1 and
@@ -573,11 +573,15 @@ private predicate mk_ArgConsInner(HashCons head, HC_Args tail, int i, HC_Args li
  */
 private predicate analyzableAllocatorArgZero(ErrorExpr e) {
   exists(NewOrNewArrayExpr new |
-    new.getAllocatorCall().getChild(0) = e
+    new.getAllocatorCall().getChild(0) = e and
+    strictcount(new.getType().getUnspecifiedType()) = 1
   )
+  and
+  strictcount(NewOrNewArrayExpr new | new.getAllocatorCall().getChild(0) = e) = 1
 }
 
 private predicate mk_AllocatorArgZero(Type t, ErrorExpr e) {
+  analyzableAllocatorArgZero(e) and
   exists(NewOrNewArrayExpr new |
     new.getAllocatorCall().getChild(0) = e and
     t = new.getType().getUnspecifiedType()
@@ -767,7 +771,9 @@ private predicate analyzableClassAggregateLiteral(ClassAggregateLiteral cal) {
   forall(int i |
     exists(cal.getChild(i)) |
     strictcount(cal.getChild(i).getFullyConverted()) = 1 and
-    strictcount(Field f | cal.getChild(i) = cal.getFieldExpr(f)) = 1
+    strictcount(Field f | cal.getChild(i) = cal.getFieldExpr(f)) = 1 and
+    strictcount(Field f, int j |
+      cal.getFieldExpr(f) = cal.getChild(i) and j = f.getInitializationOrder()) = 1
   )
 }
 
@@ -791,10 +797,12 @@ private predicate analyzableArrayAggregateLiteral(ArrayAggregateLiteral aal) {
   forall(int i |
     exists(aal.getChild(i)) |
     strictcount(aal.getChild(i).getFullyConverted()) = 1
-  )
+  ) and
+  strictcount(aal.getType().getUnspecifiedType()) = 1
 }
 
 private predicate mk_ArrayCons(Type t, int i, HashCons hc, HC_Array hca, ArrayAggregateLiteral aal) {
+  analyzableArrayAggregateLiteral(aal) and
   t = aal.getType().getUnspecifiedType() and
   hc = hashCons(aal.getChild(i)) and
   (
@@ -935,7 +943,7 @@ cached HashCons hashCons(Expr e) {
     result = HC_MemberFunctionCall(fcn, qual, args)
   )
   or
-  // works around an extractor issue class
+  // works around an extractor issue
   exists(Type t
   | mk_AllocatorArgZero(t, e) and
     result = HC_AllocatorArgZero(t)
@@ -969,6 +977,11 @@ cached HashCons hashCons(Expr e) {
   exists(HashCons child
   | mk_TypeidExpr(child, e) and
     result = HC_TypeidExpr(child)
+  )
+  or
+  exists(Type t
+  | mk_UuidofOperator(t, e) and
+    result = HC_UuidofOperator(t)
   )
   or
   exists(Type t
