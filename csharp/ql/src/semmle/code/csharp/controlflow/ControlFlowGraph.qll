@@ -1589,8 +1589,8 @@ module ControlFlow {
       }
 
       pragma [nomagic]
-      private ControlFlowElement lastCaseCondition(CaseStmt tc, Completion c) {
-        result = last(tc.getCondition(), c)
+      private ControlFlowElement lastCaseCondition(CaseStmt cs, Completion c) {
+        result = last(cs.getCondition(), c)
       }
 
       pragma [nomagic]
