@@ -18,6 +18,7 @@
 | src/iterated-handlers.js:4:2:4:22 | functio ...  res){} |
 | src/middleware-attacher-getter.js:4:17:4:36 | function(req, res){} |
 | src/middleware-attacher-getter.js:19:19:19:38 | function(req, res){} |
+| src/middleware-attacher-getter.js:29:32:29:51 | function(req, res){} |
 | src/middleware-attacher.js:3:13:3:32 | function(req, res){} |
 | src/nodejs.js:3:19:3:38 | function(req, res){} |
 | src/nodejs.js:5:22:5:41 | function(req, res){} |

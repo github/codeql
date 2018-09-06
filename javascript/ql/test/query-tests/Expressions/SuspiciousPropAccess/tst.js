@@ -27,3 +27,7 @@
         v1.p;
     }
 });
+
+(function(){
+    function a(){return null;} a(1)[0];
+});
