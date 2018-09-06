@@ -43,5 +43,7 @@ where e.same(_) and
         propName = any(AccessorMethodDeclaration amd).getName()
       ) and
       // exclude DOM properties
-      not isDOMProperty(e.(PropAccess).getPropertyName())
+      not isDOMProperty(e.(PropAccess).getPropertyName()) and
+      // exclude self-assignments with a JSDoc comment
+      not exists(e.getAssignment().getParent().(ExprStmt).getDocumentation().getATag())
 select e.getParent(), "This expression assigns " + dsc + " to itself."
