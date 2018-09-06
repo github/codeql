@@ -644,15 +644,14 @@
 | forof | 1 | entry node of functio ...     ;\\n} | 2 | {\\n    f ...     ;\\n} |
 | forof | 1 | f | 1 | functio ...     ;\\n} |
 | forof | 1 | functio ...     ;\\n} | 10 | exit node of <toplevel> |
-| forof | 2 | {\\n    f ...     ;\\n} | 3 | for (\\n  ... )\\n    ; |
-| forof | 3 | for (\\n  ... )\\n    ; | 7 | [] |
+| forof | 2 | {\\n    f ...     ;\\n} | 7 | [] |
+| forof | 3 | for (\\n  ... )\\n    ; | 4 | var\\n        x |
+| forof | 3 | for (\\n  ... )\\n    ; | 9 | exit node of functio ...     ;\\n} |
 | forof | 4 | var\\n        x | 5 | x |
 | forof | 5 | x | 5 | x |
 | forof | 5 | x | 8 | ; |
-| forof | 7 | [] | 4 | var\\n        x |
-| forof | 7 | [] | 9 | exit node of functio ...     ;\\n} |
-| forof | 8 | ; | 4 | var\\n        x |
-| forof | 8 | ; | 9 | exit node of functio ...     ;\\n} |
+| forof | 7 | [] | 3 | for (\\n  ... )\\n    ; |
+| forof | 8 | ; | 3 | for (\\n  ... )\\n    ; |
 | globals | 1 | entry node of <toplevel> | 14 | g |
 | globals | 1 | var\\n x,\\n y; | 2 | x |
 | globals | 2 | x | 2 | x |
@@ -662,15 +661,14 @@
 | globals | 4 | {\\n    var\\n     z;\\n} | 5 | var\\n     z; |
 | globals | 5 | var\\n     z; | 6 | z |
 | globals | 6 | z | 6 | z |
-| globals | 6 | z | 8 | for (\\n  ... [])\\n  ; |
-| globals | 8 | for (\\n  ... [])\\n  ; | 11 | [] |
+| globals | 6 | z | 11 | [] |
+| globals | 8 | for (\\n  ... [])\\n  ; | 9 | var\\n  a |
+| globals | 8 | for (\\n  ... [])\\n  ; | 13 | function\\n g()\\n{\\n} |
 | globals | 9 | var\\n  a | 10 | a |
 | globals | 10 | a | 10 | a |
 | globals | 10 | a | 12 | ; |
-| globals | 11 | [] | 9 | var\\n  a |
-| globals | 11 | [] | 13 | function\\n g()\\n{\\n} |
-| globals | 12 | ; | 9 | var\\n  a |
-| globals | 12 | ; | 13 | function\\n g()\\n{\\n} |
+| globals | 11 | [] | 8 | for (\\n  ... [])\\n  ; |
+| globals | 12 | ; | 8 | for (\\n  ... [])\\n  ; |
 | globals | 13 | entry node of function\\n g()\\n{\\n} | 15 | {\\n} |
 | globals | 13 | function\\n g()\\n{\\n} | 17 | !\\nfunction\\n h()\\n{\\n}; |
 | globals | 14 | g | 1 | var\\n x,\\n y; |
