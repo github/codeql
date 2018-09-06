@@ -85,6 +85,11 @@ var someModule = require('someModule'),
         (function () {
             f();
         });
+        function getG(){}
+        var g = getG();
+        (function () {
+            g();
+        });
     });
 
 });

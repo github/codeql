@@ -756,7 +756,7 @@ module DataFlow {
     /**
      * A data flow node representing an explicit (that is, non-reflective) function call.
      */
-    private class ExplicitCallNode extends CallNodeDef, ExplicitInvokeNode {
+    class ExplicitCallNode extends CallNodeDef, ExplicitInvokeNode {
       override CallExpr astNode;
     }
 

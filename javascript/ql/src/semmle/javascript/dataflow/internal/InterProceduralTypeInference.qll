@@ -144,6 +144,23 @@ abstract class CallWithAnalyzedReturnFlow extends DataFlow::AnalyzedValueNode {
 }
 
 /**
+ * A call with inter-procedural type inference for the return value.
+ *
+ * Unlike `CallWithAnalyzedReturnFlow`, this only contributes to `getAValue()`, not `getALocalValue()`.
+ */
+abstract class CallWithNonLocalAnalyzedReturnFlow extends DataFlow::AnalyzedValueNode {
+
+  /**
+   * Gets a called function.
+   */
+  abstract AnalyzedFunction getACallee();
+
+  override AbstractValue getAValue() {
+    result = getACallee().getAReturnValue()
+  }
+}
+
+/**
  * Flow analysis for the return value of IIFEs.
  */
 private class IIFEWithAnalyzedReturnFlow extends CallWithAnalyzedReturnFlow {
@@ -208,6 +225,32 @@ private class LocalFunctionCallWithAnalyzedReturnFlow extends CallWithAnalyzedRe
 
   override AnalyzedFunction getACallee() {
     result = f.analyze()
+  }
+
+}
+
+pragma[noinline]
+private predicate hasExplicitDefiniteCallee(DataFlow::Impl::ExplicitCallNode call, DataFlow::AnalyzedNode callee) {
+  callee = call.getCalleeNode() and
+  not callee.getALocalValue().isIndefinite(_)
+}
+
+/**
+ * Enables inter-procedural type inference for the return value of a call to a type-inferred callee.
+ */
+private class TypeInferredCalleeWithAnalyzedReturnFlow extends CallWithNonLocalAnalyzedReturnFlow {
+
+  DataFlow::FunctionNode fun;
+
+  TypeInferredCalleeWithAnalyzedReturnFlow() {
+    exists (DataFlow::AnalyzedNode calleeNode |
+      hasExplicitDefiniteCallee(this, calleeNode) and
+      calleeNode.getALocalValue().(AbstractFunction).getFunction().flow() = fun
+    )
+  }
+
+  override AnalyzedFunction getACallee() {
+    result = fun
   }
 
 }
