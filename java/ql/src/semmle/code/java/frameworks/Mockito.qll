@@ -397,7 +397,7 @@ class MockitoSettableField extends Field {
 class MockitoMockMethod extends Method {
   MockitoMockMethod() {
     this.getDeclaringType().hasQualifiedName("org.mockito", "Mockito") and
-    this.hasName("mock")
+    (this.hasName("mock") or this.hasName("verify"))
   }
 }
 
