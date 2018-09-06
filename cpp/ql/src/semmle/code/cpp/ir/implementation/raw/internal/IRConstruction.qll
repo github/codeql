@@ -3,8 +3,12 @@ import semmle.code.cpp.ir.implementation.raw.IR
 import IRBlockConstruction as BlockConstruction
 private import semmle.code.cpp.ir.internal.TempVariableTag
 private import InstructionTag
+private import TranslatedAccess
+private import TranslatedCall
+private import TranslatedConversion
 private import TranslatedElement
 private import TranslatedFunction
+private import TranslatedNewDelete
 
 class InstructionTagType extends TInstructionTag {
   final string toString() {
