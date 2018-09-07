@@ -1429,6 +1429,8 @@ case @expr.kind of
 | 319 = @noexceptexpr
 | 320 = @builtinshufflevector
 | 321 = @builtinchooseexpr
+| 322 = @builtinaddressof
+| 323 = @vec_fill
 ;
 
 new_allocated_type(
