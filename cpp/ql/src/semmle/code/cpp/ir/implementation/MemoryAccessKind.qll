@@ -1,7 +1,10 @@
 import cpp
 
-newtype TMemoryAccessKind =
+private newtype TMemoryAccessKind =
   TIndirectMemoryAccess() or
+  TIndirectMayMemoryAccess() or
+  TBufferMemoryAccess() or
+  TBufferMayMemoryAccess() or
   TEscapedMemoryAccess() or
   TPhiMemoryAccess() or
   TUnmodeledMemoryAccess()
@@ -15,12 +18,44 @@ class MemoryAccessKind extends TMemoryAccessKind {
 }
 
 /**
- * The operand or result accesses memory at the address specified by the
- * `AddressOperand` on the same instruction.
+ * The operand or result accesses memory at the address specified by the `AddressOperand` on the
+ * same instruction.
  */
 class IndirectMemoryAccess extends MemoryAccessKind, TIndirectMemoryAccess {
   override string toString() {
     result = "indirect"
+  }
+}
+
+/**
+ * The operand or result may access some, all, or none of the memory at the address specified by the
+ * `AddressOperand` on the same instruction.
+ */
+class IndirectMayMemoryAccess extends MemoryAccessKind, TIndirectMayMemoryAccess {
+  override string toString() {
+    result = "indirect(may)"
+  }
+}
+
+/**
+ * The operand or result accesses memory starting at the address specified by the `AddressOperand`
+ * on the same instruction, accessing a number of consecutive elements given by the
+ * `BufferSizeOperand`.
+ */
+class BufferMemoryAccess extends MemoryAccessKind, TBufferMemoryAccess {
+  override string toString() {
+    result = "buffer"
+  }
+}
+
+/**
+ * The operand or result may access some, all, or none of the memory starting at the address
+ * specified by the `AddressOperand` on the same instruction, accessing a number of consecutive
+ * elements given by the `BufferSizeOperand`.
+ */
+class BufferMayMemoryAccess extends MemoryAccessKind, TBufferMayMemoryAccess {
+  override string toString() {
+    result = "buffer(may)"
   }
 }
 

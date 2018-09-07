@@ -5,6 +5,8 @@ import cpp
 
 private newtype TOperandTag =
   TAddressOperand() or
+  TBufferSizeOperand() or
+  TSideEffectOperand() or
   TCopySourceOperand() or
   TUnaryOperand() or
   TLeftOperand() or
@@ -47,11 +49,11 @@ abstract class OperandTag extends TOperandTag {
 
 /**
  * The address operand of an instruction that loads or stores a value from
- * memory (e.g. `Load`, `Store`).
+ * memory (e.g. `Load`, `Store`, `InitializeParameter`, `IndirectReadSideEffect`).
  */
 class AddressOperand extends OperandTag, TAddressOperand {
   override final string toString() {
-    result = "LoadStoreAddress"
+    result = "Address"
   }
 
   override final int getSortOrder() {
@@ -64,6 +66,33 @@ AddressOperand addressOperand() {
 }
 
 /**
+ * The buffer size operand of an instruction that represents a read or write of
+ * a buffer.
+ */
+class BufferSizeOperand extends OperandTag, TBufferSizeOperand {
+  override final string toString() {
+    result = "BufferSize"
+  }
+
+  override final int getSortOrder() {
+    result = 1
+  }
+}
+
+/**
+ * The operand representing the read side effect of a `SideEffectInstruction`.
+ */
+class SideEffectOperand extends OperandTag, TSideEffectOperand {
+  override final string toString() {
+    result = "SideEffect"
+  }
+
+  override final int getSortOrder() {
+    result = 2
+  }
+}
+
+/**
  * The source value operand of an instruction that copies this value to its
  * result (e.g. `Copy`, `Load`, `Store`).
  */
@@ -73,7 +102,7 @@ class CopySourceOperand extends OperandTag, TCopySourceOperand {
   }
 
   override final int getSortOrder() {
-    result = 1
+    result = 3
   }
 }
 
@@ -90,7 +119,7 @@ class UnaryOperand extends OperandTag, TUnaryOperand {
   }
 
   override final int getSortOrder() {
-    result = 2
+    result = 4
   }
 }
 
@@ -107,7 +136,7 @@ class LeftOperand extends OperandTag, TLeftOperand {
   }
 
   override final int getSortOrder() {
-    result = 3
+    result = 5
   }
 }
 
@@ -124,7 +153,7 @@ class RightOperand extends OperandTag, TRightOperand {
   }
 
   override final int getSortOrder() {
-    result = 4
+    result = 6
   }
 }
 
@@ -141,7 +170,7 @@ class ReturnValueOperand extends OperandTag, TReturnValueOperand {
   }
 
   override final int getSortOrder() {
-    result = 5
+    result = 7
   }
 }
 
@@ -158,7 +187,7 @@ class ExceptionOperand extends OperandTag, TExceptionOperand {
   }
 
   override final int getSortOrder() {
-    result = 6
+    result = 8
   }
 }
 
@@ -175,7 +204,7 @@ class ConditionOperand extends OperandTag, TConditionOperand {
   }
 
   override final int getSortOrder() {
-    result = 7
+    result = 9
   }
 }
 
@@ -193,7 +222,7 @@ class UnmodeledUseOperand extends OperandTag, TUnmodeledUseOperand {
   }
 
   override final int getSortOrder() {
-    result = 8
+    result = 10
   }
 }
 
@@ -210,7 +239,7 @@ class CallTargetOperand extends OperandTag, TCallTargetOperand {
   }
 
   override final int getSortOrder() {
-    result = 9
+    result = 11
   }
 }
 
@@ -240,7 +269,7 @@ class ThisArgumentOperand extends ArgumentOperand, TThisArgumentOperand {
   }
 
   override final int getSortOrder() {
-    result = 10
+    result = 12
   }
 
   override final string getLabel() {
@@ -268,7 +297,7 @@ class PositionalArgumentOperand extends ArgumentOperand,
   }
 
   override final int getSortOrder() {
-    result = 11 + argIndex
+    result = 13 + argIndex
   }
 
   final int getArgIndex() {
@@ -295,7 +324,7 @@ class PhiOperand extends OperandTag, TPhiOperand {
   }
 
   override final int getSortOrder() {
-    result = 11 + getPredecessorBlock().getDisplayIndex()
+    result = 13 + getPredecessorBlock().getDisplayIndex()
   }
 
   override final string getLabel() {

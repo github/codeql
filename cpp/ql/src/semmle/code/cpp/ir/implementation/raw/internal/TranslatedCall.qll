@@ -28,11 +28,19 @@ abstract class TranslatedCall extends TranslatedExpr {
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-    Type resultType, boolean isGLValue) {
-    tag = CallTag() and
-    opcode instanceof Opcode::Call and
-    resultType = getCallResultType() and
-    isGLValue = false
+      Type resultType, boolean isGLValue) {
+    (
+      tag = CallTag() and
+      opcode instanceof Opcode::Call and
+      resultType = getCallResultType() and
+      isGLValue = false
+    ) or
+    (
+      tag = CallSideEffectTag() and
+      opcode instanceof Opcode::CallSideEffect and
+      resultType instanceof UnknownType and
+      isGLValue = false
+    )
   }
   
   override Instruction getChildSuccessor(TranslatedElement child) {
@@ -56,26 +64,41 @@ abstract class TranslatedCall extends TranslatedExpr {
   override Instruction getInstructionSuccessor(InstructionTag tag,
     EdgeKind kind) {
     kind instanceof GotoEdge and
-    tag = CallTag() and
-    result = getParent().getChildSuccessor(this)
+    (
+      (
+        tag = CallTag() and
+        result = getInstruction(CallSideEffectTag())
+      ) or
+      (
+        tag = CallSideEffectTag() and
+        result = getParent().getChildSuccessor(this)
+      )
+    )
   }
 
   override Instruction getInstructionOperand(InstructionTag tag,
-    OperandTag operandTag) {
-    tag = CallTag() and
+      OperandTag operandTag) {
     (
+      tag = CallTag() and
       (
-        operandTag instanceof CallTargetOperand and
-        result = getCallTargetResult()
-      ) or
-      (
-        operandTag instanceof ThisArgumentOperand and
-        result = getQualifierResult()
-      ) or
-      exists(PositionalArgumentOperand argTag |
-        argTag = operandTag and
-        result = getArgument(argTag.getArgIndex()).getResult()
+        (
+          operandTag instanceof CallTargetOperand and
+          result = getCallTargetResult()
+        ) or
+        (
+          operandTag instanceof ThisArgumentOperand and
+          result = getQualifierResult()
+        ) or
+        exists(PositionalArgumentOperand argTag |
+          argTag = operandTag and
+          result = getArgument(argTag.getArgIndex()).getResult()
+        )
       )
+    ) or
+    (
+      tag = CallSideEffectTag() and
+      operandTag instanceof SideEffectOperand and
+      result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
     )
   }
 
