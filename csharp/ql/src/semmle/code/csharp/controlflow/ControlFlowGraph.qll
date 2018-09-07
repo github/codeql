@@ -1272,33 +1272,24 @@ module ControlFlow {
           // Case expression exits abnormally
           result = lastConstCaseExpr(cc, c) and
           not c instanceof NormalCompletion
-          or
-          // Case statement exits with any completion
-          result = lastConstCaseStmt(cc, c)
-          or
-          // Condition exists with a `false` completion
-          result = lastCaseCondition(cc, c) and
-          c instanceof FalseCompletion
-          or
-          // Condition exists abnormally
-          result = lastCaseCondition(cc, c) and
-          not c instanceof NormalCompletion
         )
         or
         cfe = any(TypeCase tc |
           // Type test exits with a non-match
           result = lastTypeCaseNoMatch(tc, c)
-          or
+        )
+        or
+        cfe = any(CaseStmt cs |
           // Condition exists with a `false` completion
-          result = lastCaseCondition(tc, c) and
+          result = lastCaseCondition(cs, c) and
           c instanceof FalseCompletion
           or
           // Condition exists abnormally
-          result = lastCaseCondition(tc, c) and
+          result = lastCaseCondition(cs, c) and
           not c instanceof NormalCompletion
           or
           // Case statement exits with any completion
-          result = lastTypeCaseStmt(tc, c)
+          result = lastCaseStmt(cs, c)
         )
         or
         exists(LoopStmt ls |
@@ -1584,8 +1575,10 @@ module ControlFlow {
       }
 
       pragma [nomagic]
-      private ControlFlowElement lastConstCaseStmt(ConstCase cc, Completion c) {
-        result = last(cc.getStmt(), c)
+      private ControlFlowElement lastCaseStmt(CaseStmt cs, Completion c) {
+        result = last(cs.(TypeCase).getStmt(), c)
+        or
+        result = last(cs.(ConstCase).getStmt(), c)
       }
 
       pragma [nomagic]
@@ -1596,11 +1589,6 @@ module ControlFlow {
       pragma [nomagic]
       private ControlFlowElement lastTypeCaseVariableDeclExpr(TypeCase tc, Completion c) {
         result = last(tc.getVariableDeclExpr(), c)
-      }
-
-      pragma [nomagic]
-      private ControlFlowElement lastTypeCaseStmt(TypeCase tc, Completion c) {
-        result = last(tc.getStmt(), c)
       }
 
       pragma [nomagic]
