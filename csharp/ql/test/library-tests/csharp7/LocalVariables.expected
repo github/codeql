@@ -52,15 +52,16 @@
 | CSharp7.cs:234:22:234:23 | i1 | int |
 | CSharp7.cs:238:30:238:31 | s1 | string |
 | CSharp7.cs:245:27:245:28 | v1 | object |
-| CSharp7.cs:253:22:253:23 | i2 | int |
-| CSharp7.cs:256:22:256:23 | i3 | int |
-| CSharp7.cs:259:25:259:26 | s2 | string |
-| CSharp7.cs:265:22:265:23 | v2 | object |
-| CSharp7.cs:278:13:278:16 | dict | Dictionary<int, string> |
-| CSharp7.cs:279:13:279:16 | list | IEnumerable<(int, string)> |
-| CSharp7.cs:281:23:281:23 | a | int |
-| CSharp7.cs:281:33:281:33 | b | string |
-| CSharp7.cs:283:23:283:23 | a | int |
-| CSharp7.cs:283:30:283:30 | b | string |
-| CSharp7.cs:285:23:285:23 | a | int |
-| CSharp7.cs:285:26:285:26 | b | string |
+| CSharp7.cs:255:39:255:40 | s4 | string |
+| CSharp7.cs:258:22:258:23 | i2 | int |
+| CSharp7.cs:261:22:261:23 | i3 | int |
+| CSharp7.cs:264:25:264:26 | s2 | string |
+| CSharp7.cs:270:22:270:23 | v2 | object |
+| CSharp7.cs:283:13:283:16 | dict | Dictionary<int, string> |
+| CSharp7.cs:284:13:284:16 | list | IEnumerable<(int, string)> |
+| CSharp7.cs:286:23:286:23 | a | int |
+| CSharp7.cs:286:33:286:33 | b | string |
+| CSharp7.cs:288:23:288:23 | a | int |
+| CSharp7.cs:288:30:288:30 | b | string |
+| CSharp7.cs:290:23:290:23 | a | int |
+| CSharp7.cs:290:26:290:26 | b | string |

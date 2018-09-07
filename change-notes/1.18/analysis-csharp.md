@@ -36,6 +36,10 @@
 
 ## Changes to code extraction
 
+* The `into` part of `join` clauses is now extracted.
+* The `when` part of constant cases is now extracted.
+* Fixed a bug where `while(x is T y) ...` was not extracted correctly.
+
 * *Series of bullet points*
 
 ## Changes to QL libraries
@@ -59,3 +63,4 @@
   - `ControlFlowEdgeGotoCase` has been renamed to `ControlFlow::SuccessorTypes::GotoCaseSuccessor`.
   - `ControlFlowEdgeGotoDefault` has been renamed to `ControlFlow::SuccessorTypes::GotoDefaultSuccessor`.
   - `ControlFlowEdgeException` has been renamed to `ControlFlow::SuccessorTypes::ExceptionSuccessor`.
+* The predicate `getCondition()` has been moved from `TypeCase` to `CaseStmt`. It is now possible to get the condition of a `ConstCase` using its `getCondition()` predicate.

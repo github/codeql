@@ -688,6 +688,28 @@
 | Switch.cs:108:16:108:17 | -... | Switch.cs:108:9:108:18 | return ...; | semmle.label | successor |
 | Switch.cs:108:17:108:17 | 1 | Switch.cs:108:16:108:17 | -... | semmle.label | successor |
 | Switch.cs:111:34:111:48 | object creation of type Exception | Switch.cs:111:28:111:48 | throw ... | semmle.label | successor |
+| Switch.cs:114:5:121:5 | {...} | Switch.cs:115:9:119:9 | switch (...) {...} | semmle.label | successor |
+| Switch.cs:115:9:119:9 | switch (...) {...} | Switch.cs:115:17:115:17 | access to parameter s | semmle.label | successor |
+| Switch.cs:115:17:115:17 | access to parameter s | Switch.cs:115:17:115:24 | access to property Length | semmle.label | successor |
+| Switch.cs:115:17:115:24 | access to property Length | Switch.cs:117:13:117:34 | case ...: | semmle.label | successor |
+| Switch.cs:117:13:117:34 | case ...: | Switch.cs:117:18:117:18 | 3 | semmle.label | successor |
+| Switch.cs:117:18:117:18 | 3 | Switch.cs:117:25:117:25 | access to parameter s | semmle.label | match |
+| Switch.cs:117:18:117:18 | 3 | Switch.cs:118:13:118:33 | case ...: | semmle.label | no-match |
+| Switch.cs:117:25:117:25 | access to parameter s | Switch.cs:117:28:117:32 | "foo" | semmle.label | successor |
+| Switch.cs:117:25:117:32 | ... == ... | Switch.cs:117:43:117:43 | 1 | semmle.label | true |
+| Switch.cs:117:25:117:32 | ... == ... | Switch.cs:118:13:118:33 | case ...: | semmle.label | false |
+| Switch.cs:117:28:117:32 | "foo" | Switch.cs:117:25:117:32 | ... == ... | semmle.label | successor |
+| Switch.cs:117:43:117:43 | 1 | Switch.cs:117:36:117:44 | return ...; | semmle.label | successor |
+| Switch.cs:118:13:118:33 | case ...: | Switch.cs:118:18:118:18 | 2 | semmle.label | successor |
+| Switch.cs:118:18:118:18 | 2 | Switch.cs:118:25:118:25 | access to parameter s | semmle.label | match |
+| Switch.cs:118:18:118:18 | 2 | Switch.cs:120:17:120:17 | 1 | semmle.label | no-match |
+| Switch.cs:118:25:118:25 | access to parameter s | Switch.cs:118:28:118:31 | "fu" | semmle.label | successor |
+| Switch.cs:118:25:118:31 | ... == ... | Switch.cs:118:42:118:42 | 2 | semmle.label | true |
+| Switch.cs:118:25:118:31 | ... == ... | Switch.cs:120:17:120:17 | 1 | semmle.label | false |
+| Switch.cs:118:28:118:31 | "fu" | Switch.cs:118:25:118:31 | ... == ... | semmle.label | successor |
+| Switch.cs:118:42:118:42 | 2 | Switch.cs:118:35:118:43 | return ...; | semmle.label | successor |
+| Switch.cs:120:16:120:17 | -... | Switch.cs:120:9:120:18 | return ...; | semmle.label | successor |
+| Switch.cs:120:17:120:17 | 1 | Switch.cs:120:16:120:17 | -... | semmle.label | successor |
 | TypeAccesses.cs:4:5:9:5 | {...} | TypeAccesses.cs:5:9:5:26 | ... ...; | semmle.label | successor |
 | TypeAccesses.cs:5:9:5:26 | ... ...; | TypeAccesses.cs:5:13:5:13 | access to local variable s | semmle.label | successor |
 | TypeAccesses.cs:5:13:5:13 | access to local variable s | TypeAccesses.cs:5:25:5:25 | access to parameter o | semmle.label | successor |

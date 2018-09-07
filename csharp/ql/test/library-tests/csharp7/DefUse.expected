@@ -51,16 +51,18 @@
 | CSharp7.cs:233:16:233:23 | Object o = ... | CSharp7.cs:242:18:242:18 | access to local variable o |
 | CSharp7.cs:233:16:233:23 | Object o = ... | CSharp7.cs:245:18:245:18 | access to local variable o |
 | CSharp7.cs:233:16:233:23 | Object o = ... | CSharp7.cs:249:17:249:17 | access to local variable o |
+| CSharp7.cs:233:16:233:23 | Object o = ... | CSharp7.cs:255:27:255:27 | access to local variable o |
 | CSharp7.cs:234:18:234:23 | Int32 i1 | CSharp7.cs:234:28:234:29 | access to local variable i1 |
 | CSharp7.cs:234:18:234:23 | Int32 i1 | CSharp7.cs:236:38:236:39 | access to local variable i1 |
 | CSharp7.cs:238:23:238:31 | String s1 | CSharp7.cs:240:41:240:42 | access to local variable s1 |
-| CSharp7.cs:253:18:253:23 | Int32 i2 | CSharp7.cs:253:30:253:31 | access to local variable i2 |
-| CSharp7.cs:253:18:253:23 | Int32 i2 | CSharp7.cs:254:47:254:48 | access to local variable i2 |
-| CSharp7.cs:256:18:256:23 | Int32 i3 | CSharp7.cs:257:42:257:43 | access to local variable i3 |
-| CSharp7.cs:259:18:259:26 | String s2 | CSharp7.cs:260:45:260:46 | access to local variable s2 |
-| CSharp7.cs:278:13:278:48 | Dictionary<Int32,String> dict = ... | CSharp7.cs:279:20:279:23 | access to local variable dict |
-| CSharp7.cs:279:13:279:62 | IEnumerable<(Int32,String)> list = ... | CSharp7.cs:281:39:281:42 | access to local variable list |
-| CSharp7.cs:279:13:279:62 | IEnumerable<(Int32,String)> list = ... | CSharp7.cs:283:36:283:39 | access to local variable list |
-| CSharp7.cs:279:13:279:62 | IEnumerable<(Int32,String)> list = ... | CSharp7.cs:285:32:285:35 | access to local variable list |
-| CSharp7.cs:279:32:279:35 | item | CSharp7.cs:279:41:279:44 | access to parameter item |
-| CSharp7.cs:279:32:279:35 | item | CSharp7.cs:279:51:279:54 | access to parameter item |
+| CSharp7.cs:255:32:255:40 | String s4 | CSharp7.cs:256:40:256:41 | access to local variable s4 |
+| CSharp7.cs:258:18:258:23 | Int32 i2 | CSharp7.cs:258:30:258:31 | access to local variable i2 |
+| CSharp7.cs:258:18:258:23 | Int32 i2 | CSharp7.cs:259:47:259:48 | access to local variable i2 |
+| CSharp7.cs:261:18:261:23 | Int32 i3 | CSharp7.cs:262:42:262:43 | access to local variable i3 |
+| CSharp7.cs:264:18:264:26 | String s2 | CSharp7.cs:265:45:265:46 | access to local variable s2 |
+| CSharp7.cs:283:13:283:48 | Dictionary<Int32,String> dict = ... | CSharp7.cs:284:20:284:23 | access to local variable dict |
+| CSharp7.cs:284:13:284:62 | IEnumerable<(Int32,String)> list = ... | CSharp7.cs:286:39:286:42 | access to local variable list |
+| CSharp7.cs:284:13:284:62 | IEnumerable<(Int32,String)> list = ... | CSharp7.cs:288:36:288:39 | access to local variable list |
+| CSharp7.cs:284:13:284:62 | IEnumerable<(Int32,String)> list = ... | CSharp7.cs:290:32:290:35 | access to local variable list |
+| CSharp7.cs:284:32:284:35 | item | CSharp7.cs:284:41:284:44 | access to parameter item |
+| CSharp7.cs:284:32:284:35 | item | CSharp7.cs:284:51:284:54 | access to parameter item |

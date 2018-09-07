@@ -1272,25 +1272,24 @@ module ControlFlow {
           // Case expression exits abnormally
           result = lastConstCaseExpr(cc, c) and
           not c instanceof NormalCompletion
-          or
-          // Case statement exits with any completion
-          result = lastConstCaseStmt(cc, c)
         )
         or
         cfe = any(TypeCase tc |
           // Type test exits with a non-match
           result = lastTypeCaseNoMatch(tc, c)
-          or
+        )
+        or
+        cfe = any(CaseStmt cs |
           // Condition exists with a `false` completion
-          result = lastTypeCaseCondition(tc, c) and
+          result = lastCaseCondition(cs, c) and
           c instanceof FalseCompletion
           or
           // Condition exists abnormally
-          result = lastTypeCaseCondition(tc, c) and
+          result = lastCaseCondition(cs, c) and
           not c instanceof NormalCompletion
           or
           // Case statement exits with any completion
-          result = lastTypeCaseStmt(tc, c)
+          result = lastCaseStmt(cs, c)
         )
         or
         exists(LoopStmt ls |
@@ -1576,23 +1575,20 @@ module ControlFlow {
       }
 
       pragma [nomagic]
-      private ControlFlowElement lastConstCaseStmt(ConstCase cc, Completion c) {
-        result = last(cc.getStmt(), c)
+      private ControlFlowElement lastCaseStmt(CaseStmt cs, Completion c) {
+        result = last(cs.(TypeCase).getStmt(), c)
+        or
+        result = last(cs.(ConstCase).getStmt(), c)
       }
 
       pragma [nomagic]
-      private ControlFlowElement lastTypeCaseCondition(TypeCase tc, Completion c) {
-        result = last(tc.getCondition(), c)
+      private ControlFlowElement lastCaseCondition(CaseStmt cs, Completion c) {
+        result = last(cs.getCondition(), c)
       }
 
       pragma [nomagic]
       private ControlFlowElement lastTypeCaseVariableDeclExpr(TypeCase tc, Completion c) {
         result = last(tc.getVariableDeclExpr(), c)
-      }
-
-      pragma [nomagic]
-      private ControlFlowElement lastTypeCaseStmt(TypeCase tc, Completion c) {
-        result = last(tc.getStmt(), c)
       }
 
       pragma [nomagic]
@@ -2032,9 +2028,9 @@ module ControlFlow {
           )
           or
           // Flow from last element of condition to next case
-          exists(TypeCase tc, int i |
+          exists(CaseStmt tc, int i |
             tc = ss.getCase(i) |
-            cfe = lastTypeCaseCondition(tc, c) and
+            cfe = lastCaseCondition(tc, c) and
             c instanceof FalseCompletion and
             result = first(ss.getCase(i + 1))
           )
@@ -2063,9 +2059,19 @@ module ControlFlow {
           result = first(cc.getExpr()) and
           c instanceof SimpleCompletion
           or
-          // Flow from last element of case expression to first element of statement
           cfe = lastConstCaseExpr(cc, c) and
-          c.(MatchingCompletion).isMatch() and
+          c.(MatchingCompletion).isMatch() and (
+            if exists(cc.getCondition()) then
+              // Flow from the last element of case expression to the condition
+              result = first(cc.getCondition())
+            else
+              // Flow from last element of case expression to first element of statement
+              result = first(cc.getStmt())
+          )
+          or
+          // Flow from last element of case condition to first element of statement
+          cfe = lastCaseCondition(cc, c) and
+          c instanceof TrueCompletion and
           result = first(cc.getStmt())
         )
         or
@@ -2105,7 +2111,7 @@ module ControlFlow {
             result = first(tc.getStmt())
           or
           // Flow from condition to first element of statement
-          cfe = lastTypeCaseCondition(tc, c) and
+          cfe = lastCaseCondition(tc, c) and
           c instanceof TrueCompletion and
           result = first(tc.getStmt())
         )

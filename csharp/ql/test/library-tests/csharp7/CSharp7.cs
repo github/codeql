@@ -250,6 +250,11 @@ class Patterns
         {
             case "xyz":
                 break;
+            case "" when 1 < 2:
+                break;
+            case "x" when o is string s4:
+                Console.WriteLine($"x {s4}");
+                break;
             case int i2 when i2 > 0:
                 Console.WriteLine($"positive {i2}");
                 break;
