@@ -1,7 +1,9 @@
-|  | fp_offset | <no initialiser value> |
-|  | gp_offset | <no initialiser value> |
-|  | overflow_arg_area | <no initialiser value> |
-|  | reg_save_area | <no initialiser value> |
+|  | fp_offset | <no initialiser expr> |
+|  | gp_offset | <no initialiser expr> |
+|  | overflow_arg_area | <no initialiser expr> |
+|  | reg_save_area | <no initialiser expr> |
+| addressof.c | x | 0 |
+| addressof.c | x_addr | __builtin_addressof ... |
 | extended.cpp | has_nullptr_e | 1 |
 | extended.cpp | has_nullptr_f | 1 |
 | gcc492.c | has_include | 1 |

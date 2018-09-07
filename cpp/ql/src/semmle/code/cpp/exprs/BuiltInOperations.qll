@@ -203,6 +203,20 @@ class BuiltInOperationBuiltInShuffleVector extends BuiltInOperation, @builtinshu
 }
 
 /**
+ * A clang `__builtin_addressof` expression (can be used to implement C++'s std::addressof).
+ */
+class BuiltInOperationBuiltInAddressOf extends UnaryOperation, BuiltInOperation, @builtinaddressof {
+  /** Gets the function or variable whose address is taken. */
+  Declaration getAddressable() {
+       result = this.getOperand().(Access).getTarget()
+       // this handles the case where we are taking the address of a reference variable
+    or result = this.getOperand().(ReferenceDereferenceExpr).getChild(0).(Access).getTarget()
+  }
+
+  override string getOperator() { result = "__builtin_addressof" }
+}
+
+/**
  * The `__is_trivially_constructible` type trait.
  */
 class BuiltInOperationIsTriviallyConstructible extends BuiltInOperation, @istriviallyconstructibleexpr {
