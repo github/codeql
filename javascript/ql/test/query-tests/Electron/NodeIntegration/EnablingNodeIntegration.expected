@@ -1,5 +1,5 @@
-| EnablingNodeIntegration.js:5:28:11:9 | {\\r\\n     ...       } | nodeIntegration property may have been enabled on this object that could result in RCE |
-| EnablingNodeIntegration.js:5:28:11:9 | {\\r\\n     ...       } | nodeIntegrationInWorker property may have been enabled on this object that could result in RCE |
-| EnablingNodeIntegration.js:15:22:20:9 | {\\r\\n     ...       } | nodeIntegration is enabled by default in WebPreferences object that could result in RCE |
-| EnablingNodeIntegration.js:23:13:27:9 | {\\r\\n     ...       } | nodeIntegration is enabled by default in WebPreferences object that could result in RCE |
+| EnablingNodeIntegration.js:5:28:11:9 | {\\n     ...       } | nodeIntegration property may have been enabled on this object that could result in RCE |
+| EnablingNodeIntegration.js:5:28:11:9 | {\\n     ...       } | nodeIntegrationInWorker property may have been enabled on this object that could result in RCE |
+| EnablingNodeIntegration.js:15:22:20:9 | {\\n     ...       } | nodeIntegration is enabled by default in WebPreferences object that could result in RCE |
+| EnablingNodeIntegration.js:23:13:27:9 | {\\n     ...       } | nodeIntegration is enabled by default in WebPreferences object that could result in RCE |
 | EnablingNodeIntegration.js:49:71:49:93 | {nodeIn ... : true} | nodeIntegration property may have been enabled on this object that could result in RCE |
