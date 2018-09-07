@@ -240,6 +240,32 @@ class FormatLiteral extends Literal {
   }
 
   /**
+   * Gets the default character type expected for `%s` by this format literal.  Typically
+   * `char` or `wchar_t`.
+   */
+  Type getDefaultCharType() {
+    result = getUse().getTarget().(FormattingFunction).getDefaultCharType()
+  }
+
+  /**
+   * Gets the non-default character type expected for `%S` by this format literal.  Typically
+   * `wchar_t` or `char`.  On some snapshots there may be multiple results where we can't tell
+   * which is correct for a particular function.
+   */
+  Type getNonDefaultCharType() {
+    result = getUse().getTarget().(FormattingFunction).getNonDefaultCharType()
+  }
+
+  /**
+   * Gets the wide character type for this format literal.  This is usually `wchar_t`.  On some
+   * snapshots there may be multiple results where we can't tell which is correct for a
+   * particular function.
+   */
+  Type getWideCharType() {
+    result = getUse().getTarget().(FormattingFunction).getWideCharType()
+  }
+
+  /**
    * Holds if this `FormatLiteral` is in a context that supports
    * Microsoft rules and extensions.
    */
@@ -648,7 +674,6 @@ class FormatLiteral extends Literal {
     result = getConversionType2(n) or
     result = getConversionType3(n) or
     result = getConversionType4(n) or
-    result = getConversionType5(n) or
     result = getConversionType6(n) or
     result = getConversionType7(n) or
     result = getConversionType8(n) or
@@ -715,38 +740,34 @@ class FormatLiteral extends Literal {
   }
 
   /**
-   * Gets the 'effective' string type character, that is, 's' (meaning a char string) or
-   * 'S' (meaning a wide string).
-   *  - in the base case this is the same as the format type character.
-   *  - for a `wprintf` or similar function call, the meanings are reversed.
-   *  - the size prefixes 'l'/'w' (long) and 'h' (short) override the
-   *    type character to effectively 'S' or 's' respectively.
+   * Gets the string type required by the nth conversion specifier.
+   *  - in the base case this is the default for the formatting function
+   *    (e.g. `char` for `printf`, `wchar_t` for `wprintf`).
+   *  - the `%S` format character reverses wideness.
+   *  - the size prefixes 'l'/'w' and 'h' override the type character
+   *    to wide or single-byte characters respectively.
    */
-  private string getEffectiveStringConversionChar(int n) {
-    exists(string len, string conv | this.parseConvSpec(n, _, _, _, _, _, len, conv) and (conv = "s" or conv = "S") |
-      (len = "l" and result = "S") or
-      (len = "w" and result = "S") or
-      (len = "h" and result = "s") or
-      (len != "l" and len != "w" and len != "h" and (result = "s" or result = "S") and (if isWideCharDefault() then result != conv else result = conv))
-    )
-  }
-
   private Type getConversionType4(int n) {
-    exists(string cnv, CharType t | cnv = this.getEffectiveStringConversionChar(n) |
-      cnv="s" and t = result.(PointerType).getBaseType()
-      and not t.isExplicitlySigned()
-      and not t.isExplicitlyUnsigned()
-    )
-  }
-
-  private Type getConversionType5(int n) {
-    exists(string cnv | cnv = this.getEffectiveStringConversionChar(n) |
-      cnv="S" and
+    exists(string len, string conv |
+      this.parseConvSpec(n, _, _, _, _, _, len, conv) and
       (
-        result = getAFormatterWideType()
-        or
-        not exists(getAFormatterWideType()) and
-        result.(PointerType).getBaseType().hasName("wchar_t")
+        (
+          (conv = "s" or conv = "S") and
+          len = "h" and
+          result.(PointerType).getBaseType() instanceof PlainCharType
+        ) or (
+          (conv = "s" or conv = "S") and
+          (len = "l" or len = "w") and
+          result.(PointerType).getBaseType() = getWideCharType()
+        ) or (
+          conv = "s" and
+          (len != "l" and len != "w" and len != "h") and
+          result.(PointerType).getBaseType() = getDefaultCharType()
+        ) or (
+          conv = "S" and
+          (len != "l" and len != "w" and len != "h") and
+          result.(PointerType).getBaseType() = getNonDefaultCharType()
+        )
       )
     )
   }

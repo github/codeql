@@ -31,8 +31,8 @@ void tests() {
 	wprintf(L"%S", L"Hello"); // BAD: expecting char
 
 	swprintf(buffer, BUF_SIZE, u"%s", "Hello"); // BAD: expecting char16_t
-	swprintf(buffer, BUF_SIZE, u"%s", u"Hello"); // GOOD [FALSE POSITIVE]
-	swprintf(buffer, BUF_SIZE, u"%s", L"Hello"); // BAD: expecting char16_t [NOT DETECTED]
+	swprintf(buffer, BUF_SIZE, u"%s", u"Hello"); // GOOD
+	swprintf(buffer, BUF_SIZE, u"%s", L"Hello"); // BAD: expecting char16_t
 
 	swprintf(buffer, BUF_SIZE, u"%S", "Hello"); // GOOD
 	swprintf(buffer, BUF_SIZE, u"%S", u"Hello"); // BAD: expecting char
