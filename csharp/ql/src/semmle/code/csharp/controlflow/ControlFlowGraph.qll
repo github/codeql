@@ -2059,16 +2059,15 @@ module ControlFlow {
           result = first(cc.getExpr()) and
           c instanceof SimpleCompletion
           or
-          // Flow from last element of case expression to first element of statement
-          not exists(cc.getCondition()) and
           cfe = lastConstCaseExpr(cc, c) and
-          c.(MatchingCompletion).isMatch() and
-          result = first(cc.getStmt())
-          or
-          // Flow from the last element of case expression to the condition
-          cfe = lastConstCaseExpr(cc, c) and
-          c.(MatchingCompletion).isMatch() and
-          result = first(cc.getCondition())
+          c.(MatchingCompletion).isMatch() and (
+            if exists(cc.getCondition()) then
+              // Flow from the last element of case expression to the condition
+              result = first(cc.getCondition())
+            else
+              // Flow from last element of case expression to first element of statement
+              result = first(cc.getStmt())
+          )
           or
           // Flow from last element of case condition to first element of statement
           cfe = lastCaseCondition(cc, c) and
