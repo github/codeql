@@ -34,7 +34,7 @@
   
   <example>
     <p>
-      The following example shows insecure and secure uses of </code>&lt;webview&gt;</code> tag:
+      The following example shows insecure and secure uses of </code>webview</code> tag:
     </p>
     <sample src="examples/WebViewNodeIntegration.html"/>
    
