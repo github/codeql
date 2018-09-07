@@ -369,3 +369,10 @@ class BuiltInOperationIsFinal extends BuiltInOperation, @isfinalexpr {
 class BuiltInChooseExpr extends BuiltInOperation, @builtinchooseexpr {
   override string toString() { result = "__builtin_choose_expr" }
 }
+
+/**
+ * Fill operation on a GNU vector.
+ */
+class VectorFillOperation extends UnaryOperation, @vec_fill {
+  override string getOperator() { result = "(vector fill)" }
+}
