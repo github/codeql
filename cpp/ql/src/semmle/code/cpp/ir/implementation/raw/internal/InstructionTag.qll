@@ -43,6 +43,7 @@ newtype TInstructionTag =
   SwitchBranchTag() or
   CallTargetTag() or
   CallTag() or
+  CallSideEffectTag() or
   AllocationSizeTag() or
   AllocationElementSizeTag() or
   AllocationExtentConvertTag() or
@@ -113,6 +114,7 @@ string getInstructionTagId(TInstructionTag tag) {
   tag = SwitchBranchTag() and result = "SwitchBranch" or
   tag = CallTargetTag() and result = "CallTarget" or
   tag = CallTag() and result = "Call" or
+  tag = CallSideEffectTag() and result = "CallSideEffect" or
   tag = AllocationSizeTag() and result = "AllocSize" or
   tag = AllocationElementSizeTag() and result = "AllocElemSize" or
   tag = AllocationExtentConvertTag() and result = "AllocExtConv" or

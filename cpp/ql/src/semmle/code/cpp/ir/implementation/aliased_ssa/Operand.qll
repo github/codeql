@@ -306,6 +306,38 @@ class PositionalArgumentOperand extends ArgumentOperand {
   }
 }
 
+class SideEffectOperand extends NonPhiOperand {
+  SideEffectOperand() {
+    this = TNonPhiOperand(_, sideEffectOperand(), _)
+  }
+  
+  override MemoryAccessKind getMemoryAccess() {
+    instr instanceof CallSideEffectInstruction and
+    result instanceof EscapedMemoryAccess
+    or
+    instr instanceof CallReadSideEffectInstruction and
+    result instanceof EscapedMemoryAccess
+    or
+    instr instanceof IndirectReadSideEffectInstruction and
+    result instanceof IndirectMemoryAccess
+    or
+    instr instanceof BufferReadSideEffectInstruction and
+    result instanceof BufferMemoryAccess
+    or
+    instr instanceof IndirectWriteSideEffectInstruction and
+    result instanceof IndirectMemoryAccess
+    or
+    instr instanceof BufferWriteSideEffectInstruction and
+    result instanceof BufferMemoryAccess
+    or
+    instr instanceof IndirectMayWriteSideEffectInstruction and
+    result instanceof IndirectMayMemoryAccess
+    or
+    instr instanceof BufferMayWriteSideEffectInstruction and
+    result instanceof BufferMayMemoryAccess
+  }
+}
+
 /**
  * An operand of a `PhiInstruction`.
  */
@@ -349,6 +381,7 @@ class PhiOperand extends Operand, TPhiOperand {
     result instanceof PhiMemoryAccess
   }
 }
+
 
 /**
  * An operand that reads a value from memory.

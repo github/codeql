@@ -167,6 +167,13 @@ cached private module Cached {
       result = element.getInstructionResultSize(tag)
     )
   }
+
+  cached Instruction getPrimaryInstructionForSideEffect(Instruction instruction) {
+    exists(TranslatedElement element, InstructionTag tag |
+      instructionOrigin(instruction, element, tag) and
+      result = element.getPrimaryInstructionForSideEffect(tag)
+    )
+  }
 }
 
 import CachedForDebugging

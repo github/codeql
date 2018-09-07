@@ -1,6 +1,7 @@
 import SSAConstructionInternal
 import cpp
 private import semmle.code.cpp.ir.implementation.Opcode
+private import semmle.code.cpp.ir.internal.OperandTag
 private import NewIR
 
 import Cached
@@ -223,6 +224,13 @@ cached private module Cached {
       oldInstr = getOldInstruction(instruction) and
       baseClass = oldInstr.getBaseClass() and
       derivedClass = oldInstr.getDerivedClass()
+    )
+  }
+
+  cached Instruction getPrimaryInstructionForSideEffect(Instruction instruction) {
+    exists(OldIR::SideEffectInstruction oldInstruction |
+      oldInstruction = getOldInstruction(instruction) and
+      result = getNewInstruction(oldInstruction.getPrimaryInstruction())
     )
   }
 

@@ -227,6 +227,13 @@ cached private module Cached {
     )
   }
 
+  cached Instruction getPrimaryInstructionForSideEffect(Instruction instruction) {
+    exists(OldIR::SideEffectInstruction oldInstruction |
+      oldInstruction = getOldInstruction(instruction) and
+      result = getNewInstruction(oldInstruction.getPrimaryInstruction())
+    )
+  }
+
   private predicate ssa_variableUpdate(Alias::VirtualVariable vvar,
     OldIR::Instruction instr, OldIR::IRBlock block, int index) {
     block.getInstruction(index) = instr and
