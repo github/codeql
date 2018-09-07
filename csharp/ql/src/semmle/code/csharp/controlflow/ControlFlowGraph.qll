@@ -950,6 +950,7 @@ module ControlFlow {
           not this instanceof CastExpr and
           not this instanceof AnonymousFunctionExpr and
           not this instanceof DelegateCall and
+          not this instanceof @unknown_expr and
           result = this.getChild(i)
           or
           this = any(ExtensionMethodCall emc |
@@ -967,6 +968,8 @@ module ControlFlow {
           result = getCastExprChild(this, i)
           or
           result = this.(DelegateCall).getChild(i - 1)
+          or
+          result = getUnknownExprChild(this, i)
         }
       }
 
@@ -999,6 +1002,13 @@ module ControlFlow {
       private ControlFlowElement getAsExprChild(AsExpr ae, int i) {
         // The type access at index 1 is not evaluated at run-time
         i = 0 and result = ae.getExpr()
+      }
+
+      private ControlFlowElement getUnknownExprChild(@unknown_expr e, int i) {
+        exists(int c |
+          result = e.(Expr).getChild(c) |
+          c = rank[i+1](int j | exists(e.(Expr).getChild(j)))
+        )
       }
 
       private ControlFlowElement getCastExprChild(CastExpr ce, int i) {

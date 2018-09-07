@@ -6,13 +6,12 @@ import semmle.code.csharp.controlflow.ControlFlowGraph
  * The purpose of this is to ensure that all MethodCall expressions
  * have a valid `toString()`.
  */
-class UnknownCall extends MethodCall
-{
+class UnknownCall extends MethodCall {
   UnknownCall() { not exists(this.getTarget()) }
   
   override string toString() { result = "Call to unknown method" }
 }
 
-query predicate edges(ControlFlowNode n1, ControlFlowNode n2) {
+query predicate edges(ControlFlow::Node n1, ControlFlow::Node n2) {
   n2 = n1.getASuccessor()
 }
