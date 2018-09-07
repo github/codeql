@@ -214,7 +214,7 @@ class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
       tag = ConditionValueTrueStoreTag() and
       (
         (
-          operandTag instanceof LoadStoreAddressOperand and
+          operandTag instanceof AddressOperand and
           result = getInstruction(ConditionValueTrueTempAddressTag())
         ) or
         (
@@ -227,7 +227,7 @@ class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
       tag = ConditionValueFalseStoreTag() and
       (
         (
-          operandTag instanceof LoadStoreAddressOperand and
+          operandTag instanceof AddressOperand and
           result = getInstruction(ConditionValueFalseTempAddressTag())
         ) or
         (
@@ -240,7 +240,7 @@ class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
       tag = ConditionValueResultLoadTag() and
       (
         (
-          operandTag instanceof LoadStoreAddressOperand and
+          operandTag instanceof AddressOperand and
           result = getInstruction(ConditionValueResultTempAddressTag())
         ) or
         (
@@ -345,7 +345,7 @@ class TranslatedLoad extends TranslatedExpr, TTranslatedLoad {
     tag = LoadTag() and
     (
       (
-        operandTag instanceof LoadStoreAddressOperand and
+        operandTag instanceof AddressOperand and
         result = getOperand().getResult()
       ) or
       (
@@ -483,7 +483,7 @@ abstract class TranslatedCrementOperation extends TranslatedNonConstantExpr {
       tag = CrementLoadTag() and
       (
         (
-          operandTag instanceof LoadStoreAddressOperand and
+          operandTag instanceof AddressOperand and
           result = getOperand().getResult()
         ) or
         (
@@ -509,7 +509,7 @@ abstract class TranslatedCrementOperation extends TranslatedNonConstantExpr {
       tag = CrementStoreTag() and
       (
         (
-          operandTag instanceof LoadStoreAddressOperand and
+          operandTag instanceof AddressOperand and
           result = getOperand().getResult()
         ) or
         (
@@ -1157,7 +1157,7 @@ class TranslatedAssignExpr extends TranslatedAssignment {
     tag = AssignmentStoreTag() and
     (
       (
-        operandTag instanceof LoadStoreAddressOperand and
+        operandTag instanceof AddressOperand and
         result = getLeftOperand().getResult()
       ) or
       (
@@ -1320,7 +1320,7 @@ class TranslatedAssignOperation extends TranslatedAssignment {
       tag = AssignOperationLoadTag() and
       (
         (
-          operandTag instanceof LoadStoreAddressOperand and
+          operandTag instanceof AddressOperand and
           result = getLeftOperand().getResult()
         ) or
         (
@@ -1361,7 +1361,7 @@ class TranslatedAssignOperation extends TranslatedAssignment {
       tag = AssignmentStoreTag() and
       (
         (
-          operandTag instanceof LoadStoreAddressOperand and
+          operandTag instanceof AddressOperand and
           result = getLeftOperand().getResult()
         ) or
         (
@@ -1551,7 +1551,7 @@ class TranslatedConditionalExpr extends TranslatedNonConstantExpr,
         tag = ConditionValueTrueStoreTag() and
         (
           (
-            operandTag instanceof LoadStoreAddressOperand and
+            operandTag instanceof AddressOperand and
             result = getInstruction(ConditionValueTrueTempAddressTag())
           ) or
           (
@@ -1565,7 +1565,7 @@ class TranslatedConditionalExpr extends TranslatedNonConstantExpr,
         tag = ConditionValueFalseStoreTag() and
         (
           (
-            operandTag instanceof LoadStoreAddressOperand and
+            operandTag instanceof AddressOperand and
             result = getInstruction(ConditionValueFalseTempAddressTag())
           ) or
           (
@@ -1578,7 +1578,7 @@ class TranslatedConditionalExpr extends TranslatedNonConstantExpr,
         tag = ConditionValueResultLoadTag() and
         (
           (
-            operandTag instanceof LoadStoreAddressOperand and
+            operandTag instanceof AddressOperand and
             result = getInstruction(ConditionValueResultTempAddressTag())
           ) or
           (
@@ -1758,7 +1758,7 @@ class TranslatedThrowValueExpr extends TranslatedThrowExpr,
     tag = ThrowTag() and
     (
       (
-        operandTag instanceof LoadStoreAddressOperand and
+        operandTag instanceof AddressOperand and
         result = getInstruction(InitializerVariableAddressTag())
       ) or
       (

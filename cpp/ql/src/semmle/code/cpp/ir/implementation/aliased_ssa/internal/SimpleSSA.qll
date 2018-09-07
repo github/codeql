@@ -69,7 +69,7 @@ Overlap getOverlap(MemoryAccess def, MemoryAccess use) {
 MemoryAccess getResultMemoryAccess(Instruction instr) {
   exists(IRVariable var |
     instr.getResultMemoryAccess() instanceof IndirectMemoryAccess and
-    resultPointsTo(instr.getOperand(loadStoreAddressOperand()), var, 0) and
+    resultPointsTo(instr.getOperand(addressOperand()), var, 0) and
     result = getMemoryAccess(var)
   )
 }
@@ -77,7 +77,7 @@ MemoryAccess getResultMemoryAccess(Instruction instr) {
 MemoryAccess getOperandMemoryAccess(Instruction instr, OperandTag tag) {
   exists(IRVariable var |
     instr.getOperandMemoryAccess(tag) instanceof IndirectMemoryAccess and
-    resultPointsTo(instr.getOperand(loadStoreAddressOperand()), var, 0) and
+    resultPointsTo(instr.getOperand(addressOperand()), var, 0) and
     result = getMemoryAccess(var)
   )
 }

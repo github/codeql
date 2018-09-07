@@ -157,7 +157,7 @@ class TranslatedUninitializedVariable extends
     tag = InitializerStoreTag() and
     (
       (
-        operandTag instanceof LoadStoreAddressOperand and
+        operandTag instanceof AddressOperand and
         result = getInstruction(InitializerVariableAddressTag())
       ) 
     )

@@ -4,7 +4,7 @@ import IRBlock
 import cpp
 
 private newtype TOperandTag =
-  TLoadStoreAddressOperand() or
+  TAddressOperand() or
   TCopySourceOperand() or
   TUnaryOperand() or
   TLeftOperand() or
@@ -49,7 +49,7 @@ abstract class OperandTag extends TOperandTag {
  * The address operand of an instruction that loads or stores a value from
  * memory (e.g. `Load`, `Store`).
  */
-class LoadStoreAddressOperand extends OperandTag, TLoadStoreAddressOperand {
+class AddressOperand extends OperandTag, TAddressOperand {
   override final string toString() {
     result = "LoadStoreAddress"
   }
@@ -59,8 +59,8 @@ class LoadStoreAddressOperand extends OperandTag, TLoadStoreAddressOperand {
   }
 }
 
-LoadStoreAddressOperand loadStoreAddressOperand() {
-  result = TLoadStoreAddressOperand()
+AddressOperand addressOperand() {
+  result = TAddressOperand()
 }
 
 /**

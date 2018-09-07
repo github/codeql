@@ -16,7 +16,7 @@ class MemoryAccessKind extends TMemoryAccessKind {
 
 /**
  * The operand or result accesses memory at the address specified by the
- * `LoadStoreAddressOperand` on the same instruction.
+ * `AddressOperand` on the same instruction.
  */
 class IndirectMemoryAccess extends MemoryAccessKind, TIndirectMemoryAccess {
   override string toString() {

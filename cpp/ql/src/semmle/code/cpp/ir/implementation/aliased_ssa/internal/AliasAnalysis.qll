@@ -51,7 +51,7 @@ predicate operandIsConsumedWithoutEscaping(Instruction instr, OperandTag tag) {
   (
     // The source/destination address of a Load/Store does not escape (but the
     // loaded/stored value could).
-    tag instanceof LoadStoreAddressOperand or
+    tag instanceof AddressOperand or
     // Neither operand of a Compare escapes.
     instr instanceof CompareInstruction or
     // Neither operand of a PointerDiff escapes.

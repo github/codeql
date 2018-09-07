@@ -8,7 +8,7 @@ import Cached
 cached private module Cached {
 
   private OldIR::OperandTag getOldOperandTag(OperandTag newTag) {
-    newTag instanceof LoadStoreAddressOperand and result instanceof OldIR::LoadStoreAddressOperand or
+    newTag instanceof AddressOperand and result instanceof OldIR::AddressOperand or
     newTag instanceof CopySourceOperand and result instanceof OldIR::CopySourceOperand or
     newTag instanceof UnaryOperand and result instanceof OldIR::UnaryOperand or
     newTag instanceof LeftOperand and result instanceof OldIR::LeftOperand or

@@ -209,7 +209,7 @@ class TranslatedSimpleDirectInitialization extends
     tag = InitializerStoreTag() and
     (
       (
-        operandTag instanceof LoadStoreAddressOperand and
+        operandTag instanceof AddressOperand and
         result = getContext().getTargetAddress()
       ) or
       (
@@ -332,7 +332,7 @@ class TranslatedStringLiteralInitialization extends
       tag = InitializerLoadStringTag() and
       (
         (
-          operandTag instanceof LoadStoreAddressOperand and
+          operandTag instanceof AddressOperand and
           result = getInitializer().getResult()
         ) or
         (
@@ -345,7 +345,7 @@ class TranslatedStringLiteralInitialization extends
       tag = InitializerStoreTag() and
       (
         (
-          operandTag instanceof LoadStoreAddressOperand and
+          operandTag instanceof AddressOperand and
           result = getContext().getTargetAddress()
         ) or
         (
@@ -371,7 +371,7 @@ class TranslatedStringLiteralInitialization extends
       tag = ZeroPadStringStoreTag() and
       (
         (
-          operandTag instanceof LoadStoreAddressOperand and
+          operandTag instanceof AddressOperand and
           result = getInstruction(ZeroPadStringElementAddressTag())
         ) or
         (
@@ -639,7 +639,7 @@ class TranslatedFieldValueInitialization extends
       tag = getFieldDefaultValueStoreTag() and
       (
         (
-          operandTag instanceof LoadStoreAddressOperand and
+          operandTag instanceof AddressOperand and
           result = getInstruction(getFieldAddressTag())
         ) or
         (
@@ -888,7 +888,7 @@ class TranslatedElementValueInitialization extends
       tag = getElementDefaultValueStoreTag() and
       (
         (
-          operandTag instanceof LoadStoreAddressOperand and
+          operandTag instanceof AddressOperand and
           result = getInstruction(getElementAddressTag())
         ) or
         (

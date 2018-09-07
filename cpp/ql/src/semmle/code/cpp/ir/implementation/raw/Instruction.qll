@@ -31,7 +31,7 @@ module InstructionSanity {
           )
         ) or
         opcode instanceof CopyOpcode and tag instanceof CopySourceOperand or
-        opcode instanceof MemoryAccessOpcode and tag instanceof LoadStoreAddressOperand or
+        opcode instanceof MemoryAccessOpcode and tag instanceof AddressOperand or
         opcode instanceof OpcodeWithCondition and tag instanceof ConditionOperand or
         opcode instanceof Opcode::ReturnValue and tag instanceof ReturnValueOperand or
         opcode instanceof Opcode::ThrowValue and tag instanceof ExceptionOperand or
@@ -634,7 +634,7 @@ class LoadInstruction extends CopyInstruction {
   }
 
   final Instruction getSourceAddress() {
-    result = getOperand(loadStoreAddressOperand())
+    result = getOperand(addressOperand())
   }
 }
 
@@ -648,7 +648,7 @@ class StoreInstruction extends CopyInstruction {
   }
 
   final Instruction getDestinationAddress() {
-    result = getOperand(loadStoreAddressOperand())
+    result = getOperand(addressOperand())
   }
 }
 
@@ -1024,7 +1024,7 @@ class ThrowValueInstruction extends ThrowInstruction {
    * Gets the address of the exception thrown by this instruction.
    */
   final Instruction getExceptionAddress() {
-    result = getOperand(loadStoreAddressOperand())
+    result = getOperand(addressOperand())
   }
 
   /**

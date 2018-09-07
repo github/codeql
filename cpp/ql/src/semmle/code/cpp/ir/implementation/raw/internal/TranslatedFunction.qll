@@ -222,7 +222,7 @@ class TranslatedFunction extends TranslatedElement,
       not getReturnType() instanceof VoidType and
       (
         (
-          operandTag instanceof LoadStoreAddressOperand and
+          operandTag instanceof AddressOperand and
           result = getInstruction(ReturnValueAddressTag())
         ) or
         (
@@ -378,7 +378,7 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
     tag = InitializerStoreTag() and
     (
       (
-        operandTag instanceof LoadStoreAddressOperand and
+        operandTag instanceof AddressOperand and
         result = getInstruction(InitializerVariableAddressTag())
       )
     )
