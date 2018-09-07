@@ -25,27 +25,29 @@ int swprintf(WCHAR *dest, WCHAR *format, ...) {
 
 int sprintf(char *dest, char *format, ...);
 
+// ---
+
 void test1() {
 	WCHAR string[20];
 
-	swprintf(string, u"test %s", u"test");
+	swprintf(string, u"test %s", u"test"); // GOOD
 }
 
 void test2() {
 	char string[20];
 
-	sprintf(string, "test %S", u"test");
+	sprintf(string, "test %S", u"test"); // GOOD
 }
 
 void test3() {
 	char string[20];
 
-	sprintf(string, "test %s", u"test");
+	sprintf(string, "test %s", u"test"); // BAD: `char16_t` string parameter read as `char` string
 }
 
 
 void test4() {
 	char string[20];
 
-	sprintf(string, "test %S", L"test");
+	sprintf(string, "test %S", L"test"); // BAD: `wchar_t` string parameter read as `char16_t` string
 }
