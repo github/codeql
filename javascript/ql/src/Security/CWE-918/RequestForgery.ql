@@ -3,7 +3,7 @@
  * @description Sending remote requests with user-controlled data allows for request forgery attacks.
  * @kind problem
  * @problem.severity error
- * @precision high
+ * @precision medium
  * @id js/request-forgery
  * @tags security
  *       external/cwe/cwe-918
