@@ -18,9 +18,9 @@ void tests() {
 	printf("%s", u"Hello"); // BAD: expecting char
 	printf("%s", L"Hello"); // BAD: expecting char
 
-	printf("%S", "Hello"); // BAD: expecting wchar_t or char16_t
-	printf("%S", u"Hello"); // GOOD [FALSE POSITIVE]
-	printf("%S", L"Hello"); // GOOD [FALSE POSITIVE]
+	printf("%S", "Hello"); // BAD: expecting wchar_t or char16_t [NOT DETECTED]
+	printf("%S", u"Hello"); // GOOD
+	printf("%S", L"Hello"); // GOOD
 
 	wprintf(L"%s", "Hello"); // BAD: expecting wchar_t
 	wprintf(L"%s", u"Hello"); // BAD: expecting wchar_t
