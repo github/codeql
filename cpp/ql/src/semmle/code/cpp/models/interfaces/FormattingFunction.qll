@@ -7,6 +7,27 @@
  */
 
 import semmle.code.cpp.Function
+
+private Type stripTopLevelSpecifiersOnly(Type t) {
+  (
+    result = stripTopLevelSpecifiersOnly(t.(SpecifiedType).getBaseType())
+  ) or (
+    result = t and
+    not t instanceof SpecifiedType
+  )
+}
+
+/**
+ * A type that is used as a format string by any formatting function.
+ */
+Type getAFormatterWideType() {
+  exists(FormattingFunction ff, Type t |
+    t = stripTopLevelSpecifiersOnly(ff.getDefaultCharType()) and
+    t.getSize() != 1 and
+    result.(PointerType).getBaseType() = t
+  )
+}
+
 /**
  * A type that is used as a format string by any formatting function, or `wchar_t` if
  * there is none.
@@ -16,15 +37,6 @@ private Type getAFormatterWideTypeOrDefault() {
   (
     not exists(getAFormatterWideType().(PointerType).getBaseType()) and
     result instanceof Wchar_t
-  )
-}
-
-private Type stripTopLevelSpecifiersOnly(Type t) {
-  (
-    result = stripTopLevelSpecifiersOnly(t.(SpecifiedType).getBaseType())
-  ) or (
-    result = t and
-    not t instanceof SpecifiedType
   )
 }
 

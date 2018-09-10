@@ -29,25 +29,6 @@ class AttributeFormattingFunction extends FormattingFunction {
 }
 
 /**
- * A type that is used as a format string by a wide variadic formatter such as
- * `vwprintf` or by a user-defined formatting function with the GNU `format`
- * attribute.
- */
-Type getAFormatterWideType() {
-  exists(TopLevelFunction f, int formatParamIndex |
-    primitiveVariadicFormatter(f, formatParamIndex, true) and
-    result = f.getParameter(formatParamIndex).getType().getUnspecifiedType() and
-    result.(PointerType).getBaseType().getSize() != 1 and
-    f.hasDefinition()
-  )
-  or
-  exists(AttributeFormattingFunction f, int formatParamIndex |
-    result = f.getParameter(formatParamIndex).getType().getUnspecifiedType() and
-    result.(PointerType).getBaseType().getSize() != 1
-  )
-}
-
-/**
  * A standard function such as `vprintf` that has a format parameter
  * and a variable argument list of type `va_arg`.
  */
