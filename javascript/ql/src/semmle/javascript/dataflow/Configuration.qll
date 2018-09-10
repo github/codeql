@@ -288,11 +288,11 @@ abstract class AdditionalSink extends DataFlow::Node {
  *
  * This contributes additional argument-passing flow edges that should be added to all data flow configurations.
  */
-abstract class AdditionalPartialInvokeNode extends DataFlow::InvokeNode {
+cached abstract class AdditionalPartialInvokeNode extends DataFlow::InvokeNode {
   /**
    * Holds if `argument` is passed as argument `index` to the function in `callback`.
    */
-  abstract predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index);
+  cached abstract predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index);
 }
 
 /**
