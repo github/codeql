@@ -13,28 +13,33 @@ import javascript
  * Holds if the receiver of `method` is bound.
  */
 private predicate isBoundInMethod(MethodDeclaration method) {
-  exists (DataFlow::ThisNode thiz, MethodDeclaration bindingMethod, string name |
-    name = method.getName() and
+  exists (DataFlow::ThisNode thiz, MethodDeclaration bindingMethod |
     bindingMethod.getDeclaringClass() = method.getDeclaringClass() and
     not bindingMethod.isStatic() and
     thiz.getBinder().getAstNode() = bindingMethod.getBody() |
-    exists (DataFlow::Node rhs, DataFlow::MethodCallNode bind |
-      // this.<methodName> = <expr>.bind(...)
-      thiz.hasPropertyWrite(name, rhs) and
-      bind.flowsTo(rhs) and
-      bind.getMethodName() = "bind"
-    )
+    // require("auto-bind")(this)
+    thiz.flowsTo(DataFlow::moduleImport("auto-bind").getACall().getArgument(0))
     or
-    exists (DataFlow::MethodCallNode bindAll |
-      bindAll.getMethodName() = "bindAll" and
-      thiz.flowsTo(bindAll.getArgument(0)) |
-      // _.bindAll(this, <name1>)
-      bindAll.getArgument(1).mayHaveStringValue(name)
+    exists (string name |
+      name = method.getName() |
+      exists (DataFlow::Node rhs, DataFlow::MethodCallNode bind |
+        // this.<methodName> = <expr>.bind(...)
+        thiz.hasPropertyWrite(name, rhs) and
+        bind.flowsTo(rhs) and
+        bind.getMethodName() = "bind"
+      )
       or
-      // _.bindAll(this, [<name1>, <name2>])
-      exists (DataFlow::ArrayLiteralNode names |
-        names.flowsTo(bindAll.getArgument(1)) and
-        names.getAnElement().mayHaveStringValue(name)
+      exists (DataFlow::MethodCallNode bindAll |
+        bindAll.getMethodName() = "bindAll" and
+        thiz.flowsTo(bindAll.getArgument(0)) |
+        // _.bindAll(this, <name1>)
+        bindAll.getArgument(1).mayHaveStringValue(name)
+        or
+        // _.bindAll(this, [<name1>, <name2>])
+        exists (DataFlow::ArrayLiteralNode names |
+          names.flowsTo(bindAll.getArgument(1)) and
+          names.getAnElement().mayHaveStringValue(name)
+        )
       )
     )
   )

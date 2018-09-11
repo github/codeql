@@ -1,6 +1,25 @@
 import React from 'react';
+import autoBind from 'auto-bind';
 
-class Component extends React.Component {
+class Component0 extends React.Component {
+
+    render() {
+        return <div>
+            <div onClick={this.bound_throughAutoBind}/> // OK
+            </div>
+    }
+
+    constructor(props) {
+        super(props);
+        autoBind(this);
+    }
+
+    bound_throughAutoBind() {
+        this.setState({ });
+    }
+}
+
+class Component1 extends React.Component {
 
     render() {
         var unbound3 = this.unbound3;
