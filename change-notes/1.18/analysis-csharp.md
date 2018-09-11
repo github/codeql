@@ -1,11 +1,5 @@
 # Improvements to C# analysis
 
-> NOTES
->
-> Please describe your changes in terms that are suitable for
-> customers to read. These notes will have only minor tidying up
-> before they are published as part of the release notes.
-
 ## General improvements
 
 * Control flow analysis has been improved for `catch` clauses with filters.
@@ -14,7 +8,7 @@
 
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
-| Arbitrary file write during zip extraction ("Zip Slip") (`cs/zipslip`) | security, external/cwe/cwe-022  | Identifies zip extraction routines which allow arbitrary file overwrite vulnerabilities.
+| Arbitrary file write during zip extraction ("Zip Slip") (`cs/zipslip`) | security, external/cwe/cwe-022  | Identifies zip extraction routines which allow arbitrary file overwrite vulnerabilities. |
 | Local scope variable shadows member (`cs/local-shadows-member`) | maintainability, readability | Replaces the existing queries Local variable shadows class member (`cs/local-shadows-class-member`), Local variable shadows struct member (`cs/local-shadows-struct-member`), Parameter shadows class member (`cs/parameter-shadows-class-member`), and Parameter shadows struct member (`cs/parameter-shadows-struct-member`). |
 
 ## Changes to existing queries
@@ -39,8 +33,6 @@
 * The `into` part of `join` clauses is now extracted.
 * The `when` part of constant cases is now extracted.
 * Fixed a bug where `while(x is T y) ...` was not extracted correctly.
-
-* *Series of bullet points*
 
 ## Changes to QL libraries
 
