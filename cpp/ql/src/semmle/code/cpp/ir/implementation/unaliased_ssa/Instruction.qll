@@ -602,7 +602,7 @@ class ReturnValueInstruction extends ReturnInstruction {
   }
 
   override final MemoryAccessKind getOperandMemoryAccess(OperandTag tag) {
-    tag instanceof ReturnValueOperand and
+    exists(this.getOperand(tag.(ReturnValueOperand))) and
     result instanceof IndirectMemoryAccess
   }
 }
@@ -629,7 +629,7 @@ class LoadInstruction extends CopyInstruction {
   }
 
   override final MemoryAccessKind getOperandMemoryAccess(OperandTag tag) {
-    tag instanceof CopySourceOperand and
+    exists(this.getOperand(tag.(CopySourceOperand))) and
     result instanceof IndirectMemoryAccess
   }
 
@@ -1015,7 +1015,7 @@ class ThrowValueInstruction extends ThrowInstruction {
   }
 
   override final MemoryAccessKind getOperandMemoryAccess(OperandTag tag) {
-    tag instanceof ExceptionOperand and
+    exists(this.getOperand(tag.(ExceptionOperand))) and
     result instanceof IndirectMemoryAccess
   }
 
@@ -1114,7 +1114,7 @@ class UnmodeledUseInstruction extends Instruction {
   }
 
   override final MemoryAccessKind getOperandMemoryAccess(OperandTag tag) {
-    tag instanceof UnmodeledUseOperand and
+    exists(this.getOperand(tag.(UnmodeledUseOperand))) and
     result instanceof UnmodeledMemoryAccess
   }
 }
@@ -1125,7 +1125,7 @@ class PhiInstruction extends Instruction {
   }
 
   override final MemoryAccessKind getOperandMemoryAccess(OperandTag tag) {
-    tag instanceof PhiOperand and
+    exists(this.getOperand(tag.(PhiOperand))) and
     result instanceof PhiMemoryAccess
   }
 

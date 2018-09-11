@@ -43,3 +43,9 @@
 | queries.cs:47:11:47:18 | call to method Select | 1 | queries.cs:47:18:47:18 | access to local variable a |
 | queries.cs:51:11:51:18 | call to method Select | 0 | queries.cs:50:11:50:32 | String a = ... |
 | queries.cs:51:11:51:18 | call to method Select | 1 | queries.cs:51:18:51:18 | access to local variable a |
+| queries.cs:55:11:55:49 | call to method GroupJoin | 0 | queries.cs:54:11:54:25 | Int32 a = ... |
+| queries.cs:55:11:55:49 | call to method GroupJoin | 1 | queries.cs:55:11:55:49 | IList<IList<Int32>> c = ... |
+| queries.cs:55:11:55:49 | call to method GroupJoin | 2 | queries.cs:55:21:55:25 | access to local variable list2 |
+| queries.cs:55:11:55:49 | call to method GroupJoin | 3 | queries.cs:55:30:55:30 | access to local variable a |
+| queries.cs:55:11:55:49 | call to method GroupJoin | 4 | queries.cs:55:39:55:42 | access to indexer |
+| queries.cs:55:11:55:49 | call to method GroupJoin | 5 | queries.cs:55:11:55:49 | IList<IList<Int32>> d = ... |

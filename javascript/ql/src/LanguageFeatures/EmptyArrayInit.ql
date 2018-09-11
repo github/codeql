@@ -45,4 +45,5 @@ class OmittedArrayElement extends ArrayExpr {
 }
 
 from OmittedArrayElement ae
+where not ae.getFile().getFileType().isTypeScript() // ignore quirks in TypeScript tokenizer
 select ae, "Avoid omitted array elements."

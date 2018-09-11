@@ -1,5 +1,5 @@
 import csharp
-import ControlFlowGraph::Internal
+import ControlFlow::Internal
 
 from ControlFlowElement cfe
 select cfe, first(cfe)
