@@ -92,6 +92,7 @@
 | IR: VarArgs | 1 |
 | IR: VirtualMemberFunction | 1 |
 | IR: WhileStatements | 4 |
+| IR: designatedInit | 4 |
 | IR: min | 4 |
 | IR: operator= | 1 |
 | IR: ~Base | 1 |
