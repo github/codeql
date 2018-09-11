@@ -213,12 +213,19 @@ Comment getExclamationPointCommentInRun(ExclamationPointComment head) {
  * Holds if this is a bundle containing multiple licenses.
  */
 predicate isMultiLicenseBundle(TopLevel tl) {
+  // case: comments preserved by minifiers
   count(ExclamationPointComment head |
     head.getTopLevel() = tl and
     exists(ExclamationPointComment licenseIndicator |
       licenseIndicator = getExclamationPointCommentInRun(head) and
       licenseIndicator.getLine(_).regexpMatch("(?i).*\\b(copyright|license|\\d+\\.\\d+)\\b.*")
     )
+  ) > 1
+  or
+  // case: ordinary block comments with "@license" lines
+  count(BlockComment head |
+    head.getTopLevel() = tl and
+    head.getLine(_).regexpMatch("(?i) *\\* @license .*")
   ) > 1
 }
 
