@@ -904,15 +904,26 @@ class ArrayType extends DerivedType {
   ArrayType() { derivedtypes(underlyingElement(this),_,4,_) }
 
   predicate hasArraySize() { arraysizes(underlyingElement(this),_,_,_) }
+
+  /**
+   * Gets the number of elements in this array. Only has a result for arrays declared to be of a
+   * constant size. See `getByteSize` for getting the number of bytes.
+   */
   int getArraySize() { arraysizes(underlyingElement(this),result,_,_) }
 
+  /**
+   * Gets the byte size of this array. Only has a result for arrays declared to be of a constant
+   * size. This predicate is a synonym for `getByteSize`. See `getArraySize` for getting the number
+   * of elements.
+   */
   int getByteSize() { arraysizes(underlyingElement(this),_,result,_) }
 
   override int getAlignment() { arraysizes(underlyingElement(this), _, _, result) }
 
   /**
-   * Gets the size of this array (only valid for arrays declared to be of a constant
-   * size, will fail for all others).
+   * Gets the byte size of this array. Only has a result for arrays declared to be of a constant
+   * size. This predicate is a synonym for `getByteSize`. See `getArraySize` for getting the number
+   * of elements.
    */
   override int getSize() {
     result = this.getByteSize()
