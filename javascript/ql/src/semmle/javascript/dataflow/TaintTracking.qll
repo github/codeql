@@ -239,8 +239,28 @@ module TaintTracking {
         succ = call
       )
       or
-      // `array.push(e)`: if `e` is tainted, then so is `array`
-      succ.(DataFlow::SourceNode).getAMethodCall("push") = call
+      // `array.push(e)`, `array.unshift(e)`: if `e` is tainted, then so is `array`.
+      exists (string name |
+        name = "push" or
+        name = "unshift" |
+        pred = call.getAnArgument() and
+        succ.(DataFlow::SourceNode).getAMethodCall(name) = call
+      )
+      or
+      // `e = array.pop()`, `e = array.shift()`, or similar: if `array` is tainted, then so is `e`.
+      exists (string name |
+        name = "pop" or
+        name = "shift" or
+        name = "slice" or
+        name = "splice" |
+        call.(DataFlow::MethodCallNode).calls(pred, name) and
+        succ = call
+      )
+      or
+      // `e = Array.from(x)`: if `x` is tainted, then so is `e`.
+      call = DataFlow::globalVarRef("Array").getAPropertyRead("from").getACall() and
+      pred = call.getAnArgument() and
+      succ = call
     }
 
   }
