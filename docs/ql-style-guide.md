@@ -54,7 +54,7 @@ select c, "This call to '$@' is deprecated because " + reason + ".",
    - Immediately after `if`, `then`, or `else` keywords. The `then` and `else` parts *should* be consistent.
 1. *Avoid* other line breaks in declarations, other than to break long lines.
 1. When operands of *binary operators* span two lines, the operator *should* be placed at the end of the first line.
-1. If the parameter list needs to be broken across multiple lines then there must *must* be a line break after the opening `(`, the parameter declarations indented one level, and the `) {` on its own line at the outer indentation.
+1. If the parameter list needs to be broken across multiple lines then there *must* be a line break after the opening `(`, the parameter declarations indented one level, and the `) {` *must* be on its own line at the outer indentation.
 
 ### Examples
 
@@ -302,7 +302,7 @@ deprecated Expr getInitializer()
    - Spanning multiple lines. The opening parenthesis *should* be placed at the end of the preceding line, the body should be indented one level, and the closing bracket should be placed on a new line at the outer indentation.
 1. *Quantifiers/aggregations* *can* be written:
    - Within a single line. In this case, there is no space to the inside of the parentheses, or after the quantifier keyword.
-   - Across multiple lines. In this case, type declarations are on the same line as the quantifier with the `|` at the end of the same line as the quantifier, the second `|` *must* be at the end of the same line as the quantifier or on its own line at the outer indentation, and the body of the quantifier *must* be indented one level. The closing `)` is written on a new line, at the outer indentation. If the type declarations need to be broken across multiple lines then there must *must* be a line break after the opening `(`, the type declarations indented one level, and the first `|` on its own line at the outer indentation.
+   - Across multiple lines. In this case, type declarations are on the same line as the quantifier with the first `|` at the same line as the quantifier, the second `|` *must* be at the end of the same line as the quantifier or on its own line at the outer indentation, and the body of the quantifier *must* be indented one level. The closing `)` is written on a new line, at the outer indentation. If the type declarations need to be broken across multiple lines then there must *must* be a line break after the opening `(`, the type declarations indented one level, and the first `|` on its own line at the outer indentation.
 1. `if`-`then`-`else` *can* be written:
    - On a single line
    - With the *body* after the `if`/`then`/`else` keyword
