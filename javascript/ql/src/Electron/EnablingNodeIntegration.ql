@@ -1,28 +1,32 @@
 /**
- * @name Enabling nodeIntegration and nodeIntegrationInWorker in webPreferences
- * @description Enabling nodeIntegration and nodeIntegrationInWorker could expose your app to remote code execution.
+ * @name Enabling `nodeIntegration` or `nodeIntegrationInWorker` for Electron web content
+ * @description Enabling `nodeIntegration` or `nodeIntegrationInWorker` can expose the application to remote code execution.
  * @kind problem
  * @problem.severity warning
- * @precision very-high
+ * @id js/enabling-electron-renderer-node-integration
  * @tags security
  *       frameworks/electron
- * @id js/enabling-electron-renderer-node-integration
  */
 
 import javascript
 
-string checkWebOptions(DataFlow::PropWrite prop, Electron::WebPreferences pref) {
-	(prop = pref.getAPropertyWrite("nodeIntegration") and 
-	 prop.getRhs().mayHaveBooleanValue(true) and
-	 result = "nodeIntegration property may have been enabled on this object that could result in RCE")
+/**
+ * Gets a warning message for `pref` if one of the `nodeIntegration` features is enabled.
+ */
+string getNodeIntegrationWarning(Electron::WebPreferences pref) {
+	exists (string feature |
+		feature = "nodeIntegration" or
+		feature = "nodeIntegrationInWorker" |
+		pref.getAPropertyWrite(feature).getRhs().mayHaveBooleanValue(true) and
+		result = "The `" + feature + "` feature has been enabled."
+	)
 	or
-	(prop = pref.getAPropertyWrite("nodeIntegrationInWorker") and
-	 prop.getRhs().mayHaveBooleanValue(true) and
-	 result = "nodeIntegrationInWorker property may have been enabled on this object that could result in RCE")
-	or
-	(not exists(pref.asExpr().(ObjectExpr).getPropertyByName("nodeIntegration")) and
-	 result = "nodeIntegration is enabled by default in WebPreferences object that could result in RCE")
+	exists (string feature |
+		feature = "nodeIntegration" |
+		not exists(pref.getAPropertyWrite(feature)) and
+		result = "The `" + feature + "` feature is enabled by default."
+	)
 }
 
-from DataFlow::PropWrite property, Electron::WebPreferences preferences 
-select preferences,checkWebOptions(property, preferences)
+from Electron::WebPreferences preferences
+select preferences, getNodeIntegrationWarning(preferences)
