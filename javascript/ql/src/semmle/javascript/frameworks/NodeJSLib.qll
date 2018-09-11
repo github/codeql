@@ -502,53 +502,47 @@ module NodeJSLib {
   }
 
   /**
-   * A data flow node that is an HTTP or HTTPS client request made by a Node.js server, for example `http.request(url)`.
+   * A data flow node that is an HTTP or HTTPS client request made by a Node.js application, for example `http.request(url)`.
    */
-  abstract class ClientRequest extends DataFlow::DefaultSourceNode {
-    /**
-     * Gets the options object or string URL used to make the request.
-     */
-    abstract DataFlow::Node getOptions();
+  abstract class CustomNodeJSClientRequest extends CustomClientRequest {
+
+  }
+
+  /**
+   * A data flow node that is an HTTP or HTTPS client request made by a Node.js application, for example `http.request(url)`.
+   */
+  class NodeJSClientRequest extends ClientRequest {
+
+    NodeJSClientRequest() {
+      this instanceof CustomNodeJSClientRequest
+    }
+
   }
   
   /**
-   * A data flow node that is an HTTP or HTTPS client request made by a Node.js server, for example `http.request(url)`.
+   * A model of a URL request in the Node.js `http` library.
    */
-  private class HttpRequest extends ClientRequest {
-    HttpRequest() {
-      exists(string protocol |
+  private class NodeHttpUrlRequest extends CustomNodeJSClientRequest {
+
+    DataFlow::Node url;
+
+    NodeHttpUrlRequest() {
+      exists (string moduleName, DataFlow::SourceNode callee |
+        this = callee.getACall() |
+        (moduleName = "http" or moduleName = "https") and
         (
-          protocol = "http" or
-          protocol = "https"
-        )
-        and
-        this = DataFlow::moduleImport(protocol).getAMemberCall("request")
+          callee = DataFlow::moduleMember(moduleName, any(HTTP::RequestMethodName m).toLowerCase())
+          or
+          callee = DataFlow::moduleMember(moduleName, "request")
+        ) and
+        url = getArgument(0)
       )
     }
-    
-    override DataFlow::Node getOptions() {
-      result = this.(DataFlow::MethodCallNode).getArgument(0)
+
+    override DataFlow::Node getUrl() {
+      result = url
     }
-  }
-  
-  /**
-   * A data flow node that is an HTTP or HTTPS client request made by a Node.js process, for example `https.get(url)`.
-   */
-  private class HttpGet extends ClientRequest {
-    HttpGet() {
-      exists(string protocol |
-        (
-          protocol = "http" or
-          protocol = "https"
-        )
-        and
-        this = DataFlow::moduleImport(protocol).getAMemberCall("get")
-      )
-    }
-    
-    override DataFlow::Node getOptions() {
-      result = this.(DataFlow::MethodCallNode).getArgument(0)
-    }
+
   }
   
   /**
@@ -556,13 +550,13 @@ module NodeJSLib {
    */
   private class ClientRequestCallbackParam extends DataFlow::ParameterNode, RemoteFlowSource {
     ClientRequestCallbackParam() {
-      exists(ClientRequest req |
+      exists(NodeJSClientRequest req |
         this = req.(DataFlow::MethodCallNode).getCallback(1).getParameter(0)
       )
     }
     
     override string getSourceType() {
-      result = "ClientRequest callback parameter"
+      result = "NodeJSClientRequest callback parameter"
     }
   }
   
@@ -589,7 +583,7 @@ module NodeJSLib {
    */
   class ClientRequestHandler extends DataFlow::FunctionNode {
     string handledEvent;
-    ClientRequest clientRequest;
+    NodeJSClientRequest clientRequest;
     
     ClientRequestHandler() {
       exists(DataFlow::MethodCallNode mcn |
@@ -609,7 +603,7 @@ module NodeJSLib {
     /**
      * Gets a request this callback is registered for.
      */
-    ClientRequest getClientRequest() {
+    NodeJSClientRequest getClientRequest() {
       result = clientRequest
     }
   }
@@ -626,7 +620,7 @@ module NodeJSLib {
     }
     
     override string getSourceType() {
-      result = "ClientRequest response event"
+      result = "NodeJSClientRequest response event"
     }
   }
   
@@ -643,7 +637,7 @@ module NodeJSLib {
     }
     
     override string getSourceType() {
-      result = "ClientRequest data event"
+      result = "NodeJSClientRequest data event"
     }
   }
   
@@ -667,7 +661,7 @@ module NodeJSLib {
     }
     
     override string getSourceType() {
-      result = "ClientRequest login event"
+      result = "NodeJSClientRequest login event"
     }
   }
   
@@ -725,7 +719,7 @@ module NodeJSLib {
     }
     
     override string getSourceType() {
-      result = "ClientRequest error event"
+      result = "NodeJSClientRequest error event"
     }
   }
 }

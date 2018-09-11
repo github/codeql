@@ -33,37 +33,51 @@ module Electron {
       this = DataFlow::moduleMember("electron", "BrowserView").getAnInstantiation()
     }
   }
-  
+
   /**
    * A Node.js-style HTTP or HTTPS request made using an Electron module.
    */
-  abstract class ClientRequest extends NodeJSLib::ClientRequest {}
+  abstract class CustomElectronClientRequest extends NodeJSLib::CustomNodeJSClientRequest {}
+
+  /**
+   * A Node.js-style HTTP or HTTPS request made using an Electron module.
+   */
+  class ElectronClientRequest extends NodeJSLib::NodeJSClientRequest {
+
+    ElectronClientRequest() {
+      this instanceof CustomElectronClientRequest
+    }
+
+  }
   
   /**
    * A Node.js-style HTTP or HTTPS request made using `electron.net`, for example `net.request(url)`.
    */
-  private class NetRequest extends ClientRequest {
+  private class NetRequest extends CustomElectronClientRequest {
     NetRequest() {
       this = DataFlow::moduleMember("electron", "net").getAMemberCall("request")
     }
-    
-    override DataFlow::Node getOptions() {
-      result = this.(DataFlow::MethodCallNode).getArgument(0)
+
+    override DataFlow::Node getUrl() {
+      result = getArgument(0) or
+      result = getOptionArgument(0, "url")
     }
+
   }
-  
-  
+
   /**
    * A Node.js-style HTTP or HTTPS request made using `electron.client`, for example `new client(url)`.
    */
-  private class NewClientRequest extends ClientRequest {
+  private class NewClientRequest extends CustomElectronClientRequest {
     NewClientRequest() {
       this = DataFlow::moduleMember("electron", "ClientRequest").getAnInstantiation()
     }
-    
-    override DataFlow::Node getOptions() {
-      result = this.(DataFlow::NewNode).getArgument(0)
+
+    override DataFlow::Node getUrl() {
+      result = getArgument(0) or
+      result = getOptionArgument(0, "url")
     }
+
   }
   
     
@@ -75,12 +89,12 @@ module Electron {
       exists(NodeJSLib::ClientRequestHandler handler |
         this = handler.getParameter(0) and
         handler.getAHandledEvent() = "redirect" and
-        handler.getClientRequest() instanceof ClientRequest
+        handler.getClientRequest() instanceof ElectronClientRequest
       )
     }
     
     override string getSourceType() {
-      result = "Electron ClientRequest redirect event"
+      result = "ElectronClientRequest redirect event"
     }
   }
 }

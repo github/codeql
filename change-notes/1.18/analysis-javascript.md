@@ -19,11 +19,13 @@
 * Type inference for simple function calls has been improved. This may give additional results for queries that rely on type inference.
 
 * Support for popular libraries has been improved. Consequently, queries may produce more results on code bases that use the following libraries:
+  - [axios](https://github.com/axios/axios)
   - [bluebird](https://bluebirdjs.com)
   - [browserid-crypto](https://github.com/mozilla/browserid-crypto)
   - [compose-function](https://github.com/stoeffel/compose-function)
   - [cookie-parser](https://github.com/expressjs/cookie-parser)
   - [cookie-session](https://github.com/expressjs/cookie-session)
+  - [cross-fetch](https://github.com/lquixada/cross-fetch)
   - [crypto-js](https://github.com/https://github.com/brix/crypto-js)
   - [deep-assign](https://github.com/sindresorhus/deep-assign)
   - [deep-extend](https://github.com/unclechu/node-deep-extend)
@@ -45,9 +47,11 @@
   - [fast-json-parse](https://github.com/mcollina/fast-json-parse)
   - [forge](https://github.com/digitalbazaar/forge)
   - [format-util](https://github.com/tmpfs/format-util)
+  - [got](https://github.com/sindresorhus/got)
   - [global](https://github.com/Raynos/global)
   - [he](https://github.com/mathiasbynens/he)
   - [html-entities](https://github.com/mdevils/node-html-entities)
+  - [isomorphic-fetch](https://github.com/matthew-andrews/isomorphic-fetch)
   - [jquery](https://jquery.com)
   - [js-extend](https://github.com/vmattos/js-extend)
   - [json-parse-better-errors](https://github.com/zkat/json-parse-better-errors)
@@ -63,6 +67,7 @@
   - [mixin-object](https://github.com/jonschlinkert/mixin-object)
   - [MySQL2](https://github.com/sidorares/node-mysql2)
   - [node.extend](https://github.com/dreamerslab/node.extend)
+  - [node-fetch](https://github.com/bitinn/node-fetch)
   - [object-assign](https://github.com/sindresorhus/object-assign)
   - [object.assign](https://github.com/ljharb/object.assign)
   - [object.defaults](https://github.com/jonschlinkert/object.defaults)
@@ -71,6 +76,10 @@
   - [printj](https://github.com/SheetJS/printj)
   - [q](https://documentup.com/kriskowal/q/)
   - [ramda](https://ramdajs.com)
+  - [request](https://github.com/request/request)
+  - [request-promise](https://github.com/request/request-promise)
+  - [request-promise-any](https://github.com/request/request-promise-any)
+  - [request-promise-native](https://github.com/request/request-promise-native)
   - [React Native](https://facebook.github.io/react-native/)
   - [safe-json-parse](https://github.com/Raynos/safe-json-parse)
   - [sanitize](https://github.com/pocketly/node-sanitize)
@@ -78,6 +87,7 @@
   - [smart-extend](https://github.com/danielkalen/smart-extend)
   - [sprintf.js](https://github.com/alexei/sprintf.js)
   - [string-template](https://github.com/Matt-Esch/string-template)
+  - [superagent](https://github.com/visionmedia/superagent)
   - [underscore](https://underscorejs.org)
   - [util-extend](https://github.com/isaacs/util-extend)
   - [utils-merge](https://github.com/jaredhanson/utils-merge)
@@ -94,6 +104,7 @@
 | Clear-text logging of sensitive information (`js/clear-text-logging`) | security, external/cwe/cwe-312, external/cwe/cwe-315, external/cwe/cwe-359 | Highlights logging of sensitive information, indicating a violation of [CWE-312](https://cwe.mitre.org/data/definitions/312.html). Results shown on LGTM by default. |
 | Disabling Electron webSecurity (`js/disabling-electron-websecurity`) | security, frameworks/electron | Highlights Electron browser objects that are created with the `webSecurity` property set to false. Results shown on LGTM by default. |
 | Enabling Electron allowRunningInsecureContent (`js/enabling-electron-insecure-content`) | security, frameworks/electron | Highlights Electron browser objects that are created with the `allowRunningInsecureContent` property set to true. Results shown on LGTM by default. |
+| Uncontrolled data used in remote request (`js/request-forgery`) | security, external/cwe/cwe-918 | Highlights remote requests that are built from unsanitized user input, indicating a violation of [CWE-918](https://cwe.mitre.org/data/definitions/918.html). Results are not shown on LGTM by default. |
 | Use of externally-controlled format string (`js/tainted-format-string`) | security, external/cwe/cwe-134 | Highlights format strings containing user-provided data, indicating a violation of [CWE-134](https://cwe.mitre.org/data/definitions/134.html). Results shown on LGTM by default. |
 
 ## Changes to existing queries
