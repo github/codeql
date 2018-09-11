@@ -214,36 +214,33 @@ module TaintTracking {
    * A taint propagating data flow edge caused by the builtin array functions.
    */
   private class ArrayFunctionTaintStep extends AdditionalTaintStep {
+    DataFlow::CallNode call;
 
     ArrayFunctionTaintStep() {
-      this = DataFlow::valueNode(_) or
-      this = DataFlow::parameterNode(_) or
-      this instanceof DataFlow::PropRead
+      this = call
     }
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      succ = this and (
-        // `array.map(function (elt, i, ary) { ... })`: if `array` is tainted, then so are
-        // `elt` and `ary`; similar for `forEach`
-        exists (MethodCallExpr m, Function f, int i, SimpleParameter p |
-          (m.getMethodName() = "map" or m.getMethodName() = "forEach") and
-          (i = 0 or i = 2) and
-          m.getArgument(0).analyze().getAValue().(AbstractFunction).getFunction() = f and
-          p = f.getParameter(i) and
-          this = DataFlow::parameterNode(p) and
-          pred.asExpr() = m.getReceiver()
-        )
-        or
-        // `array.map` with tainted return value in callback
-        exists (MethodCallExpr m, Function f |
-          this.asExpr() = m and
-          m.getMethodName() = "map" and
-          m.getArgument(0) = f and // Require the argument to be a closure to avoid spurious call/return flow
-          pred = f.getAReturnedExpr().flow())
-        or
-        // `array.push(e)`: if `e` is tainted, then so is `array`
-        succ.(DataFlow::SourceNode).getAMethodCall("push").getAnArgument() = pred
+      // `array.map(function (elt, i, ary) { ... })`: if `array` is tainted, then so are
+      // `elt` and `ary`; similar for `forEach`
+      exists (string name, Function f, int i |
+        (name = "map" or name = "forEach") and
+        (i = 0 or i = 2) and
+        call.getArgument(0).analyze().getAValue().(AbstractFunction).getFunction() = f and
+        pred.(DataFlow::SourceNode).getAMethodCall(name) = call and
+        succ = DataFlow::parameterNode(f.getParameter(i))
       )
+      or
+      // `array.map` with tainted return value in callback
+      exists (DataFlow::FunctionNode f |
+        call.(DataFlow::MethodCallNode).getMethodName() = "map" and
+        call.getArgument(0) = f and // Require the argument to be a closure to avoid spurious call/return flow
+        pred = f.getAReturn() and
+        succ = call
+      )
+      or
+      // `array.push(e)`: if `e` is tainted, then so is `array`
+      succ.(DataFlow::SourceNode).getAMethodCall("push") = call
     }
 
   }
