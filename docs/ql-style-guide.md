@@ -51,7 +51,7 @@ select c, "This call to '$@' is deprecated because " + reason + ".",
 1. There *should not* be additional blank lines within a predicate.
 1. There *may* be a new line:
    - Immediately after the `from`, `where` or `select` keywords in a query.
-   - Immediately after `if`, `then`, or `else` keywords. The `then` and `else` parts *should* be consistent.
+   - Immediately after `if`, `then`, or `else` keywords.
 1. *Avoid* other line breaks in declarations, other than to break long lines.
 1. When operands of *binary operators* span two lines, the operator *should* be placed at the end of the first line.
 1. If the parameter list needs to be broken across multiple lines then there *must* be a line break after the opening `(`, the parameter declarations indented one level, and the `) {` *must* be on its own line at the outer indentation.
@@ -96,13 +96,6 @@ select main, "Main method has no parameters."
 ```	
 
 ```ql
-  if x.isPublic() then
-    result = "public"
-  else
-    result = "private"
-```
-
-```ql
   if
     x.isPublic()
   then
@@ -110,6 +103,16 @@ select main, "Main method has no parameters."
   else
     result = "private"
 ```
+
+```ql
+  if x.isPublic()
+  then result = "public"
+  else
+    if x.isPrivate()
+    then result = "private"
+    else result = "protected"
+```
+
 
 ## Braces
 1. Braces follow [Stroustrup](https://en.wikipedia.org/wiki/Indentation_style#Variant:_Stroustrup) style. The opening `{` *must* be placed at the end of the preceding line.
@@ -308,6 +311,7 @@ deprecated Expr getInitializer()
    - With the *body* after the `if`/`then`/`else` keyword
    - With the *body* indented on the next line
    - *Always* parenthesise the `else` part if it is a compound formula.
+1. If an `if`-`then`-`else` is broken across multiple lines then the `then` and `else` keywords *should* be at the start of lines aligned with the `if`.
 1. The `and` and `else` keywords *may* be placed on the same line as the closing parenthesis.
 1. The `and` and `else` keywords *may* be "cuddled": `) else (`
 1. *Always* qualify *calls* to predicates of the same class with `this`.
@@ -342,7 +346,8 @@ deprecated Expr getInitializer()
 ```
 
 ```ql
-  if e1 instanceof BitwiseOrExpr or e1 instanceof LogicalOrExpr then (
+  if e1 instanceof BitwiseOrExpr or e1 instanceof LogicalOrExpr
+  then (
     impliesSub(e1.(BinaryOperation).getAnOperand(), e2, b1, b2) and
     b1 = false
   ) else (
@@ -397,7 +402,8 @@ deprecated Expr getInitializer()
 ```	
 
 ```ql
-  if exists(this.getContainingType()) then (
+  if exists(this.getContainingType())
+  then (
     result = "A nested class" and
     parentName = this.getContainingType().getFullyQualifiedName()
   ) else (
