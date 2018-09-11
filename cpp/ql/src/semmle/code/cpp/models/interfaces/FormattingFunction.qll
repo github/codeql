@@ -19,6 +19,15 @@ private Type getAFormatterWideTypeOrDefault() {
   )
 }
 
+private Type stripTopLevelSpecifiersOnly(Type t) {
+  (
+    result = stripTopLevelSpecifiersOnly(t.(SpecifiedType).getBaseType())
+  ) or (
+    result = t and
+    not t instanceof SpecifiedType
+  )
+}
+
 /**
  * A standard library function that uses a `printf`-like formatting string.
  */
@@ -37,8 +46,8 @@ abstract class FormattingFunction extends Function {
    * `char` or `wchar_t`.
    */
   Type getDefaultCharType() {
-    result = getParameter(getFormatParameterIndex()).getType().
-      getUnderlyingType().(PointerType).getBaseType().stripTopLevelSpecifiers()
+    result = stripTopLevelSpecifiersOnly(getParameter(getFormatParameterIndex()).getType().
+      getUnderlyingType().(PointerType).getBaseType())
   }
 
   /**
