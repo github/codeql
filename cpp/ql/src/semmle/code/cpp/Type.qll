@@ -913,8 +913,7 @@ class ArrayType extends DerivedType {
 
   /**
    * Gets the byte size of this array. Only has a result for arrays declared to be of a constant
-   * size. This predicate is a synonym for `getByteSize`. See `getArraySize` for getting the number
-   * of elements.
+   * size. See `getArraySize` for getting the number of elements.
    */
   int getByteSize() { arraysizes(underlyingElement(this),_,result,_) }
 
