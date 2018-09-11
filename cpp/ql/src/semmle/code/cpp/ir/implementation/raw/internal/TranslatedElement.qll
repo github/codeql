@@ -329,6 +329,8 @@ newtype TTranslatedElement =
  * initialized.
  */
 private int getEndOfValueInitializedRange(ArrayAggregateLiteral initList, int afterElementIndex) {
+  result = getNextExplicitlyInitializedElementAfter(initList, afterElementIndex)
+  or
   isFirstValueInitializedElementInRange(initList, afterElementIndex) and
   not exists(getNextExplicitlyInitializedElementAfter(initList, afterElementIndex)) and
   result = initList.getType().getUnspecifiedType().(ArrayType).getArraySize()
