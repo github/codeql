@@ -63,7 +63,7 @@ module InstructionSanity {
    * Holds if instruction `instr` has multiple operands with tag `tag`.
    */
   query predicate duplicateOperand(Instruction instr, OperandTag tag) {
-    count(instr.getOperand(tag)) > 1 and
+    strictcount(instr.getOperand(tag)) > 1 and
     not tag instanceof UnmodeledUseOperand
   }
 
