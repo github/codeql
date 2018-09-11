@@ -119,7 +119,6 @@
 | Insecure randomness (`js/insecure-randomness`) | More true-positive results | This query now recognizes secret cryptographic keys. |
 | Misleading indentation after control statement (`js/misleading-indentation-after-control-statement`) | Fewer results | This query temporarily ignores TypeScript files. |
 | Missing rate limiting (`js/missing-rate-limiting`) | More true-positive results, fewer false-positive results | This query now recognizes additional rate limiters and expensive route handlers. |
-| Missing X-Frame-Options HTTP header (`js/missing-x-frame-options`) | Fewer false-positive results | This query now treats header names case-insensitively. |
 | Omitted array element (`js/omitted-array-element`)| Fewer results | This query temporarily ignores TypeScript files. |
 | Reflected cross-site scripting (`js/reflected-xss`) | Fewer false-positive results | This query now treats header names case-insensitively. |
 | Semicolon insertion (`js/automatic-semicolon-insertion`) | Fewer results | This query temporarily ignores TypeScript files. |
