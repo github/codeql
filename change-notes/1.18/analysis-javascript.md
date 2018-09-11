@@ -111,25 +111,25 @@
 
 | **Query**                  | **Expected impact**    | **Change**                                                       |
 |----------------------------|------------------------|------------------------------------------------------------------|
-| Arguments redefined | Fewer results | This rule previously also flagged redefinitions of `eval`. This was an oversight that is now fixed. |
-| Comparison between inconvertible types | Fewer results | This rule now flags fewer comparisons involving parameters. The severity of this rule has been revised to "warning". |
-| CORS misconfiguration for credentials transfer | More true-positive results | This rule now treats header names case-insensitively. |
-| Hard-coded credentials | More true-positive results | This rule now recognizes secret cryptographic keys. |
-| Incomplete string escaping or encoding | New name, more true-positive results | This rule now recognizes incomplete URL encoding and decoding. As a consequence, the name was updated to reflect the change in behavior. |
-| Insecure randomness | More true-positive results | This rule now recognizes secret cryptographic keys. |
-| Misleading indentation after control statement | Fewer results | This rule temporarily ignores TypeScript files. |
-| Missing rate limiting | More true-positive results, fewer false-positive results | This rule now recognizes additional rate limiters and expensive route handlers. |
-| Missing X-Frame-Options HTTP header | Fewer false-positive results | This rule now treats header names case-insensitively. |
-| Omitted array element | Fewer results | This rule temporarily ignores TypeScript files. |
-| Reflected cross-site scripting | Fewer false-positive results | This rule now treats header names case-insensitively. |
-| Semicolon insertion | Fewer results | This rule temporarily ignores TypeScript files. |
-| Server-side URL redirect | More true-positive results | This rule now treats header names case-insensitively. |
-| Superfluous trailing arguments | Fewer false-positive results | This rule now ignores calls to some empty functions. |
-| Type confusion through parameter tampering | Fewer false-positive results | This rule no longer flags emptiness checks. |
-| Uncontrolled command line | More true-positive results | This rule now recognizes indirect command injection through `sh -c` and similar. |
-| Unused variable | New name, fewer results | This rule has been renamed to "Unused variable, import, function or class" to reflect the fact that it flags different kinds of unused program elements. The rule no longer flags class expressions that could be made anonymous. While technically true, these results are not interesting. |
-| Use of incompletely initialized object| Fewer results | This rule now flags the constructor instead of its errorneous `this` or `super` expressions. |
-| Useless conditional | Fewer results | This rule no longer flags uses of boolean return values and highlights fewer comparisons involving parameters. |
+| Arguments redefined (`js/arguments-redefinition`) | Fewer results | This query previously also flagged redefinitions of `eval`. This was an oversight that is now fixed. |
+| Comparison between inconvertible types (`js/comparison-between-incompatible-types`) | Fewer results | This query now flags fewer comparisons involving parameters. The severity of this query has been revised to "warning". |
+| CORS misconfiguration for credentials transfer (`js/cors-misconfiguration-for-credentials`) | More true-positive results | This query now treats header names case-insensitively. |
+| Hard-coded credentials (`js/hardcoded-credentials`) | More true-positive results | This query now recognizes secret cryptographic keys. |
+| Incomplete string escaping or encoding (`js/incomplete-sanitization`) | New name, more true-positive results | The "Incomplete sanitization" query has been renamed to more clearly reflect its purpose. It now recognizes incomplete URL encoding and decoding. |
+| Insecure randomness (`js/insecure-randomness`) | More true-positive results | This query now recognizes secret cryptographic keys. |
+| Misleading indentation after control statement (`js/misleading-indentation-after-control-statement`) | Fewer results | This query temporarily ignores TypeScript files. |
+| Missing rate limiting (`js/missing-rate-limiting`) | More true-positive results, fewer false-positive results | This query now recognizes additional rate limiters and expensive route handlers. |
+| Missing X-Frame-Options HTTP header (`js/missing-x-frame-options`) | Fewer false-positive results | This query now treats header names case-insensitively. |
+| Omitted array element (`js/omitted-array-element`)| Fewer results | This query temporarily ignores TypeScript files. |
+| Reflected cross-site scripting (`js/reflected-xss`) | Fewer false-positive results | This query now treats header names case-insensitively. |
+| Semicolon insertion (`js/automatic-semicolon-insertion`) | Fewer results | This query temporarily ignores TypeScript files. |
+| Server-side URL redirect (`js/server-side-unvalidated-url-redirection`) | More true-positive results | This query now treats header names case-insensitively. |
+| Superfluous trailing arguments (`js/superfluous-trailing-arguments`) | Fewer false-positive results | This query now ignores calls to some empty functions. |
+| Type confusion through parameter tampering (`js/type-confusion-through-parameter-tampering`) | Fewer false-positive results | This query no longer flags emptiness checks. |
+| Uncontrolled command line (`js/command-line-injection`) | More true-positive results | This query now recognizes indirect command injection through `sh -c` and similar. |
+| Unused variable, import, function or class (`js/unused-local-variable`) | New name, fewer results | The "Unused variable" query has been renamed to reflect the fact that it highlights different kinds of unused program elements. In addition, the query no longer highlights class expressions that could be made anonymous. While technically true, these results are not interesting. |
+| Use of incompletely initialized object (`js/incomplete-object-initialization`) | Fewer results | This query now highlights the constructor instead of its erroneous `this` or `super` expressions. |
+| Useless conditional (`js/trivial-conditional`) | Fewer results | This query no longer flags uses of boolean return values and highlights fewer comparisons involving parameters. |
 
 ## Changes to QL libraries
 
