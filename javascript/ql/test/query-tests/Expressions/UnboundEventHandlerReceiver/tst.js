@@ -17,6 +17,8 @@ class Component extends React.Component {
             <div onClick={this.bound_throughNonSyntacticBindInConstructor}/> // OK
             <div onClick={this.bound_throughBindAllInConstructor1}/> // OK
             <div onClick={this.bound_throughBindAllInConstructor2}/> // OK
+            <div onClick={this.bound_throughDecorator_autobind}/> // OK
+            <div onClick={this.bound_throughDecorator_actionBound}/> // OK
             </div>
     }
 
@@ -84,6 +86,16 @@ class Component extends React.Component {
     }
 
     bound_throughBindAllInConstructor2() {
+        this.setState({ });
+    }
+
+    @autobind
+    bound_throughDecorator_autobind() {
+        this.setState({ });
+    }
+
+    @action.bound
+    bound_throughDecorator_actionBound() {
         this.setState({ });
     }
 

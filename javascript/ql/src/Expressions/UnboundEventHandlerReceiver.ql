@@ -10,7 +10,7 @@
 import javascript
 
 /**
- * Holds if the receiver of `method` is bound in a method of its class.
+ * Holds if the receiver of `method` is bound.
  */
 private predicate isBoundInMethod(MethodDeclaration method) {
   exists (DataFlow::ThisNode thiz, MethodDeclaration bindingMethod, string name |
@@ -37,6 +37,15 @@ private predicate isBoundInMethod(MethodDeclaration method) {
         names.getAnElement().mayHaveStringValue(name)
       )
     )
+  )
+  or
+  exists (Expr decoration, string name |
+    decoration = method.getADecorator().getExpression() and
+    name.regexpMatch("(?i).*(bind|bound).*") |
+    // @autobind
+    decoration.(Identifier).getName() = name or
+    // @action.bound
+    decoration.(PropAccess).getPropertyName() = name
   )
 }
 
