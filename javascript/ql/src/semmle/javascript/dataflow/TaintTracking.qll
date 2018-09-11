@@ -185,18 +185,44 @@ module TaintTracking {
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       succ = this and
-      (
-        exists (Expr e, Expr f | e = this.asExpr() and f = pred.asExpr() |
-          // arrays with tainted elements and objects with tainted property names are tainted
-          e.(ArrayExpr).getAnElement() = f or
-          exists (Property prop | e.(ObjectExpr).getAProperty() = prop |
-            prop.isComputed() and f = prop.getNameExpr()
-          )
-          or
-          // awaiting a tainted expression gives a tainted result
-          e.(AwaitExpr).getOperand() = f
+      exists (Expr e, Expr f | e = this.asExpr() and f = pred.asExpr() |
+        // arrays with tainted elements and objects with tainted property names are tainted
+        e.(ArrayExpr).getAnElement() = f or
+        exists (Property prop | e.(ObjectExpr).getAProperty() = prop |
+          prop.isComputed() and f = prop.getNameExpr()
         )
         or
+        // awaiting a tainted expression gives a tainted result
+        e.(AwaitExpr).getOperand() = f
+      )
+      or
+      // reading from a tainted object yields a tainted result
+      this = succ and
+      succ.(DataFlow::PropRead).getBase() = pred
+      or
+      // iterating over a tainted iterator taints the loop variable
+      exists (EnhancedForLoop efl, SsaExplicitDefinition ssa |
+        this = DataFlow::valueNode(efl.getIterationDomain()) and
+        pred = this and
+        ssa.getDef() = efl.getIteratorExpr() and
+        succ = DataFlow::ssaDefinitionNode(ssa)
+      )
+    }
+  }
+
+  /**
+   * A taint propagating data flow edge caused by the builtin array functions.
+   */
+  private class ArrayFunctionTaintStep extends AdditionalTaintStep {
+
+    ArrayFunctionTaintStep() {
+      this = DataFlow::valueNode(_) or
+      this = DataFlow::parameterNode(_) or
+      this instanceof DataFlow::PropRead
+    }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      succ = this and (
         // `array.map(function (elt, i, ary) { ... })`: if `array` is tainted, then so are
         // `elt` and `ary`; similar for `forEach`
         exists (MethodCallExpr m, Function f, int i, SimpleParameter p |
@@ -218,19 +244,8 @@ module TaintTracking {
         // `array.push(e)`: if `e` is tainted, then so is `array`
         succ.(DataFlow::SourceNode).getAMethodCall("push").getAnArgument() = pred
       )
-      or
-      // reading from a tainted object yields a tainted result
-      this = succ and
-      succ.(DataFlow::PropRead).getBase() = pred
-      or
-      // iterating over a tainted iterator taints the loop variable
-      exists (EnhancedForLoop efl, SsaExplicitDefinition ssa |
-        this = DataFlow::valueNode(efl.getIterationDomain()) and
-        pred = this and
-        ssa.getDef() = efl.getIteratorExpr() and
-        succ = DataFlow::ssaDefinitionNode(ssa)
-      )
     }
+
   }
 
   /**
