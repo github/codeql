@@ -1431,6 +1431,7 @@ case @expr.kind of
 | 321 = @builtinchooseexpr
 | 322 = @builtinaddressof
 | 323 = @vec_fill
+| 324 = @builtinconvertvector
 ;
 
 new_allocated_type(
