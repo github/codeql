@@ -11,7 +11,7 @@
 import csharp
 import semmle.code.csharp.frameworks.system.Text
 
-from ObjectCreation creation, LoopStmt loop, ControlFlowGraph::ControlFlowNode loopEntryNode
+from ObjectCreation creation, LoopStmt loop, ControlFlow::Node loopEntryNode
 where creation.getType() instanceof SystemTextStringBuilderClass
   and loopEntryNode = loop.getBody().getAControlFlowEntryNode()
   and loop.getBody().getAChild*() = creation

@@ -49,6 +49,11 @@ class Queries
         var list11 =
           from string a in list7
           select a;
+        
+        var list12 = 
+          from a in list1
+          join c in list2 on a equals c[0] into d
+          select (a,d);
     }
 
     class A : System.Collections.IEnumerable

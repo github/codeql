@@ -167,12 +167,12 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
   final predicate hasExpressionBody() { exists(getExpressionBody()) }
 
   /** Gets the entry point in the control graph for this callable. */
-  ControlFlowGraph::CallableEntryNode getEntryPoint() {
+  ControlFlow::Nodes::EntryNode getEntryPoint() {
     result.getCallable() = this
   }
 
   /** Gets the exit point in the control graph for this callable. */
-  ControlFlowGraph::CallableExitNode getExitPoint() {
+  ControlFlow::Nodes::ExitNode getExitPoint() {
     result.getCallable() = this
   }
 

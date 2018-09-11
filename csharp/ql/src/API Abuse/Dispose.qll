@@ -5,7 +5,7 @@ private import semmle.code.csharp.frameworks.system.web.UI
 
 class DisposableType extends RefType {
   DisposableType() {
-    this.getABaseType+() = getSystemIDisposableInterface()
+    this.getABaseType+() instanceof SystemIDisposableInterface
   }
 }
 
@@ -17,13 +17,13 @@ class DisposableField extends Field {
 
 class WebControl extends RefType {
   WebControl() {
-    this.getBaseClass*() = getSystemWebUIControlClass()
+    this.getBaseClass*() instanceof SystemWebUIControlClass
   }
 }
 
 class WebPage extends RefType {
   WebPage() {
-    this.getBaseClass*() = getSystemWebUIPageClass()
+    this.getBaseClass*() instanceof SystemWebUIPageClass
   }
 }
 

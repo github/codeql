@@ -72,7 +72,7 @@ module MissingXMLValidation {
       this.getExpr() = createCall.getArgumentForName("input")
     }
 
-    string getReason() {
+    override string getReason() {
       // No settings = no Schema validation
       result = "there is no 'XmlReaderSettings' instance specifying schema validation." and not exists(createCall.getSettings()) or
         /*
