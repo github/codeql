@@ -65,23 +65,23 @@ void g()
     printf("%zu", c_st); // ok
     printf("%zu", C_ST); // ok
     printf("%zu", sizeof(ul)); // ok
-    printf("%zu", sst); // not ok [NOT DETECTED ON MICROSOFT]
+    printf("%zu", sst); // not ok [NOT DETECTED]
 
-    printf("%zd", ul); // not ok
-    printf("%zd", st); // not ok
-    printf("%zd", ST); // not ok
-    printf("%zd", c_st); // not ok
-    printf("%zd", C_ST); // not ok
-    printf("%zd", sizeof(ul)); // not ok
+    printf("%zd", ul); // not ok [NOT DETECTED]
+    printf("%zd", st); // not ok [NOT DETECTED]
+    printf("%zd", ST); // not ok [NOT DETECTED]
+    printf("%zd", c_st); // not ok [NOT DETECTED]
+    printf("%zd", C_ST); // not ok [NOT DETECTED]
+    printf("%zd", sizeof(ul)); // not ok [NOT DETECTED]
     printf("%zd", sst); // ok
     {
         char *ptr_a, *ptr_b;
         char buf[100];
 
         printf("%tu", ptr_a - ptr_b); // ok
-        printf("%td", ptr_a - ptr_b); // ok [FALSE POSITIVE]
-        printf("%zu", ptr_a - ptr_b); // ok (dubious) [DETECTED ON LINUX ONLY]
-        printf("%zd", ptr_a - ptr_b); // ok (dubious) [DETECTED ON MICROSOFT ONLY]
+        printf("%td", ptr_a - ptr_b); // ok
+        printf("%zu", ptr_a - ptr_b); // ok (dubious)
+        printf("%zd", ptr_a - ptr_b); // ok (dubious)
     }
 }
 
@@ -99,5 +99,5 @@ void fun1(unsigned char* a, unsigned char* b) {
   ptrdiff_t pdt;
 
   printf("%td\n", pdt); // GOOD
-  printf("%td\n", a-b); // GOOD [FALSE POSITIVE]
+  printf("%td\n", a-b); // GOOD
 }
