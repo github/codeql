@@ -52,4 +52,4 @@ where
   // not obviously small and ok
   not small(e) and
   e.getEnclosingCallable().fromSource()
-select c, "$@ converted to "+ destType.getName() +" by use in " + ("a " + c.kind()).regexpReplaceAll("^a ([aeiou])", "an $1") + ".", e, sourceType.getName() + " multiplication"
+select c, "Potential overflow in $@ before it is converted to "+ destType.getName() +" by use in " + ("a " + c.kind()).regexpReplaceAll("^a ([aeiou])", "an $1") + ".", e, sourceType.getName() + " multiplication"
