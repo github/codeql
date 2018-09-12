@@ -1,0 +1,366 @@
+import javascript
+
+/*
+ * The range analysis is based on Difference Bound constraints, that is, inequalities of form:
+ *
+ *      a - b <= c
+ *
+ * or equivalently,
+ *
+ *      a <= b + c
+ *
+ * where a and b are variables in the constraint system, and c is an integer constant.
+ *
+ * Such constraints obey a transitive law. Given two constraints,
+ *
+ *      a - x <= c1
+ *      x - b <= c2
+ *
+ * adding the two inequalities yields the obvious transitive conclusion:
+ *
+ *      a - b <= c1 + c2
+ *
+ * We view the system of constraints as a weighted graph, where `a - b <= c`
+ * corresponds to the edge `a -> b` with weight `c`.
+ *
+ * Paths in this graph corresponds to the additional inequalities we can derive from the constraint set.
+ * A negative-weight cycle represents a contradiction, such as `a <= a - 1`.
+ *
+ *
+ * CONTROL FLOW:
+ *
+ * Each constraint is associated with a CFG node where that constraint is known to be valid.
+ * The constraint is only valid within the dominator subtree of that node.
+ *
+ * The transitive rule additionally requires that, in order to compose two edges, one of
+ * their CFG nodes must dominate the other, and the resulting edge becomes associated with the
+ * dominated CFG node (i.e. the most restrictive scope).  This ensures constraints
+ * cannot be taken out of context.
+ *
+ * If a negative-weight cycle can be constructed from the edges "in scope" at a given CFG node
+ * (i.e. associated with a dominator of the node), that node is unreachable.
+ *
+ *
+ * DUAL CONSTRAINTS:
+ *
+ * For every data flow node `a` we have two constraint variables, `+a` and `-a` (or just `a` and `-a`)
+ * representing the numerical value of `a` and its negation.  Negations let us reason about the sum of
+ * two variables. For example:
+ *
+ *     a + b <= 10  becomes  a - (-b) <= 10
+ *
+ * It also lets us reason about the upper and lower bounds of a single variable:
+ *
+ *     a <= 10  becomes  a + a <= 20  becomes  a - (-a) <= 20
+ *     a >= 10  becomes  -a <= -10    becomes  (-a) - a <= -20
+ *
+ * For the graph analogy to include the relationship between `a` and `-a`, all constraints
+ * imply their dual constraint:
+ *
+ *     a - b <= c  implies  (-b) - (-a) <= c
+ *
+ * That is, for every edge from a -> b, there is an edge with the same weight from (-b) -> (-a).
+ *
+ *
+ * PATH FINDING:
+ *
+ * See `extendedEdge` predicate for details about how we find negative-weight paths in the graph.
+ *
+ *
+ * CAVEATS:
+ *
+ * - We assume !(x <= y) means x > y, ignoring NaN.
+ *
+ * - We assume x < y means x <= y + 1, ignoring floats.
+ *
+ * - We assume integer arithmetic is exact, ignoring values above 2^53.
+ *
+ */
+
+/**
+ * Contains predicates for reasoning about the relative numeric value of expressions.
+ */
+module RangeAnalysis {
+  /**
+   * Holds if the given node has a unique data flow predecessor.
+   */
+  pragma[noinline]
+  private predicate hasUniquePredecessor(DataFlow::Node node) {
+    strictcount(node.getAPredecessor()) = 1
+  }
+
+  /**
+   * Gets the definition of `node`, without unfolding phi nodes.
+   */
+  DataFlow::Node getDefinition(DataFlow::Node node) {
+    if hasUniquePredecessor(node) then
+      result = getDefinition(node.getAPredecessor())
+    else
+      result = node
+  }
+
+  /**
+   * Holds if `r` can be modelled as `r = root * sign + bias`.
+   *
+   * Does not follow data flow edges and is not recursive (that is, `root` may itself be defined linearly).
+   */
+  private predicate linearDefinitionStep(DataFlow::Node r, DataFlow::Node root, int sign, int bias) {
+    not exists(r.asExpr().getIntValue()) and
+    (
+      exists (AddExpr expr | r.asExpr() = expr |
+        root = expr.getLeftOperand().flow() and
+        bias = expr.getRightOperand().getIntValue() and
+        sign = 1)
+      or
+      exists (AddExpr expr | r.asExpr() = expr |
+        bias = expr.getLeftOperand().getIntValue() and
+        root = expr.getRightOperand().flow() and
+        sign = 1)
+      or
+      exists (SubExpr expr | r.asExpr() = expr |
+        root = expr.getLeftOperand().flow() and
+        bias = -expr.getRightOperand().getIntValue() and
+        sign = 1)
+      or
+      exists (SubExpr expr | r.asExpr() = expr |
+        bias = expr.getLeftOperand().getIntValue() and
+        root = expr.getRightOperand().flow() and
+        sign = -1)
+      or
+      exists (NegExpr expr | r.asExpr() = expr |
+        root = expr.getOperand().flow() and
+        bias = 0 and
+        sign = -1)
+    )
+  }
+
+  /**
+   * Holds if `r` can be modelled as `r = root * sign + bias`.
+   */
+  predicate linearDefinition(DataFlow::Node r, DataFlow::Node root, int sign, int bias) {
+    if hasUniquePredecessor(r) then
+      linearDefinition(r.getAPredecessor(), root, sign, bias)
+    else if linearDefinitionStep(r, _, _, _) then
+      exists (DataFlow::Node pred, int sign1, int bias1, int sign2, int bias2 |
+        linearDefinitionStep(r, pred, sign1, bias1) and
+        linearDefinition(pred, root, sign2, bias2) and
+        sign = sign1 * sign2 and
+        bias = bias1 + sign1 * bias2)
+    else (
+      root = r and
+      sign = 1 and
+      bias = 0
+    )
+  }
+
+  /**
+   * Holds if `r` can be modelled as `r = xroot * xsign + yroot * ysign + bias`.
+   */
+  predicate linearDefinitionSum(DataFlow::Node r, DataFlow::Node xroot, int xsign, DataFlow::Node yroot, int ysign, int bias) {
+    if hasUniquePredecessor(r) then
+      linearDefinitionSum(r.getAPredecessor(), xroot, xsign, yroot, ysign, bias)
+    else if exists(r.asExpr().getIntValue()) then
+      none() // do not model constants as sums
+    else (
+      exists (AddExpr add, int bias1, int bias2 | r.asExpr() = add |
+        linearDefinition(add.getLeftOperand().flow(), xroot, xsign, bias1) and
+        linearDefinition(add.getRightOperand().flow(), yroot, ysign, bias2) and
+        bias = bias1 + bias2)
+      or
+      exists (SubExpr sub, int bias1, int bias2 | r.asExpr() = sub |
+        linearDefinition(sub.getLeftOperand().flow(), xroot, xsign, bias1) and
+        linearDefinition(sub.getRightOperand().flow(), yroot, -ysign, -bias2) and // Negate right-hand operand
+        bias = bias1 + bias2)
+      or
+      linearDefinitionSum(r.asExpr().(NegExpr).getOperand().flow(), xroot, -xsign, yroot, -ysign, -bias)
+    )
+  }
+
+  /**
+   * Holds if the given comparison can be modelled as `A <op> B + bias` where `<op>` is the comparison operator.
+   */
+  predicate linearComparison(Comparison comparison, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, int bias) {
+    exists(Expr left, Expr right, int bias1, int bias2 | left = comparison.getLeftOperand() and right = comparison.getRightOperand() |
+      // A <= B + c
+      linearDefinition(left.flow(), a, asign, bias1) and
+      linearDefinition(right.flow(), b, bsign, bias2) and
+      bias = bias2 - bias1
+      or
+      // A - B + c1 <= c2  becomes  A <= B + (c2 - c1)
+      linearDefinitionSum(left.flow(), a, asign, b, -bsign, bias1) and
+      right.getIntValue() = bias2 and
+      bias = bias2 - bias1
+      or
+      // c1 <= -A + B + c2  becomes  A <= B + (c2 - c1)
+      left.getIntValue() = bias1 and
+      linearDefinitionSum(right.flow(), a, -asign, b, bsign, bias2) and
+      bias = bias2 - bias1
+    )
+  }
+
+  /**
+   * Holds if `guard` asserts that the outcome of `A <op> B + bias` is true, where `<op>` is a comparison operator.
+   */
+  predicate linearComparisonGuard(ConditionGuardNode guard, DataFlow::Node a, int asign, string operator, DataFlow::Node b, int bsign, int bias) {
+    exists (Comparison compare | compare = getDefinition(guard.getTest().flow()).asExpr() |
+      linearComparison(compare, a, asign, b, bsign, bias) and
+      (
+        guard.getOutcome() = true and operator = compare.getOperator()
+        or
+        guard.getOutcome() = false and operator = negateOperator(compare.getOperator())
+      )
+    )
+  }
+
+  /**
+   * Gets the binary operator whose return value is the opposite of `operator` (excluding NaN comparisons).
+   */
+  private string negateOperator(string operator) {
+    operator = "==" and result = "!=" or
+    operator = "!=" and result = "==" or
+    operator = "===" and result = "!==" or
+    operator = "!==" and result = "===" or
+    operator = "<" and result = ">=" or
+    operator = "<=" and result = ">" or
+    operator = ">" and result = "<=" or
+    operator = ">=" and result = "<"
+  }
+
+  /**
+   * Holds if immediately after `cfg` it becomes known that `A <= B + c`.
+   *
+   * These are the initial inputs to the difference bound constraint system.
+   *
+   * The dual constraint `-B <= -A + c` is not included in this predicate.
+   */
+  predicate comparisonEdge(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, int bias) {
+    // A <= B + c
+    linearComparisonGuard(cfg, a, asign, "<=", b, bsign, bias)
+    or
+    // A <= B + c   iff   A < B + c + 1  (assuming A,B are integers)
+    linearComparisonGuard(cfg, a, asign, "<", b, bsign, bias + 1)
+    or
+    // A <= B + c   iff   B >= A - c
+    linearComparisonGuard(cfg, b, bsign, ">=", a, asign, -bias)
+    or
+    // A <= B + c   iff   B > A - c - 1  (assuming A,B are integers)
+    linearComparisonGuard(cfg, b, bsign, ">", a, asign, -bias - 1)
+    or
+    exists (string operator | operator = "==" or operator = "===" |
+      // A == B + c   iff   A <= B + c  and  B <= A - c
+      linearComparisonGuard(cfg, a, asign, operator, b, bsign, bias)
+      or
+      linearComparisonGuard(cfg, b, bsign, operator, a, asign, -bias)
+    )
+  }
+
+  /**
+   * The set of initial edges including those from dual constraints.
+   */
+  private predicate seedEdge(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, int c) {
+    // A <= B + c
+    comparisonEdge(cfg, a, asign, b, bsign, c)
+    or
+    // -B <= -A + c   (dual constraint)
+    comparisonEdge(cfg, b, -bsign, a, -asign, c)
+  }
+
+  /**
+   * Applies a restricted transitive rule to the edge set.
+   *
+   * In particular, we apply the transitive rule only where a negative edge followed by a non-negative edge.
+   * For example:
+   *
+   *   A  --(-1)--> B --(+3)--> C
+   *
+   * yields:
+   *
+   *   A  --(+2)--> C
+   *
+   * In practice, the restriction to edges of different sign prevent the
+   * quadratic blow-up you would normally get from a transitive closure.
+   *
+   * It also prevents the relation from becoming infinite in case
+   * there are negative-weight cycles, where the transitive weights would
+   * otherwise diverge towards minus infinity.
+   *
+   * Moreover, the rule is enough to guarantee the following property:
+   *
+   *    A negative-weight path from X to Y exists iff a path of negative-weight edges exists from X to Y.
+   *
+   * This means negative-weight cycles (contradictions) can be detected using simple cycle detection.
+   */
+  private predicate extendedEdge(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, int c) {
+    seedEdge(cfg, a, asign, b, bsign, c)
+    or
+    exists (DataFlow::Node mid, int midx, ControlFlowNode cfg1, int c1, ControlFlowNode cfg2, int c2 |
+      extendedEdge(cfg1, a, asign, mid, midx, c1) and
+      extendedEdge(cfg2, mid, midx, b, bsign, c2) and
+      c1 < 0 and
+      c2 >= 0 and
+      c = c1 + c2 and
+      // One of the two CFG nodes must dominate the other, and `cfg` must be bound to the dominated one.
+      (
+        // They are in the same basic block
+        exists (BasicBlock bb, int i, int j |
+          bb.getNode(i) = cfg1 and
+          bb.getNode(j) = cfg2 and
+          if i < j then
+            cfg = cfg2
+          else
+            cfg = cfg1)
+        or
+        // They are in different basic blocks
+        cfg1.getBasicBlock().(ReachableBasicBlock).strictlyDominates(cfg2.getBasicBlock()) and
+        cfg = cfg2
+        or
+        cfg2.getBasicBlock().(ReachableBasicBlock).strictlyDominates(cfg1.getBasicBlock()) and
+        cfg = cfg1
+      )
+    )
+  }
+
+  /**
+   * Holds if there is a negative-weight edge from src to dst.
+   */
+  private predicate negativeEdge(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign) {
+    exists (int weight | extendedEdge(cfg, a, asign, b, bsign, weight) |
+      weight < 0)
+  }
+
+  /**
+   * Holds if `src` can reach `dst` using only negative-weight edges.
+   *
+   * The initial outgoing edge from `src` must be derived at `cfg`.
+   */
+  pragma[noopt]
+  private predicate reachableByNegativeEdges(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign) {
+    negativeEdge(cfg, a, asign, b, bsign)
+    or
+    exists(DataFlow::Node mid, int midx, ControlFlowNode midcfg |
+      reachableByNegativeEdges(cfg, a, asign, mid, midx) and
+      negativeEdge(midcfg, mid, midx, b, bsign) and
+      exists (BasicBlock bb, int i, int j |
+        bb.getNode(i) = midcfg and
+        bb.getNode(j) = cfg and
+        i <= j))
+    or
+    // Same as above, but where CFG nodes are in different basic blocks
+    exists(DataFlow::Node mid, int midx, ControlFlowNode midcfg, BasicBlock midBB, ReachableBasicBlock midRBB, BasicBlock cfgBB |
+      reachableByNegativeEdges(cfg, a, asign, mid, midx) and
+      negativeEdge(midcfg, mid, midx, b, bsign) and
+      midBB = midcfg.getBasicBlock() and
+      midRBB = midBB.(ReachableBasicBlock) and
+      cfgBB = cfg.getBasicBlock() and
+      midRBB.strictlyDominates(cfgBB)
+    )
+  }
+
+  /**
+   * Holds if the condition asserted at `guard` is contradictory, that is, its condition always has the
+   * opposite of the expected outcome.
+   */
+  predicate isContradictoryGuardNode(ConditionGuardNode guard) {
+    exists (DataFlow::Node a, int asign | reachableByNegativeEdges(guard, a, asign, a, asign))
+  }
+}
