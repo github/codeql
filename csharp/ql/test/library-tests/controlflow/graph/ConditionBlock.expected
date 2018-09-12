@@ -89,6 +89,8 @@
 | Switch.cs:50:30:50:38 | ... != ... | Switch.cs:51:17:51:22 | break; | true |
 | Switch.cs:84:19:84:23 | ... > ... | Switch.cs:85:17:85:22 | break; | true |
 | Switch.cs:84:19:84:23 | ... > ... | Switch.cs:86:22:86:25 | true | false |
+| Switch.cs:117:25:117:32 | ... == ... | Switch.cs:117:43:117:43 | 1 | true |
+| Switch.cs:118:25:118:31 | ... == ... | Switch.cs:118:42:118:42 | 2 | true |
 | TypeAccesses.cs:7:13:7:22 | ... is ... | TypeAccesses.cs:7:25:7:25 | ; | true |
 | VarDecls.cs:25:20:25:20 | access to parameter b | VarDecls.cs:25:24:25:24 | access to local variable x | true |
 | VarDecls.cs:25:20:25:20 | access to parameter b | VarDecls.cs:25:28:25:28 | access to local variable y | false |

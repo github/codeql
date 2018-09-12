@@ -1,0 +1,6 @@
+| tst.js:16:5:16:20 | request(tainted) | The $@ of this request depends on $@. | tst.js:16:13:16:19 | tainted | URL | tst.js:12:29:12:35 | req.url | a user-provided value |
+| tst.js:18:5:18:24 | request.get(tainted) | The $@ of this request depends on $@. | tst.js:18:17:18:23 | tainted | URL | tst.js:12:29:12:35 | req.url | a user-provided value |
+| tst.js:22:5:22:20 | request(options) | The $@ of this request depends on $@. | tst.js:21:19:21:25 | tainted | URL | tst.js:12:29:12:35 | req.url | a user-provided value |
+| tst.js:24:5:24:32 | request ... ainted) | The $@ of this request depends on $@. | tst.js:24:13:24:31 | "http://" + tainted | URL | tst.js:12:29:12:35 | req.url | a user-provided value |
+| tst.js:26:5:26:43 | request ... ainted) | The $@ of this request depends on $@. | tst.js:26:13:26:42 | "http:/ ... tainted | URL | tst.js:12:29:12:35 | req.url | a user-provided value |
+| tst.js:28:5:28:44 | request ... ainted) | The $@ of this request depends on $@. | tst.js:28:13:28:43 | "http:/ ... tainted | URL | tst.js:12:29:12:35 | req.url | a user-provided value |

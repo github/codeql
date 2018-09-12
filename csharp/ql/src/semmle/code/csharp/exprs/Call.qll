@@ -38,10 +38,9 @@ class Call extends DotNet::Call, Expr, @call {
    * Use `getARuntimeTarget()` instead to get a potential run-time target (will
    * include `B.M` in the example above).
    */
-  Callable getTarget() { none() }
+  override Callable getTarget() { none() }
 
-  /** Gets the `i`th argument of this call. */
-  Expr getArgument(int i) {
+  override Expr getArgument(int i) {
     result = this.getChild(i) and i >= 0
   }
 
@@ -49,8 +48,7 @@ class Call extends DotNet::Call, Expr, @call {
     result = this.getArgument(i)
   }
 
-  /** Gets an argument of this call. */
-  Expr getAnArgument() {
+  override Expr getAnArgument() {
     result = getArgument(_)
   }
 
@@ -189,7 +187,7 @@ class Call extends DotNet::Call, Expr, @call {
    * - Line 16: There is no static target (delegate call) but the delegate `i => { }` (line
    *   20) is a run-time target.
    */
-  Callable getARuntimeTarget() {
+  override Callable getARuntimeTarget() {
     exists(DispatchCall dc | dc.getCall() = this | result = dc.getADynamicTarget())
   }
 

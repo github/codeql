@@ -1,11 +1,10 @@
 import csharp
-import semmle.code.csharp.controlflow.ControlFlowGraph
 
 /** "Naive" def-use implementation. */
-predicate defReaches(AssignableDefinition def, LocalScopeVariable v, ControlFlowNode cfn) {
+predicate defReaches(AssignableDefinition def, LocalScopeVariable v, ControlFlow::Node cfn) {
   def.getTarget() = v and cfn = def.getAControlFlowNode().getASuccessor()
   or
-  exists(ControlFlowNode mid |
+  exists(ControlFlow::Node mid |
     defReaches(def, v, mid) |
     not mid = any(AssignableDefinition ad | ad.getTarget() = v and ad.isCertain()).getAControlFlowNode() and
     cfn = mid.getASuccessor()

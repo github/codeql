@@ -6,7 +6,7 @@ private import semmle.code.csharp.frameworks.system.Runtime
 /** The `System.Runtime.InteropServices` namespace. */
 class SystemRuntimeInteropServicesNamespace extends Namespace {
   SystemRuntimeInteropServicesNamespace() {
-    this.getParentNamespace() = getSystemRuntimeNamespace() and
+    this.getParentNamespace() instanceof SystemRuntimeNamespace and
     this.hasName("InteropServices")
   }
 }

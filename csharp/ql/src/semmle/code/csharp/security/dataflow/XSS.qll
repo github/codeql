@@ -451,7 +451,7 @@ module XSS {
       this.getExpr() = aspWrittenValue(inline)
     }
 
-    string explanation() {
+    override string explanation() {
       result = "member is [[\"accessed inline\"|\"" +makeUrl(inline.getLocation())+ "\"]] in an ASPX page"
     }
   }

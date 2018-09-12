@@ -14,7 +14,6 @@
 import csharp
 import semmle.code.csharp.commons.Assertions
 import semmle.code.csharp.commons.Constants
-import ControlFlowGraph
 
 /** A constant condition. */
 abstract class ConstantCondition extends Expr {
@@ -76,13 +75,13 @@ class ConstantNullnessCondition extends ConstantCondition {
   boolean b;
 
   ConstantNullnessCondition() {
-    forex(ControlFlowNode cfn |
+    forex(ControlFlow::Node cfn |
       cfn = this.getAControlFlowNode() |
-      exists(ControlFlowEdgeNullness t |
+      exists(ControlFlow::SuccessorTypes::NullnessSuccessor t |
         exists(cfn.getASuccessorByType(t)) |
         if t.isNull() then b = true else b = false
       ) and
-      strictcount(ControlFlowEdgeType t | exists(cfn.getASuccessorByType(t))) = 1
+      strictcount(ControlFlow::SuccessorType t | exists(cfn.getASuccessorByType(t))) = 1
     )
   }
 
@@ -99,13 +98,13 @@ class ConstantMatchingCondition extends ConstantCondition {
   boolean b;
 
   ConstantMatchingCondition() {
-    forex(ControlFlowNode cfn |
+    forex(ControlFlow::Node cfn |
       cfn = this.getAControlFlowNode() |
-      exists(ControlFlowEdgeMatching t |
+      exists(ControlFlow::SuccessorTypes::MatchingSuccessor t |
         exists(cfn.getASuccessorByType(t)) |
         if t.isMatch() then b = true else b = false
       ) and
-      strictcount(ControlFlowEdgeType t | exists(cfn.getASuccessorByType(t))) = 1
+      strictcount(ControlFlow::SuccessorType t | exists(cfn.getASuccessorByType(t))) = 1
     )
   }
 

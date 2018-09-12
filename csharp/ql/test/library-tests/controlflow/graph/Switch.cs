@@ -109,4 +109,14 @@ class Switch
     }
 
     static bool Throw() => throw new Exception();
+
+    int M10(string s)
+    {
+        switch (s.Length)
+        {
+            case 3 when s=="foo" : return 1;
+            case 2 when s=="fu" : return 2;
+        }
+        return -1;
+    }
 }

@@ -245,6 +245,14 @@
 | Switch.cs:106:29:106:29 | 1 | Switch.cs:106:22:106:30 | return ...; | 2 |
 | Switch.cs:108:17:108:17 | 1 | Switch.cs:108:9:108:18 | return ...; | 3 |
 | Switch.cs:111:17:111:21 | enter Throw | Switch.cs:111:17:111:21 | exit Throw | 4 |
+| Switch.cs:113:9:113:11 | enter M10 | Switch.cs:117:18:117:18 | 3 | 7 |
+| Switch.cs:113:9:113:11 | exit M10 | Switch.cs:113:9:113:11 | exit M10 | 1 |
+| Switch.cs:117:25:117:25 | access to parameter s | Switch.cs:117:25:117:32 | ... == ... | 3 |
+| Switch.cs:117:43:117:43 | 1 | Switch.cs:117:36:117:44 | return ...; | 2 |
+| Switch.cs:118:13:118:33 | case ...: | Switch.cs:118:18:118:18 | 2 | 2 |
+| Switch.cs:118:25:118:25 | access to parameter s | Switch.cs:118:25:118:31 | ... == ... | 3 |
+| Switch.cs:118:42:118:42 | 2 | Switch.cs:118:35:118:43 | return ...; | 2 |
+| Switch.cs:120:17:120:17 | 1 | Switch.cs:120:9:120:18 | return ...; | 3 |
 | TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:7:13:7:22 | ... is ... | 16 |
 | TypeAccesses.cs:7:25:7:25 | ; | TypeAccesses.cs:7:25:7:25 | ; | 1 |
 | TypeAccesses.cs:8:9:8:28 | ... ...; | TypeAccesses.cs:3:10:3:10 | exit M | 5 |

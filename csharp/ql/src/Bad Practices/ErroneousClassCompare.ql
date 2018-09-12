@@ -35,5 +35,5 @@ class StringComparison extends Expr {
 from StringComparison sc, PropertyAccess pa
 where sc.getAnOperand() instanceof StringLiteral
  and sc.getAnOperand() = pa
- and pa.getTarget() = getSystemTypeClass().getFullNameProperty()
+ and pa.getTarget() = any(SystemTypeClass c).getFullNameProperty()
 select sc, "Erroneous class compare."

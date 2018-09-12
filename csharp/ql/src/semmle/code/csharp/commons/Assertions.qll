@@ -29,7 +29,7 @@ abstract class AssertNonNullMethod extends AssertMethod {
  */
 class SystemDiagnosticsDebugAssertTrueMethod extends AssertTrueMethod {
   SystemDiagnosticsDebugAssertTrueMethod() {
-    this = getSystemDiagnosticsDebugClass().getAssertMethod()
+    this = any(SystemDiagnosticsDebugClass c).getAssertMethod()
   }
 
   override int getAssertionIndex() { result = 0 }
@@ -38,7 +38,7 @@ class SystemDiagnosticsDebugAssertTrueMethod extends AssertTrueMethod {
 /** A Visual Studio assertion method. */
 class VSTestAssertTrueMethod extends AssertTrueMethod {
   VSTestAssertTrueMethod() {
-    this = getVSTestAssertClass().getIsTrueMethod()
+    this = any(VSTestAssertClass c).getIsTrueMethod()
   }
 
   override int getAssertionIndex() { result = 0 }
@@ -47,7 +47,7 @@ class VSTestAssertTrueMethod extends AssertTrueMethod {
 /** A Visual Studio negated assertion method. */
 class VSTestAssertFalseMethod extends AssertFalseMethod {
   VSTestAssertFalseMethod() {
-    this = getVSTestAssertClass().getIsFalseMethod()
+    this = any(VSTestAssertClass c).getIsFalseMethod()
   }
 
   override int getAssertionIndex() { result = 0 }
@@ -56,7 +56,7 @@ class VSTestAssertFalseMethod extends AssertFalseMethod {
 /** A Visual Studio `null` assertion method. */
 class VSTestAssertNullMethod extends AssertNullMethod {
   VSTestAssertNullMethod() {
-    this = getVSTestAssertClass().getIsNullMethod()
+    this = any(VSTestAssertClass c).getIsNullMethod()
   }
 
   override int getAssertionIndex() { result = 0 }
@@ -65,7 +65,7 @@ class VSTestAssertNullMethod extends AssertNullMethod {
 /** A Visual Studio non-`null` assertion method. */
 class VSTestAssertNonNullMethod extends AssertNonNullMethod {
   VSTestAssertNonNullMethod() {
-    this = getVSTestAssertClass().getIsNotNullMethod()
+    this = any(VSTestAssertClass c).getIsNotNullMethod()
   }
 
   override int getAssertionIndex() { result = 0 }
