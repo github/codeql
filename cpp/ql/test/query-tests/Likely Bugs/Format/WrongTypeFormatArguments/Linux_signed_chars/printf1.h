@@ -79,7 +79,7 @@ void g()
         char buf[100];
 
         printf("%tu", ptr_a - ptr_b); // ok
-        printf("%td", ptr_a - ptr_b); // ok
+        printf("%td", ptr_a - ptr_b); // ok [FALSE POSITIVE]
         printf("%zu", ptr_a - ptr_b); // ok (dubious) [DETECTED ON LINUX ONLY]
         printf("%zd", ptr_a - ptr_b); // ok (dubious) [DETECTED ON MICROSOFT ONLY]
     }
@@ -91,4 +91,13 @@ void h(int i, struct some_type *j, int k)
 	// recognize.  We should not report a problem if we're unable to understand what's
 	// going on.
 	printf("%i %R %i", i, j, k); // GOOD (as far as we can tell)
+}
+
+typedef long ptrdiff_t;
+
+void fun1(unsigned char* a, unsigned char* b) {
+  ptrdiff_t pdt;
+
+  printf("%td\n", pdt); // GOOD
+  printf("%td\n", a-b); // GOOD [FALSE POSITIVE]
 }
