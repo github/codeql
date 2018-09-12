@@ -1,11 +1,10 @@
 import csharp
-import semmle.code.csharp.controlflow.ControlFlowGraph
 
 /** "Naive" use-use implementation. */
-predicate useReaches(LocalScopeVariableRead read, LocalScopeVariable v, ControlFlowNode cfn) {
+predicate useReaches(LocalScopeVariableRead read, LocalScopeVariable v, ControlFlow::Node cfn) {
   read.getTarget() = v and cfn = read.getAControlFlowNode().getASuccessor()
   or
-  exists(ControlFlowNode mid |
+  exists(ControlFlow::Node mid |
     useReaches(read, v, mid) |
     not mid = any(AssignableDefinition ad | ad.getTarget() = v and ad.isCertain()).getAControlFlowNode() and
     cfn = mid.getASuccessor()
@@ -29,7 +28,7 @@ private TLocalScopeVariableReadOrSsaDef getANextReadOrDef(TLocalScopeVariableRea
     result = TLocalScopeVariableRead(read.getANextRead())
     or
     not exists(read.getANextRead()) and
-    exists(Ssa::Definition ssaDef, Ssa::PseudoDefinition pseudoDef, ControlFlowNode cfn, BasicBlock bb, int i |
+    exists(Ssa::Definition ssaDef, Ssa::PseudoDefinition pseudoDef, ControlFlow::Node cfn, ControlFlow::BasicBlock bb, int i |
       ssaDef.getARead() = read |
       pseudoDef.getAnInput() = ssaDef and
       pseudoDef.definesAt(bb, i) and

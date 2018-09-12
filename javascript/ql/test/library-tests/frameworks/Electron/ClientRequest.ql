@@ -1,4 +1,4 @@
 import javascript
 
-from NodeJSLib::ClientRequest cr
+from Electron::ElectronClientRequest cr
 select cr

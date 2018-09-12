@@ -50,7 +50,7 @@ module XMLEntityInjection {
       ).getAnArgument()
     }
 
-    string getReason() {
+    override string getReason() {
       exists(InsecureXML::InsecureXmlProcessing r | r.isUnsafe(result) | this.getExpr() = r.getAnArgument())
     }
   }

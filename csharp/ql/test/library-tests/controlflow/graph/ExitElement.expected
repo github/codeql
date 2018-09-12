@@ -1020,6 +1020,40 @@
 | Switch.cs:108:17:108:17 | 1 | Switch.cs:108:17:108:17 | 1 | normal |
 | Switch.cs:111:28:111:48 | throw ... | Switch.cs:111:28:111:48 | throw ... | throw(Exception) |
 | Switch.cs:111:34:111:48 | object creation of type Exception | Switch.cs:111:34:111:48 | object creation of type Exception | normal |
+| Switch.cs:114:5:121:5 | {...} | Switch.cs:117:36:117:44 | return ...; | return |
+| Switch.cs:114:5:121:5 | {...} | Switch.cs:118:35:118:43 | return ...; | return |
+| Switch.cs:114:5:121:5 | {...} | Switch.cs:120:9:120:18 | return ...; | return |
+| Switch.cs:115:9:119:9 | switch (...) {...} | Switch.cs:117:36:117:44 | return ...; | return |
+| Switch.cs:115:9:119:9 | switch (...) {...} | Switch.cs:118:18:118:18 | 2 | no-match |
+| Switch.cs:115:9:119:9 | switch (...) {...} | Switch.cs:118:25:118:31 | ... == ... | false/false |
+| Switch.cs:115:9:119:9 | switch (...) {...} | Switch.cs:118:35:118:43 | return ...; | return |
+| Switch.cs:115:17:115:17 | access to parameter s | Switch.cs:115:17:115:17 | access to parameter s | normal |
+| Switch.cs:115:17:115:24 | access to property Length | Switch.cs:115:17:115:24 | access to property Length | normal |
+| Switch.cs:117:13:117:34 | case ...: | Switch.cs:117:18:117:18 | 3 | no-match |
+| Switch.cs:117:13:117:34 | case ...: | Switch.cs:117:25:117:32 | ... == ... | false/false |
+| Switch.cs:117:13:117:34 | case ...: | Switch.cs:117:36:117:44 | return ...; | return |
+| Switch.cs:117:18:117:18 | 3 | Switch.cs:117:18:117:18 | 3 | match |
+| Switch.cs:117:18:117:18 | 3 | Switch.cs:117:18:117:18 | 3 | no-match |
+| Switch.cs:117:25:117:25 | access to parameter s | Switch.cs:117:25:117:25 | access to parameter s | normal |
+| Switch.cs:117:25:117:32 | ... == ... | Switch.cs:117:25:117:32 | ... == ... | false/false |
+| Switch.cs:117:25:117:32 | ... == ... | Switch.cs:117:25:117:32 | ... == ... | true/true |
+| Switch.cs:117:28:117:32 | "foo" | Switch.cs:117:28:117:32 | "foo" | normal |
+| Switch.cs:117:36:117:44 | return ...; | Switch.cs:117:36:117:44 | return ...; | return |
+| Switch.cs:117:43:117:43 | 1 | Switch.cs:117:43:117:43 | 1 | normal |
+| Switch.cs:118:13:118:33 | case ...: | Switch.cs:118:18:118:18 | 2 | no-match |
+| Switch.cs:118:13:118:33 | case ...: | Switch.cs:118:25:118:31 | ... == ... | false/false |
+| Switch.cs:118:13:118:33 | case ...: | Switch.cs:118:35:118:43 | return ...; | return |
+| Switch.cs:118:18:118:18 | 2 | Switch.cs:118:18:118:18 | 2 | match |
+| Switch.cs:118:18:118:18 | 2 | Switch.cs:118:18:118:18 | 2 | no-match |
+| Switch.cs:118:25:118:25 | access to parameter s | Switch.cs:118:25:118:25 | access to parameter s | normal |
+| Switch.cs:118:25:118:31 | ... == ... | Switch.cs:118:25:118:31 | ... == ... | false/false |
+| Switch.cs:118:25:118:31 | ... == ... | Switch.cs:118:25:118:31 | ... == ... | true/true |
+| Switch.cs:118:28:118:31 | "fu" | Switch.cs:118:28:118:31 | "fu" | normal |
+| Switch.cs:118:35:118:43 | return ...; | Switch.cs:118:35:118:43 | return ...; | return |
+| Switch.cs:118:42:118:42 | 2 | Switch.cs:118:42:118:42 | 2 | normal |
+| Switch.cs:120:9:120:18 | return ...; | Switch.cs:120:9:120:18 | return ...; | return |
+| Switch.cs:120:16:120:17 | -... | Switch.cs:120:16:120:17 | -... | normal |
+| Switch.cs:120:17:120:17 | 1 | Switch.cs:120:17:120:17 | 1 | normal |
 | TypeAccesses.cs:4:5:9:5 | {...} | TypeAccesses.cs:8:13:8:27 | Type t = ... | normal |
 | TypeAccesses.cs:5:9:5:26 | ... ...; | TypeAccesses.cs:5:13:5:25 | String s = ... | normal |
 | TypeAccesses.cs:5:13:5:13 | access to local variable s | TypeAccesses.cs:5:13:5:13 | access to local variable s | normal |

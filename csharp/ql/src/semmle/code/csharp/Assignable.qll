@@ -3,7 +3,6 @@
  */
 
 import csharp
-private import ControlFlowGraph
 
 /**
  * An assignable, that is, an element that can be assigned to. Either a
@@ -348,7 +347,7 @@ private cached module AssignableDefinitionImpl {
   cached predicate isUncertainRefCall(Call c, AssignableAccess aa) {
     isRelevantRefCall(c, aa)
     and
-    exists(ControlFlowGraph::BasicBlock bb, Parameter p |
+    exists(ControlFlow::BasicBlock bb, Parameter p |
       isAnalyzableRefCall(c, aa, p) |
       parameterReachesWithoutDef(p, bb) and
       bb.getLastNode() = p.getCallable().getExitPoint()
@@ -360,14 +359,14 @@ private cached module AssignableDefinitionImpl {
    * entry point of `p`'s callable to basic block `bb` without passing through
    * any assignments to `p`.
    */
-  private predicate parameterReachesWithoutDef(Parameter p, BasicBlock bb) {
+  private predicate parameterReachesWithoutDef(Parameter p, ControlFlow::BasicBlock bb) {
     not basicBlockRefParamDef(bb, p)
     and
     (
       isAnalyzableRefCall(_, _, p) and
       p.getCallable().getEntryPoint() = bb.getFirstNode()
       or
-      exists(BasicBlock mid |
+      exists(ControlFlow::BasicBlock mid |
         parameterReachesWithoutDef(p, mid) |
         bb = mid.getASuccessor()
       )
@@ -375,7 +374,7 @@ private cached module AssignableDefinitionImpl {
   }
 
   /** Holds if a node in basic block `bb` assigns to `ref` parameter `p`. */
-  private predicate basicBlockRefParamDef(BasicBlock bb, Parameter p) {
+  private predicate basicBlockRefParamDef(ControlFlow::BasicBlock bb, Parameter p) {
     bb.getANode() = getAnAnalyzableRefDef(_, _, p).getAControlFlowNode()
   }
 
@@ -447,11 +446,11 @@ class AssignableDefinition extends TAssignableDefinition {
    * the definitions of `x` and `y` in `M(out x, out y)` and `(x, y) = (0, 1)`
    * relate to the same call to `M` and assignment node, respectively.
    */
-  ControlFlowNode getAControlFlowNode() { none() }
+  ControlFlow::Node getAControlFlowNode() { none() }
 
   /** DEPRECATED: Use `getAControlFlowNode()` instead. */
   deprecated
-  ControlFlowNode getControlFlowNode() { result = this.getAControlFlowNode() }
+  ControlFlow::Node getControlFlowNode() { result = this.getAControlFlowNode() }
 
   /** Gets the enclosing callable of this definition. */
   Callable getEnclosingCallable() {
@@ -603,7 +602,7 @@ module AssignableDefinitions {
       result = a
     }
 
-    override ControlFlowNode getAControlFlowNode() {
+    override ControlFlow::Node getAControlFlowNode() {
       result = a.getAControlFlowNode()
     }
 
@@ -644,7 +643,7 @@ module AssignableDefinitions {
      * orders of the definitions of `x`, `y`, and `z` are 0, 1, and 2, respectively.
      */
     int getEvaluationOrder() {
-      exists(BasicBlock bb, int i |
+      exists(ControlFlow::BasicBlock bb, int i |
         bb.getNode(i).getElement() = leaf |
         i = rank[result + 1](int j, TupleAssignmentDefinition def |
           bb.getNode(j).getElement() = def.getLeaf() and
@@ -655,7 +654,7 @@ module AssignableDefinitions {
       )
     }
 
-    override ControlFlowNode getAControlFlowNode() {
+    override ControlFlow::Node getAControlFlowNode() {
       result = ae.getAControlFlowNode()
     }
 
@@ -690,7 +689,7 @@ module AssignableDefinitions {
      * the definitions of `x` and `y` are 0 and 1, respectively.
      */
     int getIndex() {
-      exists(BasicBlock bb, int i |
+      exists(ControlFlow::BasicBlock bb, int i |
         bb.getNode(i).getElement() = aa |
         i = rank[result + 1](int j, OutRefDefinition def |
           bb.getNode(j).getElement() = def.getTargetAccess() and
@@ -701,7 +700,7 @@ module AssignableDefinitions {
       )
     }
 
-    override ControlFlowNode getAControlFlowNode() {
+    override ControlFlow::Node getAControlFlowNode() {
       result = this.getCall().getAControlFlowNode()
     }
 
@@ -733,7 +732,7 @@ module AssignableDefinitions {
       result = mo
     }
 
-    override ControlFlowNode getAControlFlowNode() {
+    override ControlFlow::Node getAControlFlowNode() {
       result = mo.getAControlFlowNode()
     }
 
@@ -757,7 +756,7 @@ module AssignableDefinitions {
       result = lvde
     }
 
-    override ControlFlowNode getAControlFlowNode() {
+    override ControlFlow::Node getAControlFlowNode() {
       result = lvde.getAControlFlowNode()
     }
 
@@ -782,7 +781,7 @@ module AssignableDefinitions {
       result = p
     }
 
-    override ControlFlowNode getAControlFlowNode() {
+    override ControlFlow::Node getAControlFlowNode() {
       result = p.getCallable().getEntryPoint()
     }
 
@@ -810,7 +809,7 @@ module AssignableDefinitions {
       result = aoe
     }
 
-    override ControlFlowNode getAControlFlowNode() {
+    override ControlFlow::Node getAControlFlowNode() {
       result = aoe.getAControlFlowNode()
     }
 
@@ -834,7 +833,7 @@ module AssignableDefinitions {
       result = ipe.getVariableDeclExpr()
     }
 
-    override ControlFlowNode getAControlFlowNode() {
+    override ControlFlow::Node getAControlFlowNode() {
       result = this.getDeclaration().getAControlFlowNode()
     }
 
@@ -871,7 +870,7 @@ module AssignableDefinitions {
       result = tc.getVariableDeclExpr()
     }
 
-    override ControlFlowNode getAControlFlowNode() {
+    override ControlFlow::Node getAControlFlowNode() {
       result = this.getDeclaration().getAControlFlowNode()
     }
 
@@ -907,7 +906,7 @@ module AssignableDefinitions {
       result = a
     }
 
-    override ControlFlowNode getAControlFlowNode() {
+    override ControlFlow::Node getAControlFlowNode() {
       none() // initializers are currently not part of the CFG
     }
 

@@ -13,7 +13,6 @@
 import csharp
 import DataMembers
 import ThreadCreation
-import ControlFlowGraph
 
 predicate correctlySynchronized(CollectionMember c, Expr access) {
   access = c.getAReadOrWrite() and
@@ -24,9 +23,9 @@ predicate correctlySynchronized(CollectionMember c, Expr access) {
   )
 }
 
-ControlFlowNode unlockedReachable(Callable a) {
+ControlFlow::Node unlockedReachable(Callable a) {
   result = a.getEntryPoint() or
-  exists(ControlFlowNode mid | mid = unlockedReachable(a) |
+  exists(ControlFlow::Node mid | mid = unlockedReachable(a) |
     not mid.getElement() instanceof LockingCall and
     result = mid.getASuccessor()
   )

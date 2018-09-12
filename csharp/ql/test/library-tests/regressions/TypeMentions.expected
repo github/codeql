@@ -39,3 +39,10 @@
 | Program.cs:69:5:69:8 | Boolean |
 | Program.cs:69:16:69:18 | Int32 |
 | Program.cs:75:5:75:7 | Int32 |
+| Program.cs:87:5:87:8 | Void |
+| Program.cs:89:9:89:14 | Object |
+| Program.cs:90:20:90:25 | String |
+| Program.cs:92:13:92:15 | String |
+| Program.cs:101:16:101:21 | Object |
+| Program.cs:104:5:104:8 | Void |
+| Program.cs:106:13:106:17 | Point |

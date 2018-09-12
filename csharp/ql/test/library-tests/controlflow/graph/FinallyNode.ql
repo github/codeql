@@ -1,12 +1,13 @@
 import csharp
-import semmle.code.csharp.controlflow.ControlFlowGraph
+import ControlFlow
 import Internal
+import Nodes
 
-class MyFinallySplitControlFlowNode extends ControlFlowElementNode {
+class MyFinallySplitControlFlowNode extends ElementNode {
   MyFinallySplitControlFlowNode() {
     exists(FinallySplitting::FinallySplitType type |
       type = this.getASplit().(FinallySplit).getType() |
-      not type instanceof ControlFlowEdgeSuccessor
+      not type instanceof SuccessorTypes::NormalSuccessor
     )
   }
 

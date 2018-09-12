@@ -184,7 +184,7 @@ class NullGuardedExpr extends AccessOrCallExpr {
       // Call to `string.IsNullOrEmpty()`
       exists(MethodCall mc |
         mc = cond and
-        mc.getTarget() = getSystemStringClass().getIsNullOrEmptyMethod() and
+        mc.getTarget() = any(SystemStringClass c).getIsNullOrEmptyMethod() and
         mc.getArgument(0) = sub and
         b = false
       )

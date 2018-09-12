@@ -819,6 +819,24 @@
 | post | Switch.cs:111:17:111:21 | exit Throw | Switch.cs:111:28:111:48 | throw ... |
 | post | Switch.cs:111:28:111:48 | throw ... | Switch.cs:111:34:111:48 | object creation of type Exception |
 | post | Switch.cs:111:34:111:48 | object creation of type Exception | Switch.cs:111:17:111:21 | enter Throw |
+| post | Switch.cs:113:9:113:11 | exit M10 | Switch.cs:117:36:117:44 | return ...; |
+| post | Switch.cs:113:9:113:11 | exit M10 | Switch.cs:118:35:118:43 | return ...; |
+| post | Switch.cs:113:9:113:11 | exit M10 | Switch.cs:120:9:120:18 | return ...; |
+| post | Switch.cs:114:5:121:5 | {...} | Switch.cs:113:9:113:11 | enter M10 |
+| post | Switch.cs:115:9:119:9 | switch (...) {...} | Switch.cs:114:5:121:5 | {...} |
+| post | Switch.cs:115:17:115:17 | access to parameter s | Switch.cs:115:9:119:9 | switch (...) {...} |
+| post | Switch.cs:115:17:115:24 | access to property Length | Switch.cs:115:17:115:17 | access to parameter s |
+| post | Switch.cs:117:13:117:34 | case ...: | Switch.cs:115:17:115:24 | access to property Length |
+| post | Switch.cs:117:18:117:18 | 3 | Switch.cs:117:13:117:34 | case ...: |
+| post | Switch.cs:117:25:117:32 | ... == ... | Switch.cs:117:28:117:32 | "foo" |
+| post | Switch.cs:117:28:117:32 | "foo" | Switch.cs:117:25:117:25 | access to parameter s |
+| post | Switch.cs:117:36:117:44 | return ...; | Switch.cs:117:43:117:43 | 1 |
+| post | Switch.cs:118:18:118:18 | 2 | Switch.cs:118:13:118:33 | case ...: |
+| post | Switch.cs:118:25:118:31 | ... == ... | Switch.cs:118:28:118:31 | "fu" |
+| post | Switch.cs:118:28:118:31 | "fu" | Switch.cs:118:25:118:25 | access to parameter s |
+| post | Switch.cs:118:35:118:43 | return ...; | Switch.cs:118:42:118:42 | 2 |
+| post | Switch.cs:120:9:120:18 | return ...; | Switch.cs:120:16:120:17 | -... |
+| post | Switch.cs:120:16:120:17 | -... | Switch.cs:120:17:120:17 | 1 |
 | post | TypeAccesses.cs:3:10:3:10 | exit M | TypeAccesses.cs:8:13:8:27 | Type t = ... |
 | post | TypeAccesses.cs:4:5:9:5 | {...} | TypeAccesses.cs:3:10:3:10 | enter M |
 | post | TypeAccesses.cs:5:9:5:26 | ... ...; | TypeAccesses.cs:4:5:9:5 | {...} |
@@ -2643,6 +2661,27 @@
 | pre | Switch.cs:111:17:111:21 | enter Throw | Switch.cs:111:34:111:48 | object creation of type Exception |
 | pre | Switch.cs:111:28:111:48 | throw ... | Switch.cs:111:17:111:21 | exit Throw |
 | pre | Switch.cs:111:34:111:48 | object creation of type Exception | Switch.cs:111:28:111:48 | throw ... |
+| pre | Switch.cs:113:9:113:11 | enter M10 | Switch.cs:114:5:121:5 | {...} |
+| pre | Switch.cs:114:5:121:5 | {...} | Switch.cs:115:9:119:9 | switch (...) {...} |
+| pre | Switch.cs:115:9:119:9 | switch (...) {...} | Switch.cs:115:17:115:17 | access to parameter s |
+| pre | Switch.cs:115:17:115:17 | access to parameter s | Switch.cs:115:17:115:24 | access to property Length |
+| pre | Switch.cs:115:17:115:24 | access to property Length | Switch.cs:117:13:117:34 | case ...: |
+| pre | Switch.cs:117:13:117:34 | case ...: | Switch.cs:117:18:117:18 | 3 |
+| pre | Switch.cs:117:18:117:18 | 3 | Switch.cs:117:25:117:25 | access to parameter s |
+| pre | Switch.cs:117:18:117:18 | 3 | Switch.cs:118:13:118:33 | case ...: |
+| pre | Switch.cs:117:25:117:25 | access to parameter s | Switch.cs:117:28:117:32 | "foo" |
+| pre | Switch.cs:117:25:117:32 | ... == ... | Switch.cs:117:43:117:43 | 1 |
+| pre | Switch.cs:117:28:117:32 | "foo" | Switch.cs:117:25:117:32 | ... == ... |
+| pre | Switch.cs:117:43:117:43 | 1 | Switch.cs:117:36:117:44 | return ...; |
+| pre | Switch.cs:118:13:118:33 | case ...: | Switch.cs:118:18:118:18 | 2 |
+| pre | Switch.cs:118:18:118:18 | 2 | Switch.cs:118:25:118:25 | access to parameter s |
+| pre | Switch.cs:118:18:118:18 | 2 | Switch.cs:120:17:120:17 | 1 |
+| pre | Switch.cs:118:25:118:25 | access to parameter s | Switch.cs:118:28:118:31 | "fu" |
+| pre | Switch.cs:118:25:118:31 | ... == ... | Switch.cs:118:42:118:42 | 2 |
+| pre | Switch.cs:118:28:118:31 | "fu" | Switch.cs:118:25:118:31 | ... == ... |
+| pre | Switch.cs:118:42:118:42 | 2 | Switch.cs:118:35:118:43 | return ...; |
+| pre | Switch.cs:120:16:120:17 | -... | Switch.cs:120:9:120:18 | return ...; |
+| pre | Switch.cs:120:17:120:17 | 1 | Switch.cs:120:16:120:17 | -... |
 | pre | TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:4:5:9:5 | {...} |
 | pre | TypeAccesses.cs:4:5:9:5 | {...} | TypeAccesses.cs:5:9:5:26 | ... ...; |
 | pre | TypeAccesses.cs:5:9:5:26 | ... ...; | TypeAccesses.cs:5:13:5:13 | access to local variable s |

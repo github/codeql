@@ -1,5 +1,5 @@
 import csharp
-import ControlFlowGraph::Internal
+import ControlFlow::Internal
 private import semmle.code.csharp.controlflow.Completion
 
 from ControlFlowElement cfe, Completion c

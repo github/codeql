@@ -39,6 +39,7 @@ where misleadingIndentationCandidate(ctrl, s1, s2) and
       f.hasIndentation(ctrlStartLine, indent, _) and
       f.hasIndentation(startLine1, indent, _) and
       f.hasIndentation(startLine2, indent, _) and
-      not s2 instanceof EmptyStmt
+      not s2 instanceof EmptyStmt and
+      not f.getFileType().isTypeScript() // ignore quirks in TypeScript tokenizer
 select (FirstLineOf)s2, "The indentation of this statement suggests that it is controlled by $@, while in fact it is not.",
             (FirstLineOf)ctrl, "this statement"

@@ -92,8 +92,7 @@ class EventAccessor extends Accessor, @event_accessor {
     result instanceof VoidType
   }
 
-  /** Gets the assembly name of this event accessor. */
-  string getAssemblyName() { event_accessors(this,_,result,_,_) }
+  override string getAssemblyName() { event_accessors(this,_,result,_,_) }
 
   override EventAccessor getSourceDeclaration() { event_accessors(this,_,_,_,result) }
 

@@ -607,6 +607,10 @@ abstract class EnhancedForLoop extends LoopStmt {
   override Stmt getBody() {
     result = getChildStmt(2)
   }
+
+  override ControlFlowNode getFirstControlFlowNode() {
+    result = getIteratorExpr().getFirstControlFlowNode()
+  }
 }
 
 /** A `for`-`in` loop. */
