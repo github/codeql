@@ -203,6 +203,13 @@ class BuiltInOperationBuiltInShuffleVector extends BuiltInOperation, @builtinshu
 }
 
 /**
+ * A clang `__builtin_convertvector` expression.
+ */
+class BuiltInOperationBuiltInConvertVector extends BuiltInOperation, @builtinconvertvector {
+  override string toString() { result = "__builtin_convertvector" }
+}
+
+/**
  * A clang `__builtin_addressof` expression (can be used to implement C++'s std::addressof).
  */
 class BuiltInOperationBuiltInAddressOf extends UnaryOperation, BuiltInOperation, @builtinaddressof {

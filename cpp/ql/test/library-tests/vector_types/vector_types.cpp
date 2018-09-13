@@ -50,3 +50,10 @@ void shift_left(v16i *dst, v16i *src, int n) {
   // each element).
   *dst = *src << n;
 }
+
+typedef double vector4double __attribute__((__vector_size__(32)));
+typedef float  vector4float  __attribute__((__vector_size__(16)));
+
+vector4double convert_vector(vector4float vf) {
+  return __builtin_convertvector(vf, vector4double);
+}
