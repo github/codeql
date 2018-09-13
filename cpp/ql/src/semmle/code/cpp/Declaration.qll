@@ -56,6 +56,7 @@ abstract class Declaration extends Locatable, @declaration {
     // MemberFunction, MemberVariable, MemberType
     exists (Declaration m
     | m = this and
+      not m instanceof EnumConstant and
       result = m.getDeclaringType().getQualifiedName() + "::" + m.getName())
     or
     exists (EnumConstant c

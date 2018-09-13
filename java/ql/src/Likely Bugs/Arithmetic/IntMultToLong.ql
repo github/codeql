@@ -15,6 +15,7 @@
  *       external/cwe/cwe-197
  *       external/cwe/cwe-681
  */
+
 import java
 import semmle.code.java.dataflow.RangeUtils
 import semmle.code.java.Conversions
@@ -25,7 +26,8 @@ predicate small(MulExpr e) {
     lhs = e.getLeftOperand().getProperExpr().(ConstantIntegerExpr).getIntValue() and
     rhs = e.getRightOperand().getProperExpr().(ConstantIntegerExpr).getIntValue() and
     lhs * rhs = res and
-    t.getOrdPrimitiveType().getMinValue() <= res and res <= t.getOrdPrimitiveType().getMaxValue()
+    t.getOrdPrimitiveType().getMinValue() <= res and
+    res <= t.getOrdPrimitiveType().getMaxValue()
   )
 }
 
@@ -52,4 +54,7 @@ where
   // not obviously small and ok
   not small(e) and
   e.getEnclosingCallable().fromSource()
-select c, "$@ converted to "+ destType.getName() +" by use in " + ("a " + c.kind()).regexpReplaceAll("^a ([aeiou])", "an $1") + ".", e, sourceType.getName() + " multiplication"
+select c,
+  "Potential overflow in $@ before it is converted to " + destType.getName() + " by use in " +
+    ("a " + c.kind()).regexpReplaceAll("^a ([aeiou])", "an $1") + ".", e,
+  sourceType.getName() + " multiplication"
