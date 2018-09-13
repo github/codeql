@@ -2,6 +2,8 @@
 
 ## General improvements
 
+* Modelling of taint flow through array operations has been improved. This may give additional results for the security queries.
+
 ## New queries
 
 | **Query**                   | **Tags**  | **Purpose**                                                        |
