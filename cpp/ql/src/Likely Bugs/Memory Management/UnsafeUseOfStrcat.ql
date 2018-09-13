@@ -29,11 +29,20 @@ predicate isEffectivelyConstAccess(VariableAccess a)
   )
 }
 
-from FunctionCall fc, VariableAccess src
-where fc.getTarget().hasName("strcat") and
-      src = fc.getArgument(1) and
-      not src.getType() instanceof ArrayType and
+class StrcatSource extends VariableAccess {
+  FunctionCall strcat;
+
+  StrcatSource() {
+    strcat.getTarget().hasName("strcat") and
+    this = strcat.getArgument(1)
+  }
+
+  FunctionCall getStrcatCall() { result = strcat }
+}
+
+from StrcatSource src
+where not src.getType() instanceof ArrayType and
       not exists(BufferSizeExpr bse |
         bse.getArg().(VariableAccess).getTarget() = src.getTarget()) and
       not isEffectivelyConstAccess(src)
-select fc, "Always check the size of the source buffer when using strcat."
+select src.getStrcatCall(), "Always check the size of the source buffer when using strcat."
