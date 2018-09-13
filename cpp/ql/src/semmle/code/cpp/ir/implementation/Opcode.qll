@@ -76,6 +76,8 @@ abstract class PointerOffsetOpcode extends PointerArithmeticOpcode {}
 
 abstract class CompareOpcode extends BinaryOpcode {}
 
+abstract class RelationalOpcode extends CompareOpcode {}
+
 abstract class CopyOpcode extends Opcode {}
 
 abstract class MemoryAccessOpcode extends Opcode {}
@@ -117,10 +119,10 @@ module Opcode {
   class LogicalNot extends UnaryOpcode, TLogicalNot { override final string toString() { result = "LogicalNot" } }
   class CompareEQ extends CompareOpcode, TCompareEQ { override final string toString() { result = "CompareEQ" } }
   class CompareNE extends CompareOpcode, TCompareNE { override final string toString() { result = "CompareNE" } }
-  class CompareLT extends CompareOpcode, TCompareLT { override final string toString() { result = "CompareLT" } }
-  class CompareGT extends CompareOpcode, TCompareGT { override final string toString() { result = "CompareGT" } }
-  class CompareLE extends CompareOpcode, TCompareLE { override final string toString() { result = "CompareLE" } }
-  class CompareGE extends CompareOpcode, TCompareGE { override final string toString() { result = "CompareGE" } }
+  class CompareLT extends RelationalOpcode, TCompareLT { override final string toString() { result = "CompareLT" } }
+  class CompareGT extends RelationalOpcode, TCompareGT { override final string toString() { result = "CompareGT" } }
+  class CompareLE extends RelationalOpcode, TCompareLE { override final string toString() { result = "CompareLE" } }
+  class CompareGE extends RelationalOpcode, TCompareGE { override final string toString() { result = "CompareGE" } }
   class PointerAdd extends PointerOffsetOpcode, TPointerAdd { override final string toString() { result = "PointerAdd" } }
   class PointerSub extends PointerOffsetOpcode, TPointerSub { override final string toString() { result = "PointerSub" } }
   class PointerDiff extends PointerArithmeticOpcode, TPointerDiff { override final string toString() { result = "PointerDiff" } }

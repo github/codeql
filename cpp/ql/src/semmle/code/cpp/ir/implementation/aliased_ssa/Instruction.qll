@@ -967,27 +967,68 @@ class CompareNEInstruction extends CompareInstruction {
   }
 }
 
-class CompareLTInstruction extends CompareInstruction {
+class RelationalInstruction extends CompareInstruction {
+  RelationalInstruction() {
+    opcode instanceof RelationalOpcode
+  }
+
+  abstract Instruction getGreaterOperand();
+  abstract Instruction getLesserOperand();
+}
+
+class CompareLTInstruction extends RelationalInstruction {
   CompareLTInstruction() {
     opcode instanceof Opcode::CompareLT
   }
+
+  override Instruction getLesserOperand() {
+    result = getLeftOperand()
+  }
+
+  override Instruction getGreaterOperand() {
+    result = getRightOperand()
+  }
 }
 
-class CompareGTInstruction extends CompareInstruction {
+class CompareGTInstruction extends RelationalInstruction {
   CompareGTInstruction() {
     opcode instanceof Opcode::CompareGT
   }
-}
 
-class CompareLEInstruction extends CompareInstruction {
-  CompareLEInstruction() {
-    opcode instanceof Opcode::CompareLE
+  override Instruction getLesserOperand() {
+    result = getRightOperand()
+  }
+
+  override Instruction getGreaterOperand() {
+    result = getLeftOperand()
   }
 }
 
-class CompareGEInstruction extends CompareInstruction {
+class CompareLEInstruction extends RelationalInstruction {
+  CompareLEInstruction() {
+    opcode instanceof Opcode::CompareLE
+  }
+
+  override Instruction getLesserOperand() {
+    result = getLeftOperand()
+  }
+
+  override Instruction getGreaterOperand() {
+    result = getRightOperand()
+  }
+}
+
+class CompareGEInstruction extends RelationalInstruction {
   CompareGEInstruction() {
     opcode instanceof Opcode::CompareGE
+  }
+
+  override Instruction getLesserOperand() {
+    result = getRightOperand()
+  }
+
+  override Instruction getGreaterOperand() {
+    result = getLeftOperand()
   }
 }
 
