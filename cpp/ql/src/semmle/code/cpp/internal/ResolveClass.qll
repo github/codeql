@@ -3,7 +3,10 @@ import semmle.code.cpp.Type
 pragma[noinline]
 private string getTopLevelClassName(@usertype c) {
   isClass(c) and
-  usertypes(c, result, _)
+  usertypes(c, result, _) and
+  not namespacembrs(_, c) and // not in a namespace
+  not member(_, _, c) and // not in some structure
+  not class_instantiation(c, _) // not a template instantiation
 }
 
 /** Holds if `d` is a unique complete class named `name`. */
