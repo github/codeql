@@ -967,13 +967,31 @@ class CompareNEInstruction extends CompareInstruction {
   }
 }
 
+/**
+ * Represents an instruction that does a relative comparison of two values, such as `<` or `>=`.
+ */
 class RelationalInstruction extends CompareInstruction {
   RelationalInstruction() {
     opcode instanceof RelationalOpcode
   }
-
+  /**
+   * Gets the operand on the "greater" (or "greater-or-equal") side
+   * of this relational instruction, that is, the side that is larger
+   * if the overall instruction evaluates to `true`; for example on
+   * `x <= 20` this is the `20`, and on `y > 0` it is `y`.
+   */
   abstract Instruction getGreaterOperand();
+
+  /**
+   * Gets the operand on the "lesser" (or "lesser-or-equal") side
+   * of this relational instruction, that is, the side that is smaller
+   * if the overall instruction evaluates to `true`; for example on
+   * `x <= 20` this is `x`, and on `y > 0` it is the `0`.
+   */
   abstract Instruction getLesserOperand();
+  /**
+   * Holds if this relational instruction is strict (is not an "or-equal" instruction).
+   */
   abstract predicate isStrict();
 }
 
