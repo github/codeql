@@ -24,3 +24,9 @@ class Damson {
   int damson_x;
   void foo();
 };
+
+namespace unrelated {
+  class AppleCompatible {
+    long apple_x;
+  };
+}
