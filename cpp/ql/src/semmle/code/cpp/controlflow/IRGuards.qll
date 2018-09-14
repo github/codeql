@@ -63,7 +63,7 @@ class GuardCondition extends Expr {
   abstract cached predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual);
 }
 
-class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
+private class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
   GuardConditionFromBinaryLogicalOperator() {
     exists(GuardCondition gc |
       this.(BinaryLogicalOperation).getAnOperand()= gc
@@ -106,7 +106,7 @@ class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
   }
 }
 
-class GuardConditionFromShortCircuitNot extends GuardCondition, NotExpr {
+private class GuardConditionFromShortCircuitNot extends GuardCondition, NotExpr {
   GuardConditionFromShortCircuitNot() {
     not exists (Instruction inst | this.getFullyConverted() = inst.getAST()) and
     exists(IRGuardCondition ir | getOperand() = ir.getAST())
@@ -133,7 +133,7 @@ class GuardConditionFromShortCircuitNot extends GuardCondition, NotExpr {
   }
 }
 
-class GuardConditionFromIR extends GuardCondition {
+private class GuardConditionFromIR extends GuardCondition {
   IRGuardCondition ir;
   
   GuardConditionFromIR() {
