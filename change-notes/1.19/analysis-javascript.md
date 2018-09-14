@@ -13,6 +13,7 @@
 | **Query**                      | **Expected impact**        | **Change**                                   |
 |--------------------------------|----------------------------|----------------------------------------------|
 | Regular expression injection | Fewer false-positive results | This rule now identifies calls to `String.prototype.search` with more precision. |
+| Unbound event handler receiver | Fewer false-positive results | This rule now recognizes additional ways class methods can be bound. |
 
 
 ## Changes to QL libraries
