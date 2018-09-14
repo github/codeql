@@ -967,27 +967,85 @@ class CompareNEInstruction extends CompareInstruction {
   }
 }
 
-class CompareLTInstruction extends CompareInstruction {
+class RelationalInstruction extends CompareInstruction {
+  RelationalInstruction() {
+    opcode instanceof RelationalOpcode
+  }
+
+  abstract Instruction getGreaterOperand();
+  abstract Instruction getLesserOperand();
+  abstract predicate isStrict();
+}
+
+class CompareLTInstruction extends RelationalInstruction {
   CompareLTInstruction() {
     opcode instanceof Opcode::CompareLT
   }
+
+  override Instruction getLesserOperand() {
+    result = getLeftOperand()
+  }
+
+  override Instruction getGreaterOperand() {
+    result = getRightOperand()
+  }
+
+  override predicate isStrict() {
+    any()
+  }
 }
 
-class CompareGTInstruction extends CompareInstruction {
+class CompareGTInstruction extends RelationalInstruction {
   CompareGTInstruction() {
     opcode instanceof Opcode::CompareGT
   }
-}
 
-class CompareLEInstruction extends CompareInstruction {
-  CompareLEInstruction() {
-    opcode instanceof Opcode::CompareLE
+  override Instruction getLesserOperand() {
+    result = getRightOperand()
+  }
+
+  override Instruction getGreaterOperand() {
+    result = getLeftOperand()
+  }
+
+  override predicate isStrict() {
+    any()
   }
 }
 
-class CompareGEInstruction extends CompareInstruction {
+class CompareLEInstruction extends RelationalInstruction {
+  CompareLEInstruction() {
+    opcode instanceof Opcode::CompareLE
+  }
+
+  override Instruction getLesserOperand() {
+    result = getLeftOperand()
+  }
+
+  override Instruction getGreaterOperand() {
+    result = getRightOperand()
+  }
+
+  override predicate isStrict() {
+    none()
+  }
+}
+
+class CompareGEInstruction extends RelationalInstruction {
   CompareGEInstruction() {
     opcode instanceof Opcode::CompareGE
+  }
+
+  override Instruction getLesserOperand() {
+    result = getRightOperand()
+  }
+
+  override Instruction getGreaterOperand() {
+    result = getLeftOperand()
+  }
+
+  override predicate isStrict() {
+    none()
   }
 }
 
