@@ -46,3 +46,9 @@
 | Program.cs:101:16:101:21 | Object |
 | Program.cs:104:5:104:8 | Void |
 | Program.cs:106:13:106:17 | Point |
+| Program.cs:114:16:114:18 | Int32 |
+| Program.cs:114:16:114:18 | Int32 |
+| Program.cs:114:16:114:19 | Nullable<Int32> |
+| Program.cs:114:16:114:19 | Nullable<Int32> |
+| Program.cs:117:5:117:8 | Void |
+| Program.cs:119:13:119:17 | Point |

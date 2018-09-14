@@ -1,6 +1,6 @@
 var express = require('express');
 var app = express();
-var URI = reuires("urijs");
+var URI = require("urijs");
 app.get('/findKey', function(req, res) {
   var key = req.param("key"), input = req.param("input");
 
