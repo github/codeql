@@ -974,6 +974,7 @@ class RelationalInstruction extends CompareInstruction {
 
   abstract Instruction getGreaterOperand();
   abstract Instruction getLesserOperand();
+  abstract predicate isStrict();
 }
 
 class CompareLTInstruction extends RelationalInstruction {
@@ -987,6 +988,10 @@ class CompareLTInstruction extends RelationalInstruction {
 
   override Instruction getGreaterOperand() {
     result = getRightOperand()
+  }
+
+  override predicate isStrict() {
+    any()
   }
 }
 
@@ -1002,6 +1007,10 @@ class CompareGTInstruction extends RelationalInstruction {
   override Instruction getGreaterOperand() {
     result = getLeftOperand()
   }
+
+  override predicate isStrict() {
+    any()
+  }
 }
 
 class CompareLEInstruction extends RelationalInstruction {
@@ -1016,6 +1025,10 @@ class CompareLEInstruction extends RelationalInstruction {
   override Instruction getGreaterOperand() {
     result = getRightOperand()
   }
+
+  override predicate isStrict() {
+    none()
+  }
 }
 
 class CompareGEInstruction extends RelationalInstruction {
@@ -1029,6 +1042,10 @@ class CompareGEInstruction extends RelationalInstruction {
 
   override Instruction getGreaterOperand() {
     result = getLeftOperand()
+  }
+
+  override predicate isStrict() {
+    none()
   }
 }
 
