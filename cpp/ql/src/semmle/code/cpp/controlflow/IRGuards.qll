@@ -2,7 +2,7 @@ import cpp
 import semmle.code.cpp.ir.IR
 
 /**
- * A Boolean condition in the IR that guards one or more basic blocks. This includes
+ * A Boolean condition in the AST that guards one or more basic blocks. This includes
  * operands of logical operators but not switch statements.
  */
 class GuardCondition extends Expr {
@@ -63,6 +63,9 @@ class GuardCondition extends Expr {
   abstract cached predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual);
 }
 
+/**
+ * A binary logical operator in the AST that guards one or more basic blocks.
+ */
 private class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
   GuardConditionFromBinaryLogicalOperator() {
     exists(GuardCondition gc |
@@ -106,6 +109,10 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
   }
 }
 
+/**
+ * A `!` operator in the AST that guards one or more basic blocks, and does not have a corresponding
+ * IR instruction.
+ */
 private class GuardConditionFromShortCircuitNot extends GuardCondition, NotExpr {
   GuardConditionFromShortCircuitNot() {
     not exists (Instruction inst | this.getFullyConverted() = inst.getAST()) and
@@ -132,7 +139,10 @@ private class GuardConditionFromShortCircuitNot extends GuardCondition, NotExpr 
     getOperand().(GuardCondition).ensuresEq(left, right, k, block, testIsTrue.booleanNot())
   }
 }
-
+/**
+ * A Boolean condition in the AST that guards one or more basic blocks and has a corresponding IR
+ * instruction.
+ */
 private class GuardConditionFromIR extends GuardCondition {
   IRGuardCondition ir;
   
@@ -463,7 +473,7 @@ private int int_value(Instruction i) {
   result = i.(IntegerConstantInstruction).getValue().toInt()
 }
 
-
+/** Gets the underlying expression of `e`. */
 private Expr remove_conversions(Expr e) {
   if e instanceof Conversion
   then result = e.(Conversion).getExpr*() and
