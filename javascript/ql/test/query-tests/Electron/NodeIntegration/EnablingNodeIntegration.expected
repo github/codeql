@@ -1,0 +1,5 @@
+| EnablingNodeIntegration.js:5:28:11:9 | {\\n      ...       } | The `nodeIntegrationInWorker` feature has been enabled. |
+| EnablingNodeIntegration.js:5:28:11:9 | {\\n      ...       } | The `nodeIntegration` feature has been enabled. |
+| EnablingNodeIntegration.js:15:22:20:9 | {\\n      ...       } | The `nodeIntegration` feature is enabled by default. |
+| EnablingNodeIntegration.js:23:16:27:9 | { // NO ...       } | The `nodeIntegration` feature is enabled by default. |
+| EnablingNodeIntegration.js:49:74:49:96 | {nodeIn ... : true} | The `nodeIntegration` feature has been enabled. |
