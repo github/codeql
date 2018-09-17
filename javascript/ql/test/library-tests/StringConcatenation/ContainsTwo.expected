@@ -14,10 +14,13 @@
 | tst.js:20:3:20:25 | x += (" ... "four") |
 | tst.js:21:10:21:10 | x |
 | tst.js:21:10:21:19 | x + "five" |
+| tst.js:25:10:25:32 | ["one", ... three"] |
 | tst.js:25:10:25:41 | ["one", ... oin("") |
 | tst.js:25:18:25:22 | "two" |
+| tst.js:29:10:29:37 | Array(" ... three") |
 | tst.js:29:10:29:46 | Array(" ... oin("") |
 | tst.js:29:23:29:27 | "two" |
+| tst.js:33:10:33:41 | new Arr ... three") |
 | tst.js:33:10:33:50 | new Arr ... oin("") |
 | tst.js:33:27:33:31 | "two" |
 | tst.js:38:11:38:15 | "two" |

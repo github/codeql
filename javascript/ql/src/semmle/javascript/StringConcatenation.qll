@@ -28,10 +28,19 @@ module StringConcatenation {
       or
       n = 1 and result = assign.getRhs().flow())
     or
-    exists (DataFlow::ArrayCreationNode array |
-      node = array.getAMethodCall("join") and
-      node.(DataFlow::MethodCallNode).getArgument(0).mayHaveStringValue("") and
-      result = array.getElement(n))
+    exists (DataFlow::ArrayCreationNode array, DataFlow::MethodCallNode call |
+      call = array.getAMethodCall("join") and
+      call.getArgument(0).mayHaveStringValue("") and
+      (
+        // step from array element to array
+        result = array.getElement(n) and
+        node = array
+        or
+        // step from array to join call
+        node = call and
+        result = array and
+        n = 0
+      ))
   }
 
   /** Gets an operand to the string concatenation defining `node`. */
