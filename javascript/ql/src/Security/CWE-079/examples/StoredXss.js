@@ -5,7 +5,8 @@ express().get('/list-directory', function(req, res) {
     fs.readdir('/public', function (error, fileNames) {
         var list = '<ul>';
         fileNames.forEach(fileName => {
-            list += '<li>' + fileName '</li>'; // BAD: `fileName` can contain HTML elements
+            // BAD: `fileName` can contain HTML elements
+            list += '<li>' + fileName '</li>';
         });
         list += '</ul>'
         res.send(list);
