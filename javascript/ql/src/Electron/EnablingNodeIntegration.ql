@@ -1,11 +1,13 @@
 /**
- * @name Enabling `nodeIntegration` or `nodeIntegrationInWorker` for Electron web content
+ * @name Enabling Node.js integration for Electron web content renderers
  * @description Enabling `nodeIntegration` or `nodeIntegrationInWorker` can expose the application to remote code execution.
  * @kind problem
  * @problem.severity warning
+ * @precision low
  * @id js/enabling-electron-renderer-node-integration
  * @tags security
  *       frameworks/electron
+ *       external/cwe/cwe-094
  */
 
 import javascript

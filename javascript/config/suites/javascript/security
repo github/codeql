@@ -1,4 +1,5 @@
 + semmlecode-javascript-queries/DOM/TargetBlank.ql: /Security/CWE/CWE-200
++ semmlecode-javascript-queries/Electron/EnablingNodeIntegration.ql: /Security/CWE/CWE-094
 + semmlecode-javascript-queries/Security/CWE-022/TaintedPath.ql: /Security/CWE/CWE-022
 + semmlecode-javascript-queries/Security/CWE-078/CommandInjection.ql: /Security/CWE/CWE-078
 + semmlecode-javascript-queries/Security/CWE-079/ReflectedXss.ql: /Security/CWE/CWE-079

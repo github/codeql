@@ -1,26 +1,21 @@
-//BAD
-win_1 = new BrowserWindow({width: 800, height: 600, webPreferences: {nodeIntegration: true}});
-win_1.loadURL("https://untrusted-site.com");
+//BAD: `nodeIntegration` enabled by default
+var win_1 = new BrowserWindow();
+win_1.loadURL(remote_site);
 
-//GOOD
-win_2 = new BrowserWindow({width: 800, height: 600, webPreferences: {nodeIntegration: false}});
-win_2.loadURL("https://untrusted-site.com");
+//BAD: `nodeIntegration` enabled
+var win_2 = new BrowserWindow({webPreferences: {nodeIntegration: true}});
+win_2.loadURL(remote_site);
 
-//BAD
-win_3 = new BrowserWindow({
-    webPreferences: {
-      nodeIntegrationInWorker: true
-    }
-});
+//GOOD: `nodeIntegration` disabled
+let win_3 = new BrowserWindow({webPreferences: {nodeIntegration: false}});
+win_3.loadURL(remote_site);
 
-//BAD BrowserView
-win_4 = new BrowserWindow({width: 800, height: 600, webPreferences: {nodeIntegration: false}})
-view = new BrowserView({
+//BAD: `nodeIntegration` enabled  in the view
+var win_4 = new BrowserWindow({webPreferences: {nodeIntegration: false}})
+var view_4 = new BrowserView({
   webPreferences: {
     nodeIntegration: true
   }
 });
-win.setBrowserView(view);
-view.setBounds({ x: 0, y: 0, width: 300, height: 300 });
-view.webContents.loadURL('https://untrusted-site.com');
-
+win_4.setBrowserView(view_4);
+view_4.webContents.loadURL(remote_site);
