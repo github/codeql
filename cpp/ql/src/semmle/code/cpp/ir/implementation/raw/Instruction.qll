@@ -980,7 +980,9 @@ class RelationalInstruction extends CompareInstruction {
    * if the overall instruction evaluates to `true`; for example on
    * `x <= 20` this is the `20`, and on `y > 0` it is `y`.
    */
-  abstract Instruction getGreaterOperand();
+  Instruction getGreaterOperand() {
+    none()
+  }
 
   /**
    * Gets the operand on the "lesser" (or "lesser-or-equal") side
@@ -988,11 +990,15 @@ class RelationalInstruction extends CompareInstruction {
    * if the overall instruction evaluates to `true`; for example on
    * `x <= 20` this is `x`, and on `y > 0` it is the `0`.
    */
-  abstract Instruction getLesserOperand();
+  Instruction getLesserOperand() {
+    none()
+  }
   /**
    * Holds if this relational instruction is strict (is not an "or-equal" instruction).
    */
-  abstract predicate isStrict();
+  predicate isStrict() {
+    none()
+  }
 }
 
 class CompareLTInstruction extends RelationalInstruction {

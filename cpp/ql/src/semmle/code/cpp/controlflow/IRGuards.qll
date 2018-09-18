@@ -46,21 +46,31 @@ class GuardCondition extends Expr {
    * being short-circuited) then it will only control blocks dominated by the
    * true (for `&&`) or false (for `||`) branch.
    */
-  abstract cached predicate controls(BasicBlock controlled, boolean testIsTrue);
+  cached predicate controls(BasicBlock controlled, boolean testIsTrue) {
+    none()
+  }
   
   /** Holds if (determined by this guard) `left < right + k` evaluates to `isLessThan` if this expression evaluates to `testIsTrue`. */
-  abstract cached predicate comparesLt(Expr left, Expr right, int k, boolean isLessThan, boolean testIsTrue);
+  cached predicate comparesLt(Expr left, Expr right, int k, boolean isLessThan, boolean testIsTrue) {
+    none()
+  }
 
   /** Holds if (determined by this guard) `left < right + k` must be `isLessThan` in `block`.
         If `isLessThan = false` then this implies `left >= right + k`.  */
-  abstract cached predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan);
+  cached predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan) {
+    none()
+  }
 
   /** Holds if (determined by this guard) `left == right + k` evaluates to `areEqual` if this expression evaluates to `testIsTrue`. */
-  abstract cached predicate comparesEq(Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue);
+  cached predicate comparesEq(Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue) {
+    none()
+  }
 
   /** Holds if (determined by this guard) `left == right + k` must be `areEqual` in `block`.
       If `areEqual = false` then this implies `left != right + k`.  */
-  abstract cached predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual);
+  cached predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual) {
+    none()
+  }
 }
 
 /**
