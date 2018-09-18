@@ -28,6 +28,5 @@
 | test.c:146:7:146:8 | ! ... |
 | test.c:146:8:146:8 | x |
 | test.cpp:18:8:18:10 | call to get |
-| test.cpp:18:8:18:12 | (bool)... |
 | test.cpp:31:7:31:13 | ... == ... |
 | test.cpp:42:13:42:20 | call to getABool |

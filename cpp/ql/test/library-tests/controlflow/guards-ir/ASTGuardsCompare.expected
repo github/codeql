@@ -14,9 +14,7 @@
 | 17 | y < 1+1 when ... > ... is false |
 | 17 | y >= 1+1 when ... && ... is true |
 | 17 | y >= 1+1 when ... > ... is true |
-| 18 | call to get != call to get+0 when (bool)... is true |
 | 18 | call to get != call to get+0 when call to get is true |
-| 18 | call to get == call to get+0 when (bool)... is false |
 | 18 | call to get == call to get+0 when call to get is false |
 | 26 | 0 < x+0 when ... > ... is true |
 | 26 | 0 >= x+0 when ... > ... is false |

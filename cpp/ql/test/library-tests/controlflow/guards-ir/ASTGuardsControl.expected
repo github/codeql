@@ -83,7 +83,6 @@
 | test.c:146:7:146:8 | ! ... | true | 146 | 147 |
 | test.c:146:8:146:8 | x | false | 146 | 147 |
 | test.cpp:18:8:18:10 | call to get | true | 19 | 19 |
-| test.cpp:18:8:18:12 | (bool)... | true | 19 | 19 |
 | test.cpp:31:7:31:13 | ... == ... | false | 30 | 30 |
 | test.cpp:31:7:31:13 | ... == ... | false | 34 | 34 |
 | test.cpp:31:7:31:13 | ... == ... | true | 30 | 30 |

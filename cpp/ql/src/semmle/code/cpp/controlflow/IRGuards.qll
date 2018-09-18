@@ -7,7 +7,7 @@ import semmle.code.cpp.ir.IR
  */
 class GuardCondition extends Expr {
   GuardCondition() {
-    exists(IRGuardCondition ir | this.getFullyConverted() = ir.getAST())
+    exists(IRGuardCondition ir | this = remove_conversions(ir.getAST()))
     or
     // no binary operators in the IR
     exists(Instruction ir |
@@ -147,7 +147,7 @@ private class GuardConditionFromIR extends GuardCondition {
   IRGuardCondition ir;
   
   GuardConditionFromIR() {
-    this.getFullyConverted() = ir.getAST()
+    this = remove_conversions(ir.getAST())
   }
     override predicate controls(BasicBlock controlled, boolean testIsTrue) {
         /* This condition must determine the flow of control; that is, this
@@ -476,7 +476,7 @@ private int int_value(Instruction i) {
 /** Gets the underlying expression of `e`. */
 private Expr remove_conversions(Expr e) {
   if e instanceof Conversion
-  then result = e.(Conversion).getExpr*() and
+  then result = e.(Conversion).getExpr+() and
        not result instanceof Conversion
   else result = e
 }
