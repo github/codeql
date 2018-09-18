@@ -302,6 +302,13 @@ class Instruction extends Construction::TInstruction {
   }
 
   /**
+   * Gets the `Expr` whose results is computed by this instruction, if any.
+   */
+  final Expr getResultExpression() {
+    result = Construction::getInstructionResultExpression(this) 
+  }
+
+  /**
    * Gets the type of the result produced by this instruction. If the
    * instruction does not produce a result, its result type will be `VoidType`.
    */
@@ -551,6 +558,15 @@ class InitializeParameterInstruction extends VariableInstruction {
 
   override final MemoryAccessKind getResultMemoryAccess() {
     result instanceof IndirectMemoryAccess
+  }
+}
+
+/**
+ * An instruction that initializes the `this` pointer parameter of the enclosing function.
+ */
+class InitializeThisInstruction extends Instruction {
+  InitializeThisInstruction() {
+    opcode instanceof Opcode::InitializeThis
   }
 }
 

@@ -195,6 +195,10 @@ cached private module Cached {
     )
   }
 
+  cached Expr getInstructionResultExpression(Instruction instruction) {
+    result = getOldInstruction(instruction).getResultExpression()
+  }
+
   cached Instruction getInstructionSuccessor(Instruction instruction, EdgeKind kind) {
     result = getNewInstruction(getOldInstruction(instruction).getSuccessor(kind))
   }
