@@ -310,7 +310,7 @@ class IRGuardCondition extends Instruction {
             succ.dominates(controlled) and
             forall(IRBlock pred
             | pred.getASuccessor() = succ
-            | pred = thisblock or succ.dominates(pred)))) // removed reachability condition - is that OK?
+            | pred = thisblock or succ.dominates(pred) or not pred.isReachableFromFunctionEntry())))
     }
 }
 
