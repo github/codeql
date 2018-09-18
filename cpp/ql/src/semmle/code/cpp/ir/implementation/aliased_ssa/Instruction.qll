@@ -107,6 +107,14 @@ module InstructionSanity {
     operand = op.getOperand(tag) and
     operand.getFunctionIR() != op.getFunctionIR()
   }
+
+  /**
+   * Holds if instruction `instr` is not in exactly one block.
+   */
+  query predicate instructionWithoutUniqueBlock(Instruction instr, int blockCount) {
+    blockCount = count(instr.getBlock()) and
+    blockCount != 1
+  } 
 }
 
 /**

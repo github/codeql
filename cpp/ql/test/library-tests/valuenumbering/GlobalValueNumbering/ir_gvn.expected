@@ -67,15 +67,6 @@ test.cpp:
 #    1|     v0_33(void)                 = UnmodeledUse             : mu*
 #    1|     v0_34(void)                 = ExitFunction             : 
 
-#   53| 1644
-#   53|     valnum = unique
-
-#   56| 1646
-#   56|     valnum = unique
-
-#   88| 1755
-#   88|     valnum = unique
-
 #   12| test01(int, int) -> int
 #   12|   Block 0
 #   12|     v0_0(void)                  = EnterFunction             : 

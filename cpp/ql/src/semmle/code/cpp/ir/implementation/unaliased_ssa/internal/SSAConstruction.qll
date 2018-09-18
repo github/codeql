@@ -30,7 +30,9 @@ cached private module Cached {
   }
 
   cached newtype TInstructionTag =
-    WrappedInstructionTag(OldIR::Instruction oldInstruction) or
+    WrappedInstructionTag(OldIR::Instruction oldInstruction) {
+      not oldInstruction instanceof OldIR::PhiInstruction
+    } or
     PhiTag(Alias::VirtualVariable vvar, OldIR::IRBlock block) {
       hasPhiNode(vvar, block)
     }
