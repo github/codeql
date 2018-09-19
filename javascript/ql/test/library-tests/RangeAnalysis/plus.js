@@ -26,3 +26,8 @@ function g(x) {
   if (z < x + 5) {} // NOT OK - always true
   if (z > x + 5) {} // NOT OK - always false 
 }
+
+function h(x) {
+  let y = x++;
+  if (x > y) {} // NOT OK - always true
+}

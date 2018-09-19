@@ -163,6 +163,12 @@ module RangeAnalysis {
         else
           bias = -1)
       or
+      exists (UpdateExpr update | r.asExpr() = update | // Return value of x++ is just x (coerced to an int)
+        root = update.getOperand().flow() and
+        not update.isPrefix() and
+        sign = 1 and
+        bias = 0)
+      or
       exists (CompoundAssignExpr assign | r = compoundAssignResult(assign) |
         root = assign.getLhs().flow() and
         sign = 1 and
