@@ -8,6 +8,7 @@
 import cpp
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.controlflow.IRGuards
+private import semmle.code.cpp.ir.ValueNumbering
 
 private newtype TSign = TNeg() or TZero() or TPos()
 private class Sign extends TSign {
@@ -130,21 +131,29 @@ private Sign certainInstructionSign(Instruction inst) {
 /** Holds if the sign of `e` is too complicated to determine. */
 private predicate unknownSign(Instruction i) {
   (
-    i instanceof UnmodeledDefinitionInstruction or
-    i instanceof UninitializedInstruction or
-    i instanceof InitializeParameterInstruction or
-    i instanceof BuiltInInstruction or
+    i instanceof UnmodeledDefinitionInstruction
+    or
+    i instanceof UninitializedInstruction
+    or
+    i instanceof InitializeParameterInstruction
+    or
+    i instanceof BuiltInInstruction
+    or
     i instanceof CallInstruction
+    or
+    i instanceof ConvertInstruction and
+    i.getResultType().(IntegralType).isSigned()
   )
 }
 
 /**
- * Holds if `lowerbound` is a lower bound for `compared` at `pos`. This is restricted
+ * Holds if `lowerbound` is a lower bound for `bounded` at `pos`. This is restricted
  * to only include bounds for which we might determine a sign.
  */
-private predicate lowerBound(Instruction lowerbound, Instruction compared, Instruction pos, boolean isStrict) {
-  exists(int adjustment, IRGuardCondition comp |
-    pos.getAnOperand() = compared and
+private predicate lowerBound(IRGuardCondition comp, Instruction lowerbound, Instruction bounded, Instruction pos, boolean isStrict) {
+  exists(int adjustment, Instruction compared |
+    valueNumber(bounded) = valueNumber(compared) and
+    bounded = pos.getAnOperand() and
   /*
    *  Java library uses guardControlsSsaRead here. I think that the phi node logic doesn't need to
    * be duplicated but the implication predicates may need to be ported
@@ -156,18 +165,19 @@ private predicate lowerBound(Instruction lowerbound, Instruction compared, Instr
      isStrict = false and
      adjustment = 1
    ) and
-   comp.ensuresLt(lowerbound, compared, 0, pos.getBlock(), true)
+   comp.ensuresLt(lowerbound, compared, adjustment, pos.getBlock(), true)
   )
 }
 
 
 /**
- * Holds if `upperbound` is an upper bound for `compared` at `pos`. This is restricted
+ * Holds if `upperbound` is an upper bound for `bounded` at `pos`. This is restricted
  * to only include bounds for which we might determine a sign.
  */
-private predicate upperBound(Instruction upperbound, Instruction compared, Instruction pos, boolean isStrict) {
-  exists(int adjustment, IRGuardCondition comp |
-    pos.getAnOperand() = compared and
+private predicate upperBound(IRGuardCondition comp, Instruction upperbound, Instruction bounded, Instruction pos, boolean isStrict) {
+  exists(int adjustment, Instruction compared |
+    valueNumber(bounded) = valueNumber(compared) and
+    bounded = pos.getAnOperand() and
   /*
    * Java library uses guardControlsSsaRead here. I think that the phi node logic doesn't need to
    * be duplicated but the implication predicates may need to be ported
@@ -179,20 +189,21 @@ private predicate upperBound(Instruction upperbound, Instruction compared, Instr
      isStrict = false and
      adjustment = 1
    ) and
-   comp.ensuresLt(compared, upperbound, 0, pos.getBlock(), true)
+   comp.ensuresLt(compared, upperbound, adjustment, pos.getBlock(), true)
   )
 }
 
 /**
- * Holds if `eqbound` is an equality/inequality for `v` at `pos`. This is
+ * Holds if `eqbound` is an equality/inequality for `bounded` at `pos`. This is
  * restricted to only include bounds for which we might determine a sign. The
  * boolean `isEq` gives the polarity:
- *  - `isEq = true` : `v = eqbound`
- *  - `isEq = false` : `v != eqbound`
+ *  - `isEq = true` : `bounded = eqbound`
+ *  - `isEq = false` : `bounded != eqbound`
  */
-private predicate eqBound(Instruction eqbound, Instruction compared, Instruction pos, boolean isEq) {
-  exists(IRGuardCondition guard |
-    pos.getAnOperand() = compared and
+private predicate eqBound(IRGuardCondition guard, Instruction eqbound, Instruction bounded, Instruction pos, boolean isEq) {
+  exists(Instruction compared |
+    valueNumber(bounded) = valueNumber(compared) and
+    bounded = pos.getAnOperand() and
     guard.ensuresEq(compared, eqbound, 0, pos.getBlock(), isEq)
   )
 }
@@ -203,48 +214,48 @@ private predicate eqBound(Instruction eqbound, Instruction compared, Instruction
  * Holds if `bound` is a bound for `v` at `pos` that needs to be positive in
  * order for `v` to be positive.
  */
-private predicate posBound(Instruction bound, Instruction v, Instruction pos) {
-  upperBound(bound, v, pos, _) or
-  eqBound(bound, v, pos, true)
+private predicate posBound(IRGuardCondition comp, Instruction bound, Instruction v, Instruction pos) {
+  upperBound(comp, bound, v, pos, _) or
+  eqBound(comp, bound, v, pos, true)
 }
 
 /**
  * Holds if `bound` is a bound for `v` at `pos` that needs to be negative in
  * order for `v` to be negative.
  */
-private predicate negBound(Instruction bound, Instruction v, Instruction pos) {
-  lowerBound(bound, v, pos, _) or
-  eqBound(bound, v, pos, true)
+private predicate negBound(IRGuardCondition comp, Instruction bound, Instruction v, Instruction pos) {
+  lowerBound(comp, bound, v, pos, _) or
+  eqBound(comp, bound, v, pos, true)
 }
 
 /**
  * Holds if `bound` is a bound for `v` at `pos` that can restrict whether `v`
  * can be zero.
  */
-private predicate zeroBound(Instruction bound, Instruction v, Instruction pos) {
-  lowerBound(bound, v, pos, _) or
-  upperBound(bound, v, pos, _) or
-  eqBound(bound, v, pos, _)
+private predicate zeroBound(IRGuardCondition comp, Instruction bound, Instruction v, Instruction pos) {
+  lowerBound(comp, bound, v, pos, _) or
+  upperBound(comp, bound, v, pos, _) or
+  eqBound(comp, bound, v, pos, _)
 }
 
 /** Holds if `bound` allows `v` to be positive at `pos`. */
-private predicate posBoundOk(Instruction bound, Instruction v, Instruction pos) {
-  posBound(bound, v, pos) and TPos() = instructionSign(bound)
+private predicate posBoundOk(IRGuardCondition comp, Instruction bound, Instruction v, Instruction pos) {
+  posBound(comp, bound, v, pos) and TPos() = operandSign(comp, bound)
 }
 
 /** Holds if `bound` allows `v` to be negative at `pos`. */
-private predicate negBoundOk(Instruction bound, Instruction v, Instruction pos) {
-  negBound(bound, v, pos) and TNeg() = instructionSign(bound)
+private predicate negBoundOk(IRGuardCondition comp, Instruction bound, Instruction v, Instruction pos) {
+  negBound(comp, bound, v, pos) and TNeg() = operandSign(comp, bound)
 }
 
 /** Holds if `bound` allows `v` to be zero at `pos`. */
-private predicate zeroBoundOk(Instruction bound, Instruction v, Instruction pos) {
-  lowerBound(bound, v, pos, _) and TNeg() = instructionSign(bound) or
-  lowerBound(bound, v, pos, false) and TZero() = instructionSign(bound) or
-  upperBound(bound, v, pos, _) and TPos() = instructionSign(bound) or
-  upperBound(bound, v, pos, false) and TZero() = instructionSign(bound) or
-  eqBound(bound, v, pos, true) and TZero() = instructionSign(bound) or
-  eqBound(bound, v, pos, false) and TZero() != instructionSign(bound)
+private predicate zeroBoundOk(IRGuardCondition comp, Instruction bound, Instruction v, Instruction pos) {
+  lowerBound(comp, bound, v, pos, _) and TNeg() = operandSign(comp, bound) or
+  lowerBound(comp, bound, v, pos, false) and TZero() = operandSign(comp, bound) or
+  upperBound(comp, bound, v, pos, _) and TPos() = operandSign(comp, bound) or
+  upperBound(comp, bound, v, pos, false) and TZero() = operandSign(comp, bound) or
+  eqBound(comp, bound, v, pos, true) and TZero() = operandSign(comp, bound) or
+  eqBound(comp, bound, v, pos, false) and TZero() != operandSign(comp, bound)
 }
 
 private Sign binaryOpLhsSign(Instruction i) {
@@ -254,10 +265,27 @@ private Sign binaryOpLhsSign(Instruction i) {
 private Sign binaryOpRhsSign(Instruction i) {
   result = operandSign(i, i.(BinaryInstruction).getRightOperand())
 }
+
 pragma[noinline]
 private predicate binaryOpSigns(Instruction i, Sign lhs, Sign rhs) {
   lhs = binaryOpLhsSign(i) and
   rhs = binaryOpRhsSign(i)
+}
+
+private Sign unguardedOperandSign(Instruction pos, Instruction operand) {
+  result = instructionSign(operand) and
+  not hasGuard(operand, pos, result)
+}
+
+private Sign guardedOperandSign(Instruction pos, Instruction operand) {
+  result = instructionSign(operand) and
+  hasGuard(operand, pos, result)
+}
+
+private Sign guardedOperandSignOk(Instruction pos, Instruction operand) {
+  result = TPos() and forex(IRGuardCondition guard, Instruction bound | posBound(guard, bound, operand, pos) | posBoundOk(guard, bound, operand, pos)) or
+  result = TNeg() and forex(IRGuardCondition guard, Instruction bound | negBound(guard, bound, operand, pos) | negBoundOk(guard, bound, operand, pos)) or
+  result = TZero() and forex(IRGuardCondition guard, Instruction bound | zeroBound(guard, bound, operand, pos) | zeroBoundOk(guard, bound, operand, pos))
 }
 
 /**
@@ -265,17 +293,22 @@ private predicate binaryOpSigns(Instruction i, Sign lhs, Sign rhs) {
  * at `pos`.
  */
 private predicate hasGuard(Instruction v, Instruction pos, Sign s) {
-  s = TPos() and posBound(_, v, pos) or
-  s = TNeg() and negBound(_, v, pos) or
-  s = TZero() and zeroBound(_, v, pos)
+    s = TPos() and posBound(_, _, v, pos)
+    or
+    s = TNeg() and negBound(_, _, v, pos)
+    or
+    s = TZero() and zeroBound(_, _, v, pos)
 }
 
+/**
+ * Gets a sign that `operand` may have at `pos`, taking guards into account.
+ */
 cached
 private Sign operandSign(Instruction pos, Instruction operand) {
-  hasGuard(operand, pos, result)
+  result = unguardedOperandSign(pos, operand)
   or
-  not hasGuard(operand, pos, _) and
-  result = instructionSign(operand)
+  result = guardedOperandSign(pos, operand) and
+  result = guardedOperandSignOk(pos, operand)
 }
 
 cached
@@ -289,15 +322,12 @@ private Sign instructionSign(Instruction i) {
     exists(Instruction prior |
       prior = i.(CopyInstruction).getSourceValue()
       |
-      hasGuard(prior, i, result)
-      or
-      not exists(Sign s | hasGuard(prior, i, s)) and
-      result = instructionSign(prior)
+      result = operandSign(i, prior)
     )
     or
-    result = instructionSign(i.(BitComplementInstruction).getOperand()).bitnot()
+    result = operandSign(i, i.(BitComplementInstruction).getOperand()).bitnot()
     or
-    result = instructionSign(i.(AddInstruction))
+    result = operandSign(i, i.(NegateInstruction).getOperand()).neg()
     or
     exists(Sign s1, Sign s2 |
       binaryOpSigns(i, s1, s2)
@@ -340,10 +370,21 @@ predicate positive(Instruction i) {
   not instructionSign(i) = TNeg()
 }
 
+predicate positive(Instruction i, Instruction pos) {
+  operandSign(pos, i) = TPos() and
+  not operandSign(pos, i) = TNeg()
+}
+
 /** Holds if `e` can be negative and cannot be positive. */
 predicate negative(Instruction i) {
   instructionSign(i) = TNeg() and
   not instructionSign(i) = TPos()
+}
+
+/** Holds if `e` can be negative and cannot be positive. */
+predicate negative(Instruction i, Instruction pos) {
+  operandSign(pos, i) = TNeg() and
+  not operandSign(pos, i) = TPos()
 }
 
 /** Holds if `e` is strictly positive. */
@@ -353,9 +394,23 @@ predicate strictlyPositive(Instruction i) {
   not instructionSign(i) = TZero()
 }
 
+/** Holds if `e` is strictly positive. */
+predicate strictlyPositive(Instruction i, Instruction pos) {
+  operandSign(pos, i) = TPos() and
+  not operandSign(pos, i) = TNeg() and
+  not operandSign(pos, i) = TZero()
+}
 /** Holds if `e` is strictly negative. */
 predicate strictlyNegative(Instruction i) {
   instructionSign(i) = TNeg() and
   not instructionSign(i) = TPos() and
   not instructionSign(i) = TZero()
+}
+
+
+/** Holds if `e` can be negative and cannot be positive. */
+predicate strictlyNegative(Instruction i, Instruction pos) {
+  operandSign(pos, i) = TNeg() and
+  not operandSign(pos, i) = TPos() and
+  not operandSign(pos, i) = TZero()
 }
