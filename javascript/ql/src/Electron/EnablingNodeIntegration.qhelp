@@ -5,39 +5,48 @@
 
   <overview>
     <p>
-	Enabling Node.js integration in web content renderers (<code>BrowserWindow</code>, <code>BrowserView</code> and <code>webview</code>) could result in
-	remote native code execution attacks when rendering malicious JavaScript code from untrusted remote web site or 
-	code that is injected via a cross site scripting vulnerability into a trusted remote web site. Note that
- 	the <code>nodeIntegration</code> property is enabled by default in Electron and needs to be set to <code>false</code> explicitly.
-    </p>
+
+	    Enabling Node.js integration in Electron web content renderers
+	    (<code>BrowserWindow</code>, <code>BrowserView</code> and
+	    <code>webview</code>) can result in remote native code execution
+	    attacks.
+
+	    The attack is realized when the renderer uses content from an
+	    untrusted remote web site or a trusted site with a cross site
+	    scripting vulnerability.
+
+        </p>
   </overview>
   
   <recommendation>
     <p>
-      Node.js integration should be disabled when loading remote web sites. If not possible, always set nodeIntegration property
-      to 'false' before loading remote web sites and only enable it for whitelisted sites.
+
+	    Node.js integration should be disabled when loading remote web
+	    sites. Always set <code>nodeIntegration</code> preference
+	    to <code>false</code> before loading remote web sites, and only enable
+	    it for whitelisted sites.
+
+    </p>
+
+    <p>
+
+	    Note that the <code>nodeIntegration</code> property is enabled
+	    by default in Electron and needs to be set to <code>false</code>
+	    explicitly.
+
     </p>
   </recommendation>
   
   <example>
-    <p>
-      The following example shows insecure use of <code>BrowserWindow</code> with regards to <code>nodeIntegration</code>
-      property:
-    </p>
-    <sample src="examples/DefaultNodeIntegration.js"/>
 
     <p>
-      This is problematic, because default value of <code>nodeIntegration</code> is 'true'.
-    </p>
-    
-  </example>
-  
 
-  <example>
-    <p>
-      The following example shows insecure and secure uses of <code>BrowserWindow</code> and <code>BrowserView</code> when
-      loading untrusted web sites:
+	    The following examples shows insecure and secure uses of
+	    <code>BrowserWindow</code> and <code>BrowserView</code> when loading
+	    remote web sites:
+
     </p>
+
     <sample src="examples/EnablingNodeIntegration.js"/>
    
   </example>
