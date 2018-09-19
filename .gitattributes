@@ -15,3 +15,5 @@
 *.qlref eol=lf
 *.dbscheme eol=lf
 *.qhelp eol=lf
+*.html eol=lf
+*.js eol=lf
