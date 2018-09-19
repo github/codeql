@@ -1,3 +1,4 @@
+| inline_assembly.c:9:23:9:23 | m0_6(unsigned int) = Uninitialized r0_5 | inline_assembly.c:9:23:9:23 | definition of y | positive |
 | inline_assembly.c:10:3:10:7 | m0_9(unsigned int) = Store r0_8, r0_7 | inline_assembly.c:10:3:10:7 | ... = ... | positive strictlyPositive |
 | inline_assembly.c:10:7:10:7 | r0_7(unsigned int) = Constant[1]  | inline_assembly.c:10:7:10:7 | (unsigned int)... | positive strictlyPositive |
 | inline_assembly.c:12:32:12:32 | r0_17(unsigned int) = Load r0_16, m0_9 | inline_assembly.c:12:32:12:32 | y | positive strictlyPositive |
@@ -115,18 +116,48 @@
 | test.c:119:10:119:12 | m0_10(unsigned long long) = Store r0_6, r0_9 | test.c:119:10:119:12 | ... ++ | positive strictlyPositive |
 | test.c:119:10:119:12 | r0_8(unsigned long long) = Constant[1]  | test.c:119:10:119:12 | ... ++ | positive strictlyPositive |
 | test.c:119:10:119:12 | r0_9(unsigned long long) = Add r0_7, r0_8 | test.c:119:10:119:12 | ... ++ | positive strictlyPositive |
+| test.c:124:11:124:15 | m1_0(unsigned long long) = Phi from 0:m0_4, from 2:m2_11 | test.c:124:11:124:15 | Start | positive |
+| test.c:124:11:124:15 | r1_2(unsigned long long) = Load r1_1, m1_0 | test.c:124:11:124:15 | Start | positive |
+| test.c:124:20:124:32 | r1_4(unsigned long long) = Call r1_3 | test.c:124:20:124:32 | call to test12_helper | positive |
+| test.c:124:20:124:36 | r1_6(unsigned long long) = Sub r1_4, r1_5 | test.c:124:20:124:36 | ... - ... | positive |
 | test.c:124:36:124:36 | r1_5(unsigned long long) = Constant[1]  | test.c:124:36:124:36 | (unsigned long long)... | positive strictlyPositive |
+| test.c:126:31:126:43 | m2_3(unsigned long long) = Store r2_0, r2_2 | test.c:126:31:126:43 | call to test12_helper | positive |
+| test.c:126:31:126:43 | r2_2(unsigned long long) = Call r2_1 | test.c:126:31:126:43 | call to test12_helper | positive |
+| test.c:127:6:127:24 | m2_11(unsigned long long) = Store r2_8, r2_10 | test.c:127:6:127:24 | ... += ... | positive strictlyPositive |
+| test.c:127:6:127:24 | r2_9(unsigned long long) = Load r2_8, m1_0 | test.c:127:6:127:24 | ... += ... | positive |
+| test.c:127:6:127:24 | r2_10(unsigned long long) = Add r2_9, r2_7 | test.c:127:6:127:24 | ... += ... | positive strictlyPositive |
+| test.c:127:15:127:20 | r2_5(unsigned long long) = Load r2_4, m2_3 | test.c:127:15:127:20 | Length | positive |
+| test.c:127:15:127:24 | r2_7(unsigned long long) = Add r2_5, r2_6 | test.c:127:15:127:24 | ... + ... | positive strictlyPositive |
 | test.c:127:24:127:24 | r2_6(unsigned long long) = Constant[1]  | test.c:127:24:127:24 | (unsigned long long)... | positive strictlyPositive |
 | test.c:130:11:130:11 | m3_2(int) = Store r3_0, r3_1 | test.c:130:11:130:11 | 1 | positive strictlyPositive |
 | test.c:130:11:130:11 | r3_1(int) = Constant[1]  | test.c:130:11:130:11 | 1 | positive strictlyPositive |
-| test.c:137:20:137:22 | m0_19(unsigned int) = Store r0_14, r0_18 | test.c:137:20:137:22 | ... - ... | negative strictlyNegative |
-| test.c:137:20:137:22 | r0_18(unsigned int) = Sub r0_16, r0_17 | test.c:137:20:137:22 | ... - ... | negative strictlyNegative |
+| test.c:135:22:135:22 | m0_10(unsigned char) = Store r0_6, r0_9 | test.c:135:22:135:22 | (unsigned char)... | positive |
+| test.c:135:22:135:22 | r0_9(unsigned char) = Convert r0_8 | test.c:135:22:135:22 | (unsigned char)... | positive |
 | test.c:137:22:137:22 | r0_17(unsigned int) = Constant[1]  | test.c:137:22:137:22 | (unsigned int)... | positive strictlyPositive |
 | test.c:138:13:138:13 | r0_23(int) = Constant[1]  | test.c:138:13:138:13 | 1 | positive strictlyPositive |
-| test.c:139:36:139:36 | r0_42(unsigned int) = Load r0_41, m0_19 | test.c:139:36:139:36 | y | negative strictlyNegative |
+| test.c:139:19:139:28 | r0_37(unsigned int) = Convert r0_36 | test.c:139:19:139:28 | (unsigned int)... | positive |
+| test.c:139:19:139:32 | r0_40(unsigned int) = Add r0_37, r0_39 | test.c:139:19:139:32 | ... + ... | positive |
+| test.c:139:27:139:28 | r0_34(unsigned char) = Load r0_33, m0_10 | test.c:139:27:139:28 | uc | positive |
+| test.c:139:27:139:28 | r0_35(int) = Convert r0_34 | test.c:139:27:139:28 | (int)... | positive |
+| test.c:139:40:139:40 | r0_46(unsigned int) = Convert r0_45 | test.c:139:40:139:40 | (unsigned int)... | positive |
+| test.c:145:12:145:32 | m0_15(int) = Store r0_10, r0_14 | test.c:145:12:145:32 | (int)... | positive |
+| test.c:145:12:145:32 | r0_14(int) = Convert r0_13 | test.c:145:12:145:32 | (int)... | positive |
+| test.c:145:17:145:32 | r0_13(unsigned char) = Convert r0_12 | test.c:145:17:145:32 | (unsigned char)... | positive |
+| test.c:146:12:146:33 | m0_21(int) = Store r0_16, r0_20 | test.c:146:12:146:33 | (int)... | positive |
+| test.c:146:12:146:33 | r0_20(int) = Convert r0_19 | test.c:146:12:146:33 | (int)... | positive |
+| test.c:146:17:146:33 | r0_19(unsigned short) = Convert r0_18 | test.c:146:17:146:33 | (unsigned short)... | positive |
+| test.c:147:17:147:31 | r0_25(unsigned int) = Convert r0_24 | test.c:147:17:147:31 | (unsigned int)... | positive |
+| test.c:149:23:149:23 | m0_37(unsigned short) = Store r0_33, r0_36 | test.c:149:23:149:23 | (unsigned short)... | positive |
+| test.c:149:23:149:23 | r0_36(unsigned short) = Convert r0_35 | test.c:149:23:149:23 | (unsigned short)... | positive |
+| test.c:150:15:150:16 | r0_42(int) = Load r0_41, m0_15 | test.c:150:15:150:16 | x1 | positive |
+| test.c:150:20:150:21 | r0_45(int) = Load r0_44, m0_21 | test.c:150:20:150:21 | x2 | positive |
+| test.c:150:35:150:36 | r0_55(unsigned short) = Load r0_54, m0_37 | test.c:150:35:150:36 | s0 | positive |
+| test.c:150:35:150:36 | r0_56(int) = Convert r0_55 | test.c:150:35:150:36 | (int)... | positive |
 | test.c:154:10:154:40 | m2_3(long long) = Store r2_2, r2_1 | test.c:154:10:154:40 | ... ? ... : ... | positive strictlyPositive |
 | test.c:154:10:154:40 | m3_2(long long) = Store r3_1, r3_0 | test.c:154:10:154:40 | ... ? ... : ... | negative strictlyNegative |
 | test.c:154:20:154:20 | r1_1(long long) = Load r1_0, m0_3 | test.c:154:20:154:20 | x | positive strictlyPositive |
+| test.c:154:25:154:30 | r1_4(int) = Convert r1_3 | test.c:154:25:154:30 | (int)... | positive |
+| test.c:154:25:154:30 | r1_5(long long) = Convert r1_4 | test.c:154:25:154:30 | (long long)... | positive |
 | test.c:154:30:154:30 | r1_3(long long) = Load r1_2, m0_3 | test.c:154:30:154:30 | x | positive strictlyPositive |
 | test.c:154:35:154:35 | r2_1(long long) = Load r2_0, m0_3 | test.c:154:35:154:35 | x | positive strictlyPositive |
 | test.c:154:39:154:40 | r3_0(long long) = Constant[-1]  | test.c:154:39:154:40 | (long long)... | negative strictlyNegative |
@@ -409,49 +440,127 @@
 | test.c:347:9:347:9 | r6_1(int) = Load r6_0, m5_3 | test.c:347:9:347:9 | d | positive |
 | test.c:348:14:348:14 | m7_2(int) = Store r7_0, r7_1 | test.c:348:14:348:14 | 1 | positive strictlyPositive |
 | test.c:348:14:348:14 | r7_1(int) = Constant[1]  | test.c:348:14:348:14 | 1 | positive strictlyPositive |
+| test.c:355:42:355:42 | m0_3(unsigned int) = InitializeParameter[x] r0_2 | test.c:355:42:355:42 | x | positive |
+| test.c:356:16:356:17 | m0_5(unsigned int) = Uninitialized r0_4 | test.c:356:16:356:17 | definition of y1 | positive |
+| test.c:356:20:356:21 | m0_7(unsigned int) = Uninitialized r0_6 | test.c:356:20:356:21 | definition of y2 | positive |
+| test.c:356:24:356:25 | m0_9(unsigned int) = Uninitialized r0_8 | test.c:356:24:356:25 | definition of y3 | positive |
+| test.c:356:28:356:29 | m0_11(unsigned int) = Uninitialized r0_10 | test.c:356:28:356:29 | definition of y4 | positive |
+| test.c:356:32:356:33 | m0_13(unsigned int) = Uninitialized r0_12 | test.c:356:32:356:33 | definition of y5 | positive |
+| test.c:356:36:356:37 | m0_15(unsigned int) = Uninitialized r0_14 | test.c:356:36:356:37 | definition of y6 | positive |
+| test.c:356:40:356:41 | m0_17(unsigned int) = Uninitialized r0_16 | test.c:356:40:356:41 | definition of y7 | positive |
+| test.c:356:44:356:45 | m0_19(unsigned int) = Uninitialized r0_18 | test.c:356:44:356:45 | definition of y8 | positive |
+| test.c:357:3:357:23 | m17_4(unsigned int) = Store r17_3, r17_2 | test.c:357:3:357:23 | ... = ... | positive |
+| test.c:357:8:357:8 | r0_21(unsigned int) = Load r0_20, m0_3 | test.c:357:8:357:8 | x | positive |
+| test.c:357:8:357:23 | m17_0(unsigned int) = Phi from 21:m21_3, from 22:m22_2 | test.c:357:8:357:23 | ... ? ... : ... | positive |
+| test.c:357:8:357:23 | m21_3(unsigned int) = Store r21_2, r21_1 | test.c:357:8:357:23 | ... ? ... : ... | positive |
 | test.c:357:8:357:23 | m22_2(unsigned int) = Store r22_1, r22_0 | test.c:357:8:357:23 | ... ? ... : ... | positive strictlyPositive |
+| test.c:357:8:357:23 | r17_2(unsigned int) = Load r17_1, m17_0 | test.c:357:8:357:23 | ... ? ... : ... | positive |
 | test.c:357:12:357:14 | r0_22(unsigned int) = Constant[100]  | test.c:357:12:357:14 | (unsigned int)... | positive strictlyPositive |
+| test.c:357:18:357:18 | r21_1(unsigned int) = Load r21_0, m0_3 | test.c:357:18:357:18 | x | positive |
 | test.c:357:22:357:23 | r22_0(unsigned int) = Constant[10]  | test.c:357:22:357:23 | (unsigned int)... | positive strictlyPositive |
+| test.c:358:3:358:24 | m23_4(unsigned int) = Store r23_3, r23_2 | test.c:358:3:358:24 | ... = ... | positive |
+| test.c:358:8:358:8 | r17_6(unsigned int) = Load r17_5, m0_3 | test.c:358:8:358:8 | x | positive |
+| test.c:358:8:358:24 | m23_0(unsigned int) = Phi from 24:m24_2, from 25:m25_3 | test.c:358:8:358:24 | ... ? ... : ... | positive |
 | test.c:358:8:358:24 | m24_2(unsigned int) = Store r24_1, r24_0 | test.c:358:8:358:24 | ... ? ... : ... | positive strictlyPositive |
+| test.c:358:8:358:24 | m25_3(unsigned int) = Store r25_2, r25_1 | test.c:358:8:358:24 | ... ? ... : ... | positive |
+| test.c:358:8:358:24 | r23_2(unsigned int) = Load r23_1, m23_0 | test.c:358:8:358:24 | ... ? ... : ... | positive |
 | test.c:358:13:358:15 | r17_7(unsigned int) = Constant[100]  | test.c:358:13:358:15 | (unsigned int)... | positive strictlyPositive |
 | test.c:358:19:358:20 | r24_0(unsigned int) = Constant[10]  | test.c:358:19:358:20 | (unsigned int)... | positive strictlyPositive |
+| test.c:358:24:358:24 | r25_1(unsigned int) = Load r25_0, m0_3 | test.c:358:24:358:24 | x | positive |
+| test.c:365:7:365:7 | r23_24(unsigned int) = Load r23_23, m0_3 | test.c:365:7:365:7 | x | positive |
 | test.c:365:11:365:13 | r23_25(unsigned int) = Constant[300]  | test.c:365:11:365:13 | (unsigned int)... | positive strictlyPositive |
+| test.c:366:5:366:15 | m34_4(unsigned int) = Store r34_3, r34_2 | test.c:366:5:366:15 | ... = ... | positive |
+| test.c:366:10:366:10 | r37_1(unsigned int) = Load r39_0, r37_0, m0_3 | test.c:366:10:366:10 | x | positive |
+| test.c:366:10:366:10 | r39_1(unsigned int) = Load r39_0, r37_0, m0_3 | test.c:366:10:366:10 | x | positive |
+| test.c:366:10:366:15 | m34_0(unsigned int) = Phi from 35:m35_1, from 40:m40_2, from 40:m38_2, from 38:m40_2, from 38:m38_2, from 40:m40_2, from 40:m38_2, from 38:m40_2, from 38:m38_2 | test.c:366:10:366:15 | ... ? ... : ... | positive |
+| test.c:366:10:366:15 | m35_1(unsigned int) = Store r35_0, r39_1, r37_1 | test.c:366:10:366:15 | ... ? ... : ... | positive |
 | test.c:366:10:366:15 | m38_2(unsigned int) = Store r40_1, r38_1, r40_0, r38_0 | test.c:366:10:366:15 | ... ? ... : ... | positive strictlyPositive |
 | test.c:366:10:366:15 | m40_2(unsigned int) = Store r40_1, r38_1, r40_0, r38_0 | test.c:366:10:366:15 | ... ? ... : ... | positive strictlyPositive |
+| test.c:366:10:366:15 | r34_2(unsigned int) = Load r34_1, m34_0 | test.c:366:10:366:15 | ... ? ... : ... | positive |
 | test.c:366:15:366:15 | r38_0(unsigned int) = Constant[5]  | test.c:366:15:366:15 | (unsigned int)... | positive strictlyPositive |
 | test.c:366:15:366:15 | r40_0(unsigned int) = Constant[5]  | test.c:366:15:366:15 | (unsigned int)... | positive strictlyPositive |
+| test.c:367:5:367:17 | m44_4(unsigned int) = Store r44_3, r44_2 | test.c:367:5:367:17 | ... = ... | positive |
+| test.c:367:10:367:10 | r47_1(unsigned int) = Load r49_0, r47_0, m0_3 | test.c:367:10:367:10 | x | positive |
+| test.c:367:10:367:10 | r49_1(unsigned int) = Load r49_0, r47_0, m0_3 | test.c:367:10:367:10 | x | positive |
+| test.c:367:10:367:17 | m44_0(unsigned int) = Phi from 45:m45_1, from 50:m50_2, from 50:m48_2, from 48:m50_2, from 48:m48_2, from 50:m50_2, from 50:m48_2, from 48:m50_2, from 48:m48_2 | test.c:367:10:367:17 | ... ? ... : ... | positive |
+| test.c:367:10:367:17 | m45_1(unsigned int) = Store r45_0, r49_1, r47_1 | test.c:367:10:367:17 | ... ? ... : ... | positive |
 | test.c:367:10:367:17 | m48_2(unsigned int) = Store r50_1, r48_1, r50_0, r48_0 | test.c:367:10:367:17 | ... ? ... : ... | positive strictlyPositive |
 | test.c:367:10:367:17 | m50_2(unsigned int) = Store r50_1, r48_1, r50_0, r48_0 | test.c:367:10:367:17 | ... ? ... : ... | positive strictlyPositive |
+| test.c:367:10:367:17 | r44_2(unsigned int) = Load r44_1, m44_0 | test.c:367:10:367:17 | ... ? ... : ... | positive |
 | test.c:367:15:367:17 | r48_0(unsigned int) = Constant[500]  | test.c:367:15:367:17 | (unsigned int)... | positive strictlyPositive |
 | test.c:367:15:367:17 | r50_0(unsigned int) = Constant[500]  | test.c:367:15:367:17 | (unsigned int)... | positive strictlyPositive |
 | test.c:368:5:368:21 | m51_4(unsigned int) = Store r51_3, r51_2 | test.c:368:5:368:21 | ... = ... | positive strictlyPositive |
 | test.c:368:10:368:21 | m51_0(unsigned int) = Phi from 52:m52_1, from 55:m55_2 | test.c:368:10:368:21 | ... ? ... : ... | positive strictlyPositive |
 | test.c:368:10:368:21 | m55_2(unsigned int) = Store r55_1, r55_0 | test.c:368:10:368:21 | ... ? ... : ... | positive strictlyPositive |
 | test.c:368:10:368:21 | r51_2(unsigned int) = Load r51_1, m51_0 | test.c:368:10:368:21 | ... ? ... : ... | positive strictlyPositive |
+| test.c:368:11:368:11 | r44_6(unsigned int) = Load r44_5, m0_3 | test.c:368:11:368:11 | x | positive |
+| test.c:368:11:368:13 | r53_0(unsigned int) = Add r44_6, r54_0, r27_0 | test.c:368:11:368:13 | ... + ... | positive strictlyPositive |
 | test.c:368:13:368:13 | r27_0(unsigned int) = Constant[1]  | test.c:368:13:368:13 | (unsigned int)... | positive strictlyPositive |
 | test.c:368:13:368:13 | r54_0(unsigned int) = Constant[1]  | test.c:368:13:368:13 | (unsigned int)... | positive strictlyPositive |
 | test.c:368:19:368:21 | r55_0(unsigned int) = Constant[500]  | test.c:368:19:368:21 | (unsigned int)... | positive strictlyPositive |
+| test.c:369:5:369:36 | m1_5(unsigned int) = Store r1_4, r1_3 | test.c:369:5:369:36 | ... = ... | positive strictlyPositive |
 | test.c:369:10:369:36 | m1_0(int) = Phi from 2:m2_1, from 5:m5_2 | test.c:369:10:369:36 | ... ? ... : ... | positive strictlyPositive |
 | test.c:369:10:369:36 | m5_2(int) = Store r5_1, r5_0 | test.c:369:10:369:36 | ... ? ... : ... | positive strictlyPositive |
 | test.c:369:10:369:36 | r1_2(int) = Load r1_1, m1_0 | test.c:369:10:369:36 | ... ? ... : ... | positive strictlyPositive |
+| test.c:369:10:369:36 | r1_3(unsigned int) = Convert r1_2 | test.c:369:10:369:36 | (unsigned int)... | positive strictlyPositive |
+| test.c:369:11:369:30 | r3_1(unsigned char) = Convert r3_0 | test.c:369:11:369:30 | (unsigned char)... | positive |
+| test.c:369:27:369:27 | r51_6(unsigned int) = Load r51_5, m0_3 | test.c:369:27:369:27 | x | positive |
+| test.c:369:27:369:29 | r3_0(unsigned int) = Add r51_6, r4_0, r41_0 | test.c:369:27:369:29 | ... + ... | positive strictlyPositive |
 | test.c:369:29:369:29 | r4_0(unsigned int) = Constant[1]  | test.c:369:29:369:29 | (unsigned int)... | positive strictlyPositive |
 | test.c:369:29:369:29 | r41_0(unsigned int) = Constant[1]  | test.c:369:29:369:29 | (unsigned int)... | positive strictlyPositive |
 | test.c:369:36:369:36 | r5_0(int) = Constant[5]  | test.c:369:36:369:36 | 5 | positive strictlyPositive |
+| test.c:370:5:370:38 | m6_5(unsigned int) = Store r6_4, r6_3 | test.c:370:5:370:38 | ... = ... | positive strictlyPositive |
 | test.c:370:10:370:38 | m6_0(int) = Phi from 7:m7_1, from 10:m10_2 | test.c:370:10:370:38 | ... ? ... : ... | positive strictlyPositive |
 | test.c:370:10:370:38 | m10_2(int) = Store r10_1, r10_0 | test.c:370:10:370:38 | ... ? ... : ... | positive strictlyPositive |
 | test.c:370:10:370:38 | r6_2(int) = Load r6_1, m6_0 | test.c:370:10:370:38 | ... ? ... : ... | positive strictlyPositive |
+| test.c:370:10:370:38 | r6_3(unsigned int) = Convert r6_2 | test.c:370:10:370:38 | (unsigned int)... | positive strictlyPositive |
+| test.c:370:11:370:30 | r8_1(unsigned char) = Convert r8_0 | test.c:370:11:370:30 | (unsigned char)... | positive |
+| test.c:370:27:370:27 | r1_7(unsigned int) = Load r1_6, m0_3 | test.c:370:27:370:27 | x | positive |
+| test.c:370:27:370:29 | r8_0(unsigned int) = Add r1_7, r9_0, r41_0 | test.c:370:27:370:29 | ... + ... | positive strictlyPositive |
 | test.c:370:29:370:29 | r9_0(unsigned int) = Constant[1]  | test.c:370:29:370:29 | (unsigned int)... | positive strictlyPositive |
 | test.c:370:29:370:29 | r41_0(unsigned int) = Constant[1]  | test.c:370:29:370:29 | (unsigned int)... | positive strictlyPositive |
 | test.c:370:36:370:38 | r10_0(int) = Constant[500]  | test.c:370:36:370:38 | 500 | positive strictlyPositive |
+| test.c:371:5:371:39 | m11_5(unsigned int) = Store r11_4, r11_3 | test.c:371:5:371:39 | ... = ... | positive strictlyPositive |
 | test.c:371:10:371:39 | m11_0(int) = Phi from 12:m12_1, from 15:m15_2 | test.c:371:10:371:39 | ... ? ... : ... | positive strictlyPositive |
 | test.c:371:10:371:39 | m15_2(int) = Store r15_1, r15_0 | test.c:371:10:371:39 | ... ? ... : ... | positive strictlyPositive |
 | test.c:371:10:371:39 | r11_2(int) = Load r11_1, m11_0 | test.c:371:10:371:39 | ... ? ... : ... | positive strictlyPositive |
+| test.c:371:10:371:39 | r11_3(unsigned int) = Convert r11_2 | test.c:371:10:371:39 | (unsigned int)... | positive strictlyPositive |
+| test.c:371:11:371:31 | r13_1(unsigned short) = Convert r13_0 | test.c:371:11:371:31 | (unsigned short)... | positive |
+| test.c:371:28:371:28 | r6_7(unsigned int) = Load r6_6, m0_3 | test.c:371:28:371:28 | x | positive |
+| test.c:371:28:371:30 | r13_0(unsigned int) = Add r6_7, r41_0, r14_0 | test.c:371:28:371:30 | ... + ... | positive strictlyPositive |
 | test.c:371:30:371:30 | r14_0(unsigned int) = Constant[1]  | test.c:371:30:371:30 | (unsigned int)... | positive strictlyPositive |
 | test.c:371:30:371:30 | r41_0(unsigned int) = Constant[1]  | test.c:371:30:371:30 | (unsigned int)... | positive strictlyPositive |
 | test.c:371:37:371:39 | r15_0(int) = Constant[500]  | test.c:371:37:371:39 | 500 | positive strictlyPositive |
+| test.c:373:3:373:47 | m16_0(unsigned int) = Phi from 11:m34_4, from 23:m23_7 | test.c:373:3:373:47 | return ... | positive |
+| test.c:373:3:373:47 | m16_1(unsigned int) = Phi from 11:m44_4, from 23:m23_10 | test.c:373:3:373:47 | return ... | positive |
 | test.c:373:3:373:47 | m16_2(unsigned int) = Phi from 11:m51_4, from 23:m23_13 | test.c:373:3:373:47 | return ... | positive |
+| test.c:373:3:373:47 | m16_3(unsigned int) = Phi from 11:m1_5, from 23:m23_16 | test.c:373:3:373:47 | return ... | positive |
+| test.c:373:3:373:47 | m16_4(unsigned int) = Phi from 11:m6_5, from 23:m23_19 | test.c:373:3:373:47 | return ... | positive |
+| test.c:373:3:373:47 | m16_5(unsigned int) = Phi from 11:m11_5, from 23:m23_22 | test.c:373:3:373:47 | return ... | positive |
+| test.c:373:10:373:11 | r16_8(unsigned int) = Load r16_7, m17_4 | test.c:373:10:373:11 | y1 | positive |
+| test.c:373:10:373:16 | r16_11(unsigned int) = Add r16_8, r16_10 | test.c:373:10:373:16 | ... + ... | positive |
+| test.c:373:10:373:21 | r16_14(unsigned int) = Add r16_11, r16_13 | test.c:373:10:373:21 | ... + ... | positive |
+| test.c:373:10:373:26 | r16_17(unsigned int) = Add r16_14, r16_16 | test.c:373:10:373:26 | ... + ... | positive |
+| test.c:373:10:373:31 | r16_20(unsigned int) = Add r16_17, r16_19 | test.c:373:10:373:31 | ... + ... | positive |
+| test.c:373:10:373:36 | r16_23(unsigned int) = Add r16_20, r16_22 | test.c:373:10:373:36 | ... + ... | positive |
+| test.c:373:10:373:41 | r16_26(unsigned int) = Add r16_23, r16_25 | test.c:373:10:373:41 | ... + ... | positive |
+| test.c:373:10:373:46 | m16_30(unsigned int) = Store r16_6, r16_29 | test.c:373:10:373:46 | ... + ... | positive |
+| test.c:373:10:373:46 | r16_29(unsigned int) = Add r16_26, r16_28 | test.c:373:10:373:46 | ... + ... | positive |
+| test.c:373:15:373:16 | r16_10(unsigned int) = Load r16_9, m23_4 | test.c:373:15:373:16 | y2 | positive |
+| test.c:373:20:373:21 | r16_13(unsigned int) = Load r16_12, m16_0 | test.c:373:20:373:21 | y3 | positive |
+| test.c:373:25:373:26 | r16_16(unsigned int) = Load r16_15, m16_1 | test.c:373:25:373:26 | y4 | positive |
 | test.c:373:30:373:31 | r16_19(unsigned int) = Load r16_18, m16_2 | test.c:373:30:373:31 | y5 | positive |
+| test.c:373:35:373:36 | r16_22(unsigned int) = Load r16_21, m16_3 | test.c:373:35:373:36 | y6 | positive |
+| test.c:373:40:373:41 | r16_25(unsigned int) = Load r16_24, m16_4 | test.c:373:40:373:41 | y7 | positive |
+| test.c:373:45:373:46 | r16_28(unsigned int) = Load r16_27, m16_5 | test.c:373:45:373:46 | y8 | positive |
+| test.c:377:42:377:42 | m0_3(unsigned int) = InitializeParameter[x] r0_2 | test.c:377:42:377:42 | x | positive |
+| test.c:378:16:378:17 | m0_5(unsigned int) = Uninitialized r0_4 | test.c:378:16:378:17 | definition of y1 | positive |
+| test.c:378:20:378:21 | m0_7(unsigned int) = Uninitialized r0_6 | test.c:378:20:378:21 | definition of y2 | positive |
+| test.c:378:24:378:25 | m0_9(unsigned int) = Uninitialized r0_8 | test.c:378:24:378:25 | definition of y3 | positive |
+| test.c:378:28:378:29 | m0_11(unsigned int) = Uninitialized r0_10 | test.c:378:28:378:29 | definition of y4 | positive |
+| test.c:378:32:378:33 | m0_13(unsigned int) = Uninitialized r0_12 | test.c:378:32:378:33 | definition of y5 | positive |
 | test.c:379:3:379:24 | m1_4(unsigned int) = Store r1_3, r1_2 | test.c:379:3:379:24 | ... = ... | positive strictlyPositive |
+| test.c:379:8:379:8 | r0_15(unsigned int) = Load r0_14, m0_3 | test.c:379:8:379:8 | x | positive |
 | test.c:379:8:379:24 | m1_0(unsigned int) = Phi from 2:m2_3, from 5:m5_2 | test.c:379:8:379:24 | ... ? ... : ... | positive strictlyPositive |
 | test.c:379:8:379:24 | m2_3(unsigned int) = Store r2_2, r2_1 | test.c:379:8:379:24 | ... ? ... : ... | positive strictlyPositive |
 | test.c:379:8:379:24 | m5_2(unsigned int) = Store r5_1, r5_0 | test.c:379:8:379:24 | ... ? ... : ... | positive strictlyPositive |
@@ -460,6 +569,7 @@
 | test.c:379:18:379:18 | r2_1(unsigned int) = Load r2_0, m0_3 | test.c:379:18:379:18 | x | positive strictlyPositive |
 | test.c:379:22:379:24 | r5_0(unsigned int) = Constant[110]  | test.c:379:22:379:24 | (unsigned int)... | positive strictlyPositive |
 | test.c:380:3:380:25 | m6_4(unsigned int) = Store r6_3, r6_2 | test.c:380:3:380:25 | ... = ... | positive strictlyPositive |
+| test.c:380:8:380:8 | r1_6(unsigned int) = Load r1_5, m0_3 | test.c:380:8:380:8 | x | positive |
 | test.c:380:8:380:25 | m6_0(unsigned int) = Phi from 7:m7_2, from 8:m8_3 | test.c:380:8:380:25 | ... ? ... : ... | positive strictlyPositive |
 | test.c:380:8:380:25 | m7_2(unsigned int) = Store r7_1, r7_0 | test.c:380:8:380:25 | ... ? ... : ... | positive strictlyPositive |
 | test.c:380:8:380:25 | m8_3(unsigned int) = Store r8_2, r8_1 | test.c:380:8:380:25 | ... ? ... : ... | positive strictlyPositive |
@@ -473,12 +583,14 @@
 | test.c:382:8:382:11 | r6_8(unsigned int) = Constant[1000]  | test.c:382:8:382:11 | (unsigned int)... | positive strictlyPositive |
 | test.c:383:3:383:11 | m6_13(unsigned int) = Store r6_12, r6_11 | test.c:383:3:383:11 | ... = ... | positive strictlyPositive |
 | test.c:383:8:383:11 | r6_11(unsigned int) = Constant[1000]  | test.c:383:8:383:11 | (unsigned int)... | positive strictlyPositive |
+| test.c:384:7:384:7 | r6_15(unsigned int) = Load r6_14, m0_3 | test.c:384:7:384:7 | x | positive |
 | test.c:384:12:384:14 | r6_16(unsigned int) = Constant[300]  | test.c:384:12:384:14 | (unsigned int)... | positive strictlyPositive |
 | test.c:385:5:385:21 | m14_4(unsigned int) = Store r14_3, r14_2 | test.c:385:5:385:21 | ... = ... | positive strictlyPositive |
 | test.c:385:10:385:21 | m14_0(unsigned int) = Phi from 15:m15_1, from 19:m19_2 | test.c:385:10:385:21 | ... ? ... : ... | positive strictlyPositive |
 | test.c:385:10:385:21 | m19_2(unsigned int) = Store r19_1, r19_0 | test.c:385:10:385:21 | ... ? ... : ... | positive strictlyPositive |
 | test.c:385:10:385:21 | r14_2(unsigned int) = Load r14_1, m14_0 | test.c:385:10:385:21 | ... ? ... : ... | positive strictlyPositive |
 | test.c:385:11:385:11 | r17_1(unsigned int) = Load r17_0, m0_3 | test.c:385:11:385:11 | x | positive strictlyPositive |
+| test.c:385:11:385:15 | r16_0(unsigned int) = Sub r17_1, r18_0, r11_0 | test.c:385:11:385:15 | ... - ... | positive |
 | test.c:385:13:385:15 | r11_0(unsigned int) = Constant[300]  | test.c:385:13:385:15 | (unsigned int)... | positive strictlyPositive |
 | test.c:385:13:385:15 | r18_0(unsigned int) = Constant[300]  | test.c:385:13:385:15 | (unsigned int)... | positive strictlyPositive |
 | test.c:385:21:385:21 | r19_0(unsigned int) = Constant[5]  | test.c:385:21:385:21 | (unsigned int)... | positive strictlyPositive |
@@ -487,13 +599,18 @@
 | test.c:386:10:386:21 | m25_2(unsigned int) = Store r25_1, r25_0 | test.c:386:10:386:21 | ... ? ... : ... | positive strictlyPositive |
 | test.c:386:10:386:21 | r20_2(unsigned int) = Load r20_1, m20_0 | test.c:386:10:386:21 | ... ? ... : ... | positive strictlyPositive |
 | test.c:386:11:386:11 | r14_6(unsigned int) = Load r14_5, m0_3 | test.c:386:11:386:11 | x | positive strictlyPositive |
+| test.c:386:11:386:15 | r22_0(unsigned int) = Sub r14_6, r24_0, r11_0 | test.c:386:11:386:15 | ... - ... | positive |
 | test.c:386:13:386:15 | r11_0(unsigned int) = Constant[200]  | test.c:386:13:386:15 | (unsigned int)... | positive strictlyPositive |
 | test.c:386:13:386:15 | r24_0(unsigned int) = Constant[200]  | test.c:386:13:386:15 | (unsigned int)... | positive strictlyPositive |
 | test.c:386:21:386:21 | r25_0(unsigned int) = Constant[5]  | test.c:386:21:386:21 | (unsigned int)... | positive strictlyPositive |
+| test.c:387:5:387:38 | m26_5(unsigned int) = Store r26_4, r26_3 | test.c:387:5:387:38 | ... = ... | positive strictlyPositive |
 | test.c:387:10:387:38 | m26_0(int) = Phi from 27:m27_1, from 31:m31_2 | test.c:387:10:387:38 | ... ? ... : ... | positive strictlyPositive |
 | test.c:387:10:387:38 | m31_2(int) = Store r31_1, r31_0 | test.c:387:10:387:38 | ... ? ... : ... | positive strictlyPositive |
 | test.c:387:10:387:38 | r26_2(int) = Load r26_1, m26_0 | test.c:387:10:387:38 | ... ? ... : ... | positive strictlyPositive |
+| test.c:387:10:387:38 | r26_3(unsigned int) = Convert r26_2 | test.c:387:10:387:38 | (unsigned int)... | positive strictlyPositive |
+| test.c:387:11:387:32 | r29_1(unsigned char) = Convert r29_0 | test.c:387:11:387:32 | (unsigned char)... | positive |
 | test.c:387:27:387:27 | r20_6(unsigned int) = Load r20_5, m0_3 | test.c:387:27:387:27 | x | positive strictlyPositive |
+| test.c:387:27:387:31 | r29_0(unsigned int) = Sub r20_6, r30_0, r28_0 | test.c:387:27:387:31 | ... - ... | positive |
 | test.c:387:29:387:31 | r28_0(unsigned int) = Constant[200]  | test.c:387:29:387:31 | (unsigned int)... | positive strictlyPositive |
 | test.c:387:29:387:31 | r30_0(unsigned int) = Constant[200]  | test.c:387:29:387:31 | (unsigned int)... | positive strictlyPositive |
 | test.c:387:38:387:38 | r31_0(int) = Constant[5]  | test.c:387:38:387:38 | 5 | positive strictlyPositive |
@@ -510,12 +627,38 @@
 | test.c:389:20:389:21 | r32_10(unsigned int) = Load r32_9, m32_0 | test.c:389:20:389:21 | y3 | positive strictlyPositive |
 | test.c:389:25:389:26 | r32_13(unsigned int) = Load r32_12, m32_1 | test.c:389:25:389:26 | y4 | positive strictlyPositive |
 | test.c:389:30:389:31 | r32_16(unsigned int) = Load r32_15, m32_2 | test.c:389:30:389:31 | y5 | positive strictlyPositive |
+| test.c:393:40:393:40 | m0_3(unsigned int) = InitializeParameter[x] r0_2 | test.c:393:40:393:40 | x | positive |
+| test.c:394:20:394:20 | r0_6(unsigned int) = Load r0_5, m0_3 | test.c:394:20:394:20 | x | positive |
+| test.c:394:20:394:36 | m1_3(unsigned int) = Store r1_2, r1_1 | test.c:394:20:394:36 | ... ? ... : ... | positive |
 | test.c:394:20:394:36 | m2_2(unsigned int) = Store r2_1, r2_0 | test.c:394:20:394:36 | ... ? ... : ... | positive strictlyPositive |
+| test.c:394:20:394:36 | m3_0(unsigned int) = Phi from 1:m1_3, from 2:m2_2 | test.c:394:20:394:36 | ... ? ... : ... | positive |
+| test.c:394:20:394:36 | m3_3(unsigned int) = Store r0_4, r3_2 | test.c:394:20:394:36 | ... ? ... : ... | positive |
+| test.c:394:20:394:36 | r3_2(unsigned int) = Load r3_1, m3_0 | test.c:394:20:394:36 | ... ? ... : ... | positive |
 | test.c:394:24:394:26 | r0_7(unsigned int) = Constant[100]  | test.c:394:24:394:26 | (unsigned int)... | positive strictlyPositive |
+| test.c:394:30:394:30 | r1_1(unsigned int) = Load r1_0, m0_3 | test.c:394:30:394:30 | x | positive |
 | test.c:394:34:394:36 | r2_0(unsigned int) = Constant[100]  | test.c:394:34:394:36 | (unsigned int)... | positive strictlyPositive |
+| test.c:395:16:395:17 | m3_5(unsigned int) = Uninitialized r3_4 | test.c:395:16:395:17 | definition of y1 | positive |
+| test.c:396:16:396:17 | m3_7(unsigned int) = Uninitialized r3_6 | test.c:396:16:396:17 | definition of y2 | positive |
+| test.c:397:3:397:15 | m3_16(unsigned int) = Store r3_15, r3_14 | test.c:397:3:397:15 | ... = ... | positive strictlyPositive |
+| test.c:397:9:397:11 | m3_12(unsigned int) = Store r3_8, r3_11 | test.c:397:9:397:11 | ++ ... | positive strictlyPositive |
+| test.c:397:9:397:11 | r3_9(unsigned int) = Load r3_8, m3_3 | test.c:397:9:397:11 | ++ ... | positive |
 | test.c:397:9:397:11 | r3_10(unsigned int) = Constant[1]  | test.c:397:9:397:11 | ++ ... | positive strictlyPositive |
+| test.c:397:9:397:11 | r3_11(unsigned int) = Add r3_9, r3_10 | test.c:397:9:397:11 | ++ ... | positive strictlyPositive |
+| test.c:397:14:397:14 | r3_14(unsigned int) = Load r3_13, m3_12 | test.c:397:14:397:14 | y | positive strictlyPositive |
+| test.c:398:3:398:23 | m3_30(unsigned int) = Store r3_29, r3_28 | test.c:398:3:398:23 | ... = ... | positive strictlyPositive |
+| test.c:398:9:398:11 | m3_21(unsigned int) = Store r3_17, r3_20 | test.c:398:9:398:11 | ... ++ | positive strictlyPositive |
+| test.c:398:9:398:11 | r3_18(unsigned int) = Load r3_17, m3_12 | test.c:398:9:398:11 | ... ++ | positive strictlyPositive |
 | test.c:398:9:398:11 | r3_19(unsigned int) = Constant[1]  | test.c:398:9:398:11 | ... ++ | positive strictlyPositive |
+| test.c:398:9:398:11 | r3_20(unsigned int) = Add r3_18, r3_19 | test.c:398:9:398:11 | ... ++ | positive strictlyPositive |
+| test.c:398:14:398:19 | m3_26(unsigned int) = Store r3_23, r3_25 | test.c:398:14:398:19 | ... += ... | positive strictlyPositive |
+| test.c:398:14:398:19 | r3_24(unsigned int) = Load r3_23, m3_21 | test.c:398:14:398:19 | ... += ... | positive strictlyPositive |
+| test.c:398:14:398:19 | r3_25(unsigned int) = Add r3_24, r3_22 | test.c:398:14:398:19 | ... += ... | positive strictlyPositive |
 | test.c:398:19:398:19 | r3_22(unsigned int) = Constant[3]  | test.c:398:19:398:19 | (unsigned int)... | positive strictlyPositive |
+| test.c:398:22:398:22 | r3_28(unsigned int) = Load r3_27, m3_26 | test.c:398:22:398:22 | y | positive strictlyPositive |
+| test.c:399:10:399:11 | r3_33(unsigned int) = Load r3_32, m3_16 | test.c:399:10:399:11 | y1 | positive strictlyPositive |
+| test.c:399:10:399:16 | m3_37(unsigned int) = Store r3_31, r3_36 | test.c:399:10:399:16 | ... + ... | positive strictlyPositive |
+| test.c:399:10:399:16 | r3_36(unsigned int) = Add r3_33, r3_35 | test.c:399:10:399:16 | ... + ... | positive strictlyPositive |
+| test.c:399:15:399:16 | r3_35(unsigned int) = Load r3_34, m3_30 | test.c:399:15:399:16 | y2 | positive strictlyPositive |
 | test.cpp:9:11:9:12 | m0_8(int) = Store r0_6, r0_7 | test.cpp:9:11:9:12 | - ... | negative strictlyNegative |
 | test.cpp:9:11:9:12 | r0_7(int) = Constant[-1]  | test.cpp:9:11:9:12 | - ... | negative strictlyNegative |
 | test.cpp:11:13:11:13 | r1_2(int) = Constant[3]  | test.cpp:11:13:11:13 | 3 | positive strictlyPositive |

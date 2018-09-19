@@ -119,7 +119,6 @@ private Sign certainInstructionSign(Instruction inst) {
     i > 0 and result = TPos()
   )
   or
-  not inst instanceof IntegerConstantInstruction and
   exists(float f | f = inst.(FloatConstantInstruction).getValue().toFloat() |
     f < 0 and result = TNeg() or
     f = 0 and result = TZero() or
@@ -127,6 +126,69 @@ private Sign certainInstructionSign(Instruction inst) {
   )
 }
 
+private newtype CastKind = TWiden() or TSame() or TNarrow()
+
+private CastKind getCastKind(ConvertInstruction ci) {
+  exists(int fromSize, int toSize |
+    toSize = ci.getResultSize() and
+    fromSize = ci.getOperand().getResultSize()
+    |
+    fromSize < toSize and
+    result = TWiden()
+    or
+    fromSize = toSize and
+    result = TSame()
+    or
+    fromSize > toSize and
+    result = TNarrow()
+  )
+}
+
+private predicate bindBool(boolean bool) {
+  bool = true or
+  bool = false
+}
+
+private Sign castSign(Sign s, boolean fromSigned, boolean toSigned, CastKind ck) {
+  result = TZero() and
+  (
+    bindBool(fromSigned) and
+    bindBool(toSigned) and
+    s = TZero()
+    or
+    bindBool(fromSigned) and
+    bindBool(toSigned) and
+    ck = TNarrow()
+  )
+  or
+  result = TPos() and
+  (
+    bindBool(fromSigned) and
+    bindBool(toSigned) and
+    s = TPos()
+    or
+    bindBool(fromSigned) and
+    bindBool(toSigned) and
+    s = TNeg() and
+    ck = TNarrow()
+    or
+    fromSigned = true and
+    toSigned = false and
+    s = TNeg()
+  )
+  or
+  result = TNeg() and
+  (
+    fromSigned = true and
+    toSigned = true and
+    s = TNeg()
+    or
+    fromSigned = false and
+    toSigned = true and
+    s = TPos() and
+    ck != TWiden()
+  )
+}
 
 /** Holds if the sign of `e` is too complicated to determine. */
 private predicate unknownSign(Instruction i) {
@@ -140,9 +202,6 @@ private predicate unknownSign(Instruction i) {
     i instanceof BuiltInInstruction
     or
     i instanceof CallInstruction
-    or
-    i instanceof ConvertInstruction and
-    i.getResultType().(IntegralType).isSigned()
   )
 }
 
@@ -154,6 +213,7 @@ private predicate lowerBound(IRGuardCondition comp, Instruction lowerbound, Inst
   exists(int adjustment, Instruction compared |
     valueNumber(bounded) = valueNumber(compared) and
     bounded = pos.getAnOperand() and
+    not unknownSign(lowerbound) and
   /*
    *  Java library uses guardControlsSsaRead here. I think that the phi node logic doesn't need to
    * be duplicated but the implication predicates may need to be ported
@@ -178,6 +238,8 @@ private predicate upperBound(IRGuardCondition comp, Instruction upperbound, Inst
   exists(int adjustment, Instruction compared |
     valueNumber(bounded) = valueNumber(compared) and
     bounded = pos.getAnOperand() and
+    not unknownSign(upperbound) and
+    
   /*
    * Java library uses guardControlsSsaRead here. I think that the phi node logic doesn't need to
    * be duplicated but the implication predicates may need to be ported
@@ -202,6 +264,7 @@ private predicate upperBound(IRGuardCondition comp, Instruction upperbound, Inst
  */
 private predicate eqBound(IRGuardCondition guard, Instruction eqbound, Instruction bounded, Instruction pos, boolean isEq) {
   exists(Instruction compared |
+    not unknownSign(eqbound) and
     valueNumber(bounded) = valueNumber(compared) and
     bounded = pos.getAnOperand() and
     guard.ensuresEq(compared, eqbound, 0, pos.getBlock(), isEq)
@@ -316,8 +379,28 @@ private Sign instructionSign(Instruction i) {
   result = certainInstructionSign(i)
   or
   not exists(certainInstructionSign(i)) and
+  not (
+    result = TNeg() and
+    i.getResultType().(IntegralType).isUnsigned()
+  ) and
   (
     unknownSign(i)
+    or
+    exists(ConvertInstruction ci, Instruction prior, boolean fromSigned, boolean toSigned |
+      i = ci and
+      prior = ci.getOperand() and
+      (
+        if ci.getResultType().(IntegralType).isSigned()
+        then toSigned = true
+        else toSigned = false
+      ) and
+      (
+        if prior.getResultType().(IntegralType).isSigned()
+        then fromSigned = true
+        else fromSigned = false
+      ) and
+      result = castSign(operandSign(ci, prior), fromSigned, toSigned, getCastKind(ci))
+    )
     or
     exists(Instruction prior |
       prior = i.(CopyInstruction).getSourceValue()
