@@ -691,6 +691,7 @@ usertype_uuid(
 );
 
 is_pod_class(unique int id: @usertype ref);
+is_standard_layout_class(unique int id: @usertype ref);
 
 is_complete(unique int id: @usertype ref);
 
