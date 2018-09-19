@@ -3,7 +3,7 @@
  * @description If a synchronized method is overridden in a subclass, and the overriding method is
  *              not synchronized, the thread-safety of the subclass may be broken.
  * @kind problem
- * @problem.severity error
+ * @problem.severity warning
  * @precision very-high
  * @id java/non-sync-override
  * @tags reliability
