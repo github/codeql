@@ -6,6 +6,7 @@
 | express.js:78:16:78:43 | `${req. ... )}/foo` | Untrusted URL redirection due to $@. | express.js:78:19:78:37 | req.param("target") | user-provided value |
 | express.js:94:18:94:23 | target | Untrusted URL redirection due to $@. | express.js:87:16:87:34 | req.param("target") | user-provided value |
 | express.js:101:16:101:21 | target | Untrusted URL redirection due to $@. | express.js:87:16:87:34 | req.param("target") | user-provided value |
+| express.js:122:16:122:72 | [req.qu ... oin('') | Untrusted URL redirection due to $@. | express.js:122:17:122:30 | req.query.page | user-provided value |
 | node.js:7:34:7:39 | target | Untrusted URL redirection due to $@. | node.js:6:26:6:32 | req.url | user-provided value |
 | node.js:15:34:15:45 | '/' + target | Untrusted URL redirection due to $@. | node.js:11:26:11:32 | req.url | user-provided value |
 | node.js:32:34:32:55 | target  ... =" + me | Untrusted URL redirection due to $@. | node.js:29:26:29:32 | req.url | user-provided value |

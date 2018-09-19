@@ -358,19 +358,8 @@ module TaintTracking {
    */
   class StringConcatenationTaintStep extends AdditionalTaintStep, DataFlow::ValueNode {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      succ = this and
-      (
-        // addition propagates taint
-        astNode.(AddExpr).getAnOperand() = pred.asExpr() or
-        astNode.(AssignAddExpr).getAChildExpr() = pred.asExpr() or
-        exists (SsaExplicitDefinition ssa |
-          astNode = ssa.getVariable().getAUse() and
-          pred.asExpr().(AssignAddExpr) = ssa.getDef()
-        )
-        or
-        // templating propagates taint
-        astNode.(TemplateLiteral).getAnElement() = pred.asExpr()
-      )
+        succ = this and
+        StringConcatenation::taintStep(pred, succ)
     }
   }
   
