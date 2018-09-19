@@ -100,9 +100,32 @@ module RangeAnalysis {
   }
 
   /**
+   * Gets a data flow node holding the result of the add/subtract operation in
+   * the given increment/decrement expression.
+   */
+  private DataFlow::Node updateExprResult(UpdateExpr expr) {
+    exists (SsaExplicitDefinition def | def.getDef() = expr |
+      result = DataFlow::ssaDefinitionNode(def))
+    or
+    expr.isPrefix() and
+    result = expr.flow()
+  }
+
+  /**
+   * Gets a data flow node holding the result of the given componund assignment.
+   */
+  private DataFlow::Node compoundAssignResult(CompoundAssignExpr expr) {
+    exists (SsaExplicitDefinition def | def.getDef() = expr |
+      result = DataFlow::ssaDefinitionNode(def))
+    or
+    result = expr.flow()
+  }
+
+  /**
    * Holds if `r` can be modelled as `r = root * sign + bias`.
    *
-   * Does not follow data flow edges and is not recursive (that is, `root` may itself be defined linearly).
+   * Only looks "one step", that is, does not follow data flow and does not recursively
+   * unfold nested arithmetic expressions.
    */
   private predicate linearDefinitionStep(DataFlow::Node r, DataFlow::Node root, int sign, int bias) {
     not exists(r.asExpr().getIntValue()) and
@@ -131,6 +154,25 @@ module RangeAnalysis {
         root = expr.getOperand().flow() and
         bias = 0 and
         sign = -1)
+      or
+      exists (UpdateExpr update | r = updateExprResult(update) |
+        root = update.getOperand().flow() and
+        sign = 1 and
+        if update instanceof IncExpr then
+          bias = 1
+        else
+          bias = -1)
+      or
+      exists (CompoundAssignExpr assign | r = compoundAssignResult(assign) |
+        root = assign.getLhs().flow() and
+        sign = 1 and
+        (
+          assign instanceof AssignAddExpr and
+          bias = assign.getRhs().getIntValue()
+          or
+          assign instanceof AssignSubExpr and
+          bias = -assign.getRhs().getIntValue()
+        ))
     )
   }
 
