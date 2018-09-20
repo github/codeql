@@ -303,14 +303,86 @@ module RangeAnalysis {
   }
 
   /**
+   * Holds if `node` is a phi node with `left` and `right` has the only two inputs.
+   *
+   * Note that this predicate is symmetric: when it holds for (left, right) it also holds for (right, left).
+   */
+  predicate binaryPhiNode(DataFlow::Node node, DataFlow::Node left, DataFlow::Node right) {
+    exists (SsaPhiNode phi | node = DataFlow::ssaDefinitionNode(phi) |
+      strictcount(phi.getAnInput()) = 2 and
+      left = DataFlow::ssaDefinitionNode(phi.getAnInput()) and
+      right = DataFlow::ssaDefinitionNode(phi.getAnInput()) and
+      left != right)
+  }
+
+  /**
+   * Holds if `A <= B + c` can be determined based on a phi node.
+   */
+  predicate phiEdge(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, int c) {
+    exists (DataFlow::Node phi, DataFlow::Node left, DataFlow::Node right |
+      binaryPhiNode(phi, left, right) and
+      cfg = phi.getBasicBlock()
+      |
+      // Both inputs are defined in terms of the same root:
+      //  phi = PHI(root + bias1, root + bias2)
+      exists (DataFlow::Node root, int sign, int bias1, int bias2 |
+        linearDefinition(left, root, sign, bias1) and
+        linearDefinition(right, root, sign, bias2) and
+        bias1 < bias2 and
+        // root + bias1 <= phi <= root + bias2
+        (
+          // root <= phi - bias1
+          a = root and asign = 1 and
+          b = phi and bsign = 1 and
+          c = -bias1
+          or
+          // phi <= root + bias2
+          a = phi and asign = 1 and
+          b = root and bsign = 1 and
+          c = bias2
+        )
+      )
+      or
+      // One input is defined in terms of the phi node itself:
+      //  phi = PHI(phi + increment, x)
+      exists (int increment, DataFlow::Node root, int sign, int bias |
+        linearDefinition(left, phi, 1, increment) and
+        linearDefinition(right, root, sign, bias) and
+        (
+          // If increment is positive (or zero):
+          //   phi >= right' + bias
+          increment >= 0 and
+          a = root and asign = sign and
+          b = phi and bsign = 1 and
+          c = -bias
+          or
+          // If increment is negative (or zero):
+          //   phi <= right' + bias
+          increment <= 0 and
+          a = phi and asign = 1 and
+          b = root and bsign = sign and
+          c = bias
+        )
+      )
+    )
+  }
+
+  /**
    * The set of initial edges including those from dual constraints.
    */
   private predicate seedEdge(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, int c) {
     // A <= B + c
     comparisonEdge(cfg, a, asign, b, bsign, c)
     or
+    phiEdge(cfg, a, asign, b, bsign, c)
+  }
+
+  private predicate seedEdgeWithDual(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, int c) {
+    // A <= B + c
+    seedEdge(cfg, a, asign, b, bsign, c)
+    or
     // -B <= -A + c   (dual constraint)
-    comparisonEdge(cfg, b, -bsign, a, -asign, c)
+    seedEdge(cfg, b, -bsign, a, -asign, c)
   }
 
   /**
@@ -339,7 +411,7 @@ module RangeAnalysis {
    * This means negative-weight cycles (contradictions) can be detected using simple cycle detection.
    */
   private predicate extendedEdge(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, int c) {
-    seedEdge(cfg, a, asign, b, bsign, c)
+    seedEdgeWithDual(cfg, a, asign, b, bsign, c)
     or
     exists (DataFlow::Node mid, int midx, ControlFlowNode cfg1, int c1, ControlFlowNode cfg2, int c2 |
       extendedEdge(cfg1, a, asign, mid, midx, c1) and
