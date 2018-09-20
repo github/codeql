@@ -5,3 +5,4 @@ missingPhiOperand
 instructionWithoutSuccessor
 unnecessaryPhiInstruction
 operandAcrossFunctions
+instructionWithoutUniqueBlock

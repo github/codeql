@@ -4,6 +4,7 @@ import IRBlockConstruction as BlockConstruction
 private import semmle.code.cpp.ir.internal.TempVariableTag
 private import InstructionTag
 private import TranslatedElement
+private import TranslatedExpr
 private import TranslatedFunction
 
 class InstructionTagType extends TInstructionTag {
@@ -71,6 +72,13 @@ cached private module Cached {
 
   cached predicate hasModeledMemoryResult(Instruction instruction) {
     none()
+  }
+
+  cached Expr getInstructionResultExpression(Instruction instruction) {
+    exists(TranslatedExpr translatedExpr |
+      translatedExpr = getTranslatedExpr(result) and
+      instruction = translatedExpr.getResult()
+    )
   }
 
   cached Instruction getInstructionOperand(Instruction instruction, OperandTag tag) {

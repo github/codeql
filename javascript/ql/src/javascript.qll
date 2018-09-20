@@ -38,6 +38,7 @@ import semmle.javascript.Regexp
 import semmle.javascript.SSA
 import semmle.javascript.StandardLibrary
 import semmle.javascript.Stmt
+import semmle.javascript.StringConcatenation
 import semmle.javascript.Templates
 import semmle.javascript.Tokens
 import semmle.javascript.TypeScript
@@ -59,6 +60,7 @@ import semmle.javascript.frameworks.Credentials
 import semmle.javascript.frameworks.CryptoLibraries
 import semmle.javascript.frameworks.DigitalOcean
 import semmle.javascript.frameworks.Electron
+import semmle.javascript.frameworks.Files
 import semmle.javascript.frameworks.jQuery
 import semmle.javascript.frameworks.LodashUnderscore
 import semmle.javascript.frameworks.Logging

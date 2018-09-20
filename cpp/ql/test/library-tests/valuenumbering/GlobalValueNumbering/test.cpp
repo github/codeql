@@ -92,3 +92,19 @@ int regression_test00() {
   int x = x = 10;
   return x;
 }
+
+struct Base {
+  int b;
+};
+
+struct Derived : Base {
+  int d;
+};
+
+int inheritanceConversions(Derived* pd) {
+  int x = pd->b;
+  Base* pb = static_cast<Base*>(pd);
+  int y = pb->b;
+
+  return y;
+}
