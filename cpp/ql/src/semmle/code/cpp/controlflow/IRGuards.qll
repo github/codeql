@@ -7,7 +7,7 @@ import semmle.code.cpp.ir.IR
  */
 class GuardCondition extends Expr {
   GuardCondition() {
-    exists(IRGuardCondition ir | this = remove_conversions(ir.getAST()))
+    exists(IRGuardCondition ir | this = ir.getUnconvertedResultExpression())
     or
     // no binary operators in the IR
     exists(Instruction ir |
@@ -157,7 +157,7 @@ private class GuardConditionFromIR extends GuardCondition {
   IRGuardCondition ir;
   
   GuardConditionFromIR() {
-    this = remove_conversions(ir.getAST())
+    this = ir.getUnconvertedResultExpression()
   }
     override predicate controls(BasicBlock controlled, boolean testIsTrue) {
         /* This condition must determine the flow of control; that is, this
@@ -168,8 +168,8 @@ private class GuardConditionFromIR extends GuardCondition {
     /** Holds if (determined by this guard) `left < right + k` evaluates to `isLessThan` if this expression evaluates to `testIsTrue`. */
     override predicate comparesLt(Expr left, Expr right, int k, boolean isLessThan, boolean testIsTrue) {
       exists(Instruction li, Instruction ri |
-        remove_conversions(li.getAST()) = left and
-        remove_conversions(ri.getAST()) = right and
+        li.getUnconvertedResultExpression() = left and
+        ri.getUnconvertedResultExpression() = right and
         ir.comparesLt(li, ri, k, isLessThan, testIsTrue)
       )
     }
@@ -178,8 +178,8 @@ private class GuardConditionFromIR extends GuardCondition {
         If `isLessThan = false` then this implies `left >= right + k`.  */
     override predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan) {
       exists(Instruction li, Instruction ri, boolean testIsTrue |
-        remove_conversions(li.getAST()) = left and
-        remove_conversions(ri.getAST()) = right and
+        li.getUnconvertedResultExpression() = left and
+        ri.getUnconvertedResultExpression() = right and
         ir.comparesLt(li, ri, k, isLessThan, testIsTrue) and
         this.controls(block, testIsTrue)
       )
@@ -188,8 +188,8 @@ private class GuardConditionFromIR extends GuardCondition {
     /** Holds if (determined by this guard) `left == right + k` evaluates to `areEqual` if this expression evaluates to `testIsTrue`. */
     override predicate comparesEq(Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue) {
       exists(Instruction li, Instruction ri |
-        remove_conversions(li.getAST()) = left and
-        remove_conversions(ri.getAST()) = right and
+        li.getUnconvertedResultExpression() = left and
+        ri.getUnconvertedResultExpression() = right and
         ir.comparesEq(li, ri, k, areEqual, testIsTrue)
       )
     }
@@ -198,8 +198,8 @@ private class GuardConditionFromIR extends GuardCondition {
         If `areEqual = false` then this implies `left != right + k`.  */
     override predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual) {
         exists(Instruction li, Instruction ri, boolean testIsTrue |
-        remove_conversions(li.getAST()) = left and
-        remove_conversions(ri.getAST()) = right and
+        li.getUnconvertedResultExpression() = left and
+        ri.getUnconvertedResultExpression() = right and
         ir.comparesEq(li, ri, k, areEqual, testIsTrue)
         and this.controls(block, testIsTrue)
       )
@@ -481,12 +481,4 @@ private predicate add_eq(CompareInstruction cmp, Instruction left, Instruction r
 /** The int value of integer constant expression. */
 private int int_value(Instruction i) {
   result = i.(IntegerConstantInstruction).getValue().toInt()
-}
-
-/** Gets the underlying expression of `e`. */
-private Expr remove_conversions(Expr e) {
-  if e instanceof Conversion
-  then result = e.(Conversion).getExpr+() and
-       not result instanceof Conversion
-  else result = e
 }
