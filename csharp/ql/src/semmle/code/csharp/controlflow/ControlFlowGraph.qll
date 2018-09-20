@@ -2692,63 +2692,137 @@ module ControlFlow {
       class SplitImpl extends TSplit {
         /** Gets a textual representation of this split. */
         string toString() { none() }
+      }
+
+      /**
+       * A split kind. Each control flow node can have at most one split of a
+       * given kind.
+       */
+      abstract class SplitKind extends TSplitKind {
+        /** Gets a split of this kind. */
+        SplitInternal getASplit() { result.getKind() = this }
+
+        /** Holds if some split of this kind applies to control flow element `cfe`. */
+        predicate appliesTo(ControlFlowElement cfe) {
+          this.getASplit().appliesTo(cfe)
+        }
+
+        private predicate appliesToSucc(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+          succ = succ(pred, c) and
+          exists(SplitInternal s |
+            s = this.getASplit() |
+            s.appliesTo(pred) and
+            s.hasSuccessor(pred, succ, c)
+            or
+            s.hasEntry(pred, succ, c)
+          )
+        }
 
         /**
-         * INTERNAL: Do not use.
-         *
-         * Holds if this split applies to control flow element `cfe`.
+         * Holds if some control flow path (but not all paths) to `cfe` leads to
+         * a split of this kind.
          */
-        final predicate appliesTo(ControlFlowElement cfe) {
+        predicate appliesToMaybe(ControlFlowElement cfe) {
+          this.appliesTo(cfe) and
+          exists(ControlFlowElement pred, Completion c |
+            cfe = succ(pred, c) |
+            not this.appliesToSucc(pred, cfe, c)
+          )
+          or
+          exists(ControlFlowElement mid |
+            this.appliesToMaybe(mid) |
+            this.getASplit().hasSuccessor(mid, cfe, _)
+          )
+        }
+
+        /** Holds if all control flow paths to `cfe` lead to a split of this kind. */
+        predicate appliesToAlways(ControlFlowElement cfe) {
+          this.appliesTo(cfe) and
+          not this.appliesToMaybe(cfe)
+        }
+
+        /**
+         * Gets a unique integer representing this split kind. The integer is used
+         * to represent sets of splits as ordered lists.
+         */
+        abstract int getListOrder();
+
+        /**
+         * Gets the rank of this split kind among all the split kinds that apply to
+         * control flow element `cfe`. The rank is based on the order defined by
+         * `getListOrder()`.
+         */
+        int getListRank(ControlFlowElement cfe) {
+          this.appliesTo(cfe) and
+          this = rank[result](SplitKind sk |
+            sk.appliesTo(cfe) |
+            sk order by sk.getListOrder()
+          )
+        }
+
+        /**
+         * Holds if a split of this kind can be the last element in a list
+         * representation of a set of splits for control flow element `cfe`.
+         */
+        predicate endsList(ControlFlowElement cfe, int rnk) {
+          rnk = this.getListRank(cfe) and
+          forall(int rnk0, SplitKind sk |
+            rnk0 > rnk and
+            rnk0 = sk.getListRank(cfe) |
+            sk.appliesToMaybe(cfe)
+          )
+        }
+
+        /** Gets a textual representation of this split kind. */
+        abstract string toString();
+      }
+
+      // This class only exists to not pollute the externally visible `Split` class
+      // with internal helper predicates
+      abstract class SplitInternal extends SplitImpl {
+        /** Gets the kind of this split. */
+        abstract SplitKind getKind();
+
+        /**
+         * Holds if this split is entered when control passes from `pred` to `succ` with
+         * completion `c`.
+         *
+         * Invariant: `hasEntry(pred, succ, c) implies succ = Successor::succ(pred, c)`.
+         */
+        abstract predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c);
+
+        /**
+         * Holds if this split is left when control passes from `pred` to `succ` with
+         * completion `c`.
+         *
+         * Invariant: `hasExit(pred, succ, c) implies succ = Successor::succ(pred, c)`.
+         */
+        abstract predicate hasExit(ControlFlowElement pred, ControlFlowElement succ, Completion c);
+
+        /**
+         * Holds if this split is left when control passes from `pred` out of the enclosing
+         * callable with completion `c`.
+         *
+         * Invariant: `hasExit(pred, c) implies pred.getEnclosingCallable() = Successor::succExit(pred, c)`
+         */
+        abstract predicate hasExit(ControlFlowElement pred, Completion c);
+
+        /**
+         * Holds if this split is maintained when control passes from `pred` to `succ` with
+         * completion `c`.
+         *
+         * Invariant: `hasSuccessor(pred, succ, c) implies succ = Successor::succ(pred, c)`
+         */
+        abstract predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c);
+
+        /** Holds if this split applies to control flow element `cfe`. */
+        predicate appliesTo(ControlFlowElement cfe) {
           this.hasEntry(_, cfe, _)
           or
           exists(ControlFlowElement pred |
             this.appliesTo(pred) |
             this.hasSuccessor(pred, cfe, _)
           )
-        }
-
-        /**
-         * INTERNAL: Do not use.
-         *
-         * Holds if this split is entered when control passes from `pred` to `succ` with
-         * completion `c`.
-         */
-        // Invariant: `hasEntry(pred, succ, c) implies succ = Successor::succ(pred, c)`
-        predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-          none()
-        }
-
-        /**
-         * INTERNAL: Do not use.
-         *
-         * Holds if this split is left when control passes from `pred` to `succ` with
-         * completion `c`.
-         */
-        // Invariant: `hasExit(pred, succ, c) implies succ = Successor::succ(pred, c)`
-        predicate hasExit(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-          none()
-        }
-
-        /**
-         * INTERNAL: Do not use.
-         *
-         * Holds if this split is left when control passes from `pred` out of the enclosing
-         * callable with completion `c`.
-         */
-        // Invariant: `hasExit(pred, c) implies pred.getEnclosingCallable() = Successor::succExit(pred, c)`
-        predicate hasExit(ControlFlowElement pred, Completion c) {
-          none()
-        }
-
-        /**
-         * INTERNAL: Do not use.
-         *
-         * Holds if this split is maintained when control passes from `pred` to `succ` with
-         * completion `c`.
-         */
-        // Invariant: `hasSuccessor(pred, succ, c) implies succ = Successor::succ(pred, c)`
-        predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-          none()
         }
       }
 
@@ -2846,7 +2920,7 @@ module ControlFlow {
          * normal execution of the `try` block (when `M()` returns `true`), and one
          * representing exceptional execution of the `try` block (when `M()` returns `false`).
          */
-        class FinallySplitImpl extends Nodes::Split, TFinallySplit {
+        class FinallySplitImpl extends SplitImpl, TFinallySplit {
           private FinallySplitType type;
 
           FinallySplitImpl() { this = TFinallySplit(type) }
@@ -2865,11 +2939,20 @@ module ControlFlow {
             else
               result = "finally: " + type.toString()
           }
+        }
+
+        private class FinallySplitKind extends SplitKind, TFinallySplitKind {
+          override int getListOrder() { result = 0 }
+          override string toString() { result = "Finally" }
+        }
+
+        private class FinallySplitInternal extends SplitInternal, FinallySplitImpl {
+          override FinallySplitKind getKind() { any() }
 
           override predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
             succ.(FinallyControlFlowElement).isEntryNode() and
             succ = succ(pred, c) and
-            type.isSplitForEntryCompletion(c) and
+            this.getType().isSplitForEntryCompletion(c) and
             (
               // Abnormal entry must enter the correct splitting
               not c instanceof NormalCompletion
@@ -2892,7 +2975,8 @@ module ControlFlow {
           /** Holds if `pred` may exit this split with completion `c`. */
           private predicate exit(ControlFlowElement pred, Completion c) {
             this.appliesToPredecessor(pred) and
-            exists(TryStmt try |
+            exists(TryStmt try, FinallySplitType type |
+              type = this.getType() and
               pred = last(try, c) |
               if pred.(FinallyControlFlowElement).isExitNode(try, c) then (
                 // Finally block can itself exit with completion `c`: either `c` must
@@ -2990,21 +3074,29 @@ module ControlFlow {
          * have two splits: one representing the `try` block throwing an `ArgumentException`,
          * and one representing the `try` block throwing an `ArithmeticException`.
          */
-        class ExceptionHandlerSplitImpl extends Nodes::Split, TExceptionHandlerSplit {
+        class ExceptionHandlerSplitImpl extends SplitImpl, TExceptionHandlerSplit {
           private ExceptionClass ec;
 
-          ExceptionHandlerSplitImpl() {
-            this = TExceptionHandlerSplit(ec)
-          }
+          ExceptionHandlerSplitImpl() { this = TExceptionHandlerSplit(ec) }
 
-          override string toString() {
-            result = "exception: " + ec.toString()
-          }
+          /** Gets the exception type that this split represents. */
+          ExceptionClass getExceptionClass() { result = ec }
+
+          override string toString() { result = "exception: " + ec.toString() }
+        }
+
+        private class ExceptionHandlerSplitKind extends SplitKind, TExceptionHandlerSplitKind {
+          override int getListOrder() { result = 1 }
+          override string toString() { result = "ExceptionHandler" }
+        }
+
+        private class ExceptionHandlerSplitInternal extends SplitInternal, ExceptionHandlerSplitImpl {
+          override ExceptionHandlerSplitKind getKind() { any() }
 
           override predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
             // Entry into first catch clause
             exists(TryStmt ts |
-              ec = getAThrownException(ts, pred, c) |
+              this.getExceptionClass() = getAThrownException(ts, pred, c) |
               succ = succ(pred, c) and
               succ = ts.getCatchClause(0).(SpecificCatchClause)
             )
@@ -3016,7 +3108,8 @@ module ControlFlow {
            * this split.
            */
           private predicate appliesToCatchClause(SpecificCatchClause scc, TMatch match) {
-            exists(TryStmt ts |
+            exists(TryStmt ts, ExceptionClass ec |
+              ec = this.getExceptionClass() and
               ec = getAThrownException(ts, _, _) and
               scc = ts.getACatchClause() |
               if scc.getCaughtExceptionType() = ec.getABaseType*() then
@@ -3072,7 +3165,7 @@ module ControlFlow {
               pred = lastTryStmtCatchClause(ts, last, c) |
               ts.getCatchClause(last) = scc and
               scc.isLast() and
-              c.getExceptionClass() = ec
+              c.getExceptionClass() = this.getExceptionClass()
             )
           }
 
@@ -3112,53 +3205,39 @@ module ControlFlow {
       }
 
       /**
-       * Gets an integer representing the kind of split `s`. The kind is used
-       * to make an arbitrary order on splits.
-       */
-      private int getSplitKind(Nodes::Split s) {
-        s = TFinallySplit(_) and result = 0
-        or
-        s = TExceptionHandlerSplit(_) and result = 1
-      }
-
-      /** Gets the rank of `split` among all the splits that apply to `cfe`. */
-      int getSplitRank(Nodes::Split split, ControlFlowElement cfe) {
-        split.appliesTo(cfe) and
-        getSplitKind(split) = rank[result](int i |
-          i = getSplitKind(any(Nodes::Split s | s.appliesTo(cfe)))
-        )
-      }
-
-      /**
        * A set of control flow node splits. The set is represented by a list of splits,
-       * ordered by rank.
+       * ordered by ascending rank.
        */
       class Splits extends TSplits {
         /**
-         * Holds if this subset of splits, `s_n ::  ... s_1 :: NIL`, applies to control
-         * flow element `cfe`. That is, `i = getSplitRank(s_i, cfe)`, for `i = 1 .. n`,
-         * and `rnk = getSplitRank(s_n)`.
+         * Holds if this non-empty set of splits applies to control flow
+         * element `cfe`, starting from rank `rnk`.
+         *
+         * As a special case, `appliesToFromRank(ControlFlowElement cfe, 1)`
+         * means that this non-empty set of splits applies fully to `cfe`.
          */
-        private predicate appliesToSub(ControlFlowElement cfe, int rnk) {
-          exists(Nodes::Split last |
-            this = TSplitsCons(last, TSplitsNil()) |
-            rnk = getSplitRank(last, cfe) and
-            rnk = 1
+        predicate appliesToFromRank(ControlFlowElement cfe, int rnk) {
+          exists(SplitInternal end |
+            this = TSplitsCons(end, TSplitsNil()) |
+            end.appliesTo(cfe) and
+            end.getKind().endsList(cfe, rnk)
           )
           or
-          exists(Nodes::Split head, Splits tail |
-            this = TSplitsCons(head, tail) |
-            tail.appliesToSub(cfe, rnk - 1) and
-            rnk = getSplitRank(head, cfe)
+          this.appliesToFromRankCons(cfe, _, _, rnk)
+          or
+          exists(SplitKind sk |
+            this.appliesToFromRank(cfe, rnk + 1) |
+            sk.appliesToMaybe(cfe) and
+            rnk = sk.getListRank(cfe)
           )
         }
 
-        /** Holds if this set of splits applies to control flow element `cfe`. */
-        predicate appliesTo(ControlFlowElement cfe) {
-          this = TSplitsNil() and
-          not exists(Nodes::Split s | s.appliesTo(cfe))
-          or
-          this.appliesToSub(cfe, max(getSplitRank(_, cfe)))
+        pragma [noinline]
+        predicate appliesToFromRankCons(ControlFlowElement cfe, SplitInternal head, Splits tail, int rnk) {
+          tail.appliesToFromRank(cfe, rnk + 1) and
+          this = TSplitsCons(head, tail) and
+          head.appliesTo(cfe) and
+          rnk = head.getKind().getListRank(cfe)
         }
 
         /** Gets a textual representation of this set of splits. */
@@ -3166,19 +3245,22 @@ module ControlFlow {
           this = TSplitsNil() and
           result = ""
           or
-          exists(Nodes::Split head, Splits tail, string res |
+          exists(SplitInternal head, Splits tail, string headString, string tailString |
             this = TSplitsCons(head, tail) |
-            res = tail.toString() and
-            if res = "" then
-              result = head.toString()
+            headString = head.toString() and
+            tailString = tail.toString() and
+            if tailString = "" then
+              result = headString
+            else if headString = "" then
+              result = tailString
             else
-              result = head.toString() + ", " + res
+              result = headString + ", " + tailString
           )
         }
 
         /** Gets a split belonging to this set of splits. */
-        Nodes::Split getASplit() {
-          exists(Nodes::Split head, Splits tail |
+        SplitInternal getASplit() {
+          exists(SplitInternal head, Splits tail |
             this = TSplitsCons(head, tail) |
             result = head
             or
@@ -3198,26 +3280,110 @@ module ControlFlow {
         succSplits = TSplitsNil() // initially no splits
       }
 
-      pragma [noinline]
-      private predicate succSplits0(ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits, Completion c) {
-        succ = succ(pred, c) and
-        predSplits.appliesTo(pred) and
-        succSplits.appliesTo(succ)
+      private predicate succSplits0(ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c) {
+        // Performance optimization: if we know that `pred` and `succ` must have the
+        // same set of splits, there is no need to perform the checks in `succSplits1()`
+        // through `succSplits3()` below
+        exists(Reachability::SameSplitsBlock b |
+          pred = b.getAnElement() and
+          b.isReachable(predSplits) and
+          succ = succ(pred, c) and
+          (succ = b.getAnElement() implies succ = b)
+        )
+      }
+
+      pragma [inline]
+      private predicate entryOrSuccessor(ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, SplitInternal succHead, Completion c) {
+        succHead.hasEntry(pred, succ, c)
+        or
+        succHead = predSplits.getASplit() and
+        succHead.hasSuccessor(pred, succ, c)
       }
 
       pragma [noinline]
-      private predicate succSplits1(ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits, Completion c) {
-        succSplits0(pred, predSplits, succ, succSplits, c) and
-        // Each successor split must be either newly entered into, or must be
-        // passed over from a predecessor split
-        forall(Nodes::Split succSplit |
-          succSplit = succSplits.getASplit() |
-          succSplit.hasEntry(pred, succ, c)
+      private predicate endSplits(ControlFlowElement cfe, SplitInternal end, Splits splits, int rnk) {
+        splits = TSplitsCons(end, TSplitsNil()) and
+        end.getKind().endsList(cfe, rnk)
+      }
+
+      /**
+       * Holds if
+       * - the set of splits `predSplits` applies to `pred`;
+       * - `succ` is a successor of `pred` with completion `c`;
+       * - the non-empty set of splits `succSplits` applies to `succ`, starting
+       *   from rank `rnk`; and
+       * - each split in `succSplits` is either newly entered into, or passed
+       *   over from one of the predecessor splits in `predSplits`.
+       */
+      private predicate succSplits1(ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits, Completion c, int rnk) {
+        succSplits0(pred, predSplits, succ, c) and
+        exists(SplitInternal end |
+          endSplits(succ, end, succSplits, rnk) |
+          entryOrSuccessor(pred, predSplits, succ, end, c)
+        )
+        or
+        exists(SplitInternal succHead, Splits succTail |
+          succSplits1(pred, predSplits, succ, succTail, c, rnk + 1) |
+          succSplits.appliesToFromRankCons(succ, succHead, succTail, rnk) and
+          entryOrSuccessor(pred, predSplits, succ, succHead, c)
+        )
+        or
+        exists(SplitKind sk |
+          succSplits1(pred, predSplits, succ, succSplits, c, rnk + 1) |
+          sk.appliesToMaybe(succ) and
+          rnk = sk.getListRank(succ)
+        )
+      }
+
+      /**
+       * Holds if
+       * - the set of splits `predSplits` applies to `pred`;
+       * - `succ` is a successor of `pred` with completion `c`;
+       * - the set of splits `succSplits` applies to `succ`; and
+       * - each split in `succSplits` is either newly entered into, or passed
+       *   over from one of the predecessor splits in `predSplits`.
+       */
+      private predicate succSplits2(ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits, Completion c) {
+        succSplits1(pred, predSplits, succ, succSplits, c, 1)
+        or
+        succSplits0(pred, predSplits, succ, c) and
+        succSplits = TSplitsNil() and
+        not exists(SplitKind sk | sk.appliesToAlways(succ))
+      }
+
+      /**
+       * Holds if
+       * - the set of splits `predSplits` applies to `pred`;
+       * - `succ` is a successor of `pred` with completion `c`;
+       * - the set of splits `succSplits` applies to `succ`;
+       * - each split in `succSplits` is either newly entered into, or passed
+       *   over from one of the predecessor splits in `predSplits`;
+       * - each split in `predSplits` (except possibly those in `predSplitsRemaining`)
+       *   is passed over to one of the successor splits in `succSplits`, or left; and
+       * - `succSplits` contains a split for each newly entered split.
+       */
+      private predicate succSplits3(ControlFlowElement pred, Splits predSplits, Splits predSplitsRemaining, ControlFlowElement succ, Splits succSplits, Completion c) {
+        succSplits2(pred, predSplits, succ, succSplits, c) and
+        predSplitsRemaining = predSplits and
+        // Enter a new split when required
+        forall(SplitInternal split |
+          split.hasEntry(pred, succ, c) |
+          split = succSplits.getASplit()
+        )
+        or
+        exists(SplitInternal predSplit |
+          succSplits3(pred, predSplits, TSplitsCons(predSplit, predSplitsRemaining), succ, succSplits, c) |
+          // Each predecessor split must be either passed over as a successor split,
+          // or must be left (possibly entering a new split)
+          predSplit.hasSuccessor(pred, succ, c) and
+          predSplit = succSplits.getASplit()
           or
-          exists(Nodes::Split predSplit |
-            predSplit = predSplits.getASplit() |
-            succSplit = predSplit and
-            predSplit.hasSuccessor(pred, succ, c)
+          predSplit.hasExit(pred, succ, c) and
+          forall(SplitInternal succSplit |
+            succSplit = succSplits.getASplit() |
+            succSplit.getKind() != predSplit.getKind()
+            or
+            succSplit.hasEntry(pred, succ, c)
           )
         )
       }
@@ -3229,27 +3395,16 @@ module ControlFlow {
       predicate succSplits(ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits, SuccessorType t) {
         exists(Completion c |
           t.matchesCompletion(c) |
-          succSplits1(pred, predSplits, succ, succSplits, c) and
-          // Enter a new split when required
-          forall(Nodes::Split split |
-            split.hasEntry(pred, succ, c) |
-            succSplits.getASplit() = split
-          ) and
-          // Each predecessor split must be either passed over as a successor split,
-          // or must be left (possibly entering a new split)
-          forall(Nodes::Split predSplit |
-            predSplit = predSplits.getASplit() |
-            predSplit.hasSuccessor(pred, succ, c) and
-            predSplit = succSplits.getASplit()
-            or
-            predSplit.hasExit(pred, succ, c) and
-            forall(Nodes::Split succSplit |
-              succSplit = succSplits.getASplit() |
-              getSplitKind(succSplit) != getSplitKind(predSplit)
-              or
-              succSplit.hasEntry(pred, succ, c)
-            )
+          exists(Reachability::SameSplitsBlock b |
+            pred = b.getAnElement() |
+            b.isReachable(predSplits) and
+            succ = succ(pred, c) and
+            succ = b.getAnElement() and
+            not succ = b and
+            succSplits = predSplits
           )
+          or
+          succSplits3(pred, predSplits, TSplitsNil(), succ, succSplits, c)
         )
       }
 
@@ -3258,11 +3413,12 @@ module ControlFlow {
        * `succ` with type `t`.
        */
       predicate succExitSplits(ControlFlowElement pred, Splits predSplits, Callable succ, SuccessorType t) {
-        exists(Completion c |
-          t.matchesCompletion(c) |
+        exists(Reachability::SameSplitsBlock b, Completion c |
+          pred = b.getAnElement() |
+          b.isReachable(predSplits) and
+          t.matchesCompletion(c) and
           succ = succExit(pred, c) and
-          predSplits.appliesTo(pred) and
-          forall(Nodes::Split predSplit |
+          forall(SplitInternal predSplit |
             predSplit = predSplits.getASplit() |
             predSplit.hasExit(pred, c)
           )
@@ -3281,10 +3437,16 @@ module ControlFlow {
       private predicate startsSplits(ControlFlowElement cfe) {
         cfe = succEntry(_)
         or
-        exists(Nodes::Split s |
+        exists(SplitInternal s |
           s.hasEntry(_, cfe, _)
           or
           s.hasExit(_, cfe, _)
+        )
+        or
+        exists(ControlFlowElement pred, SplitInternal split, Completion c |
+          cfe = succ(pred, c) |
+          split.appliesTo(pred) and
+          not split.hasSuccessor(pred, cfe, c)
         )
       }
 
@@ -3312,8 +3474,7 @@ module ControlFlow {
           result = this
         }
 
-        /** Gets a successor block, where the splits may be different. */
-        SameSplitsBlock getASuccessor(Splits predSplits, Splits succSplits) {
+        private SameSplitsBlock getASuccessor(Splits predSplits, Splits succSplits) {
           exists(ControlFlowElement pred |
             pred = this.getAnElement() |
             succSplits(pred, predSplits, result, succSplits, _)
@@ -3352,6 +3513,12 @@ module ControlFlow {
         }
 
       cached
+      newtype TSplitKind =
+        TFinallySplitKind()
+        or
+        TExceptionHandlerSplitKind()
+
+      cached
       newtype TSplit =
         TFinallySplit(FinallySplitting::FinallySplitType type)
         or
@@ -3361,16 +3528,14 @@ module ControlFlow {
       newtype TSplits =
         TSplitsNil()
         or
-        TSplitsCons(Nodes::Split head, Splits tail) {
-          exists(int rnk, ControlFlowElement cfe |
-            rnk = getSplitRank(head, cfe) |
-            rnk = 1 and
-            tail = TSplitsNil()
+        TSplitsCons(SplitInternal head, Splits tail) {
+          exists(ControlFlowElement cfe, SplitKind sk |
+            head.appliesTo(cfe) and
+            sk = head.getKind() |
+            tail = TSplitsNil() and
+            sk.endsList(cfe, _)
             or
-            exists(Nodes::Split tailHead |
-              tail = TSplitsCons(tailHead, _) |
-              rnk - 1 = getSplitRank(tailHead, cfe)
-            )
+            tail.appliesToFromRank(cfe, sk.getListRank(cfe) + 1)
           )
         }
 

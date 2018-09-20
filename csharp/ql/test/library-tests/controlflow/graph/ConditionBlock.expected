@@ -40,12 +40,12 @@
 | CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:17:41:17:43 | "1" | false |
 | CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:17:41:17:43 | [finally: exception(ArgumentNullException)] "1" | true |
 | CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:17:41:17:43 | [finally: exception(Exception)] "1" | true |
-| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(ArgumentNullException)] catch (...) {...} | true |
-| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(Exception)] catch (...) {...} | true |
 | CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:19:13:22:13 | [exception: Exception] catch (...) {...} | false |
-| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] catch (...) {...} | true |
-| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(Exception)] catch (...) {...} | true |
 | CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException] catch (...) {...} | false |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:19:13:22:13 | [finally: exception(ArgumentNullException), exception: Exception] catch (...) {...} | true |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:19:13:22:13 | [finally: exception(ArgumentNullException), exception: NullReferenceException] catch (...) {...} | true |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:19:13:22:13 | [finally: exception(Exception), exception: Exception] catch (...) {...} | true |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:19:13:22:13 | [finally: exception(Exception), exception: NullReferenceException] catch (...) {...} | true |
 | CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:20:13:22:13 | [finally: exception(ArgumentNullException)] {...} | true |
 | CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:20:13:22:13 | [finally: exception(Exception)] {...} | true |
 | CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:20:13:22:13 | {...} | false |

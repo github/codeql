@@ -33,18 +33,18 @@
 | 16 | 21 | CatchInFinally.cs:16:21:16:36 | ... == ... | true | 17 | 41 | CatchInFinally.cs:17:41:17:43 | "1" |
 | 16 | 21 | CatchInFinally.cs:16:21:16:36 | [finally: exception(ArgumentNullException)] ... == ... | true | 17 | 41 | CatchInFinally.cs:17:41:17:43 | [finally: exception(ArgumentNullException)] "1" |
 | 16 | 21 | CatchInFinally.cs:16:21:16:36 | [finally: exception(Exception)] ... == ... | true | 17 | 41 | CatchInFinally.cs:17:41:17:43 | [finally: exception(Exception)] "1" |
-| 19 | 39 | CatchInFinally.cs:19:39:19:54 | [exception: Exception, finally: exception(ArgumentNullException)] ... == ... | false | 23 | 13 | CatchInFinally.cs:23:13:26:13 | [finally: exception(ArgumentNullException)] catch {...} |
-| 19 | 39 | CatchInFinally.cs:19:39:19:54 | [exception: Exception, finally: exception(ArgumentNullException)] ... == ... | true | 20 | 13 | CatchInFinally.cs:20:13:22:13 | [finally: exception(ArgumentNullException)] {...} |
-| 19 | 39 | CatchInFinally.cs:19:39:19:54 | [exception: Exception, finally: exception(Exception)] ... == ... | false | 23 | 13 | CatchInFinally.cs:23:13:26:13 | [finally: exception(Exception)] catch {...} |
-| 19 | 39 | CatchInFinally.cs:19:39:19:54 | [exception: Exception, finally: exception(Exception)] ... == ... | true | 20 | 13 | CatchInFinally.cs:20:13:22:13 | [finally: exception(Exception)] {...} |
 | 19 | 39 | CatchInFinally.cs:19:39:19:54 | [exception: Exception] ... == ... | false | 23 | 13 | CatchInFinally.cs:23:13:26:13 | catch {...} |
 | 19 | 39 | CatchInFinally.cs:19:39:19:54 | [exception: Exception] ... == ... | true | 20 | 13 | CatchInFinally.cs:20:13:22:13 | {...} |
-| 19 | 39 | CatchInFinally.cs:19:39:19:54 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] ... == ... | false | 23 | 13 | CatchInFinally.cs:23:13:26:13 | [finally: exception(ArgumentNullException)] catch {...} |
-| 19 | 39 | CatchInFinally.cs:19:39:19:54 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] ... == ... | true | 20 | 13 | CatchInFinally.cs:20:13:22:13 | [finally: exception(ArgumentNullException)] {...} |
-| 19 | 39 | CatchInFinally.cs:19:39:19:54 | [exception: NullReferenceException, finally: exception(Exception)] ... == ... | false | 23 | 13 | CatchInFinally.cs:23:13:26:13 | [finally: exception(Exception)] catch {...} |
-| 19 | 39 | CatchInFinally.cs:19:39:19:54 | [exception: NullReferenceException, finally: exception(Exception)] ... == ... | true | 20 | 13 | CatchInFinally.cs:20:13:22:13 | [finally: exception(Exception)] {...} |
 | 19 | 39 | CatchInFinally.cs:19:39:19:54 | [exception: NullReferenceException] ... == ... | false | 23 | 13 | CatchInFinally.cs:23:13:26:13 | catch {...} |
 | 19 | 39 | CatchInFinally.cs:19:39:19:54 | [exception: NullReferenceException] ... == ... | true | 20 | 13 | CatchInFinally.cs:20:13:22:13 | {...} |
+| 19 | 39 | CatchInFinally.cs:19:39:19:54 | [finally: exception(ArgumentNullException), exception: Exception] ... == ... | false | 23 | 13 | CatchInFinally.cs:23:13:26:13 | [finally: exception(ArgumentNullException)] catch {...} |
+| 19 | 39 | CatchInFinally.cs:19:39:19:54 | [finally: exception(ArgumentNullException), exception: Exception] ... == ... | true | 20 | 13 | CatchInFinally.cs:20:13:22:13 | [finally: exception(ArgumentNullException)] {...} |
+| 19 | 39 | CatchInFinally.cs:19:39:19:54 | [finally: exception(ArgumentNullException), exception: NullReferenceException] ... == ... | false | 23 | 13 | CatchInFinally.cs:23:13:26:13 | [finally: exception(ArgumentNullException)] catch {...} |
+| 19 | 39 | CatchInFinally.cs:19:39:19:54 | [finally: exception(ArgumentNullException), exception: NullReferenceException] ... == ... | true | 20 | 13 | CatchInFinally.cs:20:13:22:13 | [finally: exception(ArgumentNullException)] {...} |
+| 19 | 39 | CatchInFinally.cs:19:39:19:54 | [finally: exception(Exception), exception: Exception] ... == ... | false | 23 | 13 | CatchInFinally.cs:23:13:26:13 | [finally: exception(Exception)] catch {...} |
+| 19 | 39 | CatchInFinally.cs:19:39:19:54 | [finally: exception(Exception), exception: Exception] ... == ... | true | 20 | 13 | CatchInFinally.cs:20:13:22:13 | [finally: exception(Exception)] {...} |
+| 19 | 39 | CatchInFinally.cs:19:39:19:54 | [finally: exception(Exception), exception: NullReferenceException] ... == ... | false | 23 | 13 | CatchInFinally.cs:23:13:26:13 | [finally: exception(Exception)] catch {...} |
+| 19 | 39 | CatchInFinally.cs:19:39:19:54 | [finally: exception(Exception), exception: NullReferenceException] ... == ... | true | 20 | 13 | CatchInFinally.cs:20:13:22:13 | [finally: exception(Exception)] {...} |
 | 21 | 21 | Switch.cs:21:21:21:29 | ... == ... | false | 23 | 27 | Switch.cs:23:27:23:27 | 0 |
 | 21 | 21 | Switch.cs:21:21:21:29 | ... == ... | true | 22 | 21 | Switch.cs:22:21:22:27 | return ...; |
 | 22 | 18 | cflow.cs:22:18:22:23 | ... < ... | false | 24 | 9 | cflow.cs:24:9:34:9 | for (...;...;...) ... |
