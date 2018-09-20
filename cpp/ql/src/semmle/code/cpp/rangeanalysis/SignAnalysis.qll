@@ -214,10 +214,6 @@ private predicate lowerBound(IRGuardCondition comp, Instruction lowerbound, Inst
     valueNumber(bounded) = valueNumber(compared) and
     bounded = pos.getAnOperand() and
     not unknownSign(lowerbound) and
-  /*
-   *  Java library uses guardControlsSsaRead here. I think that the phi node logic doesn't need to
-   * be duplicated but the implication predicates may need to be ported
-   */
    (
      isStrict = true and
      adjustment = 0
@@ -239,11 +235,6 @@ private predicate upperBound(IRGuardCondition comp, Instruction upperbound, Inst
     valueNumber(bounded) = valueNumber(compared) and
     bounded = pos.getAnOperand() and
     not unknownSign(upperbound) and
-    
-  /*
-   * Java library uses guardControlsSsaRead here. I think that the phi node logic doesn't need to
-   * be duplicated but the implication predicates may need to be ported
-   */
    (
      isStrict = true and
      adjustment = 0
