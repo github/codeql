@@ -17,6 +17,7 @@
 *.qhelp eol=lf
 *.html eol=lf
 *.js eol=lf
+*.mjs eol=lf
 *.ts eol=lf
 *.json eol=lf
 *.yml eol=lf
