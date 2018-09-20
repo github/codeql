@@ -21,3 +21,7 @@
 *.ts eol=lf
 *.json eol=lf
 *.yml eol=lf
+*.c eol=lf
+*.cpp eol=lf
+*.h eol=lf
+*.hpp eol=lf
