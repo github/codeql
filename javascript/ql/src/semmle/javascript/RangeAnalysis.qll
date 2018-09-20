@@ -368,6 +368,23 @@ module RangeAnalysis {
   }
 
   /**
+   * Holds constraints derived from `A = const`.
+   *
+   * `A = c` is written to `A + A = 2c` which is then converted to `<=` and `>=`.
+   *
+   *   A + A <= 2c  becomes  A <= -A + 2c
+   *   A + A >= 2c  becomes  -A <= A - 2c
+   */
+  predicate constantEdge(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, int c) {
+    exists (NumberLiteral literal | cfg = literal |
+      a = literal.flow() and
+      b = a and
+      (asign = 1 or asign = -1) and
+      bsign = -asign and
+      c = literal.getIntValue() * 2 * asign)
+  }
+
+  /**
    * The set of initial edges including those from dual constraints.
    */
   private predicate seedEdge(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, int c) {
@@ -375,6 +392,8 @@ module RangeAnalysis {
     comparisonEdge(cfg, a, asign, b, bsign, c)
     or
     phiEdge(cfg, a, asign, b, bsign, c)
+    or
+    constantEdge(cfg, a, asign, b, bsign, c)
   }
 
   private predicate seedEdgeWithDual(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, int c) {
