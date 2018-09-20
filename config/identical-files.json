@@ -56,8 +56,8 @@
         "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/SSAConstruction.qll"
     ],
     "C++ IR ValueNumber": [
-        "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/internal/gvn/ValueNumber.qll",
-        "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/gvn/ValueNumber.qll",
-        "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/gvn/ValueNumber.qll"
+        "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/gvn/ValueNumbering.qll",
+        "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/gvn/ValueNumbering.qll",
+        "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/gvn/ValueNumbering.qll"
     ]
 }

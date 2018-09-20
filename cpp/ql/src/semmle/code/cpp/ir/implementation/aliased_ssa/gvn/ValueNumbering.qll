@@ -1,4 +1,4 @@
-private import ValueNumberInternal
+private import internal.ValueNumberingInternal
 import cpp
 private import IR
 
