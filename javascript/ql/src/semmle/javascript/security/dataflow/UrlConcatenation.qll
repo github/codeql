@@ -11,16 +11,13 @@ import javascript
  * `nd` or one of its operands, assuming that it is a concatenation.
  */
 private predicate hasSanitizingSubstring(DataFlow::Node nd) {
-  exists (Expr e | e = nd.asExpr() |
-    (e instanceof AddExpr or e instanceof AssignAddExpr) and
-    hasSanitizingSubstring(DataFlow::valueNode(e.getAChildExpr()))
-    or
-    e.getStringValue().regexpMatch(".*[?#].*")
-  )
+  nd.asExpr().getStringValue().regexpMatch(".*[?#].*")
   or
-  nd.isIncomplete(_)
+  hasSanitizingSubstring(StringConcatenation::getAnOperand(nd))
   or
   hasSanitizingSubstring(nd.getAPredecessor())
+  or
+  nd.isIncomplete(_)
 }
 
 /**
@@ -30,17 +27,7 @@ private predicate hasSanitizingSubstring(DataFlow::Node nd) {
  * This is considered as a sanitizing edge for the URL redirection queries.
  */
 predicate sanitizingPrefixEdge(DataFlow::Node source, DataFlow::Node sink) {
-  exists (AddExpr add, DataFlow::Node left |
-    source.asExpr() = add.getRightOperand() and
-    sink.asExpr() = add and
-    left.asExpr() = add.getLeftOperand() and
-    hasSanitizingSubstring(left)
-  )
-  or
-  exists (TemplateLiteral tl, int i, DataFlow::Node elt |
-    source.asExpr() = tl.getElement(i) and
-    sink.asExpr() = tl and
-    elt.asExpr() = tl.getElement([0..i-1]) and
-    hasSanitizingSubstring(elt)
-  )
+  exists (DataFlow::Node operator, int n |
+    StringConcatenation::taintStep(source, sink, operator, n) and
+    hasSanitizingSubstring(StringConcatenation::getOperand(operator, [0..n-1])))
 }

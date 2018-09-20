@@ -10,19 +10,47 @@
 import javascript
 
 /**
- * Holds if the receiver of `method` is bound in a method of its class.
+ * Holds if the receiver of `method` is bound.
  */
 private predicate isBoundInMethod(MethodDeclaration method) {
   exists (DataFlow::ThisNode thiz, MethodDeclaration bindingMethod |
     bindingMethod.getDeclaringClass() = method.getDeclaringClass() and
     not bindingMethod.isStatic() and
-    thiz.getBinder().getAstNode() = bindingMethod.getBody() and
-    exists (DataFlow::Node rhs, DataFlow::MethodCallNode bind |
-      // this.<methodName> = <expr>.bind(...)
-      thiz.hasPropertyWrite(method.getName(), rhs) and
-      bind.flowsTo(rhs) and
-      bind.getMethodName() = "bind"
+    thiz.getBinder().getAstNode() = bindingMethod.getBody() |
+    // require("auto-bind")(this)
+    thiz.flowsTo(DataFlow::moduleImport("auto-bind").getACall().getArgument(0))
+    or
+    exists (string name |
+      name = method.getName() |
+      exists (DataFlow::Node rhs, DataFlow::MethodCallNode bind |
+        // this.<methodName> = <expr>.bind(...)
+        thiz.hasPropertyWrite(name, rhs) and
+        bind.flowsTo(rhs) and
+        bind.getMethodName() = "bind"
+      )
+      or
+      exists (DataFlow::MethodCallNode bindAll |
+        bindAll.getMethodName() = "bindAll" and
+        thiz.flowsTo(bindAll.getArgument(0)) |
+        // _.bindAll(this, <name1>)
+        bindAll.getArgument(1).mayHaveStringValue(name)
+        or
+        // _.bindAll(this, [<name1>, <name2>])
+        exists (DataFlow::ArrayLiteralNode names |
+          names.flowsTo(bindAll.getArgument(1)) and
+          names.getAnElement().mayHaveStringValue(name)
+        )
+      )
     )
+  )
+  or
+  exists (Expr decoration, string name |
+    decoration = method.getADecorator().getExpression() and
+    name.regexpMatch("(?i).*(bind|bound).*") |
+    // @autobind
+    decoration.(Identifier).getName() = name or
+    // @action.bound
+    decoration.(PropAccess).getPropertyName() = name
   )
 }
 

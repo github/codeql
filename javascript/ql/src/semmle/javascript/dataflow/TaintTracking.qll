@@ -185,38 +185,15 @@ module TaintTracking {
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       succ = this and
-      (
-        exists (Expr e, Expr f | e = this.asExpr() and f = pred.asExpr() |
-          // arrays with tainted elements and objects with tainted property names are tainted
-          e.(ArrayExpr).getAnElement() = f or
-          exists (Property prop | e.(ObjectExpr).getAProperty() = prop |
-            prop.isComputed() and f = prop.getNameExpr()
-          )
-          or
-          // awaiting a tainted expression gives a tainted result
-          e.(AwaitExpr).getOperand() = f
+      exists (Expr e, Expr f | e = this.asExpr() and f = pred.asExpr() |
+        // arrays with tainted elements and objects with tainted property names are tainted
+        e.(ArrayExpr).getAnElement() = f or
+        exists (Property prop | e.(ObjectExpr).getAProperty() = prop |
+          prop.isComputed() and f = prop.getNameExpr()
         )
         or
-        // `array.map(function (elt, i, ary) { ... })`: if `array` is tainted, then so are
-        // `elt` and `ary`; similar for `forEach`
-        exists (MethodCallExpr m, Function f, int i, SimpleParameter p |
-          (m.getMethodName() = "map" or m.getMethodName() = "forEach") and
-          (i = 0 or i = 2) and
-          m.getArgument(0).analyze().getAValue().(AbstractFunction).getFunction() = f and
-          p = f.getParameter(i) and
-          this = DataFlow::parameterNode(p) and
-          pred.asExpr() = m.getReceiver()
-        )
-        or
-        // `array.map` with tainted return value in callback
-        exists (MethodCallExpr m, Function f |
-          this.asExpr() = m and
-          m.getMethodName() = "map" and
-          m.getArgument(0) = f and // Require the argument to be a closure to avoid spurious call/return flow
-          pred = f.getAReturnedExpr().flow())
-        or
-        // `array.push(e)`: if `e` is tainted, then so is `array`
-        succ.(DataFlow::SourceNode).getAMethodCall("push").getAnArgument() = pred
+        // awaiting a tainted expression gives a tainted result
+        e.(AwaitExpr).getOperand() = f
       )
       or
       // reading from a tainted object yields a tainted result
@@ -231,6 +208,61 @@ module TaintTracking {
         succ = DataFlow::ssaDefinitionNode(ssa)
       )
     }
+  }
+
+  /**
+   * A taint propagating data flow edge caused by the builtin array functions.
+   */
+  private class ArrayFunctionTaintStep extends AdditionalTaintStep {
+    DataFlow::CallNode call;
+
+    ArrayFunctionTaintStep() {
+      this = call
+    }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      // `array.map(function (elt, i, ary) { ... })`: if `array` is tainted, then so are
+      // `elt` and `ary`; similar for `forEach`
+      exists (string name, Function f, int i |
+        (name = "map" or name = "forEach") and
+        (i = 0 or i = 2) and
+        call.getArgument(0).analyze().getAValue().(AbstractFunction).getFunction() = f and
+        pred.(DataFlow::SourceNode).getAMethodCall(name) = call and
+        succ = DataFlow::parameterNode(f.getParameter(i))
+      )
+      or
+      // `array.map` with tainted return value in callback
+      exists (DataFlow::FunctionNode f |
+        call.(DataFlow::MethodCallNode).getMethodName() = "map" and
+        call.getArgument(0) = f and // Require the argument to be a closure to avoid spurious call/return flow
+        pred = f.getAReturn() and
+        succ = call
+      )
+      or
+      // `array.push(e)`, `array.unshift(e)`: if `e` is tainted, then so is `array`.
+      exists (string name |
+        name = "push" or
+        name = "unshift" |
+        pred = call.getAnArgument() and
+        succ.(DataFlow::SourceNode).getAMethodCall(name) = call
+      )
+      or
+      // `e = array.pop()`, `e = array.shift()`, or similar: if `array` is tainted, then so is `e`.
+      exists (string name |
+        name = "pop" or
+        name = "shift" or
+        name = "slice" or
+        name = "splice" |
+        call.(DataFlow::MethodCallNode).calls(pred, name) and
+        succ = call
+      )
+      or
+      // `e = Array.from(x)`: if `x` is tainted, then so is `e`.
+      call = DataFlow::globalVarRef("Array").getAPropertyRead("from").getACall() and
+      pred = call.getAnArgument() and
+      succ = call
+    }
+
   }
 
   /**
@@ -326,19 +358,8 @@ module TaintTracking {
    */
   class StringConcatenationTaintStep extends AdditionalTaintStep, DataFlow::ValueNode {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      succ = this and
-      (
-        // addition propagates taint
-        astNode.(AddExpr).getAnOperand() = pred.asExpr() or
-        astNode.(AssignAddExpr).getAChildExpr() = pred.asExpr() or
-        exists (SsaExplicitDefinition ssa |
-          astNode = ssa.getVariable().getAUse() and
-          pred.asExpr().(AssignAddExpr) = ssa.getDef()
-        )
-        or
-        // templating propagates taint
-        astNode.(TemplateLiteral).getAnElement() = pred.asExpr()
-      )
+        succ = this and
+        StringConcatenation::taintStep(pred, succ)
     }
   }
   

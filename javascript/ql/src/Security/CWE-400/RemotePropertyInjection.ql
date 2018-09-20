@@ -5,7 +5,7 @@
  *   
  * @kind problem
  * @problem.severity warning
- * @precision high
+ * @precision medium
  * @id js/remote-property-injection
  * @tags security
  *       external/cwe/cwe-250
