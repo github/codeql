@@ -45,6 +45,10 @@ newtype TValueNumber =
   TUnaryValueNumber(FunctionIR funcIR, Opcode opcode, Type type, ValueNumber operand) {
     unaryValueNumber(_, funcIR, opcode, type, operand)
   } or
+  TInheritanceConversionValueNumber(FunctionIR funcIR, Opcode opcode, Class baseClass,
+      Class derivedClass, ValueNumber operand) {
+    inheritanceConversionValueNumber(_, funcIR, opcode, baseClass, derivedClass, operand)
+  } or
   TUniqueValueNumber(FunctionIR funcIR, Instruction instr) {
     uniqueValueNumber(instr, funcIR)
   }
@@ -80,13 +84,6 @@ class ValueNumber extends TValueNumber {
     )
   }
 }
-
-class BinaryValueNumber extends ValueNumber, TBinaryValueNumber {}
-class UnaryValueNumber extends ValueNumber, TUnaryValueNumber {}
-class ConstantValueNumber extends ValueNumber, TConstantValueNumber {}
-class FieldAddressValueNumber extends ValueNumber, TFieldAddressValueNumber {}
-class PointerArithmeticValueNumber extends ValueNumber, TPointerArithmeticValueNumber {}
-class UniqueValueNumber extends ValueNumber, TUniqueValueNumber {}
 
 /**
  * A `CopyInstruction` whose source operand's value is congruent to the definition of that source
@@ -187,9 +184,17 @@ private predicate unaryValueNumber(UnaryInstruction instr, FunctionIR funcIR, Op
     Type type, ValueNumber operand) {
   instr.getFunctionIR() = funcIR and
   (not instr instanceof InheritanceConversionInstruction) and
-  (not instr instanceof FieldAddressInstruction) and
   instr.getOpcode() = opcode and
   instr.getResultType() = type and
+  valueNumber(instr.getOperand()) = operand
+}
+
+private predicate inheritanceConversionValueNumber(InheritanceConversionInstruction instr,
+    FunctionIR funcIR, Opcode opcode, Class baseClass, Class derivedClass, ValueNumber operand) {
+  instr.getFunctionIR() = funcIR and
+  instr.getOpcode() = opcode and
+  instr.getBaseClass() = baseClass and
+  instr.getDerivedClass() = derivedClass and
   valueNumber(instr.getOperand()) = operand
 }
 
@@ -249,6 +254,11 @@ private ValueNumber nonUniqueValueNumber(Instruction instr) {
       exists(Opcode opcode, Type type, ValueNumber operand |
         unaryValueNumber(instr, funcIR, opcode, type, operand) and
         result = TUnaryValueNumber(funcIR, opcode, type, operand)
+      ) or
+      exists(Opcode opcode, Class baseClass, Class derivedClass, ValueNumber operand |
+        inheritanceConversionValueNumber(instr, funcIR, opcode, baseClass, derivedClass,
+            operand) and
+        result = TInheritanceConversionValueNumber(funcIR, opcode, baseClass, derivedClass, operand)
       ) or
       exists(Opcode opcode, Type type, int elementSize, ValueNumber leftOperand,
           ValueNumber rightOperand |
