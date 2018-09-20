@@ -14,6 +14,7 @@ import semmle.code.cpp.dataflow.DataFlow2
 import semmle.code.cpp.dataflow.DataFlow3
 import semmle.code.cpp.dataflow.DataFlow4
 import semmle.code.cpp.dataflow.TaintTracking
+import semmle.code.cpp.valuenumbering.HashCons
 
 from File f, string tag
 where none()

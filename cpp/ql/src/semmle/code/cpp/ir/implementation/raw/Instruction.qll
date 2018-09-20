@@ -107,6 +107,14 @@ module InstructionSanity {
     operand = op.getOperand(tag) and
     operand.getFunctionIR() != op.getFunctionIR()
   }
+
+  /**
+   * Holds if instruction `instr` is not in exactly one block.
+   */
+  query predicate instructionWithoutUniqueBlock(Instruction instr, int blockCount) {
+    blockCount = count(instr.getBlock()) and
+    blockCount != 1
+  } 
 }
 
 /**
@@ -299,6 +307,13 @@ class Instruction extends Construction::TInstruction {
    */
   final Location getLocation() {
     result = ast.getLocation()
+  }
+
+  /**
+   * Gets the `Expr` whose results is computed by this instruction, if any.
+   */
+  final Expr getResultExpression() {
+    result = Construction::getInstructionResultExpression(this) 
   }
 
   /**
@@ -551,6 +566,15 @@ class InitializeParameterInstruction extends VariableInstruction {
 
   override final MemoryAccessKind getResultMemoryAccess() {
     result instanceof IndirectMemoryAccess
+  }
+}
+
+/**
+ * An instruction that initializes the `this` pointer parameter of the enclosing function.
+ */
+class InitializeThisInstruction extends Instruction {
+  InitializeThisInstruction() {
+    opcode instanceof Opcode::InitializeThis
   }
 }
 

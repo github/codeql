@@ -110,3 +110,14 @@ app.get('/some/path', function(req, res) {
   else
     res.redirect(target);
 });
+
+app.get('/array/join', function(req, res) {
+  // GOOD: request input embedded in query string
+  res.redirect(['index.html?section=', req.query.section].join(''));
+
+  // GOOD: request input still embedded in query string
+  res.redirect(['index.html?section=', '34'].join('') + '&subsection=' + req.query.subsection);
+
+  // BAD: request input becomes before query string
+  res.redirect([req.query.page, '?section=', req.query.section].join(''));
+});
