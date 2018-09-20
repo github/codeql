@@ -1,0 +1,2 @@
+| UnsafeDaclSecurityDescriptor.cpp:69:6:69:30 | call to SetSecurityDescriptorDacl | Setting a SECURITY_DESCRIPTOR\u2019s DACL to NULL will result in an unprotected object. |
+| UnsafeDaclSecurityDescriptor.cpp:75:6:75:30 | call to SetSecurityDescriptorDacl | Setting a SECURITY_DESCRIPTOR\u2019s DACL using variable pDacl that is set to NULL will result in an unprotected object. |

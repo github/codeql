@@ -1,0 +1,6 @@
+| IncorrectTypeConversion.cpp:33:9:33:20 | call to BoolFunction | Implicit conversion from BOOL to HRESULT |
+| IncorrectTypeConversion.cpp:38:12:38:13 | hr | Explicit conversion from HRESULT to BOOL |
+| IncorrectTypeConversion.cpp:47:6:47:30 | (...) | Explicit conversion from BOOL to HRESULT |
+| IncorrectTypeConversion.cpp:55:11:55:34 | call to IncorrectHresultFunction | Implicit conversion from HRESULT to BOOL |
+| IncorrectTypeConversion.cpp:58:7:58:8 | hr | Implicit conversion from HRESULT to bool |
+| IncorrectTypeConversion.cpp:68:6:68:7 | hr | Implicit conversion from HRESULT to bool |

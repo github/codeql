@@ -1,0 +1,24 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+  <p>This finding indicates indicates a potentially incorrect cast from an ANSI string (<code>char_t*</code>) to a Unicode string (<code>wchar_t *</code>) or vice-versa.</p>
+  <p>This cast might yield strings that are not correctly terminated; including potential buffer overruns when using such strings with some dangerous APIs.</p>
+</overview>
+
+<recommendation>
+<p>Make sure constant strings are properly typed (i.e. prepend the letter L before a Unicode string).</p>
+</recommendation>
+
+<example>
+<p>In the following example, an ANSI string literal is casted as a Unicode (<code>LPWSTR</code>) string.</p>
+<sample src="StringTypeConfusion.cpp" />
+
+<p>To fix this issue, use a Unicode literal string by prepending the letter L to the string (i.e. <code>L"a"</code>).</p>
+</example>
+
+<references>
+</references>
+</qhelp>
