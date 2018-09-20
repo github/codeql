@@ -11,8 +11,8 @@ private import semmle.code.csharp.frameworks.system.web.Services
 private import semmle.code.csharp.frameworks.system.web.ui.WebControls
 private import semmle.code.csharp.frameworks.WCF
 private import semmle.code.csharp.frameworks.microsoft.Owin
-private import microsoft.code.csharp.frameworks.microsoft.Primitives
-private import microsoft.code.csharp.frameworks.microsoft.AspNetCore
+private import semmle.code.csharp.frameworks.microsoft.Primitives
+private import semmle.code.csharp.frameworks.microsoft.AspNetCore
 
 
 /** A data flow source of remote user input. */
