@@ -310,14 +310,14 @@ class Instruction extends Construction::TInstruction {
   }
 
   /**
-   * Gets the `Expr` whose results is computed by this instruction, if any.
+   * Gets the `Expr` whose result is computed by this instruction, if any.
    */
   final Expr getConvertedResultExpression() {
     result = Construction::getInstructionConvertedResultExpression(this) 
   }
   
     /**
-   * Gets the `Expr` whose results is computed by this instruction, if any.
+   * Gets the unconverted `Expr` whose result is computed by this instruction, if any.
    */
   final Expr getUnconvertedResultExpression() {
     result = Construction::getInstructionUnconvertedResultExpression(this) 
