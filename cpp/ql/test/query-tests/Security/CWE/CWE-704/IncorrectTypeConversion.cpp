@@ -65,7 +65,7 @@ void IncorrectTypeConversionTest() {
 	}
 
 	hr = S_FALSE;
-	if (hr) // Should fail
+	if (hr) // BUG
 	{
 		// ...
 	}

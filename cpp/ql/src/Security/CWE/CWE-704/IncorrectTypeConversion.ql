@@ -4,7 +4,7 @@
  *              Boolean types indicate success by a non-zero value, whereas success (S_OK) in HRESULT is indicated by a value of 0. 
  *              Casting an HRESULT to/from a Boolean type and then using it in a test expression will yield an incorrect result.
  * @kind problem
- * @id cpp/incorrect-type-conversion
+ * @id cpp/hresult-to-boolean-conversion
  * @problem.severity error
  * @precision high
  * @tags security
