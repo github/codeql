@@ -8,7 +8,8 @@ private import semmle.code.cpp.internal.ResolveClass
  * For example, for an incomplete struct `e` the result may be a
  * complete struct with the same name.
  */
-private cached @element resolveElement(@element e) {
+pragma[inline]
+private @element resolveElement(@element e) {
   if isClass(e)
   then result = resolveClass(e)
   else result = e
@@ -31,6 +32,7 @@ Element mkElement(@element e) {
  * extensional.
  * See `underlyingElement` for when `e` is `this`.
  */
+pragma[inline]
 @element unresolveElement(Element e) {
   resolveElement(result) = e
 }
