@@ -38,12 +38,15 @@ predicate hasCookieMiddleware(Express::RouteHandlerExpr expr, Express::RouteHand
  *   // protected from CSRF
  * })
  * ```
- *
- * Currently the predicate only detects `csurf`-based protectors.
  */
 DataFlow::CallNode csrfMiddlewareCreation() {
-  exists (DataFlow::ModuleImportNode mod | result = mod.getACall() |
-    mod.getPath() = "csurf"
+  exists (DataFlow::SourceNode callee | result = callee.getACall() |
+    callee = DataFlow::moduleImport("csurf")
+    or
+    callee = DataFlow::moduleImport("lusca") and
+    result.getOptionArgument(0, "csrf").analyze().getABooleanValue() = true // any truthy value will enable CSRF
+    or
+    callee = DataFlow::moduleMember("lusca", "csrf")
   )
 }
 
