@@ -1,3 +1,4 @@
+// semmle-extractor-options: --microsoft
 typedef unsigned long       DWORD;
 typedef unsigned long       ULONG;
 typedef unsigned char       BYTE;
