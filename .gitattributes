@@ -39,3 +39,10 @@
 *.py text
 *.lua text
 *.expected text
+
+# Explicitly set a bunch of known extensions to binary, because Git < 2.10 will treat
+# `* text=auto eol=lf` as `* text eol=lf`
+*.png -text
+*.jpg -text
+*.jpeg -text
+*.gif -text
