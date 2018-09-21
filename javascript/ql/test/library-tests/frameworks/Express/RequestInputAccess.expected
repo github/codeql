@@ -12,3 +12,6 @@
 | src/express.js:28:3:28:16 | req.get("foo") | header | src/express.js:22:30:32:1 | functio ... ar');\\n} |
 | src/express.js:29:3:29:19 | req.header("bar") | header | src/express.js:22:30:32:1 | functio ... ar');\\n} |
 | src/express.js:30:3:30:13 | req.cookies | cookie | src/express.js:22:30:32:1 | functio ... ar');\\n} |
+| src/express.js:47:3:47:17 | req.headers.baz | header | src/express.js:46:22:50:1 | functio ... name;\\n} |
+| src/express.js:48:3:48:10 | req.host | header | src/express.js:46:22:50:1 | functio ... name;\\n} |
+| src/express.js:49:3:49:14 | req.hostname | header | src/express.js:46:22:50:1 | functio ... name;\\n} |

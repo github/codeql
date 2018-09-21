@@ -42,3 +42,9 @@ function getArrowHandler() {
     return (req, res) => f();
 }
 app.use(getArrowHandler());
+
+app.post('/headers', function(req, res) {
+  req.headers.baz;
+  req.host;
+  req.hostname;
+});
