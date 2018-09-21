@@ -1,3 +1,4 @@
 (function() {
     password;
+    JSON.stringify();
 })();
