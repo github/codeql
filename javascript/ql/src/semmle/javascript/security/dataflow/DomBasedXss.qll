@@ -77,9 +77,9 @@ module DomBasedXss {
         or
         // or it doesn't start with something other than `<`, and so at least
         // _may_ be interpreted as HTML
-        not exists (Expr prefix, string strval |
+        not exists (DataFlow::Node prefix, string strval |
           isPrefixOfJQueryHtmlString(astNode, prefix) and
-          strval = prefix.getStringValue() and
+          strval = prefix.asExpr().getStringValue() and
           not strval.regexpMatch("\\s*<.*")
         )
       )
@@ -93,13 +93,14 @@ module DomBasedXss {
    * Holds if `prefix` is a prefix of `htmlString`, which may be intepreted as
    * HTML by a jQuery method.
    */
-  private predicate isPrefixOfJQueryHtmlString(Expr htmlString, Expr prefix) {
+  private predicate isPrefixOfJQueryHtmlString(Expr htmlString, DataFlow::Node prefix) {
     any(JQueryMethodCall call).interpretsArgumentAsHtml(htmlString) and
-    prefix = htmlString
+    prefix = htmlString.flow()
     or
-    exists (Expr pred | isPrefixOfJQueryHtmlString(htmlString, pred) |
-      prefix = pred.(AddExpr).getLeftOperand() or
-      prefix = pred.(ParExpr).getExpression()
+    exists (DataFlow::Node pred | isPrefixOfJQueryHtmlString(htmlString, pred) |
+      prefix = StringConcatenation::getFirstOperand(pred)
+      or
+      prefix = pred.getAPredecessor()
     )
   }
 
