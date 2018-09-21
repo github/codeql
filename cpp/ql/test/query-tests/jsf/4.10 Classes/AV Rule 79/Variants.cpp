@@ -64,7 +64,7 @@ public:
 	{
 		a = new int[10]; // BAD
 		b = (int *)calloc(10, sizeof(int)); // BAD
-		c = (int *)realloc(0, 10 * sizeof(int)); // BAD [NOT DETECTED]
+		c = (int *)realloc(0, 10 * sizeof(int)); // BAD
 	}
 	
 	~MyClass6()

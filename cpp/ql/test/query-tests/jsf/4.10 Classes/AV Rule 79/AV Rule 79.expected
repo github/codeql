@@ -16,3 +16,4 @@
 | Variants.cpp:25:3:25:13 | ... = ... | Resource f is acquired by class MyClass4 but not released anywhere in this class. |
 | Variants.cpp:65:3:65:17 | ... = ... | Resource a is acquired by class MyClass6 but not released anywhere in this class. |
 | Variants.cpp:66:3:66:36 | ... = ... | Resource b is acquired by class MyClass6 but not released anywhere in this class. |
+| Variants.cpp:67:3:67:41 | ... = ... | Resource c is acquired by class MyClass6 but not released anywhere in this class. |
