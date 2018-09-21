@@ -3,12 +3,12 @@ SECURITY_ATTRIBUTES  SA;
 
 if (!InitializeSecurityDescriptor(&pSD, SECURITY_DESCRIPTOR_REVISION))
 {
-	// error handling
+    // error handling
 }
-if (!SetSecurityDescriptorDacl(&pSD, 
-	TRUE,	// bDaclPresent - this value indicates the presence of a DACL in the security descriptor
-	NULL,	// pDacl - the pDacl parameter does not point to a DACL. All access will be allowed
-	FALSE))
+if (!SetSecurityDescriptorDacl(&pSD,
+    TRUE,   // bDaclPresent - this value indicates the presence of a DACL in the security descriptor
+    NULL,   // pDacl - the pDacl parameter does not point to a DACL. All access will be allowed
+    FALSE))
 {
-	// error handling
+    // error handling
 }
