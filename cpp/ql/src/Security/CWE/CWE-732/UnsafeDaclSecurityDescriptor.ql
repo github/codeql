@@ -1,6 +1,6 @@
 /**
- * @name Setting a SECURITY_DESCRIPTOR’s DACL to NULL
- * @description Setting a SECURITY_DESCRIPTOR’s DACL to NULL will result in an unprotected object.
+ * @name Setting a SECURITY_DESCRIPTOR's DACL to NULL
+ * @description Setting a SECURITY_DESCRIPTOR's DACL to NULL will result in an unprotected object.
  *              If the DACL that belongs to the security descriptor of an object is set to NULL, a null DACL is created. 
  *              A null DACL grants full access to any user who requests it;
  *              normal security checking is not performed with respect to the object.
@@ -49,12 +49,12 @@ class SetSecurityDescriptorDaclFunctionConfiguration extends DataFlow::Configura
 
 from SetSecurityDescriptorDaclFunctionCall call, string message
 where exists( NullValue nullExpr |
-        message = "Setting a SECURITY_DESCRIPTOR’s DACL to NULL will result in an unprotected object." |
+        message = "Setting a SECURITY_DESCRIPTOR's DACL to NULL will result in an unprotected object." |
         call.getArgument(1).getValue().toInt() != 0
         and call.getArgument(2) = nullExpr
       ) or exists( Expr constassign, VariableAccess var, 
 	  	SetSecurityDescriptorDaclFunctionConfiguration config |
-	  	message = "Setting a SECURITY_DESCRIPTOR’s DACL using variable " + var + " that is set to NULL will result in an unprotected object." |
+	  	message = "Setting a SECURITY_DESCRIPTOR's DACL using variable " + var + " that is set to NULL will result in an unprotected object." |
 	  	var = call.getArgument(2)
 		and	config.hasFlow(DataFlow::exprNode(constassign), DataFlow::exprNode(var))
 	  )
