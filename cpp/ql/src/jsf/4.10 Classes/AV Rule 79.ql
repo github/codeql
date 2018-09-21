@@ -125,7 +125,21 @@ class Resource extends MemberVariable {
 
   private Assignment getANew() {
     result.getLValue() = this.getAnAccess() and
-    (result.getRValue() instanceof NewExpr or result.getRValue() instanceof NewArrayExpr) and
+    (
+      (
+        result.getRValue() instanceof NewExpr and
+
+        // exclude placement new and custom overloads as they
+        // may not conform to assumptions
+        not result.getRValue().(NewExpr).getAllocatorCall().getTarget().getNumberOfParameters() > 1
+      ) or (
+        result.getRValue() instanceof NewArrayExpr and
+
+        // exclude placement new and custom overloads as they
+        // may not conform to assumptions
+        not result.getRValue().(NewArrayExpr).getAllocatorCall().getTarget().getNumberOfParameters() > 1
+      )
+    ) and
     this.inSameClass(result)
   }
 
