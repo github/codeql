@@ -1,23 +1,31 @@
 import semmle.code.cpp.Type
 
-/** Holds if `d` is a complete class named `name`. */
+pragma[noinline]
+private string getTopLevelClassName(@usertype c) {
+  isClass(c) and
+  usertypes(c, result, _) and
+  not namespacembrs(_, c) and // not in a namespace
+  not member(_, _, c) and // not in some structure
+  not class_instantiation(c, _) // not a template instantiation
+}
+
+/** Holds if `d` is a unique complete class named `name`. */
 pragma[noinline]
 private predicate existsCompleteWithName(string name, @usertype d) {
-  isClass(d) and
   is_complete(d) and
-  usertypes(d, name, _)
+  name = getTopLevelClassName(d) and
+  strictcount(@usertype other | is_complete(other) and getTopLevelClassName(other) = name) = 1
 }
 
 /** Holds if `c` is an incomplete class named `name`. */
 pragma[noinline]
 private predicate existsIncompleteWithName(string name, @usertype c) {
-  isClass(c) and
   not is_complete(c) and
-  usertypes(c, name, _)
+  name = getTopLevelClassName(c)
 }
 
 /**
- * Holds if `c` is an incomplete class, and there exists a complete class `d`
+ * Holds if `c` is an incomplete class, and there exists a unique complete class `d`
  * with the same name.
  */
 private predicate hasCompleteTwin(@usertype c, @usertype d) {
@@ -30,10 +38,8 @@ private predicate hasCompleteTwin(@usertype c, @usertype d) {
 import Cached
 cached private module Cached {
   /**
-   * If `c` is incomplete, and there exists a complete class with the same name,
-   * then the result is that complete class. Otherwise, the result is `c`. If
-   * multiple complete classes have the same name, this predicate may have
-   * multiple results.
+   * If `c` is incomplete, and there exists a unique complete class with the same name,
+   * then the result is that complete class. Otherwise, the result is `c`.
    */
   cached @usertype resolveClass(@usertype c) {
     hasCompleteTwin(c, result)

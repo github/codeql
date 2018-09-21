@@ -6303,3 +6303,35 @@ ir.cpp:
 #  958|             Type = int
 #  958|             ValueCategory = prvalue(load)
 #  959|     8: return ...
+#  961| designatedInit() -> int
+#  961|   params: 
+#  961|   body: { ... }
+#  962|     0: declaration
+#  962|       0: definition of a1
+#  962|           Type = int[1000]
+#  962|         init: initializer for a1
+#  962|           expr: {...}
+#  962|               Type = int[1000]
+#  962|               ValueCategory = prvalue
+#  962|             0: 10002
+#  962|                 Type = int
+#  962|                 Value = 10002
+#  962|                 ValueCategory = prvalue
+#  962|             1: 10900
+#  962|                 Type = int
+#  962|                 Value = 10900
+#  962|                 ValueCategory = prvalue
+#  963|     1: return ...
+#  963|       0: access to array
+#  963|           Type = int
+#  963|           ValueCategory = prvalue(load)
+#  963|         0: array to pointer conversion
+#  963|             Type = int *
+#  963|             ValueCategory = prvalue
+#  963|           expr: a1
+#  963|               Type = int[1000]
+#  963|               ValueCategory = lvalue
+#  963|         1: 900
+#  963|             Type = int
+#  963|             Value = 900
+#  963|             ValueCategory = prvalue

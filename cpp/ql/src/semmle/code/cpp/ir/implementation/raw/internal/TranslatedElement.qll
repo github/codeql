@@ -270,7 +270,7 @@ newtype TTranslatedElement =
     not ignoreExpr(initList) and
     isFirstValueInitializedElementInRange(initList, elementIndex) and
     elementCount = 
-      getNextExplicitlyInitializedElementAfter(initList, elementIndex) -
+      getEndOfValueInitializedRange(initList, elementIndex) -
       elementIndex
   } or
   // The initialization of a base class from within a constructor.
@@ -322,23 +322,30 @@ newtype TTranslatedElement =
 
 /**
  * Gets the index of the first explicitly initialized element in `initList`
- * whose index is greater than `afterElementIndex`. If there are no remaining
- * explicitly initialized elements in `initList`, the result is the total number
- * of elements in the array being initialized.
+ * whose index is greater than `afterElementIndex`, where `afterElementIndex`
+ * is a first value-initialized element in a value-initialized range in
+ * `initList`. If there are no remaining explicitly initialized elements in
+ * `initList`, the result is the total number of elements in the array being
+ * initialized.
  */
- private int getNextExplicitlyInitializedElementAfter(
-  ArrayAggregateLiteral initList, int afterElementIndex) {
-    if exists(int x |
-      x > afterElementIndex and
-      exists(initList.getElementExpr(x)))
-    then (
-      if exists(initList.getElementExpr(afterElementIndex + 1))
-      then result = afterElementIndex + 1
-      else result = getNextExplicitlyInitializedElementAfter(initList, afterElementIndex+1))
-    else
-      result = initList.getType().getUnspecifiedType().(ArrayType).getArraySize() and
-      // required for binding
-      initList.isInitialized(afterElementIndex)
+private int getEndOfValueInitializedRange(ArrayAggregateLiteral initList, int afterElementIndex) {
+  result = getNextExplicitlyInitializedElementAfter(initList, afterElementIndex)
+  or
+  isFirstValueInitializedElementInRange(initList, afterElementIndex) and
+  not exists(getNextExplicitlyInitializedElementAfter(initList, afterElementIndex)) and
+  result = initList.getType().getUnspecifiedType().(ArrayType).getArraySize()
+}
+
+/**
+ * Gets the index of the first explicitly initialized element in `initList`
+ * whose index is greater than `afterElementIndex`, where `afterElementIndex`
+ * is a first value-initialized element in a value-initialized range in
+ * `initList`.
+ */
+private int getNextExplicitlyInitializedElementAfter(
+    ArrayAggregateLiteral initList, int afterElementIndex) {
+  isFirstValueInitializedElementInRange(initList, afterElementIndex) and
+  result = min(int i | exists(initList.getElementExpr(i)) and i > afterElementIndex)
 }
 
 /**
