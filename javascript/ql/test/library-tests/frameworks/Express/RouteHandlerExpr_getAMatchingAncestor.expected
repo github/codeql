@@ -16,3 +16,5 @@
 | src/express.js:16:19:18:3 | functio ... ");\\n  } | src/express.js:39:9:39:20 | getHandler() |
 | src/express.js:16:19:18:3 | functio ... ");\\n  } | src/express.js:44:9:44:25 | getArrowHandler() |
 | src/express.js:44:9:44:25 | getArrowHandler() | src/express.js:39:9:39:20 | getHandler() |
+| src/express.js:46:22:50:1 | functio ... name;\\n} | src/express.js:39:9:39:20 | getHandler() |
+| src/express.js:46:22:50:1 | functio ... name;\\n} | src/express.js:44:9:44:25 | getArrowHandler() |
