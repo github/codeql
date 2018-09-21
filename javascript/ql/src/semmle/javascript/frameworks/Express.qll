@@ -788,6 +788,10 @@ module Express {
       asExpr().(MethodCallExpr).calls(any(ResponseExpr res), "sendFile")
     }
 
+    override DataFlow::Node getDataNode() {
+      result = DataFlow::valueNode(astNode)
+    }
+
     override DataFlow::Node getAPathArgument() {
       result = DataFlow::valueNode(astNode.getArgument(0))
     }

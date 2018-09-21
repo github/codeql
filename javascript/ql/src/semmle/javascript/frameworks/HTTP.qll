@@ -133,6 +133,11 @@ module HTTP {
   }
 
   /**
+   * An expression whose value is sent as (part of) the body of an HTTP request (POST, PUT).
+   */
+  abstract class RequestBody extends DataFlow::Node {}
+  
+  /**
    * An expression whose value is sent as (part of) the body of an HTTP response.
    */
   abstract class ResponseBody extends Expr {

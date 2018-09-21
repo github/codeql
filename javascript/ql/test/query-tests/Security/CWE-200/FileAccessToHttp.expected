@@ -1,0 +1,7 @@
+| bufferRead.js:10:22:10:43 | new Buf ... s.size) | $@ flows directly to Http request body | bufferRead.js:31:21:31:28 | postData | File access |
+| googlecompiler.js:43:54:43:57 | data | $@ flows directly to Http request body | googlecompiler.js:37:18:37:26 | post_data | File access |
+| readStreamRead.js:11:21:11:35 | readable.read() | $@ flows directly to Http request body | readStreamRead.js:28:19:28:23 | chunk | File access |
+| request.js:27:52:27:55 | data | $@ flows directly to Http request body | request.js:7:11:7:20 | {jsonData} | File access |
+| request.js:42:51:42:54 | data | $@ flows directly to Http request body | request.js:15:11:22:3 | {\\n    u ... ody\\n  } | File access |
+| sentAsHeaders.js:8:79:8:84 | buffer | $@ flows directly to Http request body | sentAsHeaders.js:13:20:18:9 | {\\n      ...       } | File access |
+| sentAsHeaders.js:8:79:8:84 | buffer | $@ flows directly to Http request body | sentAsHeaders.js:19:20:24:9 | {\\n      ...       } | File access |
