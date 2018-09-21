@@ -44,7 +44,7 @@ DataFlow::CallNode csrfMiddlewareCreation() {
     callee = DataFlow::moduleImport("csurf")
     or
     callee = DataFlow::moduleImport("lusca") and
-    result.getOptionArgument(0, "csrf").analyze().getABooleanValue() = true // any truthy value will enable CSRF
+    exists(result.getOptionArgument(0, "csrf"))
     or
     callee = DataFlow::moduleMember("lusca", "csrf")
   )

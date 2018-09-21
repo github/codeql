@@ -24,10 +24,6 @@ app.post('/process', parseForm, lusca(), function (req, res) { // NOT OK - missi
   res.send('data is being processed')
 })
 
-app.post('/process', parseForm, lusca({csrf: false}), function (req, res) { // NOT OK - csrf disabled
-  res.send('data is being processed')
-})
-
 app.post('/process_unsafe', parseForm, function (req, res) { // NOT OK
   res.send('data is being processed')
 })
