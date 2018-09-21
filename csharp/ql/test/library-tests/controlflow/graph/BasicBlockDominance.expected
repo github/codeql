@@ -199,6 +199,167 @@
 | post | ConditionalAccess.cs:19:58:19:59 | access to parameter s2 | ConditionalAccess.cs:19:58:19:59 | access to parameter s2 |
 | post | ConditionalAccess.cs:21:10:21:11 | enter M7 | ConditionalAccess.cs:21:10:21:11 | enter M7 |
 | post | ConditionalAccess.cs:31:26:31:38 | enter CommaJoinWith | ConditionalAccess.cs:31:26:31:38 | enter CommaJoinWith |
+| post | Conditions.cs:3:10:3:19 | enter IncrOrDecr | Conditions.cs:3:10:3:19 | enter IncrOrDecr |
+| post | Conditions.cs:3:10:3:19 | exit IncrOrDecr | Conditions.cs:3:10:3:19 | enter IncrOrDecr |
+| post | Conditions.cs:3:10:3:19 | exit IncrOrDecr | Conditions.cs:3:10:3:19 | exit IncrOrDecr |
+| post | Conditions.cs:3:10:3:19 | exit IncrOrDecr | Conditions.cs:6:13:6:16 | [inc (line 3): true] ...; |
+| post | Conditions.cs:3:10:3:19 | exit IncrOrDecr | Conditions.cs:7:9:8:16 | [inc (line 3): false] if (...) ... |
+| post | Conditions.cs:6:13:6:16 | [inc (line 3): true] ...; | Conditions.cs:6:13:6:16 | [inc (line 3): true] ...; |
+| post | Conditions.cs:7:9:8:16 | [inc (line 3): false] if (...) ... | Conditions.cs:7:9:8:16 | [inc (line 3): false] if (...) ... |
+| post | Conditions.cs:11:9:11:10 | enter M1 | Conditions.cs:11:9:11:10 | enter M1 |
+| post | Conditions.cs:15:13:15:16 | [b (line 11): true] ...; | Conditions.cs:15:13:15:16 | [b (line 11): true] ...; |
+| post | Conditions.cs:16:9:18:20 | [b (line 11): false] if (...) ... | Conditions.cs:16:9:18:20 | [b (line 11): false] if (...) ... |
+| post | Conditions.cs:17:13:18:20 | [b (line 11): false] if (...) ... | Conditions.cs:17:13:18:20 | [b (line 11): false] if (...) ... |
+| post | Conditions.cs:17:13:18:20 | [b (line 11): true] if (...) ... | Conditions.cs:17:13:18:20 | [b (line 11): true] if (...) ... |
+| post | Conditions.cs:19:16:19:16 | access to local variable x | Conditions.cs:11:9:11:10 | enter M1 |
+| post | Conditions.cs:19:16:19:16 | access to local variable x | Conditions.cs:15:13:15:16 | [b (line 11): true] ...; |
+| post | Conditions.cs:19:16:19:16 | access to local variable x | Conditions.cs:16:9:18:20 | [b (line 11): false] if (...) ... |
+| post | Conditions.cs:19:16:19:16 | access to local variable x | Conditions.cs:17:13:18:20 | [b (line 11): false] if (...) ... |
+| post | Conditions.cs:19:16:19:16 | access to local variable x | Conditions.cs:17:13:18:20 | [b (line 11): true] if (...) ... |
+| post | Conditions.cs:19:16:19:16 | access to local variable x | Conditions.cs:19:16:19:16 | access to local variable x |
+| post | Conditions.cs:22:9:22:10 | enter M2 | Conditions.cs:22:9:22:10 | enter M2 |
+| post | Conditions.cs:26:13:27:20 | if (...) ... | Conditions.cs:26:13:27:20 | if (...) ... |
+| post | Conditions.cs:27:17:27:20 | [b2 (line 22): true] ...; | Conditions.cs:27:17:27:20 | [b2 (line 22): true] ...; |
+| post | Conditions.cs:28:9:29:16 | [b2 (line 22): false] if (...) ... | Conditions.cs:28:9:29:16 | [b2 (line 22): false] if (...) ... |
+| post | Conditions.cs:28:9:29:16 | if (...) ... | Conditions.cs:28:9:29:16 | if (...) ... |
+| post | Conditions.cs:29:13:29:16 | ...; | Conditions.cs:27:17:27:20 | [b2 (line 22): true] ...; |
+| post | Conditions.cs:29:13:29:16 | ...; | Conditions.cs:29:13:29:16 | ...; |
+| post | Conditions.cs:30:16:30:16 | access to local variable x | Conditions.cs:22:9:22:10 | enter M2 |
+| post | Conditions.cs:30:16:30:16 | access to local variable x | Conditions.cs:26:13:27:20 | if (...) ... |
+| post | Conditions.cs:30:16:30:16 | access to local variable x | Conditions.cs:27:17:27:20 | [b2 (line 22): true] ...; |
+| post | Conditions.cs:30:16:30:16 | access to local variable x | Conditions.cs:28:9:29:16 | [b2 (line 22): false] if (...) ... |
+| post | Conditions.cs:30:16:30:16 | access to local variable x | Conditions.cs:28:9:29:16 | if (...) ... |
+| post | Conditions.cs:30:16:30:16 | access to local variable x | Conditions.cs:29:13:29:16 | ...; |
+| post | Conditions.cs:30:16:30:16 | access to local variable x | Conditions.cs:30:16:30:16 | access to local variable x |
+| post | Conditions.cs:33:9:33:10 | enter M3 | Conditions.cs:33:9:33:10 | enter M3 |
+| post | Conditions.cs:38:13:38:20 | ...; | Conditions.cs:38:13:38:20 | ...; |
+| post | Conditions.cs:39:9:40:16 | if (...) ... | Conditions.cs:33:9:33:10 | enter M3 |
+| post | Conditions.cs:39:9:40:16 | if (...) ... | Conditions.cs:38:13:38:20 | ...; |
+| post | Conditions.cs:39:9:40:16 | if (...) ... | Conditions.cs:39:9:40:16 | if (...) ... |
+| post | Conditions.cs:40:13:40:16 | [b2 (line 39): true] ...; | Conditions.cs:40:13:40:16 | [b2 (line 39): true] ...; |
+| post | Conditions.cs:41:9:42:16 | [b2 (line 39): false] if (...) ... | Conditions.cs:41:9:42:16 | [b2 (line 39): false] if (...) ... |
+| post | Conditions.cs:43:16:43:16 | access to local variable x | Conditions.cs:33:9:33:10 | enter M3 |
+| post | Conditions.cs:43:16:43:16 | access to local variable x | Conditions.cs:38:13:38:20 | ...; |
+| post | Conditions.cs:43:16:43:16 | access to local variable x | Conditions.cs:39:9:40:16 | if (...) ... |
+| post | Conditions.cs:43:16:43:16 | access to local variable x | Conditions.cs:40:13:40:16 | [b2 (line 39): true] ...; |
+| post | Conditions.cs:43:16:43:16 | access to local variable x | Conditions.cs:41:9:42:16 | [b2 (line 39): false] if (...) ... |
+| post | Conditions.cs:43:16:43:16 | access to local variable x | Conditions.cs:43:16:43:16 | access to local variable x |
+| post | Conditions.cs:46:9:46:10 | enter M4 | Conditions.cs:46:9:46:10 | enter M4 |
+| post | Conditions.cs:49:16:49:16 | [b (line 46): false] access to parameter x | Conditions.cs:49:16:49:16 | [b (line 46): false] access to parameter x |
+| post | Conditions.cs:49:16:49:16 | [b (line 46): false] access to parameter x | Conditions.cs:50:9:53:9 | [b (line 46): false] {...} |
+| post | Conditions.cs:50:9:53:9 | [b (line 46): false] {...} | Conditions.cs:50:9:53:9 | [b (line 46): false] {...} |
+| post | Conditions.cs:50:9:53:9 | [b (line 46): true] {...} | Conditions.cs:50:9:53:9 | [b (line 46): true] {...} |
+| post | Conditions.cs:50:9:53:9 | {...} | Conditions.cs:50:9:53:9 | {...} |
+| post | Conditions.cs:52:17:52:20 | [b (line 46): true] ...; | Conditions.cs:50:9:53:9 | [b (line 46): true] {...} |
+| post | Conditions.cs:52:17:52:20 | [b (line 46): true] ...; | Conditions.cs:52:17:52:20 | [b (line 46): true] ...; |
+| post | Conditions.cs:54:16:54:16 | access to local variable y | Conditions.cs:46:9:46:10 | enter M4 |
+| post | Conditions.cs:54:16:54:16 | access to local variable y | Conditions.cs:49:16:49:16 | [b (line 46): false] access to parameter x |
+| post | Conditions.cs:54:16:54:16 | access to local variable y | Conditions.cs:50:9:53:9 | [b (line 46): false] {...} |
+| post | Conditions.cs:54:16:54:16 | access to local variable y | Conditions.cs:50:9:53:9 | [b (line 46): true] {...} |
+| post | Conditions.cs:54:16:54:16 | access to local variable y | Conditions.cs:50:9:53:9 | {...} |
+| post | Conditions.cs:54:16:54:16 | access to local variable y | Conditions.cs:52:17:52:20 | [b (line 46): true] ...; |
+| post | Conditions.cs:54:16:54:16 | access to local variable y | Conditions.cs:54:16:54:16 | access to local variable y |
+| post | Conditions.cs:57:9:57:10 | enter M5 | Conditions.cs:57:9:57:10 | enter M5 |
+| post | Conditions.cs:60:16:60:16 | [b (line 57): false] access to parameter x | Conditions.cs:60:16:60:16 | [b (line 57): false] access to parameter x |
+| post | Conditions.cs:60:16:60:16 | [b (line 57): false] access to parameter x | Conditions.cs:61:9:64:9 | [b (line 57): false] {...} |
+| post | Conditions.cs:61:9:64:9 | [b (line 57): false] {...} | Conditions.cs:61:9:64:9 | [b (line 57): false] {...} |
+| post | Conditions.cs:61:9:64:9 | [b (line 57): true] {...} | Conditions.cs:61:9:64:9 | [b (line 57): true] {...} |
+| post | Conditions.cs:61:9:64:9 | {...} | Conditions.cs:61:9:64:9 | {...} |
+| post | Conditions.cs:63:17:63:20 | [b (line 57): true] ...; | Conditions.cs:61:9:64:9 | [b (line 57): true] {...} |
+| post | Conditions.cs:63:17:63:20 | [b (line 57): true] ...; | Conditions.cs:63:17:63:20 | [b (line 57): true] ...; |
+| post | Conditions.cs:65:9:66:16 | [b (line 57): false] if (...) ... | Conditions.cs:60:16:60:16 | [b (line 57): false] access to parameter x |
+| post | Conditions.cs:65:9:66:16 | [b (line 57): false] if (...) ... | Conditions.cs:61:9:64:9 | [b (line 57): false] {...} |
+| post | Conditions.cs:65:9:66:16 | [b (line 57): false] if (...) ... | Conditions.cs:65:9:66:16 | [b (line 57): false] if (...) ... |
+| post | Conditions.cs:65:9:66:16 | [b (line 57): true] if (...) ... | Conditions.cs:61:9:64:9 | [b (line 57): true] {...} |
+| post | Conditions.cs:65:9:66:16 | [b (line 57): true] if (...) ... | Conditions.cs:63:17:63:20 | [b (line 57): true] ...; |
+| post | Conditions.cs:65:9:66:16 | [b (line 57): true] if (...) ... | Conditions.cs:65:9:66:16 | [b (line 57): true] if (...) ... |
+| post | Conditions.cs:65:9:66:16 | if (...) ... | Conditions.cs:65:9:66:16 | if (...) ... |
+| post | Conditions.cs:66:13:66:16 | ...; | Conditions.cs:61:9:64:9 | [b (line 57): true] {...} |
+| post | Conditions.cs:66:13:66:16 | ...; | Conditions.cs:63:17:63:20 | [b (line 57): true] ...; |
+| post | Conditions.cs:66:13:66:16 | ...; | Conditions.cs:65:9:66:16 | [b (line 57): true] if (...) ... |
+| post | Conditions.cs:66:13:66:16 | ...; | Conditions.cs:66:13:66:16 | ...; |
+| post | Conditions.cs:67:16:67:16 | access to local variable y | Conditions.cs:57:9:57:10 | enter M5 |
+| post | Conditions.cs:67:16:67:16 | access to local variable y | Conditions.cs:60:16:60:16 | [b (line 57): false] access to parameter x |
+| post | Conditions.cs:67:16:67:16 | access to local variable y | Conditions.cs:61:9:64:9 | [b (line 57): false] {...} |
+| post | Conditions.cs:67:16:67:16 | access to local variable y | Conditions.cs:61:9:64:9 | [b (line 57): true] {...} |
+| post | Conditions.cs:67:16:67:16 | access to local variable y | Conditions.cs:61:9:64:9 | {...} |
+| post | Conditions.cs:67:16:67:16 | access to local variable y | Conditions.cs:63:17:63:20 | [b (line 57): true] ...; |
+| post | Conditions.cs:67:16:67:16 | access to local variable y | Conditions.cs:65:9:66:16 | [b (line 57): false] if (...) ... |
+| post | Conditions.cs:67:16:67:16 | access to local variable y | Conditions.cs:65:9:66:16 | [b (line 57): true] if (...) ... |
+| post | Conditions.cs:67:16:67:16 | access to local variable y | Conditions.cs:65:9:66:16 | if (...) ... |
+| post | Conditions.cs:67:16:67:16 | access to local variable y | Conditions.cs:66:13:66:16 | ...; |
+| post | Conditions.cs:67:16:67:16 | access to local variable y | Conditions.cs:67:16:67:16 | access to local variable y |
+| post | Conditions.cs:70:9:70:10 | enter M6 | Conditions.cs:70:9:70:10 | enter M6 |
+| post | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:70:9:70:10 | enter M6 |
+| post | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... |
+| post | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:75:9:80:9 | {...} |
+| post | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:77:17:77:20 | ...; |
+| post | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:78:13:79:26 | if (...) ... |
+| post | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:79:17:79:26 | ...; |
+| post | Conditions.cs:75:9:80:9 | {...} | Conditions.cs:75:9:80:9 | {...} |
+| post | Conditions.cs:77:17:77:20 | ...; | Conditions.cs:77:17:77:20 | ...; |
+| post | Conditions.cs:78:13:79:26 | if (...) ... | Conditions.cs:75:9:80:9 | {...} |
+| post | Conditions.cs:78:13:79:26 | if (...) ... | Conditions.cs:77:17:77:20 | ...; |
+| post | Conditions.cs:78:13:79:26 | if (...) ... | Conditions.cs:78:13:79:26 | if (...) ... |
+| post | Conditions.cs:79:17:79:26 | ...; | Conditions.cs:79:17:79:26 | ...; |
+| post | Conditions.cs:81:9:82:16 | if (...) ... | Conditions.cs:70:9:70:10 | enter M6 |
+| post | Conditions.cs:81:9:82:16 | if (...) ... | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... |
+| post | Conditions.cs:81:9:82:16 | if (...) ... | Conditions.cs:75:9:80:9 | {...} |
+| post | Conditions.cs:81:9:82:16 | if (...) ... | Conditions.cs:77:17:77:20 | ...; |
+| post | Conditions.cs:81:9:82:16 | if (...) ... | Conditions.cs:78:13:79:26 | if (...) ... |
+| post | Conditions.cs:81:9:82:16 | if (...) ... | Conditions.cs:79:17:79:26 | ...; |
+| post | Conditions.cs:81:9:82:16 | if (...) ... | Conditions.cs:81:9:82:16 | if (...) ... |
+| post | Conditions.cs:82:13:82:16 | ...; | Conditions.cs:82:13:82:16 | ...; |
+| post | Conditions.cs:83:16:83:16 | access to local variable x | Conditions.cs:70:9:70:10 | enter M6 |
+| post | Conditions.cs:83:16:83:16 | access to local variable x | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... |
+| post | Conditions.cs:83:16:83:16 | access to local variable x | Conditions.cs:75:9:80:9 | {...} |
+| post | Conditions.cs:83:16:83:16 | access to local variable x | Conditions.cs:77:17:77:20 | ...; |
+| post | Conditions.cs:83:16:83:16 | access to local variable x | Conditions.cs:78:13:79:26 | if (...) ... |
+| post | Conditions.cs:83:16:83:16 | access to local variable x | Conditions.cs:79:17:79:26 | ...; |
+| post | Conditions.cs:83:16:83:16 | access to local variable x | Conditions.cs:81:9:82:16 | if (...) ... |
+| post | Conditions.cs:83:16:83:16 | access to local variable x | Conditions.cs:82:13:82:16 | ...; |
+| post | Conditions.cs:83:16:83:16 | access to local variable x | Conditions.cs:83:16:83:16 | access to local variable x |
+| post | Conditions.cs:86:9:86:10 | enter M7 | Conditions.cs:86:9:86:10 | enter M7 |
+| post | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:86:9:86:10 | enter M7 |
+| post | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... |
+| post | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:91:9:98:9 | {...} |
+| post | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:93:17:93:20 | ...; |
+| post | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:94:13:95:26 | if (...) ... |
+| post | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:95:17:95:26 | ...; |
+| post | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:96:13:97:20 | if (...) ... |
+| post | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:97:17:97:20 | ...; |
+| post | Conditions.cs:91:9:98:9 | {...} | Conditions.cs:91:9:98:9 | {...} |
+| post | Conditions.cs:93:17:93:20 | ...; | Conditions.cs:93:17:93:20 | ...; |
+| post | Conditions.cs:94:13:95:26 | if (...) ... | Conditions.cs:91:9:98:9 | {...} |
+| post | Conditions.cs:94:13:95:26 | if (...) ... | Conditions.cs:93:17:93:20 | ...; |
+| post | Conditions.cs:94:13:95:26 | if (...) ... | Conditions.cs:94:13:95:26 | if (...) ... |
+| post | Conditions.cs:95:17:95:26 | ...; | Conditions.cs:95:17:95:26 | ...; |
+| post | Conditions.cs:96:13:97:20 | if (...) ... | Conditions.cs:91:9:98:9 | {...} |
+| post | Conditions.cs:96:13:97:20 | if (...) ... | Conditions.cs:93:17:93:20 | ...; |
+| post | Conditions.cs:96:13:97:20 | if (...) ... | Conditions.cs:94:13:95:26 | if (...) ... |
+| post | Conditions.cs:96:13:97:20 | if (...) ... | Conditions.cs:95:17:95:26 | ...; |
+| post | Conditions.cs:96:13:97:20 | if (...) ... | Conditions.cs:96:13:97:20 | if (...) ... |
+| post | Conditions.cs:97:17:97:20 | ...; | Conditions.cs:97:17:97:20 | ...; |
+| post | Conditions.cs:99:16:99:16 | access to local variable x | Conditions.cs:86:9:86:10 | enter M7 |
+| post | Conditions.cs:99:16:99:16 | access to local variable x | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... |
+| post | Conditions.cs:99:16:99:16 | access to local variable x | Conditions.cs:91:9:98:9 | {...} |
+| post | Conditions.cs:99:16:99:16 | access to local variable x | Conditions.cs:93:17:93:20 | ...; |
+| post | Conditions.cs:99:16:99:16 | access to local variable x | Conditions.cs:94:13:95:26 | if (...) ... |
+| post | Conditions.cs:99:16:99:16 | access to local variable x | Conditions.cs:95:17:95:26 | ...; |
+| post | Conditions.cs:99:16:99:16 | access to local variable x | Conditions.cs:96:13:97:20 | if (...) ... |
+| post | Conditions.cs:99:16:99:16 | access to local variable x | Conditions.cs:97:17:97:20 | ...; |
+| post | Conditions.cs:99:16:99:16 | access to local variable x | Conditions.cs:99:16:99:16 | access to local variable x |
+| post | Conditions.cs:102:12:102:13 | enter M8 | Conditions.cs:102:12:102:13 | enter M8 |
+| post | Conditions.cs:106:13:106:20 | [b (line 102): true] ...; | Conditions.cs:106:13:106:20 | [b (line 102): true] ...; |
+| post | Conditions.cs:107:9:109:24 | [b (line 102): false] if (...) ... | Conditions.cs:107:9:109:24 | [b (line 102): false] if (...) ... |
+| post | Conditions.cs:108:13:109:24 | [b (line 102): false] if (...) ... | Conditions.cs:108:13:109:24 | [b (line 102): false] if (...) ... |
+| post | Conditions.cs:108:13:109:24 | [b (line 102): true] if (...) ... | Conditions.cs:108:13:109:24 | [b (line 102): true] if (...) ... |
+| post | Conditions.cs:110:16:110:16 | access to local variable x | Conditions.cs:102:12:102:13 | enter M8 |
+| post | Conditions.cs:110:16:110:16 | access to local variable x | Conditions.cs:106:13:106:20 | [b (line 102): true] ...; |
+| post | Conditions.cs:110:16:110:16 | access to local variable x | Conditions.cs:107:9:109:24 | [b (line 102): false] if (...) ... |
+| post | Conditions.cs:110:16:110:16 | access to local variable x | Conditions.cs:108:13:109:24 | [b (line 102): false] if (...) ... |
+| post | Conditions.cs:110:16:110:16 | access to local variable x | Conditions.cs:108:13:109:24 | [b (line 102): true] if (...) ... |
+| post | Conditions.cs:110:16:110:16 | access to local variable x | Conditions.cs:110:16:110:16 | access to local variable x |
 | post | ExitMethods.cs:6:10:6:11 | enter M1 | ExitMethods.cs:6:10:6:11 | enter M1 |
 | post | ExitMethods.cs:12:10:12:11 | enter M2 | ExitMethods.cs:12:10:12:11 | enter M2 |
 | post | ExitMethods.cs:18:10:18:11 | enter M3 | ExitMethods.cs:18:10:18:11 | enter M3 |
@@ -1365,6 +1526,181 @@
 | pre | ConditionalAccess.cs:19:58:19:59 | access to parameter s2 | ConditionalAccess.cs:19:58:19:59 | access to parameter s2 |
 | pre | ConditionalAccess.cs:21:10:21:11 | enter M7 | ConditionalAccess.cs:21:10:21:11 | enter M7 |
 | pre | ConditionalAccess.cs:31:26:31:38 | enter CommaJoinWith | ConditionalAccess.cs:31:26:31:38 | enter CommaJoinWith |
+| pre | Conditions.cs:3:10:3:19 | enter IncrOrDecr | Conditions.cs:3:10:3:19 | enter IncrOrDecr |
+| pre | Conditions.cs:3:10:3:19 | enter IncrOrDecr | Conditions.cs:3:10:3:19 | exit IncrOrDecr |
+| pre | Conditions.cs:3:10:3:19 | enter IncrOrDecr | Conditions.cs:6:13:6:16 | [inc (line 3): true] ...; |
+| pre | Conditions.cs:3:10:3:19 | enter IncrOrDecr | Conditions.cs:7:9:8:16 | [inc (line 3): false] if (...) ... |
+| pre | Conditions.cs:3:10:3:19 | exit IncrOrDecr | Conditions.cs:3:10:3:19 | exit IncrOrDecr |
+| pre | Conditions.cs:6:13:6:16 | [inc (line 3): true] ...; | Conditions.cs:6:13:6:16 | [inc (line 3): true] ...; |
+| pre | Conditions.cs:7:9:8:16 | [inc (line 3): false] if (...) ... | Conditions.cs:7:9:8:16 | [inc (line 3): false] if (...) ... |
+| pre | Conditions.cs:11:9:11:10 | enter M1 | Conditions.cs:11:9:11:10 | enter M1 |
+| pre | Conditions.cs:11:9:11:10 | enter M1 | Conditions.cs:15:13:15:16 | [b (line 11): true] ...; |
+| pre | Conditions.cs:11:9:11:10 | enter M1 | Conditions.cs:16:9:18:20 | [b (line 11): false] if (...) ... |
+| pre | Conditions.cs:11:9:11:10 | enter M1 | Conditions.cs:17:13:18:20 | [b (line 11): false] if (...) ... |
+| pre | Conditions.cs:11:9:11:10 | enter M1 | Conditions.cs:17:13:18:20 | [b (line 11): true] if (...) ... |
+| pre | Conditions.cs:11:9:11:10 | enter M1 | Conditions.cs:19:16:19:16 | access to local variable x |
+| pre | Conditions.cs:15:13:15:16 | [b (line 11): true] ...; | Conditions.cs:15:13:15:16 | [b (line 11): true] ...; |
+| pre | Conditions.cs:15:13:15:16 | [b (line 11): true] ...; | Conditions.cs:17:13:18:20 | [b (line 11): true] if (...) ... |
+| pre | Conditions.cs:16:9:18:20 | [b (line 11): false] if (...) ... | Conditions.cs:16:9:18:20 | [b (line 11): false] if (...) ... |
+| pre | Conditions.cs:16:9:18:20 | [b (line 11): false] if (...) ... | Conditions.cs:17:13:18:20 | [b (line 11): false] if (...) ... |
+| pre | Conditions.cs:17:13:18:20 | [b (line 11): false] if (...) ... | Conditions.cs:17:13:18:20 | [b (line 11): false] if (...) ... |
+| pre | Conditions.cs:17:13:18:20 | [b (line 11): true] if (...) ... | Conditions.cs:17:13:18:20 | [b (line 11): true] if (...) ... |
+| pre | Conditions.cs:19:16:19:16 | access to local variable x | Conditions.cs:19:16:19:16 | access to local variable x |
+| pre | Conditions.cs:22:9:22:10 | enter M2 | Conditions.cs:22:9:22:10 | enter M2 |
+| pre | Conditions.cs:22:9:22:10 | enter M2 | Conditions.cs:26:13:27:20 | if (...) ... |
+| pre | Conditions.cs:22:9:22:10 | enter M2 | Conditions.cs:27:17:27:20 | [b2 (line 22): true] ...; |
+| pre | Conditions.cs:22:9:22:10 | enter M2 | Conditions.cs:28:9:29:16 | [b2 (line 22): false] if (...) ... |
+| pre | Conditions.cs:22:9:22:10 | enter M2 | Conditions.cs:28:9:29:16 | if (...) ... |
+| pre | Conditions.cs:22:9:22:10 | enter M2 | Conditions.cs:29:13:29:16 | ...; |
+| pre | Conditions.cs:22:9:22:10 | enter M2 | Conditions.cs:30:16:30:16 | access to local variable x |
+| pre | Conditions.cs:26:13:27:20 | if (...) ... | Conditions.cs:26:13:27:20 | if (...) ... |
+| pre | Conditions.cs:26:13:27:20 | if (...) ... | Conditions.cs:27:17:27:20 | [b2 (line 22): true] ...; |
+| pre | Conditions.cs:26:13:27:20 | if (...) ... | Conditions.cs:28:9:29:16 | [b2 (line 22): false] if (...) ... |
+| pre | Conditions.cs:27:17:27:20 | [b2 (line 22): true] ...; | Conditions.cs:27:17:27:20 | [b2 (line 22): true] ...; |
+| pre | Conditions.cs:28:9:29:16 | [b2 (line 22): false] if (...) ... | Conditions.cs:28:9:29:16 | [b2 (line 22): false] if (...) ... |
+| pre | Conditions.cs:28:9:29:16 | if (...) ... | Conditions.cs:28:9:29:16 | if (...) ... |
+| pre | Conditions.cs:29:13:29:16 | ...; | Conditions.cs:29:13:29:16 | ...; |
+| pre | Conditions.cs:30:16:30:16 | access to local variable x | Conditions.cs:30:16:30:16 | access to local variable x |
+| pre | Conditions.cs:33:9:33:10 | enter M3 | Conditions.cs:33:9:33:10 | enter M3 |
+| pre | Conditions.cs:33:9:33:10 | enter M3 | Conditions.cs:38:13:38:20 | ...; |
+| pre | Conditions.cs:33:9:33:10 | enter M3 | Conditions.cs:39:9:40:16 | if (...) ... |
+| pre | Conditions.cs:33:9:33:10 | enter M3 | Conditions.cs:40:13:40:16 | [b2 (line 39): true] ...; |
+| pre | Conditions.cs:33:9:33:10 | enter M3 | Conditions.cs:41:9:42:16 | [b2 (line 39): false] if (...) ... |
+| pre | Conditions.cs:33:9:33:10 | enter M3 | Conditions.cs:43:16:43:16 | access to local variable x |
+| pre | Conditions.cs:38:13:38:20 | ...; | Conditions.cs:38:13:38:20 | ...; |
+| pre | Conditions.cs:39:9:40:16 | if (...) ... | Conditions.cs:39:9:40:16 | if (...) ... |
+| pre | Conditions.cs:39:9:40:16 | if (...) ... | Conditions.cs:40:13:40:16 | [b2 (line 39): true] ...; |
+| pre | Conditions.cs:39:9:40:16 | if (...) ... | Conditions.cs:41:9:42:16 | [b2 (line 39): false] if (...) ... |
+| pre | Conditions.cs:39:9:40:16 | if (...) ... | Conditions.cs:43:16:43:16 | access to local variable x |
+| pre | Conditions.cs:40:13:40:16 | [b2 (line 39): true] ...; | Conditions.cs:40:13:40:16 | [b2 (line 39): true] ...; |
+| pre | Conditions.cs:41:9:42:16 | [b2 (line 39): false] if (...) ... | Conditions.cs:41:9:42:16 | [b2 (line 39): false] if (...) ... |
+| pre | Conditions.cs:43:16:43:16 | access to local variable x | Conditions.cs:43:16:43:16 | access to local variable x |
+| pre | Conditions.cs:46:9:46:10 | enter M4 | Conditions.cs:46:9:46:10 | enter M4 |
+| pre | Conditions.cs:46:9:46:10 | enter M4 | Conditions.cs:49:16:49:16 | [b (line 46): false] access to parameter x |
+| pre | Conditions.cs:46:9:46:10 | enter M4 | Conditions.cs:50:9:53:9 | [b (line 46): false] {...} |
+| pre | Conditions.cs:46:9:46:10 | enter M4 | Conditions.cs:50:9:53:9 | [b (line 46): true] {...} |
+| pre | Conditions.cs:46:9:46:10 | enter M4 | Conditions.cs:50:9:53:9 | {...} |
+| pre | Conditions.cs:46:9:46:10 | enter M4 | Conditions.cs:52:17:52:20 | [b (line 46): true] ...; |
+| pre | Conditions.cs:46:9:46:10 | enter M4 | Conditions.cs:54:16:54:16 | access to local variable y |
+| pre | Conditions.cs:49:16:49:16 | [b (line 46): false] access to parameter x | Conditions.cs:49:16:49:16 | [b (line 46): false] access to parameter x |
+| pre | Conditions.cs:49:16:49:16 | [b (line 46): false] access to parameter x | Conditions.cs:50:9:53:9 | [b (line 46): false] {...} |
+| pre | Conditions.cs:50:9:53:9 | [b (line 46): false] {...} | Conditions.cs:50:9:53:9 | [b (line 46): false] {...} |
+| pre | Conditions.cs:50:9:53:9 | [b (line 46): true] {...} | Conditions.cs:50:9:53:9 | [b (line 46): true] {...} |
+| pre | Conditions.cs:50:9:53:9 | {...} | Conditions.cs:49:16:49:16 | [b (line 46): false] access to parameter x |
+| pre | Conditions.cs:50:9:53:9 | {...} | Conditions.cs:50:9:53:9 | [b (line 46): false] {...} |
+| pre | Conditions.cs:50:9:53:9 | {...} | Conditions.cs:50:9:53:9 | [b (line 46): true] {...} |
+| pre | Conditions.cs:50:9:53:9 | {...} | Conditions.cs:50:9:53:9 | {...} |
+| pre | Conditions.cs:50:9:53:9 | {...} | Conditions.cs:52:17:52:20 | [b (line 46): true] ...; |
+| pre | Conditions.cs:52:17:52:20 | [b (line 46): true] ...; | Conditions.cs:50:9:53:9 | [b (line 46): true] {...} |
+| pre | Conditions.cs:52:17:52:20 | [b (line 46): true] ...; | Conditions.cs:52:17:52:20 | [b (line 46): true] ...; |
+| pre | Conditions.cs:54:16:54:16 | access to local variable y | Conditions.cs:54:16:54:16 | access to local variable y |
+| pre | Conditions.cs:57:9:57:10 | enter M5 | Conditions.cs:57:9:57:10 | enter M5 |
+| pre | Conditions.cs:57:9:57:10 | enter M5 | Conditions.cs:60:16:60:16 | [b (line 57): false] access to parameter x |
+| pre | Conditions.cs:57:9:57:10 | enter M5 | Conditions.cs:61:9:64:9 | [b (line 57): false] {...} |
+| pre | Conditions.cs:57:9:57:10 | enter M5 | Conditions.cs:61:9:64:9 | [b (line 57): true] {...} |
+| pre | Conditions.cs:57:9:57:10 | enter M5 | Conditions.cs:61:9:64:9 | {...} |
+| pre | Conditions.cs:57:9:57:10 | enter M5 | Conditions.cs:63:17:63:20 | [b (line 57): true] ...; |
+| pre | Conditions.cs:57:9:57:10 | enter M5 | Conditions.cs:65:9:66:16 | [b (line 57): false] if (...) ... |
+| pre | Conditions.cs:57:9:57:10 | enter M5 | Conditions.cs:65:9:66:16 | [b (line 57): true] if (...) ... |
+| pre | Conditions.cs:57:9:57:10 | enter M5 | Conditions.cs:65:9:66:16 | if (...) ... |
+| pre | Conditions.cs:57:9:57:10 | enter M5 | Conditions.cs:66:13:66:16 | ...; |
+| pre | Conditions.cs:57:9:57:10 | enter M5 | Conditions.cs:67:16:67:16 | access to local variable y |
+| pre | Conditions.cs:60:16:60:16 | [b (line 57): false] access to parameter x | Conditions.cs:60:16:60:16 | [b (line 57): false] access to parameter x |
+| pre | Conditions.cs:60:16:60:16 | [b (line 57): false] access to parameter x | Conditions.cs:61:9:64:9 | [b (line 57): false] {...} |
+| pre | Conditions.cs:60:16:60:16 | [b (line 57): false] access to parameter x | Conditions.cs:65:9:66:16 | [b (line 57): false] if (...) ... |
+| pre | Conditions.cs:61:9:64:9 | [b (line 57): false] {...} | Conditions.cs:61:9:64:9 | [b (line 57): false] {...} |
+| pre | Conditions.cs:61:9:64:9 | [b (line 57): true] {...} | Conditions.cs:61:9:64:9 | [b (line 57): true] {...} |
+| pre | Conditions.cs:61:9:64:9 | {...} | Conditions.cs:60:16:60:16 | [b (line 57): false] access to parameter x |
+| pre | Conditions.cs:61:9:64:9 | {...} | Conditions.cs:61:9:64:9 | [b (line 57): false] {...} |
+| pre | Conditions.cs:61:9:64:9 | {...} | Conditions.cs:61:9:64:9 | [b (line 57): true] {...} |
+| pre | Conditions.cs:61:9:64:9 | {...} | Conditions.cs:61:9:64:9 | {...} |
+| pre | Conditions.cs:61:9:64:9 | {...} | Conditions.cs:63:17:63:20 | [b (line 57): true] ...; |
+| pre | Conditions.cs:61:9:64:9 | {...} | Conditions.cs:65:9:66:16 | [b (line 57): false] if (...) ... |
+| pre | Conditions.cs:61:9:64:9 | {...} | Conditions.cs:65:9:66:16 | [b (line 57): true] if (...) ... |
+| pre | Conditions.cs:63:17:63:20 | [b (line 57): true] ...; | Conditions.cs:61:9:64:9 | [b (line 57): true] {...} |
+| pre | Conditions.cs:63:17:63:20 | [b (line 57): true] ...; | Conditions.cs:63:17:63:20 | [b (line 57): true] ...; |
+| pre | Conditions.cs:63:17:63:20 | [b (line 57): true] ...; | Conditions.cs:65:9:66:16 | [b (line 57): true] if (...) ... |
+| pre | Conditions.cs:65:9:66:16 | [b (line 57): false] if (...) ... | Conditions.cs:65:9:66:16 | [b (line 57): false] if (...) ... |
+| pre | Conditions.cs:65:9:66:16 | [b (line 57): true] if (...) ... | Conditions.cs:65:9:66:16 | [b (line 57): true] if (...) ... |
+| pre | Conditions.cs:65:9:66:16 | if (...) ... | Conditions.cs:65:9:66:16 | if (...) ... |
+| pre | Conditions.cs:66:13:66:16 | ...; | Conditions.cs:66:13:66:16 | ...; |
+| pre | Conditions.cs:67:16:67:16 | access to local variable y | Conditions.cs:67:16:67:16 | access to local variable y |
+| pre | Conditions.cs:70:9:70:10 | enter M6 | Conditions.cs:70:9:70:10 | enter M6 |
+| pre | Conditions.cs:70:9:70:10 | enter M6 | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... |
+| pre | Conditions.cs:70:9:70:10 | enter M6 | Conditions.cs:75:9:80:9 | {...} |
+| pre | Conditions.cs:70:9:70:10 | enter M6 | Conditions.cs:77:17:77:20 | ...; |
+| pre | Conditions.cs:70:9:70:10 | enter M6 | Conditions.cs:78:13:79:26 | if (...) ... |
+| pre | Conditions.cs:70:9:70:10 | enter M6 | Conditions.cs:79:17:79:26 | ...; |
+| pre | Conditions.cs:70:9:70:10 | enter M6 | Conditions.cs:81:9:82:16 | if (...) ... |
+| pre | Conditions.cs:70:9:70:10 | enter M6 | Conditions.cs:82:13:82:16 | ...; |
+| pre | Conditions.cs:70:9:70:10 | enter M6 | Conditions.cs:83:16:83:16 | access to local variable x |
+| pre | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... |
+| pre | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:75:9:80:9 | {...} |
+| pre | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:77:17:77:20 | ...; |
+| pre | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:78:13:79:26 | if (...) ... |
+| pre | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:79:17:79:26 | ...; |
+| pre | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:81:9:82:16 | if (...) ... |
+| pre | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:82:13:82:16 | ...; |
+| pre | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:83:16:83:16 | access to local variable x |
+| pre | Conditions.cs:75:9:80:9 | {...} | Conditions.cs:75:9:80:9 | {...} |
+| pre | Conditions.cs:75:9:80:9 | {...} | Conditions.cs:77:17:77:20 | ...; |
+| pre | Conditions.cs:75:9:80:9 | {...} | Conditions.cs:78:13:79:26 | if (...) ... |
+| pre | Conditions.cs:75:9:80:9 | {...} | Conditions.cs:79:17:79:26 | ...; |
+| pre | Conditions.cs:77:17:77:20 | ...; | Conditions.cs:77:17:77:20 | ...; |
+| pre | Conditions.cs:78:13:79:26 | if (...) ... | Conditions.cs:78:13:79:26 | if (...) ... |
+| pre | Conditions.cs:78:13:79:26 | if (...) ... | Conditions.cs:79:17:79:26 | ...; |
+| pre | Conditions.cs:79:17:79:26 | ...; | Conditions.cs:79:17:79:26 | ...; |
+| pre | Conditions.cs:81:9:82:16 | if (...) ... | Conditions.cs:81:9:82:16 | if (...) ... |
+| pre | Conditions.cs:81:9:82:16 | if (...) ... | Conditions.cs:82:13:82:16 | ...; |
+| pre | Conditions.cs:81:9:82:16 | if (...) ... | Conditions.cs:83:16:83:16 | access to local variable x |
+| pre | Conditions.cs:82:13:82:16 | ...; | Conditions.cs:82:13:82:16 | ...; |
+| pre | Conditions.cs:83:16:83:16 | access to local variable x | Conditions.cs:83:16:83:16 | access to local variable x |
+| pre | Conditions.cs:86:9:86:10 | enter M7 | Conditions.cs:86:9:86:10 | enter M7 |
+| pre | Conditions.cs:86:9:86:10 | enter M7 | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... |
+| pre | Conditions.cs:86:9:86:10 | enter M7 | Conditions.cs:91:9:98:9 | {...} |
+| pre | Conditions.cs:86:9:86:10 | enter M7 | Conditions.cs:93:17:93:20 | ...; |
+| pre | Conditions.cs:86:9:86:10 | enter M7 | Conditions.cs:94:13:95:26 | if (...) ... |
+| pre | Conditions.cs:86:9:86:10 | enter M7 | Conditions.cs:95:17:95:26 | ...; |
+| pre | Conditions.cs:86:9:86:10 | enter M7 | Conditions.cs:96:13:97:20 | if (...) ... |
+| pre | Conditions.cs:86:9:86:10 | enter M7 | Conditions.cs:97:17:97:20 | ...; |
+| pre | Conditions.cs:86:9:86:10 | enter M7 | Conditions.cs:99:16:99:16 | access to local variable x |
+| pre | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... |
+| pre | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:91:9:98:9 | {...} |
+| pre | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:93:17:93:20 | ...; |
+| pre | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:94:13:95:26 | if (...) ... |
+| pre | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:95:17:95:26 | ...; |
+| pre | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:96:13:97:20 | if (...) ... |
+| pre | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:97:17:97:20 | ...; |
+| pre | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:99:16:99:16 | access to local variable x |
+| pre | Conditions.cs:91:9:98:9 | {...} | Conditions.cs:91:9:98:9 | {...} |
+| pre | Conditions.cs:91:9:98:9 | {...} | Conditions.cs:93:17:93:20 | ...; |
+| pre | Conditions.cs:91:9:98:9 | {...} | Conditions.cs:94:13:95:26 | if (...) ... |
+| pre | Conditions.cs:91:9:98:9 | {...} | Conditions.cs:95:17:95:26 | ...; |
+| pre | Conditions.cs:91:9:98:9 | {...} | Conditions.cs:96:13:97:20 | if (...) ... |
+| pre | Conditions.cs:91:9:98:9 | {...} | Conditions.cs:97:17:97:20 | ...; |
+| pre | Conditions.cs:93:17:93:20 | ...; | Conditions.cs:93:17:93:20 | ...; |
+| pre | Conditions.cs:94:13:95:26 | if (...) ... | Conditions.cs:94:13:95:26 | if (...) ... |
+| pre | Conditions.cs:94:13:95:26 | if (...) ... | Conditions.cs:95:17:95:26 | ...; |
+| pre | Conditions.cs:94:13:95:26 | if (...) ... | Conditions.cs:96:13:97:20 | if (...) ... |
+| pre | Conditions.cs:94:13:95:26 | if (...) ... | Conditions.cs:97:17:97:20 | ...; |
+| pre | Conditions.cs:95:17:95:26 | ...; | Conditions.cs:95:17:95:26 | ...; |
+| pre | Conditions.cs:96:13:97:20 | if (...) ... | Conditions.cs:96:13:97:20 | if (...) ... |
+| pre | Conditions.cs:96:13:97:20 | if (...) ... | Conditions.cs:97:17:97:20 | ...; |
+| pre | Conditions.cs:97:17:97:20 | ...; | Conditions.cs:97:17:97:20 | ...; |
+| pre | Conditions.cs:99:16:99:16 | access to local variable x | Conditions.cs:99:16:99:16 | access to local variable x |
+| pre | Conditions.cs:102:12:102:13 | enter M8 | Conditions.cs:102:12:102:13 | enter M8 |
+| pre | Conditions.cs:102:12:102:13 | enter M8 | Conditions.cs:106:13:106:20 | [b (line 102): true] ...; |
+| pre | Conditions.cs:102:12:102:13 | enter M8 | Conditions.cs:107:9:109:24 | [b (line 102): false] if (...) ... |
+| pre | Conditions.cs:102:12:102:13 | enter M8 | Conditions.cs:108:13:109:24 | [b (line 102): false] if (...) ... |
+| pre | Conditions.cs:102:12:102:13 | enter M8 | Conditions.cs:108:13:109:24 | [b (line 102): true] if (...) ... |
+| pre | Conditions.cs:102:12:102:13 | enter M8 | Conditions.cs:110:16:110:16 | access to local variable x |
+| pre | Conditions.cs:106:13:106:20 | [b (line 102): true] ...; | Conditions.cs:106:13:106:20 | [b (line 102): true] ...; |
+| pre | Conditions.cs:106:13:106:20 | [b (line 102): true] ...; | Conditions.cs:108:13:109:24 | [b (line 102): true] if (...) ... |
+| pre | Conditions.cs:107:9:109:24 | [b (line 102): false] if (...) ... | Conditions.cs:107:9:109:24 | [b (line 102): false] if (...) ... |
+| pre | Conditions.cs:107:9:109:24 | [b (line 102): false] if (...) ... | Conditions.cs:108:13:109:24 | [b (line 102): false] if (...) ... |
+| pre | Conditions.cs:108:13:109:24 | [b (line 102): false] if (...) ... | Conditions.cs:108:13:109:24 | [b (line 102): false] if (...) ... |
+| pre | Conditions.cs:108:13:109:24 | [b (line 102): true] if (...) ... | Conditions.cs:108:13:109:24 | [b (line 102): true] if (...) ... |
+| pre | Conditions.cs:110:16:110:16 | access to local variable x | Conditions.cs:110:16:110:16 | access to local variable x |
 | pre | ExitMethods.cs:6:10:6:11 | enter M1 | ExitMethods.cs:6:10:6:11 | enter M1 |
 | pre | ExitMethods.cs:12:10:12:11 | enter M2 | ExitMethods.cs:12:10:12:11 | enter M2 |
 | pre | ExitMethods.cs:18:10:18:11 | enter M3 | ExitMethods.cs:18:10:18:11 | enter M3 |

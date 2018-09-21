@@ -360,6 +360,7 @@ module ControlFlow {
     class Split = SplitImpl;
     class FinallySplit = FinallySplitting::FinallySplitImpl;
     class ExceptionHandlerSplit = ExceptionHandlerSplitting::ExceptionHandlerSplitImpl;
+    class BooleanSplit = BooleanSplitting::BooleanSplitImpl;
   }
 
   class BasicBlock = BBs::BasicBlock;
@@ -3204,6 +3205,275 @@ module ControlFlow {
         }
       }
 
+      module BooleanSplitting {
+        private import PreBasicBlocks
+        private import PreSsa
+
+        /** A sub-classification of Boolean splits. */
+        abstract class BooleanSplitSubKind extends TBooleanSplitSubKind {
+          /**
+           * Holds if the branch taken by condition `cb1` should be recorded in
+           * this split, and the recorded value determines the branch taken by a
+           * later condition `cb2`, possibly inverted.
+           *
+           * For example, in
+           *
+           * ```
+           * var b = GetB();
+           * if (b)
+           *     Console.WriteLine("b is true");
+           * if (!b)
+           *     Console.WriteLine("b is false");
+           * ```
+           *
+           * the branch taken in the condition on line 2 can be recorded, and the
+           * recorded value will detmine the branch taken in the condition on line 4.
+           */
+          abstract predicate correlatesConditions(ConditionBlock cb1, ConditionBlock cb2, boolean inverted);
+
+          /** Holds if control flow element `cfe` starts a split of this kind. */
+          predicate startsSplit(ControlFlowElement cfe) {
+            this.correlatesConditions(any(ConditionBlock cb | cb.getLastElement() = cfe), _, _)
+          }
+
+          /** Gets the callable that this Boolean split kind belongs to. */
+          abstract Callable getEnclosingCallable();
+
+          /** Gets a textual representation of this Boolean split kind. */
+          abstract string toString();
+
+          /** Gets the location of this Boolean split kind. */
+          abstract Location getLocation();
+        }
+
+        /**
+         * A Boolean split that records the value of a Boolean SSA variable.
+         *
+         * For example, in
+         *
+         * ```
+         * var b = GetB();
+         * if (b)
+         *     Console.WriteLine("b is true");
+         * if (!b)
+         *     Console.WriteLine("b is false");
+         * ```
+         *
+         * there is a Boolean split on the SSA variable for `b` at line 1.
+         */
+        class SsaBooleanSplitSubKind extends BooleanSplitSubKind, TSsaBooleanSplitSubKind {
+          private PreSsa::Definition def;
+
+          SsaBooleanSplitSubKind() {
+            this = TSsaBooleanSplitSubKind(def)
+          }
+
+          /**
+           * Holds if condition `cb` is a read of the SSA variable in this split.
+           */
+          private predicate defCondition(ConditionBlock cb) {
+            exists(LocalScopeVariableRead read1, LocalScopeVariableRead read2 |
+              firstReadSameVar(def, read1) |
+              adjacentReadPairSameVar*(read1, read2) and
+              read2 = cb.getLastElement()
+            )
+          }
+
+          /**
+           * Holds if condition `cb` is a read of the SSA variable in this split,
+           * and `cb` can be reached from `read` without passing through another
+           * condition that reads the same SSA variable.
+           */
+          private predicate defConditionReachableFromRead(ConditionBlock cb, LocalScopeVariableRead read) {
+            this.defCondition(cb) and
+            read = cb.getLastElement()
+            or
+            exists(LocalScopeVariableRead mid |
+              this.defConditionReachableFromRead(cb, mid) |
+              adjacentReadPairSameVar(read, mid) and
+              not this.defCondition(read)
+            )
+          }
+
+          /**
+           * Holds if condition `cb` is a read of the SSA variable in this split,
+           * and `cb` can be reached from the SSA definition without passing through
+           * another condition that reads the same SSA variable.
+           */
+          private predicate firstDefCondition(ConditionBlock cb) {
+            exists(LocalScopeVariableRead read |
+              this.defConditionReachableFromRead(cb, read) |
+              firstReadSameVar(def, read)
+            )
+          }
+
+          override predicate correlatesConditions(ConditionBlock cb1, ConditionBlock cb2, boolean inverted) {
+            this.firstDefCondition(cb1) and
+            exists(LocalScopeVariableRead read1, LocalScopeVariableRead read2 |
+              read1 = cb1.getLastElement() and
+              adjacentReadPairSameVar+(read1, read2) and
+              read2 = cb2.getLastElement() and
+              inverted = false
+            )
+          }
+
+          override Callable getEnclosingCallable() {
+            result = def.getVariable().getCallable()
+          }
+
+          override string toString() {
+            result = def.getVariable().toString()
+          }
+
+          override Location getLocation() {
+            result = def.getLocation()
+          }
+        }
+
+        /**
+         * A split for elements that can reach a condition where this split determines
+         * the Boolean value that the condition evaluates to. For example, in
+         *
+         * ```
+         * if (b)
+         *     Console.WriteLine("b is true");
+         * if (!b)
+         *     Console.WriteLine("b is false");
+         * ```
+         *
+         * all control flow nodes on line 2 and line 3 have two splits: one representing
+         * that the condition on line 1 took the `true` branch, and one representing that
+         * the condition on line 1 took the `false` branch.
+         */
+        class BooleanSplitImpl extends SplitImpl, TBooleanSplit {
+          private BooleanSplitSubKind kind;
+          private boolean branch;
+
+          BooleanSplitImpl() {
+            this = TBooleanSplit(kind, branch)
+          }
+
+          /** Gets the kind of this Boolean split. */
+          BooleanSplitSubKind getSubKind() { result = kind }
+
+          /** Gets the branch taken in this split. */
+          boolean getBranch() { result = branch }
+
+          override string toString() {
+            exists(int line |
+              line = kind.getLocation().getStartLine() and
+              result = kind.toString() + " (line " + line + "): " + branch.toString()
+            )
+          }
+        }
+
+        private class BooleanSplitKind extends SplitKind, TBooleanSplitKind {
+          private BooleanSplitSubKind kind;
+
+          BooleanSplitKind() {
+            this = TBooleanSplitKind(kind)
+          }
+
+          /** Gets the sub kind of this Boolean split kind. */
+          BooleanSplitSubKind getSubKind() { result = kind }
+
+          override int getListOrder() {
+            exists(Callable c, int r |
+              c = kind.getEnclosingCallable() |
+              result = r + 1 and // start the ordering from 2
+              kind = rank[r](BooleanSplitSubKind kind0 |
+                kind0.getEnclosingCallable() = c and
+                kind0.startsSplit(_) |
+                kind0 order by kind0.getLocation().getStartLine(), kind0.getLocation().getStartColumn()
+              )
+            )
+          }
+
+          override string toString() { result = kind.toString() }
+        }
+
+        private class BooleanSplitInternal extends SplitInternal, BooleanSplitImpl {
+          override BooleanSplitKind getKind() {
+            result.getSubKind() = this.getSubKind()
+          }
+
+          override predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+            succ = succ(pred, c) and
+            this.getSubKind().startsSplit(pred) and
+            c = any(BooleanCompletion bc | bc.getOuterValue() = this.getBranch())
+          }
+
+          private ConditionBlock getACorrelatedCondition(boolean inverted) {
+            this.getSubKind().correlatesConditions(_, result, inverted)
+          }
+
+          /**
+           * Holds if this split applies to basic block `bb`, where the the last
+           * element of `bb` can have completion `c`.
+           */
+          private predicate appliesToBlock(PreBasicBlock bb, Completion c) {
+            this.appliesTo(bb) and
+            exists(ControlFlowElement last |
+              last = bb.getLastElement() |
+              (exists(succ(last, c)) or exists(succExit(last, c))) and
+              // Respect the value recorded in this split for all correlated conditions
+              forall(boolean inverted |
+                bb = this.getACorrelatedCondition(inverted) |
+                c instanceof BooleanCompletion
+                implies
+                c = any(BooleanCompletion bc | bc.getInnerValue() = this.getBranch().booleanXor(inverted))
+              )
+            )
+          }
+
+          /**
+           * Holds if basic block `bb` can reach a condition correlated with the value
+           * recorded in this split.
+           */
+          private predicate canReachCorrelatedCondition(PreBasicBlock bb) {
+            bb = this.getACorrelatedCondition(_)
+            or
+            exists(PreBasicBlock mid |
+              this.canReachCorrelatedCondition(mid) |
+              bb = mid.getAPredecessor()
+            )
+          }
+
+          override predicate hasExit(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+            exists(PreBasicBlock bb |
+              this.appliesToBlock(bb, c) |
+              pred = bb.getLastElement() and
+              succ = succ(pred, c) and
+              // Exit this split if we can no longer reach a correlated condition
+              not this.canReachCorrelatedCondition(succ)
+            )
+          }
+
+          override predicate hasExit(ControlFlowElement pred, Completion c) {
+            exists(PreBasicBlock bb |
+              this.appliesToBlock(bb, c) |
+              pred = bb.getLastElement() and
+              exists(succExit(pred, c))
+            )
+          }
+
+          override predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+            exists(PreBasicBlock bb, Completion c0 |
+              this.appliesToBlock(bb, c0) |
+              pred = bb.getAnElement() and
+              succ = succ(pred, c) and
+              (
+                pred = bb.getLastElement()
+                implies
+                // We must still be able to reach a correlated condition to stay in this split
+                this.canReachCorrelatedCondition(succ) and
+                c = c0
+              )
+            )
+          }
+        }
+      }
+
       /**
        * A set of control flow node splits. The set is represented by a list of splits,
        * ordered by ascending rank.
@@ -3513,16 +3783,29 @@ module ControlFlow {
         }
 
       cached
+      newtype TBooleanSplitSubKind =
+        TSsaBooleanSplitSubKind(PreSsa::Definition def)
+
+      cached
       newtype TSplitKind =
         TFinallySplitKind()
         or
         TExceptionHandlerSplitKind()
+        or
+        TBooleanSplitKind(BooleanSplitting::BooleanSplitSubKind kind) {
+          kind.startsSplit(_)
+        }
 
       cached
       newtype TSplit =
         TFinallySplit(FinallySplitting::FinallySplitType type)
         or
         TExceptionHandlerSplit(ExceptionClass ec)
+        or
+        TBooleanSplit(BooleanSplitting::BooleanSplitSubKind kind, boolean branch) {
+          kind.startsSplit(_) and
+          (branch = true or branch = false)
+        }
 
       cached
       newtype TSplits =

@@ -464,9 +464,7 @@ class AssignableDefinition extends TAssignableDefinition {
   ControlFlow::Node getControlFlowNode() { result = this.getAControlFlowNode() }
 
   /** Gets the enclosing callable of this definition. */
-  Callable getEnclosingCallable() {
-    result = this.getAControlFlowNode().getBasicBlock().getCallable()
-  }
+  Callable getEnclosingCallable() { result = this.getExpr().getEnclosingCallable() }
 
   /**
    * Gets the assigned expression, if any. For example, the expression assigned
@@ -592,7 +590,7 @@ class AssignableDefinition extends TAssignableDefinition {
 
   /** Gets the location of this assignable definition. */
   Location getLocation() {
-    result = this.getAControlFlowNode().getLocation()
+    result = this.getExpr().getLocation()
   }
 }
 
@@ -642,24 +640,15 @@ module AssignableDefinitions {
       result = ae
     }
 
-    private Expr getLeaf() {
-      result = leaf
-    }
-
     /**
      * Gets the evaluation order of this definition among the other definitions
      * in the compound tuple assignment. For example, in `(x, (y, z)) = ...` the
      * orders of the definitions of `x`, `y`, and `z` are 0, 1, and 2, respectively.
      */
     int getEvaluationOrder() {
-      exists(ControlFlow::BasicBlock bb, int i |
-        bb.getNode(i).getElement() = leaf |
-        i = rank[result + 1](int j, TupleAssignmentDefinition def |
-          bb.getNode(j).getElement() = def.getLeaf() and
-          ae = def.getAssignment()
-          |
-          j
-        )
+      leaf = rank[result + 1](Expr leaf0 |
+        exists(TTupleAssignmentDefinition(ae, leaf0)) |
+        leaf0 order by leaf0.getLocation().getStartLine(), leaf0.getLocation().getStartColumn()
       )
     }
 
@@ -784,6 +773,10 @@ module AssignableDefinitions {
 
     override ControlFlow::Node getAControlFlowNode() {
       result = p.getCallable().getEntryPoint()
+    }
+
+    override Callable getEnclosingCallable() {
+      result = p.getCallable()
     }
 
     override string toString() {
