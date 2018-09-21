@@ -117,9 +117,10 @@ private abstract class GeneratedType extends ValueOrRefType, GeneratedElement {
 
   private ValueOrRefType getAnInterestingBaseType() {
     result = this.getABaseType() and
-    not result instanceof ObjectType
+    not result instanceof ObjectType and
+    not result.getQualifiedName() = "System.ValueType"
   }
-  
+
   private string stubBaseTypesString() {
     if this instanceof Enum then
       result = ""
@@ -132,7 +133,7 @@ private abstract class GeneratedType extends ValueOrRefType, GeneratedElement {
     else
       result = ""
   }
-  
+
   private string stubMembers() {
     result = concat(stubMember(this.getAGeneratedMember()))
   }
@@ -171,15 +172,15 @@ private class IndirectType extends GeneratedType {
     or
     this.(UnboundGenericType).getAConstructedGeneric().getASubType() instanceof GeneratedType
     or
-    exists(GeneratedType t | this = getAContainedType(t.getAGeneratedType()))
+    exists(GeneratedType t | this = getAContainedType(t.getAGeneratedType()).getSourceDeclaration())
     or
-    exists(GeneratedDeclaration decl | decl.(Member).getDeclaringType() = this)
+    exists(GeneratedDeclaration decl | decl.(Member).getDeclaringType().getSourceDeclaration() = this)
   }
 }
 
 private class RootGeneratedType extends GeneratedType {
   RootGeneratedType() {
-    this instanceof GeneratedDeclaration
+    this = any(GeneratedDeclaration decl).getSourceDeclaration()
   }
 }
 
@@ -191,7 +192,7 @@ private Type getAContainedType(Type t) {
 
 private class RootGeneratedMember extends GeneratedMember {
   RootGeneratedMember() {
-    this instanceof GeneratedDeclaration
+    this = any(GeneratedDeclaration d).getSourceDeclaration()
   }
 }
 
@@ -209,7 +210,7 @@ private class InheritedMember extends GeneratedMember, Virtualizable {
     or
     declarationExists(this.getOverridee+())
     or
-    declarationExists(this.getAnOverrider*())
+    declarationExists(this.getAnOverrider+())
   }
 }
 
@@ -328,6 +329,8 @@ private string stubClassName(Type t) {
     result = "float"
   else if t instanceof DoubleType then
     result = "double"
+  else if t instanceof NullableType then
+    result = stubClassName(t.(NullableType).getUnderlyingType()) + "?"
   else if t instanceof TypeParameter then
     result = t.getName()
   else if t instanceof ArrayType then
@@ -345,9 +348,9 @@ private string stubClassName(Type t) {
 language[monotonicAggregates]
 private string stubGenericArguments(ValueOrRefType t) {
   if t instanceof UnboundGenericType then
-    result = "<" + concat(int n | exists(t.(UnboundGenericType).getTypeParameter(n)) | t.(UnboundGenericType).getTypeParameter(n).getName(),",") + ">"
+    result = "<" + concat(int n | exists(t.(UnboundGenericType).getTypeParameter(n)) | t.(UnboundGenericType).getTypeParameter(n).getName(),"," order by n) + ">"
   else if t instanceof ConstructedType then
-    result = "<" + concat(int n | exists(t.(ConstructedType).getTypeArgument(n)) | stubClassName(t.(ConstructedType).getTypeArgument(n)),",") + ">"
+    result = "<" + concat(int n | exists(t.(ConstructedType).getTypeArgument(n)) | stubClassName(t.(ConstructedType).getTypeArgument(n)),"," order by n) + ">"
   else
     result = ""
 }
@@ -398,9 +401,15 @@ private string stubMember(Member m) {
      "(" + stubParameters(c) + ")" + stubImplementation(c) + ";\n"
   )
   or
-  exists(Operator op | m = op and not m.getDeclaringType() instanceof Enum |
+  exists(Operator op | m = op and not m.getDeclaringType() instanceof Enum and not op instanceof ConversionOperator |
     result = "    " + stubModifiers(op) + stubClassName(op.getReturnType()) + " operator " +
       op.getName() +"(" + stubParameters(op) + ") => throw null;\n"
+  )
+  or
+  exists(ConversionOperator op | m = op |
+    result = "    " + stubModifiers(op) + stubExplicit(op) + "operator " +
+      stubClassName(op.getReturnType()) + "(" + stubParameters(op) +
+      ") => throw null;\n"
   )
   or
   result = "    " + m.(EnumConstant).getName() + ",\n"
@@ -420,6 +429,12 @@ private string stubMember(Member m) {
   or exists(Field f | f = m and not f instanceof EnumConstant |
     result = "    " + stubModifiers(m) + stubClassName(f.getType()) + " " + f.getName() + ";\n"
   )
+}
+
+private string stubExplicit(ConversionOperator op) {
+  op instanceof ImplicitConversionOperator and result = "implicit "
+  or
+  op instanceof ExplicitConversionOperator and result = "explicit "
 }
 
 private string stubGetter(DeclarationWithGetSetAccessors p) {
@@ -442,7 +457,17 @@ private string stubSetter(DeclarationWithGetSetAccessors p) {
     result = ""
 }
 
+private string stubSemmleExtractorOptions() {
+  result = concat(string s |
+    exists(CommentLine comment |
+      s = "// original-extractor-options:" + comment.getText().regexpCapture("\\w*semmle-extractor-options:(.*)", 1) + "\n"
+    )
+  )
+}
+
 /** Gets the generated C# code. */
 string generatedCode() {
-  result = any(GeneratedNamespace ns | ns.isGlobalNamespace()).getStubs()
+  result = "// This file contains auto-generated code.\n" +
+    stubSemmleExtractorOptions() + "\n" +
+    any(GeneratedNamespace ns | ns.isGlobalNamespace()).getStubs()
 }

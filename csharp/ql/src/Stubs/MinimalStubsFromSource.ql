@@ -22,6 +22,10 @@ class UsedInSource extends GeneratedDeclaration {
       exists(Variable v | v.fromSource() | this = v.getType())
       or
       exists(Virtualizable v | v.fromSource() | this = v.getImplementee() or this = v.getOverridee())
+      or
+      this = any(Attribute a).getType()
+      or
+      this = any(Attribute a).getType().getAConstructor()
     )
     and
     this.fromLibrary()
