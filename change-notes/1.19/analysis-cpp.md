@@ -12,7 +12,7 @@
 
 | **Query**                  | **Expected impact**    | **Change**                                                       |
 |----------------------------|------------------------|------------------------------------------------------------------|
-| *@name of query (Query ID)*| *Impact on results*    | *How/why the query has changed*                                  |
+| Resource not released in destructor | Fewer false positive results | Placement new is now excluded from the query. |
 
 
 ## Changes to QL libraries
