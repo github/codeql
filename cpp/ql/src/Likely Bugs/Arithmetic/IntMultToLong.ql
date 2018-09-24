@@ -27,13 +27,13 @@ import semmle.code.cpp.controlflow.SSA
  * In these cases the value of `e` is likely to be small and
  * controlled, so we consider it less likely to cause an overflow.
  */
-predicate effectivelyConstant(Expr e) {
+predicate likelySmall(Expr e) {
   e.isConstant() or
   e.getType().getSize() <= 1 or
   e.(ArrayExpr).getArrayBase().getType().(ArrayType).getBaseType().isConst() or
   exists(SsaDefinition def, Variable v |
     def.getAUse(v) = e and
-    effectivelyConstant(def.getDefiningValue(v))
+    likelySmall(def.getDefiningValue(v))
   )
 }
 
@@ -58,7 +58,7 @@ int getEffectiveMulOperands(MulExpr me) {
   result = count(Expr op |
     op = getMulOperand*(me) and
     not op instanceof MulExpr and
-    not effectivelyConstant(op)
+    not likelySmall(op)
   )
 }
 
