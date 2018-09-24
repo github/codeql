@@ -32,15 +32,17 @@ class SetSecurityDescriptorDaclFunctionConfiguration extends DataFlow::Configura
   SetSecurityDescriptorDaclFunctionConfiguration() {
     this = "SetSecurityDescriptorDaclFunctionConfiguration"
   }
-	
+
   override predicate isSource(DataFlow::Node source) {
-    exists( NullValue nullExpr |
+    exists( 
+      NullValue nullExpr |
       source.asExpr() = nullExpr 
     )
   }
  
   override predicate isSink(DataFlow::Node sink) {
-    exists( SetSecurityDescriptorDaclFunctionCall call, VariableAccess val |
+    exists( 
+      SetSecurityDescriptorDaclFunctionCall call, VariableAccess val |
       val = sink.asExpr() |
       val = call.getArgument(2) 
     )
@@ -48,14 +50,18 @@ class SetSecurityDescriptorDaclFunctionConfiguration extends DataFlow::Configura
 }
 
 from SetSecurityDescriptorDaclFunctionCall call, string message
-where exists( NullValue nullExpr |
-        message = "Setting a SECURITY_DESCRIPTOR's DACL to NULL will result in an unprotected object." |
-        call.getArgument(1).getValue().toInt() != 0
-        and call.getArgument(2) = nullExpr
-      ) or exists( Expr constassign, VariableAccess var, 
-	  	SetSecurityDescriptorDaclFunctionConfiguration config |
-	  	message = "Setting a SECURITY_DESCRIPTOR's DACL using variable " + var + " that is set to NULL will result in an unprotected object." |
-	  	var = call.getArgument(2)
-		and	config.hasFlow(DataFlow::exprNode(constassign), DataFlow::exprNode(var))
-	  )
+where exists
+  ( 
+    NullValue nullExpr |
+    message = "Setting a SECURITY_DESCRIPTOR's DACL to NULL will result in an unprotected object." |
+    call.getArgument(1).getValue().toInt() != 0
+    and call.getArgument(2) = nullExpr
+  ) or exists
+  ( 
+    Expr constassign, VariableAccess var, 
+    SetSecurityDescriptorDaclFunctionConfiguration config |
+    message = "Setting a SECURITY_DESCRIPTOR's DACL using variable " + var + " that is set to NULL will result in an unprotected object." |
+    var = call.getArgument(2)
+    and config.hasFlow(DataFlow::exprNode(constassign), DataFlow::exprNode(var))
+  )
 select call, message
