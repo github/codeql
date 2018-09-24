@@ -15,7 +15,7 @@
 
 <example>
 <p>In the following example, <code>HRESULT</code> is used in a test expression incorrectly as it may yield an incorrect result.</p>
-<sample src="IncorrectTypeConversion.cpp" />
+<sample src="HResultBooleanConversion.cpp" />
 
 <p>To fix this issue, use the <code>FAILED</code> macro in the test expression.</p>
 </example>
