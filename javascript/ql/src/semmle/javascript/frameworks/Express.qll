@@ -503,6 +503,19 @@ module Express {
     override string getKind() {
       result = kind
     }
+
+    override string getAHeaderName() {
+      kind = "header" and
+      exists (string name |
+        name = this.(DataFlow::PropRead).getPropertyName()
+        or
+        this.(DataFlow::CallNode).getArgument(0).mayHaveStringValue(name)
+        |
+        if name = "hostname" then
+          result = "host"
+        else
+          result = name.toLowerCase())
+    }
   }
 
   /**

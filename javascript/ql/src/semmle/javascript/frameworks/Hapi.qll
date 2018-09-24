@@ -144,6 +144,11 @@ module Hapi {
     override string getKind() {
       result = kind
     }
+
+    override string getAHeaderName() {
+      kind = "header" and
+      result = this.(DataFlow::PropRead).getPropertyName().toLowerCase()
+    }
   }
 
   /**

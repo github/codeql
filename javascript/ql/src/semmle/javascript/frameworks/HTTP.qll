@@ -399,8 +399,17 @@ module HTTP {
      * Note that this predicate is functional.
      */
     abstract string getKind();
+
+    /**
+     * Gets the lower-case name of an HTTP header from which this input is derived,
+     * if this can be determined.
+     *
+     * When the input is not derived from a header, or the header name is
+     * unknown, this has no result.
+     */
+    string getAHeaderName() { none() }
   }
-  
+
   /**
    * A node that looks like a route setup on a server.
    *

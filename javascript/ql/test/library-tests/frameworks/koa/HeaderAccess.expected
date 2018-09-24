@@ -1,0 +1,3 @@
+| src/koa.js:24:3:24:24 | ctx.req ... der.bar | bar |
+| src/koa.js:25:3:25:25 | ctx.req ... ers.bar | bar |
+| src/koa.js:26:3:26:24 | ctx.req ... ('bar') | bar |

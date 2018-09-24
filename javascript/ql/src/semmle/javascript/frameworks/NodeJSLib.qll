@@ -161,6 +161,11 @@ module NodeJSLib {
     override string getKind() {
       result = kind
     }
+
+    override string getAHeaderName() {
+      kind = "header" and
+      result = this.(DataFlow::PropRead).getPropertyName().toLowerCase()
+    }
   }
 
   class RouteSetup extends CallExpr, HTTP::Servers::StandardRouteSetup {
