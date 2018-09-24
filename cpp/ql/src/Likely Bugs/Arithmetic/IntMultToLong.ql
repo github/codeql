@@ -21,6 +21,7 @@ import semmle.code.cpp.controlflow.SSA
 /**
  * Holds if `e` is either:
  *  - a constant
+ *  - a char-typed expression, meaning it's a small number
  *  - an array access to an array of constants
  *  - flows from one of the above
  * In these cases the value of `e` is likely to be small and
@@ -28,6 +29,7 @@ import semmle.code.cpp.controlflow.SSA
  */
 predicate effectivelyConstant(Expr e) {
   e.isConstant() or
+  e.getType().getSize() <= 1 or
   e.(ArrayExpr).getArrayBase().getType().(ArrayType).getBaseType().isConst() or
   exists(SsaDefinition def, Variable v |
     def.getAUse(v) = e and

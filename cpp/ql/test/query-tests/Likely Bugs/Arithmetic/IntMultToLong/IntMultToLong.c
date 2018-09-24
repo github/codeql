@@ -90,5 +90,5 @@ void use_printf(float f, double d)
 }
 
 size_t three_chars(unsigned char a, unsigned char b, unsigned char c) {
-    return a * b * c; // at most 16581375 [FALSE POSITIVE]
+    return a * b * c; // at most 16581375
 }

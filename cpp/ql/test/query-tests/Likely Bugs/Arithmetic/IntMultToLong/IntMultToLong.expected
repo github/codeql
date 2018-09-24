@@ -7,4 +7,3 @@
 | IntMultToLong.c:61:23:61:33 | ... * ... | Multiplication result may overflow 'int' before it is converted to 'long long'. |
 | IntMultToLong.c:63:23:63:40 | ... * ... | Multiplication result may overflow 'int' before it is converted to 'long long'. |
 | IntMultToLong.c:75:9:75:13 | ... * ... | Multiplication result may overflow 'int' before it is converted to 'size_t'. |
-| IntMultToLong.c:93:12:93:20 | ... * ... | Multiplication result may overflow 'int' before it is converted to 'size_t'. |
