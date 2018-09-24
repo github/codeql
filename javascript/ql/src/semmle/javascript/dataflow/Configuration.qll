@@ -438,16 +438,18 @@ private predicate isRelevant(DataFlow::Node nd, DataFlow::Configuration cfg) {
  * either `pred` is an argument of `f` and `succ` the corresponding parameter, or
  * `pred` is a variable definition whose value is captured by `f` at `succ`.
  */
+pragma[noopt]
 private predicate callInputStep(Function f, DataFlow::Node invk,
                                 DataFlow::Node pred, DataFlow::Node succ,
                                 DataFlow::Configuration cfg) {
-  isRelevant(pred, cfg) and
   (
+   isRelevant(pred, cfg) and
    exists (Parameter parm |
      argumentPassing(invk, pred, f, parm) and
      succ = DataFlow::parameterNode(parm)
    )
    or
+   isRelevant(pred, cfg) and
    exists (SsaDefinition prevDef, SsaDefinition def |
      pred = DataFlow::ssaDefinitionNode(prevDef) and
      calls(invk, f) and captures(f, prevDef, def) and
