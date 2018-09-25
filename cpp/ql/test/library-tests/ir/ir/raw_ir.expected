@@ -3885,3 +3885,49 @@ ir.cpp:
 #  950|     v0_65(void)                          = ReturnVoid                      : 
 #  950|     v0_66(void)                          = UnmodeledUse                    : mu*
 #  950|     v0_67(void)                          = ExitFunction                    : 
+
+#  961| designatedInit() -> int
+#  961|   Block 0
+#  961|     v0_0(void)             = EnterFunction       : 
+#  961|     mu0_1(unknown)         = UnmodeledDefinition : 
+#  962|     r0_2(glval<int[1000]>) = VariableAddress[a1] : 
+#  962|     r0_3(int)              = Constant[0]         : 
+#  962|     r0_4(glval<int>)       = PointerAdd          : r0_2, r0_3
+#  962|     r0_5(unknown[8])       = Constant[0]         : 
+#  962|     mu0_6(unknown[8])      = Store               : r0_4, r0_5
+#-----|   Goto -> Block 2
+
+#  962|   Block 1
+#  962|     r1_0(int)           = Constant[900]   : 
+#  962|     r1_1(glval<int>)    = PointerAdd      : r0_2, r1_0
+#  962|     r1_2(int)           = Constant[10900] : 
+#  962|     mu1_3(int)          = Store           : r1_1, r1_2
+#  962|     r1_4(int)           = Constant[901]   : 
+#  962|     r1_5(glval<int>)    = PointerAdd      : r0_2, r1_4
+#  962|     r1_6(unknown[396])  = Constant[0]     : 
+#  962|     mu1_7(unknown[396]) = Store           : r1_5, r1_6
+#-----|   Goto -> Block 2
+
+#  963|   Block 2
+#  963|     r2_0(glval<int>)       = VariableAddress[#return] : 
+#  963|     r2_1(glval<int[1000]>) = VariableAddress[a1]      : 
+#  963|     r2_2(int *)            = Convert                  : r2_1
+#  963|     r2_3(int)              = Constant[900]            : 
+#  963|     r2_4(int *)            = PointerAdd[4]            : r2_2, r2_3
+#  963|     r2_5(int)              = Load                     : r2_4, mu0_1
+#  963|     mu2_6(int)             = Store                    : r2_0, r2_5
+#  961|     r2_7(glval<int>)       = VariableAddress[#return] : 
+#  961|     v2_8(void)             = ReturnValue              : r2_7, mu0_1
+#  961|     v2_9(void)             = UnmodeledUse             : mu*
+#  961|     v2_10(void)            = ExitFunction             : 
+
+#  962|   Block 3
+#  962|     r3_0(int)            = Constant[2]     : 
+#  962|     r3_1(glval<int>)     = PointerAdd      : r0_2, r3_0
+#  962|     r3_2(int)            = Constant[10002] : 
+#  962|     mu3_3(int)           = Store           : r3_1, r3_2
+#  962|     r3_4(int)            = Constant[3]     : 
+#  962|     r3_5(glval<int>)     = PointerAdd      : r0_2, r3_4
+#  962|     r3_6(unknown[3588])  = Constant[0]     : 
+#  962|     mu3_7(unknown[3588]) = Store           : r3_5, r3_6
+#-----|   Goto -> Block 2

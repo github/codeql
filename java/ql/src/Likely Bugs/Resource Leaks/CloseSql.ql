@@ -2,7 +2,7 @@
  * @name Potential database resource leak
  * @description A database resource that is opened but not closed may cause a resource leak.
  * @kind problem
- * @problem.severity error
+ * @problem.severity warning
  * @precision high
  * @id java/database-resource-leak
  * @tags correctness

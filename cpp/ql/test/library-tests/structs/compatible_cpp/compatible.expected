@@ -32,6 +32,9 @@
 | b1.cpp:23:7:23:12 | Damson | 5 members | 2 locations | 1 | foo |
 | b1.cpp:23:7:23:12 | Damson | 5 members | 2 locations | 2 | operator= |
 | b1.cpp:23:7:23:12 | Damson | 5 members | 2 locations | 3 | operator= |
+| b1.cpp:29:9:29:23 | AppleCompatible | 3 members | 1 locations | 0 | apple_x |
+| b1.cpp:29:9:29:23 | AppleCompatible | 3 members | 1 locations | 1 | operator= |
+| b1.cpp:29:9:29:23 | AppleCompatible | 3 members | 1 locations | 2 | operator= |
 | b2.cpp:2:7:2:21 | AppleCompatible | 3 members | 2 locations | 0 | apple_x |
 | b2.cpp:2:7:2:21 | AppleCompatible | 3 members | 2 locations | 1 | operator= |
 | b2.cpp:2:7:2:21 | AppleCompatible | 3 members | 2 locations | 2 | operator= |

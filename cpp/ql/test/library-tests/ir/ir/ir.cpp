@@ -958,6 +958,11 @@ void OperatorNewArray(int n) {
   new int[n] { 0, 1, 2 };
 }
 
+int designatedInit() {
+  int a1[1000] = { [2] = 10002, [900] = 10900 };
+  return a1[900];
+}
+
 #if 0
 void OperatorDelete() {
   delete static_cast<int*>(nullptr);  // No destructor
