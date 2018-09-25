@@ -13,18 +13,19 @@
 import cpp
 import IncorrectPointerScalingCommon
 
-private predicate isCharPtrExpr(Expr e) {
+private predicate isCharSzPtrExpr(Expr e) {
   exists (PointerType pt
   | pt = e.getFullyConverted().getUnderlyingType()
-  | pt.getBaseType().getUnspecifiedType() instanceof CharType)
+  | pt.getBaseType().getUnspecifiedType() instanceof CharType
+  or pt.getBaseType().getUnspecifiedType() instanceof VoidType)
 }
 
 from Expr sizeofExpr, Expr e
 where
   // If we see an addWithSizeof then we expect the type of
-  // the pointer expression to be char*. Otherwise it is probably
-  // a mistake.
-  addWithSizeof(e, sizeofExpr, _) and not isCharPtrExpr(e)
+  // the pointer expression to be char* or void*. Otherwise it
+  // is probably a mistake.
+  addWithSizeof(e, sizeofExpr, _) and not isCharSzPtrExpr(e)
 select
   sizeofExpr,
   "Suspicious sizeof offset in a pointer arithmetic expression. " +
