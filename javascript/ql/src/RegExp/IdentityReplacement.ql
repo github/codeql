@@ -60,8 +60,9 @@ predicate regExpMatchesString(RegExpTerm t, string s) {
   )
 }
 
-from MethodCallExpr repl, string s
+from MethodCallExpr repl, string s, string friendly
 where repl.getMethodName() = "replace" and
       matchesString(repl.getArgument(0), s) and
-      repl.getArgument(1).getStringValue() = s
-select repl.getArgument(0), "This replaces '" + s + "' with itself."
+      repl.getArgument(1).getStringValue() = s and
+      (if s = "" then friendly = "the empty string" else friendly = "'" + s + "'")
+select repl.getArgument(0), "This replaces " + friendly + " with itself."
