@@ -405,6 +405,26 @@ module RangeAnalysis {
   }
 
   /**
+   * Adds a negative and positive integer, but only if they are within in the same
+   * order of magnitude.
+   */
+  bindingset[x, y]
+  private int wideningAddition(int x, int y) {
+    x < 0 and
+    y >= 0 and
+    (
+      x = 0
+      or
+      y = 0
+      or
+      // If non-zero, check that the values are within a factor 16 of each other
+      x.abs().bitShiftRight(4) < y.abs() and
+      y.abs().bitShiftRight(4) < x.abs()
+    ) and
+    result = x + y
+  }
+
+  /**
    * Applies a restricted transitive rule to the edge set.
    *
    * In particular, we apply the transitive rule only where a negative edge followed by a non-negative edge.
@@ -435,9 +455,7 @@ module RangeAnalysis {
     exists (DataFlow::Node mid, int midx, ControlFlowNode cfg1, int c1, ControlFlowNode cfg2, int c2 |
       extendedEdge(cfg1, a, asign, mid, midx, c1) and
       extendedEdge(cfg2, mid, midx, b, bsign, c2) and
-      c1 < 0 and
-      c2 >= 0 and
-      c = c1 + c2 and
+      c = wideningAddition(c1, c2) and
       // One of the two CFG nodes must dominate the other, and `cfg` must be bound to the dominated one.
       (
         // They are in the same basic block
