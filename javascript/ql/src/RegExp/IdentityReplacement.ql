@@ -27,16 +27,36 @@ predicate matchesString(Expr e, string s) {
 }
 
 /**
- * Holds if `t` matches `c` and nothing else.
+ * Holds if `t` matches `s` and nothing else.
  */
-predicate matchesConstant(RegExpTerm t, RegExpConstant c) {
-  c = t
+language[monotonicAggregates]
+predicate regExpMatchesString(RegExpTerm t, string s) {
+  // constants match themselves
+  s = t.(RegExpConstant).getValue()
   or
-  matchesConstant(t.(RegExpGroup).getAChild(), c)
+  // assertions match the empty string
+  (t instanceof RegExpCaret or
+   t instanceof RegExpDollar or
+   t instanceof RegExpWordBoundary or
+   t instanceof RegExpNonWordBoundary or
+   t instanceof RegExpLookahead or
+   t instanceof RegExpLookbehind) and
+  s = ""
   or
+  // groups match their content
+  regExpMatchesString(t.(RegExpGroup).getAChild(), s)
+  or
+  // single-character classes match that character
   exists (RegExpCharacterClass recc | recc = t and not recc.isInverted() |
     recc.getNumChild() = 1 and
-    matchesConstant(recc.getChild(0), c)
+    regExpMatchesString(recc.getChild(0), s)
+  )
+  or
+  // sequences match the concatenation of their elements
+  exists (RegExpSequence seq | seq = t |
+    s = concat(int i, RegExpTerm child | child = seq.getChild(i) |
+      any(string subs | regExpMatchesString(child, subs)) order by i
+    )
   )
 }
 
