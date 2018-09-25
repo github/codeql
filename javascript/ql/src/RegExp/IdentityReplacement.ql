@@ -17,9 +17,10 @@ import javascript
  * `s` and nothing else.
  */
 predicate matchesString(Expr e, string s) {
-  exists (RegExpConstant c |
-    matchesConstant(e.(RegExpLiteral).getRoot(), c) and
-    s = c.getValue()
+  exists (RegExpLiteral rl |
+    rl = e and
+    not rl.isIgnoreCase() and
+    regExpMatchesString(rl.getRoot(), s)
   )
   or
   s = e.getStringValue()
