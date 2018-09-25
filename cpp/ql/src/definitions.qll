@@ -102,7 +102,8 @@ private predicate constructorCallStartLoc(ConstructorCall cc, File f, int line, 
 
 /**
  * Holds if `f`, `line`, `column` indicate the start character
- * of `tm`, which mentions `t`.
+ * of `tm`, which mentions `t`. Type mentions for instantiations
+ * are filtered out.
  */
 private predicate typeMentionStartLoc(TypeMention tm, Type t, File f, int line, int column) {
   exists(Location l |
@@ -111,7 +112,8 @@ private predicate typeMentionStartLoc(TypeMention tm, Type t, File f, int line, 
     l.getStartLine() = line and
     l.getStartColumn() = column
   ) and
-  t = tm.getMentionedType()
+  t = tm.getMentionedType() and
+  not t instanceof ClassTemplateInstantiation
 }
 
 /**
