@@ -4,6 +4,8 @@
 
 * Modelling of taint flow through array operations has been improved. This may give additional results for the security queries.
 
+* The taint tracking library now recognizes additional sanitization patterns. This may give fewer false-positive results for the security queries.
+
 * Support for popular libraries has been improved. Consequently, queries may produce more results on code bases that use the following features:
   - file system access, for example through [fs-extra](https://github.com/jprichardson/node-fs-extra) or [globby](https://www.npmjs.com/package/globby)
 
