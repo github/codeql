@@ -220,11 +220,14 @@ abstract class FlowLabel extends string {
   bindingset[this] FlowLabel() { any() }
 }
 
-module FlowLabel {
-  private class StandardFlowLabel extends FlowLabel {
-    StandardFlowLabel() { this = "data" or this = "taint" }
-  }
+/**
+ * A standard flow label, that is, either `FlowLabel::data()` or `FlowLabel::taint()`.
+ */
+private class StandardFlowLabel extends FlowLabel {
+  StandardFlowLabel() { this = "data" or this = "taint" }
+}
 
+module FlowLabel {
   /**
    * Gets the standard flow label for describing values that directly originate from a flow source.
    */
@@ -467,7 +470,7 @@ private predicate isSource(DataFlow::Node nd, DataFlow::Configuration cfg, FlowL
  */
 private predicate isSink(DataFlow::Node nd, DataFlow::Configuration cfg, FlowLabel lbl) {
   (cfg.isSink(nd) or nd.(AdditionalSink).isSinkFor(cfg)) and
-  lbl = any(FlowLabel f)
+  lbl = any(StandardFlowLabel f)
   or
   cfg.isSink(nd, lbl)
 }
