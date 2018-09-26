@@ -399,6 +399,13 @@ module HTTP {
      * Note that this predicate is functional.
      */
     abstract string getKind();
+
+    override predicate isThirdPartyControllable() {
+      exists (string kind | kind = getKind() |
+        kind = "parameter" or
+        kind = "url" or
+        kind = "body")
+    }
   }
 
   /**

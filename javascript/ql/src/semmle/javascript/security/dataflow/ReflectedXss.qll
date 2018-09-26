@@ -46,10 +46,7 @@ module ReflectedXss {
   /** A source of remote user input, considered as a flow source for reflected XSS. */
   class RemoteFlowSourceAsSource extends Source {
     RemoteFlowSourceAsSource() {
-      this instanceof RemoteFlowSource and
-      // cookies cannot be controlled by a third-party attacker, and hence are
-      // not relevant for reflected XSS
-      not this.(RemoteFlowSource).getSourceType() = "Server request cookie"
+      this.(RemoteFlowSource).isThirdPartyControllable()
     }
   }
 
