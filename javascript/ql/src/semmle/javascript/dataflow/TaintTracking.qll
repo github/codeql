@@ -629,20 +629,18 @@ module TaintTracking {
    * A check of the form `if(<isWhitelisted>(x))`, which sanitizes `x` in its "then" branch.
    *
    * `<isWhitelisted>` is a call with callee name 'safe', 'whitelist', 'allow', or similar.
+   *
+   * This sanitizer is not enabled by default.
    */
-  private class AdHocWhitelistCheckSanitizer extends AdditionalSanitizerGuardNode, DataFlow::CallNode {
+  class AdHocWhitelistCheckSanitizer extends SanitizerGuardNode, DataFlow::CallNode {
     AdHocWhitelistCheckSanitizer() {
-      getCalleeName().regexpMatch("(?i).*(safe|whitelist|allow|auth).*") and
+      getCalleeName().regexpMatch("(?i).*((?<!un)safe|whitelist|allow|(?<!un)auth(?!or\\b)).*") and
       getNumArgument() = 1
     }
 
     override predicate sanitizes(boolean outcome, Expr e) {
       outcome = true and
       e = getArgument(0).asExpr()
-    }
-
-    override predicate appliesTo(Configuration cfg) {
-      any()
     }
 
   }
