@@ -23,4 +23,9 @@ class ExampleConfiguration extends TaintTracking::Configuration {
     )
   }
 
+  override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
+    // add additional generic sanitizers
+    guard instanceof TaintTracking::AdHocWhitelistCheckSanitizer
+  }
+
 }
