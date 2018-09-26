@@ -483,7 +483,7 @@ module Express {
           // `req.headers.name`
           kind = "header" and
           headers.accesses(request, "headers") and
-          this = headers.getAPropertyRead(_))
+          this = headers.getAPropertyRead())
         or
         exists (string propName | propName = "host" or propName = "hostname" |
           // `req.host` and `req.hostname` are derived from headers
