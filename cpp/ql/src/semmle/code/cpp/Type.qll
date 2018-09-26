@@ -7,6 +7,8 @@ private import semmle.code.cpp.internal.ResolveClass
  * A C/C++ type.
  */
 class Type extends Locatable, @type {
+  Type() { isType(this.underlying()) }
+
   /**
    * Gets the name of this type.
    */

@@ -294,13 +294,13 @@ class AttributeArgument extends Element, @attribute_arg {
   }
 
   override string toString() {
-    if exists (@attribute_arg_empty self | mkElement(self) = this)
+    if exists (@attribute_arg_empty self | self = underlyingElement(this))
       then result = "empty argument"
       else exists (string prefix, string tail
            | (if exists(getName())
                 then prefix = getName() + "="
                 else prefix = "") and
-             (if exists (@attribute_arg_type self | mkElement(self) = this)
+             (if exists (@attribute_arg_type self | self = underlyingElement(this))
                 then tail = getValueType().getName()
                 else tail = getValueText()) and
              result = prefix + tail)

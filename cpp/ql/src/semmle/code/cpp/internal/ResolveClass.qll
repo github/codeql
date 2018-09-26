@@ -54,4 +54,10 @@ cached private module Cached {
     (usertypes(t,_,1) or usertypes(t,_,2) or usertypes(t,_,3) or usertypes(t,_,6)
     or usertypes(t,_,10) or usertypes(t,_,11) or usertypes(t,_,12))
   }
+
+  cached predicate isType(@type t) {
+    not isClass(t)
+    or
+    t = resolveClass(_)
+  }
 }
