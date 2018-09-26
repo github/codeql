@@ -3,10 +3,12 @@
 | file://:0:0:0:0 | (global namespace) |
 | file://:0:0:0:0 | __va_list_tag |
 | file://:0:0:0:0 | __va_list_tag & |
+| file://:0:0:0:0 | __va_list_tag && |
 | file://:0:0:0:0 | auto |
 | file://:0:0:0:0 | const EC |
+| file://:0:0:0:0 | const __va_list_tag |
+| file://:0:0:0:0 | const __va_list_tag & |
 | file://:0:0:0:0 | const bool |
-| file://:0:0:0:0 | definition of __va_list_tag |
 | file://:0:0:0:0 | definition of fp_offset |
 | file://:0:0:0:0 | definition of gp_offset |
 | file://:0:0:0:0 | definition of overflow_arg_area |
@@ -18,6 +20,8 @@
 | file://:0:0:0:0 | operator= |
 | file://:0:0:0:0 | operator= |
 | file://:0:0:0:0 | overflow_arg_area |
+| file://:0:0:0:0 | p#0 |
+| file://:0:0:0:0 | p#0 |
 | file://:0:0:0:0 | reg_save_area |
 | file://:0:0:0:0 | void * |
 | test.cpp:0:0:0:0 | test.cpp |

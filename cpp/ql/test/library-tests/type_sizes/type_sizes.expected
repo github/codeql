@@ -40,6 +40,7 @@
 | file://:0:0:0:0 | __int128 | 16 |
 | file://:0:0:0:0 | __va_list_tag | 24 |
 | file://:0:0:0:0 | __va_list_tag & | 8 |
+| file://:0:0:0:0 | __va_list_tag && | 8 |
 | file://:0:0:0:0 | auto | <none> |
 | file://:0:0:0:0 | bool | 1 |
 | file://:0:0:0:0 | char | 1 |
@@ -54,6 +55,8 @@
 | file://:0:0:0:0 | const StructWithDef & | 8 |
 | file://:0:0:0:0 | const UnionWithDef | 4 |
 | file://:0:0:0:0 | const UnionWithDef & | 8 |
+| file://:0:0:0:0 | const __va_list_tag | 24 |
+| file://:0:0:0:0 | const __va_list_tag & | 8 |
 | file://:0:0:0:0 | const char | 1 |
 | file://:0:0:0:0 | const char * | 8 |
 | file://:0:0:0:0 | const char *const | 8 |

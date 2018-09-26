@@ -28,4 +28,3 @@
 | 6 none of the above | C::operator=(volatile C & c_templated) |
 | 6 none of the above | C::operator=(volatile C && c_templated) |
 | 6 none of the above | C::operator==(const C & c) |
-| 6 none of the above | __va_list_tag::operator=() |

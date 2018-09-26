@@ -43,7 +43,5 @@
 | declaration.cpp:122:5:122:20 | myMemberVariable |
 | file://:0:0:0:0 | fp_offset |
 | file://:0:0:0:0 | gp_offset |
-| file://:0:0:0:0 | operator= |
-| file://:0:0:0:0 | operator= |
 | file://:0:0:0:0 | overflow_arg_area |
 | file://:0:0:0:0 | reg_save_area |

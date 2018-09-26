@@ -1,8 +1,12 @@
 | file://:0:0:0:0 | fp_offset | file://:0:0:0:0 | unsigned int | Field |  |  |
 | file://:0:0:0:0 | gp_offset | file://:0:0:0:0 | unsigned int | Field |  |  |
 | file://:0:0:0:0 | overflow_arg_area | file://:0:0:0:0 | void * | Field |  |  |
+| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | __va_list_tag && | SemanticStackVariable |  |  |
+| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | __va_list_tag && | StackVariable |  |  |
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | address && | SemanticStackVariable |  |  |
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | address && | StackVariable |  |  |
+| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | const __va_list_tag & | SemanticStackVariable |  |  |
+| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | const __va_list_tag & | StackVariable |  |  |
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | const address & | SemanticStackVariable |  |  |
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | const address & | StackVariable |  |  |
 | file://:0:0:0:0 | reg_save_area | file://:0:0:0:0 | void * | Field |  |  |

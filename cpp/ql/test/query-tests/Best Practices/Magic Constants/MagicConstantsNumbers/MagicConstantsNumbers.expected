@@ -13,6 +13,9 @@
 | constants.h:153:10:153:12 | 129 | Magic constant: literal '129' is repeated 31 times and should be encapsulated in a constant. |
 | constants.h:153:10:153:12 | 129 | Magic constant: literal '129' is repeated 31 times and should be encapsulated in a constant. |
 | functions.h:3:2:3:4 | 102 | Magic constant: literal '102' is repeated 21 times and should be encapsulated in a constant. |
+| functions.h:3:2:3:4 | 102 | Magic constant: literal '102' is repeated 21 times and should be encapsulated in a constant. |
 | functions.h:3:8:3:10 | 102 | Magic constant: literal '102' is repeated 21 times and should be encapsulated in a constant. |
+| functions.h:3:8:3:10 | 102 | Magic constant: literal '102' is repeated 21 times and should be encapsulated in a constant. |
+| functions.h:3:14:3:16 | 102 | Magic constant: literal '102' is repeated 21 times and should be encapsulated in a constant. |
 | functions.h:3:14:3:16 | 102 | Magic constant: literal '102' is repeated 21 times and should be encapsulated in a constant. |
 | functions.h:12:11:12:13 | 103 | Magic constant: literal '103' is repeated 21 times and should be encapsulated in a constant. |
