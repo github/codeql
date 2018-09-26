@@ -3,62 +3,74 @@ private import semmle.code.cpp.Enclosing
 private import semmle.code.cpp.internal.ResolveClass
 
 /**
- * Get the `@element` that represents this `@element`.
- * Normally this will simply be `e`, but sometimes it is not.
- * For example, for an incomplete struct `e` the result may be a
- * complete struct with the same name.
- */
-private cached @element resolveElement(@element e) {
-  if isClass(e)
-  then result = resolveClass(e)
-  else result = e
-}
-
-/**
  * Get the `Element` that represents this `@element`.
  * Normally this will simply be a cast of `e`, but sometimes it is not.
  * For example, for an incomplete struct `e` the result may be a
  * complete struct with the same name.
  */
+pragma[inline]
 Element mkElement(@element e) {
-  result = resolveElement(e)
+  result.unresolve() = e
 }
 
 /**
- * Get an `@element` that resolves to the `Element`. This should
+ * INTERNAL: Do not use.
+ *
+ * Gets an `@element` that resolves to the `Element`. This should
  * normally only be called from member predicates, where `e` is not
  * `this` and you need the result for an argument to a database
  * extensional.
  * See `underlyingElement` for when `e` is `this`.
  */
+pragma[inline]
 @element unresolveElement(Element e) {
-  resolveElement(result) = e
+  result = e.unresolve()
 }
 
 /**
- * Get the `@element` that this `Element` extends. This should normally
+ * INTERNAL: Do not use.
+ *
+ * Gets the `@element` that this `Element` extends. This should normally
  * only be called from member predicates, where `e` is `this` and you
  * need the result for an argument to a database extensional.
  * See `unresolveElement` for when `e` is not `this`.
  */
+pragma[inline]
 @element underlyingElement(Element e) {
   result = e
 }
 
 /**
- * A C/C++ element with no member predicates other than `toString`. Not for
+ * A C/C++ element with a minimal set of member predicates. Not for
  * general use. This class does not define a location, so classes wanting to
  * change their location without affecting other classes can extend
  * `ElementBase` instead of `Element` to create a new rootdef for `getURL`,
  * `getLocation`, or `hasLocationInfo`.
  */
 class ElementBase extends @element {
-  ElementBase() {
-    this = resolveElement(_)
-  }
-
   /** Gets a textual representation of this element. */
   string toString() { none() }
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Gets the `@element` that this `Element` extends. This should normally only
+   * be called from member predicates on `this` where you need the result for
+   * an argument to a database extensional.
+   * See `unresolve` for when the qualifier is not `this`.
+   */
+  final @element underlying() { result = this }
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Gets an `@element` that resolves to the `Element`. This should normally
+   * only be called from member predicates, where the qualifier is not `this`
+   * and you need the result for an argument to a database extensional.
+   * See `underlying` for when the qualifier is `this`.
+   */
+  pragma[inline]
+  @element unresolve() { result = this }
 }
 
 /**
