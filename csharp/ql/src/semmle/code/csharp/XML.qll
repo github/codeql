@@ -79,9 +79,12 @@ class XMLParent extends @xmlparent {
   }
 
   /**
+   * DEPRECATED: Internal.
+   *
    * Append the character sequences of this XML parent from left to right, separated by a space,
    * up to a specified (zero-based) index.
    */
+  deprecated
   string charsSetUpTo(int n) {
     (n = 0 and xmlChars(_,result,this,0,_,_)) or
     (n > 0 and exists(string chars | xmlChars(_,chars,this,n,_,_) |
@@ -90,10 +93,7 @@ class XMLParent extends @xmlparent {
 
   /** Append all the character sequences of this XML parent from left to right, separated by a space. */
   string allCharactersString() {
-    exists(int n | n = this.getNumberOfCharacterSets() |
-      (n = 0 and result = "") or
-      (n > 0 and result = this.charsSetUpTo(n-1))
-    )
+    result = concat(string chars, int pos | xmlChars(_, chars, this, pos, _, _) | chars, " " order by pos)
   }
 
   /** Gets the text value contained in this XML parent. */
