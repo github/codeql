@@ -41,3 +41,19 @@ int main() {
 v4f lax(v16c arg) {
   return arg;
 }
+
+typedef int v16i __attribute__((vector_size(16)));
+
+void shift_left(v16i *dst, v16i *src, int n) {
+  // We represent this shift as an operation on vector types, and the
+  // right-hand side is a vector fill expression (i.e. a vector filled with n in
+  // each element).
+  *dst = *src << n;
+}
+
+typedef double vector4double __attribute__((__vector_size__(32)));
+typedef float  vector4float  __attribute__((__vector_size__(16)));
+
+vector4double convert_vector(vector4float vf) {
+  return __builtin_convertvector(vf, vector4double);
+}
