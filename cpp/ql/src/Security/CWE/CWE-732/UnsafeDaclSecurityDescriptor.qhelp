@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+  <p>This query indicates that a call is setting the DACL field in a <code>SECURITY_DESCRIPTOR</code> to null.</p>
+  <p>When using <code>SetSecurityDescriptorDacl</code> to set a discretionary access control (DACL), setting the <code>bDaclPresent</code> argument to <code>TRUE</code> indicates the prescence of a DACL in the security description in the argument <code>pDacl</code>.</p>
+  <p>When the <code>pDacl</code> parameter does not point to a DACL (i.e. it is <code>NULL</code>) and the <code>bDaclPresent</code> flag is <code>TRUE</code>, a <code>NULL DACL</code> is specified.</p>
+  <p>A <code>NULL DACL</code> grants full access to any user who requests it; normal security checking is not performed with respect to the object.</p>
+</overview>
+
+<recommendation>
+<p>You should not use a <code>NULL DACL</code> with an object because any user can change the DACL and owner of the security descriptor.</p>
+</recommendation>
+
+<example>
+<p>In the following example, the call to <code>SetSecurityDescriptorDacl</code> is setting an unsafe DACL (<code>NULL DACL</code>) to the security descriptor.</p>
+<sample src="UnsafeDaclSecurityDescriptor.cpp" />
+
+<p>To fix this issue, <code>pDacl</code> argument should be a pointer to an <code>ACL</code> structure that specifies the DACL for the security descriptor.</p>
+</example>
+
+<references>
+  <li><a href="https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-setsecuritydescriptordacl">SetSecurityDescriptorDacl function (Microsoft documentation).</a>
+  </li>
+</references>
+
+</qhelp>
