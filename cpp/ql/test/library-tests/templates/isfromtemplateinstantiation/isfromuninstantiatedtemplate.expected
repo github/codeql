@@ -3,6 +3,7 @@ isFromUninstantiatedTemplate
 | file://:0:0:0:0 | 0 | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
 | file://:0:0:0:0 | (int)... | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
 | file://:0:0:0:0 | (int)... | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
+| file://:0:0:0:0 | Inner<U> | file://:0:0:0:0 | Inner<U> |
 | file://:0:0:0:0 | declaration of 1st parameter | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
 | file://:0:0:0:0 | declaration of 1st parameter | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
 | file://:0:0:0:0 | initializer for MyClassEnumConst | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
@@ -433,15 +434,15 @@ isFromUninstantiatedTemplate
 | isfromtemplateinstantiation.cpp:135:31:135:31 | declaration of operator= | I | T | DeclarationEntry |  |
 | isfromtemplateinstantiation.cpp:135:31:135:31 | operator= | I | T | Declaration |  |
 | isfromtemplateinstantiation.cpp:135:31:135:31 | operator= | I | T | Declaration |  |
-| isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<U> | I | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<U> |  | T | Declaration |  |
 | isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<long> | I | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:136:7:136:7 | definition of x |  | T | Definition |  |
 | isfromtemplateinstantiation.cpp:136:7:136:7 | definition of x | I | T | Definition |  |
-| isfromtemplateinstantiation.cpp:136:7:136:7 | definition of x | I | T | Definition |  |
+| isfromtemplateinstantiation.cpp:136:7:136:7 | x |  | T | Declaration |  |
 | isfromtemplateinstantiation.cpp:136:7:136:7 | x | I | T | Declaration |  |
-| isfromtemplateinstantiation.cpp:136:7:136:7 | x | I | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:137:7:137:7 | definition of y |  | T | Definition |  |
 | isfromtemplateinstantiation.cpp:137:7:137:7 | definition of y | I | T | Definition |  |
-| isfromtemplateinstantiation.cpp:137:7:137:7 | definition of y | I | T | Definition |  |
-| isfromtemplateinstantiation.cpp:137:7:137:7 | y | I | T | Declaration |  |
+| isfromtemplateinstantiation.cpp:137:7:137:7 | y |  | T | Declaration |  |
 | isfromtemplateinstantiation.cpp:137:7:137:7 | y | I | T | Declaration |  |
 | isfromtemplateinstantiation.cpp:144:28:144:56 | incomplete_never_instantiated<T> |  | T | Declaration |  |
 | isfromtemplateinstantiation.cpp:146:28:146:45 | never_instantiated<T> |  | T | Declaration |  |
