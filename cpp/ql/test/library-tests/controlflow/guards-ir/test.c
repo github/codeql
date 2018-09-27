@@ -147,3 +147,8 @@ void test5(int x) {
     test3();
   }
 }
+
+void test6(int x, int y) {
+  return x && y;
+}
+

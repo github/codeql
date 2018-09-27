@@ -10,12 +10,13 @@ class GuardCondition extends Expr {
     exists(IRGuardCondition ir | this = ir.getUnconvertedResultExpression())
     or
     // no binary operators in the IR
-    exists(Instruction ir |
-      this.(BinaryLogicalOperation).getAnOperand().getFullyConverted() = ir.getAST()
+    exists(GuardCondition gc |
+      this.(BinaryLogicalOperation).getAnOperand()= gc
     )
     or
     // the IR short-circuits if(!x)
     (
+      // don't produce a guard condition for `y = !x` and other non-short-circuited cases
       not exists (Instruction inst | this.getFullyConverted() = inst.getAST()) and
       exists(IRGuardCondition ir | this.(NotExpr).getOperand() = ir.getAST())
     )
