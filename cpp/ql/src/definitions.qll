@@ -127,6 +127,28 @@ private cached predicate constructorCallTypeMention(ConstructorCall cc, TypeMent
 }
 
 /**
+ * We sometimes produce many type mentions at the same location that
+ * refer to the same type. For the purposes of providing a definition
+ * link, we only want one of them.
+ */
+private module TypeMentions {
+  private
+  predicate identity(TypeMention a, TypeMention b) { a = b }
+
+  private
+  int id(TypeMention a) = equivalenceRelation(identity/2)(a, result)
+
+  private
+  TypeMention minMentionIdAt(Location l, Type t) {
+    result = min(TypeMention m | l = m.getLocation() and t = m.getMentionedType() | m order by id(m))
+  }
+
+  predicate isCanonical(TypeMention m) {
+    m = minMentionIdAt(_, _)
+  }
+}
+
+/**
  * Gets an element, of kind `kind`, that element `e` uses, if any.
  *
  * The `kind` is a string representing what kind of use it is:
@@ -156,6 +178,7 @@ Top definitionOf(Top e, string kind) {
     ) or (
       // type mention -> type
       kind = "T" and
+      TypeMentions::isCanonical(e) and
       e.(TypeMention).getMentionedType() = result and
       not constructorCallTypeMention(_, e) and // handled elsewhere
       // Multiple type mentions can be generated when a typedef is used, and
@@ -177,6 +200,7 @@ Top definitionOf(Top e, string kind) {
       //  - using the location of the type mention, since it's
       //    tighter that the location of the function call.
       kind = "M" and
+      TypeMentions::isCanonical(e) and
       exists(ConstructorCall cc |
         constructorCallTypeMention(cc, e) and
         result = cc.getTarget()
