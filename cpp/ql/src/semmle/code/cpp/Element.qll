@@ -10,7 +10,7 @@ private import semmle.code.cpp.internal.ResolveClass
  */
 pragma[inline]
 Element mkElement(@element e) {
-  result.unresolve() = e
+  unresolveElement(result) = e
 }
 
 /**
@@ -24,7 +24,10 @@ Element mkElement(@element e) {
  */
 pragma[inline]
 @element unresolveElement(Element e) {
-  result = e.unresolve()
+  not result instanceof @usertype and
+  result = e
+  or
+  e = resolveClass(result)
 }
 
 /**
@@ -35,13 +38,12 @@ pragma[inline]
  * need the result for an argument to a database extensional.
  * See `unresolveElement` for when `e` is not `this`.
  */
-pragma[inline]
 @element underlyingElement(Element e) {
   result = e
 }
 
 /**
- * A C/C++ element with a minimal set of member predicates. Not for
+ * A C/C++ element with no member predicates other than `toString`. Not for
  * general use. This class does not define a location, so classes wanting to
  * change their location without affecting other classes can extend
  * `ElementBase` instead of `Element` to create a new rootdef for `getURL`,
@@ -50,32 +52,6 @@ pragma[inline]
 class ElementBase extends @element {
   /** Gets a textual representation of this element. */
   string toString() { none() }
-
-  /**
-   * INTERNAL: Do not use.
-   *
-   * Gets the `@element` that this `Element` extends. This should normally only
-   * be called from member predicates on `this` where you need the result for
-   * an argument to a database extensional.
-   * See `unresolve` for when the qualifier is not `this`.
-   */
-  final @element underlying() { result = this }
-
-  /**
-   * INTERNAL: Do not use.
-   *
-   * Gets an `@element` that resolves to the `Element`. This should normally
-   * only be called from member predicates, where the qualifier is not `this`
-   * and you need the result for an argument to a database extensional.
-   * See `underlying` for when the qualifier is `this`.
-   */
-  pragma[inline]
-  final @element unresolve() {
-    not result instanceof @usertype and
-    result = this
-    or
-    this = resolveClass(result)
-  }
 }
 
 /**
