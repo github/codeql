@@ -119,7 +119,7 @@ class CommentBlock extends Comment {
      */
     predicate hasLocationInfo(string filepath, int startline, int startcolumn, int endline, int endcolumn) {
         this.getLocation().hasLocationInfo(filepath, startline, startcolumn, _, _) and
-        this.lastComment().getLocation().hasLocationInfo(filepath, _, _, endline, endcolumn)
+        this.lastComment().getLocation().hasLocationInfo(_, _, _, endline, endcolumn)
     }
 }
 
