@@ -180,6 +180,10 @@
 | n.js:3:16:3:23 | object literal |
 | namespace-reexport.js:1:1:4:0 | exports object of module namespace-reexport |
 | namespace-reexport.js:1:1:4:0 | module object of module namespace-reexport |
+| nestedImport.js:1:1:13:0 | exports object of module nestedImport |
+| nestedImport.js:1:1:13:0 | module object of module nestedImport |
+| nestedImport.js:9:1:12:1 | function tst |
+| nestedImport.js:9:1:12:1 | instance of function tst |
 | nodeJsClient.js:1:1:6:0 | exports object of module nodeJsClient |
 | nodeJsClient.js:1:1:6:0 | module object of module nodeJsClient |
 | nodeJsLib.js:1:1:4:0 | exports object of module nodeJsLib |
