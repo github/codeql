@@ -785,7 +785,8 @@ module Express {
     override MethodCallExpr astNode;
 
     ResponseSendFileAsFileSystemAccess() {
-      asExpr().(MethodCallExpr).calls(any(ResponseExpr res), "sendFile")
+      exists (string name | name = "sendFile" or name = "sendfile" |
+        asExpr().(MethodCallExpr).calls(any(ResponseExpr res), name))
     }
 
     override DataFlow::Node getAPathArgument() {

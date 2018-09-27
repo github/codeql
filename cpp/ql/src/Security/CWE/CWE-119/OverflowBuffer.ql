@@ -29,7 +29,7 @@ from BufferAccess ba, string bufferDesc, int accessSize, int accessType,
 where accessSize = ba.getSize()
   and bufferSize = getBufferSize(ba.getBuffer(bufferDesc, accessType),
                                  bufferAlloc)
-  and accessSize > bufferSize
+  and (accessSize > bufferSize or (accessSize <= 0 and accessType = 3))
   and if accessType = 1 then (
         message = "This '" + ba.getName() + "' operation accesses "
                 + plural(accessSize, " byte", " bytes")
@@ -41,8 +41,13 @@ where accessSize = ba.getSize()
                 + " but the $@ is only "
                 + plural(bufferSize, " byte", " bytes") + "."
       ) else (
-        message = "This array indexing operation accesses byte offset "
-                + (accessSize - 1) + " but the $@ is only "
-                + plural(bufferSize, " byte", " bytes") + "."
+        if accessSize > 0 then (
+          message = "This array indexing operation accesses byte offset "
+                  + (accessSize - 1) + " but the $@ is only "
+                  + plural(bufferSize, " byte", " bytes") + "."
+        ) else (
+          message = "This array indexing operation accesses a negative index "
+                  + ((accessSize/ba.getActualType().getSize()) - 1) + " on the $@."
+        )
       )
 select ba, message, bufferAlloc, bufferDesc

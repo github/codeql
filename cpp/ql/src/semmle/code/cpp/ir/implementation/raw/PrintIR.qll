@@ -1,6 +1,18 @@
 private import IR
 import cpp
 
+private string getAdditionalInstructionProperty(Instruction instr, string key) {
+  exists(IRPropertyProvider provider |
+    result = provider.getInstructionProperty(instr, key)
+  )
+}
+
+private string getAdditionalBlockProperty(IRBlock block, string key) {
+  exists(IRPropertyProvider provider |
+    result = provider.getBlockProperty(block, key)
+  )
+}
+
 private newtype TPrintableIRNode =
   TPrintableFunctionIR(FunctionIR funcIR) or
   TPrintableIRBlock(IRBlock block) or
@@ -135,6 +147,11 @@ class PrintableIRBlock extends PrintableIRNode, TPrintableIRBlock {
     result.getFunctionIR() = block.getFunctionIR()
   }
 
+  override string getProperty(string key) {
+    result = PrintableIRNode.super.getProperty(key) or
+    result = getAdditionalBlockProperty(block, key)
+  }
+
   final IRBlock getBlock() {
     result = block
   }
@@ -184,6 +201,11 @@ class PrintableInstruction extends PrintableIRNode, TPrintableInstruction {
 
   final Instruction getInstruction() {
     result = instr
+  }
+
+  override string getProperty(string key) {
+    result = PrintableIRNode.super.getProperty(key) or
+    result = getAdditionalInstructionProperty(instr, key)
   }
 }
 

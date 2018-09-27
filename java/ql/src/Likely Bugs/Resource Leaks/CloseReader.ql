@@ -3,7 +3,7 @@
  * @description A resource that is opened for reading but not closed may cause a resource
  *              leak.
  * @kind problem
- * @problem.severity error
+ * @problem.severity warning
  * @precision high
  * @id java/input-resource-leak
  * @tags efficiency

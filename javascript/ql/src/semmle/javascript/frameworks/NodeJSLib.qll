@@ -336,17 +336,26 @@ module NodeJSLib {
     )
   }
 
+  /**
+   * A member `member` from module `fs` or its drop-in replacements `graceful-fs` or `fs-extra`.
+   */
+  private DataFlow::SourceNode fsModuleMember(string member) {
+    exists (string moduleName |
+      moduleName = "fs" or
+      moduleName = "graceful-fs" or
+      moduleName = "fs-extra" |
+      result = DataFlow::moduleMember(moduleName, member)
+    )
+  }
 
   /**
-   * A call to a method from module `fs` or `graceful-fs`.
+   * A call to a method from module `fs`, `graceful-fs` or `fs-extra`.
    */
   private class NodeJSFileSystemAccess extends FileSystemAccess, DataFlow::CallNode {
     string methodName;
 
     NodeJSFileSystemAccess() {
-      exists (string moduleName | this = DataFlow::moduleMember(moduleName, methodName).getACall() |
-        moduleName = "fs" or moduleName = "graceful-fs"
-      )
+      this = fsModuleMember(methodName).getACall()
     }
 
     override DataFlow::Node getAPathArgument() {
@@ -356,6 +365,22 @@ module NodeJSLib {
     }
   }
 
+  /**
+   * A data flow node that contains a file name or an array of file names from the local file system.
+   */
+  private class NodeJSFileNameSource extends FileNameSource {
+
+    NodeJSFileNameSource() {
+      exists (string name |
+        name = "readdir" or
+        name = "realpath" |
+        this = fsModuleMember(name).getACall().getCallback([1..2]).getParameter(1) or
+        this = fsModuleMember(name + "Sync").getACall()
+      )
+    }
+
+  }
+  
   /**
    * A call to a method from module `child_process`.
    */
