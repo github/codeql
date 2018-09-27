@@ -180,7 +180,6 @@ Top definitionOf(Top e, string kind) {
       kind = "T" and
       TypeMentions::isCanonical(e) and
       e.(TypeMention).getMentionedType() = result and
-      not result instanceof ClassTemplateInstantiation and
       not constructorCallTypeMention(_, e) and // handled elsewhere
       // Multiple type mentions can be generated when a typedef is used, and
       // in such cases we want to exclude all but the originating typedef.
