@@ -44,20 +44,12 @@ module ClientSideUrlRedirect {
     }
 
     override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel lbl) {
-      source instanceof RemoteFlowSource and
-      lbl = DataFlow::FlowLabel::taint()
-      or
       isDocumentURL(source.asExpr()) and
       lbl instanceof DocumentUrl
     }
 
     override predicate isSink(DataFlow::Node sink) {
       sink instanceof Sink
-    }
-
-    override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel f) {
-      sink instanceof UrlSink and
-      f = DataFlow::FlowLabel::taint()
     }
 
     override predicate isSanitizer(DataFlow::Node node) {
@@ -74,6 +66,11 @@ module ClientSideUrlRedirect {
       f instanceof DocumentUrl and
       g = DataFlow::FlowLabel::taint()
     }
+  }
+
+  /** A source of remote user input, considered as a flow source for unvalidated URL redirects. */
+  class RemoteFlowSourceAsSource extends Source {
+    RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
   }
 
   /**
@@ -105,13 +102,10 @@ module ClientSideUrlRedirect {
     )
   }
 
-  abstract class UrlSink extends DataFlow::Node {
-  }
-
   /**
    * A sink which is used to set the window location.
    */
-  class LocationSink extends UrlSink, DataFlow::ValueNode {
+  class LocationSink extends Sink, DataFlow::ValueNode {
     LocationSink() {
       // A call to a `window.navigate` or `window.open`
       exists (string name |
@@ -152,7 +146,7 @@ module ClientSideUrlRedirect {
   /**
    * An expression that may be interpreted as the URL of a script.
    */
-  abstract class ScriptUrlSink extends UrlSink {
+  abstract class ScriptUrlSink extends Sink {
   }
 
   /**

@@ -282,7 +282,7 @@ class PathSummary extends TPathSummary {
     result = hasCall
   }
 
-  /** Gets the flow label describing data at the end of this flow path. */
+  /** Gets the flow label describing the value at the end of this flow path. */
   FlowLabel getEndLabel() {
     result = end
   }
