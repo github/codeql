@@ -27,7 +27,7 @@ class ES2015Module extends Module {
 
   /** Gets an export declaration in this module. */
   ExportDeclaration getAnExport() {
-    result.getContainer() = this
+    result.getTopLevel() = this
   }
 
   override Module getAnImportedModule() {
@@ -55,7 +55,7 @@ class ES2015Module extends Module {
 /** An import declaration. */
 class ImportDeclaration extends Stmt, Import, @importdeclaration {
   override ES2015Module getEnclosingModule() {
-    result = getContainer()
+    result = getTopLevel()
   }
 
   override PathExprInModule getImportedPath() {
@@ -254,7 +254,7 @@ class BulkReExportDeclaration extends ReExportDeclaration, @exportalldeclaration
   * but we ignore this subtlety.
   */
 private predicate isShadowedFromBulkExport(BulkReExportDeclaration reExport, string name) {
-  exists (ExportNamedDeclaration other | other.getContainer() = reExport.getEnclosingModule() |
+  exists (ExportNamedDeclaration other | other.getTopLevel() = reExport.getEnclosingModule() |
     other.getAnExportedDecl().getName() = name
     or
     other.getASpecifier().getExportedName() = name)
