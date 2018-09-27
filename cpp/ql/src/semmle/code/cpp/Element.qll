@@ -70,7 +70,12 @@ class ElementBase extends @element {
    * See `underlying` for when the qualifier is `this`.
    */
   pragma[inline]
-  @element unresolve() { result = this }
+  final @element unresolve() {
+    not result instanceof @usertype and
+    result = this
+    or
+    this = resolveClass(result)
+  }
 }
 
 /**

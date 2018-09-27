@@ -15,10 +15,6 @@ class Class extends UserType {
     isClass(this.underlying())
   }
 
-  override @element unresolve() {
-    resolveClass(result) = this
-  }
-
   /** Gets a child declaration of this class. */
   override Declaration getADeclaration() { result = this.getAMember() }
 
