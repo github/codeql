@@ -1,4 +1,4 @@
 import javascript
 
-from HTTP::RequestInputAccess access
+from HTTP::RequestHeaderAccess access
 select access, access.getAHeaderName()

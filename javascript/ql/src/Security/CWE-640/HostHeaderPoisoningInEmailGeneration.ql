@@ -14,7 +14,7 @@ class TaintedHostHeader extends TaintTracking::Configuration {
   TaintedHostHeader() { this = "TaintedHostHeader" }
 
   override predicate isSource(DataFlow::Node node) {
-    exists (HTTP::RequestInputAccess input | node = input |
+    exists (HTTP::RequestHeaderAccess input | node = input |
       input.getKind() = "header" and
       input.getAHeaderName() = "host")
   }

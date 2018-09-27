@@ -72,9 +72,9 @@ module HTTP {
      * Holds if the header with (lower-case) name `headerName` is set to the value of `headerValue`.
      */
     abstract predicate definesExplicitly(string headerName, Expr headerValue);
-    
+
     /**
-     * Returns the expression used to compute the header name. 
+     * Returns the expression used to compute the header name.
      */
     abstract Expr getNameExpr();
   }
@@ -354,9 +354,9 @@ module HTTP {
         headerName = getNameExpr().getStringValue().toLowerCase() and
         headerValue = astNode.getArgument(1)
       }
-      
+
       override Expr getNameExpr() {
-      	 result = astNode.getArgument(0)
+         result = astNode.getArgument(0)
       }
 
     }
@@ -399,15 +399,19 @@ module HTTP {
      * Note that this predicate is functional.
      */
     abstract string getKind();
+  }
 
+  /**
+   * An access to a header on an incoming HTTP request.
+   */
+  abstract class RequestHeaderAccess extends RequestInputAccess {
     /**
      * Gets the lower-case name of an HTTP header from which this input is derived,
      * if this can be determined.
      *
-     * When the input is not derived from a header, or the header name is
-     * unknown, this has no result.
+     * When the name of the header is unknown, this has no result.
      */
-    string getAHeaderName() { none() }
+    abstract string getAHeaderName();
   }
 
   /**

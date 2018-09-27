@@ -146,12 +146,16 @@ module NodeJSLib {
       kind = "url" and
       this.asExpr().(PropAccess).accesses(request, "url")
       or
-      exists (PropAccess headers, string name |
-        // `req.headers.<name>`
-        if name = "cookie" then kind = "cookie" else kind= "header" |
+      exists (PropAccess headers |
+        // `req.headers.cookie`
+        kind = "cookie" and
         headers.accesses(request, "headers") and
-        this.asExpr().(PropAccess).accesses(headers, name)
+        this.asExpr().(PropAccess).accesses(headers, "cookie")
       )
+      or
+      exists (RequestHeaderAccess access | this = access |
+        request = access.getRequest() and
+        kind = "header")
     }
 
     override RouteHandler getRouteHandler() {
@@ -161,10 +165,37 @@ module NodeJSLib {
     override string getKind() {
       result = kind
     }
+  }
+
+  /**
+   * An access to an HTTP header (other than "Cookie") on an incoming Node.js request object.
+   */
+  private class RequestHeaderAccess extends HTTP::RequestHeaderAccess {
+    RequestExpr request;
+
+    RequestHeaderAccess() {
+      exists (PropAccess headers, string name |
+        // `req.headers.<name>`
+        name != "cookie" and
+        headers.accesses(request, "headers") and
+        this.asExpr().(PropAccess).accesses(headers, name)
+      )
+    }
 
     override string getAHeaderName() {
-      kind = "header" and
       result = this.(DataFlow::PropRead).getPropertyName().toLowerCase()
+    }
+
+    override RouteHandler getRouteHandler() {
+      result = request.getRouteHandler()
+    }
+
+    override string getKind() {
+      result = "header"
+    }
+
+    RequestExpr getRequest() {
+      result = request
     }
   }
 
@@ -385,7 +416,7 @@ module NodeJSLib {
     }
 
   }
-  
+
   /**
    * A call to a method from module `child_process`.
    */
@@ -481,21 +512,21 @@ module NodeJSLib {
     }
 
   }
-  
+
   /**
    * A call to a method from module `vm`
    */
   class VmModuleMethodCall extends DataFlow::CallNode {
     string methodName;
-    
+
     VmModuleMethodCall() {
       this = DataFlow::moduleMember("vm", methodName).getACall()
     }
-    
+
     /**
      * Gets the code to be executed as part of this call.
      */
-    DataFlow::Node getACodeArgument() {      
+    DataFlow::Node getACodeArgument() {
       (
         methodName = "runInContext" or
         methodName = "runInNewContext" or
@@ -548,7 +579,7 @@ module NodeJSLib {
     }
 
   }
-  
+
   /**
    * A model of a URL request in the Node.js `http` library.
    */
@@ -574,7 +605,7 @@ module NodeJSLib {
     }
 
   }
-  
+
   /**
    * A data flow node that is the parameter of a result callback for an HTTP or HTTPS request made by a Node.js process, for example `res` in `https.request(url, (res) => {})`.
    */
@@ -584,12 +615,12 @@ module NodeJSLib {
         this = req.(DataFlow::MethodCallNode).getCallback(1).getParameter(0)
       )
     }
-    
+
     override string getSourceType() {
       result = "NodeJSClientRequest callback parameter"
     }
   }
-  
+
   /**
    * A data flow node that is the parameter of a data callback for an HTTP or HTTPS request made by a Node.js process, for example `body` in `http.request(url, (res) => {res.on('data', (body) => {})})`.
    */
@@ -601,20 +632,20 @@ module NodeJSLib {
         this = mcn.getCallback(1).getParameter(0)
       )
     }
-    
+
     override string getSourceType() {
       result = "http.request data parameter"
     }
   }
-  
-  
+
+
   /**
    * A data flow node that is registered as a callback for an HTTP or HTTPS request made by a Node.js process, for example the function `handler` in `http.request(url).on(message, handler)`.
    */
   class ClientRequestHandler extends DataFlow::FunctionNode {
     string handledEvent;
     NodeJSClientRequest clientRequest;
-    
+
     ClientRequestHandler() {
       exists(DataFlow::MethodCallNode mcn |
         clientRequest.getAMethodCall("on") = mcn and
@@ -622,14 +653,14 @@ module NodeJSLib {
         flowsTo(mcn.getArgument(1))
       )
     }
-    
+
     /**
      * Gets the name of an event this callback is registered for.
      */
     string getAHandledEvent() {
       result = handledEvent
     }
-    
+
     /**
      * Gets a request this callback is registered for.
      */
@@ -637,7 +668,7 @@ module NodeJSLib {
       result = clientRequest
     }
   }
-  
+
   /**
    * A data flow node that is the parameter of a response callback for an HTTP or HTTPS request made by a Node.js process, for example `res` in `http.request(url).on('response', (res) => {})`.
    */
@@ -648,12 +679,12 @@ module NodeJSLib {
         handler.getAHandledEvent() = "response"
       )
     }
-    
+
     override string getSourceType() {
       result = "NodeJSClientRequest response event"
     }
   }
-  
+
   /**
    * A data flow node that is the parameter of a data callback for an HTTP or HTTPS request made by a Node.js process, for example `chunk` in `http.request(url).on('response', (res) => {res.on('data', (chunk) => {})})`.
    */
@@ -665,12 +696,12 @@ module NodeJSLib {
         this = mcn.getCallback(1).getParameter(0)
       )
     }
-    
+
     override string getSourceType() {
       result = "NodeJSClientRequest data event"
     }
   }
-  
+
   /**
    * A data flow node that is a login callback for an HTTP or HTTPS request made by a Node.js process.
    */
@@ -679,7 +710,7 @@ module NodeJSLib {
       getAHandledEvent() = "login"
     }
   }
-  
+
   /**
    * A data flow node that is a parameter of a login callback for an HTTP or HTTPS request made by a Node.js process, for example `res` in `http.request(url).on('login', (res, callback) => {})`.
    */
@@ -689,12 +720,12 @@ module NodeJSLib {
         this = handler.getParameter(0)
       )
     }
-    
+
     override string getSourceType() {
       result = "NodeJSClientRequest login event"
     }
   }
-  
+
   /**
    * A data flow node that is the login callback provided by an HTTP or HTTPS request made by a Node.js process, for example `callback` in `http.request(url).on('login', (res, callback) => {})`.
    */
@@ -705,7 +736,7 @@ module NodeJSLib {
       )
     }
   }
-  
+
   /**
    * A data flow node that is the username passed to the login callback provided by an HTTP or HTTPS request made by a Node.js process, for example `username` in `http.request(url).on('login', (res, cb) => {cb(username, password)})`.
    */
@@ -715,14 +746,14 @@ module NodeJSLib {
         this = callback.getACall().getArgument(0).asExpr()
       )
     }
-    
+
     override string getCredentialsKind() {
       result = "Node.js http(s) client login username"
     }
   }
-  
+
   /**
-   * A data flow node that is the password passed to the login callback provided by an HTTP or HTTPS request made by a Node.js process, for example `password` in `http.request(url).on('login', (res, cb) => {cb(username, password)})`. 
+   * A data flow node that is the password passed to the login callback provided by an HTTP or HTTPS request made by a Node.js process, for example `password` in `http.request(url).on('login', (res, cb) => {cb(username, password)})`.
    */
   private class ClientRequestLoginPassword extends CredentialsExpr {
     ClientRequestLoginPassword() {
@@ -730,13 +761,13 @@ module NodeJSLib {
         this = callback.getACall().getArgument(1).asExpr()
       )
     }
-    
+
     override string getCredentialsKind() {
       result = "Node.js http(s) client login password"
     }
   }
 
-  
+
   /**
    * A data flow node that is the parameter of an error callback for an HTTP or HTTPS request made by a Node.js process, for example `err` in `http.request(url).on('error', (err) => {})`.
    */
@@ -747,7 +778,7 @@ module NodeJSLib {
         handler.getAHandledEvent() = "error"
       )
     }
-    
+
     override string getSourceType() {
       result = "NodeJSClientRequest error event"
     }
