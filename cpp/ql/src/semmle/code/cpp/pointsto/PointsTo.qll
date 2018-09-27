@@ -635,7 +635,7 @@ class PointsToExpr extends Expr
   {
     this.interesting() and
     exists(int set, @element thisEntity, @element resultEntity |
-      thisEntity = this.underlying() and
+      thisEntity = underlyingElement(this) and
       pointstosets(set, thisEntity) and
       setlocations(set, resultEntity) and
       resultEntity = localUnresolveElement(result)

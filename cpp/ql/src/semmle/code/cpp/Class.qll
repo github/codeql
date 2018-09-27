@@ -12,11 +12,7 @@ private import semmle.code.cpp.internal.ResolveClass
  */
 class Class extends UserType {
   Class() {
-    isClass(this.underlying())
-  }
-
-  override @element unresolve() {
-    resolveClass(result) = this
+    isClass(underlyingElement(this))
   }
 
   /** Gets a child declaration of this class. */
