@@ -301,7 +301,7 @@ private class AnalyzedExportAssign extends AnalyzedPropertyWrite, DataFlow::Valu
   }
 
   override predicate writes(AbstractValue baseVal, string propName, DataFlow::AnalyzedNode source) {
-    baseVal = TAbstractModuleObject(exportAssign.getContainer()) and
+    baseVal = TAbstractModuleObject(exportAssign.getTopLevel()) and
     propName = "exports" and
     source = this
   }
