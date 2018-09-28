@@ -18,6 +18,83 @@ private Callable dispatchCand(Call c) {
   result = viableImpl_inp(c)
 }
 
+/**
+ * Holds if `t` and all its enclosing types are public.
+ */
+private predicate veryPublic(RefType t) {
+  t.isPublic() and
+  (
+    not t instanceof NestedType or
+    veryPublic(t.(NestedType).getEnclosingType())
+  )
+}
+
+/**
+ * Holds if `cie` occurs as the initializer of a public static field.
+ */
+private predicate publicStaticFieldInit(ClassInstanceExpr cie) {
+  exists(Field f |
+    f.isStatic() and
+    f.isPublic() and
+    veryPublic(f.getDeclaringType()) and
+    f.getInitializer() = cie
+  )
+}
+
+/**
+ * Holds if a `ClassInstanceExpr` constructing `t` occurs as the initializer of
+ * a public static field.
+ */
+private predicate publicThroughField(RefType t) {
+  exists(ClassInstanceExpr cie |
+    cie.getConstructedType() = t and
+    publicStaticFieldInit(cie)
+  )
+}
+
+/**
+ * Holds if `t` and its subtypes are private or anonymous.
+ */
+private predicate privateConstruction(RefType t) {
+  (t.isPrivate() or t instanceof AnonymousClass) and
+  not publicThroughField(t) and
+  forall(SrcRefType sub | sub.getASourceSupertype+() = t.getSourceDeclaration() |
+    (sub.isPrivate() or sub instanceof AnonymousClass) and
+    not publicThroughField(sub)
+  )
+}
+
+/**
+ * Holds if `m` is declared on a type that we will track all instantiations of
+ * for the purpose of virtual dispatch to `m`. This holds in particular for
+ * lambda methods and methods on other anonymous classes.
+ */
+private predicate trackedMethod(Method m) {
+  privateConstruction(m.getDeclaringType().getSourceDeclaration())
+}
+
+/**
+ * Holds if `t` declares or inherits the tracked method `m`.
+ */
+private predicate trackedMethodOnType(Method m, SrcRefType t) {
+  exists(Method m0 |
+    t.hasMethod(m0, _, _) and
+    m = m0.getSourceDeclaration() and
+    trackedMethod(m)
+  )
+}
+
+/**
+ * Holds if `ma` may dispatch to the tracked method `m` declared or inherited
+ * by the type constructed by `cie`. Thus the dispatch from `ma` to `m` will
+ * only be included if `cie` flows to the qualifier of `ma`.
+ */
+private predicate dispatchOrigin(ClassInstanceExpr cie, MethodAccess ma, Method m) {
+  m = viableImpl_inp(ma) and
+  not m = ma.getMethod().getSourceDeclaration() and
+  trackedMethodOnType(m, cie.getConstructedType().getSourceDeclaration())
+}
+
 /** Holds if `t` is a type that is relevant for dispatch flow. */
 predicate relevant(RefType t) {
   exists(ClassInstanceExpr cie | dispatchOrigin(cie, _, _) and t = cie.getConstructedType().getSourceDeclaration()) or
@@ -140,83 +217,6 @@ private predicate flowStep(RelevantNode n1, RelevantNode n2) {
       ssa.getAUse() = n2.asExpr()
     )
   )
-}
-
-/**
- * Holds if `t` and all its enclosing types are public.
- */
-private predicate veryPublic(RefType t) {
-  t.isPublic() and
-  (
-    not t instanceof NestedType or
-    veryPublic(t.(NestedType).getEnclosingType())
-  )
-}
-
-/**
- * Holds if `cie` occurs as the initializer of a public static field.
- */
-private predicate publicStaticFieldInit(ClassInstanceExpr cie) {
-  exists(Field f |
-    f.isStatic() and
-    f.isPublic() and
-    veryPublic(f.getDeclaringType()) and
-    f.getInitializer() = cie
-  )
-}
-
-/**
- * Holds if a `ClassInstanceExpr` constructing `t` occurs as the initializer of
- * a public static field.
- */
-private predicate publicThroughField(RefType t) {
-  exists(ClassInstanceExpr cie |
-    cie.getConstructedType() = t and
-    publicStaticFieldInit(cie)
-  )
-}
-
-/**
- * Holds if `t` and its subtypes are private or anonymous.
- */
-private predicate privateConstruction(RefType t) {
-  (t.isPrivate() or t instanceof AnonymousClass) and
-  not publicThroughField(t) and
-  forall(SrcRefType sub | sub.getASourceSupertype+() = t.getSourceDeclaration() |
-    (sub.isPrivate() or sub instanceof AnonymousClass) and
-    not publicThroughField(sub)
-  )
-}
-
-/**
- * Holds if `m` is declared on a type that we will track all instantiations of
- * for the purpose of virtual dispatch to `m`. This holds in particular for
- * lambda methods and methods on other anonymous classes.
- */
-private predicate trackedMethod(Method m) {
-  privateConstruction(m.getDeclaringType().getSourceDeclaration())
-}
-
-/**
- * Holds if `t` declares or inherits the tracked method `m`.
- */
-private predicate trackedMethodOnType(Method m, SrcRefType t) {
-  exists(Method m0 |
-    t.hasMethod(m0, _, _) and
-    m = m0.getSourceDeclaration() and
-    trackedMethod(m)
-  )
-}
-
-/**
- * Holds if `ma` may dispatch to the tracked method `m` declared or inherited
- * by the type constructed by `cie`. Thus the dispatch from `ma` to `m` will
- * only be included if `cie` flows to the qualifier of `ma`.
- */
-private predicate dispatchOrigin(ClassInstanceExpr cie, MethodAccess ma, Method m) {
-  m = viableImpl_inp(ma) and
-  not m = ma.getMethod().getSourceDeclaration() and
-  trackedMethodOnType(m, cie.getConstructedType().getSourceDeclaration())
 }
 
 /**
