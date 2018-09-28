@@ -1008,6 +1008,25 @@ class BinaryExpr extends @binaryexpr, Expr {
   override ControlFlowNode getFirstControlFlowNode() {
     result = getLeftOperand().getFirstControlFlowNode()
   }
+
+  /**
+   * Gets the number of whitespace characters around the operator of this expression.
+   *
+   * This predicate is only defined if both operands are on the same line, and if the
+   * amount of whitespace before and after the operator are the same.
+   */
+  int getWhitespaceAroundOperator() {
+    exists (Token lastLeft, Token operator, Token firstRight, int l, int c1, int c2, int c3, int c4 |
+      lastLeft = getLeftOperand().getLastToken() and
+      operator = lastLeft.getNextToken() and
+      firstRight = operator.getNextToken() and
+      lastLeft.getLocation().hasLocationInfo(_, _, _, l, c1) and
+      operator.getLocation().hasLocationInfo(_, l, c2, l, c3) and
+      firstRight.getLocation().hasLocationInfo(_, l, c4, _, _) and
+      result = c2-c1-1 and
+      result = c4-c3-1
+    )
+  }
 }
 
 /**
