@@ -5,4 +5,4 @@ Bundle-SymbolicName: com.semmle.plugin.semmlecode.csharp.queries;singleton:=true
 Bundle-Version: 1.18.0
 Bundle-Vendor: Semmle Ltd.
 Bundle-ActivationPolicy: lazy
-Require-Bundle: com.semmle.plugin.qdt.ui;bundle-version="[1.18.0.qualifier, 1.18.0.qualifier]"
+Require-Bundle: com.semmle.plugin.qdt.ui;bundle-version="[1.18.0,1.18.0]"
