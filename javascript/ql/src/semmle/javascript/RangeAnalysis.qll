@@ -71,8 +71,6 @@ import javascript
  *
  * - We assume !(x <= y) means x > y, ignoring NaN.
  *
- * - We assume x < y means x <= y + 1, ignoring floats.
- *
  * - We assume integer arithmetic is exact, ignoring values above 2^53.
  *
  */
@@ -281,19 +279,24 @@ module RangeAnalysis {
    *
    * The dual constraint `-B <= -A + c` is not included in this predicate.
    */
-  predicate comparisonEdge(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, int bias) {
+  predicate comparisonEdge(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, int bias, boolean sharp) {
     // A <= B + c
-    linearComparisonGuard(cfg, a, asign, "<=", b, bsign, bias)
+    linearComparisonGuard(cfg, a, asign, "<=", b, bsign, bias) and
+    sharp = false
     or
-    // A <= B + c   iff   A < B + c + 1  (assuming A,B are integers)
-    linearComparisonGuard(cfg, a, asign, "<", b, bsign, bias + 1)
+    // A < B + c
+    linearComparisonGuard(cfg, a, asign, "<", b, bsign, bias) and
+    sharp = true
     or
     // A <= B + c   iff   B >= A - c
-    linearComparisonGuard(cfg, b, bsign, ">=", a, asign, -bias)
+    linearComparisonGuard(cfg, b, bsign, ">=", a, asign, -bias) and
+    sharp = false
     or
-    // A <= B + c   iff   B > A - c - 1  (assuming A,B are integers)
-    linearComparisonGuard(cfg, b, bsign, ">", a, asign, -bias - 1)
+    // A < B + c   iff   B > A - c
+    linearComparisonGuard(cfg, b, bsign, ">", a, asign, -bias) and
+    sharp = true
     or
+    sharp = false and
     exists (string operator | operator = "==" or operator = "===" |
       // A == B + c   iff   A <= B + c  and  B <= A - c
       linearComparisonGuard(cfg, a, asign, operator, b, bsign, bias)
@@ -387,31 +390,31 @@ module RangeAnalysis {
   /**
    * The set of initial edges including those from dual constraints.
    */
-  private predicate seedEdge(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, int c) {
+  private predicate seedEdge(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, int c, boolean sharp) {
     // A <= B + c
-    comparisonEdge(cfg, a, asign, b, bsign, c)
+    comparisonEdge(cfg, a, asign, b, bsign, c, sharp)
     or
-    phiEdge(cfg, a, asign, b, bsign, c)
+    phiEdge(cfg, a, asign, b, bsign, c) and sharp = false
     or
-    constantEdge(cfg, a, asign, b, bsign, c)
+    constantEdge(cfg, a, asign, b, bsign, c) and sharp = false
   }
 
-  private predicate seedEdgeWithDual(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, int c) {
+  private predicate seedEdgeWithDual(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, int c, boolean sharp) {
     // A <= B + c
-    seedEdge(cfg, a, asign, b, bsign, c)
+    seedEdge(cfg, a, asign, b, bsign, c, sharp)
     or
     // -B <= -A + c   (dual constraint)
-    seedEdge(cfg, b, -bsign, a, -asign, c)
+    seedEdge(cfg, b, -bsign, a, -asign, c, sharp)
   }
 
   /**
    * Adds a negative and positive integer, but only if they are within in the same
    * order of magnitude.
    */
-  bindingset[x, y]
-  private int wideningAddition(int x, int y) {
-    x < 0 and
-    y >= 0 and
+  bindingset[x, sharpx, y, sharpy]
+  private int wideningAddition(int x, boolean sharpx, int y, boolean sharpy) {
+    (x < 0 or x = 0 and sharpx = true) and
+    (y > 0 or y = 0 and sharpy = false) and
     (
       x = 0
       or
@@ -449,13 +452,14 @@ module RangeAnalysis {
    *
    * This means negative-weight cycles (contradictions) can be detected using simple cycle detection.
    */
-  private predicate extendedEdge(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, int c) {
-    seedEdgeWithDual(cfg, a, asign, b, bsign, c)
+  private predicate extendedEdge(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, int c, boolean sharp) {
+    seedEdgeWithDual(cfg, a, asign, b, bsign, c, sharp)
     or
-    exists (DataFlow::Node mid, int midx, ControlFlowNode cfg1, int c1, ControlFlowNode cfg2, int c2 |
-      extendedEdge(cfg1, a, asign, mid, midx, c1) and
-      extendedEdge(cfg2, mid, midx, b, bsign, c2) and
-      c = wideningAddition(c1, c2) and
+    exists (DataFlow::Node mid, int midx, ControlFlowNode cfg1, int c1, ControlFlowNode cfg2, int c2, boolean sharp1, boolean sharp2 |
+      extendedEdge(cfg1, a, asign, mid, midx, c1, sharp1) and
+      extendedEdge(cfg2, mid, midx, b, bsign, c2, sharp2) and
+      sharp = sharp1.booleanOr(sharp2) and
+      c = wideningAddition(c1, sharp1, c2, sharp2) and
       // One of the two CFG nodes must dominate the other, and `cfg` must be bound to the dominated one.
       (
         // They are in the same basic block
@@ -481,7 +485,9 @@ module RangeAnalysis {
    * Holds if there is a negative-weight edge from src to dst.
    */
   private predicate negativeEdge(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign) {
-    exists (int weight | extendedEdge(cfg, a, asign, b, bsign, weight) |
+    exists (int weight, boolean sharp | extendedEdge(cfg, a, asign, b, bsign, weight, sharp) |
+      weight = 0 and sharp = true // a strict "< 0" edge counts as negative
+      or
       weight < 0)
   }
 
