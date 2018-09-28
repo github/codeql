@@ -5,6 +5,7 @@
 + semmlecode-javascript-queries/Expressions/SuspiciousInvocation.ql: /Correctness/Expressions
 + semmlecode-javascript-queries/Expressions/SuspiciousPropAccess.ql: /Correctness/Expressions
 + semmlecode-javascript-queries/Expressions/UnboundEventHandlerReceiver.ql: /Correctness/Expressions
++ semmlecode-javascript-queries/Expressions/UnclearOperatorPrecedence.ql: /Correctness/Expressions
 + semmlecode-javascript-queries/Expressions/UnknownDirective.ql: /Correctness/Expressions
 + semmlecode-javascript-queries/Expressions/WhitespaceContradictsPrecedence.ql: /Correctness/Expressions
 + semmlecode-javascript-queries/LanguageFeatures/IllegalInvocation.ql: /Correctness/Language Features
