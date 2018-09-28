@@ -18,6 +18,21 @@ private Callable dispatchCand(Call c) {
   result = viableImpl_inp(c)
 }
 
+/** Holds if `t` is a type that is relevant for dispatch flow. */
+predicate relevant(RefType t) {
+  exists(ClassInstanceExpr cie | dispatchOrigin(cie, _, _) and t = cie.getConstructedType().getSourceDeclaration()) or
+  relevant(t.getErasure()) or
+  exists(RefType r | relevant(r) and t = r.getASourceSupertype()) or
+  relevant(t.(Array).getComponentType()) or
+  t instanceof MapType or
+  t instanceof CollectionType
+}
+
+/** A node with a type that is relevant for dispatch flow. */
+class RelevantNode extends Node {
+  RelevantNode() { relevant(this.getType()) }
+}
+
 /**
  * Holds if `p` is the `i`th parameter of a viable dispatch target of `call`.
  * The instance parameter is considered to have index `-1`.
@@ -26,7 +41,8 @@ pragma[nomagic]
 private predicate viableParamCand(Call call, int i, ParameterNode p) {
   exists(Callable callable |
     callable = dispatchCand(call) and
-    p.isParameterOf(callable, i)
+    p.isParameterOf(callable, i) and
+    p instanceof RelevantNode
   )
 }
 
@@ -43,7 +59,7 @@ private predicate viableArgParamCand(ArgumentNode arg, ParameterNode p) {
 /**
  * Holds if data may flow from `n1` to `n2` in a single step through a call or a return.
  */
-private predicate callFlowStepCand(Node n1, Node n2) {
+private predicate callFlowStepCand(RelevantNode n1, RelevantNode n2) {
   exists(ReturnStmt ret, Method m |
     ret.getEnclosingCallable() = m and
     ret.getResult() = n1.asExpr() and
@@ -56,7 +72,7 @@ private predicate callFlowStepCand(Node n1, Node n2) {
  * Holds if data may flow from `n1` to `n2` in a single step that does not go
  * through a call or a return.
  */
-private predicate flowStep(Node n1, Node n2) {
+private predicate flowStep(RelevantNode n1, RelevantNode n2) {
   exists(BaseSsaVariable v, BaseSsaVariable def |
     def.(BaseSsaUpdate).getDefiningExpr().(VariableAssign).getSource() = n1.asExpr() or
     def.(BaseSsaImplicitInit).isParameterDefinition(n1.asParameter()) or
