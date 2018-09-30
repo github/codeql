@@ -385,346 +385,346 @@ astGuardsEnsure
 | test.cpp:31:7:31:13 | ... == ... | test.cpp:31:12:31:13 | - ... | == | test.cpp:31:7:31:7 | x | 0 | 30 | 30 |
 | test.cpp:31:7:31:13 | ... == ... | test.cpp:31:12:31:13 | - ... | == | test.cpp:31:7:31:7 | x | 0 | 31 | 32 |
 irGuards
-| test.c:7:9:7:13 | r0_16(int) = CompareGT r0_14, r0_15 |
-| test.c:17:8:17:12 | r16_13(int) = CompareLT r16_11, r16_12 |
-| test.c:17:17:17:21 | r17_3(int) = CompareGT r17_1, r17_2 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 |
-| test.c:42:16:42:21 | r3_6(int) = CompareLT r3_4, r3_5 |
-| test.c:44:12:44:16 | r4_6(int) = CompareGT r4_4, r4_5 |
-| test.c:45:16:45:20 | r5_3(int) = CompareGT r5_1, r5_2 |
-| test.c:58:9:58:14 | r10_5(int) = CompareEQ r10_3, r10_4 |
-| test.c:58:19:58:23 | r11_3(int) = CompareLT r11_1, r11_2 |
-| test.c:75:9:75:14 | r0_16(int) = CompareEQ r0_14, r0_15 |
-| test.c:85:8:85:13 | r8_13(int) = CompareEQ r8_11, r8_12 |
-| test.c:85:18:85:23 | r9_3(int) = CompareNE r9_1, r9_2 |
-| test.c:94:11:94:16 | r13_5(int) = CompareNE r13_3, r13_4 |
-| test.c:102:16:102:21 | r16_6(int) = CompareLT r16_4, r16_5 |
-| test.c:109:9:109:14 | r2_9(int) = CompareEQ r2_7, r2_8 |
-| test.c:109:19:109:23 | r3_3(int) = CompareLT r3_1, r3_2 |
-| test.c:126:7:126:7 | r0_5(int) = Constant[1]  |
-| test.c:126:12:126:26 | r1_1(int) = Call r1_0 |
-| test.c:131:7:131:7 | r3_2(int) = Load r3_1, m3_0 |
-| test.c:137:7:137:7 | r0_4(int) = Constant[0]  |
-| test.c:138:9:138:9 | r1_1(int) = Load r1_0, m0_3 |
-| test.c:146:8:146:8 | r0_5(int) = Load r0_4, m0_3 |
-| test.c:152:10:152:10 | r0_7(int) = Load r0_6, m0_3 |
-| test.c:152:15:152:15 | r1_1(int) = Load r1_0, m0_5 |
-| test.cpp:18:8:18:12 | r0_7(bool) = CompareNE r0_5, r0_6 |
-| test.cpp:31:7:31:13 | r0_7(bool) = CompareEQ r0_5, r0_6 |
-| test.cpp:42:13:42:20 | r0_5(bool) = Call r0_4 |
+| test.c:7:9:7:13 | CompareGT: ... > ... |
+| test.c:17:8:17:12 | CompareLT: ... < ... |
+| test.c:17:17:17:21 | CompareGT: ... > ... |
+| test.c:26:11:26:15 | CompareGT: ... > ... |
+| test.c:34:16:34:21 | CompareLT: ... < ... |
+| test.c:42:16:42:21 | CompareLT: ... < ... |
+| test.c:44:12:44:16 | CompareGT: ... > ... |
+| test.c:45:16:45:20 | CompareGT: ... > ... |
+| test.c:58:9:58:14 | CompareEQ: ... == ... |
+| test.c:58:19:58:23 | CompareLT: ... < ... |
+| test.c:75:9:75:14 | CompareEQ: ... == ... |
+| test.c:85:8:85:13 | CompareEQ: ... == ... |
+| test.c:85:18:85:23 | CompareNE: ... != ... |
+| test.c:94:11:94:16 | CompareNE: ... != ... |
+| test.c:102:16:102:21 | CompareLT: ... < ... |
+| test.c:109:9:109:14 | CompareEQ: ... == ... |
+| test.c:109:19:109:23 | CompareLT: ... < ... |
+| test.c:126:7:126:7 | Constant: 1 |
+| test.c:126:12:126:26 | Call: call to test3_condition |
+| test.c:131:7:131:7 | Load: b |
+| test.c:137:7:137:7 | Constant: 0 |
+| test.c:138:9:138:9 | Load: i |
+| test.c:146:8:146:8 | Load: x |
+| test.c:152:10:152:10 | Load: x |
+| test.c:152:15:152:15 | Load: y |
+| test.cpp:18:8:18:12 | CompareNE: (bool)... |
+| test.cpp:31:7:31:13 | CompareEQ: ... == ... |
+| test.cpp:42:13:42:20 | Call: call to getABool |
 irGuardsCompare
-| 7 | 0 < x+0 when r0_16(int) = CompareGT r0_14, r0_15 is true |
-| 7 | 0 >= x+0 when r0_16(int) = CompareGT r0_14, r0_15 is false |
-| 7 | x < 0+1 when r0_16(int) = CompareGT r0_14, r0_15 is false |
-| 7 | x >= 0+1 when r0_16(int) = CompareGT r0_14, r0_15 is true |
-| 17 | 0 < x+1 when r16_13(int) = CompareLT r16_11, r16_12 is false |
-| 17 | 0 >= x+1 when r16_13(int) = CompareLT r16_11, r16_12 is true |
-| 17 | 1 < y+0 when r17_3(int) = CompareGT r17_1, r17_2 is true |
-| 17 | 1 >= y+0 when r17_3(int) = CompareGT r17_1, r17_2 is false |
-| 17 | x < 0+0 when r16_13(int) = CompareLT r16_11, r16_12 is true |
-| 17 | x >= 0+0 when r16_13(int) = CompareLT r16_11, r16_12 is false |
-| 17 | y < 1+1 when r17_3(int) = CompareGT r17_1, r17_2 is false |
-| 17 | y >= 1+1 when r17_3(int) = CompareGT r17_1, r17_2 is true |
-| 26 | 0 < x+0 when r21_5(int) = CompareGT r21_3, r21_4 is true |
-| 26 | 0 >= x+0 when r21_5(int) = CompareGT r21_3, r21_4 is false |
-| 26 | x < 0+1 when r21_5(int) = CompareGT r21_3, r21_4 is false |
-| 26 | x >= 0+1 when r21_5(int) = CompareGT r21_3, r21_4 is true |
-| 31 | - ... != x+0 when r0_7(bool) = CompareEQ r0_5, r0_6 is false |
-| 31 | - ... == x+0 when r0_7(bool) = CompareEQ r0_5, r0_6 is true |
-| 31 | x != - ...+0 when r0_7(bool) = CompareEQ r0_5, r0_6 is false |
-| 31 | x == - ...+0 when r0_7(bool) = CompareEQ r0_5, r0_6 is true |
-| 34 | 10 < j+1 when r24_6(int) = CompareLT r24_4, r24_5 is false |
-| 34 | 10 >= j+1 when r24_6(int) = CompareLT r24_4, r24_5 is true |
-| 34 | j < 10+0 when r24_6(int) = CompareLT r24_4, r24_5 is true |
-| 34 | j >= 10+0 when r24_6(int) = CompareLT r24_4, r24_5 is false |
-| 42 | 10 < j+1 when r3_6(int) = CompareLT r3_4, r3_5 is false |
-| 42 | 10 >= j+1 when r3_6(int) = CompareLT r3_4, r3_5 is true |
-| 42 | j < 10+0 when r3_6(int) = CompareLT r3_4, r3_5 is true |
-| 42 | j >= 10+0 when r3_6(int) = CompareLT r3_4, r3_5 is false |
-| 44 | 0 < z+0 when r4_6(int) = CompareGT r4_4, r4_5 is true |
-| 44 | 0 >= z+0 when r4_6(int) = CompareGT r4_4, r4_5 is false |
-| 44 | z < 0+1 when r4_6(int) = CompareGT r4_4, r4_5 is false |
-| 44 | z >= 0+1 when r4_6(int) = CompareGT r4_4, r4_5 is true |
-| 45 | 0 < y+0 when r5_3(int) = CompareGT r5_1, r5_2 is true |
-| 45 | 0 >= y+0 when r5_3(int) = CompareGT r5_1, r5_2 is false |
-| 45 | y < 0+1 when r5_3(int) = CompareGT r5_1, r5_2 is false |
-| 45 | y >= 0+1 when r5_3(int) = CompareGT r5_1, r5_2 is true |
-| 58 | 0 != x+0 when r10_5(int) = CompareEQ r10_3, r10_4 is false |
-| 58 | 0 < y+1 when r11_3(int) = CompareLT r11_1, r11_2 is false |
-| 58 | 0 == x+0 when r10_5(int) = CompareEQ r10_3, r10_4 is true |
-| 58 | 0 >= y+1 when r11_3(int) = CompareLT r11_1, r11_2 is true |
-| 58 | x != 0+0 when r10_5(int) = CompareEQ r10_3, r10_4 is false |
-| 58 | x == 0+0 when r10_5(int) = CompareEQ r10_3, r10_4 is true |
-| 58 | y < 0+0 when r11_3(int) = CompareLT r11_1, r11_2 is true |
-| 58 | y >= 0+0 when r11_3(int) = CompareLT r11_1, r11_2 is false |
-| 75 | 0 != x+0 when r0_16(int) = CompareEQ r0_14, r0_15 is false |
-| 75 | 0 == x+0 when r0_16(int) = CompareEQ r0_14, r0_15 is true |
-| 75 | x != 0+0 when r0_16(int) = CompareEQ r0_14, r0_15 is false |
-| 75 | x == 0+0 when r0_16(int) = CompareEQ r0_14, r0_15 is true |
-| 85 | 0 != x+0 when r8_13(int) = CompareEQ r8_11, r8_12 is false |
-| 85 | 0 != y+0 when r9_3(int) = CompareNE r9_1, r9_2 is true |
-| 85 | 0 == x+0 when r8_13(int) = CompareEQ r8_11, r8_12 is true |
-| 85 | 0 == y+0 when r9_3(int) = CompareNE r9_1, r9_2 is false |
-| 85 | x != 0+0 when r8_13(int) = CompareEQ r8_11, r8_12 is false |
-| 85 | x == 0+0 when r8_13(int) = CompareEQ r8_11, r8_12 is true |
-| 85 | y != 0+0 when r9_3(int) = CompareNE r9_1, r9_2 is true |
-| 85 | y == 0+0 when r9_3(int) = CompareNE r9_1, r9_2 is false |
-| 94 | 0 != x+0 when r13_5(int) = CompareNE r13_3, r13_4 is true |
-| 94 | 0 == x+0 when r13_5(int) = CompareNE r13_3, r13_4 is false |
-| 94 | x != 0+0 when r13_5(int) = CompareNE r13_3, r13_4 is true |
-| 94 | x == 0+0 when r13_5(int) = CompareNE r13_3, r13_4 is false |
-| 102 | 10 < j+1 when r16_6(int) = CompareLT r16_4, r16_5 is false |
-| 102 | 10 >= j+1 when r16_6(int) = CompareLT r16_4, r16_5 is true |
-| 102 | j < 10+0 when r16_6(int) = CompareLT r16_4, r16_5 is true |
-| 102 | j >= 10+0 when r16_6(int) = CompareLT r16_4, r16_5 is false |
-| 109 | 0 != x+0 when r2_9(int) = CompareEQ r2_7, r2_8 is false |
-| 109 | 0 < y+1 when r3_3(int) = CompareLT r3_1, r3_2 is false |
-| 109 | 0 == x+0 when r2_9(int) = CompareEQ r2_7, r2_8 is true |
-| 109 | 0 >= y+1 when r3_3(int) = CompareLT r3_1, r3_2 is true |
-| 109 | x != 0+0 when r2_9(int) = CompareEQ r2_7, r2_8 is false |
-| 109 | x == 0+0 when r2_9(int) = CompareEQ r2_7, r2_8 is true |
-| 109 | y < 0+0 when r3_3(int) = CompareLT r3_1, r3_2 is true |
-| 109 | y >= 0+0 when r3_3(int) = CompareLT r3_1, r3_2 is false |
+| 7 | 0 < x+0 when CompareGT: ... > ... is true |
+| 7 | 0 >= x+0 when CompareGT: ... > ... is false |
+| 7 | x < 0+1 when CompareGT: ... > ... is false |
+| 7 | x >= 0+1 when CompareGT: ... > ... is true |
+| 17 | 0 < x+1 when CompareLT: ... < ... is false |
+| 17 | 0 >= x+1 when CompareLT: ... < ... is true |
+| 17 | 1 < y+0 when CompareGT: ... > ... is true |
+| 17 | 1 >= y+0 when CompareGT: ... > ... is false |
+| 17 | x < 0+0 when CompareLT: ... < ... is true |
+| 17 | x >= 0+0 when CompareLT: ... < ... is false |
+| 17 | y < 1+1 when CompareGT: ... > ... is false |
+| 17 | y >= 1+1 when CompareGT: ... > ... is true |
+| 26 | 0 < x+0 when CompareGT: ... > ... is true |
+| 26 | 0 >= x+0 when CompareGT: ... > ... is false |
+| 26 | x < 0+1 when CompareGT: ... > ... is false |
+| 26 | x >= 0+1 when CompareGT: ... > ... is true |
+| 31 | - ... != x+0 when CompareEQ: ... == ... is false |
+| 31 | - ... == x+0 when CompareEQ: ... == ... is true |
+| 31 | x != - ...+0 when CompareEQ: ... == ... is false |
+| 31 | x == - ...+0 when CompareEQ: ... == ... is true |
+| 34 | 10 < j+1 when CompareLT: ... < ... is false |
+| 34 | 10 >= j+1 when CompareLT: ... < ... is true |
+| 34 | j < 10+0 when CompareLT: ... < ... is true |
+| 34 | j >= 10+0 when CompareLT: ... < ... is false |
+| 42 | 10 < j+1 when CompareLT: ... < ... is false |
+| 42 | 10 >= j+1 when CompareLT: ... < ... is true |
+| 42 | j < 10+0 when CompareLT: ... < ... is true |
+| 42 | j >= 10+0 when CompareLT: ... < ... is false |
+| 44 | 0 < z+0 when CompareGT: ... > ... is true |
+| 44 | 0 >= z+0 when CompareGT: ... > ... is false |
+| 44 | z < 0+1 when CompareGT: ... > ... is false |
+| 44 | z >= 0+1 when CompareGT: ... > ... is true |
+| 45 | 0 < y+0 when CompareGT: ... > ... is true |
+| 45 | 0 >= y+0 when CompareGT: ... > ... is false |
+| 45 | y < 0+1 when CompareGT: ... > ... is false |
+| 45 | y >= 0+1 when CompareGT: ... > ... is true |
+| 58 | 0 != x+0 when CompareEQ: ... == ... is false |
+| 58 | 0 < y+1 when CompareLT: ... < ... is false |
+| 58 | 0 == x+0 when CompareEQ: ... == ... is true |
+| 58 | 0 >= y+1 when CompareLT: ... < ... is true |
+| 58 | x != 0+0 when CompareEQ: ... == ... is false |
+| 58 | x == 0+0 when CompareEQ: ... == ... is true |
+| 58 | y < 0+0 when CompareLT: ... < ... is true |
+| 58 | y >= 0+0 when CompareLT: ... < ... is false |
+| 75 | 0 != x+0 when CompareEQ: ... == ... is false |
+| 75 | 0 == x+0 when CompareEQ: ... == ... is true |
+| 75 | x != 0+0 when CompareEQ: ... == ... is false |
+| 75 | x == 0+0 when CompareEQ: ... == ... is true |
+| 85 | 0 != x+0 when CompareEQ: ... == ... is false |
+| 85 | 0 != y+0 when CompareNE: ... != ... is true |
+| 85 | 0 == x+0 when CompareEQ: ... == ... is true |
+| 85 | 0 == y+0 when CompareNE: ... != ... is false |
+| 85 | x != 0+0 when CompareEQ: ... == ... is false |
+| 85 | x == 0+0 when CompareEQ: ... == ... is true |
+| 85 | y != 0+0 when CompareNE: ... != ... is true |
+| 85 | y == 0+0 when CompareNE: ... != ... is false |
+| 94 | 0 != x+0 when CompareNE: ... != ... is true |
+| 94 | 0 == x+0 when CompareNE: ... != ... is false |
+| 94 | x != 0+0 when CompareNE: ... != ... is true |
+| 94 | x == 0+0 when CompareNE: ... != ... is false |
+| 102 | 10 < j+1 when CompareLT: ... < ... is false |
+| 102 | 10 >= j+1 when CompareLT: ... < ... is true |
+| 102 | j < 10+0 when CompareLT: ... < ... is true |
+| 102 | j >= 10+0 when CompareLT: ... < ... is false |
+| 109 | 0 != x+0 when CompareEQ: ... == ... is false |
+| 109 | 0 < y+1 when CompareLT: ... < ... is false |
+| 109 | 0 == x+0 when CompareEQ: ... == ... is true |
+| 109 | 0 >= y+1 when CompareLT: ... < ... is true |
+| 109 | x != 0+0 when CompareEQ: ... == ... is false |
+| 109 | x == 0+0 when CompareEQ: ... == ... is true |
+| 109 | y < 0+0 when CompareLT: ... < ... is true |
+| 109 | y >= 0+0 when CompareLT: ... < ... is false |
 irGuardsControl
-| test.c:7:9:7:13 | r0_16(int) = CompareGT r0_14, r0_15 | false | 11 | 11 |
-| test.c:7:9:7:13 | r0_16(int) = CompareGT r0_14, r0_15 | true | 8 | 8 |
-| test.c:17:8:17:12 | r16_13(int) = CompareLT r16_11, r16_12 | true | 17 | 17 |
-| test.c:17:8:17:12 | r16_13(int) = CompareLT r16_11, r16_12 | true | 18 | 18 |
-| test.c:17:17:17:21 | r17_3(int) = CompareGT r17_1, r17_2 | true | 18 | 18 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | false | 2 | 2 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | false | 31 | 31 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | false | 34 | 34 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | false | 35 | 35 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | false | 39 | 39 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | false | 42 | 42 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | false | 43 | 43 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | false | 45 | 45 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | false | 46 | 46 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | false | 49 | 49 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | false | 52 | 52 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | false | 56 | 56 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | false | 58 | 58 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | false | 59 | 59 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | false | 62 | 62 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | true | 27 | 27 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | false | 2 | 2 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | false | 39 | 39 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | false | 42 | 42 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | false | 43 | 43 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | false | 45 | 45 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | false | 46 | 46 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | false | 49 | 49 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | false | 52 | 52 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | false | 56 | 56 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | false | 58 | 58 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | false | 59 | 59 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | false | 62 | 62 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | true | 35 | 35 |
-| test.c:42:16:42:21 | r3_6(int) = CompareLT r3_4, r3_5 | true | 42 | 42 |
-| test.c:42:16:42:21 | r3_6(int) = CompareLT r3_4, r3_5 | true | 43 | 43 |
-| test.c:42:16:42:21 | r3_6(int) = CompareLT r3_4, r3_5 | true | 45 | 45 |
-| test.c:42:16:42:21 | r3_6(int) = CompareLT r3_4, r3_5 | true | 46 | 46 |
-| test.c:42:16:42:21 | r3_6(int) = CompareLT r3_4, r3_5 | true | 49 | 49 |
-| test.c:42:16:42:21 | r3_6(int) = CompareLT r3_4, r3_5 | true | 52 | 52 |
-| test.c:44:12:44:16 | r4_6(int) = CompareGT r4_4, r4_5 | false | 52 | 52 |
-| test.c:44:12:44:16 | r4_6(int) = CompareGT r4_4, r4_5 | true | 45 | 45 |
-| test.c:44:12:44:16 | r4_6(int) = CompareGT r4_4, r4_5 | true | 46 | 46 |
-| test.c:44:12:44:16 | r4_6(int) = CompareGT r4_4, r4_5 | true | 49 | 49 |
-| test.c:45:16:45:20 | r5_3(int) = CompareGT r5_1, r5_2 | false | 49 | 49 |
-| test.c:45:16:45:20 | r5_3(int) = CompareGT r5_1, r5_2 | true | 46 | 46 |
-| test.c:58:9:58:14 | r10_5(int) = CompareEQ r10_3, r10_4 | false | 58 | 58 |
-| test.c:58:9:58:14 | r10_5(int) = CompareEQ r10_3, r10_4 | false | 62 | 62 |
-| test.c:58:19:58:23 | r11_3(int) = CompareLT r11_1, r11_2 | false | 62 | 62 |
-| test.c:75:9:75:14 | r0_16(int) = CompareEQ r0_14, r0_15 | false | 79 | 79 |
-| test.c:75:9:75:14 | r0_16(int) = CompareEQ r0_14, r0_15 | true | 76 | 76 |
-| test.c:85:8:85:13 | r8_13(int) = CompareEQ r8_11, r8_12 | true | 85 | 85 |
-| test.c:85:8:85:13 | r8_13(int) = CompareEQ r8_11, r8_12 | true | 86 | 86 |
-| test.c:85:18:85:23 | r9_3(int) = CompareNE r9_1, r9_2 | true | 86 | 86 |
-| test.c:94:11:94:16 | r13_5(int) = CompareNE r13_3, r13_4 | false | 70 | 70 |
-| test.c:94:11:94:16 | r13_5(int) = CompareNE r13_3, r13_4 | false | 99 | 99 |
-| test.c:94:11:94:16 | r13_5(int) = CompareNE r13_3, r13_4 | false | 102 | 102 |
-| test.c:94:11:94:16 | r13_5(int) = CompareNE r13_3, r13_4 | false | 103 | 103 |
-| test.c:94:11:94:16 | r13_5(int) = CompareNE r13_3, r13_4 | false | 107 | 107 |
-| test.c:94:11:94:16 | r13_5(int) = CompareNE r13_3, r13_4 | false | 109 | 109 |
-| test.c:94:11:94:16 | r13_5(int) = CompareNE r13_3, r13_4 | false | 110 | 110 |
-| test.c:94:11:94:16 | r13_5(int) = CompareNE r13_3, r13_4 | false | 113 | 113 |
-| test.c:94:11:94:16 | r13_5(int) = CompareNE r13_3, r13_4 | true | 95 | 95 |
-| test.c:102:16:102:21 | r16_6(int) = CompareLT r16_4, r16_5 | false | 70 | 70 |
-| test.c:102:16:102:21 | r16_6(int) = CompareLT r16_4, r16_5 | false | 107 | 107 |
-| test.c:102:16:102:21 | r16_6(int) = CompareLT r16_4, r16_5 | false | 109 | 109 |
-| test.c:102:16:102:21 | r16_6(int) = CompareLT r16_4, r16_5 | false | 110 | 110 |
-| test.c:102:16:102:21 | r16_6(int) = CompareLT r16_4, r16_5 | false | 113 | 113 |
-| test.c:102:16:102:21 | r16_6(int) = CompareLT r16_4, r16_5 | true | 103 | 103 |
-| test.c:109:9:109:14 | r2_9(int) = CompareEQ r2_7, r2_8 | false | 109 | 109 |
-| test.c:109:9:109:14 | r2_9(int) = CompareEQ r2_7, r2_8 | false | 113 | 113 |
-| test.c:109:19:109:23 | r3_3(int) = CompareLT r3_1, r3_2 | false | 113 | 113 |
-| test.c:126:7:126:7 | r0_5(int) = Constant[1]  | true | 126 | 126 |
-| test.c:126:7:126:7 | r0_5(int) = Constant[1]  | true | 127 | 127 |
-| test.c:126:12:126:26 | r1_1(int) = Call r1_0 | true | 127 | 127 |
-| test.c:131:7:131:7 | r3_2(int) = Load r3_1, m3_0 | true | 132 | 132 |
-| test.c:137:7:137:7 | r0_4(int) = Constant[0]  | true | 138 | 138 |
-| test.c:137:7:137:7 | r0_4(int) = Constant[0]  | true | 139 | 139 |
-| test.c:138:9:138:9 | r1_1(int) = Load r1_0, m0_3 | true | 139 | 139 |
-| test.c:146:8:146:8 | r0_5(int) = Load r0_4, m0_3 | false | 147 | 147 |
-| test.c:152:10:152:10 | r0_7(int) = Load r0_6, m0_3 | true | 152 | 152 |
-| test.c:152:15:152:15 | r1_1(int) = Load r1_0, m0_5 | true | 152 | 152 |
-| test.cpp:18:8:18:12 | r0_7(bool) = CompareNE r0_5, r0_6 | true | 0 | 0 |
-| test.cpp:31:7:31:13 | r0_7(bool) = CompareEQ r0_5, r0_6 | false | 34 | 34 |
-| test.cpp:31:7:31:13 | r0_7(bool) = CompareEQ r0_5, r0_6 | true | 30 | 30 |
-| test.cpp:31:7:31:13 | r0_7(bool) = CompareEQ r0_5, r0_6 | true | 32 | 32 |
-| test.cpp:42:13:42:20 | r0_5(bool) = Call r0_4 | false | 53 | 53 |
-| test.cpp:42:13:42:20 | r0_5(bool) = Call r0_4 | true | 44 | 44 |
+| test.c:7:9:7:13 | CompareGT: ... > ... | false | 11 | 11 |
+| test.c:7:9:7:13 | CompareGT: ... > ... | true | 8 | 8 |
+| test.c:17:8:17:12 | CompareLT: ... < ... | true | 17 | 17 |
+| test.c:17:8:17:12 | CompareLT: ... < ... | true | 18 | 18 |
+| test.c:17:17:17:21 | CompareGT: ... > ... | true | 18 | 18 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | false | 2 | 2 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | false | 31 | 31 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | false | 34 | 34 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | false | 35 | 35 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | false | 39 | 39 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | false | 42 | 42 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | false | 43 | 43 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | false | 45 | 45 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | false | 46 | 46 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | false | 49 | 49 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | false | 52 | 52 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | false | 56 | 56 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | false | 58 | 58 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | false | 59 | 59 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | false | 62 | 62 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | true | 27 | 27 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | false | 2 | 2 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | false | 39 | 39 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | false | 42 | 42 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | false | 43 | 43 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | false | 45 | 45 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | false | 46 | 46 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | false | 49 | 49 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | false | 52 | 52 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | false | 56 | 56 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | false | 58 | 58 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | false | 59 | 59 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | false | 62 | 62 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | true | 35 | 35 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | true | 42 | 42 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | true | 43 | 43 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | true | 45 | 45 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | true | 46 | 46 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | true | 49 | 49 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | true | 52 | 52 |
+| test.c:44:12:44:16 | CompareGT: ... > ... | false | 52 | 52 |
+| test.c:44:12:44:16 | CompareGT: ... > ... | true | 45 | 45 |
+| test.c:44:12:44:16 | CompareGT: ... > ... | true | 46 | 46 |
+| test.c:44:12:44:16 | CompareGT: ... > ... | true | 49 | 49 |
+| test.c:45:16:45:20 | CompareGT: ... > ... | false | 49 | 49 |
+| test.c:45:16:45:20 | CompareGT: ... > ... | true | 46 | 46 |
+| test.c:58:9:58:14 | CompareEQ: ... == ... | false | 58 | 58 |
+| test.c:58:9:58:14 | CompareEQ: ... == ... | false | 62 | 62 |
+| test.c:58:19:58:23 | CompareLT: ... < ... | false | 62 | 62 |
+| test.c:75:9:75:14 | CompareEQ: ... == ... | false | 79 | 79 |
+| test.c:75:9:75:14 | CompareEQ: ... == ... | true | 76 | 76 |
+| test.c:85:8:85:13 | CompareEQ: ... == ... | true | 85 | 85 |
+| test.c:85:8:85:13 | CompareEQ: ... == ... | true | 86 | 86 |
+| test.c:85:18:85:23 | CompareNE: ... != ... | true | 86 | 86 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | false | 70 | 70 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | false | 99 | 99 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | false | 102 | 102 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | false | 103 | 103 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | false | 107 | 107 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | false | 109 | 109 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | false | 110 | 110 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | false | 113 | 113 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | true | 95 | 95 |
+| test.c:102:16:102:21 | CompareLT: ... < ... | false | 70 | 70 |
+| test.c:102:16:102:21 | CompareLT: ... < ... | false | 107 | 107 |
+| test.c:102:16:102:21 | CompareLT: ... < ... | false | 109 | 109 |
+| test.c:102:16:102:21 | CompareLT: ... < ... | false | 110 | 110 |
+| test.c:102:16:102:21 | CompareLT: ... < ... | false | 113 | 113 |
+| test.c:102:16:102:21 | CompareLT: ... < ... | true | 103 | 103 |
+| test.c:109:9:109:14 | CompareEQ: ... == ... | false | 109 | 109 |
+| test.c:109:9:109:14 | CompareEQ: ... == ... | false | 113 | 113 |
+| test.c:109:19:109:23 | CompareLT: ... < ... | false | 113 | 113 |
+| test.c:126:7:126:7 | Constant: 1 | true | 126 | 126 |
+| test.c:126:7:126:7 | Constant: 1 | true | 127 | 127 |
+| test.c:126:12:126:26 | Call: call to test3_condition | true | 127 | 127 |
+| test.c:131:7:131:7 | Load: b | true | 132 | 132 |
+| test.c:137:7:137:7 | Constant: 0 | true | 138 | 138 |
+| test.c:137:7:137:7 | Constant: 0 | true | 139 | 139 |
+| test.c:138:9:138:9 | Load: i | true | 139 | 139 |
+| test.c:146:8:146:8 | Load: x | false | 147 | 147 |
+| test.c:152:10:152:10 | Load: x | true | 152 | 152 |
+| test.c:152:15:152:15 | Load: y | true | 152 | 152 |
+| test.cpp:18:8:18:12 | CompareNE: (bool)... | true | 0 | 0 |
+| test.cpp:31:7:31:13 | CompareEQ: ... == ... | false | 34 | 34 |
+| test.cpp:31:7:31:13 | CompareEQ: ... == ... | true | 30 | 30 |
+| test.cpp:31:7:31:13 | CompareEQ: ... == ... | true | 32 | 32 |
+| test.cpp:42:13:42:20 | Call: call to getABool | false | 53 | 53 |
+| test.cpp:42:13:42:20 | Call: call to getABool | true | 44 | 44 |
 irGuardsEnsure
-| test.c:7:9:7:13 | r0_16(int) = CompareGT r0_14, r0_15 | test.c:7:9:7:9 | r0_14(int) = Load r0_13, m0_3 | < | test.c:7:13:7:13 | r0_15(int) = Constant[0]  | 1 | 11 | 11 |
-| test.c:7:9:7:13 | r0_16(int) = CompareGT r0_14, r0_15 | test.c:7:9:7:9 | r0_14(int) = Load r0_13, m0_3 | >= | test.c:7:13:7:13 | r0_15(int) = Constant[0]  | 1 | 8 | 8 |
-| test.c:7:9:7:13 | r0_16(int) = CompareGT r0_14, r0_15 | test.c:7:13:7:13 | r0_15(int) = Constant[0]  | < | test.c:7:9:7:9 | r0_14(int) = Load r0_13, m0_3 | 0 | 8 | 8 |
-| test.c:7:9:7:13 | r0_16(int) = CompareGT r0_14, r0_15 | test.c:7:13:7:13 | r0_15(int) = Constant[0]  | >= | test.c:7:9:7:9 | r0_14(int) = Load r0_13, m0_3 | 0 | 11 | 11 |
-| test.c:17:8:17:12 | r16_13(int) = CompareLT r16_11, r16_12 | test.c:17:8:17:8 | r16_11(int) = Load r16_10, m0_3 | < | test.c:17:12:17:12 | r16_12(int) = Constant[0]  | 0 | 17 | 17 |
-| test.c:17:8:17:12 | r16_13(int) = CompareLT r16_11, r16_12 | test.c:17:8:17:8 | r16_11(int) = Load r16_10, m0_3 | < | test.c:17:12:17:12 | r16_12(int) = Constant[0]  | 0 | 18 | 18 |
-| test.c:17:8:17:12 | r16_13(int) = CompareLT r16_11, r16_12 | test.c:17:12:17:12 | r16_12(int) = Constant[0]  | >= | test.c:17:8:17:8 | r16_11(int) = Load r16_10, m0_3 | 1 | 17 | 17 |
-| test.c:17:8:17:12 | r16_13(int) = CompareLT r16_11, r16_12 | test.c:17:12:17:12 | r16_12(int) = Constant[0]  | >= | test.c:17:8:17:8 | r16_11(int) = Load r16_10, m0_3 | 1 | 18 | 18 |
-| test.c:17:17:17:21 | r17_3(int) = CompareGT r17_1, r17_2 | test.c:17:17:17:17 | r17_1(long) = Load r17_0, m16_0 | >= | test.c:17:21:17:21 | r17_2(long) = Constant[1]  | 1 | 18 | 18 |
-| test.c:17:17:17:21 | r17_3(int) = CompareGT r17_1, r17_2 | test.c:17:21:17:21 | r17_2(long) = Constant[1]  | < | test.c:17:17:17:17 | r17_1(long) = Load r17_0, m16_0 | 0 | 18 | 18 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | test.c:26:11:26:11 | r21_3(int) = Load r21_2, m21_0 | < | test.c:26:15:26:15 | r21_4(int) = Constant[0]  | 1 | 2 | 2 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | test.c:26:11:26:11 | r21_3(int) = Load r21_2, m21_0 | < | test.c:26:15:26:15 | r21_4(int) = Constant[0]  | 1 | 31 | 31 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | test.c:26:11:26:11 | r21_3(int) = Load r21_2, m21_0 | < | test.c:26:15:26:15 | r21_4(int) = Constant[0]  | 1 | 34 | 34 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | test.c:26:11:26:11 | r21_3(int) = Load r21_2, m21_0 | < | test.c:26:15:26:15 | r21_4(int) = Constant[0]  | 1 | 35 | 35 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | test.c:26:11:26:11 | r21_3(int) = Load r21_2, m21_0 | < | test.c:26:15:26:15 | r21_4(int) = Constant[0]  | 1 | 39 | 39 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | test.c:26:11:26:11 | r21_3(int) = Load r21_2, m21_0 | < | test.c:26:15:26:15 | r21_4(int) = Constant[0]  | 1 | 42 | 42 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | test.c:26:11:26:11 | r21_3(int) = Load r21_2, m21_0 | < | test.c:26:15:26:15 | r21_4(int) = Constant[0]  | 1 | 43 | 43 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | test.c:26:11:26:11 | r21_3(int) = Load r21_2, m21_0 | < | test.c:26:15:26:15 | r21_4(int) = Constant[0]  | 1 | 45 | 45 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | test.c:26:11:26:11 | r21_3(int) = Load r21_2, m21_0 | < | test.c:26:15:26:15 | r21_4(int) = Constant[0]  | 1 | 46 | 46 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | test.c:26:11:26:11 | r21_3(int) = Load r21_2, m21_0 | < | test.c:26:15:26:15 | r21_4(int) = Constant[0]  | 1 | 49 | 49 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | test.c:26:11:26:11 | r21_3(int) = Load r21_2, m21_0 | < | test.c:26:15:26:15 | r21_4(int) = Constant[0]  | 1 | 52 | 52 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | test.c:26:11:26:11 | r21_3(int) = Load r21_2, m21_0 | < | test.c:26:15:26:15 | r21_4(int) = Constant[0]  | 1 | 56 | 56 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | test.c:26:11:26:11 | r21_3(int) = Load r21_2, m21_0 | < | test.c:26:15:26:15 | r21_4(int) = Constant[0]  | 1 | 58 | 58 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | test.c:26:11:26:11 | r21_3(int) = Load r21_2, m21_0 | < | test.c:26:15:26:15 | r21_4(int) = Constant[0]  | 1 | 59 | 59 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | test.c:26:11:26:11 | r21_3(int) = Load r21_2, m21_0 | < | test.c:26:15:26:15 | r21_4(int) = Constant[0]  | 1 | 62 | 62 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | test.c:26:11:26:11 | r21_3(int) = Load r21_2, m21_0 | >= | test.c:26:15:26:15 | r21_4(int) = Constant[0]  | 1 | 27 | 27 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | test.c:26:15:26:15 | r21_4(int) = Constant[0]  | < | test.c:26:11:26:11 | r21_3(int) = Load r21_2, m21_0 | 0 | 27 | 27 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | test.c:26:15:26:15 | r21_4(int) = Constant[0]  | >= | test.c:26:11:26:11 | r21_3(int) = Load r21_2, m21_0 | 0 | 2 | 2 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | test.c:26:15:26:15 | r21_4(int) = Constant[0]  | >= | test.c:26:11:26:11 | r21_3(int) = Load r21_2, m21_0 | 0 | 31 | 31 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | test.c:26:15:26:15 | r21_4(int) = Constant[0]  | >= | test.c:26:11:26:11 | r21_3(int) = Load r21_2, m21_0 | 0 | 34 | 34 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | test.c:26:15:26:15 | r21_4(int) = Constant[0]  | >= | test.c:26:11:26:11 | r21_3(int) = Load r21_2, m21_0 | 0 | 35 | 35 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | test.c:26:15:26:15 | r21_4(int) = Constant[0]  | >= | test.c:26:11:26:11 | r21_3(int) = Load r21_2, m21_0 | 0 | 39 | 39 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | test.c:26:15:26:15 | r21_4(int) = Constant[0]  | >= | test.c:26:11:26:11 | r21_3(int) = Load r21_2, m21_0 | 0 | 42 | 42 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | test.c:26:15:26:15 | r21_4(int) = Constant[0]  | >= | test.c:26:11:26:11 | r21_3(int) = Load r21_2, m21_0 | 0 | 43 | 43 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | test.c:26:15:26:15 | r21_4(int) = Constant[0]  | >= | test.c:26:11:26:11 | r21_3(int) = Load r21_2, m21_0 | 0 | 45 | 45 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | test.c:26:15:26:15 | r21_4(int) = Constant[0]  | >= | test.c:26:11:26:11 | r21_3(int) = Load r21_2, m21_0 | 0 | 46 | 46 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | test.c:26:15:26:15 | r21_4(int) = Constant[0]  | >= | test.c:26:11:26:11 | r21_3(int) = Load r21_2, m21_0 | 0 | 49 | 49 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | test.c:26:15:26:15 | r21_4(int) = Constant[0]  | >= | test.c:26:11:26:11 | r21_3(int) = Load r21_2, m21_0 | 0 | 52 | 52 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | test.c:26:15:26:15 | r21_4(int) = Constant[0]  | >= | test.c:26:11:26:11 | r21_3(int) = Load r21_2, m21_0 | 0 | 56 | 56 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | test.c:26:15:26:15 | r21_4(int) = Constant[0]  | >= | test.c:26:11:26:11 | r21_3(int) = Load r21_2, m21_0 | 0 | 58 | 58 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | test.c:26:15:26:15 | r21_4(int) = Constant[0]  | >= | test.c:26:11:26:11 | r21_3(int) = Load r21_2, m21_0 | 0 | 59 | 59 |
-| test.c:26:11:26:15 | r21_5(int) = CompareGT r21_3, r21_4 | test.c:26:15:26:15 | r21_4(int) = Constant[0]  | >= | test.c:26:11:26:11 | r21_3(int) = Load r21_2, m21_0 | 0 | 62 | 62 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | test.c:34:16:34:16 | r24_4(int) = Load r24_3, m24_0 | < | test.c:34:20:34:21 | r24_5(int) = Constant[10]  | 0 | 35 | 35 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | test.c:34:16:34:16 | r24_4(int) = Load r24_3, m24_0 | >= | test.c:34:20:34:21 | r24_5(int) = Constant[10]  | 0 | 2 | 2 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | test.c:34:16:34:16 | r24_4(int) = Load r24_3, m24_0 | >= | test.c:34:20:34:21 | r24_5(int) = Constant[10]  | 0 | 39 | 39 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | test.c:34:16:34:16 | r24_4(int) = Load r24_3, m24_0 | >= | test.c:34:20:34:21 | r24_5(int) = Constant[10]  | 0 | 42 | 42 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | test.c:34:16:34:16 | r24_4(int) = Load r24_3, m24_0 | >= | test.c:34:20:34:21 | r24_5(int) = Constant[10]  | 0 | 43 | 43 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | test.c:34:16:34:16 | r24_4(int) = Load r24_3, m24_0 | >= | test.c:34:20:34:21 | r24_5(int) = Constant[10]  | 0 | 45 | 45 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | test.c:34:16:34:16 | r24_4(int) = Load r24_3, m24_0 | >= | test.c:34:20:34:21 | r24_5(int) = Constant[10]  | 0 | 46 | 46 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | test.c:34:16:34:16 | r24_4(int) = Load r24_3, m24_0 | >= | test.c:34:20:34:21 | r24_5(int) = Constant[10]  | 0 | 49 | 49 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | test.c:34:16:34:16 | r24_4(int) = Load r24_3, m24_0 | >= | test.c:34:20:34:21 | r24_5(int) = Constant[10]  | 0 | 52 | 52 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | test.c:34:16:34:16 | r24_4(int) = Load r24_3, m24_0 | >= | test.c:34:20:34:21 | r24_5(int) = Constant[10]  | 0 | 56 | 56 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | test.c:34:16:34:16 | r24_4(int) = Load r24_3, m24_0 | >= | test.c:34:20:34:21 | r24_5(int) = Constant[10]  | 0 | 58 | 58 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | test.c:34:16:34:16 | r24_4(int) = Load r24_3, m24_0 | >= | test.c:34:20:34:21 | r24_5(int) = Constant[10]  | 0 | 59 | 59 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | test.c:34:16:34:16 | r24_4(int) = Load r24_3, m24_0 | >= | test.c:34:20:34:21 | r24_5(int) = Constant[10]  | 0 | 62 | 62 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | test.c:34:20:34:21 | r24_5(int) = Constant[10]  | < | test.c:34:16:34:16 | r24_4(int) = Load r24_3, m24_0 | 1 | 2 | 2 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | test.c:34:20:34:21 | r24_5(int) = Constant[10]  | < | test.c:34:16:34:16 | r24_4(int) = Load r24_3, m24_0 | 1 | 39 | 39 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | test.c:34:20:34:21 | r24_5(int) = Constant[10]  | < | test.c:34:16:34:16 | r24_4(int) = Load r24_3, m24_0 | 1 | 42 | 42 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | test.c:34:20:34:21 | r24_5(int) = Constant[10]  | < | test.c:34:16:34:16 | r24_4(int) = Load r24_3, m24_0 | 1 | 43 | 43 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | test.c:34:20:34:21 | r24_5(int) = Constant[10]  | < | test.c:34:16:34:16 | r24_4(int) = Load r24_3, m24_0 | 1 | 45 | 45 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | test.c:34:20:34:21 | r24_5(int) = Constant[10]  | < | test.c:34:16:34:16 | r24_4(int) = Load r24_3, m24_0 | 1 | 46 | 46 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | test.c:34:20:34:21 | r24_5(int) = Constant[10]  | < | test.c:34:16:34:16 | r24_4(int) = Load r24_3, m24_0 | 1 | 49 | 49 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | test.c:34:20:34:21 | r24_5(int) = Constant[10]  | < | test.c:34:16:34:16 | r24_4(int) = Load r24_3, m24_0 | 1 | 52 | 52 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | test.c:34:20:34:21 | r24_5(int) = Constant[10]  | < | test.c:34:16:34:16 | r24_4(int) = Load r24_3, m24_0 | 1 | 56 | 56 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | test.c:34:20:34:21 | r24_5(int) = Constant[10]  | < | test.c:34:16:34:16 | r24_4(int) = Load r24_3, m24_0 | 1 | 58 | 58 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | test.c:34:20:34:21 | r24_5(int) = Constant[10]  | < | test.c:34:16:34:16 | r24_4(int) = Load r24_3, m24_0 | 1 | 59 | 59 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | test.c:34:20:34:21 | r24_5(int) = Constant[10]  | < | test.c:34:16:34:16 | r24_4(int) = Load r24_3, m24_0 | 1 | 62 | 62 |
-| test.c:34:16:34:21 | r24_6(int) = CompareLT r24_4, r24_5 | test.c:34:20:34:21 | r24_5(int) = Constant[10]  | >= | test.c:34:16:34:16 | r24_4(int) = Load r24_3, m24_0 | 1 | 35 | 35 |
-| test.c:42:16:42:21 | r3_6(int) = CompareLT r3_4, r3_5 | test.c:42:16:42:16 | r3_4(int) = Load r3_3, m3_0 | < | test.c:42:20:42:21 | r3_5(int) = Constant[10]  | 0 | 42 | 42 |
-| test.c:42:16:42:21 | r3_6(int) = CompareLT r3_4, r3_5 | test.c:42:16:42:16 | r3_4(int) = Load r3_3, m3_0 | < | test.c:42:20:42:21 | r3_5(int) = Constant[10]  | 0 | 43 | 43 |
-| test.c:42:16:42:21 | r3_6(int) = CompareLT r3_4, r3_5 | test.c:42:16:42:16 | r3_4(int) = Load r3_3, m3_0 | < | test.c:42:20:42:21 | r3_5(int) = Constant[10]  | 0 | 45 | 45 |
-| test.c:42:16:42:21 | r3_6(int) = CompareLT r3_4, r3_5 | test.c:42:16:42:16 | r3_4(int) = Load r3_3, m3_0 | < | test.c:42:20:42:21 | r3_5(int) = Constant[10]  | 0 | 46 | 46 |
-| test.c:42:16:42:21 | r3_6(int) = CompareLT r3_4, r3_5 | test.c:42:16:42:16 | r3_4(int) = Load r3_3, m3_0 | < | test.c:42:20:42:21 | r3_5(int) = Constant[10]  | 0 | 49 | 49 |
-| test.c:42:16:42:21 | r3_6(int) = CompareLT r3_4, r3_5 | test.c:42:16:42:16 | r3_4(int) = Load r3_3, m3_0 | < | test.c:42:20:42:21 | r3_5(int) = Constant[10]  | 0 | 52 | 52 |
-| test.c:42:16:42:21 | r3_6(int) = CompareLT r3_4, r3_5 | test.c:42:20:42:21 | r3_5(int) = Constant[10]  | >= | test.c:42:16:42:16 | r3_4(int) = Load r3_3, m3_0 | 1 | 42 | 42 |
-| test.c:42:16:42:21 | r3_6(int) = CompareLT r3_4, r3_5 | test.c:42:20:42:21 | r3_5(int) = Constant[10]  | >= | test.c:42:16:42:16 | r3_4(int) = Load r3_3, m3_0 | 1 | 43 | 43 |
-| test.c:42:16:42:21 | r3_6(int) = CompareLT r3_4, r3_5 | test.c:42:20:42:21 | r3_5(int) = Constant[10]  | >= | test.c:42:16:42:16 | r3_4(int) = Load r3_3, m3_0 | 1 | 45 | 45 |
-| test.c:42:16:42:21 | r3_6(int) = CompareLT r3_4, r3_5 | test.c:42:20:42:21 | r3_5(int) = Constant[10]  | >= | test.c:42:16:42:16 | r3_4(int) = Load r3_3, m3_0 | 1 | 46 | 46 |
-| test.c:42:16:42:21 | r3_6(int) = CompareLT r3_4, r3_5 | test.c:42:20:42:21 | r3_5(int) = Constant[10]  | >= | test.c:42:16:42:16 | r3_4(int) = Load r3_3, m3_0 | 1 | 49 | 49 |
-| test.c:42:16:42:21 | r3_6(int) = CompareLT r3_4, r3_5 | test.c:42:20:42:21 | r3_5(int) = Constant[10]  | >= | test.c:42:16:42:16 | r3_4(int) = Load r3_3, m3_0 | 1 | 52 | 52 |
-| test.c:44:12:44:16 | r4_6(int) = CompareGT r4_4, r4_5 | test.c:44:12:44:12 | r4_4(int) = Load r4_3, m2_5 | < | test.c:44:16:44:16 | r4_5(int) = Constant[0]  | 1 | 52 | 52 |
-| test.c:44:12:44:16 | r4_6(int) = CompareGT r4_4, r4_5 | test.c:44:12:44:12 | r4_4(int) = Load r4_3, m2_5 | >= | test.c:44:16:44:16 | r4_5(int) = Constant[0]  | 1 | 45 | 45 |
-| test.c:44:12:44:16 | r4_6(int) = CompareGT r4_4, r4_5 | test.c:44:12:44:12 | r4_4(int) = Load r4_3, m2_5 | >= | test.c:44:16:44:16 | r4_5(int) = Constant[0]  | 1 | 46 | 46 |
-| test.c:44:12:44:16 | r4_6(int) = CompareGT r4_4, r4_5 | test.c:44:12:44:12 | r4_4(int) = Load r4_3, m2_5 | >= | test.c:44:16:44:16 | r4_5(int) = Constant[0]  | 1 | 49 | 49 |
-| test.c:44:12:44:16 | r4_6(int) = CompareGT r4_4, r4_5 | test.c:44:16:44:16 | r4_5(int) = Constant[0]  | < | test.c:44:12:44:12 | r4_4(int) = Load r4_3, m2_5 | 0 | 45 | 45 |
-| test.c:44:12:44:16 | r4_6(int) = CompareGT r4_4, r4_5 | test.c:44:16:44:16 | r4_5(int) = Constant[0]  | < | test.c:44:12:44:12 | r4_4(int) = Load r4_3, m2_5 | 0 | 46 | 46 |
-| test.c:44:12:44:16 | r4_6(int) = CompareGT r4_4, r4_5 | test.c:44:16:44:16 | r4_5(int) = Constant[0]  | < | test.c:44:12:44:12 | r4_4(int) = Load r4_3, m2_5 | 0 | 49 | 49 |
-| test.c:44:12:44:16 | r4_6(int) = CompareGT r4_4, r4_5 | test.c:44:16:44:16 | r4_5(int) = Constant[0]  | >= | test.c:44:12:44:12 | r4_4(int) = Load r4_3, m2_5 | 0 | 52 | 52 |
-| test.c:45:16:45:20 | r5_3(int) = CompareGT r5_1, r5_2 | test.c:45:16:45:16 | r5_1(long) = Load r5_0, m4_2 | < | test.c:45:20:45:20 | r5_2(long) = Constant[0]  | 1 | 49 | 49 |
-| test.c:45:16:45:20 | r5_3(int) = CompareGT r5_1, r5_2 | test.c:45:16:45:16 | r5_1(long) = Load r5_0, m4_2 | >= | test.c:45:20:45:20 | r5_2(long) = Constant[0]  | 1 | 46 | 46 |
-| test.c:45:16:45:20 | r5_3(int) = CompareGT r5_1, r5_2 | test.c:45:20:45:20 | r5_2(long) = Constant[0]  | < | test.c:45:16:45:16 | r5_1(long) = Load r5_0, m4_2 | 0 | 46 | 46 |
-| test.c:45:16:45:20 | r5_3(int) = CompareGT r5_1, r5_2 | test.c:45:20:45:20 | r5_2(long) = Constant[0]  | >= | test.c:45:16:45:16 | r5_1(long) = Load r5_0, m4_2 | 0 | 49 | 49 |
-| test.c:58:9:58:14 | r10_5(int) = CompareEQ r10_3, r10_4 | test.c:58:9:58:9 | r10_3(int) = Load r10_2, m3_1 | != | test.c:58:14:58:14 | r10_4(int) = Constant[0]  | 0 | 58 | 58 |
-| test.c:58:9:58:14 | r10_5(int) = CompareEQ r10_3, r10_4 | test.c:58:9:58:9 | r10_3(int) = Load r10_2, m3_1 | != | test.c:58:14:58:14 | r10_4(int) = Constant[0]  | 0 | 62 | 62 |
-| test.c:58:9:58:14 | r10_5(int) = CompareEQ r10_3, r10_4 | test.c:58:14:58:14 | r10_4(int) = Constant[0]  | != | test.c:58:9:58:9 | r10_3(int) = Load r10_2, m3_1 | 0 | 58 | 58 |
-| test.c:58:9:58:14 | r10_5(int) = CompareEQ r10_3, r10_4 | test.c:58:14:58:14 | r10_4(int) = Constant[0]  | != | test.c:58:9:58:9 | r10_3(int) = Load r10_2, m3_1 | 0 | 62 | 62 |
-| test.c:58:19:58:23 | r11_3(int) = CompareLT r11_1, r11_2 | test.c:58:19:58:19 | r11_1(long) = Load r11_0, m10_0 | >= | test.c:58:23:58:23 | r11_2(long) = Constant[0]  | 0 | 62 | 62 |
-| test.c:58:19:58:23 | r11_3(int) = CompareLT r11_1, r11_2 | test.c:58:23:58:23 | r11_2(long) = Constant[0]  | < | test.c:58:19:58:19 | r11_1(long) = Load r11_0, m10_0 | 1 | 62 | 62 |
-| test.c:75:9:75:14 | r0_16(int) = CompareEQ r0_14, r0_15 | test.c:75:9:75:9 | r0_14(int) = Load r0_13, m0_3 | != | test.c:75:14:75:14 | r0_15(int) = Constant[0]  | 0 | 79 | 79 |
-| test.c:75:9:75:14 | r0_16(int) = CompareEQ r0_14, r0_15 | test.c:75:9:75:9 | r0_14(int) = Load r0_13, m0_3 | == | test.c:75:14:75:14 | r0_15(int) = Constant[0]  | 0 | 76 | 76 |
-| test.c:75:9:75:14 | r0_16(int) = CompareEQ r0_14, r0_15 | test.c:75:14:75:14 | r0_15(int) = Constant[0]  | != | test.c:75:9:75:9 | r0_14(int) = Load r0_13, m0_3 | 0 | 79 | 79 |
-| test.c:75:9:75:14 | r0_16(int) = CompareEQ r0_14, r0_15 | test.c:75:14:75:14 | r0_15(int) = Constant[0]  | == | test.c:75:9:75:9 | r0_14(int) = Load r0_13, m0_3 | 0 | 76 | 76 |
-| test.c:85:8:85:13 | r8_13(int) = CompareEQ r8_11, r8_12 | test.c:85:8:85:8 | r8_11(int) = Load r8_10, m0_3 | == | test.c:85:13:85:13 | r8_12(int) = Constant[0]  | 0 | 85 | 85 |
-| test.c:85:8:85:13 | r8_13(int) = CompareEQ r8_11, r8_12 | test.c:85:8:85:8 | r8_11(int) = Load r8_10, m0_3 | == | test.c:85:13:85:13 | r8_12(int) = Constant[0]  | 0 | 86 | 86 |
-| test.c:85:8:85:13 | r8_13(int) = CompareEQ r8_11, r8_12 | test.c:85:13:85:13 | r8_12(int) = Constant[0]  | == | test.c:85:8:85:8 | r8_11(int) = Load r8_10, m0_3 | 0 | 85 | 85 |
-| test.c:85:8:85:13 | r8_13(int) = CompareEQ r8_11, r8_12 | test.c:85:13:85:13 | r8_12(int) = Constant[0]  | == | test.c:85:8:85:8 | r8_11(int) = Load r8_10, m0_3 | 0 | 86 | 86 |
-| test.c:85:18:85:23 | r9_3(int) = CompareNE r9_1, r9_2 | test.c:85:18:85:18 | r9_1(long) = Load r9_0, m8_0 | != | test.c:85:23:85:23 | r9_2(long) = Constant[0]  | 0 | 86 | 86 |
-| test.c:85:18:85:23 | r9_3(int) = CompareNE r9_1, r9_2 | test.c:85:23:85:23 | r9_2(long) = Constant[0]  | != | test.c:85:18:85:18 | r9_1(long) = Load r9_0, m8_0 | 0 | 86 | 86 |
-| test.c:94:11:94:16 | r13_5(int) = CompareNE r13_3, r13_4 | test.c:94:11:94:11 | r13_3(int) = Load r13_2, m13_0 | != | test.c:94:16:94:16 | r13_4(int) = Constant[0]  | 0 | 95 | 95 |
-| test.c:94:11:94:16 | r13_5(int) = CompareNE r13_3, r13_4 | test.c:94:11:94:11 | r13_3(int) = Load r13_2, m13_0 | == | test.c:94:16:94:16 | r13_4(int) = Constant[0]  | 0 | 70 | 70 |
-| test.c:94:11:94:16 | r13_5(int) = CompareNE r13_3, r13_4 | test.c:94:11:94:11 | r13_3(int) = Load r13_2, m13_0 | == | test.c:94:16:94:16 | r13_4(int) = Constant[0]  | 0 | 99 | 99 |
-| test.c:94:11:94:16 | r13_5(int) = CompareNE r13_3, r13_4 | test.c:94:11:94:11 | r13_3(int) = Load r13_2, m13_0 | == | test.c:94:16:94:16 | r13_4(int) = Constant[0]  | 0 | 102 | 102 |
-| test.c:94:11:94:16 | r13_5(int) = CompareNE r13_3, r13_4 | test.c:94:11:94:11 | r13_3(int) = Load r13_2, m13_0 | == | test.c:94:16:94:16 | r13_4(int) = Constant[0]  | 0 | 103 | 103 |
-| test.c:94:11:94:16 | r13_5(int) = CompareNE r13_3, r13_4 | test.c:94:11:94:11 | r13_3(int) = Load r13_2, m13_0 | == | test.c:94:16:94:16 | r13_4(int) = Constant[0]  | 0 | 107 | 107 |
-| test.c:94:11:94:16 | r13_5(int) = CompareNE r13_3, r13_4 | test.c:94:11:94:11 | r13_3(int) = Load r13_2, m13_0 | == | test.c:94:16:94:16 | r13_4(int) = Constant[0]  | 0 | 109 | 109 |
-| test.c:94:11:94:16 | r13_5(int) = CompareNE r13_3, r13_4 | test.c:94:11:94:11 | r13_3(int) = Load r13_2, m13_0 | == | test.c:94:16:94:16 | r13_4(int) = Constant[0]  | 0 | 110 | 110 |
-| test.c:94:11:94:16 | r13_5(int) = CompareNE r13_3, r13_4 | test.c:94:11:94:11 | r13_3(int) = Load r13_2, m13_0 | == | test.c:94:16:94:16 | r13_4(int) = Constant[0]  | 0 | 113 | 113 |
-| test.c:94:11:94:16 | r13_5(int) = CompareNE r13_3, r13_4 | test.c:94:16:94:16 | r13_4(int) = Constant[0]  | != | test.c:94:11:94:11 | r13_3(int) = Load r13_2, m13_0 | 0 | 95 | 95 |
-| test.c:94:11:94:16 | r13_5(int) = CompareNE r13_3, r13_4 | test.c:94:16:94:16 | r13_4(int) = Constant[0]  | == | test.c:94:11:94:11 | r13_3(int) = Load r13_2, m13_0 | 0 | 70 | 70 |
-| test.c:94:11:94:16 | r13_5(int) = CompareNE r13_3, r13_4 | test.c:94:16:94:16 | r13_4(int) = Constant[0]  | == | test.c:94:11:94:11 | r13_3(int) = Load r13_2, m13_0 | 0 | 99 | 99 |
-| test.c:94:11:94:16 | r13_5(int) = CompareNE r13_3, r13_4 | test.c:94:16:94:16 | r13_4(int) = Constant[0]  | == | test.c:94:11:94:11 | r13_3(int) = Load r13_2, m13_0 | 0 | 102 | 102 |
-| test.c:94:11:94:16 | r13_5(int) = CompareNE r13_3, r13_4 | test.c:94:16:94:16 | r13_4(int) = Constant[0]  | == | test.c:94:11:94:11 | r13_3(int) = Load r13_2, m13_0 | 0 | 103 | 103 |
-| test.c:94:11:94:16 | r13_5(int) = CompareNE r13_3, r13_4 | test.c:94:16:94:16 | r13_4(int) = Constant[0]  | == | test.c:94:11:94:11 | r13_3(int) = Load r13_2, m13_0 | 0 | 107 | 107 |
-| test.c:94:11:94:16 | r13_5(int) = CompareNE r13_3, r13_4 | test.c:94:16:94:16 | r13_4(int) = Constant[0]  | == | test.c:94:11:94:11 | r13_3(int) = Load r13_2, m13_0 | 0 | 109 | 109 |
-| test.c:94:11:94:16 | r13_5(int) = CompareNE r13_3, r13_4 | test.c:94:16:94:16 | r13_4(int) = Constant[0]  | == | test.c:94:11:94:11 | r13_3(int) = Load r13_2, m13_0 | 0 | 110 | 110 |
-| test.c:94:11:94:16 | r13_5(int) = CompareNE r13_3, r13_4 | test.c:94:16:94:16 | r13_4(int) = Constant[0]  | == | test.c:94:11:94:11 | r13_3(int) = Load r13_2, m13_0 | 0 | 113 | 113 |
-| test.c:102:16:102:21 | r16_6(int) = CompareLT r16_4, r16_5 | test.c:102:16:102:16 | r16_4(int) = Load r16_3, m16_0 | < | test.c:102:20:102:21 | r16_5(int) = Constant[10]  | 0 | 103 | 103 |
-| test.c:102:16:102:21 | r16_6(int) = CompareLT r16_4, r16_5 | test.c:102:16:102:16 | r16_4(int) = Load r16_3, m16_0 | >= | test.c:102:20:102:21 | r16_5(int) = Constant[10]  | 0 | 70 | 70 |
-| test.c:102:16:102:21 | r16_6(int) = CompareLT r16_4, r16_5 | test.c:102:16:102:16 | r16_4(int) = Load r16_3, m16_0 | >= | test.c:102:20:102:21 | r16_5(int) = Constant[10]  | 0 | 107 | 107 |
-| test.c:102:16:102:21 | r16_6(int) = CompareLT r16_4, r16_5 | test.c:102:16:102:16 | r16_4(int) = Load r16_3, m16_0 | >= | test.c:102:20:102:21 | r16_5(int) = Constant[10]  | 0 | 109 | 109 |
-| test.c:102:16:102:21 | r16_6(int) = CompareLT r16_4, r16_5 | test.c:102:16:102:16 | r16_4(int) = Load r16_3, m16_0 | >= | test.c:102:20:102:21 | r16_5(int) = Constant[10]  | 0 | 110 | 110 |
-| test.c:102:16:102:21 | r16_6(int) = CompareLT r16_4, r16_5 | test.c:102:16:102:16 | r16_4(int) = Load r16_3, m16_0 | >= | test.c:102:20:102:21 | r16_5(int) = Constant[10]  | 0 | 113 | 113 |
-| test.c:102:16:102:21 | r16_6(int) = CompareLT r16_4, r16_5 | test.c:102:20:102:21 | r16_5(int) = Constant[10]  | < | test.c:102:16:102:16 | r16_4(int) = Load r16_3, m16_0 | 1 | 70 | 70 |
-| test.c:102:16:102:21 | r16_6(int) = CompareLT r16_4, r16_5 | test.c:102:20:102:21 | r16_5(int) = Constant[10]  | < | test.c:102:16:102:16 | r16_4(int) = Load r16_3, m16_0 | 1 | 107 | 107 |
-| test.c:102:16:102:21 | r16_6(int) = CompareLT r16_4, r16_5 | test.c:102:20:102:21 | r16_5(int) = Constant[10]  | < | test.c:102:16:102:16 | r16_4(int) = Load r16_3, m16_0 | 1 | 109 | 109 |
-| test.c:102:16:102:21 | r16_6(int) = CompareLT r16_4, r16_5 | test.c:102:20:102:21 | r16_5(int) = Constant[10]  | < | test.c:102:16:102:16 | r16_4(int) = Load r16_3, m16_0 | 1 | 110 | 110 |
-| test.c:102:16:102:21 | r16_6(int) = CompareLT r16_4, r16_5 | test.c:102:20:102:21 | r16_5(int) = Constant[10]  | < | test.c:102:16:102:16 | r16_4(int) = Load r16_3, m16_0 | 1 | 113 | 113 |
-| test.c:102:16:102:21 | r16_6(int) = CompareLT r16_4, r16_5 | test.c:102:20:102:21 | r16_5(int) = Constant[10]  | >= | test.c:102:16:102:16 | r16_4(int) = Load r16_3, m16_0 | 1 | 103 | 103 |
-| test.c:109:9:109:14 | r2_9(int) = CompareEQ r2_7, r2_8 | test.c:109:9:109:9 | r2_7(int) = Load r2_6, m13_0 | != | test.c:109:14:109:14 | r2_8(int) = Constant[0]  | 0 | 109 | 109 |
-| test.c:109:9:109:14 | r2_9(int) = CompareEQ r2_7, r2_8 | test.c:109:9:109:9 | r2_7(int) = Load r2_6, m13_0 | != | test.c:109:14:109:14 | r2_8(int) = Constant[0]  | 0 | 113 | 113 |
-| test.c:109:9:109:14 | r2_9(int) = CompareEQ r2_7, r2_8 | test.c:109:14:109:14 | r2_8(int) = Constant[0]  | != | test.c:109:9:109:9 | r2_7(int) = Load r2_6, m13_0 | 0 | 109 | 109 |
-| test.c:109:9:109:14 | r2_9(int) = CompareEQ r2_7, r2_8 | test.c:109:14:109:14 | r2_8(int) = Constant[0]  | != | test.c:109:9:109:9 | r2_7(int) = Load r2_6, m13_0 | 0 | 113 | 113 |
-| test.c:109:19:109:23 | r3_3(int) = CompareLT r3_1, r3_2 | test.c:109:19:109:19 | r3_1(long) = Load r3_0, m16_2 | >= | test.c:109:23:109:23 | r3_2(long) = Constant[0]  | 0 | 113 | 113 |
-| test.c:109:19:109:23 | r3_3(int) = CompareLT r3_1, r3_2 | test.c:109:23:109:23 | r3_2(long) = Constant[0]  | < | test.c:109:19:109:19 | r3_1(long) = Load r3_0, m16_2 | 1 | 113 | 113 |
-| test.cpp:18:8:18:12 | r0_7(bool) = CompareNE r0_5, r0_6 | test.cpp:18:8:18:10 | r0_5(X *) = Call r0_4, this:r0_3 | != | test.cpp:18:8:18:12 | r0_6(X *) = Constant[0]  | 0 | 0 | 0 |
-| test.cpp:18:8:18:12 | r0_7(bool) = CompareNE r0_5, r0_6 | test.cpp:18:8:18:12 | r0_6(X *) = Constant[0]  | != | test.cpp:18:8:18:10 | r0_5(X *) = Call r0_4, this:r0_3 | 0 | 0 | 0 |
-| test.cpp:31:7:31:13 | r0_7(bool) = CompareEQ r0_5, r0_6 | test.cpp:31:7:31:7 | r0_5(int) = Load r0_4, m0_3 | != | test.cpp:31:12:31:13 | r0_6(int) = Constant[-1]  | 0 | 34 | 34 |
-| test.cpp:31:7:31:13 | r0_7(bool) = CompareEQ r0_5, r0_6 | test.cpp:31:7:31:7 | r0_5(int) = Load r0_4, m0_3 | == | test.cpp:31:12:31:13 | r0_6(int) = Constant[-1]  | 0 | 30 | 30 |
-| test.cpp:31:7:31:13 | r0_7(bool) = CompareEQ r0_5, r0_6 | test.cpp:31:7:31:7 | r0_5(int) = Load r0_4, m0_3 | == | test.cpp:31:12:31:13 | r0_6(int) = Constant[-1]  | 0 | 32 | 32 |
-| test.cpp:31:7:31:13 | r0_7(bool) = CompareEQ r0_5, r0_6 | test.cpp:31:12:31:13 | r0_6(int) = Constant[-1]  | != | test.cpp:31:7:31:7 | r0_5(int) = Load r0_4, m0_3 | 0 | 34 | 34 |
-| test.cpp:31:7:31:13 | r0_7(bool) = CompareEQ r0_5, r0_6 | test.cpp:31:12:31:13 | r0_6(int) = Constant[-1]  | == | test.cpp:31:7:31:7 | r0_5(int) = Load r0_4, m0_3 | 0 | 30 | 30 |
-| test.cpp:31:7:31:13 | r0_7(bool) = CompareEQ r0_5, r0_6 | test.cpp:31:12:31:13 | r0_6(int) = Constant[-1]  | == | test.cpp:31:7:31:7 | r0_5(int) = Load r0_4, m0_3 | 0 | 32 | 32 |
+| test.c:7:9:7:13 | CompareGT: ... > ... | test.c:7:9:7:9 | Load: x | < | test.c:7:13:7:13 | Constant: 0 | 1 | 11 | 11 |
+| test.c:7:9:7:13 | CompareGT: ... > ... | test.c:7:9:7:9 | Load: x | >= | test.c:7:13:7:13 | Constant: 0 | 1 | 8 | 8 |
+| test.c:7:9:7:13 | CompareGT: ... > ... | test.c:7:13:7:13 | Constant: 0 | < | test.c:7:9:7:9 | Load: x | 0 | 8 | 8 |
+| test.c:7:9:7:13 | CompareGT: ... > ... | test.c:7:13:7:13 | Constant: 0 | >= | test.c:7:9:7:9 | Load: x | 0 | 11 | 11 |
+| test.c:17:8:17:12 | CompareLT: ... < ... | test.c:17:8:17:8 | Load: x | < | test.c:17:12:17:12 | Constant: 0 | 0 | 17 | 17 |
+| test.c:17:8:17:12 | CompareLT: ... < ... | test.c:17:8:17:8 | Load: x | < | test.c:17:12:17:12 | Constant: 0 | 0 | 18 | 18 |
+| test.c:17:8:17:12 | CompareLT: ... < ... | test.c:17:12:17:12 | Constant: 0 | >= | test.c:17:8:17:8 | Load: x | 1 | 17 | 17 |
+| test.c:17:8:17:12 | CompareLT: ... < ... | test.c:17:12:17:12 | Constant: 0 | >= | test.c:17:8:17:8 | Load: x | 1 | 18 | 18 |
+| test.c:17:17:17:21 | CompareGT: ... > ... | test.c:17:17:17:17 | Load: y | >= | test.c:17:21:17:21 | Constant: (long)... | 1 | 18 | 18 |
+| test.c:17:17:17:21 | CompareGT: ... > ... | test.c:17:21:17:21 | Constant: (long)... | < | test.c:17:17:17:17 | Load: y | 0 | 18 | 18 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | test.c:26:15:26:15 | Constant: 0 | 1 | 2 | 2 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | test.c:26:15:26:15 | Constant: 0 | 1 | 31 | 31 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | test.c:26:15:26:15 | Constant: 0 | 1 | 34 | 34 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | test.c:26:15:26:15 | Constant: 0 | 1 | 35 | 35 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | test.c:26:15:26:15 | Constant: 0 | 1 | 39 | 39 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | test.c:26:15:26:15 | Constant: 0 | 1 | 42 | 42 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | test.c:26:15:26:15 | Constant: 0 | 1 | 43 | 43 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | test.c:26:15:26:15 | Constant: 0 | 1 | 45 | 45 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | test.c:26:15:26:15 | Constant: 0 | 1 | 46 | 46 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | test.c:26:15:26:15 | Constant: 0 | 1 | 49 | 49 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | test.c:26:15:26:15 | Constant: 0 | 1 | 52 | 52 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | test.c:26:15:26:15 | Constant: 0 | 1 | 56 | 56 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | test.c:26:15:26:15 | Constant: 0 | 1 | 58 | 58 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | test.c:26:15:26:15 | Constant: 0 | 1 | 59 | 59 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | test.c:26:15:26:15 | Constant: 0 | 1 | 62 | 62 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | >= | test.c:26:15:26:15 | Constant: 0 | 1 | 27 | 27 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:15:26:15 | Constant: 0 | < | test.c:26:11:26:11 | Load: x | 0 | 27 | 27 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:15:26:15 | Constant: 0 | >= | test.c:26:11:26:11 | Load: x | 0 | 2 | 2 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:15:26:15 | Constant: 0 | >= | test.c:26:11:26:11 | Load: x | 0 | 31 | 31 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:15:26:15 | Constant: 0 | >= | test.c:26:11:26:11 | Load: x | 0 | 34 | 34 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:15:26:15 | Constant: 0 | >= | test.c:26:11:26:11 | Load: x | 0 | 35 | 35 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:15:26:15 | Constant: 0 | >= | test.c:26:11:26:11 | Load: x | 0 | 39 | 39 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:15:26:15 | Constant: 0 | >= | test.c:26:11:26:11 | Load: x | 0 | 42 | 42 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:15:26:15 | Constant: 0 | >= | test.c:26:11:26:11 | Load: x | 0 | 43 | 43 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:15:26:15 | Constant: 0 | >= | test.c:26:11:26:11 | Load: x | 0 | 45 | 45 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:15:26:15 | Constant: 0 | >= | test.c:26:11:26:11 | Load: x | 0 | 46 | 46 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:15:26:15 | Constant: 0 | >= | test.c:26:11:26:11 | Load: x | 0 | 49 | 49 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:15:26:15 | Constant: 0 | >= | test.c:26:11:26:11 | Load: x | 0 | 52 | 52 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:15:26:15 | Constant: 0 | >= | test.c:26:11:26:11 | Load: x | 0 | 56 | 56 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:15:26:15 | Constant: 0 | >= | test.c:26:11:26:11 | Load: x | 0 | 58 | 58 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:15:26:15 | Constant: 0 | >= | test.c:26:11:26:11 | Load: x | 0 | 59 | 59 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:15:26:15 | Constant: 0 | >= | test.c:26:11:26:11 | Load: x | 0 | 62 | 62 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | < | test.c:34:20:34:21 | Constant: 10 | 0 | 35 | 35 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | test.c:34:20:34:21 | Constant: 10 | 0 | 2 | 2 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | test.c:34:20:34:21 | Constant: 10 | 0 | 39 | 39 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | test.c:34:20:34:21 | Constant: 10 | 0 | 42 | 42 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | test.c:34:20:34:21 | Constant: 10 | 0 | 43 | 43 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | test.c:34:20:34:21 | Constant: 10 | 0 | 45 | 45 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | test.c:34:20:34:21 | Constant: 10 | 0 | 46 | 46 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | test.c:34:20:34:21 | Constant: 10 | 0 | 49 | 49 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | test.c:34:20:34:21 | Constant: 10 | 0 | 52 | 52 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | test.c:34:20:34:21 | Constant: 10 | 0 | 56 | 56 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | test.c:34:20:34:21 | Constant: 10 | 0 | 58 | 58 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | test.c:34:20:34:21 | Constant: 10 | 0 | 59 | 59 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | test.c:34:20:34:21 | Constant: 10 | 0 | 62 | 62 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:20:34:21 | Constant: 10 | < | test.c:34:16:34:16 | Load: j | 1 | 2 | 2 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:20:34:21 | Constant: 10 | < | test.c:34:16:34:16 | Load: j | 1 | 39 | 39 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:20:34:21 | Constant: 10 | < | test.c:34:16:34:16 | Load: j | 1 | 42 | 42 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:20:34:21 | Constant: 10 | < | test.c:34:16:34:16 | Load: j | 1 | 43 | 43 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:20:34:21 | Constant: 10 | < | test.c:34:16:34:16 | Load: j | 1 | 45 | 45 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:20:34:21 | Constant: 10 | < | test.c:34:16:34:16 | Load: j | 1 | 46 | 46 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:20:34:21 | Constant: 10 | < | test.c:34:16:34:16 | Load: j | 1 | 49 | 49 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:20:34:21 | Constant: 10 | < | test.c:34:16:34:16 | Load: j | 1 | 52 | 52 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:20:34:21 | Constant: 10 | < | test.c:34:16:34:16 | Load: j | 1 | 56 | 56 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:20:34:21 | Constant: 10 | < | test.c:34:16:34:16 | Load: j | 1 | 58 | 58 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:20:34:21 | Constant: 10 | < | test.c:34:16:34:16 | Load: j | 1 | 59 | 59 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:20:34:21 | Constant: 10 | < | test.c:34:16:34:16 | Load: j | 1 | 62 | 62 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:20:34:21 | Constant: 10 | >= | test.c:34:16:34:16 | Load: j | 1 | 35 | 35 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:16 | Load: j | < | test.c:42:20:42:21 | Constant: 10 | 0 | 42 | 42 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:16 | Load: j | < | test.c:42:20:42:21 | Constant: 10 | 0 | 43 | 43 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:16 | Load: j | < | test.c:42:20:42:21 | Constant: 10 | 0 | 45 | 45 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:16 | Load: j | < | test.c:42:20:42:21 | Constant: 10 | 0 | 46 | 46 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:16 | Load: j | < | test.c:42:20:42:21 | Constant: 10 | 0 | 49 | 49 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:16 | Load: j | < | test.c:42:20:42:21 | Constant: 10 | 0 | 52 | 52 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:20:42:21 | Constant: 10 | >= | test.c:42:16:42:16 | Load: j | 1 | 42 | 42 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:20:42:21 | Constant: 10 | >= | test.c:42:16:42:16 | Load: j | 1 | 43 | 43 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:20:42:21 | Constant: 10 | >= | test.c:42:16:42:16 | Load: j | 1 | 45 | 45 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:20:42:21 | Constant: 10 | >= | test.c:42:16:42:16 | Load: j | 1 | 46 | 46 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:20:42:21 | Constant: 10 | >= | test.c:42:16:42:16 | Load: j | 1 | 49 | 49 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:20:42:21 | Constant: 10 | >= | test.c:42:16:42:16 | Load: j | 1 | 52 | 52 |
+| test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:12:44:12 | Load: z | < | test.c:44:16:44:16 | Constant: 0 | 1 | 52 | 52 |
+| test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:12:44:12 | Load: z | >= | test.c:44:16:44:16 | Constant: 0 | 1 | 45 | 45 |
+| test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:12:44:12 | Load: z | >= | test.c:44:16:44:16 | Constant: 0 | 1 | 46 | 46 |
+| test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:12:44:12 | Load: z | >= | test.c:44:16:44:16 | Constant: 0 | 1 | 49 | 49 |
+| test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:16:44:16 | Constant: 0 | < | test.c:44:12:44:12 | Load: z | 0 | 45 | 45 |
+| test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:16:44:16 | Constant: 0 | < | test.c:44:12:44:12 | Load: z | 0 | 46 | 46 |
+| test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:16:44:16 | Constant: 0 | < | test.c:44:12:44:12 | Load: z | 0 | 49 | 49 |
+| test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:16:44:16 | Constant: 0 | >= | test.c:44:12:44:12 | Load: z | 0 | 52 | 52 |
+| test.c:45:16:45:20 | CompareGT: ... > ... | test.c:45:16:45:16 | Load: y | < | test.c:45:20:45:20 | Constant: (long)... | 1 | 49 | 49 |
+| test.c:45:16:45:20 | CompareGT: ... > ... | test.c:45:16:45:16 | Load: y | >= | test.c:45:20:45:20 | Constant: (long)... | 1 | 46 | 46 |
+| test.c:45:16:45:20 | CompareGT: ... > ... | test.c:45:20:45:20 | Constant: (long)... | < | test.c:45:16:45:16 | Load: y | 0 | 46 | 46 |
+| test.c:45:16:45:20 | CompareGT: ... > ... | test.c:45:20:45:20 | Constant: (long)... | >= | test.c:45:16:45:16 | Load: y | 0 | 49 | 49 |
+| test.c:58:9:58:14 | CompareEQ: ... == ... | test.c:58:9:58:9 | Load: x | != | test.c:58:14:58:14 | Constant: 0 | 0 | 58 | 58 |
+| test.c:58:9:58:14 | CompareEQ: ... == ... | test.c:58:9:58:9 | Load: x | != | test.c:58:14:58:14 | Constant: 0 | 0 | 62 | 62 |
+| test.c:58:9:58:14 | CompareEQ: ... == ... | test.c:58:14:58:14 | Constant: 0 | != | test.c:58:9:58:9 | Load: x | 0 | 58 | 58 |
+| test.c:58:9:58:14 | CompareEQ: ... == ... | test.c:58:14:58:14 | Constant: 0 | != | test.c:58:9:58:9 | Load: x | 0 | 62 | 62 |
+| test.c:58:19:58:23 | CompareLT: ... < ... | test.c:58:19:58:19 | Load: y | >= | test.c:58:23:58:23 | Constant: (long)... | 0 | 62 | 62 |
+| test.c:58:19:58:23 | CompareLT: ... < ... | test.c:58:23:58:23 | Constant: (long)... | < | test.c:58:19:58:19 | Load: y | 1 | 62 | 62 |
+| test.c:75:9:75:14 | CompareEQ: ... == ... | test.c:75:9:75:9 | Load: x | != | test.c:75:14:75:14 | Constant: 0 | 0 | 79 | 79 |
+| test.c:75:9:75:14 | CompareEQ: ... == ... | test.c:75:9:75:9 | Load: x | == | test.c:75:14:75:14 | Constant: 0 | 0 | 76 | 76 |
+| test.c:75:9:75:14 | CompareEQ: ... == ... | test.c:75:14:75:14 | Constant: 0 | != | test.c:75:9:75:9 | Load: x | 0 | 79 | 79 |
+| test.c:75:9:75:14 | CompareEQ: ... == ... | test.c:75:14:75:14 | Constant: 0 | == | test.c:75:9:75:9 | Load: x | 0 | 76 | 76 |
+| test.c:85:8:85:13 | CompareEQ: ... == ... | test.c:85:8:85:8 | Load: x | == | test.c:85:13:85:13 | Constant: 0 | 0 | 85 | 85 |
+| test.c:85:8:85:13 | CompareEQ: ... == ... | test.c:85:8:85:8 | Load: x | == | test.c:85:13:85:13 | Constant: 0 | 0 | 86 | 86 |
+| test.c:85:8:85:13 | CompareEQ: ... == ... | test.c:85:13:85:13 | Constant: 0 | == | test.c:85:8:85:8 | Load: x | 0 | 85 | 85 |
+| test.c:85:8:85:13 | CompareEQ: ... == ... | test.c:85:13:85:13 | Constant: 0 | == | test.c:85:8:85:8 | Load: x | 0 | 86 | 86 |
+| test.c:85:18:85:23 | CompareNE: ... != ... | test.c:85:18:85:18 | Load: y | != | test.c:85:23:85:23 | Constant: (long)... | 0 | 86 | 86 |
+| test.c:85:18:85:23 | CompareNE: ... != ... | test.c:85:23:85:23 | Constant: (long)... | != | test.c:85:18:85:18 | Load: y | 0 | 86 | 86 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | test.c:94:11:94:11 | Load: x | != | test.c:94:16:94:16 | Constant: 0 | 0 | 95 | 95 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | test.c:94:11:94:11 | Load: x | == | test.c:94:16:94:16 | Constant: 0 | 0 | 70 | 70 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | test.c:94:11:94:11 | Load: x | == | test.c:94:16:94:16 | Constant: 0 | 0 | 99 | 99 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | test.c:94:11:94:11 | Load: x | == | test.c:94:16:94:16 | Constant: 0 | 0 | 102 | 102 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | test.c:94:11:94:11 | Load: x | == | test.c:94:16:94:16 | Constant: 0 | 0 | 103 | 103 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | test.c:94:11:94:11 | Load: x | == | test.c:94:16:94:16 | Constant: 0 | 0 | 107 | 107 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | test.c:94:11:94:11 | Load: x | == | test.c:94:16:94:16 | Constant: 0 | 0 | 109 | 109 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | test.c:94:11:94:11 | Load: x | == | test.c:94:16:94:16 | Constant: 0 | 0 | 110 | 110 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | test.c:94:11:94:11 | Load: x | == | test.c:94:16:94:16 | Constant: 0 | 0 | 113 | 113 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | test.c:94:16:94:16 | Constant: 0 | != | test.c:94:11:94:11 | Load: x | 0 | 95 | 95 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | test.c:94:16:94:16 | Constant: 0 | == | test.c:94:11:94:11 | Load: x | 0 | 70 | 70 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | test.c:94:16:94:16 | Constant: 0 | == | test.c:94:11:94:11 | Load: x | 0 | 99 | 99 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | test.c:94:16:94:16 | Constant: 0 | == | test.c:94:11:94:11 | Load: x | 0 | 102 | 102 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | test.c:94:16:94:16 | Constant: 0 | == | test.c:94:11:94:11 | Load: x | 0 | 103 | 103 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | test.c:94:16:94:16 | Constant: 0 | == | test.c:94:11:94:11 | Load: x | 0 | 107 | 107 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | test.c:94:16:94:16 | Constant: 0 | == | test.c:94:11:94:11 | Load: x | 0 | 109 | 109 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | test.c:94:16:94:16 | Constant: 0 | == | test.c:94:11:94:11 | Load: x | 0 | 110 | 110 |
+| test.c:94:11:94:16 | CompareNE: ... != ... | test.c:94:16:94:16 | Constant: 0 | == | test.c:94:11:94:11 | Load: x | 0 | 113 | 113 |
+| test.c:102:16:102:21 | CompareLT: ... < ... | test.c:102:16:102:16 | Load: j | < | test.c:102:20:102:21 | Constant: 10 | 0 | 103 | 103 |
+| test.c:102:16:102:21 | CompareLT: ... < ... | test.c:102:16:102:16 | Load: j | >= | test.c:102:20:102:21 | Constant: 10 | 0 | 70 | 70 |
+| test.c:102:16:102:21 | CompareLT: ... < ... | test.c:102:16:102:16 | Load: j | >= | test.c:102:20:102:21 | Constant: 10 | 0 | 107 | 107 |
+| test.c:102:16:102:21 | CompareLT: ... < ... | test.c:102:16:102:16 | Load: j | >= | test.c:102:20:102:21 | Constant: 10 | 0 | 109 | 109 |
+| test.c:102:16:102:21 | CompareLT: ... < ... | test.c:102:16:102:16 | Load: j | >= | test.c:102:20:102:21 | Constant: 10 | 0 | 110 | 110 |
+| test.c:102:16:102:21 | CompareLT: ... < ... | test.c:102:16:102:16 | Load: j | >= | test.c:102:20:102:21 | Constant: 10 | 0 | 113 | 113 |
+| test.c:102:16:102:21 | CompareLT: ... < ... | test.c:102:20:102:21 | Constant: 10 | < | test.c:102:16:102:16 | Load: j | 1 | 70 | 70 |
+| test.c:102:16:102:21 | CompareLT: ... < ... | test.c:102:20:102:21 | Constant: 10 | < | test.c:102:16:102:16 | Load: j | 1 | 107 | 107 |
+| test.c:102:16:102:21 | CompareLT: ... < ... | test.c:102:20:102:21 | Constant: 10 | < | test.c:102:16:102:16 | Load: j | 1 | 109 | 109 |
+| test.c:102:16:102:21 | CompareLT: ... < ... | test.c:102:20:102:21 | Constant: 10 | < | test.c:102:16:102:16 | Load: j | 1 | 110 | 110 |
+| test.c:102:16:102:21 | CompareLT: ... < ... | test.c:102:20:102:21 | Constant: 10 | < | test.c:102:16:102:16 | Load: j | 1 | 113 | 113 |
+| test.c:102:16:102:21 | CompareLT: ... < ... | test.c:102:20:102:21 | Constant: 10 | >= | test.c:102:16:102:16 | Load: j | 1 | 103 | 103 |
+| test.c:109:9:109:14 | CompareEQ: ... == ... | test.c:109:9:109:9 | Load: x | != | test.c:109:14:109:14 | Constant: 0 | 0 | 109 | 109 |
+| test.c:109:9:109:14 | CompareEQ: ... == ... | test.c:109:9:109:9 | Load: x | != | test.c:109:14:109:14 | Constant: 0 | 0 | 113 | 113 |
+| test.c:109:9:109:14 | CompareEQ: ... == ... | test.c:109:14:109:14 | Constant: 0 | != | test.c:109:9:109:9 | Load: x | 0 | 109 | 109 |
+| test.c:109:9:109:14 | CompareEQ: ... == ... | test.c:109:14:109:14 | Constant: 0 | != | test.c:109:9:109:9 | Load: x | 0 | 113 | 113 |
+| test.c:109:19:109:23 | CompareLT: ... < ... | test.c:109:19:109:19 | Load: y | >= | test.c:109:23:109:23 | Constant: (long)... | 0 | 113 | 113 |
+| test.c:109:19:109:23 | CompareLT: ... < ... | test.c:109:23:109:23 | Constant: (long)... | < | test.c:109:19:109:19 | Load: y | 1 | 113 | 113 |
+| test.cpp:18:8:18:12 | CompareNE: (bool)... | test.cpp:18:8:18:10 | Call: call to get | != | test.cpp:18:8:18:12 | Constant: (bool)... | 0 | 0 | 0 |
+| test.cpp:18:8:18:12 | CompareNE: (bool)... | test.cpp:18:8:18:12 | Constant: (bool)... | != | test.cpp:18:8:18:10 | Call: call to get | 0 | 0 | 0 |
+| test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:7:31:7 | Load: x | != | test.cpp:31:12:31:13 | Constant: - ... | 0 | 34 | 34 |
+| test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:7:31:7 | Load: x | == | test.cpp:31:12:31:13 | Constant: - ... | 0 | 30 | 30 |
+| test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:7:31:7 | Load: x | == | test.cpp:31:12:31:13 | Constant: - ... | 0 | 32 | 32 |
+| test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:12:31:13 | Constant: - ... | != | test.cpp:31:7:31:7 | Load: x | 0 | 34 | 34 |
+| test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:12:31:13 | Constant: - ... | == | test.cpp:31:7:31:7 | Load: x | 0 | 30 | 30 |
+| test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:12:31:13 | Constant: - ... | == | test.cpp:31:7:31:7 | Load: x | 0 | 32 | 32 |
