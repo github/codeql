@@ -1,0 +1,25 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+  <p>This rule indicates a potentially incorrect cast from/to an ANSI string (<code>char *</code>) to/from a Unicode string (<code>wchar_t *</code>).</p>
+  <p>This cast might yield strings that are not correctly terminated; including potential buffer overruns when using such strings with some dangerous APIs.</p>
+</overview>
+
+<recommendation>
+  <p>Do not explicitly casting ANSI strings to/from Unicode strings.</p>
+</recommendation>
+
+<example>
+<p>In the following example, an ANSI string literal (<code>"a"</code>) is casted as a Unicode string.</p>
+<sample src="WcharCharConversion.cpp" />
+
+<p>To fix this issue, prepend the literal with the letter "L" (<code>L"a"</code>) to define it as a Unicode string.</p>
+</example>
+
+<references>
+</references>
+
+</qhelp>
