@@ -5,7 +5,7 @@
 <p>
 Using the HTTP Host header to construct a link in an email can facilitate phishing attacks and leak password reset tokens.
 A malicious user can send an HTTP request to the targeted web site, but with a Host header that refers to his own web site.
-This means the emails will be sent out to potential victims, originating from a server they trust but with
+This means the emails will be sent out to potential victims, originating from a server they trust, but with
 links leading to a malicious web site.
 </p>
 <p>

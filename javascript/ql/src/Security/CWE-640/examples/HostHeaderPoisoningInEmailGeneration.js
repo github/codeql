@@ -14,6 +14,6 @@ app.post('/resetpass', (req, res) => {
     from: 'webmaster@example.com',
     to: email,
     subject: 'Forgot password',
-    text: `Forgot your password?. Click here to reset: https://${req.host}/resettoken/${token}`,
+    text: `Click to reset password: https://${req.host}/resettoken/${token}`,
   });
 });
