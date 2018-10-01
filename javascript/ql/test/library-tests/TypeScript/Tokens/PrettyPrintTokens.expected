@@ -1,0 +1,4 @@
+| templateLiteralsJS.js:2 | console . log ( ` template~without~placeholders ` ) ;  |
+| templateLiteralsJS.js:3 | console . log ( ` template~with~placeholder~ ${ x } . ` ) ;  |
+| templateLiteralsTS.ts:2 | console . log ( `template~without~placeholders` ) ;  |
+| templateLiteralsTS.ts:3 | console . log ( `template~with~placeholder~${ x }.` ) ;  |
