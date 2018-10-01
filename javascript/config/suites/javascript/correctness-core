@@ -32,6 +32,7 @@
 + semmlecode-javascript-queries/RegExp/BackrefIntoNegativeLookahead.ql: /Correctness/Regular Expressions
 + semmlecode-javascript-queries/RegExp/DuplicateCharacterInCharacterClass.ql: /Correctness/Regular Expressions
 + semmlecode-javascript-queries/RegExp/EmptyCharacterClass.ql: /Correctness/Regular Expressions
++ semmlecode-javascript-queries/RegExp/IdentityReplacement.ql: /Correctness/Regular Expressions
 + semmlecode-javascript-queries/RegExp/UnboundBackref.ql: /Correctness/Regular Expressions
 + semmlecode-javascript-queries/RegExp/UnmatchableCaret.ql: /Correctness/Regular Expressions
 + semmlecode-javascript-queries/RegExp/UnmatchableDollar.ql: /Correctness/Regular Expressions
