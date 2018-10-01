@@ -8,8 +8,7 @@
 # qltest projects and artifacts
 */ql/test/**/*.testproj
 */ql/test/**/*.actual
-/.vs/slnx.sqlite
-/.vs/ql/v15/Browse.VC.opendb
-/.vs/ql/v15/Browse.VC.db
-/.vs/ProjectSettings.json
 
+# Visual studio temporaries, except a file used by QL4VS
+.vs/*
+!.vs/VSWorkspaceSettings.json

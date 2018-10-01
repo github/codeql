@@ -197,8 +197,12 @@ cached private module Cached {
     )
   }
 
-  cached Expr getInstructionResultExpression(Instruction instruction) {
-    result = getOldInstruction(instruction).getResultExpression()
+  cached Expr getInstructionConvertedResultExpression(Instruction instruction) {
+    result = getOldInstruction(instruction).getConvertedResultExpression()
+  }
+
+  cached Expr getInstructionUnconvertedResultExpression(Instruction instruction) {
+    result = getOldInstruction(instruction).getUnconvertedResultExpression()
   }
 
   cached Instruction getInstructionSuccessor(Instruction instruction, EdgeKind kind) {

@@ -74,13 +74,25 @@ cached private module Cached {
     none()
   }
 
-  cached Expr getInstructionResultExpression(Instruction instruction) {
+  cached Expr getInstructionConvertedResultExpression(Instruction instruction) {
     exists(TranslatedExpr translatedExpr |
       translatedExpr = getTranslatedExpr(result) and
       instruction = translatedExpr.getResult()
     )
   }
 
+  cached Expr getInstructionUnconvertedResultExpression(Instruction instruction) {
+    exists(Expr converted, TranslatedExpr translatedExpr |
+      result = converted.(Conversion).getExpr+()
+      or
+      result = converted
+      |
+      not result instanceof Conversion and
+      translatedExpr = getTranslatedExpr(converted) and
+      instruction = translatedExpr.getResult()
+    )
+  }
+  
   cached Instruction getInstructionOperand(Instruction instruction, OperandTag tag) {
     result = getInstructionTranslatedElement(instruction).getInstructionOperand(
       instruction.getTag(), tag)
