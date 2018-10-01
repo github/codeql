@@ -21,10 +21,10 @@ module ServerSideUrlRedirect {
      * Holds if this sink may redirect to a non-local URL.
      */
     predicate maybeNonLocal() {
-      exists (Expr prefix | prefix = getAPrefix(this) |
-        not exists(prefix.getStringValue())
+      exists (DataFlow::Node prefix | prefix = getAPrefix(this) |
+        not exists(prefix.asExpr().getStringValue())
         or
-        exists (string prefixVal | prefixVal = prefix.getStringValue() |
+        exists (string prefixVal | prefixVal = prefix.asExpr().getStringValue() |
           // local URLs (i.e., URLs that start with `/` not followed by `\` or `/`,
           // or that start with `~/`) are unproblematic
           not prefixVal.regexpMatch("/[^\\\\/].*|~/.*") and
@@ -47,12 +47,12 @@ module ServerSideUrlRedirect {
   /**
    * Gets an expression that may end up being a prefix of the string concatenation `nd`.
    */
-  private Expr getAPrefix(Sink sink) {
+  private DataFlow::Node getAPrefix(Sink sink) {
     exists (DataFlow::Node prefix |
       prefix = prefixCandidate(sink) and
       not exists(StringConcatenation::getFirstOperand(prefix)) and
       not exists(prefix.getAPredecessor()) and
-      result = prefix.asExpr()
+      result = prefix
     )
   }
 

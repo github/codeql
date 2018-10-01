@@ -26,5 +26,6 @@
 | Unbound event handler receiver | Fewer false-positive results | This rule now recognizes additional ways class methods can be bound. |
 | Remote property injection | Fewer results | The precision of this rule has been revised to "medium". Results are no longer shown on LGTM by default. |
 | Missing CSRF middleware | Fewer false-positive results | This rule now recognizes additional CSRF protection middlewares. |
+| Server-side URL redirect | More results | This rule now recognizes redirection calls in more cases. |
 
 ## Changes to QL libraries
