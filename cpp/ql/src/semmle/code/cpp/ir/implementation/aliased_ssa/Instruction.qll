@@ -133,6 +133,16 @@ class Instruction extends Construction::TInstruction {
   }
 
   final string toString() {
+    result = getOpcode().toString() + ": " + getAST().toString()
+  }
+
+  /**
+   * Gets a string showing the result, opcode, and operands of the instruction, equivalent to what
+   * would be printed by PrintIR.ql. For example:
+   *
+   * `mu0_28(int) = Store r0_26, r0_27`
+   */
+  final string getDumpString() {
     result = getResultString() + " = " + getOperationString() + " " + getOperandsString()
   }
 
