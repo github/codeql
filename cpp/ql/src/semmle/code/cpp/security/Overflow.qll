@@ -13,6 +13,7 @@ predicate guardedAbs(Operation e, Expr use) {
 }
 
 /** is the size of this use guarded to be less than something? */
+pragma[nomagic]
 predicate guardedLesser(Operation e, Expr use) {
   exists(IfStmt c, RelationalOperation guard |
     use = guard.getLesserOperand().getAChild*() and
@@ -33,6 +34,7 @@ predicate guardedLesser(Operation e, Expr use) {
 }
 
 /** is the size of this use guarded to be greater than something? */
+pragma[nomagic]
 predicate guardedGreater(Operation e, Expr use) {
   exists(IfStmt c, RelationalOperation guard |
     use = guard.getGreaterOperand().getAChild*() and
