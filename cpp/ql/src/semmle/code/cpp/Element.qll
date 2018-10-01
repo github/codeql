@@ -3,40 +3,37 @@ private import semmle.code.cpp.Enclosing
 private import semmle.code.cpp.internal.ResolveClass
 
 /**
- * Get the `@element` that represents this `@element`.
- * Normally this will simply be `e`, but sometimes it is not.
- * For example, for an incomplete struct `e` the result may be a
- * complete struct with the same name.
- */
-private cached @element resolveElement(@element e) {
-  if isClass(e)
-  then result = resolveClass(e)
-  else result = e
-}
-
-/**
  * Get the `Element` that represents this `@element`.
  * Normally this will simply be a cast of `e`, but sometimes it is not.
  * For example, for an incomplete struct `e` the result may be a
  * complete struct with the same name.
  */
+pragma[inline]
 Element mkElement(@element e) {
-  result = resolveElement(e)
+  unresolveElement(result) = e
 }
 
 /**
- * Get an `@element` that resolves to the `Element`. This should
+ * INTERNAL: Do not use.
+ *
+ * Gets an `@element` that resolves to the `Element`. This should
  * normally only be called from member predicates, where `e` is not
  * `this` and you need the result for an argument to a database
  * extensional.
  * See `underlyingElement` for when `e` is `this`.
  */
+pragma[inline]
 @element unresolveElement(Element e) {
-  resolveElement(result) = e
+  not result instanceof @usertype and
+  result = e
+  or
+  e = resolveClass(result)
 }
 
 /**
- * Get the `@element` that this `Element` extends. This should normally
+ * INTERNAL: Do not use.
+ *
+ * Gets the `@element` that this `Element` extends. This should normally
  * only be called from member predicates, where `e` is `this` and you
  * need the result for an argument to a database extensional.
  * See `unresolveElement` for when `e` is not `this`.
@@ -53,10 +50,6 @@ Element mkElement(@element e) {
  * `getLocation`, or `hasLocationInfo`.
  */
 class ElementBase extends @element {
-  ElementBase() {
-    this = resolveElement(_)
-  }
-
   /** Gets a textual representation of this element. */
   string toString() { none() }
 }
