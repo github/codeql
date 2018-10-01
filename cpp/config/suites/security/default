@@ -13,6 +13,7 @@
 @import "cwe-170"
 @import "cwe-190"
 @import "cwe-242"
+@import "cwe-253"
 @import "cwe-290"
 @import "cwe-311"
 @import "cwe-327"
