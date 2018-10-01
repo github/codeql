@@ -58,6 +58,10 @@ int getBufferSize(Expr bufferExpr, Element why) {
       // buffer is an initialized array
       //  e.g. int buffer[] = {1, 2, 3};
       why = bufferVar.getInitializer().getExpr() and
+      (
+        why instanceof AggregateLiteral or
+        why instanceof StringLiteral
+      ) and
       result = why.(Expr).getType().(ArrayType).getSize() and
       not exists(bufferVar.getType().getUnspecifiedType().(ArrayType).getSize())
     ) or exists(Class parentClass, VariableAccess parentPtr |
