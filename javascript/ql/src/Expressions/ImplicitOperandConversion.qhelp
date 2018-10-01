@@ -39,7 +39,7 @@ property of the name stored in variable <code>member</code>:
 
 <p>
 However, this test is ineffective as written: the operator <code>!</code> binds more
-tighly than <code>in</code>, so it is applied first. Applying <code>!</code> to a
+tightly than <code>in</code>, so it is applied first. Applying <code>!</code> to a
 non-empty string yields <code>false</code>, so the <code>in</code> operator actually
 ends up checking whether <code>obj</code> contains a property called <code>"false"</code>.
 </p>
