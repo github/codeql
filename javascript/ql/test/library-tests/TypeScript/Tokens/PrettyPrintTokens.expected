@@ -1,3 +1,11 @@
+| greaterThanTS.ts:2 | console . log ( x >= 1 ) ;  |
+| greaterThanTS.ts:3 | console . log ( x >>= 1 ) ;  |
+| greaterThanTS.ts:4 | console . log ( x >>>= 1 ) ;  |
+| greaterThanTS.ts:5 | console . log ( x >> 1 ) ;  |
+| greaterThanTS.ts:6 | console . log ( x >>> 1 ) ;  |
+| greaterThanTS.ts:8 | console . log ( x >= 1 ) ;  |
+| greaterThanTS.ts:9 | console . log ( x >= 1 ) ;  |
+| greaterThanTS.ts:10 | console . log ( x >= 1 ) ;  |
 | regexpTS.ts:2 | console . log ( /foo/g ) ;  |
 | regexpTS.ts:3 | console . log ( /foo/g ) ;  |
 | templateLiteralsJS.js:2 | console . log ( ` template~without~placeholders ` ) ;  |
