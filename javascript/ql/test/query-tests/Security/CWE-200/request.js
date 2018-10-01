@@ -1,3 +1,4 @@
+// adopted from https://stackoverflow.com/questions/9577611/http-get-request-in-node-js-express
 
 var fs = require('fs');
 var request = require('request');

@@ -1,3 +1,5 @@
+// adopted from https://stackoverflow.com/questions/6158933/how-to-make-an-http-post-request-in-node-js
+
 const fs = require('fs');
 var http = require('http');
 
@@ -24,7 +26,7 @@ fs.exists(fileName, function (exists) {
           res.setEncoding('utf8');
         });
         
-        // write data to request body
+        // BAD: write data from file to request body
         req.write(chunk);
 
         req.end(); 

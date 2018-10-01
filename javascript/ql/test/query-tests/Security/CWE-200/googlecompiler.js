@@ -1,4 +1,5 @@
-// We need this to build our post string
+// adopted from https://stackoverflow.com/questions/6158933/how-to-make-an-http-post-request-in-node-js
+
 var querystring = require('querystring');
 var http = require('http');
 var fs = require('fs');
@@ -33,7 +34,7 @@ function PostCode(codestring) {
       });
   });
 
-  // post the data
+  // BAD: post the data from file to request body
   post_req.write(post_data);
   post_req.end();
 

