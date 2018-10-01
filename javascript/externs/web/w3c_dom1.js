@@ -25,9 +25,11 @@
 
 /**
  * @constructor
+ * @param {string=} message
+ * @param {string=} message
  * @see http://www.w3.org/TR/1998/REC-DOM-Level-1-19981001/level-one-core.html#ID-17189187
  */
-function DOMException() {}
+function DOMException(message, name) {}
 
 /**
  * @type {number}

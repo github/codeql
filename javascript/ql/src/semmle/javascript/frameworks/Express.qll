@@ -479,6 +479,17 @@ module Express {
           methodName = "header"
         )
         or
+        exists (DataFlow::PropRead headers |
+          // `req.headers.name`
+          kind = "header" and
+          headers.accesses(request, "headers") and
+          this = headers.getAPropertyRead())
+        or
+        exists (string propName | propName = "host" or propName = "hostname" |
+          // `req.host` and `req.hostname` are derived from headers
+          kind = "header" and
+          this.(DataFlow::PropRead).accesses(request, propName))
+        or
         // `req.cookies`
         kind = "cookie" and
         this.(DataFlow::PropRef).accesses(request, "cookies")
@@ -785,7 +796,8 @@ module Express {
     override MethodCallExpr astNode;
 
     ResponseSendFileAsFileSystemAccess() {
-      asExpr().(MethodCallExpr).calls(any(ResponseExpr res), "sendFile")
+      exists (string name | name = "sendFile" or name = "sendfile" |
+        asExpr().(MethodCallExpr).calls(any(ResponseExpr res), name))
     }
 
     override DataFlow::Node getDataNode() {

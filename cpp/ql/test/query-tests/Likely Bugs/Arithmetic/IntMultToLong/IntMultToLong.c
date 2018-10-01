@@ -88,3 +88,7 @@ void use_printf(float f, double d)
 		// ^ there's a float -> double varargs promotion here, but it's unlikely that the author anticipates requiring a double
 	printf("%f", d * d); // safe
 }
+
+size_t three_chars(unsigned char a, unsigned char b, unsigned char c) {
+    return a * b * c; // at most 16581375
+}

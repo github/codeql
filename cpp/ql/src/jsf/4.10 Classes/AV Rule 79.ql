@@ -10,33 +10,69 @@
  *       external/cwe/cwe-404
  */
 import cpp
+import Critical.NewDelete
 
-// List pairs of functions that do resource acquisition/release
-// Extend this to add custom function pairs. As written the query
-// will only apply if the resource is the *return value* of the
-// first call and a *parameter* to the second. Other cases should
-// be handled differently.
-predicate resourceManagementPair(string acquire, string release) {
-
-  (acquire = "fopen" and release = "fclose")
-  or
-  (acquire = "open" and release = "close")
-  or
-  (acquire = "socket" and release = "close")
-
+/**
+ * An expression that acquires a resource, and the kind of resource that is acquired.  The
+ * kind of a resource indicates which acquisition/release expressions can be paired.
+ */
+predicate acquireExpr(Expr acquire, string kind) {
+  exists(FunctionCall fc, Function f, string name |
+    fc = acquire and
+    f = fc.getTarget() and
+    name = f.getName() and 
+    (
+      (
+        name = "fopen" and
+        kind = "file"
+      ) or (
+        name = "open" and
+        kind = "file descriptor"
+      ) or (
+        name = "socket" and
+        kind = "file descriptor"
+      )
+    )
+  ) or (
+    allocExpr(acquire, kind)
+  )
 }
 
-// List functions that return malloc-allocated memory. Customize
-// to list your own functions there
-predicate mallocFunction(Function malloc) {
-  malloc.hasName("malloc") or malloc.hasName("calloc") or // Not realloc: doesn't acquire it, really
-  malloc.hasName("strdup")
-}
-
-private predicate isRelease(string release) {
-  resourceManagementPair(_, release) or
-  release = "free" or
-  release = "delete"
+/**
+ * An expression that releases a resource, and the kind of resource that is released.  The
+ * kind of a resource indicates which acquisition/release expressions can be paired.
+ */
+predicate releaseExpr(Expr release, Expr resource, string kind) {
+  exists(FunctionCall fc, Function f, string name |
+    fc = release and
+    f = fc.getTarget() and
+    name = f.getName() and 
+    (
+      (
+        name = "fclose" and
+        resource = fc.getArgument(0) and
+        kind = "file"
+      ) or (
+        name = "close" and
+        resource = fc.getArgument(0) and
+        kind = "file descriptor"
+      )
+    )
+  ) or exists(string releaseKind |
+    freeExpr(release, resource, releaseKind) and
+    (
+      (
+        kind = "malloc" and
+        releaseKind = "free"
+      ) or (
+        kind = "new" and
+        releaseKind = "delete"
+      ) or (
+        kind = "new[]" and
+        releaseKind = "delete[]"
+      )
+    )
+  )
 }
 
 /**
@@ -52,35 +88,23 @@ Expr exprOrDereference(Expr e) {
  * Holds if the expression `e` releases expression `released`, whether directly
  * or via one or more function call(s).
  */
-private predicate exprReleases(Expr e, Expr released, string releaseType) {
+private predicate exprReleases(Expr e, Expr released, string kind) {
   (
-    // `e` is a call to a release function and `released` is any argument
-    e.(FunctionCall).getTarget().getName() = releaseType and
-    isRelease(releaseType) and
-    e.(FunctionCall).getAnArgument() = released
-  ) or (
-    // `e` is a call to `delete` and `released` is the target
-    e.(DeleteExpr).getExpr() = released and
-    releaseType = "delete"
-  ) or (
-    // `e` is a call to `delete[]` and `released` is the target
-    e.(DeleteArrayExpr).getExpr() = released and
-    releaseType = "delete"
+    // `e` is a call to a release function and `released` is the released argument
+    releaseExpr(e, released, kind)
   ) or exists(Function f, int arg |
     // `e` is a call to a function that releases one of it's parameters,
     // and `released` is the corresponding argument
     e.(FunctionCall).getTarget() = f and
     e.(FunctionCall).getArgument(arg) = released and
-    exprReleases(_, exprOrDereference(f.getParameter(arg).getAnAccess()), releaseType)
-  ) or exists(Function f, Expr innerThis |
+    exprReleases(_, exprOrDereference(f.getParameter(arg).getAnAccess()), kind)
+  ) or exists(Function f, ThisExpr innerThis |
     // `e` is a call to a method that releases `this`, and `released`
     // is the object that is called
     e.(FunctionCall).getTarget() = f and
     e.(FunctionCall).getQualifier() = exprOrDereference(released) and
     innerThis.getEnclosingFunction() = f and
-    exprReleases(_, innerThis, releaseType) and
-    innerThis instanceof ThisExpr and
-    releaseType = "delete"
+    exprReleases(_, innerThis, kind)
   )
 }
 
@@ -109,28 +133,17 @@ class Resource extends MemberVariable {
     )
   }
 
-  predicate acquisitionWithRequiredRelease(Expr acquire, string releaseName) {
-    acquire.(Assignment).getLValue() = this.getAnAccess() and
+  predicate acquisitionWithRequiredRelease(Assignment acquireAssign, string kind) {
+    // acquireAssign is an assignment to this resource
+    acquireAssign.(Assignment).getLValue() = this.getAnAccess() and
     // Should be in this class, but *any* member method will do
-    this.inSameClass(acquire) and
+    this.inSameClass(acquireAssign) and
     // Check that it is an acquisition function and return the corresponding free
-    (
-      exists(Function f | f = acquire.(Assignment).getRValue().(FunctionCall).getTarget() and
-         (resourceManagementPair(f.getName(), releaseName) or (mallocFunction(f) and (releaseName = "free" or releaseName = "delete")))
-      )
-      or
-      (acquire = this.getANew() and releaseName = "delete")
-    )
+    acquireExpr(acquireAssign.getRValue(), kind)
   }
 
-  private Assignment getANew() {
-    result.getLValue() = this.getAnAccess() and
-    (result.getRValue() instanceof NewExpr or result.getRValue() instanceof NewArrayExpr) and
-    this.inSameClass(result)
-  }
-
-  Expr getAReleaseExpr(string releaseName) {
-    exprReleases(result, this.getAnAccess(), releaseName)
+  Expr getAReleaseExpr(string kind) {
+    exprReleases(result, this.getAnAccess(), kind)
   }
 }
 

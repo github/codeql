@@ -633,10 +633,24 @@ class PointsToExpr extends Expr
   pragma[noopt]
   Element pointsTo()
   {
-    this.interesting() and exists(int set, @element thisEntity, @element resultEntity | thisEntity = underlyingElement(this) and pointstosets(set, thisEntity) and setlocations(set, resultEntity) and resultEntity = unresolveElement(result))
+    this.interesting() and
+    exists(int set, @element thisEntity, @element resultEntity |
+      thisEntity = underlyingElement(this) and
+      pointstosets(set, thisEntity) and
+      setlocations(set, resultEntity) and
+      resultEntity = localUnresolveElement(result)
+    )
   }
 
   float confidence() { result = 1.0 / count(this.pointsTo()) }
+}
+
+/*
+ * This is used above in a `pragma[noopt]` context, which prevents its
+ * customary inlining. We materialise it explicitly here.
+ */
+private @element localUnresolveElement(Element e) {
+  result = unresolveElement(e)
 }
 
 /**

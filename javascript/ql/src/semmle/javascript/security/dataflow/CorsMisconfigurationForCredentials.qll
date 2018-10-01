@@ -49,6 +49,11 @@ module CorsMisconfigurationForCredentials {
       super.isSanitizer(node) or
       node instanceof Sanitizer
     }
+
+    override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
+      guard instanceof TaintTracking::AdHocWhitelistCheckSanitizer
+    }
+
   }
 
   /** A source of remote user input, considered as a flow source for CORS misconfiguration. */
