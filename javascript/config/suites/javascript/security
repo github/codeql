@@ -22,6 +22,7 @@
 + semmlecode-javascript-queries/Security/CWE-601/ClientSideUrlRedirect.ql: /Security/CWE/CWE-601
 + semmlecode-javascript-queries/Security/CWE-601/ServerSideUrlRedirect.ql: /Security/CWE/CWE-601
 + semmlecode-javascript-queries/Security/CWE-611/Xxe.ql: /Security/CWE/CWE-611
++ semmlecode-javascript-queries/Security/CWE-640/HostHeaderPoisoningInEmailGeneration.ql: /Security/CWE/CWE-640
 + semmlecode-javascript-queries/Security/CWE-643/XpathInjection.ql: /Security/CWE/CWE-643
 + semmlecode-javascript-queries/Security/CWE-730/RegExpInjection.ql: /Security/CWE/CWE-730
 + semmlecode-javascript-queries/Security/CWE-770/MissingRateLimiting.ql: /Security/CWE/CWE-770

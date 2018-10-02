@@ -1,0 +1,2 @@
+| src/http.js:9:3:9:17 | req.headers.foo | foo |
+| src/https.js:9:3:9:17 | req.headers.foo | foo |
