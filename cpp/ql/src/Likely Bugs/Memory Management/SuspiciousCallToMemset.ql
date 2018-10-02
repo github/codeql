@@ -41,11 +41,13 @@ Type stripType(Type t) {
   result = stripType(t.(ArrayType).getBaseType()) or
   result = stripType(t.(ReferenceType).getBaseType()) or
   result = stripType(t.(SpecifiedType).getBaseType()) or
+  result = stripType(t.(Decltype).getBaseType()) or
   (
     not t instanceof TypedefType and
     not t instanceof ArrayType and
     not t instanceof ReferenceType and
     not t instanceof SpecifiedType and
+    not t instanceof Decltype and
     result = t
   )
 }
