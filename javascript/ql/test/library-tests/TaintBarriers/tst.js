@@ -230,3 +230,16 @@ function RelationalIndexOfCheckSanitizer () {
     }
 
 }
+
+function adhocWhitelisting() {
+    var v = SOURCE();
+    if (isWhitelisted(v))
+        SINK(v);
+    else
+        SINK(v);
+    if (config.allowValue(v))
+        SINK(v);
+    else
+        SINK(v);
+
+}

@@ -34,7 +34,6 @@
 | test.cpp:8:31:8:35 | initializer for Value |
 | test.cpp:11:10:11:11 | mention of EC |
 | test.cpp:11:25:11:27 | mention of IsX<X> |
-| test.cpp:11:25:11:27 | mention of IsX<X> |
 | test.cpp:12:8:12:9 | DX<X, B> |
 | test.cpp:12:8:12:9 | definition of DX<X, B> |
 | test.cpp:13:17:13:20 | Type |

@@ -190,19 +190,32 @@ private Type elementType(RefType t) {
   )
 }
 
+private predicate upcastEnhancedForStmtAux(BaseSsaUpdate v, RefType t, RefType t1, RefType t2) {
+  exists(EnhancedForStmt for |
+    for.getVariable() = v.getDefiningExpr() and
+    v.getSourceVariable().getType().getErasure() = t2 and
+    t = boxIfNeeded(elementType(for.getExpr().getType())) and
+    t.getErasure() = t1
+  )
+}
+
 /**
  * Holds if `v` is the iteration variable of an enhanced for statement, `t` is
  * the type of the elements being iterated over, and this type is more precise
  * than the type of `v`.
  */
 private predicate upcastEnhancedForStmt(BaseSsaUpdate v, RefType t) {
-  exists(EnhancedForStmt for, RefType t1, RefType t2 |
-    for.getVariable() = v.getDefiningExpr() and
-    v.getSourceVariable().getType().getErasure() = t2 and
-    t = boxIfNeeded(elementType(for.getExpr().getType())) and
-    t.getErasure() = t1 and
+  exists(RefType t1, RefType t2 |
+    upcastEnhancedForStmtAux(v, t, t1, t2) and
     t1.getASourceSupertype+() = t2
   )
+}
+
+private predicate downcastSuccessorAux(CastExpr cast, BaseSsaVariable v, RefType t, RefType t1, RefType t2) {
+  cast.getExpr() = v.getAUse() and
+  t = cast.getType() and
+  t1 = t.getErasure() and
+  t2 = v.getSourceVariable().getType().getErasure()
 }
 
 /**
@@ -210,10 +223,7 @@ private predicate upcastEnhancedForStmt(BaseSsaUpdate v, RefType t) {
  */
 private predicate downcastSuccessor(VarAccess va, RefType t) {
   exists(CastExpr cast, BaseSsaVariable v, RefType t1, RefType t2 |
-    cast.getExpr() = v.getAUse() and
-    t = cast.getType() and
-    t1 = t.getErasure() and
-    t2 = v.getSourceVariable().getType().getErasure() and
+    downcastSuccessorAux(cast, v, t, t1, t2) and
     t1.getASourceSupertype+() = t2 and
     va = v.getAUse() and
     dominates(cast, va) and
