@@ -1,4 +1,5 @@
 import cpp
+import semmle.code.cpp.dataflow.DataFlow
 
 /**
  * Holds if `sizeof(s)` occurs as part of the parameter of a dynamic
@@ -75,16 +76,13 @@ int getBufferSize(Expr bufferExpr, Element why) {
         bufferVar.getType().getSize() -
         parentClass.getSize()
     )
-  ) or exists(Expr def |
+  ) or (
     // buffer is assigned with an allocation
-    definitionUsePair(_, def, bufferExpr) and
-    exprDefinition(_, def, why) and
+    DataFlow::localFlowStep(DataFlow::exprNode(why), DataFlow::exprNode(bufferExpr)) and
     isFixedSizeAllocationExpr(why, result)
-  ) or exists(Expr def, Expr e, Element why2 |
-    // buffer is assigned with another buffer
-    definitionUsePair(_, def, bufferExpr) and
-    exprDefinition(_, def, e) and
-    result = getBufferSize(e, why2) and
+  ) or exists(Expr def, Element why2 |
+    DataFlow::localFlowStep(DataFlow::exprNode(def), DataFlow::exprNode(bufferExpr)) and
+    result = getBufferSize(def, why2) and
     (
       why = def or
       why = why2
