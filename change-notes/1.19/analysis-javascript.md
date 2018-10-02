@@ -23,6 +23,7 @@
 
 | **Query**                      | **Expected impact**        | **Change**                                   |
 |--------------------------------|----------------------------|----------------------------------------------|
+| Useless assignment to local variable | Fewer false-positive results | This rule now recognizes additional ways default values can be set. |
 | Regular expression injection | Fewer false-positive results | This rule now identifies calls to `String.prototype.search` with more precision. |
 | Unbound event handler receiver | Fewer false-positive results | This rule now recognizes additional ways class methods can be bound. |
 | Remote property injection | Fewer results | The precision of this rule has been revised to "medium". Results are no longer shown on LGTM by default. |
