@@ -77,10 +77,11 @@ int getBufferSize(Expr bufferExpr, Element why) {
         parentClass.getSize()
     )
   ) or (
-    // buffer is assigned with an allocation
-    DataFlow::localFlowStep(DataFlow::exprNode(why), DataFlow::exprNode(bufferExpr)) and
-    isFixedSizeAllocationExpr(why, result)
+    // buffer is a fixed size dynamic allocation
+    isFixedSizeAllocationExpr(bufferExpr, result) and
+    why = bufferExpr
   ) or exists(Expr def, Element why2 |
+    // dataflow
     DataFlow::localFlowStep(DataFlow::exprNode(def), DataFlow::exprNode(bufferExpr)) and
     result = getBufferSize(def, why2) and
     (
