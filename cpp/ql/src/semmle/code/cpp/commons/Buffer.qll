@@ -80,13 +80,15 @@ int getBufferSize(Expr bufferExpr, Element why) {
     // buffer is a fixed size dynamic allocation
     isFixedSizeAllocationExpr(bufferExpr, result) and
     why = bufferExpr
-  ) or exists(Expr def, Element why2 |
+  ) or forex(Expr def |
     // dataflow
-    DataFlow::localFlowStep(DataFlow::exprNode(def), DataFlow::exprNode(bufferExpr)) and
-    result = getBufferSize(def, why2) and
-    (
-      why = def or
-      why = why2
+    DataFlow::localFlowStep(DataFlow::exprNode(def), DataFlow::exprNode(bufferExpr)) |
+    exists(Element why2 |
+      result = getBufferSize(def, why2) and
+      (
+        why = def or
+        why = why2
+      )
     )
   ) or exists(Type bufferType |
     // buffer is the address of a variable
