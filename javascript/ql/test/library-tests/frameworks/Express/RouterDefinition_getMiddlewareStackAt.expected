@@ -75,7 +75,14 @@
 | src/express.js:2:11:2:19 | express() | src/express.js:44:5:44:7 | use | src/express.js:39:9:39:20 | getHandler() |
 | src/express.js:2:11:2:19 | express() | src/express.js:44:9:44:23 | getArrowHandler | src/express.js:39:9:39:20 | getHandler() |
 | src/express.js:2:11:2:19 | express() | src/express.js:44:9:44:25 | getArrowHandler() | src/express.js:39:9:39:20 | getHandler() |
-| src/express.js:2:11:2:19 | express() | src/express.js:45:1:45:0 | exit node of <toplevel> | src/express.js:44:9:44:25 | getArrowHandler() |
+| src/express.js:2:11:2:19 | express() | src/express.js:46:1:46:3 | app | src/express.js:44:9:44:25 | getArrowHandler() |
+| src/express.js:2:11:2:19 | express() | src/express.js:46:1:46:8 | app.post | src/express.js:44:9:44:25 | getArrowHandler() |
+| src/express.js:2:11:2:19 | express() | src/express.js:46:1:51:2 | app.pos ... me];\\n}) | src/express.js:44:9:44:25 | getArrowHandler() |
+| src/express.js:2:11:2:19 | express() | src/express.js:46:1:51:3 | app.pos ... e];\\n}); | src/express.js:44:9:44:25 | getArrowHandler() |
+| src/express.js:2:11:2:19 | express() | src/express.js:46:5:46:8 | post | src/express.js:44:9:44:25 | getArrowHandler() |
+| src/express.js:2:11:2:19 | express() | src/express.js:46:10:46:19 | '/headers' | src/express.js:44:9:44:25 | getArrowHandler() |
+| src/express.js:2:11:2:19 | express() | src/express.js:46:22:51:1 | functio ... ame];\\n} | src/express.js:44:9:44:25 | getArrowHandler() |
+| src/express.js:2:11:2:19 | express() | src/express.js:52:1:52:0 | exit node of <toplevel> | src/express.js:44:9:44:25 | getArrowHandler() |
 | src/subrouter.js:2:11:2:19 | express() | src/subrouter.js:4:1:4:26 | app.use ... rotect) | src/subrouter.js:4:19:4:25 | protect |
 | src/subrouter.js:2:11:2:19 | express() | src/subrouter.js:5:1:5:3 | app | src/subrouter.js:4:19:4:25 | protect |
 | src/subrouter.js:2:11:2:19 | express() | src/subrouter.js:5:1:5:7 | app.use | src/subrouter.js:4:19:4:25 | protect |

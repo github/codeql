@@ -36,3 +36,5 @@
 | tst.js:214:9:214:24 | o.indexOf(v) < 0 | ExampleConfiguration | false | tst.js:214:19:214:19 | v |
 | tst.js:220:9:220:25 | o.indexOf(v) > -1 | ExampleConfiguration | true | tst.js:220:19:220:19 | v |
 | tst.js:226:9:226:26 | -1 >= o.indexOf(v) | ExampleConfiguration | false | tst.js:226:25:226:25 | v |
+| tst.js:236:9:236:24 | isWhitelisted(v) | ExampleConfiguration | true | tst.js:236:23:236:23 | v |
+| tst.js:240:9:240:28 | config.allowValue(v) | ExampleConfiguration | true | tst.js:240:27:240:27 | v |
