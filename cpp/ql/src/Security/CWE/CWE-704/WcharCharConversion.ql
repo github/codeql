@@ -21,18 +21,9 @@ class WideCharPointerType extends PointerType {
 
 from Expr e1, Cast e2
 where 
-  e2 = e1.getConversion() 
-  and
-  (
-    exists( WideCharPointerType w, CharPointerType c  | 
-      w = e1.getType().getUnspecifiedType().(PointerType)
-      and c = e2.getType().getUnspecifiedType().(PointerType)
-    )
-    or exists
-    ( 
-      WideCharPointerType w, CharPointerType c | 
-      w = e2.getType().getUnspecifiedType().(PointerType)
-      and c = e1.getType().getUnspecifiedType().(PointerType)
-    )
+  e2 = e1.getConversion() and
+  exists(WideCharPointerType w, CharPointerType c |
+    w = e2.getType().getUnspecifiedType().(PointerType) and
+    c = e1.getType().getUnspecifiedType().(PointerType)
   )
 select e1, "Conversion from " + e1.getType().toString() + " to " +  e2.getType().toString() + ". Use of invalid string can lead to undefined behavior."

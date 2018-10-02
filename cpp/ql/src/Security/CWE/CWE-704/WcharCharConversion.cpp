@@ -1,3 +1,3 @@
-LPWSTR pSrc;
+wchar_t* pSrc;
 
-pSrc = (LPWSTR)"a";
+pSrc = (wchar_t*)"a"; // casting a byte-string literal "a" to a wide-character string

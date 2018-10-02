@@ -9,32 +9,26 @@ typedef CONST WCHAR *LPCWSTR;
 typedef CHAR *LPSTR;
 typedef CONST CHAR *LPCSTR;
 
-void fconstChar(LPCSTR p) {}
-void fChar(LPSTR p) {}
 void fconstWChar(LPCWSTR p) {}
 void fWChar(LPWSTR p) {}
 
 void Test()
 {
-    char *lpChar = NULL;
-    wchar_t *lpWchar = NULL;
+	char *lpChar = NULL;
+	wchar_t *lpWchar = NULL;
+	LPCSTR lpcstr = "b";
 
-    lpChar = (LPSTR)L"a";   // BUG
-    lpWchar = (LPWSTR)"a";  // BUG
+	lpWchar = (LPWSTR)"a"; // BUG
+	lpWchar = (LPWSTR)lpcstr; // BUG
 
-    lpChar = (char*)lpWchar;    // BUG
-    lpWchar = (wchar_t*)lpChar; // BUG
+	lpWchar = (wchar_t*)lpChar;	// BUG
 
-    fconstChar((LPCSTR)lpWchar);    // BUG
-    fChar((LPSTR)lpWchar);          // BUG
-    fconstWChar((LPCWSTR)lpChar);   // BUG
-    fWChar((LPWSTR)lpChar);         // BUG
+	fconstWChar((LPCWSTR)lpChar);	// BUG
+	fWChar((LPWSTR)lpChar);			// BUG
 
-    lpChar = (LPSTR)"a";    // Valid
-    lpWchar = (LPWSTR)L"a"; // Valid
+	lpChar = (LPSTR)"a"; // Valid
+	lpWchar = (LPWSTR)L"a"; // Valid
 
-    fconstChar((LPCSTR)lpChar);     // Valid
-    fChar(lpChar);                  // Valid
-    fconstWChar((LPCWSTR)lpWchar);  // Valid
-    fWChar(lpWchar);                // Valid
+	fconstWChar((LPCWSTR)lpWchar);	// Valid
+	fWChar(lpWchar);				// Valid
 }
