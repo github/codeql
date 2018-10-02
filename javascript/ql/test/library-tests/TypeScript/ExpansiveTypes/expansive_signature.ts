@@ -19,3 +19,7 @@ interface ExpansiveMethod<T> {
 interface ExpansiveFunctionType<T> {
   x: () => ExpansiveFunctionType<T[]>;
 }
+
+interface ExpansiveSignatureTypeBound<T> {
+  foo : { <G extends ExpansiveSignatureTypeBound<T[]>>(x: G): G };
+}
