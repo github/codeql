@@ -13,6 +13,7 @@ import semmle.javascript.Constants
 import semmle.javascript.DataFlow
 import semmle.javascript.DefUse
 import semmle.javascript.DOM
+import semmle.javascript.EmailClients
 import semmle.javascript.Errors
 import semmle.javascript.ES2015Modules
 import semmle.javascript.Expr

@@ -33,12 +33,15 @@ predicate deadStoreOfLocal(VarDef vd, PurelyLocalVariable v) {
  * is itself an expression evaluating to `null` or `undefined`.
  */
 predicate isNullOrUndef(Expr e) {
-  // `null` or `undefined`
-  e instanceof NullLiteral or
-  e.(VarAccess).getName() = "undefined" or
-  e instanceof VoidExpr or
-  // recursive case to catch multi-assignments of the form `x = y = null`
-  isNullOrUndef(e.(AssignExpr).getRhs())
+  exists (Expr inner |
+    inner = e.stripParens() |
+    // `null` or `undefined`
+    inner instanceof NullLiteral or
+    inner.(VarAccess).getName() = "undefined" or
+    inner instanceof VoidExpr or
+    // recursive case to catch multi-assignments of the form `x = y = null`
+    isNullOrUndef(inner.(AssignExpr).getRhs())
+  )
 }
 
 /**

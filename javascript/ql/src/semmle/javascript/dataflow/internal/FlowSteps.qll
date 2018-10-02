@@ -28,6 +28,21 @@ predicate calls(DataFlow::InvokeNode invk, Function f) {
 }
 
 /**
+ * Holds if `invk` may invoke `f` indirectly through the given `callback` argument.
+ *
+ * This only holds for explicitly modeled partial calls.
+ */
+private predicate partiallyCalls(DataFlow::AdditionalPartialInvokeNode invk, DataFlow::AnalyzedNode callback, Function f) {
+  invk.isPartialArgument(callback, _, _) and
+  exists (AbstractFunction callee | callee = callback.getAValue() |
+    if callback.getAValue().isIndefinite("global") then
+      (f = callee.getFunction() and f.getFile() = invk.getFile())
+    else
+      f = callee.getFunction()
+  )
+}
+
+/**
  * Holds if `f` captures the variable defined by `def` in `cap`.
  */
 cached
@@ -69,6 +84,11 @@ predicate argumentPassing(DataFlow::InvokeNode invk, DataFlow::ValueNode arg, Fu
     f.getParameter(i) = parm and not parm.isRestParameter() and
     arg = invk.getArgument(i)
   )
+  or
+  exists (DataFlow::Node callback, int i |
+    invk.(DataFlow::AdditionalPartialInvokeNode).isPartialArgument(callback, arg, i) and
+    partiallyCalls(invk, callback, f) and
+    parm = f.getParameter(i) and not parm.isRestParameter())
 }
 
 

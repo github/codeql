@@ -182,19 +182,6 @@ module Koa {
           propName = "originalUrl" or
           propName = "href"
         )
-        or
-        exists (string propName, PropAccess headers |
-          // `ctx.request.header.<name>`, `ctx.request.headers.<name>`
-          kind = "header" and
-          headers.accesses(request, propName) and
-          this.asExpr().(PropAccess).accesses(headers, _) |
-          propName = "header" or
-          propName = "headers"
-        )
-        or
-        // `ctx.request.get(<name>)`
-        kind = "header" and
-        this.asExpr().(MethodCallExpr).calls(request, "get")
       )
       or
       exists (PropAccess cookies |
@@ -203,6 +190,10 @@ module Koa {
         cookies.accesses(rh.getAContextExpr(), "cookies") and
         this.asExpr().(MethodCallExpr).calls(cookies, "get")
       )
+      or
+      exists (RequestHeaderAccess access | access = this |
+        rh = access.getRouteHandler() and
+        kind = "header")
     }
 
     override RouteHandler getRouteHandler() {
@@ -211,6 +202,44 @@ module Koa {
 
     override string getKind() {
       result = kind
+    }
+  }
+
+  /**
+   * An access to an HTTP header on a Koa request.
+   */
+  private class RequestHeaderAccess extends HTTP::RequestHeaderAccess {
+    RouteHandler rh;
+
+    RequestHeaderAccess() {
+      exists (Expr request | request = rh.getARequestExpr() |
+        exists (string propName, PropAccess headers |
+          // `ctx.request.header.<name>`, `ctx.request.headers.<name>`
+          headers.accesses(request, propName) and
+          this.asExpr().(PropAccess).accesses(headers, _) |
+          propName = "header" or
+          propName = "headers"
+        )
+        or
+        // `ctx.request.get(<name>)`
+        this.asExpr().(MethodCallExpr).calls(request, "get")
+      )
+    }
+
+    override string getAHeaderName() {
+      result = this.(DataFlow::PropRead).getPropertyName().toLowerCase()
+      or
+      exists (string name |
+        this.(DataFlow::CallNode).getArgument(0).mayHaveStringValue(name) and
+        result = name.toLowerCase())
+    }
+
+    override RouteHandler getRouteHandler() {
+      result = rh
+    }
+
+    override string getKind() {
+      result = "header"
     }
   }
 
