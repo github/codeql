@@ -30,3 +30,5 @@
 | Server-side URL redirect | More results | This rule now recognizes redirection calls in more cases. |
 
 ## Changes to QL libraries
+
+* The flow configuration framework now supports distinguishing and tracking different kinds of taint, specified by an extensible class `FlowLabel` (which can also be referred to by its alias `TaintKind`).
