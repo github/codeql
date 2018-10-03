@@ -9,6 +9,7 @@
 * Support for popular libraries has been improved. Consequently, queries may produce more results on code bases that use the following features:
   - file system access, for example through [fs-extra](https://github.com/jprichardson/node-fs-extra) or [globby](https://www.npmjs.com/package/globby)
 
+* The type inference now handles nested imports (that is, imports not appearing at the toplevel). This may yield fewer false-positive results on projects that use this non-standard language feature.
 
 ## New queries
 
