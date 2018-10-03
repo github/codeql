@@ -515,9 +515,9 @@ private class FactoryDefinition extends ReactElementDefinition {
  * However, since the function could be invoked in another way, we additionally
  * still infer the ordinary abstract value.
  */
-private class AnalyzedThisInBoundCallback extends AnalyzedValueNode, DataFlow::ThisNode {
+private class AnalyzedThisInBoundCallback extends AnalyzedNode, DataFlow::ThisNode {
 
-  AnalyzedValueNode thisSource;
+  AnalyzedNode thisSource;
 
   AnalyzedThisInBoundCallback() {
     exists(DataFlow::CallNode bindingCall, string binderName |
@@ -533,7 +533,7 @@ private class AnalyzedThisInBoundCallback extends AnalyzedValueNode, DataFlow::T
 
   override AbstractValue getALocalValue() {
     result = thisSource.getALocalValue() or
-    result = AnalyzedValueNode.super.getALocalValue()
+    result = AnalyzedNode.super.getALocalValue()
   }
 
 }
