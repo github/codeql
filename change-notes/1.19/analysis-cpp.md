@@ -13,7 +13,7 @@
 | **Query**                  | **Expected impact**    | **Change**                                                       |
 |----------------------------|------------------------|------------------------------------------------------------------|
 | Resource not released in destructor | Fewer false positive results | Placement new is now excluded from the query. |
-
+| Wrong type of arguments to formatting function | Fewer false positive results | False positive results involving typedefs have been removed. |
 
 ## Changes to QL libraries
 
