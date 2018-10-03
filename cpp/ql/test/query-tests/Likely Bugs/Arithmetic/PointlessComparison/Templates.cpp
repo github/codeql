@@ -1,6 +1,6 @@
 template<typename T>
 bool sometimesPointless(T param) {
-  return param <= 0xFFFF; // GOOD (FALSE POSITIVE: hypothetical instantiations are okay)
+  return param <= 0xFFFF; // GOOD (hypothetical instantiations are okay)
 }
 
 template<typename T>
