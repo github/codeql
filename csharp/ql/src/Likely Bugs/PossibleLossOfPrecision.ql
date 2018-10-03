@@ -8,7 +8,6 @@
  * @id cs/loss-of-precision
  * @tags reliability
  *       correctness
- *       security
  *       external/cwe/cwe-190
  *       external/cwe/cwe-192
  *       external/cwe/cwe-197
