@@ -221,6 +221,13 @@ abstract class FlowLabel extends string {
 }
 
 /**
+ * A kind of taint tracked by a taint-tracking configuration.
+ *
+ * This is an alias of `FlowLabel`, so the two types can be used interchangeably.
+ */
+class TaintKind = FlowLabel;
+
+/**
  * A standard flow label, that is, either `FlowLabel::data()` or `FlowLabel::taint()`.
  */
 private class StandardFlowLabel extends FlowLabel {
