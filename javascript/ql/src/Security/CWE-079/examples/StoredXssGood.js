@@ -7,7 +7,7 @@ express().get('/list-directory', function(req, res) {
         var list = '<ul>';
         fileNames.forEach(fileName => {
             // GOOD: escaped `fileName` can not contain HTML elements
-            list += '<li>' + escape(fileName) '</li>';
+            list += '<li>' + escape(fileName) + '</li>';
         });
         list += '</ul>'
         res.send(list);
