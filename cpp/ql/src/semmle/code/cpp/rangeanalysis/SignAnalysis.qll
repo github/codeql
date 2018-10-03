@@ -9,6 +9,7 @@ import cpp
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.ir.ValueNumbering
+private import SignAnalysisCached
 
 private newtype TSign = TNeg() or TZero() or TPos()
 private class Sign extends TSign {
@@ -354,88 +355,90 @@ private predicate hasGuard(Instruction v, Instruction pos, Sign s) {
     s = TZero() and zeroBound(_, _, v, pos)
 }
 
-/**
- * Gets a sign that `operand` may have at `pos`, taking guards into account.
- */
-cached
-private Sign operandSign(Instruction pos, Instruction operand) {
-  result = unguardedOperandSign(pos, operand)
-  or
-  result = guardedOperandSign(pos, operand) and
-  result = guardedOperandSignOk(pos, operand)
-}
-
-cached
-private Sign instructionSign(Instruction i) {
-  result = certainInstructionSign(i)
-  or
-  not exists(certainInstructionSign(i)) and
-  not (
-    result = TNeg() and
-    i.getResultType().(IntegralType).isUnsigned()
-  ) and
-  (
-    unknownSign(i)
+cached private module SignAnalysisCached { 
+  /**
+   * Gets a sign that `operand` may have at `pos`, taking guards into account.
+   */
+  cached
+  Sign operandSign(Instruction pos, Instruction operand) {
+    result = unguardedOperandSign(pos, operand)
     or
-    exists(ConvertInstruction ci, Instruction prior, boolean fromSigned, boolean toSigned |
-      i = ci and
-      prior = ci.getOperand() and
-      (
-        if ci.getResultType().(IntegralType).isSigned()
-        then toSigned = true
-        else toSigned = false
-      ) and
-      (
-        if prior.getResultType().(IntegralType).isSigned()
-        then fromSigned = true
-        else fromSigned = false
-      ) and
-      result = castSign(operandSign(ci, prior), fromSigned, toSigned, getCastKind(ci))
+    result = guardedOperandSign(pos, operand) and
+    result = guardedOperandSignOk(pos, operand)
+  }
+  
+  cached
+  Sign instructionSign(Instruction i) {
+    result = certainInstructionSign(i)
+    or
+    not exists(certainInstructionSign(i)) and
+    not (
+      result = TNeg() and
+      i.getResultType().(IntegralType).isUnsigned()
+    ) and
+    (
+      unknownSign(i)
+      or
+      exists(ConvertInstruction ci, Instruction prior, boolean fromSigned, boolean toSigned |
+        i = ci and
+        prior = ci.getOperand() and
+        (
+          if ci.getResultType().(IntegralType).isSigned()
+          then toSigned = true
+          else toSigned = false
+        ) and
+        (
+          if prior.getResultType().(IntegralType).isSigned()
+          then fromSigned = true
+          else fromSigned = false
+        ) and
+        result = castSign(operandSign(ci, prior), fromSigned, toSigned, getCastKind(ci))
+      )
+      or
+      exists(Instruction prior |
+        prior = i.(CopyInstruction).getSourceValue()
+        |
+        result = operandSign(i, prior)
+      )
+      or
+      result = operandSign(i, i.(BitComplementInstruction).getOperand()).bitnot()
+      or
+      result = operandSign(i, i.(NegateInstruction).getOperand()).neg()
+      or
+      exists(Sign s1, Sign s2 |
+        binaryOpSigns(i, s1, s2)
+        |
+        i instanceof AddInstruction and result = s1.add(s2)
+        or
+        i instanceof SubInstruction and result = s1.add(s2.neg())
+        or
+        i instanceof MulInstruction and result = s1.mul(s2)
+        or
+        i instanceof DivInstruction and result = s1.div(s2)
+        or
+        i instanceof RemInstruction and result = s1.rem(s2)
+        or
+        i instanceof BitAndInstruction and result = s1.bitand(s2)
+        or
+        i instanceof BitOrInstruction and result = s1.bitor(s2)
+        or
+        i instanceof BitXorInstruction and result = s1.bitxor(s2)
+        or
+        i instanceof ShiftLeftInstruction and result = s1.lshift(s2)
+        or
+        i instanceof ShiftRightInstruction and
+        i.getResultType().(IntegralType).isSigned() and
+        result = s1.rshift(s2)
+        or
+        i instanceof ShiftRightInstruction and
+        not i.getResultType().(IntegralType).isSigned() and
+        result = s1.urshift(s2)
+      )
+      or
+      // use hasGuard here?
+      result = operandSign(i, i.(PhiInstruction).getAnOperand())
     )
-    or
-    exists(Instruction prior |
-      prior = i.(CopyInstruction).getSourceValue()
-      |
-      result = operandSign(i, prior)
-    )
-    or
-    result = operandSign(i, i.(BitComplementInstruction).getOperand()).bitnot()
-    or
-    result = operandSign(i, i.(NegateInstruction).getOperand()).neg()
-    or
-    exists(Sign s1, Sign s2 |
-      binaryOpSigns(i, s1, s2)
-      |
-      i instanceof AddInstruction and result = s1.add(s2)
-      or
-      i instanceof SubInstruction and result = s1.add(s2.neg())
-      or
-      i instanceof MulInstruction and result = s1.mul(s2)
-      or
-      i instanceof DivInstruction and result = s1.div(s2)
-      or
-      i instanceof RemInstruction and result = s1.rem(s2)
-      or
-      i instanceof BitAndInstruction and result = s1.bitand(s2)
-      or
-      i instanceof BitOrInstruction and result = s1.bitor(s2)
-      or
-      i instanceof BitXorInstruction and result = s1.bitxor(s2)
-      or
-      i instanceof ShiftLeftInstruction and result = s1.lshift(s2)
-      or
-      i instanceof ShiftRightInstruction and
-      i.getResultType().(IntegralType).isSigned() and
-      result = s1.rshift(s2)
-      or
-      i instanceof ShiftRightInstruction and
-      not i.getResultType().(IntegralType).isSigned() and
-      result = s1.urshift(s2)
-    )
-    or
-    // use hasGuard here?
-    result = operandSign(i, i.(PhiInstruction).getAnOperand())
-  )
+  }
 }
 
 /** Holds if `e` can be positive and cannot be negative. */
