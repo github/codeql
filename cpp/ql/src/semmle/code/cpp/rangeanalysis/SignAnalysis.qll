@@ -441,51 +441,51 @@ cached private module SignAnalysisCached {
   }
 }
 
-/** Holds if `e` can be positive and cannot be negative. */
+/** Holds if `i` can be positive and cannot be negative. */
 predicate positive(Instruction i) {
   instructionSign(i) = TPos() and
   not instructionSign(i) = TNeg()
 }
 
+/** Holds if `i` at `pos` can be positive at and cannot be negative. */
 predicate positive(Instruction i, Instruction pos) {
   operandSign(pos, i) = TPos() and
   not operandSign(pos, i) = TNeg()
 }
 
-/** Holds if `e` can be negative and cannot be positive. */
+/** Holds if `i` can be negative and cannot be positive. */
 predicate negative(Instruction i) {
   instructionSign(i) = TNeg() and
   not instructionSign(i) = TPos()
 }
 
-/** Holds if `e` can be negative and cannot be positive. */
+/** Holds if `i` at `pos` can be negative and cannot be positive. */
 predicate negative(Instruction i, Instruction pos) {
   operandSign(pos, i) = TNeg() and
   not operandSign(pos, i) = TPos()
 }
 
-/** Holds if `e` is strictly positive. */
+/** Holds if `i` is strictly positive. */
 predicate strictlyPositive(Instruction i) {
   instructionSign(i) = TPos() and
   not instructionSign(i) = TNeg() and
   not instructionSign(i) = TZero()
 }
 
-/** Holds if `e` is strictly positive. */
+/** Holds if `i` is strictly positive at `pos`. */
 predicate strictlyPositive(Instruction i, Instruction pos) {
   operandSign(pos, i) = TPos() and
   not operandSign(pos, i) = TNeg() and
   not operandSign(pos, i) = TZero()
 }
-/** Holds if `e` is strictly negative. */
+/** Holds if `i` is strictly negative. */
 predicate strictlyNegative(Instruction i) {
   instructionSign(i) = TNeg() and
   not instructionSign(i) = TPos() and
   not instructionSign(i) = TZero()
 }
 
-
-/** Holds if `e` can be negative and cannot be positive. */
+/** Holds if `i` is strictly negative at `pos`. */
 predicate strictlyNegative(Instruction i, Instruction pos) {
   operandSign(pos, i) = TNeg() and
   not operandSign(pos, i) = TPos() and
