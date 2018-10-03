@@ -59,7 +59,7 @@ namespace ZipSlip
                     foreach (ZipArchiveEntry entry in archive.Entries)
                     {
                         // figure out where we are putting the file
-                        string destFilePath = Path.Combine(InstallDir, entry.FullName);
+                        String destFilePath = Path.Combine(InstallDir, entry.FullName);
 
                         Directory.CreateDirectory(Path.GetDirectoryName(destFilePath));
 
@@ -90,6 +90,15 @@ namespace ZipSlip
                             // BAD: creating stream using fileInfo
                             var fileInfo1 = new FileInfo(destFilePath);
                             using (FileStream fs = fileInfo1.Open(FileMode.Create))
+                            {
+                                Console.WriteLine(@"Writing ""{0}""", destFilePath);
+                                archiveFileStream.CopyTo(fs);
+                            }
+
+                            // GOOD: Use substring to pick out single component
+                            string fileName = destFilePath.Substring(destFilePath.LastIndexOf("\\"));
+                            var fileInfo2 = new FileInfo(fileName);
+                            using (FileStream fs = fileInfo2.Open(FileMode.Create))
                             {
                                 Console.WriteLine(@"Writing ""{0}""", destFilePath);
                                 archiveFileStream.CopyTo(fs);

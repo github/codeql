@@ -112,7 +112,7 @@ module ZipSlip {
   }
 
   /**
-   * A call to Substring.
+   * A call to `Substring`.
    *
    * This is considered a sanitizer because `Substring` may be used to extract a single component
    * of a path to avoid ZipSlip.
