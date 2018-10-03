@@ -1,8 +1,8 @@
 /**
- * @name Cast between semantically different string types: char* from/to wchar_t*
- * @description This rule indicates a potentially incorrect cast from/to an ANSI string (char *) to/from a Unicode string (wchar_t *). 
- *              This cast might yield strings that are not correctly terminated; 
- *              including potential buffer overruns when using such strings with some dangerous APIs.
+ * @name Cast from char* to wchar_t*
+ * @description Casting a byte string to a wide-character string is likely 
+ *              to yield a string that is incorrectly terminated or aligned. 
+ *              This can lead to undefined behavior, including buffer overruns.
  * @kind problem
  * @id cpp/incorrect-string-type-conversion
  * @problem.severity error
