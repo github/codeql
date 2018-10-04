@@ -412,6 +412,9 @@ module HTTP {
      *
      * In these cases, the request is technically sent from the user's browser, but
      * the user is not in direct control of the URL or POST body.
+     *
+     * Headers are never considered third-party controllable by this predicate, although the
+     * third party does have some control over the the Referer and Origin headers.
      */
     predicate isThirdPartyControllable() {
       exists (string kind | kind = getKind() |

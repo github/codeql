@@ -47,6 +47,8 @@ module ReflectedXss {
   class ThirdPartyRequestInputAccessAsSource extends Source {
     ThirdPartyRequestInputAccessAsSource() {
       this.(HTTP::RequestInputAccess).isThirdPartyControllable()
+      or
+      this.(HTTP::RequestHeaderAccess).getAHeaderName() = "referer"
     }
   }
 
