@@ -44,6 +44,7 @@
 import cpp
 private import RangeAnalysisUtils
 import RangeSSA
+import SimpleRangeAnalysisCached
 
 /**
  * This fixed set of lower bounds is used when the lower bounds of an
@@ -921,28 +922,6 @@ float getDefUpperBoundsImpl(RangeSsaDefinition def, LocalScopeVariable v) {
   unanalyzableDefBounds(def, v, _, result)
 }
 
-/** Holds if the definition might overflow negatively. */
-cached
-predicate defMightOverflowNegatively(RangeSsaDefinition def, LocalScopeVariable v) {
-  getDefLowerBoundsImpl(def, v) < varMinVal(v)
-}
-
-/** Holds if the definition might overflow positively. */
-cached
-predicate defMightOverflowPositively(RangeSsaDefinition def, LocalScopeVariable v) {
-  getDefUpperBoundsImpl(def, v) > varMaxVal(v)
-}
-
-/**
- * Holds if the definition might overflow (either positively or
- * negatively).
- */
-cached
-predicate defMightOverflow(RangeSsaDefinition def, LocalScopeVariable v) {
-  defMightOverflowNegatively(def, v) or
-  defMightOverflowPositively(def, v)
-}
-
 /**
  * Get the lower bounds for a `RangeSsaDefinition`. Most of the work is
  * done by `getDefLowerBoundsImpl`, but this is where widening is applied
@@ -1133,63 +1112,87 @@ predicate exprTypeBounds(Expr expr, float boundValue, boolean isLowerBound) {
   (isLowerBound = false and boundValue = exprMaxVal(expr.getFullyConverted()))
 }
 
-/**
- * Gets the lower bound of the expression.
- *
- * Note: expressions in C/C++ are often implicitly or explicitly cast to a
- * different result type. Such casts can cause the value of the expression
- * to overflow or to be truncated. This predicate computes the lower bound
- * of the expression without including the effect of the casts. To compute
- * the lower bound of the expression after all the casts have been applied,
- * call `lowerBound` like this:
- *
- *    `lowerBound(expr.getFullyConverted())`
- */
-cached
-float lowerBound(Expr expr) {
-  // Combine the lower bounds returned by getTruncatedLowerBounds into a
-  // single minimum value.
-  result = min(float lb | lb = getTruncatedLowerBounds(expr) | lb)
-}
+private cached module SimpleRangeAnalysisCached {
+    /**
+   * Gets the lower bound of the expression.
+   *
+   * Note: expressions in C/C++ are often implicitly or explicitly cast to a
+   * different result type. Such casts can cause the value of the expression
+   * to overflow or to be truncated. This predicate computes the lower bound
+   * of the expression without including the effect of the casts. To compute
+   * the lower bound of the expression after all the casts have been applied,
+   * call `lowerBound` like this:
+   *
+   *    `lowerBound(expr.getFullyConverted())`
+   */
+  cached
+  float lowerBound(Expr expr) {
+    // Combine the lower bounds returned by getTruncatedLowerBounds into a
+    // single minimum value.
+    result = min(float lb | lb = getTruncatedLowerBounds(expr) | lb)
+  }
+  
+  /**
+   * Gets the upper bound of the expression.
+   *
+   * Note: expressions in C/C++ are often implicitly or explicitly cast to a
+   * different result type. Such casts can cause the value of the expression
+   * to overflow or to be truncated. This predicate computes the upper bound
+   * of the expression without including the effect of the casts. To compute
+   * the upper bound of the expression after all the casts have been applied,
+   * call `upperBound` like this:
+   *
+   *    `upperBound(expr.getFullyConverted())`
+   */
+  cached
+  float upperBound(Expr expr) {
+    // Combine the upper bounds returned by getTruncatedUpperBounds into a
+    // single maximum value.
+    result = max(float ub | ub = getTruncatedUpperBounds(expr) | ub)
+  }
+  
+  /**
+   * Holds if `expr` has a provably empty range. For example:
+   *
+   *   10 < expr and expr < 5
+   *
+   * The range of an expression can only be empty if it can never be
+   * executed. For example:
+   *
+   *   if (10 < x) {
+   *     if (x < 5) {
+   *       // Unreachable code
+   *       return x; // x has an empty range: 10 < x && x < 5
+   *     }
+   *   }
+   */
+  cached
+  predicate exprWithEmptyRange(Expr expr) {
+    analyzableExpr(expr) and
+    (not exists(lowerBound(expr)) or
+     not exists(upperBound(expr)) or
+     lowerBound(expr) > upperBound(expr))
+  }
 
-/**
- * Gets the upper bound of the expression.
- *
- * Note: expressions in C/C++ are often implicitly or explicitly cast to a
- * different result type. Such casts can cause the value of the expression
- * to overflow or to be truncated. This predicate computes the upper bound
- * of the expression without including the effect of the casts. To compute
- * the upper bound of the expression after all the casts have been applied,
- * call `upperBound` like this:
- *
- *    `upperBound(expr.getFullyConverted())`
- */
-cached
-float upperBound(Expr expr) {
-  // Combine the upper bounds returned by getTruncatedUpperBounds into a
-  // single maximum value.
-  result = max(float ub | ub = getTruncatedUpperBounds(expr) | ub)
-}
-
-/**
- * Holds if `expr` has a provably empty range. For example:
- *
- *   10 < expr and expr < 5
- *
- * The range of an expression can only be empty if it can never be
- * executed. For example:
- *
- *   if (10 < x) {
- *     if (x < 5) {
- *       // Unreachable code
- *       return x; // x has an empty range: 10 < x && x < 5
- *     }
- *   }
- */
-cached
-predicate exprWithEmptyRange(Expr expr) {
-  analyzableExpr(expr) and
-  (not exists(lowerBound(expr)) or
-   not exists(upperBound(expr)) or
-   lowerBound(expr) > upperBound(expr))
+  /** Holds if the definition might overflow negatively. */
+  cached
+  predicate defMightOverflowNegatively(RangeSsaDefinition def, LocalScopeVariable v) {
+    getDefLowerBoundsImpl(def, v) < varMinVal(v)
+  }
+  
+  /** Holds if the definition might overflow positively. */
+  cached
+  predicate defMightOverflowPositively(RangeSsaDefinition def, LocalScopeVariable v) {
+    getDefUpperBoundsImpl(def, v) > varMaxVal(v)
+  }
+  
+  /**
+   * Holds if the definition might overflow (either positively or
+   * negatively).
+   */
+  cached
+  predicate defMightOverflow(RangeSsaDefinition def, LocalScopeVariable v) {
+    defMightOverflowNegatively(def, v) or
+    defMightOverflowPositively(def, v)
+  }
 }
