@@ -120,12 +120,25 @@ module RangeAnalysis {
   }
 
   /**
+   * A 30-bit integer.
+   *
+   * Adding two such integers is guaranteed not to overflow. We simply omit constraints
+   * whose parameters would exceed this range.
+   */
+  private class Bias extends int {
+    bindingset[this]
+    Bias() {
+      -536870912 < this and this < 536870912
+    }
+  }
+
+  /**
    * Holds if `r` can be modelled as `r = root * sign + bias`.
    *
    * Only looks "one step", that is, does not follow data flow and does not recursively
    * unfold nested arithmetic expressions.
    */
-  private predicate linearDefinitionStep(DataFlow::Node r, DataFlow::Node root, int sign, int bias) {
+  private predicate linearDefinitionStep(DataFlow::Node r, DataFlow::Node root, int sign, Bias bias) {
     not exists(r.asExpr().getIntValue()) and
     (
       exists (AddExpr expr | r.asExpr() = expr |
@@ -183,7 +196,7 @@ module RangeAnalysis {
   /**
    * Holds if `r` can be modelled as `r = root * sign + bias`.
    */
-  predicate linearDefinition(DataFlow::Node r, DataFlow::Node root, int sign, int bias) {
+  predicate linearDefinition(DataFlow::Node r, DataFlow::Node root, int sign, Bias bias) {
     if hasUniquePredecessor(r) then
       linearDefinition(r.getAPredecessor(), root, sign, bias)
     else if linearDefinitionStep(r, _, _, _) then
@@ -202,7 +215,7 @@ module RangeAnalysis {
   /**
    * Holds if `r` can be modelled as `r = xroot * xsign + yroot * ysign + bias`.
    */
-  predicate linearDefinitionSum(DataFlow::Node r, DataFlow::Node xroot, int xsign, DataFlow::Node yroot, int ysign, int bias) {
+  predicate linearDefinitionSum(DataFlow::Node r, DataFlow::Node xroot, int xsign, DataFlow::Node yroot, int ysign, Bias bias) {
     if hasUniquePredecessor(r) then
       linearDefinitionSum(r.getAPredecessor(), xroot, xsign, yroot, ysign, bias)
     else if exists(r.asExpr().getIntValue()) then
@@ -225,7 +238,7 @@ module RangeAnalysis {
   /**
    * Holds if the given comparison can be modelled as `A <op> B + bias` where `<op>` is the comparison operator.
    */
-  predicate linearComparison(Comparison comparison, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, int bias) {
+  predicate linearComparison(Comparison comparison, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, Bias bias) {
     exists(Expr left, Expr right, int bias1, int bias2 | left = comparison.getLeftOperand() and right = comparison.getRightOperand() |
       // A <= B + c
       linearDefinition(left.flow(), a, asign, bias1) and
@@ -247,7 +260,7 @@ module RangeAnalysis {
   /**
    * Holds if `guard` asserts that the outcome of `A <op> B + bias` is true, where `<op>` is a comparison operator.
    */
-  predicate linearComparisonGuard(ConditionGuardNode guard, DataFlow::Node a, int asign, string operator, DataFlow::Node b, int bsign, int bias) {
+  predicate linearComparisonGuard(ConditionGuardNode guard, DataFlow::Node a, int asign, string operator, DataFlow::Node b, int bsign, Bias bias) {
     exists (Comparison compare | compare = getDefinition(guard.getTest().flow()).asExpr() |
       linearComparison(compare, a, asign, b, bsign, bias) and
       (
@@ -279,7 +292,7 @@ module RangeAnalysis {
    *
    * The dual constraint `-B <= -A + c` is not included in this predicate.
    */
-  predicate comparisonEdge(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, int bias, boolean sharp) {
+  predicate comparisonEdge(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, Bias bias, boolean sharp) {
     // A <= B + c
     linearComparisonGuard(cfg, a, asign, "<=", b, bsign, bias) and
     sharp = false
@@ -321,14 +334,14 @@ module RangeAnalysis {
   /**
    * Holds if `A <= B + c` can be determined based on a phi node.
    */
-  predicate phiEdge(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, int c) {
+  predicate phiEdge(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, Bias c) {
     exists (DataFlow::Node phi, DataFlow::Node left, DataFlow::Node right |
       binaryPhiNode(phi, left, right) and
       cfg = phi.getBasicBlock()
       |
       // Both inputs are defined in terms of the same root:
       //  phi = PHI(root + bias1, root + bias2)
-      exists (DataFlow::Node root, int sign, int bias1, int bias2 |
+      exists (DataFlow::Node root, int sign, Bias bias1, Bias bias2 |
         linearDefinition(left, root, sign, bias1) and
         linearDefinition(right, root, sign, bias2) and
         bias1 < bias2 and
@@ -348,7 +361,7 @@ module RangeAnalysis {
       or
       // One input is defined in terms of the phi node itself:
       //  phi = PHI(phi + increment, x)
-      exists (int increment, DataFlow::Node root, int sign, int bias |
+      exists (int increment, DataFlow::Node root, int sign, Bias bias |
         linearDefinition(left, phi, 1, increment) and
         linearDefinition(right, root, sign, bias) and
         (
@@ -378,8 +391,9 @@ module RangeAnalysis {
    *   A + A <= 2c  becomes  A <= -A + 2c
    *   A + A >= 2c  becomes  -A <= A - 2c
    */
-  predicate constantEdge(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, int c) {
+  predicate constantEdge(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, Bias c) {
     exists (NumberLiteral literal | cfg = literal |
+      literal.getIntValue() instanceof Bias and // avoid overflow
       a = literal.flow() and
       b = a and
       (asign = 1 or asign = -1) and
@@ -390,7 +404,7 @@ module RangeAnalysis {
   /**
    * The set of initial edges including those from dual constraints.
    */
-  private predicate seedEdge(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, int c, boolean sharp) {
+  predicate seedEdge(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, Bias c, boolean sharp) {
     // A <= B + c
     comparisonEdge(cfg, a, asign, b, bsign, c, sharp)
     or
@@ -399,7 +413,7 @@ module RangeAnalysis {
     constantEdge(cfg, a, asign, b, bsign, c) and sharp = false
   }
 
-  private predicate seedEdgeWithDual(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, int c, boolean sharp) {
+  private predicate seedEdgeWithDual(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, Bias c, boolean sharp) {
     // A <= B + c
     seedEdge(cfg, a, asign, b, bsign, c, sharp)
     or
@@ -452,10 +466,10 @@ module RangeAnalysis {
    *
    * This means negative-weight cycles (contradictions) can be detected using simple cycle detection.
    */
-  private predicate extendedEdge(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, int c, boolean sharp) {
+  private predicate extendedEdge(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, Bias c, boolean sharp) {
     seedEdgeWithDual(cfg, a, asign, b, bsign, c, sharp)
     or
-    exists (DataFlow::Node mid, int midx, ControlFlowNode cfg1, int c1, ControlFlowNode cfg2, int c2, boolean sharp1, boolean sharp2 |
+    exists (DataFlow::Node mid, int midx, ControlFlowNode cfg1, Bias c1, ControlFlowNode cfg2, Bias c2, boolean sharp1, boolean sharp2 |
       extendedEdge(cfg1, a, asign, mid, midx, c1, sharp1) and
       extendedEdge(cfg2, mid, midx, b, bsign, c2, sharp2) and
       sharp = sharp1.booleanOr(sharp2) and
