@@ -312,7 +312,7 @@ private predicate analyzableLocalScopeVariable(VariableAccess access) {
   strictcount (SsaDefinition def, Variable v | def.getAUse(v) = access | v) = 1 and
   count (SsaDefinition def, Variable v
   | def.getAUse(v) = access
-  | def.getDefiningValue(v)) <= 1 and
+  | def.getDefiningValue(v).getFullyConverted()) <= 1 and
   not analyzableConst(access)
 }
 
