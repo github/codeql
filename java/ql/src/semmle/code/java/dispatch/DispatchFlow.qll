@@ -96,7 +96,7 @@ private predicate dispatchOrigin(ClassInstanceExpr cie, MethodAccess ma, Method 
 }
 
 /** Holds if `t` is a type that is relevant for dispatch flow. */
-predicate relevant(RefType t) {
+private predicate relevant(RefType t) {
   exists(ClassInstanceExpr cie | dispatchOrigin(cie, _, _) and t = cie.getConstructedType().getSourceDeclaration()) or
   relevant(t.getErasure()) or
   exists(RefType r | relevant(r) and t = r.getASourceSupertype()) or
@@ -106,7 +106,7 @@ predicate relevant(RefType t) {
 }
 
 /** A node with a type that is relevant for dispatch flow. */
-class RelevantNode extends Node {
+private class RelevantNode extends Node {
   RelevantNode() { relevant(this.getType()) }
 }
 
