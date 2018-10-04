@@ -43,10 +43,10 @@ module ReflectedXss {
     }
   }
 
-  /** A source of remote user input, considered as a flow source for reflected XSS. */
-  class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() {
-      this.(RemoteFlowSource).isThirdPartyControllable()
+  /** A third-party controllable request input, considered as a flow source for reflected XSS. */
+  class ThirdPartyRequestInputAccessAsSource extends Source {
+    ThirdPartyRequestInputAccessAsSource() {
+      this.(HTTP::RequestInputAccess).isThirdPartyControllable()
     }
   }
 
