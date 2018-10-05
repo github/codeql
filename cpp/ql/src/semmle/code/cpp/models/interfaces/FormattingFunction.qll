@@ -21,10 +21,9 @@ private Type stripTopLevelSpecifiersOnly(Type t) {
  * A type that is used as a format string by any formatting function.
  */
 Type getAFormatterWideType() {
-  exists(FormattingFunction ff, Type t |
-    t = stripTopLevelSpecifiersOnly(ff.getDefaultCharType()) and
-    t.getSize() != 1 and
-    result.(PointerType).getBaseType() = t
+  exists(FormattingFunction ff |
+    result = stripTopLevelSpecifiersOnly(ff.getDefaultCharType()) and
+    result.getSize() != 1
   )
 }
 
@@ -33,9 +32,9 @@ Type getAFormatterWideType() {
  * there is none.
  */
 private Type getAFormatterWideTypeOrDefault() {
-  result = getAFormatterWideType().(PointerType).getBaseType() or
+  result = getAFormatterWideType() or
   (
-    not exists(getAFormatterWideType().(PointerType).getBaseType()) and
+    not exists(getAFormatterWideType()) and
     result instanceof Wchar_t
   )
 }
