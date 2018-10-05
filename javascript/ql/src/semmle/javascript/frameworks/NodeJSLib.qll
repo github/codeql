@@ -774,6 +774,10 @@ module NodeJSLib {
       result = url
     }
 
+    override DataFlow::Node getADataNode() {
+      none()
+    }
+
   }
 
   /**

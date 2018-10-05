@@ -9,6 +9,10 @@ import javascript
 
 /**
  * A call that performs a request to a URL.
+ *
+ * Example: An HTTP POST request is client request that sends some
+ * `data` to a `url`, where both the headers and the body of the request
+ * contribute to the `data`.
  */
 abstract class CustomClientRequest extends DataFlow::InvokeNode {
 
@@ -16,10 +20,20 @@ abstract class CustomClientRequest extends DataFlow::InvokeNode {
    * Gets the URL of the request.
    */
   abstract DataFlow::Node getUrl();
+
+  /**
+   * Gets a node that contributes to the data-part this request.
+   */
+  abstract DataFlow::Node getADataNode();
+
 }
 
 /**
  * A call that performs a request to a URL.
+ *
+ * Example: An HTTP POST request is client request that sends some
+ * `data` to a `url`, where both the headers and the body of the request
+ * contribute to the `data`.
  */
 class ClientRequest extends DataFlow::InvokeNode {
 
@@ -35,6 +49,14 @@ class ClientRequest extends DataFlow::InvokeNode {
   DataFlow::Node getUrl() {
     result = custom.getUrl()
   }
+
+  /**
+   * Gets a node that contributes to the data-part this request.
+   */
+  DataFlow::Node getADataNode() {
+    result = custom.getADataNode()
+  }
+
 }
 
 /**
@@ -83,6 +105,10 @@ private class RequestUrlRequest extends CustomClientRequest {
     result = url
   }
 
+  override DataFlow::Node getADataNode() {
+    none()
+  }
+
 }
 
 /**
@@ -111,6 +137,10 @@ private class AxiosUrlRequest extends CustomClientRequest {
 
   override DataFlow::Node getUrl() {
     result = url
+  }
+
+  override DataFlow::Node getADataNode() {
+    none()
   }
 
 }
@@ -144,6 +174,10 @@ private class FetchUrlRequest extends CustomClientRequest {
     result = url
   }
 
+  override DataFlow::Node getADataNode() {
+    none()
+  }
+
 }
 
 /**
@@ -169,6 +203,10 @@ private class GotUrlRequest extends CustomClientRequest {
     result = url
   }
 
+  override DataFlow::Node getADataNode() {
+    none()
+  }
+
 }
 
 /**
@@ -189,6 +227,10 @@ private class SuperAgentUrlRequest extends CustomClientRequest {
 
   override DataFlow::Node getUrl() {
     result = url
+  }
+
+  override DataFlow::Node getADataNode() {
+    none()
   }
 
 }
