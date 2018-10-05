@@ -503,72 +503,34 @@ module NodeJSLib {
   }
 
   /**
-   * A call to read corresponds to a pattern where file stream is open first with createReadStream, followed by 'read' call
+   * A read from the file system using a stream.
    */
-   private class NodeJSFileSystemRead extends FileSystemReadAccess, DataFlow::CallNode {
+  private class FileStreamRead extends FileSystemReadAccess, DataFlow::CallNode {
 
-      NodeJSFileSystemAccessCall init;
+    NodeJSFileSystemAccessCall stream;
 
-      NodeJSFileSystemRead() {
-        exists (NodeJSFileSystemAccessCall n | 
-            n.getCalleeName() = "createReadStream" and init = n |
-            this = n.getAMemberCall("read")
-        )
-      }
+    string method;
 
-      override DataFlow::Node getADataNode() {
-        result = this
-      }
-
-      override DataFlow::Node getAPathArgument() {
-          result = init.getAPathArgument()
-      }
-   }
-
-   /**
-   * A call to read corresponds to a pattern where file stream is open first with createReadStream, followed by 'pipe' call
-   */
-   private class NodeJSFileSystemPipe extends FileSystemReadAccess, DataFlow::CallNode {
-
-      NodeJSFileSystemAccessCall init;
-
-      NodeJSFileSystemPipe() {
-        exists (NodeJSFileSystemAccessCall n | 
-            n.getCalleeName() = "createReadStream" and init = n |
-            this = n.getAMemberCall("pipe")
-        )
-      }
-
-      override DataFlow::Node getADataNode() {
-        result = this.getArgument(0)
-      }
-
-      override DataFlow::Node getAPathArgument() {
-          result = init.getAPathArgument()
-      }
-   }
-   
-  /** 
-   * An 'on' event where data comes in as a parameter (usage: readstream.on('data', chunk)) 
-   */
-  private class NodeJSFileSystemReadDataEvent extends FileSystemReadAccess, DataFlow::CallNode {
-
-    NodeJSFileSystemAccessCall init;
-
-    NodeJSFileSystemReadDataEvent() {
-      exists(NodeJSFileSystemAccessCall n |
-        n.getCalleeName() = "createReadStream" and init = n |
-        this = n.getAMethodCall("on") and
-        this.getArgument(0).mayHaveStringValue("data")
-      )
+    FileStreamRead() {
+      stream.getMethodName() = "createReadStream" and
+      this = stream.getAMemberCall(method) and
+      (method = "read" or method = "pipe" or method = "on")
     }
 
     override DataFlow::Node getADataNode() {
-        result = this.getCallback(1).getParameter(0)
+      method = "read" and
+      result = this
+      or
+      method = "pipe" and
+      result = getArgument(0)
+      or
+      method = "on" and
+      getArgument(0).mayHaveStringValue("data") and
+      result = getCallback(1).getParameter(0)
     }
-    
+
     override DataFlow::Node getAPathArgument() {
-      result = init.getAPathArgument()
+      result = stream.getAPathArgument()
     }
   }
 
