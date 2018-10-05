@@ -478,29 +478,30 @@ module NodeJSLib {
   }
   
   /**
-   * A call to write corresponds to a pattern where file stream is open first with 'createWriteStream', followed by 'write' or 'end' call
+   * A write to the file system using a stream.
    */
-   private class NodeJSFileSystemWrite extends FileSystemWriteAccess, DataFlow::CallNode {
+  private class FileStreamWrite extends FileSystemWriteAccess, DataFlow::CallNode {
 
-      NodeJSFileSystemAccessCall init;
+    NodeJSFileSystemAccessCall stream;
 
-      NodeJSFileSystemWrite() {
-        exists (NodeJSFileSystemAccessCall n |
-            n.getCalleeName() = "createWriteStream" and init = n |
-            this = n.getAMemberCall("write") or 
-            this = n.getAMemberCall("end")
-        )
-      }
-      
-      override DataFlow::Node getADataNode() {
-          result = this.getArgument(0)
-      } 
+    FileStreamWrite() {
+      stream.getMethodName() = "createWriteStream" and
+      exists (string method |
+        method = "write" or
+        method = "end" |
+        this = stream.getAMemberCall(method)
+      )
+    }
 
-      override DataFlow::Node getAPathArgument() {
-          result = init.getAPathArgument()
-      }
-   }
-  
+    override DataFlow::Node getADataNode() {
+      result = getArgument(0)
+    }
+
+    override DataFlow::Node getAPathArgument() {
+      result = stream.getAPathArgument()
+    }
+  }
+
   /**
    * A call to read corresponds to a pattern where file stream is open first with createReadStream, followed by 'read' call
    */
