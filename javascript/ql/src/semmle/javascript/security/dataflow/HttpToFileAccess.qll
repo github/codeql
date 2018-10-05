@@ -49,7 +49,7 @@ module HttpToFileAccessFlow {
   class FileAccessAsSink extends Sink {
     FileAccessAsSink () {
       exists(FileSystemWriteAccess src |
-        this = src.getDataNode()
+        this = src.getADataNode()
       )
     }
   }

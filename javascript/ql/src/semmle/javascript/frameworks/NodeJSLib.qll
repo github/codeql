@@ -416,26 +416,6 @@ module NodeJSLib {
         result = methodName
     }
 
-    override DataFlow::Node getDataNode() {
-      (
-        methodName = "readFileSync" and 
-        result = this
-      ) 
-      or
-      exists (int i, string paramName | fsDataParam(methodName, i, paramName) |
-      (
-        paramName = "callback" and
-        exists (DataFlow::ParameterNode p, string n | 
-          p = getCallback(i).getAParameter() and
-          n = p.getName().toLowerCase() and
-          result = p |
-          n = "data" or n = "buffer" or n = "string"
-        )
-      ) 
-      or
-        result = getArgument(i))
-    }
-
     override DataFlow::Node getAPathArgument() {
       exists (int i | fsFileParam(methodName, i) | 
         result = getArgument(i))
@@ -444,24 +424,57 @@ module NodeJSLib {
 
   /** Only NodeJSSystemFileAccessCalls that write data to 'fs' */
   private class NodeJSFileSystemAccessWriteCall extends FileSystemWriteAccess, NodeJSFileSystemAccessCall {
-      NodeJSFileSystemAccessWriteCall () {
-          this.getMethodName() = "appendFile" or
-          this.getMethodName() = "appendFileSync" or
-          this.getMethodName() = "write" or
-          this.getMethodName() = "writeFile" or
-          this.getMethodName() = "writeFileSync" or
-          this.getMethodName() = "writeSync"
-      }
+    NodeJSFileSystemAccessWriteCall () {
+      this.getMethodName() = "appendFile" or
+      this.getMethodName() = "appendFileSync" or
+      this.getMethodName() = "write" or
+      this.getMethodName() = "writeFile" or
+      this.getMethodName() = "writeFileSync" or
+      this.getMethodName() = "writeSync"
+    }
+
+    override DataFlow::Node getADataNode() {
+      exists (int i, string paramName |
+        fsDataParam(methodName, i, paramName) |
+        if paramName = "callback" then
+          exists (DataFlow::ParameterNode p |
+            p = getCallback(i).getAParameter() and
+            p.getName().regexpMatch("(?i)data|buffer|string") and
+            result = p
+          )
+        else
+          result = getArgument(i)
+      )
+    }
+
   }
 
   /** Only NodeJSSystemFileAccessCalls that read data from 'fs' */
   private class NodeJSFileSystemAccessReadCall extends FileSystemReadAccess, NodeJSFileSystemAccessCall {
-      NodeJSFileSystemAccessReadCall () {
-          this.getMethodName() = "read" or
-          this.getMethodName() = "readSync" or
-          this.getMethodName() = "readFile" or
-          this.getMethodName() = "readFileSync" 
-      }
+    NodeJSFileSystemAccessReadCall () {
+      this.getMethodName() = "read" or
+      this.getMethodName() = "readSync" or
+      this.getMethodName() = "readFile" or
+      this.getMethodName() = "readFileSync"
+    }
+
+    override DataFlow::Node getADataNode() {
+      if methodName.regexpMatch(".*Sync") then
+        result = this
+      else
+        exists (int i, string paramName |
+          fsDataParam(methodName, i, paramName) |
+          if paramName = "callback" then
+            exists (DataFlow::ParameterNode p |
+              p = getCallback(i).getAParameter() and
+              p.getName().regexpMatch("(?i)data|buffer|string") and
+              result = p
+            )
+          else
+            result = getArgument(i)
+        )
+    }
+
   }
   
   /**
@@ -479,7 +492,7 @@ module NodeJSLib {
         )
       }
       
-      override DataFlow::Node getDataNode() {
+      override DataFlow::Node getADataNode() {
           result = this.getArgument(0)
       } 
 
@@ -502,7 +515,7 @@ module NodeJSLib {
         )
       }
 
-      override DataFlow::Node getDataNode() {
+      override DataFlow::Node getADataNode() {
         result = this
       }
 
@@ -525,7 +538,7 @@ module NodeJSLib {
         )
       }
 
-      override DataFlow::Node getDataNode() {
+      override DataFlow::Node getADataNode() {
         result = this.getArgument(0)
       }
 
@@ -549,7 +562,7 @@ module NodeJSLib {
       )
     }
 
-    override DataFlow::Node getDataNode() {
+    override DataFlow::Node getADataNode() {
         result = this.getCallback(1).getParameter(0)
     }
     

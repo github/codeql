@@ -57,7 +57,7 @@ module FileAccessToHttpDataFlow {
   private class FileAccessArgumentAsSource extends Source {
     FileAccessArgumentAsSource() {  
       exists(FileSystemReadAccess src |
-        this = src.getDataNode().getALocalSource()
+        this = src.getADataNode().getALocalSource()
       )
     }
   }
