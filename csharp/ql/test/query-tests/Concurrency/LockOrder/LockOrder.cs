@@ -2,30 +2,29 @@ using System;
 
 class LocalTest
 {
+    // BAD: b is flagged.
     Object a, b, c;
 
     void F()
     {
-        // BAD: Flagged in G().
         lock (a) lock (b) lock(c) { }
     }
     
     void G()
     {
-        // BAD: Inconsistent with F().
         lock (a) lock (c) lock(b) { }
     }  
 
     void H()
     {
-        // GOOD: Consistent with F() and G().
         lock (a) lock(c) { }
     }
 }
 
 class GlobalTest
 {
-    Object a, b, c;
+    // BAD: b is flagged.
+    static Object a, b, c;
 
     void F()
     {
@@ -40,25 +39,24 @@ class GlobalTest
     
     void H()
     {
-        // BAD: Inconsistent with I().
         lock (c) { }
     }
     
     void I()
     {
-        // BAD: Flagged in H().
         lock (b) { }
     }
 }
 
 class LambdaTest
 {
-    Object a, b;
+    // BAD: a is flagged.
+    static Object a, b;
     
     void F()
     {
-        Action lock_a = () => { lock(a) { } };  // BAD: Inconsistent with lock_b.
-        Action lock_b = () => { lock(b) { } };  // BAD: Flagged in lock_a.
+        Action lock_a = () => { lock(a) { } };
+        Action lock_b = () => { lock(b) { } };
       
         lock(a) lock_b();
         lock(b) lock_a();
