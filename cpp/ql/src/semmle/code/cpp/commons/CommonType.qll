@@ -80,6 +80,10 @@ class Uintmax_t extends Type {
 
 /**
  * The C/C++ wchar_t type.
+ *
+ * Note that on some platforms `wchar_t` doesn't exist as a built-in
+ * type but a typedef is provided.  This QL class includes both cases
+ * (see also `WideCharType`).
  */
 class Wchar_t extends Type {
   Wchar_t() {
