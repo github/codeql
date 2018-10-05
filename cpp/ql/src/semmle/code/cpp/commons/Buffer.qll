@@ -48,6 +48,7 @@ predicate memberMayBeVarSize(Class c, MemberVariable v) {
 /**
  * Get the size in bytes of the buffer pointed to by an expression (if this can be determined). 
  */
+language[monotonicAggregates]
 int getBufferSize(Expr bufferExpr, Element why) {
   exists(Variable bufferVar | bufferVar = bufferExpr.(VariableAccess).getTarget() |
     (
@@ -82,16 +83,19 @@ int getBufferSize(Expr bufferExpr, Element why) {
     why = bufferExpr
   ) or (
     // dataflow (all sources must be the same size)
-    forex(Expr def |
+    result = min(Expr def |
       DataFlow::localFlowStep(DataFlow::exprNode(def), DataFlow::exprNode(bufferExpr)) |
-      result = getBufferSize(def, _)
+      getBufferSize(def, _)
+    ) and result = max(Expr def |
+      DataFlow::localFlowStep(DataFlow::exprNode(def), DataFlow::exprNode(bufferExpr)) |
+      getBufferSize(def, _)
     ) and
 
     // find reason
     exists(Expr def |
       DataFlow::localFlowStep(DataFlow::exprNode(def), DataFlow::exprNode(bufferExpr)) |
       why = def or
-      result = getBufferSize(def, why)
+      exists(getBufferSize(def, why))
     )
   ) or exists(Type bufferType |
     // buffer is the address of a variable
