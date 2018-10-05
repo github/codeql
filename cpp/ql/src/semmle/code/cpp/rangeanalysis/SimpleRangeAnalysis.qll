@@ -407,27 +407,6 @@ deprecated predicate negative_overflow(Expr expr) {
   exprMightOverflowNegatively(expr)
 }
 
-/**
- * Holds if the expression might overflow negatively. This predicate
- * does not consider the possibility that the expression might overflow
- * due to a conversion.
- */
-cached
-predicate exprMightOverflowNegatively(Expr expr) {
-  getLowerBoundsImpl(expr) < exprMinVal(expr)
-}
-
-/**
- * Holds if the expression might overflow negatively. Conversions
- * are also taken into account. For example the expression
- * `(int16)(x+y)` might overflow due to the `(int16)` cast, rather than
- * due to the addition.
- */
-cached
-predicate convertedExprMightOverflowNegatively(Expr expr) {
-  exprMightOverflowNegatively(expr) or
-  convertedExprMightOverflowNegatively(expr.getConversion())
-}
 
 /**
  * Holds if the expression might overflow positively. This predicate
@@ -438,39 +417,6 @@ predicate convertedExprMightOverflowNegatively(Expr expr) {
  */
 deprecated predicate positive_overflow(Expr expr) {
   exprMightOverflowPositively(expr)
-}
-
-/**
- * Holds if the expression might overflow positively. This predicate
- * does not consider the possibility that the expression might overflow
- * due to a conversion.
- */
-cached
-predicate exprMightOverflowPositively(Expr expr) {
-  getUpperBoundsImpl(expr) > exprMaxVal(expr)
-}
-
-/**
- * Holds if the expression might overflow positively. Conversions
- * are also taken into account. For example the expression
- * `(int16)(x+y)` might overflow due to the `(int16)` cast, rather than
- * due to the addition.
- */
-cached
-predicate convertedExprMightOverflowPositively(Expr expr) {
-  exprMightOverflowPositively(expr) or
-  convertedExprMightOverflowPositively(expr.getConversion())
-}
-
-/**
- * Holds if the expression might overflow (either positively or
- * negatively). The possibility that the expression might overflow
- * due to an implicit or explicit cast is also considered.
- */
-cached
-predicate convertedExprMightOverflow(Expr expr) {
-  convertedExprMightOverflowNegatively(expr) or
-  convertedExprMightOverflowPositively(expr)
 }
 
 /** Only to be called by `getTruncatedLowerBounds`. */
@@ -1194,5 +1140,60 @@ private cached module SimpleRangeAnalysisCached {
   predicate defMightOverflow(RangeSsaDefinition def, LocalScopeVariable v) {
     defMightOverflowNegatively(def, v) or
     defMightOverflowPositively(def, v)
+  }
+  
+  /**
+   * Holds if the expression might overflow negatively. This predicate
+   * does not consider the possibility that the expression might overflow
+   * due to a conversion.
+   */
+  cached
+  predicate exprMightOverflowNegatively(Expr expr) {
+    getLowerBoundsImpl(expr) < exprMinVal(expr)
+  }
+  
+  /**
+   * Holds if the expression might overflow negatively. Conversions
+   * are also taken into account. For example the expression
+   * `(int16)(x+y)` might overflow due to the `(int16)` cast, rather than
+   * due to the addition.
+   */
+  cached
+  predicate convertedExprMightOverflowNegatively(Expr expr) {
+    exprMightOverflowNegatively(expr) or
+    convertedExprMightOverflowNegatively(expr.getConversion())
+  }
+  
+    /**
+   * Holds if the expression might overflow positively. This predicate
+   * does not consider the possibility that the expression might overflow
+   * due to a conversion.
+   */
+  cached
+  predicate exprMightOverflowPositively(Expr expr) {
+    getUpperBoundsImpl(expr) > exprMaxVal(expr)
+  }
+  
+  /**
+   * Holds if the expression might overflow positively. Conversions
+   * are also taken into account. For example the expression
+   * `(int16)(x+y)` might overflow due to the `(int16)` cast, rather than
+   * due to the addition.
+   */
+  cached
+  predicate convertedExprMightOverflowPositively(Expr expr) {
+    exprMightOverflowPositively(expr) or
+    convertedExprMightOverflowPositively(expr.getConversion())
+  }
+  
+  /**
+   * Holds if the expression might overflow (either positively or
+   * negatively). The possibility that the expression might overflow
+   * due to an implicit or explicit cast is also considered.
+   */
+  cached
+  predicate convertedExprMightOverflow(Expr expr) {
+    convertedExprMightOverflowNegatively(expr) or
+    convertedExprMightOverflowPositively(expr)
   }
 }
