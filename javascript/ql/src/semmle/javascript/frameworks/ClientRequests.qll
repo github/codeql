@@ -106,7 +106,7 @@ private class RequestUrlRequest extends CustomClientRequest {
   }
 
   override DataFlow::Node getADataNode() {
-    none()
+    result = getArgument(1)
   }
 
 }

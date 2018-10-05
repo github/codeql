@@ -62,10 +62,15 @@ module FileAccessToHttpDataFlow {
     }
   }
 
-  /** Sink is any parameter or argument that evaluates to a parameter ot a function or call that sets Http Body on a request */ 
-  private class HttpRequestBodyAsSink extends Sink {
-    HttpRequestBodyAsSink () {
-      this instanceof HTTP::RequestBody
+  /**
+   * The URL or data of a client request, viewed as a sink.
+   */
+  private class ClientRequestUrlOrDataAsSink extends Sink {
+    ClientRequestUrlOrDataAsSink () {
+      exists (ClientRequest req |
+        this = req.getUrl() or
+        this = req.getADataNode()
+      )
     }
   }
 }

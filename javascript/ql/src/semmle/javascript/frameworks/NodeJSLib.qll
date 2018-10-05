@@ -775,7 +775,7 @@ module NodeJSLib {
     }
 
     override DataFlow::Node getADataNode() {
-      none()
+      result = getAMethodCall("write").getArgument(0)
     }
 
   }
@@ -809,18 +809,6 @@ module NodeJSLib {
 
     override string getSourceType() {
       result = "http.request data parameter"
-    }
-  }
-  
-  /**
-   * An argument to client request.write () method, can be used to write body to a HTTP or HTTPS POST/PUT request, 
-   * or request option (like headers, cookies, even url) 
-   */
-  class HttpRequestWriteArgument extends HTTP::RequestBody, DataFlow::Node {
-    HttpRequestWriteArgument () {
-      exists(CustomClientRequest req |
-        this = req.getAMethodCall("write").getArgument(0) or
-        this = req.getArgument(0))
     }
   }
 
