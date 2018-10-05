@@ -203,7 +203,7 @@ class Syslog extends FormattingFunction {
     this instanceof TopLevelFunction and (
       hasGlobalName("syslog")
     ) and
-    not hasDefinition()
+    not exists(getDefinition().getFile().getRelativePath())
   }
 
   override int getFormatParameterIndex() { result=1 }
