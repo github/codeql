@@ -425,12 +425,12 @@ module NodeJSLib {
   /** Only NodeJSSystemFileAccessCalls that write data to 'fs' */
   private class NodeJSFileSystemAccessWriteCall extends FileSystemWriteAccess, NodeJSFileSystemAccessCall {
     NodeJSFileSystemAccessWriteCall () {
-      this.getMethodName() = "appendFile" or
-      this.getMethodName() = "appendFileSync" or
-      this.getMethodName() = "write" or
-      this.getMethodName() = "writeFile" or
-      this.getMethodName() = "writeFileSync" or
-      this.getMethodName() = "writeSync"
+      methodName = "appendFile" or
+      methodName = "appendFileSync" or
+      methodName = "write" or
+      methodName = "writeFile" or
+      methodName = "writeFileSync" or
+      methodName = "writeSync"
     }
 
     override DataFlow::Node getADataNode() {
@@ -452,10 +452,10 @@ module NodeJSLib {
   /** Only NodeJSSystemFileAccessCalls that read data from 'fs' */
   private class NodeJSFileSystemAccessReadCall extends FileSystemReadAccess, NodeJSFileSystemAccessCall {
     NodeJSFileSystemAccessReadCall () {
-      this.getMethodName() = "read" or
-      this.getMethodName() = "readSync" or
-      this.getMethodName() = "readFile" or
-      this.getMethodName() = "readFileSync"
+      methodName = "read" or
+      methodName = "readSync" or
+      methodName = "readFile" or
+      methodName = "readFileSync"
     }
 
     override DataFlow::Node getADataNode() {
