@@ -13,31 +13,52 @@
 
 import csharp
 
+/**
+ * Find a call target conservatively only when there is
+ * a static target or one runtime target.
+ */
+Callable getCallTarget(Call c) {
+  if count(c.getARuntimeTarget()) = 1 then
+    result = c.getARuntimeTarget()
+  else
+    result = c.getTarget()
+}
+
+/** Find any lock statement reachable from a callable. */
 LockStmt getAReachableLockStmt(Callable callable) {
   result.getEnclosingCallable() = callable
   or
-  exists(Call c | c.getEnclosingCallable() = callable |
-    result = getAReachableLockStmt(c.getARuntimeTarget())
+  exists(Call call | call.getEnclosingCallable() = callable |
+    result = getAReachableLockStmt(getCallTarget(call))
   )
 }
 
-predicate nestedLocks(LockStmt outer, LockStmt inner) {
-  inner = outer.getALockedStmt()
-  or
-  exists(Call call | call.getEnclosingStmt() = outer.getALockedStmt() |
-    inner = getAReachableLockStmt(call.getARuntimeTarget())
+/**
+ * Finds nested pairs of lock statements, either
+ * inter-procedurally or intra-procedurally.
+ */
+predicate nestedLocks(Variable outerVariable, Variable innerVariable, LockStmt outer, LockStmt inner) {
+  outerVariable = outer.getLockVariable() and
+  innerVariable = inner.getLockVariable() and
+  outerVariable != innerVariable and (
+    inner = outer.getALockedStmt()
+    or
+    exists(Call call | call.getEnclosingStmt() = outer.getALockedStmt() |
+      inner = getAReachableLockStmt(getCallTarget(call))
+    ) and
+    outerVariable.(Modifiable).isStatic() and
+    innerVariable.(Modifiable).isStatic()
   )
 }
 
 from LockStmt outer1, LockStmt inner1, LockStmt outer2, LockStmt inner2, Variable v1, Variable v2
 where
-  nestedLocks(outer1, inner1) and
-  nestedLocks(outer2, inner2) and
-  outer1.getLockVariable() = v1 and
-  inner1.getLockVariable() = v2 and
-  outer2.getLockVariable() = v2 and
-  inner2.getLockVariable() = v1 and
-  v1 != v2 and
+  nestedLocks(v1, v2, outer1, inner1) and
+  nestedLocks(v2, v1, outer2, inner2) and
   v1.getName() <= v2.getName()
-select inner2, "Inconsistent lock sequence. The locks " + v1 + " and " + v2 + " are locked in a different sequence $@.",
-  inner1, "here"
+select v1, "Inconsistent lock sequence with $@. Lock sequences $@, $@ and $@, $@ found.",
+  v2, v2.getName(),
+  outer1, v1.getName(),
+  inner1, v2.getName(),
+  outer2, v2.getName(),
+  inner2, v1.getName()
