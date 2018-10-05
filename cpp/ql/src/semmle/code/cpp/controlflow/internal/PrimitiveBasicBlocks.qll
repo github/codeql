@@ -66,8 +66,14 @@ private cached module Cached {
   /** Holds if `node` is the `pos`th control-flow node in primitive basic block `bb`. */
   cached
   predicate primitive_basic_block_member(Node node, PrimitiveBasicBlock bb, int pos) {
-    pos = getMemberIndex(node) and
-    member_step*(bb, node)
+    primitive_basic_block_entry_node(bb) and
+    (
+      pos = 0 and
+      node = bb
+      or
+      pos = getMemberIndex(node) and
+      member_step+(bb, node)
+    )
   }
 
   /** Gets the number of control-flow nodes in the primitive basic block `bb`. */
