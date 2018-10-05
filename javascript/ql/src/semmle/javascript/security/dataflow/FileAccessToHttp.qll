@@ -1,30 +1,33 @@
-/** 
- * Provides Taint tracking configuration for reasoning about file access taint flow to http post body 
+/**
+ * Provides a taint tracking configuration for reasoning about file data in outbound remote requests.
  */
 import javascript
-import semmle.javascript.frameworks.HTTP
+import semmle.javascript.security.dataflow.RemoteFlowSources
 
-module FileAccessToHttpDataFlow {
+module FileAccessToHttp {
+
   /**
-   * A data flow source for reasoning about file access to http post body flow vulnerabilities.
+   * A data flow source for file data in outbound remote requests.
    */
   abstract class Source extends DataFlow::Node { }
 
   /**
-   * A data flow sink for reasoning about file access to http post body flow vulnerabilities.
+   * A data flow sink for file data in outbound remote requests.
    */
   abstract class Sink extends DataFlow::Node { }
 
   /**
-   * A sanitizer for reasoning about file access to http post body flow vulnerabilities.
+   * A sanitizer for file data in outbound remote requests.
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * A taint-tracking configuration for reasoning about file access to http post body flow vulnerabilities.
+   * A taint tracking configuration for file data in outbound remote requests.
    */
   class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "FileAccessToHttpDataFlow" }
+    Configuration() {
+      this = "FileAccessToHttp"
+    }
 
     override predicate isSource(DataFlow::Node source) {
       source instanceof Source
@@ -38,7 +41,7 @@ module FileAccessToHttpDataFlow {
       super.isSanitizer(node) or
       node instanceof Sanitizer
     }
-    
+
     /** additional taint step that taints an object wrapping a source */
     override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
       (
@@ -53,7 +56,9 @@ module FileAccessToHttpDataFlow {
     }
   }
 
-  /** A source is a file access parameter, as in readFromFile(buffer). */
+  /**
+   * A file access parameter, considered as a flow source for file data in outbound remote requests.
+   */
   private class FileAccessArgumentAsSource extends Source {
     FileAccessArgumentAsSource() {  
       exists(FileSystemReadAccess src |
@@ -63,7 +68,7 @@ module FileAccessToHttpDataFlow {
   }
 
   /**
-   * The URL or data of a client request, viewed as a sink.
+   * The URL or data of a client request, considered as a flow source for file data in outbound remote requests.
    */
   private class ClientRequestUrlOrDataAsSink extends Sink {
     ClientRequestUrlOrDataAsSink () {
