@@ -31,8 +31,11 @@ private cached module Cached {
     // or the node's predecessor has more than one successor,
     // then the node is the start of a new primitive basic block.
     or
-    strictcount (Node pred, Node other
-    | successors_extended(pred,node) and successors_extended(pred,other)) > 1
+    strictcount(Node pred | successors_extended(pred, node)) > 1
+    or
+    exists(ControlFlowNode pred | successors_extended(pred, node) |
+      strictcount(ControlFlowNode other | successors_extended(pred, other)) > 1
+    )
 
     // If the node has zero predecessors then it is the start of
     // a BB. However, the C++ AST contains many nodes with zero
