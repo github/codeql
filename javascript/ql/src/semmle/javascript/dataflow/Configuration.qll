@@ -284,6 +284,18 @@ abstract class AdditionalSink extends DataFlow::Node {
 }
 
 /**
+ * An invocation that is modeled as a partial function application.
+ *
+ * This contributes additional argument-passing flow edges that should be added to all data flow configurations.
+ */
+cached abstract class AdditionalPartialInvokeNode extends DataFlow::InvokeNode {
+  /**
+   * Holds if `argument` is passed as argument `index` to the function in `callback`.
+   */
+  cached abstract predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index);
+}
+
+/**
  * Additional flow step to model flow from import specifiers into the SSA variable
  * corresponding to the imported variable.
  */
@@ -296,6 +308,37 @@ private class FlowStepThroughImport extends AdditionalFlowStep, DataFlow::ValueN
       ssa.getDef() = astNode and
       succ = DataFlow::ssaDefinitionNode(ssa)
     )
+  }
+}
+
+/**
+ * A partial call through the built-in `Function.prototype.bind`.
+ */
+private class BindPartialCall extends AdditionalPartialInvokeNode, DataFlow::MethodCallNode {
+  BindPartialCall() {
+    getMethodName() = "bind"
+  }
+
+  override predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) {
+    callback = getReceiver() and
+    argument = getArgument(index + 1)
+  }
+}
+
+/**
+ * A partial call through `_.partial` or a function with a similar interface.
+ */
+private class LibraryPartialCall extends AdditionalPartialInvokeNode {
+  LibraryPartialCall() {
+    this = LodashUnderscore::member("partial").getACall() or
+    this = DataFlow::moduleMember("ramda", "partial").getACall()
+  }
+
+  override predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) {
+    callback = getArgument(0) and
+    exists (DataFlow::ArrayLiteralNode array |
+      array.flowsTo(getArgument(1)) and
+      argument = array.getElement(index))
   }
 }
 
@@ -395,16 +438,18 @@ private predicate isRelevant(DataFlow::Node nd, DataFlow::Configuration cfg) {
  * either `pred` is an argument of `f` and `succ` the corresponding parameter, or
  * `pred` is a variable definition whose value is captured by `f` at `succ`.
  */
+pragma[noopt]
 private predicate callInputStep(Function f, DataFlow::Node invk,
                                 DataFlow::Node pred, DataFlow::Node succ,
                                 DataFlow::Configuration cfg) {
-  isRelevant(pred, cfg) and
   (
+   isRelevant(pred, cfg) and
    exists (Parameter parm |
      argumentPassing(invk, pred, f, parm) and
      succ = DataFlow::parameterNode(parm)
    )
    or
+   isRelevant(pred, cfg) and
    exists (SsaDefinition prevDef, SsaDefinition def |
      pred = DataFlow::ssaDefinitionNode(prevDef) and
      calls(invk, f) and captures(f, prevDef, def) and
@@ -445,6 +490,7 @@ private predicate flowThroughCall(DataFlow::Node input, DataFlow::Node invk,
                                   DataFlow::Configuration cfg, boolean valuePreserving) {
   exists (Function f, DataFlow::ValueNode ret |
     ret.asExpr() = f.getAReturnedExpr() and
+    calls(invk, f) and // Do not consider partial calls
     reachableFromInput(f, invk, input, ret, cfg, PathSummary::level(valuePreserving))
   )
 }

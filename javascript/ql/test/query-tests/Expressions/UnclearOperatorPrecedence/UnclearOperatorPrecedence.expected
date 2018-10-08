@@ -1,0 +1,3 @@
+| tst.js:1:9:1:17 | 0x0A != 0 | The '!=' operator binds more tightly than '&', which may not be obvious in this case. |
+| tst.js:6:1:6:7 | x !== y | The '!==' operator binds more tightly than '&', which may not be obvious in this case. |
+| tst.js:10:3:10:6 | b==c | The '==' operator binds more tightly than '&', which may not be obvious in this case. |

@@ -307,7 +307,7 @@ class ArrayLiteralNode extends DataFlow::ValueNode, DataFlow::DefaultSourceNode 
 /** A data flow node corresponding to a `new Array()` or `Array()` invocation. */
 class ArrayConstructorInvokeNode extends DataFlow::InvokeNode {
   ArrayConstructorInvokeNode() {
-    getCallee() = DataFlow::globalVarRef("Array")
+    getCalleeNode() = DataFlow::globalVarRef("Array")
   }
 
   /** Gets the `i`th initial element of this array, if one is provided. */

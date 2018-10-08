@@ -121,13 +121,6 @@ module Hapi {
           this.asExpr().(PropAccess).accesses(url, "path")
         )
         or
-        exists (PropAccess headers |
-          // `request.headers.<name>`
-          kind = "header" and
-          headers.accesses(request, "headers")  and
-          this.asExpr().(PropAccess).accesses(headers, _)
-        )
-        or
         exists (PropAccess state |
           // `request.state.<name>`
           kind = "cookie" and
@@ -135,6 +128,10 @@ module Hapi {
           this.asExpr().(PropAccess).accesses(state, _)
         )
       )
+      or
+      exists (RequestHeaderAccess access | this = access |
+        rh = access.getRouteHandler() and
+        kind = "header")
     }
 
     override RouteHandler getRouteHandler() {
@@ -143,6 +140,35 @@ module Hapi {
 
     override string getKind() {
       result = kind
+    }
+  }
+
+  /**
+   * An access to an HTTP header on a Hapi request.
+   */
+  private class RequestHeaderAccess extends HTTP::RequestHeaderAccess {
+    RouteHandler rh;
+
+    RequestHeaderAccess() {
+      exists (Expr request | request = rh.getARequestExpr() |
+        exists (PropAccess headers |
+          // `request.headers.<name>`
+          headers.accesses(request, "headers")  and
+          this.asExpr().(PropAccess).accesses(headers, _)
+        )
+      )
+    }
+
+    override string getAHeaderName() {
+      result = this.(DataFlow::PropRead).getPropertyName().toLowerCase()
+    }
+
+    override RouteHandler getRouteHandler() {
+      result = rh
+    }
+
+    override string getKind() {
+      result = "header"
     }
   }
 

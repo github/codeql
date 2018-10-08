@@ -22,13 +22,15 @@ import UnsignedGEZero
 // #define PRINTMSG(val,msg) { if (val >= PRINTLEVEL) printf(msg); }
 //
 // So to reduce the number of false positives, we do not report a result if
-// the comparison is in a macro expansion.
+// the comparison is in a macro expansion. Similarly for template
+// instantiations.
 from
   ComparisonOperation cmp, SmallSide ss,
   float left, float right, boolean value,
   string reason
 where
   not cmp.isInMacroExpansion() and
+  not cmp.isFromTemplateInstantiation(_) and
   reachablePointlessComparison(cmp, left, right, value, ss) and
 
   // a comparison between an enum and zero is always valid because whether
