@@ -12,7 +12,6 @@ abstract class RemoteFlowSource extends DataFlow::Node {
   abstract string getSourceType();
 }
 
-
 /**
  * An access to `document.cookie`, viewed as a source of remote user input.
  */

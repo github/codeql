@@ -90,9 +90,11 @@ module ServerSideUrlRedirect {
 
   }
 
-  /** A source of remote user input, considered as a flow source for URL redirects. */
-  class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
+  /** A source of third-party user input, considered as a flow source for URL redirects. */
+  class ThirdPartyRequestInputAccessAsSource extends Source {
+    ThirdPartyRequestInputAccessAsSource() {
+      this.(HTTP::RequestInputAccess).isThirdPartyControllable()
+    }
   }
 
   /**
