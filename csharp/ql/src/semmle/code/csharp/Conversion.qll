@@ -169,6 +169,7 @@ private module Identity {
     )
   }
 
+  /** Gets the 'i'th type argument, ranked by size, of constructed type `t`. */
   private Type getTypeArgumentRanked(UnboundGenericType ugt, IdentityConvertibleConstructedType t, int i) {
     result = getTypeArgument(ugt, t, rnk(ugt, i), _)
   }
@@ -799,6 +800,7 @@ private module Variance {
     )
   }
 
+  /** Gets the 'i'th type argument, ranked by size, of constructed type `t`. */
   private Type getTypeArgumentRanked(UnboundGenericType ugt, VarianceConvertibleConstructedType t, int i, TypeParameter tp) {
     result = getTypeArgument(ugt, t, rnk(ugt, i), tp)
   }
