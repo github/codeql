@@ -6,7 +6,7 @@
 
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
-| *@name of query (Query ID)* | *Tags*    |*Aim of the new query and whether it is enabled by default or not*  |
+| Cast from char* to wchar_t* | security, external/cwe/cwe-704, external/microsoft/c/c6276 | Detects potentially dangerous casts from char* to wchar_t*.  Enabled by default on LGTM. |
 
 ## Changes to existing queries
 
