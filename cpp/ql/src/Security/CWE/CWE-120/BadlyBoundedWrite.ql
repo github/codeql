@@ -21,5 +21,4 @@ from BufferWrite bw, int destSize
 where bw.hasExplicitLimit()                     // has an explicit size limit
   and destSize = getBufferSize(bw.getDest(), _)
   and (bw.getExplicitLimit() > destSize)        // but it's larger than the destination
-  and not destSize = 0                          // probably just a hack if the destination size is 0
 select bw, "This '" + bw.getBWDesc() + "' operation is limited to " + bw.getExplicitLimit() + " bytes but the destination is only " + destSize + " bytes."
