@@ -401,17 +401,19 @@ module NodeJSLib {
     )
   }
 
-  
   /**
    * A call to a method from module `fs`, `graceful-fs` or `fs-extra`.
    */
-  private class NodeJSFileSystemAccessCall extends FileSystemAccess, DataFlow::CallNode {
+  private class NodeJSFileSystemAccess extends FileSystemAccess, DataFlow::CallNode {
     string methodName;
 
-    NodeJSFileSystemAccessCall() {
+    NodeJSFileSystemAccess() {
       this = fsModuleMember(methodName).getACall()
     }
 
+    /**
+     * Gets the name of the called method.
+     */
     string getMethodName() {
         result = methodName
     }
@@ -422,9 +424,9 @@ module NodeJSLib {
     }
   }
 
-  /** Only NodeJSSystemFileAccessCalls that write data to 'fs' */
-  private class NodeJSFileSystemAccessWriteCall extends FileSystemWriteAccess, NodeJSFileSystemAccessCall {
-    NodeJSFileSystemAccessWriteCall () {
+  /** A write to the file system. */
+  private class NodeJSFileSystemAccessWrite extends FileSystemWriteAccess, NodeJSFileSystemAccess {
+    NodeJSFileSystemAccessWrite () {
       methodName = "appendFile" or
       methodName = "appendFileSync" or
       methodName = "write" or
@@ -449,9 +451,9 @@ module NodeJSLib {
 
   }
 
-  /** Only NodeJSSystemFileAccessCalls that read data from 'fs' */
-  private class NodeJSFileSystemAccessReadCall extends FileSystemReadAccess, NodeJSFileSystemAccessCall {
-    NodeJSFileSystemAccessReadCall () {
+  /** A file system read. */
+  private class NodeJSFileSystemAccessRead extends FileSystemReadAccess, NodeJSFileSystemAccess {
+    NodeJSFileSystemAccessRead () {
       methodName = "read" or
       methodName = "readSync" or
       methodName = "readFile" or
@@ -478,11 +480,11 @@ module NodeJSLib {
   }
   
   /**
-   * A write to the file system using a stream.
+   * A read from the file system.
    */
   private class FileStreamWrite extends FileSystemWriteAccess, DataFlow::CallNode {
 
-    NodeJSFileSystemAccessCall stream;
+    NodeJSFileSystemAccess stream;
 
     FileStreamWrite() {
       stream.getMethodName() = "createWriteStream" and
@@ -507,7 +509,7 @@ module NodeJSLib {
    */
   private class FileStreamRead extends FileSystemReadAccess, DataFlow::CallNode {
 
-    NodeJSFileSystemAccessCall stream;
+    NodeJSFileSystemAccess stream;
 
     string method;
 
