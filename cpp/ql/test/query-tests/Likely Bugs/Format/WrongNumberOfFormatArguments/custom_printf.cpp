@@ -41,6 +41,6 @@ void test_custom_printf2()
 {
 	//     notTheFormat  format    ...
 	printf(0,            "%i %i",  100, 200); // GOOD
-	printf("",           "%i %i",  100, 200); // GOOD [FALSE POSITIVE]
-	printf("%i %i",      ""        );         // GOOD [FALSE POSITIVE]
+	printf("",           "%i %i",  100, 200); // GOOD
+	printf("%i %i",      ""        );         // GOOD
 }

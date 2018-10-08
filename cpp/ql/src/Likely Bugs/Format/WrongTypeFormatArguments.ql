@@ -25,7 +25,8 @@ private predicate formattingFunctionCallExpectedType(FormattingFunctionCall ffc,
       ffc.getTarget() = f and
       f.getFormatParameterIndex() = i and
       ffc.getArgument(i) = fl and
-      fl.getConversionType(pos) = expected
+      fl.getConversionType(pos) = expected and
+      count(fl.getConversionType(pos)) = 1
     )
 }
 
