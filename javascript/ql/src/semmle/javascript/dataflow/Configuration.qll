@@ -336,7 +336,7 @@ private class LibraryPartialCall extends AdditionalPartialInvokeNode {
 
   override predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) {
     callback = getArgument(0) and
-    exists (DataFlow::ArrayLiteralNode array |
+    exists (DataFlow::ArrayCreationNode array |
       array.flowsTo(getArgument(1)) and
       argument = array.getElement(index))
   }

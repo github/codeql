@@ -36,7 +36,7 @@ private predicate isBoundInMethod(MethodDeclaration method) {
         bindAll.getArgument(1).mayHaveStringValue(name)
         or
         // _.bindAll(this, [<name1>, <name2>])
-        exists (DataFlow::ArrayLiteralNode names |
+        exists (DataFlow::ArrayCreationNode names |
           names.flowsTo(bindAll.getArgument(1)) and
           names.getAnElement().mayHaveStringValue(name)
         )

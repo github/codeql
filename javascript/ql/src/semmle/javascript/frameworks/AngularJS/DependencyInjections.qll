@@ -146,7 +146,7 @@ private DataFlow::PropWrite getAPropertyDependencyInjection(Function function) {
  */
 private class FunctionWithInjectProperty extends InjectableFunction {
   override Function astNode;
-  DataFlow::ArrayLiteralNode dependencies;
+  DataFlow::ArrayCreationNode dependencies;
 
   FunctionWithInjectProperty() {
     (
