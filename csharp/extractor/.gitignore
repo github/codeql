@@ -1,0 +1,16 @@
+obj/
+SemmleTests/bin
+TestResults/
+*.manifest
+*.pdb
+*.suo
+*.mdb
+*.vsmdi
+CSharpExtractor*.config
+csharp.log
+**/bin/Debug
+**/bin/Release
+*.tlog
+.vs
+packages
+*.user
