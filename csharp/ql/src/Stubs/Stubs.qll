@@ -239,7 +239,7 @@ private class GeneratedNamespace extends Namespace, GeneratedElement {
   final string getStubs() {
     result = getPreamble() +
       getTypeStubs() +
-      getSubNamespaces(0) +
+      getSubNamespaces() +
       getPostAmble()
   }
 
@@ -254,10 +254,9 @@ private class GeneratedNamespace extends Namespace, GeneratedElement {
     result = count(GeneratedNamespace g | g.getParentNamespace() = this)
   }
 
-  private string getSubNamespaces(int n) {
-    result = getChildNamespace(n).getStubs() + getSubNamespaces(n+1)
-    or
-    n = getChildNamespaceCount() and result = ""
+  language[monotonicAggregates]
+  private string getSubNamespaces() {
+    result = concat(int i | exists(getChildNamespace(i)) | getChildNamespace(i).getStubs())
   }
 
   private string getTypeStubs() {

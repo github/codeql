@@ -10,6 +10,7 @@
 
 import sys
 import os
+import subprocess
 
 print('Script to generate stub.cs files for C# qltest projects')
 
@@ -42,9 +43,9 @@ if not foundCS:
     print("Test directory does not contain .cs files. Please specify a working qltest directory.")
     exit(1)
 
-cmd = 'odasa selfTest'
-print(cmd)
-if os.system(cmd):
+cmd = ['odasa', 'selfTest']
+print('Running ' + ' '.join(cmd))
+if subprocess.check_call(cmd):
     print("odasa selfTest failed. Ensure odasa is on your current path.")
     exit(1)
 
@@ -57,9 +58,9 @@ if os.path.isfile(outputFile):
     os.remove(outputFile)  # It would interfere with the test.
     print("Removed previous", outputFile)
 
-cmd = 'odasa qltest --optimize --leave-temp-files "' + testDir + '"'
-print(cmd)
-if os.system(cmd) != 0:
+cmd = ['odasa', 'qltest', '--optimize', '--leave-temp-files', testDir]
+print('Running ' + ' '.join(cmd))
+if subprocess.check_call(cmd):
     print("qltest failed. Please fix up the test before proceeding.")
     exit(1)
 
@@ -69,9 +70,9 @@ if not os.path.isdir(dbDir):
     print("Expected database directory " + dbDir + " not found. Please contact Semmle.")
     exit(1)
 
-cmd = 'odasa runQuery --query "' + os.path.join(csharpQueries, 'MinimalStubsFromSource.ql') + '" --db "' + dbDir +'" --output-file "' + outputFile + '"'
-print(cmd)
-if os.system(cmd):
+cmd = ['odasa', 'runQuery', '--query', os.path.join(csharpQueries, 'MinimalStubsFromSource.ql'), '--db', dbDir, '--output-file', outputFile]
+print('Running ' + ' '.join(cmd))
+if subprocess.check_call(cmd):
     print('Failed to run the query to generate output file. Please contact Semmle.')
     exit(1)
 
@@ -93,10 +94,9 @@ f = open(outputFile, "wb")
 f.write(contents)
 f.close()
 
-cmd = 'odasa qltest --optimize "' + testDir + '"'
-print(cmd)
-
-if os.system(cmd):
+cmd = ['odasa', 'qltest', '--optimize', testDir]
+print('Running ' + ' '.join(cmd))
+if subprocess.check_call(cmd):
   print('\nTest failed. You may need to fix up', outputFile)
   print('It may help to view', outputFile, ' in Visual Studio')
   print("Next steps:")
