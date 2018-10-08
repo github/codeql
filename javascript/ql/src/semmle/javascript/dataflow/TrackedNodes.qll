@@ -70,23 +70,23 @@ private module NodeTracking {
     (
      // Local flow
      localFlowStep(pred, succ) and
-     summary = PathSummary::level(true)
+     summary = PathSummary::level()
      or
      // Flow through properties of objects
      propertyFlowStep(pred, succ) and
-     summary = PathSummary::level(true)
+     summary = PathSummary::level()
      or
      // Flow through global variables
      globalFlowStep(pred, succ) and
-     summary = PathSummary::level(true)
+     summary = PathSummary::level()
      or
      // Flow into function
      callStep(pred, succ) and
-     summary = PathSummary::call(true)
+     summary = PathSummary::call()
      or
      // Flow out of function
      returnStep(pred, succ) and
-     summary = PathSummary::return(true)
+     summary = PathSummary::return()
     )
   }
 
@@ -138,7 +138,7 @@ private module NodeTracking {
                                        DataFlow::Node input, DataFlow::Node nd,
                                        PathSummary summary) {
     callInputStep(f, invk, input, nd) and
-    summary = PathSummary::empty()
+    summary = PathSummary::level()
     or
     exists (DataFlow::Node mid, PathSummary oldSummary, PathSummary newSummary |
       reachableFromInput(f, invk, input, mid, oldSummary) and
@@ -165,7 +165,7 @@ private module NodeTracking {
   private predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop,
                               PathSummary summary) {
     basicStoreStep(pred, succ, prop) and
-    summary = PathSummary::level(true)
+    summary = PathSummary::level()
     or
     exists (Function f, DataFlow::Node mid, DataFlow::SourceNode base |
       // `f` stores its parameter `pred` in property `prop` of a value that it returns,
@@ -214,7 +214,7 @@ private module NodeTracking {
     // Flow through a function that returns a value that depends on one of its arguments
     // or a captured variable
     flowThroughCall(pred, succ) and
-    summary = PathSummary::level(true)
+    summary = PathSummary::level()
     or
     // Flow through a property write/read pair
     flowThroughProperty(pred, succ, summary)
@@ -226,7 +226,7 @@ private module NodeTracking {
    */
   predicate flowsTo(TrackedNode source, DataFlow::Node nd, PathSummary summary) {
     source = nd and
-    summary = PathSummary::empty()
+    summary = PathSummary::level()
     or
     exists (DataFlow::Node pred, PathSummary oldSummary, PathSummary newSummary |
       flowsTo(source, pred, oldSummary) and

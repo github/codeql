@@ -37,14 +37,14 @@ module CommandInjection {
      * Holds if `sink` is a data flow sink for command-injection vulnerabilities, and
      * the alert should be placed at the node `highlight`.
      */
-    predicate isSink(DataFlow::Node sink, DataFlow::Node highlight) {
+    predicate isSinkWithHighlight(DataFlow::Node sink, DataFlow::Node highlight) {
       sink instanceof Sink and highlight = sink
       or
       indirectCommandInjection(sink, highlight)
     }
 
     override predicate isSink(DataFlow::Node sink) {
-      isSink(sink, _)
+      isSinkWithHighlight(sink, _)
     }
 
     override predicate isSanitizer(DataFlow::Node node) {

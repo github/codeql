@@ -5,6 +5,7 @@
  */
 
 import javascript
+import semmle.javascript.dataflow.Configuration
 
 /**
  * Holds if flow should be tracked through properties of `obj`.
@@ -66,12 +67,20 @@ predicate returnExpr(Function f, DataFlow::Node source, DataFlow::Node sink) {
  */
 pragma[inline]
 predicate localFlowStep(DataFlow::Node pred, DataFlow::Node succ,
-                        DataFlow::Configuration configuration, boolean valuePreserving) {
- pred = succ.getAPredecessor() and valuePreserving = true
- or
- any(DataFlow::AdditionalFlowStep afs).step(pred, succ) and valuePreserving = true
- or
- configuration.isAdditionalFlowStep(pred, succ, valuePreserving)
+                        DataFlow::Configuration configuration,
+                        FlowLabel predlbl, FlowLabel succlbl) {
+  pred = succ.getAPredecessor() and predlbl = succlbl
+  or
+  any(DataFlow::AdditionalFlowStep afs).step(pred, succ) and predlbl = succlbl
+  or
+  exists (boolean vp | configuration.isAdditionalFlowStep(pred, succ, vp) |
+    if vp = false and (predlbl = FlowLabel::data() or predlbl = FlowLabel::taint()) then
+      succlbl = FlowLabel::taint()
+    else
+      predlbl = succlbl
+  )
+  or
+  configuration.isAdditionalFlowStep(pred, succ, predlbl, succlbl)
 }
 
 /**
@@ -240,17 +249,15 @@ class Boolean extends boolean {
  */
 newtype TPathSummary =
   /** A summary of an inter-procedural data flow path. */
-  MkPathSummary(Boolean hasReturn, Boolean hasCall, Boolean valuePreserving)
+  MkPathSummary(Boolean hasReturn, Boolean hasCall, FlowLabel start, FlowLabel end)
 
 /**
  * A summary of an inter-procedural data flow path.
  *
- * The summary keeps track of whether the path contains any call steps from an argument
- * of a function call to the corresponding parameter, and/or any return steps from the
- * `return` statement of a function to a call of that function.
- *
- * Additionally, it records and whether each step on the path preserves the value of its
- * input node (and not just its taintedness).
+ * The summary includes a start flow label and an end flow label, and keeps track of
+ * whether the path contains any call steps from an argument of a function call to the
+ * corresponding parameter, and/or any return steps from the `return` statement of a
+ * function to a call of that function.
  *
  * We only want to build properly matched call/return sequences, so if a path has both
  * call steps and return steps, all return steps must precede all call steps.
@@ -258,10 +265,11 @@ newtype TPathSummary =
 class PathSummary extends TPathSummary {
   Boolean hasReturn;
   Boolean hasCall;
-  Boolean valuePreserving;
+  FlowLabel start;
+  FlowLabel end;
 
   PathSummary() {
-    this = MkPathSummary(hasReturn, hasCall, valuePreserving)
+    this = MkPathSummary(hasReturn, hasCall, start, end)
   }
 
   /** Indicates whether the path represented by this summary contains any return steps. */
@@ -274,12 +282,9 @@ class PathSummary extends TPathSummary {
     result = hasCall
   }
 
-  /**
-   * Indicates whether the path represented by this summary preserves the value of
-   * its start node or only its taintedness.
-   */
-  boolean valuePreserving() {
-    result = valuePreserving
+  /** Gets the flow label describing the value at the end of this flow path. */
+  FlowLabel getEndLabel() {
+    result = end
   }
 
   /**
@@ -289,11 +294,30 @@ class PathSummary extends TPathSummary {
    * a `call` step in order to maintain well-formedness.
    */
   PathSummary append(PathSummary that) {
-    result = MkPathSummary(this.hasReturn().booleanOr(that.hasReturn()),
-                           this.hasCall().booleanOr(that.hasCall()),
-                           this.valuePreserving().booleanAnd(that.valuePreserving())) and
-    // avoid constructing invalid paths
-    not (this.hasCall() = true and that.hasReturn() = true)
+    exists (Boolean hasReturn2, Boolean hasCall2, FlowLabel end2 |
+      that = MkPathSummary(hasReturn2, hasCall2, end, end2) |
+      result = MkPathSummary(hasReturn.booleanOr(hasReturn2),
+                             hasCall.booleanOr(hasCall2),
+                             start, end2) and
+      // avoid constructing invalid paths
+      not (hasCall = true and hasReturn2 = true)
+    )
+  }
+
+  /**
+   * Gets the summary for the path obtained by appending `that` to `this`, where
+   * `that` must be a path mapping `data` to `data` (in other words, it must be
+   * a value-preserving path).
+   */
+  PathSummary appendValuePreserving(PathSummary that) {
+    exists (Boolean hasReturn2, Boolean hasCall2 |
+      that = MkPathSummary(hasReturn2, hasCall2, FlowLabel::data(), FlowLabel::data()) |
+      result = MkPathSummary(hasReturn.booleanOr(hasReturn2),
+                             hasCall.booleanOr(hasCall2),
+                             start, end) and
+      // avoid constructing invalid paths
+      not (hasCall = true and hasReturn2 = true)
+    )
   }
 
   /**
@@ -308,43 +332,37 @@ class PathSummary extends TPathSummary {
     exists (string withReturn, string withCall |
       (if hasReturn = true then withReturn = "with" else withReturn = "without") and
       (if hasCall = true then withCall = "with" else withCall = "without") |
-      result = "forward path " + withReturn + " return steps and " + withCall + " call steps"
+      result = "path " + withReturn + " return steps and " + withCall + " call steps " +
+               "transforming " + start + " into " + end
     )
   }
 }
 
 module PathSummary {
   /**
-   * Gets a summary describing an empty path.
-   */
-  PathSummary empty() {
-    result = level(true)
-  }
-
-  /**
    * Gets a summary describing a path without any calls or returns.
-   * `valuePreserving` indicates whether the path preserves the value of its
-   * start node or only its taintedness.
    */
-  PathSummary level(Boolean valuePreserving) {
-    result = MkPathSummary(false, false, valuePreserving)
+  PathSummary level() {
+    exists (FlowLabel lbl |
+      result = MkPathSummary(false, false, lbl, lbl)
+    )
   }
 
   /**
    * Gets a summary describing a path with one or more calls, but no returns.
-   * `valuePreserving` indicates whether the path preserves the value of its
-   * start node or only its taintedness.
    */
-  PathSummary call(Boolean valuePreserving) {
-    result = MkPathSummary(false, true, valuePreserving)
+  PathSummary call() {
+    exists (FlowLabel lbl |
+      result = MkPathSummary(false, true, lbl, lbl)
+    )
   }
 
   /**
    * Gets a summary describing a path with one or more returns, but no calls.
-   * `valuePreserving` indicates whether the path preserves the value of its
-   * start node or only its taintedness.
    */
-  PathSummary return(Boolean valuePreserving) {
-    result = MkPathSummary(true, false, valuePreserving)
+  PathSummary return() {
+    exists (FlowLabel lbl |
+      result = MkPathSummary(true, false, lbl, lbl)
+    )
   }
 }
