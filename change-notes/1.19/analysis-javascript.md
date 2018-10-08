@@ -16,10 +16,12 @@
 | **Query**                                     | **Tags**                                             | **Purpose**                                                                                                                                                                 |
 |-----------------------------------------------|------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Enabling Node.js integration for Electron web content renderers (`js/enabling-electron-renderer-node-integration`) | security, frameworks/electron, external/cwe/cwe-094  | Highlights Electron web content renderer preferences with Node.js integration enabled, indicating a violation of [CWE-94](https://cwe.mitre.org/data/definitions/94.html). Results are not shown on LGTM by default. |
+| File data in outbound remote request | security, external/cwe/cwe-200 | Highligts locations where file data is sent in a remote request. Results are not shown on LGTM by default. |
 | Host header poisoning in email generation |  security, external/cwe/cwe-640 | Highlights code that generates emails with links that can be hijacked by HTTP host header poisoning, indicating a violation of [CWE-640](https://cwe.mitre.org/data/definitions/640.html). Results shown on LGTM by default.  |
 | Replacement of a substring with itself (`js/identity-replacement`) | correctness, security, external/cwe/cwe-116 | Highlights string replacements that replace a string with itself, which usually indicates a mistake. Results shown on LGTM by default. |
 | Stored cross-site scripting (`js/stored-xss`) | security, external/cwe/cwe-079, external/cwe/cwe-116 | Highlights uncontrolled stored values flowing into HTML content, indicating a violation of [CWE-079](https://cwe.mitre.org/data/definitions/79.html). Results shown on LGTM by default. |
 | Unclear precedence of nested operators (`js/unclear-operator-precedence`) | maintainability, correctness, external/cwe/cwe-783 | Highlights nested binary operators whose relative precedence is easy to misunderstand. Results shown on LGTM by default. |
+| User-controlled data in file | security, external/cwe/cwe-912 | Highlights locations where user-controlled data is written to a file. Results are not shown on LGTM by default. |
 
 ## Changes to existing queries
 
