@@ -88,15 +88,35 @@ abstract class Configuration extends string {
   /**
    * Holds if `source` is a relevant data flow source for this configuration.
    */
-  abstract predicate isSource(DataFlow::Node source);
+  predicate isSource(DataFlow::Node source) {
+    none()
+  }
+
+  /**
+   * Holds if `source` is a source of flow labelled with `lbl` that is relevant
+   * for this configuration.
+   */
+  predicate isSource(DataFlow::Node source, FlowLabel lbl) {
+    none()
+  }
 
   /**
    * Holds if `sink` is a relevant data flow sink for this configuration.
    */
-  abstract predicate isSink(DataFlow::Node sink);
+  predicate isSink(DataFlow::Node sink) {
+    none()
+  }
 
   /**
-   * Holds if `source -> sink` should be considered as a flow edge
+   * Holds if `sink` is a sink of flow labelled with `lbl` that is relevant
+   * for this configuration.
+   */
+  predicate isSink(DataFlow::Node sink, FlowLabel lbl) {
+    none()
+  }
+
+  /**
+   * Holds if `src -> trg` should be considered as a flow edge
    * in addition to standard data flow edges.
    */
   predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node trg) { none() }
@@ -105,12 +125,20 @@ abstract class Configuration extends string {
    * INTERNAL: This predicate should not normally be used outside the data flow
    * library.
    *
-   * Holds if `source -> sink` should be considered as a flow edge
+   * Holds if `src -> trg` should be considered as a flow edge
    * in addition to standard data flow edges, with `valuePreserving`
    * indicating whether the step preserves values or just taintedness.
    */
   predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node trg, boolean valuePreserving) {
     isAdditionalFlowStep(src, trg) and valuePreserving = true
+  }
+
+  /**
+   * Holds if `src -> trg` is a flow edge converting flow with label `inlbl` to
+   * flow with label `outlbl`.
+   */
+  predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node trg, FlowLabel inlbl, FlowLabel outlbl) {
+    none()
   }
 
   /**
@@ -129,6 +157,11 @@ abstract class Configuration extends string {
   predicate isBarrier(DataFlow::Node src, DataFlow::Node trg) { none() }
 
   /**
+   * Holds if flow with label `lbl` cannot flow from `src` to `trg`.
+   */
+  predicate isBarrier(DataFlow::Node src, DataFlow::Node trg, FlowLabel lbl) { none() }
+
+  /**
    * Holds if data flow node `guard` can act as a barrier when appearing
    * in a condition.
    *
@@ -142,7 +175,7 @@ abstract class Configuration extends string {
    * Holds if data may flow from `source` to `sink` for this configuration.
    */
   predicate hasFlow(DataFlow::Node source, DataFlow::Node sink) {
-    isSource(_, this) and isSink(_, this) and
+    isSource(_, this, _) and isSink(_, this, _) and
     exists (SourcePathNode flowsource, SinkPathNode flowsink |
       hasPathFlow(flowsource, flowsink) and
       source = flowsource.getNode() and
@@ -174,6 +207,44 @@ abstract class Configuration extends string {
   deprecated predicate flowsFrom(DataFlow::Node sink, DataFlow::Node source) {
     hasFlow(source, sink)
   }
+}
+
+/**
+ * A label describing the kind of information tracked by a flow configuration.
+ *
+ * There are two standard labels "data" and "taint", the former describing values
+ * that directly originate from a flow source, the latter values that are derived
+ * from a flow source via one or more transformations (such as string operations).
+ */
+abstract class FlowLabel extends string {
+  bindingset[this] FlowLabel() { any() }
+}
+
+/**
+ * A kind of taint tracked by a taint-tracking configuration.
+ *
+ * This is an alias of `FlowLabel`, so the two types can be used interchangeably.
+ */
+class TaintKind = FlowLabel;
+
+/**
+ * A standard flow label, that is, either `FlowLabel::data()` or `FlowLabel::taint()`.
+ */
+private class StandardFlowLabel extends FlowLabel {
+  StandardFlowLabel() { this = "data" or this = "taint" }
+}
+
+module FlowLabel {
+  /**
+   * Gets the standard flow label for describing values that directly originate from a flow source.
+   */
+  FlowLabel data() { result = "data" }
+
+  /**
+   * Gets the standard flow label for describing values that are influenced ("tainted") by a flow
+   * source, but not necessarily directly derived from it.
+   */
+  FlowLabel taint() { result = "taint" }
 }
 
 /**
@@ -353,26 +424,27 @@ private predicate basicFlowStep(DataFlow::Node pred, DataFlow::Node succ, PathSu
   isRelevantForward(pred, cfg) and
   (
    // Local flow
-   exists (boolean valuePreserving |
-     localFlowStep(pred, succ, cfg, valuePreserving) and
-     summary = PathSummary::level(valuePreserving)
+   exists (FlowLabel predlbl, FlowLabel succlbl |
+     localFlowStep(pred, succ, cfg, predlbl, succlbl) and
+     not cfg.isBarrier(pred, succ, predlbl) and
+     summary = MkPathSummary(false, false, predlbl, succlbl)
    )
    or
    // Flow through properties of objects
    propertyFlowStep(pred, succ) and
-   summary = PathSummary::level(true)
+   summary = PathSummary::level()
    or
    // Flow through global variables
    globalFlowStep(pred, succ) and
-   summary = PathSummary::level(true)
+   summary = PathSummary::level()
    or
    // Flow into function
    callStep(pred, succ) and
-   summary = PathSummary::call(true)
+   summary = PathSummary::call()
    or
    // Flow out of function
    returnStep(pred, succ) and
-   summary = PathSummary::return(true)
+   summary = PathSummary::return()
   )
 }
 
@@ -393,15 +465,21 @@ private predicate exploratoryFlowStep(DataFlow::Node pred, DataFlow::Node succ,
 /**
  * Holds if `nd` is a source node for configuration `cfg`.
  */
-private predicate isSource(DataFlow::Node nd, DataFlow::Configuration cfg) {
-  cfg.isSource(nd) or nd.(AdditionalSource).isSourceFor(cfg)
+private predicate isSource(DataFlow::Node nd, DataFlow::Configuration cfg, FlowLabel lbl) {
+  (cfg.isSource(nd) or nd.(AdditionalSource).isSourceFor(cfg)) and
+  lbl = FlowLabel::data()
+  or
+  cfg.isSource(nd, lbl)
 }
 
 /**
  * Holds if `nd` is a sink node for configuration `cfg`.
  */
-private predicate isSink(DataFlow::Node nd, DataFlow::Configuration cfg) {
-  cfg.isSink(nd) or nd.(AdditionalSink).isSinkFor(cfg)
+private predicate isSink(DataFlow::Node nd, DataFlow::Configuration cfg, FlowLabel lbl) {
+  (cfg.isSink(nd) or nd.(AdditionalSink).isSinkFor(cfg)) and
+  lbl = any(StandardFlowLabel f)
+  or
+  cfg.isSink(nd, lbl)
 }
 
 /**
@@ -410,7 +488,7 @@ private predicate isSink(DataFlow::Node nd, DataFlow::Configuration cfg) {
  * No call/return matching is done, so this is a relatively coarse over-approximation.
  */
 private predicate isRelevantForward(DataFlow::Node nd, DataFlow::Configuration cfg) {
-  isSource(nd, cfg)
+  isSource(nd, cfg, _)
   or
   exists (DataFlow::Node mid |
     isRelevantForward(mid, cfg) and exploratoryFlowStep(mid, nd, cfg)
@@ -424,7 +502,7 @@ private predicate isRelevantForward(DataFlow::Node nd, DataFlow::Configuration c
  */
 private predicate isRelevant(DataFlow::Node nd, DataFlow::Configuration cfg) {
   isRelevantForward(nd, cfg) and
-  isSink(nd, cfg)
+  isSink(nd, cfg, _)
   or
   exists (DataFlow::Node mid |
     isRelevant(mid, cfg) and
@@ -472,7 +550,7 @@ private predicate reachableFromInput(Function f, DataFlow::Node invk,
                                      DataFlow::Node input, DataFlow::Node nd,
                                      DataFlow::Configuration cfg, PathSummary summary) {
   callInputStep(f, invk, input, nd, cfg) and
-  summary = PathSummary::empty()
+  summary = PathSummary::level()
   or
   exists (DataFlow::Node mid, PathSummary oldSummary, PathSummary newSummary |
     reachableFromInput(f, invk, input, mid, cfg, oldSummary) and
@@ -487,11 +565,12 @@ private predicate reachableFromInput(Function f, DataFlow::Node invk,
  * configuration `cfg`, possibly through callees.
  */
 private predicate flowThroughCall(DataFlow::Node input, DataFlow::Node invk,
-                                  DataFlow::Configuration cfg, boolean valuePreserving) {
+                                  DataFlow::Configuration cfg, PathSummary summary) {
   exists (Function f, DataFlow::ValueNode ret |
     ret.asExpr() = f.getAReturnedExpr() and
     calls(invk, f) and // Do not consider partial calls
-    reachableFromInput(f, invk, input, ret, cfg, PathSummary::level(valuePreserving))
+    reachableFromInput(f, invk, input, ret, cfg, summary) and
+    not cfg.isBarrier(ret, invk)
   )
 }
 
@@ -502,7 +581,7 @@ private predicate flowThroughCall(DataFlow::Node input, DataFlow::Node invk,
 private predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop,
                             DataFlow::Configuration cfg, PathSummary summary) {
   basicStoreStep(pred, succ, prop) and
-  summary = PathSummary::level(true)
+  summary = PathSummary::level()
   or
   exists (Function f, DataFlow::Node mid, DataFlow::SourceNode base |
     // `f` stores its parameter `pred` in property `prop` of a value that it returns,
@@ -526,8 +605,7 @@ private predicate reachableFromStoreBase(string prop, DataFlow::Node rhs, DataFl
   exists (DataFlow::Node mid, PathSummary oldSummary, PathSummary newSummary |
     reachableFromStoreBase(prop, rhs, mid, cfg, oldSummary) and
     flowStep(mid, cfg, nd, newSummary) and
-    newSummary.valuePreserving() = true and
-    summary = oldSummary.append(newSummary)
+    summary = oldSummary.appendValuePreserving(newSummary)
   )
 }
 
@@ -557,10 +635,7 @@ private predicate flowStep(DataFlow::Node pred, DataFlow::Configuration cfg,
    or
    // Flow through a function that returns a value that depends on one of its arguments
    // or a captured variable
-   exists (boolean valuePreserving |
-     flowThroughCall(pred, succ, cfg, valuePreserving) and
-     summary = PathSummary::level(valuePreserving)
-   )
+   flowThroughCall(pred, succ, cfg, summary)
    or
    // Flow through a property write/read pair
    flowThroughProperty(pred, succ, cfg, summary)
@@ -588,9 +663,11 @@ private predicate flowsTo(PathNode flowsource, DataFlow::Node source,
  */
 private predicate reachableFromSource(DataFlow::Node nd, DataFlow::Configuration cfg,
                                       PathSummary summary) {
-  isSource(nd, cfg) and
-  not cfg.isBarrier(nd) and
-  summary = PathSummary::empty()
+  exists (FlowLabel lbl |
+    isSource(nd, cfg, lbl) and
+    not cfg.isBarrier(nd) and
+    summary = MkPathSummary(false, false, lbl, lbl)
+  )
   or
   exists (DataFlow::Node pred, PathSummary oldSummary, PathSummary newSummary |
     reachableFromSource(pred, cfg, oldSummary) and
@@ -601,21 +678,18 @@ private predicate reachableFromSource(DataFlow::Node nd, DataFlow::Configuration
 
 /**
  * Holds if `nd` can be reached from a source under `cfg`, and in turn a sink is
- * reachable from `nd`. The path from the source to `nd` is summarized by `summary1`,
- * the path from `nd` to the sink is summarized by `summary2`.
+ * reachable from `nd`, where the path from the source to `nd` is summarized by `summary`.
  */
 private predicate onPath(DataFlow::Node nd, DataFlow::Configuration cfg,
-                         PathSummary summary1, PathSummary summary2) {
-  reachableFromSource(nd, cfg, summary1) and
-  isSink(nd, cfg) and
-  not cfg.isBarrier(nd) and
-  summary2 = PathSummary::empty()
+                         PathSummary summary) {
+  reachableFromSource(nd, cfg, summary) and
+  isSink(nd, cfg, summary.getEndLabel()) and
+  not cfg.isBarrier(nd)
   or
-  exists (DataFlow::Node mid, PathSummary newSummary, PathSummary oldSummary |
-    onPath(mid, cfg, _, oldSummary) and
-    flowStep(nd, cfg, mid, newSummary) and
-    reachableFromSource(nd, cfg, summary1) and
-    summary2 = oldSummary.prepend(newSummary)
+  exists (DataFlow::Node mid, PathSummary stepSummary |
+    reachableFromSource(nd, cfg, summary) and
+    flowStep(nd, cfg, mid, stepSummary) and
+    onPath(mid, cfg, summary.append(stepSummary))
   )
 }
 
@@ -624,7 +698,7 @@ private predicate onPath(DataFlow::Node nd, DataFlow::Configuration cfg,
  */
 private newtype TPathNode =
   MkPathNode(DataFlow::Node nd, DataFlow::Configuration cfg, PathSummary summary) {
-    onPath(nd, cfg, summary, _)
+    onPath(nd, cfg, summary)
   }
 
 /**
@@ -693,7 +767,7 @@ class PathNode extends TPathNode {
  */
 class SourcePathNode extends PathNode {
   SourcePathNode() {
-    isSource(nd, cfg)
+    isSource(nd, cfg, _)
   }
 }
 
@@ -702,7 +776,7 @@ class SourcePathNode extends PathNode {
  */
 class SinkPathNode extends PathNode {
   SinkPathNode() {
-    isSink(nd, cfg)
+    isSink(nd, cfg, _)
   }
 }
 

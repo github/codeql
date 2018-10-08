@@ -404,6 +404,29 @@ module HTTP {
      * Note that this predicate is functional.
      */
     abstract string getKind();
+
+    /**
+     * Holds if this part of the request may be controlled by a third party,
+     * that is, an agent other than the one who sent the request.
+     *
+     * This is true for the URL, query parameters, and request body.
+     * These can be controlled by a malicious third party in the following scenarios:
+     *
+     * - The user clicks a malicious link or is otherwise redirected to a malicious URL.
+     * - The user visits a web site that initiates a form submission or AJAX request on their behalf.
+     *
+     * In these cases, the request is technically sent from the user's browser, but
+     * the user is not in direct control of the URL or POST body.
+     *
+     * Headers are never considered third-party controllable by this predicate, although the
+     * third party does have some control over the the Referer and Origin headers.
+     */
+    predicate isThirdPartyControllable() {
+      exists (string kind | kind = getKind() |
+        kind = "parameter" or
+        kind = "url" or
+        kind = "body")
+    }
   }
 
   /**

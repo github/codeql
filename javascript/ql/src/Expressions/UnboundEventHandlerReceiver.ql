@@ -45,7 +45,11 @@ private predicate isBoundInMethod(MethodDeclaration method) {
   )
   or
   exists (Expr decoration, string name |
-    decoration = method.getADecorator().getExpression() and
+    (
+      decoration = method.getADecorator().getExpression()
+      or
+      decoration = method.getDeclaringType().(ClassDefinition).getADecorator().getExpression()
+    ) and
     name.regexpMatch("(?i).*(bind|bound).*") |
     // @autobind
     decoration.(Identifier).getName() = name or

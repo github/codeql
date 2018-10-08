@@ -34,3 +34,5 @@
 | Whitespace contradicts operator precedence | Fewer false-positive results | This rule no longer flags operators with asymmetric whitespace. |
 
 ## Changes to QL libraries
+
+* The flow configuration framework now supports distinguishing and tracking different kinds of taint, specified by an extensible class `FlowLabel` (which can also be referred to by its alias `TaintKind`).
