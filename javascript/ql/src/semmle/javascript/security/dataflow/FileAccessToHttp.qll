@@ -42,13 +42,8 @@ module FileAccessToHttp {
       node instanceof Sanitizer
     }
 
-    /** additional taint step that taints an object wrapping a source */
     override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-      (
-          pred = DataFlow::valueNode(_) or
-          pred = DataFlow::parameterNode(_) or
-          pred instanceof DataFlow::PropRead
-      ) and
+      // taint entire object on property write
       exists (DataFlow::PropWrite pwr |
         succ = pwr.getBase() and
         pred = pwr.getRhs()

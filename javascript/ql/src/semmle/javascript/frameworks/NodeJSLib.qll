@@ -379,7 +379,7 @@ module NodeJSLib {
    *
    * We determine this by looking for an externs declaration for
    * `fs.methodName` where the `i`th parameter's name is `data` or
-   * `buffer` or a 'callback'.
+   * `buffer` or a `callback`.
    */
   private predicate fsDataParam(string methodName, int i, string n) {
     exists (ExternalMemberDecl decl, Function f, JSDocParamTag p |
