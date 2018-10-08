@@ -601,6 +601,10 @@ class VoidType extends BuiltInType {
 
 /**
  * The C/C++ wide character type.
+ * 
+ * Note that on some platforms `wchar_t` doesn't exist as a built-in
+ * type but a typedef is provided.  Consider using the `Wchar_t` QL
+ * class to include these types.
  */
 class WideCharType extends IntegralType {
 

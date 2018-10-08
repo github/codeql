@@ -25,7 +25,7 @@ predicate stringType(Type t, Type charType) {
       charType = t.(ArrayType).getBaseType()
     ) and (
       charType.getUnspecifiedType() instanceof CharType or
-      charType.getUnspecifiedType() instanceof WideCharType
+      charType.getUnspecifiedType() instanceof Wchar_t
     )
   )
   or
