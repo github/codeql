@@ -54,8 +54,18 @@ abstract class ReactComponent extends ASTNode {
   /**
    * Gets the `this` node in an instance method of this component.
    */
-  DataFlow::SourceNode getAThisAccess() {
+  DataFlow::SourceNode getAThisNode() {
     result.(DataFlow::ThisNode).getBinder().getFunction() = getInstanceMethod(_)
+  }
+
+  /**
+   * Gets the `this` node in an instance method of this component.
+   *
+   * DEPRECATED: Use `getAThisNode` instead.
+   */
+  deprecated
+  DataFlow::SourceNode getAThisAccess() {
+    result = getAThisNode()
   }
 
   /**

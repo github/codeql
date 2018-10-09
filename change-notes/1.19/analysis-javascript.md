@@ -38,3 +38,5 @@
 * The flow configuration framework now supports distinguishing and tracking different kinds of taint, specified by an extensible class `FlowLabel` (which can also be referred to by its alias `TaintKind`).
 
 * The `DataFlow::ThisNode` class now corresponds to the implicit receiver parameter of a function, as opposed to an indivdual `this` expression. This means `getALocalSource` now maps all `this` expressions within a given function to the same source. The data-flow node associated with a `ThisExpr` can no longer be cast to `DataFlow::SourceNode` or `DataFlow::ThisNode` - it is recomended to use `getALocalSource` before casting or instead of casting.
+
+* `ReactComponent::getAThisAccess` has been renamed to `getAThisNode`. The old name is still usable but is deprecated. It no longer gets individual `this` expressions, but the `ThisNode` mentioned above.
