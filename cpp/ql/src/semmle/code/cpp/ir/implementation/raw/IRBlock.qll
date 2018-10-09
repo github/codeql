@@ -89,4 +89,12 @@ class IRBlock extends TIRBlock {
     dominates(result.getAPredecessor()) and
     not strictlyDominates(result)
   }
+  
+  /**
+   * Holds if this block is reachable from the entry point of its function
+   */
+  final predicate isReachableFromFunctionEntry() {
+    this = getFunctionIR().getEntryBlock() or
+    getAPredecessor().isReachableFromFunctionEntry()
+  }
 }

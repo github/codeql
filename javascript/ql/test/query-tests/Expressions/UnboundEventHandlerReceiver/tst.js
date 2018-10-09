@@ -120,4 +120,18 @@ class Component1 extends React.Component {
 
 }
 
+@autobind
+class Component2 extends React.Component {
+
+    render() {
+        return <div>
+            <div onClick={this.bound_throughClassDecorator_autobind}/> // OK
+            </div>;
+    }
+
+    bound_throughClassDecorator_autobind() {
+        this.setState({ });
+    }
+
+}
 // semmle-extractor-options: --experimental

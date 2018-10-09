@@ -471,18 +471,14 @@ module Express {
           propName = "originalUrl"
         )
         or
-        exists (string methodName |
-          // `req.get(...)` or `req.header(...)`
-          kind = "header" and
-          this.(DataFlow::MethodCallNode).calls(request, methodName) |
-          methodName = "get" or
-          methodName = "header"
-        )
-        or
         // `req.cookies`
         kind = "cookie" and
         this.(DataFlow::PropRef).accesses(request, "cookies")
       )
+      or
+      exists (RequestHeaderAccess access | this = access |
+        rh = access.getRouteHandler() and
+        kind = "header")
     }
 
     override RouteHandler getRouteHandler() {
@@ -491,6 +487,53 @@ module Express {
 
     override string getKind() {
       result = kind
+    }
+  }
+
+  /**
+   * An access to a header on an Express request.
+   */
+  private class RequestHeaderAccess extends HTTP::RequestHeaderAccess {
+    RouteHandler rh;
+
+    RequestHeaderAccess() {
+      exists (DataFlow::Node request | request = DataFlow::valueNode(rh.getARequestExpr()) |
+        exists (string methodName |
+          // `req.get(...)` or `req.header(...)`
+          this.(DataFlow::MethodCallNode).calls(request, methodName) |
+          methodName = "get" or
+          methodName = "header"
+        )
+        or
+        exists (DataFlow::PropRead headers |
+          // `req.headers.name`
+          headers.accesses(request, "headers") and
+          this = headers.getAPropertyRead())
+        or
+        exists (string propName | propName = "host" or propName = "hostname" |
+          // `req.host` and `req.hostname` are derived from headers
+          this.(DataFlow::PropRead).accesses(request, propName))
+      )
+    }
+
+    override string getAHeaderName() {
+      exists (string name |
+        name = this.(DataFlow::PropRead).getPropertyName()
+        or
+        this.(DataFlow::CallNode).getArgument(0).mayHaveStringValue(name)
+        |
+        if name = "hostname" then
+          result = "host"
+        else
+          result = name.toLowerCase())
+    }
+
+    override RouteHandler getRouteHandler() {
+      result = rh
+    }
+
+    override string getKind() {
+      result = "header"
     }
   }
 
@@ -589,9 +632,9 @@ module Express {
       astNode.getMethodName() = any(string n | n = "set" or n = "header") and
       astNode.getNumArgument() = 1
     }
-    
+
     /**
-     * Gets a reference to the multiple headers object that is to be set. 
+     * Gets a reference to the multiple headers object that is to be set.
      */
     private DataFlow::SourceNode getAHeaderSource() {
       result.flowsToExpr(astNode.getArgument(0))
@@ -607,12 +650,12 @@ module Express {
     override RouteHandler getRouteHandler() {
       result = rh
     }
-    
+
     override Expr getNameExpr() {
-      exists (DataFlow::PropWrite write  | 
+      exists (DataFlow::PropWrite write  |
         getAHeaderSource().flowsTo(write.getBase()) and
         result = write.getPropertyNameExpr()
-      )      
+      )
     }
   }
 
@@ -787,6 +830,10 @@ module Express {
     ResponseSendFileAsFileSystemAccess() {
       exists (string name | name = "sendFile" or name = "sendfile" |
         asExpr().(MethodCallExpr).calls(any(ResponseExpr res), name))
+    }
+
+    override DataFlow::Node getDataNode() {
+      result = DataFlow::valueNode(astNode)
     }
 
     override DataFlow::Node getAPathArgument() {

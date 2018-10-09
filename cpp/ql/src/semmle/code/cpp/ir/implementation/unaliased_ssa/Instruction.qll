@@ -133,6 +133,16 @@ class Instruction extends Construction::TInstruction {
   }
 
   final string toString() {
+    result = getOpcode().toString() + ": " + getAST().toString()
+  }
+
+  /**
+   * Gets a string showing the result, opcode, and operands of the instruction, equivalent to what
+   * would be printed by PrintIR.ql. For example:
+   *
+   * `mu0_28(int) = Store r0_26, r0_27`
+   */
+  final string getDumpString() {
     result = getResultString() + " = " + getOperationString() + " " + getOperandsString()
   }
 
@@ -310,11 +320,19 @@ class Instruction extends Construction::TInstruction {
   }
 
   /**
-   * Gets the `Expr` whose results is computed by this instruction, if any.
+   * Gets the `Expr` whose result is computed by this instruction, if any.
    */
-  final Expr getResultExpression() {
-    result = Construction::getInstructionResultExpression(this) 
+  final Expr getConvertedResultExpression() {
+    result = Construction::getInstructionConvertedResultExpression(this) 
   }
+  
+    /**
+   * Gets the unconverted `Expr` whose result is computed by this instruction, if any.
+   */
+  final Expr getUnconvertedResultExpression() {
+    result = Construction::getInstructionUnconvertedResultExpression(this) 
+  }
+  
 
   /**
    * Gets the type of the result produced by this instruction. If the
@@ -967,27 +985,109 @@ class CompareNEInstruction extends CompareInstruction {
   }
 }
 
-class CompareLTInstruction extends CompareInstruction {
+/**
+ * Represents an instruction that does a relative comparison of two values, such as `<` or `>=`.
+ */
+class RelationalInstruction extends CompareInstruction {
+  RelationalInstruction() {
+    opcode instanceof RelationalOpcode
+  }
+  /**
+   * Gets the operand on the "greater" (or "greater-or-equal") side
+   * of this relational instruction, that is, the side that is larger
+   * if the overall instruction evaluates to `true`; for example on
+   * `x <= 20` this is the `20`, and on `y > 0` it is `y`.
+   */
+  Instruction getGreaterOperand() {
+    none()
+  }
+
+  /**
+   * Gets the operand on the "lesser" (or "lesser-or-equal") side
+   * of this relational instruction, that is, the side that is smaller
+   * if the overall instruction evaluates to `true`; for example on
+   * `x <= 20` this is `x`, and on `y > 0` it is the `0`.
+   */
+  Instruction getLesserOperand() {
+    none()
+  }
+  /**
+   * Holds if this relational instruction is strict (is not an "or-equal" instruction).
+   */
+  predicate isStrict() {
+    none()
+  }
+}
+
+class CompareLTInstruction extends RelationalInstruction {
   CompareLTInstruction() {
     opcode instanceof Opcode::CompareLT
   }
+
+  override Instruction getLesserOperand() {
+    result = getLeftOperand()
+  }
+
+  override Instruction getGreaterOperand() {
+    result = getRightOperand()
+  }
+
+  override predicate isStrict() {
+    any()
+  }
 }
 
-class CompareGTInstruction extends CompareInstruction {
+class CompareGTInstruction extends RelationalInstruction {
   CompareGTInstruction() {
     opcode instanceof Opcode::CompareGT
   }
-}
 
-class CompareLEInstruction extends CompareInstruction {
-  CompareLEInstruction() {
-    opcode instanceof Opcode::CompareLE
+  override Instruction getLesserOperand() {
+    result = getRightOperand()
+  }
+
+  override Instruction getGreaterOperand() {
+    result = getLeftOperand()
+  }
+
+  override predicate isStrict() {
+    any()
   }
 }
 
-class CompareGEInstruction extends CompareInstruction {
+class CompareLEInstruction extends RelationalInstruction {
+  CompareLEInstruction() {
+    opcode instanceof Opcode::CompareLE
+  }
+
+  override Instruction getLesserOperand() {
+    result = getLeftOperand()
+  }
+
+  override Instruction getGreaterOperand() {
+    result = getRightOperand()
+  }
+
+  override predicate isStrict() {
+    none()
+  }
+}
+
+class CompareGEInstruction extends RelationalInstruction {
   CompareGEInstruction() {
     opcode instanceof Opcode::CompareGE
+  }
+
+  override Instruction getLesserOperand() {
+    result = getRightOperand()
+  }
+
+  override Instruction getGreaterOperand() {
+    result = getLeftOperand()
+  }
+
+  override predicate isStrict() {
+    none()
   }
 }
 

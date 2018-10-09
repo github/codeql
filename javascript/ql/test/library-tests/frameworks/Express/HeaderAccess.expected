@@ -1,0 +1,5 @@
+| src/express.js:28:3:28:16 | req.get("foo") | foo |
+| src/express.js:29:3:29:19 | req.header("bar") | bar |
+| src/express.js:47:3:47:17 | req.headers.baz | baz |
+| src/express.js:48:3:48:10 | req.host | host |
+| src/express.js:49:3:49:14 | req.hostname | host |

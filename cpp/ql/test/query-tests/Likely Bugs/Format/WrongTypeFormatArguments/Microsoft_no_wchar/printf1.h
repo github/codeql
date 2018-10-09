@@ -65,9 +65,9 @@ void g()
     printf("%zu", c_st); // ok
     printf("%zu", C_ST); // ok
     printf("%zu", sizeof(ul)); // ok
-    printf("%zu", sst); // not ok [NOT DETECTED ON MICROSOFT]
+    printf("%zu", sst); // not ok [NOT DETECTED]
 
-    printf("%zd", ul); // not ok
+    printf("%zd", ul); // not ok [NOT DETECTED]
     printf("%zd", st); // not ok
     printf("%zd", ST); // not ok
     printf("%zd", c_st); // not ok
@@ -80,8 +80,8 @@ void g()
 
         printf("%tu", ptr_a - ptr_b); // ok
         printf("%td", ptr_a - ptr_b); // ok
-        printf("%zu", ptr_a - ptr_b); // ok (dubious) [DETECTED ON LINUX ONLY]
-        printf("%zd", ptr_a - ptr_b); // ok (dubious) [DETECTED ON MICROSOFT ONLY]
+        printf("%zu", ptr_a - ptr_b); // ok (dubious)
+        printf("%zd", ptr_a - ptr_b); // ok (dubious) [FALSE POSITIVE]
     }
 }
 
@@ -91,4 +91,41 @@ void h(int i, struct some_type *j, int k)
 	// recognize.  We should not report a problem if we're unable to understand what's
 	// going on.
 	printf("%i %R %i", i, j, k); // GOOD (as far as we can tell)
+}
+
+typedef long long ptrdiff_t;
+
+void fun1(unsigned char* a, unsigned char* b) {
+  ptrdiff_t pdt;
+
+  printf("%td\n", pdt); // GOOD
+  printf("%td\n", a-b); // GOOD
+}
+
+typedef wchar_t WCHAR_T; // WCHAR_T -> wchar_t -> int
+typedef int MYCHAR; // MYCHAR -> int (notably not via the wchar_t typedef)
+
+void fun2() {
+  wchar_t *myString1;
+  WCHAR_T *myString2;
+  int *myString3;
+  MYCHAR *myString4;
+
+  printf("%S", myString1); // GOOD
+  printf("%S", myString2); // GOOD
+  printf("%S", myString3); // GOOD
+  printf("%S", myString4); // GOOD
+}
+
+typedef void *VOIDPTR;
+typedef int (*FUNPTR)(int);
+
+void fun3(void *p1, VOIDPTR p2, FUNPTR p3, char *p4)
+{
+  printf("%p\n", p1); // GOOD
+  printf("%p\n", p2); // GOOD
+  printf("%p\n", p3); // GOOD
+  printf("%p\n", p4); // GOOD
+  printf("%p\n", p4 + 1); // GOOD
+  printf("%p\n", 0); // GOOD [FALSE POSITIVE]
 }
