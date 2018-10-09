@@ -101,23 +101,6 @@ private import RangeAnalysisCache
 import RangeAnalysisPublic
 
 /**
- * Gets a condition that tests whether `v` equals `e + delta`.
- *
- * If the condition evaluates to `testIsTrue`:
- * - `isEq = true`  : `v == e + delta`
- * - `isEq = false` : `v != e + delta`
- */
-private Guard eqFlowCond(SsaVariable v, Expr e, int delta, boolean isEq, boolean testIsTrue) {
-  exists(boolean eqpolarity |
-    result.isEquality(ssaRead(v, delta), e, eqpolarity) and
-    (testIsTrue = true or testIsTrue = false) and
-    eqpolarity.booleanXor(testIsTrue).booleanNot() = isEq
-  )
-  or
-  exists(boolean testIsTrue0 | implies_v2(result, testIsTrue, eqFlowCond(v, e, delta, isEq, testIsTrue0), testIsTrue0))
-}
-
-/**
  * Holds if `comp` corresponds to:
  * - `upper = true`  : `v <= e + delta` or `v < e + delta`
  * - `upper = false` : `v >= e + delta` or `v > e + delta`
@@ -207,14 +190,8 @@ class CondReason extends Reason, TCondReason {
  * - `upper = false` : `v >= e + delta`
  */
 private predicate boundFlowStepSsa(SsaVariable v, SsaReadPosition pos, Expr e, int delta, boolean upper, Reason reason) {
-  exists(SsaExplicitUpdate upd | v = upd and pos.hasReadOfVar(v) and reason = TNoReason() |
-    upd.getDefiningExpr().(VariableAssign).getSource() = e and delta = 0 and (upper = true or upper = false) or
-    upd.getDefiningExpr().(PostIncExpr).getExpr() = e and delta = 1 and (upper = true or upper = false) or
-    upd.getDefiningExpr().(PreIncExpr).getExpr() = e and delta = 1 and (upper = true or upper = false) or
-    upd.getDefiningExpr().(PostDecExpr).getExpr() = e and delta = -1 and (upper = true or upper = false) or
-    upd.getDefiningExpr().(PreDecExpr).getExpr() = e and delta = -1 and (upper = true or upper = false) or
-    upd.getDefiningExpr().(AssignOp) = e and delta = 0 and (upper = true or upper = false)
-  ) or
+  ssaUpdateStep(v, e, delta) and pos.hasReadOfVar(v) and (upper = true or upper = false) and reason = TNoReason()
+  or
   exists(Guard guard, boolean testIsTrue |
     pos.hasReadOfVar(v) and
     guard = boundFlowCond(v, e, delta, upper, testIsTrue) and
@@ -291,22 +268,8 @@ private class NarrowingCastExpr extends CastExpr {
  * - `upper = false` : `e2 >= e1 + delta`
  */
 private predicate boundFlowStep(Expr e2, Expr e1, int delta, boolean upper) {
-  e2.(ParExpr).getExpr() = e1 and delta = 0 and (upper = true or upper = false) or
-  e2.(AssignExpr).getSource() = e1 and delta = 0 and (upper = true or upper = false) or
-  e2.(PlusExpr).getExpr() = e1 and delta = 0 and (upper = true or upper = false) or
-  e2.(PostIncExpr).getExpr() = e1 and delta = 0 and (upper = true or upper = false) or
-  e2.(PostDecExpr).getExpr() = e1 and delta = 0 and (upper = true or upper = false) or
-  e2.(PreIncExpr).getExpr() = e1 and delta = 1 and (upper = true or upper = false) or
-  e2.(PreDecExpr).getExpr() = e1 and delta = -1 and (upper = true or upper = false) or
+  valueFlowStep(e2, e1, delta) and (upper = true or upper = false) or
   e2.(SafeCastExpr).getExpr() = e1 and delta = 0 and (upper = true or upper = false) or
-  exists(SsaExplicitUpdate v, FieldRead arrlen |
-    e2 = arrlen and
-    arrlen.getField() instanceof ArrayLengthField and
-    arrlen.getQualifier() = v.getAUse() and
-    v.getDefiningExpr().(VariableAssign).getSource().(ArrayCreationExpr).getDimension(0) = e1 and
-    delta = 0 and
-    (upper = true or upper = false)
-  ) or
   exists(Expr x |
     e2.(AddExpr).hasOperands(e1, x) or
     exists(AssignAddExpr add | add = e2 |
@@ -314,8 +277,7 @@ private predicate boundFlowStep(Expr e2, Expr e1, int delta, boolean upper) {
       add.getDest() = x and add.getRhs() = e1
     )
     |
-    x.(ConstantIntegerExpr).getIntValue() = delta and (upper = true or upper = false)
-    or
+    // `x instanceof ConstantIntegerExpr` is covered by valueFlowStep
     not x instanceof ConstantIntegerExpr and
     not e1 instanceof ConstantIntegerExpr and
     if strictlyPositive(x) then
@@ -341,8 +303,7 @@ private predicate boundFlowStep(Expr e2, Expr e1, int delta, boolean upper) {
       sub.getRhs() = x
     )
     |
-    x.(ConstantIntegerExpr).getIntValue() = -delta and (upper = true or upper = false)
-    or
+    // `x instanceof ConstantIntegerExpr` is covered by valueFlowStep
     not x instanceof ConstantIntegerExpr and
     if strictlyPositive(x) then
       (upper = true and delta = -1)
