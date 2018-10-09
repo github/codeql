@@ -96,8 +96,7 @@ class AbstractProtoProperty extends AbstractProperty {
  * which in turn introduces a materialization.
  */
 private AbstractValue getAnAssignedValue(AbstractValue b, string p) {
-  exists (AnalyzedPropertyWrite apw, DataFlow::AnalyzedNode afn |
-    apw.writes(b, p, afn) and
-    result = afn.getALocalValue()
+  exists (AnalyzedPropertyWrite apw |
+    apw.writesValue(b, p, result)
   )
 }

@@ -52,3 +52,6 @@ let z14 = foo_reexported;
 
 import { something } from './reexport-unknown';
 let z15 = something;
+
+import { notAlwaysZero } from './a';
+let z16 = notAlwaysZero;
