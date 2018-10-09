@@ -19,7 +19,7 @@ import cpp
 class AnyCharPointerType extends PointerType {
   AnyCharPointerType() {
     this.getBaseType().getUnderlyingType() instanceof CharType or
-    this.getBaseType().getUnderlyingType() instanceof WideCharType
+    this.getBaseType().getUnderlyingType() instanceof Wchar_t
   }
 }
 
@@ -29,7 +29,7 @@ class AnyCharPointerType extends PointerType {
 class AnyCharArrayType extends ArrayType {
   AnyCharArrayType() {
     this.getBaseType().getUnderlyingType() instanceof CharType or
-    this.getBaseType().getUnderlyingType() instanceof WideCharType
+    this.getBaseType().getUnderlyingType() instanceof Wchar_t
   }
 }
 

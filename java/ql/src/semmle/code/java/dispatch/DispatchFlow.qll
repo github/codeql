@@ -19,114 +19,6 @@ private Callable dispatchCand(Call c) {
 }
 
 /**
- * Holds if `p` is the `i`th parameter of a viable dispatch target of `call`.
- * The instance parameter is considered to have index `-1`.
- */
-pragma[nomagic]
-private predicate viableParamCand(Call call, int i, ParameterNode p) {
-  exists(Callable callable |
-    callable = dispatchCand(call) and
-    p.isParameterOf(callable, i)
-  )
-}
-
-/**
- * Holds if `arg` is a possible argument to `p` taking virtual dispatch into account.
- */
-private predicate viableArgParamCand(ArgumentNode arg, ParameterNode p) {
-  exists(int i, Call call |
-    viableParamCand(call, i, p) and
-    arg.argumentOf(call, i)
-  )
-}
-
-/**
- * Holds if data may flow from `n1` to `n2` in a single step through a call or a return.
- */
-private predicate callFlowStepCand(Node n1, Node n2) {
-  exists(ReturnStmt ret, Method m |
-    ret.getEnclosingCallable() = m and
-    ret.getResult() = n1.asExpr() and
-    m = dispatchCand(n2.asExpr())
-  ) or
-  viableArgParamCand(n1, n2)
-}
-
-/**
- * Holds if data may flow from `n1` to `n2` in a single step that does not go
- * through a call or a return.
- */
-private predicate flowStep(Node n1, Node n2) {
-  exists(BaseSsaVariable v, BaseSsaVariable def |
-    def.(BaseSsaUpdate).getDefiningExpr().(VariableAssign).getSource() = n1.asExpr() or
-    def.(BaseSsaImplicitInit).isParameterDefinition(n1.asParameter()) or
-    exists(EnhancedForStmt for |
-      for.getVariable() = def.(BaseSsaUpdate).getDefiningExpr() and
-      for.getExpr() = n1.asExpr() and
-      n1.getType() instanceof Array
-    )
-    |
-    v.getAnUltimateDefinition() = def and
-    v.getAUse() = n2.asExpr()
-  ) or
-  exists(Callable c |
-    n1.(InstanceParameterNode).getCallable() = c
-    |
-    exists(InstanceAccess ia | ia = n2.asExpr() and ia.getEnclosingCallable() = c and ia.isOwnInstanceAccess()) or
-    n2.(ImplicitInstanceAccess).getInstanceAccess().(OwnInstanceAccess).getEnclosingCallable() = c
-  ) or
-  exists(Field f |
-    f.getAnAssignedValue() = n1.asExpr() and
-    n2.asExpr().(FieldRead).getField() = f
-  ) or
-  exists(EnumType enum, Method getValue |
-    enum.getAnEnumConstant().getAnAssignedValue() = n1.asExpr() and
-    getValue.getDeclaringType() = enum and
-    (getValue.hasName("values") or getValue.hasName("valueOf")) and
-    n2.asExpr().(MethodAccess).getMethod() = getValue
-  ) or
-  n2.asExpr().(ParExpr).getExpr() = n1.asExpr() or
-  n2.asExpr().(CastExpr).getExpr() = n1.asExpr() or
-  n2.asExpr().(ConditionalExpr).getTrueExpr() = n1.asExpr() or
-  n2.asExpr().(ConditionalExpr).getFalseExpr() = n1.asExpr() or
-  n2.asExpr().(AssignExpr).getSource() = n1.asExpr() or
-  n2.asExpr().(ArrayInit).getAnInit() = n1.asExpr() or
-  n2.asExpr().(ArrayCreationExpr).getInit() = n1.asExpr() or
-  n2.asExpr().(ArrayAccess).getArray() = n1.asExpr() or
-  exists(Argument arg | n1.asExpr() = arg and arg.isVararg() and n2.(ImplicitVarargsArray).getCall() = arg.getCall()) or
-  exists(AssignExpr a, Variable v |
-    a.getSource() = n1.asExpr() and
-    a.getDest().(ArrayAccess).getArray() = v.getAnAccess() and
-    n2.asExpr() = v.getAnAccess().(RValue)
-  ) or
-  exists(Variable v, MethodAccess put, MethodAccess get |
-    put.getArgument(1) = n1.asExpr() and
-    put.getMethod().(MapMethod).hasName("put") and
-    put.getQualifier() = v.getAnAccess() and
-    get.getQualifier() = v.getAnAccess() and
-    get.getMethod().(MapMethod).hasName("get") and
-    n2.asExpr() = get
-  ) or
-  exists(Variable v, MethodAccess add |
-    add.getAnArgument() = n1.asExpr() and
-    add.getMethod().(CollectionMethod).hasName("add") and
-    add.getQualifier() = v.getAnAccess()
-    |
-    exists(MethodAccess get |
-      get.getQualifier() = v.getAnAccess() and
-      get.getMethod().(CollectionMethod).hasName("get") and
-      n2.asExpr() = get
-    ) or
-    exists(EnhancedForStmt for, BaseSsaVariable ssa, BaseSsaVariable def |
-      for.getVariable() = def.(BaseSsaUpdate).getDefiningExpr() and
-      for.getExpr() = v.getAnAccess() and
-      ssa.getAnUltimateDefinition() = def and
-      ssa.getAUse() = n2.asExpr()
-    )
-  )
-}
-
-/**
  * Holds if `t` and all its enclosing types are public.
  */
 private predicate veryPublic(RefType t) {
@@ -201,6 +93,130 @@ private predicate dispatchOrigin(ClassInstanceExpr cie, MethodAccess ma, Method 
   m = viableImpl_inp(ma) and
   not m = ma.getMethod().getSourceDeclaration() and
   trackedMethodOnType(m, cie.getConstructedType().getSourceDeclaration())
+}
+
+/** Holds if `t` is a type that is relevant for dispatch flow. */
+private predicate relevant(RefType t) {
+  exists(ClassInstanceExpr cie | dispatchOrigin(cie, _, _) and t = cie.getConstructedType().getSourceDeclaration()) or
+  relevant(t.getErasure()) or
+  exists(RefType r | relevant(r) and t = r.getASourceSupertype()) or
+  relevant(t.(Array).getComponentType()) or
+  t instanceof MapType or
+  t instanceof CollectionType
+}
+
+/** A node with a type that is relevant for dispatch flow. */
+private class RelevantNode extends Node {
+  RelevantNode() { relevant(this.getType()) }
+}
+
+/**
+ * Holds if `p` is the `i`th parameter of a viable dispatch target of `call`.
+ * The instance parameter is considered to have index `-1`.
+ */
+pragma[nomagic]
+private predicate viableParamCand(Call call, int i, ParameterNode p) {
+  exists(Callable callable |
+    callable = dispatchCand(call) and
+    p.isParameterOf(callable, i) and
+    p instanceof RelevantNode
+  )
+}
+
+/**
+ * Holds if `arg` is a possible argument to `p` taking virtual dispatch into account.
+ */
+private predicate viableArgParamCand(ArgumentNode arg, ParameterNode p) {
+  exists(int i, Call call |
+    viableParamCand(call, i, p) and
+    arg.argumentOf(call, i)
+  )
+}
+
+/**
+ * Holds if data may flow from `n1` to `n2` in a single step through a call or a return.
+ */
+private predicate callFlowStepCand(RelevantNode n1, RelevantNode n2) {
+  exists(ReturnStmt ret, Method m |
+    ret.getEnclosingCallable() = m and
+    ret.getResult() = n1.asExpr() and
+    m = dispatchCand(n2.asExpr())
+  ) or
+  viableArgParamCand(n1, n2)
+}
+
+/**
+ * Holds if data may flow from `n1` to `n2` in a single step that does not go
+ * through a call or a return.
+ */
+private predicate flowStep(RelevantNode n1, RelevantNode n2) {
+  exists(BaseSsaVariable v, BaseSsaVariable def |
+    def.(BaseSsaUpdate).getDefiningExpr().(VariableAssign).getSource() = n1.asExpr() or
+    def.(BaseSsaImplicitInit).isParameterDefinition(n1.asParameter()) or
+    exists(EnhancedForStmt for |
+      for.getVariable() = def.(BaseSsaUpdate).getDefiningExpr() and
+      for.getExpr() = n1.asExpr() and
+      n1.getType() instanceof Array
+    )
+    |
+    v.getAnUltimateDefinition() = def and
+    v.getAUse() = n2.asExpr()
+  ) or
+  exists(Callable c |
+    n1.(InstanceParameterNode).getCallable() = c
+    |
+    exists(InstanceAccess ia | ia = n2.asExpr() and ia.getEnclosingCallable() = c and ia.isOwnInstanceAccess()) or
+    n2.(ImplicitInstanceAccess).getInstanceAccess().(OwnInstanceAccess).getEnclosingCallable() = c
+  ) or
+  exists(Field f |
+    f.getAnAssignedValue() = n1.asExpr() and
+    n2.asExpr().(FieldRead).getField() = f
+  ) or
+  exists(EnumType enum, Method getValue |
+    enum.getAnEnumConstant().getAnAssignedValue() = n1.asExpr() and
+    getValue.getDeclaringType() = enum and
+    (getValue.hasName("values") or getValue.hasName("valueOf")) and
+    n2.asExpr().(MethodAccess).getMethod() = getValue
+  ) or
+  n2.asExpr().(ParExpr).getExpr() = n1.asExpr() or
+  n2.asExpr().(CastExpr).getExpr() = n1.asExpr() or
+  n2.asExpr().(ConditionalExpr).getTrueExpr() = n1.asExpr() or
+  n2.asExpr().(ConditionalExpr).getFalseExpr() = n1.asExpr() or
+  n2.asExpr().(AssignExpr).getSource() = n1.asExpr() or
+  n2.asExpr().(ArrayInit).getAnInit() = n1.asExpr() or
+  n2.asExpr().(ArrayCreationExpr).getInit() = n1.asExpr() or
+  n2.asExpr().(ArrayAccess).getArray() = n1.asExpr() or
+  exists(Argument arg | n1.asExpr() = arg and arg.isVararg() and n2.(ImplicitVarargsArray).getCall() = arg.getCall()) or
+  exists(AssignExpr a, Variable v |
+    a.getSource() = n1.asExpr() and
+    a.getDest().(ArrayAccess).getArray() = v.getAnAccess() and
+    n2.asExpr() = v.getAnAccess().(RValue)
+  ) or
+  exists(Variable v, MethodAccess put, MethodAccess get |
+    put.getArgument(1) = n1.asExpr() and
+    put.getMethod().(MapMethod).hasName("put") and
+    put.getQualifier() = v.getAnAccess() and
+    get.getQualifier() = v.getAnAccess() and
+    get.getMethod().(MapMethod).hasName("get") and
+    n2.asExpr() = get
+  ) or
+  exists(Variable v, MethodAccess add |
+    add.getAnArgument() = n1.asExpr() and
+    add.getMethod().(CollectionMethod).hasName("add") and
+    add.getQualifier() = v.getAnAccess()
+    |
+    exists(MethodAccess get |
+      get.getQualifier() = v.getAnAccess() and
+      get.getMethod().(CollectionMethod).hasName("get") and
+      n2.asExpr() = get
+    ) or
+    exists(EnhancedForStmt for, BaseSsaVariable ssa, BaseSsaVariable def |
+      for.getVariable() = def.(BaseSsaUpdate).getDefiningExpr() and
+      for.getExpr() = v.getAnAccess() and
+      ssa.getAnUltimateDefinition() = def and
+      ssa.getAUse() = n2.asExpr()
+    )
+  )
 }
 
 /**

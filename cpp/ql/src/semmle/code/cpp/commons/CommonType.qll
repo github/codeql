@@ -1,7 +1,7 @@
 import semmle.code.cpp.Type
 
 /**
- * The C/C++ char* type.
+ * The C/C++ `char*` type.
  */
 class CharPointerType extends PointerType {
 
@@ -10,7 +10,7 @@ class CharPointerType extends PointerType {
 }
 
 /**
- * The C/C++ int* type.
+ * The C/C++ `int*` type.
  */
 class IntPointerType extends PointerType {
 
@@ -20,7 +20,7 @@ class IntPointerType extends PointerType {
 
 
 /**
- * The C/C++ void* type.
+ * The C/C++ `void*` type.
  */
 class VoidPointerType extends PointerType {
 
@@ -29,7 +29,7 @@ class VoidPointerType extends PointerType {
 }
 
 /**
- * The C/C++ size_t type.
+ * The C/C++ `size_t` type.
  */
 class Size_t extends Type {
   Size_t() {
@@ -39,7 +39,7 @@ class Size_t extends Type {
 }
 
 /**
- * The C/C++ ssize_t type.
+ * The C/C++ `ssize_t` type.
  */
 class Ssize_t extends Type {
   Ssize_t() {
@@ -49,7 +49,7 @@ class Ssize_t extends Type {
 }
 
 /**
- * The C/C++ ptrdiff_t type.
+ * The C/C++ `ptrdiff_t` type.
  */
 class Ptrdiff_t extends Type {
   Ptrdiff_t() {
@@ -59,7 +59,7 @@ class Ptrdiff_t extends Type {
 }
 
 /**
- * The C/C++ intmax_t type.
+ * The C/C++ `intmax_t` type.
  */
 class Intmax_t extends Type {
   Intmax_t() {
@@ -69,7 +69,7 @@ class Intmax_t extends Type {
 }
 
 /**
- * The C/C++ uintmax_t type.
+ * The C/C++ `uintmax_t` type.
  */
 class Uintmax_t extends Type {
   Uintmax_t() {
@@ -79,7 +79,11 @@ class Uintmax_t extends Type {
 }
 
 /**
- * The C/C++ wchar_t type.
+ * The C/C++ `wchar_t` type.
+ *
+ * Note that on some platforms `wchar_t` doesn't exist as a built-in
+ * type but a typedef is provided.  This QL class includes both cases
+ * (see also `WideCharType`).
  */
 class Wchar_t extends Type {
   Wchar_t() {

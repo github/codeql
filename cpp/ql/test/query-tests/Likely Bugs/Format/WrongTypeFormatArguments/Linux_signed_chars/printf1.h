@@ -65,14 +65,14 @@ void g()
     printf("%zu", c_st); // ok
     printf("%zu", C_ST); // ok
     printf("%zu", sizeof(ul)); // ok
-    printf("%zu", sst); // not ok [NOT DETECTED ON MICROSOFT]
+    printf("%zu", sst); // not ok [NOT DETECTED]
 
-    printf("%zd", ul); // not ok
-    printf("%zd", st); // not ok
-    printf("%zd", ST); // not ok
-    printf("%zd", c_st); // not ok
-    printf("%zd", C_ST); // not ok
-    printf("%zd", sizeof(ul)); // not ok
+    printf("%zd", ul); // not ok [NOT DETECTED]
+    printf("%zd", st); // not ok [NOT DETECTED]
+    printf("%zd", ST); // not ok [NOT DETECTED]
+    printf("%zd", c_st); // not ok [NOT DETECTED]
+    printf("%zd", C_ST); // not ok [NOT DETECTED]
+    printf("%zd", sizeof(ul)); // not ok [NOT DETECTED]
     printf("%zd", sst); // ok
     {
         char *ptr_a, *ptr_b;
@@ -80,8 +80,8 @@ void g()
 
         printf("%tu", ptr_a - ptr_b); // ok
         printf("%td", ptr_a - ptr_b); // ok
-        printf("%zu", ptr_a - ptr_b); // ok (dubious) [DETECTED ON LINUX ONLY]
-        printf("%zd", ptr_a - ptr_b); // ok (dubious) [DETECTED ON MICROSOFT ONLY]
+        printf("%zu", ptr_a - ptr_b); // ok (dubious)
+        printf("%zd", ptr_a - ptr_b); // ok (dubious)
     }
 }
 
@@ -91,4 +91,13 @@ void h(int i, struct some_type *j, int k)
 	// recognize.  We should not report a problem if we're unable to understand what's
 	// going on.
 	printf("%i %R %i", i, j, k); // GOOD (as far as we can tell)
+}
+
+typedef long ptrdiff_t;
+
+void fun1(unsigned char* a, unsigned char* b) {
+  ptrdiff_t pdt;
+
+  printf("%td\n", pdt); // GOOD
+  printf("%td\n", a-b); // GOOD
 }
