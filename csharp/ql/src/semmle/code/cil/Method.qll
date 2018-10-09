@@ -51,8 +51,6 @@ class MethodImplementation extends EntryPoint, @cil_method_implementation {
   /** Gets a handler in this implementation, if any. */
   Handler getAHandler() { result.getImplementation()=this }
 
-  override Instruction getASuccessorType(FlowType t) { t instanceof NormalFlow and result.getImplementation()=this and result.getIndex()=0 }
-
   /** Gets the maximum stack size of this implementation. */
   int getStackSize() { cil_method_stack_size(this, result) }
 

@@ -46,12 +46,6 @@ class Handler extends Element, EntryPoint, @cil_handler
 
   override string toString() { none() }
 
-  override Instruction getASuccessorType(FlowType t) {
-    result = getHandlerStart()
-    and
-    t instanceof NormalFlow
-  }
-
   /** Gets the type of the caught exception, if any. */
   Type getCaughtType() { cil_handler_type(this,result) }
 

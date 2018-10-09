@@ -38,15 +38,6 @@ class Instruction extends Element, ControlFlowNode, DataFlowNode, @cil_instructi
   /** Gets the declaration accessed by this instruction, if any. */
   Declaration getAccess() { cil_access(this, result) }
 
-  /** Gets a successor instruction to this instruction. */
-  override Instruction getASuccessorType(FlowType t) {
-    t instanceof NormalFlow
-    and
-    canFlowNext()
-    and
-    result = this.getImplementation().getInstruction(getIndex()+1)
-  }
-
   /** Holds if this instruction passes control flow into the next instruction. */
   predicate canFlowNext() { any() }
 

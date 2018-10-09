@@ -23,7 +23,6 @@ class VariableAccess extends Access, @cil_access {
 
 /** An instruction that reads a variable. */
 class ReadAccess extends VariableAccess, Expr, @cil_read_access {
-  override Type getType() { result=getTarget().getType() }
 }
 
 /** An instruction yielding an address. */

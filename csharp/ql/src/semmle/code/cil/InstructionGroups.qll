@@ -11,7 +11,7 @@ private import dotnet
  */
 class Expr extends DotNet::Expr, Instruction, @cil_expr {
   override int getPushCount() { result=1 }
-  override Type getType() { result=Instruction.super.getType() }
+  final override Type getType() { result=Instruction.super.getType() }
   override Method getEnclosingCallable() { result=getImplementation().getMethod() }
 
   /**
@@ -30,16 +30,11 @@ class Branch extends Instruction, @cil_jump {
 
 /** An instruction that unconditionally jumps to another instruction. */
 class UnconditionalBranch extends Branch, @cil_unconditional_jump {
-  override Instruction getASuccessorType(FlowType t) { t instanceof NormalFlow and result=getTarget() }
   override predicate canFlowNext() { none() }
 }
 
 /** An instruction that jumps to a target based on a condition. */
 class ConditionalBranch extends Branch, @cil_conditional_jump {
-  override Instruction getASuccessorType(FlowType t) {
-    t instanceof TrueFlow and result = getTarget() or
-    t instanceof FalseFlow and result = getImplementation().getInstruction(getIndex()+1)
-  }
   override int getPushCount() { result=0 }
 }
 
@@ -57,29 +52,18 @@ class UnaryExpr extends Expr, @cil_unary_expr {
 
 /** A binary expression that compares two values. */
 class ComparisonOperation extends BinaryExpr, @cil_comparison_operation {
-  override BoolType getType() { exists(result) }
 }
 
 /** A binary arithmetic expression. */
 class BinaryArithmeticExpr extends BinaryExpr, @cil_binary_arithmetic_operation {
-  override Type getType() {
-    exists(Type t0, Type t1 | t0=getOperand(0).getType().getUnderlyingType() and t1=getOperand(1).getType().getUnderlyingType() |
-      t0=t1 and result=t0 or
-      t0.getConversionIndex() < t1.getConversionIndex() and result=t1 or
-      t0.getConversionIndex() > t1.getConversionIndex() and result=t0)
-  }
 }
 
 /** A binary bitwise expression. */
 class BinaryBitwiseOperation extends BinaryExpr, @cil_binary_bitwise_operation {
-  // This is wrong but efficient - should depend on the types of the operands.
-  override IntType getType() { exists(result) }
 }
 
 /** A unary bitwise expression. */
 class UnaryBitwiseOperation extends UnaryExpr, @cil_unary_bitwise_operation {
-  // This is wrong but efficient - should depend on the types of the operands.
-  override IntType getType() { exists(result) }
 }
 
 /** A unary expression that converts a value from one primitive type to another. */
@@ -104,7 +88,6 @@ class Literal extends DotNet::Literal, Expr, @cil_literal
 /** An integer literal. */
 class IntLiteral extends Literal, @cil_ldc_i {
   override string getExtra() { none() }
-  override IntType getType() { exists(result) }
 }
 
 /** An expression that pushes a `float`/`Single`. */
@@ -138,13 +121,6 @@ class Call extends Expr, DotNet::Call, @cil_call_any {
   }
 
   override string getExtra() { result=getTarget().getQualifiedName() }
-
-  /**
-   * Gets the return type of the call. Methods that do not return a value
-   * return the `void` type, `System.Void`, although the value of `getPushCount` is
-   * 0 in this case.
-   */
-  override Type getType() { result=getTarget().getReturnType() }
 
   // The number of items popped/pushed from the stack
   // depends on the target of the call.
