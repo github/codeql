@@ -15,6 +15,13 @@ private predicate constantIntegerExpr(Expr e, int val) {
     src = v.getDefiningExpr().(VariableAssign).getSource() and
     constantIntegerExpr(src, val)
   )
+  or
+  exists(SsaExplicitUpdate v, FieldRead arrlen |
+    e = arrlen and
+    arrlen.getField() instanceof ArrayLengthField and
+    arrlen.getQualifier() = v.getAUse() and
+    v.getDefiningExpr().(VariableAssign).getSource().(ArrayCreationExpr).getFirstDimensionSize() = val
+  )
 }
 
 /** An expression that always has the same integer value. */
