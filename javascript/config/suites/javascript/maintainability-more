@@ -2,6 +2,7 @@
 + semmlecode-javascript-queries/Comments/TodoComments.ql: /Maintainability/Comments
 + semmlecode-javascript-queries/Declarations/DeadStoreOfGlobal.ql: /Maintainability/Declarations
 + semmlecode-javascript-queries/Declarations/DeadStoreOfLocal.ql: /Maintainability/Declarations
++ semmlecode-javascript-queries/Declarations/DeadStoreOfProperty.ql: /Maintainability/Declarations
 + semmlecode-javascript-queries/Declarations/DuplicateVarDecl.ql: /Maintainability/Declarations
 + semmlecode-javascript-queries/Declarations/UnusedParameter.ql: /Maintainability/Declarations
 + semmlecode-javascript-queries/Declarations/UnusedVariable.ql: /Maintainability/Declarations
