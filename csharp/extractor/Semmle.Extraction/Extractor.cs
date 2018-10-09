@@ -203,6 +203,6 @@ namespace Semmle.Extraction
 
         public ILogger Logger { get; private set; }
 
-        public string Version => "1.8.0";
+        public string Version => $"{ThisAssembly.Git.BaseTag} ({ThisAssembly.Git.Sha})";
     }
 }

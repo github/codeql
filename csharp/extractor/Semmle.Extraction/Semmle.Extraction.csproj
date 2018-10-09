@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis" Version="2.8.0" />
+    <PackageReference Include="GitInfo" Version="2.0.18" />
   </ItemGroup>
 
   <ItemGroup>
