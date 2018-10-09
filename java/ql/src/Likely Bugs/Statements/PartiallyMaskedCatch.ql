@@ -47,7 +47,10 @@ RefType getAThrownExceptionType(TryStmt t) {
     t.getBlock() = call.getEnclosingStmt().getParent*() or
     t.getAResourceDecl() = call.getEnclosingStmt()
     |
-    call.getCallee().getAnException() = e and
+    (
+      call.getCallee().getAnException() = e or
+      call.(GenericCall).getATypeArgument(call.getCallee().getAnException().getType()) = e.getType()
+    ) and
     not caughtInside(t, call.getEnclosingStmt(), e.getType()) and
     result = e.getType()
   ) or
