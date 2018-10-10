@@ -891,7 +891,7 @@ module Express {
         getMethodName() = methodName and
         exists (DataFlow::ValueNode arg |
           arg = getAnArgument() |
-          exists (DataFlow::ArrayLiteralNode array |
+          exists (DataFlow::ArrayCreationNode array |
             array.flowsTo(arg) and
             routeHandlerArg = array.getAnElement()
           ) or
