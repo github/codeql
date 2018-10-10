@@ -824,12 +824,16 @@ module Express {
   }
 
   /** A call to `response.sendFile`, considered as a file system access. */
-  private class ResponseSendFileAsFileSystemAccess extends FileSystemAccess, DataFlow::ValueNode {
+  private class ResponseSendFileAsFileSystemAccess extends FileSystemReadAccess, DataFlow::ValueNode {
     override MethodCallExpr astNode;
 
     ResponseSendFileAsFileSystemAccess() {
       exists (string name | name = "sendFile" or name = "sendfile" |
         asExpr().(MethodCallExpr).calls(any(ResponseExpr res), name))
+    }
+
+    override DataFlow::Node getADataNode() {
+      none()
     }
 
     override DataFlow::Node getAPathArgument() {
