@@ -1,11 +1,5 @@
-| global-module-definition.js:10:8:10:11 | Mod2 | This guard always evaluates to false. |
-| module-environment-detection.js:3:13:3:41 | typeof  ... efined' | This guard always evaluates to true. |
-| module-environment-detection.js:15:9:15:37 | typeof  ... efined' | This guard always evaluates to true. |
 | module-environment-detection.js:23:8:23:36 | typeof  ... efined' | This guard always evaluates to true. |
 | tst2.js:4:12:4:35 | typeof  ... efined" | This guard always evaluates to true. |
-| tst.js:13:10:13:11 | u_ | This guard always evaluates to false. |
-| tst.js:14:10:14:11 | n_ | This guard always evaluates to false. |
-| tst.js:15:10:15:11 | o_ | This guard always evaluates to true. |
 | tst.js:18:5:18:5 | u | This guard always evaluates to false. |
 | tst.js:19:5:19:5 | n | This guard always evaluates to false. |
 | tst.js:20:5:20:5 | o | This guard always evaluates to true. |

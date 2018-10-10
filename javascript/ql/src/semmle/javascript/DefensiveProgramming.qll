@@ -390,7 +390,7 @@ module Internal {
   /**
    * A test for `undefined` using a `typeof` expression.
    */
-  private class TypeofUndefinedTest extends UndefinedNullTest {
+  class TypeofUndefinedTest extends UndefinedNullTest {
 
     TypeofTest test;
 
