@@ -250,4 +250,71 @@ module Internal {
     )
   }
 
+  /**
+   * Holds if `t` is `string`, `number` or `boolean`.
+   */
+  private predicate isStringOrNumOrBool(InferredType t) {
+    t = TTString() or
+    t = TTNumber() or
+    t = TTBoolean()
+  }
+
+  /**
+   * A defensive expression that tests for `undefined` and `null` using a truthiness test.
+   */
+  private class UndefinedNullTruthinessGuard extends DefensiveExpression {
+
+    VarRef guardVar;
+
+    boolean polarity;
+
+    UndefinedNullTruthinessGuard() {
+      exists (VarRef useVar |
+        guardVar = stripNotsAndParens(this.asExpr(), polarity) and
+        guardVar.getVariable() = useVar.getVariable() |
+        getAGuardedExpr(this.asExpr()).stripParens().(UndefinedNullCrashUse).getVulnerableSubexpression() = useVar and
+        // exclude types whose truthiness depend on the value
+        not isStringOrNumOrBool(guardVar.analyze().getAType())
+      )
+    }
+
+    override boolean getTheTestResult() {
+      exists (boolean testResult |
+        testResult = guardVar.analyze().getTheBooleanValue() |
+        if polarity = true then
+          result = testResult
+        else
+          result = testResult.booleanNot()
+      )
+    }
+
+  }
+
+  /**
+   * A defensive expression that tests for `undefined` and `null`.
+   */
+  private class UndefinedNullTypeGuard extends DefensiveExpression {
+
+    UndefinedNullTest test;
+
+    boolean polarity;
+
+    UndefinedNullTypeGuard() {
+      exists (Expr guard, VarRef guardVar, VarRef useVar |
+        this = guard.flow() and
+        test = stripNotsAndParens(guard, polarity) and
+        test.getOperand() = guardVar and
+        guardVar.getVariable() = useVar.getVariable() |
+        getAGuardedExpr(guard).stripParens().(UndefinedNullCrashUse).getVulnerableSubexpression() = useVar
+      )
+    }
+
+    override boolean getTheTestResult() {
+      polarity = true and result = test.getTheTestResult()
+      or
+      polarity = false and result = test.getTheTestResult().booleanNot()
+    }
+
+  }
+
 }
