@@ -159,6 +159,14 @@ predicate unreleasedResource(Resource r, Expr acquire, File f, int acquireLine) 
     )
     and f = acquire.getFile()
     and acquireLine = acquire.getLocation().getStartLine()
+
+    // check that any destructor for this class has a block; if it doesn't,
+    // we must be missing information.
+    and forall(Destructor d |
+      d = r.getDeclaringType().getAMember() and
+      not d.isCompilerGenerated() |
+      exists(d.getBlock())
+    ) 
 }
 
 predicate freedInSameMethod(Resource r, Expr acquire) {
