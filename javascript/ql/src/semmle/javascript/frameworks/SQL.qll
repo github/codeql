@@ -387,3 +387,105 @@ private module Sequelize {
     }
   }
 }
+
+/**
+ * Provides classes modelling the Google Cloud Spanner library.
+ */
+private module Spanner {
+  /**
+   * Gets a node that refers to the `Spanner` class
+   */
+  DataFlow::SourceNode spanner() {
+    // older versions
+    result = DataFlow::moduleImport("@google-cloud/spanner")
+    or
+    // newer versions
+    result = DataFlow::moduleMember("@google-cloud/spanner", "Spanner")
+  }
+
+  /**
+   * Gets a node that refers to an instance of the `Database` class.
+   */
+  DataFlow::SourceNode database() {
+    result = spanner().getAnInvocation().getAMethodCall("instance").getAMethodCall("database")
+  }
+
+  /**
+   * Gets a node that refers to an instance of the `v1.SpannerClient` class.
+   */
+  DataFlow::SourceNode v1SpannerClient() {
+    result = spanner().getAPropertyRead("v1").getAPropertyRead("SpannerClient").getAnInstantiation()
+  }
+
+  /**
+   * Gets a node that refers to a transaction object.
+   */
+  DataFlow::SourceNode transaction() {
+    result = database().getAMethodCall("runTransaction").getCallback(0).getParameter(1)
+  }
+
+  /**
+   * A call to a Spanner method that executes a SQL query.
+   */
+  abstract class SqlExecution extends DatabaseAccess, DataFlow::InvokeNode {
+    /**
+     * Gets the position of the query argument; default is zero, which can be overridden
+     * by subclasses.
+     */
+    int getQueryArgumentPosition() {
+      result = 0
+    }
+
+    override DataFlow::Node getAQueryArgument() {
+      result = getArgument(getQueryArgumentPosition()) or
+      result = getOptionArgument(getQueryArgumentPosition(), "sql")
+    }
+  }
+
+  /**
+   * A call to `Database.run` or `Database.runStream`.
+   */
+  class DatabaseRunCall extends SqlExecution {
+    DatabaseRunCall() {
+      exists (string run | run = "run" or run = "runPartitionedUpdate" or run = "runStream" |
+        this = database().getAMethodCall(run)
+      )
+    }
+  }
+
+  /**
+   * A call to `Transaction.run` or `Database.runStream`.
+   */
+  class TransactionRunCall extends SqlExecution {
+    TransactionRunCall() {
+      exists (string run | run = "run" or run = "runStream" or run = "runUpdate" |
+        this = transaction().getAMethodCall(run)
+      )
+    }
+  }
+
+  /**
+   * A call to `v1.SpannerClient.executeSql` or `v1.SpannerClient.executeStreamingSql`.
+   */
+  class ExecuteSqlCall extends SqlExecution {
+    ExecuteSqlCall() {
+      exists (string exec | exec = "executeSql" or exec = "executeStreamingSql" |
+        this = v1SpannerClient().getAMethodCall(exec)
+      )
+    }
+
+    override DataFlow::Node getAQueryArgument() {
+      // `executeSql` and `executeStreamingSql` do not accept query strings directly
+      result = getOptionArgument(0, "sql")
+    }
+  }
+
+  /**
+   * An expression that is interpreted as a SQL string.
+   */
+  class QueryString extends SQL::SqlString {
+    QueryString() {
+      this = any(SqlExecution se).getAQueryArgument().asExpr()
+    }
+  }
+}
