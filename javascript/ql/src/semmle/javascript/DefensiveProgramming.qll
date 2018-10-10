@@ -46,4 +46,86 @@ module Internal {
     }
   }
 
+  /**
+   * Gets the inner expression of `e`, with any surrounding parentheses and boolean nots removed.
+   * `polarity` is true iff the inner expression is nested in an even number of negations.
+   */
+  private Expr stripNotsAndParens(Expr e, boolean polarity) {
+    exists (Expr inner |
+      inner = e.stripParens() |
+      if inner instanceof LogNotExpr then
+        (result = stripNotsAndParens(inner.(LogNotExpr).getOperand(), polarity.booleanNot()))
+      else
+        (result = inner and polarity = true)
+    )
+  }
+
+  /**
+   * An equality test for `null` and `undefined`.
+   */
+  private abstract class UndefinedNullTest extends EqualityTest {
+    /** Gets the unique Boolean value that this test evaluates to, if any. */
+    abstract boolean getTheTestResult();
+
+    /**
+     * Gets the expression that is tested for being `null` or `undefined`.
+     */
+    abstract Expr getOperand();
+  }
+
+  /**
+   * A dis- or conjunction that tests if an expression is `null` or `undefined` in either branch.
+   */
+  private class CompositeUndefinedNullTestPart extends DefensiveExpression {
+
+    UndefinedNullTest test;
+
+    boolean polarity;
+
+    CompositeUndefinedNullTestPart(){
+      exists (BinaryExpr composite, Variable v, Expr op, Expr opOther, UndefinedNullTest testOther |
+        composite instanceof LogAndExpr or
+        composite instanceof LogOrExpr |
+        composite.hasOperands(op, opOther) and
+        this = op.flow() and
+        test = stripNotsAndParens(op, polarity) and
+        testOther = stripNotsAndParens(opOther, _) and
+        test.getOperand().(VarRef).getVariable() = v and
+        testOther.getOperand().(VarRef).getVariable() = v
+      )
+    }
+
+    override boolean getTheTestResult() {
+      polarity = true and result = test.getTheTestResult()
+      or
+      polarity = false and result = test.getTheTestResult().booleanNot()
+    }
+
+  }
+
+  /**
+   * A test for `undefined` or `null` in an if-statement.
+   */
+  private class SanityCheckingUndefinedNullGuard extends DefensiveExpression {
+
+    UndefinedNullTest test;
+
+    boolean polarity;
+
+    SanityCheckingUndefinedNullGuard() {
+      exists (IfStmt c |
+        this = c.getCondition().flow() and
+        test = stripNotsAndParens(c.getCondition(), polarity) and
+        test.getOperand() instanceof VarRef
+      )
+    }
+
+    override boolean getTheTestResult() {
+      polarity = true and result = test.getTheTestResult()
+      or
+      polarity = false and result = test.getTheTestResult().booleanNot()
+    }
+
+  }
+
 }
