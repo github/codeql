@@ -6,7 +6,7 @@ import javascript
 private import semmle.javascript.dataflow.InferredTypes
 
 /**
- * The test in a defensive programming pattern.
+ * A test in a defensive programming pattern.
  */
 abstract class DefensiveExpression extends DataFlow::ValueNode {
   /** Gets the unique Boolean value that this test evaluates to, if any. */
