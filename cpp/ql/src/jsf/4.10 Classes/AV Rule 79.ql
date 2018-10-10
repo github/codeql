@@ -164,7 +164,9 @@ predicate unreleasedResource(Resource r, Expr acquire, File f, int acquireLine) 
     // we must be missing information.
     and forall(Destructor d |
       d = r.getDeclaringType().getAMember() and
-      not d.isCompilerGenerated() |
+      not d.isCompilerGenerated() and
+      not d.isDefaulted() and
+      not d.isDeleted() |
       exists(d.getBlock())
     ) 
 }
