@@ -32,6 +32,7 @@ module DataFlow {
   or TReflectiveCallNode(MethodCallExpr ce, string kind) {
        ce.getMethodName() = kind and (kind = "call" or kind = "apply")
      }
+  or TThisNode(StmtContainer f) { f.(Function).getThisBinder() = f or f instanceof TopLevel }
 
   /**
    * A node in the data flow graph.
@@ -868,6 +869,13 @@ module DataFlow {
   }
 
   /**
+   * INTERNAL: Use `thisNode(StmtContainer container)` instead.
+   */
+  predicate thisNode(DataFlow::Node node, StmtContainer container) {
+    node = TThisNode(container)
+  }
+
+  /**
    * A classification of flows that are not modeled, or only modeled incompletely, by
    * `DataFlowNode`:
    *
@@ -970,6 +978,11 @@ module DataFlow {
       pred = valueNode(defSourceNode(def)) and
       succ = TDestructuringPatternNode(def.getTarget())
     )
+    or
+    // flow from 'this' parameter into 'this' expressions
+    exists (ThisExpr thiz |
+      pred = TThisNode(thiz.getBindingContainer()) and
+      succ = valueNode(thiz))
   }
 
   /**

@@ -52,10 +52,20 @@ abstract class ReactComponent extends ASTNode {
   }
 
   /**
-   * Gets a `this` access in an instance method of this component.
+   * Gets the `this` node in an instance method of this component.
    */
+  DataFlow::SourceNode getAThisNode() {
+    result.(DataFlow::ThisNode).getBinder().getFunction() = getInstanceMethod(_)
+  }
+
+  /**
+   * Gets the `this` node in an instance method of this component.
+   *
+   * DEPRECATED: Use `getAThisNode` instead.
+   */
+  deprecated
   DataFlow::SourceNode getAThisAccess() {
-    result.asExpr().(ThisExpr).getBinder() = getInstanceMethod(_)
+    result = getAThisNode()
   }
 
   /**
@@ -515,9 +525,9 @@ private class FactoryDefinition extends ReactElementDefinition {
  * However, since the function could be invoked in another way, we additionally
  * still infer the ordinary abstract value.
  */
-private class AnalyzedThisInBoundCallback extends AnalyzedValueNode, DataFlow::ThisNode {
+private class AnalyzedThisInBoundCallback extends AnalyzedNode, DataFlow::ThisNode {
 
-  AnalyzedValueNode thisSource;
+  AnalyzedNode thisSource;
 
   AnalyzedThisInBoundCallback() {
     exists(DataFlow::CallNode bindingCall, string binderName |
@@ -533,7 +543,7 @@ private class AnalyzedThisInBoundCallback extends AnalyzedValueNode, DataFlow::T
 
   override AbstractValue getALocalValue() {
     result = thisSource.getALocalValue() or
-    result = AnalyzedValueNode.super.getALocalValue()
+    result = AnalyzedNode.super.getALocalValue()
   }
 
 }
