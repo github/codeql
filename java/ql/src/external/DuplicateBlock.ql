@@ -6,6 +6,7 @@
  * @precision low
  * @id java/duplicate-block
  */
+
 import CodeDuplication
 
 from DuplicateBlock d, DuplicateBlock other, int lines, File otherFile, int otherLine
@@ -16,6 +17,6 @@ where
   other != d and
   otherFile = other.sourceFile() and
   otherLine = other.sourceStartLine()
-select
-  d,
-  "Duplicate code: " + lines + " lines are duplicated at " + otherFile.getStem() + ":" + otherLine + "."
+select d,
+  "Duplicate code: " + lines + " lines are duplicated at " + otherFile.getStem() + ":" + otherLine +
+    "."

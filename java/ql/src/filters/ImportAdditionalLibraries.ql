@@ -8,7 +8,6 @@
  */
 
 import java
-
 import semmle.code.java.dataflow.Guards
 import semmle.code.java.security.DataFlow
 

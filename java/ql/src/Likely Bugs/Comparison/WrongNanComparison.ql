@@ -8,6 +8,7 @@
  * @id java/comparison-with-nan
  * @tags correctness
  */
+
 import java
 
 predicate nanField(Field f) {
@@ -16,5 +17,8 @@ predicate nanField(Field f) {
 }
 
 from EqualityTest eq, Field f, string classname
-where eq.getAnOperand() = f.getAnAccess() and nanField(f) and f.getDeclaringType().hasName(classname)
-select eq, "This comparison will always yield the same result since 'NaN != NaN'. Consider using " + classname + ".isNaN instead"
+where
+  eq.getAnOperand() = f.getAnAccess() and nanField(f) and f.getDeclaringType().hasName(classname)
+select eq,
+  "This comparison will always yield the same result since 'NaN != NaN'. Consider using " +
+    classname + ".isNaN instead"

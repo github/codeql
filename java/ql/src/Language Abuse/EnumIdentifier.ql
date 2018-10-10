@@ -13,9 +13,9 @@
 import java
 
 Element elementNamedEnum() {
-  result.(CompilationUnit).getPackage().getName().regexpMatch("(.*\\.|)enum(\\..*|)")
-  or
+  result.(CompilationUnit).getPackage().getName().regexpMatch("(.*\\.|)enum(\\..*|)") or
   result.getName() = "enum"
 }
 
-select elementNamedEnum(), "Code using 'enum' as an identifier will not compile with a recent version of Java."
+select elementNamedEnum(),
+  "Code using 'enum' as an identifier will not compile with a recent version of Java."

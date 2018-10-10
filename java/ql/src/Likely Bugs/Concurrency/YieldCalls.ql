@@ -10,19 +10,18 @@
  *       correctness
  *       concurrency
  */
+
 import java
 
 class YieldMethod extends Method {
   YieldMethod() {
     this.getName() = "yield" and
-    this.getDeclaringType().hasQualifiedName("java.lang","Thread")
+    this.getDeclaringType().hasQualifiedName("java.lang", "Thread")
   }
 }
 
 class YieldMethodAccess extends MethodAccess {
-  YieldMethodAccess() {
-    this.getMethod() instanceof YieldMethod
-  }
+  YieldMethodAccess() { this.getMethod() instanceof YieldMethod }
 }
 
 from YieldMethodAccess yield

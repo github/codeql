@@ -14,5 +14,4 @@ from SsaPhiNode phi, int inputs
 where
   inputs = count(SsaVariable v | v = phi.getAPhiInput()) and
   inputs < 2
-select
-  phi, "Phi node for " + phi.getSourceVariable() + " has only " + inputs + " inputs."
+select phi, "Phi node for " + phi.getSourceVariable() + " has only " + inputs + " inputs."

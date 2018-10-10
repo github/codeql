@@ -8,6 +8,7 @@
  * @id java/non-private-field
  * @tags maintainability
  */
+
 import java
 import semmle.code.java.JDKAnnotations
 

@@ -24,8 +24,10 @@ predicate delegatingSuperCall(Expr e, Method target) {
     call.getQualifier() instanceof SuperAccess and
     call.getCallee() = target and
     forall(Expr arg | arg = call.getAnArgument() | arg instanceof VarAccess)
-  ) or
-  delegatingSuperCall(e.(CastExpr).getExpr(), target) or
+  )
+  or
+  delegatingSuperCall(e.(CastExpr).getExpr(), target)
+  or
   delegatingSuperCall(e.(ParExpr).getExpr(), target)
 }
 

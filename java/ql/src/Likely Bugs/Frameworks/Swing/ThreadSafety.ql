@@ -15,14 +15,16 @@ import java
 
 from MethodAccess ma, Method m, MainMethod main
 where
-  ma.getQualifier().getType().getCompilationUnit().getPackage().getName()
-    .matches("javax.swing%") and
+  ma.getQualifier().getType().getCompilationUnit().getPackage().getName().matches("javax.swing%") and
   (
-    m.hasName("show") and m.hasNoParameters() or
-    m.hasName("pack") and m.hasNoParameters() or
+    m.hasName("show") and m.hasNoParameters()
+    or
+    m.hasName("pack") and m.hasNoParameters()
+    or
     m.hasName("setVisible") and m.getNumberOfParameters() = 1
   ) and
   ma.getMethod() = m and
   ma.getEnclosingCallable() = main
-select ma, "Call to swing method in " + main.getDeclaringType().getName()
-                                      + " needs to be performed in Swing event thread."
+select ma,
+  "Call to swing method in " + main.getDeclaringType().getName() +
+    " needs to be performed in Swing event thread."

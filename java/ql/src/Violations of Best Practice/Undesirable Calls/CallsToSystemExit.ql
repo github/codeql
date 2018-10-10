@@ -10,6 +10,7 @@
  *       maintainability
  *       external/cwe/cwe-382
  */
+
 import java
 
 from Method m, MethodAccess sysexitCall, Method sysexit, Class system
@@ -17,7 +18,8 @@ where
   sysexitCall = m.getACallSite(sysexit) and
   (sysexit.hasName("exit") or sysexit.hasName("halt")) and
   sysexit.getDeclaringType() = system and
-  ( system.hasQualifiedName("java.lang", "System") or
+  (
+    system.hasQualifiedName("java.lang", "System") or
     system.hasQualifiedName("java.lang", "Runtime")
   ) and
   m.fromSource() and

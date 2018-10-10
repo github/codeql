@@ -10,6 +10,7 @@
  * @tags reliability
  *       correctness
  */
+
 import java
 
 predicate instanceofInEquals(EqualsMethod m, InstanceOfExpr e) {
@@ -29,6 +30,7 @@ where
   exists(m.getBody()) and
   m2.fromSource() and
   exists(Method overridden | overridden.getSourceDeclaration() = m | m2.overrides+(overridden))
-select e, "Possible violation of equals contract due to use of instanceof in $@ and/or overriding $@.",
-  m, m.getDeclaringType().getName() + "." + m.getName(),
-  m2, m2.getDeclaringType().getName() + "." + m2.getName()
+select e,
+  "Possible violation of equals contract due to use of instanceof in $@ and/or overriding $@.", m,
+  m.getDeclaringType().getName() + "." + m.getName(), m2,
+  m2.getDeclaringType().getName() + "." + m2.getName()

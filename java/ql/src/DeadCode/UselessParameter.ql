@@ -9,6 +9,7 @@
  *       useless-code
  *       external/cwe/cwe-561
  */
+
 import semmle.code.java.deadcode.DeadCode
 
 from RootdefCallable c

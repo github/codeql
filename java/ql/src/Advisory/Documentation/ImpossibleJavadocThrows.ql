@@ -19,9 +19,10 @@ RefType getTaggedType(ThrowsTag tag) {
 predicate canThrow(Callable callable, RefType exception) {
   exists(string uncheckedException |
     uncheckedException = "RuntimeException" or uncheckedException = "Error"
-    |
+  |
     exception.getASupertype*().hasQualifiedName("java.lang", uncheckedException)
-  ) or
+  )
+  or
   callable.getAnException().getType().getASubtype*() = exception
 }
 
@@ -31,4 +32,5 @@ where
   docMethod.getDoc().getJavadoc().getAChild*() = throwsTag and
   not canThrow(docMethod, thrownType)
 select throwsTag,
-  "Javadoc for " + docMethod + " claims to throw " + thrownType.getName() + " but this is impossible."
+  "Javadoc for " + docMethod + " claims to throw " + thrownType.getName() +
+    " but this is impossible."

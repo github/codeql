@@ -16,8 +16,13 @@ import semmle.code.java.dataflow.FlowSources
 
 class SafeSAXSourceFlowConfig extends TaintTracking::Configuration2 {
   SafeSAXSourceFlowConfig() { this = "XmlParsers::SafeSAXSourceFlowConfig" }
+
   override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeSAXSource }
-  override predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(XmlParserCall parse).getSink() }
+
+  override predicate isSink(DataFlow::Node sink) {
+    sink.asExpr() = any(XmlParserCall parse).getSink()
+  }
+
   override int fieldFlowBranchLimit() { result = 0 }
 }
 
@@ -33,7 +38,9 @@ class UnsafeXxeSink extends DataFlow::ExprNode {
 
 class XxeConfig extends TaintTracking::Configuration {
   XxeConfig() { this = "XXE.ql::XxeConfig" }
+
   override predicate isSource(DataFlow::Node src) { src instanceof RemoteUserInput }
+
   override predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeXxeSink }
 }
 

@@ -1,6 +1,7 @@
 /**
  * @name Depends
  */
+
 import default
 
 from RefType rt1, RefType rt2

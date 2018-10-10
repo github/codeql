@@ -8,9 +8,9 @@
  * @id java/interfaces-per-file
  * @tags maintainability
  */
+
 import java
 
 from CompilationUnit f, int n
 where n = count(Interface i | i.fromSource() and i.getCompilationUnit() = f)
-select f, n
-order by n desc
+select f, n order by n desc

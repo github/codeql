@@ -12,6 +12,7 @@
  *       external/cwe/cwe-404
  *       external/cwe/cwe-772
  */
+
 import CloseType
 
 predicate writerType(RefType t) {

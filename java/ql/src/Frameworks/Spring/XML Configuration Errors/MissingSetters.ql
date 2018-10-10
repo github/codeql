@@ -10,6 +10,7 @@
  *       maintainability
  *       frameworks/spring
  */
+
 import java
 import semmle.code.java.frameworks.spring.Spring
 
@@ -17,5 +18,5 @@ from SpringProperty p
 where
   not p.getEnclosingBean().isAbstract() and
   not exists(p.getSetterMethod())
-select p, "This property is missing a setter method on $@.",
-  p.getEnclosingBean().getClass() as c, c.getName()
+select p, "This property is missing a setter method on $@.", p.getEnclosingBean().getClass() as c,
+  c.getName()

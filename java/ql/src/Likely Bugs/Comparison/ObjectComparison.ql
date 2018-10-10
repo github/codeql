@@ -10,14 +10,13 @@
  *       correctness
  *       external/cwe/cwe-595
  */
+
 import semmle.code.java.Member
 import semmle.code.java.JDK
 
 /** An expression that accesses a field declared `final`. */
 class FinalFieldAccess extends VarAccess {
-  FinalFieldAccess() {
-    this.getVariable().(Field).isFinal()
-  }
+  FinalFieldAccess() { this.getVariable().(Field).isFinal() }
 }
 
 class ReferenceEqualityTestOnObject extends EqualityTest {

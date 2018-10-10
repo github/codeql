@@ -8,6 +8,7 @@
  * @tags security
  *       external/cwe/cwe-315
  */
+
 import java
 import SensitiveStorage
 
@@ -19,7 +20,5 @@ where
   // Exclude results in test code.
   not testMethod(store.getEnclosingCallable()) and
   not testMethod(data.getEnclosingCallable())
-select store, "Cookie $@ containing $@ is stored here. Data was added $@.",
-  s, s.toString(),
-  data, "sensitive data",
-  input, "here"
+select store, "Cookie $@ containing $@ is stored here. Data was added $@.", s, s.toString(), data,
+  "sensitive data", input, "here"
