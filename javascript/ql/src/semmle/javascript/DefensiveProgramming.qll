@@ -184,4 +184,70 @@ module Internal {
     }
   }
 
+  /**
+   * An expression that throws an exception if one of its subexpressions evaluates to `null` or `undefined`.
+   */
+  private class UndefinedNullCrashUse extends Expr {
+
+    Expr target;
+
+    UndefinedNullCrashUse() {
+      this.(InvokeExpr).getCallee().stripParens() = target
+      or
+      this.(PropAccess).getBase().stripParens() = target
+      or
+      this.(MethodCallExpr).getReceiver().stripParens() = target
+    }
+
+    /**
+     * Gets the subexpression that will cause an exception to be thrown if it is `null` or `undefined`.
+     */
+    Expr getVulnerableSubexpression() {
+      result = target
+    }
+
+  }
+
+  /**
+   * An expression that throws an exception if one of its subexpressions is not a `function`.
+   */
+  private class NonFunctionCallCrashUse extends Expr {
+
+    Expr target;
+
+    NonFunctionCallCrashUse() {
+      this.(InvokeExpr).getCallee().stripParens() = target
+    }
+
+    /**
+     * Gets the subexpression that will cause an exception to be thrown if it is not a `function`.
+     */
+    Expr getVulnerableSubexpression() {
+      result = target
+    }
+
+  }
+
+  /**
+   * Gets the first expression that is guarded by `guard`.
+   */
+  private Expr getAGuardedExpr(Expr guard) {
+    exists(BinaryExpr op |
+      op.getLeftOperand() = guard and
+      (op instanceof LogAndExpr or op instanceof LogOrExpr) and
+      op.getRightOperand() = result
+    )
+    or
+    exists(IfStmt c |
+      c.getCondition() = guard |
+      result = c.getAControlledStmt().getChildExpr(0) or
+      result = c.getAControlledStmt().(BlockStmt).getStmt(0).getChildExpr(0)
+    )
+    or
+    exists (ConditionalExpr c |
+      c.getCondition() = guard |
+      result = c.getABranch()
+    )
+  }
+
 }
