@@ -54,6 +54,10 @@ module NosqlInjection {
       node instanceof Sanitizer
     }
 
+    override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
+      guard instanceof TaintedObject::SanitizerGuard
+    }
+
     override predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node trg, DataFlow::FlowLabel inlbl, DataFlow::FlowLabel outlbl) {
       TaintedObject::step(src, trg, inlbl, outlbl)
       or

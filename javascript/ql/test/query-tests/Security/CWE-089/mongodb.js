@@ -22,6 +22,15 @@ app.post('/documents/find', (req, res) => {
 
       // OK: throws unless user-data is a string
       doc.find({ title: query.body.title.substr(1) });
+
+      let title = req.body.title;
+      if (typeof title === "string") {
+        // OK: input checked to be a string
+        doc.find({ title: title });
+
+        // NOT OK: input is parsed as JSON after string check
+        doc.find({ title: JSON.parse(title) });
+      }
     });
 });
 

@@ -10,6 +10,7 @@
  * 1. One or more sinks associated with the label `TaintedObject::label()`.
  * 2. The sources from `TaintedObject::isSource`.
  * 3. The flow steps from `TaintedObject::step`.
+ * 4. The sanitizing guards `TaintedObject::SanitizerGuard`.
  */
 import javascript
 
@@ -80,5 +81,41 @@ module TaintedObject {
     }
   }
 
-  // TODO: string tests should be classified as sanitizer guards; need support for flow labels on guards
+  /**
+   * Sanitizer guard that blocks deep object taint.
+   */
+  abstract class SanitizerGuard extends TaintTracking::SanitizerGuardNode {
+    override predicate blocksAllLabels() { none() }
+
+    override predicate blocksSpecificLabel(FlowLabel label) {
+      label = label()
+    }
+  }
+
+  /**
+   * A test of form `typeof x === "something"`, preventing `x` from being an object in some cases.
+   */
+  private class TypeTestGuard extends SanitizerGuard, ValueNode {
+    override EqualityTest astNode;
+    TypeofExpr typeof;
+    boolean polarity;
+
+    TypeTestGuard() {
+      astNode.getAnOperand() = typeof and
+      (
+        // typeof x === "object" sanitizes `x` when it evaluates to false
+        astNode.getAnOperand().getStringValue() = "object" and
+        polarity = astNode.getPolarity().booleanNot()
+        or
+        // typeof x === "string" sanitizes `x` when it evaluates to true
+        astNode.getAnOperand().getStringValue() != "object" and
+        polarity = astNode.getPolarity()
+      )
+    }
+
+    override predicate sanitizes(boolean outcome, Expr e) {
+      polarity = outcome and
+      e = typeof.getOperand()
+    }
+  }
 }
