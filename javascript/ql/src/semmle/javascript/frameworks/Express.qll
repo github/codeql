@@ -501,6 +501,17 @@ module Express {
       // but all known body parsers are deep, assume req.body is a deep object.
       kind = "body" and
       forall(ExpressLibraries::BodyParser bodyParser | bodyParser.isDeepObject())
+      or
+      kind = "parameter" and
+      exists (DataFlow::Node request | request = DataFlow::valueNode(rh.getARequestExpr()) |
+        this.(DataFlow::MethodCallNode).calls(request, "param")
+        or
+        exists (DataFlow::PropRead base |
+          // `req.query.name`
+          base.accesses(request, "query") and
+          this = base.getAPropertyReference(_)
+        )
+      )
     }
   }
 

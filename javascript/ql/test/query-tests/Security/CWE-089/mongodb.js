@@ -42,6 +42,6 @@ app.post('/documents/find', (req, res) => {
       let doc = db.collection('doc');
 
       // NOT OK: query is tainted by user-provided object value
-      doc.find(query); // Not currently detected 
+      doc.find(query);
     });
 });
