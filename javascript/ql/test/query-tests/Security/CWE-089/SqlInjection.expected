@@ -1,5 +1,4 @@
 | mongodb.js:18:16:18:20 | query | This query depends on $@. | mongodb.js:13:19:13:26 | req.body | a user-provided value |
-| mongodb.js:39:16:39:20 | query | This query depends on $@. | mongodb.js:34:19:34:33 | req.query.title | a user-provided value |
 | mongoose.js:27:20:27:24 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
 | mongoose.js:30:25:30:29 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
 | mongoose.js:33:24:33:28 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |

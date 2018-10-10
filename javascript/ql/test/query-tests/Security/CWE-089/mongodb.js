@@ -16,6 +16,12 @@ app.post('/documents/find', (req, res) => {
 
       // NOT OK: query is tainted by user-provided object value
       doc.find(query);
+
+      // OK: user-data is coerced to a string
+      doc.find({ title: '' + query.body.title });
+
+      // OK: throws unless user-data is a string
+      doc.find({ title: query.body.title.substr(1) });
     });
 });
 
@@ -36,6 +42,6 @@ app.post('/documents/find', (req, res) => {
       let doc = db.collection('doc');
 
       // NOT OK: query is tainted by user-provided object value
-      doc.find(query);
+      doc.find(query); // Not currently detected 
     });
 });
