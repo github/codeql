@@ -68,7 +68,7 @@ private import SSA
 private import RangeUtils
 private import semmle.code.java.controlflow.internal.GuardsLogic
 private import SignAnalysis
-private import ParityAnalysis
+private import ModulusAnalysis
 private import semmle.code.java.Reflection
 private import semmle.code.java.Collections
 private import semmle.code.java.Maps
@@ -134,6 +134,29 @@ private predicate boundCondition(ComparisonExpr comp, SsaVariable v, Expr e, int
 }
 
 /**
+ * Holds if `comp` is a comparison between `x` and `y` for which `y - x` has a
+ * fixed value modulo some `mod > 1`, such that the comparison can be
+ * strengthened by `strengthen` when evaluating to `testIsTrue`.
+ */
+private predicate modulusComparison(ComparisonExpr comp, boolean testIsTrue, int strengthen) {
+  exists(Bound b, int v1, int v2, int mod, boolean resultIsStrict, int d, int k |
+    // If `x <= y` and `x =(mod) b + v1` and `y =(mod) b + v2` then
+    // `0 <= y - x =(mod) v2 - v1`. By choosing `k =(mod) v2 - v1` with
+    // `0 <= k < mod` we get `k <= y - x`. If the resulting comparison is
+    // strict then the strengthening amount is instead `k - 1` modulo `mod`:
+    // `x < y` means `0 <= y - x - 1 =(mod) k - 1` so `k - 1 <= y - x - 1` and
+    // thus `k - 1 < y - x` with `0 <= k - 1 < mod`.
+    exprModulus(comp.getLesserOperand(), b, v1, mod) and
+    exprModulus(comp.getGreaterOperand(), b, v2, mod) and
+    (testIsTrue = true or testIsTrue = false) and
+    (if comp.isStrict() then resultIsStrict = testIsTrue else resultIsStrict = testIsTrue.booleanNot()) and
+    (resultIsStrict = true and d = 1 or resultIsStrict = false and d = 0) and
+    (testIsTrue = true and k = v2 - v1 or testIsTrue = false and k = v1 - v2) and
+    strengthen = (((k - d) % mod) + mod) % mod
+  )
+}
+
+/**
  * Gets a condition that tests whether `v` is bounded by `e + delta`.
  *
  * If the condition evaluates to `testIsTrue`:
@@ -152,10 +175,10 @@ private Guard boundFlowCond(SsaVariable v, Expr e, int delta, boolean upper, boo
       upper = false and strengthen = 1)
     else
       strengthen = 0) and
-    // A non-strict inequality `x <= y` can be strengthened to `x <= y - 1` if
-    // `x` and `y` have opposite parities, and a strict inequality `x < y` can
-    // be similarly strengthened if `x` and `y` have equal parities.
-    (if parityComparison(comp, resultIsStrict) then d2 = strengthen else d2 = 0) and
+    (
+      exists(int k | modulusComparison(comp, testIsTrue, k) and d2 = strengthen * k) or
+      not modulusComparison(comp, testIsTrue, _) and d2 = 0
+    ) and
     // A strict inequality `x < y` can be strengthened to `x <= y - 1`.
     (resultIsStrict = true and d3 = strengthen or resultIsStrict = false and d3 = 0) and
     delta = d1 + d2 + d3

@@ -76,7 +76,7 @@ public class A {
     int[] a = new int[3 * n];
     int sum = 0;
     for (int i = 0; i < a.length; i += 3) {
-      sum += a[i] + a[i + 1] + a[i + 2]; // OK - FP
+      sum += a[i] + a[i + 1] + a[i + 2]; // OK
     }
   }
 
