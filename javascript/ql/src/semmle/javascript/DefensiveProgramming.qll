@@ -128,4 +128,60 @@ module Internal {
 
   }
 
+  /**
+   * Holds if `t` is `null` or `undefined`.
+   */
+  private predicate isNullOrUndefined(InferredType t) {
+    t = TTNull() or
+    t = TTUndefined()
+  }
+
+  /**
+   * Holds if `t` is not `null` or `undefined`.
+   */
+  private predicate isNotNullOrUndefined(InferredType t) {
+    not isNullOrUndefined(t)
+  }
+
+  /**
+   * A value comparison for `null` and `undefined`.
+   */
+  private class NullUndefinedComparison extends UndefinedNullTest {
+
+    Expr operand;
+
+    InferredType op2type;
+
+    NullUndefinedComparison() {
+      exists (Expr op2 |
+        hasOperands(operand, op2) |
+        op2type = TTNull() and SyntacticConstants::isNull(op2)
+        or
+        op2type = TTUndefined() and SyntacticConstants::isUndefined(op2)
+      )
+    }
+
+    override boolean getTheTestResult() {
+      result = getPolarity() and
+      (
+        if this instanceof StrictEqualityTest then
+          operand.analyze().getTheType() = op2type
+        else
+          not isNotNullOrUndefined(operand.analyze().getAType())
+      )
+      or
+      result = getPolarity().booleanNot() and
+      (
+        if this instanceof StrictEqualityTest then
+          not operand.analyze().getAType() = op2type
+        else
+          not isNullOrUndefined(operand.analyze().getAType())
+      )
+    }
+
+    override Expr getOperand() {
+      result = operand
+    }
+  }
+
 }
