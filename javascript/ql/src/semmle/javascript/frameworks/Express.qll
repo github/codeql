@@ -488,6 +488,20 @@ module Express {
     override string getKind() {
       result = kind
     }
+
+    override predicate isDeepObject() {
+      kind = "body" and
+      exists (ExpressLibraries::BodyParser bodyParser, RouteHandlerExpr expr |
+        expr.getBody() = rh and
+        bodyParser.isDeepObject() and
+        bodyParser.flowsToExpr(expr.getAMatchingAncestor())
+      )
+      or
+      // If we can't find the middlewares for the route handler,
+      // but all known body parsers are deep, assume req.body is a deep object.
+      kind = "body" and
+      forall(ExpressLibraries::BodyParser bodyParser | bodyParser.isDeepObject())
+    }
   }
 
   /**
