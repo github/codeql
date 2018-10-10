@@ -130,7 +130,7 @@ module TaintTracking {
    * configurations it is used in.
    *
    * Note: For performance reasons, all subclasses of this class should be part
-   * of the standard library. Override `Configuration::isTaintSanitizerGuard`
+   * of the standard library. Override `Configuration::isSanitizer`
    * for analysis-specific taint steps.
    */
   abstract class AdditionalSanitizerGuardNode extends SanitizerGuardNode {
