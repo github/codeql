@@ -87,7 +87,7 @@ predicate isConstantBooleanReturnValue(Expr e) {
 predicate whitelist(Expr e) {
   isConstant(e) or
   isConstant(e.(LogNotExpr).getOperand()) or
-  e.flow() instanceof Internal::DefensiveInit or
+  exists (e.flow().(DefensiveExpression).getTheTestResult()) or
   isInitialParameterUse(e) or
   isConstantBooleanReturnValue(e)
 }

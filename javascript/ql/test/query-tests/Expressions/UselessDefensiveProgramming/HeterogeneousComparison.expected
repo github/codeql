@@ -1,0 +1,3 @@
+| tst.js:162:9:162:16 | typeof x | This expression is of type string, but it is compared to $@ of type undefined. | tst.js:162:22:162:30 | undefined | 'undefined' |
+| tst.js:163:9:163:21 | typeof window | This expression is of type string, but it is compared to $@ of type undefined. | tst.js:163:27:163:35 | undefined | 'undefined' |
+| tst.js:165:9:165:16 | typeof x | This expression is of type string, but it is compared to $@ of type undefined. | tst.js:165:22:165:22 | u | variable 'u' |
