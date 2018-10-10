@@ -160,18 +160,26 @@ private class IIFEWithAnalyzedReturnFlow extends CallWithAnalyzedReturnFlow {
   
 }
 
+/**
+ * Gets the only access to `v`, which is the variable declared by `fn`.
+ *
+ * This predicate is not defined for global functions `fn`, or for
+ * local variables `v` that do not have exactly one access.
+ */
+private VarAccess getOnlyAccess(FunctionDeclStmt fn, LocalVariable v) {
+  v = fn.getVariable() and
+  result = v.getAnAccess() and
+  strictcount(v.getAnAccess()) = 1
+}
+
 /** A function that only is used locally, making it amenable to type inference. */
 class LocalFunction extends Function {
 
   DataFlow::Impl::ExplicitInvokeNode invk;
 
   LocalFunction() {
-    this instanceof FunctionDeclStmt and
-    exists (LocalVariable v, Expr callee |
-      callee = invk.getCalleeNode().asExpr() and
-      v = getVariable() and
-      v.getAnAccess() = callee and
-      forall(VarAccess o | o = v.getAnAccess() | o = callee) and
+    exists (LocalVariable v |
+      getOnlyAccess(this, v) = invk.getCalleeNode().asExpr() and
       not exists(v.getAnAssignedExpr()) and
       not exists(ExportDeclaration export | export.exportsAs(v, _))
     ) and
