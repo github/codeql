@@ -317,4 +317,96 @@ module Internal {
 
   }
 
+  /**
+   * A test for the value of a `typeof` expression.
+   */
+  private class TypeofTest extends EqualityTest {
+    Expr operand;
+
+    TypeofTag tag;
+
+    TypeofTest() {
+      exists (Expr op1, Expr op2 |
+        hasOperands(op1, op2) |
+        operand = op1.(TypeofExpr).getOperand() and
+        op2.mayHaveStringValue(tag)
+      )
+    }
+
+    boolean getTheTestResult() {
+      exists (boolean testResult |
+        testResult = true and operand.analyze().getTheType().getTypeofTag() = tag or
+        testResult = false and not operand.analyze().getAType().getTypeofTag() = tag |
+        if getPolarity() = true then
+          result = testResult
+        else
+          result = testResult.booleanNot()
+      )
+    }
+
+    /**
+     * Gets the operand used in the `typeof` expression.
+     */
+    Expr getOperand() {
+      result = operand
+    }
+
+    /**
+     * Gets the `typeof` tag that is tested.
+     */
+    TypeofTag getTag() {
+      result = tag
+    }
+  }
+
+  /**
+   * A defensive expression that tests if an expression has type `function`.
+   */
+  private class FunctionTypeGuard extends DefensiveExpression {
+
+    TypeofTest test;
+
+    boolean polarity;
+
+    FunctionTypeGuard() {
+      exists (Expr guard, VarRef guardVar, VarRef useVar |
+        this = guard.flow() and
+        test = stripNotsAndParens(guard, polarity) and
+        test.getOperand() = guardVar and
+        guardVar.getVariable() = useVar.getVariable() |
+        getAGuardedExpr(guard).stripParens().(NonFunctionCallCrashUse).getVulnerableSubexpression() = useVar
+      ) and
+      test.getTag() = "function"
+    }
+
+    override boolean getTheTestResult() {
+      polarity = true and result = test.getTheTestResult()
+      or
+      polarity = false and result = test.getTheTestResult().booleanNot()
+    }
+
+  }
+
+  /**
+   * A test for `undefined` using a `typeof` expression.
+   */
+  private class TypeofUndefinedTest extends UndefinedNullTest {
+
+    TypeofTest test;
+
+    TypeofUndefinedTest() {
+      this = test and
+      test.getTag() = "undefined"
+    }
+
+    override boolean getTheTestResult() {
+      result = test.getTheTestResult()
+    }
+
+    override Expr getOperand() {
+      result = test.getOperand()
+    }
+
+  }
+
 }
