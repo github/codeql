@@ -10,7 +10,7 @@ import javascript
 /**
  * A call that performs a request to a URL.
  *
- * Example: An HTTP POST request is client request that sends some
+ * Example: An HTTP POST request is a client request that sends some
  * `data` to a `url`, where both the headers and the body of the request
  * contribute to the `data`.
  */

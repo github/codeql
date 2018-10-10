@@ -1,5 +1,5 @@
 /**
- * @name User-controlled data in file
+ * @name User-controlled data written to file
  * @description Writing user-controlled data directly to the file system allows arbitrary file upload and might indicate a backdoor.
  * @kind problem
  * @problem.severity warning

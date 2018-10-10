@@ -1,5 +1,5 @@
 /**
- * Provides a taint tracking configuration for reasoning about user-controlled data in files.
+ * Provides a taint tracking configuration for reasoning about writing user-controlled data to files.
  */
 import javascript
 import semmle.javascript.security.dataflow.RemoteFlowSources
@@ -7,22 +7,22 @@ import semmle.javascript.security.dataflow.RemoteFlowSources
 module HttpToFileAccess {
 
   /**
-   * A data flow source for user-controlled data in files.
+   * A data flow source for writing user-controlled data to files.
    */
   abstract class Source extends DataFlow::Node { }
 
   /**
-   * A data flow sink for user-controlled data in files.
+   * A data flow sink for writing user-controlled data to files.
    */
   abstract class Sink extends DataFlow::Node { }
 
   /**
-   * A sanitizer for user-controlled data in files.
+   * A sanitizer for writing user-controlled data to files.
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * A taint tracking configuration for user-controlled data in files.
+   * A taint tracking configuration for writing user-controlled data to files.
    */
   class Configuration extends TaintTracking::Configuration {
     Configuration() {
@@ -43,7 +43,7 @@ module HttpToFileAccess {
     }
   }
 
-  /** A source of remote user input, considered as a flow source for user-controlled data in files. */
+  /** A source of remote user input, considered as a flow source for writing user-controlled data to files. */
   class RemoteFlowSourceAsSource extends Source {
     RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
   }

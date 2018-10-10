@@ -480,7 +480,7 @@ module NodeJSLib {
   }
   
   /**
-   * A read from the file system.
+   * A write to the file system, using a stream.
    */
   private class FileStreamWrite extends FileSystemWriteAccess, DataFlow::CallNode {
 
