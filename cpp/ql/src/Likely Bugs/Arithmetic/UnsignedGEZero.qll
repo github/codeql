@@ -50,5 +50,6 @@ predicate unsignedGEZero(UnsignedGEZero ugez, string msg) {
     ugez.getLocation().getStartLine() = mi.getLocation().getStartLine() and
     ugez.getLocation().getStartColumn() = mi.getLocation().getStartColumn()
   ) and
+  not ugez.isFromTemplateInstantiation(_) and
   msg = "Pointless comparison of unsigned value to zero."
 }
