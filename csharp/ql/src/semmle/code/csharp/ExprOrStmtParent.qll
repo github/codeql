@@ -370,7 +370,29 @@ private cached module Cached {
       t = getTopLevelDeclaringType(d) or d = t or d = p
     )
   }
+
+  private predicate hasNoSourceLocation(Element e) {
+    not e.getALocation() instanceof SourceLocation
+  }
+
+  /**
+   * Gets the "best" location for element `e`. Where an element has locations in
+   * source and assemblies, choose the source location. If there are multiple assembly
+   * locations, choose only one.
+   */
+  cached
+  Location bestLocationCached(Element e) {
+    result = e.getALocation().(SourceLocation) and
+    (mustHaveLocationInFile(e, _) implies mustHaveLocationInFile(e, result.getFile()))
+    or
+    (
+      hasNoSourceLocation(e)
+      and
+      result = min(Location l | l = e.getALocation() | l order by l.getFile().toString())
+    )
+  }
 }
 private import Cached
 
 predicate mustHaveLocationInFile = mustHaveLocationInFileCached/2;
+predicate bestLocation = bestLocationCached/1;
