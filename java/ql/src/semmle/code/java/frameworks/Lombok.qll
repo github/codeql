@@ -134,7 +134,6 @@ class LombokDataAnnotation extends LombokAnnotation {
  *
  * ```
  * final @ToString @EqualsAndHashCode @AllArgsConstructor
- *
  * @FieldDefaults(makeFinal=true,level=AccessLevel.PRIVATE) @Getter
  * ```
  */
