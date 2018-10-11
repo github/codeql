@@ -59,4 +59,7 @@ import {ClientRequest, net} from 'electron';
     axios({headers: headerData, params: paramsData});
 
     window.fetch(url, {headers: headerData, body: bodyData});
+
+    got(url, {headers: headerData, body: bodyData, quer: queryData});
+
 });

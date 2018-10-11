@@ -193,8 +193,6 @@ private class FetchUrlRequest extends CustomClientRequest {
  */
 private class GotUrlRequest extends CustomClientRequest {
 
-  DataFlow::Node url;
-
   GotUrlRequest() {
     exists (string moduleName, DataFlow::SourceNode callee |
       this = callee.getACall() |
@@ -202,17 +200,20 @@ private class GotUrlRequest extends CustomClientRequest {
       (
         callee = DataFlow::moduleImport(moduleName) or
         callee = DataFlow::moduleMember(moduleName, "stream")
-      ) and
-      url = getArgument(0) and not exists (getOptionArgument(1, "baseUrl"))
+      )
     )
   }
 
   override DataFlow::Node getUrl() {
-    result = url
+    result = getArgument(0) and
+    not exists (getOptionArgument(1, "baseUrl"))
   }
 
   override DataFlow::Node getADataNode() {
-    none()
+    exists (string name |
+      name = "headers" or name = "body" or name = "query" |
+      result = getOptionArgument(1, name)
+    )
   }
 
 }
