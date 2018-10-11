@@ -9,20 +9,14 @@ import semmle.code.java.frameworks.jackson.JacksonSerializability
  *
  * This defines the set of fields for which we will determine liveness.
  */
-library class SourceField extends Field {
-  SourceField() {
-    fromSource()
-  }
-}
+library class SourceField extends Field { SourceField() { fromSource() } }
 
 /**
  * A field is dead if it is never read by a live callable and it is neither reflectively accessed,
  * nor whitelisted.
  */
 class DeadField extends SourceField {
-  DeadField() {
-    not this instanceof LiveField
-  }
+  DeadField() { not this instanceof LiveField }
 
   /**
    * Holds if this dead field is already within the scope of a dead class, or reported by a dead
@@ -42,13 +36,15 @@ class DeadField extends SourceField {
 class LiveField extends SourceField {
   LiveField() {
     exists(FieldRead access | access = getAnAccess() |
-      isLive(access.getEnclosingCallable()) or
+      isLive(access.getEnclosingCallable())
+      or
       exists(Annotation a |
         /*
          * This is an access used in an annotation, either directly, or within the expression.
          */
+
         a.getValue(_) = access.getParent*()
-        |
+      |
         // The annotated element is a live callable.
         isLive(a.getAnnotatedElement()) or
         // The annotated element is in a live callable.
@@ -61,10 +57,13 @@ class LiveField extends SourceField {
          * Note: We ignore annotation values on library classes, because they should only refer to
          * fields in library classes, not `fromSource()` fields.
          */
+
         a.getAnnotatedElement() instanceof LiveClass
       )
-    ) or
-    this instanceof ReflectivelyReadField or
+    )
+    or
+    this instanceof ReflectivelyReadField
+    or
     this instanceof WhitelistedLiveField
   }
 }
@@ -72,8 +71,7 @@ class LiveField extends SourceField {
 /**
  * A field that may be read reflectively.
  */
-abstract class ReflectivelyReadField extends Field {
-}
+abstract class ReflectivelyReadField extends Field { }
 
 /**
  * A field which is dead, but should be considered as live.
@@ -85,8 +83,7 @@ abstract class ReflectivelyReadField extends Field {
  *
  * Whitelisting a field will automatically cause the containing class to be considered as live.
  */
-abstract class WhitelistedLiveField extends Field {
-}
+abstract class WhitelistedLiveField extends Field { }
 
 /**
  * A static, final, long field named `serialVersionUID` in a class that extends `Serializable` acts as
@@ -132,17 +129,15 @@ class JUnitAnnotatedField extends ReflectivelyReadField {
  */
 class ClassReflectivelyReadField extends ReflectivelyReadField {
   ClassReflectivelyReadField() {
-    exists(ReflectiveFieldAccess fieldAccess |
-      this = fieldAccess.inferAccessedField()
-    )
+    exists(ReflectiveFieldAccess fieldAccess | this = fieldAccess.inferAccessedField())
   }
 }
 
 /**
  * Consider all `JacksonSerializableField`s as reflectively read.
  */
-class JacksonSerializableReflectivelyReadField extends ReflectivelyReadField, JacksonSerializableField {
-}
+class JacksonSerializableReflectivelyReadField extends ReflectivelyReadField,
+  JacksonSerializableField { }
 
 /**
  * A field that is used when applying Jackson mixins.
@@ -152,7 +147,7 @@ class JacksonMixinReflextivelyReadField extends ReflectivelyReadField {
     exists(JacksonMixinType mixinType, JacksonAddMixinCall mixinCall |
       this = mixinType.getAMixedInField() and
       mixinType = mixinCall.getAMixedInType()
-      |
+    |
       isLive(mixinCall.getEnclosingCallable())
     )
   }
@@ -168,7 +163,8 @@ class JPAReadField extends ReflectivelyReadField {
       (
         entity.getAccessType() = "field" or
         this.hasAnnotation("javax.persistence", "Access")
-      ) |
+      )
+    |
       not this.hasAnnotation("javax.persistence", "Transient") and
       not isStatic() and
       not isFinal()

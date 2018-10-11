@@ -14,8 +14,10 @@ class TestMethodEntry extends CallableEntryPoint {
       this instanceof TestMethod and
       // Ignored tests are not run
       not this instanceof JUnitIgnoredMethod
-    ) or
-    this instanceof JUnit3TestSuite or
+    )
+    or
+    this instanceof JUnit3TestSuite
+    or
     exists(AnnotationType a | a = this.getAnAnnotation().getType() |
       a.hasQualifiedName("org.junit.runners", "Parameterized$Parameters") and
       getDeclaringType() instanceof ParameterizedJUnitTest
@@ -45,7 +47,7 @@ class JUnitTheories extends CallableEntryPoint {
     exists(AnnotationType a |
       a = this.getAnAnnotation().getType() and
       getDeclaringType() instanceof JUnitTheoryTest
-      |
+    |
       a.hasQualifiedName("org.junit.experimental.theories", "Theory") or
       a.hasQualifiedName("org.junit.experimental.theories", "DataPoint") or
       a.hasQualifiedName("org.junit.experimental.theories", "DataPoints")
@@ -72,11 +74,7 @@ class JUnitDataPointField extends ReflectivelyReadField {
  * Any types used as a category in a JUnit `@Category` annotation should be considered live.
  */
 class JUnitCategory extends WhitelistedLiveClass {
-  JUnitCategory() {
-    exists(JUnitCategoryAnnotation ca |
-      ca.getACategory() = this
-    )
-  }
+  JUnitCategory() { exists(JUnitCategoryAnnotation ca | ca.getACategory() = this) }
 }
 
 /**
@@ -89,6 +87,7 @@ class TestNGReflectivelyConstructedListener extends ReflectivelyConstructedClass
      * specified on the command line, in `testng.xml` files and in Ant build files, so it is safest
      * to assume that all such listeners are live.
      */
+
     this instanceof TestNGListenerImpl
   }
 }
@@ -98,9 +97,7 @@ class TestNGReflectivelyConstructedListener extends ReflectivelyConstructedClass
  */
 class TestNGDataProvidersEntryPoint extends CallableEntryPoint {
   TestNGDataProvidersEntryPoint() {
-    exists(TestNGTestMethod method |
-      this = method.getADataProvider()
-    )
+    exists(TestNGTestMethod method | this = method.getADataProvider())
   }
 }
 
@@ -108,9 +105,7 @@ class TestNGDataProvidersEntryPoint extends CallableEntryPoint {
  * A `@Factory` TestNG method or constructor which is live.
  */
 class TestNGFactoryEntryPoint extends CallableEntryPoint {
-  TestNGFactoryEntryPoint() {
-    this instanceof TestNGFactoryCallable
-  }
+  TestNGFactoryEntryPoint() { this instanceof TestNGFactoryCallable }
 }
 
 class TestRefectivelyConstructedClass extends ReflectivelyConstructedClass {
@@ -132,9 +127,8 @@ class RunWithReflectivelyConstructedClass extends ReflectivelyConstructedClass {
  */
 class MockitoCalledByInjection extends CallableEntryPoint {
   MockitoCalledByInjection() {
-    exists(MockitoInjectedField field |
-      this = field.getAnInvokedCallable()
-    ) or
+    exists(MockitoInjectedField field | this = field.getAnInvokedCallable())
+    or
     exists(MockitoSpiedField spyField |
       spyField.isConstructed() and
       this = spyField.getType().(RefType).getAConstructor() and
@@ -147,9 +141,7 @@ class MockitoCalledByInjection extends CallableEntryPoint {
  * Mock fields that are read by Mockito when performing injection.
  */
 class MockitoReadField extends ReflectivelyReadField {
-  MockitoReadField() {
-    this.(MockitoMockedField).isReferencedByInjection()
-  }
+  MockitoReadField() { this.(MockitoMockedField).isReferencedByInjection() }
 }
 
 /**
@@ -167,6 +159,7 @@ class CucumberConstructedClass extends ReflectivelyConstructedClass {
      * injection framework (possibly an in-built one) to construct these instances, so any
      * constructor could be called.
      */
+
     result = getAConstructor()
   }
 }
@@ -175,7 +168,5 @@ class CucumberConstructedClass extends ReflectivelyConstructedClass {
  * A "step definition" that may be called by Cucumber when executing an acceptance test.
  */
 class CucumberStepDefinitionEntryPoint extends CallableEntryPoint {
-  CucumberStepDefinitionEntryPoint() {
-    this instanceof CucumberStepDefinition
-  }
+  CucumberStepDefinitionEntryPoint() { this instanceof CucumberStepDefinition }
 }
