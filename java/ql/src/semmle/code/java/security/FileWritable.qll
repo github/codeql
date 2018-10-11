@@ -66,10 +66,7 @@ private EnumConstant getAContainedEnumConstant(Expr enumSetRef) {
 private VarAccess getFileForPathConversion(Expr pathExpr) {
   pathExpr.getType().(RefType).hasQualifiedName("java.nio.file", "Path") and
   (
-    /*
-     * Look for conversion from `File` to `Path` using `file.getPath()`.
-     */
-
+    // Look for conversion from `File` to `Path` using `file.getPath()`.
     exists(MethodAccess fileToPath |
       fileToPath = pathExpr and
       result = fileToPath.getQualifier() and
@@ -77,10 +74,7 @@ private VarAccess getFileForPathConversion(Expr pathExpr) {
       fileToPath.getMethod().getDeclaringType().hasQualifiedName("java.io", "File")
     )
     or
-    /*
-     * Look for the pattern `Paths.get(file.get*Path())` for converting between a `File` and a `Path`.
-     */
-
+    // Look for the pattern `Paths.get(file.get*Path())` for converting between a `File` and a `Path`.
     exists(MethodAccess pathsGet, MethodAccess fileGetPath |
       pathsGet = pathExpr and
       pathsGet.getMethod().hasName("get") and
@@ -99,10 +93,7 @@ private VarAccess getFileForPathConversion(Expr pathExpr) {
  * Holds if `fileAccess` is used in the `setWorldWritableExpr` to set the file to be world writable.
  */
 private predicate fileSetWorldWritable(VarAccess fileAccess, Expr setWorldWritable) {
-  /*
-   * Calls to `File.setWritable(.., false)`.
-   */
-
+  // Calls to `File.setWritable(.., false)`.
   exists(MethodAccess fileSetWritable |
     // A call to the `setWritable` method.
     fileSetWritable.getMethod() instanceof SetWritable and
@@ -114,10 +105,7 @@ private predicate fileSetWorldWritable(VarAccess fileAccess, Expr setWorldWritab
     fileAccess = fileSetWritable.getQualifier()
   )
   or
-  /*
-   * Calls to `Files.setPosixFilePermissions(...)`.
-   */
-
+  // Calls to `Files.setPosixFilePermissions(...)`.
   exists(MethodAccess setPosixPerms |
     setPosixPerms = setWorldWritable and
     setPosixPerms.getMethod().hasName("setPosixFilePermissions") and
@@ -132,10 +120,7 @@ private predicate fileSetWorldWritable(VarAccess fileAccess, Expr setWorldWritab
     getAContainedEnumConstant(setPosixPerms.getArgument(1)).hasName("OTHERS_WRITE")
   )
   or
-  /*
-   * Calls to something that indirectly sets the file permissions.
-   */
-
+  // Calls to something that indirectly sets the file permissions.
   exists(Call call, int parameterPos, VarAccess nestedFileAccess, Expr nestedSetWorldWritable |
     call = setWorldWritable and
     fileSetWorldWritable(nestedFileAccess, nestedSetWorldWritable) and

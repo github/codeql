@@ -4,10 +4,7 @@ import java
  * Holds if `fileAccess` is used in the `fileReadingExpr` to read the represented file.
  */
 private predicate fileRead(VarAccess fileAccess, Expr fileReadingExpr) {
-  /*
-   * `fileAccess` used to construct a class that reads a file.
-   */
-
+  // `fileAccess` used to construct a class that reads a file.
   exists(ClassInstanceExpr cie |
     cie = fileReadingExpr and
     cie.getArgument(0) = fileAccess
@@ -21,11 +18,8 @@ private predicate fileRead(VarAccess fileAccess, Expr fileReadingExpr) {
     ma = fileReadingExpr and filesMethod = ma.getMethod()
   |
     (
-      /*
-       * Identify all method calls on the `Files` class that imply that we are reading the file
-       * represented by the first argument.
-       */
-
+      // Identify all method calls on the `Files` class that imply that we are reading the file
+      // represented by the first argument.
       filesMethod.getDeclaringType().hasQualifiedName("java.nio.file", "Files") and
       fileAccess = ma.getArgument(0) and
       (
