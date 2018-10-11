@@ -1,3 +1,6 @@
+/**
+ * Provides classes representing various flow sources for taint tracking.
+ */
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
