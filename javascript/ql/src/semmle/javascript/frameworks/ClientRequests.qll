@@ -239,7 +239,10 @@ private class SuperAgentUrlRequest extends CustomClientRequest {
   }
 
   override DataFlow::Node getADataNode() {
-    none()
+    exists (string name |
+      name = "set" or name = "send" or name = "query" |
+      result = this.getAChainedMethodCall(name).getAnArgument()
+    )
   }
 
 }

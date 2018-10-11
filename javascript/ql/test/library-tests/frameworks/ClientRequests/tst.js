@@ -62,4 +62,10 @@ import {ClientRequest, net} from 'electron';
 
     got(url, {headers: headerData, body: bodyData, quer: queryData});
 
+    superagent.get(url).query(data);
+    superagent.get(url).set('x', headerData)
+    superagent.post(url).send(bodyData);
+    superagent.get(url).set('x', headerData).query(queryData);
+    superagent.get(url).unknown(nonData).query(queryData);
+
 });
