@@ -22,11 +22,11 @@ module TaintedObject {
   }
 
   /**
-   * Gets the flow label representing a deeply tainted objects.
+   * Gets the flow label representing a deeply tainted object.
    *
-   * A "tainted object" is an array or object whose values are all assumed to be tainted as well.
+   * A "tainted object" is an array or object whose properties values are all assumed to be tainted as well.
    *
-   * Note that the presence of the `object-taint` label generally implies the presence of the `taint` label as well.
+   * Note that the presence of the this label generally implies the presence of the `taint` label as well.
    */
   FlowLabel label() { result instanceof TaintedObjectLabel  }
 

@@ -311,12 +311,17 @@ abstract class BarrierGuardNode extends DataFlow::Node {
   abstract predicate blocks(boolean outcome, Expr e);
 
   /**
-   * Holds if this barrier guard blocks all labels.
+   * Holds if this barrier guard should block all labels.
+   *
+   * To block specific labels only, subclasses should override this with `none()` and
+   * also override `blocksSpecificLabel`.
    */
   predicate blocksAllLabels() { any() }
 
   /**
    * Holds if this barrier guard only blocks specific labels, and `label` is one of them.
+   *
+   * Subclasses that override this predicate should also override `blocksAllLabels`.
    */
   predicate blocksSpecificLabel(FlowLabel label) { none() }
 }
