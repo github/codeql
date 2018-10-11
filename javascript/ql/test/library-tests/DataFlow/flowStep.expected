@@ -76,6 +76,7 @@
 | tst.js:37:5:42:1 | o | tst.js:83:23:83:23 | o |
 | tst.js:37:5:42:1 | o | tst.js:85:23:85:23 | o |
 | tst.js:37:9:42:1 | {\\n  x:  ... ;\\n  }\\n} | tst.js:37:5:42:1 | o |
+| tst.js:39:4:39:3 | this | tst.js:40:5:40:8 | this |
 | tst.js:46:10:46:11 | "" | tst.js:46:1:46:11 | global = "" |
 | tst.js:49:1:54:1 | A | tst.js:55:1:55:1 | A |
 | tst.js:49:1:54:1 | class A ... `\\n  }\\n} | tst.js:49:1:54:1 | A |

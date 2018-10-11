@@ -1,4 +1,5 @@
 import cpp
+import semmle.code.cpp.dataflow.DataFlow
 
 /**
  * Holds if `sizeof(s)` occurs as part of the parameter of a dynamic
@@ -47,6 +48,7 @@ predicate memberMayBeVarSize(Class c, MemberVariable v) {
 /**
  * Get the size in bytes of the buffer pointed to by an expression (if this can be determined). 
  */
+language[monotonicAggregates]
 int getBufferSize(Expr bufferExpr, Element why) {
   exists(Variable bufferVar | bufferVar = bufferExpr.(VariableAccess).getTarget() |
     (
@@ -58,6 +60,10 @@ int getBufferSize(Expr bufferExpr, Element why) {
       // buffer is an initialized array
       //  e.g. int buffer[] = {1, 2, 3};
       why = bufferVar.getInitializer().getExpr() and
+      (
+        why instanceof AggregateLiteral or
+        why instanceof StringLiteral
+      ) and
       result = why.(Expr).getType().(ArrayType).getSize() and
       not exists(bufferVar.getType().getUnspecifiedType().(ArrayType).getSize())
     ) or exists(Class parentClass, VariableAccess parentPtr |
@@ -71,19 +77,25 @@ int getBufferSize(Expr bufferExpr, Element why) {
         bufferVar.getType().getSize() -
         parentClass.getSize()
     )
-  ) or exists(Expr def |
-    // buffer is assigned with an allocation
-    definitionUsePair(_, def, bufferExpr) and
-    exprDefinition(_, def, why) and
-    isFixedSizeAllocationExpr(why, result)
-  ) or exists(Expr def, Expr e, Element why2 |
-    // buffer is assigned with another buffer
-    definitionUsePair(_, def, bufferExpr) and
-    exprDefinition(_, def, e) and
-    result = getBufferSize(e, why2) and
-    (
+  ) or (
+    // buffer is a fixed size dynamic allocation
+    isFixedSizeAllocationExpr(bufferExpr, result) and
+    why = bufferExpr
+  ) or (
+    // dataflow (all sources must be the same size)
+    result = min(Expr def |
+      DataFlow::localFlowStep(DataFlow::exprNode(def), DataFlow::exprNode(bufferExpr)) |
+      getBufferSize(def, _)
+    ) and result = max(Expr def |
+      DataFlow::localFlowStep(DataFlow::exprNode(def), DataFlow::exprNode(bufferExpr)) |
+      getBufferSize(def, _)
+    ) and
+
+    // find reason
+    exists(Expr def |
+      DataFlow::localFlowStep(DataFlow::exprNode(def), DataFlow::exprNode(bufferExpr)) |
       why = def or
-      why = why2
+      exists(getBufferSize(def, why))
     )
   ) or exists(Type bufferType |
     // buffer is the address of a variable

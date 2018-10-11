@@ -1,30 +1,33 @@
-/** 
- * Provides Taint tracking configuration for reasoning about file access taint flow to http post body 
+/**
+ * Provides a taint tracking configuration for reasoning about file data in outbound network requests.
  */
 import javascript
-import semmle.javascript.frameworks.HTTP
+import semmle.javascript.security.dataflow.RemoteFlowSources
 
-module FileAccessToHttpDataFlow {
+module FileAccessToHttp {
+
   /**
-   * A data flow source for reasoning about file access to http post body flow vulnerabilities.
+   * A data flow source for file data in outbound network requests.
    */
   abstract class Source extends DataFlow::Node { }
 
   /**
-   * A data flow sink for reasoning about file access to http post body flow vulnerabilities.
+   * A data flow sink for file data in outbound network requests.
    */
   abstract class Sink extends DataFlow::Node { }
 
   /**
-   * A sanitizer for reasoning about file access to http post body flow vulnerabilities.
+   * A sanitizer for file data in outbound network requests.
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * A taint-tracking configuration for reasoning about file access to http post body flow vulnerabilities.
+   * A taint tracking configuration for file data in outbound network requests.
    */
   class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "FileAccessToHttpDataFlow" }
+    Configuration() {
+      this = "FileAccessToHttp"
+    }
 
     override predicate isSource(DataFlow::Node source) {
       source instanceof Source
@@ -38,14 +41,9 @@ module FileAccessToHttpDataFlow {
       super.isSanitizer(node) or
       node instanceof Sanitizer
     }
-    
-    /** additional taint step that taints an object wrapping a source */
+
     override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-      (
-          pred = DataFlow::valueNode(_) or
-          pred = DataFlow::parameterNode(_) or
-          pred instanceof DataFlow::PropRead
-      ) and
+      // taint entire object on property write
       exists (DataFlow::PropWrite pwr |
         succ = pwr.getBase() and
         pred = pwr.getRhs()
@@ -53,19 +51,26 @@ module FileAccessToHttpDataFlow {
     }
   }
 
-  /** A source is a file access parameter, as in readFromFile(buffer). */
+  /**
+   * A file access parameter, considered as a flow source for file data in outbound network requests.
+   */
   private class FileAccessArgumentAsSource extends Source {
     FileAccessArgumentAsSource() {  
       exists(FileSystemReadAccess src |
-        this = src.getDataNode().getALocalSource()
+        this = src.getADataNode().getALocalSource()
       )
     }
   }
 
-  /** Sink is any parameter or argument that evaluates to a parameter ot a function or call that sets Http Body on a request */ 
-  private class HttpRequestBodyAsSink extends Sink {
-    HttpRequestBodyAsSink () {
-      this instanceof HTTP::RequestBody
+  /**
+   * The URL or data of a client request, considered as a flow source for file data in outbound network requests.
+   */
+  private class ClientRequestUrlOrDataAsSink extends Sink {
+    ClientRequestUrlOrDataAsSink () {
+      exists (ClientRequest req |
+        this = req.getUrl() or
+        this = req.getADataNode()
+      )
     }
   }
 }

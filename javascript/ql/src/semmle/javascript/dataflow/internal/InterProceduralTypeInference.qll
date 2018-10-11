@@ -10,7 +10,7 @@ import AbstractValuesImpl
 /**
  * Flow analysis for `this` expressions inside functions.
  */
-private abstract class AnalyzedThisExpr extends DataFlow::AnalyzedValueNode, DataFlow::ThisNode {
+private abstract class AnalyzedThisExpr extends DataFlow::AnalyzedNode, DataFlow::ThisNode {
   DataFlow::FunctionNode binder;
 
   AnalyzedThisExpr() {
@@ -29,7 +29,7 @@ private abstract class AnalyzedThisExpr extends DataFlow::AnalyzedValueNode, Dat
  */
 private class AnalyzedThisInBoundFunction extends AnalyzedThisExpr {
 
-  AnalyzedValueNode thisSource;
+  AnalyzedNode thisSource;
 
   AnalyzedThisInBoundFunction() {
     exists(string name |

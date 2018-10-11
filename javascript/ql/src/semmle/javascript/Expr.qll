@@ -303,6 +303,16 @@ class ThisExpr extends @thisexpr, Expr {
   Function getBinder() {
     result = getEnclosingFunction().getThisBinder()
   }
+
+  /**
+   * Gets the function or top-level whose `this` binding this expression refers to,
+   * which is the nearest enclosing non-arrow function or top-level.
+   */
+  StmtContainer getBindingContainer() {
+    result = getContainer().(Function).getThisBindingContainer()
+    or
+    result = getContainer().(TopLevel)
+  }
 }
 
 /** An array literal. */

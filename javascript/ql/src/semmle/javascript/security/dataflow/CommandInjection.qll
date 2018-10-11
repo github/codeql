@@ -75,7 +75,7 @@ module CommandInjection {
     ArgumentListTracking() { this = "ArgumentListTracking" }
 
     override predicate isSource(DataFlow::Node nd) {
-      nd instanceof DataFlow::ArrayLiteralNode
+      nd instanceof DataFlow::ArrayCreationNode
       or
       exists (StringLiteral shell | shellCmd(shell, _) |
         nd = DataFlow::valueNode(shell)
@@ -125,7 +125,7 @@ module CommandInjection {
    * we want to report the `spawn` call as the sink, so we bind it to `sys`.
    */
   private predicate indirectCommandInjection(DataFlow::Node sink, SystemCommandExecution sys) {
-    exists (ArgumentListTracking cfg, DataFlow::ArrayLiteralNode args,
+    exists (ArgumentListTracking cfg, DataFlow::ArrayCreationNode args,
             StringLiteral shell, string dashC |
       shellCmd(shell, dashC) and
       cfg.hasFlow(DataFlow::valueNode(shell), sys.getACommandArgument()) and

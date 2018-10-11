@@ -198,16 +198,36 @@ class NewNode extends InvokeNode {
   override DataFlow::Impl::NewNodeDef impl;
 }
 
-/** A data flow node corresponding to a `this` expression. */
-class ThisNode extends DataFlow::ValueNode, DataFlow::DefaultSourceNode {
-  override ThisExpr astNode;
+/** A data flow node corresponding to the `this` parameter in a function or `this` at the top-level. */
+class ThisNode extends DataFlow::Node, DataFlow::DefaultSourceNode {
+  ThisNode() {
+    DataFlow::thisNode(this, _)
+  }
 
   /**
    * Gets the function whose `this` binding this expression refers to,
    * which is the nearest enclosing non-arrow function.
    */
   FunctionNode getBinder() {
-    result = DataFlow::valueNode(astNode.getBinder())
+    exists (Function binder |
+      DataFlow::thisNode(this, binder) and
+      result = DataFlow::valueNode(binder))
+  }
+
+  /**
+   * Gets the function or top-level whose `this` binding this expression refers to,
+   * which is the nearest enclosing non-arrow function or top-level.
+   */
+  StmtContainer getBindingContainer() {
+    DataFlow::thisNode(this, result)
+  }
+
+  override string toString() { result = "this" }
+
+  override predicate hasLocationInfo(string filepath, int startline, int startcolumn,
+                                     int endline, int endcolumn) {
+    // Use the function entry as the location
+    getBindingContainer().getEntry().getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 

@@ -144,8 +144,8 @@ module ExpressLibraries {
 
       override DataFlow::Node getASecretKey() {
         exists (DataFlow::Node secret | secret = getOption("secret") |
-          if exists(DataFlow::ArrayLiteralNode arr | arr.flowsTo(secret)) then
-            result = any (DataFlow::ArrayLiteralNode arr | arr.flowsTo(secret)).getAnElement()
+          if exists(DataFlow::ArrayCreationNode arr | arr.flowsTo(secret)) then
+            result = any (DataFlow::ArrayCreationNode arr | arr.flowsTo(secret)).getAnElement()
           else
             result = secret
         )
@@ -182,8 +182,8 @@ module ExpressLibraries {
 
       override DataFlow::Node getASecretKey() {
         exists (DataFlow::Node arg0 | arg0 = getArgument(0) |
-          if exists(DataFlow::ArrayLiteralNode arr | arr.flowsTo(arg0)) then
-            result = any (DataFlow::ArrayLiteralNode arr | arr.flowsTo(arg0)).getAnElement()
+          if exists(DataFlow::ArrayCreationNode arr | arr.flowsTo(arg0)) then
+            result = any (DataFlow::ArrayCreationNode arr | arr.flowsTo(arg0)).getAnElement()
           else
             result = arg0
         )
@@ -220,7 +220,7 @@ module ExpressLibraries {
 
       override DataFlow::Node getASecretKey() {
         result = getOption("secret") or
-        exists (DataFlow::ArrayLiteralNode keys |
+        exists (DataFlow::ArrayCreationNode keys |
           keys.flowsTo(getOption("keys")) and
           result = keys.getAnElement()
         )
