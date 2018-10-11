@@ -138,10 +138,7 @@ private Type parameterForSubTypes(ParameterizedType type) {
       // Upper bound case
       upperBound = arg.(BoundedType).getUpperBoundType()
     |
-      /*
-       * `T extends Foo` implies that `Foo`, or any sub-type of `Foo`, may be represented.
-       */
-
+      // `T extends Foo` implies that `Foo`, or any sub-type of `Foo`, may be represented.
       result.(RefType).getAnAncestor() = upperBound
     )
     or
@@ -149,10 +146,7 @@ private Type parameterForSubTypes(ParameterizedType type) {
       // Lower bound case
       lowerBound = arg.(Wildcard).getLowerBoundType()
     |
-      /*
-       * `T super Foo` implies that `Foo`, or any super-type of `Foo`, may be represented.
-       */
-
+      // `T super Foo` implies that `Foo`, or any super-type of `Foo`, may be represented.
       lowerBound.(RefType).getAnAncestor() = result
     )
   )
@@ -165,11 +159,8 @@ Type inferClassParameterType(Expr expr) {
   // Must be of type `Class` or `Class<T>`.
   expr.getType() instanceof TypeClass and
   (
-    /*
-     * If this `expr` is a `VarAccess` of a final or effectively final parameter, then look at the
-     * arguments to calls to this method, to see if we can infer anything from that case.
-     */
-
+    // If this `expr` is a `VarAccess` of a final or effectively final parameter, then look at the
+    // arguments to calls to this method, to see if we can infer anything from that case.
     exists(Parameter p |
       p = expr.(VarAccess).getVariable() and
       p.isEffectivelyFinal()
@@ -179,24 +170,18 @@ Type inferClassParameterType(Expr expr) {
     or
     if exists(pointsToReflectiveClassIdentifier(expr).getReflectivelyIdentifiedClass())
     then
-      /*
-       * We've been able to identify where this `Class` instance was created, and identified the
-       * particular class that was loaded.
-       */
-
+      // We've been able to identify where this `Class` instance was created, and identified the
+      // particular class that was loaded.
       result = pointsToReflectiveClassIdentifier(expr).getReflectivelyIdentifiedClass()
     else (
-      /*
-       * If we haven't been able to find where the value for this expression was defined, then we
-       * resort to the type `T` in `Class<T>`.
-       *
-       * If `T` refers to a bounded type with an upper bound, then we return all sub-types of the upper
-       * bound as possibilities for the instantiation, so long as this is not a catch-all type.
-       *
-       * A "catch-all" type is something like `? extends Object` or `? extends Serialization`, which
-       * would return too many sub-types.
-       */
-
+      // If we haven't been able to find where the value for this expression was defined, then we
+      // resort to the type `T` in `Class<T>`.
+      //
+      // If `T` refers to a bounded type with an upper bound, then we return all sub-types of the upper
+      // bound as possibilities for the instantiation, so long as this is not a catch-all type.
+      //
+      // A "catch-all" type is something like `? extends Object` or `? extends Serialization`, which
+      // would return too many sub-types.
       result = parameterForSubTypes(expr.getType())
     )
   )
@@ -244,11 +229,8 @@ class NewInstance extends MethodAccess {
     else
       if getNumArgument() = 1 and getArgument(0).getType() instanceof Array
       then
-        /*
-         * This is a var-args array argument. If array argument is initialized inline, then identify
-         * the number of arguments specified in the array.
-         */
-
+        // This is a var-args array argument. If array argument is initialized inline, then identify
+        // the number of arguments specified in the array.
         if exists(getArgument(0).(ArrayCreationExpr).getInit())
         then
           // Count the number of elements in the initializer, and find the matching constructors.
@@ -258,11 +240,8 @@ class NewInstance extends MethodAccess {
           // Could be any of the constructors on this class.
           any()
       else
-        /*
-         * No var-args in play, just use the number of arguments to the `newInstance(..)` to determine
-         * which constructors may be called.
-         */
-
+        // No var-args in play, just use the number of arguments to the `newInstance(..)` to determine
+        // which constructors may be called.
         matchConstructorArguments(result, getNumArgument())
   }
 
@@ -310,11 +289,8 @@ class NewInstance extends MethodAccess {
       result = cast.getType()
       or
       (
-        /*
-         * If we cast the result of this method, then this is either the type specified, or a
-         * sub-type of that type. Make sure we exclude overly generic types such as `Object`.
-         */
-
+        // If we cast the result of this method, then this is either the type specified, or a
+        // sub-type of that type. Make sure we exclude overly generic types such as `Object`.
         not overlyGenericType(cast.getType()) and
         hasSubtype*(cast.getType(), result)
       )

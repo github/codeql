@@ -62,17 +62,11 @@ class JMXRegistrationMethod extends Method {
       getName() = "registerMBean"
     )
     or
-    /*
-     * The `MBeanServer` is often wrapped by an application specific management class, so identify
-     * methods that wrap a call to another `JMXRegistrationMethod`.
-     */
-
+    // The `MBeanServer` is often wrapped by an application specific management class, so identify
+    // methods that wrap a call to another `JMXRegistrationMethod`.
     exists(JMXRegistrationCall c |
-      /*
-       * This must be a call to another JMX registration method, where the object argument is an access
-       * of one of the parameters of this method.
-       */
-
+      // This must be a call to another JMX registration method, where the object argument is an access
+      // of one of the parameters of this method.
       c.getObjectArgument().(VarAccess).getVariable() = getAParameter()
     )
   }
