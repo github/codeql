@@ -122,16 +122,24 @@ private cached module Internal {
        }
     or TPhi(ReachableJoinBlock bb, SsaSourceVariable v) {
          liveAtEntry(bb, v) and
-         exists (ReachableBasicBlock defbb, SsaDefinition def |
-          def.definesAt(defbb, _, v) and
-          bb.inDominanceFrontierOf(defbb)
-         )
+         inDefDominanceFrontier(bb, v)
        }
     or TRefinement(ReachableBasicBlock bb, int i, GuardControlFlowNode guard, SsaSourceVariable v) {
          bb.getNode(i) = guard and
          guard.getTest().(Refinement).getRefinedVar() = v and
          liveAtEntry(bb, v)
        }
+
+  /**
+   * Holds if `bb` is in the dominance frontier of a block containing a definition of `v`.
+   */
+  pragma[noinline]
+  private predicate inDefDominanceFrontier(ReachableJoinBlock bb, SsaSourceVariable v) {
+    exists (ReachableBasicBlock defbb, SsaDefinition def |
+      def.definesAt(defbb, _, v) and
+      bb.inDominanceFrontierOf(defbb)
+    )
+  }
 
   /**
    * Holds if `v` is a captured variable which is declared in `declContainer` and read in
