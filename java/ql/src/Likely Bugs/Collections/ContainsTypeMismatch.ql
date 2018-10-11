@@ -46,7 +46,11 @@ predicate containerAccess(string package, string type, int p, string signature, 
   signature = "lastIndexOf(java.lang.Object)" and
   i = 0
   or
-  package = "java.util" and type = "Map" and p = 0 and signature = "get(java.lang.Object)" and i = 0
+  package = "java.util" and
+  type = "Map" and
+  p = 0 and
+  signature = "get(java.lang.Object)" and
+  i = 0
   or
   package = "java.util" and
   type = "Map" and
