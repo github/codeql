@@ -740,7 +740,10 @@ module NodeJSLib {
     }
 
     override DataFlow::Node getADataNode() {
-      result = getAMethodCall("write").getArgument(0)
+      exists (string name |
+        name = "write" or name = "end" |
+        result =this.(DataFlow::SourceNode).getAMethodCall(name).getArgument(0)
+      )
     }
 
   }
