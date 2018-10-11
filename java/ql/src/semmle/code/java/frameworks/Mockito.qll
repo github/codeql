@@ -142,11 +142,8 @@ class MockitoMockedField extends MockitoAnnotatedField {
     exists(MockitoInjectedField injectedField |
       injectedField.getDeclaringType() = getDeclaringType()
     |
-      /*
-       * A `@Mock` is injected if it is used in one of the invoked callables (constructor or
-       * setter), or injected directly onto a field.
-       */
-
+      // A `@Mock` is injected if it is used in one of the invoked callables (constructor or
+      // setter), or injected directly onto a field.
       getType().(RefType).getAnAncestor() = injectedField.getAnInvokedCallable().getAParamType() or
       getType().(RefType).getAnAncestor() = injectedField.getASetField().getType()
     )
@@ -162,11 +159,8 @@ class MockitoInjectedField extends MockitoAnnotatedField {
   override predicate isValid() {
     super.isValid() and
     (
-      /*
-       * If we need to initialize the field, it is only valid if the type is a `Class` that is not
-       * local, is static if it is a nested class, and is not abstract.
-       */
-
+      // If we need to initialize the field, it is only valid if the type is a `Class` that is not
+      // local, is static if it is a nested class, and is not abstract.
       exists(getInitializer())
       or
       exists(Class c | c = getType() |
@@ -176,10 +170,7 @@ class MockitoInjectedField extends MockitoAnnotatedField {
       )
     ) and
     (
-      /*
-       * If neither of these is true, then mockito will fail to initialize this field.
-       */
-
+      // If neither of these is true, then mockito will fail to initialize this field.
       usingConstructorInjection() or
       usingPropertyInjection()
     )
@@ -223,11 +214,8 @@ class MockitoInjectedField extends MockitoAnnotatedField {
     |
       if usingConstructorInjection()
       then
-        /*
-         * If there is no initializer for this field, and there is a most mockable constructor,
-         * then we are doing a parameterized injection of mocks into a most mockable constructor.
-         */
-
+        // If there is no initializer for this field, and there is a most mockable constructor,
+        // then we are doing a parameterized injection of mocks into a most mockable constructor.
         result = mockInjectedClass.getAMostMockableConstructor()
       else
         if usingPropertyInjection()
@@ -239,21 +227,15 @@ class MockitoInjectedField extends MockitoAnnotatedField {
           )
           or
           (
-            /*
-             * Perform property injection into setter fields, but only where there exists a mock
-             * that can be injected into the method. Otherwise, the setter method is never called.
-             */
-
+            // Perform property injection into setter fields, but only where there exists a mock
+            // that can be injected into the method. Otherwise, the setter method is never called.
             result = mockInjectedClass.getASetterMethod() and
             exists(MockitoMockedField mockedField |
               mockedField.getDeclaringType() = this.getDeclaringType() and
               mockedField.isValid()
             |
-              /*
-               * We make a simplifying assumption here - in theory, each mock can only be injected
-               * once, but we instead assume that there are sufficient mocks to go around.
-               */
-
+              // We make a simplifying assumption here - in theory, each mock can only be injected
+              // once, but we instead assume that there are sufficient mocks to go around.
               mockedField.getType().(RefType).getAnAncestor() = result.getParameterType(0)
             )
           )
@@ -276,11 +258,8 @@ class MockitoInjectedField extends MockitoAnnotatedField {
         mockedField.getDeclaringType() = this.getDeclaringType() and
         mockedField.isValid()
       |
-        /*
-         * We make a simplifying assumption here - in theory, each mock can only be injected
-         * once, but we instead assume that there are sufficient mocks to go around.
-         */
-
+        // We make a simplifying assumption here - in theory, each mock can only be injected
+        // once, but we instead assume that there are sufficient mocks to go around.
         mockedField.getType().(RefType).getAnAncestor() = result.getType()
       )
     else none()

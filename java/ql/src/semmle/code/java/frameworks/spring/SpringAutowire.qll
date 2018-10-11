@@ -23,10 +23,7 @@ predicate hasInjectAnnotation(Annotatable a) {
  */
 class SpringComponentConstructor extends Constructor {
   SpringComponentConstructor() {
-    /*
-     * Must be a live Spring component.
-     */
-
+    // Must be a live Spring component.
     getDeclaringType().(SpringComponent).isLive() and
     (
       this.getNumberOfParameters() = 0 or
@@ -63,10 +60,7 @@ class SpringBeanPropertySetterMethod extends Method {
  */
 class SpringBeanXMLAutowiredSetterMethod extends Method {
   SpringBeanXMLAutowiredSetterMethod() {
-    /*
-     * The bean as marked with some form of autowiring in the XML file.
-     */
-
+    // The bean as marked with some form of autowiring in the XML file.
     exists(string xmlAutowire |
       xmlAutowire = this.getDeclaringType().(SpringBeanRefType).getSpringBean().getAutowire()
     |
@@ -95,11 +89,8 @@ class SpringBeanXMLAutowiredSetterMethod extends Method {
           xmlAutowire = "byType"
           or
           (
-            /*
-             * When it is set to autodetect, we use "byType" if there is a no-arg constructor. This
-             * approach has been removed in Spring 4.x.
-             */
-
+            // When it is set to autodetect, we use "byType" if there is a no-arg constructor. This
+            // approach has been removed in Spring 4.x.
             xmlAutowire = "autodetect" and
             exists(Constructor c | c = this.getDeclaringType().getAConstructor() |
               c.getNumberOfParameters() = 0

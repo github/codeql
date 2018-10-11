@@ -72,11 +72,8 @@ class CamelTargetClass extends Class {
     or
     exists(CamelJavaDSLMethodDecl methodDecl | this = methodDecl.getABean())
     or
-    /*
-     * Any beans referred to in Java DSL bean or beanRef elements are considered as possible
-     * targets. Whether the route builder is ever constructed or called is not considered.
-     */
-
+    // Any beans referred to in Java DSL bean or beanRef elements are considered as possible
+    // targets. Whether the route builder is ever constructed or called is not considered.
     exists(CamelJavaDSLBeanDecl beanDecl | this = beanDecl.getABeanClass())
     or
     exists(CamelJavaDSLBeanRefDecl beanRefDecl | this = beanRefDecl.getABeanClass())

@@ -42,10 +42,7 @@ class SpringComponentScan extends Annotation {
     result = getAValue("value").(StringLiteral).getRepresentedString()
     or
     exists(TypeLiteral typeLiteral |
-      /*
-       * Base package classes are type literals whose package should be considered a base package.
-       */
-
+      // Base package classes are type literals whose package should be considered a base package.
       typeLiteral = getAValue("basePackageClasses")
     |
       result = typeLiteral.getTypeName().getType().(RefType).getPackage().getName()
@@ -60,11 +57,8 @@ class SpringComponentScan extends Annotation {
 class SpringBasePackage extends string {
   SpringBasePackage() {
     exists(string basePackages |
-      /*
-       * Interpret the contexts of the `web.xml` "contextConfigLocation" parameter as a base package,
-       * but only if the appropriate context class is chosen.
-       */
-
+      // Interpret the contexts of the `web.xml` "contextConfigLocation" parameter as a base package,
+      // but only if the appropriate context class is chosen.
       exists(WebXMLFile webXML |
         webXML.getContextParamValue("contextClass") = "org.springframework.web.context.support.AnnotationConfigWebApplicationContext"
       |
@@ -75,11 +69,8 @@ class SpringBasePackage extends string {
         c.hasAnnotation("org.springframework.context.annotation", "Configuration") and
         componentScan = c.getAnAnnotation() and
         basePackages = componentScan.(SpringComponentScan).getBasePackages() and
-        /*
-         * For a `@ComponentScan` annotation to take effect, the configuration class must already be
-         * picked up by the component scan.
-         */
-
+        // For a `@ComponentScan` annotation to take effect, the configuration class must already be
+        // picked up by the component scan.
         c.isLive()
       )
       or
@@ -177,16 +168,13 @@ class SpringComponent extends RefType {
    * we need the XML files to accurately determine the component scan.
    */
   predicate isLive() {
-    /*
-     * Components all have to be registered with Spring. They are usually registered by being
-     * identified during a component scan, which traverses the class path looking for components in
-     * particular base packages. Base packages can be defined either using the `@ComponentScan`
-     * annotation, on an `@Configuration` class, or in an XML configuration file. We can therefore
-     * only validate whether this class is ever picked up if XML indexing is enabled. If it's
-     * enabled, then the package of this class must belong in one of the packages defined as a base
-     * package.
-     */
-
+    // Components all have to be registered with Spring. They are usually registered by being
+    // identified during a component scan, which traverses the class path looking for components in
+    // particular base packages. Base packages can be defined either using the `@ComponentScan`
+    // annotation, on an `@Configuration` class, or in an XML configuration file. We can therefore
+    // only validate whether this class is ever picked up if XML indexing is enabled. If it's
+    // enabled, then the package of this class must belong in one of the packages defined as a base
+    // package.
     not isSpringXMLEnabled()
     or
     (

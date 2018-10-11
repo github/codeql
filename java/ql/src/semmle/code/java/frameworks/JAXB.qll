@@ -1,4 +1,5 @@
-/* Definitions related to JAXB. */
+/** Definitions related to JAXB. */
+
 import semmle.code.java.Type
 
 library class JAXBElement extends Class {
@@ -39,11 +40,8 @@ class JaxbType extends Class {
     or
     hasJaxbAnnotation(this, "XmlRootElement")
     or
-    /*
-     * There is at least one Jaxb annotation on a member of this class. The `@XmlType` is implied
-     * on any class, but we limit our identification to those that have some reference to JAXB.
-     */
-
+    // There is at least one Jaxb annotation on a member of this class. The `@XmlType` is implied
+    // on any class, but we limit our identification to those that have some reference to JAXB.
     exists(AnnotationType at |
       at = this.getAMember().getAnAnnotation().getType() and
       at instanceof JaxbMemberAnnotation
@@ -189,17 +187,11 @@ class JaxbBoundGetterSetter extends GetterOrSetterMethod {
       or
       // Within a JAXB type which has an `XmlAcessType` that binds this method.
       exists(JaxbType c | this.getDeclaringType() = c |
-        /*
-         * If this is a "property" - both a setter and getter present for the XML element or attribute
-         * - the `XmlAccessType` of the declaring type may cause this property to be bound.
-         */
-
+        // If this is a "property" - both a setter and getter present for the XML element or attribute
+        // - the `XmlAccessType` of the declaring type may cause this property to be bound.
         isProperty() and
         (
-          /*
-           * In the `PUBLIC_MEMBER` case all public properties are considered bound.
-           */
-
+          // In the `PUBLIC_MEMBER` case all public properties are considered bound.
           (c.getXmlAccessType().isPublicMember() and isPublic())
           or
           // In "property" all properties are considered bound.

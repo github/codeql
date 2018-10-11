@@ -68,11 +68,8 @@ class JaxRsResourceClass extends Class {
     or
     // A sub-resource
     exists(JaxRsResourceClass resourceClass, Method method |
-      /*
-       * This is a sub-resource class is if it is referred to from the sub-resource locator of
-       * another resource class.
-       */
-
+      // This is a sub-resource class is if it is referred to from the sub-resource locator of
+      // another resource class.
       method = resourceClass.getASubResourceLocator()
     |
       this = method.getReturnType()
@@ -118,11 +115,8 @@ class JaxRsResourceClass extends Class {
     // JaxRs Spec v2.0 - 3.12
     // Only root resources are constructed by the JaxRS container.
     isRootResource() and
-    /*
-     * JaxRS can only construct the class using constructors that are public, and where the
-     * container can provide all of the parameters. This includes the no-arg constructor.
-     */
-
+    // JaxRS can only construct the class using constructors that are public, and where the
+    // container can provide all of the parameters. This includes the no-arg constructor.
     result.isPublic() and
     forall(Parameter p | p = result.getAParameter() |
       p.getAnAnnotation() instanceof JaxRsInjectionAnnotation

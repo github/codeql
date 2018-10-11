@@ -40,10 +40,7 @@ class SpringCamelXMLRouteContext extends SpringCamelXMLElement {
  */
 class SpringCamelXMLRoute extends SpringCamelXMLElement {
   SpringCamelXMLRoute() {
-    /*
-     * A route must either be in a `<routeContext>` or a `<camelContext>`.
-     */
-
+    // A route must either be in a `<routeContext>` or a `<camelContext>`.
     (
       getParent() instanceof SpringCamelXMLRouteContext or
       getParent() instanceof SpringCamelXMLContext

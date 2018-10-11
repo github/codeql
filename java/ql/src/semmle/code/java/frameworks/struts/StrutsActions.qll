@@ -15,26 +15,17 @@ private string getStrutsMapperClass(RefType refType) {
 class Struts2ActionClass extends Class {
   Struts2ActionClass() {
     (
-      /*
-       * If there are no XML files present, then we assume we any class that extends a struts 2
-       * action must be reflectively constructed, as we have no better indication.
-       */
-
+      // If there are no XML files present, then we assume we any class that extends a struts 2
+      // action must be reflectively constructed, as we have no better indication.
       not exists(XMLFile xmlFile) and
       this.getAnAncestor().hasQualifiedName("com.opensymphony.xwork2", "Action")
     )
     or
-    /*
-     * If there is a struts.xml file, then any class that is specified as an action is considered
-     * to be reflectively constructed.
-     */
-
+    // If there is a struts.xml file, then any class that is specified as an action is considered
+    // to be reflectively constructed.
     exists(StrutsXMLAction strutsAction | this = strutsAction.getActionClass())
     or
-    /*
-     * We have determined that this is an action class due to the conventions plugin.
-     */
-
+    // We have determined that this is an action class due to the conventions plugin.
     this instanceof Struts2ConventionActionClass
   }
 
@@ -59,11 +50,8 @@ class Struts2ActionClass extends Class {
         getStrutsMapperClass(this) = "org.apache.struts2.rest.RestActionMapper" or
         getStrutsMapperClass(this) = "rest"
       then (
-        /*
-         * The "Rest" action mapper is provided with the rest plugin, and maps rest APIs to specific
-         * methods based on a "ruby-on-rails" style.
-         */
-
+        // The "Rest" action mapper is provided with the rest plugin, and maps rest APIs to specific
+        // methods based on a "ruby-on-rails" style.
         result.hasName("index") or
         result.hasName("show") or
         result.hasName("edit") or

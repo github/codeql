@@ -32,12 +32,9 @@ abstract class SpringControllerMethod extends Method {
  */
 class SpringModelAttributeMethod extends SpringControllerMethod {
   SpringModelAttributeMethod() {
-    /*
-     * Any method that declares the @ModelAttribute annotation, or overrides a method that declares
-     * the annotation. We have to do this explicit check because the @ModelAttribute annotation is
-     * not declared with @Inherited.
-     */
-
+    // Any method that declares the @ModelAttribute annotation, or overrides a method that declares
+    // the annotation. We have to do this explicit check because the @ModelAttribute annotation is
+    // not declared with @Inherited.
     exists(Method superMethod |
       this.overrides*(superMethod) and
       superMethod.hasAnnotation("org.springframework.web.bind.annotation", "ModelAttribute")
@@ -50,12 +47,9 @@ class SpringModelAttributeMethod extends SpringControllerMethod {
  */
 class SpringInitBinderMethod extends SpringControllerMethod {
   SpringInitBinderMethod() {
-    /*
-     * Any method that declares the @InitBinder annotation, or overrides a method that declares
-     * the annotation. We have to do this explicit check because the @InitBinder annotation is
-     * not declared with @Inherited.
-     */
-
+    // Any method that declares the @InitBinder annotation, or overrides a method that declares
+    // the annotation. We have to do this explicit check because the @InitBinder annotation is
+    // not declared with @Inherited.
     exists(Method superMethod |
       this.overrides*(superMethod) and
       superMethod.hasAnnotation("org.springframework.web.bind.annotation", "InitBinder")
@@ -68,12 +62,9 @@ class SpringInitBinderMethod extends SpringControllerMethod {
  */
 class SpringRequestMappingMethod extends SpringControllerMethod {
   SpringRequestMappingMethod() {
-    /*
-     * Any method that declares the @RequestMapping annotation, or overrides a method that declares
-     * the annotation. We have to do this explicit check because the @RequestMapping annotation is
-     * not declared with @Inherited.
-     */
-
+    // Any method that declares the @RequestMapping annotation, or overrides a method that declares
+    // the annotation. We have to do this explicit check because the @RequestMapping annotation is
+    // not declared with @Inherited.
     exists(Method superMethod |
       this.overrides*(superMethod) and
       superMethod.hasAnnotation("org.springframework.web.bind.annotation", "RequestMapping")

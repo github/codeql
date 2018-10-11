@@ -317,11 +317,8 @@ class ServletWebXMLListenerType extends RefType {
     hasQualifiedName("javax.servlet.http", "HttpSessionAttributeListener") or
     hasQualifiedName("javax.servlet.http", "HttpSessionIdListener") or
     hasQualifiedName("javax.servlet.http", "HttpSessionListener")
-    /*
-     * Listeners that are not configured in `web.xml`:
-     *  - `HttpSessionActivationListener`
-     *  - `HttpSessionBindingListener`
-     */
-
-    }
+    // Listeners that are not configured in `web.xml`:
+    //  - `HttpSessionActivationListener`
+    //  - `HttpSessionBindingListener`
+  }
 }

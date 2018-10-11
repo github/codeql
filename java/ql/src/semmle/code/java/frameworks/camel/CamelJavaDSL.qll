@@ -59,11 +59,8 @@ class CamelJavaDSLBeanDecl extends ProcessorDefinitionElement {
   RefType getABeanClass() {
     if getArgument(0).getType() instanceof TypeClass
     then
-      /*
-       * In this case, we've been given a Class<?>, which implies a Spring Bean of this type
-       * should be loaded. Infer the type of type parameter.
-       */
-
+      // In this case, we've been given a Class<?>, which implies a Spring Bean of this type
+      // should be loaded. Infer the type of type parameter.
       result = inferClassParameterType(getArgument(0))
     else
       // In this case, the object itself is used as the target for the Apache Camel messages.

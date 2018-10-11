@@ -21,11 +21,8 @@ class PersistentEntity extends RefType {
     if exists(getAccessTypeFromAnnotation())
     then result = getAccessTypeFromAnnotation()
     else
-      /*
-       * If the access type is not explicit, then the location of the `Id` annotation determines
-       * which access type is used.
-       */
-
+      // If the access type is not explicit, then the location of the `Id` annotation determines
+      // which access type is used.
       if getAMethod().hasAnnotation("javax.persistence", "Id")
       then result = "property"
       else result = "field"

@@ -204,11 +204,8 @@ class JacksonMixedInCallable extends Callable {
       result = getATargetType().getACallable() and
       if this instanceof Constructor
       then
-        /*
-         * The mixed in type will have a different name to the target type, so just compare the
-         * parameters.
-         */
-
+        // The mixed in type will have a different name to the target type, so just compare the
+        // parameters.
         result.getSignature().suffix(targetType.getName().length()) = getSignature()
               .suffix(getDeclaringType().getName().length())
       else

@@ -30,19 +30,13 @@ class GwtEntryPointClass extends Class {
    * Holds if this entry point is live - that is, whether it is referred to within an XML element.
    */
   predicate isLive() {
-    /*
-     * We must have a `*.gwt.xml` in order to determine whether a particular `EntryPoint` is enabled.
-     * In the absence of such a file, we cannot guarantee that `EntryPoint`s without annotations
-     * are live.
-     */
-
+    // We must have a `*.gwt.xml` in order to determine whether a particular `EntryPoint` is enabled.
+    // In the absence of such a file, we cannot guarantee that `EntryPoint`s without annotations
+    // are live.
     isGwtXmlIncluded()
     implies
     (
-      /*
-       * The entry point is live if it is specified in a `*.gwt.xml` file.
-       */
-
+      // The entry point is live if it is specified in a `*.gwt.xml` file.
       exists(getAGwtXmlFile())
     )
   }
