@@ -1,5 +1,4 @@
 /* Detection of strings and arrays of strings containing relative paths. */
-
 import java
 
 /**
@@ -13,10 +12,9 @@ predicate relativePath(Element tree, string command) {
       text.regexpMatch("[^/\\\\ \t]*[ \t].*")
     ) and
     command = text.replaceAll("\t", " ").splitAt(" ", 0).replaceAll("\"", "")
-  ) or
-  exists(AddExpr add | tree = add |
-    relativePath(add.getLeftOperand(), command)
   )
+  or
+  exists(AddExpr add | tree = add | relativePath(add.getLeftOperand(), command))
 }
 
 /**
