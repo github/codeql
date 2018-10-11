@@ -49,32 +49,14 @@ module Electron {
     }
 
   }
-  
-  /**
-   * A Node.js-style HTTP or HTTPS request made using `electron.net`, for example `net.request(url)`.
-   */
-  private class NetRequest extends CustomElectronClientRequest {
-    NetRequest() {
-      this = DataFlow::moduleMember("electron", "net").getAMemberCall("request")
-    }
-
-    override DataFlow::Node getUrl() {
-      result = getArgument(0) or
-      result = getOptionArgument(0, "url")
-    }
-
-    override DataFlow::Node getADataNode() {
-      none()
-    }
-
-  }
 
   /**
-   * A Node.js-style HTTP or HTTPS request made using `electron.client`, for example `new client(url)`.
+   * A Node.js-style HTTP or HTTPS request made using `electron.ClientRequest`.
    */
   private class NewClientRequest extends CustomElectronClientRequest {
     NewClientRequest() {
-      this = DataFlow::moduleMember("electron", "ClientRequest").getAnInstantiation()
+      this = DataFlow::moduleMember("electron", "ClientRequest").getAnInstantiation() or
+      this = DataFlow::moduleMember("electron", "net").getAMemberCall("request") // alias
     }
 
     override DataFlow::Node getUrl() {
@@ -83,7 +65,10 @@ module Electron {
     }
 
     override DataFlow::Node getADataNode() {
-      none()
+      exists (string name |
+        name = "write" or name = "end" |
+        result =this.(DataFlow::SourceNode).getAMethodCall(name).getArgument(0)
+      )
     }
 
   }
