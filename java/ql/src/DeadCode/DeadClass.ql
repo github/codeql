@@ -9,20 +9,23 @@
  *       useless-code
  *       external/cwe/cwe-561
  */
+
 import semmle.code.java.deadcode.DeadCode
 
 from DeadClass c, Element origin, string reason
 where
-  if exists(DeadRoot root | root = c.getADeadRoot() | not root = c.getACallable()) then (
-      // Report a list of the dead roots.
-      origin = c.getADeadRoot() and
-      not origin = c.getACallable() and
-      // There are uses of this class from outside the class.
-      reason = " is only used from dead code originating at $@."
+  if exists(DeadRoot root | root = c.getADeadRoot() | not root = c.getACallable())
+  then (
+    // Report a list of the dead roots.
+    origin = c.getADeadRoot() and
+    not origin = c.getACallable() and
+    // There are uses of this class from outside the class.
+    reason = " is only used from dead code originating at $@."
   ) else (
     // There are no dead roots outside this class.
     origin = c and
-    if c.isUnusedOutsideClass() then
+    if c.isUnusedOutsideClass()
+    then
       // Never accessed outside this class, so it's entirely unused.
       reason = " is entirely unused."
     else
