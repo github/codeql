@@ -15,11 +15,8 @@ class ConstantField extends Field {
     getType() instanceof ImmutableType and
     // Assigned once
     count(getAnAssignedValue()) = 1 and
-    /*
-     * And that assignment is either in the appropriate initializer, or, for instance fields on
-     * classes with one constructor, in the constructor.
-     */
-
+    // And that assignment is either in the appropriate initializer, or, for instance fields on
+    // classes with one constructor, in the constructor.
     forall(FieldWrite fa | fa = getAnAccess() |
       if isStatic()
       then fa.getEnclosingCallable() instanceof StaticInitializer
@@ -83,10 +80,7 @@ abstract class ExcludedConstantField extends ConstantField { }
  */
 class ConstantExpr extends Expr {
   ConstantExpr() {
-    /*
-     * Ignore reads of excluded fields.
-     */
-
+    // Ignore reads of excluded fields.
     not this.(FieldRead).getField() instanceof ExcludedConstantField and
     (
       // A JLS compile time constant expr
@@ -210,24 +204,18 @@ class ConstSwitchStmt extends SwitchStmt {
  */
 class UnreachableBasicBlock extends BasicBlock {
   UnreachableBasicBlock() {
-    /*
-     * Condition blocks with a constant condition that causes a true/false successor to be
-     * unreachable. Note: conditions including a single boolean literal e.g. if (false) are not
-     * modeled as a ConditionBlock - this case is covered by the blocks-without-a-predecessor
-     * check below.
-     */
-
+    // Condition blocks with a constant condition that causes a true/false successor to be
+    // unreachable. Note: conditions including a single boolean literal e.g. if (false) are not
+    // modeled as a ConditionBlock - this case is covered by the blocks-without-a-predecessor
+    // check below.
     exists(ConditionBlock conditionBlock, boolean constant |
       constant = conditionBlock.getCondition().(ConstantExpr).getBooleanValue()
     |
       conditionBlock.controls(this, constant.booleanNot())
     )
     or
-    /*
-     * This block is not reachable in the CFG, and is not a callable, a body of a callable, an
-     * expression in an annotation, an expression in an assert statement, or a catch clause.
-     */
-
+    // This block is not reachable in the CFG, and is not a callable, a body of a callable, an
+    // expression in an annotation, an expression in an assert statement, or a catch clause.
     (
       forall(BasicBlock bb | bb = getABBPredecessor() | bb instanceof UnreachableBasicBlock) and
       not exists(Callable c | c.getBody() = this) and
