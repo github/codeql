@@ -81,9 +81,11 @@ predicate mayWriteToArray(Expr modified) {
 
 predicate writesToArray(Expr array) {
   relevantType(array.getType()) and
-  (exists(Assignment a, ArrayAccess access | a.getDest() = access | access.getArray() = array))
-  or
-  exists(MethodAccess ma | ma.getQualifier() = array | modifyMethod(ma.getMethod()))
+  (
+    exists(Assignment a, ArrayAccess access | a.getDest() = access | access.getArray() = array)
+    or
+    exists(MethodAccess ma | ma.getQualifier() = array | modifyMethod(ma.getMethod()))
+  )
 }
 
 VarAccess modificationAfter(VarAccess v) {
