@@ -180,7 +180,10 @@ private class FetchUrlRequest extends CustomClientRequest {
   }
 
   override DataFlow::Node getADataNode() {
-    none()
+    exists (string name |
+      name = "headers" or name = "body" |
+      result = getOptionArgument(1, name)
+    )
   }
 
 }

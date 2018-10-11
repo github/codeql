@@ -57,4 +57,6 @@ import {ClientRequest, net} from 'electron';
     axios.post(x, data1, {data: data2});
 
     axios({headers: headerData, params: paramsData});
+
+    window.fetch(url, {headers: headerData, body: bodyData});
 });
