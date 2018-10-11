@@ -4,19 +4,13 @@ import semmle.code.java.frameworks.spring.SpringBean
 
 /** A common superclass for all Spring XML elements. */
 class SpringXMLElement extends XMLElement {
-  SpringXMLElement() {
-    this.getFile() instanceof SpringBeanFile
-  }
+  SpringXMLElement() { this.getFile() instanceof SpringBeanFile }
 
   /** Gets a child of this Spring XML element. */
-  SpringXMLElement getASpringChild() {
-    result = this.getAChild()
-  }
+  SpringXMLElement getASpringChild() { result = this.getAChild() }
 
   /** Gets the bean file of this XML element. */
-  SpringBeanFile getSpringBeanFile() {
-    result = this.getFile()
-  }
+  SpringBeanFile getSpringBeanFile() { result = this.getFile() }
 
   /**
    * Gets the value of the attribute with name `attributeName`, or "default" if the
@@ -25,8 +19,8 @@ class SpringXMLElement extends XMLElement {
   string getAttributeValueWithDefault(string attributeName) {
     this.hasAttribute(attributeName) and
     if exists(XMLAttribute a | a = this.getAttribute(attributeName))
-      then result = this.getAttributeValue(attributeName)
-      else result = "default"
+    then result = this.getAttributeValue(attributeName)
+    else result = "default"
   }
 
   /** Gets the closest enclosing `<bean>` element. */
@@ -39,11 +33,7 @@ class SpringXMLElement extends XMLElement {
   /**
    * Overridden by subclasses. Used to match `value`, `property` and `ref` elements for similarity.
    */
-  predicate isSimilar(SpringXMLElement other) {
-    none()
-  }
+  predicate isSimilar(SpringXMLElement other) { none() }
 
-  string getContentString() {
-    result = this.allCharactersString()
-  }
+  string getContentString() { result = this.allCharactersString() }
 }

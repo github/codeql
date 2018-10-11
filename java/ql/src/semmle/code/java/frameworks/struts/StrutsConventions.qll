@@ -25,7 +25,7 @@ private Folder getSourceFolder(CompilationUnit compilationUnit) {
   exists(string relativePath, string fullPath |
     relativePath = compilationUnit.getPackage().getName().replaceAll(".", "/") and
     fullPath = compilationUnit.getFile().getParentContainer().getAbsolutePath()
-    |
+  |
     result.getAbsolutePath() = fullPath.prefix(fullPath.length() - relativePath.length() - 1)
   )
 }
@@ -33,7 +33,7 @@ private Folder getSourceFolder(CompilationUnit compilationUnit) {
 private predicate strutsConventionAnnotationUsedInFolder(Folder f) {
   exists(Annotation a |
     a.getType().getPackage().hasName("org.apache.struts2.convention.annotation")
-    |
+  |
     getSourceFolder(a.getAnnotatedElement().getCompilationUnit()) = f
   )
 }
@@ -50,13 +50,16 @@ private predicate strutsConventionAnnotationUsedInFolder(Folder f) {
  */
 private predicate isStrutsConventionPluginUsed(RefType refType) {
   // A convention annotation is used within the same source folder as this RefType.
-  strutsConventionAnnotationUsedInFolder(getSourceFolder(refType.getCompilationUnit())) or
+  strutsConventionAnnotationUsedInFolder(getSourceFolder(refType.getCompilationUnit()))
+  or
   // The struts configuration file for this file sets a convention property
-  getRootXMLFile(refType).getAConstant().getName().matches("struts.convention%") or
+  getRootXMLFile(refType).getAConstant().getName().matches("struts.convention%")
+  or
   // We've found the POM for this RefType, and it includes a dependency on the convention plugin
   exists(Pom pom |
     pom.getASourceRefType() = refType and
-    pom.getADependency() instanceof Struts2ConventionDependency)
+    pom.getADependency() instanceof Struts2ConventionDependency
+  )
 }
 
 /**
@@ -69,8 +72,9 @@ StrutsXMLFile getRootXMLFile(RefType refType) {
   exists(StrutsFolder strutsFolder |
     strutsFolder = refType.getFile().getParentContainer*() and
     strutsFolder.isUnique()
-    |
-    result = strutsFolder.getAStrutsRootFile())
+  |
+    result = strutsFolder.getAStrutsRootFile()
+  )
 }
 
 /**
@@ -79,10 +83,9 @@ StrutsXMLFile getRootXMLFile(RefType refType) {
  * If no configuration is supplied, or identified, the default is "Action".
  */
 private string getConventionSuffix(RefType refType) {
-  if exists(getRootXMLFile(refType).getConstantValue("struts.convention.action.suffix")) then
-    result = getRootXMLFile(refType).getConstantValue("struts.convention.action.suffix")
-  else
-    result = "Action"
+  if exists(getRootXMLFile(refType).getConstantValue("struts.convention.action.suffix"))
+  then result = getRootXMLFile(refType).getConstantValue("struts.convention.action.suffix")
+  else result = "Action"
 }
 
 /**
@@ -116,12 +119,12 @@ class Struts2ConventionActionClass extends Class {
    */
   Method getAnActionMethod() {
     this.inherits(result) and
-      // Default mapping
-      (
-        result.hasName("execute") or
-        exists(StrutsActionAnnotation actionAnnotation |
-          result = actionAnnotation.getActionCallable()
-        )
+    // Default mapping
+    (
+      result.hasName("execute") or
+      exists(StrutsActionAnnotation actionAnnotation |
+        result = actionAnnotation.getActionCallable()
       )
+    )
   }
 }
