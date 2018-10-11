@@ -3,11 +3,10 @@ import semmle.code.java.controlflow.Dominance
 import semmle.code.java.dataflow.DefUse
 import semmle.code.java.controlflow.Guards
 
-/*
- * The type of `exp` is narrower than or equal to `numType`,
+/**
+ * Holds if the type of `exp` is narrower than or equal to `numType`,
  * or there is an enclosing cast to a type at least as narrow as 'numType'.
  */
-
 predicate narrowerThanOrEqualTo(ArithExpr exp, NumType numType) {
   exp.getType().(NumType).widerThan(numType)
   implies
