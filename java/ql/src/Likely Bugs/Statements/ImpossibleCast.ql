@@ -79,14 +79,12 @@ where
                 target.getName() + "[] will always fail with a ClassCastException."
     )
     or
-    /*
-     * For unchecked operations, the crash would not occur at the cast site,
-     * but only if/when the value is assigned to a variable of different array type.
-     * This would require tracking the flow of values, but we focus on finding problematic
-     * APIs. We keep two cases:
-     * - An array that is actually returned from the (non-private) method, or
-     * - an array that is assigned to a field returned from another (non-private) method.
-     */
+    // For unchecked operations, the crash would not occur at the cast site,
+    // but only if/when the value is assigned to a variable of different array type.
+    // This would require tracking the flow of values, but we focus on finding problematic
+    // APIs. We keep two cases:
+    // - An array that is actually returned from the (non-private) method, or
+    // - an array that is assigned to a field returned from another (non-private) method.
     (
       uncheckedCastType(target) and
       returnedFrom(ce, ce.getEnclosingCallable()) and

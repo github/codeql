@@ -18,10 +18,8 @@ where
     // Lines of code contributed by dead classes.
     sum(DeadClass deadClass | deadClass.getFile() = f |
       deadClass.getNumberOfLinesOfCode() -
-      /*
-       * Remove inner and local classes, as they are reported as separate dead classes. Do not
-       * remove anonymous classes, because they aren't reported separately.
-       */
+      // Remove inner and local classes, as they are reported as separate dead classes. Do not
+      // remove anonymous classes, because they aren't reported separately.
       sum(NestedClass innerClass | innerClass.getEnclosingType() = deadClass and not innerClass.isAnonymous() |
         innerClass.getNumberOfLinesOfCode()
       )
@@ -29,11 +27,9 @@ where
     // Lines of code contributed by dead methods, not in dead classes.
     sum(DeadMethod deadMethod | deadMethod.getFile() = f and not deadMethod.isInDeadScope() |
       deadMethod.getNumberOfLinesOfCode() -
-      /*
-       * Remove local classes defined in the dead method - they are reported separately as a dead
-       * class. We keep anonymous class counts, because anonymous classes are not reported
-       * separately.
-       */
+      // Remove local classes defined in the dead method - they are reported separately as a dead
+      // class. We keep anonymous class counts, because anonymous classes are not reported
+      // separately.
       sum(LocalClass localClass | localClass.getLocalClassDeclStmt().getEnclosingCallable() = deadMethod |
         localClass.getNumberOfLinesOfCode()
       )

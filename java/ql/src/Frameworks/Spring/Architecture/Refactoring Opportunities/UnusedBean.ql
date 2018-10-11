@@ -40,9 +40,7 @@ class ImpureStmt extends Stmt {
     exists(Expr e |
       e.getEnclosingStmt() = this
       |
-      /*
-       * Only permit calls to set of whitelisted targets.
-       */
+      // Only permit calls to set of whitelisted targets.
       (
         e instanceof Call and
         not e.(Call).getCallee().getDeclaringType().hasQualifiedName("java.util", "Collections")
@@ -73,10 +71,8 @@ private Stmt getANestedStmt(Block block) {
 class SpringPureClass extends Class {
   SpringPureClass() {
     (
-      /*
-       * The only permitted statement in static initializers is the initialization of a static
-       * final or effectively final logger fields, or effectively immutable types.
-       */
+      // The only permitted statement in static initializers is the initialization of a static
+      // final or effectively final logger fields, or effectively immutable types.
       forall(Stmt s |
         s = getANestedStmt(getAMember().(StaticInitializer).getBody())
         |
@@ -164,11 +160,9 @@ class LiveSpringBean extends SpringBean {
       not getClass() instanceof SpringPureClass
     ) or
     (
-      /*
-       * If the class does not exist for this bean, or the class is not a source bean, then this is
-       * likely to be a definition using a library class, in which case we should consider it to be
-       * live.
-       */
+      // If the class does not exist for this bean, or the class is not a source bean, then this is
+      // likely to be a definition using a library class, in which case we should consider it to be
+      // live.
       not exists(getClass()) or
       not getClass().fromSource() or
       // In alfresco, "webscript" beans should be considered live

@@ -26,10 +26,8 @@ where
       // Never accessed outside this class, so it's entirely unused.
       reason = " is entirely unused."
     else
-      /*
-       * There are no dead roots outside the class, but the class has a possible liveness cause
-       * external to the class, so it must be accessed from at least one dead-code cycle.
-       */
+      // There are no dead roots outside the class, but the class has a possible liveness cause
+      // external to the class, so it must be accessed from at least one dead-code cycle.
       reason = " is only used from or in a dead-code cycle."
   )
 select c, "The class " + c.getName() + reason, origin, origin.getName()
