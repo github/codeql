@@ -48,3 +48,13 @@ import {ClientRequest, net} from 'electron';
 
     unknown({ url:url });
 });
+
+(function() {
+    axios({data: data});
+
+    axios.get(x, {data: not_data});
+
+    axios.post(x, data1, {data: data2});
+
+    axios({headers: headerData, params: paramsData});
+});
