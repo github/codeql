@@ -334,24 +334,31 @@ private cached module Internal {
   }
 
   /**
+   * Gets an SSA definition of `v` that reaches the end of the immediate dominator of `bb`.
+   */
+  pragma[noinline]
+  private SsaDefinition getDefReachingEndOfImmediateDominator(ReachableBasicBlock bb, SsaSourceVariable v) {
+    result = getDefReachingEndOf(bb.getImmediateDominator(), v)
+  }
+
+  /**
    * Gets an SSA definition of `v` that reaches the end of basic block `bb`.
    */
   cached SsaDefinition getDefReachingEndOf(ReachableBasicBlock bb, SsaSourceVariable v) {
-    bb.getASuccessor().localIsLiveAtEntry(v) and
-    (
-      exists (int lastRef | lastRef = max(int i | ssaRef(bb, i, v, _)) |
-        result = getLocalDefinition(bb, lastRef, v)
-        or
-        result.definesAt(bb, lastRef, v)
-      )
+    exists (int lastRef | lastRef = max(int i | ssaRef(bb, i, v, _)) |
+      result = getLocalDefinition(bb, lastRef, v)
       or
-      /* In SSA form, the (unique) reaching definition of a use is the closest
-       * definition that dominates the use. If two definitions dominate a node
-       * then one must dominate the other, so we can find the reaching definition
-       * by following the idominance relation backwards. */
-      result = getDefReachingEndOf(bb.getImmediateDominator(), v) and
-      not exists (SsaDefinition ssa | ssa.definesAt(bb, _, v))
+      result.definesAt(bb, lastRef, v) and
+      liveAtSuccEntry(bb, v)
     )
+    or
+    /* In SSA form, the (unique) reaching definition of a use is the closest
+     * definition that dominates the use. If two definitions dominate a node
+     * then one must dominate the other, so we can find the reaching definition
+     * by following the idominance relation backwards. */
+    result = getDefReachingEndOfImmediateDominator(bb, v) and
+    not exists (SsaDefinition ssa | ssa.definesAt(bb, _, v)) and
+    liveAtSuccEntry(bb, v)
   }
 
   /**
