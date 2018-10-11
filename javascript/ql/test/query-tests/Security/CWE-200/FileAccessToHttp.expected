@@ -1,8 +1,8 @@
-| bufferRead.js:12:22:12:43 | new Buf ... s.size) | $@ flows directly to Http request body | bufferRead.js:33:21:33:28 | postData | File access |
-| googlecompiler.js:44:54:44:57 | data | $@ flows directly to Http request body | googlecompiler.js:38:18:38:26 | post_data | File access |
-| readFileSync.js:5:12:5:39 | fs.read ... t.txt") | $@ flows directly to Http request body | readFileSync.js:26:18:26:18 | s | File access |
-| readStreamRead.js:13:21:13:35 | readable.read() | $@ flows directly to Http request body | readStreamRead.js:30:19:30:23 | chunk | File access |
-| request.js:28:52:28:55 | data | $@ flows directly to Http request body | request.js:8:11:8:20 | {jsonData} | File access |
-| request.js:43:51:43:54 | data | $@ flows directly to Http request body | request.js:16:11:23:3 | {\\n    u ... ody\\n  } | File access |
-| sentAsHeaders.js:10:79:10:84 | buffer | $@ flows directly to Http request body | sentAsHeaders.js:14:20:19:9 | {\\n      ...       } | File access |
-| sentAsHeaders.js:10:79:10:84 | buffer | $@ flows directly to Http request body | sentAsHeaders.js:20:20:25:9 | {\\n      ...       } | File access |
+| bufferRead.js:33:21:33:28 | postData | $@ flows directly to outbound network request | bufferRead.js:12:22:12:43 | new Buf ... s.size) | File data |
+| googlecompiler.js:38:18:38:26 | post_data | $@ flows directly to outbound network request | googlecompiler.js:44:54:44:57 | data | File data |
+| readFileSync.js:26:18:26:18 | s | $@ flows directly to outbound network request | readFileSync.js:5:12:5:39 | fs.read ... t.txt") | File data |
+| readStreamRead.js:30:19:30:23 | chunk | $@ flows directly to outbound network request | readStreamRead.js:13:21:13:35 | readable.read() | File data |
+| request.js:8:11:8:20 | {jsonData} | $@ flows directly to outbound network request | request.js:28:52:28:55 | data | File data |
+| request.js:16:11:23:3 | {\\n    u ... ody\\n  } | $@ flows directly to outbound network request | request.js:43:51:43:54 | data | File data |
+| sentAsHeaders.js:14:20:19:9 | {\\n      ...       } | $@ flows directly to outbound network request | sentAsHeaders.js:10:79:10:84 | buffer | File data |
+| sentAsHeaders.js:20:20:25:9 | {\\n      ...       } | $@ flows directly to outbound network request | sentAsHeaders.js:10:79:10:84 | buffer | File data |
