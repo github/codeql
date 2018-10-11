@@ -2,7 +2,6 @@
 
 import semmle.code.FileSystem
 import semmle.code.Location
-
 import semmle.code.java.Annotation
 import semmle.code.java.CompilationUnit
 import semmle.code.java.ControlFlowGraph
@@ -26,15 +25,12 @@ import semmle.code.java.Statement
 import semmle.code.java.Type
 import semmle.code.java.UnitTests
 import semmle.code.java.Variable
-
 import semmle.code.java.controlflow.BasicBlocks
-
 import semmle.code.java.metrics.MetricCallable
 import semmle.code.java.metrics.MetricElement
 import semmle.code.java.metrics.MetricField
 import semmle.code.java.metrics.MetricPackage
 import semmle.code.java.metrics.MetricRefType
 import semmle.code.java.metrics.MetricStmt
-
 import semmle.code.xml.Ant
 import semmle.code.xml.XML

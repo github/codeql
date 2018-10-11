@@ -5,7 +5,8 @@ import java
  */
 predicate javaApiCallablePasswordParam(Callable c, int i) {
   exists(c.getParameter(i)) and
-  javaApiCallablePasswordParam(c.getDeclaringType().getQualifiedName() + ";" + c.getStringSignature() + ";" + i)
+  javaApiCallablePasswordParam(c.getDeclaringType().getQualifiedName() + ";" +
+      c.getStringSignature() + ";" + i)
 }
 
 private predicate javaApiCallablePasswordParam(string s) {
@@ -128,7 +129,8 @@ private predicate javaApiCallablePasswordParam(string s) {
  */
 predicate javaApiCallableUsernameParam(Callable c, int i) {
   exists(c.getParameter(i)) and
-  javaApiCallableUsernameParam(c.getDeclaringType().getQualifiedName() + ";" + c.getStringSignature() + ";" + i)
+  javaApiCallableUsernameParam(c.getDeclaringType().getQualifiedName() + ";" +
+      c.getStringSignature() + ";" + i)
 }
 
 private predicate javaApiCallableUsernameParam(string s) {
@@ -189,7 +191,8 @@ private predicate javaApiCallableUsernameParam(string s) {
  */
 predicate javaApiCallableCryptoKeyParam(Callable c, int i) {
   exists(c.getParameter(i)) and
-  javaApiCallableCryptoKeyParam(c.getDeclaringType().getQualifiedName() + ";" + c.getStringSignature() + ";" + i)
+  javaApiCallableCryptoKeyParam(c.getDeclaringType().getQualifiedName() + ";" +
+      c.getStringSignature() + ";" + i)
 }
 
 private predicate javaApiCallableCryptoKeyParam(string s) {
@@ -413,7 +416,8 @@ private predicate javaApiCallableCryptoKeyParam(string s) {
  */
 predicate otherApiCallableCredentialParam(Callable c, int i) {
   exists(c.getParameter(i)) and
-  otherApiCallableCredentialParam(c.getDeclaringType().getQualifiedName() + ";" + c.getStringSignature() + ";" + i)
+  otherApiCallableCredentialParam(c.getDeclaringType().getQualifiedName() + ";" +
+      c.getStringSignature() + ";" + i)
 }
 
 private predicate otherApiCallableCredentialParam(string s) {

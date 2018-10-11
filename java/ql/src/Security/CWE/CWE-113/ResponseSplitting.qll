@@ -10,18 +10,21 @@ class HeaderSplittingSink extends DataFlow::ExprNode {
     exists(ResponseAddCookieMethod m, MethodAccess ma |
       ma.getMethod() = m and
       this.getExpr() = ma.getArgument(0)
-    ) or
+    )
+    or
     exists(ResponseAddHeaderMethod m, MethodAccess ma |
       ma.getMethod() = m and
       this.getExpr() = ma.getAnArgument()
-    ) or
+    )
+    or
     exists(ResponseSetHeaderMethod m, MethodAccess ma |
       ma.getMethod() = m and
       this.getExpr() = ma.getAnArgument()
-    ) or
+    )
+    or
     exists(JaxRsResponseBuilder builder, Method m |
       m = builder.getAMethod() and m.getName() = "header"
-      |
+    |
       this.getExpr() = m.getAReference().getArgument(1)
     )
   }
