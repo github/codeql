@@ -76,9 +76,18 @@ Expr integerGuard(IntComparableExpr e, boolean branch, int k, boolean is_k) {
     bounded(c, any(ZeroBound zb), val, upper, _) and
     is_k = false
   |
-    comp.getLesserOperand() = c and comp.isStrict() and branch = true and val >= k and upper = false // k <= val <= c < e, so e != k
+    // k <= val <= c < e, so e != k
+    comp.getLesserOperand() = c and
+    comp.isStrict() and
+    branch = true and
+    val >= k and
+    upper = false
     or
-    comp.getLesserOperand() = c and comp.isStrict() and branch = false and val < k and upper = true
+    comp.getLesserOperand() = c and
+    comp.isStrict() and
+    branch = false and
+    val < k and
+    upper = true
     or
     comp.getLesserOperand() = c and
     not comp.isStrict() and
@@ -92,7 +101,11 @@ Expr integerGuard(IntComparableExpr e, boolean branch, int k, boolean is_k) {
     val <= k and
     upper = true
     or
-    comp.getGreaterOperand() = c and comp.isStrict() and branch = true and val <= k and upper = true
+    comp.getGreaterOperand() = c and
+    comp.isStrict() and
+    branch = true and
+    val <= k and
+    upper = true
     or
     comp.getGreaterOperand() = c and
     comp.isStrict() and
@@ -128,24 +141,28 @@ Expr intBoundGuard(RValue x, boolean branch_with_lower_bound_k, int k) {
     c.getIntValue() = val and
     x.getVariable().getType() instanceof IntegralType
   |
+    // c < x
     comp.getLesserOperand().getProperExpr() = c and
     comp.isStrict() and
     branch_with_lower_bound_k = true and
-    val + 1 = k // c < x
+    val + 1 = k
     or
+    // c <= x
     comp.getLesserOperand().getProperExpr() = c and
     not comp.isStrict() and
     branch_with_lower_bound_k = true and
-    val = k // c <= x
+    val = k
     or
+    // x < c
     comp.getGreaterOperand().getProperExpr() = c and
     comp.isStrict() and
     branch_with_lower_bound_k = false and
-    val = k // x < c
+    val = k
     or
+    // x <= c
     comp.getGreaterOperand().getProperExpr() = c and
     not comp.isStrict() and
     branch_with_lower_bound_k = false and
-    val + 1 = k // x <= c
+    val + 1 = k
   )
 }
