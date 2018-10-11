@@ -203,9 +203,8 @@ where
     else
       if constCondSimple(test, _)
       then (
-        constCondSimple(test, testIsTrue) and reason = "" and reasonElem = test
+        constCondSimple(test, testIsTrue) and reason = "" and reasonElem = test // dummy reason element
       ) else
-        // dummy reason element
         exists(CondReason r |
           constCond(test, testIsTrue, r) and reason = ", because of $@" and reasonElem = r.getCond()
         )
