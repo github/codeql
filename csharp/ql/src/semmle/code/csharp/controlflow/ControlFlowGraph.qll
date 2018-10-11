@@ -2507,7 +2507,7 @@ module ControlFlow {
       private import PreBasicBlocks
       private import AssignableDefinitions
 
-      private class SimpleLocalScopeVariable extends LocalScopeVariable {
+      class SimpleLocalScopeVariable extends LocalScopeVariable {
         SimpleLocalScopeVariable() {
           not exists(AssignableDefinition def1, AssignableDefinition def2 |
             def1.getTarget() = this and
