@@ -58,11 +58,8 @@ predicate exception(EnumConstant e) {
       values.getParent().(MethodAccess).getMethod().hasName("findThisIn")
     )
     or
-    /*
-     * The `valueOf` method is called, meaning that depending on the string any constant
-     * could be retrieved.
-     */
-
+    // The `valueOf` method is called, meaning that depending on the string any constant
+    // could be retrieved.
     exists(MethodAccess valueOf | valueOf.getMethod().getDeclaringType() = t |
       valueOf.getMethod().hasName("valueOf")
     )

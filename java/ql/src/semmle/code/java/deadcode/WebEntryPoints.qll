@@ -10,12 +10,9 @@ import semmle.code.java.frameworks.Servlets
 class ServletConstructedClass extends ReflectivelyConstructedClass {
   ServletConstructedClass() {
     this instanceof ServletClass and
-    /*
-     * If we have seen any `web.xml` files, this servlet will be considered to be live only if it is
-     * referred to as a servlet-class in at least one. If no `web.xml` files are found, we assume
-     * that XML extraction was not enabled, and therefore consider all `Servlet` classes as live.
-     */
-
+    // If we have seen any `web.xml` files, this servlet will be considered to be live only if it is
+    // referred to as a servlet-class in at least one. If no `web.xml` files are found, we assume
+    // that XML extraction was not enabled, and therefore consider all `Servlet` classes as live.
     (
       isWebXMLIncluded()
       implies
@@ -33,12 +30,9 @@ class ServletConstructedClass extends ReflectivelyConstructedClass {
 class ServletListenerClass extends ReflectivelyConstructedClass {
   ServletListenerClass() {
     getAnAncestor() instanceof ServletWebXMLListenerType and
-    /*
-     * If we have seen any `web.xml` files, this listener will be considered to be live only if it is
-     * referred to as a listener-class in at least one. If no `web.xml` files are found, we assume
-     * that XML extraction was not enabled, and therefore consider all listener classes as live.
-     */
-
+    // If we have seen any `web.xml` files, this listener will be considered to be live only if it is
+    // referred to as a listener-class in at least one. If no `web.xml` files are found, we assume
+    // that XML extraction was not enabled, and therefore consider all listener classes as live.
     (
       isWebXMLIncluded()
       implies
@@ -54,12 +48,9 @@ class ServletListenerClass extends ReflectivelyConstructedClass {
 class ServletFilterClass extends ReflectivelyConstructedClass {
   ServletFilterClass() {
     getASupertype*().hasQualifiedName("javax.servlet", "Filter") and
-    /*
-     * If we have seen any `web.xml` files, this filter will be considered to be live only if it is
-     * referred to as a filter-class in at least one. If no `web.xml` files are found, we assume
-     * that XML extraction was not enabled, and therefore consider all filter classes as live.
-     */
-
+    // If we have seen any `web.xml` files, this filter will be considered to be live only if it is
+    // referred to as a filter-class in at least one. If no `web.xml` files are found, we assume
+    // that XML extraction was not enabled, and therefore consider all filter classes as live.
     (isWebXMLIncluded() implies exists(WebFilterClass filterClass | this = filterClass.getClass()))
   }
 }
@@ -77,11 +68,8 @@ class GWTEntryPointConstructedClass extends ReflectivelyConstructedClass {
 class GWTServletClass extends ReflectivelyConstructedClass {
   GWTServletClass() {
     this instanceof ServletClass and
-    /*
-     * There must be evidence that GWT is being used, otherwise missing `*.gwt.xml` files could cause
-     * all `Servlet`s to be live.
-     */
-
+    // There must be evidence that GWT is being used, otherwise missing `*.gwt.xml` files could cause
+    // all `Servlet`s to be live.
     exists(Package p | p.getName().matches("com.google.gwt%")) and
     (
       isGwtXmlIncluded()
@@ -102,12 +90,9 @@ class GwtUiBinderEntryPoint extends CallableEntryPoint {
     or
     this instanceof GwtUiHandler
     or
-    /*
-     * The UiBinder framework constructs instances of classes specified in the template files. If a
-     * no-arg constructor is present, that may be called automatically. Or, if there is a
-     * constructor marked as a `UiConstructor`, then that may be called instead.
-     */
-
+    // The UiBinder framework constructs instances of classes specified in the template files. If a
+    // no-arg constructor is present, that may be called automatically. Or, if there is a
+    // constructor marked as a `UiConstructor`, then that may be called instead.
     this instanceof GwtUiConstructor
     or
     exists(GwtComponentTemplateElement componentElement |

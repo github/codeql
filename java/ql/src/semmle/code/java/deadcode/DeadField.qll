@@ -39,10 +39,7 @@ class LiveField extends SourceField {
       isLive(access.getEnclosingCallable())
       or
       exists(Annotation a |
-        /*
-         * This is an access used in an annotation, either directly, or within the expression.
-         */
-
+        // This is an access used in an annotation, either directly, or within the expression.
         a.getValue(_) = access.getParent*()
       |
         // The annotated element is a live callable.
@@ -51,13 +48,9 @@ class LiveField extends SourceField {
         isLive(a.getAnnotatedElement().(LocalVariableDecl).getEnclosingCallable()) or
         // The annotated element is a live field.
         a.getAnnotatedElement() instanceof LiveField or
-        /*
-         * The annotated element is a live source class or interface.
-         *
-         * Note: We ignore annotation values on library classes, because they should only refer to
-         * fields in library classes, not `fromSource()` fields.
-         */
-
+        // The annotated element is a live source class or interface.
+        // Note: We ignore annotation values on library classes, because they should only refer to
+        // fields in library classes, not `fromSource()` fields.
         a.getAnnotatedElement() instanceof LiveClass
       )
     )

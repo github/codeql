@@ -82,12 +82,9 @@ class JUnitCategory extends WhitelistedLiveClass {
  */
 class TestNGReflectivelyConstructedListener extends ReflectivelyConstructedClass {
   TestNGReflectivelyConstructedListener() {
-    /*
-     * Consider any class that implements a TestNG listener interface to be live. Listeners can be
-     * specified on the command line, in `testng.xml` files and in Ant build files, so it is safest
-     * to assume that all such listeners are live.
-     */
-
+    // Consider any class that implements a TestNG listener interface to be live. Listeners can be
+    // specified on the command line, in `testng.xml` files and in Ant build files, so it is safest
+    // to assume that all such listeners are live.
     this instanceof TestNGListenerImpl
   }
 }
@@ -154,12 +151,9 @@ class CucumberConstructedClass extends ReflectivelyConstructedClass {
   }
 
   override Callable getALiveCallable() {
-    /*
-     * Consider any constructor to be live - Cucumber calls a runtime-specified dependency
-     * injection framework (possibly an in-built one) to construct these instances, so any
-     * constructor could be called.
-     */
-
+    // Consider any constructor to be live - Cucumber calls a runtime-specified dependency
+    // injection framework (possibly an in-built one) to construct these instances, so any
+    // constructor could be called.
     result = getAConstructor()
   }
 }

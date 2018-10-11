@@ -97,29 +97,20 @@ class SuppressedConstructor extends Constructor {
     getNumberOfParameters() = 0 and
     // Not the compiler-generated constructor itself.
     not isDefaultConstructor() and
-    /*
-     * Verify that there is only one statement, which is the `super()` call. This exists
-     * even for empty constructors.
-     */
-
+    // Verify that there is only one statement, which is the `super()` call. This exists
+    // even for empty constructors.
     getBody().(Block).getNumStmt() = 1 and
     getBody().(Block).getAStmt().(SuperConstructorInvocationStmt).getNumArgument() = 0 and
-    /*
-     * A constructor that is called is not acting to suppress the default constructor. We permit
-     * calls from suppressed and default constructors - in both cases, they can only come from
-     * sub-class constructors.
-     */
-
+    // A constructor that is called is not acting to suppress the default constructor. We permit
+    // calls from suppressed and default constructors - in both cases, they can only come from
+    // sub-class constructors.
     not exists(Call c |
       c.getCallee().getSourceDeclaration() = this and
       not c.getCaller() instanceof SuppressedConstructor and
       not c.getCaller().(Constructor).isDefaultConstructor()
     ) and
-    /*
-     * If other constructors are declared, then no compiler-generated constructor is added, so
-     * this constructor is not acting to suppress the default compiler-generated constructor.
-     */
-
+    // If other constructors are declared, then no compiler-generated constructor is added, so
+    // this constructor is not acting to suppress the default compiler-generated constructor.
     not exists(Constructor other | other = getDeclaringType().getAConstructor() and other != this)
   }
 }
@@ -130,11 +121,8 @@ class SuppressedConstructor extends Constructor {
 class NamespaceClass extends RefType {
   NamespaceClass() {
     fromSource() and
-    /*
-     * All members, apart from the default constructor and, if present, a "suppressed" constructor
-     * must be static. There must be at least one member apart from the permitted constructors.
-     */
-
+    // All members, apart from the default constructor and, if present, a "suppressed" constructor
+    // must be static. There must be at least one member apart from the permitted constructors.
     forex(Member m |
       m.getDeclaringType() = this and
       not m.(Constructor).isDefaultConstructor() and
@@ -174,29 +162,20 @@ class LiveClass extends SourceClassOrInterface {
     )
     or
     exists(LiveField f | f.getDeclaringType() = this |
-      /*
-       * A `serialVersionUID` field is considered to be a live field, but is
-       * not be enough to be make this class live.
-       */
-
+      // A `serialVersionUID` field is considered to be a live field, but is
+      // not be enough to be make this class live.
       not f instanceof SerialVersionUIDField
     )
     or
     (
-      /*
-       * If this is a namespace class, it is live if there is at least one live nested class.
-       * The definition of `NamespaceClass` is such, that the nested classes must all be static.
-       * Static methods are handled above.
-       */
-
+      // If this is a namespace class, it is live if there is at least one live nested class.
+      // The definition of `NamespaceClass` is such, that the nested classes must all be static.
+      // Static methods are handled above.
       this instanceof NamespaceClass and
       exists(NestedType r | r.getEnclosingType() = this | r instanceof LiveClass)
     )
     or
-    /*
-     * An annotation on the class is reflectively accessed.
-     */
-
+    // An annotation on the class is reflectively accessed.
     exists(ReflectiveAnnotationAccess reflectiveAnnotationAccess |
       this = reflectiveAnnotationAccess.getInferredClassType() and
       isLive(reflectiveAnnotationAccess.getEnclosingCallable())
@@ -232,11 +211,8 @@ class DeadClass extends SourceClassOrInterface {
    * Holds if this dead class is only used within the class itself.
    */
   predicate isUnusedOutsideClass() {
-    /*
-     * Accessed externally if any callable in the class has a possible liveness cause outside the
-     * class. Only one step is required.
-     */
-
+    // Accessed externally if any callable in the class has a possible liveness cause outside the
+    // class. Only one step is required.
     not exists(Callable c |
       c = possibleLivenessCause(getACallable()) and
       not c = getACallable()
@@ -264,11 +240,8 @@ class DeadMethod extends Callable {
     fromSource() and
     not isLive(this) and
     not this.(Constructor).isDefaultConstructor() and
-    /*
-     * Ignore `SuppressedConstructor`s in `NamespaceClass`es. There is no reason to use a suppressed
-     * constructor in other cases.
-     */
-
+    // Ignore `SuppressedConstructor`s in `NamespaceClass`es. There is no reason to use a suppressed
+    // constructor in other cases.
     not (
       this instanceof SuppressedConstructor and this.getDeclaringType() instanceof NamespaceClass
     ) and
@@ -276,14 +249,11 @@ class DeadMethod extends Callable {
       this.(Method).isAbstract() and
       exists(Method m | m.overridesOrInstantiates+(this.(Method)) | isLive(m))
     ) and
-    /*
-     * A getter or setter associated with a live JPA field.
-     *
-     * These getters and setters are often generated in an ad-hoc way by the developer, which leads to
-     * methods that are theoretically dead, but uninteresting. We therefore ignore them, so long as
-     * they are "simple".
-     */
-
+    // A getter or setter associated with a live JPA field.
+    //
+    // These getters and setters are often generated in an ad-hoc way by the developer, which leads to
+    // methods that are theoretically dead, but uninteresting. We therefore ignore them, so long as
+    // they are "simple".
     not exists(JPAReadField readField | this.getDeclaringType() = readField.getDeclaringType() |
       this.(GetterMethod).getField() = readField or
       this.(SetterMethod).getField() = readField
@@ -294,11 +264,8 @@ class DeadMethod extends Callable {
    * Holds if this dead method is already within the scope of a dead class.
    */
   predicate isInDeadScope() {
-    /*
-     * We do not need to consider whitelisting because whitelisted classes should not have dead
-     * methods reported.
-     */
-
+    // We do not need to consider whitelisting because whitelisted classes should not have dead
+    // methods reported.
     this.getDeclaringType() instanceof DeadClass
   }
 

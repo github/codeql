@@ -72,12 +72,9 @@ class LibOverrideMethodEntry extends CallableEntryPoint {
   LibOverrideMethodEntry() {
     this.fromSource() and
     exists(Method libraryMethod | this.(Method).overrides*(libraryMethod) |
-      /*
-       * The library method must not come from source, either directly, or added automatically.
-       * For example, `values()` and `valueOf(...)` methods are not `fromSource()`, but are added
-       * automatically to source types.
-       */
-
+      // The library method must not come from source, either directly, or added automatically.
+      // For example, `values()` and `valueOf(...)` methods are not `fromSource()`, but are added
+      // automatically to source types.
       not libraryMethod.getDeclaringType().getSourceDeclaration().fromSource()
     )
   }
@@ -103,11 +100,8 @@ library class JacksonReflectivelyConstructedClass extends ReflectivelyConstructe
   JacksonReflectivelyConstructedClass() { this instanceof JacksonDeserializableType }
 
   override Callable getALiveCallable() {
-    /*
-     * Constructors may be called by Jackson, if they are a no-arg, they have a suitable annotation,
-     * or inherit a suitable annotation through a mixin.
-     */
-
+    // Constructors may be called by Jackson, if they are a no-arg, they have a suitable annotation,
+    // or inherit a suitable annotation through a mixin.
     result = getAConstructor() and
     (
       result.getNumberOfParameters() = 0 or
@@ -265,11 +259,8 @@ class JaxRsBeanParamConstructorEntryPoint extends JaxRsBeanParamConstructor, Cal
  */
 class ManagedBeanImplEntryPoint extends EntryPoint, RegisteredManagedBeanImpl {
   override Method getALiveCallable() {
-    /*
-     * Find the method that will be called for each method on each managed bean that this class
-     * implements.
-     */
-
+    // Find the method that will be called for each method on each managed bean that this class
+    // implements.
     this.inherits(result) and
     result.(Method).overrides(getAnImplementedManagedBean().getAMethod())
   }
