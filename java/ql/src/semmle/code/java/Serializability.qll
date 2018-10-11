@@ -10,16 +10,13 @@ private import frameworks.google.GoogleHttpClientApi
  * A serializable field may be read without code referencing it,
  * due to the use of serialization.
  */
-abstract class SerializableField extends Field {
+abstract class SerializableField extends Field { }
 
-}
 /**
  * A deserializable field may be written without code referencing it,
  * due to the use of serialization.
  */
-abstract class DeserializableField extends Field {
-
-}
+abstract class DeserializableField extends Field { }
 
 /**
  * A non-`transient` field in a type that (directly or indirectly) implements the `Serializable` interface
