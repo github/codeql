@@ -225,6 +225,13 @@ private cached module Internal {
   }
 
   /**
+   * Gets the maximum rank among all references to `v` in basic block `bb`.
+   */
+  private int maxRefRank(ReachableBasicBlock bb, SsaSourceVariable v) {
+    result = max(refRank(bb, _, v, _))
+  }
+
+  /**
    * Holds if variable `v` is live after the `i`th node of basic block `bb`, where
    * `i` is the index of a node that may assign or capture `v`.
    *
@@ -238,8 +245,8 @@ private cached module Internal {
       or
       // this is the last reference to `v` inside `bb`, but `v` is live at entry
       // to a successor basic block of `bb`
-      r = max(refRank(bb, _, v, _)) and
-      liveAtEntry(bb.getASuccessor(), v)
+      r = maxRefRank(bb, v) and
+      liveAtSuccEntry(bb, v)
     )
   }
 
@@ -256,6 +263,13 @@ private cached module Internal {
     // there is no reference to `v` inside `bb`, but `v` is live at entry
     // to a successor basic block of `bb`
     not exists(refRank(bb, _, v, _)) and
+    liveAtSuccEntry(bb, v)
+  }
+
+  /**
+   * Holds if `v` is live at the beginning of any successor of basic block `bb`.
+   */
+  private predicate liveAtSuccEntry(ReachableBasicBlock bb, SsaSourceVariable v) {
     liveAtEntry(bb.getASuccessor(), v)
   }
 
