@@ -63,6 +63,10 @@ module Electron {
       result = getOptionArgument(0, "url")
     }
 
+    override DataFlow::Node getADataNode() {
+      none()
+    }
+
   }
 
   /**
@@ -76,6 +80,10 @@ module Electron {
     override DataFlow::Node getUrl() {
       result = getArgument(0) or
       result = getOptionArgument(0, "url")
+    }
+
+    override DataFlow::Node getADataNode() {
+      none()
     }
 
   }

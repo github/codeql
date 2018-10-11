@@ -6,6 +6,7 @@
 + semmlecode-cpp-queries/Likely Bugs/Arithmetic/IntMultToLong.ql: /Correctness/Dangerous Conversions
 + semmlecode-cpp-queries/Likely Bugs/Conversion/NonzeroValueCastToPointer.ql: /Correctness/Dangerous Conversions
 + semmlecode-cpp-queries/Likely Bugs/Conversion/ImplicitDowncastFromBitfield.ql: /Correctness/Dangerous Conversions
++ semmlecode-cpp-queries/Security/CWE/CWE-253/HResultBooleanConversion.ql: /Correctness/Dangerous Conversions
   # Consistent Use 
 + semmlecode-cpp-queries/Critical/ReturnValueIgnored.ql: /Correctness/Consistent Use
 + semmlecode-cpp-queries/Likely Bugs/InconsistentCheckReturnNull.ql: /Correctness/Consistent Use

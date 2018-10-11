@@ -4,6 +4,8 @@
 import csharp
 
 module ZipSlip {
+  import semmle.code.csharp.controlflow.Guards
+
   /**
    * A data flow source for unsafe zip extraction.
    */
@@ -96,7 +98,7 @@ module ZipSlip {
   }
 
   /**
-   * An argument to `GetFileName`.
+   * A call to `GetFileName`.
    *
    * This is considered a sanitizer because it extracts just the file name, not the full path.
    */
@@ -104,23 +106,47 @@ module ZipSlip {
     GetFileNameSanitizer() {
       exists(MethodCall mc |
         mc.getTarget().hasQualifiedName("System.IO.Path", "GetFileName") |
-        this.asExpr() = mc.getAnArgument()
+        this.asExpr() = mc
       )
     }
   }
 
   /**
-   * A qualifier in a call to `StartsWith` or `Substring` string method.
+   * A call to `Substring`.
    *
-   * A call to a String method such as `StartsWith` or `Substring` can indicate a check for a
-   * relative path, or a check against the destination folder for whitelisted/target path, etc.
+   * This is considered a sanitizer because `Substring` may be used to extract a single component
+   * of a path to avoid ZipSlip.
+   */
+  class SubstringSanitizer extends Sanitizer {
+    SubstringSanitizer() {
+      exists(MethodCall mc |
+        mc.getTarget().hasQualifiedName("System.String", "Substring") |
+        this.asExpr() = mc
+      )
+    }
+  }
+
+  /**
+   * An expression which is guarded by a call to `String.StartsWith`.
+   *
+   * A call to the method `String.StartsWith` can indicate the the tainted path value is being
+   * validated to ensure that it occurs within a permitted output path.
    */
   class StringCheckSanitizer extends Sanitizer {
     StringCheckSanitizer() {
-      exists(MethodCall mc |
-        mc.getTarget().hasQualifiedName("System.String", "StartsWith") or
-        mc.getTarget().hasQualifiedName("System.String", "Substring") |
-        this.asExpr() = mc.getQualifier()
+      exists(GuardedExpr ge, MethodCall mc, Expr startsWithQualifier |
+        ge = this.asExpr() and
+        ge.isGuardedBy(mc, startsWithQualifier, true) |
+        mc.getTarget().hasQualifiedName("System.String", "StartsWith") and
+        mc.getQualifier() = startsWithQualifier and
+        /*
+         * A StartsWith check against Path.Combine is not sufficient, because the ".." elements have
+         * not yet been resolved.
+         */
+        not exists(MethodCall combineCall |
+          combineCall.getTarget().hasQualifiedName("System.IO.Path", "Combine") and
+          DataFlow::localFlow(DataFlow::exprNode(combineCall), DataFlow::exprNode(startsWithQualifier))
+        )
       )
     }
   }

@@ -29,19 +29,27 @@ abstract class FileSystemAccess extends DataFlow::Node {
   /** Gets an argument to this file system access that is interpreted as a path. */
   abstract DataFlow::Node getAPathArgument();
   
-  /** Gets a node that represents file system access data, such as buffer the data is copied to. */
-  abstract DataFlow::Node getDataNode();
 }
 
 /**
- * A data flow node that performs read file system access.
+ * A data flow node that reads data from the file system.
  */
-abstract class FileSystemReadAccess extends FileSystemAccess { }
+abstract class FileSystemReadAccess extends FileSystemAccess {
+
+  /** Gets a node that represents data from the file system. */
+  abstract DataFlow::Node getADataNode();
+
+}
 
 /**
- * A data flow node that performs write file system access.
+ * A data flow node that writes data to the file system.
  */
-abstract class FileSystemWriteAccess extends FileSystemAccess { }
+abstract class FileSystemWriteAccess extends FileSystemAccess {
+
+  /** Gets a node that represents data to be written to the file system. */
+  abstract DataFlow::Node getADataNode();
+
+}
 
 /**
  * A data flow node that contains a file name or an array of file names from the local file system.

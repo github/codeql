@@ -44,13 +44,5 @@ module Request {
     }
 
   }
-  
-  // using 'request' library to make http 'POST' and 'PUT' requests with message body. 
-  private class RequestPostBody extends HTTP::RequestBody {
-      RequestPostBody () {
-          this = DataFlow::moduleMember("request", "post").getACall().getArgument(1) or
-          this = DataFlow::moduleImport("request").getAnInvocation().getArgument(0)
-      }
-  }
 
 }

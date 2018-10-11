@@ -379,7 +379,7 @@ module NodeJSLib {
    *
    * We determine this by looking for an externs declaration for
    * `fs.methodName` where the `i`th parameter's name is `data` or
-   * `buffer` or a 'callback'.
+   * `buffer` or a `callback`.
    */
   private predicate fsDataParam(string methodName, int i, string n) {
     exists (ExternalMemberDecl decl, Function f, JSDocParamTag p |
@@ -401,39 +401,21 @@ module NodeJSLib {
     )
   }
 
-  
   /**
    * A call to a method from module `fs`, `graceful-fs` or `fs-extra`.
    */
-  private class NodeJSFileSystemAccessCall extends FileSystemAccess, DataFlow::CallNode {
+  private class NodeJSFileSystemAccess extends FileSystemAccess, DataFlow::CallNode {
     string methodName;
 
-    NodeJSFileSystemAccessCall() {
+    NodeJSFileSystemAccess() {
       this = fsModuleMember(methodName).getACall()
     }
 
+    /**
+     * Gets the name of the called method.
+     */
     string getMethodName() {
         result = methodName
-    }
-
-    override DataFlow::Node getDataNode() {
-      (
-        methodName = "readFileSync" and 
-        result = this
-      ) 
-      or
-      exists (int i, string paramName | fsDataParam(methodName, i, paramName) |
-      (
-        paramName = "callback" and
-        exists (DataFlow::ParameterNode p, string n | 
-          p = getCallback(i).getAParameter() and
-          n = p.getName().toLowerCase() and
-          result = p |
-          n = "data" or n = "buffer" or n = "string"
-        )
-      ) 
-      or
-        result = getArgument(i))
     }
 
     override DataFlow::Node getAPathArgument() {
@@ -442,119 +424,115 @@ module NodeJSLib {
     }
   }
 
-  /** Only NodeJSSystemFileAccessCalls that write data to 'fs' */
-  private class NodeJSFileSystemAccessWriteCall extends FileSystemWriteAccess, NodeJSFileSystemAccessCall {
-      NodeJSFileSystemAccessWriteCall () {
-          this.getMethodName() = "appendFile" or
-          this.getMethodName() = "appendFileSync" or
-          this.getMethodName() = "write" or
-          this.getMethodName() = "writeFile" or
-          this.getMethodName() = "writeFileSync" or
-          this.getMethodName() = "writeSync"
-      }
-  }
+  /** A write to the file system. */
+  private class NodeJSFileSystemAccessWrite extends FileSystemWriteAccess, NodeJSFileSystemAccess {
+    NodeJSFileSystemAccessWrite () {
+      methodName = "appendFile" or
+      methodName = "appendFileSync" or
+      methodName = "write" or
+      methodName = "writeFile" or
+      methodName = "writeFileSync" or
+      methodName = "writeSync"
+    }
 
-  /** Only NodeJSSystemFileAccessCalls that read data from 'fs' */
-  private class NodeJSFileSystemAccessReadCall extends FileSystemReadAccess, NodeJSFileSystemAccessCall {
-      NodeJSFileSystemAccessReadCall () {
-          this.getMethodName() = "read" or
-          this.getMethodName() = "readSync" or
-          this.getMethodName() = "readFile" or
-          this.getMethodName() = "readFileSync" 
-      }
-  }
-  
-  /**
-   * A call to write corresponds to a pattern where file stream is open first with 'createWriteStream', followed by 'write' or 'end' call
-   */
-   private class NodeJSFileSystemWrite extends FileSystemWriteAccess, DataFlow::CallNode {
-
-      NodeJSFileSystemAccessCall init;
-
-      NodeJSFileSystemWrite() {
-        exists (NodeJSFileSystemAccessCall n |
-            n.getCalleeName() = "createWriteStream" and init = n |
-            this = n.getAMemberCall("write") or 
-            this = n.getAMemberCall("end")
-        )
-      }
-      
-      override DataFlow::Node getDataNode() {
-          result = this.getArgument(0)
-      } 
-
-      override DataFlow::Node getAPathArgument() {
-          result = init.getAPathArgument()
-      }
-   }
-  
-  /**
-   * A call to read corresponds to a pattern where file stream is open first with createReadStream, followed by 'read' call
-   */
-   private class NodeJSFileSystemRead extends FileSystemReadAccess, DataFlow::CallNode {
-
-      NodeJSFileSystemAccessCall init;
-
-      NodeJSFileSystemRead() {
-        exists (NodeJSFileSystemAccessCall n | 
-            n.getCalleeName() = "createReadStream" and init = n |
-            this = n.getAMemberCall("read")
-        )
-      }
-
-      override DataFlow::Node getDataNode() {
-        result = this
-      }
-
-      override DataFlow::Node getAPathArgument() {
-          result = init.getAPathArgument()
-      }
-   }
-
-   /**
-   * A call to read corresponds to a pattern where file stream is open first with createReadStream, followed by 'pipe' call
-   */
-   private class NodeJSFileSystemPipe extends FileSystemReadAccess, DataFlow::CallNode {
-
-      NodeJSFileSystemAccessCall init;
-
-      NodeJSFileSystemPipe() {
-        exists (NodeJSFileSystemAccessCall n | 
-            n.getCalleeName() = "createReadStream" and init = n |
-            this = n.getAMemberCall("pipe")
-        )
-      }
-
-      override DataFlow::Node getDataNode() {
-        result = this.getArgument(0)
-      }
-
-      override DataFlow::Node getAPathArgument() {
-          result = init.getAPathArgument()
-      }
-   }
-   
-  /** 
-   * An 'on' event where data comes in as a parameter (usage: readstream.on('data', chunk)) 
-   */
-  private class NodeJSFileSystemReadDataEvent extends FileSystemReadAccess, DataFlow::CallNode {
-
-    NodeJSFileSystemAccessCall init;
-
-    NodeJSFileSystemReadDataEvent() {
-      exists(NodeJSFileSystemAccessCall n |
-        n.getCalleeName() = "createReadStream" and init = n |
-        this = n.getAMethodCall("on") and
-        this.getArgument(0).mayHaveStringValue("data")
+    override DataFlow::Node getADataNode() {
+      exists (int i, string paramName |
+        fsDataParam(methodName, i, paramName) |
+        if paramName = "callback" then
+          exists (DataFlow::ParameterNode p |
+            p = getCallback(i).getAParameter() and
+            p.getName().regexpMatch("(?i)data|buffer|string") and
+            result = p
+          )
+        else
+          result = getArgument(i)
       )
     }
 
-    override DataFlow::Node getDataNode() {
-        result = this.getCallback(1).getParameter(0)
+  }
+
+  /** A file system read. */
+  private class NodeJSFileSystemAccessRead extends FileSystemReadAccess, NodeJSFileSystemAccess {
+    NodeJSFileSystemAccessRead () {
+      methodName = "read" or
+      methodName = "readSync" or
+      methodName = "readFile" or
+      methodName = "readFileSync"
     }
-    
+
+    override DataFlow::Node getADataNode() {
+      if methodName.regexpMatch(".*Sync") then
+        result = this
+      else
+        exists (int i, string paramName |
+          fsDataParam(methodName, i, paramName) |
+          if paramName = "callback" then
+            exists (DataFlow::ParameterNode p |
+              p = getCallback(i).getAParameter() and
+              p.getName().regexpMatch("(?i)data|buffer|string") and
+              result = p
+            )
+          else
+            result = getArgument(i)
+        )
+    }
+
+  }
+  
+  /**
+   * A write to the file system, using a stream.
+   */
+  private class FileStreamWrite extends FileSystemWriteAccess, DataFlow::CallNode {
+
+    NodeJSFileSystemAccess stream;
+
+    FileStreamWrite() {
+      stream.getMethodName() = "createWriteStream" and
+      exists (string method |
+        method = "write" or
+        method = "end" |
+        this = stream.getAMemberCall(method)
+      )
+    }
+
+    override DataFlow::Node getADataNode() {
+      result = getArgument(0)
+    }
+
     override DataFlow::Node getAPathArgument() {
-      result = init.getAPathArgument()
+      result = stream.getAPathArgument()
+    }
+  }
+
+  /**
+   * A read from the file system using a stream.
+   */
+  private class FileStreamRead extends FileSystemReadAccess, DataFlow::CallNode {
+
+    NodeJSFileSystemAccess stream;
+
+    string method;
+
+    FileStreamRead() {
+      stream.getMethodName() = "createReadStream" and
+      this = stream.getAMemberCall(method) and
+      (method = "read" or method = "pipe" or method = "on")
+    }
+
+    override DataFlow::Node getADataNode() {
+      method = "read" and
+      result = this
+      or
+      method = "pipe" and
+      result = getArgument(0)
+      or
+      method = "on" and
+      getArgument(0).mayHaveStringValue("data") and
+      result = getCallback(1).getParameter(0)
+    }
+
+    override DataFlow::Node getAPathArgument() {
+      result = stream.getAPathArgument()
     }
   }
 
@@ -761,6 +739,10 @@ module NodeJSLib {
       result = url
     }
 
+    override DataFlow::Node getADataNode() {
+      result = getAMethodCall("write").getArgument(0)
+    }
+
   }
 
   /**
@@ -792,18 +774,6 @@ module NodeJSLib {
 
     override string getSourceType() {
       result = "http.request data parameter"
-    }
-  }
-  
-  /**
-   * An argument to client request.write () method, can be used to write body to a HTTP or HTTPS POST/PUT request, 
-   * or request option (like headers, cookies, even url) 
-   */
-  class HttpRequestWriteArgument extends HTTP::RequestBody, DataFlow::Node {
-    HttpRequestWriteArgument () {
-      exists(CustomClientRequest req |
-        this = req.getAMethodCall("write").getArgument(0) or
-        this = req.getArgument(0))
     }
   }
 
