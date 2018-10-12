@@ -124,11 +124,17 @@ cached library class SSAHelper extends int {
      * Modern Compiler Implementation by Andrew Appel.
      */
     private predicate frontier_phi_node(LocalScopeVariable v, BasicBlock b) {
-        exists(BasicBlock x | dominanceFrontier(x, b) and ssa_defn(v, _, x, _))
+        exists(BasicBlock x | dominanceFrontier(x, b) and ssa_defn_rec(v, x))
         /* We can also eliminate those nodes where the variable is not live on any incoming edge */
         and live_at_start_of_bb(v, b)
     }
 
+    private predicate ssa_defn_rec(LocalScopeVariable v, BasicBlock b) {
+        phi_node(v, b)
+        or
+        variableUpdate(v, _, b, _)
+    }
+  
     /**
      * Holds if `v` is defined, for the purpose of SSA, at `node`, which is at
      * position `index` in block `b`. This includes definitions from phi nodes.
