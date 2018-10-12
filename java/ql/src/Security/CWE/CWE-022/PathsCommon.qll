@@ -1,9 +1,7 @@
 import java
 import semmle.code.java.controlflow.Guards
 
-abstract class PathCreation extends Expr {
-  abstract Expr getInput();
-}
+abstract class PathCreation extends Expr { abstract Expr getInput(); }
 
 class PathsGet extends PathCreation, MethodAccess {
   PathsGet() {
@@ -28,9 +26,7 @@ class FileSystemGetPath extends PathCreation, MethodAccess {
 }
 
 class FileCreation extends PathCreation, ClassInstanceExpr {
-  FileCreation() {
-    this.getConstructedType() instanceof TypeFile
-  }
+  FileCreation() { this.getConstructedType() instanceof TypeFile }
 
   override Expr getInput() {
     result = this.getAnArgument() and
@@ -40,9 +36,7 @@ class FileCreation extends PathCreation, ClassInstanceExpr {
 }
 
 class FileWriterCreation extends PathCreation, ClassInstanceExpr {
-  FileWriterCreation() {
-    this.getConstructedType().getQualifiedName() = "java.io.FileWriter"
-  }
+  FileWriterCreation() { this.getConstructedType().getQualifiedName() = "java.io.FileWriter" }
 
   override Expr getInput() {
     result = this.getAnArgument() and
@@ -58,11 +52,10 @@ predicate inWeakCheck(Expr e) {
     def.getName() = "endsWith" or
     def.getName() = "isEmpty" or
     def.getName() = "equals"
-  ) or
-  // Checking against `null` has no bearing on path traversal.
-  exists(EqualityTest b | b.getAnOperand() = e |
-    b.getAnOperand() instanceof NullLiteral
   )
+  or
+  // Checking against `null` has no bearing on path traversal.
+  exists(EqualityTest b | b.getAnOperand() = e | b.getAnOperand() instanceof NullLiteral)
 }
 
 // Ignore cases where the variable has been checked somehow,

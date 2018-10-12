@@ -32,7 +32,6 @@ abstract class CallableEntryPoint extends EntryPoint, Callable {
   override Callable getALiveCallable() { result = this }
 }
 
-
 /**
  * An entry point that is a single method, that is only live if there is a live constructor on the
  * class.
@@ -42,9 +41,7 @@ abstract class CallableEntryPointOnConstructedClass extends EntryPoint {
     exists(Constructor c | c = this.(Callable).getDeclaringType().getAConstructor() and isLive(c))
   }
 
-  override Callable getALiveCallable() {
-    result = this
-  }
+  override Callable getALiveCallable() { result = this }
 }
 
 /**
@@ -56,8 +53,7 @@ abstract class CallableEntryPointOnConstructedClass extends EntryPoint {
  *
  * Whitelisting a callable will automatically cause the containing class to be considered as live.
  */
-abstract class WhitelistedLiveCallable extends CallableEntryPoint {
-}
+abstract class WhitelistedLiveCallable extends CallableEntryPoint { }
 
 /**
  * A `public static void main(String[] args)` method.
@@ -76,11 +72,9 @@ class LibOverrideMethodEntry extends CallableEntryPoint {
   LibOverrideMethodEntry() {
     this.fromSource() and
     exists(Method libraryMethod | this.(Method).overrides*(libraryMethod) |
-      /*
-       * The library method must not come from source, either directly, or added automatically.
-       * For example, `values()` and `valueOf(...)` methods are not `fromSource()`, but are added
-       * automatically to source types.
-       */
+      // The library method must not come from source, either directly, or added automatically.
+      // For example, `values()` and `valueOf(...)` methods are not `fromSource()`, but are added
+      // automatically to source types.
       not libraryMethod.getDeclaringType().getSourceDeclaration().fromSource()
     )
   }
@@ -90,7 +84,6 @@ class LibOverrideMethodEntry extends CallableEntryPoint {
  * A class that may be constructed reflectively, making its default constructor live.
  */
 abstract class ReflectivelyConstructedClass extends EntryPoint, Class {
-
   /**
    * Reflectively constructed classes have a live default constructor.
    */
@@ -104,23 +97,17 @@ abstract class ReflectivelyConstructedClass extends EntryPoint, Class {
  * Classes that are deserialized by Jackson are reflectively constructed.
  */
 library class JacksonReflectivelyConstructedClass extends ReflectivelyConstructedClass {
-  JacksonReflectivelyConstructedClass() {
-    this instanceof JacksonDeserializableType
-  }
+  JacksonReflectivelyConstructedClass() { this instanceof JacksonDeserializableType }
 
   override Callable getALiveCallable() {
-    /*
-     * Constructors may be called by Jackson, if they are a no-arg, they have a suitable annotation,
-     * or inherit a suitable annotation through a mixin.
-     */
+    // Constructors may be called by Jackson, if they are a no-arg, they have a suitable annotation,
+    // or inherit a suitable annotation through a mixin.
     result = getAConstructor() and
     (
       result.getNumberOfParameters() = 0 or
       result.getAnAnnotation() instanceof JacksonAnnotation or
       result.getAParameter().getAnAnnotation() instanceof JacksonAnnotation or
-      exists(JacksonMixedInCallable mixinCallable |
-        result = mixinCallable.getATargetCallable()
-      )
+      exists(JacksonMixedInCallable mixinCallable | result = mixinCallable.getATargetCallable())
     )
   }
 }
@@ -133,14 +120,12 @@ class JacksonMixinCallableEntryPoint extends EntryPoint {
     exists(JacksonMixinType mixinType, JacksonAddMixinCall mixinCall |
       this = mixinType.getAMixedInCallable() and
       mixinType = mixinCall.getAMixedInType()
-      |
+    |
       isLive(mixinCall.getEnclosingCallable())
     )
   }
 
-  override Callable getALiveCallable() {
-    result = this
-  }
+  override Callable getALiveCallable() { result = this }
 }
 
 class JAXAnnotationReflectivelyConstructedClass extends ReflectivelyConstructedClass {
@@ -152,9 +137,11 @@ class JAXAnnotationReflectivelyConstructedClass extends ReflectivelyConstructedC
   }
 }
 
-class DeserializedClass extends ReflectivelyConstructedClass{
-  DeserializedClass(){
-    exists(CastExpr cast, ReadObjectMethod readObject | cast.getExpr().(MethodAccess).getMethod() = readObject |
+class DeserializedClass extends ReflectivelyConstructedClass {
+  DeserializedClass() {
+    exists(CastExpr cast, ReadObjectMethod readObject |
+      cast.getExpr().(MethodAccess).getMethod() = readObject
+    |
       hasSubtype*(cast.getType(), this)
     )
   }
@@ -165,7 +152,6 @@ class DeserializedClass extends ReflectivelyConstructedClass{
  * constructors are live.
  */
 class NewInstanceCall extends EntryPoint, NewInstance {
-
   override Constructor getALiveCallable() {
     result = getInferredConstructor() and
     // The `newInstance(...)` call must be used in a live context.
@@ -177,7 +163,6 @@ class NewInstanceCall extends EntryPoint, NewInstance {
  * A call to either `Class.getMethod(...)` or `Class.getDeclaredMethod(...)`.
  */
 class ReflectiveMethodAccessEntryPoint extends EntryPoint, ReflectiveMethodAccess {
-
   override Method getALiveCallable() {
     result = inferAccessedMethod() and
     // The `getMethod(...)` call must be used in a live context.
@@ -189,7 +174,6 @@ class ReflectiveMethodAccessEntryPoint extends EntryPoint, ReflectiveMethodAcces
  * Classes that are entry points recognised by annotations.
  */
 abstract class AnnotationEntryPoint extends EntryPoint, Class {
-
   /**
    * By default assume all public methods might be called, but not
    * constructors -- be sure to register any further subtypes with
@@ -206,9 +190,7 @@ abstract class AnnotationEntryPoint extends EntryPoint, Class {
  * the contents of XML files.
  */
 class JaxbXmlRegistry extends AnnotationEntryPoint {
-  JaxbXmlRegistry() {
-    this.(JaxbAnnotated).hasJaxbAnnotation("XmlRegistry")
-  }
+  JaxbXmlRegistry() { this.(JaxbAnnotated).hasJaxbAnnotation("XmlRegistry") }
 }
 
 /**
@@ -218,9 +200,7 @@ class JaxbXmlRegistry extends AnnotationEntryPoint {
  * them.
  */
 class JaxbXmlEnum extends AnnotationEntryPoint {
-  JaxbXmlEnum() {
-    this.(JaxbAnnotated).hasJaxbAnnotation("XmlEnum")
-  }
+  JaxbXmlEnum() { this.(JaxbAnnotated).hasJaxbAnnotation("XmlEnum") }
 }
 
 /**
@@ -234,11 +214,15 @@ class JaxbXmlType extends AnnotationEntryPoint, JaxbType {
     result = getACallable() and
     (
       // A bound getter or setter.
-      result instanceof JaxbBoundGetterSetter or
+      result instanceof JaxbBoundGetterSetter
+      or
       // Methods called by reflection when unmarshalling or marshalling.
-      result.hasName("afterUnmarshal") and result.paramsString() = "(Unmarshaller, Object)" or
-      result.hasName("beforeUnmarshal") and result.paramsString() = "(Unmarshaller, Object)" or
-      result.hasName("afterMarshal") and result.paramsString() = "(Marshaller, Object)" or
+      result.hasName("afterUnmarshal") and result.paramsString() = "(Unmarshaller, Object)"
+      or
+      result.hasName("beforeUnmarshal") and result.paramsString() = "(Unmarshaller, Object)"
+      or
+      result.hasName("afterMarshal") and result.paramsString() = "(Marshaller, Object)"
+      or
       result.hasName("beforeMarshal") and result.paramsString() = "(Marshaller, Object)"
     )
   }
@@ -257,9 +241,7 @@ class JaxWsEndpointEntry extends JaxWsEndpoint, AnnotationEntryPoint {
  * class itself may be reflectively constructed by the container.
  */
 class JaxRsResourceClassEntry extends JaxRsResourceClass, AnnotationEntryPoint {
-  override Callable getALiveCallable() {
-    result = this.getAnInjectableCallable()
-  }
+  override Callable getALiveCallable() { result = this.getAnInjectableCallable() }
 }
 
 /**
@@ -276,12 +258,9 @@ class JaxRsBeanParamConstructorEntryPoint extends JaxRsBeanParamConstructor, Cal
  * that this class implements.
  */
 class ManagedBeanImplEntryPoint extends EntryPoint, RegisteredManagedBeanImpl {
-
   override Method getALiveCallable() {
-    /*
-     * Find the method that will be called for each method on each managed bean that this class
-     * implements.
-     */
+    // Find the method that will be called for each method on each managed bean that this class
+    // implements.
     this.inherits(result) and
     result.(Method).overrides(getAnImplementedManagedBean().getAMethod())
   }
@@ -291,10 +270,10 @@ class ManagedBeanImplEntryPoint extends EntryPoint, RegisteredManagedBeanImpl {
  * Entry point for bean classes. Should be extended to define any
  * project specific types of bean.
  */
-abstract class BeanClass extends EntryPoint, Class{
-  override Callable getALiveCallable(){
+abstract class BeanClass extends EntryPoint, Class {
+  override Callable getALiveCallable() {
     result = this.getACallable() and
-    (result.(Method).isPublic() or result.(Constructor).getNumberOfParameters()=0)
+    (result.(Method).isPublic() or result.(Constructor).getNumberOfParameters() = 0)
   }
 }
 
@@ -302,7 +281,7 @@ abstract class BeanClass extends EntryPoint, Class{
  * Entry point for J2EE beans (`EnterpriseBean`, `EntityBean`, `MessageBean`, `SessionBean`).
  */
 class J2EEBean extends BeanClass {
-  J2EEBean(){
+  J2EEBean() {
     this instanceof EnterpriseBean or
     this instanceof EntityBean or
     this instanceof MessageBean or
@@ -320,9 +299,7 @@ class FacesManagedBeanEntryPoint extends BeanClass, FacesManagedBean { }
  */
 class FacesAccessibleMethodEntryPoint extends CallableEntryPoint {
   FacesAccessibleMethodEntryPoint() {
-    exists(FacesAccessibleType accessibleType |
-      this = accessibleType.getAnAccessibleMethod()
-    )
+    exists(FacesAccessibleType accessibleType | this = accessibleType.getAnAccessibleMethod())
   }
 }
 
@@ -337,31 +314,23 @@ class FacesComponentReflectivelyConstructedClass extends ReflectivelyConstructed
 /**
  * Entry point for EJB home interfaces.
  */
-class EJBHome extends Interface, EntryPoint{
-  EJBHome(){
-    this.getASupertype*().hasQualifiedName("javax.ejb", "EJBHome")
-  }
+class EJBHome extends Interface, EntryPoint {
+  EJBHome() { this.getASupertype*().hasQualifiedName("javax.ejb", "EJBHome") }
 
-  override Callable getALiveCallable(){
-    result = this.getACallable()
-  }
+  override Callable getALiveCallable() { result = this.getACallable() }
 }
 
 /**
  * Entry point for EJB object interfaces.
  */
-class EJBObject extends Interface, EntryPoint{
-  EJBObject(){
-    this.getASupertype*().hasQualifiedName("javax.ejb", "EJBObject")
-  }
+class EJBObject extends Interface, EntryPoint {
+  EJBObject() { this.getASupertype*().hasQualifiedName("javax.ejb", "EJBObject") }
 
-  override Callable getALiveCallable(){
-    result = this.getACallable()
-  }
+  override Callable getALiveCallable() { result = this.getACallable() }
 }
 
 class GsonDeserializationEntryPoint extends ReflectivelyConstructedClass {
-  GsonDeserializationEntryPoint(){
+  GsonDeserializationEntryPoint() {
     // Assume any class with a gson annotated field can be deserialized.
     this.getAField().getAnAnnotation().getType().hasQualifiedName("com.google.gson.annotations", _)
   }
@@ -373,7 +342,9 @@ class JAXBDeserializationEntryPoint extends ReflectivelyConstructedClass {
     this.getAnAnnotation().getType().hasQualifiedName("javax.xml.bind.annotation", "XmlRootElement")
     or
     // ... or the type of an `XmlElement` field.
-    exists(Field elementField | elementField.getAnAnnotation().getType() instanceof JaxbMemberAnnotation |
+    exists(Field elementField |
+      elementField.getAnAnnotation().getType() instanceof JaxbMemberAnnotation
+    |
       usesType(elementField.getType(), this)
     )
   }
@@ -397,9 +368,7 @@ class PreOrPostDIMethod extends CallableEntryPointOnConstructedClass {
  * Consider this to be live if and only if there is a live constructor.
  */
 class JavaxResourceAnnotatedMethod extends CallableEntryPointOnConstructedClass {
-  JavaxResourceAnnotatedMethod() {
-    this.(Method).getAnAnnotation() instanceof ResourceAnnotation
-  }
+  JavaxResourceAnnotatedMethod() { this.(Method).getAnAnnotation() instanceof ResourceAnnotation }
 }
 
 /**
@@ -417,9 +386,7 @@ class JavaxManagedBeanReflectivelyConstructed extends ReflectivelyConstructedCla
  * loaded.
  */
 class PersistentEntityEntryPoint extends ReflectivelyConstructedClass {
-  PersistentEntityEntryPoint() {
-    this instanceof PersistentEntity
-  }
+  PersistentEntityEntryPoint() { this instanceof PersistentEntity }
 }
 
 /**
@@ -468,7 +435,7 @@ class ArbitraryXMLEntryPoint extends ReflectivelyConstructedClass {
       attribute.getName().matches("%ClassName") or
       attribute.getName() = "class" or
       attribute.getName().matches("%Class")
-      |
+    |
       attribute.getValue() = getQualifiedName()
     )
   }
@@ -481,7 +448,5 @@ class ArbitraryXMLEntryPoint extends ReflectivelyConstructedClass {
 
 /** A Selenium PageObject, created by a call to PageFactory.initElements(..). */
 class SeleniumPageObjectEntryPoint extends ReflectivelyConstructedClass {
-  SeleniumPageObjectEntryPoint() {
-    this instanceof SeleniumPageObject
-  }
+  SeleniumPageObjectEntryPoint() { this instanceof SeleniumPageObject }
 }

@@ -14,21 +14,21 @@ import semmle.code.java.ControlFlowGraph
  */
 class BasicBlock extends ControlFlowNode {
   BasicBlock() {
-    not exists(this.getAPredecessor()) and exists(this.getASuccessor()) or
-    strictcount(this.getAPredecessor()) > 1 or
-    exists(ControlFlowNode pred | pred = this.getAPredecessor() | strictcount(pred.getASuccessor()) > 1)
+    not exists(this.getAPredecessor()) and exists(this.getASuccessor())
+    or
+    strictcount(this.getAPredecessor()) > 1
+    or
+    exists(ControlFlowNode pred | pred = this.getAPredecessor() |
+      strictcount(pred.getASuccessor()) > 1
+    )
   }
 
   /** Gets an immediate successor of this basic block. */
   cached
-  BasicBlock getABBSuccessor() {
-    result = getLastNode().getASuccessor()
-  }
+  BasicBlock getABBSuccessor() { result = getLastNode().getASuccessor() }
 
   /** Gets an immediate predecessor of this basic block. */
-  BasicBlock getABBPredecessor() {
-    result.getABBSuccessor() = this
-  }
+  BasicBlock getABBPredecessor() { result.getABBSuccessor() = this }
 
   /** Gets a control-flow node contained in this basic block. */
   ControlFlowNode getANode() { result = getNode(_) }
@@ -49,7 +49,7 @@ class BasicBlock extends ControlFlowNode {
   ControlFlowNode getFirstNode() { result = this }
 
   /** Gets the last control-flow node in this basic block. */
-  ControlFlowNode getLastNode() { result = getNode(length()-1) }
+  ControlFlowNode getLastNode() { result = getNode(length() - 1) }
 
   /** Gets the number of control-flow nodes contained in this basic block. */
   cached

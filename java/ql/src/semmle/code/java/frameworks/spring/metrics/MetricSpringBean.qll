@@ -11,19 +11,23 @@ predicate springDepends(SpringBean b1, SpringBean b2, SpringXMLElement cause) {
     ref.getEnclosingBean() = b1 and
     ref.getBean() = b2 and
     cause = ref
-  ) or
+  )
+  or
   exists(SpringConstructorArg arg |
     arg.getEnclosingBean() = b1 and
     arg.getArgRefBean() = b2 and
     cause = arg
-  ) or
+  )
+  or
   exists(SpringEntry entry |
     entry.getEnclosingBean() = b1 and
-    ( entry.getKeyRefBean() = b2 or
+    (
+      entry.getKeyRefBean() = b2 or
       entry.getValueRefBean() = b2
     ) and
     cause = entry
-  ) or
+  )
+  or
   exists(SpringProperty prop |
     prop.getEnclosingBean() = b1 and
     prop.getPropertyRefBean() = b2 and
@@ -32,35 +36,25 @@ predicate springDepends(SpringBean b1, SpringBean b2, SpringXMLElement cause) {
 }
 
 class MetricSpringBean extends SpringBean {
-  int getAfferentCoupling() {
-    result = count(SpringBean other |
-      springDepends(other, this, _)
-    )
-  }
+  int getAfferentCoupling() { result = count(SpringBean other | springDepends(other, this, _)) }
 
-  int getEfferentCoupling() {
-    result = count(SpringBean other |
-      springDepends(this, other, _)
-    )
-  }
+  int getEfferentCoupling() { result = count(SpringBean other | springDepends(this, other, _)) }
 
   int getLocalAfferentCoupling() {
     result = count(SpringBean other |
-      springDepends(other, this, _) and
-      this.getSpringBeanFile() = other.getSpringBeanFile()
-    )
+        springDepends(other, this, _) and
+        this.getSpringBeanFile() = other.getSpringBeanFile()
+      )
   }
 
   int getLocalEfferentCoupling() {
     result = count(SpringBean other |
-      springDepends(this, other, _) and
-      this.getSpringBeanFile() = other.getSpringBeanFile()
-    )
+        springDepends(this, other, _) and
+        this.getSpringBeanFile() = other.getSpringBeanFile()
+      )
   }
 
-  SpringBean getABeanDependency() {
-    springDepends(this, result, _)
-  }
+  SpringBean getABeanDependency() { springDepends(this, result, _) }
 
   SpringBean getALocalBeanDependency() {
     springDepends(this, result, _) and

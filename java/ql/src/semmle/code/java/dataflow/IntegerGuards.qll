@@ -20,9 +20,7 @@ private Expr exprWithIntValue(int i) {
  * This includes `RValue` and `MethodAccess`.
  */
 class IntComparableExpr extends Expr {
-  IntComparableExpr() {
-    this instanceof RValue or this instanceof MethodAccess
-  }
+  IntComparableExpr() { this instanceof RValue or this instanceof MethodAccess }
 
   /** Gets an integer that is directly assigned to the expression in case of a variable; or zero. */
   int relevantInt() {
@@ -30,7 +28,8 @@ class IntComparableExpr extends Expr {
       this = v.getAnAccess() and
       ssa.getSourceVariable() = v and
       ssa.getDefiningExpr().(VariableAssign).getSource() = exprWithIntValue(result)
-    ) or
+    )
+    or
     result = 0
   }
 }
@@ -49,32 +48,82 @@ Expr integerGuard(IntComparableExpr e, boolean branch, int k, boolean is_k) {
     eqtest = result and
     eqtest.hasOperands(e, any(ConstantIntegerExpr c | c.getIntValue() = k)) and
     polarity = eqtest.polarity() and
-    (branch = true and is_k = polarity or branch = false and is_k = polarity.booleanNot())
-  ) or
+    (
+      branch = true and is_k = polarity
+      or
+      branch = false and is_k = polarity.booleanNot()
+    )
+  )
+  or
   exists(EqualityTest eqtest, int val, Expr c, boolean upper |
     k = e.relevantInt() and
     eqtest = result and
     eqtest.hasOperands(e, c) and
     bounded(c, any(ZeroBound zb), val, upper, _) and
     is_k = false and
-    (upper = true and val < k or upper = false and val > k) and
+    (
+      upper = true and val < k
+      or
+      upper = false and val > k
+    ) and
     branch = eqtest.polarity()
-  ) or
+  )
+  or
   exists(ComparisonExpr comp, Expr c, int val, boolean upper |
     k = e.relevantInt() and
     comp = result and
     comp.hasOperands(e, c) and
     bounded(c, any(ZeroBound zb), val, upper, _) and
     is_k = false
-    |
-    comp.getLesserOperand() = c and comp.isStrict() and branch = true and val >= k and upper = false or // k <= val <= c < e, so e != k
-    comp.getLesserOperand() = c and comp.isStrict() and branch = false and val < k and upper = true or
-    comp.getLesserOperand() = c and not comp.isStrict() and branch = true and val > k and upper = false or
-    comp.getLesserOperand() = c and not comp.isStrict() and branch = false and val <= k and upper = true or
-    comp.getGreaterOperand() = c and comp.isStrict() and branch = true and val <= k and upper = true or
-    comp.getGreaterOperand() = c and comp.isStrict() and branch = false and val > k and upper = false or
-    comp.getGreaterOperand() = c and not comp.isStrict() and branch = true and val < k and upper = true or
-    comp.getGreaterOperand() = c and not comp.isStrict() and branch = false and val >= k and upper = false
+  |
+    // k <= val <= c < e, so e != k
+    comp.getLesserOperand() = c and
+    comp.isStrict() and
+    branch = true and
+    val >= k and
+    upper = false
+    or
+    comp.getLesserOperand() = c and
+    comp.isStrict() and
+    branch = false and
+    val < k and
+    upper = true
+    or
+    comp.getLesserOperand() = c and
+    not comp.isStrict() and
+    branch = true and
+    val > k and
+    upper = false
+    or
+    comp.getLesserOperand() = c and
+    not comp.isStrict() and
+    branch = false and
+    val <= k and
+    upper = true
+    or
+    comp.getGreaterOperand() = c and
+    comp.isStrict() and
+    branch = true and
+    val <= k and
+    upper = true
+    or
+    comp.getGreaterOperand() = c and
+    comp.isStrict() and
+    branch = false and
+    val > k and
+    upper = false
+    or
+    comp.getGreaterOperand() = c and
+    not comp.isStrict() and
+    branch = true and
+    val < k and
+    upper = true
+    or
+    comp.getGreaterOperand() = c and
+    not comp.isStrict() and
+    branch = false and
+    val >= k and
+    upper = false
   )
 }
 
@@ -91,11 +140,29 @@ Expr intBoundGuard(RValue x, boolean branch_with_lower_bound_k, int k) {
     comp.hasOperands(x, c) and
     c.getIntValue() = val and
     x.getVariable().getType() instanceof IntegralType
-    |
-    comp.getLesserOperand().getProperExpr() = c and comp.isStrict() and branch_with_lower_bound_k = true and val + 1 = k or // c < x
-    comp.getLesserOperand().getProperExpr() = c and not comp.isStrict() and branch_with_lower_bound_k = true and val = k or // c <= x
-    comp.getGreaterOperand().getProperExpr() = c and comp.isStrict() and branch_with_lower_bound_k = false and val = k or // x < c
-    comp.getGreaterOperand().getProperExpr() = c and not comp.isStrict() and branch_with_lower_bound_k = false and val + 1 = k // x <= c
+  |
+    // c < x
+    comp.getLesserOperand().getProperExpr() = c and
+    comp.isStrict() and
+    branch_with_lower_bound_k = true and
+    val + 1 = k
+    or
+    // c <= x
+    comp.getLesserOperand().getProperExpr() = c and
+    not comp.isStrict() and
+    branch_with_lower_bound_k = true and
+    val = k
+    or
+    // x < c
+    comp.getGreaterOperand().getProperExpr() = c and
+    comp.isStrict() and
+    branch_with_lower_bound_k = false and
+    val = k
+    or
+    // x <= c
+    comp.getGreaterOperand().getProperExpr() = c and
+    not comp.isStrict() and
+    branch_with_lower_bound_k = false and
+    val + 1 = k
   )
 }
-

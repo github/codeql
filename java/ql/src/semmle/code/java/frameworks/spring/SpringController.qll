@@ -16,18 +16,14 @@ class SpringControllerAnnotation extends AnnotationType {
  * A class annotated, directly or indirectly, as a Spring `Controller`.
  */
 class SpringController extends Class {
-  SpringController() {
-    getAnAnnotation().getType() instanceof SpringControllerAnnotation
-  }
+  SpringController() { getAnAnnotation().getType() instanceof SpringControllerAnnotation }
 }
 
 /**
  * A method on a Spring controller which is accessed by the Spring MVC framework.
  */
 abstract class SpringControllerMethod extends Method {
-  SpringControllerMethod() {
-    getDeclaringType() instanceof SpringController
-  }
+  SpringControllerMethod() { getDeclaringType() instanceof SpringController }
 }
 
 /**
@@ -36,11 +32,9 @@ abstract class SpringControllerMethod extends Method {
  */
 class SpringModelAttributeMethod extends SpringControllerMethod {
   SpringModelAttributeMethod() {
-    /*
-     * Any method that declares the @ModelAttribute annotation, or overrides a method that declares
-     * the annotation. We have to do this explicit check because the @ModelAttribute annotation is
-     * not declared with @Inherited.
-     */
+    // Any method that declares the @ModelAttribute annotation, or overrides a method that declares
+    // the annotation. We have to do this explicit check because the @ModelAttribute annotation is
+    // not declared with @Inherited.
     exists(Method superMethod |
       this.overrides*(superMethod) and
       superMethod.hasAnnotation("org.springframework.web.bind.annotation", "ModelAttribute")
@@ -53,11 +47,9 @@ class SpringModelAttributeMethod extends SpringControllerMethod {
  */
 class SpringInitBinderMethod extends SpringControllerMethod {
   SpringInitBinderMethod() {
-    /*
-     * Any method that declares the @InitBinder annotation, or overrides a method that declares
-     * the annotation. We have to do this explicit check because the @InitBinder annotation is
-     * not declared with @Inherited.
-     */
+    // Any method that declares the @InitBinder annotation, or overrides a method that declares
+    // the annotation. We have to do this explicit check because the @InitBinder annotation is
+    // not declared with @Inherited.
     exists(Method superMethod |
       this.overrides*(superMethod) and
       superMethod.hasAnnotation("org.springframework.web.bind.annotation", "InitBinder")
@@ -70,11 +62,9 @@ class SpringInitBinderMethod extends SpringControllerMethod {
  */
 class SpringRequestMappingMethod extends SpringControllerMethod {
   SpringRequestMappingMethod() {
-    /*
-     * Any method that declares the @RequestMapping annotation, or overrides a method that declares
-     * the annotation. We have to do this explicit check because the @RequestMapping annotation is
-     * not declared with @Inherited.
-     */
+    // Any method that declares the @RequestMapping annotation, or overrides a method that declares
+    // the annotation. We have to do this explicit check because the @RequestMapping annotation is
+    // not declared with @Inherited.
     exists(Method superMethod |
       this.overrides*(superMethod) and
       superMethod.hasAnnotation("org.springframework.web.bind.annotation", "RequestMapping")
@@ -87,9 +77,7 @@ class SpringRequestMappingMethod extends SpringControllerMethod {
  * the method, which will be used to render the response e.g. as a JSP file.
  */
 abstract class SpringModel extends Parameter {
-  SpringModel() {
-    getCallable() instanceof SpringRequestMappingMethod
-  }
+  SpringModel() { getCallable() instanceof SpringRequestMappingMethod }
 
   /**
    * Types for which instances are placed inside the model.
@@ -101,15 +89,13 @@ abstract class SpringModel extends Parameter {
  * A `java.util.Map` can be accepted as the model parameter for a Spring `RequestMapping` method.
  */
 class SpringModelPlainMap extends SpringModel {
-  SpringModelPlainMap() {
-    getType().(RefType).hasQualifiedName("java.util", "Map")
-  }
+  SpringModelPlainMap() { getType().(RefType).hasQualifiedName("java.util", "Map") }
 
   override RefType getATypeInModel() {
     exists(MethodAccess methodCall |
       methodCall.getQualifier() = getAnAccess() and
       methodCall.getCallee().hasName("put")
-      |
+    |
       result = methodCall.getArgument(1).getType()
     )
   }
@@ -129,7 +115,7 @@ class SpringModelModel extends SpringModel {
     exists(MethodAccess methodCall |
       methodCall.getQualifier() = getAnAccess() and
       methodCall.getCallee().hasName("addAttribute")
-      |
+    |
       result = methodCall.getArgument(methodCall.getNumArgument() - 1).getType()
     )
   }
@@ -143,8 +129,6 @@ class SpringModelResponseType extends RefType {
     exists(SpringModelAttributeMethod modelAttributeMethod |
       this = modelAttributeMethod.getReturnType()
     ) or
-    exists(SpringModel model |
-      usesType(model.getATypeInModel(), this)
-    )
+    exists(SpringModel model | usesType(model.getATypeInModel(), this))
   }
 }
