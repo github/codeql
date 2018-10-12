@@ -1315,6 +1315,11 @@ class TypeAssertion extends Expr, @typeassertion {
   override ControlFlowNode getFirstControlFlowNode() {
     result = getExpression().getFirstControlFlowNode()
   }
+
+  override Expr getUnderlyingValue() {
+    result = getExpression().getUnderlyingValue()
+  }
+
 }
 
 /**

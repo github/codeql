@@ -47,6 +47,14 @@ class ExprOrType extends @exprortype, Documentable {
 
   /** Gets this expression or type, with any surrounding parentheses removed. */
   ExprOrType stripParens() { result = this }
+
+  /**
+   * Gets the innermost expression that this expression evaluates to.
+   */
+  Expr getUnderlyingValue() {
+    result = this
+  }
+
 }
 
 /** An expression. */
@@ -210,6 +218,11 @@ class ParExpr extends @parexpr, Expr {
   override predicate isImpure() {
     getExpression().isImpure()
   }
+
+  override Expr getUnderlyingValue() {
+    result = getExpression().getUnderlyingValue()
+  }
+
 }
 
 /** A `null` literal. */
@@ -617,6 +630,11 @@ class SeqExpr extends @seqexpr, Expr {
   override string getStringValue() {
     result = getLastOperand().getStringValue()
   }
+
+  override Expr getUnderlyingValue() {
+    result = getLastOperand().getUnderlyingValue()
+  }
+
 }
 
 /** A conditional expression. */
@@ -1284,6 +1302,11 @@ class Assignment extends @assignment, Expr {
   override ControlFlowNode getFirstControlFlowNode() {
     result = getLhs().getFirstControlFlowNode()
   }
+
+  override Expr getUnderlyingValue() {
+    result = getRhs().getUnderlyingValue()
+  }
+
 }
 
 /** A simple assignment expression. */
