@@ -9,6 +9,7 @@
  * @tags maintainability
  *       readability
  */
+
 import java
 import MagicConstants
 

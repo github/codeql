@@ -9,9 +9,11 @@
  * @tags portability
  *       modularity
  */
+
 import java
 
 from RefType t, float n
-where t.fromSource()
-  and n =  100 * t.getMetrics().getEfferentSourceCoupling() / t.getMetrics().getEfferentCoupling()
+where
+  t.fromSource() and
+  n = 100 * t.getMetrics().getEfferentSourceCoupling() / t.getMetrics().getEfferentCoupling()
 select t, n

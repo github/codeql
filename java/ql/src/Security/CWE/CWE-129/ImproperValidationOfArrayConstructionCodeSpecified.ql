@@ -15,21 +15,24 @@ import ArraySizing
 
 class BoundedFlowSourceConf extends DataFlow::Configuration {
   BoundedFlowSourceConf() { this = "BoundedFlowSource" }
+
   override predicate isSource(DataFlow::Node source) {
     source instanceof BoundedFlowSource and
     // There is not a fixed lower bound which is greater than zero.
     not source.(BoundedFlowSource).lowerBound() > 0
   }
+
   override predicate isSink(DataFlow::Node sink) {
     any(CheckableArrayAccess caa).canThrowOutOfBoundsDueToEmptyArray(sink.asExpr(), _)
   }
 }
 
-from BoundedFlowSource source, Expr sizeExpr, ArrayCreationExpr arrayCreation, CheckableArrayAccess arrayAccess
+from
+  BoundedFlowSource source, Expr sizeExpr, ArrayCreationExpr arrayCreation,
+  CheckableArrayAccess arrayAccess
 where
   arrayAccess.canThrowOutOfBoundsDueToEmptyArray(sizeExpr, arrayCreation) and
   any(BoundedFlowSourceConf conf).hasFlow(source, DataFlow::exprNode(sizeExpr))
 select arrayAccess.getIndexExpr(),
   "The $@ is accessed here, but the array is initialized using $@ which may be zero.",
-  arrayCreation, "array",
-  source, source.getDescription().toLowerCase()
+  arrayCreation, "array", source, source.getDescription().toLowerCase()

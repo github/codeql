@@ -8,6 +8,7 @@
  * @id java/raw-constructor-invocation
  * @tags maintainability
  */
+
 import java
 
 from ClassInstanceExpr cie

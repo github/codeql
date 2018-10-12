@@ -10,6 +10,7 @@
  *       readability
  *       external/cwe/cwe-546
  */
+
 import java
 
 from JavadocText c

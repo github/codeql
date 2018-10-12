@@ -9,6 +9,7 @@
  * @tags reliability
  *       correctness
  */
+
 import java
 import Equality
 
@@ -34,12 +35,16 @@ predicate hashingMethod(Method m) {
 
 /** Holds if `e` is an expression in which `t` is used in a hashing data structure. */
 predicate usedInHash(RefType t, Expr e) {
-  exists(RefType s | s.getName().matches("%Hash%") and not s.getSourceDeclaration().getName() = "IdentityHashMap" |
+  exists(RefType s |
+    s.getName().matches("%Hash%") and not s.getSourceDeclaration().getName() = "IdentityHashMap"
+  |
     exists(MethodAccess ma |
       ma.getQualifier().getType() = s and
       ma.getArgument(0).getType() = t and
-      e = ma and hashingMethod(ma.getMethod())
-    ) or
+      e = ma and
+      hashingMethod(ma.getMethod())
+    )
+    or
     exists(ConstructorCall cc |
       cc.getConstructedType() = s and
       s.(ParameterizedType).getTypeArgument(0) = t and
@@ -52,5 +57,6 @@ from RefType t, Expr e
 where
   usedInHash(t, e) and
   eqNoHash(t.getSourceDeclaration())
-select e, "Type '" + t.getName() + "' does not define hashCode(), "
-          + "but is used in a hashing data-structure."
+select e,
+  "Type '" + t.getName() + "' does not define hashCode(), " +
+    "but is used in a hashing data-structure."

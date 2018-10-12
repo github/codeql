@@ -13,10 +13,11 @@
  *       statistical
  *       non-attributable
  */
+
 import java
 import CodeDuplication
 
 from File f, File other, int percent
 where similarFiles(f, other, percent)
-select f, percent + "% of the lines in " + f.getStem() + " are similar to lines in $@.",
-  other, other.getStem()
+select f, percent + "% of the lines in " + f.getStem() + " are similar to lines in $@.", other,
+  other.getStem()

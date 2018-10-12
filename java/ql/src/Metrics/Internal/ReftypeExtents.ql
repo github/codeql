@@ -4,6 +4,7 @@
  * @metricType reftype
  * @id java/reference-type-extents
  */
+
 import java
 import Extents
 

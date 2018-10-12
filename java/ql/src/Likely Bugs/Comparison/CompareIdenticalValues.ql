@@ -15,7 +15,8 @@ import java
 
 predicate comparison(BinaryExpr binop, Expr left, Expr right) {
   (binop instanceof ComparisonExpr or binop instanceof EqualityTest) and
-  binop.getLeftOperand() = left and binop.getRightOperand() = right
+  binop.getLeftOperand() = left and
+  binop.getRightOperand() = right
 }
 
 /**
@@ -41,7 +42,8 @@ predicate varsToCompare(VarAccess left, VarAccess right, Variable v1, Variable v
 predicate sameVariable(VarAccess left, VarAccess right, Variable v) {
   varsToCompare(left, right, v, v) and
   (
-    sameVariable(left.getQualifier(), right.getQualifier(), _) or
+    sameVariable(left.getQualifier(), right.getQualifier(), _)
+    or
     left.isLocal() and right.isLocal()
   )
 }
@@ -50,8 +52,10 @@ predicate sameVariable(VarAccess left, VarAccess right, Variable v) {
 predicate equal(Expr left, Expr right) {
   toCompare(left, right) and
   (
-    left.(Literal).getValue() = right.(Literal).getValue() or
-    sameVariable(left, right, _) or
+    left.(Literal).getValue() = right.(Literal).getValue()
+    or
+    sameVariable(left, right, _)
+    or
     exists(BinaryExpr bLeft, BinaryExpr bRight | bLeft = left and bRight = right |
       bLeft.getKind() = bRight.getKind() and
       equal(bLeft.getLeftOperand(), bRight.getLeftOperand()) and
@@ -78,6 +82,8 @@ where
   (
     specialCase(comparison, equiv) and msg = "Comparison is " + equiv
     or
-    not specialCase(comparison, _) and msg = "Comparison of identical values " + left + " and " + right and equiv=""
+    not specialCase(comparison, _) and
+    msg = "Comparison of identical values " + left + " and " + right and
+    equiv = ""
   )
 select comparison, msg + "."

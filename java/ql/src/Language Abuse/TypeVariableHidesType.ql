@@ -14,10 +14,8 @@
 import java
 
 RefType anOuterType(TypeVariable var) {
-  var.getGenericCallable().getDeclaringType() = result
-  or
-  var.getGenericType() = result
-  or
+  var.getGenericCallable().getDeclaringType() = result or
+  var.getGenericType() = result or
   result = anOuterType(var).(NestedType).getEnclosingType()
 }
 

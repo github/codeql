@@ -14,6 +14,7 @@
  *       external/cwe/cwe-413
  *       external/cwe/cwe-662
  */
+
 import java
 
 /**
@@ -23,11 +24,10 @@ import java
 predicate isSynchronizedByBlock(Method m) {
   exists(SynchronizedStmt sync, Expr on |
     sync = m.getBody().getAChild*() and on = sync.getExpr().getProperExpr()
-    |
-    if m.isStatic() then
-      on.(TypeLiteral).getTypeName().getType() = m.getDeclaringType()
-    else
-      on.(ThisAccess).getType().(RefType).getSourceDeclaration() = m.getDeclaringType()
+  |
+    if m.isStatic()
+    then on.(TypeLiteral).getTypeName().getType() = m.getDeclaringType()
+    else on.(ThisAccess).getType().(RefType).getSourceDeclaration() = m.getDeclaringType()
   )
 }
 
@@ -48,10 +48,10 @@ from Method set, Method get
 where
   set.getDeclaringType() = get.getDeclaringType() and
   set.getName().matches("set%") and
-  get.getName() = "get"+set.getName().substring(3,set.getName().length()) and
+  get.getName() = "get" + set.getName().substring(3, set.getName().length()) and
   set.isSynchronized() and
   not (get.isSynchronized() or isSynchronizedByBlock(get)) and
   not bothAccessVolatileField(set, get) and
   set.fromSource()
-select get, "This get method is unsynchronized, but the corresponding $@ is synchronized.",
-  set, "set method"
+select get, "This get method is unsynchronized, but the corresponding $@ is synchronized.", set,
+  "set method"

@@ -10,6 +10,7 @@
  *       correctness
  *       logic
  */
+
 import java
 
 from ForStmt inner, Variable iteration, ForStmt outer
@@ -18,7 +19,5 @@ where
   iteration = outer.getAnIterationVariable() and
   inner.getParent+() = outer and
   inner.getBasicBlock().getABBSuccessor+() = outer.getCondition().getBasicBlock()
-select
-  inner.getCondition(), "Nested for statement uses loop variable $@ of enclosing $@.",
-  iteration, iteration.getName(),
-  outer, "for statement"
+select inner.getCondition(), "Nested for statement uses loop variable $@ of enclosing $@.",
+  iteration, iteration.getName(), outer, "for statement"

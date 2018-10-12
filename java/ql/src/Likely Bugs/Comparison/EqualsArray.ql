@@ -9,6 +9,7 @@
  * @tags reliability
  *       correctness
  */
+
 import java
 
 from MethodAccess ma, Array recvtype, Method m
@@ -19,6 +20,8 @@ where
     m instanceof HashCodeMethod
     or
     m instanceof EqualsMethod and
-    haveIntersection(recvtype, (Array)ma.getArgument(0).getType())
+    haveIntersection(recvtype, ma.getArgument(0).getType().(Array))
   )
-select ma, "The " + m.getName() + " method on arrays only considers object identity and ignores array contents."
+select ma,
+  "The " + m.getName() +
+    " method on arrays only considers object identity and ignores array contents."

@@ -9,9 +9,9 @@
  * @tags maintainability
  *       complexity
  */
+
 import java
 
 from RefType t
 where t.fromSource()
-select t, t.getMetrics().getNumberOfExplicitFields() as n
-order by n desc
+select t, t.getMetrics().getNumberOfExplicitFields() as n order by n desc

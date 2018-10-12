@@ -7,6 +7,7 @@
  * @id java/misnamed-function
  * @tags maintainability
  */
+
 import java
 
 from Method m

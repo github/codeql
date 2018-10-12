@@ -7,6 +7,7 @@
  * @metricAggregate avg min max
  * @id java/vcs/authors-per-file
  */
+
 import java
 import external.VCS
 

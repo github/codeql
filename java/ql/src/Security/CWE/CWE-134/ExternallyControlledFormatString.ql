@@ -15,14 +15,19 @@ import semmle.code.java.StringFormat
 
 class ExternallyControlledFormatStringConfig extends TaintTracking::Configuration {
   ExternallyControlledFormatStringConfig() { this = "ExternallyControlledFormatStringConfig" }
+
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteUserInput }
-  override predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(StringFormat formatCall).getFormatArgument() }
-  override predicate isSanitizer(DataFlow::Node node) { node.getType() instanceof NumericType or node.getType() instanceof BooleanType }
+
+  override predicate isSink(DataFlow::Node sink) {
+    sink.asExpr() = any(StringFormat formatCall).getFormatArgument()
+  }
+
+  override predicate isSanitizer(DataFlow::Node node) {
+    node.getType() instanceof NumericType or node.getType() instanceof BooleanType
+  }
 }
 
 from RemoteUserInput source, StringFormat formatCall, ExternallyControlledFormatStringConfig conf
-where
-  conf.hasFlow(source, DataFlow::exprNode(formatCall.getFormatArgument()))
-select formatCall.getFormatArgument(),
-  "$@ flows to here and is used in a format string.",
-  source, "User-provided value"
+where conf.hasFlow(source, DataFlow::exprNode(formatCall.getFormatArgument()))
+select formatCall.getFormatArgument(), "$@ flows to here and is used in a format string.", source,
+  "User-provided value"

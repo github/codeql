@@ -11,6 +11,7 @@
  *       correctness
  *       concurrency
  */
+
 import java
 
 /**
@@ -21,7 +22,8 @@ private predicate cannotBeExtended(RefType t) {
   t.isFinal()
   or
   // If the class is private, all possible subclasses are known.
-  t.isPrivate() and not exists(RefType sub | sub != t | sub.getAnAncestor() = t)
+  t.isPrivate() and
+  not exists(RefType sub | sub != t | sub.getAnAncestor() = t)
 }
 
 from MethodAccess m, Constructor c, Class clazz

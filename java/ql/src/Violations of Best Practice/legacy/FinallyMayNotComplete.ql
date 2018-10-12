@@ -14,9 +14,7 @@
 
 import java
 
-Block finallyBlock() {
-  exists(TryStmt try | try.getFinally() = result)
-}
+Block finallyBlock() { exists(TryStmt try | try.getFinally() = result) }
 
 Stmt statementIn(Block finally) {
   finallyBlock() = finally and
@@ -26,8 +24,10 @@ Stmt statementIn(Block finally) {
 predicate banned(Stmt s, Block finally) {
   s = statementIn(finally) and
   (
-    s instanceof ReturnStmt or
-    exists(ThrowStmt throw | s = throw and not throw.getLexicalCatchIfAny() = statementIn(finally)) or
+    s instanceof ReturnStmt
+    or
+    exists(ThrowStmt throw | s = throw and not throw.getLexicalCatchIfAny() = statementIn(finally))
+    or
     exists(JumpStmt jump | s = jump and not jump.getTarget() = statementIn(finally))
   )
 }

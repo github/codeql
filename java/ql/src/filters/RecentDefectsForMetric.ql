@@ -4,15 +4,14 @@
  * @kind treemap
  * @id java/recently-changed-file-metric-filter
  */
+
 import java
 import external.MetricFilter
 import external.VCS
 
-private pragma[noopt]
-predicate recent(File file) {
-  exists(Commit e | file = e.getAnAffectedFile() |
-    e.isRecent() and not artificialChange(e)
-  ) and
+pragma[noopt]
+private predicate recent(File file) {
+  exists(Commit e | file = e.getAnAffectedFile() | e.isRecent() and not artificialChange(e)) and
   exists(file.getLocation())
 }
 

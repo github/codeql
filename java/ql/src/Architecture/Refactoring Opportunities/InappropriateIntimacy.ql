@@ -9,6 +9,7 @@
  * @tags maintainability
  *       modularity
  */
+
 import java
 
 predicate enclosingRefType(Variable v, RefType type) {
@@ -60,5 +61,6 @@ where
   cb > 20 and
   ca >= cb and
   not exists(CompilationUnit cu | cu = a.getCompilationUnit() and cu = b.getCompilationUnit())
-select a, "Type " + a.getName() + " is too closely tied to $@ (" + ca.toString() +
-          " dependencies one way and " + cb.toString() + " the other).", b, b.getName()
+select a,
+  "Type " + a.getName() + " is too closely tied to $@ (" + ca.toString() +
+    " dependencies one way and " + cb.toString() + " the other).", b, b.getName()

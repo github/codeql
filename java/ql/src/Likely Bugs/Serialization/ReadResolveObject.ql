@@ -11,6 +11,7 @@
  *       maintainability
  *       language-features
  */
+
 import java
 
 from TypeSerializable serializable, Class c, Method m
@@ -20,6 +21,6 @@ where
   m.hasName("readResolve") and
   m.hasNoParameters() and
   not m.getReturnType() instanceof TypeObject
-select m, "The method " + m.getName()
-          + " must be declared with a return type of Object rather than "
-          + m.getReturnType().getName() + "."
+select m,
+  "The method " + m.getName() + " must be declared with a return type of Object rather than " +
+    m.getReturnType().getName() + "."
