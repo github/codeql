@@ -24,6 +24,5 @@ where
   objMethod = protectedObjectMethod(method.getSignature()) and
   not hasSubtype*(objMethod.getReturnType(), method.getReturnType())
 select method,
-  "This method's return type conflicts with Object." + method.getName() + " so $@ can never be implemented.",
-  impossible,
-  impossible.getName()
+  "This method's return type conflicts with Object." + method.getName() +
+    " so $@ can never be implemented.", impossible, impossible.getName()

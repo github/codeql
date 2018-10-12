@@ -6,14 +6,10 @@ import java
 
 /** A GWT UiBinder XML template file with a `.ui.xml` suffix. */
 class GwtUiTemplateXmlFile extends XMLFile {
-  GwtUiTemplateXmlFile() {
-    this.getBaseName().matches("%.ui.xml")
-  }
+  GwtUiTemplateXmlFile() { this.getBaseName().matches("%.ui.xml") }
 
   /** Gets the top-level UiBinder element. */
-  GwtUiBinderTemplateElement getUiBinderElement() {
-    result = this.getAChild()
-  }
+  GwtUiBinderTemplateElement getUiBinderElement() { result = this.getAChild() }
 }
 
 /** The top-level `<ui:UiBinder>` element of a GWT UiBinder template XML file. */
@@ -30,9 +26,7 @@ class GwtUiBinderTemplateElement extends XMLElement {
  */
 class GwtComponentTemplateElement extends XMLElement {
   GwtComponentTemplateElement() {
-    exists(GwtUiBinderTemplateElement templateElement |
-      this = templateElement.getAChild*()
-      |
+    exists(GwtUiBinderTemplateElement templateElement | this = templateElement.getAChild*() |
       this.getNamespace().getURI().substring(0, 10) = "urn:import"
     )
   }

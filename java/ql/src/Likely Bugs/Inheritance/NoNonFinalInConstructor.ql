@@ -10,37 +10,36 @@
  *       correctness
  *       logic
  */
+
 import java
 
-private
-predicate writtenInOneCallable(Field f) {
-  strictcount(Callable m | m.writes(f)) = 1
-}
+private predicate writtenInOneCallable(Field f) { strictcount(Callable m | m.writes(f)) = 1 }
 
-private
-FieldWrite fieldWriteOnlyIn(Callable m, Field f) {
+private FieldWrite fieldWriteOnlyIn(Callable m, Field f) {
   result.getField() = f and
   m.writes(f) and
   writtenInOneCallable(f)
 }
 
-private
-FieldRead nonFinalFieldRead(Callable m, Field f) {
+private FieldRead nonFinalFieldRead(Callable m, Field f) {
   result.getField() = f and
   result.getEnclosingCallable() = m and
   not f.isFinal()
 }
 
-private
-MethodAccess unqualifiedCallToNonAbstractMethod(Constructor c, Method m) {
+private MethodAccess unqualifiedCallToNonAbstractMethod(Constructor c, Method m) {
   result.getEnclosingCallable() = c and
-  (not exists(result.getQualifier()) or
-    result.getQualifier().(ThisAccess).getType() = c.getDeclaringType()) and
+  (
+    not exists(result.getQualifier()) or
+    result.getQualifier().(ThisAccess).getType() = c.getDeclaringType()
+  ) and
   m = result.getMethod() and
   not m.isAbstract()
 }
 
-from Constructor c, MethodAccess ma, Method m, Method n, Field f, FieldRead fa, Constructor d, FieldWrite fw
+from
+  Constructor c, MethodAccess ma, Method m, Method n, Field f, FieldRead fa, Constructor d,
+  FieldWrite fw
 where
   // Method access in a constructor
   // which is an access to the object being initialized, ...
@@ -58,11 +57,6 @@ where
   fw = fieldWriteOnlyIn(d, f) and
   // ... the subtype constructor calls (possibly indirectly) the offending super constructor.
   d.callsConstructor+(c)
-select
-  ma, "One $@ $@ a $@ that is only $@ in the $@, so it is uninitialized in this $@.",
-  n, "overriding implementation",
-  fa, "reads",
-  f, "subclass field",
-  fw, "initialized",
-  d, "subclass constructor",
-  c, "super constructor"
+select ma, "One $@ $@ a $@ that is only $@ in the $@, so it is uninitialized in this $@.", n,
+  "overriding implementation", fa, "reads", f, "subclass field", fw, "initialized", d,
+  "subclass constructor", c, "super constructor"

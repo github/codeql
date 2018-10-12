@@ -38,7 +38,9 @@ module TaintTracking {
      * The smaller this predicate is, the faster `hasFlow()` will converge.
      */
     // overridden to provide taint-tracking specific qldoc
-    abstract override predicate isSource(DataFlow::Node source);
+    override predicate isSource(DataFlow::Node source) {
+      super.isSource(source)
+    }
 
     /**
      * Holds if `sink` is a relevant taint sink.
@@ -46,7 +48,9 @@ module TaintTracking {
      * The smaller this predicate is, the faster `hasFlow()` will converge.
      */
     // overridden to provide taint-tracking specific qldoc
-    abstract override predicate isSink(DataFlow::Node sink);
+    override predicate isSink(DataFlow::Node sink) {
+      super.isSink(sink)
+    }
 
     /** Holds if the intermediate node `node` is a taint sanitizer. */
     predicate isSanitizer(DataFlow::Node node) {
@@ -55,6 +59,11 @@ module TaintTracking {
 
     /** Holds if the edge from `source` to `sink` is a taint sanitizer. */
     predicate isSanitizer(DataFlow::Node source, DataFlow::Node sink) {
+      none()
+    }
+
+    /** Holds if the edge from `source` to `sink` is a taint sanitizer for data labelled with `lbl`. */
+    predicate isSanitizer(DataFlow::Node source, DataFlow::Node sink, DataFlow::FlowLabel lbl) {
       none()
     }
 
@@ -80,6 +89,12 @@ module TaintTracking {
     override predicate isBarrier(DataFlow::Node source, DataFlow::Node sink) {
       super.isBarrier(source, sink) or
       isSanitizer(source, sink)
+    }
+
+    final
+    override predicate isBarrier(DataFlow::Node source, DataFlow::Node sink, DataFlow::FlowLabel lbl) {
+      super.isBarrier(source, sink, lbl) or
+      isSanitizer(source, sink, lbl)
     }
 
     final
@@ -610,6 +625,26 @@ module TaintTracking {
 
     override predicate appliesTo(Configuration cfg) {
       any()
+    }
+
+  }
+
+  /**
+   * A check of the form `if(<isWhitelisted>(x))`, which sanitizes `x` in its "then" branch.
+   *
+   * `<isWhitelisted>` is a call with callee name 'safe', 'whitelist', 'allow', or similar.
+   *
+   * This sanitizer is not enabled by default.
+   */
+  class AdHocWhitelistCheckSanitizer extends SanitizerGuardNode, DataFlow::CallNode {
+    AdHocWhitelistCheckSanitizer() {
+      getCalleeName().regexpMatch("(?i).*((?<!un)safe|whitelist|allow|(?<!un)auth(?!or\\b)).*") and
+      getNumArgument() = 1
+    }
+
+    override predicate sanitizes(boolean outcome, Expr e) {
+      outcome = true and
+      e = getArgument(0).asExpr()
     }
 
   }

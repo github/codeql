@@ -30,7 +30,10 @@ where
   // Every access to `v` is either...
   forex(VarAccess va | va = v.getAnAccess() |
     // ...an assignment storing a new container into `v`,
-    exists(AssignExpr assgn | va = assgn.getDest() and assgn.getSource() instanceof ClassInstanceExpr) or
+    exists(AssignExpr assgn |
+      va = assgn.getDest() and assgn.getSource() instanceof ClassInstanceExpr
+    )
+    or
     // ...or a call to a mutator method on `v` such that the result of the call is not checked.
     exists(ContainerMutation cm | va = cm.getQualifier() and not cm.resultIsChecked())
   ) and

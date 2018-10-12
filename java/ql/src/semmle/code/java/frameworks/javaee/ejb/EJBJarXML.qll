@@ -4,16 +4,11 @@ import java
  * An EJB deployment descriptor XML file named `ejb-jar.xml`.
  */
 class EjbJarXMLFile extends XMLFile {
-  EjbJarXMLFile() {
-    this.getStem() = "ejb-jar"
-  }
+  EjbJarXMLFile() { this.getStem() = "ejb-jar" }
 
-  EjbJarRootElement getRoot() {
-    result = this.getAChild()
-  }
+  EjbJarRootElement getRoot() { result = this.getAChild() }
 
   // Convenience methods.
-
   EjbJarEnterpriseBeansElement getAnEnterpriseBeansElement() {
     result = this.getRoot().getAnEnterpriseBeansElement()
   }
@@ -37,9 +32,7 @@ class EjbJarRootElement extends XMLElement {
     this.getName() = "ejb-jar"
   }
 
-  EjbJarEnterpriseBeansElement getAnEnterpriseBeansElement() {
-    result = this.getAChild()
-  }
+  EjbJarEnterpriseBeansElement getAnEnterpriseBeansElement() { result = this.getAChild() }
 }
 
 class EjbJarEnterpriseBeansElement extends XMLElement {
@@ -65,9 +58,7 @@ class EjbJarEnterpriseBeansElement extends XMLElement {
 }
 
 abstract class EjbJarBeanTypeElement extends XMLElement {
-  EjbJarBeanTypeElement() {
-    this.getParent() instanceof EjbJarEnterpriseBeansElement
-  }
+  EjbJarBeanTypeElement() { this.getParent() instanceof EjbJarEnterpriseBeansElement }
 
   XMLElement getAnEjbClassElement() {
     result = this.getAChild() and
@@ -76,9 +67,7 @@ abstract class EjbJarBeanTypeElement extends XMLElement {
 }
 
 class EjbJarSessionElement extends EjbJarBeanTypeElement {
-  EjbJarSessionElement() {
-    this.getName() = "session"
-  }
+  EjbJarSessionElement() { this.getName() = "session" }
 
   XMLElement getABusinessLocalElement() {
     result = this.getAChild() and
@@ -115,16 +104,11 @@ class EjbJarSessionElement extends EjbJarBeanTypeElement {
     result.getName() = "local-home"
   }
 
-  EjbJarSessionTypeElement getASessionTypeElement() {
-    result = this.getAChild()
-  }
+  EjbJarSessionTypeElement getASessionTypeElement() { result = this.getAChild() }
 
-  EjbJarInitMethodElement getAnInitMethodElement() {
-    result = this.getAChild()
-  }
+  EjbJarInitMethodElement getAnInitMethodElement() { result = this.getAChild() }
 
   // Convenience methods.
-
   XMLElement getACreateMethodNameElement() {
     result = getAnInitMethodElement().getACreateMethodElement().getAMethodNameElement()
   }
@@ -135,15 +119,11 @@ class EjbJarSessionElement extends EjbJarBeanTypeElement {
 }
 
 class EjbJarMessageDrivenElement extends EjbJarBeanTypeElement {
-  EjbJarMessageDrivenElement() {
-    this.getName() = "message-driven"
-  }
+  EjbJarMessageDrivenElement() { this.getName() = "message-driven" }
 }
 
 class EjbJarEntityElement extends EjbJarBeanTypeElement {
-  EjbJarEntityElement() {
-    this.getName() = "entity"
-  }
+  EjbJarEntityElement() { this.getName() = "entity" }
 }
 
 class EjbJarSessionTypeElement extends XMLElement {
@@ -152,13 +132,9 @@ class EjbJarSessionTypeElement extends XMLElement {
     this.getName() = "session-type"
   }
 
-  predicate isStateful() {
-    this.getACharactersSet().getCharacters() = "Stateful"
-  }
+  predicate isStateful() { this.getACharactersSet().getCharacters() = "Stateful" }
 
-  predicate isStateless() {
-    this.getACharactersSet().getCharacters() = "Stateless"
-  }
+  predicate isStateless() { this.getACharactersSet().getCharacters() = "Stateless" }
 }
 
 class EjbJarInitMethodElement extends XMLElement {

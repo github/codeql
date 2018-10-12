@@ -7,19 +7,13 @@ import java
 /**
  * The type `com.esotericsoftware.kryo.Kryo`.
  */
-class Kryo extends RefType {
-  Kryo() {
-    this.hasQualifiedName("com.esotericsoftware.kryo", "Kryo")
-  }
-}
+class Kryo extends RefType { Kryo() { this.hasQualifiedName("com.esotericsoftware.kryo", "Kryo") } }
 
 /**
  * A Kryo input stream.
  */
 class KryoInput extends RefType {
-  KryoInput() {
-    this.hasQualifiedName("com.esotericsoftware.kryo.io", "Input")
-  }
+  KryoInput() { this.hasQualifiedName("com.esotericsoftware.kryo.io", "Input") }
 }
 
 /**

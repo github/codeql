@@ -10,14 +10,12 @@
  *       maintainability
  *       frameworks/spring
  */
-import java
 
+import java
 import semmle.code.java.frameworks.spring.Spring
 
 class ParentBean extends SpringBean {
-  ParentBean() {
-    exists(SpringBean b | b.getBeanParent() = this)
-  }
+  ParentBean() { exists(SpringBean b | b.getBeanParent() = this) }
 
   RefType getDeclaredClass() {
     result = this.getClass() and
@@ -28,5 +26,5 @@ class ParentBean extends SpringBean {
 
 from ParentBean parent
 where parent.getDeclaredClass().isAbstract()
-select parent, "Parent bean $@ should not have an abstract class.",
-  parent, parent.getBeanIdentifier()
+select parent, "Parent bean $@ should not have an abstract class.", parent,
+  parent.getBeanIdentifier()

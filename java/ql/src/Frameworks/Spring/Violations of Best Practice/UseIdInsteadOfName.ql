@@ -10,6 +10,7 @@
  *       maintainability
  *       frameworks/spring
  */
+
 import java
 import semmle.code.java.frameworks.spring.Spring
 
@@ -17,4 +18,5 @@ from SpringBean b
 where
   not b.hasBeanId() and
   b.hasBeanName()
-select b, "Use \"id\" instead of \"name\" to take advantage of the IDREF constraint in the XML parser."
+select b,
+  "Use \"id\" instead of \"name\" to take advantage of the IDREF constraint in the XML parser."

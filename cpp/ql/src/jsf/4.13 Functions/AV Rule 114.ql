@@ -3,7 +3,7 @@
  * @description All functions that are not void should return a value on every exit path.
  * @kind problem
  * @problem.severity error
- * @precision medium
+ * @precision high
  * @id cpp/missing-return
  * @tags reliability
  *       readability

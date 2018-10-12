@@ -21,6 +21,45 @@ app.post('/documents/find', (req, res) => {
     query.title = req.body.title;
 
     // NOT OK: query is tainted by user-provided object value
+    Document.aggregate('type', query);
+
+    // NOT OK: query is tainted by user-provided object value
+    Document.count(query);
+
+    // NOT OK: query is tainted by user-provided object value
+    Document.deleteMany(query);
+
+    // NOT OK: query is tainted by user-provided object value
+    Document.deleteOne(query);
+
+    // NOT OK: query is tainted by user-provided object value
+    Document.distinct('type', query);
+
+    // NOT OK: query is tainted by user-provided object value
     Document.find(query);
+
+    // NOT OK: query is tainted by user-provided object value
+    Document.findOne(query);
+
+    // NOT OK: query is tainted by user-provided object value
+    Document.findOneAndDelete(query);
+
+    // NOT OK: query is tainted by user-provided object value
+    Document.findOneAndRemove(query);
+
+    // NOT OK: query is tainted by user-provided object value
+    Document.findOneAndUpdate(query);
+
+    // NOT OK: query is tainted by user-provided object value
+    Document.replaceOne(query);
+
+    // NOT OK: query is tainted by user-provided object value
+    Document.update(query);
+
+    // NOT OK: query is tainted by user-provided object value
+    Document.updateMany(query);
+
+    // NOT OK: query is tainted by user-provided object value
+    Document.updateOne(query);
 });
 

@@ -6,12 +6,13 @@ import semmle.code.java.frameworks.android.SQLite
 import semmle.code.java.frameworks.javaee.Persistence
 
 /** A sink for database query language injection vulnerabilities. */
-abstract class QueryInjectionSink extends DataFlow::ExprNode {}
+abstract class QueryInjectionSink extends DataFlow::ExprNode { }
 
 /** A sink for SQL injection vulnerabilities. */
 class SqlInjectionSink extends QueryInjectionSink {
   SqlInjectionSink() {
-    this.getExpr() instanceof SqlExpr or
+    this.getExpr() instanceof SqlExpr
+    or
     exists(SQLiteRunner s, MethodAccess m | m.getMethod() = s |
       m.getArgument(s.sqlIndex()) = this.getExpr()
     )
@@ -33,9 +34,14 @@ class PersistenceQueryInjectionSink extends QueryInjectionSink {
 
 private class QueryInjectionFlowConfig extends TaintTracking::Configuration {
   QueryInjectionFlowConfig() { this = "SqlInjectionLib::QueryInjectionFlowConfig" }
+
   override predicate isSource(DataFlow::Node src) { src instanceof RemoteUserInput }
+
   override predicate isSink(DataFlow::Node sink) { sink instanceof QueryInjectionSink }
-  override predicate isSanitizer(DataFlow::Node node) { node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType }
+
+  override predicate isSanitizer(DataFlow::Node node) {
+    node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType
+  }
 }
 
 /**
@@ -43,7 +49,5 @@ private class QueryInjectionFlowConfig extends TaintTracking::Configuration {
  * can be excluded from `SqlUnescaped.ql` to avoid overlapping results.
  */
 predicate queryTaintedBy(QueryInjectionSink query, RemoteUserInput source) {
-  exists(QueryInjectionFlowConfig conf |
-    conf.hasFlow(source, query)
-  )
+  exists(QueryInjectionFlowConfig conf | conf.hasFlow(source, query))
 }

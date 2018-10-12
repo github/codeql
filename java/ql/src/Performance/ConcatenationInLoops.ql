@@ -9,17 +9,14 @@
  * @tags efficiency
  *       maintainability
  */
+
 import semmle.code.java.Type
 import semmle.code.java.Expr
 import semmle.code.java.Statement
 import semmle.code.java.JDK
 
 /** A use of `+` that has type `String`. */
-class StringCat extends AddExpr {
-  StringCat() {
-    this.getType() instanceof TypeString
-  }
-}
+class StringCat extends AddExpr { StringCat() { this.getType() instanceof TypeString } }
 
 /**
  * An assignment of the form
@@ -42,9 +39,7 @@ predicate useAndDef(Assignment a, Variable v) {
     a instanceof AssignAddExpr
     or
     (
-      exists(VarAccess use | use.getVariable() = v |
-        use.getParent*() = a.getSource()
-      ) and
+      exists(VarAccess use | use.getVariable() = v | use.getParent*() = a.getSource()) and
       a.getSource() instanceof AddExpr
     )
   )
@@ -54,16 +49,13 @@ predicate declaredInLoop(LocalVariableDecl v, LoopStmt loop) {
   exists(LocalVariableDeclExpr e |
     e.getVariable() = v and
     e.getEnclosingStmt().getParent*() = loop.getBody()
-  ) or
-  exists(EnhancedForStmt for | for = loop |
-    for.getVariable().getVariable() = v
   )
+  or
+  exists(EnhancedForStmt for | for = loop | for.getVariable().getVariable() = v)
 }
 
 from Assignment a, Variable v
 where
   useAndDef(a, v) and
-  exists(LoopStmt loop | a.getEnclosingStmt().getParent*() = loop |
-    not declaredInLoop(v, loop)
-  )
+  exists(LoopStmt loop | a.getEnclosingStmt().getParent*() = loop | not declaredInLoop(v, loop))
 select a, "The string " + v.getName() + " is built-up in a loop: use string buffer."

@@ -7,7 +7,8 @@ import semmle.code.java.controlflow.Dominance
  * dominate `node`.
  */
 predicate dominanceCounterExample(ControlFlowNode entry, ControlFlowNode dom, ControlFlowNode node) {
-  node = entry or
+  node = entry
+  or
   exists(ControlFlowNode mid |
     dominanceCounterExample(entry, dom, mid) and mid != dom and mid.getASuccessor() = node
   )

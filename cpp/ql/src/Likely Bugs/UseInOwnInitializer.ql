@@ -11,10 +11,21 @@
 
 import cpp
 
-from Initializer init, Variable v, VariableAccess va
-where init.getDeclaration() = v
-  and va.getTarget() = v
-  and va.getParent*() = init
+class VariableAccessInInitializer extends VariableAccess {
+  Variable var;
+  Initializer init;
+  VariableAccessInInitializer() {
+    init.getDeclaration() = var and
+    init.getExpr().getAChild*() = this
+  }
+
+  predicate initializesItself(Variable v, Initializer i) {
+    v = var and i = init and var = this.getTarget()
+  }
+}
+
+from Initializer init, Variable v, VariableAccessInInitializer va
+where va.initializesItself(v, init)
   and (
     va.hasLValueToRValueConversion() or
     exists (Assignment assn | assn.getLValue() = va) or

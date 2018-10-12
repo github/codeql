@@ -14,4 +14,5 @@ import java
 
 from RefType type, AnnotationType annotation
 where type.getASupertype() = annotation
-select type, "Should this class be annotated by '" + annotation.getName() + "', not have it as a super-type?"
+select type,
+  "Should this class be annotated by '" + annotation.getName() + "', not have it as a super-type?"

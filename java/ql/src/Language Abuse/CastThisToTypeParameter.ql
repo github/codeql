@@ -22,6 +22,6 @@ where
     dest = cse.getType()
   ) and
   dest.getGenericType() = src
-select e, "Casting 'this' to $@, a type parameter of $@, masks an implicit type constraint that should be explicitly stated.",
-  dest, dest.getName(),
-  src, src.getName()
+select e,
+  "Casting 'this' to $@, a type parameter of $@, masks an implicit type constraint that should be explicitly stated.",
+  dest, dest.getName(), src, src.getName()

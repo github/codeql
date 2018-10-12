@@ -10,6 +10,7 @@
  *       correctness
  *       concurrency
  */
+
 import java
 
 /** A numerical comparison or an equality test. */
@@ -35,8 +36,10 @@ class EmptyLoop extends Stmt {
       count(stmt.getAnInit()) = 0 and
       count(stmt.getAnUpdate()) = 0 and
       stmt.getStmt() instanceof Empty
-    ) or
-    this.(WhileStmt).getStmt() instanceof Empty or
+    )
+    or
+    this.(WhileStmt).getStmt() instanceof Empty
+    or
     this.(DoStmt).getStmt() instanceof Empty
   }
 
@@ -64,5 +67,5 @@ where
   not field.isFinal() and
   not field.isVolatile() and
   field.getType() instanceof RefType
-select access, "Spinning on " + field.getName() + " in "
-                              + loop.getEnclosingCallable().getName() + "."
+select access,
+  "Spinning on " + field.getName() + " in " + loop.getEnclosingCallable().getName() + "."

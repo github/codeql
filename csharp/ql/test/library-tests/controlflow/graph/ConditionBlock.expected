@@ -40,12 +40,12 @@
 | CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:17:41:17:43 | "1" | false |
 | CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:17:41:17:43 | [finally: exception(ArgumentNullException)] "1" | true |
 | CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:17:41:17:43 | [finally: exception(Exception)] "1" | true |
-| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(ArgumentNullException)] catch (...) {...} | true |
-| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(Exception)] catch (...) {...} | true |
 | CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:19:13:22:13 | [exception: Exception] catch (...) {...} | false |
-| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] catch (...) {...} | true |
-| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(Exception)] catch (...) {...} | true |
 | CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException] catch (...) {...} | false |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:19:13:22:13 | [finally: exception(ArgumentNullException), exception: Exception] catch (...) {...} | true |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:19:13:22:13 | [finally: exception(ArgumentNullException), exception: NullReferenceException] catch (...) {...} | true |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:19:13:22:13 | [finally: exception(Exception), exception: Exception] catch (...) {...} | true |
+| CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:19:13:22:13 | [finally: exception(Exception), exception: NullReferenceException] catch (...) {...} | true |
 | CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:20:13:22:13 | [finally: exception(ArgumentNullException)] {...} | true |
 | CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:20:13:22:13 | [finally: exception(Exception)] {...} | true |
 | CatchInFinally.cs:9:17:9:28 | ... == ... | CatchInFinally.cs:20:13:22:13 | {...} | false |
@@ -60,6 +60,64 @@
 | CatchInFinally.cs:16:21:16:36 | [finally: exception(Exception)] ... == ... | CatchInFinally.cs:17:41:17:43 | [finally: exception(Exception)] "1" | true |
 | ConditionalAccess.cs:13:13:13:25 | ... > ... | ConditionalAccess.cs:14:20:14:20 | 0 | true |
 | ConditionalAccess.cs:13:13:13:25 | ... > ... | ConditionalAccess.cs:16:20:16:20 | 1 | false |
+| Conditions.cs:5:13:5:15 | access to parameter inc | Conditions.cs:6:13:6:16 | [inc (line 3): true] ...; | true |
+| Conditions.cs:5:13:5:15 | access to parameter inc | Conditions.cs:7:9:8:16 | [inc (line 3): false] if (...) ... | false |
+| Conditions.cs:14:13:14:13 | access to parameter b | Conditions.cs:15:13:15:16 | [b (line 11): true] ...; | true |
+| Conditions.cs:14:13:14:13 | access to parameter b | Conditions.cs:16:9:18:20 | [b (line 11): false] if (...) ... | false |
+| Conditions.cs:14:13:14:13 | access to parameter b | Conditions.cs:17:13:18:20 | [b (line 11): false] if (...) ... | false |
+| Conditions.cs:14:13:14:13 | access to parameter b | Conditions.cs:17:13:18:20 | [b (line 11): true] if (...) ... | true |
+| Conditions.cs:16:13:16:17 | [b (line 11): false] ... > ... | Conditions.cs:17:13:18:20 | [b (line 11): false] if (...) ... | true |
+| Conditions.cs:16:13:16:17 | [b (line 11): true] ... > ... | Conditions.cs:17:13:18:20 | [b (line 11): true] if (...) ... | true |
+| Conditions.cs:25:13:25:14 | access to parameter b1 | Conditions.cs:26:13:27:20 | if (...) ... | true |
+| Conditions.cs:25:13:25:14 | access to parameter b1 | Conditions.cs:27:17:27:20 | [b2 (line 22): true] ...; | true |
+| Conditions.cs:25:13:25:14 | access to parameter b1 | Conditions.cs:28:9:29:16 | [b2 (line 22): false] if (...) ... | true |
+| Conditions.cs:25:13:25:14 | access to parameter b1 | Conditions.cs:28:9:29:16 | if (...) ... | false |
+| Conditions.cs:26:17:26:18 | access to parameter b2 | Conditions.cs:27:17:27:20 | [b2 (line 22): true] ...; | true |
+| Conditions.cs:26:17:26:18 | access to parameter b2 | Conditions.cs:28:9:29:16 | [b2 (line 22): false] if (...) ... | false |
+| Conditions.cs:37:13:37:14 | access to parameter b1 | Conditions.cs:38:13:38:20 | ...; | true |
+| Conditions.cs:39:13:39:14 | access to local variable b2 | Conditions.cs:40:13:40:16 | [b2 (line 39): true] ...; | true |
+| Conditions.cs:39:13:39:14 | access to local variable b2 | Conditions.cs:41:9:42:16 | [b2 (line 39): false] if (...) ... | false |
+| Conditions.cs:49:16:49:22 | ... > ... | Conditions.cs:49:16:49:16 | [b (line 46): false] access to parameter x | true |
+| Conditions.cs:49:16:49:22 | ... > ... | Conditions.cs:50:9:53:9 | [b (line 46): false] {...} | true |
+| Conditions.cs:49:16:49:22 | ... > ... | Conditions.cs:50:9:53:9 | [b (line 46): true] {...} | true |
+| Conditions.cs:49:16:49:22 | ... > ... | Conditions.cs:50:9:53:9 | {...} | true |
+| Conditions.cs:49:16:49:22 | ... > ... | Conditions.cs:52:17:52:20 | [b (line 46): true] ...; | true |
+| Conditions.cs:49:16:49:22 | [b (line 46): false] ... > ... | Conditions.cs:50:9:53:9 | [b (line 46): false] {...} | true |
+| Conditions.cs:49:16:49:22 | [b (line 46): true] ... > ... | Conditions.cs:50:9:53:9 | [b (line 46): true] {...} | true |
+| Conditions.cs:51:17:51:17 | access to parameter b | Conditions.cs:49:16:49:16 | [b (line 46): false] access to parameter x | false |
+| Conditions.cs:51:17:51:17 | access to parameter b | Conditions.cs:50:9:53:9 | [b (line 46): false] {...} | false |
+| Conditions.cs:51:17:51:17 | access to parameter b | Conditions.cs:50:9:53:9 | [b (line 46): true] {...} | true |
+| Conditions.cs:51:17:51:17 | access to parameter b | Conditions.cs:52:17:52:20 | [b (line 46): true] ...; | true |
+| Conditions.cs:60:16:60:22 | ... > ... | Conditions.cs:60:16:60:16 | [b (line 57): false] access to parameter x | true |
+| Conditions.cs:60:16:60:22 | ... > ... | Conditions.cs:61:9:64:9 | [b (line 57): false] {...} | true |
+| Conditions.cs:60:16:60:22 | ... > ... | Conditions.cs:61:9:64:9 | [b (line 57): true] {...} | true |
+| Conditions.cs:60:16:60:22 | ... > ... | Conditions.cs:61:9:64:9 | {...} | true |
+| Conditions.cs:60:16:60:22 | ... > ... | Conditions.cs:63:17:63:20 | [b (line 57): true] ...; | true |
+| Conditions.cs:60:16:60:22 | ... > ... | Conditions.cs:65:9:66:16 | [b (line 57): false] if (...) ... | true |
+| Conditions.cs:60:16:60:22 | ... > ... | Conditions.cs:65:9:66:16 | [b (line 57): true] if (...) ... | true |
+| Conditions.cs:60:16:60:22 | ... > ... | Conditions.cs:65:9:66:16 | if (...) ... | false |
+| Conditions.cs:60:16:60:22 | [b (line 57): false] ... > ... | Conditions.cs:61:9:64:9 | [b (line 57): false] {...} | true |
+| Conditions.cs:60:16:60:22 | [b (line 57): false] ... > ... | Conditions.cs:65:9:66:16 | [b (line 57): false] if (...) ... | false |
+| Conditions.cs:60:16:60:22 | [b (line 57): true] ... > ... | Conditions.cs:61:9:64:9 | [b (line 57): true] {...} | true |
+| Conditions.cs:60:16:60:22 | [b (line 57): true] ... > ... | Conditions.cs:65:9:66:16 | [b (line 57): true] if (...) ... | false |
+| Conditions.cs:62:17:62:17 | access to parameter b | Conditions.cs:60:16:60:16 | [b (line 57): false] access to parameter x | false |
+| Conditions.cs:62:17:62:17 | access to parameter b | Conditions.cs:61:9:64:9 | [b (line 57): false] {...} | false |
+| Conditions.cs:62:17:62:17 | access to parameter b | Conditions.cs:61:9:64:9 | [b (line 57): true] {...} | true |
+| Conditions.cs:62:17:62:17 | access to parameter b | Conditions.cs:63:17:63:20 | [b (line 57): true] ...; | true |
+| Conditions.cs:62:17:62:17 | access to parameter b | Conditions.cs:65:9:66:16 | [b (line 57): false] if (...) ... | false |
+| Conditions.cs:62:17:62:17 | access to parameter b | Conditions.cs:65:9:66:16 | [b (line 57): true] if (...) ... | true |
+| Conditions.cs:76:17:76:17 | access to local variable b | Conditions.cs:77:17:77:20 | ...; | true |
+| Conditions.cs:78:17:78:21 | ... > ... | Conditions.cs:79:17:79:26 | ...; | true |
+| Conditions.cs:81:12:81:12 | access to local variable b | Conditions.cs:82:13:82:16 | ...; | true |
+| Conditions.cs:92:17:92:17 | access to local variable b | Conditions.cs:93:17:93:20 | ...; | true |
+| Conditions.cs:94:17:94:21 | ... > ... | Conditions.cs:95:17:95:26 | ...; | true |
+| Conditions.cs:96:17:96:17 | access to local variable b | Conditions.cs:97:17:97:20 | ...; | true |
+| Conditions.cs:105:13:105:13 | access to parameter b | Conditions.cs:106:13:106:20 | [b (line 102): true] ...; | true |
+| Conditions.cs:105:13:105:13 | access to parameter b | Conditions.cs:107:9:109:24 | [b (line 102): false] if (...) ... | false |
+| Conditions.cs:105:13:105:13 | access to parameter b | Conditions.cs:108:13:109:24 | [b (line 102): false] if (...) ... | false |
+| Conditions.cs:105:13:105:13 | access to parameter b | Conditions.cs:108:13:109:24 | [b (line 102): true] if (...) ... | true |
+| Conditions.cs:107:13:107:24 | [b (line 102): false] ... > ... | Conditions.cs:108:13:109:24 | [b (line 102): false] if (...) ... | true |
+| Conditions.cs:107:13:107:24 | [b (line 102): true] ... > ... | Conditions.cs:108:13:109:24 | [b (line 102): true] if (...) ... | true |
 | ExitMethods.cs:54:13:54:13 | access to parameter b | ExitMethods.cs:55:19:55:33 | object creation of type Exception | true |
 | ExitMethods.cs:60:13:60:13 | access to parameter b | ExitMethods.cs:61:19:61:33 | object creation of type Exception | true |
 | ExitMethods.cs:60:13:60:13 | access to parameter b | ExitMethods.cs:63:41:63:43 | "b" | false |

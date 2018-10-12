@@ -10,6 +10,7 @@
  *       maintainability
  *       external/cwe/cwe-568
  */
+
 import java
 
 from FinalizeMethod m, Class c, FinalizeMethod mSuper, Class cSuper

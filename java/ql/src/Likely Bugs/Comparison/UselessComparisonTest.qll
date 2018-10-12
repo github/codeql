@@ -14,40 +14,33 @@ library class BoundKind extends string {
     this = "<="
   }
 
-  predicate isEqual() {
-    this = "="
-  }
+  predicate isEqual() { this = "=" }
 
-  predicate isNotEqual() {
-    this = "!="
-  }
+  predicate isNotEqual() { this = "!=" }
 
-  predicate isLower() {
-    this = ">="
-  }
+  predicate isLower() { this = ">=" }
 
-  predicate isUpper() {
-    this = "<="
-  }
+  predicate isUpper() { this = "<=" }
 
-  predicate providesLowerBound() {
-    isEqual() or isLower()
-  }
+  predicate providesLowerBound() { isEqual() or isLower() }
 
-  predicate providesUpperBound() {
-    isEqual() or isUpper()
-  }
+  predicate providesUpperBound() { isEqual() or isUpper() }
 }
 
 /**
  * The information from `s1` implies that `test` always has the value `testIsTrue`.
  */
 predicate uselessTest(ConditionNode s1, BinaryExpr test, boolean testIsTrue) {
-  exists(ConditionBlock cb, SsaVariable v, BinaryExpr cond, boolean condIsTrue, int k1, int k2, CompileTimeConstantExpr c1, CompileTimeConstantExpr c2 |
+  exists(
+    ConditionBlock cb, SsaVariable v, BinaryExpr cond, boolean condIsTrue, int k1, int k2,
+    CompileTimeConstantExpr c1, CompileTimeConstantExpr c2
+  |
     s1 = cond and
     cb.getCondition() = cond and
-    cond.hasOperands(v.getAUse(), c1) and c1.getIntValue() = k1 and
-    test.hasOperands(v.getAUse(), c2) and c2.getIntValue() = k2 and
+    cond.hasOperands(v.getAUse(), c1) and
+    c1.getIntValue() = k1 and
+    test.hasOperands(v.getAUse(), c2) and
+    c2.getIntValue() = k2 and
     v.getSourceVariable().getVariable() instanceof LocalScopeVariable and
     cb.controls(test.getBasicBlock(), condIsTrue) and
     v.getSourceVariable().getType() instanceof IntegralType and
@@ -62,22 +55,36 @@ predicate uselessTest(ConditionNode s1, BinaryExpr test, boolean testIsTrue) {
       or
       exists(ComparisonExpr comp | comp = cond |
         comp.getLesserOperand() = v.getAUse() and
-          (condIsTrue = true and boundKind.isUpper() and (if comp.isStrict() then bound = k1-1 else bound = k1)
+        (
+          condIsTrue = true and
+          boundKind.isUpper() and
+          (if comp.isStrict() then bound = k1 - 1 else bound = k1)
           or
-          condIsTrue = false and boundKind.isLower() and (if comp.isStrict() then bound = k1 else bound = k1+1))
+          condIsTrue = false and
+          boundKind.isLower() and
+          (if comp.isStrict() then bound = k1 else bound = k1 + 1)
+        )
         or
         comp.getGreaterOperand() = v.getAUse() and
-          (condIsTrue = true and boundKind.isLower() and (if comp.isStrict() then bound = k1+1 else bound = k1)
+        (
+          condIsTrue = true and
+          boundKind.isLower() and
+          (if comp.isStrict() then bound = k1 + 1 else bound = k1)
           or
-          condIsTrue = false and boundKind.isUpper() and (if comp.isStrict() then bound = k1 else bound = k1-1))
+          condIsTrue = false and
+          boundKind.isUpper() and
+          (if comp.isStrict() then bound = k1 else bound = k1 - 1)
+        )
       )
     |
       // Given the bound we check if the `test` is either
       // always true (`testIsTrue = true`) or always false (`testIsTrue = false`).
       exists(EqualityTest testeq, boolean pol | testeq = test and pol = testeq.polarity() |
         (
-          boundKind.providesLowerBound() and k2 < bound or
-          boundKind.providesUpperBound() and bound < k2 or
+          boundKind.providesLowerBound() and k2 < bound
+          or
+          boundKind.providesUpperBound() and bound < k2
+          or
           boundKind.isNotEqual() and k2 = bound
         ) and
         testIsTrue = pol.booleanNot()
@@ -87,14 +94,42 @@ predicate uselessTest(ConditionNode s1, BinaryExpr test, boolean testIsTrue) {
       or
       exists(ComparisonExpr comp | comp = test |
         comp.getLesserOperand() = v.getAUse() and
-          (boundKind.providesLowerBound() and testIsTrue = false and (k2 < bound or k2 = bound and comp.isStrict())
+        (
+          boundKind.providesLowerBound() and
+          testIsTrue = false and
+          (
+            k2 < bound
+            or
+            k2 = bound and comp.isStrict()
+          )
           or
-          boundKind.providesUpperBound() and testIsTrue = true and (bound < k2 or bound = k2 and not comp.isStrict()))
+          boundKind.providesUpperBound() and
+          testIsTrue = true and
+          (
+            bound < k2
+            or
+            bound = k2 and not comp.isStrict()
+          )
+        )
         or
         comp.getGreaterOperand() = v.getAUse() and
-          (boundKind.providesLowerBound() and testIsTrue = true and (k2 < bound or k2 = bound and not comp.isStrict())
+        (
+          boundKind.providesLowerBound() and
+          testIsTrue = true and
+          (
+            k2 < bound
+            or
+            k2 = bound and not comp.isStrict()
+          )
           or
-          boundKind.providesUpperBound() and testIsTrue = false and (bound < k2 or bound = k2 and comp.isStrict()))
+          boundKind.providesUpperBound() and
+          testIsTrue = false and
+          (
+            bound < k2
+            or
+            bound = k2 and comp.isStrict()
+          )
+        )
       )
     )
   )

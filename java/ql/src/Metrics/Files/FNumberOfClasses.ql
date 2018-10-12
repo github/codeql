@@ -8,9 +8,9 @@
  * @id java/classes-per-file
  * @tags maintainability
  */
+
 import java
 
 from CompilationUnit f, int n
 where n = count(Class c | c.fromSource() and c.getCompilationUnit() = f)
-select f, n
-order by n desc
+select f, n order by n desc

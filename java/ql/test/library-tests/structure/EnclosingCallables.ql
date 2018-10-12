@@ -8,6 +8,4 @@ string printableEnclosingCallable(Expr e) {
 
 from Expr e
 where e.getFile().toString() = "A"
-select
-  e,
-  printableEnclosingCallable(e)
+select e, printableEnclosingCallable(e)

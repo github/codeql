@@ -1,6 +1,6 @@
 /**
- * @name Uncontrolled data used in remote request
- * @description Sending remote requests with user-controlled data allows for request forgery attacks.
+ * @name Uncontrolled data used in network request
+ * @description Sending network requests with user-controlled data allows for request forgery attacks.
  * @kind problem
  * @problem.severity error
  * @precision medium

@@ -185,7 +185,6 @@ class DefaultSourceNode extends SourceNode {
       astNode instanceof ObjectExpr or
       astNode instanceof ArrayExpr or
       astNode instanceof JSXNode or
-      astNode instanceof ThisExpr or
       astNode instanceof GlobalVarAccess or
       astNode instanceof ExternalModuleReference
     )
@@ -198,5 +197,7 @@ class DefaultSourceNode extends SourceNode {
     DataFlow::parameterNode(this, _)
     or
     this instanceof DataFlow::Impl::InvokeNodeDef
+    or
+    DataFlow::thisNode(this, _)
   }
 }

@@ -121,3 +121,12 @@ app.get('/array/join', function(req, res) {
   // BAD: request input becomes before query string
   res.redirect([req.query.page, '?section=', req.query.section].join(''));
 });
+
+function sendUserToUrl(res, nextUrl) {
+  // BAD: value comes from query parameter
+  res.redrect(nextUrl);
+}
+
+app.get('/call', function(req, res) {
+  sendUserToUrl(res, req.query.nextUrl);
+});

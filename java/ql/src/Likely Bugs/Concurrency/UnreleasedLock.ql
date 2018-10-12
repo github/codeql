@@ -11,6 +11,7 @@
  *       external/cwe/cwe-764
  *       external/cwe/cwe-833
  */
+
 import java
 import semmle.code.java.controlflow.Guards
 import semmle.code.java.dataflow.SSA
@@ -69,10 +70,12 @@ predicate unlockBlock(LockType t, BasicBlock b, int unlocks) {
  * equals the number of locks minus the number of unlocks.
  */
 predicate lockUnlockBlock(LockType t, BasicBlock b, int netlocks) {
-  lockBlock(t, b, netlocks) and not unlockBlock(t, b, _) or
+  lockBlock(t, b, netlocks) and not unlockBlock(t, b, _)
+  or
   exists(int unlocks |
     not lockBlock(t, b, _) and unlockBlock(t, b, unlocks) and netlocks = -unlocks
-  ) or
+  )
+  or
   exists(int locks, int unlocks |
     lockBlock(t, b, locks) and unlockBlock(t, b, unlocks) and netlocks = locks - unlocks
   )
@@ -93,8 +96,7 @@ predicate failedLock(LockType t, BasicBlock lockblock, BasicBlock exblock) {
         lock = lockbool.getAUse() and
         lockbool.getDefiningExpr().(VariableAssign).getSource() = t.getLockAccess()
       )
-    )
-    and
+    ) and
     (
       lock.getAnExceptionSuccessor() = exblock or
       lock.(ConditionNode).getAFalseSuccessor() = exblock
@@ -109,7 +111,7 @@ predicate failedLock(LockType t, BasicBlock lockblock, BasicBlock exblock) {
 predicate heldByCurrentThreadCheck(LockType t, BasicBlock checkblock, BasicBlock falsesucc) {
   exists(ConditionBlock conditionBlock |
     conditionBlock.getCondition() = t.getIsHeldByCurrentThreadAccess()
-    |
+  |
     conditionBlock.getBasicBlock() = checkblock and
     conditionBlock.getTestSuccessor(false) = falsesucc
   )
@@ -122,20 +124,23 @@ predicate heldByCurrentThreadCheck(LockType t, BasicBlock checkblock, BasicBlock
 predicate blockIsLocked(LockType t, BasicBlock src, BasicBlock b, int locks) {
   lockUnlockBlock(t, b, locks) and src = b and locks > 0
   or
-  exists(BasicBlock pred, int predlocks, int curlocks, int failedlock | pred = b.getABBPredecessor() |
+  exists(BasicBlock pred, int predlocks, int curlocks, int failedlock |
+    pred = b.getABBPredecessor()
+  |
     // The number of net locks from the `src` block to the predecessor block `pred` is `predlocks`.
     blockIsLocked(t, src, pred, predlocks) and
-    /*
-     * The recursive call ensures that at least one lock is held, so do not consider the false
-     * successor of the `isHeldByCurrentThread()` check.
-     */
+    // The recursive call ensures that at least one lock is held, so do not consider the false
+    // successor of the `isHeldByCurrentThread()` check.
     not heldByCurrentThreadCheck(t, pred, b) and
     // Count a failed lock as an unlock so the net is zero.
-    ( if failedLock(t, pred, b) then failedlock = 1 else failedlock = 0 ) and
-    ( not lockUnlockBlock(t, b, _) and curlocks = 0 or
+    (if failedLock(t, pred, b) then failedlock = 1 else failedlock = 0) and
+    (
+      not lockUnlockBlock(t, b, _) and curlocks = 0
+      or
       lockUnlockBlock(t, b, curlocks)
     ) and
-    locks = predlocks + curlocks - failedlock and locks > 0 and
+    locks = predlocks + curlocks - failedlock and
+    locks > 0 and
     // Arbitrary bound in order to fail gracefully in case of locking in a loop.
     locks < 10
   )
@@ -147,6 +152,6 @@ where
   t.getUnlockAccess().getEnclosingCallable() = c and
   blockIsLocked(t, src, exit, _) and
   exit.getLastNode() = c and
-  lock = src.getANode() and lock = t.getLockAccess()
-select
-  lock, "This lock might not be unlocked or might be locked more times than it is unlocked."
+  lock = src.getANode() and
+  lock = t.getLockAccess()
+select lock, "This lock might not be unlocked or might be locked more times than it is unlocked."

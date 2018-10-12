@@ -98,6 +98,9 @@
 | mixed.js:8:5:8:7 | exp | mixed.js:8:11:8:17 | exports | object |
 | mixed.js:9:5:9:6 | fn | mixed.js:9:10:9:19 | __filename | string |
 | mixed.js:10:5:10:6 | dn | mixed.js:10:10:10:18 | __dirname | string |
+| nestedImport.js:2:5:2:6 | x1 | nestedImport.js:2:10:2:12 | foo | function |
+| nestedImport.js:6:7:6:8 | x2 | nestedImport.js:6:12:6:14 | foo | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| nestedImport.js:11:7:11:8 | x3 | nestedImport.js:11:12:11:14 | foo | function |
 | nodeJsClient.js:1:5:1:6 | nj | nodeJsClient.js:1:10:1:31 | require ... JsLib') | boolean, class, date, function, null, number, object, regular expression,string or undefined |
 | nodeJsClient.js:2:5:2:6 | es | nodeJsClient.js:2:10:2:27 | require('./esLib') | boolean, class, date, function, null, number, object, regular expression,string or undefined |
 | nodeJsClient.js:4:5:4:6 | x1 | nodeJsClient.js:4:10:4:15 | nj.foo | boolean, class, date, function, null, number, object, regular expression,string or undefined |

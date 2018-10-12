@@ -10,6 +10,7 @@
  *       external/cwe/cwe-190
  *       external/cwe/cwe-191
  */
+
 import java
 import semmle.code.java.dataflow.FlowSources
 import ArithmeticCommon
@@ -17,7 +18,8 @@ import ArithmeticCommon
 predicate sink(ArithExpr exp, VarAccess tainted, string effect) {
   exp.getAnOperand() = tainted and
   (
-    not guardedAgainstUnderflow(exp, tainted) and effect = "underflow" or
+    not guardedAgainstUnderflow(exp, tainted) and effect = "underflow"
+    or
     not guardedAgainstOverflow(exp, tainted) and effect = "overflow"
   ) and
   // Exclude widening conversions of tainted values due to binary numeric promotion (JLS 5.6.2)
@@ -28,8 +30,11 @@ predicate sink(ArithExpr exp, VarAccess tainted, string effect) {
 
 class ArithmeticTaintedLocalFlowConfig extends TaintTracking::Configuration {
   ArithmeticTaintedLocalFlowConfig() { this = "ArithmeticTaintedLocalFlowConfig" }
+
   override predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
+
   override predicate isSink(DataFlow::Node sink) { sink(_, sink.asExpr(), _) }
+
   override predicate isSanitizer(DataFlow::Node n) { n.getType() instanceof BooleanType }
 }
 

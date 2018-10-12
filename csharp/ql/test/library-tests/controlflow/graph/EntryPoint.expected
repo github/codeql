@@ -23,6 +23,15 @@
 | ConditionalAccess.cs:19:12:19:13 | M6 | ConditionalAccess.cs:19:40:19:41 | access to parameter s1 |
 | ConditionalAccess.cs:21:10:21:11 | M7 | ConditionalAccess.cs:22:5:26:5 | {...} |
 | ConditionalAccess.cs:31:26:31:38 | CommaJoinWith | ConditionalAccess.cs:31:70:31:71 | access to parameter s1 |
+| Conditions.cs:3:10:3:19 | IncrOrDecr | Conditions.cs:4:5:9:5 | {...} |
+| Conditions.cs:11:9:11:10 | M1 | Conditions.cs:12:5:20:5 | {...} |
+| Conditions.cs:22:9:22:10 | M2 | Conditions.cs:23:5:31:5 | {...} |
+| Conditions.cs:33:9:33:10 | M3 | Conditions.cs:34:5:44:5 | {...} |
+| Conditions.cs:46:9:46:10 | M4 | Conditions.cs:47:5:55:5 | {...} |
+| Conditions.cs:57:9:57:10 | M5 | Conditions.cs:58:5:68:5 | {...} |
+| Conditions.cs:70:9:70:10 | M6 | Conditions.cs:71:5:84:5 | {...} |
+| Conditions.cs:86:9:86:10 | M7 | Conditions.cs:87:5:100:5 | {...} |
+| Conditions.cs:102:12:102:13 | M8 | Conditions.cs:103:5:111:5 | {...} |
 | ExitMethods.cs:6:10:6:11 | M1 | ExitMethods.cs:7:5:10:5 | {...} |
 | ExitMethods.cs:12:10:12:11 | M2 | ExitMethods.cs:13:5:16:5 | {...} |
 | ExitMethods.cs:18:10:18:11 | M3 | ExitMethods.cs:19:5:22:5 | {...} |

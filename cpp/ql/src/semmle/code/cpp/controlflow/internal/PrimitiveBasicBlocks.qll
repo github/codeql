@@ -31,8 +31,11 @@ private cached module Cached {
     // or the node's predecessor has more than one successor,
     // then the node is the start of a new primitive basic block.
     or
-    strictcount (Node pred, Node other
-    | successors_extended(pred,node) and successors_extended(pred,other)) > 1
+    strictcount(Node pred | successors_extended(pred, node)) > 1
+    or
+    exists(ControlFlowNode pred | successors_extended(pred, node) |
+      strictcount(ControlFlowNode other | successors_extended(pred, other)) > 1
+    )
 
     // If the node has zero predecessors then it is the start of
     // a BB. However, the C++ AST contains many nodes with zero
@@ -63,8 +66,14 @@ private cached module Cached {
   /** Holds if `node` is the `pos`th control-flow node in primitive basic block `bb`. */
   cached
   predicate primitive_basic_block_member(Node node, PrimitiveBasicBlock bb, int pos) {
-    pos = getMemberIndex(node) and
-    member_step*(bb, node)
+    primitive_basic_block_entry_node(bb) and
+    (
+      pos = 0 and
+      node = bb
+      or
+      pos = getMemberIndex(node) and
+      member_step+(bb, node)
+    )
   }
 
   /** Gets the number of control-flow nodes in the primitive basic block `bb`. */

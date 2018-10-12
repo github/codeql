@@ -9,6 +9,7 @@
  *       maintainability
  *       language-features
  */
+
 import java
 
 from TypeSerializable serializable, Class c, Field f
@@ -16,5 +17,4 @@ where
   not c.hasSupertype+(serializable) and
   f.getDeclaringType() = c and
   f.isTransient()
-select
-  f, "The field " + f.getName() + " is transient but " + c.getName() + " is not Serializable."
+select f, "The field " + f.getName() + " is transient but " + c.getName() + " is not Serializable."

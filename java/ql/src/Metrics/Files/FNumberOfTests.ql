@@ -9,9 +9,9 @@
  * @id java/tests-in-files
  * @tags maintainability
  */
+
 import java
 
 from CompilationUnit f, int n
 where n = strictcount(TestMethod test | test.fromSource() and test.getCompilationUnit() = f)
-select f, n
-order by n desc
+select f, n order by n desc

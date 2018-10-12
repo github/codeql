@@ -54,6 +54,7 @@
 | b.js:42:5:42:7 | z11 | b.js:42:11:42:18 | toString | file://:0:0:0:0 | indefinite value (import) |
 | b.js:45:5:45:7 | z12 | b.js:45:11:45:12 | f2 | ts2.ts:1:1:6:0 | exports object of module ts2 |
 | b.js:45:5:45:7 | z12 | b.js:45:11:45:12 | f2 | ts2.ts:1:10:1:22 | anonymous function |
+| b.js:45:5:45:7 | z12 | b.js:45:11:45:12 | f2 | ts2.ts:4:12:4:13 | object literal |
 | b.js:48:5:48:7 | z13 | b.js:48:11:48:11 | w | file://:0:0:0:0 | non-empty, non-numeric string |
 | b.js:51:5:51:7 | z14 | b.js:51:11:51:24 | foo_reexported | file://:0:0:0:0 | indefinite value (import) |
 | b.js:54:5:54:7 | z15 | b.js:54:11:54:19 | something | file://:0:0:0:0 | indefinite value (import) |
@@ -171,6 +172,10 @@
 | mixed.js:9:5:9:6 | fn | mixed.js:9:10:9:19 | __filename | file://:0:0:0:0 | numeric string |
 | mixed.js:10:5:10:6 | dn | mixed.js:10:10:10:18 | __dirname | file://:0:0:0:0 | non-empty, non-numeric string |
 | mixed.js:10:5:10:6 | dn | mixed.js:10:10:10:18 | __dirname | file://:0:0:0:0 | numeric string |
+| nestedImport.js:2:5:2:6 | x1 | nestedImport.js:2:10:2:12 | foo | esLib.js:3:8:3:24 | function foo |
+| nestedImport.js:6:7:6:8 | x2 | nestedImport.js:6:12:6:14 | foo | file://:0:0:0:0 | indefinite value (import) |
+| nestedImport.js:6:7:6:8 | x2 | nestedImport.js:6:12:6:14 | foo | nodeJsLib.js:3:15:3:37 | function nodeJsFoo |
+| nestedImport.js:11:7:11:8 | x3 | nestedImport.js:11:12:11:14 | foo | esLib.js:3:8:3:24 | function foo |
 | nodeJsClient.js:1:5:1:6 | nj | nodeJsClient.js:1:10:1:31 | require ... JsLib') | file://:0:0:0:0 | indefinite value (call) |
 | nodeJsClient.js:1:5:1:6 | nj | nodeJsClient.js:1:10:1:31 | require ... JsLib') | nodeJsLib.js:1:1:4:0 | exports object of module nodeJsLib |
 | nodeJsClient.js:1:5:1:6 | nj | nodeJsClient.js:1:10:1:31 | require ... JsLib') | nodeJsLib.js:1:18:1:43 | function nodeJsModule |

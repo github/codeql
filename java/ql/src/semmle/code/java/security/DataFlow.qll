@@ -30,9 +30,7 @@ import semmle.code.java.dispatch.VirtualDispatch
  */
 deprecated class FlowSource extends Expr {
   /** Holds if this source flows to the `sink`. */
-  predicate flowsTo(Expr sink) {
-    flowsToAndLocal((FlowExpr) sink)
-  }
+  predicate flowsTo(Expr sink) { flowsToAndLocal(sink.(FlowExpr)) }
 
   /**
    * The same as `flowsTo(sink,fromArg)`, plus `localFlow` and reads from instance fields.
@@ -43,12 +41,15 @@ deprecated class FlowSource extends Expr {
     // Verify that the sink is not excluded for this `FlowSource`.
     not isExcluded(sink) and
     (
-      flowsTo(sink, _) or
+      flowsTo(sink, _)
+      or
       exists(FlowExpr tracked |
         // The tracked expression should not be excluded for this `FlowSource`.
         not isExcluded(tracked) and
-        flowsToAndLocal(tracked) and (
-          localFlowStep(tracked, sink) or
+        flowsToAndLocal(tracked) and
+        (
+          localFlowStep(tracked, sink)
+          or
           exists(Field field |
             tracked = field.getAnAssignedValue() and
             sink = field.getAnAccess()
@@ -66,38 +67,44 @@ deprecated class FlowSource extends Expr {
   private predicate flowsTo(FlowExpr sink, boolean fromArg) {
     // Base case.
     sink = this and fromArg = false
-
-    or exists(FlowExpr tracked |
+    or
+    exists(FlowExpr tracked |
       // The tracked expression should not be excluded for this `FlowSource`.
       not isExcluded(tracked)
-      |
+    |
       // Flow within a single method.
-      (flowsTo(tracked, fromArg) and
+      (
+        flowsTo(tracked, fromArg) and
         localFlowStep(tracked, sink)
       )
+      or
       // Flow through a field.
-      or (flowsTo(tracked, _) and
+      (
+        flowsTo(tracked, _) and
         staticFieldStep(tracked, sink) and
         fromArg = false
       )
+      or
       // Flow through a method that returns one of its arguments.
-      or exists(MethodAccess call, int i |
+      exists(MethodAccess call, int i |
         flowsTo(tracked, fromArg) and
         methodReturnsArg(responderForArg(call, i, tracked), i) and
         sink = call
       )
+      or
       // Flow into a method.
-      or exists(Call c, Callable m, Parameter p, int i |
+      exists(Call c, Callable m, Parameter p, int i |
         flowsTo(tracked, _) and
         m = responderForArg(c, i, tracked) and
         m.getParameter(i) = p and
         parameterDefUsePair(p, sink) and
         fromArg = true
       )
+      or
       // Flow out of a method.
       // This path is only enabled if the flow did not come from the argument;
       // such cases are handled by `methodReturnsArg`.
-      or (
+      (
         flowsTo(tracked, false) and
         methodStep(tracked, sink) and
         fromArg = false
@@ -115,13 +122,12 @@ deprecated class FlowSource extends Expr {
     not isExcluded(sink.(FlowExpr)) and
     (
       sink = this
-      or exists(FlowSource tracked | tracked.flowsToReverse(sink) |
-        localFlowStep(this, tracked)
-      )
-      or exists(FlowSource tracked | tracked.flowsToReverse(sink) |
-        staticFieldStep(this, tracked)
-      )
-      or exists(FlowSource tracked, MethodAccess call, int i |
+      or
+      exists(FlowSource tracked | tracked.flowsToReverse(sink) | localFlowStep(this, tracked))
+      or
+      exists(FlowSource tracked | tracked.flowsToReverse(sink) | staticFieldStep(this, tracked))
+      or
+      exists(FlowSource tracked, MethodAccess call, int i |
         tracked.flowsToReverse(sink) and
         tracked = call and
         methodReturnsArg(call.getMethod(), i) and
@@ -149,7 +155,6 @@ deprecated class FlowExpr extends Expr {
   FlowExpr() {
     // Ignore paths through test code.
     not getEnclosingCallable().getDeclaringType() instanceof NonSecurityTestClass and
-
     not exists(ValidatedVariable var | this = var.getAnAccess())
   }
 }
@@ -163,7 +168,8 @@ deprecated private Callable responderForArg(Call call, int i, FlowExpr tracked) 
 
 /** Gets the responders to consider when tracking flow through a `call`. */
 deprecated private Callable responder(Call call) {
-  result = exactCallable(call) or
+  result = exactCallable(call)
+  or
   (
     not exists(exactCallable(call)) and
     result = call.getCallee()
@@ -183,9 +189,11 @@ deprecated predicate methodReturnsArg(Method method, int arg) {
  * that return their argument.
  */
 deprecated private Expr parameterFlow(Method method, int arg) {
-  result = method.getParameter(arg).getAnAccess() or
+  result = method.getParameter(arg).getAnAccess()
+  or
   exists(Expr tracked | tracked = parameterFlow(method, arg) |
-    localFlowStep(tracked, result) or
+    localFlowStep(tracked, result)
+    or
     exists(MethodAccess acc, int j |
       acc.getArgument(j) = tracked and
       methodReturnsArg(acc.getMethod(), j) and
@@ -197,50 +205,53 @@ deprecated private Expr parameterFlow(Method method, int arg) {
 /**
  * One step of flow within a single method.
  */
-deprecated cached private predicate localFlowStep(Expr tracked, Expr sink) {
+cached
+deprecated private predicate localFlowStep(Expr tracked, Expr sink) {
   variableStep(tracked, sink)
-
+  or
   // A concatenation of a tracked expression.
-  or sink.(AddExpr).getAnOperand() = tracked
-
+  sink.(AddExpr).getAnOperand() = tracked
+  or
   // A parenthesized tracked expression.
-  or sink.(ParExpr).getExpr() = tracked
-
+  sink.(ParExpr).getExpr() = tracked
+  or
   // A cast of a tracked expression.
-  or sink.(CastExpr).getExpr() = tracked
-
+  sink.(CastExpr).getExpr() = tracked
+  or
   // A conditional expression with a tracked branch.
-  or sink.(ConditionalExpr).getTrueExpr() = tracked
-  or sink.(ConditionalExpr).getFalseExpr() = tracked
-
+  sink.(ConditionalExpr).getTrueExpr() = tracked
+  or
+  sink.(ConditionalExpr).getFalseExpr() = tracked
+  or
   // An array initialization or creation expression.
-  or sink.(ArrayCreationExpr).getInit() = tracked
-  or sink.(ArrayInit).getAnInit() = tracked
-
+  sink.(ArrayCreationExpr).getInit() = tracked
+  or
+  sink.(ArrayInit).getAnInit() = tracked
+  or
   // An access to an element of a tracked array.
-  or sink.(ArrayAccess).getArray() = tracked
-
-  or arrayAccessStep(tracked, sink)
-
-  or constructorStep(tracked, sink)
-
-  or qualifierToMethodStep(tracked, sink)
-
-  or argToMethodStep(tracked, sink)
-
+  sink.(ArrayAccess).getArray() = tracked
+  or
+  arrayAccessStep(tracked, sink)
+  or
+  constructorStep(tracked, sink)
+  or
+  qualifierToMethodStep(tracked, sink)
+  or
+  argToMethodStep(tracked, sink)
+  or
   // An unsafe attempt to escape tainted input.
-  or (unsafeEscape(sink) and sink.(MethodAccess).getQualifier() = tracked)
-
+  (unsafeEscape(sink) and sink.(MethodAccess).getQualifier() = tracked)
+  or
   // A logic expression.
-  or sink.(LogicExpr).getAnOperand() = tracked
-
-  or comparisonStep(tracked, sink)
-
-  or stringBuilderStep(tracked, sink)
-
-  or serializationStep(tracked, sink)
-
-  or argToArgStep(tracked, sink)
+  sink.(LogicExpr).getAnOperand() = tracked
+  or
+  comparisonStep(tracked, sink)
+  or
+  stringBuilderStep(tracked, sink)
+  or
+  serializationStep(tracked, sink)
+  or
+  argToArgStep(tracked, sink)
 }
 
 /**
@@ -262,14 +273,25 @@ deprecated private predicate argToArgStep(Expr tracked, VarAccess sink) {
  * `output`th argument if the `input`th argument is tainted.
  */
 deprecated private predicate dataPreservingArgToArg(Method method, int input, int output) {
-  method.getDeclaringType().hasQualifiedName("org.apache.commons.io", "IOUtils") and (
-    method.hasName("copy") and input = 0 and output = 1 or
-    method.hasName("copyLarge") and input = 0 and output = 1 or
-    method.hasName("read") and input = 0 and output = 1 or
-    method.hasName("readFully") and input = 0 and output = 1 and not method.getParameterType(1).hasName("int") or
-    method.hasName("write") and input = 0 and output = 1 or
-    method.hasName("writeChunked") and input = 0 and output = 1 or
-    method.hasName("writeLines") and input = 0 and output = 2 or
+  method.getDeclaringType().hasQualifiedName("org.apache.commons.io", "IOUtils") and
+  (
+    method.hasName("copy") and input = 0 and output = 1
+    or
+    method.hasName("copyLarge") and input = 0 and output = 1
+    or
+    method.hasName("read") and input = 0 and output = 1
+    or
+    method.hasName("readFully") and
+    input = 0 and
+    output = 1 and
+    not method.getParameterType(1).hasName("int")
+    or
+    method.hasName("write") and input = 0 and output = 1
+    or
+    method.hasName("writeChunked") and input = 0 and output = 1
+    or
+    method.hasName("writeLines") and input = 0 and output = 2
+    or
     method.hasName("writeLines") and input = 1 and output = 2
   )
 }
@@ -285,7 +307,9 @@ deprecated private predicate variableStep(Expr tracked, VarAccess sink) {
 deprecated private predicate staticFieldStep(Expr tracked, FieldAccess sink) {
   exists(Field f |
     f.isStatic() and
-    f.getAnAssignedValue() = tracked | f.getAnAccess() = sink
+    f.getAnAssignedValue() = tracked
+  |
+    f.getAnAccess() = sink
   )
 }
 
@@ -302,12 +326,13 @@ deprecated private predicate methodStep(Expr tracked, MethodAccess sink) {
     m = responder(sink)
   )
 }
+
 /** Access to a method that passes taint from an argument. */
 deprecated private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
   exists(Method m, int i |
-    m = sink.(MethodAccess).getMethod()
-    and dataPreservingArgument(m, i)
-    and tracked = sink.(MethodAccess).getArgument(i)
+    m = sink.(MethodAccess).getMethod() and
+    dataPreservingArgument(m, i) and
+    tracked = sink.(MethodAccess).getArgument(i)
   )
 }
 
@@ -316,21 +341,22 @@ deprecated private predicate comparisonStep(Expr tracked, Expr sink) {
   exists(Expr other |
     (
       exists(BinaryExpr e | e instanceof ComparisonExpr or e instanceof EqualityTest |
-        e = sink
-        and e.getAnOperand() = tracked
-        and e.getAnOperand() = other
+        e = sink and
+        e.getAnOperand() = tracked and
+        e.getAnOperand() = other
       )
       or
       exists(MethodAccess m | m.getMethod() instanceof EqualsMethod |
-        m = sink
-        and (
-          (m.getQualifier() = tracked and m.getArgument(0) = other) or
+        m = sink and
+        (
+          (m.getQualifier() = tracked and m.getArgument(0) = other)
+          or
           (m.getQualifier() = other and m.getArgument(0) = tracked)
         )
       )
-    )
-    and (other.isCompileTimeConstant() or other instanceof NullLiteral)
-    and tracked != other
+    ) and
+    (other.isCompileTimeConstant() or other instanceof NullLiteral) and
+    tracked != other
   )
 }
 
@@ -340,8 +366,8 @@ deprecated private predicate stringBuilderStep(Expr tracked, Expr sink) {
     exists(MethodAccess input, int arg |
       input = sbvar.getAnInput(arg) and
       tracked = input.getArgument(arg)
-    )
-    and sink = sbvar.getToStringCall()
+    ) and
+    sink = sbvar.getToStringCall()
   )
 }
 
@@ -403,12 +429,13 @@ deprecated class StringBuilderVar extends LocalVariableDecl {
    * Gets a call that adds something to this string builder, from the argument at the given index.
    */
   MethodAccess getAnInput(int arg) {
-    result.getQualifier() = getAChainedReference()
-    and
+    result.getQualifier() = getAChainedReference() and
     (
       result.getMethod().getName() = "append" and arg = 0
-      or result.getMethod().getName() = "insert" and arg = 1
-      or result.getMethod().getName() = "replace" and arg = 2
+      or
+      result.getMethod().getName() = "insert" and arg = 1
+      or
+      result.getMethod().getName() = "replace" and arg = 2
     )
   }
 
@@ -416,15 +443,16 @@ deprecated class StringBuilderVar extends LocalVariableDecl {
    * Gets a call that appends something to this string builder.
    */
   MethodAccess getAnAppend() {
-    result.getQualifier() = getAChainedReference()
-    and result.getMethod().getName() = "append"
+    result.getQualifier() = getAChainedReference() and
+    result.getMethod().getName() = "append"
   }
 
   MethodAccess getNextAppend(MethodAccess append) {
     result = getAnAppend() and
     append = getAnAppend() and
     (
-      result.getQualifier() = append or
+      result.getQualifier() = append
+      or
       not exists(MethodAccess chainAccess | chainAccess.getQualifier() = append) and
       exists(RValue sbva1, RValue sbva2 |
         adjacentUseUse(sbva1, sbva2) and
@@ -438,8 +466,8 @@ deprecated class StringBuilderVar extends LocalVariableDecl {
    * Gets a call that converts this string builder to a string.
    */
   MethodAccess getToStringCall() {
-    result.getQualifier() = getAChainedReference()
-    and result.getMethod().getName() = "toString"
+    result.getQualifier() = getAChainedReference() and
+    result.getMethod().getName() = "toString"
   }
 
   private Expr getAChainedReference(VarAccess sbva) {
@@ -453,9 +481,7 @@ deprecated class StringBuilderVar extends LocalVariableDecl {
   /**
    * Gets an expression that refers to this `StringBuilder`, possibly after some chained calls.
    */
-  Expr getAChainedReference() {
-    result = getAChainedReference(_)
-  }
+  Expr getAChainedReference() { result = getAChainedReference(_) }
 }
 
 deprecated private MethodAccess callReturningSameType(Expr ref) {
@@ -465,7 +491,8 @@ deprecated private MethodAccess callReturningSameType(Expr ref) {
 
 deprecated private class BulkData extends RefType {
   BulkData() {
-    this.(Array).getElementType().(PrimitiveType).getName().regexpMatch("byte|char") or
+    this.(Array).getElementType().(PrimitiveType).getName().regexpMatch("byte|char")
+    or
     exists(RefType t | this.getASourceSupertype*() = t |
       t.hasQualifiedName("java.io", "InputStream") or
       t.hasQualifiedName("java.nio", "ByteBuffer") or
@@ -494,48 +521,74 @@ deprecated predicate constructorStep(Expr tracked, ConstructorCall sink) {
   exists(int argi | sink.getArgument(argi) = tracked |
     exists(string s | sink.getConstructedType().getQualifiedName() = s |
       // String constructor does nothing to data
-      s = "java.lang.String" and argi = 0 or
+      s = "java.lang.String" and argi = 0
+      or
       // some readers preserve the content of streams
-      s = "java.io.InputStreamReader" and argi = 0 or
-      s = "java.io.BufferedReader" and argi = 0 or
-      s = "java.io.CharArrayReader" and argi = 0 or
-      s = "java.io.StringReader" and argi = 0 or
+      s = "java.io.InputStreamReader" and argi = 0
+      or
+      s = "java.io.BufferedReader" and argi = 0
+      or
+      s = "java.io.CharArrayReader" and argi = 0
+      or
+      s = "java.io.StringReader" and argi = 0
+      or
       // data preserved through streams
-      s = "java.io.ObjectInputStream" and argi = 0 or
-      s = "java.io.ByteArrayInputStream" and argi = 0 or
-      s = "java.io.DataInputStream" and argi = 0 or
-      s = "java.io.BufferedInputStream" and argi = 0 or
-      s = "com.esotericsoftware.kryo.io.Input" and argi = 0 or
-      s = "java.beans.XMLDecoder" and argi = 0 or
+      s = "java.io.ObjectInputStream" and argi = 0
+      or
+      s = "java.io.ByteArrayInputStream" and argi = 0
+      or
+      s = "java.io.DataInputStream" and argi = 0
+      or
+      s = "java.io.BufferedInputStream" and argi = 0
+      or
+      s = "com.esotericsoftware.kryo.io.Input" and argi = 0
+      or
+      s = "java.beans.XMLDecoder" and argi = 0
+      or
       // a tokenizer preserves the content of a string
-      s = "java.util.StringTokenizer" and argi = 0 or
+      s = "java.util.StringTokenizer" and argi = 0
+      or
       // unzipping the stream preserves content
-      s = "java.util.zip.ZipInputStream" and argi = 0 or
-      s = "java.util.zip.GZIPInputStream" and argi = 0 or
+      s = "java.util.zip.ZipInputStream" and argi = 0
+      or
+      s = "java.util.zip.GZIPInputStream" and argi = 0
+      or
       // string builders and buffers
-      s = "java.lang.StringBuilder" and argi = 0 or
-      s = "java.lang.StringBuffer" and argi = 0 or
+      s = "java.lang.StringBuilder" and argi = 0
+      or
+      s = "java.lang.StringBuffer" and argi = 0
+      or
       // a cookie with tainted ingredients is tainted
-      s = "javax.servlet.http.Cookie" and argi = 0 or
-      s = "javax.servlet.http.Cookie" and argi = 1 or
+      s = "javax.servlet.http.Cookie" and argi = 0
+      or
+      s = "javax.servlet.http.Cookie" and argi = 1
+      or
       // various xml stream source constructors.
-      s = "org.xml.sax.InputSource" and argi = 0 or
-      s = "javax.xml.transform.sax.SAXSource" and argi = 0 and sink.getNumArgument() = 1 or
-      s = "javax.xml.transform.sax.SAXSource" and argi = 1 and sink.getNumArgument() = 2 or
-      s = "javax.xml.transform.stream.StreamSource" and argi = 0 or
+      s = "org.xml.sax.InputSource" and argi = 0
+      or
+      s = "javax.xml.transform.sax.SAXSource" and argi = 0 and sink.getNumArgument() = 1
+      or
+      s = "javax.xml.transform.sax.SAXSource" and argi = 1 and sink.getNumArgument() = 2
+      or
+      s = "javax.xml.transform.stream.StreamSource" and argi = 0
+      or
       //a URI constructed from a tainted string is tainted.
       s = "java.net.URI" and argi = 0 and sink.getNumArgument() = 1
-    ) or
+    )
+    or
     exists(RefType t | t.getQualifiedName() = "java.lang.Number" |
       hasSubtypeStar(t, sink.getConstructedType())
-    ) and argi = 0 or
+    ) and
+    argi = 0
+    or
     // wrappers constructed by extension
     exists(Constructor c, Parameter p, SuperConstructorInvocationStmt sup |
       c = sink.getConstructor() and
       p = c.getParameter(argi) and
       sup.getEnclosingCallable() = c and
       constructorStep(p.getAnAccess(), sup)
-    ) or
+    )
+    or
     // a custom InputStream that wraps a tainted data source is tainted
     inputStreamWrapper(sink.getConstructor(), argi)
   )
@@ -565,49 +618,57 @@ deprecated class DataPreservingMethod extends Method {
         this.getName() = "toUpperCase" or
         this.getName() = "trim"
       )
-    ) or
+    )
+    or
     (
       exists(Class c | c.getQualifiedName() = "java.lang.Number" |
-      hasSubtypeStar(c, this.getDeclaringType())) and
+        hasSubtypeStar(c, this.getDeclaringType())
+      ) and
       (
         this.getName().matches("to%String") or
         this.getName() = "toByteArray" or
         this.getName().matches("%Value")
       )
-    ) or
+    )
+    or
     (
       this.getDeclaringType().getQualifiedName().matches("%Reader") and
       this.getName().matches("read%")
-    ) or
+    )
+    or
     (
       this.getDeclaringType().getQualifiedName().matches("%StringWriter") and
       this.getName() = "toString"
-    ) or
+    )
+    or
     (
       this.getDeclaringType().hasQualifiedName("java.util", "StringTokenizer") and
       this.getName().matches("next%")
-    ) or
+    )
+    or
     (
       this.getDeclaringType().hasQualifiedName("java.io", "ByteArrayOutputStream") and
       (this.getName() = "toByteArray" or this.getName() = "toString")
-    ) or
+    )
+    or
     (
       this.getDeclaringType().hasQualifiedName("java.io", "ObjectInputStream") and
       this.getName().matches("read%")
-    ) or
+    )
+    or
     (
       (
         this.getDeclaringType().hasQualifiedName("java.lang", "StringBuilder") or
         this.getDeclaringType().hasQualifiedName("java.lang", "StringBuffer")
       ) and
-      (
-        this.getName() = "toString" or this.getName() = "append"
-      )
-    ) or
+      (this.getName() = "toString" or this.getName() = "append")
+    )
+    or
     (
       this.getDeclaringType().hasQualifiedName("javax.xml.transform.sax", "SAXSource") and
       this.hasName("getInputSource")
-    ) or
+    )
+    or
     (
       this.getDeclaringType().hasQualifiedName("javax.xml.transform.stream", "StreamSource") and
       this.hasName("getInputStream")
@@ -623,17 +684,21 @@ deprecated predicate dataPreservingArgument(Method method, int arg) {
   (
     method instanceof StringReplaceMethod and
     arg = 1
-  ) or
+  )
+  or
   (
     exists(Class c | c.getQualifiedName() = "java.lang.Number" |
       hasSubtypeStar(c, method.getDeclaringType())
     ) and
     (
-      (method.getName().matches("parse%") and arg = 0) or
-      (method.getName().matches("valueOf%") and arg = 0) or
+      (method.getName().matches("parse%") and arg = 0)
+      or
+      (method.getName().matches("valueOf%") and arg = 0)
+      or
       (method.getName().matches("to%String") and arg = 0)
     )
-  ) or
+  )
+  or
   (
     (
       method.getDeclaringType().hasQualifiedName("java.lang", "StringBuilder") or
@@ -646,43 +711,58 @@ deprecated predicate dataPreservingArgument(Method method, int arg) {
       or
       method.getName() = "replace" and arg = 2
     )
-  ) or
+  )
+  or
   (
     (
       method.getDeclaringType().hasQualifiedName("java.util", "Base64$Encoder") or
       method.getDeclaringType().hasQualifiedName("java.util", "Base64$Decoder")
     ) and
     (
-      method.getName() = "encode" and arg = 0 and method.getNumberOfParameters() = 1 or
-      method.getName() = "decode" and arg = 0 and method.getNumberOfParameters() = 1 or
-      method.getName() = "encodeToString" and arg = 0 or
+      method.getName() = "encode" and arg = 0 and method.getNumberOfParameters() = 1
+      or
+      method.getName() = "decode" and arg = 0 and method.getNumberOfParameters() = 1
+      or
+      method.getName() = "encodeToString" and arg = 0
+      or
       method.getName() = "wrap" and arg = 0
     )
-  ) or
+  )
+  or
   (
+    (method.getDeclaringType().hasQualifiedName("org.apache.commons.io", "IOUtils")) and
     (
-      method.getDeclaringType().hasQualifiedName("org.apache.commons.io", "IOUtils")
-    ) and
-    (
-      method.getName() = "buffer" and arg = 0 or
-      method.getName() = "readLines" and arg = 0 or
-      method.getName() = "readFully" and arg = 0 and method.getParameterType(1).hasName("int") or
-      method.getName() = "toBufferedInputStream" and arg = 0 or
-      method.getName() = "toBufferedReader" and arg = 0 or
-      method.getName() = "toByteArray" and arg = 0 or
-      method.getName() = "toCharArray" and arg = 0 or
-      method.getName() = "toInputStream" and arg = 0 or
+      method.getName() = "buffer" and arg = 0
+      or
+      method.getName() = "readLines" and arg = 0
+      or
+      method.getName() = "readFully" and arg = 0 and method.getParameterType(1).hasName("int")
+      or
+      method.getName() = "toBufferedInputStream" and arg = 0
+      or
+      method.getName() = "toBufferedReader" and arg = 0
+      or
+      method.getName() = "toByteArray" and arg = 0
+      or
+      method.getName() = "toCharArray" and arg = 0
+      or
+      method.getName() = "toInputStream" and arg = 0
+      or
       method.getName() = "toString" and arg = 0
     )
-  ) or
+  )
+  or
   (
     //A URI created from a tainted string is still tainted.
     method.getDeclaringType().hasQualifiedName("java.net", "URI") and
-    method.hasName("create") and arg = 0
-  ) or
+    method.hasName("create") and
+    arg = 0
+  )
+  or
   (
     method.getDeclaringType().hasQualifiedName("javax.xml.transform.sax", "SAXSource") and
-    method.hasName("sourceToInputSource") and arg = 0
+    method.hasName("sourceToInputSource") and
+    arg = 0
   )
 }
 
@@ -711,7 +791,7 @@ deprecated predicate unsafeEscape(MethodAccess ma) {
  *
  * Class for `tainted` user input.
  */
-deprecated abstract class UserInput extends FlowSource {}
+abstract deprecated class UserInput extends FlowSource { }
 
 /**
  * DEPRECATED: Use semmle.code.java.dataflow.FlowSources.RemoteUserInput instead.
@@ -721,37 +801,38 @@ deprecated abstract class UserInput extends FlowSource {}
 deprecated class RemoteUserInput extends UserInput {
   RemoteUserInput() {
     this.(MethodAccess).getMethod() instanceof RemoteTaintedMethod
-
+    or
     // Parameters to RMI methods.
-    or exists(RemoteCallableMethod method |
-       method.getAParameter().getAnAccess() = this
-       and (
-         getType() instanceof PrimitiveType
-         or getType() instanceof TypeString
-       )
-    )
-
-    // Parameters to Jax WS methods.
-    or exists(JaxWsEndpoint endpoint |
-       endpoint.getARemoteMethod().getAParameter().getAnAccess() = this
-    )
-    // Parameters to Jax Rs methods.
-    or exists(JaxRsResourceClass service |
-       service.getAnInjectableCallable().getAParameter().getAnAccess() = this or
-       service.getAnInjectableField().getAnAccess() = this
-    )
-
-    // Reverse DNS. Try not to trigger on `localhost`.
-    or exists(MethodAccess m | m = this |
-      m.getMethod() instanceof ReverseDNSMethod and
-      not exists(MethodAccess l |
-        (variableStep(l, m.getQualifier()) or l = m.getQualifier())
-        and l.getMethod().getName() = "getLocalHost"
+    exists(RemoteCallableMethod method |
+      method.getAParameter().getAnAccess() = this and
+      (
+        getType() instanceof PrimitiveType or
+        getType() instanceof TypeString
       )
     )
-
+    or
+    // Parameters to Jax WS methods.
+    exists(JaxWsEndpoint endpoint |
+      endpoint.getARemoteMethod().getAParameter().getAnAccess() = this
+    )
+    or
+    // Parameters to Jax Rs methods.
+    exists(JaxRsResourceClass service |
+      service.getAnInjectableCallable().getAParameter().getAnAccess() = this or
+      service.getAnInjectableField().getAnAccess() = this
+    )
+    or
+    // Reverse DNS. Try not to trigger on `localhost`.
+    exists(MethodAccess m | m = this |
+      m.getMethod() instanceof ReverseDNSMethod and
+      not exists(MethodAccess l |
+        (variableStep(l, m.getQualifier()) or l = m.getQualifier()) and
+        l.getMethod().getName() = "getLocalHost"
+      )
+    )
+    or
     //MessageBodyReader
-    or exists(MessageBodyReaderRead m |
+    exists(MessageBodyReaderRead m |
       m.getParameter(4).getAnAccess() = this or
       m.getParameter(5).getAnAccess() = this
     )
@@ -763,35 +844,34 @@ deprecated class RemoteUserInput extends UserInput {
  *
  * Input that may be controlled by a local user.
  */
-deprecated abstract class LocalUserInput extends UserInput {}
+abstract deprecated class LocalUserInput extends UserInput { }
 
 deprecated class EnvInput extends LocalUserInput {
   EnvInput() {
     // Parameters to a main method.
     exists(MainMethod main | this = main.getParameter(0).getAnAccess())
-
+    or
     // Args4j arguments.
-    or exists(Field f | this = f.getAnAccess() | f.getAnAnnotation().getType().getQualifiedName() = "org.kohsuke.args4j.Argument")
-
+    exists(Field f | this = f.getAnAccess() |
+      f.getAnAnnotation().getType().getQualifiedName() = "org.kohsuke.args4j.Argument"
+    )
+    or
     // Results from various specific methods.
-    or this.(MethodAccess).getMethod() instanceof EnvTaintedMethod
-
+    this.(MethodAccess).getMethod() instanceof EnvTaintedMethod
+    or
     // Access to `System.in`.
-    or exists(Field f | this = f.getAnAccess() | f instanceof SystemIn)
-
+    exists(Field f | this = f.getAnAccess() | f instanceof SystemIn)
+    or
     // Access to files.
-    or this.(ConstructorCall).getConstructedType().hasQualifiedName("java.io", "FileInputStream")
+    this.(ConstructorCall).getConstructedType().hasQualifiedName("java.io", "FileInputStream")
   }
 }
 
 deprecated class DatabaseInput extends LocalUserInput {
-  DatabaseInput() {
-    this.(MethodAccess).getMethod() instanceof ResultSetGetStringMethod
-  }
+  DatabaseInput() { this.(MethodAccess).getMethod() instanceof ResultSetGetStringMethod }
 }
 
-library
-deprecated class RemoteTaintedMethod extends Method {
+deprecated library class RemoteTaintedMethod extends Method {
   RemoteTaintedMethod() {
     this instanceof ServletRequestGetParameterMethod or
     this instanceof HttpServletRequestGetQueryStringMethod or
@@ -812,8 +892,7 @@ deprecated class RemoteTaintedMethod extends Method {
   }
 }
 
-library
-deprecated class EnvTaintedMethod extends Method {
+deprecated library class EnvTaintedMethod extends Method {
   EnvTaintedMethod() {
     this instanceof MethodSystemGetenv or
     this instanceof PropertiesGetPropertyMethod or
@@ -822,9 +901,7 @@ deprecated class EnvTaintedMethod extends Method {
 }
 
 deprecated class TypeInetAddr extends RefType {
-  TypeInetAddr() {
-    this.getQualifiedName() = "java.net.InetAddress"
-  }
+  TypeInetAddr() { this.getQualifiedName() = "java.net.InetAddress" }
 }
 
 deprecated class ReverseDNSMethod extends Method {

@@ -9,6 +9,7 @@
  * @tags reliability
  *       maintainability
  */
+
 import java
 
 /** Access to a method in `this` object. */

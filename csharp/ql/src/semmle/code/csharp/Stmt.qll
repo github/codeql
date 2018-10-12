@@ -173,17 +173,7 @@ class SwitchStmt extends SelectionStmt, @switch_stmt {
    * }
    * ```
    */
-  cached
-  CaseStmt getCase(int i) {
-    exists(int index, int rankIndex |
-      result = getChildStmt(index) and
-      rankIndex = i + 1 and
-      index = rank[rankIndex](int j, CaseStmt cs |
-        cs = this.getChildStmt(j) |
-        j
-      )
-    )
-  }
+  CaseStmt getCase(int i) { result = SwithStmtInternal::getCase(this, i) }
 
   /** Gets a case of this `switch` statement. */
   CaseStmt getACase() { result = this.getCase(_) }
@@ -221,29 +211,45 @@ class SwitchStmt extends SelectionStmt, @switch_stmt {
    * Note that each non-`default` case is a labeled statement, so the statement
    * that follows is a child of the labeled statement, and not the `switch` block.
    */
+  Stmt getStmt(int i) { result = SwithStmtInternal::getStmt(this, i) }
+
+  /** Gets a statement in the body of this `switch` statement. */
+  Stmt getAStmt() { result = this.getStmt(_) }
+}
+
+private cached module SwithStmtInternal {
   cached
-  Stmt getStmt(int i) {
+  CaseStmt getCase(SwitchStmt ss, int i) {
     exists(int index, int rankIndex |
-      result = getChildStmt(index) and
+      result = ss.getChildStmt(index) and
       rankIndex = i + 1 and
-      index = rank[rankIndex](int j, Stmt s |
-        // `getChild` includes both labeled statements and the targeted
-        // statements of labeled statement as separate children, but we
-        // only want the labeled statement
-        s = getLabeledStmt(j) |
+      index = rank[rankIndex](int j, CaseStmt cs |
+        cs = ss.getChildStmt(j) |
         j
       )
     )
   }
 
-  private Stmt getLabeledStmt(int i) {
-    result = this.getChildStmt(i) and
+  cached
+  Stmt getStmt(SwitchStmt ss, int i) {
+    exists(int index, int rankIndex |
+      result = ss.getChildStmt(index) and
+      rankIndex = i + 1 and
+      index = rank[rankIndex](int j, Stmt s |
+        // `getChild` includes both labeled statements and the targeted
+        // statements of labeled statement as separate children, but we
+        // only want the labeled statement
+        s = getLabeledStmt(ss, j) |
+        j
+      )
+    )
+  }
+
+  private Stmt getLabeledStmt(SwitchStmt ss, int i) {
+    result = ss.getChildStmt(i) and
     not result = any(ConstCase cc).getStmt() and
     not result = any(TypeCase tc).getStmt()
   }
-
-  /** Gets a statement in the body of this `switch` statement. */
-  Stmt getAStmt() { result = this.getStmt(_) }
 }
 
 /**

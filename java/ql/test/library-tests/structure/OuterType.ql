@@ -1,6 +1,7 @@
 /**
  * @name OuterType
  */
+
 import default
 
 from TopLevelType t
