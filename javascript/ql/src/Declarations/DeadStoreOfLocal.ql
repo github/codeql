@@ -38,9 +38,7 @@ predicate isDefaultInit(Expr e) {
   // initialising to an empty array or object literal, even if unnecessary,
   // can convey useful type information to the reader
   e.(ArrayExpr).getSize() = 0 or
-  e.(ObjectExpr).getNumProperty() = 0 or
-  // recursive case
-  isDefaultInit(e.(AssignExpr).getRhs())
+  e.(ObjectExpr).getNumProperty() = 0
 }
 
 from VarDef dead, PurelyLocalVariable v  // captured variables may be read by closures, so don't flag them
@@ -60,7 +58,7 @@ where deadStoreOfLocal(dead, v) and
       // don't flag overwrites with `null` or `undefined`
       not SyntacticConstants::isNullOrUndefined(dead.getSource()) and
       // don't flag default inits that are later overwritten
-      not (isDefaultInit(dead.getSource()) and dead.isOverwritten(v)) and
+      not (isDefaultInit(dead.getSource().(Expr).getUnderlyingValue()) and dead.isOverwritten(v)) and
       // don't flag assignments in externs
       not dead.(ASTNode).inExternsFile() and
       // don't flag exported variables
