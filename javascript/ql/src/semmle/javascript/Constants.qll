@@ -127,10 +127,7 @@ module SyntacticConstants {
   class WrappedConstant extends SyntacticConstant {
 
     WrappedConstant() {
-      stripParens() instanceof SyntacticConstant or
-      this.(SeqExpr).getLastOperand() instanceof SyntacticConstant or
-      this.(TypeAssertion).getExpression() instanceof SyntacticConstant or
-      this.(Assignment).getRhs() instanceof SyntacticConstant
+      getUnderlyingValue() instanceof SyntacticConstant
     }
 
   }
