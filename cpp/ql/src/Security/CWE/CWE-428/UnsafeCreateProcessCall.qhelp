@@ -4,7 +4,7 @@
 <qhelp>
 
 <overview>
-  <p>This query indicates that there is a call to a function of the <code>CreatePorcess*</code> family of functions, which may result in a security vulnerability if the path contains spaces.</p>
+  <p>This query indicates that there is a call to a function of the <code>CreateProcess*</code> family of functions, which may result in a security vulnerability if the path contains spaces.</p>
 </overview>
 
 <recommendation>
