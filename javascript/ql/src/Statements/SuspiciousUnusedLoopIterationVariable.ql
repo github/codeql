@@ -26,7 +26,7 @@ class IncrementExpr extends Expr {
     // x = x + e
     exists (AssignExpr assgn, Variable v | assgn = this |
       assgn.getTarget() = v.getAnAccess() and
-      assgn.getRhs().(AddExpr).getAnOperand().stripParens() = v.getAnAccess()
+      assgn.getRhs().(AddExpr).getAnOperand().getUnderlyingReference() = v.getAnAccess()
     )
   }
 }
