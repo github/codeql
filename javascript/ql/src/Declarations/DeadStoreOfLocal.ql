@@ -11,6 +11,7 @@
  */
 
 import javascript
+import DeadStore
 
 /**
  * Holds if `vd` is a definition of variable `v` that is dead, that is,
@@ -23,22 +24,6 @@ predicate deadStoreOfLocal(VarDef vd, PurelyLocalVariable v) {
   exists (ReachableBasicBlock rbb | vd = rbb.getANode()) and
   // but it has no associated SSA definition, that is, it is dead
   not exists (SsaExplicitDefinition ssa | ssa.defines(vd, v))
-}
-
-/**
- * Holds if `e` is an expression that may be used as a default initial value,
- * such as `0` or `-1`, or an empty object or array literal.
- */
-predicate isDefaultInit(Expr e) {
-  // primitive default values: zero, false, empty string, and (integer) -1
-  e.(NumberLiteral).getValue().toFloat() = 0.0 or
-  e.(NegExpr).getOperand().(NumberLiteral).getValue() = "1" or
-  e.(ConstantString).getStringValue() = "" or
-  e.(BooleanLiteral).getValue() = "false" or
-  // initialising to an empty array or object literal, even if unnecessary,
-  // can convey useful type information to the reader
-  e.(ArrayExpr).getSize() = 0 or
-  e.(ObjectExpr).getNumProperty() = 0
 }
 
 from VarDef dead, PurelyLocalVariable v  // captured variables may be read by closures, so don't flag them
