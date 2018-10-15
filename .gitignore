@@ -12,4 +12,3 @@
 # Visual studio temporaries, except a file used by QL4VS
 .vs/*
 !.vs/VSWorkspaceSettings.json
-
