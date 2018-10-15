@@ -49,6 +49,13 @@ class ExprOrType extends @exprortype, Documentable {
   ExprOrType stripParens() { result = this }
 
   /**
+   * Gets the innermost reference that this expression evaluates to, if any.
+   */
+  Expr getUnderlyingReference() {
+    none()
+  }
+
+  /**
    * Gets the innermost expression that this expression evaluates to.
    */
   Expr getUnderlyingValue() {
@@ -221,6 +228,10 @@ class ParExpr extends @parexpr, Expr {
 
   override Expr getUnderlyingValue() {
     result = getExpression().getUnderlyingValue()
+  }
+
+  override Expr getUnderlyingReference() {
+    result = getExpression().getUnderlyingReference()
   }
 
 }
@@ -880,6 +891,11 @@ class PropAccess extends @propaccess, Expr {
   override ControlFlowNode getFirstControlFlowNode() {
     result = getBase().getFirstControlFlowNode()
   }
+
+  override Expr getUnderlyingReference() {
+    result = this
+  }
+
 }
 
 /** A dot expression. */

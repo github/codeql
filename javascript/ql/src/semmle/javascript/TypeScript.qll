@@ -1320,6 +1320,10 @@ class TypeAssertion extends Expr, @typeassertion {
     result = getExpression().getUnderlyingValue()
   }
 
+  override Expr getUnderlyingReference() {
+    result = getExpression().getUnderlyingReference()
+  }
+
 }
 
 /**
