@@ -443,7 +443,7 @@ private module Spanner {
   }
 
   /**
-   * A call to `Database.run` or `Database.runStream`.
+   * A call to `Database.run`, `Database.runPartitionedUpdate` or `Database.runStream`.
    */
   class DatabaseRunCall extends SqlExecution {
     DatabaseRunCall() {
@@ -454,7 +454,7 @@ private module Spanner {
   }
 
   /**
-   * A call to `Transaction.run` or `Database.runStream`.
+   * A call to `Transaction.run`, `Transaction.runStream` or `Transaction.runUpdate`.
    */
   class TransactionRunCall extends SqlExecution {
     TransactionRunCall() {
