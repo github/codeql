@@ -31,10 +31,10 @@ predicate isDefensiveInit(VarAccess va) {
     va = o.getLeftOperand().stripParens() and va2.getVariable() = va.getVariable() |
     exists (AssignExpr assgn | va2 = assgn.getTarget() |
       assgn = o.getRightOperand().stripParens() or
-      o = assgn.getRhs().stripParens()
+      o = assgn.getRhs().getUnderlyingValue()
     ) or
     exists (VariableDeclarator vd | va2 = vd.getBindingPattern() |
-      o = vd.getInit().stripParens()
+      o = vd.getInit().getUnderlyingValue()
     )
   )
 }
