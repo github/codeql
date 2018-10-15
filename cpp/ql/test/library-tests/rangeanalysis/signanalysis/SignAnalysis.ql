@@ -16,4 +16,4 @@ string getASignString(Instruction i) {
 }
 
 from Instruction i
-select i, i.getAST(), strictconcat(string s | s = getASignString(i) | s, " ")
+select i, strictconcat(string s | s = getASignString(i) | s, " ")
