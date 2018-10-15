@@ -1,207 +1,126 @@
 // semmle-extractor-options: --microsoft
 #define NULL 0
 #define FALSE 0
-#define far
 #define LOGON_WITH_PROFILE 0x00000001
 
-typedef char CHAR;
-typedef unsigned short WCHAR;
-typedef int BOOL;
-#define CONST const
-typedef CHAR *PCHAR, *LPCH, *PCH;
-typedef CONST CHAR *LPCCH, *PCCH;
-typedef CHAR *NPSTR, *LPSTR, *PSTR;
-typedef CONST PSTR *PCZPSTR;
-typedef CONST CHAR *LPCSTR, *PCSTR;
-typedef WCHAR *PWCHAR, *LPWCH, *PWCH;
-typedef CONST WCHAR *LPCWCH, *PCWCH;
-typedef WCHAR *NWPSTR, *LPWSTR, *PWSTR;
-typedef PWSTR *PZPWSTR;
-typedef CONST PWSTR *PCZPWSTR;
-typedef CONST WCHAR *LPCWSTR, *PCWSTR;
-typedef unsigned long DWORD;
-typedef void far *LPVOID;
-typedef unsigned short WORD;
-typedef unsigned char BYTE;
-typedef BYTE far *LPBYTE;
-typedef void *HANDLE;
-
-typedef struct _SECURITY_ATTRIBUTES {
-    DWORD nLength;
-    LPVOID lpSecurityDescriptor;
-    BOOL bInheritHandle;
-} SECURITY_ATTRIBUTES, *PSECURITY_ATTRIBUTES, *LPSECURITY_ATTRIBUTES;
-
-typedef struct _PROCESS_INFORMATION {
-    HANDLE hProcess;
-    HANDLE hThread;
-    DWORD dwProcessId;
-    DWORD dwThreadId;
-} PROCESS_INFORMATION, *PPROCESS_INFORMATION, *LPPROCESS_INFORMATION;
-
-typedef struct _STARTUPINFOA {
-    DWORD   cb;
-    LPSTR   lpReserved;
-    LPSTR   lpDesktop;
-    LPSTR   lpTitle;
-    DWORD   dwX;
-    DWORD   dwY;
-    DWORD   dwXSize;
-    DWORD   dwYSize;
-    DWORD   dwXCountChars;
-    DWORD   dwYCountChars;
-    DWORD   dwFillAttribute;
-    DWORD   dwFlags;
-    WORD    wShowWindow;
-    WORD    cbReserved2;
-    LPBYTE  lpReserved2;
-    HANDLE  hStdInput;
-    HANDLE  hStdOutput;
-    HANDLE  hStdError;
-} STARTUPINFOA, *LPSTARTUPINFOA;
-typedef struct _STARTUPINFOW {
-    DWORD   cb;
-    LPWSTR  lpReserved;
-    LPWSTR  lpDesktop;
-    LPWSTR  lpTitle;
-    DWORD   dwX;
-    DWORD   dwY;
-    DWORD   dwXSize;
-    DWORD   dwYSize;
-    DWORD   dwXCountChars;
-    DWORD   dwYCountChars;
-    DWORD   dwFillAttribute;
-    DWORD   dwFlags;
-    WORD    wShowWindow;
-    WORD    cbReserved2;
-    LPBYTE  lpReserved2;
-    HANDLE  hStdInput;
-    HANDLE  hStdOutput;
-    HANDLE  hStdError;
-} STARTUPINFOW, *LPSTARTUPINFOW;
-
-typedef STARTUPINFOW STARTUPINFO;
-typedef LPSTARTUPINFOW LPSTARTUPINFO;
-
-
-BOOL
+int
 CreateProcessA(
-    LPCSTR lpApplicationName,
-    LPSTR lpCommandLine,
-    LPSECURITY_ATTRIBUTES lpProcessAttributes,
-    LPSECURITY_ATTRIBUTES lpThreadAttributes,
-    BOOL bInheritHandles,
-    DWORD dwCreationFlags,
-    LPVOID lpEnvironment,
-    LPCSTR lpCurrentDirectory,
-    LPSTARTUPINFOA lpStartupInfo,
-    LPPROCESS_INFORMATION lpProcessInformation
+    const char* lpApplicationName,
+    char* lpCommandLine,
+    void* lpProcessAttributes,
+    void* lpThreadAttributes,
+    int bInheritHandles,
+    unsigned long dwCreationFlags,
+    void* lpEnvironment,
+    const char* lpCurrentDirectory,
+    void* lpStartupInfo,
+    void* lpProcessInformation
 );
 
-BOOL
+int
 CreateProcessW(
-    LPCWSTR lpApplicationName,
-    LPWSTR lpCommandLine,
-    LPSECURITY_ATTRIBUTES lpProcessAttributes,
-    LPSECURITY_ATTRIBUTES lpThreadAttributes,
-    BOOL bInheritHandles,
-    DWORD dwCreationFlags,
-    LPVOID lpEnvironment,
-    LPCWSTR lpCurrentDirectory,
-    LPSTARTUPINFOW lpStartupInfo,
-    LPPROCESS_INFORMATION lpProcessInformation
+    const wchar_t* lpApplicationName,
+    wchar_t* lpCommandLine,
+    void* lpProcessAttributes,
+    void* lpThreadAttributes,
+    int bInheritHandles,
+    unsigned long dwCreationFlags,
+    void* lpEnvironment,
+    const wchar_t* lpCurrentDirectory,
+    void* lpStartupInfo,
+    void* lpProcessInformation
 );
 
 #define CreateProcess  CreateProcessW
 
-BOOL
+int
 CreateProcessWithTokenW(
-    HANDLE hToken,
-    DWORD dwLogonFlags,
-    LPCWSTR lpApplicationName,
-    LPWSTR lpCommandLine,
-    DWORD dwCreationFlags,
-    LPVOID lpEnvironment,
-    LPCWSTR lpCurrentDirectory,
-    LPSTARTUPINFOW lpStartupInfo,
-    LPPROCESS_INFORMATION lpProcessInformation
+    void* hToken,
+    unsigned long dwLogonFlags,
+    const wchar_t* lpApplicationName,
+    wchar_t* lpCommandLine,
+    unsigned long dwCreationFlags,
+    void* lpEnvironment,
+    const wchar_t* lpCurrentDirectory,
+    void* lpStartupInfo,
+    void* lpProcessInformation
 );
 
-BOOL
+int
 CreateProcessWithLogonW(
-    LPCWSTR lpUsername,
-    LPCWSTR lpDomain,
-    LPCWSTR lpPassword,
-    DWORD dwLogonFlags,
-    LPCWSTR lpApplicationName,
-    LPWSTR lpCommandLine,
-    DWORD dwCreationFlags,
-    LPVOID lpEnvironment,
-    LPCWSTR lpCurrentDirectory,
-    LPSTARTUPINFOW lpStartupInfo,
-    LPPROCESS_INFORMATION lpProcessInformation
+    const wchar_t* lpUsername,
+    const wchar_t* lpDomain,
+    const wchar_t* lpPassword,
+    unsigned long dwLogonFlags,
+    const wchar_t* lpApplicationName,
+    wchar_t* lpCommandLine,
+    unsigned long dwCreationFlags,
+    void* lpEnvironment,
+    const wchar_t* lpCurrentDirectory,
+    void* lpStartupInfo,
+    void* lpProcessInformation
 );
 
-BOOL
+int
 CreateProcessAsUserA(
-    HANDLE hToken,
-    LPCSTR lpApplicationName,
-    LPSTR lpCommandLine,
-    LPSECURITY_ATTRIBUTES lpProcessAttributes,
-    LPSECURITY_ATTRIBUTES lpThreadAttributes,
-    BOOL bInheritHandles,
-    DWORD dwCreationFlags,
-    LPVOID lpEnvironment,
-    LPCSTR lpCurrentDirectory,
-    LPSTARTUPINFOA lpStartupInfo,
-    LPPROCESS_INFORMATION lpProcessInformation
+    void* hToken,
+    const char* lpApplicationName,
+    char* lpCommandLine,
+    void* lpProcessAttributes,
+    void* lpThreadAttributes,
+    int bInheritHandles,
+    unsigned long dwCreationFlags,
+    void* lpEnvironment,
+    const char* lpCurrentDirectory,
+    void* lpStartupInfo,
+    void* lpProcessInformation
 );
 
-BOOL
+int
 CreateProcessAsUserW(
-    HANDLE hToken,
-    LPCWSTR lpApplicationName,
-    LPWSTR lpCommandLine,
-    LPSECURITY_ATTRIBUTES lpProcessAttributes,
-    LPSECURITY_ATTRIBUTES lpThreadAttributes,
-    BOOL bInheritHandles,
-    DWORD dwCreationFlags,
-    LPVOID lpEnvironment,
-    LPCWSTR lpCurrentDirectory,
-    LPSTARTUPINFOW lpStartupInfo,
-    LPPROCESS_INFORMATION lpProcessInformation
+    void* hToken,
+    const wchar_t* lpApplicationName,
+    wchar_t* lpCommandLine,
+    void* lpProcessAttributes,
+    void* lpThreadAttributes,
+    int bInheritHandles,
+    unsigned long dwCreationFlags,
+    void* lpEnvironment,
+    const wchar_t* lpCurrentDirectory,
+    void* lpStartupInfo,
+    void* lpProcessInformation
 );
 
 #define CreateProcessAsUser  CreateProcessAsUserW
 
 void positiveTestCases()
 {
-    LPCWSTR lpCommandLine = (LPCWSTR)L"C:\\Program Files\\MyApp";
-    HANDLE h = 0;
-    LPWSTR lpApplicationName = NULL;
+    const wchar_t* lpCommandLine = (const wchar_t*)L"C:\\Program Files\\MyApp";
+    void* h = 0;
+    wchar_t* lpApplicationName = NULL;
 
     // CreatePorcessA
     CreateProcessA(                             //BUG
         NULL,
-        (LPSTR)"C:\\Program Files\\MyApp",
+        (char*)"C:\\Program Files\\MyApp",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
     // CreatePorcessW
     CreateProcessW(                             //BUG
         NULL,
-        (LPWSTR)L"C:\\Program Files\\MyApp",
+        (wchar_t*)L"C:\\Program Files\\MyApp",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
     
     // CreatePorcess
     CreateProcess(                              //BUG
         NULL,
-        (LPWSTR)L"C:\\Program Files\\MyApp",
+        (wchar_t*)L"C:\\Program Files\\MyApp",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
     // lpCommandLine as hardcoded variable
     CreateProcess(                              //BUG
         NULL,
-        (LPWSTR)lpCommandLine,
+        (wchar_t*)lpCommandLine,
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
     // CreateProcessWithTokenW
@@ -209,48 +128,49 @@ void positiveTestCases()
         h,
         LOGON_WITH_PROFILE,
         NULL,
-        (LPWSTR)L"C:\\Program Files\\MyApp",
+        (wchar_t*)L"C:\\Program Files\\MyApp",
         0, NULL, NULL, NULL, NULL);
 
     // CreateProcessWithLogonW
     CreateProcessWithLogonW(                    //BUG
-        (LPCWSTR)L"UserName",
-        (LPCWSTR)L"CONTOSO",
-        (LPCWSTR)L"<fake_password!>",
+        (const wchar_t*)L"UserName",
+        (const wchar_t*)L"CONTOSO",
+        (const wchar_t*)L"<fake_password!>",
         LOGON_WITH_PROFILE,
         NULL,
-        (LPWSTR)L"C:\\Program Files\\MyApp",
+        (wchar_t*)L"C:\\Program Files\\MyApp",
         0, NULL, NULL, NULL, NULL);
 
     // CreateProcessAsUserA
     CreateProcessAsUserA(                        //BUG
         h,
         NULL,
-        (LPSTR)"C:\\Program Files\\MyApp",
+        (char*)"C:\\Program Files\\MyApp",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
     // CreateProcessAsUserW
     CreateProcessAsUserW(                        //BUG
         h,
         NULL,
-        (LPWSTR)L"C:\\Program Files\\MyApp",
+        (wchar_t*)L"C:\\Program Files\\MyApp",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
     // CreateProcessAsUser
     CreateProcessAsUser(                        //BUG
         h,
         NULL,
-        (LPWSTR)L"C:\\Program Files\\MyApp",
+        (wchar_t*)L"C:\\Program Files\\MyApp",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
     // CreatePorcess with a hardcoded variable for application Name (NULL)
+    // Variation: tab instead of space
     CreateProcess(                              //BUG
         lpApplicationName,
-        (LPWSTR)L"C:\\Program Files\\MyApp",
+        (wchar_t*)L"C:\\Program\tFiles\\MyApp",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 }
 
-void PositiveTestCasesWithCmdLineParameter(LPWSTR lpCommandLine)
+void PositiveTestCasesWithCmdLineParameter(wchar_t* lpCommandLine)
 {
     // lpCommandLine as variable
     CreateProcess(                              //BUG - Depends on the caller
@@ -261,12 +181,12 @@ void PositiveTestCasesWithCmdLineParameter(LPWSTR lpCommandLine)
 
 void PositiveTestCasesWithCmdLineParameter_caller()
 {
-    PositiveTestCasesWithCmdLineParameter((LPWSTR)L"C:\\Program Files\\MyApp");
+    PositiveTestCasesWithCmdLineParameter((wchar_t*)L"C:\\Program Files\\MyApp");
 }
 
 // NOTE: This function will not be flagged as having a bug by this rule.
 //       but as it is, the function can still be misused
-void FalseNegativeTestCasesWithCmdLineParameter(LPWSTR lpCommandLine)
+void FalseNegativeTestCasesWithCmdLineParameter(wchar_t* lpCommandLine)
 {
     // lpCommandLine as variable
     CreateProcess(                              //Depends on the caller, this time the caller will quote
@@ -279,18 +199,18 @@ void FalseNegativeTestCasesWithCmdLineParameter_caller()
 {
     // No bug - escaped command line
     // But compare with "PositiveTestCasesWithCmdLineParameter"
-    FalseNegativeTestCasesWithCmdLineParameter((LPWSTR)L"\"C:\\Program Files\\MyApp\"");  
+    FalseNegativeTestCasesWithCmdLineParameter((wchar_t*)L"\"C:\\Program Files\\MyApp\"");  
 }
 
-void PositiveTestCasesWithAppNameParameter(LPWSTR lpApplicationName)
+void PositiveTestCasesWithAppNameParameter(wchar_t* lpApplicationName)
 {
-    HANDLE h = 0;
+    void* h = 0;
 
     CreateProcessWithTokenW(                    //BUG - Depends on the caller. In this case the caller sends NULL
         h,
         LOGON_WITH_PROFILE,
         lpApplicationName,
-        (LPWSTR)L"C:\\Program Files\\MyApp",
+        (wchar_t*)L"C:\\Program Files\\MyApp",
         0, NULL, NULL, NULL, NULL);
 }
 
@@ -301,15 +221,15 @@ void PositiveTestCasesWithAppNameParameter_caller()
 
 // NOTE: This function will not be flagged as having a bug by this rule.
 //       but as it is, the function can still be misused
-void FalseNegativeTestCasesWithAppNameParameter(LPWSTR lpApplicationName)
+void FalseNegativeTestCasesWithAppNameParameter(wchar_t* lpApplicationName)
 {
-    HANDLE h = 0;
+    void* h = 0;
 
     CreateProcessWithTokenW(                    // Depends on the caller. In this case the caller sends an ApplicatioName
         h,
         LOGON_WITH_PROFILE,
         lpApplicationName,
-        (LPWSTR)L"C:\\Program Files\\MyApp",
+        (wchar_t*)L"C:\\Program Files\\MyApp",
         0, NULL, NULL, NULL, NULL);
 }
 
@@ -317,10 +237,10 @@ void FalseNegativeTestCasesWithAppNameParameter_caller()
 {
     // No bug - escaped command line
     // But compare with "PositiveTestCasesWithAppNameParameter"
-    FalseNegativeTestCasesWithAppNameParameter((LPWSTR)L"MyApp.exe");
+    FalseNegativeTestCasesWithAppNameParameter((wchar_t*)L"MyApp.exe");
 }
 
-bool MayReturnFalse()
+int MayReturnFalse()
 {
     // return ((rand() % 2) == 0);
     return true;
@@ -328,20 +248,20 @@ bool MayReturnFalse()
 
 void TestCaseProbablyBug()
 {
-    LPCWSTR lpApplicationName = NULL;
+    const wchar_t* lpApplicationName = NULL;
 
     if (!MayReturnFalse())
     {
-        lpApplicationName = (LPCWSTR)L"app.exe";
+        lpApplicationName = (const wchar_t*)L"app.exe";
     }
 
     CreateProcessWithLogonW(                    // BUG (Probably - depends on a condition that may be false)
-        (LPCWSTR)L"UserName",
-        (LPCWSTR)L"CONTOSO",
-        (LPCWSTR)L"<fake_password!>",
+        (const wchar_t*)L"UserName",
+        (const wchar_t*)L"CONTOSO",
+        (const wchar_t*)L"<fake_password!>",
         LOGON_WITH_PROFILE,
-        (LPWSTR)lpApplicationName,
-        (LPWSTR)L"C:\\Program Files\\MyApp",
+        (wchar_t*)lpApplicationName,
+        (wchar_t*)L"C:\\Program Files\\MyApp",
         0, NULL, NULL, NULL, NULL);
 
     if (lpApplicationName)
@@ -352,32 +272,32 @@ void TestCaseProbablyBug()
 
 void negativeTestCases_quotedCommandLine()
 {
-    LPCWSTR lpCommandLine = (LPCWSTR)L"\"C:\\Program Files\\MyApp\" with additional params";
-    HANDLE h = 0;
-    LPWSTR lpApplicationName = NULL;
+    const wchar_t* lpCommandLine = (const wchar_t*)L"\"C:\\Program Files\\MyApp\" with additional params";
+    void* h = 0;
+    wchar_t* lpApplicationName = NULL;
 
     // CreatePorcessA
     CreateProcessA(
         NULL,
-        (LPSTR)"\"C:\\Program Files\\MyApp\"",
+        (char*)"\"C:\\Program Files\\MyApp\"",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
     // CreatePorcessW
     CreateProcessW(
         NULL,
-        (LPWSTR)L"\"C:\\Program Files\\MyApp\"",
+        (wchar_t*)L"\"C:\\Program Files\\MyApp\"",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
     // CreatePorcess
     CreateProcess( 
         NULL,
-        (LPWSTR)L"\"C:\\Program Files\\MyApp\"",
+        (wchar_t*)L"\"C:\\Program Files\\MyApp\"",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
     // lpCommandLine as hardcoded variable
     CreateProcess( 
         NULL,
-        (LPWSTR)lpCommandLine,
+        (wchar_t*)lpCommandLine,
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
     // CreateProcessWithTokenW
@@ -385,119 +305,126 @@ void negativeTestCases_quotedCommandLine()
         h,
         LOGON_WITH_PROFILE,
         NULL,
-        (LPWSTR)L"\"C:\\Program Files\\MyApp\"",
+        (wchar_t*)L"\"C:\\Program Files\\MyApp\"",
         0, NULL, NULL, NULL, NULL);
 
     // CreateProcessWithLogonW
     CreateProcessWithLogonW(
-        (LPCWSTR)L"UserName",
-        (LPCWSTR)L"CONTOSO",
-        (LPCWSTR)L"<fake_password!>",
+        (const wchar_t*)L"UserName",
+        (const wchar_t*)L"CONTOSO",
+        (const wchar_t*)L"<fake_password!>",
         LOGON_WITH_PROFILE,
         NULL,
-        (LPWSTR)L"\"C:\\Program Files\\MyApp\"",
+        (wchar_t*)L"\"C:\\Program Files\\MyApp\"",
         0, NULL, NULL, NULL, NULL);
 
     // CreateProcessAsUserA
     CreateProcessAsUserA(
         h,
         NULL,
-        (LPSTR)"\"C:\\Program Files\\MyApp\"",
+        (char*)"\"C:\\Program Files\\MyApp\"",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
     // CreateProcessAsUserW
     CreateProcessAsUserW(
         h,
         NULL,
-        (LPWSTR)L"\"C:\\Program Files\\MyApp\"",
+        (wchar_t*)L"\"C:\\Program Files\\MyApp\"",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
     // CreateProcessAsUser
     CreateProcessAsUser(
         h,
         NULL,
-        (LPWSTR)L"\"C:\\Program Files\\MyApp\"",
+        (wchar_t*)L"\"C:\\Program Files\\MyApp\"",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
     // CreatePorcess with a hardcoded variable for application Name (NULL)
     CreateProcess( 
         lpApplicationName,
-        (LPWSTR)L"\"C:\\Program Files\\MyApp\"",
+        (wchar_t*)L"\"C:\\Program Files\\MyApp\"",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
+
+    // Null AppName, but lpComamndLine has no spaces/tabs
+    CreateProcessA(
+        NULL,
+        (char*)"C:\\MyFolder\\MyApp.exe",
+        NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
+
 }
 
 void negativeTestCases_AppNameSet()
 {
-    LPCWSTR lpCommandLine = (LPCWSTR)L"C:\\Program Files\\MyApp";
-    HANDLE h = 0;
-    LPCWSTR lpApplicationName = (LPCWSTR)L"MyApp.exe";
+    const wchar_t* lpCommandLine = (const wchar_t*)L"C:\\Program Files\\MyApp";
+    void* h = 0;
+    const wchar_t* lpApplicationName = (const wchar_t*)L"MyApp.exe";
 
     // CreatePorcessA
     CreateProcessA(
-        (LPSTR)"MyApp.exe",
-        (LPSTR)"C:\\Program Files\\MyApp",
+        (char*)"MyApp.exe",
+        (char*)"C:\\Program Files\\MyApp",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
     // CreatePorcessW
     CreateProcessW(
-        (LPWSTR)L"MyApp.exe",
-        (LPWSTR)L"C:\\Program Files\\MyApp",
+        (wchar_t*)L"MyApp.exe",
+        (wchar_t*)L"C:\\Program Files\\MyApp",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
     // CreatePorcess
     CreateProcess(
-        (LPWSTR)L"MyApp.exe",
-        (LPWSTR)L"C:\\Program Files\\MyApp",
+        (wchar_t*)L"MyApp.exe",
+        (wchar_t*)L"C:\\Program Files\\MyApp",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
     // lpCommandLine as hardcoded variable
     CreateProcess(
-        (LPWSTR)L"MyApp.exe",
-        (LPWSTR)lpCommandLine,
+        (wchar_t*)L"MyApp.exe",
+        (wchar_t*)lpCommandLine,
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
     // CreateProcessWithTokenW
     CreateProcessWithTokenW(
         h,
         LOGON_WITH_PROFILE,
-        (LPWSTR)L"MyApp.exe",
-        (LPWSTR)L"C:\\Program Files\\MyApp",
+        (wchar_t*)L"MyApp.exe",
+        (wchar_t*)L"C:\\Program Files\\MyApp",
         0, NULL, NULL, NULL, NULL);
 
     // CreateProcessWithLogonW
     CreateProcessWithLogonW(
-        (LPCWSTR)L"UserName",
-        (LPCWSTR)L"CONTOSO",
-        (LPCWSTR)L"<fake_password!>",
+        (const wchar_t*)L"UserName",
+        (const wchar_t*)L"CONTOSO",
+        (const wchar_t*)L"<fake_password!>",
         LOGON_WITH_PROFILE,
-        (LPWSTR)L"MyApp.exe",
-        (LPWSTR)L"C:\\Program Files\\MyApp",
+        (wchar_t*)L"MyApp.exe",
+        (wchar_t*)L"C:\\Program Files\\MyApp",
         0, NULL, NULL, NULL, NULL);
 
     // CreateProcessAsUserA
     CreateProcessAsUserA(
         h,
-        (LPSTR)"MyApp.exe",
-        (LPSTR)"C:\\Program Files\\MyApp",
+        (char*)"MyApp.exe",
+        (char*)"C:\\Program Files\\MyApp",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
     // CreateProcessAsUserW
     CreateProcessAsUserW(
         h,
-        (LPWSTR)L"MyApp.exe",
-        (LPWSTR)L"C:\\Program Files\\MyApp",
+        (wchar_t*)L"MyApp.exe",
+        (wchar_t*)L"C:\\Program Files\\MyApp",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
     // CreateProcessAsUser
     CreateProcessAsUser(
         h,
-        (LPWSTR)L"MyApp.exe",
-        (LPWSTR)L"C:\\Program Files\\MyApp",
+        (wchar_t*)L"MyApp.exe",
+        (wchar_t*)L"C:\\Program Files\\MyApp",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
     // CreatePorcess with a hardcoded variable for application Name (NULL)
     CreateProcess(
-        (LPWSTR)lpApplicationName,
-        (LPWSTR)L"C:\\Program Files\\MyApp",
+        (wchar_t*)lpApplicationName,
+        (wchar_t*)L"C:\\Program Files\\MyApp",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 }

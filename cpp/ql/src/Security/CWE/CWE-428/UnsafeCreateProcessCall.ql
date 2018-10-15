@@ -14,55 +14,47 @@ import cpp
 import semmle.code.cpp.dataflow.DataFlow
 import semmle.code.cpp.dataflow.DataFlow2
 
+predicate isCreateProcessFunction(FunctionCall call, int applicationNameIndex, int commandLineIndex) {
+  ( 
+    call.getTarget().hasGlobalName("CreateProcessA") 
+    and applicationNameIndex = 0 
+    and commandLineIndex = 1
+  ) or ( 
+    call.getTarget().hasGlobalName("CreateProcessW") 
+    and applicationNameIndex = 0
+    and commandLineIndex = 1
+  ) or ( 
+    call.getTarget().hasGlobalName("CreateProcessWithTokenW") 
+    and applicationNameIndex = 2
+    and commandLineIndex = 3
+  ) or ( 
+    call.getTarget().hasGlobalName("CreateProcessWithLogonW") 
+    and applicationNameIndex = 4
+    and commandLineIndex = 5
+  ) or ( 
+    call.getTarget().hasGlobalName("CreateProcessAsUserA") 
+    and applicationNameIndex = 1
+    and commandLineIndex = 2
+  ) or ( 
+    call.getTarget().hasGlobalName("CreateProcessAsUserW") 
+    and applicationNameIndex = 1
+    and commandLineIndex = 2
+  ) 
+}
 /**
  * A function call to CreateProcess (either wide-char or single byte string versions)
  */
 class CreateProcessFunctionCall extends FunctionCall {
   CreateProcessFunctionCall() {
-    (
-      this.getTarget().hasGlobalName("CreateProcessA") or
-      this.getTarget().hasGlobalName("CreateProcessW") or
-      this.getTarget().hasGlobalName("CreateProcessWithTokenW") or
-      this.getTarget().hasGlobalName("CreateProcessWithLogonW") or
-      this.getTarget().hasGlobalName("CreateProcessAsUserA") or
-      this.getTarget().hasGlobalName("CreateProcessAsUserW") 
-    )
+    isCreateProcessFunction( this, _, _)
   }
   
   int getApplicationNameArgumentId() {
-    if(
-      this.getTarget().hasGlobalName("CreateProcessA") or
-      this.getTarget().hasGlobalName("CreateProcessW") 
-    ) then ( result = 0 )
-    else if (
-      this.getTarget().hasGlobalName("CreateProcessWithTokenW") 
-    ) then ( result = 2 )
-    else if (
-      this.getTarget().hasGlobalName("CreateProcessWithLogonW") 
-    ) then ( result = 4 )
-    else if(
-      this.getTarget().hasGlobalName("CreateProcessAsUserA") or
-      this.getTarget().hasGlobalName("CreateProcessAsUserW") 
-    ) then ( result = 1 )
-    else (result = -1 )
+    isCreateProcessFunction( this, result, _)
   }
   
   int getCommandLineArgumentId() {
-    if(
-      this.getTarget().hasGlobalName("CreateProcessA") or
-      this.getTarget().hasGlobalName("CreateProcessW") 
-    ) then ( result = 1 )
-    else if (
-      this.getTarget().hasGlobalName("CreateProcessWithTokenW") 
-    ) then ( result = 3 )
-    else if (
-      this.getTarget().hasGlobalName("CreateProcessWithLogonW") 
-    ) then ( result = 5 )
-    else if(
-      this.getTarget().hasGlobalName("CreateProcessAsUserA") or
-      this.getTarget().hasGlobalName("CreateProcessAsUserW") 
-    ) then ( result = 2 )
-    else (result = -1 )
+    isCreateProcessFunction( this, _, result)
   }
 }
  
@@ -99,7 +91,7 @@ class QuotedCommandInCreateProcessFunctionConfiguration extends DataFlow2::Confi
     exists( string s |
       s = source.asExpr().getValue().toString()
       and
-      not isQuotedApplicationNameOnCmd(s) 
+      not isQuotedOrNoSpaceApplicationNameOnCmd(s) 
     ) 
   }
  
@@ -113,8 +105,10 @@ class QuotedCommandInCreateProcessFunctionConfiguration extends DataFlow2::Confi
 }
 
 bindingset[s]
-predicate isQuotedApplicationNameOnCmd(string s){
-  s.regexpMatch("\"([^\"])*\"(\\s|.)*")
+predicate isQuotedOrNoSpaceApplicationNameOnCmd(string s){
+    s.regexpMatch("\"([^\"])*\"(\\s|.)*") // The first element (path) is quoted
+    or
+    s.regexpMatch("[^\\s]+") // There are no spaces in the string
 }
 
 from CreateProcessFunctionCall call, string msg1, string msg2
