@@ -14,7 +14,7 @@
 
 <example>
 <p>In the following example, <code>CreateProcessW</code> is called with a NULL value for <code>lpApplicationName</code>, 
-and the value for <code>lpCommandLine</code> that represent the application path is not quoted and has spaces int.</p>
+and the value for <code>lpCommandLine</code> that represent the application path is not quoted and has spaces in it.</p>
 <p>If an attacker has access to the file system, it is possible to elevate privileges by creating a file such as "C:\Program.exe" that will be executed instead of the intended application.</p>
 <sample src="UnsafeCreateProcessCall.cpp" />
 
