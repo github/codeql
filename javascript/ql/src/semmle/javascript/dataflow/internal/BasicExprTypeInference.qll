@@ -159,7 +159,7 @@ private class AnalyzedJSXEmptyExpression extends DataFlow::AnalyzedValueNode{
  */
 private class AnalyzedSuperCall extends DataFlow::AnalyzedValueNode {
   AnalyzedSuperCall() {
-    astNode = any(SuperCall sc).getCallee().stripParens()
+    astNode = any(SuperCall sc).getCallee().getUnderlyingValue()
   }
 
   override AbstractValue getALocalValue() {

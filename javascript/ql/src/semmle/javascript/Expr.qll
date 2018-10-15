@@ -710,7 +710,7 @@ class InvokeExpr extends @invokeexpr, Expr {
 
   /** Gets the name of the function or method being invoked, if it can be determined. */
   string getCalleeName() {
-    exists (Expr callee | callee = getCallee().stripParens() |
+    exists (Expr callee | callee = getCallee().getUnderlyingValue() |
       result = ((Identifier)callee).getName() or
       result = ((PropAccess)callee).getPropertyName()
     )
@@ -1690,10 +1690,10 @@ class ImmediatelyInvokedFunctionExpr extends Function {
 
   ImmediatelyInvokedFunctionExpr() {
     // direct call
-    this = invk.getCallee().stripParens() and kind = "direct" or
+    this = invk.getCallee().getUnderlyingValue() and kind = "direct" or
     // reflective call
     exists (MethodCallExpr mce | mce = invk |
-      this = mce.getReceiver().stripParens() and
+      this = mce.getReceiver().getUnderlyingValue() and
       kind = mce.getMethodName() and
       (kind = "call" or kind = "apply")
     )

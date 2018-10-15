@@ -16,10 +16,10 @@ import javascript
 bindingset[regexp]
 predicate isReadFrom(DataFlow::Node read, string regexp) {
   exists (DataFlow::Node actualRead |
-    actualRead = read.asExpr().stripParens().(LogOrExpr).getAnOperand().flow() or // unfold `x || y` once
+    actualRead = read.asExpr().getUnderlyingValue().(LogOrExpr).getAnOperand().flow() or // unfold `x || y` once
     actualRead = read |
     exists (string name | name.regexpMatch(regexp) |
-      actualRead.asExpr().stripParens().(VarAccess).getName() = name or
+      actualRead.asExpr().getUnderlyingValue().(VarAccess).getName() = name or
       actualRead.(DataFlow::PropRead).getPropertyName() = name or
       actualRead.(DataFlow::InvokeNode).getCalleeName() = "get" + name
     )
