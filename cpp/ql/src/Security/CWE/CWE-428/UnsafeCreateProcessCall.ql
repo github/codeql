@@ -1,6 +1,6 @@
 /**
  * @name NULL application name with an unquoted path in call to CreateProcess
- * @description Calling a function of the CreatePorcess* family of functions, which may result in a security vulnerability if the path contains spaces.
+ * @description Calling a function of the CreateProcess* family of functions, which may result in a security vulnerability if the path contains spaces.
  * @id cpp/unsafe-create-process-call
  * @kind problem
  * @problem.severity error
