@@ -13,6 +13,8 @@
 
 * The type inference now handles nested imports (that is, imports not appearing at the toplevel). This may yield fewer false-positive results on projects that use this non-standard language feature.
 
+* Type inference for function calls has been improved. This may give additional results for queries that rely on type inference.
+
 ## New queries
 
 | **Query**                                     | **Tags**                                             | **Purpose**                                                                                                                                                                 |
