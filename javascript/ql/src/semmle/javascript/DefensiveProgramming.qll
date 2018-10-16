@@ -52,7 +52,7 @@ module Internal {
    */
   private Expr stripNotsAndParens(Expr e, boolean polarity) {
     exists (Expr inner |
-      inner = e.stripParens() |
+      inner = e.getUnderlyingValue() |
       if inner instanceof LogNotExpr then
         (result = stripNotsAndParens(inner.(LogNotExpr).getOperand(), polarity.booleanNot()))
       else
@@ -192,11 +192,11 @@ module Internal {
     Expr target;
 
     UndefinedNullCrashUse() {
-      this.(InvokeExpr).getCallee().stripParens() = target
+      this.(InvokeExpr).getCallee().getUnderlyingValue() = target
       or
-      this.(PropAccess).getBase().stripParens() = target
+      this.(PropAccess).getBase().getUnderlyingValue() = target
       or
-      this.(MethodCallExpr).getReceiver().stripParens() = target
+      this.(MethodCallExpr).getReceiver().getUnderlyingValue() = target
     }
 
     /**
@@ -216,7 +216,7 @@ module Internal {
     Expr target;
 
     NonFunctionCallCrashUse() {
-      this.(InvokeExpr).getCallee().stripParens() = target
+      this.(InvokeExpr).getCallee().getUnderlyingValue() = target
     }
 
     /**
@@ -272,7 +272,7 @@ module Internal {
       exists (VarRef useVar |
         guardVar = stripNotsAndParens(this.asExpr(), polarity) and
         guardVar.getVariable() = useVar.getVariable() |
-        getAGuardedExpr(this.asExpr()).stripParens().(UndefinedNullCrashUse).getVulnerableSubexpression() = useVar and
+        getAGuardedExpr(this.asExpr()).getUnderlyingValue().(UndefinedNullCrashUse).getVulnerableSubexpression() = useVar and
         // exclude types whose truthiness depend on the value
         not isStringOrNumOrBool(guardVar.analyze().getAType())
       )
@@ -305,7 +305,7 @@ module Internal {
         test = stripNotsAndParens(guard, polarity) and
         test.getOperand() = guardVar and
         guardVar.getVariable() = useVar.getVariable() |
-        getAGuardedExpr(guard).stripParens().(UndefinedNullCrashUse).getVulnerableSubexpression() = useVar
+        getAGuardedExpr(guard).getUnderlyingValue().(UndefinedNullCrashUse).getVulnerableSubexpression() = useVar
       )
     }
 
@@ -374,7 +374,7 @@ module Internal {
         test = stripNotsAndParens(guard, polarity) and
         test.getOperand() = guardVar and
         guardVar.getVariable() = useVar.getVariable() |
-        getAGuardedExpr(guard).stripParens().(NonFunctionCallCrashUse).getVulnerableSubexpression() = useVar
+        getAGuardedExpr(guard).getUnderlyingValue().(NonFunctionCallCrashUse).getVulnerableSubexpression() = useVar
       ) and
       test.getTag() = "function"
     }
