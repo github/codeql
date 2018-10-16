@@ -20,13 +20,13 @@ import semmle.code.cpp.pointsto.PointsTo
  *   memcpy(dest, src, sizeof(src));
  * ```
  */
-predicate sourceSized(FunctionCall fc)
+predicate sourceSized(FunctionCall fc, Expr src)
 {
   exists(string name |
     (name = "strncpy" or name = "strncat" or name = "memcpy" or name = "memmove") and
     fc.getTarget().hasQualifiedName(name))
   and
-  exists(Expr dest, Expr src, Expr size, Variable v |
+  exists(Expr dest, Expr size, Variable v |
     fc.getArgument(0) = dest and fc.getArgument(1) = src and fc.getArgument(2) = size and
     src = v.getAnAccess() and size.getAChild+() = v.getAnAccess() and
 
@@ -45,8 +45,8 @@ predicate sourceSized(FunctionCall fc)
 
 class VulnerableArgument extends PointsToExpr
 {
-  VulnerableArgument() { sourceSized(this.getParent()) }
-  override predicate interesting() { sourceSized(this.getParent()) }
+  VulnerableArgument() { sourceSized(_, this) }
+  override predicate interesting() { sourceSized(_, this) }
 }
 
 predicate taintingFunction(Function f, int buf)
@@ -83,8 +83,7 @@ class TaintedArgument extends PointsToExpr
 }
 
 from FunctionCall fc, VulnerableArgument vuln, TaintedArgument tainted
-where sourceSized(fc)
-  and fc.getArgument(1) = vuln
+where sourceSized(fc, vuln)
   and vuln.pointsTo() = tainted.pointsTo()
   and vuln.confidence() > 0.01
 select fc, "To avoid overflow, this operation should be bounded by destination-buffer size, not source-buffer size."
