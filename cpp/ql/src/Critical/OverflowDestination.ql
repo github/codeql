@@ -11,6 +11,7 @@
  *       external/cwe/cwe-131
  */
 import cpp
+import semmle.code.cpp.security.TaintTracking
 import semmle.code.cpp.pointsto.PointsTo
 
 /**
@@ -49,41 +50,8 @@ class VulnerableArgument extends PointsToExpr
   override predicate interesting() { sourceSized(_, this) }
 }
 
-predicate taintingFunction(Function f, int buf)
-{
-  (f.hasQualifiedName("read") and buf = 1) or
-  (f.hasQualifiedName("fgets") and buf = 0) or
-  (f.hasQualifiedName("fread") and buf = 0)
-}
-
-// Taint `argv[i]`, for all i, but also `*argv`, etc.
-predicate commandLineArg(Expr e)
-{
-  exists(Function f, Parameter argv, VariableAccess access |
-    f.hasQualifiedName("main") and f.getParameter(1) = argv and
-    argv.getAnAccess() = access and access.isRValue() and
-    pointer(access, e))
-}
-
-predicate tainted(Expr e)
-{
-  exists(FunctionCall fc, int arg |
-    taintingFunction(fc.getTarget(), arg) and
-    e = fc.getArgument(arg))
-  or
-  e.(FunctionCall).getTarget().hasQualifiedName("getenv")
-  or
-  commandLineArg(e)
-}
-
-class TaintedArgument extends PointsToExpr
-{
-  TaintedArgument() { tainted(this) }
-  override predicate interesting() { tainted(this) }
-}
-
-from FunctionCall fc, VulnerableArgument vuln, TaintedArgument tainted
+from FunctionCall fc, VulnerableArgument vuln, Expr taintSource
 where sourceSized(fc, vuln)
-  and vuln.pointsTo() = tainted.pointsTo()
+  and tainted(taintSource, vuln.pointsTo())
   and vuln.confidence() > 0.01
 select fc, "To avoid overflow, this operation should be bounded by destination-buffer size, not source-buffer size."
