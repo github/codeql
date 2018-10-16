@@ -1,0 +1,3 @@
+| ZipTest.java:9:48:9:51 | file | Unsanitized $@, which may contain '..', is used in a file system operation. | ZipTest.java:7:19:7:33 | getName(...) | archive entry |
+| ZipTest.java:10:49:10:52 | file | Unsanitized $@, which may contain '..', is used in a file system operation. | ZipTest.java:7:19:7:33 | getName(...) | archive entry |
+| ZipTest.java:11:36:11:39 | file | Unsanitized $@, which may contain '..', is used in a file system operation. | ZipTest.java:7:19:7:33 | getName(...) | archive entry |
