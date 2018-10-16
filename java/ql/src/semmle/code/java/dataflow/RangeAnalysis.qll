@@ -133,21 +133,41 @@ private predicate boundCondition(ComparisonExpr comp, SsaVariable v, Expr e, int
   )
 }
 
+private predicate gcdInput(int x, int y) {
+  exists(ComparisonExpr comp, Bound b |
+    exprModulus(comp.getLesserOperand(), b, _, x) and
+    exprModulus(comp.getGreaterOperand(), b, _, y)
+  ) or
+  exists(int x0, int y0 |
+    gcdInput(x0, y0) and
+    x = y0 and
+    y = x0 % y0
+  )
+}
+
+private int gcd(int x, int y) {
+  result = x.abs() and y = 0 and gcdInput(x, y)
+  or
+  result = gcd(y, x % y) and y != 0 and gcdInput(x, y)
+}
+
 /**
  * Holds if `comp` is a comparison between `x` and `y` for which `y - x` has a
  * fixed value modulo some `mod > 1`, such that the comparison can be
  * strengthened by `strengthen` when evaluating to `testIsTrue`.
  */
 private predicate modulusComparison(ComparisonExpr comp, boolean testIsTrue, int strengthen) {
-  exists(Bound b, int v1, int v2, int mod, boolean resultIsStrict, int d, int k |
+  exists(Bound b, int v1, int v2, int mod1, int mod2, int mod, boolean resultIsStrict, int d, int k |
     // If `x <= y` and `x =(mod) b + v1` and `y =(mod) b + v2` then
     // `0 <= y - x =(mod) v2 - v1`. By choosing `k =(mod) v2 - v1` with
     // `0 <= k < mod` we get `k <= y - x`. If the resulting comparison is
     // strict then the strengthening amount is instead `k - 1` modulo `mod`:
     // `x < y` means `0 <= y - x - 1 =(mod) k - 1` so `k - 1 <= y - x - 1` and
     // thus `k - 1 < y - x` with `0 <= k - 1 < mod`.
-    exprModulus(comp.getLesserOperand(), b, v1, mod) and
-    exprModulus(comp.getGreaterOperand(), b, v2, mod) and
+    exprModulus(comp.getLesserOperand(), b, v1, mod1) and
+    exprModulus(comp.getGreaterOperand(), b, v2, mod2) and
+    mod = gcd(mod1, mod2) and
+    mod != 1 and
     (testIsTrue = true or testIsTrue = false) and
     (if comp.isStrict() then resultIsStrict = testIsTrue else resultIsStrict = testIsTrue.booleanNot()) and
     (resultIsStrict = true and d = 1 or resultIsStrict = false and d = 0) and

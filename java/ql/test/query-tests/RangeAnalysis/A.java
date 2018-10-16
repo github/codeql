@@ -151,4 +151,15 @@ public class A {
     }
   }
 
+  void m12() {
+    int[] a = new int[] { 1, 2, 3, 4, 5, 6 };
+    int sum = 0;
+    for (int i = 0; i < a.length; i += 2) {
+      sum += a[i] + a[i + 1]; // OK
+    }
+    int[] b = new int[8];
+    for (int i = 2; i < 8; i += 2) {
+      sum += b[i] + b[i + 1]; // OK
+    }
+  }
 }
