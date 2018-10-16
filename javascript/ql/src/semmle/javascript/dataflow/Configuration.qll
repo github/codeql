@@ -324,7 +324,19 @@ abstract class AdditionalFlowStep extends DataFlow::Node {
    * Holds if `pred` &rarr; `succ` should be considered a data flow edge.
    */
   cached
-  abstract predicate step(DataFlow::Node pred, DataFlow::Node succ);
+  predicate step(DataFlow::Node pred, DataFlow::Node succ) { none() }
+
+  /**
+   * Holds if `pred` &rarr; `succ` should be considered a data flow edge
+   * transforming values with label `predlbl` to have label `succlbl`.
+   */
+  cached
+  predicate step(
+    DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel predlbl,
+    DataFlow::FlowLabel succlbl
+  ) {
+    none()
+  }
 }
 
 /**
@@ -336,7 +348,13 @@ abstract class AdditionalSource extends DataFlow::Node {
    * Holds if this data flow node should be considered a source node for
    * configuration `cfg`.
    */
-  abstract predicate isSourceFor(Configuration cfg);
+  predicate isSourceFor(Configuration cfg) { none() }
+
+  /**
+   * Holds if this data flow node should be considered a source node for
+   * values labeled with `lbl` under configuration `cfg`.
+   */
+  predicate isSourceFor(Configuration cfg, FlowLabel lbl) { none() }
 }
 
 /**
@@ -348,7 +366,13 @@ abstract class AdditionalSink extends DataFlow::Node {
    * Holds if this data flow node should be considered a sink node for
    * configuration `cfg`.
    */
-  abstract predicate isSinkFor(Configuration cfg);
+  predicate isSinkFor(Configuration cfg) { none() }
+
+  /**
+   * Holds if this data flow node should be considered a sink node for
+   * values labeled with `lbl` under configuration `cfg`.
+   */
+  predicate isSinkFor(Configuration cfg, FlowLabel lbl) { none() }
 }
 
 /**
@@ -476,6 +500,8 @@ private predicate isSource(DataFlow::Node nd, DataFlow::Configuration cfg, FlowL
   (cfg.isSource(nd) or nd.(AdditionalSource).isSourceFor(cfg)) and
   lbl = FlowLabel::data()
   or
+  nd.(AdditionalSource).isSourceFor(cfg, lbl)
+  or
   cfg.isSource(nd, lbl)
 }
 
@@ -485,6 +511,8 @@ private predicate isSource(DataFlow::Node nd, DataFlow::Configuration cfg, FlowL
 private predicate isSink(DataFlow::Node nd, DataFlow::Configuration cfg, FlowLabel lbl) {
   (cfg.isSink(nd) or nd.(AdditionalSink).isSinkFor(cfg)) and
   lbl = any(StandardFlowLabel f)
+  or
+  nd.(AdditionalSink).isSinkFor(cfg, lbl)
   or
   cfg.isSink(nd, lbl)
 }
