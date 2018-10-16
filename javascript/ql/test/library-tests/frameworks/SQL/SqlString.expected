@@ -14,4 +14,24 @@
 | postgres3.js:15:16:15:40 | 'SELECT ... s name' |
 | sequelize2.js:10:17:10:118 | 'SELECT ... Y name' |
 | sequelize.js:8:17:8:118 | 'SELECT ... Y name' |
+| spanner2.js:5:26:5:35 | "SQL code" |
+| spanner2.js:7:35:7:44 | "SQL code" |
+| spanner.js:6:8:6:17 | "SQL code" |
+| spanner.js:7:8:7:26 | { sql: "SQL code" } |
+| spanner.js:7:15:7:24 | "SQL code" |
+| spanner.js:8:25:8:34 | "SQL code" |
+| spanner.js:9:25:9:43 | { sql: "SQL code" } |
+| spanner.js:9:32:9:41 | "SQL code" |
+| spanner.js:10:14:10:23 | "SQL code" |
+| spanner.js:11:14:11:31 | { sql: "SQL code"} |
+| spanner.js:11:21:11:30 | "SQL code" |
+| spanner.js:14:10:14:19 | "SQL code" |
+| spanner.js:15:10:15:28 | { sql: "SQL code" } |
+| spanner.js:15:17:15:26 | "SQL code" |
+| spanner.js:16:16:16:25 | "SQL code" |
+| spanner.js:17:16:17:34 | { sql: "SQL code" } |
+| spanner.js:17:23:17:32 | "SQL code" |
+| spanner.js:18:16:18:25 | "SQL code" |
+| spanner.js:19:16:19:34 | { sql: "SQL code" } |
+| spanner.js:19:23:19:32 | "SQL code" |
 | sqlite.js:7:8:7:45 | "UPDATE ... id = ?" |
