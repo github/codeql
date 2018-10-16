@@ -1,10 +1,11 @@
 /**
  * @name NULL application name with an unquoted path in call to CreateProcess
- * @description Calling a function of the CreateProcess* family of functions, which may result in a security vulnerability if the path contains spaces.
+ * @description Calling a function of the CreateProcess* family of functions, where the path contains spaces, introduces a security vulnerability.
  * @id cpp/unsafe-create-process-call
  * @kind problem
  * @problem.severity error
  * @precision medium
+ * @msrc.severity important
  * @tags security
  *       external/cwe/cwe-428
  *       external/microsoft/C6277
@@ -124,6 +125,6 @@ where
     QuotedCommandInCreateProcessFunctionConfiguration quotedConfig |
     cmd = call.getArgument(call.getCommandLineArgumentId())
     and quotedConfig.hasFlow(DataFlow2::exprNode(source), DataFlow2::exprNode(cmd))
-    and msg2 = " and with an unquoted lpCommandLine (" + cmd + ") may result in a security vulnerability if the path contains spaces."
+    and msg2 = " and with an unquoted lpCommandLine (" + cmd + ") introduces a security vulnerability if the path contains spaces."
   )
 select call, msg1 + " " + msg2

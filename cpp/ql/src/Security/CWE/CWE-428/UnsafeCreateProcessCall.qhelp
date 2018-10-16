@@ -4,7 +4,7 @@
 <qhelp>
 
 <overview>
-  <p>This query indicates that there is a call to a function of the <code>CreateProcess*</code> family of functions, which may result in a security vulnerability if the path contains spaces.</p>
+  <p>This query indicates that there is a call to a function of the <code>CreateProcess*</code> family of functions, which introduces a security vulnerability.</p>
 </overview>
 
 <recommendation>
@@ -13,9 +13,9 @@
 </recommendation>
 
 <example>
-<p>In the following example, <code>CreateProcessW</code> is called with a NULL value for <code>lpApplicationName</code>, 
+<p>In the following example, <code>CreateProcessW</code> is called with a <code>NULL</code> value for <code>lpApplicationName</code>, 
 and the value for <code>lpCommandLine</code> that represent the application path is not quoted and has spaces in it.</p>
-<p>If an attacker has access to the file system, it is possible to elevate privileges by creating a file such as "C:\Program.exe" that will be executed instead of the intended application.</p>
+<p>If an attacker has access to the file system, they can elevate privileges by creating a file such as <code>C:\Program.exe</code> that will be executed instead of the intended application.</p>
 <sample src="UnsafeCreateProcessCall.cpp" />
 
 <p>To fix this issue, specify a valid string for <code>lpApplicationName</code>, or quote the path for <code>lpCommandLine</code>. For example:</p>
