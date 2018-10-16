@@ -3,6 +3,7 @@
  * @description A goto or break statement is followed by unreachable code. 
  * @kind problem
  * @problem.severity warning
+ * @precision high
  * @id cpp/dead-code-goto
  * @tags maintainability
  *       external/cwe/cwe-561
