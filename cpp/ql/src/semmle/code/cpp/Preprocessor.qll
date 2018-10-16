@@ -31,6 +31,7 @@ class PreprocessorDirective extends Locatable, @preprocdirect {
 	}
 }
 
+
 /**
  * A C/C++ preprocessor branch related directive: `#if`, `#ifdef`,
  * `#ifndef`, `#elif`, `#else` or `#endif`.
