@@ -13,6 +13,13 @@
 import cpp
 import semmle.code.cpp.pointsto.PointsTo
 
+/**
+ * Holds if `fc` is a call to a copy operation where the size argument contains
+ * a reference to the source argument.  For example:
+ * ```
+ *   memcpy(dest, src, sizeof(src));
+ * ```
+ */
 predicate sourceSized(FunctionCall fc)
 {
   exists(string name |
@@ -22,9 +29,13 @@ predicate sourceSized(FunctionCall fc)
   exists(Expr dest, Expr src, Expr size, Variable v |
     fc.getArgument(0) = dest and fc.getArgument(1) = src and fc.getArgument(2) = size and
     src = v.getAnAccess() and size.getAChild+() = v.getAnAccess() and
+
+    // exception: `dest` is also referenced in the size argument
     not exists(Variable other |
       dest = other.getAnAccess() and size.getAChild+() = other.getAnAccess())
     and
+
+    // exception: `src` and `dest` are both arrays of the same type and size
     not exists(ArrayType srctype, ArrayType desttype |
       dest.getType().getUnderlyingType() = desttype and
       src.getType().getUnderlyingType() = srctype and
