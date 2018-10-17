@@ -369,6 +369,26 @@ class Initializers
         s = "";
         return s;
     }
+
+    string M6(bool b)
+    {
+        var s = "";
+        if (b)
+            s = "abc"; // GOOD
+        if (b)
+            return s;
+        return null;
+    }
+
+    string M7(bool b)
+    {
+        var s = "";
+        if (b)
+            s = "abc"; // BAD
+        if (!b)
+            return s;
+        return null;
+    }
 }
 
 class Anonymous

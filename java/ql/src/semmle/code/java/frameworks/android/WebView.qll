@@ -1,21 +1,13 @@
 import java
 
-class TypeWebView extends Class {
-  TypeWebView() {
-    hasQualifiedName("android.webkit", "WebView")
-  }
-}
+class TypeWebView extends Class { TypeWebView() { hasQualifiedName("android.webkit", "WebView") } }
 
 class TypeWebViewClient extends Class {
-  TypeWebViewClient() {
-    hasQualifiedName("android.webkit", "WebViewClient")
-  }
+  TypeWebViewClient() { hasQualifiedName("android.webkit", "WebViewClient") }
 }
 
 class TypeWebSettings extends Class {
-  TypeWebSettings() {
-    hasQualifiedName("android.webkit", "WebSettings")
-  }
+  TypeWebSettings() { hasQualifiedName("android.webkit", "WebSettings") }
 }
 
 class WebViewGetSettingsMethod extends Method {

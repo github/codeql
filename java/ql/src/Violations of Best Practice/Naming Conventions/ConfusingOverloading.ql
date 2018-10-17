@@ -11,16 +11,16 @@
  *       readability
  *       naming
  */
+
 import java
 
-private pragma[nomagic]
-predicate confusingPrimitiveBoxedTypes(Type t, Type u) {
+pragma[nomagic]
+private predicate confusingPrimitiveBoxedTypes(Type t, Type u) {
   t.(PrimitiveType).getBoxedType() = u or
   u.(PrimitiveType).getBoxedType() = t
 }
 
-private
-predicate overloadedMethods(Method n, Method m) {
+private predicate overloadedMethods(Method n, Method m) {
   n.fromSource() and
   exists(RefType rt, string name, int numParams |
     candidateMethod(rt, m, name, numParams) and
@@ -30,12 +30,11 @@ predicate overloadedMethods(Method n, Method m) {
   n.getSourceDeclaration().getSignature() < m.getSourceDeclaration().getSignature()
 }
 
-private
-predicate overloadedMethodsMostSpecific(Method n, Method m) {
+private predicate overloadedMethodsMostSpecific(Method n, Method m) {
   overloadedMethods(n, m) and
   not exists(Method nSup, Method mSup |
     n.overridesOrInstantiates*(nSup) and m.overridesOrInstantiates*(mSup)
-    |
+  |
     overloadedMethods(nSup, mSup) and
     (n != nSup or m != mSup)
   )
@@ -45,16 +44,13 @@ predicate overloadedMethodsMostSpecific(Method n, Method m) {
  * A whitelist of names that are commonly overloaded in odd ways and should
  * not be reported by this query.
  */
-private predicate whitelist(string name) {
-  name = "visit"
-}
+private predicate whitelist(string name) { name = "visit" }
 
 /**
  * Method `m` has name `name`, number of parameters `numParams`
  * and is declared in `t` or inherited from a supertype of `t`.
  */
-private
-predicate candidateMethod(RefType t, Method m, string name, int numParam) {
+private predicate candidateMethod(RefType t, Method m, string name, int numParam) {
   exists(Method n | n.getSourceDeclaration() = m | t.inherits(n)) and
   m.getName() = name and
   m.getNumberOfParameters() = numParam and
@@ -63,22 +59,21 @@ predicate candidateMethod(RefType t, Method m, string name, int numParam) {
   not whitelist(name)
 }
 
-private pragma[inline]
-predicate potentiallyConfusingTypes(Type a, Type b) {
+pragma[inline]
+private predicate potentiallyConfusingTypes(Type a, Type b) {
   exists(RefType commonSubtype | hasSubtypeOrInstantiation*(a, commonSubtype) |
     hasSubtypeOrInstantiation*(b, commonSubtype)
-  ) or
+  )
+  or
   confusingPrimitiveBoxedTypes(a, b)
 }
 
-private
-predicate hasSubtypeOrInstantiation(RefType t, RefType sub) {
+private predicate hasSubtypeOrInstantiation(RefType t, RefType sub) {
   hasSubtype(t, sub) or
   sub.getSourceDeclaration() = t
 }
 
-private
-predicate confusinglyOverloaded(Method m, Method n) {
+private predicate confusinglyOverloaded(Method m, Method n) {
   overloadedMethodsMostSpecific(n, m) and
   forall(int i, Parameter p, Parameter q | p = n.getParameter(i) and q = m.getParameter(i) |
     potentiallyConfusingTypes(p.getType(), q.getType())
@@ -87,15 +82,13 @@ predicate confusinglyOverloaded(Method m, Method n) {
   not exists(Method target | delegate*(m, target) and delegate*(n, target))
 }
 
-private
-predicate wrappedAccess(Expr e, MethodAccess ma) {
+private predicate wrappedAccess(Expr e, MethodAccess ma) {
   e = ma or
   wrappedAccess(e.(ParExpr).getExpr(), ma) or
   wrappedAccess(e.(CastExpr).getExpr(), ma)
 }
 
-private
-predicate delegate(Method caller, Method callee) {
+private predicate delegate(Method caller, Method callee) {
   exists(MethodAccess ma | ma.getMethod() = callee |
     exists(Stmt stmt | stmt = caller.getBody().(SingletonBlock).getStmt() |
       wrappedAccess(stmt.(ExprStmt).getExpr(), ma) or
@@ -103,7 +96,8 @@ predicate delegate(Method caller, Method callee) {
     ) and
     forex(Parameter p, int i, Expr arg | p = caller.getParameter(i) and ma.getArgument(i) = arg |
       // The parameter is propagated without modification.
-      arg = p.getAnAccess() or
+      arg = p.getAnAccess()
+      or
       // The parameter is cast to a supertype.
       arg.(CastExpr).getExpr() = p.getAnAccess() and
       arg.getType().(RefType).getASubtype() = p.getType()
@@ -114,10 +108,12 @@ predicate delegate(Method caller, Method callee) {
 from Method m, Method n, string messageQualifier
 where
   confusinglyOverloaded(m, n) and
-  (if m.getDeclaringType() = n.getDeclaringType()
-   then messageQualifier = ""
-   else messageQualifier = m.getDeclaringType().getName() + ".")
-select n, "Method " + n.getDeclaringType() + "." + n +
-       "(..) could be confused with overloaded method $@, since dispatch depends on static types.",
-       m.getSourceDeclaration(), messageQualifier + m.getName()
-
+  (
+    if m.getDeclaringType() = n.getDeclaringType()
+    then messageQualifier = ""
+    else messageQualifier = m.getDeclaringType().getName() + "."
+  )
+select n,
+  "Method " + n.getDeclaringType() + "." + n +
+    "(..) could be confused with overloaded method $@, since dispatch depends on static types.",
+  m.getSourceDeclaration(), messageQualifier + m.getName()

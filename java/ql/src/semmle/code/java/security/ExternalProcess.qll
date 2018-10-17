@@ -1,5 +1,4 @@
 /* Definitions related to external processes. */
-
 import semmle.code.java.Member
 import semmle.code.java.JDK
 import semmle.code.java.frameworks.apache.Exec
@@ -20,10 +19,11 @@ class ArgumentToExec extends Expr {
         method instanceof MethodCommandLineParse or
         method instanceof MethodCommandLineAddArguments
       )
-    ) or
+    )
+    or
     exists(ConstructorCall expr, Constructor cons |
       expr.getConstructor() = cons and
-      cons.getDeclaringType().hasQualifiedName("java.lang" , "ProcessBuilder") and
+      cons.getDeclaringType().hasQualifiedName("java.lang", "ProcessBuilder") and
       expr.getArgument(0) = this
     )
   }
@@ -33,7 +33,5 @@ class ArgumentToExec extends Expr {
  * An `ArgumentToExec` of type `String`.
  */
 class StringArgumentToExec extends ArgumentToExec {
-  StringArgumentToExec() {
-    this.getType() instanceof TypeString
-  }
+  StringArgumentToExec() { this.getType() instanceof TypeString }
 }

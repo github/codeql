@@ -4,15 +4,14 @@
  * @kind problem
  * @id java/recently-changed-file-filter
  */
+
 import java
 import external.DefectFilter
 import external.VCS
 
-private pragma[noopt]
-predicate recent(File file) {
-  exists(Commit e | file = e.getAnAffectedFile() |
-    e.isRecent() and not artificialChange(e)
-  ) and
+pragma[noopt]
+private predicate recent(File file) {
+  exists(Commit e | file = e.getAnAffectedFile() | e.isRecent() and not artificialChange(e)) and
   exists(file.getLocation())
 }
 

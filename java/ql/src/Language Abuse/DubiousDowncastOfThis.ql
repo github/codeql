@@ -25,5 +25,4 @@ where
   src != dest and
   not dest instanceof TypeVariable
 select e, "Downcasting 'this' from $@ to $@ introduces a dependency cycle between the two types.",
-  src, src.getName(),
-  dest, dest.getName()
+  src, src.getName(), dest, dest.getName()

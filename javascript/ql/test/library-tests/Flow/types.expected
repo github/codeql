@@ -2,6 +2,7 @@
 | a.js:1:12:1:12 | x | a.js:1:16:1:16 | 0 | number |
 | a.js:1:19:1:19 | y | a.js:1:23:1:23 | 0 | number |
 | a.js:9:5:9:5 | z | a.js:9:9:9:18 | someGlobal | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| a.js:14:12:14:24 | notAlwaysZero | a.js:14:28:14:28 | 0 | number |
 | amd.js:2:7:2:7 | m | amd.js:2:11:2:13 | mod | boolean, class, date, function, null, number, object, regular expression,string or undefined |
 | amd.js:3:7:3:7 | e | amd.js:3:11:3:13 | exp | boolean, class, date, function, null, number, object, regular expression,string or undefined |
 | arguments.js:2:7:2:7 | y | arguments.js:2:11:2:11 | x | number |
@@ -32,6 +33,7 @@
 | b.js:48:5:48:7 | z13 | b.js:48:11:48:11 | w | string |
 | b.js:51:5:51:7 | z14 | b.js:51:11:51:24 | foo_reexported | boolean, class, date, function, null, number, object, regular expression,string or undefined |
 | b.js:54:5:54:7 | z15 | b.js:54:11:54:19 | something | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| b.js:57:5:57:7 | z16 | b.js:57:11:57:23 | notAlwaysZero | number |
 | backend.js:1:7:1:13 | Backend | backend.js:1:17:1:18 | {} | object |
 | classAccessors.js:10:9:10:11 | myX | classAccessors.js:10:15:10:20 | this.x | boolean, class, date, function, null, number, object, regular expression,string or undefined |
 | classAccessors.js:11:9:11:11 | myY | classAccessors.js:11:15:11:20 | this.y | boolean, class, date, function, null, number, object, regular expression,string or undefined |

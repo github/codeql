@@ -16,6 +16,7 @@ import semmle.code.java.DependencyCounts
  * recover that information once we are in the dashboard database, using the
  * ExternalEntity.getASourceLink() method.
  */
+
 from File sourceFile, string entity
 where fileJarDependencyCount(sourceFile, _, entity)
 select entity, sourceFile

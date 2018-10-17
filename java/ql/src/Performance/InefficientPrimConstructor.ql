@@ -8,11 +8,13 @@
  * @tags efficiency
  *       maintainability
  */
+
 import java
 
 from ClassInstanceExpr call, BoxedType type
 where
   type = call.getType() and
   not call.getEnclosingCallable().getDeclaringType() = type
-select call, "Inefficient constructor for " + type.getPrimitiveType().getName() +
-  " value, use " + type.getName() + ".valueOf(...) instead."
+select call,
+  "Inefficient constructor for " + type.getPrimitiveType().getName() + " value, use " +
+    type.getName() + ".valueOf(...) instead."

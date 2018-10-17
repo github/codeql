@@ -14,6 +14,7 @@
  *       external/cwe/cwe-197
  *       external/cwe/cwe-681
  */
+
 import semmle.code.java.arithmetic.Overflow
 
 class DangerousAssignOpExpr extends AssignOp {
@@ -23,14 +24,12 @@ class DangerousAssignOpExpr extends AssignOp {
   }
 }
 
-predicate problematicCasting(Type t, Expr e) {
-  e.getType().(NumType).widerThan((NumType)t)
-}
+predicate problematicCasting(Type t, Expr e) { e.getType().(NumType).widerThan(t.(NumType)) }
 
 from DangerousAssignOpExpr a, Expr e
 where
   e = a.getSource() and
   problematicCasting(a.getDest().getType(), e)
 select a,
-  "Implicit cast of source type " + e.getType().getName() +
-  " to narrower destination type " + a.getDest().getType().getName() + "."
+  "Implicit cast of source type " + e.getType().getName() + " to narrower destination type " +
+    a.getDest().getType().getName() + "."

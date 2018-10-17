@@ -19,20 +19,22 @@ class AntTarget extends XMLElement {
    */
   string getDependsString() {
     result = "," +
-      this.getAttributeValue("depends").replaceAll(" ", "")
-          .replaceAll("\r","").replaceAll("\n","").replaceAll("\t","") + ","
+        this
+            .getAttributeValue("depends")
+            .replaceAll(" ", "")
+            .replaceAll("\r", "")
+            .replaceAll("\n", "")
+            .replaceAll("\t", "") + ","
   }
 
   /** Holds if this Ant target depends on the specified target. */
   predicate dependsOn(AntTarget that) {
     this.getFile() = that.getFile() and
-    this.getDependsString().matches("%,"+that.getName()+",%")
+    this.getDependsString().matches("%," + that.getName() + ",%")
   }
 
   /** Gets an Ant target on which this Ant target depends. */
-  AntTarget getADependency() {
-    this.dependsOn(result)
-  }
+  AntTarget getADependency() { this.dependsOn(result) }
 }
 
 /** An Ant target that occurs in an Ant build file with the default name `build.xml`. */

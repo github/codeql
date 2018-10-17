@@ -8,6 +8,7 @@
  * @id java/implicit-import
  * @tags maintainability
  */
+
 import java
 
 from ImportOnDemandFromPackage i

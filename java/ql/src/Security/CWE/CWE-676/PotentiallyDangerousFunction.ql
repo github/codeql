@@ -9,11 +9,10 @@
  *       security
  *       external/cwe/cwe-676
  */
+
 import java
 
-predicate dangerousMethod(string descriptor) {
-  descriptor = "java.lang.Thread.stop"
-}
+predicate dangerousMethod(string descriptor) { descriptor = "java.lang.Thread.stop" }
 
 from MethodAccess call, Method target, string descriptor
 where

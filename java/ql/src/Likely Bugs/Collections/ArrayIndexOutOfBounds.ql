@@ -23,7 +23,7 @@ predicate boundedArrayAccess(ArrayAccess aa, int k) {
     aa.getIndexExpr() = index and
     aa.getArray() = arr.getAUse() and
     bounded(index, b, delta, true, _)
-    |
+  |
     exists(FieldAccess len |
       len.getField() instanceof ArrayLengthField and
       len.getQualifier() = arr.getAUse() and
@@ -33,13 +33,14 @@ predicate boundedArrayAccess(ArrayAccess aa, int k) {
     or
     exists(ArrayCreationExpr arraycreation |
       arraycreation = arr.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource()
-      |
+    |
       k = delta and
       arraycreation.getDimension(0) = b.getExpr()
       or
       exists(int arrlen |
         arraycreation.getFirstDimensionSize() = arrlen and
-        b instanceof ZeroBound and k = delta - arrlen
+        b instanceof ZeroBound and
+        k = delta - arrlen
       )
     )
   )
@@ -59,4 +60,5 @@ where
   k >= 0 and
   if k = 0 then kstr = "" else kstr = " + " + k
 select aa,
-  "This array access might be out of bounds, as the index might be equal to the array length" + kstr + "."
+  "This array access might be out of bounds, as the index might be equal to the array length" + kstr
+    + "."

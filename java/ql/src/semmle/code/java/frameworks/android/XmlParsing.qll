@@ -1,9 +1,7 @@
 import java
 
 class XmlPullParser extends Interface {
-  XmlPullParser() {
-    this.hasQualifiedName("org.xmlpull.v1", "XmlPullParser")
-  }
+  XmlPullParser() { this.hasQualifiedName("org.xmlpull.v1", "XmlPullParser") }
 }
 
 class XmlPullGetMethod extends Method {
@@ -14,9 +12,7 @@ class XmlPullGetMethod extends Method {
 }
 
 class XmlAttrSet extends Interface {
-  XmlAttrSet() {
-    this.hasQualifiedName("android.util", "AttributeSet")
-  }
+  XmlAttrSet() { this.hasQualifiedName("android.util", "AttributeSet") }
 }
 
 class XmlAttrSetGetMethod extends Method {

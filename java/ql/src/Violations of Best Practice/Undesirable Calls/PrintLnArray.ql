@@ -8,6 +8,7 @@
  * @id java/print-array
  * @tags maintainability
  */
+
 import java
 import semmle.code.java.StringFormat
 
@@ -22,6 +23,7 @@ predicate arraysToStringArgument(Expr e) {
     m.hasName("toString")
   )
 }
+
 from Expr arr
 where
   arr.getType() instanceof Array and

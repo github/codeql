@@ -9,9 +9,7 @@ import java
  * declared in an immutable type, and that every method overriding it is also
  * designed for chaining.
  */
-predicate designedForChaining(Method m) {
-  not nonChaining(m)
-}
+predicate designedForChaining(Method m) { not nonChaining(m) }
 
 private predicate nonChaining(Method m) {
   // The method has a body, and at least one of the return values is not suitable for chaining.
@@ -22,9 +20,11 @@ private predicate nonChaining(Method m) {
     not exists(m.getBody()) and
     (
       // ... it has the wrong return type, ...
-      not hasSubtype*(m.getReturnType(), m.getDeclaringType()) or
+      not hasSubtype*(m.getReturnType(), m.getDeclaringType())
+      or
       // ... it is defined on an immutable type, or ...
-      m.getDeclaringType() instanceof ImmutableType or
+      m.getDeclaringType() instanceof ImmutableType
+      or
       // ... it has an override that is non-chaining.
       exists(Method override | override.overrides(m) | nonChaining(override))
     )
@@ -36,25 +36,31 @@ private predicate nonChainingReturn(Method m, ReturnStmt ret) {
   (
     ret.getResult() instanceof ThisAccess and
     ret.getResult().getType() != m.getDeclaringType()
-  ) or
+  )
+  or
   // A method call to the wrong method is returned.
   (
     ret.getResult() instanceof MethodAccess and
     exists(MethodAccess delegateCall, Method delegate |
       delegateCall = ret.getResult() and
       delegate = delegateCall.getMethod()
-      |
-      delegate.getDeclaringType() != m.getDeclaringType() or
-      delegate.isStatic() or
-      not hasSubtype*(m.getReturnType(), delegate.getReturnType()) or
+    |
+      delegate.getDeclaringType() != m.getDeclaringType()
+      or
+      delegate.isStatic()
+      or
+      not hasSubtype*(m.getReturnType(), delegate.getReturnType())
+      or
       // A method on the wrong object is called.
       not (
         delegateCall.getQualifier().getProperExpr() instanceof ThisAccess or
         not exists(delegateCall.getQualifier())
-      ) or
+      )
+      or
       nonChaining(delegate)
     )
-  ) or
+  )
+  or
   // Something else is returned.
   not (
     ret.getResult() instanceof ThisAccess or

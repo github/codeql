@@ -1,0 +1,7 @@
+**/mcs.exe:
+**/csc.exe:
+  invoke ${env.SEMMLE_PLATFORM_TOOLS}/csharp/Semmle.Extraction.CSharp.Driver
+  prepend --cil
+**/bin/mono*:
+**/dotnet:
+  invoke ${odasa_tools}/extract-csharp.sh

@@ -24,12 +24,12 @@ import java
  */
 newtype Label = MkLabel(string l) { exists(LabeledStmt lbl | l = lbl.getLabel()) }
 
-
 /**
  * Either a `Label` or nothing.
  */
-newtype MaybeLabel = JustLabel(Label l) or NoLabel()
-
+newtype MaybeLabel =
+  JustLabel(Label l) or
+  NoLabel()
 
 /**
  * A completion of a statement or an expression.
@@ -48,7 +48,8 @@ newtype Completion =
    * flow node having value `innerValue`.
    */
   BooleanCompletion(boolean outerValue, boolean innerValue) {
-    (outerValue = true or outerValue = false) and (innerValue = true or innerValue = false)
+    (outerValue = true or outerValue = false) and
+    (innerValue = true or innerValue = false)
   } or
   /**
    * The expression or statement completes via a `break` statement.
@@ -63,25 +64,13 @@ newtype Completion =
    */
   ThrowCompletion(ThrowableType tt)
 
+ContinueCompletion anonymousContinueCompletion() { result = ContinueCompletion(NoLabel()) }
 
-ContinueCompletion anonymousContinueCompletion() {
-  result = ContinueCompletion(NoLabel())
-}
+ContinueCompletion labelledContinueCompletion(Label l) { result = ContinueCompletion(JustLabel(l)) }
 
-ContinueCompletion labelledContinueCompletion(Label l) {
-  result = ContinueCompletion(JustLabel(l))
-}
+BreakCompletion anonymousBreakCompletion() { result = BreakCompletion(NoLabel()) }
 
-BreakCompletion anonymousBreakCompletion() {
-  result = BreakCompletion(NoLabel())
-}
-
-BreakCompletion labelledBreakCompletion(Label l) {
-  result = BreakCompletion(JustLabel(l))
-}
+BreakCompletion labelledBreakCompletion(Label l) { result = BreakCompletion(JustLabel(l)) }
 
 /** Gets the completion `booleanCompletion(value, value)`. */
-Completion basicBooleanCompletion(boolean value) {
-  result = BooleanCompletion(value, value)
-}
-
+Completion basicBooleanCompletion(boolean value) { result = BooleanCompletion(value, value) }

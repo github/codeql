@@ -9,6 +9,7 @@
  * @tags efficiency
  *       maintainability
  */
+
 import java
 
 from FinalizeMethod m, Assignment assign, FieldAccess lhs, NullLiteral null

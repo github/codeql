@@ -255,6 +255,229 @@
 | ConditionalAccess.cs:31:70:31:83 | ... + ... | ConditionalAccess.cs:31:70:31:71 | access to parameter s1 |
 | ConditionalAccess.cs:31:75:31:78 | ", " | ConditionalAccess.cs:31:75:31:78 | ", " |
 | ConditionalAccess.cs:31:82:31:83 | access to parameter s2 | ConditionalAccess.cs:31:82:31:83 | access to parameter s2 |
+| Conditions.cs:4:5:9:5 | {...} | Conditions.cs:4:5:9:5 | {...} |
+| Conditions.cs:5:9:6:16 | if (...) ... | Conditions.cs:5:9:6:16 | if (...) ... |
+| Conditions.cs:5:13:5:15 | access to parameter inc | Conditions.cs:5:13:5:15 | access to parameter inc |
+| Conditions.cs:6:13:6:13 | access to parameter x | Conditions.cs:6:13:6:13 | access to parameter x |
+| Conditions.cs:6:13:6:15 | ...++ | Conditions.cs:6:13:6:13 | access to parameter x |
+| Conditions.cs:6:13:6:16 | ...; | Conditions.cs:6:13:6:16 | ...; |
+| Conditions.cs:7:9:8:16 | if (...) ... | Conditions.cs:7:9:8:16 | if (...) ... |
+| Conditions.cs:7:13:7:16 | !... | Conditions.cs:7:13:7:16 | !... |
+| Conditions.cs:7:14:7:16 | access to parameter inc | Conditions.cs:7:14:7:16 | access to parameter inc |
+| Conditions.cs:8:13:8:13 | access to parameter x | Conditions.cs:8:13:8:13 | access to parameter x |
+| Conditions.cs:8:13:8:15 | ...-- | Conditions.cs:8:13:8:13 | access to parameter x |
+| Conditions.cs:8:13:8:16 | ...; | Conditions.cs:8:13:8:16 | ...; |
+| Conditions.cs:12:5:20:5 | {...} | Conditions.cs:12:5:20:5 | {...} |
+| Conditions.cs:13:9:13:18 | ... ...; | Conditions.cs:13:9:13:18 | ... ...; |
+| Conditions.cs:13:13:13:13 | access to local variable x | Conditions.cs:13:13:13:13 | access to local variable x |
+| Conditions.cs:13:13:13:17 | Int32 x = ... | Conditions.cs:13:13:13:13 | access to local variable x |
+| Conditions.cs:13:17:13:17 | 0 | Conditions.cs:13:17:13:17 | 0 |
+| Conditions.cs:14:9:15:16 | if (...) ... | Conditions.cs:14:9:15:16 | if (...) ... |
+| Conditions.cs:14:13:14:13 | access to parameter b | Conditions.cs:14:13:14:13 | access to parameter b |
+| Conditions.cs:15:13:15:13 | access to local variable x | Conditions.cs:15:13:15:13 | access to local variable x |
+| Conditions.cs:15:13:15:15 | ...++ | Conditions.cs:15:13:15:13 | access to local variable x |
+| Conditions.cs:15:13:15:16 | ...; | Conditions.cs:15:13:15:16 | ...; |
+| Conditions.cs:16:9:18:20 | if (...) ... | Conditions.cs:16:9:18:20 | if (...) ... |
+| Conditions.cs:16:13:16:13 | access to local variable x | Conditions.cs:16:13:16:13 | access to local variable x |
+| Conditions.cs:16:13:16:17 | ... > ... | Conditions.cs:16:13:16:13 | access to local variable x |
+| Conditions.cs:16:17:16:17 | 0 | Conditions.cs:16:17:16:17 | 0 |
+| Conditions.cs:17:13:18:20 | if (...) ... | Conditions.cs:17:13:18:20 | if (...) ... |
+| Conditions.cs:17:17:17:18 | !... | Conditions.cs:17:17:17:18 | !... |
+| Conditions.cs:17:18:17:18 | access to parameter b | Conditions.cs:17:18:17:18 | access to parameter b |
+| Conditions.cs:18:17:18:17 | access to local variable x | Conditions.cs:18:17:18:17 | access to local variable x |
+| Conditions.cs:18:17:18:19 | ...-- | Conditions.cs:18:17:18:17 | access to local variable x |
+| Conditions.cs:18:17:18:20 | ...; | Conditions.cs:18:17:18:20 | ...; |
+| Conditions.cs:19:9:19:17 | return ...; | Conditions.cs:19:16:19:16 | access to local variable x |
+| Conditions.cs:19:16:19:16 | access to local variable x | Conditions.cs:19:16:19:16 | access to local variable x |
+| Conditions.cs:23:5:31:5 | {...} | Conditions.cs:23:5:31:5 | {...} |
+| Conditions.cs:24:9:24:18 | ... ...; | Conditions.cs:24:9:24:18 | ... ...; |
+| Conditions.cs:24:13:24:13 | access to local variable x | Conditions.cs:24:13:24:13 | access to local variable x |
+| Conditions.cs:24:13:24:17 | Int32 x = ... | Conditions.cs:24:13:24:13 | access to local variable x |
+| Conditions.cs:24:17:24:17 | 0 | Conditions.cs:24:17:24:17 | 0 |
+| Conditions.cs:25:9:27:20 | if (...) ... | Conditions.cs:25:9:27:20 | if (...) ... |
+| Conditions.cs:25:13:25:14 | access to parameter b1 | Conditions.cs:25:13:25:14 | access to parameter b1 |
+| Conditions.cs:26:13:27:20 | if (...) ... | Conditions.cs:26:13:27:20 | if (...) ... |
+| Conditions.cs:26:17:26:18 | access to parameter b2 | Conditions.cs:26:17:26:18 | access to parameter b2 |
+| Conditions.cs:27:17:27:17 | access to local variable x | Conditions.cs:27:17:27:17 | access to local variable x |
+| Conditions.cs:27:17:27:19 | ...++ | Conditions.cs:27:17:27:17 | access to local variable x |
+| Conditions.cs:27:17:27:20 | ...; | Conditions.cs:27:17:27:20 | ...; |
+| Conditions.cs:28:9:29:16 | if (...) ... | Conditions.cs:28:9:29:16 | if (...) ... |
+| Conditions.cs:28:13:28:14 | access to parameter b2 | Conditions.cs:28:13:28:14 | access to parameter b2 |
+| Conditions.cs:29:13:29:13 | access to local variable x | Conditions.cs:29:13:29:13 | access to local variable x |
+| Conditions.cs:29:13:29:15 | ...++ | Conditions.cs:29:13:29:13 | access to local variable x |
+| Conditions.cs:29:13:29:16 | ...; | Conditions.cs:29:13:29:16 | ...; |
+| Conditions.cs:30:9:30:17 | return ...; | Conditions.cs:30:16:30:16 | access to local variable x |
+| Conditions.cs:30:16:30:16 | access to local variable x | Conditions.cs:30:16:30:16 | access to local variable x |
+| Conditions.cs:34:5:44:5 | {...} | Conditions.cs:34:5:44:5 | {...} |
+| Conditions.cs:35:9:35:18 | ... ...; | Conditions.cs:35:9:35:18 | ... ...; |
+| Conditions.cs:35:13:35:13 | access to local variable x | Conditions.cs:35:13:35:13 | access to local variable x |
+| Conditions.cs:35:13:35:17 | Int32 x = ... | Conditions.cs:35:13:35:13 | access to local variable x |
+| Conditions.cs:35:17:35:17 | 0 | Conditions.cs:35:17:35:17 | 0 |
+| Conditions.cs:36:9:36:23 | ... ...; | Conditions.cs:36:9:36:23 | ... ...; |
+| Conditions.cs:36:13:36:14 | access to local variable b2 | Conditions.cs:36:13:36:14 | access to local variable b2 |
+| Conditions.cs:36:13:36:22 | Boolean b2 = ... | Conditions.cs:36:13:36:14 | access to local variable b2 |
+| Conditions.cs:36:18:36:22 | false | Conditions.cs:36:18:36:22 | false |
+| Conditions.cs:37:9:38:20 | if (...) ... | Conditions.cs:37:9:38:20 | if (...) ... |
+| Conditions.cs:37:13:37:14 | access to parameter b1 | Conditions.cs:37:13:37:14 | access to parameter b1 |
+| Conditions.cs:38:13:38:14 | access to local variable b2 | Conditions.cs:38:13:38:14 | access to local variable b2 |
+| Conditions.cs:38:13:38:19 | ... = ... | Conditions.cs:38:13:38:14 | access to local variable b2 |
+| Conditions.cs:38:13:38:20 | ...; | Conditions.cs:38:13:38:20 | ...; |
+| Conditions.cs:38:18:38:19 | access to parameter b1 | Conditions.cs:38:18:38:19 | access to parameter b1 |
+| Conditions.cs:39:9:40:16 | if (...) ... | Conditions.cs:39:9:40:16 | if (...) ... |
+| Conditions.cs:39:13:39:14 | access to local variable b2 | Conditions.cs:39:13:39:14 | access to local variable b2 |
+| Conditions.cs:40:13:40:13 | access to local variable x | Conditions.cs:40:13:40:13 | access to local variable x |
+| Conditions.cs:40:13:40:15 | ...++ | Conditions.cs:40:13:40:13 | access to local variable x |
+| Conditions.cs:40:13:40:16 | ...; | Conditions.cs:40:13:40:16 | ...; |
+| Conditions.cs:41:9:42:16 | if (...) ... | Conditions.cs:41:9:42:16 | if (...) ... |
+| Conditions.cs:41:13:41:14 | access to local variable b2 | Conditions.cs:41:13:41:14 | access to local variable b2 |
+| Conditions.cs:42:13:42:13 | access to local variable x | Conditions.cs:42:13:42:13 | access to local variable x |
+| Conditions.cs:42:13:42:15 | ...++ | Conditions.cs:42:13:42:13 | access to local variable x |
+| Conditions.cs:42:13:42:16 | ...; | Conditions.cs:42:13:42:16 | ...; |
+| Conditions.cs:43:9:43:17 | return ...; | Conditions.cs:43:16:43:16 | access to local variable x |
+| Conditions.cs:43:16:43:16 | access to local variable x | Conditions.cs:43:16:43:16 | access to local variable x |
+| Conditions.cs:47:5:55:5 | {...} | Conditions.cs:47:5:55:5 | {...} |
+| Conditions.cs:48:9:48:18 | ... ...; | Conditions.cs:48:9:48:18 | ... ...; |
+| Conditions.cs:48:13:48:13 | access to local variable y | Conditions.cs:48:13:48:13 | access to local variable y |
+| Conditions.cs:48:13:48:17 | Int32 y = ... | Conditions.cs:48:13:48:13 | access to local variable y |
+| Conditions.cs:48:17:48:17 | 0 | Conditions.cs:48:17:48:17 | 0 |
+| Conditions.cs:49:9:53:9 | while (...) ... | Conditions.cs:49:9:53:9 | while (...) ... |
+| Conditions.cs:49:16:49:16 | access to parameter x | Conditions.cs:49:16:49:16 | access to parameter x |
+| Conditions.cs:49:16:49:18 | ...-- | Conditions.cs:49:16:49:16 | access to parameter x |
+| Conditions.cs:49:16:49:22 | ... > ... | Conditions.cs:49:16:49:16 | access to parameter x |
+| Conditions.cs:49:22:49:22 | 0 | Conditions.cs:49:22:49:22 | 0 |
+| Conditions.cs:50:9:53:9 | {...} | Conditions.cs:50:9:53:9 | {...} |
+| Conditions.cs:51:13:52:20 | if (...) ... | Conditions.cs:51:13:52:20 | if (...) ... |
+| Conditions.cs:51:17:51:17 | access to parameter b | Conditions.cs:51:17:51:17 | access to parameter b |
+| Conditions.cs:52:17:52:17 | access to local variable y | Conditions.cs:52:17:52:17 | access to local variable y |
+| Conditions.cs:52:17:52:19 | ...++ | Conditions.cs:52:17:52:17 | access to local variable y |
+| Conditions.cs:52:17:52:20 | ...; | Conditions.cs:52:17:52:20 | ...; |
+| Conditions.cs:54:9:54:17 | return ...; | Conditions.cs:54:16:54:16 | access to local variable y |
+| Conditions.cs:54:16:54:16 | access to local variable y | Conditions.cs:54:16:54:16 | access to local variable y |
+| Conditions.cs:58:5:68:5 | {...} | Conditions.cs:58:5:68:5 | {...} |
+| Conditions.cs:59:9:59:18 | ... ...; | Conditions.cs:59:9:59:18 | ... ...; |
+| Conditions.cs:59:13:59:13 | access to local variable y | Conditions.cs:59:13:59:13 | access to local variable y |
+| Conditions.cs:59:13:59:17 | Int32 y = ... | Conditions.cs:59:13:59:13 | access to local variable y |
+| Conditions.cs:59:17:59:17 | 0 | Conditions.cs:59:17:59:17 | 0 |
+| Conditions.cs:60:9:64:9 | while (...) ... | Conditions.cs:60:9:64:9 | while (...) ... |
+| Conditions.cs:60:16:60:16 | access to parameter x | Conditions.cs:60:16:60:16 | access to parameter x |
+| Conditions.cs:60:16:60:18 | ...-- | Conditions.cs:60:16:60:16 | access to parameter x |
+| Conditions.cs:60:16:60:22 | ... > ... | Conditions.cs:60:16:60:16 | access to parameter x |
+| Conditions.cs:60:22:60:22 | 0 | Conditions.cs:60:22:60:22 | 0 |
+| Conditions.cs:61:9:64:9 | {...} | Conditions.cs:61:9:64:9 | {...} |
+| Conditions.cs:62:13:63:20 | if (...) ... | Conditions.cs:62:13:63:20 | if (...) ... |
+| Conditions.cs:62:17:62:17 | access to parameter b | Conditions.cs:62:17:62:17 | access to parameter b |
+| Conditions.cs:63:17:63:17 | access to local variable y | Conditions.cs:63:17:63:17 | access to local variable y |
+| Conditions.cs:63:17:63:19 | ...++ | Conditions.cs:63:17:63:17 | access to local variable y |
+| Conditions.cs:63:17:63:20 | ...; | Conditions.cs:63:17:63:20 | ...; |
+| Conditions.cs:65:9:66:16 | if (...) ... | Conditions.cs:65:9:66:16 | if (...) ... |
+| Conditions.cs:65:13:65:13 | access to parameter b | Conditions.cs:65:13:65:13 | access to parameter b |
+| Conditions.cs:66:13:66:13 | access to local variable y | Conditions.cs:66:13:66:13 | access to local variable y |
+| Conditions.cs:66:13:66:15 | ...++ | Conditions.cs:66:13:66:13 | access to local variable y |
+| Conditions.cs:66:13:66:16 | ...; | Conditions.cs:66:13:66:16 | ...; |
+| Conditions.cs:67:9:67:17 | return ...; | Conditions.cs:67:16:67:16 | access to local variable y |
+| Conditions.cs:67:16:67:16 | access to local variable y | Conditions.cs:67:16:67:16 | access to local variable y |
+| Conditions.cs:71:5:84:5 | {...} | Conditions.cs:71:5:84:5 | {...} |
+| Conditions.cs:72:9:72:30 | ... ...; | Conditions.cs:72:9:72:30 | ... ...; |
+| Conditions.cs:72:13:72:13 | access to local variable b | Conditions.cs:72:13:72:13 | access to local variable b |
+| Conditions.cs:72:13:72:29 | Boolean b = ... | Conditions.cs:72:13:72:13 | access to local variable b |
+| Conditions.cs:72:17:72:18 | access to parameter ss | Conditions.cs:72:17:72:18 | access to parameter ss |
+| Conditions.cs:72:17:72:25 | access to property Length | Conditions.cs:72:17:72:18 | access to parameter ss |
+| Conditions.cs:72:17:72:29 | ... > ... | Conditions.cs:72:17:72:18 | access to parameter ss |
+| Conditions.cs:72:29:72:29 | 0 | Conditions.cs:72:29:72:29 | 0 |
+| Conditions.cs:73:9:73:18 | ... ...; | Conditions.cs:73:9:73:18 | ... ...; |
+| Conditions.cs:73:13:73:13 | access to local variable x | Conditions.cs:73:13:73:13 | access to local variable x |
+| Conditions.cs:73:13:73:17 | Int32 x = ... | Conditions.cs:73:13:73:13 | access to local variable x |
+| Conditions.cs:73:17:73:17 | 0 | Conditions.cs:73:17:73:17 | 0 |
+| Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:74:27:74:28 | access to parameter ss |
+| Conditions.cs:74:27:74:28 | access to parameter ss | Conditions.cs:74:27:74:28 | access to parameter ss |
+| Conditions.cs:75:9:80:9 | {...} | Conditions.cs:75:9:80:9 | {...} |
+| Conditions.cs:76:13:77:20 | if (...) ... | Conditions.cs:76:13:77:20 | if (...) ... |
+| Conditions.cs:76:17:76:17 | access to local variable b | Conditions.cs:76:17:76:17 | access to local variable b |
+| Conditions.cs:77:17:77:17 | access to local variable x | Conditions.cs:77:17:77:17 | access to local variable x |
+| Conditions.cs:77:17:77:19 | ...++ | Conditions.cs:77:17:77:17 | access to local variable x |
+| Conditions.cs:77:17:77:20 | ...; | Conditions.cs:77:17:77:20 | ...; |
+| Conditions.cs:78:13:79:26 | if (...) ... | Conditions.cs:78:13:79:26 | if (...) ... |
+| Conditions.cs:78:17:78:17 | access to local variable x | Conditions.cs:78:17:78:17 | access to local variable x |
+| Conditions.cs:78:17:78:21 | ... > ... | Conditions.cs:78:17:78:17 | access to local variable x |
+| Conditions.cs:78:21:78:21 | 0 | Conditions.cs:78:21:78:21 | 0 |
+| Conditions.cs:79:17:79:17 | access to local variable b | Conditions.cs:79:17:79:17 | access to local variable b |
+| Conditions.cs:79:17:79:25 | ... = ... | Conditions.cs:79:17:79:17 | access to local variable b |
+| Conditions.cs:79:17:79:26 | ...; | Conditions.cs:79:17:79:26 | ...; |
+| Conditions.cs:79:21:79:25 | false | Conditions.cs:79:21:79:25 | false |
+| Conditions.cs:81:9:82:16 | if (...) ... | Conditions.cs:81:9:82:16 | if (...) ... |
+| Conditions.cs:81:12:81:12 | access to local variable b | Conditions.cs:81:12:81:12 | access to local variable b |
+| Conditions.cs:82:13:82:13 | access to local variable x | Conditions.cs:82:13:82:13 | access to local variable x |
+| Conditions.cs:82:13:82:15 | ...++ | Conditions.cs:82:13:82:13 | access to local variable x |
+| Conditions.cs:82:13:82:16 | ...; | Conditions.cs:82:13:82:16 | ...; |
+| Conditions.cs:83:9:83:17 | return ...; | Conditions.cs:83:16:83:16 | access to local variable x |
+| Conditions.cs:83:16:83:16 | access to local variable x | Conditions.cs:83:16:83:16 | access to local variable x |
+| Conditions.cs:87:5:100:5 | {...} | Conditions.cs:87:5:100:5 | {...} |
+| Conditions.cs:88:9:88:30 | ... ...; | Conditions.cs:88:9:88:30 | ... ...; |
+| Conditions.cs:88:13:88:13 | access to local variable b | Conditions.cs:88:13:88:13 | access to local variable b |
+| Conditions.cs:88:13:88:29 | Boolean b = ... | Conditions.cs:88:13:88:13 | access to local variable b |
+| Conditions.cs:88:17:88:18 | access to parameter ss | Conditions.cs:88:17:88:18 | access to parameter ss |
+| Conditions.cs:88:17:88:25 | access to property Length | Conditions.cs:88:17:88:18 | access to parameter ss |
+| Conditions.cs:88:17:88:29 | ... > ... | Conditions.cs:88:17:88:18 | access to parameter ss |
+| Conditions.cs:88:29:88:29 | 0 | Conditions.cs:88:29:88:29 | 0 |
+| Conditions.cs:89:9:89:18 | ... ...; | Conditions.cs:89:9:89:18 | ... ...; |
+| Conditions.cs:89:13:89:13 | access to local variable x | Conditions.cs:89:13:89:13 | access to local variable x |
+| Conditions.cs:89:13:89:17 | Int32 x = ... | Conditions.cs:89:13:89:13 | access to local variable x |
+| Conditions.cs:89:17:89:17 | 0 | Conditions.cs:89:17:89:17 | 0 |
+| Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:90:27:90:28 | access to parameter ss |
+| Conditions.cs:90:27:90:28 | access to parameter ss | Conditions.cs:90:27:90:28 | access to parameter ss |
+| Conditions.cs:91:9:98:9 | {...} | Conditions.cs:91:9:98:9 | {...} |
+| Conditions.cs:92:13:93:20 | if (...) ... | Conditions.cs:92:13:93:20 | if (...) ... |
+| Conditions.cs:92:17:92:17 | access to local variable b | Conditions.cs:92:17:92:17 | access to local variable b |
+| Conditions.cs:93:17:93:17 | access to local variable x | Conditions.cs:93:17:93:17 | access to local variable x |
+| Conditions.cs:93:17:93:19 | ...++ | Conditions.cs:93:17:93:17 | access to local variable x |
+| Conditions.cs:93:17:93:20 | ...; | Conditions.cs:93:17:93:20 | ...; |
+| Conditions.cs:94:13:95:26 | if (...) ... | Conditions.cs:94:13:95:26 | if (...) ... |
+| Conditions.cs:94:17:94:17 | access to local variable x | Conditions.cs:94:17:94:17 | access to local variable x |
+| Conditions.cs:94:17:94:21 | ... > ... | Conditions.cs:94:17:94:17 | access to local variable x |
+| Conditions.cs:94:21:94:21 | 0 | Conditions.cs:94:21:94:21 | 0 |
+| Conditions.cs:95:17:95:17 | access to local variable b | Conditions.cs:95:17:95:17 | access to local variable b |
+| Conditions.cs:95:17:95:25 | ... = ... | Conditions.cs:95:17:95:17 | access to local variable b |
+| Conditions.cs:95:17:95:26 | ...; | Conditions.cs:95:17:95:26 | ...; |
+| Conditions.cs:95:21:95:25 | false | Conditions.cs:95:21:95:25 | false |
+| Conditions.cs:96:13:97:20 | if (...) ... | Conditions.cs:96:13:97:20 | if (...) ... |
+| Conditions.cs:96:17:96:17 | access to local variable b | Conditions.cs:96:17:96:17 | access to local variable b |
+| Conditions.cs:97:17:97:17 | access to local variable x | Conditions.cs:97:17:97:17 | access to local variable x |
+| Conditions.cs:97:17:97:19 | ...++ | Conditions.cs:97:17:97:17 | access to local variable x |
+| Conditions.cs:97:17:97:20 | ...; | Conditions.cs:97:17:97:20 | ...; |
+| Conditions.cs:99:9:99:17 | return ...; | Conditions.cs:99:16:99:16 | access to local variable x |
+| Conditions.cs:99:16:99:16 | access to local variable x | Conditions.cs:99:16:99:16 | access to local variable x |
+| Conditions.cs:103:5:111:5 | {...} | Conditions.cs:103:5:111:5 | {...} |
+| Conditions.cs:104:9:104:29 | ... ...; | Conditions.cs:104:9:104:29 | ... ...; |
+| Conditions.cs:104:13:104:13 | access to local variable x | Conditions.cs:104:13:104:13 | access to local variable x |
+| Conditions.cs:104:13:104:28 | String x = ... | Conditions.cs:104:13:104:13 | access to local variable x |
+| Conditions.cs:104:17:104:17 | access to parameter b | Conditions.cs:104:17:104:17 | access to parameter b |
+| Conditions.cs:104:17:104:28 | call to method ToString | Conditions.cs:104:17:104:17 | access to parameter b |
+| Conditions.cs:105:9:106:20 | if (...) ... | Conditions.cs:105:9:106:20 | if (...) ... |
+| Conditions.cs:105:13:105:13 | access to parameter b | Conditions.cs:105:13:105:13 | access to parameter b |
+| Conditions.cs:106:13:106:13 | access to local variable x | Conditions.cs:106:13:106:13 | access to local variable x |
+| Conditions.cs:106:13:106:13 | access to local variable x | Conditions.cs:106:13:106:13 | access to local variable x |
+| Conditions.cs:106:13:106:19 | ... + ... | Conditions.cs:106:13:106:13 | access to local variable x |
+| Conditions.cs:106:13:106:19 | ... += ... | Conditions.cs:106:13:106:13 | access to local variable x |
+| Conditions.cs:106:13:106:19 | ... = ... | Conditions.cs:106:13:106:13 | access to local variable x |
+| Conditions.cs:106:13:106:20 | ...; | Conditions.cs:106:13:106:20 | ...; |
+| Conditions.cs:106:18:106:19 | "" | Conditions.cs:106:18:106:19 | "" |
+| Conditions.cs:107:9:109:24 | if (...) ... | Conditions.cs:107:9:109:24 | if (...) ... |
+| Conditions.cs:107:13:107:13 | access to local variable x | Conditions.cs:107:13:107:13 | access to local variable x |
+| Conditions.cs:107:13:107:20 | access to property Length | Conditions.cs:107:13:107:13 | access to local variable x |
+| Conditions.cs:107:13:107:24 | ... > ... | Conditions.cs:107:13:107:13 | access to local variable x |
+| Conditions.cs:107:24:107:24 | 0 | Conditions.cs:107:24:107:24 | 0 |
+| Conditions.cs:108:13:109:24 | if (...) ... | Conditions.cs:108:13:109:24 | if (...) ... |
+| Conditions.cs:108:17:108:18 | !... | Conditions.cs:108:17:108:18 | !... |
+| Conditions.cs:108:18:108:18 | access to parameter b | Conditions.cs:108:18:108:18 | access to parameter b |
+| Conditions.cs:109:17:109:17 | access to local variable x | Conditions.cs:109:17:109:17 | access to local variable x |
+| Conditions.cs:109:17:109:17 | access to local variable x | Conditions.cs:109:17:109:17 | access to local variable x |
+| Conditions.cs:109:17:109:23 | ... + ... | Conditions.cs:109:17:109:17 | access to local variable x |
+| Conditions.cs:109:17:109:23 | ... += ... | Conditions.cs:109:17:109:17 | access to local variable x |
+| Conditions.cs:109:17:109:23 | ... = ... | Conditions.cs:109:17:109:17 | access to local variable x |
+| Conditions.cs:109:17:109:24 | ...; | Conditions.cs:109:17:109:24 | ...; |
+| Conditions.cs:109:22:109:23 | "" | Conditions.cs:109:22:109:23 | "" |
+| Conditions.cs:110:9:110:17 | return ...; | Conditions.cs:110:16:110:16 | access to local variable x |
+| Conditions.cs:110:16:110:16 | access to local variable x | Conditions.cs:110:16:110:16 | access to local variable x |
 | ExitMethods.cs:7:5:10:5 | {...} | ExitMethods.cs:7:5:10:5 | {...} |
 | ExitMethods.cs:8:9:8:24 | call to method ErrorMaybe | ExitMethods.cs:8:20:8:23 | true |
 | ExitMethods.cs:8:9:8:25 | ...; | ExitMethods.cs:8:9:8:25 | ...; |

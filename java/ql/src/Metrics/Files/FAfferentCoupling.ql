@@ -9,14 +9,14 @@
  * @tags changeability
  *       modularity
  */
+
 import java
 
 from CompilationUnit f, int n
 where
   n = count(File g |
-    exists(Class c | c.fromSource() and c.getCompilationUnit() = f |
-      exists(Class d | d.fromSource() and d.getCompilationUnit() = g | depends(d,c))
+      exists(Class c | c.fromSource() and c.getCompilationUnit() = f |
+        exists(Class d | d.fromSource() and d.getCompilationUnit() = g | depends(d, c))
+      )
     )
-  )
-select f, n
-order by n desc
+select f, n order by n desc

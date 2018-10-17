@@ -11,6 +11,7 @@
  *       exceptions
  *       external/cwe/cwe-391
  */
+
 import java
 
 from CatchClause cc

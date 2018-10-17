@@ -10,11 +10,12 @@
  *       maintainability
  *       external/cwe/cwe-335
  */
+
 import java
 
 from MethodAccess ma, Method random
 where
-  random.getDeclaringType().hasQualifiedName("java.util","Random") and
+  random.getDeclaringType().hasQualifiedName("java.util", "Random") and
   ma.getMethod() = random and
   ma.getQualifier() instanceof ClassInstanceExpr
 select ma, "Random object created and used only once."

@@ -8,6 +8,7 @@
  * @id java/undocumented-type
  * @tags maintainability
  */
+
 import java
 import JavadocCommon
 

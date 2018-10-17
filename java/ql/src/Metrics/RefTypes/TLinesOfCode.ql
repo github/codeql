@@ -8,9 +8,9 @@
  * @id java/lines-of-code-per-type
  * @tags maintainability
  */
+
 import java
 
 from RefType t
 where t.fromSource()
-select t, t.getMetrics().getNumberOfLinesOfCode() as n
-order by n desc
+select t, t.getMetrics().getNumberOfLinesOfCode() as n order by n desc

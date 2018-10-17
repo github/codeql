@@ -11,13 +11,16 @@
  *       external/cwe/cwe-036
  *       external/cwe/cwe-073
  */
+
 import java
 import semmle.code.java.dataflow.FlowSources
 import PathsCommon
 
 class TaintedPathLocalConfig extends TaintTracking::Configuration {
   TaintedPathLocalConfig() { this = "TaintedPathLocalConfig" }
+
   override predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
+
   override predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(PathCreation p).getInput() }
 }
 

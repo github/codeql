@@ -7,6 +7,7 @@
  * @id java/unused-local-variable
  * @tags external/cwe/cwe-563
  */
+
 import java
 import DeadLocals
 
@@ -28,4 +29,6 @@ where
   // Rules about catch clauses belong in an exception handling query
   not exceptionVariable(ve) and
   not enhancedForVariable(ve)
-select v, "Unused local variable " + v.getName() + ". The variable is never read or written to and should be removed."
+select v,
+  "Unused local variable " + v.getName() +
+    ". The variable is never read or written to and should be removed."
