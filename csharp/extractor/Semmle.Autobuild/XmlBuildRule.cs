@@ -9,10 +9,16 @@ namespace Semmle.Autobuild
     {
         public BuildScript Analyse(Autobuilder builder)
         {
-            var command = new CommandBuilder(builder.Actions).
+            var config = new CommandBuilder(builder.Actions).
                 RunCommand(builder.Odasa).
                 Argument("index --xml --extensions config");
-            return command.Script;
+            var csproj = new CommandBuilder(builder.Actions).
+                RunCommand(builder.Odasa).
+                Argument("index --xml --extensions csproj");
+            var props = new CommandBuilder(builder.Actions).
+                RunCommand(builder.Odasa).
+                Argument("index --xml --extensions props");
+            return config.Script & csproj.Script & props.Script;
         }
     }
 }
