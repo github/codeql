@@ -744,6 +744,7 @@ private predicate onPath(DataFlow::Node nd, DataFlow::Configuration cfg,
  */
 private newtype TPathNode =
   MkPathNode(DataFlow::Node nd, DataFlow::Configuration cfg, PathSummary summary) {
+    isSource(_, cfg, _) and isSink(_, cfg, _) and
     onPath(nd, cfg, summary)
   }
 
