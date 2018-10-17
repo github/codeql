@@ -1,5 +1,5 @@
 /**
- * DEPRECATED: semmle.code.java.dataflow.ModulusAnalysis instead.
+ * DEPRECATED: Use semmle.code.java.dataflow.ModulusAnalysis instead.
  *
  * Parity Analysis.
  *
@@ -225,7 +225,7 @@ Parity getExprParity(Expr e) {
 }
 
 /**
- * DEPRECATED: semmle.code.java.dataflow.ModulusAnalysis instead.
+ * DEPRECATED: Use semmle.code.java.dataflow.ModulusAnalysis instead.
  *
  * Holds if the parity can be determined for both sides of `comp`. The boolean
  * `eqparity` indicates whether the two sides have equal or opposite parity.
