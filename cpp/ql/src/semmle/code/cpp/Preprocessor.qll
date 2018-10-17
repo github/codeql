@@ -27,8 +27,8 @@ class PreprocessorDirective extends Locatable, @preprocdirect {
       line = this.getLocation().getStartLine() and
       result.getLocation().getStartLine() < line and
       line < e.getLocation().getEndLine()
-		)
-	}
+    )
+  }
 }
 
 
