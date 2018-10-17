@@ -23,3 +23,8 @@
 | Guards.cs:97:31:97:31 | access to parameter s |
 | Guards.cs:116:27:116:51 | access to field Field |
 | Guards.cs:125:29:125:30 | access to parameter s1 |
+| Guards.cs:132:16:132:16 | access to parameter s |
+| Guards.cs:138:20:138:20 | access to parameter s |
+| Guards.cs:154:24:154:24 | access to parameter o |
+| Guards.cs:158:24:158:24 | access to parameter o |
+| Guards.cs:162:24:162:24 | access to parameter o |

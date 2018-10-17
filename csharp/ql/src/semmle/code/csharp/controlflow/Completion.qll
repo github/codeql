@@ -401,10 +401,21 @@ private predicate inNullnessContext(Expr e, boolean isNullnessCompletionForParen
   )
 }
 
+/**
+ * Holds if `cfe` is the element inside case statement `cs`, belonging to `switch`
+ * statement `ss`, that has the matching completion.
+ */
+predicate switchMatching(SwitchStmt ss, CaseStmt cs, ControlFlowElement cfe) {
+  ss.getACase() = cs and
+  (
+    cfe = cs.(ConstCase).getExpr()
+    or
+    cfe = cs.(TypeCase).getTypeAccess() // use type access to represent the type test
+  )
+}
+
 private predicate mustHaveMatchingCompletion(SwitchStmt ss, ControlFlowElement cfe) {
-  cfe = ss.getAConstCase().getExpr()
-  or
-  cfe = ss.getATypeCase().getTypeAccess() // use type access to represent the type test
+  switchMatching(ss, _, cfe)
 }
 
 /**
