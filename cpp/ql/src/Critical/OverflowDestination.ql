@@ -5,6 +5,7 @@
  * @kind problem
  * @id cpp/overflow-destination
  * @problem.severity warning
+ * @precision low
  * @tags reliability
  *       security
  *       external/cwe/cwe-119
