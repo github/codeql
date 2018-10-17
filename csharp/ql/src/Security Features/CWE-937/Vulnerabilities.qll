@@ -11,7 +11,6 @@ import csharp
 import Vulnerability
 
 class MicrosoftAdvisory4021279 extends Vulnerability {
-
   MicrosoftAdvisory4021279() { this = "Microsoft Security Advisory 4021279" }
 
   override string getUrl() { result = "https://github.com/dotnet/corefx/issues/19535" }
