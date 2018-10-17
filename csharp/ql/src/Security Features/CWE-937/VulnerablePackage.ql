@@ -1,5 +1,5 @@
 /**
- * @name Using a package with a known vulnerability.
+ * @name Using a package with a known vulnerability
  * @description Using a package with a known vulnerability is a security risk.
  *              Upgrade the package to a version that does not contain the vulnerability.
  * @kind problem
