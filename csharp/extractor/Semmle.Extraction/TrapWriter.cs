@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.IO.Compression;
+using System.Security.Cryptography;
 using System.Text;
 using Semmle.Util;
 using Semmle.Util.Logging;
@@ -170,21 +171,23 @@ namespace Semmle.Extraction
                     WriterLazy.Value.Close();
                     if (TryMove(tmpFile, TrapFile))
                         return;
-                    else if (discardDuplicates)
+
+                    if (discardDuplicates)
                     {
                         FileUtils.TryDelete(tmpFile);
                         return;
                     }
 
-                    string root = TrapFile.Substring(0, TrapFile.Length - 8);   // Remove trailing ".trap.gz"
-
-                    // Loop until we find an available trap filename.
-                    for (int n = 0; n < 100; ++n)
+                    var existingHash = ComputeHash(TrapFile);
+                    var hash = ComputeHash(tmpFile);
+                    if (existingHash != hash)
                     {
-                        if (TryMove(tmpFile, string.Format("{0}.{1}.trap.gz", root, n)))
+                        var root = TrapFile.Substring(0, TrapFile.Length - 8); // Remove trailing ".trap.gz"
+                        if (TryMove(tmpFile, $"{root}-{hash}.trap.gz"))
                             return;
                     }
-                    Logger.Log(Severity.Error, "Failed to move the trap file from {0} to {1}", tmpFile, TrapFile);
+                    Logger.Log(Severity.Info, "Identical trap file for {0} already exists", TrapFile);
+                    FileUtils.TryDelete(tmpFile);
                 }
             }
             catch (Exception ex)
@@ -202,6 +205,19 @@ namespace Semmle.Extraction
 
         //#################### PRIVATE METHODS ####################
         #region
+
+        /// <summary>
+        /// Computes the hash of <paramref name="filePath"/>.
+        /// </summary>
+        static string ComputeHash(string filePath)
+        {
+            using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            using (var shaAlg = new SHA256Managed())
+            {
+                var sha = shaAlg.ComputeHash(fileStream);
+                return Convert.ToBase64String(sha);
+            }
+        }
 
         class TrapBuilder : ITrapBuilder
         {
