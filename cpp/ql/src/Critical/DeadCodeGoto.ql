@@ -29,4 +29,4 @@ where b.getStmt(i) = js
   and not s.(BreakStmt).getBreakable() instanceof SwitchStmt
   // the jump isn't a goto into the body of the next statement
   and not exists (LabelStmt ls | s.(Loop).getStmt().getAChild*() = ls | ls.getName() = js.(GotoStmt).getName())
-select js, "This statement makes $@ dead.", s, s.toString()
+select js, "This statement makes $@ unreachable.", s, s.toString()
