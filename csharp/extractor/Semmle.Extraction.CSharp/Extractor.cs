@@ -87,11 +87,9 @@ namespace Semmle.Extraction.CSharp
                         return ExitCode.Ok;
                     }
 
-                    var argsWithResponse = AddDefaultResponse(compilerVersion.CscRsp, commandLineArguments.CompilerArguments);
-
                     var cwd = Directory.GetCurrentDirectory();
                     var compilerArguments = CSharpCommandLineParser.Default.Parse(
-                        argsWithResponse,
+                        compilerVersion.ArgsWithResponse,
                         cwd,
                         compilerVersion.FrameworkPath,
                         compilerVersion.AdditionalReferenceDirectories
@@ -128,7 +126,7 @@ namespace Semmle.Extraction.CSharp
                     {
                         logger.Log(Severity.Error, "  No source files");
                         ++analyser.CompilationErrors;
-                        analyser.LogDiagnostics();
+                        analyser.LogDiagnostics(compilerVersion.ArgsWithResponse);
                         return ExitCode.Failed;
                     }
 
@@ -146,7 +144,7 @@ namespace Semmle.Extraction.CSharp
                         // already.
                         );
 
-                    analyser.Initialize(compilerArguments, compilation, commandLineArguments);
+                    analyser.Initialize(compilerArguments, compilation, commandLineArguments, compilerVersion.ArgsWithResponse);
                     analyser.AnalyseReferences();
 
                     foreach (var tree in compilation.SyntaxTrees)
@@ -170,24 +168,6 @@ namespace Semmle.Extraction.CSharp
                     return ExitCode.Errors;
                 }
             }
-        }
-
-        internal static bool SuppressDefaultResponseFile(IEnumerable<string> args)
-        {
-            return args.Any(arg => new[] { "/noconfig", "-noconfig" }.Contains(arg.ToLowerInvariant()));
-        }
-
-        /// <summary>
-        /// Adds @csc.rsp to the argument list to mimic csc.exe.
-        /// </summary>
-        /// <param name="responseFile">The full pathname of csc.rsp.</param>
-        /// <param name="args">The other command line arguments.</param>
-        /// <returns>Modified list of arguments.</returns>
-        static IEnumerable<string> AddDefaultResponse(string responseFile, IEnumerable<string> args)
-        {
-            return SuppressDefaultResponseFile(args) && File.Exists(responseFile) ?
-                args :
-                new[] { "@" + responseFile }.Concat(args);
         }
 
         /// <summary>
