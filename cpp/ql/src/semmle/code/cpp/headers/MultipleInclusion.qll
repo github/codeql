@@ -114,8 +114,11 @@ pragma[noopt] predicate correctIncludeGuard(HeaderFile hf, PreprocessorDirective
  */
 predicate startsWithIfndef(HeaderFile hf, PreprocessorDirective ifndef, string macroName) {
   ifndefDirective(ifndef, macroName) and
-  ifndef.getFile() = hf and
-  ifndef.getLocation().getStartLine() = min(int l | includeGuardRelevantLine(hf, l))
+  exists(Location loc |
+    loc = ifndef.getLocation() and
+    loc.getFile() = hf and
+    loc.getStartLine() = min(int l | includeGuardRelevantLine(hf, l))
+  )
 }
 
 private predicate endifLocation(PreprocessorEndif endif, File f, int line) {
