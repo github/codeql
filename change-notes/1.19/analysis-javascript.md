@@ -35,6 +35,7 @@
 | Remote property injection | Fewer results | The precision of this rule has been revised to "medium". Results are no longer shown on LGTM by default. |
 | Missing CSRF middleware | Fewer false-positive results | This rule now recognizes additional CSRF protection middlewares. |
 | Server-side URL redirect | More results | This rule now recognizes redirection calls in more cases. |
+| User-controlled bypass of security check | Fewer results | This rule no longer flags conditions that guard early returns. The precision of this rule has been revised to "medium". Results are no longer shown on LGTM by default. | 
 | Whitespace contradicts operator precedence | Fewer false-positive results | This rule no longer flags operators with asymmetric whitespace. |
 
 ## Changes to QL libraries

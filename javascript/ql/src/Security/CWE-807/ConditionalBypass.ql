@@ -3,7 +3,7 @@
  * @description Conditions that the user controls are not suited for making security-related decisions.
  * @kind problem
  * @problem.severity error
- * @precision high
+ * @precision medium
  * @id js/user-controlled-bypass
  * @tags security
  *       external/cwe/cwe-807
@@ -83,8 +83,32 @@ predicate isTaintedGuardForSensitiveAction(Sink sink, DataFlow::Node source, Sen
   )
 }
 
+/**
+ * Holds if `e` effectively guards access to `action` by returning or throwing early.
+ *
+ * Example: `if (e) return; action(x)`.
+ */
+predicate isEarlyAbortGuard(Sink e, SensitiveAction action) {
+  exists (IfStmt guard |
+    // `e` is in the condition of an if-statement ...
+    e.asExpr().getParentExpr*() = guard.getCondition() and
+    // ... where the then-branch always throws or returns
+    exists (Stmt abort |
+      abort instanceof ThrowStmt or
+      abort instanceof ReturnStmt |
+      abort.nestedIn(guard) and
+      abort.getBasicBlock().(ReachableBasicBlock).postDominates(guard.getThen().getBasicBlock() )
+    ) and
+    // ... and the else-branch does not exist
+    not exists (guard.getElse()) |
+    // ... and `action` is outside the if-statement
+    not action.asExpr().getEnclosingStmt().nestedIn(guard)
+  )
+}
+
 from DataFlow::Node source, DataFlow::Node sink, SensitiveAction action
-where isTaintedGuardForSensitiveAction(sink, source, action)
+where isTaintedGuardForSensitiveAction(sink, source, action) and
+      not isEarlyAbortGuard(sink, action)
 select sink, "This condition guards a sensitive $@, but $@ controls it.",
     action, "action",
     source, "a user-provided value"
