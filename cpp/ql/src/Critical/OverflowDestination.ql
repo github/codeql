@@ -12,7 +12,6 @@
  */
 import cpp
 import semmle.code.cpp.security.TaintTracking
-import semmle.code.cpp.pointsto.PointsTo
 
 /**
  * Holds if `fc` is a call to a copy operation where the size argument contains
@@ -44,14 +43,7 @@ predicate sourceSized(FunctionCall fc, Expr src)
       desttype.getArraySize() = srctype.getArraySize()))
 }
 
-class VulnerableArgument extends PointsToExpr
-{
-  VulnerableArgument() { sourceSized(_, this) }
-  override predicate interesting() { sourceSized(_, this) }
-}
-
-from FunctionCall fc, VulnerableArgument vuln, Expr taintSource
+from FunctionCall fc, Expr vuln, Expr taintSource
 where sourceSized(fc, vuln)
-  and tainted(taintSource, vuln.pointsTo())
-  and vuln.confidence() > 0.01
+  and tainted(taintSource, vuln)
 select fc, "To avoid overflow, this operation should be bounded by destination-buffer size, not source-buffer size."
