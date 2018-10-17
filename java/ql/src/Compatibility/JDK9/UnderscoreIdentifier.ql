@@ -8,6 +8,7 @@
  * @id java/underscore-identifier
  * @tags maintainability
  */
+
 import java
 
 class IdentifierElement extends Element {

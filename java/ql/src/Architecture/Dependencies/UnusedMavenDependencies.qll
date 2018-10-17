@@ -6,11 +6,11 @@ import semmle.code.xml.MavenPom
  * within the given container (folder, jar file etc.).
  */
 predicate pomDependsOnContainer(Pom f, Container g) {
-    exists(RefType source, RefType target |
-        source.getFile().getParentContainer*() = f.getFile().getParentContainer() and
-        target.getFile().getParentContainer*() = g and
-        depends(source, target)
-    )
+  exists(RefType source, RefType target |
+    source.getFile().getParentContainer*() = f.getFile().getParentContainer() and
+    target.getFile().getParentContainer*() = g and
+    depends(source, target)
+  )
 }
 
 /**
@@ -18,9 +18,9 @@ predicate pomDependsOnContainer(Pom f, Container g) {
  * within the project represented by the targetPom.
  */
 predicate pomDependsOnPom(Pom sourcePom, Pom targetPom) {
-    exists(RefType source, RefType target |
-        source.getFile().getParentContainer*() = sourcePom.getFile().getParentContainer() and
-        target.getFile().getParentContainer*() = targetPom.getFile().getParentContainer() and
-        depends(source, target)
-    )
+  exists(RefType source, RefType target |
+    source.getFile().getParentContainer*() = sourcePom.getFile().getParentContainer() and
+    target.getFile().getParentContainer*() = targetPom.getFile().getParentContainer() and
+    depends(source, target)
+  )
 }

@@ -6,19 +6,13 @@ private import semmle.code.java.controlflow.internal.GuardsLogic
  * A basic block that terminates in a condition, splitting the subsequent control flow.
  */
 class ConditionBlock extends BasicBlock {
-  ConditionBlock() {
-    this.getLastNode() instanceof ConditionNode
-  }
+  ConditionBlock() { this.getLastNode() instanceof ConditionNode }
 
   /** Gets the last node of this basic block. */
-  ConditionNode getConditionNode() {
-    result = this.getLastNode()
-  }
+  ConditionNode getConditionNode() { result = this.getLastNode() }
 
   /** Gets the condition of the last node of this basic block. */
-  Expr getCondition() {
-    result = this.getConditionNode().getCondition()
-  }
+  Expr getCondition() { result = this.getConditionNode().getCondition() }
 
   /** Gets a `true`- or `false`-successor of the last node of this basic block. */
   BasicBlock getTestSuccessor(boolean testIsTrue) {
@@ -63,6 +57,7 @@ class ConditionBlock extends BasicBlock {
      * that `this` strictly dominates `controlled` so that isn't necessary to check
      * directly.
      */
+
     exists(BasicBlock succ |
       succ = this.getTestSuccessor(testIsTrue) and
       succ.bbDominates(controlled) and
@@ -83,7 +78,8 @@ class ConditionBlock extends BasicBlock {
  */
 class Guard extends ExprParent {
   Guard() {
-    this.(Expr).getType() instanceof BooleanType and not this instanceof BooleanLiteral or
+    this.(Expr).getType() instanceof BooleanType and not this instanceof BooleanLiteral
+    or
     this instanceof SwitchCase
   }
 
@@ -106,10 +102,9 @@ class Guard extends ExprParent {
    * true.
    */
   predicate isEquality(Expr e1, Expr e2, boolean polarity) {
-    exists(Expr exp1, Expr exp2 |
-      equalityGuard(this, exp1, exp2, polarity)
-      |
-      e1 = exp1.getProperExpr() and e2 = exp2.getProperExpr() or
+    exists(Expr exp1, Expr exp2 | equalityGuard(this, exp1, exp2, polarity) |
+      e1 = exp1.getProperExpr() and e2 = exp2.getProperExpr()
+      or
       e2 = exp1.getProperExpr() and e1 = exp2.getProperExpr()
     )
   }
@@ -123,7 +118,8 @@ class Guard extends ExprParent {
       cb = bb1 and
       cb.getCondition() = this and
       bb2 = cb.getTestSuccessor(branch)
-    ) or
+    )
+    or
     exists(SwitchCase sc, ControlFlowNode pred |
       sc = this and
       branch = true and
@@ -143,7 +139,8 @@ class Guard extends ExprParent {
     exists(ConditionBlock cb |
       cb.getCondition() = this and
       cb.controls(controlled, branch)
-    ) or
+    )
+    or
     switchCaseControls(this, controlled) and branch = true
   }
 
@@ -175,7 +172,8 @@ private predicate switchCaseControls(SwitchCase sc, BasicBlock bb) {
  * BaseSSA-based reasoning.
  */
 predicate guardControls_v1(Guard guard, BasicBlock controlled, boolean branch) {
-  guard.directlyControls(controlled, branch) or
+  guard.directlyControls(controlled, branch)
+  or
   exists(Guard g, boolean b |
     guardControls_v1(g, controlled, b) and
     implies_v1(g, b, guard, branch)
@@ -189,7 +187,8 @@ predicate guardControls_v1(Guard guard, BasicBlock controlled, boolean branch) {
  * RangeAnalysis.
  */
 predicate guardControls_v2(Guard guard, BasicBlock controlled, boolean branch) {
-  guard.directlyControls(controlled, branch) or
+  guard.directlyControls(controlled, branch)
+  or
   exists(Guard g, boolean b |
     guardControls_v2(g, controlled, b) and
     implies_v2(g, b, guard, branch)
@@ -197,7 +196,8 @@ predicate guardControls_v2(Guard guard, BasicBlock controlled, boolean branch) {
 }
 
 private predicate guardControls_v3(Guard guard, BasicBlock controlled, boolean branch) {
-  guard.directlyControls(controlled, branch) or
+  guard.directlyControls(controlled, branch)
+  or
   exists(Guard g, boolean b |
     guardControls_v3(g, controlled, b) and
     implies_v3(g, b, guard, branch)
@@ -209,13 +209,16 @@ private predicate equalityGuard(Guard g, Expr e1, Expr e2, boolean polarity) {
     eqtest = g and
     polarity = eqtest.polarity() and
     eqtest.hasOperands(e1, e2)
-  ) or
+  )
+  or
   exists(MethodAccess ma |
     ma = g and
     ma.getMethod() instanceof EqualsMethod and
     polarity = true and
-    ma.getAnArgument() = e1 and ma.getQualifier() = e2
-  ) or
+    ma.getAnArgument() = e1 and
+    ma.getQualifier() = e2
+  )
+  or
   exists(MethodAccess ma, Method equals |
     ma = g and
     ma.getMethod() = equals and
@@ -223,11 +226,14 @@ private predicate equalityGuard(Guard g, Expr e1, Expr e2, boolean polarity) {
     equals.hasName("equals") and
     equals.getNumberOfParameters() = 2 and
     equals.getDeclaringType().hasQualifiedName("java.util", "Objects") and
-    ma.getArgument(0) = e1 and ma.getArgument(1) = e2
-  ) or
+    ma.getArgument(0) = e1 and
+    ma.getArgument(1) = e2
+  )
+  or
   exists(ConstCase cc |
     cc = g and
     polarity = true and
-    cc.getSwitch().getExpr().getProperExpr() = e1 and cc.getValue() = e2
+    cc.getSwitch().getExpr().getProperExpr() = e1 and
+    cc.getValue() = e2
   )
 }

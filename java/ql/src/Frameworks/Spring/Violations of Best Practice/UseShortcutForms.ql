@@ -8,6 +8,7 @@
  * @tags maintainability
  *       frameworks/spring
  */
+
 import java
 import semmle.code.java.frameworks.spring.Spring
 
@@ -52,7 +53,9 @@ class SpringPropertyUseShortcut extends SpringProperty {
 
 from SpringXMLElement springElement, string msg
 where
-  exists(SpringConstructorArgUseShortcut cons | cons = springElement and msg = cons.getMessage()) or
-  exists(SpringEntryUseShortcut entry | entry = springElement and msg = entry.getMessage()) or
+  exists(SpringConstructorArgUseShortcut cons | cons = springElement and msg = cons.getMessage())
+  or
+  exists(SpringEntryUseShortcut entry | entry = springElement and msg = entry.getMessage())
+  or
   exists(SpringPropertyUseShortcut prop | prop = springElement and msg = prop.getMessage())
 select springElement, msg

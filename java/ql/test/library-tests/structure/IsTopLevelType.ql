@@ -1,6 +1,7 @@
 /**
  * @name IsTopLevelType
  */
+
 import default
 
 from TopLevelType tp

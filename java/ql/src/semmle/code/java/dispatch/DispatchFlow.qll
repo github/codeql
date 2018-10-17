@@ -9,12 +9,11 @@ private import semmle.code.java.Maps
 /**
  * Gets a viable dispatch target for `ma`. This is the input dispatch relation.
  */
-private Method viableImpl_inp(MethodAccess ma) {
-  result = viableImpl_v2(ma)
-}
+private Method viableImpl_inp(MethodAccess ma) { result = viableImpl_v2(ma) }
 
 private Callable dispatchCand(Call c) {
-  c instanceof ConstructorCall and result = c.getCallee().getSourceDeclaration() or
+  c instanceof ConstructorCall and result = c.getCallee().getSourceDeclaration()
+  or
   result = viableImpl_inp(c)
 }
 
@@ -97,18 +96,23 @@ private predicate dispatchOrigin(ClassInstanceExpr cie, MethodAccess ma, Method 
 
 /** Holds if `t` is a type that is relevant for dispatch flow. */
 private predicate relevant(RefType t) {
-  exists(ClassInstanceExpr cie | dispatchOrigin(cie, _, _) and t = cie.getConstructedType().getSourceDeclaration()) or
-  relevant(t.getErasure()) or
-  exists(RefType r | relevant(r) and t = r.getASourceSupertype()) or
-  relevant(t.(Array).getComponentType()) or
-  t instanceof MapType or
+  exists(ClassInstanceExpr cie |
+    dispatchOrigin(cie, _, _) and t = cie.getConstructedType().getSourceDeclaration()
+  )
+  or
+  relevant(t.getErasure())
+  or
+  exists(RefType r | relevant(r) and t = r.getASourceSupertype())
+  or
+  relevant(t.(Array).getComponentType())
+  or
+  t instanceof MapType
+  or
   t instanceof CollectionType
 }
 
 /** A node with a type that is relevant for dispatch flow. */
-private class RelevantNode extends Node {
-  RelevantNode() { relevant(this.getType()) }
-}
+private class RelevantNode extends Node { RelevantNode() { relevant(this.getType()) } }
 
 /**
  * Holds if `p` is the `i`th parameter of a viable dispatch target of `call`.
@@ -141,7 +145,8 @@ private predicate callFlowStepCand(RelevantNode n1, RelevantNode n2) {
     ret.getEnclosingCallable() = m and
     ret.getResult() = n1.asExpr() and
     m = dispatchCand(n2.asExpr())
-  ) or
+  )
+  or
   viableArgParamCand(n1, n2)
 }
 
@@ -151,47 +156,66 @@ private predicate callFlowStepCand(RelevantNode n1, RelevantNode n2) {
  */
 private predicate flowStep(RelevantNode n1, RelevantNode n2) {
   exists(BaseSsaVariable v, BaseSsaVariable def |
-    def.(BaseSsaUpdate).getDefiningExpr().(VariableAssign).getSource() = n1.asExpr() or
-    def.(BaseSsaImplicitInit).isParameterDefinition(n1.asParameter()) or
+    def.(BaseSsaUpdate).getDefiningExpr().(VariableAssign).getSource() = n1.asExpr()
+    or
+    def.(BaseSsaImplicitInit).isParameterDefinition(n1.asParameter())
+    or
     exists(EnhancedForStmt for |
       for.getVariable() = def.(BaseSsaUpdate).getDefiningExpr() and
       for.getExpr() = n1.asExpr() and
       n1.getType() instanceof Array
     )
-    |
+  |
     v.getAnUltimateDefinition() = def and
     v.getAUse() = n2.asExpr()
-  ) or
-  exists(Callable c |
-    n1.(InstanceParameterNode).getCallable() = c
-    |
-    exists(InstanceAccess ia | ia = n2.asExpr() and ia.getEnclosingCallable() = c and ia.isOwnInstanceAccess()) or
+  )
+  or
+  exists(Callable c | n1.(InstanceParameterNode).getCallable() = c |
+    exists(InstanceAccess ia |
+      ia = n2.asExpr() and ia.getEnclosingCallable() = c and ia.isOwnInstanceAccess()
+    )
+    or
     n2.(ImplicitInstanceAccess).getInstanceAccess().(OwnInstanceAccess).getEnclosingCallable() = c
-  ) or
+  )
+  or
   exists(Field f |
     f.getAnAssignedValue() = n1.asExpr() and
     n2.asExpr().(FieldRead).getField() = f
-  ) or
+  )
+  or
   exists(EnumType enum, Method getValue |
     enum.getAnEnumConstant().getAnAssignedValue() = n1.asExpr() and
     getValue.getDeclaringType() = enum and
     (getValue.hasName("values") or getValue.hasName("valueOf")) and
     n2.asExpr().(MethodAccess).getMethod() = getValue
-  ) or
-  n2.asExpr().(ParExpr).getExpr() = n1.asExpr() or
-  n2.asExpr().(CastExpr).getExpr() = n1.asExpr() or
-  n2.asExpr().(ConditionalExpr).getTrueExpr() = n1.asExpr() or
-  n2.asExpr().(ConditionalExpr).getFalseExpr() = n1.asExpr() or
-  n2.asExpr().(AssignExpr).getSource() = n1.asExpr() or
-  n2.asExpr().(ArrayInit).getAnInit() = n1.asExpr() or
-  n2.asExpr().(ArrayCreationExpr).getInit() = n1.asExpr() or
-  n2.asExpr().(ArrayAccess).getArray() = n1.asExpr() or
-  exists(Argument arg | n1.asExpr() = arg and arg.isVararg() and n2.(ImplicitVarargsArray).getCall() = arg.getCall()) or
+  )
+  or
+  n2.asExpr().(ParExpr).getExpr() = n1.asExpr()
+  or
+  n2.asExpr().(CastExpr).getExpr() = n1.asExpr()
+  or
+  n2.asExpr().(ConditionalExpr).getTrueExpr() = n1.asExpr()
+  or
+  n2.asExpr().(ConditionalExpr).getFalseExpr() = n1.asExpr()
+  or
+  n2.asExpr().(AssignExpr).getSource() = n1.asExpr()
+  or
+  n2.asExpr().(ArrayInit).getAnInit() = n1.asExpr()
+  or
+  n2.asExpr().(ArrayCreationExpr).getInit() = n1.asExpr()
+  or
+  n2.asExpr().(ArrayAccess).getArray() = n1.asExpr()
+  or
+  exists(Argument arg |
+    n1.asExpr() = arg and arg.isVararg() and n2.(ImplicitVarargsArray).getCall() = arg.getCall()
+  )
+  or
   exists(AssignExpr a, Variable v |
     a.getSource() = n1.asExpr() and
     a.getDest().(ArrayAccess).getArray() = v.getAnAccess() and
     n2.asExpr() = v.getAnAccess().(RValue)
-  ) or
+  )
+  or
   exists(Variable v, MethodAccess put, MethodAccess get |
     put.getArgument(1) = n1.asExpr() and
     put.getMethod().(MapMethod).hasName("put") and
@@ -199,17 +223,19 @@ private predicate flowStep(RelevantNode n1, RelevantNode n2) {
     get.getQualifier() = v.getAnAccess() and
     get.getMethod().(MapMethod).hasName("get") and
     n2.asExpr() = get
-  ) or
+  )
+  or
   exists(Variable v, MethodAccess add |
     add.getAnArgument() = n1.asExpr() and
     add.getMethod().(CollectionMethod).hasName("add") and
     add.getQualifier() = v.getAnAccess()
-    |
+  |
     exists(MethodAccess get |
       get.getQualifier() = v.getAnAccess() and
       get.getMethod().(CollectionMethod).hasName("get") and
       n2.asExpr() = get
-    ) or
+    )
+    or
     exists(EnhancedForStmt for, BaseSsaVariable ssa, BaseSsaVariable def |
       for.getVariable() = def.(BaseSsaUpdate).getDefiningExpr() and
       for.getExpr() = v.getAnAccess() and
@@ -223,7 +249,8 @@ private predicate flowStep(RelevantNode n1, RelevantNode n2) {
  * Holds if `n` is forward-reachable from a relevant `ClassInstanceExpr`.
  */
 private predicate nodeCandFwd(Node n) {
-  dispatchOrigin(n.asExpr(), _, _) or
+  dispatchOrigin(n.asExpr(), _, _)
+  or
   exists(Node mid | nodeCandFwd(mid) | flowStep(mid, n) or callFlowStepCand(mid, n))
 }
 
@@ -236,7 +263,8 @@ private predicate nodeCand(Node n) {
     dispatchOrigin(_, ma, _) and
     n = getInstanceArgument(ma) and
     nodeCandFwd(n)
-  ) or
+  )
+  or
   exists(Node mid | nodeCand(mid) | flowStep(n, mid) or callFlowStepCand(n, mid)) and
   nodeCandFwd(n)
 }

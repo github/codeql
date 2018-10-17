@@ -8,6 +8,7 @@
  * @id java/local-shadows-field-unused
  * @tags maintainability
  */
+
 import java
 import Shadowing
 
@@ -16,8 +17,8 @@ where
   shadows(d, c, f, callable) and
   not assignmentToShadowingLocal(d, f) and
   not assignmentFromShadowingLocal(d, f) and
-  not thisAccess(d, f) and not confusingAccess(d, f) and
+  not thisAccess(d, f) and
+  not confusingAccess(d, f) and
   (if callable instanceof Constructor then callableType = "" else callableType = "method ")
-select
-  d, "This local variable shadows field $@, which is not used in " + callableType + "$@.",
-  f, f.getName(), callable, callable.getName()
+select d, "This local variable shadows field $@, which is not used in " + callableType + "$@.", f,
+  f.getName(), callable, callable.getName()

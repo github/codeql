@@ -10,6 +10,7 @@
  * @tags maintainability
  *       complexity
  */
+
 import java
 
 /**
@@ -18,10 +19,7 @@ import java
  * consider the second `if` nested. Blocks are also skipped.
  */
 predicate realParent(Stmt inner, Stmt outer) {
-  if skipParent(inner) then
-    realParent(inner.getParent(), outer)
-  else
-    outer = inner.getParent()
+  if skipParent(inner) then realParent(inner.getParent(), outer) else outer = inner.getParent()
 }
 
 predicate skipParent(Stmt s) {
@@ -37,6 +35,6 @@ predicate nestingDepth(Stmt s, int depth) {
 }
 
 from Method m, int depth
-where depth = max(Stmt s, int aDepth | s.getEnclosingCallable() = m and nestingDepth(s, aDepth) | aDepth)
-select m, depth
-order by depth
+where
+  depth = max(Stmt s, int aDepth | s.getEnclosingCallable() = m and nestingDepth(s, aDepth) | aDepth)
+select m, depth order by depth

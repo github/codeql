@@ -1,5 +1,4 @@
 import java
-
 import semmle.code.java.frameworks.spring.SpringAbstractRef
 import semmle.code.java.frameworks.spring.SpringAlias
 import semmle.code.java.frameworks.spring.SpringArgType
@@ -35,6 +34,5 @@ import semmle.code.java.frameworks.spring.SpringReplacedMethod
 import semmle.code.java.frameworks.spring.SpringSet
 import semmle.code.java.frameworks.spring.SpringValue
 import semmle.code.java.frameworks.spring.SpringXMLElement
-
 import semmle.code.java.frameworks.spring.metrics.MetricSpringBean
 import semmle.code.java.frameworks.spring.metrics.MetricSpringBeanFile

@@ -9,6 +9,7 @@
  * @tags reliability
  *       correctness
  */
+
 import java
 import semmle.code.java.frameworks.Lombok
 
@@ -17,9 +18,10 @@ predicate implementsComparableOn(RefType t, RefType typeArg) {
   exists(RefType cmp |
     t.getAnAncestor() = cmp and
     cmp.getSourceDeclaration().hasQualifiedName("java.lang", "Comparable")
-    |
+  |
     // Either `t` extends `Comparable<T>`, in which case `typeArg` is `T`, ...
-    typeArg = cmp.(ParameterizedType).getATypeArgument() and not typeArg instanceof Wildcard or
+    typeArg = cmp.(ParameterizedType).getATypeArgument() and not typeArg instanceof Wildcard
+    or
     // ... or it extends the raw type `Comparable`, in which case `typeArg` is `Object`.
     cmp instanceof RawType and typeArg instanceof TypeObject
   )

@@ -7,6 +7,7 @@
  * @metricAggregate avg min max sum
  * @id java/vcs/commits-per-file
  */
+
 import java
 import external.VCS
 

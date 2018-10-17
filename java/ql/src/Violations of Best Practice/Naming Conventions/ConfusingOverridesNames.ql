@@ -10,6 +10,7 @@
  *       readability
  *       naming
  */
+
 import java
 
 /**
@@ -71,5 +72,5 @@ where
     notConfusing.getName() = m2.getName()
   )
 select m1,
-  "It is confusing to have methods " + m1.getName() + " in " + m1.getDeclaringType().getName() + " and "
-  + m2.getName() + " in " + m2.getDeclaringType().getName() + "."
+  "It is confusing to have methods " + m1.getName() + " in " + m1.getDeclaringType().getName() +
+    " and " + m2.getName() + " in " + m2.getDeclaringType().getName() + "."

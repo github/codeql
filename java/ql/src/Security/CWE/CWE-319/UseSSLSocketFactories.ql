@@ -9,6 +9,7 @@
  * @tags security
  *       external/cwe/cwe-319
  */
+
 import java
 import semmle.code.java.security.Encryption
 
@@ -24,11 +25,10 @@ class SocketFactoryType extends RefType {
   SocketFactoryType() {
     this.getQualifiedName() = "java.rmi.server.RMIServerSocketFactory" or
     this.getQualifiedName() = "java.rmi.server.RMIClientSocketFactory" or
-    this.getQualifiedName()= "javax.net.SocketFactory" or
+    this.getQualifiedName() = "javax.net.SocketFactory" or
     this.getQualifiedName() = "java.net.SocketImplFactory"
   }
 }
-
 
 /** Holds if the method `m` has a factory parameter at location `p`. */
 cached
@@ -76,6 +76,5 @@ predicate query(MethodAccess m, Method def, int paramNo, string message, Element
 }
 
 from MethodAccess m, Method def, int param, string message, Element evidence
-where
-  query(m,def,param,message,evidence)
+where query(m, def, param, message, evidence)
 select m, "Method " + message + ": use an SSL factory."

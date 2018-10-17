@@ -8,6 +8,7 @@
  * @id java/undocumented-exception
  * @tags maintainability
  */
+
 import java
 import JavadocCommon
 
@@ -18,5 +19,6 @@ where
     e.getType() = t and
     not c.hasAcceptableThrowsTag(e)
   )
-select c, "This " + c.toMethodOrConstructorString() + " throws $@ but does not have a corresponding Javadoc tag.",
-  t, t.getName()
+select c,
+  "This " + c.toMethodOrConstructorString() +
+    " throws $@ but does not have a corresponding Javadoc tag.", t, t.getName()

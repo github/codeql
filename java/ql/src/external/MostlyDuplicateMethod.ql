@@ -13,6 +13,7 @@
  *       statistical
  *       non-attributable
  */
+
 import java
 import CodeDuplication
 
@@ -26,5 +27,5 @@ where
   not duplicateMethod(m, other) and
   not classLevelDuplication(m.getDeclaringType(), other.getDeclaringType()) and
   not fileLevelDuplication(m.getCompilationUnit(), other.getCompilationUnit())
-select m, percent + "% of the statements in " + m.getName() + " are duplicated in $@.",
-  other, other.getDeclaringType().getName() + "." + other.getStringSignature()
+select m, percent + "% of the statements in " + m.getName() + " are duplicated in $@.", other,
+  other.getDeclaringType().getName() + "." + other.getStringSignature()

@@ -62,9 +62,22 @@ private module MongoDB {
 
     QueryCall() {
       exists (string m | asExpr().(MethodCallExpr).calls(any(Collection c), m) |
+        m = "aggregate" and queryArgIdx = 0 or
         m = "count" and queryArgIdx = 0 or
+        m = "deleteMany" and queryArgIdx = 0 or
+        m = "deleteOne" and queryArgIdx = 0 or
         m = "distinct" and queryArgIdx = 1 or
-        m = "find" and queryArgIdx = 0
+        m = "find" and queryArgIdx = 0 or
+        m = "findOne" and queryArgIdx = 0 or
+        m = "findOneAndDelete" and queryArgIdx = 0 or
+        m = "findOneAndRemove" and queryArgIdx = 0 or
+        m = "findOneAndDelete" and queryArgIdx = 0 or
+        m = "findOneAndUpdate" and queryArgIdx = 0 or
+        m = "remove" and queryArgIdx = 0 or
+        m = "replaceOne" and queryArgIdx = 0 or
+        m = "update" and queryArgIdx = 0 or
+        m = "updateMany" and queryArgIdx = 0 or
+        m = "updateOne" and queryArgIdx = 0
       )
     }
 

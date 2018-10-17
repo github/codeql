@@ -9,6 +9,7 @@
  * @tags reliability
  *       correctness
  */
+
 import semmle.code.java.Member
 import semmle.code.java.JDK
 
@@ -22,12 +23,11 @@ class CheckedCast extends CastExpr {
     )
   }
 
-  Variable castVariable() {
-    result.getAnAccess() = this.getExpr()
-  }
+  Variable castVariable() { result.getAnAccess() = this.getExpr() }
 }
 
-/** An `equals` method with a body of either `return o == this;`
+/**
+ * An `equals` method with a body of either `return o == this;`
  *  or `return o == field;`
  */
 class ReferenceEquals extends EqualsMethod {
@@ -35,7 +35,11 @@ class ReferenceEquals extends EqualsMethod {
     exists(Block b, ReturnStmt ret, EQExpr eq |
       this.getBody() = b and
       b.getStmt(0) = ret and
-      (ret.getResult() = eq or exists(ParExpr pe | ret.getResult() = pe and pe.getExpr() = eq)) and
+      (
+        ret.getResult() = eq
+        or
+        exists(ParExpr pe | ret.getResult() = pe and pe.getExpr() = eq)
+      ) and
       eq.getAnOperand() = this.getAParameter().getAnAccess() and
       (eq.getAnOperand() instanceof ThisAccess or eq.getAnOperand() instanceof FieldAccess)
     )
@@ -53,10 +57,14 @@ where
   ) and
   // Exclude cases that are probably OK.
   not exists(MethodAccess ma, Method c | ma.getEnclosingCallable() = m and ma.getMethod() = c |
-    c.hasName("getClass") or
-    c.hasName("compareTo") or
-    c.hasName("equals") or
-    c.hasName("isInstance") or
+    c.hasName("getClass")
+    or
+    c.hasName("compareTo")
+    or
+    c.hasName("equals")
+    or
+    c.hasName("isInstance")
+    or
     c.hasName("reflectionEquals")
     or
     // If both `this` and the argument are passed to another method,
@@ -64,7 +72,8 @@ where
     // that method may do the right thing.
     ma.getAnArgument() = m.getParameter().getAnAccess() and
     (
-      ma.getAnArgument() instanceof ThisAccess or
+      ma.getAnArgument() instanceof ThisAccess
+      or
       exists(Method delegate | delegate.getSourceDeclaration() = ma.getMethod() |
         m.getDeclaringType().inherits(delegate)
       )

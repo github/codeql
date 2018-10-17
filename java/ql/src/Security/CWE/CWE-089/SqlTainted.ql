@@ -14,8 +14,6 @@ import semmle.code.java.Expr
 import semmle.code.java.dataflow.FlowSources
 import SqlInjectionLib
 
-
 from QueryInjectionSink query, RemoteUserInput source
 where queryTaintedBy(query, source)
-select query, "Query might include code from $@.",
-  source, "this user input"
+select query, "Query might include code from $@.", source, "this user input"

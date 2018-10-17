@@ -8,6 +8,7 @@
  * @tags security
  *       external/cwe/cwe-798
  */
+
 import java
 import HardcodedCredentials
 
@@ -16,5 +17,4 @@ where
   f instanceof Field and
   f.getAnAssignedValue() = e and
   not e.(StringLiteral).getValue() = ""
-select f, "Sensitive field is assigned a hard-coded $@.",
-  e, "value"
+select f, "Sensitive field is assigned a hard-coded $@.", e, "value"

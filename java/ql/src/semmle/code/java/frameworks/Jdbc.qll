@@ -5,38 +5,27 @@
 import semmle.code.java.Type
 
 /*--- Types ---*/
-
 /** The interface `java.sql.Connection`. */
 class TypeConnection extends Interface {
-  TypeConnection() {
-    hasQualifiedName("java.sql", "Connection")
-  }
+  TypeConnection() { hasQualifiedName("java.sql", "Connection") }
 }
 
 /** The interface `java.sql.PreparedStatement`. */
 class TypePreparedStatement extends Interface {
-  TypePreparedStatement() {
-    hasQualifiedName("java.sql", "PreparedStatement")
-  }
+  TypePreparedStatement() { hasQualifiedName("java.sql", "PreparedStatement") }
 }
 
 /** The interface `java.sql.ResultSet`. */
 class TypeResultSet extends Interface {
-  TypeResultSet() {
-    hasQualifiedName("java.sql", "ResultSet")
-  }
+  TypeResultSet() { hasQualifiedName("java.sql", "ResultSet") }
 }
 
 /** The interface `java.sql.Statement`. */
 class TypeStatement extends Interface {
-  TypeStatement() {
-    hasQualifiedName("java.sql", "Statement")
-  }
+  TypeStatement() { hasQualifiedName("java.sql", "Statement") }
 }
 
-
 /*--- Methods ---*/
-
 /** A method with the name `prepareStatement` declared in `java.sql.Connection`. */
 class ConnectionPrepareStatement extends Method {
   ConnectionPrepareStatement() {
@@ -44,7 +33,6 @@ class ConnectionPrepareStatement extends Method {
     hasName("prepareStatement")
   }
 }
-
 
 /** A method with the name `executeQuery` declared in `java.sql.Statement`. */
 class StatementExecuteQuery extends Method {
@@ -87,9 +75,7 @@ class ResultSetGetStringMethod extends Method {
   }
 }
 
-
 /*--- Other definitions ---*/
-
 /**
  * An expression representing SQL code that occurs as an argument of
  * a method in `java.sql.Connection` or `java.sql.Statement`.

@@ -10,6 +10,7 @@
  *       external/cwe/cwe-807
  *       external/cwe/cwe-290
  */
+
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.SensitiveActions
@@ -31,7 +32,9 @@ predicate conditionControlsMethod(MethodAccess m, Expr e) {
 
 class ConditionalBypassFlowConfig extends TaintTracking::Configuration {
   ConditionalBypassFlowConfig() { this = "ConditionalBypassFlowConfig" }
+
   override predicate isSource(DataFlow::Node source) { source instanceof UserInput }
+
   override predicate isSink(DataFlow::Node sink) { conditionControlsMethod(_, sink.asExpr()) }
 }
 
@@ -39,5 +42,5 @@ from UserInput u, MethodAccess m, Expr e, ConditionalBypassFlowConfig conf
 where
   conditionControlsMethod(m, e) and
   conf.hasFlow(u, DataFlow::exprNode(e))
-select m, "Sensitive method may not be executed depending on $@, which flows from $@.",
-  e, "this condition", u, "user input"
+select m, "Sensitive method may not be executed depending on $@, which flows from $@.", e,
+  "this condition", u, "user input"

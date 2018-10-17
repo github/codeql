@@ -10,6 +10,7 @@
  *       maintainability
  *       frameworks/junit
  */
+
 import java
 
 from TypeJUnitTestCase junitTestCase, TypeJUnitTest junitTest, Method m

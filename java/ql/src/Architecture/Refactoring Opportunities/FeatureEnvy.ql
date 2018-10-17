@@ -10,6 +10,7 @@
  * @tags maintainability
  *       modularity
  */
+
 import java
 
 Member getAUsedMember(Method m) {
@@ -21,9 +22,7 @@ int dependencyCount(Method source, RefType target) {
   result = strictcount(Member m | m = getAUsedMember(source) and m = target.getAMember())
 }
 
-predicate methodDependsOn(Method m, RefType target) {
-  exists(dependencyCount(m, target))
-}
+predicate methodDependsOn(Method m, RefType target) { exists(dependencyCount(m, target)) }
 
 predicate dependsOn(RefType source, RefType target) {
   methodDependsOn(source.getACallable(), target)
@@ -36,7 +35,7 @@ int selfDependencyCount(Method source) {
 predicate dependsHighlyOn(Method source, RefType target, int selfCount, int depCount) {
   depCount = dependencyCount(source, target) and
   selfCount = selfDependencyCount(source) and
-  depCount > 2*selfCount and
+  depCount > 2 * selfCount and
   depCount > 4
 }
 
@@ -69,6 +68,7 @@ where
   // Don't include types that are used from many different places - we only highlight
   // relatively local fixes that could reasonably be implemented.
   count(Method yetAnotherMethod | query(yetAnotherMethod, other, _, _)) < 10
-select m, "Method " + m.getName() + " is too closely tied to $@: " + depCount +
-          " dependencies to it, but only " + selfCount + " dependencies to its own type.",
-          other, other.getName()
+select m,
+  "Method " + m.getName() + " is too closely tied to $@: " + depCount +
+    " dependencies to it, but only " + selfCount + " dependencies to its own type.", other,
+  other.getName()

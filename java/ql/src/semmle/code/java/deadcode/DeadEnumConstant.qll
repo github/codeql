@@ -5,11 +5,13 @@ import semmle.code.java.JDKAnnotations
  * Direct flow of values (i.e. object references) through expressions.
  */
 Expr valueFlow(Expr src) {
-  result = src or
+  result = src
+  or
   exists(ConditionalExpr c | result = c |
     src = c.getTrueExpr() or
     src = c.getFalseExpr()
-  ) or
+  )
+  or
   src = result.(ParExpr).getExpr()
 }
 
@@ -19,14 +21,19 @@ Expr valueFlow(Expr src) {
  * compared and discarded.
  */
 VarAccess valueAccess(EnumConstant e) {
-  result = e.getAnAccess() and (
+  result = e.getAnAccess() and
+  (
     exists(Call c |
       c.getAnArgument() = valueFlow+(result) or
       c.(MethodAccess).getQualifier() = valueFlow+(result)
-    ) or
-    exists(Assignment a | a.getSource() = valueFlow+(result)) or
-    exists(ReturnStmt r | r.getResult() = valueFlow+(result)) or
-    exists(LocalVariableDeclExpr v | v.getInit() = valueFlow+(result)) or
+    )
+    or
+    exists(Assignment a | a.getSource() = valueFlow+(result))
+    or
+    exists(ReturnStmt r | r.getResult() = valueFlow+(result))
+    or
+    exists(LocalVariableDeclExpr v | v.getInit() = valueFlow+(result))
+    or
     exists(AddExpr a | a.getAnOperand() = valueFlow+(result))
   )
 }
@@ -43,23 +50,24 @@ predicate exception(EnumConstant e) {
       exists(EnhancedForStmt s | s.getEnclosingCallable() = fromString |
         s.getVariable().getType() = t
       )
-    ) or
+    )
+    or
     // A method iterates over the values of an enum.
     exists(MethodAccess values | values.getMethod().getDeclaringType() = t |
       values.getParent() instanceof EnhancedForStmt or
       values.getParent().(MethodAccess).getMethod().hasName("findThisIn")
-    ) or
-    /*
-     * The `valueOf` method is called, meaning that depending on the string any constant
-     * could be retrieved.
-     */
+    )
+    or
+    // The `valueOf` method is called, meaning that depending on the string any constant
+    // could be retrieved.
     exists(MethodAccess valueOf | valueOf.getMethod().getDeclaringType() = t |
       valueOf.getMethod().hasName("valueOf")
-    ) or
+    )
+    or
     // Entire `Enum` annotated with reflective annotation.
     exists(ReflectiveAccessAnnotation ann | ann = t.getAnAnnotation())
-
-  ) or
+  )
+  or
   // Enum field annotated with reflective annotation.
   e.getAnAnnotation() instanceof ReflectiveAccessAnnotation
 }
@@ -71,7 +79,5 @@ class UnusedEnumConstant extends EnumConstant {
     not exception(this)
   }
 
-  predicate whitelisted() {
-    none()
-  }
+  predicate whitelisted() { none() }
 }

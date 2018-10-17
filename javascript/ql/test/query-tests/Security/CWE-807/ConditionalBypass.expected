@@ -10,3 +10,5 @@
 | tst.js:76:9:76:10 | v1 | This condition guards a sensitive $@, but $@ controls it. | tst.js:78:9:78:22 | process.exit() | action | tst.js:75:14:75:24 | req.cookies | a user-provided value |
 | tst.js:76:9:76:10 | v1 | This condition guards a sensitive $@, but $@ controls it. | tst.js:78:9:78:22 | process.exit() | action | tst.js:75:39:75:58 | req.params.requestId | a user-provided value |
 | tst.js:90:9:90:41 | req.coo ... secret" | This condition guards a sensitive $@, but $@ controls it. | tst.js:92:9:92:22 | process.exit() | action | tst.js:90:9:90:19 | req.cookies | a user-provided value |
+| tst.js:111:13:111:32 | req.query.vulnerable | This condition guards a sensitive $@, but $@ controls it. | tst.js:114:9:114:16 | verify() | action | tst.js:111:13:111:32 | req.query.vulnerable | a user-provided value |
+| tst.js:118:13:118:32 | req.query.vulnerable | This condition guards a sensitive $@, but $@ controls it. | tst.js:121:13:121:20 | verify() | action | tst.js:118:13:118:32 | req.query.vulnerable | a user-provided value |

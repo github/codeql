@@ -15,10 +15,10 @@ import Type
  */
 class Exception extends Element, @exception {
   /** Gets the type of this exception. */
-  RefType getType() { exceptions(this,result,_) }
+  RefType getType() { exceptions(this, result, _) }
 
   /** Gets the callable whose `throws` clause contains this exception. */
-  Callable getCallable() { exceptions(this,_,result) }
+  Callable getCallable() { exceptions(this, _, result) }
 
   /** Gets the name of this exception, that is, the name of its type. */
   override string getName() { result = this.getType().getName() }

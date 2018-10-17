@@ -9,11 +9,12 @@
  * @tags modularity
  *       maintainability
  */
+
 import java
 
 from RefType t
-where t.fromSource() and
-      (t instanceof ParameterizedType implies t instanceof GenericType) and
-      not t instanceof AnonymousClass
-select t, t.getMetrics().getSpecialisationIndex() as n
-order by n desc
+where
+  t.fromSource() and
+  (t instanceof ParameterizedType implies t instanceof GenericType) and
+  not t instanceof AnonymousClass
+select t, t.getMetrics().getSpecialisationIndex() as n order by n desc

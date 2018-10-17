@@ -10,6 +10,7 @@
  *       concurrency
  *       language-features
  */
+
 import java
 
 /** The set of methods to test: `wait`, `notify`, `notifyAll`. */
@@ -19,9 +20,8 @@ class MethodRequiresSynch extends Method {
       this.hasName("wait") or
       this.hasName("notify") or
       this.hasName("notifyAll")
-    )
-    and
-    this.getDeclaringType().hasQualifiedName("java.lang","Object")
+    ) and
+    this.getDeclaringType().hasQualifiedName("java.lang", "Object")
   }
 }
 
@@ -44,9 +44,9 @@ class MethodRequiresSynch extends Method {
  *  }
  * ```
  */
-private
-predicate synchronizedCallable(Callable c) {
-  c.isSynchronized() or
+private predicate synchronizedCallable(Callable c) {
+  c.isSynchronized()
+  or
   (
     c.isPrivate() and
     forall(MethodAccess parent | parent.getCallee() = c |
@@ -62,14 +62,14 @@ predicate synchronizedCallable(Callable c) {
  * example, if the method call is `MyClass.wait()`, then the predicate
  * holds if there is an enclosing synchronization on `MyClass.this`.
  */
-private
-predicate synchronizedThisAccess(MethodAccess ma, Type thisType) {
+private predicate synchronizedThisAccess(MethodAccess ma, Type thisType) {
   // Are we inside a synchronized method?
   exists(Callable c |
     c = ma.getEnclosingCallable() and
     c.getDeclaringType() = thisType and
     synchronizedCallable(c)
-  ) or
+  )
+  or
   // Is there an enclosing `synchronized` statement?
   exists(SynchronizedStmt s, ThisAccess x |
     s.getAChild*() = ma.getEnclosingStmt() and
@@ -96,8 +96,7 @@ predicate synchronizedVarAccess(VarAccess x) {
  * such as `this.wait()`, and it is not inside a synchronized statement
  * or method.
  */
-private
-predicate unsynchronizedExplicitThisAccess(MethodAccess ma) {
+private predicate unsynchronizedExplicitThisAccess(MethodAccess ma) {
   exists(ThisAccess x |
     x = ma.getQualifier() and
     not synchronizedThisAccess(ma, x.getType())
@@ -109,8 +108,7 @@ predicate unsynchronizedExplicitThisAccess(MethodAccess ma) {
  * such as `wait()`, and it is not inside a synchronized statement
  * or method.
  */
-private
-predicate unsynchronizedImplicitThisAccess(MethodAccess ma) {
+private predicate unsynchronizedImplicitThisAccess(MethodAccess ma) {
   not ma.hasQualifier() and
   not synchronizedThisAccess(ma, ma.getEnclosingCallable().getDeclaringType())
 }
@@ -119,8 +117,7 @@ predicate unsynchronizedImplicitThisAccess(MethodAccess ma) {
  * Holds if the `MethodAccess` is on a variable,
  * such as `x.wait()`, and it is not inside a synchronized statement.
  */
-private
-predicate unsynchronizedVarAccess(MethodAccess ma) {
+private predicate unsynchronizedVarAccess(MethodAccess ma) {
   exists(VarAccess x |
     x = ma.getQualifier() and
     not synchronizedVarAccess(x)

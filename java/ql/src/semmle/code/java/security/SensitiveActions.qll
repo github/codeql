@@ -10,6 +10,7 @@
  * in a fashion that the user can control. This includes authorization
  * methods such as logins, and sending of data, etc.
  */
+
 import java
 
 private string suspicious() {
@@ -27,16 +28,18 @@ private string nonSuspicious() {
 }
 
 /** An expression that might contain sensitive data. */
-abstract class SensitiveExpr extends Expr {
-}
+abstract class SensitiveExpr extends Expr { }
 
 /** A method access that might produce sensitive data. */
 class SensitiveMethodAccess extends SensitiveExpr, MethodAccess {
   SensitiveMethodAccess() {
-    this.getMethod() instanceof SensitiveDataMethod or
+    this.getMethod() instanceof SensitiveDataMethod
+    or
     // This is particularly to pick up methods with an argument like "password", which
     // may indicate a lookup.
-    exists(string s | this.getAnArgument().(StringLiteral).getRepresentedString().toLowerCase() = s |
+    exists(string s |
+      this.getAnArgument().(StringLiteral).getRepresentedString().toLowerCase() = s
+    |
       s.matches(suspicious()) and
       not s.matches(nonSuspicious())
     )
@@ -54,18 +57,16 @@ class SensitiveVarAccess extends SensitiveExpr, VarAccess {
 }
 
 /** A method that may produce sensitive data. */
-abstract class SensitiveDataMethod extends Method {}
+abstract class SensitiveDataMethod extends Method { }
 
 class CredentialsMethod extends SensitiveDataMethod {
   CredentialsMethod() {
-    exists(string s | s = this.getName().toLowerCase() |
-      s.matches(suspicious())
-    )
+    exists(string s | s = this.getName().toLowerCase() | s.matches(suspicious()))
   }
 }
 
 /** A method whose execution may be sensitive. */
-abstract class SensitiveExecutionMethod extends Method {}
+abstract class SensitiveExecutionMethod extends Method { }
 
 /** A method that may perform authorization. */
 class AuthMethod extends SensitiveExecutionMethod {

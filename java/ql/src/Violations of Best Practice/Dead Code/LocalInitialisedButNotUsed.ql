@@ -7,6 +7,7 @@
  * @id java/unused-initialized-local
  * @tags external/cwe/cwe-563
  */
+
 import java
 import DeadLocals
 
@@ -18,4 +19,3 @@ where
   exists(ve.getInit()) and
   not exprHasNoEffect(ve.getInit())
 select v, "Local variable " + v.getName() + " is never read or written to after it is initialised."
-

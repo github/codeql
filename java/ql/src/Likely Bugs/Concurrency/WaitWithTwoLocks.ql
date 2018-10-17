@@ -10,6 +10,7 @@
  *       concurrency
  *       external/cwe/cwe-833
  */
+
 import java
 
 /** A `synchronized` method or statement. */
