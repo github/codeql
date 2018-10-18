@@ -1,5 +1,5 @@
-| file://:0:0:0:0 | operator= | __va_list_tag::operator= | returns |
-| file://:0:0:0:0 | operator= | __va_list_tag::operator= | returns |
+| file://:0:0:0:0 | operator= | operator= | returns |
+| file://:0:0:0:0 | operator= | operator= | returns |
 | test.cpp:1:6:1:9 | exit | exit | exits |
 | test.cpp:2:6:2:10 | _exit | _exit | exits |
 | test.cpp:3:6:3:10 | abort | abort | exits |

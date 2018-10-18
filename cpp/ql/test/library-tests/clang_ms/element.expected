@@ -51,6 +51,7 @@
 | file://:0:0:0:0 | __uptr |
 | file://:0:0:0:0 | __va_list_tag |
 | file://:0:0:0:0 | __va_list_tag & |
+| file://:0:0:0:0 | __va_list_tag && |
 | file://:0:0:0:0 | abstract |
 | file://:0:0:0:0 | atomic |
 | file://:0:0:0:0 | auto |
@@ -60,12 +61,13 @@
 | file://:0:0:0:0 | char16_t |
 | file://:0:0:0:0 | char32_t |
 | file://:0:0:0:0 | const |
+| file://:0:0:0:0 | const __va_list_tag |
+| file://:0:0:0:0 | const __va_list_tag & |
 | file://:0:0:0:0 | const mystruct |
 | file://:0:0:0:0 | const mystruct & |
 | file://:0:0:0:0 | declaration of 1st parameter |
 | file://:0:0:0:0 | declaration of 1st parameter |
 | file://:0:0:0:0 | decltype(nullptr) |
-| file://:0:0:0:0 | definition of __va_list_tag |
 | file://:0:0:0:0 | definition of fp_offset |
 | file://:0:0:0:0 | definition of gp_offset |
 | file://:0:0:0:0 | definition of overflow_arg_area |
@@ -102,6 +104,8 @@
 | file://:0:0:0:0 | optional |
 | file://:0:0:0:0 | overflow_arg_area |
 | file://:0:0:0:0 | override |
+| file://:0:0:0:0 | p#0 |
+| file://:0:0:0:0 | p#0 |
 | file://:0:0:0:0 | p#0 |
 | file://:0:0:0:0 | p#0 |
 | file://:0:0:0:0 | private |

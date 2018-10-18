@@ -2,8 +2,8 @@
 | bar.h:1:13:1:15 | bar | MemberFunction | 1 | C |
 | bar.h:1:13:1:15 | bar | MemberFunction | 1 | C |
 | bar.h:1:13:1:15 | bar | MemberFunction | 2 | D |
-| file://:0:0:0:0 | operator= | MemberFunction | 0 | __va_list_tag |
-| file://:0:0:0:0 | operator= | MemberFunction | 0 | __va_list_tag |
+| file://:0:0:0:0 | operator= | Function | 0 | <none> |
+| file://:0:0:0:0 | operator= | Function | 0 | <none> |
 | foo.h:1:13:1:15 | foo | Function | 1 | <none> |
 | foo.h:1:13:1:15 | foo | MemberFunction | 1 | C |
 | foo.h:1:13:1:15 | foo | MemberFunction | 1 | C |

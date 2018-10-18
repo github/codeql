@@ -6,7 +6,6 @@
 | file://:0:0:0:0 | declaration of 1st parameter |
 | file://:0:0:0:0 | declaration of 1st parameter |
 | file://:0:0:0:0 | declaration of 1st parameter |
-| file://:0:0:0:0 | definition of __va_list_tag |
 | file://:0:0:0:0 | definition of fp_offset |
 | file://:0:0:0:0 | definition of gp_offset |
 | file://:0:0:0:0 | definition of overflow_arg_area |
@@ -61,7 +60,11 @@
 | test.cpp:57:7:57:26 | definition of tmplClassProtoAndDef<T> |
 | test.cpp:59:19:59:19 | definition of T |
 | test.cpp:60:6:60:29 | declaration of tmplInstantiatedFunction |
+| test.cpp:60:33:60:33 | definition of t |
+| test.cpp:60:33:60:33 | definition of t |
 | test.cpp:61:19:61:19 | definition of T |
+| test.cpp:62:6:62:6 | definition of tmplInstantiatedFunction |
+| test.cpp:62:6:62:6 | definition of tmplInstantiatedFunction |
 | test.cpp:62:6:62:29 | definition of tmplInstantiatedFunction |
 | test.cpp:62:33:62:33 | declaration of t |
 | test.cpp:62:33:62:33 | definition of t |

@@ -1,7 +1,3 @@
-#-----| __va_list_tag::operator=() -> __va_list_tag &
-#-----|   params: 
-#-----| __va_list_tag::operator=() -> __va_list_tag &
-#-----|   params: 
 #-----| operator delete(void *) -> void
 #-----|   params: 
 #-----|     0: p#0
@@ -10,6 +6,14 @@
 #-----|   params: 
 #-----|     0: p#0
 #-----|         Type = unsigned long
+#-----| operator=(__va_list_tag &&) -> __va_list_tag &
+#-----|   params: 
+#-----|     0: p#0
+#-----|         Type = __va_list_tag &&
+#-----| operator=(const __va_list_tag &) -> __va_list_tag &
+#-----|   params: 
+#-----|     0: p#0
+#-----|         Type = const __va_list_tag &
 AddressOf.c:
 #    1| AddressOf(int) -> void
 #    1|   params: 

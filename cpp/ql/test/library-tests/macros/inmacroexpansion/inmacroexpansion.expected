@@ -1,5 +1,8 @@
+| file://:0:0:0:0 | __va_list_tag | false |
 | file://:0:0:0:0 | operator= | false |
 | file://:0:0:0:0 | operator= | false |
+| file://:0:0:0:0 | p#0 | false |
+| file://:0:0:0:0 | p#0 | false |
 | test.cpp:0:0:0:0 | test.cpp | false |
 | test.cpp:2:1:2:61 | #define FOO class S{int i; void f(void) { int j; return; } }; | false |
 | test.cpp:4:1:4:1 | declaration of operator= | false |

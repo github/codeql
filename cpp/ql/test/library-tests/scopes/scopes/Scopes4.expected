@@ -1,7 +1,7 @@
 | file://:0:0:0:0 | operator delete[] | isTopLevel() | 1 | 1 |
 | file://:0:0:0:0 | operator new[] | isTopLevel() | 1 | 1 |
-| file://:0:0:0:0 | operator= |  | 1 | 1 |
-| file://:0:0:0:0 | operator= |  | 1 | 1 |
+| file://:0:0:0:0 | operator= | isTopLevel() | 1 | 1 |
+| file://:0:0:0:0 | operator= | isTopLevel() | 1 | 1 |
 | scopes.cpp:2:7:2:7 | operator= |  | 1 | 1 |
 | scopes.cpp:2:7:2:7 | operator= |  | 1 | 1 |
 | scopes.cpp:7:7:7:7 | operator= |  | 1 | 1 |
