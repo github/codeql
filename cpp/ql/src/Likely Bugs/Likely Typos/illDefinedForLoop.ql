@@ -1,6 +1,6 @@
 /**
  * @name Ill-defined for loop
- * @description A for-loop iteration expressions goes backward with respect of the initialization statement and condition expression.
+ * @description A for-loop iteration expression goes backward with respect of the initialization statement and condition expression.
  * @id cpp/ill-defined-for-loop
  * @kind problem
  * @problem.severity warning
