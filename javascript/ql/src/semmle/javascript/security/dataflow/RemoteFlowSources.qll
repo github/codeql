@@ -12,9 +12,9 @@ abstract class RemoteFlowSource extends DataFlow::Node {
   abstract string getSourceType();
 
   /**
-   * Holds if this can be a user-controlled deep object, such as a JSON object parsed from user-controlled data.
+   * Holds if this can be a user-controlled object, such as a JSON object parsed from user-controlled data.
    */
-  predicate isDeepObject() { none() }
+  predicate isUserControlledObject() { none() }
 }
 
 /**

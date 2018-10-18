@@ -160,6 +160,12 @@ module TaintTracking {
   }
 
   /**
+   * A sanitizer guard node that only blocks specific flow labels.
+   */
+  abstract class LabeledSanitizerGuardNode extends SanitizerGuardNode, DataFlow::LabeledBarrierGuardNode {
+  }
+
+  /**
    * DEPRECATED: Override `Configuration::isAdditionalTaintStep` or use
    * `AdditionalTaintStep` instead.
    */

@@ -24,7 +24,7 @@ module TaintedObject {
   /**
    * Gets the flow label representing a deeply tainted object.
    *
-   * A "tainted object" is an array or object whose properties values are all assumed to be tainted as well.
+   * A "tainted object" is an array or object whose property values are all assumed to be tainted as well.
    *
    * Note that the presence of the this label generally implies the presence of the `taint` label as well.
    */
@@ -70,25 +70,23 @@ module TaintedObject {
   }
 
   /**
-   * A source of a user-controlled deep object object.
+   * A source of a user-controlled deep object.
    */
   abstract class Source extends DataFlow::Node {}
 
   /** Request input accesses as a JSON source. */
   private class RequestInputAsSource extends Source {
     RequestInputAsSource() {
-      this.(HTTP::RequestInputAccess).isDeepObject()
+      this.(HTTP::RequestInputAccess).isUserControlledObject()
     }
   }
 
   /**
    * Sanitizer guard that blocks deep object taint.
    */
-  abstract class SanitizerGuard extends TaintTracking::SanitizerGuardNode {
-    override predicate blocksAllLabels() { none() }
-
-    override predicate blocksSpecificLabel(FlowLabel label) {
-      label = label()
+  abstract class SanitizerGuard extends TaintTracking::LabeledSanitizerGuardNode {
+    override FlowLabel getALabel() {
+      result = label()
     }
   }
 

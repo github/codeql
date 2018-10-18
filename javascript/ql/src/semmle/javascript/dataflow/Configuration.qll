@@ -93,7 +93,7 @@ abstract class Configuration extends string {
   }
 
   /**
-   * Holds if `source` is a source of flow labelled with `lbl` that is relevant
+   * Holds if `source` is a source of flow labeled with `lbl` that is relevant
    * for this configuration.
    */
   predicate isSource(DataFlow::Node source, FlowLabel lbl) {
@@ -108,7 +108,7 @@ abstract class Configuration extends string {
   }
 
   /**
-   * Holds if `sink` is a sink of flow labelled with `lbl` that is relevant
+   * Holds if `sink` is a sink of flow labeled with `lbl` that is relevant
    * for this configuration.
    */
   predicate isSink(DataFlow::Node sink, FlowLabel lbl) {
@@ -146,7 +146,7 @@ abstract class Configuration extends string {
    */
   predicate isBarrier(DataFlow::Node node) {
     exists (BarrierGuardNode guard |
-      guard.blocksAllLabels() and
+      not guard instanceof LabeledBarrierGuardNode and
       isBarrierGuard(guard) and
       guard.blocks(node)
     )
@@ -165,9 +165,9 @@ abstract class Configuration extends string {
   /**
    * Holds if flow with label `lbl` cannot flow into `node`.
    */
-  predicate isBarrierForLabel(DataFlow::Node node, FlowLabel lbl) {
-    exists (BarrierGuardNode guard |
-      guard.blocksSpecificLabel(lbl) and
+  predicate isLabeledBarrier(DataFlow::Node node, FlowLabel lbl) {
+    exists (LabeledBarrierGuardNode guard |
+      lbl = guard.getALabel() and
       isBarrierGuard(guard) and
       guard.blocks(node)
     )
@@ -309,21 +309,16 @@ abstract class BarrierGuardNode extends DataFlow::Node {
    * Holds if this node blocks expression `e` provided it evaluates to `outcome`.
    */
   abstract predicate blocks(boolean outcome, Expr e);
+}
 
+/**
+ * A guard node that only blocks specific labels.
+ */
+abstract class LabeledBarrierGuardNode extends BarrierGuardNode {
   /**
-   * Holds if this barrier guard should block all labels.
-   *
-   * To block specific labels only, subclasses should override this with `none()` and
-   * also override `blocksSpecificLabel`.
+   * Get a flow label blocked by this guard node.
    */
-  predicate blocksAllLabels() { any() }
-
-  /**
-   * Holds if this barrier guard only blocks specific labels, and `label` is one of them.
-   *
-   * Subclasses that override this predicate should also override `blocksAllLabels`.
-   */
-  predicate blocksSpecificLabel(FlowLabel label) { none() }
+  abstract FlowLabel getALabel();
 }
 
 /**
@@ -597,7 +592,7 @@ private predicate flowThroughCall(DataFlow::Node input, DataFlow::Node invk,
     calls(invk, f) and // Do not consider partial calls
     reachableFromInput(f, invk, input, ret, cfg, summary) and
     not cfg.isBarrier(ret, invk) and
-    not cfg.isBarrierForLabel(invk, summary.getEndLabel())
+    not cfg.isLabeledBarrier(invk, summary.getEndLabel())
   )
 }
 
@@ -669,7 +664,7 @@ private predicate flowStep(DataFlow::Node pred, DataFlow::Configuration cfg,
   ) and
   not cfg.isBarrier(succ) and
   not cfg.isBarrier(pred, succ) and
-  not cfg.isBarrierForLabel(succ, summary.getEndLabel())
+  not cfg.isLabeledBarrier(succ, summary.getEndLabel())
 }
 
 /**
@@ -694,7 +689,7 @@ private predicate reachableFromSource(DataFlow::Node nd, DataFlow::Configuration
   exists (FlowLabel lbl |
     isSource(nd, cfg, lbl) and
     not cfg.isBarrier(nd) and
-    not cfg.isBarrierForLabel(nd, lbl) and
+    not cfg.isLabeledBarrier(nd, lbl) and
     summary = MkPathSummary(false, false, lbl, lbl)
   )
   or
@@ -714,7 +709,7 @@ private predicate onPath(DataFlow::Node nd, DataFlow::Configuration cfg,
   reachableFromSource(nd, cfg, summary) and
   isSink(nd, cfg, summary.getEndLabel()) and
   not cfg.isBarrier(nd) and
-  not cfg.isBarrierForLabel(nd, summary.getEndLabel())
+  not cfg.isLabeledBarrier(nd, summary.getEndLabel())
   or
   exists (DataFlow::Node mid, PathSummary stepSummary |
     reachableFromSource(nd, cfg, summary) and

@@ -271,9 +271,10 @@ module ExpressLibraries {
     }
 
     /**
-     * Holds if this parses the input as JSON or extended URL-encoding.
+     * Holds if this parses the input as JSON or extended URL-encoding, resulting
+     * in user-controlled objects (as opposed to user-controlled strings).
      */
-    predicate isDeepObject() {
+    predicate producesUserControlledObjects() {
       isJson() or isExtendedUrlEncoded()
     }
   }
