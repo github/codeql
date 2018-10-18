@@ -118,7 +118,7 @@ private module ImplCommon {
       node1.(ArgumentNode).argumentOf(call, i1) and
       node2.getPreUpdateNode().(ArgumentNode).argumentOf(call, i2) and
       compatibleTypes(node1.getTypeBound(), f.getType()) and
-      compatibleTypes(node2.getTypeBound(), f.getDeclaringType())
+      compatibleTypes(node2.getTypeBound(), f.getContainerType())
     )
   }
 
@@ -149,7 +149,7 @@ private module ImplCommon {
       setterReturn(p, f) and
       arg.argumentOf(node2.asExpr(), _) and
       compatibleTypes(node1.getTypeBound(), f.getType()) and
-      compatibleTypes(node2.getTypeBound(), f.getDeclaringType())
+      compatibleTypes(node2.getTypeBound(), f.getContainerType())
     )
   }
 
@@ -174,7 +174,7 @@ private module ImplCommon {
       viableParamArg(p, arg) and
       getter(p, f) and
       arg.argumentOf(node2.asExpr(), _) and
-      compatibleTypes(node1.getTypeBound(), f.getDeclaringType()) and
+      compatibleTypes(node1.getTypeBound(), f.getContainerType()) and
       compatibleTypes(node2.getTypeBound(), f.getType())
     )
   }
