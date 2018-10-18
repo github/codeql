@@ -9,7 +9,7 @@
 </overview>
 
 <recommendation>
-<p>Verify the iteration expression on the <code>for-loop</code> and make sure the direction of the iteration expression is correct.</p>
+<p>To fix this issue, check that the loop condition is correct and change the iteration expression to match.</p>
 </recommendation>
 
 <example>

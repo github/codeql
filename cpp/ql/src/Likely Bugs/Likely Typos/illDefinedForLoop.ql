@@ -10,58 +10,56 @@
  */
 import cpp
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
+import semmle.code.cpp.dataflow.DataFlow
 
 predicate illDefinedDecrForStmt( ForStmt forstmt, Variable v, Expr initialCondition, Expr terminalCondition ) { 
-  v.getAnAssignedValue() = initialCondition 
+  v.getAnAssignedValue() = initialCondition
   and
   exists( 
-    RelationalOperation rel, Expr e |
+    RelationalOperation rel |
     rel = forstmt.getCondition() |
-    e = rel.getGreaterOperand()
+    terminalCondition = rel.getGreaterOperand()
     and v.getAnAccess() = rel.getLesserOperand()
-    and terminalCondition = e
-  )
-  and
-  (
-    exists( 
-      PostfixDecrExpr pdec |
-      pdec = forstmt.getUpdate().(PostfixDecrExpr)
-      and pdec.getAnOperand() = v.getAnAccess()
-    ) or 
-    exists( 
-      PrefixDecrExpr pdec |
-      pdec = forstmt.getUpdate().(PrefixDecrExpr)
-      and pdec.getAnOperand() = v.getAnAccess()
+    and
+    DataFlow::localFlowStep(DataFlow::exprNode(initialCondition), DataFlow::exprNode(rel.getLesserOperand()))
     )
+  and
+  exists( 
+    DecrementOperation dec |
+    dec = forstmt.getUpdate().(DecrementOperation)
+    and dec.getAnOperand() = v.getAnAccess()
   )
   and
-  upperBound(initialCondition) < lowerBound(terminalCondition)
+  ( 
+    ( upperBound(initialCondition) < lowerBound(terminalCondition) )
+    or
+    ( forstmt.conditionAlwaysFalse() or forstmt.conditionAlwaysTrue() )
+  )
 }
 
 predicate illDefinedIncrForStmt( ForStmt forstmt, Variable v, Expr initialCondition, Expr terminalCondition ) { 
   v.getAnAssignedValue() = initialCondition 
   and
   exists( 
-    RelationalOperation rel, Expr e |
+    RelationalOperation rel |
     rel = forstmt.getCondition() |
-    e = rel.getLesserOperand()
+    terminalCondition = rel.getLesserOperand()
     and v.getAnAccess() = rel.getGreaterOperand()
-    and terminalCondition = e
+    and
+    DataFlow::localFlowStep(DataFlow::exprNode(initialCondition), DataFlow::exprNode(rel.getGreaterOperand()))
   )
   and
-  ( exists( PostfixIncrExpr pincr |
-      pincr = forstmt.getUpdate().(PostfixIncrExpr)
-      and
-      pincr.getAnOperand() = v.getAnAccess()
-    ) or 
-    exists( PrefixIncrExpr pincr |
-      pincr = forstmt.getUpdate().(PrefixIncrExpr)
-      and
-      pincr.getAnOperand() = v.getAnAccess()
-    )
+  exists( IncrementOperation incr |
+    incr = forstmt.getUpdate().(IncrementOperation)
+    and
+    incr.getAnOperand() = v.getAnAccess()
   )
   and
-  upperBound(terminalCondition) < lowerBound(initialCondition)
+  ( 
+    ( upperBound(terminalCondition) < lowerBound(initialCondition))
+    or
+    ( forstmt.conditionAlwaysFalse() or forstmt.conditionAlwaysTrue())
+  )
 }
  
 predicate illDefinedForStmtWrongDirection( ForStmt forstmt, Variable v, Expr initialCondition, Expr terminalCondition
@@ -91,9 +89,23 @@ private string forLoopTerminalConditionRelationship(boolean b){
     Expr terminalCondition |
     illDefinedForStmtWrongDirection(for, v, initialCondition, terminalCondition, isIncr)
     and
-    message = "Ill-defined for-loop: a loop using variable \"" + v + "\" counts " 
-      + forLoopdirection(isIncr) + " from a value ("+ initialCondition +"), but the terminal condition is "
-      + forLoopTerminalConditionRelationship(isIncr) + " (" + terminalCondition + ")."
+    if( for.conditionAlwaysFalse() ) then 
+    (
+      message = "Ill-defined for-loop: a loop using variable \"" + v + "\" counts " 
+      + forLoopdirection(isIncr) + " from a value ("+ initialCondition +"), but the terminal condition is always false."
+    ) 
+    else if 
+    ( 
+      for.conditionAlwaysTrue() ) then (
+      message = "Ill-defined for-loop: a loop using variable \"" + v + "\" counts " 
+      + forLoopdirection(isIncr) + " from a value ("+ initialCondition +"), but the terminal condition is always true."
+    ) 
+    else 
+    (
+      message = "Ill-defined for-loop: a loop using variable \"" + v + "\" counts " 
+        + forLoopdirection(isIncr) + " from a value ("+ initialCondition +"), but the terminal condition is "
+        + forLoopTerminalConditionRelationship(isIncr) + " (" + terminalCondition + ")."
+    )
   )
 }
  

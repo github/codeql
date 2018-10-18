@@ -14,3 +14,9 @@
 | illDefinedForLoop.cpp:77:5:79:5 | for(...;...;...) ... | Ill-defined for-loop: a loop using variable "i" counts upward from a value (max), but the terminal condition is lower (min). |
 | illDefinedForLoop.cpp:91:5:93:5 | for(...;...;...) ... | Ill-defined for-loop: a loop using variable "i" counts downward from a value (0), but the terminal condition is higher (100). |
 | illDefinedForLoop.cpp:101:5:103:5 | for(...;...;...) ... | Ill-defined for-loop: a loop using variable "i" counts upward from a value (100), but the terminal condition is lower (0). |
+| illDefinedForLoop.cpp:118:5:120:5 | for(...;...;...) ... | Ill-defined for-loop: a loop using variable "i" counts downward from a value (max), but the terminal condition is always false. |
+| illDefinedForLoop.cpp:122:5:124:5 | for(...;...;...) ... | Ill-defined for-loop: a loop using variable "i" counts upward from a value (min), but the terminal condition is always false. |
+| illDefinedForLoop.cpp:133:5:135:5 | for(...;...;...) ... | Ill-defined for-loop: a loop using variable "i" counts downward from a value (100), but the terminal condition is always false. |
+| illDefinedForLoop.cpp:140:5:142:5 | for(...;...;...) ... | Ill-defined for-loop: a loop using variable "i" counts upward from a value (200), but the terminal condition is lower (0). |
+| illDefinedForLoop.cpp:175:5:175:36 | for(...;...;...) ... | Ill-defined for-loop: a loop using variable "i" counts downward from a value (0), but the terminal condition is higher (10). |
+| illDefinedForLoop.cpp:179:5:179:38 | for(...;...;...) ... | Ill-defined for-loop: a loop using variable "i" counts upward from a value (100), but the terminal condition is lower (0). |
