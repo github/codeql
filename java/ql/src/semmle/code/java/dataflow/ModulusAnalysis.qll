@@ -32,7 +32,8 @@ private predicate nonConstAddition(Expr add, Expr larg, Expr rarg) {
     exists(AddExpr a | a = add |
       larg = a.getLeftOperand() and
       rarg = a.getRightOperand()
-    ) or
+    )
+    or
     exists(AssignAddExpr a | a = add |
       larg = a.getDest() and
       rarg = a.getRhs()
@@ -51,7 +52,8 @@ private predicate nonConstSubtraction(Expr sub, Expr larg, Expr rarg) {
     exists(SubExpr s | s = sub |
       larg = s.getLeftOperand() and
       rarg = s.getRightOperand()
-    ) or
+    )
+    or
     exists(AssignSubExpr s | s = sub |
       larg = s.getDest() and
       rarg = s.getRhs()
@@ -67,12 +69,14 @@ private Expr modExpr(Expr arg, int mod) {
     arg = rem.getLeftOperand() and
     rem.getRightOperand().(CompileTimeConstantExpr).getIntValue() = mod and
     mod >= 2
-  ) or
+  )
+  or
   exists(CompileTimeConstantExpr c |
-    mod = 2.pow([1..30]) and
+    mod = 2.pow([1 .. 30]) and
     c.getIntValue() = mod - 1 and
     result.(AndBitwiseExpr).hasOperands(arg, c)
-  ) or
+  )
+  or
   result.(ParExpr).getExpr() = modExpr(arg, mod)
 }
 
@@ -88,7 +92,9 @@ private Guard moduloCheck(SsaVariable v, int val, int mod, boolean testIsTrue) {
     (
       testIsTrue = polarity and val = r
       or
-      testIsTrue = polarity.booleanNot() and mod = 2 and val = 1 - r and
+      testIsTrue = polarity.booleanNot() and
+      mod = 2 and
+      val = 1 - r and
       (r = 0 or r = 1)
     )
   )
@@ -109,17 +115,22 @@ private predicate moduloGuardedRead(SsaVariable v, SsaReadPosition pos, int val,
 bindingset[mask]
 private predicate andmaskFactor(int mask, int factor) {
   mask % factor = 0 and
-  factor = 2.pow([1..30])
+  factor = 2.pow([1 .. 30])
 }
 
 /** Holds if `e` is evenly divisible by `factor`. */
 private predicate evenlyDivisibleExpr(Expr e, int factor) {
   exists(ConstantIntegerExpr c, int k | k = c.getIntValue() |
-    e.(MulExpr).getAnOperand() = c and factor = k.abs() and factor >= 2 or
-    e.(AssignMulExpr).getSource() = c and factor = k.abs() and factor >= 2 or
-    e.(LShiftExpr).getRightOperand() = c and factor = 2.pow(k) and k > 0 or
-    e.(AssignLShiftExpr).getRhs() = c and factor = 2.pow(k) and k > 0 or
-    e.(AndBitwiseExpr).getAnOperand() = c and factor = max(int f | andmaskFactor(k, f)) or
+    e.(MulExpr).getAnOperand() = c and factor = k.abs() and factor >= 2
+    or
+    e.(AssignMulExpr).getSource() = c and factor = k.abs() and factor >= 2
+    or
+    e.(LShiftExpr).getRightOperand() = c and factor = 2.pow(k) and k > 0
+    or
+    e.(AssignLShiftExpr).getRhs() = c and factor = 2.pow(k) and k > 0
+    or
+    e.(AndBitwiseExpr).getAnOperand() = c and factor = max(int f | andmaskFactor(k, f))
+    or
     e.(AssignAndExpr).getSource() = c and factor = max(int f | andmaskFactor(k, f))
   )
 }
@@ -134,9 +145,17 @@ private int getId(BasicBlock bb) { idOf(bb, result) }
  * Holds if `inp` is an input to `phi` along `edge` and this input has index `r`
  * in an arbitrary 1-based numbering of the input edges to `phi`.
  */
-private predicate rankedPhiInput(SsaPhiNode phi, SsaVariable inp, SsaReadPositionPhiInputEdge edge, int r) {
+private predicate rankedPhiInput(
+  SsaPhiNode phi, SsaVariable inp, SsaReadPositionPhiInputEdge edge, int r
+) {
   edge.phiInput(phi, inp) and
-  edge = rank[r](SsaReadPositionPhiInputEdge e | e.phiInput(phi, _) | e order by getId(e.getOrigBlock()))
+  edge = rank[r](SsaReadPositionPhiInputEdge e |
+      e.phiInput(phi, _)
+    |
+      e
+      order by
+        getId(e.getOrigBlock())
+    )
 }
 
 /**
@@ -154,9 +173,11 @@ private int gcdLim() { result = 128 }
  */
 private int gcd(int x, int y) {
   result != 1 and
-  result = x.abs() and y = 0 and x in [-gcdLim()..gcdLim()]
+  result = x.abs() and
+  y = 0 and
+  x in [-gcdLim() .. gcdLim()]
   or
-  result = gcd(y, x % y) and y != 0 and x in [-gcdLim()..gcdLim()]
+  result = gcd(y, x % y) and y != 0 and x in [-gcdLim() .. gcdLim()]
 }
 
 /**
@@ -167,14 +188,17 @@ private int gcd(int x, int y) {
  */
 bindingset[val, mod]
 private int remainder(int val, int mod) {
-  mod = 0 and result = val or
+  mod = 0 and result = val
+  or
   mod > 1 and result = ((val % mod) + mod) % mod
 }
 
 /**
  * Holds if `inp` is an input to `phi` and equals `phi` modulo `mod` along `edge`.
  */
-private predicate phiSelfModulus(SsaPhiNode phi, SsaVariable inp, SsaReadPositionPhiInputEdge edge, int mod) {
+private predicate phiSelfModulus(
+  SsaPhiNode phi, SsaVariable inp, SsaReadPositionPhiInputEdge edge, int mod
+) {
   exists(SsaBound phibound, int v, int m |
     edge.phiInput(phi, inp) and
     phibound.getSsa() = phi and
@@ -204,7 +228,7 @@ private predicate phiModulusRankStep(SsaPhiNode phi, Bound b, int val, int mod, 
   exists(SsaVariable inp, SsaReadPositionPhiInputEdge edge, int v1, int m1 |
     mod != 1 and
     val = remainder(v1, mod)
-    |
+  |
     exists(int v2, int m2 |
       rankedPhiInput(phi, inp, edge, rix) and
       phiModulusRankStep(phi, b, v1, m1, rix - 1) and
@@ -257,18 +281,22 @@ private predicate ssaModulus(SsaVariable v, SsaReadPosition pos, Bound b, int va
  */
 cached
 predicate exprModulus(Expr e, Bound b, int val, int mod) {
-  e = b.getExpr(val) and mod = 0 or
-  evenlyDivisibleExpr(e, mod) and val = 0 and b instanceof ZeroBound or
+  e = b.getExpr(val) and mod = 0
+  or
+  evenlyDivisibleExpr(e, mod) and val = 0 and b instanceof ZeroBound
+  or
   exists(SsaVariable v, SsaReadPositionBlock bb |
     ssaModulus(v, bb, b, val, mod) and
     e = v.getAUse() and
     bb.getBlock() = e.getBasicBlock()
-  ) or
+  )
+  or
   exists(Expr mid, int val0, int delta |
     exprModulus(mid, b, val0, mod) and
     valueFlowStep(e, mid, delta) and
     val = remainder(val0 + delta, mod)
-  ) or
+  )
+  or
   exists(ConditionalExpr cond, int v1, int v2, int m1, int m2 |
     cond = e and
     condExprBranchModulus(cond, true, b, v1, m1) and
@@ -276,17 +304,20 @@ predicate exprModulus(Expr e, Bound b, int val, int mod) {
     mod = gcd(gcd(m1, m2), v1 - v2) and
     mod != 1 and
     val = remainder(v1, mod)
-  ) or
+  )
+  or
   exists(Bound b1, Bound b2, int v1, int v2, int m1, int m2 |
     addModulus(e, true, b1, v1, m1) and
     addModulus(e, false, b2, v2, m2) and
     mod = gcd(m1, m2) and
     mod != 1 and
     val = remainder(v1 + v2, mod)
-    |
-    b = b1 and b2 instanceof ZeroBound or
+  |
+    b = b1 and b2 instanceof ZeroBound
+    or
     b = b2 and b1 instanceof ZeroBound
-  ) or
+  )
+  or
   exists(int v1, int v2, int m1, int m2 |
     subModulus(e, true, b, v1, m1) and
     subModulus(e, false, any(ZeroBound zb), v2, m2) and
@@ -296,15 +327,16 @@ predicate exprModulus(Expr e, Bound b, int val, int mod) {
   )
 }
 
-private predicate condExprBranchModulus(ConditionalExpr cond, boolean branch, Bound b, int val, int mod) {
-  exprModulus(cond.getTrueExpr(), b, val, mod) and branch = true or
+private predicate condExprBranchModulus(
+  ConditionalExpr cond, boolean branch, Bound b, int val, int mod
+) {
+  exprModulus(cond.getTrueExpr(), b, val, mod) and branch = true
+  or
   exprModulus(cond.getFalseExpr(), b, val, mod) and branch = false
 }
 
 private predicate addModulus(Expr add, boolean isLeft, Bound b, int val, int mod) {
-  exists(Expr larg, Expr rarg |
-    nonConstAddition(add, larg, rarg)
-  |
+  exists(Expr larg, Expr rarg | nonConstAddition(add, larg, rarg) |
     exprModulus(larg, b, val, mod) and isLeft = true
     or
     exprModulus(rarg, b, val, mod) and isLeft = false
@@ -312,9 +344,7 @@ private predicate addModulus(Expr add, boolean isLeft, Bound b, int val, int mod
 }
 
 private predicate subModulus(Expr sub, boolean isLeft, Bound b, int val, int mod) {
-  exists(Expr larg, Expr rarg |
-    nonConstSubtraction(sub, larg, rarg)
-  |
+  exists(Expr larg, Expr rarg | nonConstSubtraction(sub, larg, rarg) |
     exprModulus(larg, b, val, mod) and isLeft = true
     or
     exprModulus(rarg, b, val, mod) and isLeft = false
