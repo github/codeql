@@ -1,4 +1,6 @@
 /**
+ * DEPRECATED: Use semmle.code.java.dataflow.ModulusAnalysis instead.
+ *
  * Parity Analysis.
  *
  * The analysis is implemented as an abstract interpretation over the
@@ -12,6 +14,7 @@ private import SignAnalysis
 private import semmle.code.java.Reflection
 
 /** Gets an expression that is the remainder modulo 2 of `arg`. */
+deprecated
 private Expr mod2(Expr arg) {
   exists(RemExpr rem |
     result = rem and
@@ -23,6 +26,7 @@ private Expr mod2(Expr arg) {
 }
 
 /** An expression that calculates remainder modulo 2. */
+deprecated
 private class Mod2 extends Expr {
   Mod2() {
     this = mod2(_)
@@ -38,6 +42,7 @@ private class Mod2 extends Expr {
  * Parity represented as booleans. Even corresponds to `false` and odd
  * corresponds to `true`.
  */
+deprecated
 class Parity extends boolean {
   Parity() { this = true or this = false }
   predicate isEven() { this = false }
@@ -48,6 +53,7 @@ class Parity extends boolean {
  * Gets a condition that performs a parity check on `v`, such that `v` has
  * the given parity if the condition evaluates to `testIsTrue`.
  */
+deprecated
 private Guard parityCheck(SsaVariable v, Parity parity, boolean testIsTrue) {
   exists(Mod2 rem, CompileTimeConstantExpr c, int r, boolean polarity |
     result.isEquality(rem, c, polarity) and
@@ -65,6 +71,7 @@ private Guard parityCheck(SsaVariable v, Parity parity, boolean testIsTrue) {
 /**
  * Gets the parity of `e` if it can be directly determined.
  */
+deprecated
 private Parity certainExprParity(Expr e) {
   exists(int i | e.(ConstantIntegerExpr).getIntValue() = i |
     if i % 2 = 0 then result.isEven() else result.isOdd()
@@ -92,6 +99,7 @@ private Parity certainExprParity(Expr e) {
 /**
  * Gets the expression that defines the array length that equals `len`, if any.
  */
+deprecated
 private Expr arrLenDef(FieldAccess len) {
   exists(SsaVariable arr |
     len.getField() instanceof ArrayLengthField and
@@ -101,6 +109,7 @@ private Expr arrLenDef(FieldAccess len) {
 }
 
 /** Gets a possible parity for `v`. */
+deprecated
 private Parity ssaParity(SsaVariable v) {
   exists(VariableUpdate def | def = v.(SsaExplicitUpdate).getDefiningExpr() |
     result = exprParity(def.(VariableAssign).getSource()) or
@@ -115,6 +124,7 @@ private Parity ssaParity(SsaVariable v) {
 }
 
 /** Gets a possible parity for `f`. */
+deprecated
 private Parity fieldParity(Field f) {
   result = exprParity(f.getAnAssignedValue()) or
   exists(UnaryAssignExpr u | u.getExpr() = f.getAnAccess() and (result = true or result = false)) or
@@ -128,6 +138,7 @@ private Parity fieldParity(Field f) {
 }
 
 /** Holds if the parity of `e` is too complicated to determine. */
+deprecated
 private predicate unknownParity(Expr e) {
   e instanceof AssignDivExpr or
   e instanceof AssignRShiftExpr or
@@ -144,6 +155,7 @@ private predicate unknownParity(Expr e) {
 }
 
 /** Gets a possible parity for `e`. */
+deprecated
 private Parity exprParity(Expr e) {
   result = certainExprParity(e) or
   not exists(certainExprParity(e)) and
@@ -207,14 +219,18 @@ private Parity exprParity(Expr e) {
 /**
  * Gets the parity of `e` if it can be uniquely determined.
  */
+deprecated
 Parity getExprParity(Expr e) {
   result = exprParity(e) and 1 = count(exprParity(e))
 }
 
 /**
+ * DEPRECATED: Use semmle.code.java.dataflow.ModulusAnalysis instead.
+ *
  * Holds if the parity can be determined for both sides of `comp`. The boolean
  * `eqparity` indicates whether the two sides have equal or opposite parity.
  */
+deprecated
 predicate parityComparison(ComparisonExpr comp, boolean eqparity) {
   exists(Expr left, Expr right, boolean lpar, boolean rpar |
     comp.getLeftOperand() = left and

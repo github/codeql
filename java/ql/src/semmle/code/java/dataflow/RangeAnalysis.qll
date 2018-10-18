@@ -68,10 +68,11 @@ private import SSA
 private import RangeUtils
 private import semmle.code.java.controlflow.internal.GuardsLogic
 private import SignAnalysis
-private import ParityAnalysis
+private import ModulusAnalysis
 private import semmle.code.java.Reflection
 private import semmle.code.java.Collections
 private import semmle.code.java.Maps
+import Bound
 
 cached private module RangeAnalysisCache {
 
@@ -98,23 +99,6 @@ cached private module RangeAnalysisCache {
 }
 private import RangeAnalysisCache
 import RangeAnalysisPublic
-
-/**
- * Gets a condition that tests whether `v` equals `e + delta`.
- *
- * If the condition evaluates to `testIsTrue`:
- * - `isEq = true`  : `v == e + delta`
- * - `isEq = false` : `v != e + delta`
- */
-private Guard eqFlowCond(SsaVariable v, Expr e, int delta, boolean isEq, boolean testIsTrue) {
-  exists(boolean eqpolarity |
-    result.isEquality(ssaRead(v, delta), e, eqpolarity) and
-    (testIsTrue = true or testIsTrue = false) and
-    eqpolarity.booleanXor(testIsTrue).booleanNot() = isEq
-  )
-  or
-  exists(boolean testIsTrue0 | implies_v2(result, testIsTrue, eqFlowCond(v, e, delta, isEq, testIsTrue0), testIsTrue0))
-}
 
 /**
  * Holds if `comp` corresponds to:
@@ -149,6 +133,49 @@ private predicate boundCondition(ComparisonExpr comp, SsaVariable v, Expr e, int
   )
 }
 
+private predicate gcdInput(int x, int y) {
+  exists(ComparisonExpr comp, Bound b |
+    exprModulus(comp.getLesserOperand(), b, _, x) and
+    exprModulus(comp.getGreaterOperand(), b, _, y)
+  ) or
+  exists(int x0, int y0 |
+    gcdInput(x0, y0) and
+    x = y0 and
+    y = x0 % y0
+  )
+}
+
+private int gcd(int x, int y) {
+  result = x.abs() and y = 0 and gcdInput(x, y)
+  or
+  result = gcd(y, x % y) and y != 0 and gcdInput(x, y)
+}
+
+/**
+ * Holds if `comp` is a comparison between `x` and `y` for which `y - x` has a
+ * fixed value modulo some `mod > 1`, such that the comparison can be
+ * strengthened by `strengthen` when evaluating to `testIsTrue`.
+ */
+private predicate modulusComparison(ComparisonExpr comp, boolean testIsTrue, int strengthen) {
+  exists(Bound b, int v1, int v2, int mod1, int mod2, int mod, boolean resultIsStrict, int d, int k |
+    // If `x <= y` and `x =(mod) b + v1` and `y =(mod) b + v2` then
+    // `0 <= y - x =(mod) v2 - v1`. By choosing `k =(mod) v2 - v1` with
+    // `0 <= k < mod` we get `k <= y - x`. If the resulting comparison is
+    // strict then the strengthening amount is instead `k - 1` modulo `mod`:
+    // `x < y` means `0 <= y - x - 1 =(mod) k - 1` so `k - 1 <= y - x - 1` and
+    // thus `k - 1 < y - x` with `0 <= k - 1 < mod`.
+    exprModulus(comp.getLesserOperand(), b, v1, mod1) and
+    exprModulus(comp.getGreaterOperand(), b, v2, mod2) and
+    mod = gcd(mod1, mod2) and
+    mod != 1 and
+    (testIsTrue = true or testIsTrue = false) and
+    (if comp.isStrict() then resultIsStrict = testIsTrue else resultIsStrict = testIsTrue.booleanNot()) and
+    (resultIsStrict = true and d = 1 or resultIsStrict = false and d = 0) and
+    (testIsTrue = true and k = v2 - v1 or testIsTrue = false and k = v1 - v2) and
+    strengthen = (((k - d) % mod) + mod) % mod
+  )
+}
+
 /**
  * Gets a condition that tests whether `v` is bounded by `e + delta`.
  *
@@ -168,10 +195,10 @@ private Guard boundFlowCond(SsaVariable v, Expr e, int delta, boolean upper, boo
       upper = false and strengthen = 1)
     else
       strengthen = 0) and
-    // A non-strict inequality `x <= y` can be strengthened to `x <= y - 1` if
-    // `x` and `y` have opposite parities, and a strict inequality `x < y` can
-    // be similarly strengthened if `x` and `y` have equal parities.
-    (if parityComparison(comp, resultIsStrict) then d2 = strengthen else d2 = 0) and
+    (
+      exists(int k | modulusComparison(comp, testIsTrue, k) and d2 = strengthen * k) or
+      not modulusComparison(comp, testIsTrue, _) and d2 = 0
+    ) and
     // A strict inequality `x < y` can be strengthened to `x <= y - 1`.
     (resultIsStrict = true and d3 = strengthen or resultIsStrict = false and d3 = 0) and
     delta = d1 + d2 + d3
@@ -206,14 +233,8 @@ class CondReason extends Reason, TCondReason {
  * - `upper = false` : `v >= e + delta`
  */
 private predicate boundFlowStepSsa(SsaVariable v, SsaReadPosition pos, Expr e, int delta, boolean upper, Reason reason) {
-  exists(SsaExplicitUpdate upd | v = upd and pos.hasReadOfVar(v) and reason = TNoReason() |
-    upd.getDefiningExpr().(VariableAssign).getSource() = e and delta = 0 and (upper = true or upper = false) or
-    upd.getDefiningExpr().(PostIncExpr).getExpr() = e and delta = 1 and (upper = true or upper = false) or
-    upd.getDefiningExpr().(PreIncExpr).getExpr() = e and delta = 1 and (upper = true or upper = false) or
-    upd.getDefiningExpr().(PostDecExpr).getExpr() = e and delta = -1 and (upper = true or upper = false) or
-    upd.getDefiningExpr().(PreDecExpr).getExpr() = e and delta = -1 and (upper = true or upper = false) or
-    upd.getDefiningExpr().(AssignOp) = e and delta = 0 and (upper = true or upper = false)
-  ) or
+  ssaUpdateStep(v, e, delta) and pos.hasReadOfVar(v) and (upper = true or upper = false) and reason = TNoReason()
+  or
   exists(Guard guard, boolean testIsTrue |
     pos.hasReadOfVar(v) and
     guard = boundFlowCond(v, e, delta, upper, testIsTrue) and
@@ -290,22 +311,8 @@ private class NarrowingCastExpr extends CastExpr {
  * - `upper = false` : `e2 >= e1 + delta`
  */
 private predicate boundFlowStep(Expr e2, Expr e1, int delta, boolean upper) {
-  e2.(ParExpr).getExpr() = e1 and delta = 0 and (upper = true or upper = false) or
-  e2.(AssignExpr).getSource() = e1 and delta = 0 and (upper = true or upper = false) or
-  e2.(PlusExpr).getExpr() = e1 and delta = 0 and (upper = true or upper = false) or
-  e2.(PostIncExpr).getExpr() = e1 and delta = 0 and (upper = true or upper = false) or
-  e2.(PostDecExpr).getExpr() = e1 and delta = 0 and (upper = true or upper = false) or
-  e2.(PreIncExpr).getExpr() = e1 and delta = 1 and (upper = true or upper = false) or
-  e2.(PreDecExpr).getExpr() = e1 and delta = -1 and (upper = true or upper = false) or
+  valueFlowStep(e2, e1, delta) and (upper = true or upper = false) or
   e2.(SafeCastExpr).getExpr() = e1 and delta = 0 and (upper = true or upper = false) or
-  exists(SsaExplicitUpdate v, FieldRead arrlen |
-    e2 = arrlen and
-    arrlen.getField() instanceof ArrayLengthField and
-    arrlen.getQualifier() = v.getAUse() and
-    v.getDefiningExpr().(VariableAssign).getSource().(ArrayCreationExpr).getDimension(0) = e1 and
-    delta = 0 and
-    (upper = true or upper = false)
-  ) or
   exists(Expr x |
     e2.(AddExpr).hasOperands(e1, x) or
     exists(AssignAddExpr add | add = e2 |
@@ -313,8 +320,7 @@ private predicate boundFlowStep(Expr e2, Expr e1, int delta, boolean upper) {
       add.getDest() = x and add.getRhs() = e1
     )
     |
-    x.(ConstantIntegerExpr).getIntValue() = delta and (upper = true or upper = false)
-    or
+    // `x instanceof ConstantIntegerExpr` is covered by valueFlowStep
     not x instanceof ConstantIntegerExpr and
     not e1 instanceof ConstantIntegerExpr and
     if strictlyPositive(x) then
@@ -340,8 +346,7 @@ private predicate boundFlowStep(Expr e2, Expr e1, int delta, boolean upper) {
       sub.getRhs() = x
     )
     |
-    x.(ConstantIntegerExpr).getIntValue() = -delta and (upper = true or upper = false)
-    or
+    // `x instanceof ConstantIntegerExpr` is covered by valueFlowStep
     not x instanceof ConstantIntegerExpr and
     if strictlyPositive(x) then
       (upper = true and delta = -1)
@@ -407,61 +412,6 @@ private predicate boundFlowStepDiv(Expr e2, Expr e1, int factor) {
     exists(URShiftExpr e | e = e2 and e.getLeftOperand() = e1 and e.getRightOperand() = c and factor = 2.pow(k)) or
     exists(AssignURShiftExpr e | e = e2 and e.getDest() = e1 and e.getRhs() = c and factor = 2.pow(k))
   )
-}
-
-private newtype TBound =
-  TBoundZero() or
-  TBoundSsa(SsaVariable v) { v.getSourceVariable().getType() instanceof IntegralType } or
-  TBoundExpr(Expr e) { e.(FieldRead).getField() instanceof ArrayLengthField and not exists(SsaVariable v | e = v.getAUse()) }
-
-/**
- * A bound that may be inferred for an expression plus/minus an integer delta.
- */
-abstract class Bound extends TBound {
-  abstract string toString();
-  /** Gets an expression that equals this bound plus `delta`. */
-  abstract Expr getExpr(int delta);
-  /** Gets an expression that equals this bound. */
-  Expr getExpr() {
-    result = getExpr(0)
-  }
-  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
-  }
-}
-
-/**
- * The bound that corresponds to the integer 0. This is used to represent all
- * integer bounds as bounds are always accompanied by an added integer delta.
- */
-class ZeroBound extends Bound, TBoundZero {
-  override string toString() { result = "0" }
-  override Expr getExpr(int delta) { result.(ConstantIntegerExpr).getIntValue() = delta }
-}
-
-/**
- * A bound corresponding to the value of an SSA variable.
- */
-class SsaBound extends Bound, TBoundSsa {
-  /** Gets the SSA variable that equals this bound. */
-  SsaVariable getSsa() { this = TBoundSsa(result) }
-  override string toString() { result = getSsa().toString() }
-  override Expr getExpr(int delta) { result = getSsa().getAUse() and delta = 0 }
-  override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    getSsa().getLocation().hasLocationInfo(path, sl, sc, el, ec)
-  }
-}
-
-/**
- * A bound that corresponds to the value of a specific expression that might be
- * interesting, but isn't otherwise represented by the value of an SSA variable.
- */
-class ExprBound extends Bound, TBoundExpr {
-  override string toString() { result = getExpr().toString() }
-  override Expr getExpr(int delta) { this = TBoundExpr(result) and delta = 0 }
-  override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    getExpr().hasLocationInfo(path, sl, sc, el, ec)
-  }
 }
 
 /**
@@ -632,7 +582,7 @@ private predicate baseBound(Expr e, int b, boolean upper) {
  */
 private predicate safeNarrowingCast(NarrowingCastExpr cast, boolean upper) {
   exists(int bound |
-    bounded(cast.getExpr(), TBoundZero(), bound, upper, _, _, _)
+    bounded(cast.getExpr(), any(ZeroBound zb), bound, upper, _, _, _)
     |
     upper = true and bound <= cast.getUpperBound() or
     upper = false and bound >= cast.getLowerBound()

@@ -15,6 +15,13 @@ private predicate constantIntegerExpr(Expr e, int val) {
     src = v.getDefiningExpr().(VariableAssign).getSource() and
     constantIntegerExpr(src, val)
   )
+  or
+  exists(SsaExplicitUpdate v, FieldRead arrlen |
+    e = arrlen and
+    arrlen.getField() instanceof ArrayLengthField and
+    arrlen.getQualifier() = v.getAUse() and
+    v.getDefiningExpr().(VariableAssign).getSource().(ArrayCreationExpr).getFirstDimensionSize() = val
+  )
 }
 
 /** An expression that always has the same integer value. */
@@ -129,5 +136,77 @@ predicate guardControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean 
   exists(Guard guard0, boolean testIsTrue0 |
     implies_v2(guard0, testIsTrue0, guard, testIsTrue) and
     guardControlsSsaRead(guard0, controlled, testIsTrue0)
+  )
+}
+
+/**
+ * Gets a condition that tests whether `v` equals `e + delta`.
+ *
+ * If the condition evaluates to `testIsTrue`:
+ * - `isEq = true`  : `v == e + delta`
+ * - `isEq = false` : `v != e + delta`
+ */
+Guard eqFlowCond(SsaVariable v, Expr e, int delta, boolean isEq, boolean testIsTrue) {
+  exists(boolean eqpolarity |
+    result.isEquality(ssaRead(v, delta), e, eqpolarity) and
+    (testIsTrue = true or testIsTrue = false) and
+    eqpolarity.booleanXor(testIsTrue).booleanNot() = isEq
+  )
+  or
+  exists(boolean testIsTrue0 | implies_v2(result, testIsTrue, eqFlowCond(v, e, delta, isEq, testIsTrue0), testIsTrue0))
+}
+
+/**
+ * Holds if `v` is an `SsaExplicitUpdate` that equals `e + delta`.
+ */
+predicate ssaUpdateStep(SsaExplicitUpdate v, Expr e, int delta) {
+  v.getDefiningExpr().(VariableAssign).getSource() = e and delta = 0 or
+  v.getDefiningExpr().(PostIncExpr).getExpr() = e and delta = 1 or
+  v.getDefiningExpr().(PreIncExpr).getExpr() = e and delta = 1 or
+  v.getDefiningExpr().(PostDecExpr).getExpr() = e and delta = -1 or
+  v.getDefiningExpr().(PreDecExpr).getExpr() = e and delta = -1 or
+  v.getDefiningExpr().(AssignOp) = e and delta = 0
+}
+
+/**
+ * Holds if `e1 + delta` equals `e2`.
+ */
+predicate valueFlowStep(Expr e2, Expr e1, int delta) {
+  e2.(ParExpr).getExpr() = e1 and delta = 0 or
+  e2.(AssignExpr).getSource() = e1 and delta = 0 or
+  e2.(PlusExpr).getExpr() = e1 and delta = 0 or
+  e2.(PostIncExpr).getExpr() = e1 and delta = 0 or
+  e2.(PostDecExpr).getExpr() = e1 and delta = 0 or
+  e2.(PreIncExpr).getExpr() = e1 and delta = 1 or
+  e2.(PreDecExpr).getExpr() = e1 and delta = -1 or
+  exists(SsaExplicitUpdate v, FieldRead arrlen |
+    e2 = arrlen and
+    arrlen.getField() instanceof ArrayLengthField and
+    arrlen.getQualifier() = v.getAUse() and
+    v.getDefiningExpr().(VariableAssign).getSource().(ArrayCreationExpr).getDimension(0) = e1 and
+    delta = 0
+  ) or
+  exists(Expr x |
+    e2.(AddExpr).hasOperands(e1, x) or
+    exists(AssignAddExpr add | add = e2 |
+      add.getDest() = e1 and add.getRhs() = x or
+      add.getDest() = x and add.getRhs() = e1
+    )
+    |
+    x.(ConstantIntegerExpr).getIntValue() = delta
+  ) or
+  exists(Expr x |
+    exists(SubExpr sub |
+      e2 = sub and
+      sub.getLeftOperand() = e1 and
+      sub.getRightOperand() = x
+    ) or
+    exists(AssignSubExpr sub |
+      e2 = sub and
+      sub.getDest() = e1 and
+      sub.getRhs() = x
+    )
+    |
+    x.(ConstantIntegerExpr).getIntValue() = -delta
   )
 }
