@@ -171,6 +171,10 @@ namespace Semmle.Extraction
                 {
                     populateQueue.Dequeue()();
                 }
+                catch (InternalError e)
+                {
+                    Extractor.Message(e.ExtractionMessage);
+                }
                 catch (Exception e)
                 {
                     Extractor.Message(new Message { severity = Severity.Error, exception = e, message = "Uncaught exception" });
