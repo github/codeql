@@ -78,7 +78,7 @@ TypePair<void, int>::second g10()
 template<class T>
 typename TypePair<void, T>::first g11()
 {
-	// GOOD (the return type amounts to void) [FALSE POSITIVE]
+	// GOOD (the return type amounts to void)
 }
 
 template<class T>
