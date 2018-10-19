@@ -6,6 +6,65 @@ import java
 private import SSA
 private import semmle.code.java.controlflow.internal.GuardsLogic
 
+/**
+ * Holds if `v` is an input to `phi` that is not along a back edge, and the
+ * only other input to `phi` is a `null` value.
+ *
+ * Note that the declared type of `phi` is `SsaVariable` instead of
+ * `SsaPhiNode` in order for the reflexive case of `nonNullSsaFwdStep*(..)` to
+ * have non-`SsaPhiNode` results.
+ */
+private predicate nonNullSsaFwdStep(SsaVariable v, SsaVariable phi) {
+  exists(SsaExplicitUpdate vnull, SsaPhiNode phi0 | phi0 = phi |
+    2 = strictcount(phi0.getAPhiInput()) and
+    vnull = phi0.getAPhiInput() and
+    v = phi0.getAPhiInput() and
+    not backEdge(phi0, v, _) and
+    vnull != v and
+    vnull.getDefiningExpr().(VariableAssign).getSource() instanceof NullLiteral
+  )
+}
+
+private predicate nonNullDefStep(Expr e1, Expr e2) {
+  e2.(ParExpr).getExpr() = e1
+  or
+  exists(ConditionalExpr cond | cond = e2 |
+    cond.getTrueExpr() = e1 and cond.getFalseExpr() instanceof NullLiteral
+    or
+    cond.getFalseExpr() = e1 and cond.getTrueExpr() instanceof NullLiteral
+  )
+}
+
+/**
+ * Gets the definition of `v` provided that `v` is a non-null array with an
+ * explicit `ArrayCreationExpr` definition and that the definition does not go
+ * through a back edge.
+ */
+ArrayCreationExpr getArrayDef(SsaVariable v) {
+  exists(Expr src |
+    v.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() = src and
+    nonNullDefStep*(result, src)
+  )
+  or
+  exists(SsaVariable mid |
+    result = getArrayDef(mid) and
+    nonNullSsaFwdStep(mid, v)
+  )
+}
+
+/**
+ * Holds if `arrlen` is a read of an array `length` field on an array that, if
+ * it is non-null, is defined by `def` and that the definition can reach
+ * `arrlen` without going through a back edge.
+ */
+private predicate arrayLengthDef(FieldRead arrlen, ArrayCreationExpr def) {
+  exists(SsaVariable arr |
+    arrlen.getField() instanceof ArrayLengthField and
+    arrlen.getQualifier() = arr.getAUse() and
+    def = getArrayDef(arr)
+  )
+}
+
 /** An expression that always has the same integer value. */
 pragma[nomagic]
 private predicate constantIntegerExpr(Expr e, int val) {
@@ -17,11 +76,17 @@ private predicate constantIntegerExpr(Expr e, int val) {
     constantIntegerExpr(src, val)
   )
   or
-  exists(SsaExplicitUpdate v, FieldRead arrlen |
-    e = arrlen and
+  exists(ArrayCreationExpr a |
+    arrayLengthDef(e, a) and
+    a.getFirstDimensionSize() = val
+  )
+  or
+  exists(Field a, FieldRead arrlen |
+    a.isFinal() and
+    a.getInitializer().(ArrayCreationExpr).getFirstDimensionSize() = val and
     arrlen.getField() instanceof ArrayLengthField and
-    arrlen.getQualifier() = v.getAUse() and
-    v.getDefiningExpr().(VariableAssign).getSource().(ArrayCreationExpr).getFirstDimensionSize() = val
+    arrlen.getQualifier() = a.getAnAccess() and
+    e = arrlen
   )
 }
 
@@ -123,6 +188,18 @@ class SsaReadPositionPhiInputEdge extends SsaReadPosition, TSsaReadPositionPhiIn
 }
 
 /**
+ * Holds if `inp` is an input to `phi` along a back edge.
+ */
+predicate backEdge(SsaPhiNode phi, SsaVariable inp, SsaReadPositionPhiInputEdge edge) {
+  edge.phiInput(phi, inp) and
+  // Conservatively assume that every edge is a back edge if we don't have dominance information.
+  (
+    phi.getBasicBlock().bbDominates(edge.getOrigBlock()) or
+    not hasDominanceInformation(edge.getOrigBlock())
+  )
+}
+
+/**
  * Holds if `guard` directly controls the position `controlled` with the
  * value `testIsTrue`.
  */
@@ -201,11 +278,9 @@ predicate valueFlowStep(Expr e2, Expr e1, int delta) {
   or
   e2.(PreDecExpr).getExpr() = e1 and delta = -1
   or
-  exists(SsaExplicitUpdate v, FieldRead arrlen |
-    e2 = arrlen and
-    arrlen.getField() instanceof ArrayLengthField and
-    arrlen.getQualifier() = v.getAUse() and
-    v.getDefiningExpr().(VariableAssign).getSource().(ArrayCreationExpr).getDimension(0) = e1 and
+  exists(ArrayCreationExpr a |
+    arrayLengthDef(e2, a) and
+    a.getDimension(0) = e1 and
     delta = 0
   )
   or
