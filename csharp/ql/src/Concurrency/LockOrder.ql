@@ -14,17 +14,15 @@
 import csharp
 
 /**
- * Find a call target conservatively only when there is
- * a static target or one runtime target.
+ * Gets a call target conservatively only when there is
+ * one runtime target.
  */
 Callable getCallTarget(Call c) {
-  if count(c.getARuntimeTarget()) = 1 then
-    result = c.getARuntimeTarget()
-  else
-    result = c.getTarget()
+  count(c.getARuntimeTarget()) = 1 and
+  result = c.getARuntimeTarget()
 }
 
-/** Find any lock statement reachable from a callable. */
+/** Gets a lock statement reachable from a callable. */
 LockStmt getAReachableLockStmt(Callable callable) {
   result.getEnclosingCallable() = callable
   or
@@ -34,7 +32,7 @@ LockStmt getAReachableLockStmt(Callable callable) {
 }
 
 /**
- * Finds nested pairs of lock statements, either
+ * Holds if there is nested pairs of lock statements, either
  * inter-procedurally or intra-procedurally.
  */
 predicate nestedLocks(Variable outerVariable, Variable innerVariable, LockStmt outer, LockStmt inner) {
