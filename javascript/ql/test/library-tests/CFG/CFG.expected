@@ -579,20 +579,20 @@
 | destructuring | 3 | o | 4 | p |
 | destructuring | 4 | p | 5 | {\\n    v ...  = p;\\n} |
 | destructuring | 5 | {\\n    v ...  = p;\\n} | 6 | var\\n    ...  } = o; |
-| destructuring | 6 | var\\n    ...  } = o; | 7 | {\\n      ... \\n     } |
+| destructuring | 6 | var\\n    ...  } = o; | 10 | o |
 | destructuring | 7 | {\\n      ...   } = o | 11 | var\\n    ...  ] = p; |
 | destructuring | 7 | {\\n      ... \\n     } | 8 | x |
 | destructuring | 8 | x | 8 | x |
 | destructuring | 8 | x | 9 | y |
+| destructuring | 9 | y | 7 | {\\n      ...   } = o |
 | destructuring | 9 | y | 9 | y |
-| destructuring | 9 | y | 10 | o |
-| destructuring | 10 | o | 7 | {\\n      ...   } = o |
-| destructuring | 11 | var\\n    ...  ] = p; | 12 | [\\n      ... \\n     ] |
+| destructuring | 10 | o | 7 | {\\n      ... \\n     } |
+| destructuring | 11 | var\\n    ...  ] = p; | 16 | p |
 | destructuring | 12 | [\\n      ...   ] = p | 17 | exit node of functio ...  = p;\\n} |
 | destructuring | 12 | [\\n      ... \\n     ] | 13 | a |
 | destructuring | 13 | a | 15 | c |
-| destructuring | 15 | c | 16 | p |
-| destructuring | 16 | p | 12 | [\\n      ...   ] = p |
+| destructuring | 15 | c | 12 | [\\n      ...   ] = p |
+| destructuring | 16 | p | 12 | [\\n      ... \\n     ] |
 | enum | 1 | 'value' | 1 | a = 'value' |
 | enum | 1 | E | 1 | a |
 | enum | 1 | a | 1 | 'value' |
