@@ -1,5 +1,5 @@
 /**
- * A list of NuGet packages with known vulnerabilities.
+ * Provides a list of NuGet packages with known vulnerabilities.
  * 
  * To add a new vulnerability follow the existing pattern.
  * Create a new class that extends the abstract class `Vulnerability`,
@@ -113,11 +113,13 @@ class AspNetCore_Mar18 extends Vulnerability {
       name = "Microsoft.AspNetCore.Server.Kestrel.Transport.Abstractions"
       or
       name = "Microsoft.AspNetCore.Server.Kestrel.Transport.Libuv"
-      or
-      name = "Microsoft.AspNetCore.All"
     ) and
     affected = "2.0.0" and
     fixed = "2.0.3"
+    or
+    name = "Microsoft.AspNetCore.All" and
+    affected = "2.0.0" and
+    fixed = "2.0.8"
   }
 }
 

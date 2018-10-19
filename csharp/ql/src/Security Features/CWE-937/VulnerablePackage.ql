@@ -15,5 +15,5 @@ import Vulnerabilities
 
 from Vulnerability vuln, VulnerablePackage package
 where vuln = package.getVulnerability()
-select package, "Package " + package + " has vulnerability $@, and should be upgraded to version " + package.getFixedVersion() + ".",
+select package, "Package '" + package + "' has vulnerability $@, and should be upgraded to version " + package.getFixedVersion() + ".",
   vuln.getUrl(), vuln.toString()
