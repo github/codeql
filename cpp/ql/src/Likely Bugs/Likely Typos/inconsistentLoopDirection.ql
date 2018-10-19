@@ -1,11 +1,13 @@
 /**
- * @name Ill-defined for loop
+ * @name Inconsistent direction of for loop
  * @description A for-loop iteration expression goes backward with respect of the initialization statement and condition expression.
- * @id cpp/ill-defined-for-loop
  * @kind problem
- * @problem.severity warning
+ * @problem.severity error
  * @precision high
- * @tags external/microsoft/6293
+ * @id cpp/inconsistent-loop-direction
+ * @tags correctness
+ *       external/cwe/cwe-835 
+ *       external/microsoft/6293
  * @msrc.severity important
  */
 import cpp

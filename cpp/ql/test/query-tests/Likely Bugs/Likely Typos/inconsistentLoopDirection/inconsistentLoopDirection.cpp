@@ -144,7 +144,7 @@ void InvalidConditionUnsignedCornerCase()
 
 void NegativeTestCase()
 {
-    for (int i = 0; (200 - i) < 100; i--)
+    for (int i = 0; (100 - i) < 200; i--)
     {
         // code ...
     }
