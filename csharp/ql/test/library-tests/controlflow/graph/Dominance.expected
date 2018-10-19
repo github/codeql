@@ -712,37 +712,25 @@
 | post | ExitMethods.cs:97:16:97:30 | call to method Contains | ExitMethods.cs:97:27:97:29 | - |
 | post | ExitMethods.cs:97:16:97:38 | ... ? ... : ... | ExitMethods.cs:96:5:98:5 | {...} |
 | post | ExitMethods.cs:97:27:97:29 | - | ExitMethods.cs:97:16:97:16 | access to parameter s |
-| post | ExitMethods.cs:100:17:100:32 | exit FailingAssertion | ExitMethods.cs:103:13:103:17 | Int32 x = ... |
+| post | ExitMethods.cs:100:17:100:32 | exit FailingAssertion | ExitMethods.cs:102:9:102:28 | call to method IsTrue |
 | post | ExitMethods.cs:101:5:104:5 | {...} | ExitMethods.cs:100:17:100:32 | enter FailingAssertion |
 | post | ExitMethods.cs:102:9:102:28 | call to method IsTrue | ExitMethods.cs:102:23:102:27 | false |
 | post | ExitMethods.cs:102:9:102:29 | ...; | ExitMethods.cs:101:5:104:5 | {...} |
 | post | ExitMethods.cs:102:23:102:27 | false | ExitMethods.cs:102:9:102:29 | ...; |
-| post | ExitMethods.cs:103:9:103:18 | ... ...; | ExitMethods.cs:102:9:102:28 | call to method IsTrue |
-| post | ExitMethods.cs:103:13:103:13 | access to local variable x | ExitMethods.cs:103:9:103:18 | ... ...; |
-| post | ExitMethods.cs:103:13:103:17 | Int32 x = ... | ExitMethods.cs:103:17:103:17 | 0 |
-| post | ExitMethods.cs:103:17:103:17 | 0 | ExitMethods.cs:103:13:103:13 | access to local variable x |
-| post | ExitMethods.cs:106:17:106:33 | exit FailingAssertion2 | ExitMethods.cs:109:13:109:17 | Int32 x = ... |
+| post | ExitMethods.cs:106:17:106:33 | exit FailingAssertion2 | ExitMethods.cs:108:9:108:26 | call to method FailingAssertion |
 | post | ExitMethods.cs:107:5:110:5 | {...} | ExitMethods.cs:106:17:106:33 | enter FailingAssertion2 |
 | post | ExitMethods.cs:108:9:108:26 | call to method FailingAssertion | ExitMethods.cs:108:9:108:26 | this access |
 | post | ExitMethods.cs:108:9:108:26 | this access | ExitMethods.cs:108:9:108:27 | ...; |
 | post | ExitMethods.cs:108:9:108:27 | ...; | ExitMethods.cs:107:5:110:5 | {...} |
-| post | ExitMethods.cs:109:9:109:18 | ... ...; | ExitMethods.cs:108:9:108:26 | call to method FailingAssertion |
-| post | ExitMethods.cs:109:13:109:13 | access to local variable x | ExitMethods.cs:109:9:109:18 | ... ...; |
-| post | ExitMethods.cs:109:13:109:17 | Int32 x = ... | ExitMethods.cs:109:17:109:17 | 0 |
-| post | ExitMethods.cs:109:17:109:17 | 0 | ExitMethods.cs:109:13:109:13 | access to local variable x |
 | post | ExitMethods.cs:112:10:112:20 | exit AssertFalse | ExitMethods.cs:112:33:112:49 | call to method IsFalse |
 | post | ExitMethods.cs:112:33:112:49 | call to method IsFalse | ExitMethods.cs:112:48:112:48 | access to parameter b |
 | post | ExitMethods.cs:112:48:112:48 | access to parameter b | ExitMethods.cs:112:10:112:20 | enter AssertFalse |
-| post | ExitMethods.cs:114:17:114:33 | exit FailingAssertion3 | ExitMethods.cs:117:13:117:17 | Int32 x = ... |
+| post | ExitMethods.cs:114:17:114:33 | exit FailingAssertion3 | ExitMethods.cs:116:9:116:25 | call to method AssertFalse |
 | post | ExitMethods.cs:115:5:118:5 | {...} | ExitMethods.cs:114:17:114:33 | enter FailingAssertion3 |
 | post | ExitMethods.cs:116:9:116:25 | call to method AssertFalse | ExitMethods.cs:116:21:116:24 | true |
 | post | ExitMethods.cs:116:9:116:25 | this access | ExitMethods.cs:116:9:116:26 | ...; |
 | post | ExitMethods.cs:116:9:116:26 | ...; | ExitMethods.cs:115:5:118:5 | {...} |
 | post | ExitMethods.cs:116:21:116:24 | true | ExitMethods.cs:116:9:116:25 | this access |
-| post | ExitMethods.cs:117:9:117:18 | ... ...; | ExitMethods.cs:116:9:116:25 | call to method AssertFalse |
-| post | ExitMethods.cs:117:13:117:13 | access to local variable x | ExitMethods.cs:117:9:117:18 | ... ...; |
-| post | ExitMethods.cs:117:13:117:17 | Int32 x = ... | ExitMethods.cs:117:17:117:17 | 0 |
-| post | ExitMethods.cs:117:17:117:17 | 0 | ExitMethods.cs:117:13:117:13 | access to local variable x |
 | post | Extensions.cs:5:23:5:29 | exit ToInt32 | Extensions.cs:7:9:7:30 | return ...; |
 | post | Extensions.cs:6:5:8:5 | {...} | Extensions.cs:5:23:5:29 | enter ToInt32 |
 | post | Extensions.cs:7:9:7:30 | return ...; | Extensions.cs:7:16:7:29 | call to method Parse |
@@ -2853,35 +2841,23 @@
 | pre | ExitMethods.cs:97:27:97:29 | - | ExitMethods.cs:97:16:97:30 | call to method Contains |
 | pre | ExitMethods.cs:100:17:100:32 | enter FailingAssertion | ExitMethods.cs:101:5:104:5 | {...} |
 | pre | ExitMethods.cs:101:5:104:5 | {...} | ExitMethods.cs:102:9:102:29 | ...; |
-| pre | ExitMethods.cs:102:9:102:28 | call to method IsTrue | ExitMethods.cs:103:9:103:18 | ... ...; |
+| pre | ExitMethods.cs:102:9:102:28 | call to method IsTrue | ExitMethods.cs:100:17:100:32 | exit FailingAssertion |
 | pre | ExitMethods.cs:102:9:102:29 | ...; | ExitMethods.cs:102:23:102:27 | false |
 | pre | ExitMethods.cs:102:23:102:27 | false | ExitMethods.cs:102:9:102:28 | call to method IsTrue |
-| pre | ExitMethods.cs:103:9:103:18 | ... ...; | ExitMethods.cs:103:13:103:13 | access to local variable x |
-| pre | ExitMethods.cs:103:13:103:13 | access to local variable x | ExitMethods.cs:103:17:103:17 | 0 |
-| pre | ExitMethods.cs:103:13:103:17 | Int32 x = ... | ExitMethods.cs:100:17:100:32 | exit FailingAssertion |
-| pre | ExitMethods.cs:103:17:103:17 | 0 | ExitMethods.cs:103:13:103:17 | Int32 x = ... |
 | pre | ExitMethods.cs:106:17:106:33 | enter FailingAssertion2 | ExitMethods.cs:107:5:110:5 | {...} |
 | pre | ExitMethods.cs:107:5:110:5 | {...} | ExitMethods.cs:108:9:108:27 | ...; |
-| pre | ExitMethods.cs:108:9:108:26 | call to method FailingAssertion | ExitMethods.cs:109:9:109:18 | ... ...; |
+| pre | ExitMethods.cs:108:9:108:26 | call to method FailingAssertion | ExitMethods.cs:106:17:106:33 | exit FailingAssertion2 |
 | pre | ExitMethods.cs:108:9:108:26 | this access | ExitMethods.cs:108:9:108:26 | call to method FailingAssertion |
 | pre | ExitMethods.cs:108:9:108:27 | ...; | ExitMethods.cs:108:9:108:26 | this access |
-| pre | ExitMethods.cs:109:9:109:18 | ... ...; | ExitMethods.cs:109:13:109:13 | access to local variable x |
-| pre | ExitMethods.cs:109:13:109:13 | access to local variable x | ExitMethods.cs:109:17:109:17 | 0 |
-| pre | ExitMethods.cs:109:13:109:17 | Int32 x = ... | ExitMethods.cs:106:17:106:33 | exit FailingAssertion2 |
-| pre | ExitMethods.cs:109:17:109:17 | 0 | ExitMethods.cs:109:13:109:17 | Int32 x = ... |
 | pre | ExitMethods.cs:112:10:112:20 | enter AssertFalse | ExitMethods.cs:112:48:112:48 | access to parameter b |
 | pre | ExitMethods.cs:112:33:112:49 | call to method IsFalse | ExitMethods.cs:112:10:112:20 | exit AssertFalse |
 | pre | ExitMethods.cs:112:48:112:48 | access to parameter b | ExitMethods.cs:112:33:112:49 | call to method IsFalse |
 | pre | ExitMethods.cs:114:17:114:33 | enter FailingAssertion3 | ExitMethods.cs:115:5:118:5 | {...} |
 | pre | ExitMethods.cs:115:5:118:5 | {...} | ExitMethods.cs:116:9:116:26 | ...; |
-| pre | ExitMethods.cs:116:9:116:25 | call to method AssertFalse | ExitMethods.cs:117:9:117:18 | ... ...; |
+| pre | ExitMethods.cs:116:9:116:25 | call to method AssertFalse | ExitMethods.cs:114:17:114:33 | exit FailingAssertion3 |
 | pre | ExitMethods.cs:116:9:116:25 | this access | ExitMethods.cs:116:21:116:24 | true |
 | pre | ExitMethods.cs:116:9:116:26 | ...; | ExitMethods.cs:116:9:116:25 | this access |
 | pre | ExitMethods.cs:116:21:116:24 | true | ExitMethods.cs:116:9:116:25 | call to method AssertFalse |
-| pre | ExitMethods.cs:117:9:117:18 | ... ...; | ExitMethods.cs:117:13:117:13 | access to local variable x |
-| pre | ExitMethods.cs:117:13:117:13 | access to local variable x | ExitMethods.cs:117:17:117:17 | 0 |
-| pre | ExitMethods.cs:117:13:117:17 | Int32 x = ... | ExitMethods.cs:114:17:114:33 | exit FailingAssertion3 |
-| pre | ExitMethods.cs:117:17:117:17 | 0 | ExitMethods.cs:117:13:117:17 | Int32 x = ... |
 | pre | Extensions.cs:5:23:5:29 | enter ToInt32 | Extensions.cs:6:5:8:5 | {...} |
 | pre | Extensions.cs:6:5:8:5 | {...} | Extensions.cs:7:28:7:28 | access to parameter s |
 | pre | Extensions.cs:7:9:7:30 | return ...; | Extensions.cs:5:23:5:29 | exit ToInt32 |

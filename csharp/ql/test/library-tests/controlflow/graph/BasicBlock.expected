@@ -193,10 +193,10 @@
 | ExitMethods.cs:97:9:97:39 | return ...; | ExitMethods.cs:95:16:95:34 | exit ExtensionMethodCall | 2 |
 | ExitMethods.cs:97:34:97:34 | 0 | ExitMethods.cs:97:34:97:34 | 0 | 1 |
 | ExitMethods.cs:97:38:97:38 | 1 | ExitMethods.cs:97:38:97:38 | 1 | 1 |
-| ExitMethods.cs:100:17:100:32 | enter FailingAssertion | ExitMethods.cs:100:17:100:32 | exit FailingAssertion | 10 |
-| ExitMethods.cs:106:17:106:33 | enter FailingAssertion2 | ExitMethods.cs:106:17:106:33 | exit FailingAssertion2 | 10 |
+| ExitMethods.cs:100:17:100:32 | enter FailingAssertion | ExitMethods.cs:100:17:100:32 | exit FailingAssertion | 6 |
+| ExitMethods.cs:106:17:106:33 | enter FailingAssertion2 | ExitMethods.cs:106:17:106:33 | exit FailingAssertion2 | 6 |
 | ExitMethods.cs:112:10:112:20 | enter AssertFalse | ExitMethods.cs:112:10:112:20 | exit AssertFalse | 4 |
-| ExitMethods.cs:114:17:114:33 | enter FailingAssertion3 | ExitMethods.cs:114:17:114:33 | exit FailingAssertion3 | 11 |
+| ExitMethods.cs:114:17:114:33 | enter FailingAssertion3 | ExitMethods.cs:114:17:114:33 | exit FailingAssertion3 | 7 |
 | Extensions.cs:5:23:5:29 | enter ToInt32 | Extensions.cs:5:23:5:29 | exit ToInt32 | 6 |
 | Extensions.cs:10:24:10:29 | enter ToBool | Extensions.cs:10:24:10:29 | exit ToBool | 7 |
 | Extensions.cs:15:23:15:33 | enter CallToInt32 | Extensions.cs:15:23:15:33 | exit CallToInt32 | 4 |

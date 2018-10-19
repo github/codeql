@@ -787,28 +787,31 @@
 | ExitMethods.cs:97:27:97:29 | - | ExitMethods.cs:97:27:97:29 | - | normal |
 | ExitMethods.cs:97:34:97:34 | 0 | ExitMethods.cs:97:34:97:34 | 0 | normal |
 | ExitMethods.cs:97:38:97:38 | 1 | ExitMethods.cs:97:38:97:38 | 1 | normal |
+| ExitMethods.cs:101:5:104:5 | {...} | ExitMethods.cs:102:9:102:28 | call to method IsTrue | throw(AssertFailedException) |
 | ExitMethods.cs:101:5:104:5 | {...} | ExitMethods.cs:103:13:103:17 | Int32 x = ... | normal |
-| ExitMethods.cs:102:9:102:28 | call to method IsTrue | ExitMethods.cs:102:9:102:28 | call to method IsTrue | normal |
-| ExitMethods.cs:102:9:102:29 | ...; | ExitMethods.cs:102:9:102:28 | call to method IsTrue | normal |
+| ExitMethods.cs:102:9:102:28 | call to method IsTrue | ExitMethods.cs:102:9:102:28 | call to method IsTrue | throw(AssertFailedException) |
+| ExitMethods.cs:102:9:102:29 | ...; | ExitMethods.cs:102:9:102:28 | call to method IsTrue | throw(AssertFailedException) |
 | ExitMethods.cs:102:23:102:27 | false | ExitMethods.cs:102:23:102:27 | false | normal |
 | ExitMethods.cs:103:9:103:18 | ... ...; | ExitMethods.cs:103:13:103:17 | Int32 x = ... | normal |
 | ExitMethods.cs:103:13:103:13 | access to local variable x | ExitMethods.cs:103:13:103:13 | access to local variable x | normal |
 | ExitMethods.cs:103:13:103:17 | Int32 x = ... | ExitMethods.cs:103:13:103:17 | Int32 x = ... | normal |
 | ExitMethods.cs:103:17:103:17 | 0 | ExitMethods.cs:103:17:103:17 | 0 | normal |
+| ExitMethods.cs:107:5:110:5 | {...} | ExitMethods.cs:108:9:108:26 | call to method FailingAssertion | throw(AssertFailedException) |
 | ExitMethods.cs:107:5:110:5 | {...} | ExitMethods.cs:109:13:109:17 | Int32 x = ... | normal |
-| ExitMethods.cs:108:9:108:26 | call to method FailingAssertion | ExitMethods.cs:108:9:108:26 | call to method FailingAssertion | normal |
+| ExitMethods.cs:108:9:108:26 | call to method FailingAssertion | ExitMethods.cs:108:9:108:26 | call to method FailingAssertion | throw(AssertFailedException) |
 | ExitMethods.cs:108:9:108:26 | this access | ExitMethods.cs:108:9:108:26 | this access | normal |
-| ExitMethods.cs:108:9:108:27 | ...; | ExitMethods.cs:108:9:108:26 | call to method FailingAssertion | normal |
+| ExitMethods.cs:108:9:108:27 | ...; | ExitMethods.cs:108:9:108:26 | call to method FailingAssertion | throw(AssertFailedException) |
 | ExitMethods.cs:109:9:109:18 | ... ...; | ExitMethods.cs:109:13:109:17 | Int32 x = ... | normal |
 | ExitMethods.cs:109:13:109:13 | access to local variable x | ExitMethods.cs:109:13:109:13 | access to local variable x | normal |
 | ExitMethods.cs:109:13:109:17 | Int32 x = ... | ExitMethods.cs:109:13:109:17 | Int32 x = ... | normal |
 | ExitMethods.cs:109:17:109:17 | 0 | ExitMethods.cs:109:17:109:17 | 0 | normal |
 | ExitMethods.cs:112:33:112:49 | call to method IsFalse | ExitMethods.cs:112:33:112:49 | call to method IsFalse | normal |
 | ExitMethods.cs:112:48:112:48 | access to parameter b | ExitMethods.cs:112:48:112:48 | access to parameter b | normal |
+| ExitMethods.cs:115:5:118:5 | {...} | ExitMethods.cs:116:9:116:25 | call to method AssertFalse | throw(AssertFailedException) |
 | ExitMethods.cs:115:5:118:5 | {...} | ExitMethods.cs:117:13:117:17 | Int32 x = ... | normal |
-| ExitMethods.cs:116:9:116:25 | call to method AssertFalse | ExitMethods.cs:116:9:116:25 | call to method AssertFalse | normal |
+| ExitMethods.cs:116:9:116:25 | call to method AssertFalse | ExitMethods.cs:116:9:116:25 | call to method AssertFalse | throw(AssertFailedException) |
 | ExitMethods.cs:116:9:116:25 | this access | ExitMethods.cs:116:9:116:25 | this access | normal |
-| ExitMethods.cs:116:9:116:26 | ...; | ExitMethods.cs:116:9:116:25 | call to method AssertFalse | normal |
+| ExitMethods.cs:116:9:116:26 | ...; | ExitMethods.cs:116:9:116:25 | call to method AssertFalse | throw(AssertFailedException) |
 | ExitMethods.cs:116:21:116:24 | true | ExitMethods.cs:116:21:116:24 | true | normal |
 | ExitMethods.cs:117:9:117:18 | ... ...; | ExitMethods.cs:117:13:117:17 | Int32 x = ... | normal |
 | ExitMethods.cs:117:13:117:13 | access to local variable x | ExitMethods.cs:117:13:117:13 | access to local variable x | normal |

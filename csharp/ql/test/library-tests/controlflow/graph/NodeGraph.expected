@@ -833,35 +833,23 @@
 | ExitMethods.cs:97:38:97:38 | 1 | ExitMethods.cs:97:9:97:39 | return ...; | semmle.label | successor |
 | ExitMethods.cs:100:17:100:32 | enter FailingAssertion | ExitMethods.cs:101:5:104:5 | {...} | semmle.label | successor |
 | ExitMethods.cs:101:5:104:5 | {...} | ExitMethods.cs:102:9:102:29 | ...; | semmle.label | successor |
-| ExitMethods.cs:102:9:102:28 | call to method IsTrue | ExitMethods.cs:103:9:103:18 | ... ...; | semmle.label | successor |
+| ExitMethods.cs:102:9:102:28 | call to method IsTrue | ExitMethods.cs:100:17:100:32 | exit FailingAssertion | semmle.label | exception(AssertFailedException) |
 | ExitMethods.cs:102:9:102:29 | ...; | ExitMethods.cs:102:23:102:27 | false | semmle.label | successor |
 | ExitMethods.cs:102:23:102:27 | false | ExitMethods.cs:102:9:102:28 | call to method IsTrue | semmle.label | successor |
-| ExitMethods.cs:103:9:103:18 | ... ...; | ExitMethods.cs:103:13:103:13 | access to local variable x | semmle.label | successor |
-| ExitMethods.cs:103:13:103:13 | access to local variable x | ExitMethods.cs:103:17:103:17 | 0 | semmle.label | successor |
-| ExitMethods.cs:103:13:103:17 | Int32 x = ... | ExitMethods.cs:100:17:100:32 | exit FailingAssertion | semmle.label | successor |
-| ExitMethods.cs:103:17:103:17 | 0 | ExitMethods.cs:103:13:103:17 | Int32 x = ... | semmle.label | successor |
 | ExitMethods.cs:106:17:106:33 | enter FailingAssertion2 | ExitMethods.cs:107:5:110:5 | {...} | semmle.label | successor |
 | ExitMethods.cs:107:5:110:5 | {...} | ExitMethods.cs:108:9:108:27 | ...; | semmle.label | successor |
-| ExitMethods.cs:108:9:108:26 | call to method FailingAssertion | ExitMethods.cs:109:9:109:18 | ... ...; | semmle.label | successor |
+| ExitMethods.cs:108:9:108:26 | call to method FailingAssertion | ExitMethods.cs:106:17:106:33 | exit FailingAssertion2 | semmle.label | exception(AssertFailedException) |
 | ExitMethods.cs:108:9:108:26 | this access | ExitMethods.cs:108:9:108:26 | call to method FailingAssertion | semmle.label | successor |
 | ExitMethods.cs:108:9:108:27 | ...; | ExitMethods.cs:108:9:108:26 | this access | semmle.label | successor |
-| ExitMethods.cs:109:9:109:18 | ... ...; | ExitMethods.cs:109:13:109:13 | access to local variable x | semmle.label | successor |
-| ExitMethods.cs:109:13:109:13 | access to local variable x | ExitMethods.cs:109:17:109:17 | 0 | semmle.label | successor |
-| ExitMethods.cs:109:13:109:17 | Int32 x = ... | ExitMethods.cs:106:17:106:33 | exit FailingAssertion2 | semmle.label | successor |
-| ExitMethods.cs:109:17:109:17 | 0 | ExitMethods.cs:109:13:109:17 | Int32 x = ... | semmle.label | successor |
 | ExitMethods.cs:112:10:112:20 | enter AssertFalse | ExitMethods.cs:112:48:112:48 | access to parameter b | semmle.label | successor |
 | ExitMethods.cs:112:33:112:49 | call to method IsFalse | ExitMethods.cs:112:10:112:20 | exit AssertFalse | semmle.label | successor |
 | ExitMethods.cs:112:48:112:48 | access to parameter b | ExitMethods.cs:112:33:112:49 | call to method IsFalse | semmle.label | successor |
 | ExitMethods.cs:114:17:114:33 | enter FailingAssertion3 | ExitMethods.cs:115:5:118:5 | {...} | semmle.label | successor |
 | ExitMethods.cs:115:5:118:5 | {...} | ExitMethods.cs:116:9:116:26 | ...; | semmle.label | successor |
-| ExitMethods.cs:116:9:116:25 | call to method AssertFalse | ExitMethods.cs:117:9:117:18 | ... ...; | semmle.label | successor |
+| ExitMethods.cs:116:9:116:25 | call to method AssertFalse | ExitMethods.cs:114:17:114:33 | exit FailingAssertion3 | semmle.label | exception(AssertFailedException) |
 | ExitMethods.cs:116:9:116:25 | this access | ExitMethods.cs:116:21:116:24 | true | semmle.label | successor |
 | ExitMethods.cs:116:9:116:26 | ...; | ExitMethods.cs:116:9:116:25 | this access | semmle.label | successor |
 | ExitMethods.cs:116:21:116:24 | true | ExitMethods.cs:116:9:116:25 | call to method AssertFalse | semmle.label | successor |
-| ExitMethods.cs:117:9:117:18 | ... ...; | ExitMethods.cs:117:13:117:13 | access to local variable x | semmle.label | successor |
-| ExitMethods.cs:117:13:117:13 | access to local variable x | ExitMethods.cs:117:17:117:17 | 0 | semmle.label | successor |
-| ExitMethods.cs:117:13:117:17 | Int32 x = ... | ExitMethods.cs:114:17:114:33 | exit FailingAssertion3 | semmle.label | successor |
-| ExitMethods.cs:117:17:117:17 | 0 | ExitMethods.cs:117:13:117:17 | Int32 x = ... | semmle.label | successor |
 | Extensions.cs:5:23:5:29 | enter ToInt32 | Extensions.cs:6:5:8:5 | {...} | semmle.label | successor |
 | Extensions.cs:6:5:8:5 | {...} | Extensions.cs:7:28:7:28 | access to parameter s | semmle.label | successor |
 | Extensions.cs:7:9:7:30 | return ...; | Extensions.cs:5:23:5:29 | exit ToInt32 | semmle.label | return |

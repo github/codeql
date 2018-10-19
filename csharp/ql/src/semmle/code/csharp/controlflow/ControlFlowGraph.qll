@@ -1763,6 +1763,7 @@ module ControlFlow {
        */
       private module NonReturning {
         private import semmle.code.csharp.ExprOrStmtParent
+        private import semmle.code.csharp.commons.Assertions
         private import semmle.code.csharp.frameworks.System
 
         /** A call that definitely does not return (conservative analysis). */
@@ -1774,6 +1775,11 @@ module ControlFlow {
         private class ExitingCall extends NonReturningCall {
           ExitingCall() {
             this.getTarget() instanceof ExitingCallable
+            or
+            exists(AssertMethod m |
+              m = this.(FailingAssertion).getAssertMethod() |
+              not exists(m.getExceptionClass())
+            )
           }
 
           override ExitCompletion getACompletion() { any() }
@@ -1784,6 +1790,11 @@ module ControlFlow {
 
           ThrowingCall() {
             c = this.getTarget().(ThrowingCallable).getACallCompletion()
+            or
+            exists(AssertMethod m |
+              m = this.(FailingAssertion).getAssertMethod() |
+              c.getExceptionClass() = m.getExceptionClass()
+            )
           }
 
           override ThrowCompletion getACompletion() { result = c }
