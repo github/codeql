@@ -96,6 +96,10 @@
 | CompileTimeOperators.cs:30:9:38:9 | try {...} ... | CompileTimeOperators.cs:37:13:37:40 | [finally: goto(End)] call to method WriteLine |
 | CompileTimeOperators.cs:30:9:38:9 | try {...} ... | CompileTimeOperators.cs:37:13:37:41 | [finally: goto(End)] ...; |
 | CompileTimeOperators.cs:30:9:38:9 | try {...} ... | CompileTimeOperators.cs:37:31:37:39 | [finally: goto(End)] "Finally" |
+| ExitMethods.cs:74:9:82:9 | try {...} ... | ExitMethods.cs:79:9:82:9 | [finally: return] {...} |
+| ExitMethods.cs:74:9:82:9 | try {...} ... | ExitMethods.cs:81:13:81:40 | [finally: return] call to method WriteLine |
+| ExitMethods.cs:74:9:82:9 | try {...} ... | ExitMethods.cs:81:13:81:41 | [finally: return] ...; |
+| ExitMethods.cs:74:9:82:9 | try {...} ... | ExitMethods.cs:81:38:81:39 | [finally: return] "" |
 | cflow.cs:148:9:155:9 | try {...} ... | cflow.cs:153:9:155:9 | [finally: exception(Exception)] {...} |
 | cflow.cs:148:9:155:9 | try {...} ... | cflow.cs:153:9:155:9 | [finally: exception(OutOfMemoryException)] {...} |
 | cflow.cs:148:9:155:9 | try {...} ... | cflow.cs:154:13:154:40 | [finally: exception(Exception)] call to method WriteLine |

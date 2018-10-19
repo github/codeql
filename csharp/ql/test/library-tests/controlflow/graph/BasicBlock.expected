@@ -164,35 +164,39 @@
 | Conditions.cs:108:13:109:24 | [b (line 102): false] if (...) ... | Conditions.cs:109:17:109:23 | ... = ... | 9 |
 | Conditions.cs:108:13:109:24 | [b (line 102): true] if (...) ... | Conditions.cs:108:18:108:18 | [b (line 102): true] access to parameter b | 3 |
 | Conditions.cs:110:16:110:16 | access to local variable x | Conditions.cs:102:12:102:13 | exit M8 | 3 |
-| ExitMethods.cs:6:10:6:11 | enter M1 | ExitMethods.cs:6:10:6:11 | exit M1 | 7 |
-| ExitMethods.cs:12:10:12:11 | enter M2 | ExitMethods.cs:12:10:12:11 | exit M2 | 7 |
-| ExitMethods.cs:18:10:18:11 | enter M3 | ExitMethods.cs:18:10:18:11 | exit M3 | 6 |
-| ExitMethods.cs:24:10:24:11 | enter M4 | ExitMethods.cs:24:10:24:11 | exit M4 | 6 |
-| ExitMethods.cs:30:10:30:11 | enter M5 | ExitMethods.cs:30:10:30:11 | exit M5 | 6 |
-| ExitMethods.cs:36:10:36:11 | enter M6 | ExitMethods.cs:40:13:40:30 | call to method ErrorAlways | 7 |
-| ExitMethods.cs:36:10:36:11 | exit M6 | ExitMethods.cs:36:10:36:11 | exit M6 | 1 |
-| ExitMethods.cs:42:9:45:9 | [exception: ArgumentException] catch (...) {...} | ExitMethods.cs:42:9:45:9 | [exception: ArgumentException] catch (...) {...} | 1 |
-| ExitMethods.cs:42:9:45:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:42:9:45:9 | [exception: Exception] catch (...) {...} | 1 |
-| ExitMethods.cs:43:9:45:9 | {...} | ExitMethods.cs:44:13:44:19 | return ...; | 2 |
-| ExitMethods.cs:46:9:49:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:48:13:48:19 | return ...; | 3 |
-| ExitMethods.cs:52:17:52:26 | enter ErrorMaybe | ExitMethods.cs:54:13:54:13 | access to parameter b | 4 |
-| ExitMethods.cs:52:17:52:26 | exit ErrorMaybe | ExitMethods.cs:52:17:52:26 | exit ErrorMaybe | 1 |
-| ExitMethods.cs:55:19:55:33 | object creation of type Exception | ExitMethods.cs:55:13:55:34 | throw ...; | 2 |
-| ExitMethods.cs:58:17:58:27 | enter ErrorAlways | ExitMethods.cs:60:13:60:13 | access to parameter b | 4 |
-| ExitMethods.cs:58:17:58:27 | exit ErrorAlways | ExitMethods.cs:58:17:58:27 | exit ErrorAlways | 1 |
-| ExitMethods.cs:61:19:61:33 | object creation of type Exception | ExitMethods.cs:61:13:61:34 | throw ...; | 2 |
-| ExitMethods.cs:63:41:63:43 | "b" | ExitMethods.cs:63:13:63:45 | throw ...; | 3 |
-| ExitMethods.cs:66:10:66:13 | enter Exit | ExitMethods.cs:66:10:66:13 | exit Exit | 6 |
-| ExitMethods.cs:71:10:71:24 | enter ApplicationExit | ExitMethods.cs:71:10:71:24 | exit ApplicationExit | 5 |
-| ExitMethods.cs:76:13:76:21 | enter ThrowExpr | ExitMethods.cs:78:16:78:25 | ... != ... | 7 |
-| ExitMethods.cs:76:13:76:21 | exit ThrowExpr | ExitMethods.cs:76:13:76:21 | exit ThrowExpr | 1 |
-| ExitMethods.cs:78:29:78:29 | 1 | ExitMethods.cs:78:9:78:77 | return ...; | 5 |
-| ExitMethods.cs:78:69:78:75 | "input" | ExitMethods.cs:78:41:78:76 | throw ... | 3 |
-| ExitMethods.cs:81:16:81:34 | enter ExtensionMethodCall | ExitMethods.cs:83:16:83:30 | call to method Contains | 6 |
-| ExitMethods.cs:83:9:83:39 | return ...; | ExitMethods.cs:81:16:81:34 | exit ExtensionMethodCall | 2 |
-| ExitMethods.cs:83:34:83:34 | 0 | ExitMethods.cs:83:34:83:34 | 0 | 1 |
-| ExitMethods.cs:83:38:83:38 | 1 | ExitMethods.cs:83:38:83:38 | 1 | 1 |
-| ExitMethods.cs:91:28:91:31 | enter Exit | ExitMethods.cs:91:28:91:31 | exit Exit | 3 |
+| ExitMethods.cs:7:10:7:11 | enter M1 | ExitMethods.cs:7:10:7:11 | exit M1 | 7 |
+| ExitMethods.cs:13:10:13:11 | enter M2 | ExitMethods.cs:13:10:13:11 | exit M2 | 7 |
+| ExitMethods.cs:19:10:19:11 | enter M3 | ExitMethods.cs:19:10:19:11 | exit M3 | 6 |
+| ExitMethods.cs:25:10:25:11 | enter M4 | ExitMethods.cs:25:10:25:11 | exit M4 | 6 |
+| ExitMethods.cs:31:10:31:11 | enter M5 | ExitMethods.cs:31:10:31:11 | exit M5 | 6 |
+| ExitMethods.cs:37:10:37:11 | enter M6 | ExitMethods.cs:41:13:41:30 | call to method ErrorAlways | 7 |
+| ExitMethods.cs:37:10:37:11 | exit M6 | ExitMethods.cs:37:10:37:11 | exit M6 | 1 |
+| ExitMethods.cs:43:9:46:9 | [exception: ArgumentException] catch (...) {...} | ExitMethods.cs:43:9:46:9 | [exception: ArgumentException] catch (...) {...} | 1 |
+| ExitMethods.cs:43:9:46:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:43:9:46:9 | [exception: Exception] catch (...) {...} | 1 |
+| ExitMethods.cs:44:9:46:9 | {...} | ExitMethods.cs:45:13:45:19 | return ...; | 2 |
+| ExitMethods.cs:47:9:50:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:49:13:49:19 | return ...; | 3 |
+| ExitMethods.cs:53:17:53:26 | enter ErrorMaybe | ExitMethods.cs:55:13:55:13 | access to parameter b | 4 |
+| ExitMethods.cs:53:17:53:26 | exit ErrorMaybe | ExitMethods.cs:53:17:53:26 | exit ErrorMaybe | 1 |
+| ExitMethods.cs:56:19:56:33 | object creation of type Exception | ExitMethods.cs:56:13:56:34 | throw ...; | 2 |
+| ExitMethods.cs:59:17:59:27 | enter ErrorAlways | ExitMethods.cs:61:13:61:13 | access to parameter b | 4 |
+| ExitMethods.cs:59:17:59:27 | exit ErrorAlways | ExitMethods.cs:59:17:59:27 | exit ErrorAlways | 1 |
+| ExitMethods.cs:62:19:62:33 | object creation of type Exception | ExitMethods.cs:62:13:62:34 | throw ...; | 2 |
+| ExitMethods.cs:64:41:64:43 | "b" | ExitMethods.cs:64:13:64:45 | throw ...; | 3 |
+| ExitMethods.cs:67:10:67:13 | enter Exit | ExitMethods.cs:67:10:67:13 | exit Exit | 6 |
+| ExitMethods.cs:72:10:72:18 | enter ExitInTry | ExitMethods.cs:72:10:72:18 | exit ExitInTry | 12 |
+| ExitMethods.cs:85:10:85:24 | enter ApplicationExit | ExitMethods.cs:85:10:85:24 | exit ApplicationExit | 5 |
+| ExitMethods.cs:90:13:90:21 | enter ThrowExpr | ExitMethods.cs:92:16:92:25 | ... != ... | 7 |
+| ExitMethods.cs:90:13:90:21 | exit ThrowExpr | ExitMethods.cs:90:13:90:21 | exit ThrowExpr | 1 |
+| ExitMethods.cs:92:29:92:29 | 1 | ExitMethods.cs:92:9:92:77 | return ...; | 5 |
+| ExitMethods.cs:92:69:92:75 | "input" | ExitMethods.cs:92:41:92:76 | throw ... | 3 |
+| ExitMethods.cs:95:16:95:34 | enter ExtensionMethodCall | ExitMethods.cs:97:16:97:30 | call to method Contains | 6 |
+| ExitMethods.cs:97:9:97:39 | return ...; | ExitMethods.cs:95:16:95:34 | exit ExtensionMethodCall | 2 |
+| ExitMethods.cs:97:34:97:34 | 0 | ExitMethods.cs:97:34:97:34 | 0 | 1 |
+| ExitMethods.cs:97:38:97:38 | 1 | ExitMethods.cs:97:38:97:38 | 1 | 1 |
+| ExitMethods.cs:100:17:100:32 | enter FailingAssertion | ExitMethods.cs:100:17:100:32 | exit FailingAssertion | 10 |
+| ExitMethods.cs:106:17:106:33 | enter FailingAssertion2 | ExitMethods.cs:106:17:106:33 | exit FailingAssertion2 | 10 |
+| ExitMethods.cs:112:10:112:20 | enter AssertFalse | ExitMethods.cs:112:10:112:20 | exit AssertFalse | 4 |
+| ExitMethods.cs:114:17:114:33 | enter FailingAssertion3 | ExitMethods.cs:114:17:114:33 | exit FailingAssertion3 | 11 |
 | Extensions.cs:5:23:5:29 | enter ToInt32 | Extensions.cs:5:23:5:29 | exit ToInt32 | 6 |
 | Extensions.cs:10:24:10:29 | enter ToBool | Extensions.cs:10:24:10:29 | exit ToBool | 7 |
 | Extensions.cs:15:23:15:33 | enter CallToInt32 | Extensions.cs:15:23:15:33 | exit CallToInt32 | 4 |

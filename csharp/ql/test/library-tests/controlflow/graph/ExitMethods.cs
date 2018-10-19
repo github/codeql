@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 class ExitMethods
 {
@@ -68,6 +69,19 @@ class ExitMethods
         Environment.Exit(0);
     }
 
+    void ExitInTry()
+    {
+        try
+        {
+            Exit();
+        }
+        finally
+        {
+            // dead
+            System.Console.WriteLine("");
+        }
+    }
+
     void ApplicationExit()
     {
         System.Windows.Forms.Application.Exit();
@@ -82,12 +96,26 @@ class ExitMethods
     {
         return s.Contains('-') ? 0 : 1;
     }
-}
 
-namespace System.Windows.Forms
-{
-    public class Application
+    public void FailingAssertion()
     {
-        public static void Exit() { }
+        Assert.IsTrue(false);
+        var x = 0; // dead
+    }
+
+    public void FailingAssertion2()
+    {
+        FailingAssertion();
+        var x = 0; // dead
+    }
+
+    void AssertFalse(bool b) => Assert.IsFalse(b);
+
+    public void FailingAssertion3()
+    {
+        AssertFalse(true);
+        var x = 0; // dead
     }
 }
+
+// semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Windows.cs  ${testdir}/../../../resources/stubs/Microsoft.VisualStudio.TestTools.UnitTesting.cs

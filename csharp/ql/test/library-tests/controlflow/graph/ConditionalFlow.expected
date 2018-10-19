@@ -116,10 +116,8 @@
 | 51 | 17 | Conditions.cs:51:17:51:17 | [b (line 46): true] access to parameter b | true | 52 | 17 | Conditions.cs:52:17:52:20 | [b (line 46): true] ...; |
 | 51 | 17 | Conditions.cs:51:17:51:17 | access to parameter b | false | 49 | 16 | Conditions.cs:49:16:49:16 | [b (line 46): false] access to parameter x |
 | 51 | 17 | Conditions.cs:51:17:51:17 | access to parameter b | true | 52 | 17 | Conditions.cs:52:17:52:20 | [b (line 46): true] ...; |
-| 54 | 13 | ExitMethods.cs:54:13:54:13 | access to parameter b | false | 52 | 17 | ExitMethods.cs:52:17:52:26 | exit ErrorMaybe |
-| 54 | 13 | ExitMethods.cs:54:13:54:13 | access to parameter b | true | 55 | 19 | ExitMethods.cs:55:19:55:33 | object creation of type Exception |
-| 60 | 13 | ExitMethods.cs:60:13:60:13 | access to parameter b | false | 63 | 41 | ExitMethods.cs:63:41:63:43 | "b" |
-| 60 | 13 | ExitMethods.cs:60:13:60:13 | access to parameter b | true | 61 | 19 | ExitMethods.cs:61:19:61:33 | object creation of type Exception |
+| 55 | 13 | ExitMethods.cs:55:13:55:13 | access to parameter b | false | 53 | 17 | ExitMethods.cs:53:17:53:26 | exit ErrorMaybe |
+| 55 | 13 | ExitMethods.cs:55:13:55:13 | access to parameter b | true | 56 | 19 | ExitMethods.cs:56:19:56:33 | object creation of type Exception |
 | 60 | 16 | Conditions.cs:60:16:60:22 | ... > ... | false | 65 | 9 | Conditions.cs:65:9:66:16 | if (...) ... |
 | 60 | 16 | Conditions.cs:60:16:60:22 | ... > ... | true | 61 | 9 | Conditions.cs:61:9:64:9 | {...} |
 | 60 | 16 | Conditions.cs:60:16:60:22 | [b (line 57): false] ... > ... | false | 65 | 9 | Conditions.cs:65:9:66:16 | [b (line 57): false] if (...) ... |
@@ -128,6 +126,8 @@
 | 60 | 16 | Conditions.cs:60:16:60:22 | [b (line 57): true] ... > ... | true | 61 | 9 | Conditions.cs:61:9:64:9 | [b (line 57): true] {...} |
 | 60 | 17 | BreakInTry.cs:60:17:60:28 | ... == ... | false | 64 | 9 | BreakInTry.cs:64:9:70:9 | {...} |
 | 60 | 17 | BreakInTry.cs:60:17:60:28 | ... == ... | true | 61 | 17 | BreakInTry.cs:61:17:61:23 | return ...; |
+| 61 | 13 | ExitMethods.cs:61:13:61:13 | access to parameter b | false | 64 | 41 | ExitMethods.cs:64:41:64:43 | "b" |
+| 61 | 13 | ExitMethods.cs:61:13:61:13 | access to parameter b | true | 62 | 19 | ExitMethods.cs:62:19:62:33 | object creation of type Exception |
 | 62 | 17 | Conditions.cs:62:17:62:17 | [b (line 57): false] access to parameter b | false | 60 | 16 | Conditions.cs:60:16:60:16 | [b (line 57): false] access to parameter x |
 | 62 | 17 | Conditions.cs:62:17:62:17 | [b (line 57): true] access to parameter b | true | 63 | 17 | Conditions.cs:63:17:63:20 | [b (line 57): true] ...; |
 | 62 | 17 | Conditions.cs:62:17:62:17 | access to parameter b | false | 60 | 16 | Conditions.cs:60:16:60:16 | [b (line 57): false] access to parameter x |
@@ -148,14 +148,10 @@
 | 74 | 13 | cflow.cs:74:13:74:24 | ... > ... | true | 75 | 9 | cflow.cs:75:9:77:9 | {...} |
 | 76 | 17 | Conditions.cs:76:17:76:17 | access to local variable b | false | 78 | 13 | Conditions.cs:78:13:79:26 | if (...) ... |
 | 76 | 17 | Conditions.cs:76:17:76:17 | access to local variable b | true | 77 | 17 | Conditions.cs:77:17:77:20 | ...; |
-| 78 | 16 | ExitMethods.cs:78:16:78:25 | ... != ... | false | 78 | 69 | ExitMethods.cs:78:69:78:75 | "input" |
-| 78 | 16 | ExitMethods.cs:78:16:78:25 | ... != ... | true | 78 | 29 | ExitMethods.cs:78:29:78:29 | 1 |
 | 78 | 17 | Conditions.cs:78:17:78:21 | ... > ... | false | 74 | 9 | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... |
 | 78 | 17 | Conditions.cs:78:17:78:21 | ... > ... | true | 79 | 17 | Conditions.cs:79:17:79:26 | ...; |
 | 81 | 12 | Conditions.cs:81:12:81:12 | access to local variable b | false | 83 | 16 | Conditions.cs:83:16:83:16 | access to local variable x |
 | 81 | 12 | Conditions.cs:81:12:81:12 | access to local variable b | true | 82 | 13 | Conditions.cs:82:13:82:16 | ...; |
-| 83 | 16 | ExitMethods.cs:83:16:83:30 | call to method Contains | false | 83 | 38 | ExitMethods.cs:83:38:83:38 | 1 |
-| 83 | 16 | ExitMethods.cs:83:16:83:30 | call to method Contains | true | 83 | 34 | ExitMethods.cs:83:34:83:34 | 0 |
 | 84 | 19 | Switch.cs:84:19:84:23 | ... > ... | false | 86 | 22 | Switch.cs:86:22:86:25 | true |
 | 84 | 19 | Switch.cs:84:19:84:23 | ... > ... | true | 85 | 17 | Switch.cs:85:17:85:22 | break; |
 | 86 | 13 | cflow.cs:86:13:86:21 | ... != ... | false | 84 | 18 | cflow.cs:84:18:84:19 | exit M2 |
@@ -164,6 +160,8 @@
 | 86 | 26 | cflow.cs:86:26:86:37 | ... > ... | true | 87 | 13 | cflow.cs:87:13:87:33 | ...; |
 | 92 | 13 | cflow.cs:92:13:92:27 | call to method Equals | false | 94 | 9 | cflow.cs:94:9:94:29 | ...; |
 | 92 | 13 | cflow.cs:92:13:92:27 | call to method Equals | true | 93 | 45 | cflow.cs:93:45:93:47 | "s" |
+| 92 | 16 | ExitMethods.cs:92:16:92:25 | ... != ... | false | 92 | 69 | ExitMethods.cs:92:69:92:75 | "input" |
+| 92 | 16 | ExitMethods.cs:92:16:92:25 | ... != ... | true | 92 | 29 | ExitMethods.cs:92:29:92:29 | 1 |
 | 92 | 17 | Conditions.cs:92:17:92:17 | access to local variable b | false | 94 | 13 | Conditions.cs:94:13:95:26 | if (...) ... |
 | 92 | 17 | Conditions.cs:92:17:92:17 | access to local variable b | true | 93 | 17 | Conditions.cs:93:17:93:20 | ...; |
 | 94 | 17 | Conditions.cs:94:17:94:21 | ... > ... | false | 96 | 13 | Conditions.cs:96:13:97:20 | if (...) ... |
@@ -172,6 +170,8 @@
 | 96 | 13 | cflow.cs:96:13:96:25 | ... != ... | true | 97 | 13 | cflow.cs:97:13:97:55 | ...; |
 | 96 | 17 | Conditions.cs:96:17:96:17 | access to local variable b | false | 90 | 9 | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... |
 | 96 | 17 | Conditions.cs:96:17:96:17 | access to local variable b | true | 97 | 17 | Conditions.cs:97:17:97:20 | ...; |
+| 97 | 16 | ExitMethods.cs:97:16:97:30 | call to method Contains | false | 97 | 38 | ExitMethods.cs:97:38:97:38 | 1 |
+| 97 | 16 | ExitMethods.cs:97:16:97:30 | call to method Contains | true | 97 | 34 | ExitMethods.cs:97:34:97:34 | 0 |
 | 99 | 13 | cflow.cs:99:13:99:25 | ... != ... | false | 102 | 9 | cflow.cs:102:9:103:36 | if (...) ... |
 | 99 | 13 | cflow.cs:99:13:99:25 | ... != ... | true | 100 | 13 | cflow.cs:100:13:100:42 | ...; |
 | 102 | 13 | cflow.cs:102:13:102:29 | ... != ... | false | 90 | 18 | cflow.cs:90:18:90:19 | exit M3 |

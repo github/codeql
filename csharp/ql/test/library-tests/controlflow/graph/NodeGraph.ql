@@ -1,6 +1,7 @@
 import csharp
+import Common
 
-query predicate edges(ControlFlow::Node node, ControlFlow::Node successor, string attr, string val) {
+query predicate edges(SourceControlFlowNode node, SourceControlFlowNode successor, string attr, string val) {
   exists(ControlFlow::SuccessorType t |
     successor = node.getASuccessorByType(t) |
     attr = "semmle.label" and
