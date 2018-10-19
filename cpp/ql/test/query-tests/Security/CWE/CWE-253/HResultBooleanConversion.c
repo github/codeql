@@ -106,7 +106,7 @@ void IncorrectTypeConversionTest() {
     while (!HresultFunction()) {}; // BUG
     while (FAILED(HresultFunction())) {}; // Correct Usage
 
-    switch(hr) // Correct Usage [FALSE POSITIVE]
+    switch(hr) // Correct Usage
     {
     case S_OK:
     case S_FALSE:

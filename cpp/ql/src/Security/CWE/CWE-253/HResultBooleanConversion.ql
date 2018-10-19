@@ -48,6 +48,7 @@ where exists
     ctls.getControllingExpr() = e1
     and e1.getType().(TypedefType).hasName("HRESULT")
     and not isHresultBooleanConverted(e1)
+    and not ctls instanceof SwitchStmt // not controlled by a boolean condition
     and msg = "Direct usage of a type " + e1.getType().toString() + " as a conditional expression"
   ) 
   or
