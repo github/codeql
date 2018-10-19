@@ -41,4 +41,14 @@ public class ZipTest {
     validate(dir, file);
     FileOutputStream os = new FileOutputStream(file); // OK
   }
+
+  public void m5(ZipEntry entry, File dir) {
+    String name = entry.getName();
+    File file = new File(dir, name);
+    Path absfile = file.toPath().toAbsolutePath().normalize();
+    Path absdir = dir.toPath().toAbsolutePath().normalize();
+    if (!absfile.startsWith(absdir))
+      throw new Exception();
+    FileOutputStream os = new FileOutputStream(file); // OK
+  }
 }
