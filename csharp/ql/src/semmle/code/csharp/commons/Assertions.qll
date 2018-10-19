@@ -1,11 +1,20 @@
 /** Provides classes for assertions. */
 private import semmle.code.csharp.frameworks.system.Diagnostics
 private import semmle.code.csharp.frameworks.test.VisualStudio
+private import semmle.code.csharp.frameworks.System
 
 /** An assertion method. */
 abstract class AssertMethod extends Method {
   /** Gets the index of the parameter being asserted. */
   abstract int getAssertionIndex();
+
+  /** Gets the parameter being asserted. */
+  final Parameter getAssertionParameter() {
+    result = this.getParameter(this.getAssertionIndex())
+  }
+
+  /** Gets the exception being thrown if the assertion fails, if any. */
+  abstract ExceptionClass getExceptionClass();
 }
 
 /** A positive assertion method. */
@@ -24,6 +33,36 @@ abstract class AssertNullMethod extends AssertMethod {
 abstract class AssertNonNullMethod extends AssertMethod {
 }
 
+/** An assertion, that is, a call to an assertion method. */
+class Assertion extends MethodCall {
+  private AssertMethod target;
+
+  Assertion() { this.getTarget() = target }
+
+  /** Gets the assertion method targeted by this assertion. */
+  AssertMethod getAssertMethod() { result = target }
+
+  /** Gets the expression that this assertion pertains to. */
+  Expr getExpr() {
+    result = this.getArgumentForParameter(target.getAssertionParameter())
+  }
+}
+
+/** A trivially failing assertion, for example `Debug.Assert(false)`. */
+class FailingAssertion extends Assertion {
+  FailingAssertion() {
+    exists(AssertMethod am, Expr e |
+      am = this.getAssertMethod() and
+      e = this.getExpr() |
+      am instanceof AssertTrueMethod and
+      e.(BoolLiteral).getBoolValue() = false
+      or
+      am instanceof AssertFalseMethod and
+      e.(BoolLiteral).getBoolValue() = true
+    )
+  }
+}
+
 /**
  * A `System.Diagnostics.Debug` assertion method.
  */
@@ -33,6 +72,12 @@ class SystemDiagnosticsDebugAssertTrueMethod extends AssertTrueMethod {
   }
 
   override int getAssertionIndex() { result = 0 }
+
+  override ExceptionClass getExceptionClass() {
+    // A failing assertion generates a message box, see
+    // https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.debug.assert
+    none()
+  }
 }
 
 /** A Visual Studio assertion method. */
@@ -42,6 +87,8 @@ class VSTestAssertTrueMethod extends AssertTrueMethod {
   }
 
   override int getAssertionIndex() { result = 0 }
+
+  override AssertFailedExceptionClass getExceptionClass() { any() }
 }
 
 /** A Visual Studio negated assertion method. */
@@ -51,6 +98,8 @@ class VSTestAssertFalseMethod extends AssertFalseMethod {
   }
 
   override int getAssertionIndex() { result = 0 }
+
+  override AssertFailedExceptionClass getExceptionClass() { any() }
 }
 
 /** A Visual Studio `null` assertion method. */
@@ -60,6 +109,8 @@ class VSTestAssertNullMethod extends AssertNullMethod {
   }
 
   override int getAssertionIndex() { result = 0 }
+
+  override AssertFailedExceptionClass getExceptionClass() { any() }
 }
 
 /** A Visual Studio non-`null` assertion method. */
@@ -69,26 +120,48 @@ class VSTestAssertNonNullMethod extends AssertNonNullMethod {
   }
 
   override int getAssertionIndex() { result = 0 }
+
+  override AssertFailedExceptionClass getExceptionClass() { any() }
 }
 
 /** A method that forwards to another assertion method. */
 class ForwarderAssertMethod extends AssertMethod {
   AssertMethod forwardee;
-  int assertionIndex;
+  Parameter p;
 
   ForwarderAssertMethod() {
-    exists(AssignableDefinitions::ImplicitParameterDefinition def, ParameterRead pr |
-      def.getParameter() = this.getParameter(assertionIndex) and
-      pr = def.getAReachableRead() and
-      pr.getAControlFlowNode().postDominates(this.getEntryPoint()) and
-      forwardee.getParameter(forwardee.getAssertionIndex()).getAnAssignedArgument() = pr
+    p = this.getAParameter() and
+    strictcount(AssignableDefinition def | def.getTarget() = p) = 1 and
+    forex(ControlFlowElement body |
+      body = this.getABody() |
+      exists(Assertion a |
+        body = getAnAssertingElement(a) and
+        a.getExpr() = p.getAnAccess() and
+        forwardee = a.getAssertMethod()
+      )
     )
   }
 
-  override int getAssertionIndex() { result = assertionIndex }
+  override int getAssertionIndex() { result = p.getPosition() }
 
+  override ExceptionClass getExceptionClass() {
+    result = forwardee.getExceptionClass()
+  }
+  
   /** Gets the underlying assertion method that is being forwarded to. */
   AssertMethod getUnderlyingAssertMethod() { result = forwardee }
+}
+
+private ControlFlowElement getAnAssertingElement(Assertion a) {
+  result = a
+  or
+  result = getAnAssertingStmt(a)
+}
+
+private Stmt getAnAssertingStmt(Assertion a) {
+  result.(ExprStmt).getExpr() = getAnAssertingElement(a)
+  or
+  result.(BlockStmt).getFirstStmt() = getAnAssertingElement(a)
 }
 
 /** A method that forwards to a positive assertion method. */
@@ -121,8 +194,5 @@ class ForwarderAssertNonNullMethod extends ForwarderAssertMethod, AssertNonNullM
 
 /** Holds if expression `e` appears in an assertion. */
 predicate isExprInAssertion(Expr e) {
-  exists(MethodCall call, AssertMethod assertMethod |
-    call.getTarget() = assertMethod |
-    e = call.getArgument(assertMethod.getAssertionIndex()).getAChildExpr*()
-  )
+  e = any(Assertion a).getExpr().getAChildExpr*()
 }

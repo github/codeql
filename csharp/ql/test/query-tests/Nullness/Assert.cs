@@ -2,17 +2,6 @@ using System;
 using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.VisualStudio.TestTools.UnitTesting
-{
-    public static class Assert
-    {
-        public static void IsNull(object o) { }
-        public static void IsNotNull(object o) { }
-        public static void IsTrue(bool b) { }
-        public static void IsFalse(bool b) { }
-    }
-}
-
 class AssertTests
 {
     void Fn()
@@ -40,3 +29,5 @@ class AssertTests
         Console.WriteLine(s.Length);
     }
 }
+
+// semmle-extractor-options: ${testdir}/../../resources/stubs/Microsoft.VisualStudio.TestTools.UnitTesting.cs
