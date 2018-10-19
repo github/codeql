@@ -6,14 +6,14 @@ class StringsTest
     {
         string s = null;
         s += "abc";
-        s = s.Trim(); // OK
+        s = s.Trim(); // GOOD
     }
 
     void StringMaybeNull()
     {
         string s = null;
         while (s != "")
-            s = s.Trim(); // Maybe null
+            s = s.Trim(); // BAD (maybe)
     }
 
     void StringNotNull()
@@ -21,13 +21,13 @@ class StringsTest
         string s = null;
         while (s != "")
             s += "abc";
-        s = s.Trim(); // OK (s == "")
+        s = s.Trim(); // GOOD
     }
 
     void StringNotAssignedNull()
     {
         string s = "abc";
         s += null;
-        s = s.Trim(); // OK
+        s = s.Trim(); // GOOD
     }
 }
