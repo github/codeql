@@ -520,12 +520,8 @@
 | ExitMethods.cs:73:5:83:5 | {...} | ExitMethods.cs:74:9:82:9 | try {...} ... | semmle.label | successor |
 | ExitMethods.cs:74:9:82:9 | try {...} ... | ExitMethods.cs:75:9:77:9 | {...} | semmle.label | successor |
 | ExitMethods.cs:75:9:77:9 | {...} | ExitMethods.cs:76:13:76:19 | ...; | semmle.label | successor |
-| ExitMethods.cs:76:13:76:18 | call to method Exit | ExitMethods.cs:79:9:82:9 | {...} | semmle.label | return |
 | ExitMethods.cs:76:13:76:18 | this access | ExitMethods.cs:76:13:76:18 | call to method Exit | semmle.label | successor |
 | ExitMethods.cs:76:13:76:19 | ...; | ExitMethods.cs:76:13:76:18 | this access | semmle.label | successor |
-| ExitMethods.cs:79:9:82:9 | {...} | ExitMethods.cs:81:13:81:41 | ...; | semmle.label | successor |
-| ExitMethods.cs:81:13:81:41 | ...; | ExitMethods.cs:81:38:81:39 | "" | semmle.label | successor |
-| ExitMethods.cs:81:38:81:39 | "" | ExitMethods.cs:81:13:81:40 | call to method WriteLine | semmle.label | successor |
 | ExitMethods.cs:86:5:88:5 | {...} | ExitMethods.cs:87:9:87:48 | ...; | semmle.label | successor |
 | ExitMethods.cs:87:9:87:48 | ...; | ExitMethods.cs:87:9:87:47 | call to method Exit | semmle.label | successor |
 | ExitMethods.cs:91:5:93:5 | {...} | ExitMethods.cs:92:16:92:76 | ... ? ... : ... | semmle.label | successor |

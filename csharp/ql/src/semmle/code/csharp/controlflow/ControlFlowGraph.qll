@@ -785,6 +785,30 @@ module ControlFlow {
         c.(ThrowCompletion).getExceptionClass() = getExceptionClass()
       }
     }
+
+    /**
+     * An exit control flow successor.
+     *
+     * Example:
+     *
+     * ```
+     * int M(string s)
+     * {
+     *     if (s == null)
+     *         System.Environment.Exit(0);
+     *     return s.Length;
+     * }
+     * ```
+     *
+     * The callable exit node of `M` is an exit successor of the node on line 4.
+     */
+    class ExitSuccessor extends SuccessorType, TExitSuccessor {
+      override string toString() { result = "exit" }
+
+      override predicate matchesCompletion(Completion c) {
+        c instanceof ExitCompletion
+      }
+    }
   }
   private import SuccessorTypes
 
@@ -1386,10 +1410,15 @@ module ControlFlow {
           result = lastTryStmtFinally(ts, c) and
           not c instanceof NormalCompletion
           or
-          // If there is no `finally` block, last elements are from the body, from
-          // the blocks of one of the `catch` clauses, or from the last `catch` clause
-          not ts.hasFinally() and
-          result = getBlockOrCatchFinallyPred(ts, c)
+          result = getBlockOrCatchFinallyPred(ts, c) and
+          (
+            // If there is no `finally` block, last elements are from the body, from
+            // the blocks of one of the `catch` clauses, or from the last `catch` clause
+            not ts.hasFinally()
+            or
+            // Exit completions ignore the `finally` block
+            c instanceof ExitCompletion
+          )
         )
         or
         cfe = any(SpecificCatchClause scc |
@@ -1453,7 +1482,7 @@ module ControlFlow {
         // Propagate completion from a call to a non-terminating callable
         cfe = any(NonReturningCall nrc |
           result = nrc and
-          c = nrc.getTarget().(NonReturningCallable).getACallCompletion()
+          c = nrc.getACompletion()
         )
       }
 
@@ -1736,17 +1765,31 @@ module ControlFlow {
         private import semmle.code.csharp.ExprOrStmtParent
         private import semmle.code.csharp.frameworks.System
 
-        /**
-         * A call that definitely does not return (conservative analysis).
-         */
-        class NonReturningCall extends Call {
-          NonReturningCall() {
-            this.getTarget() instanceof NonReturningCallable
-          }
+        /** A call that definitely does not return (conservative analysis). */
+        abstract class NonReturningCall extends Call {
+          /** Gets a valid completion for this non-returning call. */
+          abstract Completion getACompletion();
         }
 
-        /** A callable that does not return. */
-        abstract class NonReturningCallable extends Callable {
+        private class ExitingCall extends NonReturningCall {
+          ExitingCall() {
+            this.getTarget() instanceof ExitingCallable
+          }
+
+          override ExitCompletion getACompletion() { any() }
+        }
+
+        private class ThrowingCall extends NonReturningCall {
+          private ThrowCompletion c;
+
+          ThrowingCall() {
+            c = this.getTarget().(ThrowingCallable).getACallCompletion()
+          }
+
+          override ThrowCompletion getACompletion() { result = c }
+        }
+
+        private abstract class NonReturningCallable extends Callable {
           NonReturningCallable() {
             not exists(ReturnStmt ret | ret.getEnclosingCallable() = this) and
             not hasAccessorAutoImplementation(this, _) and
@@ -1756,19 +1799,9 @@ module ControlFlow {
               v = this.(Accessor).getDeclaration()
             )
           }
-
-          /** Gets a valid completion for a call to this non-returning callable. */
-          abstract Completion getACallCompletion();
         }
 
-        /**
-         * A callable that exits when called.
-         */
-        private abstract class ExitingCallable extends NonReturningCallable {
-          override Completion getACallCompletion() {
-            result instanceof ReturnCompletion
-          }
-        }
+        private abstract class ExitingCallable extends NonReturningCallable { }
 
         private class DirectlyExitingCallable extends ExitingCallable {
           DirectlyExitingCallable() {
@@ -1789,7 +1822,8 @@ module ControlFlow {
         }
 
         private ControlFlowElement getAnExitingElement() {
-          result.(Call).getTarget() instanceof ExitingCallable or
+          result instanceof ExitingCall
+          or
           result = getAnExitingStmt()
         }
 
@@ -1805,9 +1839,6 @@ module ControlFlow {
           )
         }
 
-        /**
-         * A callable that throws an exception when called.
-         */
         private class ThrowingCallable extends NonReturningCallable {
           ThrowingCallable() {
             forex(ControlFlowElement body |
@@ -1816,16 +1847,17 @@ module ControlFlow {
             )
           }
 
-          override ThrowCompletion getACallCompletion() {
+          /** Gets a valid completion for a call to this throwing callable. */
+          ThrowCompletion getACallCompletion() {
             this.getABody() = getAThrowingElement(result)
           }
         }
 
         private ControlFlowElement getAThrowingElement(ThrowCompletion c) {
-          c = result.(Call).getTarget().(ThrowingCallable).getACallCompletion()
+          c = result.(ThrowingCall).getACompletion()
           or
           result = any(ThrowElement te |
-            c.(ThrowCompletion).getExceptionClass() = te.getThrownExceptionType() and
+            c.getExceptionClass() = te.getThrownExceptionType() and
             // For stub implementations, there may exist proper implementations that are not seen
             // during compilation, so we conservatively rule those out
             not isStub(te)
@@ -1839,12 +1871,13 @@ module ControlFlow {
           or
           result.(BlockStmt).getFirstStmt() = getAThrowingStmt(c)
           or
-          exists(IfStmt ifStmt |
+          exists(IfStmt ifStmt, ThrowCompletion c1, ThrowCompletion c2 |
             result = ifStmt and
-            ifStmt.getThen() = getAThrowingElement(_) and
-            ifStmt.getElse() = getAThrowingElement(_) |
-            ifStmt.getThen() = getAThrowingElement(c) or
-            ifStmt.getElse() = getAThrowingElement(c)
+            ifStmt.getThen() = getAThrowingElement(c1) and
+            ifStmt.getElse() = getAThrowingElement(c2) |
+            c = c1
+            or
+            c = c2
           )
         }
 
@@ -2293,6 +2326,7 @@ module ControlFlow {
           // Flow from last element of `try` block to first element of `finally` block
           cfe = lastTryStmtBlock(ts, c) and
           result = first(ts.getFinally()) and
+          not c instanceof ExitCompletion and
           (
             c instanceof ThrowCompletion
             implies
@@ -3892,6 +3926,8 @@ module ControlFlow {
         TExceptionSuccessor(ExceptionClass ec) {
           exists(ThrowCompletion c | c.getExceptionClass() = ec)
         }
+        or
+        TExitSuccessor()
 
       /** Gets a successor node of a given flow type, if any. */
       cached

@@ -183,7 +183,7 @@
 | ExitMethods.cs:62:19:62:33 | object creation of type Exception | ExitMethods.cs:62:13:62:34 | throw ...; | 2 |
 | ExitMethods.cs:64:41:64:43 | "b" | ExitMethods.cs:64:13:64:45 | throw ...; | 3 |
 | ExitMethods.cs:67:10:67:13 | enter Exit | ExitMethods.cs:67:10:67:13 | exit Exit | 6 |
-| ExitMethods.cs:72:10:72:18 | enter ExitInTry | ExitMethods.cs:72:10:72:18 | exit ExitInTry | 12 |
+| ExitMethods.cs:72:10:72:18 | enter ExitInTry | ExitMethods.cs:72:10:72:18 | exit ExitInTry | 8 |
 | ExitMethods.cs:85:10:85:24 | enter ApplicationExit | ExitMethods.cs:85:10:85:24 | exit ApplicationExit | 5 |
 | ExitMethods.cs:90:13:90:21 | enter ThrowExpr | ExitMethods.cs:92:16:92:25 | ... != ... | 7 |
 | ExitMethods.cs:90:13:90:21 | exit ThrowExpr | ExitMethods.cs:90:13:90:21 | exit ThrowExpr | 1 |

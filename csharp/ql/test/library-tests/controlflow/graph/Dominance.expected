@@ -679,17 +679,13 @@
 | post | ExitMethods.cs:69:9:69:27 | call to method Exit | ExitMethods.cs:69:26:69:26 | 0 |
 | post | ExitMethods.cs:69:9:69:28 | ...; | ExitMethods.cs:68:5:70:5 | {...} |
 | post | ExitMethods.cs:69:26:69:26 | 0 | ExitMethods.cs:69:9:69:28 | ...; |
-| post | ExitMethods.cs:72:10:72:18 | exit ExitInTry | ExitMethods.cs:81:13:81:40 | [finally: return] call to method WriteLine |
+| post | ExitMethods.cs:72:10:72:18 | exit ExitInTry | ExitMethods.cs:76:13:76:18 | call to method Exit |
 | post | ExitMethods.cs:73:5:83:5 | {...} | ExitMethods.cs:72:10:72:18 | enter ExitInTry |
 | post | ExitMethods.cs:74:9:82:9 | try {...} ... | ExitMethods.cs:73:5:83:5 | {...} |
 | post | ExitMethods.cs:75:9:77:9 | {...} | ExitMethods.cs:74:9:82:9 | try {...} ... |
 | post | ExitMethods.cs:76:13:76:18 | call to method Exit | ExitMethods.cs:76:13:76:18 | this access |
 | post | ExitMethods.cs:76:13:76:18 | this access | ExitMethods.cs:76:13:76:19 | ...; |
 | post | ExitMethods.cs:76:13:76:19 | ...; | ExitMethods.cs:75:9:77:9 | {...} |
-| post | ExitMethods.cs:79:9:82:9 | [finally: return] {...} | ExitMethods.cs:76:13:76:18 | call to method Exit |
-| post | ExitMethods.cs:81:13:81:40 | [finally: return] call to method WriteLine | ExitMethods.cs:81:38:81:39 | [finally: return] "" |
-| post | ExitMethods.cs:81:13:81:41 | [finally: return] ...; | ExitMethods.cs:79:9:82:9 | [finally: return] {...} |
-| post | ExitMethods.cs:81:38:81:39 | [finally: return] "" | ExitMethods.cs:81:13:81:41 | [finally: return] ...; |
 | post | ExitMethods.cs:85:10:85:24 | exit ApplicationExit | ExitMethods.cs:87:9:87:47 | call to method Exit |
 | post | ExitMethods.cs:86:5:88:5 | {...} | ExitMethods.cs:85:10:85:24 | enter ApplicationExit |
 | post | ExitMethods.cs:87:9:87:47 | call to method Exit | ExitMethods.cs:87:9:87:48 | ...; |
@@ -2826,13 +2822,9 @@
 | pre | ExitMethods.cs:73:5:83:5 | {...} | ExitMethods.cs:74:9:82:9 | try {...} ... |
 | pre | ExitMethods.cs:74:9:82:9 | try {...} ... | ExitMethods.cs:75:9:77:9 | {...} |
 | pre | ExitMethods.cs:75:9:77:9 | {...} | ExitMethods.cs:76:13:76:19 | ...; |
-| pre | ExitMethods.cs:76:13:76:18 | call to method Exit | ExitMethods.cs:79:9:82:9 | [finally: return] {...} |
+| pre | ExitMethods.cs:76:13:76:18 | call to method Exit | ExitMethods.cs:72:10:72:18 | exit ExitInTry |
 | pre | ExitMethods.cs:76:13:76:18 | this access | ExitMethods.cs:76:13:76:18 | call to method Exit |
 | pre | ExitMethods.cs:76:13:76:19 | ...; | ExitMethods.cs:76:13:76:18 | this access |
-| pre | ExitMethods.cs:79:9:82:9 | [finally: return] {...} | ExitMethods.cs:81:13:81:41 | [finally: return] ...; |
-| pre | ExitMethods.cs:81:13:81:40 | [finally: return] call to method WriteLine | ExitMethods.cs:72:10:72:18 | exit ExitInTry |
-| pre | ExitMethods.cs:81:13:81:41 | [finally: return] ...; | ExitMethods.cs:81:38:81:39 | [finally: return] "" |
-| pre | ExitMethods.cs:81:38:81:39 | [finally: return] "" | ExitMethods.cs:81:13:81:40 | [finally: return] call to method WriteLine |
 | pre | ExitMethods.cs:85:10:85:24 | enter ApplicationExit | ExitMethods.cs:86:5:88:5 | {...} |
 | pre | ExitMethods.cs:86:5:88:5 | {...} | ExitMethods.cs:87:9:87:48 | ...; |
 | pre | ExitMethods.cs:87:9:87:47 | call to method Exit | ExitMethods.cs:85:10:85:24 | exit ApplicationExit |

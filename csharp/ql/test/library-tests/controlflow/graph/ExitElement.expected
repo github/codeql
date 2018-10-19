@@ -691,17 +691,17 @@
 | ExitMethods.cs:21:9:21:26 | ...; | ExitMethods.cs:21:9:21:25 | call to method ErrorAlways | throw(Exception) |
 | ExitMethods.cs:21:21:21:24 | true | ExitMethods.cs:21:21:21:24 | true | normal |
 | ExitMethods.cs:22:9:22:15 | return ...; | ExitMethods.cs:22:9:22:15 | return ...; | return |
-| ExitMethods.cs:26:5:29:5 | {...} | ExitMethods.cs:27:9:27:14 | call to method Exit | return |
+| ExitMethods.cs:26:5:29:5 | {...} | ExitMethods.cs:27:9:27:14 | call to method Exit | exit |
 | ExitMethods.cs:26:5:29:5 | {...} | ExitMethods.cs:28:9:28:15 | return ...; | return |
-| ExitMethods.cs:27:9:27:14 | call to method Exit | ExitMethods.cs:27:9:27:14 | call to method Exit | return |
+| ExitMethods.cs:27:9:27:14 | call to method Exit | ExitMethods.cs:27:9:27:14 | call to method Exit | exit |
 | ExitMethods.cs:27:9:27:14 | this access | ExitMethods.cs:27:9:27:14 | this access | normal |
-| ExitMethods.cs:27:9:27:15 | ...; | ExitMethods.cs:27:9:27:14 | call to method Exit | return |
+| ExitMethods.cs:27:9:27:15 | ...; | ExitMethods.cs:27:9:27:14 | call to method Exit | exit |
 | ExitMethods.cs:28:9:28:15 | return ...; | ExitMethods.cs:28:9:28:15 | return ...; | return |
-| ExitMethods.cs:32:5:35:5 | {...} | ExitMethods.cs:33:9:33:25 | call to method ApplicationExit | return |
+| ExitMethods.cs:32:5:35:5 | {...} | ExitMethods.cs:33:9:33:25 | call to method ApplicationExit | exit |
 | ExitMethods.cs:32:5:35:5 | {...} | ExitMethods.cs:34:9:34:15 | return ...; | return |
-| ExitMethods.cs:33:9:33:25 | call to method ApplicationExit | ExitMethods.cs:33:9:33:25 | call to method ApplicationExit | return |
+| ExitMethods.cs:33:9:33:25 | call to method ApplicationExit | ExitMethods.cs:33:9:33:25 | call to method ApplicationExit | exit |
 | ExitMethods.cs:33:9:33:25 | this access | ExitMethods.cs:33:9:33:25 | this access | normal |
-| ExitMethods.cs:33:9:33:26 | ...; | ExitMethods.cs:33:9:33:25 | call to method ApplicationExit | return |
+| ExitMethods.cs:33:9:33:26 | ...; | ExitMethods.cs:33:9:33:25 | call to method ApplicationExit | exit |
 | ExitMethods.cs:34:9:34:15 | return ...; | ExitMethods.cs:34:9:34:15 | return ...; | return |
 | ExitMethods.cs:38:5:51:5 | {...} | ExitMethods.cs:45:13:45:19 | return ...; | return |
 | ExitMethods.cs:38:5:51:5 | {...} | ExitMethods.cs:49:13:49:19 | return ...; | return |
@@ -740,23 +740,25 @@
 | ExitMethods.cs:64:13:64:45 | throw ...; | ExitMethods.cs:64:13:64:45 | throw ...; | throw(ArgumentException) |
 | ExitMethods.cs:64:19:64:44 | object creation of type ArgumentException | ExitMethods.cs:64:19:64:44 | object creation of type ArgumentException | normal |
 | ExitMethods.cs:64:41:64:43 | "b" | ExitMethods.cs:64:41:64:43 | "b" | normal |
-| ExitMethods.cs:68:5:70:5 | {...} | ExitMethods.cs:69:9:69:27 | call to method Exit | return |
-| ExitMethods.cs:69:9:69:27 | call to method Exit | ExitMethods.cs:69:9:69:27 | call to method Exit | return |
-| ExitMethods.cs:69:9:69:28 | ...; | ExitMethods.cs:69:9:69:27 | call to method Exit | return |
+| ExitMethods.cs:68:5:70:5 | {...} | ExitMethods.cs:69:9:69:27 | call to method Exit | exit |
+| ExitMethods.cs:69:9:69:27 | call to method Exit | ExitMethods.cs:69:9:69:27 | call to method Exit | exit |
+| ExitMethods.cs:69:9:69:28 | ...; | ExitMethods.cs:69:9:69:27 | call to method Exit | exit |
 | ExitMethods.cs:69:26:69:26 | 0 | ExitMethods.cs:69:26:69:26 | 0 | normal |
-| ExitMethods.cs:73:5:83:5 | {...} | ExitMethods.cs:81:13:81:40 | call to method WriteLine | return |
-| ExitMethods.cs:74:9:82:9 | try {...} ... | ExitMethods.cs:81:13:81:40 | call to method WriteLine | return |
-| ExitMethods.cs:75:9:77:9 | {...} | ExitMethods.cs:76:13:76:18 | call to method Exit | return |
-| ExitMethods.cs:76:13:76:18 | call to method Exit | ExitMethods.cs:76:13:76:18 | call to method Exit | return |
+| ExitMethods.cs:73:5:83:5 | {...} | ExitMethods.cs:76:13:76:18 | call to method Exit | exit |
+| ExitMethods.cs:73:5:83:5 | {...} | ExitMethods.cs:81:13:81:40 | call to method WriteLine | exit |
+| ExitMethods.cs:74:9:82:9 | try {...} ... | ExitMethods.cs:76:13:76:18 | call to method Exit | exit |
+| ExitMethods.cs:74:9:82:9 | try {...} ... | ExitMethods.cs:81:13:81:40 | call to method WriteLine | exit |
+| ExitMethods.cs:75:9:77:9 | {...} | ExitMethods.cs:76:13:76:18 | call to method Exit | exit |
+| ExitMethods.cs:76:13:76:18 | call to method Exit | ExitMethods.cs:76:13:76:18 | call to method Exit | exit |
 | ExitMethods.cs:76:13:76:18 | this access | ExitMethods.cs:76:13:76:18 | this access | normal |
-| ExitMethods.cs:76:13:76:19 | ...; | ExitMethods.cs:76:13:76:18 | call to method Exit | return |
+| ExitMethods.cs:76:13:76:19 | ...; | ExitMethods.cs:76:13:76:18 | call to method Exit | exit |
 | ExitMethods.cs:79:9:82:9 | {...} | ExitMethods.cs:81:13:81:40 | call to method WriteLine | normal |
 | ExitMethods.cs:81:13:81:40 | call to method WriteLine | ExitMethods.cs:81:13:81:40 | call to method WriteLine | normal |
 | ExitMethods.cs:81:13:81:41 | ...; | ExitMethods.cs:81:13:81:40 | call to method WriteLine | normal |
 | ExitMethods.cs:81:38:81:39 | "" | ExitMethods.cs:81:38:81:39 | "" | normal |
-| ExitMethods.cs:86:5:88:5 | {...} | ExitMethods.cs:87:9:87:47 | call to method Exit | return |
-| ExitMethods.cs:87:9:87:47 | call to method Exit | ExitMethods.cs:87:9:87:47 | call to method Exit | return |
-| ExitMethods.cs:87:9:87:48 | ...; | ExitMethods.cs:87:9:87:47 | call to method Exit | return |
+| ExitMethods.cs:86:5:88:5 | {...} | ExitMethods.cs:87:9:87:47 | call to method Exit | exit |
+| ExitMethods.cs:87:9:87:47 | call to method Exit | ExitMethods.cs:87:9:87:47 | call to method Exit | exit |
+| ExitMethods.cs:87:9:87:48 | ...; | ExitMethods.cs:87:9:87:47 | call to method Exit | exit |
 | ExitMethods.cs:91:5:93:5 | {...} | ExitMethods.cs:92:9:92:77 | return ...; | return |
 | ExitMethods.cs:91:5:93:5 | {...} | ExitMethods.cs:92:41:92:76 | throw ... | throw(ArgumentException) |
 | ExitMethods.cs:92:9:92:77 | return ...; | ExitMethods.cs:92:9:92:77 | return ...; | return |
