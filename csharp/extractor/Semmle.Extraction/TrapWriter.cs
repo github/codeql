@@ -211,11 +211,14 @@ namespace Semmle.Extraction
         /// </summary>
         static string ComputeHash(string filePath)
         {
-            using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
             using (var shaAlg = new SHA256Managed())
             {
                 var sha = shaAlg.ComputeHash(fileStream);
-                return Convert.ToBase64String(sha);
+                var hex = new StringBuilder(sha.Length * 2);
+                foreach (var b in sha)
+                    hex.AppendFormat("{0:x2}", b);
+                return hex.ToString();
             }
         }
 

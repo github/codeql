@@ -55,21 +55,21 @@ namespace Semmle.Extraction.CSharp
                 var versionInfo = FileVersionInfo.GetVersionInfo(SpecifiedCompiler);
 
                 var compilerDir = Path.GetDirectoryName(SpecifiedCompiler);
-                var known_compiler_names = new Dictionary<string, string>
+                var knownCompilerNames = new Dictionary<string, string>
                 {
                     { "csc.exe", "Microsoft" },
                     { "csc2.exe", "Microsoft" },
                     { "csc.dll", "Microsoft" },
                     { "mcs.exe", "Novell" }
                 };
-                var mscorlib_exists = File.Exists(Path.Combine(compilerDir, "mscorlib.dll"));
+                var mscorlibExists = File.Exists(Path.Combine(compilerDir, "mscorlib.dll"));
 
-                if (specifiedFramework == null && mscorlib_exists)
+                if (specifiedFramework == null && mscorlibExists)
                 {
                     specifiedFramework = compilerDir;
                 }
 
-                if (!known_compiler_names.TryGetValue(versionInfo.OriginalFilename, out var vendor))
+                if (!knownCompilerNames.TryGetValue(versionInfo.OriginalFilename, out var vendor))
                 {
                     SkipExtractionBecause("the compiler name is not recognised");
                     return;
