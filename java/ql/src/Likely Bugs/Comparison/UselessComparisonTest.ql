@@ -167,6 +167,15 @@ predicate overFlowTest(ComparisonExpr comp) {
   comp.getGreaterOperand().(IntegerLiteral).getIntValue() = 0
 }
 
+predicate concurrentModificationTest(BinaryExpr test) {
+  exists(IfStmt ifstmt, ThrowStmt throw, RefType exc |
+    ifstmt.getCondition() = test and
+    (ifstmt.getThen() = throw or ifstmt.getThen().(SingletonBlock).getStmt() = throw) and
+    throw.getExpr().(ClassInstanceExpr).getConstructedType() = exc and
+    exc.hasQualifiedName("java.util", "ConcurrentModificationException")
+  )
+}
+
 /**
  * Holds if `test` and `guard` are equality tests of the same integral variable v with constants `c1` and `c2`.
  */
@@ -202,13 +211,13 @@ where
       )
     else
       if constCondSimple(test, _)
-      then (
-        constCondSimple(test, testIsTrue) and reason = "" and reasonElem = test // dummy reason element
-      ) else
+      then constCondSimple(test, testIsTrue) and reason = "" and reasonElem = test // dummy reason element
+      else
         exists(CondReason r |
           constCond(test, testIsTrue, r) and reason = ", because of $@" and reasonElem = r.getCond()
         )
   ) and
   not overFlowTest(test) and
+  not concurrentModificationTest(test) and
   not exists(AssertStmt assert | assert.getExpr() = test.getParent*())
 select test, "Test is always " + testIsTrue + reason + ".", reasonElem, "this condition"
