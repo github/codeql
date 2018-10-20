@@ -118,20 +118,10 @@ class Content extends TContent {
   }
 
   /** Gets the type of the object containing this content. */
-  abstract RefType getDeclaringType();
+  abstract RefType getContainerType();
 
   /** Gets the type of this content. */
   abstract Type getType();
-
-  /**
-   * Holds if this content may contain an object of the same type as the one
-   * that contains this content, and if this fact should be used to compress
-   * access paths.
-   *
-   * Examples include the tail pointer in a linked list or the left and right
-   * pointers in a binary tree.
-   */
-  predicate isSelfRef() { none() }
 }
 
 private class FieldContent extends Content, TFieldContent {
@@ -147,17 +137,15 @@ private class FieldContent extends Content, TFieldContent {
     f.getLocation().hasLocationInfo(path, sl, sc, el, ec)
   }
 
-  override RefType getDeclaringType() { result = f.getDeclaringType() }
+  override RefType getContainerType() { result = f.getDeclaringType() }
 
   override Type getType() { result = getFieldTypeBound(f) }
-
-  override predicate isSelfRef() { compatibleTypes(getDeclaringType(), getType()) }
 }
 
 private class CollectionContent extends Content, TCollectionContent {
   override string toString() { result = "collection" }
 
-  override RefType getDeclaringType() { none() }
+  override RefType getContainerType() { none() }
 
   override Type getType() { none() }
 }
@@ -165,7 +153,7 @@ private class CollectionContent extends Content, TCollectionContent {
 private class ArrayContent extends Content, TArrayContent {
   override string toString() { result = "array" }
 
-  override RefType getDeclaringType() { none() }
+  override RefType getContainerType() { none() }
 
   override Type getType() { none() }
 }
@@ -212,6 +200,13 @@ RefType getErasedRepr(Type t) {
   )
 }
 
+/** Gets a string representation of a type returned by `getErasedRepr`. */
+string ppReprType(Type t) {
+  if t.(BoxedType).getPrimitiveType().getName() = "double"
+  then result = "Number"
+  else result = t.toString()
+}
+
 private predicate canContainBool(Type t) {
   t instanceof BooleanType or
   any(BooleanType b).(RefType).getASourceSupertype+() = t
@@ -227,12 +222,9 @@ predicate compatibleTypes(Type t1, Type t2) {
     e1 = getErasedRepr(t1) and
     e2 = getErasedRepr(t2)
   |
-    /*
-     * Because of `getErasedRepr`, `erasedHaveIntersection` is a sufficient
-     * compatibility check, but `conContainBool` is kept as a dummy disjunct
-     * to get the proper join-order.
-     */
-
+    // Because of `getErasedRepr`, `erasedHaveIntersection` is a sufficient
+    // compatibility check, but `conContainBool` is kept as a dummy disjunct
+    // to get the proper join-order.
     erasedHaveIntersection(e1, e2)
     or
     canContainBool(e1) and canContainBool(e2)
