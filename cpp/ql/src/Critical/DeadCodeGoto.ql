@@ -27,6 +27,7 @@ where b.getStmt(i) = js
   and not s instanceof SwitchCase
   // the next statement isn't breaking out of a switch
   and not s.(BreakStmt).getBreakable() instanceof SwitchStmt
-  // the jump isn't a goto into the body of the next statement
-  and not exists (LabelStmt ls | s.(Loop).getStmt().getAChild*() = ls | ls.getName() = js.(GotoStmt).getName())
+  // the next statement isn't a loop that can be jumped into
+  and not exists (LabelStmt ls | s.(Loop).getStmt().getAChild*() = ls)
+  and not exists (SwitchCase sc | s.(Loop).getStmt().getAChild*() = sc)
 select js, "This statement makes $@ unreachable.", s, s.toString()

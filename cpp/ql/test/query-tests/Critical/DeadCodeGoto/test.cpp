@@ -50,3 +50,34 @@ int test5(int x, int y) {
 	return x;
 }
 
+void test6(int x, int cond) {
+	if (cond) {
+		x++;
+	} else goto end; // GOOD
+	x++;
+	end:
+}
+
+void test7(int x, int cond) {
+	if (cond)
+	{
+		goto target;
+	}
+	goto somewhere_else; // GOOD
+	while (x < 10) // not dead code
+	{
+	target:
+		x++;
+	}
+	somewhere_else:
+	switch (1)
+	{
+	  goto end;
+	  while (x < 10) // not dead code
+	  {
+	case 1:
+	    x++;
+	  } break;
+	}
+	end:
+}
