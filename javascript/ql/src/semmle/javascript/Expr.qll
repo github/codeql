@@ -1902,3 +1902,32 @@ private class LiteralDynamicImportPath extends PathExprInModule, ConstantString 
 
   override string getValue() { result = this.(ConstantString).getStringValue() }
 }
+
+/**
+ * A call or member access that evaluates to `undefined` if its base operand evaluates to `undefined` or `null`.
+ */
+class OptionalUse extends Expr, @optionalchainable { OptionalUse() { isOptionalChaining(this) } }
+
+private class ChainElem extends Expr, @optionalchainable {
+  ChainElem getChild() {
+    result = this.(CallExpr).getCallee() or
+    result = this.(PropAccess).getBase()
+  }
+}
+
+/**
+ * The root in a chain of calls or property accesses, where at least one call or property access is optional.
+ */
+class OptionalChainRoot extends ChainElem {
+  OptionalUse optionalUse;
+
+  OptionalChainRoot() {
+    getChild*() = optionalUse and
+    not exists(ChainElem other | this = other.getChild())
+  }
+
+  /**
+   * Gets an optional call or property access in the chain of this root.
+   */
+  OptionalUse getAnOptionalUse() { result = optionalUse }
+}

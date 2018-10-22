@@ -1077,4 +1077,8 @@ xmllocations(
 
 @dataflownode = @expr | @functiondeclstmt | @classdeclstmt | @namespacedeclaration | @enumdeclaration | @property;
 
-/* Last updated 2017/07/11. */
+@optionalchainable = @callexpr | @propaccess;
+
+isOptionalChaining(int id: @optionalchainable ref);
+
+/* Last updated 2018/10/22. */
