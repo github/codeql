@@ -137,6 +137,25 @@ private predicate impossibleDefaultSwitchEdge(Block switchBlock, DefaultCase dc)
 }
 
 /**
+ * Holds if the function `f` never returns due to not containing a return
+ * statement (explicit or compiler generated).  Reachability of return
+ * statements is not checked.
+ */
+private predicate nonReturningFunction(Function f)
+{
+  exists(f.getBlock()) and
+  not exists(ReturnStmt ret | ret.getEnclosingFunction() = f)
+}
+
+/**
+ * An edge from a call to a function that never returns is impossible.
+ */
+private predicate impossibleFunctionReturn(FunctionCall fc, Node succ) {
+  nonReturningFunction(fc.getTarget()) and
+  successors_extended(fc, succ)
+}
+
+/**
  * If `pred` is a function call with (at least) one function target,
  * (at least) one such target must be potentially returning.
  */
@@ -158,6 +177,7 @@ cached predicate successors_adapted(Node pred, Node succ) {
   and not impossibleTrueEdge(pred, succ)
   and not impossibleSwitchEdge(pred, succ)
   and not impossibleDefaultSwitchEdge(pred, succ)
+  and not impossibleFunctionReturn(pred, succ)
   and not getOptions().exprExits(pred)
 }
 

@@ -100,7 +100,7 @@ void myThrow(const char *error)
 
 int g13()
 {
-	myThrow("fail"); // GOOD [FALSE POSITIVE]
+	myThrow("fail"); // GOOD
 }
 
 int g14(int x)
@@ -117,7 +117,7 @@ int g15(int x)
 	{
 		return x;
 	} else {
-		myThrow("fail"); // GOOD [FALSE POSITIVE]
+		myThrow("fail"); // GOOD
 	}
 }
 
