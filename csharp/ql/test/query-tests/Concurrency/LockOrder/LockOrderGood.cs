@@ -1,3 +1,6 @@
+using System;
+using System.Threading;
+
 class DeadlockFixed
 {
     private readonly Object lock1 = new Object();
