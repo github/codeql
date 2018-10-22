@@ -4,6 +4,7 @@
  */
 
 import javascript
+import semmle.javascript.security.TaintedObject
 
 module NosqlInjection {
   /**
@@ -14,7 +15,16 @@ module NosqlInjection {
   /**
    * A data flow sink for SQL-injection vulnerabilities.
    */
-  abstract class Sink extends DataFlow::Node { }
+  abstract class Sink extends DataFlow::Node {
+    /**
+     * Gets a flow label relevant for this sink.
+     *
+     * Defaults to deeply tainted objects only.
+     */
+    DataFlow::FlowLabel getAFlowLabel() {
+      result = TaintedObject::label()
+    }
+  }
 
   /**
    * A sanitizer for SQL-injection vulnerabilities.
@@ -31,8 +41,12 @@ module NosqlInjection {
       source instanceof Source
     }
 
-    override predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink
+    override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
+      TaintedObject::isSource(source, label)
+    }
+
+    override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
+      sink.(Sink).getAFlowLabel() = label
     }
 
     override predicate isSanitizer(DataFlow::Node node) {
@@ -40,12 +54,20 @@ module NosqlInjection {
       node instanceof Sanitizer
     }
 
-    override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
+      guard instanceof TaintedObject::SanitizerGuard
+    }
+
+    override predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node trg, DataFlow::FlowLabel inlbl, DataFlow::FlowLabel outlbl) {
+      TaintedObject::step(src, trg, inlbl, outlbl)
+      or
       // additional flow step to track taint through NoSQL query objects
+      inlbl = TaintedObject::label() and
+      outlbl = TaintedObject::label() and
       exists (NoSQL::Query query, DataFlow::SourceNode queryObj |
         queryObj.flowsToExpr(query) and
-        queryObj.flowsTo(succ) and
-        pred = queryObj.getAPropertyWrite().getRhs()
+        queryObj.flowsTo(trg) and
+        src = queryObj.getAPropertyWrite().getRhs()
       )
     }
   }

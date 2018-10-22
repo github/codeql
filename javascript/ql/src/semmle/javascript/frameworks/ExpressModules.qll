@@ -230,4 +230,53 @@ module ExpressLibraries {
 
   }
 
+  /**
+   * An instance of the Express `body-parser` middleware.
+   */
+  class BodyParser extends DataFlow::InvokeNode {
+    string kind;
+
+    BodyParser() {
+      this = DataFlow::moduleImport("body-parser").getACall() and kind = "json"
+      or
+      exists (string moduleName |
+        (moduleName = "body-parser" or moduleName = "express") and
+        (kind = "json" or kind = "urlencoded") and
+        this = DataFlow::moduleMember(moduleName, kind).getACall()
+      )
+    }
+
+    /**
+     * Holds if this is a JSON body parser.
+     */
+    predicate isJson() {
+      kind = "json"
+    }
+
+    /**
+     * Holds if this is a URL-encoded body parser.
+     */
+    predicate isUrlEncoded() {
+      kind = "urlencoded"
+    }
+
+    /**
+     * Holds if this is an extended URL-encoded body parser.
+     *
+     * The extended URL-encoding allows for nested objects, like JSON.
+     */
+    predicate isExtendedUrlEncoded() {
+      kind = "urlencoded" and
+      not getOptionArgument(0, "extended").mayHaveBooleanValue(false)
+    }
+
+    /**
+     * Holds if this parses the input as JSON or extended URL-encoding, resulting
+     * in user-controlled objects (as opposed to user-controlled strings).
+     */
+    predicate producesUserControlledObjects() {
+      isJson() or isExtendedUrlEncoded()
+    }
+  }
+
 }

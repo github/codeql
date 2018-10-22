@@ -488,6 +488,31 @@ module Express {
     override string getKind() {
       result = kind
     }
+
+    override predicate isUserControlledObject() {
+      kind = "body" and
+      exists (ExpressLibraries::BodyParser bodyParser, RouteHandlerExpr expr |
+        expr.getBody() = rh and
+        bodyParser.producesUserControlledObjects() and
+        bodyParser.flowsToExpr(expr.getAMatchingAncestor())
+      )
+      or
+      // If we can't find the middlewares for the route handler,
+      // but all known body parsers are deep, assume req.body is a deep object.
+      kind = "body" and
+      forall(ExpressLibraries::BodyParser bodyParser | bodyParser.producesUserControlledObjects())
+      or
+      kind = "parameter" and
+      exists (DataFlow::Node request | request = DataFlow::valueNode(rh.getARequestExpr()) |
+        this.(DataFlow::MethodCallNode).calls(request, "param")
+        or
+        exists (DataFlow::PropRead base |
+          // `req.query.name`
+          base.accesses(request, "query") and
+          this = base.getAPropertyReference(_)
+        )
+      )
+    }
   }
 
   /**
