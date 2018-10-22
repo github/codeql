@@ -12,7 +12,8 @@
  *       external/cwe/cwe-131
  */
 import cpp
-import semmle.code.cpp.security.TaintTracking
+import semmle.code.cpp.dataflow.TaintTracking
+import semmle.code.cpp.security.Security
 
 /**
  * Holds if `fc` is a call to a copy operation where the size argument contains
@@ -44,7 +45,24 @@ predicate sourceSized(FunctionCall fc, Expr src)
       desttype.getArraySize() = srctype.getArraySize()))
 }
 
-from FunctionCall fc, Expr vuln, Expr taintSource
-where sourceSized(fc, vuln)
-  and tainted(taintSource, vuln)
+/**
+ * Taint configuration.
+ */
+class TaintConfig extends TaintTracking::Configuration {
+  TaintConfig() {
+    this = "TaintConfig"
+  }
+
+  override predicate isSource(DataFlow::Node source) {
+    isUserInput(source.asExpr(), _)
+  }
+
+  override predicate isSink(DataFlow::Node sink) {
+    sourceSized(_, sink.asExpr())
+  }
+}
+
+from FunctionCall fc, TaintConfig taintConfig, DataFlow::Node taintSource, DataFlow::Node taintSink
+where sourceSized(fc, taintSink.asExpr())
+  and taintConfig.hasFlow(taintSource, taintSink)
 select fc, "To avoid overflow, this operation should be bounded by destination-buffer size, not source-buffer size."
