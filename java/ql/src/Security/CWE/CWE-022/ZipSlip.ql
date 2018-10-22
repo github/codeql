@@ -81,10 +81,24 @@ predicate filePathStep(ExprNode n1, ExprNode n2) {
   )
 }
 
+predicate fileTaintStep(ExprNode n1, ExprNode n2) {
+  exists(MethodAccess ma, Method m |
+    n1.asExpr() = ma.getQualifier() or
+    n1.asExpr() = ma.getAnArgument()
+  |
+    n2.asExpr() = ma and
+    ma.getMethod() = m and
+    m.getDeclaringType() instanceof TypePath and
+    m.hasName("resolve")
+  )
+}
+
 predicate localFileValueStep(Node n1, Node n2) {
   localFlowStep(n1, n2) or
   filePathStep(n1, n2)
 }
+
+predicate localFileValueStepPlus(Node n1, Node n2) = fastTC(localFileValueStep/2)(n1, n2)
 
 /**
  * Holds if `check` is a guard that checks whether `var` is a file path with a
@@ -97,10 +111,10 @@ predicate validateFilePath(SsaVariable var, Guard check) {
   exists(MethodAccess normalize, MethodAccess startsWith, Node n1, Node n2, Node n3, Node n4 |
     n1.asExpr() = var.getAUse() and
     n2.asExpr() = normalize.getQualifier() and
-    localFileValueStep*(n1, n2) and
+    (n1 = n2 or localFileValueStepPlus(n1, n2)) and
     n3.asExpr() = normalize and
     n4.asExpr() = startsWith.getQualifier() and
-    localFileValueStep*(n3, n4) and
+    (n3 = n4 or localFileValueStepPlus(n3, n4)) and
     check = startsWith and
     startsWith.getMethod().hasName("startsWith") and
     (
@@ -136,7 +150,9 @@ class ZipSlipConfiguration extends TaintTracking::Configuration {
 
   override predicate isSink(Node sink) { sink.asExpr() instanceof WrittenFileName }
 
-  override predicate isAdditionalTaintStep(Node n1, Node n2) { filePathStep(n1, n2) }
+  override predicate isAdditionalTaintStep(Node n1, Node n2) {
+    filePathStep(n1, n2) or fileTaintStep(n1, n2)
+  }
 
   override predicate isSanitizer(Node node) {
     exists(Guard g, SsaVariable var, RValue varuse | validateFilePath(var, g) |
