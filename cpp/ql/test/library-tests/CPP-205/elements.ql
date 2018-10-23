@@ -1,13 +1,13 @@
 import cpp
 
 string describe(Element e) {
-  result = "from " + e.(Function).getFullSignature()
+  result = "function " + e.(Function).getFullSignature()
   or
-  result = "from " + e.(FunctionDeclarationEntry).getFunction().getFullSignature()
+  result = "function declaration entry for " + e.(FunctionDeclarationEntry).getFunction().getFullSignature()
   or
-  result = "from " + e.(Parameter).getFunction().getFullSignature()
+  result = "parameter for " + e.(Parameter).getFunction().getFullSignature()
   or
-  result = "from " + e.(ParameterDeclarationEntry).getFunctionDeclarationEntry().getFunction().getFullSignature()
+  result = "parameter declaration entry for " + e.(ParameterDeclarationEntry).getFunctionDeclarationEntry().getFunction().getFullSignature()
 }
 
 from Element e
