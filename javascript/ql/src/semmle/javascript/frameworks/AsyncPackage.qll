@@ -7,6 +7,7 @@ module AsyncPackage {
   /**
    * Gets a reference the given member of the `async` or `async-es` package.
    */
+  pragma[noopt]
   DataFlow::SourceNode member(string name) {
     result = DataFlow::moduleMember("async", name) or
     result = DataFlow::moduleMember("async-es", name)
@@ -18,8 +19,9 @@ module AsyncPackage {
    * For example, `memberVariant("map")` finds references to `map`, `mapLimit`, and `mapSeries`.
    */
   DataFlow::SourceNode memberVariant(string name) {
-    exists (string suffix | result = member(name + suffix) |
-      suffix = "" or suffix = "Limit" or suffix = "Series")
+    result = member(name) or
+    result = member(name + "Limit") or
+    result = member(name + "Series")
   }
 
   /**
