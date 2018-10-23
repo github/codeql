@@ -162,8 +162,9 @@ predicate unreleasedResource(Resource r, Expr acquire, File f, int acquireLine) 
 
     // check that any destructor for this class has a block; if it doesn't,
     // we must be missing information.
-    and forall(Destructor d |
-      d = r.getDeclaringType().getAMember() and
+    and forall(Class c, Destructor d |
+      r.getDeclaringType().isConstructedFrom*(c) and
+      d = c.getAMember() and
       not d.isCompilerGenerated() and
       not d.isDefaulted() and
       not d.isDeleted() |
