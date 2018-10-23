@@ -6,9 +6,10 @@
 
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
-| Cast between HRESULT and a Boolean type (`cpp/hresult-boolean-conversion`) | external/cwe/cwe-253 | Finds logic errors caused by mistakenly treating the Windows `HRESULT` type as a Boolean instead of testing it with the appropriate macros. Enabled by default. |
+| Cast between `HRESULT` and a Boolean type (`cpp/hresult-boolean-conversion`) | external/cwe/cwe-253 | Finds logic errors caused by mistakenly treating the Windows `HRESULT` type as a Boolean instead of testing it with the appropriate macros. Enabled by default. |
 | Setting a DACL to `NULL` in a `SECURITY_DESCRIPTOR` (`cpp/unsafe-dacl-security-descriptor`) | external/cwe/cwe-732 | This query finds code that creates world-writable objects on Windows by setting their DACL to `NULL`. Enabled by default. |
-| Cast from char* to wchar_t* | security, external/cwe/cwe-704 | Detects potentially dangerous casts from char* to wchar_t*.  Enabled by default on LGTM. |
+| Cast from `char*` to `wchar_t*` | security, external/cwe/cwe-704 | Detects potentially dangerous casts from `char*` to `wchar_t*`.  Enabled by default on LGTM. |
+| Dead code due to `goto` or `break` statement (`cpp/dead-code-goto`) | maintainability, external/cwe/cwe-561 | Detects dead code following a goto or break statement. Enabled by default on LGTM. |
 
 ## Changes to existing queries
 
