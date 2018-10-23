@@ -50,3 +50,15 @@ function h(x, y) {
     if (x > y) {}  // NOT OK - always true
   }
 }
+
+function nan(x) {
+  // This is a NaN comment.
+  if (x - 1 < x) {} // OK
+}
+
+/**
+ * This is a NAN comment.
+ */
+function nan2(x) {
+  if (x - 1 < x) {} // OK
+}

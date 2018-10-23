@@ -69,7 +69,7 @@ import javascript
  *
  * CAVEATS:
  *
- * - We assume !(x <= y) means x > y, ignoring NaN.
+ * - We assume !(x <= y) means x > y, ignoring NaN, unless a nearby comment or identifier mentions NaN.
  *
  * - We assume integer arithmetic is exact, ignoring values above 2^53.
  *
@@ -258,6 +258,24 @@ module RangeAnalysis {
   }
 
   /**
+   * Holds if the given container has a comment or identifier mentioning `NaN`.
+   */
+  predicate hasNaNIndicator(StmtContainer container) {
+    exists (Comment comment |
+      comment.getText().regexpMatch("(?s).*N[aA]N.*") and
+      comment.getFile() = container.getFile() and
+      (
+        comment.getLocation().getStartLine() >= container.getLocation().getStartLine() and
+        comment.getLocation().getEndLine() <= container.getLocation().getEndLine()
+        or
+        comment.getNextToken() = container.getFirstToken()
+      ))
+    or
+    exists (Identifier id | id.getName() = "NaN" or id.getName() = "isNaN" |
+      id.getContainer() = container)
+  }
+
+  /**
    * Holds if `guard` asserts that the outcome of `A <op> B + bias` is true, where `<op>` is a comparison operator.
    */
   predicate linearComparisonGuard(ConditionGuardNode guard, DataFlow::Node a, int asign, string operator, DataFlow::Node b, int bsign, Bias bias) {
@@ -266,6 +284,7 @@ module RangeAnalysis {
       (
         guard.getOutcome() = true and operator = compare.getOperator()
         or
+        not hasNaNIndicator(guard.getContainer()) and
         guard.getOutcome() = false and operator = negateOperator(compare.getOperator())
       )
     )
