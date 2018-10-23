@@ -72,7 +72,7 @@ class TemplateWithDestructor
 {
 public:
 	TemplateWithDestructor(int len) {
-		ptr = new char[len]; // GOOD
+		ptr = new char[len]; // GOOD [FALSE POSITIVE]
 	}
 
 	~TemplateWithDestructor()
