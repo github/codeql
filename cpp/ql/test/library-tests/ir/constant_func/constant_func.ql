@@ -19,8 +19,8 @@ IntValue getConstantValue(Instruction instr) {
   result = getConstantValue(instr.(CopyInstruction).getSourceValue()) or
   exists(PhiInstruction phi |
     phi = instr and
-    result = max(Instruction operand | operand = phi.getAnOperand() | getConstantValue(operand)) and
-    result = min(Instruction operand | operand = phi.getAnOperand() | getConstantValue(operand))
+    result = max(PhiOperand operand | operand = phi.getAnOperand() | getConstantValue(operand.getDefinitionInstruction())) and
+    result = min(PhiOperand operand | operand = phi.getAnOperand() | getConstantValue(operand.getDefinitionInstruction()))
   )
 }
 

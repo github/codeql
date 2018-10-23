@@ -1,6 +1,7 @@
 import cpp
 import semmle.code.cpp.ir.implementation.raw.IR
 import IRBlockConstruction as BlockConstruction
+private import semmle.code.cpp.ir.internal.OperandTag
 private import semmle.code.cpp.ir.internal.TempVariableTag
 private import InstructionTag
 private import TranslatedElement
@@ -35,14 +36,6 @@ import Cached
 cached private module Cached {
   cached predicate functionHasIR(Function func) {
     exists(getTranslatedFunction(func))
-  }
-
-  cached int getMaxCallArgIndex() {
-    result = max(int argIndex |
-      exists(FunctionCall call |
-        exists(call.getArgument(argIndex))
-      )
-    )
   }
 
   cached newtype TInstruction =
@@ -96,6 +89,10 @@ cached private module Cached {
   cached Instruction getInstructionOperand(Instruction instruction, OperandTag tag) {
     result = getInstructionTranslatedElement(instruction).getInstructionOperand(
       instruction.getTag(), tag)
+  }
+
+  cached Instruction getPhiInstructionOperand(Instruction instruction, IRBlock predecessorBlock) {
+    none()
   }
 
   cached Instruction getPhiInstructionBlockStart(PhiInstruction instr) {
