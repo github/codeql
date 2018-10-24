@@ -13,7 +13,7 @@
 ## Changes to existing queries
 
 | Inconsistent lock sequence (`cs/inconsistent-lock-sequence`) | More results | This query now finds inconsistent lock sequences globally across calls. |
-
+| Local scope variable shadows member (`cs/local-shadows-member`) | Fewer results | Results have been removed where a constructor parameter shadows a member, because the parameter is probably used to initialise the member. |
 | *@name of query (Query ID)*| *Impact on results*    | *How/why the query has changed*                                  |
 
 
