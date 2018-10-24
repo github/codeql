@@ -25,6 +25,7 @@
 | ExpansiveMethod in expansive_signature.ts | has properties |
 | ExpansiveParameter in expansive_signature.ts | has properties |
 | ExpansiveSignature in expansive_signature.ts | has properties |
+| ExpansiveSignatureTypeBound in expansive_signature.ts | has properties |
 | ExpansiveX in used_from_expansion.ts | has properties |
 | Function in global scope | has properties |
 | Intl.CollatorOptions in global scope | has properties |
