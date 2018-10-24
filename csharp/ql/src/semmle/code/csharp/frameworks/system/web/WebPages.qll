@@ -19,19 +19,19 @@ class SystemWebWebPagesWebPageExecutingBaseClass extends Class {
   }
 }
 
-/**
- * This class describes any class that derives from System.Web.WebPages.WebPageExecutingBase
- */
+/** A class that derives from `System.Web.WebPages.WebPageExecutingBase`. */
 class WebPageClass extends Class {
-	WebPageClass () {
-		this.getBaseClass*() instanceof SystemWebWebPagesWebPageExecutingBaseClass
-	}
-	
-	Method getWriteLiteralMethod() {
+  WebPageClass () {
+    this.getBaseClass*() instanceof SystemWebWebPagesWebPageExecutingBaseClass
+  }
+
+  /** Gets the `WriteLiteral` method. */
+  Method getWriteLiteralMethod() {
     result = getAMethod("WriteLiteral")
-	}
-	
-	Method getWriteLiteralToMethod() {
+  }
+
+  /** Gets the `WriteLiteralTo` method. */
+  Method getWriteLiteralToMethod() {
     result = getAMethod("WriteLiteralTo")
-	}
+  }
 }
