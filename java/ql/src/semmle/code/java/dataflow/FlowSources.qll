@@ -16,6 +16,7 @@ import semmle.code.java.frameworks.android.XmlParsing
 import semmle.code.java.frameworks.android.WebView
 import semmle.code.java.frameworks.JaxWS
 import semmle.code.java.frameworks.android.Intent
+import semmle.code.java.frameworks.SpringWeb
 
 /** Class for `tainted` user input. */
 abstract class UserInput extends DataFlow::Node { }
@@ -66,6 +67,8 @@ class RemoteUserInput extends UserInput {
       m.getParameter(4) = this.asParameter() or
       m.getParameter(5) = this.asParameter()
     )
+    or
+    this.asParameter().getAnAnnotation() instanceof SpringServletInputAnnotation
   }
 
   /**
