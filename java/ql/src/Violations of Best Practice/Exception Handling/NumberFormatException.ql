@@ -2,7 +2,7 @@
  * @name Missing catch of NumberFormatException
  * @description Calling 'Integer.parseInt' without handling 'NumberFormatException'.
  * @kind problem
- * @problem.severity warning
+ * @problem.severity recommendation
  * @precision high
  * @id java/uncaught-number-format-exception
  * @tags reliability
