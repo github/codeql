@@ -44,9 +44,9 @@ private class SpecialMethodAccess extends MethodAccess {
 
 private class SpecialClassInstanceExpr extends ClassInstanceExpr {
   predicate isStringConstructor(string klass) {
-    cie.getType().(RefType).hasQualifiedName("java.lang", klass) and
-    cie.getAnArgument().getType().(RefType).hasQualifiedName("java.lang", "String") and
-    cie.getNumberOfParameters() = 1
+    this.getType().(RefType).hasQualifiedName("java.lang", klass) and
+    this.getAnArgument().getType().(RefType).hasQualifiedName("java.lang", "String") and
+    this.getNumArgument() = 1
   }
 
   predicate throwsNFE() {
