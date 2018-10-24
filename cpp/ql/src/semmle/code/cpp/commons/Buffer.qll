@@ -16,11 +16,12 @@ import semmle.code.cpp.dataflow.DataFlow
  * ```
 */
 private predicate isDynamicallyAllocatedWithDifferentSize(Class s) {
-  exists(SizeofTypeOperator sof |
-    sof.getTypeOperand().getUnspecifiedType() = s |
+  exists(SizeofOperator so |
+    so.(SizeofTypeOperator).getTypeOperand().getUnspecifiedType() = s or
+    so.(SizeofExprOperator).getExprOperand().getType().getUnspecifiedType() = s |
     // Check all ancestor nodes except the immediate parent for
     // allocations.
-    isStdLibAllocationExpr(sof.getParent().(Expr).getParent+())
+    isStdLibAllocationExpr(so.getParent().(Expr).getParent+())
   )
 }
 
