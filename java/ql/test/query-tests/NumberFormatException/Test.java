@@ -1,7 +1,7 @@
 import java.io.*;
 
 public class Test {
-	public static void main(String[] args) {
+        public static void main(String[] args) {
                 test1();
                 test2();
                 test3();
@@ -49,7 +49,7 @@ public class Test {
                 Double.valueOf("2.7818281828");
                 new Double("2.7818281828");
                 new Double(2.7818281828); // don't flag: wrong constructor
-	}
+        }
 
         static void test2() {
                 // Don't flag any of these. The exception is caught.
@@ -93,7 +93,7 @@ public class Test {
                 catch (NumberFormatException e) {
                   // parse error
                 }
-	}
+        }
 
         static void test3() throws NumberFormatException {
                 // Don't flag any of these: the exception is explcitly declared
@@ -132,5 +132,5 @@ public class Test {
                 Double.parseDouble("2.7818281828");
                 Double.valueOf("2.7818281828");
                 new Double("2.7818281828");
-	}
+        }
 }
