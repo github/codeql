@@ -1,3 +1,4 @@
 /csharp/ @Semmle/cs
 /java/ @Semmle/java
 /javascript/ @Semmle/js
+/python/ @Semmle/python
