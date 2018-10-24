@@ -72,7 +72,10 @@ predicate assignOperatorWithWrongType(Operator op, string msg) {
 predicate assignOperatorWithWrongResult(Operator op, string msg) {
   op.hasName("operator=")
   and not returnsDereferenceThis(op)
-  and exists(op.getBlock())
+  // If a function does not have a reachable `ReturnStmt` then either its body
+  // was not in the snapshot or it was established by the extractor or the CFG
+  // pruning that the function never returns.
+  and exists(ReturnStmt ret | ret.getEnclosingFunction() = op and reachable(ret))
   and not op.getType() instanceof VoidType
   and not assignOperatorWithWrongType(op, _)
   and msg = "Assignment operator in class " + op.getDeclaringType().getName() + " does not return a reference to *this."
