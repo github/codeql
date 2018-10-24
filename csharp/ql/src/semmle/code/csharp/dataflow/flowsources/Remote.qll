@@ -143,9 +143,7 @@ class MicrosoftOwinStringFlowSource extends RemoteFlowSource, DataFlow::ExprNode
   string getSourceType() { result = "Microsoft Owin request or query string" }
 }
 
-/**
- * A data flow source of remote user input (`Microsoft Owin IOwinRequest`).
- */
+/** A data flow source of remote user input (`Microsoft Owin IOwinRequest`). */
 class MicrosoftOwinRequestRemoteFlowSource extends RemoteFlowSource, DataFlow::ExprNode {
   MicrosoftOwinRequestRemoteFlowSource() {
     exists(Property p, MicrosoftOwinIOwinRequestClass owinRequest |
@@ -174,15 +172,14 @@ class MicrosoftOwinRequestRemoteFlowSource extends RemoteFlowSource, DataFlow::E
   string getSourceType() { result = "Microsoft Owin request" }
 }
 
-/**
- * A parameter to an Mvc controller action method, viewed as a source of remote user input.
- */
+/** A parameter to an Mvc controller action method, viewed as a source of remote user input. */
 class ActionMethodParameter extends RemoteFlowSource, DataFlow::ParameterNode {
   ActionMethodParameter() {
     exists(Parameter p |
       p = this.getParameter() and
       p.fromSource() |
-      p = any(Controller c).getAnActionMethod().getAParameter() or
+      p = any(Controller c).getAnActionMethod().getAParameter()
+      or
       p = any(ApiController c).getAnActionMethod().getAParameter()
     )
   }
@@ -198,19 +195,22 @@ abstract class AspNetCoreRemoteFlowSource extends RemoteFlowSource { }
 /** A data flow source of remote user input (ASP.NET query collection). */
 class AspNetCoreQueryRemoteFlowSource extends AspNetCoreRemoteFlowSource, DataFlow::ExprNode {
   AspNetCoreQueryRemoteFlowSource() {
-    exists(ValueOrRefType t, Call c, Access ac |
-      t instanceof MicrosoftAspNetCoreHttpHttpRequest or
-      t instanceof MicrosoftAspNetCoreHttpQueryCollection or
-      t instanceof MicrosoftAspNetCoreHttpQueryString |
-        this.getExpr() = c and
-        c.getTarget().getDeclaringType() = t
+    exists(ValueOrRefType t |
+      t instanceof MicrosoftAspNetCoreHttpHttpRequest
       or
-        this.asExpr() = ac and
-        ac.getTarget().getDeclaringType() = t
+      t instanceof MicrosoftAspNetCoreHttpQueryCollection
+      or
+      t instanceof MicrosoftAspNetCoreHttpQueryString
+      |
+      this.getExpr().(Call).getTarget().getDeclaringType() = t
       or 
-        c.getTarget().getDeclaringType().hasQualifiedName("Microsoft.AspNetCore.Http", "IQueryCollection") and
-        c.getTarget().getName() = "TryGetValue" and
-        this.asExpr() = c.getArgumentForName("value")
+      this.asExpr().(Access).getTarget().getDeclaringType() = t
+    )
+    or
+    exists(Call c |
+      c.getTarget().getDeclaringType().hasQualifiedName("Microsoft.AspNetCore.Http", "IQueryCollection") and
+      c.getTarget().getName() = "TryGetValue" and
+      this.asExpr() = c.getArgumentForName("value")
     )
   }
 
@@ -218,9 +218,7 @@ class AspNetCoreQueryRemoteFlowSource extends AspNetCoreRemoteFlowSource, DataFl
   string getSourceType() { result = "ASP.NET Core query string" }
 }
 
-/**
- * A parameter to an Mvc controller action method, viewed as a source of remote user input.
- */
+/** A parameter to a `Mvc` controller action method, viewed as a source of remote user input. */
 class AspNetCoreActionMethodParameter extends RemoteFlowSource, DataFlow::ParameterNode {
   AspNetCoreActionMethodParameter() {
     exists(Parameter p |

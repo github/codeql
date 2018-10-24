@@ -17,20 +17,20 @@ namespace Testing.Controllers
     {
         public IActionResult Index()
         {
-            // BAD: flow of content type to 
+            // BAD: flow of content type to.
             var v = new ViewResult();
             v.ViewData["BadData"] = new HtmlString(Request.Query["Bad data"]);
 
             StringValues vOut;
             Request.Query.TryGetValue("Foo", out vOut);
 
-            // BAD: via Enumerable
+            // BAD: via Enumerable.
             v.ViewData["FooFirst"] = new HtmlString(vOut.First());
 
-            // BAD: via toArray
+            // BAD: via toArray.
             v.ViewData["FooArray0"] = new HtmlString(vOut.ToArray()[0]);
 
-            // BAD: via implicit conversion operator
+            // BAD: via implicit conversion operator.
             v.ViewData["FooImplicit"] = new HtmlString(vOut);
 
             return v;
@@ -45,7 +45,6 @@ namespace Testing.Controllers
             view.ViewData["FOO"] = new HtmlString(foo);
             return view;
         }
-
 
         public IActionResult IndexToModel()
         {
