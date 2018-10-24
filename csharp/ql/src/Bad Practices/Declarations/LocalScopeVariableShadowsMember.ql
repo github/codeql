@@ -38,6 +38,8 @@ private predicate acceptableShadowing(LocalScopeVariable v, Member m) {
       ma.targetIsLocalInstance() and
       not ma.getQualifier().isImplicit()
     )
+    or
+    t.getAConstructor().getAParameter() = v
   )
 }
 
