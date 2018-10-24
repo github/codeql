@@ -18,4 +18,5 @@
 | ExpansiveMethod in expansive_signature.ts | has no properties |
 | ExpansiveParameter in expansive_signature.ts | has no properties |
 | ExpansiveSignature in expansive_signature.ts | has no properties |
+| ExpansiveSignatureTypeBound in expansive_signature.ts | has no properties |
 | ExpansiveX in used_from_expansion.ts | has no properties |

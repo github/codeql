@@ -36,8 +36,7 @@ where s.hasSemicolonInserted() and
       asi = strictcount(Stmt ss | asi(sc, ss, true)) and
       nstmt = strictcount(Stmt ss | asi(sc, ss, _)) and
       perc = ((1-asi/nstmt)*100).floor() and
-      perc >= 90 and
-      not s.getFile().getFileType().isTypeScript() // ignore some quirks in the TypeScript tokenizer
+      perc >= 90
 select (LastLineOf)s, "Avoid automated semicolon insertion " +
                       "(" + perc + "% of all statements in $@ have an explicit semicolon).",
                       sc, "the enclosing " + sctype
