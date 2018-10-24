@@ -27,7 +27,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 var add = new Expression(new ExpressionInfo(cx, qualifierInfo.Type, Location, ExprKind.ADD, this, 0, false, null));
                 qualifierInfo.SetParent(add, 0);
                 CreateFromNode(qualifierInfo);
-                PopulateArguments(cx, ArgumentList, 1);
+                PopulateArguments(ArgumentList, 1);
             }
             else
             {

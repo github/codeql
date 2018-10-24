@@ -14,7 +14,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         protected override void Populate() { }
 
-        void VisitParameter(Context cx, ParameterSyntax p)
+        void VisitParameter(ParameterSyntax p)
         {
             var symbol = cx.Model(p).GetDeclaredSymbol(p);
             Parameter.Create(cx, symbol, this);
@@ -27,7 +27,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             cx.PopulateLater(() =>
             {
                 foreach (var param in @params)
-                    VisitParameter(cx, param);
+                    VisitParameter(param);
 
                 if (body is ExpressionSyntax)
                     Create(cx, (ExpressionSyntax)body, this, 0);

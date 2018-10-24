@@ -49,9 +49,9 @@ namespace Semmle.Extraction.CIL
 
         public virtual IId Id => FreshId.Instance;
 
-        public virtual void Extract(Context cx)
+        public virtual void Extract(Context cx2)
         {
-            cx.Extract(this);
+            cx2.Extract(this);
         }
 
         public readonly Context cx;
@@ -79,9 +79,9 @@ namespace Semmle.Extraction.CIL
         public abstract Id IdSuffix { get; }
         public IId Id => ShortId + IdSuffix;
 
-        public void Extract(Context cx)
+        public void Extract(Context cx2)
         {
-            cx.Populate(this);
+            cx2.Populate(this);
         }
 
         public readonly Context cx;

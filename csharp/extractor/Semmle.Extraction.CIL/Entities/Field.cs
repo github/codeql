@@ -62,9 +62,9 @@ namespace Semmle.Extraction.CIL.Entities
             }
         }
 
-        public void Extract(Context cx)
+        public void Extract(Context cx2)
         {
-            cx.Populate(this);
+            cx2.Populate(this);
         }
 
         TrapStackBehaviour IEntity.TrapStackBehaviour => TrapStackBehaviour.NoLabel;
