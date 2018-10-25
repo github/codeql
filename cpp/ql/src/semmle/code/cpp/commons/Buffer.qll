@@ -33,13 +33,12 @@ predicate memberMayBeVarSize(Class c, MemberVariable v) {
       // `sizeof(c)` is taken
       so.(SizeofTypeOperator).getTypeOperand().getUnspecifiedType() = c or
       so.(SizeofExprOperator).getExprOperand().getType().getUnspecifiedType() = c |
-      // Check all ancestor nodes except the immediate parent for
-      // allocations.
-      isStdLibAllocationExpr(so.getParent().(Expr).getParent+())
+
+      // arithmetic is performed on the result
+      so.getParent*() instanceof BinaryArithmeticOperation
     ) or exists(AddressOfExpr aoe |
       // `&(c.v)` is taken
-      aoe.getAddressable() = v and
-      isStdLibAllocationExpr(aoe.getParent().(Expr).getParent+())
+      aoe.getAddressable() = v
     )
   )
 }
