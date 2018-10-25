@@ -28,7 +28,7 @@ predicate memberMayBeVarSize(Class c, MemberVariable v) {
     v = c.getCanonicalMember(i) and
 
     // v is an array of size at most 1
-    v.getType().getUnspecifiedType().(ArrayType).getSize() <= 1
+    v.getType().getUnspecifiedType().(ArrayType).getArraySize() <= 1
   ) and (
     exists(SizeofOperator so |
       // `sizeof(c)` is taken
