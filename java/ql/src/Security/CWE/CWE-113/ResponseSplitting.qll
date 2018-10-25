@@ -32,6 +32,7 @@ class HeaderSplittingSink extends DataFlow::ExprNode {
 
 class WhitelistedSource extends RemoteUserInput {
   WhitelistedSource() {
-    this.asExpr().(MethodAccess).getMethod() instanceof HttpServletRequestGetHeaderMethod
+    this.asExpr().(MethodAccess).getMethod() instanceof HttpServletRequestGetHeaderMethod or
+    this.asExpr().(MethodAccess).getMethod() instanceof CookieGetNameMethod
   }
 }
