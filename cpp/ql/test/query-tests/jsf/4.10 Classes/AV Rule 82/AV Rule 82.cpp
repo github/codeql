@@ -134,7 +134,7 @@ public:
 };
 
 class Reachability {
-  Reachability &operator=(Reachability &that) { // GOOD [FALSE POSITIVE]
+  Reachability &operator=(Reachability &that) { // GOOD
     int one = 1;
     if (one)
       return *this;
@@ -160,11 +160,11 @@ class Reachability {
       return &staticInstance; // unreachable
   }
 
-  Reachability &operator=(int _val) { // GOOD [FALSE POSITIVE]
+  Reachability &operator=(int _val) { // GOOD
     return returnThisReference();
   }
 
-  Reachability &operator=(short _val) { // GOOD [FALSE POSITIVE]
+  Reachability &operator=(short _val) { // GOOD
     return *returnThisPointer();
   }
 
