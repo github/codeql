@@ -80,10 +80,29 @@ import javascript
  */
 module RangeAnalysis {
   /**
+   * Holds if the given node is relevant for range analysis.
+   */
+  private predicate isRelevant(DataFlow::Node node) {
+    node = any(Comparison cmp).getAnOperand().flow()
+    or
+    node = any(ConditionGuardNode guard).getTest().flow()
+    or
+    exists (DataFlow::Node succ | isRelevant(succ) |
+      succ = node.getASuccessor()
+      or
+      linearDefinitionStep(succ, node, _, _)
+      or
+      exists (BinaryExpr bin | bin instanceof AddExpr or bin instanceof SubExpr |
+        succ.asExpr() = bin and
+        bin.getAnOperand().flow() = node))
+  }
+
+  /**
    * Holds if the given node has a unique data flow predecessor.
    */
   pragma[noinline]
   private predicate hasUniquePredecessor(DataFlow::Node node) {
+    isRelevant(node) and
     strictcount(node.getAPredecessor()) = 1
   }
 
@@ -206,6 +225,7 @@ module RangeAnalysis {
         sign = sign1 * sign2 and
         bias = bias1 + sign1 * bias2)
     else (
+      isRelevant(r) and
       root = r and
       sign = 1 and
       bias = 0
@@ -344,6 +364,7 @@ module RangeAnalysis {
    */
   predicate binaryPhiNode(DataFlow::Node node, DataFlow::Node left, DataFlow::Node right) {
     exists (SsaPhiNode phi | node = DataFlow::ssaDefinitionNode(phi) |
+      isRelevant(node) and
       strictcount(phi.getAnInput()) = 2 and
       left = DataFlow::ssaDefinitionNode(phi.getAnInput()) and
       right = DataFlow::ssaDefinitionNode(phi.getAnInput()) and
@@ -412,6 +433,7 @@ module RangeAnalysis {
    */
   predicate constantEdge(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, Bias c) {
     exists (NumberLiteral literal | cfg = literal |
+      isRelevant(literal.flow()) and
       literal.getIntValue() instanceof Bias and // avoid overflow
       a = literal.flow() and
       b = a and
