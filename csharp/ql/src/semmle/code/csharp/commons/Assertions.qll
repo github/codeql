@@ -9,7 +9,7 @@ abstract class AssertMethod extends Method {
   abstract int getAssertionIndex();
 
   /** Gets the parameter being asserted. */
-  final Parameter getAssertionParameter() {
+  final Parameter getAssertedParameter() {
     result = this.getParameter(this.getAssertionIndex())
   }
 
@@ -44,7 +44,7 @@ class Assertion extends MethodCall {
 
   /** Gets the expression that this assertion pertains to. */
   Expr getExpr() {
-    result = this.getArgumentForParameter(target.getAssertionParameter())
+    result = this.getArgumentForParameter(target.getAssertedParameter())
   }
 }
 
@@ -55,10 +55,10 @@ class FailingAssertion extends Assertion {
       am = this.getAssertMethod() and
       e = this.getExpr() |
       am instanceof AssertTrueMethod and
-      e.(BoolLiteral).getBoolValue() = false
+      e.getValue() = "false"
       or
       am instanceof AssertFalseMethod and
-      e.(BoolLiteral).getBoolValue() = true
+      e.getValue() = "true"
     )
   }
 }
