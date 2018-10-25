@@ -60,7 +60,7 @@ static int foo(size_t *size)
 
 // ODASA-7205
 int regression_test_01(unsigned long bb) {
-  if (bb + 1 == 0) { // GOOD [FALSE POSITIVE]
+  if (bb + 1 == 0) { // GOOD [NO LONGER REPORTED]
     return 0;
   } else {
     return 1;

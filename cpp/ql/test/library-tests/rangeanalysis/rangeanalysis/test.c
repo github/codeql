@@ -186,10 +186,10 @@ int test_unary(int a) {
   if (-7 <= a && a <= -2) {
     int b = +a;
     int c = -a;
-    total += b+c;
+    total += b+c; // BUG: lower bound should be exact, not approximate
   }
 
-  return total;
+  return total; // BUG: lower bound should be exact, not approximate
 }
 
 
