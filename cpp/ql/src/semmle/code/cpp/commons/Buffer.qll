@@ -39,6 +39,9 @@ predicate memberMayBeVarSize(Class c, MemberVariable v) {
     ) or exists(AddressOfExpr aoe |
       // `&(c.v)` is taken
       aoe.getAddressable() = v
+    ) or exists(BuiltInOperationOffsetOf oo |
+      // `offsetof(c, v)` using a builtin
+      oo.getAChild().(VariableAccess).getTarget() = v
     )
   )
 }
