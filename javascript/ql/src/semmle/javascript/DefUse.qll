@@ -98,7 +98,8 @@ private predicate lvalAux(Expr l, ControlFlowNode def) {
   exists (ArrayPattern ap | lvalAux(ap, def) | l = ap.getAnElement().stripParens())
   or
   exists (ObjectPattern op | lvalAux(op, def) |
-    l = op.getAPropertyPattern().getValuePattern().stripParens()
+    l = op.getAPropertyPattern().getValuePattern().stripParens() or
+    l = op.getRest().stripParens()
   )
 }
 

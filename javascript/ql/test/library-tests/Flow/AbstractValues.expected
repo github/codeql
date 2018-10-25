@@ -59,6 +59,8 @@
 | d.js:1:1:4:0 | exports object of module d |
 | d.js:1:1:4:0 | module object of module d |
 | d.js:1:18:3:1 | object literal |
+| destructuring.js:1:1:4:1 | function f |
+| destructuring.js:1:1:4:1 | instance of function f |
 | e.js:1:1:6:0 | exports object of module e |
 | e.js:1:1:6:0 | module object of module e |
 | es2015.js:1:1:50:0 | exports object of module es2015 |
