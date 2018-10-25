@@ -32,4 +32,5 @@
 | PointlessComparison.c:129:12:129:16 | ... > ... | Comparison is always false because a <= 3. |
 | PointlessComparison.c:197:7:197:11 | ... < ... | Comparison is always false because x >= 0. |
 | RegressionTests.cpp:57:7:57:22 | ... <= ... | Comparison is always true because * ... <= 4294967295. |
+| RegressionTests.cpp:63:7:63:17 | ... == ... | Comparison is always false because ... + ... >= 1. |
 | Templates.cpp:9:10:9:24 | ... <= ... | Comparison is always true because local <= 32767. |

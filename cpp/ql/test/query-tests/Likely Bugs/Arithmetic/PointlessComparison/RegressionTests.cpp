@@ -57,3 +57,12 @@ static int foo(size_t *size)
   if (*size <= MAX_VAL) // BAD (pointless comparison) [NO LONGER REPORTED]
     *size = MAX_VAL;
 }
+
+// ODASA-7205
+int regression_test_01(unsigned long bb) {
+  if (bb + 1 == 0) { // GOOD [FALSE POSITIVE]
+    return 0;
+  } else {
+    return 1;
+  }
+}
