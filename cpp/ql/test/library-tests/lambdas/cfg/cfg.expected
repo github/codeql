@@ -59,6 +59,8 @@
 | <no scope> | true | 259 | 195 |  |
 | <no scope> | true | 261 | 259 |  |
 | <no scope> | true | 263 | 206 |  |
+| __va_list_tag::operator= | false | 92 | 92 | operator= |
+| __va_list_tag::operator= | false | 99 | 99 | operator= |
 | main | false | 147 | 147 | main |
 | main | false | 269 | 269 | declaration |
 | main | false | 271 | 271 | call to printf |
@@ -98,6 +100,4 @@
 | main | true | 315 | 147 |  |
 | main | true | 316 | 315 |  |
 | main | true | 318 | 269 |  |
-| operator= | false | 92 | 92 | operator= |
-| operator= | false | 99 | 99 | operator= |
 | printf | false | 209 | 209 | printf |

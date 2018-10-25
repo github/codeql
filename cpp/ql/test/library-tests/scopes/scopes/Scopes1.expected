@@ -1,7 +1,5 @@
 | file://:0:0:0:0 | (global namespace) | GlobalNamespace | file://:0:0:0:0 | operator delete[] |  |
 | file://:0:0:0:0 | (global namespace) | GlobalNamespace | file://:0:0:0:0 | operator new[] |  |
-| file://:0:0:0:0 | (global namespace) | GlobalNamespace | file://:0:0:0:0 | operator= |  |
-| file://:0:0:0:0 | (global namespace) | GlobalNamespace | file://:0:0:0:0 | operator= |  |
 | file://:0:0:0:0 | (global namespace) | GlobalNamespace | scopes.cpp:2:7:2:7 | A | Class |
 | file://:0:0:0:0 | (global namespace) | GlobalNamespace | scopes.cpp:7:7:7:7 | B | Class |
 | file://:0:0:0:0 | (global namespace) | GlobalNamespace | scopes.cpp:11:7:11:7 | C | Class |
@@ -15,6 +13,8 @@
 | file://:0:0:0:0 | (global namespace) | GlobalNamespace | scopes.cpp:74:11:74:13 | One | Namespace |
 | file://:0:0:0:0 | __va_list_tag | Class | file://:0:0:0:0 | fp_offset |  |
 | file://:0:0:0:0 | __va_list_tag | Class | file://:0:0:0:0 | gp_offset |  |
+| file://:0:0:0:0 | __va_list_tag | Class | file://:0:0:0:0 | operator= |  |
+| file://:0:0:0:0 | __va_list_tag | Class | file://:0:0:0:0 | operator= |  |
 | file://:0:0:0:0 | __va_list_tag | Class | file://:0:0:0:0 | overflow_arg_area |  |
 | file://:0:0:0:0 | __va_list_tag | Class | file://:0:0:0:0 | reg_save_area |  |
 | scopes.cpp:2:7:2:7 | A | Class | scopes.cpp:2:7:2:7 | operator= |  |
