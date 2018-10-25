@@ -46,10 +46,12 @@ namespace Semmle.Extraction.CSharp
         /// <param name="commandLineArguments">Arguments passed to csc.</param>
         /// <param name="compilationIn">The Roslyn compilation.</param>
         /// <param name="options">Extractor options.</param>
+        /// <param name="roslynArgs">The arguments passed to Roslyn.</param>
         public void Initialize(
             CSharpCommandLineArguments commandLineArguments,
             CSharpCompilation compilationIn,
-            Options options)
+            Options options,
+            string[] roslynArgs)
         {
             compilation = compilationIn;
 
@@ -58,7 +60,7 @@ namespace Semmle.Extraction.CSharp
 
             extractor = new Extraction.Extractor(false, GetOutputName(compilation, commandLineArguments), Logger);
 
-            LogDiagnostics();
+            LogDiagnostics(roslynArgs);
             SetReferencePaths();
 
             CompilationErrors += FilteredDiagnostics.Count();
@@ -113,7 +115,7 @@ namespace Semmle.Extraction.CSharp
             layout = new Layout();
             extractor = new Extraction.Extractor(true, null, Logger);
             this.options = options;
-            LogDiagnostics();
+            LogDiagnostics(null);
             SetReferencePaths();
         }
 
@@ -409,7 +411,8 @@ namespace Semmle.Extraction.CSharp
         /// Logs detailed information about this invocation,
         /// in the event that errors were detected.
         /// </summary>
-        public void LogDiagnostics()
+        /// <param name="roslynArgs">The arguments passed to Roslyn.</param>
+        public void LogDiagnostics(string[] roslynArgs)
         {
             Logger.Log(Severity.Info, "  Current working directory: {0}", Directory.GetCurrentDirectory());
             Logger.Log(Severity.Info, "  Extractor: {0}", Environment.GetCommandLineArgs().First());
@@ -437,6 +440,9 @@ namespace Semmle.Extraction.CSharp
                 }
             }
             Logger.Log(Severity.Info, sb.ToString());
+
+            if (roslynArgs != null)
+                Logger.Log(Severity.Info, $"  Arguments to Roslyn: {string.Join(' ', roslynArgs)}");
 
             foreach (var error in FilteredDiagnostics)
             {

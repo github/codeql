@@ -255,6 +255,7 @@ module ControlFlow {
      * The node on line 2 is an immediate `null` successor of the node
      * `x` on line 1.
      */
+    deprecated
     Node getANullSuccessor() {
       result = getASuccessorByType(any(NullnessSuccessor t | t.isNull()))
     }
@@ -274,6 +275,7 @@ module ControlFlow {
      * The node `x?.M()`, representing the call to `M`, is a non-`null` successor
      * of the node `x`.
      */
+    deprecated
     Node getANonNullSuccessor() {
       result = getASuccessorByType(any(NullnessSuccessor t | not t.isNull()))
     }
@@ -400,7 +402,10 @@ module ControlFlow {
      * a nullness successor (`NullnessSuccessor`), a matching successor (`MatchingSuccessor`),
      * or an emptiness successor (`EmptinessSuccessor`).
      */
-    abstract class ConditionalSuccessor extends SuccessorType { }
+    abstract class ConditionalSuccessor extends SuccessorType {
+      /** Gets the Boolean value of this successor. */
+      abstract boolean getValue();
+    }
 
     /**
      * A Boolean control flow successor.
@@ -429,8 +434,7 @@ module ControlFlow {
      * ```
      */
     class BooleanSuccessor extends ConditionalSuccessor, TBooleanSuccessor {
-      /** Gets the value of this Boolean successor. */
-      boolean getValue() { this = TBooleanSuccessor(result) }
+      override boolean getValue() { this = TBooleanSuccessor(result) }
 
       override string toString() { result = getValue().toString() }
 
@@ -468,6 +472,8 @@ module ControlFlow {
     class NullnessSuccessor extends ConditionalSuccessor, TNullnessSuccessor {
       /** Holds if this is a `null` successor. */
       predicate isNull() { this = TNullnessSuccessor(true) }
+
+      override boolean getValue() { this = TNullnessSuccessor(result) }
 
       override string toString() {
         if this.isNull() then
@@ -520,6 +526,8 @@ module ControlFlow {
       /** Holds if this is a match successor. */
       predicate isMatch() { this = TMatchingSuccessor(true) }
 
+      override boolean getValue() { this = TMatchingSuccessor(result) }
+
       override string toString() {
         if this.isMatch() then
           result = "match"
@@ -570,6 +578,8 @@ module ControlFlow {
     class EmptinessSuccessor extends ConditionalSuccessor, TEmptinessSuccessor {
       /** Holds if this is an empty successor. */
       predicate isEmpty() { this = TEmptinessSuccessor(true) }
+
+      override boolean getValue() { this = TEmptinessSuccessor(result) }
 
       override string toString() {
         if this.isEmpty() then

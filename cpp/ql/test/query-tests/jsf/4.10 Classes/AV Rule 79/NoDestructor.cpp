@@ -66,3 +66,25 @@ public:
 		n = new MyNumber(200); // GOOD: deleted in base class
 	}
 };
+
+template<class T>
+class TemplateWithDestructor
+{
+public:
+	TemplateWithDestructor(int len) {
+		ptr = new char[len]; // GOOD
+	}
+
+	~TemplateWithDestructor()
+	{
+		delete [] ptr;
+	}
+
+private:
+	char *ptr;
+};
+
+void test() {
+	TemplateWithDestructor<int *> *t_ptr = new TemplateWithDestructor<int *>(10);
+	//delete t_ptr; --- destructor never used
+}

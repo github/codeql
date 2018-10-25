@@ -1,0 +1,7 @@
+| tst.ts:122:19:122:32 | import("type") | type | type |
+| tst.ts:123:26:123:39 | import("type") | type | type |
+| tst.ts:124:28:124:46 | import("namespace") | namespace | namespace |
+| tst.ts:125:35:125:53 | import("namespace") | namespace | namespace |
+| tst.ts:126:28:126:42 | import("value") | value | value |
+| tst.ts:127:37:127:51 | import("value") | value | value |
+| tst.ts:128:38:130:3 | import( ... ce'\\n  ) | awkard-namespace | namespace |

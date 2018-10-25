@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace Semmle.Extraction.CSharp
@@ -53,24 +55,34 @@ namespace Semmle.Extraction.CSharp
                 var versionInfo = FileVersionInfo.GetVersionInfo(SpecifiedCompiler);
 
                 var compilerDir = Path.GetDirectoryName(SpecifiedCompiler);
-                bool known_compiler_name = versionInfo.OriginalFilename == "csc.exe" || versionInfo.OriginalFilename == "csc2.exe";
-                bool copyright_microsoft = versionInfo.LegalCopyright != null && versionInfo.LegalCopyright.Contains("Microsoft");
-                bool mscorlib_exists = File.Exists(Path.Combine(compilerDir, "mscorlib.dll"));
+                var knownCompilerNames = new Dictionary<string, string>
+                {
+                    { "csc.exe", "Microsoft" },
+                    { "csc2.exe", "Microsoft" },
+                    { "csc.dll", "Microsoft" },
+                    { "mcs.exe", "Novell" }
+                };
+                var mscorlibExists = File.Exists(Path.Combine(compilerDir, "mscorlib.dll"));
 
-                if (specifiedFramework == null && mscorlib_exists)
+                if (specifiedFramework == null && mscorlibExists)
                 {
                     specifiedFramework = compilerDir;
                 }
 
-                if (!known_compiler_name)
+                if (!knownCompilerNames.TryGetValue(versionInfo.OriginalFilename, out var vendor))
                 {
-                    SkipExtractionBecause("the exe name is not recognised");
+                    SkipExtractionBecause("the compiler name is not recognised");
+                    return;
                 }
-                else if (!copyright_microsoft)
+
+                if (versionInfo.LegalCopyright == null || !versionInfo.LegalCopyright.Contains(vendor))
                 {
-                    SkipExtractionBecause("the exe isn't copyright Microsoft");
+                    SkipExtractionBecause($"the compiler isn't copyright {vendor}, but instead {versionInfo.LegalCopyright ?? "<null>"}");
+                    return;
                 }
             }
+
+            ArgsWithResponse = AddDefaultResponse(CscRsp, options.CompilerArguments).ToArray();
         }
 
         void SkipExtractionBecause(string reason)
@@ -87,7 +99,7 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// The file csc.rsp.
         /// </summary>
-        public string CscRsp => Path.Combine(FrameworkPath, csc_rsp);
+        string CscRsp => Path.Combine(FrameworkPath, csc_rsp);
 
         /// <summary>
         /// Should we skip extraction?
@@ -103,5 +115,25 @@ namespace Semmle.Extraction.CSharp
         /// Gets additional reference directories - the compiler directory.
         /// </summary>
         public string AdditionalReferenceDirectories => SpecifiedCompiler != null ? Path.GetDirectoryName(SpecifiedCompiler) : null;
+
+        /// <summary>
+        /// Adds @csc.rsp to the argument list to mimic csc.exe.
+        /// </summary>
+        /// <param name="responseFile">The full pathname of csc.rsp.</param>
+        /// <param name="args">The other command line arguments.</param>
+        /// <returns>Modified list of arguments.</returns>
+        static IEnumerable<string> AddDefaultResponse(string responseFile, IEnumerable<string> args)
+        {
+            return SuppressDefaultResponseFile(args) && File.Exists(responseFile) ?
+                args :
+                new[] { "@" + responseFile }.Concat(args);
+        }
+
+        static bool SuppressDefaultResponseFile(IEnumerable<string> args)
+        {
+            return args.Any(arg => new[] { "/noconfig", "-noconfig" }.Contains(arg.ToLowerInvariant()));
+        }
+
+        public readonly string[] ArgsWithResponse;
     }
 }

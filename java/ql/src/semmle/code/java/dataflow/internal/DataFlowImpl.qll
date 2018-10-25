@@ -724,76 +724,27 @@ private predicate localFlowBigStep(
   localFlowExit(node2, config)
 }
 
-/**
- * Holds if `f` may contain an object of the same type, `t`, as the one
- * that contains `f`, and if this fact should be used to compress
- * access paths.
- *
- * Examples include the tail pointer in a linked list or the left and right
- * pointers in a binary tree.
- */
-private predicate selfRef(Content f, RefType t) {
-  t = f.getDeclaringType() and
-  f.isSelfRef()
-}
-
-private newtype TFlowContainer =
-  TRegularContent(Content f) { not selfRef(f, _) } or
-  TSelfRefContent(RefType t) { selfRef(_, t) }
-
-/**
- * A `Content` or a `Content` abstracted as its declaring type.
- *
- * Sequences of one or more `Content`s in the same declaring type for which
- * `isSelfRef()` holds are represented as a single `FlowContainer` in an
- * `AccessPath`.
- */
-private class FlowContainer extends TFlowContainer {
-  string toString() {
-    exists(Content f | this = TRegularContent(f) and result = f.toString())
-    or
-    exists(RefType t | this = TSelfRefContent(t) and result = t.toString())
-  }
-
-  predicate usesContent(Content f) {
-    this = TRegularContent(f)
-    or
-    exists(RefType t | this = TSelfRefContent(t) and selfRef(f, t))
-  }
-
-  RefType getContainerType() {
-    exists(Content f | this = TRegularContent(f) and result = f.getDeclaringType())
-    or
-    this = TSelfRefContent(result)
-  }
-}
-
 private newtype TAccessPathFront =
   TFrontNil(Type t) or
-  TFrontHead(FlowContainer f)
+  TFrontHead(Content f)
 
 /**
  * The front of an `AccessPath`. This is either a head or a nil.
  */
 private class AccessPathFront extends TAccessPathFront {
   string toString() {
-    exists(Type t | this = TFrontNil(t) | result = t.toString())
+    exists(Type t | this = TFrontNil(t) | result = ppReprType(t))
     or
-    exists(FlowContainer f | this = TFrontHead(f) | result = f.toString())
+    exists(Content f | this = TFrontHead(f) | result = f.toString())
   }
 
   Type getType() {
     this = TFrontNil(result)
     or
-    exists(FlowContainer head | this = TFrontHead(head) | result = head.getContainerType())
+    exists(Content head | this = TFrontHead(head) | result = head.getContainerType())
   }
 
-  predicate headUsesContent(Content f) {
-    exists(FlowContainer fc |
-      fc.usesContent(f) and
-      this = TFrontHead(fc)
-    )
-  }
+  predicate headUsesContent(Content f) { this = TFrontHead(f) }
 }
 
 private class AccessPathFrontNil extends AccessPathFront, TFrontNil { }
@@ -1004,7 +955,7 @@ private predicate consCand(Content f, AccessPathFront apf, Configuration config)
 
 private newtype TAccessPath =
   TNil(Type t) or
-  TCons(FlowContainer f, int len) { len in [1 .. 5] }
+  TCons(Content f, int len) { len in [1 .. 5] }
 
 /**
  * Conceptually a list of `Content`s followed by a `Type`, but only the first
@@ -1016,7 +967,7 @@ private newtype TAccessPath =
 private class AccessPath extends TAccessPath {
   abstract string toString();
 
-  FlowContainer getHead() { this = TCons(result, _) }
+  Content getHead() { this = TCons(result, _) }
 
   int len() {
     this = TNil(_) and result = 0
@@ -1027,27 +978,27 @@ private class AccessPath extends TAccessPath {
   Type getType() {
     this = TNil(result)
     or
-    exists(FlowContainer head | this = TCons(head, _) | result = head.getContainerType())
+    exists(Content head | this = TCons(head, _) | result = head.getContainerType())
   }
 
   abstract AccessPathFront getFront();
 }
 
 private class AccessPathNil extends AccessPath, TNil {
-  override string toString() { exists(Type t | this = TNil(t) | result = t.toString()) }
+  override string toString() { exists(Type t | this = TNil(t) | result = ppReprType(t)) }
 
   override AccessPathFront getFront() { exists(Type t | this = TNil(t) | result = TFrontNil(t)) }
 }
 
 private class AccessPathCons extends AccessPath, TCons {
   override string toString() {
-    exists(FlowContainer f, int len | this = TCons(f, len) |
+    exists(Content f, int len | this = TCons(f, len) |
       result = f.toString() + ", ... (" + len.toString() + ")"
     )
   }
 
   override AccessPathFront getFront() {
-    exists(FlowContainer f | this = TCons(f, _) | result = TFrontHead(f))
+    exists(Content f | this = TCons(f, _) | result = TFrontHead(f))
   }
 }
 

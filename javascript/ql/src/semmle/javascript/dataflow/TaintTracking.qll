@@ -130,7 +130,7 @@ module TaintTracking {
    * configurations it is used in.
    *
    * Note: For performance reasons, all subclasses of this class should be part
-   * of the standard library. Override `Configuration::isTaintSanitizerGuard`
+   * of the standard library. Override `Configuration::isSanitizer`
    * for analysis-specific taint steps.
    */
   abstract class AdditionalSanitizerGuardNode extends SanitizerGuardNode {
@@ -157,6 +157,12 @@ module TaintTracking {
      */
     abstract predicate sanitizes(boolean outcome, Expr e);
 
+  }
+
+  /**
+   * A sanitizer guard node that only blocks specific flow labels.
+   */
+  abstract class LabeledSanitizerGuardNode extends SanitizerGuardNode, DataFlow::LabeledBarrierGuardNode {
   }
 
   /**

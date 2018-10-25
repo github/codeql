@@ -9,7 +9,7 @@ do
   if [[ `basename -- "$i"` =~ csc.exe|mcs.exe|csc.dll ]]
   then
     echo extract-csharp.sh: exec $extractor --cil $@
-    exec "$extractor" --cil $@
+    exec "$extractor" --compiler $i --cil $@
   fi
 done
 

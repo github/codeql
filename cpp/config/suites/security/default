@@ -19,6 +19,7 @@
 @import "cwe-327"
 @import "cwe-367"
 @import "cwe-416"
+@import "cwe-428"
 @import "cwe-457"
 @import "cwe-468"
 @import "cwe-676"

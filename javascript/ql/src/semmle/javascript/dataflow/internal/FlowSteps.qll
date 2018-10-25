@@ -74,10 +74,12 @@ predicate localFlowStep(DataFlow::Node pred, DataFlow::Node succ,
   any(DataFlow::AdditionalFlowStep afs).step(pred, succ) and predlbl = succlbl
   or
   exists (boolean vp | configuration.isAdditionalFlowStep(pred, succ, vp) |
-    if vp = false and (predlbl = FlowLabel::data() or predlbl = FlowLabel::taint()) then
-      succlbl = FlowLabel::taint()
-    else
-      predlbl = succlbl
+    vp = true and
+    predlbl = succlbl
+    or
+    vp = false and
+    (predlbl = FlowLabel::data() or predlbl = FlowLabel::taint()) and
+    succlbl = FlowLabel::taint()
   )
   or
   configuration.isAdditionalFlowStep(pred, succ, predlbl, succlbl)
