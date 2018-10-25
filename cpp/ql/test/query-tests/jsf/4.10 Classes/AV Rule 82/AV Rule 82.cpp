@@ -133,6 +133,43 @@ public:
   }
 };
 
+class Reachability {
+  Reachability &operator=(Reachability &that) { // GOOD [FALSE POSITIVE]
+    int one = 1;
+    if (one)
+      return *this;
+    else
+      return that; // unreachable
+  }
+
+  // helper function that always returns a reference to `*this`.
+  Reachability &returnThisReference() {
+    int one = 1;
+    if (one)
+      return *this;
+    else
+      return staticInstance; // unreachable
+  }
+
+  // helper function that always returns `this`.
+  Reachability *const returnThisPointer() {
+    int one = 1;
+    if (one)
+      return this;
+    else
+      return &staticInstance; // unreachable
+  }
+
+  Reachability &operator=(int _val) { // GOOD [FALSE POSITIVE]
+    return returnThisReference();
+  }
+
+  Reachability &operator=(short _val) { // GOOD [FALSE POSITIVE]
+    return *returnThisPointer();
+  }
+
+  static Reachability staticInstance;
+};
 
 int main() {
   Container c;
