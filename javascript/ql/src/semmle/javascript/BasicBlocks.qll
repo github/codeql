@@ -67,25 +67,25 @@ private cached module Internal {
   }
 
   cached predicate defAt(BasicBlock bb, int i, Variable v, VarDef d) {
-    exists (VarRef def |
-      def = d.getTarget().(BindingPattern).getABindingVarRef() and
-      v = def.getVariable() |
-      def = d.getTarget() and
+    exists (VarRef lhs |
+      lhs = d.getTarget().(BindingPattern).getABindingVarRef() and
+      v = lhs.getVariable() |
+      lhs = d.getTarget() and
       bbIndex(bb, d, i)
       or
       exists (PropertyPattern pp |
-        def = pp.getValuePattern() and
+        lhs = pp.getValuePattern() and
         bbIndex(bb, pp, i)
       )
       or
       exists (ObjectPattern op |
-        def = op.getRest() and
-        bbIndex(bb, def, i)
+        lhs = op.getRest() and
+        bbIndex(bb, lhs, i)
       )
       or
       exists (ArrayPattern ap |
-        def = ap.getAnElement() and
-        bbIndex(bb, def, i)
+        lhs = ap.getAnElement() and
+        bbIndex(bb, lhs, i)
       )
     )
   }
