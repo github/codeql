@@ -1,0 +1,30 @@
+| Test.java:11:17:11:37 | parseByte(...) | Potential uncaught 'java.lang.NumberFormatException'. |
+| Test.java:12:17:12:34 | decode(...) | Potential uncaught 'java.lang.NumberFormatException'. |
+| Test.java:13:17:13:35 | valueOf(...) | Potential uncaught 'java.lang.NumberFormatException'. |
+| Test.java:14:17:14:39 | valueOf(...) | Potential uncaught 'java.lang.NumberFormatException'. |
+| Test.java:15:17:15:38 | valueOf(...) | Potential uncaught 'java.lang.NumberFormatException'. |
+| Test.java:16:17:16:31 | new Byte(...) | Potential uncaught 'java.lang.NumberFormatException'. |
+| Test.java:19:17:19:39 | parseShort(...) | Potential uncaught 'java.lang.NumberFormatException'. |
+| Test.java:20:17:20:35 | decode(...) | Potential uncaught 'java.lang.NumberFormatException'. |
+| Test.java:21:17:21:36 | valueOf(...) | Potential uncaught 'java.lang.NumberFormatException'. |
+| Test.java:22:17:22:40 | valueOf(...) | Potential uncaught 'java.lang.NumberFormatException'. |
+| Test.java:23:17:23:41 | valueOf(...) | Potential uncaught 'java.lang.NumberFormatException'. |
+| Test.java:24:17:24:32 | new Short(...) | Potential uncaught 'java.lang.NumberFormatException'. |
+| Test.java:27:17:27:39 | parseInt(...) | Potential uncaught 'java.lang.NumberFormatException'. |
+| Test.java:28:17:28:37 | decode(...) | Potential uncaught 'java.lang.NumberFormatException'. |
+| Test.java:29:17:29:38 | valueOf(...) | Potential uncaught 'java.lang.NumberFormatException'. |
+| Test.java:30:17:30:42 | valueOf(...) | Potential uncaught 'java.lang.NumberFormatException'. |
+| Test.java:31:17:31:47 | valueOf(...) | Potential uncaught 'java.lang.NumberFormatException'. |
+| Test.java:32:17:32:34 | new Integer(...) | Potential uncaught 'java.lang.NumberFormatException'. |
+| Test.java:35:17:35:37 | parseLong(...) | Potential uncaught 'java.lang.NumberFormatException'. |
+| Test.java:36:17:36:34 | decode(...) | Potential uncaught 'java.lang.NumberFormatException'. |
+| Test.java:37:17:37:35 | valueOf(...) | Potential uncaught 'java.lang.NumberFormatException'. |
+| Test.java:38:17:38:39 | valueOf(...) | Potential uncaught 'java.lang.NumberFormatException'. |
+| Test.java:39:17:39:44 | valueOf(...) | Potential uncaught 'java.lang.NumberFormatException'. |
+| Test.java:40:17:40:31 | new Long(...) | Potential uncaught 'java.lang.NumberFormatException'. |
+| Test.java:43:17:43:48 | parseFloat(...) | Potential uncaught 'java.lang.NumberFormatException'. |
+| Test.java:44:17:44:45 | valueOf(...) | Potential uncaught 'java.lang.NumberFormatException'. |
+| Test.java:45:17:45:41 | new Float(...) | Potential uncaught 'java.lang.NumberFormatException'. |
+| Test.java:48:17:48:50 | parseDouble(...) | Potential uncaught 'java.lang.NumberFormatException'. |
+| Test.java:49:17:49:46 | valueOf(...) | Potential uncaught 'java.lang.NumberFormatException'. |
+| Test.java:50:17:50:42 | new Double(...) | Potential uncaught 'java.lang.NumberFormatException'. |
