@@ -17,7 +17,7 @@ vulnerabilities.
 
 <recommendation>
 <p>
-Upgrade the package to the recommended version, for example using the NuGet package manager,
+Upgrade the package to the recommended version using, for example, the NuGet package manager,
 or by editing the project files directly.
 </p>
 </recommendation>
