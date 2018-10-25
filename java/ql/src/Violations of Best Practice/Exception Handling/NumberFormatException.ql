@@ -1,6 +1,7 @@
 /**
  * @name Missing catch of NumberFormatException
- * @description Calling 'Integer.parseInt' without handling 'NumberFormatException'.
+ * @description Calling a string to number conversion method without handling
+ *              'NumberFormatException'.
  * @kind problem
  * @problem.severity recommendation
  * @precision high
@@ -8,6 +9,7 @@
  * @tags reliability
  *       external/cwe/cwe-248
  */
+
 import java
 
 private class SpecialMethodAccess extends MethodAccess {
@@ -16,7 +18,7 @@ private class SpecialMethodAccess extends MethodAccess {
     this.getQualifier().getType().(RefType).hasQualifiedName("java.lang", klass) and
     this.getAnArgument().getType().(RefType).hasQualifiedName("java.lang", "String")
   }
-  
+
   predicate isParseMethod(string klass, string name) {
     this.getMethod().getName() = name and
     this.getQualifier().getType().(RefType).hasQualifiedName("java.lang", klass)
@@ -59,11 +61,15 @@ private class SpecialClassInstanceExpr extends ClassInstanceExpr {
   }
 }
 
+class NumberFormatException extends RefType {
+  NumberFormatException() { this.hasQualifiedName("java.lang", "NumberFormatException") }
+}
+
 private predicate catchesNFE(TryStmt t) {
   exists(CatchClause cc, LocalVariableDeclExpr v |
     t.getACatchClause() = cc and
     cc.getVariable() = v and
-    v.getType().(RefType).getASubtype*().hasQualifiedName("java.lang", "NumberFormatException")
+    v.getType().(RefType).getASubtype*() instanceof NumberFormatException
   )
 }
 
@@ -80,9 +86,6 @@ where
   ) and
   not exists(Callable c |
     e.getEnclosingCallable() = c and
-    c.getAThrownExceptionType().getASubtype*().hasQualifiedName("java.lang", "NumberFormatException")
+    c.getAThrownExceptionType().getASubtype*() instanceof NumberFormatException
   )
-select
-  e, "Potential uncaught 'java.lang.NumberFormatException'."
-
-
+select e, "Potential uncaught 'java.lang.NumberFormatException'."
