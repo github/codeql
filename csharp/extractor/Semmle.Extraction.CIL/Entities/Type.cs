@@ -83,13 +83,13 @@ namespace Semmle.Extraction.CIL.Entities
         /// <summary>
         /// Find the method in this type matching the name and signature.
         /// </summary>
-        /// <param name="MethodNmae">The handle to the name.</param>
+        /// <param name="MethodName">The handle to the name.</param>
         /// <param name="signature">
         /// The handle to the signature. Note that comparing handles is a valid
         /// shortcut to comparing the signature bytes since handles are unique.
         /// </param>
         /// <returns>The method, or 'null' if not found or not supported.</returns>
-        internal virtual Method LookupMethod(StringHandle MethodNmae, BlobHandle signature)
+        internal virtual Method LookupMethod(StringHandle MethodName, BlobHandle signature)
         {
             return null;
         }
