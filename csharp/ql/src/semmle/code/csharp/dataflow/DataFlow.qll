@@ -35,6 +35,12 @@ module DataFlow {
 
     /** Gets the location of this node. */
     Location getLocation() { none() }
+
+    /** Gets the path node for this node. */
+    PathNode getPathNode(Configuration config) {
+      result.getNode() = this and
+      result.getConfiguration() = config
+    }
   }
 
   /**

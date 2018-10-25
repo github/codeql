@@ -1,7 +1,7 @@
 /**
  * @name Hard-coded connection string with credentials
  * @description Credentials are hard-coded in a connection string in the source code of the application.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id cs/hardcoded-connection-string-credentials
@@ -13,6 +13,7 @@
 import csharp
 import semmle.code.csharp.frameworks.system.Data
 import semmle.code.csharp.security.dataflow.HardcodedCredentials
+import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 /**
  * A string literal containing a username or password field.
@@ -49,4 +50,6 @@ class ConnectionStringTaintTrackingConfiguration extends TaintTracking::Configur
 
 from ConnectionStringTaintTrackingConfiguration c, DataFlow::Node source, DataFlow::Node sink
 where c.hasFlow(source, sink)
-select source, "'ConnectionString' property includes hard-coded credentials set in $@.", any(Call call | call.getAnArgument() = sink.asExpr()) as call, call.toString()
+select source, source.getPathNode(c), sink.getPathNode(c),
+  "'ConnectionString' property includes hard-coded credentials set in $@.",
+  any(Call call | call.getAnArgument() = sink.asExpr()) as call, call.toString()

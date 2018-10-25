@@ -2,7 +2,7 @@
  * @name Stored cross-site scripting
  * @description Writing input from the database directly to a web page indicates a cross-site
  *              scripting vulnerability if the data was originally user-provided.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision medium
  * @id cs/web/stored-xss
@@ -13,6 +13,7 @@
 import csharp
 import semmle.code.csharp.security.dataflow.flowsources.Stored
 import semmle.code.csharp.security.dataflow.XSS::XSS
+import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 class StoredTaintTrackingConfiguration extends TaintTrackingConfiguration {
   override predicate isSource(DataFlow::Node source) {
@@ -26,4 +27,5 @@ and
   if exists(sink.explanation())
   then explanation = ": " + sink.explanation() + "."
   else explanation = "."
-select sink, "$@ flows to here and is written to HTML or javascript" + explanation, source, "Stored user-provided value"
+select sink, source.getPathNode(c), sink.getPathNode(c),
+  "$@ flows to here and is written to HTML or JavaScript" + explanation, source, "Stored user-provided value"

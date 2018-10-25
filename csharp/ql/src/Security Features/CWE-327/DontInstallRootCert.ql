@@ -2,7 +2,7 @@
  * @name Do not add certificates to the system root store.
  * @description Application- or user-specific certificates placed in the system root store could
  *              weaken security for other processing running on the same system.
- * @kind problem
+ * @kind path-problem
  * @id cs/adding-cert-to-root-store
  * @problem.severity error
  * @tags security
@@ -10,6 +10,7 @@
  */
 import csharp
 import semmle.code.csharp.dataflow.DataFlow::DataFlow
+import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 class AddCertToRootStoreConfig extends DataFlow::Configuration {
   AddCertToRootStoreConfig() { this = "Adding Certificate To Root Store" }
@@ -30,7 +31,8 @@ class AddCertToRootStoreConfig extends DataFlow::Configuration {
   }
 }
 
-from Expr oc, Expr mc, AddCertToRootStoreConfig config
-where config.hasFlow(DataFlow::exprNode(oc), DataFlow::exprNode(mc))
-select mc, "Certificate added to the root certificate store."
+from DataFlow::PathNode oc, DataFlow::PathNode mc, AddCertToRootStoreConfig config
+where config.hasFlowPath(oc, mc)
+select mc, oc, mc,
+  "Certificate added to the root certificate store."
 

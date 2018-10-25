@@ -2,7 +2,7 @@
 * @name Inappropriate encoding
 * @description Using an inappropriate encoding may give unintended results and may
 *              pose a security risk.
-* @kind problem
+* @kind path-problem
 * @problem.severity error
 * @precision low
 * @id cs/inappropriate-encoding
@@ -20,6 +20,7 @@ import semmle.code.csharp.security.dataflow.SqlInjection
 import semmle.code.csharp.security.dataflow.XSS
 import semmle.code.csharp.security.dataflow.UrlRedirect
 import semmle.code.csharp.security.Sanitizers
+import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 /**
  * A configuration for specifying expressions that must be
@@ -43,8 +44,8 @@ abstract class RequiresEncodingConfiguration extends TaintTracking::Configuratio
    * `sink`, where `sink` is an expression of kind `kind` that is required
    * to be encoded.
    */
-  predicate hasWrongEncoding(Expr encodedValue, Expr sink, string kind) {
-    hasFlow(exprNode(encodedValue), exprNode(sink)) and
+  predicate hasWrongEncoding(PathNode encodedValue, PathNode sink, string kind) {
+    hasFlowPath(encodedValue, sink) and
     kind = this.getKind()
   }
 
@@ -153,6 +154,7 @@ module EncodingConfigurations {
   }
 }
 
-from RequiresEncodingConfiguration c, Expr encodedValue, Expr sink, string kind
+from RequiresEncodingConfiguration c, PathNode encodedValue, PathNode sink, string kind
 where c.hasWrongEncoding(encodedValue, sink, kind)
-select sink, "This " + kind + " may include data from a $@.", encodedValue, "possibly inappropriately encoded value"
+select sink, encodedValue, sink,
+  "This " + kind + " may include data from a $@.", encodedValue, "possibly inappropriately encoded value"

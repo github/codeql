@@ -1,1 +1,4 @@
-| StoredCommandInjection.cs:24:46:24:80 | ... + ... | $@ flows to here and is used in a command. | StoredCommandInjection.cs:24:54:24:80 | call to method GetString | Stored user-provided value |
+edges
+| StoredCommandInjection.cs:24:54:24:80 | call to method GetString | StoredCommandInjection.cs:24:46:24:80 | ... + ... |
+#select
+| StoredCommandInjection.cs:24:46:24:80 | ... + ... | StoredCommandInjection.cs:24:54:24:80 | call to method GetString | StoredCommandInjection.cs:24:46:24:80 | ... + ... | $@ flows to here and is used in a command. | StoredCommandInjection.cs:24:54:24:80 | call to method GetString | Stored user-provided value |
