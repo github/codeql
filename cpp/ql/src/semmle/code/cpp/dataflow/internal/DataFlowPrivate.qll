@@ -69,18 +69,9 @@ class Content extends TContent {
     path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
   }
   /** Gets the type of the object containing this content. */
-  abstract RefType getDeclaringType();
+  abstract RefType getContainerType();
   /** Gets the type of this content. */
   abstract Type getType();
-  /**
-   * Holds if this content may contain an object of the same type as the one
-   * that contains this content, and if this fact should be used to compress
-   * access paths.
-   *
-   * Examples include the tail pointer in a linked list or the left and right
-   * pointers in a binary tree.
-   */
-  predicate isSelfRef() { none() }
 }
 private class FieldContent extends Content, TFieldContent {
   Field f;
@@ -90,17 +81,17 @@ private class FieldContent extends Content, TFieldContent {
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     f.getLocation().hasLocationInfo(path, sl, sc, el, ec)
   }
-  override RefType getDeclaringType() { result = f.getDeclaringType() }
+  override RefType getContainerType() { result = f.getDeclaringType() }
   override Type getType() { result = f.getType() }
 }
 private class CollectionContent extends Content, TCollectionContent {
   override string toString() { result = "collection" }
-  override RefType getDeclaringType() { none() }
+  override RefType getContainerType() { none() }
   override Type getType() { none() }
 }
 private class ArrayContent extends Content, TArrayContent {
   override string toString() { result = "array" }
-  override RefType getDeclaringType() { none() }
+  override RefType getContainerType() { none() }
   override Type getType() { none() }
 }
 
@@ -130,6 +121,11 @@ predicate readStep(Node node1, Content f, Node node2) {
 RefType getErasedRepr(Type t) {
   suppressUnusedType(t) and
   result instanceof VoidType // stub implementation
+}
+
+/** Gets a string representation of a type returned by `getErasedRepr`. */
+string ppReprType(Type t) {
+  result = t.toString()
 }
 
 /**

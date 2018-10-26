@@ -10,14 +10,12 @@ private import semmle.code.csharp.frameworks.System
 
 /** An expression that accesses/calls a declaration. */
 class AccessOrCallExpr extends Expr {
-  AccessOrCallExpr() {
-    exists(getDeclarationTarget(this))
-  }
+  private Declaration target;
+
+  AccessOrCallExpr() { target = getDeclarationTarget(this) }
 
   /** Gets the target of this expression. */
-  Declaration getTarget() {
-    result = getDeclarationTarget(this)
-  }
+  Declaration getTarget() { result = target }
 
   /**
    * Gets the (non-trivial) SSA definition corresponding to the longest
@@ -35,16 +33,12 @@ class AccessOrCallExpr extends Expr {
    * x;             // SSA qualifier: SSA definition for `x`
    * ```
    */
-  Ssa::Definition getSsaQualifier() {
-    result = getSsaQualifier(this)
-  }
+  Ssa::Definition getSsaQualifier() { result = getSsaQualifier(this) }
 
   /**
    * Holds if this expression has an SSA qualifier.
    */
-  predicate hasSsaQualifier() {
-    exists(getSsaQualifier())
-  }
+  predicate hasSsaQualifier() { exists(this.getSsaQualifier()) }
 }
 
 private Declaration getDeclarationTarget(Expr e) {
@@ -103,8 +97,12 @@ private AssignableRead getATrackedRead(Ssa::Definition def) {
  * definition).
  */
 class GuardedExpr extends AccessOrCallExpr {
+  private Expr cond0;
+  private AccessOrCallExpr e0;
+  private boolean b0;
+
   GuardedExpr() {
-    Internal::isGuardedBy(this, _, _, _)
+    Internal::isGuardedBy(this, cond0, e0, b0)
   }
 
   /**
@@ -117,14 +115,16 @@ class GuardedExpr extends AccessOrCallExpr {
    * variable).
    */
   predicate isGuardedBy(Expr cond, Expr e, boolean b) {
-    Internal::isGuardedBy(this, cond, e, b)
+    cond = cond0 and
+    e = e0 and
+    b = b0
   }
 }
 
 /**
  * A nullness guarded expression.
  *
- * A nullness  guarded expression is an access or a call that is reached only
+ * A nullness guarded expression is an access or a call that is reached only
  * when a nullness condition containing a structurally equal expression
  * evaluates to one of `null` or non-`null`.
  *
@@ -136,8 +136,11 @@ class GuardedExpr extends AccessOrCallExpr {
  * ```
  */
 class NullnessGuardedExpr extends AccessOrCallExpr {
+  private Expr e0;
+  private boolean isNull0;
+
   NullnessGuardedExpr() {
-    Internal::isGuardedByNullness(this, _, _)
+    Internal::isGuardedByNullness(this, e0, isNull0)
   }
 
   /**
@@ -150,13 +153,64 @@ class NullnessGuardedExpr extends AccessOrCallExpr {
    * variable).
    */
   predicate isGuardedBy(Expr e, boolean isNull) {
-    Internal::isGuardedByNullness(this, e, isNull)
+    e = e0 and
+    isNull = isNull0
+  }
+}
+
+/**
+ * A matching guarded expression.
+ *
+ * A matching guarded expression is an access or a call that is reached only
+ * when a pattern, matching against a structurally equal expression, matches
+ * or non-matches.
+ *
+ * For example, the access to `o` on line 8 is only evaluated when `case null`
+ * does not match.
+ *
+ * ```
+ * string M(object o)
+ * {
+ *     switch (o)
+ *     {
+ *         case null:
+ *             return "";
+ *         default:
+ *             return o.ToString();
+ *     }
+ * }
+ * ```
+ */
+class MatchingGuardedExpr extends AccessOrCallExpr {
+  private AccessOrCallExpr e0;
+  private CaseStmt cs0;
+  private boolean isMatch0;
+
+  MatchingGuardedExpr() {
+    Internal::isGuardedByMatching(this, e0, cs0, isMatch0)
+  }
+
+  /**
+   * Holds if this expression is guarded by case statement `cs` matching
+   * (`isMatch = true`) or non-matching (`isMatch = false`). The expression
+   * `e` is structurally equal to this expression being matched against in
+   * `cs`.
+   *
+   * In case this expression or `e` accesses an SSA variable in its
+   * left-most qualifier, then so must the other (accessing the same SSA
+   * variable).
+   */
+  predicate isGuardedBy(AccessOrCallExpr e, CaseStmt cs, boolean isMatch) {
+    e = e0 and
+    cs0 = cs and
+    isMatch0 = isMatch
   }
 }
 
 /** An expression guarded by a `null` check. */
 class NullGuardedExpr extends AccessOrCallExpr {
   NullGuardedExpr() {
+    this.getType() instanceof RefType and
     exists(Expr cond, Expr sub, boolean b |
       this.(GuardedExpr).isGuardedBy(cond, sub, b) |
       // Comparison with `null`, for example `x != null`
@@ -182,19 +236,47 @@ class NullGuardedExpr extends AccessOrCallExpr {
       )
       or
       // Call to `string.IsNullOrEmpty()`
-      exists(MethodCall mc |
-        mc = cond and
+      cond = any(MethodCall mc |
         mc.getTarget() = any(SystemStringClass c).getIsNullOrEmptyMethod() and
         mc.getArgument(0) = sub and
         b = false
       )
+      or
+      cond = any(IsExpr ie |
+        ie.getExpr() = sub and
+        if ie.(IsConstantExpr).getConstant() instanceof NullLiteral then
+          // E.g. `x is null`
+          b = false
+        else
+          // E.g. `x is string`
+          b = true
+      )
     )
     or
     this.(NullnessGuardedExpr).isGuardedBy(_, false)
+    or
+    exists(CaseStmt cs, boolean isMatch |
+      this.(MatchingGuardedExpr).isGuardedBy(_, cs, isMatch) |
+      // E.g. `case string`
+      cs instanceof TypeCase and
+      isMatch = true
+      or
+      cs = any(ConstCase cc |
+        if cc.getExpr() instanceof NullLiteral then
+          // `case null`
+          isMatch = false
+        else
+          // E.g. `case ""`
+          isMatch = true
+      )
+    )
   }
 }
 
 private module Internal {
+  private import semmle.code.csharp.controlflow.Completion
+  private import ControlFlow::SuccessorTypes
+
   private cached module Cached {
     cached predicate isGuardedBy(AccessOrCallExpr guarded, Expr cond, AccessOrCallExpr e, boolean b) {
       exists(BasicBlock bb |
@@ -210,6 +292,17 @@ private module Internal {
     cached predicate isGuardedByNullness(AccessOrCallExpr guarded, AccessOrCallExpr e, boolean isNull) {
       exists(BasicBlock bb |
         controlsNullness(e, bb, isNull) and
+        bb = guarded.getAControlFlowNode().getBasicBlock() and
+        exists(ConditionOnExprComparisonConfig c | c.same(e, guarded)) |
+        not guarded.hasSsaQualifier() and not e.hasSsaQualifier()
+        or
+        guarded.getSsaQualifier() = e.getSsaQualifier()
+      )
+    }
+
+    cached predicate isGuardedByMatching(AccessOrCallExpr guarded, AccessOrCallExpr e, CaseStmt cs, boolean isMatch) {
+      exists(BasicBlock bb |
+        controlsMatching(e, cs, bb, isMatch) and
         bb = guarded.getAControlFlowNode().getBasicBlock() and
         exists(ConditionOnExprComparisonConfig c | c.same(e, guarded)) |
         not guarded.hasSsaQualifier() and not e.hasSsaQualifier()
@@ -263,9 +356,24 @@ private module Internal {
    * (`isNull = true`) or when `e` evaluates to non-`null` (`isNull = false`).
    */
   private predicate controlsNullness(Expr e, BasicBlock bb, boolean isNull) {
-    exists(ConditionBlock cb |
-      cb.controlsNullness(bb, isNull) |
+    exists(ConditionBlock cb, NullnessSuccessor s |
+      cb.controls(bb, s) |
+      isNull = s.getValue() and
       e = cb.getLastNode().getElement()
+    )
+  }
+
+  /**
+   * Holds if basic block `bb` only is reached when `e` matches case `cs`
+   * (`isMatch = true`) or when `e` does not match `cs` (`isMatch = false`).
+   */
+  private predicate controlsMatching(Expr e, CaseStmt cs, BasicBlock bb, boolean isMatch) {
+    exists(ConditionBlock cb, SwitchStmt ss, ControlFlowElement cfe, MatchingSuccessor s |
+      cb.controls(bb, s) |
+      cfe = cb.getLastNode().getElement() and
+      switchMatching(ss, cs, cfe) and
+      e = ss.getCondition() and
+      isMatch = s.getValue()
     )
   }
 
@@ -280,7 +388,10 @@ private module Internal {
     override predicate candidate(Element x, Element y) {
       exists(BasicBlock bb, Declaration d |
         candidateAux(x, d, bb) and
-        y = any(AccessOrCallExpr e | e.getAControlFlowNode().getBasicBlock() = bb and e.getTarget() = d)
+        y = any(AccessOrCallExpr e |
+          e.getAControlFlowNode().getBasicBlock() = bb and
+          e.getTarget() = d
+        )
       )
     }
 
@@ -289,10 +400,16 @@ private module Internal {
      * is a sub expression of a condition that controls whether basic block
      * `bb` is reached.
      */
-    pragma [noinline] // predicate folding for proper join-order
+    pragma [noinline]
     private predicate candidateAux(AccessOrCallExpr e, Declaration target, BasicBlock bb) {
-      (controls(_, e, bb, _) or controlsNullness(e, bb, _)) and
-      target = e.getTarget()
+      target = e.getTarget() and
+      (
+        controls(_, e, bb, _)
+        or
+        controlsNullness(e, bb, _)
+        or
+        controlsMatching(e, _, bb, _)
+      )
     }
   }
 }

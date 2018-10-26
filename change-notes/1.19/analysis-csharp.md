@@ -12,8 +12,8 @@
 
 ## Changes to existing queries
 
-| **Query**                  | **Expected impact**    | **Change**                                                       |
-|----------------------------|------------------------|------------------------------------------------------------------|
+| Inconsistent lock sequence (`cs/inconsistent-lock-sequence`) | More results | This query now finds inconsistent lock sequences globally across calls. |
+
 | *@name of query (Query ID)*| *Impact on results*    | *How/why the query has changed*                                  |
 
 

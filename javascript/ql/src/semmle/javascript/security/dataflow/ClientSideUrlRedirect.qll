@@ -65,6 +65,11 @@ module ClientSideUrlRedirect {
       queryAccess(pred, succ) and
       f instanceof DocumentUrl and
       g = DataFlow::FlowLabel::taint()
+      or
+      // preserve document.url label in step from `location` to `location.href`
+      f instanceof DocumentUrl and
+      g instanceof DocumentUrl and
+      succ.(DataFlow::PropRead).accesses(pred, "href")
     }
   }
 

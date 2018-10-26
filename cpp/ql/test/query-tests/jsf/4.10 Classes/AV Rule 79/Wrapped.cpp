@@ -37,3 +37,34 @@ public:
 private:
 	char *ptr1, *ptr2, *ptr3;
 };
+
+class Wrapped2
+{
+public:
+	Wrapped2(int len) {
+		ptr1 = new char[len]; // GOOD
+		ptr2 = new char[len]; // BAD: not released in destructor
+
+		Init(len);
+	}
+
+	~Wrapped2()
+	{
+		Shutdown();
+	}
+
+	void Init(int len)
+	{
+		ptr3 = new char[len]; // GOOD
+		ptr4 = new char[len]; // BAD: not released in destructor
+	}
+
+	void Shutdown()
+	{
+		delete [] ptr1;
+		delete [] ptr3;
+	}
+
+private:
+	char *ptr1, *ptr2, *ptr3, *ptr4;
+};
