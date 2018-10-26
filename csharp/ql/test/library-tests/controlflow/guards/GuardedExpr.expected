@@ -1,3 +1,7 @@
+| Assert.cs:59:36:59:36 | access to parameter b | Assert.cs:58:20:58:32 | ... ? ... : ... | Assert.cs:58:20:58:20 | access to parameter b | non-null |
+| Assert.cs:66:37:66:37 | access to parameter b | Assert.cs:65:20:65:32 | ... ? ... : ... | Assert.cs:65:20:65:20 | access to parameter b | non-null |
+| Assert.cs:73:36:73:36 | access to parameter b | Assert.cs:72:20:72:32 | ... ? ... : ... | Assert.cs:72:20:72:20 | access to parameter b | null |
+| Assert.cs:80:37:80:37 | access to parameter b | Assert.cs:79:20:79:32 | ... ? ... : ... | Assert.cs:79:20:79:20 | access to parameter b | null |
 | Guards.cs:12:13:12:13 | access to parameter s | Guards.cs:10:13:10:25 | !... | Guards.cs:10:16:10:16 | access to parameter s | false |
 | Guards.cs:12:13:12:13 | access to parameter s | Guards.cs:10:14:10:25 | !... | Guards.cs:10:16:10:16 | access to parameter s | true |
 | Guards.cs:12:13:12:13 | access to parameter s | Guards.cs:10:16:10:16 | access to parameter s | Guards.cs:10:16:10:16 | access to parameter s | non-null |
