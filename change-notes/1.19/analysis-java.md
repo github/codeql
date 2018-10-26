@@ -19,5 +19,9 @@
 
 ## Changes to QL libraries
 
+* The default set of taint sources in the `FlowSources` library is extended to
+  cover parameters annotated with Spring framework annotations indicating
+  remote user input from servlets. This affects all security queries, which
+  will yield additional results on projects using the Spring Web framework.
 * The `ParityAnalysis` library is replaced with the more general `ModulusAnalysis` library, which improves the range analysis.
 
