@@ -1,7 +1,7 @@
 /**
  * @name Missing catch of NumberFormatException
  * @description Calling a string to number conversion method without handling
- *              'NumberFormatException'.
+ *              'NumberFormatException' may cause unexpected runtime exceptions.
  * @kind problem
  * @problem.severity recommendation
  * @precision high
