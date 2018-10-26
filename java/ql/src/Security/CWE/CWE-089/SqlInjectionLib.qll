@@ -4,6 +4,9 @@ import semmle.code.java.Expr
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.frameworks.android.SQLite
 import semmle.code.java.frameworks.javaee.Persistence
+import semmle.code.java.frameworks.SpringJdbc
+import semmle.code.java.frameworks.MyBatis
+import semmle.code.java.frameworks.Hibernate
 
 /** A sink for database query language injection vulnerabilities. */
 abstract class QueryInjectionSink extends DataFlow::ExprNode { }
@@ -13,8 +16,19 @@ class SqlInjectionSink extends QueryInjectionSink {
   SqlInjectionSink() {
     this.getExpr() instanceof SqlExpr
     or
-    exists(SQLiteRunner s, MethodAccess m | m.getMethod() = s |
-      m.getArgument(s.sqlIndex()) = this.getExpr()
+    exists(MethodAccess ma, Method m, int index |
+      ma.getMethod() = m and
+      ma.getArgument(index) = this.getExpr()
+    |
+      index = m.(SQLiteRunner).sqlIndex()
+      or
+      m instanceof BatchUpdateVarargsMethod
+      or
+      index = 0 and jdbcSqlMethod(m)
+      or
+      index = 0 and mybatisSqlMethod(m)
+      or
+      index = 0 and hibernateSqlMethod(m)
     )
   }
 }
