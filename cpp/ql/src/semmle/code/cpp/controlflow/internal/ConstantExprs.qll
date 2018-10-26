@@ -138,13 +138,15 @@ private predicate impossibleDefaultSwitchEdge(Block switchBlock, DefaultCase dc)
 
 /**
  * Holds if the function `f` never returns due to not containing a return
- * statement (explicit or compiler generated).  Reachability of return
+ * statement (explicit or compiler generated).  This can be thought of as
+ * a lightweight `potentiallyReturningFunction`- reachability of return
  * statements is not checked.
  */
 private predicate nonReturningFunction(Function f)
 {
   exists(f.getBlock()) and
-  not exists(ReturnStmt ret | ret.getEnclosingFunction() = f)
+  not exists(ReturnStmt ret | ret.getEnclosingFunction() = f) and
+  not getOptions().exits(f)
 }
 
 /**
@@ -152,6 +154,7 @@ private predicate nonReturningFunction(Function f)
  */
 private predicate impossibleFunctionReturn(FunctionCall fc, Node succ) {
   nonReturningFunction(fc.getTarget()) and
+  not fc.isVirtual() and
   successors_extended(fc, succ)
 }
 
