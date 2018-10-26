@@ -294,12 +294,23 @@ predicate analyzableDef(RangeSsaDefinition def, LocalScopeVariable v) {
 }
 
 /**
+ * Computes a normal form of `x` where -0.0 has changed to +0.0. This can be
+ * needed on the lesser side of a floating-point comparison or on both sides of
+ * a floating point equality because QL does not follow IEEE in floating-point
+ * comparisons but instead defines -0.0 to be less than and distinct from 0.0.
+ */
+bindingset[x]
+private float normalizeFloatUp(float x) {
+  result = x + 0.0
+}
+
+/**
  * Computes `x + y`, rounded towards +Inf. This is the general case where both
  * `x` and `y` may be large numbers.
  */
 bindingset[x, y]
 private float addRoundingUp(float x, float y) {
-  if (x + y) - x < y or (x + y) - y < x
+  if normalizeFloatUp((x + y) - x) < y or normalizeFloatUp((x + y) - y) < x
   then result = (x + y).nextUp()
   else result = (x + y)
 }
@@ -310,7 +321,7 @@ private float addRoundingUp(float x, float y) {
  */
 bindingset[x, y]
 private float addRoundingDown(float x, float y) {
-  if (x + y) - x > y or (x + y) - y > x
+  if (x + y) - x > normalizeFloatUp(y) or (x + y) - y > normalizeFloatUp(x)
   then result = (x + y).nextDown()
   else result = (x + y)
 }
