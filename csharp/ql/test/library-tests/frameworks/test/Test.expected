@@ -1,8 +1,8 @@
-| VisualStudio.cs:22:11:22:21 | MyTestSuite | TestClass | VSTestClass |
-| VisualStudio.cs:25:21:25:25 | Test1 | TestMethod | InstanceCallable |
-| VisualStudio.cs:25:21:25:25 | Test1 | TestMethod | VSTestMethod |
-| VisualStudio.cs:30:21:30:25 | Test2 | TestMethod | InstanceCallable |
-| VisualStudio.cs:30:21:30:25 | Test2 | TestMethod | VSTestMethod |
+| VisualStudio.cs:9:11:9:21 | MyTestSuite | TestClass | VSTestClass |
+| VisualStudio.cs:12:21:12:25 | Test1 | TestMethod | InstanceCallable |
+| VisualStudio.cs:12:21:12:25 | Test1 | TestMethod | VSTestMethod |
+| VisualStudio.cs:17:21:17:25 | Test2 | TestMethod | InstanceCallable |
+| VisualStudio.cs:17:21:17:25 | Test2 | TestMethod | VSTestMethod |
 | XUnit.cs:22:11:22:21 | MyTestSuite | TestClass | XUnitTestClass |
 | XUnit.cs:25:21:25:25 | Test1 | TestMethod | InstanceCallable |
 | XUnit.cs:25:21:25:25 | Test1 | TestMethod | XUnitTestMethod |

@@ -59,6 +59,8 @@ private newtype TCompletion =
   TGotoDefaultCompletion()
   or
   TThrowCompletion(ExceptionClass ec)
+  or
+  TExitCompletion()
 
 /**
  * A completion of a statement or an expression.
@@ -641,4 +643,17 @@ class ThrowCompletion extends Completion, TThrowCompletion {
   ExceptionClass getExceptionClass() { this = TThrowCompletion(result) }
 
   override string toString() { result = "throw(" + getExceptionClass() + ")" }
+}
+
+/**
+ * A completion that represents evaluation of a statement or an
+ * expression resulting in a program exit, for example
+ * `System.Environment.Exit(0)`.
+ *
+ * An exit completion is different from a `return` completion; the former
+ * exits the whole application, and exists inside `try` statements skip
+ * `finally` blocks.
+ */
+class ExitCompletion extends Completion, TExitCompletion {
+  override string toString() { result = "exit" }
 }

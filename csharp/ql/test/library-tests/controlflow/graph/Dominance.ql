@@ -1,6 +1,7 @@
 import csharp
+import Common
 
-from ControlFlow::Node dom, ControlFlow::Node node, string s
+from SourceControlFlowNode dom, SourceControlFlowNode node, string s
 where
   dom.strictlyDominates(node) and dom.getASuccessor() = node and s = "pre"
   or
