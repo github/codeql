@@ -4,6 +4,7 @@
 
 import csharp
 private import ControlFlow::SuccessorTypes
+private import semmle.code.csharp.commons.Assertions
 private import semmle.code.csharp.commons.ComparisonTest
 private import semmle.code.csharp.commons.StructuralComparison::Internal
 private import semmle.code.csharp.controlflow.BasicBlocks
@@ -472,30 +473,69 @@ module Internal {
     pragma [noinline]
     private predicate candidateAux(AccessOrCallExpr e, Declaration target, BasicBlock bb) {
       target = e.getTarget() and
-      controls(bb, _, e, _)
+      exists(Expr e0 |
+        e = e0.getAChildExpr*() |
+        controls(bb, e0, _)
+        or
+        controlsNode(bb.getANode(), e0, _)
+      )
     }
   }
 
-  /**
-   * Holds if basic block `bb` only is reached when `e` has abstract value `v`.
-   * SSA qualified expression `sub` is a sub expression of `e`.
-   */
-  private predicate controls(BasicBlock bb, Expr e, AccessOrCallExpr sub, AbstractValue v) {
+  /** Holds if basic block `bb` only is reached when `e` has abstract value `v`. */
+  private predicate controls(BasicBlock bb, Expr e, AbstractValue v) {
     exists(ConditionBlock cb, ConditionalSuccessor s, AbstractValue v0, Expr cond |
       cb.controls(bb, s) |
       v0.branchImplies(cb.getLastNode().getElement(), s, cond) and
-      impliesSteps(cond, v0, e, v) and
-      sub = e.getAChildExpr*()
+      impliesSteps(cond, v0, e, v)
+    )
+  }
+
+  /**
+   * Holds if assertion `a` directly asserts that expression `e` evaluates to
+   * value `v`.
+   */
+  predicate asserts(Assertion a, Expr e, AbstractValue v) {
+    e = a.getExpr() and
+    (
+      a.getAssertMethod() instanceof AssertTrueMethod and
+      v.(BooleanValue).getValue() = true
+      or
+      a.getAssertMethod() instanceof AssertFalseMethod and
+      v.(BooleanValue).getValue() = false
+      or
+      a.getAssertMethod() instanceof AssertNullMethod and
+      v.(NullValue).isNull()
+      or
+      a.getAssertMethod() instanceof AssertNonNullMethod and
+      v = any(NullValue nv | not nv.isNull())
+    )
+  }
+
+  /** Holds if control flow node `cfn` only is reached when `e` evaluates to `v`. */
+  private predicate controlsNode(ControlFlow::Node cfn, Expr e, AbstractValue v) {
+    exists(Assertion a, Expr e0, AbstractValue v0 |
+      a.getAControlFlowNode().dominates(cfn) |
+      asserts(a, e0, v0) and
+      impliesSteps(e0, v0, e, v)
     )
   }
 
   private cached module Cached {
+    pragma[noinline]
+    private predicate isGuardedBy0(AccessOrCallExpr guarded, Expr e, AccessOrCallExpr sub, AbstractValue v) {
+      exists(ControlFlow::Node cfn |
+        (controls(cfn.getBasicBlock(), e, v) or controlsNode(cfn, e, v)) and
+        cfn = guarded.getAControlFlowNode() and
+        exists(ConditionOnExprComparisonConfig c | c.same(sub, guarded))
+      )
+    }
+
     cached
     predicate isGuardedBy(AccessOrCallExpr guarded, Expr e, AccessOrCallExpr sub, AbstractValue v) {
-      exists(BasicBlock bb |
-        controls(bb, e, sub, v) and
-        bb = guarded.getAControlFlowNode().getBasicBlock() and
-        exists(ConditionOnExprComparisonConfig c | c.same(sub, guarded)) |
+      isGuardedBy0(guarded, e, sub, v) and
+      sub = e.getAChildExpr*() and
+      (
         not guarded.hasSsaQualifier() and not sub.hasSsaQualifier()
         or
         guarded.getSsaQualifier() = sub.getSsaQualifier()
@@ -646,6 +686,13 @@ module Internal {
     v1.branchImplies(_, _, e1) and
     e2 = e1 and
     v2 = v1
+    or
+    exists(Assertion a |
+      e1 = a.getExpr() |
+      asserts(a, e1, v1) and
+      e2 = e1 and
+      v2 = v1
+    )
     or
     exists(Expr mid, AbstractValue vMid |
       impliesSteps(e1, v1, mid, vMid) |
