@@ -2,29 +2,6 @@ import cpp
 import semmle.code.cpp.dataflow.DataFlow
 
 /**
- * Holds if `sizeof(s)` occurs as part of the parameter of a dynamic
- * memory allocation (`malloc`, `realloc`, etc.), except if `sizeof(s)`
- * only ever occurs as the immediate parameter to allocations.
- *
- * For example, holds for `s` if it occurs as
- * ```
- * malloc(sizeof(s) + 100 * sizeof(char))
- * ```
- * but not if it only ever occurs as
- * ```
- * malloc(sizeof(s))
- * ```
-*/
-private predicate isDynamicallyAllocatedWithDifferentSize(Class s) {
-  exists(SizeofTypeOperator sof |
-    sof.getTypeOperand().getUnspecifiedType() = s |
-    // Check all ancestor nodes except the immediate parent for
-    // allocations.
-    isStdLibAllocationExpr(sof.getParent().(Expr).getParent+())
-  )
-}
-
-/**
  * Holds if `v` is a member variable of `c` that looks like it might be variable sized in practice.  For
  * example:
  * ```
@@ -34,15 +11,40 @@ private predicate isDynamicallyAllocatedWithDifferentSize(Class s) {
  * };
  * ```
  * This requires that `v` is an array of size 0 or 1, and `v` is the last member of `c`.  In addition,
- * there must be at least one instance where a `c` pointer is allocated with additional space. 
+ * there must be at least one instance where a `c` pointer is allocated with additional space.  For
+ * example, holds for `c` if it occurs as
+ * ```
+ * malloc(sizeof(c) + 100 * sizeof(char))
+ * ```
+ * but not if it only ever occurs as
+ * ```
+ * malloc(sizeof(c))
+ * ``` 
  */
 predicate memberMayBeVarSize(Class c, MemberVariable v) {
   exists(int i |
+    // `v` is the last field in `c`
     i = max(int j | c.getCanonicalMember(j) instanceof Field | j) and
     v = c.getCanonicalMember(i) and
-    v.getType().getUnspecifiedType().(ArrayType).getSize() <= 1
-  ) and
-  isDynamicallyAllocatedWithDifferentSize(c)
+
+    // v is an array of size at most 1
+    v.getType().getUnspecifiedType().(ArrayType).getArraySize() <= 1
+  ) and (
+    exists(SizeofOperator so |
+      // `sizeof(c)` is taken
+      so.(SizeofTypeOperator).getTypeOperand().getUnspecifiedType() = c or
+      so.(SizeofExprOperator).getExprOperand().getType().getUnspecifiedType() = c |
+
+      // arithmetic is performed on the result
+      so.getParent*() instanceof AddExpr
+    ) or exists(AddressOfExpr aoe |
+      // `&(c.v)` is taken
+      aoe.getAddressable() = v
+    ) or exists(BuiltInOperationOffsetOf oo |
+      // `offsetof(c, v)` using a builtin
+      oo.getAChild().(VariableAccess).getTarget() = v
+    )
+  )
 }
 
 /**

@@ -25,3 +25,4 @@
 ## Changes to QL libraries
 
 * Added a hash consing library for structural comparison of expressions.
+* `getBufferSize` now detects variable size structs more reliably.
