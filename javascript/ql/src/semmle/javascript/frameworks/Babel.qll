@@ -60,7 +60,7 @@ module Babel {
       this = cfg.getPluginConfig(pluginName)
     }
 
-    /** Gets the name of the plugin begin installed. */
+    /** Gets the name of the plugin being installed. */
     string getPluginName() {
       result = pluginName
     }
