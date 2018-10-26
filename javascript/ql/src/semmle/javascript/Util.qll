@@ -24,3 +24,13 @@ string pluralize(string noun, int n) {
   else
     result = noun + "s"
 }
+
+/**
+ * Gets `str` or a truncated version of `str` with `explanation` appended if its length exceeds `maxLength`.
+ *
+ * For example, the truncation of `"long_string"` for `maxLength = 5` and explanation `" ..."` is `"long_ ..."`.
+ */
+bindingset[str, maxLength, explanation]
+string truncate(string str, int maxLength, string explanation) {
+  if str.length() > maxLength then result = str.prefix(maxLength) + explanation else result = str
+}
