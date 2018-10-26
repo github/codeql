@@ -110,7 +110,7 @@ cached private module Cached {
     instruction instanceof PhiInstruction  // Phis always have modeled results
   }
 
-  cached Instruction getInstructionOperand(Instruction instruction, OperandTag tag) {
+  cached Instruction getInstructionOperandDefinition(Instruction instruction, OperandTag tag) {
     exists(OldIR::Instruction oldInstruction, OldIR::NonPhiOperand oldOperand |
       oldInstruction = getOldInstruction(instruction) and
       oldOperand = oldInstruction.getAnOperand() and
@@ -149,7 +149,8 @@ cached private module Cached {
     )
   }
 
-  cached Instruction getPhiInstructionOperand(PhiInstruction instr, IRBlock newPredecessorBlock) {
+  cached Instruction getPhiInstructionOperandDefinition(PhiInstruction instr,
+      IRBlock newPredecessorBlock) {
     exists(Alias::VirtualVariable vvar, OldIR::IRBlock phiBlock,
       OldIR::IRBlock defBlock, int defRank, int defIndex, OldIR::IRBlock predBlock |
       hasPhiNode(vvar, phiBlock) and

@@ -86,12 +86,13 @@ cached private module Cached {
     )
   }
   
-  cached Instruction getInstructionOperand(Instruction instruction, OperandTag tag) {
+  cached Instruction getInstructionOperandDefinition(Instruction instruction, OperandTag tag) {
     result = getInstructionTranslatedElement(instruction).getInstructionOperand(
       instruction.getTag(), tag)
   }
 
-  cached Instruction getPhiInstructionOperand(Instruction instruction, IRBlock predecessorBlock) {
+  cached Instruction getPhiInstructionOperandDefinition(Instruction instruction,
+      IRBlock predecessorBlock) {
     none()
   }
 

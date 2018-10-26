@@ -7,10 +7,10 @@ private import semmle.code.cpp.ir.internal.OperandTag
 
 private newtype TOperand =
   TNonPhiOperand(Instruction instr, OperandTag tag, Instruction defInstr) {
-    defInstr = Construction::getInstructionOperand(instr, tag)
+    defInstr = Construction::getInstructionOperandDefinition(instr, tag)
   } or
   TPhiOperand(PhiInstruction instr, Instruction defInstr, IRBlock predecessorBlock) {
-    defInstr = Construction::getPhiInstructionOperand(instr, predecessorBlock)
+    defInstr = Construction::getPhiInstructionOperandDefinition(instr, predecessorBlock)
   }
 
 /**
