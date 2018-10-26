@@ -172,5 +172,5 @@ class ZipSlipConfiguration extends TaintTracking::Configuration {
 
 from Node source, Node sink
 where any(ZipSlipConfiguration c).hasFlow(source, sink)
-select sink, "Unsanitized $@, which may contain '..', is used in a file system operation.", source,
-  "archive entry"
+select source, "Unsanitized archive entry, which may contain '..', is used in a $@.", sink,
+  "file system operation"
