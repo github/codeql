@@ -35,7 +35,7 @@ predicate memberMayBeVarSize(Class c, MemberVariable v) {
       so.(SizeofExprOperator).getExprOperand().getType().getUnspecifiedType() = c |
 
       // arithmetic is performed on the result
-      so.getParent*() instanceof BinaryArithmeticOperation
+      so.getParent*() instanceof AddExpr
     ) or exists(AddressOfExpr aoe |
       // `&(c.v)` is taken
       aoe.getAddressable() = v
