@@ -28,6 +28,18 @@ module Babel {
         result.(JSONArray).getElementStringValue(0) = pluginName
       )
     }
+
+    /**
+     * Gets a file affected by this Babel configuration.
+     */
+    Container getAContainerInScope() {
+      result = getFile().getParentContainer()
+      or
+      result = getAContainerInScope().getAChildContainer() and
+      // File-relative .babelrc search stops at any package.json or .babelrc file.
+      not result.getAChildContainer() = any(PackageJSON pkg).getFile() and
+      not result.getAChildContainer() = any(Config pkg).getFile()
+    }
   }
 
   /**
@@ -150,6 +162,35 @@ module Babel {
 
     override Folder getARootFolder() {
       result = pathExpr.getConfig().getFolder()
+    }
+  }
+
+  /**
+   * A configuration object for the `transform-react-jsx` plugin.
+   *
+   * The plugin option `{"pragma": xxx}` specifies a variable name used to instantiate
+   * JSX elements.
+   */
+  class TransformReactJsxConfig extends JSONArray {
+    Config cfg;
+
+    TransformReactJsxConfig() {
+      this = cfg.getPluginConfig("transform-react-jsx")
+    }
+
+    /** Gets the Babel configuration object. */
+    Config getConfig() {
+      result = cfg
+    }
+
+    /** Gets the options passed to this plugin. */
+    JSONObject getOptions() {
+      result = getElementValue(1)
+    }
+
+    /** Gets the name of the variable used to create JSX elements. */
+    string getJSXFactoryVariableName() {
+      result = getOptions().getPropStringValue("pragma")
     }
   }
 }
