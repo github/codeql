@@ -83,19 +83,21 @@ int getBufferSize(Expr bufferExpr, Element why) {
     // buffer is a fixed size dynamic allocation
     isFixedSizeAllocationExpr(bufferExpr, result) and
     why = bufferExpr
-  ) or (
+  ) or exists(DataFlow::ExprNode bufferExprNode |
     // dataflow (all sources must be the same size)
+    bufferExprNode = DataFlow::exprNode(bufferExpr) and
+ 
     result = min(Expr def |
-      DataFlow::localFlowStep(DataFlow::exprNode(def), DataFlow::exprNode(bufferExpr)) |
+      DataFlow::localFlowStep(DataFlow::exprNode(def), bufferExprNode) |
       getBufferSize(def, _)
     ) and result = max(Expr def |
-      DataFlow::localFlowStep(DataFlow::exprNode(def), DataFlow::exprNode(bufferExpr)) |
+      DataFlow::localFlowStep(DataFlow::exprNode(def), bufferExprNode) |
       getBufferSize(def, _)
     ) and
 
     // find reason
     exists(Expr def |
-      DataFlow::localFlowStep(DataFlow::exprNode(def), DataFlow::exprNode(bufferExpr)) |
+      DataFlow::localFlowStep(DataFlow::exprNode(def), bufferExprNode) |
       why = def or
       exists(getBufferSize(def, why))
     )
