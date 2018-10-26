@@ -25,7 +25,7 @@ predicate pointerThis(Expr e) {
   // `f(...)`
   // (includes `this = ...`, where `=` is overloaded so a `FunctionCall`)
   exists(FunctionCall fc | fc = e and callOnThis(fc) |
-    exists(fc.getTarget().getBlock()) implies returnsPointerThis(fc.getTarget())
+    returnsPointerThis(fc.getTarget())
   ) or
 
   // `this = ...` (where `=` is not overloaded, so an `AssignExpr`) 
@@ -38,22 +38,33 @@ predicate dereferenceThis(Expr e) {
   // `f(...)`
   // (includes `*this = ...`, where `=` is overloaded so a `FunctionCall`)
   exists(FunctionCall fc | fc = e and callOnThis(fc) |
-    exists(fc.getTarget().getBlock()) implies returnsDereferenceThis(fc.getTarget())
+    returnsDereferenceThis(fc.getTarget())
   ) or
 
   // `*this = ...` (where `=` is not overloaded, so an `AssignExpr`) 
   dereferenceThis(e.(AssignExpr).getLValue())
 }
 
+/**
+ * Holds if all `return` statements in `f` return `this`, possibly indirectly.
+ * This includes functions whose body is not in the database.
+ */
 predicate returnsPointerThis(Function f) {
-  forex(ReturnStmt s | s.getEnclosingFunction() = f |
+  f.getType().getUnspecifiedType() instanceof PointerType and
+  forall(ReturnStmt s | s.getEnclosingFunction() = f and reachable(s) |
     // `return this`
     pointerThis(s.getExpr())
   )
 }
 
+/**
+ * Holds if all `return` statements in `f` return a reference to `*this`,
+ * possibly indirectly. This includes functions whose body is not in the
+ * database.
+ */
 predicate returnsDereferenceThis(Function f) {
-  forex(ReturnStmt s | s.getEnclosingFunction() = f |
+  f.getType().getUnspecifiedType() instanceof ReferenceType and
+  forall(ReturnStmt s | s.getEnclosingFunction() = f and reachable(s) |
     // `return *this`
     dereferenceThis(s.getExpr())
   )
@@ -72,7 +83,6 @@ predicate assignOperatorWithWrongType(Operator op, string msg) {
 predicate assignOperatorWithWrongResult(Operator op, string msg) {
   op.hasName("operator=")
   and not returnsDereferenceThis(op)
-  and exists(op.getBlock())
   and not op.getType() instanceof VoidType
   and not assignOperatorWithWrongType(op, _)
   and msg = "Assignment operator in class " + op.getDeclaringType().getName() + " does not return a reference to *this."
