@@ -65,8 +65,8 @@ predicate isReactImportForJSX(UnusedLocal v) {
     or
     // JSX pragma from a .babelrc file
     exists (Babel::TransformReactJsxConfig plugin |
-      plugin.getConfig().getAContainerInScope() = is.getFile() and
-      plugin.getJSXFactoryVariableName() = v.getName())
+      plugin.appliesTo(is.getTopLevel()) and
+      plugin.getJsxFactoryVariableName() = v.getName())
   )
 }
 
