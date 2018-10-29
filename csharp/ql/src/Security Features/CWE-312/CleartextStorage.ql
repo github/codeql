@@ -17,5 +17,5 @@ import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
 where c.hasFlowPath(source, sink)
-select sink, source, sink,
-  "Sensitive data returned by $@ is stored here.", source, source.toString()
+select sink.getNode(), source, sink,
+  "Sensitive data returned by $@ is stored here.", source.getNode(), source.toString()

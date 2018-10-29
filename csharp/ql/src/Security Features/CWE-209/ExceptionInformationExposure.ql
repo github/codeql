@@ -59,5 +59,5 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
 
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
 where c.hasFlowPath(source, sink)
-select sink, source, sink,
-  "Exception information from $@ flows to here, and is exposed to the user.", source, source.toString()
+select sink.getNode(), source, sink,
+  "Exception information from $@ flows to here, and is exposed to the user.", source.getNode(), source.toString()

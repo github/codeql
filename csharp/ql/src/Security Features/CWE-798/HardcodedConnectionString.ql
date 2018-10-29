@@ -48,8 +48,8 @@ class ConnectionStringTaintTrackingConfiguration extends TaintTracking::Configur
   }
 }
 
-from ConnectionStringTaintTrackingConfiguration c, DataFlow::Node source, DataFlow::Node sink
-where c.hasFlow(source, sink)
-select source, source.getPathNode(c), sink.getPathNode(c),
+from ConnectionStringTaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
+where c.hasFlowPath(source, sink)
+select source.getNode(), source, sink,
   "'ConnectionString' property includes hard-coded credentials set in $@.",
-  any(Call call | call.getAnArgument() = sink.asExpr()) as call, call.toString()
+  any(Call call | call.getAnArgument() = sink.getNode().asExpr()) as call, call.toString()

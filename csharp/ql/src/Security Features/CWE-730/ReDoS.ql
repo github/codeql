@@ -15,9 +15,9 @@ import semmle.code.csharp.security.dataflow.ReDoS::ReDoS
 import semmle.code.csharp.frameworks.system.text.RegularExpressions
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
-from TaintTrackingConfiguration c, Source source, DataFlow::Node sink
-where c.hasFlow(source, sink)
+from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
+where c.hasFlowPath(source, sink)
   // No global timeout set
   and not exists(RegexGlobalTimeout r)
-select sink, source.getPathNode(c), sink.getPathNode(c),
-  "$@ flows to regular expression operation with dangerous regex.", source, "User-provided value"
+select sink.getNode().(Sink), source, sink,
+  "$@ flows to regular expression operation with dangerous regex.", source.getNode(), "User-provided value"

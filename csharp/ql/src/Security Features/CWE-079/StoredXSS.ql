@@ -21,11 +21,11 @@ class StoredTaintTrackingConfiguration extends TaintTrackingConfiguration {
   }
 }
 
-from StoredTaintTrackingConfiguration c, StoredFlowSource source, Sink sink, string explanation
-where c.hasFlow(source, sink)
+from StoredTaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink, string explanation
+where c.hasFlowPath(source, sink)
 and
-  if exists(sink.explanation())
-  then explanation = ": " + sink.explanation() + "."
+  if exists(sink.getNode().(Sink).explanation())
+  then explanation = ": " + sink.getNode().(Sink).explanation() + "."
   else explanation = "."
-select sink, source.getPathNode(c), sink.getPathNode(c),
-  "$@ flows to here and is written to HTML or JavaScript" + explanation, source, "Stored user-provided value"
+select sink.getNode(), source, sink,
+  "$@ flows to here and is written to HTML or JavaScript" + explanation, source.getNode(), "Stored user-provided value"

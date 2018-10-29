@@ -17,5 +17,5 @@ import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 from TaintTrackingConfiguration zipTaintTracking, DataFlow::PathNode source, DataFlow::PathNode sink
 where zipTaintTracking.hasFlowPath(source, sink)
-select sink, source, sink,
-  "Unsanitized zip archive $@, which may contain '..', is used in a file system operation.", source, "item path"
+select sink.getNode(), source, sink,
+  "Unsanitized zip archive $@, which may contain '..', is used in a file system operation.", source.getNode(), "item path"

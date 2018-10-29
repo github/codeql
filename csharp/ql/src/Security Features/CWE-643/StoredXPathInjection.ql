@@ -23,5 +23,5 @@ class StoredTaintTrackingConfiguration extends XPathInjection::TaintTrackingConf
 
 from StoredTaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
 where c.hasFlowPath(source, sink)
-select sink, source, sink,
-  "$@ flows to here and is used in an XPath expression.", source, "Stored user-provided value"
+select sink.getNode(), source, sink,
+  "$@ flows to here and is used in an XPath expression.", source.getNode(), "Stored user-provided value"

@@ -18,5 +18,5 @@ import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
 where c.hasFlowPath(source, sink)
-select sink, source, sink,
-  "$@ flows to here and is used in a path.", source, "User-provided value"
+select sink.getNode(), source, sink,
+  "$@ flows to here and is used in a path.", source.getNode(), "User-provided value"

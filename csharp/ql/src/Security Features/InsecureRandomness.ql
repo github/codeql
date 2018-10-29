@@ -3,7 +3,7 @@
  * @description Using a cryptographically weak pseudo-random number generator to generate a
  *              security sensitive value may allow an attacker to predict what sensitive value will
  *              be generated.
- * @kind problem
+ * @kind path-problem
  * @problem.severity warning
  * @precision high
  * @id cs/insecure-randomness
@@ -12,6 +12,7 @@
  */
 import csharp
 import semmle.code.csharp.frameworks.Test
+import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 module Random {
   import semmle.code.csharp.dataflow.flowsources.Remote
@@ -103,6 +104,7 @@ module Random {
   }
 }
 
-from Random::TaintTrackingConfiguration randomTracking, Random::Source source, Random::Sink sink
-where randomTracking.hasFlow(source, sink)
-select sink, "Cryptographically insecure random number is generated at $@ and used here in a security context.", source, source.toString()
+from Random::TaintTrackingConfiguration randomTracking, DataFlow::PathNode source, DataFlow::PathNode sink
+where randomTracking.hasFlowPath(source, sink)
+select sink.getNode(), source, sink,
+  "Cryptographically insecure random number is generated at $@ and used here in a security context.", source.getNode(), source.toString()

@@ -13,7 +13,7 @@ import csharp
 import semmle.code.csharp.security.dataflow.MissingXMLValidation::MissingXMLValidation
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
-from TaintTrackingConfiguration c, Source source, Sink sink
-where c.hasFlow(source, sink)
-select sink, source.getPathNode(c), sink.getPathNode(c),
-  "$@ flows to here and is processed as XML without validation because " + sink.getReason(), source, "User-provided value"
+from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
+where c.hasFlowPath(source, sink)
+select sink.getNode(), source, sink,
+  "$@ flows to here and is processed as XML without validation because " + sink.getNode().(Sink).getReason(), source.getNode(), "User-provided value"

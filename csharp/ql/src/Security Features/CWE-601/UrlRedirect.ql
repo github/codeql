@@ -15,5 +15,5 @@ import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
 where c.hasFlowPath(source, sink)
-select sink, source, sink,
-  "Untrusted URL redirection due to $@.", source, "user-provided value"
+select sink.getNode(), source, sink,
+  "Untrusted URL redirection due to $@.", source.getNode(), "user-provided value"
