@@ -294,6 +294,61 @@ predicate analyzableDef(RangeSsaDefinition def, LocalScopeVariable v) {
 }
 
 /**
+ * Computes a normal form of `x` where -0.0 has changed to +0.0. This can be
+ * needed on the lesser side of a floating-point comparison or on both sides of
+ * a floating point equality because QL does not follow IEEE in floating-point
+ * comparisons but instead defines -0.0 to be less than and distinct from 0.0.
+ */
+bindingset[x]
+private float normalizeFloatUp(float x) {
+  result = x + 0.0
+}
+
+/**
+ * Computes `x + y`, rounded towards +Inf. This is the general case where both
+ * `x` and `y` may be large numbers.
+ */
+bindingset[x, y]
+private float addRoundingUp(float x, float y) {
+  if normalizeFloatUp((x + y) - x) < y or normalizeFloatUp((x + y) - y) < x
+  then result = (x + y).nextUp()
+  else result = (x + y)
+}
+
+/**
+ * Computes `x + y`, rounded towards -Inf. This is the general case where both
+ * `x` and `y` may be large numbers.
+ */
+bindingset[x, y]
+private float addRoundingDown(float x, float y) {
+  if (x + y) - x > normalizeFloatUp(y) or (x + y) - y > normalizeFloatUp(x)
+  then result = (x + y).nextDown()
+  else result = (x + y)
+}
+
+/**
+ * Computes `x + small`, rounded towards +Inf, where `small` is a small
+ * constant.
+ */
+bindingset[x, small]
+private float addRoundingUpSmall(float x, float small) {
+  if (x + small) - x < small
+  then result = (x + small).nextUp()
+  else result = (x + small)
+}
+
+/**
+ * Computes `x + small`, rounded towards -Inf, where `small` is a small
+ * constant.
+ */
+bindingset[x, small]
+private float addRoundingDownSmall(float x, float small) {
+  if (x + small) - x > small
+  then result = (x + small).nextDown()
+  else result = (x + small)
+}
+
+/**
  * Gets the truncated lower bounds of the fully converted expression.
  */
 private
@@ -470,13 +525,13 @@ float getLowerBoundsImpl(Expr expr) {
   | expr = addExpr and
     xLow = getFullyConvertedLowerBounds(addExpr.getLeftOperand()) and
     yLow = getFullyConvertedLowerBounds(addExpr.getRightOperand()) and
-    result = xLow+yLow)
+    result = addRoundingDown(xLow, yLow))
   or
   exists (SubExpr subExpr, float xLow, float yHigh
   | expr = subExpr and
     xLow = getFullyConvertedLowerBounds(subExpr.getLeftOperand()) and
     yHigh = getFullyConvertedUpperBounds(subExpr.getRightOperand()) and
-    result = xLow-yHigh)
+    result = addRoundingDown(xLow, -yHigh))
   or
   exists (PrefixIncrExpr incrExpr, float xLow
   | expr = incrExpr and
@@ -486,7 +541,7 @@ float getLowerBoundsImpl(Expr expr) {
   exists (PrefixDecrExpr decrExpr, float xLow
   | expr = decrExpr and
     xLow = getFullyConvertedLowerBounds(decrExpr.getOperand()) and
-    result = xLow-1)
+    result = addRoundingDownSmall(xLow, -1))
   or
   // `PostfixIncrExpr` and `PostfixDecrExpr` return the value of their
   // operand. The incrementing/decrementing behavior is handled in
@@ -592,18 +647,18 @@ float getUpperBoundsImpl(Expr expr) {
   | expr = addExpr and
     xHigh = getFullyConvertedUpperBounds(addExpr.getLeftOperand()) and
     yHigh = getFullyConvertedUpperBounds(addExpr.getRightOperand()) and
-    result = xHigh+yHigh)
+    result = addRoundingUp(xHigh, yHigh))
   or
   exists (SubExpr subExpr, float xHigh, float yLow
   | expr = subExpr and
     xHigh = getFullyConvertedUpperBounds(subExpr.getLeftOperand()) and
     yLow = getFullyConvertedLowerBounds(subExpr.getRightOperand()) and
-    result = xHigh-yLow)
+    result = addRoundingUp(xHigh, -yLow))
   or
   exists (PrefixIncrExpr incrExpr, float xHigh
   | expr = incrExpr and
     xHigh = getFullyConvertedUpperBounds(incrExpr.getOperand()) and
-    result = xHigh+1)
+    result = addRoundingUpSmall(xHigh, 1))
   or
   exists (PrefixDecrExpr decrExpr, float xHigh
   | expr = decrExpr and
@@ -796,7 +851,7 @@ float getDefLowerBoundsImpl(RangeSsaDefinition def, LocalScopeVariable v) {
     assignAdd.getLValue() = nextDef.getAUse(v) and
     lhsLB = getDefLowerBounds(nextDef, v) and
     rhsLB = getFullyConvertedLowerBounds(assignAdd.getRValue()) and
-    result = lhsLB + rhsLB)
+    result = addRoundingDown(lhsLB, rhsLB))
   or
   exists (
     AssignSubExpr assignSub, RangeSsaDefinition nextDef, float lhsLB, float rhsUB
@@ -804,7 +859,7 @@ float getDefLowerBoundsImpl(RangeSsaDefinition def, LocalScopeVariable v) {
     assignSub.getLValue() = nextDef.getAUse(v) and
     lhsLB = getDefLowerBounds(nextDef, v) and
     rhsUB = getFullyConvertedUpperBounds(assignSub.getRValue()) and
-    result = lhsLB - rhsUB)
+    result = addRoundingDown(lhsLB, -rhsUB))
   or
   exists (IncrementOperation incr, float newLB
   | def = incr and
@@ -816,7 +871,7 @@ float getDefLowerBoundsImpl(RangeSsaDefinition def, LocalScopeVariable v) {
   | def = decr and
     decr.getOperand() = v.getAnAccess() and
     newLB = getFullyConvertedLowerBounds(decr.getOperand()) and
-    result = newLB-1)
+    result = addRoundingDownSmall(newLB, -1))
   or
   // Phi nodes.
   result = getPhiLowerBounds(v, def)
@@ -839,7 +894,7 @@ float getDefUpperBoundsImpl(RangeSsaDefinition def, LocalScopeVariable v) {
     assignAdd.getLValue() = nextDef.getAUse(v) and
     lhsUB = getDefUpperBounds(nextDef, v) and
     rhsUB = getFullyConvertedUpperBounds(assignAdd.getRValue()) and
-    result = lhsUB + rhsUB)
+    result = addRoundingUp(lhsUB, rhsUB))
   or
   exists (
     AssignSubExpr assignSub, RangeSsaDefinition nextDef, float lhsUB, float rhsLB
@@ -847,13 +902,13 @@ float getDefUpperBoundsImpl(RangeSsaDefinition def, LocalScopeVariable v) {
     assignSub.getLValue() = nextDef.getAUse(v) and
     lhsUB = getDefUpperBounds(nextDef, v) and
     rhsLB = getFullyConvertedLowerBounds(assignSub.getRValue()) and
-    result = lhsUB - rhsLB)
+    result = addRoundingUp(lhsUB, -rhsLB))
   or
   exists (IncrementOperation incr, float newUB
   | def = incr and
     incr.getOperand() = v.getAnAccess() and
     newUB = getFullyConvertedUpperBounds(incr.getOperand()) and
-    result = newUB+1)
+    result = addRoundingUpSmall(newUB, 1))
   or
   exists (DecrementOperation decr, float newUB
   | def = decr and
