@@ -33,3 +33,8 @@ function good() {
     "deps foo"; // OK
     "deps bar"; // OK
 }
+
+function data() {
+    "[0, 0, 0];"; // NOT OK
+    "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];"; // NOT OK
+}
