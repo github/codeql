@@ -29,6 +29,10 @@ class AffectedFile extends File {
   }
 }
 
+/**
+ * A block, or an element we might find textually within a block that is
+ * not a child of it in the AST.
+ */
 class BlockOrNonChild extends Element {
   BlockOrNonChild() {
     ( this instanceof Block
@@ -68,6 +72,9 @@ class BlockOrNonChild extends Element {
   }
 }
 
+/**
+ * A block that contains a non-child element.
+ */
 predicate emptyBlockContainsNonchild(Block b) {
   emptyBlock(_, b) and
   exists(BlockOrNonChild c, AffectedFile file |
@@ -78,7 +85,12 @@ predicate emptyBlockContainsNonchild(Block b) {
   )
 }
 
+/**
+ * A block that is entirely on one line, which also contains a comment.  Chances
+ * are the comment is intended to refer to the block.
+ */
 predicate lineComment(Block b) {
+  emptyBlock(_, b) and
   exists(File f, int line |
     f = b.getFile() and
     line = b.getLocation().getStartLine() and
