@@ -19,32 +19,39 @@ predicate oppositeOperators(string op1, string op2) {
 /* this match is very syntactic: we simply check that op1 is defined as
    !op2(_, _) */
 predicate implementedAsNegationOf(Operator op1, Operator op2) {
-  exists(Block b, ReturnStmt r, NotExpr n, FunctionCall c |
+  exists(Block b, ReturnStmt r, NotExpr n, Expr o |
     b = op1.getBlock() and
     b.getNumStmt() = 1 and
     r = b.getStmt(0) and
     n = r.getExpr() and
-    c = n.getOperand() and
-    c.getTarget() = op2)
+    o = n.getOperand() and
+    (
+      o instanceof LTExpr and op2.hasName("operator<") or
+      o instanceof LEExpr and op2.hasName("operator<=") or
+      o instanceof GTExpr and op2.hasName("operator>") or
+      o instanceof GEExpr and op2.hasName("operator>=") or
+      o instanceof EQExpr and op2.hasName("operator==") or
+      o instanceof NEExpr and op2.hasName("operator!=") or
+      o.(FunctionCall).getTarget() = op2
+    )
+  )
 }
 
 predicate classIsCheckableFor(Class c, string op) {
   oppositeOperators(op, _) and
-  if exists(Class templ | c.isConstructedFrom(templ))
-  then // If we are an instantiation, then we can't check `op` if the
-       // template has it but we don't (because that member wasn't
-       // instantiated)
-       exists(Class templ | c.isConstructedFrom(templ) and
-                            (templ.getAMember().hasName(op) implies
-                             exists(Function f | f = c.getAMember() and
-                                                 f.hasName(op) and
-                                                 f.isDefined())))
-  else any()
+  // We check the template, not its instantiations
+  not c instanceof ClassTemplateInstantiation and
+  // Member functions of templates are not necessarily instantiated, so
+  // if the function we want to check exists, then make sure that its
+  // body also exists
+  ((c instanceof TemplateClass)
+   implies
+   forall(Function f | f = c.getAMember() and f.hasName(op)
+                     | exists(f.getEntryPoint())))
 }
 
 from Class c, string op, string opp, Operator rator
 where c.fromSource() and
-      not c instanceof TemplateClass and
       oppositeOperators(op, opp) and
       classIsCheckableFor(c, op) and
       classIsCheckableFor(c, opp) and
