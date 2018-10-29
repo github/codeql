@@ -78,7 +78,20 @@ predicate emptyBlockContainsNonchild(Block b) {
   )
 }
 
+predicate lineComment(Block b) {
+  exists(File f, int line |
+    f = b.getFile() and
+    line = b.getLocation().getStartLine() and
+    line = b.getLocation().getEndLine() and
+    exists(Comment c |
+      c.getFile() = f and
+      c.getLocation().getStartLine() = line
+    )
+  )
+}
+
 from ControlStructure s, Block eb
 where emptyBlock(s, eb)
   and not emptyBlockContainsNonchild(eb)
+  and not lineComment(eb)
 select eb, "Empty block without comment"
