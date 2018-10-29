@@ -126,7 +126,7 @@ class VSTestAssertNonNullMethod extends AssertNonNullMethod {
 
 /** A method that forwards to another assertion method. */
 class ForwarderAssertMethod extends AssertMethod {
-  AssertMethod forwardee;
+  Assertion a;
   Parameter p;
 
   ForwarderAssertMethod() {
@@ -134,22 +134,25 @@ class ForwarderAssertMethod extends AssertMethod {
     strictcount(AssignableDefinition def | def.getTarget() = p) = 1 and
     forex(ControlFlowElement body |
       body = this.getABody() |
-      exists(Assertion a |
-        body = getAnAssertingElement(a) and
-        a.getExpr() = p.getAnAccess() and
-        forwardee = a.getAssertMethod()
-      )
+      bodyAsserts(this, body, a) and
+      a.getExpr() = p.getAnAccess()
     )
   }
 
   override int getAssertionIndex() { result = p.getPosition() }
 
   override ExceptionClass getExceptionClass() {
-    result = forwardee.getExceptionClass()
+    result = this.getUnderlyingAssertMethod().getExceptionClass()
   }
   
   /** Gets the underlying assertion method that is being forwarded to. */
-  AssertMethod getUnderlyingAssertMethod() { result = forwardee }
+  AssertMethod getUnderlyingAssertMethod() { result = a.getAssertMethod() }
+}
+
+pragma[noinline]
+private predicate bodyAsserts(Callable c, ControlFlowElement body, Assertion a) {
+  c.getABody() = body and
+  body = getAnAssertingElement(a)
 }
 
 private ControlFlowElement getAnAssertingElement(Assertion a) {
