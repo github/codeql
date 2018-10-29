@@ -89,4 +89,17 @@ async function awaitFlow(){
     if ((x, true));
 });
 
+(function (x, y) {
+    if (!x) {
+        while (x) { // NOT OK
+            f();
+        }
+        while (true) { // OK
+            break;
+        }
+        if (true && true) {} // OK
+        if (y && x) {} // NOT OK
+    }
+});
+
 // semmle-extractor-options: --experimental
