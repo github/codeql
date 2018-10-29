@@ -1,5 +1,9 @@
 | decorated.ts:1:1:1:126 | import  ... where'; | Unused import actionHandler. |
 | decorated.ts:4:10:4:12 | fun | Unused function fun. |
+| eval.js:2:9:2:20 | used_by_eval | Unused variable used_by_eval. |
+| eval.js:7:9:7:20 | used_by_eval | Unused variable used_by_eval. |
+| eval.js:10:9:10:24 | not_used_by_eval | Unused variable not_used_by_eval. |
+| eval.js:19:9:19:24 | not_used_by_eval | Unused variable not_used_by_eval. |
 | externs.js:6:5:6:13 | iAmUnused | Unused variable iAmUnused. |
 | multi-imports.js:1:1:1:29 | import  ... om 'x'; | Unused imports a, b, d. |
 | multi-imports.js:2:1:2:42 | import  ... om 'x'; | Unused imports alphabetically, ordered. |
