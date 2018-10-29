@@ -13,6 +13,7 @@
 
 import java
 import semmle.code.java.dataflow.SSA
+import semmle.code.java.dataflow.RangeUtils
 import semmle.code.java.dataflow.RangeAnalysis
 
 /**
@@ -31,9 +32,7 @@ predicate boundedArrayAccess(ArrayAccess aa, int k) {
       k = delta
     )
     or
-    exists(ArrayCreationExpr arraycreation |
-      arraycreation = arr.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource()
-    |
+    exists(ArrayCreationExpr arraycreation | arraycreation = getArrayDef(arr) |
       k = delta and
       arraycreation.getDimension(0) = b.getExpr()
       or

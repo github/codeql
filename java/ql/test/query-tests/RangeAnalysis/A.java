@@ -34,7 +34,7 @@ public class A {
     }
     for (int i = 0; i < arr1.length; ) {
       sum += arr1[i++]; // OK
-      sum += arr1[i++]; // OK - FP
+      sum += arr1[i++]; // OK
       i += 2;
     }
     for (int i = 0; i < arr2.length; ) {
@@ -160,6 +160,19 @@ public class A {
     int[] b = new int[8];
     for (int i = 2; i < 8; i += 2) {
       sum += b[i] + b[i + 1]; // OK
+    }
+  }
+
+  void m13(int n) {
+    int[] a = null;
+    if (n > 0) {
+      a = n > 0 ? new int[3 * n] : null;
+    }
+    int sum;
+    if (a != null) {
+      for (int i = 0; i < a.length; i += 3) {
+        sum += a[i + 2]; // OK
+      }
     }
   }
 }

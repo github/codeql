@@ -1,6 +1,5 @@
 | A.java:16:14:16:17 | ...[...] | This array access might be out of bounds, as the index might be equal to the array length. |
 | A.java:23:21:23:28 | ...[...] | This array access might be out of bounds, as the index might be equal to the array length. |
-| A.java:37:14:37:22 | ...[...] | This array access might be out of bounds, as the index might be equal to the array length. |
 | A.java:42:14:42:22 | ...[...] | This array access might be out of bounds, as the index might be equal to the array length. |
 | A.java:46:14:46:22 | ...[...] | This array access might be out of bounds, as the index might be equal to the array length. |
 | A.java:55:14:55:19 | ...[...] | This array access might be out of bounds, as the index might be equal to the array length. |
