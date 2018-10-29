@@ -2,6 +2,7 @@
 | file://:0:0:0:0 | __va_list_tag | 1 __va_list_tag::fp_offset |
 | file://:0:0:0:0 | __va_list_tag | 2 __va_list_tag::overflow_arg_area |
 | file://:0:0:0:0 | __va_list_tag | 3 __va_list_tag::reg_save_area |
+| file://:0:0:0:0 | __va_list_tag | 6 __va_list_tag::operator= |
 | h.h:2:7:2:8 | CA | 0 CA::CB<TB> |
 | h.h:2:7:2:8 | CA | 0 CA::CB<double> |
 | h.h:2:7:2:8 | CA | 0 CA::CB<float> |

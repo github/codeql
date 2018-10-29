@@ -1,3 +1,5 @@
+| file://:0:0:0:0 | operator= |  | file://:0:0:0:0 | __va_list_tag | 6 |
+| file://:0:0:0:0 | operator= |  | file://:0:0:0:0 | __va_list_tag | 6 |
 | scopes.cpp:2:7:2:7 | operator= |  | scopes.cpp:2:7:2:7 | A | 2 |
 | scopes.cpp:2:7:2:7 | operator= |  | scopes.cpp:2:7:2:7 | A | 2 |
 | scopes.cpp:7:7:7:7 | operator= |  | scopes.cpp:7:7:7:7 | B | 2 |

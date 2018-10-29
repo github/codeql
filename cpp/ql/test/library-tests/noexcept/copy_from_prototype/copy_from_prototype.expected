@@ -26,3 +26,5 @@
 | copy_from_prototype.cpp:22:8:22:8 | operator= | e<int>::operator=(e<int> &&) | copy_from_prototype.cpp:22:8:22:8 | e<int> | <no expr> |
 | copy_from_prototype.cpp:23:26:23:26 | e | e<T>::e<(unnamed)>() | copy_from_prototype.cpp:22:8:22:8 | e<T> | 456 |
 | copy_from_prototype.cpp:26:35:26:43 | e | e<int>::e<(unnamed)>() | copy_from_prototype.cpp:22:8:22:8 | e<int> | 456 |
+| file://:0:0:0:0 | operator= | __va_list_tag::operator=(__va_list_tag &&) | file://:0:0:0:0 | __va_list_tag | <none> |
+| file://:0:0:0:0 | operator= | __va_list_tag::operator=(const __va_list_tag &) | file://:0:0:0:0 | __va_list_tag | <none> |

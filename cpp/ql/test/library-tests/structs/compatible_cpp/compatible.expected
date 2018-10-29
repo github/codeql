@@ -34,7 +34,8 @@
 | b2.cpp:21:7:21:12 | Damson | 5 members | 2 locations | 4 | bar |
 | b2.cpp:21:7:21:12 | Damson | 5 members | 2 locations | 4 | foo |
 | b2.cpp:21:7:21:12 | Damson | 5 members | 2 locations | 4 | operator= |
-| file://:0:0:0:0 | __va_list_tag | 4 members | 0 locations | 0 | gp_offset |
-| file://:0:0:0:0 | __va_list_tag | 4 members | 0 locations | 1 | fp_offset |
-| file://:0:0:0:0 | __va_list_tag | 4 members | 0 locations | 2 | overflow_arg_area |
-| file://:0:0:0:0 | __va_list_tag | 4 members | 0 locations | 3 | reg_save_area |
+| file://:0:0:0:0 | __va_list_tag | 6 members | 0 locations | 0 | gp_offset |
+| file://:0:0:0:0 | __va_list_tag | 6 members | 0 locations | 1 | fp_offset |
+| file://:0:0:0:0 | __va_list_tag | 6 members | 0 locations | 2 | overflow_arg_area |
+| file://:0:0:0:0 | __va_list_tag | 6 members | 0 locations | 3 | reg_save_area |
+| file://:0:0:0:0 | __va_list_tag | 6 members | 0 locations | 6 | operator= |

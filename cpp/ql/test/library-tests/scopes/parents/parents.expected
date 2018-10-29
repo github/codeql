@@ -1,9 +1,9 @@
 | 0 | file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | __va_list_tag |
-| 0 | file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | operator= |
-| 0 | file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | operator= |
 | 0 | file://:0:0:0:0 | (global namespace) | parents.cpp:2:11:2:13 | foo |
 | 1 | file://:0:0:0:0 | __va_list_tag | file://:0:0:0:0 | fp_offset |
 | 1 | file://:0:0:0:0 | __va_list_tag | file://:0:0:0:0 | gp_offset |
+| 1 | file://:0:0:0:0 | __va_list_tag | file://:0:0:0:0 | operator= |
+| 1 | file://:0:0:0:0 | __va_list_tag | file://:0:0:0:0 | operator= |
 | 1 | file://:0:0:0:0 | __va_list_tag | file://:0:0:0:0 | overflow_arg_area |
 | 1 | file://:0:0:0:0 | __va_list_tag | file://:0:0:0:0 | reg_save_area |
 | 1 | file://:0:0:0:0 | operator= | file://:0:0:0:0 | p#0 |

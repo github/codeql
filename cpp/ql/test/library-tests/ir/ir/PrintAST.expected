@@ -1,3 +1,11 @@
+#-----| __va_list_tag::operator=(__va_list_tag &&) -> __va_list_tag &
+#-----|   params: 
+#-----|     0: p#0
+#-----|         Type = __va_list_tag &&
+#-----| __va_list_tag::operator=(const __va_list_tag &) -> __va_list_tag &
+#-----|   params: 
+#-----|     0: p#0
+#-----|         Type = const __va_list_tag &
 #-----| operator delete(void *, unsigned long) -> void
 #-----|   params: 
 #-----|     0: p#0
@@ -30,14 +38,6 @@
 #-----|         Type = unsigned long
 #-----|     1: p#1
 #-----|         Type = align_val_t
-#-----| operator=(__va_list_tag &&) -> __va_list_tag &
-#-----|   params: 
-#-----|     0: p#0
-#-----|         Type = __va_list_tag &&
-#-----| operator=(const __va_list_tag &) -> __va_list_tag &
-#-----|   params: 
-#-----|     0: p#0
-#-----|         Type = const __va_list_tag &
 ir.cpp:
 #    1| Constants() -> void
 #    1|   params: 

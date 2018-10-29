@@ -1,3 +1,5 @@
+| __va_list_tag::operator= | false | 92 | 92 | operator= |
+| __va_list_tag::operator= | false | 99 | 99 | operator= |
 | f | false | 175 | 175 | f |
 | f | false | 182 | 182 | 1 |
 | f | false | 183 | 183 | throw ... |
@@ -55,5 +57,3 @@
 | g | true | 169 | 164 |  |
 | g | true | 171 | 145 |  |
 | g | true | 173 | 169 |  |
-| operator= | false | 92 | 92 | operator= |
-| operator= | false | 99 | 99 | operator= |

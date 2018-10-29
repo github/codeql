@@ -1,7 +1,7 @@
-| C::C | false | 436 | 436 | C |
-| C::C | false | 625 | 625 | C |
-| C::operator= | false | 618 | 618 | operator= |
-| C::~C | false | 557 | 557 | ~C |
+| C::C | false | 435 | 435 | C |
+| C::C | false | 624 | 624 | C |
+| C::operator= | false | 617 | 617 | operator= |
+| C::~C | false | 556 | 556 | ~C |
 | Error::Error | false | 242 | 242 | Error |
 | Error::Error | false | 255 | 255 | Error |
 | Error::Error | false | 260 | 260 | return ... |
@@ -14,178 +14,180 @@
 | Error::~Error | false | 253 | 253 | { ... } |
 | Error::~Error | true | 251 | 246 |  |
 | Error::~Error | true | 253 | 251 |  |
-| f | false | 420 | 420 | f |
-| f | false | 431 | 431 | declaration |
-| f | false | 434 | 434 | call to C |
-| f | false | 439 | 439 | 102 |
-| f | false | 440 | 440 | initializer for c102 |
-| f | false | 444 | 444 | call to C |
-| f | false | 448 | 448 | 103 |
-| f | false | 449 | 449 | initializer for c103 |
-| f | false | 452 | 452 | declaration |
-| f | false | 454 | 454 | b1 |
-| f | false | 456 | 456 | (bool)... |
-| f | false | 459 | 459 | 1 |
-| f | false | 460 | 460 | throw ... |
-| f | false | 462 | 462 | ExprStmt |
-| f | false | 464 | 464 | { ... } |
-| f | false | 466 | 466 | if (...) ...  |
-| f | false | 468 | 468 | declaration |
-| f | false | 470 | 470 | { ... } |
-| f | false | 477 | 477 | 1 |
-| f | false | 479 | 479 | call to C |
-| f | false | 483 | 483 | 104 |
-| f | false | 484 | 484 | initializer for c104 |
-| f | false | 487 | 487 | declaration |
-| f | false | 489 | 489 | { ... } |
-| f | false | 491 | 491 | __try { ... } __except( ... ) { ... } |
-| f | false | 493 | 493 | declaration |
-| f | false | 496 | 496 | call to C |
-| f | false | 500 | 500 | 106 |
-| f | false | 501 | 501 | initializer for c106 |
-| f | false | 505 | 505 | call to C |
-| f | false | 509 | 509 | 107 |
-| f | false | 510 | 510 | initializer for c107 |
-| f | false | 513 | 513 | declaration |
-| f | false | 515 | 515 | b2 |
-| f | false | 517 | 517 | (bool)... |
-| f | false | 520 | 520 | 2 |
-| f | false | 521 | 521 | throw ... |
-| f | false | 523 | 523 | ExprStmt |
-| f | false | 525 | 525 | { ... } |
-| f | false | 527 | 527 | if (...) ...  |
-| f | false | 529 | 529 | declaration |
-| f | false | 531 | 531 | { ... } |
-| f | false | 534 | 534 | call to C |
-| f | false | 538 | 538 | 108 |
-| f | false | 539 | 539 | initializer for c108 |
-| f | false | 542 | 542 | declaration |
-| f | false | 544 | 544 | { ... } |
-| f | false | 546 | 546 | __try { ... } __finally { ... } |
-| f | false | 548 | 548 | declaration |
-| f | false | 550 | 550 | return ... |
-| f | false | 552 | 552 | { ... } |
-| f | false | 554 | 554 | c101 |
-| f | false | 556 | 556 | call to c101.~C |
-| f | false | 558 | 558 | c105 |
-| f | false | 559 | 559 | call to c105.~C |
-| f | false | 560 | 560 | c109 |
-| f | false | 561 | 561 | call to c109.~C |
-| f | false | 562 | 562 | c101 |
-| f | false | 563 | 563 | call to c101.~C |
-| f | false | 564 | 564 | c105 |
-| f | false | 565 | 565 | call to c105.~C |
-| f | false | 566 | 566 | c108 |
-| f | false | 568 | 568 | call to c108.~C |
-| f | false | 569 | 569 | c106 |
-| f | false | 571 | 571 | call to c106.~C |
-| f | false | 572 | 572 | c107 |
-| f | false | 573 | 573 | call to c107.~C |
-| f | false | 574 | 574 | c106 |
-| f | false | 575 | 575 | call to c106.~C |
-| f | false | 576 | 576 | c104 |
-| f | false | 578 | 578 | call to c104.~C |
-| f | false | 579 | 579 | c102 |
-| f | false | 581 | 581 | call to c102.~C |
-| f | false | 582 | 582 | c103 |
-| f | false | 583 | 583 | call to c103.~C |
-| f | false | 584 | 584 | c102 |
-| f | false | 585 | 585 | call to c102.~C |
-| f | false | 587 | 587 | call to C |
-| f | false | 591 | 591 | 101 |
-| f | false | 592 | 592 | initializer for c101 |
-| f | false | 596 | 596 | call to C |
-| f | false | 600 | 600 | 105 |
-| f | false | 601 | 601 | initializer for c105 |
-| f | false | 605 | 605 | call to C |
-| f | false | 609 | 609 | 109 |
-| f | false | 610 | 610 | initializer for c109 |
-| f | true | 431 | 592 |  |
-| f | true | 434 | 466 |  |
-| f | true | 439 | 434 |  |
-| f | true | 440 | 439 |  |
-| f | true | 444 | 582 |  |
-| f | true | 448 | 444 |  |
-| f | true | 449 | 448 |  |
-| f | true | 452 | 440 |  |
-| f | true | 454 | 464 | T |
-| f | true | 454 | 468 | F |
-| f | true | 459 | 460 |  |
-| f | true | 460 | 584 |  |
-| f | true | 462 | 459 |  |
-| f | true | 464 | 462 |  |
-| f | true | 466 | 454 |  |
-| f | true | 468 | 449 |  |
-| f | true | 470 | 452 |  |
-| f | true | 477 | 489 | T |
-| f | true | 479 | 576 |  |
-| f | true | 483 | 479 |  |
-| f | true | 484 | 483 |  |
-| f | true | 487 | 484 |  |
-| f | true | 489 | 487 |  |
-| f | true | 491 | 470 |  |
-| f | true | 493 | 601 |  |
-| f | true | 496 | 527 |  |
-| f | true | 500 | 496 |  |
-| f | true | 501 | 500 |  |
-| f | true | 505 | 572 |  |
-| f | true | 509 | 505 |  |
-| f | true | 510 | 509 |  |
-| f | true | 513 | 501 |  |
-| f | true | 515 | 525 | T |
-| f | true | 515 | 529 | F |
-| f | true | 520 | 521 |  |
-| f | true | 521 | 574 |  |
-| f | true | 523 | 520 |  |
-| f | true | 525 | 523 |  |
-| f | true | 527 | 515 |  |
-| f | true | 529 | 510 |  |
-| f | true | 531 | 513 |  |
-| f | true | 534 | 566 |  |
-| f | true | 538 | 534 |  |
-| f | true | 539 | 538 |  |
-| f | true | 542 | 539 |  |
-| f | true | 544 | 542 |  |
-| f | true | 546 | 531 |  |
-| f | true | 548 | 610 |  |
-| f | true | 550 | 560 |  |
-| f | true | 552 | 431 |  |
-| f | true | 554 | 556 |  |
-| f | true | 556 | 420 |  |
-| f | true | 558 | 559 |  |
-| f | true | 559 | 554 |  |
-| f | true | 560 | 561 |  |
-| f | true | 561 | 558 |  |
-| f | true | 562 | 563 |  |
-| f | true | 563 | 420 |  |
-| f | true | 564 | 565 |  |
-| f | true | 565 | 562 |  |
-| f | true | 566 | 568 |  |
-| f | true | 568 | 548 |  |
-| f | true | 568 | 564 |  |
-| f | true | 569 | 571 |  |
-| f | true | 571 | 544 |  |
-| f | true | 572 | 573 |  |
-| f | true | 573 | 569 |  |
-| f | true | 574 | 575 |  |
-| f | true | 575 | 544 |  |
-| f | true | 576 | 578 |  |
-| f | true | 578 | 493 |  |
-| f | true | 579 | 581 |  |
-| f | true | 581 | 493 |  |
-| f | true | 582 | 583 |  |
-| f | true | 583 | 579 |  |
-| f | true | 584 | 585 |  |
-| f | true | 585 | 477 |  |
-| f | true | 587 | 491 |  |
-| f | true | 591 | 587 |  |
-| f | true | 592 | 591 |  |
-| f | true | 596 | 546 |  |
-| f | true | 600 | 596 |  |
-| f | true | 601 | 600 |  |
-| f | true | 605 | 550 |  |
-| f | true | 609 | 605 |  |
-| f | true | 610 | 609 |  |
+| __va_list_tag::operator= | false | 140 | 140 | operator= |
+| __va_list_tag::operator= | false | 147 | 147 | operator= |
+| f | false | 419 | 419 | f |
+| f | false | 430 | 430 | declaration |
+| f | false | 433 | 433 | call to C |
+| f | false | 438 | 438 | 102 |
+| f | false | 439 | 439 | initializer for c102 |
+| f | false | 443 | 443 | call to C |
+| f | false | 447 | 447 | 103 |
+| f | false | 448 | 448 | initializer for c103 |
+| f | false | 451 | 451 | declaration |
+| f | false | 453 | 453 | b1 |
+| f | false | 455 | 455 | (bool)... |
+| f | false | 458 | 458 | 1 |
+| f | false | 459 | 459 | throw ... |
+| f | false | 461 | 461 | ExprStmt |
+| f | false | 463 | 463 | { ... } |
+| f | false | 465 | 465 | if (...) ...  |
+| f | false | 467 | 467 | declaration |
+| f | false | 469 | 469 | { ... } |
+| f | false | 476 | 476 | 1 |
+| f | false | 478 | 478 | call to C |
+| f | false | 482 | 482 | 104 |
+| f | false | 483 | 483 | initializer for c104 |
+| f | false | 486 | 486 | declaration |
+| f | false | 488 | 488 | { ... } |
+| f | false | 490 | 490 | __try { ... } __except( ... ) { ... } |
+| f | false | 492 | 492 | declaration |
+| f | false | 495 | 495 | call to C |
+| f | false | 499 | 499 | 106 |
+| f | false | 500 | 500 | initializer for c106 |
+| f | false | 504 | 504 | call to C |
+| f | false | 508 | 508 | 107 |
+| f | false | 509 | 509 | initializer for c107 |
+| f | false | 512 | 512 | declaration |
+| f | false | 514 | 514 | b2 |
+| f | false | 516 | 516 | (bool)... |
+| f | false | 519 | 519 | 2 |
+| f | false | 520 | 520 | throw ... |
+| f | false | 522 | 522 | ExprStmt |
+| f | false | 524 | 524 | { ... } |
+| f | false | 526 | 526 | if (...) ...  |
+| f | false | 528 | 528 | declaration |
+| f | false | 530 | 530 | { ... } |
+| f | false | 533 | 533 | call to C |
+| f | false | 537 | 537 | 108 |
+| f | false | 538 | 538 | initializer for c108 |
+| f | false | 541 | 541 | declaration |
+| f | false | 543 | 543 | { ... } |
+| f | false | 545 | 545 | __try { ... } __finally { ... } |
+| f | false | 547 | 547 | declaration |
+| f | false | 549 | 549 | return ... |
+| f | false | 551 | 551 | { ... } |
+| f | false | 553 | 553 | c101 |
+| f | false | 555 | 555 | call to c101.~C |
+| f | false | 557 | 557 | c105 |
+| f | false | 558 | 558 | call to c105.~C |
+| f | false | 559 | 559 | c109 |
+| f | false | 560 | 560 | call to c109.~C |
+| f | false | 561 | 561 | c101 |
+| f | false | 562 | 562 | call to c101.~C |
+| f | false | 563 | 563 | c105 |
+| f | false | 564 | 564 | call to c105.~C |
+| f | false | 565 | 565 | c108 |
+| f | false | 567 | 567 | call to c108.~C |
+| f | false | 568 | 568 | c106 |
+| f | false | 570 | 570 | call to c106.~C |
+| f | false | 571 | 571 | c107 |
+| f | false | 572 | 572 | call to c107.~C |
+| f | false | 573 | 573 | c106 |
+| f | false | 574 | 574 | call to c106.~C |
+| f | false | 575 | 575 | c104 |
+| f | false | 577 | 577 | call to c104.~C |
+| f | false | 578 | 578 | c102 |
+| f | false | 580 | 580 | call to c102.~C |
+| f | false | 581 | 581 | c103 |
+| f | false | 582 | 582 | call to c103.~C |
+| f | false | 583 | 583 | c102 |
+| f | false | 584 | 584 | call to c102.~C |
+| f | false | 586 | 586 | call to C |
+| f | false | 590 | 590 | 101 |
+| f | false | 591 | 591 | initializer for c101 |
+| f | false | 595 | 595 | call to C |
+| f | false | 599 | 599 | 105 |
+| f | false | 600 | 600 | initializer for c105 |
+| f | false | 604 | 604 | call to C |
+| f | false | 608 | 608 | 109 |
+| f | false | 609 | 609 | initializer for c109 |
+| f | true | 430 | 591 |  |
+| f | true | 433 | 465 |  |
+| f | true | 438 | 433 |  |
+| f | true | 439 | 438 |  |
+| f | true | 443 | 581 |  |
+| f | true | 447 | 443 |  |
+| f | true | 448 | 447 |  |
+| f | true | 451 | 439 |  |
+| f | true | 453 | 463 | T |
+| f | true | 453 | 467 | F |
+| f | true | 458 | 459 |  |
+| f | true | 459 | 583 |  |
+| f | true | 461 | 458 |  |
+| f | true | 463 | 461 |  |
+| f | true | 465 | 453 |  |
+| f | true | 467 | 448 |  |
+| f | true | 469 | 451 |  |
+| f | true | 476 | 488 | T |
+| f | true | 478 | 575 |  |
+| f | true | 482 | 478 |  |
+| f | true | 483 | 482 |  |
+| f | true | 486 | 483 |  |
+| f | true | 488 | 486 |  |
+| f | true | 490 | 469 |  |
+| f | true | 492 | 600 |  |
+| f | true | 495 | 526 |  |
+| f | true | 499 | 495 |  |
+| f | true | 500 | 499 |  |
+| f | true | 504 | 571 |  |
+| f | true | 508 | 504 |  |
+| f | true | 509 | 508 |  |
+| f | true | 512 | 500 |  |
+| f | true | 514 | 524 | T |
+| f | true | 514 | 528 | F |
+| f | true | 519 | 520 |  |
+| f | true | 520 | 573 |  |
+| f | true | 522 | 519 |  |
+| f | true | 524 | 522 |  |
+| f | true | 526 | 514 |  |
+| f | true | 528 | 509 |  |
+| f | true | 530 | 512 |  |
+| f | true | 533 | 565 |  |
+| f | true | 537 | 533 |  |
+| f | true | 538 | 537 |  |
+| f | true | 541 | 538 |  |
+| f | true | 543 | 541 |  |
+| f | true | 545 | 530 |  |
+| f | true | 547 | 609 |  |
+| f | true | 549 | 559 |  |
+| f | true | 551 | 430 |  |
+| f | true | 553 | 555 |  |
+| f | true | 555 | 419 |  |
+| f | true | 557 | 558 |  |
+| f | true | 558 | 553 |  |
+| f | true | 559 | 560 |  |
+| f | true | 560 | 557 |  |
+| f | true | 561 | 562 |  |
+| f | true | 562 | 419 |  |
+| f | true | 563 | 564 |  |
+| f | true | 564 | 561 |  |
+| f | true | 565 | 567 |  |
+| f | true | 567 | 547 |  |
+| f | true | 567 | 563 |  |
+| f | true | 568 | 570 |  |
+| f | true | 570 | 543 |  |
+| f | true | 571 | 572 |  |
+| f | true | 572 | 568 |  |
+| f | true | 573 | 574 |  |
+| f | true | 574 | 543 |  |
+| f | true | 575 | 577 |  |
+| f | true | 577 | 492 |  |
+| f | true | 578 | 580 |  |
+| f | true | 580 | 492 |  |
+| f | true | 581 | 582 |  |
+| f | true | 582 | 578 |  |
+| f | true | 583 | 584 |  |
+| f | true | 584 | 476 |  |
+| f | true | 586 | 490 |  |
+| f | true | 590 | 586 |  |
+| f | true | 591 | 590 |  |
+| f | true | 595 | 545 |  |
+| f | true | 599 | 595 |  |
+| f | true | 600 | 599 |  |
+| f | true | 604 | 549 |  |
+| f | true | 608 | 604 |  |
+| f | true | 609 | 608 |  |
 | f1 | false | 275 | 275 | f1 |
 | f2 | false | 282 | 282 | f2 |
 | f3 | false | 287 | 287 | f3 |
@@ -338,8 +340,6 @@
 | i | false | 334 | 334 | i |
 | j | false | 344 | 344 | j |
 | k | false | 355 | 355 | k |
-| operator= | false | 140 | 140 | operator= |
-| operator= | false | 147 | 147 | operator= |
 | run_fun2 | false | 182 | 182 | run_fun2 |
 | run_fun2 | false | 190 | 190 | call to fun2 |
 | run_fun2 | false | 192 | 192 | ExprStmt |
