@@ -91,13 +91,15 @@ predicate emptyBlockContainsNonchild(Block b) {
  */
 predicate lineComment(Block b) {
   emptyBlock(_, b) and
-  exists(File f, int line |
-    f = b.getFile() and
-    line = b.getLocation().getStartLine() and
-    line = b.getLocation().getEndLine() and
-    exists(Comment c |
-      c.getFile() = f and
-      c.getLocation().getStartLine() = line
+  exists(Location bLocation, File f, int line |
+    bLocation = b.getLocation() and
+    f = bLocation.getFile() and
+    line = bLocation.getStartLine() and
+    line = bLocation.getEndLine() and
+    exists(Comment c, Location cLocation |
+      cLocation = c.getLocation() and
+      cLocation.getFile() = f and
+      cLocation.getStartLine() = line
     )
   )
 }
