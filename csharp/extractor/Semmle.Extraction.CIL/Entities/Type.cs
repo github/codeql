@@ -60,7 +60,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         Location IEntity.ReportingLocation => throw new NotImplementedException();
 
-        public void Extract(Context cx) { cx.Populate(this); }
+        public void Extract(Context cx2) { cx2.Populate(this); }
 
         public abstract IEnumerable<IExtractionProduct> Contents { get; }
 
@@ -83,13 +83,13 @@ namespace Semmle.Extraction.CIL.Entities
         /// <summary>
         /// Find the method in this type matching the name and signature.
         /// </summary>
-        /// <param name="Name">The handle to the name.</param>
+        /// <param name="methodName">The handle to the name.</param>
         /// <param name="signature">
         /// The handle to the signature. Note that comparing handles is a valid
         /// shortcut to comparing the signature bytes since handles are unique.
         /// </param>
         /// <returns>The method, or 'null' if not found or not supported.</returns>
-        internal virtual Method LookupMethod(StringHandle Name, BlobHandle signature)
+        internal virtual Method LookupMethod(StringHandle methodName, BlobHandle signature)
         {
             return null;
         }
@@ -338,16 +338,16 @@ namespace Semmle.Extraction.CIL.Entities
             if (ThisTypeParameters == 0)
                 return Enumerable.Empty<TypeTypeParameter>();
 
-            var typeParams = new TypeTypeParameter[ThisTypeParameters];
+            var newTypeParams = new TypeTypeParameter[ThisTypeParameters];
             var genericParams = td.GetGenericParameters();
-            int toSkip = genericParams.Count - typeParams.Length;
+            int toSkip = genericParams.Count - newTypeParams.Length;
 
             // Two-phase population because type parameters can be mutually dependent
-            for (int i = 0; i < typeParams.Length; ++i)
-                typeParams[i] = cx.Populate(new TypeTypeParameter(this, this, i));
-            for (int i = 0; i < typeParams.Length; ++i)
-                typeParams[i].PopulateHandle(this, genericParams[i + toSkip]);
-            return typeParams;
+            for (int i = 0; i < newTypeParams.Length; ++i)
+                newTypeParams[i] = cx.Populate(new TypeTypeParameter(this, this, i));
+            for (int i = 0; i < newTypeParams.Length; ++i)
+                newTypeParams[i].PopulateHandle(this, genericParams[i + toSkip]);
+            return newTypeParams;
         }
 
         readonly Lazy<IEnumerable<TypeTypeParameter>> typeParams;
@@ -482,12 +482,12 @@ namespace Semmle.Extraction.CIL.Entities
 
         TypeTypeParameter[] MakeTypeParameters()
         {
-            var typeParams = new TypeTypeParameter[ThisTypeParameters];
-            for (int i = 0; i < typeParams.Length; ++i)
+            var newTypeParams = new TypeTypeParameter[ThisTypeParameters];
+            for (int i = 0; i < newTypeParams.Length; ++i)
             {
-                typeParams[i] = new TypeTypeParameter(this, this, i);
+                newTypeParams[i] = new TypeTypeParameter(this, this, i);
             }
-            return typeParams;
+            return newTypeParams;
         }
 
         public override IEnumerable<IExtractionProduct> Contents

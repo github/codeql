@@ -202,13 +202,13 @@ namespace Semmle.Extraction.CSharp.Entities
             cx.Emit(Tuples.conditional_access(this));
         }
 
-        public void PopulateArguments(Context cx, BaseArgumentListSyntax args, int child)
+        public void PopulateArguments(BaseArgumentListSyntax args, int child)
         {
             foreach (var arg in args.Arguments)
-                PopulateArgument(cx, arg, child++);
+                PopulateArgument(arg, child++);
         }
 
-        private void PopulateArgument(Context cx, ArgumentSyntax arg, int child)
+        private void PopulateArgument(ArgumentSyntax arg, int child)
         {
             var expr = Create(cx, arg.Expression, this, child);
             int mode;

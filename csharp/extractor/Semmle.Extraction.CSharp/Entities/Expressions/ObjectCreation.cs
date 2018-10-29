@@ -37,7 +37,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         {
             if (Syntax.ArgumentList != null)
             {
-                PopulateArguments(cx, Syntax.ArgumentList, 0);
+                PopulateArguments(Syntax.ArgumentList, 0);
             }
 
             var target = cx.Model(Syntax).GetSymbolInfo(Syntax);
