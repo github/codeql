@@ -1,3 +1,5 @@
 | empty_block.cpp:7:10:7:11 | { ... } | Empty block without comment |
 | empty_block.cpp:10:10:11:3 | { ... } | Empty block without comment |
 | empty_block.cpp:18:10:19:3 | { ... } | Empty block without comment |
+| empty_block.cpp:53:10:53:11 | { ... } | Empty block without comment |
+| empty_block.cpp:56:10:56:11 | { ... } | Empty block without comment |
