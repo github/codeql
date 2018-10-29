@@ -1,4 +1,4 @@
-| UselessConditional.js:5:7:5:12 | !lines | This expression always evaluates to false. |
+| UselessConditional.js:5:8:5:12 | lines | Variable 'lines' always evaluates to true here. |
 | UselessConditional.js:12:34:12:79 | (v = ne ... k] = v) | This logical 'and' expression can be replaced with a comma expression. |
 | UselessConditional.js:17:9:17:9 | a | Variable 'a' always evaluates to false here. |
 | UselessConditional.js:18:9:18:9 | b | Variable 'b' always evaluates to false here. |
