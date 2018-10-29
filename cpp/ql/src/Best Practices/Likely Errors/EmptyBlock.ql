@@ -29,6 +29,10 @@ class AffectedFile extends File {
   }
 }
 
+/**
+ * A block, or an element we might find textually within a block that is
+ * not a child of it in the AST.
+ */
 class BlockOrNonChild extends Element {
   BlockOrNonChild() {
     ( this instanceof Block
@@ -68,6 +72,9 @@ class BlockOrNonChild extends Element {
   }
 }
 
+/**
+ * A block that contains a non-child element.
+ */
 predicate emptyBlockContainsNonchild(Block b) {
   emptyBlock(_, b) and
   exists(BlockOrNonChild c, AffectedFile file |
@@ -78,7 +85,27 @@ predicate emptyBlockContainsNonchild(Block b) {
   )
 }
 
+/**
+ * A block that is entirely on one line, which also contains a comment.  Chances
+ * are the comment is intended to refer to the block.
+ */
+predicate lineComment(Block b) {
+  emptyBlock(_, b) and
+  exists(Location bLocation, File f, int line |
+    bLocation = b.getLocation() and
+    f = bLocation.getFile() and
+    line = bLocation.getStartLine() and
+    line = bLocation.getEndLine() and
+    exists(Comment c, Location cLocation |
+      cLocation = c.getLocation() and
+      cLocation.getFile() = f and
+      cLocation.getStartLine() = line
+    )
+  )
+}
+
 from ControlStructure s, Block eb
 where emptyBlock(s, eb)
   and not emptyBlockContainsNonchild(eb)
+  and not lineComment(eb)
 select eb, "Empty block without comment"
