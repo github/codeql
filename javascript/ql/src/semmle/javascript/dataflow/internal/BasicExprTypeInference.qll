@@ -243,17 +243,24 @@ private class AnalyzedBinaryExpr extends DataFlow::AnalyzedValueNode {
 }
 
 /**
+ * Gets a primitive type to which the local value of `e` can be coerced.
+ */
+private PrimitiveType getALocalPrimitiveType(Expr e) {
+    result = e.analyze().getALocalValue().toPrimitive().getType()
+}
+
+/**
  * Holds if `e` may hold a string value.
  */
 private predicate maybeString(Expr e) {
-  e.analyze().getAPrimitiveType() = TTString()
+  getALocalPrimitiveType(e) = TTString()
 }
 
 /**
  * Holds if `e` may hold a non-string value.
  */
 private predicate maybeNonString(Expr e) {
-  e.analyze().getAPrimitiveType() != TTString()
+  getALocalPrimitiveType(e) != TTString()
 }
 
 /**
