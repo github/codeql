@@ -84,4 +84,9 @@ async function awaitFlow(){
     }
     f3(true);
 });
+
+(function() {
+    if ((x, true));
+});
+
 // semmle-extractor-options: --experimental
