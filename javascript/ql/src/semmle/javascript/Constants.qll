@@ -127,12 +127,30 @@ module SyntacticConstants {
   class WrappedConstant extends SyntacticConstant {
 
     WrappedConstant() {
-      stripParens() instanceof SyntacticConstant or
-      this.(SeqExpr).getLastOperand() instanceof SyntacticConstant or
-      this.(TypeAssertion).getExpression() instanceof SyntacticConstant or
-      this.(Assignment).getRhs() instanceof SyntacticConstant
+      getUnderlyingValue() instanceof SyntacticConstant
     }
 
+  }
+
+  /**
+   * Holds if `c` evaluates to `undefined`.
+   */
+  predicate isUndefined(SyntacticConstant c) {
+    c.getUnderlyingValue() instanceof UndefinedConstant
+  }
+
+  /**
+   * Holds if `c` evaluates to `null`.
+   */
+  predicate isNull(SyntacticConstant c) {
+    c.getUnderlyingValue() instanceof NullConstant
+  }
+
+  /**
+   * Holds if `c` evaluates to `null` or `undefined`.
+   */
+  predicate isNullOrUndefined(SyntacticConstant c) {
+    isUndefined(c) or isNull(c)
   }
 
 }

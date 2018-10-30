@@ -107,6 +107,14 @@ class VSTestAssertClass extends Class {
   }
 }
 
+/** The `Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException` class. */
+class AssertFailedExceptionClass extends ExceptionClass {
+  AssertFailedExceptionClass() {
+    this.getNamespace() instanceof VSTestNamespace and
+    this.hasName("AssertFailedException")
+  }
+}
+
 /** DEPRECATED. Gets the `Microsoft.VisualStudio.TestTools.UnitTesting.Assert` class. */
 deprecated
 VSTestAssertClass getVSTestAssertClass() { any() }

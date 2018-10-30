@@ -38,6 +38,7 @@
 | Unused variable, import, function or class | Fewer results | This rule now flags import statements with multiple unused imports once. |
 | User-controlled bypass of security check | Fewer results | This rule no longer flags conditions that guard early returns. The precision of this rule has been revised to "medium". Results are no longer shown on LGTM by default. | 
 | Whitespace contradicts operator precedence | Fewer false-positive results | This rule no longer flags operators with asymmetric whitespace. |
+| Unused import | Fewer false-positive results | This rule no longer flags imports used by the `transform-react-jsx` Babel plugin. |
 
 ## Changes to QL libraries
 

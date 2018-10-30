@@ -122,16 +122,24 @@ private cached module Internal {
        }
     or TPhi(ReachableJoinBlock bb, SsaSourceVariable v) {
          liveAtEntry(bb, v) and
-         exists (ReachableBasicBlock defbb, SsaDefinition def |
-          def.definesAt(defbb, _, v) and
-          bb.inDominanceFrontierOf(defbb)
-         )
+         inDefDominanceFrontier(bb, v)
        }
     or TRefinement(ReachableBasicBlock bb, int i, GuardControlFlowNode guard, SsaSourceVariable v) {
          bb.getNode(i) = guard and
          guard.getTest().(Refinement).getRefinedVar() = v and
          liveAtEntry(bb, v)
        }
+
+  /**
+   * Holds if `bb` is in the dominance frontier of a block containing a definition of `v`.
+   */
+  pragma[noinline]
+  private predicate inDefDominanceFrontier(ReachableJoinBlock bb, SsaSourceVariable v) {
+    exists (ReachableBasicBlock defbb, SsaDefinition def |
+      def.definesAt(defbb, _, v) and
+      bb.inDominanceFrontierOf(defbb)
+    )
+  }
 
   /**
    * Holds if `v` is a captured variable which is declared in `declContainer` and read in
@@ -217,6 +225,13 @@ private cached module Internal {
   }
 
   /**
+   * Gets the maximum rank among all references to `v` in basic block `bb`.
+   */
+  private int maxRefRank(ReachableBasicBlock bb, SsaSourceVariable v) {
+    result = max(refRank(bb, _, v, _))
+  }
+
+  /**
    * Holds if variable `v` is live after the `i`th node of basic block `bb`, where
    * `i` is the index of a node that may assign or capture `v`.
    *
@@ -230,8 +245,8 @@ private cached module Internal {
       or
       // this is the last reference to `v` inside `bb`, but `v` is live at entry
       // to a successor basic block of `bb`
-      r = max(refRank(bb, _, v, _)) and
-      liveAtEntry(bb.getASuccessor(), v)
+      r = maxRefRank(bb, v) and
+      liveAtSuccEntry(bb, v)
     )
   }
 
@@ -248,6 +263,13 @@ private cached module Internal {
     // there is no reference to `v` inside `bb`, but `v` is live at entry
     // to a successor basic block of `bb`
     not exists(refRank(bb, _, v, _)) and
+    liveAtSuccEntry(bb, v)
+  }
+
+  /**
+   * Holds if `v` is live at the beginning of any successor of basic block `bb`.
+   */
+  private predicate liveAtSuccEntry(ReachableBasicBlock bb, SsaSourceVariable v) {
     liveAtEntry(bb.getASuccessor(), v)
   }
 
@@ -312,24 +334,31 @@ private cached module Internal {
   }
 
   /**
+   * Gets an SSA definition of `v` that reaches the end of the immediate dominator of `bb`.
+   */
+  pragma[noinline]
+  private SsaDefinition getDefReachingEndOfImmediateDominator(ReachableBasicBlock bb, SsaSourceVariable v) {
+    result = getDefReachingEndOf(bb.getImmediateDominator(), v)
+  }
+
+  /**
    * Gets an SSA definition of `v` that reaches the end of basic block `bb`.
    */
   cached SsaDefinition getDefReachingEndOf(ReachableBasicBlock bb, SsaSourceVariable v) {
-    bb.getASuccessor().localIsLiveAtEntry(v) and
-    (
-      exists (int lastRef | lastRef = max(int i | ssaRef(bb, i, v, _)) |
-        result = getLocalDefinition(bb, lastRef, v)
-        or
-        result.definesAt(bb, lastRef, v)
-      )
+    exists (int lastRef | lastRef = max(int i | ssaRef(bb, i, v, _)) |
+      result = getLocalDefinition(bb, lastRef, v)
       or
-      /* In SSA form, the (unique) reaching definition of a use is the closest
-       * definition that dominates the use. If two definitions dominate a node
-       * then one must dominate the other, so we can find the reaching definition
-       * by following the idominance relation backwards. */
-      result = getDefReachingEndOf(bb.getImmediateDominator(), v) and
-      not exists (SsaDefinition ssa | ssa.definesAt(bb, _, v))
+      result.definesAt(bb, lastRef, v) and
+      liveAtSuccEntry(bb, v)
     )
+    or
+    /* In SSA form, the (unique) reaching definition of a use is the closest
+     * definition that dominates the use. If two definitions dominate a node
+     * then one must dominate the other, so we can find the reaching definition
+     * by following the idominance relation backwards. */
+    result = getDefReachingEndOfImmediateDominator(bb, v) and
+    not exists (SsaDefinition ssa | ssa.definesAt(bb, _, v)) and
+    liveAtSuccEntry(bb, v)
   }
 
   /**

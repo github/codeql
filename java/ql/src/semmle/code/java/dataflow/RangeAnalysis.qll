@@ -583,18 +583,6 @@ private predicate unequalSsa(SsaVariable v, SsaReadPosition pos, Bound b, int de
   )
 }
 
-/**
- * Holds if `inp` is an input to `phi` along a back edge.
- */
-private predicate backEdge(SsaPhiNode phi, SsaVariable inp, SsaReadPositionPhiInputEdge edge) {
-  edge.phiInput(phi, inp) and
-  // Conservatively assume that every edge is a back edge if we don't have dominance information.
-  (
-    phi.getBasicBlock().bbDominates(edge.getOrigBlock()) or
-    not hasDominanceInformation(edge.getOrigBlock())
-  )
-}
-
 /** Weakens a delta to lie in the range `[-1..1]`. */
 bindingset[delta, upper]
 private int weakenDelta(boolean upper, int delta) {
