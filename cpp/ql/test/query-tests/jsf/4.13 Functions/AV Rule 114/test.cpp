@@ -133,3 +133,34 @@ int g16(int x)
 {
 	myConditionalThrow(x < 10, "fail"); // BAD (doesn't always throw)
 }
+
+int g17(int x)
+{
+	try
+	{
+		myConditionalThrow(x < 10, "fail");
+	} catch (...) {
+		return x; // BAD (doesn't always reach this return)
+	}
+}
+
+int g18(int x)
+{
+	try
+	{
+		myThrow("fail");
+	} catch (...) {
+		return x; // GOOD [FALSE POSITIVE]
+	}
+}
+
+int g19(int x)
+{
+	try
+	{
+		myThrow("fail");
+	} catch (...) {
+	}
+
+	return x; // GOOD
+}
