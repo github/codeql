@@ -17,6 +17,10 @@
 | nodeJsLib.js:2:15:2:23 | "tainted" | esClient.js:7:13:7:18 | nj.foo |
 | nodeJsLib.js:2:15:2:23 | "tainted" | esClient.js:10:13:10:17 | njFoo |
 | nodeJsLib.js:2:15:2:23 | "tainted" | nodeJsClient.js:4:13:4:18 | nj.foo |
+| partial.js:5:15:5:24 | "tainted1" | partial.js:9:15:9:15 | x |
+| partial.js:5:15:5:24 | "tainted1" | partial.js:15:15:15:15 | x |
+| partial.js:5:15:5:24 | "tainted1" | partial.js:21:15:21:15 | x |
+| partial.js:5:15:5:24 | "tainted1" | partial.js:27:15:27:15 | x |
 | promises.js:2:16:2:24 | "tainted" | promises.js:7:16:7:18 | val |
 | promises.js:11:22:11:31 | "resolved" | promises.js:19:20:19:20 | v |
 | promises.js:11:22:11:31 | "resolved" | promises.js:27:16:27:16 | v |
