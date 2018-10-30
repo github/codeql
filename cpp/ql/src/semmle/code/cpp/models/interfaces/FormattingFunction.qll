@@ -7,6 +7,38 @@
  */
 
 import semmle.code.cpp.Function
+
+private Type stripTopLevelSpecifiersOnly(Type t) {
+  (
+    result = stripTopLevelSpecifiersOnly(t.(SpecifiedType).getBaseType())
+  ) or (
+    result = t and
+    not t instanceof SpecifiedType
+  )
+}
+
+/**
+ * A type that is used as a format string by any formatting function.
+ */
+Type getAFormatterWideType() {
+  exists(FormattingFunction ff |
+    result = stripTopLevelSpecifiersOnly(ff.getDefaultCharType()) and
+    result.getSize() != 1
+  )
+}
+
+/**
+ * A type that is used as a format string by any formatting function, or `wchar_t` if
+ * there is none.
+ */
+private Type getAFormatterWideTypeOrDefault() {
+  result = getAFormatterWideType() or
+  (
+    not exists(getAFormatterWideType()) and
+    result instanceof Wchar_t
+  )
+}
+
 /**
  * A standard library function that uses a `printf`-like formatting string.
  */
@@ -19,6 +51,43 @@ abstract class FormattingFunction extends Function {
    * a `char *` (either way, `%S` will have the opposite meaning).
    */
   predicate isWideCharDefault() { none() }
+
+  /**
+   * Gets the default character type expected for `%s` by this function.  Typically
+   * `char` or `wchar_t`.
+   */
+  Type getDefaultCharType() {
+    result = stripTopLevelSpecifiersOnly(getParameter(getFormatParameterIndex()).getType().
+      getUnderlyingType().(PointerType).getBaseType())
+  }
+
+  /**
+   * Gets the non-default character type expected for `%S` by this function.  Typically
+   * `wchar_t` or `char`.  On some snapshots there may be multiple results where we can't tell
+   * which is correct for a particular function.
+   */
+  Type getNonDefaultCharType() {
+  	(
+  	  getDefaultCharType().getSize() = 1 and
+  	  result = getAFormatterWideTypeOrDefault()
+  	) or (
+  	  getDefaultCharType().getSize() > 1 and
+  	  result instanceof PlainCharType
+  	)
+  }
+
+  /**
+   * Gets the wide character type for this function.  This is usually `wchar_t`.  On some
+   * snapshots there may be multiple results where we can't tell which is correct for a
+   * particular function.
+   */
+  Type getWideCharType() {
+    (
+      result = getDefaultCharType() or
+      result = getNonDefaultCharType()
+    ) and
+    result.getSize() > 1
+  }
 
   /**
    * Gets the position at which the output parameter, if any, occurs.

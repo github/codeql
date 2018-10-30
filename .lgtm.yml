@@ -1,0 +1,17 @@
+path_classifiers:
+  library:
+  - javascript/externs
+
+  test:
+  - csharp/ql/src
+  - csharp/ql/test
+  - javascript/ql/src
+  - javascript/ql/test
+
+queries:
+  - include: "*"
+
+extraction:
+  python:
+    python_setup:
+      version: 3

@@ -24,6 +24,14 @@ module ClientSideUrlRedirect {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
+   * A flow label for values that represent the URL of the current document, and
+   * hence are only partially user-controlled.
+   */
+  class DocumentUrl extends DataFlow::FlowLabel {
+    DocumentUrl() { this = "document.url" }
+  }
+
+  /**
    * A taint-tracking configuration for reasoning about unvalidated URL redirections.
    */
   class Configuration extends TaintTracking::Configuration {
@@ -35,18 +43,33 @@ module ClientSideUrlRedirect {
       source instanceof Source
     }
 
+    override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel lbl) {
+      isDocumentURL(source.asExpr()) and
+      lbl instanceof DocumentUrl
+    }
+
     override predicate isSink(DataFlow::Node sink) {
       sink instanceof Sink
     }
 
     override predicate isSanitizer(DataFlow::Node node) {
       super.isSanitizer(node) or
-      isSafeLocationProperty(node.asExpr()) or
       node instanceof Sanitizer
     }
 
     override predicate isSanitizer(DataFlow::Node source, DataFlow::Node sink) {
       sanitizingPrefixEdge(source, sink)
+    }
+
+    override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel f, DataFlow::FlowLabel g) {
+      queryAccess(pred, succ) and
+      f instanceof DocumentUrl and
+      g = DataFlow::FlowLabel::taint()
+      or
+      // preserve document.url label in step from `location` to `location.href`
+      f instanceof DocumentUrl and
+      g instanceof DocumentUrl and
+      succ.(DataFlow::PropRead).accesses(pred, "href")
     }
   }
 
@@ -82,35 +105,6 @@ module ClientSideUrlRedirect {
       mce.calls(any(RegExpLiteral re), "exec") and
       nd.asExpr() = mce.getArgument(0)
     )
-  }
-
-  /**
-   * A taint tracking configuration for identifying accesses of the query string of the current URL.
-   */
-  private class LocationHrefDataFlowConfiguration extends TaintTracking::Configuration {
-    LocationHrefDataFlowConfiguration() {
-      this = "LocationHrefDataFlowConfiguration"
-    }
-
-    override predicate isSource(DataFlow::Node source) {
-      isDocumentURL(source.asExpr())
-    }
-
-    override predicate isSink(DataFlow::Node sink) {
-      queryAccess(sink, _)
-    }
-  }
-
-  /**
-   * An access of the query string of the current URL.
-   */
-  class LocationSearchSource extends Source {
-    LocationSearchSource() {
-      exists(LocationHrefDataFlowConfiguration cfg, DataFlow::Node nd |
-        cfg.hasFlow(_, nd) and
-        queryAccess(nd, this)
-      )
-    }
   }
 
   /**

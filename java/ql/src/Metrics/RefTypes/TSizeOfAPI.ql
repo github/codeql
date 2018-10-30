@@ -9,11 +9,12 @@
  * @tags testability
  *       modularity
  */
+
 import java
 
 from Class c, int n
-where c.fromSource() and 
-      c.isPublic() and
-      n = count(Method m | c.getAMethod() = m and m.isPublic())
-select c, n
-order by n desc
+where
+  c.fromSource() and
+  c.isPublic() and
+  n = count(Method m | c.getAMethod() = m and m.isPublic())
+select c, n order by n desc

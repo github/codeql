@@ -268,6 +268,12 @@ private class AnalyzedVariableExport extends AnalyzedPropertyWrite, DataFlow::Va
     propName = name and
     source = varDef.getSource().analyze()
   }
+
+  override predicate writesValue(AbstractValue baseVal, string propName, AbstractValue val) {
+    baseVal = TAbstractExportsObject(export.getEnclosingModule()) and
+    propName = name and
+    val = varDef.getAnAssignedValue()
+  }
 }
 
 /**
@@ -301,7 +307,7 @@ private class AnalyzedExportAssign extends AnalyzedPropertyWrite, DataFlow::Valu
   }
 
   override predicate writes(AbstractValue baseVal, string propName, DataFlow::AnalyzedNode source) {
-    baseVal = TAbstractModuleObject(exportAssign.getContainer()) and
+    baseVal = TAbstractModuleObject(exportAssign.getTopLevel()) and
     propName = "exports" and
     source = this
   }

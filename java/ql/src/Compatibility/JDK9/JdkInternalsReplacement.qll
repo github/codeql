@@ -3,16 +3,14 @@
  *
  * http://hg.openjdk.java.net/jdk9/jdk9/langtools/file/6ba2130e87bd/src/jdk.jdeps/share/classes/com/sun/tools/jdeps/resources/jdkinternals.properties
  */
-
 predicate jdkInternalReplacement(string old, string new) {
   exists(string r, int eqIdx | jdkInternalReplacement(r) and eqIdx = r.indexOf("=") |
     old = r.prefix(eqIdx) and
-    new = r.suffix(eqIdx+1)
+    new = r.suffix(eqIdx + 1)
   )
 }
 
-private
-predicate jdkInternalReplacement(string r) {
+private predicate jdkInternalReplacement(string r) {
   r = "com.sun.crypto.provider.SunJCE=Use java.security.Security.getProvider(provider-name) @since 1.3" or
   r = "com.sun.org.apache.xml.internal.security=Use java.xml.crypto @since 1.6" or
   r = "com.sun.org.apache.xml.internal.security.utils.Base64=Use java.util.Base64 @since 1.8" or

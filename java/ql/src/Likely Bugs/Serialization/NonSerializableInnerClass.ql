@@ -10,59 +10,55 @@
  *       maintainability
  *       language-features
  */
+
 import java
 import semmle.code.java.JDKAnnotations
 
-predicate isSerializable(RefType t) {
-  exists(TypeSerializable ts | ts = t.getASupertype*())
-}
+predicate isSerializable(RefType t) { exists(TypeSerializable ts | ts = t.getASupertype*()) }
 
 predicate withinStaticContext(NestedClass c) {
   c.isStatic() or
   c.(AnonymousClass).getClassInstanceExpr().getEnclosingCallable().isStatic() // JLS 15.9.2
 }
 
-RefType enclosingInstanceType(Class inner){
+RefType enclosingInstanceType(Class inner) {
   not withinStaticContext(inner) and
   result = inner.(NestedClass).getEnclosingType()
 }
 
-predicate castTo(ClassInstanceExpr cie, RefType to){
-  exists(LocalVariableDeclExpr lvd | lvd.getInit() = cie |
-    to = lvd.getType()
-  ) or
-  exists(Assignment a | a.getSource() = cie |
-    to = a.getType()
-  ) or
-  exists(Call call, int n | call.getArgument(n) = cie |
-    to = call.getCallee().getParameterType(n)
-  ) or
-  exists(ReturnStmt ret | ret.getResult() = cie |
-    to = ret.getEnclosingCallable().getReturnType()
-  ) or
+predicate castTo(ClassInstanceExpr cie, RefType to) {
+  exists(LocalVariableDeclExpr lvd | lvd.getInit() = cie | to = lvd.getType())
+  or
+  exists(Assignment a | a.getSource() = cie | to = a.getType())
+  or
+  exists(Call call, int n | call.getArgument(n) = cie | to = call.getCallee().getParameterType(n))
+  or
+  exists(ReturnStmt ret | ret.getResult() = cie | to = ret.getEnclosingCallable().getReturnType())
+  or
   exists(ArrayCreationExpr ace | ace.getInit().getAnInit() = cie |
     to = ace.getType().(Array).getComponentType()
   )
 }
 
-predicate exceptions(NestedClass inner){
-  inner instanceof AnonymousClass or
-
+predicate exceptions(NestedClass inner) {
+  inner instanceof AnonymousClass
+  or
   // Serializable objects with custom `readObject` or `writeObject` methods may write out
   // the "non-serializable" fields in a different way.
-  inner.declaresMethod("readObject") or
-  inner.declaresMethod("writeObject") or
-
+  inner.declaresMethod("readObject")
+  or
+  inner.declaresMethod("writeObject")
+  or
   // Exclude cases where serialization warnings are deliberately suppressed.
-  inner.suppressesWarningsAbout("serial") or
-
+  inner.suppressesWarningsAbout("serial")
+  or
   // The class `inner` is a local class or non-public member class and
   // all its instance expressions are cast to non-serializable types.
   (
     (inner instanceof LocalClass or not inner.isPublic()) and
     forall(ClassInstanceExpr cie, RefType target |
       cie.getConstructedType() = inner and castTo(cie, target)
-      |
+    |
       not isSerializable(target)
     ) and
     // Exception 1: the expression is used as an argument to `writeObject()`.
@@ -90,9 +86,9 @@ where
   not isSerializable(outer) and
   not exceptions(inner) and
   (
-    if (inner instanceof LocalClass) then
-      advice = "Consider implementing readObject() and writeObject()."
-    else
-      advice = "Consider making the class static or implementing readObject() and writeObject()."
+    if (inner instanceof LocalClass)
+    then advice = "Consider implementing readObject() and writeObject()."
+    else advice = "Consider making the class static or implementing readObject() and writeObject()."
   )
-select inner, "Serializable inner class of non-serializable class $@. " + advice, outer, outer.getName()
+select inner, "Serializable inner class of non-serializable class $@. " + advice, outer,
+  outer.getName()

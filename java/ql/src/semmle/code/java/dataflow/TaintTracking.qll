@@ -7,7 +7,6 @@ import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.DataFlow2
 import semmle.code.java.Collections
-
 private import SSA
 private import DefUse
 private import semmle.code.java.security.SecurityTests
@@ -15,7 +14,6 @@ private import semmle.code.java.security.Validation
 private import semmle.code.java.frameworks.android.Intent
 
 module TaintTracking {
-
   /**
    * A taint tracking configuration.
    *
@@ -54,8 +52,7 @@ module TaintTracking {
     /** Holds if the node `node` is a taint sanitizer. */
     predicate isSanitizer(DataFlow::Node node) { none() }
 
-    final
-    override predicate isBarrier(DataFlow::Node node) {
+    final override predicate isBarrier(DataFlow::Node node) {
       isSanitizer(node) or
       // Ignore paths through test code.
       node.getEnclosingCallable().getDeclaringType() instanceof NonSecurityTestClass or
@@ -65,8 +62,7 @@ module TaintTracking {
     /** Holds if the edge from `node1` to `node2` is a taint sanitizer. */
     predicate isSanitizerEdge(DataFlow::Node node1, DataFlow::Node node2) { none() }
 
-    final
-    override predicate isBarrierEdge(DataFlow::Node node1, DataFlow::Node node2) {
+    final override predicate isBarrierEdge(DataFlow::Node node1, DataFlow::Node node2) {
       isSanitizerEdge(node1, node2)
     }
 
@@ -76,8 +72,7 @@ module TaintTracking {
      */
     predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) { none() }
 
-    final
-    override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    final override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
       isAdditionalTaintStep(node1, node2) or
       localAdditionalTaintStep(node1, node2)
     }
@@ -129,8 +124,7 @@ module TaintTracking {
     /** Holds if the node `node` is a taint sanitizer. */
     predicate isSanitizer(DataFlow::Node node) { none() }
 
-    final
-    override predicate isBarrier(DataFlow::Node node) {
+    final override predicate isBarrier(DataFlow::Node node) {
       isSanitizer(node) or
       // Ignore paths through test code.
       node.getEnclosingCallable().getDeclaringType() instanceof NonSecurityTestClass or
@@ -140,8 +134,7 @@ module TaintTracking {
     /** Holds if the edge from `node1` to `node2` is a taint sanitizer. */
     predicate isSanitizerEdge(DataFlow::Node node1, DataFlow::Node node2) { none() }
 
-    final
-    override predicate isBarrierEdge(DataFlow::Node node1, DataFlow::Node node2) {
+    final override predicate isBarrierEdge(DataFlow::Node node1, DataFlow::Node node2) {
       isSanitizerEdge(node1, node2)
     }
 
@@ -151,8 +144,7 @@ module TaintTracking {
      */
     predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) { none() }
 
-    final
-    override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    final override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
       isAdditionalTaintStep(node1, node2) or
       localAdditionalTaintStep(node1, node2)
     }
@@ -170,9 +162,7 @@ module TaintTracking {
    * Holds if taint can flow from `src` to `sink` in zero or more
    * local (intra-procedural) steps.
    */
-  predicate localTaint(DataFlow::Node src, DataFlow::Node sink) {
-    localTaintStep*(src, sink)
-  }
+  predicate localTaint(DataFlow::Node src, DataFlow::Node sink) { localTaintStep*(src, sink) }
 
   /**
    * Holds if taint can flow in one local step from `src` to `sink`.
@@ -188,8 +178,13 @@ module TaintTracking {
    * different objects.
    */
   predicate localAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
-    localAdditionalTaintExprStep(src.asExpr(), sink.asExpr()) or
-    exists(Argument arg | src.asExpr() = arg and arg.isVararg() and sink.(DataFlow::ImplicitVarargsArray).getCall() = arg.getCall())
+    localAdditionalTaintExprStep(src.asExpr(), sink.asExpr())
+    or
+    exists(Argument arg |
+      src.asExpr() = arg and
+      arg.isVararg() and
+      sink.(DataFlow::ImplicitVarargsArray).getCall() = arg.getCall()
+    )
   }
 
   /**
@@ -198,30 +193,47 @@ module TaintTracking {
    * different objects.
    */
   private predicate localAdditionalTaintExprStep(Expr src, Expr sink) {
-    sink.(AddExpr).getAnOperand() = src and sink.getType() instanceof TypeString or
-    sink.(AssignAddExpr).getSource() = src and sink.getType() instanceof TypeString or
-    sink.(ArrayCreationExpr).getInit() = src or
-    sink.(ArrayInit).getAnInit() = src or
-    sink.(ArrayAccess).getArray() = src or
-    sink.(LogicExpr).getAnOperand() = src or
+    sink.(AddExpr).getAnOperand() = src and sink.getType() instanceof TypeString
+    or
+    sink.(AssignAddExpr).getSource() = src and sink.getType() instanceof TypeString
+    or
+    sink.(ArrayCreationExpr).getInit() = src
+    or
+    sink.(ArrayInit).getAnInit() = src
+    or
+    sink.(ArrayAccess).getArray() = src
+    or
+    sink.(LogicExpr).getAnOperand() = src
+    or
     exists(Assignment assign | assign.getSource() = src |
       sink = assign.getDest().(ArrayAccess).getArray()
-    ) or
-    constructorStep(src, sink) or
-    qualifierToMethodStep(src, sink) or
-    qualifierToArgumentStep(src, sink) or
-    argToMethodStep(src, sink) or
-    argToArgStep(src, sink) or
-    argToQualifierStep(src, sink) or
-    comparisonStep(src, sink) or
-    stringBuilderStep(src, sink) or
-    serializationStep(src, sink) or
+    )
+    or
+    constructorStep(src, sink)
+    or
+    qualifierToMethodStep(src, sink)
+    or
+    qualifierToArgumentStep(src, sink)
+    or
+    argToMethodStep(src, sink)
+    or
+    argToArgStep(src, sink)
+    or
+    argToQualifierStep(src, sink)
+    or
+    comparisonStep(src, sink)
+    or
+    stringBuilderStep(src, sink)
+    or
+    serializationStep(src, sink)
+    or
     qualifierToArgStep(src, sink)
   }
 
   private class BulkData extends RefType {
     BulkData() {
-      this.(Array).getElementType().(PrimitiveType).getName().regexpMatch("byte|char") or
+      this.(Array).getElementType().(PrimitiveType).getName().regexpMatch("byte|char")
+      or
       exists(RefType t | this.getASourceSupertype*() = t |
         t.hasQualifiedName("java.io", "InputStream") or
         t.hasQualifiedName("java.nio", "ByteBuffer") or
@@ -250,48 +262,74 @@ module TaintTracking {
     exists(int argi | sink.getArgument(argi) = tracked |
       exists(string s | sink.getConstructedType().getQualifiedName() = s |
         // String constructor does nothing to data
-        s = "java.lang.String" and argi = 0 or
+        s = "java.lang.String" and argi = 0
+        or
         // some readers preserve the content of streams
-        s = "java.io.InputStreamReader" and argi = 0 or
-        s = "java.io.BufferedReader" and argi = 0 or
-        s = "java.io.CharArrayReader" and argi = 0 or
-        s = "java.io.StringReader" and argi = 0 or
+        s = "java.io.InputStreamReader" and argi = 0
+        or
+        s = "java.io.BufferedReader" and argi = 0
+        or
+        s = "java.io.CharArrayReader" and argi = 0
+        or
+        s = "java.io.StringReader" and argi = 0
+        or
         // data preserved through streams
-        s = "java.io.ObjectInputStream" and argi = 0 or
-        s = "java.io.ByteArrayInputStream" and argi = 0 or
-        s = "java.io.DataInputStream" and argi = 0 or
-        s = "java.io.BufferedInputStream" and argi = 0 or
-        s = "com.esotericsoftware.kryo.io.Input" and argi = 0 or
-        s = "java.beans.XMLDecoder" and argi = 0 or
+        s = "java.io.ObjectInputStream" and argi = 0
+        or
+        s = "java.io.ByteArrayInputStream" and argi = 0
+        or
+        s = "java.io.DataInputStream" and argi = 0
+        or
+        s = "java.io.BufferedInputStream" and argi = 0
+        or
+        s = "com.esotericsoftware.kryo.io.Input" and argi = 0
+        or
+        s = "java.beans.XMLDecoder" and argi = 0
+        or
         // a tokenizer preserves the content of a string
-        s = "java.util.StringTokenizer" and argi = 0 or
+        s = "java.util.StringTokenizer" and argi = 0
+        or
         // unzipping the stream preserves content
-        s = "java.util.zip.ZipInputStream" and argi = 0 or
-        s = "java.util.zip.GZIPInputStream" and argi = 0 or
+        s = "java.util.zip.ZipInputStream" and argi = 0
+        or
+        s = "java.util.zip.GZIPInputStream" and argi = 0
+        or
         // string builders and buffers
-        s = "java.lang.StringBuilder" and argi = 0 or
-        s = "java.lang.StringBuffer" and argi = 0 or
+        s = "java.lang.StringBuilder" and argi = 0
+        or
+        s = "java.lang.StringBuffer" and argi = 0
+        or
         // a cookie with tainted ingredients is tainted
-        s = "javax.servlet.http.Cookie" and argi = 0 or
-        s = "javax.servlet.http.Cookie" and argi = 1 or
+        s = "javax.servlet.http.Cookie" and argi = 0
+        or
+        s = "javax.servlet.http.Cookie" and argi = 1
+        or
         // various xml stream source constructors.
-        s = "org.xml.sax.InputSource" and argi = 0 or
-        s = "javax.xml.transform.sax.SAXSource" and argi = 0 and sink.getNumArgument() = 1 or
-        s = "javax.xml.transform.sax.SAXSource" and argi = 1 and sink.getNumArgument() = 2 or
-        s = "javax.xml.transform.stream.StreamSource" and argi = 0 or
+        s = "org.xml.sax.InputSource" and argi = 0
+        or
+        s = "javax.xml.transform.sax.SAXSource" and argi = 0 and sink.getNumArgument() = 1
+        or
+        s = "javax.xml.transform.sax.SAXSource" and argi = 1 and sink.getNumArgument() = 2
+        or
+        s = "javax.xml.transform.stream.StreamSource" and argi = 0
+        or
         //a URI constructed from a tainted string is tainted.
         s = "java.net.URI" and argi = 0 and sink.getNumArgument() = 1
-      ) or
+      )
+      or
       exists(RefType t | t.getQualifiedName() = "java.lang.Number" |
         hasSubtype*(t, sink.getConstructedType())
-      ) and argi = 0 or
+      ) and
+      argi = 0
+      or
       // wrappers constructed by extension
       exists(Constructor c, Parameter p, SuperConstructorInvocationStmt sup |
         c = sink.getConstructor() and
         p = c.getParameter(argi) and
         sup.getEnclosingCallable() = c and
         constructorStep(p.getAnAccess(), sup)
-      ) or
+      )
+      or
       // a custom InputStream that wraps a tainted data source is tainted
       inputStreamWrapper(sink.getConstructor(), argi)
     )
@@ -301,23 +339,25 @@ module TaintTracking {
   private predicate qualifierToArgumentStep(Expr tracked, RValue sink) {
     exists(MethodAccess ma, int arg |
       taintPreservingQualifierToArgument(ma.getMethod(), arg) and
-      tracked = ma.getQualifier() and sink = ma.getArgument(arg)
+      tracked = ma.getQualifier() and
+      sink = ma.getArgument(arg)
     )
   }
 
-  /** Methods that passes tainted data from qualifier to argument.*/
+  /** Methods that passes tainted data from qualifier to argument. */
   private predicate taintPreservingQualifierToArgument(Method m, int arg) {
     m instanceof CollectionMethod and
-    m.hasName("toArray") and arg = 1
+    m.hasName("toArray") and
+    arg = 1
     or
     m.getDeclaringType().hasQualifiedName("java.io", "ByteArrayOutputStream") and
-    m.hasName("writeTo") and arg = 0
+    m.hasName("writeTo") and
+    arg = 0
   }
 
   /** Access to a method that passes taint from the qualifier. */
   private predicate qualifierToMethodStep(Expr tracked, MethodAccess sink) {
-    (taintPreservingQualifierToMethod(sink.getMethod()) or unsafeEscape(sink))
-    and
+    (taintPreservingQualifierToMethod(sink.getMethod()) or unsafeEscape(sink)) and
     tracked = sink.getQualifier()
   }
 
@@ -336,13 +376,17 @@ module TaintTracking {
       m.getName() = "toString" or
       m.getName() = "toUpperCase" or
       m.getName() = "trim"
-    ) or
-    exists(Class c | c.getQualifiedName() = "java.lang.Number" | hasSubtype*(c, m.getDeclaringType())) and
+    )
+    or
+    exists(Class c | c.getQualifiedName() = "java.lang.Number" |
+      hasSubtype*(c, m.getDeclaringType())
+    ) and
     (
       m.getName().matches("to%String") or
       m.getName() = "toByteArray" or
       m.getName().matches("%Value")
-    ) or
+    )
+    or
     m.getDeclaringType().getQualifiedName().matches("%Reader") and
     m.getName().matches("read%")
     or
@@ -415,10 +459,14 @@ module TaintTracking {
   private predicate taintPreservingArgumentToMethod(Method method, int arg) {
     method instanceof StringReplaceMethod and arg = 1
     or
-    exists(Class c | c.getQualifiedName() = "java.lang.Number" | hasSubtype*(c, method.getDeclaringType())) and
+    exists(Class c | c.getQualifiedName() = "java.lang.Number" |
+      hasSubtype*(c, method.getDeclaringType())
+    ) and
     (
-      method.getName().matches("parse%") and arg = 0 or
-      method.getName().matches("valueOf%") and arg = 0 or
+      method.getName().matches("parse%") and arg = 0
+      or
+      method.getName().matches("valueOf%") and arg = 0
+      or
       method.getName().matches("to%String") and arg = 0
     )
     or
@@ -427,8 +475,10 @@ module TaintTracking {
       method.getDeclaringType().hasQualifiedName("java.lang", "StringBuffer")
     ) and
     (
-      method.getName() = "append" and arg = 0 or
-      method.getName() = "insert" and arg = 1 or
+      method.getName() = "append" and arg = 0
+      or
+      method.getName() = "insert" and arg = 1
+      or
       method.getName() = "replace" and arg = 2
     )
     or
@@ -437,31 +487,44 @@ module TaintTracking {
       method.getDeclaringType().hasQualifiedName("java.util", "Base64$Decoder")
     ) and
     (
-      method.getName() = "encode" and arg = 0 and method.getNumberOfParameters() = 1 or
-      method.getName() = "decode" and arg = 0 and method.getNumberOfParameters() = 1 or
-      method.getName() = "encodeToString" and arg = 0 or
+      method.getName() = "encode" and arg = 0 and method.getNumberOfParameters() = 1
+      or
+      method.getName() = "decode" and arg = 0 and method.getNumberOfParameters() = 1
+      or
+      method.getName() = "encodeToString" and arg = 0
+      or
       method.getName() = "wrap" and arg = 0
     )
     or
     method.getDeclaringType().hasQualifiedName("org.apache.commons.io", "IOUtils") and
     (
-      method.getName() = "buffer" and arg = 0 or
-      method.getName() = "readLines" and arg = 0 or
-      method.getName() = "readFully" and arg = 0 and method.getParameterType(1).hasName("int") or
-      method.getName() = "toBufferedInputStream" and arg = 0 or
-      method.getName() = "toBufferedReader" and arg = 0 or
-      method.getName() = "toByteArray" and arg = 0 or
-      method.getName() = "toCharArray" and arg = 0 or
-      method.getName() = "toInputStream" and arg = 0 or
+      method.getName() = "buffer" and arg = 0
+      or
+      method.getName() = "readLines" and arg = 0
+      or
+      method.getName() = "readFully" and arg = 0 and method.getParameterType(1).hasName("int")
+      or
+      method.getName() = "toBufferedInputStream" and arg = 0
+      or
+      method.getName() = "toBufferedReader" and arg = 0
+      or
+      method.getName() = "toByteArray" and arg = 0
+      or
+      method.getName() = "toCharArray" and arg = 0
+      or
+      method.getName() = "toInputStream" and arg = 0
+      or
       method.getName() = "toString" and arg = 0
     )
     or
     // A URI created from a tainted string is still tainted.
     method.getDeclaringType().hasQualifiedName("java.net", "URI") and
-    method.hasName("create") and arg = 0
+    method.hasName("create") and
+    arg = 0
     or
     method.getDeclaringType().hasQualifiedName("javax.xml.transform.sax", "SAXSource") and
-    method.hasName("sourceToInputSource") and arg = 0
+    method.hasName("sourceToInputSource") and
+    arg = 0
   }
 
   /**
@@ -482,19 +545,32 @@ module TaintTracking {
    * `output`th argument if the `input`th argument is tainted.
    */
   private predicate taintPreservingArgToArg(Method method, int input, int output) {
-    method.getDeclaringType().hasQualifiedName("org.apache.commons.io", "IOUtils") and (
-      method.hasName("copy") and input = 0 and output = 1 or
-      method.hasName("copyLarge") and input = 0 and output = 1 or
-      method.hasName("read") and input = 0 and output = 1 or
-      method.hasName("readFully") and input = 0 and output = 1 and not method.getParameterType(1).hasName("int") or
-      method.hasName("write") and input = 0 and output = 1 or
-      method.hasName("writeChunked") and input = 0 and output = 1 or
-      method.hasName("writeLines") and input = 0 and output = 2 or
+    method.getDeclaringType().hasQualifiedName("org.apache.commons.io", "IOUtils") and
+    (
+      method.hasName("copy") and input = 0 and output = 1
+      or
+      method.hasName("copyLarge") and input = 0 and output = 1
+      or
+      method.hasName("read") and input = 0 and output = 1
+      or
+      method.hasName("readFully") and
+      input = 0 and
+      output = 1 and
+      not method.getParameterType(1).hasName("int")
+      or
+      method.hasName("write") and input = 0 and output = 1
+      or
+      method.hasName("writeChunked") and input = 0 and output = 1
+      or
+      method.hasName("writeLines") and input = 0 and output = 2
+      or
       method.hasName("writeLines") and input = 1 and output = 2
     )
     or
     method.getDeclaringType().hasQualifiedName("java.lang", "System") and
-    method.hasName("arraycopy") and input = 0 and output = 2
+    method.hasName("arraycopy") and
+    input = 0 and
+    output = 2
   }
 
   /**
@@ -516,7 +592,8 @@ module TaintTracking {
    */
   private predicate taintPreservingArgumentToQualifier(Method method, int arg) {
     method.getDeclaringType().hasQualifiedName("java.io", "ByteArrayOutputStream") and
-    method.hasName("write") and arg = 0
+    method.hasName("write") and
+    arg = 0
   }
 
   /**
@@ -538,7 +615,8 @@ module TaintTracking {
    */
   private predicate taintPreservingQualifierToArg(Method method, int i) {
     method.getDeclaringType().hasQualifiedName("java.io", "InputStream") and
-    method.hasName("read") and i = 0
+    method.hasName("read") and
+    i = 0
   }
 
   /** A comparison or equality test with a constant. */
@@ -552,11 +630,12 @@ module TaintTracking {
       exists(MethodAccess m | m.getMethod() instanceof EqualsMethod |
         m = sink and
         (
-          m.getQualifier() = tracked and m.getArgument(0) = other or
+          m.getQualifier() = tracked and m.getArgument(0) = other
+          or
           m.getQualifier() = other and m.getArgument(0) = tracked
         )
       )
-      |
+    |
       other.isCompileTimeConstant() or other instanceof NullLiteral
     )
   }
@@ -610,7 +689,6 @@ module TaintTracking {
       result.getMethod().hasName("writeObject")
     }
   }
-
 }
 
 /**
@@ -628,11 +706,12 @@ class StringBuilderVar extends LocalVariableDecl {
    * Gets a call that adds something to this string builder, from the argument at the given index.
    */
   MethodAccess getAnInput(int arg) {
-    result.getQualifier() = getAChainedReference()
-    and
+    result.getQualifier() = getAChainedReference() and
     (
-      result.getMethod().getName() = "append" and arg = 0 or
-      result.getMethod().getName() = "insert" and arg = 1 or
+      result.getMethod().getName() = "append" and arg = 0
+      or
+      result.getMethod().getName() = "insert" and arg = 1
+      or
       result.getMethod().getName() = "replace" and arg = 2
     )
   }
@@ -649,7 +728,8 @@ class StringBuilderVar extends LocalVariableDecl {
     result = getAnAppend() and
     append = getAnAppend() and
     (
-      result.getQualifier() = append or
+      result.getQualifier() = append
+      or
       not exists(MethodAccess chainAccess | chainAccess.getQualifier() = append) and
       exists(RValue sbva1, RValue sbva2 |
         adjacentUseUse(sbva1, sbva2) and
@@ -678,9 +758,7 @@ class StringBuilderVar extends LocalVariableDecl {
   /**
    * Gets an expression that refers to this `StringBuilder`, possibly after some chained calls.
    */
-  Expr getAChainedReference() {
-    result = getAChainedReference(_)
-  }
+  Expr getAChainedReference() { result = getAChainedReference(_) }
 }
 
 private MethodAccess callReturningSameType(Expr ref) {

@@ -8,6 +8,7 @@
  * @tags security
  *       external/cwe/cwe-327
  */
+
 import java
 import semmle.code.java.security.Encryption
 import semmle.code.java.dataflow.TaintTracking
@@ -15,9 +16,7 @@ import DataFlow
 import semmle.code.java.dispatch.VirtualDispatch
 
 private class ShortStringLiteral extends StringLiteral {
-  ShortStringLiteral() {
-    getLiteral().length() < 100
-  }
+  ShortStringLiteral() { getLiteral().length() < 100 }
 }
 
 class InsecureAlgoLiteral extends ShortStringLiteral {
@@ -53,12 +52,11 @@ class StringContainer extends RefType {
 
 class InsecureCryptoConfiguration extends TaintTracking::Configuration {
   InsecureCryptoConfiguration() { this = "InsecureCryptoConfiguration" }
-  override predicate isSource(Node n) {
-    n.asExpr() instanceof InsecureAlgoLiteral
-  }
-  override predicate isSink(Node n) {
-    exists(CryptoAlgoSpec c | n.asExpr() = c.getAlgoSpec())
-  }
+
+  override predicate isSource(Node n) { n.asExpr() instanceof InsecureAlgoLiteral }
+
+  override predicate isSink(Node n) { exists(CryptoAlgoSpec c | n.asExpr() = c.getAlgoSpec()) }
+
   override predicate isSanitizer(Node n) {
     objectToString(n.asExpr()) or
     not n.getType().getErasure() instanceof StringContainer
@@ -69,5 +67,5 @@ from CryptoAlgoSpec c, Expr a, InsecureAlgoLiteral s, InsecureCryptoConfiguratio
 where
   a = c.getAlgoSpec() and
   conf.hasFlow(exprNode(s), exprNode(a))
-select c, "Cryptographic algorithm $@ may not be secure, consider using a different algorithm.",
-  s, s.getLiteral()
+select c, "Cryptographic algorithm $@ may not be secure, consider using a different algorithm.", s,
+  s.getLiteral()

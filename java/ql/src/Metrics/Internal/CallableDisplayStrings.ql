@@ -4,6 +4,7 @@
  * @metricType callable
  * @id java/callable-display-strings
  */
+
 import java
 
 private string prefix(Callable c) {

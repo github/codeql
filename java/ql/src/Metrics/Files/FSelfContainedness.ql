@@ -9,21 +9,22 @@
  * @tags portability
  *       modularity
  */
+
 import java
 
 from CompilationUnit f, float selfContaindness, int efferentSourceCoupling, int efferentCoupling
-where efferentSourceCoupling = count(CompilationUnit g |
-        exists(RefType c | c.fromSource() and c.getCompilationUnit() = g |
-          exists(RefType d | d.fromSource() and d.getCompilationUnit()= f | depends(d,c))
-        )
+where
+  efferentSourceCoupling = count(CompilationUnit g |
+      exists(RefType c | c.fromSource() and c.getCompilationUnit() = g |
+        exists(RefType d | d.fromSource() and d.getCompilationUnit() = f | depends(d, c))
       )
-  and efferentCoupling = count(CompilationUnit g |
-        exists(RefType c | c.getCompilationUnit() = g |
-          exists(RefType d | d.fromSource() and d.getCompilationUnit() = f | depends(d,c))
-        )
+    ) and
+  efferentCoupling = count(CompilationUnit g |
+      exists(RefType c | c.getCompilationUnit() = g |
+        exists(RefType d | d.fromSource() and d.getCompilationUnit() = f | depends(d, c))
       )
-  and if efferentCoupling = 0
-      then selfContaindness = 100
-      else selfContaindness = 100*(float)efferentSourceCoupling/efferentCoupling
-select f, selfContaindness
-order by selfContaindness desc
+    ) and
+  if efferentCoupling = 0
+  then selfContaindness = 100
+  else selfContaindness = 100 * efferentSourceCoupling.(float) / efferentCoupling
+select f, selfContaindness order by selfContaindness desc

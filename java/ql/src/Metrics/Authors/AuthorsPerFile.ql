@@ -8,12 +8,12 @@
  * @id java/authors-per-file
  * @tags maintainability
  */
- 
+
 import java
 
 from CompilationUnit u, int num
 where
   num = strictcount(string s |
-    exists(Documentable d | d.getAuthor() = s and d.getCompilationUnit() = u)
-  )
+      exists(Documentable d | d.getAuthor() = s and d.getCompilationUnit() = u)
+    )
 select u, num

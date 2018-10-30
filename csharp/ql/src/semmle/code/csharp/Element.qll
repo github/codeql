@@ -57,24 +57,3 @@ class Element extends DotNet::Element, @element {
     exists(Element parent | parent.getChild(result) = this)
   }
 }
-
-/**
- * Gets the "best" location for element `e`. Where an element has locations in
- * source and assemblies, choose the source location. If there are multiple assembly
- * locations, choose only one.
- */
-cached
-private Location bestLocation(Element e) {
-  result = e.getALocation().(SourceLocation) and
-  (mustHaveLocationInFile(e, _) implies mustHaveLocationInFile(e, result.getFile()))
-  or
-  (
-    hasNoSourceLocation(e)
-    and
-    result = min(Location l | l = e.getALocation() | l order by l.getFile().toString())
-  )
-}
-
-private predicate hasNoSourceLocation(Element e) {
-  not e.getALocation() instanceof SourceLocation
-}

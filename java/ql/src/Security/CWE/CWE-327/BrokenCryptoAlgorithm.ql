@@ -8,15 +8,14 @@
  * @tags security
  *       external/cwe/cwe-327
  */
+
 import java
 import semmle.code.java.security.Encryption
 import semmle.code.java.dataflow.TaintTracking
 import DataFlow
 
 private class ShortStringLiteral extends StringLiteral {
-  ShortStringLiteral() {
-    getLiteral().length() < 100
-  }
+  ShortStringLiteral() { getLiteral().length() < 100 }
 }
 
 class BrokenAlgoLiteral extends ShortStringLiteral {
@@ -29,18 +28,18 @@ class BrokenAlgoLiteral extends ShortStringLiteral {
 
 class InsecureCryptoConfiguration extends TaintTracking::Configuration {
   InsecureCryptoConfiguration() { this = "BrokenCryptoAlgortihm::InsecureCryptoConfiguration" }
-  override predicate isSource(Node n) {
-    n.asExpr() instanceof BrokenAlgoLiteral
+
+  override predicate isSource(Node n) { n.asExpr() instanceof BrokenAlgoLiteral }
+
+  override predicate isSink(Node n) { exists(CryptoAlgoSpec c | n.asExpr() = c.getAlgoSpec()) }
+
+  override predicate isSanitizer(DataFlow::Node node) {
+    node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType
   }
-  override predicate isSink(Node n) {
-    exists(CryptoAlgoSpec c | n.asExpr() = c.getAlgoSpec())
-  }
-  override predicate isSanitizer(DataFlow::Node node) { node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType }
 }
 
 from CryptoAlgoSpec c, Expr a, BrokenAlgoLiteral s, InsecureCryptoConfiguration conf
 where
   a = c.getAlgoSpec() and
   conf.hasFlow(exprNode(s), exprNode(a))
-select c, "Cryptographic algorithm $@ is weak and should not be used.",
-  s, s.getLiteral()
+select c, "Cryptographic algorithm $@ is weak and should not be used.", s, s.getLiteral()

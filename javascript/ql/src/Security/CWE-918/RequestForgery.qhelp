@@ -25,8 +25,8 @@
 		<p>
 
 			To guard against request forgery, it is advisable to avoid
-			putting user input directly into a remote request. If a flexible
-			remote request mechanism is required, it is recommended to maintain a
+			putting user input directly into a network request. If a flexible
+			network request mechanism is required, it is recommended to maintain a
 			list of authorized request targets and choose from that list based on
 			the user input provided.
 

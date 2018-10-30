@@ -9,13 +9,12 @@
  * @tags reliability
  *       external/cwe/cwe-597
  */
+
 import java
 
 /** An expression of type `java.lang.String`. */
 class StringValue extends Expr {
-  StringValue() {
-    this.getType() instanceof TypeString
-  }
+  StringValue() { this.getType() instanceof TypeString }
 
   predicate isInterned() {
     // A call to `String.intern()`.

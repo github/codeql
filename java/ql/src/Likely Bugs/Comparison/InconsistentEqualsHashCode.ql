@@ -10,6 +10,7 @@
  *       correctness
  *       external/cwe/cwe-581
  */
+
 import java
 import Equality
 
@@ -23,7 +24,9 @@ where
     or
     not exists(HashCodeMethod h | h.getDeclaringType() = c) and
     // If the inherited `equals` is a refining `equals` then the superclass hash code is still valid.
-    exists(EqualsMethod e | e.getDeclaringType() = c and e = existingMethod and not e instanceof RefiningEquals) and
+    exists(EqualsMethod e |
+      e.getDeclaringType() = c and e = existingMethod and not e instanceof RefiningEquals
+    ) and
     message = "Class " + c.getName() + " overrides $@ but not hashCode."
   )
 select c, message, existingMethod, existingMethod.getName()

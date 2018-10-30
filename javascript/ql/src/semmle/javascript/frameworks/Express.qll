@@ -488,6 +488,31 @@ module Express {
     override string getKind() {
       result = kind
     }
+
+    override predicate isUserControlledObject() {
+      kind = "body" and
+      exists (ExpressLibraries::BodyParser bodyParser, RouteHandlerExpr expr |
+        expr.getBody() = rh and
+        bodyParser.producesUserControlledObjects() and
+        bodyParser.flowsToExpr(expr.getAMatchingAncestor())
+      )
+      or
+      // If we can't find the middlewares for the route handler,
+      // but all known body parsers are deep, assume req.body is a deep object.
+      kind = "body" and
+      forall(ExpressLibraries::BodyParser bodyParser | bodyParser.producesUserControlledObjects())
+      or
+      kind = "parameter" and
+      exists (DataFlow::Node request | request = DataFlow::valueNode(rh.getARequestExpr()) |
+        this.(DataFlow::MethodCallNode).calls(request, "param")
+        or
+        exists (DataFlow::PropRead base |
+          // `req.query.name`
+          base.accesses(request, "query") and
+          this = base.getAPropertyReference(_)
+        )
+      )
+    }
   }
 
   /**
@@ -824,12 +849,16 @@ module Express {
   }
 
   /** A call to `response.sendFile`, considered as a file system access. */
-  private class ResponseSendFileAsFileSystemAccess extends FileSystemAccess, DataFlow::ValueNode {
+  private class ResponseSendFileAsFileSystemAccess extends FileSystemReadAccess, DataFlow::ValueNode {
     override MethodCallExpr astNode;
 
     ResponseSendFileAsFileSystemAccess() {
       exists (string name | name = "sendFile" or name = "sendfile" |
         asExpr().(MethodCallExpr).calls(any(ResponseExpr res), name))
+    }
+
+    override DataFlow::Node getADataNode() {
+      none()
     }
 
     override DataFlow::Node getAPathArgument() {
@@ -887,7 +916,7 @@ module Express {
         getMethodName() = methodName and
         exists (DataFlow::ValueNode arg |
           arg = getAnArgument() |
-          exists (DataFlow::ArrayLiteralNode array |
+          exists (DataFlow::ArrayCreationNode array |
             array.flowsTo(arg) and
             routeHandlerArg = array.getAnElement()
           ) or

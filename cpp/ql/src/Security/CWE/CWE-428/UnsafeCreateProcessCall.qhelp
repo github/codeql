@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+  <p>This query indicates that there is a call to a function of the <code>CreateProcess*</code> family of functions, which introduces a security vulnerability.</p>
+</overview>
+
+<recommendation>
+<p>Do not use <code>NULL</code> for the <code>lpApplicationName</code> argument to the <code>CreateProcess*</code> function.</p>
+<p>If you pass <code>NULL</code> for <code>lpApplicationName</code>, use quotation marks around the executable path in <code>lpCommandLine</code>.</p>
+</recommendation>
+
+<example>
+<p>In the following example, <code>CreateProcessW</code> is called with a <code>NULL</code> value for <code>lpApplicationName</code>, 
+and the value for <code>lpCommandLine</code> that represent the application path is not quoted and has spaces in it.</p>
+<p>If an attacker has access to the file system, they can elevate privileges by creating a file such as <code>C:\Program.exe</code> that will be executed instead of the intended application.</p>
+<sample src="UnsafeCreateProcessCall.cpp" />
+
+<p>To fix this issue, specify a valid string for <code>lpApplicationName</code>, or quote the path for <code>lpCommandLine</code>. For example:</p>
+<p><code>(LPWSTR)L"\"C:\\Program Files\\MyApp\"",  // lpCommandLine</code></p>
+</example>
+
+<references>
+  <li>
+    <a href="https://docs.microsoft.com/en-us/windows/desktop/api/processthreadsapi/nf-processthreadsapi-createprocessa">CreateProcessA function (Microsoft documentation).</a>
+  </li>
+  <li>
+    <a href="https://docs.microsoft.com/en-us/windows/desktop/api/processthreadsapi/nf-processthreadsapi-createprocessw">CreateProcessW function (Microsoft documentation).</a>
+  </li>
+  <li>
+    <a href="https://docs.microsoft.com/en-us/windows/desktop/api/processthreadsapi/nf-processthreadsapi-createprocessasusera">CreateProcessAsUserA function (Microsoft documentation).</a>
+  </li>
+  <li>
+    <a href="https://docs.microsoft.com/en-us/windows/desktop/api/processthreadsapi/nf-processthreadsapi-createprocessasuserw">CreateProcessAsUserW function (Microsoft documentation).</a>
+  </li>
+  <li>
+    <a href="https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-createprocesswithlogonw">CreateProcessWithLogonW function (Microsoft documentation).</a>
+  </li>
+  <li>
+    <a href="https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-createprocesswithtokenw">CreateProcessWithTokenW function (Microsoft documentation).</a>
+  </li>
+</references>
+
+</qhelp>

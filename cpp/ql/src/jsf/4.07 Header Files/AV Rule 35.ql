@@ -107,15 +107,17 @@ predicate defUndef(File f, string macroName) {
 }
 
 /**
- * Header file `hf` looks like it contains an x-macro called
- * `macroName`.  That is, a macro that is used to interpret the
+ * Header file `hf` looks like it contains an x-macro.
+ * That is, a macro that is used to interpret the
  * data in `hf`, usually defined just before including that file
  * and undefined immediately afterwards.
  */
-predicate hasXMacro(HeaderFile hf, string macroName) {
-  usesMacro(hf, macroName) and
-  forex(Include i | i.getIncludedFile() = hf |
-    defUndef(i.getFile(), macroName)
+predicate hasXMacro(HeaderFile hf) {
+  exists(string macroName |
+    usesMacro(hf, macroName) and
+    forex(File f | f.getAnIncludedFile() = hf |
+      defUndef(f, macroName)
+    )
   )
 }
 
@@ -135,7 +137,7 @@ where not hf instanceof IncludeGuardedHeader
     exists(UsingEntry ue | ue.getFile() = hf)
   )
   // Exclude files which look like they contain 'x-macros'
-  and not hasXMacro(hf, _)
+  and not hasXMacro(hf)
   // Exclude files which are always #imported.
   and not forex(Include i | i.getIncludedFile() = hf | i instanceof Import)
   // Exclude files which are only included once.

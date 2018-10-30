@@ -9,16 +9,13 @@
  * @tags readability
  *       types
  */
+
 import java
 
 class LocalBoxedVar extends LocalVariableDecl {
-  LocalBoxedVar() {
-    this.getType() instanceof BoxedType
-  }
+  LocalBoxedVar() { this.getType() instanceof BoxedType }
 
-  PrimitiveType getPrimitiveType() {
-    this.getType().(BoxedType).getPrimitiveType() = result
-  }
+  PrimitiveType getPrimitiveType() { this.getType().(BoxedType).getPrimitiveType() = result }
 }
 
 /**
@@ -33,7 +30,8 @@ predicate notDeliberatelyBoxed(LocalBoxedVar v) {
     exists(Call c, int i |
       c.getCallee().getParameterType(i) instanceof RefType and
       c.getArgument(i) = a
-    ) or
+    )
+    or
     exists(ReturnStmt ret |
       ret.getResult() = a and
       ret.getEnclosingCallable().getReturnType() instanceof RefType
@@ -61,11 +59,14 @@ predicate affectsOverload(LocalBoxedVar v) {
 from LocalBoxedVar v
 where
   forall(Expr e | e = v.getAnAssignedValue() | e.getType() = v.getPrimitiveType()) and
-  ( not v.getDeclExpr().getParent() instanceof EnhancedForStmt or
-    v.getDeclExpr().getParent().(EnhancedForStmt).getExpr().getType().(Array).getComponentType() = v.getPrimitiveType()
+  (
+    not v.getDeclExpr().getParent() instanceof EnhancedForStmt or
+    v.getDeclExpr().getParent().(EnhancedForStmt).getExpr().getType().(Array).getComponentType() = v
+          .getPrimitiveType()
   ) and
   notDeliberatelyBoxed(v) and
   not affectsOverload(v)
 select v,
-  "The variable '" + v.getName() + "' is only assigned values of primitive type and is never 'null', but it is declared with the boxed type '" +
-  v.getType().toString() + "'."
+  "The variable '" + v.getName() +
+    "' is only assigned values of primitive type and is never 'null', but it is declared with the boxed type '"
+    + v.getType().toString() + "'."

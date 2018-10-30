@@ -28,7 +28,7 @@ import semmle.code.java.DependencyCounts
  * dashboard database, which is implicitly relative to the source
  * archive location.
  */
+
 from File sourceFile, int total, string entity
 where fileJarDependencyCount(sourceFile, total, entity)
-select entity, total
-order by total desc
+select entity, total order by total desc

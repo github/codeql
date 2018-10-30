@@ -446,16 +446,25 @@ class AssignableDefinition extends TAssignableDefinition {
    * the definitions of `x` and `y` in `M(out x, out y)` and `(x, y) = (0, 1)`
    * relate to the same call to `M` and assignment node, respectively.
    */
-  ControlFlow::Node getAControlFlowNode() { none() }
+  ControlFlow::Node getAControlFlowNode() {
+    result = this.getExpr().getAControlFlowNode()
+  }
+
+  /**
+   * Gets the underlying expression that updates the targeted assignable when
+   * reached, if any.
+   *
+   * Not all definitions have an associated expression, for example implicit
+   * parameter definitions.
+   */
+  Expr getExpr() { none() }
 
   /** DEPRECATED: Use `getAControlFlowNode()` instead. */
   deprecated
   ControlFlow::Node getControlFlowNode() { result = this.getAControlFlowNode() }
 
   /** Gets the enclosing callable of this definition. */
-  Callable getEnclosingCallable() {
-    result = this.getAControlFlowNode().getBasicBlock().getCallable()
-  }
+  Callable getEnclosingCallable() { result = this.getExpr().getEnclosingCallable() }
 
   /**
    * Gets the assigned expression, if any. For example, the expression assigned
@@ -581,7 +590,7 @@ class AssignableDefinition extends TAssignableDefinition {
 
   /** Gets the location of this assignable definition. */
   Location getLocation() {
-    result = this.getAControlFlowNode().getLocation()
+    result = this.getExpr().getLocation()
   }
 }
 
@@ -602,9 +611,7 @@ module AssignableDefinitions {
       result = a
     }
 
-    override ControlFlow::Node getAControlFlowNode() {
-      result = a.getAControlFlowNode()
-    }
+    override Expr getExpr() { result = a }
 
     override Expr getSource() {
       result = a.getRValue() and
@@ -633,30 +640,19 @@ module AssignableDefinitions {
       result = ae
     }
 
-    private Expr getLeaf() {
-      result = leaf
-    }
-
     /**
      * Gets the evaluation order of this definition among the other definitions
      * in the compound tuple assignment. For example, in `(x, (y, z)) = ...` the
      * orders of the definitions of `x`, `y`, and `z` are 0, 1, and 2, respectively.
      */
     int getEvaluationOrder() {
-      exists(ControlFlow::BasicBlock bb, int i |
-        bb.getNode(i).getElement() = leaf |
-        i = rank[result + 1](int j, TupleAssignmentDefinition def |
-          bb.getNode(j).getElement() = def.getLeaf() and
-          ae = def.getAssignment()
-          |
-          j
-        )
+      leaf = rank[result + 1](Expr leaf0 |
+        exists(TTupleAssignmentDefinition(ae, leaf0)) |
+        leaf0 order by leaf0.getLocation().getStartLine(), leaf0.getLocation().getStartColumn()
       )
     }
 
-    override ControlFlow::Node getAControlFlowNode() {
-      result = ae.getAControlFlowNode()
-    }
+    override Expr getExpr() { result = ae }
 
     override Expr getSource() {
       result = getTupleSource(this) // need not exist
@@ -700,9 +696,7 @@ module AssignableDefinitions {
       )
     }
 
-    override ControlFlow::Node getAControlFlowNode() {
-      result = this.getCall().getAControlFlowNode()
-    }
+    override Expr getExpr() { result = this.getCall() }
 
     override predicate isCertain() {
       not isUncertainRefCall(this.getCall(), this.getTargetAccess())
@@ -732,9 +726,7 @@ module AssignableDefinitions {
       result = mo
     }
 
-    override ControlFlow::Node getAControlFlowNode() {
-      result = mo.getAControlFlowNode()
-    }
+    override Expr getExpr() { result = mo }
 
     override string toString() {
       result = mo.toString()
@@ -756,9 +748,7 @@ module AssignableDefinitions {
       result = lvde
     }
 
-    override ControlFlow::Node getAControlFlowNode() {
-      result = lvde.getAControlFlowNode()
-    }
+    override Expr getExpr() { result = lvde }
 
     override string toString() {
       result = lvde.toString()
@@ -785,6 +775,10 @@ module AssignableDefinitions {
       result = p.getCallable().getEntryPoint()
     }
 
+    override Callable getEnclosingCallable() {
+      result = p.getCallable()
+    }
+
     override string toString() {
       result = p.toString()
     }
@@ -809,9 +803,7 @@ module AssignableDefinitions {
       result = aoe
     }
 
-    override ControlFlow::Node getAControlFlowNode() {
-      result = aoe.getAControlFlowNode()
-    }
+    override Expr getExpr() { result = aoe }
 
     override string toString() {
       result = aoe.toString()
@@ -833,9 +825,7 @@ module AssignableDefinitions {
       result = ipe.getVariableDeclExpr()
     }
 
-    override ControlFlow::Node getAControlFlowNode() {
-      result = this.getDeclaration().getAControlFlowNode()
-    }
+    override Expr getExpr() { result = this.getDeclaration() }
 
     override Expr getSource() {
       result = ipe.getExpr()
@@ -870,9 +860,7 @@ module AssignableDefinitions {
       result = tc.getVariableDeclExpr()
     }
 
-    override ControlFlow::Node getAControlFlowNode() {
-      result = this.getDeclaration().getAControlFlowNode()
-    }
+    override Expr getExpr() { result = this.getDeclaration() }
 
     override Expr getSource() {
       result = any(SwitchStmt ss | ss.getATypeCase() = tc).getCondition()
@@ -904,10 +892,6 @@ module AssignableDefinitions {
     /** Gets the assignable (field or property) being initialized. */
     Assignable getAssignable() {
       result = a
-    }
-
-    override ControlFlow::Node getAControlFlowNode() {
-      none() // initializers are currently not part of the CFG
     }
 
     override Expr getSource() {

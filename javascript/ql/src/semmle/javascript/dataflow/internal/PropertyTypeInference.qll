@@ -96,8 +96,24 @@ abstract class AnalyzedPropertyWrite extends DataFlow::Node {
   /**
    * Holds if this property write assigns `source` to property `propName` of one of the
    * concrete objects represented by `baseVal`.
+   *
+   * Note that not all property writes have an explicit `source` node; use predicate
+   * `writesValue` below to cover these cases.
    */
-  abstract predicate writes(AbstractValue baseVal, string propName, DataFlow::AnalyzedNode source);
+  predicate writes(AbstractValue baseVal, string propName, DataFlow::AnalyzedNode source) {
+    none()
+  }
+
+  /**
+   * Holds if this property write assigns `val` to property `propName` of one of the
+   * concrete objects represented by `baseVal`.
+   */
+  predicate writesValue(AbstractValue baseVal, string propName, AbstractValue val) {
+    exists (AnalyzedNode source |
+      writes(baseVal, propName, source) and
+      val = source.getALocalValue()
+    )
+  }
 
   /**
    * Holds if the flow information for the base node of this property write is incomplete

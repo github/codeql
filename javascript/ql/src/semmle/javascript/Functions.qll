@@ -207,6 +207,17 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
   }
 
   /**
+   * Gets the function or top-level whose `this` binding a `this` expression in this function refers to,
+   * which is the nearest enclosing non-arrow function or top-level.
+   */
+  StmtContainer getThisBindingContainer() {
+    result = getThisBinder()
+    or
+    not exists(getThisBinder()) and
+    result = getTopLevel()
+  }
+
+  /**
    * Holds if this function has a mapped `arguments` variable whose indices are aliased
    * with the function's parameters.
    *

@@ -1,4 +1,3 @@
-
 import DataFlowUtil
 private import DataFlowPrivate
 private import DataFlowDispatch
@@ -55,9 +54,7 @@ private module ImplCommon {
    */
   cached
   predicate parameterValueFlowsThrough(ParameterNode p) {
-    exists(ReturnNode ret |
-      parameterValueFlow(p, ret)
-    )
+    exists(ReturnNode ret | parameterValueFlow(p, ret))
   }
 
   /**
@@ -112,16 +109,19 @@ private module ImplCommon {
     storeViaSideEffect(node1, f, node2) or
     storeReturn(node1, f, node2)
   }
+
   private predicate storeViaSideEffect(Node node1, Content f, PostUpdateNode node2) {
-    storeStep(node1, f, node2) and readStep(_, f, _) or
+    storeStep(node1, f, node2) and readStep(_, f, _)
+    or
     exists(Call call, int i1, int i2 |
       setterCall(call, i1, i2, f) and
       node1.(ArgumentNode).argumentOf(call, i1) and
       node2.getPreUpdateNode().(ArgumentNode).argumentOf(call, i2) and
       compatibleTypes(node1.getTypeBound(), f.getType()) and
-      compatibleTypes(node2.getTypeBound(), f.getDeclaringType())
+      compatibleTypes(node2.getTypeBound(), f.getContainerType())
     )
   }
+
   pragma[nomagic]
   private predicate setterInParam(ParameterNode p1, Content f, ParameterNode p2) {
     exists(Node n1, PostUpdateNode n2 |
@@ -131,6 +131,7 @@ private module ImplCommon {
       p1 != p2
     )
   }
+
   pragma[nomagic]
   private predicate setterCall(Call call, int i1, int i2, Content f) {
     exists(Callable callable, ParameterNode p1, ParameterNode p2 |
@@ -140,6 +141,7 @@ private module ImplCommon {
       p2.isParameterOf(callable, i2)
     )
   }
+
   private predicate storeReturn(Node node1, Content f, Node node2) {
     exists(ParameterNode p, ArgumentNode arg |
       arg = node1 and
@@ -147,9 +149,10 @@ private module ImplCommon {
       setterReturn(p, f) and
       arg.argumentOf(node2.asExpr(), _) and
       compatibleTypes(node1.getTypeBound(), f.getType()) and
-      compatibleTypes(node2.getTypeBound(), f.getDeclaringType())
+      compatibleTypes(node2.getTypeBound(), f.getContainerType())
     )
   }
+
   private predicate setterReturn(ParameterNode p, Content f) {
     exists(Node n1, Node n2, ReturnNode ret |
       parameterValueFlow(p, n1) and
@@ -164,16 +167,18 @@ private module ImplCommon {
    */
   cached
   predicate read(Node node1, Content f, Node node2) {
-    readStep(node1, f, node2) and storeStep(_, f, _) or
+    readStep(node1, f, node2) and storeStep(_, f, _)
+    or
     exists(ParameterNode p, ArgumentNode arg |
       arg = node1 and
       viableParamArg(p, arg) and
       getter(p, f) and
       arg.argumentOf(node2.asExpr(), _) and
-      compatibleTypes(node1.getTypeBound(), f.getDeclaringType()) and
+      compatibleTypes(node1.getTypeBound(), f.getContainerType()) and
       compatibleTypes(node2.getTypeBound(), f.getType())
     )
   }
+
   private predicate getter(ParameterNode p, Content f) {
     exists(Node n1, Node n2, ReturnNode ret |
       parameterValueFlow(p, n1) and
@@ -196,9 +201,7 @@ private module ImplCommon {
    * expression that reaches a `this` parameter.
    */
   private predicate callHasInstanceArgument(Call call) {
-    exists(ArgumentNode arg |
-      arg.argumentOf(call, -1)
-    )
+    exists(ArgumentNode arg | arg.argumentOf(call, -1))
   }
 
   cached
@@ -207,9 +210,11 @@ private module ImplCommon {
     TSpecificCall(Call call, int i, boolean emptyAp) {
       reducedViableImplInCallContext(_, _, call) and
       (emptyAp = true or emptyAp = false) and
-      (exists(call.getArgument(i))
-       or
-       i = -1 and callHasInstanceArgument(call))
+      (
+        exists(call.getArgument(i))
+        or
+        i = -1 and callHasInstanceArgument(call)
+      )
     } or
     TSomeCall(ParameterNode p, boolean emptyAp) { emptyAp = true or emptyAp = false } or
     TReturn(Method m, MethodAccess ma) { reducedViableImplInReturn(m, ma) }
@@ -232,19 +237,22 @@ import ImplCommon
  *    this dispatch target of `ma` implies a reduced set of dispatch origins
  *    to which data may flow if it should reach a `return` statement.
  */
-abstract class CallContext extends TCallContext {
-  abstract string toString();
-}
+abstract class CallContext extends TCallContext { abstract string toString(); }
+
 class CallContextAny extends CallContext, TAnyCallContext {
   override string toString() { result = "CcAny" }
 }
+
 abstract class CallContextCall extends CallContext { }
+
 class CallContextSpecificCall extends CallContextCall, TSpecificCall {
   override string toString() { result = "CcCall" }
 }
+
 class CallContextSomeCall extends CallContextCall, TSomeCall {
   override string toString() { result = "CcSomeCall" }
 }
+
 class CallContextReturn extends CallContext, TReturn {
   override string toString() { result = "CcReturn" }
 }
@@ -263,12 +271,14 @@ predicate resolveReturn(CallContext cc, Callable callable, Call call) {
 bindingset[call, cc]
 Callable resolveCall(Call call, CallContext cc) {
   exists(Call ctx | cc = TSpecificCall(ctx, _, _) |
-    if reducedViableImplInCallContext(call, _, ctx) then
-      result = prunedViableImplInCallContext(call, ctx)
-    else
-      result = viableCallable(call)
-  ) or
-  result = viableCallable(call) and cc instanceof CallContextSomeCall or
-  result = viableCallable(call) and cc instanceof CallContextAny or
+    if reducedViableImplInCallContext(call, _, ctx)
+    then result = prunedViableImplInCallContext(call, ctx)
+    else result = viableCallable(call)
+  )
+  or
+  result = viableCallable(call) and cc instanceof CallContextSomeCall
+  or
+  result = viableCallable(call) and cc instanceof CallContextAny
+  or
   result = viableCallable(call) and cc instanceof CallContextReturn
 }

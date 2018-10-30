@@ -6,3 +6,8 @@ function f() {
 function g(x, y) {
   var arguments = [y, x]; // NOT OK
 }
+
+(function (){
+    for ([arguments] of o);
+    for ([arguments = 4] of o);
+});

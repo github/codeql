@@ -298,6 +298,11 @@ class VarRef extends @varref, Identifier, BindingPattern, LexicalRef {
   override VarRef getABindingVarRef() { result = this }
 
   override predicate isImpure() { none() }
+
+  override Expr getUnderlyingReference() {
+    result = this
+  }
+
 }
 
 /** An identifier that refers to a variable in a non-declaring position. */

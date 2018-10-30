@@ -13,7 +13,8 @@ import java
 
 from EmptyStmt empty, string action
 where
-  if exists(LoopStmt l | l.getBody() = empty) then (
+  if exists(LoopStmt l | l.getBody() = empty)
+  then (
     action = "turned into '{}'"
   ) else (
     action = "deleted"

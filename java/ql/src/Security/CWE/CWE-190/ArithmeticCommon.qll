@@ -3,23 +3,21 @@ import semmle.code.java.controlflow.Dominance
 import semmle.code.java.dataflow.DefUse
 import semmle.code.java.controlflow.Guards
 
-/*
- * The type of `exp` is narrower than or equal to `numType`,
+/**
+ * Holds if the type of `exp` is narrower than or equal to `numType`,
  * or there is an enclosing cast to a type at least as narrow as 'numType'.
  */
 predicate narrowerThanOrEqualTo(ArithExpr exp, NumType numType) {
   exp.getType().(NumType).widerThan(numType)
   implies
   exists(CastExpr cast | cast.getAChildExpr().getProperExpr() = exp |
-    numType.widerThanOrEqualTo((NumType)cast.getType())
+    numType.widerThanOrEqualTo(cast.getType().(NumType))
   )
 }
 
 /** Holds if the size of this use is guarded using `Math.abs`. */
 predicate guardedAbs(ArithExpr e, Expr use) {
-  exists(MethodAccess m |
-    m.getMethod() instanceof MethodAbs
-    |
+  exists(MethodAccess m | m.getMethod() instanceof MethodAbs |
     m.getArgument(0) = use and
     guardedLesser(e, m)
   )
@@ -31,7 +29,8 @@ predicate guardedLesser(ArithExpr e, Expr use) {
     use = guard.getLesserOperand() and
     guard = c.getCondition() and
     c.controls(e.getBasicBlock(), true)
-  ) or
+  )
+  or
   guardedAbs(e, use)
 }
 
@@ -41,7 +40,8 @@ predicate guardedGreater(ArithExpr e, Expr use) {
     use = guard.getGreaterOperand() and
     guard = c.getCondition() and
     c.controls(e.getBasicBlock(), true)
-  ) or
+  )
+  or
   guardedAbs(e, use)
 }
 
@@ -55,25 +55,31 @@ predicate guarded(ArithExpr e, Expr use) {
 }
 
 /** A prior use of the same variable that could see the same value. */
-VarAccess priorAccess(VarAccess access) {
-  useUsePair(result, access)
-}
+VarAccess priorAccess(VarAccess access) { useUsePair(result, access) }
 
 /** Holds if `e` is guarded against overflow by `use`. */
 predicate guardedAgainstOverflow(ArithExpr e, VarAccess use) {
   use = e.getAnOperand() and
   (
     // overflow possible if large
-    e instanceof AddExpr and guardedLesser(e, priorAccess(use)) or
-    e instanceof PreIncExpr and guardedLesser(e, priorAccess(use)) or
-    e instanceof PostIncExpr and guardedLesser(e, priorAccess(use)) or
+    e instanceof AddExpr and guardedLesser(e, priorAccess(use))
+    or
+    e instanceof PreIncExpr and guardedLesser(e, priorAccess(use))
+    or
+    e instanceof PostIncExpr and guardedLesser(e, priorAccess(use))
+    or
     // overflow unlikely with subtraction
-    e instanceof SubExpr or
-    e instanceof PreDecExpr or
-    e instanceof PostDecExpr or
+    e instanceof SubExpr
+    or
+    e instanceof PreDecExpr
+    or
+    e instanceof PostDecExpr
+    or
     // overflow possible if large or small
-    e instanceof MulExpr and guardedLesser(e, priorAccess(use)) and
-      guardedGreater(e, priorAccess(use)) or
+    e instanceof MulExpr and
+    guardedLesser(e, priorAccess(use)) and
+    guardedGreater(e, priorAccess(use))
+    or
     // overflow possible if MIN_VALUE
     e instanceof DivExpr and guardedGreater(e, priorAccess(use))
   )
@@ -84,16 +90,25 @@ predicate guardedAgainstUnderflow(ArithExpr e, VarAccess use) {
   use = e.getAnOperand() and
   (
     // underflow unlikely for addition
-    e instanceof AddExpr or
-    e instanceof PreIncExpr or
-    e instanceof PostIncExpr or
+    e instanceof AddExpr
+    or
+    e instanceof PreIncExpr
+    or
+    e instanceof PostIncExpr
+    or
     // underflow possible if use is left operand and small
-    e instanceof SubExpr and (use = e.getRightOperand() or guardedGreater(e, priorAccess(use))) or
-    e instanceof PreDecExpr and guardedGreater(e, priorAccess(use)) or
-    e instanceof PostDecExpr and guardedGreater(e, priorAccess(use)) or
+    e instanceof SubExpr and
+    (use = e.getRightOperand() or guardedGreater(e, priorAccess(use)))
+    or
+    e instanceof PreDecExpr and guardedGreater(e, priorAccess(use))
+    or
+    e instanceof PostDecExpr and guardedGreater(e, priorAccess(use))
+    or
     // underflow possible if large or small
-    e instanceof MulExpr and guardedLesser(e, priorAccess(use)) and
-      guardedGreater(e, priorAccess(use)) or
+    e instanceof MulExpr and
+    guardedLesser(e, priorAccess(use)) and
+    guardedGreater(e, priorAccess(use))
+    or
     // underflow possible if MAX_VALUE
     e instanceof DivExpr and guardedLesser(e, priorAccess(use))
   )

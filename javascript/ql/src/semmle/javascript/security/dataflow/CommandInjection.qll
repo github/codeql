@@ -37,14 +37,14 @@ module CommandInjection {
      * Holds if `sink` is a data flow sink for command-injection vulnerabilities, and
      * the alert should be placed at the node `highlight`.
      */
-    predicate isSink(DataFlow::Node sink, DataFlow::Node highlight) {
+    predicate isSinkWithHighlight(DataFlow::Node sink, DataFlow::Node highlight) {
       sink instanceof Sink and highlight = sink
       or
       indirectCommandInjection(sink, highlight)
     }
 
     override predicate isSink(DataFlow::Node sink) {
-      isSink(sink, _)
+      isSinkWithHighlight(sink, _)
     }
 
     override predicate isSanitizer(DataFlow::Node node) {
@@ -75,7 +75,7 @@ module CommandInjection {
     ArgumentListTracking() { this = "ArgumentListTracking" }
 
     override predicate isSource(DataFlow::Node nd) {
-      nd instanceof DataFlow::ArrayLiteralNode
+      nd instanceof DataFlow::ArrayCreationNode
       or
       exists (StringLiteral shell | shellCmd(shell, _) |
         nd = DataFlow::valueNode(shell)
@@ -125,7 +125,7 @@ module CommandInjection {
    * we want to report the `spawn` call as the sink, so we bind it to `sys`.
    */
   private predicate indirectCommandInjection(DataFlow::Node sink, SystemCommandExecution sys) {
-    exists (ArgumentListTracking cfg, DataFlow::ArrayLiteralNode args,
+    exists (ArgumentListTracking cfg, DataFlow::ArrayCreationNode args,
             StringLiteral shell, string dashC |
       shellCmd(shell, dashC) and
       cfg.hasFlow(DataFlow::valueNode(shell), sys.getACommandArgument()) and

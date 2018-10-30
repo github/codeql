@@ -15,17 +15,20 @@ import semmle.code.java.dataflow.FlowSources
 
 class Conf extends TaintTracking::Configuration {
   Conf() { this = "RemoteUserInputTocanThrowOutOfBoundsDueToEmptyArrayConfig" }
+
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteUserInput }
+
   override predicate isSink(DataFlow::Node sink) {
     any(CheckableArrayAccess caa).canThrowOutOfBoundsDueToEmptyArray(sink.asExpr(), _)
   }
 }
 
-from RemoteUserInput source, Expr sizeExpr, ArrayCreationExpr arrayCreation, CheckableArrayAccess arrayAccess
+from
+  RemoteUserInput source, Expr sizeExpr, ArrayCreationExpr arrayCreation,
+  CheckableArrayAccess arrayAccess
 where
   arrayAccess.canThrowOutOfBoundsDueToEmptyArray(sizeExpr, arrayCreation) and
   any(Conf conf).hasFlow(source, DataFlow::exprNode(sizeExpr))
 select arrayAccess.getIndexExpr(),
   "The $@ is accessed here, but the array is initialized using $@ which may be zero.",
-  arrayCreation, "array",
-  source, "User-provided value"
+  arrayCreation, "array", source, "User-provided value"

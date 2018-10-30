@@ -10,14 +10,22 @@
  *       external/cwe/cwe-197
  *       external/cwe/cwe-681
  */
+
 import java
 import semmle.code.java.dataflow.FlowSources
 import NumericCastCommon
 
 private class NumericCastFlowConfig extends TaintTracking::Configuration {
-  NumericCastFlowConfig() { this = "NumericCastTaintedLocal::LocalUserInputToNumericNarrowingCastExpr" }
+  NumericCastFlowConfig() {
+    this = "NumericCastTaintedLocal::LocalUserInputToNumericNarrowingCastExpr"
+  }
+
   override predicate isSource(DataFlow::Node src) { src instanceof LocalUserInput }
-  override predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(NumericNarrowingCastExpr cast).getExpr() }
+
+  override predicate isSink(DataFlow::Node sink) {
+    sink.asExpr() = any(NumericNarrowingCastExpr cast).getExpr()
+  }
+
   override predicate isSanitizer(DataFlow::Node node) {
     boundedRead(node.asExpr()) or
     castCheck(node.asExpr()) or
@@ -27,7 +35,8 @@ private class NumericCastFlowConfig extends TaintTracking::Configuration {
   }
 }
 
-from NumericNarrowingCastExpr exp, VarAccess tainted, LocalUserInput origin, NumericCastFlowConfig conf
+from
+  NumericNarrowingCastExpr exp, VarAccess tainted, LocalUserInput origin, NumericCastFlowConfig conf
 where
   exp.getExpr() = tainted and
   conf.hasFlow(origin, DataFlow::exprNode(tainted)) and

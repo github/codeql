@@ -144,8 +144,8 @@ module ExpressLibraries {
 
       override DataFlow::Node getASecretKey() {
         exists (DataFlow::Node secret | secret = getOption("secret") |
-          if exists(DataFlow::ArrayLiteralNode arr | arr.flowsTo(secret)) then
-            result = any (DataFlow::ArrayLiteralNode arr | arr.flowsTo(secret)).getAnElement()
+          if exists(DataFlow::ArrayCreationNode arr | arr.flowsTo(secret)) then
+            result = any (DataFlow::ArrayCreationNode arr | arr.flowsTo(secret)).getAnElement()
           else
             result = secret
         )
@@ -182,8 +182,8 @@ module ExpressLibraries {
 
       override DataFlow::Node getASecretKey() {
         exists (DataFlow::Node arg0 | arg0 = getArgument(0) |
-          if exists(DataFlow::ArrayLiteralNode arr | arr.flowsTo(arg0)) then
-            result = any (DataFlow::ArrayLiteralNode arr | arr.flowsTo(arg0)).getAnElement()
+          if exists(DataFlow::ArrayCreationNode arr | arr.flowsTo(arg0)) then
+            result = any (DataFlow::ArrayCreationNode arr | arr.flowsTo(arg0)).getAnElement()
           else
             result = arg0
         )
@@ -220,7 +220,7 @@ module ExpressLibraries {
 
       override DataFlow::Node getASecretKey() {
         result = getOption("secret") or
-        exists (DataFlow::ArrayLiteralNode keys |
+        exists (DataFlow::ArrayCreationNode keys |
           keys.flowsTo(getOption("keys")) and
           result = keys.getAnElement()
         )
@@ -228,6 +228,55 @@ module ExpressLibraries {
 
     }
 
+  }
+
+  /**
+   * An instance of the Express `body-parser` middleware.
+   */
+  class BodyParser extends DataFlow::InvokeNode {
+    string kind;
+
+    BodyParser() {
+      this = DataFlow::moduleImport("body-parser").getACall() and kind = "json"
+      or
+      exists (string moduleName |
+        (moduleName = "body-parser" or moduleName = "express") and
+        (kind = "json" or kind = "urlencoded") and
+        this = DataFlow::moduleMember(moduleName, kind).getACall()
+      )
+    }
+
+    /**
+     * Holds if this is a JSON body parser.
+     */
+    predicate isJson() {
+      kind = "json"
+    }
+
+    /**
+     * Holds if this is a URL-encoded body parser.
+     */
+    predicate isUrlEncoded() {
+      kind = "urlencoded"
+    }
+
+    /**
+     * Holds if this is an extended URL-encoded body parser.
+     *
+     * The extended URL-encoding allows for nested objects, like JSON.
+     */
+    predicate isExtendedUrlEncoded() {
+      kind = "urlencoded" and
+      not getOptionArgument(0, "extended").mayHaveBooleanValue(false)
+    }
+
+    /**
+     * Holds if this parses the input as JSON or extended URL-encoding, resulting
+     * in user-controlled objects (as opposed to user-controlled strings).
+     */
+    predicate producesUserControlledObjects() {
+      isJson() or isExtendedUrlEncoded()
+    }
   }
 
 }

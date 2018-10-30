@@ -4,12 +4,11 @@
  * @metricType reftype
  * @id java/reference-type-display-strings
  */
+
 import java
 
 private string suffix(RefType t) {
-  if t instanceof AnonymousClass
-  then result = "<anonymous class>"
-  else result = ""
+  if t instanceof AnonymousClass then result = "<anonymous class>" else result = ""
 }
 
 from RefType t

@@ -11,6 +11,7 @@
  *       useless-code
  *       external/cwe/cwe-457
  */
+
 import java
 import semmle.code.java.Reflection
 
@@ -28,7 +29,8 @@ predicate isClassOf(ParameterizedClass c, RefType t) {
 predicate subjectToAtomicReferenceFieldUpdater(Field f) {
   exists(Class arfu, Method newUpdater, MethodAccess c |
     arfu.hasQualifiedName("java.util.concurrent.atomic", "AtomicReferenceFieldUpdater") and
-    newUpdater = arfu.getAMethod() and newUpdater.hasName("newUpdater") and
+    newUpdater = arfu.getAMethod() and
+    newUpdater.hasName("newUpdater") and
     c.getMethod().getSourceDeclaration() = newUpdater and
     isClassOf(c.getArgument(0).getType(), f.getDeclaringType()) and
     isClassOf(c.getArgument(1).getType(), f.getType()) and
@@ -63,9 +65,7 @@ where
   f.fromSource() and
   fr.getField().getSourceDeclaration() = f and
   not f.getDeclaringType() instanceof EnumType and
-  forall(Assignment ae, Field g |
-    ae.getDest() = g.getAnAccess() and g.getSourceDeclaration() = f
-    |
+  forall(Assignment ae, Field g | ae.getDest() = g.getAnAccess() and g.getSourceDeclaration() = f |
     ae.getSource() instanceof NullLiteral
   ) and
   not exists(UnaryAssignExpr ua, Field g |
@@ -86,5 +86,5 @@ where
   ) and
   // Exclude special VM classes.
   not isVMObserver(f.getDeclaringType())
-select f, "Field " + f.getName() + " never assigned non-null value, yet it is read at $@.",
-  fr, fr.getFile().getStem() + ".java:" + fr.getLocation().getStartLine()
+select f, "Field " + f.getName() + " never assigned non-null value, yet it is read at $@.", fr,
+  fr.getFile().getStem() + ".java:" + fr.getLocation().getStartLine()

@@ -10,4 +10,9 @@ namespace System.Windows.Forms
     {
         public static void Show(string msg, string title) { }
     }
+
+    public class Application
+    {
+        public static void Exit() { }
+    }
 }

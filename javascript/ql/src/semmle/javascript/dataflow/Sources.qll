@@ -132,6 +132,26 @@ abstract class SourceNode extends DataFlow::Node {
   }
 
   /**
+   * Gets a method call that invokes a method on this node.
+   *
+   * This includes only calls that have the syntactic shape of a method call,
+   * that is, `o.m(...)` or `o[p](...)`.
+   */
+  DataFlow::CallNode getAMethodCall() {
+    result = getAMethodCall(_)
+  }
+
+  /**
+   * Gets a chained method call that invokes `methodName` last.
+   *
+   * The chain steps include only calls that have the syntactic shape of a method call,
+   * that is, `o.m(...)` or `o[p](...)`.
+   */
+  DataFlow::CallNode getAChainedMethodCall(string methodName) {
+    result = getAMethodCall*().getAMethodCall(methodName)
+  }
+
+  /**
    * Gets a `new` call that invokes constructor `constructorName` on this node.
    */
   DataFlow::NewNode getAConstructorInvocation(string constructorName) {
@@ -185,7 +205,6 @@ class DefaultSourceNode extends SourceNode {
       astNode instanceof ObjectExpr or
       astNode instanceof ArrayExpr or
       astNode instanceof JSXNode or
-      astNode instanceof ThisExpr or
       astNode instanceof GlobalVarAccess or
       astNode instanceof ExternalModuleReference
     )
@@ -198,5 +217,7 @@ class DefaultSourceNode extends SourceNode {
     DataFlow::parameterNode(this, _)
     or
     this instanceof DataFlow::Impl::InvokeNodeDef
+    or
+    DataFlow::thisNode(this, _)
   }
 }

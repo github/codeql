@@ -18,27 +18,28 @@ class PersistentEntity extends RefType {
    * instead.
    */
   string getAccessType() {
-    if exists(getAccessTypeFromAnnotation()) then
-      result = getAccessTypeFromAnnotation()
+    if exists(getAccessTypeFromAnnotation())
+    then result = getAccessTypeFromAnnotation()
     else
-      /*
-       * If the access type is not explicit, then the location of the `Id` annotation determines
-       * which access type is used.
-       */
-      if getAMethod().hasAnnotation("javax.persistence", "Id") then
-        result = "property"
-      else
-        result = "field"
+      // If the access type is not explicit, then the location of the `Id` annotation determines
+      // which access type is used.
+      if getAMethod().hasAnnotation("javax.persistence", "Id")
+      then result = "property"
+      else result = "field"
   }
 
   /**
    * If there is an annotation on this class defining the access type, then this is the type.
    */
   string getAccessTypeFromAnnotation() {
-    exists(AccessAnnotation accessType |
-      accessType = getAnAnnotation()
-      |
-      result = accessType.getValue("value").(FieldRead).getField().(EnumConstant).getName().toLowerCase()
+    exists(AccessAnnotation accessType | accessType = getAnAnnotation() |
+      result = accessType
+            .getValue("value")
+            .(FieldRead)
+            .getField()
+            .(EnumConstant)
+            .getName()
+            .toLowerCase()
     )
   }
 }
@@ -48,15 +49,11 @@ class PersistentEntity extends RefType {
  */
 
 class AccessAnnotation extends Annotation {
-  AccessAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "Access")
-  }
+  AccessAnnotation() { this.getType().hasQualifiedName("javax.persistence", "Access") }
 }
 
 class AccessTypeAnnotation extends Annotation {
-  AccessTypeAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "AccessType")
-  }
+  AccessTypeAnnotation() { this.getType().hasQualifiedName("javax.persistence", "AccessType") }
 }
 
 class AssociationOverrideAnnotation extends Annotation {
@@ -84,15 +81,11 @@ class AttributeOverridesAnnotation extends Annotation {
 }
 
 class BasicAnnotation extends Annotation {
-  BasicAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "Basic")
-  }
+  BasicAnnotation() { this.getType().hasQualifiedName("javax.persistence", "Basic") }
 }
 
 class CacheableAnnotation extends Annotation {
-  CacheableAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "Cacheable")
-  }
+  CacheableAnnotation() { this.getType().hasQualifiedName("javax.persistence", "Cacheable") }
 }
 
 class CollectionTableAnnotation extends Annotation {
@@ -102,15 +95,11 @@ class CollectionTableAnnotation extends Annotation {
 }
 
 class ColumnAnnotation extends Annotation {
-  ColumnAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "Column")
-  }
+  ColumnAnnotation() { this.getType().hasQualifiedName("javax.persistence", "Column") }
 }
 
 class ColumnResultAnnotation extends Annotation {
-  ColumnResultAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "ColumnResult")
-  }
+  ColumnResultAnnotation() { this.getType().hasQualifiedName("javax.persistence", "ColumnResult") }
 }
 
 class DiscriminatorColumnAnnotation extends Annotation {
@@ -132,27 +121,19 @@ class ElementCollectionAnnotation extends Annotation {
 }
 
 class EmbeddableAnnotation extends Annotation {
-  EmbeddableAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "Embeddable")
-  }
+  EmbeddableAnnotation() { this.getType().hasQualifiedName("javax.persistence", "Embeddable") }
 }
 
 class EmbeddedAnnotation extends Annotation {
-  EmbeddedAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "Embedded")
-  }
+  EmbeddedAnnotation() { this.getType().hasQualifiedName("javax.persistence", "Embedded") }
 }
 
 class EmbeddedIdAnnotation extends Annotation {
-  EmbeddedIdAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "EmbeddedId")
-  }
+  EmbeddedIdAnnotation() { this.getType().hasQualifiedName("javax.persistence", "EmbeddedId") }
 }
 
 class EntityAnnotation extends Annotation {
-  EntityAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "Entity")
-  }
+  EntityAnnotation() { this.getType().hasQualifiedName("javax.persistence", "Entity") }
 }
 
 class EntityListenersAnnotation extends Annotation {
@@ -162,15 +143,11 @@ class EntityListenersAnnotation extends Annotation {
 }
 
 class EntityResultAnnotation extends Annotation {
-  EntityResultAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "EntityResult")
-  }
+  EntityResultAnnotation() { this.getType().hasQualifiedName("javax.persistence", "EntityResult") }
 }
 
 class EnumeratedAnnotation extends Annotation {
-  EnumeratedAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "Enumerated")
-  }
+  EnumeratedAnnotation() { this.getType().hasQualifiedName("javax.persistence", "Enumerated") }
 }
 
 class ExcludeDefaultListenersAnnotation extends Annotation {
@@ -186,9 +163,7 @@ class ExcludeSuperclassListenersAnnotation extends Annotation {
 }
 
 class FieldResultAnnotation extends Annotation {
-  FieldResultAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "FieldResult")
-  }
+  FieldResultAnnotation() { this.getType().hasQualifiedName("javax.persistence", "FieldResult") }
 }
 
 class GeneratedValueAnnotation extends Annotation {
@@ -198,75 +173,51 @@ class GeneratedValueAnnotation extends Annotation {
 }
 
 class IdAnnotation extends Annotation {
-  IdAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "Id")
-  }
+  IdAnnotation() { this.getType().hasQualifiedName("javax.persistence", "Id") }
 }
 
 class IdClassAnnotation extends Annotation {
-  IdClassAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "IdClass")
-  }
+  IdClassAnnotation() { this.getType().hasQualifiedName("javax.persistence", "IdClass") }
 }
 
 class InheritanceAnnotation extends Annotation {
-  InheritanceAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "Inheritance")
-  }
+  InheritanceAnnotation() { this.getType().hasQualifiedName("javax.persistence", "Inheritance") }
 }
 
 class JoinColumnAnnotation extends Annotation {
-  JoinColumnAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "JoinColumn")
-  }
+  JoinColumnAnnotation() { this.getType().hasQualifiedName("javax.persistence", "JoinColumn") }
 }
 
 class JoinColumnsAnnotation extends Annotation {
-  JoinColumnsAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "JoinColumns")
-  }
+  JoinColumnsAnnotation() { this.getType().hasQualifiedName("javax.persistence", "JoinColumns") }
 }
 
 class JoinTableAnnotation extends Annotation {
-  JoinTableAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "JoinTable")
-  }
+  JoinTableAnnotation() { this.getType().hasQualifiedName("javax.persistence", "JoinTable") }
 }
 
 class LobAnnotation extends Annotation {
-  LobAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "Lob")
-  }
+  LobAnnotation() { this.getType().hasQualifiedName("javax.persistence", "Lob") }
 }
 
 class ManyToManyAnnotation extends Annotation {
-  ManyToManyAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "ManyToMany")
-  }
+  ManyToManyAnnotation() { this.getType().hasQualifiedName("javax.persistence", "ManyToMany") }
 }
 
 class ManyToOneAnnotation extends Annotation {
-  ManyToOneAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "ManyToOne")
-  }
+  ManyToOneAnnotation() { this.getType().hasQualifiedName("javax.persistence", "ManyToOne") }
 }
 
 class MapKeyAnnotation extends Annotation {
-  MapKeyAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "MapKey")
-  }
+  MapKeyAnnotation() { this.getType().hasQualifiedName("javax.persistence", "MapKey") }
 }
 
 class MapKeyClassAnnotation extends Annotation {
-  MapKeyClassAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "MapKeyClass")
-  }
+  MapKeyClassAnnotation() { this.getType().hasQualifiedName("javax.persistence", "MapKeyClass") }
 }
 
 class MapKeyColumnAnnotation extends Annotation {
-  MapKeyColumnAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "MapKeyColumn")
-  }
+  MapKeyColumnAnnotation() { this.getType().hasQualifiedName("javax.persistence", "MapKeyColumn") }
 }
 
 class MapKeyEnumeratedAnnotation extends Annotation {
@@ -300,9 +251,7 @@ class MappedSuperclassAnnotation extends Annotation {
 }
 
 class MapsIdAnnotation extends Annotation {
-  MapsIdAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "MapsId")
-  }
+  MapsIdAnnotation() { this.getType().hasQualifiedName("javax.persistence", "MapsId") }
 }
 
 class NamedNativeQueriesAnnotation extends Annotation {
@@ -318,39 +267,27 @@ class NamedNativeQueryAnnotation extends Annotation {
 }
 
 class NamedQueriesAnnotation extends Annotation {
-  NamedQueriesAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "NamedQueries")
-  }
+  NamedQueriesAnnotation() { this.getType().hasQualifiedName("javax.persistence", "NamedQueries") }
 }
 
 class NamedQueryAnnotation extends Annotation {
-  NamedQueryAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "NamedQuery")
-  }
+  NamedQueryAnnotation() { this.getType().hasQualifiedName("javax.persistence", "NamedQuery") }
 }
 
 class OneToManyAnnotation extends Annotation {
-  OneToManyAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "OneToMany")
-  }
+  OneToManyAnnotation() { this.getType().hasQualifiedName("javax.persistence", "OneToMany") }
 }
 
 class OneToOneAnnotation extends Annotation {
-  OneToOneAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "OneToOne")
-  }
+  OneToOneAnnotation() { this.getType().hasQualifiedName("javax.persistence", "OneToOne") }
 }
 
 class OrderByAnnotation extends Annotation {
-  OrderByAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "OrderBy")
-  }
+  OrderByAnnotation() { this.getType().hasQualifiedName("javax.persistence", "OrderBy") }
 }
 
 class OrderColumnAnnotation extends Annotation {
-  OrderColumnAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "OrderColumn")
-  }
+  OrderColumnAnnotation() { this.getType().hasQualifiedName("javax.persistence", "OrderColumn") }
 }
 
 class PersistenceContextAnnotation extends Annotation {
@@ -384,45 +321,31 @@ class PersistenceUnitsAnnotation extends Annotation {
 }
 
 class PostLoadAnnotation extends Annotation {
-  PostLoadAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "PostLoad")
-  }
+  PostLoadAnnotation() { this.getType().hasQualifiedName("javax.persistence", "PostLoad") }
 }
 
 class PostPersistAnnotation extends Annotation {
-  PostPersistAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "PostPersist")
-  }
+  PostPersistAnnotation() { this.getType().hasQualifiedName("javax.persistence", "PostPersist") }
 }
 
 class PostRemoveAnnotation extends Annotation {
-  PostRemoveAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "PostRemove")
-  }
+  PostRemoveAnnotation() { this.getType().hasQualifiedName("javax.persistence", "PostRemove") }
 }
 
 class PostUpdateAnnotation extends Annotation {
-  PostUpdateAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "PostUpdate")
-  }
+  PostUpdateAnnotation() { this.getType().hasQualifiedName("javax.persistence", "PostUpdate") }
 }
 
 class PrePersistAnnotation extends Annotation {
-  PrePersistAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "PrePersist")
-  }
+  PrePersistAnnotation() { this.getType().hasQualifiedName("javax.persistence", "PrePersist") }
 }
 
 class PreRemoveAnnotation extends Annotation {
-  PreRemoveAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "PreRemove")
-  }
+  PreRemoveAnnotation() { this.getType().hasQualifiedName("javax.persistence", "PreRemove") }
 }
 
 class PreUpdateAnnotation extends Annotation {
-  PreUpdateAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "PreUpdate")
-  }
+  PreUpdateAnnotation() { this.getType().hasQualifiedName("javax.persistence", "PreUpdate") }
 }
 
 class PrimaryKeyJoinColumnAnnotation extends Annotation {
@@ -438,9 +361,7 @@ class PrimaryKeyJoinColumnsAnnotation extends Annotation {
 }
 
 class QueryHintAnnotation extends Annotation {
-  QueryHintAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "QueryHint")
-  }
+  QueryHintAnnotation() { this.getType().hasQualifiedName("javax.persistence", "QueryHint") }
 }
 
 class SecondaryTableAnnotation extends Annotation {
@@ -474,9 +395,7 @@ class SqlResultSetMappingsAnnotation extends Annotation {
 }
 
 class TableAnnotation extends Annotation {
-  TableAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "Table")
-  }
+  TableAnnotation() { this.getType().hasQualifiedName("javax.persistence", "Table") }
 }
 
 class TableGeneratorAnnotation extends Annotation {
@@ -486,15 +405,11 @@ class TableGeneratorAnnotation extends Annotation {
 }
 
 class TemporalAnnotation extends Annotation {
-  TemporalAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "Temporal")
-  }
+  TemporalAnnotation() { this.getType().hasQualifiedName("javax.persistence", "Temporal") }
 }
 
 class TransientAnnotation extends Annotation {
-  TransientAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "Transient")
-  }
+  TransientAnnotation() { this.getType().hasQualifiedName("javax.persistence", "Transient") }
 }
 
 class UniqueConstraintAnnotation extends Annotation {
@@ -504,16 +419,12 @@ class UniqueConstraintAnnotation extends Annotation {
 }
 
 class VersionAnnotation extends Annotation {
-  VersionAnnotation() {
-    this.getType().hasQualifiedName("javax.persistence", "Version")
-  }
+  VersionAnnotation() { this.getType().hasQualifiedName("javax.persistence", "Version") }
 }
 
 /** The interface `javax.persistence.EntityManager`. */
 class TypeEntityManager extends Interface {
-  TypeEntityManager() {
-    this.hasQualifiedName("javax.persistence", "EntityManager")
-  }
+  TypeEntityManager() { this.hasQualifiedName("javax.persistence", "EntityManager") }
 
   /** Gets a method named `createQuery` declared in the `EntityManager` interface. */
   Method getACreateQueryMethod() {
@@ -536,9 +447,7 @@ class TypeEntityManager extends Interface {
 
 /** The interface `javax.persistence.Query`, which represents queries in the Java Persistence Query Language. */
 class TypeQuery extends Interface {
-  TypeQuery() {
-    this.hasQualifiedName("javax.persistence", "Query")
-  }
+  TypeQuery() { this.hasQualifiedName("javax.persistence", "Query") }
 
   /** Gets a method named `setParameter` declared in the `Query` interface. */
   Method getASetParameterMethod() {

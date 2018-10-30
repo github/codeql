@@ -124,4 +124,42 @@ public class Guards
         var b1 = s1.Equals(s2); // not null guarded
         var b2 = s1?.Equals(s1); // null guarded
     }
+
+    int M11(string s)
+    {
+        if (s is null)
+            return s.Length; // not null guarded
+        return s.Length; // null guarded
+    }
+
+    int M12(string s)
+    {
+        if (s is string)
+            return s.Length; // null guarded
+        return s.Length; // not null guarded
+    }
+
+    string M13(object o)
+    {
+        if (o is string s)
+            return s; // not null (but not a guard)
+        return o.ToString(); // not null guarded
+    }
+
+    string M14(object o)
+    {
+        switch (o)
+        {
+            case Action<object> _:
+                return o.ToString(); // null guarded
+            case Action<string> a:
+                return a.ToString(); // not null (but not a guard)
+            case "":
+                return o.ToString(); // null guarded
+            case null:
+                return o.ToString(); // not null guarded
+            default:
+                return o.ToString(); // null guarded
+        }
+    }
 }

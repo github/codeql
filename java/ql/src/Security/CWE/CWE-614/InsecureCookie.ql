@@ -9,6 +9,7 @@
  * @tags security
  *       external/cwe/cwe-614
  */
+
 import java
 import semmle.code.java.frameworks.Servlets
 

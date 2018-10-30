@@ -73,14 +73,20 @@ module UserControlledBypassOfSensitiveMethod {
    * on the given expression.
    */
   predicate conditionControlsMethod(MethodCall call, Expr e) {
-    exists (ConditionBlock cb, SensitiveExecutionMethod def, boolean cond |
-      cb.controls(call.getAControlFlowNode().getBasicBlock(), cond) and
+    exists(ConditionBlock cb, SensitiveExecutionMethod def, boolean cond |
+      exists(ControlFlow::SuccessorTypes::BooleanSuccessor s |
+        cond = s.getValue() |
+        cb.controls(call.getAControlFlowNode().getBasicBlock(), s)
+      ) and
       def = call.getTarget() and
       /*
        * Exclude this condition if the other branch also contains a call to the same security
        * sensitive method.
        */
-      not cb.controls(def.getACall().getAControlFlowNode().getBasicBlock(), cond.booleanNot()) and
+      not exists(ControlFlow::SuccessorTypes::BooleanSuccessor s |
+        cond = s.getValue().booleanNot() |
+        cb.controls(def.getACall().getAControlFlowNode().getBasicBlock(), s)
+      ) and
       e = cb.getLastNode().getElement()
     )
   }
