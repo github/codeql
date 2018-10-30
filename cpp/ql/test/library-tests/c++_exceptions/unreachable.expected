@@ -1,8 +1,2 @@
-| ODASA-5692.cpp:11:18:13:3 | <handler> |
-| ODASA-5692.cpp:11:18:13:3 | <handler> |
-| ODASA-5692.cpp:14:15:15:12 | <handler> |
-| ODASA-5692.cpp:14:15:15:12 | <handler> |
 | exceptions.cpp:25:13:30:9 | ExprStmt |
 | exceptions.cpp:26:13:26:13 | ExprStmt |
-| exceptions.cpp:32:19:34:5 | <handler> |
-| exceptions.cpp:35:19:37:5 | <handler> |

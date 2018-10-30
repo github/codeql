@@ -245,8 +245,14 @@ class BasicBlock extends ControlFlowNodeBase {
   predicate isReachable() {
     exists(Function f | f.getBlock() = this)
     or
-    exists(TryStmt t, BasicBlock tryblock | this = t.getACatchClause() and tryblock.isReachable() and tryblock.contains(t))
-    or
+    exists(TryStmt t, BasicBlock tryblock |
+      (
+        this = t.getACatchClause() or
+        this.(Handler).getTryStmt() = t
+      ) and
+      tryblock.isReachable() and
+      tryblock.contains(t)
+    ) or
     exists(BasicBlock pred | pred.getASuccessor() = this and pred.isReachable())
   }
 
