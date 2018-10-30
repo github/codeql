@@ -156,6 +156,12 @@ predicate whitelisted(UnusedLocal v) {
     isEnumMember(vd) or
     // ignore ambient declarations - too noisy
     vd.isAmbient()
+  ) or
+  exists (DirectEval eval |
+    // eval nearby
+    eval.getEnclosingFunction() = v.getADeclaration().getEnclosingFunction() and
+    // ... but not on the RHS
+    not v.getAnAssignedExpr() = eval
   )
 }
 
