@@ -46,7 +46,7 @@ module ZipSlip {
       exists(PropertyAccess pa |
         this.asExpr() = pa |
         pa.getTarget().getDeclaringType().hasQualifiedName("System.IO.Compression.ZipArchiveEntry") and
-        pa.getTarget().getName() = "FullName" 
+        pa.getTarget().getName() = "FullName"
       )
     }
   }
