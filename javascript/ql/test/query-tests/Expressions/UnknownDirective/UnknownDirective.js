@@ -38,3 +38,7 @@ function data() {
     "[0, 0, 0];"; // NOT OK
     "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];"; // NOT OK
 }
+
+function deliberate(){
+    "no use strict"; // whitelisted
+};
