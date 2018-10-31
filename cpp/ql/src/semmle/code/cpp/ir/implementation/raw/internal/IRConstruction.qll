@@ -1,6 +1,5 @@
 import cpp
 import semmle.code.cpp.ir.implementation.raw.IR
-import IRBlockConstruction as BlockConstruction
 private import semmle.code.cpp.ir.internal.OperandTag
 private import semmle.code.cpp.ir.internal.TempVariableTag
 private import InstructionTag
