@@ -3,7 +3,6 @@ import cpp
 private import semmle.code.cpp.ir.implementation.Opcode
 private import semmle.code.cpp.ir.internal.OperandTag
 private import NewIR
-import IRBlockConstruction as BlockConstruction
 
 import Cached
 cached private module Cached {
