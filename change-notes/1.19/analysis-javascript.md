@@ -39,6 +39,7 @@
 | User-controlled bypass of security check | Fewer results | This rule no longer flags conditions that guard early returns. The precision of this rule has been revised to "medium". Results are no longer shown on LGTM by default. | 
 | Whitespace contradicts operator precedence | Fewer false-positive results | This rule no longer flags operators with asymmetric whitespace. |
 | Unused import | Fewer false-positive results | This rule no longer flags imports used by the `transform-react-jsx` Babel plugin. |
+| Useless conditional | More true-positive results | This rule now flags useless conditions in more cases. |
 
 ## Changes to QL libraries
 
