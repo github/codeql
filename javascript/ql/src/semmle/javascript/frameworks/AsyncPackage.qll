@@ -147,7 +147,7 @@ module AsyncPackage {
     /**
      * Gets the node holding the function being called for each element in the collection.
      */
-    DataFlow::Node getIteratee() {
+    DataFlow::Node getIteratorCallback() {
       result = getArgument(getNumArgument() - 2)
     }
 
@@ -167,7 +167,7 @@ module AsyncPackage {
   private class IterationInputTaintStep extends TaintTracking::AdditionalTaintStep, IterationCall {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists (DataFlow::FunctionNode iteratee |
-        iteratee = getIteratee() and // Require a closure to avoid spurious call/return mismatch.
+        iteratee = getIteratorCallback() and // Require a closure to avoid spurious call/return mismatch.
         pred = getCollection() and
         succ = iteratee.getParameter(0))
     }
@@ -189,7 +189,7 @@ module AsyncPackage {
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists (DataFlow::FunctionNode iteratee, DataFlow::FunctionNode final, int i |
-        iteratee = getIteratee().getALocalSource() and
+        iteratee = getIteratorCallback().getALocalSource() and
         final = getFinalCallback() and // Require a closure to avoid spurious call/return mismatch.
         pred = getLastParameter(iteratee).getACall().getArgument(i) and
         succ = final.getParameter(i))
