@@ -120,9 +120,12 @@ predicate whitelist(Expr e) {
  */
 predicate isConditional(ASTNode cond, Expr e) {
   e = cond.(IfStmt).getCondition() or
+  e = cond.(WhileStmt).getExpr() or
+  e = cond.(ForStmt).getTest() or
   e = cond.(ConditionalExpr).getCondition() or
-  e = cond.(LogAndExpr).getLeftOperand() or
-  e = cond.(LogOrExpr).getLeftOperand()
+  e = cond.(LogicalBinaryExpr).getLeftOperand() or
+  // Include `z` in `if (x && z)`.
+  isConditional(_, cond) and e = cond.(LogicalBinaryExpr).getRightOperand()
 }
 
 from ASTNode cond, DataFlow::AnalyzedNode op, boolean cv, ASTNode sel, string msg
@@ -132,7 +135,7 @@ where isConditional(cond, op.asExpr()) and
 
       // if `cond` is of the form `<non-trivial truthy expr> && <something>`,
       // we suggest replacing it with `<non-trivial truthy expr>, <something>`
-      if cond instanceof LogAndExpr and cv = true and not op.asExpr().isPure() then
+      if cond.(LogAndExpr).getLeftOperand() = op.asExpr() and cv = true and not op.asExpr().isPure() then
         (sel = cond and msg = "This logical 'and' expression can be replaced with a comma expression.")
 
       // otherwise we just report that `op` always evaluates to `cv`
