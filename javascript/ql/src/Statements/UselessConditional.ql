@@ -74,6 +74,19 @@ predicate isConstantBooleanReturnValue(Expr e) {
 }
 
 /**
+ * Holds if `e` is a defensive expression with a fixed outcome.
+ */
+predicate isConstantDefensive(Expr e) {
+  exists(Expr defensive |
+    defensive = e or
+    // traverse negations
+    defensive.(LogNotExpr).getOperand+() = e
+    |
+    exists(defensive.flow().(DefensiveExpression).getTheTestResult())
+  )
+}
+
+/**
  * Holds if `e` is an expression that should not be flagged as a useless condition.
  *
  * We currently whitelist these kinds of expressions:
@@ -87,7 +100,7 @@ predicate isConstantBooleanReturnValue(Expr e) {
 predicate whitelist(Expr e) {
   isConstant(e) or
   isConstant(e.(LogNotExpr).getOperand()) or
-  exists (e.flow().(DefensiveExpression).getTheTestResult()) or
+  isConstantDefensive(e) or // flagged by js/useless-defensive-code
   isInitialParameterUse(e) or
   isConstantBooleanReturnValue(e)
 }
