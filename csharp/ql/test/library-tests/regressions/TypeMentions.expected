@@ -52,3 +52,10 @@
 | Program.cs:114:16:114:19 | Nullable<Int32> |
 | Program.cs:117:5:117:8 | Void |
 | Program.cs:119:13:119:17 | Point |
+| Program.cs:125:5:125:8 | Void |
+| Program.cs:127:9:127:15 | dynamic |
+| Program.cs:127:22:127:28 | dynamic |
+| Program.cs:133:5:133:8 | Func<Int32,Int32> |
+| Program.cs:133:10:133:12 | Int32 |
+| Program.cs:133:15:133:17 | Int32 |
+| Program.cs:133:31:133:33 | Int32 |
