@@ -507,33 +507,52 @@ module RangeAnalysis {
    *
    * This means negative-weight cycles (contradictions) can be detected using simple cycle detection.
    */
+  pragma[noopt]
   private predicate extendedEdge(DataFlow::Node a, int asign, DataFlow::Node b, int bsign, Bias c, boolean sharp, ControlFlowNode cfg) {
     seedEdgeWithDual(cfg, a, asign, b, bsign, c, sharp)
     or
-    exists (DataFlow::Node mid, int midx, ControlFlowNode cfg1, Bias c1, ControlFlowNode cfg2, Bias c2, boolean sharp1, boolean sharp2 |
+    // One of the two CFG nodes must dominate the other, and `cfg` must be bound to the dominated one.
+    exists (ControlFlowNode cfg1, ControlFlowNode cfg2 |
+      // They are in the same basic block
+      extendedEdgeCandidate(a, asign, b, bsign, c, sharp, cfg1, cfg2) and
+      exists (BasicBlock bb, int i, int j |
+        bb.getNode(i) = cfg1 and
+        bb.getNode(j) = cfg2 and
+        if i < j then
+          cfg = cfg2
+        else
+          cfg = cfg1)
+      or
+      // They are in different basic blocks
+      extendedEdgeCandidate(a, asign, b, bsign, c, sharp, cfg1, cfg2) and
+      exists (BasicBlock cfg1BB, ReachableBasicBlock cfg1RBB, BasicBlock cfg2BB, ReachableBasicBlock cfg2RBB |
+        cfg1BB = cfg1.getBasicBlock() and
+        cfg1RBB = cfg1BB.(ReachableBasicBlock) and
+        cfg2BB = cfg2.getBasicBlock() and
+        cfg2RBB = cfg2BB.(ReachableBasicBlock) and
+        (
+          cfg1RBB.strictlyDominates(cfg2BB) and
+          cfg = cfg2
+          or
+          cfg2RBB.strictlyDominates(cfg1RBB) and
+          cfg = cfg1
+        ))
+    ) and
+    cfg instanceof ControlFlowNode
+  }
+
+  /**
+   * Holds if an extended edge from `A` to `B` can potentially be generates from two edges, from `cfg1` and `cfg2`, respectively.
+   *
+   * This does not check for dominance between `cfg1` and `cfg2`.
+   */
+  pragma[nomagic]
+  private predicate extendedEdgeCandidate(DataFlow::Node a, int asign, DataFlow::Node b, int bsign, Bias c, boolean sharp, ControlFlowNode cfg1, ControlFlowNode cfg2) {
+    exists (DataFlow::Node mid, int midx, Bias c1, Bias c2, boolean sharp1, boolean sharp2 |
       extendedEdge(a, asign, mid, midx, c1, sharp1, cfg1) and
       extendedEdge(mid, midx, b, bsign, c2, sharp2, cfg2) and
       sharp = sharp1.booleanOr(sharp2) and
-      c = wideningAddition(c1, sharp1, c2, sharp2) and
-      // One of the two CFG nodes must dominate the other, and `cfg` must be bound to the dominated one.
-      (
-        // They are in the same basic block
-        exists (BasicBlock bb, int i, int j |
-          bb.getNode(i) = cfg1 and
-          bb.getNode(j) = cfg2 and
-          if i < j then
-            cfg = cfg2
-          else
-            cfg = cfg1)
-        or
-        // They are in different basic blocks
-        cfg1.getBasicBlock().(ReachableBasicBlock).strictlyDominates(cfg2.getBasicBlock()) and
-        cfg = cfg2
-        or
-        cfg2.getBasicBlock().(ReachableBasicBlock).strictlyDominates(cfg1.getBasicBlock()) and
-        cfg = cfg1
-      )
-    )
+      c = wideningAddition(c1, sharp1, c2, sharp2))
   }
 
   /**
