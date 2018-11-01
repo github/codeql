@@ -115,21 +115,25 @@ predicate whitelist(Expr e) {
 }
 
 /**
- * Gets the `&&` expression that defines this guard node, if any.
+ * Holds if `e` is part of a conditional node `cond` that evaluates
+ * `e` and checks its value for truthiness.
  */
-LogAndExpr getLogAndExpr(ConditionGuardNode guard) {
-  result.getLeftOperand().stripParens() = guard.getTest()
+predicate isConditional(ASTNode cond, Expr e) {
+  e = cond.(IfStmt).getCondition() or
+  e = cond.(ConditionalExpr).getCondition() or
+  e = cond.(LogAndExpr).getLeftOperand() or
+  e = cond.(LogOrExpr).getLeftOperand()
 }
 
-from ConditionGuardNode guard, DataFlow::AnalyzedNode op, boolean cv, ASTNode sel, string msg
-where guard.getTest() = op.asExpr() and
+from ASTNode cond, DataFlow::AnalyzedNode op, boolean cv, ASTNode sel, string msg
+where isConditional(cond, op.asExpr()) and
       cv = op.getTheBooleanValue()and
       not whitelist(op.asExpr()) and
 
       // if `cond` is of the form `<non-trivial truthy expr> && <something>`,
       // we suggest replacing it with `<non-trivial truthy expr>, <something>`
-      if exists(getLogAndExpr(guard)) and cv = true and not op.asExpr().isPure() then
-        (sel = getLogAndExpr(guard) and msg = "This logical 'and' expression can be replaced with a comma expression.")
+      if cond instanceof LogAndExpr and cv = true and not op.asExpr().isPure() then
+        (sel = cond and msg = "This logical 'and' expression can be replaced with a comma expression.")
 
       // otherwise we just report that `op` always evaluates to `cv`
       else (
