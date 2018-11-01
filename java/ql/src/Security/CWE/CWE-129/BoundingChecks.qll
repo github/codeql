@@ -58,7 +58,8 @@ predicate lessthanLength(ArrayAccess a) {
 pragma[nomagic]
 private Expr arrayReference(ArrayAccess arrayAccess) {
   // Array is stored in a variable.
-  result = arrayAccess.getArray().(VarAccess).getVariable().getAnAccess() or
+  result = arrayAccess.getArray().(VarAccess).getVariable().getAnAccess()
+  or
   // Array is returned from a method.
   result.(MethodAccess).getMethod() = arrayAccess.getArray().(MethodAccess).getMethod()
 }

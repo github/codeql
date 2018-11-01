@@ -58,7 +58,8 @@ class CamelTargetClass extends Class {
   CamelTargetClass() {
     exists(SpringCamelXMLBeanRef camelXMLBeanRef |
       // A target may be defined by referencing an existing Spring Bean.
-      this = camelXMLBeanRef.getRefBean().getClass() or
+      this = camelXMLBeanRef.getRefBean().getClass()
+      or
       // A target may be defined by referencing a class, which Apache Camel will create into a bean.
       this = camelXMLBeanRef.getBeanType()
     )

@@ -32,13 +32,15 @@ where
   not (
     (
       // The input has a lower bound.
-      source.lowerBound() >= 0 or
+      source.lowerBound() >= 0
+      or
       // There is a condition dominating this expression ensuring that the index is >= 0.
       lowerBound(arrayAccess.getIndexExpr()) >= 0
     ) and
     (
       // The input has an upper bound, and the array has a fixed size, and that fixed size is less.
-      source.upperBound() < fixedArraySize(arrayAccess) or
+      source.upperBound() < fixedArraySize(arrayAccess)
+      or
       // There is a condition dominating this expression that ensures the index is less than the length.
       lessthanLength(arrayAccess)
     )

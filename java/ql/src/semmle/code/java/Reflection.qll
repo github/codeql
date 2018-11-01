@@ -271,9 +271,11 @@ class NewInstance extends MethodAccess {
     not result instanceof TypeVariable and
     (
       // If this is called on a `Class<T>` instance, return the inferred type `T`.
-      result = inferClassParameterType(getQualifier()) or
+      result = inferClassParameterType(getQualifier())
+      or
       // If this is called on a `Constructor<T>` instance, return the inferred type `T`.
-      result = inferConstructorParameterType(getQualifier()) or
+      result = inferConstructorParameterType(getQualifier())
+      or
       // If the result of this is cast to a particular type, then use that type.
       result = getCastInferredConstructedTypes()
     )

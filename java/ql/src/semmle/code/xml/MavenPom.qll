@@ -263,7 +263,8 @@ class PomDependency extends Dependency {
       source.getADependency() = this and
       // Consider dependencies that can be used at compile time.
       (
-        getScope() = "compile" or
+        getScope() = "compile"
+        or
         // Provided dependencies are like compile time dependencies except (a) they are not packaged
         // when creating the jar and (b) they are not transitive.
         getScope() = "provided"
