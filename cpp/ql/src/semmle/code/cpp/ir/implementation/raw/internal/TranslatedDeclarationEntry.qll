@@ -1,5 +1,6 @@
 import cpp
 private import semmle.code.cpp.ir.implementation.Opcode
+private import semmle.code.cpp.ir.internal.OperandTag
 private import InstructionTag
 private import TranslatedElement
 private import TranslatedExpr
@@ -157,7 +158,7 @@ class TranslatedUninitializedVariable extends
     tag = InitializerStoreTag() and
     (
       (
-        operandTag instanceof LoadStoreAddressOperand and
+        operandTag instanceof AddressOperandTag and
         result = getInstruction(InitializerVariableAddressTag())
       ) 
     )

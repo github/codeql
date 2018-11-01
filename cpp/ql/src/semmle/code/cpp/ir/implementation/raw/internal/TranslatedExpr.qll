@@ -1,5 +1,6 @@
 import cpp
 private import semmle.code.cpp.ir.implementation.Opcode
+private import semmle.code.cpp.ir.internal.OperandTag
 private import semmle.code.cpp.ir.internal.TempVariableTag
 private import InstructionTag
 private import TranslatedCondition
@@ -209,16 +210,16 @@ class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
   }
 
   override Instruction getInstructionOperand(InstructionTag tag,
-    OperandTag operandTag) {
+      OperandTag operandTag) {
     (
       tag = ConditionValueTrueStoreTag() and
       (
         (
-          operandTag instanceof LoadStoreAddressOperand and
+          operandTag instanceof AddressOperandTag and
           result = getInstruction(ConditionValueTrueTempAddressTag())
         ) or
         (
-          operandTag instanceof CopySourceOperand and
+          operandTag instanceof CopySourceOperandTag and
           result = getInstruction(ConditionValueTrueConstantTag())
         )
       )
@@ -227,11 +228,11 @@ class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
       tag = ConditionValueFalseStoreTag() and
       (
         (
-          operandTag instanceof LoadStoreAddressOperand and
+          operandTag instanceof AddressOperandTag and
           result = getInstruction(ConditionValueFalseTempAddressTag())
         ) or
         (
-          operandTag instanceof CopySourceOperand and
+          operandTag instanceof CopySourceOperandTag and
           result = getInstruction(ConditionValueFalseConstantTag())
         )
       )
@@ -240,11 +241,11 @@ class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
       tag = ConditionValueResultLoadTag() and
       (
         (
-          operandTag instanceof LoadStoreAddressOperand and
+          operandTag instanceof AddressOperandTag and
           result = getInstruction(ConditionValueResultTempAddressTag())
         ) or
         (
-          operandTag instanceof CopySourceOperand and
+          operandTag instanceof CopySourceOperandTag and
           result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
         )
       )
@@ -315,7 +316,7 @@ class TranslatedLoad extends TranslatedExpr, TTranslatedLoad {
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-    Type resultType, boolean isGLValue) {
+      Type resultType, boolean isGLValue) {
     tag = LoadTag() and
     opcode instanceof Opcode::Load and
     resultType = expr.getType().getUnspecifiedType() and
@@ -326,7 +327,7 @@ class TranslatedLoad extends TranslatedExpr, TTranslatedLoad {
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag,
-    EdgeKind kind) {
+      EdgeKind kind) {
     tag = LoadTag() and
     result = getParent().getChildSuccessor(this) and
     kind instanceof GotoEdge
@@ -345,11 +346,11 @@ class TranslatedLoad extends TranslatedExpr, TTranslatedLoad {
     tag = LoadTag() and
     (
       (
-        operandTag instanceof LoadStoreAddressOperand and
+        operandTag instanceof AddressOperandTag and
         result = getOperand().getResult()
       ) or
       (
-        operandTag instanceof CopySourceOperand and
+        operandTag instanceof CopySourceOperandTag and
         result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
       )
     )
@@ -404,7 +405,7 @@ class TranslatedCommaExpr extends TranslatedNonConstantExpr {
   }
 
   override Instruction getInstructionOperand(InstructionTag tag,
-    OperandTag operandTag) {
+      OperandTag operandTag) {
     none()
   }
 
@@ -478,16 +479,16 @@ abstract class TranslatedCrementOperation extends TranslatedNonConstantExpr {
   }
 
   override final Instruction getInstructionOperand(InstructionTag tag,
-    OperandTag operandTag) {
+      OperandTag operandTag) {
     (
       tag = CrementLoadTag() and
       (
         (
-          operandTag instanceof LoadStoreAddressOperand and
+          operandTag instanceof AddressOperandTag and
           result = getOperand().getResult()
         ) or
         (
-          operandTag instanceof CopySourceOperand and
+          operandTag instanceof CopySourceOperandTag and
           result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
         )
       )
@@ -496,11 +497,11 @@ abstract class TranslatedCrementOperation extends TranslatedNonConstantExpr {
       tag = CrementOpTag() and
       (
         (
-          operandTag instanceof LeftOperand and
+          operandTag instanceof LeftOperandTag and
           result = getInstruction(CrementLoadTag())
         ) or
         (
-          operandTag instanceof RightOperand and
+          operandTag instanceof RightOperandTag and
           result = getInstruction(CrementConstantTag())
         )
       )
@@ -509,11 +510,11 @@ abstract class TranslatedCrementOperation extends TranslatedNonConstantExpr {
       tag = CrementStoreTag() and
       (
         (
-          operandTag instanceof LoadStoreAddressOperand and
+          operandTag instanceof AddressOperandTag and
           result = getOperand().getResult()
         ) or
         (
-          operandTag instanceof CopySourceOperand and
+          operandTag instanceof CopySourceOperandTag and
           result = getInstruction(CrementOpTag())
         )
       )
@@ -670,11 +671,11 @@ class TranslatedArrayExpr extends TranslatedNonConstantExpr {
     tag = OnlyInstructionTag() and
     (
       (
-        operandTag instanceof LeftOperand and
+        operandTag instanceof LeftOperandTag and
         result = getBaseOperand().getResult()
       ) or
       (
-        operandTag instanceof RightOperand and
+        operandTag instanceof RightOperandTag and
         result = getOffsetOperand().getResult()
       )
     )
@@ -722,7 +723,7 @@ abstract class TranslatedTransparentExpr extends TranslatedNonConstantExpr {
   }
 
   override final Instruction getInstructionOperand(InstructionTag tag,
-    OperandTag operandTag) {
+      OperandTag operandTag) {
     none()
   }
 
@@ -804,7 +805,7 @@ class TranslatedThisExpr extends TranslatedNonConstantExpr {
   override final Instruction getInstructionOperand(InstructionTag tag,
     OperandTag operandTag) {
     tag = OnlyInstructionTag() and
-    operandTag instanceof CopySourceOperand and
+    operandTag instanceof CopySourceOperandTag and
     result = getInitializeThisInstruction()
   }
 
@@ -857,7 +858,7 @@ class TranslatedNonFieldVariableAccess extends TranslatedVariableAccess {
   }
 
   override Instruction getInstructionOperand(InstructionTag tag,
-    OperandTag operandTag) {
+      OperandTag operandTag) {
     none()
   }
 
@@ -891,7 +892,7 @@ class TranslatedFieldAccess extends TranslatedVariableAccess {
   override Instruction getInstructionOperand(InstructionTag tag,
     OperandTag operandTag) {
     tag = OnlyInstructionTag() and
-    operandTag instanceof UnaryOperand and
+    operandTag instanceof UnaryOperandTag and
     result = getQualifier().getResult()
   }
 
@@ -987,7 +988,7 @@ abstract class TranslatedConstantExpr extends TranslatedCoreExpr {
   }
 
   override final Instruction getInstructionOperand(InstructionTag tag,
-    OperandTag operandTag) {
+      OperandTag operandTag) {
     none()
   }
 
@@ -1100,13 +1101,13 @@ class TranslatedUnaryExpr extends TranslatedSingleInstructionExpr {
   }
 
   override final Instruction getInstructionOperand(InstructionTag tag,
-    OperandTag operandTag) {
+      OperandTag operandTag) {
     tag = OnlyInstructionTag() and
     result = getOperand().getResult() and
     if getOpcode() instanceof Opcode::CopyValue then
-      operandTag instanceof CopySourceOperand
+      operandTag instanceof CopySourceOperandTag
     else
-      operandTag instanceof UnaryOperand
+      operandTag instanceof UnaryOperandTag
   }
 
   override final Opcode getOpcode() {
@@ -1172,9 +1173,9 @@ abstract class TranslatedSingleInstructionConversion extends TranslatedConversio
   }
 
   override Instruction getInstructionOperand(InstructionTag tag,
-    OperandTag operandTag) {
+      OperandTag operandTag) {
     tag = OnlyInstructionTag() and
-    operandTag instanceof UnaryOperand and
+    operandTag instanceof UnaryOperandTag and
     result = getOperand().getResult()
   }
 
@@ -1313,11 +1314,11 @@ class TranslatedBoolConversion extends TranslatedConversion {
     tag = BoolConversionCompareTag() and
     (
       (
-        operandTag instanceof LeftOperand and
+        operandTag instanceof LeftOperandTag and
         result = getOperand().getResult()
       ) or
       (
-        operandTag instanceof RightOperand and
+        operandTag instanceof RightOperandTag and
         result = getInstruction(BoolConversionConstantTag())
       )
     )
@@ -1381,21 +1382,21 @@ class TranslatedBinaryOperation extends TranslatedSingleInstructionExpr {
     tag = OnlyInstructionTag() and
     if swapOperandsOnOp() then (
       (
-        operandTag instanceof RightOperand and
+        operandTag instanceof RightOperandTag and
         result = getLeftOperand().getResult()
       ) or
       (
-        operandTag instanceof LeftOperand and
+        operandTag instanceof LeftOperandTag and
         result = getRightOperand().getResult()
       )
     )
     else (
       (
-        operandTag instanceof LeftOperand and
+        operandTag instanceof LeftOperandTag and
         result = getLeftOperand().getResult()
       ) or
       (
-        operandTag instanceof RightOperand and
+        operandTag instanceof RightOperandTag and
         result = getRightOperand().getResult()
       )
     )
@@ -1551,11 +1552,11 @@ class TranslatedAssignExpr extends TranslatedAssignment {
     tag = AssignmentStoreTag() and
     (
       (
-        operandTag instanceof LoadStoreAddressOperand and
+        operandTag instanceof AddressOperandTag and
         result = getLeftOperand().getResult()
       ) or
       (
-        operandTag instanceof CopySourceOperand and
+        operandTag instanceof CopySourceOperandTag and
         result = getRightOperand().getResult()
       )
     )
@@ -1714,11 +1715,11 @@ class TranslatedAssignOperation extends TranslatedAssignment {
       tag = AssignOperationLoadTag() and
       (
         (
-          operandTag instanceof LoadStoreAddressOperand and
+          operandTag instanceof AddressOperandTag and
           result = getLeftOperand().getResult()
         ) or
         (
-          operandTag instanceof CopySourceOperand and
+          operandTag instanceof CopySourceOperandTag and
           result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
         )
       )
@@ -1726,21 +1727,21 @@ class TranslatedAssignOperation extends TranslatedAssignment {
     (
       leftOperandNeedsConversion() and
       tag = AssignOperationConvertLeftTag() and
-      operandTag instanceof UnaryOperand and
+      operandTag instanceof UnaryOperandTag and
       result = getInstruction(AssignOperationLoadTag())
     ) or
     (
       tag = AssignOperationOpTag() and
       (
         (
-          operandTag instanceof LeftOperand and
+          operandTag instanceof LeftOperandTag and
           if leftOperandNeedsConversion() then
             result = getInstruction(AssignOperationConvertLeftTag())
           else
             result = getInstruction(AssignOperationLoadTag())
         ) or
         (
-          operandTag instanceof RightOperand and
+          operandTag instanceof RightOperandTag and
           result = getRightOperand().getResult()
         )
       )
@@ -1748,18 +1749,18 @@ class TranslatedAssignOperation extends TranslatedAssignment {
     (
       leftOperandNeedsConversion() and
       tag = AssignOperationConvertResultTag() and
-      operandTag instanceof UnaryOperand and
+      operandTag instanceof UnaryOperandTag and
       result = getInstruction(AssignOperationOpTag())
     ) or
     (
       tag = AssignmentStoreTag() and
       (
         (
-          operandTag instanceof LoadStoreAddressOperand and
+          operandTag instanceof AddressOperandTag and
           result = getLeftOperand().getResult()
         ) or
         (
-          operandTag instanceof CopySourceOperand and
+          operandTag instanceof CopySourceOperandTag and
           result = getStoredValue()
         )
       )
@@ -1828,14 +1829,14 @@ abstract class TranslatedCall extends TranslatedExpr {
     tag = CallTag() and
     (
       (
-        operandTag instanceof CallTargetOperand and
+        operandTag instanceof CallTargetOperandTag and
         result = getCallTargetResult()
       ) or
       (
-        operandTag instanceof ThisArgumentOperand and
+        operandTag instanceof ThisArgumentOperandTag and
         result = getQualifierResult()
       ) or
-      exists(PositionalArgumentOperand argTag |
+      exists(PositionalArgumentOperandTag argTag |
         argTag = operandTag and
         result = getArgument(argTag.getArgIndex()).getResult()
       )
@@ -2071,13 +2072,13 @@ class TranslatedNonConstantAllocationSize extends TranslatedAllocationSize {
     (
       tag = AllocationSizeTag() and
       (
-        operandTag instanceof LeftOperand and result = getInstruction(AllocationExtentConvertTag()) or
-        operandTag instanceof RightOperand and result = getInstruction(AllocationElementSizeTag())
+        operandTag instanceof LeftOperandTag and result = getInstruction(AllocationExtentConvertTag()) or
+        operandTag instanceof RightOperandTag and result = getInstruction(AllocationElementSizeTag())
       )
     ) or
     (
       tag = AllocationExtentConvertTag() and
-      operandTag instanceof UnaryOperand and
+      operandTag instanceof UnaryOperandTag and
       result = getExtent().getResult()
     )
   }
@@ -2322,7 +2323,7 @@ class TranslatedDestructorFieldDestruction extends TranslatedNonConstantExpr,
 
   override final Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
     tag = OnlyInstructionTag() and
-    operandTag instanceof UnaryOperand and
+    operandTag instanceof UnaryOperandTag and
     result = getTranslatedFunction(destruction.getEnclosingFunction()).getInitializeThisInstruction()
   }
 
@@ -2433,7 +2434,7 @@ class TranslatedConditionalExpr extends TranslatedNonConstantExpr,
   }
 
   override Instruction getInstructionOperand(InstructionTag tag,
-    OperandTag operandTag) {
+      OperandTag operandTag) {
     not resultIsVoid() and
     (
       (
@@ -2441,11 +2442,11 @@ class TranslatedConditionalExpr extends TranslatedNonConstantExpr,
         tag = ConditionValueTrueStoreTag() and
         (
           (
-            operandTag instanceof LoadStoreAddressOperand and
+            operandTag instanceof AddressOperandTag and
             result = getInstruction(ConditionValueTrueTempAddressTag())
           ) or
           (
-            operandTag instanceof CopySourceOperand and
+            operandTag instanceof CopySourceOperandTag and
             result = getThen().getResult()
           )
         )
@@ -2455,11 +2456,11 @@ class TranslatedConditionalExpr extends TranslatedNonConstantExpr,
         tag = ConditionValueFalseStoreTag() and
         (
           (
-            operandTag instanceof LoadStoreAddressOperand and
+            operandTag instanceof AddressOperandTag and
             result = getInstruction(ConditionValueFalseTempAddressTag())
           ) or
           (
-            operandTag instanceof CopySourceOperand and
+            operandTag instanceof CopySourceOperandTag and
             result = getElse().getResult()
           )
         )
@@ -2468,11 +2469,11 @@ class TranslatedConditionalExpr extends TranslatedNonConstantExpr,
         tag = ConditionValueResultLoadTag() and
         (
           (
-            operandTag instanceof LoadStoreAddressOperand and
+            operandTag instanceof AddressOperandTag and
             result = getInstruction(ConditionValueResultTempAddressTag())
           ) or
           (
-            operandTag instanceof CopySourceOperand and
+            operandTag instanceof CopySourceOperandTag and
             result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
           )
         )
@@ -2648,11 +2649,11 @@ class TranslatedThrowValueExpr extends TranslatedThrowExpr,
     tag = ThrowTag() and
     (
       (
-        operandTag instanceof LoadStoreAddressOperand and
+        operandTag instanceof AddressOperandTag and
         result = getInstruction(InitializerVariableAddressTag())
       ) or
       (
-        operandTag instanceof ExceptionOperand and
+        operandTag instanceof ExceptionOperandTag and
         result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
       )
     )
@@ -2864,7 +2865,7 @@ abstract class TranslatedNewOrNewArrayExpr extends TranslatedNonConstantExpr,
   override final Instruction getInstructionOperand(InstructionTag tag,
       OperandTag operandTag) {
     tag = OnlyInstructionTag() and
-    operandTag instanceof UnaryOperand and
+    operandTag instanceof UnaryOperandTag and
     result = getAllocatorCall().getResult()
   }
   

@@ -2,7 +2,8 @@ import SimpleSSAInternal
 import cpp
 import Alias
 private import InputIR
-import semmle.code.cpp.ir.internal.Overlap
+private import semmle.code.cpp.ir.internal.OperandTag
+private import semmle.code.cpp.ir.internal.Overlap
 
 private newtype TVirtualVariable =
   MkVirtualVariable(IRVariable var) {
@@ -69,15 +70,15 @@ Overlap getOverlap(MemoryAccess def, MemoryAccess use) {
 MemoryAccess getResultMemoryAccess(Instruction instr) {
   exists(IRVariable var |
     instr.getResultMemoryAccess() instanceof IndirectMemoryAccess and
-    resultPointsTo(instr.getOperand(loadStoreAddressOperand()), var, 0) and
+    resultPointsTo(instr.getAnOperand().(AddressOperand).getDefinitionInstruction(),
+      var, 0) and
     result = getMemoryAccess(var)
   )
 }
 
-MemoryAccess getOperandMemoryAccess(Instruction instr, OperandTag tag) {
+MemoryAccess getOperandMemoryAccess(Operand operand) {
   exists(IRVariable var |
-    instr.getOperandMemoryAccess(tag) instanceof IndirectMemoryAccess and
-    resultPointsTo(instr.getOperand(loadStoreAddressOperand()), var, 0) and
+    resultPointsTo(operand.getAddressOperand().getDefinitionInstruction(), var, 0) and
     result = getMemoryAccess(var)
   )
 }
