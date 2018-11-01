@@ -507,12 +507,12 @@ module RangeAnalysis {
    *
    * This means negative-weight cycles (contradictions) can be detected using simple cycle detection.
    */
-  private predicate extendedEdge(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, Bias c, boolean sharp) {
+  private predicate extendedEdge(DataFlow::Node a, int asign, DataFlow::Node b, int bsign, Bias c, boolean sharp, ControlFlowNode cfg) {
     seedEdgeWithDual(cfg, a, asign, b, bsign, c, sharp)
     or
     exists (DataFlow::Node mid, int midx, ControlFlowNode cfg1, Bias c1, ControlFlowNode cfg2, Bias c2, boolean sharp1, boolean sharp2 |
-      extendedEdge(cfg1, a, asign, mid, midx, c1, sharp1) and
-      extendedEdge(cfg2, mid, midx, b, bsign, c2, sharp2) and
+      extendedEdge(a, asign, mid, midx, c1, sharp1, cfg1) and
+      extendedEdge(mid, midx, b, bsign, c2, sharp2, cfg2) and
       sharp = sharp1.booleanOr(sharp2) and
       c = wideningAddition(c1, sharp1, c2, sharp2) and
       // One of the two CFG nodes must dominate the other, and `cfg` must be bound to the dominated one.
@@ -539,8 +539,8 @@ module RangeAnalysis {
   /**
    * Holds if there is a negative-weight edge from src to dst.
    */
-  private predicate negativeEdge(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign) {
-    exists (int weight, boolean sharp | extendedEdge(cfg, a, asign, b, bsign, weight, sharp) |
+  private predicate negativeEdge(DataFlow::Node a, int asign, DataFlow::Node b, int bsign, ControlFlowNode cfg) {
+    exists (int weight, boolean sharp | extendedEdge(a, asign, b, bsign, weight, sharp, cfg) |
       weight = 0 and sharp = true // a strict "< 0" edge counts as negative
       or
       weight < 0)
@@ -552,12 +552,12 @@ module RangeAnalysis {
    * The initial outgoing edge from `src` must be derived at `cfg`.
    */
   pragma[noopt]
-  private predicate reachableByNegativeEdges(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign) {
-    negativeEdge(cfg, a, asign, b, bsign)
+  private predicate reachableByNegativeEdges(DataFlow::Node a, int asign, DataFlow::Node b, int bsign, ControlFlowNode cfg) {
+    negativeEdge(a, asign, b, bsign, cfg)
     or
     exists(DataFlow::Node mid, int midx, ControlFlowNode midcfg |
-      reachableByNegativeEdges(cfg, a, asign, mid, midx) and
-      negativeEdge(midcfg, mid, midx, b, bsign) and
+      reachableByNegativeEdges(a, asign, mid, midx, cfg) and
+      negativeEdge(mid, midx, b, bsign, midcfg) and
       exists (BasicBlock bb, int i, int j |
         bb.getNode(i) = midcfg and
         bb.getNode(j) = cfg and
@@ -565,8 +565,8 @@ module RangeAnalysis {
     or
     // Same as above, but where CFG nodes are in different basic blocks
     exists(DataFlow::Node mid, int midx, ControlFlowNode midcfg, BasicBlock midBB, ReachableBasicBlock midRBB, BasicBlock cfgBB |
-      reachableByNegativeEdges(cfg, a, asign, mid, midx) and
-      negativeEdge(midcfg, mid, midx, b, bsign) and
+      reachableByNegativeEdges(a, asign, mid, midx, cfg) and
+      negativeEdge(mid, midx, b, bsign, midcfg) and
       midBB = midcfg.getBasicBlock() and
       midRBB = midBB.(ReachableBasicBlock) and
       cfgBB = cfg.getBasicBlock() and
@@ -579,6 +579,6 @@ module RangeAnalysis {
    * opposite of the expected outcome.
    */
   predicate isContradictoryGuardNode(ConditionGuardNode guard) {
-    exists (DataFlow::Node a, int asign | reachableByNegativeEdges(guard, a, asign, a, asign))
+    exists (DataFlow::Node a, int asign | reachableByNegativeEdges(a, asign, a, asign, guard))
   }
 }
