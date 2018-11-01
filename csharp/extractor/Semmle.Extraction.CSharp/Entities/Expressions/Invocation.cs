@@ -22,7 +22,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         {
             if (IsNameof(Syntax))
             {
-                PopulateArguments(cx, Syntax.ArgumentList, 0);
+                PopulateArguments(Syntax.ArgumentList, 0);
                 return;
             }
 
@@ -80,7 +80,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     cx.ModelError(Syntax, "Unable to get name for dynamic call.");
             }
 
-            PopulateArguments(cx, Syntax.ArgumentList, child);
+            PopulateArguments(Syntax.ArgumentList, child);
 
             if (target == null)
             {

@@ -21,7 +21,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 // existence of a syntax tree. This is not the case for compiled
                 // attributes.
                 var syntax = attribute.ApplicationSyntaxReference.GetSyntax() as AttributeSyntax;
-                ExtractAttribute(cx, syntax, attribute.AttributeClass, entity);
+                ExtractAttribute(syntax, attribute.AttributeClass, entity);
             }
         }
 
@@ -29,10 +29,10 @@ namespace Semmle.Extraction.CSharp.Entities
             : base(cx)
         {
             var info = cx.GetSymbolInfo(attribute);
-            ExtractAttribute(cx, attribute, info.Symbol.ContainingType, entity);
+            ExtractAttribute(attribute, info.Symbol.ContainingType, entity);
         }
 
-        void ExtractAttribute(Context cx, AttributeSyntax syntax, ITypeSymbol attributeClass, IEntity entity)
+        void ExtractAttribute(AttributeSyntax syntax, ITypeSymbol attributeClass, IEntity entity)
         {
             var type = Type.Create(cx, attributeClass);
             cx.Emit(Tuples.attributes(this, type.TypeRef, entity));

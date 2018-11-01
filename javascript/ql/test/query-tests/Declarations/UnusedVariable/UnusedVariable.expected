@@ -1,6 +1,8 @@
+| Babelrc/importPragma.jsx:2:1:2:27 | import  ... react'; | Unused import q. |
 | decorated.ts:1:1:1:126 | import  ... where'; | Unused import actionHandler. |
 | decorated.ts:4:10:4:12 | fun | Unused function fun. |
 | externs.js:6:5:6:13 | iAmUnused | Unused variable iAmUnused. |
+| importWithoutPragma.jsx:1:1:1:27 | import  ... react'; | Unused import h. |
 | multi-imports.js:1:1:1:29 | import  ... om 'x'; | Unused imports a, b, d. |
 | multi-imports.js:2:1:2:42 | import  ... om 'x'; | Unused imports alphabetically, ordered. |
 | typeoftype.ts:9:7:9:7 | y | Unused variable y. |

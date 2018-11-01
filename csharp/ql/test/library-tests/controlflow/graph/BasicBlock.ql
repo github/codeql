@@ -1,7 +1,7 @@
 import csharp
-import semmle.code.csharp.controlflow.BasicBlocks
+import Common
 
-from BasicBlock bb
+from SourceBasicBlock bb
 select
   bb.getFirstNode(),
   bb.getLastNode(),

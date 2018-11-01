@@ -8,6 +8,7 @@
 | HResultBooleanConversion.c:79:15:79:38 | call to IncorrectHresultFunction | Implicit conversion from HRESULT to bool |
 | HResultBooleanConversion.c:82:10:82:11 | hr | Usage of a type HRESULT as an argument of a unary logical operation |
 | HResultBooleanConversion.c:92:9:92:10 | hr | Direct usage of a type HRESULT as a conditional expression |
+| HResultBooleanConversion.c:106:13:106:27 | call to HresultFunction | Usage of a type HRESULT as an argument of a unary logical operation |
 | HResultBooleanConversion.cpp:39:12:39:23 | call to BoolFunction | Implicit conversion from BOOL to HRESULT |
 | HResultBooleanConversion.cpp:44:12:44:24 | call to BoolFunction2 | Implicit conversion from bool to HRESULT |
 | HResultBooleanConversion.cpp:50:15:50:16 | hr | Explicit conversion from HRESULT to BOOL |
@@ -18,3 +19,4 @@
 | HResultBooleanConversion.cpp:76:15:76:38 | call to IncorrectHresultFunction | Implicit conversion from HRESULT to bool |
 | HResultBooleanConversion.cpp:79:10:79:11 | hr | Implicit conversion from HRESULT to bool |
 | HResultBooleanConversion.cpp:89:9:89:10 | hr | Implicit conversion from HRESULT to bool |
+| HResultBooleanConversion.cpp:103:13:103:27 | call to HresultFunction | Implicit conversion from HRESULT to bool |

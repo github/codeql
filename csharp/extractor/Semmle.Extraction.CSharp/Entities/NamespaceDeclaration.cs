@@ -29,11 +29,6 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public void Extract(Context cx, NamespaceDeclarationSyntax decl)
-        {
-            decl.Accept(new Populators.TypeOrNamespaceVisitor(cx, this));
-        }
-
         public static NamespaceDeclaration Create(Context cx, NamespaceDeclarationSyntax decl, NamespaceDeclaration parent) => new NamespaceDeclaration(cx, decl, parent);
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;

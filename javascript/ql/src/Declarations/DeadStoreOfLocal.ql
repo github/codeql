@@ -26,25 +26,6 @@ predicate deadStoreOfLocal(VarDef vd, PurelyLocalVariable v) {
 }
 
 /**
- * Holds if `e` is an expression evaluating to `null` or `undefined`.
- *
- * This includes not only direct references to `null` and `undefined`, but
- * also `void` expressions and assignments of the form `x = rhs`, where `rhs`
- * is itself an expression evaluating to `null` or `undefined`.
- */
-predicate isNullOrUndef(Expr e) {
-  exists (Expr inner |
-    inner = e.stripParens() |
-    // `null` or `undefined`
-    inner instanceof NullLiteral or
-    inner.(VarAccess).getName() = "undefined" or
-    inner instanceof VoidExpr or
-    // recursive case to catch multi-assignments of the form `x = y = null`
-    isNullOrUndef(inner.(AssignExpr).getRhs())
-  )
-}
-
-/**
  * Holds if `e` is an expression that may be used as a default initial value,
  * such as `0` or `-1`, or an empty object or array literal.
  */
@@ -57,9 +38,7 @@ predicate isDefaultInit(Expr e) {
   // initialising to an empty array or object literal, even if unnecessary,
   // can convey useful type information to the reader
   e.(ArrayExpr).getSize() = 0 or
-  e.(ObjectExpr).getNumProperty() = 0 or
-  // recursive case
-  isDefaultInit(e.(AssignExpr).getRhs())
+  e.(ObjectExpr).getNumProperty() = 0
 }
 
 from VarDef dead, PurelyLocalVariable v  // captured variables may be read by closures, so don't flag them
@@ -77,9 +56,9 @@ where deadStoreOfLocal(dead, v) and
         not fd = outer.getBody().(BlockStmt).getAStmt()
       ) and
       // don't flag overwrites with `null` or `undefined`
-      not isNullOrUndef(dead.getSource()) and
+      not SyntacticConstants::isNullOrUndefined(dead.getSource()) and
       // don't flag default inits that are later overwritten
-      not (isDefaultInit(dead.getSource()) and dead.isOverwritten(v)) and
+      not (isDefaultInit(dead.getSource().(Expr).getUnderlyingValue()) and dead.isOverwritten(v)) and
       // don't flag assignments in externs
       not dead.(ASTNode).inExternsFile() and
       // don't flag exported variables

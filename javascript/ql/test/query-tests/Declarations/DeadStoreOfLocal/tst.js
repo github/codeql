@@ -153,3 +153,7 @@ function v() {
 	z2 = 42;
 	return x + y + z1 + z2;
 });
+
+(function() {
+	for (var a = (x, -1) in v = a, o);
+});

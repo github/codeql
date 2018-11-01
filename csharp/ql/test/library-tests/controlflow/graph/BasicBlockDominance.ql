@@ -1,7 +1,7 @@
 import csharp
-import semmle.code.csharp.controlflow.BasicBlocks
+import Common
 
-from BasicBlock dom, BasicBlock bb, string s
+from SourceBasicBlock dom, SourceBasicBlock bb, string s
 where
   dom.dominates(bb) and s = "pre"
   or

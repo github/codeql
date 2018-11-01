@@ -48,4 +48,10 @@ int f(int x) {
 
   // GOOD (no block)
   for (;;) ;
+
+  // GOOD (has comment): [FALSE POSITIVE]
+  if (x) {} // comment
+
+  // GOOD (has comment): [FALSE POSITIVE]
+  if (x) {}  // comment
 }
