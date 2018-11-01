@@ -1,7 +1,6 @@
 private import internal.IRInternal
 import Instruction
 import semmle.code.cpp.ir.implementation.EdgeKind
-import Cached
 
 class IRBlock extends TIRBlock {
   final string toString() {
@@ -122,6 +121,7 @@ private predicate isEntryBlock(TIRBlock block) {
   block = MkIRBlock(any(EnterFunctionInstruction enter))
 }
 
+private import Cached
 private cached module Cached {
   cached newtype TIRBlock =
     MkIRBlock(Instruction firstInstr) {
@@ -174,6 +174,6 @@ private cached module Cached {
     idominance(isEntryBlock/1, blockSuccessor/2)(_, dominator, block)
 }
 
-Instruction getFirstInstruction(TIRBlock block) {
+private Instruction getFirstInstruction(TIRBlock block) {
   block = MkIRBlock(result)
 }
