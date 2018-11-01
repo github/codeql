@@ -399,10 +399,8 @@ class ModuleImportNode extends DataFlow::DefaultSourceNode {
     )
     or
     // declared AMD dependency
-    exists (AMDModuleDefinition amd, PathExpr dep, Parameter p |
-      amd.dependencyParameter(dep, p) and
-      path = dep.getValue() and
-      this = DataFlow::parameterNode(p)
+    exists (AMDModuleDefinition amd |
+      this = DataFlow::parameterNode(amd.getDependencyParameter(path))
     )
     or
     // AMD require
