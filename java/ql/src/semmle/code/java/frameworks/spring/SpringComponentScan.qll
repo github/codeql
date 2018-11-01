@@ -96,7 +96,8 @@ class SpringBasePackage extends string {
 class SpringComponentAnnotation extends AnnotationType {
   SpringComponentAnnotation() {
     // Component used directly as an annotation.
-    hasQualifiedName("org.springframework.stereotype", "Component") or
+    hasQualifiedName("org.springframework.stereotype", "Component")
+    or
     // Component can be used as a meta-annotation on other annotation types.
     getAnAnnotation().getType() instanceof SpringComponentAnnotation
   }

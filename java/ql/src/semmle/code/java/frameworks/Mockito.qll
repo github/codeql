@@ -53,7 +53,8 @@ class MockitoInitedTest extends Class {
   MockitoInitedTest() {
     // Tests run with the Mockito runner.
     exists(RunWithAnnotation a | a = this.getAnAncestor().getAnAnnotation() |
-      a.getRunner().(RefType).hasQualifiedName("org.mockito.runners", "MockitoJUnitRunner") or
+      a.getRunner().(RefType).hasQualifiedName("org.mockito.runners", "MockitoJUnitRunner")
+      or
       // Deprecated style.
       a.getRunner().(RefType).hasQualifiedName("org.mockito.runners", "MockitoJUnit44Runner")
     )
@@ -124,7 +125,8 @@ class MockitoAnnotatedField extends Field {
  */
 class MockitoMockedField extends MockitoAnnotatedField {
   MockitoMockedField() {
-    hasAnnotation("org.mockito", "Mock") or
+    hasAnnotation("org.mockito", "Mock")
+    or
     // Deprecated style.
     hasAnnotation("org.mockito", "MockitoAnnotations$Mock")
   }

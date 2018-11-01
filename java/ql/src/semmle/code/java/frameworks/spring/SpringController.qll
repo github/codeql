@@ -6,7 +6,8 @@ import java
 class SpringControllerAnnotation extends AnnotationType {
   SpringControllerAnnotation() {
     // `@Controller` used directly as an annotation.
-    hasQualifiedName("org.springframework.stereotype", "Controller") or
+    hasQualifiedName("org.springframework.stereotype", "Controller")
+    or
     // `@Controller` can be used as a meta-annotation on other annotation types.
     getAnAnnotation().getType() instanceof SpringControllerAnnotation
   }

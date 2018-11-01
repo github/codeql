@@ -370,7 +370,8 @@ class Method extends Callable, @method {
   }
 
   override predicate isStrictfp() {
-    Callable.super.isStrictfp() or
+    Callable.super.isStrictfp()
+    or
     // JLS 8.1.1.3, JLS 9.1.1.2
     getDeclaringType().isStrictfp()
   }
@@ -575,21 +576,24 @@ class Field extends Member, ExprParent, @field, Variable {
   predicate isSourceDeclaration() { this.getSourceDeclaration() = this }
 
   override predicate isPublic() {
-    Member.super.isPublic() or
+    Member.super.isPublic()
+    or
     // JLS 9.3: Every field declaration in the body of an interface is
     // implicitly public, static, and final
     getDeclaringType() instanceof Interface
   }
 
   override predicate isStatic() {
-    Member.super.isStatic() or
+    Member.super.isStatic()
+    or
     // JLS 9.3: Every field declaration in the body of an interface is
     // implicitly public, static, and final
     this.getDeclaringType() instanceof Interface
   }
 
   override predicate isFinal() {
-    Member.super.isFinal() or
+    Member.super.isFinal()
+    or
     // JLS 9.3: Every field declaration in the body of an interface is
     // implicitly public, static, and final
     this.getDeclaringType() instanceof Interface

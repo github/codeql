@@ -153,9 +153,11 @@ class StatelessSessionEJB extends SessionEJB {
 class MessageDrivenBean extends EJB {
   MessageDrivenBean() {
     // Subtype of `javax.ejb.MessageBean`.
-    this instanceof MessageBean or
+    this instanceof MessageBean
+    or
     // EJB annotations.
-    this.getAnAnnotation().getType().hasName("MessageDriven") or
+    this.getAnAnnotation().getType().hasName("MessageDriven")
+    or
     // XML deployment descriptor.
     exists(EjbJarXMLFile f |
       this.getQualifiedName() = f
@@ -173,7 +175,8 @@ class MessageDrivenBean extends EJB {
 class EntityEJB extends EJB {
   EntityEJB() {
     // Subtype of `javax.ejb.EntityBean`.
-    this instanceof EntityBean or
+    this instanceof EntityBean
+    or
     // XML deployment descriptor.
     exists(EjbJarXMLFile f |
       this.getQualifiedName() = f
@@ -294,7 +297,8 @@ class XmlSpecifiedBusinessInterface extends BusinessInterface {
 class AnnotatedBusinessInterface extends BusinessInterface {
   AnnotatedBusinessInterface() {
     // An interface annotated as `@Remote` or `@Local`.
-    this.getAnAnnotation() instanceof BusinessInterfaceAnnotation or
+    this.getAnAnnotation() instanceof BusinessInterfaceAnnotation
+    or
     // An interface named within a `@Local` or `@Remote` annotation of another type.
     exists(BusinessInterfaceAnnotation a | a.getANamedType() = this)
   }

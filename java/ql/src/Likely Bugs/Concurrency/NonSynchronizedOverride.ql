@@ -41,7 +41,8 @@ predicate delegatingOverride(Method sub, Method sup) {
     stmt = sub.getBody().(SingletonBlock).getStmt() and
     (
       // ...that is either a delegating call to `sup` (with a possible cast)...
-      delegatingSuperCall(stmt.(ExprStmt).getExpr(), sup) or
+      delegatingSuperCall(stmt.(ExprStmt).getExpr(), sup)
+      or
       // ...or a `return` statement containing such a call.
       delegatingSuperCall(stmt.(ReturnStmt).getResult(), sup)
     )

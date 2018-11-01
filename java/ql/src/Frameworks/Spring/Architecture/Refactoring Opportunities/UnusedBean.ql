@@ -156,12 +156,16 @@ class LiveSpringBean extends SpringBean {
       // If the class does not exist for this bean, or the class is not a source bean, then this is
       // likely to be a definition using a library class, in which case we should consider it to be
       // live.
-      not exists(getClass()) or
-      not getClass().fromSource() or
+      not exists(getClass())
+      or
+      not getClass().fromSource()
+      or
       // In alfresco, "webscript" beans should be considered live
-      getBeanParent*().getBeanParentName() = "webscript" or
+      getBeanParent*().getBeanParentName() = "webscript"
+      or
       // A live child bean implies this bean is live
-      exists(LiveSpringBean child | this = child.getBeanParent()) or
+      exists(LiveSpringBean child | this = child.getBeanParent())
+      or
       // Beans constructed by a bean factory are considered live
       exists(SpringBeanFactory beanFactory | this = beanFactory.getAConstructedBean())
     )

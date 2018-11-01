@@ -61,7 +61,8 @@ class FacesComponent extends Class {
       // Must be registered using either an annotation
       exists(FacesComponentAnnotation componentAnnotation |
         this = componentAnnotation.getFacesComponentClass()
-      ) or
+      )
+      or
       // Or in an XML file
       exists(FacesConfigComponentClass componentClassXML |
         this = componentClassXML.getFacesComponentClass()
