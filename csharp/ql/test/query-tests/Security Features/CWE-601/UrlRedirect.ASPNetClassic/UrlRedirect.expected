@@ -1,4 +1,0 @@
-| UrlRedirect.cs:14:31:14:61 | access to indexer | Untrusted URL redirection due to $@. | UrlRedirect.cs:14:31:14:53 | access to property QueryString | user-provided value |
-| UrlRedirect.cs:39:44:39:74 | access to indexer | Untrusted URL redirection due to $@. | UrlRedirect.cs:39:44:39:66 | access to property QueryString | user-provided value |
-| UrlRedirect.cs:40:47:40:77 | access to indexer | Untrusted URL redirection due to $@. | UrlRedirect.cs:40:47:40:69 | access to property QueryString | user-provided value |
-| UrlRedirect.cs:49:29:49:31 | access to local variable url | Untrusted URL redirection due to $@. | UrlRedirect.cs:24:22:24:44 | access to property QueryString | user-provided value |

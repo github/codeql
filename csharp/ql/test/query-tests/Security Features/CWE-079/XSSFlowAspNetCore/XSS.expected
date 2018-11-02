@@ -1,7 +1,0 @@
-| XSS.cs:22:52:22:76 | call to operator implicit conversion | $@ flows to here and is written to HTML or JavaScript. | XSS.cs:22:52:22:64 | access to property Query | User-provided value |
-| XSS.cs:45:51:45:53 | access to parameter foo | $@ flows to here and is written to HTML or JavaScript. | XSS.cs:41:56:41:58 | foo | User-provided value |
-| XSS.cs:52:43:52:67 | access to property Value | $@ flows to here and is written to HTML or JavaScript. | XSS.cs:52:43:52:67 | access to property Value | User-provided value |
-| XSS.cs:59:43:59:73 | call to method ToString | $@ flows to here and is written to HTML or JavaScript. | XSS.cs:59:43:59:55 | access to property Query | User-provided value |
-| XSS.cs:62:44:62:66 | access to indexer | $@ flows to here and is written to HTML or JavaScript. | XSS.cs:62:44:62:56 | access to property Query | User-provided value |
-| XSS.cs:70:43:70:61 | access to property ContentType | $@ flows to here and is written to HTML or JavaScript. | XSS.cs:70:43:70:61 | access to property ContentType | User-provided value |
-| XSS.cs:73:51:73:72 | call to operator implicit conversion | $@ flows to here and is written to HTML or JavaScript. | XSS.cs:73:51:73:65 | access to property Headers | User-provided value |
