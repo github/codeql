@@ -600,18 +600,26 @@ private predicate flowThroughCall(DataFlow::Node input, DataFlow::Node invk,
  * Holds if `pred` may flow into property `prop` of `succ` under configuration `cfg`
  * along a path summarized by `summary`.
  */
-private predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop,
+pragma[nomagic]
+private predicate storeStep(DataFlow::Node pred, DataFlow::Node succ, string prop,
                             DataFlow::Configuration cfg, PathSummary summary) {
   basicStoreStep(pred, succ, prop) and
   summary = PathSummary::level()
   or
-  exists (Function f, DataFlow::Node mid, DataFlow::SourceNode base |
+  exists (Function f, DataFlow::Node mid, DataFlow::Node base |
     // `f` stores its parameter `pred` in property `prop` of a value that it returns,
     // and `succ` is an invocation of `f`
     reachableFromInput(f, succ, pred, mid, cfg, summary) and
-    base.hasPropertyWrite(prop, mid) and
-    base.flowsToExpr(f.getAReturnedExpr())
+    returnedPropWrite(f, base, prop, mid)
   )
+}
+
+/**
+ * Holds if `f` may return `base`, which has a write of property `prop` with right-hand side `rhs`.
+ */
+predicate returnedPropWrite(Function f, DataFlow::SourceNode base, string prop, DataFlow::Node rhs) {
+  base.hasPropertyWrite(prop, rhs) and
+  base.flowsToExpr(f.getAReturnedExpr())
 }
 
 /**
