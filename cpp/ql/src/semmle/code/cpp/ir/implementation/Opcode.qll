@@ -66,7 +66,8 @@ private newtype TOpcode =
   TIndirectMayWriteSideEffect() or
   TBufferReadSideEffect() or
   TBufferWriteSideEffect() or
-  TBufferMayWriteSideEffect()
+  TBufferMayWriteSideEffect() or
+  TChi()
 
 class Opcode extends TOpcode {
   string toString() {
@@ -192,4 +193,5 @@ module Opcode {
   class BufferReadSideEffect extends ReadSideEffectOpcode, BufferAccessOpcode, TBufferReadSideEffect { override final string toString() { result = "BufferReadSideEffect" } }
   class BufferWriteSideEffect extends WriteSideEffectOpcode, BufferAccessOpcode, TBufferWriteSideEffect { override final string toString() { result = "BufferWriteSideEffect" } }
   class BufferMayWriteSideEffect extends MayWriteSideEffectOpcode, BufferAccessOpcode, TBufferMayWriteSideEffect { override final string toString() { result = "BufferMayWriteSideEffect" } }
+  class Chi extends Opcode, TChi {override final string toString() { result = "Chi" } }
 }

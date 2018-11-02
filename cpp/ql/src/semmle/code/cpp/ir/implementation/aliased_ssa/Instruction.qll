@@ -1340,6 +1340,16 @@ class PhiInstruction extends Instruction {
   }
 }
 
+class ChiInstruction extends Instruction {
+  ChiInstruction() {
+    opcode instanceof Opcode::Chi
+  }
+
+  override final MemoryAccessKind getResultMemoryAccess() {
+    result instanceof ChiUpdateMemoryAccess
+  }
+}
+
 /**
  * An instruction representing a built-in operation. This is used to represent
  * operations such as access to variable argument lists.

@@ -17,6 +17,10 @@ cached private module Cached {
     } or
     PhiTag(Alias::VirtualVariable vvar, OldIR::IRBlock block) {
       hasPhiNode(vvar, block)
+    } or
+    ChiTag(OldIR::Instruction oldInstruction) {
+      not oldInstruction instanceof OldIR::PhiInstruction and
+      hasChiNode(_, oldInstruction)
     }
 
   cached class InstructionTagType extends TInstructionTag {
@@ -39,11 +43,23 @@ cached private module Cached {
     getOldInstruction(result) = instr
   }
 
+  private Instruction getNewFinalInstruction(OldIR::Instruction instr) {
+    result = getChiInstruction(instr)
+    or
+    not exists(getChiInstruction(instr)) and
+    result = getNewInstruction(instr)
+  }
+
   private PhiInstruction getPhiInstruction(Function func, OldIR::IRBlock oldBlock,
     Alias::VirtualVariable vvar) {
     result.getFunction() = func and
     result.getAST() = oldBlock.getFirstInstruction().getAST() and
     result.getTag() = PhiTag(vvar, oldBlock)
+  }
+  
+  private ChiInstruction getChiInstruction (OldIR::Instruction instr) {
+    hasChiNode(_, instr) and
+    result.getTag() = ChiTag(instr)
   }
 
   private IRVariable getNewIRVariable(OldIR::IRVariable var) {
@@ -89,6 +105,15 @@ cached private module Cached {
       opcode instanceof Opcode::Phi and
       ast = block.getFirstInstruction().getAST() and
       tag = PhiTag(vvar, block) and
+      resultType = vvar.getType() and
+      isGLValue = false
+    ) or
+    exists(OldIR::Instruction instr, Alias::VirtualVariable vvar |
+      hasChiNode(vvar, instr) and
+      instr.getFunction() = func and
+      opcode instanceof Opcode::Chi and
+      ast = instr.getAST() and
+      tag = ChiTag(instr) and
       resultType = vvar.getType() and
       isGLValue = false
     )
@@ -181,7 +206,18 @@ cached private module Cached {
   }
 
   cached Instruction getInstructionSuccessor(Instruction instruction, EdgeKind kind) {
-    result = getNewInstruction(getOldInstruction(instruction).getSuccessor(kind))
+    if(hasChiNode(_, getOldInstruction(instruction)))
+    then
+      result = getChiInstruction(getOldInstruction(instruction)) and
+      kind instanceof GotoEdge
+    else (
+      result = getNewInstruction(getOldInstruction(instruction).getSuccessor(kind))
+      or
+      exists(OldIR::Instruction oldInstruction |
+        instruction = getChiInstruction(oldInstruction) and
+        result = getNewInstruction(oldInstruction.getSuccessor(kind))
+      )
+    )
   }
 
   cached IRVariable getInstructionVariable(Instruction instruction) {
@@ -231,6 +267,11 @@ cached private module Cached {
     exists(OldIR::SideEffectInstruction oldInstruction |
       oldInstruction = getOldInstruction(instruction) and
       result = getNewInstruction(oldInstruction.getPrimaryInstruction())
+    )
+    or
+    exists(OldIR::Instruction oldInstruction |
+      instruction.getTag() = ChiTag(oldInstruction) and
+      result = getNewInstruction(oldInstruction)
     )
   }
 
@@ -389,6 +430,15 @@ cached private module Cached {
     OldIR::IRBlock phiBlock) {
     hasFrontierPhiNode(vvar, phiBlock)
     //or ssa_sanitized_custom_phi_node(vvar, block)
+  }
+  
+  private predicate hasChiNode(Alias::VirtualVariable vvar,
+    OldIR::Instruction def) {
+    exists(Alias::MemoryAccess ma |
+      ma = Alias::getResultMemoryAccess(def) and
+      ma.isPartialMemoryAccess() and
+      ma.getVirtualVariable() = vvar
+    )
   }
 }
 

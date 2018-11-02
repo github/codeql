@@ -1,4 +1,12 @@
 missingOperand
+| ir.cpp:174:9:174:12 | Load: access to array | CopySource |
+| ir.cpp:175:9:175:12 | Load: access to array | CopySource |
+| ir.cpp:188:14:188:21 | Load: access to array | CopySource |
+| ir.cpp:190:18:190:23 | Load: access to array | CopySource |
+| ir.cpp:572:22:572:23 | Load:  | CopySource |
+| ir.cpp:676:12:676:12 | Load: (reference dereference) | CopySource |
+| ir.cpp:894:14:894:43 | Load: __builtin_va_arg | CopySource |
+| ir.cpp:895:30:895:33 | Load: __builtin_va_arg | CopySource |
 unexpectedOperand
 duplicateOperand
 missingPhiOperand

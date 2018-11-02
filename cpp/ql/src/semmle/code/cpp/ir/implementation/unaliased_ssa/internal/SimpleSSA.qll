@@ -1,7 +1,6 @@
-import SimpleSSAInternal
+import AliasAnalysis
 import cpp
-import Alias
-private import InputIR
+private import semmle.code.cpp.ir.implementation.raw.IR
 private import semmle.code.cpp.ir.internal.OperandTag
 private import semmle.code.cpp.ir.internal.Overlap
 
@@ -9,6 +8,7 @@ private newtype TVirtualVariable =
   MkVirtualVariable(IRVariable var) {
     not variableAddressEscapes(var)
   }
+
 
 private VirtualVariable getVirtualVariable(IRVariable var) {
   result.getIRVariable() = var
@@ -60,11 +60,17 @@ class MemoryAccess extends TMemoryAccess {
   VirtualVariable getVirtualVariable() {
     result = vvar
   }
+
+  predicate isPartialMemoryAccess() {
+    none()
+  }
 }
 
 Overlap getOverlap(MemoryAccess def, MemoryAccess use) {
   def.getVirtualVariable() = use.getVirtualVariable() and
   result instanceof MustExactlyOverlap
+  or
+  none() // Avoid compiler error in SSAConstruction
 }
 
 MemoryAccess getResultMemoryAccess(Instruction instr) {

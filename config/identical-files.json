@@ -43,10 +43,6 @@
         "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/AliasAnalysis.qll",
         "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/AliasAnalysis.qll"
     ],
-    "C++ SSA SimpleSSA": [
-        "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/SimpleSSA.qll",
-        "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/SimpleSSA.qll"
-    ],
     "C++ SSA SSAConstruction": [
         "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/SSAConstruction.qll",
         "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/SSAConstruction.qll"

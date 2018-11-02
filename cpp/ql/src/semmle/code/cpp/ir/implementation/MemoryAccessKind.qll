@@ -7,7 +7,9 @@ private newtype TMemoryAccessKind =
   TBufferMayMemoryAccess() or
   TEscapedMemoryAccess() or
   TPhiMemoryAccess() or
-  TUnmodeledMemoryAccess()
+  TUnmodeledMemoryAccess() or
+  TChiOldMemoryAccess() or
+  TChiUpdateMemoryAccess()
 
 /**
  * Describes the set of memory locations memory accessed by a memory operand or
@@ -78,6 +80,25 @@ class PhiMemoryAccess extends MemoryAccessKind, TPhiMemoryAccess {
   }
 }
 
+/**
+ * The operand is a ChiOld operand, which accesses the same memory as its
+ * definition.
+ */
+class ChiOldMemoryAccess extends MemoryAccessKind, TChiOldMemoryAccess {
+  override string toString() {
+    result = "chi(old)"
+  }
+}
+
+/**
+ * The operand is a ChiUpdate operand, which accesses the same memory as its
+ * definition.
+ */
+class ChiUpdateMemoryAccess extends MemoryAccessKind, TChiUpdateMemoryAccess {
+  override string toString() {
+    result = "chi(updated)"
+  }
+}
 /**
  * The operand accesses memory not modeled in SSA. Used only on the result of
  * `UnmodeledDefinition` and on the operands of `UnmodeledUse`.
