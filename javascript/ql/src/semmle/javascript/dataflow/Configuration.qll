@@ -566,6 +566,7 @@ private predicate callInputStep(Function f, DataFlow::Node invk,
  * Note that the summary does not take the initial step from argument to parameter
  * into account.
  */
+pragma[nomagic]
 private predicate reachableFromInput(Function f, DataFlow::Node invk,
                                      DataFlow::Node input, DataFlow::Node nd,
                                      DataFlow::Configuration cfg, PathSummary summary) {
