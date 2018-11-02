@@ -1,5 +1,4 @@
-﻿
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Html;
 using Microsoft.Extensions.Primitives;
@@ -24,13 +23,13 @@ namespace Testing.Controllers
             StringValues vOut;
             Request.Query.TryGetValue("Foo", out vOut);
 
-            // BAD: via Enumerable.
+            // BAD: via Enumerable. (false negative)
             v.ViewData["FooFirst"] = new HtmlString(vOut.First());
 
-            // BAD: via toArray.
+            // BAD: via toArray. (false negative)
             v.ViewData["FooArray0"] = new HtmlString(vOut.ToArray()[0]);
 
-            // BAD: via implicit conversion operator.
+            // BAD: via implicit conversion operator. (false negative)
             v.ViewData["FooImplicit"] = new HtmlString(vOut);
 
             return v;
