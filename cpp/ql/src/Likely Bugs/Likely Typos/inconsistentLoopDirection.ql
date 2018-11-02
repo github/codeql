@@ -14,53 +14,56 @@ import cpp
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 import semmle.code.cpp.dataflow.DataFlow
 
-predicate illDefinedDecrForStmt( ForStmt forstmt, Variable v, Expr initialCondition, Expr terminalCondition ) { 
-  v.getAnAssignedValue() = initialCondition
-  and
-  exists( 
-    RelationalOperation rel |
-    rel = forstmt.getCondition() |
-    terminalCondition = rel.getGreaterOperand()
-    and v.getAnAccess() = rel.getLesserOperand()
-    and
-    DataFlow::localFlowStep(DataFlow::exprNode(initialCondition), DataFlow::exprNode(rel.getLesserOperand()))
+/**
+ * A `for` statement whose update is a crement operation on a variable.
+ */
+predicate candidateForStmt(ForStmt forStmt, Variable v, CrementOperation update, RelationalOperation rel) {
+  update = forStmt.getUpdate() and
+  update.getAnOperand() = v.getAnAccess() and
+  rel = forStmt.getCondition() 
+}
+
+predicate illDefinedDecrForStmt( ForStmt forstmt, Variable v, Expr initialCondition, Expr terminalCondition ) {
+  exists(DecrementOperation dec, RelationalOperation rel |
+    // decrementing for loop
+    candidateForStmt(forstmt, v, dec, rel) and
+
+    // condition is `v < terminalCondition`
+    terminalCondition = rel.getGreaterOperand() and
+    v.getAnAccess() = rel.getLesserOperand() and
+
+    // `initialCondition` is a value of `v` in the for loop
+    v.getAnAssignedValue() = initialCondition and
+    DataFlow::localFlowStep(DataFlow::exprNode(initialCondition), DataFlow::exprNode(rel.getLesserOperand())) and
+
+    // `initialCondition` < `terminalCondition`
+    (
+      ( upperBound(initialCondition) < lowerBound(terminalCondition) )
+      or
+      ( forstmt.conditionAlwaysFalse() or forstmt.conditionAlwaysTrue() )
     )
-  and
-  exists( 
-    DecrementOperation dec |
-    dec = forstmt.getUpdate().(DecrementOperation)
-    and dec.getAnOperand() = v.getAnAccess()
-  )
-  and
-  ( 
-    ( upperBound(initialCondition) < lowerBound(terminalCondition) )
-    or
-    ( forstmt.conditionAlwaysFalse() or forstmt.conditionAlwaysTrue() )
   )
 }
 
-predicate illDefinedIncrForStmt( ForStmt forstmt, Variable v, Expr initialCondition, Expr terminalCondition ) { 
-  v.getAnAssignedValue() = initialCondition 
-  and
-  exists( 
-    RelationalOperation rel |
-    rel = forstmt.getCondition() |
-    terminalCondition = rel.getLesserOperand()
-    and v.getAnAccess() = rel.getGreaterOperand()
-    and
-    DataFlow::localFlowStep(DataFlow::exprNode(initialCondition), DataFlow::exprNode(rel.getGreaterOperand()))
-  )
-  and
-  exists( IncrementOperation incr |
-    incr = forstmt.getUpdate().(IncrementOperation)
-    and
-    incr.getAnOperand() = v.getAnAccess()
-  )
-  and
-  ( 
-    ( upperBound(terminalCondition) < lowerBound(initialCondition))
-    or
-    ( forstmt.conditionAlwaysFalse() or forstmt.conditionAlwaysTrue())
+predicate illDefinedIncrForStmt( ForStmt forstmt, Variable v, Expr initialCondition, Expr terminalCondition ) {
+  exists(IncrementOperation inc, RelationalOperation rel |
+    // incrementing for loop
+    candidateForStmt(forstmt, v, inc, rel) and
+
+    // condition is `v > terminalCondition`
+    terminalCondition = rel.getLesserOperand() and
+    v.getAnAccess() = rel.getGreaterOperand() and
+
+    // `initialCondition` is a value of `v` in the for loop
+    v.getAnAssignedValue() = initialCondition and
+    DataFlow::localFlowStep(DataFlow::exprNode(initialCondition), DataFlow::exprNode(rel.getGreaterOperand())) and
+
+    // `terminalCondition` < `initialCondition`
+    (
+      ( upperBound(terminalCondition) < lowerBound(initialCondition) )
+      or
+      ( forstmt.conditionAlwaysFalse() or forstmt.conditionAlwaysTrue() )
+    )
   )
 }
  
