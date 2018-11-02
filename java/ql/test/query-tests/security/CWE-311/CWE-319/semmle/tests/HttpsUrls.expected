@@ -1,4 +1,0 @@
-| Test.java:50:50:50:67 | openConnection(...) | URL may have been constructed with HTTP protocol, using $@. | Test.java:45:23:45:31 | "http://" | this source |
-| Test.java:63:50:63:67 | openConnection(...) | URL may have been constructed with HTTP protocol, using $@. | Test.java:58:23:58:28 | "http" | this source |
-| Test.java:77:50:77:67 | openConnection(...) | URL may have been constructed with HTTP protocol, using $@. | Test.java:71:23:71:31 | "http://" | this source |
-| Test.java:114:50:114:67 | openConnection(...) | URL may have been constructed with HTTP protocol, using $@. | Test.java:109:23:109:28 | "http" | this source |
