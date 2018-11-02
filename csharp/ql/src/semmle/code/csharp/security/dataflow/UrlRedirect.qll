@@ -181,10 +181,10 @@ module UrlRedirect {
   class AspNetCoreLocationHeaderSink extends Sink {
     AspNetCoreLocationHeaderSink () {
       // ResponseHeaders.Location = <user-provided value>
-      exists(Assignment propAssign, PropertyAccess pa |
-        pa.getTarget() = any(MicrosoftAspNetCoreHttpResponseHeaders headers).getLocationProperty() and
-        pa = propAssign.getLValue() and
-        this.asExpr() = propAssign.getRValue())
+      exists(AssignableDefinition def |
+        def.getTarget() = any(MicrosoftAspNetCoreHttpResponseHeaders headers).getLocationProperty() |
+        this.asExpr() = def.getSource()
+      )
       or // HttpResponse.Headers.Append("location", <user-provided value>)
       exists(MethodCall mc, MicrosoftAspNetCoreHttpHeaderDictionaryExtensions ext |
         mc.getTarget() = ext.getAppendMethod() or
@@ -193,17 +193,17 @@ module UrlRedirect {
         mc.getArgumentForName("key").getValue().toLowerCase() = "location" and
         this.getExpr() = mc.getArgument(2))
       or // HttpResponse.Headers.Add("location", <user-provided value>)
-      exists(RefType cl, MicrosoftAspNetCoreHttpHttpResponse resp, PropertyAccess c, MethodCall add |
-        c.getTarget() = resp.getHeadersProperty() and
+      exists(RefType cl, MicrosoftAspNetCoreHttpHttpResponse resp, PropertyAccess qualifier, MethodCall add |
+        qualifier.getTarget() = resp.getHeadersProperty() and
         add.getTarget() = cl.getAMethod("Add") and
-        c = add.getQualifier() and
+        qualifier = add.getQualifier() and
         add.getArgument(0).getValue().toLowerCase() = "location" and
         this.getExpr() = add.getArgument(1))
       or // HttpResponse.Headers["location"] = <user-provided value>
-      exists(RefType cl, MicrosoftAspNetCoreHttpHttpResponse resp, IndexerAccess ci, Call cs, PropertyAccess pa |
-        pa.getTarget() = resp.getHeadersProperty() and 
+      exists(RefType cl, MicrosoftAspNetCoreHttpHttpResponse resp, IndexerAccess ci, Call cs, PropertyAccess qualifier |
+        qualifier.getTarget() = resp.getHeadersProperty() and 
         ci.getTarget() = cl.getAnIndexer() and
-        pa = ci.getQualifier() and
+        qualifier = ci.getQualifier() and
         cs.getTarget() = cl.getAnIndexer().getSetter() and
         cs.getArgument(0).getValue().toLowerCase() = "location" and
         this.asExpr() = cs.getArgument(1)) 

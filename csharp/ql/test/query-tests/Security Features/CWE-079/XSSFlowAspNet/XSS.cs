@@ -5,7 +5,6 @@ namespace ASP
     using System.IO;
     using System.Net;
     using System.Web;
-    // using System.Web.UI;
     using System.Web.WebPages;
 
     public class _Page_Views_Home_Contact_cshtml : System.Web.Mvc.WebViewPage<dynamic>

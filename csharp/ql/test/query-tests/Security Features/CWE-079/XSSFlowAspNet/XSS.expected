@@ -1,3 +1,3 @@
-| XSS.cs:28:30:28:34 | access to local variable sayHi | $@ flows to here and is written to HTML or JavaScript: System.Web.WebPages.WebPage.WriteLiteral() method. | XSS.cs:21:25:21:43 | access to property QueryString | User-provided value |
-| XSS.cs:38:40:38:44 | access to local variable sayHi | $@ flows to here and is written to HTML or JavaScript: System.Web.WebPages.WebPage.WriteLiteralTo() method. | XSS.cs:21:25:21:43 | access to property QueryString | User-provided value |
-| XSS.cs:45:28:45:55 | access to indexer | $@ flows to here and is written to HTML or JavaScript. | XSS.cs:45:28:45:46 | access to property QueryString | User-provided value |
+| XSS.cs:27:30:27:34 | access to local variable sayHi | $@ flows to here and is written to HTML or JavaScript: System.Web.WebPages.WebPage.WriteLiteral() method. | XSS.cs:20:25:20:43 | access to property QueryString | User-provided value |
+| XSS.cs:37:40:37:44 | access to local variable sayHi | $@ flows to here and is written to HTML or JavaScript: System.Web.WebPages.WebPage.WriteLiteralTo() method. | XSS.cs:20:25:20:43 | access to property QueryString | User-provided value |
+| XSS.cs:44:28:44:55 | access to indexer | $@ flows to here and is written to HTML or JavaScript. | XSS.cs:44:28:44:46 | access to property QueryString | User-provided value |

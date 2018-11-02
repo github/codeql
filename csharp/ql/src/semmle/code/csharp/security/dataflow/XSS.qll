@@ -6,6 +6,7 @@ import csharp
 
 module XSS {
   import semmle.code.csharp.dataflow.flowsources.Remote
+  import semmle.code.csharp.frameworks.microsoft.AspNetCore
   import semmle.code.csharp.frameworks.system.Net
   import semmle.code.csharp.frameworks.system.Web
   import semmle.code.csharp.frameworks.system.web.Mvc
@@ -15,7 +16,6 @@ module XSS {
   import semmle.code.csharp.frameworks.system.windows.Forms
   import semmle.code.csharp.security.Sanitizers
   import semmle.code.asp.AspNet
-  import semmle.code.csharp.frameworks.microsoft.AspNetCore
 
   /**
    * Holds if there is tainted flow from `source` to `sink` that may lead to a

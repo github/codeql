@@ -3,6 +3,7 @@
 import csharp
 import semmle.code.csharp.frameworks.Microsoft
 
+/** The `Microsoft.AspNetCore` namespace. */
 class MicrosoftAspNetCoreNamespace extends Namespace {
   MicrosoftAspNetCoreNamespace() {
     getParentNamespace() instanceof MicrosoftNamespace and
@@ -29,36 +30,28 @@ class MicrosoftAspNetCoreMvcViewFeatures extends Namespace {
 /** An attribute whose type is in the `Microsoft.AspNetCore.Mvc` namespace. */
 class MicrosoftAspNetCoreMvcAttribute extends Attribute {
   MicrosoftAspNetCoreMvcAttribute() {
-    getType().getNamespace() = any(MicrosoftAspNetCoreMvcNamespace mvc)
+    getType().getNamespace() instanceof MicrosoftAspNetCoreMvcNamespace
   }
 }
 
 /** A `Microsoft.AspNetCore.Mvc.HttpPost` attribute. */
 class MicrosoftAspNetCoreMvcHttpPostAttribute extends MicrosoftAspNetCoreMvcAttribute {
-  MicrosoftAspNetCoreMvcHttpPostAttribute() {
-    getType().hasName("HttpPostAttribute")
-  }
+  MicrosoftAspNetCoreMvcHttpPostAttribute() { getType().hasName("HttpPostAttribute") }
 }
 
-/** A `Microsoft.AspNetCore.Mvc.HttpPut`. */
+/** A `Microsoft.AspNetCore.Mvc.HttpPut` attribute. */
 class MicrosoftAspNetCoreMvcHttpPutAttribute extends MicrosoftAspNetCoreMvcAttribute {
-  MicrosoftAspNetCoreMvcHttpPutAttribute() {
-    getType().hasName("HttpPutAttribute")
-  }
+  MicrosoftAspNetCoreMvcHttpPutAttribute() { getType().hasName("HttpPutAttribute") }
 }
 
 /** A `Microsoft.AspNetCore.Mvc.HttpDelete` attribute. */
 class MicrosoftAspNetCoreMvcHttpDeleteAttribute extends MicrosoftAspNetCoreMvcAttribute {
-  MicrosoftAspNetCoreMvcHttpDeleteAttribute() {
-    getType().hasName("HttpDeleteAttribute")
-  }
+  MicrosoftAspNetCoreMvcHttpDeleteAttribute() { getType().hasName("HttpDeleteAttribute") }
 }
 
 /** A `Microsoft.AspNetCore.Mvc.NonAction` attribute. */
 class MicrosoftAspNetCoreMvcNonActionAttribute extends MicrosoftAspNetCoreMvcAttribute {
-  MicrosoftAspNetCoreMvcNonActionAttribute() {
-    getType().hasName("NonActionAttribute")
-  }
+  MicrosoftAspNetCoreMvcNonActionAttribute() { getType().hasName("NonActionAttribute") }
 }
 
 /** The `Microsoft.AspNetCore.Antiforgery` namespace. */
@@ -85,7 +78,7 @@ class MicrosoftAspNetCoreMvcIFilterMetadataInterface extends Interface {
   }
 }
 
- /** The `Microsoft.AspNetCore.IAuthorizationFilter` interface. */
+/** The `Microsoft.AspNetCore.IAuthorizationFilter` interface. */
 class MicrosoftAspNetCoreIAuthorizationFilterInterface extends Interface {
   MicrosoftAspNetCoreIAuthorizationFilterInterface() {
     getNamespace() instanceof MicrosoftAspNetCoreMvcFilters and
@@ -93,9 +86,7 @@ class MicrosoftAspNetCoreIAuthorizationFilterInterface extends Interface {
   }
 
   /** Gets the `OnAuthorizationAsync` method. */
-  Method getOnAuthorizationMethod() {
-    result = getAMethod("OnAuthorizationAsync")
-  }
+  Method getOnAuthorizationMethod() { result = getAMethod("OnAuthorizationAsync") }
 }
 
 /** The `Microsoft.AspNetCore.IAntiforgery` interface. */
@@ -106,40 +97,30 @@ class MicrosoftAspNetCoreIAntiForgeryInterface extends Interface {
   }
 
   /** Gets the `ValidateRequestAsync` method. */
-  Method getValidateMethod() {
-    result = getAMethod("ValidateRequestAsync")
-  }
+  Method getValidateMethod() { result = getAMethod("ValidateRequestAsync") }
 }
 
 /** The `Microsoft.AspNetCore.DefaultAntiForgery` class, or another user-supplied class that implements `IAntiForgery`. */
 class AntiForgeryClass extends Class {
-  AntiForgeryClass () {
-    getABaseInterface*() instanceof MicrosoftAspNetCoreIAntiForgeryInterface
-  }
+  AntiForgeryClass() { getABaseInterface*() instanceof MicrosoftAspNetCoreIAntiForgeryInterface }
 
   /** Gets the `ValidateRequestAsync` method. */
-  Method getValidateMethod() {
-    result = getAMethod("ValidateRequestAsync")
-  }
+  Method getValidateMethod() { result = getAMethod("ValidateRequestAsync") }
 }
 
-/** Authorization filter class defined by AspNetCore or the user. */
+/** An authorization filter class defined by AspNetCore or the user. */
 class AuthorizationFilterClass extends Class {
   AuthorizationFilterClass() {
     getABaseInterface*() instanceof MicrosoftAspNetCoreIAuthorizationFilterInterface
   }
 
   /** Gets the `OnAuthorization` method provided by this filter. */
-  Method getOnAuthorizationMethod() {
-    result = getAMethod("OnAuthorizationAsync")
-  }
+  Method getOnAuthorizationMethod() { result = getAMethod("OnAuthorizationAsync") }
 }
 
 /** An attribute whose type has a name like `[Auto...]Validate[...]Anti[Ff]orgery[...Token]Attribute`. */
 class ValidateAntiForgeryAttribute extends Attribute {
-  ValidateAntiForgeryAttribute() {
-    getType().getName().matches("%Validate%Anti_orgery%Attribute")
-  }
+  ValidateAntiForgeryAttribute() { getType().getName().matches("%Validate%Anti_orgery%Attribute") }
 }
 
 /**
@@ -148,7 +129,7 @@ class ValidateAntiForgeryAttribute extends Attribute {
  */
 class ValidateAntiforgeryTokenAuthorizationFilter extends Class {
   ValidateAntiforgeryTokenAuthorizationFilter() {
-    getABaseInterface*() instanceof MicrosoftAspNetCoreMvcIFilterMetadataInterface and  
+    getABaseInterface*() instanceof MicrosoftAspNetCoreMvcIFilterMetadataInterface and
     getName().matches("%Validate%Anti_orgery%")
   }
 }
@@ -156,7 +137,7 @@ class ValidateAntiforgeryTokenAuthorizationFilter extends Class {
 /** The `Microsoft.AspNetCore.Mvc.Filters.FilterCollection` class. */
 class MicrosoftAspNetCoreMvcFilterCollection extends Class {
   MicrosoftAspNetCoreMvcFilterCollection() {
-    getNamespace() = any(MicrosoftAspNetCoreMvcFilters h) and
+    getNamespace() instanceof MicrosoftAspNetCoreMvcFilters and
     hasName("FilterCollection")
   }
 
@@ -170,22 +151,20 @@ class MicrosoftAspNetCoreMvcFilterCollection extends Class {
 /** The `Microsoft.AspNetCore.Mvc.MvcOptions` class. */
 class MicrosoftAspNetCoreMvcOptions extends Class {
   MicrosoftAspNetCoreMvcOptions() {
-  	getNamespace() instanceof MicrosoftAspNetCoreMvcNamespace and
+    getNamespace() instanceof MicrosoftAspNetCoreMvcNamespace and
     hasName("MvcOptions")
   }
 
   /** Gets the `Filters` property. */
-  Property getFilterCollectionProperty() {
-    result = getProperty("Filters")
-  }
+  Property getFilterCollectionProperty() { result = getProperty("Filters") }
 }
 
 /** The base class for controllers in MVC, i.e. `Microsoft.AspNetCore.Mvc.Controller` or `Microsoft.AspNetCore.Mvc.ControllerBase` class. */
 class MicrosoftAspNetCoreMvcControllerBaseClass extends Class {
   MicrosoftAspNetCoreMvcControllerBaseClass() {
-    getNamespace() instanceof MicrosoftAspNetCoreMvcNamespace and (
-      hasName("Controller")
-      or
+    getNamespace() instanceof MicrosoftAspNetCoreMvcNamespace and
+    (
+      hasName("Controller") or
       hasName("ControllerBase")
     )
   }
@@ -199,137 +178,102 @@ class MicrosoftAspNetCoreMvcController extends Class {
 
   /** Gets an action method for this controller. */
   Method getAnActionMethod() {
-   result = getAMethod() and
-   result.isPublic() and
-   not result.isStatic() and
-   not result.getAnAttribute() instanceof MicrosoftAspNetCoreMvcNonActionAttribute
+    result = getAMethod() and
+    result.isPublic() and
+    not result.isStatic() and
+    not result.getAnAttribute() instanceof MicrosoftAspNetCoreMvcNonActionAttribute
   }
 
-  /**
-   * Gets an "action" method handling POST, PUT and DELETE request, which may be called by the MVC framework in response to a user
-   * request.
-   */
-  Method getAnActionModifyingMethod() {
-    result = getAnActionMethod() and (
-      result.getAnAttribute() instanceof MicrosoftAspNetCoreMvcHttpPostAttribute
-      or
-      result.getAnAttribute() instanceof MicrosoftAspNetCoreMvcHttpPutAttribute
-      or
-      result.getAnAttribute() instanceof MicrosoftAspNetCoreMvcHttpDeleteAttribute
-    ) 
-  }
-  
   /** Gets a `Redirect*` method. */
   Method getARedirectMethod() {
     result = this.getAMethod() and
     result.getName().matches("Redirect%")
   }
 }
-  
-/** Gets a string corresponding to the HTTP method used in the action method. */
-string httpMethodType(Method m) {
-  m.getAnAttribute() instanceof MicrosoftAspNetCoreMvcHttpPostAttribute and result = "POST" or
-  m.getAnAttribute() instanceof MicrosoftAspNetCoreMvcHttpPutAttribute and result = "PUT"  or
-  m.getAnAttribute() instanceof MicrosoftAspNetCoreMvcHttpDeleteAttribute and result = "DELETE"
-}
 
 /** The `Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper` class. */
 class MicrosoftAspNetCoreMvcHtmlHelperClass extends Class {
   MicrosoftAspNetCoreMvcHtmlHelperClass() {
-  	getNamespace() = any(MicrosoftAspNetCoreMvcViewFeatures mvc) and
+    getNamespace() instanceof MicrosoftAspNetCoreMvcViewFeatures and
     hasName("HtmlHelper")
   }
 
   /** Gets the `Raw` method. */
-  Method getRawMethod() {
-    result = getAMethod("Raw")
-  }
+  Method getRawMethod() { result = getAMethod("Raw") }
 }
 
-/** Class deriving from `Microsoft.AspNetCore.Mvc.Razor.RazorPageBase`, implements Razor page in ASPNET Core. */
+/** A class deriving from `Microsoft.AspNetCore.Mvc.Razor.RazorPageBase`, implements Razor page in ASPNET Core. */
 class MicrosoftAspNetCoreMvcRazorPageBase extends Class {
-  MicrosoftAspNetCoreMvcRazorPageBase () {
+  MicrosoftAspNetCoreMvcRazorPageBase() {
     this.getABaseType*().hasQualifiedName("Microsoft.AspNetCore.Mvc.Razor", "RazorPageBase")
   }
 
   /** Gets the `WriteLiteral` method. */
-  Method getWriteLiteralMethod() {
-    result = getAMethod("WriteLiteral")
-  }
+  Method getWriteLiteralMethod() { result = getAMethod("WriteLiteral") }
 }
 
-/** Class deriving from `Microsoft.AspNetCore.Http.HttpRequest`, implements `HttpRequest` in ASP.NET Core. */
+/** A class deriving from `Microsoft.AspNetCore.Http.HttpRequest`, implements `HttpRequest` in ASP.NET Core. */
 class MicrosoftAspNetCoreHttpHttpRequest extends Class {
   MicrosoftAspNetCoreHttpHttpRequest() {
     this.getABaseType*().hasQualifiedName("Microsoft.AspNetCore.Http", "HttpRequest")
   }
 }
 
-/** Class deriving from `Microsoft.AspNetCore.Http.HttpResponse`, implements `HttpResponse` in ASP.NET Core. */
+/** A class deriving from `Microsoft.AspNetCore.Http.HttpResponse`, implements `HttpResponse` in ASP.NET Core. */
 class MicrosoftAspNetCoreHttpHttpResponse extends Class {
   MicrosoftAspNetCoreHttpHttpResponse() {
     this.getABaseType*().hasQualifiedName("Microsoft.AspNetCore.Http", "HttpResponse")
   }
 
   /** Gets the `Redirect` method. */
-  Method getRedirectMethod() {
-    result = this.getAMethod("Redirect")
-  }
+  Method getRedirectMethod() { result = this.getAMethod("Redirect") }
 
   /** Gets the `Headers` property. */
-  Property getHeadersProperty() {
-    result = this.getProperty("Headers")
-  }
+  Property getHeadersProperty() { result = this.getProperty("Headers") }
 }
 
-/** Class is a wrapper around the collection of cookies in the response. */
-class MicrosoftAspNetCoreHttpResponseCookies extends Interface{
+/** An interface that is a wrapper around the collection of cookies in the response. */
+class MicrosoftAspNetCoreHttpResponseCookies extends Interface {
   MicrosoftAspNetCoreHttpResponseCookies() {
     this.hasQualifiedName("Microsoft.AspNetCore.Http.IResponseCookies")
   }
 
   /** Gets the `Append` method. */
-  Method getAppendMethod() {
-    result = this.getAMethod("Append")
-  }
+  Method getAppendMethod() { result = this.getAMethod("Append") }
 }
 
-/** Class `Microsoft.AspNetCore.Http.QueryString`, holds query string in ASP.NET Core. */
+/** The class `Microsoft.AspNetCore.Http.QueryString`, holds query string in ASP.NET Core. */
 class MicrosoftAspNetCoreHttpQueryString extends Struct {
   MicrosoftAspNetCoreHttpQueryString() {
     this.hasQualifiedName("Microsoft.AspNetCore.Http", "QueryString")
   }
 }
- 
-/** Class implementing `IQueryCollection`, holds parsed query string in ASP.NET Core. */
+
+/** A class or interface implementing `IQueryCollection`, holds parsed query string in ASP.NET Core. */
 class MicrosoftAspNetCoreHttpQueryCollection extends RefType {
   MicrosoftAspNetCoreHttpQueryCollection() {
     this.getABaseInterface().hasQualifiedName("Microsoft.AspNetCore.Http", "IQueryCollection")
   }
 }
 
-/** Helper class for setting headers. */
+/** The helper class `ResponseHeaders` for setting headers. */
 class MicrosoftAspNetCoreHttpResponseHeaders extends RefType {
   MicrosoftAspNetCoreHttpResponseHeaders() {
     this.hasQualifiedName("Microsoft.AspNetCore.Http.Headers", "ResponseHeaders")
   }
 
   /** Gets the `Location` property. */
-  Property getLocationProperty() {
-    result = this.getProperty("Location")
-  }
+  Property getLocationProperty() { result = this.getProperty("Location") }
 }
 
 /** The `Microsoft.AspNetCore.Http.HeaderDictionaryExtensions` class. */
 class MicrosoftAspNetCoreHttpHeaderDictionaryExtensions extends RefType {
-  MicrosoftAspNetCoreHttpHeaderDictionaryExtensions () {
+  MicrosoftAspNetCoreHttpHeaderDictionaryExtensions() {
     this.hasQualifiedName("Microsoft.AspNetCore.Http", "HeaderDictionaryExtensions")
   }
 
   /** Gets the `Append` extension method. */
-  Method getAppendMethod() {
-    result = this.getAMethod("Append")
-  }
+  Method getAppendMethod() { result = this.getAMethod("Append") }
 
   /** Gets the `AppendCommaSeparatedValues` extension method. */
   Method getAppendCommaSeparatedValuesMethod() {
@@ -337,9 +281,7 @@ class MicrosoftAspNetCoreHttpHeaderDictionaryExtensions extends RefType {
   }
 
   /** Gets the `SetCommaSeparatedValues` extension method. */
-  Method getSetCommaSeparatedValuesMethod() {
-    result = this.getAMethod("SetCommaSeparatedValues")
-  }
+  Method getSetCommaSeparatedValuesMethod() { result = this.getAMethod("SetCommaSeparatedValues") }
 }
 
 /**
