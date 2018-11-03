@@ -149,11 +149,11 @@ cached private module Cached {
               hasUseAtRank(vvar, useBlock, useRank, oldInstruction) and
               definitionReachesUse(vvar, defBlock, defRank, useBlock, useRank) and
               if defIndex >= 0 then
-                result = getNewInstruction(defBlock.getInstruction(defIndex))
+                result = getNewFinalInstruction(defBlock.getInstruction(defIndex))
               else
-                result = getPhiInstruction(instruction.getFunction(), defBlock, vvar)      
+                result = getPhiInstruction(instruction.getFunction(), defBlock, vvar)
             )
-          ) 
+          )
           else (
             result = instruction.getFunctionIR().getUnmodeledDefinitionInstruction()
           )
@@ -168,9 +168,13 @@ cached private module Cached {
           result = getNewInstruction(oldDefinition)
         )
       )
-      else 
+      else
         result = getNewInstruction(oldOperand.getDefinitionInstruction())
-    )
+    ) or
+    instruction.getTag() = ChiTag(getOldInstruction(result)) and
+    tag instanceof ChiPartialOperandTag
+    or
+    result = getChiInstructionTotalOperand(instruction.(ChiInstruction), tag.(ChiTotalOperandTag))
   }
 
   cached Instruction getPhiInstructionOperandDefinition(PhiInstruction instr,
@@ -184,9 +188,21 @@ cached private module Cached {
       hasDefinitionAtRank(vvar, defBlock, defRank, defIndex) and
       definitionReachesEndOfBlock(vvar, defBlock, defRank, predBlock) and
       if defIndex >= 0 then
-        result = getNewInstruction(defBlock.getInstruction(defIndex))
+        result = getNewFinalInstruction(defBlock.getInstruction(defIndex))
       else
         result = getPhiInstruction(instr.getFunction(), defBlock, vvar)
+    )
+  }
+
+  cached Instruction getChiInstructionTotalOperand(ChiInstruction chiInstr, ChiTotalOperandTag tag) {
+    exists(Alias::VirtualVariable vvar, OldIR::Instruction oldInstr, OldIR::IRBlock defBlock,
+      int defRank, int defIndex, OldIR::IRBlock useBlock, int useRank |
+       ChiTag(oldInstr) = chiInstr.getTag() and
+       vvar = Alias::getResultMemoryAccess(oldInstr).getVirtualVariable() and
+       hasDefinitionAtRank(vvar, defBlock, defRank, defIndex) and
+       hasUseAtRank(vvar, useBlock, useRank, oldInstr) and
+       definitionReachesUse(vvar, defBlock, defRank, useBlock, useRank) and
+       result = getNewFinalInstruction(defBlock.getInstruction(defIndex))
     )
   }
 
@@ -300,7 +316,12 @@ cached private module Cached {
   private predicate hasUse(Alias::VirtualVariable vvar, 
     OldIR::Instruction use, OldIR::IRBlock block, int index) {
     exists(Alias::MemoryAccess access |
-      access = Alias::getOperandMemoryAccess(use.getAnOperand()) and
+      (
+        access = Alias::getOperandMemoryAccess(use.getAnOperand())
+        or
+        access = Alias::getResultMemoryAccess(use) and
+        access.isPartialMemoryAccess()
+      ) and
       block.getInstruction(index) = use and
       vvar = access.getVirtualVariable()
     )
@@ -438,7 +459,8 @@ cached private module Cached {
       ma = Alias::getResultMemoryAccess(def) and
       ma.isPartialMemoryAccess() and
       ma.getVirtualVariable() = vvar
-    )
+    ) and
+    not def instanceof OldIR::UnmodeledDefinitionInstruction
   }
 }
 

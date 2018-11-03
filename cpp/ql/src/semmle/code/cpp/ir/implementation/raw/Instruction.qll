@@ -39,6 +39,8 @@ module InstructionSanity {
         opcode instanceof Opcode::ThrowValue and tag instanceof ExceptionOperandTag or
         opcode instanceof Opcode::UnmodeledUse and tag instanceof UnmodeledUseOperandTag or
         opcode instanceof Opcode::Call and tag instanceof CallTargetOperandTag or
+        opcode instanceof Opcode::Chi and tag instanceof ChiTotalOperandTag or
+        opcode instanceof Opcode::Chi and tag instanceof ChiPartialOperandTag or
         (
           (opcode instanceof ReadSideEffectOpcode or opcode instanceof MayWriteSideEffectOpcode) and
           tag instanceof SideEffectOperandTag
@@ -1346,7 +1348,7 @@ class ChiInstruction extends Instruction {
   }
 
   override final MemoryAccessKind getResultMemoryAccess() {
-    result instanceof ChiUpdateMemoryAccess
+    result instanceof ChiTotalMemoryAccess
   }
 }
 

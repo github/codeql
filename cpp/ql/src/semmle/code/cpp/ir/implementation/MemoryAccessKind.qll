@@ -84,9 +84,9 @@ class PhiMemoryAccess extends MemoryAccessKind, TPhiMemoryAccess {
  * The operand is a ChiOld operand, which accesses the same memory as its
  * definition.
  */
-class ChiOldMemoryAccess extends MemoryAccessKind, TChiOldMemoryAccess {
+class ChiTotalMemoryAccess extends MemoryAccessKind, TChiOldMemoryAccess {
   override string toString() {
-    result = "chi(old)"
+    result = "chi(total)"
   }
 }
 
@@ -94,9 +94,9 @@ class ChiOldMemoryAccess extends MemoryAccessKind, TChiOldMemoryAccess {
  * The operand is a ChiUpdate operand, which accesses the same memory as its
  * definition.
  */
-class ChiUpdateMemoryAccess extends MemoryAccessKind, TChiUpdateMemoryAccess {
+class ChiPartialMemoryAccess extends MemoryAccessKind, TChiUpdateMemoryAccess {
   override string toString() {
-    result = "chi(updated)"
+    result = "chi(partial)"
   }
 }
 /**

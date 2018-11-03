@@ -85,9 +85,11 @@ class UnknownVirtualVariable extends VirtualVariable, TUnknownVirtualVariable {
 private newtype TMemoryAccess =
   TVariableMemoryAccess(VirtualIRVariable vvar, IntValue offset, IntValue size) {
     exists(Instruction instr |
-      instr.getResultMemoryAccess() instanceof IndirectMemoryAccess and
+      exists(MemoryAccessKind mak | instr.getResultMemoryAccess() = mak and not mak instanceof PhiMemoryAccess) and
       resultPointsTo(instr.getAnOperand().(AddressOperand).getDefinitionInstruction(), vvar.getIRVariable(), offset) and
-      instr.getResultSize() = size
+      if exists(instr.getResultSize())
+      then instr.getResultSize() = size
+      else size = Ints::unknown()
     )
   }
   or
@@ -107,7 +109,7 @@ class MemoryAccess extends TMemoryAccess {
   VirtualVariable getVirtualVariable() {
     none()
   }
-  
+
   predicate isPartialMemoryAccess() {
     none()
   }
@@ -147,6 +149,10 @@ class VariableMemoryAccess extends TVariableMemoryAccess, MemoryAccess {
 
 class UnknownMemoryAccess extends TUnknownMemoryAccess, MemoryAccess {
   UnknownVirtualVariable vvar;
+  
+  UnknownMemoryAccess() {
+    this = TUnknownMemoryAccess(vvar)
+  }
   
   final override string toString() {
     result = vvar.toString()
@@ -201,7 +207,7 @@ Overlap getOverlap(MemoryAccess def, MemoryAccess use) {
 }
 
 MemoryAccess getResultMemoryAccess(Instruction instr) {
-  instr.getResultMemoryAccess() instanceof IndirectMemoryAccess and
+  exists(instr.getResultMemoryAccess()) and
   if exists(IRVariable var, IntValue i |
     resultPointsTo(instr.getAnOperand().(AddressOperand).getDefinitionInstruction(), var, i)
   )
@@ -214,13 +220,13 @@ MemoryAccess getResultMemoryAccess(Instruction instr) {
 }
 
 MemoryAccess getOperandMemoryAccess(Operand operand) {
-  operand.getMemoryAccess() instanceof IndirectMemoryAccess and
+  exists(operand.getMemoryAccess()) and
   if exists(IRVariable var, IntValue i |
     resultPointsTo(operand.getAddressOperand().getDefinitionInstruction(), var, i)
   )
   then exists(IRVariable var, IntValue i |
     resultPointsTo(operand.getAddressOperand().getDefinitionInstruction(), var, i) and
-    result = getVariableMemoryAccess(var, i, operand.getAddressOperand().getDefinitionInstruction().getResultSize())
+    result = getVariableMemoryAccess(var, i, operand.getDefinitionInstruction().getResultSize())
   )
   else
     result = TUnknownMemoryAccess(TUnknownVirtualVariable(operand.getInstruction().getFunctionIR()))

@@ -1,12 +1,18 @@
 missingOperand
-| ir.cpp:174:9:174:12 | Load: access to array | CopySource |
-| ir.cpp:175:9:175:12 | Load: access to array | CopySource |
-| ir.cpp:188:14:188:21 | Load: access to array | CopySource |
-| ir.cpp:190:18:190:23 | Load: access to array | CopySource |
-| ir.cpp:572:22:572:23 | Load:  | CopySource |
-| ir.cpp:676:12:676:12 | Load: (reference dereference) | CopySource |
-| ir.cpp:894:14:894:43 | Load: __builtin_va_arg | CopySource |
-| ir.cpp:895:30:895:33 | Load: __builtin_va_arg | CopySource |
+| ir.cpp:265:6:265:14 | UnmodeledUse: For_Empty | UnmodeledUse |
+| ir.cpp:272:6:272:13 | UnmodeledUse: For_Init | UnmodeledUse |
+| ir.cpp:285:6:285:15 | UnmodeledUse: For_Update | UnmodeledUse |
+| ir.cpp:298:6:298:19 | UnmodeledUse: For_InitUpdate | UnmodeledUse |
+| ir.cpp:504:19:504:19 | Chi: x | ChiTotal |
+| ir.cpp:505:19:505:19 | Chi: x | ChiTotal |
+| ir.cpp:506:16:506:18 | Chi: {...} | ChiTotal |
+| ir.cpp:513:14:513:16 | Chi: {...} | ChiTotal |
+| ir.cpp:514:19:514:19 | Chi: x | ChiTotal |
+| ir.cpp:515:19:515:19 | Chi: x | ChiTotal |
+| ir.cpp:516:19:516:19 | Chi: x | ChiTotal |
+| ir.cpp:736:5:736:19 | Chi: call to String | ChiTotal |
+| ir.cpp:962:26:962:30 | Chi: 10002 | ChiTotal |
+| ir.cpp:962:41:962:45 | Chi: 10900 | ChiTotal |
 unexpectedOperand
 duplicateOperand
 missingPhiOperand

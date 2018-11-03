@@ -28,8 +28,8 @@ private newtype TOperandTag =
       exists(op.getChild(argIndex))
     )
   } or
-  TChiOldOperand() or
-  TChiUpdateOperand()
+  TChiTotalOperand() or
+  TChiPartialOperand()
 
 /**
  * Identifies the kind of operand on an instruction. Each `Instruction` has at
@@ -315,9 +315,9 @@ PositionalArgumentOperandTag positionalArgumentOperand(int argIndex) {
   result = TPositionalArgumentOperand(argIndex)
 }
 
-class ChiOldOperand extends OperandTag, TChiOldOperand {
+class ChiTotalOperandTag extends OperandTag, TChiTotalOperand {
   override final string toString() {
-    result = "ChiOld"
+    result = "ChiTotal"
   }
 
   override final int getSortOrder() {
@@ -325,9 +325,9 @@ class ChiOldOperand extends OperandTag, TChiOldOperand {
   }
 }
 
-class ChiUpdateOperand extends OperandTag, TChiUpdateOperand {
+class ChiPartialOperandTag extends OperandTag, TChiPartialOperand {
   override final string toString() {
-    result = "ChiUpdate"
+    result = "ChiPartial"
   }
 
   override final int getSortOrder() {
