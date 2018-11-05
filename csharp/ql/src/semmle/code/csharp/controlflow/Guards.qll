@@ -138,10 +138,11 @@ class DereferenceableExpr extends Expr {
     exists(boolean branch |
       branch = v.getValue() |
       // Comparison with `null`, for example `x != null`
-      exists(ComparisonTest ct, ComparisonKind ck |
+      exists(ComparisonTest ct, ComparisonKind ck, NullLiteral nl |
         ct.getExpr() = result and
         ct.getAnArgument() = this and
-        ct.getAnArgument() instanceof NullLiteral and
+        ct.getAnArgument() = nl and
+        this != nl and
         ck = ct.getComparisonKind() |
         ck.isEquality() and isNull = branch
         or
@@ -609,7 +610,8 @@ module Internal {
       or
       exists(boolean isNull |
         v2 = any(NullValue nv | if nv.isNull() then isNull = true else isNull = false) |
-        e1 = e2.(DereferenceableExpr).getANullCheck(v1, isNull)
+        e1 = e2.(DereferenceableExpr).getANullCheck(v1, isNull) and
+        (e1 != e2 or v1 != v2)
       )
       or
       e1 instanceof DereferenceableExpr and
@@ -624,7 +626,7 @@ module Internal {
    * Holds if `e1` having some abstract value, `v`, implies that `e2` has the same
    * abstract value `v`.
    */
-  private predicate impliesStepIdentity(Expr e1, Expr e2) {
+  predicate impliesStepIdentity(Expr e1, Expr e2) {
     exists(PreSsa::Definition def |
       def.getDefinition().getSource() = e2 |
       e1 = def.getARead()
