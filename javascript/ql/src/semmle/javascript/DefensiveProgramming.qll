@@ -8,13 +8,13 @@ private import semmle.javascript.dataflow.InferredTypes
 /**
  * A test in a defensive programming pattern.
  */
-abstract class DefensiveExpression extends DataFlow::ValueNode {
+abstract class DefensiveExpressionTest extends DataFlow::ValueNode {
   /** Gets the unique Boolean value that this test evaluates to, if any. */
   abstract boolean getTheTestResult();
 }
 
 /**
- * INTERNAL: Do not use directly; use `DefensiveExpression` instead.
+ * INTERNAL: Do not use directly; use `DefensiveExpressionTest` instead.
  */
 module Internal {
   /**
@@ -27,7 +27,7 @@ module Internal {
    *   - the second `x` in `x = (x || e)`
    *   - the second `x` in `var x = x || e`
    */
-  class DefensiveInit extends DefensiveExpression {
+  class DefensiveInit extends DefensiveExpressionTest {
     DefensiveInit() {
       exists(VarAccess va, LogOrExpr o, VarRef va2 |
         va = astNode and
@@ -76,16 +76,14 @@ module Internal {
   /**
    * A dis- or conjunction that tests if an expression is `null` or `undefined` in either branch.
    */
-  private class CompositeUndefinedNullTestPart extends DefensiveExpression {
+  private class CompositeUndefinedNullTestPart extends DefensiveExpressionTest {
 
     UndefinedNullTest test;
 
     boolean polarity;
 
     CompositeUndefinedNullTestPart(){
-      exists (BinaryExpr composite, Variable v, Expr op, Expr opOther, UndefinedNullTest testOther |
-        composite instanceof LogAndExpr or
-        composite instanceof LogOrExpr |
+      exists (LogicalBinaryExpr composite, Variable v, Expr op, Expr opOther, UndefinedNullTest testOther |
         composite.hasOperands(op, opOther) and
         this = op.flow() and
         test = stripNotsAndParens(op, polarity) and
@@ -106,7 +104,7 @@ module Internal {
   /**
    * A test for `undefined` or `null` in an if-statement.
    */
-  private class SanityCheckingUndefinedNullGuard extends DefensiveExpression {
+  private class SanityCheckingUndefinedNullGuard extends DefensiveExpressionTest {
 
     UndefinedNullTest test;
 
@@ -165,16 +163,20 @@ module Internal {
       result = getPolarity() and
       (
         if this instanceof StrictEqualityTest then
+          // case: `operand === null` or `operand === undefined`
           operand.analyze().getTheType() = op2type
         else
+          // case: `operand == null` or `operand == undefined`
           not isNotNullOrUndefined(operand.analyze().getAType())
       )
       or
       result = getPolarity().booleanNot() and
       (
         if this instanceof StrictEqualityTest then
+          // case: `operand !== null` or `operand !== undefined`
           not operand.analyze().getAType() = op2type
         else
+          // case: `operand != null` or `operand != undefined`
           not isNullOrUndefined(operand.analyze().getAType())
       )
     }
@@ -232,9 +234,8 @@ module Internal {
    * Gets the first expression that is guarded by `guard`.
    */
   private Expr getAGuardedExpr(Expr guard) {
-    exists(BinaryExpr op |
+    exists(LogicalBinaryExpr op |
       op.getLeftOperand() = guard and
-      (op instanceof LogAndExpr or op instanceof LogOrExpr) and
       op.getRightOperand() = result
     )
     or
@@ -262,7 +263,7 @@ module Internal {
   /**
    * A defensive expression that tests for `undefined` and `null` using a truthiness test.
    */
-  private class UndefinedNullTruthinessGuard extends DefensiveExpression {
+  private class UndefinedNullTruthinessGuard extends DefensiveExpressionTest {
 
     VarRef guardVar;
 
@@ -293,7 +294,7 @@ module Internal {
   /**
    * A defensive expression that tests for `undefined` and `null`.
    */
-  private class UndefinedNullTypeGuard extends DefensiveExpression {
+  private class UndefinedNullTypeGuard extends DefensiveExpressionTest {
 
     UndefinedNullTest test;
 
@@ -362,7 +363,7 @@ module Internal {
   /**
    * A defensive expression that tests if an expression has type `function`.
    */
-  private class FunctionTypeGuard extends DefensiveExpression {
+  private class FunctionTypeGuard extends DefensiveExpressionTest {
 
     TypeofTest test;
 

@@ -82,7 +82,7 @@ predicate isConstantDefensive(Expr e) {
     // traverse negations
     defensive.(LogNotExpr).getOperand+() = e
     |
-    exists(defensive.flow().(DefensiveExpression).getTheTestResult())
+    exists(defensive.flow().(DefensiveExpressionTest).getTheTestResult())
   )
 }
 

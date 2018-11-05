@@ -199,7 +199,7 @@ from ASTNode cmp,
      int leftTypeCount, int rightTypeCount ,
      string leftTypeDescription, string rightTypeDescription
 where isHeterogeneousComparison(cmp, left, right, leftTypes, rightTypes) and
-      not exists (cmp.(Expr).flow().(DefensiveExpression).getTheTestResult()) and
+      not exists (cmp.(Expr).flow().(DefensiveExpressionTest).getTheTestResult()) and
       not whitelist(left.asExpr()) and
       not whitelist(right.asExpr()) and
       leftExprDescription = capitalize(getDescription(left.asExpr(), "this expression")) and

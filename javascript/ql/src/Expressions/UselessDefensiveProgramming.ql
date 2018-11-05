@@ -14,7 +14,7 @@
 import javascript
 import semmle.javascript.DefensiveProgramming
 
-from DefensiveExpression e, boolean cv
+from DefensiveExpressionTest e, boolean cv
 where e.getTheTestResult() = cv and
       // whitelist
       not (
