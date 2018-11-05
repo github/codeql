@@ -239,10 +239,11 @@ module Internal {
       op.getRightOperand() = result
     )
     or
-    exists(IfStmt c |
-      c.getCondition() = guard |
-      result = c.getAControlledStmt().getChildExpr(0) or
-      result = c.getAControlledStmt().(BlockStmt).getStmt(0).getChildExpr(0)
+    exists(IfStmt c, ExprStmt guardedStmt |
+      c.getCondition() = guard and
+      result = guardedStmt.getExpr() |
+      guardedStmt = c.getAControlledStmt() or
+      guardedStmt = c.getAControlledStmt().(BlockStmt).getStmt(0)
     )
     or
     exists (ConditionalExpr c |
