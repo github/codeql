@@ -419,12 +419,17 @@ library class ExprEvaluator extends int {
     )
   }
 
+  /** Holds if the function `f` is considered by the analysis and may return `ret`. */
+  pragma[noinline]
+  private predicate interestingReturnValue(Function f, Expr ret) {
+    interestingFunction(_, f) and
+    returnStmt(f, ret)
+  }
+
   private int getFunctionValue(Function f) {
-    interestingFunction(_, f)
-    and
     // All returns must have the same int value
     // And it must have at least one return
-    forex(Expr ret | returnStmt(f, ret) | result = getValueInternalNonSubExpr(ret))
+    forex(Expr ret | interestingReturnValue(f, ret) | result = getValueInternalNonSubExpr(ret))
   }
 
   /**
