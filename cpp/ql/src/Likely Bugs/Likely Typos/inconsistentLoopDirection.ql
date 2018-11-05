@@ -20,7 +20,7 @@ import semmle.code.cpp.dataflow.DataFlow
 predicate candidateForStmt(ForStmt forStmt, Variable v, CrementOperation update, RelationalOperation rel) {
   update = forStmt.getUpdate() and
   update.getAnOperand() = v.getAnAccess() and
-  rel = forStmt.getCondition() 
+  rel = forStmt.getCondition()
 }
 
 predicate illDefinedDecrForStmt( ForStmt forstmt, Variable v, Expr initialCondition, Expr terminalCondition ) {
