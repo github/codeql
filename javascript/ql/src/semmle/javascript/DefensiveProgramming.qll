@@ -62,6 +62,8 @@ module Internal {
 
   /**
    * An equality test for `null` and `undefined`.
+   *
+   * Examples: `e === undefined` or `typeof e !== undefined`.
    */
   private abstract class UndefinedNullTest extends EqualityTest {
     /** Gets the unique Boolean value that this test evaluates to, if any. */
@@ -75,6 +77,8 @@ module Internal {
 
   /**
    * A dis- or conjunction that tests if an expression is `null` or `undefined` in either branch.
+   *
+   * Example: a branch in `x === null || x === undefined`.
    */
   private class CompositeUndefinedNullTestPart extends DefensiveExpressionTest {
 
@@ -103,6 +107,8 @@ module Internal {
 
   /**
    * A test for `undefined` or `null` in an if-statement.
+   *
+   * Example: `if (x === null) ...`.
    */
   private class SanityCheckingUndefinedNullGuard extends DefensiveExpressionTest {
 
@@ -143,6 +149,8 @@ module Internal {
 
   /**
    * A value comparison for `null` and `undefined`.
+   *
+   * Examples: `x === null` or `x != undefined`.
    */
   private class NullUndefinedComparison extends UndefinedNullTest {
 
@@ -188,6 +196,8 @@ module Internal {
 
   /**
    * An expression that throws an exception if one of its subexpressions evaluates to `null` or `undefined`.
+   *
+   * Examples: `sub.p` or `sub()`.
    */
   private class UndefinedNullCrashUse extends Expr {
 
@@ -212,6 +222,8 @@ module Internal {
 
   /**
    * An expression that throws an exception if one of its subexpressions is not a `function`.
+   *
+   * Example: `sub()`.
    */
   private class NonFunctionCallCrashUse extends Expr {
 
@@ -263,6 +275,8 @@ module Internal {
 
   /**
    * A defensive expression that tests for `undefined` and `null` using a truthiness test.
+   *
+   * Examples: The condition in `if(x) { x.p; }` or `!x || x.m()`.
    */
   private class UndefinedNullTruthinessGuard extends DefensiveExpressionTest {
 
@@ -294,6 +308,8 @@ module Internal {
 
   /**
    * A defensive expression that tests for `undefined` and `null`.
+   *
+   * Example: the condition in `if(x !== null) { x.p; }`.
    */
   private class UndefinedNullTypeGuard extends DefensiveExpressionTest {
 
@@ -321,6 +337,8 @@ module Internal {
 
   /**
    * A test for the value of a `typeof` expression.
+   *
+   * Example: `typeof x === 'undefined'`.
    */
   private class TypeofTest extends EqualityTest {
     Expr operand;
@@ -363,6 +381,8 @@ module Internal {
 
   /**
    * A defensive expression that tests if an expression has type `function`.
+   *
+   * Example: the condition in `if(typeof x === 'function') x()`.
    */
   private class FunctionTypeGuard extends DefensiveExpressionTest {
 
@@ -391,6 +411,8 @@ module Internal {
 
   /**
    * A test for `undefined` using a `typeof` expression.
+   *
+   * Example: `typeof x === undefined'.
    */
   class TypeofUndefinedTest extends UndefinedNullTest {
 
