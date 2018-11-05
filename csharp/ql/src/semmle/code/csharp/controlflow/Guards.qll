@@ -404,21 +404,15 @@ class NullGuardedExpr extends GuardedExpr {
 /** INTERNAL: Do not use. */
 module Internal {
   private import ControlFlow::Internal
-  /**
-   * Gets the conditional qualifier of `e`, if any, where `e` is an access/call
-   * with a value type, lifted to a nullable type by the conditional access.
-   */
-  Expr getConditionalQualifier(Expr e) {
-    result = any(QualifiableExpr qe |
-      qe.getQualifier() = e and
-      qe.isConditional() and
-      (
-        result.(FieldAccess).getTarget().getType() instanceof ValueType
-        or
-        result.(Call).getTarget().getReturnType() instanceof ValueType
-      )
-    )
-  }
+
+  newtype TAbstractValue =
+    TBooleanValue(boolean b) { b = true or b = false }
+    or
+    TNullValue(boolean b) { b = true or b = false }
+    or
+    TMatchValue(CaseStmt cs, boolean b) { b = true or b = false }
+    or
+    TEmptyCollectionValue(boolean b) { b = true or b = false }
 
   /**
    * Gets the parent expression of `e` which is `null` only if `e` is `null`,
@@ -496,16 +490,6 @@ module Internal {
 
   private cached module Cached {
     cached
-    newtype TAbstractValue =
-      TBooleanValue(boolean b) { b = true or b = false }
-      or
-      TNullValue(boolean b) { b = true or b = false }
-      or
-      TMatchValue(CaseStmt cs, boolean b) { b = true or b = false }
-      or
-      TEmptyCollectionValue(boolean b) { b = true or b = false }
-
-    cached
     predicate isGuardedBy(AccessOrCallExpr guarded, Expr e, AccessOrCallExpr sub, AbstractValue v) {
       exists(BasicBlock bb |
         controls(bb, e, sub, v) and
@@ -523,57 +507,104 @@ module Internal {
      */
     cached
     predicate impliesStep(Expr e1, AbstractValue v1, Expr e2, AbstractValue v2) {
-      e1.(BitwiseAndExpr).getAnOperand() = e2 and
-      v1 = TBooleanValue(true) and
-      v2 = v1
+      exists(BinaryOperation bo |
+        bo instanceof BitwiseAndExpr or
+        bo instanceof LogicalAndExpr
+      |
+        bo = e1 and
+        e2 = bo.getAnOperand() and
+        v1 = TBooleanValue(true) and
+        v2 = v1
+        or
+        bo = e2 and
+        e1 = bo.getAnOperand() and
+        v1 = TBooleanValue(false) and
+        v2 = v1
+      )
       or
-      e1.(BitwiseOrExpr).getAnOperand() = e2 and
-      v1 = TBooleanValue(false) and
-      v2 = v1
-      or
-      e1.(LogicalAndExpr).getAnOperand() = e2 and
-      v1 = TBooleanValue(true) and
-      v2 = v1
-      or
-      e1.(LogicalOrExpr).getAnOperand() = e2 and
-      v1 = TBooleanValue(false) and
-      v2 = v1
+      exists(BinaryOperation bo |
+        bo instanceof BitwiseOrExpr or
+        bo instanceof LogicalOrExpr
+      |
+        bo = e1 and
+        e2 = bo.getAnOperand() and
+        v1 = TBooleanValue(false) and
+        v2 = v1
+        or
+        bo = e2 and
+        e1 = bo.getAnOperand() and
+        v1 = TBooleanValue(true) and
+        v2 = v1
+      )
       or
       e1.(LogicalNotExpr).getOperand() = e2 and
       v2 = TBooleanValue(v1.(BooleanValue).getValue().booleanNot())
       or
-      exists(ComparisonTest ct, boolean polarity, BoolLiteral boolLit |
-        e1 = ct.getExpr() and
-        ct.getAnArgument() = e2 and
+      e1 = e2.(LogicalNotExpr).getOperand() and
+      v2 = TBooleanValue(v1.(BooleanValue).getValue().booleanNot())
+      or
+      exists(ComparisonTest ct, boolean polarity, BoolLiteral boolLit, boolean b |
         ct.getAnArgument() = boolLit and
-        v2 = TBooleanValue(v1.(BooleanValue).getValue().booleanXor(polarity).booleanXor(boolLit.getBoolValue())) |
+        b = boolLit.getBoolValue() and
+        v2 = TBooleanValue(v1.(BooleanValue).getValue().booleanXor(polarity).booleanXor(b)) |
         ct.getComparisonKind().isEquality() and
-        polarity = true
+        polarity = true and
+        (
+          // e1 === e2 == b, v1 === !(v2 xor b)
+          e1 = ct.getExpr() and
+          e2 = ct.getAnArgument()
+          or
+          // e2 === e1 == b, v1 === !(v2 xor b)
+          e1 = ct.getAnArgument() and
+          e2 = ct.getExpr()
+        )
         or
         ct.getComparisonKind().isInequality() and
-        polarity = false
+        polarity = false and
+        (
+          // e1 === e2 != b, v1 === v2 xor b
+          e1 = ct.getExpr() and
+          e2 = ct.getAnArgument()
+          or
+          // e2 === e1 != true, v1 === v2 xor b
+          e1 = ct.getAnArgument() and
+          e2 = ct.getExpr()
+        )
       )
       or
-      exists(ConditionalExpr cond, boolean branch, BoolLiteral boolLit, boolean boolVal |
-        cond.getThen() = boolLit and branch = true
-        or
-        cond.getElse() = boolLit and branch = false
-        |
-        cond = e1 and
-        boolVal = boolLit.getBoolValue() and
-        v1 = TBooleanValue(boolVal.booleanNot()) and
+      exists(ConditionalExpr cond, boolean branch, BoolLiteral boolLit, boolean b |
+        b = boolLit.getBoolValue() and
         (
+          cond.getThen() = boolLit and branch = true
+          or
+          cond.getElse() = boolLit and branch = false
+        )
+      |
+        e1 = cond and
+        v1 = TBooleanValue(b.booleanNot()) and
+        (
+          // e1 === e2 ? b : x, v1 === !b, v2 === false; or
+          // e1 === e2 ? x : b, v1 === !b, v2 === true
           e2 = cond.getCondition() and
           v2 = TBooleanValue(branch.booleanNot())
           or
+          // e1 === x ? e2 : b, v1 === !b, v2 === v1
           e2 = cond.getThen() and
-          e2 != boolLit and
+          branch = false and
           v2 = v1
           or
+          // e1 === x ? b : e2, v1 === !b, v2 === v1
           e2 = cond.getElse() and
-          e2 != boolLit and
+          branch = true and
           v2 = v1
         )
+        or
+        // e2 === e1 ? b : x, v1 === true, v2 === b; or
+        // e2 === e1 ? x : b, v1 === false, v2 === b
+        e1 = cond.getCondition() and
+        e2 = cond and
+        v1 = TBooleanValue(branch) and
+        v2 = TBooleanValue(b)
       )
       or
       exists(boolean isNull |
