@@ -221,9 +221,7 @@ module FlowVar_internal {
     BlockVar() { this = TBlockVar(sbb, v) }
 
     override VariableAccess getAnAccess() {
-      result.getTarget() = v and
-      result = getAReachedBlockVarSBB(this).getANode() and
-      not overwrite(result, _)
+      variableAccessInSBB(v, getAReachedBlockVarSBB(this), result)
     }
 
     override predicate definedByInitialValue(LocalScopeVariable lsv) {
@@ -371,6 +369,15 @@ module FlowVar_internal {
       not skipLoop(mid, result, sbbDef, v) and
       not assignmentLikeOperation(result, v, _)
     )
+  }
+
+  /** Holds if `va` is a read access to `v` in `sbb`, where `v` is modeled by `BlockVar`. */
+  pragma[noinline]
+  private predicate variableAccessInSBB(Variable v, SubBasicBlock sbb, VariableAccess va) {
+    exists(TBlockVar(_, v)) and
+    va.getTarget() = v and
+    va = sbb.getANode() and
+    not overwrite(va, _)
   }
 
   /**
