@@ -1,10 +1,10 @@
 /**
- * @name No virtual destructor
+ * @name Non-virtual destructor in base class
  * @description All base classes with a virtual function should define a virtual destructor. If an application attempts to delete a derived class object through a base class pointer, the result is undefined if the base class destructor is non-virtual.
  * @kind problem
  * @problem.severity warning
  * @precision high
- * @id cpp/jsf/av-rule-78
+ * @id cpp/virtual-destructor
  * @tags reliability
  *       readability
  *       language-features
@@ -17,8 +17,11 @@ import cpp
 from Class c
 where exists(VirtualFunction f | f.getDeclaringType() = c)
   and exists(Destructor d | d.getDeclaringType() = c and
+                            // Ignore non-public destructors, which prevent an object of the declaring class from being deleted
+                            // directly (except from within the class itself). This is a common pattern in real-world code.
+                            d.hasSpecifier("public") and
                             not d.isVirtual() and
                             not d.isDeleted() and
                             not d.isCompilerGenerated())
   and exists(ClassDerivation d | d.getBaseClass() = c)
-select c, "Base classes with a virtual function must define a virtual destructor."
+select c, "A base class with a virtual function should define a virtual destructor."
