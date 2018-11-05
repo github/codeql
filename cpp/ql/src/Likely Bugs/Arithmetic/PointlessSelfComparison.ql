@@ -18,4 +18,5 @@ from ComparisonOperation cmp
 where pointlessSelfComparison(cmp)
   and not nanTest(cmp)
   and not overflowTest(cmp)
+  and not cmp.isInMacroExpansion()
 select cmp, "Self comparison."

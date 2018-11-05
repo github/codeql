@@ -142,5 +142,5 @@ void useMarkRange(int offs) {
 	markRange(buffer, 10, 20);
 	markRange(buffer, 30, 30);
 	markRange(buffer, offs, offs + 10);
-	markRange(buffer, offs, offs); // GOOD (comparison is in the macro) [FALSE POSITIVE]
+	markRange(buffer, offs, offs); // GOOD (comparison is in the macro)
 }
