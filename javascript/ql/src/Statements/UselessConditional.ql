@@ -120,12 +120,11 @@ predicate whitelist(Expr e) {
  */
 predicate isConditional(ASTNode cond, Expr e) {
   e = cond.(IfStmt).getCondition() or
-  e = cond.(WhileStmt).getExpr() or
-  e = cond.(ForStmt).getTest() or
+  e = cond.(LoopStmt).getTest() or
   e = cond.(ConditionalExpr).getCondition() or
   e = cond.(LogicalBinaryExpr).getLeftOperand() or
   // Include `z` in `if (x && z)`.
-  isConditional(_, cond) and e = cond.(LogicalBinaryExpr).getRightOperand()
+  isConditional(_, cond) and e = cond.(Expr).getUnderlyingValue().(LogicalBinaryExpr).getRightOperand()
 }
 
 from ASTNode cond, DataFlow::AnalyzedNode op, boolean cv, ASTNode sel, string msg

@@ -99,6 +99,8 @@ async function awaitFlow(){
         }
         if (true && true) {} // NOT OK
         if (y && x) {} // NOT OK
+        if (y && (x)) {} // NOT OK
+        do { } while (x); // NOT OK
     }
 });
 
