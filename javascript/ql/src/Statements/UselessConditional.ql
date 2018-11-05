@@ -73,16 +73,18 @@ predicate isConstantBooleanReturnValue(Expr e) {
   isConstantBooleanReturnValue(e.(LogNotExpr).getOperand())
 }
 
+private Expr maybeStripLogNot(Expr e) {
+  result = maybeStripLogNot(e.(LogNotExpr).getOperand()) or
+  result = e
+}
+
 /**
  * Holds if `e` is a defensive expression with a fixed outcome.
  */
 predicate isConstantDefensive(Expr e) {
-  exists(Expr defensive |
-    defensive = e or
-    // traverse negations
-    defensive.(LogNotExpr).getOperand+() = e
-    |
-    exists(defensive.flow().(DefensiveExpressionTest).getTheTestResult())
+  exists(DefensiveExpressionTest defensive |
+    maybeStripLogNot(defensive.asExpr()) = e and
+    exists(defensive.getTheTestResult())
   )
 }
 
