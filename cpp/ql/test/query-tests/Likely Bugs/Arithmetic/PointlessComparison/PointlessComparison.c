@@ -241,3 +241,27 @@ void macroExpansionTest() {
   MAYBE_DO(x = 1); // GOOD (the problem is in the macro)
   MAYBE_DO(if (global_setting >= 0) {x = 2;}); // BAD (the problem is in the invocation)
 }
+
+int overeager_wraparound(unsigned int u32bound, unsigned long long u64bound) {
+  unsigned int u32idx;
+  unsigned long long u64idx;
+
+  for (u32idx = 1; u32idx < u32bound; u32idx++) {
+    if (u32idx == 0) // BAD [NOT DETECTED]
+      return 0;
+  }
+
+  for (u64idx = 1; u64idx < u64bound; u64idx++) {
+    if (u64idx == 0) // BAD [NOT DETECTED]
+      return 0;
+  }
+
+  return 1;
+}
+
+int negative_zero(double dbl) {
+  if (dbl >= 0) {
+    return dbl >= -dbl; // GOOD [FALSE POSITIVE]
+  }
+  return 0;
+}
