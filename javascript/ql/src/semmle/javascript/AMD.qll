@@ -105,7 +105,7 @@ class AMDModuleDefinition extends CallExpr {
    * parameters `pdep1` and `pdep2` correspond to dependencies
    * `dep1` and `dep2`.
    */
-  private SimpleParameter getDependencyParameter(string name) {
+  Parameter getDependencyParameter(string name) {
     exists (PathExpr dep |
       dependencyParameter(dep, result) and
       dep.getValue() = name

@@ -19,7 +19,7 @@ app.get("/underscore", (req, res) => {
     res.send(x + y); // NOT OK
   }
   
-  let callback = underscore.partial(sendResponse, [req.url]);
+  let callback = underscore.partial(sendResponse, req.url);
   [1, 2, 3].forEach(callback);
 });
 
@@ -28,7 +28,7 @@ app.get("/lodash", (req, res) => {
     res.send(x + y); // NOT OK
   }
   
-  let callback = lodash.partial(sendResponse, [req.url]);
+  let callback = lodash.partial(sendResponse, req.url);
   [1, 2, 3].forEach(callback);
 });
 

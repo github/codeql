@@ -6,6 +6,7 @@
 
 import javascript
 import SyntacticHeuristics
+private import semmle.javascript.security.dataflow.CommandInjection
 
 /**
  * A heuristic source of data flow in a security query.
@@ -25,4 +26,14 @@ private class RemoteFlowPassword extends HeuristicSource, RemoteFlowSource {
     result = "a user provided password"
   }
 
+}
+
+/**
+ * A use of `JSON.stringify`, viewed as a source for command line injections
+ * since it does not properly escape single quotes and dollar symbols.
+ */
+private class JSONStringifyAsCommandInjectionSource extends HeuristicSource, CommandInjection::Source {
+  JSONStringifyAsCommandInjectionSource() {
+    this = DataFlow::globalVarRef("JSON").getAMemberCall("stringify")
+  }
 }

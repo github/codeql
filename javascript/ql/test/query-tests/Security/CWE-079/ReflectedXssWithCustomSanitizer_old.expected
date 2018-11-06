@@ -6,8 +6,8 @@ WARNING: Type XssDataFlowConfiguration has been deprecated and may be removed in
 | formatting.js:6:14:6:47 | util.fo ... , evil) | Cross-site scripting vulnerability due to $@. | formatting.js:4:16:4:29 | req.query.evil | user-provided value |
 | formatting.js:7:14:7:53 | require ... , evil) | Cross-site scripting vulnerability due to $@. | formatting.js:4:16:4:29 | req.query.evil | user-provided value |
 | partial.js:10:14:10:18 | x + y | Cross-site scripting vulnerability due to $@. | partial.js:13:42:13:48 | req.url | user-provided value |
-| partial.js:19:14:19:18 | x + y | Cross-site scripting vulnerability due to $@. | partial.js:22:52:22:58 | req.url | user-provided value |
-| partial.js:28:14:28:18 | x + y | Cross-site scripting vulnerability due to $@. | partial.js:31:48:31:54 | req.url | user-provided value |
+| partial.js:19:14:19:18 | x + y | Cross-site scripting vulnerability due to $@. | partial.js:22:51:22:57 | req.url | user-provided value |
+| partial.js:28:14:28:18 | x + y | Cross-site scripting vulnerability due to $@. | partial.js:31:47:31:53 | req.url | user-provided value |
 | partial.js:37:14:37:18 | x + y | Cross-site scripting vulnerability due to $@. | partial.js:40:43:40:49 | req.url | user-provided value |
 | promises.js:6:25:6:25 | x | Cross-site scripting vulnerability due to $@. | promises.js:5:44:5:57 | req.query.data | user-provided value |
 | tst2.js:7:12:7:12 | p | Cross-site scripting vulnerability due to $@. | tst2.js:6:9:6:9 | p | user-provided value |

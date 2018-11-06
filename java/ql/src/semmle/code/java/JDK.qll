@@ -133,8 +133,8 @@ class TypeObjectOutputStream extends RefType {
 /** The class `java.nio.file.Paths`. */
 class TypePaths extends Class { TypePaths() { this.hasQualifiedName("java.nio.file", "Paths") } }
 
-/** The class `java.nio.file.Path`. */
-class TypePath extends Class { TypePath() { this.hasQualifiedName("java.nio.file", "Path") } }
+/** The type `java.nio.file.Path`. */
+class TypePath extends RefType { TypePath() { this.hasQualifiedName("java.nio.file", "Path") } }
 
 /** The class `java.nio.file.FileSystem`. */
 class TypeFileSystem extends Class {

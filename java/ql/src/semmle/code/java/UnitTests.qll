@@ -148,7 +148,8 @@ class TestNGTestMethod extends Method {
             .getRepresentedString()
     |
       // Either the data provider should be on the current class, or a supertype
-      getDeclaringType().getAnAncestor() = result.getDeclaringType() or
+      getDeclaringType().getAnAncestor() = result.getDeclaringType()
+      or
       // Or the data provider class should be declared
       result.getDeclaringType() = testAnnotation
             .getValue("dataProviderClass")

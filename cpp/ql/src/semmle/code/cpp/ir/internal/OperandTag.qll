@@ -1,10 +1,15 @@
-private import internal.IRInternal
-import Instruction
-import IRBlock
 import cpp
 
+private int getMaxCallArgIndex() {
+  result = max(int argIndex |
+    exists(FunctionCall call |
+      exists(call.getArgument(argIndex))
+    )
+  )
+}
+
 private newtype TOperandTag =
-  TLoadStoreAddressOperand() or
+  TAddressOperand() or
   TCopySourceOperand() or
   TUnaryOperand() or
   TLeftOperand() or
@@ -16,14 +21,9 @@ private newtype TOperandTag =
   TCallTargetOperand() or
   TThisArgumentOperand() or
   TPositionalArgumentOperand(int argIndex) {
-    argIndex in [0..Construction::getMaxCallArgIndex()] or
+    argIndex in [0..getMaxCallArgIndex()] or
     exists(BuiltInOperation op |
       exists(op.getChild(argIndex))
-    )
-  } or
-  TPhiOperand(IRBlock predecessorBlock) {
-    exists(PhiInstruction phi |
-      predecessorBlock = Construction::getPhiInstructionBlockStart(phi).getBlock().getAPredecessor()
     )
   }
 
@@ -49,9 +49,9 @@ abstract class OperandTag extends TOperandTag {
  * The address operand of an instruction that loads or stores a value from
  * memory (e.g. `Load`, `Store`).
  */
-class LoadStoreAddressOperand extends OperandTag, TLoadStoreAddressOperand {
+class AddressOperandTag extends OperandTag, TAddressOperand {
   override final string toString() {
-    result = "LoadStoreAddress"
+    result = "Address"
   }
 
   override final int getSortOrder() {
@@ -59,15 +59,15 @@ class LoadStoreAddressOperand extends OperandTag, TLoadStoreAddressOperand {
   }
 }
 
-LoadStoreAddressOperand loadStoreAddressOperand() {
-  result = TLoadStoreAddressOperand()
+AddressOperandTag addressOperand() {
+  result = TAddressOperand()
 }
 
 /**
  * The source value operand of an instruction that copies this value to its
  * result (e.g. `Copy`, `Load`, `Store`).
  */
-class CopySourceOperand extends OperandTag, TCopySourceOperand {
+class CopySourceOperandTag extends OperandTag, TCopySourceOperand {
   override final string toString() {
     result = "CopySource"
   }
@@ -77,14 +77,14 @@ class CopySourceOperand extends OperandTag, TCopySourceOperand {
   }
 }
 
-CopySourceOperand copySourceOperand() {
+CopySourceOperandTag copySourceOperand() {
   result = TCopySourceOperand()
 }
 
 /**
  * The sole operand of a unary instruction (e.g. `Convert`, `Negate`).
  */
-class UnaryOperand extends OperandTag, TUnaryOperand {
+class UnaryOperandTag extends OperandTag, TUnaryOperand {
   override final string toString() {
     result = "Unary"
   }
@@ -94,14 +94,14 @@ class UnaryOperand extends OperandTag, TUnaryOperand {
   }
 }
 
-UnaryOperand unaryOperand() {
+UnaryOperandTag unaryOperand() {
   result = TUnaryOperand()
 }
 
 /**
  * The left operand of a binary instruction (e.g. `Add`, `CompareEQ`).
  */
-class LeftOperand extends OperandTag, TLeftOperand {
+class LeftOperandTag extends OperandTag, TLeftOperand {
   override final string toString() {
     result = "Left"
   }
@@ -111,14 +111,14 @@ class LeftOperand extends OperandTag, TLeftOperand {
   }
 }
 
-LeftOperand leftOperand() {
+LeftOperandTag leftOperand() {
   result = TLeftOperand()
 }
 
 /**
  * The right operand of a binary instruction (e.g. `Add`, `CompareEQ`).
  */
-class RightOperand extends OperandTag, TRightOperand {
+class RightOperandTag extends OperandTag, TRightOperand {
   override final string toString() {
     result = "Right"
   }
@@ -128,14 +128,14 @@ class RightOperand extends OperandTag, TRightOperand {
   }
 }
 
-RightOperand rightOperand() {
+RightOperandTag rightOperand() {
   result = TRightOperand()
 }
 
 /**
  * The return value operand of a `ReturnValue` instruction.
  */
-class ReturnValueOperand extends OperandTag, TReturnValueOperand {
+class ReturnValueOperandTag extends OperandTag, TReturnValueOperand {
   override final string toString() {
     result = "ReturnValue"
   }
@@ -145,14 +145,14 @@ class ReturnValueOperand extends OperandTag, TReturnValueOperand {
   }
 }
 
-ReturnValueOperand returnValueOperand() {
+ReturnValueOperandTag returnValueOperand() {
   result = TReturnValueOperand()
 }
 
 /**
  * The exception thrown by a `ThrowValue` instruction.
  */
-class ExceptionOperand extends OperandTag, TExceptionOperand {
+class ExceptionOperandTag extends OperandTag, TExceptionOperand {
   override final string toString() {
     result = "Exception"
   }
@@ -162,14 +162,14 @@ class ExceptionOperand extends OperandTag, TExceptionOperand {
   }
 }
 
-ExceptionOperand exceptionOperand() {
+ExceptionOperandTag exceptionOperand() {
   result = TExceptionOperand()
 }
 
 /**
  * The condition operand of a `ConditionalBranch` or `Switch` instruction.
  */
-class ConditionOperand extends OperandTag, TConditionOperand {
+class ConditionOperandTag extends OperandTag, TConditionOperand {
   override final string toString() {
     result = "Condition"
   }
@@ -179,7 +179,7 @@ class ConditionOperand extends OperandTag, TConditionOperand {
   }
 }
 
-ConditionOperand conditionOperand() {
+ConditionOperandTag conditionOperand() {
   result = TConditionOperand()
 }
 
@@ -187,7 +187,7 @@ ConditionOperand conditionOperand() {
  * An operand of the special `UnmodeledUse` instruction, representing a value
  * whose set of uses is unknown.
  */
-class UnmodeledUseOperand extends OperandTag, TUnmodeledUseOperand {
+class UnmodeledUseOperandTag extends OperandTag, TUnmodeledUseOperand {
   override final string toString() {
     result = "UnmodeledUse"
   }
@@ -197,14 +197,14 @@ class UnmodeledUseOperand extends OperandTag, TUnmodeledUseOperand {
   }
 }
 
-UnmodeledUseOperand unmodeledUseOperand() {
+UnmodeledUseOperandTag unmodeledUseOperand() {
   result = TUnmodeledUseOperand()
 }
 
 /**
  * The operand representing the target function of an `Call` instruction.
  */
-class CallTargetOperand extends OperandTag, TCallTargetOperand {
+class CallTargetOperandTag extends OperandTag, TCallTargetOperand {
   override final string toString() {
     result = "CallTarget"
   }
@@ -214,7 +214,7 @@ class CallTargetOperand extends OperandTag, TCallTargetOperand {
   }
 }
 
-CallTargetOperand callTargetOperand() {
+CallTargetOperandTag callTargetOperand() {
   result = TCallTargetOperand()
 }
 
@@ -223,15 +223,15 @@ CallTargetOperand callTargetOperand() {
  * positional arguments (represented by `PositionalArgumentOperand`) and the
  * implicit `this` argument, if any (represented by `ThisArgumentOperand`).
  */
-abstract class ArgumentOperand extends OperandTag {
+abstract class ArgumentOperandTag extends OperandTag {
 }
 
 /**
  * An operand representing the implicit 'this' argument to a member function
  * call.
  */
-class ThisArgumentOperand extends ArgumentOperand, TThisArgumentOperand {
-  ThisArgumentOperand() {
+class ThisArgumentOperandTag extends ArgumentOperandTag, TThisArgumentOperand {
+  ThisArgumentOperandTag() {
     this = TThisArgumentOperand()
   }
 
@@ -248,18 +248,18 @@ class ThisArgumentOperand extends ArgumentOperand, TThisArgumentOperand {
   }
 }
 
-ThisArgumentOperand thisArgumentOperand() {
+ThisArgumentOperandTag thisArgumentOperand() {
   result = TThisArgumentOperand()
 }
 
 /**
  * An operand representing an argument to a function call.
  */
-class PositionalArgumentOperand extends ArgumentOperand,
+class PositionalArgumentOperandTag extends ArgumentOperandTag,
   TPositionalArgumentOperand {
   int argIndex;
 
-  PositionalArgumentOperand() {
+  PositionalArgumentOperandTag() {
     this = TPositionalArgumentOperand(argIndex)
   }
 
@@ -276,37 +276,6 @@ class PositionalArgumentOperand extends ArgumentOperand,
   }
 }
 
-PositionalArgumentOperand positionalArgumentOperand(int argIndex) {
+PositionalArgumentOperandTag positionalArgumentOperand(int argIndex) {
   result = TPositionalArgumentOperand(argIndex)
-}
-
-/**
- * An operand of an SSA `Phi` instruction.
- */
-class PhiOperand extends OperandTag, TPhiOperand {
-  IRBlock predecessorBlock;
-
-  PhiOperand() {
-    this = TPhiOperand(predecessorBlock)
-  }
-
-  override final string toString() {
-    result = "Phi"
-  }
-
-  override final int getSortOrder() {
-    result = 11 + getPredecessorBlock().getDisplayIndex()
-  }
-
-  override final string getLabel() {
-    result = "from " + getPredecessorBlock().getDisplayIndex().toString() + ":"
-  }
-
-  final IRBlock getPredecessorBlock() {
-    result = predecessorBlock
-  }
-}
-
-PhiOperand phiOperand(IRBlock predecessorBlock) {
-  result = TPhiOperand(predecessorBlock)
 }

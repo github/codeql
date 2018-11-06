@@ -216,16 +216,19 @@ private predicate typeArgumentContainsAux1(RefType s, RefType t, int n) {
   |
     exists(RefType tUpperBound | tUpperBound = t.(Wildcard).getUpperBound().getType() |
       // ? extends T <= ? extends S if T <: S
-      hasSubtypeStar0(s.(Wildcard).getUpperBound().getType(), tUpperBound) or
+      hasSubtypeStar0(s.(Wildcard).getUpperBound().getType(), tUpperBound)
+      or
       // ? extends T <= ?
       s.(Wildcard).isUnconstrained()
     )
     or
     exists(RefType tLowerBound | tLowerBound = t.(Wildcard).getLowerBound().getType() |
       // ? super T <= ? super S if s <: T
-      hasSubtypeStar0(tLowerBound, s.(Wildcard).getLowerBound().getType()) or
+      hasSubtypeStar0(tLowerBound, s.(Wildcard).getLowerBound().getType())
+      or
       // ? super T <= ?
-      s.(Wildcard).isUnconstrained() or
+      s.(Wildcard).isUnconstrained()
+      or
       // ? super T <= ? extends Object
       wildcardExtendsObject(s)
     )
@@ -736,13 +739,15 @@ class NestedType extends RefType {
   }
 
   override predicate isPublic() {
-    super.isPublic() or
+    super.isPublic()
+    or
     // JLS 9.5: A member type declaration in an interface is implicitly public and static
     exists(Interface i | this = i.getAMember())
   }
 
   override predicate isStrictfp() {
-    super.isStrictfp() or
+    super.isStrictfp()
+    or
     // JLS 8.1.1.3, JLS 9.1.1.2
     getEnclosingType().isStrictfp()
   }
@@ -762,11 +767,14 @@ class NestedType extends RefType {
    * section 8.9 (Enums) and section 9.5 (Member Type Declarations).
    */
   override predicate isStatic() {
-    super.isStatic() or
+    super.isStatic()
+    or
     // JLS 8.5.1: A member interface is implicitly static.
-    this instanceof Interface or
+    this instanceof Interface
+    or
     // JLS 8.9: A nested enum type is implicitly static.
-    this instanceof EnumType or
+    this instanceof EnumType
+    or
     // JLS 9.5: A member type declaration in an interface is implicitly public and static
     exists(Interface i | this = i.getAMember())
   }

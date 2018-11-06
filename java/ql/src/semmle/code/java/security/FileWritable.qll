@@ -111,7 +111,8 @@ private predicate fileSetWorldWritable(VarAccess fileAccess, Expr setWorldWritab
     setPosixPerms.getMethod().hasName("setPosixFilePermissions") and
     setPosixPerms.getMethod().getDeclaringType().hasQualifiedName("java.nio.file", "Files") and
     (
-      fileAccess = setPosixPerms.getArgument(0) or
+      fileAccess = setPosixPerms.getArgument(0)
+      or
       // The argument was a file that has been converted to a path.
       fileAccess = getFileForPathConversion(setPosixPerms.getArgument(0))
     )
