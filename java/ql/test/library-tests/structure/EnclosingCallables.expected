@@ -6,6 +6,7 @@
 | structure/A.java:15:17:15:17 | A | --none-- |
 | structure/A.java:16:2:16:4 | int | --none-- |
 | structure/A.java:21:2:21:4 | int | --none-- |
+| structure/A.java:24:7:24:7 | <obinit>(...) | D |
 | structure/A.java:24:17:24:17 | B | --none-- |
 | structure/A.java:25:4:25:13 | new (...) | <obinit> |
 | structure/A.java:25:8:25:8 | C | <obinit> |
