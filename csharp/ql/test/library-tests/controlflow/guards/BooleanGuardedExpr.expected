@@ -11,11 +11,7 @@
 | Assert.cs:74:27:74:27 | access to local variable s | Assert.cs:73:23:73:36 | ... && ... | Assert.cs:73:23:73:23 | access to local variable s | true |
 | Assert.cs:81:27:81:27 | access to local variable s | Assert.cs:80:24:80:32 | ... != ... | Assert.cs:80:24:80:24 | access to local variable s | false |
 | Assert.cs:81:27:81:27 | access to local variable s | Assert.cs:80:24:80:37 | ... \|\| ... | Assert.cs:80:24:80:24 | access to local variable s | false |
-| Guards.cs:12:13:12:13 | access to parameter s | Guards.cs:10:13:10:25 | !... | Guards.cs:10:16:10:16 | access to parameter s | false |
-| Guards.cs:12:13:12:13 | access to parameter s | Guards.cs:10:14:10:25 | !... | Guards.cs:10:16:10:16 | access to parameter s | true |
 | Guards.cs:12:13:12:13 | access to parameter s | Guards.cs:10:16:10:24 | ... == ... | Guards.cs:10:16:10:16 | access to parameter s | false |
-| Guards.cs:14:31:14:31 | access to parameter s | Guards.cs:10:13:10:25 | !... | Guards.cs:10:16:10:16 | access to parameter s | false |
-| Guards.cs:14:31:14:31 | access to parameter s | Guards.cs:10:14:10:25 | !... | Guards.cs:10:16:10:16 | access to parameter s | true |
 | Guards.cs:14:31:14:31 | access to parameter s | Guards.cs:10:16:10:24 | ... == ... | Guards.cs:10:16:10:16 | access to parameter s | false |
 | Guards.cs:14:31:14:31 | access to parameter s | Guards.cs:12:13:12:24 | ... > ... | Guards.cs:12:13:12:13 | access to parameter s | true |
 | Guards.cs:26:31:26:31 | access to parameter s | Guards.cs:24:13:24:21 | ... != ... | Guards.cs:24:13:24:13 | access to parameter s | true |
@@ -60,14 +56,9 @@
 | Guards.cs:138:20:138:20 | access to parameter s | Guards.cs:137:13:137:23 | ... is ... | Guards.cs:137:13:137:13 | access to parameter s | true |
 | Guards.cs:139:16:139:16 | access to parameter s | Guards.cs:137:13:137:23 | ... is ... | Guards.cs:137:13:137:13 | access to parameter s | false |
 | Guards.cs:146:16:146:16 | access to parameter o | Guards.cs:144:13:144:25 | ... is ... | Guards.cs:144:13:144:13 | access to parameter o | false |
-| Guards.cs:169:31:169:31 | access to parameter x | Guards.cs:168:13:168:41 | !... | Guards.cs:168:40:168:40 | access to parameter x | true |
 | Guards.cs:169:31:169:31 | access to parameter x | Guards.cs:168:14:168:41 | call to method IsNullOrWhiteSpace | Guards.cs:168:40:168:40 | access to parameter x | false |
-| Guards.cs:190:31:190:31 | access to parameter s | Guards.cs:189:13:189:25 | !... | Guards.cs:189:24:189:24 | access to parameter s | true |
 | Guards.cs:190:31:190:31 | access to parameter s | Guards.cs:189:14:189:25 | call to method NullTest1 | Guards.cs:189:24:189:24 | access to parameter s | false |
-| Guards.cs:192:31:192:31 | access to parameter s | Guards.cs:191:13:191:25 | !... | Guards.cs:191:24:191:24 | access to parameter s | true |
 | Guards.cs:192:31:192:31 | access to parameter s | Guards.cs:191:14:191:25 | call to method NullTest2 | Guards.cs:191:24:191:24 | access to parameter s | false |
-| Guards.cs:194:31:194:31 | access to parameter s | Guards.cs:193:13:193:25 | !... | Guards.cs:193:24:193:24 | access to parameter s | true |
 | Guards.cs:194:31:194:31 | access to parameter s | Guards.cs:193:14:193:25 | call to method NullTest3 | Guards.cs:193:24:193:24 | access to parameter s | false |
 | Guards.cs:196:31:196:31 | access to parameter s | Guards.cs:195:13:195:27 | call to method NotNullTest4 | Guards.cs:195:26:195:26 | access to parameter s | true |
-| Guards.cs:198:31:198:31 | access to parameter s | Guards.cs:197:13:197:29 | !... | Guards.cs:197:28:197:28 | access to parameter s | true |
 | Guards.cs:198:31:198:31 | access to parameter s | Guards.cs:197:14:197:29 | call to method NullTestWrong | Guards.cs:197:28:197:28 | access to parameter s | false |
