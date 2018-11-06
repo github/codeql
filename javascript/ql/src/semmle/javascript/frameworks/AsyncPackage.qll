@@ -40,7 +40,7 @@ module AsyncPackage {
     }
 
     /**
-     * Gets the callback to invoke after all the last task in the array completes.
+     * Gets the callback to invoke after the last task in the array completes.
      */
     DataFlow::FunctionNode getFinalCallback() {
       result.flowsTo(getArgument(1))
@@ -74,7 +74,7 @@ module AsyncPackage {
    *
    * Such a callback has the form `callback(err, result1, result2, ...)`. The error is propagated
    * to the first parameter of the final callback, while `result1, result2, ...` are propagated to
-   * the paramters of the following task.
+   * the parameters of the following task.
    */
   private class WaterfallNextTaskCall extends DataFlow::AdditionalPartialInvokeNode {
     Waterfall waterfall;
