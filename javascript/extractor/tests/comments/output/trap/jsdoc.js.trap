@@ -1,0 +1,303 @@
+#10000=@"/jsdoc.js;sourcefile"
+files(#10000,"/jsdoc.js","jsdoc","js",0)
+#10001=@"/;folder"
+folders(#10001,"/","")
+containerparent(#10001,#10000)
+#10002=@"loc,{#10000},0,0,0,0"
+locations_default(#10002,#10000,0,0,0,0)
+hasLocation(#10000,#10002)
+#20000=@"global_scope"
+scopes(#20000,0)
+#20001=@"script;{#10000},1,1"
+toplevels(#20001,0)
+#20002=@"loc,{#10000},1,1,18,0"
+locations_default(#20002,#10000,1,1,18,0)
+hasLocation(#20001,#20002)
+#20003=*
+comments(#20003,2,#20001,"
+ * This is a constant.
+ * 
+ * @const x
+ ","/**\n *  ... t x\n */")
+#20004=@"loc,{#10000},1,1,5,3"
+locations_default(#20004,#10000,1,1,5,3)
+hasLocation(#20003,#20004)
+#20005=*
+comments(#20005,2,#20001," @class {Object} klass ","/** @cl ... lass */")
+#20006=@"loc,{#10000},6,1,6,28"
+locations_default(#20006,#10000,6,1,6,28)
+hasLocation(#20005,#20006)
+#20007=*
+comments(#20007,2,#20001," @deprecated ","/** @deprecated */")
+#20008=@"loc,{#10000},7,1,7,18"
+locations_default(#20008,#10000,7,1,7,18)
+hasLocation(#20007,#20008)
+#20009=*
+comments(#20009,2,#20001," @param {(int|bool)} x
+ *  @param {Array.<String, Number>} ys
+ *  @param {String[]} zs
+ *  @param {function(new:goog.ui.Menu, ?string=, number=): void} f
+ *  @param {...number} var_args
+ ","/** @pa ... rgs\n */")
+#20010=@"loc,{#10000},8,1,13,3"
+locations_default(#20010,#10000,8,1,13,3)
+hasLocation(#20009,#20010)
+#20011=*
+comments(#20011,2,#20001,"
+ * @param {Function(DOMNode)}
+ * @param {Function(DOMNode)} x
+ ","/**\n *  ... } x\n */")
+#20012=@"loc,{#10000},14,1,17,3"
+locations_default(#20012,#10000,14,1,17,3)
+hasLocation(#20011,#20012)
+#20013=*
+lines(#20013,#20001,"/**","
+")
+#20014=@"loc,{#10000},1,1,1,3"
+locations_default(#20014,#10000,1,1,1,3)
+hasLocation(#20013,#20014)
+#20015=*
+lines(#20015,#20001," * This is a constant.","
+")
+#20016=@"loc,{#10000},2,1,2,22"
+locations_default(#20016,#10000,2,1,2,22)
+hasLocation(#20015,#20016)
+indentation(#10000,2," ",1)
+#20017=*
+lines(#20017,#20001," * ","
+")
+#20018=@"loc,{#10000},3,1,3,3"
+locations_default(#20018,#10000,3,1,3,3)
+hasLocation(#20017,#20018)
+indentation(#10000,3," ",1)
+#20019=*
+lines(#20019,#20001," * @const x","
+")
+#20020=@"loc,{#10000},4,1,4,11"
+locations_default(#20020,#10000,4,1,4,11)
+hasLocation(#20019,#20020)
+indentation(#10000,4," ",1)
+#20021=*
+lines(#20021,#20001," */","
+")
+#20022=@"loc,{#10000},5,1,5,3"
+locations_default(#20022,#10000,5,1,5,3)
+hasLocation(#20021,#20022)
+indentation(#10000,5," ",1)
+#20023=*
+lines(#20023,#20001,"/** @class {Object} klass */","
+")
+hasLocation(#20023,#20006)
+#20024=*
+lines(#20024,#20001,"/** @deprecated */","
+")
+hasLocation(#20024,#20008)
+#20025=*
+lines(#20025,#20001,"/** @param {(int|bool)} x","
+")
+#20026=@"loc,{#10000},8,1,8,25"
+locations_default(#20026,#10000,8,1,8,25)
+hasLocation(#20025,#20026)
+#20027=*
+lines(#20027,#20001," *  @param {Array.<String, Number>} ys","
+")
+#20028=@"loc,{#10000},9,1,9,38"
+locations_default(#20028,#10000,9,1,9,38)
+hasLocation(#20027,#20028)
+indentation(#10000,9," ",1)
+#20029=*
+lines(#20029,#20001," *  @param {String[]} zs","
+")
+#20030=@"loc,{#10000},10,1,10,24"
+locations_default(#20030,#10000,10,1,10,24)
+hasLocation(#20029,#20030)
+indentation(#10000,10," ",1)
+#20031=*
+lines(#20031,#20001," *  @param {function(new:goog.ui.Menu, ?string=, number=): void} f","
+")
+#20032=@"loc,{#10000},11,1,11,66"
+locations_default(#20032,#10000,11,1,11,66)
+hasLocation(#20031,#20032)
+indentation(#10000,11," ",1)
+#20033=*
+lines(#20033,#20001," *  @param {...number} var_args","
+")
+#20034=@"loc,{#10000},12,1,12,31"
+locations_default(#20034,#10000,12,1,12,31)
+hasLocation(#20033,#20034)
+indentation(#10000,12," ",1)
+#20035=*
+lines(#20035,#20001," */","
+")
+#20036=@"loc,{#10000},13,1,13,3"
+locations_default(#20036,#10000,13,1,13,3)
+hasLocation(#20035,#20036)
+indentation(#10000,13," ",1)
+#20037=*
+lines(#20037,#20001,"/**","
+")
+#20038=@"loc,{#10000},14,1,14,3"
+locations_default(#20038,#10000,14,1,14,3)
+hasLocation(#20037,#20038)
+#20039=*
+lines(#20039,#20001," * @param {Function(DOMNode)}","
+")
+#20040=@"loc,{#10000},15,1,15,29"
+locations_default(#20040,#10000,15,1,15,29)
+hasLocation(#20039,#20040)
+indentation(#10000,15," ",1)
+#20041=*
+lines(#20041,#20001," * @param {Function(DOMNode)} x","
+")
+#20042=@"loc,{#10000},16,1,16,31"
+locations_default(#20042,#10000,16,1,16,31)
+hasLocation(#20041,#20042)
+indentation(#10000,16," ",1)
+#20043=*
+lines(#20043,#20001," */","
+")
+#20044=@"loc,{#10000},17,1,17,3"
+locations_default(#20044,#10000,17,1,17,3)
+hasLocation(#20043,#20044)
+indentation(#10000,17," ",1)
+numlines(#20001,17,0,17)
+#20045=*
+tokeninfo(#20045,0,#20001,0,"")
+#20046=@"loc,{#10000},18,1,18,0"
+locations_default(#20046,#10000,18,1,18,0)
+hasLocation(#20045,#20046)
+next_token(#20003,#20045)
+next_token(#20005,#20045)
+next_token(#20007,#20045)
+next_token(#20009,#20045)
+next_token(#20011,#20045)
+#20047=*
+entry_cfg_node(#20047,#20001)
+#20048=@"loc,{#10000},1,1,1,0"
+locations_default(#20048,#10000,1,1,1,0)
+hasLocation(#20047,#20048)
+#20049=*
+exit_cfg_node(#20049,#20001)
+hasLocation(#20049,#20046)
+successor(#20047,#20049)
+#20050=*
+jsdoc(#20050,"This is a constant.",#20003)
+hasLocation(#20050,#20004)
+#20051=*
+jsdoc_tags(#20051,"const",#20050,0,"@const")
+#20052=@"loc,{#10000},4,4,4,9"
+locations_default(#20052,#10000,4,4,4,9)
+hasLocation(#20051,#20052)
+jsdoc_tag_names(#20051,"x")
+#20053=*
+jsdoc(#20053,"",#20005)
+hasLocation(#20053,#20006)
+#20054=*
+jsdoc_tags(#20054,"class",#20053,0,"@class")
+#20055=@"loc,{#10000},6,5,6,10"
+locations_default(#20055,#10000,6,5,6,10)
+hasLocation(#20054,#20055)
+jsdoc_tag_names(#20054,"klass")
+#20056=*
+jsdoc_type_exprs(#20056,5,#20054,0,"Object")
+#20057=*
+jsdoc(#20057,"",#20007)
+hasLocation(#20057,#20008)
+#20058=*
+jsdoc_tags(#20058,"deprecated",#20057,0,"@deprecated")
+#20059=@"loc,{#10000},7,5,7,15"
+locations_default(#20059,#10000,7,5,7,15)
+hasLocation(#20058,#20059)
+#20060=*
+jsdoc(#20060,"",#20009)
+hasLocation(#20060,#20010)
+#20061=*
+jsdoc_tags(#20061,"param",#20060,0,"@param")
+#20062=@"loc,{#10000},8,5,8,10"
+locations_default(#20062,#10000,8,5,8,10)
+hasLocation(#20061,#20062)
+jsdoc_tag_names(#20061,"x")
+#20063=*
+jsdoc_type_exprs(#20063,11,#20061,0,"(int|bool)")
+#20064=*
+jsdoc_type_exprs(#20064,5,#20063,0,"int")
+#20065=*
+jsdoc_type_exprs(#20065,5,#20063,1,"bool")
+#20066=*
+jsdoc_tags(#20066,"param",#20060,1,"@param")
+#20067=@"loc,{#10000},9,5,9,10"
+locations_default(#20067,#10000,9,5,9,10)
+hasLocation(#20066,#20067)
+jsdoc_tag_names(#20066,"ys")
+#20068=*
+jsdoc_type_exprs(#20068,6,#20066,0,"Array.<String, Number>")
+#20069=*
+jsdoc_type_exprs(#20069,5,#20068,-1,"Array")
+#20070=*
+jsdoc_type_exprs(#20070,5,#20068,0,"String")
+#20071=*
+jsdoc_type_exprs(#20071,5,#20068,1,"Number")
+#20072=*
+jsdoc_tags(#20072,"param",#20060,2,"@param")
+#20073=@"loc,{#10000},10,5,10,10"
+locations_default(#20073,#10000,10,5,10,10)
+hasLocation(#20072,#20073)
+jsdoc_tag_names(#20072,"zs")
+#20074=*
+jsdoc_type_exprs(#20074,6,#20072,0,"Array.<String>")
+#20075=*
+jsdoc_type_exprs(#20075,5,#20074,-1,"Array")
+#20076=*
+jsdoc_type_exprs(#20076,5,#20074,0,"String")
+#20077=*
+jsdoc_tags(#20077,"param",#20060,3,"@param")
+#20078=@"loc,{#10000},11,5,11,10"
+locations_default(#20078,#10000,11,5,11,10)
+hasLocation(#20077,#20078)
+jsdoc_tag_names(#20077,"f")
+#20079=*
+jsdoc_type_exprs(#20079,12,#20077,0,"function (new: goog.ui.Menu, ?string=, number=): void")
+#20080=*
+jsdoc_type_exprs(#20080,13,#20079,0,"?string=")
+#20081=*
+jsdoc_type_exprs(#20081,7,#20080,0,"?string")
+#20082=*
+jsdoc_type_exprs(#20082,5,#20081,0,"string")
+jsdoc_prefix_qualifier(#20081)
+#20083=*
+jsdoc_type_exprs(#20083,13,#20079,1,"number=")
+#20084=*
+jsdoc_type_exprs(#20084,5,#20083,0,"number")
+#20085=*
+jsdoc_type_exprs(#20085,4,#20079,-1,"void")
+#20086=*
+jsdoc_type_exprs(#20086,5,#20079,-2,"goog.ui.Menu")
+jsdoc_has_new_parameter(#20079)
+#20087=*
+jsdoc_tags(#20087,"param",#20060,4,"@param")
+#20088=@"loc,{#10000},12,5,12,10"
+locations_default(#20088,#10000,12,5,12,10)
+hasLocation(#20087,#20088)
+jsdoc_tag_names(#20087,"var_args")
+#20089=*
+jsdoc_type_exprs(#20089,14,#20087,0,"...number")
+#20090=*
+jsdoc_type_exprs(#20090,5,#20089,0,"number")
+#20091=*
+jsdoc(#20091,"",#20011)
+hasLocation(#20091,#20012)
+#20092=*
+jsdoc_tags(#20092,"param",#20091,0,"@param")
+#20093=@"loc,{#10000},15,4,15,9"
+locations_default(#20093,#10000,15,4,15,9)
+hasLocation(#20092,#20093)
+#20094=*
+jsdoc_errors(#20094,#20092,"Missing or invalid tag name","Missing ... ag name")
+#20095=*
+jsdoc_tags(#20095,"param",#20091,1,"@param")
+#20096=@"loc,{#10000},16,4,16,9"
+locations_default(#20096,#10000,16,4,16,9)
+hasLocation(#20095,#20096)
+jsdoc_tag_names(#20095,"x")
+numlines(#10000,17,0,17)
+filetype(#10000,"javascript")
