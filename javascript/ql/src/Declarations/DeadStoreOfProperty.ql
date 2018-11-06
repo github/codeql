@@ -92,11 +92,10 @@ predicate noPropAccessBetween(string name, Assignment assign1, Assignment assign
     assign2.getBasicBlock() = block2 and
     if block1 = block2 then
       // same block: check for access between
-      not exists (int i1, int iMid, Expr mid, int i2 |
+      not exists (int i1, Expr mid, int i2 |
         assign1 = block1.getNode(i1) and
         assign2 = block2.getNode(i2) and
-        i1 < iMid and iMid < i2 and
-        mid = block1.getNode(iMid) and
+        mid = block1.getNode([i1+1..i2-1]) and
         maybeAccessesProperty(mid, name)
       )
     else
