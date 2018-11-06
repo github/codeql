@@ -1,26 +1,26 @@
 (function(){
     var o = {};
-    o.pure1 = 42;
+    o.pure1 = 42; // NOT OK
     o.pure1 = 42;
 
-    o.pure2 = 42;
+    o.pure2 = 42; // NOT OK
     o.pure2 = 43;
 
     o.impure3 = 42;
     f();
     o.impure3 = 42;
 
-    o.pure4 = 42;
+    o.pure4 = 42; // NOT OK
     43;
     o.pure4 = 42;
 
     o.impure5 = 42;
     o.impure5 = f();
 
-    o.pure6 = f();
+    o.pure6 = f(); // NOT OK
     o.pure6 = 42;
 
-    o.pure7 = 42;
+    o.pure7 = 42; // NOT OK
     if(x){}
     o.pure7 = 42;
 
@@ -73,7 +73,7 @@
     o15.pure15_aliasWrite = 42;
 
     var o16 = x? o: null;
-    o.pure16_simpleAliasWrite = 42;
+    o.pure16_simpleAliasWrite = 42; // NOT OK
     o16.pure16_simpleAliasWrite = 42;
 
     var o17 = {
@@ -92,7 +92,7 @@
     o.defaulted2 = 42;
 
     var o = {};
-    o.pure18 = 42;
-    o.pure18 = 42;
+    o.pure18 = 42; // NOT OK
+    o.pure18 = 42; // NOT OK
     o.pure18 = 42;
 });
