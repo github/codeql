@@ -219,6 +219,11 @@ class TranslatedFunction extends TranslatedElement,
       result.hasMemoryResult()
     ) or
     (
+      tag = UnmodeledUseTag() and
+      operandTag instanceof UnmodeledUseOperandTag and
+      result = getUnmodeledDefinitionInstruction()
+    ) or
+    (
       tag = ReturnTag() and
       not getReturnType() instanceof VoidType and
       (

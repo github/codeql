@@ -678,7 +678,7 @@ ir.cpp:
 #  171| ArrayAccess(int *, int) -> void
 #  171|   Block 0
 #  171|     v0_0(void)            = EnterFunction          : 
-#  171|     m0_1(unknown)         = UnmodeledDefinition    : 
+#  171|     mu0_1(unknown)        = UnmodeledDefinition    : 
 #  171|     r0_2(glval<int *>)    = VariableAddress[p]     : 
 #  171|     m0_3(int *)           = InitializeParameter[p] : r0_2
 #  171|     r0_4(glval<int>)      = VariableAddress[i]     : 
@@ -690,7 +690,7 @@ ir.cpp:
 #  174|     r0_10(glval<int>)     = VariableAddress[i]     : 
 #  174|     r0_11(int)            = Load                   : r0_10, m0_5
 #  174|     r0_12(int *)          = PointerAdd[4]          : r0_9, r0_11
-#  174|     r0_13(int)            = Load                   : r0_12, m0_1
+#  174|     r0_13(int)            = Load                   : r0_12, mu0_1
 #  174|     r0_14(glval<int>)     = VariableAddress[x]     : 
 #  174|     m0_15(int)            = Store                  : r0_14, r0_13
 #  175|     r0_16(glval<int *>)   = VariableAddress[p]     : 
@@ -698,7 +698,7 @@ ir.cpp:
 #  175|     r0_18(glval<int>)     = VariableAddress[i]     : 
 #  175|     r0_19(int)            = Load                   : r0_18, m0_5
 #  175|     r0_20(int *)          = PointerAdd[4]          : r0_17, r0_19
-#  175|     r0_21(int)            = Load                   : r0_20, m0_1
+#  175|     r0_21(int)            = Load                   : r0_20, mu0_1
 #  175|     r0_22(glval<int>)     = VariableAddress[x]     : 
 #  175|     m0_23(int)            = Store                  : r0_22, r0_21
 #  177|     r0_24(glval<int>)     = VariableAddress[x]     : 
@@ -709,7 +709,7 @@ ir.cpp:
 #  177|     r0_29(int)            = Load                   : r0_28, m0_5
 #  177|     r0_30(int *)          = PointerAdd[4]          : r0_27, r0_29
 #  177|     m0_31(int)            = Store                  : r0_30, r0_25
-#  177|     m0_32(unknown)        = Chi                    : m0_1, m0_31
+#  177|     m0_32(unknown)        = Chi                    : mu0_1, m0_31
 #  178|     r0_33(glval<int>)     = VariableAddress[x]     : 
 #  178|     r0_34(int)            = Load                   : r0_33, m0_23
 #  178|     r0_35(glval<int *>)   = VariableAddress[p]     : 
@@ -726,7 +726,7 @@ ir.cpp:
 #  181|     r0_46(glval<int>)     = VariableAddress[i]     : 
 #  181|     r0_47(int)            = Load                   : r0_46, m0_5
 #  181|     r0_48(int *)          = PointerAdd[4]          : r0_45, r0_47
-#  181|     r0_49(int)            = Load                   : r0_48, m0_1
+#  181|     r0_49(int)            = Load                   : r0_48, mu0_1
 #  181|     r0_50(glval<int>)     = VariableAddress[x]     : 
 #  181|     m0_51(int)            = Store                  : r0_50, r0_49
 #  182|     r0_52(glval<int[10]>) = VariableAddress[a]     : 
@@ -734,7 +734,7 @@ ir.cpp:
 #  182|     r0_54(glval<int>)     = VariableAddress[i]     : 
 #  182|     r0_55(int)            = Load                   : r0_54, m0_5
 #  182|     r0_56(int *)          = PointerAdd[4]          : r0_53, r0_55
-#  182|     r0_57(int)            = Load                   : r0_56, m0_1
+#  182|     r0_57(int)            = Load                   : r0_56, mu0_1
 #  182|     r0_58(glval<int>)     = VariableAddress[x]     : 
 #  182|     m0_59(int)            = Store                  : r0_58, r0_57
 #  183|     r0_60(glval<int>)     = VariableAddress[x]     : 
@@ -1094,7 +1094,7 @@ ir.cpp:
 #  265| For_Empty() -> void
 #  265|   Block 0
 #  265|     v0_0(void)       = EnterFunction       : 
-#  265|     m0_1(unknown)    = UnmodeledDefinition : 
+#  265|     mu0_1(unknown)   = UnmodeledDefinition : 
 #  266|     r0_2(glval<int>) = VariableAddress[j]  : 
 #  266|     m0_3(int)        = Uninitialized       : r0_2
 #-----|   Goto -> Block 2
@@ -1111,7 +1111,7 @@ ir.cpp:
 #  272| For_Init() -> void
 #  272|   Block 0
 #  272|     v0_0(void)       = EnterFunction       : 
-#  272|     m0_1(unknown)    = UnmodeledDefinition : 
+#  272|     mu0_1(unknown)   = UnmodeledDefinition : 
 #  273|     r0_2(glval<int>) = VariableAddress[i]  : 
 #  273|     r0_3(int)        = Constant[0]         : 
 #  273|     m0_4(int)        = Store               : r0_2, r0_3
@@ -1157,7 +1157,7 @@ ir.cpp:
 #  285| For_Update() -> void
 #  285|   Block 0
 #  285|     v0_0(void)       = EnterFunction       : 
-#  285|     m0_1(unknown)    = UnmodeledDefinition : 
+#  285|     mu0_1(unknown)   = UnmodeledDefinition : 
 #  286|     r0_2(glval<int>) = VariableAddress[i]  : 
 #  286|     r0_3(int)        = Constant[0]         : 
 #  286|     m0_4(int)        = Store               : r0_2, r0_3
@@ -1209,7 +1209,7 @@ ir.cpp:
 #  298| For_InitUpdate() -> void
 #  298|   Block 0
 #  298|     v0_0(void)       = EnterFunction       : 
-#  298|     m0_1(unknown)    = UnmodeledDefinition : 
+#  298|     mu0_1(unknown)   = UnmodeledDefinition : 
 #  299|     r0_2(glval<int>) = VariableAddress[i]  : 
 #  299|     r0_3(int)        = Constant[0]         : 
 #  299|     m0_4(int)        = Store               : r0_2, r0_3
@@ -1436,14 +1436,14 @@ ir.cpp:
 #  341| Dereference(int *) -> int
 #  341|   Block 0
 #  341|     v0_0(void)          = EnterFunction            : 
-#  341|     m0_1(unknown)       = UnmodeledDefinition      : 
+#  341|     mu0_1(unknown)      = UnmodeledDefinition      : 
 #  341|     r0_2(glval<int *>)  = VariableAddress[p]       : 
 #  341|     m0_3(int *)         = InitializeParameter[p]   : r0_2
 #  342|     r0_4(int)           = Constant[1]              : 
 #  342|     r0_5(glval<int *>)  = VariableAddress[p]       : 
 #  342|     r0_6(int *)         = Load                     : r0_5, m0_3
 #  342|     m0_7(int)           = Store                    : r0_6, r0_4
-#  342|     mu0_8(unknown)      = Chi                      : m0_1, m0_7
+#  342|     mu0_8(unknown)      = Chi                      : mu0_1, m0_7
 #  343|     r0_9(glval<int>)    = VariableAddress[#return] : 
 #  343|     r0_10(glval<int *>) = VariableAddress[p]       : 
 #  343|     r0_11(int *)        = Load                     : r0_10, m0_3
@@ -1562,11 +1562,11 @@ ir.cpp:
 #  372| Call() -> void
 #  372|   Block 0
 #  372|     v0_0(void)           = EnterFunction             : 
-#  372|     m0_1(unknown)        = UnmodeledDefinition       : 
+#  372|     mu0_1(unknown)       = UnmodeledDefinition       : 
 #  373|     r0_2(glval<unknown>) = FunctionAddress[VoidFunc] : 
 #  373|     v0_3(void)           = Call                      : r0_2
-#  373|     m0_4(unknown)        = ^CallSideEffect           : m0_1
-#  373|     mu0_5(unknown)       = Chi                       : m0_1, m0_4
+#  373|     m0_4(unknown)        = ^CallSideEffect           : mu0_1
+#  373|     mu0_5(unknown)       = Chi                       : mu0_1, m0_4
 #  374|     v0_6(void)           = NoOp                      : 
 #  372|     v0_7(void)           = ReturnVoid                : 
 #  372|     v0_8(void)           = UnmodeledUse              : mu*
@@ -1575,7 +1575,7 @@ ir.cpp:
 #  376| CallAdd(int, int) -> int
 #  376|   Block 0
 #  376|     v0_0(void)           = EnterFunction            : 
-#  376|     m0_1(unknown)        = UnmodeledDefinition      : 
+#  376|     mu0_1(unknown)       = UnmodeledDefinition      : 
 #  376|     r0_2(glval<int>)     = VariableAddress[x]       : 
 #  376|     m0_3(int)            = InitializeParameter[x]   : r0_2
 #  376|     r0_4(glval<int>)     = VariableAddress[y]       : 
@@ -1587,8 +1587,8 @@ ir.cpp:
 #  377|     r0_10(glval<int>)    = VariableAddress[y]       : 
 #  377|     r0_11(int)           = Load                     : r0_10, m0_5
 #  377|     r0_12(int)           = Call                     : r0_7, r0_9, r0_11
-#  377|     m0_13(unknown)       = ^CallSideEffect          : m0_1
-#  377|     mu0_14(unknown)      = Chi                      : m0_1, m0_13
+#  377|     m0_13(unknown)       = ^CallSideEffect          : mu0_1
+#  377|     mu0_14(unknown)      = Chi                      : mu0_1, m0_13
 #  377|     m0_15(int)           = Store                    : r0_6, r0_12
 #  376|     r0_16(glval<int>)    = VariableAddress[#return] : 
 #  376|     v0_17(void)          = ReturnValue              : r0_16, m0_15
@@ -1598,7 +1598,7 @@ ir.cpp:
 #  380| Comma(int, int) -> int
 #  380|   Block 0
 #  380|     v0_0(void)            = EnterFunction             : 
-#  380|     m0_1(unknown)         = UnmodeledDefinition       : 
+#  380|     mu0_1(unknown)        = UnmodeledDefinition       : 
 #  380|     r0_2(glval<int>)      = VariableAddress[x]        : 
 #  380|     m0_3(int)             = InitializeParameter[x]    : r0_2
 #  380|     r0_4(glval<int>)      = VariableAddress[y]        : 
@@ -1606,8 +1606,8 @@ ir.cpp:
 #  381|     r0_6(glval<int>)      = VariableAddress[#return]  : 
 #  381|     r0_7(glval<unknown>)  = FunctionAddress[VoidFunc] : 
 #  381|     v0_8(void)            = Call                      : r0_7
-#  381|     m0_9(unknown)         = ^CallSideEffect           : m0_1
-#  381|     m0_10(unknown)        = Chi                       : m0_1, m0_9
+#  381|     m0_9(unknown)         = ^CallSideEffect           : mu0_1
+#  381|     m0_10(unknown)        = Chi                       : mu0_1, m0_9
 #  381|     r0_11(glval<unknown>) = FunctionAddress[CallAdd]  : 
 #  381|     r0_12(glval<int>)     = VariableAddress[x]        : 
 #  381|     r0_13(int)            = Load                      : r0_12, m0_3
@@ -2073,7 +2073,7 @@ ir.cpp:
 #  486| Conditional_LValue(bool) -> void
 #  486|   Block 0
 #  486|     v0_0(void)        = EnterFunction          : 
-#  486|     m0_1(unknown)     = UnmodeledDefinition    : 
+#  486|     mu0_1(unknown)    = UnmodeledDefinition    : 
 #  486|     r0_2(glval<bool>) = VariableAddress[a]     : 
 #  486|     m0_3(bool)        = InitializeParameter[a] : r0_2
 #  487|     r0_4(glval<int>)  = VariableAddress[x]     : 
@@ -2092,7 +2092,7 @@ ir.cpp:
 #  489|     r1_1(glval<int>) = VariableAddress[#temp489:6] : 
 #  489|     r1_2(glval<int>) = Load                        : r1_1, m1_0
 #  489|     m1_3(int)        = Store                       : r1_2, r0_8
-#  489|     mu1_4(unknown)   = Chi                         : m0_1, m1_3
+#  489|     mu1_4(unknown)   = Chi                         : mu0_1, m1_3
 #  490|     v1_5(void)       = NoOp                        : 
 #  486|     v1_6(void)       = ReturnVoid                  : 
 #  486|     v1_7(void)       = UnmodeledUse                : mu*
@@ -2113,7 +2113,7 @@ ir.cpp:
 #  492| Conditional_Void(bool) -> void
 #  492|   Block 0
 #  492|     v0_0(void)        = EnterFunction          : 
-#  492|     m0_1(unknown)     = UnmodeledDefinition    : 
+#  492|     mu0_1(unknown)    = UnmodeledDefinition    : 
 #  492|     r0_2(glval<bool>) = VariableAddress[a]     : 
 #  492|     m0_3(bool)        = InitializeParameter[a] : r0_2
 #  493|     r0_4(glval<bool>) = VariableAddress[a]     : 
@@ -2132,15 +2132,15 @@ ir.cpp:
 #  493|   Block 2
 #  493|     r2_0(glval<unknown>) = FunctionAddress[VoidFunc] : 
 #  493|     v2_1(void)           = Call                      : r2_0
-#  493|     m2_2(unknown)        = ^CallSideEffect           : m0_1
-#  493|     m2_3(unknown)        = Chi                       : m0_1, m2_2
+#  493|     m2_2(unknown)        = ^CallSideEffect           : mu0_1
+#  493|     m2_3(unknown)        = Chi                       : mu0_1, m2_2
 #-----|   Goto -> Block 1
 
 #  493|   Block 3
 #  493|     r3_0(glval<unknown>) = FunctionAddress[VoidFunc] : 
 #  493|     v3_1(void)           = Call                      : r3_0
-#  493|     m3_2(unknown)        = ^CallSideEffect           : m0_1
-#  493|     m3_3(unknown)        = Chi                       : m0_1, m3_2
+#  493|     m3_2(unknown)        = ^CallSideEffect           : mu0_1
+#  493|     m3_3(unknown)        = Chi                       : mu0_1, m3_2
 #-----|   Goto -> Block 1
 
 #  496| Nullptr() -> void
@@ -2302,7 +2302,7 @@ ir.cpp:
 #  519| ArrayInit(int, float) -> void
 #  519|   Block 0
 #  519|     v0_0(void)           = EnterFunction          : 
-#  519|     m0_1(unknown)        = UnmodeledDefinition    : 
+#  519|     mu0_1(unknown)       = UnmodeledDefinition    : 
 #  519|     r0_2(glval<int>)     = VariableAddress[x]     : 
 #  519|     m0_3(int)            = InitializeParameter[x] : r0_2
 #  519|     r0_4(glval<float>)   = VariableAddress[f]     : 
@@ -2312,7 +2312,7 @@ ir.cpp:
 #  520|     r0_8(glval<int>)     = PointerAdd             : r0_6, r0_7
 #  520|     r0_9(unknown[12])    = Constant[0]            : 
 #  520|     m0_10(unknown[12])   = Store                  : r0_8, r0_9
-#  520|     m0_11(unknown)       = Chi                    : m0_1, m0_10
+#  520|     m0_11(unknown)       = Chi                    : mu0_1, m0_10
 #  521|     r0_12(glval<int[3]>) = VariableAddress[a2]    : 
 #  521|     r0_13(int)           = Constant[0]            : 
 #  521|     r0_14(glval<int>)    = PointerAdd             : r0_12, r0_13
@@ -2446,7 +2446,7 @@ ir.cpp:
 #  551| CallViaFuncPtr(..(*)(..)) -> int
 #  551|   Block 0
 #  551|     v0_0(void)             = EnterFunction            : 
-#  551|     m0_1(unknown)          = UnmodeledDefinition      : 
+#  551|     mu0_1(unknown)         = UnmodeledDefinition      : 
 #  551|     r0_2(glval<..(*)(..)>) = VariableAddress[pfn]     : 
 #  551|     m0_3(..(*)(..))        = InitializeParameter[pfn] : r0_2
 #  552|     r0_4(glval<int>)       = VariableAddress[#return] : 
@@ -2454,8 +2454,8 @@ ir.cpp:
 #  552|     r0_6(..(*)(..))        = Load                     : r0_5, m0_3
 #  552|     r0_7(int)              = Constant[5]              : 
 #  552|     r0_8(int)              = Call                     : r0_6, r0_7
-#  552|     m0_9(unknown)          = ^CallSideEffect          : m0_1
-#  552|     mu0_10(unknown)        = Chi                      : m0_1, m0_9
+#  552|     m0_9(unknown)          = ^CallSideEffect          : mu0_1
+#  552|     mu0_10(unknown)        = Chi                      : mu0_1, m0_9
 #  552|     m0_11(int)             = Store                    : r0_4, r0_8
 #  551|     r0_12(glval<int>)      = VariableAddress[#return] : 
 #  551|     v0_13(void)            = ReturnValue              : r0_12, m0_11
@@ -2507,16 +2507,16 @@ ir.cpp:
 #  571| InitArray() -> void
 #  571|   Block 0
 #  571|     v0_0(void)            = EnterFunction            : 
-#  571|     m0_1(unknown)         = UnmodeledDefinition      : 
+#  571|     mu0_1(unknown)        = UnmodeledDefinition      : 
 #  572|     r0_2(glval<char[32]>) = VariableAddress[a_pad]   : 
 #  572|     r0_3(glval<char[1]>)  = StringConstant[""]       : 
-#  572|     r0_4(char[1])         = Load                     : r0_3, m0_1
+#  572|     r0_4(char[1])         = Load                     : r0_3, mu0_1
 #  572|     mu0_5(char[1])        = Store                    : r0_2, r0_4
 #  572|     r0_6(unknown[31])     = Constant[0]              : 
 #  572|     r0_7(int)             = Constant[1]              : 
 #  572|     r0_8(glval<char>)     = PointerAdd               : r0_2, r0_7
 #  572|     m0_9(unknown[31])     = Store                    : r0_8, r0_6
-#  572|     m0_10(unknown)        = Chi                      : m0_1, m0_9
+#  572|     m0_10(unknown)        = Chi                      : mu0_1, m0_9
 #  573|     r0_11(glval<char[4]>) = VariableAddress[a_nopad] : 
 #  573|     r0_12(glval<char[4]>) = StringConstant["foo"]    : 
 #  573|     r0_13(char[4])        = Load                     : r0_12, m0_10
@@ -2574,7 +2574,7 @@ ir.cpp:
 #  584| VarArgs() -> void
 #  584|   Block 0
 #  584|     v0_0(void)           = EnterFunction                   : 
-#  584|     m0_1(unknown)        = UnmodeledDefinition             : 
+#  584|     mu0_1(unknown)       = UnmodeledDefinition             : 
 #  585|     r0_2(glval<unknown>) = FunctionAddress[VarArgFunction] : 
 #  585|     r0_3(glval<char[6]>) = StringConstant["%d %s"]         : 
 #  585|     r0_4(char *)         = Convert                         : r0_3
@@ -2582,8 +2582,8 @@ ir.cpp:
 #  585|     r0_6(glval<char[7]>) = StringConstant["string"]        : 
 #  585|     r0_7(char *)         = Convert                         : r0_6
 #  585|     v0_8(void)           = Call                            : r0_2, r0_4, r0_5, r0_7
-#  585|     m0_9(unknown)        = ^CallSideEffect                 : m0_1
-#  585|     mu0_10(unknown)      = Chi                             : m0_1, m0_9
+#  585|     m0_9(unknown)        = ^CallSideEffect                 : mu0_1
+#  585|     mu0_10(unknown)      = Chi                             : mu0_1, m0_9
 #  586|     v0_11(void)          = NoOp                            : 
 #  584|     v0_12(void)          = ReturnVoid                      : 
 #  584|     v0_13(void)          = UnmodeledUse                    : mu*
@@ -2613,12 +2613,12 @@ ir.cpp:
 #  615| DeclareObject() -> void
 #  615|   Block 0
 #  615|     v0_0(void)            = EnterFunction                 : 
-#  615|     m0_1(unknown)         = UnmodeledDefinition           : 
+#  615|     mu0_1(unknown)        = UnmodeledDefinition           : 
 #  616|     r0_2(glval<String>)   = VariableAddress[s1]           : 
 #  616|     r0_3(glval<unknown>)  = FunctionAddress[String]       : 
 #  616|     v0_4(void)            = Call                          : r0_3, this:r0_2
-#  616|     m0_5(unknown)         = ^CallSideEffect               : m0_1
-#  616|     m0_6(unknown)         = Chi                           : m0_1, m0_5
+#  616|     m0_5(unknown)         = ^CallSideEffect               : mu0_1
+#  616|     m0_6(unknown)         = Chi                           : mu0_1, m0_5
 #  617|     r0_7(glval<String>)   = VariableAddress[s2]           : 
 #  617|     r0_8(glval<unknown>)  = FunctionAddress[String]       : 
 #  617|     r0_9(glval<char[6]>)  = StringConstant["hello"]       : 
@@ -2647,7 +2647,7 @@ ir.cpp:
 #  622| CallMethods(String &, String *, String) -> void
 #  622|   Block 0
 #  622|     v0_0(void)             = EnterFunction          : 
-#  622|     m0_1(unknown)          = UnmodeledDefinition    : 
+#  622|     mu0_1(unknown)         = UnmodeledDefinition    : 
 #  622|     r0_2(glval<String &>)  = VariableAddress[r]     : 
 #  622|     m0_3(String &)         = InitializeParameter[r] : r0_2
 #  622|     r0_4(glval<String *>)  = VariableAddress[p]     : 
@@ -2659,8 +2659,8 @@ ir.cpp:
 #  623|     r0_10(glval<String>)   = Convert                : r0_9
 #  623|     r0_11(glval<unknown>)  = FunctionAddress[c_str] : 
 #  623|     r0_12(char *)          = Call                   : r0_11, this:r0_10
-#  623|     m0_13(unknown)         = ^CallSideEffect        : m0_1
-#  623|     m0_14(unknown)         = Chi                    : m0_1, m0_13
+#  623|     m0_13(unknown)         = ^CallSideEffect        : mu0_1
+#  623|     m0_14(unknown)         = Chi                    : mu0_1, m0_13
 #  624|     r0_15(glval<String *>) = VariableAddress[p]     : 
 #  624|     r0_16(String *)        = Load                   : r0_15, m0_5
 #  624|     r0_17(String *)        = Convert                : r0_16
@@ -2729,13 +2729,13 @@ ir.cpp:
 #  642| C::FieldAccess() -> void
 #  642|   Block 0
 #  642|     v0_0(void)        = EnterFunction       : 
-#  642|     m0_1(unknown)     = UnmodeledDefinition : 
+#  642|     mu0_1(unknown)    = UnmodeledDefinition : 
 #  642|     r0_2(glval<C>)    = InitializeThis      : 
 #  643|     r0_3(int)         = Constant[0]         : 
 #  643|     r0_4(C *)         = CopyValue           : r0_2
 #  643|     r0_5(glval<int>)  = FieldAddress[m_a]   : r0_4
 #  643|     m0_6(int)         = Store               : r0_5, r0_3
-#  643|     m0_7(unknown)     = Chi                 : m0_1, m0_6
+#  643|     m0_7(unknown)     = Chi                 : mu0_1, m0_6
 #  644|     r0_8(int)         = Constant[1]         : 
 #  644|     r0_9(C *)         = CopyValue           : r0_2
 #  644|     r0_10(glval<int>) = FieldAddress[m_a]   : r0_9
@@ -2771,14 +2771,14 @@ ir.cpp:
 #  652| C::MethodCalls() -> void
 #  652|   Block 0
 #  652|     v0_0(void)            = EnterFunction                           : 
-#  652|     m0_1(unknown)         = UnmodeledDefinition                     : 
+#  652|     mu0_1(unknown)        = UnmodeledDefinition                     : 
 #  652|     r0_2(glval<C>)        = InitializeThis                          : 
 #  653|     r0_3(C *)             = CopyValue                               : r0_2
 #  653|     r0_4(glval<unknown>)  = FunctionAddress[InstanceMemberFunction] : 
 #  653|     r0_5(int)             = Constant[0]                             : 
 #  653|     r0_6(int)             = Call                                    : r0_4, this:r0_3, r0_5
-#  653|     m0_7(unknown)         = ^CallSideEffect                         : m0_1
-#  653|     m0_8(unknown)         = Chi                                     : m0_1, m0_7
+#  653|     m0_7(unknown)         = ^CallSideEffect                         : mu0_1
+#  653|     m0_8(unknown)         = Chi                                     : mu0_1, m0_7
 #  654|     r0_9(C *)             = CopyValue                               : r0_2
 #  654|     r0_10(glval<unknown>) = FunctionAddress[InstanceMemberFunction] : 
 #  654|     r0_11(int)            = Constant[1]                             : 
@@ -2799,12 +2799,12 @@ ir.cpp:
 #  658| C::C() -> void
 #  658|   Block 0
 #  658|     v0_0(void)            = EnterFunction           : 
-#  658|     m0_1(unknown)         = UnmodeledDefinition     : 
+#  658|     mu0_1(unknown)        = UnmodeledDefinition     : 
 #  658|     r0_2(glval<C>)        = InitializeThis          : 
 #  659|     r0_3(glval<int>)      = FieldAddress[m_a]       : r0_2
 #  659|     r0_4(int)             = Constant[1]             : 
 #  659|     m0_5(int)             = Store                   : r0_3, r0_4
-#  659|     m0_6(unknown)         = Chi                     : m0_1, m0_5
+#  659|     m0_6(unknown)         = Chi                     : mu0_1, m0_5
 #  663|     r0_7(glval<String>)   = FieldAddress[m_b]       : r0_2
 #  663|     r0_8(glval<unknown>)  = FunctionAddress[String] : 
 #  663|     v0_9(void)            = Call                    : r0_8, this:r0_7
@@ -2861,7 +2861,7 @@ ir.cpp:
 #  685| InitReference(int) -> void
 #  685|   Block 0
 #  685|     v0_0(void)             = EnterFunction                    : 
-#  685|     m0_1(unknown)          = UnmodeledDefinition              : 
+#  685|     mu0_1(unknown)         = UnmodeledDefinition              : 
 #  685|     r0_2(glval<int>)       = VariableAddress[x]               : 
 #  685|     m0_3(int)              = InitializeParameter[x]           : r0_2
 #  686|     r0_4(glval<int &>)     = VariableAddress[r]               : 
@@ -2874,8 +2874,8 @@ ir.cpp:
 #  688|     r0_11(glval<String &>) = VariableAddress[r3]              : 
 #  688|     r0_12(glval<unknown>)  = FunctionAddress[ReturnReference] : 
 #  688|     r0_13(String &)        = Call                             : r0_12
-#  688|     m0_14(unknown)         = ^CallSideEffect                  : m0_1
-#  688|     mu0_15(unknown)        = Chi                              : m0_1, m0_14
+#  688|     m0_14(unknown)         = ^CallSideEffect                  : mu0_1
+#  688|     mu0_15(unknown)        = Chi                              : mu0_1, m0_14
 #  688|     r0_16(glval<String>)   = Convert                          : r0_13
 #  688|     m0_17(String &)        = Store                            : r0_11, r0_16
 #  689|     v0_18(void)            = NoOp                             : 
@@ -2908,7 +2908,7 @@ ir.cpp:
 #  697| FunctionReferences() -> void
 #  697|   Block 0
 #  697|     v0_0(void)             = EnterFunction                  : 
-#  697|     m0_1(unknown)          = UnmodeledDefinition            : 
+#  697|     mu0_1(unknown)         = UnmodeledDefinition            : 
 #  698|     r0_2(glval<..(&)(..)>) = VariableAddress[rfn]           : 
 #  698|     r0_3(glval<..()(..)>)  = FunctionAddress[FuncPtrTarget] : 
 #  698|     m0_4(..(&)(..))        = Store                          : r0_2, r0_3
@@ -2920,8 +2920,8 @@ ir.cpp:
 #  700|     r0_10(..(&)(..))       = Load                           : r0_9, m0_4
 #  700|     r0_11(int)             = Constant[5]                    : 
 #  700|     r0_12(int)             = Call                           : r0_10, r0_11
-#  700|     m0_13(unknown)         = ^CallSideEffect                : m0_1
-#  700|     mu0_14(unknown)        = Chi                            : m0_1, m0_13
+#  700|     m0_13(unknown)         = ^CallSideEffect                : mu0_1
+#  700|     mu0_14(unknown)        = Chi                            : mu0_1, m0_13
 #  701|     v0_15(void)            = NoOp                           : 
 #  697|     v0_16(void)            = ReturnVoid                     : 
 #  697|     v0_17(void)            = UnmodeledUse                   : mu*
@@ -2972,7 +2972,7 @@ ir.cpp:
 #  708| CallMin(int, int) -> int
 #  708|   Block 0
 #  708|     v0_0(void)           = EnterFunction            : 
-#  708|     m0_1(unknown)        = UnmodeledDefinition      : 
+#  708|     mu0_1(unknown)       = UnmodeledDefinition      : 
 #  708|     r0_2(glval<int>)     = VariableAddress[x]       : 
 #  708|     m0_3(int)            = InitializeParameter[x]   : r0_2
 #  708|     r0_4(glval<int>)     = VariableAddress[y]       : 
@@ -2984,8 +2984,8 @@ ir.cpp:
 #  709|     r0_10(glval<int>)    = VariableAddress[y]       : 
 #  709|     r0_11(int)           = Load                     : r0_10, m0_5
 #  709|     r0_12(int)           = Call                     : r0_7, r0_9, r0_11
-#  709|     m0_13(unknown)       = ^CallSideEffect          : m0_1
-#  709|     mu0_14(unknown)      = Chi                      : m0_1, m0_13
+#  709|     m0_13(unknown)       = ^CallSideEffect          : mu0_1
+#  709|     mu0_14(unknown)      = Chi                      : mu0_1, m0_13
 #  709|     m0_15(int)           = Store                    : r0_6, r0_12
 #  708|     r0_16(glval<int>)    = VariableAddress[#return] : 
 #  708|     v0_17(void)          = ReturnValue              : r0_16, m0_15
@@ -3011,14 +3011,14 @@ ir.cpp:
 #  720| CallNestedTemplateFunc() -> double
 #  720|   Block 0
 #  720|     v0_0(void)           = EnterFunction            : 
-#  720|     m0_1(unknown)        = UnmodeledDefinition      : 
+#  720|     mu0_1(unknown)       = UnmodeledDefinition      : 
 #  721|     r0_2(glval<double>)  = VariableAddress[#return] : 
 #  721|     r0_3(glval<unknown>) = FunctionAddress[Func]    : 
 #  721|     r0_4(void *)         = Constant[0]              : 
 #  721|     r0_5(char)           = Constant[111]            : 
 #  721|     r0_6(long)           = Call                     : r0_3, r0_4, r0_5
-#  721|     m0_7(unknown)        = ^CallSideEffect          : m0_1
-#  721|     mu0_8(unknown)       = Chi                      : m0_1, m0_7
+#  721|     m0_7(unknown)        = ^CallSideEffect          : mu0_1
+#  721|     mu0_8(unknown)       = Chi                      : mu0_1, m0_7
 #  721|     r0_9(double)         = Convert                  : r0_6
 #  721|     m0_10(double)        = Store                    : r0_2, r0_9
 #  720|     r0_11(glval<double>) = VariableAddress[#return] : 
@@ -3029,7 +3029,7 @@ ir.cpp:
 #  724| TryCatch(bool) -> void
 #  724|   Block 0
 #  724|     v0_0(void)        = EnterFunction          : 
-#  724|     m0_1(unknown)     = UnmodeledDefinition    : 
+#  724|     mu0_1(unknown)    = UnmodeledDefinition    : 
 #  724|     r0_2(glval<bool>) = VariableAddress[b]     : 
 #  724|     m0_3(bool)        = InitializeParameter[b] : r0_2
 #  726|     r0_4(glval<int>)  = VariableAddress[x]     : 
@@ -3091,9 +3091,9 @@ ir.cpp:
 #  731|     r7_2(glval<char[14]>) = StringConstant["String object"] : 
 #  731|     r7_3(char *)          = Convert                         : r7_2
 #  731|     v7_4(void)            = Call                            : r7_1, this:r7_0, r7_3
-#  731|     m7_5(unknown)         = ^CallSideEffect                 : m0_1
-#  731|     m7_6(unknown)         = Chi                             : m0_1, m7_5
-#  731|     v7_7(void)            = ThrowValue                      : r7_0, m0_1
+#  731|     m7_5(unknown)         = ^CallSideEffect                 : mu0_1
+#  731|     m7_6(unknown)         = Chi                             : mu0_1, m7_5
+#  731|     v7_7(void)            = ThrowValue                      : r7_0, mu0_1
 #-----|   Exception -> Block 9
 
 #  733|   Block 8
@@ -3103,7 +3103,7 @@ ir.cpp:
 #-----|   Goto -> Block 14
 
 #  735|   Block 9
-#  735|     m9_0(unknown) = Phi                       : from 3:m0_1, from 7:m7_6
+#  735|     m9_0(unknown) = Phi                       : from 3:mu0_1, from 7:m7_6
 #  735|     v9_1(void)    = CatchByType[const char *] : 
 #-----|   Exception -> Block 11
 #-----|   Goto -> Block 10
@@ -3118,7 +3118,7 @@ ir.cpp:
 #  736|     v10_6(void)           = Call                         : r10_3, this:r10_2, r10_5
 #  736|     m10_7(unknown)        = ^CallSideEffect              : m9_0
 #  736|     m10_8(unknown)        = Chi                          : m10_7
-#  736|     v10_9(void)           = ThrowValue                   : r10_2, m0_1
+#  736|     v10_9(void)           = ThrowValue                   : r10_2, mu0_1
 #-----|   Exception -> Block 2
 
 #  738|   Block 11
@@ -3138,7 +3138,7 @@ ir.cpp:
 #-----|   Exception -> Block 2
 
 #  743|   Block 14
-#  743|     m14_0(unknown) = Phi        : from 8:m0_1, from 12:m9_0
+#  743|     m14_0(unknown) = Phi        : from 8:mu0_1, from 12:m9_0
 #  743|     v14_1(void)    = NoOp       : 
 #  724|     v14_2(void)    = ReturnVoid : 
 #-----|   Goto -> Block 1
@@ -3146,15 +3146,15 @@ ir.cpp:
 #  745| Base::Base(const Base &) -> void
 #  745|   Block 0
 #  745|     v0_0(void)           = EnterFunction            : 
-#  745|     m0_1(unknown)        = UnmodeledDefinition      : 
+#  745|     mu0_1(unknown)       = UnmodeledDefinition      : 
 #  745|     r0_2(glval<Base>)    = InitializeThis           : 
 #-----|     r0_3(glval<Base &>)  = VariableAddress[p#0]     : 
 #-----|     m0_4(Base &)         = InitializeParameter[p#0] : r0_3
 #  745|     r0_5(glval<String>)  = FieldAddress[base_s]     : r0_2
 #  745|     r0_6(glval<unknown>) = FunctionAddress[String]  : 
 #  745|     v0_7(void)           = Call                     : r0_6, this:r0_5
-#  745|     m0_8(unknown)        = ^CallSideEffect          : m0_1
-#  745|     mu0_9(unknown)       = Chi                      : m0_1, m0_8
+#  745|     m0_8(unknown)        = ^CallSideEffect          : mu0_1
+#  745|     mu0_9(unknown)       = Chi                      : mu0_1, m0_8
 #  745|     v0_10(void)          = NoOp                     : 
 #  745|     v0_11(void)          = ReturnVoid               : 
 #  745|     v0_12(void)          = UnmodeledUse             : mu*
@@ -3163,7 +3163,7 @@ ir.cpp:
 #  745| Base::operator=(const Base &) -> Base &
 #  745|   Block 0
 #  745|     v0_0(void)           = EnterFunction              : 
-#  745|     m0_1(unknown)        = UnmodeledDefinition        : 
+#  745|     mu0_1(unknown)       = UnmodeledDefinition        : 
 #  745|     r0_2(glval<Base>)    = InitializeThis             : 
 #-----|     r0_3(glval<Base &>)  = VariableAddress[p#0]       : 
 #-----|     m0_4(Base &)         = InitializeParameter[p#0]   : r0_3
@@ -3174,8 +3174,8 @@ ir.cpp:
 #-----|     r0_9(Base &)         = Load                       : r0_8, m0_4
 #-----|     r0_10(glval<String>) = FieldAddress[base_s]       : r0_9
 #  745|     r0_11(String &)      = Call                       : r0_7, this:r0_6, r0_10
-#  745|     m0_12(unknown)       = ^CallSideEffect            : m0_1
-#  745|     mu0_13(unknown)      = Chi                        : m0_1, m0_12
+#  745|     m0_12(unknown)       = ^CallSideEffect            : mu0_1
+#  745|     mu0_13(unknown)      = Chi                        : mu0_1, m0_12
 #-----|     r0_14(glval<Base &>) = VariableAddress[#return]   : 
 #-----|     r0_15(Base *)        = CopyValue                  : r0_2
 #-----|     m0_16(Base &)        = Store                      : r0_14, r0_15
@@ -3187,13 +3187,13 @@ ir.cpp:
 #  748| Base::Base() -> void
 #  748|   Block 0
 #  748|     v0_0(void)           = EnterFunction           : 
-#  748|     m0_1(unknown)        = UnmodeledDefinition     : 
+#  748|     mu0_1(unknown)       = UnmodeledDefinition     : 
 #  748|     r0_2(glval<Base>)    = InitializeThis          : 
 #  748|     r0_3(glval<String>)  = FieldAddress[base_s]    : r0_2
 #  748|     r0_4(glval<unknown>) = FunctionAddress[String] : 
 #  748|     v0_5(void)           = Call                    : r0_4, this:r0_3
-#  748|     m0_6(unknown)        = ^CallSideEffect         : m0_1
-#  748|     mu0_7(unknown)       = Chi                     : m0_1, m0_6
+#  748|     m0_6(unknown)        = ^CallSideEffect         : mu0_1
+#  748|     mu0_7(unknown)       = Chi                     : mu0_1, m0_6
 #  749|     v0_8(void)           = NoOp                    : 
 #  748|     v0_9(void)           = ReturnVoid              : 
 #  748|     v0_10(void)          = UnmodeledUse            : mu*
@@ -3202,14 +3202,14 @@ ir.cpp:
 #  750| Base::~Base() -> void
 #  750|   Block 0
 #  750|     v0_0(void)           = EnterFunction            : 
-#  750|     m0_1(unknown)        = UnmodeledDefinition      : 
+#  750|     mu0_1(unknown)       = UnmodeledDefinition      : 
 #  750|     r0_2(glval<Base>)    = InitializeThis           : 
 #  751|     v0_3(void)           = NoOp                     : 
 #  751|     r0_4(glval<String>)  = FieldAddress[base_s]     : r0_2
 #  751|     r0_5(glval<unknown>) = FunctionAddress[~String] : 
 #  751|     v0_6(void)           = Call                     : r0_5, this:r0_4
-#  751|     m0_7(unknown)        = ^CallSideEffect          : m0_1
-#  751|     mu0_8(unknown)       = Chi                      : m0_1, m0_7
+#  751|     m0_7(unknown)        = ^CallSideEffect          : mu0_1
+#  751|     mu0_8(unknown)       = Chi                      : mu0_1, m0_7
 #  750|     v0_9(void)           = ReturnVoid               : 
 #  750|     v0_10(void)          = UnmodeledUse             : mu*
 #  750|     v0_11(void)          = ExitFunction             : 
@@ -3217,7 +3217,7 @@ ir.cpp:
 #  754| Middle::operator=(const Middle &) -> Middle &
 #  754|   Block 0
 #  754|     v0_0(void)             = EnterFunction                : 
-#  754|     m0_1(unknown)          = UnmodeledDefinition          : 
+#  754|     mu0_1(unknown)         = UnmodeledDefinition          : 
 #  754|     r0_2(glval<Middle>)    = InitializeThis               : 
 #-----|     r0_3(glval<Middle &>)  = VariableAddress[p#0]         : 
 #-----|     m0_4(Middle &)         = InitializeParameter[p#0]     : r0_3
@@ -3228,8 +3228,8 @@ ir.cpp:
 #-----|     r0_9(Middle &)         = Load                         : r0_8, m0_4
 #-----|     r0_10(Base *)          = ConvertToBase[Middle : Base] : r0_9
 #  754|     r0_11(Base &)          = Call                         : r0_7, this:r0_6, r0_10
-#  754|     m0_12(unknown)         = ^CallSideEffect              : m0_1
-#  754|     m0_13(unknown)         = Chi                          : m0_1, m0_12
+#  754|     m0_12(unknown)         = ^CallSideEffect              : mu0_1
+#  754|     m0_13(unknown)         = Chi                          : mu0_1, m0_12
 #-----|     r0_14(Middle *)        = CopyValue                    : r0_2
 #-----|     r0_15(glval<String>)   = FieldAddress[middle_s]       : r0_14
 #  754|     r0_16(glval<unknown>)  = FunctionAddress[operator=]   : 
@@ -3250,13 +3250,13 @@ ir.cpp:
 #  757| Middle::Middle() -> void
 #  757|   Block 0
 #  757|     v0_0(void)           = EnterFunction                : 
-#  757|     m0_1(unknown)        = UnmodeledDefinition          : 
+#  757|     mu0_1(unknown)       = UnmodeledDefinition          : 
 #  757|     r0_2(glval<Middle>)  = InitializeThis               : 
 #  757|     r0_3(glval<Base>)    = ConvertToBase[Middle : Base] : r0_2
 #  757|     r0_4(glval<unknown>) = FunctionAddress[Base]        : 
 #  757|     v0_5(void)           = Call                         : r0_4, this:r0_3
-#  757|     m0_6(unknown)        = ^CallSideEffect              : m0_1
-#  757|     m0_7(unknown)        = Chi                          : m0_1, m0_6
+#  757|     m0_6(unknown)        = ^CallSideEffect              : mu0_1
+#  757|     m0_7(unknown)        = Chi                          : mu0_1, m0_6
 #  757|     r0_8(glval<String>)  = FieldAddress[middle_s]       : r0_2
 #  757|     r0_9(glval<unknown>) = FunctionAddress[String]      : 
 #  757|     v0_10(void)          = Call                         : r0_9, this:r0_8
@@ -3270,14 +3270,14 @@ ir.cpp:
 #  759| Middle::~Middle() -> void
 #  759|   Block 0
 #  759|     v0_0(void)            = EnterFunction                : 
-#  759|     m0_1(unknown)         = UnmodeledDefinition          : 
+#  759|     mu0_1(unknown)        = UnmodeledDefinition          : 
 #  759|     r0_2(glval<Middle>)   = InitializeThis               : 
 #  760|     v0_3(void)            = NoOp                         : 
 #  760|     r0_4(glval<String>)   = FieldAddress[middle_s]       : r0_2
 #  760|     r0_5(glval<unknown>)  = FunctionAddress[~String]     : 
 #  760|     v0_6(void)            = Call                         : r0_5, this:r0_4
-#  760|     m0_7(unknown)         = ^CallSideEffect              : m0_1
-#  760|     m0_8(unknown)         = Chi                          : m0_1, m0_7
+#  760|     m0_7(unknown)         = ^CallSideEffect              : mu0_1
+#  760|     m0_8(unknown)         = Chi                          : mu0_1, m0_7
 #  760|     r0_9(glval<Base>)     = ConvertToBase[Middle : Base] : r0_2
 #  760|     r0_10(glval<unknown>) = FunctionAddress[~Base]       : 
 #  760|     v0_11(void)           = Call                         : r0_10, this:r0_9
@@ -3290,7 +3290,7 @@ ir.cpp:
 #  763| Derived::operator=(const Derived &) -> Derived &
 #  763|   Block 0
 #  763|     v0_0(void)              = EnterFunction                   : 
-#  763|     m0_1(unknown)           = UnmodeledDefinition             : 
+#  763|     mu0_1(unknown)          = UnmodeledDefinition             : 
 #  763|     r0_2(glval<Derived>)    = InitializeThis                  : 
 #-----|     r0_3(glval<Derived &>)  = VariableAddress[p#0]            : 
 #-----|     m0_4(Derived &)         = InitializeParameter[p#0]        : r0_3
@@ -3301,8 +3301,8 @@ ir.cpp:
 #-----|     r0_9(Derived &)         = Load                            : r0_8, m0_4
 #-----|     r0_10(Middle *)         = ConvertToBase[Derived : Middle] : r0_9
 #  763|     r0_11(Middle &)         = Call                            : r0_7, this:r0_6, r0_10
-#  763|     m0_12(unknown)          = ^CallSideEffect                 : m0_1
-#  763|     m0_13(unknown)          = Chi                             : m0_1, m0_12
+#  763|     m0_12(unknown)          = ^CallSideEffect                 : mu0_1
+#  763|     m0_13(unknown)          = Chi                             : mu0_1, m0_12
 #-----|     r0_14(Derived *)        = CopyValue                       : r0_2
 #-----|     r0_15(glval<String>)    = FieldAddress[derived_s]         : r0_14
 #  763|     r0_16(glval<unknown>)   = FunctionAddress[operator=]      : 
@@ -3323,13 +3323,13 @@ ir.cpp:
 #  766| Derived::Derived() -> void
 #  766|   Block 0
 #  766|     v0_0(void)           = EnterFunction                   : 
-#  766|     m0_1(unknown)        = UnmodeledDefinition             : 
+#  766|     mu0_1(unknown)       = UnmodeledDefinition             : 
 #  766|     r0_2(glval<Derived>) = InitializeThis                  : 
 #  766|     r0_3(glval<Middle>)  = ConvertToBase[Derived : Middle] : r0_2
 #  766|     r0_4(glval<unknown>) = FunctionAddress[Middle]         : 
 #  766|     v0_5(void)           = Call                            : r0_4, this:r0_3
-#  766|     m0_6(unknown)        = ^CallSideEffect                 : m0_1
-#  766|     m0_7(unknown)        = Chi                             : m0_1, m0_6
+#  766|     m0_6(unknown)        = ^CallSideEffect                 : mu0_1
+#  766|     m0_7(unknown)        = Chi                             : mu0_1, m0_6
 #  766|     r0_8(glval<String>)  = FieldAddress[derived_s]         : r0_2
 #  766|     r0_9(glval<unknown>) = FunctionAddress[String]         : 
 #  766|     v0_10(void)          = Call                            : r0_9, this:r0_8
@@ -3343,14 +3343,14 @@ ir.cpp:
 #  768| Derived::~Derived() -> void
 #  768|   Block 0
 #  768|     v0_0(void)            = EnterFunction                   : 
-#  768|     m0_1(unknown)         = UnmodeledDefinition             : 
+#  768|     mu0_1(unknown)        = UnmodeledDefinition             : 
 #  768|     r0_2(glval<Derived>)  = InitializeThis                  : 
 #  769|     v0_3(void)            = NoOp                            : 
 #  769|     r0_4(glval<String>)   = FieldAddress[derived_s]         : r0_2
 #  769|     r0_5(glval<unknown>)  = FunctionAddress[~String]        : 
 #  769|     v0_6(void)            = Call                            : r0_5, this:r0_4
-#  769|     m0_7(unknown)         = ^CallSideEffect                 : m0_1
-#  769|     m0_8(unknown)         = Chi                             : m0_1, m0_7
+#  769|     m0_7(unknown)         = ^CallSideEffect                 : mu0_1
+#  769|     m0_8(unknown)         = Chi                             : mu0_1, m0_7
 #  769|     r0_9(glval<Middle>)   = ConvertToBase[Derived : Middle] : r0_2
 #  769|     r0_10(glval<unknown>) = FunctionAddress[~Middle]        : 
 #  769|     v0_11(void)           = Call                            : r0_10, this:r0_9
@@ -3363,13 +3363,13 @@ ir.cpp:
 #  775| MiddleVB1::MiddleVB1() -> void
 #  775|   Block 0
 #  775|     v0_0(void)             = EnterFunction                   : 
-#  775|     m0_1(unknown)          = UnmodeledDefinition             : 
+#  775|     mu0_1(unknown)         = UnmodeledDefinition             : 
 #  775|     r0_2(glval<MiddleVB1>) = InitializeThis                  : 
 #  775|     r0_3(glval<Base>)      = ConvertToBase[MiddleVB1 : Base] : r0_2
 #  775|     r0_4(glval<unknown>)   = FunctionAddress[Base]           : 
 #  775|     v0_5(void)             = Call                            : r0_4, this:r0_3
-#  775|     m0_6(unknown)          = ^CallSideEffect                 : m0_1
-#  775|     m0_7(unknown)          = Chi                             : m0_1, m0_6
+#  775|     m0_6(unknown)          = ^CallSideEffect                 : mu0_1
+#  775|     m0_7(unknown)          = Chi                             : mu0_1, m0_6
 #  775|     r0_8(glval<String>)    = FieldAddress[middlevb1_s]       : r0_2
 #  775|     r0_9(glval<unknown>)   = FunctionAddress[String]         : 
 #  775|     v0_10(void)            = Call                            : r0_9, this:r0_8
@@ -3383,14 +3383,14 @@ ir.cpp:
 #  777| MiddleVB1::~MiddleVB1() -> void
 #  777|   Block 0
 #  777|     v0_0(void)             = EnterFunction                   : 
-#  777|     m0_1(unknown)          = UnmodeledDefinition             : 
+#  777|     mu0_1(unknown)         = UnmodeledDefinition             : 
 #  777|     r0_2(glval<MiddleVB1>) = InitializeThis                  : 
 #  778|     v0_3(void)             = NoOp                            : 
 #  778|     r0_4(glval<String>)    = FieldAddress[middlevb1_s]       : r0_2
 #  778|     r0_5(glval<unknown>)   = FunctionAddress[~String]        : 
 #  778|     v0_6(void)             = Call                            : r0_5, this:r0_4
-#  778|     m0_7(unknown)          = ^CallSideEffect                 : m0_1
-#  778|     m0_8(unknown)          = Chi                             : m0_1, m0_7
+#  778|     m0_7(unknown)          = ^CallSideEffect                 : mu0_1
+#  778|     m0_8(unknown)          = Chi                             : mu0_1, m0_7
 #  778|     r0_9(glval<Base>)      = ConvertToBase[MiddleVB1 : Base] : r0_2
 #  778|     r0_10(glval<unknown>)  = FunctionAddress[~Base]          : 
 #  778|     v0_11(void)            = Call                            : r0_10, this:r0_9
@@ -3403,13 +3403,13 @@ ir.cpp:
 #  784| MiddleVB2::MiddleVB2() -> void
 #  784|   Block 0
 #  784|     v0_0(void)             = EnterFunction                   : 
-#  784|     m0_1(unknown)          = UnmodeledDefinition             : 
+#  784|     mu0_1(unknown)         = UnmodeledDefinition             : 
 #  784|     r0_2(glval<MiddleVB2>) = InitializeThis                  : 
 #  784|     r0_3(glval<Base>)      = ConvertToBase[MiddleVB2 : Base] : r0_2
 #  784|     r0_4(glval<unknown>)   = FunctionAddress[Base]           : 
 #  784|     v0_5(void)             = Call                            : r0_4, this:r0_3
-#  784|     m0_6(unknown)          = ^CallSideEffect                 : m0_1
-#  784|     m0_7(unknown)          = Chi                             : m0_1, m0_6
+#  784|     m0_6(unknown)          = ^CallSideEffect                 : mu0_1
+#  784|     m0_7(unknown)          = Chi                             : mu0_1, m0_6
 #  784|     r0_8(glval<String>)    = FieldAddress[middlevb2_s]       : r0_2
 #  784|     r0_9(glval<unknown>)   = FunctionAddress[String]         : 
 #  784|     v0_10(void)            = Call                            : r0_9, this:r0_8
@@ -3423,14 +3423,14 @@ ir.cpp:
 #  786| MiddleVB2::~MiddleVB2() -> void
 #  786|   Block 0
 #  786|     v0_0(void)             = EnterFunction                   : 
-#  786|     m0_1(unknown)          = UnmodeledDefinition             : 
+#  786|     mu0_1(unknown)         = UnmodeledDefinition             : 
 #  786|     r0_2(glval<MiddleVB2>) = InitializeThis                  : 
 #  787|     v0_3(void)             = NoOp                            : 
 #  787|     r0_4(glval<String>)    = FieldAddress[middlevb2_s]       : r0_2
 #  787|     r0_5(glval<unknown>)   = FunctionAddress[~String]        : 
 #  787|     v0_6(void)             = Call                            : r0_5, this:r0_4
-#  787|     m0_7(unknown)          = ^CallSideEffect                 : m0_1
-#  787|     m0_8(unknown)          = Chi                             : m0_1, m0_7
+#  787|     m0_7(unknown)          = ^CallSideEffect                 : mu0_1
+#  787|     m0_8(unknown)          = Chi                             : mu0_1, m0_7
 #  787|     r0_9(glval<Base>)      = ConvertToBase[MiddleVB2 : Base] : r0_2
 #  787|     r0_10(glval<unknown>)  = FunctionAddress[~Base]          : 
 #  787|     v0_11(void)            = Call                            : r0_10, this:r0_9
@@ -3443,13 +3443,13 @@ ir.cpp:
 #  793| DerivedVB::DerivedVB() -> void
 #  793|   Block 0
 #  793|     v0_0(void)              = EnterFunction                        : 
-#  793|     m0_1(unknown)           = UnmodeledDefinition                  : 
+#  793|     mu0_1(unknown)          = UnmodeledDefinition                  : 
 #  793|     r0_2(glval<DerivedVB>)  = InitializeThis                       : 
 #  793|     r0_3(glval<Base>)       = ConvertToBase[DerivedVB : Base]      : r0_2
 #  793|     r0_4(glval<unknown>)    = FunctionAddress[Base]                : 
 #  793|     v0_5(void)              = Call                                 : r0_4, this:r0_3
-#  793|     m0_6(unknown)           = ^CallSideEffect                      : m0_1
-#  793|     m0_7(unknown)           = Chi                                  : m0_1, m0_6
+#  793|     m0_6(unknown)           = ^CallSideEffect                      : mu0_1
+#  793|     m0_7(unknown)           = Chi                                  : mu0_1, m0_6
 #  793|     r0_8(glval<MiddleVB1>)  = ConvertToBase[DerivedVB : MiddleVB1] : r0_2
 #  793|     r0_9(glval<unknown>)    = FunctionAddress[MiddleVB1]           : 
 #  793|     v0_10(void)             = Call                                 : r0_9, this:r0_8
@@ -3473,14 +3473,14 @@ ir.cpp:
 #  795| DerivedVB::~DerivedVB() -> void
 #  795|   Block 0
 #  795|     v0_0(void)              = EnterFunction                        : 
-#  795|     m0_1(unknown)           = UnmodeledDefinition                  : 
+#  795|     mu0_1(unknown)          = UnmodeledDefinition                  : 
 #  795|     r0_2(glval<DerivedVB>)  = InitializeThis                       : 
 #  796|     v0_3(void)              = NoOp                                 : 
 #  796|     r0_4(glval<String>)     = FieldAddress[derivedvb_s]            : r0_2
 #  796|     r0_5(glval<unknown>)    = FunctionAddress[~String]             : 
 #  796|     v0_6(void)              = Call                                 : r0_5, this:r0_4
-#  796|     m0_7(unknown)           = ^CallSideEffect                      : m0_1
-#  796|     m0_8(unknown)           = Chi                                  : m0_1, m0_7
+#  796|     m0_7(unknown)           = ^CallSideEffect                      : mu0_1
+#  796|     m0_8(unknown)           = Chi                                  : mu0_1, m0_7
 #  796|     r0_9(glval<MiddleVB2>)  = ConvertToBase[DerivedVB : MiddleVB2] : r0_2
 #  796|     r0_10(glval<unknown>)   = FunctionAddress[~MiddleVB2]          : 
 #  796|     v0_11(void)             = Call                                 : r0_10, this:r0_9
@@ -3503,12 +3503,12 @@ ir.cpp:
 #  799| HierarchyConversions() -> void
 #  799|   Block 0
 #  799|     v0_0(void)                 = EnterFunction                          : 
-#  799|     m0_1(unknown)              = UnmodeledDefinition                    : 
+#  799|     mu0_1(unknown)             = UnmodeledDefinition                    : 
 #  800|     r0_2(glval<Base>)          = VariableAddress[b]                     : 
 #  800|     r0_3(glval<unknown>)       = FunctionAddress[Base]                  : 
 #  800|     v0_4(void)                 = Call                                   : r0_3, this:r0_2
-#  800|     m0_5(unknown)              = ^CallSideEffect                        : m0_1
-#  800|     m0_6(unknown)              = Chi                                    : m0_1, m0_5
+#  800|     m0_5(unknown)              = ^CallSideEffect                        : mu0_1
+#  800|     m0_6(unknown)              = Chi                                    : mu0_1, m0_5
 #  801|     r0_7(glval<Middle>)        = VariableAddress[m]                     : 
 #  801|     r0_8(glval<unknown>)       = FunctionAddress[Middle]                : 
 #  801|     v0_9(void)                 = Call                                   : r0_8, this:r0_7
@@ -3736,13 +3736,13 @@ ir.cpp:
 #  846| PolymorphicDerived::PolymorphicDerived() -> void
 #  846|   Block 0
 #  846|     v0_0(void)                      = EnterFunction                                       : 
-#  846|     m0_1(unknown)                   = UnmodeledDefinition                                 : 
+#  846|     mu0_1(unknown)                  = UnmodeledDefinition                                 : 
 #  846|     r0_2(glval<PolymorphicDerived>) = InitializeThis                                      : 
 #  846|     r0_3(glval<PolymorphicBase>)    = ConvertToBase[PolymorphicDerived : PolymorphicBase] : r0_2
 #  846|     r0_4(glval<unknown>)            = FunctionAddress[PolymorphicBase]                    : 
 #  846|     v0_5(void)                      = Call                                                : r0_4, this:r0_3
-#  846|     m0_6(unknown)                   = ^CallSideEffect                                     : m0_1
-#  846|     mu0_7(unknown)                  = Chi                                                 : m0_1, m0_6
+#  846|     m0_6(unknown)                   = ^CallSideEffect                                     : mu0_1
+#  846|     mu0_7(unknown)                  = Chi                                                 : mu0_1, m0_6
 #  846|     v0_8(void)                      = NoOp                                                : 
 #  846|     v0_9(void)                      = ReturnVoid                                          : 
 #  846|     v0_10(void)                     = UnmodeledUse                                        : mu*
@@ -3751,14 +3751,14 @@ ir.cpp:
 #  846| PolymorphicDerived::~PolymorphicDerived() -> void
 #  846|   Block 0
 #  846|     v0_0(void)                      = EnterFunction                                       : 
-#  846|     m0_1(unknown)                   = UnmodeledDefinition                                 : 
+#  846|     mu0_1(unknown)                  = UnmodeledDefinition                                 : 
 #  846|     r0_2(glval<PolymorphicDerived>) = InitializeThis                                      : 
 #-----|     v0_3(void)                      = NoOp                                                : 
 #  846|     r0_4(glval<PolymorphicBase>)    = ConvertToBase[PolymorphicDerived : PolymorphicBase] : r0_2
 #  846|     r0_5(glval<unknown>)            = FunctionAddress[~PolymorphicBase]                   : 
 #  846|     v0_6(void)                      = Call                                                : r0_5, this:r0_4
-#  846|     m0_7(unknown)                   = ^CallSideEffect                                     : m0_1
-#  846|     mu0_8(unknown)                  = Chi                                                 : m0_1, m0_7
+#  846|     m0_7(unknown)                   = ^CallSideEffect                                     : mu0_1
+#  846|     mu0_8(unknown)                  = Chi                                                 : mu0_1, m0_7
 #  846|     v0_9(void)                      = ReturnVoid                                          : 
 #  846|     v0_10(void)                     = UnmodeledUse                                        : mu*
 #  846|     v0_11(void)                     = ExitFunction                                        : 
@@ -3766,12 +3766,12 @@ ir.cpp:
 #  849| DynamicCast() -> void
 #  849|   Block 0
 #  849|     v0_0(void)                         = EnterFunction                       : 
-#  849|     m0_1(unknown)                      = UnmodeledDefinition                 : 
+#  849|     mu0_1(unknown)                     = UnmodeledDefinition                 : 
 #  850|     r0_2(glval<PolymorphicBase>)       = VariableAddress[b]                  : 
 #-----|     r0_3(glval<unknown>)               = FunctionAddress[PolymorphicBase]    : 
 #-----|     v0_4(void)                         = Call                                : r0_3, this:r0_2
-#-----|     m0_5(unknown)                      = ^CallSideEffect                     : m0_1
-#-----|     m0_6(unknown)                      = Chi                                 : m0_1, m0_5
+#-----|     m0_5(unknown)                      = ^CallSideEffect                     : mu0_1
+#-----|     m0_6(unknown)                      = Chi                                 : mu0_1, m0_5
 #  851|     r0_7(glval<PolymorphicDerived>)    = VariableAddress[d]                  : 
 #  851|     r0_8(glval<unknown>)               = FunctionAddress[PolymorphicDerived] : 
 #  851|     v0_9(void)                         = Call                                : r0_8, this:r0_7
@@ -3819,14 +3819,14 @@ ir.cpp:
 #  867| String::String() -> void
 #  867|   Block 0
 #  867|     v0_0(void)           = EnterFunction           : 
-#  867|     m0_1(unknown)        = UnmodeledDefinition     : 
+#  867|     mu0_1(unknown)       = UnmodeledDefinition     : 
 #  867|     r0_2(glval<String>)  = InitializeThis          : 
 #  868|     r0_3(glval<unknown>) = FunctionAddress[String] : 
 #  868|     r0_4(glval<char[1]>) = StringConstant[""]      : 
 #  868|     r0_5(char *)         = Convert                 : r0_4
 #  868|     v0_6(void)           = Call                    : r0_3, this:r0_2, r0_5
-#  868|     m0_7(unknown)        = ^CallSideEffect         : m0_1
-#  868|     mu0_8(unknown)       = Chi                     : m0_1, m0_7
+#  868|     m0_7(unknown)        = ^CallSideEffect         : mu0_1
+#  868|     mu0_8(unknown)       = Chi                     : mu0_1, m0_7
 #  869|     v0_9(void)           = NoOp                    : 
 #  867|     v0_10(void)          = ReturnVoid              : 
 #  867|     v0_11(void)          = UnmodeledUse            : mu*
@@ -3999,12 +3999,12 @@ ir.cpp:
 #  940| OperatorNew() -> void
 #  940|   Block 0
 #  940|     v0_0(void)            = EnterFunction                 : 
-#  940|     m0_1(unknown)         = UnmodeledDefinition           : 
+#  940|     mu0_1(unknown)        = UnmodeledDefinition           : 
 #  941|     r0_2(glval<unknown>)  = FunctionAddress[operator new] : 
 #  941|     r0_3(unsigned long)   = Constant[4]                   : 
 #  941|     r0_4(void *)          = Call                          : r0_2, r0_3
-#  941|     m0_5(unknown)         = ^CallSideEffect               : m0_1
-#  941|     m0_6(unknown)         = Chi                           : m0_1, m0_5
+#  941|     m0_5(unknown)         = ^CallSideEffect               : mu0_1
+#  941|     m0_6(unknown)         = Chi                           : mu0_1, m0_5
 #  941|     r0_7(int *)           = Convert                       : r0_4
 #  942|     r0_8(glval<unknown>)  = FunctionAddress[operator new] : 
 #  942|     r0_9(unsigned long)   = Constant[4]                   : 
@@ -4071,14 +4071,14 @@ ir.cpp:
 #  950| OperatorNewArray(int) -> void
 #  950|   Block 0
 #  950|     v0_0(void)                           = EnterFunction                   : 
-#  950|     m0_1(unknown)                        = UnmodeledDefinition             : 
+#  950|     mu0_1(unknown)                       = UnmodeledDefinition             : 
 #  950|     r0_2(glval<int>)                     = VariableAddress[n]              : 
 #  950|     m0_3(int)                            = InitializeParameter[n]          : r0_2
 #  951|     r0_4(glval<unknown>)                 = FunctionAddress[operator new[]] : 
 #  951|     r0_5(unsigned long)                  = Constant[40]                    : 
 #  951|     r0_6(void *)                         = Call                            : r0_4, r0_5
-#  951|     m0_7(unknown)                        = ^CallSideEffect                 : m0_1
-#  951|     m0_8(unknown)                        = Chi                             : m0_1, m0_7
+#  951|     m0_7(unknown)                        = ^CallSideEffect                 : mu0_1
+#  951|     m0_8(unknown)                        = Chi                             : mu0_1, m0_7
 #  951|     r0_9(int *)                          = Convert                         : r0_6
 #  952|     r0_10(glval<unknown>)                = FunctionAddress[operator new[]] : 
 #  952|     r0_11(glval<int>)                    = VariableAddress[n]              : 
@@ -4158,13 +4158,13 @@ ir.cpp:
 #  961| designatedInit() -> int
 #  961|   Block 0
 #  961|     v0_0(void)             = EnterFunction       : 
-#  961|     m0_1(unknown)          = UnmodeledDefinition : 
+#  961|     mu0_1(unknown)         = UnmodeledDefinition : 
 #  962|     r0_2(glval<int[1000]>) = VariableAddress[a1] : 
 #  962|     r0_3(int)              = Constant[0]         : 
 #  962|     r0_4(glval<int>)       = PointerAdd          : r0_2, r0_3
 #  962|     r0_5(unknown[8])       = Constant[0]         : 
 #  962|     m0_6(unknown[8])       = Store               : r0_4, r0_5
-#  962|     m0_7(unknown)          = Chi                 : m0_1, m0_6
+#  962|     m0_7(unknown)          = Chi                 : mu0_1, m0_6
 #-----|   Goto -> Block 2
 
 #  962|   Block 1
@@ -4187,7 +4187,7 @@ ir.cpp:
 #  963|     r2_3(int *)            = Convert                  : r2_2
 #  963|     r2_4(int)              = Constant[900]            : 
 #  963|     r2_5(int *)            = PointerAdd[4]            : r2_3, r2_4
-#  963|     r2_6(int)              = Load                     : r2_5, m0_1
+#  963|     r2_6(int)              = Load                     : r2_5, mu0_1
 #  963|     m2_7(int)              = Store                    : r2_1, r2_6
 #  961|     r2_8(glval<int>)       = VariableAddress[#return] : 
 #  961|     v2_9(void)             = ReturnValue              : r2_8, m2_7

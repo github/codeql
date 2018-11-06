@@ -153,7 +153,7 @@ cached private module Cached {
               else
                 result = getPhiInstruction(instruction.getFunction(), defBlock, vvar)
             )
-          )
+          ) 
           else (
             result = instruction.getFunctionIR().getUnmodeledDefinitionInstruction()
           )
@@ -168,11 +168,16 @@ cached private module Cached {
           result = getNewInstruction(oldDefinition)
         )
       )
-      else
+      else 
         result = getNewInstruction(oldOperand.getDefinitionInstruction())
     ) or
     instruction.getTag() = ChiTag(getOldInstruction(result)) and
     tag instanceof ChiPartialOperandTag
+    or
+    instruction instanceof UnmodeledUseInstruction and
+    tag instanceof UnmodeledUseOperandTag and
+    result  instanceof UnmodeledDefinitionInstruction and
+    instruction.getFunction() = result.getFunction()
     or
     result = getChiInstructionTotalOperand(instruction.(ChiInstruction), tag.(ChiTotalOperandTag))
   }
