@@ -1909,7 +1909,10 @@ private class LiteralDynamicImportPath extends PathExprInModule, ConstantString 
 class OptionalUse extends Expr, @optionalchainable { OptionalUse() { isOptionalChaining(this) } }
 
 private class ChainElem extends Expr, @optionalchainable {
-  ChainElem getChild() {
+  /**
+   * Gets the base operand of this chainable element.
+   */
+  ChainElem getChainBase() {
     result = this.(CallExpr).getCallee() or
     result = this.(PropAccess).getBase()
   }
@@ -1922,8 +1925,8 @@ class OptionalChainRoot extends ChainElem {
   OptionalUse optionalUse;
 
   OptionalChainRoot() {
-    getChild*() = optionalUse and
-    not exists(ChainElem other | this = other.getChild())
+    getChainBase*() = optionalUse and
+    not exists(ChainElem other | this = other.getChainBase())
   }
 
   /**
