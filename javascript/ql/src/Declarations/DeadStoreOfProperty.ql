@@ -20,7 +20,7 @@ predicate unambiguousPropWrite(DataFlow::SourceNode base, string name, Assignmen
     assign.getLhs().flow() = lhs and
     base.getAPropertyWrite(name) = lhs and
     not exists (DataFlow::SourceNode otherBase |
-      not otherBase = base and
+      otherBase != base and
       lhs = otherBase.getAPropertyWrite(name)
     )
   )
