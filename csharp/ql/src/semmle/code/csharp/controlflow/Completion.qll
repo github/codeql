@@ -431,11 +431,19 @@ private predicate mustHaveMatchingCompletion(ControlFlowElement cfe) {
 }
 
 /**
+ * Holds if `cfe` is the element inside foreach statement `fs` that has the emptiness
+ * completion.
+ */
+predicate foreachEmptiness(ForeachStmt fs, ControlFlowElement cfe) {
+  cfe = fs // use `foreach` statement itself to represent the emptiness test
+}
+
+/**
  * Holds if a normal completion of `cfe` must be an emptiness completion. Thats is,
  * whether `cfe` determines whether to execute the body of a `foreach` statement.
  */
 private predicate mustHaveEmptinessCompletion(ControlFlowElement cfe) {
-  cfe instanceof ForeachStmt // use `foreach` statement itself to represent the emptiness test
+  foreachEmptiness(_, cfe)
 }
 
 /**

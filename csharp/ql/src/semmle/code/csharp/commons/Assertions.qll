@@ -144,7 +144,7 @@ class ForwarderAssertMethod extends AssertMethod {
   override ExceptionClass getExceptionClass() {
     result = this.getUnderlyingAssertMethod().getExceptionClass()
   }
-  
+
   /** Gets the underlying assertion method that is being forwarded to. */
   AssertMethod getUnderlyingAssertMethod() { result = a.getAssertMethod() }
 }
