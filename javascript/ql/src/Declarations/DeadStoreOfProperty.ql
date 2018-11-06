@@ -1,6 +1,6 @@
 /**
  * @name Useless assignment to property
- * @description An assignment to a property whose value is always overwritten, has no effect.
+ * @description An assignment to a property whose value is always overwritten has no effect.
  * @kind problem
  * @problem.severity warning
  * @id js/useless-assignment-to-property
@@ -15,7 +15,7 @@ import DeadStore
 /**
  * Holds if `assign` definitely assigns property `name` of `base`.
  */
-predicate unambigiousPropWrite(DataFlow::SourceNode base, string name, Assignment assign) {
+predicate unambiguousPropWrite(DataFlow::SourceNode base, string name, Assignment assign) {
   exists(DataFlow::PropWrite lhs |
     assign.getLhs().flow() = lhs and
     base.getAPropertyWrite(name) = lhs and
@@ -33,8 +33,8 @@ predicate postDominatedPropWrite(string name, Assignment assign1, Assignment ass
   exists (DataFlow::SourceNode base, ReachableBasicBlock block1, ReachableBasicBlock block2 |
     block1 = assign1.getBasicBlock() and
     block2 = assign2.getBasicBlock() and
-    unambigiousPropWrite(base, name, assign1) and
-    unambigiousPropWrite(base, name, assign2) and
+    unambiguousPropWrite(base, name, assign1) and
+    unambiguousPropWrite(base, name, assign2) and
     block2.postDominates(block1) and
     (block1 = block2 implies
       exists (int i1, int i2 |
@@ -61,13 +61,13 @@ predicate maybeAccessesProperty(Expr e, string name) {
  */
 predicate isDeadAssignment(string name, Assignment assign1, Assignment assign2) {
   postDominatedPropWrite(name, assign1, assign2) and
-  maybeHasPropAccessBetween(name, assign1, assign2) and
+  noPropAccessBetween(name, assign1, assign2) and
   not isDOMProperty(name)
 }
 
 /**
  * Holds if `assign` assigns a property `name` that may be accessed somewhere else in the same block,
- * `after` indicates if the if the access happens before or after the node for `assign`.
+ * `after` indicates if the access happens before or after the node for `assign`.
  */
 bindingset[name]
 predicate maybeAccessesAssignedPropInBlock(string name, Assignment assign, boolean after) {
@@ -86,12 +86,12 @@ predicate maybeAccessesAssignedPropInBlock(string name, Assignment assign, boole
  * Holds if `assign1` and `assign2` both assign property `name`, and the assigned property may be accessed between the two assignments.
  */
 bindingset[name]
-predicate maybeHasPropAccessBetween(string name, Assignment assign1, Assignment assign2) {
+predicate noPropAccessBetween(string name, Assignment assign1, Assignment assign2) {
   exists (ReachableBasicBlock block1, ReachableBasicBlock block2 |
     assign1.getBasicBlock() = block1 and
     assign2.getBasicBlock() = block2 and
     if block1 = block2 then
-      // same block: check for read between
+      // same block: check for access between
       not exists (int i1, int iMid, Expr mid, int i2 |
         assign1 = block1.getNode(i1) and
         assign2 = block2.getNode(i2) and
@@ -102,15 +102,15 @@ predicate maybeHasPropAccessBetween(string name, Assignment assign1, Assignment 
     else
       // other block:
       not (
-        // check for read after in start block
+        // check for an access after the first write node
         maybeAccessesAssignedPropInBlock(name, assign1, true) or
-        // check for read after in other block
+        // check for an access between the two write blocks
         exists (ReachableBasicBlock mid |
           block1.getASuccessor+() = mid and
           mid.getASuccessor+() = block2 |
           maybeAccessesProperty(mid.getANode(), name)
         ) or
-        // check for read before in end block
+        // check for an access before the second write node
         maybeAccessesAssignedPropInBlock(name, assign2, false)
       )
   )

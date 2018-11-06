@@ -4,7 +4,7 @@
 <qhelp>
 <overview>
 <p>
-A value is assigned to a location, but either that location is never read
+A value is assigned to a variable or property, but either that location is never read
 later on, or its value is always overwritten before being read. This means
 that the original assignment has no effect, and could indicate a logic error or
 incomplete code.
