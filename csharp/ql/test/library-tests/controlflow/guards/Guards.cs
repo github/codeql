@@ -162,4 +162,39 @@ public class Guards
                 return o.ToString(); // null guarded
         }
     }
+
+    void M15(string x)
+    {
+        if (!string.IsNullOrWhiteSpace(x))
+            Console.WriteLine(x); // null guarded
+    }
+
+    bool NullTest1(object o) => o == null;
+
+    bool NullTest2(object o)
+    {
+        if (o is null)
+            return true;
+        return false;
+    }
+
+    bool NullTest3(object o) => o == null ? true : false;
+
+    bool NotNullTest4(object o) => !NullTest3(o);
+
+    bool NullTestWrong(object o) => o == null ? true : true;
+
+    void M16(string s)
+    {
+        if (!NullTest1(s))
+            Console.WriteLine(s); // null guarded
+        if (!NullTest2(s))
+            Console.WriteLine(s); // null guarded
+        if (!NullTest3(s))
+            Console.WriteLine(s); // null guarded
+        if (NotNullTest4(s))
+            Console.WriteLine(s); // null guarded
+        if (!NullTestWrong(s))
+            Console.WriteLine(s); // not null guarded
+    }
 }
