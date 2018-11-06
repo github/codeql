@@ -6,6 +6,7 @@
 
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
+| Arbitrary file write during archive extraction ("Zip Slip") (`java/zipslip`) | security, external/cwe/cwe-022 | Identifies extraction routines that allow arbitrary file overwrite vulnerabilities. |
 | Missing catch of NumberFormatException (`java/uncaught-number-format-exception`) | reliability, external/cwe/cwe-248 | Finds calls to `Integer.parseInt` and similar string-to-number conversions that might raise a `NumberFormatException` without a corresponding `catch`-clause. |
 
 ## Changes to existing queries

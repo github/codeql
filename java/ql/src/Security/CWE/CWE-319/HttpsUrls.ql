@@ -18,7 +18,8 @@ class HTTPString extends StringLiteral {
     exists(string s | this.getRepresentedString() = s |
       (
         // Either the literal "http", ...
-        s = "http" or
+        s = "http"
+        or
         // ... or the beginning of a http URL.
         s.matches("http://%")
       ) and

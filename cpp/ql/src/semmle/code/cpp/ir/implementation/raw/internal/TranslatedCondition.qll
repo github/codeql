@@ -1,5 +1,6 @@
 import cpp
 private import semmle.code.cpp.ir.implementation.Opcode
+private import semmle.code.cpp.ir.internal.OperandTag
 private import InstructionTag
 private import TranslatedElement
 private import TranslatedExpr
@@ -209,7 +210,7 @@ class TranslatedLogicalOrExpr extends TranslatedBinaryLogicalOperation {
 }
 
 class TranslatedValueCondition extends TranslatedCondition,
-  TTranslatedValueCondition {
+    TTranslatedValueCondition {
   TranslatedValueCondition() {
     this = TTranslatedValueCondition(expr)
   }
@@ -223,7 +224,7 @@ class TranslatedValueCondition extends TranslatedCondition,
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-    Type resultType, boolean isGLValue) {
+      Type resultType, boolean isGLValue) {
     tag = ValueConditionConditionalBranchTag() and
     opcode instanceof Opcode::ConditionalBranch and
     resultType instanceof VoidType and
@@ -236,7 +237,7 @@ class TranslatedValueCondition extends TranslatedCondition,
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag,
-    EdgeKind kind) {
+      EdgeKind kind) {
     tag = ValueConditionConditionalBranchTag() and
     (
       (
@@ -251,9 +252,9 @@ class TranslatedValueCondition extends TranslatedCondition,
   }
 
   override Instruction getInstructionOperand(InstructionTag tag,
-    OperandTag operandTag) {
+      OperandTag operandTag) {
     tag = ValueConditionConditionalBranchTag() and
-    operandTag instanceof ConditionOperand and
+    operandTag instanceof ConditionOperandTag and
     result = getValueExpr().getResult()
   }
 

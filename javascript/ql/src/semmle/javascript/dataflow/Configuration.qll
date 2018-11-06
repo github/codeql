@@ -418,11 +418,24 @@ private class BindPartialCall extends AdditionalPartialInvokeNode, DataFlow::Met
 }
 
 /**
- * A partial call through `_.partial` or a function with a similar interface.
+ * A partial call through `_.partial`.
  */
-private class LibraryPartialCall extends AdditionalPartialInvokeNode {
-  LibraryPartialCall() {
-    this = LodashUnderscore::member("partial").getACall() or
+private class LodashPartialCall extends AdditionalPartialInvokeNode {
+  LodashPartialCall() {
+    this = LodashUnderscore::member("partial").getACall()
+  }
+
+  override predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) {
+    callback = getArgument(0) and
+    argument = getArgument(index+1)
+  }
+}
+
+/**
+ * A partial call through `ramda.partial`.
+ */
+private class RamdaPartialCall extends AdditionalPartialInvokeNode {
+  RamdaPartialCall() {
     this = DataFlow::moduleMember("ramda", "partial").getACall()
   }
 

@@ -1266,7 +1266,8 @@ class VarAccess extends Expr, @varaccess {
    */
   predicate isLocal() {
     // The access has no qualifier, or...
-    not hasQualifier() or
+    not hasQualifier()
+    or
     // the qualifier is either `this` or `A.this`, where `A` is the enclosing type, or
     // the qualifier is either `super` or `A.super`, where `A` is the enclosing type.
     getQualifier().(InstanceAccess).isOwnInstanceAccess()
@@ -1705,7 +1706,8 @@ class Argument extends Expr {
       p.isVarargs() and
       ptyp = p.getType() and
       (
-        hasSubtype*(ptyp, typ) or
+        hasSubtype*(ptyp, typ)
+        or
         // If the types don't match then we'll guess based on whether there are type variables involved.
         hasInstantiation(ptyp.(Array).getComponentType())
       )
