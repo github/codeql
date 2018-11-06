@@ -43,6 +43,7 @@
 | Whitespace contradicts operator precedence | Fewer false-positive results | This rule no longer flags operators with asymmetric whitespace. |
 | Unused import | Fewer false-positive results | This rule no longer flags imports used by the `transform-react-jsx` Babel plugin. |
 | Self assignment | Fewer false-positive results | This rule now ignores self-assignments preceded by a JSDoc comment with a `@type` tag. |
+| Client side cross-site scripting | More results | This rule now also flags HTML injection in the body of an email. |
 
 ## Changes to QL libraries
 
