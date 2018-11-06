@@ -65,22 +65,22 @@ int f10() {
 
 int f11(int x)
 {
-	if (x < 10)
-	{
-		return x;
-	} else {
-		f10(); // GOOD
-	}
+    if (x < 10)
+    {
+        return x;
+    } else {
+        f10(); // GOOD
+    }
 }
 
 int f12(int x)
 {
-	while (1)
-	{
-		// ...
+    while (1)
+    {
+        // ...
 
-		if (x == 10) return 1; // GOOD
+        if (x == 10) return 1; // GOOD
 
-		// ...
-	}
+        // ...
+    }
 }
