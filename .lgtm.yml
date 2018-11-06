@@ -1,10 +1,13 @@
 path_classifiers:
   library:
   - javascript/externs
+  - javascript/extractor/lib
 
   test:
   - csharp/ql/src
   - csharp/ql/test
+  - javascript/extractor/parser-tests
+  - javascript/extractor/tests
   - javascript/ql/src
   - javascript/ql/test
 
