@@ -151,6 +151,7 @@ impliesStep
 | Guards.cs:168:13:168:41 | !... | false | Guards.cs:168:14:168:41 | call to method IsNullOrWhiteSpace | true |
 | Guards.cs:168:13:168:41 | !... | true | Guards.cs:168:14:168:41 | call to method IsNullOrWhiteSpace | false |
 | Guards.cs:168:14:168:41 | call to method IsNullOrWhiteSpace | false | Guards.cs:168:13:168:41 | !... | true |
+| Guards.cs:168:14:168:41 | call to method IsNullOrWhiteSpace | false | Guards.cs:168:40:168:40 | access to parameter x | non-null |
 | Guards.cs:168:14:168:41 | call to method IsNullOrWhiteSpace | true | Guards.cs:168:13:168:41 | !... | false |
 | Guards.cs:172:33:172:41 | ... == ... | false | Guards.cs:172:33:172:33 | access to parameter o | non-null |
 | Guards.cs:172:33:172:41 | ... == ... | true | Guards.cs:172:33:172:33 | access to parameter o | null |
@@ -167,7 +168,9 @@ impliesStep
 | Guards.cs:183:36:183:48 | !... | false | Guards.cs:183:37:183:48 | call to method NullTest3 | true |
 | Guards.cs:183:36:183:48 | !... | true | Guards.cs:183:37:183:48 | call to method NullTest3 | false |
 | Guards.cs:183:37:183:48 | call to method NullTest3 | false | Guards.cs:183:36:183:48 | !... | true |
+| Guards.cs:183:37:183:48 | call to method NullTest3 | false | Guards.cs:183:47:183:47 | access to parameter o | non-null |
 | Guards.cs:183:37:183:48 | call to method NullTest3 | true | Guards.cs:183:36:183:48 | !... | false |
+| Guards.cs:183:37:183:48 | call to method NullTest3 | true | Guards.cs:183:47:183:47 | access to parameter o | null |
 | Guards.cs:185:37:185:45 | ... == ... | false | Guards.cs:185:37:185:37 | access to parameter o | non-null |
 | Guards.cs:185:37:185:45 | ... == ... | false | Guards.cs:185:37:185:59 | ... ? ... : ... | true |
 | Guards.cs:185:37:185:45 | ... == ... | true | Guards.cs:185:37:185:37 | access to parameter o | null |
@@ -179,15 +182,23 @@ impliesStep
 | Guards.cs:189:13:189:25 | !... | false | Guards.cs:189:14:189:25 | call to method NullTest1 | true |
 | Guards.cs:189:13:189:25 | !... | true | Guards.cs:189:14:189:25 | call to method NullTest1 | false |
 | Guards.cs:189:14:189:25 | call to method NullTest1 | false | Guards.cs:189:13:189:25 | !... | true |
+| Guards.cs:189:14:189:25 | call to method NullTest1 | false | Guards.cs:189:24:189:24 | access to parameter s | non-null |
 | Guards.cs:189:14:189:25 | call to method NullTest1 | true | Guards.cs:189:13:189:25 | !... | false |
+| Guards.cs:189:14:189:25 | call to method NullTest1 | true | Guards.cs:189:24:189:24 | access to parameter s | null |
 | Guards.cs:191:13:191:25 | !... | false | Guards.cs:191:14:191:25 | call to method NullTest2 | true |
 | Guards.cs:191:13:191:25 | !... | true | Guards.cs:191:14:191:25 | call to method NullTest2 | false |
 | Guards.cs:191:14:191:25 | call to method NullTest2 | false | Guards.cs:191:13:191:25 | !... | true |
+| Guards.cs:191:14:191:25 | call to method NullTest2 | false | Guards.cs:191:24:191:24 | access to parameter s | non-null |
 | Guards.cs:191:14:191:25 | call to method NullTest2 | true | Guards.cs:191:13:191:25 | !... | false |
+| Guards.cs:191:14:191:25 | call to method NullTest2 | true | Guards.cs:191:24:191:24 | access to parameter s | null |
 | Guards.cs:193:13:193:25 | !... | false | Guards.cs:193:14:193:25 | call to method NullTest3 | true |
 | Guards.cs:193:13:193:25 | !... | true | Guards.cs:193:14:193:25 | call to method NullTest3 | false |
 | Guards.cs:193:14:193:25 | call to method NullTest3 | false | Guards.cs:193:13:193:25 | !... | true |
+| Guards.cs:193:14:193:25 | call to method NullTest3 | false | Guards.cs:193:24:193:24 | access to parameter s | non-null |
 | Guards.cs:193:14:193:25 | call to method NullTest3 | true | Guards.cs:193:13:193:25 | !... | false |
+| Guards.cs:193:14:193:25 | call to method NullTest3 | true | Guards.cs:193:24:193:24 | access to parameter s | null |
+| Guards.cs:195:13:195:27 | call to method NotNullTest4 | false | Guards.cs:195:26:195:26 | access to parameter s | null |
+| Guards.cs:195:13:195:27 | call to method NotNullTest4 | true | Guards.cs:195:26:195:26 | access to parameter s | non-null |
 | Guards.cs:197:13:197:29 | !... | false | Guards.cs:197:14:197:29 | call to method NullTestWrong | true |
 | Guards.cs:197:13:197:29 | !... | true | Guards.cs:197:14:197:29 | call to method NullTestWrong | false |
 | Guards.cs:197:14:197:29 | call to method NullTestWrong | false | Guards.cs:197:13:197:29 | !... | true |

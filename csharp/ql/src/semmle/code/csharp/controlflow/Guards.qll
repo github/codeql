@@ -162,9 +162,11 @@ class DereferenceableExpr extends Expr {
         if ck.isInequality() then branch = false else branch = true
       )
       or
-      // Call to `string.IsNullOrEmpty()`
-      result = any(MethodCall mc |
-        mc.getTarget() = any(SystemStringClass c).getIsNullOrEmptyMethod() and
+      // Call to `string.IsNullOrEmpty()` or `string.IsNullOrWhiteSpace()`
+      exists(MethodCall mc, string name |
+        result = mc |
+        mc.getTarget() = any(SystemStringClass c).getAMethod(name) and
+        name.regexpMatch("IsNullOr(Empty|WhiteSpace)") and
         mc.getArgument(0) = this and
         branch = false and
         isNull = false
@@ -179,6 +181,8 @@ class DereferenceableExpr extends Expr {
           // E.g. `x is string` or `x is ""`
           (branch = true and isNull = false)
       )
+      or
+      isCustomNullCheck(result, this, v, isNull)
     )
   }
 
@@ -491,6 +495,15 @@ module Internal {
     )
   }
 
+  /** Holds if pre basic block `bb` only is reached when `e` has abstract value `v`. */
+  private predicate preControls(PreBasicBlocks::PreBasicBlock bb, Expr e, AbstractValue v) {
+    exists(PreBasicBlocks::ConditionBlock cb, ConditionalSuccessor s, AbstractValue v0, Expr cond |
+      cb.controls(bb, s) |
+      v0.branchImplies(cb.getLastElement(), s, cond) and
+      impliesSteps(cond, v0, e, v)
+    )
+  }
+
   /**
    * Holds if assertion `a` directly asserts that expression `e` evaluates to
    * value `v`.
@@ -521,6 +534,86 @@ module Internal {
     )
   }
 
+  private Expr stripConditionalExpr(Expr e) {
+    e = any(ConditionalExpr ce |
+      result = stripConditionalExpr(ce.getThen())
+      or
+      result = stripConditionalExpr(ce.getElse())
+    )
+    or
+    not e instanceof ConditionalExpr and
+    result = e
+  }
+
+  private predicate canReturn(Callable c, Expr ret) {
+    exists(Expr e | c.canReturn(e) | ret = stripConditionalExpr(e))
+  }
+
+  private class PreSsaImplicitParameterDefinition extends PreSsa::Definition {
+    private Parameter p;
+
+    PreSsaImplicitParameterDefinition() {
+      p = this.getDefinition().(AssignableDefinitions::ImplicitParameterDefinition).getParameter()
+    }
+
+    Parameter getParameter() { result = p }
+
+    /**
+     * Holds if the callable that this parameter belongs to can return `ret`, but
+     * only if this parameter is `null` or non-`null`, as specified by `isNull`.
+     */
+    predicate nullGuardedReturn(Expr ret, boolean isNull) {
+      canReturn(p.getCallable(), ret) and
+      exists(PreBasicBlocks::PreBasicBlock bb, NullValue nv |
+        preControls(bb, this.getARead(), nv) |
+        ret = bb.getAnElement() and
+        if nv.isNull() then isNull = true else isNull = false
+      )
+    }
+  }
+
+  /**
+   * Holds if `ret` is an expression returned by the callable to which parameter
+   * `p` belongs, and `ret` having Boolean value `retVal` allows the conclusion
+   * that the parameter `p` either is `null` or non-`null`, as specified by `isNull`.
+   */
+  private predicate validReturnInCustomNullCheck(Expr ret, Parameter p, BooleanValue retVal, boolean isNull) {
+    exists(Callable c |
+      canReturn(c, ret) |
+      p.getCallable() = c and
+      c.getReturnType() instanceof BoolType
+    ) and
+    exists(PreSsaImplicitParameterDefinition def |
+      p = def.getParameter() |
+      def.nullGuardedReturn(ret, isNull)
+      or
+      exists(NullValue nv |
+        impliesSteps(ret, retVal, def.getARead(), nv) |
+        if nv.isNull() then isNull = true else isNull = false
+      )
+    )
+  }
+
+  /**
+   * Gets a non-overridable callable with a Boolean return value that performs a
+   * `null`-check on parameter `p`. A return value having Boolean value `retVal`
+   * allows us to conclude that the argument either is `null` or non-`null`, as
+   * specified by `isNull`.
+   */
+  private Callable customNullCheck(Parameter p, BooleanValue retVal, boolean isNull) {
+    result.getReturnType() instanceof BoolType and
+    not result.(Virtualizable).isOverridableOrImplementable() and
+    p.getCallable() = result and
+    not p.isParams() and
+    p.getType() = any(Type t | t instanceof RefType or t instanceof NullableType) and
+    forex(Expr ret |
+      canReturn(result, ret) and
+      not ret.(BoolLiteral).getBoolValue() = retVal.getValue().booleanNot()
+      |
+      validReturnInCustomNullCheck(ret, p, retVal, isNull)
+    )
+  }
+
   private cached module Cached {
     pragma[noinline]
     private predicate isGuardedBy0(AccessOrCallExpr guarded, Expr e, AccessOrCallExpr sub, AbstractValue v) {
@@ -539,6 +632,21 @@ module Internal {
         not guarded.hasSsaQualifier() and not sub.hasSsaQualifier()
         or
         guarded.getSsaQualifier() = sub.getSsaQualifier()
+      )
+    }
+  }
+  import Cached
+
+  // The predicates in this module should be cached in the same stage as the cache stage
+  // in ControlFlowGraph.qll. This is to avoid recomputation of pre-basic-blocks and
+  // pre-SSA predicates
+  cached module CachedWithCFG {
+    cached
+    predicate isCustomNullCheck(Call call, Expr arg, BooleanValue v, boolean isNull) {
+      exists(Callable callable, Parameter p |
+        arg = call.getArgumentForParameter(any(Parameter p0 | p0.getSourceDeclaration() = p)) and
+        call.getTarget().getSourceDeclaration() = callable and
+        callable = customNullCheck(p, v, isNull)
       )
     }
 
@@ -659,8 +767,11 @@ module Internal {
       v1 instanceof NullValue and
       v1 = v2
     }
+
+    cached
+    predicate forceCachingInSameStage() { any() }
   }
-  import Cached
+  import CachedWithCFG
 
   /**
    * Holds if `e1` having some abstract value, `v`, implies that `e2` has the same
