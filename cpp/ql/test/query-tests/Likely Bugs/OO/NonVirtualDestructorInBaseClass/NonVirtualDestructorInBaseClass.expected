@@ -1,0 +1,3 @@
+| NonVirtualDestructorInBaseClass.cpp:56:8:56:34 | Base_Virtual_NonVirtualDtor | A base class with a virtual function should define a virtual destructor. |
+| NonVirtualDestructorInBaseClass.cpp:68:8:68:48 | Base_Virtual_NonVirtualDtorWithDefinition | A base class with a virtual function should define a virtual destructor. |
+| NonVirtualDestructorInBaseClass.cpp:78:8:78:54 | Base_Virtual_NonVirtualDtorWithInlineDefinition | A base class with a virtual function should define a virtual destructor. |
