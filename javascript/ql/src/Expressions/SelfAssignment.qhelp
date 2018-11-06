@@ -16,7 +16,7 @@ Carefully inspect the assignment to check for misspellings or missing qualifiers
 </p>
 
 <p>
-If the self-assignment is intentional, and is needed for documentation or optimization purposes,
+If the self-assignment is intentional and is needed for documentation or optimization purposes,
 add a JSDoc comment with a <tt>@type</tt> tag. This will indicate the self-assignment is intentional.
 </p>
 
