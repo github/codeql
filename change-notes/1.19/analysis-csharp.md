@@ -24,6 +24,7 @@
 
 * Arguments passed using `in` are now extracted.
 * Fix a bug where the `dynamic` type name was not extracted correctly in certain circumstances.
+* Fixed a bug where method type signatures were extracted incorrectly in some circumstances.
 
 ## Changes to QL libraries
 
