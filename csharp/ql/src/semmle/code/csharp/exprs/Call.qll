@@ -643,8 +643,7 @@ class PropertyCall extends AccessorCall, PropertyAccessExpr {
 
   override Expr getArgument(int i) {
     i = 0 and
-    this instanceof AssignableWrite and
-    exists(Assignment a | a.getLValue() = this and result = a.getRValue())
+    result = AssignableInternal::getAccessorCallValueArgument(this)
   }
 
   override string toString() {
@@ -681,9 +680,8 @@ class IndexerCall extends AccessorCall, IndexerAccessExpr {
   override Expr getArgument(int i) {
     result = this.(ElementAccess).getIndex(i)
     or
-    this instanceof AssignableWrite and
     i = count(this.(ElementAccess).getAnIndex()) and
-    exists(Assignment a | a.getLValue() = this and result = a.getRValue())
+    result = AssignableInternal::getAccessorCallValueArgument(this)
   }
 
   override string toString() { result = IndexerAccessExpr.super.toString() }

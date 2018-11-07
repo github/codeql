@@ -21,10 +21,11 @@
 | arguments.cs:55:9:55:12 | access to property Prop | arguments.cs:55:16:55:25 | access to indexer | arguments.cs:48:21:48:23 | value |
 | arguments.cs:55:16:55:25 | access to indexer | arguments.cs:55:21:55:21 | 1 | arguments.cs:50:18:50:18 | a |
 | arguments.cs:55:16:55:25 | access to indexer | arguments.cs:55:24:55:24 | 2 | arguments.cs:50:25:50:25 | b |
+| arguments.cs:56:10:56:13 | access to property Prop | arguments.cs:56:31:56:31 | 5 | arguments.cs:48:21:48:23 | value |
 | arguments.cs:56:16:56:25 | access to indexer | arguments.cs:56:21:56:21 | 3 | arguments.cs:50:18:50:18 | a |
 | arguments.cs:56:16:56:25 | access to indexer | arguments.cs:56:24:56:24 | 4 | arguments.cs:50:25:50:25 | b |
+| arguments.cs:56:16:56:25 | access to indexer | arguments.cs:56:34:56:34 | 6 | arguments.cs:50:44:50:46 | value |
 | arguments.cs:58:9:58:12 | access to property Prop | arguments.cs:58:9:58:17 | ... + ... | arguments.cs:48:21:48:23 | value |
-| arguments.cs:58:9:58:12 | access to property Prop | arguments.cs:58:17:58:17 | 7 | arguments.cs:48:21:48:23 | value |
 | arguments.cs:59:9:59:18 | access to indexer | arguments.cs:59:14:59:14 | 8 | arguments.cs:50:18:50:18 | a |
 | arguments.cs:59:9:59:18 | access to indexer | arguments.cs:59:14:59:14 | 8 | arguments.cs:50:18:50:18 | a |
 | arguments.cs:59:9:59:18 | access to indexer | arguments.cs:59:17:59:17 | 9 | arguments.cs:50:25:50:25 | b |
@@ -34,6 +35,5 @@
 | arguments.cs:60:9:60:20 | access to indexer | arguments.cs:60:14:60:15 | 10 | arguments.cs:50:18:50:18 | a |
 | arguments.cs:60:9:60:20 | access to indexer | arguments.cs:60:18:60:19 | 11 | arguments.cs:50:25:50:25 | b |
 | arguments.cs:60:9:60:20 | access to indexer | arguments.cs:60:18:60:19 | 11 | arguments.cs:50:25:50:25 | b |
-| arguments.cs:60:9:60:20 | access to indexer | arguments.cs:60:25:60:26 | 12 | arguments.cs:50:44:50:46 | value |
 | arguments.cs:62:16:62:27 | access to indexer | arguments.cs:62:21:62:22 | 15 | arguments.cs:50:18:50:18 | a |
 | arguments.cs:62:16:62:27 | access to indexer | arguments.cs:62:25:62:26 | 16 | arguments.cs:50:25:50:25 | b |
