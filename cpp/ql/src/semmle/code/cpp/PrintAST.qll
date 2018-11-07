@@ -542,5 +542,5 @@ query predicate edges(PrintASTNode source, PrintASTNode target, string key, stri
 }
 
 query predicate graphProperties(string key, string value) {
-	key = "semmle.graphKind" and value = "tree"
+  key = "semmle.graphKind" and value = "tree"
 }
