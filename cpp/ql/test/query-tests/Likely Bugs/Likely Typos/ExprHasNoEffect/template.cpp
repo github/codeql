@@ -1,7 +1,7 @@
 
 template<class T>
 void Increment(T &t) {
-	t++; // GOOD (sometimes has an effect) [FALSE POSITIVE]
+	t++; // GOOD (sometimes has an effect)
 }
 
 class Nothing {
