@@ -5,11 +5,11 @@
 import cpp
 
 string exprString(Expr e) {
-	if (e instanceof ArrayToPointerConversion) then (
-		result = e.(ArrayToPointerConversion).getExpr().(Literal).getValue()
-	) else (
-		result = e.toString()
-	)
+  if (e instanceof ArrayToPointerConversion) then (
+    result = e.(ArrayToPointerConversion).getExpr().(Literal).getValue()
+  ) else (
+    result = e.toString()
+  )
 }
 
 from Cast c, Type cType, string cTypeName, string toStruct
