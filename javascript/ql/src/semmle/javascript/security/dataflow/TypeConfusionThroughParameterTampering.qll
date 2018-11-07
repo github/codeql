@@ -54,12 +54,7 @@ module TypeConfusionThroughParameterTampering {
   private class TypeTamperableRequestParameter extends Source {
 
     TypeTamperableRequestParameter() {
-      this.(HTTP::RequestInputAccess).getKind() = "parameter" and
-      not exists (Express::RequestExpr request, DataFlow::PropRead base |
-        // Express's `req.params.name` is always a string
-        base.accesses(request.flow(), "params") and
-        this = base.getAPropertyRead(_)
-      )
+      this.(HTTP::RequestInputAccess).isUserControlledObject()
     }
 
   }
