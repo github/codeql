@@ -399,14 +399,6 @@ namespace Semmle.Extraction.CSharp
         /// </summary>
         public int TotalErrors => CompilationErrors + ExtractorErrors;
 
-        void AppendQuoted(StringBuilder sb, string s)
-        {
-            if (s.IndexOf(' ') != -1)
-                sb.Append('\"').Append(s).Append('\"');
-            else
-                sb.Append(s);
-        }
-
         /// <summary>
         /// Logs detailed information about this invocation,
         /// in the event that errors were detected.
@@ -414,35 +406,20 @@ namespace Semmle.Extraction.CSharp
         /// <param name="roslynArgs">The arguments passed to Roslyn.</param>
         public void LogDiagnostics(string[] roslynArgs)
         {
-            Logger.Log(Severity.Info, "  Current working directory: {0}", Directory.GetCurrentDirectory());
             Logger.Log(Severity.Info, "  Extractor: {0}", Environment.GetCommandLineArgs().First());
             if (extractor != null)
                 Logger.Log(Severity.Info, "  Extractor version: {0}", extractor.Version);
-            var sb = new StringBuilder();
-            sb.Append("  Expanded command line: ");
-            bool first = true;
-            foreach (var arg in Environment.GetCommandLineArgs().Skip(1))
-            {
-                if (arg[0] == '@')
-                {
-                    foreach (var line in File.ReadAllLines(arg.Substring(1)))
-                    {
-                        if (first) first = false;
-                        else sb.Append(" ");
-                        sb.Append(line);
-                    }
-                }
-                else
-                {
-                    if (first) first = false;
-                    else sb.Append(" ");
-                    AppendQuoted(sb, arg);
-                }
-            }
-            Logger.Log(Severity.Info, sb.ToString());
+
+            Logger.Log(Severity.Info, "  Current working directory: {0}", Directory.GetCurrentDirectory());
 
             if (roslynArgs != null)
                 Logger.Log(Severity.Info, $"  Arguments to Roslyn: {string.Join(' ', roslynArgs)}");
+
+            // Create a new file in the log folder.
+            var argsFile = Path.Combine(Extractor.GetCSharpLogDirectory(), $"csharp.{Path.GetRandomFileName()}.txt");
+
+            if (roslynArgs.ArchiveCommandLine(argsFile))
+                Logger.Log(Severity.Info, $"  Arguments have been written to {argsFile}");
 
             foreach (var error in FilteredDiagnostics)
             {
