@@ -3,7 +3,7 @@
 void f_warning(int i)
 {
     // The usage of the logical not operator in this case is unlikely to be correct
-    // as the output is being used as an opeartor for a bit-wise and operation
+    // as the output is being used as an operator for a bit-wise and operation
     if (i & !FLAGS) 
     {
         // code

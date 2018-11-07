@@ -6,7 +6,7 @@
  * @kind problem
  * @id cpp/incorrect-not-operator-usage
  * @problem.severity warning
- * @precision low
+ * @precision medium
  * @tags security
  *       external/cwe/cwe-480
  *       external/microsoft/c6317
@@ -21,14 +21,15 @@ import cpp
  * indicates the explicit purpose to normalize the result for bit-wise or arithmetic purposes. 
  */
 predicate doubleNegationNormalization( NotExpr notexpr ){
-  exists( NotExpr doubleNot |
-    doubleNot  = notexpr.getAnOperand())
+  notexpr.getAnOperand() instanceof NotExpr
 }
 
 from BinaryBitwiseOperation binbitwop
 where exists( NotExpr notexpr | 
   binbitwop.getAnOperand() = notexpr
   and not doubleNegationNormalization(notexpr)
+  and ( binbitwop instanceof BitwiseAndExpr
+    or binbitwop instanceof BitwiseOrExpr )
 )
 select binbitwop, "Usage of a logical not (!) expression as a bitwise operator."
 
