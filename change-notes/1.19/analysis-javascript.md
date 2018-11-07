@@ -9,7 +9,7 @@
 * Support for popular libraries has been improved. Consequently, queries may produce more results on code bases that use the following features:
   - file system access, for example through [fs-extra](https://github.com/jprichardson/node-fs-extra) or [globby](https://www.npmjs.com/package/globby)
   - outbound network access, for example through the [fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
-  - the [Google Cloud Spanner](https://cloud.google.com/spanner), [lodash](https://lodash.com) and [underscore](https://underscorejs.org/) libraries
+  - the [Google Cloud Spanner](https://cloud.google.com/spanner), [lodash](https://lodash.com), [underscore](https://underscorejs.org/), [async](https://www.npmjs.com/package/async) and [async-es](https://www.npmjs.com/package/async-es) libraries
 
 * The type inference now handles nested imports (that is, imports not appearing at the toplevel). This may yield fewer false-positive results on projects that use this non-standard language feature.
 
