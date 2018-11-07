@@ -1,0 +1,110 @@
+diff --git a/test/index.js b/test/index.js
+index efc6fe5..64d3ddf 100644
+--- a/test/index.js
++++ b/test/index.js
+@@ -60,6 +60,105 @@ function runTest(test) {
+       throw new Error(mis);
+     }
+   }
++
++  require("fs").writeFileSync(test.expect.loc.replace(/\.js(on)?$/, ".ast"),
++    JSON.stringify(ast, massage, 2));
++}
++
++function massage(k, v) {
++  if (v && typeof v === 'object') {
++    if (v.type === "File")
++      return massage(k, v.program);
++
++
++    if (v.type === "ObjectProperty")
++      v.type = "Property";
++
++    if (v.type === "NumericLiteral" || v.type === "StringLiteral" || v.type === "NullLiteral")
++      v.type = "Literal";
++
++    if (v.type === "RestProperty") {
++      v.type = "Property";
++      v.key = null;
++      v.value = {
++        type: "RestElement",
++        argument: v.argument
++      };
++      delete v.argument;
++    }
++
++    if (v.type === "SpreadProperty") {
++      v.type = "Property";
++      v.key = null;
++      v.value = {
++        type: "SpreadElement",
++        argument: v.argument
++      };
++      delete v.argument;
++    }
++
++    if (v.type === "ClassMethod") {
++      v.type = "MethodDefinition";
++      v.value = {
++        type: "FunctionExpression",
++        id: v.id,
++        generator: v.generator,
++        expression: v.expression,
++        async: v.async,
++        params: v.params,
++        body: v.body
++      };
++      delete v.id; delete v.generator; delete v.expression;
++      delete v.async; delete v.params; delete v.body;
++    }
++
++    if (v.type === "ObjectMethod") {
++      v.type = "Property";
++      v.kind = "init";
++      v.value = {
++        type: "FunctionExpression",
++        id: v.id,
++        generator: v.generator,
++        expression: v.expression,
++        async: v.async,
++        params: v.params,
++        body: v.body
++      };
++      delete v.id; delete v.generator; delete v.expression;
++      delete v.async; delete v.params; delete v.body;
++    }
++
++    if (v.type === "ClassProperty")
++      v.type = "FieldDefinition";
++
++    if (v.range) {
++      v.start = v.range[0];
++      v.end = v.range[1];
++      delete v.range;
++    }
++
++    if (typeof v.start === 'number') {
++      v.loc = v.loc || {};
++      v.loc.start = v.loc.start || {};
++      v.loc.start.offset = v.start;
++      delete v.start;
++    }
++
++    if (typeof v.end === 'number') {
++      v.loc = v.loc || {};
++      v.loc.end = v.loc.end || {};
++      v.loc.end.offset = v.end;
++      delete v.end;
++    }
++
++    delete v.directives;
++    delete v.extra;
++  }
++
++  if (v instanceof RegExp)
++    return v.toString();
++
++  return v;
+ }
+ 
+ function ppJSON(v) {

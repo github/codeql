@@ -1,0 +1,1 @@
+function f(a=2) { 'use strict'; }

@@ -1,0 +1,13 @@
+{
+    "name": "esregex",
+    "version": "1.0.0",
+    "author": "Semmle",
+    "description": "Parser for ECMAScript 2018 regular expressions",
+    "devDependencies": {
+	"nodeunit": "*"
+    },
+    "scripts": {
+	"test": "node tests/runtests.js"
+    },
+    "license": "Apache 2.0"
+}
