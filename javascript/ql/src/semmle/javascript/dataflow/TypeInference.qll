@@ -91,17 +91,19 @@ class AnalyzedNode extends DataFlow::Node {
 
   /** Gets a type inferred for this node. */
   pragma[nomagic] InferredType getAType() {
-    result = getALocalValue().getType()
+    result = getAValue().getType()
   }
 
-  /** Gets a primitive type to which the value of this node can be coerced. */
+  /**
+   * Gets a primitive type to which the value of this node can be coerced.
+   */
   PrimitiveType getAPrimitiveType() {
-    result = getALocalValue().toPrimitive().getType()
+    result = getAValue().toPrimitive().getType()
   }
 
   /** Gets a Boolean value that this node evaluates to. */
   boolean getABooleanValue() {
-    result = getALocalValue().getBooleanValue()
+    result = getAValue().getBooleanValue()
   }
 
   /** Gets the unique Boolean value that this node evaluates to, if any. */
@@ -166,7 +168,7 @@ class AnalyzedNode extends DataFlow::Node {
 
   /** Holds if the flow analysis can infer at least one abstract value for this node. */
   predicate hasFlow() {
-    exists(getALocalValue())
+    exists(getAValue())
   }
 }
 

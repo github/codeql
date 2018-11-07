@@ -18,6 +18,7 @@
 | src/iterated-handlers.js:5:5:5:14 | app.use(h) |
 | src/middleware-attacher-getter.js:4:9:4:37 | app.use ... res){}) |
 | src/middleware-attacher-getter.js:14:9:14:18 | app.use(h) |
+| src/middleware-attacher-getter.js:24:9:24:18 | app.use(h) |
 | src/middleware-attacher.js:3:5:3:33 | app.use ... res){}) |
 | src/nodejs.js:3:1:3:39 | http.cr ... res){}) |
 | src/nodejs.js:5:1:5:42 | unknown ... res){}) |
