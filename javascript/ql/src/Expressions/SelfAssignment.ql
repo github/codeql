@@ -43,5 +43,7 @@ where e.same(_) and
         propName = any(AccessorMethodDeclaration amd).getName()
       ) and
       // exclude DOM properties
-      not isDOMProperty(e.(PropAccess).getPropertyName())
+      not isDOMProperty(e.(PropAccess).getPropertyName()) and
+      // exclude self-assignments that have been inserted to satisfy the TypeScript JS-checker
+      not e.getAssignment().getParent().(ExprStmt).getDocumentation().getATag().getTitle() = "type"
 select e.getParent(), "This expression assigns " + dsc + " to itself."

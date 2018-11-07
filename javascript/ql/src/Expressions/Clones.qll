@@ -152,7 +152,14 @@ class SelfAssignment extends StructurallyCompared {
   }
 
   override Expr candidate() {
-    result = getParent().(AssignExpr).getRhs()
+    result = getAssignment().getRhs()
+  }
+
+  /**
+   * Gets the enclosing assignment.
+   */
+  AssignExpr getAssignment() {
+    result.getLhs() = this
   }
 }
 
