@@ -27,7 +27,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override IEnumerable<Type> TypeParameters => gc.TypeParameters.Concat(declaringType.TypeParameters);
 
-        public override IEnumerable<Type> MethodParameters => genericParams == null ? Enumerable.Empty<Type>() : genericParams;
+        public override IEnumerable<Type> MethodParameters => genericParams == null ? gc.MethodParameters : gc.MethodParameters.Concat(genericParams);
 
         public int GenericParameterCount => signature.GenericParameterCount;
 
