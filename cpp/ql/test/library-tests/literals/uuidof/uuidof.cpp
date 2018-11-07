@@ -15,5 +15,6 @@ void GetUUID() {
     uuid = __uuidof(Templ<S>);
     S s;
     uuid = __uuidof(s);
+    uuid = __uuidof(0);
 }
 // semmle-extractor-options: --microsoft
