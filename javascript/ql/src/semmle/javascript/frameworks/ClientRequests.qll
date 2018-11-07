@@ -246,3 +246,14 @@ private class SuperAgentUrlRequest extends CustomClientRequest {
   }
 
 }
+
+/**
+ * A model of a URL request made using the `XMLHttpRequest` browser class.
+ */
+private class XMLHttpRequest extends CustomClientRequest {
+  XMLHttpRequest() { this = DataFlow::globalVarRef("XMLHttpRequest").getAnInstantiation() }
+
+  override DataFlow::Node getUrl() { result = getAMethodCall("open").getArgument(1) }
+
+  override DataFlow::Node getADataNode() { result = getAMethodCall("send").getArgument(0) }
+}
