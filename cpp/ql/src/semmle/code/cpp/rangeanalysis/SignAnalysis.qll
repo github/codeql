@@ -211,8 +211,8 @@ private predicate unknownSign(Instruction i) {
  * to only include bounds for which we might determine a sign.
  */
 private predicate lowerBound(IRGuardCondition comp, Operand lowerbound, Operand bounded, boolean isStrict) {
-  exists(int adjustment, Instruction compared |
-    valueNumber(bounded.getDefinitionInstruction()) = valueNumber(compared) and
+  exists(int adjustment, Operand compared |
+    valueNumber(bounded.getDefinitionInstruction()) = valueNumber(compared.getDefinitionInstruction()) and
     (
       isStrict = true and
       adjustment = 0
@@ -220,7 +220,7 @@ private predicate lowerBound(IRGuardCondition comp, Operand lowerbound, Operand 
       isStrict = false and
       adjustment = 1
     )  and
-    comp.ensuresLt(lowerbound.getDefinitionInstruction(), compared, adjustment, bounded.getInstruction().getBlock(), true)
+    comp.ensuresLt(lowerbound, compared, adjustment, bounded.getInstruction().getBlock(), true)
   )
 }
 
@@ -230,8 +230,8 @@ private predicate lowerBound(IRGuardCondition comp, Operand lowerbound, Operand 
  * to only include bounds for which we might determine a sign.
  */
 private predicate upperBound(IRGuardCondition comp, Operand upperbound, Operand bounded, boolean isStrict) {
-  exists(int adjustment, Instruction compared |
-    valueNumber(bounded.getDefinitionInstruction()) = valueNumber(compared) and
+  exists(int adjustment, Operand compared |
+    valueNumber(bounded.getDefinitionInstruction()) = valueNumber(compared.getDefinitionInstruction()) and
     (
       isStrict = true and
       adjustment = 0
@@ -239,7 +239,7 @@ private predicate upperBound(IRGuardCondition comp, Operand upperbound, Operand 
       isStrict = false and
       adjustment = 1
     ) and
-    comp.ensuresLt(compared, upperbound.getDefinitionInstruction(), adjustment, bounded.getInstruction().getBlock(), true)
+    comp.ensuresLt(compared, upperbound, adjustment, bounded.getInstruction().getBlock(), true)
   )
 }
 
@@ -251,9 +251,9 @@ private predicate upperBound(IRGuardCondition comp, Operand upperbound, Operand 
  *  - `isEq = false` : `bounded != eqbound`
  */
 private predicate eqBound(IRGuardCondition guard, Operand eqbound, Operand bounded, boolean isEq) {
-  exists(Instruction compared |
-    valueNumber(bounded.getDefinitionInstruction()) = valueNumber(compared) and
-    guard.ensuresEq(compared, eqbound.getDefinitionInstruction(), 0, bounded.getInstruction().getBlock(), isEq)
+  exists(Operand compared |
+    valueNumber(bounded.getDefinitionInstruction()) = valueNumber(compared.getDefinitionInstruction()) and
+    guard.ensuresEq(compared, eqbound, 0, bounded.getInstruction().getBlock(), isEq)
   )
 }
 

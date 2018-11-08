@@ -7,3 +7,13 @@ int f(int x, int y) {
   }
   return 0;
 }
+
+int g(int x, int y) {
+  if (x < y) {
+    return y
+  }
+  if (x < 0) {
+    return x;
+  }
+  return 0;
+}
