@@ -9,6 +9,7 @@
 
 import AllConfigurations
 import PortalExitSource
+import SinkFromAnnotation
 
 from TaintTracking::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink,
      Portal p

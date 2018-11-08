@@ -161,6 +161,10 @@ function h(y) {
   return y;
 }
 
+function mkdirp(path) {
+  path /* Semmle: sink: taint, TaintedPath */
+}
+
 module.exports = {
     codeInjection: codeInjection,
     commandInjection: commandInjection,
@@ -183,5 +187,6 @@ module.exports = {
     notACookieSource: notACookieSource,
     invoke: invoke,
     g: g,
-    h: h
+    h: h,
+    mkdirp: mkdirp
 }

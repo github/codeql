@@ -8,6 +8,7 @@
 | (parameter (member (root https://www.npmjs.com/package/infer-sources) hashPass) 0) | data | InsufficientPasswordHash |
 | (parameter (member (root https://www.npmjs.com/package/infer-sources) hashPass) 0) | taint | CodeInjection |
 | (parameter (member (root https://www.npmjs.com/package/infer-sources) hashPass) 0) | taint | InsufficientPasswordHash |
+| (parameter (member (root https://www.npmjs.com/package/infer-sources) mkdirp) 0) | taint | TaintedPath |
 | (parameter (member (root https://www.npmjs.com/package/infer-sources) multiple) 0) | data | CodeInjection |
 | (parameter (member (root https://www.npmjs.com/package/infer-sources) multiple) 0) | data | CommandInjection |
 | (parameter (member (root https://www.npmjs.com/package/infer-sources) multiple) 0) | taint | CodeInjection |
