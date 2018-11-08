@@ -10,11 +10,30 @@
  */
 import cpp
 
+predicate whitelist(string fName) {
+  fName = "ceil" or
+  fName = "ceilf" or
+  fName = "ceill" or
+  fName = "floor" or
+  fName = "floorf" or
+  fName = "floorl" or
+  fName = "nearbyint" or
+  fName = "nearbyintf" or
+  fName = "nearbyintl" or
+  fName = "rint" or
+  fName = "rintf" or
+  fName = "rintl" or
+  fName = "round" or
+  fName = "roundf" or
+  fName = "roundl" or
+  fName = "trunc" or
+  fName = "truncf" or
+  fName = "truncl"
+}
+
 from FunctionCall c, FloatingPointType t1, IntegralType t2
 where t1 = c.getTarget().getType().getUnderlyingType() and
       t2 = c.getActualType() and
       c.hasImplicitConversion() and
-      not c.getTarget().getName() = "ceil" and
-      not c.getTarget().getName() = "floor" and
-      not c.getTarget().getName() = "round"
+      not whitelist(c.getTarget().getName())
 select c, "Return value of type " + t1.toString() + " is implicitly converted to " + t2.toString() + " here."

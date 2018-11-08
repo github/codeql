@@ -75,9 +75,9 @@ void test1()
 
 	// explicit rounding
 
-	if (roundf(getFloat())) // [FALSE POSITIVE]
+	if (roundf(getFloat()))
 	{
-		setPosInt(roundf(getFloat())); // [FALSE POSITIVE]
+		setPosInt(roundf(getFloat()));
 		setPosFloat(roundf(getFloat()));
 	}
 	if (round(getDouble()))
