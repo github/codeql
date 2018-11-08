@@ -14,7 +14,7 @@
 import javascript
 import semmle.javascript.security.dataflow.DomBasedXss::DomBasedXss
 
-from Configuration xss, DataFlow::Node source, DataFlow::Node sink
+from Configuration xss, DataFlow::Node source, Sink sink
 where xss.hasFlow(source, sink)
-select sink, "Cross-site scripting vulnerability due to $@.",
+select sink, sink.getVulnerabilityKind() + " vulnerability due to $@.",
        source, "user-provided value"
