@@ -49,6 +49,8 @@
 | Unused variable, import, function or class | Fewer results | This rule now flags import statements with multiple unused imports once. |
 | Useless assignment to local variable | Fewer false-positive results | This rule now recognizes additional ways default values can be set. |
 | Whitespace contradicts operator precedence | Fewer false-positive results | This rule no longer flags operators with asymmetric whitespace. |
+| Client-side URL redirect | Fewer false-positive results | This rule now recognizes safe redirects in more cases. |
+| Server-side URL redirect | Fewer false-positive results | This rule now recognizes safe redirects in more cases. |
 
 ## Changes to QL libraries
 
