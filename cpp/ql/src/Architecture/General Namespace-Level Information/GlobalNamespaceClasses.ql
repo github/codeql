@@ -1,6 +1,6 @@
 /**
  * @name Global namespace classes
- * @description Finds classes that belong to no namespace
+ * @description Finds classes that belong to no namespace.
  * @kind table
  * @id cpp/architecture/global-namespace-classes
  */
