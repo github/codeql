@@ -17,6 +17,6 @@ import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasPathFlow(source, sink)
-select sink.getNode(), "$@ leak vulnerability due to $@.",
+select sink.getNode(), source, sink, "$@ leak vulnerability due to $@.",
        sink.(Sink).getCredentialsHeader(), "Credential",
        source, "a misconfigured CORS header value"

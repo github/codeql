@@ -22,4 +22,4 @@ where cfg.hasPathFlow(source, sink) and
         cfg.isSinkWithHighlight(sink.getNode(), highlight)
       else
         highlight = sink.getNode()
-select highlight, "This command depends on $@.", source, "a user-provided value"
+select highlight, source, sink, "This command depends on $@.", source, "a user-provided value"

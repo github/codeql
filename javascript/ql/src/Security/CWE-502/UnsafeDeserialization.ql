@@ -16,4 +16,4 @@ import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasPathFlow(source, sink)
-select sink.getNode(), "Unsafe deserialization of $@.", source, "user input"
+select sink.getNode(), source, sink, "Unsafe deserialization of $@.", source, "user input"

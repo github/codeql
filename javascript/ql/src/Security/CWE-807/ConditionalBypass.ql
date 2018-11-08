@@ -112,6 +112,6 @@ predicate isEarlyAbortGuard(DataFlow::PathNode e, SensitiveAction action) {
 from DataFlow::PathNode source, DataFlow::PathNode sink, SensitiveAction action
 where isTaintedGuardForSensitiveAction(sink, source, action) and
       not isEarlyAbortGuard(sink, action)
-select sink.getNode(), "This condition guards a sensitive $@, but $@ controls it.",
+select sink.getNode(), source, sink, "This condition guards a sensitive $@, but $@ controls it.",
     action, "action",
     source, "a user-provided value"

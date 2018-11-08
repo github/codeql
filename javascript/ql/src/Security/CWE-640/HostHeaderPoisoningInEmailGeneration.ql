@@ -16,4 +16,4 @@ import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasPathFlow(source, sink)
-select sink.getNode(), "Links in this email can be hijacked by poisoning the HTTP host header $@.", source, "here"
+select sink.getNode(), source, sink, "Links in this email can be hijacked by poisoning the HTTP host header $@.", source, "here"
