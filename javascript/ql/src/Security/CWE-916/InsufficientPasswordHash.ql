@@ -13,6 +13,6 @@ import javascript
 import semmle.javascript.security.dataflow.InsufficientPasswordHash::InsufficientPasswordHash
 import DataFlow::PathGraph
 
-from Configuration cfg, DataFlow::Node source, DataFlow::Node sink
-where cfg.hasFlow(source, sink)
-select sink, "Password from $@ is hashed insecurely.", source , source.(Source).describe()
+from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+where cfg.hasPathFlow(source, sink)
+select sink.getNode(), "Password from $@ is hashed insecurely.", source , source.(Source).describe()

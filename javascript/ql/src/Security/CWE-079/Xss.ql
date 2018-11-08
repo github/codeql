@@ -15,7 +15,7 @@ import javascript
 import semmle.javascript.security.dataflow.DomBasedXss::DomBasedXss
 import DataFlow::PathGraph
 
-from Configuration cfg, DataFlow::Node source, DataFlow::Node sink
-where cfg.hasFlow(source, sink)
-select sink, sink.(Sink).getVulnerabilityKind() + " vulnerability due to $@.",
+from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+where cfg.hasPathFlow(source, sink)
+select sink.getNode(), sink.getNode().(Sink).getVulnerabilityKind() + " vulnerability due to $@.",
        source, "user-provided value"

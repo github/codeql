@@ -16,10 +16,10 @@ import javascript
 import semmle.javascript.security.dataflow.CommandInjection::CommandInjection
 import DataFlow::PathGraph
 
-from Configuration cfg, DataFlow::Node source, DataFlow::Node sink, DataFlow::Node highlight
-where cfg.hasFlow(source, sink) and
-      if cfg.isSinkWithHighlight(sink, _) then
-        cfg.isSinkWithHighlight(sink, highlight)
+from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, DataFlow::Node highlight
+where cfg.hasPathFlow(source, sink) and
+      if cfg.isSinkWithHighlight(sink.getNode(), _) then
+        cfg.isSinkWithHighlight(sink.getNode(), highlight)
       else
-        highlight = sink
+        highlight = sink.getNode()
 select highlight, "This command depends on $@.", source, "a user-provided value"

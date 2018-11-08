@@ -16,6 +16,6 @@ import javascript
 import semmle.javascript.security.dataflow.CleartextStorage::CleartextStorage
 import DataFlow::PathGraph
 
-from Configuration cfg, DataFlow::Node source, DataFlow::Node sink
-where cfg.hasFlow(source, sink)
-select sink, "Sensitive data returned by $@ is stored here.", source, source.(Source).describe()
+from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+where cfg.hasPathFlow(source, sink)
+select sink.getNode(), "Sensitive data returned by $@ is stored here.", source, source.getNode().(Source).describe()

@@ -15,8 +15,8 @@ import semmle.javascript.security.dataflow.SqlInjection
 import semmle.javascript.security.dataflow.NosqlInjection
 import DataFlow::PathGraph
 
-from DataFlow::Configuration cfg, DataFlow::Node source, DataFlow::Node sink
+from DataFlow::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where (cfg instanceof SqlInjection::Configuration or
        cfg instanceof NosqlInjection::Configuration) and
-      cfg.hasFlow(source, sink)
-select sink, "This query depends on $@.", source, "a user-provided value"
+      cfg.hasPathFlow(source, sink)
+select sink.getNode(), "This query depends on $@.", source, "a user-provided value"

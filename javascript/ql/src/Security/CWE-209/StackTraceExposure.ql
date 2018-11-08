@@ -15,7 +15,7 @@ import javascript
 import semmle.javascript.security.dataflow.StackTraceExposure::StackTraceExposure
 import DataFlow::PathGraph
 
-from Configuration cfg, DataFlow::Node source, DataFlow::Node sink
-where cfg.hasFlow(source, sink)
-select sink, "Stack trace information from $@ may be exposed to an external user here.",
+from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+where cfg.hasPathFlow(source, sink)
+select sink.getNode(), "Stack trace information from $@ may be exposed to an external user here.",
        source, "here"

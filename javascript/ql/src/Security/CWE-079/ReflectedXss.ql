@@ -15,7 +15,7 @@ import javascript
 import semmle.javascript.security.dataflow.ReflectedXss::ReflectedXss
 import DataFlow::PathGraph
 
-from Configuration cfg, DataFlow::Node source, DataFlow::Node sink
-where cfg.hasFlow(source, sink)
-select sink, "Cross-site scripting vulnerability due to $@.",
+from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+where cfg.hasPathFlow(source, sink)
+select sink.getNode(), "Cross-site scripting vulnerability due to $@.",
        source, "user-provided value"

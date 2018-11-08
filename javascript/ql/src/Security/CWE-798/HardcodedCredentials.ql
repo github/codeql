@@ -16,11 +16,11 @@ import javascript
 private import semmle.javascript.security.dataflow.HardcodedCredentials::HardcodedCredentials
 import DataFlow::PathGraph
 
-from Configuration cfg, DataFlow::Node source, DataFlow::Node sink, string value
-where cfg.hasFlow(source, sink) and
+from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, string value
+where cfg.hasPathFlow(source, sink) and
       // use source value in message if it's available
-      if source.asExpr() instanceof ConstantString then
-        value = "The hard-coded value \"" + source.asExpr().(ConstantString).getStringValue() + "\""
+      if source.getNode().asExpr() instanceof ConstantString then
+        value = "The hard-coded value \"" + source.getNode().asExpr().(ConstantString).getStringValue() + "\""
       else
         value = "This hard-coded value"
-select source, value + " is used as $@.", sink, sink.(Sink).getKind()
+select source.getNode(), value + " is used as $@.", sink, sink.getNode().(Sink).getKind()

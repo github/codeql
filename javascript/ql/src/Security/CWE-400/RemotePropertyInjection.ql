@@ -16,7 +16,7 @@ import javascript
 import semmle.javascript.security.dataflow.RemotePropertyInjection::RemotePropertyInjection
 import DataFlow::PathGraph
 
-from Configuration cfg, DataFlow::Node source, DataFlow::Node sink
-where cfg.hasFlow(source, sink)
-select sink, "A $@ is used as" + sink.(Sink).getMessage(),
+from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+where cfg.hasPathFlow(source, sink)
+select sink.getNode(), "A $@ is used as" + sink.(Sink).getMessage(),
        source, "user-provided value"

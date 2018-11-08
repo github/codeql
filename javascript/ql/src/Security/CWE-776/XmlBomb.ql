@@ -15,7 +15,7 @@ import javascript
 import semmle.javascript.security.dataflow.XmlBomb::XmlBomb
 import DataFlow::PathGraph
 
-from Configuration cfg, DataFlow::Node source, DataFlow::Node sink
-where cfg.hasFlow(source, sink)
-select sink, "A $@ is parsed as XML without guarding against uncontrolled entity expansion.",
+from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+where cfg.hasPathFlow(source, sink)
+select sink.getNode(), "A $@ is parsed as XML without guarding against uncontrolled entity expansion.",
        source, "user-provided value"

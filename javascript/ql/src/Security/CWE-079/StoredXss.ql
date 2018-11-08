@@ -15,7 +15,7 @@ import javascript
 import semmle.javascript.security.dataflow.StoredXss::StoredXss
 import DataFlow::PathGraph
 
-from Configuration cfg, DataFlow::Node source, DataFlow::Node sink
-where cfg.hasFlow(source, sink)
-select sink, "Stored cross-site scripting vulnerability due to $@.",
+from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+where cfg.hasPathFlow(source, sink)
+select sink.getNode(), "Stored cross-site scripting vulnerability due to $@.",
        source, "stored value"
