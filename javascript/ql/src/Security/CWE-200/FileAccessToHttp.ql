@@ -9,8 +9,8 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.FileAccessToHttp
+import semmle.javascript.security.dataflow.FileAccessToHttp::FileAccessToHttp
 
-from FileAccessToHttp::Configuration config, DataFlow::Node src, DataFlow::Node sink
-where config.hasFlow (src, sink)
-select sink, "$@ flows directly to outbound network request", src, "File data"
+from Configuration cfg, DataFlow::Node source, DataFlow::Node sink
+where cfg.hasFlow (source, sink)
+select sink, "$@ flows directly to outbound network request", source, "File data"

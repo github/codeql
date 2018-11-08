@@ -31,8 +31,8 @@ predicate inBrowserEnvironment(TopLevel tl) {
   )
 }
 
-from Configuration cfg, Source source, DataFlow::Node sink
+from Configuration cfg, DataFlow::Node source, DataFlow::Node sink
 where cfg.hasFlow(source, sink) and
       // ignore logging to the browser console (even though it is not a good practice)
       not inBrowserEnvironment(sink.asExpr().getTopLevel())
-select sink, "Sensitive data returned by $@ is logged here.", source, source.describe()
+select sink, "Sensitive data returned by $@ is logged here.", source, source.(Source).describe()

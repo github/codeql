@@ -9,8 +9,8 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.HttpToFileAccess
+import semmle.javascript.security.dataflow.HttpToFileAccess::HttpToFileAccess
 
-from HttpToFileAccess::Configuration configuration, DataFlow::Node src, DataFlow::Node sink
-where configuration.hasFlow(src, sink)
-select sink, "$@ flows to file system", src, "Untrusted data"
+from Configuration cfg, DataFlow::Node source, DataFlow::Node sink
+where cfg.hasFlow(source, sink)
+select sink, "$@ flows to file system", source, "Untrusted data"

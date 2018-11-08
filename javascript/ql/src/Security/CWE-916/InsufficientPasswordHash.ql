@@ -12,6 +12,6 @@
 import javascript
 import semmle.javascript.security.dataflow.InsufficientPasswordHash::InsufficientPasswordHash
 
-from Configuration cfg, Source source, DataFlow::Node sink
+from Configuration cfg, DataFlow::Node source, DataFlow::Node sink
 where cfg.hasFlow(source, sink)
-select sink, "Password from $@ is hashed insecurely.", source , source.describe()
+select sink, "Password from $@ is hashed insecurely.", source , source.(Source).describe()

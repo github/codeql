@@ -14,7 +14,7 @@
 import javascript
 import semmle.javascript.security.dataflow.Xxe::Xxe
 
-from Configuration c, DataFlow::Node source, DataFlow::Node sink
-where c.hasFlow(source, sink)
+from Configuration cfg, DataFlow::Node source, DataFlow::Node sink
+where cfg.hasFlow(source, sink)
 select sink, "A $@ is parsed as XML without guarding against external entity expansion.",
        source, "user-provided value"

@@ -15,8 +15,8 @@
 import javascript
 import semmle.javascript.security.dataflow.RemotePropertyInjection::RemotePropertyInjection
 
-from Configuration c, DataFlow::Node source, Sink sink
-where c.hasFlow(source, sink)  
-select sink, "A $@ is used as" + sink.getMessage(),
+from Configuration cfg, DataFlow::Node source, DataFlow::Node sink
+where cfg.hasFlow(source, sink)
+select sink, "A $@ is used as" + sink.(Sink).getMessage(),
        source, "user-provided value"
        

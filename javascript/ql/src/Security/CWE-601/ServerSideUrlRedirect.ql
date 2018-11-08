@@ -13,6 +13,6 @@
 import javascript
 import semmle.javascript.security.dataflow.ServerSideUrlRedirect::ServerSideUrlRedirect
 
-from Configuration urlRedirect, DataFlow::Node source, DataFlow::Node sink
-where urlRedirect.hasFlow(source, sink)
+from Configuration cfg, DataFlow::Node source, DataFlow::Node sink
+where cfg.hasFlow(source, sink)
 select sink, "Untrusted URL redirection due to $@.", source, "user-provided value"

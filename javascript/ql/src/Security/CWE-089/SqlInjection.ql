@@ -14,15 +14,8 @@ import javascript
 import semmle.javascript.security.dataflow.SqlInjection
 import semmle.javascript.security.dataflow.NosqlInjection
 
-predicate sqlInjection(DataFlow::Node source, DataFlow::Node sink) {
-  any(SqlInjection::Configuration cfg).hasFlow(source, sink)
-}
-
-predicate nosqlInjection(DataFlow::Node source, DataFlow::Node sink) {
-  any(NosqlInjection::Configuration cfg).hasFlow(source, sink)
-}
-
-from DataFlow::Node source, DataFlow::Node sink
-where sqlInjection(source, sink) or
-      nosqlInjection(source, sink)
+from DataFlow::Configuration cfg, DataFlow::Node source, DataFlow::Node sink
+where (cfg instanceof SqlInjection::Configuration or
+       cfg instanceof NosqlInjection::Configuration) and
+      cfg.hasFlow(source, sink)
 select sink, "This query depends on $@.", source, "a user-provided value"

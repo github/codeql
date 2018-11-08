@@ -9,6 +9,7 @@
  *       external/cwe/cwe-807
  *       external/cwe/cwe-290
  */
+
 import javascript
 import semmle.javascript.security.dataflow.ConditionalBypass::ConditionalBypass
 
