@@ -1,2 +1,2 @@
-| csharp72.cs:28:17:28:30 | ReadonlyStruct |
-| csharp72.cs:36:21:36:37 | ReadonlyRefStruct |
+| csharp72.cs:34:17:34:30 | ReadonlyStruct |
+| csharp72.cs:42:21:42:37 | ReadonlyRefStruct |
