@@ -10,12 +10,12 @@
 
 import cpp
 
-Loop getAFalseLoop() {
+DoStmt getAFalseLoop() {
   result.getControllingExpr().getValue() = "0"
   and not result.getControllingExpr().isAffectedByMacro()
 }
 
-Loop enclosingLoop(Stmt s) {
+DoStmt enclosingLoop(Stmt s) {
   exists(Stmt parent |
     parent = s.getParent() and
     if parent instanceof Loop then
@@ -24,7 +24,7 @@ Loop enclosingLoop(Stmt s) {
       result = enclosingLoop(parent))
 }
 
-from Loop loop, ContinueStmt continue
+from DoStmt loop, ContinueStmt continue
 where loop = getAFalseLoop()
   and loop = enclosingLoop(continue)
 select continue,

@@ -36,7 +36,7 @@ void test1()
 	while (false)
 	{
 		if (cond())
-			continue; // GOOD [never reached, if the condition changed so it was then the result would no longer apply] [FALSE POSITIVE]
+			continue; // GOOD [never reached, if the condition changed so it was then the result would no longer apply]
 		if (cond())
 			break;
 	}
@@ -44,7 +44,7 @@ void test1()
 	for (i = 0; false; i++)
 	{
 		if (cond())
-			continue; // GOOD [never reached, if the condition changed so it was then the result would no longer apply] [FALSE POSITIVE]
+			continue; // GOOD [never reached, if the condition changed so it was then the result would no longer apply]
 		if (cond())
 			break;
 	}
