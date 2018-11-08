@@ -2,16 +2,16 @@ import semmle.code.cpp.rangeanalysis.SignAnalysis
 import semmle.code.cpp.ir.IR
 
 string getASignString(Instruction i) {
-  positive(i) and
+  positiveInstruction(i) and
   result = "positive"
   or
-  negative(i) and
+  negativeInstruction(i) and
   result = "negative"
   or
-  strictlyPositive(i) and
+  strictlyPositiveInstruction(i) and
   result = "strictlyPositive"
   or
-  strictlyNegative(i) and
+  strictlyNegativeInstruction(i) and
   result = "strictlyNegative"
 }
 
