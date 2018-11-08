@@ -1,6 +1,36 @@
-| tst.js:16:5:16:20 | request(tainted) | The $@ of this request depends on $@. | tst.js:16:13:16:19 | tainted | URL | tst.js:12:29:12:35 | req.url | a user-provided value |
-| tst.js:18:5:18:24 | request.get(tainted) | The $@ of this request depends on $@. | tst.js:18:17:18:23 | tainted | URL | tst.js:12:29:12:35 | req.url | a user-provided value |
-| tst.js:22:5:22:20 | request(options) | The $@ of this request depends on $@. | tst.js:21:19:21:25 | tainted | URL | tst.js:12:29:12:35 | req.url | a user-provided value |
-| tst.js:24:5:24:32 | request ... ainted) | The $@ of this request depends on $@. | tst.js:24:13:24:31 | "http://" + tainted | URL | tst.js:12:29:12:35 | req.url | a user-provided value |
-| tst.js:26:5:26:43 | request ... ainted) | The $@ of this request depends on $@. | tst.js:26:13:26:42 | "http:/ ... tainted | URL | tst.js:12:29:12:35 | req.url | a user-provided value |
-| tst.js:28:5:28:44 | request ... ainted) | The $@ of this request depends on $@. | tst.js:28:13:28:43 | "http:/ ... tainted | URL | tst.js:12:29:12:35 | req.url | a user-provided value |
+nodes
+| tst.js:12:9:12:52 | tainted |
+| tst.js:12:19:12:42 | url.par ... , true) |
+| tst.js:12:19:12:48 | url.par ... ).query |
+| tst.js:12:19:12:52 | url.par ... ery.url |
+| tst.js:12:29:12:35 | req.url |
+| tst.js:16:13:16:19 | tainted |
+| tst.js:18:17:18:23 | tainted |
+| tst.js:21:19:21:25 | tainted |
+| tst.js:24:13:24:31 | "http://" + tainted |
+| tst.js:24:25:24:31 | tainted |
+| tst.js:26:13:26:42 | "http:/ ... tainted |
+| tst.js:26:36:26:42 | tainted |
+| tst.js:28:13:28:43 | "http:/ ... tainted |
+| tst.js:28:37:28:43 | tainted |
+edges
+| tst.js:12:9:12:52 | tainted | tst.js:16:13:16:19 | tainted |
+| tst.js:12:9:12:52 | tainted | tst.js:18:17:18:23 | tainted |
+| tst.js:12:9:12:52 | tainted | tst.js:21:19:21:25 | tainted |
+| tst.js:12:9:12:52 | tainted | tst.js:24:25:24:31 | tainted |
+| tst.js:12:9:12:52 | tainted | tst.js:26:36:26:42 | tainted |
+| tst.js:12:9:12:52 | tainted | tst.js:28:37:28:43 | tainted |
+| tst.js:12:19:12:42 | url.par ... , true) | tst.js:12:19:12:48 | url.par ... ).query |
+| tst.js:12:19:12:48 | url.par ... ).query | tst.js:12:19:12:52 | url.par ... ery.url |
+| tst.js:12:19:12:52 | url.par ... ery.url | tst.js:12:9:12:52 | tainted |
+| tst.js:12:29:12:35 | req.url | tst.js:12:19:12:42 | url.par ... , true) |
+| tst.js:24:25:24:31 | tainted | tst.js:24:13:24:31 | "http://" + tainted |
+| tst.js:26:36:26:42 | tainted | tst.js:26:13:26:42 | "http:/ ... tainted |
+| tst.js:28:37:28:43 | tainted | tst.js:28:13:28:43 | "http:/ ... tainted |
+#select
+| tst.js:16:5:16:20 | request(tainted) | tst.js:12:29:12:35 | req.url | tst.js:16:13:16:19 | tainted | The $@ of this request depends on $@. | tst.js:16:13:16:19 | tainted | URL | tst.js:12:29:12:35 | req.url | a user-provided value |
+| tst.js:18:5:18:24 | request.get(tainted) | tst.js:12:29:12:35 | req.url | tst.js:18:17:18:23 | tainted | The $@ of this request depends on $@. | tst.js:18:17:18:23 | tainted | URL | tst.js:12:29:12:35 | req.url | a user-provided value |
+| tst.js:22:5:22:20 | request(options) | tst.js:12:29:12:35 | req.url | tst.js:21:19:21:25 | tainted | The $@ of this request depends on $@. | tst.js:21:19:21:25 | tainted | URL | tst.js:12:29:12:35 | req.url | a user-provided value |
+| tst.js:24:5:24:32 | request ... ainted) | tst.js:12:29:12:35 | req.url | tst.js:24:13:24:31 | "http://" + tainted | The $@ of this request depends on $@. | tst.js:24:13:24:31 | "http://" + tainted | URL | tst.js:12:29:12:35 | req.url | a user-provided value |
+| tst.js:26:5:26:43 | request ... ainted) | tst.js:12:29:12:35 | req.url | tst.js:26:13:26:42 | "http:/ ... tainted | The $@ of this request depends on $@. | tst.js:26:13:26:42 | "http:/ ... tainted | URL | tst.js:12:29:12:35 | req.url | a user-provided value |
+| tst.js:28:5:28:44 | request ... ainted) | tst.js:12:29:12:35 | req.url | tst.js:28:13:28:43 | "http:/ ... tainted | The $@ of this request depends on $@. | tst.js:28:13:28:43 | "http:/ ... tainted | URL | tst.js:12:29:12:35 | req.url | a user-provided value |
