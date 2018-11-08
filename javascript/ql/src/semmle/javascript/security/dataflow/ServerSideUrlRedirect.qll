@@ -16,46 +16,8 @@ module ServerSideUrlRedirect {
   /**
    * A data flow sink for unvalidated URL redirect vulnerabilities.
    */
-  abstract class Sink extends DataFlow::Node {
-    /**
-     * Holds if this sink may redirect to a non-local URL.
-     */
-    predicate maybeNonLocal() {
-      exists (DataFlow::Node prefix | prefix = getAPrefix(this) |
-        not exists(prefix.asExpr().getStringValue())
-        or
-        exists (string prefixVal | prefixVal = prefix.asExpr().getStringValue() |
-          // local URLs (i.e., URLs that start with `/` not followed by `\` or `/`,
-          // or that start with `~/`) are unproblematic
-          not prefixVal.regexpMatch("/[^\\\\/].*|~/.*") and
-          // so are localhost URLs
-          not prefixVal.regexpMatch("(\\w+:)?//localhost[:/].*")
-        )
-      )
-    }
-  }
+  abstract class Sink extends DataFlow::Node { }
   
-  /**
-   * Gets a node that is transitively reachable from `nd` along prefix predecessor edges.
-   */
-  private DataFlow::Node prefixCandidate(Sink sink) {
-    result = sink or
-    result = prefixCandidate(sink).getAPredecessor() or
-    result = StringConcatenation::getFirstOperand(prefixCandidate(sink))
-  }
-
-  /**
-   * Gets an expression that may end up being a prefix of the string concatenation `nd`.
-   */
-  private DataFlow::Node getAPrefix(Sink sink) {
-    exists (DataFlow::Node prefix |
-      prefix = prefixCandidate(sink) and
-      not exists(StringConcatenation::getFirstOperand(prefix)) and
-      not exists(prefix.getAPredecessor()) and
-      result = prefix
-    )
-  }
-
   /**
    * A sanitizer for unvalidated URL redirect vulnerabilities.
    */
@@ -72,7 +34,7 @@ module ServerSideUrlRedirect {
     }
 
     override predicate isSink(DataFlow::Node sink) {
-      sink.(Sink).maybeNonLocal()
+      sink instanceof Sink
     }
 
     override predicate isSanitizer(DataFlow::Node node) {

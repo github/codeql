@@ -7,11 +7,19 @@
 import javascript
 
 /**
- * Holds if a string value containing `?` or `#` may flow into
- * `nd` or one of its operands, assuming that it is a concatenation.
+ * Holds if the string value of `nd` prevents anything appended after it
+ * from affecting the hostname of a URL.
+ *
+ * Specifically, this holds if the string contains any of the following:
+ * - `?` (any suffix becomes part of query)
+ * - `#` (any suffix becomes part of fragment)
+ * - `/` or `\`, immediately prefixed by a character other than `:`, `/`, or `\` (any suffix becomes part of the path)
+ *
+ * In the latter case, the additional prefix check is necessary to avoid a `/` that could be interpreted as
+ * the `//` separating the (optional) scheme from the hostname.
  */
-private predicate hasSanitizingSubstring(DataFlow::Node nd) {
-  nd.asExpr().getStringValue().regexpMatch(".*[?#].*")
+predicate hasSanitizingSubstring(DataFlow::Node nd) {
+  nd.asExpr().getStringValue().regexpMatch(".*([?#]|[^?#:/\\\\][/\\\\]).*") 
   or
   hasSanitizingSubstring(StringConcatenation::getAnOperand(nd))
   or
@@ -21,8 +29,8 @@ private predicate hasSanitizingSubstring(DataFlow::Node nd) {
 }
 
 /**
- * Holds if data that flows from `source` to `sink` may have a string
- * containing the character `?` or `#` prepended to it.
+ * Holds if data that flows from `source` to `sink` cannot affect the
+ * hostname of the resulting string when interpreted as a URL.
  *
  * This is considered as a sanitizing edge for the URL redirection queries.
  */
