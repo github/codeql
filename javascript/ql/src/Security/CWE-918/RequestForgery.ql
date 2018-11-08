@@ -16,4 +16,5 @@ import DataFlow::PathGraph
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, DataFlow::Node request
 where cfg.hasPathFlow(source, sink) and
       request = sink.getNode().(Sink).getARequest()
-select request, source, sink, "The $@ of this request depends on $@.", sink, sink.getNode().(Sink).getKind(), source, "a user-provided value"
+select request, source, sink, "The $@ of this request depends on $@.",
+       sink.getNode(), sink.getNode().(Sink).getKind(), source, "a user-provided value"

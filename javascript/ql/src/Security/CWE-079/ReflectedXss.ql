@@ -18,4 +18,4 @@ import DataFlow::PathGraph
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasPathFlow(source, sink)
 select sink.getNode(), source, sink, "Cross-site scripting vulnerability due to $@.",
-       source, "user-provided value"
+       source.getNode(), "user-provided value"

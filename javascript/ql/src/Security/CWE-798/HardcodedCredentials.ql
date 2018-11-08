@@ -23,4 +23,5 @@ where cfg.hasPathFlow(source, sink) and
         value = "The hard-coded value \"" + source.getNode().asExpr().(ConstantString).getStringValue() + "\""
       else
         value = "This hard-coded value"
-select source.getNode(), source, sink, value + " is used as $@.", sink, sink.getNode().(Sink).getKind()
+select source.getNode(), source, sink, value + " is used as $@.",
+       sink.getNode(), sink.getNode().(Sink).getKind()

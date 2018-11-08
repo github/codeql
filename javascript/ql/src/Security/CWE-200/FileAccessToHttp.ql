@@ -14,4 +14,5 @@ import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasPathFlow(source, sink)
-select sink.getNode(), source, sink, "$@ flows directly to outbound network request", source, "File data"
+select sink.getNode(), source, sink, "$@ flows directly to outbound network request",
+       source.getNode(), "File data"

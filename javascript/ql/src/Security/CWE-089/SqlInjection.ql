@@ -19,4 +19,5 @@ from DataFlow::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode 
 where (cfg instanceof SqlInjection::Configuration or
        cfg instanceof NosqlInjection::Configuration) and
       cfg.hasPathFlow(source, sink)
-select sink.getNode(), source, sink, "This query depends on $@.", source, "a user-provided value"
+select sink.getNode(), source, sink, "This query depends on $@.",
+       source.getNode(), "a user-provided value"

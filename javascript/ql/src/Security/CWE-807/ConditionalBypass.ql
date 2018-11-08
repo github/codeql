@@ -114,4 +114,4 @@ where isTaintedGuardForSensitiveAction(sink, source, action) and
       not isEarlyAbortGuard(sink, action)
 select sink.getNode(), source, sink, "This condition guards a sensitive $@, but $@ controls it.",
     action, "action",
-    source, "a user-provided value"
+    source.getNode(), "a user-provided value"

@@ -16,5 +16,6 @@ import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasPathFlow(source, sink) and
-      not source.asExpr() instanceof CleartextPasswordExpr // flagged by js/insufficient-password-hash
-select sink.getNode(), source, sink, "Sensitive data from $@ is used in a broken or weak cryptographic algorithm.", source , source.(Source).describe()
+      not source.getNode().asExpr() instanceof CleartextPasswordExpr // flagged by js/insufficient-password-hash
+select sink.getNode(), source, sink, "Sensitive data from $@ is used in a broken or weak cryptographic algorithm.",
+       source.getNode(), source.getNode().(Source).describe()

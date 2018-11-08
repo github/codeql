@@ -36,4 +36,5 @@ from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasPathFlow(source, sink) and
       // ignore logging to the browser console (even though it is not a good practice)
       not inBrowserEnvironment(sink.getNode().asExpr().getTopLevel())
-select sink.getNode(), source, sink, "Sensitive data returned by $@ is logged here.", source, source.getNode().(Source).describe()
+select sink.getNode(), source, sink, "Sensitive data returned by $@ is logged here.",
+       source.getNode(), source.getNode().(Source).describe()

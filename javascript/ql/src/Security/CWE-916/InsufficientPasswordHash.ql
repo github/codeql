@@ -15,4 +15,5 @@ import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasPathFlow(source, sink)
-select sink.getNode(), source, sink, "Password from $@ is hashed insecurely.", source , source.(Source).describe()
+select sink.getNode(), source, sink, "Password from $@ is hashed insecurely.",
+       source.getNode(), source.getNode().(Source).describe()
