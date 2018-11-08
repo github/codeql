@@ -5,7 +5,9 @@
  *              a bug.
  * @kind problem
  * @id cpp/continue-in-false-loop
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @precision medium
+ * @tags correctness
  */
 
 import cpp
