@@ -319,59 +319,28 @@ module Ssa {
     }
 
     /**
-     * Same as `variableWrite()`, but extended to include implicit call definitions
-     * for fields and properties.
+     * Holds if source varible `v` is likely to be live at any node inside basic
+     * block `bb`.
      */
-    private predicate variableWriteExt(BasicBlock bb, int i, SourceVariable v, boolean certain) {
-      variableWrite(bb, i, v, certain)
+    predicate likelyLive(BasicBlock bb, SourceVariable v) {
+      liveAtExit(bb, v, _)
       or
-      variableWriteExt(bb, i, v.(QualifiedFieldOrPropSourceVariable).getQualifier(), certain)
-      or
-      exists(Call c |
-        bb.getNode(i) = c.getAControlFlowNode() |
-        updatesNamedFieldOrProp(c, v, _) and
-        certain = false
-      )
-    }
-
-    /**
-     * Same as `ref()`, but extended to include implicit call definitions
-     * for fields and properties.
-     */
-    private predicate refExt(BasicBlock bb, int i, SourceVariable v, RefKind k) {
-      exists(ReadKind rk |
-        variableRead(bb, i, v, _, rk) |
-        k = Read(rk)
-      )
-      or
-      exists(boolean certain |
-        variableWriteExt(bb, i, v, certain) |
-        k = Write(certain)
-      )
-    }
-
-    /**
-     * Same as `refRank()`, but extended to include implicit call definitions
-     * for fields and properties.
-     */
-    private int refRankExt(BasicBlock bb, int i, SourceVariable v, RefKind k) {
-      i = rank[result](int j | refExt(bb, j, v, _)) and
-      refExt(bb, i, v, k)
+      ref(bb, _, v, Read(_))
     }
 
     /**
      * Holds if variable `v` is live in basic block `bb` at index `i`.
-     * The rank of `i` is `rnk` as defined by `refRankExt()`.
+     * The rank of `i` is `rnk` as defined by `refRank()`.
      */
-    private predicate liveAtRank(BasicBlock bb, int i, SourceVariable v, int rnk, ReadKind rk) {
-      rnk = refRankExt(bb, i, v, _) and
+    predicate liveAtRank(BasicBlock bb, int i, SourceVariable v, int rnk, ReadKind rk) {
+      rnk = refRank(bb, i, v, _) and
       (
-        rnk = max(refRankExt(bb, _, v, _)) and
+        rnk = max(refRank(bb, _, v, _)) and
         liveAtExit(bb, v, rk)
         or
         ref(bb, i, v, Read(rk))
         or
-        exists(int j | liveAtRank(bb, j, v, rnk + 1, rk) | not refExt(bb, j, v, Write(true)))
+        exists(int j | liveAtRank(bb, j, v, rnk + 1, rk) | not ref(bb, j, v, Write(true)))
       )
     }
 
@@ -382,7 +351,7 @@ module Ssa {
      */
     predicate liveAfterWrite(BasicBlock bb, int i, SourceVariable v, ReadKind rk) {
       exists (int rnk |
-        rnk = refRankExt(bb, i, v, Write(_)) |
+        rnk = refRank(bb, i, v, Write(_)) |
         liveAtRank(bb, i, v, rnk, rk)
       )
     }
@@ -1222,65 +1191,22 @@ module Ssa {
       setsOtherFieldOrProp(c, fp) and c = setter
     }
 
+    pragma[noinline]
+    predicate callAt(BasicBlock bb, int i, Call call) {
+      bb.getNode(i) = call.getAControlFlowNode() and
+      getARuntimeTarget(call).hasBody()
+    }
+
     /**
      * Holds if `call` occurs in basic block `bb` at index `i`, `fp` has
-     * an update somewhere, and `fp` is accessed somewhere inside the callable
-     * to which `bb` belongs.
+     * an update somewhere, and `fp` is likely to be live in `bb` at index
+     * `i`.
      */
     private predicate updateCandidate(BasicBlock bb, int i, TrackedFieldOrProp fp, Call call) {
-      bb.getNode(i) = call.getAControlFlowNode() and
-      call.getEnclosingCallable() = fp.getEnclosingCallable() and
-      relevantDefinition(_, fp.getAssignable(), _)
-    }
-
-    /**
-     * Same as `ref()`, but extended to include implicit call definitions
-     * for fields and properties.
-     */
-    private predicate refExt(BasicBlock bb, int i, TrackedFieldOrProp fp) {
-      ref(bb, i, fp, _)
-      or
-      updateCandidate(bb, i, fp, _) and
+      likelyLive(bb, fp) and
+      callAt(bb, i, call) and
+      relevantDefinition(_, fp.getAssignable(), _) and
       not ref(bb, i, fp, _)
-    }
-
-    /**
-     * Same as `refRank()`, but extended to include implicit call definitions
-     * for fields and properties, and restricted to basic blocks that have
-     * a potential implicit call definition.
-     */
-    private int refRankExt(BasicBlock bb, int i, TrackedFieldOrProp fp) {
-      updateCandidate(bb, _, fp, _) and
-      i = rank[result](int j | refExt(bb, j, fp)) and
-      refExt(bb, i, fp)
-    }
-
-    /**
-     * Holds if field or property `fp` is live in basic block `bb` at index `i`.
-     * The rank of `i` is `rnk` as defined by `refRankExt()`.
-     */
-    private predicate liveAtRank(BasicBlock bb, int i, TrackedFieldOrProp fp, int rnk) {
-      rnk = refRankExt(bb, i, fp) and
-      (
-        rnk = max(refRankExt(bb, _, fp)) and
-        liveAtExit(bb, fp, _)
-        or
-        ref(bb, i, fp, Read(_))
-        or
-        exists(int j | liveAtRank(bb, j, fp, rnk + 1) | not ref(bb, j, fp, Write(true)))
-      )
-    }
-
-    /**
-     * Holds if field or property `fp` is live after the potential update at call `c`.
-     */
-    private predicate liveAfterUpdateCandidate(Call c, TrackedFieldOrProp fp) {
-      exists(BasicBlock bb, int i, int rnk |
-        updateCandidate(bb, i, fp, c) |
-        not ref(bb, i, fp, _) and
-        rnk = refRankExt(bb, i, fp) and
-        liveAtRank(bb, i, fp, rnk)
-      )
     }
 
     /**
@@ -1289,7 +1215,7 @@ module Ssa {
      */
     private predicate pruneFromLeft(Callable c) {
       exists(Call call, TrackedFieldOrProp f |
-        liveAfterUpdateCandidate(call, f) and
+        updateCandidate(_, _, f, call) and
         c = getARuntimeTarget(call) and
         generalSetter(_, f.getAssignable(), _)
       )
@@ -1330,7 +1256,7 @@ module Ssa {
 
     pragma [noinline]
     private predicate updatesNamedFieldOrPropPart1Prefix0(Call call, TrackedFieldOrProp tfp, Callable c1, FieldOrProp fp) {
-      liveAfterUpdateCandidate(call, tfp) and
+      updateCandidate(_, _, tfp, call) and
       fp = tfp.getAssignable() and
       generalSetter(_, fp, _) and
       c1 = getARuntimeTarget(call)
@@ -1353,7 +1279,7 @@ module Ssa {
      * may not alias with `this`. The actual update occurs in `setter`.
      */
     pragma [noopt]
-    predicate updatesNamedFieldOrPropPart1(Call call, TrackedFieldOrProp tfp, Callable setter) {
+    private predicate updatesNamedFieldOrPropPart1(Call call, TrackedFieldOrProp tfp, Callable setter) {
       exists(Callable c1, Callable c2, FieldOrProp fp |
         updatesNamedFieldOrPropPart1Prefix(call, tfp, c1, setter, fp) and
         generalSetter(c2, fp, setter) |
@@ -1365,9 +1291,78 @@ module Ssa {
      * Holds if `call` may change the value of `tfp` on `this`. The actual update occurs
      * in `setter`.
      */
-    predicate updatesNamedFieldOrPropPart2(Call call, TrackedFieldOrProp tfp, Callable setter) {
-      liveAfterUpdateCandidate(call, tfp) and
+    private predicate updatesNamedFieldOrPropPart2(Call call, TrackedFieldOrProp tfp, Callable setter) {
+      updateCandidate(_, _, tfp, call) and
       setsOwnFieldOrPropTransitive(getARuntimeTarget(call), tfp.getAssignable(), setter)
+    }
+
+    private predicate updatesNamedFieldOrPropLikelyLive(BasicBlock bb, int i, TrackedFieldOrProp fp, Call call, Callable setter) {
+      updateCandidate(bb, i, fp, call) and
+      (
+        updatesNamedFieldOrPropPart1(call, fp, setter)
+        or
+        updatesNamedFieldOrPropPart2(call, fp, setter)
+      )
+    }
+
+    private int firstRefAfterCall(BasicBlock bb, int i, TrackedFieldOrProp fp) {
+      updatesNamedFieldOrPropLikelyLive(bb, i, fp, _, _) and
+      result = min(int k | k > i and ref(bb, k, fp, _))
+    }
+
+    /**
+     * Holds if `call` may change the value of field or property `fp`. The actual
+     * update occurs in `setter`.
+     */
+    cached
+    predicate updatesNamedFieldOrProp(Call c, TrackedFieldOrProp fp, Callable setter) {
+      forceCachingInSameStage() and
+      exists(BasicBlock bb, int i |
+        updatesNamedFieldOrPropLikelyLive(bb, i, fp, c, setter) |
+        not exists(firstRefAfterCall(bb, i, fp)) and
+        liveAtExit(bb, fp, _)
+        or
+        exists(int j |
+          j = firstRefAfterCall(bb, i, fp) |
+          liveAtRank(bb, j, fp, _, _) and
+          not ref(bb, j, fp, Write(true))
+        )
+      )
+    }
+
+    /**
+     * Same as `variableWrite()`, but extended to include implicit call definitions
+     * for fields and properties.
+     */
+    private predicate variableWriteExt(BasicBlock bb, int i, SourceVariable v) {
+      ref(bb, i, v, Write(_))
+      or
+      variableWriteExt(bb, i, v.(QualifiedFieldOrPropSourceVariable).getQualifier())
+      or
+      exists(Call c | callAt(bb, i, c) | updatesNamedFieldOrProp(c, v, _))
+    }
+
+    private int firstRefAfterQualifiedDef(BasicBlock bb, int i, QualifiedFieldOrPropSourceVariable q) {
+      variableWriteExt(bb, i, q) and
+      result = min(int k | k > i and ref(bb, k, q, _))
+    }
+
+    /**
+     * Holds if qualified field or property `q` is live after the (certain or
+     * uncertain) write at index `i` inside basic block `bb`.
+     */
+    predicate liveAfterWriteQualified(BasicBlock bb, int i, QualifiedFieldOrPropSourceVariable q) {
+      variableWriteExt(bb, i, q) and
+      (
+        not exists(firstRefAfterQualifiedDef(bb, i, q)) and
+        liveAtExit(bb, q, _)
+        or
+        exists(int j |
+          j = firstRefAfterQualifiedDef(bb, i, q) |
+          liveAtRank(bb, j, q, _, _) and
+          not ref(bb, j, q, Write(true))
+        )
+      )
     }
   }
 
@@ -1440,63 +1435,13 @@ module Ssa {
 
     /**
      * Holds if `call` occurs in basic block `bb` at index `i`, captured variable
-     * `v` has an update somewhere, and `v` is accessed somewhere inside the callable
-     * to which `bb` belongs.
+     * `v` has an update somewhere, and `v` is likely to be live in `bb` at index
+     * `i`.
      */
     private predicate updateCandidate(BasicBlock bb, int i, CapturedWrittenLocalScopeSourceVariable v, Call call) {
-      bb.getNode(i) = call.getAControlFlowNode() and
-      call.getEnclosingCallable() = v.getEnclosingCallable() and
+      likelyLive(bb, v) and
+      callAt(bb, i, call) and
       relevantDefinition(_, v.getAssignable(), _)
-    }
-
-    /**
-     * Same as `ref()`, but extended to include implicit call definitions
-     * for captured variables.
-     */
-    private predicate refExt(BasicBlock bb, int i, CapturedWrittenLocalScopeSourceVariable v) {
-      ref(bb, i, v, _)
-      or
-      updateCandidate(bb, i, v, _) and
-      not ref(bb, i, v, _)
-    }
-
-    /**
-     * Same as `refRank()`, but extended to include implicit call definitions
-     * for captured variables, and restricted to basic blocks that have a
-     * potential implicit call definition.
-     */
-    private int refRankExt(BasicBlock bb, int i, CapturedWrittenLocalScopeSourceVariable v) {
-      updateCandidate(bb, _, v, _) and
-      i = rank[result](int j | refExt(bb, j, v)) and
-      refExt(bb, i, v)
-    }
-
-    /**
-     * Holds if captured source variable `v` is live in basic block `bb` at index `i`.
-     * The rank of `i` is `rnk` as defined by `refRankExt()`.
-     */
-    private predicate liveAtRank(BasicBlock bb, int i, CapturedWrittenLocalScopeSourceVariable v, int rnk) {
-      rnk = refRankExt(bb, i, v) and
-      (
-        rnk = max(refRankExt(bb, _, v)) and
-        liveAtExit(bb, v, _)
-        or
-        ref(bb, i, v, Read(_))
-        or
-        exists(int j | liveAtRank(bb, j, v, rnk + 1) | not ref(bb, j, v, Write(true)))
-      )
-    }
-
-    /**
-     * Holds if captured source variable `v` is live after the potential update at call `c`.
-     */
-    private predicate liveAfterUpdateCandidate(Call c, CapturedWrittenLocalScopeSourceVariable v) {
-      exists(BasicBlock bb, int i, int rnk |
-        updateCandidate(bb, i, v, c) |
-        not ref(bb, i, v, _) and
-        rnk = refRankExt(bb, i, v) and
-        liveAtRank(bb, i, v, rnk)
-      )
     }
 
     /**
@@ -1505,7 +1450,7 @@ module Ssa {
      */
     private predicate pruneFromLeft(Callable c) {
       exists(Call call, CapturedWrittenLocalScopeSourceVariable v |
-        liveAfterUpdateCandidate(call, v) and
+        updateCandidate(_, _, v, call) and
         c = getARuntimeTarget(call) and
         relevantDefinition(_, v.getAssignable(), _)
       )
@@ -1551,7 +1496,7 @@ module Ssa {
 
     pragma [noinline]
     private predicate updatesCapturedVariablePrefix(Call call, CapturedWrittenLocalScopeSourceVariable v, PrunedCallable c, CapturedWrittenLocalScopeVariable captured) {
-      liveAfterUpdateCandidate(call, v) and
+      updateCandidate(_, _, v, call) and
       captured = v.getAssignable() and
       relevantDefinitionProj(_, captured) and
       c = getARuntimeTarget(call)
@@ -1573,12 +1518,40 @@ module Ssa {
       )
     }
 
-    // A non-cached helper predicate that is cached in a cached module further down,
-    // to make sure the predicate is evaluated in the same stage as other cached predicates
-    predicate updatesCapturedVariableNonCached(Call call, CapturedWrittenLocalScopeSourceVariable v, AssignableDefinition def) {
+    /**
+     * Holds if `call` may change the value of captured variable `v`. The actual
+     * update occurs in `def`.
+     */
+    private predicate updatesCapturedVariableLikelyLive(BasicBlock bb, int i, Call call, LocalScopeSourceVariable v, AssignableDefinition def) {
+      updateCandidate(bb, i, v, call) and
       exists(Callable writer |
         relevantDefinition(writer, v.getAssignable(), def) |
         updatesCapturedVariableWriter(call, v, writer)
+      )
+    }
+
+    private int firstRefAfter(BasicBlock bb, int i, CapturedWrittenLocalScopeSourceVariable v) {
+      updatesCapturedVariableLikelyLive(bb, i, _, v, _) and
+      result = min(int k | k > i and ref(bb, k, v, _))
+    }
+
+    /**
+     * Holds if `call` may change the value of captured variable `v`. The actual
+     * update occurs in `def`.
+     */
+    cached
+    predicate updatesCapturedVariable(Call call, LocalScopeSourceVariable v, AssignableDefinition def) {
+      forceCachingInSameStage() and
+      exists(BasicBlock bb, int i |
+        updatesCapturedVariableLikelyLive(bb, i, call, v, def) |
+        not exists(firstRefAfter(bb, i, v)) and
+        liveAtExit(bb, v, _)
+        or
+        exists(int j |
+          j = firstRefAfter(bb, i, v) |
+          liveAtRank(bb, j, v, _, _) and
+          not ref(bb, j, v, Write(true))
+        )
       )
     }
   }
@@ -1830,6 +1803,8 @@ module Ssa {
   private import CapturedVariableLivenessImpl
 
   private cached module SsaImpl {
+    cached predicate forceCachingInSameStage() { any() }
+
     /**
      * A data type representing SSA definitions.
      *
@@ -1905,7 +1880,7 @@ module Ssa {
         exists(BasicBlock bb, int i |
           qdef.getSourceVariable() = v.getQualifier() and
           qdef.definesAt(bb, i) and
-          liveAfterWrite(bb, i, v, _) and
+          liveAfterWriteQualified(bb, i, v) and
           // Eliminate corner case where a call definition can overlap with a
           // qualifier definition: if method `M` updates field `F`, then a call
           // to `M` is both an update of `x.M` and `x.M.M`, so the former call
@@ -1950,23 +1925,6 @@ module Ssa {
       def = TSsaImplicitUntrackedDef(v, bb, i)
       or
       def = TPhiNode(v, bb) and i = -1
-    }
-
-    /**
-     * Holds if `call` may change the value of field or property `fp`. The actual
-     * update occurs in `setter`.
-     */
-    cached predicate updatesNamedFieldOrProp(Call call, TrackedFieldOrProp fp, Callable setter) {
-      updatesNamedFieldOrPropPart1(call, fp, setter) or
-      updatesNamedFieldOrPropPart2(call, fp, setter)
-    }
-
-    /**
-     * Holds if `call` may change the value of captured variable `v`. The actual
-     * update occurs in `def`.
-     */
-    cached predicate updatesCapturedVariable(Call call, LocalScopeSourceVariable v, AssignableDefinition def) {
-      updatesCapturedVariableNonCached(call, v, def)
     }
 
     cached predicate isCapturedVariableDefinitionFlowIn(ExplicitDefinition def, ImplicitEntryDefinition edef, Call c) {
