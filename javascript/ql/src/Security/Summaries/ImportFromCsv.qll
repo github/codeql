@@ -6,6 +6,7 @@
 import javascript
 import semmle.javascript.dataflow.Portals
 import external.ExternalArtifact
+private import Shared
 
 /**
  * An additional source specified in an `additional-sources.csv` file.
@@ -26,18 +27,25 @@ class AdditionalSourceSpec extends ExternalData {
    * Gets the flow label of this source.
    */
   DataFlow::FlowLabel getFlowLabel() {
-    result.toString() = getField(1)
+    sourceFlowLabelSpec(result, getField(1))
   }
 
   /**
-   * Gets the configuration for which this is a source.
+   * Gets the configuration for which this is a source, or any
+   * configuration if this source does not specify a configuration.
    */
   DataFlow::Configuration getConfiguration() {
-    result.toString() = getField(2)
+    configSpec(result, getField(2))
   }
 
   override string toString() {
-    result = getPortal() + " as " + getFlowLabel() + " source for " + getConfiguration()
+    exists (string config |
+      if getField(2) = "" then
+        config = "any configuration"
+      else
+        config = getConfiguration() |
+      result = getPortal() + " as " + getFlowLabel() + " source for " + config
+    )
   }
 }
 
@@ -69,21 +77,30 @@ class AdditionalSinkSpec extends ExternalData {
   }
 
   /**
-   * Gets the flow label of this sink.
+   * Gets the flow label of this sink, or any standard flow label if this sink
+   * does not specify a flow label.
    */
   DataFlow::FlowLabel getFlowLabel() {
-    result.toString() = getField(1)
+    sinkFlowLabelSpec(result, getField(1))
   }
 
   /**
-   * Gets the configuration for which this is a sink.
+   * Gets the configuration for which this is a sink, or any configuration if
+   * this sink does not specify a configuration.
    */
   DataFlow::Configuration getConfiguration() {
-    result.toString() = getField(2)
+    configSpec(result, getField(2))
   }
 
   override string toString() {
-    result = getPortal() + " as " + getFlowLabel() + " sink for " + getConfiguration()
+    exists (string labels, string config |
+      labels = strictconcat(getFlowLabel(), " or ") and
+      if getField(2) = "" then
+        config = "any configuration"
+      else
+        config = getConfiguration() |
+      result = getPortal() + " as " + labels + " sink for " + config
+    )
   }
 }
 
@@ -138,13 +155,19 @@ class AdditionalStepSpec extends ExternalData {
    * Gets the configuration to which this step should be added.
    */
   DataFlow::Configuration getConfiguration() {
-    result.toString() = getField(4)
+    configSpec(result, getField(4))
   }
 
   override string toString() {
-    result = "edge from " + getStartPortal() + " to " + getEndPortal() +
-             ", transforming " + getStartFlowLabel() + " into " + getEndFlowLabel() +
-             " for " + getConfiguration()
+    exists (string config |
+      if getField(4) = "" then
+        config = "any configuration"
+      else
+        config = getConfiguration() |
+      result = "edge from " + getStartPortal() + " to " + getEndPortal() +
+               ", transforming " + getStartFlowLabel() + " into " + getEndFlowLabel() +
+               " for " + config
+    )
   }
 }
 

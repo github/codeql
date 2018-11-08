@@ -6,6 +6,7 @@
 import javascript
 import semmle.javascript.dataflow.Portals
 import external.ExternalArtifact
+import Shared
 
 /**
  * An external predicate providing information about additional sources.
@@ -42,8 +43,7 @@ private class AdditionalSourceFromSpec extends DataFlow::AdditionalSource {
   }
 
   override predicate isSourceFor(DataFlow::Configuration cfg, DataFlow::FlowLabel lbl) {
-    cfg.toString() = config and
-    lbl = flowLabel
+    configSpec(cfg, config) and sourceFlowLabelSpec(lbl, flowLabel)
   }
 }
 
@@ -61,8 +61,7 @@ private class AdditionalSinkFromSpec extends DataFlow::AdditionalSink {
   }
 
   override predicate isSinkFor(DataFlow::Configuration cfg, DataFlow::FlowLabel lbl) {
-    cfg.toString() = config and
-    lbl = flowLabel
+    configSpec(cfg, config) and sinkFlowLabelSpec(lbl, flowLabel)
   }
 }
 /**
@@ -75,8 +74,9 @@ private class AdditionalFlowStepFromSpec extends DataFlow::Configuration {
   string endFlowLabel;
 
   AdditionalFlowStepFromSpec() {
-    exists (Portal startPortal, Portal endPortal |
-      additionalSteps(startPortal.toString(), startFlowLabel, endPortal.toString(), endFlowLabel, this) and
+    exists (Portal startPortal, Portal endPortal, string config |
+      additionalSteps(startPortal.toString(), startFlowLabel, endPortal.toString(), endFlowLabel, config) and
+      configSpec(this, config) and
       entry = startPortal.getAnEntryNode(_) and
       exit = endPortal.getAnExitNode(_)
     )
