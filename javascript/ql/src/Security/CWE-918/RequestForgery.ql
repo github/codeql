@@ -11,6 +11,7 @@
 
 import javascript
 import semmle.javascript.security.dataflow.RequestForgery::RequestForgery
+import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::Node source, DataFlow::Node sink, DataFlow::Node request
 where cfg.hasFlow(source, sink) and

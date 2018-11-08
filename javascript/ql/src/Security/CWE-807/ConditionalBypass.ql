@@ -12,6 +12,7 @@
 
 import javascript
 import semmle.javascript.security.dataflow.ConditionalBypass::ConditionalBypass
+import DataFlow::PathGraph
 
 /**
  * Holds if the value of `nd` flows into `guard`.

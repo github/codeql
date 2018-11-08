@@ -11,6 +11,7 @@
 
 import javascript
 import semmle.javascript.security.dataflow.TaintedFormatString::TaintedFormatString
+import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::Node source, DataFlow::Node sink
 where cfg.hasFlow(source, sink)

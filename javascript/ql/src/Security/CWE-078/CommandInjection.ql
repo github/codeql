@@ -14,6 +14,7 @@
 
 import javascript
 import semmle.javascript.security.dataflow.CommandInjection::CommandInjection
+import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::Node source, DataFlow::Node sink, DataFlow::Node highlight
 where cfg.hasFlow(source, sink) and

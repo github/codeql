@@ -13,6 +13,7 @@
 import javascript
 import semmle.javascript.security.dataflow.SqlInjection
 import semmle.javascript.security.dataflow.NosqlInjection
+import DataFlow::PathGraph
 
 from DataFlow::Configuration cfg, DataFlow::Node source, DataFlow::Node sink
 where (cfg instanceof SqlInjection::Configuration or

@@ -12,6 +12,7 @@
 
 import javascript
 import semmle.javascript.security.dataflow.UnsafeDeserialization::UnsafeDeserialization
+import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::Node source, DataFlow::Node sink
 where cfg.hasFlow(source, sink)

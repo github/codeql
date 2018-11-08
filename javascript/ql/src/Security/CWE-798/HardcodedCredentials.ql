@@ -14,6 +14,7 @@
 
 import javascript
 private import semmle.javascript.security.dataflow.HardcodedCredentials::HardcodedCredentials
+import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::Node source, DataFlow::Node sink, string value
 where cfg.hasFlow(source, sink) and

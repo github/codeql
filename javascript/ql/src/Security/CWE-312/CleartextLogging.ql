@@ -14,6 +14,7 @@
 
 import javascript
 import semmle.javascript.security.dataflow.CleartextLogging::CleartextLogging
+import DataFlow::PathGraph
 
 /**
  * Holds if `tl` is used in a browser environment.

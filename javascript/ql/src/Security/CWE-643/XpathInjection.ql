@@ -12,6 +12,7 @@
 
 import javascript
 import semmle.javascript.security.dataflow.XpathInjection::XpathInjection
+import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::Node source, DataFlow::Node sink
 where cfg.hasFlow(source, sink)

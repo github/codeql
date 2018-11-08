@@ -13,6 +13,7 @@
 
 import javascript
 import semmle.javascript.security.dataflow.Xxe::Xxe
+import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::Node source, DataFlow::Node sink
 where cfg.hasFlow(source, sink)

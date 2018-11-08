@@ -10,6 +10,7 @@
 
 import javascript
 import semmle.javascript.security.dataflow.HttpToFileAccess::HttpToFileAccess
+import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::Node source, DataFlow::Node sink
 where cfg.hasFlow(source, sink)
