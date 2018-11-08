@@ -4,7 +4,9 @@
  *              to enforce invariants that should hold for the whole hierarchy.
  * @kind problem
  * @id cpp/nvi
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @precision low
+ * @tags maintainability
  */
 import cpp
 

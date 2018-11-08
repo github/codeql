@@ -6,6 +6,9 @@
  *              dependencies or dependents.
  * @kind table
  * @id cpp/nvi-hub
+ * @problem.severity recommendation
+ * @precision low
+ * @tags maintainability
  */
 import cpp
 
