@@ -1,7 +1,7 @@
 [
   {
     "pattern": [
-      "lib/**/*.js",
+      "lib/**/*",
       "parser-tests/**/*.js",
       "tests/**/*.js"
     ],
