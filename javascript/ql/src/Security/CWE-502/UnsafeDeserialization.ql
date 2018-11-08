@@ -2,7 +2,7 @@
  * @name Deserialization of user-controlled data
  * @description Deserializing user-controlled data may allow attackers to
  *              execute arbitrary code.
- * @kind problem
+ * @kind path-problem
  * @problem.severity warning
  * @precision high
  * @id js/unsafe-deserialization

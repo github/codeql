@@ -2,7 +2,7 @@
  * @name Server-side URL redirect
  * @description Server-side URL redirection based on unvalidated user input
  *              may cause redirection to malicious web sites.
- * @kind problem
+ * @kind path-problem
  * @problem.severity warning
  * @id js/server-side-unvalidated-url-redirection
  * @tags security

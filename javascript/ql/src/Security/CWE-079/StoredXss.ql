@@ -2,7 +2,7 @@
  * @name Stored cross-site scripting
  * @description Using uncontrolled stored values in HTML allows for
  *              a stored cross-site scripting vulnerability.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id js/stored-xss

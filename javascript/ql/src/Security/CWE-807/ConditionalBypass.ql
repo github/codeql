@@ -1,7 +1,7 @@
 /**
  * @name User-controlled bypass of security check
  * @description Conditions that the user controls are not suited for making security-related decisions.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision medium
  * @id js/user-controlled-bypass

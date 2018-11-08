@@ -2,7 +2,7 @@
  * @name Uncontrolled command line
  * @description Using externally controlled strings in a command line may allow a malicious
  *              user to change the meaning of the command.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id js/command-line-injection

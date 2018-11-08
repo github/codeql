@@ -1,7 +1,7 @@
 /**
  * @name File data in outbound network request
  * @description Directly sending file data in an outbound network request can indicate unauthorized information disclosure.
- * @kind problem
+ * @kind path-problem
  * @problem.severity warning
  * @id js/file-access-to-http
  * @tags security

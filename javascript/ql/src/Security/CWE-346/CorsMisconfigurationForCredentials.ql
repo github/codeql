@@ -1,7 +1,7 @@
 /**
  * @name CORS misconfiguration for credentials transfer
  * @description Misconfiguration of CORS HTTP headers allows for leaks of secret credentials.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id js/cors-misconfiguration-for-credentials

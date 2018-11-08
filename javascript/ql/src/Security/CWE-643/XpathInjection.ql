@@ -2,7 +2,7 @@
  * @name XPath injection
  * @description Building an XPath expression from user-controlled sources is vulnerable to insertion of
  *              malicious code by the user.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id js/xpath-injection

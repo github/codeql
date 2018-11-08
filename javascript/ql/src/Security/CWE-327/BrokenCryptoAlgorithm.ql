@@ -1,7 +1,7 @@
 /**
  * @name Use of a broken or weak cryptographic algorithm
  * @description Using broken or weak cryptographic algorithms can compromise security.
- * @kind problem
+ * @kind path-problem
  * @problem.severity warning
  * @precision high
  * @id js/weak-cryptographic-algorithm

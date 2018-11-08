@@ -2,7 +2,7 @@
 * @name Database query built from user-controlled sources
 * @description Building a database query from user-controlled sources is vulnerable to insertion of
 *              malicious code by the user.
-* @kind problem
+* @kind path-problem
 * @problem.severity error
 * @precision high
 * @id js/sql-injection

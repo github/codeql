@@ -2,7 +2,7 @@
  * @name Client side cross-site scripting
  * @description Writing user input directly to the DOM allows for
  *              a cross-site scripting vulnerability.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id js/xss

@@ -2,7 +2,7 @@
  * @name Clear text storage of sensitive information
  * @description Sensitive information stored without encryption or hashing can expose it to an
  *              attacker.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id js/clear-text-storage-of-sensitive-data

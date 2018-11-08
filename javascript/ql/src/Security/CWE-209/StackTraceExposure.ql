@@ -3,7 +3,7 @@
  * @description Propagating stack trace information to an external user can
  *              unintentionally reveal implementation details that are useful
  *              to an attacker for developing a subsequent exploit.
- * @kind problem
+ * @kind path-problem
  * @problem.severity warning
  * @precision very-high
  * @id js/stack-trace-exposure

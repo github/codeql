@@ -2,7 +2,7 @@
  * @name Client-side URL redirect
  * @description Client-side URL redirection based on unvalidated user input
  *              may cause redirection to malicious web sites.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id js/client-side-unvalidated-url-redirection

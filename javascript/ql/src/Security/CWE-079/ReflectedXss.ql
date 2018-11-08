@@ -2,7 +2,7 @@
  * @name Reflected cross-site scripting
  * @description Writing user input directly to an HTTP response allows for
  *              a cross-site scripting vulnerability.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id js/reflected-xss

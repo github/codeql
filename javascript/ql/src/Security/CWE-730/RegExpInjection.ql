@@ -3,7 +3,7 @@
  * @description User input should not be used in regular expressions without first being escaped,
  *              otherwise a malicious user may be able to inject an expression that could require
  *              exponential time on certain inputs.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id js/regex-injection

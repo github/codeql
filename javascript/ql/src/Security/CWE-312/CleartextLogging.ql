@@ -2,7 +2,7 @@
  * @name Clear-text logging of sensitive information
  * @description Logging sensitive information without encryption or hashing can
  *              expose it to an attacker.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id js/clear-text-logging

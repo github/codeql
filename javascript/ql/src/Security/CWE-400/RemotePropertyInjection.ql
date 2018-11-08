@@ -3,7 +3,7 @@
  * @description Allowing writes to arbitrary properties or calls to arbitrary 
  *       methods of an object may lead to denial-of-service attacks. 
  *   
- * @kind problem
+ * @kind path-problem
  * @problem.severity warning
  * @precision medium
  * @id js/remote-property-injection

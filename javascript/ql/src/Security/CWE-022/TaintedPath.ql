@@ -2,7 +2,7 @@
  * @name Uncontrolled data used in path expression
  * @description Accessing paths influenced by users can allow an attacker to access
  *              unexpected resources.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id js/path-injection

@@ -3,7 +3,7 @@
  * @description Using a cryptographically weak pseudo-random number generator to generate a
  *              security-sensitive value may allow an attacker to predict what value will
  *              be generated.
- * @kind problem
+ * @kind path-problem
  * @problem.severity warning
  * @precision high
  * @id js/insecure-randomness

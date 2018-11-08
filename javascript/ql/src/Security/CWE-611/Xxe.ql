@@ -2,7 +2,7 @@
  * @name XML external entity expansion
  * @description Parsing user input as an XML document with external
  *              entity expansion is vulnerable to XXE attacks.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id js/xxe

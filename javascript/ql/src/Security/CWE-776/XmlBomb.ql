@@ -2,7 +2,7 @@
  * @name XML internal entity expansion
  * @description Parsing user input as an XML document with arbitrary internal
  *              entity expansion is vulnerable to denial-of-service attacks.
- * @kind problem
+ * @kind path-problem
  * @problem.severity warning
  * @precision high
  * @id js/xml-bomb

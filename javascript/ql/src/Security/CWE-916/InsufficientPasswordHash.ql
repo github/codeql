@@ -1,7 +1,7 @@
 /**
  * @name Use of password hash with insufficient computational effort
  * @description Creating a hash of a password with low computational effort makes the hash vulnerable to password cracking attacks.
- * @kind problem
+ * @kind path-problem
  * @problem.severity warning
  * @precision high
  * @id js/insufficient-password-hash

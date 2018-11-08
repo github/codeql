@@ -2,7 +2,7 @@
  * @name Hard-coded credentials
  * @description Hard-coding credentials in source code may enable an attacker
  *              to gain unauthorized access.
- * @kind problem
+ * @kind path-problem
  * @problem.severity warning
  * @precision high
  * @id js/hardcoded-credentials
