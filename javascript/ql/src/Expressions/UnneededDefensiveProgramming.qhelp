@@ -14,7 +14,7 @@
 
 			However, if the situation that some defensive code guards
 			against never can occur, then the defensive code serves no purpose and
-			it can safely be removed.
+			can safely be removed.
 
 		</p>
 
@@ -45,7 +45,7 @@
 
 		</p>
 
-		<sample src="examples/UselessDefensiveProgramming1_bad.js" />
+		<sample src="examples/UnneededDefensiveProgramming1_bad.js" />
 
 		<p>
 
@@ -56,7 +56,7 @@
 
 		</p>
 
-		<sample src="examples/UselessDefensiveProgramming1_good.js" />
+		<sample src="examples/UnneededDefensiveProgramming1_good.js" />
 
 		<p>
 
@@ -68,7 +68,7 @@
 
 		</p>
 
-		<sample src="examples/UselessDefensiveProgramming2_bad.js" />
+		<sample src="examples/UnneededDefensiveProgramming2_bad.js" />
 
 		<p>
 
@@ -76,11 +76,11 @@
 			undefined</code> holds for both the situation where <code>v</code>
 			is<code>undefined</code> and the situation where <code>v</code>
 			is<code>null</code>, so the <code>v == null</code>
-			guard serves no purpose, and it can be removed:
+			guard serves no purpose, and can be removed:
 
 		</p>
 
-		<sample src="examples/UselessDefensiveProgramming2_good.js" />
+		<sample src="examples/UnneededDefensiveProgramming2_good.js" />
 
 	</example>
 	<references>

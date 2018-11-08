@@ -1,10 +1,9 @@
 /**
- * @name Useless defensive code
- * @description If the situation some defensive code guards against never
- *              happens, then the defensive code is not needed.
+ * @name Unneeded defensive code
+ * @description Defensive code that guards against a situation that never happens is not needed.
  * @kind problem
  * @problem.severity recommendation
- * @id js/useless-defensive-code
+ * @id js/unneeded-defensive-code
  * @tags correctness
  *       external/cwe/cwe-570
  *       external/cwe/cwe-571
