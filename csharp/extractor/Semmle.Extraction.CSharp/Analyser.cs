@@ -413,13 +413,15 @@ namespace Semmle.Extraction.CSharp
             Logger.Log(Severity.Info, "  Current working directory: {0}", Directory.GetCurrentDirectory());
 
             if (roslynArgs != null)
+            {
                 Logger.Log(Severity.Info, $"  Arguments to Roslyn: {string.Join(' ', roslynArgs)}");
 
-            // Create a new file in the log folder.
-            var argsFile = Path.Combine(Extractor.GetCSharpLogDirectory(), $"csharp.{Path.GetRandomFileName()}.txt");
+                // Create a new file in the log folder.
+                var argsFile = Path.Combine(Extractor.GetCSharpLogDirectory(), $"csharp.{Path.GetRandomFileName()}.txt");
 
-            if (roslynArgs.ArchiveCommandLine(argsFile))
-                Logger.Log(Severity.Info, $"  Arguments have been written to {argsFile}");
+                if (roslynArgs.ArchiveCommandLine(argsFile))
+                    Logger.Log(Severity.Info, $"  Arguments have been written to {argsFile}");
+            }
 
             foreach (var error in FilteredDiagnostics)
             {
