@@ -1,6 +1,6 @@
 /**
- * @name Global variable used before initialization
- * @description A function that uses a global variable has been called before the variable has been initialized. Not all compilers zero-out memory for variables, especially when optimizations are enabled, or if the compiler is not compliant with the latest language standards. Using an uninitialized variable leads to undefined results.
+ * @name Global variable may be used before initialization
+ * @description Using an uninitialized variable leads to undefined results.
  * @kind problem
  * @id cpp/global-use-before-init
  * @problem.severity warning

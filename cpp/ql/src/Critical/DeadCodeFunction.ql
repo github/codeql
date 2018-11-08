@@ -1,6 +1,6 @@
 /**
  * @name Function is never called
- * @description A function is never called, and should be considered for removal. Unused functions may increase object size, decrease readability and create the possibility of misuse.
+ * @description Unused functions may increase object size, decrease readability, and create the possibility of misuse.
  * @kind problem
  * @id cpp/dead-code-function
  * @problem.severity warning

@@ -1,7 +1,7 @@
 /**
  * @name Copy function using source size
  * @description Calling a copy operation with a size derived from the source
- *              buffer instead of the destination buffer may result in a buffer overflow
+ *              buffer instead of the destination buffer may result in a buffer overflow.
  * @kind problem
  * @id cpp/overflow-destination
  * @problem.severity warning
