@@ -138,6 +138,10 @@ class SystemXmlSchemaXmlSchemaValidationFlags extends EnumConstant {
   }
 }
 
+private Expr getBitwiseOrOperand(Expr e) {
+  result = e.(BitwiseOrExpr).getAnOperand()
+}
+
 /** A creation of an instance of `System.Xml.XmlReaderSettings`. */
 class XmlReaderSettingsCreation extends ObjectCreation {
   XmlReaderSettingsCreation() {
@@ -157,10 +161,11 @@ class XmlReaderSettingsCreation extends ObjectCreation {
   /** Gets a value set for the given property in this local context. */
   private Expr getPropertyValue(Property p) {
     p = this.getType().(RefType).getAProperty() and
-    exists(PropertyCall set |
+    exists(PropertyCall set, Expr arg |
       set.getTarget() = p.getSetter() and
       DataFlow::localFlow(DataFlow::exprNode(this), DataFlow::exprNode(set.getQualifier())) and
-      result = set.getAnArgument()
+      arg = set.getAnArgument() and
+      result = getBitwiseOrOperand*(arg)
     )
   }
 }
