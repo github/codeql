@@ -8,8 +8,8 @@
  * @tags security
  *       external/cwe/cwe-916
  */
+
 import javascript
-import semmle.javascript.security.dataflow.RemoteFlowSources
 import semmle.javascript.security.dataflow.InsufficientPasswordHash::InsufficientPasswordHash
 
 from Configuration cfg, Source source, DataFlow::Node sink

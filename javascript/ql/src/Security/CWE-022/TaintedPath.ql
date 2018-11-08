@@ -15,7 +15,6 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.RemoteFlowSources
 import semmle.javascript.security.dataflow.TaintedPath::TaintedPath
 
 from Configuration cfg, DataFlow::Node source, DataFlow::Node sink
