@@ -207,7 +207,7 @@ private predicate unknownSign(Instruction i) {
 }
 
 /**
- * Holds if `lowerbound` is a lower bound for `bounded``. This is restricted
+ * Holds if `lowerbound` is a lower bound for `bounded`. This is restricted
  * to only include bounds for which we might determine a sign.
  */
 private predicate lowerBound(IRGuardCondition comp, Operand lowerbound, Operand bounded, boolean isStrict) {
