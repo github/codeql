@@ -3,5 +3,5 @@
 
 void test2(int param)
 {
-	UNUSED(param); // GOOD [FALSE POSITIVE]
+	UNUSED(param); // GOOD
 }

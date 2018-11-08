@@ -1,4 +1,3 @@
-| macros.c:6:9:6:13 | param | This expression has no effect. | macros.c:6:9:6:13 | param |  |
 | preproc.c:89:2:89:4 | call to fn4 | This expression has no effect (because $@ has no external side effects). | preproc.c:33:5:33:7 | fn4 | fn4 |
 | preproc.c:94:2:94:4 | call to fn9 | This expression has no effect (because $@ has no external side effects). | preproc.c:78:5:78:7 | fn9 | fn9 |
 | template.cpp:19:3:19:3 | call to operator++ | This expression has no effect (because $@ has no external side effects). | template.cpp:9:10:9:19 | operator++ | operator++ |
