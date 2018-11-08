@@ -36,7 +36,7 @@ predicate isBrowserifyBundle(ObjectExpr oe) {
     isBrowserifyBundledModule(p)
   ) and
   // the whole object must be passed to the module loader function
-  exists (CallExpr ce | ce.getCallee().stripParens() instanceof Function |
+  exists (CallExpr ce | ce.getCallee().getUnderlyingValue() instanceof Function |
     // the module loader function always has three arguments
     ce.getNumArgument() = 3 and
     // the first of which is the bundle
@@ -140,10 +140,10 @@ private predicate isWebpackModule(FunctionExpr m) {
  */
 predicate isWebpackBundle(ArrayExpr ae) {
   // ensure that there is at least one bundled module
-  isWebpackModule(ae.getAnElement().stripParens())
+  isWebpackModule(ae.getAnElement().getUnderlyingValue())
   and
   // furthermore, every element is either
-  forall (Expr elt | elt = ae.getAnElement().stripParens() |
+  forall (Expr elt | elt = ae.getAnElement().getUnderlyingValue() |
     // (1) a module
     isWebpackModule(elt)
     or
@@ -158,7 +158,7 @@ predicate isWebpackBundle(ArrayExpr ae) {
   )
   and
   // the whole array must be passed to a module loader function
-  exists (CallExpr ce | ce.getCallee().stripParens() instanceof Function |
+  exists (CallExpr ce | ce.getCallee().getUnderlyingValue() instanceof Function |
     // which is the bundle
     ce.getArgument(0) = ae
   )

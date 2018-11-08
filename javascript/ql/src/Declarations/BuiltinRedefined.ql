@@ -27,12 +27,12 @@ predicate acceptableRedefinition(Identifier id) {
   // Date = global.Date
   exists (AssignExpr assgn |
     id = assgn.getTarget() and
-    id.getName() = assgn.getRhs().stripParens().(PropAccess).getPropertyName()
+    id.getName() = assgn.getRhs().getUnderlyingValue().(PropAccess).getPropertyName()
   ) or
   // var Date = global.Date
   exists (VariableDeclarator decl |
     id = decl.getBindingPattern() and
-    id.getName() = decl.getInit().stripParens().(PropAccess).getPropertyName()
+    id.getName() = decl.getInit().getUnderlyingValue().(PropAccess).getPropertyName()
   )
 }
 

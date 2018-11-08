@@ -37,13 +37,13 @@ predicate acceptableSignCheck(BitwiseExpr b) {
    * is sign-preserving, we shouldn't flag it (and we allow arbitrary shifts, not just 16-bit ones)
    */
   exists (RShiftExpr rsh, LShiftExpr lsh |
-    rsh = b and lsh = rsh.getLeftOperand().stripParens() and
+    rsh = b and lsh = rsh.getLeftOperand().getUnderlyingValue() and
     lsh.getRightOperand().getIntValue() = rsh.getRightOperand().getIntValue()
   )
 }
 
 from Comparison e, BitwiseExpr b
-where b = e.getLeftOperand().stripParens() and
+where b = e.getLeftOperand().getUnderlyingValue() and
       not e instanceof EqualityTest and
       e.getRightOperand().getIntValue() = 0 and
       not acceptableSignCheck(b)

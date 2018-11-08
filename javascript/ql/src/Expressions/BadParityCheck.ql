@@ -65,7 +65,7 @@ predicate maybeNegativeVar(Variable v) {
   // is v ever assigned a potentially negative value?
   maybeNegative(v.getAnAssignedExpr()) or
   // is v ever decremented?
-  exists (DecExpr dec | dec.getOperand().stripParens() = v.getAnAccess()) or
+  exists (DecExpr dec | dec.getOperand().getUnderlyingReference() = v.getAnAccess()) or
   // is v ever subject to a compound assignment other than +=, or to
   // += with potentially negative rhs?
   exists (CompoundAssignExpr assgn | assgn.getTarget() = v.getAnAccess() |
