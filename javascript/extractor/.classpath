@@ -6,7 +6,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/util-shared"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/util-java7"/>
-	<classpathentry kind="lib" path="/resources/lib/js.jar" sourcepath="/resources/lib/js-src.jar"/>
 	<classpathentry kind="lib" path="/resources/lib/jericho-html-3.3.jar" sourcepath="/resources/lib/jericho-html-3.3-sources.jar"/>
 	<classpathentry kind="lib" path="/resources/lib/junit-4.11.jar" sourcepath="/resources/lib/junit-4.11-sources.jar"/>
 	<classpathentry kind="lib" path="/resources/lib/gson-2.2.2-jar.jar" sourcepath="/resources/lib/gson-2.2.2-source.jar"/>
