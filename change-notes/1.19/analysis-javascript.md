@@ -30,19 +30,19 @@
 
 | **Query**                      | **Expected impact**        | **Change**                                   |
 |--------------------------------|----------------------------|----------------------------------------------|
-| Useless assignment to local variable | Fewer false-positive results | This rule now recognizes additional ways default values can be set. |
-| Regular expression injection | Fewer false-positive results | This rule now identifies calls to `String.prototype.search` with more precision. |
-| Unbound event handler receiver | Fewer false-positive results | This rule now recognizes additional ways class methods can be bound. |
-| Remote property injection | Fewer results | The precision of this rule has been revised to "medium". Results are no longer shown on LGTM by default. |
-| Missing CSRF middleware | Fewer false-positive results | This rule now recognizes additional CSRF protection middlewares. |
-| Server-side URL redirect | More results | This rule now recognizes redirection calls in more cases. |
-| Unused variable, import, function or class | Fewer false-positive results | This rule now flags fewer variables that may be used by `eval` calls. |
-| Unused variable, import, function or class | Fewer results | This rule now flags import statements with multiple unused imports once. |
-| Whitespace contradicts operator precedence | Fewer false-positive results | This rule no longer flags operators with asymmetric whitespace. |
-| Unused import | Fewer false-positive results | This rule no longer flags imports used by the `transform-react-jsx` Babel plugin. |
-| Self assignment | Fewer false-positive results | This rule now ignores self-assignments preceded by a JSDoc comment with a `@type` tag. |
 | Client side cross-site scripting | More results | This rule now also flags HTML injection in the body of an email. |
 | Information exposure through a stack trace | More results | This rule now also flags cases where the entire exception object (including the stack trace) may be exposed. |
+| Missing CSRF middleware | Fewer false-positive results | This rule now recognizes additional CSRF protection middlewares. |
+| Regular expression injection | Fewer false-positive results | This rule now identifies calls to `String.prototype.search` with more precision. |
+| Remote property injection | Fewer results | The precision of this rule has been revised to "medium". Results are no longer shown on LGTM by default. |
+| Self assignment | Fewer false-positive results | This rule now ignores self-assignments preceded by a JSDoc comment with a `@type` tag. |
+| Server-side URL redirect | More results | This rule now recognizes redirection calls in more cases. |
+| Unbound event handler receiver | Fewer false-positive results | This rule now recognizes additional ways class methods can be bound. |
+| Unused import | Fewer false-positive results | This rule no longer flags imports used by the `transform-react-jsx` Babel plugin. |
+| Unused variable, import, function or class | Fewer false-positive results | This rule now flags fewer variables that may be used by `eval` calls. |
+| Unused variable, import, function or class | Fewer results | This rule now flags import statements with multiple unused imports once. |
+| Useless assignment to local variable | Fewer false-positive results | This rule now recognizes additional ways default values can be set. |
+| Whitespace contradicts operator precedence | Fewer false-positive results | This rule no longer flags operators with asymmetric whitespace. |
 
 ## Changes to QL libraries
 
