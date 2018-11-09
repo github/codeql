@@ -703,6 +703,13 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
   override Expr getControllingExpr() { result = this.getCondition() }
 
   /**
+   * Gets a declaration statement that declares first `__begin` and then
+   * `__end`, initializing them to the values they have before entering the
+   * desugared loop.
+   */
+  DeclStmt getBeginEndDeclaration() { result = this.getChild(1) }
+
+  /**
    * Gets the compiler-generated `++__begin` which is the update
    * expression of this for statement after desugaring. It will
    * be either a `PrefixIncrExpr` or a call to a user-defined
