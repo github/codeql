@@ -33,6 +33,8 @@ namespace Semmle.Extraction.Tests
             FileExistsIn.Add(file);
             if (FileExists.TryGetValue(file, out var ret))
                 return ret;
+            if (FileExists.TryGetValue(System.IO.Path.GetFileName(file), out ret))
+                return ret;
             throw new ArgumentException("Missing FileExists " + file);
         }
 

@@ -25,6 +25,7 @@
 | tst.js:28:2:29:3 | () =>\\n  x |
 | tst.js:32:1:32:0 | this |
 | tst.js:32:1:34:1 | functio ... ables\\n} |
+| tst.js:32:12:32:12 | b |
 | tst.js:35:1:35:7 | g(true) |
 | tst.js:37:9:42:1 | {\\n  x:  ... ;\\n  }\\n} |
 | tst.js:39:4:39:3 | this |

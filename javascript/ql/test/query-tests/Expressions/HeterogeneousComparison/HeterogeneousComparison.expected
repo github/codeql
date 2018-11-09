@@ -1,3 +1,6 @@
+| interprocedural.js:11:9:11:13 | known | Variable 'known' is of type string, but it is compared to $@ of type number. | interprocedural.js:11:19:11:20 | 42 | an expression |
+| interprocedural.js:15:9:15:18 | getKnown() | This expression is of type string, but it is compared to $@ of type number. | interprocedural.js:15:24:15:25 | 42 | an expression |
+| interprocedural.js:17:9:17:27 | getKnown_indirect() | This expression is of type string, but it is compared to $@ of type number. | interprocedural.js:17:33:17:34 | 42 | an expression |
 | tst.js:2:5:2:17 | typeof window | This expression is of type string, but it is compared to $@ of type undefined. | tst.js:2:23:2:31 | undefined | 'undefined' |
 | tst.js:10:28:10:34 | "Hello" | This expression is of type string, but it is compared to $@ of type number. | tst.js:10:39:10:39 | 0 | an expression |
 | tst.js:20:1:20:4 | null | This expression is of type null, but it is compared to $@ of type number. | tst.js:20:9:20:9 | 0 | an expression |

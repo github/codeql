@@ -14,5 +14,7 @@ namespace Semmle.Extraction
         public ISymbol symbol;
         public SyntaxNode node;
         public Exception exception;
+
+        public override string ToString() => message;
     }
 }

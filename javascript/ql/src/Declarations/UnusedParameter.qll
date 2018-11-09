@@ -10,7 +10,7 @@ import javascript
  * Holds if `e` is an expression whose value is invoked as a function.
  */
 private predicate isCallee(Expr e) {
-  exists (InvokeExpr invk | e = invk.getCallee().stripParens())
+  exists (InvokeExpr invk | e = invk.getCallee().getUnderlyingValue())
 }
 
 /**

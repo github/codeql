@@ -291,7 +291,7 @@ class SuperExpr extends @superexpr, Expr {
  */
 class SuperCall extends CallExpr {
   SuperCall() {
-    getCallee().stripParens() instanceof SuperExpr
+    getCallee().getUnderlyingValue() instanceof SuperExpr
   }
 
   /**
@@ -299,7 +299,7 @@ class SuperCall extends CallExpr {
    * which is the nearest enclosing non-arrow function.
    */
   Function getBinder() {
-    result = getCallee().stripParens().(SuperExpr).getBinder()
+    result = getCallee().getUnderlyingValue().(SuperExpr).getBinder()
   }
 }
 
@@ -308,7 +308,7 @@ class SuperCall extends CallExpr {
  */
 class SuperPropAccess extends PropAccess {
   SuperPropAccess() {
-    getBase().stripParens() instanceof SuperExpr
+    getBase().getUnderlyingValue() instanceof SuperExpr
   }
 }
 

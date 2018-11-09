@@ -526,8 +526,8 @@ module XSS {
       this.getExpr() = any(WebPageClass h).getWriteLiteralMethod().getACall().getAnArgument()
     }
 
-    override string explanation() { 
-      result = "System.Web.WebPages.WebPage.WriteLiteral() method" 
+    override string explanation() {
+      result = "System.Web.WebPages.WebPage.WriteLiteral() method"
     }
   }
 
@@ -539,9 +539,9 @@ module XSS {
     WebPageWriteLiteralToSink() {
       this.getExpr() = any(WebPageClass h).getWriteLiteralToMethod().getACall().getAnArgument()
     }
-    
-    override string explanation() { 
-      result = "System.Web.WebPages.WebPage.WriteLiteralTo() method" 
+
+    override string explanation() {
+      result = "System.Web.WebPages.WebPage.WriteLiteralTo() method"
     }
   }
 
@@ -555,9 +555,9 @@ module XSS {
     MicrosoftAspNetCoreMvcHtmlHelperRawSink() {
       this.getExpr() = any(MicrosoftAspNetCoreMvcHtmlHelperClass h).getRawMethod().getACall().getAnArgument()
     }
-  
-    override string explanation() { 
-      result = "Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.Raw() method" 
+
+    override string explanation() {
+      result = "Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.Raw() method"
     }
   }
 
@@ -569,19 +569,19 @@ module XSS {
     MicrosoftAspNetRazorPageWriteLiteralSink() {
       this.getExpr() = any(MicrosoftAspNetCoreMvcRazorPageBase h).getWriteLiteralMethod().getACall().getAnArgument()
     }
-    
-    override string explanation() { 
-      result = "Microsoft.AspNetCore.Mvc.Razor.RazorPageBase.WriteLiteral() method" 
+
+    override string explanation() {
+      result = "Microsoft.AspNetCore.Mvc.Razor.RazorPageBase.WriteLiteral() method"
     }
   }
-  
+
   /**
    * HtmlString that may be rendered as is need to have sanitized value
    */
   class MicrosoftAspNetHtmlStringSink extends AspNetCoreSink {
     MicrosoftAspNetHtmlStringSink() {
-      exists (ObjectCreation c, MicrosoftAspNetCoreHttpHtmlString s | 
-       c.getTarget() = s.getAConstructor() and 
+      exists (ObjectCreation c, MicrosoftAspNetCoreHttpHtmlString s |
+       c.getTarget() = s.getAConstructor() and
        this.asExpr() = c.getAnArgument())
     }
   }

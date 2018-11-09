@@ -92,3 +92,75 @@ void instantiate()
 	g11<int>();
 	g12<int>();
 }
+
+void myThrow(const char *error)
+{
+	throw error;
+}
+
+int g13()
+{
+	myThrow("fail"); // GOOD
+}
+
+int g14(int x)
+{
+	if (x < 10)
+	{
+		myThrow("fail"); // BAD (doesn't always throw)
+	}
+}
+
+int g15(int x)
+{
+	if (x < 10)
+	{
+		return x;
+	} else {
+		myThrow("fail"); // GOOD
+	}
+}
+
+void myConditionalThrow(bool condition, const char *error)
+{
+	if (condition)
+	{
+		throw error;
+	}
+}
+
+int g16(int x)
+{
+	myConditionalThrow(x < 10, "fail"); // BAD (doesn't always throw)
+}
+
+int g17(int x)
+{
+	try
+	{
+		myConditionalThrow(x < 10, "fail");
+	} catch (...) {
+		return x; // BAD (doesn't always reach this return)
+	}
+}
+
+int g18(int x)
+{
+	try
+	{
+		myThrow("fail");
+	} catch (...) {
+		return x; // GOOD [FALSE POSITIVE]
+	}
+}
+
+int g19(int x)
+{
+	try
+	{
+		myThrow("fail");
+	} catch (...) {
+	}
+
+	return x; // GOOD
+}

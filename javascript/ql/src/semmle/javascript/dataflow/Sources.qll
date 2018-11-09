@@ -125,7 +125,7 @@ abstract class SourceNode extends DataFlow::Node {
    */
   DataFlow::CallNode getAMethodCall(string methodName) {
     exists (PropAccess pacc |
-      pacc = result.getCalleeNode().asExpr().stripParens() and
+      pacc = result.getCalleeNode().asExpr().getUnderlyingReference() and
       flowsToExpr(pacc.getBase()) and
       pacc.getPropertyName() = methodName
     )

@@ -56,7 +56,7 @@ int numRet(Function f) {
 predicate isDualUseConstructor(Function f) {
   numRet(f) = 1 and
   exists (ReturnStmt ret, DataFlow::NewNode new | ret.getContainer() = f |
-    new.asExpr() = ret.getExpr().stripParens() and
+    new.asExpr() = ret.getExpr().getUnderlyingValue() and
     new.getACallee() = f
   )
 }

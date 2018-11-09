@@ -167,12 +167,8 @@ module Koa {
         kind = "body" and
         this.asExpr().(PropAccess).accesses(request, "body")
         or
-        exists (PropAccess query |
-          kind = "parameter" and
-          // `ctx.request.query.name`
-          query.accesses(request, "query")  and
-          this.asExpr().(PropAccess).accesses(query, _)
-        )
+        kind = "parameter" and
+        this = getAQueryParameterAccess(rh)
         or
         exists (string propName |
           // `ctx.request.url`, `ctx.request.originalUrl`, or `ctx.request.href`
@@ -203,6 +199,16 @@ module Koa {
     override string getKind() {
       result = kind
     }
+
+    override predicate isUserControlledObject() {
+      this = getAQueryParameterAccess(rh)
+    }
+
+  }
+
+  private DataFlow::Node getAQueryParameterAccess(RouteHandler rh) {
+    // `ctx.request.query.name`
+    result.asExpr().(PropAccess).getBase().(PropAccess).accesses(rh.getARequestExpr(), "query")
   }
 
   /**

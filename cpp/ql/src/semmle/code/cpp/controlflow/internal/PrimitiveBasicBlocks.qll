@@ -44,6 +44,14 @@ private cached module Cached {
     // that the node have at least one successor.
     or
     (not successors_extended(_, node) and successors_extended(node, _))
+
+    // An exception handler is always the start of a new basic block. We
+    // don't generate edges for [possible] exceptions, but in practice control
+    // flow could reach the handler from anywhere inside the try block that
+    // could throw an exception of a corresponding type. A `Handler` usually
+    // needs to be considered reachable (see also `BasicBlock.isReachable`).
+    or
+    node instanceof Handler
   }
 
   /** Holds if `n2` follows `n1` in a `PrimitiveBasicBlock`. */

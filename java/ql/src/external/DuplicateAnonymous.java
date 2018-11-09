@@ -3,7 +3,7 @@ button1.addActionListener(new ActionListener() {
     public void actionPerfored(ActionEvent e)
     {
         for (ActionListener listener: listeners)
-        	listeners.actionPerformed(e);
+            listeners.actionPerformed(e);
     }
 });
 
@@ -11,7 +11,7 @@ button2.addActionListener(new ActionListener() {
     public void actionPerfored(ActionEvent e)
     {
         for (ActionListener listener: listeners)
-        	listeners.actionPerformed(e);
+            listeners.actionPerformed(e);
     }
 });
 
@@ -19,10 +19,10 @@ button2.addActionListener(new ActionListener() {
 
 // GOOD: Better solution:
 class MultiplexingListener implements ActionListener {
-	public void actionPerformed(ActionEvent e) {
-		for (ActionListener listener : listeners)
-			listener.actionPerformed(e);
-	}
+    public void actionPerformed(ActionEvent e) {
+        for (ActionListener listener : listeners)
+            listener.actionPerformed(e);
+    }
 }
 
 button1.addActionListener(new MultiplexingListener());

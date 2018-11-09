@@ -319,7 +319,7 @@ class VarAccess extends @varaccess, VarRef, LexicalAccess {
 
   override predicate isLValue() {
     exists (Assignment assgn | assgn.getTarget() = this) or
-    exists (UpdateExpr upd | upd.getOperand().stripParens() = this) or
+    exists (UpdateExpr upd | upd.getOperand().getUnderlyingReference() = this) or
     exists (EnhancedForLoop efl | efl.getIterator() = this) or
     exists (BindingPattern p | this = p.getABindingVarRef() and p.isLValue())
   }

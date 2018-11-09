@@ -225,7 +225,8 @@ private module SsaImpl {
   cached
   predicate certainVariableUpdate(TrackedVar v, ControlFlowNode n, BasicBlock b, int i) {
     exists(VariableUpdate a | a = n | getDestVar(a) = v) and
-    b.getNode(i) = n
+    b.getNode(i) = n and
+    hasDominanceInformation(b)
     or
     certainVariableUpdate(v.getQualifier(), n, b, i)
   }
@@ -559,7 +560,8 @@ private module SsaImpl {
   cached
   predicate uncertainVariableUpdate(TrackedVar v, ControlFlowNode n, BasicBlock b, int i) {
     exists(Call c | c = n | updatesNamedField(c, v, _)) and
-    b.getNode(i) = n
+    b.getNode(i) = n and
+    hasDominanceInformation(b)
     or
     uncertainVariableUpdate(v.getQualifier(), n, b, i)
   }

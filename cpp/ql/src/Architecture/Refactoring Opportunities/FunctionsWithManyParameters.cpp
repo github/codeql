@@ -4,5 +4,5 @@ void fillRect(int x, int y, int w, int h,
               int r2, int g2, int b2, int a2,
               gradient_type grad, unsigned int flags, bool border)
 {
-	// ...
+    // ...
 }

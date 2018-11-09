@@ -3,10 +3,272 @@
  */
 
 import csharp
-private import BasicBlocks
+private import ControlFlow::SuccessorTypes
 private import semmle.code.csharp.commons.ComparisonTest
 private import semmle.code.csharp.commons.StructuralComparison::Internal
+private import semmle.code.csharp.controlflow.BasicBlocks
+private import semmle.code.csharp.controlflow.Completion
 private import semmle.code.csharp.frameworks.System
+
+/** An abstract value. */
+abstract class AbstractValue extends TAbstractValue {
+  /** Holds if taking the `s` branch out of `cfe` implies that `e` has this value. */
+  abstract predicate branchImplies(ControlFlowElement cfe, ConditionalSuccessor s, Expr e);
+
+  /** Gets a textual representation of this abstract value. */
+  abstract string toString();
+}
+
+/** Provides different types of `AbstractValues`s. */
+module AbstractValues {
+  /** A Boolean value. */
+  class BooleanValue extends AbstractValue, TBooleanValue {
+    /** Gets the underlying Boolean value. */
+    boolean getValue() { this = TBooleanValue(result) }
+
+    override predicate branchImplies(ControlFlowElement cfe, ConditionalSuccessor s, Expr e) {
+      s.(BooleanSuccessor).getValue() = this.getValue() and
+      exists(BooleanCompletion c |
+        s.matchesCompletion(c) |
+        c.isValidFor(cfe) and
+        e = cfe
+      )
+    }
+
+    override string toString() { result = this.getValue().toString() }
+  }
+
+  /** A value that is either `null` or non-`null`. */
+  class NullValue extends AbstractValue, TNullValue {
+    /** Holds if this value represents `null`. */
+    predicate isNull() { this = TNullValue(true) }
+
+    override predicate branchImplies(ControlFlowElement cfe, ConditionalSuccessor s, Expr e) {
+      this = TNullValue(s.(NullnessSuccessor).getValue()) and
+      exists(NullnessCompletion c |
+        s.matchesCompletion(c) |
+        c.isValidFor(cfe) and
+        e = cfe
+      )
+    }
+
+    override string toString() {
+      if this.isNull() then result = "null" else result = "non-null"
+    }
+  }
+
+  /** A value that represents match or non-match against a specific `case` statement. */
+  class MatchValue extends AbstractValue, TMatchValue {
+    /** Gets the case statement. */
+    CaseStmt getCaseStmt() { this = TMatchValue(result, _) }
+
+    /** Holds if this value represents a match. */
+    predicate isMatch() { this = TMatchValue(_, true) }
+
+    override predicate branchImplies(ControlFlowElement cfe, ConditionalSuccessor s, Expr e) {
+      this = TMatchValue(_, s.(MatchingSuccessor).getValue()) and
+      exists(MatchingCompletion c, SwitchStmt ss, CaseStmt cs |
+        s.matchesCompletion(c) |
+        c.isValidFor(cfe) and
+        switchMatching(ss, cs, cfe) and
+        e = ss.getCondition() and
+        cs = this.getCaseStmt()
+      )
+    }
+
+    override string toString() {
+      exists(string s |
+        s = this.getCaseStmt().toString() |
+        if this.isMatch() then result = "match " + s else result = "non-match " + s
+      )
+    }
+  }
+
+  /** A value that represents an empty or non-empty collection. */
+  class EmptyCollectionValue extends AbstractValue, TEmptyCollectionValue {
+    /** Holds if this value represents an empty collection. */
+    predicate isEmpty() { this = TEmptyCollectionValue(true) }
+
+    override predicate branchImplies(ControlFlowElement cfe, ConditionalSuccessor s, Expr e) {
+      this = TEmptyCollectionValue(s.(EmptinessSuccessor).getValue()) and
+      exists(EmptinessCompletion c, ForeachStmt fs |
+        s.matchesCompletion(c) |
+        c.isValidFor(cfe) and
+        foreachEmptiness(fs, cfe) and
+        e = fs.getIterableExpr()
+      )
+    }
+
+    override string toString() {
+      if this.isEmpty() then result = "empty" else result = "non-empty"
+    }
+  }
+}
+private import AbstractValues
+
+/**
+ * An expression that evaluates to a value that can be dereferenced. That is,
+ * an expression that may evaluate to `null`.
+ */
+class DereferenceableExpr extends Expr {
+  DereferenceableExpr() {
+    exists(Expr e, Type t |
+      // There is currently a bug in the extractor: the type of `x?.Length` is
+      // incorrectly `int`, while it should have been `int?`. We apply
+      // `getNullEquivParent()` as a workaround
+      this = getNullEquivParent*(e) and
+      t = e.getType() |
+      t instanceof NullableType
+      or
+      t instanceof RefType
+    )
+  }
+
+  /**
+   * Gets an expression that directly tests whether this expression is `null`.
+   *
+   * If the returned expression evaluates to `v`, then this expression is
+   * guaranteed to be `null` if `isNull` is true, and non-`null` if `isNull` is
+   * false.
+   *
+   * For example, if the expression `x != null` evaluates to `true` then the
+   * expression `x` is guaranteed to be non-`null`.
+   */
+  private Expr getABooleanNullCheck(BooleanValue v, boolean isNull) {
+    exists(boolean branch |
+      branch = v.getValue() |
+      // Comparison with `null`, for example `x != null`
+      exists(ComparisonTest ct, ComparisonKind ck, NullLiteral nl |
+        ct.getExpr() = result and
+        ct.getAnArgument() = this and
+        ct.getAnArgument() = nl and
+        this != nl and
+        ck = ct.getComparisonKind() |
+        ck.isEquality() and isNull = branch
+        or
+        ck.isInequality() and isNull = branch.booleanNot()
+      )
+      or
+      // Comparison with a non-`null` value, for example `x?.Length > 0`
+      exists(ComparisonTest ct, ComparisonKind ck, Expr e |
+        ct.getExpr() = result |
+        ct.getAnArgument() = this and
+        ct.getAnArgument() = e and
+        nonNullValue(e) and
+        ck = ct.getComparisonKind() and
+        this != e and
+        isNull = false and
+        if ck.isInequality() then branch = false else branch = true
+      )
+      or
+      // Call to `string.IsNullOrEmpty()`
+      result = any(MethodCall mc |
+        mc.getTarget() = any(SystemStringClass c).getIsNullOrEmptyMethod() and
+        mc.getArgument(0) = this and
+        branch = false and
+        isNull = false
+      )
+      or
+      result = any(IsExpr ie |
+        ie.getExpr() = this and
+        if ie.(IsConstantExpr).getConstant() instanceof NullLiteral then
+          // E.g. `x is null`
+          isNull = branch
+        else
+          // E.g. `x is string` or `x is ""`
+          (branch = true and isNull = false)
+      )
+    )
+  }
+
+  /**
+   * Gets an expression that tests via matching whether this expression is `null`.
+   *
+   * If the returned element matches (`v.isMatch()`) or non-matches
+   * (`not v.isMatch()`), then this expression is guaranteed to be `null`
+   * if `isNull` is true, and non-`null` if `isNull` is false.
+   *
+   * For example, if the case statement `case string s` matches in
+   *
+   * ```
+   * switch (o)
+   * {
+   *     case string s:
+   *         return s;
+   *     default:
+   *         return "";
+   * }
+   * ```
+   *
+   * then `o` is guaranteed to be non-`null`.
+   */
+  private Expr getAMatchingNullCheck(MatchValue v, boolean isNull) {
+    exists(SwitchStmt ss, CaseStmt cs |
+      cs = v.getCaseStmt() and
+      this = ss.getCondition() and
+      result = this and
+      cs = ss.getACase() |
+      // E.g. `case string`
+      cs instanceof TypeCase and
+      v.isMatch() and
+      isNull = false
+      or
+      cs = any(ConstCase cc |
+        if cc.getExpr() instanceof NullLiteral then
+          // `case null`
+          if v.isMatch() then isNull = true else isNull = false
+        else (
+          // E.g. `case ""`
+          v.isMatch() and
+          isNull = false
+        )
+      )
+    )
+  }
+
+  /**
+   * Gets an expression that tests via nullness whether this expression is `null`.
+   *
+   * If the returned expression evaluates to `null` (`v.isNull()`) or evaluates to
+   * non-`null` (`not v.isNull()`), then this expression is guaranteed to be `null`
+   * if `isNull` is true, and non-`null` if `isNull` is false.
+   *
+   * For example, if `x` evaluates to `null` in `x ?? y` then `y` is evaluated, and
+   * `x` is guaranteed to be `null`.
+   */
+  private Expr getANullnessNullCheck(NullValue v, boolean isNull) {
+    exists(NullnessCompletion c |
+      c.isValidFor(this) |
+      result = this and
+      if c.isNull() then (
+        v.isNull() and
+        isNull = true
+      )
+      else (
+        not v.isNull() and
+        isNull = false
+      )
+    )
+  }
+
+  /**
+   * Gets an expression that tests whether this expression is `null`.
+   *
+   * If the returned expression has abstract value `v`, then this expression is
+   * guaranteed to be `null` if `isNull` is true, and non-`null` if `isNull` is
+   * false.
+   *
+   * For example, if the expression `x != null` evaluates to `true` then the
+   * expression `x` is guaranteed to be non-`null`.
+   */
+  Expr getANullCheck(AbstractValue v, boolean isNull) {
+    result = this.getABooleanNullCheck(v, isNull)
+    or
+    result = this.getAMatchingNullCheck(v, isNull)
+    or
+    result = this.getANullnessNullCheck(v, isNull)
+  }
+}
 
 /** An expression that accesses/calls a declaration. */
 class AccessOrCallExpr extends Expr {
@@ -61,12 +323,11 @@ private AssignableRead getATrackedRead(Ssa::Definition def) {
 /**
  * A guarded expression.
  *
- * A guarded expression is an access or a call that is reached only
- * when a conditional containing a structurally equal expression
- * evaluates to one of `true` or `false`.
+ * A guarded expression is an access or a call that is reached only when another
+ * expression, `e`, has a certain abstract value, where `e` contains a sub
+ * expression that is structurally equal to this expression.
  *
- * For example, the property call `x.Field.Property` on line 3 is
- * guarded in
+ * For example, the property call `x.Field.Property` on line 3 is guarded in
  *
  * ```
  * string M(C x) {
@@ -97,234 +358,77 @@ private AssignableRead getATrackedRead(Ssa::Definition def) {
  * definition).
  */
 class GuardedExpr extends AccessOrCallExpr {
-  private Expr cond0;
-  private AccessOrCallExpr e0;
-  private boolean b0;
-
-  GuardedExpr() {
-    Internal::isGuardedBy(this, cond0, e0, b0)
-  }
-
-  /**
-   * Holds if this expression is guarded by expression `cond`, which must
-   * evaluate to `b`. The expression `e` is a sub expression of `cond`
-   * that is structurally equal to this expression.
-   *
-   * In case this expression or `e` accesses an SSA variable in its
-   * left-most qualifier, then so must the other (accessing the same SSA
-   * variable).
-   */
-  predicate isGuardedBy(Expr cond, Expr e, boolean b) {
-    cond = cond0 and
-    e = e0 and
-    b = b0
-  }
-}
-
-/**
- * A nullness guarded expression.
- *
- * A nullness guarded expression is an access or a call that is reached only
- * when a nullness condition containing a structurally equal expression
- * evaluates to one of `null` or non-`null`.
- *
- * For example, the second access to `x` is only evaluated when `x` is null
- * in
- *
- * ```
- * string M(string x) => x ?? x;
- * ```
- */
-class NullnessGuardedExpr extends AccessOrCallExpr {
   private Expr e0;
-  private boolean isNull0;
+  private AccessOrCallExpr sub0;
+  private AbstractValue v0;
 
-  NullnessGuardedExpr() {
-    Internal::isGuardedByNullness(this, e0, isNull0)
+  GuardedExpr() { isGuardedBy(this, e0, sub0, v0) }
+
+  /**
+   * Gets an expression that guards this expression. That is, this expression is
+   * only reached when the returned expression has abstract value `v`.
+   *
+   * The expression `sub` is a sub expression of the guarding expression that is
+   * structurally equal to this expression.
+   *
+   * In case this expression or `sub` accesses an SSA variable in its
+   * left-most qualifier, then so must the other (accessing the same SSA
+   * variable).
+   */
+  Expr getAGuard(Expr sub, AbstractValue v) {
+    result = e0 and
+    sub = sub0 and
+    v = v0
   }
 
   /**
    * Holds if this expression is guarded by expression `cond`, which must
-   * evaluate to `b`. The expression `e` is a sub expression of `cond`
+   * evaluate to `b`. The expression `sub` is a sub expression of `cond`
    * that is structurally equal to this expression.
    *
-   * In case this expression or `e` accesses an SSA variable in its
+   * In case this expression or `sub` accesses an SSA variable in its
    * left-most qualifier, then so must the other (accessing the same SSA
    * variable).
    */
-  predicate isGuardedBy(Expr e, boolean isNull) {
-    e = e0 and
-    isNull = isNull0
-  }
-}
-
-/**
- * A matching guarded expression.
- *
- * A matching guarded expression is an access or a call that is reached only
- * when a pattern, matching against a structurally equal expression, matches
- * or non-matches.
- *
- * For example, the access to `o` on line 8 is only evaluated when `case null`
- * does not match.
- *
- * ```
- * string M(object o)
- * {
- *     switch (o)
- *     {
- *         case null:
- *             return "";
- *         default:
- *             return o.ToString();
- *     }
- * }
- * ```
- */
-class MatchingGuardedExpr extends AccessOrCallExpr {
-  private AccessOrCallExpr e0;
-  private CaseStmt cs0;
-  private boolean isMatch0;
-
-  MatchingGuardedExpr() {
-    Internal::isGuardedByMatching(this, e0, cs0, isMatch0)
-  }
-
-  /**
-   * Holds if this expression is guarded by case statement `cs` matching
-   * (`isMatch = true`) or non-matching (`isMatch = false`). The expression
-   * `e` is structurally equal to this expression being matched against in
-   * `cs`.
-   *
-   * In case this expression or `e` accesses an SSA variable in its
-   * left-most qualifier, then so must the other (accessing the same SSA
-   * variable).
-   */
-  predicate isGuardedBy(AccessOrCallExpr e, CaseStmt cs, boolean isMatch) {
-    e = e0 and
-    cs0 = cs and
-    isMatch0 = isMatch
+  predicate isGuardedBy(Expr cond, Expr sub, boolean b) {
+    cond = this.getAGuard(sub, any(BooleanValue v | v.getValue() = b))
   }
 }
 
 /** An expression guarded by a `null` check. */
-class NullGuardedExpr extends AccessOrCallExpr {
+class NullGuardedExpr extends GuardedExpr {
   NullGuardedExpr() {
-    this.getType() instanceof RefType and
-    exists(Expr cond, Expr sub, boolean b |
-      this.(GuardedExpr).isGuardedBy(cond, sub, b) |
-      // Comparison with `null`, for example `x != null`
-      exists(ComparisonTest ct, ComparisonKind ck |
-        ct.getExpr() = cond and
-        ct.getAnArgument() = Internal::getNullEquivParent*(sub) and
-        ct.getAnArgument() instanceof NullLiteral and
-        ck = ct.getComparisonKind() |
-        ck.isEquality() and b = false
-        or
-        ck.isInequality() and b = true
-      )
-      or
-      // Comparison with a non-`null` value, for example `x?.Length > 0`
-      exists(ComparisonTest ct, ComparisonKind ck, Type t |
-        ct.getExpr() = cond and
-        ct.getAnArgument() = Internal::getNullEquivParent*(sub) and
-        sub.getType() = t and
-        (t instanceof RefType or t instanceof NullableType) and
-        Internal::nonNullValue(ct.getAnArgument()) and
-        ck = ct.getComparisonKind() |
-        if ck.isInequality() then b = false else b = true
-      )
-      or
-      // Call to `string.IsNullOrEmpty()`
-      cond = any(MethodCall mc |
-        mc.getTarget() = any(SystemStringClass c).getIsNullOrEmptyMethod() and
-        mc.getArgument(0) = sub and
-        b = false
-      )
-      or
-      cond = any(IsExpr ie |
-        ie.getExpr() = sub and
-        if ie.(IsConstantExpr).getConstant() instanceof NullLiteral then
-          // E.g. `x is null`
-          b = false
-        else
-          // E.g. `x is string`
-          b = true
-      )
-    )
-    or
-    this.(NullnessGuardedExpr).isGuardedBy(_, false)
-    or
-    exists(CaseStmt cs, boolean isMatch |
-      this.(MatchingGuardedExpr).isGuardedBy(_, cs, isMatch) |
-      // E.g. `case string`
-      cs instanceof TypeCase and
-      isMatch = true
-      or
-      cs = any(ConstCase cc |
-        if cc.getExpr() instanceof NullLiteral then
-          // `case null`
-          isMatch = false
-        else
-          // E.g. `case ""`
-          isMatch = true
-      )
-    )
+    exists(Expr e, NullValue v | e = this.getAGuard(e, v) | not v.isNull())
   }
 }
 
-private module Internal {
-  private import semmle.code.csharp.controlflow.Completion
-  private import ControlFlow::SuccessorTypes
+/** INTERNAL: Do not use. */
+module Internal {
+  private import ControlFlow::Internal
 
-  private cached module Cached {
-    cached predicate isGuardedBy(AccessOrCallExpr guarded, Expr cond, AccessOrCallExpr e, boolean b) {
-      exists(BasicBlock bb |
-        controls(cond, e, bb, b) and
-        bb = guarded.getAControlFlowNode().getBasicBlock() and
-        exists(ConditionOnExprComparisonConfig c | c.same(e, guarded)) |
-        not guarded.hasSsaQualifier() and not e.hasSsaQualifier()
-        or
-        guarded.getSsaQualifier() = e.getSsaQualifier()
-      )
-    }
-
-    cached predicate isGuardedByNullness(AccessOrCallExpr guarded, AccessOrCallExpr e, boolean isNull) {
-      exists(BasicBlock bb |
-        controlsNullness(e, bb, isNull) and
-        bb = guarded.getAControlFlowNode().getBasicBlock() and
-        exists(ConditionOnExprComparisonConfig c | c.same(e, guarded)) |
-        not guarded.hasSsaQualifier() and not e.hasSsaQualifier()
-        or
-        guarded.getSsaQualifier() = e.getSsaQualifier()
-      )
-    }
-
-    cached predicate isGuardedByMatching(AccessOrCallExpr guarded, AccessOrCallExpr e, CaseStmt cs, boolean isMatch) {
-      exists(BasicBlock bb |
-        controlsMatching(e, cs, bb, isMatch) and
-        bb = guarded.getAControlFlowNode().getBasicBlock() and
-        exists(ConditionOnExprComparisonConfig c | c.same(e, guarded)) |
-        not guarded.hasSsaQualifier() and not e.hasSsaQualifier()
-        or
-        guarded.getSsaQualifier() = e.getSsaQualifier()
-      )
-    }
-  }
-  import Cached
+  newtype TAbstractValue =
+    TBooleanValue(boolean b) { b = true or b = false }
+    or
+    TNullValue(boolean b) { b = true or b = false }
+    or
+    TMatchValue(CaseStmt cs, boolean b) { b = true or b = false }
+    or
+    TEmptyCollectionValue(boolean b) { b = true or b = false }
 
   /**
-   * Gets the parent expression of `e` which is `null` iff `e` is null,
+   * Gets the parent expression of `e` which is `null` only if `e` is `null`,
    * if any. For example, `result = x?.y` and `e = x`, or `result = x + 1`
    * and `e = x`.
    */
   Expr getNullEquivParent(Expr e) {
-    exists(QualifiableExpr qe |
-      result = qe and
+    result = any(QualifiableExpr qe |
       qe.getQualifier() = e and
-      qe.isConditional() |
-      qe.(FieldAccess).getTarget().getType() instanceof ValueType or
-      qe.(Call).getTarget().getReturnType() instanceof ValueType
+      qe.isConditional() and
+      (
+        result.(FieldAccess).getTarget().getType() instanceof ValueType
+        or
+        result.(Call).getTarget().getReturnType() instanceof ValueType
+      )
     )
     or
     // In C#, `null + 1` has type `int?` with value `null`
@@ -340,41 +444,6 @@ private module Internal {
   /** Holds if expression `e` is a non-`null` value. */
   predicate nonNullValue(Expr e) {
     e.stripCasts() = any(Expr s | s.hasValue() and not s instanceof NullLiteral)
-  }
-
-  /**
-   * Holds if basic block `bb` only is reached when `cond` evaluates to `b`.
-   * SSA qualified expression `e` is a sub expression of `cond`.
-   */
-  private predicate controls(Expr cond, AccessOrCallExpr e, BasicBlock bb, boolean b) {
-    exists(ConditionBlock cb | cb.controlsSubCond(bb, _, cond, b)) and
-    cond.getAChildExpr*() = e
-  }
-
-  /**
-   * Holds if basic block `bb` only is reached when `e` evaluates to `null`
-   * (`isNull = true`) or when `e` evaluates to non-`null` (`isNull = false`).
-   */
-  private predicate controlsNullness(Expr e, BasicBlock bb, boolean isNull) {
-    exists(ConditionBlock cb, NullnessSuccessor s |
-      cb.controls(bb, s) |
-      isNull = s.getValue() and
-      e = cb.getLastNode().getElement()
-    )
-  }
-
-  /**
-   * Holds if basic block `bb` only is reached when `e` matches case `cs`
-   * (`isMatch = true`) or when `e` does not match `cs` (`isMatch = false`).
-   */
-  private predicate controlsMatching(Expr e, CaseStmt cs, BasicBlock bb, boolean isMatch) {
-    exists(ConditionBlock cb, SwitchStmt ss, ControlFlowElement cfe, MatchingSuccessor s |
-      cb.controls(bb, s) |
-      cfe = cb.getLastNode().getElement() and
-      switchMatching(ss, cs, cfe) and
-      e = ss.getCondition() and
-      isMatch = s.getValue()
-    )
   }
 
   /**
@@ -403,13 +472,188 @@ private module Internal {
     pragma [noinline]
     private predicate candidateAux(AccessOrCallExpr e, Declaration target, BasicBlock bb) {
       target = e.getTarget() and
-      (
-        controls(_, e, bb, _)
-        or
-        controlsNullness(e, bb, _)
-        or
-        controlsMatching(e, _, bb, _)
-      )
+      controls(bb, _, e, _)
     }
   }
+
+  /**
+   * Holds if basic block `bb` only is reached when `e` has abstract value `v`.
+   * SSA qualified expression `sub` is a sub expression of `e`.
+   */
+  private predicate controls(BasicBlock bb, Expr e, AccessOrCallExpr sub, AbstractValue v) {
+    exists(ConditionBlock cb, ConditionalSuccessor s, AbstractValue v0, Expr cond |
+      cb.controls(bb, s) |
+      v0.branchImplies(cb.getLastNode().getElement(), s, cond) and
+      impliesSteps(cond, v0, e, v) and
+      sub = e.getAChildExpr*()
+    )
+  }
+
+  private cached module Cached {
+    cached
+    predicate isGuardedBy(AccessOrCallExpr guarded, Expr e, AccessOrCallExpr sub, AbstractValue v) {
+      exists(BasicBlock bb |
+        controls(bb, e, sub, v) and
+        bb = guarded.getAControlFlowNode().getBasicBlock() and
+        exists(ConditionOnExprComparisonConfig c | c.same(sub, guarded)) |
+        not guarded.hasSsaQualifier() and not sub.hasSsaQualifier()
+        or
+        guarded.getSsaQualifier() = sub.getSsaQualifier()
+      )
+    }
+
+    /**
+     * Holds if `e1` having abstract value `v1` implies that `e2` has abstract
+     * value `v2, using one step of reasoning.
+     */
+    cached
+    predicate impliesStep(Expr e1, AbstractValue v1, Expr e2, AbstractValue v2) {
+      exists(BinaryOperation bo |
+        bo instanceof BitwiseAndExpr or
+        bo instanceof LogicalAndExpr
+      |
+        bo = e1 and
+        e2 = bo.getAnOperand() and
+        v1 = TBooleanValue(true) and
+        v2 = v1
+        or
+        bo = e2 and
+        e1 = bo.getAnOperand() and
+        v1 = TBooleanValue(false) and
+        v2 = v1
+      )
+      or
+      exists(BinaryOperation bo |
+        bo instanceof BitwiseOrExpr or
+        bo instanceof LogicalOrExpr
+      |
+        bo = e1 and
+        e2 = bo.getAnOperand() and
+        v1 = TBooleanValue(false) and
+        v2 = v1
+        or
+        bo = e2 and
+        e1 = bo.getAnOperand() and
+        v1 = TBooleanValue(true) and
+        v2 = v1
+      )
+      or
+      e1.(LogicalNotExpr).getOperand() = e2 and
+      v2 = TBooleanValue(v1.(BooleanValue).getValue().booleanNot())
+      or
+      e1 = e2.(LogicalNotExpr).getOperand() and
+      v2 = TBooleanValue(v1.(BooleanValue).getValue().booleanNot())
+      or
+      exists(ComparisonTest ct, boolean polarity, BoolLiteral boolLit, boolean b |
+        ct.getAnArgument() = boolLit and
+        b = boolLit.getBoolValue() and
+        v2 = TBooleanValue(v1.(BooleanValue).getValue().booleanXor(polarity).booleanXor(b)) |
+        ct.getComparisonKind().isEquality() and
+        polarity = true and
+        (
+          // e1 === e2 == b, v1 === !(v2 xor b)
+          e1 = ct.getExpr() and
+          e2 = ct.getAnArgument()
+          or
+          // e2 === e1 == b, v1 === !(v2 xor b)
+          e1 = ct.getAnArgument() and
+          e2 = ct.getExpr()
+        )
+        or
+        ct.getComparisonKind().isInequality() and
+        polarity = false and
+        (
+          // e1 === e2 != b, v1 === v2 xor b
+          e1 = ct.getExpr() and
+          e2 = ct.getAnArgument()
+          or
+          // e2 === e1 != true, v1 === v2 xor b
+          e1 = ct.getAnArgument() and
+          e2 = ct.getExpr()
+        )
+      )
+      or
+      exists(ConditionalExpr cond, boolean branch, BoolLiteral boolLit, boolean b |
+        b = boolLit.getBoolValue() and
+        (
+          cond.getThen() = boolLit and branch = true
+          or
+          cond.getElse() = boolLit and branch = false
+        )
+      |
+        e1 = cond and
+        v1 = TBooleanValue(b.booleanNot()) and
+        (
+          // e1 === e2 ? b : x, v1 === !b, v2 === false; or
+          // e1 === e2 ? x : b, v1 === !b, v2 === true
+          e2 = cond.getCondition() and
+          v2 = TBooleanValue(branch.booleanNot())
+          or
+          // e1 === x ? e2 : b, v1 === !b, v2 === v1
+          e2 = cond.getThen() and
+          branch = false and
+          v2 = v1
+          or
+          // e1 === x ? b : e2, v1 === !b, v2 === v1
+          e2 = cond.getElse() and
+          branch = true and
+          v2 = v1
+        )
+        or
+        // e2 === e1 ? b : x, v1 === true, v2 === b; or
+        // e2 === e1 ? x : b, v1 === false, v2 === b
+        e1 = cond.getCondition() and
+        e2 = cond and
+        v1 = TBooleanValue(branch) and
+        v2 = TBooleanValue(b)
+      )
+      or
+      exists(boolean isNull |
+        v2 = any(NullValue nv | if nv.isNull() then isNull = true else isNull = false) |
+        e1 = e2.(DereferenceableExpr).getANullCheck(v1, isNull) and
+        (e1 != e2 or v1 != v2)
+      )
+      or
+      e1 instanceof DereferenceableExpr and
+      e1 = getNullEquivParent(e2) and
+      v1 instanceof NullValue and
+      v1 = v2
+    }
+  }
+  import Cached
+
+  /**
+   * Holds if `e1` having some abstract value, `v`, implies that `e2` has the same
+   * abstract value `v`.
+   */
+  predicate impliesStepIdentity(Expr e1, Expr e2) {
+    exists(PreSsa::Definition def |
+      def.getDefinition().getSource() = e2 |
+      e1 = def.getARead()
+    )
+  }
+
+  /**
+   * Holds if `e1` having abstract value `v1` implies that `e2` has abstract value
+   * `v2, using zero or more steps of reasoning.
+   */
+  predicate impliesSteps(Expr e1, AbstractValue v1, Expr e2, AbstractValue v2) {
+    e1.getType() instanceof BoolType and
+    e1 = e2 and
+    v1 = v2 and
+    v1 = TBooleanValue(_)
+    or
+    v1.branchImplies(_, _, e1) and
+    e2 = e1 and
+    v2 = v1
+    or
+    exists(Expr mid, AbstractValue vMid |
+      impliesSteps(e1, v1, mid, vMid) |
+      impliesStep(mid, vMid, e2, v2)
+      or
+      impliesStepIdentity(mid, e2) and
+      v2 = vMid
+    )
+  }
 }
+private import Internal

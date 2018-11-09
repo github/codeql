@@ -171,6 +171,16 @@ class Reachability {
   static Reachability staticInstance;
 };
 
+class Forgivable {
+  // GOOD: wrong return type but that doesn't matter on a deleted function.
+  Forgivable operator=(const Forgivable &_val) = delete;
+
+private:
+  // GOOD: wrong return type but that doesn't matter because this operator is
+  // private and probably also unimplemented, so no code can call it.
+  Forgivable operator=(int *_val);
+};
+
 int main() {
   Container c;
   c = c;

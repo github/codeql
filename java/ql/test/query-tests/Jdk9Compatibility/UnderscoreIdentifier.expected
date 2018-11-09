@@ -1,5 +1,0 @@
-| p/_/UnderscoreIdentifier.java:0:0:0:0 | UnderscoreIdentifier | Use of underscore as a one-character identifier in package name 'p._'. |
-| p/_/UnderscoreIdentifier.java:4:8:4:8 | _ | Use of underscore as a one-character identifier. |
-| p/_/UnderscoreIdentifier.java:5:6:5:6 | _ | Use of underscore as a one-character identifier. |
-| p/_/UnderscoreIdentifier.java:6:12:6:16 | _ | Use of underscore as a one-character identifier. |
-| p/_/UnderscoreIdentifier.java:9:3:9:12 | boolean _ | Use of underscore as a one-character identifier. |

@@ -94,4 +94,17 @@ function l() {
     }
 });
 
+(function(){
+    function f() {
+    }
+    f()|0;
+
+    unknown()|0;
+
+    function g() {
+    }
+    g()|0;
+    g();
+});
+
 // semmle-extractor-options: --experimental

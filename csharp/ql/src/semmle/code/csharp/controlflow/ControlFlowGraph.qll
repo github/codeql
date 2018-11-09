@@ -2593,6 +2593,15 @@ module ControlFlow {
           this = TPhiPreSsaDef(_, result)
         }
 
+        LocalScopeVariableRead getARead() {
+          firstReadSameVar(this, result)
+          or
+          exists(LocalScopeVariableRead read |
+            firstReadSameVar(this, read) |
+            adjacentReadPairSameVar+(read, result)
+          )
+        }
+
         Location getLocation() {
           exists(AssignableDefinition def |
             this = TExplicitPreSsaDef(_, _, def, _) |
@@ -2720,21 +2729,29 @@ module ControlFlow {
         ssaRefRank(bb2, i2, v, _) = 1
       }
 
-      predicate firstReadSameVar(Definition def, LocalScopeVariableRead read) {
-        exists(SimpleLocalScopeVariable v, PreBasicBlock b1, int i1, PreBasicBlock b2, int i2 |
-          adjacentVarRefs(v, b1, i1, b2, i2) and
-          defAt(b1, i1, def, v) and
-          readAt(b2, i2, read, v)
-        )
-      }
+      private cached module PreSsaCached {
+        cached
+        predicate firstReadSameVar(Definition def, LocalScopeVariableRead read) {
+          exists(SimpleLocalScopeVariable v, PreBasicBlock b1, int i1, PreBasicBlock b2, int i2 |
+            adjacentVarRefs(v, b1, i1, b2, i2) and
+            defAt(b1, i1, def, v) and
+            readAt(b2, i2, read, v)
+          )
+        }
 
-      predicate adjacentReadPairSameVar(LocalScopeVariableRead read1, LocalScopeVariableRead read2) {
-        exists(SimpleLocalScopeVariable v, PreBasicBlock bb1, int i1, PreBasicBlock bb2, int i2 |
-          adjacentVarRefs(v, bb1, i1, bb2, i2) and
-          readAt(bb1, i1, read1, v) and
-          readAt(bb2, i2, read2, v)
-        )
+        cached
+        predicate adjacentReadPairSameVar(LocalScopeVariableRead read1, LocalScopeVariableRead read2) {
+          exists(SimpleLocalScopeVariable v, PreBasicBlock bb1, int i1, PreBasicBlock bb2, int i2 |
+            adjacentVarRefs(v, bb1, i1, bb2, i2) and
+            readAt(bb1, i1, read1, v) and
+            readAt(bb2, i2, read2, v)
+          )
+        }
+
+        cached
+        predicate forceCachingInSameStage() { any() }
       }
+      import PreSsaCached
     }
 
     /**
@@ -3327,11 +3344,7 @@ module ControlFlow {
            * Holds if condition `cb` is a read of the SSA variable in this split.
            */
           private predicate defCondition(ConditionBlock cb) {
-            exists(LocalScopeVariableRead read1, LocalScopeVariableRead read2 |
-              firstReadSameVar(def, read1) |
-              adjacentReadPairSameVar*(read1, read2) and
-              read2 = cb.getLastElement()
-            )
+            cb.getLastElement() = def.getARead()
           }
 
           /**
@@ -3827,6 +3840,7 @@ module ControlFlow {
       cached
       newtype TPreSsaDef =
         TExplicitPreSsaDef(PreBasicBlocks::PreBasicBlock bb, int i, AssignableDefinition def, LocalScopeVariable v) {
+          PreSsa::forceCachingInSameStage() and
           PreSsa::assignableDefAt(bb, i, def, v)
         }
         or
