@@ -374,6 +374,16 @@ public class AutoBuild {
 	 */
 	private void extractExterns() throws IOException {
 		ExtractorConfig config = new ExtractorConfig(false).withExterns(true);
+
+		// use explicitly specified trap cache, or otherwise $SEMMLE_DIST/.cache/trap-cache/javascript,
+		// which we pre-populate when building the distribution
+		ITrapCache trapCache = this.trapCache;
+		if (trapCache instanceof DummyTrapCache) {
+			Path trapCachePath = SEMMLE_DIST.resolve(".cache").resolve("trap-cache").resolve("javascript");
+			if (Files.isDirectory(trapCachePath))
+				trapCache = new DefaultTrapCache(trapCachePath.toString(), null, Main.EXTRACTOR_VERSION);
+		}
+
 		FileExtractor extractor = new FileExtractor(config, outputConfig, trapCache, extractorState);
 		FileVisitor<? super Path> visitor = new SimpleFileVisitor<Path>() {
 			@Override
