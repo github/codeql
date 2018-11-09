@@ -9,9 +9,7 @@
 * Support for popular libraries has been improved. Consequently, queries may produce more results on code bases that use the following features:
   - file system access, for example through [fs-extra](https://github.com/jprichardson/node-fs-extra) or [globby](https://www.npmjs.com/package/globby)
   - outbound network access, for example through the [fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
-  - the [Google Cloud Spanner](https://cloud.google.com/spanner), [lodash](https://lodash.com), [underscore](https://underscorejs.org/), [async](https://www.npmjs.com/package/async) and [async-es](https://www.npmjs.com/package/async-es) libraries
-
-* The type inference now handles nested imports (that is, imports not appearing at the toplevel). This may yield fewer false-positive results on projects that use this non-standard language feature.
+  - the [lodash](https://lodash.com), [underscore](https://underscorejs.org/), [async](https://www.npmjs.com/package/async) and [async-es](https://www.npmjs.com/package/async-es) libraries
 
 * Type inference for function calls has been improved. This may give additional results for queries that rely on type inference.
 
@@ -39,7 +37,6 @@
 | Server-side URL redirect | More results | This rule now recognizes redirection calls in more cases. |
 | Unused variable, import, function or class | Fewer false-positive results | This rule now flags fewer variables that may be used by `eval` calls. |
 | Unused variable, import, function or class | Fewer results | This rule now flags import statements with multiple unused imports once. |
-| User-controlled bypass of security check | Fewer results | This rule no longer flags conditions that guard early returns. The precision of this rule has been revised to "medium". Results are no longer shown on LGTM by default. | 
 | Whitespace contradicts operator precedence | Fewer false-positive results | This rule no longer flags operators with asymmetric whitespace. |
 | Unused import | Fewer false-positive results | This rule no longer flags imports used by the `transform-react-jsx` Babel plugin. |
 | Self assignment | Fewer false-positive results | This rule now ignores self-assignments preceded by a JSDoc comment with a `@type` tag. |
