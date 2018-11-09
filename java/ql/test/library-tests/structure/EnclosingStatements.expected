@@ -6,6 +6,7 @@
 | structure/A.java:15:17:15:17 | A | --none-- |
 | structure/A.java:16:2:16:4 | int | --none-- |
 | structure/A.java:21:2:21:4 | int | --none-- |
+| structure/A.java:24:7:24:7 | <obinit>(...) | stmt on line 24 |
 | structure/A.java:24:17:24:17 | B | --none-- |
 | structure/A.java:25:4:25:13 | new (...) | stmt on line 25 |
 | structure/A.java:25:8:25:8 | C | stmt on line 25 |
