@@ -424,34 +424,50 @@ module RangeAnalysis {
   }
 
   /**
-   * Holds constraints derived from `A = const`.
+   * Holds if a comparison implies that `A <= B + c`.
    *
-   * `A = c` is written to `A + A = 2c` which is then converted to `<=` and `>=`.
-   *
-   *   A + A <= 2c  becomes  A <= -A + 2c
-   *   A + A >= 2c  becomes  -A <= A - 2c
+   * Comparisons where one operand is really a constant are converted into a unary constraint.
    */
-  predicate constantEdge(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, Bias c) {
-    exists (NumberLiteral literal | cfg = literal |
-      isRelevant(literal.flow()) and
-      literal.getIntValue() instanceof Bias and // avoid overflow
-      a = literal.flow() and
+  predicate foldedComparisonEdge(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, Bias c, boolean sharp) {
+    // A <= B + c    (where A and B are not constants)
+    comparisonEdge(cfg, a, asign, b, bsign, c, sharp) and
+    not exists(a.asExpr().getIntValue()) and
+    not exists(b.asExpr().getIntValue())
+    or
+    // A - k <= c  becomes  A - (-A) <= 2*(k + c)
+    exists (DataFlow::Node k, int ksign, Bias kbias, Bias value |
+      comparisonEdge(cfg, a, asign, k, ksign, kbias, sharp) and
+      value = k.asExpr().getIntValue() and
       b = a and
-      (asign = 1 or asign = -1) and
       bsign = -asign and
-      c = literal.getIntValue() * 2 * asign)
+      c = 2 * (value * ksign + kbias))
+    or
+    // k - A <= c   becomes   -A - A <= 2(-k + c)
+    exists (DataFlow::Node k, int ksign, Bias kbias, Bias value |
+      comparisonEdge(cfg, k, ksign, b, bsign, kbias, sharp) and
+      value = k.asExpr().getIntValue() and
+      a = b and
+      asign = -bsign and
+      c = 2 * (-value * ksign + kbias))
+    or
+    // For completeness, generate a contradictory constraint for trivially false conditions.
+    exists (DataFlow::Node k, int ksign, Bias bias, int avalue, int kvalue |
+      comparisonEdge(cfg, a, asign, k, ksign, bias, sharp) and
+      avalue = a.asExpr().getIntValue() * asign and
+      kvalue = b.asExpr().getIntValue() * bsign and
+      (avalue < kvalue + bias or sharp = true and avalue = kvalue + bias) and
+      a = b and
+      asign = bsign and
+      c = -1)
   }
 
   /**
    * The set of initial edges including those from dual constraints.
    */
   predicate seedEdge(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, Bias c, boolean sharp) {
-    // A <= B + c
-    comparisonEdge(cfg, a, asign, b, bsign, c, sharp)
+    foldedComparisonEdge(cfg, a, asign, b, bsign, c, sharp)
     or
     phiEdge(cfg, a, asign, b, bsign, c) and sharp = false
-    or
-    constantEdge(cfg, a, asign, b, bsign, c) and sharp = false
   }
 
   private predicate seedEdgeWithDual(ControlFlowNode cfg, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, Bias c, boolean sharp) {
