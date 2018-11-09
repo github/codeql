@@ -21,6 +21,10 @@ public class SourceLocation {
 		this(source, start, null);
 	}
 
+	public SourceLocation(SourceLocation that) {
+		this(that.source, that.start, that.end);
+	}
+
 	/**
 	 * The source code contained in this location.
 	 */
