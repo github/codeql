@@ -2,6 +2,7 @@
  * Provides classes for working with JavaScript programs, as well as JSON, YAML and HTML.
  */
 
+import semmle.javascript.Aliases
 import semmle.javascript.AMD
 import semmle.javascript.AST
 import semmle.javascript.BasicBlocks
