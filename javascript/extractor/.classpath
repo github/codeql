@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry excluding=".git" kind="src" path="lib/esregex"/>
-	<classpathentry excluding=".git" kind="src" path="lib/external/doctrine"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/util-shared"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/util-java7"/>
