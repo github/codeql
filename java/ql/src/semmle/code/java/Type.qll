@@ -435,22 +435,6 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
     hasInterfaceMethod(m, declaringType) and hidden = false
   }
 
-  private predicate noMethodExtraction() {
-    not methods(_, _, _, _, this, _) and
-    exists(Method m | methods(m, _, _, _, getSourceDeclaration(), _) and m.isInheritable())
-  }
-
-  private predicate canInheritFromSupertype(RefType sup) {
-    sup = getASupertype() and
-    (noMethodExtraction() implies supertypeSrcDecl(sup, getSourceDeclaration()))
-  }
-
-  pragma[nomagic]
-  private predicate supertypeSrcDecl(RefType sup, RefType srcDecl) {
-    sup = getASupertype() and
-    srcDecl = sup.getSourceDeclaration()
-  }
-
   private predicate hasNonInterfaceMethod(Method m, RefType declaringType, boolean hidden) {
     m = getAMethod() and
     this = declaringType and
@@ -464,7 +448,7 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
         else h1 = false
       ) and
       (not sup instanceof Interface or this instanceof Interface) and
-      canInheritFromSupertype(sup) and
+      this.extendsOrImplements(sup) and
       sup.hasNonInterfaceMethod(m, declaringType, h2) and
       hidden = h1.booleanOr(h2) and
       exists(string signature |
@@ -491,7 +475,7 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
     exists(RefType sup |
       sup.interfaceMethodCandidateWithSignature(m, signature, declaringType) and
       not cannotInheritInterfaceMethod(signature) and
-      canInheritFromSupertype(sup) and
+      this.extendsOrImplements(sup) and
       m.isInheritable()
     )
   }
