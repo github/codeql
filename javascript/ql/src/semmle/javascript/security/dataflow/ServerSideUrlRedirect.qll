@@ -43,7 +43,7 @@ module ServerSideUrlRedirect {
     }
 
     override predicate isSanitizer(DataFlow::Node source, DataFlow::Node sink) {
-      sanitizingPrefixEdge(source, sink)
+      hostnameSanitizingPrefixEdge(source, sink)
     }
 
     override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
