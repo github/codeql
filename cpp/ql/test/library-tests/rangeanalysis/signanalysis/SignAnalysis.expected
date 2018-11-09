@@ -10,6 +10,8 @@
 | bounded_bounds.c:5:7:5:7 | Load: x | positive |
 | bounded_bounds.c:6:11:6:11 | Load: y | positive strictlyPositive |
 | bounded_bounds.c:6:11:6:11 | Store: y | positive strictlyPositive |
+| bounded_bounds.c:16:12:16:12 | Load: x | negative strictlyNegative |
+| bounded_bounds.c:16:12:16:12 | Store: x | negative strictlyNegative |
 | inline_assembly.c:9:23:9:23 | Uninitialized: definition of y | positive |
 | inline_assembly.c:10:3:10:7 | Store: ... = ... | positive strictlyPositive |
 | inline_assembly.c:10:7:10:7 | Constant: (unsigned int)... | positive strictlyPositive |

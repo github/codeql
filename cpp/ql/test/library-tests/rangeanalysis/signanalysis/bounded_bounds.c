@@ -10,7 +10,7 @@ int f(int x, int y) {
 
 int g(int x, int y) {
   if (x < y) {
-    return y
+    return y;
   }
   if (x < 0) {
     return x;
