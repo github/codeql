@@ -6,6 +6,7 @@
  * Note: This module should not be a permanent part of the standard library imports.
  */
 
+import AdditionalFrameworks
 import AdditionalPromises
 import AdditionalRouteHandlers
 import AdditionalSources
