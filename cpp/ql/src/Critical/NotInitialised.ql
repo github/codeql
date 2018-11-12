@@ -1,6 +1,6 @@
 /**
  * @name Variable not initialized before use
- * @description A variable is used before initialized. The value of a variable is undefined before initialization, and its use should be avoided.
+ * @description Using an uninitialized variable may lead to undefined results.
  * @kind problem
  * @id cpp/not-initialised
  * @problem.severity error

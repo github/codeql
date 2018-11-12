@@ -1,6 +1,6 @@
 /**
  * @name Open descriptor may not be closed
- * @description A function may return before closing a socket or file that was opened in the function. Closing resources in the same function that opened them ties the lifetime of the resource to that of the function call, making it easier to avoid and detect resource leaks.
+ * @description Failing to close resources in the function that opened them, makes it difficult to avoid and detect resource leaks.
  * @kind problem
  * @id cpp/descriptor-may-not-be-closed
  * @problem.severity warning

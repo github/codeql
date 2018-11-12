@@ -1,6 +1,6 @@
 /**
  * @name Initialization code not run
- * @description A global variable has initialization code, but that code is never run (i.e. is called directly or indirectly from main()). Accessing uninitialized variables leads to undefined results.
+ * @description Using an uninitialized variable may lead to undefined results.
  * @kind problem
  * @id cpp/initialization-not-run
  * @problem.severity warning

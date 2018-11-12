@@ -1,6 +1,6 @@
 /**
  * @name Open descriptor never closed
- * @description A function always returns before closing a socket or file that was opened in the function. Closing resources in the same function that opened them ties the lifetime of the resource to that of the function call, making it easier to avoid and detect resource leaks.
+ * @description Functions that always return before closing the socket or file they opened leak resources.
  * @kind problem
  * @id cpp/descriptor-never-closed
  * @problem.severity warning

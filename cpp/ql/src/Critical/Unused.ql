@@ -1,6 +1,6 @@
 /**
  * @name Variable is assigned a value that is never read
- * @description A variable is assigned a value but is never read. These variables are usually orphaned due to changes in code and can be removed, or may indicate a bug in the code that is caused by an omission of the unused variable.
+ * @description Assigning a value to a variable that is not used may indicate an error in the code.
  * @kind problem
  * @id cpp/unused-variable
  * @problem.severity warning

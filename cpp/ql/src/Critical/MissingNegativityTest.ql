@@ -1,6 +1,7 @@
 /**
  * @name Unchecked return value used as offset
- * @description A return value from a function is used as a pointer offset before it is checked for being positive/negative. Integer values used as pointer offsets should be checked, especially if they are derived from user input.
+ * @description  Using a value as a pointer offset without checking that the value is positive
+ *               may lead to buffer overruns.
  * @kind problem
  * @id cpp/missing-negativity-test
  * @problem.severity warning

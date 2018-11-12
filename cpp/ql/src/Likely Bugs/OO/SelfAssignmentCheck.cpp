@@ -8,7 +8,7 @@ public:
   MyClass &operator=(const MyClass &other)
   {
     delete data;
-    data = other.data->clone(); // BAD: if other == *this, other.data has already been deleted!
+    data = other.data->clone(); // wrong: if other == *this, other.data has already been deleted!
     return *this;
   }
 
@@ -28,7 +28,7 @@ public:
 
   MyClass &operator=(const MyClass &other)
   {
-    if (this == &other) { return *this; } // FIXED
+    if (this == &other) { return *this; } // correct
     delete data;
     data = other.data->clone();
     return *this;
