@@ -380,8 +380,16 @@ public class AutoBuild {
 		ITrapCache trapCache = this.trapCache;
 		if (trapCache instanceof DummyTrapCache) {
 			Path trapCachePath = SEMMLE_DIST.resolve(".cache").resolve("trap-cache").resolve("javascript");
-			if (Files.isDirectory(trapCachePath))
-				trapCache = new DefaultTrapCache(trapCachePath.toString(), null, Main.EXTRACTOR_VERSION);
+			if (Files.isDirectory(trapCachePath)) {
+				trapCache = new DefaultTrapCache(trapCachePath.toString(), null, Main.EXTRACTOR_VERSION) {
+					@Override
+					public File lookup(String source, ExtractorConfig config, FileType type) {
+						File f = super.lookup(source, config, type);
+						// only return `f` if it exists; this has the effect of making the cache read-only
+						return f.exists() ? f : null;
+					}
+				};
+			}
 		}
 
 		FileExtractor extractor = new FileExtractor(config, outputConfig, trapCache, extractorState);
