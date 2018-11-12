@@ -567,6 +567,8 @@ module RangeAnalysis {
     exists (DataFlow::Node mid, int midx, Bias c1, Bias c2, boolean sharp1, boolean sharp2 |
       extendedEdge(a, asign, mid, midx, c1, sharp1, cfg1) and
       extendedEdge(mid, midx, b, bsign, c2, sharp2, cfg2) and
+      (a != mid or asign != midx) and
+      (b != mid or bsign != midx) and
       sharp = sharp1.booleanOr(sharp2) and
       c = wideningAddition(c1, sharp1, c2, sharp2))
   }
