@@ -65,5 +65,5 @@ private predicate hasHostnameSanitizingSubstring(DataFlow::Node nd) {
 predicate hostnameSanitizingPrefixEdge(DataFlow::Node source, DataFlow::Node sink) {
   exists (DataFlow::Node operator, int n |
     StringConcatenation::taintStep(source, sink, operator, n) and
-    hasSanitizingSubstring(StringConcatenation::getOperand(operator, [0..n-1])))
+    hasHostnameSanitizingSubstring(StringConcatenation::getOperand(operator, [0..n-1])))
 }
