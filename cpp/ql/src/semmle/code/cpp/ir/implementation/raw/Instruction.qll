@@ -761,6 +761,12 @@ class RemInstruction extends BinaryInstruction {
   }
 }
 
+class NegateInstruction extends UnaryInstruction {
+  NegateInstruction() {
+    opcode instanceof Opcode::Negate
+  }
+}
+
 class BitAndInstruction extends BinaryInstruction {
   BitAndInstruction() {
     opcode instanceof Opcode::BitAnd

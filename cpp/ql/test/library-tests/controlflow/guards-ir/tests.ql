@@ -51,7 +51,7 @@ query predicate irGuards(IRGuardCondition guard) {
 }
 
 query predicate irGuardsCompare(int startLine, string msg) {
-  exists(IRGuardCondition guard, Instruction left, Instruction right, int k, string which, string op |
+  exists(IRGuardCondition guard, Operand left, Operand right, int k, string which, string op |
     exists(boolean sense |
       sense = true and which = "true"
       or sense = false and which = "false"
@@ -65,7 +65,7 @@ query predicate irGuardsCompare(int startLine, string msg) {
       guard.comparesEq(left, right, k, false, sense)  and op = " != "
     )
     and startLine = guard.getLocation().getStartLine()
-    and msg = left.getUnconvertedResultExpression() + op + right.getUnconvertedResultExpression() + "+" + k + " when " + guard + " is " + which
+    and msg = left.getDefinitionInstruction().getUnconvertedResultExpression() + op + right.getDefinitionInstruction().getUnconvertedResultExpression() + "+" + k + " when " + guard + " is " + which
   )
 }
 query predicate irGuardsControl(IRGuardCondition guard, boolean sense, int start, int end) {
@@ -77,15 +77,18 @@ query predicate irGuardsControl(IRGuardCondition guard, boolean sense, int start
 
 query predicate irGuardsEnsure(IRGuardCondition guard, Instruction left, string op, Instruction right, int k, int start, int end)
 {
-  exists(IRBlock block |
-   guard.ensuresLt(left, right, k, block, true) and op = "<"
-   or
-   guard.ensuresLt(left, right, k, block, false) and op = ">=" 
-   or
-   guard.ensuresEq(left, right, k, block, true) and op = "=="
-   or
-   guard.ensuresEq(left, right, k, block, false) and op = "!="
-   |
-   block.getLocation().hasLocationInfo(_, start, _, end, _)
+  
+  exists(IRBlock block, Operand leftOp, Operand rightOp |
+    guard.ensuresLt(leftOp, rightOp, k, block, true) and op = "<"
+    or
+    guard.ensuresLt(leftOp, rightOp, k, block, false) and op = ">=" 
+    or
+    guard.ensuresEq(leftOp, rightOp, k, block, true) and op = "=="
+    or
+    guard.ensuresEq(leftOp, rightOp, k, block, false) and op = "!="
+    |
+    leftOp = left.getAUse() and
+    rightOp = right.getAUse() and
+    block.getLocation().hasLocationInfo(_, start, _, end, _)
   )
 }
