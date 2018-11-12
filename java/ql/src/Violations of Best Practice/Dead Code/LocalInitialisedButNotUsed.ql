@@ -1,6 +1,6 @@
 /**
  * @name Local variable is initialized but not used
- * @description A local variable is initialized once, but never read or written to. Either the local variable is useless, or its value was intended to be used but is not.
+ * @description Assigning a value to a local variable that is not used may indicate an error in the code.
  * @kind problem
  * @problem.severity recommendation
  * @precision low

@@ -1,6 +1,6 @@
 /**
  * @name Unused local variable
- * @description A local variable is entirely unused: it is not initialized, written to or read. The variable serves no purpose and obscures the code. It should be removed.
+ * @description Assigning a value to a local variable that is not used may indicate incomplete code.
  * @kind problem
  * @problem.severity recommendation
  * @precision low
