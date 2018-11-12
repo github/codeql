@@ -827,9 +827,14 @@ class SinkPathNode extends PathNode {
 }
 
 /**
- * Provides the query predicate needed to include a graph in a path-problem query.
+ * Provides the query predicates needed to include a graph in a path-problem query.
  */
 module PathGraph {
+  /** Holds if `nd` is a node in the graph of data flow path explanations. */
+  query predicate nodes(PathNode nd) {
+    any()
+  }
+
   /** Holds if `pred` &rarr; `succ` is an edge in the graph of data flow path explanations. */
   query predicate edges(PathNode pred, PathNode succ) {
     pred.getASuccessor() = succ
