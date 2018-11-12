@@ -124,7 +124,7 @@ namespace Semmle.Extraction.CSharp
         /// <returns>Modified list of arguments.</returns>
         static IEnumerable<string> AddDefaultResponse(string responseFile, IEnumerable<string> args)
         {
-            return SuppressDefaultResponseFile(args) && File.Exists(responseFile) ?
+            return SuppressDefaultResponseFile(args) || !File.Exists(responseFile) ?
                 args :
                 new[] { "@" + responseFile }.Concat(args);
         }

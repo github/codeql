@@ -16,7 +16,17 @@ module DomBasedXss {
   /**
    * A data flow sink for XSS vulnerabilities.
    */
-  abstract class Sink extends DataFlow::Node { }
+  abstract class Sink extends DataFlow::Node {
+    /**
+     * Gets the kind of vulnerability to report in the alert message.
+     *
+     * Defaults to `Cross-site scripting`, but may be overriden for sinks
+     * that do not allow script injection, but injection of other undesirable HTML elements.
+     */
+    string getVulnerabilityKind() {
+      result = "Cross-site scripting"
+    }
+  }
 
   /**
    * A sanitizer for XSS vulnerabilities.
@@ -164,6 +174,18 @@ module DomBasedXss {
     }
   }
 
+  /**
+   * The HTML body of an email, viewed as an XSS sink.
+   */
+  class EmailHtmlBodySink extends Sink {
+    EmailHtmlBodySink() {
+      this = any(EmailSender sender).getHtmlBody()
+    }
+
+    override string getVulnerabilityKind() {
+      result = "HTML injection"
+    }
+  }
 }
 
 /** DEPRECATED: Use `DomBasedXss::Source` instead. */

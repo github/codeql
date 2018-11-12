@@ -19,7 +19,7 @@ private import Declarations.Declarations
  * `x` has kind `"V"`.
  */
 string refKind(RefExpr r) {
-  if exists(InvokeExpr invk | r = invk.getCallee().stripParens()) then
+  if exists(InvokeExpr invk | r = invk.getCallee().getUnderlyingReference()) then
     result = "M"
   else
     result = "V"
@@ -143,7 +143,7 @@ predicate typedInvokeLookup(ASTNode ref, ASTNode decl, string kind) {
   not variableDefLookup(ref, decl, _) and
   not propertyLookup(ref, decl, _) and
   exists (InvokeExpr invoke, Expr callee | 
-    callee = invoke.getCallee().stripParens() and
+    callee = invoke.getCallee().getUnderlyingReference() and
     (ref = callee.(Identifier) or ref = callee.(DotExpr).getPropertyNameExpr()) and
     decl = invoke.getResolvedCallee() and
     kind = "M")

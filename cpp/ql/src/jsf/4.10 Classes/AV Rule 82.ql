@@ -83,6 +83,7 @@ predicate assignOperatorWithWrongType(Operator op, string msg) {
 predicate assignOperatorWithWrongResult(Operator op, string msg) {
   op.hasName("operator=")
   and not returnsDereferenceThis(op)
+  and exists(op.getBlock())
   and not op.getType() instanceof VoidType
   and not assignOperatorWithWrongType(op, _)
   and msg = "Assignment operator in class " + op.getDeclaringType().getName() + " does not return a reference to *this."

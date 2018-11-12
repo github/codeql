@@ -34,8 +34,11 @@ namespace Semmle.Extraction.CSharp
 
             public void Analysed(int item, int total, string source, string output, TimeSpan time, AnalysisAction action)
             {
-                Logger.Log(Severity.Info, "  {0} -> {1} ({2})", source, output,
-                    action == AnalysisAction.Extracted ? time.ToString() : action == AnalysisAction.Excluded ? "excluded" : "up to date");
+                if (action != AnalysisAction.UpToDate)
+                {
+                    Logger.Log(Severity.Info, "  {0} ({1})", source,
+                        action == AnalysisAction.Extracted ? time.ToString() : action == AnalysisAction.Excluded ? "excluded" : "up to date");
+                }
             }
 
             public void MissingNamespace(string @namespace) { }
@@ -361,27 +364,28 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// Gets the path to the `csharp.log` file written to by the C# extractor.
         /// </summary>
-        public static string GetCSharpLogPath()
+        public static string GetCSharpLogPath() =>
+            Path.Combine(GetCSharpLogDirectory(), "csharp.log");
+
+        public static string GetCSharpLogDirectory()
         {
             string snapshot = Environment.GetEnvironmentVariable("ODASA_SNAPSHOT");
             string buildErrorDir = Environment.GetEnvironmentVariable("ODASA_BUILD_ERROR_DIR");
             string traps = Environment.GetEnvironmentVariable("TRAP_FOLDER");
-            string output = "csharp.log";
             if (!string.IsNullOrEmpty(snapshot))
             {
-                snapshot = Path.Combine(snapshot, "log");
-                return Path.Combine(snapshot, output);
+                return Path.Combine(snapshot, "log");
             }
             if (!string.IsNullOrEmpty(buildErrorDir))
             {
                 // Used by `qltest`
-                return Path.Combine(buildErrorDir, output);
+                return buildErrorDir;
             }
             if (!string.IsNullOrEmpty(traps))
             {
-                return Path.Combine(traps, output);
+                return traps;
             }
-            return output;
+            return Directory.GetCurrentDirectory();
         }
     }
 }

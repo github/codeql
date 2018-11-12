@@ -1,0 +1,113 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "JSXElement",
+        "openingElement": {
+          "type": "JSXOpeningElement",
+          "attributes": [
+            {
+              "type": "JSXAttribute",
+              "name": {
+                "type": "JSXIdentifier",
+                "name": "pre",
+                "loc": {
+                  "start": {
+                    "offset": 5
+                  },
+                  "end": {
+                    "offset": 8
+                  }
+                }
+              },
+              "value": {
+                "type": "Literal",
+                "value": "leading",
+                "loc": {
+                  "start": {
+                    "offset": 9
+                  },
+                  "end": {
+                    "offset": 18
+                  }
+                }
+              },
+              "loc": {
+                "start": {
+                  "offset": 5
+                },
+                "end": {
+                  "offset": 18
+                }
+              }
+            },
+            {
+              "type": "JSXSpreadAttribute",
+              "argument": {
+                "type": "Identifier",
+                "name": "props",
+                "loc": {
+                  "start": {
+                    "offset": 23
+                  },
+                  "end": {
+                    "offset": 28
+                  }
+                }
+              },
+              "loc": {
+                "start": {
+                  "offset": 19
+                },
+                "end": {
+                  "offset": 29
+                }
+              }
+            }
+          ],
+          "name": {
+            "type": "JSXIdentifier",
+            "name": "div",
+            "loc": {
+              "start": {
+                "offset": 1
+              },
+              "end": {
+                "offset": 4
+              }
+            }
+          },
+          "selfClosing": true,
+          "loc": {
+            "start": {
+              "offset": 0
+            },
+            "end": {
+              "offset": 32
+            }
+          }
+        },
+        "closingElement": null,
+        "children": [],
+        "loc": {
+          "start": {
+            "offset": 0
+          },
+          "end": {
+            "offset": 32
+          }
+        }
+      },
+      "loc": {
+        "start": {
+          "offset": 0
+        },
+        "end": {
+          "offset": 32
+        }
+      }
+    }
+  ]
+}

@@ -1,3 +1,0 @@
-| Guards.cs:114:14:114:38 | access to field Field | Guards.cs:113:21:113:45 | access to field Field | true |
-| Guards.cs:116:27:116:51 | access to field Field | Guards.cs:115:17:115:41 | access to field Field | false |
-| Guards.cs:125:29:125:30 | access to parameter s1 | Guards.cs:125:18:125:19 | access to parameter s1 | false |

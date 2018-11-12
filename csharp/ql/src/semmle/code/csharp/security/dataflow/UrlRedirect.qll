@@ -174,7 +174,7 @@ module UrlRedirect {
       )
     }
   }
-  
+
   /**
    * Anything that is setting "location" header in the response headers.
    */
@@ -201,12 +201,12 @@ module UrlRedirect {
         this.getExpr() = add.getArgument(1))
       or // HttpResponse.Headers["location"] = <user-provided value>
       exists(RefType cl, MicrosoftAspNetCoreHttpHttpResponse resp, IndexerAccess ci, Call cs, PropertyAccess qualifier |
-        qualifier.getTarget() = resp.getHeadersProperty() and 
+        qualifier.getTarget() = resp.getHeadersProperty() and
         ci.getTarget() = cl.getAnIndexer() and
         qualifier = ci.getQualifier() and
         cs.getTarget() = cl.getAnIndexer().getSetter() and
         cs.getArgument(0).getValue().toLowerCase() = "location" and
-        this.asExpr() = cs.getArgument(1)) 
+        this.asExpr() = cs.getArgument(1))
     }
   }
 }

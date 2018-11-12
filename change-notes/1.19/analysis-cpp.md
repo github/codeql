@@ -28,3 +28,4 @@
 
 * Added a hash consing library for structural comparison of expressions.
 * `getBufferSize` now detects variable size structs more reliably.
+* Buffer.qll now treats arrays of zero size as a special case.

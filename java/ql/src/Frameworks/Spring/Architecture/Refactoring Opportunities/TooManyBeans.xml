@@ -1,5 +1,5 @@
 <beans>
-	<!--Compose configuration files by using the 'import' element.-->
+    <!--Compose configuration files by using the 'import' element.-->
     <import resource="services.xml"/>
     <import resource="resources/messageSource.xml"/>
 

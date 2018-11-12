@@ -1,9 +1,9 @@
-/** 
+/**
  * Generates C# stubs for use in test code.
  *
  * Extend the abstract class `GeneratedDeclaration` with the declarations that should be generated.
  * This will generate stubs for all the required dependencies as well.
- * 
+ *
  * Use
  * ```
  * select generatedCode()
@@ -104,7 +104,7 @@ private abstract class GeneratedType extends ValueOrRefType, GeneratedElement {
       result = this.stubComment() +
       this.stubAttributes() +
       this.stubAbstractModifier() +
-      this.stubStaticModifier() + 
+      this.stubStaticModifier() +
       this.stubAccessibilityModifier() +
       this.stubKeyword() + " " +
       this.getUndecoratedName() +

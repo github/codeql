@@ -57,7 +57,9 @@ int getBufferSize(Expr bufferExpr, Element why) {
       // buffer is a fixed size array
       result = bufferVar.getType().getUnspecifiedType().(ArrayType).getSize() and
       why = bufferVar and
-      not memberMayBeVarSize(_, bufferVar)
+      not memberMayBeVarSize(_, bufferVar) and
+      not result = 0 // zero sized arrays are likely to have special usage, for example
+                     // behaving a bit like a 'union' overlapping other fields. 
     ) or (
       // buffer is an initialized array
       //  e.g. int buffer[] = {1, 2, 3};

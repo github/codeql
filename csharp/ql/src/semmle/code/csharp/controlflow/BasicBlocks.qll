@@ -524,6 +524,7 @@ class ConditionBlock extends BasicBlock {
   //
   // In the former case, `x` and `y` control `A`, in the latter case
   // only `x & y` controls `A` if we do not take sub conditions into account.
+  deprecated
   predicate controlsSubCond(BasicBlock controlled, boolean testIsTrue, Expr cond, boolean condIsTrue) {
     impliesSub(getLastNode().getElement(), cond, testIsTrue, condIsTrue) and
     controls(controlled, any(BooleanSuccessor s | s.getValue() = testIsTrue))
@@ -542,6 +543,7 @@ class ConditionBlock extends BasicBlock {
  * Holds if `e2` is a sub expression of (Boolean) expression `e1`, and
  * if `e1` has value `b1` then `e2` must have value `b2`.
  */
+deprecated
 private predicate impliesSub(Expr e1, Expr e2, boolean b1, boolean b2) {
   if e1 instanceof LogicalNotExpr then (
     impliesSub(e1.(LogicalNotExpr).getOperand(), e2, b1.booleanNot(), b2)

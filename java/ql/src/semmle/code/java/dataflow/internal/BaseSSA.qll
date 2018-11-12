@@ -72,7 +72,8 @@ private module SsaImpl {
   cached
   predicate variableUpdate(BaseSsaSourceVariable v, ControlFlowNode n, BasicBlock b, int i) {
     exists(VariableUpdate a | a = n | getDestVar(a) = v) and
-    b.getNode(i) = n
+    b.getNode(i) = n and
+    hasDominanceInformation(b)
   }
 
   /** Gets the definition point of a nested class in the parent scope. */

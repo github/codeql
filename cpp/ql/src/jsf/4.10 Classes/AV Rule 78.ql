@@ -4,7 +4,7 @@
  * @kind problem
  * @problem.severity warning
  * @precision high
- * @id cpp/virtual-destructor
+ * @id cpp/jsf/av-rule-78
  * @tags reliability
  *       readability
  *       language-features

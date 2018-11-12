@@ -152,7 +152,7 @@ abstract class StructuralComparisonConfiguration extends string {
  */
 module Internal {
   // Import all uses of the internal library to make sure caching works
-  private import semmle.code.csharp.controlflow.Guards
+  private import semmle.code.csharp.controlflow.Guards as G
 
   /**
    * A configuration for performing structural comparisons of program elements

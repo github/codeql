@@ -104,9 +104,13 @@ where
   // Some of the functions operate on a larger char type, like `wchar_t`, so we
   // need to take this into account in the fixed size case.
   charSize = f.getParameter(argDest).getType().getUnspecifiedType().(PointerType).getBaseType().getSize() and
-  if exists (fc.getArgument(argLimit).getValue().toInt()) then (
+  if exists(fc.getArgument(argLimit).getValue().toInt()) then (
     // Fixed sized case
-    arrayExprFixedSize(copyDest) < charSize * fc.getArgument(argLimit).getValue().toInt()
+    exists(int size |
+      size = arrayExprFixedSize(copyDest) and
+      size < charSize * fc.getArgument(argLimit).getValue().toInt() and
+      size != 0 // if the array has zero size, something special is going on
+    )
   ) else exists (Access takenSizeOf, BufferSizeExpr sizeExpr, int plus |
     // Variable sized case
     sizeExpr = fc.getArgument(argLimit).getAChild*() and

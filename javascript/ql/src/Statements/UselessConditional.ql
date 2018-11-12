@@ -28,13 +28,13 @@ import semmle.javascript.dataflow.Refinements
  */
 predicate isDefensiveInit(VarAccess va) {
   exists (LogOrExpr o, VarRef va2 |
-    va = o.getLeftOperand().stripParens() and va2.getVariable() = va.getVariable() |
+    va = o.getLeftOperand().getUnderlyingReference() and va2.getVariable() = va.getVariable() |
     exists (AssignExpr assgn | va2 = assgn.getTarget() |
       assgn = o.getRightOperand().stripParens() or
-      o = assgn.getRhs().stripParens()
+      o = assgn.getRhs().getUnderlyingValue()
     ) or
     exists (VariableDeclarator vd | va2 = vd.getBindingPattern() |
-      o = vd.getInit().stripParens()
+      o = vd.getInit().getUnderlyingValue()
     )
   )
 }
@@ -120,9 +120,11 @@ predicate whitelist(Expr e) {
  */
 predicate isConditional(ASTNode cond, Expr e) {
   e = cond.(IfStmt).getCondition() or
+  e = cond.(LoopStmt).getTest() or
   e = cond.(ConditionalExpr).getCondition() or
-  e = cond.(LogAndExpr).getLeftOperand() or
-  e = cond.(LogOrExpr).getLeftOperand()
+  e = cond.(LogicalBinaryExpr).getLeftOperand() or
+  // Include `z` in `if (x && z)`.
+  isConditional(_, cond) and e = cond.(Expr).getUnderlyingValue().(LogicalBinaryExpr).getRightOperand()
 }
 
 from ASTNode cond, DataFlow::AnalyzedNode op, boolean cv, ASTNode sel, string msg
@@ -132,16 +134,13 @@ where isConditional(cond, op.asExpr()) and
 
       // if `cond` is of the form `<non-trivial truthy expr> && <something>`,
       // we suggest replacing it with `<non-trivial truthy expr>, <something>`
-      if cond instanceof LogAndExpr and cv = true and not op.asExpr().isPure() then
+      if cond.(LogAndExpr).getLeftOperand() = op.asExpr() and cv = true and not op.asExpr().isPure() then
         (sel = cond and msg = "This logical 'and' expression can be replaced with a comma expression.")
 
       // otherwise we just report that `op` always evaluates to `cv`
       else (
         sel = op.asExpr().stripParens() and
-        if sel instanceof VarAccess then
-          msg = "Variable '" + sel.(VarAccess).getVariable().getName() + "' always evaluates to " + cv + " here."
-        else
-          msg = "This expression always evaluates to " + cv + "."
+        msg = "This " + describeExpression(sel) + " always evaluates to " + cv + "."
       )
 
 select sel, msg

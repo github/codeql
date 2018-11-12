@@ -74,11 +74,11 @@ predicate methodStats(
   ...
 }
 ```
-	
+
 ```ql
 from Method main
 where main.getName() = "Main"
-select main, "This is the program entry point." 
+select main, "This is the program entry point."
 ```
 
 ```ql
@@ -87,13 +87,13 @@ where
   main.getName() = "Main" and
   main.getNumberOfParameters() = 0
 select main, "Main method has no parameters."
-```	
+```
 
 ```ql
   if x.isPublic()
   then result = "public"
   else result = "private"
-```	
+```
 
 ```ql
   if
@@ -245,7 +245,7 @@ Documentation for specific items:
 
 ```ql
 /** Provides logic for determining constant expressions. */
-```	
+```
 
 ```ql
 /**
@@ -253,12 +253,12 @@ Documentation for specific items:
  * `isExactType` indicates whether the type is exact, that is, whether
  * the qualifier is guaranteed not to be a subtype of `qualifierType`.
  */
-```	
+```
 ```ql
 /**
  * A delegate declaration, for example
  * ```
- * delegate void Logger(string text); 
+ * delegate void Logger(string text);
  * ```
  */
 class Delegate extends ...
@@ -329,7 +329,7 @@ deprecated Expr getInitializer()
   reflectionOrDynamicArg(argumentType, parameterType)
 ```
 
-```ql	
+```ql
   this.getName() = "Finalize" and not exists(this.getAParameter())
 ```
 
@@ -360,15 +360,15 @@ deprecated Expr getInitializer()
 
 ```ql
   (x instanceof Exception implies x.isPublic()) and y instanceof Exception
-```	
+```
 
 ```ql
   x instanceof Exception implies (x.isPublic() and y instanceof Exception)
-```	
+```
 
 ```ql
   exists(Type arg | arg = this.getAChild() | arg instanceof TypeParameter)
-```	
+```
 
 ```ql
   exists(Type qualifierType |
@@ -376,21 +376,21 @@ deprecated Expr getInitializer()
   |
     result = getANonExactQualifierSubType(qualifierType)
   )
-```	
+```
 
 ```ql
   methods = count(Method m | t = m.getDeclaringType() and not ilc(m))
-```	
+```
 
 ```ql
   if n = 0 then result = 1 else result = n * f(n - 1)
-```	
+```
 
 ```ql
   if n = 0
   then result = 1
   else result = n * f(n - 1)
-```	
+```
 
 ```ql
   if
@@ -399,7 +399,7 @@ deprecated Expr getInitializer()
     result = 1
   else
     result = n * f(n - 1)
-```	
+```
 
 ```ql
   if exists(this.getContainingType())

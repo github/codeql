@@ -1,6 +1,8 @@
 using Xunit;
 using Semmle.Util.Logging;
 using System;
+using System.IO;
+using Semmle.Util;
 
 namespace Semmle.Extraction.Tests
 {
@@ -183,6 +185,25 @@ namespace Semmle.Extraction.Tests
             Environment.SetEnvironmentVariable("LGTM_INDEX_EXTRACTOR", "--fast");
             options = CSharp.Options.CreateWithEnvironment(new string[] {});
             Assert.True(options.Fast);
+        }
+
+        [Fact]
+        public void ArchiveArguments()
+        {
+            var file1 = Path.GetTempFileName();
+            var file2 = Path.GetTempFileName();
+
+            try
+            {
+                File.AppendAllText(file1, "Test");
+                new string[] { "/noconfig", "@" + file1 }.ArchiveCommandLine(file2);
+                Assert.Equal("Test", File.ReadAllText(file2));
+            }
+            finally
+            {
+                File.Delete(file1);
+                File.Delete(file2);
+            }
         }
     }
 }

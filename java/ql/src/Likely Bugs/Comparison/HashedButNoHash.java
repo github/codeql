@@ -8,17 +8,17 @@ class Point {
     }
 
     public boolean equals(Object o) {
-    	if (!(o instanceof Point)) return false;
-    	Point q = (Point)o;
-    	return x == q.x && y == q.y;
+        if (!(o instanceof Point)) return false;
+        Point q = (Point)o;
+        return x == q.x && y == q.y;
     }
 
-	// Implement hashCode so that equivalent points (with the same values of x and y) have the
-	// same hash code
+    // Implement hashCode so that equivalent points (with the same values of x and y) have the
+    // same hash code
     public int hashCode() {
-    	int hash = 7;
-    	hash = 31*hash + x;
-    	hash = 31*hash + y;
-    	return hash;
+        int hash = 7;
+        hash = 31*hash + x;
+        hash = 31*hash + y;
+        return hash;
     }
 }

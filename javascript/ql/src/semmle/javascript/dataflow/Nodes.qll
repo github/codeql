@@ -287,6 +287,16 @@ class FunctionNode extends DataFlow::ValueNode, DataFlow::DefaultSourceNode {
     result = getParameter(_)
   }
 
+  /** Gets the number of parameters declared on this function. */
+  int getNumParameter() {
+    result = count(astNode.getAParameter())
+  }
+
+  /** Holds if the last parameter of this function is a rest parameter. */
+  predicate hasRestParameter() {
+    astNode.hasRestParameter()
+  }
+
   /** Gets the name of this function, if it has one. */
   string getName() { result = astNode.getName() }
 

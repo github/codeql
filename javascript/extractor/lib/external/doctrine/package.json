@@ -1,0 +1,34 @@
+{
+    "name": "doctrine",
+    "description": "JSDoc parser",
+    "homepage": "http://github.com/Constellation/doctrine.html",
+    "main": "doctrine.js",
+    "version": "0.5.3-dev",
+    "engines": {
+        "node": ">=0.10.0"
+    },
+    "maintainers": [{
+        "name": "Yusuke Suzuki",
+        "email": "utatane.tea@gmail.com",
+        "web": "http://github.com/Constellation"
+    }],
+    "repository": {
+        "type": "git",
+        "url": "http://github.com/Constellation/doctrine.git"
+    },
+    "devDependencies": {
+        "jslint": "~0.1.9",
+        "eslint": "~0.6.2",
+        "mocha": "*",
+        "should": "*"
+    },
+    "licenses": [{
+        "type": "BSD",
+        "url": "http://github.com/Constellation/doctrine/raw/master/LICENSE.BSD"
+    }],
+    "scripts": {
+        "test": "npm run-script lint && npm run-script eslint && ./node_modules/.bin/mocha",
+        "lint": "node_modules/jslint/bin/jslint.js doctrine.js",
+        "eslint": "node_modules/eslint/bin/eslint.js -c eslint.json doctrine.js"
+    }
+}

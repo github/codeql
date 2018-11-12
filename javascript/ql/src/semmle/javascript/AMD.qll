@@ -172,7 +172,7 @@ class AMDModuleDefinition extends CallExpr {
    * Gets a call to `require` inside this module.
    */
   CallExpr getARequireCall() {
-    result.getCallee().stripParens() = getRequireVariable().getAnAccess()
+    result.getCallee().getUnderlyingValue() = getRequireVariable().getAnAccess()
   }
 }
 

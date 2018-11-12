@@ -18,13 +18,17 @@ import cpp
    programmer, we can flag it anyway, since this is arguably a bug.) */
 
 predicate functionsMissingReturnStmt(Function f, ControlFlowNode blame) {
-                        f.fromSource() and
-      exists(Type returnType |
-        returnType = f.getType().getUnderlyingType().getUnspecifiedType() and
-        not returnType instanceof VoidType and
-        not returnType instanceof TemplateParameter
-      ) and
-      exists(ReturnStmt s | f.getAPredecessor() = s | blame = s.getAPredecessor())}
+  f.fromSource() and
+  exists(Type returnType |
+    returnType = f.getType().getUnderlyingType().getUnspecifiedType() and
+    not returnType instanceof VoidType and
+    not returnType instanceof TemplateParameter
+  ) and
+  exists(ReturnStmt s |
+    f.getAPredecessor() = s and
+    blame = s.getAPredecessor()
+  )
+}
 
 /* If a function has a value-carrying return statement, but the extractor hit a snag
    whilst parsing the value, then the control flow graph will not include the value.
