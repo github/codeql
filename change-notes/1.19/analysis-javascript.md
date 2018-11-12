@@ -41,6 +41,7 @@
 | Unused import | Fewer false-positive results | This rule no longer flags imports used by the `transform-react-jsx` Babel plugin. |
 | Self assignment | Fewer false-positive results | This rule now ignores self-assignments preceded by a JSDoc comment with a `@type` tag. |
 | Client side cross-site scripting | More results | This rule now also flags HTML injection in the body of an email. |
+| Information exposure through a stack trace | More results | This rule now also flags cases where the entire exception object (including the stack trace) may be exposed. |
 
 ## Changes to QL libraries
 

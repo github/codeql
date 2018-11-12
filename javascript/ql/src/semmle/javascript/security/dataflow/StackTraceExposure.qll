@@ -23,22 +23,32 @@ module StackTraceExposure {
       src instanceof Source
     }
 
+    override predicate isSanitizer(DataFlow::Node nd) {
+      super.isSanitizer(nd)
+      or
+      // read of a property other than `stack`
+      nd.(DataFlow::PropRead).getPropertyName() != "stack"
+      or
+      // `toString` does not include the stack trace
+      nd.(DataFlow::MethodCallNode).getMethodName() = "toString"
+      or
+      nd = StringConcatenation::getAnOperand(_)
+    }
+
     override predicate isSink(DataFlow::Node snk) {
       snk instanceof Sink
     }
   }
 
+
   /**
    * A read of the `stack` property of an exception, viewed as a data flow
    * sink for stack trace exposure vulnerabilities.
    */
-  class DefaultSource extends Source, DataFlow::ValueNode {
+  class DefaultSource extends Source, DataFlow::Node {
     DefaultSource() {
-      // any read of the `stack` property of an exception is a source
-      exists (Parameter exc |
-        exc = any(TryStmt try).getACatchClause().getAParameter() and
-        this = DataFlow::parameterNode(exc).getAPropertyRead("stack")
-      )
+      // any exception is a source
+      this = DataFlow::parameterNode(any(TryStmt try).getACatchClause().getAParameter())
     }
   }
   

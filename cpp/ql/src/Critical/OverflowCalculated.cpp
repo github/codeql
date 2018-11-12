@@ -1,5 +1,5 @@
 void f(char* string) {
-	// wrong: allocates space for characters, put not zero terminator
+	// wrong: allocates space for characters, but not zero terminator
 	char* buf = malloc(strlen(string));
 	strcpy(buf, string);
 

@@ -1,1 +1,3 @@
-| node.js:11:13:11:21 | err.stack | Stack trace information from $@ may be exposed to an external user here. | node.js:11:13:11:21 | err.stack | here |
+| node.js:11:13:11:21 | err.stack | Stack trace information from $@ may be exposed to an external user here. | node.js:8:10:8:12 | err | here |
+| tst.js:7:13:7:13 | e | Stack trace information from $@ may be exposed to an external user here. | tst.js:6:12:6:12 | e | here |
+| tst.js:17:11:17:17 | e.stack | Stack trace information from $@ may be exposed to an external user here. | tst.js:6:12:6:12 | e | here |
