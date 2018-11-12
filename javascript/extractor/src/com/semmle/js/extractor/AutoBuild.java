@@ -373,7 +373,7 @@ public class AutoBuild {
 	 * externs.
 	 */
 	private void extractExterns() throws IOException {
-		ExtractorConfig config = new ExtractorConfig(true).withExterns(true);
+		ExtractorConfig config = new ExtractorConfig(false).withExterns(true);
 		FileExtractor extractor = new FileExtractor(config, outputConfig, trapCache, extractorState);
 		FileVisitor<? super Path> visitor = new SimpleFileVisitor<Path>() {
 			@Override
