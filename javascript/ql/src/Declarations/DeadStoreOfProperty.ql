@@ -13,7 +13,7 @@ import Expressions.DOMProperties
 import DeadStore
 
 /**
- * Holds if `assign` definitely assigns property `name` of `base`.
+ * Holds if `write` writes to property `name` of `base`, and `base` is the only base object of `write`.
  */
 predicate unambiguousPropWrite(DataFlow::SourceNode base, string name, DataFlow::PropWrite write) {
   write = base.getAPropertyWrite(name) and
@@ -83,7 +83,7 @@ predicate maybeAccessesAssignedPropInBlock(string name, DataFlow::PropWrite assi
 }
 
 /**
- * Holds if `assign1` and `assign2` both assign property `name`, and the assigned property may be accessed between the two assignments.
+ * Holds if `assign1` and `assign2` both assign property `name`, and the assigned property is not accessed between the two assignments.
  */
 bindingset[name]
 predicate noPropAccessBetween(string name, DataFlow::PropWrite assign1, DataFlow::PropWrite assign2) {
