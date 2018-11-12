@@ -13,6 +13,7 @@ zero terminator into consideration.</li>
 <li><code>strcat</code> or <code>strncat</code> that use buffers that are too small to contain the new string.</li>
 </ul>
 </p>
+</overview>
 
 <p>
 The highlighted expression will cause a buffer overflow because the buffer is too small to contain

@@ -20,7 +20,9 @@ the initialization code is executed.
 </p>
 </recommendation>
 <example>
+<p>
 In the example below, <code>callCtr</code> is wrongly used before it has been initialized.
+</p>
 <sample src="GlobalUseBeforeInit.cpp" />
 </example>
 
