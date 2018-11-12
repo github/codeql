@@ -824,6 +824,12 @@ module TaintTracking {
       exists(Expr e |
         exists(Expr returnExpr |
           returnExpr = sanitizer.asExpr()
+          or
+          // ad hoc support for conjunctions:
+          returnExpr.(LogAndExpr).getAnOperand() = sanitizer.asExpr() and sanitizerOutcome = true
+          or
+          // ad hoc support for disjunctions:
+          returnExpr.(LogOrExpr).getAnOperand() = sanitizer.asExpr() and sanitizerOutcome = false
           |
           exists(SsaExplicitDefinition ssa |
             ssa.getDef().getSource() = returnExpr and
