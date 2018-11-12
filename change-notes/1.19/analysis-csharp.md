@@ -10,7 +10,8 @@
 
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
-| *@name of query (Query ID)* | *Tags*    |*Aim of the new query and whether it is enabled by default or not*  |
+| Using a package with a known vulnerability (cs/use-of-vulnerable-package) | security, external/cwe/cwe-937 | Finds project build files that import packages with known vulnerabilities. This is included by default. |
+
 
 ## Changes to existing queries
 
