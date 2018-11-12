@@ -5,6 +5,7 @@
  * @kind problem
  * @id cpp/jsf/av-rule-171
  * @problem.severity error
+ * @tags correctness
  */
 import cpp
 import semmle.code.cpp.pointsto.PointsTo

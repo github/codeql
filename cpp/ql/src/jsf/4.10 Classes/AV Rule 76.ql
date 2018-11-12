@@ -3,7 +3,8 @@
  * @description A copy constructor and an assignment operator shall be declared for classes that contain pointers to data items or nontrivial destructors. If the copy constructor and assignment operators are not required, they should be explicitly disallowed.
  * @kind problem
  * @id cpp/jsf/av-rule-76
- * @problem.severity error
+ * @problem.severity warning
+ * @tags maintainability
  */
 import cpp
 

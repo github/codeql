@@ -3,7 +3,8 @@
  * @description The break statement shall not be used.
  * @kind problem
  * @id cpp/jsf/av-rule-191
- * @problem.severity error
+ * @problem.severity recommendation
+ * @tags maintainability
  */
 import cpp
 

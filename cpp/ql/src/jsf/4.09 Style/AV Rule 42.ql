@@ -3,7 +3,9 @@
  * @description Each expression-statement will be on a separate line.
  * @kind problem
  * @id cpp/jsf/av-rule-42
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
  */
 import cpp
 

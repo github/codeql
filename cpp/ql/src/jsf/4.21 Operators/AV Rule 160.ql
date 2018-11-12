@@ -3,7 +3,9 @@
  * @description An assignment expression shall be used only as the expression in an expression statement.
  * @kind problem
  * @id cpp/jsf/av-rule-160
- * @problem.severity error
+ * @problem.severity warning
+ * @tags correctness
+ *       readability
  */
 import cpp
 

@@ -6,7 +6,9 @@
  *              condition, or as a part of a chained operation.
  * @kind problem
  * @id cpp/jsf/av-rule-204
- * @problem.severity error
+ * @problem.severity warning
+ * @tags maintainability
+ *       readability
  */
 import cpp
 

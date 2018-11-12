@@ -3,7 +3,8 @@
  * @description Functions shall not call themselves, either directly or indirectly (i.e. recursion shall not be allowed).
  * @kind problem
  * @id cpp/jsf/av-rule-119
- * @problem.severity error
+ * @problem.severity recommendation
+ * @tags resources
  */
 import cpp
 

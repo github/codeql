@@ -3,7 +3,9 @@
  * @description The following character sequences shall not appear in header file names: ', \, /*, //, or ".
  * @kind problem
  * @id cpp/jsf/av-rule-53-1
- * @problem.severity error
+ * @problem.severity warning
+ * @tags maintainability
+ *       portability
  */
 import cpp
 

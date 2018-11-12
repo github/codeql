@@ -3,7 +3,8 @@
  * @description The volatile keyword shall not be used unless directly interfacing with hardware.
  * @kind problem
  * @id cpp/jsf/av-rule-205
- * @problem.severity error
+ * @problem.severity warning
+ * @tags efficiency
  */
 import cpp
 

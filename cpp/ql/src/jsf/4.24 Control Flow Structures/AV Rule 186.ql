@@ -3,7 +3,9 @@
  * @description There shall be no unreachable code.
  * @kind problem
  * @id cpp/jsf/av-rule-186
- * @problem.severity error
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       useless-code
  */
 import cpp
 

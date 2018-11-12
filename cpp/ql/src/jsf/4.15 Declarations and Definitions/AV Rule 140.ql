@@ -4,7 +4,8 @@
  * @kind problem
  * @id cpp/jsf/av-rule-140
  * @problem.severity warning
- * @tags portability
+ * @tags maintainability
+ *       portability
  */
 import cpp
 

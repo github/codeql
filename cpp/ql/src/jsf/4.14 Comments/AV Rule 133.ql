@@ -3,7 +3,9 @@
  * @description Every source file will be documented with an introductory comment that provides information on the file name, its contents, and any program-required information (eg. legal statements, copyright information, etc)
  * @kind problem
  * @id cpp/jsf/av-rule-133
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       documentation
  */
 import cpp
 

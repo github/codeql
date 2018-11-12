@@ -3,7 +3,9 @@
  * @description All words in an identifier will be separated by the underscore character.
  * @kind problem
  * @id cpp/jsf/av-rule-45
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
  */
 import cpp
 

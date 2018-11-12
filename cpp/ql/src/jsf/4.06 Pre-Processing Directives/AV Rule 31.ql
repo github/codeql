@@ -4,6 +4,7 @@
  * @kind problem
  * @id cpp/jsf/av-rule-31
  * @problem.severity warning
+ * @tags maintainability
  */
 import cpp
 import semmle.code.cpp.headers.MultipleInclusion

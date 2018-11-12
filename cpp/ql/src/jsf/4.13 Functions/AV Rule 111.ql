@@ -4,7 +4,8 @@
  * @kind problem
  * @id cpp/jsf/av-rule-111
  * @problem.severity error
- * @tags reliability
+ * @tags correctness
+ *       reliability
  */
 import semmle.code.cpp.pointsto.PointsTo
 

@@ -3,7 +3,9 @@
  * @description Only valid C++ style comments shall be used.
  * @kind problem
  * @id cpp/jsf/av-rule-126
- * @problem.severity error
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       documentation
  */
 import cpp
 

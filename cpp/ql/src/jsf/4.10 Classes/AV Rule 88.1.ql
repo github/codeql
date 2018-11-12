@@ -3,7 +3,8 @@
  * @description A stateful virtual base shall be explicitly declared in each derived class that accesses it. Explicitly declaring a stateful virtual base at each level in a hierarchy (where that base is used), documents that fact that no assumptions can be made with respect to the exclusive use of the data contained within the virtual base.
  * @kind problem
  * @id cpp/jsf/av-rule-88-1
- * @problem.severity error
+ * @problem.severity warning
+ * @tags maintainability
  */
 import cpp
 

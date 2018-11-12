@@ -3,7 +3,8 @@
  * @description Octal constants (other than zero) shall not be used.
  * @kind problem
  * @id cpp/jsf/av-rule-149
- * @problem.severity error
+ * @problem.severity recommendation
+ * @tags maintainability
  */
 import cpp
 

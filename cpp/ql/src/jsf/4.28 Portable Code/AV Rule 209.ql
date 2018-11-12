@@ -5,7 +5,9 @@
  *              each compiler, and these type names used in the code.
  * @kind problem
  * @id cpp/jsf/av-rule-209
- * @problem.severity error
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       portability
  */
 import cpp
 

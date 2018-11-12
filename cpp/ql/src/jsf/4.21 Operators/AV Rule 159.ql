@@ -3,7 +3,8 @@
  * @description Operators ||, &&, and unary & shall not be overloaded
  * @kind problem
  * @id cpp/jsf/av-rule-159
- * @problem.severity error
+ * @problem.severity warning
+ * @tags correctness
  */
 // See More Effective C++ item 7
 // Note: Meyers allows unary & to be overloaded but not comma

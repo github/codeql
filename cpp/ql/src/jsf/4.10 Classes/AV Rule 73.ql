@@ -3,8 +3,9 @@
  * @description Unnecessary default constructors shall not be defined.
  * @kind problem
  * @id cpp/jsf/av-rule-73
- * @problem.severity error
+ * @problem.severity recommendation
  * @precision low
+ * @tags maintainability
  */
 import cpp
 

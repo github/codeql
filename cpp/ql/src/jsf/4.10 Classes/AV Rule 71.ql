@@ -4,6 +4,7 @@
  * @kind problem
  * @id cpp/jsf/av-rule-71
  * @problem.severity error
+ * @tags correctness
  */
 import cpp
 

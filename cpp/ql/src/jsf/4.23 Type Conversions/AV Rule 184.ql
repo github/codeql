@@ -5,7 +5,8 @@
  *              requirement or is necessary for a hardware interface.
  * @kind problem
  * @id cpp/jsf/av-rule-184
- * @problem.severity error
+ * @problem.severity warning
+ * @tags correctness
  */
 import cpp
 

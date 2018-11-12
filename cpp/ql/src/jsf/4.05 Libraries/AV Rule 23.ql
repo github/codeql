@@ -4,6 +4,8 @@
  * @kind problem
  * @id cpp/jsf/av-rule-23
  * @problem.severity error
+ * @tags correctness
+ *       portability
  */
 import cpp
 

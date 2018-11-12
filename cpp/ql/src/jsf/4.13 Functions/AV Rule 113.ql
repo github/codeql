@@ -3,7 +3,8 @@
  * @description Functions will have a single exit point.
  * @kind problem
  * @id cpp/jsf/av-rule-113
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
  */
 import cpp
 

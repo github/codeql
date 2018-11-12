@@ -3,7 +3,8 @@
  * @description Identifiers will not begin with the underscore character.
  * @kind problem
  * @id cpp/jsf/av-rule-47
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
  */
 import cpp
 

@@ -4,7 +4,8 @@
  * @kind problem
  * @id cpp/jsf/av-rule-85
  * @problem.severity warning
- * @tags reliability
+ * @tags maintainability
+ *       reliability
  */
 import cpp
 

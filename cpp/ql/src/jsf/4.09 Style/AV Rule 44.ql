@@ -3,7 +3,9 @@
  * @description All indentations will be at least two spaces and be consistent within the same source file.
  * @kind problem
  * @id cpp/jsf/av-rule-44
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
  */
 
 import cpp

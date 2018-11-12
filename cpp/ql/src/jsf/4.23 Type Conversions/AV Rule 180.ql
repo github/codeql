@@ -4,7 +4,8 @@
  *              shall not be used.
  * @kind problem
  * @id cpp/jsf/av-rule-180
- * @problem.severity error
+ * @problem.severity warning
+ * @tags correctness
  */
 import cpp
 

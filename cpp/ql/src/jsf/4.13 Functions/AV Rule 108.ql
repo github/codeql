@@ -3,7 +3,8 @@
  * @description Functions with variable number of arguments shall not be used.
  * @kind problem
  * @id cpp/jsf/av-rule-108
- * @problem.severity error
+ * @problem.severity warning
+ * @tags correctness
  */
 import cpp
 

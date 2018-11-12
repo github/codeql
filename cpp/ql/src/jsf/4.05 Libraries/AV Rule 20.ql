@@ -4,6 +4,9 @@
  * @kind problem
  * @id cpp/jsf/av-rule-20
  * @problem.severity error
+ * @tags correctness
+ *       portability
+ *       readability
  */
 import cpp
 

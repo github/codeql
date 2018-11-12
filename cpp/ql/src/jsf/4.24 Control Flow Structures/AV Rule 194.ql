@@ -3,7 +3,8 @@
  * @description All switch statements that do not intend to test for every enumeration value shall contain a final default clause.
  * @kind problem
  * @id cpp/jsf/av-rule-194
- * @problem.severity error
+ * @problem.severity warning
+ * @tags correctness
  */
 import cpp
 
