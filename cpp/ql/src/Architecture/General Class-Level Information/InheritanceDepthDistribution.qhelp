@@ -19,20 +19,16 @@ may not be exploiting object-orientation to the full.</p>
 
 <references>
 <li>
-Shyam R. Chidamber and Chris F. Kemerer.
-<a href="http://www.pitt.edu/~ckemerer/CK%20research%20papers/MetricForOOD_ChidamberKemerer94.pdf">A Metrics Suite for Object Oriented Design
-</a>.
+Shyam R. Chidamber and Chris F. Kemerer,
+<i><a href="http://www.pitt.edu/~ckemerer/CK%20research%20papers/MetricForOOD_ChidamberKemerer94.pdf">A Metrics Suite for Object Oriented Design
+</a></i>.
 IEEE Transactions on Software Engineering,
 20(6), pages 476-493, June 1994.</li>
 
 <li>
-<a href="http://www.dmst.aueb.gr/dds/index.en.html">Diomides D. Spinnelis</a>.
-<a href="http://www.spinellis.gr/codequality/">Code Quality: The Open Source Perspective</a>.
-Addison-Wesley 2007.</li>
-
-<li>
-<a href="http://www.dmst.aueb.gr/dds/index.en.html">Diomides D. Spinnelis</a>.
-<a href="http://www.spinellis.gr/sw/ckjm/">ckjm - Chidamber and Kemerer Java Metrics</a>.
-(implementation of CK metrics), 2006.</li>
+Lutz Prechelt, Barbara Unger, Michael Philippsen, and Walter Tich, <i><a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.159.2229&rep=rep1&type=pdf">A Controlled Experiment on Inheritance Depth as a Cost Factor for Code Maintenance
+</a></i>.
+Journal of Systems and Software, 65 (2):115-126, 2003.
+</li>
 </references>
 </qhelp>
