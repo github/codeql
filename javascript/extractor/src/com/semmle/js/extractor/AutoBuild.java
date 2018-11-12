@@ -494,13 +494,18 @@ public class AutoBuild {
 			logEndProcess();
 			// Extract all files belonging to this project which are also matched
 			// by our include/exclude filters.
+			List<File> typeScriptFiles = new ArrayList<File>();
 			for (File sourceFile : project.getSourceFiles()) {
 				Path sourcePath = sourceFile.toPath();
 				if (!filesToExtract.contains(normalizePath(sourcePath)))
 					continue;
 				if (extractedFiles.add(sourcePath)) {
-					extract(extractor, sourcePath);
+					typeScriptFiles.add(sourcePath.toFile());
 				}
+			}
+			tsParser.prepareFiles(typeScriptFiles);
+			for (File file : typeScriptFiles) {
+				extract(extractor, file.toPath());
 			}
 			tsParser.closeProject(projectFile);
 		}
@@ -509,12 +514,29 @@ public class AutoBuild {
 			// Extract all the types discovered when extracting the ASTs.
 			TypeTable typeTable = tsParser.getTypeTable();
 			extractTypeTable(tsconfigFiles.iterator().next(), typeTable);
-
-			// The TypeScript compiler instance is no longer needed.
-			tsParser.killProcess();
 		}
 
-		// Extract files that were not part of a project.
+		// Extract remaining TypeScript files.
+		List<File> remainingTypeScriptFiles = new ArrayList<File>();
+		for (Path f : filesToExtract) {
+			if (!extractedFiles.contains(f) && FileType.forFileExtension(f.toFile()) == FileType.TYPESCRIPT) {
+				remainingTypeScriptFiles.add(f.toFile());
+			}
+		}
+		if (!remainingTypeScriptFiles.isEmpty()) {
+			tsParser.prepareFiles(remainingTypeScriptFiles);
+			for (File f : remainingTypeScriptFiles) {
+				Path path = f.toPath();
+				if (extractedFiles.add(path)) {
+					extract(extractor, path);
+				}
+			}
+		}
+
+		// The TypeScript compiler instance is no longer needed.
+		tsParser.killProcess();
+
+		// Extract non-TypeScript files
 		for (Path f : filesToExtract) {
 			if (extractedFiles.add(f)) {
 				extract(extractor, f);

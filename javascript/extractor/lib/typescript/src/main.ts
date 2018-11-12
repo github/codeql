@@ -67,13 +67,24 @@ interface ResetCommand {
 interface QuitCommand {
     command: "quit";
 }
+interface PrepareFilesCommand {
+    command: "prepare-files";
+    filenames: string[];
+}
 type Command = ParseCommand | OpenProjectCommand | CloseProjectCommand
-    | GetTypeTableCommand | ResetCommand | QuitCommand;
+    | GetTypeTableCommand | ResetCommand | QuitCommand | PrepareFilesCommand;
 
 /** The state to be shared between commands. */
 class State {
     public project: Project = null;
     public typeTable = new TypeTable();
+
+    /** List of files that have been requested. */
+    public pendingFiles: string[] = [];
+    public pendingFileIndex = 0;
+
+    /** Next response to be delivered. */
+    public pendingResponse: string = null;
 }
 let state = new State();
 
@@ -154,16 +165,43 @@ function getSourceCode(filename: string): string {
     return code;
 }
 
-function handleParseCommand(command: ParseCommand) {
-    let filename = String(command.filename);
+function extractFile(filename: string): string {
     let {ast, code} = getAstForFile(filename);
 
     // Get the AST and augment it.
     ast_extractor.augmentAst(ast, code, state.project);
 
-    console.log(stringifyAST(
-        { type: "ast", ast, nodeFlags: ts.NodeFlags, syntaxKinds: ts.SyntaxKind },
-    ));
+    return stringifyAST({
+        type: "ast",
+        ast,
+        nodeFlags: ts.NodeFlags,
+        syntaxKinds: ts.SyntaxKind
+    });
+}
+
+function prepareNextFile() {
+    if (state.pendingResponse != null) return;
+    if (state.pendingFileIndex < state.pendingFiles.length) {
+        let nextFilename = state.pendingFiles[state.pendingFileIndex];
+        state.pendingResponse = extractFile(nextFilename);
+    }
+}
+
+function handleParseCommand(command: ParseCommand) {
+    let filename = command.filename;
+    let expectedFilename = state.pendingFiles[state.pendingFileIndex];
+    if (expectedFilename !== filename) {
+        throw new Error("File requested out of order. Expected '" + expectedFilename + "' but got '" + filename + "'");
+    }
+    ++state.pendingFileIndex;
+    let response = state.pendingResponse || extractFile(command.filename);
+    state.pendingResponse = null;
+    process.stdout.write(response + "\n", () => {
+        // Start working on the next file as soon as the old one is flushed.
+        // Note that if we didn't wait for flushing, this would block the I/O
+        // loop and delay flushing.
+        prepareNextFile();
+    });
 }
 
 /**
@@ -360,6 +398,15 @@ function handleResetCommand(command: ResetCommand) {
     }));
 }
 
+function handlePrepareFilesCommand(command: PrepareFilesCommand) {
+    state.pendingFiles = command.filenames;
+    state.pendingFileIndex = 0;
+    state.pendingResponse = null;
+    process.stdout.write('{"type":"ok"}\n', () => {
+        prepareNextFile();
+    });
+}
+
 function reset() {
     state = new State();
     state.typeTable.restrictedExpansion = getEnvironmentVariable("SEMMLE_TYPESCRIPT_NO_EXPANSION", Boolean, false);
@@ -399,6 +446,9 @@ function runReadLineInterface() {
             break;
         case "get-type-table":
             handleGetTypeTableCommand(req);
+            break;
+        case "prepare-files":
+            handlePrepareFilesCommand(req);
             break;
         case "reset":
             handleResetCommand(req);
