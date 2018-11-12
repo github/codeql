@@ -22,7 +22,7 @@ important system data (including the interrupt table in some architectures).
 <example>
 This code shows two examples where a pointer is dereferenced. 
 The first example checks that the pointer is not null before dereferencing it. 
-The second example fails to perform a nullnes check, leading to a potential vulnerability in the code.
+The second example fails to perform a nullness check, leading to a potential vulnerability in the code.
 <sample src="InconsistentNullnessTesting.cpp" />
 </example>
 

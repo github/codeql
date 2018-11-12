@@ -1,6 +1,6 @@
 /**
  * @name Global variable may be used before initialization
- * @description Using an uninitialized variable leads to undefined results.
+ * @description Using an uninitialized variable may lead to undefined results.
  * @kind problem
  * @id cpp/global-use-before-init
  * @problem.severity warning
