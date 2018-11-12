@@ -1,11 +1,13 @@
 import csharp
 import ControlFlow::Internal
 
-predicate defReadInconsistency(AssignableRead ar, Expr e, boolean b) {
+query
+predicate defReadInconsistency(AssignableRead ar, Expr e, PreSsa::SimpleLocalScopeVariable v, boolean b) {
   exists(AssignableDefinition def |
     e = def.getExpr() |
     b = true and
     exists(PreSsa::Definition ssaDef |
+      ssaDef.getVariable() = v |
       PreSsa::firstReadSameVar(ssaDef, ar) and
       ssaDef.getDefinition() = def and
       not exists(Ssa::ExplicitDefinition edef |
@@ -18,7 +20,7 @@ predicate defReadInconsistency(AssignableRead ar, Expr e, boolean b) {
     exists(Ssa::ExplicitDefinition edef |
       edef.getADefinition() = def and
       edef.getAFirstRead() = ar and
-      def.getTarget() instanceof PreSsa::SimpleLocalScopeVariable and
+      def.getTarget() = v and
       not exists(PreSsa::Definition ssaDef |
         PreSsa::firstReadSameVar(ssaDef, ar) and
         ssaDef.getDefinition() = def
@@ -27,22 +29,48 @@ predicate defReadInconsistency(AssignableRead ar, Expr e, boolean b) {
   )
 }
 
-predicate readReadInconsistency(LocalScopeVariableRead read1, LocalScopeVariableRead read2, boolean b) {
+query
+predicate readReadInconsistency(LocalScopeVariableRead read1, LocalScopeVariableRead read2, PreSsa::SimpleLocalScopeVariable v, boolean b) {
   b = true and
+  v = read1.getTarget() and
   PreSsa::adjacentReadPairSameVar(read1, read2) and
   not Ssa::Internal::adjacentReadPairSameVar(read1, read2)
   or
   b = false and
+  v = read1.getTarget() and
   Ssa::Internal::adjacentReadPairSameVar(read1, read2) and
   read1.getTarget() instanceof PreSsa::SimpleLocalScopeVariable and
   not PreSsa::adjacentReadPairSameVar(read1, read2)
 }
 
-from Element e1, Element e2, boolean b, string s
-where
-  defReadInconsistency(e1, e2, b) and
-  s = "def-read inconsistency (" + b + ")"
-  or
-  readReadInconsistency(e1, e2, b) and
-  s = "read-read inconsistency (" + b + ")"
-select e1, e2, s
+query
+predicate phiInconsistency(ControlFlowElement cfe, Expr e, PreSsa::SimpleLocalScopeVariable v, boolean b) {
+  exists(AssignableDefinition adef |
+    e = adef.getExpr() |
+    b = true and
+    exists(PreSsa::Definition def |
+      v = def.getVariable() |
+      adef = def.getAPhiInput+().getDefinition() and
+      cfe = def.getBasicBlock().getFirstElement() and
+      not exists(Ssa::PhiNode phi, ControlFlow::BasicBlock bb, Ssa::ExplicitDefinition edef |
+        edef = phi.getAnUltimateDefinition() |
+        edef.getADefinition() = adef and
+        phi.definesAt(bb, _) and
+        cfe = bb.getFirstNode().getElement()
+      )
+    )
+    or
+    b = false and
+    exists(Ssa::PhiNode phi, ControlFlow::BasicBlock bb, Ssa::ExplicitDefinition edef |
+      v = phi.getSourceVariable().getAssignable() |
+      edef = phi.getAnUltimateDefinition() and
+      edef.getADefinition() = adef and
+      phi.definesAt(bb, _) and
+      cfe = bb.getFirstNode().getElement() and
+      not exists(PreSsa::Definition def |
+        adef = def.getAPhiInput+().getDefinition() and
+        cfe = def.getBasicBlock().getFirstElement()
+      )
+    )
+  )
+}

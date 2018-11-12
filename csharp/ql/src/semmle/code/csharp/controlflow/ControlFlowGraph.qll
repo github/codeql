@@ -2516,8 +2516,12 @@ module ControlFlow {
           result = strictcount(getAnElement())
         }
 
+        predicate immediatelyDominates(PreBasicBlock bb) {
+          bbIDominates(this, bb)
+        }
+
         predicate strictlyDominates(PreBasicBlock bb) {
-          bbIDominates+(this, bb)
+          this.immediatelyDominates+(bb)
         }
 
         predicate dominates(PreBasicBlock bb) {
@@ -2584,8 +2588,6 @@ module ControlFlow {
         }
       }
 
-      private newtype SsaRefKind = SsaRead() or SsaDef()
-
       class Definition extends TPreSsaDef {
         string toString() {
           exists(AssignableDefinition def |
@@ -2626,12 +2628,25 @@ module ControlFlow {
           )
         }
 
+        PreBasicBlock getBasicBlock() {
+          this = TExplicitPreSsaDef(result, _, _, _) or
+          this = TPhiPreSsaDef(result, _)
+        }
+
         AssignableDefinition getDefinition() {
           this = TExplicitPreSsaDef(_, _, result, _)
         }
+
+        Definition getAPhiInput() {
+          exists(PreBasicBlock bb, PreBasicBlock phiPred, SimpleLocalScopeVariable v |
+            this = TPhiPreSsaDef(bb, v) |
+            bb.getAPredecessor() = phiPred and
+            ssaDefReachesEndOfBlock(phiPred, result, v)
+          )
+        }
       }
 
-      predicate assignableDefAt(PreBasicBlocks::PreBasicBlock bb, int i, AssignableDefinition def, SimpleLocalScopeVariable v) {
+      private predicate assignableDefAt(PreBasicBlocks::PreBasicBlock bb, int i, AssignableDefinition def, SimpleLocalScopeVariable v) {
         bb.getElement(i) = def.getExpr() and
         v = def.getTarget() and
         // In cases like `(x, x) = (0, 1)`, we discard the first (dead) definition of `x`
@@ -2650,16 +2665,82 @@ module ControlFlow {
         )
       }
 
+      private predicate readAt(PreBasicBlock bb, int i, LocalScopeVariableRead read, SimpleLocalScopeVariable v) {
+        read = bb.getElement(i) and
+        read.getTarget() = v
+      }
+
+      pragma[noinline]
+      private predicate exitBlock(PreBasicBlock bb, Callable c) {
+        exists(succExit(bb.getLastElement(), _)) and
+        c = bb.getEnclosingCallable()
+      }
+
+      private predicate outRefExitRead(PreBasicBlock bb, int i, SimpleLocalScopeVariable v) {
+        exitBlock(bb, v.getCallable()) and
+        i = bb.length() + 1 and
+        (v.isRef() or v.(Parameter).isOut())
+      }
+
+      private newtype RefKind =
+        Read()
+        or
+        Write(boolean certain) { certain = true or certain = false }
+
+      private predicate ref(PreBasicBlock bb, int i, SimpleLocalScopeVariable v, RefKind k) {
+        (readAt(bb, i, _, v) or outRefExitRead(bb, i, v)) and
+        k = Read()
+        or
+        exists(AssignableDefinition def, boolean certain |
+          assignableDefAt(bb, i, def, v) |
+          if def.getTargetAccess().isRefArgument() then certain = false else certain = true and
+          k = Write(certain)
+        )
+      }
+
+      private int refRank(PreBasicBlock bb, int i, SimpleLocalScopeVariable v, RefKind k) {
+        i = rank[result](int j | ref(bb, j, v, _)) and
+        ref(bb, i, v, k)
+      }
+
+      private int firstReadOrCertainWrite(PreBasicBlock bb, SimpleLocalScopeVariable v) {
+        result = min(int r, RefKind k |
+          r = refRank(bb, _, v, k) and
+          k != Write(false)
+          |
+          r
+        )
+      }
+
+      predicate liveAtEntry(PreBasicBlock bb, SimpleLocalScopeVariable v) {
+        refRank(bb, _, v, Read()) = firstReadOrCertainWrite(bb, v)
+        or
+        not exists(firstReadOrCertainWrite(bb, v)) and
+        liveAtExit(bb, v)
+      }
+
+      private predicate liveAtExit(PreBasicBlock bb, SimpleLocalScopeVariable v) {
+        liveAtEntry(bb.getASuccessor(), v)
+      }
+
+      predicate assignableDefAtLive(PreBasicBlocks::PreBasicBlock bb, int i, AssignableDefinition def, SimpleLocalScopeVariable v) {
+        assignableDefAt(bb, i, def, v) and
+        exists(int rnk |
+          rnk = refRank(bb, i, v, Write(_)) |
+          rnk + 1 = refRank(bb, _, v, Read())
+          or
+          rnk = max(refRank(bb, _, v, _)) and
+          liveAtExit(bb, v)
+        )
+      }
+
       predicate defAt(PreBasicBlock bb, int i, Definition def, SimpleLocalScopeVariable v) {
         def = TExplicitPreSsaDef(bb, i, _, v)
         or
         def = TPhiPreSsaDef(bb, v) and i = -1
       }
 
-      private predicate readAt(PreBasicBlock bb, int i, LocalScopeVariableRead read, SimpleLocalScopeVariable v) {
-        read = bb.getElement(i) and
-        read.getTarget() = v
-      }
+      private newtype SsaRefKind = SsaRead() or SsaDef()
 
       private predicate ssaRef(PreBasicBlock bb, int i, SimpleLocalScopeVariable v, SsaRefKind k) {
         readAt(bb, i, _, v) and
@@ -2754,6 +2835,22 @@ module ControlFlow {
           adjacentVarRefs(v, bb1, i1, bb2, i2) and
           readAt(bb1, i1, read1, v) and
           readAt(bb2, i2, read2, v)
+        )
+      }
+
+      predicate ssaDefReachesEndOfBlock(PreBasicBlock bb, Definition def, SimpleLocalScopeVariable v) {
+        liveAtExit(bb, v) and
+        (
+          exists(int last |
+            last = max(ssaRefRank(bb, _, v, _)) |
+            defReachesRank(bb, def, v, last)
+          )
+          or
+          exists(PreBasicBlock idom |
+            idom.immediatelyDominates(bb) |
+            ssaDefReachesEndOfBlock(idom, def, v) and
+            not exists(ssaRefRank(bb, _, v, SsaDef()))
+          )
         )
       }
     }
@@ -3847,10 +3944,11 @@ module ControlFlow {
       newtype TPreSsaDef =
         TExplicitPreSsaDef(PreBasicBlocks::PreBasicBlock bb, int i, AssignableDefinition def, LocalScopeVariable v) {
           Guards::Internal::CachedWithCFG::forceCachingInSameStage() and
-          PreSsa::assignableDefAt(bb, i, def, v)
+          PreSsa::assignableDefAtLive(bb, i, def, v)
         }
         or
         TPhiPreSsaDef(PreBasicBlocks::PreBasicBlock bb, LocalScopeVariable v) {
+          PreSsa::liveAtEntry(bb, v) and
           exists(PreBasicBlocks::PreBasicBlock def |
             def.inDominanceFrontier(bb) |
             PreSsa::defAt(def, _, _, v)
