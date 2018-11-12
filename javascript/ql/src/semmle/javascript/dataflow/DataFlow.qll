@@ -459,6 +459,11 @@ module DataFlow {
       prop = getPropertyName() and
       rhs = getRhs()
     }
+
+    /**
+     * Gets the node where the property write happens in the control flow graph.
+     */
+    abstract ControlFlowNode getWriteNode();
   }
 
   /**
@@ -484,6 +489,10 @@ module DataFlow {
     override Node getRhs() {
       result = valueNode(astNode.(LValue).getRhs())
     }
+
+    override ControlFlowNode getWriteNode() {
+      result = astNode.(LValue).getDefNode()
+    }
   }
 
   /**
@@ -507,6 +516,10 @@ module DataFlow {
 
     override Node getRhs() {
       result = valueNode(prop.(ValueProperty).getInit())
+    }
+
+    override ControlFlowNode getWriteNode() {
+      result = prop
     }
   }
 
@@ -537,6 +550,10 @@ module DataFlow {
         propdesc.hasPropertyWrite("value", result)
       )
     }
+
+    override ControlFlowNode getWriteNode() {
+      result = odp.getAstNode()
+    }
   }
 
   /**
@@ -563,6 +580,10 @@ module DataFlow {
       not prop instanceof AccessorMethodDefinition and
       result = valueNode(prop.getInit())
     }
+
+    override ControlFlowNode getWriteNode() {
+      result = prop
+    }
   }
 
   /**
@@ -586,6 +607,10 @@ module DataFlow {
 
     override Node getRhs() {
       result = valueNode(prop.getValue())
+    }
+
+    override ControlFlowNode getWriteNode() {
+      result = prop
     }
   }
 
@@ -869,6 +894,11 @@ module DataFlow {
     override Node getBase() {
       result = valueNode(arr)
     }
+
+    override ControlFlowNode getWriteNode() {
+      result = arr
+    }
+
   }
 
   /**
