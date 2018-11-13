@@ -285,9 +285,8 @@ public class AutoBuild {
 							excludes.add(toRealPath(folderPath));
 						} catch (InvalidPathException | URISyntaxException | ResourceError e) {
 							Exceptions.ignore(e, "Ignore path and print warning message instead");
-							System.err.println("Ignoring '" + fields[0] + "' classification for " +
+							warn("Ignoring '" + fields[0] + "' classification for " +
 									folder + ", which is not a valid path.");
-							System.err.flush();
 						}
 					}
 				}
@@ -354,8 +353,7 @@ public class AutoBuild {
 			patterns.add(realPath);
 		} catch (ResourceError e) {
 			Exceptions.ignore(e, "Ignore exception and print warning instead.");
-			System.err.println("Skipping path " + path + ", which does not exist.");
-			System.err.flush();
+			warn("Skipping path " + path + ", which does not exist.");
 		}
 		return true;
 	}
@@ -557,14 +555,18 @@ public class AutoBuild {
 	protected void extract(FileExtractor extractor, Path file) throws IOException {
 		File f = file.toFile();
 		if (!f.exists()) {
-			System.err.println("Skipping " + file + ", which does not exist.");
-			System.err.flush();
+			warn("Skipping " + file + ", which does not exist.");
 			return;
 		}
 
 		logBeginProcess("Extracting " + file);
 		extractor.extract(f);
 		logEndProcess();
+	}
+
+	private void warn(String msg) {
+		System.err.println(msg);
+		System.err.flush();
 	}
 
 	private void logBeginProcess(String message) {
