@@ -1,6 +1,6 @@
 /**
  * @name Unchecked return value used as offset
- * @description  Using a value as a pointer offset without checking that the value is positive
+ * @description  Using a return value as a pointer offset without checking that the value is positive
  *               may lead to buffer overruns.
  * @kind problem
  * @id cpp/missing-negativity-test

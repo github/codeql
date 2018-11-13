@@ -1,6 +1,7 @@
 /**
  * @name Pointer offset used before it is checked
- * @description Setting a pointer offset before checking if the value is positive 
+ * @description Accessing a pointer or array using an offset before 
+ *              checking if the value is positive 
  *              may result in unexpected behavior.
  * @kind problem
  * @id cpp/late-negative-test

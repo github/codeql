@@ -1,6 +1,6 @@
 /**
  * @name Open descriptor may not be closed
- * @description Failing to close resources in the function that opened them, makes it difficult to avoid and detect resource leaks.
+ * @description Failing to close resources in the function that opened them makes it difficult to avoid and detect resource leaks.
  * @kind problem
  * @id cpp/descriptor-may-not-be-closed
  * @problem.severity warning

@@ -26,10 +26,12 @@ negative then the negativity test is redundant and can be removed.
 
 <example>
 <p>The example below includes two functions that use the value <code>recordIdx</code> to 
-index an array and a test to verify that the value is positive. The test is made after 
-<code>printRecord</code> is indexed and before <code>processRecord</code> is indexed. 
+index an array and a test to verify that the value is positive. 
+The test is made after <code>records</code> is indexed for <code>printRecord</code> and 
+before <code>records</code> is indexed for <code>processRecord</code>. 
 Unless the value of <code>recordIdx</code> cannot be negative, the test should be 
-updated to run <em>before</em> both arrays are indexed.
+updated to run before <em>both</em> times the array is indexed. 
+If the value cannot be negative, the test should be removed.
 </p>
 
 <sample src="LateNegativeTest.cpp" />
@@ -37,5 +39,6 @@ updated to run <em>before</em> both arrays are indexed.
 
 <references>
 <li>cplusplus.com: <a href="http://www.cplusplus.com/doc/tutorial/pointers/">Pointers</a>.</li>
+<li>SEI CERT C Coding Standard: <a href="https://wiki.sei.cmu.edu/confluence/display/c/ARR30-C.+Do+not+form+or+use+out-of-bounds+pointers+or+array+subscripts">ARR30-C. Do not form or use out-of-bounds pointers or array subscripts</a>.</li>
 </references>
 </qhelp>

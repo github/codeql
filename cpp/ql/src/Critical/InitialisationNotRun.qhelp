@@ -20,7 +20,7 @@ optimizations are enabled or the compiler is not compliant with the latest langu
 </recommendation>
 <example>
 <p>In the example below, the code that triggers the initialization of <code>g_storage</code> is not run from <code>main</code>. 
-Unless the variable is initialized by another method, the call on line 10 may not use the intended value.
+Unless the variable is initialized by another method, the call on line 10 may dereference a null pointer.
 </p>
 
 <sample src="InitialisationNotRun.cpp" />

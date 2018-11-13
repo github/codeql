@@ -1,6 +1,6 @@
 /**
  * @name Initialization code not run
- * @description Using an uninitialized variable may lead to undefined results.
+ * @description Not running initialization code may lead to unexpected behavior.
  * @kind problem
  * @id cpp/initialization-not-run
  * @problem.severity warning
