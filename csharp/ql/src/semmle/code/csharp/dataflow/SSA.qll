@@ -283,6 +283,11 @@ module Ssa {
       ref(bb, i, v, k)
     }
 
+    private int maxRefRank(BasicBlock bb, SourceVariable v) {
+      result = refRank(bb, _, v, _) and
+      not result + 1 = refRank(bb, _, v, _)
+    }
+
     /**
      * Gets the (1-based) rank of the first reference to `v` inside basic block `bb`
      * that is either a read or a certain write.
@@ -335,7 +340,7 @@ module Ssa {
     predicate liveAtRank(BasicBlock bb, int i, SourceVariable v, int rnk, ReadKind rk) {
       rnk = refRank(bb, i, v, _) and
       (
-        rnk = max(refRank(bb, _, v, _)) and
+        rnk = maxRefRank(bb, v) and
         liveAtExit(bb, v, rk)
         or
         ref(bb, i, v, Read(rk))
@@ -641,6 +646,11 @@ module Ssa {
       ssaRef(bb, i, v, k)
     }
 
+    private int maxSsaRefRank(BasicBlock bb, SourceVariable v) {
+      result = ssaRefRank(bb, _, v, _) and
+      not result + 1 = ssaRefRank(bb, _, v, _)
+    }
+
     /**
      * Holds if the non-trivial SSA definition `def` reaches rank index `rankix`
      * in its own basic block `bb`.
@@ -734,7 +744,7 @@ module Ssa {
         rankix + 1 = ssaRefRank(bb2, i2, v, _)
       )
       or
-      ssaRefRank(bb1, i1, v, _) = max(ssaRefRank(bb1, _, v, _)) and
+      ssaRefRank(bb1, i1, v, _) = maxSsaRefRank(bb1, v) and
       varBlockStep(v, bb1, bb2) and
       ssaRefRank(bb2, i2, v, _) = 1
     }
@@ -792,7 +802,7 @@ module Ssa {
           rnk + 1 = ssaRefRank(bb, _, v, SsaDef())
           or
           // No next reference to `v` inside `bb`
-          rnk = max(ssaRefRank(bb, _, v, _)) and
+          rnk = maxSsaRefRank(bb, v) and
           (
             // Read reaches end of enclosing callable
             not varBlockReaches(v, bb, _)
@@ -806,6 +816,21 @@ module Ssa {
         )
       }
 
+      pragma[noinline]
+      private predicate ssaDefReachesEndOfBlockRec(BasicBlock bb, TrackedDefinition def, TrackedVar v) {
+        exists(BasicBlock idom |
+          ssaDefReachesEndOfBlock(idom, def, v) |
+          /* The construction of SSA form ensures that each read of a variable is
+           * dominated by its definition. An SSA definition therefore reaches a
+           * control flow node if it is the _closest_ SSA definition that dominates
+           * the node. If two definitions dominate a node then one must dominate the
+           * other, so therefore the definition of _closest_ is given by the dominator
+           * tree. Thus, reaching definitions can be calculated in terms of dominance.
+           */
+          idom = bb.getImmediateDominator()
+        )
+      }
+
       /**
        * Holds if the non-trivial SSA definition of `v` at `def` reaches the end of a
        * basic block `bb`, at which point it is still live, without crossing another
@@ -813,26 +838,15 @@ module Ssa {
        */
       cached
       predicate ssaDefReachesEndOfBlock(BasicBlock bb, TrackedDefinition def, TrackedVar v) {
-        liveAtExit(bb, v, _) and
-        (
-          exists(int last |
-            last = max(ssaRefRank(bb, _, v, _)) |
-            ssaDefReachesRank(bb, def, last, v)
-          )
-          or
-          exists(BasicBlock idom |
-            /* The construction of SSA form ensures that each read of a variable is
-             * dominated by its definition. An SSA definition therefore reaches a
-             * control flow node if it is the _closest_ SSA definition that dominates
-             * the node. If two definitions dominate a node then one must dominate the
-             * other, so therefore the definition of _closest_ is given by the dominator
-             * tree. Thus, reaching definitions can be calculated in terms of dominance.
-             */
-            idom = bb.getImmediateDominator() and
-            ssaDefReachesEndOfBlock(idom, def, v) and
-            not exists(ssaRefRank(bb, _, v, SsaDef()))
-          )
+        exists(int last |
+          last = maxSsaRefRank(bb, v) |
+          ssaDefReachesRank(bb, def, last, v) and
+          liveAtExit(bb, v, _)
         )
+        or
+        ssaDefReachesEndOfBlockRec(bb, def, v) and
+        liveAtExit(bb, v, _) and
+        not ssaRef(bb, _, v, SsaDef())
       }
 
       /**
@@ -1896,13 +1910,17 @@ module Ssa {
       }
       or
       TPhiNode(TrackedVar v, ControlFlow::BasicBlocks::JoinBlock bb) {
+        phiNodeMaybeLive(bb, v) and
         liveAtEntry(bb, v, _)
-        and
-        exists(BasicBlock bb1, Definition def |
-          bb1.inDominanceFrontier(bb) and
-          definesAt(def, bb1, _, v)
-        )
       }
+
+    pragma[noinline]
+    private predicate phiNodeMaybeLive(ControlFlow::BasicBlocks::JoinBlock bb, TrackedVar v) {
+      exists(Definition def, BasicBlock bb1 |
+        definesAt(def, bb1, _, v) |
+        bb1.inDominanceFrontier(bb)
+      )
+    }
 
     /**
      * Holds if the SSA definition `def` defines source variable `v` at index `i`
