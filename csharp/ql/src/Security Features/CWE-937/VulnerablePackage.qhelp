@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Using a package with a known vulnerability is a security risk that could leave the
+software vulnerable to attack.
+</p>
+<p>
+This query reads the packages imported by the project build files and
+<code>.config</code> files, and checks them against a list of packages with known
+vulnerabilities.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Upgrade the package to the recommended version using, for example, the NuGet package manager,
+or by editing the project files directly.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example shows a C# project file referencing package <code>System.Net.Http</code>
+version 4.3.1, which is vulnerable to <a href="https://github.com/dotnet/announcements/issues/88">CVE-2018-8292</a>.
+</p>
+<sample src="VulnerablePackageBAD.csproj" />
+<p>
+The project file can be fixed by changing the version of the package to 4.3.4.
+</p>
+<sample src="VulnerablePackageGOOD.csproj" />
+</example>
+
+<references>
+<li>
+OWASP: <a href="https://www.owasp.org/index.php/Top_10-2017_A9-Using_Components_with_Known_Vulnerabilities">A9-Using Components with Known Vulnerabilities</a>.
+</li>
+</references>
+
+</qhelp>

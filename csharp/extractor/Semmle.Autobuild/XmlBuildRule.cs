@@ -11,7 +11,7 @@ namespace Semmle.Autobuild
         {
             var command = new CommandBuilder(builder.Actions).
                 RunCommand(builder.Odasa).
-                Argument("index --xml --extensions config");
+                Argument("index --xml --extensions config csproj props xml");
             return command.Script;
         }
     }
