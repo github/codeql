@@ -1,49 +1,3 @@
-bad_asts.cpp:
-#   14| Bad::CallBadMemberFunction() -> void
-#   14|   Block 0
-#   14|     v0_0(void)           = EnterFunction                   : 
-#   14|     mu0_1(unknown)       = UnmodeledDefinition             : 
-#   15|     r0_2(glval<S>)       = VariableAddress[s]              : 
-#   15|     mu0_3(S)             = Uninitialized                   : r0_2
-#   15|     r0_4(glval<int>)     = FieldAddress[x]                 : r0_2
-#   15|     r0_5(int)            = Constant[0]                     : 
-#   15|     mu0_6(int)           = Store                           : r0_4, r0_5
-#   16|     r0_7(glval<S>)       = VariableAddress[s]              : 
-#   16|     r0_8(glval<unknown>) = FunctionAddress[MemberFunction] : 
-#   16|     r0_9(int)            = Constant[1]                     : 
-#   16|     r0_10(int)           = Call                            : r0_8, this:r0_7, r0_9
-#   17|     v0_11(void)          = NoOp                            : 
-#   14|     v0_12(void)          = ReturnVoid                      : 
-#   14|     v0_13(void)          = UnmodeledUse                    : mu*
-#   14|     v0_14(void)          = ExitFunction                    : 
-
-#   22| Bad::Point::Point() -> void
-#   22|   Block 0
-#   22|     v0_0(void)         = EnterFunction       : 
-#   22|     mu0_1(unknown)     = UnmodeledDefinition : 
-#   22|     r0_2(glval<Point>) = InitializeThis      : 
-#   23|     v0_3(void)         = NoOp                : 
-#   22|     v0_4(void)         = ReturnVoid          : 
-#   22|     v0_5(void)         = UnmodeledUse        : mu*
-#   22|     v0_6(void)         = ExitFunction        : 
-
-#   26| Bad::CallCopyConstructor(const Point &) -> void
-#   26|   Block 0
-#   26|     v0_0(void)           = EnterFunction          : 
-#   26|     mu0_1(unknown)       = UnmodeledDefinition    : 
-#   26|     r0_2(glval<Point &>) = VariableAddress[a]     : 
-#   26|     mu0_3(Point &)       = InitializeParameter[a] : r0_2
-#   27|     r0_4(glval<Point>)   = VariableAddress[b]     : 
-#   27|     r0_5(glval<Point &>) = VariableAddress[a]     : 
-#   27|     r0_6(Point &)        = Load                   : r0_5, mu0_1
-#   27|     r0_7(glval<Point>)   = Convert                : r0_6
-#   27|     r0_8(Point)          = Load                   : r0_7, mu0_1
-#   27|     mu0_9(Point)         = Store                  : r0_4, r0_8
-#   28|     v0_10(void)          = NoOp                   : 
-#   26|     v0_11(void)          = ReturnVoid             : 
-#   26|     v0_12(void)          = UnmodeledUse           : mu*
-#   26|     v0_13(void)          = ExitFunction           : 
-
 ir.cpp:
 #    1| Constants() -> void
 #    1|   Block 0
@@ -4091,146 +4045,82 @@ ir.cpp:
 #  962|     mu3_7(unknown[3588]) = Store           : r3_5, r3_6
 #-----|   Goto -> Block 2
 
-#  966| IfStmtWithDeclaration(int, int) -> void
-#  966|   Block 0
-#  966|     v0_0(void)         = EnterFunction          : 
-#  966|     mu0_1(unknown)     = UnmodeledDefinition    : 
-#  966|     r0_2(glval<int>)   = VariableAddress[x]     : 
-#  966|     mu0_3(int)         = InitializeParameter[x] : r0_2
-#  966|     r0_4(glval<int>)   = VariableAddress[y]     : 
-#  966|     mu0_5(int)         = InitializeParameter[y] : r0_4
-#  967|     r0_6(glval<bool>)  = VariableAddress[b]     : 
-#  967|     r0_7(glval<int>)   = VariableAddress[x]     : 
-#  967|     r0_8(int)          = Load                   : r0_7, mu0_1
-#  967|     r0_9(glval<int>)   = VariableAddress[y]     : 
-#  967|     r0_10(int)         = Load                   : r0_9, mu0_1
-#  967|     r0_11(bool)        = CompareLT              : r0_8, r0_10
-#  967|     mu0_12(bool)       = Store                  : r0_6, r0_11
-#  967|     r0_13(glval<bool>) = VariableAddress[b]     : 
-#  967|     r0_14(bool)        = Load                   : r0_13, mu0_1
-#  967|     v0_15(void)        = ConditionalBranch      : r0_14
+#  984| ChiPhiNode(Point *, bool, bool) -> int
+#  984|   Block 0
+#  984|     v0_0(void)           = EnterFunction               : 
+#  984|     mu0_1(unknown)       = UnmodeledDefinition         : 
+#  984|     r0_2(glval<Point *>) = VariableAddress[p]          : 
+#  984|     mu0_3(Point *)       = InitializeParameter[p]      : r0_2
+#  984|     r0_4(glval<bool>)    = VariableAddress[which1]     : 
+#  984|     mu0_5(bool)          = InitializeParameter[which1] : r0_4
+#  984|     r0_6(glval<bool>)    = VariableAddress[which2]     : 
+#  984|     mu0_7(bool)          = InitializeParameter[which2] : r0_6
+#  985|     r0_8(glval<bool>)    = VariableAddress[which1]     : 
+#  985|     r0_9(bool)           = Load                        : r0_8, mu0_1
+#  985|     v0_10(void)          = ConditionalBranch           : r0_9
 #-----|   False -> Block 2
 #-----|   True -> Block 1
 
-#  968|   Block 1
-#  968|     r1_0(int)        = Constant[5]        : 
-#  968|     r1_1(glval<int>) = VariableAddress[x] : 
-#  968|     mu1_2(int)       = Store              : r1_1, r1_0
+#  986|   Block 1
+#  986|     r1_0(glval<Point *>) = VariableAddress[p] : 
+#  986|     r1_1(Point *)        = Load               : r1_0, mu0_1
+#  986|     r1_2(glval<int>)     = FieldAddress[x]    : r1_1
+#  986|     r1_3(int)            = Load               : r1_2, mu0_1
+#  986|     r1_4(int)            = Constant[1]        : 
+#  986|     r1_5(int)            = Add                : r1_3, r1_4
+#  986|     mu1_6(int)           = Store              : r1_2, r1_5
+#-----|   Goto -> Block 3
+
+#  988|   Block 2
+#  988|     r2_0(glval<Point *>) = VariableAddress[p] : 
+#  988|     r2_1(Point *)        = Load               : r2_0, mu0_1
+#  988|     r2_2(glval<int>)     = FieldAddress[y]    : r2_1
+#  988|     r2_3(int)            = Load               : r2_2, mu0_1
+#  988|     r2_4(int)            = Constant[1]        : 
+#  988|     r2_5(int)            = Add                : r2_3, r2_4
+#  988|     mu2_6(int)           = Store              : r2_2, r2_5
+#-----|   Goto -> Block 3
+
+#  991|   Block 3
+#  991|     r3_0(glval<bool>) = VariableAddress[which2] : 
+#  991|     r3_1(bool)        = Load                    : r3_0, mu0_1
+#  991|     v3_2(void)        = ConditionalBranch       : r3_1
+#-----|   False -> Block 5
+#-----|   True -> Block 4
+
+#  992|   Block 4
+#  992|     r4_0(glval<Point *>) = VariableAddress[p] : 
+#  992|     r4_1(Point *)        = Load               : r4_0, mu0_1
+#  992|     r4_2(glval<int>)     = FieldAddress[x]    : r4_1
+#  992|     r4_3(int)            = Load               : r4_2, mu0_1
+#  992|     r4_4(int)            = Constant[1]        : 
+#  992|     r4_5(int)            = Add                : r4_3, r4_4
+#  992|     mu4_6(int)           = Store              : r4_2, r4_5
 #-----|   Goto -> Block 6
 
-#  970|   Block 2
-#  970|     r2_0(glval<int>) = VariableAddress[z] : 
-#  970|     r2_1(glval<int>) = VariableAddress[x] : 
-#  970|     r2_2(int)        = Load               : r2_1, mu0_1
-#  970|     r2_3(glval<int>) = VariableAddress[y] : 
-#  970|     r2_4(int)        = Load               : r2_3, mu0_1
-#  970|     r2_5(int)        = Add                : r2_2, r2_4
-#  970|     mu2_6(int)       = Store              : r2_0, r2_5
-#  970|     r2_7(glval<int>) = VariableAddress[z] : 
-#  970|     r2_8(int)        = Load               : r2_7, mu0_1
-#  970|     r2_9(int)        = Constant[0]        : 
-#  970|     r2_10(bool)      = CompareNE          : r2_8, r2_9
-#  970|     v2_11(void)      = ConditionalBranch  : r2_10
-#-----|   False -> Block 4
-#-----|   True -> Block 3
-
-#  971|   Block 3
-#  971|     r3_0(int)        = Constant[7]        : 
-#  971|     r3_1(glval<int>) = VariableAddress[y] : 
-#  971|     mu3_2(int)       = Store              : r3_1, r3_0
+#  994|   Block 5
+#  994|     r5_0(glval<Point *>) = VariableAddress[p] : 
+#  994|     r5_1(Point *)        = Load               : r5_0, mu0_1
+#  994|     r5_2(glval<int>)     = FieldAddress[y]    : r5_1
+#  994|     r5_3(int)            = Load               : r5_2, mu0_1
+#  994|     r5_4(int)            = Constant[1]        : 
+#  994|     r5_5(int)            = Add                : r5_3, r5_4
+#  994|     mu5_6(int)           = Store              : r5_2, r5_5
 #-----|   Goto -> Block 6
 
-#  973|   Block 4
-#  973|     r4_0(glval<int *>) = VariableAddress[p] : 
-#  973|     r4_1(glval<int>)   = VariableAddress[x] : 
-#  973|     mu4_2(int *)       = Store              : r4_0, r4_1
-#  973|     r4_3(glval<int *>) = VariableAddress[p] : 
-#  973|     r4_4(int *)        = Load               : r4_3, mu0_1
-#  973|     r4_5(int *)        = Constant[0]        : 
-#  973|     r4_6(bool)         = CompareNE          : r4_4, r4_5
-#  973|     v4_7(void)         = ConditionalBranch  : r4_6
-#-----|   False -> Block 6
-#-----|   True -> Block 5
-
-#  974|   Block 5
-#  974|     r5_0(int)          = Constant[2]        : 
-#  974|     r5_1(glval<int *>) = VariableAddress[p] : 
-#  974|     r5_2(int *)        = Load               : r5_1, mu0_1
-#  974|     mu5_3(int)         = Store              : r5_2, r5_0
-#-----|   Goto -> Block 6
-
-#  976|   Block 6
-#  976|     v6_0(void) = NoOp         : 
-#  966|     v6_1(void) = ReturnVoid   : 
-#  966|     v6_2(void) = UnmodeledUse : mu*
-#  966|     v6_3(void) = ExitFunction : 
-
-#  978| WhileStmtWithDeclaration(int, int) -> void
-#  978|   Block 0
-#  978|     v0_0(void)       = EnterFunction          : 
-#  978|     mu0_1(unknown)   = UnmodeledDefinition    : 
-#  978|     r0_2(glval<int>) = VariableAddress[x]     : 
-#  978|     mu0_3(int)       = InitializeParameter[x] : r0_2
-#  978|     r0_4(glval<int>) = VariableAddress[y]     : 
-#  978|     mu0_5(int)       = InitializeParameter[y] : r0_4
-#-----|   Goto -> Block 7
-
-#  979|   Block 1
-#  979|     v1_0(void) = NoOp : 
-#-----|   Goto -> Block 7
-
-#  981|   Block 2
-#  981|     r2_0(glval<int>) = VariableAddress[z] : 
-#  981|     r2_1(glval<int>) = VariableAddress[x] : 
-#  981|     r2_2(int)        = Load               : r2_1, mu0_1
-#  981|     r2_3(glval<int>) = VariableAddress[y] : 
-#  981|     r2_4(int)        = Load               : r2_3, mu0_1
-#  981|     r2_5(int)        = Add                : r2_2, r2_4
-#  981|     mu2_6(int)       = Store              : r2_0, r2_5
-#  981|     r2_7(glval<int>) = VariableAddress[z] : 
-#  981|     r2_8(int)        = Load               : r2_7, mu0_1
-#  981|     r2_9(int)        = Constant[0]        : 
-#  981|     r2_10(bool)      = CompareNE          : r2_8, r2_9
-#  981|     v2_11(void)      = ConditionalBranch  : r2_10
-#-----|   False -> Block 4
-#-----|   True -> Block 3
-
-#  981|   Block 3
-#  981|     v3_0(void) = NoOp : 
-#-----|   Goto -> Block 2
-
-#  983|   Block 4
-#  983|     r4_0(glval<int *>) = VariableAddress[p] : 
-#  983|     r4_1(glval<int>)   = VariableAddress[x] : 
-#  983|     mu4_2(int *)       = Store              : r4_0, r4_1
-#  983|     r4_3(glval<int *>) = VariableAddress[p] : 
-#  983|     r4_4(int *)        = Load               : r4_3, mu0_1
-#  983|     r4_5(int *)        = Constant[0]        : 
-#  983|     r4_6(bool)         = CompareNE          : r4_4, r4_5
-#  983|     v4_7(void)         = ConditionalBranch  : r4_6
-#-----|   False -> Block 6
-#-----|   True -> Block 5
-
-#  983|   Block 5
-#  983|     v5_0(void) = NoOp : 
-#-----|   Goto -> Block 4
-
-#  985|   Block 6
-#  985|     v6_0(void) = NoOp         : 
-#  978|     v6_1(void) = ReturnVoid   : 
-#  978|     v6_2(void) = UnmodeledUse : mu*
-#  978|     v6_3(void) = ExitFunction : 
-
-#  979|   Block 7
-#  979|     r7_0(glval<bool>) = VariableAddress[b] : 
-#  979|     r7_1(glval<int>)  = VariableAddress[x] : 
-#  979|     r7_2(int)         = Load               : r7_1, mu0_1
-#  979|     r7_3(glval<int>)  = VariableAddress[y] : 
-#  979|     r7_4(int)         = Load               : r7_3, mu0_1
-#  979|     r7_5(bool)        = CompareLT          : r7_2, r7_4
-#  979|     mu7_6(bool)       = Store              : r7_0, r7_5
-#  979|     r7_7(glval<bool>) = VariableAddress[b] : 
-#  979|     r7_8(bool)        = Load               : r7_7, mu0_1
-#  979|     v7_9(void)        = ConditionalBranch  : r7_8
-#-----|   False -> Block 2
-#-----|   True -> Block 1
+#  997|   Block 6
+#  997|     r6_0(glval<int>)     = VariableAddress[#return] : 
+#  997|     r6_1(glval<Point *>) = VariableAddress[p]       : 
+#  997|     r6_2(Point *)        = Load                     : r6_1, mu0_1
+#  997|     r6_3(glval<int>)     = FieldAddress[x]          : r6_2
+#  997|     r6_4(int)            = Load                     : r6_3, mu0_1
+#  997|     r6_5(glval<Point *>) = VariableAddress[p]       : 
+#  997|     r6_6(Point *)        = Load                     : r6_5, mu0_1
+#  997|     r6_7(glval<int>)     = FieldAddress[y]          : r6_6
+#  997|     r6_8(int)            = Load                     : r6_7, mu0_1
+#  997|     r6_9(int)            = Add                      : r6_4, r6_8
+#  997|     mu6_10(int)          = Store                    : r6_0, r6_9
+#  984|     r6_11(glval<int>)    = VariableAddress[#return] : 
+#  984|     v6_12(void)          = ReturnValue              : r6_11, mu0_1
+#  984|     v6_13(void)          = UnmodeledUse             : mu*
+#  984|     v6_14(void)          = ExitFunction             : 

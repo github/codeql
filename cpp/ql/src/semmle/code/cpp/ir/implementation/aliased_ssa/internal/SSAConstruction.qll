@@ -43,6 +43,10 @@ cached private module Cached {
     getOldInstruction(result) = instr
   }
 
+  /**
+   * Gets the chi node corresponding to `instr` if one is present, or the new `Instruction`
+   * corresponding to `instr` if there is no `Chi` node.
+   */
   private Instruction getNewFinalInstruction(OldIR::Instruction instr) {
     result = getChiInstruction(instr)
     or
@@ -202,12 +206,15 @@ cached private module Cached {
   cached Instruction getChiInstructionTotalOperand(ChiInstruction chiInstr, ChiTotalOperandTag tag) {
     exists(Alias::VirtualVariable vvar, OldIR::Instruction oldInstr, OldIR::IRBlock defBlock,
       int defRank, int defIndex, OldIR::IRBlock useBlock, int useRank |
-       ChiTag(oldInstr) = chiInstr.getTag() and
-       vvar = Alias::getResultMemoryAccess(oldInstr).getVirtualVariable() and
-       hasDefinitionAtRank(vvar, defBlock, defRank, defIndex) and
-       hasUseAtRank(vvar, useBlock, useRank, oldInstr) and
-       definitionReachesUse(vvar, defBlock, defRank, useBlock, useRank) and
-       result = getNewFinalInstruction(defBlock.getInstruction(defIndex))
+      ChiTag(oldInstr) = chiInstr.getTag() and
+      vvar = Alias::getResultMemoryAccess(oldInstr).getVirtualVariable() and
+      hasDefinitionAtRank(vvar, defBlock, defRank, defIndex) and
+      hasUseAtRank(vvar, useBlock, useRank, oldInstr) and
+      definitionReachesUse(vvar, defBlock, defRank, useBlock, useRank) and
+      if defIndex >= 0 then
+        result = getNewFinalInstruction(defBlock.getInstruction(defIndex))
+      else
+        result = getPhiInstruction(chiInstr.getFunction(), defBlock, vvar)
     )
   }
 

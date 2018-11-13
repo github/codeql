@@ -62,6 +62,7 @@ newtype TInstructionTag =
   CatchTag() or
   ThrowTag() or
   UnwindTag() or
+  InitializerUninitializedTag() or
   InitializerFieldAddressTag(Field field) {
     fieldIsInitialized(field)
   } or

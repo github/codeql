@@ -15,6 +15,7 @@
 | IR: CallNestedTemplateFunc | 1 |
 | IR: CallViaFuncPtr | 1 |
 | IR: CastToVoid | 1 |
+| IR: ChiPhiNode | 7 |
 | IR: Comma | 1 |
 | IR: CompoundAssignment | 1 |
 | IR: ConditionValues | 13 |
