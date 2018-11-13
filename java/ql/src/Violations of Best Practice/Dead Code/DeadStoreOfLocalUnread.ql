@@ -1,9 +1,6 @@
 /**
  * @name Useless assignment to local variable
- * @description A value is assigned to a local variable, but the local variable
- *              is only read before the assignment, not after it.
- *              The assignment has no effect: either it should be removed,
- *              or the assigned value should be used.
+ * @description Assigning a value to a local variable that is not later used has no effect.
  * @kind problem
  * @problem.severity recommendation
  * @precision low
