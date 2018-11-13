@@ -380,13 +380,24 @@ public class AutoBuild {
 			Path trapCachePath = SEMMLE_DIST.resolve(".cache").resolve("trap-cache").resolve("javascript");
 			if (Files.isDirectory(trapCachePath)) {
 				trapCache = new DefaultTrapCache(trapCachePath.toString(), null, Main.EXTRACTOR_VERSION) {
+					boolean warnedAboutCacheMiss = false;
+
 					@Override
 					public File lookup(String source, ExtractorConfig config, FileType type) {
 						File f = super.lookup(source, config, type);
 						// only return `f` if it exists; this has the effect of making the cache read-only
-						return f.exists() ? f : null;
+						if (f.exists())
+							return f;
+						// warn on first failed lookup
+						if (!warnedAboutCacheMiss) {
+							warn("Trap cache lookup for externs failed.");
+							warnedAboutCacheMiss = true;
+						}
+						return null;
 					}
 				};
+			} else {
+				warn("No externs trap cache found");
 			}
 		}
 
