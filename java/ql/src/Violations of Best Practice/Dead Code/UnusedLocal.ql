@@ -1,6 +1,6 @@
 /**
  * @name Unused local variable
- * @description Assigning a value to a local variable that is not used may indicate incomplete code.
+ * @description A local variable that is not initialized, assigned, or read may indicate incomplete code.
  * @kind problem
  * @problem.severity recommendation
  * @precision low

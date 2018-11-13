@@ -1,6 +1,6 @@
 /**
  * @name Local variable is initialized but not used
- * @description Assigning a value to a local variable that is not used may indicate an error in the code.
+ * @description A local variable that is initialized but not subsequently used may indicate an error in the code.
  * @kind problem
  * @problem.severity recommendation
  * @precision low
