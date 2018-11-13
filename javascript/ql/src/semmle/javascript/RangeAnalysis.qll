@@ -161,31 +161,35 @@ module RangeAnalysis {
     not exists(r.asExpr().getIntValue()) and
     (
       exists (AddExpr expr | r.asExpr() = expr |
+        // r = root + k
         root = expr.getLeftOperand().flow() and
         bias = expr.getRightOperand().getIntValue() and
-        sign = 1)
-      or
-      exists (AddExpr expr | r.asExpr() = expr |
+        sign = 1
+        or
+        // r = k + root
         bias = expr.getLeftOperand().getIntValue() and
         root = expr.getRightOperand().flow() and
         sign = 1)
       or
       exists (SubExpr expr | r.asExpr() = expr |
+        // r = root - k
         root = expr.getLeftOperand().flow() and
         bias = -expr.getRightOperand().getIntValue() and
-        sign = 1)
-      or
-      exists (SubExpr expr | r.asExpr() = expr |
+        sign = 1
+        or
+        // r = k - root
         bias = expr.getLeftOperand().getIntValue() and
         root = expr.getRightOperand().flow() and
         sign = -1)
       or
       exists (NegExpr expr | r.asExpr() = expr |
+        // r = -root
         root = expr.getOperand().flow() and
         bias = 0 and
         sign = -1)
       or
       exists (UpdateExpr update | r = updateExprResult(update) |
+        // r = ++root
         root = update.getOperand().flow() and
         sign = 1 and
         if update instanceof IncExpr then
@@ -194,6 +198,7 @@ module RangeAnalysis {
           bias = -1)
       or
       exists (UpdateExpr update | r.asExpr() = update | // Return value of x++ is just x (coerced to an int)
+        // r = root++
         root = update.getOperand().flow() and
         not update.isPrefix() and
         sign = 1 and
@@ -203,9 +208,11 @@ module RangeAnalysis {
         root = assign.getLhs().flow() and
         sign = 1 and
         (
+          // r = root += k 
           assign instanceof AssignAddExpr and
           bias = assign.getRhs().getIntValue()
           or
+          // r = root -= k
           assign instanceof AssignSubExpr and
           bias = -assign.getRhs().getIntValue()
         ))
@@ -220,8 +227,11 @@ module RangeAnalysis {
       linearDefinition(r.getAPredecessor(), root, sign, bias)
     else if linearDefinitionStep(r, _, _, _) then
       exists (DataFlow::Node pred, int sign1, int bias1, int sign2, int bias2 |
+        // r = pred * sign1 + bias1
         linearDefinitionStep(r, pred, sign1, bias1) and
+        // pred = root * sign2 + bias2 
         linearDefinition(pred, root, sign2, bias2) and
+        // r = (root * sign2 + bias2) * sign1 + bias1
         sign = sign1 * sign2 and
         bias = bias1 + sign1 * bias2)
     else (
@@ -242,11 +252,13 @@ module RangeAnalysis {
       none() // do not model constants as sums
     else (
       exists (AddExpr add, int bias1, int bias2 | r.asExpr() = add |
+        // r = r1 + r2
         linearDefinition(add.getLeftOperand().flow(), xroot, xsign, bias1) and
         linearDefinition(add.getRightOperand().flow(), yroot, ysign, bias2) and
         bias = bias1 + bias2)
       or
       exists (SubExpr sub, int bias1, int bias2 | r.asExpr() = sub |
+        // r = r1 - r2
         linearDefinition(sub.getLeftOperand().flow(), xroot, xsign, bias1) and
         linearDefinition(sub.getRightOperand().flow(), yroot, -ysign, -bias2) and // Negate right-hand operand
         bias = bias1 + bias2)
@@ -256,7 +268,8 @@ module RangeAnalysis {
   }
 
   /**
-   * Holds if the given comparison can be modelled as `A <op> B + bias` where `<op>` is the comparison operator.
+   * Holds if the given comparison can be modelled as `A <op> B + bias` where `<op>` is the comparison operator,
+   * and `A` is `a * asign` and likewise `B` is `b * bsign`.
    */
   predicate linearComparison(Comparison comparison, DataFlow::Node a, int asign, DataFlow::Node b, int bsign, Bias bias) {
     exists(Expr left, Expr right, int bias1, int bias2 | left = comparison.getLeftOperand() and right = comparison.getRightOperand() |
@@ -315,13 +328,10 @@ module RangeAnalysis {
    */
   private string negateOperator(string operator) {
     operator = "==" and result = "!=" or
-    operator = "!=" and result = "==" or
     operator = "===" and result = "!==" or
-    operator = "!==" and result = "===" or
     operator = "<" and result = ">=" or
-    operator = "<=" and result = ">" or
     operator = ">" and result = "<=" or
-    operator = ">=" and result = "<"
+    operator = negateOperator(result)
   }
 
   /**

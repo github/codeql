@@ -17,7 +17,7 @@ longer needed, remove it.
 </p>
 
 <p>
-If the check is needed to guard against NaN values, insert a comment explaning the possibility of NaN.
+If the check is needed to guard against <code>NaN</code> values, insert a comment explaning the possibility of <code>NaN</code>.
 </p>
 
 </recommendation>
@@ -30,7 +30,7 @@ The following example finds the index of an element in a given slice of the arra
 <sample src="examples/UselessConditional.js" />
 
 <p>
-The condition <tt>i &lt; end</tt> at the end is always false, however. The code can be clarified if the
+The condition <code>i &lt; end</code> at the end is always false, however. The code can be clarified if the
 redundant condition is removed:
 </p>
 
