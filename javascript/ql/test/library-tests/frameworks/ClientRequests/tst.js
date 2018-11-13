@@ -69,3 +69,15 @@ import {ClientRequest, net} from 'electron';
     superagent.get(url).unknown(nonData).query(queryData);
 
 });
+
+(function() {
+    $.ajax(url, {data: data});
+    $.ajax({url: url, tdata: data});
+
+    $.getJSON(url, {data: data});
+    $.getJSON({url: url, tdata: data});
+
+    var xhr = new XMLHttpRequest();
+    xhr.open(_, url);
+    xhr.send(data);
+});

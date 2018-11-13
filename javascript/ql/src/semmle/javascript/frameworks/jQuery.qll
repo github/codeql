@@ -340,3 +340,24 @@ private class JQueryChainedElement extends DOM::Element {
     )
   }
 }
+
+/**
+ * A model of a URL request made using the `jQuery.ajax` or `jQuery.getJSON`.
+ */
+private class JQueryClientRequest extends CustomClientRequest {
+  JQueryClientRequest() {
+    exists(string name |
+      name = "ajax" or
+      name = "getJSON"
+      |
+      this = jquery().getAMemberCall(name)
+    )
+  }
+
+  override DataFlow::Node getUrl() {
+    result = getArgument(0) or
+    result = getOptionArgument([0 .. 1], "url")
+  }
+
+  override DataFlow::Node getADataNode() { result = getOptionArgument([0 .. 1], "data") }
+}

@@ -15,3 +15,6 @@
 | tst.js:68:5:68:23 | superagent.get(url) | tst.js:68:34:68:43 | headerData |
 | tst.js:68:5:68:23 | superagent.get(url) | tst.js:68:52:68:60 | queryData |
 | tst.js:69:5:69:23 | superagent.get(url) | tst.js:69:48:69:56 | queryData |
+| tst.js:74:5:74:29 | $.ajax( ...  data}) | tst.js:74:24:74:27 | data |
+| tst.js:77:5:77:32 | $.getJS ...  data}) | tst.js:77:27:77:30 | data |
+| tst.js:80:15:80:34 | new XMLHttpRequest() | tst.js:82:14:82:17 | data |
