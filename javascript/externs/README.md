@@ -2,7 +2,7 @@ This directory contains externs definitions for improving the precision of some 
 
 Externs are organized into five categories, corresponding to the subdirectories of this directory:
 
-  * `es`: Externs definitions for the ECMAScript language standard; imported from the `externs` directory of the Google Closure Compiler source tree (https://github.com/google/closure-compiler), revision 6b81fd0bebe9b2560b55a37b880156465d045247.
+  * `es`: Externs definitions for the ECMAScript language standard; imported from the `externs` directory of the Google Closure Compiler source tree (https://github.com/google/closure-compiler).
 
   * `web`: Externs definitions for various web standards and browser-specific extensions; imported from the same source.
 
