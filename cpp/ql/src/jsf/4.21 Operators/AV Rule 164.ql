@@ -35,7 +35,7 @@ predicate constantValue(Expr e, int value) {
 predicate violation(BinaryBitwiseOperation op, int lhsBytes, int value) {
     (op instanceof LShiftExpr or op instanceof RShiftExpr) and
     constantValue(op.getRightOperand(), value) and
-    lhsBytes = op.getLeftOperand().getType().getSize() and
+    lhsBytes = op.getLeftOperand().getExplicitlyConverted().getType().getSize() and
     (value < 0 or value >= lhsBytes * 8)
 }
 

@@ -23,6 +23,6 @@ void f(unsigned char uc, signed char sc, int i) {
 	((unsigned char)i) >> -1; // BAD
 	((unsigned char)i) >> 0;
 	((unsigned char)i) >> 7;
-	((unsigned char)i) >> 8; // BAD [NOT DETECTED]
+	((unsigned char)i) >> 8; // BAD
 }
 
