@@ -1,6 +1,6 @@
 /**
  * @name Inheritance depth distribution
- * @description Shows distribution of inheritance depth across all classes.
+ * @description Shows the distribution of inheritance depth across all classes.
  * @kind chart
  * @id cpp/architecture/inheritance-depth-distribution
  * @chart.type line
