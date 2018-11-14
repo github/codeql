@@ -13,5 +13,5 @@ import semmle.javascript.security.dataflow.HttpToFileAccess::HttpToFileAccess
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasPathFlow(source, sink)
+where cfg.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "$@ flows to file system", source.getNode(), "Untrusted data"

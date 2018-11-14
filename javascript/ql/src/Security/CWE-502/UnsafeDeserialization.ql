@@ -15,6 +15,6 @@ import semmle.javascript.security.dataflow.UnsafeDeserialization::UnsafeDeserial
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasPathFlow(source, sink)
+where cfg.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Unsafe deserialization of $@.",
        source.getNode(), "user input"

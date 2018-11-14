@@ -189,7 +189,7 @@ abstract class Configuration extends string {
   predicate hasFlow(DataFlow::Node source, DataFlow::Node sink) {
     isSource(_, this, _) and isSink(_, this, _) and
     exists (SourcePathNode flowsource, SinkPathNode flowsink |
-      hasPathFlow(flowsource, flowsink) and
+      hasFlowPath(flowsource, flowsink) and
       source = flowsource.getNode() and
       sink = flowsink.getNode()
     )
@@ -198,8 +198,17 @@ abstract class Configuration extends string {
   /**
    * Holds if data may flow from `source` to `sink` for this configuration.
    */
-  predicate hasPathFlow(SourcePathNode source, SinkPathNode sink) {
+  predicate hasFlowPath(SourcePathNode source, SinkPathNode sink) {
     flowsTo(source, _, sink, _, this)
+  }
+
+  /**
+   * DEPRECATED: Use `hasFlowPath` instead.
+   *
+   * Holds if data may flow from `source` to `sink` for this configuration.
+   */
+  deprecated predicate hasPathFlow(SourcePathNode source, SinkPathNode sink) {
+    hasFlowPath(source, sink)
   }
 
   /**
