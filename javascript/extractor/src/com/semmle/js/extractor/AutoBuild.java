@@ -393,10 +393,13 @@ public class AutoBuild {
 	private void startThreadPool() {
 		int defaultNumThreads = Runtime.getRuntime().availableProcessors();
 		int numThreads = Env.systemEnv().getInt("LGTM_INDEX_THREADS", defaultNumThreads);
-		if (numThreads > 1)
+		if (numThreads > 1) {
+			System.out.println("Parallel extraction with " + numThreads + " threads.");
 			threadPool = Executors.newFixedThreadPool(numThreads);
-		else
+		} else {
+			System.out.println("Single-threaded extraction.");
 			threadPool = null;
+		}
 	}
 
 	private void shutdownThreadPool() {
@@ -680,6 +683,7 @@ public class AutoBuild {
 		long end = System.nanoTime();
 		int milliseconds = (int) ((end - timedLogMessageStart) / 1_000_000);
 		System.out.println(message + " (" + milliseconds + " ms)");
+		System.out.flush();
 	}
 
 	public static void main(String[] args) {
