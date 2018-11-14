@@ -93,7 +93,8 @@ private newtype TMemoryAccess =
     )
   }
   or
-  TUnknownMemoryAccess(UnknownVirtualVariable uvv)
+  TUnknownMemoryAccess(UnknownVirtualVariable uvv) or
+  TTotalUnknownMemoryAccess(UnknownVirtualVariable uvv)
 
 private VariableMemoryAccess getVariableMemoryAccess(IRVariable var, IntValue offset, IntValue size) {
   result.getVirtualVariable() = getVirtualVariable(var) and
@@ -170,6 +171,26 @@ class UnknownMemoryAccess extends TUnknownMemoryAccess, MemoryAccess {
   }
 }
 
+class TotalUnknownMemoryAccess extends TTotalUnknownMemoryAccess, MemoryAccess {
+  UnknownVirtualVariable vvar;
+  
+  TotalUnknownMemoryAccess() {
+    this = TTotalUnknownMemoryAccess(vvar)
+  }
+  
+  final override string toString() {
+    result = vvar.toString()
+  }
+  
+  final override VirtualVariable getVirtualVariable() {
+    result = vvar
+  }
+  
+  Type getType() {
+    result instanceof UnknownType
+  }
+}
+
 Overlap getOverlap(MemoryAccess def, MemoryAccess use) {
   def instanceof VariableMemoryAccess and
   def = use and
@@ -200,9 +221,15 @@ Overlap getOverlap(MemoryAccess def, MemoryAccess use) {
   )
   or
   exists(UnknownVirtualVariable uvv |
-    uvv = def.getVirtualVariable() and
+    def = TUnknownMemoryAccess(uvv) and
     uvv = use.getVirtualVariable() and
     result instanceof MayPartiallyOverlap
+  )
+  or
+  exists(UnknownVirtualVariable uvv |
+    def = TTotalUnknownMemoryAccess(uvv) and
+    uvv = use.getVirtualVariable() and
+    result instanceof MustTotallyOverlap
   )
 }
 
@@ -215,8 +242,14 @@ MemoryAccess getResultMemoryAccess(Instruction instr) {
     resultPointsTo(instr.getAnOperand().(AddressOperand).getDefinitionInstruction(), var, i) and
     result = getVariableMemoryAccess(var, i, instr.getResultSize())
   )
-  else
-    result = TUnknownMemoryAccess(TUnknownVirtualVariable(instr.getFunctionIR()))
+  else (
+    result = TUnknownMemoryAccess(TUnknownVirtualVariable(instr.getFunctionIR())) and
+    not instr instanceof UnmodeledDefinitionInstruction and
+    not instr instanceof AliasedDefinitionInstruction
+    or
+    result = TTotalUnknownMemoryAccess(TUnknownVirtualVariable(instr.getFunctionIR())) and
+    instr instanceof AliasedDefinitionInstruction
+  )
 }
 
 MemoryAccess getOperandMemoryAccess(Operand operand) {
@@ -228,6 +261,8 @@ MemoryAccess getOperandMemoryAccess(Operand operand) {
     resultPointsTo(operand.getAddressOperand().getDefinitionInstruction(), var, i) and
     result = getVariableMemoryAccess(var, i, operand.getDefinitionInstruction().getResultSize())
   )
-  else
-    result = TUnknownMemoryAccess(TUnknownVirtualVariable(operand.getInstruction().getFunctionIR()))
+  else (
+    result = TUnknownMemoryAccess(TUnknownVirtualVariable(operand.getInstruction().getFunctionIR())) and
+    not operand.getInstruction() instanceof UnmodeledUseInstruction
+  )
 }

@@ -1322,6 +1322,16 @@ class UnmodeledDefinitionInstruction extends Instruction {
   }
 }
 
+class AliasedDefinitionInstruction extends Instruction {
+  AliasedDefinitionInstruction() {
+    opcode instanceof Opcode::AliasedDefinition
+  }
+
+  override final MemoryAccessKind getResultMemoryAccess() {
+    result instanceof EscapedMemoryAccess
+  }
+}
+
 class UnmodeledUseInstruction extends Instruction {
   UnmodeledUseInstruction() {
     opcode instanceof Opcode::UnmodeledUse

@@ -76,6 +76,9 @@ class TranslatedFunction extends TranslatedElement,
     (
       (
         tag = EnterFunctionTag() and
+        result = getInstruction(AliasedDefinitionTag())
+      ) or (
+        tag = AliasedDefinitionTag() and
         result = getInstruction(UnmodeledDefinitionTag())
       ) or
       (
@@ -150,6 +153,12 @@ class TranslatedFunction extends TranslatedElement,
       (
         tag = UnmodeledDefinitionTag() and
         opcode instanceof Opcode::UnmodeledDefinition and
+        resultType instanceof UnknownType and
+        isGLValue = false
+      ) or
+      (
+        tag = AliasedDefinitionTag() and
+        opcode instanceof Opcode::AliasedDefinition and
         resultType instanceof UnknownType and
         isGLValue = false
       ) or

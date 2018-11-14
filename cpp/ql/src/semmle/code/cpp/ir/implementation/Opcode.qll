@@ -54,6 +54,7 @@ private newtype TOpcode =
   TUnwind() or
   TUnmodeledDefinition() or
   TUnmodeledUse() or
+  TAliasedDefinition() or
   TPhi() or
   TVarArgsStart() or
   TVarArgsEnd() or
@@ -180,6 +181,7 @@ module Opcode {
   class Unwind extends Opcode, TUnwind { override final string toString() { result = "Unwind" } }
   class UnmodeledDefinition extends Opcode, TUnmodeledDefinition { override final string toString() { result = "UnmodeledDefinition" } }
   class UnmodeledUse extends Opcode, TUnmodeledUse { override final string toString() { result = "UnmodeledUse" } }
+  class AliasedDefinition extends Opcode, TAliasedDefinition { override final string toString() { result = "AliasedDefinition" } }
   class Phi extends Opcode, TPhi { override final string toString() { result = "Phi" } }
   class VarArgsStart extends BuiltInOpcode, TVarArgsStart { override final string toString() { result = "VarArgsStart" } }
   class VarArgsEnd extends BuiltInOpcode, TVarArgsEnd { override final string toString() { result = "VarArgsEnd" } }

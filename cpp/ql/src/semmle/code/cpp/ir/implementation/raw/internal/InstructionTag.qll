@@ -40,6 +40,7 @@ newtype TInstructionTag =
   ExitFunctionTag() or
   UnmodeledDefinitionTag() or
   UnmodeledUseTag() or
+  AliasedDefinitionTag() or
   SwitchBranchTag() or
   CallTargetTag() or
   CallTag() or

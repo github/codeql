@@ -157,7 +157,7 @@ cached private module Cached {
               else
                 result = getPhiInstruction(instruction.getFunction(), defBlock, vvar)
             )
-          ) 
+          )
           else (
             result = instruction.getFunctionIR().getUnmodeledDefinitionInstruction()
           )
