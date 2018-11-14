@@ -7,6 +7,7 @@
  * @tags maintainability
  *       readability
  *       testability
+ *       external/jsf
  */
 import cpp
 

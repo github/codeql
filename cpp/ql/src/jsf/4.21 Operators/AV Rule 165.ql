@@ -7,6 +7,7 @@
  * @precision low
  * @tags correctness
  *       reliability
+ *       external/jsf
  */
 import cpp
 

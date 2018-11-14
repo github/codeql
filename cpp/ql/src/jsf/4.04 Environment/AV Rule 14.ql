@@ -6,6 +6,7 @@
  * @problem.severity error
  * @tags maintainability
  *       readability
+ *       external/jsf
  */
 import cpp
 

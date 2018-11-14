@@ -6,6 +6,7 @@
  * @problem.severity recommendation
  * @tags maintainability
  *       documentation
+ *       external/jsf
  */
 import cpp
 

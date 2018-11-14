@@ -6,6 +6,7 @@
  * @problem.severity error
  * @precision low
  * @tags correctness
+ *       external/jsf
  */
 import cpp
 

@@ -8,6 +8,7 @@
  * @problem.severity recommendation
  * @tags maintainability
  *       portability
+ *       external/jsf
  */
 import cpp
 

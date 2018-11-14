@@ -6,6 +6,7 @@
  * @problem.severity error
  * @tags correctness
  *       reliability
+ *       external/jsf
  */
 import semmle.code.cpp.pointsto.PointsTo
 

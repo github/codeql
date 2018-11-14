@@ -6,6 +6,7 @@
  * @problem.severity warrecommendationning
  * @tags maintainability
  *       readability
+ *       external/jsf
  */
 
 import cpp

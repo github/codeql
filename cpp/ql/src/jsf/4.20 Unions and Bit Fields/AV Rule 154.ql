@@ -10,6 +10,7 @@
  *       portability
  *       reliability
  *       language-features
+ *       external/jsf
  *       external/cwe/cwe-190
  */
 import cpp

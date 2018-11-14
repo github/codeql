@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @tags correctness
  *       portability
+ *       external/jsf
  */
 import cpp
 

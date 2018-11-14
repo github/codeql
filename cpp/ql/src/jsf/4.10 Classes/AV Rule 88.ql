@@ -7,6 +7,7 @@
  * @id cpp/undisciplined-multiple-inheritance
  * @tags maintainability
  *       readability
+ *       external/jsf
  */
 import cpp
 

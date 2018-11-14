@@ -7,6 +7,7 @@
  * @id cpp/loop-variable-float
  * @tags correctness
  *       reliability
+ *       external/jsf
  */
 import cpp
 

@@ -5,6 +5,7 @@
  * @id cpp/jsf/av-rule-208
  * @problem.severity recommendation
  * @tags language-features
+ *       external/jsf
  */
 import cpp
 

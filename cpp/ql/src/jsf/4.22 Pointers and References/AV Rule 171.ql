@@ -6,6 +6,7 @@
  * @id cpp/jsf/av-rule-171
  * @problem.severity error
  * @tags correctness
+ *       external/jsf
  */
 import cpp
 import semmle.code.cpp.pointsto.PointsTo

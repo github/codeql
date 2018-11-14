@@ -5,6 +5,7 @@
  * @id cpp/jsf/av-rule-138
  * @problem.severity warning
  * @tags maintainability
+ *       external/jsf
  */
 import cpp
 

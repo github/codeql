@@ -8,6 +8,7 @@
  * @tags efficiency
  *       readability
  *       external/cwe/cwe-404
+ *       external/jsf
  */
 import cpp
 import Critical.NewDelete

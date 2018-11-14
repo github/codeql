@@ -8,6 +8,7 @@
  * @precision low
  * @tags correctness
  *       portability
+ *       external/jsf
  */
 import cpp
 

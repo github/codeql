@@ -6,6 +6,7 @@
  * @id cpp/jsf/av-rule-206
  * @problem.severity recommendation
  * @tags resources
+ *       external/jsf
  */
 import cpp
 
