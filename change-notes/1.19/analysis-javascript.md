@@ -6,6 +6,8 @@
 
 * The taint tracking library now recognizes additional sanitization patterns. This may give fewer false-positive results for the security queries.
 
+* Support for AMD modules has been improved. This may give additional results for the security queries as well as any queries that use type inference on code bases that use such modules.
+
 * Support for popular libraries has been improved. Consequently, queries may produce more results on code bases that use the following features:
   - file system access, for example through [fs-extra](https://github.com/jprichardson/node-fs-extra) or [globby](https://www.npmjs.com/package/globby)
   - outbound network access, for example through the [fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
