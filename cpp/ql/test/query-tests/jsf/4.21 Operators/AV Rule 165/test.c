@@ -13,11 +13,11 @@ void f(int i, unsigned int ui, signed int si, TUI tui, volatile unsigned int vui
 	si = -si;
 
 	i = -(int)i;
-	i = -(unsigned int)i; // BAD [NOT DETECTED]
+	i = -(unsigned int)i; // BAD
 	i = -(signed int)i;
-	ui = -(int)ui; // [FALSE POSITIVE]
+	ui = -(int)ui;
 	ui = -(unsigned int)ui; // BAD
-	ui = -(signed int)ui; // [FALSE POSITIVE]
+	ui = -(signed int)ui;
 
 	tui = -tui; // BAD
 	vui = -vui; // BAD
