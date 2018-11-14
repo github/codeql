@@ -22,10 +22,9 @@ private predicate isBoundInMethod(MethodDeclaration method) {
     or
     exists (string name |
       name = method.getName() |
-      exists (DataFlow::Node rhs, DataFlow::MethodCallNode bind |
+      exists (DataFlow::MethodCallNode bind |
         // this.<methodName> = <expr>.bind(...)
-        thiz.hasPropertyWrite(name, rhs) and
-        bind.flowsTo(rhs) and
+        bind = thiz.getAPropertySource(name) and
         bind.getMethodName() = "bind"
       )
       or
