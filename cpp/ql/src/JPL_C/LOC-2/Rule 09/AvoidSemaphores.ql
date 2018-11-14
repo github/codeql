@@ -3,7 +3,8 @@
  * @description The use of semaphores or locks to access shared data should be avoided.
  * @kind problem
  * @id cpp/jpl-c/avoid-semaphores
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags concurrency
  */
 
 import Semaphores

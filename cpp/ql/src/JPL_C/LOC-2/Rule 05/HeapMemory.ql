@@ -3,7 +3,8 @@
  * @description Dynamic memory allocation (using malloc() or calloc()) should be confined to the initialization routines of a program.
  * @kind problem
  * @id cpp/jpl-c/heap-memory
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags resources
  */
 
 import cpp

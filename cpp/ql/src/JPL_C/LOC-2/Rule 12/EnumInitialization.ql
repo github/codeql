@@ -3,7 +3,9 @@
  * @description In an enumerator list, the = construct should not be used to explicitly initialize members other than the first, unless all items are explicitly initialized. An exception is the pattern to use the last element of an enumerator list to get the number of possible values.
  * @kind problem
  * @id cpp/jpl-c/enum-initialization
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
  */
 import cpp
 

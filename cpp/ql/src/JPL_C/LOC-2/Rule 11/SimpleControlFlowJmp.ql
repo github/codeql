@@ -4,6 +4,9 @@
  * @kind problem
  * @id cpp/jpl-c/simple-control-flow-jmp
  * @problem.severity warning
+ * @tags correctness
+ *       portability
+ *       readability
  */
 
 import cpp
