@@ -21,6 +21,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.semmle.js.extractor.AutoBuild;
+import com.semmle.js.extractor.ExtractorState;
 import com.semmle.js.extractor.FileExtractor;
 import com.semmle.util.data.StringUtil;
 import com.semmle.util.exception.UserError;
@@ -94,12 +95,12 @@ public class AutoBuildTests {
 			Set<String> actual = new LinkedHashSet<>();
 			new AutoBuild() {
 				@Override
-				protected void extract(FileExtractor extractor, Path file) {
+				protected void extract(FileExtractor extractor, Path file, ExtractorState state) {
 					actual.add(file.toString());
 				}
 
 				@Override
-				public void verifyTypeScriptInstallation() {
+				public void verifyTypeScriptInstallation(ExtractorState state) {
 				}
 
 				@Override

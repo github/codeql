@@ -173,7 +173,6 @@ public class AutoBuild {
 	private final Path LGTM_SRC, SEMMLE_DIST;
 	private final TypeScriptMode typeScriptMode;
 	private final String defaultEncoding;
-	private ExtractorState extractorState;
 
 	public AutoBuild() {
 		this.LGTM_SRC = toRealPath(getPathFromEnvVar("LGTM_SRC"));
@@ -182,7 +181,6 @@ public class AutoBuild {
 		this.trapCache = mkTrapCache();
 		this.typeScriptMode = getEnumFromEnvVar("LGTM_INDEX_TYPESCRIPT", TypeScriptMode.class, TypeScriptMode.BASIC);
 		this.defaultEncoding = getEnvVar("LGTM_INDEX_DEFAULT_ENCODING");
-		this.extractorState = new ExtractorState();
 		setupMatchers();
 	}
 
@@ -413,12 +411,12 @@ public class AutoBuild {
 			}
 		}
 
-		FileExtractor extractor = new FileExtractor(config, outputConfig, trapCache, extractorState);
+		FileExtractor extractor = new FileExtractor(config, outputConfig, trapCache);
 		FileVisitor<? super Path> visitor = new SimpleFileVisitor<Path>() {
 			@Override
 			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
 				if (".js".equals(FileUtil.extension(file.toString())))
-					extract(extractor, file);
+					extract(extractor, file, null);
 				return super.visitFile(file, attrs);
 			}
 		};
@@ -435,7 +433,7 @@ public class AutoBuild {
 		config = config.withTypeScriptMode(typeScriptMode);
 		if (defaultEncoding != null)
 			config = config.withDefaultEncoding(defaultEncoding);
-		FileExtractor extractor = new FileExtractor(config, outputConfig, trapCache, extractorState);
+		FileExtractor extractor = new FileExtractor(config, outputConfig, trapCache);
 		Path[] currentRoot = new Path[1];
 		final Set<Path> filesToExtract = new LinkedHashSet<>();
 		final List<Path> tsconfigFiles = new ArrayList<>();
@@ -482,6 +480,7 @@ public class AutoBuild {
 		}
 
 		// If there are any .ts files, verify that TypeScript is installed.
+		ExtractorState extractorState = new ExtractorState();
 		TypeScriptParser tsParser = extractorState.getTypeScriptParser();
 		boolean hasTypeScriptFiles = false;
 		for (Path file : filesToExtract) {
@@ -494,7 +493,7 @@ public class AutoBuild {
 			}
 		}
 		if (hasTypeScriptFiles || !tsconfigFiles.isEmpty()) {
-			verifyTypeScriptInstallation();
+			verifyTypeScriptInstallation(extractorState);
 		}
 
 		// Extract TypeScript projects
@@ -515,7 +514,7 @@ public class AutoBuild {
 					typeScriptFiles.add(sourcePath.toFile());
 				}
 			}
-			extractTypeScriptFiles(typeScriptFiles, extractedFiles, extractor);
+			extractTypeScriptFiles(typeScriptFiles, extractedFiles, extractor, extractorState);
 			tsParser.closeProject(projectFile);
 		}
 
@@ -533,7 +532,7 @@ public class AutoBuild {
 			}
 		}
 		if (!remainingTypeScriptFiles.isEmpty()) {
-			extractTypeScriptFiles(remainingTypeScriptFiles, extractedFiles, extractor);
+			extractTypeScriptFiles(remainingTypeScriptFiles, extractedFiles, extractor, extractorState);
 		}
 
 		// The TypeScript compiler instance is no longer needed.
@@ -542,7 +541,7 @@ public class AutoBuild {
 		// Extract non-TypeScript files
 		for (Path f : filesToExtract) {
 			if (extractedFiles.add(f)) {
-				extract(extractor, f);
+				extract(extractor, f, null);
 			}
 		}
 	}
@@ -551,16 +550,17 @@ public class AutoBuild {
 	 * Verifies that Node.js and the TypeScript compiler are installed and can be
 	 * found.
 	 */
-	public void verifyTypeScriptInstallation() {
+	public void verifyTypeScriptInstallation(ExtractorState extractorState) {
 		extractorState.getTypeScriptParser().verifyInstallation(true);
 	}
 
-	public void extractTypeScriptFiles(List<File> files, Set<Path> extractedFiles, FileExtractor extractor) throws IOException {
+	public void extractTypeScriptFiles(List<File> files, Set<Path> extractedFiles,
+			FileExtractor extractor, ExtractorState extractorState) throws IOException {
 		extractorState.getTypeScriptParser().prepareFiles(files);
 		for (File f : files) {
 			Path path = f.toPath();
 			extractedFiles.add(path);
-			extract(extractor, f.toPath());
+			extract(extractor, f.toPath(), extractorState);
 		}
 	}
 
@@ -597,7 +597,7 @@ public class AutoBuild {
 	/**
 	 * Extract a single file.
 	 */
-	protected void extract(FileExtractor extractor, Path file) throws IOException {
+	protected void extract(FileExtractor extractor, Path file, ExtractorState state) throws IOException {
 		File f = file.toFile();
 		if (!f.exists()) {
 			warn("Skipping " + file + ", which does not exist.");
@@ -605,7 +605,7 @@ public class AutoBuild {
 		}
 
 		long start = logBeginProcess("Extracting " + file);
-		extractor.extract(f);
+		extractor.extract(f, state);
 		logEndProcess(start);
 	}
 

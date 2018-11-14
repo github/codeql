@@ -125,7 +125,7 @@ public class Main {
 				ap.error(P_TRAP_CACHE_BOUND + " should only be specified together with " + P_TRAP_CACHE + ".");
 			trapCache = new DummyTrapCache();
 		}
-		fileExtractor = new FileExtractor(extractorConfig, extractorOutputConfig, trapCache, extractorState);
+		fileExtractor = new FileExtractor(extractorConfig, extractorOutputConfig, trapCache);
 
 		setupMatchers(ap);
 
@@ -211,7 +211,7 @@ public class Main {
 		}
 		long start = verboseLogStartTimer(ap, "Extracting " + f);
 		try {
-			fileExtractor.extract(f.getAbsoluteFile());
+			fileExtractor.extract(f.getAbsoluteFile(), extractorState);
 			verboseLogEndTimer(ap, start);
 		} catch (IOException e) {
 			throw new ResourceError("Extraction of " + f + " failed.", e);

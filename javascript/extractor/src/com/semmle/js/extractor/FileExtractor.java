@@ -395,13 +395,11 @@ public class FileExtractor {
 	private final ExtractorConfig config;
 	private final ExtractorOutputConfig outputConfig;
 	private final ITrapCache trapCache;
-	private final ExtractorState state;
 
-	public FileExtractor(ExtractorConfig config, ExtractorOutputConfig outputConfig, ITrapCache trapCache, ExtractorState state) {
+	public FileExtractor(ExtractorConfig config, ExtractorOutputConfig outputConfig, ITrapCache trapCache) {
 		this.config = config;
 		this.outputConfig = outputConfig;
 		this.trapCache = trapCache;
-		this.state = state;
 	}
 
 	public ExtractorConfig getConfig() {
@@ -412,7 +410,7 @@ public class FileExtractor {
 		return config.hasFileType() || FileType.forFile(f, config) != null;
 	}
 
-	public void extract(File f) throws IOException {
+	public void extract(File f, ExtractorState state) throws IOException {
 		// populate source archive
 		String source = new WholeIO(config.getDefaultEncoding()).strictread(f);
 		outputConfig.getSourceArchive().add(f, source);
@@ -424,7 +422,7 @@ public class FileExtractor {
 		locationManager.emitFileLocation(fileLabel, 0, 0, 0, 0);
 
 		// now extract the contents
-		extractContents(f, fileLabel, source, locationManager);
+		extractContents(f, fileLabel, source, locationManager, state);
 	}
 
 
@@ -440,7 +438,7 @@ public class FileExtractor {
 	 *
 	 * We only cache the content-dependent part, which makes up the bulk of the TRAP
 	 * file anyway. The location-dependent part is emitted from scratch every time
-	 * by the {@link #extract(File)} method above.
+	 * by the {@link #extract(File, ExtractorState)} method above.
 	 *
 	 * In order to keep labels in the main part independent of the file's location,
 	 * we bump the TRAP label counter to a known value (currently 20000) after the
@@ -451,7 +449,8 @@ public class FileExtractor {
 	 * Also note that we support extraction with TRAP writer factories that are not file-backed;
 	 * obviously, no caching is done in that scenario.
 	 */
-	private void extractContents(File f, Label fileLabel, String source, LocationManager locationManager) throws IOException {
+	private void extractContents(File f, Label fileLabel, String source, LocationManager locationManager,
+			ExtractorState state) throws IOException {
 		TrapWriter trapwriter = locationManager.getTrapWriter();
 		FileType fileType = config.hasFileType() ? FileType.valueOf(config.getFileType())
 				: FileType.forFile(f, config);
