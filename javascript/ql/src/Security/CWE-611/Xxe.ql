@@ -16,6 +16,6 @@ import semmle.javascript.security.dataflow.Xxe::Xxe
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasPathFlow(source, sink)
+where cfg.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "A $@ is parsed as XML without guarding against external entity expansion.",
        source.getNode(), "user-provided value"

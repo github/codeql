@@ -73,13 +73,13 @@ predicate isTaintedGuardForSensitiveAction(DataFlow::PathNode sink, DataFlow::Pa
   not sink.getNode() instanceof SensitiveActionGuardComparisonOperand and
   exists (Configuration cfg  |
     // ordinary taint tracking to a guard
-    cfg.hasPathFlow(source, sink) or
+    cfg.hasFlowPath(source, sink) or
     // taint tracking to both operands of a guard comparison
     exists (SensitiveActionGuardComparison cmp, DataFlow::PathNode lSource, DataFlow::PathNode rSource,
             DataFlow::PathNode lSink, DataFlow::PathNode rSink |
       sink.getNode() = cmp.getGuard() and
-      cfg.hasPathFlow(lSource, lSink) and lSink.getNode() = DataFlow::valueNode(cmp.getLeftOperand()) and
-      cfg.hasPathFlow(rSource, rSink) and rSink.getNode() = DataFlow::valueNode(cmp.getRightOperand()) |
+      cfg.hasFlowPath(lSource, lSink) and lSink.getNode() = DataFlow::valueNode(cmp.getLeftOperand()) and
+      cfg.hasFlowPath(rSource, rSink) and rSink.getNode() = DataFlow::valueNode(cmp.getRightOperand()) |
       source = lSource or
       source = rSource
     )

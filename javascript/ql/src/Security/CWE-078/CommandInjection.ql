@@ -17,7 +17,7 @@ import semmle.javascript.security.dataflow.CommandInjection::CommandInjection
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, DataFlow::Node highlight
-where cfg.hasPathFlow(source, sink) and
+where cfg.hasFlowPath(source, sink) and
       if cfg.isSinkWithHighlight(sink.getNode(), _) then
         cfg.isSinkWithHighlight(sink.getNode(), highlight)
       else

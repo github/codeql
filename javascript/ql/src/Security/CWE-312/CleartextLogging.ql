@@ -33,7 +33,7 @@ predicate inBrowserEnvironment(TopLevel tl) {
 }
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasPathFlow(source, sink) and
+where cfg.hasFlowPath(source, sink) and
       // ignore logging to the browser console (even though it is not a good practice)
       not inBrowserEnvironment(sink.getNode().asExpr().getTopLevel())
 select sink.getNode(), source, sink, "Sensitive data returned by $@ is logged here.",

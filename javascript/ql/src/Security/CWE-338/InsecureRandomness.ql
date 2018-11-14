@@ -15,6 +15,6 @@ import semmle.javascript.security.dataflow.InsecureRandomness::InsecureRandomnes
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasPathFlow(source, sink)
+where cfg.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Cryptographically insecure $@ in a security context.",
        source.getNode(), "random value"

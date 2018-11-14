@@ -17,7 +17,7 @@ private import semmle.javascript.security.dataflow.HardcodedCredentials::Hardcod
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, string value
-where cfg.hasPathFlow(source, sink) and
+where cfg.hasFlowPath(source, sink) and
       // use source value in message if it's available
       if source.getNode().asExpr() instanceof ConstantString then
         value = "The hard-coded value \"" + source.getNode().asExpr().(ConstantString).getStringValue() + "\""
