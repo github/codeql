@@ -510,7 +510,7 @@ public class AutoBuild {
 			File projectFile = projectPath.toFile();
 			long start = logBeginProcess("Opening project " + projectFile);
 			ParsedProject project = tsParser.openProject(projectFile);
-			logEndProcess(start);
+			logEndProcess(start, "Done opening project " + projectFile);
 			// Extract all files belonging to this project which are also matched
 			// by our include/exclude filters.
 			List<File> typeScriptFiles = new ArrayList<File>();
@@ -625,7 +625,7 @@ public class AutoBuild {
 		try {
 			long start = logBeginProcess("Extracting " + file);
 			extractor.extract(f, state);
-			logEndProcess(start);
+			logEndProcess(start, "Done extracting " + file);
 		} catch (IOException e) {
 			throw new ResourceError("Exception while extracting " + file + ".", e);
 		}
@@ -637,15 +637,14 @@ public class AutoBuild {
 	}
 
 	private long logBeginProcess(String message) {
-		System.out.print(message + "...");
-		System.out.flush();
+		System.out.println(message);
 		return System.nanoTime();
 	}
 
-	private void logEndProcess(long timedLogMessageStart) {
+	private void logEndProcess(long timedLogMessageStart, String message) {
 		long end = System.nanoTime();
-		int milliseconds = (int) ((end - timedLogMessageStart) / 1000000);
-		System.out.println(" done (" + milliseconds + " ms)");
+		int milliseconds = (int) ((end - timedLogMessageStart) / 1_000_000);
+		System.out.println(message + " (" + milliseconds + " ms)");
 	}
 
 	public static void main(String[] args) {
