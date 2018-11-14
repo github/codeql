@@ -2,7 +2,7 @@
  * @name Deserialization of user-controlled data
  * @description Deserializing user-controlled data may allow attackers to
  *              execute arbitrary code.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id java/unsafe-deserialization
@@ -13,6 +13,7 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import UnsafeDeserialization
+import DataFlow::PathGraph
 
 class UnsafeDeserializationConfig extends TaintTracking::Configuration {
   UnsafeDeserializationConfig() { this = "UnsafeDeserializationConfig" }
@@ -22,6 +23,7 @@ class UnsafeDeserializationConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeDeserializationSink }
 }
 
-from UnsafeDeserializationSink sink, RemoteUserInput source, UnsafeDeserializationConfig conf
-where conf.hasFlow(source, sink)
-select sink.getMethodAccess(), "Unsafe deserialization of $@.", source, "user input"
+from DataFlow::PathNode source, DataFlow::PathNode sink, UnsafeDeserializationConfig conf
+where conf.hasFlowPath(source, sink)
+select sink.getNode().(UnsafeDeserializationSink).getMethodAccess(), source, sink,
+  "Unsafe deserialization of $@.", source.getNode(), "user input"

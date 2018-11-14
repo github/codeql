@@ -20,8 +20,8 @@ private class RemoteUserInputToArgumentToExecFlowConfig extends TaintTracking::C
  * so that it can be excluded from `ExecUnescaped.ql` to avoid
  * reporting overlapping results.
  */
-predicate execTainted(RemoteUserInput source, ArgumentToExec execArg) {
+predicate execTainted(DataFlow::PathNode source, DataFlow::PathNode sink, ArgumentToExec execArg) {
   exists(RemoteUserInputToArgumentToExecFlowConfig conf |
-    conf.hasFlow(source, DataFlow::exprNode(execArg))
+    conf.hasFlowPath(source, sink) and sink.getNode() = DataFlow::exprNode(execArg)
   )
 }

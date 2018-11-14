@@ -2,7 +2,7 @@
  * @name URL redirection from remote source
  * @description URL redirection based on unvalidated user-input
  *              may cause redirection to malicious web sites.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id java/unvalidated-url-redirection
@@ -13,6 +13,7 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import UrlRedirect
+import DataFlow::PathGraph
 
 class UrlRedirectConfig extends TaintTracking::Configuration {
   UrlRedirectConfig() { this = "UrlRedirectConfig" }
@@ -22,6 +23,7 @@ class UrlRedirectConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof UrlRedirectSink }
 }
 
-from UrlRedirectSink sink, RemoteUserInput source, UrlRedirectConfig conf
-where conf.hasFlow(source, sink)
-select sink, "Potentially untrusted URL redirection due to $@.", source, "user-provided value"
+from DataFlow::PathNode source, DataFlow::PathNode sink, UrlRedirectConfig conf
+where conf.hasFlowPath(source, sink)
+select sink.getNode(), source, sink, "Potentially untrusted URL redirection due to $@.",
+  source.getNode(), "user-provided value"
