@@ -83,6 +83,11 @@ class AMDModuleDefinition extends CallExpr {
     )
   }
 
+  /** Gets a source node whose value becomes the definition of this module. */
+  DataFlow::SourceNode getAModuleSource() {
+    result.flowsToExpr(getModuleExpr())
+  }
+
   /**
    * Holds if `p` is the parameter corresponding to dependency `dep`.
    */
