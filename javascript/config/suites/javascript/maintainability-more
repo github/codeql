@@ -6,7 +6,7 @@
 + semmlecode-javascript-queries/Declarations/DuplicateVarDecl.ql: /Maintainability/Declarations
 + semmlecode-javascript-queries/Declarations/UnusedParameter.ql: /Maintainability/Declarations
 + semmlecode-javascript-queries/Declarations/UnusedVariable.ql: /Maintainability/Declarations
-+ semmlecode-javascript-queries/Expressions/UselessDefensiveProgramming.ql: /Maintainability/Expressions
++ semmlecode-javascript-queries/Expressions/UnneededDefensiveProgramming.ql: /Maintainability/Expressions
 + semmlecode-javascript-queries/LanguageFeatures/ArgumentsCallerCallee.ql: /Maintainability/Language Features
 + semmlecode-javascript-queries/LanguageFeatures/ConditionalComments.ql: /Maintainability/Language Features
 + semmlecode-javascript-queries/LanguageFeatures/Eval.ql: /Maintainability/Language Features
