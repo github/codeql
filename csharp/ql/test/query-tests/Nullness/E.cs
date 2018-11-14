@@ -90,12 +90,12 @@ public class E
         switch (switchguard)
         {
             case MY_CONST_A:
-                vals[0] = 0; // GOOD (false positive)
+                vals[0] = 0; // GOOD
                 break;
             case MY_CONST_C:
                 break;
             case MY_CONST_B:
-                vals[0] = 0; // GOOD (false positive)
+                vals[0] = 0; // GOOD
                 break;
             default:
                 throw new Exception();

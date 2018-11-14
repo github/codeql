@@ -75,7 +75,7 @@ public class D
         var o8 = maybe ? null : "";
         int track = o8 == null ? 42 : 1 + 1;
         if (track == 2)
-            o8.ToString(); // GOOD (false positive)
+            o8.ToString(); // GOOD
         if (track != 42)
             o8.ToString(); // GOOD (false positive)
         if (track < 42)

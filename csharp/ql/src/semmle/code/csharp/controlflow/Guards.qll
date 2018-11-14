@@ -981,6 +981,82 @@ module Internal {
   }
 
   /**
+   * Holds if `def` can have a value that is not representable as an
+   * abstract value.
+   */
+  private predicate hasPossibleUnknownValue(PreSsa::Definition def) {
+    exists(PreSsa::Definition input |
+      input = def.getAPhiInput*() and
+      not exists(input.getAPhiInput())
+    |
+      not exists(input.getDefinition().getSource())
+      or
+      exists(Expr e |
+        e = stripConditionalExpr(input.getDefinition().getSource()) |
+        not e = any(AbstractValue v).getAnExpr()
+      )
+    )
+  }
+
+  /**
+   * Gets an ultimate definition of `def` that is not itself a phi node. The
+   * boolean `fromBackEdge` indicates whether the flow from `result` to `def`
+   * goes through a back edge.
+   */
+  PreSsa::Definition getADefinition(PreSsa::Definition def, boolean fromBackEdge) {
+    result = def and
+    not exists(def.getAPhiInput()) and
+    fromBackEdge = false
+    or
+    exists(PreSsa::Definition input, PreBasicBlocks::PreBasicBlock pred, boolean fbe |
+      input = def.getAPhiInput() |
+      pred = def.getBasicBlock().getAPredecessor() and
+      PreSsa::ssaDefReachesEndOfBlock(pred, input, _) and
+      result = getADefinition(input, fbe) and
+      (if def.getBasicBlock().dominates(pred) then fromBackEdge = true else fromBackEdge = fbe)
+    )
+  }
+
+  /**
+   * Holds if `e` has abstract value `v` and may be assigned to `def`. The Boolean
+   * `fromBackEdge` indicates whether the flow from `e` to `def` goes through a
+   * back edge.
+   */
+  private predicate possibleValue(PreSsa::Definition def, boolean fromBackEdge, Expr e, AbstractValue v) {
+    not hasPossibleUnknownValue(def) and
+    exists(PreSsa::Definition input |
+      input = getADefinition(def, fromBackEdge) |
+      e = stripConditionalExpr(input.getDefinition().getSource()) and
+      v.getAnExpr() = e
+    )
+  }
+
+  private predicate nonUniqueValue(PreSsa::Definition def, Expr e, AbstractValue v) {
+    possibleValue(def, false, e, v) and
+    possibleValue(def, _, any(Expr other | other != e), v)
+  }
+
+  /**
+   * Holds if `e` has abstract value `v` and may be assigned to `def` without going
+   * through back edges, and all other possible ultimate definitions of `def` do not
+   * have abstract value `v`. The trivial case where `def` is an explicit update with
+   * source `e is excluded.
+   */
+  private predicate uniqueValue(PreSsa::Definition def, Expr e, AbstractValue v) {
+    possibleValue(def, false, e, v) and
+    not nonUniqueValue(def, e, v) and
+    exists(Expr other | possibleValue(def, _, other, _) and other != e)
+  }
+
+  /**
+   * Holds if `guard` having abstract value `vGuard` implies that `def` has
+   * abstract value `vDef`.
+   */
+  private predicate guardImpliesEqual(Guard guard, AbstractValue vGuard, PreSsa::Definition def, AbstractValue vDef) {
+    guard = getAnEqualityCheck(def.getARead(), vGuard, vDef.getAnExpr())
+  }
+
+  /**
    * A helper class for calculating structurally equal access/call expressions.
    */
   private class ConditionOnExprComparisonConfig extends InternalStructuralComparisonConfiguration {
@@ -1166,6 +1242,15 @@ module Internal {
         // proving `def != v` ensures that `g2` evaluates to `b2`.
         conditionalAssignVal(g2, v2.getDualValue(), def, v) and
         guardImpliesNotEqual(g1, v1, def, v)
+      )
+      or
+      exists(PreSsa::Definition def, Expr e, AbstractValue v |
+        // If `def = g2 ? v : ...` and all other assignments to `def` are different from
+        // `v` then a guard proving `def == v` ensures that `g2` evaluates to `v2`.
+        uniqueValue(def, e, v) and
+        guardImpliesEqual(g1, v1, def, v) and
+        g2.preControlsDirect(any(PreBasicBlocks::PreBasicBlock bb | e = bb.getAnElement()), v2) and
+        not g2.preControlsDirect(any(PreBasicBlocks::PreBasicBlock bb | g1 = bb.getAnElement()), v2)
       )
     }
 

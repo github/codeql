@@ -717,8 +717,10 @@
 | D.cs:76:21:76:30 | ... == ... | false | D.cs:76:21:76:22 | access to local variable o8 | non-null |
 | D.cs:76:21:76:30 | ... == ... | true | D.cs:75:18:75:22 | access to field maybe | true |
 | D.cs:76:21:76:30 | ... == ... | true | D.cs:76:21:76:22 | access to local variable o8 | null |
+| D.cs:77:13:77:22 | ... == ... | true | D.cs:76:21:76:30 | ... == ... | false |
 | D.cs:78:13:78:14 | access to local variable o8 | non-null | D.cs:75:18:75:34 | ... ? ... : ... | non-null |
 | D.cs:78:13:78:14 | access to local variable o8 | null | D.cs:75:18:75:34 | ... ? ... : ... | null |
+| D.cs:79:13:79:23 | ... != ... | false | D.cs:76:21:76:30 | ... == ... | true |
 | D.cs:80:13:80:14 | access to local variable o8 | non-null | D.cs:75:18:75:34 | ... ? ... : ... | non-null |
 | D.cs:80:13:80:14 | access to local variable o8 | null | D.cs:75:18:75:34 | ... ? ... : ... | null |
 | D.cs:82:13:82:14 | access to local variable o8 | non-null | D.cs:75:18:75:34 | ... ? ... : ... | non-null |
@@ -1152,6 +1154,10 @@
 | E.cs:85:18:85:29 | ... != ... | true | E.cs:85:18:85:21 | access to parameter vals | non-null |
 | E.cs:85:18:85:35 | ... && ... | true | E.cs:85:18:85:29 | ... != ... | true |
 | E.cs:85:18:85:35 | ... && ... | true | E.cs:85:34:85:35 | access to parameter b2 | true |
+| E.cs:90:17:90:27 | access to local variable switchguard | match case ...: | E.cs:83:13:83:24 | ... != ... | true |
+| E.cs:90:17:90:27 | access to local variable switchguard | match case ...: | E.cs:83:29:83:30 | access to parameter b1 | true |
+| E.cs:90:17:90:27 | access to local variable switchguard | match case ...: | E.cs:85:18:85:29 | ... != ... | true |
+| E.cs:90:17:90:27 | access to local variable switchguard | match case ...: | E.cs:85:34:85:35 | access to parameter b2 | true |
 | E.cs:107:15:107:25 | Int32[] arr2 = ... | non-null | E.cs:107:15:107:18 | access to local variable arr2 | non-null |
 | E.cs:107:15:107:25 | Int32[] arr2 = ... | null | E.cs:107:15:107:18 | access to local variable arr2 | null |
 | E.cs:109:13:109:39 | ... = ... | non-null | E.cs:109:13:109:16 | access to local variable arr2 | non-null |
