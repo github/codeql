@@ -1,7 +1,7 @@
 /**
  * @name File data in outbound network request
  * @description Directly sending file data in an outbound network request can indicate unauthorized information disclosure.
- * @kind problem
+ * @kind path-problem
  * @problem.severity warning
  * @id js/file-access-to-http
  * @tags security
@@ -9,8 +9,10 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.FileAccessToHttp
+import semmle.javascript.security.dataflow.FileAccessToHttp::FileAccessToHttp
+import DataFlow::PathGraph
 
-from FileAccessToHttp::Configuration config, DataFlow::Node src, DataFlow::Node sink
-where config.hasFlow (src, sink)
-select sink, "$@ flows directly to outbound network request", src, "File data"
+from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+where cfg.hasPathFlow(source, sink)
+select sink.getNode(), source, sink, "$@ flows directly to outbound network request",
+       source.getNode(), "File data"

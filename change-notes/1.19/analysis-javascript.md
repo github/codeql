@@ -13,6 +13,8 @@
 
 * Type inference for function calls has been improved. This may give additional results for queries that rely on type inference.
 
+* Where applicable, path explanations have been added to the security queries.
+
 ## New queries
 
 | **Query**                                     | **Tags**                                             | **Purpose**                                                                                                                                                                 |
