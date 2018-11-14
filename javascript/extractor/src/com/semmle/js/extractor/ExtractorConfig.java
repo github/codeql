@@ -162,7 +162,7 @@ public class ExtractorConfig {
         this.ecmaVersion = experimental ? ECMAVersion.ECMA2019 : ECMAVersion.ECMA2018;
         this.platform = Platform.AUTO;
         this.jsx = true;
-        this.sourceType = SourceType.SCRIPT;
+        this.sourceType = SourceType.AUTO;
         this.htmlHandling = HTMLHandling.ELEMENTS;
         this.tolerateParseErrors = true;
         if (experimental) {
@@ -171,6 +171,7 @@ public class ExtractorConfig {
             this.esnext = true;
             this.v8Extensions = true;
         }
+        this.typescriptMode = TypeScriptMode.NONE;
         this.defaultEncoding = StandardCharsets.UTF_8.name();
     }
 

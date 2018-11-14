@@ -23,25 +23,28 @@
 | Replacement of a substring with itself (`js/identity-replacement`) | correctness, security, external/cwe/cwe-116 | Highlights string replacements that replace a string with itself, which usually indicates a mistake. Results shown on LGTM by default. |
 | Stored cross-site scripting (`js/stored-xss`) | security, external/cwe/cwe-079, external/cwe/cwe-116 | Highlights uncontrolled stored values flowing into HTML content, indicating a violation of [CWE-079](https://cwe.mitre.org/data/definitions/79.html). Results shown on LGTM by default. |
 | Unclear precedence of nested operators (`js/unclear-operator-precedence`) | maintainability, correctness, external/cwe/cwe-783 | Highlights nested binary operators whose relative precedence is easy to misunderstand. Results shown on LGTM by default. |
+| Unneeded defensive code | correctness, external/cwe/cwe-570, external/cwe/cwe-571 | Highlights locations where defensive code is not needed. Results are shown on LGTM by default. |
+| Useless assignment to property | maintainability | Highlights property assignments whose value is always overwritten. Results are shown on LGTM by default. |
 | User-controlled data in file | security, external/cwe/cwe-912 | Highlights locations where user-controlled data is written to a file. Results are not shown on LGTM by default. |
 
 ## Changes to existing queries
 
 | **Query**                      | **Expected impact**        | **Change**                                   |
 |--------------------------------|----------------------------|----------------------------------------------|
-| Useless assignment to local variable | Fewer false-positive results | This rule now recognizes additional ways default values can be set. |
-| Regular expression injection | Fewer false-positive results | This rule now identifies calls to `String.prototype.search` with more precision. |
-| Unbound event handler receiver | Fewer false-positive results | This rule now recognizes additional ways class methods can be bound. |
-| Remote property injection | Fewer results | The precision of this rule has been revised to "medium". Results are no longer shown on LGTM by default. |
-| Missing CSRF middleware | Fewer false-positive results | This rule now recognizes additional CSRF protection middlewares. |
-| Server-side URL redirect | More results | This rule now recognizes redirection calls in more cases. |
-| Unused variable, import, function or class | Fewer false-positive results | This rule now flags fewer variables that may be used by `eval` calls. |
-| Unused variable, import, function or class | Fewer results | This rule now flags import statements with multiple unused imports once. |
-| Whitespace contradicts operator precedence | Fewer false-positive results | This rule no longer flags operators with asymmetric whitespace. |
-| Unused import | Fewer false-positive results | This rule no longer flags imports used by the `transform-react-jsx` Babel plugin. |
-| Self assignment | Fewer false-positive results | This rule now ignores self-assignments preceded by a JSDoc comment with a `@type` tag. |
 | Client side cross-site scripting | More results | This rule now also flags HTML injection in the body of an email. |
 | Information exposure through a stack trace | More results | This rule now also flags cases where the entire exception object (including the stack trace) may be exposed. |
+| Missing CSRF middleware | Fewer false-positive results | This rule now recognizes additional CSRF protection middlewares. |
+| Regular expression injection | Fewer false-positive results | This rule now identifies calls to `String.prototype.search` with more precision. |
+| Remote property injection | Fewer results | The precision of this rule has been revised to "medium". Results are no longer shown on LGTM by default. |
+| Self assignment | Fewer false-positive results | This rule now ignores self-assignments preceded by a JSDoc comment with a `@type` tag. |
+| Server-side URL redirect | More results | This rule now recognizes redirection calls in more cases. |
+| Unbound event handler receiver | Fewer false-positive results | This rule now recognizes additional ways class methods can be bound. |
+| Uncontrolled data used in remote request | More results | This rule now recognizes additional kinds of requests. |
+| Unused import | Fewer false-positive results | This rule no longer flags imports used by the `transform-react-jsx` Babel plugin. |
+| Unused variable, import, function or class | Fewer false-positive results | This rule now flags fewer variables that may be used by `eval` calls. |
+| Unused variable, import, function or class | Fewer results | This rule now flags import statements with multiple unused imports once. |
+| Useless assignment to local variable | Fewer false-positive results | This rule now recognizes additional ways default values can be set. |
+| Whitespace contradicts operator precedence | Fewer false-positive results | This rule no longer flags operators with asymmetric whitespace. |
 
 ## Changes to QL libraries
 

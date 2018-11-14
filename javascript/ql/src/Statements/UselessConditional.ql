@@ -15,29 +15,7 @@
 import javascript
 import semmle.javascript.RestrictedLocations
 import semmle.javascript.dataflow.Refinements
-
-/**
- * Holds if `va` is a defensive truthiness check that may be worth keeping, even if it
- * is strictly speaking useless.
- *
- * We currently recognize three patterns:
- *
- *   - the first `x` in `x || (x = e)`
- *   - the second `x` in `x = (x || e)`
- *   - the second `x` in `var x = x || e`
- */
-predicate isDefensiveInit(VarAccess va) {
-  exists (LogOrExpr o, VarRef va2 |
-    va = o.getLeftOperand().getUnderlyingReference() and va2.getVariable() = va.getVariable() |
-    exists (AssignExpr assgn | va2 = assgn.getTarget() |
-      assgn = o.getRightOperand().stripParens() or
-      o = assgn.getRhs().getUnderlyingValue()
-    ) or
-    exists (VariableDeclarator vd | va2 = vd.getBindingPattern() |
-      o = vd.getInit().getUnderlyingValue()
-    )
-  )
-}
+import semmle.javascript.DefensiveProgramming
 
 /**
  * Holds if variable `v` looks like a symbolic constant, that is, it is assigned
@@ -95,6 +73,21 @@ predicate isConstantBooleanReturnValue(Expr e) {
   isConstantBooleanReturnValue(e.(LogNotExpr).getOperand())
 }
 
+private Expr maybeStripLogNot(Expr e) {
+  result = maybeStripLogNot(e.(LogNotExpr).getOperand()) or
+  result = e
+}
+
+/**
+ * Holds if `e` is a defensive expression with a fixed outcome.
+ */
+predicate isConstantDefensive(Expr e) {
+  exists(DefensiveExpressionTest defensive |
+    maybeStripLogNot(defensive.asExpr()) = e and
+    exists(defensive.getTheTestResult())
+  )
+}
+
 /**
  * Holds if `e` is an expression that should not be flagged as a useless condition.
  *
@@ -109,7 +102,7 @@ predicate isConstantBooleanReturnValue(Expr e) {
 predicate whitelist(Expr e) {
   isConstant(e) or
   isConstant(e.(LogNotExpr).getOperand()) or
-  isDefensiveInit(e) or
+  isConstantDefensive(e) or // flagged by js/useless-defensive-code
   isInitialParameterUse(e) or
   isConstantBooleanReturnValue(e)
 }
