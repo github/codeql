@@ -452,8 +452,7 @@ public class FileExtractor {
 	private void extractContents(File f, Label fileLabel, String source, LocationManager locationManager,
 			ExtractorState state) throws IOException {
 		TrapWriter trapwriter = locationManager.getTrapWriter();
-		FileType fileType = config.hasFileType() ? FileType.valueOf(config.getFileType())
-				: FileType.forFile(f, config);
+		FileType fileType = getFileType(f);
 
 		File cacheFile = null,   // the cache file for this extraction
 		     resultFile = null;  // the final result TRAP file for this extraction
@@ -499,6 +498,11 @@ public class FileExtractor {
 
 			FileUtil.close(trapwriter);
 		}
+	}
+
+	public FileType getFileType(File f) {
+		return config.hasFileType() ? FileType.valueOf(config.getFileType())
+				: FileType.forFile(f, config);
 	}
 
 	/**

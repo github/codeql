@@ -377,8 +377,8 @@ public class AutoBuild {
 	public void run() throws IOException {
 		threadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 		try {
-			extractExterns();
 			extractSource();
+			extractExterns();
 		} finally {
 			threadPool.shutdown();
 		}
@@ -442,9 +442,90 @@ public class AutoBuild {
 		if (defaultEncoding != null)
 			config = config.withDefaultEncoding(defaultEncoding);
 		FileExtractor extractor = new FileExtractor(config, outputConfig, trapCache);
+
+		Set<Path> filesToExtract = new LinkedHashSet<>();
+		List<Path> tsconfigFiles = new ArrayList<>();
+		findFilesToExtract(extractor, filesToExtract, tsconfigFiles);
+
+		// extract TypeScript projects and files
+		Set<Path> extractedFiles = extractTypeScript(extractor, filesToExtract, tsconfigFiles);
+
+		// extract remaining files
+		for (Path f : filesToExtract) {
+			if (extractedFiles.add(f)) {
+				extract(extractor, f, null);
+			}
+		}
+	}
+
+	private Set<Path> extractTypeScript(FileExtractor extractor, Set<Path> files, List<Path> tsconfig) {
+		Set<Path> extractedFiles = new LinkedHashSet<>();
+
+		if (hasTypeScriptFiles(files) || !tsconfig.isEmpty()) {
+			ExtractorState extractorState = new ExtractorState();
+			TypeScriptParser tsParser = extractorState.getTypeScriptParser();
+			verifyTypeScriptInstallation(extractorState);
+
+			// Extract TypeScript projects
+			for (Path projectPath : tsconfig) {
+				File projectFile = projectPath.toFile();
+				long start = logBeginProcess("Opening project " + projectFile);
+				ParsedProject project = tsParser.openProject(projectFile);
+				logEndProcess(start, "Done opening project " + projectFile);
+				// Extract all files belonging to this project which are also matched
+				// by our include/exclude filters.
+				List<File> typeScriptFiles = new ArrayList<File>();
+				for (File sourceFile : project.getSourceFiles()) {
+					Path sourcePath = sourceFile.toPath();
+					if (!files.contains(normalizePath(sourcePath)))
+						continue;
+					if (!extractedFiles.contains(sourcePath)) {
+						typeScriptFiles.add(sourcePath.toFile());
+					}
+				}
+				extractTypeScriptFiles(typeScriptFiles, extractedFiles, extractor, extractorState);
+				tsParser.closeProject(projectFile);
+			}
+	
+			// Extract all the types discovered when extracting the ASTs.
+			if (!tsconfig.isEmpty()) {
+				TypeTable typeTable = tsParser.getTypeTable();
+				extractTypeTable(tsconfig.iterator().next(), typeTable);
+			}
+	
+			// Extract remaining TypeScript files.
+			List<File> remainingTypeScriptFiles = new ArrayList<File>();
+			for (Path f : files) {
+				if (!extractedFiles.contains(f) && FileType.forFileExtension(f.toFile()) == FileType.TYPESCRIPT) {
+					remainingTypeScriptFiles.add(f.toFile());
+				}
+			}
+			if (!remainingTypeScriptFiles.isEmpty()) {
+				extractTypeScriptFiles(remainingTypeScriptFiles, extractedFiles, extractor, extractorState);
+			}
+	
+			// The TypeScript compiler instance is no longer needed.
+			tsParser.killProcess();
+		}
+
+		return extractedFiles;
+	}
+
+	private boolean hasTypeScriptFiles(Set<Path> filesToExtract) {
+		for (Path file : filesToExtract) {
+			// Check if there are any files with the TypeScript extension.
+			// Do not use FileType.forFile as it involves I/O for file header checks,
+			// and files with a bad header have already been excluded.
+			if (FileType.forFileExtension(file.toFile()) == FileType.TYPESCRIPT)
+				return true;
+		}
+		return false;
+	}
+
+	private void findFilesToExtract(FileExtractor extractor,
+			final Set<Path> filesToExtract, final List<Path> tsconfigFiles)
+					throws IOException {
 		Path[] currentRoot = new Path[1];
-		final Set<Path> filesToExtract = new LinkedHashSet<>();
-		final List<Path> tsconfigFiles = new ArrayList<>();
 		FileVisitor<? super Path> visitor = new SimpleFileVisitor<Path>() {
 			private boolean isFileIncluded(Path file) {
 				// normalise path for matching
@@ -486,72 +567,6 @@ public class AutoBuild {
 			currentRoot[0] = root;
 			Files.walkFileTree(currentRoot[0], visitor);
 		}
-
-		// If there are any .ts files, verify that TypeScript is installed.
-		ExtractorState extractorState = new ExtractorState();
-		TypeScriptParser tsParser = extractorState.getTypeScriptParser();
-		boolean hasTypeScriptFiles = false;
-		for (Path file : filesToExtract) {
-			// Check if there are any files with the TypeScript extension.
-			// Do not use FileType.forFile as it involves I/O for file header checks,
-			// and files with a bad header have already been excluded.
-			if (FileType.forFileExtension(file.toFile()) == FileType.TYPESCRIPT) {
-				hasTypeScriptFiles = true;
-				break;
-			}
-		}
-		if (hasTypeScriptFiles || !tsconfigFiles.isEmpty()) {
-			verifyTypeScriptInstallation(extractorState);
-		}
-
-		// Extract TypeScript projects
-		Set<Path> extractedFiles = new LinkedHashSet<>();
-		for (Path projectPath : tsconfigFiles) {
-			File projectFile = projectPath.toFile();
-			long start = logBeginProcess("Opening project " + projectFile);
-			ParsedProject project = tsParser.openProject(projectFile);
-			logEndProcess(start, "Done opening project " + projectFile);
-			// Extract all files belonging to this project which are also matched
-			// by our include/exclude filters.
-			List<File> typeScriptFiles = new ArrayList<File>();
-			for (File sourceFile : project.getSourceFiles()) {
-				Path sourcePath = sourceFile.toPath();
-				if (!filesToExtract.contains(normalizePath(sourcePath)))
-					continue;
-				if (!extractedFiles.contains(sourcePath)) {
-					typeScriptFiles.add(sourcePath.toFile());
-				}
-			}
-			extractTypeScriptFiles(typeScriptFiles, extractedFiles, extractor, extractorState);
-			tsParser.closeProject(projectFile);
-		}
-
-		if (!tsconfigFiles.isEmpty()) {
-			// Extract all the types discovered when extracting the ASTs.
-			TypeTable typeTable = tsParser.getTypeTable();
-			extractTypeTable(tsconfigFiles.iterator().next(), typeTable);
-		}
-
-		// Extract remaining TypeScript files.
-		List<File> remainingTypeScriptFiles = new ArrayList<File>();
-		for (Path f : filesToExtract) {
-			if (!extractedFiles.contains(f) && FileType.forFileExtension(f.toFile()) == FileType.TYPESCRIPT) {
-				remainingTypeScriptFiles.add(f.toFile());
-			}
-		}
-		if (!remainingTypeScriptFiles.isEmpty()) {
-			extractTypeScriptFiles(remainingTypeScriptFiles, extractedFiles, extractor, extractorState);
-		}
-
-		// The TypeScript compiler instance is no longer needed.
-		tsParser.killProcess();
-
-		// Extract non-TypeScript files
-		for (Path f : filesToExtract) {
-			if (extractedFiles.add(f)) {
-				extract(extractor, f, null);
-			}
-		}
 	}
 
 	/**
@@ -563,7 +578,7 @@ public class AutoBuild {
 	}
 
 	public void extractTypeScriptFiles(List<File> files, Set<Path> extractedFiles,
-			FileExtractor extractor, ExtractorState extractorState) throws IOException {
+			FileExtractor extractor, ExtractorState extractorState) {
 		extractorState.getTypeScriptParser().prepareFiles(files);
 		for (File f : files) {
 			Path path = f.toPath();
