@@ -4,7 +4,7 @@
 <qhelp>
 <overview>
 <p>This query identifies Windows form controls that have a default name such as <code>textBox1</code>
-. Replacing the default names with names that describe their purpose makes it much easier to for other 
+. Replacing the default names with names that describe their purpose makes it much easier for other 
 developers to understand your code.</p>
 
 </overview>
