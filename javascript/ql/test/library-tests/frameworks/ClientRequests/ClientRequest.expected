@@ -27,3 +27,8 @@
 | tst.js:67:5:67:24 | superagent.post(url) |
 | tst.js:68:5:68:23 | superagent.get(url) |
 | tst.js:69:5:69:23 | superagent.get(url) |
+| tst.js:74:5:74:29 | $.ajax( ...  data}) |
+| tst.js:75:5:75:35 | $.ajax( ...  data}) |
+| tst.js:77:5:77:32 | $.getJS ...  data}) |
+| tst.js:78:5:78:38 | $.getJS ...  data}) |
+| tst.js:80:15:80:34 | new XMLHttpRequest() |

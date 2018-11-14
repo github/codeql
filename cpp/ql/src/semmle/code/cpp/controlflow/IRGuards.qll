@@ -171,7 +171,7 @@ private class GuardConditionFromIR extends GuardCondition {
       exists(Instruction li, Instruction ri |
         li.getUnconvertedResultExpression() = left and
         ri.getUnconvertedResultExpression() = right and
-        ir.comparesLt(li, ri, k, isLessThan, testIsTrue)
+        ir.comparesLt(li.getAUse(), ri.getAUse(), k, isLessThan, testIsTrue)
       )
     }
 
@@ -181,7 +181,7 @@ private class GuardConditionFromIR extends GuardCondition {
       exists(Instruction li, Instruction ri, boolean testIsTrue |
         li.getUnconvertedResultExpression() = left and
         ri.getUnconvertedResultExpression() = right and
-        ir.comparesLt(li, ri, k, isLessThan, testIsTrue) and
+        ir.comparesLt(li.getAUse(), ri.getAUse(), k, isLessThan, testIsTrue) and
         this.controls(block, testIsTrue)
       )
     }
@@ -191,7 +191,7 @@ private class GuardConditionFromIR extends GuardCondition {
       exists(Instruction li, Instruction ri |
         li.getUnconvertedResultExpression() = left and
         ri.getUnconvertedResultExpression() = right and
-        ir.comparesEq(li, ri, k, areEqual, testIsTrue)
+        ir.comparesEq(li.getAUse(), ri.getAUse(), k, areEqual, testIsTrue)
       )
     }
 
@@ -201,8 +201,8 @@ private class GuardConditionFromIR extends GuardCondition {
         exists(Instruction li, Instruction ri, boolean testIsTrue |
         li.getUnconvertedResultExpression() = left and
         ri.getUnconvertedResultExpression() = right and
-        ir.comparesEq(li, ri, k, areEqual, testIsTrue)
-        and this.controls(block, testIsTrue)
+        ir.comparesEq(li.getAUse(), ri.getAUse(), k, areEqual, testIsTrue) and
+        this.controls(block, testIsTrue)
       )
     }
 
@@ -269,26 +269,26 @@ class IRGuardCondition extends Instruction {
     }
 
     /** Holds if (determined by this guard) `left < right + k` evaluates to `isLessThan` if this expression evaluates to `testIsTrue`. */
-    cached predicate comparesLt(Instruction left, Instruction right, int k, boolean isLessThan, boolean testIsTrue) {
+    cached predicate comparesLt(Operand left, Operand right, int k, boolean isLessThan, boolean testIsTrue) {
         compares_lt(this, left, right, k, isLessThan, testIsTrue)
     }
 
     /** Holds if (determined by this guard) `left < right + k` must be `isLessThan` in `block`.
         If `isLessThan = false` then this implies `left >= right + k`.  */
-    cached predicate ensuresLt(Instruction left, Instruction right, int k, IRBlock block, boolean isLessThan) {
+    cached predicate ensuresLt(Operand left, Operand right, int k, IRBlock block, boolean isLessThan) {
         exists(boolean testIsTrue |
             compares_lt(this, left, right, k, isLessThan, testIsTrue) and this.controls(block, testIsTrue)
         )
     }
 
     /** Holds if (determined by this guard) `left == right + k` evaluates to `areEqual` if this expression evaluates to `testIsTrue`. */
-    cached predicate comparesEq(Instruction left, Instruction right, int k, boolean areEqual, boolean testIsTrue) {
+    cached predicate comparesEq(Operand left, Operand right, int k, boolean areEqual, boolean testIsTrue) {
         compares_eq(this, left, right, k, areEqual, testIsTrue)
     }
 
     /** Holds if (determined by this guard) `left == right + k` must be `areEqual` in `block`.
         If `areEqual = false` then this implies `left != right + k`.  */
-    cached predicate ensuresEq(Instruction left, Instruction right, int k, IRBlock block, boolean areEqual) {
+    cached predicate ensuresEq(Operand left, Operand right, int k, IRBlock block, boolean areEqual) {
         exists(boolean testIsTrue |
             compares_eq(this, left, right, k, areEqual, testIsTrue) and this.controls(block, testIsTrue)
         )
@@ -328,7 +328,7 @@ private predicate is_condition(Instruction guard) {
  *
  * Beware making mistaken logical implications here relating `areEqual` and `testIsTrue`.
  */
-private predicate compares_eq(Instruction test, Instruction left, Instruction right, int k, boolean areEqual, boolean testIsTrue) {
+private predicate compares_eq(Instruction test, Operand left, Operand right, int k, boolean areEqual, boolean testIsTrue) {
     /* The simple case where the test *is* the comparison so areEqual = testIsTrue xor eq. */
     exists(boolean eq | simple_comparison_eq(test, left, right, k, eq) |
         areEqual = true and testIsTrue = eq or areEqual = false and testIsTrue = eq.booleanNot()
@@ -349,13 +349,13 @@ private predicate compares_eq(Instruction test, Instruction left, Instruction ri
 }
 
 /** Rearrange various simple comparisons into `left == right + k` form. */
-private predicate simple_comparison_eq(CompareInstruction cmp, Instruction left, Instruction right, int k, boolean areEqual) {
-    left = cmp.getLeftOperand() and cmp instanceof CompareEQInstruction and right = cmp.getRightOperand() and k = 0 and areEqual = true
+private predicate simple_comparison_eq(CompareInstruction cmp, Operand left, Operand right, int k, boolean areEqual) {
+    left = cmp.getAnOperand().(LeftOperand) and cmp instanceof CompareEQInstruction and right = cmp.getAnOperand().(RightOperand) and k = 0 and areEqual = true
     or
-    left = cmp.getLeftOperand() and cmp instanceof CompareNEInstruction and right = cmp.getRightOperand() and k = 0 and areEqual = false
+    left = cmp.getAnOperand().(LeftOperand) and cmp instanceof CompareNEInstruction and right = cmp.getAnOperand().(RightOperand) and k = 0 and areEqual = false
 }
 
-private predicate complex_eq(CompareInstruction cmp, Instruction left, Instruction right, int k, boolean areEqual, boolean testIsTrue) {
+private predicate complex_eq(CompareInstruction cmp, Operand left, Operand right, int k, boolean areEqual, boolean testIsTrue) {
     sub_eq(cmp, left, right, k, areEqual, testIsTrue)
     or
     add_eq(cmp, left, right, k, areEqual, testIsTrue)
@@ -367,7 +367,7 @@ private predicate complex_eq(CompareInstruction cmp, Instruction left, Instructi
  */
 
 /** Holds if `left < right + k` evaluates to `isLt` given that test is `testIsTrue`. */
-private predicate compares_lt(Instruction test, Instruction left, Instruction right, int k, boolean isLt, boolean testIsTrue) {
+private predicate compares_lt(Instruction test, Operand left, Operand right, int k, boolean isLt, boolean testIsTrue) {
     /* In the simple case, the test is the comparison, so isLt = testIsTrue */
     simple_comparison_lt(test, left, right, k) and isLt = true and testIsTrue = true
     or
@@ -387,22 +387,22 @@ private predicate compares_lt(Instruction test, Instruction left, Instruction ri
 }
 
 /** `(a < b + k) => (b > a - k) => (b >= a + (1-k))` */
-private predicate compares_ge(Instruction test, Instruction left, Instruction right, int k, boolean isGe, boolean testIsTrue) {
+private predicate compares_ge(Instruction test, Operand left, Operand right, int k, boolean isGe, boolean testIsTrue) {
     exists(int onemk | k = 1 - onemk | compares_lt(test, right, left, onemk, isGe, testIsTrue))
 }
 
 /** Rearrange various simple comparisons into `left < right + k` form. */
-private predicate simple_comparison_lt(CompareInstruction cmp, Instruction left, Instruction right, int k) {
-    left = cmp.getLeftOperand() and cmp instanceof CompareLTInstruction and right = cmp.getRightOperand() and k = 0
+private predicate simple_comparison_lt(CompareInstruction cmp, Operand left, Operand right, int k) {
+    left = cmp.getAnOperand().(LeftOperand) and cmp instanceof CompareLTInstruction and right = cmp.getAnOperand().(RightOperand) and k = 0
     or
-    left = cmp.getLeftOperand() and cmp instanceof CompareLEInstruction and right = cmp.getRightOperand() and k = 1
+    left = cmp.getAnOperand().(LeftOperand) and cmp instanceof CompareLEInstruction and right = cmp.getAnOperand().(RightOperand) and k = 1
     or
-    right = cmp.getLeftOperand() and cmp instanceof CompareGTInstruction and left = cmp.getRightOperand() and k = 0
+    right = cmp.getAnOperand().(LeftOperand) and cmp instanceof CompareGTInstruction and left = cmp.getAnOperand().(RightOperand) and k = 0
     or
-    right = cmp.getLeftOperand() and cmp instanceof CompareGEInstruction and left = cmp.getRightOperand() and k = 1
+    right = cmp.getAnOperand().(LeftOperand) and cmp instanceof CompareGEInstruction and left = cmp.getAnOperand().(RightOperand) and k = 1
 }
 
-private predicate complex_lt(CompareInstruction cmp, Instruction left, Instruction right, int k, boolean isLt, boolean testIsTrue) {
+private predicate complex_lt(CompareInstruction cmp, Operand left, Operand right, int k, boolean isLt, boolean testIsTrue) {
     sub_lt(cmp, left, right, k, isLt, testIsTrue)
     or
     add_lt(cmp, left, right, k, isLt, testIsTrue)
@@ -411,33 +411,33 @@ private predicate complex_lt(CompareInstruction cmp, Instruction left, Instructi
 
 /* left - x < right + c => left < right + (c+x)
    left < (right - x) + c => left < right + (c-x) */
-private predicate sub_lt(CompareInstruction cmp, Instruction left, Instruction right, int k, boolean isLt, boolean testIsTrue) {
-    exists(SubInstruction lhs, int c, int x | compares_lt(cmp, lhs, right, c, isLt, testIsTrue) and
-                                left = lhs.getLeftOperand() and x = int_value(lhs.getRightOperand())
+private predicate sub_lt(CompareInstruction cmp, Operand left, Operand right, int k, boolean isLt, boolean testIsTrue) {
+    exists(SubInstruction lhs, int c, int x | compares_lt(cmp, lhs.getAUse(), right, c, isLt, testIsTrue) and
+                                left = lhs.getAnOperand().(LeftOperand) and x = int_value(lhs.getRightOperand())
                                 and k = c + x
     )
     or
-    exists(SubInstruction rhs, int c, int x | compares_lt(cmp, left, rhs, c, isLt, testIsTrue) and
-                                right = rhs.getLeftOperand() and x = int_value(rhs.getRightOperand())
+    exists(SubInstruction rhs, int c, int x | compares_lt(cmp, left, rhs.getAUse(), c, isLt, testIsTrue) and
+                                right = rhs.getAnOperand().(LeftOperand) and x = int_value(rhs.getRightOperand())
                                 and k = c - x
     )
 }
 
 /* left + x < right + c => left < right + (c-x)
    left < (right + x) + c => left < right + (c+x) */
-private predicate add_lt(CompareInstruction cmp, Instruction left, Instruction right, int k, boolean isLt, boolean testIsTrue) {
-    exists(AddInstruction lhs, int c, int x | compares_lt(cmp, lhs, right, c, isLt, testIsTrue) and
-                                (left = lhs.getLeftOperand() and x = int_value(lhs.getRightOperand())
+private predicate add_lt(CompareInstruction cmp, Operand left, Operand right, int k, boolean isLt, boolean testIsTrue) {
+    exists(AddInstruction lhs, int c, int x | compares_lt(cmp, lhs.getAUse(), right, c, isLt, testIsTrue) and
+                                (left = lhs.getAnOperand().(LeftOperand) and x = int_value(lhs.getRightOperand())
                                  or
-                                 left = lhs.getRightOperand() and x = int_value(lhs.getLeftOperand())
+                                 left = lhs.getAnOperand().(RightOperand) and x = int_value(lhs.getLeftOperand())
                                 )
                                 and k = c - x
     )
     or
-    exists(AddInstruction rhs, int c, int x | compares_lt(cmp, left, rhs, c, isLt, testIsTrue) and
-                                (right = rhs.getLeftOperand() and x = int_value(rhs.getRightOperand())
+    exists(AddInstruction rhs, int c, int x | compares_lt(cmp, left, rhs.getAUse(), c, isLt, testIsTrue) and
+                                (right = rhs.getAnOperand().(LeftOperand) and x = int_value(rhs.getRightOperand())
                                  or
-                                 right = rhs.getRightOperand() and x = int_value(rhs.getLeftOperand())
+                                 right = rhs.getAnOperand().(RightOperand) and x = int_value(rhs.getLeftOperand())
                                 )
                                 and k = c + x
     )
@@ -446,14 +446,14 @@ private predicate add_lt(CompareInstruction cmp, Instruction left, Instruction r
 
 /* left - x == right + c => left == right + (c+x)
    left == (right - x) + c => left == right + (c-x) */
-private predicate sub_eq(CompareInstruction cmp, Instruction left, Instruction right, int k, boolean areEqual, boolean testIsTrue) {
-    exists(SubInstruction lhs, int c, int x | compares_eq(cmp, lhs, right, c, areEqual, testIsTrue) and
-                                left = lhs.getLeftOperand() and x = int_value(lhs.getRightOperand())
+private predicate sub_eq(CompareInstruction cmp, Operand left, Operand right, int k, boolean areEqual, boolean testIsTrue) {
+    exists(SubInstruction lhs, int c, int x | compares_eq(cmp, lhs.getAUse(), right, c, areEqual, testIsTrue) and
+                                left = lhs.getAnOperand().(LeftOperand) and x = int_value(lhs.getRightOperand())
                                 and k = c + x
     )
     or
-    exists(SubInstruction rhs, int c, int x | compares_eq(cmp, left, rhs, c, areEqual, testIsTrue) and
-                                right = rhs.getLeftOperand() and x = int_value(rhs.getRightOperand())
+    exists(SubInstruction rhs, int c, int x | compares_eq(cmp, left, rhs.getAUse(), c, areEqual, testIsTrue) and
+                                right = rhs.getAnOperand().(LeftOperand) and x = int_value(rhs.getRightOperand())
                                 and k = c - x
     )
 }
@@ -461,19 +461,19 @@ private predicate sub_eq(CompareInstruction cmp, Instruction left, Instruction r
 
 /* left + x == right + c => left == right + (c-x)
    left == (right + x) + c => left == right + (c+x) */
-private predicate add_eq(CompareInstruction cmp, Instruction left, Instruction right, int k, boolean areEqual, boolean testIsTrue) {
-    exists(AddInstruction lhs, int c, int x | compares_eq(cmp, lhs, right, c, areEqual, testIsTrue) and
-                                (left = lhs.getLeftOperand() and x = int_value(lhs.getRightOperand())
+private predicate add_eq(CompareInstruction cmp, Operand left, Operand right, int k, boolean areEqual, boolean testIsTrue) {
+    exists(AddInstruction lhs, int c, int x | compares_eq(cmp, lhs.getAUse(), right, c, areEqual, testIsTrue) and
+                                (left = lhs.getAnOperand().(LeftOperand) and x = int_value(lhs.getRightOperand())
                                  or
-                                 left = lhs.getRightOperand() and x = int_value(lhs.getLeftOperand())
+                                 left = lhs.getAnOperand().(RightOperand) and x = int_value(lhs.getLeftOperand())
                                 )
                                 and k = c - x
     )
     or
-    exists(AddInstruction rhs, int c, int x | compares_eq(cmp, left, rhs, c, areEqual, testIsTrue) and
-                                (right = rhs.getLeftOperand() and x = int_value(rhs.getRightOperand())
+    exists(AddInstruction rhs, int c, int x | compares_eq(cmp, left, rhs.getAUse(), c, areEqual, testIsTrue) and
+                                (right = rhs.getAnOperand().(LeftOperand) and x = int_value(rhs.getRightOperand())
                                  or
-                                 right = rhs.getRightOperand() and x = int_value(rhs.getLeftOperand())
+                                 right = rhs.getAnOperand().(RightOperand) and x = int_value(rhs.getLeftOperand())
                                 )
                                 and k = c + x
     )

@@ -15,6 +15,7 @@
 
 import javascript
 import semmle.javascript.dataflow.CallGraph
+private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
 private import semmle.javascript.dataflow.InferredTypes
 
 /**
@@ -809,6 +810,74 @@ module TaintTracking {
 
   }
 
+  /**
+   * A function that returns the result of a sanitizer check.
+   */
+  private class SanitizingFunction extends Function {
+    Parameter sanitizedParameter;
+
+    SanitizerGuardNode sanitizer;
+
+    boolean sanitizerOutcome;
+
+    SanitizingFunction() {
+      exists(Expr e |
+        exists(Expr returnExpr |
+          returnExpr = sanitizer.asExpr()
+          or
+          // ad hoc support for conjunctions:
+          returnExpr.(LogAndExpr).getAnOperand() = sanitizer.asExpr() and sanitizerOutcome = true
+          or
+          // ad hoc support for disjunctions:
+          returnExpr.(LogOrExpr).getAnOperand() = sanitizer.asExpr() and sanitizerOutcome = false
+          |
+          exists(SsaExplicitDefinition ssa |
+            ssa.getDef().getSource() = returnExpr and
+            ssa.getVariable().getAUse() = getAReturnedExpr()
+          )
+          or
+          returnExpr = getAReturnedExpr()
+        ) and
+        DataFlow::parameterNode(sanitizedParameter).flowsToExpr(e) and
+        sanitizer.sanitizes(sanitizerOutcome, e)
+      ) and
+      getNumParameter() = 1 and
+      sanitizedParameter = getParameter(0)
+    }
+
+    /**
+     * Holds if this function sanitizes argument `e` of call `call`, provided the call evaluates to `outcome`.
+     */
+    predicate isSanitizingCall(DataFlow::CallNode call, Expr e, boolean outcome) {
+      exists(DataFlow::Node arg |
+        arg.asExpr() = e and
+        arg = call.getArgument(0) and
+        call.getNumArgument() = 1 and
+        FlowSteps::argumentPassing(call, arg, this, sanitizedParameter) and
+        outcome = sanitizerOutcome
+      )
+    }
+
+    /**
+     * Holds if this function applies to the flow in `cfg`.
+     */
+    predicate appliesTo(Configuration cfg) {
+      cfg.isBarrierGuard(sanitizer)
+    }
+  }
+
+  /**
+   * A call that sanitizes an argument.
+   */
+  private class AdditionalSanitizingCall extends AdditionalSanitizerGuardNode, DataFlow::CallNode {
+    SanitizingFunction f;
+
+    AdditionalSanitizingCall() { f.isSanitizingCall(this, _, _) }
+
+    override predicate sanitizes(boolean outcome, Expr e) { f.isSanitizingCall(this, e, outcome) }
+
+    override predicate appliesTo(Configuration cfg) { f.appliesTo(cfg) }
+  }
 
   /**
    * An equality test on `e.origin` or `e.source` where `e` is a `postMessage` event object,

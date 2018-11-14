@@ -35,10 +35,6 @@ app.get('/some/path', function(req, res) {
   res.redirect(target);
 });
 
-function isLocalURL(target) {
-  return new RegExp("^/(?![/\\])|^~/").exec(target);
-}
-
 app.get('/foo', function(req, res) {
   // BAD: may be a global redirection
   res.redirect((req.param('action') && req.param('action') != "") ? req.param('action') : "/google_contacts")
