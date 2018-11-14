@@ -161,10 +161,16 @@ import com.semmle.util.trap.TrapWriter;
  * </p>
  *
  * <p>
- * Finally, the environment variables <code>LGTM_TRAP_CACHE</code> and
- * <code>LGTM_TRAP_CACHE_BOUND</code> can optionally be used to specify the location and size
- * of a trap cache to be used during extraction.
+ * To customise the actual extraction (as opposed to determining which files to extract),
+ * the following environment variables are available:
  * </p>
+ * <ul>
+ * <li><code>LGTM_INDEX_THREADS</code> determines how many threads are used for parallel extraction
+ * of JavaScript files (TypeScript files cannot currently be extracted in parallel). If left
+ * unspecified, the extractor uses as many threads as there are cores.</li>
+ * <li><code>LGTM_TRAP_CACHE</code> and <code>LGTM_TRAP_CACHE_BOUND</code> can be used to specify the
+ * location and size of a trap cache to be used during extraction.</li>
+ * </ul>
  */
 public class AutoBuild {
 	private final ExtractorOutputConfig outputConfig;
@@ -375,13 +381,27 @@ public class AutoBuild {
 	 * Perform extraction.
 	 */
 	public void run() throws IOException {
-		threadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+		startThreadPool();
 		try {
 			extractSource();
 			extractExterns();
 		} finally {
-			threadPool.shutdown();
+			shutdownThreadPool();
 		}
+	}
+
+	private void startThreadPool() {
+		int defaultNumThreads = Runtime.getRuntime().availableProcessors();
+		int numThreads = Env.systemEnv().getInt("LGTM_INDEX_THREADS", defaultNumThreads);
+		if (numThreads > 1)
+			threadPool = Executors.newFixedThreadPool(numThreads);
+		else
+			threadPool = null;
+	}
+
+	private void shutdownThreadPool() {
+		if (threadPool != null)
+			threadPool.shutdown();
 	}
 
 	/**
@@ -624,7 +644,7 @@ public class AutoBuild {
 	 * otherwise extraction will happen on the main thread.
 	 */
 	protected void extract(FileExtractor extractor, Path file, ExtractorState state) {
-		if (state == null)
+		if (state == null && threadPool != null)
 			threadPool.submit(() -> doExtract(extractor, file, state));
 		else
 			doExtract(extractor, file, state);
