@@ -19,6 +19,8 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Stream;
 
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
@@ -173,6 +175,7 @@ public class AutoBuild {
 	private final Path LGTM_SRC, SEMMLE_DIST;
 	private final TypeScriptMode typeScriptMode;
 	private final String defaultEncoding;
+	private ExecutorService threadPool;
 
 	public AutoBuild() {
 		this.LGTM_SRC = toRealPath(getPathFromEnvVar("LGTM_SRC"));
@@ -372,8 +375,13 @@ public class AutoBuild {
 	 * Perform extraction.
 	 */
 	public void run() throws IOException {
-		extractExterns();
-		extractSource();
+		threadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+		try {
+			extractExterns();
+			extractSource();
+		} finally {
+			threadPool.shutdown();
+		}
 	}
 
 	/**
@@ -595,18 +603,32 @@ public class AutoBuild {
 	}
 
 	/**
-	 * Extract a single file.
+	 * Extract a single file using the given extractor and state.
+	 *
+	 * If the state is {@code null}, the extraction job will be submitted to the {@link #threadPool},
+	 * otherwise extraction will happen on the main thread.
 	 */
-	protected void extract(FileExtractor extractor, Path file, ExtractorState state) throws IOException {
+	protected void extract(FileExtractor extractor, Path file, ExtractorState state) {
+		if (state == null)
+			threadPool.submit(() -> doExtract(extractor, file, state));
+		else
+			doExtract(extractor, file, state);
+	}
+
+	private void doExtract(FileExtractor extractor, Path file, ExtractorState state) {
 		File f = file.toFile();
 		if (!f.exists()) {
 			warn("Skipping " + file + ", which does not exist.");
 			return;
 		}
 
-		long start = logBeginProcess("Extracting " + file);
-		extractor.extract(f, state);
-		logEndProcess(start);
+		try {
+			long start = logBeginProcess("Extracting " + file);
+			extractor.extract(f, state);
+			logEndProcess(start);
+		} catch (IOException e) {
+			throw new ResourceError("Exception while extracting " + file + ".", e);
+		}
 	}
 
 	private void warn(String msg) {
