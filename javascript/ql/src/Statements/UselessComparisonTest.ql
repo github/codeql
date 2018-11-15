@@ -1,6 +1,7 @@
 /**
- * @name Useless range check
- * @description If a range check always fails or always succeeds, it is indicative of a bug.
+ * @name Useless comparison test
+ * @description A comparison that always evaluates to true or always evaluates to false may
+ *              indicate faulty logic and dead code.
  * @kind problem
  * @problem.severity warning
  * @id js/useless-range-check

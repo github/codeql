@@ -27,14 +27,14 @@ If the check is needed to guard against <code>NaN</code> values, insert a commen
 The following example finds the index of an element in a given slice of the array:
 </p>
 
-<sample src="examples/UselessRangeCheck.js" />
+<sample src="examples/UselessComparisonTest.js" />
 
 <p>
 The condition <code>i &lt; end</code> at the end is always false, however. The code can be clarified if the
 redundant condition is removed:
 </p>
 
-<sample src="examples/UselessRangeCheckGood.js" />
+<sample src="examples/UselessComparisonTestGood.js" />
 
 </example>
 <references>
