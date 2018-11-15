@@ -285,9 +285,8 @@ public class AutoBuild {
 							excludes.add(toRealPath(folderPath));
 						} catch (InvalidPathException | URISyntaxException | ResourceError e) {
 							Exceptions.ignore(e, "Ignore path and print warning message instead");
-							System.err.println("Ignoring '" + fields[0] + "' classification for " +
+							warn("Ignoring '" + fields[0] + "' classification for " +
 									folder + ", which is not a valid path.");
-							System.err.flush();
 						}
 					}
 				}
@@ -354,8 +353,7 @@ public class AutoBuild {
 			patterns.add(realPath);
 		} catch (ResourceError e) {
 			Exceptions.ignore(e, "Ignore exception and print warning instead.");
-			System.err.println("Skipping path " + path + ", which does not exist.");
-			System.err.flush();
+			warn("Skipping path " + path + ", which does not exist.");
 		}
 		return true;
 	}
@@ -374,6 +372,35 @@ public class AutoBuild {
 	 */
 	private void extractExterns() throws IOException {
 		ExtractorConfig config = new ExtractorConfig(false).withExterns(true);
+
+		// use explicitly specified trap cache, or otherwise $SEMMLE_DIST/.cache/trap-cache/javascript,
+		// which we pre-populate when building the distribution
+		ITrapCache trapCache = this.trapCache;
+		if (trapCache instanceof DummyTrapCache) {
+			Path trapCachePath = SEMMLE_DIST.resolve(".cache").resolve("trap-cache").resolve("javascript");
+			if (Files.isDirectory(trapCachePath)) {
+				trapCache = new DefaultTrapCache(trapCachePath.toString(), null, Main.EXTRACTOR_VERSION) {
+					boolean warnedAboutCacheMiss = false;
+
+					@Override
+					public File lookup(String source, ExtractorConfig config, FileType type) {
+						File f = super.lookup(source, config, type);
+						// only return `f` if it exists; this has the effect of making the cache read-only
+						if (f.exists())
+							return f;
+						// warn on first failed lookup
+						if (!warnedAboutCacheMiss) {
+							warn("Trap cache lookup for externs failed.");
+							warnedAboutCacheMiss = true;
+						}
+						return null;
+					}
+				};
+			} else {
+				warn("No externs trap cache found");
+			}
+		}
+
 		FileExtractor extractor = new FileExtractor(config, outputConfig, trapCache, extractorState);
 		FileVisitor<? super Path> visitor = new SimpleFileVisitor<Path>() {
 			@Override
@@ -539,14 +566,18 @@ public class AutoBuild {
 	protected void extract(FileExtractor extractor, Path file) throws IOException {
 		File f = file.toFile();
 		if (!f.exists()) {
-			System.err.println("Skipping " + file + ", which does not exist.");
-			System.err.flush();
+			warn("Skipping " + file + ", which does not exist.");
 			return;
 		}
 
 		logBeginProcess("Extracting " + file);
 		extractor.extract(f);
 		logEndProcess();
+	}
+
+	private void warn(String msg) {
+		System.err.println(msg);
+		System.err.flush();
 	}
 
 	private void logBeginProcess(String message) {
