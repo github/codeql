@@ -32,7 +32,7 @@ Increase the size of the buffer being allocated.
 <p>This example includes three annotated calls that copy a string into a buffer.
 The first call to <code>malloc</code> creates a buffer that's the 
 same size as the string, leaving no space for the zero terminator 
-and causing an overflow. The second call to <ocde>malloc</code> 
+and causing an overflow. The second call to <code>malloc</code> 
 correctly calculates the required buffer size. The call to 
 <code>strcat</code> appends an additional string to the same buffer 
 causing a second overflow.</p>
