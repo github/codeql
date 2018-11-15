@@ -27,7 +27,8 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override IEnumerable<Type> TypeParameters => gc.TypeParameters.Concat(declaringType.TypeParameters);
 
-        public override IEnumerable<Type> MethodParameters => genericParams == null ? gc.MethodParameters : gc.MethodParameters.Concat(genericParams);
+        public override IEnumerable<Type> MethodParameters =>
+            genericParams == null ? gc.MethodParameters : gc.MethodParameters.Concat(genericParams);
 
         public int GenericParameterCount => signature.GenericParameterCount;
 
@@ -47,14 +48,14 @@ namespace Semmle.Extraction.CIL.Entities
 
         internal protected Id MakeMethodId(Type parent, Id methodName)
         {
-            var id = signature.ReturnType.MakeId(gc) + space + parent.ShortId + dot + methodName;
+            var id = signature.ReturnType.MakeId(this) + space + parent.ShortId + dot + methodName;
 
             if (signature.GenericParameterCount > 0)
             {
                 id += tick + signature.GenericParameterCount;
             }
 
-            id += open + CIL.Id.CommaSeparatedList(signature.ParameterTypes.Select(p => p.MakeId(gc))) + close;
+            id += open + CIL.Id.CommaSeparatedList(signature.ParameterTypes.Select(p => p.MakeId(this))) + close;
             return id;
         }
 
