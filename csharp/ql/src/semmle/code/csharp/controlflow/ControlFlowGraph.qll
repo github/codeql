@@ -2473,7 +2473,7 @@ module ControlFlow {
         not startsBB(succ)
       }
 
-      predicate bbIndex(ControlFlowElement bbStart, ControlFlowElement cfe, int i) =
+      private predicate bbIndex(ControlFlowElement bbStart, ControlFlowElement cfe, int i) =
         shortestDistances(startsBB/1, intraBBSucc/2)(bbStart, cfe, i)
 
       private predicate succBB(PreBasicBlock pred, PreBasicBlock succ) {
@@ -2488,13 +2488,9 @@ module ControlFlow {
         idominance(entryBB/1, succBB/2)(_, dom, bb)
 
       class PreBasicBlock extends ControlFlowElement {
-        PreBasicBlock() {
-          startsBB(this)
-        }
+        PreBasicBlock() { startsBB(this) }
 
-        PreBasicBlock getASuccessor() {
-          result = succ(this.getLastElement(), _)
-        }
+        PreBasicBlock getASuccessor() { result = succ(this.getLastElement(), _) }
 
         PreBasicBlock getAPredecessor() {
           result.getASuccessor() = this
@@ -2547,6 +2543,22 @@ module ControlFlow {
             or
             exists(succExit(this.getLastElement(), c))
           ) > 1
+        }
+
+        private predicate isCandidateSuccessor(PreBasicBlock succ, ConditionalCompletion c) {
+          succ = succ(this.getLastElement(), c) and
+          forall(PreBasicBlock pred |
+            pred = succ.getAPredecessor() and pred != this |
+            succ.dominates(pred)
+          )
+        }
+
+        predicate controls(PreBasicBlock controlled, ConditionalSuccessor s) {
+          exists(PreBasicBlock succ, ConditionalCompletion c |
+            isCandidateSuccessor(succ, c) |
+            succ.dominates(controlled) and
+            s.matchesCompletion(c)
+          )
         }
       }
     }
@@ -2729,29 +2741,21 @@ module ControlFlow {
         ssaRefRank(bb2, i2, v, _) = 1
       }
 
-      private cached module PreSsaCached {
-        cached
-        predicate firstReadSameVar(Definition def, LocalScopeVariableRead read) {
-          exists(SimpleLocalScopeVariable v, PreBasicBlock b1, int i1, PreBasicBlock b2, int i2 |
-            adjacentVarRefs(v, b1, i1, b2, i2) and
-            defAt(b1, i1, def, v) and
-            readAt(b2, i2, read, v)
-          )
-        }
-
-        cached
-        predicate adjacentReadPairSameVar(LocalScopeVariableRead read1, LocalScopeVariableRead read2) {
-          exists(SimpleLocalScopeVariable v, PreBasicBlock bb1, int i1, PreBasicBlock bb2, int i2 |
-            adjacentVarRefs(v, bb1, i1, bb2, i2) and
-            readAt(bb1, i1, read1, v) and
-            readAt(bb2, i2, read2, v)
-          )
-        }
-
-        cached
-        predicate forceCachingInSameStage() { any() }
+      predicate firstReadSameVar(Definition def, LocalScopeVariableRead read) {
+        exists(SimpleLocalScopeVariable v, PreBasicBlock b1, int i1, PreBasicBlock b2, int i2 |
+          adjacentVarRefs(v, b1, i1, b2, i2) and
+          defAt(b1, i1, def, v) and
+          readAt(b2, i2, read, v)
+        )
       }
-      import PreSsaCached
+
+      predicate adjacentReadPairSameVar(LocalScopeVariableRead read1, LocalScopeVariableRead read2) {
+        exists(SimpleLocalScopeVariable v, PreBasicBlock bb1, int i1, PreBasicBlock bb2, int i2 |
+          adjacentVarRefs(v, bb1, i1, bb2, i2) and
+          readAt(bb1, i1, read1, v) and
+          readAt(bb2, i2, read2, v)
+        )
+      }
     }
 
     /**
@@ -3837,10 +3841,12 @@ module ControlFlow {
     }
 
     private cached module Cached {
+      private import semmle.code.csharp.controlflow.Guards as Guards
+
       cached
       newtype TPreSsaDef =
         TExplicitPreSsaDef(PreBasicBlocks::PreBasicBlock bb, int i, AssignableDefinition def, LocalScopeVariable v) {
-          PreSsa::forceCachingInSameStage() and
+          Guards::Internal::CachedWithCFG::forceCachingInSameStage() and
           PreSsa::assignableDefAt(bb, i, def, v)
         }
         or

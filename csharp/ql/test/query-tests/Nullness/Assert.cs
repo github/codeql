@@ -10,21 +10,27 @@ class AssertTests
         Debug.Assert(s != null);
         Console.WriteLine(s.Length);
 
+        s = null;
         Assert.IsNull(s);
         Console.WriteLine(s.Length); // always null
 
+        s = null;
         Assert.IsNotNull(s);
         Console.WriteLine(s.Length);
 
+        s = null;
         Assert.IsTrue(s == null);
         Console.WriteLine(s.Length); // always null
 
+        s = null;
         Assert.IsTrue(s != null);
         Console.WriteLine(s.Length);
 
+        s = null;
         Assert.IsFalse(s != null);
         Console.WriteLine(s.Length); // always null
 
+        s = null;
         Assert.IsFalse(s == null);
         Console.WriteLine(s.Length);
     }
