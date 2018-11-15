@@ -5,14 +5,14 @@
 <overview>
 <p>
 If a condition always evaluates to true or always evaluates to false, this often indicates
-incomplete code or a latent bug and should be examined carefully.
+incomplete code or a latent bug, and it should be examined carefully.
 </p>
 
 </overview>
 <recommendation>
 
 <p>
-Examine the surrounding code to determine why the condition is useless. If it is no
+Examine the surrounding code to determine why the condition is redundant. If it is no
 longer needed, remove it.
 </p>
 

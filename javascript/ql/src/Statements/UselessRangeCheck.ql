@@ -1,6 +1,6 @@
 /**
  * @name Useless range check
- * @description If a range check always fails or always succeeds it is indicative of a bug.
+ * @description If a range check always fails or always succeeds, it is indicative of a bug.
  * @kind problem
  * @problem.severity warning
  * @id js/useless-range-check
