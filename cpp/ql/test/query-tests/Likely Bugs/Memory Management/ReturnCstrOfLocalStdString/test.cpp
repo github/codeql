@@ -1,20 +1,22 @@
-extern "C" {
-  char *strdup(const char *s);
-  void free (void* ptr);
-}
 
 namespace std {
-  // We are not allowed to include <string> in the test file,
-  // so this is an approximation of the std::string class.
-  class string {
-    char* str_;
+  template<class charT> struct char_traits;
 
+  template <class T> class allocator {
   public:
-    string(const char* str) : str_(strdup(str)) {}
-    ~string() { free(str_); }
-
-    const char* c_str() const noexcept { return str_; }
+    allocator() throw();
   };
+
+  template<class charT, class traits = char_traits<charT>, class Allocator = allocator<charT> >
+  class basic_string {
+  public:
+    explicit basic_string(const Allocator& a = Allocator());
+    basic_string(const charT* s, const Allocator& a = Allocator());
+
+    const charT* c_str() const;
+  };
+
+  typedef basic_string<char> string;
 }
 
 const char* bad000() {
