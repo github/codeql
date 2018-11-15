@@ -9,9 +9,7 @@
  */
 import cpp
 
-// This query is the JSF version
-//
-// (see also InitialisationNotRun.ql and GlobalUseBeforeInit.ql)
+// See also InitialisationNotRun.ql and GlobalUseBeforeInit.ql
 
 // Holds if s defines variable v (conservative)
 predicate defines(ControlFlowNode s, Variable lv) {
