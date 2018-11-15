@@ -2,7 +2,7 @@ class C {
 public:
 	void g() {
 		...
-		//f() was previously used but is now commented, orphaning f()
+		//f() was previously used but is now commented-out, orphaning f()
 		//f();
 		...
 	}
