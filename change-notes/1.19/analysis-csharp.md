@@ -3,7 +3,7 @@
 ## General improvements
 
 * Control flow graph improvements:
-  * The control flow graph construction now takes simple Boolean conditions on local scope variables into account. For example, in `if (b) x = 0; if (b) x = 1;`, the control flow graph will reflect that taking the `true` (resp. `false`) branch in the first condition implies taking the same branch in the second condition. In effect, the first assignment to `x` will now be identified as being dead.
+* The control flow graph construction now takes simple Boolean conditions on local scope variables into account. For example, in `if (b) x = 0; if (b) x = 1;`, the control flow graph will reflect that taking the `true` (resp. `false`) branch in the first condition implies taking the same branch in the second condition. In effect, the first assignment to `x` will now be identified as being dead.
   * Code that is only reachable from a constant failing assertion, such as `Debug.Assert(false)`, is considered to be unreachable.
 
 ## New queries
@@ -20,7 +20,11 @@
 | Cross-site scripting (`cs/web/xss`) | More results | This query now finds cross-site scripting vulnerabilities in ASP.NET Core applications. |
 | *@name of query (Query ID)*| *Impact on results*    | *How/why the query has changed*                                  |
 
+## Changes to code extraction
+
+* Arguments passed using `in` are now extracted.
 
 ## Changes to QL libraries
 
 * `getArgument()` on `AccessorCall` has been improved so it now takes tuple assignments into account. For example, the argument for the implicit `value` parameter in the setter of property `P` is `0` in `(P, x) = (0, 1)`. Additionally, the argument for the `value` parameter in compound assignments is now only the expanded value, for example, in `P += 7` the argument is `P + 7` and not `7`.
+* The predicate `isInArgument()` has been added to the `AssignableAccess` class. This holds for expressions that are passed as arguments using `in`.
