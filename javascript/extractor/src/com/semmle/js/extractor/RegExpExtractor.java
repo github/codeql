@@ -94,7 +94,6 @@ public class RegExpExtractor {
 		termkinds.put("UnicodePropertyEscape", 27);
 	}
 
-	/** This has to be kept consistent with esregex. */
 	private static final String[] errmsgs = new String[] {
 		"unexpected end of regular expression",
 		"unexpected character",
