@@ -5,8 +5,12 @@
 
 
 <overview>
+
+<!-- Mention that this rule may not be applicable in projects that don't follow the JSF standard. -->
+<include src="cpp/jsfNote.qhelp" />
+
 <p>
-This rule ensures that all operators with opposites (e.g. == and !=) are both defined, and
+This query ensures that all operators with opposites (e.g. == and !=) are both defined, and
 that one of them is defined in terms of the other. This just enforces the consistency of meaning
 of the operators.
 </p>
