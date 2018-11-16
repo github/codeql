@@ -499,7 +499,7 @@ public class AutoBuild {
 				Path sourcePath = sourceFile.toPath();
 				if (!filesToExtract.contains(normalizePath(sourcePath)))
 					continue;
-				if (extractedFiles.add(sourcePath)) {
+				if (!extractedFiles.contains(sourcePath)) {
 					typeScriptFiles.add(sourcePath.toFile());
 				}
 			}
@@ -547,9 +547,8 @@ public class AutoBuild {
 		extractorState.getTypeScriptParser().prepareFiles(files);
 		for (File f : files) {
 			Path path = f.toPath();
-			if (extractedFiles.add(path)) {
-				extract(extractor, f.toPath());
-			}
+			extractedFiles.add(path);
+			extract(extractor, f.toPath());
 		}
 	}
 
