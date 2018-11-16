@@ -2,7 +2,7 @@
 
 int globalInt1; // BAD [only accessed in this file]
 int globalInt2; // GOOD [accessed in file1.c and file2.c]
-int globalInt3; // GOOD [referenced in file1.h] [FALSE POSITIVE]
+int globalInt3; // GOOD [referenced in file1.h]
 int globalInt4; // GOOD [only accessed in one function, should be function scope instead]
 int globalInt5; // GOOD [not accessed]
 
