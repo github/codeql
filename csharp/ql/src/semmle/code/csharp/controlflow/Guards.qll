@@ -112,6 +112,8 @@ private import AbstractValues
  * an expression that may evaluate to `null`.
  */
 class DereferenceableExpr extends Expr {
+  private boolean isNullableType;
+
   DereferenceableExpr() {
     exists(Expr e, Type t |
       // There is currently a bug in the extractor: the type of `x?.Length` is
@@ -119,10 +121,17 @@ class DereferenceableExpr extends Expr {
       // `getNullEquivParent()` as a workaround
       this = getNullEquivParent*(e) and
       t = e.getType() |
-      t instanceof NullableType
+      t instanceof NullableType and
+      isNullableType = true
       or
-      t instanceof RefType
+      t instanceof RefType and
+      isNullableType = false
     )
+  }
+
+  /** Holds if this expression has a nullable type `T?`. */
+  predicate hasNullableType() {
+    isNullableType = true
   }
 
   /**
@@ -177,9 +186,22 @@ class DereferenceableExpr extends Expr {
         if ie.(IsConstantExpr).getConstant() instanceof NullLiteral then
           // E.g. `x is null`
           isNull = branch
-        else
+        else (
           // E.g. `x is string` or `x is ""`
-          (branch = true and isNull = false)
+          branch = true and isNull = false
+          or
+          // E.g. `x is string` where `x` has type `string`
+          ie = any(IsTypeExpr ite | ite.getCheckedType() = ite.getExpr().getType()) and
+          branch = false and
+          isNull = true
+        ) 
+      )
+      or
+      this.hasNullableType() and
+      result = any(PropertyAccess pa |
+        pa.getQualifier() = this and
+        pa.getTarget().hasName("HasValue") and
+        if branch = true then isNull = false else isNull = true
       )
       or
       isCustomNullCheck(result, this, v, isNull)
@@ -307,19 +329,23 @@ class AccessOrCallExpr extends Expr {
 }
 
 private Declaration getDeclarationTarget(Expr e) {
-  e = any(AssignableRead ar | result = ar.getTarget()) or
+  e = any(AssignableAccess aa | result = aa.getTarget()) or
   result = e.(Call).getTarget()
 }
 
 private Ssa::Definition getAnSsaQualifier(Expr e) {
-  e = getATrackedRead(result)
+  e = getATrackedAccess(result)
   or
-  not e = getATrackedRead(_) and
+  not e = getATrackedAccess(_) and
   result = getAnSsaQualifier(e.(QualifiableExpr).getQualifier())
 }
 
-private AssignableRead getATrackedRead(Ssa::Definition def) {
-  result = def.getARead() and
+private AssignableAccess getATrackedAccess(Ssa::Definition def) {
+  (
+    result = def.getARead()
+    or
+    result = def.(Ssa::ExplicitDefinition).getADefinition().getTargetAccess()
+  ) and
   not def instanceof Ssa::ImplicitUntrackedDefinition
 }
 
@@ -385,6 +411,15 @@ class GuardedExpr extends AccessOrCallExpr {
   }
 
   /**
+   * Holds if this expression must have abstract value `v`. That is, this
+   * expression is guarded by a structurally equal expression having abstract
+   * value `v`.
+   */
+  predicate mustHaveValue(AbstractValue v) {
+    exists(Expr e | e = this.getAGuard(e, v))
+  }
+
+  /**
    * Holds if this expression is guarded by expression `cond`, which must
    * evaluate to `b`. The expression `sub` is a sub expression of `cond`
    * that is structurally equal to this expression.
@@ -401,7 +436,7 @@ class GuardedExpr extends AccessOrCallExpr {
 /** An expression guarded by a `null` check. */
 class NullGuardedExpr extends GuardedExpr {
   NullGuardedExpr() {
-    exists(Expr e, NullValue v | e = this.getAGuard(e, v) | not v.isNull())
+    this.mustHaveValue(any(NullValue v | not v.isNull()))
   }
 }
 
@@ -420,11 +455,28 @@ module Internal {
 
   /** Holds if expression `e` is a non-`null` value. */
   predicate nonNullValue(Expr e) {
-    e.stripCasts() = any(Expr s | s.hasValue() and not s instanceof NullLiteral)
+    e instanceof ObjectCreation
+    or
+    e instanceof ArrayCreation
+    or
+    e.hasValue() and
+    not e instanceof NullLiteral
+    or
+    e instanceof ThisAccess
+    or
+    e instanceof AddExpr and
+    e.getType() instanceof StringType
+  }
+
+  /** Holds if expression `e2` is a non-`null` value whenever `e1` is. */
+  predicate nonNullValueImplied(Expr e1, Expr e2) {
+    e1 = e2.(CastExpr).getExpr()
+    or
+    e1 = e2.(AssignExpr).getRValue()
   }
 
   /**
-   * Gets the parent expression of `e` which is `null` only if `e` is `null`,
+   * Gets the parent expression of `e` which is `null` iff `e` is `null`,
    * if any. For example, `result = x?.y` and `e = x`, or `result = x + 1`
    * and `e = x`.
    */
@@ -433,6 +485,8 @@ module Internal {
       qe.getQualifier() = e and
       qe.isConditional() and
       (
+        // The accessed declaration must have a value type in order
+        // for `only if` to hold
         result.(FieldAccess).getTarget().getType() instanceof ValueType
         or
         result.(Call).getTarget().getReturnType() instanceof ValueType
@@ -444,8 +498,25 @@ module Internal {
       result = bao and
       bao.getAnOperand() = e and
       bao.getAnOperand() = o and
+      // The other operand must be provably non-null in order
+      // for `only if` to hold
       nonNullValue(o) and
       e != o
+    )
+  }
+
+  /**
+   * Gets a child expression of `e` which is `null` only if `e` is `null`.
+   */
+  Expr getANullImplyingChild(Expr e) {
+    e = any(QualifiableExpr qe |
+      qe.isConditional() and
+      result = qe.getQualifier()
+    )
+    or
+    // In C#, `null + 1` has type `int?` with value `null`
+    e = any(BinaryArithmeticOperation bao |
+      result = bao.getAnOperand()
     )
   }
 
@@ -784,6 +855,23 @@ module Internal {
       g1 = getNullEquivParent(g2) and
       v1 instanceof NullValue and
       v2 = v1
+      or
+      g1 instanceof DereferenceableExpr and
+      g2 = getANullImplyingChild(g1) and
+      v1 = any(NullValue nv | not nv.isNull()) and
+      v2 = v1
+      or
+      g2 = g1.(AssignExpr).getRValue() and
+      v1 = g1.getAValue() and
+      v2 = v1
+      or
+      g2 = g1.(Assignment).getLValue() and
+      v1 = g1.getAValue() and
+      v2 = v1
+      or
+      g2 = g1.(CastExpr).getExpr() and
+      v1 = g1.getAValue() and
+      v2 = v1.(NullValue)
       or
       exists(PreSsa::Definition def |
         def.getDefinition().getSource() = g2 |

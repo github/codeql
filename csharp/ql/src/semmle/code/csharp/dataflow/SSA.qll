@@ -422,7 +422,16 @@ module Ssa {
      * Gets an SSA definition that has this variable as its underlying
      * source variable.
      */
+    deprecated
     Definition getAnDefinition() {
+      result.getSourceVariable() = this
+    }
+
+    /**
+     * Gets an SSA definition that has this variable as its underlying
+     * source variable.
+     */
+    Definition getAnSsaDefinition() {
       result.getSourceVariable() = this
     }
   }
@@ -1113,7 +1122,8 @@ module Ssa {
           call = succ |
           callable = call.getTarget() or
           callable = call.getTarget().(Method).getAnOverrider+() or
-          callable = call.getTarget().(Method).getAnUltimateImplementor()
+          callable = call.getTarget().(Method).getAnUltimateImplementor() or
+          callable = getARuntimeDelegateTarget(call)
         )
         or
         pred = succ.(DelegateCreation).getArgument()

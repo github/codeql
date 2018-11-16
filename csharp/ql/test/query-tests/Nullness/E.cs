@@ -70,7 +70,7 @@ public class E
             arrLen = arr == null ? 0 : arr.Length;
 
         if (arrLen > 0)
-            arr[0] = 0; // GOOD
+            arr[0] = 0; // GOOD (false positive)
     }
 
     public const int MY_CONST_A = 1;
@@ -90,12 +90,12 @@ public class E
         switch (switchguard)
         {
             case MY_CONST_A:
-                vals[0] = 0; // GOOD
+                vals[0] = 0; // GOOD (false positive)
                 break;
             case MY_CONST_C:
                 break;
             case MY_CONST_B:
-                vals[0] = 0; // GOOD
+                vals[0] = 0; // GOOD (false positive)
                 break;
             default:
                 throw new Exception();
@@ -156,7 +156,7 @@ public class E
             cond = true;
         }
         if (cond)
-            obj2.ToString(); // GOOD
+            obj2.ToString(); // GOOD (false positive)
     }
 
     public void Ex10(int[] a)
@@ -164,7 +164,7 @@ public class E
         int n = a == null ? 0 : a.Length;
         for (var i = 0; i < n; i++)
         {
-            int x = a[i]; // GOOD
+            int x = a[i]; // GOOD (false positive)
             if (x > 7)
                 a = new int[n];
         }
@@ -175,7 +175,7 @@ public class E
         bool b2 = obj == null ? false : b1;
         if (b2 == null)
         {
-            obj.ToString(); // GOOD
+            obj.ToString(); // GOOD (false positive)
         }
         if (obj == null)
         {
@@ -183,13 +183,13 @@ public class E
         }
         if (b1 == null)
         {
-            obj.ToString(); // GOOD
+            obj.ToString(); // GOOD (false positive)
         }
     }
 
     public void Ex12(object o)
     {
-        var i = o.GetHashCode(); // BAD (maybe) (false negative)
+        var i = o.GetHashCode(); // BAD (maybe)
         var s = o?.ToString();
     }
 
@@ -198,16 +198,16 @@ public class E
         var o = b ? null : "";
         o.M1(); // GOOD
         if (b)
-          o.M2(); // BAD (maybe) (false negative)
+          o.M2(); // BAD (maybe)
         else
-          o.Select(x => x); // BAD (maybe) (false negative)
+          o.Select(x => x); // BAD (maybe)
     }
 
     public int Ex14(string s)
     {
         if (s is string)
           return s.Length;
-        return s.GetHashCode(); // BAD (always) (false negative)
+        return s.GetHashCode(); // BAD (always)
     }
 
     public void Ex15(bool b)
@@ -217,7 +217,7 @@ public class E
             x = null;
         x.ToString(); // BAD (maybe)
         if (b)
-            x.ToString(); // BAD (always) (false negative)
+            x.ToString(); // BAD (always)
     }
 
     public void Ex16(bool b)
@@ -227,17 +227,17 @@ public class E
             x = null;
         if (b)
             x.ToString(); // BAD (always)
-        x.ToString(); // BAD (maybe) (false negative)
+        x.ToString(); // BAD (maybe)
     }
 
     public int Ex17(int? i)
     {
-        return i.Value; // BAD (maybe) (false negative)
+        return i.Value; // BAD (maybe)
     }
 
     public int Ex18(int? i)
     {
-        return (int)i; // BAD (maybe) (false negative)
+        return (int)i; // BAD (maybe)
     }
 
     public int Ex19(int? i)

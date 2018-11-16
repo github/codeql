@@ -33,7 +33,7 @@ class ForwardingTests
 
         if (IsNotNullWrong(s))
         {
-            Console.WriteLine(s.Length); // BAD (always) (reported as maybe)
+            Console.WriteLine(s.Length); // BAD (always)
         }
 
         AssertIsNotNull(s);

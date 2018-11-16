@@ -82,6 +82,7 @@
 | D.cs:39:16:39:24 | ... == ... | D.cs:39:16:39:16 | access to parameter x | true | true |
 | D.cs:45:13:45:22 | ... != ... | D.cs:45:13:45:14 | access to local variable o1 | false | true |
 | D.cs:45:13:45:22 | ... != ... | D.cs:45:13:45:14 | access to local variable o1 | true | false |
+| D.cs:48:13:48:24 | ... is ... | D.cs:48:13:48:14 | access to local variable o2 | false | true |
 | D.cs:48:13:48:24 | ... is ... | D.cs:48:13:48:14 | access to local variable o2 | true | false |
 | D.cs:51:13:51:44 | ... != ... | D.cs:51:14:51:35 | ... = ... | false | true |
 | D.cs:51:13:51:44 | ... != ... | D.cs:51:14:51:35 | ... = ... | true | false |
@@ -184,7 +185,10 @@
 | E.cs:184:13:184:22 | ... == ... | E.cs:184:13:184:14 | (...) ... | true | true |
 | E.cs:193:17:193:17 | access to parameter o | E.cs:193:17:193:17 | access to parameter o | non-null | false |
 | E.cs:193:17:193:17 | access to parameter o | E.cs:193:17:193:17 | access to parameter o | null | true |
+| E.cs:208:13:208:23 | ... is ... | E.cs:208:13:208:13 | access to parameter s | false | true |
 | E.cs:208:13:208:23 | ... is ... | E.cs:208:13:208:13 | access to parameter s | true | false |
+| E.cs:245:13:245:22 | access to property HasValue | E.cs:245:13:245:13 | access to parameter i | false | true |
+| E.cs:245:13:245:22 | access to property HasValue | E.cs:245:13:245:13 | access to parameter i | true | false |
 | E.cs:252:13:252:21 | ... != ... | E.cs:252:13:252:13 | access to parameter i | false | true |
 | E.cs:252:13:252:21 | ... != ... | E.cs:252:13:252:13 | access to parameter i | true | false |
 | E.cs:259:13:259:21 | ... == ... | E.cs:259:13:259:13 | access to parameter i | false | false |
@@ -231,5 +235,11 @@
 | GuardedString.cs:34:13:34:13 | access to local variable s | GuardedString.cs:34:13:34:13 | access to local variable s | non-null | false |
 | GuardedString.cs:34:13:34:13 | access to local variable s | GuardedString.cs:34:13:34:13 | access to local variable s | null | true |
 | GuardedString.cs:34:13:34:26 | ... != ... | GuardedString.cs:34:15:34:21 | access to property Length | false | false |
+| NullAlwaysBad.cs:9:17:9:25 | ... != ... | NullAlwaysBad.cs:9:17:9:17 | access to parameter s | false | true |
+| NullAlwaysBad.cs:9:17:9:25 | ... != ... | NullAlwaysBad.cs:9:17:9:17 | access to parameter s | true | false |
+| NullAlwaysGood.cs:9:17:9:25 | ... != ... | NullAlwaysGood.cs:9:17:9:17 | access to parameter s | false | true |
+| NullAlwaysGood.cs:9:17:9:25 | ... != ... | NullAlwaysGood.cs:9:17:9:17 | access to parameter s | true | false |
+| NullMaybeGood.cs:9:17:9:25 | ... != ... | NullMaybeGood.cs:9:17:9:17 | access to parameter o | false | true |
+| NullMaybeGood.cs:9:17:9:25 | ... != ... | NullMaybeGood.cs:9:17:9:17 | access to parameter o | true | false |
 | StringConcatenation.cs:15:16:15:22 | ... != ... | StringConcatenation.cs:15:16:15:16 | access to local variable s | false | false |
 | StringConcatenation.cs:22:16:22:22 | ... != ... | StringConcatenation.cs:22:16:22:16 | access to local variable s | false | false |

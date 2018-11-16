@@ -20,7 +20,7 @@ public class D
 
     public void Callee1(object param)
     {
-        param.ToString(); // BAD (maybe) (false negative)
+        param.ToString(); // BAD (maybe)
     }
 
     public void Callee2(object param)
@@ -29,7 +29,7 @@ public class D
         {
             param.ToString(); // GOOD
         }
-        param.ToString(); // BAD (maybe) (false negative)
+        param.ToString(); // BAD (maybe)
     }
 
     private static bool CustomIsNull(object x)
@@ -99,7 +99,7 @@ public class D
         }
 
         if (i > 4)
-            foreach (var _ in xs) ; // BAD (maybe) (false negative)
+            foreach (var _ in xs) ; // BAD (maybe)
 
         if (i > 5)
             lock (xs) // BAD (maybe)
@@ -117,7 +117,7 @@ public class D
         var x = b ? null : "abc";
         x = x == null ? "" : x;
         if (x == null)
-            x.ToString(); // BAD (always) (false negative)
+            x.ToString(); // BAD (always)
         else
             x.ToString(); // GOOD
     }
@@ -131,8 +131,8 @@ public class D
         {
             for (int i = 0; i < alen; i++)
             {
-                sum += a[i]; // GOOD
-                sum += b[i]; // GOOD
+                sum += a[i]; // GOOD (false positive)
+                sum += b[i]; // GOOD (false positive)
             }
         }
         int alen2;
@@ -142,13 +142,13 @@ public class D
             alen2 = 0;
         for (int i = 1; i <= alen2; ++i)
         {
-            sum += a[i - 1]; // GOOD
+            sum += a[i - 1]; // GOOD (false positive)
         }
     }
 
     public void MissedGuard(object obj)
     {
-        obj.ToString(); // BAD (maybe) (false negative)
+        obj.ToString(); // BAD (maybe)
         var x = obj != null ? 1 : 0;
     }
 
@@ -194,7 +194,7 @@ public class D
     {
         var o = new Object();
         if (o == null)
-            o.ToString(); // BAD (always) (false negative)
+            o.ToString(); // BAD (always)
         o.ToString(); // GOOD
 
         try
@@ -204,7 +204,7 @@ public class D
         catch (Exception e)
         {
             if (e == null)
-                e.ToString(); // BAD (always) (false negative)
+                e.ToString(); // BAD (always)
             e.ToString(); // GOOD
         }
 
@@ -214,12 +214,12 @@ public class D
 
         var o3 = "abc";
         if (o3 == null)
-            o3.ToString(); // BAD (always) (false negative)
+            o3.ToString(); // BAD (always)
         o3.ToString(); // GOOD
 
         var o4 = "" + null;
         if (o4 == null)
-            o4.ToString(); // BAD (always) (false negative)
+            o4.ToString(); // BAD (always)
         o4.ToString(); // GOOD
     }
 
@@ -343,7 +343,7 @@ public class D
             msg += "foobar";
             throw new Exception(msg);
         }
-        obj.ToString(); // GOOD
+        obj.ToString(); // GOOD (false positive)
     }
 
     public void LoopCorr(int iters)
@@ -392,12 +392,12 @@ public class D
         int i;
         for (i = 0; i < alen; i++)
         {
-            sum += a[i]; // GOOD
+            sum += a[i]; // GOOD (false positive)
         }
         int blen = b == null ? 0 : b.Length; // GOOD
         for (i = 0; i < blen; i++)
         {
-            sum += b[i]; // GOOD
+            sum += b[i]; // GOOD (false positive)
         }
         i = -3;
     }
@@ -407,8 +407,8 @@ public class D
         if ((x != null && y == null) || (x == null && y != null))
             return;
         if (x != null)
-            y.ToString(); // GOOD
+            y.ToString(); // GOOD (false positive)
         if (y != null)
-            x.ToString(); // GOOD
+            x.ToString(); // GOOD (false positive)
     }
 }

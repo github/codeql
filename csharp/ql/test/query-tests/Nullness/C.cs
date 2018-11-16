@@ -101,7 +101,7 @@ public class C
     {
         if (Maybe())
             list = null;
-        foreach (var x in list) // BAD (maybe) (false negative)
+        foreach (var x in list) // BAD (maybe)
         {
             x.ToString(); // GOOD
             list.ToString(); // GOOD
@@ -168,7 +168,7 @@ public class C
         s = null;
         do
         {
-            s.ToString(); // BAD (always) (reported as maybe)
+            s.ToString(); // BAD (always)
         }
         while (s != null);
 

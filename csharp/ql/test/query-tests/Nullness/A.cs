@@ -47,7 +47,7 @@ class A
 
         object varRef = null;
         TestMethod2(ref varRef);
-        varRef.ToString(); // BAD (always) (false negative)
+        varRef.ToString(); // BAD (always)
 
         varRef = null;
         TestMethod3(ref varRef);
