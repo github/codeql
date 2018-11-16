@@ -14,7 +14,7 @@ int *addrGlobalInt8 = &globalInt8; // GOOD [used in func1, func2]
 int globalInt9; // GOOD [used at file level and in func1] [FALSE POSITIVE]
 int *addrGlobalInt9 = &globalInt9; // GOOD [used in func1, func2]
 
-int externInt; // GOOD [extern'd so could be part of an interface] [FALSE POSITIVE]
+int externInt; // GOOD [extern'd so could be part of an interface]
 
 void func1()
 {
