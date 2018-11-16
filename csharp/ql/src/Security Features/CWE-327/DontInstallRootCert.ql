@@ -33,6 +33,6 @@ class AddCertToRootStoreConfig extends DataFlow::Configuration {
 
 from DataFlow::PathNode oc, DataFlow::PathNode mc, AddCertToRootStoreConfig config
 where config.hasFlowPath(oc, mc)
-select mc, oc, mc,
+select mc.getNode(), oc, mc,
   "Certificate added to the root certificate store."
 

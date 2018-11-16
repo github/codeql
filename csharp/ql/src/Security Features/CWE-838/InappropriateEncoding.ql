@@ -156,5 +156,5 @@ module EncodingConfigurations {
 
 from RequiresEncodingConfiguration c, PathNode encodedValue, PathNode sink, string kind
 where c.hasWrongEncoding(encodedValue, sink, kind)
-select sink, encodedValue, sink,
-  "This " + kind + " may include data from a $@.", encodedValue, "possibly inappropriately encoded value"
+select sink.getNode(), encodedValue, sink,
+  "This " + kind + " may include data from a $@.", encodedValue.getNode(), "possibly inappropriately encoded value"

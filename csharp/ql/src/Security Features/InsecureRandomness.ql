@@ -107,4 +107,4 @@ module Random {
 from Random::TaintTrackingConfiguration randomTracking, DataFlow::PathNode source, DataFlow::PathNode sink
 where randomTracking.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
-  "Cryptographically insecure random number is generated at $@ and used here in a security context.", source.getNode(), source.toString()
+  "Cryptographically insecure random number is generated at $@ and used here in a security context.", source.getNode(), source.getNode().toString()

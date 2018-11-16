@@ -19,4 +19,4 @@ from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink.getNode().(Sink).getSensitiveMethodCall(), source, sink,
   "Sensitive method may not be executed depending on $@, which flows from $@.",
-  sink, "this condition", source, "user input"
+  sink.getNode(), "this condition", source.getNode(), "user input"

@@ -16,4 +16,4 @@ import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
 where c.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
-  "Private data returned by $@ is written to an external location.", source.getNode(), source.toString()
+  "Private data returned by $@ is written to an external location.", source.getNode(), source.getNode().toString()
