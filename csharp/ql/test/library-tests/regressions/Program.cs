@@ -119,3 +119,24 @@ class LiteralConversions
         new Point { x=1, y=2 };
     }
 }
+
+class DynamicType
+{
+    void F()
+    {
+        dynamic t = (dynamic)null;
+    }
+}
+
+class LocalVariableTags
+{
+    Func<int, int> F = x => { int y=x; return y; };
+
+    private static Func<object, string, object> _getter => (o, n) =>
+    {
+         object x = o;
+         return x;
+    };
+}
+
+// semmle-extractor-options: /r:System.Dynamic.Runtime.dll

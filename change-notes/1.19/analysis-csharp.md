@@ -23,6 +23,7 @@
 ## Changes to code extraction
 
 * Arguments passed using `in` are now extracted.
+* Fix a bug where the `dynamic` type name was not extracted correctly in certain circumstances.
 
 ## Changes to QL libraries
 

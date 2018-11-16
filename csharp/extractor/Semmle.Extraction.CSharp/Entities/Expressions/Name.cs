@@ -43,6 +43,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             {
                 case SymbolKind.TypeParameter:
                 case SymbolKind.NamedType:
+                case SymbolKind.DynamicType:
                     return TypeAccess.Create(info);
 
                 case SymbolKind.Property:
