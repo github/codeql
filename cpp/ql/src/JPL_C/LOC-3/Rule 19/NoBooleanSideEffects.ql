@@ -4,6 +4,8 @@
  * @kind problem
  * @id cpp/jpl-c/no-boolean-side-effects
  * @problem.severity warning
+ * @tags correctness
+ *       readability
  */
 
 import cpp

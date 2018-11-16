@@ -4,6 +4,7 @@
  * @kind problem
  * @id cpp/jpl-c/use-of-assertions-non-boolean
  * @problem.severity warning
+ * @tags correctness
  */
 
 import semmle.code.cpp.commons.Assertions

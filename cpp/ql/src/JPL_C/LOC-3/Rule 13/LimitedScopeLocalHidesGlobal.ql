@@ -3,7 +3,9 @@
  * @description A local variable or parameter that hides a global variable of the same name.
  * @kind problem
  * @id cpp/jpl-c/limited-scope-local-hides-global
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
  */
 import cpp
 

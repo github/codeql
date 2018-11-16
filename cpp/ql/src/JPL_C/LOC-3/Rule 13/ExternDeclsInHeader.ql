@@ -4,6 +4,7 @@
  * @kind problem
  * @id cpp/jpl-c/extern-decls-in-header
  * @problem.severity warning
+ * @tags maintainability
  */
 
 import cpp
