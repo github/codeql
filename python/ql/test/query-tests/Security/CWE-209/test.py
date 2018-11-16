@@ -23,3 +23,15 @@ def server_good():
     except Exception as e:
         log(traceback.format_exc())
         return "An internal error has occurred!"
+
+#BAD
+@app.route('/bad/with-flow')
+def server_bad_flow():
+    try:
+        do_computation()
+    except Exception as e:
+        err = traceback.format_exc()
+        return format_error(err)
+
+def format_error(msg):
+    return "[ERROR] " + msg
