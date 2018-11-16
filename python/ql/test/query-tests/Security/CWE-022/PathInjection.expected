@@ -1,29 +1,15 @@
 edges
-| ../lib/os/path.py:1:13:1:13 | Taint externally controlled string at ../lib/os/path.py:1 | ../lib/os/path.py:2:22:2:22 | Taint externally controlled string at ../lib/os/path.py:2 |
-| ../lib/os/path.py:1:13:1:13 | Taint externally controlled string at ../lib/os/path.py:1 | ../lib/os/path.py:2:22:2:22 | Taint externally controlled string at ../lib/os/path.py:2 |
-| ../lib/os/path.py:1:13:1:13 | Taint externally controlled string at ../lib/os/path.py:1 | ../lib/os/path.py:2:22:2:22 | Taint externally controlled string at ../lib/os/path.py:2 |
-| ../lib/os/path.py:1:13:1:13 | Taint externally controlled string at ../lib/os/path.py:1 | ../lib/os/path.py:2:22:2:22 | Taint externally controlled string at ../lib/os/path.py:2 |
-| ../lib/os/path.py:2:12:2:22 | Taint externally controlled string at ../lib/os/path.py:2 | path_injection.py:10:14:10:44 | Taint externally controlled string at path_injection.py:10 |
-| ../lib/os/path.py:2:12:2:22 | Taint externally controlled string at ../lib/os/path.py:2 | path_injection.py:16:30:16:60 | Taint externally controlled string at path_injection.py:16 |
-| ../lib/os/path.py:2:12:2:22 | Taint externally controlled string at ../lib/os/path.py:2 | path_injection.py:25:30:25:60 | Taint externally controlled string at path_injection.py:25 |
-| ../lib/os/path.py:2:12:2:22 | Taint externally controlled string at ../lib/os/path.py:2 | path_injection.py:34:30:34:60 | Taint externally controlled string at path_injection.py:34 |
-| ../lib/os/path.py:2:22:2:22 | Taint externally controlled string at ../lib/os/path.py:2 | ../lib/os/path.py:2:12:2:22 | Taint externally controlled string at ../lib/os/path.py:2 |
-| ../lib/os/path.py:2:22:2:22 | Taint externally controlled string at ../lib/os/path.py:2 | ../lib/os/path.py:2:12:2:22 | Taint externally controlled string at ../lib/os/path.py:2 |
-| ../lib/os/path.py:2:22:2:22 | Taint externally controlled string at ../lib/os/path.py:2 | ../lib/os/path.py:2:12:2:22 | Taint externally controlled string at ../lib/os/path.py:2 |
-| ../lib/os/path.py:2:22:2:22 | Taint externally controlled string at ../lib/os/path.py:2 | ../lib/os/path.py:2:12:2:22 | Taint externally controlled string at ../lib/os/path.py:2 |
 | ../lib/os/path.py:4:14:4:14 | Taint externally controlled string at ../lib/os/path.py:4 | ../lib/os/path.py:5:12:5:12 | Taint externally controlled string at ../lib/os/path.py:5 |
 | ../lib/os/path.py:4:14:4:14 | Taint externally controlled string at ../lib/os/path.py:4 | ../lib/os/path.py:5:12:5:12 | Taint externally controlled string at ../lib/os/path.py:5 |
 | ../lib/os/path.py:4:14:4:14 | Taint externally controlled string at ../lib/os/path.py:4 | ../lib/os/path.py:5:12:5:12 | Taint externally controlled string at ../lib/os/path.py:5 |
 | path_injection.py:9:12:9:23 | Taint {externally controlled string} at path_injection.py:9 | path_injection.py:9:12:9:39 | Taint externally controlled string at path_injection.py:9 |
 | path_injection.py:9:12:9:39 | Taint externally controlled string at path_injection.py:9 | path_injection.py:10:40:10:43 | Taint externally controlled string at path_injection.py:10 |
-| path_injection.py:10:40:10:43 | Taint externally controlled string at path_injection.py:10 | ../lib/os/path.py:1:13:1:13 | Taint externally controlled string at ../lib/os/path.py:1 |
 | path_injection.py:10:40:10:43 | Taint externally controlled string at path_injection.py:10 | path_injection.py:10:14:10:44 | Taint externally controlled string at path_injection.py:10 |
 | path_injection.py:15:12:15:23 | Taint {externally controlled string} at path_injection.py:15 | path_injection.py:15:12:15:39 | Taint externally controlled string at path_injection.py:15 |
 | path_injection.py:15:12:15:39 | Taint externally controlled string at path_injection.py:15 | path_injection.py:16:56:16:59 | Taint externally controlled string at path_injection.py:16 |
 | path_injection.py:16:13:16:61 | Taint normalized.path.injection at path_injection.py:16 | path_injection.py:17:14:17:18 | Taint normalized.path.injection at path_injection.py:17 |
 | path_injection.py:16:30:16:60 | Taint externally controlled string at path_injection.py:16 | ../lib/os/path.py:4:14:4:14 | Taint externally controlled string at ../lib/os/path.py:4 |
 | path_injection.py:16:30:16:60 | Taint externally controlled string at path_injection.py:16 | path_injection.py:16:13:16:61 | Taint normalized.path.injection at path_injection.py:16 |
-| path_injection.py:16:56:16:59 | Taint externally controlled string at path_injection.py:16 | ../lib/os/path.py:1:13:1:13 | Taint externally controlled string at ../lib/os/path.py:1 |
 | path_injection.py:16:56:16:59 | Taint externally controlled string at path_injection.py:16 | path_injection.py:16:30:16:60 | Taint externally controlled string at path_injection.py:16 |
 | path_injection.py:24:12:24:23 | Taint {externally controlled string} at path_injection.py:24 | path_injection.py:24:12:24:39 | Taint externally controlled string at path_injection.py:24 |
 | path_injection.py:24:12:24:39 | Taint externally controlled string at path_injection.py:24 | path_injection.py:25:56:25:59 | Taint externally controlled string at path_injection.py:25 |
@@ -31,20 +17,14 @@ edges
 | path_injection.py:25:13:25:61 | Taint normalized.path.injection at path_injection.py:25 | path_injection.py:28:14:28:18 | Taint normalized.path.injection at path_injection.py:28 |
 | path_injection.py:25:30:25:60 | Taint externally controlled string at path_injection.py:25 | ../lib/os/path.py:4:14:4:14 | Taint externally controlled string at ../lib/os/path.py:4 |
 | path_injection.py:25:30:25:60 | Taint externally controlled string at path_injection.py:25 | path_injection.py:25:13:25:61 | Taint normalized.path.injection at path_injection.py:25 |
-| path_injection.py:25:56:25:59 | Taint externally controlled string at path_injection.py:25 | ../lib/os/path.py:1:13:1:13 | Taint externally controlled string at ../lib/os/path.py:1 |
 | path_injection.py:25:56:25:59 | Taint externally controlled string at path_injection.py:25 | path_injection.py:25:30:25:60 | Taint externally controlled string at path_injection.py:25 |
 | path_injection.py:33:12:33:23 | Taint {externally controlled string} at path_injection.py:33 | path_injection.py:33:12:33:39 | Taint externally controlled string at path_injection.py:33 |
 | path_injection.py:33:12:33:39 | Taint externally controlled string at path_injection.py:33 | path_injection.py:34:56:34:59 | Taint externally controlled string at path_injection.py:34 |
 | path_injection.py:34:13:34:61 | Taint normalized.path.injection at path_injection.py:34 | path_injection.py:35:8:35:12 | Taint normalized.path.injection at path_injection.py:35 |
 | path_injection.py:34:30:34:60 | Taint externally controlled string at path_injection.py:34 | ../lib/os/path.py:4:14:4:14 | Taint externally controlled string at ../lib/os/path.py:4 |
 | path_injection.py:34:30:34:60 | Taint externally controlled string at path_injection.py:34 | path_injection.py:34:13:34:61 | Taint normalized.path.injection at path_injection.py:34 |
-| path_injection.py:34:56:34:59 | Taint externally controlled string at path_injection.py:34 | ../lib/os/path.py:1:13:1:13 | Taint externally controlled string at ../lib/os/path.py:1 |
 | path_injection.py:34:56:34:59 | Taint externally controlled string at path_injection.py:34 | path_injection.py:34:30:34:60 | Taint externally controlled string at path_injection.py:34 |
 parents
-| ../lib/os/path.py:1:13:1:13 | Taint externally controlled string at ../lib/os/path.py:1 | path_injection.py:10:40:10:43 | Taint externally controlled string at path_injection.py:10 |
-| ../lib/os/path.py:1:13:1:13 | Taint externally controlled string at ../lib/os/path.py:1 | path_injection.py:16:56:16:59 | Taint externally controlled string at path_injection.py:16 |
-| ../lib/os/path.py:1:13:1:13 | Taint externally controlled string at ../lib/os/path.py:1 | path_injection.py:25:56:25:59 | Taint externally controlled string at path_injection.py:25 |
-| ../lib/os/path.py:1:13:1:13 | Taint externally controlled string at ../lib/os/path.py:1 | path_injection.py:34:56:34:59 | Taint externally controlled string at path_injection.py:34 |
 | ../lib/os/path.py:4:14:4:14 | Taint externally controlled string at ../lib/os/path.py:4 | path_injection.py:16:30:16:60 | Taint externally controlled string at path_injection.py:16 |
 | ../lib/os/path.py:4:14:4:14 | Taint externally controlled string at ../lib/os/path.py:4 | path_injection.py:25:30:25:60 | Taint externally controlled string at path_injection.py:25 |
 | ../lib/os/path.py:4:14:4:14 | Taint externally controlled string at ../lib/os/path.py:4 | path_injection.py:34:30:34:60 | Taint externally controlled string at path_injection.py:34 |
