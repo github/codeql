@@ -503,10 +503,7 @@ public class AutoBuild {
 					typeScriptFiles.add(sourcePath.toFile());
 				}
 			}
-			tsParser.prepareFiles(typeScriptFiles);
-			for (File file : typeScriptFiles) {
-				extract(extractor, file.toPath());
-			}
+			extractTypeScriptFiles(typeScriptFiles, extractedFiles, extractor);
 			tsParser.closeProject(projectFile);
 		}
 
@@ -524,13 +521,7 @@ public class AutoBuild {
 			}
 		}
 		if (!remainingTypeScriptFiles.isEmpty()) {
-			tsParser.prepareFiles(remainingTypeScriptFiles);
-			for (File f : remainingTypeScriptFiles) {
-				Path path = f.toPath();
-				if (extractedFiles.add(path)) {
-					extract(extractor, path);
-				}
-			}
+			extractTypeScriptFiles(remainingTypeScriptFiles, extractedFiles, extractor);
 		}
 
 		// The TypeScript compiler instance is no longer needed.
@@ -550,6 +541,16 @@ public class AutoBuild {
 	 */
 	public void verifyTypeScriptInstallation() {
 		extractorState.getTypeScriptParser().verifyInstallation(true);
+	}
+
+	public void extractTypeScriptFiles(List<File> files, Set<Path> extractedFiles, FileExtractor extractor) throws IOException {
+		extractorState.getTypeScriptParser().prepareFiles(files);
+		for (File f : files) {
+			Path path = f.toPath();
+			if (extractedFiles.add(path)) {
+				extract(extractor, f.toPath());
+			}
+		}
 	}
 
 	private Path normalizePath(Path path) {
