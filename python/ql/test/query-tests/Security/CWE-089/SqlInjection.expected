@@ -1,4 +1,13 @@
-| sql_injection.py:19:13:19:66 | db.connection.execute | This SQL query depends on $@. | sql_injection.py:9:15:9:21 | Django request source | a user-provided value |
-| sql_injection.py:22:38:22:91 | django.db.models.expressions.RawSQL(sink,...) | This SQL query depends on $@. | sql_injection.py:9:15:9:21 | Django request source | a user-provided value |
-| sql_injection.py:23:26:23:79 | django.models.QuerySet.raw(sink,...) | This SQL query depends on $@. | sql_injection.py:9:15:9:21 | Django request source | a user-provided value |
-| sql_injection.py:24:28:24:81 | django.models.QuerySet.extra(sink,...) | This SQL query depends on $@. | sql_injection.py:9:15:9:21 | Django request source | a user-provided value |
+edges
+| sql_injection.py:5:15:5:21 | Taint django.request.HttpRequest at sql_injection.py:5 | sql_injection.py:7:8:7:14 | Taint django.request.HttpRequest at sql_injection.py:7 |
+| sql_injection.py:5:15:5:21 | Taint django.request.HttpRequest at sql_injection.py:5 | sql_injection.py:8:16:8:22 | Taint django.request.HttpRequest at sql_injection.py:8 |
+| sql_injection.py:8:16:8:22 | Taint django.request.HttpRequest at sql_injection.py:8 | sql_injection.py:8:16:8:27 | Taint django.http.request.QueryDict at sql_injection.py:8 |
+| sql_injection.py:8:16:8:27 | Taint django.http.request.QueryDict at sql_injection.py:8 | sql_injection.py:8:16:8:39 | Taint externally controlled string at sql_injection.py:8 |
+| sql_injection.py:8:16:8:39 | Taint externally controlled string at sql_injection.py:8 | sql_injection.py:12:62:12:65 | Taint externally controlled string at sql_injection.py:12 |
+| sql_injection.py:8:16:8:39 | Taint externally controlled string at sql_injection.py:8 | sql_injection.py:15:63:15:66 | Taint externally controlled string at sql_injection.py:15 |
+| sql_injection.py:9:16:9:34 | Taint django.db.connection.cursor at sql_injection.py:9 | sql_injection.py:11:9:11:12 | Taint django.db.connection.cursor at sql_injection.py:11 |
+| sql_injection.py:9:16:9:34 | Taint django.db.connection.cursor at sql_injection.py:9 | sql_injection.py:14:9:14:12 | Taint django.db.connection.cursor at sql_injection.py:14 |
+| sql_injection.py:15:63:15:66 | Taint externally controlled string at sql_injection.py:15 | sql_injection.py:15:13:15:66 | Taint externally controlled string at sql_injection.py:15 |
+parents
+#select
+| sql_injection.py:15:13:15:66 | db.connection.execute | sql_injection.py:5:15:5:21 | Taint django.request.HttpRequest at sql_injection.py:5 | sql_injection.py:15:13:15:66 | Taint externally controlled string at sql_injection.py:15 | This SQL query depends on $@. | sql_injection.py:5:15:5:21 | Django request source | a user-provided value |

@@ -1,1 +1,12 @@
-| code_injection.py:7:14:7:44 | exec or eval | $@ flows to here and is interpreted as code. | code_injection.py:4:20:4:26 | Django request source | User-provided value |
+edges
+| code_injection.py:4:20:4:26 | Taint django.request.HttpRequest at code_injection.py:4 | code_injection.py:5:8:5:14 | Taint django.request.HttpRequest at code_injection.py:5 |
+| code_injection.py:4:20:4:26 | Taint django.request.HttpRequest at code_injection.py:4 | code_injection.py:6:22:6:28 | Taint django.request.HttpRequest at code_injection.py:6 |
+| code_injection.py:6:22:6:28 | Taint django.request.HttpRequest at code_injection.py:6 | code_injection.py:6:22:6:33 | Taint django.http.request.QueryDict at code_injection.py:6 |
+| code_injection.py:6:22:6:33 | Taint django.http.request.QueryDict at code_injection.py:6 | code_injection.py:6:22:6:55 | Taint externally controlled string at code_injection.py:6 |
+| code_injection.py:6:22:6:55 | Taint externally controlled string at code_injection.py:6 | code_injection.py:7:34:7:43 | Taint externally controlled string at code_injection.py:7 |
+| code_injection.py:7:34:7:43 | Taint externally controlled string at code_injection.py:7 | ../lib/base64.py:1:18:1:18 | Taint externally controlled string at ../lib/base64.py:1 |
+| code_injection.py:7:34:7:43 | Taint externally controlled string at code_injection.py:7 | code_injection.py:7:14:7:44 | Taint externally controlled string at code_injection.py:7 |
+parents
+| ../lib/base64.py:1:18:1:18 | Taint externally controlled string at ../lib/base64.py:1 | code_injection.py:7:34:7:43 | Taint externally controlled string at code_injection.py:7 |
+#select
+| code_injection.py:7:14:7:44 | exec or eval | code_injection.py:4:20:4:26 | Taint django.request.HttpRequest at code_injection.py:4 | code_injection.py:7:14:7:44 | Taint externally controlled string at code_injection.py:7 | $@ flows to here and is interpreted as code. | code_injection.py:4:20:4:26 | Django request source | User-provided value |

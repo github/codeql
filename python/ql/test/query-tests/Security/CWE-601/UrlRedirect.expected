@@ -1,1 +1,10 @@
-| test.py:8:21:8:26 | flask.redirect | Untrusted URL redirection due to $@. | test.py:7:22:7:33 | flask.request.args | a user-provided value |
+edges
+| test.py:7:22:7:33 | Taint {externally controlled string} at test.py:7 | test.py:7:22:7:51 | Taint externally controlled string at test.py:7 |
+| test.py:7:22:7:51 | Taint externally controlled string at test.py:7 | test.py:8:21:8:26 | Taint externally controlled string at test.py:8 |
+| test.py:8:21:8:26 | Taint externally controlled string at test.py:8 | ../lib/flask/__init__.py:11:14:11:21 | Taint externally controlled string at ../lib/flask/__init__.py:11 |
+| test.py:15:17:15:28 | Taint {externally controlled string} at test.py:15 | test.py:15:17:15:42 | Taint externally controlled string at test.py:15 |
+| test.py:15:17:15:42 | Taint externally controlled string at test.py:15 | test.py:17:13:17:21 | Taint externally controlled string at test.py:17 |
+parents
+| ../lib/flask/__init__.py:11:14:11:21 | Taint externally controlled string at ../lib/flask/__init__.py:11 | test.py:8:21:8:26 | Taint externally controlled string at test.py:8 |
+#select
+| test.py:8:21:8:26 | flask.redirect | test.py:7:22:7:33 | Taint {externally controlled string} at test.py:7 | test.py:8:21:8:26 | Taint externally controlled string at test.py:8 | Untrusted URL redirection due to $@. | test.py:7:22:7:33 | flask.request.args | a user-provided value |

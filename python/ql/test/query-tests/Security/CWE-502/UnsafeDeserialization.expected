@@ -1,3 +1,12 @@
-| test.py:12:18:12:24 | unpickling untrusted data | Deserializing of $@. | test.py:11:15:11:26 | flask.request.args | untrusted input |
-| test.py:13:15:13:21 | yaml.load vulnerability | Deserializing of $@. | test.py:11:15:11:26 | flask.request.args | untrusted input |
-| test.py:14:19:14:25 | unmarshaling vulnerability | Deserializing of $@. | test.py:11:15:11:26 | flask.request.args | untrusted input |
+edges
+| test.py:11:15:11:26 | Taint {externally controlled string} at test.py:11 | test.py:11:15:11:41 | Taint externally controlled string at test.py:11 |
+| test.py:11:15:11:41 | Taint externally controlled string at test.py:11 | test.py:12:18:12:24 | Taint externally controlled string at test.py:12 |
+| test.py:11:15:11:41 | Taint externally controlled string at test.py:11 | test.py:13:15:13:21 | Taint externally controlled string at test.py:13 |
+| test.py:11:15:11:41 | Taint externally controlled string at test.py:11 | test.py:14:19:14:25 | Taint externally controlled string at test.py:14 |
+| test.py:13:15:13:21 | Taint externally controlled string at test.py:13 | ../lib/yaml.py:1:10:1:10 | Taint externally controlled string at ../lib/yaml.py:1 |
+parents
+| ../lib/yaml.py:1:10:1:10 | Taint externally controlled string at ../lib/yaml.py:1 | test.py:13:15:13:21 | Taint externally controlled string at test.py:13 |
+#select
+| test.py:12:18:12:24 | unpickling untrusted data | test.py:11:15:11:26 | Taint {externally controlled string} at test.py:11 | test.py:12:18:12:24 | Taint externally controlled string at test.py:12 | Deserializing of $@. | test.py:11:15:11:26 | flask.request.args | untrusted input |
+| test.py:13:15:13:21 | yaml.load vulnerability | test.py:11:15:11:26 | Taint {externally controlled string} at test.py:11 | test.py:13:15:13:21 | Taint externally controlled string at test.py:13 | Deserializing of $@. | test.py:11:15:11:26 | flask.request.args | untrusted input |
+| test.py:14:19:14:25 | unmarshaling vulnerability | test.py:11:15:11:26 | Taint {externally controlled string} at test.py:11 | test.py:14:19:14:25 | Taint externally controlled string at test.py:14 | Deserializing of $@. | test.py:11:15:11:26 | flask.request.args | untrusted input |
