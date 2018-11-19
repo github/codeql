@@ -363,17 +363,23 @@
 | post | Conditions.cs:113:10:113:11 | enter M9 | Conditions.cs:113:10:113:11 | enter M9 |
 | post | Conditions.cs:113:10:113:11 | exit M9 | Conditions.cs:113:10:113:11 | enter M9 |
 | post | Conditions.cs:113:10:113:11 | exit M9 | Conditions.cs:113:10:113:11 | exit M9 |
-| post | Conditions.cs:113:10:113:11 | exit M9 | Conditions.cs:117:9:123:9 | [last (line 118): false] {...} |
-| post | Conditions.cs:113:10:113:11 | exit M9 | Conditions.cs:117:9:123:9 | [last (line 118): true] {...} |
+| post | Conditions.cs:113:10:113:11 | exit M9 | Conditions.cs:116:24:116:24 | access to local variable i |
+| post | Conditions.cs:113:10:113:11 | exit M9 | Conditions.cs:116:41:116:41 | access to local variable i |
 | post | Conditions.cs:113:10:113:11 | exit M9 | Conditions.cs:117:9:123:9 | {...} |
 | post | Conditions.cs:113:10:113:11 | exit M9 | Conditions.cs:120:17:120:23 | [last (line 118): false] ...; |
 | post | Conditions.cs:113:10:113:11 | exit M9 | Conditions.cs:121:13:122:25 | [last (line 118): true] if (...) ... |
-| post | Conditions.cs:117:9:123:9 | [last (line 118): false] {...} | Conditions.cs:117:9:123:9 | [last (line 118): false] {...} |
-| post | Conditions.cs:117:9:123:9 | [last (line 118): true] {...} | Conditions.cs:117:9:123:9 | [last (line 118): true] {...} |
+| post | Conditions.cs:116:24:116:24 | access to local variable i | Conditions.cs:113:10:113:11 | enter M9 |
+| post | Conditions.cs:116:24:116:24 | access to local variable i | Conditions.cs:116:24:116:24 | access to local variable i |
+| post | Conditions.cs:116:24:116:24 | access to local variable i | Conditions.cs:116:41:116:41 | access to local variable i |
+| post | Conditions.cs:116:24:116:24 | access to local variable i | Conditions.cs:117:9:123:9 | {...} |
+| post | Conditions.cs:116:24:116:24 | access to local variable i | Conditions.cs:120:17:120:23 | [last (line 118): false] ...; |
+| post | Conditions.cs:116:24:116:24 | access to local variable i | Conditions.cs:121:13:122:25 | [last (line 118): true] if (...) ... |
+| post | Conditions.cs:116:41:116:41 | access to local variable i | Conditions.cs:116:41:116:41 | access to local variable i |
+| post | Conditions.cs:116:41:116:41 | access to local variable i | Conditions.cs:117:9:123:9 | {...} |
+| post | Conditions.cs:116:41:116:41 | access to local variable i | Conditions.cs:120:17:120:23 | [last (line 118): false] ...; |
+| post | Conditions.cs:116:41:116:41 | access to local variable i | Conditions.cs:121:13:122:25 | [last (line 118): true] if (...) ... |
 | post | Conditions.cs:117:9:123:9 | {...} | Conditions.cs:117:9:123:9 | {...} |
-| post | Conditions.cs:120:17:120:23 | [last (line 118): false] ...; | Conditions.cs:117:9:123:9 | [last (line 118): false] {...} |
 | post | Conditions.cs:120:17:120:23 | [last (line 118): false] ...; | Conditions.cs:120:17:120:23 | [last (line 118): false] ...; |
-| post | Conditions.cs:121:13:122:25 | [last (line 118): true] if (...) ... | Conditions.cs:117:9:123:9 | [last (line 118): true] {...} |
 | post | Conditions.cs:121:13:122:25 | [last (line 118): true] if (...) ... | Conditions.cs:121:13:122:25 | [last (line 118): true] if (...) ... |
 | post | ExitMethods.cs:7:10:7:11 | enter M1 | ExitMethods.cs:7:10:7:11 | enter M1 |
 | post | ExitMethods.cs:13:10:13:11 | enter M2 | ExitMethods.cs:13:10:13:11 | enter M2 |
@@ -1722,22 +1728,24 @@
 | pre | Conditions.cs:110:16:110:16 | access to local variable x | Conditions.cs:110:16:110:16 | access to local variable x |
 | pre | Conditions.cs:113:10:113:11 | enter M9 | Conditions.cs:113:10:113:11 | enter M9 |
 | pre | Conditions.cs:113:10:113:11 | enter M9 | Conditions.cs:113:10:113:11 | exit M9 |
-| pre | Conditions.cs:113:10:113:11 | enter M9 | Conditions.cs:117:9:123:9 | [last (line 118): false] {...} |
-| pre | Conditions.cs:113:10:113:11 | enter M9 | Conditions.cs:117:9:123:9 | [last (line 118): true] {...} |
+| pre | Conditions.cs:113:10:113:11 | enter M9 | Conditions.cs:116:24:116:24 | access to local variable i |
+| pre | Conditions.cs:113:10:113:11 | enter M9 | Conditions.cs:116:41:116:41 | access to local variable i |
 | pre | Conditions.cs:113:10:113:11 | enter M9 | Conditions.cs:117:9:123:9 | {...} |
 | pre | Conditions.cs:113:10:113:11 | enter M9 | Conditions.cs:120:17:120:23 | [last (line 118): false] ...; |
 | pre | Conditions.cs:113:10:113:11 | enter M9 | Conditions.cs:121:13:122:25 | [last (line 118): true] if (...) ... |
 | pre | Conditions.cs:113:10:113:11 | exit M9 | Conditions.cs:113:10:113:11 | exit M9 |
-| pre | Conditions.cs:117:9:123:9 | [last (line 118): false] {...} | Conditions.cs:117:9:123:9 | [last (line 118): false] {...} |
-| pre | Conditions.cs:117:9:123:9 | [last (line 118): true] {...} | Conditions.cs:117:9:123:9 | [last (line 118): true] {...} |
-| pre | Conditions.cs:117:9:123:9 | {...} | Conditions.cs:117:9:123:9 | [last (line 118): false] {...} |
-| pre | Conditions.cs:117:9:123:9 | {...} | Conditions.cs:117:9:123:9 | [last (line 118): true] {...} |
+| pre | Conditions.cs:116:24:116:24 | access to local variable i | Conditions.cs:113:10:113:11 | exit M9 |
+| pre | Conditions.cs:116:24:116:24 | access to local variable i | Conditions.cs:116:24:116:24 | access to local variable i |
+| pre | Conditions.cs:116:24:116:24 | access to local variable i | Conditions.cs:116:41:116:41 | access to local variable i |
+| pre | Conditions.cs:116:24:116:24 | access to local variable i | Conditions.cs:117:9:123:9 | {...} |
+| pre | Conditions.cs:116:24:116:24 | access to local variable i | Conditions.cs:120:17:120:23 | [last (line 118): false] ...; |
+| pre | Conditions.cs:116:24:116:24 | access to local variable i | Conditions.cs:121:13:122:25 | [last (line 118): true] if (...) ... |
+| pre | Conditions.cs:116:41:116:41 | access to local variable i | Conditions.cs:116:41:116:41 | access to local variable i |
+| pre | Conditions.cs:117:9:123:9 | {...} | Conditions.cs:116:41:116:41 | access to local variable i |
 | pre | Conditions.cs:117:9:123:9 | {...} | Conditions.cs:117:9:123:9 | {...} |
 | pre | Conditions.cs:117:9:123:9 | {...} | Conditions.cs:120:17:120:23 | [last (line 118): false] ...; |
 | pre | Conditions.cs:117:9:123:9 | {...} | Conditions.cs:121:13:122:25 | [last (line 118): true] if (...) ... |
-| pre | Conditions.cs:120:17:120:23 | [last (line 118): false] ...; | Conditions.cs:117:9:123:9 | [last (line 118): false] {...} |
 | pre | Conditions.cs:120:17:120:23 | [last (line 118): false] ...; | Conditions.cs:120:17:120:23 | [last (line 118): false] ...; |
-| pre | Conditions.cs:121:13:122:25 | [last (line 118): true] if (...) ... | Conditions.cs:117:9:123:9 | [last (line 118): true] {...} |
 | pre | Conditions.cs:121:13:122:25 | [last (line 118): true] if (...) ... | Conditions.cs:121:13:122:25 | [last (line 118): true] if (...) ... |
 | pre | ExitMethods.cs:7:10:7:11 | enter M1 | ExitMethods.cs:7:10:7:11 | enter M1 |
 | pre | ExitMethods.cs:13:10:13:11 | enter M2 | ExitMethods.cs:13:10:13:11 | enter M2 |

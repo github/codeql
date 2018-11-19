@@ -98,53 +98,11 @@
 | inc (line 3): true | Conditions.cs:7:9:8:16 | [inc (line 3): true] if (...) ... |
 | inc (line 3): true | Conditions.cs:7:13:7:16 | [inc (line 3): true] !... |
 | inc (line 3): true | Conditions.cs:7:14:7:16 | [inc (line 3): true] access to parameter inc |
-| last (line 118): false | Conditions.cs:116:24:116:24 | [last (line 118): false] access to local variable i |
-| last (line 118): false | Conditions.cs:116:24:116:38 | [last (line 118): false] ... < ... |
-| last (line 118): false | Conditions.cs:116:28:116:31 | [last (line 118): false] access to parameter args |
-| last (line 118): false | Conditions.cs:116:28:116:38 | [last (line 118): false] access to property Length |
-| last (line 118): false | Conditions.cs:116:41:116:41 | [last (line 118): false] access to local variable i |
-| last (line 118): false | Conditions.cs:116:41:116:43 | [last (line 118): false] ...++ |
-| last (line 118): false | Conditions.cs:117:9:123:9 | [last (line 118): false] {...} |
-| last (line 118): false | Conditions.cs:118:13:118:44 | [last (line 118): false] ... ...; |
-| last (line 118): false | Conditions.cs:118:17:118:20 | [last (line 118): false] access to local variable last |
-| last (line 118): false | Conditions.cs:118:17:118:43 | [last (line 118): false] Boolean last = ... |
-| last (line 118): false | Conditions.cs:118:24:118:24 | [last (line 118): false] access to local variable i |
-| last (line 118): false | Conditions.cs:118:24:118:43 | [last (line 118): false] ... == ... |
-| last (line 118): false | Conditions.cs:118:29:118:32 | [last (line 118): false] access to parameter args |
-| last (line 118): false | Conditions.cs:118:29:118:39 | [last (line 118): false] access to property Length |
-| last (line 118): false | Conditions.cs:118:29:118:43 | [last (line 118): false] ... - ... |
-| last (line 118): false | Conditions.cs:118:43:118:43 | [last (line 118): false] 1 |
-| last (line 118): false | Conditions.cs:119:13:120:23 | [last (line 118): false] if (...) ... |
-| last (line 118): false | Conditions.cs:119:17:119:21 | [last (line 118): false] !... |
-| last (line 118): false | Conditions.cs:119:18:119:21 | [last (line 118): false] access to local variable last |
 | last (line 118): false | Conditions.cs:120:17:120:17 | [last (line 118): false] access to local variable s |
 | last (line 118): false | Conditions.cs:120:17:120:22 | [last (line 118): false] ... = ... |
 | last (line 118): false | Conditions.cs:120:17:120:23 | [last (line 118): false] ...; |
 | last (line 118): false | Conditions.cs:120:21:120:22 | [last (line 118): false] "" |
 | last (line 118): false | Conditions.cs:121:13:122:25 | [last (line 118): false] if (...) ... |
 | last (line 118): false | Conditions.cs:121:17:121:20 | [last (line 118): false] access to local variable last |
-| last (line 118): true | Conditions.cs:116:24:116:24 | [last (line 118): true] access to local variable i |
-| last (line 118): true | Conditions.cs:116:24:116:38 | [last (line 118): true] ... < ... |
-| last (line 118): true | Conditions.cs:116:28:116:31 | [last (line 118): true] access to parameter args |
-| last (line 118): true | Conditions.cs:116:28:116:38 | [last (line 118): true] access to property Length |
-| last (line 118): true | Conditions.cs:116:41:116:41 | [last (line 118): true] access to local variable i |
-| last (line 118): true | Conditions.cs:116:41:116:43 | [last (line 118): true] ...++ |
-| last (line 118): true | Conditions.cs:117:9:123:9 | [last (line 118): true] {...} |
-| last (line 118): true | Conditions.cs:118:13:118:44 | [last (line 118): true] ... ...; |
-| last (line 118): true | Conditions.cs:118:17:118:20 | [last (line 118): true] access to local variable last |
-| last (line 118): true | Conditions.cs:118:17:118:43 | [last (line 118): true] Boolean last = ... |
-| last (line 118): true | Conditions.cs:118:24:118:24 | [last (line 118): true] access to local variable i |
-| last (line 118): true | Conditions.cs:118:24:118:43 | [last (line 118): true] ... == ... |
-| last (line 118): true | Conditions.cs:118:29:118:32 | [last (line 118): true] access to parameter args |
-| last (line 118): true | Conditions.cs:118:29:118:39 | [last (line 118): true] access to property Length |
-| last (line 118): true | Conditions.cs:118:29:118:43 | [last (line 118): true] ... - ... |
-| last (line 118): true | Conditions.cs:118:43:118:43 | [last (line 118): true] 1 |
-| last (line 118): true | Conditions.cs:119:13:120:23 | [last (line 118): true] if (...) ... |
-| last (line 118): true | Conditions.cs:119:17:119:21 | [last (line 118): true] !... |
-| last (line 118): true | Conditions.cs:119:18:119:21 | [last (line 118): true] access to local variable last |
 | last (line 118): true | Conditions.cs:121:13:122:25 | [last (line 118): true] if (...) ... |
 | last (line 118): true | Conditions.cs:121:17:121:20 | [last (line 118): true] access to local variable last |
-| last (line 118): true | Conditions.cs:122:17:122:17 | [last (line 118): true] access to local variable s |
-| last (line 118): true | Conditions.cs:122:17:122:24 | [last (line 118): true] ... = ... |
-| last (line 118): true | Conditions.cs:122:17:122:25 | [last (line 118): true] ...; |
-| last (line 118): true | Conditions.cs:122:21:122:24 | [last (line 118): true] null |
