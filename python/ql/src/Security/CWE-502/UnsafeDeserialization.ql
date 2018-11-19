@@ -5,7 +5,7 @@
  * @id py/unsafe-deserialization
  * @problem.severity error
  * @sub-severity high
- * @precision medium
+ * @precision high
  * @tags external/cwe/cwe-502
  *       security
  *       serialization

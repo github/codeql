@@ -3,7 +3,7 @@
  * @description Using broken or weak cryptographic algorithms can compromise security.
  * @kind problem
  * @problem.severity warning
- * @precision medium
+ * @precision high
  * @id py/weak-cryptographic-algorithm
  * @tags security
  *       external/cwe/cwe-327

@@ -4,7 +4,7 @@
  * @kind problem
  * @problem.severity error
  * @sub-severity high
- * @precision medium
+ * @precision high
  * @id py/path-injection
  * @tags correctness
  *       security

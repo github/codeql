@@ -5,7 +5,7 @@
  * @kind problem
  * @problem.severity error
  * @sub-severity high
- * @precision medium
+ * @precision high
  * @id py/code-injection
  * @tags security
  *       external/owasp/owasp-a1

@@ -5,7 +5,7 @@
  * @kind problem
  * @problem.severity error
  * @sub-severity high
- * @precision medium
+ * @precision high
  * @id py/reflective-xss
  * @tags security
  *       external/cwe/cwe-079
