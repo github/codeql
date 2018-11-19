@@ -494,14 +494,16 @@ public class AutoBuild {
 			logEndProcess();
 			// Extract all files belonging to this project which are also matched
 			// by our include/exclude filters.
+			List<File> typeScriptFiles = new ArrayList<File>();
 			for (File sourceFile : project.getSourceFiles()) {
 				Path sourcePath = sourceFile.toPath();
 				if (!filesToExtract.contains(normalizePath(sourcePath)))
 					continue;
-				if (extractedFiles.add(sourcePath)) {
-					extract(extractor, sourcePath);
+				if (!extractedFiles.contains(sourcePath)) {
+					typeScriptFiles.add(sourcePath.toFile());
 				}
 			}
+			extractTypeScriptFiles(typeScriptFiles, extractedFiles, extractor);
 			tsParser.closeProject(projectFile);
 		}
 
@@ -509,12 +511,23 @@ public class AutoBuild {
 			// Extract all the types discovered when extracting the ASTs.
 			TypeTable typeTable = tsParser.getTypeTable();
 			extractTypeTable(tsconfigFiles.iterator().next(), typeTable);
-
-			// The TypeScript compiler instance is no longer needed.
-			tsParser.killProcess();
 		}
 
-		// Extract files that were not part of a project.
+		// Extract remaining TypeScript files.
+		List<File> remainingTypeScriptFiles = new ArrayList<File>();
+		for (Path f : filesToExtract) {
+			if (!extractedFiles.contains(f) && FileType.forFileExtension(f.toFile()) == FileType.TYPESCRIPT) {
+				remainingTypeScriptFiles.add(f.toFile());
+			}
+		}
+		if (!remainingTypeScriptFiles.isEmpty()) {
+			extractTypeScriptFiles(remainingTypeScriptFiles, extractedFiles, extractor);
+		}
+
+		// The TypeScript compiler instance is no longer needed.
+		tsParser.killProcess();
+
+		// Extract non-TypeScript files
 		for (Path f : filesToExtract) {
 			if (extractedFiles.add(f)) {
 				extract(extractor, f);
@@ -528,6 +541,15 @@ public class AutoBuild {
 	 */
 	public void verifyTypeScriptInstallation() {
 		extractorState.getTypeScriptParser().verifyInstallation(true);
+	}
+
+	public void extractTypeScriptFiles(List<File> files, Set<Path> extractedFiles, FileExtractor extractor) throws IOException {
+		extractorState.getTypeScriptParser().prepareFiles(files);
+		for (File f : files) {
+			Path path = f.toPath();
+			extractedFiles.add(path);
+			extract(extractor, f.toPath());
+		}
 	}
 
 	private Path normalizePath(Path path) {

@@ -293,6 +293,25 @@ public class TypeScriptParser {
 	}
 
 	/**
+	 * Informs the parser process that the following files are going to be
+	 * requested, in that order.
+	 * <p>
+	 * The parser process uses this list to start work on the next file before it is
+	 * requested.
+	 */
+	public void prepareFiles(List<File> files) {
+		JsonObject request = new JsonObject();
+		request.add("command", new JsonPrimitive("prepare-files"));
+		JsonArray filenames = new JsonArray();
+		for (File file : files) {
+			filenames.add(new JsonPrimitive(file.getAbsolutePath()));
+		}
+		request.add("filenames", filenames);
+		JsonObject response = talkToParserWrapper(request);
+		checkResponseType(response, "ok");
+	}
+
+	/**
 	 * Opens a new project based on a tsconfig.json file. The compiler will analyze
 	 * all files in the project.
 	 * <p>
