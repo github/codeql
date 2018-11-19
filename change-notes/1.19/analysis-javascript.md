@@ -4,14 +4,14 @@
 
 * Modelling of taint flow through array operations has been improved. This may give additional results for the security queries.
 
-* The taint tracking library now recognizes additional sanitization patterns. This may give fewer false-positive results for the security queries.
-
 * Support for AMD modules has been improved. This may give additional results for the security queries as well as any queries that use type inference on code bases that use such modules.
 
 * Support for popular libraries has been improved. Consequently, queries may produce more results on code bases that use the following features:
   - file system access, for example through [fs-extra](https://github.com/jprichardson/node-fs-extra) or [globby](https://www.npmjs.com/package/globby)
   - outbound network access, for example through the [fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
   - the [lodash](https://lodash.com), [underscore](https://underscorejs.org/), [async](https://www.npmjs.com/package/async) and [async-es](https://www.npmjs.com/package/async-es) libraries
+
+* The taint tracking library now recognizes additional sanitization patterns. This may give fewer false-positive results for the security queries.
 
 * Type inference for function calls has been improved. This may give additional results for queries that rely on type inference.
 
@@ -36,11 +36,13 @@
 | **Query**                      | **Expected impact**        | **Change**                                   |
 |--------------------------------|----------------------------|----------------------------------------------|
 | Client side cross-site scripting | More results | This rule now also flags HTML injection in the body of an email. |
+| Client-side URL redirect | Fewer false-positive results | This rule now recognizes safe redirects in more cases. |
 | Information exposure through a stack trace | More results | This rule now also flags cases where the entire exception object (including the stack trace) may be exposed. |
 | Missing CSRF middleware | Fewer false-positive results | This rule now recognizes additional CSRF protection middlewares. |
 | Regular expression injection | Fewer false-positive results | This rule now identifies calls to `String.prototype.search` with more precision. |
 | Remote property injection | Fewer results | The precision of this rule has been revised to "medium". Results are no longer shown on LGTM by default. |
 | Self assignment | Fewer false-positive results | This rule now ignores self-assignments preceded by a JSDoc comment with a `@type` tag. |
+| Server-side URL redirect | Fewer false-positive results | This rule now recognizes safe redirects in more cases. |
 | Server-side URL redirect | More results | This rule now recognizes redirection calls in more cases. |
 | Unbound event handler receiver | Fewer false-positive results | This rule now recognizes additional ways class methods can be bound. |
 | Uncontrolled data used in remote request | More results | This rule now recognizes additional kinds of requests. |
@@ -49,15 +51,13 @@
 | Unused variable, import, function or class | Fewer results | This rule now flags import statements with multiple unused imports once. |
 | Useless assignment to local variable | Fewer false-positive results | This rule now recognizes additional ways default values can be set. |
 | Whitespace contradicts operator precedence | Fewer false-positive results | This rule no longer flags operators with asymmetric whitespace. |
-| Client-side URL redirect | Fewer false-positive results | This rule now recognizes safe redirects in more cases. |
-| Server-side URL redirect | Fewer false-positive results | This rule now recognizes safe redirects in more cases. |
 
 ## Changes to QL libraries
 
-* The flow configuration framework now supports distinguishing and tracking different kinds of taint, specified by an extensible class `FlowLabel` (which can also be referred to by its alias `TaintKind`).
-
-* The `DataFlow::ThisNode` class now corresponds to the implicit receiver parameter of a function, as opposed to an indivdual `this` expression. This means `getALocalSource` now maps all `this` expressions within a given function to the same source. The data-flow node associated with a `ThisExpr` can no longer be cast to `DataFlow::SourceNode` or `DataFlow::ThisNode` - it is recomended to use `getALocalSource` before casting or instead of casting.
+* A `DataFlow::ParameterNode` instance now exists for all function parameters. Previously, unused parameters did not have a corresponding dataflow node.
 
 * `ReactComponent::getAThisAccess` has been renamed to `getAThisNode`. The old name is still usable but is deprecated. It no longer gets individual `this` expressions, but the `ThisNode` mentioned above.
 
-* A `DataFlow::ParameterNode` instance now exists for all function parameters. Previously, unused parameters did not have a corresponding dataflow node.
+* The `DataFlow::ThisNode` class now corresponds to the implicit receiver parameter of a function, as opposed to an indivdual `this` expression. This means `getALocalSource` now maps all `this` expressions within a given function to the same source. The data-flow node associated with a `ThisExpr` can no longer be cast to `DataFlow::SourceNode` or `DataFlow::ThisNode` - it is recomended to use `getALocalSource` before casting or instead of casting.
+
+* The flow configuration framework now supports distinguishing and tracking different kinds of taint, specified by an extensible class `FlowLabel` (which can also be referred to by its alias `TaintKind`).
