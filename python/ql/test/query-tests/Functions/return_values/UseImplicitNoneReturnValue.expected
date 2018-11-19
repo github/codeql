@@ -1,0 +1,2 @@
+| functions_test.py:77:9:77:20 | do_nothing() | The result of '$@' is used even though it is always None. | functions_test.py:83:1:83:17 | Function do_nothing | do_nothing |
+| functions_test.py:234:16:234:27 | do_nothing() | The result of '$@' is used even though it is always None. | functions_test.py:83:1:83:17 | Function do_nothing | do_nothing |

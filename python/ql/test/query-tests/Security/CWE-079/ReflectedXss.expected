@@ -1,0 +1,1 @@
+| ../lib/flask/__init__.py:16:25:16:26 | flask.response.argument | Cross-site scripting vulnerability due to $@. | reflected_xss.py:7:18:7:29 | flask.request.args | user-provided value |

@@ -1,0 +1,1 @@
+| subclass_shadowing.py:10:5:10:21 | FunctionExpr | Method shadow is shadowed by $@ in super class 'Base'. | subclass_shadowing.py:6:9:6:23 | AssignStmt | an attribute |

@@ -1,0 +1,4 @@
+| duplicate_test.py:0:0:0:0 | duplicate_test.py | 228 |
+| similar.py:0:0:0:0 | similar.py | 59 |
+| with_import1.py:0:0:0:0 | with_import1.py | 30 |
+| with_import2.py:0:0:0:0 | with_import2.py | 30 |

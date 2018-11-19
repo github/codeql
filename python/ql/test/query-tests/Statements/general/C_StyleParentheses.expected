@@ -1,0 +1,4 @@
+| test.py:109:5:109:8 | cond | Parenthesized condition in 'if' statement. |
+| test.py:112:8:112:11 | cond | Parenthesized condition in 'while' statement. |
+| test.py:115:9:115:12 | test | Parenthesized test in 'assert' statement. |
+| test.py:118:13:118:13 | x | Parenthesized value in 'return' statement. |

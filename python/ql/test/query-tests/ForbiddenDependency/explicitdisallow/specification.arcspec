@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<architecture>
+	<patternMode>regex</patternMode>
+	<group name="G1" groupRule="unrestricted">
+		<unit name="G2" filePattern="${source_location}.*/a.py" />
+		<unit name="G3" filePattern="${source_location}.*/b.py" />
+		<unit name="G4" filePattern="${source_location}.*/c.py" />
+	</group>
+	<!-- Only G2 to G3 dependency should be disallowed -->
+	<disallow originContainers="G2" targetContainers="G3" />
+</architecture>

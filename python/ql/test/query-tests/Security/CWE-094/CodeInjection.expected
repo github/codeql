@@ -1,0 +1,1 @@
+| code_injection.py:7:14:7:44 | exec or eval | $@ flows to here and is interpreted as code. | code_injection.py:4:20:4:26 | Django request source | User-provided value |

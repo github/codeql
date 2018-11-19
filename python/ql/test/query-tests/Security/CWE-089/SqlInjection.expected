@@ -1,0 +1,4 @@
+| sql_injection.py:19:13:19:66 | db.connection.execute | This SQL query depends on $@. | sql_injection.py:9:15:9:21 | Django request source | a user-provided value |
+| sql_injection.py:22:38:22:91 | django.db.models.expressions.RawSQL(sink,...) | This SQL query depends on $@. | sql_injection.py:9:15:9:21 | Django request source | a user-provided value |
+| sql_injection.py:23:26:23:79 | django.models.QuerySet.raw(sink,...) | This SQL query depends on $@. | sql_injection.py:9:15:9:21 | Django request source | a user-provided value |
+| sql_injection.py:24:28:24:81 | django.models.QuerySet.extra(sink,...) | This SQL query depends on $@. | sql_injection.py:9:15:9:21 | Django request source | a user-provided value |

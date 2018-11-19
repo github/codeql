@@ -1,0 +1,2 @@
+| test.py:3:17:3:23 | Str | Formatting string mixes implicitly and explicitly numbered fields. |
+| test.py:8:17:8:23 | Str | Formatting string mixes implicitly and explicitly numbered fields. |
