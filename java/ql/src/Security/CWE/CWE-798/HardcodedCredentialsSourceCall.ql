@@ -1,7 +1,7 @@
 /**
  * @name Hard-coded credential in sensitive call
  * @description Using a hard-coded credential in a sensitive call may compromise security.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision low
  * @id java/hardcoded-credential-sensitive-call
@@ -13,6 +13,7 @@ import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.DataFlow2
 import HardcodedCredentials
+import DataFlow::PathGraph
 
 class HardcodedCredentialSourceCallConfiguration extends DataFlow::Configuration {
   HardcodedCredentialSourceCallConfiguration() {
@@ -45,7 +46,8 @@ class FinalCredentialsSourceSink extends CredentialsSourceSink {
 }
 
 from
-  FinalCredentialsSourceSink sink, HardcodedExpr source,
+  DataFlow::PathNode source, DataFlow::PathNode sink,
   HardcodedCredentialSourceCallConfiguration conf
-where conf.hasFlow(DataFlow::exprNode(source), DataFlow::exprNode(sink))
-select source, "Hard-coded value flows to $@.", sink, "sensitive call"
+where conf.hasFlowPath(source, sink)
+select source.getNode(), source, sink, "Hard-coded value flows to $@.", sink.getNode(),
+  "sensitive call"

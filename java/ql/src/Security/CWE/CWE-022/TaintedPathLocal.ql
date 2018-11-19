@@ -1,7 +1,7 @@
 /**
  * @name Local-user-controlled data in path expression
  * @description Accessing paths influenced by users can allow an attacker to access unexpected resources.
- * @kind problem
+ * @kind path-problem
  * @problem.severity recommendation
  * @precision medium
  * @id java/path-injection-local
@@ -15,6 +15,7 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import PathsCommon
+import DataFlow::PathGraph
 
 class TaintedPathLocalConfig extends TaintTracking::Configuration {
   TaintedPathLocalConfig() { this = "TaintedPathLocalConfig" }
@@ -24,9 +25,13 @@ class TaintedPathLocalConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(PathCreation p).getInput() }
 }
 
-from LocalUserInput u, PathCreation p, Expr e, TaintedPathLocalConfig conf
+from
+  DataFlow::PathNode source, DataFlow::PathNode sink, PathCreation p, Expr e,
+  TaintedPathLocalConfig conf
 where
+  e = sink.getNode().asExpr() and
   e = p.getInput() and
-  conf.hasFlow(u, DataFlow::exprNode(e)) and
+  conf.hasFlowPath(source, sink) and
   not guarded(e)
-select p, "$@ flows to here and is used in a path.", u, "User-provided value"
+select p, source, sink, "$@ flows to here and is used in a path.", source.getNode(),
+  "User-provided value"

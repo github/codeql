@@ -46,6 +46,6 @@ where
       conf.hasFlow(DataFlow::exprNode(sbv.getToStringCall()), query)
     )
   ) and
-  not queryTaintedBy(query, _)
+  not queryTaintedBy(query, _, _)
 select query, "Query might not neutralize special characters in $@.", uncontrolled,
   "this expression"

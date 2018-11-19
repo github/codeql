@@ -420,7 +420,7 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
    * Holds if this type declares or inherits method `m`, which is declared
    * in `declaringType`.
    */
-  predicate hasMethod(Method m, RefType declaringType) { hasMethod(m, declaringType, false) }
+  predicate hasMethod(Method m, RefType declaringType) { this.hasMethod(m, declaringType, false) }
 
   /**
    * Holds if this type declares or inherits method `m`, which is declared
@@ -430,29 +430,13 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
    */
   cached
   predicate hasMethod(Method m, RefType declaringType, boolean hidden) {
-    hasNonInterfaceMethod(m, declaringType, hidden)
+    this.hasNonInterfaceMethod(m, declaringType, hidden)
     or
-    hasInterfaceMethod(m, declaringType) and hidden = false
-  }
-
-  private predicate noMethodExtraction() {
-    not methods(_, _, _, _, this, _) and
-    exists(Method m | methods(m, _, _, _, getSourceDeclaration(), _) and m.isInheritable())
-  }
-
-  private predicate canInheritFromSupertype(RefType sup) {
-    sup = getASupertype() and
-    (noMethodExtraction() implies supertypeSrcDecl(sup, getSourceDeclaration()))
-  }
-
-  pragma[nomagic]
-  private predicate supertypeSrcDecl(RefType sup, RefType srcDecl) {
-    sup = getASupertype() and
-    srcDecl = sup.getSourceDeclaration()
+    this.hasInterfaceMethod(m, declaringType) and hidden = false
   }
 
   private predicate hasNonInterfaceMethod(Method m, RefType declaringType, boolean hidden) {
-    m = getAMethod() and
+    m = this.getAMethod() and
     this = declaringType and
     not declaringType instanceof Interface and
     hidden = false
@@ -464,7 +448,7 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
         else h1 = false
       ) and
       (not sup instanceof Interface or this instanceof Interface) and
-      canInheritFromSupertype(sup) and
+      this.extendsOrImplements(sup) and
       sup.hasNonInterfaceMethod(m, declaringType, h2) and
       hidden = h1.booleanOr(h2) and
       exists(string signature |
@@ -477,21 +461,21 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
   private predicate cannotInheritInterfaceMethod(string signature) {
     methods(_, _, signature, _, this, _)
     or
-    exists(Method m | hasNonInterfaceMethod(m, _, false) and methods(m, _, signature, _, _, _))
+    exists(Method m | this.hasNonInterfaceMethod(m, _, false) and methods(m, _, signature, _, _, _))
   }
 
   private predicate interfaceMethodCandidateWithSignature(
     Method m, string signature, RefType declaringType
   ) {
-    m = getAMethod() and
+    m = this.getAMethod() and
     this = declaringType and
     declaringType instanceof Interface and
     methods(m, _, signature, _, _, _)
     or
     exists(RefType sup |
       sup.interfaceMethodCandidateWithSignature(m, signature, declaringType) and
-      not cannotInheritInterfaceMethod(signature) and
-      canInheritFromSupertype(sup) and
+      not this.cannotInheritInterfaceMethod(signature) and
+      this.extendsOrImplements(sup) and
       m.isInheritable()
     )
   }
@@ -499,8 +483,8 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
   pragma[nomagic]
   private predicate overrideEquivalentInterfaceMethodCandidates(Method m1, Method m2) {
     exists(string signature |
-      interfaceMethodCandidateWithSignature(m1, signature, _) and
-      interfaceMethodCandidateWithSignature(m2, signature, _) and
+      this.interfaceMethodCandidateWithSignature(m1, signature, _) and
+      this.interfaceMethodCandidateWithSignature(m2, signature, _) and
       m1 != m2 and
       m2.overrides(_) and
       any(Method m).overrides(m1)
@@ -510,27 +494,27 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
   pragma[noinline]
   private predicate overriddenInterfaceMethodCandidate(Method m) {
     exists(Method m2 |
-      overrideEquivalentInterfaceMethodCandidates(m, m2) and
+      this.overrideEquivalentInterfaceMethodCandidates(m, m2) and
       m2.overrides(m)
     )
   }
 
   private predicate hasInterfaceMethod(Method m, RefType declaringType) {
-    interfaceMethodCandidateWithSignature(m, _, declaringType) and
-    not overriddenInterfaceMethodCandidate(m)
+    this.interfaceMethodCandidateWithSignature(m, _, declaringType) and
+    not this.overriddenInterfaceMethodCandidate(m)
   }
 
   /** Holds if this type declares or inherits the specified member. */
   predicate inherits(Member m) {
     exists(Field f | f = m |
-      f = getAField()
+      f = this.getAField()
       or
-      not f.isPrivate() and not declaresField(f.getName()) and getASupertype().inherits(f)
+      not f.isPrivate() and not this.declaresField(f.getName()) and this.getASupertype().inherits(f)
       or
-      getSourceDeclaration().inherits(f)
+      this.getSourceDeclaration().inherits(f)
     )
     or
-    hasMethod(m.(Method), _)
+    this.hasMethod(m.(Method), _)
   }
 
   /** Holds if this is a top-level type, which is not nested inside any other types. */

@@ -6,12 +6,16 @@
 
 * The taint tracking library now recognizes additional sanitization patterns. This may give fewer false-positive results for the security queries.
 
+* Support for AMD modules has been improved. This may give additional results for the security queries as well as any queries that use type inference on code bases that use such modules.
+
 * Support for popular libraries has been improved. Consequently, queries may produce more results on code bases that use the following features:
   - file system access, for example through [fs-extra](https://github.com/jprichardson/node-fs-extra) or [globby](https://www.npmjs.com/package/globby)
   - outbound network access, for example through the [fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
   - the [lodash](https://lodash.com), [underscore](https://underscorejs.org/), [async](https://www.npmjs.com/package/async) and [async-es](https://www.npmjs.com/package/async-es) libraries
 
 * Type inference for function calls has been improved. This may give additional results for queries that rely on type inference.
+
+* Where applicable, path explanations have been added to the security queries.
 
 ## New queries
 
@@ -45,6 +49,8 @@
 | Unused variable, import, function or class | Fewer results | This rule now flags import statements with multiple unused imports once. |
 | Useless assignment to local variable | Fewer false-positive results | This rule now recognizes additional ways default values can be set. |
 | Whitespace contradicts operator precedence | Fewer false-positive results | This rule no longer flags operators with asymmetric whitespace. |
+| Client-side URL redirect | Fewer false-positive results | This rule now recognizes safe redirects in more cases. |
+| Server-side URL redirect | Fewer false-positive results | This rule now recognizes safe redirects in more cases. |
 
 ## Changes to QL libraries
 

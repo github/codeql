@@ -1,10 +1,7 @@
 /**
  * @name Possible signed bit-field member
- * @description Bit fields should have explicitly unsigned integral or
- *              enumeration types only. For example, use `unsigned int` rather
- *              than `int`. It is implementation specific whether an
- *              `int`-typed bit field is signed, so there could be unexpected
- *              sign extension or overflow.
+ * @description Failing to explicitly assign bit fields to unsigned integer or enumeration types
+ *              may result in unexpected sign extension or overflow.
  * @kind problem
  * @problem.severity warning
  * @precision low

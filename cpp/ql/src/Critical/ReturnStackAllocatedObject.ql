@@ -1,10 +1,6 @@
 /**
  * @name Pointer to stack object used as return value
- * @description A function has returned a pointer to an object allocated on
- *              the stack. The lifetime of stack allocated memory ends when the
- *              stack frame of the function that allocated it is popped off the
- *              stack. Any pointer to memory in a function call's stack frame
- *              will be a dangling pointer after the function returns.
+ * @description Using a pointer to stack memory after the function has returned gives undefined results.
  * @kind problem
  * @id cpp/return-stack-allocated-object
  * @problem.severity warning

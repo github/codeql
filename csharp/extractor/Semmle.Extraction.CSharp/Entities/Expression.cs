@@ -223,6 +223,9 @@ namespace Semmle.Extraction.CSharp.Entities
                 case SyntaxKind.None:
                     mode = 0;
                     break;
+                case SyntaxKind.InKeyword:
+                    mode = 3;
+                    break;
                 default:
                     throw new InternalError(arg, "Unknown argument type");
             }

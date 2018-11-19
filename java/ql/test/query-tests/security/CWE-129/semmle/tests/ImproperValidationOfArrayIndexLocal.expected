@@ -1,1 +1,4 @@
-| Test.java:18:34:18:38 | index | $@ flows to here and is used as an index causing an ArrayIndexOutOfBoundsException. | Test.java:13:27:13:60 | getProperty(...) | User-provided value |
+edges
+| Test.java:13:27:13:60 | getProperty(...) [String] | Test.java:18:34:18:38 | index |
+#select
+| Test.java:18:34:18:38 | index | Test.java:13:27:13:60 | getProperty(...) [String] | Test.java:18:34:18:38 | index | $@ flows to here and is used as an index causing an ArrayIndexOutOfBoundsException. | Test.java:13:27:13:60 | getProperty(...) | User-provided value |

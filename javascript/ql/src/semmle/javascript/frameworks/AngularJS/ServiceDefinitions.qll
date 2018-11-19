@@ -718,11 +718,10 @@ class ProviderRecipeDefinition extends RecipeDefinition {
     method set to your factory function is automatically created
     under the hood.  */
 
-    exists(DataFlow::ThisNode thiz, DataFlow::Node rhs, InjectableFunction f |
+    exists(DataFlow::ThisNode thiz, InjectableFunction f |
       f = getAFactoryFunction() and
       thiz.getBinder().getFunction() = f.asFunction() and
-      thiz.hasPropertyWrite("$get", rhs) and
-      result.flowsTo(rhs)
+      result = thiz.getAPropertySource("$get")
     )
   }
 

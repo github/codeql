@@ -7,6 +7,11 @@
 | a.js:9:5:9:5 | z | a.js:9:9:9:18 | someGlobal | file://:0:0:0:0 | non-zero value |
 | a.js:9:5:9:5 | z | a.js:9:9:9:18 | someGlobal | file://:0:0:0:0 | true |
 | a.js:14:12:14:24 | notAlwaysZero | a.js:14:28:14:28 | 0 | file://:0:0:0:0 | 0 |
+| amd3.js:2:7:2:8 | _a | amd3.js:2:12:2:12 | a | a.js:1:1:18:0 | exports object of module a |
+| amd3.js:2:7:2:8 | _a | amd3.js:2:12:2:12 | a | file://:0:0:0:0 | indefinite value (call) |
+| amd3.js:3:7:3:8 | _c | amd3.js:3:12:3:12 | c | c.js:1:1:7:0 | exports object of module c |
+| amd3.js:3:7:3:8 | _c | amd3.js:3:12:3:12 | c | c.js:1:18:1:19 | object literal |
+| amd3.js:3:7:3:8 | _c | amd3.js:3:12:3:12 | c | file://:0:0:0:0 | indefinite value (call) |
 | amd.js:2:7:2:7 | m | amd.js:2:11:2:13 | mod | amd.js:1:1:7:0 | module object of module amd |
 | amd.js:2:7:2:7 | m | amd.js:2:11:2:13 | mod | file://:0:0:0:0 | indefinite value (call) |
 | amd.js:3:7:3:7 | e | amd.js:3:11:3:13 | exp | amd.js:1:1:7:0 | exports object of module amd |

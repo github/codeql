@@ -2,6 +2,8 @@
 
 ## General improvements
 
+* Where applicable, path explanations have been added to the security queries.
+
 ## New queries
 
 | **Query**                   | **Tags**  | **Purpose**                                                        |

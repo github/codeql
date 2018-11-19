@@ -2,7 +2,7 @@
  * @name Cross-site scripting
  * @description Writing user input directly to a web page
  *              allows for a cross-site scripting vulnerability.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id java/xss
@@ -13,6 +13,7 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.XSS
+import DataFlow2::PathGraph
 
 class XSSConfig extends TaintTracking::Configuration2 {
   XSSConfig() { this = "XSSConfig" }
@@ -26,6 +27,7 @@ class XSSConfig extends TaintTracking::Configuration2 {
   }
 }
 
-from XssSink sink, RemoteUserInput source, XSSConfig conf
-where conf.hasFlow(source, sink)
-select sink, "Cross-site scripting vulnerability due to $@.", source, "user-provided value"
+from DataFlow2::PathNode source, DataFlow2::PathNode sink, XSSConfig conf
+where conf.hasFlowPath(source, sink)
+select sink.getNode(), source, sink, "Cross-site scripting vulnerability due to $@.",
+  source.getNode(), "user-provided value"

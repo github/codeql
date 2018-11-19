@@ -1,6 +1,6 @@
 /**
  * @name Class hierarchies
- * @description Shows classes and their base classes.
+ * @description Shows an inheritance hierarchy for classes and their base classes.
  * @kind graph
  * @id cpp/architecture/class-hierarchies
  * @graph.layout organic

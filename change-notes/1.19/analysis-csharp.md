@@ -20,7 +20,12 @@
 | Cross-site scripting (`cs/web/xss`) | More results | This query now finds cross-site scripting vulnerabilities in ASP.NET Core applications. |
 | *@name of query (Query ID)*| *Impact on results*    | *How/why the query has changed*                                  |
 
+## Changes to code extraction
+
+* Arguments passed using `in` are now extracted.
+* Fix a bug where the `dynamic` type name was not extracted correctly in certain circumstances.
 
 ## Changes to QL libraries
 
 * `getArgument()` on `AccessorCall` has been improved so it now takes tuple assignments into account. For example, the argument for the implicit `value` parameter in the setter of property `P` is `0` in `(P, x) = (0, 1)`. Additionally, the argument for the `value` parameter in compound assignments is now only the expanded value, for example, in `P += 7` the argument is `P + 7` and not `7`.
+* The predicate `isInArgument()` has been added to the `AssignableAccess` class. This holds for expressions that are passed as arguments using `in`.

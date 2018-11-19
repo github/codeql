@@ -2,7 +2,9 @@ package com.semmle.js.extractor;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -39,7 +41,7 @@ public class Main {
 	 * such a way that it may produce different tuples for the same file under the same
 	 * {@link ExtractorConfig}.
 	 */
-	public static final String EXTRACTOR_VERSION = "2018-10-16";
+	public static final String EXTRACTOR_VERSION = "2018-11-12";
 
 	public static final Pattern NEWLINE = Pattern.compile("\n");
 
@@ -140,15 +142,21 @@ public class Main {
 			tsParser.verifyInstallation(!ap.has(P_QUIET));
 		}
 		for (File projectFile : projectFiles) {
+
 			long start = verboseLogStartTimer(ap, "Opening project " + projectFile);
 			ParsedProject project = tsParser.openProject(projectFile);
 			verboseLogEndTimer(ap, start);
 			// Extract all files belonging to this project which are also matched
 			// by our include/exclude filters.
+			List<File> filesToExtract = new ArrayList<>();
 			for (File sourceFile : project.getSourceFiles()) {
-				if (files.contains(normalizeFile(sourceFile))) {
-					ensureFileIsExtracted(sourceFile, ap);
+				if (files.contains(normalizeFile(sourceFile)) && !extractedFiles.contains(sourceFile.getAbsoluteFile())) {
+					filesToExtract.add(sourceFile);
 				}
+			}
+			tsParser.prepareFiles(filesToExtract);
+			for (int i = 0; i < filesToExtract.size(); ++i) {
+				ensureFileIsExtracted(filesToExtract.get(i), ap);
 			}
 			// Close the project to free memory. This does not need to be in a `finally` as
 			// the project is not a system resource.
@@ -159,13 +167,26 @@ public class Main {
 			// Extract all the types discovered when extracting the ASTs.
 			TypeTable typeTable = tsParser.getTypeTable();
 			extractTypeTable(projectFiles.iterator().next(), typeTable);
+		}
 
-			// The TypeScript compiler instance is no longer needed - free up some memory.
-			if (hasSharedExtractorState) {
-				tsParser.reset(); // This is called from a test runner, so keep the process alive.
-			} else {
-				tsParser.killProcess();
+		List<File> remainingTypescriptFiles = new ArrayList<>();
+		for (File f : files) {
+			if (!extractedFiles.contains(f.getAbsoluteFile()) && FileType.forFileExtension(f) == FileType.TYPESCRIPT) {
+				remainingTypescriptFiles.add(f);
 			}
+		}
+		if (!remainingTypescriptFiles.isEmpty()) {
+			tsParser.prepareFiles(remainingTypescriptFiles);
+			for (File f : remainingTypescriptFiles) {
+				ensureFileIsExtracted(f, ap);
+			}
+		}
+
+		// The TypeScript compiler instance is no longer needed - free up some memory.
+		if (hasSharedExtractorState) {
+			tsParser.reset(); // This is called from a test runner, so keep the process alive.
+		} else {
+			tsParser.killProcess();
 		}
 
 		// Extract files that were not part of a project.

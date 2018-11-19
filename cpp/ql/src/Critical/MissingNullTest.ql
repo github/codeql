@@ -1,6 +1,6 @@
 /**
  * @name Returned pointer not checked
- * @description A value returned from a function that may return null is not tested to determine whether or not it is null. Dereferencing NULL pointers lead to undefined behavior.
+ * @description Dereferencing an untested value from a function that can return null may lead to undefined behavior.
  * @kind problem
  * @id cpp/missing-null-test
  * @problem.severity recommendation

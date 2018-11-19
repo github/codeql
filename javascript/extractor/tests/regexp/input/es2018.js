@@ -3,3 +3,4 @@
 /(?<!.)/;
 /\p{Number}/u;
 /\P{Script=Greek}/u;
+/\k</;

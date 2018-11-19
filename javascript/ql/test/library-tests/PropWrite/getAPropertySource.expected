@@ -1,0 +1,4 @@
+| tst.js:2:11:10:1 | {\\n    x ...     }\\n} | f | tst.js:7:6:9:5 | () {\\n   ... ;\\n    } |
+| tst.js:2:11:10:1 | {\\n    x ...     }\\n} | func | tst.js:4:11:6:5 | functio ... ;\\n    } |
+| tst.js:12:1:19:1 | class C ... ;\\n  }\\n} | func | tst.js:13:14:15:3 | (x) {\\n  ... x);\\n  } |
+| tst.js:24:8:24:57 | <div on ... }</div> | onClick | tst.js:24:22:24:26 | click |

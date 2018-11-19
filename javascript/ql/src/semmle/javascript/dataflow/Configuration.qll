@@ -189,7 +189,7 @@ abstract class Configuration extends string {
   predicate hasFlow(DataFlow::Node source, DataFlow::Node sink) {
     isSource(_, this, _) and isSink(_, this, _) and
     exists (SourcePathNode flowsource, SinkPathNode flowsink |
-      hasPathFlow(flowsource, flowsink) and
+      hasFlowPath(flowsource, flowsink) and
       source = flowsource.getNode() and
       sink = flowsink.getNode()
     )
@@ -198,8 +198,17 @@ abstract class Configuration extends string {
   /**
    * Holds if data may flow from `source` to `sink` for this configuration.
    */
-  predicate hasPathFlow(SourcePathNode source, SinkPathNode sink) {
+  predicate hasFlowPath(SourcePathNode source, SinkPathNode sink) {
     flowsTo(source, _, sink, _, this)
+  }
+
+  /**
+   * DEPRECATED: Use `hasFlowPath` instead.
+   *
+   * Holds if data may flow from `source` to `sink` for this configuration.
+   */
+  deprecated predicate hasPathFlow(SourcePathNode source, SinkPathNode sink) {
+    hasFlowPath(source, sink)
   }
 
   /**
@@ -744,6 +753,7 @@ private predicate onPath(DataFlow::Node nd, DataFlow::Configuration cfg,
  */
 private newtype TPathNode =
   MkPathNode(DataFlow::Node nd, DataFlow::Configuration cfg, PathSummary summary) {
+    isSource(_, cfg, _) and isSink(_, cfg, _) and
     onPath(nd, cfg, summary)
   }
 
@@ -827,9 +837,14 @@ class SinkPathNode extends PathNode {
 }
 
 /**
- * Provides the query predicate needed to include a graph in a path-problem query.
+ * Provides the query predicates needed to include a graph in a path-problem query.
  */
 module PathGraph {
+  /** Holds if `nd` is a node in the graph of data flow path explanations. */
+  query predicate nodes(PathNode nd) {
+    any()
+  }
+
   /** Holds if `pred` &rarr; `succ` is an edge in the graph of data flow path explanations. */
   query predicate edges(PathNode pred, PathNode succ) {
     pred.getASuccessor() = succ

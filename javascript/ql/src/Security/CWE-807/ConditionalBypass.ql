@@ -1,7 +1,7 @@
 /**
  * @name User-controlled bypass of security check
  * @description Conditions that the user controls are not suited for making security-related decisions.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision medium
  * @id js/user-controlled-bypass
@@ -9,8 +9,10 @@
  *       external/cwe/cwe-807
  *       external/cwe/cwe-290
  */
+
 import javascript
 import semmle.javascript.security.dataflow.ConditionalBypass::ConditionalBypass
+import DataFlow::PathGraph
 
 /**
  * Holds if the value of `nd` flows into `guard`.
@@ -65,18 +67,19 @@ class SensitiveActionGuardComparisonOperand extends Sink {
  * If flow from `source` taints `sink`, then an attacker can
  * control if `action` should be executed or not.
  */
-predicate isTaintedGuardForSensitiveAction(Sink sink, DataFlow::Node source, SensitiveAction action) {
-  action = sink.getAction() and
+predicate isTaintedGuardForSensitiveAction(DataFlow::PathNode sink, DataFlow::PathNode source, SensitiveAction action) {
+  action = sink.getNode().(Sink).getAction() and
   // exclude the intermediary sink
-  not sink instanceof SensitiveActionGuardComparisonOperand and
+  not sink.getNode() instanceof SensitiveActionGuardComparisonOperand and
   exists (Configuration cfg  |
     // ordinary taint tracking to a guard
-    cfg.hasFlow(source, sink) or
+    cfg.hasFlowPath(source, sink) or
     // taint tracking to both operands of a guard comparison
-    exists (SensitiveActionGuardComparison cmp, DataFlow::Node lSource, DataFlow::Node rSource |
-      sink = cmp.getGuard() and
-      cfg.hasFlow(lSource, DataFlow::valueNode(cmp.getLeftOperand())) and
-      cfg.hasFlow(rSource, DataFlow::valueNode(cmp.getRightOperand())) |
+    exists (SensitiveActionGuardComparison cmp, DataFlow::PathNode lSource, DataFlow::PathNode rSource,
+            DataFlow::PathNode lSink, DataFlow::PathNode rSink |
+      sink.getNode() = cmp.getGuard() and
+      cfg.hasFlowPath(lSource, lSink) and lSink.getNode() = DataFlow::valueNode(cmp.getLeftOperand()) and
+      cfg.hasFlowPath(rSource, rSink) and rSink.getNode() = DataFlow::valueNode(cmp.getRightOperand()) |
       source = lSource or
       source = rSource
     )
@@ -88,10 +91,10 @@ predicate isTaintedGuardForSensitiveAction(Sink sink, DataFlow::Node source, Sen
  *
  * Example: `if (e) return; action(x)`.
  */
-predicate isEarlyAbortGuard(Sink e, SensitiveAction action) {
+predicate isEarlyAbortGuard(DataFlow::PathNode e, SensitiveAction action) {
   exists (IfStmt guard |
     // `e` is in the condition of an if-statement ...
-    e.asExpr().getParentExpr*() = guard.getCondition() and
+    e.getNode().(Sink).asExpr().getParentExpr*() = guard.getCondition() and
     // ... where the then-branch always throws or returns
     exists (Stmt abort |
       abort instanceof ThrowStmt or
@@ -106,9 +109,9 @@ predicate isEarlyAbortGuard(Sink e, SensitiveAction action) {
   )
 }
 
-from DataFlow::Node source, DataFlow::Node sink, SensitiveAction action
+from DataFlow::PathNode source, DataFlow::PathNode sink, SensitiveAction action
 where isTaintedGuardForSensitiveAction(sink, source, action) and
       not isEarlyAbortGuard(sink, action)
-select sink, "This condition guards a sensitive $@, but $@ controls it.",
+select sink.getNode(), source, sink, "This condition guards a sensitive $@, but $@ controls it.",
     action, "action",
-    source, "a user-provided value"
+    source.getNode(), "a user-provided value"

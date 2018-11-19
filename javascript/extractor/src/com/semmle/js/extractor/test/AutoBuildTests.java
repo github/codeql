@@ -1,5 +1,6 @@
 package com.semmle.js.extractor.test;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -99,6 +100,13 @@ public class AutoBuildTests {
 
 				@Override
 				public void verifyTypeScriptInstallation() {
+				}
+
+				@Override
+				public void extractTypeScriptFiles(List<File> files, Set<Path> extractedFiles, FileExtractor extractor) throws IOException {
+					for (File f : files) {
+						actual.add(f.toString());
+					}
 				}
 			}.run();
 			String expectedString = StringUtil.glue("\n", expected.stream().sorted().toArray());

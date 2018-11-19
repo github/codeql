@@ -178,6 +178,13 @@ abstract class SourceNode extends DataFlow::Node {
   DataFlow::NewNode getAnInstantiation() {
     result = getAnInvocation()
   }
+
+  /**
+   * Gets a source node whose value is stored in property `prop` of this node.
+   */
+  DataFlow::SourceNode getAPropertySource(string prop) {
+    result.flowsTo(getAPropertyWrite(prop).getRhs())
+  }
 }
 
 /**

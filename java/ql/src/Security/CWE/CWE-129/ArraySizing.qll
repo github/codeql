@@ -7,32 +7,25 @@ private import BoundingChecks
  * If the `Array` accessed by the `ArrayAccess` is a fixed size, return the array size.
  */
 int fixedArraySize(ArrayAccess arrayAccess) {
-  result = arrayAccess
-        .getArray()
-        .(VarAccess)
-        .getVariable()
-        .getAnAssignedValue()
-        .(ArrayCreationExpr)
-        .getFirstDimensionSize()
+  exists(Variable v |
+    v.getAnAccess() = arrayAccess.getArray() and
+    result = v.getAnAssignedValue().(ArrayCreationExpr).getFirstDimensionSize()
+  )
 }
 
 /**
  * Holds if an `ArrayIndexOutOfBoundsException` is ever caught.
  */
 private predicate arrayIndexOutOfBoundExceptionCaught(ArrayAccess arrayAccess) {
-  exists(TryStmt ts, CatchClause cc |
+  exists(TryStmt ts, CatchClause cc, RefType exc |
     (
       ts.getBlock().getAChild*() = arrayAccess.getEnclosingStmt() or
       ts.getAResourceDecl().getAChild*() = arrayAccess.getEnclosingStmt() or
       ts.getAResourceExpr().getAChildExpr*() = arrayAccess
     ) and
-    cc = ts.getACatchClause()
-  |
-    cc
-        .getVariable()
-        .getType()
-        .(RefType)
-        .hasQualifiedName("java.lang", "ArrayIndexOutOfBoundsException")
+    cc = ts.getACatchClause() and
+    exc = cc.getVariable().getType() and
+    exc.hasQualifiedName("java.lang", "ArrayIndexOutOfBoundsException")
   )
 }
 
@@ -144,14 +137,14 @@ class RandomValueFlowSource extends BoundedFlowSource {
     )
   }
 
-  int lowerBound() {
+  override int lowerBound() {
     // If this call is to `nextInt()`, the lower bound is zero.
     this.asExpr().(MethodAccess).getCallee().hasName("nextInt") and
     this.asExpr().(MethodAccess).getNumArgument() = 1 and
     result = 0
   }
 
-  int upperBound() {
+  override int upperBound() {
     // If this call specified an argument to `nextInt()`, and that argument is a compile time constant,
     // it forms the upper bound.
     this.asExpr().(MethodAccess).getCallee().hasName("nextInt") and
@@ -159,7 +152,7 @@ class RandomValueFlowSource extends BoundedFlowSource {
     result = this.asExpr().(MethodAccess).getArgument(0).(CompileTimeConstantExpr).getIntValue()
   }
 
-  string getDescription() { result = "Random value" }
+  override string getDescription() { result = "Random value" }
 }
 
 /**
@@ -168,11 +161,11 @@ class RandomValueFlowSource extends BoundedFlowSource {
 class NumericLiteralFlowSource extends BoundedFlowSource {
   NumericLiteralFlowSource() { exists(this.asExpr().(CompileTimeConstantExpr).getIntValue()) }
 
-  int lowerBound() { result = this.asExpr().(CompileTimeConstantExpr).getIntValue() }
+  override int lowerBound() { result = this.asExpr().(CompileTimeConstantExpr).getIntValue() }
 
-  int upperBound() { result = this.asExpr().(CompileTimeConstantExpr).getIntValue() }
+  override int upperBound() { result = this.asExpr().(CompileTimeConstantExpr).getIntValue() }
 
-  string getDescription() {
+  override string getDescription() {
     result = "Literal value " + this.asExpr().(CompileTimeConstantExpr).getIntValue()
   }
 }

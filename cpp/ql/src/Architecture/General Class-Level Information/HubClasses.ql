@@ -1,6 +1,6 @@
 /**
  * @name Hub classes
- * @description Shows coupling between classes; red, large boxes are hub types that depend on many other classes
+ * @description Shows coupling between classes. Large, red, boxes are hub types that depend on many other classes
  *              and are depended on by many other classes.
  * @kind treemap
  * @id cpp/architecture/hub-classes

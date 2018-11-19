@@ -3,7 +3,7 @@
  * @description Extracting files from a malicious archive without validating that the
  *              destination file path is within the destination directory can cause files outside
  *              the destination directory to be overwritten.
- * @kind problem
+ * @kind path-problem
  * @id java/zipslip
  * @problem.severity error
  * @precision high
@@ -16,6 +16,7 @@ import semmle.code.java.controlflow.Guards
 import semmle.code.java.dataflow.SSA
 import semmle.code.java.dataflow.TaintTracking
 import DataFlow
+import PathGraph
 
 /**
  * A method that returns the name of an archive entry.
@@ -170,7 +171,8 @@ class ZipSlipConfiguration extends TaintTracking::Configuration {
   }
 }
 
-from Node source, Node sink
-where any(ZipSlipConfiguration c).hasFlow(source, sink)
-select source, "Unsanitized archive entry, which may contain '..', is used in a $@.", sink,
+from PathNode source, PathNode sink
+where any(ZipSlipConfiguration c).hasFlowPath(source, sink)
+select source.getNode(), source, sink,
+  "Unsanitized archive entry, which may contain '..', is used in a $@.", sink.getNode(),
   "file system operation"

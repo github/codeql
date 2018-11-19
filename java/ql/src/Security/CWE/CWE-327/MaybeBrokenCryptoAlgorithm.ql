@@ -1,7 +1,7 @@
 /**
  * @name Use of a potentially broken or risky cryptographic algorithm
  * @description Using broken or weak cryptographic algorithms can allow an attacker to compromise security.
- * @kind problem
+ * @kind path-problem
  * @problem.severity warning
  * @precision medium
  * @id java/potentially-weak-cryptographic-algorithm
@@ -14,6 +14,7 @@ import semmle.code.java.security.Encryption
 import semmle.code.java.dataflow.TaintTracking
 import DataFlow
 import semmle.code.java.dispatch.VirtualDispatch
+import PathGraph
 
 private class ShortStringLiteral extends StringLiteral {
   ShortStringLiteral() { getLiteral().length() < 100 }
@@ -63,9 +64,13 @@ class InsecureCryptoConfiguration extends TaintTracking::Configuration {
   }
 }
 
-from CryptoAlgoSpec c, Expr a, InsecureAlgoLiteral s, InsecureCryptoConfiguration conf
+from
+  PathNode source, PathNode sink, CryptoAlgoSpec c, InsecureAlgoLiteral s,
+  InsecureCryptoConfiguration conf
 where
-  a = c.getAlgoSpec() and
-  conf.hasFlow(exprNode(s), exprNode(a))
-select c, "Cryptographic algorithm $@ may not be secure, consider using a different algorithm.", s,
+  sink.getNode().asExpr() = c.getAlgoSpec() and
+  source.getNode().asExpr() = s and
+  conf.hasFlowPath(source, sink)
+select c, source, sink,
+  "Cryptographic algorithm $@ may not be secure, consider using a different algorithm.", s,
   s.getLiteral()

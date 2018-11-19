@@ -3,6 +3,8 @@
 | a.js:1:19:1:19 | y | a.js:1:23:1:23 | 0 | number |
 | a.js:9:5:9:5 | z | a.js:9:9:9:18 | someGlobal | boolean, class, date, function, null, number, object, regular expression,string or undefined |
 | a.js:14:12:14:24 | notAlwaysZero | a.js:14:28:14:28 | 0 | number |
+| amd3.js:2:7:2:8 | _a | amd3.js:2:12:2:12 | a | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| amd3.js:3:7:3:8 | _c | amd3.js:3:12:3:12 | c | boolean, class, date, function, null, number, object, regular expression,string or undefined |
 | amd.js:2:7:2:7 | m | amd.js:2:11:2:13 | mod | boolean, class, date, function, null, number, object, regular expression,string or undefined |
 | amd.js:3:7:3:7 | e | amd.js:3:11:3:13 | exp | boolean, class, date, function, null, number, object, regular expression,string or undefined |
 | arguments.js:2:7:2:7 | y | arguments.js:2:11:2:11 | x | number |

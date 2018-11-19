@@ -2,7 +2,7 @@
  * @name User-controlled data used in permissions check
  * @description Using user-controlled data in a permissions check may result in inappropriate
  *              permissions being granted.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id java/tainted-permissions-check
@@ -13,6 +13,7 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
+import DataFlow::PathGraph
 
 class TypeShiroSubject extends RefType {
   TypeShiroSubject() { this.getQualifiedName() = "org.apache.shiro.subject.Subject" }
@@ -58,6 +59,8 @@ class TaintedPermissionsCheckFlowConfig extends TaintTracking::Configuration {
   }
 }
 
-from UserInput u, PermissionsConstruction p, TaintedPermissionsCheckFlowConfig conf
-where conf.hasFlow(u, DataFlow::exprNode(p.getInput()))
-select p, "Permissions check uses user-controlled $@.", u, "data"
+from
+  DataFlow::PathNode source, DataFlow::PathNode sink, PermissionsConstruction p,
+  TaintedPermissionsCheckFlowConfig conf
+where sink.getNode().asExpr() = p.getInput() and conf.hasFlowPath(source, sink)
+select p, source, sink, "Permissions check uses user-controlled $@.", source.getNode(), "data"

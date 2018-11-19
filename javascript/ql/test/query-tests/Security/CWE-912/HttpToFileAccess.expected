@@ -1,3 +1,15 @@
-| tst.js:16:33:16:33 | c | $@ flows to file system | tst.js:15:26:15:26 | c | Untrusted data |
-| tst.js:19:25:19:25 | c | $@ flows to file system | tst.js:15:26:15:26 | c | Untrusted data |
-| tst.js:24:22:24:22 | c | $@ flows to file system | tst.js:15:26:15:26 | c | Untrusted data |
+nodes
+| tst.js:15:26:15:26 | c |
+| tst.js:16:33:16:33 | c |
+| tst.js:19:25:19:25 | c |
+| tst.js:23:27:23:26 | c |
+| tst.js:24:22:24:22 | c |
+edges
+| tst.js:15:26:15:26 | c | tst.js:16:33:16:33 | c |
+| tst.js:15:26:15:26 | c | tst.js:19:25:19:25 | c |
+| tst.js:15:26:15:26 | c | tst.js:23:27:23:26 | c |
+| tst.js:23:27:23:26 | c | tst.js:24:22:24:22 | c |
+#select
+| tst.js:16:33:16:33 | c | tst.js:15:26:15:26 | c | tst.js:16:33:16:33 | c | $@ flows to file system | tst.js:15:26:15:26 | c | Untrusted data |
+| tst.js:19:25:19:25 | c | tst.js:15:26:15:26 | c | tst.js:19:25:19:25 | c | $@ flows to file system | tst.js:15:26:15:26 | c | Untrusted data |
+| tst.js:24:22:24:22 | c | tst.js:15:26:15:26 | c | tst.js:24:22:24:22 | c | $@ flows to file system | tst.js:15:26:15:26 | c | Untrusted data |
