@@ -1,1 +1,4 @@
-| Test.java:50:6:50:65 | isPermitted(...) | Permissions check uses user-controlled $@. | Test.java:17:26:17:38 | args | data |
+edges
+| Test.java:17:26:17:38 | args [String[]] | Test.java:50:26:50:64 | ... + ... |
+#select
+| Test.java:50:6:50:65 | isPermitted(...) | Test.java:17:26:17:38 | args [String[]] | Test.java:50:26:50:64 | ... + ... | Permissions check uses user-controlled $@. | Test.java:17:26:17:38 | args | data |

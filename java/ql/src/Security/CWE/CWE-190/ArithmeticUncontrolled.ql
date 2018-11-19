@@ -2,7 +2,7 @@
  * @name Uncontrolled data in arithmetic expression
  * @description Arithmetic operations on uncontrolled data that is not validated can cause
  *              overflows.
- * @kind problem
+ * @kind path-problem
  * @problem.severity warning
  * @precision medium
  * @id java/uncontrolled-arithmetic
@@ -15,6 +15,7 @@ import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.SecurityTests
 import ArithmeticCommon
+import DataFlow::PathGraph
 
 class TaintSource extends DataFlow::ExprNode {
   TaintSource() {
@@ -68,10 +69,11 @@ class ArithmeticUncontrolledFlowConfig extends TaintTracking::Configuration {
 }
 
 from
-  ArithExpr exp, VarAccess tainted, TaintSource origin, string effect,
+  DataFlow::PathNode source, DataFlow::PathNode sink, ArithExpr exp, string effect,
   ArithmeticUncontrolledFlowConfig conf
 where
-  conf.hasFlow(origin, DataFlow::exprNode(tainted)) and
-  sink(exp, tainted, effect)
-select exp, "$@ flows to here and is used in arithmetic, potentially causing an " + effect + ".",
-  origin, "Uncontrolled value"
+  conf.hasFlowPath(source, sink) and
+  sink(exp, sink.getNode().asExpr(), effect)
+select exp, source, sink,
+  "$@ flows to here and is used in arithmetic, potentially causing an " + effect + ".",
+  source.getNode(), "Uncontrolled value"

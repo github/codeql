@@ -2,7 +2,7 @@
  * @name Improper validation of code-specified size used for array construction
  * @description Using a code-specified value that may be zero as the argument to
  *              a construction of an array can lead to index out of bound exceptions.
- * @kind problem
+ * @kind path-problem
  * @problem.severity recommendation
  * @precision medium
  * @id java/improper-validation-of-array-construction-code-specified
@@ -12,6 +12,7 @@
 
 import java
 import ArraySizing
+import DataFlow::PathGraph
 
 class BoundedFlowSourceConf extends DataFlow::Configuration {
   BoundedFlowSourceConf() { this = "BoundedFlowSource" }
@@ -28,11 +29,13 @@ class BoundedFlowSourceConf extends DataFlow::Configuration {
 }
 
 from
-  BoundedFlowSource source, Expr sizeExpr, ArrayCreationExpr arrayCreation,
-  CheckableArrayAccess arrayAccess
+  DataFlow::PathNode source, DataFlow::PathNode sink, BoundedFlowSource boundedsource,
+  Expr sizeExpr, ArrayCreationExpr arrayCreation, CheckableArrayAccess arrayAccess
 where
   arrayAccess.canThrowOutOfBoundsDueToEmptyArray(sizeExpr, arrayCreation) and
-  any(BoundedFlowSourceConf conf).hasFlow(source, DataFlow::exprNode(sizeExpr))
-select arrayAccess.getIndexExpr(),
+  sizeExpr = sink.getNode().asExpr() and
+  boundedsource = source.getNode() and
+  any(BoundedFlowSourceConf conf).hasFlowPath(source, sink)
+select arrayAccess.getIndexExpr(), source, sink,
   "The $@ is accessed here, but the array is initialized using $@ which may be zero.",
-  arrayCreation, "array", source, source.getDescription().toLowerCase()
+  arrayCreation, "array", boundedsource, boundedsource.getDescription().toLowerCase()

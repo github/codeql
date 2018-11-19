@@ -2,7 +2,7 @@
  * @name Use of extreme values in arithmetic expression
  * @description If a variable is assigned the maximum or minimum value for that variable's type and
  *              is then used in an arithmetic expression, this may result in an overflow.
- * @kind problem
+ * @kind path-problem
  * @problem.severity recommendation
  * @precision medium
  * @id java/extreme-value-arithmetic
@@ -15,6 +15,7 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import ArithmeticCommon
+import DataFlow::PathGraph
 
 abstract class ExtremeValueField extends Field {
   ExtremeValueField() { getType() instanceof IntegralType }
@@ -53,24 +54,27 @@ predicate sink(ArithExpr exp, VarAccess use) {
 }
 
 predicate query(
-  ArithExpr exp, Variable v, ExtremeValueField f, VarAccess use, ExtremeSource s, Type t
+  DataFlow::PathNode source, DataFlow::PathNode sink, ArithExpr exp, Variable v,
+  ExtremeValueField f, VarAccess use, ExtremeSource s, Type t
 ) {
   // `use` is the use of `v` in `exp`.
   use = exp.getAnOperand() and
   use = v.getAnAccess() and
   // An extreme field flows to `use`.
   f = s.getVariable() and
-  any(ExtremeSourceFlowConfig conf).hasFlow(DataFlow::exprNode(s), DataFlow::exprNode(use)) and
+  any(ExtremeSourceFlowConfig conf).hasFlowPath(source, sink) and
+  s = source.getNode().asExpr() and
+  use = sink.getNode().asExpr() and
   t = s.getType() and
   // Division isn't a problem in this case.
   not exp instanceof DivExpr
 }
 
 from
-  ArithExpr exp, Variable v, ExtremeValueField f, VarAccess use, ExtremeSource s, string effect,
-  Type t
+  DataFlow::PathNode source, DataFlow::PathNode sink, ArithExpr exp, Variable v,
+  ExtremeValueField f, VarAccess use, ExtremeSource s, string effect, Type t
 where
-  query(exp, v, f, use, s, t) and
+  query(source, sink, exp, v, f, use, s, t) and
   // We're not guarded against the appropriate kind of flow error.
   (
     f instanceof MinValueField and not guardedAgainstUnderflow(exp, use) and effect = "underflow"
@@ -81,6 +85,6 @@ where
   // unless there is an enclosing cast down to a narrower type.
   narrowerThanOrEqualTo(exp, t) and
   not overflowIrrelevant(exp)
-select exp,
+select exp, source, sink,
   "Variable " + v.getName() + " is assigned an extreme value $@, and may cause an " + effect + ".",
   s, f.getName()

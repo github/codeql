@@ -1,7 +1,7 @@
 /**
  * @name Hard-coded credential in API call
  * @description Using a hard-coded credential in a call to a sensitive Java API may compromise security.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision medium
  * @id java/hardcoded-credential-api-call
@@ -12,6 +12,7 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import HardcodedCredentials
+import DataFlow::PathGraph
 
 class HardcodedCredentialApiCallConfiguration extends DataFlow::Configuration {
   HardcodedCredentialApiCallConfiguration() { this = "HardcodedCredentialApiCallConfiguration" }
@@ -32,6 +33,8 @@ class HardcodedCredentialApiCallConfiguration extends DataFlow::Configuration {
   }
 }
 
-from CredentialsApiSink sink, HardcodedExpr source, HardcodedCredentialApiCallConfiguration conf
-where conf.hasFlow(DataFlow::exprNode(source), DataFlow::exprNode(sink))
-select source, "Hard-coded value flows to $@.", sink, "sensitive API call"
+from
+  DataFlow::PathNode source, DataFlow::PathNode sink, HardcodedCredentialApiCallConfiguration conf
+where conf.hasFlowPath(source, sink)
+select source.getNode(), source, sink, "Hard-coded value flows to $@.", sink.getNode(),
+  "sensitive API call"

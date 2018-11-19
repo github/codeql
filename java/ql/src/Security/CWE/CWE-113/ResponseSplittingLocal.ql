@@ -2,7 +2,7 @@
  * @name HTTP response splitting from local source
  * @description Writing user input directly to an HTTP header
  *              makes code vulnerable to attack by header splitting.
- * @kind problem
+ * @kind path-problem
  * @problem.severity recommendation
  * @precision medium
  * @id java/http-response-splitting-local
@@ -13,6 +13,7 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import ResponseSplitting
+import DataFlow::PathGraph
 
 class ResponseSplittingLocalConfig extends TaintTracking::Configuration {
   ResponseSplittingLocalConfig() { this = "ResponseSplittingLocalConfig" }
@@ -22,6 +23,7 @@ class ResponseSplittingLocalConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof HeaderSplittingSink }
 }
 
-from HeaderSplittingSink sink, LocalUserInput source, ResponseSplittingLocalConfig conf
-where conf.hasFlow(source, sink)
-select sink, "Response-splitting vulnerability due to this $@.", source, "user-provided value"
+from DataFlow::PathNode source, DataFlow::PathNode sink, ResponseSplittingLocalConfig conf
+where conf.hasFlowPath(source, sink)
+select sink.getNode(), source, sink, "Response-splitting vulnerability due to this $@.",
+  source.getNode(), "user-provided value"

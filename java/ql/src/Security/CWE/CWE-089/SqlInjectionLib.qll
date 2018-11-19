@@ -62,6 +62,8 @@ private class QueryInjectionFlowConfig extends TaintTracking::Configuration {
  * Implementation of `SqlTainted.ql`. This is extracted to a QLL so that it
  * can be excluded from `SqlUnescaped.ql` to avoid overlapping results.
  */
-predicate queryTaintedBy(QueryInjectionSink query, RemoteUserInput source) {
-  exists(QueryInjectionFlowConfig conf | conf.hasFlow(source, query))
+predicate queryTaintedBy(
+  QueryInjectionSink query, DataFlow::PathNode source, DataFlow::PathNode sink
+) {
+  exists(QueryInjectionFlowConfig conf | conf.hasFlowPath(source, sink) and sink.getNode() = query)
 }

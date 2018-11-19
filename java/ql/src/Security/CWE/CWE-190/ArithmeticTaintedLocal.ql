@@ -2,7 +2,7 @@
  * @name Local-user-controlled data in arithmetic expression
  * @description Arithmetic operations on user-controlled data that is not validated can cause
  *              overflows.
- * @kind problem
+ * @kind path-problem
  * @problem.severity recommendation
  * @precision medium
  * @id java/tainted-arithmetic-local
@@ -14,6 +14,7 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import ArithmeticCommon
+import DataFlow::PathGraph
 
 predicate sink(ArithExpr exp, VarAccess tainted, string effect) {
   exp.getAnOperand() = tainted and
@@ -38,9 +39,10 @@ class ArithmeticTaintedLocalFlowConfig extends TaintTracking::Configuration {
   override predicate isSanitizer(DataFlow::Node n) { n.getType() instanceof BooleanType }
 }
 
-from ArithExpr exp, VarAccess tainted, LocalUserInput origin, string effect
+from DataFlow::PathNode source, DataFlow::PathNode sink, ArithExpr exp, string effect
 where
-  any(ArithmeticTaintedLocalFlowConfig conf).hasFlow(origin, DataFlow::exprNode(tainted)) and
-  sink(exp, tainted, effect)
-select exp, "$@ flows to here and is used in arithmetic, potentially causing an " + effect + ".",
-  origin, "User-provided value"
+  any(ArithmeticTaintedLocalFlowConfig conf).hasFlowPath(source, sink) and
+  sink(exp, sink.getNode().asExpr(), effect)
+select exp, source, sink,
+  "$@ flows to here and is used in arithmetic, potentially causing an " + effect + ".",
+  source.getNode(), "User-provided value"

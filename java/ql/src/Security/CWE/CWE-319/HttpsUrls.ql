@@ -1,7 +1,7 @@
 /**
  * @name Failure to use HTTPS URLs
  * @description Non-HTTPS connections can be intercepted by third parties.
- * @kind problem
+ * @kind path-problem
  * @problem.severity recommendation
  * @precision medium
  * @id java/non-https-url
@@ -11,6 +11,7 @@
 
 import java
 import semmle.code.java.dataflow.TaintTracking
+import DataFlow::PathGraph
 
 class HTTPString extends StringLiteral {
   HTTPString() {
@@ -73,8 +74,10 @@ class HTTPStringToURLOpenMethodFlowConfig extends TaintTracking::Configuration {
   }
 }
 
-from MethodAccess m, HTTPString s
+from DataFlow::PathNode source, DataFlow::PathNode sink, MethodAccess m, HTTPString s
 where
-  any(HTTPStringToURLOpenMethodFlowConfig c)
-      .hasFlow(DataFlow::exprNode(s), DataFlow::exprNode(m.getQualifier()))
-select m, "URL may have been constructed with HTTP protocol, using $@.", s, "this source"
+  source.getNode().asExpr() = s and
+  sink.getNode().asExpr() = m.getQualifier() and
+  any(HTTPStringToURLOpenMethodFlowConfig c).hasFlowPath(source, sink)
+select m, source, sink, "URL may have been constructed with HTTP protocol, using $@.", s,
+  "this source"

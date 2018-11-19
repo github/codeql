@@ -1,7 +1,7 @@
 /**
  * @name Use of externally-controlled format string
  * @description Using external input in format strings can lead to exceptions or information leaks.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id java/tainted-format-string
@@ -12,6 +12,7 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.StringFormat
+import DataFlow::PathGraph
 
 class ExternallyControlledFormatStringConfig extends TaintTracking::Configuration {
   ExternallyControlledFormatStringConfig() { this = "ExternallyControlledFormatStringConfig" }
@@ -27,7 +28,9 @@ class ExternallyControlledFormatStringConfig extends TaintTracking::Configuratio
   }
 }
 
-from RemoteUserInput source, StringFormat formatCall, ExternallyControlledFormatStringConfig conf
-where conf.hasFlow(source, DataFlow::exprNode(formatCall.getFormatArgument()))
-select formatCall.getFormatArgument(), "$@ flows to here and is used in a format string.", source,
-  "User-provided value"
+from
+  DataFlow::PathNode source, DataFlow::PathNode sink, StringFormat formatCall,
+  ExternallyControlledFormatStringConfig conf
+where conf.hasFlowPath(source, sink) and sink.getNode().asExpr() = formatCall.getFormatArgument()
+select formatCall.getFormatArgument(), source, sink,
+  "$@ flows to here and is used in a format string.", source.getNode(), "User-provided value"

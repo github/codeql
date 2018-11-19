@@ -2,7 +2,7 @@
  * @name User-controlled bypass of sensitive method
  * @description User-controlled bypassing of sensitive methods may allow attackers to avoid
  *              passing through authentication systems.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id java/user-controlled-bypass
@@ -16,6 +16,7 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.SensitiveActions
 import semmle.code.java.controlflow.Dominance
 import semmle.code.java.controlflow.Guards
+import DataFlow::PathGraph
 
 /**
  * Calls to a sensitive method that are controlled by a condition
@@ -38,9 +39,13 @@ class ConditionalBypassFlowConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { conditionControlsMethod(_, sink.asExpr()) }
 }
 
-from UserInput u, MethodAccess m, Expr e, ConditionalBypassFlowConfig conf
+from
+  DataFlow::PathNode source, DataFlow::PathNode sink, MethodAccess m, Expr e,
+  ConditionalBypassFlowConfig conf
 where
   conditionControlsMethod(m, e) and
-  conf.hasFlow(u, DataFlow::exprNode(e))
-select m, "Sensitive method may not be executed depending on $@, which flows from $@.", e,
-  "this condition", u, "user input"
+  sink.getNode().asExpr() = e and
+  conf.hasFlowPath(source, sink)
+select m, source, sink,
+  "Sensitive method may not be executed depending on $@, which flows from $@.", e, "this condition",
+  source.getNode(), "user input"
