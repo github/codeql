@@ -148,5 +148,5 @@ void useMarkRange(int offs) {
 #define MY_MACRO(x) (x)
 
 void myMacroTest(int x) {
-	MY_MACRO(x == x); // BAD [NOT DETECTED]
+	MY_MACRO(x == x); // BAD
 }
