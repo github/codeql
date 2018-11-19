@@ -3636,7 +3636,7 @@ module ControlFlow {
           override predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
             succ = succ(pred, c) and
             this.getSubKind().startsSplit(pred) and
-            c = any(BooleanCompletion bc | bc.getOuterValue() = this.getBranch())
+            c = any(BooleanCompletion bc | bc.getInnerValue() = this.getBranch())
           }
 
           private ConditionBlock getACorrelatedCondition(boolean inverted) {
