@@ -92,5 +92,5 @@ void f13()
 
 void f13_func(int x)
 {
-	if (x < 10) return; // GOOD [FALSE POSITIVE]
+	if (x < 10) return; // GOOD
 }
