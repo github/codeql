@@ -1385,7 +1385,7 @@ public class TypeScriptASTConverter {
 		return new JSXClosingElement(loc, null);
 	}
 
-	private Node convertJsxOpeningElement(JsonObject node, SourceLocation loc) throws ParseError {
+	private List<IJSXAttribute> convertJsxAttributes(JsonObject node) throws ParseError {
 		JsonElement attributes = node.get("attributes");
 		List<IJSXAttribute> convertedAttributes;
 		if (attributes.isJsonArray()) {
@@ -1393,15 +1393,18 @@ public class TypeScriptASTConverter {
 		} else {
 			convertedAttributes = convertChildren(attributes.getAsJsonObject(), "properties");
 		}
+		return convertedAttributes;
+	}
+
+	private Node convertJsxOpeningElement(JsonObject node, SourceLocation loc) throws ParseError {
+		List<IJSXAttribute> convertedAttributes = convertJsxAttributes(node);
 		return new JSXOpeningElement(loc, convertJSXName(convertChild(node, "tagName")), convertedAttributes, hasChild(node, "selfClosing"));
 	}
 
-	private Node convertJsxSelfClosingElement(JsonObject node,
-			SourceLocation loc) throws ParseError {
-		node.remove("kind");
-		node.add("kind", syntaxKinds.get("JsxOpeningElement"));
-		node.add("selfClosing", new JsonPrimitive(true));
-		return new JSXElement(loc, (JSXOpeningElement) convertNode(node), new ArrayList<>(), null);
+	private Node convertJsxSelfClosingElement(JsonObject node, SourceLocation loc) throws ParseError {
+		List<IJSXAttribute> convertedAttributes = convertJsxAttributes(node);
+		JSXOpeningElement opening = new JSXOpeningElement(loc, convertJSXName(convertChild(node, "tagName")), convertedAttributes, true);
+		return new JSXElement(loc, opening, new ArrayList<>(), null);
 	}
 
 	private Node convertJsxSpreadAttribute(JsonObject node,
