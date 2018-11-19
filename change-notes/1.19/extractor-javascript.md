@@ -16,8 +16,16 @@
 
 ## General improvements
 
-> Changes that affect alerts in many files or from many queries
-> For example, changes to file classification
+* On LGTM, files whose name ends in `.min.js` or `-min.js` are no longer extracted by default, since they most likely contain minified code and results in these files would be hidden by default anyway. To extract such files anyway, you can add the following filters to your `lgtm.yml` file (or add them to existing filters):
+
+```yaml
+extraction:
+  javascript:
+    index:
+      filters:
+        - include: "**/*.min.js"
+        - include: "**/*-min.js"
+```
 
 ## Changes to code extraction
 
