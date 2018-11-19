@@ -15,6 +15,7 @@
 
 | **Query**                  | **Expected impact**    | **Change**                                                       |
 |----------------------------|------------------------|------------------------------------------------------------------|
+| Array offset used before range check | More results and fewer false positive results | The query now recognizes array accesses in different positions within the expression.  False positives where the range is checked before and after the array access have been fixed. |
 | Empty branch of conditional | Fewer false positive results | The query now recognizes commented blocks more reliably. |
 | Expression has no effect | Fewer false positive results | Expressions in template instantiations are now excluded from this query. |
 | Resource not released in destructor | Fewer false positive results | Placement new is now excluded from the query. Also fixed an issue where false positives could occur if the destructor body was not in the snapshot. |
