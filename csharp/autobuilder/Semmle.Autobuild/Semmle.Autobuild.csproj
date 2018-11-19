@@ -20,8 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Semmle.Util\Semmle.Util.csproj" />
-    <ProjectReference Include="..\Semmle.Extraction.CSharp\Semmle.Extraction.CSharp.csproj" />
+    <ProjectReference Include="..\..\extractor\Semmle.Util\Semmle.Util.csproj" />
+    <ProjectReference Include="..\..\extractor\Semmle.Extraction.CSharp\Semmle.Extraction.CSharp.csproj" />
   </ItemGroup>
 
 </Project>
