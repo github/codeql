@@ -126,3 +126,15 @@ function sendUserToUrl(res, nextUrl) {
 app.get('/call', function(req, res) {
   sendUserToUrl(res, req.query.nextUrl);
 });
+
+app.get('/redirect/:user', function(req, res) {
+  res.redirect('/users/' + req.params.user); // GOOD
+  res.redirect('users/' + req.params.user); // GOOD
+
+  res.redirect('/' + req.params.user); // BAD - could go to //evil.com
+  res.redirect('//' + req.params.user); // BAD - could go to //evil.com
+  res.redirect('u' + req.params.user); // BAD - could go to u.evil.com
+
+  res.redirect('/' + ('/u' + req.params.user)); // BAD - could go to //u.evil.com
+  res.redirect('/u' + req.params.user); // GOOD - but flagged anyway
+});
