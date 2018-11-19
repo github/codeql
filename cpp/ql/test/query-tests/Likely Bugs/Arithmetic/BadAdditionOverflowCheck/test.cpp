@@ -144,3 +144,9 @@ void useMarkRange(int offs) {
 	markRange(buffer, offs, offs + 10);
 	markRange(buffer, offs, offs); // GOOD (comparison is in the macro)
 }
+
+#define MY_MACRO(x) (x)
+
+void myMacroTest(int x) {
+	MY_MACRO(x == x); // BAD [NOT DETECTED]
+}
