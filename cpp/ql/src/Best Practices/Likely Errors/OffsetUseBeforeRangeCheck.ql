@@ -15,7 +15,7 @@ import cpp
 
 from Variable v, LogicalAndExpr andexpr, ArrayExpr access, LTExpr rangecheck
 where access.getArrayOffset() = v.getAnAccess()
-  and andexpr.getLeftOperand().getAChild() = access
+  and andexpr.getLeftOperand().getAChild*() = access
   and andexpr.getRightOperand() = rangecheck
   and rangecheck.getLeftOperand() = v.getAnAccess()
   and not access.isInMacroExpansion()
