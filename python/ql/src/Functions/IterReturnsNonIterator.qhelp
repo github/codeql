@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The <code>__iter__</code> method of a class should return an iterator.
+
+Iteration in Python relies on this behavior and attempting to iterate over an
+instance of a class with an incorrect <code>__iter__</code> method will raise a TypeError.
+</p>
+
+
+</overview>
+<recommendation>
+<p>Make the <code>__iter__</code> return a new iterator, either as an instance of
+a separate class or as a generator.</p>
+
+</recommendation>
+<example>
+<p>In this example the <code>MyRange</code> class's <code>__iter__</code> method does not
+return  an iterator. This will cause the program to fail when anyone attempts
+to use the iterator in a <code>for</code> loop or <code>in</code> statement.
+</p>
+
+<p>The fixed version implements the <code>__iter__</code> method as a generator function.</p>
+
+<sample src="IterReturnsNonIterator.py" />
+
+</example>
+<references>
+
+  <li>Python Language Reference: <a href="http://docs.python.org/2.7/reference/datamodel.html#object.__iter__">object.__iter__</a>.</li>
+  <li>Python Standard Library: <a href="http://docs.python.org/2/library/stdtypes.html#typeiter">Iterator Types</a>.</li>
+
+
+</references>
+</qhelp>

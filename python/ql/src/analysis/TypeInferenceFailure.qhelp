@@ -1,0 +1,13 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Type inference is the key part of Semmle's Python analysis.
+Failures in type inference and reduces the coverage and also accuracy of many queries.
+</p>
+
+</overview>
+</qhelp>

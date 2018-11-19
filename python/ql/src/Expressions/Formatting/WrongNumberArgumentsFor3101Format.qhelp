@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>A formatting expression, that is an expression of the form <code>the_format.format(args)</code> or <code>format(the_format, args)</code>,
+must have sufficient arguments to match the format. Otherwise, an <code>IndexError</code> will be raised.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Either change the format to match the arguments, or ensure that there are sufficient arguments.
+</p>
+
+</recommendation>
+<example>
+<p>In the following example, only 2 arguments may be provided for the call to the <code>str.format</code> method,
+which is insufficient for the format string used. To fix this a third parameter should be provided on line 4.
+</p>
+<sample src="WrongNumberArgumentsFor3101Format.py" />
+
+</example>
+<references>
+
+  <li>Python Library Reference: <a href="https://docs.python.org/2/library/string.html#string-formatting">String Formatting.</a> </li>
+
+</references>
+</qhelp>

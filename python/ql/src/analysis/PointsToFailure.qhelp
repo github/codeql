@@ -1,0 +1,11 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Points-to analysis underpins type inference and thus most of Semmle's Python analysis.
+Failures in points-to undermines type inference and reduces the coverage and also accuracy of many queries.
+</p>
+
+</overview>
+</qhelp>

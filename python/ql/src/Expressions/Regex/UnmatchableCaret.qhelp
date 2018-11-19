@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+The caret character <code>^</code> anchors a regular expression to the beginning of the input, or
+(for multi-line regular expressions) to the beginning of a line.
+If it is preceded by a pattern that must match a non-empty sequence of (non-newline) input characters,
+then the entire regular expression cannot match anything.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Examine the regular expression to find and correct any typos.
+</p>
+
+</recommendation>
+<example>
+<p>
+In the following example, the regular expression <code>r"\[^.]*\.css"</code> cannot match any
+string, since it contains a caret assertion preceded by an escape sequence that matches an
+opening bracket.
+</p>
+<p>
+In the second regular expression, <code>r"[^.]*\.css"</code>, the caret is part of a character class, and will not match the start of the string.
+</p>
+
+<sample src="UnmatchableCaret.py" />
+
+</example>
+<references>
+
+<li>Python Standard Library: <a href="https://docs.python.org/library/re.html">Regular expression operations</a>.</li>
+<li>Regular-Expressions.info: <a href="http://www.regular-expressions.info/anchors.html">Start of String and End of String Anchors</a>.</li>
+
+</references>
+</qhelp>

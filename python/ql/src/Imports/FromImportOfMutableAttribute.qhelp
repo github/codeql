@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Explicitly importing an attribute from a module into the current namespace means that the value of that attribute will not be updated if the value in the original module changes.
+</p>
+<p>
+This can mean that changes in global state are not observed locally, which may lead to inconsistencies and possible errors.
+</p>
+
+
+</overview>
+<recommendation>
+<p>Instead of using <code>from module import attr</code>, simply import the module using <code>import module</code>
+and replace all uses of <code>attr</code> with <code>module.attr</code>.
+</p>
+</recommendation>
+
+<example>
+<p>In the first of the two modules shown below, <code>from sys import stdout</code> is used to import the <code>stdout</code> attribute, 
+rather than using <code>import sys</code> to import the module. Then <code>stdout</code> is used in the <code>main()</code> function.
+</p>
+<sample src="from_import.py" />
+<p>In the second module, below, a function, <code>redirect_to_file</code> is defined to collect the output from <code>sys.stdout</code> and save it to a file.
+However, <code>redirect_to_file</code> will not work correctly when passed the <code>main()</code> function. 
+This is because the <code>main()</code> function will not see the change to <code>sys.stdout</code>, 
+as it uses its own version of <code>stdout</code> that was defined when the module was loaded.
+</p>
+<sample src="redirect.py" />
+<p>
+The problem can be fixed by rewriting the first module to import the <code>sys</code> module and write to <code>sys.stdout</code>, as shown below.
+</p>
+<sample src="from_import_fixed.py" />
+</example>
+
+<references>
+
+<li>Python Language Reference: <a href="http://docs.python.org/2/reference/simple_stmts.html#import">The import statement</a>.</li>
+<li>Python Tutorial: <a href="http://docs.python.org/2/tutorial/modules.html">Modules</a>.</li>
+
+
+</references>
+</qhelp>
