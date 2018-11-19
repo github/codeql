@@ -29,10 +29,10 @@ void test(char *buffer, int bufferSize)
 	if ((i < bufferSize - 1) && (buffer[i + 1] == 'x')) {} // GOOD
 	if ((buffer[i + 1] == 'x') && (i < bufferSize - 1)) {} // BAD [NOT DETECTED]
 
-	if ((i < bufferSize) && (buffer[i] == 'x') && (i < bufferSize - 1)) {} // GOOD [FALSE POSITIVE]
-	if ((i < bufferSize) && ((buffer[i] == 'x') && (i < bufferSize - 1))) {} // GOOD [FALSE POSITIVE]
-	if ((i < bufferSize + 1) && (buffer[i] == 'x') && (i < bufferSize)) {} // BAD
-	if ((i < bufferSize + 1) && ((buffer[i] == 'x') && (i < bufferSize))) {} // BAD
+	if ((i < bufferSize) && (buffer[i] == 'x') && (i < bufferSize - 1)) {} // GOOD
+	if ((i < bufferSize) && ((buffer[i] == 'x') && (i < bufferSize - 1))) {} // GOOD
+	if ((i < bufferSize + 1) && (buffer[i] == 'x') && (i < bufferSize)) {} // BAD [NOT DETECTED]
+	if ((i < bufferSize + 1) && ((buffer[i] == 'x') && (i < bufferSize))) {} // BAD [NOT DETECTED]
 
 	// look for 'ab'
 	for (i = 0; i < bufferSize; i++) {
