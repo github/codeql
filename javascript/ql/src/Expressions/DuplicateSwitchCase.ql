@@ -3,7 +3,7 @@
  * @description If two cases in a switch statement have the same label, the second case
  *              will never be executed.
  * @kind problem
- * @problem.severity error
+ * @problem.severity warning
  * @id js/duplicate-switch-case
  * @tags maintainability
  *       correctness

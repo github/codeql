@@ -35,10 +35,15 @@
 
 | **Query**                      | **Expected impact**        | **Change**                                   |
 |--------------------------------|----------------------------|----------------------------------------------|
+| Ambiguous HTML id attribute | Lower severity | The severity of this rule has been revised to "warning". |
 | Client side cross-site scripting | More results | This rule now also flags HTML injection in the body of an email. |
 | Client-side URL redirect | Fewer false-positive results | This rule now recognizes safe redirects in more cases. |
+| Conflicting HTML element attributes | Lower severity | The severity of this rule has been revised to "warning". |
+| Duplicate 'if' condition | Lower severity | The severity of this rule has been revised to "warning". |
+| Duplicate switch case | Lower severity | The severity of this rule has been revised to "warning". |
 | Information exposure through a stack trace | More results | This rule now also flags cases where the entire exception object (including the stack trace) may be exposed. |
 | Missing CSRF middleware | Fewer false-positive results | This rule now recognizes additional CSRF protection middlewares. |
+| Missing variable declaration | Lower severity | The severity of this rule has been revised to "warning". |
 | Regular expression injection | Fewer false-positive results | This rule now identifies calls to `String.prototype.search` with more precision. |
 | Remote property injection | Fewer results | The precision of this rule has been revised to "medium". Results are no longer shown on LGTM by default. |
 | Self assignment | Fewer false-positive results | This rule now ignores self-assignments preceded by a JSDoc comment with a `@type` tag. |
