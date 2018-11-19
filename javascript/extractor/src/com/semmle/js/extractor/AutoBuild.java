@@ -31,13 +31,13 @@ import com.semmle.js.parser.TypeScriptParser;
 import com.semmle.ts.extractor.TypeExtractor;
 import com.semmle.ts.extractor.TypeTable;
 import com.semmle.util.data.StringUtil;
-import com.semmle.util.defect.Language;
 import com.semmle.util.exception.Exceptions;
 import com.semmle.util.exception.ResourceError;
 import com.semmle.util.exception.UserError;
 import com.semmle.util.extraction.ExtractorOutputConfig;
 import com.semmle.util.files.FileUtil;
 import com.semmle.util.io.csv.CSVReader;
+import com.semmle.util.language.LegacyLanguage;
 import com.semmle.util.process.Env;
 import com.semmle.util.projectstructure.ProjectLayout;
 import com.semmle.util.trap.TrapWriter;
@@ -170,7 +170,7 @@ public class AutoBuild {
 	public AutoBuild() {
 		this.LGTM_SRC = toRealPath(getPathFromEnvVar("LGTM_SRC"));
 		this.SEMMLE_DIST = getPathFromEnvVar(Env.Var.SEMMLE_DIST.toString());
-		this.outputConfig = new ExtractorOutputConfig(Language.JAVASCRIPT);
+		this.outputConfig = new ExtractorOutputConfig(LegacyLanguage.JAVASCRIPT);
 		this.trapCache = mkTrapCache();
 		this.typeScriptMode = getEnumFromEnvVar("LGTM_INDEX_TYPESCRIPT", TypeScriptMode.class, TypeScriptMode.BASIC);
 		this.defaultEncoding = getEnvVar("LGTM_INDEX_DEFAULT_ENCODING");

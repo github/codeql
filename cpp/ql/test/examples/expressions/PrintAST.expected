@@ -1,7 +1,11 @@
-#-----| __va_list_tag::operator=() -> __va_list_tag &
+#-----| __va_list_tag::operator=(__va_list_tag &&) -> __va_list_tag &
 #-----|   params: 
-#-----| __va_list_tag::operator=() -> __va_list_tag &
+#-----|     0: p#0
+#-----|         Type = __va_list_tag &&
+#-----| __va_list_tag::operator=(const __va_list_tag &) -> __va_list_tag &
 #-----|   params: 
+#-----|     0: p#0
+#-----|         Type = const __va_list_tag &
 #-----| operator delete(void *) -> void
 #-----|   params: 
 #-----|     0: p#0

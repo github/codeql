@@ -1,9 +1,11 @@
 | CPP-205.cpp:0:0:0:0 | CPP-205.cpp |
 | CPP-205.cpp:1:20:1:20 | T |
 | CPP-205.cpp:1:20:1:20 | definition of T |
+| CPP-205.cpp:2:5:2:5 | definition of fn |
+| CPP-205.cpp:2:5:2:5 | fn |
 | CPP-205.cpp:2:5:2:6 | definition of fn |
 | CPP-205.cpp:2:5:2:6 | fn |
-| CPP-205.cpp:2:5:2:6 | fn |
+| CPP-205.cpp:2:10:2:12 | definition of out |
 | CPP-205.cpp:2:10:2:12 | definition of out |
 | CPP-205.cpp:2:10:2:12 | out |
 | CPP-205.cpp:2:10:2:12 | out |
@@ -12,8 +14,6 @@
 | CPP-205.cpp:3:3:3:33 | declaration |
 | CPP-205.cpp:3:3:3:33 | declaration |
 | CPP-205.cpp:3:15:3:15 | declaration of y |
-| CPP-205.cpp:3:15:3:15 | declaration of y |
-| CPP-205.cpp:3:15:3:15 | y |
 | CPP-205.cpp:3:15:3:15 | y |
 | CPP-205.cpp:3:17:3:31 | 5 |
 | CPP-205.cpp:4:3:4:11 | return ... |
@@ -26,5 +26,9 @@
 | CPP-205.cpp:8:3:8:15 | return ... |
 | CPP-205.cpp:8:10:8:11 | call to fn |
 | CPP-205.cpp:8:13:8:13 | 0 |
+| file://:0:0:0:0 | __va_list_tag |
 | file://:0:0:0:0 | operator= |
 | file://:0:0:0:0 | operator= |
+| file://:0:0:0:0 | p#0 |
+| file://:0:0:0:0 | p#0 |
+| file://:0:0:0:0 | y |

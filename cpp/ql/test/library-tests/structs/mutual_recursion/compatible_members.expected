@@ -24,7 +24,7 @@
 | b.c:44:8:44:20 | IncompatibleD | 1 members | 2 locations | 0 | a |
 | b.c:51:8:51:20 | NonRecursiveA | 1 members | 1 locations | 0 | val |
 | b.c:55:8:55:20 | NonRecursiveB | 1 members | 1 locations | 0 | a |
-| file://:0:0:0:0 | __va_list_tag | 4 members | 1 locations | 0 | gp_offset |
-| file://:0:0:0:0 | __va_list_tag | 4 members | 1 locations | 1 | fp_offset |
-| file://:0:0:0:0 | __va_list_tag | 4 members | 1 locations | 2 | overflow_arg_area |
-| file://:0:0:0:0 | __va_list_tag | 4 members | 1 locations | 3 | reg_save_area |
+| file://:0:0:0:0 | __va_list_tag | 4 members | 0 locations | 0 | gp_offset |
+| file://:0:0:0:0 | __va_list_tag | 4 members | 0 locations | 1 | fp_offset |
+| file://:0:0:0:0 | __va_list_tag | 4 members | 0 locations | 2 | overflow_arg_area |
+| file://:0:0:0:0 | __va_list_tag | 4 members | 0 locations | 3 | reg_save_area |

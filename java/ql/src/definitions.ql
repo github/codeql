@@ -158,7 +158,9 @@ class LocationOverridingImportStaticTypeMember extends ImportStaticTypeMember {
 }
 
 Element definition(Element e, string kind) {
-  e.(MethodAccess).getMethod().getSourceDeclaration() = result and kind = "M"
+  e.(MethodAccess).getMethod().getSourceDeclaration() = result and
+  kind = "M" and
+  not result instanceof InitializerMethod
   or
   e.(TypeAccess).getType().(RefType).getSourceDeclaration() = result and kind = "T"
   or

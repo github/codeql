@@ -1,4 +1,4 @@
-| file://:0:0:0:0 | __va_list_tag | true |
+| file://:0:0:0:0 | __va_list_tag | false |
 | test1.cpp:5:8:5:8 | S | false |
 | test2.cpp:6:8:6:10 | Foo | true |
 | test3.cpp:2:7:2:14 | MyClass1 | true |

@@ -419,6 +419,12 @@ class Class extends UserType {
   predicate isPOD() { is_pod_class(underlyingElement(this)) }
 
   /**
+   * Holds if this class is a standard-layout class [N4140 9(7)]. Also holds
+   * for structs in C programs.
+   */
+  predicate isStandardLayout() { is_standard_layout_class(underlyingElement(this)) }
+
+  /**
    * Holds if this class is abstract, in other words whether it declares one
    * or more pure virtual member functions.
    */

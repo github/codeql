@@ -5,8 +5,12 @@
 
 
 <overview>
+
+<!-- Mention that this rule may not be applicable in projects that don't follow the JSF standard. -->
+<include src="cpp/jsfNote.qhelp" />
+
 <p>
-This rule finds return statements that return pointers to an object allocated on the stack. The lifetime
+This query highlights return statements that return pointers to an object allocated on the stack. The lifetime
 of a stack allocated memory location only lasts until the function returns, , and 
 the contents of that memory become undefined after that. Clearly, using a pointer to stack 
 memory after the function has already returned will have undefined results.
