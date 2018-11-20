@@ -56,6 +56,7 @@
 | Unused variable, import, function or class | Fewer results | This rule now flags import statements with multiple unused imports once. |
 | Useless assignment to local variable | Fewer false-positive results | This rule now recognizes additional ways default values can be set. |
 | Whitespace contradicts operator precedence | Fewer false-positive results | This rule no longer flags operators with asymmetric whitespace. |
+| Wrong use of 'this' for static method | More results, fewer false-positive results | This rule now recognizes inherited methods. |
 
 ## Changes to QL libraries
 
