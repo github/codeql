@@ -51,6 +51,7 @@
 | Server-side URL redirect | More results | This rule now recognizes redirection calls in more cases. |
 | Unbound event handler receiver | Fewer false-positive results | This rule now recognizes additional ways class methods can be bound. |
 | Uncontrolled data used in remote request | More results | This rule now recognizes additional kinds of requests. |
+| Unknown directive | Fewer false positives results | This rule now recognizes YUI compressor directives. |
 | Unused import | Fewer false-positive results | This rule no longer flags imports used by the `transform-react-jsx` Babel plugin. |
 | Unused variable, import, function or class | Fewer false-positive results | This rule now flags fewer variables that may be used by `eval` calls. |
 | Unused variable, import, function or class | Fewer results | This rule now flags import statements with multiple unused imports once. |
