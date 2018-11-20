@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>This global variable may not be defined.
+If this code is executed and the variable is undefined then a <code>NameError</code> will occur.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Check that the name of the global variable is not a typographic error. If the name is correct
+then define the variable or import the module that defines the function or method.</p>
+
+<p>If it is expected this variable will be initialized from another module before it is used, then the <code>NameError</code> may not occur.
+Nonetheless, the code will be more robust and clearer if the variable is set to a default value in its own module.
+</p>
+
+</recommendation>
+<example>
+<p>The following examples show two different examples of undefined "global variables".</p>
+
+<sample src="UndefinedGlobal.py" />
+
+
+</example>
+<references>
+
+<li>Python Standard Library: <a href="https://docs.python.org/library/exceptions.html#exceptions.NameError">NameError</a>.</li>
+<li>The Python Tutorial: <a href="http://docs.python.org/2/tutorial/modules.html">Modules</a>.</li>
+
+
+</references>
+</qhelp>

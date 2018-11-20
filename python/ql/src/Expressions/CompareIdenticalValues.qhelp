@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>When two identical expressions are compared it is typically an
+indication of a mistake, since the Boolean value of the comparison
+will always be the same, unless the value is the floating point value <code>float('nan')</code>.
+</p>
+
+</overview>
+<recommendation>
+
+<p>It is not good practice to compare a value with itself, as it makes the code hard to read
+and can hide errors with classes that do not correctly implement equality.
+If testing whether a floating-point value is not-a-number, then use <code>math.isnan()</code>.
+If the value may be a complex number, then use <code>cmath.isnan()</code> instead.
+</p>
+
+</recommendation>
+<example>
+
+<p>In this example <code>f == f</code> is used to check for <code>float('nan')</code>.
+This makes the code difficult to understand as the reader may not be immediately familiar with this pattern.
+</p><sample src="CompareIdenticalValues.py" />
+
+</example>
+<references>
+
+<li>Python Language Reference: <a href="http://docs.python.org/2/reference/expressions.html#not-in">Comparisons</a>.</li>
+<li>Python Library Reference: <a href="https://docs.python.org/2/library/math.html#math.isnan">math.isnan()</a>.</li>
+<li>Python Library Reference: <a href="https://docs.python.org/2/library/cmath.html#cmath.isnan">cmath.isnan()</a>.</li>
+
+
+</references>
+</qhelp>

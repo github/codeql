@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>When a function returns a non-trivial value, that value should not be ignored. Doing so may result in errors being ignored or
+information being thrown away.</p>
+
+<p>A return value is considered to be trivial if it is <code>None</code> or it is a parameter (parameters, usually <code>self</code> are often
+returned to assist with method chaining, but can be ignored).
+A return value is also assumed to be trivial if it is ignored for 75% or more of calls.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Act upon all non-trivial return values, either propagating each value or recording it.
+If a return value should be ignored, then ensure that it is ignored consistently.
+</p>
+    
+<p>
+If you have access to the source code of the called function, then consider modifying it so that it does not return pointless values.
+</p>
+
+
+</recommendation>
+<example>
+
+<p>
+In the <code>ignore_error</code> function the error condition is ignored.
+Ideally the <code>Resource.initialize()</code> function would raise an exception if it failed, but as it does not, the caller must deal with the error.
+The <code>do_not_ignore_error</code> function checks the error condition and raises an exception if <code>Resource.initialize()</code> fails.
+</p>
+
+<sample src="ReturnValueIgnored.py" />
+
+</example>
+<references>
+
+<li>Python Language Reference: <a href="http://docs.python.org/2/reference/compound_stmts.html#function">Function definitions</a>.
+</li>
+
+</references>
+</qhelp>

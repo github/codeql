@@ -1,0 +1,47 @@
+List of approximations used and semantic details that are ignored
+=================================================================
+
+1. Metaclass __getattribute___
+
+Attribute lookup on a class, but not its instances, used the __getattribute__()
+method of the metaclass. I doubt anyone every overrides this method except for debugging 
+or testing frameworks, so we ignore the possibility that for a class C
+(type(C)).__getattribute__ != type.__getattribute__
+
+2. Class __getattribute__
+Many analyses are context-insensitive. For those analyses any instance of a class that
+defines  __getattribute__ are treated as having unknowable attributes.
+
+3. Class and Function descriptors
+Class and Function descriptors provide a challenge. 
+The resulting entity is the result of calling the descriptor with the function as input:
+@dec
+def f(): pass
+is equivalent to f = dec(f)
+ 
+and decorators themselves can be the result of calling a higher-order function
+and can, also be themselves decorated.
+
+This clearly requires context sensitive analysis.
+@dec(x):
+def f(): pass
+is equivalent to f = dec(x)(f)
+but in a context-insensitive context.
+Need a method:
+Object decoratored_function(Object decorator, Object undecorated);
+But what is the decorator and what object is available as a result?
+Need to create an object for each decorator of a class or function.
+That should be the actual Object.
+
+There is an assumption that each Object has a one-to-one mapping with a FlowNode
+adding extra Objects for decorators might be a problem, since the decorator 'dec'
+will point to another object (it could even points to itself if it were a lambda), 
+yet we need an Object for each level of decorated function.
+To do this all decorated function object have the (Function|Class)Expr as
+ origin. This requires that the getOrigin() method will need refinement for those
+ QL types.
+
+
+
+
+

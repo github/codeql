@@ -1,0 +1,35 @@
+
+
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>The result of certain comparisons can sometimes be inferred from their context and the results of other
+comparisons. This can be an indication of faulty logic and may result in dead
+code or infinite loops if, for example, a loop condition never changes its value.
+</p>
+
+</overview>
+<recommendation>
+<p>Inspect the code to check whether the logic is correct, and consider
+simplifying the logical expression.
+</p>
+
+</recommendation>
+<example>
+<p>In the following (real world) example the test <code>obj1 &lt; obj2</code> is repeated and thus the
+second test will always be false, and the function <code>_compare</code> will only ever return <code>0</code> or <code>-1</code>.
+</p>
+
+<sample src="UselessComparisonTest.py" />
+
+</example>
+
+<references>
+
+<li>Python Language Reference: <a href="http://docs.python.org/2/reference/expressions.html#not-in">Comparisons</a>.</li>
+
+</references>
+</qhelp>

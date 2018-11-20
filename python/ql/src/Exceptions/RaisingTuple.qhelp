@@ -1,0 +1,47 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>In Python 2, if a tuple is raised then all elements but the first are ignored and only the first part is raised.
+If the first element is itself a tuple, then the first element of that is used and so on.
+This unlikely to be the intended effect and will most likely indicate some sort of error.</p>
+
+<p>It is important to note that the exception in <code>raise Exception, message</code> is <em>not</em> a tuple, whereas the exception
+in <code>ex = Exception, message; raise ex</code> <em>is</em> a tuple.</p> 
+
+<p>
+In Python 3, raising a tuple is an error.
+</p>
+
+
+</overview>
+<recommendation>
+
+<p>Given that all but the first element of the tuple is ignored, 
+the tuple should be replaced with its first element in order to 
+improve the clarity of the code. If the subsequent parts of the tuple 
+were intended to form the message, then they should be passed as an argument 
+when creating the exception.
+</p>
+
+
+
+</recommendation>
+<example>
+
+<p>In the following example the intended error message is mistakenly used to form a tuple.</p>
+<sample src="RaisingTuple.py" />
+<p>This can be fixed, either by using the message to create the exception or using the message in the raise 
+statement, as shown below.</p>
+<sample src="RaisingTuple2.py" />
+
+</example>
+<references>
+
+<li>Python Language Reference: <a href="https://docs.python.org/reference/executionmodel.html#exceptions">Exceptions</a>.</li>
+<li>Python Tutorial: <a href="https://docs.python.org/tutorial/errors.html#handling-exceptions">Handling Exceptions</a>.</li>
+
+
+</references>
+</qhelp>

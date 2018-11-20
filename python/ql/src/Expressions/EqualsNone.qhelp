@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p> When you compare an object to <code>None</code>, use <code>is</code> rather than <code>==</code>.
+<code>None</code> is a singleton object, comparing using <code>==</code> invokes the <code>__eq__</code>
+method on the object in question, which may be slower than identity comparison. Comparing to 
+<code>None</code> using the <code>is</code> operator is also easier for other programmers to read.</p>
+
+
+</overview>
+<recommendation>
+
+<p>Replace <code>==</code> with <code>is</code>.</p>
+
+</recommendation>
+<example>
+<p>The <code>filter2</code> function is likely to be more efficient than the <code>filter1</code> 
+function because it uses an identity comparison.</p>
+
+<sample src="EqualsNone.py" />
+
+
+</example>
+<references>
+
+
+<li>Python Language Reference: <a href="http://docs.python.org/reference/expressions.html#is">Comparisons</a>, 
+<a href="http://docs.python.org/reference/datamodel.html#object.__eq__">object.__eq__</a>.</li>
+
+
+</references>
+</qhelp>

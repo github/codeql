@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+One of the problems with using regular expressions is that almost any sequence of characters is a valid pattern.
+This means that it is easy to omit a necessary character and still have a valid regular expression.
+Omitting a character in a named capturing group is a specific case which can dramatically change the meaning of a regular expression.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Examine the regular expression to find and correct any typos.
+</p>
+
+</recommendation>
+<example>
+<p>
+In the following example, the regular expression for <code>matcher</code>, <code>r"(P&lt;name&gt;[\w]+)"</code>, is missing a "?" and will
+match only strings of letters that start with "P&lt;name&gt;", instead of matching any sequence of letters
+and placing the result in a named group.
+The fixed version, <code>fixed_matcher</code>, includes the "?" and will work as expected.
+</p>
+
+<sample src="MissingPartSpecialGroup.py" />
+
+</example>
+<references>
+
+<li>Python Standard Library: <a href="https://docs.python.org/library/re.html">Regular expression operations</a>.</li>
+<li>Regular-Expressions.info: <a href="http://www.regular-expressions.info/named.html">Named Capturing Groups</a>.</li>
+
+</references>
+</qhelp>
