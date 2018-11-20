@@ -31,6 +31,8 @@
 | AV Rule 164 | Fewer false positive results | This query now accounts for explicit casts. |
 | Negation of unsigned value | Fewer false positive results | This query now accounts for explicit casts. |
 | Variable scope too large | Fewer false positive results | Variables with declarations in header files, or that are used at file scope, are now excluded from this query. |
+| Comparison result is always the same | Fewer false positive results | Comparisons in template instantiations are now excluded from this query. |
+| Unsigned comparison to zero | Fewer false positive results | Comparisons in template instantiations are now excluded from this query. |
 
 ## Changes to QL libraries
 
