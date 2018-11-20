@@ -5,6 +5,7 @@ window.addEventListener('message', (ev) => {
     window[message.name](message.payload); // NOT OK - may invoke eval
     new window[message.name](message.payload); // NOT OK - may invoke jQuery $ function or similar
     window["HTMLElement" + message.name](message.payload); // OK - concatenation restricts choice of methods
+    window[`HTMLElement${message.name}`](message.payload); // OK - concatenation restricts choice of methods
     
     function f() {}
     f[message.name](message.payload)(); // NOT OK - may acccess Function constructor

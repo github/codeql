@@ -133,16 +133,13 @@ module MethodNameInjection {
   }
 
   /** 
-   * A binary expression that sanitzes a value for method name injection. That 
+   * An expression that sanitizes a value for method name injection. That 
    * is, if a string is prepended or appended to the remote input, an attacker 
    * cannot access arbitrary properties.  
    */
   class ConcatSanitizer extends Sanitizer, DataFlow::ValueNode {
-
-    override BinaryExpr astNode;
-
     ConcatSanitizer() {
-      astNode.getAnOperand() instanceof ConstantString      
+      StringConcatenation::getAnOperand(this).asExpr() instanceof ConstantString
     }
   }
 }

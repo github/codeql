@@ -117,16 +117,13 @@ module RemotePropertyInjection {
   }
   
   /** 
-   * A binary expression that sanitzes a value for remote property injection. That 
+   * An expression that sanitizes a value for remote property injection. That 
    * is, if a string is prepended or appended to the remote input, an attacker 
    * cannot access arbitrary properties.  
    */
-  class ConcatSanitizer extends Sanitizer, DataFlow::ValueNode {
-
-    override BinaryExpr astNode;
-
+  class ConcatSanitizer extends Sanitizer {
     ConcatSanitizer() {
-      astNode.getAnOperand() instanceof ConstantString      
+      StringConcatenation::getAnOperand(this).asExpr() instanceof ConstantString
     }
   }     
 }
