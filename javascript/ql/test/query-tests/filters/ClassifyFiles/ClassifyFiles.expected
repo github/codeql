@@ -27,6 +27,7 @@
 | polymer.html:0:0:0:0 | polymer.html | template |
 | purs-bundle.js:0:0:0:0 | purs-bundle.js | generated |
 | purs.js:0:0:0:0 | purs.js | generated |
+| short-variables.js:0:0:0:0 | short-variables.js | generated |
 | some-template.html:0:0:0:0 | some-template.html | template |
 | templ.js:0:0:0:0 | templ.js | template |
 | textmate.html:0:0:0:0 | textmate.html | generated |
