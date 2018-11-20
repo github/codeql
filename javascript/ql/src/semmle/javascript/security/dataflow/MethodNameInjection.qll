@@ -5,6 +5,7 @@
 
 import javascript
 import semmle.javascript.frameworks.Express
+import PropertyInjectionShared
 
 module MethodNameInjection {
   private import DataFlow::FlowLabel
@@ -61,7 +62,8 @@ module MethodNameInjection {
 
     override predicate isSanitizer(DataFlow::Node node) {
       super.isSanitizer(node) or
-      node instanceof Sanitizer
+      node instanceof Sanitizer or
+      node instanceof PropertyInjection::Sanitizer
     }
 
     /**
@@ -129,17 +131,6 @@ module MethodNameInjection {
 
     override DataFlow::FlowLabel getFlowLabel() {
       result = unsafeFunction()
-    }
-  }
-
-  /** 
-   * An expression that sanitizes a value for method name injection. That 
-   * is, if a string is prepended or appended to the remote input, an attacker 
-   * cannot access arbitrary properties.  
-   */
-  class ConcatSanitizer extends Sanitizer, DataFlow::ValueNode {
-    ConcatSanitizer() {
-      StringConcatenation::getAnOperand(this).asExpr() instanceof ConstantString
     }
   }
 }
