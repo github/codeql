@@ -21,12 +21,21 @@ Whitelist the permitted method names or change the type of object the methods ar
 
 <example>
 <p>
-In the following example, a user-controlled string is used as the method name on a cross-window message handler.
-In this case, a malicious website can embed the page in an iframe, and execute arbitary code in the page by
-sending a message to it with <code>name</code> set to <code>eval</code>.
+In the following example, a message from the document's parent frame can invoke the <code>play</code>
+or <code>pause</code> method. However, it can also invoke <code>eval</code>.
+A malicious website could embed the page in an iframe and execute arbitrary code by sending a message
+with the name <code>eval</code>.
 </p>
 
 <sample src="examples/MethodNameInjection.js" />
+
+<p>
+Instead of storing the API methods in the global scope, put them in an API object. It is also good
+practice to prevent invocation of inherited methods like <code>toString</code> and <code>valueOf</code>.
+</p>
+
+<sample src="examples/MethodNameInjectionGood.js" />
+
 </example>
 
 <references>
