@@ -1,0 +1,3 @@
+| path_injection.py:10:14:10:44 | argument to open() | This path depends on $@. | path_injection.py:9:12:9:23 | flask.request.args | a user-provided value |
+| path_injection.py:17:14:17:18 | argument to open() | This path depends on $@. | path_injection.py:15:12:15:23 | flask.request.args | a user-provided value |
+| path_injection.py:28:14:28:18 | argument to open() | This path depends on $@. | path_injection.py:24:12:24:23 | flask.request.args | a user-provided value |

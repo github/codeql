@@ -1,0 +1,8 @@
+| duplicate_test.py:47:9:60:17 | Duplicate code: 14 duplicated lines. | Duplicate code: 14 lines are duplicated at duplicate_test.py:9 |
+| duplicate_test.py:56:18:66:25 | Duplicate code: 11 duplicated lines. | Duplicate code: 11 lines are duplicated at duplicate_test.py:18 |
+| duplicate_test.py:61:24:80:32 | Duplicate code: 20 duplicated lines. | Duplicate code: 20 lines are duplicated at duplicate_test.py:23 |
+| duplicate_test.py:166:18:245:24 | Duplicate code: 80 duplicated lines. | Duplicate code: 80 lines are duplicated at duplicate_test.py:84 |
+| duplicate_test.py:287:9:300:17 | Duplicate code: 14 duplicated lines. | Duplicate code: 14 lines are duplicated at duplicate_test.py:9 |
+| duplicate_test.py:287:9:300:17 | Duplicate code: 14 duplicated lines. | Duplicate code: 14 lines are duplicated at duplicate_test.py:47 |
+| duplicate_test.py:299:22:318:32 | Duplicate code: 20 duplicated lines. | Duplicate code: 20 lines are duplicated at duplicate_test.py:23 |
+| duplicate_test.py:299:22:318:32 | Duplicate code: 20 duplicated lines. | Duplicate code: 20 lines are duplicated at duplicate_test.py:61 |

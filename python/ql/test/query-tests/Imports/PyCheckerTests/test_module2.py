@@ -1,0 +1,4 @@
+
+def func():
+    pass
+

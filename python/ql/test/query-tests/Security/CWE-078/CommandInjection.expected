@@ -1,0 +1,3 @@
+| command_injection.py:12:15:12:27 | shell command | This command depends on $@. | command_injection.py:10:13:10:24 | flask.request.args | a user-provided value |
+| command_injection.py:19:22:19:34 | shell command | This command depends on $@. | command_injection.py:17:13:17:24 | flask.request.args | a user-provided value |
+| command_injection.py:25:22:25:36 | OS command first argument | This command depends on $@. | command_injection.py:24:11:24:22 | flask.request.args | a user-provided value |

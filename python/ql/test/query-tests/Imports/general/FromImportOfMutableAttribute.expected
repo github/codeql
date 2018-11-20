@@ -1,0 +1,1 @@
+| imports_mutable.py:1:26:1:26 | ImportMember | Importing the value of 'x' from $@ means that any change made to $@ will be not be observed locally. | mutable_attr.py:0:0:0:0 | Module mutable_attr | module mutable_attr | mutates.py:4:5:4:18 | ControlFlowNode for Attribute | mutable_attr.x |

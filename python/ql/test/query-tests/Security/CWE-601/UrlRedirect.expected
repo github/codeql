@@ -1,0 +1,1 @@
+| test.py:8:21:8:26 | flask.redirect | Untrusted URL redirection due to $@. | test.py:7:22:7:33 | flask.request.args | a user-provided value |

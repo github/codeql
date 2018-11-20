@@ -1,0 +1,2 @@
+| functions_test.py:18:1:18:11 | Function cr1 | Mixing implicit and explicit returns may indicate an error as implicit returns always return None. |
+| functions_test.py:22:1:22:11 | Function cr2 | Mixing implicit and explicit returns may indicate an error as implicit returns always return None. |

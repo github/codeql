@@ -1,0 +1,50 @@
+| 2 | test.py:2:1:5:1 | .0 | 2 | test.py:2:1:5:1 | For |
+| 2 | test.py:2:1:5:1 | .0 | 2 | test.py:2:1:5:1 | Function listcomp |
+| 2 | test.py:2:1:5:1 | ExprStmt | 0 | test.py:0:0:0:0 | Module test |
+| 2 | test.py:2:1:5:1 | For | 2 | test.py:2:1:5:1 | For |
+| 2 | test.py:2:1:5:1 | For | 2 | test.py:2:1:5:1 | Function listcomp |
+| 2 | test.py:2:1:5:1 | Function listcomp | 2 | test.py:2:1:5:1 | ListComp |
+| 2 | test.py:2:1:5:1 | ListComp | 2 | test.py:2:1:5:1 | ExprStmt |
+| 2 | test.py:2:5:2:5 | i | 2 | test.py:2:5:2:7 | BinaryExpr |
+| 2 | test.py:2:5:2:7 | BinaryExpr | 2 | test.py:2:5:2:7 | Yield |
+| 2 | test.py:2:5:2:7 | ExprStmt | 2 | test.py:2:1:5:1 | For |
+| 2 | test.py:2:5:2:7 | Yield | 2 | test.py:2:5:2:7 | ExprStmt |
+| 2 | test.py:2:7:2:7 | j | 2 | test.py:2:5:2:7 | BinaryExpr |
+| 3 | test.py:3:9:3:9 | i | 2 | test.py:2:1:5:1 | For |
+| 3 | test.py:3:14:3:18 | range | 3 | test.py:3:14:3:21 | range() |
+| 3 | test.py:3:14:3:21 | range() | 2 | test.py:2:1:5:1 | ListComp |
+| 3 | test.py:3:20:3:20 | IntegerLiteral | 3 | test.py:3:14:3:21 | range() |
+| 4 | test.py:4:9:4:9 | j | 2 | test.py:2:1:5:1 | For |
+| 4 | test.py:4:14:4:18 | range | 4 | test.py:4:14:4:21 | range() |
+| 4 | test.py:4:14:4:21 | range() | 2 | test.py:2:1:5:1 | For |
+| 4 | test.py:4:20:4:20 | IntegerLiteral | 4 | test.py:4:14:4:21 | range() |
+| 7 | test.py:7:1:9:1 | .0 | 7 | test.py:7:1:9:1 | For |
+| 7 | test.py:7:1:9:1 | .0 | 7 | test.py:7:1:9:1 | Function setcomp |
+| 7 | test.py:7:1:9:1 | ExprStmt | 0 | test.py:0:0:0:0 | Module test |
+| 7 | test.py:7:1:9:1 | For | 7 | test.py:7:1:9:1 | Function setcomp |
+| 7 | test.py:7:1:9:1 | Function setcomp | 7 | test.py:7:1:9:1 | SetComp |
+| 7 | test.py:7:1:9:1 | SetComp | 7 | test.py:7:1:9:1 | ExprStmt |
+| 8 | test.py:8:5:8:5 | x | 8 | test.py:8:5:8:9 | BinaryExpr |
+| 8 | test.py:8:5:8:9 | BinaryExpr | 8 | test.py:8:5:8:9 | Yield |
+| 8 | test.py:8:5:8:9 | ExprStmt | 7 | test.py:7:1:9:1 | For |
+| 8 | test.py:8:5:8:9 | Yield | 8 | test.py:8:5:8:9 | ExprStmt |
+| 8 | test.py:8:9:8:9 | x | 8 | test.py:8:5:8:9 | BinaryExpr |
+| 8 | test.py:8:15:8:15 | x | 7 | test.py:7:1:9:1 | For |
+| 8 | test.py:8:20:8:22 | seq | 7 | test.py:7:1:9:1 | SetComp |
+| 11 | test.py:11:1:15:1 | .0 | 11 | test.py:11:1:15:1 | For |
+| 11 | test.py:11:1:15:1 | .0 | 11 | test.py:11:1:15:1 | Function dictcomp |
+| 11 | test.py:11:1:15:1 | DictComp | 11 | test.py:11:1:15:1 | ExprStmt |
+| 11 | test.py:11:1:15:1 | ExprStmt | 0 | test.py:0:0:0:0 | Module test |
+| 11 | test.py:11:1:15:1 | For | 11 | test.py:11:1:15:1 | Function dictcomp |
+| 11 | test.py:11:1:15:1 | Function dictcomp | 11 | test.py:11:1:15:1 | DictComp |
+| 12 | test.py:12:5:12:5 | y | 12 | test.py:12:5:12:10 | Attribute |
+| 12 | test.py:12:5:12:10 | Attribute | 12 | test.py:12:5:12:16 | Tuple |
+| 12 | test.py:12:5:12:16 | ExprStmt | 11 | test.py:11:1:15:1 | For |
+| 12 | test.py:12:5:12:16 | Tuple | 12 | test.py:12:5:12:16 | Yield |
+| 12 | test.py:12:5:12:16 | Yield | 12 | test.py:12:5:12:16 | ExprStmt |
+| 12 | test.py:12:14:12:14 | z | 12 | test.py:12:14:12:16 | z() |
+| 12 | test.py:12:14:12:16 | z() | 12 | test.py:12:5:12:16 | Tuple |
+| 13 | test.py:13:9:13:9 | y | 13 | test.py:13:9:13:12 | Tuple |
+| 13 | test.py:13:9:13:12 | Tuple | 11 | test.py:11:1:15:1 | For |
+| 13 | test.py:13:12:13:12 | z | 13 | test.py:13:9:13:12 | Tuple |
+| 14 | test.py:14:5:14:11 | mapping | 11 | test.py:11:1:15:1 | DictComp |

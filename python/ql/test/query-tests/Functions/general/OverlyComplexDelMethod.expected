@@ -1,0 +1,1 @@
+| protocols.py:42:5:42:22 | Function __del__ | Overly complex '__del__' method. |
