@@ -2,7 +2,7 @@ import javascript
 import semmle.javascript.dataflow.InferredTypes
 import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
 import semmle.javascript.dataflow.internal.AbstractPropertiesImpl as AbstractPropertiesImpl
-import semmle.javascript.dataflow.DefinedCustomAbstractValues
+import semmle.javascript.dataflow.CustomAbstractValueDefinitions
 
 class MyCustomAbstractValueDefinition extends CustomAbstractValueDefinition {
 

@@ -1,7 +1,7 @@
 /**
  * Provides classes for working with analysis-specific abstract values.
  *
- * Implement a subclass of `CustomAbstractValueDefinition` When the builtin
+ * Implement a subclass of `CustomAbstractValueDefinition` when the builtin
  * abstract values of `AbstractValues.qll` are not expressive enough.
  *
  * For performance reasons, all subclasses of `CustomAbstractValueDefinition`
@@ -17,12 +17,12 @@ private import InferredTypes
  *
  * Wraps a `CustomAbstractValueDefinition`.
  */
-class DefinedCustomAbstractValue extends AbstractValue, TDefinedCustomAbstractValue {
+class CustomAbstractValueFromDefinition extends AbstractValue, TCustomAbstractValueFromDefinition {
 
   CustomAbstractValueDefinition def;
 
-  DefinedCustomAbstractValue() {
-    this = TDefinedCustomAbstractValue(def)
+  CustomAbstractValueFromDefinition() {
+    this = TCustomAbstractValueFromDefinition(def)
   }
 
   override InferredType getType() {
@@ -57,10 +57,14 @@ class DefinedCustomAbstractValue extends AbstractValue, TDefinedCustomAbstractVa
     result = def.toString()
   }
 
+  /**
+   * Gets the definition that induces this value.
+   */
   CustomAbstractValueDefinition getDefinition() {
    result = def
   }
 
+  /** Holds if this is a value whose properties the type inference tracks. */
   predicate shouldTrackProperties() {
     def.shouldTrackProperties()
   }
@@ -68,7 +72,7 @@ class DefinedCustomAbstractValue extends AbstractValue, TDefinedCustomAbstractVa
 }
 
 /**
- * A node that induces an analysis-specific abstract value.
+ * A data-flow node that induces an analysis-specific abstract value.
  *
  * Enables modular extensions of `AbstractValue`.
  *
@@ -128,9 +132,10 @@ abstract class CustomAbstractValueDefinition extends Locatable {
    * Gets the induced abstract value.
    */
   AbstractValue getAbstractValue() {
-    result.(DefinedCustomAbstractValue).getDefinition() = this
+    result.(CustomAbstractValueFromDefinition).getDefinition() = this
   }
 
+  /** Holds if this is a value whose properties the type inference tracks. */
   abstract predicate shouldTrackProperties();
 
 }
@@ -138,12 +143,12 @@ abstract class CustomAbstractValueDefinition extends Locatable {
 /**
  * Flow analysis for custom abstract values.
  */
-class DefinedCustomAbstractValueNode extends DataFlow::AnalyzedNode, DataFlow::ValueNode {
+class CustomAbstractValueFromDefinitionNode extends DataFlow::AnalyzedNode, DataFlow::ValueNode {
 
-  DefinedCustomAbstractValue val;
+  CustomAbstractValueFromDefinition val;
 
-  DefinedCustomAbstractValueNode() {
-    val = TDefinedCustomAbstractValue(this.getAstNode())
+  CustomAbstractValueFromDefinitionNode() {
+    val = TCustomAbstractValueFromDefinition(this.getAstNode())
   }
 
   override AbstractValue getALocalValue() {

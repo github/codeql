@@ -14,8 +14,7 @@ import semmle.javascript.dataflow.Configuration
  */
 predicate shouldTrackProperties(AbstractValue obj) {
   obj instanceof AbstractExportsObject or
-  obj instanceof AbstractModuleObject or
-  obj.(DefinedCustomAbstractValue).shouldTrackProperties()
+  obj instanceof AbstractModuleObject
 }
 
 /**

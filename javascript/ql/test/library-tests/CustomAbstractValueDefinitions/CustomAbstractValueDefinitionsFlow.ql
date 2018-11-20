@@ -1,6 +1,6 @@
 import javascript
 import semmle.javascript.dataflow.InferredTypes
-import semmle.javascript.dataflow.DefinedCustomAbstractValues
+import semmle.javascript.dataflow.CustomAbstractValueDefinitions
 
 class MyCustomAbstractValueDefinition extends CustomAbstractValueDefinition {
 
@@ -34,7 +34,7 @@ class MyCustomAbstractValueDefinition extends CustomAbstractValueDefinition {
 
 }
 
-from AnalyzedValueNode n, MyCustomAbstractValueDefinition def, DefinedCustomAbstractValue val
+from AnalyzedValueNode n, MyCustomAbstractValueDefinition def, CustomAbstractValueFromDefinition val
 where def.getAbstractValue() = val and
       n.getAValue() = val
 select n, val
