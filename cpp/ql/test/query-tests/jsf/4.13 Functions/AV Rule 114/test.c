@@ -84,3 +84,13 @@ int f12(int x)
         // ...
     }
 }
+
+void f13()
+{
+	f13_func(); // implicitly declared here
+}
+
+void f13_func(int x)
+{
+	if (x < 10) return; // GOOD
+}
