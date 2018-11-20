@@ -3,7 +3,7 @@
  * @description Source lines will be kept to a length of 120 characters or less.
  * @kind problem
  * @id cpp/jsf/av-rule-41
- * @problem.severity warrecommendationning
+ * @problem.severity recommendation
  * @tags maintainability
  *       readability
  *       external/jsf
