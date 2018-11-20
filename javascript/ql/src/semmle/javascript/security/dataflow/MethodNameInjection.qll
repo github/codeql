@@ -69,15 +69,8 @@ module MethodNameInjection {
     /**
      * Holds if a property of the given object is an unsafe function.
      */
-    predicate isUnsafeBaseObject(DataFlow::SourceNode node) {
-      // eval and friends can be accessed from the global object.
-      node = DataFlow::globalObjectRef()
-      or
-      // 'constructor' property leads to the Function constructor.
-      node.analyze().getAValue() instanceof AbstractCallable
-      or
-      // Assume that a value that is invoked can refer to a function.
-      exists (node.getAnInvocation()) 
+    predicate hasUnsafeMethods(DataFlow::SourceNode node) {
+      PropertyInjection::hasUnsafeMethods(node) // Redefined here so custom queries can override it
     }
 
     /**
@@ -91,7 +84,7 @@ module MethodNameInjection {
     override predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node dst, DataFlow::FlowLabel srclabel, DataFlow::FlowLabel dstlabel) {
       // Reading a property of the global object or of a function
       exists (DataFlow::PropRead read |
-        isUnsafeBaseObject(read.getBase().getALocalSource()) and
+        hasUnsafeMethods(read.getBase().getALocalSource()) and
         src = read.getPropertyNameExpr().flow() and
         dst = read and
         srclabel = taint() and
