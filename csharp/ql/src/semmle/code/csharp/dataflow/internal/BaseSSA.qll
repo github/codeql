@@ -114,10 +114,9 @@ module BaseSsa {
    */
   cached AssignableRead getARead(AssignableDefinition def, SimpleLocalScopeVariable v) {
     exists(BasicBlock bb, int i, int rnk |
-      result.getTarget() = v and
       result.getAControlFlowNode() = bb.getNode(i) and
       rnk = ssaRefRank(bb, i, v, SsaRead())
-      |
+    |
       defReachesRank(bb, def, v, rnk)
       or
       reachesEndOf(def, v, bb.getAPredecessor()) and
