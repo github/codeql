@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -40,7 +43,9 @@ public class TrapTests {
 		List<Object[]> testData = new ArrayList<Object[]>();
 
 		// iterate over all test groups
-		for (String testgroup : BASE.list()) {
+		List<String> testGroups = Arrays.asList(BASE.list());
+		testGroups.sort(Comparator.naturalOrder());
+		for (String testgroup : testGroups) {
 			File root = new File(BASE, testgroup);
 			if (root.isDirectory()) {
 				// check for options.json file and process it if it exists
@@ -78,7 +83,9 @@ public class TrapTests {
 					testData.add(new Object[] { testgroup, "tsconfig", new ArrayList<String>(options) });
 				} else {
 					// create isolated tests for each input file in the group
-					for (String testfile : inputDir.list()) {
+					List<String> tests = Arrays.asList(inputDir.list());
+					tests.sort(Comparator.naturalOrder());
+					for (String testfile : tests) {
 						testData.add(new Object[] { testgroup, testfile, new ArrayList<String>(options) });
 					}
 				}
@@ -149,7 +156,13 @@ public class TrapTests {
 						// convert to and from UTF-8 to mimick treatment of unencodable characters
 						byte[] actual_utf8_bytes = StringUtil.stringToBytes(sw.toString());
 						String actual = new String(actual_utf8_bytes, Charset.forName("UTF-8"));
-						String expected = new WholeIO().strictreadText(new File(outputDir, f.getName() + ".trap"));
+						File trap = new File(outputDir, f.getName() + ".trap");
+						boolean replaceExpectedOutput = false;
+						if (replaceExpectedOutput) {
+							System.out.println("Replacing expected output for " + trap);
+							new WholeIO().strictwrite(trap, actual);
+						}
+						String expected = new WholeIO().strictreadText(trap);
 						expectedVsActual.add(Pair.make(expected, actual));
 					}
 				};

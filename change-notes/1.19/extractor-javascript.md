@@ -24,3 +24,5 @@
 * The TypeScript compiler is now bundled with the distribution, and no longer needs to be installed manually.
   Should the compiler version need to be overridden, set the `SEMMLE_TYPESCRIPT_HOME` environment variable to
   point to an installation of the `typescript` NPM package.
+
+* The extractor now supports [Optional Chaining](https://github.com/tc39/proposal-optional-chaining) expressions.

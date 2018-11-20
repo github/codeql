@@ -405,6 +405,9 @@ public class ASTExtractor {
 			if (nd.getOverloadIndex() != -1) {
 				trapwriter.addTuple("invoke_expr_overload_index", key, nd.getOverloadIndex());
 			}
+			if (nd.isOptional()) {
+				trapwriter.addTuple("isOptionalChaining", key);
+			}
 			emitNodeSymbol(nd, key);
 			return key;
 		}
@@ -530,6 +533,9 @@ public class ASTExtractor {
 				IdContext baseIdContext = c.idcontext == IdContext.export ? IdContext.exportBase : IdContext.varBind;
 				visit(nd.getObject(), key, 0, baseIdContext);
 				visit(nd.getProperty(), key, 1, nd.isComputed() ? IdContext.varBind : IdContext.label);
+			}
+			if (nd.isOptional()) {
+				trapwriter.addTuple("isOptionalChaining", key);
 			}
 			return key;
 		}
@@ -1245,7 +1251,7 @@ public class ASTExtractor {
 				Super superExpr = new Super(fakeLoc("super", loc));
 				CallExpression superCall = new CallExpression(
 						fakeLoc("super(...args)", loc),
-						superExpr, new ArrayList<>(), CollectionUtil.makeList(spreadArgs));
+						superExpr, new ArrayList<>(), CollectionUtil.makeList(spreadArgs), false, false);
 				ExpressionStatement superCallStmt = new ExpressionStatement(
 						fakeLoc("super(...args);", loc), superCall);
 				body.getBody().add(superCallStmt);

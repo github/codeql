@@ -97,7 +97,7 @@ public class NodeCopier implements Visitor<Void, INode> {
 
 	@Override
 	public CallExpression visit(CallExpression nd, Void q) {
-		return new CallExpression(visit(nd.getLoc()), copy(nd.getCallee()), copy(nd.getTypeArguments()), copy(nd.getArguments()));
+		return new CallExpression(visit(nd.getLoc()), copy(nd.getCallee()), copy(nd.getTypeArguments()), copy(nd.getArguments()), nd.isOptional(), nd.isOnOptionalChain());
 	}
 
 	@Override
@@ -140,7 +140,7 @@ public class NodeCopier implements Visitor<Void, INode> {
 
 	@Override
 	public MemberExpression visit(MemberExpression nd, Void q) {
-		return new MemberExpression(visit(nd.getLoc()), copy(nd.getObject()), copy(nd.getProperty()), nd.isComputed());
+		return new MemberExpression(visit(nd.getLoc()), copy(nd.getObject()), copy(nd.getProperty()), nd.isComputed(), nd.isOptional(), nd.isOnOptionalChain());
 	}
 
 	@Override

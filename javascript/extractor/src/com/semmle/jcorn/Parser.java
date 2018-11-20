@@ -29,6 +29,7 @@ import com.semmle.js.ast.BlockStatement;
 import com.semmle.js.ast.BreakStatement;
 import com.semmle.js.ast.CallExpression;
 import com.semmle.js.ast.CatchClause;
+import com.semmle.js.ast.Chainable;
 import com.semmle.js.ast.ClassBody;
 import com.semmle.js.ast.ClassDeclaration;
 import com.semmle.js.ast.ClassExpression;
@@ -504,6 +505,14 @@ public class Parser {
 		}
 	}
 
+	private Token readToken_question() { // '?'
+		int next = charAt(this.pos + 1);
+		int next2 = charAt(this.pos + 2);
+		if (this.options.esnext() && next == '.' && !('0' <= next2 && next2 <= '9')) // '?.', but not '?.X' where X is a digit
+			return this.finishOp(TokenType.questiondot, 2);
+		return this.finishOp(TokenType.question, 1);
+	}
+
 	private Token readToken_slash() { // '/'
 		int next = charAt(this.pos + 1);
 		if (this.exprAllowed) {
@@ -616,7 +625,7 @@ public class Parser {
 		case 123: ++this.pos; return this.finishToken(TokenType.braceL);
 		case 125: ++this.pos; return this.finishToken(TokenType.braceR);
 		case 58: ++this.pos; return this.finishToken(TokenType.colon);
-		case 63: ++this.pos; return this.finishToken(TokenType.question);
+		case 63: return this.readToken_question();
 
 		case 96: // '`'
 			if (this.options.ecmaVersion() < 6) break;
@@ -1465,17 +1474,19 @@ public class Parser {
 		}
 	}
 
+	private boolean isOnOptionalChain(boolean optional, Expression base) {
+		return optional || base instanceof Chainable && ((Chainable)base).isOnOptionalChain();
+	}
+
 	/**
 	 * Parse a single subscript {@code s}; if more subscripts could follow, return {@code Pair.make(s, true},
 	 * otherwise return {@code Pair.make(s, false)}.
 	 */
 	protected Pair<Expression, Boolean> parseSubscript(final Expression base, Position startLoc, boolean noCalls) {
 		boolean maybeAsyncArrow = this.options.ecmaVersion() >= 8 && base instanceof Identifier && "async".equals(((Identifier) base).getName()) && !this.canInsertSemicolon();
-		if (this.eat(TokenType.dot)) {
-			MemberExpression node = new MemberExpression(new SourceLocation(startLoc), base, this.parseIdent(true), false);
-			return Pair.make(this.finishNode(node), true);
-		} else if (this.eat(TokenType.bracketL)) {
-			MemberExpression node = new MemberExpression(new SourceLocation(startLoc), base, this.parseExpression(false, null), true);
+		boolean optional = this.eat(TokenType.questiondot);
+		if (this.eat(TokenType.bracketL)) {
+			MemberExpression node = new MemberExpression(new SourceLocation(startLoc), base, this.parseExpression(false, null), true, optional, isOnOptionalChain(optional, base));
 			this.expect(TokenType.bracketR);
 			return Pair.make(this.finishNode(node), true);
 		} else if (!noCalls && this.eat(TokenType.parenL)) {
@@ -1494,10 +1505,16 @@ public class Parser {
 			this.checkExpressionErrors(refDestructuringErrors, true);
 			if (oldYieldPos > 0) this.yieldPos = oldYieldPos;
 			if (oldAwaitPos > 0) this.awaitPos = oldAwaitPos;
-			CallExpression node = new CallExpression(new SourceLocation(startLoc), base, new ArrayList<>(), exprList);
+			CallExpression node = new CallExpression(new SourceLocation(startLoc), base, new ArrayList<>(), exprList, optional, isOnOptionalChain(optional, base));
 			return Pair.make(this.finishNode(node), true);
 		} else if (this.type == TokenType.backQuote) {
+			if (isOnOptionalChain(optional, base)) {
+				this.raise(base, "An optional chain may not be used in a tagged template expression.");
+			}
 			TaggedTemplateExpression node = new TaggedTemplateExpression(new SourceLocation(startLoc), base, this.parseTemplate(true));
+			return Pair.make(this.finishNode(node), true);
+		} else if (optional || this.eat(TokenType.dot)) {
+			MemberExpression node = new MemberExpression(new SourceLocation(startLoc), base, this.parseIdent(true), false, optional, isOnOptionalChain(optional, base));
 			return Pair.make(this.finishNode(node), true);
 		} else {
 			return Pair.make(base, false);
@@ -1719,6 +1736,10 @@ public class Parser {
 		int innerStartPos = this.start;
 		Position innerStartLoc = this.startLoc;
 		Expression callee = this.parseSubscripts(this.parseExprAtom(null), innerStartPos, innerStartLoc, true);
+
+		if (isOnOptionalChain(false, callee))
+			this.raise(callee, "An optional chain may not be used in a `new` expression.");
+
 		List<Expression> arguments;
 		if (this.eat(TokenType.parenL))
 			arguments = this.parseExprList(TokenType.parenR, this.options.ecmaVersion() >= 8, false, null);
@@ -2159,9 +2180,12 @@ public class Parser {
 				return new ParenthesizedExpression(node.getLoc(), (Expression) this.toAssignable(expr, isBinding));
 			}
 
-			if (node instanceof MemberExpression)
+			if (node instanceof MemberExpression) {
+				if (isOnOptionalChain(false, (MemberExpression)node))
+					this.raise(node, "Invalid left-hand side in assignment");
 				if (!isBinding)
 					return node;
+			}
 
 			this.raise(node, "Assigning to rvalue");
 		}
