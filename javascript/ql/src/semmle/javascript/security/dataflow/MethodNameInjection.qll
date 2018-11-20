@@ -1,5 +1,5 @@
 /**
- * Provides a taint tracking configuration for reasoning about method invocations
+ * Provides a taint-tracking configuration for reasoning about method invocations
  * with a user-controlled method name.
  */
 
@@ -51,8 +51,8 @@ module MethodNameInjection {
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "RemotePropertyInjection" }
 
-    override predicate isSource(DataFlow::Node source) {
-      source instanceof Source
+    override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
+      source.(Source).getFlowLabel() = label
     }
 
     override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
@@ -68,7 +68,7 @@ module MethodNameInjection {
      * Holds if a property of the given object is an unsafe function.
      */
     predicate isUnsafeBaseObject(DataFlow::SourceNode node) {
-      // eval an friends can be accessed from the global object.
+      // eval and friends can be accessed from the global object.
       node = DataFlow::globalObjectRef()
       or
       // 'constructor' property leads to the Function constructor.

@@ -1,8 +1,8 @@
 /**
  * @name Method name injection
- * @description Invoking user-controlled methods on a arbitrary objects can lead to remote code execution.
+ * @description Invoking user-controlled methods on arbitrary objects can lead to remote code execution.
  * @kind path-problem
- * @problem.severity warning
+ * @problem.severity error
  * @precision high
  * @id js/method-name-injection
  * @tags security

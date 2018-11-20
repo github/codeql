@@ -15,6 +15,7 @@ in its <code>constructor</code> property.
 <recommendation>
 <p>
 Avoid invoking user-controlled methods on the global object or on any function object.
+Whitelist the permitted method names or change the type of object the methods are stored on.
 </p>
 </recommendation>
 
