@@ -10,6 +10,8 @@ path_classifiers:
   - javascript/extractor/tests
   - javascript/ql/src
   - javascript/ql/test
+  - python/ql/src
+  - python/ql/test
 
 queries:
   - include: "*"
