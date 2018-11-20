@@ -9,8 +9,9 @@
  */
 import NewDelete
 
-from Expr alloc, Expr free, Expr freed
+from File f, Expr alloc, Expr free, Expr freed
 where
+  f.compiledAsCpp() and
   allocReaches(freed, alloc, "new[]") and
   freeExprOrIndirect(free, freed, "delete")
 select

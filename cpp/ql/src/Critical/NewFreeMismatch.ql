@@ -26,9 +26,10 @@ predicate correspondingKinds(string allocKind, string freeKind) {
 }
 
 from
-  Expr alloc, string allocKind, string allocKindSimple,
+  File f, Expr alloc, string allocKind, string allocKindSimple,
   Expr free, Expr freed, string freeKind, string freeKindSimple
 where
+  f.compiledAsCpp() and
   allocReaches(freed, alloc, allocKind) and
   freeExprOrIndirect(free, freed, freeKind) and
   allocKindSimple = allocKind.replaceAll("[]", "") and
