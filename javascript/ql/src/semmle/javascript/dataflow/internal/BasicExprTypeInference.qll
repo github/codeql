@@ -413,3 +413,15 @@ private class AnalyzedAssignAddExpr extends AnalyzedCompoundAssignExpr {
     isAddition(astNode) and result = abstractValueOfType(TTNumber())
   }
 }
+
+/**
+ * Flow analysis for optional chaining expressions.
+ */
+private class AnalyzedOptionalChainExpr extends DataFlow::AnalyzedValueNode {
+  override OptionalChainRoot astNode;
+
+  override AbstractValue getALocalValue() {
+    result = super.getALocalValue() or
+    result = TAbstractUndefined()
+  }
+}
