@@ -16,6 +16,7 @@
 + semmlecode-javascript-queries/Security/CWE-327/BrokenCryptoAlgorithm.ql: /Security/CWE/CWE-327
 + semmlecode-javascript-queries/Security/CWE-338/InsecureRandomness.ql: /Security/CWE/CWE-338
 + semmlecode-javascript-queries/Security/CWE-346/CorsMisconfigurationForCredentials.ql: /Security/CWE/CWE-346
++ semmlecode-javascript-queries/Security/CWE-352/MethodNameInjection.ql: /Security/CWE/CWE-094
 + semmlecode-javascript-queries/Security/CWE-352/MissingCsrfMiddleware.ql: /Security/CWE/CWE-352
 + semmlecode-javascript-queries/Security/CWE-400/RemotePropertyInjection.ql: /Security/CWE/CWE-400
 + semmlecode-javascript-queries/Security/CWE-502/UnsafeDeserialization.ql: /Security/CWE/CWE-502
