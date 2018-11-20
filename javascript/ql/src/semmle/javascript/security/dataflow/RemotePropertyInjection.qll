@@ -70,15 +70,25 @@ module RemotePropertyInjection {
       result = " a property name to write to."
     }     
   }
+
+  /**
+   * Holds if the method name injection on the given base object is handled by another query.
+   */
+  private predicate isCoveredByMethodNameInjection(DataFlow::SourceNode node) {
+    node = DataFlow::globalObjectRef()
+    or
+    node.analyze().getAValue() instanceof AbstractCallable
+  }
   
   /**
    * A sink for method calls using dynamically computed method names.   
    */
   class MethodCallSink extends Sink, DataFlow::ValueNode  {
     MethodCallSink() {
-      exists (DataFlow::PropRead pr | astNode = pr.getPropertyNameExpr() |           
-        exists (pr.getAnInvocation())
-      )          
+      exists (DataFlow::PropRead pr | astNode = pr.getPropertyNameExpr() |
+        exists (pr.getAnInvocation()) and
+        not isCoveredByMethodNameInjection(pr.getBase().getALocalSource())
+      )
     }
 
     override string getMessage() {
