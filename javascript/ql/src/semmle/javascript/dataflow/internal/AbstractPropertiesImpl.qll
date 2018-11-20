@@ -77,5 +77,6 @@ predicate shouldAlwaysTrackProperties(AbstractValue baseVal) {
 predicate shouldTrackProperties(AbstractValue baseVal) {
   shouldAlwaysTrackProperties(baseVal) or
   baseVal instanceof AbstractObjectLiteral or
-  baseVal instanceof AbstractInstance
+  baseVal instanceof AbstractInstance or
+  baseVal.(CustomAbstractValueFromDefinition).shouldTrackProperties()
 }
