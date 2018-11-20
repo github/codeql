@@ -24,6 +24,10 @@
 | Suspicious call to memset | Fewer false positive results | Types involving decltype are now correctly compared. |
 | Suspicious add with sizeof | Fewer false positive results | Arithmetic with void pointers (where allowed) is now excluded from this query. |
 | Wrong type of arguments to formatting function | Fewer false positive results | False positive results involving typedefs have been removed.  Expected argument types are determined more accurately, especially for wide string and pointer types.  Custom (non-standard) formatting functions are also identified more accurately. |
+| Missing return statement | Fewer false positive results | Functions which make a non-returning function call are no longer expected to have a return statement after that call. |
+| AV Rule 164 | Fewer false positive results | This query now accounts for explicit casts. |
+| Negation of unsigned value | Fewer false positive results | This query now accounts for explicit casts. |
+| Variable scope too large | Fewer false positive results | Variables with declarations in header files, or that are used at file scope, are now excluded from this query. |
 
 ## Changes to QL libraries
 
