@@ -4,6 +4,7 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
+using Semmle.Util;
 
 namespace Semmle.Autobuild
 {
@@ -15,46 +16,36 @@ namespace Semmle.Autobuild
     {
         public BuildScript Analyse(Autobuilder builder)
         {
-            builder.Log(Severity.Info, "Attempting to build using .NET Core");
+            if (!builder.ProjectsOrSolutionsToBuild.Any())
+                return BuildScript.Failure;
 
-            var projects = builder.SolutionsToBuild.Any()
-                ? builder.SolutionsToBuild.SelectMany(s => s.Projects).ToArray()
-                : builder.GetExtensions(Language.CSharp.ProjectExtension).Select(p => new Project(builder, p)).ToArray();
-
-            var notDotNetProject = projects.FirstOrDefault(p => !p.DotNetProject);
+            var notDotNetProject = builder.ProjectsOrSolutionsToBuild.
+                SelectMany(p => Enumerators.Singleton(p).Concat(p.IncludedProjects)).
+                OfType<Project>().
+                FirstOrDefault(p => !p.DotNetProject);
             if (notDotNetProject != null)
             {
                 builder.Log(Severity.Info, "Not using .NET Core because of incompatible project {0}", notDotNetProject);
                 return BuildScript.Failure;
             }
 
-            if (!builder.SolutionsToBuild.Any())
-                // Attempt dotnet build in root folder
-                return WithDotNet(builder, dotNet =>
-                    {
-                        var info = GetInfoCommand(builder.Actions, dotNet);
-                        var clean = GetCleanCommand(builder.Actions, dotNet).Script;
-                        var restore = GetRestoreCommand(builder.Actions, dotNet).Script;
-                        var build = GetBuildCommand(builder, dotNet).Script;
-                        return info & clean & BuildScript.Try(restore) & build;
-                    });
+            builder.Log(Severity.Info, "Attempting to build using .NET Core");
 
-            // Attempt dotnet build on each solution
             return WithDotNet(builder, dotNet =>
                 {
                     var ret = GetInfoCommand(builder.Actions, dotNet);
-                    foreach (var solution in builder.SolutionsToBuild)
+                    foreach (var projectOrSolution in builder.ProjectsOrSolutionsToBuild)
                     {
                         var cleanCommand = GetCleanCommand(builder.Actions, dotNet);
-                        cleanCommand.QuoteArgument(solution.Path);
+                        cleanCommand.QuoteArgument(projectOrSolution.FullPath);
                         var clean = cleanCommand.Script;
 
                         var restoreCommand = GetRestoreCommand(builder.Actions, dotNet);
-                        restoreCommand.QuoteArgument(solution.Path);
+                        restoreCommand.QuoteArgument(projectOrSolution.FullPath);
                         var restore = restoreCommand.Script;
 
                         var buildCommand = GetBuildCommand(builder, dotNet);
-                        buildCommand.QuoteArgument(solution.Path);
+                        buildCommand.QuoteArgument(projectOrSolution.FullPath);
                         var build = buildCommand.Script;
 
                         ret &= clean & BuildScript.Try(restore) & build;
@@ -110,7 +101,7 @@ namespace Semmle.Autobuild
             // See https://docs.microsoft.com/en-us/dotnet/core/tools/global-json
             var installScript = BuildScript.Success;
             var validGlobalJson = false;
-            foreach (var path in builder.Paths.Where(p => p.EndsWith("global.json", StringComparison.Ordinal)))
+            foreach (var path in builder.Paths.Select(p => p.Item1).Where(p => p.EndsWith("global.json", StringComparison.Ordinal)))
             {
                 string version;
                 try
