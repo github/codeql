@@ -50,5 +50,13 @@ where maybeMissingThis(call, intendedTarget, gv)
           decl.isNamespaceExport() and
           call.getContainer().getEnclosingContainer*() instanceof NamespaceDeclaration
         )
+        or
+        // call to global function with additional arguments
+        exists (Function self |
+          intendedTarget.getBody() = self and
+          call.getEnclosingFunction() = self and
+          call.flow().(DataFlow::CallNode).getNumArgument() > self.getNumParameter() and
+          not self.usesArgumentsObject()
+        )
       )
 select call, "This call refers to a global function, and not the local method $@.", intendedTarget, intendedTarget.getName()
