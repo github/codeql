@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Invoking a user-controlled method on certain objects can lead to invocation of unsafe functions,
+such as <code>eval</code> or the <code>Function</code> constructor. In particular, the global object
+contains the <code>eval</code> function, and any function object contains the <code>Function</code> constructor
+in its <code>constructor</code> property.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Avoid invoking user-controlled methods on the global object or on any function object.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following example, a user-controlled string is used as the method name on a cross-window message handler.
+In this case, a malicious website can embed the page in an iframe, and execute arbitary code in the page by
+sending a message to it with <code>name</code> set to <code>eval</code>.
+</p>
+
+<sample src="examples/MethodNameInjection.js" />
+</example>
+
+<references>
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/Code_Injection">Code Injection</a>.
+</li>
+<li>
+MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects#Function_properties">Global functions</a>.
+</li>
+<li>
+MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function constructor</a>.
+</li>
+</references>
+</qhelp>
