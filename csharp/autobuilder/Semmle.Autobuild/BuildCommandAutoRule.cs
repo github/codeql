@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Semmle.Util;
 using Semmle.Util.Logging;
 
 namespace Semmle.Autobuild
@@ -32,7 +31,7 @@ namespace Semmle.Autobuild
 
             var extensions = builder.Actions.IsWindows() ? winExtensions : linuxExtensions;
             var scripts = buildScripts.SelectMany(s => extensions.Select(e => s + e));
-            var scriptPath = builder.Paths.Where(p => scripts.Any(p.ToLower().EndsWith)).OrderBy(p => p.Length).FirstOrDefault();
+            var scriptPath = builder.Paths.Where(p => scripts.Any(p.Item1.ToLower().EndsWith)).OrderBy(p => p.Item2).Select(p => p.Item1).FirstOrDefault();
 
             if (scriptPath == null)
                 return BuildScript.Failure;
@@ -41,12 +40,12 @@ namespace Semmle.Autobuild
             chmod.RunCommand("/bin/chmod", $"u+x {scriptPath}");
             var chmodScript = builder.Actions.IsWindows() ? BuildScript.Success : BuildScript.Try(chmod.Script);
 
-            var path = Path.GetDirectoryName(scriptPath);
+            var dir = builder.Actions.GetDirectoryName(scriptPath);
 
             // A specific .NET Core version may be required
             return chmodScript & DotNetRule.WithDotNet(builder, dotNet =>
             {
-                var command = new CommandBuilder(builder.Actions, path, dotNet?.Environment);
+                var command = new CommandBuilder(builder.Actions, dir, dotNet?.Environment);
 
                 // A specific Visual Studio version may be required
                 var vsTools = MsBuildRule.GetVcVarsBatFile(builder);

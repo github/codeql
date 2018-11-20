@@ -16,19 +16,19 @@ namespace Semmle.Autobuild
 
         public BuildScript Analyse(Autobuilder builder)
         {
-            builder.Log(Severity.Info, "Attempting to build using MSBuild");
-
-            if (!builder.SolutionsToBuild.Any())
-            {
-                builder.Log(Severity.Info, "Could not find a suitable solution file to build");
+            if (!builder.ProjectsOrSolutionsToBuild.Any())
                 return BuildScript.Failure;
-            }
+
+            builder.Log(Severity.Info, "Attempting to build using MSBuild");
 
             var vsTools = GetVcVarsBatFile(builder);
 
-            if (vsTools == null && builder.SolutionsToBuild.Any())
+            if (vsTools == null && builder.ProjectsOrSolutionsToBuild.Any())
             {
-                vsTools = BuildTools.FindCompatibleVcVars(builder.Actions, builder.SolutionsToBuild.First());
+                var firstSolution = builder.ProjectsOrSolutionsToBuild.OfType<ISolution>().FirstOrDefault();
+                vsTools = firstSolution != null
+                                ? BuildTools.FindCompatibleVcVars(builder.Actions, firstSolution)
+                                : BuildTools.VcVarsAllBatFiles(builder.Actions).OrderByDescending(b => b.ToolsVersion).FirstOrDefault();
             }
 
             if (vsTools == null && builder.Actions.IsWindows())
@@ -40,36 +40,42 @@ namespace Semmle.Autobuild
 
             var ret = BuildScript.Success;
 
-            foreach (var solution in builder.SolutionsToBuild)
+            foreach (var projectOrSolution in builder.ProjectsOrSolutionsToBuild)
             {
                 if (builder.Options.NugetRestore)
                 {
                     var nugetCommand = new CommandBuilder(builder.Actions).
                         RunCommand(nuget).
                         Argument("restore").
-                        QuoteArgument(solution.Path);
+                        QuoteArgument(projectOrSolution.FullPath);
                     ret &= BuildScript.Try(nugetCommand.Script);
                 }
 
                 var command = new CommandBuilder(builder.Actions);
 
                 if (vsTools != null)
-                {
                     command.CallBatFile(vsTools.Path);
-                }
 
                 command.IndexCommand(builder.Odasa, MsBuild);
-                command.QuoteArgument(solution.Path);
+                command.QuoteArgument(projectOrSolution.FullPath);
 
                 command.Argument("/p:UseSharedCompilation=false");
 
-                string target = builder.Options.MsBuildTarget != null ? builder.Options.MsBuildTarget : "rebuild";
-                string platform = builder.Options.MsBuildPlatform != null ? builder.Options.MsBuildPlatform : solution.DefaultPlatformName;
-                string configuration = builder.Options.MsBuildConfiguration != null ? builder.Options.MsBuildConfiguration : solution.DefaultConfigurationName;
+                string target = builder.Options.MsBuildTarget != null
+                                       ? builder.Options.MsBuildTarget
+                                       : "rebuild";
+                string platform = builder.Options.MsBuildPlatform != null
+                                         ? builder.Options.MsBuildPlatform
+                                         : projectOrSolution is ISolution s1 ? s1.DefaultPlatformName : null;
+                string configuration = builder.Options.MsBuildConfiguration != null
+                                              ? builder.Options.MsBuildConfiguration
+                                              : projectOrSolution is ISolution s2 ? s2.DefaultConfigurationName : null;
 
                 command.Argument("/t:" + target);
-                command.Argument(string.Format("/p:Platform=\"{0}\"", platform));
-                command.Argument(string.Format("/p:Configuration=\"{0}\"", configuration));
+                if (platform != null)
+                    command.Argument(string.Format("/p:Platform=\"{0}\"", platform));
+                if (configuration != null)
+                    command.Argument(string.Format("/p:Configuration=\"{0}\"", configuration));
                 command.Argument("/p:MvcBuildViews=true");
 
                 command.Argument(builder.Options.MsBuildArguments);
