@@ -13,6 +13,7 @@
 
 import javascript
 import semmle.javascript.frameworks.Templating
+import semmle.javascript.RestrictedLocations
 
 /**
  * Holds if the href attribute contains a host that we cannot determine statically.
@@ -53,4 +54,4 @@ where // `e` is a link that opens in a new browsing context (that is, it has `ta
       not exists (DOM::AttributeDefinition attr | attr = e.getAnAttribute() |
         not exists(attr.getName())
       )
-select e, "External links without noopener/noreferrer are a potential security risk."
+select (FirstLineOf)e, "External links without noopener/noreferrer are a potential security risk."
