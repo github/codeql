@@ -319,10 +319,10 @@ module Ssa {
     }
 
     /**
-     * Holds if source varible `v` is likely to be live at any node inside basic
-     * block `bb`.
+     * Holds if source variable `v` is likely to be live at any node inside basic
+     * block `bb`. This is an overestimate.
      */
-    predicate likelyLive(BasicBlock bb, SourceVariable v) {
+    predicate possiblyLiveAtAllNodes(BasicBlock bb, SourceVariable v) {
       liveAtExit(bb, v, _)
       or
       ref(bb, _, v, Read(_))
@@ -1203,7 +1203,7 @@ module Ssa {
      * `i`.
      */
     private predicate updateCandidate(BasicBlock bb, int i, TrackedFieldOrProp fp, Call call) {
-      likelyLive(bb, fp) and
+      possiblyLiveAtAllNodes(bb, fp) and
       callAt(bb, i, call) and
       relevantDefinition(_, fp.getAssignable(), _) and
       not ref(bb, i, fp, _)
@@ -1296,7 +1296,7 @@ module Ssa {
       setsOwnFieldOrPropTransitive(getARuntimeTarget(call), tfp.getAssignable(), setter)
     }
 
-    private predicate updatesNamedFieldOrPropLikelyLive(BasicBlock bb, int i, TrackedFieldOrProp fp, Call call, Callable setter) {
+    private predicate updatesNamedFieldOrPropPossiblyLive(BasicBlock bb, int i, TrackedFieldOrProp fp, Call call, Callable setter) {
       updateCandidate(bb, i, fp, call) and
       (
         updatesNamedFieldOrPropPart1(call, fp, setter)
@@ -1306,7 +1306,7 @@ module Ssa {
     }
 
     private int firstRefAfterCall(BasicBlock bb, int i, TrackedFieldOrProp fp) {
-      updatesNamedFieldOrPropLikelyLive(bb, i, fp, _, _) and
+      updatesNamedFieldOrPropPossiblyLive(bb, i, fp, _, _) and
       result = min(int k | k > i and ref(bb, k, fp, _))
     }
 
@@ -1318,7 +1318,7 @@ module Ssa {
     predicate updatesNamedFieldOrProp(Call c, TrackedFieldOrProp fp, Callable setter) {
       forceCachingInSameStage() and
       exists(BasicBlock bb, int i |
-        updatesNamedFieldOrPropLikelyLive(bb, i, fp, c, setter) |
+        updatesNamedFieldOrPropPossiblyLive(bb, i, fp, c, setter) |
         not exists(firstRefAfterCall(bb, i, fp)) and
         liveAtExit(bb, fp, _)
         or
@@ -1439,7 +1439,7 @@ module Ssa {
      * `i`.
      */
     private predicate updateCandidate(BasicBlock bb, int i, CapturedWrittenLocalScopeSourceVariable v, Call call) {
-      likelyLive(bb, v) and
+      possiblyLiveAtAllNodes(bb, v) and
       callAt(bb, i, call) and
       relevantDefinition(_, v.getAssignable(), _)
     }
@@ -1522,7 +1522,7 @@ module Ssa {
      * Holds if `call` may change the value of captured variable `v`. The actual
      * update occurs in `def`.
      */
-    private predicate updatesCapturedVariableLikelyLive(BasicBlock bb, int i, Call call, LocalScopeSourceVariable v, AssignableDefinition def) {
+    private predicate updatesCapturedVariablePossiblyLive(BasicBlock bb, int i, Call call, LocalScopeSourceVariable v, AssignableDefinition def) {
       updateCandidate(bb, i, v, call) and
       exists(Callable writer |
         relevantDefinition(writer, v.getAssignable(), def) |
@@ -1531,7 +1531,7 @@ module Ssa {
     }
 
     private int firstRefAfter(BasicBlock bb, int i, CapturedWrittenLocalScopeSourceVariable v) {
-      updatesCapturedVariableLikelyLive(bb, i, _, v, _) and
+      updatesCapturedVariablePossiblyLive(bb, i, _, v, _) and
       result = min(int k | k > i and ref(bb, k, v, _))
     }
 
@@ -1543,7 +1543,7 @@ module Ssa {
     predicate updatesCapturedVariable(Call call, LocalScopeSourceVariable v, AssignableDefinition def) {
       forceCachingInSameStage() and
       exists(BasicBlock bb, int i |
-        updatesCapturedVariableLikelyLive(bb, i, call, v, def) |
+        updatesCapturedVariablePossiblyLive(bb, i, call, v, def) |
         not exists(firstRefAfter(bb, i, v)) and
         liveAtExit(bb, v, _)
         or
