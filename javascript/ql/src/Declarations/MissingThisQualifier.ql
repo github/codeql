@@ -56,6 +56,7 @@ where maybeMissingThis(call, intendedTarget, gv)
           intendedTarget.getBody() = self and
           call.getEnclosingFunction() = self and
           call.flow().(DataFlow::CallNode).getNumArgument() > self.getNumParameter() and
+          not self.hasRestParameter() and
           not self.usesArgumentsObject()
         )
       )
