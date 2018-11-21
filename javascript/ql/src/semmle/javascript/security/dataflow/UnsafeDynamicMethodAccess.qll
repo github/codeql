@@ -50,7 +50,7 @@ module UnsafeDynamicMethodAccess {
    * A taint-tracking configuration for reasoning about unsafe dynamic method access.
    */
   class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "RemotePropertyInjection" }
+    Configuration() { this = "UnsafeDynamicMethodAccess" }
 
     override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
       source.(Source).getFlowLabel() = label
