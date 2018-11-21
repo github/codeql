@@ -8,8 +8,18 @@
 
     var f = unknown? undefined: function(){
         return 42;
-    }
+    };
     var v7 = f();
     var v8 = f?.();
+
+    var g = function(){
+        return 42;
+    };
+    var v9 = g();
+    var v10 = g?.();
+
+    var h = undefined;
+    var v11 = h();
+    var v12 = h?.();
 });
 // semmle-extractor-options: --experimental

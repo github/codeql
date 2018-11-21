@@ -157,6 +157,10 @@ abstract class CallWithNonLocalAnalyzedReturnFlow extends DataFlow::AnalyzedValu
 
   override AbstractValue getAValue() {
     result = getACallee().getAReturnValue()
+    or
+    // special case from the local layer (could be more precise if it is inferred that the callee is not `null`/`undefined`)
+    astNode instanceof OptionalChainRoot and
+    result = TAbstractUndefined()
   }
 }
 
