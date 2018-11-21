@@ -497,9 +497,9 @@ module RangeAnalysis {
     (x < 0 or x = 0 and sharpx = true) and
     (y > 0 or y = 0 and sharpy = false) and
     (
-      x = 0
+      x <= 0 and x >= 0
       or
-      y = 0
+      y <= 0 and y >= 0
       or
       // If non-zero, check that the values are within a factor 16 of each other
       x.abs().bitShiftRight(4) < y.abs() and
