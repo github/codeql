@@ -41,3 +41,28 @@ class C4 {
     }
 }
 C4.f = x;
+
+class C5_super {
+    f() {
+
+    }
+}
+class C5 extends C5_super{
+    static f() {
+
+    }
+    test() {
+        this.f; // OK
+    }
+}
+
+class C6_super {
+    f() {
+
+    }
+}
+class C6 extends C6_super{
+    static test() {
+        this.f; // NOT OK
+    }
+}
