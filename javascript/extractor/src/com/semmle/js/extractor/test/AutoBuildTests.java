@@ -433,4 +433,23 @@ public class AutoBuildTests {
 		addFile(true, LGTM_SRC, "tst.js");
 		runTest();
 	}
+
+	@Test
+	public void minifiedFilesAreExcluded() throws IOException {
+		addFile(true, LGTM_SRC, "admin.js");
+		addFile(false, LGTM_SRC, "jquery.min.js");
+		addFile(false, LGTM_SRC, "lib", "lodash-min.js");
+		addFile(true, LGTM_SRC, "compute_min.js");
+		runTest();
+	}
+
+	@Test
+	public void minifiedFilesCanBeReIncluded() throws IOException {
+		envVars.put("LGTM_INDEX_FILTERS", "include:**/*.min.js\ninclude:**/*-min.js");
+		addFile(true, LGTM_SRC, "admin.js");
+		addFile(true, LGTM_SRC, "jquery.min.js");
+		addFile(true, LGTM_SRC, "lib", "lodash-min.js");
+		addFile(true, LGTM_SRC, "compute_min.js");
+		runTest();
+	}
 }
