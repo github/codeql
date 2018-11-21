@@ -5,7 +5,7 @@
  * @kind problem
  * @problem.severity error
  * @sub-severity high
- * @precision medium
+ * @precision high
  * @id py/command-line-injection
  * @tags correctness
  *       security
