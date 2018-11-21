@@ -1,2 +1,0 @@
-| b.py:1:1:1:8 | Import | $@ imports $@. This violates the "independent" group rule on "G1", which disallows dependencies from "G3" to "G4. | b.py:0:0:0:0 | Module b | b | c.py:0:0:0:0 | Module c | c |
-| c.py:1:1:1:8 | Import | $@ imports $@. This violates the "independent" group rule on "G1", which disallows dependencies from "G4" to "G3. | c.py:0:0:0:0 | Module c | c | b.py:0:0:0:0 | Module b | b |

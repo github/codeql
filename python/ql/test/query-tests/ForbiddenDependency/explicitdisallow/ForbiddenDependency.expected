@@ -1,1 +1,0 @@
-| a.py:1:1:1:8 | Import | $@ imports $@. This violates the explicit rule against dependencies from  "G2" to "G3". | a.py:0:0:0:0 | Module a | a | b.py:0:0:0:0 | Module b | b |
