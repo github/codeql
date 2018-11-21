@@ -16,8 +16,14 @@ import semmle.code.csharp.frameworks.system.text.RegularExpressions
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
-where c.hasFlowPath(source, sink)
+where
+  c.hasFlowPath(source, sink) and
   // No global timeout set
-  and not exists(RegexGlobalTimeout r)
-select sink.getNode().(Sink), source, sink,
+  not exists(RegexGlobalTimeout r) and 
+  (
+    sink.getNode() instanceof Sink
+    or
+    sink.getNode() instanceof ExponentialRegexSink
+  )
+select sink.getNode(), source, sink,
   "$@ flows to regular expression operation with dangerous regex.", source.getNode(), "User-provided value"
