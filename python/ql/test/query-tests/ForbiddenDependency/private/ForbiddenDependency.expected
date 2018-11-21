@@ -1,1 +1,0 @@
-| a.py:1:1:1:8 | Import | $@ imports $@. This violates the "private" group rule on "G5", which disallows dependencies from "G2" to "G5. | a.py:0:0:0:0 | Module a | a | b.py:0:0:0:0 | Module b | b |
