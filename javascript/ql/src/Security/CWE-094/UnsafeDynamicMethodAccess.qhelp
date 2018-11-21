@@ -5,7 +5,7 @@
 
 <overview>
 <p>
-Invoking a user-controlled method on certain objects can lead to invocation of unsafe functions,
+Calling a user-controlled method on certain objects can lead to invocation of unsafe functions,
 such as <code>eval</code> or the <code>Function</code> constructor. In particular, the global object
 contains the <code>eval</code> function, and any function object contains the <code>Function</code> constructor
 in its <code>constructor</code> property.
