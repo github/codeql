@@ -4,8 +4,11 @@
  *              to enforce invariants that should hold for the whole hierarchy.
  *              This is especially problematic in classes with many
  *              dependencies or dependents.
- * @kind table
+ * @kind problem
  * @id cpp/nvi-hub
+ * @problem.severity recommendation
+ * @precision low
+ * @tags maintainability
  */
 import cpp
 
@@ -19,4 +22,4 @@ where f.hasSpecifier("public") and
       fclass = f.getDeclaringType() and
       hubIndex = fclass.getMetrics().getAfferentCoupling() * fclass.getMetrics().getEfferentCoupling() and
       hubIndex > 100
-select f.getFile(), f, "Avoid having public virtual methods (NVI idiom)"
+select f, "Avoid having public virtual methods (NVI idiom)"

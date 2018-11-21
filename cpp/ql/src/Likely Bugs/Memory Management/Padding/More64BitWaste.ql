@@ -4,6 +4,8 @@
  * @kind problem
  * @id cpp/more-64-bit-waste
  * @problem.severity warning
+ * @tags maintainability
+ *       portability
  */
 
 import semmle.code.cpp.padding.Padding
