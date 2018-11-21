@@ -109,4 +109,17 @@ class Conditions
                 x += "";
         return x;
     }
+
+    void M9(string[] args)
+    {
+        string s = null;
+        for(var i = 0; i < args.Length; i++)
+        {
+            var last = i == args.Length - 1;
+            if (!last)
+                s = "";
+            if (last)
+                s = null;
+        }
+    }
 }

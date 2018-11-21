@@ -3476,6 +3476,12 @@ module ControlFlow {
             this.correlatesConditions(any(ConditionBlock cb | cb.getLastElement() = cfe), _, _)
           }
 
+          /**
+           * Holds if basic block `bb` can reach a condition correlated with a
+           * split of this kind.
+           */
+          abstract predicate canReachCorrelatedCondition(PreBasicBlock bb);
+
           /** Gets the callable that this Boolean split kind belongs to. */
           abstract Callable getEnclosingCallable();
 
@@ -3550,6 +3556,17 @@ module ControlFlow {
               adjacentReadPairSameVar+(read1, read2) and
               read2 = cb2.getLastElement() and
               inverted = false
+            )
+          }
+
+          override predicate canReachCorrelatedCondition(PreBasicBlock bb) {
+            this.correlatesConditions(_, bb, _) and
+            not def.getBasicBlock() = bb
+            or
+            exists(PreBasicBlock mid |
+              this.canReachCorrelatedCondition(mid) |
+              bb = mid.getAPredecessor() and
+              not def.getBasicBlock() = bb
             )
           }
 
@@ -3636,7 +3653,7 @@ module ControlFlow {
           override predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
             succ = succ(pred, c) and
             this.getSubKind().startsSplit(pred) and
-            c = any(BooleanCompletion bc | bc.getOuterValue() = this.getBranch())
+            c = any(BooleanCompletion bc | bc.getInnerValue() = this.getBranch())
           }
 
           private ConditionBlock getACorrelatedCondition(boolean inverted) {
@@ -3662,26 +3679,13 @@ module ControlFlow {
             )
           }
 
-          /**
-           * Holds if basic block `bb` can reach a condition correlated with the value
-           * recorded in this split.
-           */
-          private predicate canReachCorrelatedCondition(PreBasicBlock bb) {
-            bb = this.getACorrelatedCondition(_)
-            or
-            exists(PreBasicBlock mid |
-              this.canReachCorrelatedCondition(mid) |
-              bb = mid.getAPredecessor()
-            )
-          }
-
           override predicate hasExit(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
             exists(PreBasicBlock bb |
               this.appliesToBlock(bb, c) |
               pred = bb.getLastElement() and
               succ = succ(pred, c) and
               // Exit this split if we can no longer reach a correlated condition
-              not this.canReachCorrelatedCondition(succ)
+              not this.getSubKind().canReachCorrelatedCondition(succ)
             )
           }
 
@@ -3702,7 +3706,7 @@ module ControlFlow {
                 pred = bb.getLastElement()
                 implies
                 // We must still be able to reach a correlated condition to stay in this split
-                this.canReachCorrelatedCondition(succ) and
+                this.getSubKind().canReachCorrelatedCondition(succ) and
                 c = c0
               )
             )

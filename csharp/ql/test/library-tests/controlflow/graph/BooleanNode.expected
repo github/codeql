@@ -98,3 +98,11 @@
 | inc (line 3): true | Conditions.cs:7:9:8:16 | [inc (line 3): true] if (...) ... |
 | inc (line 3): true | Conditions.cs:7:13:7:16 | [inc (line 3): true] !... |
 | inc (line 3): true | Conditions.cs:7:14:7:16 | [inc (line 3): true] access to parameter inc |
+| last (line 118): false | Conditions.cs:120:17:120:17 | [last (line 118): false] access to local variable s |
+| last (line 118): false | Conditions.cs:120:17:120:22 | [last (line 118): false] ... = ... |
+| last (line 118): false | Conditions.cs:120:17:120:23 | [last (line 118): false] ...; |
+| last (line 118): false | Conditions.cs:120:21:120:22 | [last (line 118): false] "" |
+| last (line 118): false | Conditions.cs:121:13:122:25 | [last (line 118): false] if (...) ... |
+| last (line 118): false | Conditions.cs:121:17:121:20 | [last (line 118): false] access to local variable last |
+| last (line 118): true | Conditions.cs:121:13:122:25 | [last (line 118): true] if (...) ... |
+| last (line 118): true | Conditions.cs:121:17:121:20 | [last (line 118): true] access to local variable last |
