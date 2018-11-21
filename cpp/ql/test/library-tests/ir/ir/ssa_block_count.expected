@@ -53,6 +53,7 @@
 | IR: FunctionReferences | 1 |
 | IR: HierarchyConversions | 1 |
 | IR: IfStatements | 8 |
+| IR: IfStmtWithDeclaration | 7 |
 | IR: InitArray | 1 |
 | IR: InitList | 1 |
 | IR: InitReference | 1 |
@@ -92,6 +93,7 @@
 | IR: VarArgs | 1 |
 | IR: VirtualMemberFunction | 1 |
 | IR: WhileStatements | 4 |
+| IR: WhileStmtWithDeclaration | 8 |
 | IR: designatedInit | 4 |
 | IR: min | 4 |
 | IR: operator= | 1 |

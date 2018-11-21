@@ -319,6 +319,10 @@ newtype TTranslatedElement =
   // An allocation size for a `new` or `new[]` expression
   TTranslatedAllocationSize(NewOrNewArrayExpr newExpr) {
     not ignoreExpr(newExpr)
+  } or
+  // The declaration/initialization part of a `ConditionDeclExpr`
+  TTranslatedConditionDecl(ConditionDeclExpr expr) {
+    not ignoreExpr(expr)
   }
 
 /**

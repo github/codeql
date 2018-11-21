@@ -28,7 +28,8 @@ class Expr extends StmtParent, @expr {
       result = this.getParent().(Expr).getEnclosingStmt() or
       result = this.getParent().(Stmt) or
       exists(Expr other | result = other.getEnclosingStmt() and other.getConversion() = this) or
-      exists(DeclStmt d, LocalVariable v | d.getADeclaration() = v and v.getInitializer().getExpr() = this and result = d)
+      exists(DeclStmt d, LocalVariable v | d.getADeclaration() = v and v.getInitializer().getExpr() = this and result = d) or
+      exists(ConditionDeclExpr cde, LocalVariable v | cde.getVariable() = v and v.getInitializer().getExpr() = this and result = cde.getEnclosingStmt())
   }
 
   /** Gets the enclosing variable of this expression, if any. */

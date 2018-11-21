@@ -186,3 +186,39 @@ class TranslatedVariableDeclarationEntry extends TranslatedVariableDeclaration,
     result = var
   }
 }
+
+TranslatedConditionDecl getTranslatedConditionDecl(ConditionDeclExpr expr) {
+  result.getAST() = expr
+}
+
+/**
+ * Represents the IR translation of the declaration portion of a `ConditionDeclExpr`, which
+ * represents the variable declared in code such as:
+ * ```
+ * if (int* p = &x) {
+ * }
+ * ```
+ */
+class TranslatedConditionDecl extends TranslatedVariableDeclaration, TTranslatedConditionDecl {
+  ConditionDeclExpr conditionDeclExpr;
+
+  TranslatedConditionDecl() {
+    this = TTranslatedConditionDecl(conditionDeclExpr)
+  }
+
+  override string toString() {
+    result = "decl: " + conditionDeclExpr.toString()
+  }
+
+  override Locatable getAST() {
+    result = conditionDeclExpr
+  }
+
+  override Function getFunction() {
+    result = conditionDeclExpr.getEnclosingFunction()
+  }
+
+  override LocalVariable getVariable() {
+    result = conditionDeclExpr.getVariable()
+  }
+}
