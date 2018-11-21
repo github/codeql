@@ -43,6 +43,7 @@
 | Duplicate switch case | Lower severity | The severity of this rule has been revised to "warning". |
 | Information exposure through a stack trace | More results | This rule now also flags cases where the entire exception object (including the stack trace) may be exposed. |
 | Missing CSRF middleware | Fewer false-positive results | This rule now recognizes additional CSRF protection middlewares. |
+| Missing 'this' qualifier | Fewer false-positive results | This rule now recognizes additional intentional calls to global functions. | 
 | Missing variable declaration | Lower severity | The severity of this rule has been revised to "warning". |
 | Regular expression injection | Fewer false-positive results | This rule now identifies calls to `String.prototype.search` with more precision. |
 | Remote property injection | Fewer results | The precision of this rule has been revised to "medium". Results are no longer shown on LGTM by default. |
