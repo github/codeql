@@ -37,7 +37,7 @@ void f2(char *src)
 	amount = amount + 1;
 	memcpy(buffer, src, amount); // BAD [NOT DETECTED]
 	amount = 101;
-	memcpy(buffer, src, amount); // BAD [NOT DETECTED]
+	memcpy(buffer, src, amount); // BAD
 
 	ptr = buffer;
 	memcpy(ptr, src, 101); // BAD [NOT DETECTED]

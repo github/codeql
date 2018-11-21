@@ -82,22 +82,31 @@ class CallWithBufferSize extends FunctionCall
   Expr buffer() {
     exists(int i |
       bufferAndSizeFunction(this.getTarget(), i, _) and
-      result = this.getArgument(i))
+      result = this.getArgument(i)
+    )
   }
-  Expr statedSize() {
+  Expr statedSizeExpr() {
     exists(int i |
       bufferAndSizeFunction(this.getTarget(), _, i) and
-      result = this.getArgument(i))
+      result = this.getArgument(i)
+    )
+  }
+  int statedSizeValue() {
+    exists(Expr statedSizeSrc |
+      DataFlow::localFlowStep*(DataFlow::exprNode(statedSizeSrc), DataFlow::exprNode(statedSizeExpr())) and
+      result = statedSizeSrc.getValue().toInt()
+    )
   }
 }
 
 predicate wrongBufferSize(Expr error, string msg) {
-  exists(CallWithBufferSize call, int bufsize, Variable buf |
+  exists(CallWithBufferSize call, int bufsize, Variable buf, int statedSize |
     staticBuffer(call.buffer(), buf, bufsize) and
-    call.statedSize().getValue().toInt() > bufsize and
-    error = call.statedSize() and
+    statedSize = call.statedSizeValue() and
+    statedSize > bufsize and
+    error = call.statedSizeExpr() and
     msg = "Potential buffer-overflow: '" + buf.getName() +
-    "' has size " + bufsize.toString() + " not " + call.statedSize().getValue() + ".")
+    "' has size " + bufsize.toString() + " not " + statedSize + ".")
 }
 
 predicate outOfBounds(BufferAccess bufaccess, string msg)
