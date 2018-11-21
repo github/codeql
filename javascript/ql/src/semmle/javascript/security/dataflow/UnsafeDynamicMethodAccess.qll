@@ -1,17 +1,17 @@
 /**
  * Provides a taint-tracking configuration for reasoning about method invocations
- * with a user-controlled method name.
+ * with a user-controlled method name on objects with unsafe methods.
  */
 
 import javascript
 import semmle.javascript.frameworks.Express
 import PropertyInjectionShared
 
-module MethodNameInjection {
+module UnsafeDynamicMethodAccess {
   private import DataFlow::FlowLabel
   
   /**
-   * A data flow source for method name injection.
+   * A data flow source for unsafe dynamic method access.
    */
   abstract class Source extends DataFlow::Node {
     /**
@@ -23,7 +23,7 @@ module MethodNameInjection {
   }
 
   /**
-   * A data flow sink for method name injection.
+   * A data flow sink for unsafe dynamic method access.
    */
   abstract class Sink extends DataFlow::Node {
     /**
@@ -33,7 +33,7 @@ module MethodNameInjection {
   }
 
   /**
-   * A sanitizer for method name injection.
+   * A sanitizer for unsafe dynamic method access.
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
@@ -47,7 +47,7 @@ module MethodNameInjection {
   }
 
   /**
-   * A taint-tracking configuration for reasoning about method name injection.
+   * A taint-tracking configuration for reasoning about unsafe dynamic method access.
    */
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "RemotePropertyInjection" }
@@ -101,21 +101,21 @@ module MethodNameInjection {
   }
 
   /**
-   * A source of remote user input, considered as a source for method name injection. 
+   * A source of remote user input, considered as a source for unsafe dynamic method access.
    */
   class RemoteFlowSourceAsSource extends Source {
     RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
   }
 
   /**
-   * The page URL considered as a flow source for method name injection. 
+   * The page URL considered as a flow source for unsafe dynamic method access.
    */
   class DocumentUrlAsSource extends Source {
     DocumentUrlAsSource() { isDocumentURL(asExpr()) }
   }
 
   /**
-   * A function invocation of an unsafe function, as a sink for remote method name injection.
+   * A function invocation of an unsafe function, as a sink for remote unsafe dynamic method access.
    */
   class CalleeAsSink extends Sink {
     CalleeAsSink() {

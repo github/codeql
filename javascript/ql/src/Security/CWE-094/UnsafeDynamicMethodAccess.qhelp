@@ -27,14 +27,14 @@ A malicious website could embed the page in an iframe and execute arbitrary code
 with the name <code>eval</code>.
 </p>
 
-<sample src="examples/MethodNameInjection.js" />
+<sample src="examples/UnsafeDynamicMethodAccess.js" />
 
 <p>
 Instead of storing the API methods in the global scope, put them in an API object or Map. It is also good
 practice to prevent invocation of inherited methods like <code>toString</code> and <code>valueOf</code>.
 </p>
 
-<sample src="examples/MethodNameInjectionGood.js" />
+<sample src="examples/UnsafeDynamicMethodAccessGood.js" />
 
 </example>
 

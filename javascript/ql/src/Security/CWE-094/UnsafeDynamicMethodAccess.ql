@@ -1,15 +1,15 @@
 /**
- * @name Method name injection
+ * @name Unsafe dynamic method access
  * @description Invoking user-controlled methods on certain objects can lead to remote code execution.
  * @kind path-problem
  * @problem.severity error
  * @precision high
- * @id js/method-name-injection
+ * @id js/unsafe-dynamic-method-access
  * @tags security
  *       external/cwe/cwe-094
  */
 import javascript
-import semmle.javascript.security.dataflow.MethodNameInjection::MethodNameInjection
+import semmle.javascript.security.dataflow.UnsafeDynamicMethodAccess::UnsafeDynamicMethodAccess
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

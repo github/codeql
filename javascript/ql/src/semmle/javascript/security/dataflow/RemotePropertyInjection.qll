@@ -81,7 +81,7 @@ module RemotePropertyInjection {
       exists (DataFlow::PropRead pr | astNode = pr.getPropertyNameExpr() |
         exists (pr.getAnInvocation()) and
 
-        // Omit sinks covered by the MethodNameInjection query
+        // Omit sinks covered by the UnsafeDynamicMethodAccess query
         not PropertyInjection::hasUnsafeMethods(pr.getBase().getALocalSource())
       )
     }
