@@ -30,7 +30,7 @@ with the name <code>eval</code>.
 <sample src="examples/MethodNameInjection.js" />
 
 <p>
-Instead of storing the API methods in the global scope, put them in an API object. It is also good
+Instead of storing the API methods in the global scope, put them in an API object or Map. It is also good
 practice to prevent invocation of inherited methods like <code>toString</code> and <code>valueOf</code>.
 </p>
 
