@@ -1,6 +1,7 @@
 /**
  * @name Uncontrolled format string
- * @description
+ * @description Passing untrusted format strings from remote data sources can throw exceptions
+ *              and cause a denial of service.
  * @kind path-problem
  * @problem.severity error
  * @precision high
