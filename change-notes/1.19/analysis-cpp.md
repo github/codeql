@@ -22,12 +22,11 @@
 | Expression has no effect | Fewer false positive results | Expressions in template instantiations are now excluded from this query. |
 | Resource not released in destructor | Fewer false positive results | Placement new is now excluded from the query. Also fixed an issue where false positives could occur if the destructor body was not in the snapshot. |
 | Missing return statement (`cpp/missing-return`) | Visible by default | The precision of this query has been increased from 'medium' to 'high', which makes it visible by default in LGTM. It was 'medium' in release 1.17 and 1.18 because it had false positives due to an extractor bug that was fixed in 1.18. |
-| Missing return statement | Fewer false positive results | The query is now produces correct results when a function returns a template-dependent type. |
+| Missing return statement | Fewer false positive results | The query is now produces correct results when a function returns a template-dependent type, or makes a non-returning call to another function. |
 | Call to memory access function may overflow buffer | More correct results | Array indexing with a negative index is now detected by this query. |
 | Suspicious call to memset | Fewer false positive results | Types involving decltype are now correctly compared. |
 | Suspicious add with sizeof | Fewer false positive results | Arithmetic with void pointers (where allowed) is now excluded from this query. |
 | Wrong type of arguments to formatting function | Fewer false positive results | False positive results involving typedefs have been removed.  Expected argument types are determined more accurately, especially for wide string and pointer types.  Custom (non-standard) formatting functions are also identified more accurately. |
-| Missing return statement | Fewer false positive results | Functions which make a non-returning function call are no longer expected to have a return statement after that call. |
 | AV Rule 164 | Fewer false positive results | This query now accounts for explicit casts. |
 | Negation of unsigned value | Fewer false positive results | This query now accounts for explicit casts. |
 | Variable scope too large | Fewer false positive results | Variables with declarations in header files, or that are used at file scope, are now excluded from this query. |
