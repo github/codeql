@@ -12,11 +12,11 @@ or an argument of the wrong type, then <code>System.FormatException</code> is th
 </overview>
 <recommendation>
 
-<p>Use a string literal for the format string, to prevent the possibility of data-flow from
+<p>Use a string literal for the format string, to prevent the possibility of data flow from
 an untrusted source. This also helps to prevent errors where the arguments to
 <code>String.Format</code> do not match the format string.</p>
 
-<p>If the format string cannot be fixed, then ensure that it comes from a secure
+<p>If the format string cannot be constant, ensure that it comes from a secure
 data source or is compiled into the source code.</p>
 
 </recommendation>
@@ -32,7 +32,7 @@ the application to crash.</p>
 
 <li>
 OWASP:
-<a href="https://www.owasp.org/index.php/Format_string_attack">format string attack</a>.
+<a href="https://www.owasp.org/index.php/Format_string_attack">Format string attack</a>.
 </li>
 
 <li>
