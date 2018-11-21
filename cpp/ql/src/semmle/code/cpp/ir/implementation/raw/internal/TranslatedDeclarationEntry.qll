@@ -10,8 +10,7 @@ private import TranslatedInitialization
  * Gets the `TranslatedDeclarationEntry` that represents the declaration
  * `entry`.
  */
-TranslatedDeclarationEntry getTranslatedDeclarationEntry(
-  DeclarationEntry entry) {
+TranslatedDeclarationEntry getTranslatedDeclarationEntry(DeclarationEntry entry) {
   result.getAST() = entry
 }
 
@@ -21,8 +20,7 @@ TranslatedDeclarationEntry getTranslatedDeclarationEntry(
  * it can also be the declaration of a static local variable, an extern
  * variable, or an extern function.
  */
-abstract class TranslatedDeclarationEntry extends TranslatedElement,
-  TTranslatedDeclarationEntry {
+abstract class TranslatedDeclarationEntry extends TranslatedElement, TTranslatedDeclarationEntry {
   DeclarationEntry entry;
 
   TranslatedDeclarationEntry() {
@@ -50,14 +48,13 @@ abstract class TranslatedDeclarationEntry extends TranslatedElement,
  * for declarations other than local variables. Since these have no semantic
  * effect, they are translated as `NoOp`.
  */
-class TranslatedNonVariableDeclaration extends
-  TranslatedDeclarationEntry {
-  TranslatedNonVariableDeclaration() {
+class TranslatedNonVariableDeclarationEntry extends TranslatedDeclarationEntry {
+  TranslatedNonVariableDeclarationEntry() {
     not entry.getDeclaration() instanceof LocalVariable
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-    Type resultType, boolean isGLValue) {
+      Type resultType, boolean isGLValue) {
     opcode instanceof Opcode::NoOp and
     tag = OnlyInstructionTag() and
     resultType instanceof VoidType and
@@ -88,98 +85,11 @@ class TranslatedNonVariableDeclaration extends
  * Represents the IR translation of the declaration of a local variable,
  * including its initialization, if any.
  */
-abstract class TranslatedVariableDeclaration extends
-  TranslatedDeclarationEntry {
-  LocalVariable var;
-
-  TranslatedVariableDeclaration() {
-    entry.getDeclaration() = var
-  }
-}
-
-/**
- * Represents the IR translation of a local variable with no initializer. The
- * generated IR stores into the variable using an `Uninitialized` instruction,
- * rather than a `Store`.
- */
-class TranslatedUninitializedVariable extends
-  TranslatedVariableDeclaration {
-  TranslatedUninitializedVariable() {
-    not exists(Initializer init |
-      init.getDeclaration() = var
-    )
-  }
-
-  override TranslatedElement getChild(int id) {
-    none()
-  }
-
-  override Instruction getFirstInstruction() {
-    result = getInstruction(InitializerVariableAddressTag())
-  }
-
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-    Type resultType, boolean isGLValue) {
-    (
-      tag = InitializerVariableAddressTag() and
-      opcode instanceof Opcode::VariableAddress and
-      resultType = var.getType().getUnspecifiedType() and
-      isGLValue = true
-    ) or
-    ( 
-      tag = InitializerStoreTag() and
-      opcode instanceof Opcode::Uninitialized and
-      resultType = var.getType().getUnspecifiedType() and
-      isGLValue = false
-    )
-  }
-
-  override Instruction getInstructionSuccessor(InstructionTag tag,
-    EdgeKind kind) {
-    kind instanceof GotoEdge and
-    (
-      (
-        tag = InitializerVariableAddressTag() and
-        result = getInstruction(InitializerStoreTag())
-      ) or
-      (
-        tag = InitializerStoreTag() and
-        result = getParent().getChildSuccessor(this)
-      )
-    )
-  }
-
-  override Instruction getChildSuccessor(TranslatedElement child) {
-    none()
-  }
-
-  override Instruction getInstructionOperand(InstructionTag tag,
-    OperandTag operandTag) {
-    tag = InitializerStoreTag() and
-    (
-      (
-        operandTag instanceof AddressOperandTag and
-        result = getInstruction(InitializerVariableAddressTag())
-      ) 
-    )
-  }
-
-  override IRVariable getInstructionVariable(InstructionTag tag) {
-    tag = InitializerVariableAddressTag() and
-    result = getIRUserVariable(var.getFunction(), var)
-  }
-}
-
-/**
- * Represents the IR translation of a local variable with an initializer.
- */
-class TranslatedInitializedVariable extends
-  TranslatedVariableDeclaration, InitializationContext {
-  Initializer init;
-
-  TranslatedInitializedVariable() {
-    init.getDeclaration() = var
-  }
+abstract class TranslatedVariableDeclaration extends TranslatedElement, InitializationContext {
+  /**
+   * Gets the local variable being declared.
+   */
+  abstract LocalVariable getVariable();
 
   override TranslatedElement getChild(int id) {
     id = 0 and result = getInitialization()
@@ -190,18 +100,41 @@ class TranslatedInitializedVariable extends
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-    Type resultType, boolean isGLValue) {
-    tag = InitializerVariableAddressTag() and
-    opcode instanceof Opcode::VariableAddress and
-    resultType = var.getType().getUnspecifiedType() and
-    isGLValue = true
+      Type resultType, boolean isGLValue) {
+    (
+      tag = InitializerVariableAddressTag() and
+      opcode instanceof Opcode::VariableAddress and
+      resultType = getVariable().getType().getUnspecifiedType() and
+      isGLValue = true
+    ) or
+    (
+      hasUninitializedInstruction() and
+      tag = InitializerStoreTag() and
+      opcode instanceof Opcode::Uninitialized and
+      resultType = getVariable().getType().getUnspecifiedType() and
+      isGLValue = false
+    )
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag,
-    EdgeKind kind) {
-    tag = InitializerVariableAddressTag() and
-    result = getInitialization().getFirstInstruction() and
-    kind instanceof GotoEdge
+      EdgeKind kind) {
+    (
+      tag = InitializerVariableAddressTag() and
+      kind instanceof GotoEdge and
+      if hasUninitializedInstruction() then
+        result = getInstruction(InitializerStoreTag())
+      else
+        result = getInitialization().getFirstInstruction()
+    ) or
+    (
+      hasUninitializedInstruction() and
+      kind instanceof GotoEdge and
+      tag = InitializerStoreTag() and
+      (
+        result = getInitialization().getFirstInstruction() or
+        not exists(getInitialization()) and result = getParent().getChildSuccessor(this)
+      )
+    )
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
@@ -210,7 +143,14 @@ class TranslatedInitializedVariable extends
 
   override IRVariable getInstructionVariable(InstructionTag tag) {
     tag = InitializerVariableAddressTag() and
-    result = getIRUserVariable(var.getFunction(), var)
+    result = getIRUserVariable(getFunction(), getVariable())
+  }
+
+  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+    hasUninitializedInstruction() and
+    tag = InitializerStoreTag() and
+    operandTag instanceof AddressOperandTag and
+    result = getInstruction(InitializerVariableAddressTag())
   }
 
   override Instruction getTargetAddress() {
@@ -218,10 +158,31 @@ class TranslatedInitializedVariable extends
   }
 
   override Type getTargetType() {
-    result = var.getType().getUnspecifiedType()
+    result = getVariable().getType().getUnspecifiedType()
   }
 
   private TranslatedInitialization getInitialization() {
-    result = getTranslatedInitialization(init.getExpr().getFullyConverted())
+    result = getTranslatedInitialization(getVariable().getInitializer().getExpr().getFullyConverted())
+  }
+
+  private predicate hasUninitializedInstruction() {
+    not exists(getInitialization()) or
+    getInitialization() instanceof TranslatedListInitialization
+  }
+}
+
+/**
+ * Represents the IR translation of a local variable declaration within a declaration statement.
+ */
+class TranslatedVariableDeclarationEntry extends TranslatedVariableDeclaration,
+    TranslatedDeclarationEntry {
+  LocalVariable var;
+
+  TranslatedVariableDeclarationEntry() {
+    var = entry.getDeclaration()
+  }
+
+  override LocalVariable getVariable() {
+    result = var
   }
 }
