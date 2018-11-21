@@ -7,6 +7,7 @@
  * @id cpp/redefined-default-parameter
  * @tags maintainability
  *       readability
+ *       external/jsf
  */
 import cpp
 

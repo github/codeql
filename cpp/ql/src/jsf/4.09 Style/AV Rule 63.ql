@@ -3,7 +3,10 @@
  * @description Spaces will not be used around '.' or '->', nor between unary operators and operands.
  * @kind problem
  * @id cpp/jsf/av-rule-63
- * @problem.severity error
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
+ *       external/jsf
  */
 import cpp
 

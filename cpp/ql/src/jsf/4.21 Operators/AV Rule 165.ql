@@ -4,7 +4,10 @@
  * @kind problem
  * @id cpp/jsf/av-rule-165
  * @problem.severity warning
- * @tags reliability
+ * @precision low
+ * @tags correctness
+ *       reliability
+ *       external/jsf
  */
 import cpp
 

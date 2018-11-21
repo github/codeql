@@ -4,7 +4,10 @@
  *              below arithmetic operators, in expressions.
  * @kind problem
  * @id cpp/jsf/av-rule-213
- * @problem.severity error
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
+ *       external/jsf
  */
 import cpp
 

@@ -4,7 +4,10 @@
  *              shall be terminated with a break statement.
  * @kind problem
  * @id cpp/jsf/av-rule-193
- * @problem.severity error
+ * @problem.severity warning
+ * @tags correctness
+ *       readability
+ *       external/jsf
  */
 import cpp
 

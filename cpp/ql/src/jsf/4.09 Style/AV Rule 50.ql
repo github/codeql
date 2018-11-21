@@ -3,7 +3,10 @@
  * @description The first word of the name of a class, structure, namespace, enumeration, or type created with typedef will begin with an uppercase letter. All other letters will be lowercase.
  * @kind problem
  * @id cpp/jsf/av-rule-50
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
+ *       external/jsf
  */
 import cpp
 import Naming

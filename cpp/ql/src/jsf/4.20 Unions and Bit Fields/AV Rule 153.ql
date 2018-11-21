@@ -3,7 +3,9 @@
  * @description Unions shall not be used.
  * @kind problem
  * @id cpp/jsf/av-rule-153
- * @problem.severity error
+ * @problem.severity recommendation
+ * @tags correctness
+ *       external/jsf
  */
 import cpp
 

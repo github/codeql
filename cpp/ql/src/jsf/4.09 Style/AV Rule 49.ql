@@ -3,7 +3,10 @@
  * @description All acronyms in an identifier will be composed of uppercase letters.
  * @kind problem
  * @id cpp/jsf/av-rule-49
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
+ *       external/jsf
  */
 import cpp
 import Naming

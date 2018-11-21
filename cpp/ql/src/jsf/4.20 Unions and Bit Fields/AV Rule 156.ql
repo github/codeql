@@ -4,7 +4,10 @@
  *              and shall only be accessed via their names.
  * @kind problem
  * @id cpp/jsf/av-rule-156
- * @problem.severity error
+ * @problem.severity warning
+ * @precision low
+ * @tags correctness
+ *       external/jsf
  */
 import cpp
 

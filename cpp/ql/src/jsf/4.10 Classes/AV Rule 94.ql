@@ -3,7 +3,9 @@
  * @description An inherited nonvirtual function shall not be redefined in a derived class. Such definitions would hide the function in the base class.
  * @kind problem
  * @id cpp/jsf/av-rule-94
- * @problem.severity error
+ * @problem.severity warning
+ * @tags maintainability
+ *       external/jsf
  */
 import cpp
 

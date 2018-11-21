@@ -3,7 +3,9 @@
  * @description Hexadecimal constants will be represented using all uppercase letters.
  * @kind problem
  * @id cpp/jsf/av-rule-150
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       external/jsf
  */
 import cpp
 

@@ -7,6 +7,7 @@
  * @id cpp/function-in-block
  * @tags maintainability
  *       readability
+ *       external/jsf
  */
 import cpp
 

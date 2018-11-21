@@ -7,6 +7,7 @@
  * @id cpp/sizeof-side-effect
  * @tags reliability
  *       correctness
+ *       external/jsf
  */
 import cpp
 import jsf.lib.section_4_21_Operators.AV_Rule_166

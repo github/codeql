@@ -3,7 +3,10 @@
  * @description All letters contained in function and variable names will be lowercase.
  * @kind problem
  * @id cpp/jsf/av-rule-51
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
+ *       external/jsf
  */
 import cpp
 import Naming

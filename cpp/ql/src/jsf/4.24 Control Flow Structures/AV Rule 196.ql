@@ -7,6 +7,7 @@
  * @id cpp/trivial-switch
  * @tags maintainability
  *       readability
+ *       external/jsf
  */
 import cpp
 

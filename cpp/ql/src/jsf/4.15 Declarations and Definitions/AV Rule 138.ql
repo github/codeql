@@ -3,7 +3,9 @@
  * @description Identifiers shall not simultaneously have both internal and external linkage in the same translation unit.
  * @kind problem
  * @id cpp/jsf/av-rule-138
- * @problem.severity error
+ * @problem.severity warning
+ * @tags maintainability
+ *       external/jsf
  */
 import cpp
 

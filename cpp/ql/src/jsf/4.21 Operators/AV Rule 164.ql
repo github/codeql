@@ -4,6 +4,9 @@
  * @kind problem
  * @id cpp/jsf/av-rule-164
  * @problem.severity error
+ * @precision low
+ * @tags correctness
+ *       external/jsf
  */
 import cpp
 
