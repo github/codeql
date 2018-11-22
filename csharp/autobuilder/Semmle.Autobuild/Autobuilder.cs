@@ -29,7 +29,7 @@ namespace Semmle.Autobuild
     public class Autobuilder
     {
         /// <summary>
-        /// Full file paths of files found in the project directory, as well
+        /// Full file paths of files found in the project directory, as well as
         /// their distance from the project root folder. The list is sorted
         /// by distance in ascending order.
         /// </summary>
@@ -37,8 +37,8 @@ namespace Semmle.Autobuild
         readonly Lazy<IEnumerable<(string, int)>> pathsLazy;
 
         /// <summary>
-        /// Gets a list of paths matching a set of extensions
-        /// (including the "."), as well their distance from the project root folder.
+        /// Gets a list of paths matching a set of extensions (including the "."),
+        /// as well as their distance from the project root folder.
         /// The list is sorted by distance in ascending order.
         /// </summary>
         /// <param name="extensions">The extensions to find.</param>
@@ -47,8 +47,8 @@ namespace Semmle.Autobuild
             Paths.Where(p => extensions.Contains(Path.GetExtension(p.Item1)));
 
         /// <summary>
-        /// Gets all paths matching a particular filename, as well
-        /// their distance from the project root folder.  The list is sorted
+        /// Gets all paths matching a particular filename, as well as
+        /// their distance from the project root folder. The list is sorted
         /// by distance in ascending order.
         /// </summary>
         /// <param name="name">The filename to find.</param>
