@@ -23,13 +23,13 @@ namespace Semmle.Autobuild
 
         public Version ToolsVersion { get; private set; }
 
-        readonly List<Project> includedProjects = new List<Project>();
-        public override IEnumerable<IProjectOrSolution> IncludedProjects =>
-            includedProjects.Concat(includedProjects.SelectMany(s => s.IncludedProjects));
+        readonly Lazy<List<Project>> includedProjectsLazy;
+        public override IEnumerable<IProjectOrSolution> IncludedProjects => includedProjectsLazy.Value;
 
         public Project(Autobuilder builder, string path) : base(builder, path)
         {
             ToolsVersion = new Version();
+            includedProjectsLazy = new Lazy<List<Project>>(() => new List<Project>());
 
             if (!builder.Actions.FileExists(FullPath))
                 return;
@@ -69,17 +69,22 @@ namespace Semmle.Autobuild
                     }
                 }
 
-                // The documentation on `.proj` files is very limited, but it appears that both
-                // `<ProjectFile Include="X"/>` and `<ProjectFiles Include="X"/>` is valid
-                var mgr = new XmlNamespaceManager(projFile.NameTable);
-                mgr.AddNamespace("msbuild", "http://schemas.microsoft.com/developer/msbuild/2003");
-                var projectFileIncludes = root.SelectNodes("//msbuild:Project/msbuild:ItemGroup/msbuild:ProjectFile/@Include", mgr).OfType<XmlNode>();
-                var projectFilesIncludes = root.SelectNodes("//msbuild:Project/msbuild:ItemGroup/msbuild:ProjectFiles/@Include", mgr).OfType<XmlNode>();
-                foreach (var include in projectFileIncludes.Concat(projectFilesIncludes))
+                includedProjectsLazy = new Lazy<List<Project>>(() =>
                 {
-                    var includePath = builder.Actions.IsWindows() ? include.Value : include.Value.Replace("\\", "/");
-                    includedProjects.Add(new Project(builder, builder.Actions.PathCombine(Path.GetDirectoryName(this.FullPath), includePath)));
-                }
+                    var ret = new List<Project>();
+                    // The documentation on `.proj` files is very limited, but it appears that both
+                    // `<ProjectFile Include="X"/>` and `<ProjectFiles Include="X"/>` is valid
+                    var mgr = new XmlNamespaceManager(projFile.NameTable);
+                    mgr.AddNamespace("msbuild", "http://schemas.microsoft.com/developer/msbuild/2003");
+                    var projectFileIncludes = root.SelectNodes("//msbuild:Project/msbuild:ItemGroup/msbuild:ProjectFile/@Include", mgr).OfType<XmlNode>();
+                    var projectFilesIncludes = root.SelectNodes("//msbuild:Project/msbuild:ItemGroup/msbuild:ProjectFiles/@Include", mgr).OfType<XmlNode>();
+                    foreach (var include in projectFileIncludes.Concat(projectFilesIncludes))
+                    {
+                        var includePath = builder.Actions.IsWindows() ? include.Value : include.Value.Replace("\\", "/");
+                        ret.Add(new Project(builder, builder.Actions.PathCombine(Path.GetDirectoryName(this.FullPath), includePath)));
+                    }
+                    return ret;
+                });
             }
         }
     }

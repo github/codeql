@@ -15,7 +15,7 @@ namespace Semmle.Autobuild
         string FullPath { get; }
 
         /// <summary>
-        /// Gets a list of other projects included by this file.
+        /// Gets a list of other projects directly included by this file.
         /// </summary>
         IEnumerable<IProjectOrSolution> IncludedProjects { get; }
     }
@@ -39,8 +39,16 @@ namespace Semmle.Autobuild
         /// <summary>
         /// Holds if this file includes a project with code from language <paramref name="l"/>.
         /// </summary>
-        public static bool HasLanguage(this IProjectOrSolution p, Language l) =>
-            l.ProjectFileHasThisLanguage(p.FullPath) ||
-            p.IncludedProjects.Any(p0 => l.ProjectFileHasThisLanguage(p0.FullPath));
+        public static bool HasLanguage(this IProjectOrSolution p, Language l)
+        {
+            bool HasLanguage(IProjectOrSolution p0, HashSet<string> seen)
+            {
+                if (seen.Contains(p0.FullPath))
+                    return false;
+                seen.Add(p0.FullPath); // guard against cyclic includes
+                return l.ProjectFileHasThisLanguage(p0.FullPath) || p0.IncludedProjects.Any(p1 => HasLanguage(p1, seen));
+            }
+            return HasLanguage(p, new HashSet<string>());
+        }
     }
 }

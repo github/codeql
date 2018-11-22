@@ -1020,5 +1020,27 @@ namespace Semmle.Extraction.Tests
             var autobuilder = CreateAutoBuilder("csharp", false);
             TestAutobuilderScript(autobuilder, 0, 4);
         }
+
+        [Fact]
+        public void TestCyclicDirsProj()
+        {
+            Actions.FileExists["dirs.proj"] = true;
+            Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
+            Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
+            Actions.FileExists["csharp.log"] = false;
+            Actions.EnumerateFiles[@"C:\Project"] = "dirs.proj";
+            Actions.EnumerateDirectories[@"C:\Project"] = "";
+
+            var dirsproj1 = new XmlDocument();
+            dirsproj1.LoadXml(@"<Project DefaultTargets=""Build"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"" ToolsVersion=""3.5"">
+  <ItemGroup>
+    <ProjectFiles Include=""dirs.proj"" />
+  </ItemGroup>
+</Project>");
+            Actions.LoadXml["dirs.proj"] = dirsproj1;
+
+            var autobuilder = CreateAutoBuilder("csharp", false);
+            TestAutobuilderScript(autobuilder, 1, 0);
+        }
     }
 }
