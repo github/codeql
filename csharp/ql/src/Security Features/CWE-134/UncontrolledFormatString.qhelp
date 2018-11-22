@@ -12,7 +12,7 @@ or an argument of the wrong type, then <code>System.FormatException</code> is th
 </overview>
 <recommendation>
 
-<p>Use a string literal for the format string, to prevent the possibility of data flow from
+<p>Use a string literal for the format string to prevent the possibility of data flow from
 an untrusted source. This also helps to prevent errors where the arguments to
 <code>String.Format</code> do not match the format string.</p>
 
