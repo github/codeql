@@ -23,3 +23,10 @@ def command_injection2():
 def first_arg_injection():
     cmd = request.args.get('cmd', '')
     subprocess.Popen([cmd, "param1"])
+
+
+@app.route("/other_cases")
+def others():
+    files = request.args.get('files', '')
+    # Don't let files be `; rm -rf /`
+    os.popen("ls " + files)
