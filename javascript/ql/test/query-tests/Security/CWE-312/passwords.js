@@ -122,3 +122,18 @@
     console.log(name + ", " + password.toString()); // NOT OK
     console.log(name + ", " + password.valueOf()); // NOT OK
 });
+
+(function() {
+    var config = {
+        password: x,
+        hostname: "tarski",
+        x: password,
+        y: getPassword()
+    };
+    var cfg = x? config: config;
+    console.log(config.hostname); // OK
+    console.log(config); // NOT OK
+    console.log(config.x); // NOT OK
+    console.log(config.y); // NOT OK
+    console.log(config[x]); // OK (probably)
+});
