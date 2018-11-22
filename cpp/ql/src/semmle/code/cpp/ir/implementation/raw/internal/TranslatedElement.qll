@@ -1,5 +1,7 @@
 import cpp
+import cpp
 import semmle.code.cpp.ir.implementation.raw.IR
+private import semmle.code.cpp.ir.IRConfiguration
 private import semmle.code.cpp.ir.implementation.Opcode
 private import semmle.code.cpp.ir.internal.OperandTag
 private import semmle.code.cpp.ir.internal.TempVariableTag
@@ -83,7 +85,8 @@ private predicate ignoreExprOnly(Expr expr) {
     // Ignore the allocator call, because we always synthesize it. Don't ignore
     // its arguments, though, because we use them as part of the synthesis.
     newExpr.getAllocatorCall() = expr
-  )
+  ) or
+  not translateFunction(expr.getEnclosingFunction())
 }
 
 /**
@@ -92,6 +95,49 @@ private predicate ignoreExprOnly(Expr expr) {
 private predicate ignoreExpr(Expr expr) {
   ignoreExprOnly(expr) or
   ignoreExprAndDescendants(getRealParent*(expr))
+}
+
+/**
+ * Holds if `func` contains an AST that cannot be translated into IR. This is mostly used to work
+ * around extractor bugs. Once the relevant extractor bugs are fixed, this predicate can be removed.
+ */
+private predicate isInvalidFunction(Function func) {
+  exists(Literal literal |
+    // Constructor field inits within a compiler-generated copy constructor have a source expression
+    // that is a `Literal` with no value.
+    literal = func.(Constructor).getAnInitializer().(ConstructorFieldInit).getExpr() and
+    not exists(literal.getValue())
+  ) or
+  exists(ThisExpr thisExpr |
+    // An instantiation of a member function template is not treated as a `MemberFunction` if it has
+    // only non-type template arguments.
+    thisExpr.getEnclosingFunction() = func and
+    not func instanceof MemberFunction
+  ) or
+  exists(Expr expr |
+    // Expression missing a type.
+    expr.getEnclosingFunction() = func and
+    not exists(expr.getType())
+  )
+}
+
+/**
+ * Holds if `func` should be translated to IR.
+ */
+private predicate translateFunction(Function func) {
+  not func.isFromUninstantiatedTemplate(_) and
+  func.hasEntryPoint() and
+  not isInvalidFunction(func) and
+  exists(IRConfiguration config |
+    config.shouldCreateIRForFunction(func)
+  )
+}
+
+/**
+ * Holds if `stmt` should be translated to IR.
+ */
+private predicate translateStmt(Stmt stmt) {
+  translateFunction(stmt.getEnclosingFunction())
 }
 
 /**
@@ -236,7 +282,7 @@ newtype TTranslatedElement =
   } or
   // The initialization of a field via a member of an initializer list.
   TTranslatedExplicitFieldInitialization(Expr ast, Field field,
-    Expr expr) {
+      Expr expr) {
     exists(ClassAggregateLiteral initList |
       not ignoreExpr(initList) and
       ast = initList and
@@ -260,14 +306,14 @@ newtype TTranslatedElement =
   } or
   // The initialization of an array element via a member of an initializer list.
   TTranslatedExplicitElementInitialization(
-    ArrayAggregateLiteral initList, int elementIndex) {
+      ArrayAggregateLiteral initList, int elementIndex) {
     not ignoreExpr(initList) and
     exists(initList.getElementExpr(elementIndex))
   } or
   // The value initialization of a range of array elements that were omitted
   // from an initializer list.
   TTranslatedElementValueInitialization(ArrayAggregateLiteral initList,
-    int elementIndex, int elementCount) {
+      int elementIndex, int elementCount) {
     not ignoreExpr(initList) and
     isFirstValueInitializedElementInRange(initList, elementIndex) and
     elementCount = 
@@ -287,28 +333,35 @@ newtype TTranslatedElement =
     not ignoreExpr(destruction)
   } or
   // A statement
-  TTranslatedStmt(Stmt stmt) or
+  TTranslatedStmt(Stmt stmt) {
+    translateStmt(stmt)
+  } or
   // A function
   TTranslatedFunction(Function func) {
-    func.hasEntryPoint() and
-    not func.isFromUninstantiatedTemplate(_)
+    translateFunction(func)
   } or
   // A constructor init list
   TTranslatedConstructorInitList(Function func) {
-    func.hasEntryPoint()
+    translateFunction(func)
   } or
   // A destructor destruction list
   TTranslatedDestructorDestructionList(Function func) {
-    func.hasEntryPoint()
+    translateFunction(func)
   } or
   // A function parameter
   TTranslatedParameter(Parameter param) {
-    param.getFunction().hasEntryPoint() or
-    exists(param.getCatchBlock())
+    exists(Function func |
+      (
+        func = param.getFunction() or
+        func = param.getCatchBlock().getEnclosingFunction()
+      ) and
+      translateFunction(func)
+    )
   } or
   // A local declaration
   TTranslatedDeclarationEntry(DeclarationEntry entry) {
     exists(DeclStmt declStmt |
+      translateStmt(declStmt) and
       declStmt.getADeclarationEntry() = entry
     )
   } or

@@ -8,6 +8,8 @@
 | IR: C | 1 |
 | IR: Call | 1 |
 | IR: CallAdd | 1 |
+| IR: CallBadMemberFunction | 1 |
+| IR: CallCopyConstructor | 1 |
 | IR: CallMethods | 1 |
 | IR: CallMin | 1 |
 | IR: CallNestedTemplateFunc | 1 |
@@ -74,6 +76,7 @@
 | IR: OperatorNew | 1 |
 | IR: OperatorNewArray | 1 |
 | IR: Parameters | 1 |
+| IR: Point | 1 |
 | IR: PointerCompare | 1 |
 | IR: PointerCrement | 1 |
 | IR: PointerOps | 1 |
