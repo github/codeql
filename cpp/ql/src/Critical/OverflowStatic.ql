@@ -102,7 +102,7 @@ class CallWithBufferSize extends FunctionCall
 predicate wrongBufferSize(Expr error, string msg) {
   exists(CallWithBufferSize call, int bufsize, Variable buf, int statedSize |
     staticBuffer(call.buffer(), buf, bufsize) and
-    statedSize = call.statedSizeValue() and
+    statedSize = min(call.statedSizeValue()) and
     statedSize > bufsize and
     error = call.statedSizeExpr() and
     msg = "Potential buffer-overflow: '" + buf.getName() +
