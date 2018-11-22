@@ -3,6 +3,7 @@
  * @description Find number of commits for a file
  * @treemap.warnOn lowValues
  * @metricType file
+ * @deprecated
  */
 
 import cpp

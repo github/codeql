@@ -3,6 +3,7 @@
  * @description A test case for creating a defect from SVN data.
  * @kind problem
  * @problem.severity warning
+ * @deprecated
  */
 
 import cpp

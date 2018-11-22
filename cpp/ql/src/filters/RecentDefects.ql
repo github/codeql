@@ -6,6 +6,7 @@
  *              before the date of the snapshot.
  * @kind problem
  * @id cpp/recent-defects-filter
+ * @deprecated
  */
 import cpp
 import external.DefectFilter
