@@ -147,10 +147,10 @@ void* operator new[](std::size_t size, const std::nothrow_t&) noexcept;
 int overloadedNew() {
   char buf[sizeof(int)];
 
-  new(&buf[0]) int(5); // GOOD [FALSE POSITIVE]
+  new(&buf[0]) int(5); // GOOD
   int five = *(int*)buf;
 
-  new(buf) int[1]; // GOOD [FALSE POSITIVE]
+  new(buf) int[1]; // GOOD
   *(int*)buf = 4;
 
   new(std::nothrow) int(3); // BAD

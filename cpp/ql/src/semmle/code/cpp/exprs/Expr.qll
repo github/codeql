@@ -664,6 +664,16 @@ class NewOrNewArrayExpr extends Expr, @any_new_expr {
    * For `new int[5]` the result is `int[5]`.
    */
   abstract Type getAllocatedType();
+
+  /**
+   * Gets the pointer `p` if this expression is of the form `new(p) T...`.
+   * Invocations of this form are non-allocating `new` expressions that may
+   * call the constructor of `T` but will not allocate memory.
+   */
+  Expr getPlacementPointer() {
+    isStandardPlacementNewAllocator(this.getAllocator()) and
+    result = this.getAllocatorCall().getArgument(1)
+  }
 }
 
 /**
@@ -960,4 +970,10 @@ private predicate convparents(Expr child, int idx, Element parent) {
     exprparents(unresolveElement(astChild), idx, unresolveElement(parent)) and
     child = astChild.getFullyConverted()
   )
+}
+
+private predicate isStandardPlacementNewAllocator(Function operatorNew) {
+  operatorNew.getName().matches("operator new%") and
+  operatorNew.getNumberOfParameters() = 2 and
+  operatorNew.getParameter(1).getType() instanceof VoidPointerType
 }
