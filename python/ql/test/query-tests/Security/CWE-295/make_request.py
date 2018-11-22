@@ -30,3 +30,5 @@ def req2(verify):
 req2(False) # BAD (at line 28)
 req2("/path/to/cert/") # GOOD
 
+#Falsey value
+requests.post('https://semmle.com', verify=0) # BAD

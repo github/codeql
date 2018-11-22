@@ -21,10 +21,16 @@ FunctionObject requestFunction() {
     )
 }
 
-from CallNode call, FunctionObject func, ControlFlowNode false_
+/** requests treats None as the default and all other "falsey" values as False */
+predicate falseNotNone(Object o) {
+    o.booleanValue() = false and not o = theNoneObject()
+}
+
+from CallNode call, FunctionObject func, Object falsey, ControlFlowNode origin
 where 
 func = requestFunction() and
 func.getACall() = call and
-call.getArgByName("verify").refersTo(theFalseObject(), false_)
+falseNotNone(falsey) and
+call.getArgByName("verify").refersTo(falsey, origin)
 
-select call, "Call to $@ with verify=$@", func, "requests." + func.getName(), false_, "False"
+select call, "Call to $@ with verify=$@", func, "requests." + func.getName(), origin, "False"

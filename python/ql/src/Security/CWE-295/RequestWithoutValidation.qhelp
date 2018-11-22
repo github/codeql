@@ -21,7 +21,7 @@ Never use <code>verify=False</code> when making a request.
 
 <example>
 <p>
-The example shows an unsafe call to <a href="https://semmle.com">semmle.com</a>, followed by various safe alternatives.
+The example shows two unsafe calls to <a href="https://semmle.com">semmle.com</a>, followed by various safe alternatives.
 </p>
 
 <sample src="examples/make_request.py" />

@@ -1,8 +1,9 @@
 import requests
 
-#An unsafe request
+#Unsafe requests
 
 requests.get('https://semmle.com', verify=False) # UNSAFE
+requests.get('https://semmle.com', verify=0) # UNSAFE
 
 #Various safe options
 
