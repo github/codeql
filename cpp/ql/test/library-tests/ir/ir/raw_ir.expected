@@ -4,17 +4,18 @@ bad_asts.cpp:
 #   14|     v0_0(void)           = EnterFunction                   : 
 #   14|     mu0_1(unknown)       = UnmodeledDefinition             : 
 #   15|     r0_2(glval<S>)       = VariableAddress[s]              : 
-#   15|     r0_3(glval<int>)     = FieldAddress[x]                 : r0_2
-#   15|     r0_4(int)            = Constant[0]                     : 
-#   15|     mu0_5(int)           = Store                           : r0_3, r0_4
-#   16|     r0_6(glval<S>)       = VariableAddress[s]              : 
-#   16|     r0_7(glval<unknown>) = FunctionAddress[MemberFunction] : 
-#   16|     r0_8(int)            = Constant[1]                     : 
-#   16|     r0_9(int)            = Call                            : r0_7, this:r0_6, r0_8
-#   17|     v0_10(void)          = NoOp                            : 
-#   14|     v0_11(void)          = ReturnVoid                      : 
-#   14|     v0_12(void)          = UnmodeledUse                    : mu*
-#   14|     v0_13(void)          = ExitFunction                    : 
+#   15|     mu0_3(S)             = Uninitialized                   : r0_2
+#   15|     r0_4(glval<int>)     = FieldAddress[x]                 : r0_2
+#   15|     r0_5(int)            = Constant[0]                     : 
+#   15|     mu0_6(int)           = Store                           : r0_4, r0_5
+#   16|     r0_7(glval<S>)       = VariableAddress[s]              : 
+#   16|     r0_8(glval<unknown>) = FunctionAddress[MemberFunction] : 
+#   16|     r0_9(int)            = Constant[1]                     : 
+#   16|     r0_10(int)           = Call                            : r0_8, this:r0_7, r0_9
+#   17|     v0_11(void)          = NoOp                            : 
+#   14|     v0_12(void)          = ReturnVoid                      : 
+#   14|     v0_13(void)          = UnmodeledUse                    : mu*
+#   14|     v0_14(void)          = ExitFunction                    : 
 
 #   22| Bad::Point::Point() -> void
 #   22|   Block 0
