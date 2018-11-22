@@ -25,6 +25,7 @@
 | Resource not released in destructor | Fewer false positive results | Placement new is now excluded from the query. Also fixed an issue where false positives could occur if the destructor body was not in the snapshot. |
 | Missing return statement (`cpp/missing-return`) | Visible by default | The precision of this query has been increased from 'medium' to 'high', which makes it visible by default in LGTM. It was 'medium' in release 1.17 and 1.18 because it had false positives due to an extractor bug that was fixed in 1.18. |
 | Missing return statement | Fewer false positive results | The query is now produces correct results when a function returns a template-dependent type, or makes a non-returning call to another function. |
+| Static array access may cause overflow | More correct results | Data flow to the size argument of a buffer operation is now checked in this query. |
 | Call to memory access function may overflow buffer | More correct results | Array indexing with a negative index is now detected by this query. |
 | Self comparison | Fewer false positive results | Code inside macro invocations is now excluded from the query. |
 | Suspicious call to memset | Fewer false positive results | Types involving decltype are now correctly compared. |
