@@ -9,6 +9,7 @@ export interface AugmentedSourceFile extends ts.SourceFile {
     parseDiagnostics?: any[];
     $tokens?: Token[];
     $symbol?: number;
+    $lineStarts?: ReadonlyArray<number>;
 }
 
 export interface AugmentedNode extends ts.Node {
@@ -21,9 +22,7 @@ export interface AugmentedNode extends ts.Node {
     $overloadIndex?: number;
 }
 
-export interface AugmentedPos extends ts.LineAndCharacter {
-    $offset?: number;
-}
+export type AugmentedPos = number;
 
 export interface Token {
     kind: ts.SyntaxKind;
@@ -66,8 +65,10 @@ function forEachNode(ast: ts.Node, callback: (node: ts.Node) => void) {
 }
 
 export function augmentAst(ast: AugmentedSourceFile, code: string, project: Project | null) {
+    ast.$lineStarts = ast.getLineStarts();
+
     /**
-     * Converts a numeric offset to a position object with line and column information.
+     * Converts a numeric offset to the value expected by the Java counterpart of the extractor.
      */
     function augmentPos(pos: number, shouldSkipWhitespace?: boolean): AugmentedPos {
         // skip over leading spaces/comments
@@ -75,9 +76,7 @@ export function augmentAst(ast: AugmentedSourceFile, code: string, project: Proj
             skipWhiteSpace.lastIndex = pos;
             pos += skipWhiteSpace.exec(code)[0].length;
         }
-        let posObject: AugmentedPos = ast.getLineAndCharacterOfPosition(pos);
-        posObject.$offset = pos;
-        return posObject;
+        return pos;
     }
 
     // Find the position of all tokens where the scanner requires parse-tree information.
