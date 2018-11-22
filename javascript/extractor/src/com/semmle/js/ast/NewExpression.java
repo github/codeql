@@ -9,7 +9,7 @@ import com.semmle.ts.ast.ITypeExpression;
  */
 public class NewExpression extends InvokeExpression {
 	public NewExpression(SourceLocation loc, Expression callee, List<ITypeExpression> typeArguments, List<Expression> arguments) {
-		super("NewExpression", loc, callee, typeArguments, arguments);
+		super("NewExpression", loc, callee, typeArguments, arguments, false, false);
 	}
 
 	@Override

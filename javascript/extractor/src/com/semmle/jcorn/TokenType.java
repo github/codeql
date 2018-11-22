@@ -76,6 +76,7 @@ public class TokenType {
 	semi = new TokenType(new Properties(";").beforeExpr()),
 	colon = new TokenType(new Properties(":").beforeExpr()),
 	dot = new TokenType(new Properties(".")),
+	questiondot = new TokenType(new Properties("?.")),
 	question = new TokenType(new Properties("?").beforeExpr()),
 	arrow = new TokenType(new Properties("=>").beforeExpr()),
 	template = new TokenType(new Properties("template")),

@@ -830,7 +830,7 @@ public class TypeScriptASTConverter {
 		}
 		Expression callee = convertChild(node, "expression");
 		List<ITypeExpression> typeArguments = convertChildrenAsTypes(node, "typeArguments");
-		CallExpression call = new CallExpression(loc, callee, typeArguments, arguments);
+		CallExpression call = new CallExpression(loc, callee, typeArguments, arguments, false, false);
 		attachResolvedSignature(call, node);
 		return call;
 	}
@@ -1027,7 +1027,7 @@ public class TypeScriptASTConverter {
 			SourceLocation loc) throws ParseError {
 		Expression object = convertChild(node, "expression");
 		Expression property = convertChild(node, "argumentExpression");
-		return new MemberExpression(loc, object, property, true);
+		return new MemberExpression(loc, object, property, true, false, false);
 	}
 
 	private Node convertEmptyStatement(SourceLocation loc) {
@@ -1311,7 +1311,7 @@ public class TypeScriptASTConverter {
 		} else {
 			throw new ParseError("Unsupported syntax in import type", getSourceLocation(node).getStart());
 		}
-		MemberExpression member = new MemberExpression(getSourceLocation(node), (Expression) base, name, false);
+		MemberExpression member = new MemberExpression(getSourceLocation(node), (Expression) base, name, false, false, false);
 		attachSymbolInformation(member, node);
 		return member;
 	}
@@ -1797,7 +1797,7 @@ public class TypeScriptASTConverter {
 
 	private Node convertPropertyAccessExpression(JsonObject node,
 			SourceLocation loc) throws ParseError {
-		return new MemberExpression(loc, convertChild(node, "expression"), convertChild(node, "name"), false);
+		return new MemberExpression(loc, convertChild(node, "expression"), convertChild(node, "name"), false, false, false);
 	}
 
 	private Node convertPropertyAssignment(JsonObject node,
@@ -1838,7 +1838,7 @@ public class TypeScriptASTConverter {
 	}
 
 	private Node convertQualifiedName(JsonObject node, SourceLocation loc) throws ParseError {
-		MemberExpression expr = new MemberExpression(loc, convertChild(node, "left"), convertChild(node, "right"), false);
+		MemberExpression expr = new MemberExpression(loc, convertChild(node, "left"), convertChild(node, "right"), false, false, false);
 		attachSymbolInformation(expr, node);
 		return expr;
 	}
