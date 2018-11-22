@@ -2,7 +2,7 @@
  * @name XPath injection
  * @description Building an XPath expression from user-controlled sources is vulnerable to insertion of
  *              malicious code by the user.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id cs/xml/xpath-injection
@@ -11,7 +11,9 @@
  */
 import csharp
 import semmle.code.csharp.security.dataflow.XPathInjection::XPathInjection
+import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
-from TaintTrackingConfiguration c, Source source, Sink sink
-where c.hasFlow(source, sink)
-select sink, "$@ flows to here and is used in an XPath expression.", source, "User-provided value"
+from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
+where c.hasFlowPath(source, sink)
+select sink.getNode(), source, sink,
+  "$@ flows to here and is used in an XPath expression.", source.getNode(), "User-provided value"
