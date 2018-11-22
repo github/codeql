@@ -3040,6 +3040,10 @@ public class Parser {
 		return parseClassPropertyBody(pi, hadConstructor, isStatic);
 	}
 
+	protected boolean atGetterSetterName(PropertyInfo pi) {
+		return !pi.isGenerator && !pi.isAsync && pi.key instanceof Identifier && this.type != TokenType.parenL && (((Identifier) pi.key).getName().equals("get") || ((Identifier) pi.key).getName().equals("set"));
+	}
+
 	/**
 	 * Parse a method declaration in a class, assuming that its name has already been consumed.
 	 */
@@ -3047,7 +3051,7 @@ public class Parser {
 		pi.kind = "method";
 		boolean isGetSet = false;
 		if (!pi.computed) {
-			if (!pi.isGenerator && !pi.isAsync && pi.key instanceof Identifier && this.type != TokenType.parenL && (((Identifier) pi.key).getName().equals("get") || ((Identifier) pi.key).getName().equals("set"))) {
+			if (atGetterSetterName(pi)) {
 				isGetSet = true;
 				pi.kind = ((Identifier) pi.key).getName();
 				this.parsePropertyName(pi);
