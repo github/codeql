@@ -1,7 +1,7 @@
 /**
  * @name Outgoing dependencies per file
  * @description The number of files that a file depends on.
- * @kind treemap
+ * @kind metric
  * @id cpp/efferent-coupling-per-file
  * @treemap.warnOn highValues
  * @metricType file

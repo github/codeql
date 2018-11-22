@@ -3,7 +3,7 @@
  * @description Measures the number of lines in a function that contain
  *              code (rather than lines that only contain comments or
  *              are blank).
- * @kind treemap
+ * @kind metric
  * @id cpp/lines-of-code-per-function
  * @treemap.warnOn highValues
  * @metricType callable

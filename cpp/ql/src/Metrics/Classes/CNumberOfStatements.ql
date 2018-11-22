@@ -3,7 +3,7 @@
  * @description The number of statements in the member functions of a class.
  *              For template functions, only the statements in the template
  *              itself, not in the instantiations, are counted.
- * @kind treemap
+ * @kind metric
  * @id cpp/statements-per-type
  * @treemap.warnOn highValues
  * @metricType reftype

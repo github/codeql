@@ -1,7 +1,7 @@
 /**
  * @name Functions per file
  * @description The total number of functions in each file.
- * @kind treemap
+ * @kind metric
  * @id cpp/number-of-functions
  * @treemap.warnOn highValues
  * @metricType file

@@ -2,7 +2,7 @@
  * @name Response per class
  * @description The number of different member functions or
  *              constructors that can be executed by a class.
- * @kind treemap
+ * @kind metric
  * @id cpp/response-per-class
  * @treemap.warnOn highValues
  * @metricType reftype

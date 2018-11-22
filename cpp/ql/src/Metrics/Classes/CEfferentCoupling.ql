@@ -1,7 +1,7 @@
 /**
  * @name Outgoing dependencies per class
  * @description The number of classes on which a class depends.
- * @kind treemap
+ * @kind metric
  * @id cpp/outgoing-type-dependencies
  * @treemap.warnOn highValues
  * @metricType reftype

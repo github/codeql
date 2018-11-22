@@ -1,7 +1,7 @@
 /**
  * @name Average cyclomatic complexity of files
  * @description The average cyclomatic complexity of the functions in a file.
- * @kind treemap
+ * @kind metric
  * @id cpp/average-cyclomatic-complexity-per-file
  * @treemap.warnOn highValues
  * @metricType file

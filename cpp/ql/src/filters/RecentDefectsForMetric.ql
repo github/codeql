@@ -4,7 +4,7 @@
  * @description Use this filter to return results only if they are
  *              located in files that have been modified in the 60 days
  *              before the snapshot.
- * @kind treemap
+ * @kind metric
  * @id cpp/recent-defects-for-metric-filter
  */
 import cpp

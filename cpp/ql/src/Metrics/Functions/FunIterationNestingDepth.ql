@@ -1,7 +1,7 @@
 /**
  * @name Iteration depth
  * @description The maximum number of nested loops in each function.
- * @kind treemap
+ * @kind metric
  * @id cpp/iteration-nesting-depth-per-function
  * @treemap.warnOn highValues
  * @metricType callable

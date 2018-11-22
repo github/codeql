@@ -1,7 +1,7 @@
 /**
  * @name Lack of cohesion per class (LCOM-HS)
  * @description Lack of cohesion for a class as defined by Henderson-Sellers.
- * @kind treemap
+ * @kind metric
  * @id cpp/lack-of-cohesion-hs
  * @treemap.warnOn highValues
  * @metricType reftype

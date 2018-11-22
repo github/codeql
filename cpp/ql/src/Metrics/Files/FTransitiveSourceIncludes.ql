@@ -6,7 +6,7 @@
  *              included file). This metric excludes included files
  *              that aren't part of the main code base (like system
  *              headers).
- * @kind treemap
+ * @kind metric
  * @id cpp/transitive-source-includes-per-file
  * @treemap.warnOn highValues
  * @metricType file

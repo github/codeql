@@ -1,7 +1,7 @@
 /**
  * @name Number of todo/fixme comments per file
  * @description The number of TODO or FIXME comments in a file.
- * @kind treemap
+ * @kind metric
  * @id cpp/todo-comments-per-file
  * @treemap.warnOn highValues
  * @metricType file

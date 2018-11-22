@@ -2,7 +2,7 @@
  * @name Lack of cohesion per class (LCOM-CK)
  * @description Lack of cohesion for a class as defined by Chidamber
  *              and Kemerer.
- * @kind treemap
+ * @kind metric
  * @id cpp/lack-of-cohesion-ck
  * @treemap.warnOn highValues
  * @metricType reftype

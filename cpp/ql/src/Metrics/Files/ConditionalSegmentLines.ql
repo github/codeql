@@ -3,7 +3,7 @@
  * @description The number of lines that are subject to conditional
  *              compilation constraints defined using `#if`, `#ifdef`,
  *              and `#ifndef`.
- * @kind treemap
+ * @kind metric
  * @id cpp/conditional-segment-lines
  * @treemap.warnOn highValues
  * @metricType file

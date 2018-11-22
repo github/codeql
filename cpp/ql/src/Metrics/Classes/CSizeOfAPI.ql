@@ -1,7 +1,7 @@
 /**
  * @name Size of API per class
  * @description The number of public member functions in a public class.
- * @kind treemap
+ * @kind metric
  * @id cpp/size-of-api-per-class
  * @treemap.warnOn highValues
  * @metricType reftype

@@ -1,7 +1,7 @@
 /**
  * @name Number of fields per class
  * @description The number of fields in a class.
- * @kind treemap
+ * @kind metric
  * @id cpp/fields-per-type
  * @treemap.warnOn highValues
  * @metricType reftype

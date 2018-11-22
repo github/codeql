@@ -2,7 +2,7 @@
  * @name Usage of macros
  * @description The percentage of source lines in each file that contain
  *              use of macros.
- * @kind treemap
+ * @kind metric
  * @id cpp/macro-ratio-per-file
  * @treemap.warnOn highValues
  * @metricType file

@@ -3,7 +3,7 @@
  * @description The Cyclomatic complexity (an indication of how many
  *              tests are necessary, based on the number of branching
  *              statements) per function.
- * @kind treemap
+ * @kind metric
  * @id cpp/cyclomatic-complexity-per-function
  * @treemap.warnOn highValues
  * @metricType callable

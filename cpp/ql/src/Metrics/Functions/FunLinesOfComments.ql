@@ -3,7 +3,7 @@
  * @description Measures the number of lines in a function that contain
  *              a comment or part of a comment (that is, which are part
  *              of a multi-line comment).
- * @kind treemap
+ * @kind metric
  * @id cpp/lines-of-comments-per-function
  * @treemap.warnOn lowValues
  * @metricType callable

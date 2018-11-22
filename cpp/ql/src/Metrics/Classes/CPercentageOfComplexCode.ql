@@ -2,7 +2,7 @@
  * @name Percentage of complex code per class
  * @description The percentage of the code in a class that is part of
  *              a complex member function.
- * @kind treemap
+ * @kind metric
  * @id cpp/percentage-of-complex-code-per-class
  * @treemap.warnOn highValues
  * @metricType reftype

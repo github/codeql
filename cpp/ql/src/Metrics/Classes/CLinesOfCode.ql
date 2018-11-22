@@ -1,7 +1,7 @@
 /**
  * @name Lines of code per class
  * @description The number of lines of code in a class.
- * @kind treemap
+ * @kind metric
  * @id cpp/lines-of-code-per-class
  * @treemap.warnOn highValues
  * @metricType reftype

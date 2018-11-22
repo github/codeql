@@ -1,7 +1,7 @@
 /**
  * @name Number of statements per function
  * @description The number of C/C++ statements per function.
- * @kind treemap
+ * @kind metric
  * @id cpp/statements-per-function
  * @treemap.warnOn highValues
  * @metricType callable

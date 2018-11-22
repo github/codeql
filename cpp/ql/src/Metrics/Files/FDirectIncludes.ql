@@ -2,7 +2,7 @@
  * @name Includes per file
  * @description The number of files directly included by this file using
  *              `#include`.
- * @kind treemap
+ * @kind metric
  * @id cpp/direct-includes-per-file
  * @treemap.warnOn highValues
  * @metricType file

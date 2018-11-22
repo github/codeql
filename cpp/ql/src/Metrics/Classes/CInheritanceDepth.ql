@@ -1,7 +1,7 @@
 /**
  * @name Inheritance depth per class
  * @description The depth of a class in the inheritance hierarchy.
- * @kind treemap
+ * @kind metric
  * @id cpp/inheritance-depth-per-class
  * @treemap.warnOn highValues
  * @metricType reftype

@@ -1,7 +1,7 @@
 /**
  * @name Number of functions per class
  * @description The number of member functions in a class.
- * @kind treemap
+ * @kind metric
  * @id cpp/number-of-functions-per-class
  * @treemap.warnOn highValues
  * @metricType reftype

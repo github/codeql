@@ -1,7 +1,7 @@
 /**
  * @name Halstead difficulty
  * @description Measures the error proneness of implementing the program
- * @kind treemap
+ * @kind metric
  * @id cpp/halstead-difficulty-per-class
  * @treemap.warnOn highValues
  * @metricType reftype

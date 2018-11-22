@@ -1,7 +1,7 @@
 /**
  * @name Number of lines
  * @description The number of lines in each file.
- * @kind treemap
+ * @kind metric
  * @id cpp/lines-per-file
  * @treemap.warnOn highValues
  * @metricType file

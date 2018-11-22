@@ -1,7 +1,7 @@
 /**
  * @name Global variables
  * @description The total number of global variables in each file.
- * @kind treemap
+ * @kind metric
  * @id cpp/number-of-globals
  * @treemap.warnOn highValues
  * @metricType file

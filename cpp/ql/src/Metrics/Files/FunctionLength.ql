@@ -1,7 +1,7 @@
 /**
  * @name Function length
  * @description The average number of lines in functions in each file.
- * @kind treemap
+ * @kind metric
  * @id cpp/function-length
  * @treemap.warnOn highValues
  * @metricType file

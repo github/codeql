@@ -3,7 +3,7 @@
  * @description Measures the amount of time (in milliseconds) spent
  *              compiling a C/C++ file, including time spent processing
  *              all files included by the pre-processor.
- * @kind treemap
+ * @kind metric
  * @id cpp/time-in-frontend-per-file
  * @metricType fileCompilation
  * @metricAggregate avg sum max

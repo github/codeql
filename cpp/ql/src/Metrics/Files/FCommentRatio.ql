@@ -1,7 +1,7 @@
 /**
  * @name Percentage of comments
  * @description The percentage of lines that contain comments.
- * @kind treemap
+ * @kind metric
  * @id cpp/comment-ratio-per-file
  * @treemap.warnOn lowValues
  * @metricType file

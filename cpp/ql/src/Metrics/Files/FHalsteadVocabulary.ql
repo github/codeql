@@ -1,7 +1,7 @@
 /**
  * @name Halstead vocabulary
  * @description Number of distinct operands and operators used.
- * @kind treemap
+ * @kind metric
  * @id cpp/halstead-vocabulary-per-file
  * @treemap.warnOn highValues
  * @metricType file

@@ -1,7 +1,7 @@
 /**
  * @name Parameters per function
  * @description The average number of parameters of functions in each file.
- * @kind treemap
+ * @kind metric
  * @id cpp/number-of-parameters
  * @treemap.warnOn highValues
  * @metricType file

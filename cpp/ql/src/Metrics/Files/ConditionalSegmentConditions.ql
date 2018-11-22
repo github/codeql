@@ -2,7 +2,7 @@
  * @name Number of distinct conditions used in #if, #ifdef, #ifndef etc. per file
  * @description For each file, the number of unique conditions used by
  *              `#if`, `#ifdef`, and `#ifndef`.
- * @kind treemap
+ * @kind metric
  * @id cpp/conditional-segment-conditions
  * @treemap.warnOn highValues
  * @metricType file

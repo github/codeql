@@ -2,7 +2,7 @@
  * @name Public global variables
  * @description The total number of global variables in each file with
  *              external (public) visibility.
- * @kind treemap
+ * @kind metric
  * @id cpp/number-of-public-globals
  * @treemap.warnOn highValues
  * @metricType file

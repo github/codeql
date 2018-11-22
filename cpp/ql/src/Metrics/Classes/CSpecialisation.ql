@@ -2,7 +2,7 @@
  * @name Specialization per class
  * @description The extent to which a subclass refines the behavior
  *              of its superclasses.
- * @kind treemap
+ * @kind metric
  * @id cpp/specialisation-per-class
  * @treemap.warnOn highValues
  * @metricType reftype

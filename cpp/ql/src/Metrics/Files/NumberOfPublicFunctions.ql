@@ -2,7 +2,7 @@
  * @name Public functions per file
  * @description The total number of public (non-static) functions in
  *              each file.
- * @kind treemap
+ * @kind metric
  * @id cpp/number-of-public-functions
  * @treemap.warnOn highValues
  * @metricType file

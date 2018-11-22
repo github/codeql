@@ -4,7 +4,7 @@
  *              pre-processor - either directly by an `#include`
  *              directive, or indirectly (by being included by an
  *              included file).
- * @kind treemap
+ * @kind metric
  * @id cpp/transitive-includes-per-file
  * @treemap.warnOn highValues
  * @metricType file

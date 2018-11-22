@@ -1,7 +1,7 @@
 /**
  * @name Halstead length
  * @description Total number of operands and operators
- * @kind treemap
+ * @kind metric
  * @id cpp/halstead-length-per-file
  * @treemap.warnOn highValues
  * @metricType file

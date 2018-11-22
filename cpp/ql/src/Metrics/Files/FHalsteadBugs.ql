@@ -2,7 +2,7 @@
  * @name Halstead bug measure
  * @description Measures the expected number of delivered bugs. The
  *              Halstead bug count is known to be an underestimate.
- * @kind treemap
+ * @kind metric
  * @id cpp/halstead-bugs-per-file
  * @treemap.warnOn highValues
  * @metricType file

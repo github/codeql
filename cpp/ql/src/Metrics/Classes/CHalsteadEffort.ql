@@ -1,7 +1,7 @@
 /**
  * @name Halstead effort
  * @description Measures the effort to implement the program
- * @kind treemap
+ * @kind metric
  * @id cpp/halstead-effort-per-class
  * @treemap.warnOn highValues
  * @metricType reftype

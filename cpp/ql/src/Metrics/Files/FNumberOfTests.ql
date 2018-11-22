@@ -1,7 +1,7 @@
 /**
  * @name Number of tests
  * @description The number of test methods defined in a file.
- * @kind treemap
+ * @kind metric
  * @treemap.warnOn lowValues
  * @metricType file
  * @metricAggregate avg sum max

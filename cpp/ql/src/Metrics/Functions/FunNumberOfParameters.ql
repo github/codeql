@@ -1,7 +1,7 @@
 /**
  * @name Number of parameters per function
  * @description The number of formal parameters for each function.
- * @kind treemap
+ * @kind metric
  * @id cpp/number-of-parameters-per-function
  * @treemap.warnOn highValues
  * @metricType callable

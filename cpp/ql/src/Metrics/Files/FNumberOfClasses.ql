@@ -1,6 +1,6 @@
 /**
  * @name Number of classes per file
- * @kind treemap
+ * @kind metric
  * @id cpp/number-of-classes-per-file
  * @treemap.warnOn highValues
  * @metricType file

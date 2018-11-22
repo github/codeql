@@ -1,6 +1,6 @@
 /**
  * @name Lines of code in files
- * @kind treemap
+ * @kind metric
  * @description Measures the number of lines in a file that contain
  *              code (rather than lines that only contain comments
  *              or are blank)

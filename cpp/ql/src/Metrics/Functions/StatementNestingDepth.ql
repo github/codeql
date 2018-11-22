@@ -2,7 +2,7 @@
  * @name Nesting depth
  * @description The maximum number of nested statements (for example,
  *              `if`, `for`, `while`, etc.). Blocks are not counted.
- * @kind treemap
+ * @kind metric
  * @id cpp/statement-nesting-depth
  * @treemap.warnOn highValues
  * @metricType callable

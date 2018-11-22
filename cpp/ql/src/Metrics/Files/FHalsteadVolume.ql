@@ -1,7 +1,7 @@
 /**
  * @name Halstead volume
  * @description The information contents of the program.
- * @kind treemap
+ * @kind metric
  * @id cpp/halstead-volume-per-file
  * @treemap.warnOn highValues
  * @metricType file

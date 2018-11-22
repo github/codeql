@@ -2,7 +2,7 @@
  * @name Comment ratio per function
  * @description The ratio of comment lines to the total number of lines
  *              in a function.
- * @kind treemap
+ * @kind metric
  * @id cpp/percentage-of-comments-per-function
  * @treemap.warnOn lowValues
  * @metricType callable

@@ -1,7 +1,7 @@
 /**
  * @name Lines of commented-out code in files
  * @description The number of lines of commented-out code in a file.
- * @kind treemap
+ * @kind metric
  * @treemap.warnOn highValues
  * @metricType file
  * @metricAggregate avg sum max

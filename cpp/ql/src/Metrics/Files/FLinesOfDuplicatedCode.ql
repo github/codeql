@@ -3,7 +3,7 @@
  * @description The number of lines in a file, including code, comment
  *              and whitespace lines, which are duplicated in at least
  *              one other place.
- * @kind treemap
+ * @kind metric
  * @treemap.warnOn highValues
  * @metricType file
  * @metricAggregate avg sum max

@@ -3,7 +3,7 @@
  * @description Measures the number of lines which contain a comment
  *              or part of a comment (that is, which are part of a
  *              multi-line comment).
- * @kind treemap
+ * @kind metric
  * @treemap.warnOn lowValues
  * @metricType file
  * @metricAggregate avg sum max
