@@ -26,3 +26,6 @@
   point to an installation of the `typescript` NPM package.
 
 * The extractor now supports [Optional Chaining](https://github.com/tc39/proposal-optional-chaining) expressions.
+
+* The extractor now supports additional [Flow](https://flow.org/) syntax.
+
