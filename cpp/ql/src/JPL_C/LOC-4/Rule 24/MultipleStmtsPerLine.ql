@@ -3,7 +3,9 @@
  * @description Putting more than one statement on a single line hinders program understanding.
  * @kind problem
  * @id cpp/jpl-c/multiple-stmts-per-line
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
  */
 
 import cpp

@@ -3,7 +3,9 @@
  * @description The declaration of an object should contain no more than two levels of indirection.
  * @kind problem
  * @id cpp/jpl-c/declaration-pointer-nesting
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
  */
 
 import cpp

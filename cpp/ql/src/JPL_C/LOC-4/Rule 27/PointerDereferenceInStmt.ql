@@ -3,7 +3,9 @@
  * @description Statements should contain no more than two levels of dereferencing per object.
  * @kind problem
  * @id cpp/jpl-c/pointer-dereference-in-stmt
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
  */
 
 import cpp

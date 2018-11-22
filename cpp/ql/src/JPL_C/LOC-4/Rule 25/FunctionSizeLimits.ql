@@ -3,7 +3,9 @@
  * @description Function length should be limited to what can be printed on a single sheet of paper (60 lines). Number of parameters is limited to 6 or fewer.
  * @kind problem
  * @id cpp/jpl-c/function-size-limits
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
  */
 
 import cpp

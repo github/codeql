@@ -3,7 +3,9 @@
  * @description Macros are not allowed to use complex preprocessor features like variable argument lists and token pasting.
  * @kind problem
  * @id cpp/jpl-c/preprocessor-use-undisciplined
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
  */
 
 import cpp

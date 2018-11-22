@@ -3,7 +3,9 @@
  * @description Pointer dereference operations should not be hidden in macro definitions.
  * @kind problem
  * @id cpp/jpl-c/hidden-pointer-dereference-macro
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
  */
 
 import cpp

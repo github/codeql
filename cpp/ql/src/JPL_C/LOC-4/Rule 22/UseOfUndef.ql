@@ -3,7 +3,9 @@
  * @description #undef shall not be used.
  * @kind problem
  * @id cpp/jpl-c/use-of-undef
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
  */
 
 import cpp

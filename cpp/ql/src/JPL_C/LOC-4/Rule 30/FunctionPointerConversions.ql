@@ -4,6 +4,8 @@
  * @kind problem
  * @id cpp/jpl-c/function-pointer-conversions
  * @problem.severity warning
+ * @precision low
+ * @tags correctness
  */
 
 import cpp

@@ -3,7 +3,9 @@
  * @description There should be no more than one variable declaration per line.
  * @kind problem
  * @id cpp/jpl-c/multiple-var-decls-per-line
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
  */
 
 import cpp

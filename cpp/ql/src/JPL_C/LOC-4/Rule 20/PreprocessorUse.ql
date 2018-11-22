@@ -3,7 +3,9 @@
  * @description The use of the preprocessor must be limited to inclusion of header files and simple macro definitions.
  * @kind problem
  * @id cpp/jpl-c/preprocessor-use
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
  */
 
 import cpp
