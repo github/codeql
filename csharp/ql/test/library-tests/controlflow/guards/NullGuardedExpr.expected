@@ -39,3 +39,15 @@
 | Guards.cs:192:31:192:31 | access to parameter s |
 | Guards.cs:194:31:194:31 | access to parameter s |
 | Guards.cs:196:31:196:31 | access to parameter s |
+| Splitting.cs:13:17:13:17 | access to parameter o |
+| Splitting.cs:23:24:23:24 | access to parameter o |
+| Splitting.cs:35:13:35:13 | access to parameter o |
+| Splitting.cs:44:17:44:17 | access to parameter o |
+| Splitting.cs:46:17:46:17 | access to parameter o |
+| Splitting.cs:55:13:55:13 | access to parameter o |
+| Splitting.cs:88:9:88:9 | access to parameter o |
+| Splitting.cs:90:13:90:13 | access to parameter o |
+| Splitting.cs:107:13:107:13 | access to parameter o |
+| Splitting.cs:109:13:109:13 | access to parameter o |
+| Splitting.cs:117:9:117:9 | access to parameter o |
+| Splitting.cs:119:13:119:13 | access to parameter o |
