@@ -1,3 +1,48 @@
+bad_asts.cpp:
+#   14| Bad::CallBadMemberFunction() -> void
+#   14|   Block 0
+#   14|     v0_0(void)           = EnterFunction                   : 
+#   14|     mu0_1(unknown)       = UnmodeledDefinition             : 
+#   15|     r0_2(glval<S>)       = VariableAddress[s]              : 
+#   15|     r0_3(glval<int>)     = FieldAddress[x]                 : r0_2
+#   15|     r0_4(int)            = Constant[0]                     : 
+#   15|     mu0_5(int)           = Store                           : r0_3, r0_4
+#   16|     r0_6(glval<S>)       = VariableAddress[s]              : 
+#   16|     r0_7(glval<unknown>) = FunctionAddress[MemberFunction] : 
+#   16|     r0_8(int)            = Constant[1]                     : 
+#   16|     r0_9(int)            = Call                            : r0_7, this:r0_6, r0_8
+#   17|     v0_10(void)          = NoOp                            : 
+#   14|     v0_11(void)          = ReturnVoid                      : 
+#   14|     v0_12(void)          = UnmodeledUse                    : mu*
+#   14|     v0_13(void)          = ExitFunction                    : 
+
+#   22| Bad::Point::Point() -> void
+#   22|   Block 0
+#   22|     v0_0(void)         = EnterFunction       : 
+#   22|     mu0_1(unknown)     = UnmodeledDefinition : 
+#   22|     r0_2(glval<Point>) = InitializeThis      : 
+#   23|     v0_3(void)         = NoOp                : 
+#   22|     v0_4(void)         = ReturnVoid          : 
+#   22|     v0_5(void)         = UnmodeledUse        : mu*
+#   22|     v0_6(void)         = ExitFunction        : 
+
+#   26| Bad::CallCopyConstructor(const Point &) -> void
+#   26|   Block 0
+#   26|     v0_0(void)           = EnterFunction          : 
+#   26|     mu0_1(unknown)       = UnmodeledDefinition    : 
+#   26|     r0_2(glval<Point &>) = VariableAddress[a]     : 
+#   26|     m0_3(Point &)        = InitializeParameter[a] : r0_2
+#   27|     r0_4(glval<Point>)   = VariableAddress[b]     : 
+#   27|     r0_5(glval<Point &>) = VariableAddress[a]     : 
+#   27|     r0_6(Point &)        = Load                   : r0_5, m0_3
+#   27|     r0_7(glval<Point>)   = Convert                : r0_6
+#   27|     r0_8(Point)          = Load                   : r0_7, mu0_1
+#   27|     m0_9(Point)          = Store                  : r0_4, r0_8
+#   28|     v0_10(void)          = NoOp                   : 
+#   26|     v0_11(void)          = ReturnVoid             : 
+#   26|     v0_12(void)          = UnmodeledUse           : mu*
+#   26|     v0_13(void)          = ExitFunction           : 
+
 ir.cpp:
 #    1| Constants() -> void
 #    1|   Block 0

@@ -34,6 +34,142 @@
 #-----|         Type = unsigned long
 #-----|     1: p#1
 #-----|         Type = align_val_t
+bad_asts.cpp:
+#    5| Bad::S::operator=(S &&) -> S &
+#    5|   params: 
+#-----|     0: p#0
+#-----|         Type = S &&
+#    5| Bad::S::operator=(const S &) -> S &
+#    5|   params: 
+#-----|     0: p#0
+#-----|         Type = const S &
+#    9| Bad::S::MemberFunction(int) -> int
+#    9|   params: 
+#    9|     0: y
+#    9|         Type = int
+#    9|   body: { ... }
+#   10|     0: return ...
+#   10|       0: ... + ...
+#   10|           Type = int
+#   10|           ValueCategory = prvalue
+#   10|         0: ... + ...
+#   10|             Type = int
+#   10|             ValueCategory = prvalue
+#   10|           0: Unknown literal
+#   10|               Type = int
+#   10|               ValueCategory = prvalue
+#   10|           1: x
+#   10|               Type = int
+#   10|               ValueCategory = prvalue(load)
+#-----|             -1: this
+#-----|                 Type = S *
+#-----|                 ValueCategory = prvalue(load)
+#   10|         1: y
+#   10|             Type = int
+#   10|             ValueCategory = prvalue(load)
+#    9| MemberFunction(int) -> int
+#    9|   params: 
+#    9|     0: y
+#    9|         Type = int
+#    9|   body: { ... }
+#   10|     0: return ...
+#   10|       0: ... + ...
+#   10|           Type = int
+#   10|           ValueCategory = prvalue
+#   10|         0: ... + ...
+#   10|             Type = int
+#   10|             ValueCategory = prvalue
+#   10|           0: 6
+#   10|               Type = int
+#   10|               Value = 6
+#   10|               ValueCategory = prvalue
+#   10|           1: x
+#   10|               Type = int
+#   10|               ValueCategory = prvalue(load)
+#-----|             -1: this
+#-----|                 Type = S *
+#-----|                 ValueCategory = prvalue(load)
+#   10|         1: y
+#   10|             Type = int
+#   10|             ValueCategory = prvalue(load)
+#   14| Bad::CallBadMemberFunction() -> void
+#   14|   params: 
+#   14|   body: { ... }
+#   15|     0: declaration
+#   15|       0: definition of s
+#   15|           Type = S
+#   15|         init: initializer for s
+#   15|           expr: {...}
+#   15|               Type = S
+#   15|               ValueCategory = prvalue
+#   16|     1: ExprStmt
+#   16|       0: call to MemberFunction
+#   16|           Type = int
+#   16|           ValueCategory = prvalue
+#   16|         -1: s
+#   16|             Type = S
+#   16|             ValueCategory = lvalue
+#   16|         0: 1
+#   16|             Type = int
+#   16|             Value = 1
+#   16|             ValueCategory = prvalue
+#   17|     2: return ...
+#   19| Bad::Point::Point(Point &&) -> void
+#   19|   params: 
+#-----|     0: p#0
+#-----|         Type = Point &&
+#   19| Bad::Point::Point(const Point &) -> void
+#   19|   params: 
+#-----|     0: p#0
+#-----|         Type = const Point &
+#   19|   initializations: 
+#   19|     0: constructor init of field x
+#   19|         Type = int
+#   19|         ValueCategory = prvalue
+#   19|       0: Unknown literal
+#   19|           Type = int
+#   19|           ValueCategory = prvalue
+#   19|     1: constructor init of field y
+#   19|         Type = int
+#   19|         ValueCategory = prvalue
+#   19|       0: Unknown literal
+#   19|           Type = int
+#   19|           ValueCategory = prvalue
+#   19|   body: { ... }
+#   19|     0: return ...
+#   19| Bad::Point::operator=(Point &&) -> Point &
+#   19|   params: 
+#-----|     0: p#0
+#-----|         Type = Point &&
+#   19| Bad::Point::operator=(const Point &) -> Point &
+#   19|   params: 
+#-----|     0: p#0
+#-----|         Type = const Point &
+#   22| Bad::Point::Point() -> void
+#   22|   params: 
+#   22|   initializations: 
+#   22|   body: { ... }
+#   23|     0: return ...
+#   26| Bad::CallCopyConstructor(const Point &) -> void
+#   26|   params: 
+#   26|     0: a
+#   26|         Type = const Point &
+#   26|   body: { ... }
+#   27|     0: declaration
+#   27|       0: definition of b
+#   27|           Type = Point
+#   27|         init: initializer for b
+#   27|           expr: (Point)...
+#   27|               Conversion = glvalue conversion
+#   27|               Type = Point
+#   27|               ValueCategory = prvalue(load)
+#   27|             expr: (reference dereference)
+#   27|                 Type = const Point
+#   27|                 ValueCategory = lvalue
+#   27|               expr: a
+#   27|                   Type = const Point &
+#   27|                   ValueCategory = prvalue(load)
+#   28|     1: return ...
 ir.cpp:
 #    1| Constants() -> void
 #    1|   params: 
