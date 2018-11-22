@@ -13,11 +13,10 @@
 import csharp
 import semmle.code.csharp.dataflow.flowsources.Remote
 import semmle.code.csharp.dataflow.TaintTracking
-import semmle.code.csharp.frameworks.System
+import semmle.code.csharp.frameworks.Format
 import DataFlow::PathGraph
 
-class FormatStringConfiguration extends TaintTracking::Configuration
-{
+class FormatStringConfiguration extends TaintTracking::Configuration {
   FormatStringConfiguration() { this = "FormatStringConfiguration" }
   
   override predicate isSource(DataFlow::Node source) {
@@ -25,13 +24,11 @@ class FormatStringConfiguration extends TaintTracking::Configuration
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(MethodCall call | sink.asExpr() = call.getArgumentForName("format") and
-      call.getTarget() = any(SystemStringClass s).getFormatMethod()
-    )
+    sink.asExpr() = any(FormatCall call).getFormatExpr()
   }
 }
 
 from FormatStringConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
-  "$@ flows to here and is used to format 'String.Format'.", source.getNode(), source.getNode().toString()
+  "$@ flows to here and is used as a format string.", source.getNode(), source.getNode().toString()
