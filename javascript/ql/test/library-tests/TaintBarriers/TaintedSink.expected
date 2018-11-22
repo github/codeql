@@ -56,3 +56,7 @@
 | tst.js:350:14:350:14 | v | tst.js:248:13:248:20 | SOURCE() |
 | tst.js:352:14:352:14 | v | tst.js:248:13:248:20 | SOURCE() |
 | tst.js:359:14:359:14 | v | tst.js:248:13:248:20 | SOURCE() |
+| tst.js:368:10:368:12 | o.p | tst.js:367:13:367:20 | SOURCE() |
+| tst.js:373:14:373:16 | o.p | tst.js:367:13:367:20 | SOURCE() |
+| tst.js:380:14:380:17 | o[p] | tst.js:367:13:367:20 | SOURCE() |
+| tst.js:382:14:382:17 | o[p] | tst.js:367:13:367:20 | SOURCE() |

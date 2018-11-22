@@ -70,6 +70,7 @@
 
 import javascript
 private import internal.FlowSteps
+private import internal.AccessPaths
 
 /**
  * A data flow tracking configuration for finding inter-procedural paths from
@@ -291,26 +292,12 @@ abstract class BarrierGuardNode extends DataFlow::Node {
       )
     )
     or
-    // 2) `nd` is a use of an SSA variable `ssa`, and dominated by a barrier for `ssa`
-    exists (SsaVariable ssa, BasicBlock bb |
-      nd = DataFlow::valueNode(ssa.getAUseIn(bb)) and
-      exists (ConditionGuardNode cond |
-        asExpr() = cond.getTest() and
-        blocks(cond.getOutcome(), ssa.getAUse()) and
-        cond.dominates(bb)
-      )
-    )
-    or
-    // 3) `nd` is a property access `ssa.p.q` on an SSA variable `ssa`, and dominated by
-    // a barrier for `ssa.p.q`
-    exists (SsaVariable ssa, string props, BasicBlock bb |
-      nd = DataFlow::valueNode(nestedPropAccessOnSsaVar(ssa, props)) and
-      bb = nd.getBasicBlock() |
-      exists (ConditionGuardNode cond |
-        asExpr() = cond.getTest() and
-        blocks(cond.getOutcome(), nestedPropAccessOnSsaVar(ssa, props)) and
-        cond.dominates(bb)
-      )
+    // 2) `nd` is an instance of an access path `p`, and dominated by a barrier for `p`
+    exists (AccessPath p, BasicBlock bb, ConditionGuardNode cond |
+      nd = DataFlow::valueNode(p.getAnInstanceIn(bb)) and
+      asExpr() = cond.getTest() and
+      blocks(cond.getOutcome(), p.getAnInstance()) and
+      cond.dominates(bb)
     )
   }
 
@@ -330,20 +317,6 @@ abstract class LabeledBarrierGuardNode extends BarrierGuardNode {
   abstract FlowLabel getALabel();
 }
 
-/**
- * Holds if `props` is a string of the form `p.q.r`, and the result is a property access
- * of the form `v.p.q.r`.
- */
-private DotExpr nestedPropAccessOnSsaVar(SsaVariable v, string props) {
-  exists (Expr base, string prop | result.accesses(base, prop) |
-    base = v.getAUse() and props = prop
-    or
-    exists (string prevProps |
-      base = nestedPropAccessOnSsaVar(v, prevProps) and
-      props = prevProps + "." + prop
-    )
-  )
-}
 
 /**
  * A data flow edge that should be added to all data flow configurations in
