@@ -63,10 +63,10 @@ public class Splitting
         if (b)
             o.ToString(); // not null guarded
         if (o != null)
-            return o.ToString(); // null guarded (missing)
+            return o.ToString(); // null guarded
         if (b)
             o.ToString(); // anti-null guarded
-        return o.ToString(); // anti-null guarded (missing)
+        return o.ToString(); // anti-null guarded
     }
 
     string M7(bool b, object o, bool b2)
@@ -75,7 +75,7 @@ public class Splitting
             o.ToString(); // not null guarded
         if (o != null)
             if (b2)
-                return o.ToString(); // null guarded (missing)
+                return o.ToString(); // null guarded
         if (b)
             o.ToString(); // not null guarded
         return o.ToString(); // not null guarded
@@ -85,7 +85,7 @@ public class Splitting
     {
         if (b)
             Debug.Assert(o != null);
-        o.ToString(); // not null guarded (incorrect)
+        o.ToString(); // not null guarded
         if (b)
             o.ToString(); // null guarded
         o.ToString(); // not null guarded
@@ -117,6 +117,6 @@ public class Splitting
         o.ToString(); // null guarded
         if (b)
             o.ToString(); // null guarded
-        return o.ToString(); // null guarded (missing)
+        return o.ToString(); // null guarded
     }
 }
