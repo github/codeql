@@ -135,8 +135,6 @@ namespace Semmle.Extraction.Tests
 
         string IBuildActions.GetFullPath(string path) => path;
 
-        string IBuildActions.GetDirectoryName(string path) => System.IO.Path.GetDirectoryName(path);
-
         void IBuildActions.WriteAllText(string filename, string contents)
         {
         }

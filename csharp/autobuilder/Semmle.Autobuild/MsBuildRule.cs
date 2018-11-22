@@ -1,5 +1,4 @@
 using Semmle.Util.Logging;
-using System.IO;
 using System.Linq;
 
 namespace Semmle.Autobuild

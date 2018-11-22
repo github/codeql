@@ -103,11 +103,6 @@ namespace Semmle.Autobuild
         string GetFullPath(string path);
 
         /// <summary>
-        /// Gets the directory of <paramref name="path"/>, Path.GetDirectoryName().
-        /// </summary>
-        string GetDirectoryName(string path);
-
-        /// <summary>
         /// Writes contents to file, File.WriteAllText().
         /// </summary>
         /// <param name="filename">The filename.</param>
@@ -191,8 +186,6 @@ namespace Semmle.Autobuild
         }
 
         string IBuildActions.GetFullPath(string path) => Path.GetFullPath(path);
-
-        string IBuildActions.GetDirectoryName(string path) => Path.GetDirectoryName(path);
 
         public static readonly IBuildActions Instance = new SystemBuildActions();
     }

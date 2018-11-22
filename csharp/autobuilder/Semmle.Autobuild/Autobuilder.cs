@@ -128,9 +128,10 @@ namespace Semmle.Autobuild
 
             projectsOrSolutionsToBuildLazy = new Lazy<IList<IProjectOrSolution>>(() =>
             {
+                List<IProjectOrSolution> ret;
                 if (options.Solution.Any())
                 {
-                    var ret = new List<IProjectOrSolution>();
+                    ret = new List<IProjectOrSolution>();
                     foreach (var solution in options.Solution)
                     {
                         if (actions.FileExists(solution))
@@ -141,53 +142,43 @@ namespace Semmle.Autobuild
                     return ret;
                 }
 
-                bool FindFiles(string extension, Func<string, ProjectOrSolution> create, out IEnumerable<IProjectOrSolution> files)
+                IEnumerable<IProjectOrSolution> FindFiles(string extension, Func<string, ProjectOrSolution> create)
                 {
-                    var allFiles = GetExtensions(extension).
+                    var matchingFiles = GetExtensions(extension).
                         Select(p => (ProjectOrSolution: create(p.Item1), DistanceFromRoot: p.Item2)).
                         Where(p => p.ProjectOrSolution.HasLanguage(this.Options.Language)).
                         ToArray();
 
-                    if (allFiles.Length == 0)
-                    {
-                        files = null;
-                        return false;
-                    }
+                    if (matchingFiles.Length == 0)
+                        return null;
 
                     if (options.AllSolutions)
-                    {
-                        files = allFiles.Select(p => p.ProjectOrSolution);
-                        return true;
-                    }
+                        return matchingFiles.Select(p => p.ProjectOrSolution);
 
-                    var firstIsClosest = allFiles.Length > 1 && allFiles[0].DistanceFromRoot < allFiles[1].DistanceFromRoot;
-                    if (allFiles.Length == 1 || firstIsClosest)
-                    {
-                        files = allFiles.Select(p => p.ProjectOrSolution).Take(1);
-                        return true;
-                    }
+                    var firstIsClosest = matchingFiles.Length > 1 && matchingFiles[0].DistanceFromRoot < matchingFiles[1].DistanceFromRoot;
+                    if (matchingFiles.Length == 1 || firstIsClosest)
+                        return matchingFiles.Select(p => p.ProjectOrSolution).Take(1);
 
-                    var candidates = allFiles.
-                        Where(f => f.DistanceFromRoot == allFiles[0].DistanceFromRoot).
+                    var candidates = matchingFiles.
+                        Where(f => f.DistanceFromRoot == matchingFiles[0].DistanceFromRoot).
                         Select(f => f.ProjectOrSolution);
                     Log(Severity.Info, $"Found multiple '{extension}' files, giving up: {string.Join(", ", candidates)}.");
-                    files = new IProjectOrSolution[0];
-                    return true;
+                    return new IProjectOrSolution[0];
                 }
 
                 // First look for `.proj` files
-                if (FindFiles(".proj", f => new Project(this, f), out var ret1))
-                    return ret1.ToList();
+                ret = FindFiles(".proj", f => new Project(this, f))?.ToList();
+                if (ret != null)
+                    return ret;
 
                 // Then look for `.sln` files
-                if (FindFiles(".sln", f => new Solution(this, f), out var ret2))
-                    return ret2.ToList();
+                ret = FindFiles(".sln", f => new Solution(this, f))?.ToList();
+                if (ret != null)
+                    return ret;
 
                 // Finally look for language specific project files, e.g. `.csproj` files
-                if (FindFiles(this.Options.Language.ProjectExtension, f => new Project(this, f), out var ret3))
-                    return ret3.ToList();
-
-                return new List<IProjectOrSolution>();
+                ret = FindFiles(this.Options.Language.ProjectExtension, f => new Project(this, f))?.ToList();
+                return ret ?? new List<IProjectOrSolution>();
             });
 
             SemmleDist = Actions.GetEnvironmentVariable("SEMMLE_DIST");

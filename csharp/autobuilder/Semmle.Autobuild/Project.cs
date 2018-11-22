@@ -78,7 +78,7 @@ namespace Semmle.Autobuild
                 foreach (var include in projectFileIncludes.Concat(projectFilesIncludes))
                 {
                     var includePath = builder.Actions.IsWindows() ? include.Value : include.Value.Replace("\\", "/");
-                    includedProjects.Add(new Project(builder, builder.Actions.PathCombine(builder.Actions.GetDirectoryName(this.FullPath), includePath)));
+                    includedProjects.Add(new Project(builder, builder.Actions.PathCombine(Path.GetDirectoryName(this.FullPath), includePath)));
                 }
             }
         }
