@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Encryption is key to the security of most, if not all, online communication.
+Using TLS can enusre that neither party in the communication is an interloper.
+For this reason, is is unwise to disable the verification that TLS provides.
+<code>requests</code> provides verification by default, and it is only when
+explicitly turned off using <code>verify=False</code> that no verification occurs.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Never use <code>verify=False</code> when making a request.
+</p>
+</recommendation>
+
+<example>
+<p>
+The example shows an unsafe call to <a href="https://semmle.com">semmle.com</a>, followed by various safe alternatives.
+</p>
+
+<sample src="examples/make_request.py" />
+</example>
+
+<references>
+<li>
+Common Weakness Enumeration:
+<a href="https://cwe.mitre.org/data/definitions/295.html">CWE-295: Improper Certificate Validation</a>.
+</li>
+<li>
+Python requests documentation: <a href="http://docs.python-requests.org/en/master/user/advanced/#ssl-cert-verification">SSL Cert Verification</a>.
+</li>
+</references>
+</qhelp>
+
