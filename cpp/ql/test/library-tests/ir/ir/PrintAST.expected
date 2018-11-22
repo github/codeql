@@ -6335,3 +6335,119 @@ ir.cpp:
 #  963|             Type = int
 #  963|             Value = 900
 #  963|             ValueCategory = prvalue
+#  966| IfStmtWithDeclaration(int, int) -> void
+#  966|   params: 
+#  966|     0: x
+#  966|         Type = int
+#  966|     1: y
+#  966|         Type = int
+#  966|   body: { ... }
+#  967|     0: if (...) ... 
+#  967|       0: (condition decl)
+#  967|           Type = bool
+#  967|           ValueCategory = prvalue
+#  967|         0: b
+#  967|             Type = bool
+#  967|             ValueCategory = prvalue(load)
+#  967|       1: { ... }
+#  968|         0: ExprStmt
+#  968|           0: ... = ...
+#  968|               Type = int
+#  968|               ValueCategory = lvalue
+#  968|             0: x
+#  968|                 Type = int
+#  968|                 ValueCategory = lvalue
+#  968|             1: 5
+#  968|                 Type = int
+#  968|                 Value = 5
+#  968|                 ValueCategory = prvalue
+#  970|       2: if (...) ... 
+#  970|         0: (condition decl)
+#  970|             Type = bool
+#  970|             ValueCategory = prvalue
+#  970|           0: (bool)...
+#  970|               Conversion = conversion to bool
+#  970|               Type = bool
+#  970|               ValueCategory = prvalue
+#  970|             expr: z
+#  970|                 Type = int
+#  970|                 ValueCategory = prvalue(load)
+#  970|         1: { ... }
+#  971|           0: ExprStmt
+#  971|             0: ... = ...
+#  971|                 Type = int
+#  971|                 ValueCategory = lvalue
+#  971|               0: y
+#  971|                   Type = int
+#  971|                   ValueCategory = lvalue
+#  971|               1: 7
+#  971|                   Type = int
+#  971|                   Value = 7
+#  971|                   ValueCategory = prvalue
+#  973|         2: if (...) ... 
+#  973|           0: (condition decl)
+#  973|               Type = bool
+#  973|               ValueCategory = prvalue
+#  973|             0: (bool)...
+#  973|                 Conversion = conversion to bool
+#  973|                 Type = bool
+#  973|                 ValueCategory = prvalue
+#  973|               expr: p
+#  973|                   Type = int *
+#  973|                   ValueCategory = prvalue(load)
+#  973|           1: { ... }
+#  974|             0: ExprStmt
+#  974|               0: ... = ...
+#  974|                   Type = int
+#  974|                   ValueCategory = lvalue
+#  974|                 0: * ...
+#  974|                     Type = int
+#  974|                     ValueCategory = lvalue
+#  974|                   0: p
+#  974|                       Type = int *
+#  974|                       ValueCategory = prvalue(load)
+#  974|                 1: 2
+#  974|                     Type = int
+#  974|                     Value = 2
+#  974|                     ValueCategory = prvalue
+#  976|     1: return ...
+#  978| WhileStmtWithDeclaration(int, int) -> void
+#  978|   params: 
+#  978|     0: x
+#  978|         Type = int
+#  978|     1: y
+#  978|         Type = int
+#  978|   body: { ... }
+#  979|     0: while (...) ...
+#  979|       0: (condition decl)
+#  979|           Type = bool
+#  979|           ValueCategory = prvalue
+#  979|         0: b
+#  979|             Type = bool
+#  979|             ValueCategory = prvalue(load)
+#  979|       1: { ... }
+#  981|     1: while (...) ...
+#  981|       0: (condition decl)
+#  981|           Type = bool
+#  981|           ValueCategory = prvalue
+#  981|         0: (bool)...
+#  981|             Conversion = conversion to bool
+#  981|             Type = bool
+#  981|             ValueCategory = prvalue
+#  981|           expr: z
+#  981|               Type = int
+#  981|               ValueCategory = prvalue(load)
+#  981|       1: { ... }
+#  983|     2: while (...) ...
+#  983|       0: (condition decl)
+#  983|           Type = bool
+#  983|           ValueCategory = prvalue
+#  983|         0: (bool)...
+#  983|             Conversion = conversion to bool
+#  983|             Type = bool
+#  983|             ValueCategory = prvalue
+#  983|           expr: p
+#  983|               Type = int *
+#  983|               ValueCategory = prvalue(load)
+#  983|       1: { ... }
+#  985|     3: return ...

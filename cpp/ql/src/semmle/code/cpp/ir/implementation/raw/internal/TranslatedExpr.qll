@@ -4,6 +4,7 @@ private import semmle.code.cpp.ir.internal.OperandTag
 private import semmle.code.cpp.ir.internal.TempVariableTag
 private import InstructionTag
 private import TranslatedCondition
+private import TranslatedDeclarationEntry
 private import TranslatedElement
 private import TranslatedFunction
 private import TranslatedInitialization
@@ -2912,5 +2913,59 @@ class TranslatedNewArrayExpr extends TranslatedNewOrNewArrayExpr {
   override final TranslatedInitialization getInitialization() {
     // REVIEW: Figure out how we want to model array initialization in the IR.
     none()
+  }
+}
+
+/**
+ * The IR translation of a `ConditionDeclExpr`, which represents the value of the declared variable
+ * after conversion to `bool` in code such as:
+ * ```
+ * if (int* p = &x) {
+ * }
+ * ```
+ */
+class TranslatedConditionDeclExpr extends TranslatedNonConstantExpr {
+  ConditionDeclExpr condDeclExpr;
+
+  TranslatedConditionDeclExpr() {
+    condDeclExpr = expr
+  }
+
+  override final Instruction getFirstInstruction() {
+    result = getDecl().getFirstInstruction()
+  }
+
+  override final TranslatedElement getChild(int id) {
+    id = 0 and result = getDecl() or
+    id = 1 and result = getConditionExpr()
+  }
+
+  override Instruction getResult() {
+    result = getConditionExpr().getResult()
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    none()
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    (
+      child = getDecl() and
+      result = getConditionExpr().getFirstInstruction()
+    ) or
+    child = getConditionExpr() and result = getParent().getChildSuccessor(this)
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType,
+      boolean isGLValue) {
+    none()
+  }
+
+  private TranslatedConditionDecl getDecl() {
+    result = getTranslatedConditionDecl(condDeclExpr)
+  }
+
+  private TranslatedExpr getConditionExpr() {
+    result = getTranslatedExpr(condDeclExpr.getExpr().getFullyConverted())
   }
 }
