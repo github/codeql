@@ -11,4 +11,6 @@ window.addEventListener('message', (ev) => {
     f[message.name](message.payload)(); // NOT OK - may acccess Function constructor
     
     obj[message.name](message.payload); // OK - may crash, but no code execution involved
+
+    window[ev](ev); // NOT OK
 });

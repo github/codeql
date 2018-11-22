@@ -87,7 +87,7 @@ module UnsafeDynamicMethodAccess {
         hasUnsafeMethods(read.getBase().getALocalSource()) and
         src = read.getPropertyNameExpr().flow() and
         dst = read and
-        srclabel = taint() and
+        (srclabel = data() or srclabel = taint()) and
         dstlabel = unsafeFunction())
       or
       // Reading a chain of properties from any object with a prototype can lead to Function
@@ -95,7 +95,7 @@ module UnsafeDynamicMethodAccess {
         not isPrototypeLessObject(proj.getObject().getALocalSource()) and
         src = proj.getASelector() and
         dst = proj and
-        srclabel = taint() and
+        (srclabel = data() or srclabel = taint()) and
         dstlabel = unsafeFunction())
     }
   }
