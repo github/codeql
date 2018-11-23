@@ -4,6 +4,8 @@
  * @kind problem
  * @id cpp/power-of-10/check-arguments
  * @problem.severity warning
++ * @tags correctness
++ *       reliability
  */
 
 import cpp

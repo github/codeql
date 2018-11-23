@@ -3,7 +3,9 @@
  * @description Function pointers are not permitted -- they make it impossible for a tool to prove the absence of recursion.
  * @kind problem
  * @id cpp/power-of-10/function-pointer
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       testability
  */
 
 import cpp

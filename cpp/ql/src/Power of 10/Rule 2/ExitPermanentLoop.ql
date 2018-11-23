@@ -3,7 +3,9 @@
  * @description Permanent loops (like "while(1) {..}") are typically meant to be non-terminating and should not be terminated by other means.
  * @kind problem
  * @id cpp/power-of-10/exit-permanent-loop
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @precision low
+ * @tags correctness
  */
 
 import cpp

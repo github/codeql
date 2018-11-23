@@ -3,7 +3,9 @@
  * @description Macros are not allowed to use complex preprocessor features like variable argument lists and token pasting.
  * @kind problem
  * @id cpp/power-of-10/undisciplined-macro
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
  */
 
 import cpp

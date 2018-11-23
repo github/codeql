@@ -3,7 +3,9 @@
  * @description Putting more than one statement on a single line hinders program understanding.
  * @kind problem
  * @id cpp/power-of-10/one-stmt-per-line
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
  */
 
 import cpp

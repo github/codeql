@@ -3,7 +3,9 @@
  * @description Function length should be limited to what can be printed on a single sheet of paper (60 logical lines).
  * @kind problem
  * @id cpp/power-of-10/function-too-long
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
  */
 
 import cpp

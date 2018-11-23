@@ -3,7 +3,9 @@
  * @description The use of the preprocessor must be limited to inclusion of header files and simple macro definitions.
  * @kind problem
  * @id cpp/power-of-10/restrict-preprocessor
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
  */
 
 import cpp

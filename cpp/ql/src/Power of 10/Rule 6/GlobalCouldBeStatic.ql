@@ -3,7 +3,10 @@
  * @description Global variables that are not accessed outside their own file could be made static to promote information hiding.
  * @kind problem
  * @id cpp/power-of-10/global-could-be-static
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @precision low
+ * @tags maintainability
+ *       modularity
  */
 
 import cpp

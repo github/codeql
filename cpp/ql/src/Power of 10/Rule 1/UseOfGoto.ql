@@ -5,6 +5,7 @@
  * @id cpp/power-of-10/use-of-goto
  * @problem.severity warning
  * @tags maintainability
+ *       readability
  */
 
 import cpp

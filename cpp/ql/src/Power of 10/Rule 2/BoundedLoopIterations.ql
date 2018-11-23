@@ -4,7 +4,10 @@
                 This check excludes loops that are meant to be nonterminating (like schedulers).
  * @kind problem
  * @id cpp/power-of-10/bounded-loop-iterations
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @precision low
+ * @tags correctness
+ *       reliability
  */
 
 import cpp

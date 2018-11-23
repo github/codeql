@@ -5,6 +5,8 @@
  * @kind problem
  * @id cpp/power-of-10/use-of-recursion
  * @problem.severity warning
+ * @tags maintainability
+ *       readability
  */
 
 import cpp
