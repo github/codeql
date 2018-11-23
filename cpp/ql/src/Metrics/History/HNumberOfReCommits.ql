@@ -7,6 +7,7 @@
  * @treemap.warnOn highValues
  * @metricType file
  * @metricAggregate avg min max
+ * @deprecated
  */
 import cpp
 import external.VCS

@@ -3,7 +3,10 @@
  * @description User-specified identifiers (internal and external) will not rely on significance of more than 64 characters.
  * @kind problem
  * @id cpp/jsf/av-rule-46
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
+ *       external/jsf
  */
 import cpp
 

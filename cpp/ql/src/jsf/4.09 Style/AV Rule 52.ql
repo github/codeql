@@ -3,7 +3,10 @@
  * @description Identifiers for constant and enumerator values shall be lowercase.
  * @kind problem
  * @id cpp/jsf/av-rule-52
- * @problem.severity error
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
+ *       external/jsf
  */
 import cpp
 import Naming

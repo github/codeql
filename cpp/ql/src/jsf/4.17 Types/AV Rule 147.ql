@@ -5,6 +5,7 @@
  * @id cpp/jsf/av-rule-147
  * @problem.severity error
  * @tags reliability
+ *       external/jsf
  */
 import cpp
 

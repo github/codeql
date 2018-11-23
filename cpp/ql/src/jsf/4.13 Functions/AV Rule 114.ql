@@ -8,6 +8,7 @@
  * @tags reliability
  *       readability
  *       language-features
+ *       external/jsf
  */
 import cpp
 
@@ -38,6 +39,8 @@ predicate functionImperfectlyExtracted(Function f) {
   exists(CompilerError e | f.getBlock().getLocation().subsumes(e.getLocation()))
   or
   exists(ErrorExpr ee | ee.getEnclosingFunction() = f)
+  or
+  count(f.getType()) > 1
 }
 
 from Stmt stmt, string msg, Function f, ControlFlowNode blame

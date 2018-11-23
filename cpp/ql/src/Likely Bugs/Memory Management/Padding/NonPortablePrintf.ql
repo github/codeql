@@ -5,6 +5,8 @@
  * @kind problem
  * @id cpp/non-portable-printf
  * @problem.severity warning
+ * @tags maintainability
+ *       portability
  */
 
 import cpp

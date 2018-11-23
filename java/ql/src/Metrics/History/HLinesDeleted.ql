@@ -6,6 +6,7 @@
  * @metricType file
  * @metricAggregate avg sum max
  * @id java/vcs/deleted-lines-per-file
+ * @deprecated
  */
 
 import java

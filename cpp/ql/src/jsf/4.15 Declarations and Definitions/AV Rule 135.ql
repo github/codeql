@@ -5,6 +5,7 @@
  * @id cpp/jsf/av-rule-135
  * @problem.severity recommendation
  * @tags maintainability
+ *       external/jsf
  */
 import cpp
 import Best_Practices.Hiding.Shadowing

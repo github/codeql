@@ -10,15 +10,19 @@
 */
 import javascript
 
+/** Holds if `base` declares or inherits method `m` with the given `name`. */
+predicate hasMethod(ClassDefinition base, string name, MethodDefinition m) {
+  m = base.getMethod(name) or
+  hasMethod(base.getSuperClassDefinition(), name, m)
+}
 
 /**
 * Holds if `access` is in`fromMethod`, and it references `toMethod` through `this`.
 */
 predicate isLocalMethodAccess(PropAccess access, MethodDefinition fromMethod, MethodDefinition toMethod) {
-    fromMethod.getDeclaringClass() = toMethod.getDeclaringClass() and
+    hasMethod(fromMethod.getDeclaringClass(), access.getPropertyName(), toMethod) and
     access.getEnclosingFunction() = fromMethod.getBody() and
-    access.getBase() instanceof ThisExpr and
-    access.getPropertyName() = toMethod.getName()
+    access.getBase() instanceof ThisExpr
 }
 
 string getKind(MethodDefinition m) {

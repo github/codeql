@@ -3,7 +3,10 @@
  * @description The public, protected, and private sections of a class will be declared in that order.
  * @kind problem
  * @id cpp/jsf/av-rule-57
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
+ *       external/jsf
  */
 import cpp
 

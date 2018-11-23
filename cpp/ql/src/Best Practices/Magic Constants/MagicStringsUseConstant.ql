@@ -4,6 +4,8 @@
  * @kind problem
  * @id cpp/use-string-constant
  * @problem.severity recommendation
+ * @precision low
+ * @tags maintainability
  */
 import cpp
 import MagicConstants

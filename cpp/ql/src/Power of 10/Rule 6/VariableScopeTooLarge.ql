@@ -10,5 +10,7 @@ import cpp
 
 from GlobalVariable v, Function f
 where v.getAnAccess().getEnclosingFunction() = f and
-      strictcount(v.getAnAccess().getEnclosingFunction()) = 1
+      strictcount(v.getAnAccess().getEnclosingFunction()) = 1 and
+      forall(VariableAccess a | a = v.getAnAccess() | exists(a.getEnclosingFunction())) and
+      not v.getADeclarationEntry().getFile() instanceof HeaderFile // intended to be accessed elsewhere
 select v, "The variable " + v.getName() + " is only accessed in $@ and should be scoped accordingly.", f, f.getName()

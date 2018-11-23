@@ -10,15 +10,8 @@ namespace Semmle.Autobuild
     /// <summary>
     /// A solution file, extension .sln.
     /// </summary>
-    public interface ISolution
+    public interface ISolution : IProjectOrSolution
     {
-        /// <summary>
-        /// List of C# or C++ projects contained in the solution.
-        /// (There could be other project types as well - these are ignored.)
-        /// </summary>
-
-        IEnumerable<Project> Projects { get; }
-
         /// <summary>
         /// Solution configurations.
         /// </summary>
@@ -35,16 +28,6 @@ namespace Semmle.Autobuild
         string DefaultPlatformName { get; }
 
         /// <summary>
-        /// The path of the solution file.
-        /// </summary>
-        string Path { get; }
-
-        /// <summary>
-        /// The number of C# or C++ projects.
-        /// </summary>
-        int ProjectCount { get; }
-
-        /// <summary>
         /// Gets the "best" tools version for this solution.
         /// If there are several versions, because the project files
         /// are inconsistent, then pick the highest/latest version.
@@ -56,11 +39,12 @@ namespace Semmle.Autobuild
     /// <summary>
     /// A solution file on the filesystem, read using Microsoft.Build.
     /// </summary>
-    class Solution : ISolution
+    class Solution : ProjectOrSolution, ISolution
     {
         readonly SolutionFile solution;
 
-        public IEnumerable<Project>  Projects { get; private set; }
+        readonly IEnumerable<Project> includedProjects;
+        public override IEnumerable<IProjectOrSolution> IncludedProjects => includedProjects;
 
         public IEnumerable<SolutionConfigurationInSolution> Configurations =>
             solution == null ? Enumerable.Empty<SolutionConfigurationInSolution>() : solution.SolutionConfigurations;
@@ -71,18 +55,16 @@ namespace Semmle.Autobuild
         public string DefaultPlatformName =>
             solution == null ? "" : solution.GetDefaultPlatformName();
 
-        public Solution(Autobuilder builder, string path)
+        public Solution(Autobuilder builder, string path) : base(builder, path)
         {
-            Path = System.IO.Path.GetFullPath(path);
             try
             {
-                solution = SolutionFile.Parse(Path);
+                solution = SolutionFile.Parse(FullPath);
 
-                Projects =
+                includedProjects =
                     solution.ProjectsInOrder.
                     Where(p => p.ProjectType == SolutionProjectType.KnownToBeMSBuildFormat).
-                    Select(p => System.IO.Path.GetFullPath(FileUtils.ConvertToNative(p.AbsolutePath))).
-                    Where(p => builder.Options.Language.ProjectFileHasThisLanguage(p)).
+                    Select(p => builder.Actions.GetFullPath(FileUtils.ConvertToNative(p.AbsolutePath))).
                     Select(p => new Project(builder, p)).
                     ToArray();
             }
@@ -90,17 +72,11 @@ namespace Semmle.Autobuild
             {
                 // We allow specifying projects as solutions in lgtm.yml, so model
                 // that scenario as a solution with just that one project
-                Projects = Language.IsProjectFileForAnySupportedLanguage(Path)
-                    ? new[] { new Project(builder, Path) }
-                    : new Project[0];
+                includedProjects = new[] { new Project(builder, path) };
             }
         }
 
-        public string Path { get; private set; }
-
-        public int ProjectCount => Projects.Count();
-
-        IEnumerable<Version> ToolsVersions => Projects.Where(p => p.ValidToolsVersion).Select(p => p.ToolsVersion);
+        IEnumerable<Version> ToolsVersions => includedProjects.Where(p => p.ValidToolsVersion).Select(p => p.ToolsVersion);
 
         public Version ToolsVersion => ToolsVersions.Any() ? ToolsVersions.Max() : new Version();
     }

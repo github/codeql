@@ -216,6 +216,13 @@ class ClassDefinition extends @classdefinition, ClassOrInterface, AST::ValueNode
     )
   }
 
+  /**
+   * Gets the definition of the super class of this class, if it can be determined.
+   */
+  ClassDefinition getSuperClassDefinition() {
+    result = getSuperClass().analyze().getAValue().(AbstractClass).getClass()
+  }
+
 }
 
 /**

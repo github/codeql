@@ -9,6 +9,11 @@ private string getDirectiveName(SlashStarComment c) {
   result = c.getText().regexpCapture("(?s)\\s*(\\w+)\\b.*", 1)
 }
 
+/** Gets a function at the specified location. */
+private Function getFunctionAt(string filepath, int startline, int startcolumn, int endline, int endcolumn) {
+  result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+}
+
 /** A JSLint directive. */
 abstract class JSLintDirective extends SlashStarComment {
   /**
@@ -36,7 +41,7 @@ abstract class JSLintDirective extends SlashStarComment {
   private Function getASurroundingFunction() {
     exists (string path, int fsl, int fsc, int fel, int fec,
                          int dsl, int dsc, int del, int dec |
-      result.getLocation().hasLocationInfo(path, fsl, fsc, fel, fec) and
+      result = getFunctionAt(path, fsl, fsc, fel, fec) and
       this.getLocation().hasLocationInfo(path, dsl, dsc, del, dec) |
       // the function starts before this directive
       (fsl < dsl or (fsl = dsl and fsc <= dsc))
@@ -95,6 +100,11 @@ abstract class JSLintDirective extends SlashStarComment {
 abstract class JSLintGlobal extends Linting::GlobalDeclaration, JSLintDirective {
   override predicate appliesTo(ExprOrStmt s) {
     JSLintDirective.super.appliesTo(s)
+  }
+
+  override predicate declaresGlobalForAccess(GlobalVarAccess gva) {
+    declaresGlobal(gva.getName(), _) and
+    getScope() = gva.getContainer().getEnclosingContainer*()
   }
 }
 

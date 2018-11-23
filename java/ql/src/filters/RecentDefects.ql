@@ -3,6 +3,7 @@
  * @description Filter a defect query to only include results in files that have been changed recently, and modify the message.
  * @kind problem
  * @id java/recently-changed-file-filter
+ * @deprecated
  */
 
 import java

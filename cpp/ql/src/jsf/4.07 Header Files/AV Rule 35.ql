@@ -10,6 +10,7 @@
  * @tags efficiency
  *       maintainability
  *       modularity
+ *       external/jsf
  */
 import cpp
 import semmle.code.cpp.headers.MultipleInclusion

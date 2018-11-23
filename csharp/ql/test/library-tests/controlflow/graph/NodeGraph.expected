@@ -728,6 +728,49 @@
 | Conditions.cs:109:22:109:23 | "" | Conditions.cs:109:17:109:23 | ... + ... | semmle.label | successor |
 | Conditions.cs:110:9:110:17 | return ...; | Conditions.cs:102:12:102:13 | exit M8 | semmle.label | return |
 | Conditions.cs:110:16:110:16 | access to local variable x | Conditions.cs:110:9:110:17 | return ...; | semmle.label | successor |
+| Conditions.cs:113:10:113:11 | enter M9 | Conditions.cs:114:5:124:5 | {...} | semmle.label | successor |
+| Conditions.cs:114:5:124:5 | {...} | Conditions.cs:115:9:115:24 | ... ...; | semmle.label | successor |
+| Conditions.cs:115:9:115:24 | ... ...; | Conditions.cs:115:16:115:16 | access to local variable s | semmle.label | successor |
+| Conditions.cs:115:16:115:16 | access to local variable s | Conditions.cs:115:20:115:23 | null | semmle.label | successor |
+| Conditions.cs:115:16:115:23 | String s = ... | Conditions.cs:116:9:123:9 | for (...;...;...) ... | semmle.label | successor |
+| Conditions.cs:115:20:115:23 | null | Conditions.cs:115:16:115:23 | String s = ... | semmle.label | successor |
+| Conditions.cs:116:9:123:9 | for (...;...;...) ... | Conditions.cs:116:17:116:17 | access to local variable i | semmle.label | successor |
+| Conditions.cs:116:17:116:17 | access to local variable i | Conditions.cs:116:21:116:21 | 0 | semmle.label | successor |
+| Conditions.cs:116:17:116:21 | Int32 i = ... | Conditions.cs:116:24:116:24 | access to local variable i | semmle.label | successor |
+| Conditions.cs:116:21:116:21 | 0 | Conditions.cs:116:17:116:21 | Int32 i = ... | semmle.label | successor |
+| Conditions.cs:116:24:116:24 | access to local variable i | Conditions.cs:116:28:116:31 | access to parameter args | semmle.label | successor |
+| Conditions.cs:116:24:116:38 | ... < ... | Conditions.cs:113:10:113:11 | exit M9 | semmle.label | false |
+| Conditions.cs:116:24:116:38 | ... < ... | Conditions.cs:117:9:123:9 | {...} | semmle.label | true |
+| Conditions.cs:116:28:116:31 | access to parameter args | Conditions.cs:116:28:116:38 | access to property Length | semmle.label | successor |
+| Conditions.cs:116:28:116:38 | access to property Length | Conditions.cs:116:24:116:38 | ... < ... | semmle.label | successor |
+| Conditions.cs:116:41:116:41 | access to local variable i | Conditions.cs:116:41:116:43 | ...++ | semmle.label | successor |
+| Conditions.cs:116:41:116:43 | ...++ | Conditions.cs:116:24:116:24 | access to local variable i | semmle.label | successor |
+| Conditions.cs:117:9:123:9 | {...} | Conditions.cs:118:13:118:44 | ... ...; | semmle.label | successor |
+| Conditions.cs:118:13:118:44 | ... ...; | Conditions.cs:118:17:118:20 | access to local variable last | semmle.label | successor |
+| Conditions.cs:118:17:118:20 | access to local variable last | Conditions.cs:118:24:118:24 | access to local variable i | semmle.label | successor |
+| Conditions.cs:118:17:118:43 | Boolean last = ... | Conditions.cs:119:13:120:23 | if (...) ... | semmle.label | successor |
+| Conditions.cs:118:24:118:24 | access to local variable i | Conditions.cs:118:29:118:32 | access to parameter args | semmle.label | successor |
+| Conditions.cs:118:24:118:43 | ... == ... | Conditions.cs:118:17:118:43 | Boolean last = ... | semmle.label | successor |
+| Conditions.cs:118:29:118:32 | access to parameter args | Conditions.cs:118:29:118:39 | access to property Length | semmle.label | successor |
+| Conditions.cs:118:29:118:39 | access to property Length | Conditions.cs:118:43:118:43 | 1 | semmle.label | successor |
+| Conditions.cs:118:29:118:43 | ... - ... | Conditions.cs:118:24:118:43 | ... == ... | semmle.label | successor |
+| Conditions.cs:118:43:118:43 | 1 | Conditions.cs:118:29:118:43 | ... - ... | semmle.label | successor |
+| Conditions.cs:119:13:120:23 | if (...) ... | Conditions.cs:119:17:119:21 | !... | semmle.label | successor |
+| Conditions.cs:119:17:119:21 | !... | Conditions.cs:119:18:119:21 | access to local variable last | semmle.label | successor |
+| Conditions.cs:119:18:119:21 | access to local variable last | Conditions.cs:120:17:120:23 | [last (line 118): false] ...; | semmle.label | false |
+| Conditions.cs:119:18:119:21 | access to local variable last | Conditions.cs:121:13:122:25 | [last (line 118): true] if (...) ... | semmle.label | true |
+| Conditions.cs:120:17:120:17 | [last (line 118): false] access to local variable s | Conditions.cs:120:21:120:22 | [last (line 118): false] "" | semmle.label | successor |
+| Conditions.cs:120:17:120:22 | [last (line 118): false] ... = ... | Conditions.cs:121:13:122:25 | [last (line 118): false] if (...) ... | semmle.label | successor |
+| Conditions.cs:120:17:120:23 | [last (line 118): false] ...; | Conditions.cs:120:17:120:17 | [last (line 118): false] access to local variable s | semmle.label | successor |
+| Conditions.cs:120:21:120:22 | [last (line 118): false] "" | Conditions.cs:120:17:120:22 | [last (line 118): false] ... = ... | semmle.label | successor |
+| Conditions.cs:121:13:122:25 | [last (line 118): false] if (...) ... | Conditions.cs:121:17:121:20 | [last (line 118): false] access to local variable last | semmle.label | successor |
+| Conditions.cs:121:13:122:25 | [last (line 118): true] if (...) ... | Conditions.cs:121:17:121:20 | [last (line 118): true] access to local variable last | semmle.label | successor |
+| Conditions.cs:121:17:121:20 | [last (line 118): false] access to local variable last | Conditions.cs:116:41:116:41 | access to local variable i | semmle.label | false |
+| Conditions.cs:121:17:121:20 | [last (line 118): true] access to local variable last | Conditions.cs:122:17:122:25 | ...; | semmle.label | true |
+| Conditions.cs:122:17:122:17 | access to local variable s | Conditions.cs:122:21:122:24 | null | semmle.label | successor |
+| Conditions.cs:122:17:122:24 | ... = ... | Conditions.cs:116:41:116:41 | access to local variable i | semmle.label | successor |
+| Conditions.cs:122:17:122:25 | ...; | Conditions.cs:122:17:122:17 | access to local variable s | semmle.label | successor |
+| Conditions.cs:122:21:122:24 | null | Conditions.cs:122:17:122:24 | ... = ... | semmle.label | successor |
 | ExitMethods.cs:7:10:7:11 | enter M1 | ExitMethods.cs:8:5:11:5 | {...} | semmle.label | successor |
 | ExitMethods.cs:8:5:11:5 | {...} | ExitMethods.cs:9:9:9:25 | ...; | semmle.label | successor |
 | ExitMethods.cs:9:9:9:24 | call to method ErrorMaybe | ExitMethods.cs:10:9:10:15 | return ...; | semmle.label | successor |

@@ -291,7 +291,8 @@ class LocalVariable extends LocalScopeVariable, @localvariable {
   override Type getType() { localvariables(underlyingElement(this),unresolveElement(result),_) }
 
   override Function getFunction() {
-    exists(DeclStmt s | s.getADeclaration() = this and s.getEnclosingFunction() = result)
+    exists(DeclStmt s | s.getADeclaration() = this and s.getEnclosingFunction() = result) or
+    exists(ConditionDeclExpr e | e.getVariable() = this and e.getEnclosingFunction() = result)
   }
 }
 

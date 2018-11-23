@@ -3,7 +3,7 @@
  * @description Leaking information about an exception, such as messages and stack traces, to an
  *              external user can expose implementation details that are useful to an attacker for
  *              developing a subsequent exploit.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id cs/information-exposure-through-exception
@@ -15,6 +15,7 @@
 import csharp
 import semmle.code.csharp.frameworks.System
 import semmle.code.csharp.security.dataflow.XSS
+import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 /**
  * A taint-tracking configuration for reasoning about stack traces that flow to web page outputs.
@@ -56,6 +57,7 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
   }
 }
 
-from TaintTrackingConfiguration c, DataFlow::Node source, DataFlow::Node sink
-where c.hasFlow(source, sink)
-select sink, "Exception information from $@ flows to here, and is exposed to the user.", source, source.toString()
+from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
+where c.hasFlowPath(source, sink)
+select sink.getNode(), source, sink,
+  "Exception information from $@ flows to here, and is exposed to the user.", source.getNode(), source.toString()

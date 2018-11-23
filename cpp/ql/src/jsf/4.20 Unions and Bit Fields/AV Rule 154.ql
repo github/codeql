@@ -6,9 +6,11 @@
  * @problem.severity warning
  * @precision low
  * @id cpp/signed-bit-field
- * @tags reliability
- *       readability
+ * @tags correctness
+ *       portability
+ *       reliability
  *       language-features
+ *       external/jsf
  *       external/cwe/cwe-190
  */
 import cpp

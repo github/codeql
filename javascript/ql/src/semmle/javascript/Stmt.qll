@@ -224,6 +224,12 @@ class NgInjectDirective extends KnownDirective {
   NgInjectDirective() { getDirectiveText().regexpMatch("ng(No)?Inject") }
 }
 
+/** A YUI compressor directive. */
+class YuiDirective extends KnownDirective {
+  YuiDirective() {
+    getDirectiveText().regexpMatch("([a-z0-9_]+:nomunge, ?)*([a-z0-9_]+:nomunge)")
+  }
+}
 
 /** A SystemJS `deps` directive. */
 class SystemJSDepsDirective extends KnownDirective {

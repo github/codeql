@@ -3,8 +3,10 @@
  * @description The goto statement shall not be used.
  * @kind problem
  * @id cpp/jsf/av-rule-189
- * @problem.severity error
+ * @problem.severity warning
  * @tags maintainability
+ *       readability
+ *       external/jsf
  */
 import cpp
 

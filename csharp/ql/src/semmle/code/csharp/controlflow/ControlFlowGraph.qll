@@ -2516,8 +2516,12 @@ module ControlFlow {
           result = strictcount(getAnElement())
         }
 
+        predicate immediatelyDominates(PreBasicBlock bb) {
+          bbIDominates(this, bb)
+        }
+
         predicate strictlyDominates(PreBasicBlock bb) {
-          bbIDominates+(this, bb)
+          this.immediatelyDominates+(bb)
         }
 
         predicate dominates(PreBasicBlock bb) {
@@ -2565,7 +2569,8 @@ module ControlFlow {
 
     /**
      * Provides an SSA implementation based on "pre-basic-blocks", restricted
-     * to local scope variables.
+     * to local scope variables and fields/properties that behave like local
+     * scope variables.
      *
      * The logic is duplicated from the implementation in `SSA.qll`, and
      * being an internal class, all predicate documentation has been removed.
@@ -2574,17 +2579,40 @@ module ControlFlow {
       private import PreBasicBlocks
       private import AssignableDefinitions
 
-      class SimpleLocalScopeVariable extends LocalScopeVariable {
-        SimpleLocalScopeVariable() {
-          not exists(AssignableDefinition def1, AssignableDefinition def2 |
-            def1.getTarget() = this and
-            def2.getTarget() = this and
-            def1.getEnclosingCallable() != def2.getEnclosingCallable()
+      /**
+       * A simple assignable. Either a local scope variable or a field/property
+       * that behaves like a local scope variable.
+       */
+      class SimpleAssignable extends Assignable {
+        private Callable c;
+
+        SimpleAssignable() {
+          (
+            this instanceof LocalScopeVariable
+            or
+            this instanceof Field
+            or
+            this = any(TrivialProperty tp | not tp.isOverridableOrImplementable())
+          ) and
+          forall(AssignableDefinition def |
+            def.getTarget() = this |
+            c = def.getEnclosingCallable()
+            or
+            def.getEnclosingCallable() instanceof Constructor
+          ) and
+          exists(AssignableAccess aa |
+            aa.getTarget() = this |
+            c = aa.getEnclosingCallable()
+          ) and
+          forall(QualifiableExpr qe |
+            qe.(AssignableAccess).getTarget() = this |
+            qe.targetIsThisInstance()
           )
         }
-      }
 
-      private newtype SsaRefKind = SsaRead() or SsaDef()
+        /** Gets a callable in which this simple assignable can be analyzed. */
+        Callable getACallable() { result = c }
+      }
 
       class Definition extends TPreSsaDef {
         string toString() {
@@ -2593,22 +2621,29 @@ module ControlFlow {
             result = def.toString()
           )
           or
-          exists(SimpleLocalScopeVariable v |
-            this = TPhiPreSsaDef(_, v) |
-            result = "phi(" + v.toString() + ")"
+          exists(SimpleAssignable a |
+            this = TImplicitEntryPreSsaDef(_, _, a) |
+            result = "implicit(" + a + ")"
+          )
+          or
+          exists(SimpleAssignable a |
+            this = TPhiPreSsaDef(_, a) |
+            result = "phi(" + a.toString() + ")"
           )
         }
 
-        SimpleLocalScopeVariable getVariable() {
+        SimpleAssignable getAssignable() {
           this = TExplicitPreSsaDef(_, _, _, result)
+          or
+          this = TImplicitEntryPreSsaDef(_, _, result)
           or
           this = TPhiPreSsaDef(_, result)
         }
 
-        LocalScopeVariableRead getARead() {
+        AssignableRead getARead() {
           firstReadSameVar(this, result)
           or
-          exists(LocalScopeVariableRead read |
+          exists(AssignableRead read |
             firstReadSameVar(this, read) |
             adjacentReadPairSameVar+(read, result)
           )
@@ -2620,141 +2655,270 @@ module ControlFlow {
             result = def.getLocation()
           )
           or
+          exists(Callable c |
+            this = TImplicitEntryPreSsaDef(c, _, _) |
+            result = c.getLocation()
+          )
+          or
           exists(PreBasicBlock bb |
             this = TPhiPreSsaDef(bb, _) |
             result = bb.getLocation()
           )
         }
 
+        PreBasicBlock getBasicBlock() {
+          this = TExplicitPreSsaDef(result, _, _, _)
+          or
+          this = TImplicitEntryPreSsaDef(_, result, _)
+          or
+          this = TPhiPreSsaDef(result, _)
+        }
+
+        Callable getCallable() {
+          result = this.getBasicBlock().getEnclosingCallable()
+        }
+
         AssignableDefinition getDefinition() {
           this = TExplicitPreSsaDef(_, _, result, _)
         }
+
+        Definition getAPhiInput() {
+          exists(PreBasicBlock bb, PreBasicBlock phiPred, SimpleAssignable a |
+            this = TPhiPreSsaDef(bb, a) |
+            bb.getAPredecessor() = phiPred and
+            ssaDefReachesEndOfBlock(phiPred, result, a)
+          )
+        }
       }
 
-      predicate assignableDefAt(PreBasicBlocks::PreBasicBlock bb, int i, AssignableDefinition def, SimpleLocalScopeVariable v) {
+      predicate implicitEntryDef(Callable c, PreBasicBlock bb, SimpleAssignable a) {
+        not a instanceof LocalScopeVariable and
+        c = a.getACallable() and
+        bb = succEntry(c)
+      }
+
+      private predicate assignableDefAt(PreBasicBlocks::PreBasicBlock bb, int i, AssignableDefinition def, SimpleAssignable a) {
         bb.getElement(i) = def.getExpr() and
-        v = def.getTarget() and
+        a = def.getTarget() and
         // In cases like `(x, x) = (0, 1)`, we discard the first (dead) definition of `x`
         not exists(TupleAssignmentDefinition first, TupleAssignmentDefinition second |
           first = def |
           second.getAssignment() = first.getAssignment() and
           second.getEvaluationOrder() > first.getEvaluationOrder() and
-          second.getTarget() = v
+          second.getTarget() = a
         )
         or
-        def.(ImplicitParameterDefinition).getParameter() = v and
+        def.(ImplicitParameterDefinition).getParameter() = a and
         exists(Callable c |
-          v = c.getAParameter() |
+          a = c.getAParameter() |
           bb = succEntry(c) and
           i = -1
         )
       }
 
-      predicate defAt(PreBasicBlock bb, int i, Definition def, SimpleLocalScopeVariable v) {
-        def = TExplicitPreSsaDef(bb, i, _, v)
-        or
-        def = TPhiPreSsaDef(bb, v) and i = -1
-      }
-
-      private predicate readAt(PreBasicBlock bb, int i, LocalScopeVariableRead read, SimpleLocalScopeVariable v) {
+      private predicate readAt(PreBasicBlock bb, int i, AssignableRead read, SimpleAssignable a) {
         read = bb.getElement(i) and
-        read.getTarget() = v
+        read.getTarget() = a
       }
 
-      private predicate ssaRef(PreBasicBlock bb, int i, SimpleLocalScopeVariable v, SsaRefKind k) {
-        readAt(bb, i, _, v) and
+      pragma[noinline]
+      private predicate exitBlock(PreBasicBlock bb, Callable c) {
+        exists(succExit(bb.getLastElement(), _)) and
+        c = bb.getEnclosingCallable()
+      }
+
+      private predicate outRefExitRead(PreBasicBlock bb, int i, LocalScopeVariable v) {
+        exitBlock(bb, v.getCallable()) and
+        i = bb.length() + 1 and
+        (v.isRef() or v.(Parameter).isOut())
+      }
+
+      private newtype RefKind =
+        Read()
+        or
+        Write(boolean certain) { certain = true or certain = false }
+
+      private predicate ref(PreBasicBlock bb, int i, SimpleAssignable a, RefKind k) {
+        (readAt(bb, i, _, a) or outRefExitRead(bb, i, a)) and
+        k = Read()
+        or
+        exists(AssignableDefinition def, boolean certain |
+          assignableDefAt(bb, i, def, a) |
+          if def.getTargetAccess().isRefArgument() then certain = false else certain = true and
+          k = Write(certain)
+        )
+      }
+
+      private int refRank(PreBasicBlock bb, int i, SimpleAssignable a, RefKind k) {
+        i = rank[result](int j | ref(bb, j, a, _)) and
+        ref(bb, i, a, k)
+      }
+
+      private int maxRefRank(PreBasicBlock bb, SimpleAssignable a) {
+        result = refRank(bb, _, a, _) and
+        not result + 1 = refRank(bb, _, a, _)
+      }
+
+      private int firstReadOrCertainWrite(PreBasicBlock bb, SimpleAssignable a) {
+        result = min(int r, RefKind k |
+          r = refRank(bb, _, a, k) and
+          k != Write(false)
+          |
+          r
+        )
+      }
+
+      predicate liveAtEntry(PreBasicBlock bb, SimpleAssignable a) {
+        refRank(bb, _, a, Read()) = firstReadOrCertainWrite(bb, a)
+        or
+        not exists(firstReadOrCertainWrite(bb, a)) and
+        liveAtExit(bb, a)
+      }
+
+      private predicate liveAtExit(PreBasicBlock bb, SimpleAssignable a) {
+        liveAtEntry(bb.getASuccessor(), a)
+      }
+
+      predicate assignableDefAtLive(PreBasicBlocks::PreBasicBlock bb, int i, AssignableDefinition def, SimpleAssignable a) {
+        assignableDefAt(bb, i, def, a) and
+        exists(int rnk |
+          rnk = refRank(bb, i, a, Write(_)) |
+          rnk + 1 = refRank(bb, _, a, Read())
+          or
+          rnk = maxRefRank(bb, a) and
+          liveAtExit(bb, a)
+        )
+      }
+
+      predicate defAt(PreBasicBlock bb, int i, Definition def, SimpleAssignable a) {
+        def = TExplicitPreSsaDef(bb, i, _, a)
+        or
+        def = TImplicitEntryPreSsaDef(_, bb, a) and i = -1
+        or
+        def = TPhiPreSsaDef(bb, a) and i = -1
+      }
+
+      private newtype SsaRefKind = SsaRead() or SsaDef()
+
+      private predicate ssaRef(PreBasicBlock bb, int i, SimpleAssignable a, SsaRefKind k) {
+        readAt(bb, i, _, a) and
         k = SsaRead()
         or
-        defAt(bb, i, _, v) and
+        defAt(bb, i, _, a) and
         k = SsaDef()
       }
 
-      private int ssaRefRank(PreBasicBlock bb, int i, SimpleLocalScopeVariable v, SsaRefKind k) {
-        i = rank[result](int j | ssaRef(bb, j, v, _)) and
-        ssaRef(bb, i, v, k)
+      private int ssaRefRank(PreBasicBlock bb, int i, SimpleAssignable a, SsaRefKind k) {
+        i = rank[result](int j | ssaRef(bb, j, a, _)) and
+        ssaRef(bb, i, a, k)
       }
 
-      private predicate defReachesRank(PreBasicBlock bb, Definition def, SimpleLocalScopeVariable v, int rnk) {
+      private predicate defReachesRank(PreBasicBlock bb, Definition def, SimpleAssignable a, int rnk) {
         exists(int i |
-          rnk = ssaRefRank(bb, i, v, SsaDef()) and
-          defAt(bb, i, def, v)
+          rnk = ssaRefRank(bb, i, a, SsaDef()) and
+          defAt(bb, i, def, a)
         )
         or
-        defReachesRank(bb, def, v, rnk - 1) and
-        rnk = ssaRefRank(bb, _, v, SsaRead())
+        defReachesRank(bb, def, a, rnk - 1) and
+        rnk = ssaRefRank(bb, _, a, SsaRead())
       }
 
-      private predicate reachesEndOf(Definition def, SimpleLocalScopeVariable v, PreBasicBlock bb) {
-        exists(int rnk |
-          defReachesRank(bb, def, v, rnk) and
-          rnk = max(ssaRefRank(bb, _, v, _))
+      private int maxSsaRefRank(PreBasicBlock bb, SimpleAssignable a) {
+        result = ssaRefRank(bb, _, a, _) and
+        not result + 1 = ssaRefRank(bb, _, a, _)
+      }
+
+      private predicate reachesEndOf(Definition def, SimpleAssignable a, PreBasicBlock bb) {
+        exists(int last |
+          last = maxSsaRefRank(bb, a) |
+          defReachesRank(bb, def, a, last)
         )
         or
         exists(PreBasicBlock mid |
-          reachesEndOf(def, v, mid) and
-          not exists(ssaRefRank(mid, _, v, SsaDef())) and
+          reachesEndOf(def, a, mid) and
+          not exists(ssaRefRank(mid, _, a, SsaDef())) and
           bb = mid.getASuccessor()
         )
       }
 
-      private predicate varOccursInBlock(SimpleLocalScopeVariable v, PreBasicBlock bb) {
-        exists(ssaRefRank(bb, _, v, _))
+      private predicate varOccursInBlock(SimpleAssignable a, PreBasicBlock bb) {
+        exists(ssaRefRank(bb, _, a, _))
       }
 
       pragma [nomagic]
-      private predicate blockPrecedesVar(SimpleLocalScopeVariable v, PreBasicBlock bb) {
-        varOccursInBlock(v, bb.getASuccessor*())
+      private predicate blockPrecedesVar(SimpleAssignable a, PreBasicBlock bb) {
+        varOccursInBlock(a, bb.getASuccessor*())
       }
 
-      private predicate varBlockReaches(SimpleLocalScopeVariable v, PreBasicBlock bb1, PreBasicBlock bb2) {
-        varOccursInBlock(v, bb1) and
+      private predicate varBlockReaches(SimpleAssignable a, PreBasicBlock bb1, PreBasicBlock bb2) {
+        varOccursInBlock(a, bb1) and
         bb2 = bb1.getASuccessor() and
-        blockPrecedesVar(v, bb2)
+        blockPrecedesVar(a, bb2)
         or
-        varBlockReachesRec(v, bb1, bb2) and
-        blockPrecedesVar(v, bb2)
+        varBlockReachesRec(a, bb1, bb2) and
+        blockPrecedesVar(a, bb2)
       }
 
       pragma [nomagic]
-      private predicate varBlockReachesRec(SimpleLocalScopeVariable v, PreBasicBlock bb1, PreBasicBlock bb2) {
+      private predicate varBlockReachesRec(SimpleAssignable a, PreBasicBlock bb1, PreBasicBlock bb2) {
         exists(PreBasicBlock mid |
-          varBlockReaches(v, bb1, mid) |
+          varBlockReaches(a, bb1, mid) |
           bb2 = mid.getASuccessor() and
-          not varOccursInBlock(v, mid)
+          not varOccursInBlock(a, mid)
         )
       }
 
-      private predicate varBlockStep(SimpleLocalScopeVariable v, PreBasicBlock bb1, PreBasicBlock bb2) {
-        varBlockReaches(v, bb1, bb2) and
-        varOccursInBlock(v, bb2)
+      private predicate varBlockStep(SimpleAssignable a, PreBasicBlock bb1, PreBasicBlock bb2) {
+        varBlockReaches(a, bb1, bb2) and
+        varOccursInBlock(a, bb2)
       }
 
-      private predicate adjacentVarRefs(SimpleLocalScopeVariable v, PreBasicBlock bb1, int i1, PreBasicBlock bb2, int i2) {
+      private predicate adjacentVarRefs(SimpleAssignable a, PreBasicBlock bb1, int i1, PreBasicBlock bb2, int i2) {
         exists(int rankix |
           bb1 = bb2 and
-          rankix = ssaRefRank(bb1, i1, v, _) and
-          rankix + 1 = ssaRefRank(bb2, i2, v, _)
+          rankix = ssaRefRank(bb1, i1, a, _) and
+          rankix + 1 = ssaRefRank(bb2, i2, a, _)
         )
         or
-        ssaRefRank(bb1, i1, v, _) = max(ssaRefRank(bb1, _, v, _)) and
-        varBlockStep(v, bb1, bb2) and
-        ssaRefRank(bb2, i2, v, _) = 1
+        ssaRefRank(bb1, i1, a, _) = maxSsaRefRank(bb1, a) and
+        varBlockStep(a, bb1, bb2) and
+        ssaRefRank(bb2, i2, a, _) = 1
       }
 
-      predicate firstReadSameVar(Definition def, LocalScopeVariableRead read) {
-        exists(SimpleLocalScopeVariable v, PreBasicBlock b1, int i1, PreBasicBlock b2, int i2 |
-          adjacentVarRefs(v, b1, i1, b2, i2) and
-          defAt(b1, i1, def, v) and
-          readAt(b2, i2, read, v)
+      predicate firstReadSameVar(Definition def, AssignableRead read) {
+        exists(SimpleAssignable a, PreBasicBlock b1, int i1, PreBasicBlock b2, int i2 |
+          adjacentVarRefs(a, b1, i1, b2, i2) and
+          defAt(b1, i1, def, a) and
+          readAt(b2, i2, read, a)
         )
       }
 
-      predicate adjacentReadPairSameVar(LocalScopeVariableRead read1, LocalScopeVariableRead read2) {
-        exists(SimpleLocalScopeVariable v, PreBasicBlock bb1, int i1, PreBasicBlock bb2, int i2 |
-          adjacentVarRefs(v, bb1, i1, bb2, i2) and
-          readAt(bb1, i1, read1, v) and
-          readAt(bb2, i2, read2, v)
+      predicate adjacentReadPairSameVar(AssignableRead read1, AssignableRead read2) {
+        exists(SimpleAssignable a, PreBasicBlock bb1, int i1, PreBasicBlock bb2, int i2 |
+          adjacentVarRefs(a, bb1, i1, bb2, i2) and
+          readAt(bb1, i1, read1, a) and
+          readAt(bb2, i2, read2, a)
         )
+      }
+
+      pragma[noinline]
+      private predicate ssaDefReachesEndOfBlockRec(PreBasicBlock bb, Definition def, SimpleAssignable a) {
+        exists(PreBasicBlock idom |
+          ssaDefReachesEndOfBlock(idom, def, a) |
+          idom.immediatelyDominates(bb)
+        )
+      }
+
+      predicate ssaDefReachesEndOfBlock(PreBasicBlock bb, Definition def, SimpleAssignable a) {
+        exists(int last |
+          last = maxSsaRefRank(bb, a) |
+          defReachesRank(bb, def, a, last) and
+          liveAtExit(bb, a)
+        )
+        or
+        ssaDefReachesEndOfBlockRec(bb, def, a) and
+        liveAtExit(bb, a) and
+        not ssaRef(bb, _, a, SsaDef())
       }
     }
 
@@ -3312,6 +3476,12 @@ module ControlFlow {
             this.correlatesConditions(any(ConditionBlock cb | cb.getLastElement() = cfe), _, _)
           }
 
+          /**
+           * Holds if basic block `bb` can reach a condition correlated with a
+           * split of this kind.
+           */
+          abstract predicate canReachCorrelatedCondition(PreBasicBlock bb);
+
           /** Gets the callable that this Boolean split kind belongs to. */
           abstract Callable getEnclosingCallable();
 
@@ -3356,11 +3526,11 @@ module ControlFlow {
            * and `cb` can be reached from `read` without passing through another
            * condition that reads the same SSA variable.
            */
-          private predicate defConditionReachableFromRead(ConditionBlock cb, LocalScopeVariableRead read) {
+          private predicate defConditionReachableFromRead(ConditionBlock cb, AssignableRead read) {
             this.defCondition(cb) and
             read = cb.getLastElement()
             or
-            exists(LocalScopeVariableRead mid |
+            exists(AssignableRead mid |
               this.defConditionReachableFromRead(cb, mid) |
               adjacentReadPairSameVar(read, mid) and
               not this.defCondition(read)
@@ -3373,7 +3543,7 @@ module ControlFlow {
            * another condition that reads the same SSA variable.
            */
           private predicate firstDefCondition(ConditionBlock cb) {
-            exists(LocalScopeVariableRead read |
+            exists(AssignableRead read |
               this.defConditionReachableFromRead(cb, read) |
               firstReadSameVar(def, read)
             )
@@ -3381,7 +3551,7 @@ module ControlFlow {
 
           override predicate correlatesConditions(ConditionBlock cb1, ConditionBlock cb2, boolean inverted) {
             this.firstDefCondition(cb1) and
-            exists(LocalScopeVariableRead read1, LocalScopeVariableRead read2 |
+            exists(AssignableRead read1, AssignableRead read2 |
               read1 = cb1.getLastElement() and
               adjacentReadPairSameVar+(read1, read2) and
               read2 = cb2.getLastElement() and
@@ -3389,12 +3559,23 @@ module ControlFlow {
             )
           }
 
+          override predicate canReachCorrelatedCondition(PreBasicBlock bb) {
+            this.correlatesConditions(_, bb, _) and
+            not def.getBasicBlock() = bb
+            or
+            exists(PreBasicBlock mid |
+              this.canReachCorrelatedCondition(mid) |
+              bb = mid.getAPredecessor() and
+              not def.getBasicBlock() = bb
+            )
+          }
+
           override Callable getEnclosingCallable() {
-            result = def.getVariable().getCallable()
+            result = def.getCallable()
           }
 
           override string toString() {
-            result = def.getVariable().toString()
+            result = def.getAssignable().toString()
           }
 
           override Location getLocation() {
@@ -3472,7 +3653,7 @@ module ControlFlow {
           override predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
             succ = succ(pred, c) and
             this.getSubKind().startsSplit(pred) and
-            c = any(BooleanCompletion bc | bc.getOuterValue() = this.getBranch())
+            c = any(BooleanCompletion bc | bc.getInnerValue() = this.getBranch())
           }
 
           private ConditionBlock getACorrelatedCondition(boolean inverted) {
@@ -3498,26 +3679,13 @@ module ControlFlow {
             )
           }
 
-          /**
-           * Holds if basic block `bb` can reach a condition correlated with the value
-           * recorded in this split.
-           */
-          private predicate canReachCorrelatedCondition(PreBasicBlock bb) {
-            bb = this.getACorrelatedCondition(_)
-            or
-            exists(PreBasicBlock mid |
-              this.canReachCorrelatedCondition(mid) |
-              bb = mid.getAPredecessor()
-            )
-          }
-
           override predicate hasExit(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
             exists(PreBasicBlock bb |
               this.appliesToBlock(bb, c) |
               pred = bb.getLastElement() and
               succ = succ(pred, c) and
               // Exit this split if we can no longer reach a correlated condition
-              not this.canReachCorrelatedCondition(succ)
+              not this.getSubKind().canReachCorrelatedCondition(succ)
             )
           }
 
@@ -3538,7 +3706,7 @@ module ControlFlow {
                 pred = bb.getLastElement()
                 implies
                 // We must still be able to reach a correlated condition to stay in this split
-                this.canReachCorrelatedCondition(succ) and
+                this.getSubKind().canReachCorrelatedCondition(succ) and
                 c = c0
               )
             )
@@ -3843,18 +4011,29 @@ module ControlFlow {
     private cached module Cached {
       private import semmle.code.csharp.controlflow.Guards as Guards
 
+      pragma[noinline]
+      private predicate phiNodeMaybeLive(PreBasicBlocks::PreBasicBlock bb, PreSsa::SimpleAssignable a) {
+        exists(PreBasicBlocks::PreBasicBlock def |
+          PreSsa::defAt(def, _, _, a) |
+          def.inDominanceFrontier(bb)
+        )
+      }
+
       cached
       newtype TPreSsaDef =
-        TExplicitPreSsaDef(PreBasicBlocks::PreBasicBlock bb, int i, AssignableDefinition def, LocalScopeVariable v) {
+        TExplicitPreSsaDef(PreBasicBlocks::PreBasicBlock bb, int i, AssignableDefinition def, PreSsa::SimpleAssignable a) {
           Guards::Internal::CachedWithCFG::forceCachingInSameStage() and
-          PreSsa::assignableDefAt(bb, i, def, v)
+          PreSsa::assignableDefAtLive(bb, i, def, a)
         }
         or
-        TPhiPreSsaDef(PreBasicBlocks::PreBasicBlock bb, LocalScopeVariable v) {
-          exists(PreBasicBlocks::PreBasicBlock def |
-            def.inDominanceFrontier(bb) |
-            PreSsa::defAt(def, _, _, v)
-          )
+        TImplicitEntryPreSsaDef(Callable c, PreBasicBlocks::PreBasicBlock bb, Assignable a) {
+          PreSsa::implicitEntryDef(c, bb, a) and
+          PreSsa::liveAtEntry(bb, a)
+        }
+        or
+        TPhiPreSsaDef(PreBasicBlocks::PreBasicBlock bb, PreSsa::SimpleAssignable a) {
+          phiNodeMaybeLive(bb, a) and
+          PreSsa::liveAtEntry(bb, a)
         }
 
       cached
