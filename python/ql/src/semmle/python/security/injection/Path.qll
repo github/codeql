@@ -36,6 +36,10 @@ class NormalizedPath extends TaintKind {
         this = "normalized.path.injection"
     }
 
+    override string repr() {
+        result = "normalized path"
+    }
+
 }
 
 private predicate abspath_call(CallNode call, ControlFlowNode arg) {

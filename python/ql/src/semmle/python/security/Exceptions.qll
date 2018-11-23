@@ -24,6 +24,11 @@ class ExceptionInfo extends StringKind {
     ExceptionInfo() {
         this = "exception.info"
     }
+
+    override string repr() {
+        result = "exception info"
+    }
+
 }
 
 
@@ -34,6 +39,10 @@ class ExceptionKind extends TaintKind {
 
     ExceptionKind() {
         this = "exception.kind"
+    }
+
+    override string repr() {
+        result = "exception"
     }
 
     override TaintKind getTaintOfAttribute(string name) {

@@ -2,7 +2,7 @@
  * @name Reflected server-side cross-site scripting
  * @description Writing user input directly to a web page
  *              allows for a cross-site scripting vulnerability.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @sub-severity high
  * @precision high
@@ -13,6 +13,7 @@
  */
 
 import python
+import semmle.python.security.Paths
 
 /* Sources */
 import semmle.python.web.HttpRequest
@@ -24,9 +25,6 @@ import semmle.python.web.HttpResponse
 /* Flow */
 import semmle.python.security.strings.Untrusted
 
-from TaintSource src, TaintSink sink
-where src.flowsToSink(sink)
-
-select sink, "Cross-site scripting vulnerability due to $@.",
-       src, "user-provided value"
-
+from TaintedPathSource src, TaintedPathSink sink
+where src.flowsTo(sink)
+select sink.getSink(), src, sink, "Cross-site scripting vulnerability due to $@.", src.getSource(), "user-provided value"

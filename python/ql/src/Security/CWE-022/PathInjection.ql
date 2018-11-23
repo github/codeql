@@ -1,7 +1,7 @@
 /**
  * @name Uncontrolled data used in path expression
  * @description Accessing paths influenced by users can allow an attacker to access unexpected resources.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @sub-severity high
  * @precision high
@@ -17,6 +17,7 @@
  */
 
 import python
+import semmle.python.security.Paths
 
 /* Sources */
 import semmle.python.web.HttpRequest
@@ -25,7 +26,6 @@ import semmle.python.web.HttpRequest
 import semmle.python.security.injection.Path
 
 
-from TaintSource src, TaintSink sink
-where src.flowsToSink(sink)
-
-select sink, "This path depends on $@.", src, "a user-provided value"
+from TaintedPathSource src, TaintedPathSink sink
+where src.flowsTo(sink)
+select sink.getSink(), src, sink, "This path depends on $@.", src.getSource(), "a user-provided value"
