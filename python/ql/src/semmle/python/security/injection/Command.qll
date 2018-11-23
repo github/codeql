@@ -15,8 +15,9 @@ private ModuleObject subprocessModule() {
     result.getName() = "subprocess"
 }
 
-private ModuleObject osModule() {
-    result.getName() = "os"
+private ModuleObject osOrPopenModule() {
+    result.getName() = "os" or
+    result.getName() = "popen2"
 }
 
 private Object makeOsCall() {
@@ -25,7 +26,8 @@ private Object makeOsCall() {
         name = "Popen" or
         name = "call" or 
         name = "check_call" or
-        name = "check_output"
+        name = "check_output" or
+        name = "run"
     )
 }
 
@@ -75,9 +77,17 @@ class ShellCommand extends TaintSink {
             istrue.booleanValue() = true
         )
         or
+        exists(CallNode call, string name |
+            call.getAnArg() = this and
+            call.getFunction().refersTo(osOrPopenModule().getAttribute(name)) |
+            name = "system" or
+            name = "popen" or
+            name.matches("popen_")
+        )
+        or
         exists(CallNode call |
-            call.getFunction().refersTo(osModule().getAttribute("system")) and
-            call.getAnArg() = this
+            call.getAnArg() = this and
+            call.getFunction().refersTo(any(ModuleObject commands | commands.getName() = "commands"))
         )
     }
 
