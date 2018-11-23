@@ -23,7 +23,6 @@ import semmle.python.web.HttpRequest
 /* Sinks */
 import semmle.python.security.injection.Command
 
-from TaintedNode srcnode, TaintedNode sinknode, TaintSource src, TaintSink sink
-where src.flowsToSink(sink) and srcnode.getNode() = src and sinknode.getNode() = sink
-
-select sink, srcnode, sinknode, "This command depends on $@.", src, "a user-provided value"
+from TaintedPathSource src, TaintedPathSink sink
+where src.flowsTo(sink)
+select sink.getSink(), src, sink, "This command depends on $@.", src.getSource(), "a user-provided value"

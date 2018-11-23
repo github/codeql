@@ -24,7 +24,6 @@ import semmle.python.web.HttpRequest
 import semmle.python.security.injection.Exec
 
 
-from TaintedNode srcnode, TaintedNode sinknode, TaintSource src, TaintSink sink
-where src.flowsToSink(sink) and srcnode.getNode() = src and sinknode.getNode() = sink
-
-select sink, srcnode, sinknode, "$@ flows to here and is interpreted as code.", src, "User-provided value"
+from TaintedPathSource src, TaintedPathSink sink
+where src.flowsTo(sink)
+select sink.getSink(), src, sink, "$@ flows to here and is interpreted as code.", src.getSource(), "User-provided value"

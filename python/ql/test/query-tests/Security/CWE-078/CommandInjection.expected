@@ -1,19 +1,18 @@
 edges
-| command_injection.py:10:13:10:24 | Taint {externally controlled string} at command_injection.py:10 | command_injection.py:10:13:10:41 | Taint externally controlled string at command_injection.py:10 |
-| command_injection.py:10:13:10:41 | Taint externally controlled string at command_injection.py:10 | command_injection.py:12:23:12:27 | Taint externally controlled string at command_injection.py:12 |
-| command_injection.py:12:15:12:27 | Taint externally controlled string at command_injection.py:12 | ../lib/os/__init__.py:1:12:1:14 | Taint externally controlled string at ../lib/os/__init__.py:1 |
-| command_injection.py:12:23:12:27 | Taint externally controlled string at command_injection.py:12 | command_injection.py:12:15:12:27 | Taint externally controlled string at command_injection.py:12 |
-| command_injection.py:17:13:17:24 | Taint {externally controlled string} at command_injection.py:17 | command_injection.py:17:13:17:41 | Taint externally controlled string at command_injection.py:17 |
-| command_injection.py:17:13:17:41 | Taint externally controlled string at command_injection.py:17 | command_injection.py:19:29:19:33 | Taint externally controlled string at command_injection.py:19 |
-| command_injection.py:19:29:19:33 | Taint externally controlled string at command_injection.py:19 | command_injection.py:19:22:19:34 | Taint [externally controlled string] at command_injection.py:19 |
-| command_injection.py:24:11:24:22 | Taint {externally controlled string} at command_injection.py:24 | command_injection.py:24:11:24:37 | Taint externally controlled string at command_injection.py:24 |
-| command_injection.py:24:11:24:37 | Taint externally controlled string at command_injection.py:24 | command_injection.py:25:23:25:25 | Taint externally controlled string at command_injection.py:25 |
-| command_injection.py:25:23:25:25 | Taint externally controlled string at command_injection.py:25 | command_injection.py:25:22:25:36 | Taint [externally controlled string] at command_injection.py:25 |
-| command_injection.py:25:23:25:25 | Taint externally controlled string at command_injection.py:25 | command_injection.py:25:22:25:36 | Taint sequence[externally controlled string][0] at command_injection.py:25 |
+| command_injection.py:10:13:10:24 | dict of externally controlled string | command_injection.py:10:13:10:41 | externally controlled string |
+| command_injection.py:10:13:10:41 | externally controlled string | command_injection.py:12:23:12:27 | externally controlled string |
+| command_injection.py:12:15:12:27 | externally controlled string | ../lib/os/__init__.py:1:12:1:14 | externally controlled string |
+| command_injection.py:12:23:12:27 | externally controlled string | command_injection.py:12:15:12:27 | externally controlled string |
+| command_injection.py:17:13:17:24 | dict of externally controlled string | command_injection.py:17:13:17:41 | externally controlled string |
+| command_injection.py:17:13:17:41 | externally controlled string | command_injection.py:19:29:19:33 | externally controlled string |
+| command_injection.py:19:29:19:33 | externally controlled string | command_injection.py:19:22:19:34 | sequence of externally controlled string |
+| command_injection.py:24:11:24:22 | dict of externally controlled string | command_injection.py:24:11:24:37 | externally controlled string |
+| command_injection.py:24:11:24:37 | externally controlled string | command_injection.py:25:23:25:25 | externally controlled string |
+| command_injection.py:25:23:25:25 | externally controlled string | command_injection.py:25:22:25:36 | first item in sequence of externally controlled string |
+| command_injection.py:25:23:25:25 | externally controlled string | command_injection.py:25:22:25:36 | sequence of externally controlled string |
 parents
-| ../lib/os/__init__.py:1:12:1:14 | Taint externally controlled string at ../lib/os/__init__.py:1 | command_injection.py:12:15:12:27 | Taint externally controlled string at command_injection.py:12 |
+| ../lib/os/__init__.py:1:12:1:14 | externally controlled string | command_injection.py:12:15:12:27 | externally controlled string |
 #select
-| command_injection.py:12:15:12:27 | shell command | command_injection.py:10:13:10:24 | Taint {externally controlled string} at command_injection.py:10 | command_injection.py:12:15:12:27 | Taint externally controlled string at command_injection.py:12 | This command depends on $@. | command_injection.py:10:13:10:24 | flask.request.args | a user-provided value |
-| command_injection.py:19:22:19:34 | shell command | command_injection.py:17:13:17:24 | Taint {externally controlled string} at command_injection.py:17 | command_injection.py:19:22:19:34 | Taint [externally controlled string] at command_injection.py:19 | This command depends on $@. | command_injection.py:17:13:17:24 | flask.request.args | a user-provided value |
-| command_injection.py:25:22:25:36 | OS command first argument | command_injection.py:24:11:24:22 | Taint {externally controlled string} at command_injection.py:24 | command_injection.py:25:22:25:36 | Taint [externally controlled string] at command_injection.py:25 | This command depends on $@. | command_injection.py:24:11:24:22 | flask.request.args | a user-provided value |
-| command_injection.py:25:22:25:36 | OS command first argument | command_injection.py:24:11:24:22 | Taint {externally controlled string} at command_injection.py:24 | command_injection.py:25:22:25:36 | Taint sequence[externally controlled string][0] at command_injection.py:25 | This command depends on $@. | command_injection.py:24:11:24:22 | flask.request.args | a user-provided value |
+| command_injection.py:12:15:12:27 | shell command | command_injection.py:10:13:10:24 | dict of externally controlled string | command_injection.py:12:15:12:27 | externally controlled string | This command depends on $@. | command_injection.py:10:13:10:24 | flask.request.args | a user-provided value |
+| command_injection.py:19:22:19:34 | shell command | command_injection.py:17:13:17:24 | dict of externally controlled string | command_injection.py:19:22:19:34 | sequence of externally controlled string | This command depends on $@. | command_injection.py:17:13:17:24 | flask.request.args | a user-provided value |
+| command_injection.py:25:22:25:36 | OS command first argument | command_injection.py:24:11:24:22 | dict of externally controlled string | command_injection.py:25:22:25:36 | first item in sequence of externally controlled string | This command depends on $@. | command_injection.py:24:11:24:22 | flask.request.args | a user-provided value |

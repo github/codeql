@@ -28,8 +28,7 @@ class UntrustedPrefixStringKind extends UntrustedStringKind {
 
 }
 
-from TaintedNode srcnode, TaintedNode sinknode, TaintSource src, TaintSink sink
-where src.flowsToSink(sink) and srcnode.getNode() = src and sinknode.getNode() = sink
-
-select sink, srcnode, sinknode, "Untrusted URL redirection due to $@.", src, "a user-provided value"
+from TaintedPathSource src, TaintedPathSink sink
+where src.flowsTo(sink)
+select sink.getSink(), src, sink, "Untrusted URL redirection due to $@.", src.getSource(), "a user-provided value"
 

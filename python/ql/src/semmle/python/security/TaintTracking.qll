@@ -148,6 +148,8 @@ abstract class TaintKind extends string {
         none()
     }
 
+    string repr() { result = this }
+
 }
 
 /** Taint kinds representing collections of other taint kind.
@@ -206,6 +208,10 @@ class SequenceKind extends CollectionKind {
 
     override TaintKind getTaintOfMethodResult(string name) {
         name = "pop" and result = this.getItem()
+    }
+
+    override string repr() {
+        result = "sequence of " + itemKind
     }
 
 }
@@ -279,6 +285,10 @@ class DictKind extends CollectionKind {
         name = "values" and result.(SequenceKind).getItem() = valueKind
         or
         name = "itervalues" and result.(SequenceKind).getItem() = valueKind
+    }
+
+    override string repr() {
+        result = "dict of " + valueKind
     }
 
 }
@@ -603,7 +613,9 @@ private predicate user_tainted_def(TaintedDefinition def, TaintFlowImplementatio
  */
 class TaintedNode extends TTaintedNode {
 
-    string toString() { result = this.getTrackedValue().toString() + " at " + this.getLocation() }
+    string toString() { result = this.getTrackedValue().repr() }
+
+    string debug() { result = this.getTrackedValue().toString() + " at " + this.getNode().getLocation() }
 
     TaintedNode getASuccessor() {
         exists(TaintFlowImplementation::TrackedValue tokind, CallContext tocontext, ControlFlowNode tonode |
@@ -675,23 +687,31 @@ class TaintedNode extends TTaintedNode {
 
 }
 
-class TaintedNodeSource extends TaintedNode {
+class TaintedPathSource extends TaintedNode {
 
-    TaintedNodeSource() {
+    TaintedPathSource() {
         this.getNode().(TaintSource).isSourceOf(this.getTaintKind(), this.getContext())
     }
 
     /** Holds if taint can flow from this source to sink `sink` */
-    final predicate flowsTo(TaintedNodeSink sink) {
+    final predicate flowsTo(TaintedPathSink sink) {
         this.getASuccessor*() = sink
+    }
+
+    TaintSource getSource() {
+        result = this.getNode()
     }
 
 }
 
-class TaintedNodeSink extends TaintedNode {
+class TaintedPathSink extends TaintedNode {
 
-    TaintedNodeSink() {
+    TaintedPathSink() {
         this.getNode().(TaintSink).sinks(this.getTaintKind())
+    }
+
+    TaintSink getSink() {
+        result = this.getNode()
     }
 
 }
@@ -739,11 +759,17 @@ library module TaintFlowImplementation {
 
         abstract string toString();
 
+        abstract string repr();
+
         abstract TrackedValue toKind(TaintKind kind);
 
     }
 
     class TrackedTaint extends TrackedValue, TTrackedTaint {
+
+        override string repr() {
+            result = this.getKind().repr()
+        }
 
         override string toString() {
             result = "Taint " + this.getKind()
@@ -760,6 +786,13 @@ library module TaintFlowImplementation {
     }
 
     class TrackedAttribute extends TrackedValue, TTrackedAttribute {
+
+        override string repr() {
+            exists(string name, TaintKind kind |
+                this = TTrackedAttribute(name, kind) and
+                result = "." + name + "=" + kind.repr()
+            )
+        }
 
         override string toString() {
             exists(string name, TaintKind kind |

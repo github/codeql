@@ -36,6 +36,9 @@ class FirstElementKind extends TaintKind {
         this = "sequence[" + any(ExternalStringKind key) + "][0]"
     }
 
+    override string repr() {
+        result = "first item in sequence of " + this.getItem().repr()
+    }
 
     /** Gets the taint kind for item in this sequence. */
     ExternalStringKind getItem() {

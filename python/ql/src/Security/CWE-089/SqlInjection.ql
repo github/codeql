@@ -23,7 +23,6 @@ import semmle.python.web.django.Db
 import semmle.python.web.django.Model
 
 
-from TaintedNode srcnode, TaintedNode sinknode, TaintSource src, TaintSink sink
-where src.flowsToSink(sink) and srcnode.getNode() = src and sinknode.getNode() = sink
-
-select sink, srcnode, sinknode, "This SQL query depends on $@.", src, "a user-provided value"
+from TaintedPathSource src, TaintedPathSink sink
+where src.flowsTo(sink)
+select sink.getSink(), src, sink, "This SQL query depends on $@.", src.getSource(), "a user-provided value"

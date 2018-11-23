@@ -18,6 +18,6 @@ import semmle.python.security.Paths
 import semmle.python.security.Exceptions
 import semmle.python.web.HttpResponse
 
-from TaintedNode srcnode, TaintedNode sinknode, TaintSource src, TaintSink sink
-where src.flowsToSink(sink) and srcnode.getNode() = src and sinknode.getNode() = sink
-select sink, srcnode, sinknode, "$@ may be exposed to an external user", src, "Error information"
+from TaintedPathSource src, TaintedPathSink sink
+where src.flowsTo(sink)
+select sink.getSink(), src, sink, "$@ may be exposed to an external user", src.getSource(), "Error information"

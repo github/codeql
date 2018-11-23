@@ -1,11 +1,11 @@
 edges
-| test.py:33:15:33:36 | Taint exception.info at test.py:33 | test.py:34:29:34:31 | Taint exception.info at test.py:34 |
-| test.py:34:29:34:31 | Taint exception.info at test.py:34 | test.py:36:18:36:20 | Taint exception.info at test.py:36 |
-| test.py:36:18:36:20 | Taint exception.info at test.py:36 | test.py:37:25:37:27 | Taint exception.info at test.py:37 |
-| test.py:37:12:37:27 | Taint exception.info at test.py:37 | test.py:34:16:34:32 | Taint exception.info at test.py:34 |
-| test.py:37:25:37:27 | Taint exception.info at test.py:37 | test.py:37:12:37:27 | Taint exception.info at test.py:37 |
+| test.py:33:15:33:36 | exception info | test.py:34:29:34:31 | exception info |
+| test.py:34:29:34:31 | exception info | test.py:36:18:36:20 | exception info |
+| test.py:36:18:36:20 | exception info | test.py:37:25:37:27 | exception info |
+| test.py:37:12:37:27 | exception info | test.py:34:16:34:32 | exception info |
+| test.py:37:25:37:27 | exception info | test.py:37:12:37:27 | exception info |
 parents
-| test.py:36:18:36:20 | Taint exception.info at test.py:36 | test.py:34:29:34:31 | Taint exception.info at test.py:34 |
+| test.py:36:18:36:20 | exception info | test.py:34:29:34:31 | exception info |
 #select
-| test.py:16:16:16:37 | flask.routed.response | test.py:16:16:16:37 | Taint exception.info at test.py:16 | test.py:16:16:16:37 | Taint exception.info at test.py:16 | $@ may be exposed to an external user | test.py:16:16:16:37 | exception.info.source | Error information |
-| test.py:34:16:34:32 | flask.routed.response | test.py:33:15:33:36 | Taint exception.info at test.py:33 | test.py:34:16:34:32 | Taint exception.info at test.py:34 | $@ may be exposed to an external user | test.py:33:15:33:36 | exception.info.source | Error information |
+| test.py:16:16:16:37 | flask.routed.response | test.py:16:16:16:37 | exception info | test.py:16:16:16:37 | exception info | $@ may be exposed to an external user | test.py:16:16:16:37 | exception.info.source | Error information |
+| test.py:34:16:34:32 | flask.routed.response | test.py:33:15:33:36 | exception info | test.py:34:16:34:32 | exception info | $@ may be exposed to an external user | test.py:33:15:33:36 | exception.info.source | Error information |

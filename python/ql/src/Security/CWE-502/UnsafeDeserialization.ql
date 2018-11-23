@@ -25,7 +25,6 @@ import semmle.python.security.injection.Marshal
 import semmle.python.security.injection.Yaml
 
 
-from TaintedNode srcnode, TaintedNode sinknode, TaintSource src, TaintSink sink
-where src.flowsToSink(sink) and srcnode.getNode() = src and sinknode.getNode() = sink
-
-select sink, srcnode, sinknode, "Deserializing of $@.", src, "untrusted input"
+from TaintedPathSource src, TaintedPathSink sink
+where src.flowsTo(sink)
+select sink.getSink(), src, sink, "Deserializing of $@.", src.getSource(), "untrusted input"

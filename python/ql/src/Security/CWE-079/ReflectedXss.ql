@@ -25,9 +25,6 @@ import semmle.python.web.HttpResponse
 /* Flow */
 import semmle.python.security.strings.Untrusted
 
-from TaintedNode srcnode, TaintedNode sinknode, TaintSource src, TaintSink sink
-where src.flowsToSink(sink) and srcnode.getNode() = src and sinknode.getNode() = sink
-
-select sink, srcnode, sinknode, "Cross-site scripting vulnerability due to $@.",
-       src, "user-provided value"
-
+from TaintedPathSource src, TaintedPathSink sink
+where src.flowsTo(sink)
+select sink.getSink(), src, sink, "Cross-site scripting vulnerability due to $@.", src.getSource(), "user-provided value"
