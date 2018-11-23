@@ -20,6 +20,6 @@ query predicate parents(TaintedNode child, TaintedNode parent) {
     child = first_child(parent) or
     exists(TaintedNode prev |
         parents(prev, parent) and
-        child = next_sibling(child)
+        child = next_sibling(prev)
     )
 }
