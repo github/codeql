@@ -52,7 +52,7 @@ module CleartextLogging {
     }
 
     override predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node trg) {
-      any (TaintTracking::StringConcatenationTaintStep s).step(src, trg)
+      StringConcatenation::taintStep(src, trg)
       or
       exists (string name | name = "toString" or name = "valueOf" |
         src.(DataFlow::SourceNode).getAMethodCall(name) = trg

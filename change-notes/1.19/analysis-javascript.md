@@ -36,6 +36,7 @@
 | **Query**                      | **Expected impact**        | **Change**                                   |
 |--------------------------------|----------------------------|----------------------------------------------|
 | Ambiguous HTML id attribute | Lower severity | The severity of this rule has been revised to "warning". |
+| Clear-text logging of sensitive information | Fewer results | This rule now tracks flow more precisely. |
 | Client side cross-site scripting | More results | This rule now also flags HTML injection in the body of an email. |
 | Client-side URL redirect | Fewer false-positive results | This rule now recognizes safe redirects in more cases. |
 | Conflicting HTML element attributes | Lower severity | The severity of this rule has been revised to "warning". |
