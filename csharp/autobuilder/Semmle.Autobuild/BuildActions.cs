@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Xml;
 
 namespace Semmle.Autobuild
 {
@@ -97,11 +98,21 @@ namespace Semmle.Autobuild
         string PathCombine(params string[] parts);
 
         /// <summary>
+        /// Gets the full path for <paramref name="path"/>, Path.GetFullPath().
+        /// </summary>
+        string GetFullPath(string path);
+
+        /// <summary>
         /// Writes contents to file, File.WriteAllText().
         /// </summary>
         /// <param name="filename">The filename.</param>
         /// <param name="contents">The text.</param>
         void WriteAllText(string filename, string contents);
+
+        /// <summary>
+        /// Loads the XML document from <paramref name="filename"/>.
+        /// </summary>
+        XmlDocument LoadXml(string filename);
     }
 
     /// <summary>
@@ -167,9 +178,14 @@ namespace Semmle.Autobuild
 
         void IBuildActions.WriteAllText(string filename, string contents) => File.WriteAllText(filename, contents);
 
-        private SystemBuildActions()
+        XmlDocument IBuildActions.LoadXml(string filename)
         {
+            var ret = new XmlDocument();
+            ret.Load(filename);
+            return ret;
         }
+
+        string IBuildActions.GetFullPath(string path) => Path.GetFullPath(path);
 
         public static readonly IBuildActions Instance = new SystemBuildActions();
     }

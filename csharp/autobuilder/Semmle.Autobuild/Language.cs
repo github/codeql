@@ -8,9 +8,6 @@
         public bool ProjectFileHasThisLanguage(string path) =>
             System.IO.Path.GetExtension(path) == ProjectExtension;
 
-        public static bool IsProjectFileForAnySupportedLanguage(string path) =>
-            Cpp.ProjectFileHasThisLanguage(path) || CSharp.ProjectFileHasThisLanguage(path);
-
         public readonly string ProjectExtension;
 
         private Language(string extension)

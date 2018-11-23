@@ -29,26 +29,32 @@ namespace Semmle.Autobuild
     public class Autobuilder
     {
         /// <summary>
-        /// Full file paths of files found in the project directory.
+        /// Full file paths of files found in the project directory, as well as
+        /// their distance from the project root folder. The list is sorted
+        /// by distance in ascending order.
         /// </summary>
-        public IEnumerable<string> Paths => pathsLazy.Value;
-        readonly Lazy<IEnumerable<string>> pathsLazy;
+        public IEnumerable<(string, int)> Paths => pathsLazy.Value;
+        readonly Lazy<IEnumerable<(string, int)>> pathsLazy;
 
         /// <summary>
-        /// Gets a list of paths matching a set of extensions
-        /// (including the ".").
+        /// Gets a list of paths matching a set of extensions (including the "."),
+        /// as well as their distance from the project root folder.
+        /// The list is sorted by distance in ascending order.
         /// </summary>
         /// <param name="extensions">The extensions to find.</param>
         /// <returns>The files matching the extension.</returns>
-        public IEnumerable<string> GetExtensions(params string[] extensions) =>
-            Paths.Where(p => extensions.Contains(Path.GetExtension(p)));
+        public IEnumerable<(string, int)> GetExtensions(params string[] extensions) =>
+            Paths.Where(p => extensions.Contains(Path.GetExtension(p.Item1)));
 
         /// <summary>
-        /// Gets all paths matching a particular filename.
+        /// Gets all paths matching a particular filename, as well as
+        /// their distance from the project root folder. The list is sorted
+        /// by distance in ascending order.
         /// </summary>
         /// <param name="name">The filename to find.</param>
         /// <returns>Possibly empty sequence of paths with the given filename.</returns>
-        public IEnumerable<string> GetFilename(string name) => Paths.Where(p => Path.GetFileName(p) == name);
+        public IEnumerable<(string, int)> GetFilename(string name) =>
+            Paths.Where(p => Path.GetFileName(p.Item1) == name);
 
         /// <summary>
         /// Holds if a given path, relative to the root of the source directory
@@ -59,30 +65,30 @@ namespace Semmle.Autobuild
         public bool HasRelativePath(string path) => HasPath(Actions.PathCombine(RootDirectory, path));
 
         /// <summary>
-        /// List of solution files to build.
+        /// List of project/solution files to build.
         /// </summary>
-        public IList<ISolution> SolutionsToBuild => solutionsToBuildLazy.Value;
-        readonly Lazy<IList<ISolution>> solutionsToBuildLazy;
+        public IList<IProjectOrSolution> ProjectsOrSolutionsToBuild => projectsOrSolutionsToBuildLazy.Value;
+        readonly Lazy<IList<IProjectOrSolution>> projectsOrSolutionsToBuildLazy;
 
         /// <summary>
         /// Holds if a given path was found.
         /// </summary>
         /// <param name="path">The path of the file.</param>
         /// <returns>True iff the path was found.</returns>
-        public bool HasPath(string path) => Paths.Any(p => path == p);
+        public bool HasPath(string path) => Paths.Any(p => path == p.Item1);
 
-        void FindFiles(string dir, int depth, IList<string> results)
+        void FindFiles(string dir, int depth, int maxDepth, IList<(string, int)> results)
         {
             foreach (var f in Actions.EnumerateFiles(dir))
             {
-                results.Add(f);
+                results.Add((f, depth));
             }
 
-            if (depth > 1)
+            if (depth < maxDepth)
             {
                 foreach (var d in Actions.EnumerateDirectories(dir))
                 {
-                    FindFiles(d, depth - 1, results);
+                    FindFiles(d, depth + 1, maxDepth, results);
                 }
             }
         }
@@ -113,46 +119,66 @@ namespace Semmle.Autobuild
             Actions = actions;
             Options = options;
 
-            pathsLazy = new Lazy<IEnumerable<string>>(() =>
+            pathsLazy = new Lazy<IEnumerable<(string, int)>>(() =>
             {
-                var files = new List<string>();
-                FindFiles(options.RootDirectory, options.SearchDepth, files);
-                return files.
-                    OrderBy(s => s.Count(c => c == Path.DirectorySeparatorChar)).
-                    ThenBy(s => Path.GetFileName(s).Length).
-                    ToArray();
+                var files = new List<(string, int)>();
+                FindFiles(options.RootDirectory, 0, options.SearchDepth, files);
+                return files.OrderBy(f => f.Item2).ToArray();
             });
 
-            solutionsToBuildLazy = new Lazy<IList<ISolution>>(() =>
+            projectsOrSolutionsToBuildLazy = new Lazy<IList<IProjectOrSolution>>(() =>
             {
+                List<IProjectOrSolution> ret;
                 if (options.Solution.Any())
                 {
-                    var ret = new List<ISolution>();
+                    ret = new List<IProjectOrSolution>();
                     foreach (var solution in options.Solution)
                     {
                         if (actions.FileExists(solution))
                             ret.Add(new Solution(this, solution));
                         else
-                            Log(Severity.Error, "The specified solution file {0} was not found", solution);
+                            Log(Severity.Error, $"The specified solution file {solution} was not found");
                     }
                     return ret;
                 }
 
-                var solutions = GetExtensions(".sln").
-                        Select(s => new Solution(this, s)).
-                        Where(s => s.ProjectCount > 0).
-                        OrderByDescending(s => s.ProjectCount).
-                        ThenBy(s => s.Path.Length).
+                IEnumerable<IProjectOrSolution> FindFiles(string extension, Func<string, ProjectOrSolution> create)
+                {
+                    var matchingFiles = GetExtensions(extension).
+                        Select(p => (ProjectOrSolution: create(p.Item1), DistanceFromRoot: p.Item2)).
+                        Where(p => p.ProjectOrSolution.HasLanguage(this.Options.Language)).
                         ToArray();
 
-                foreach (var sln in solutions)
-                {
-                    Log(Severity.Info, $"Found {sln.Path} with {sln.ProjectCount} {this.Options.Language} projects, version {sln.ToolsVersion}, config {string.Join(" ", sln.Configurations.Select(c => c.FullName))}");
+                    if (matchingFiles.Length == 0)
+                        return null;
+
+                    if (options.AllSolutions)
+                        return matchingFiles.Select(p => p.ProjectOrSolution);
+
+                    var firstIsClosest = matchingFiles.Length > 1 && matchingFiles[0].DistanceFromRoot < matchingFiles[1].DistanceFromRoot;
+                    if (matchingFiles.Length == 1 || firstIsClosest)
+                        return matchingFiles.Select(p => p.ProjectOrSolution).Take(1);
+
+                    var candidates = matchingFiles.
+                        Where(f => f.DistanceFromRoot == matchingFiles[0].DistanceFromRoot).
+                        Select(f => f.ProjectOrSolution);
+                    Log(Severity.Info, $"Found multiple '{extension}' files, giving up: {string.Join(", ", candidates)}.");
+                    return new IProjectOrSolution[0];
                 }
 
-                return new List<ISolution>(options.AllSolutions ?
-                    solutions :
-                    solutions.Take(1));
+                // First look for `.proj` files
+                ret = FindFiles(".proj", f => new Project(this, f))?.ToList();
+                if (ret != null)
+                    return ret;
+
+                // Then look for `.sln` files
+                ret = FindFiles(".sln", f => new Solution(this, f))?.ToList();
+                if (ret != null)
+                    return ret;
+
+                // Finally look for language specific project files, e.g. `.csproj` files
+                ret = FindFiles(this.Options.Language.ProjectExtension, f => new Project(this, f))?.ToList();
+                return ret ?? new List<IProjectOrSolution>();
             });
 
             SemmleDist = Actions.GetEnvironmentVariable("SEMMLE_DIST");
