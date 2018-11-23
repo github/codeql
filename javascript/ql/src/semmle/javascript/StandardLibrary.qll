@@ -76,7 +76,7 @@ private class AnalyzedThisInArrayIterationFunction extends AnalyzedNode, DataFlo
 /**
  * A definition of a `Promise` object.
  */
-abstract class PromiseDefinition extends DataFlow::DefaultSourceNode {
+abstract class PromiseDefinition extends DataFlow::SourceNode {
   /** Gets the executor function of this promise object. */
   abstract DataFlow::FunctionNode getExecutor();
 

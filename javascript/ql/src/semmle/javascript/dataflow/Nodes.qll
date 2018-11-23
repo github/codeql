@@ -7,7 +7,7 @@
 import javascript
 
 /** A data flow node corresponding to a parameter. */
-class ParameterNode extends DataFlow::DefaultSourceNode {
+class ParameterNode extends DataFlow::SourceNode {
   Parameter p;
 
   ParameterNode() { DataFlow::parameterNode(this, p) }
@@ -20,7 +20,7 @@ class ParameterNode extends DataFlow::DefaultSourceNode {
 }
 
 /** A data flow node corresponding to a function invocation (with or without `new`). */
-class InvokeNode extends DataFlow::DefaultSourceNode {
+class InvokeNode extends DataFlow::SourceNode {
   DataFlow::Impl::InvokeNodeDef impl;
 
   InvokeNode() { this = impl }
@@ -168,7 +168,7 @@ class MethodCallNode extends CallNode {
 class NewNode extends InvokeNode { override DataFlow::Impl::NewNodeDef impl; }
 
 /** A data flow node corresponding to the `this` parameter in a function or `this` at the top-level. */
-class ThisNode extends DataFlow::Node, DataFlow::DefaultSourceNode {
+class ThisNode extends DataFlow::Node, DataFlow::SourceNode {
   ThisNode() { DataFlow::thisNode(this, _) }
 
   /**
@@ -202,7 +202,7 @@ class ThisNode extends DataFlow::Node, DataFlow::DefaultSourceNode {
 }
 
 /** A data flow node corresponding to a global variable access. */
-class GlobalVarRefNode extends DataFlow::ValueNode, DataFlow::DefaultSourceNode {
+class GlobalVarRefNode extends DataFlow::ValueNode, DataFlow::SourceNode {
   override GlobalVarAccess astNode;
 
   /** Gets the name of the global variable. */
@@ -216,7 +216,10 @@ class GlobalVarRefNode extends DataFlow::ValueNode, DataFlow::DefaultSourceNode 
  */
 DataFlow::SourceNode globalObjectRef() {
   // top-level `this`
-  exists(ThisNode globalThis | result = globalThis | not exists(globalThis.getBinder()))
+  exists(StmtContainer sc |
+    sc = result.(ThisNode).getBindingContainer() and
+    not sc instanceof Function
+  )
   or
   // DOM
   result = globalVarRef("window")
@@ -244,7 +247,7 @@ DataFlow::SourceNode globalVarRef(string name) {
 }
 
 /** A data flow node corresponding to a function definition. */
-class FunctionNode extends DataFlow::ValueNode, DataFlow::DefaultSourceNode {
+class FunctionNode extends DataFlow::ValueNode, DataFlow::SourceNode {
   override Function astNode;
 
   /** Gets the `i`th parameter of this function. */
@@ -287,12 +290,12 @@ class FunctionNode extends DataFlow::ValueNode, DataFlow::DefaultSourceNode {
 }
 
 /** A data flow node corresponding to an object literal expression. */
-class ObjectLiteralNode extends DataFlow::ValueNode, DataFlow::DefaultSourceNode {
+class ObjectLiteralNode extends DataFlow::ValueNode, DataFlow::SourceNode {
   override ObjectExpr astNode;
 }
 
 /** A data flow node corresponding to an array literal expression. */
-class ArrayLiteralNode extends DataFlow::ValueNode, DataFlow::DefaultSourceNode {
+class ArrayLiteralNode extends DataFlow::ValueNode, DataFlow::SourceNode {
   override ArrayExpr astNode;
 
   /** Gets the `i`th element of this array literal. */
@@ -323,7 +326,7 @@ class ArrayConstructorInvokeNode extends DataFlow::InvokeNode {
  * A data flow node corresponding to the creation or a new array, either through an array literal
  * or an invocation of the `Array` constructor.
  */
-class ArrayCreationNode extends DataFlow::ValueNode, DataFlow::DefaultSourceNode {
+class ArrayCreationNode extends DataFlow::ValueNode, DataFlow::SourceNode {
   ArrayCreationNode() {
     this instanceof ArrayLiteralNode or
     this instanceof ArrayConstructorInvokeNode
@@ -346,7 +349,7 @@ class ArrayCreationNode extends DataFlow::ValueNode, DataFlow::DefaultSourceNode
  * For compatibility with old transpilers, we treat `import * from '...'`
  * as a default import as well.
  */
-class ModuleImportNode extends DataFlow::DefaultSourceNode {
+class ModuleImportNode extends DataFlow::SourceNode {
   string path;
 
   ModuleImportNode() {

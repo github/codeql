@@ -9,15 +9,15 @@
 import javascript
 
 /**
- * A source node for local data flow, that is, a node for which local
- * data flow cannot provide any information about its inputs.
+ * A source node for local data flow, that is, a node from which local data flow is tracked.
  *
- * By default, functions, object and array expressions and JSX nodes
- * are considered sources, as well as expressions that have non-local
- * flow (such as calls and property accesses). Additional sources
- * can be modelled by extending this class with additional subclasses.
+ * Examples include function parameters, imports and property accesses; see
+ * `DataFlow::SourceNode::DefaultRange` for details. You can introduce new kinds of
+ * source nodes by defining new subclasses of `DataFlow::SourceNode::Range`.
  */
-abstract class SourceNode extends DataFlow::Node {
+class SourceNode extends DataFlow::Node {
+  SourceNode() { this instanceof SourceNode::Range }
+
   /**
    * Holds if this node flows into `sink` in zero or more local (that is,
    * intra-procedural) steps.
@@ -167,45 +167,62 @@ abstract class SourceNode extends DataFlow::Node {
   }
 }
 
-/**
- * A data flow node that is considered a source node by default.
- *
- * Currently, the following nodes are source nodes:
- *   - import specifiers
- *   - non-destructuring function parameters
- *   - property accesses
- *   - function invocations
- *   - `this` expressions
- *   - global variable accesses
- *   - function definitions
- *   - class definitions
- *   - object expressions
- *   - array expressions
- *   - JSX literals.
- */
-class DefaultSourceNode extends SourceNode {
-  DefaultSourceNode() {
-    exists(ASTNode astNode | this = DataFlow::valueNode(astNode) |
-      astNode instanceof PropAccess or
-      astNode instanceof Function or
-      astNode instanceof ClassDefinition or
-      astNode instanceof ObjectExpr or
-      astNode instanceof ArrayExpr or
-      astNode instanceof JSXNode or
-      astNode instanceof GlobalVarAccess or
-      astNode instanceof ExternalModuleReference
-    )
-    or
-    exists(SsaExplicitDefinition ssa, VarDef def |
-      this = DataFlow::ssaDefinitionNode(ssa) and def = ssa.getDef()
-    |
-      def instanceof ImportSpecifier
-    )
-    or
-    DataFlow::parameterNode(this, _)
-    or
-    this instanceof DataFlow::Impl::InvokeNodeDef
-    or
-    DataFlow::thisNode(this, _)
+module SourceNode {
+  /**
+   * A data flow node that should be considered a source node.
+   *
+   * Subclass this class to introduce new kinds of source nodes. If you want to refine
+   * the definition of existing source nodes, subclass `DataFlow::SourceNode` instead.
+   */
+  cached
+  abstract class Range extends DataFlow::Node { }
+
+  /**
+   * A data flow node that is considered a source node by default.
+   *
+   * Currently, the following nodes are source nodes:
+   *   - import specifiers
+   *   - function parameters
+   *   - `this` nodes
+   *   - property accesses
+   *   - function invocations
+   *   - global variable accesses
+   *   - function definitions
+   *   - class definitions
+   *   - object expressions
+   *   - array expressions
+   *   - JSX literals
+   *
+   * This class is for internal use only and should not normally be used directly.
+   */
+  class DefaultRange extends Range {
+    DefaultRange() {
+      exists(ASTNode astNode | this = DataFlow::valueNode(astNode) |
+        astNode instanceof PropAccess or
+        astNode instanceof Function or
+        astNode instanceof ClassDefinition or
+        astNode instanceof ObjectExpr or
+        astNode instanceof ArrayExpr or
+        astNode instanceof JSXNode or
+        astNode instanceof GlobalVarAccess or
+        astNode instanceof ExternalModuleReference
+      )
+      or
+      exists(SsaExplicitDefinition ssa, VarDef def |
+        this = DataFlow::ssaDefinitionNode(ssa) and def = ssa.getDef()
+      |
+        def instanceof ImportSpecifier
+      )
+      or
+      DataFlow::parameterNode(this, _)
+      or
+      this instanceof DataFlow::Impl::InvokeNodeDef
+      or
+      DataFlow::thisNode(this, _)
+    }
   }
+}
+
+deprecated class DefaultSourceNode extends SourceNode {
+  DefaultSourceNode() { this instanceof SourceNode::DefaultRange }
 }

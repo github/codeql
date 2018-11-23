@@ -516,6 +516,20 @@ module DataFlow {
   abstract class PropRead extends PropRef, SourceNode { }
 
   /**
+   * A property read, considered as a source node.
+   *
+   * Note that we cannot simplify the characteristic predicate to `this instanceof PropRead`,
+   * since `PropRead` is itself a subclass of `SourceNode`.
+   */
+  private class PropReadAsSourceNode extends SourceNode::Range {
+    PropReadAsSourceNode() {
+      this = TPropNode(any(PropertyPattern p)) or
+      this instanceof RestPatternNode or
+      this instanceof ElementPatternNode
+    }
+  }
+
+  /**
    * A property access in rvalue position.
    */
   private class PropRValueAsPropRead extends PropRead, ValueNode {

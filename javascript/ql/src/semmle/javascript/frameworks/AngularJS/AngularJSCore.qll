@@ -45,7 +45,7 @@ private predicate isAngularString(Expr s) {
  * String literals in Angular code are often used as identifiers or references, so we
  * want to track them.
  */
-private class TrackStringsInAngularCode extends DataFlow::SourceNode, DataFlow::ValueNode {
+private class TrackStringsInAngularCode extends DataFlow::SourceNode::Range, DataFlow::ValueNode {
   TrackStringsInAngularCode() { isAngularString(astNode) }
 }
 
