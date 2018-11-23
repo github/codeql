@@ -80,9 +80,9 @@ Most security alerts are now visible on LGTM by default.
 ## Changes to code extraction
 
 * Improved scalability: Scaling is near linear to at least 20 CPU cores.
-* Five levels of logging can be selected: `CRITICAL`, `ERROR`, `WARN`, `INFO` and `DEBUG`. `WARN` is the default.
-* The `-v` flag can be specified twice to increase logging level to `DEBUG`
-* The `-q` flag has been added to reduce the logging level to `ERROR` or `CRITICAL`
+* Five levels of logging can be selected: `ERROR`, `WARN`, `INFO`, `DEBUG` and `TRACE`. `WARN` is the stand-alone default, but `INFO` will be used when run by LGTM.
+* The `-v` flag can be specified multiple times to increase logging level by one per `-v`.
+* The `-q` flag has been added and can be specified multiple times to reduce the logging level by one per `-q`.
 * Log lines are now in the `[SEVERITY] message` style and never overlap.
 * Extractor now outputs the location of the first offending character when an EncodingError is encountered.
 
