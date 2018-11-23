@@ -67,6 +67,7 @@ Most security alerts are now visible on LGTM by default.
 |----------------------------|------------------------|------------------------------------------------------------------|
 | Assert statement tests the truth value of a literal constant (`py/assert-literal-constant`) | reliability, correctness     | Checks whether an assert statement is testing the truth of a literal constant value. Not shown by default. |
 | Code injection (`py/code-injection`) | Supports path visualization and is now visible on LGTM by default | No change to expected results |
+| Command injection (`py/command-line-injection`) | Additional sinks in the `os`, and `popen` modules | Possibility of new results |
 | Deserializing untrusted input (`py/unsafe-deserialization`) | Supports path visualization | No change to expected results |
 | Encoding error (`py/encoding-error`) | Better alert location | Alert is now shown at the position of the first offending character, rather than at the top of the file. |
 | Missing call to \_\_init\_\_ during object initialization (`py/missing-call-to-init`) | Fewer false positive results | Results where it is likely that the full call chain has not been analyzed are no longer reported. |
