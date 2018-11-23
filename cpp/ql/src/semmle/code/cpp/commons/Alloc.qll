@@ -78,8 +78,8 @@ predicate isStdLibAllocationExpr(Expr e)
  */
 predicate isAllocationExpr(Expr e) {
   allocationCall(e)
-  or e instanceof NewExpr
-  or e instanceof NewArrayExpr
+  or
+  e = any(NewOrNewArrayExpr new | not exists(new.getPlacementPointer()))
 }
 
 /**
