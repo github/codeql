@@ -7,6 +7,7 @@
  * @id cpp/inconsistent-virtual-inheritance
  * @tags maintainability
  *       readability
+ *       external/jsf
  */
 import cpp
 

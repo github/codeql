@@ -1,5 +1,40 @@
 private import IR
 import cpp
+import semmle.code.cpp.ir.IRConfiguration
+
+private newtype TPrintIRConfiguration = MkPrintIRConfiguration()
+
+/**
+ * The query can extend this class to control which functions are printed.
+ */
+class PrintIRConfiguration extends TPrintIRConfiguration {
+  string toString() {
+    result = "PrintIRConfiguration"
+  }
+
+  /**
+   * Holds if the IR for `func` should be printed. By default, holds for all
+   * functions.
+   */
+  predicate shouldPrintFunction(Function func) {
+    any()
+  }
+}
+
+private predicate shouldPrintFunction(Function func) {
+  exists(PrintIRConfiguration config |
+    config.shouldPrintFunction(func)
+  )
+}
+
+/**
+ * Override of `IRConfiguration` to only create IR for the functions that are to be dumped.
+ */
+private class FilteredIRConfiguration extends IRConfiguration {
+  override predicate shouldCreateIRForFunction(Function func) {
+    shouldPrintFunction(func)
+  }
+}
 
 private string getAdditionalInstructionProperty(Instruction instr, string key) {
   exists(IRPropertyProvider provider |
@@ -14,9 +49,15 @@ private string getAdditionalBlockProperty(IRBlock block, string key) {
 }
 
 private newtype TPrintableIRNode =
-  TPrintableFunctionIR(FunctionIR funcIR) or
-  TPrintableIRBlock(IRBlock block) or
-  TPrintableInstruction(Instruction instr)
+  TPrintableFunctionIR(FunctionIR funcIR) {
+    shouldPrintFunction(funcIR.getFunction())
+  } or
+  TPrintableIRBlock(IRBlock block) {
+    shouldPrintFunction(block.getFunction())
+  } or
+  TPrintableInstruction(Instruction instr) {
+    shouldPrintFunction(instr.getFunction())
+  }
 
 /**
  * A node to be emitted in the IR graph.

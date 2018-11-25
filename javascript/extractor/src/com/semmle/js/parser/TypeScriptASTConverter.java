@@ -162,6 +162,7 @@ public class TypeScriptASTConverter {
 	private final JsonObject syntaxKinds;
 	private final Map<Integer, String> nodeFlagMap = new LinkedHashMap<>();
 	private final Map<Integer, String> syntaxKindMap = new LinkedHashMap<>();
+	private int[] lineStarts;
 
 	private int syntaxKindExtends;
 
@@ -199,6 +200,8 @@ public class TypeScriptASTConverter {
 	 * into a parser {@link Result}.
 	 */
 	public Result convertAST(JsonObject ast, String source) {
+		this.lineStarts = toIntArray(ast.getAsJsonArray("$lineStarts"));
+
 		List<ParseError> errors = new ArrayList<ParseError>();
 
 		// process parse diagnostics (i.e., syntax errors) reported by the TypeScript compiler
@@ -207,11 +210,8 @@ public class TypeScriptASTConverter {
 			for (JsonElement elt : parseDiagnostics) {
 				JsonObject parseDiagnostic = elt.getAsJsonObject();
 				String message = parseDiagnostic.get("messageText").getAsString();
-				JsonObject pos = parseDiagnostic.get("$pos").getAsJsonObject();
-				int line = pos.get("line").getAsInt() + 1;
-				int column = pos.get("character").getAsInt();
-				int offset = pos.get("$offset").getAsInt();
-				errors.add(new ParseError(message, line, column, offset));
+				Position pos = getPosition(parseDiagnostic.get("$pos"));
+				errors.add(new ParseError(message, pos.getLine(), pos.getColumn(), pos.getOffset()));
 			}
 			return new Result(source, null, new ArrayList<>(), new ArrayList<>(), errors);
 		}
@@ -232,13 +232,43 @@ public class TypeScriptASTConverter {
 	}
 
 	/**
+	 * Converts a JSON array to an int array.
+	 * The array is assumed to only contain integers.
+	 */
+	private static int[] toIntArray(JsonArray array) {
+		int[] result = new int[array.size()];
+		for (int i = 0; i < array.size(); ++i) {
+			result[i] = array.get(i).getAsInt();
+		}
+		return result;
+	}
+
+	private int getLineFromPos(int pos) {
+		int low = 0, high = this.lineStarts.length - 1;
+		while (low < high) {
+			int mid = high - ((high - low) >> 1); // Get middle, rounding up.
+			int startOfLine = lineStarts[mid];
+			if (startOfLine <= pos) {
+				low = mid;
+			} else {
+				high = mid - 1;
+			}
+		}
+		return low;
+	}
+
+	private int getColumnFromLinePos(int line, int pos) {
+		return pos - lineStarts[line];
+	}
+
+	/**
 	 * Extract tokens and comments from the given TypeScript AST.
 	 */
 	private void extractTokensAndComments(JsonObject ast, List<Token> tokens, List<Comment> comments) {
 		for (JsonElement elt : ast.get("$tokens").getAsJsonArray()) {
 			JsonObject token = elt.getAsJsonObject();
 			String text = token.get("text").getAsString();
-			Position start = getPosition(token.get("tokenPos").getAsJsonObject(), true);
+			Position start = getPosition(token.get("tokenPos"));
 			Position end = advance(start, text);
 			SourceLocation loc = new SourceLocation(text, start, end);
 			String kind = getKind(token);
@@ -886,7 +916,7 @@ public class TypeScriptASTConverter {
 			} else {
 				superInterfaces = convertSuperInterfaceClause(supers);
 			}
-			afterHead = heritageClause.get("$end").getAsJsonObject().get("$offset").getAsInt();
+			afterHead = heritageClause.get("$end").getAsInt();
 		}
 		if (superInterfaces == null) {
 			superInterfaces = new ArrayList<>();
@@ -2191,8 +2221,8 @@ public class TypeScriptASTConverter {
 	 * Get the source location of the given AST node.
 	 */
 	private SourceLocation getSourceLocation(JsonObject node) {
-		Position start = getPosition(node.get("$pos").getAsJsonObject(), true);
-		Position end = getPosition(node.get("$end").getAsJsonObject(), false);
+		Position start = getPosition(node.get("$pos"));
+		Position end = getPosition(node.get("$end"));
 		int startOffset = start.getOffset();
 		int endOffset = end.getOffset();
 		if (startOffset > endOffset)
@@ -2207,15 +2237,11 @@ public class TypeScriptASTConverter {
 	 * For start positions, we need to skip over whitespace, which is included in
 	 * the positions reported by the TypeScript compiler.
 	 */
-	private Position getPosition(JsonObject pos, boolean isStart) {
-		int line = pos.get("line").getAsInt() + 1;
-		int column = pos.get("character").getAsInt();
-		int offset = pos.get("$offset").getAsInt();
-		if (isStart) {
-			while (offset < source.length() && Character.isWhitespace(source.charAt(offset)))
-				++offset;
-		}
-		return new Position(line, column, offset);
+	private Position getPosition(JsonElement elm) {
+		int offset = elm.getAsInt();
+		int line = getLineFromPos(offset);
+		int column = getColumnFromLinePos(line, offset);
+		return new Position(line + 1, column, offset);
 	}
 
 	private Iterable<JsonElement> getModifiers(JsonObject node) {

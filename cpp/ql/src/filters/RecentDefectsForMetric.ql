@@ -6,6 +6,7 @@
  *              before the snapshot.
  * @kind treemap
  * @id cpp/recent-defects-for-metric-filter
+ * @deprecated
  */
 import cpp
 import external.MetricFilter

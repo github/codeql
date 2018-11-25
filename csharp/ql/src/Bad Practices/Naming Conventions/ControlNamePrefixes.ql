@@ -1,7 +1,7 @@
 /**
  * @name ASP.NET control name prefixes
- * @description This query checks that certain prefixes are used for naming fields for
- *              ASP.NET Web / HTML controls.
+ * @description Including standard prefixes in the field names of
+ *              ASP.NET Web / HTML controls makes code easier to understand.
  * @kind problem
  * @problem.severity recommendation
  * @precision medium

@@ -123,3 +123,30 @@ int isSmallEnough(unsigned long long x) {
   // get compiled away on others.
   return x == (size_t)x && x == (u64)x; // GOOD
 }
+
+#define markRange(str, x, y) \
+	if ((x) == (y)) { \
+		str[x] = '^'; \
+	} else { \
+		int i; \
+		str[x] = '<'; \
+		for (i = x + 1; i < y; i++) { \
+			str[i] = '-'; \
+		} \
+		str[y] = '>'; \
+	}
+
+void useMarkRange(int offs) {
+	char buffer[100];
+
+	markRange(buffer, 10, 20);
+	markRange(buffer, 30, 30);
+	markRange(buffer, offs, offs + 10);
+	markRange(buffer, offs, offs); // GOOD (comparison is in the macro)
+}
+
+#define MY_MACRO(x) (x)
+
+void myMacroTest(int x) {
+	MY_MACRO(x == x); // BAD
+}

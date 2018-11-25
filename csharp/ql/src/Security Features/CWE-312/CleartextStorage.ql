@@ -2,7 +2,7 @@
  * @name Clear text storage of sensitive information
  * @description Sensitive information stored without encryption or hashing can expose it to an
  *              attacker.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id cs/cleartext-storage-of-sensitive-information
@@ -13,7 +13,9 @@
  */
 import csharp
 import semmle.code.csharp.security.dataflow.CleartextStorage::CleartextStorage
+import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
-from TaintTrackingConfiguration c, Source source, Sink sink
-where c.hasFlow(source, sink)
-select sink, "Sensitive data returned by $@ is stored here.", source, source.toString()
+from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
+where c.hasFlowPath(source, sink)
+select sink.getNode(), source, sink,
+  "Sensitive data returned by $@ is stored here.", source.getNode(), source.toString()

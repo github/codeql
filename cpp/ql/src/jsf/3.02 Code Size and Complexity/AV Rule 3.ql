@@ -3,7 +3,9 @@
  * @description All functions shall have a cyclomatic complexity number of 20 or less.
  * @kind problem
  * @id cpp/jsf/av-rule-3
- * @problem.severity error
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       external/jsf
  */
 import cpp
 

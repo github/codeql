@@ -1,6 +1,7 @@
 /**
  * @name Windows controls with generated names
- * @description Finds fields, corresponding to windows-forms controls, with generated names (such as "label1" or "PictureBox4").
+ * @description Replacing the generated names in windows forms with meaningful names
+                makes it easier for other developers to understand the code.
  * @kind problem
  * @problem.severity recommendation
  * @precision medium

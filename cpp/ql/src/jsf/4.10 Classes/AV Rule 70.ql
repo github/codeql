@@ -5,7 +5,9 @@
  *              for logical or efficiency reasons.
  * @kind problem
  * @id cpp/jsf/av-rule-70
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       external/jsf
  */
 import cpp
 

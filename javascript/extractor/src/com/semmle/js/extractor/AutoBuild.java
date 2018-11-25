@@ -111,7 +111,7 @@ import com.semmle.util.trap.TrapWriter;
  *
  * <p>
  * The filtering phase is parameterised by a list of include/exclude patterns in the style of
- * {@link ProjectLayout} specifications. There are some built-in include patterns discussed
+ * {@link ProjectLayout} specifications. There are some built-in include/exclude patterns discussed
  * below. Additionally, the environment variable <code>LGTM_INDEX_FILTERS</code> is interpreted
  * as a newline-separated list of patterns to append to that list (hence taking precedence over
  * the built-in patterns). Unlike for {@link ProjectLayout}, patterns in
@@ -138,6 +138,15 @@ import com.semmle.util.trap.TrapWriter;
  * ".ts" and ".tsx") are also included. In case of "full", type information from the TypeScript
  * compiler is extracted as well.
  * </p>
+ *
+ * <p>
+ * The default exclusion patterns cause the following files to be excluded:
+ * </p>
+ * <ul>
+ * <li>All JavaScript files whose name ends with <code>-min.js</code> or <code>.min.js</code>.
+ *     Such files typically contain minified code. Since LGTM by default does not show results
+ *     in minified files, it is not usually worth extracting them in the first place.</li>
+ * </ul>
  *
  * <p>
  * JavaScript files are normally extracted with {@link SourceType#AUTO}, but an explicit
@@ -316,6 +325,10 @@ public class AutoBuild {
 		// include .eslintrc files and package.json files
 		patterns.add("**/.eslintrc*");
 		patterns.add("**/package.json");
+
+		// exclude files whose name strongly suggests they are minified
+		patterns.add("-**/*.min.js");
+		patterns.add("-**/*-min.js");
 
 		String base = LGTM_SRC.toString().replace('\\', '/');
 		// process `$LGTM_INDEX_FILTERS`

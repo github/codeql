@@ -3,7 +3,9 @@
  * @description Signed and unsigned values shall not be mixed in arithmetic or comparison operations. Mixing signed and unsigned values is error prone as it subjects operations to numerous arithmetic conversion and integral promotion rules.
  * @kind problem
  * @id cpp/jsf/av-rule-162
- * @problem.severity error
+ * @problem.severity warning
+ * @tags correctness
+ *       external/jsf
  */
 import cpp
 

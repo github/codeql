@@ -3,7 +3,9 @@
  * @description Unneeded implicitly generated member functions shall be explicitly disallowed.
  * @kind problem
  * @id cpp/jsf/av-rule-68
- * @problem.severity error
+ * @problem.severity warning
+ * @tags correctness
+ *       external/jsf
  */
 import cpp
 

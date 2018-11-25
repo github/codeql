@@ -6,6 +6,9 @@
  * @id cpp/jsf/av-rule-210
  * @problem.severity error
  * @precision low
+ * @tags correctness
+ *       portability
+ *       external/jsf
  */
 import cpp
 

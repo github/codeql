@@ -3,7 +3,10 @@
  * @description Header files will always have a file name extension of .h.
  * @kind problem
  * @id cpp/jsf/av-rule-53
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
+ *       external/jsf
  */
 import cpp
 

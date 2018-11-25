@@ -3,11 +3,11 @@
  * @description All base classes with a virtual function should define a virtual destructor. If an application attempts to delete a derived class object through a base class pointer, the result is undefined if the base class destructor is non-virtual.
  * @kind problem
  * @problem.severity warning
- * @precision high
  * @id cpp/jsf/av-rule-78
  * @tags reliability
  *       readability
  *       language-features
+ *       external/jsf
  */
 import cpp
 

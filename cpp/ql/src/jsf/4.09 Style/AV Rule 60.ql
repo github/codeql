@@ -3,7 +3,10 @@
  * @description Braces which enclose a block will be placed in the same column, on separate lines directly before and after the block.
  * @kind problem
  * @id cpp/jsf/av-rule-60
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
+ *       external/jsf
  */
 
 import cpp

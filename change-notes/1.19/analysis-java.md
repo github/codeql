@@ -16,6 +16,7 @@
 | **Query**                  | **Expected impact**    | **Change**                                                       |
 |----------------------------|------------------------|------------------------------------------------------------------|
 | Array index out of bounds (`java/index-out-of-bounds`) | Fewer false positive results | False positives involving arrays with a length evenly divisible by 3 or some greater number and an index being increased with a similar stride length are no longer reported. |
+| Confusing overloading of methods (`java/confusing-method-signature`) | Fewer false positive results | A bugfix in the inheritance relation ensures that spurious results on certain generic classes no longer occur. |
 | Query built from user-controlled sources (`java/sql-injection`) | More results | Sql injection sinks from the Spring JDBC, MyBatis, and Hibernate frameworks are now reported. |
 | Query built without neutralizing special characters (`java/concatenated-sql-query`) | More results | Sql injection sinks from the Spring JDBC, MyBatis, and Hibernate frameworks are now reported. |
 | Unreachable catch clause (`java/unreachable-catch-clause`) | Fewer false positive results | This rule now accounts for calls to generic methods that throw generic exceptions. |

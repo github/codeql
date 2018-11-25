@@ -3,7 +3,7 @@
  * @description If an HTML element has two attributes with the same name
  *              but different values, its behavior may be browser-dependent.
  * @kind problem
- * @problem.severity error
+ * @problem.severity warning
  * @id js/conflicting-html-attribute
  * @tags maintainability
  *       correctness

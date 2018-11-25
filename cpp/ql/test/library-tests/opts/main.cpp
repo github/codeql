@@ -1,8 +1,8 @@
 
 char *Xstrdup(const char *string);
-void abort();
+void abort(void);
 struct FILE;
-char *fgets(char *str, int num, FILE *stream);
+char *fgets(char *s, int n, FILE *stream);
 int ignore_return_value();
 #define IGNORE_RETURN_VALUE() ignore_return_value()
 void myIgnoreReturnValue();

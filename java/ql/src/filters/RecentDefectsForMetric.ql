@@ -3,6 +3,7 @@
  * @description Filter a metric query to only include results in files that have been changed recently, and modify the message.
  * @kind treemap
  * @id java/recently-changed-file-metric-filter
+ * @deprecated
  */
 
 import java

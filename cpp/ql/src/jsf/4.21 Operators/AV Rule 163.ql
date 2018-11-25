@@ -3,7 +3,9 @@
  * @description Unsigned arithmetic shall not be used.
  * @kind problem
  * @id cpp/jsf/av-rule-163
- * @problem.severity error
+ * @problem.severity recommendation
+ * @tags correctness
+ *       external/jsf
  */
 import cpp
 

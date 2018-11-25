@@ -3,7 +3,9 @@
  * @description Numeric values in code will not be used; symbolic values will be used instead.
  * @kind problem
  * @id cpp/jsf/av-rule-151
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       external/jsf
  */
 import cpp
 

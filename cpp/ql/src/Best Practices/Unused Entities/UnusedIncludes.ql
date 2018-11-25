@@ -4,7 +4,10 @@
  *              the included elements are used.
  * @kind problem
  * @id cpp/unused-includes
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @precision low
+ * @tags maintainability
+ *       useless-code
  */
 
 import cpp
