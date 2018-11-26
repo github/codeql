@@ -473,19 +473,40 @@ module Internal {
 
     /** Holds if basic block `bb` only is reached when this guard has abstract value `v`. */
     predicate controls(BasicBlock bb, AbstractValue v) {
-      exists(ConditionBlock cb, ConditionalSuccessor s, AbstractValue v0, Guard g |
-        cb.controls(bb, s) |
-        v0.branchImplies(cb.getLastNode().getElement(), s, g) and
+      exists(ControlFlowElement cfe, ConditionalSuccessor s, AbstractValue v0, Guard g |
+        cfe.controlsBlock(bb, s) |
+        v0.branchImplies(cfe, s, g) and
         impliesSteps(g, v0, this, v)
       )
     }
 
-    /** Holds if control flow node `cfn` only is reached when this guard evaluates to `v`. */
-    predicate controlsNode(ControlFlow::Node cfn, AbstractValue v) {
+    /**
+     * Holds if control flow node `cfn` only is reached when this guard evaluates to `v`,
+     * because of an assertion.
+     */
+    private predicate assertionControlsNode(ControlFlow::Node cfn, AbstractValue v) {
       exists(Assertion a, Guard g, AbstractValue v0 |
-        a.getAControlFlowNode().dominates(cfn) |
         asserts(a, g, v0) and
         impliesSteps(g, v0, this, v)
+      |
+        a.strictlyDominates(cfn.getBasicBlock())
+        or
+        exists(BasicBlock bb, int i, int j |
+          bb.getNode(i) = a.getAControlFlowNode() |
+          bb.getNode(j) = cfn and
+          j > i
+        )
+      )
+    }
+
+    /**
+     * Holds if control flow element `cfe` only is reached when this guard evaluates to `v`,
+     * because of an assertion.
+     */
+    predicate assertionControlsElement(ControlFlowElement cfe, AbstractValue v) {
+      forex(ControlFlow::Node cfn |
+        cfn = cfe.getAControlFlowNode() |
+        this.assertionControlsNode(cfn, v)
       )
     }
 
@@ -639,24 +660,33 @@ module Internal {
         e = g.getAChildExpr*() |
         g.controls(bb, _)
         or
-        g.controlsNode(bb.getANode(), _)
+        g.assertionControlsElement(bb.getANode().getElement(), _)
       )
     }
   }
 
   private cached module Cached {
     pragma[noinline]
-    private predicate isGuardedBy0(AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub, AbstractValue v) {
-      exists(ControlFlow::Node cfn |
-        (g.controls(cfn.getBasicBlock(), v) or g.controlsNode(cfn, v)) and
-        cfn = guarded.getAControlFlowNode() and
-        exists(ConditionOnExprComparisonConfig c | c.same(sub, guarded))
+    private predicate isGuardedBy0(ControlFlow::Node cfn, AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub, AbstractValue v) {
+      cfn = guarded.getAControlFlowNode() and
+      g.controls(cfn.getBasicBlock(), v) and
+      exists(ConditionOnExprComparisonConfig c | c.same(sub, guarded))
+    }
+
+    pragma[noinline]
+    private predicate isGuardedBy1(AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub, AbstractValue v) {
+      forex(ControlFlow::Node cfn |
+        cfn = guarded.getAControlFlowNode() |
+        isGuardedBy0(cfn, guarded, g, sub, v)
       )
+      or
+      g.assertionControlsElement(guarded, v) and
+      exists(ConditionOnExprComparisonConfig c | c.same(sub, guarded))
     }
 
     cached
     predicate isGuardedBy(AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub, AbstractValue v) {
-      isGuardedBy0(guarded, g, sub, v) and
+      isGuardedBy1(guarded, g, sub, v) and
       sub = g.getAChildExpr*() and
       (
         not guarded.hasSsaQualifier() and not sub.hasSsaQualifier()
