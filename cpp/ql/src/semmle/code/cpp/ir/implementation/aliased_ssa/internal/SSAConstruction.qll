@@ -183,7 +183,7 @@ cached private module Cached {
     result  instanceof UnmodeledDefinitionInstruction and
     instruction.getFunction() = result.getFunction()
     or
-    result = getChiInstructionTotalOperand(instruction.(ChiInstruction), tag.(ChiTotalOperandTag))
+    result = getChiInstructionTotalOperand(instruction)
   }
 
   cached Instruction getPhiInstructionOperandDefinition(PhiInstruction instr,
@@ -203,7 +203,7 @@ cached private module Cached {
     )
   }
 
-  cached Instruction getChiInstructionTotalOperand(ChiInstruction chiInstr, ChiTotalOperandTag tag) {
+  cached Instruction getChiInstructionTotalOperand(ChiInstruction chiInstr) {
     exists(Alias::VirtualVariable vvar, OldIR::Instruction oldInstr, OldIR::IRBlock defBlock,
       int defRank, int defIndex, OldIR::IRBlock useBlock, int useRank |
       ChiTag(oldInstr) = chiInstr.getTag() and
@@ -233,6 +233,11 @@ cached private module Cached {
     result = getOldInstruction(instruction).getUnconvertedResultExpression()
   }
 
+  /*
+   * This adds Chi nodes to the instruction successor relation; if an instruction has a Chi node,
+   * that node is its successor in the new successor relation, and the Chi node's successors are
+   * the new instructions generated from the successors of the old instruction
+   */
   cached Instruction getInstructionSuccessor(Instruction instruction, EdgeKind kind) {
     if(hasChiNode(_, getOldInstruction(instruction)))
     then
@@ -331,6 +336,10 @@ cached private module Cached {
       (
         access = Alias::getOperandMemoryAccess(use.getAnOperand())
         or
+        /*
+         * a partial write to a virtual variable is going to generate a use of that variable when
+         * Chi nodes are inserted, so we need to mark it as a use in the old IR
+         */
         access = Alias::getResultMemoryAccess(use) and
         access.isPartialMemoryAccess()
       ) and
@@ -471,8 +480,7 @@ cached private module Cached {
       ma = Alias::getResultMemoryAccess(def) and
       ma.isPartialMemoryAccess() and
       ma.getVirtualVariable() = vvar
-    ) and
-    not def instanceof OldIR::UnmodeledDefinitionInstruction
+    )
   }
 }
 
