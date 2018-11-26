@@ -41,7 +41,7 @@ public class Main {
 	 * such a way that it may produce different tuples for the same file under the same
 	 * {@link ExtractorConfig}.
 	 */
-	public static final String EXTRACTOR_VERSION = "2018-11-22_a";
+	public static final String EXTRACTOR_VERSION = "2018-11-23";
 
 	public static final Pattern NEWLINE = Pattern.compile("\n");
 

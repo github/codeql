@@ -331,9 +331,11 @@ public class CFGExtractor {
 			return nd.getKey().accept(this, v);
 		}
 
-		// for binary operators, the operands come first (but not for LogicalExpression, see above)
+		// for binary operators, the operands come first (but not for short-circuiting expressions), see above)
 		@Override
 		public Node visit(BinaryExpression nd, Void v) {
+			if ("??".equals(nd.getOperator()))
+				return nd;
 			return nd.getLeft().accept(this, v);
 		}
 
@@ -1583,8 +1585,16 @@ public class CFGExtractor {
 
 		@Override
 		public Void visit(BinaryExpression nd, SuccessorInfo i) {
-			this.seq(nd.getLeft(), nd.getRight(), nd);
-			succ(nd, i.getGuardedSuccessors(nd));
+			if ("??".equals(nd.getOperator())) {
+				// the nullish coalescing operator is short-circuiting, but we do not add guards for it
+				succ(nd, First.of(nd.getLeft()));
+				Object leftSucc = union(First.of(nd.getRight()), i.getAllSuccessors());  // short-circuiting happens with both truthy and falsy values
+				visit(nd.getLeft(), leftSucc, null);
+				nd.getRight().accept(this, i);
+			} else {
+				this.seq(nd.getLeft(), nd.getRight(), nd);
+				succ(nd, i.getGuardedSuccessors(nd));
+			}
 			return null;
 		}
 

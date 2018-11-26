@@ -123,6 +123,7 @@ public class TokenType {
 		}
 	},
 	prefix = new TokenType(new Properties("prefix").beforeExpr().prefix().startsExpr()),
+	questionquestion = new TokenType(binop("??", 1)),
 	logicalOR = new TokenType(binop("||", 1)),
 	logicalAND = new TokenType(binop("&&", 2)),
 	bitwiseOR = new TokenType(binop("|", 3)),
