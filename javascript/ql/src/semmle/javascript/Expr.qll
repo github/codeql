@@ -1288,6 +1288,15 @@ class LogOrExpr extends @logorexpr, BinaryExpr {
   override ControlFlowNode getFirstControlFlowNode() { result = this }
 }
 
+/** A nullish coalescing '??' expression. */
+class NullishCoalescingExpr extends @nullishcoalescingexpr, BinaryExpr {
+  override string getOperator() {
+    result = "??"
+  }
+
+  override ControlFlowNode getFirstControlFlowNode() { result = this }
+}
+
 /**
  * A logical binary expression, that is, either a logical
  * 'or' or a logical 'and' expression.
@@ -1295,7 +1304,8 @@ class LogOrExpr extends @logorexpr, BinaryExpr {
 class LogicalBinaryExpr extends BinaryExpr {
   LogicalBinaryExpr() {
     this instanceof LogAndExpr or
-    this instanceof LogOrExpr
+    this instanceof LogOrExpr or
+    this instanceof NullishCoalescingExpr
   }
 }
 

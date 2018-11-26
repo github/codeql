@@ -1370,6 +1370,10 @@
 <v>100</v>
 </e>
 <e>
+<k>@nullishcoalescingexpr</k>
+<v>100</v>
+</e>
+<e>
 <k>@xmldtd</k>
 <v>1</v>
 </e>
@@ -1395,6 +1399,10 @@
 </e>
 <e>
 <k>@optionalchainable</k>
+<v>100</v>
+</e>
+<e>
+<k>@nullishcoalescingexpr</k>
 <v>100</v>
 </e>
 </typesizes>

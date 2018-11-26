@@ -72,6 +72,7 @@ public class ExprKinds {
 		binOpKinds.put("&=", 58);
 		binOpKinds.put("**", 87);
 		binOpKinds.put("**=", 88);
+		binOpKinds.put("??", 107);
 	}
 
 	private static final Map<String, Integer> unOpKinds = new LinkedHashMap<String, Integer>();

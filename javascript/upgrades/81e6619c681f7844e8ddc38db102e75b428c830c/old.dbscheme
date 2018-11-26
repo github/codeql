@@ -338,7 +338,6 @@ case @expr.kind of
 | 104 = @decorator_list
 | 105 = @non_null_assertion
 | 106 = @bigintliteral
-| 107 = @nullishcoalescingexpr
 ;
 
 @varaccess = @proper_varaccess | @export_varaccess;
@@ -358,7 +357,7 @@ case @expr.kind of
 
 @comparison = @equalitytest | @ltexpr | @leexpr | @gtexpr | @geexpr;
 
-@binaryexpr = @comparison | @lshiftexpr | @rshiftexpr | @urshiftexpr | @addexpr | @subexpr | @mulexpr | @divexpr | @modexpr | @expexpr | @bitorexpr | @xorexpr | @bitandexpr | @inexpr | @instanceofexpr | @logandexpr | @logorexpr | @nullishcoalescingexpr;
+@binaryexpr = @comparison | @lshiftexpr | @rshiftexpr | @urshiftexpr | @addexpr | @subexpr | @mulexpr | @divexpr | @modexpr | @expexpr | @bitorexpr | @xorexpr | @bitandexpr | @inexpr | @instanceofexpr | @logandexpr | @logorexpr;
 
 @assignment = @assignexpr | @assignaddexpr | @assignsubexpr | @assignmulexpr | @assigndivexpr | @assignmodexpr | @assignexpexpr | @assignlshiftexpr | @assignrshiftexpr | @assignurshiftexpr | @assignorexpr | @assignxorexpr | @assignandexpr;
 
@@ -1082,4 +1081,4 @@ xmllocations(
 
 isOptionalChaining(int id: @optionalchainable ref);
 
-/* Last updated 2018/10/23. */
+/* Last updated 2018/10/22. */

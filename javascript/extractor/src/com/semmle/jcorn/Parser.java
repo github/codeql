@@ -508,8 +508,12 @@ public class Parser {
 	private Token readToken_question() { // '?'
 		int next = charAt(this.pos + 1);
 		int next2 = charAt(this.pos + 2);
-		if (this.options.esnext() && next == '.' && !('0' <= next2 && next2 <= '9')) // '?.', but not '?.X' where X is a digit
-			return this.finishOp(TokenType.questiondot, 2);
+		if (this.options.esnext()) {
+			if (next == '.' && !('0' <= next2 && next2 <= '9')) // '?.', but not '?.X' where X is a digit
+				return this.finishOp(TokenType.questiondot, 2);
+			if (next == '?') // '??'
+				return this.finishOp(TokenType.questionquestion, 2);
+		}
 		return this.finishOp(TokenType.question, 1);
 	}
 

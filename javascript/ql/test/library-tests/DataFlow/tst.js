@@ -102,4 +102,5 @@ var vs2 = ( for (v of o) v );     // generator comprehensions are not analysed
   return x + y + z;
 })([ 19, 23, 0 ]);
 
+x ?? y;                           // flow through short-circuiting operator
 // semmle-extractor-options: --experimental
