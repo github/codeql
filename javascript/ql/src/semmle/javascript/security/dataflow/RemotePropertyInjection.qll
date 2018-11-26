@@ -6,6 +6,7 @@
 
 import javascript
 import semmle.javascript.frameworks.Express
+import PropertyInjectionShared
 
 module RemotePropertyInjection {
   /**
@@ -45,7 +46,8 @@ module RemotePropertyInjection {
 
     override predicate isSanitizer(DataFlow::Node node) {
       super.isSanitizer(node) or
-      node instanceof Sanitizer
+      node instanceof Sanitizer or
+      node instanceof PropertyInjection::Sanitizer
     }
   }
 
@@ -76,9 +78,12 @@ module RemotePropertyInjection {
    */
   class MethodCallSink extends Sink, DataFlow::ValueNode  {
     MethodCallSink() {
-      exists (DataFlow::PropRead pr | astNode = pr.getPropertyNameExpr() |           
-        exists (pr.getAnInvocation())
-      )          
+      exists (DataFlow::PropRead pr | astNode = pr.getPropertyNameExpr() |
+        exists (pr.getAnInvocation()) and
+
+        // Omit sinks covered by the UnsafeDynamicMethodAccess query
+        not PropertyInjection::hasUnsafeMethods(pr.getBase().getALocalSource())
+      )
     }
 
     override string getMessage() {
@@ -105,18 +110,4 @@ module RemotePropertyInjection {
       result = " a header name."
     }
   }
-  
-  /** 
-   * A binary expression that sanitzes a value for remote property injection. That 
-   * is, if a string is prepended or appended to the remote input, an attacker 
-   * cannot access arbitrary properties.  
-   */
-  class ConcatSanitizer extends Sanitizer, DataFlow::ValueNode {
-
-    override BinaryExpr astNode;
-
-    ConcatSanitizer() {
-      astNode.getAnOperand() instanceof ConstantString      
-    }
-  }     
 }
