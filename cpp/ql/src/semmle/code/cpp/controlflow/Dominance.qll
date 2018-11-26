@@ -56,10 +56,10 @@ private predicate nodePred(ControlFlowNode src, ControlFlowNode pred) {
 predicate iDominates(ControlFlowNode dominator, ControlFlowNode node) = idominance(functionEntry/1,nodeSucc/2)(_, dominator, node)
 
 /**
- * Holds if `postdominator` is an immediate post-dominator of `node` in the control-flow
+ * Holds if `postDominator` is an immediate post-dominator of `node` in the control-flow
  * graph.
  */
-predicate iPostDominates(ControlFlowNode postdominator, ControlFlowNode node) = idominance(functionExit/1,nodePred/2)(_, postdominator, node)
+predicate iPostDominates(ControlFlowNode postDominator, ControlFlowNode node) = idominance(functionExit/1,nodePred/2)(_, postDominator, node)
 
 /**
  * Holds if `dominator` is a strict dominator of `node` in the control-flow
@@ -70,11 +70,11 @@ predicate strictlyDominates(ControlFlowNode dominator, ControlFlowNode node) {
 }
 
 /**
- * Holds if `postdominator` is a strict post-dominator of `node` in the control-flow
- * graph. Being strict means that `postdominator != node`.
+ * Holds if `postDominator` is a strict post-dominator of `node` in the control-flow
+ * graph. Being strict means that `postDominator != node`.
  */
-predicate strictlyPostDominates(ControlFlowNode postdominator, ControlFlowNode node) {
-  iPostDominates+(postdominator, node)
+predicate strictlyPostDominates(ControlFlowNode postDominator, ControlFlowNode node) {
+  iPostDominates+(postDominator, node)
 }
 
 /**
@@ -86,11 +86,11 @@ predicate dominates(ControlFlowNode dominator, ControlFlowNode node) {
 }
 
 /**
- * Holds if `postdominator` is a post-dominator of `node` in the control-flow graph. This
+ * Holds if `postDominator` is a post-dominator of `node` in the control-flow graph. This
  * is reflexive.
  */
-predicate postdominates(ControlFlowNode postdominator, ControlFlowNode node) {
-  strictlyPostDominates(postdominator, node) or postdominator = node
+predicate postDominates(ControlFlowNode postDominator, ControlFlowNode node) {
+  strictlyPostDominates(postDominator, node) or postDominator = node
 }
 
 /*
@@ -111,16 +111,16 @@ private predicate bb_predecessor(BasicBlock succ, BasicBlock pred) {
   bb_successor(pred, succ)
 }
 
-/** Holds if `exit` an `ExitBasicBlock`. */
+/** Holds if `exit` is an `ExitBasicBlock`. */
 private predicate bb_exit(ExitBasicBlock exit) {
   any()
 }
 
 /**
- * Holds if `postdominator` is an immediate post-dominator of `node` in the control-flow
+ * Holds if `postDominator` is an immediate post-dominator of `node` in the control-flow
  * graph of basic blocks.
  */
-predicate bbIPostDominates(BasicBlock dom, BasicBlock node) = idominance(bb_exit/1, bb_predecessor/2)(_, dom, node)
+predicate bbIPostDominates(BasicBlock pDom, BasicBlock node) = idominance(bb_exit/1, bb_predecessor/2)(_, pDom, node)
 
 /**
  * Holds if `dominator` is a strict dominator of `node` in the control-flow
@@ -131,11 +131,11 @@ predicate bbStrictlyDominates(BasicBlock dominator, BasicBlock node) {
 }
 
 /**
- * Holds if `postdominator` is a strict post-dominator of `node` in the control-flow
- * graph of basic blocks. Being strict means that `postdominator != node`.
+ * Holds if `postDominator` is a strict post-dominator of `node` in the control-flow
+ * graph of basic blocks. Being strict means that `postDominator != node`.
  */
-predicate bbStrictlyPostDominates(BasicBlock postdominator, BasicBlock node) {
-  bbIPostDominates+(postdominator, node)
+predicate bbStrictlyPostDominates(BasicBlock postDominator, BasicBlock node) {
+  bbIPostDominates+(postDominator, node)
 }
 
 /**
@@ -147,9 +147,9 @@ predicate bbDominates(BasicBlock dominator, BasicBlock node) {
 }
 
 /**
- * Holds if `postdominator` is a post-dominator of `node` in the control-flow graph of
+ * Holds if `postDominator` is a post-dominator of `node` in the control-flow graph of
  * basic blocks. This is reflexive.
  */
-predicate bbPostDominates(BasicBlock postdominator, BasicBlock node) {
-  bbStrictlyPostDominates(postdominator, node) or postdominator = node
+predicate bbPostDominates(BasicBlock postDominator, BasicBlock node) {
+  bbStrictlyPostDominates(postDominator, node) or postDominator = node
 }
