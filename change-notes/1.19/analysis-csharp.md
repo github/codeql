@@ -11,7 +11,7 @@
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
 | Using a package with a known vulnerability (cs/use-of-vulnerable-package) | security, external/cwe/cwe-937 | Finds project build files that import packages with known vulnerabilities. This is included by default. |
-
+| Uncontrolled format string (cs/uncontrolled-format-string) | security, external/cwe/cwe-134 | Finds data flow from remote inputs to the format string in `String.Format`. This is included by default. |
 
 ## Changes to existing queries
 
