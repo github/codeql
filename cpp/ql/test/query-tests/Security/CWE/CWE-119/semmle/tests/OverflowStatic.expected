@@ -1,0 +1,10 @@
+| overflowdestination.cpp:46:20:46:30 | sizeof(<expr>) | Potential buffer-overflow: 'dest' has size 64 not 128. |
+| tests.cpp:25:33:25:49 | sizeof(<expr>) | Potential buffer-overflow: 'smallbuffer' has size 10 not 20. |
+| tests.cpp:163:3:163:11 | access to array | Potential buffer-overflow: counter 'k' <= 100 but 'buffer' has 100 elements. |
+| tests.cpp:164:8:164:16 | access to array | Potential buffer-overflow: counter 'k' <= 100 but 'buffer' has 100 elements. |
+| tests.cpp:245:42:245:42 | 6 | Potential buffer-overflow: 'global_array_5' has size 5 not 6. |
+| tests.cpp:349:2:349:14 | access to array | Potential buffer-overflow: 'charArray' has size 10 but 'charArray[10]' is accessed here. |
+| tests.cpp:350:17:350:29 | access to array | Potential buffer-overflow: 'charArray' has size 10 but 'charArray[10]' is accessed here. |
+| var_size_struct.cpp:54:5:54:14 | access to array | Potential buffer-overflow: 'str' has size 1 but 'str[1]' is accessed here. |
+| var_size_struct.cpp:55:5:55:14 | access to array | Potential buffer-overflow: 'str' has size 1 but 'str[1]' is accessed here. |
+| var_size_struct.cpp:103:39:103:41 | 129 | Potential buffer-overflow: 'str' has size 128 not 129. |
