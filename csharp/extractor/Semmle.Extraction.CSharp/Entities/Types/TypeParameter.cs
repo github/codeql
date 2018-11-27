@@ -38,14 +38,12 @@ namespace Semmle.Extraction.CSharp.Entities
                     Context.Compilation.GetTypeByMetadataName(valueTypeName) :
                     Context.Compilation.ObjectType;
 
-            var constraintTypes = new List<Type>();
             foreach (var abase in symbol.ConstraintTypes)
             {
                 if (abase.TypeKind != TypeKind.Interface)
                     baseType = abase;
                 var t = Create(Context, abase);
                 Context.Emit(Tuples.specific_type_parameter_constraints(constraints, t.TypeRef));
-                constraintTypes.Add(t);
             }
 
             Context.Emit(Tuples.types(this, Semmle.Extraction.Kinds.TypeKind.TYPE_PARAMETER, symbol.Name));
@@ -67,12 +65,15 @@ namespace Semmle.Extraction.CSharp.Entities
                 clauses = clauses.Concat(declSyntaxReferences.OfType<ClassDeclarationSyntax>().SelectMany(c => c.ConstraintClauses));
                 clauses = clauses.Concat(declSyntaxReferences.OfType<InterfaceDeclarationSyntax>().SelectMany(c => c.ConstraintClauses));
                 clauses = clauses.Concat(declSyntaxReferences.OfType<StructDeclarationSyntax>().SelectMany(c => c.ConstraintClauses));
-                int i = 0;
-                foreach (var clause in clauses.Where(c => c.Name.ToString() == symbol.Name))
+                foreach (var clause in clauses.Where(c => c.Name.Identifier.Text == symbol.Name))
                 {
                     TypeMention.Create(Context, clause.Name, this, this);
                     foreach (var constraint in clause.Constraints.OfType<TypeConstraintSyntax>())
-                        TypeMention.Create(Context, constraint.Type, this, constraintTypes[i++]);
+                    {
+                        var ti = Context.Model(constraint).GetTypeInfo(constraint.Type);
+                        var target = Type.Create(Context, ti.Type);
+                        TypeMention.Create(Context, constraint.Type, this, target);
+                    }
                 }
             }
         }

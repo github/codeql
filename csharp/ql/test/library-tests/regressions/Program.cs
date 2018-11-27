@@ -139,4 +139,12 @@ class LocalVariableTags
     };
 }
 
+partial class C1<T> where T: DynamicType
+{
+}
+
+partial class C1<T> where T: DynamicType
+{
+}
+
 // semmle-extractor-options: /r:System.Dynamic.Runtime.dll
