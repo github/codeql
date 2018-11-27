@@ -84,11 +84,7 @@ predicate in_notebook(Expr e) {
 }
 
 FunctionObject assertRaises() {
-    exists(ModuleObject unittest, ClassObject testcase |
-        unittest.getName() = "unittest" and
-        testcase = unittest.getAttribute("TestCase") and
-        result = testcase.lookupAttribute("assertRaises")
-    )
+    result = ModuleObject::named("unittest").getAttribute("TestCase").(ClassObject).lookupAttribute("assertRaises")
 }
 
 /** Holds if expression `e` is in a `with` block that tests for exceptions being raised. */
