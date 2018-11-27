@@ -3325,10 +3325,10 @@ ir.cpp:
 #  504|           expr: {...}
 #  504|               Type = Point
 #  504|               ValueCategory = prvalue
-#  504|             0: x
+#  504|             .x: x
 #  504|                 Type = int
 #  504|                 ValueCategory = prvalue(load)
-#  504|             1: (int)...
+#  504|             .y: (int)...
 #  504|                 Conversion = floating point to integral conversion
 #  504|                 Type = int
 #  504|                 ValueCategory = prvalue
@@ -3342,7 +3342,7 @@ ir.cpp:
 #  505|           expr: {...}
 #  505|               Type = Point
 #  505|               ValueCategory = prvalue
-#  505|             0: x
+#  505|             .x: x
 #  505|                 Type = int
 #  505|                 ValueCategory = prvalue(load)
 #  506|     2: declaration
@@ -3390,13 +3390,13 @@ ir.cpp:
 #  514|           expr: {...}
 #  514|               Type = Rect
 #  514|               ValueCategory = prvalue
-#  514|             0: {...}
+#  514|             .topLeft: {...}
 #  514|                 Type = Point
 #  514|                 ValueCategory = prvalue
-#  514|               0: x
+#  514|               .x: x
 #  514|                   Type = int
 #  514|                   ValueCategory = prvalue(load)
-#  514|               1: (int)...
+#  514|               .y: (int)...
 #  514|                   Conversion = floating point to integral conversion
 #  514|                   Type = int
 #  514|                   ValueCategory = prvalue
@@ -3410,26 +3410,26 @@ ir.cpp:
 #  515|           expr: {...}
 #  515|               Type = Rect
 #  515|               ValueCategory = prvalue
-#  515|             0: {...}
+#  515|             .topLeft: {...}
 #  515|                 Type = Point
 #  515|                 ValueCategory = prvalue
-#  515|               0: x
+#  515|               .x: x
 #  515|                   Type = int
 #  515|                   ValueCategory = prvalue(load)
-#  515|               1: (int)...
+#  515|               .y: (int)...
 #  515|                   Conversion = floating point to integral conversion
 #  515|                   Type = int
 #  515|                   ValueCategory = prvalue
 #  515|                 expr: f
 #  515|                     Type = float
 #  515|                     ValueCategory = prvalue(load)
-#  515|             1: {...}
+#  515|             .bottomRight: {...}
 #  515|                 Type = Point
 #  515|                 ValueCategory = prvalue
-#  515|               0: x
+#  515|               .x: x
 #  515|                   Type = int
 #  515|                   ValueCategory = prvalue(load)
-#  515|               1: (int)...
+#  515|               .y: (int)...
 #  515|                   Conversion = floating point to integral conversion
 #  515|                   Type = int
 #  515|                   ValueCategory = prvalue
@@ -3443,16 +3443,16 @@ ir.cpp:
 #  516|           expr: {...}
 #  516|               Type = Rect
 #  516|               ValueCategory = prvalue
-#  516|             0: {...}
+#  516|             .topLeft: {...}
 #  516|                 Type = Point
 #  516|                 ValueCategory = prvalue
-#  516|               0: x
+#  516|               .x: x
 #  516|                   Type = int
 #  516|                   ValueCategory = prvalue(load)
-#  516|             1: {...}
+#  516|             .bottomRight: {...}
 #  516|                 Type = Point
 #  516|                 ValueCategory = prvalue
-#  516|               0: x
+#  516|               .x: x
 #  516|                   Type = int
 #  516|                   ValueCategory = prvalue(load)
 #  517|     4: return ...
@@ -3477,17 +3477,17 @@ ir.cpp:
 #  521|           expr: {...}
 #  521|               Type = int[3]
 #  521|               ValueCategory = prvalue
-#  521|             0: x
+#  521|             [0]: x
 #  521|                 Type = int
 #  521|                 ValueCategory = prvalue(load)
-#  521|             1: (int)...
+#  521|             [1]: (int)...
 #  521|                 Conversion = floating point to integral conversion
 #  521|                 Type = int
 #  521|                 ValueCategory = prvalue
 #  521|               expr: f
 #  521|                   Type = float
 #  521|                   ValueCategory = prvalue(load)
-#  521|             2: 0
+#  521|             [2]: 0
 #  521|                 Type = int
 #  521|                 Value = 0
 #  521|                 ValueCategory = prvalue
@@ -3498,7 +3498,7 @@ ir.cpp:
 #  522|           expr: {...}
 #  522|               Type = int[3]
 #  522|               ValueCategory = prvalue
-#  522|             0: x
+#  522|             [0]: x
 #  522|                 Type = int
 #  522|                 ValueCategory = prvalue(load)
 #  523|     3: return ...
@@ -3524,7 +3524,7 @@ ir.cpp:
 #  531|           expr: {...}
 #  531|               Type = U
 #  531|               ValueCategory = prvalue
-#  531|             0: (double)...
+#  531|             .d: (double)...
 #  531|                 Conversion = floating point conversion
 #  531|                 Type = double
 #  531|                 ValueCategory = prvalue
@@ -3708,7 +3708,7 @@ ir.cpp:
 #  577|           expr: {...}
 #  577|               Type = char[2]
 #  577|               ValueCategory = prvalue
-#  577|             0: (char)...
+#  577|             [0]: (char)...
 #  577|                 Conversion = integral conversion
 #  577|                 Type = char
 #  577|                 Value = 0
@@ -3724,7 +3724,7 @@ ir.cpp:
 #  578|           expr: {...}
 #  578|               Type = char[2]
 #  578|               ValueCategory = prvalue
-#  578|             0: (char)...
+#  578|             [0]: (char)...
 #  578|                 Conversion = integral conversion
 #  578|                 Type = char
 #  578|                 Value = 0
@@ -3733,7 +3733,7 @@ ir.cpp:
 #  578|                   Type = int
 #  578|                   Value = 0
 #  578|                   ValueCategory = prvalue
-#  578|             1: (char)...
+#  578|             [1]: (char)...
 #  578|                 Conversion = integral conversion
 #  578|                 Type = char
 #  578|                 Value = 1
@@ -3749,7 +3749,7 @@ ir.cpp:
 #  579|           expr: {...}
 #  579|               Type = char[3]
 #  579|               ValueCategory = prvalue
-#  579|             0: (char)...
+#  579|             [0]: (char)...
 #  579|                 Conversion = integral conversion
 #  579|                 Type = char
 #  579|                 Value = 0
@@ -6372,7 +6372,7 @@ ir.cpp:
 #  954|         1: {...}
 #  954|             Type = String[]
 #  954|             ValueCategory = prvalue
-#  954|           0: call to String
+#  954|           [0]: call to String
 #  954|               Type = void
 #  954|               ValueCategory = prvalue
 #  954|         2: n
@@ -6414,7 +6414,7 @@ ir.cpp:
 #  957|         1: {...}
 #  957|             Type = DefaultCtorWithDefaultParam[]
 #  957|             ValueCategory = prvalue
-#  957|           0: call to DefaultCtorWithDefaultParam
+#  957|           [0]: call to DefaultCtorWithDefaultParam
 #  957|               Type = void
 #  957|               ValueCategory = prvalue
 #  957|         2: n
@@ -6427,15 +6427,15 @@ ir.cpp:
 #  958|         1: {...}
 #  958|             Type = int[3]
 #  958|             ValueCategory = prvalue
-#  958|           0: 0
+#  958|           [0]: 0
 #  958|               Type = int
 #  958|               Value = 0
 #  958|               ValueCategory = prvalue
-#  958|           1: 1
+#  958|           [1]: 1
 #  958|               Type = int
 #  958|               Value = 1
 #  958|               ValueCategory = prvalue
-#  958|           2: 2
+#  958|           [2]: 2
 #  958|               Type = int
 #  958|               Value = 2
 #  958|               ValueCategory = prvalue
@@ -6453,11 +6453,11 @@ ir.cpp:
 #  962|           expr: {...}
 #  962|               Type = int[1000]
 #  962|               ValueCategory = prvalue
-#  962|             0: 10002
+#  962|             [2]: 10002
 #  962|                 Type = int
 #  962|                 Value = 10002
 #  962|                 ValueCategory = prvalue
-#  962|             1: 10900
+#  962|             [900]: 10900
 #  962|                 Type = int
 #  962|                 Value = 10900
 #  962|                 ValueCategory = prvalue
