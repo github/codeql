@@ -2,7 +2,9 @@
 | Assert.cs:9:16:9:32 | String s = ... | null | Assert.cs:9:16:9:16 | access to local variable s | null |
 | Assert.cs:10:22:10:22 | access to local variable s | non-null | Assert.cs:9:20:9:32 | ... ? ... : ... | non-null |
 | Assert.cs:10:22:10:22 | access to local variable s | null | Assert.cs:9:20:9:32 | ... ? ... : ... | null |
+| Assert.cs:10:22:10:30 | ... != ... | false | Assert.cs:9:20:9:20 | access to parameter b | true |
 | Assert.cs:10:22:10:30 | ... != ... | false | Assert.cs:10:22:10:22 | access to local variable s | null |
+| Assert.cs:10:22:10:30 | ... != ... | true | Assert.cs:9:20:9:20 | access to parameter b | false |
 | Assert.cs:10:22:10:30 | ... != ... | true | Assert.cs:10:22:10:22 | access to local variable s | non-null |
 | Assert.cs:11:27:11:27 | access to local variable s | non-null | Assert.cs:9:20:9:32 | ... ? ... : ... | non-null |
 | Assert.cs:11:27:11:27 | access to local variable s | null | Assert.cs:9:20:9:32 | ... ? ... : ... | null |
@@ -22,7 +24,9 @@
 | Assert.cs:30:16:30:32 | String s = ... | null | Assert.cs:30:16:30:16 | access to local variable s | null |
 | Assert.cs:31:23:31:23 | access to local variable s | non-null | Assert.cs:30:20:30:32 | ... ? ... : ... | non-null |
 | Assert.cs:31:23:31:23 | access to local variable s | null | Assert.cs:30:20:30:32 | ... ? ... : ... | null |
+| Assert.cs:31:23:31:31 | ... == ... | false | Assert.cs:30:20:30:20 | access to parameter b | false |
 | Assert.cs:31:23:31:31 | ... == ... | false | Assert.cs:31:23:31:23 | access to local variable s | non-null |
+| Assert.cs:31:23:31:31 | ... == ... | true | Assert.cs:30:20:30:20 | access to parameter b | true |
 | Assert.cs:31:23:31:31 | ... == ... | true | Assert.cs:31:23:31:23 | access to local variable s | null |
 | Assert.cs:32:27:32:27 | access to local variable s | non-null | Assert.cs:30:20:30:32 | ... ? ... : ... | non-null |
 | Assert.cs:32:27:32:27 | access to local variable s | null | Assert.cs:30:20:30:32 | ... ? ... : ... | null |
@@ -30,7 +34,9 @@
 | Assert.cs:37:16:37:32 | String s = ... | null | Assert.cs:37:16:37:16 | access to local variable s | null |
 | Assert.cs:38:23:38:23 | access to local variable s | non-null | Assert.cs:37:20:37:32 | ... ? ... : ... | non-null |
 | Assert.cs:38:23:38:23 | access to local variable s | null | Assert.cs:37:20:37:32 | ... ? ... : ... | null |
+| Assert.cs:38:23:38:31 | ... != ... | false | Assert.cs:37:20:37:20 | access to parameter b | true |
 | Assert.cs:38:23:38:31 | ... != ... | false | Assert.cs:38:23:38:23 | access to local variable s | null |
+| Assert.cs:38:23:38:31 | ... != ... | true | Assert.cs:37:20:37:20 | access to parameter b | false |
 | Assert.cs:38:23:38:31 | ... != ... | true | Assert.cs:38:23:38:23 | access to local variable s | non-null |
 | Assert.cs:39:27:39:27 | access to local variable s | non-null | Assert.cs:37:20:37:32 | ... ? ... : ... | non-null |
 | Assert.cs:39:27:39:27 | access to local variable s | null | Assert.cs:37:20:37:32 | ... ? ... : ... | null |
@@ -38,7 +44,9 @@
 | Assert.cs:44:16:44:32 | String s = ... | null | Assert.cs:44:16:44:16 | access to local variable s | null |
 | Assert.cs:45:24:45:24 | access to local variable s | non-null | Assert.cs:44:20:44:32 | ... ? ... : ... | non-null |
 | Assert.cs:45:24:45:24 | access to local variable s | null | Assert.cs:44:20:44:32 | ... ? ... : ... | null |
+| Assert.cs:45:24:45:32 | ... != ... | false | Assert.cs:44:20:44:20 | access to parameter b | true |
 | Assert.cs:45:24:45:32 | ... != ... | false | Assert.cs:45:24:45:24 | access to local variable s | null |
+| Assert.cs:45:24:45:32 | ... != ... | true | Assert.cs:44:20:44:20 | access to parameter b | false |
 | Assert.cs:45:24:45:32 | ... != ... | true | Assert.cs:45:24:45:24 | access to local variable s | non-null |
 | Assert.cs:46:27:46:27 | access to local variable s | non-null | Assert.cs:44:20:44:32 | ... ? ... : ... | non-null |
 | Assert.cs:46:27:46:27 | access to local variable s | null | Assert.cs:44:20:44:32 | ... ? ... : ... | null |
@@ -46,7 +54,9 @@
 | Assert.cs:51:16:51:32 | String s = ... | null | Assert.cs:51:16:51:16 | access to local variable s | null |
 | Assert.cs:52:24:52:24 | access to local variable s | non-null | Assert.cs:51:20:51:32 | ... ? ... : ... | non-null |
 | Assert.cs:52:24:52:24 | access to local variable s | null | Assert.cs:51:20:51:32 | ... ? ... : ... | null |
+| Assert.cs:52:24:52:32 | ... == ... | false | Assert.cs:51:20:51:20 | access to parameter b | false |
 | Assert.cs:52:24:52:32 | ... == ... | false | Assert.cs:52:24:52:24 | access to local variable s | non-null |
+| Assert.cs:52:24:52:32 | ... == ... | true | Assert.cs:51:20:51:20 | access to parameter b | true |
 | Assert.cs:52:24:52:32 | ... == ... | true | Assert.cs:52:24:52:24 | access to local variable s | null |
 | Assert.cs:53:27:53:27 | access to local variable s | non-null | Assert.cs:51:20:51:32 | ... ? ... : ... | non-null |
 | Assert.cs:53:27:53:27 | access to local variable s | null | Assert.cs:51:20:51:32 | ... ? ... : ... | null |
@@ -54,7 +64,9 @@
 | Assert.cs:58:16:58:32 | String s = ... | null | Assert.cs:58:16:58:16 | access to local variable s | null |
 | Assert.cs:59:23:59:23 | access to local variable s | non-null | Assert.cs:58:20:58:32 | ... ? ... : ... | non-null |
 | Assert.cs:59:23:59:23 | access to local variable s | null | Assert.cs:58:20:58:32 | ... ? ... : ... | null |
+| Assert.cs:59:23:59:31 | ... != ... | false | Assert.cs:58:20:58:20 | access to parameter b | true |
 | Assert.cs:59:23:59:31 | ... != ... | false | Assert.cs:59:23:59:23 | access to local variable s | null |
+| Assert.cs:59:23:59:31 | ... != ... | true | Assert.cs:58:20:58:20 | access to parameter b | false |
 | Assert.cs:59:23:59:31 | ... != ... | true | Assert.cs:59:23:59:23 | access to local variable s | non-null |
 | Assert.cs:59:23:59:36 | ... && ... | true | Assert.cs:59:23:59:31 | ... != ... | true |
 | Assert.cs:59:23:59:36 | ... && ... | true | Assert.cs:59:36:59:36 | access to parameter b | true |
@@ -64,7 +76,9 @@
 | Assert.cs:65:16:65:32 | String s = ... | null | Assert.cs:65:16:65:16 | access to local variable s | null |
 | Assert.cs:66:24:66:24 | access to local variable s | non-null | Assert.cs:65:20:65:32 | ... ? ... : ... | non-null |
 | Assert.cs:66:24:66:24 | access to local variable s | null | Assert.cs:65:20:65:32 | ... ? ... : ... | null |
+| Assert.cs:66:24:66:32 | ... == ... | false | Assert.cs:65:20:65:20 | access to parameter b | false |
 | Assert.cs:66:24:66:32 | ... == ... | false | Assert.cs:66:24:66:24 | access to local variable s | non-null |
+| Assert.cs:66:24:66:32 | ... == ... | true | Assert.cs:65:20:65:20 | access to parameter b | true |
 | Assert.cs:66:24:66:32 | ... == ... | true | Assert.cs:66:24:66:24 | access to local variable s | null |
 | Assert.cs:66:24:66:37 | ... \|\| ... | false | Assert.cs:66:24:66:32 | ... == ... | false |
 | Assert.cs:66:24:66:37 | ... \|\| ... | false | Assert.cs:66:37:66:37 | access to parameter b | false |
@@ -74,7 +88,9 @@
 | Assert.cs:72:16:72:32 | String s = ... | null | Assert.cs:72:16:72:16 | access to local variable s | null |
 | Assert.cs:73:23:73:23 | access to local variable s | non-null | Assert.cs:72:20:72:32 | ... ? ... : ... | non-null |
 | Assert.cs:73:23:73:23 | access to local variable s | null | Assert.cs:72:20:72:32 | ... ? ... : ... | null |
+| Assert.cs:73:23:73:31 | ... == ... | false | Assert.cs:72:20:72:20 | access to parameter b | false |
 | Assert.cs:73:23:73:31 | ... == ... | false | Assert.cs:73:23:73:23 | access to local variable s | non-null |
+| Assert.cs:73:23:73:31 | ... == ... | true | Assert.cs:72:20:72:20 | access to parameter b | true |
 | Assert.cs:73:23:73:31 | ... == ... | true | Assert.cs:73:23:73:23 | access to local variable s | null |
 | Assert.cs:73:23:73:36 | ... && ... | true | Assert.cs:73:23:73:31 | ... == ... | true |
 | Assert.cs:73:23:73:36 | ... && ... | true | Assert.cs:73:36:73:36 | access to parameter b | true |
@@ -84,7 +100,9 @@
 | Assert.cs:79:16:79:32 | String s = ... | null | Assert.cs:79:16:79:16 | access to local variable s | null |
 | Assert.cs:80:24:80:24 | access to local variable s | non-null | Assert.cs:79:20:79:32 | ... ? ... : ... | non-null |
 | Assert.cs:80:24:80:24 | access to local variable s | null | Assert.cs:79:20:79:32 | ... ? ... : ... | null |
+| Assert.cs:80:24:80:32 | ... != ... | false | Assert.cs:79:20:79:20 | access to parameter b | true |
 | Assert.cs:80:24:80:32 | ... != ... | false | Assert.cs:80:24:80:24 | access to local variable s | null |
+| Assert.cs:80:24:80:32 | ... != ... | true | Assert.cs:79:20:79:20 | access to parameter b | false |
 | Assert.cs:80:24:80:32 | ... != ... | true | Assert.cs:80:24:80:24 | access to local variable s | non-null |
 | Assert.cs:80:24:80:37 | ... \|\| ... | false | Assert.cs:80:24:80:32 | ... != ... | false |
 | Assert.cs:80:24:80:37 | ... \|\| ... | false | Assert.cs:80:37:80:37 | access to parameter b | false |

@@ -142,7 +142,7 @@ private predicate potentialNullDereferenceAt(BasicBlock bb, int i, Ssa::Definiti
  */
 private ControlFlowElement getANullCheck(Ssa::Definition def, SuccessorTypes::ConditionalSuccessor s, NullValue nv) {
   exists(Expr e, G::AbstractValue v |
-    v.branchImplies(result, s, e) |
+    v.branch(result, s, e) |
     exprImpliesSsaDef(e, v, def, nv)
   )
 }

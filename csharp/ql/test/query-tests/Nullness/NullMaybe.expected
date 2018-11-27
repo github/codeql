@@ -8,7 +8,6 @@
 | C.cs:243:13:243:13 | access to local variable s | Variable '$@' may be null here because of $@ assignment. | C.cs:229:16:229:16 | s | s | C.cs:241:24:241:31 | ... = ... | this |
 | D.cs:23:9:23:13 | access to parameter param | Variable '$@' may be null here because of $@ null argument. | D.cs:21:32:21:36 | param | param | D.cs:17:17:17:20 | null | this |
 | D.cs:32:9:32:13 | access to parameter param | Variable '$@' may be null here as suggested by $@ null check. | D.cs:26:32:26:36 | param | param | D.cs:28:13:28:25 | ... != ... | this |
-| D.cs:60:13:60:14 | access to local variable o4 | Variable '$@' may be null here because of $@ assignment. | D.cs:54:13:54:14 | o4 | o4 | D.cs:54:13:54:34 | String o4 = ... | this |
 | D.cs:62:13:62:14 | access to local variable o5 | Variable '$@' may be null here because of $@ assignment. | D.cs:58:13:58:14 | o5 | o5 | D.cs:58:13:58:41 | String o5 = ... | this |
 | D.cs:73:13:73:14 | access to local variable o7 | Variable '$@' may be null here because of $@ assignment. | D.cs:68:13:68:14 | o7 | o7 | D.cs:68:13:68:34 | String o7 = ... | this |
 | D.cs:78:13:78:14 | access to local variable o8 | Variable '$@' may be null here because of $@ assignment. | D.cs:75:13:75:14 | o8 | o8 | D.cs:75:13:75:34 | String o8 = ... | this |
@@ -38,7 +37,6 @@
 | D.cs:300:17:300:20 | access to local variable prev | Variable '$@' may be null here because of $@ assignment. | D.cs:296:16:296:19 | prev | prev | D.cs:296:16:296:26 | Object prev = ... | this |
 | D.cs:313:17:313:17 | access to local variable s | Variable '$@' may be null here because of $@ assignment. | D.cs:304:16:304:16 | s | s | D.cs:304:16:304:23 | String s = ... | this |
 | D.cs:324:9:324:9 | access to local variable r | Variable '$@' may be null here because of $@ assignment. | D.cs:316:16:316:16 | r | r | D.cs:316:16:316:23 | Object r = ... | this |
-| D.cs:346:9:346:11 | access to parameter obj | Variable '$@' may be null here as suggested by $@ null check. | D.cs:333:26:333:28 | obj | obj | D.cs:336:13:336:23 | ... == ... | this |
 | D.cs:356:13:356:13 | access to local variable a | Variable '$@' may be null here because of $@ assignment. | D.cs:351:15:351:15 | a | a | D.cs:351:15:351:22 | Int32[] a = ... | this |
 | D.cs:363:13:363:16 | access to local variable last | Variable '$@' may be null here because of $@ assignment. | D.cs:360:20:360:23 | last | last | D.cs:360:20:360:30 | String last = ... | this |
 | D.cs:372:13:372:13 | access to local variable b | Variable '$@' may be null here because of $@ assignment. | D.cs:366:15:366:15 | b | b | D.cs:366:15:366:47 | Int32[] b = ... | this |
@@ -52,7 +50,6 @@
 | D.cs:412:13:412:13 | access to parameter x | Variable '$@' may be null here as suggested by $@ null check. | D.cs:405:35:405:35 | x | x | D.cs:409:13:409:21 | ... != ... | this |
 | E.cs:12:38:12:39 | access to local variable a2 | Variable '$@' may be null here because of $@ assignment. | E.cs:9:18:9:19 | a2 | a2 | E.cs:9:18:9:26 | Int64[][] a2 = ... | this |
 | E.cs:14:13:14:14 | access to local variable a3 | Variable '$@' may be null here because of $@ assignment. | E.cs:11:16:11:17 | a3 | a3 | E.cs:11:16:11:24 | Int64[] a3 = ... | this |
-| E.cs:27:13:27:14 | access to local variable s1 | Variable '$@' may be null here because of $@ assignment. | E.cs:19:13:19:14 | s1 | s1 | E.cs:19:13:19:30 | String s1 = ... | this |
 | E.cs:27:13:27:14 | access to local variable s1 | Variable '$@' may be null here because of $@ assignment. | E.cs:19:13:19:14 | s1 | s1 | E.cs:23:13:23:30 | ... = ... | this |
 | E.cs:35:9:35:12 | access to local variable last | Variable '$@' may be null here because of $@ assignment. | E.cs:32:16:32:19 | last | last | E.cs:32:16:32:26 | String last = ... | this |
 | E.cs:43:13:43:16 | access to local variable last | Variable '$@' may be null here because of $@ assignment. | E.cs:32:16:32:19 | last | last | E.cs:37:9:37:19 | ... = ... | this |

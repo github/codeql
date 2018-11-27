@@ -57,7 +57,7 @@ public class D
 
         var o5 = (o4 != null) ? "" : null;
         if (o5 != null)
-            o4.ToString(); // GOOD (false positive)
+            o4.ToString(); // GOOD
         if (o4 != null)
             o5.ToString(); // GOOD (false positive)
 
@@ -343,7 +343,7 @@ public class D
             msg += "foobar";
             throw new Exception(msg);
         }
-        obj.ToString(); // GOOD (false positive)
+        obj.ToString(); // GOOD
     }
 
     public void LoopCorr(int iters)
