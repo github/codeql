@@ -56,6 +56,7 @@ A new predicate `Stmt.getAnEntryNode()` has been added to make it easier to writ
 
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
+| Flask app is run in debug mode (`py/flask-debug`) | security, external/cwe/cwe-215, external/cwe/cwe-489 | Finds instances where a Flask application is run in debug mode. Enabled on LGTM by default. |
 | Information exposure through an exception (`py/stack-trace-exposure`) | security, external/cwe/cwe-209, external/cwe/cwe-497 | Finds instances where information about an exception may be leaked to an external user. Enabled on LGTM by default. |
 
 ## Changes to existing queries
