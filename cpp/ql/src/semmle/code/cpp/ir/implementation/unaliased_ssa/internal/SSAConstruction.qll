@@ -43,6 +43,10 @@ cached private module Cached {
     getOldInstruction(result) = instr
   }
 
+  /**
+   * Gets the chi node corresponding to `instr` if one is present, or the new `Instruction`
+   * corresponding to `instr` if there is no `Chi` node.
+   */
   private Instruction getNewFinalInstruction(OldIR::Instruction instr) {
     result = getChiInstruction(instr)
     or
@@ -153,7 +157,7 @@ cached private module Cached {
               else
                 result = getPhiInstruction(instruction.getFunction(), defBlock, vvar)
             )
-          ) 
+          )
           else (
             result = instruction.getFunctionIR().getUnmodeledDefinitionInstruction()
           )
@@ -179,7 +183,8 @@ cached private module Cached {
     result  instanceof UnmodeledDefinitionInstruction and
     instruction.getFunction() = result.getFunction()
     or
-    result = getChiInstructionTotalOperand(instruction.(ChiInstruction), tag.(ChiTotalOperandTag))
+    tag instanceof ChiTotalOperandTag and
+    result = getChiInstructionTotalOperand(instruction)
   }
 
   cached Instruction getPhiInstructionOperandDefinition(PhiInstruction instr,
@@ -199,15 +204,18 @@ cached private module Cached {
     )
   }
 
-  cached Instruction getChiInstructionTotalOperand(ChiInstruction chiInstr, ChiTotalOperandTag tag) {
+  cached Instruction getChiInstructionTotalOperand(ChiInstruction chiInstr) {
     exists(Alias::VirtualVariable vvar, OldIR::Instruction oldInstr, OldIR::IRBlock defBlock,
-      int defRank, int defIndex, OldIR::IRBlock useBlock, int useRank |
-       ChiTag(oldInstr) = chiInstr.getTag() and
-       vvar = Alias::getResultMemoryAccess(oldInstr).getVirtualVariable() and
-       hasDefinitionAtRank(vvar, defBlock, defRank, defIndex) and
-       hasUseAtRank(vvar, useBlock, useRank, oldInstr) and
-       definitionReachesUse(vvar, defBlock, defRank, useBlock, useRank) and
-       result = getNewFinalInstruction(defBlock.getInstruction(defIndex))
+        int defRank, int defIndex, OldIR::IRBlock useBlock, int useRank |
+      ChiTag(oldInstr) = chiInstr.getTag() and
+      vvar = Alias::getResultMemoryAccess(oldInstr).getVirtualVariable() and
+      hasDefinitionAtRank(vvar, defBlock, defRank, defIndex) and
+      hasUseAtRank(vvar, useBlock, useRank, oldInstr) and
+      definitionReachesUse(vvar, defBlock, defRank, useBlock, useRank) and
+      if defIndex >= 0 then
+        result = getNewFinalInstruction(defBlock.getInstruction(defIndex))
+      else
+        result = getPhiInstruction(chiInstr.getFunction(), defBlock, vvar)
     )
   }
 
@@ -226,6 +234,11 @@ cached private module Cached {
     result = getOldInstruction(instruction).getUnconvertedResultExpression()
   }
 
+  /*
+   * This adds Chi nodes to the instruction successor relation; if an instruction has a Chi node,
+   * that node is its successor in the new successor relation, and the Chi node's successors are
+   * the new instructions generated from the successors of the old instruction
+   */
   cached Instruction getInstructionSuccessor(Instruction instruction, EdgeKind kind) {
     if(hasChiNode(_, getOldInstruction(instruction)))
     then
@@ -324,6 +337,10 @@ cached private module Cached {
       (
         access = Alias::getOperandMemoryAccess(use.getAnOperand())
         or
+        /*
+         * a partial write to a virtual variable is going to generate a use of that variable when
+         * Chi nodes are inserted, so we need to mark it as a use in the old IR
+         */
         access = Alias::getResultMemoryAccess(use) and
         access.isPartialMemoryAccess()
       ) and
@@ -464,8 +481,7 @@ cached private module Cached {
       ma = Alias::getResultMemoryAccess(def) and
       ma.isPartialMemoryAccess() and
       ma.getVirtualVariable() = vvar
-    ) and
-    not def instanceof OldIR::UnmodeledDefinitionInstruction
+    )
   }
 }
 

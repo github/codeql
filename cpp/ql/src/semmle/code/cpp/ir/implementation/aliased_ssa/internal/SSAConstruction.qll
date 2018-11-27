@@ -183,6 +183,7 @@ cached private module Cached {
     result  instanceof UnmodeledDefinitionInstruction and
     instruction.getFunction() = result.getFunction()
     or
+    tag instanceof ChiTotalOperandTag and
     result = getChiInstructionTotalOperand(instruction)
   }
 
@@ -205,7 +206,7 @@ cached private module Cached {
 
   cached Instruction getChiInstructionTotalOperand(ChiInstruction chiInstr) {
     exists(Alias::VirtualVariable vvar, OldIR::Instruction oldInstr, OldIR::IRBlock defBlock,
-      int defRank, int defIndex, OldIR::IRBlock useBlock, int useRank |
+        int defRank, int defIndex, OldIR::IRBlock useBlock, int useRank |
       ChiTag(oldInstr) = chiInstr.getTag() and
       vvar = Alias::getResultMemoryAccess(oldInstr).getVirtualVariable() and
       hasDefinitionAtRank(vvar, defBlock, defRank, defIndex) and
