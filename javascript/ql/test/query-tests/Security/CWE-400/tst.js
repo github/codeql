@@ -14,7 +14,8 @@ app.get('/user/:id', function(req, res) {
 	Object.defineProperty(myObj, prop, {value: 24}); // NOT OK
 	var headers = {};	
 	headers[prop] = 42; // NOT OK
-	res.set(headers);	
+	res.set(headers);
+	myCoolLocalFct[req.query.x](); // OK - flagged by method name injection
 });
 
 function myCoolLocalFct(x) {
