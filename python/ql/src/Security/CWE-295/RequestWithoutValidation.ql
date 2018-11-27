@@ -1,5 +1,5 @@
 /**
- * @name Request Without Certificate Validation
+ * @name Request without certificate validation
  * @description Making a request without certificate validation can allow man-in-the-middle attacks.
  * @kind problem
  * @problem.severity error

@@ -6,9 +6,9 @@
 <overview>
 <p>
 Encryption is key to the security of most, if not all, online communication.
-Using TLS can enusre that neither party in the communication is an interloper.
+Using Transport Layer Security (TLS) can ensure that communication cannot be interrupted by an interloper.
 For this reason, is is unwise to disable the verification that TLS provides.
-<code>requests</code> provides verification by default, and it is only when
+Functions in the <code>requests</code> module provide verification by default, and it is only when
 explicitly turned off using <code>verify=False</code> that no verification occurs.
 </p>
 </overview>
@@ -28,10 +28,6 @@ The example shows two unsafe calls to <a href="https://semmle.com">semmle.com</a
 </example>
 
 <references>
-<li>
-Common Weakness Enumeration:
-<a href="https://cwe.mitre.org/data/definitions/295.html">CWE-295: Improper Certificate Validation</a>.
-</li>
 <li>
 Python requests documentation: <a href="http://docs.python-requests.org/en/master/user/advanced/#ssl-cert-verification">SSL Cert Verification</a>.
 </li>
