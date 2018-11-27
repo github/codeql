@@ -1,6 +1,4 @@
 missingOperand
-| ir.cpp:962:26:962:30 | Chi: 10002 | ChiTotal |
-| ir.cpp:962:41:962:45 | Chi: 10900 | ChiTotal |
 unexpectedOperand
 duplicateOperand
 missingPhiOperand
