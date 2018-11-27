@@ -1,5 +1,5 @@
 /**
- * @name Weak Cryptographic Key Use
+ * @name Use of weak cryptographic key
  * @description Use of a cryptographic key that is too small may allow the encryption to be broken.
  * @kind problem
  * @problem.severity error
