@@ -1,8 +1,7 @@
 
 
 class Flask(object): 
-    def run(self, *args, **kwargs):
-        pass
+    def run(self, *args, **kwargs): pass
 
 from .globals import request
 
