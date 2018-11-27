@@ -81,7 +81,7 @@ class PhiMemoryAccess extends MemoryAccessKind, TPhiMemoryAccess {
 }
 
 /**
- * The operand is a ChiOld operand, which accesses the same memory as its
+ * The operand is a ChiTotal operand, which accesses the same memory as its
  * definition.
  */
 class ChiTotalMemoryAccess extends MemoryAccessKind, TChiOldMemoryAccess {
@@ -91,7 +91,7 @@ class ChiTotalMemoryAccess extends MemoryAccessKind, TChiOldMemoryAccess {
 }
 
 /**
- * The operand is a ChiUpdate operand, which accesses the same memory as its
+ * The operand is a ChiPartial operand, which accesses the same memory as its
  * definition.
  */
 class ChiPartialMemoryAccess extends MemoryAccessKind, TChiUpdateMemoryAccess {
@@ -99,6 +99,7 @@ class ChiPartialMemoryAccess extends MemoryAccessKind, TChiUpdateMemoryAccess {
     result = "chi(partial)"
   }
 }
+
 /**
  * The operand accesses memory not modeled in SSA. Used only on the result of
  * `UnmodeledDefinition` and on the operands of `UnmodeledUse`.

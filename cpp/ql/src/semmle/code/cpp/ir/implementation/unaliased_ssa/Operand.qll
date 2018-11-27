@@ -382,12 +382,46 @@ class PhiOperand extends Operand, TPhiOperand {
   }
 }
 
-
 /**
  * An operand that reads a value from memory.
  */
 class MemoryOperand extends Operand {
   MemoryOperand() {
     exists(getMemoryAccess())
+  }
+}
+
+/**
+ * The total operand of a Chi node, representing the previous value of the memory.
+ */
+class ChiTotalOperand extends Operand {
+  ChiTotalOperand() {
+    this = TNonPhiOperand(_, chiTotalOperand(), _)
+  }
+
+  override string toString() {
+    result = "ChiTotal"
+  }
+
+  override final MemoryAccessKind getMemoryAccess() {
+    result instanceof ChiTotalMemoryAccess
+  }
+}
+
+
+/**
+ * The partial operand of a Chi node, representing the value being written to part of the memory.
+ */
+class ChiPartialOperand extends Operand {
+  ChiPartialOperand() {
+    this = TNonPhiOperand(_, chiPartialOperand(), _)
+  }
+
+  override string toString() {
+    result = "ChiPartial"
+  }
+
+  override final MemoryAccessKind getMemoryAccess() {
+    result instanceof ChiPartialMemoryAccess
   }
 }

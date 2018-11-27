@@ -325,6 +325,10 @@ class ChiTotalOperandTag extends OperandTag, TChiTotalOperand {
   }
 }
 
+ChiTotalOperandTag chiTotalOperand() {
+  result = TChiTotalOperand()
+}
+
 class ChiPartialOperandTag extends OperandTag, TChiPartialOperand {
   override final string toString() {
     result = "ChiPartial"
@@ -333,4 +337,8 @@ class ChiPartialOperandTag extends OperandTag, TChiPartialOperand {
   override final int getSortOrder() {
     result = 15
   }
+}
+
+ChiPartialOperandTag chiPartialOperand() {
+  result = TChiPartialOperand()
 }

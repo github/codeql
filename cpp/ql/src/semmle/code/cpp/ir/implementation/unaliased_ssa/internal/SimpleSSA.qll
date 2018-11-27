@@ -9,7 +9,6 @@ private newtype TVirtualVariable =
     not variableAddressEscapes(var)
   }
 
-
 private VirtualVariable getVirtualVariable(IRVariable var) {
   result.getIRVariable() = var
 }

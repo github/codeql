@@ -1322,6 +1322,9 @@ class UnmodeledDefinitionInstruction extends Instruction {
   }
 }
 
+/**
+ * An instruction that initializes all escaped memory.
+ */
 class AliasedDefinitionInstruction extends Instruction {
   AliasedDefinitionInstruction() {
     opcode instanceof Opcode::AliasedDefinition
@@ -1352,6 +1355,10 @@ class PhiInstruction extends Instruction {
   }
 }
 
+/**
+ * An instruction representing the write to a piece of memory resulting from a write to a subset
+ * of that memory.
+ */
 class ChiInstruction extends Instruction {
   ChiInstruction() {
     opcode instanceof Opcode::Chi
