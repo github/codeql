@@ -1,6 +1,6 @@
 /**
  * @name Jinja2 templating with autoescape=False
- * @description Using jinja2 templates with autoescape=False can
+ * @description Using jinja2 templates with 'autoescape=False' can
  *              cause a cross-site scripting vulnerability.
  * @kind problem
  * @problem.severity error

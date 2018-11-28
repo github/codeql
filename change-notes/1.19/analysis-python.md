@@ -56,10 +56,10 @@ A new predicate `Stmt.getAnEntryNode()` has been added to make it easier to writ
 
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
-| Flask app is run in debug mode (`py/flask-debug`) | security, external/cwe/cwe-215, external/cwe/cwe-489 | Finds instances where a Flask application is run in debug mode. Enabled on LGTM by default. |
-| Information exposure through an exception (`py/stack-trace-exposure`) | security, external/cwe/cwe-209, external/cwe/cwe-497 | Finds instances where information about an exception may be leaked to an external user. Enabled on LGTM by default. |
-| Jinja2 templating with autoescape=False (`py/jinja2/autoescape-false`) | security, external/cwe/cwe-079 | Finds instantiations of jinja2.Environment with `autoescape=False` which may allow XSS attacks. Not enabled on LGTM by default. |
-| Request without certificate validation (`py/request-without-cert-validation`) | security, external/cwe/cwe-295 | Finds requests where certificate verification has been explicitly turned off, possibly allowing man-in-the-middle attacks. Not enabled on LGTM by default. |
+| Flask app is run in debug mode (`py/flask-debug`) | security, external/cwe/cwe-215, external/cwe/cwe-489 | Finds instances where a Flask application is run in debug mode. Results are shown on LGTM by default. |
+| Information exposure through an exception (`py/stack-trace-exposure`) | security, external/cwe/cwe-209, external/cwe/cwe-497 | Finds instances where information about an exception may be leaked to an external user. Results are shown on LGTM by default. |
+| Jinja2 templating with autoescape=False (`py/jinja2/autoescape-false`) | security, external/cwe/cwe-079 | Finds instantiations of `jinja2.Environment` with `autoescape=False` which may allow XSS attacks. Results are hidden on LGTM by default. |
+| Request without certificate validation (`py/request-without-cert-validation`) | security, external/cwe/cwe-295 | Finds requests where certificate verification has been explicitly turned off, possibly allowing man-in-the-middle attacks. Results are hidden on LGTM by default. |
 
 ## Changes to existing queries
 
