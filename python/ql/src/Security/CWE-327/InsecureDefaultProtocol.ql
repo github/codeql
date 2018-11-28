@@ -16,11 +16,23 @@ FunctionObject ssl_wrap_socket() {
     result = any(ModuleObject ssl | ssl.getName() = "ssl").getAttribute("wrap_socket")
 }
 
-from CallNode call
+ClassObject ssl_Context_class() {
+    result = any(ModuleObject ssl | ssl.getName() = "ssl").getAttribute("SSLContext")
+}
+
+CallNode unsafe_call(string method_name) {
+    result = ssl_wrap_socket().getACall() and
+    method_name = "deprecated method ssl.wrap_socket"
+    or
+    result = ssl_Context_class().getACall() and
+    method_name = "ssl.SSLContext"
+}
+
+from CallNode call, string method_name
 where 
-    call = ssl_wrap_socket().getACall() and
+    call = unsafe_call(method_name) and
     not exists(call.getArgByName("ssl_version"))
-select call, "Call to ssl.wrap_socket does not specify a protocol, which may result in an insecure default being used."
+select call, "Call to " + method_name + " does not specify a protocol, which may result in an insecure default being used."
 
 
 

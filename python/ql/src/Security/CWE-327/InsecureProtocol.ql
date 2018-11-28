@@ -13,7 +13,11 @@
 import python
 
 FunctionObject ssl_wrap_socket() {
-    result = any(ModuleObject ssl | ssl.getName() = "ssl").getAttribute("wrap_socket")
+    result = the_ssl_module().getAttribute("wrap_socket")
+}
+
+ClassObject ssl_Context_class() {
+    result = the_ssl_module().getAttribute("SSLContext")
 }
 
 string insecure_version_name() {
@@ -33,13 +37,27 @@ private ModuleObject the_ssl_module() {
 }
 
 private ModuleObject the_pyOpenSSL_module() {
-    result = any(ModuleObject m | m.getName() = "pyOpenSSL").getAttribute("SSL")
+    result = any(ModuleObject m | m.getName() = "pyOpenSSL.SSL")
 }
 
-predicate unsafe_ssl_wrap_method_call(CallNode call) {
-    call = ssl_wrap_socket().getACall() and
-    exists(ControlFlowNode arg | arg = call.getArgByName("ssl_version") |
-        arg.(AttrNode).getObject(insecure_version_name()).refersTo(the_ssl_module())
+predicate unsafe_ssl_wrap_socket_call(CallNode call, string method_name, string insecure_version) {
+    (
+        call = ssl_wrap_socket().getACall() and
+        method_name = "deprecated method ssl.wrap_socket"
+        or
+        call = ssl_Context_class().getACall() and
+        method_name = "ssl.SSLContext"
+    )
+    and
+    insecure_version = insecure_version_name()
+    and
+    (
+        call.getArgByName("ssl_version").refersTo(the_ssl_module().getAttribute(insecure_version))
+        or
+        // syntactic match, in case the version in question has been deprecated
+        exists(ControlFlowNode arg | arg = call.getArgByName("ssl_version") |
+            arg.(AttrNode).getObject(insecure_version).refersTo(the_ssl_module())
+        )
     )
 }
 
@@ -47,14 +65,15 @@ ClassObject the_pyOpenSSL_Context_class() {
     result = any(ModuleObject m | m.getName() = "pyOpenSSL.SSL").getAttribute("Context")
 }
 
-predicate unsafe_pyOpenSSL_Context_call(CallNode call) {
+predicate unsafe_pyOpenSSL_Context_call(CallNode call, string insecure_version) {
     call = the_pyOpenSSL_Context_class().getACall() and
-    call.getArgByName("method").refersTo(the_pyOpenSSL_module().getAttribute(insecure_version_name()))
+    insecure_version = insecure_version_name() and
+    call.getArgByName("method").refersTo(the_pyOpenSSL_module().getAttribute(insecure_version))
 }
 
-from CallNode call, string method_name
+from CallNode call, string method_name, string insecure_version
 where
-    unsafe_ssl_wrap_method_call(call) and method_name = "ssl.wrap_socket"
+    unsafe_ssl_wrap_socket_call(call, method_name, insecure_version)
 or
-    unsafe_pyOpenSSL_Context_call(call) and method_name = "pyOpenSSL.SSL.Context"
-select call, "Insecure SSL/TLS protocol version specified in call to " + method_name + "."
+    unsafe_pyOpenSSL_Context_call(call, insecure_version) and method_name = "pyOpenSSL.SSL.Context"
+select call, "Insecure SSL/TLS protocol version " + insecure_version + " specified in call to " + method_name + "."
