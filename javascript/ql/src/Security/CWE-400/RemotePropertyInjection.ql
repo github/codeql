@@ -1,8 +1,7 @@
 /**
  * @name Remote property injection
- * @description Allowing writes to arbitrary properties or calls to arbitrary 
- *       methods of an object may lead to denial-of-service attacks. 
- *   
+ * @description Allowing writes to arbitrary properties of an object may lead to
+ *              denial-of-service attacks.
  * @kind path-problem
  * @problem.severity warning
  * @precision medium
