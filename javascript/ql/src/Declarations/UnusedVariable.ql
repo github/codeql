@@ -71,6 +71,10 @@ predicate isReactImportForJSX(UnusedLocal v) {
     )
     |
     v.getADeclaration() = any(ImportDeclaration imp).getASpecifier().getLocal()
+    or
+    exists(VariableDeclarator vd | vd.getBindingPattern() = v.getADeclaration() |
+      vd.getInit() instanceof Require
+    )
   )
 }
 
