@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
@@ -403,8 +404,14 @@ public class AutoBuild {
 	}
 
 	private void shutdownThreadPool() {
-		if (threadPool != null)
+		if (threadPool != null) {
 			threadPool.shutdown();
+			try {
+				threadPool.awaitTermination(365, TimeUnit.DAYS);
+			} catch (InterruptedException e) {
+				Exceptions.ignore(e, "Awaiting termination is not essential.");
+			}
+		}
 	}
 
 	/**
