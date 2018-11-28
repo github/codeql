@@ -1,7 +1,7 @@
 
 Environment(loader=templateLoader, autoescape=fake_func())
 from flask import Flask, request, make_response, escape
-from jinja2 import Environment, select_autoescape, FileSystemLoader
+from jinja2 import Environment, select_autoescape, FileSystemLoader, Template
 
 app = Flask(__name__)
 loader = FileSystemLoader( searchpath="templates/" )
@@ -49,3 +49,7 @@ def checked(cond=False):
     if cond:
         e = Environment(autoescape=cond) # GOOD
 
+
+unsafe_tmpl = Template('Hello {{ name }}!')
+safe1_tmpl = Template('Hello {{ name }}!', autoescape=True)
+safe2_tmpl = Template('Hello {{ name }}!', autoescape=select_autoescape())
