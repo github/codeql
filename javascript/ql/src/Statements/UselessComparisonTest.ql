@@ -4,7 +4,7 @@
  *              indicate faulty logic and dead code.
  * @kind problem
  * @problem.severity warning
- * @id js/useless-range-check
+ * @id js/useless-comparison-test
  * @tags correctness
  * @precision high
  */
@@ -57,4 +57,4 @@ predicate isGuardNodeWithDeadCode(ConditionGuardNode guard) {
 
 from ConditionGuardNode guard
 where isGuardNodeWithDeadCode(guard)
-select guard.getTest(), "The condition '" + guard.getTest() + "' is always " + guard.getOutcome().booleanNot()
+select guard.getTest(), "The condition '" + guard.getTest() + "' is always " + guard.getOutcome().booleanNot() + "."
