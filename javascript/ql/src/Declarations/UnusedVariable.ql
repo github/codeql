@@ -54,19 +54,23 @@ predicate isPropertyFilter(UnusedLocal v) {
  * references it.
  */
 predicate isReactImportForJSX(UnusedLocal v) {
-  exists (ImportSpecifier is |
-    is.getLocal() = v.getADeclaration() and
-    exists (JSXNode jsx | jsx.getTopLevel() = is.getTopLevel())
+  exists(JSXNode jsx, TopLevel tl |
+    jsx.getTopLevel() = tl and
+    v.getADeclaration().getTopLevel() = tl and
+    (
+      v.getName() = "React"
+      or
+      // legacy `@jsx` pragmas
+      exists(JSXPragma p | p.getTopLevel() = tl | p.getDOMName() = v.getName())
+      or
+      // JSX pragma from a .babelrc file
+      exists(Babel::TransformReactJsxConfig plugin |
+        plugin.appliesTo(tl) and
+        plugin.getJsxFactoryVariableName() = v.getName()
+      )
+    )
     |
-    v.getName() = "React"
-    or
-    // legacy `@jsx` pragmas
-    exists (JSXPragma p | p.getTopLevel() = is.getTopLevel() | p.getDOMName() = v.getName())
-    or
-    // JSX pragma from a .babelrc file
-    exists (Babel::TransformReactJsxConfig plugin |
-      plugin.appliesTo(is.getTopLevel()) and
-      plugin.getJsxFactoryVariableName() = v.getName())
+    v.getADeclaration() = any(ImportDeclaration imp).getASpecifier().getLocal()
   )
 }
 
