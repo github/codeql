@@ -29,6 +29,7 @@
 | Stored cross-site scripting (`js/stored-xss`) | security, external/cwe/cwe-079, external/cwe/cwe-116 | Highlights uncontrolled stored values flowing into HTML content, indicating a violation of [CWE-079](https://cwe.mitre.org/data/definitions/79.html). Results shown on LGTM by default. |
 | Unclear precedence of nested operators (`js/unclear-operator-precedence`) | maintainability, correctness, external/cwe/cwe-783 | Highlights nested binary operators whose relative precedence is easy to misunderstand. Results shown on LGTM by default. |
 | Unneeded defensive code | correctness, external/cwe/cwe-570, external/cwe/cwe-571 | Highlights locations where defensive code is not needed. Results are shown on LGTM by default. |
+| Unvalidated dynamic method access (`js/unvalidated-dynamic-method-call` ) | security, external/cwe/cwe-754 | Highlights code that invokes a user-controlled method without guarding against exceptional circumstances. Results are shown on LGTM by default. |
 | Useless assignment to property | maintainability | Highlights property assignments whose value is always overwritten. Results are shown on LGTM by default. |
 | User-controlled data in file | security, external/cwe/cwe-912 | Highlights locations where user-controlled data is written to a file. Results are not shown on LGTM by default. |
 
@@ -48,7 +49,7 @@
 | Missing 'this' qualifier | Fewer false-positive results | This rule now recognizes additional intentional calls to global functions. | 
 | Missing variable declaration | Lower severity | The severity of this rule has been revised to "warning". |
 | Regular expression injection | Fewer false-positive results | This rule now identifies calls to `String.prototype.search` with more precision. |
-| Remote property injection | Fewer results | The precision of this rule has been revised to "medium". Results are no longer shown on LGTM by default. |
+| Remote property injection | Fewer results | The precision of this rule has been revised to "medium". Furthermore, it no longer flags dynamic method calls, which are now handled by two new queries. Results are no longer shown on LGTM by default. |
 | Self assignment | Fewer false-positive results | This rule now ignores self-assignments preceded by a JSDoc comment with a `@type` tag. |
 | Server-side URL redirect | Fewer false-positive results | This rule now recognizes safe redirects in more cases. |
 | Server-side URL redirect | More results | This rule now recognizes redirection calls in more cases. |
