@@ -2,7 +2,11 @@
  * @name Taint test
  * @kind table
  * @id cpp/points-to/tainted-format-strings
+ * @deprecated
  */
+
+// This query is not suitable for production use and has been deprecated.
+
 import cpp
 import semmle.code.cpp.pointsto.PointsTo
 import semmle.code.cpp.pointsto.CallGraph
