@@ -1345,6 +1345,16 @@ class UnmodeledUseInstruction extends Instruction {
   }
 }
 
+/**
+ * An instruction representing the choice of one of multiple input values based on control flow.
+ *
+ * A `PhiInstruction` is inserted at the beginning of a block whenever two different definitions of
+ * the same variable reach that block. The `PhiInstruction` will have one operand corresponding to
+ * each control flow predecessor of the block, with that operand representing the version of the
+ * variable that flows from that predecessor. The result value of the `PhiInstruction` will be
+ * a copy of whichever operand corresponds to the actual predecessor that entered the block at
+ * runtime.
+ */
 class PhiInstruction extends Instruction {
   PhiInstruction() {
     opcode instanceof Opcode::Phi
@@ -1356,8 +1366,46 @@ class PhiInstruction extends Instruction {
 }
 
 /**
- * An instruction representing the write to a piece of memory resulting from a write to a subset
- * of that memory.
+ * An instruction representing the effect that a write to a memory may have on potential aliases of
+ * that memory.
+ *
+ * A `ChiInstruction` is inserted immediately after an instruction that writes to memory. The
+ * `ChiInstruction` has two operands. The first operand, given by `getTotalOperand()`, represents
+ * the previous state of all of the memory that might be alised by the memory write. The second
+ * operand, given by `getPartialOperand()`, represents the memory that was actually modified by the
+ * memory write. The result of the `ChiInstruction` represents the same memory as
+ * `getTotalOperand()`, updated to include the changes due to the value that was actually stored by
+ * the memory write.
+ *
+ * As an example, suppose that variable `p` and `q` are pointers that may or may not point to the
+ * same memory:
+ * ```
+ * *p = 5;
+ * x = *q;
+ * ```
+ *
+ * The IR would look like:
+ * ```
+ * r1_1 = VariableAddress[p]
+ * r1_2 = Load r1_1, m0_0  // Load the value of `p`
+ * r1_3 = Constant[5]
+ * m1_4 = Store r1_2, r1_3  // Store to `*p`
+ * m1_5 = ^Chi m0_1, m1_4  // Side effect of the previous Store on aliased memory
+ * r1_6 = VariableAddress[x]
+ * r1_7 = VariableAddress[q]
+ * r1_8 = Load r1_7, m0_2  // Load the value of `q`
+ * r1_9 = Load r1_8, m1_5  // Load the value of `*q`
+ * m1_10 = Store r1_6, r1_9  // Store to x
+ * ```
+ *
+ * Note the `Chi` instruction after the store to `*p`. The indicates that the previous contents of
+ * aliased memory (`m0_1`) are merged with the new value written by the store (`m1_4`), producing a
+ * new version of aliased memory (`m1_5`). On the subsequent load from `*q`, the source operand of
+ * `*q` is `m1_5`, indicating that the store to `*p` may (or may not) have updated the memory
+ * pointed to by `q`.
+ *
+ * For more information about how `Chi` instructions are used to model memory side effects, see
+ * https://link.springer.com/content/pdf/10.1007%2F3-540-61053-7_66.pdf.
  */
 class ChiInstruction extends Instruction {
   ChiInstruction() {
@@ -1366,6 +1414,21 @@ class ChiInstruction extends Instruction {
 
   override final MemoryAccessKind getResultMemoryAccess() {
     result instanceof ChiTotalMemoryAccess
+  }
+
+  /**
+   * Gets the operand that represents the previous state of all memory that might be aliased by the
+   * memory write.
+   */
+  final Instruction getTotalOperand() {
+    result = getAnOperand().(ChiTotalOperand).getDefinitionInstruction()
+  }
+
+  /**
+   * Gets the operand that represents the new value written by the memory write.
+   */
+  final Instruction getPartialOperand() {
+    result = getAnOperand().(ChiPartialOperand).getDefinitionInstruction()
   }
 }
 
