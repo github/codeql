@@ -5,6 +5,7 @@
  * @id cpp/jpl-c/extern-decls-in-header
  * @problem.severity warning
  * @tags maintainability
+ *       external/jpl
  */
 
 import cpp

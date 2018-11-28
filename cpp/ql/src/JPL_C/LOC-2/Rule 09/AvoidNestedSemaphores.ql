@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @tags correctness
  *       concurrency
+ *       external/jpl
  */
 
 import Semaphores

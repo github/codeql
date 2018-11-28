@@ -6,6 +6,7 @@
  * @problem.severity recommendation
  * @tags maintainability
  *       reliability
+ *       external/jpl
  */
 
 import semmle.code.cpp.commons.Assertions

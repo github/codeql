@@ -5,6 +5,7 @@
  * @id cpp/jpl-c/exit-nonterminating-loop
  * @problem.severity warning
  * @tags correctness
+ *       external/jpl
  */
 
 import cpp

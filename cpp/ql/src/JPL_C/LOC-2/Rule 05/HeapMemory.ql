@@ -5,6 +5,7 @@
  * @id cpp/jpl-c/heap-memory
  * @problem.severity recommendation
  * @tags resources
+ *       external/jpl
  */
 
 import cpp

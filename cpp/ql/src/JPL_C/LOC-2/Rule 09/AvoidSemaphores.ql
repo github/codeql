@@ -5,6 +5,7 @@
  * @id cpp/jpl-c/avoid-semaphores
  * @problem.severity recommendation
  * @tags concurrency
+ *       external/jpl
  */
 
 import Semaphores
