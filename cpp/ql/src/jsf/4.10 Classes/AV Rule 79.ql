@@ -96,13 +96,19 @@ private predicate exprReleases(Expr e, Expr released, string kind) {
   ) or exists(Function f, int arg |
     // `e` is a call to a function that releases one of it's parameters,
     // and `released` is the corresponding argument
-    e.(FunctionCall).getTarget() = f and
+    (
+      e.(FunctionCall).getTarget() = f or
+      e.(FunctionCall).getTarget().(MemberFunction).getAnOverridingFunction*() = f
+    ) and
     e.(FunctionCall).getArgument(arg) = released and
     exprReleases(_, exprOrDereference(f.getParameter(arg).getAnAccess()), kind)
   ) or exists(Function f, ThisExpr innerThis |
     // `e` is a call to a method that releases `this`, and `released`
     // is the object that is called
-    e.(FunctionCall).getTarget() = f and
+    (
+      e.(FunctionCall).getTarget() = f or
+      e.(FunctionCall).getTarget().(MemberFunction).getAnOverridingFunction*() = f
+    ) and
     e.(FunctionCall).getQualifier() = exprOrDereference(released) and
     innerThis.getEnclosingFunction() = f and
     exprReleases(_, innerThis, kind)

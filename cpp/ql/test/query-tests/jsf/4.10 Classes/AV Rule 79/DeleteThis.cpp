@@ -108,8 +108,8 @@ public:
 	MyClass7()
 	{
 		a = new MyClass5(); // GOOD
-		b = new MyClass5(); // GOOD [FALSE POSITIVE]
-		c = new MyClass6(); // GOOD [FALSE POSITIVE]
+		b = new MyClass5(); // GOOD
+		c = new MyClass6(); // GOOD
 	}
 
 	~MyClass7()
