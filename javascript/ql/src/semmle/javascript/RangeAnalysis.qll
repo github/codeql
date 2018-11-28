@@ -464,8 +464,8 @@ module RangeAnalysis {
     exists (DataFlow::Node k, int ksign, Bias bias, int avalue, int kvalue |
       comparisonEdge(cfg, a, asign, k, ksign, bias, sharp) and
       avalue = a.asExpr().getIntValue() * asign and
-      kvalue = b.asExpr().getIntValue() * bsign and
-      (avalue < kvalue + bias or sharp = true and avalue = kvalue + bias) and
+      kvalue = k.asExpr().getIntValue() * ksign and
+      (avalue > kvalue + bias or sharp = true and avalue = kvalue + bias) and
       a = b and
       asign = bsign and
       c = -1)
