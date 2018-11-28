@@ -16,7 +16,7 @@ int minimumSecureKeySize(string algo) {
     or
     algo = "RSA" and result = 2048
     or
-    algo = "elliptic curve" and result = 224
+    algo = "ECC" and result = 224
 }
 
 predicate dsaRsaKeySizeArg(FunctionObject obj, string algorithm, string arg) {
@@ -39,9 +39,6 @@ predicate dsaRsaKeySizeArg(FunctionObject obj, string algorithm, string arg) {
             or
             mod.getName() = "Cryptodome.PublicKey.RSA" and arg = "bits"
         )
-        or
-        algorithm = "elliptic curve" and
-        mod.getName() = "cryptography.hazmat.primitives.asymmetric.ec" and arg = "curve"
     )
 }
 
@@ -68,7 +65,7 @@ predicate algorithmAndKeysizeForCall(CallNode call, string algorithm, int keySiz
         exists(ClassObject curve |
             arg.refersTo(_, curve, keyOrigin) and
             ecKeySizeArg(func, argname) and
-            algorithm = "elliptic curve" and
+            algorithm = "ECC" and
             keySize = keySizeFromCurve(curve)
         )
     )
