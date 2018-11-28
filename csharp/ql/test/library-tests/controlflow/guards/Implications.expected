@@ -222,3 +222,7 @@
 | Splitting.cs:105:22:105:30 | ... != ... | true | Splitting.cs:105:22:105:22 | access to parameter o | non-null |
 | Splitting.cs:116:22:116:30 | ... != ... | false | Splitting.cs:116:22:116:22 | access to parameter o | null |
 | Splitting.cs:116:22:116:30 | ... != ... | true | Splitting.cs:116:22:116:22 | access to parameter o | non-null |
+| Splitting.cs:128:17:128:25 | ... != ... | false | Splitting.cs:128:17:128:17 | access to local variable o | null |
+| Splitting.cs:128:17:128:25 | ... != ... | true | Splitting.cs:128:17:128:17 | access to local variable o | non-null |
+| Splitting.cs:133:17:133:17 | access to local variable o | non-null | Splitting.cs:132:21:132:29 | call to method M11 | non-null |
+| Splitting.cs:133:17:133:17 | access to local variable o | null | Splitting.cs:132:21:132:29 | call to method M11 | null |
