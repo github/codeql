@@ -12,5 +12,6 @@ var actions = {
 
 app.get('/perform/:action/:payload', function(req, res) {
   let action = actions[req.params.action];
+  // BAD: `action` may not be a function
   res.end(action(req.params.payload));
 });
