@@ -11,8 +11,8 @@ could choose a name that makes the application invoke an unexpected method, whic
 exception. If this exception is not handled, it could be used to mount a denial-of-service attack.
 </p>
 <p>
-For example, there might not be a method of the given name or the result of the lookup might not be
-a function, which would cause the method call to throw a <code>TypeError</code> at runtime.
+For example, there might not be a method of the given name, or the result of the lookup might not be
+a function. In either case the method call will throw a <code>TypeError</code> at runtime.
 </p>
 <p>
 Another, more subtle example is where the result of the lookup is a standard library method from
