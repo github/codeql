@@ -6,6 +6,7 @@
  * @problem.severity recommendation
  * @tags maintainability
  *       readability
+ *       external/powerof10
  */
 
 import cpp

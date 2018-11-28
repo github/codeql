@@ -5,6 +5,7 @@
  * @id cpp/power-of-10/dynamic-alloc-after-init
  * @problem.severity recommendation
  * @tags resources
+ *       external/powerof10
  */
 
 import cpp

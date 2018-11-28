@@ -5,6 +5,7 @@
  * @id cpp/power-of-10/non-boolean-assertion
  * @problem.severity warning
  * @tags correctness
+ *       external/powerof10
  */
 
 import semmle.code.cpp.commons.Assertions

@@ -7,6 +7,7 @@
  * @tags correctness
  *       portability
  *       readability
+ *       external/powerof10
  */
 
 import cpp

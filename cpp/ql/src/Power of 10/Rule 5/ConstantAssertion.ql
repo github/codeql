@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @tags maintainability
  *       reliability
+ *       external/powerof10
  */
 
 import semmle.code.cpp.commons.Assertions

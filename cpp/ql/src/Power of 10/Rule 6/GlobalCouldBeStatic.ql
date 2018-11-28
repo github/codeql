@@ -7,6 +7,7 @@
  * @precision low
  * @tags maintainability
  *       modularity
+ *       external/powerof10
  */
 
 import cpp

@@ -8,6 +8,7 @@
  * @precision low
  * @tags correctness
  *       reliability
+ *       external/powerof10
  */
 
 import cpp
