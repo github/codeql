@@ -154,7 +154,7 @@ test.cpp:
 #   25| test02(int, int) -> int
 #   25|   Block 0
 #   25|     v0_0(void)                  = EnterFunction                    : 
-#   25|     mu0_1(unknown)              = AliasedDefinition                : 
+#   25|     m0_1(unknown)               = AliasedDefinition                : 
 #   25|         valnum = unique
 #   25|     mu0_2(unknown)              = UnmodeledDefinition              : 
 #   25|         valnum = unique
@@ -201,9 +201,9 @@ test.cpp:
 #   30|     r0_23(glval<unknown>)       = FunctionAddress[change_global02] : 
 #   30|         valnum = unique
 #   30|     v0_24(void)                 = Call                             : r0_23
-#   30|     m0_25(unknown)              = ^CallSideEffect                  : mu0_1
+#   30|     m0_25(unknown)              = ^CallSideEffect                  : m0_1
 #   30|         valnum = unique
-#   30|     m0_26(unknown)              = Chi                              : mu0_1, mu0_1, mu0_1, mu0_1, mu0_1, mu0_1, mu0_1, mu0_1, mu0_1, mu0_1, mu0_1, mu0_1, this:mu0_1, mu0_1, mu0_1, m0_25
+#   30|     m0_26(unknown)              = Chi                              : m0_1, m0_25
 #   30|         valnum = unique
 #   31|     r0_27(glval<int>)           = VariableAddress[p0]              : 
 #   31|         valnum = r0_3
@@ -243,7 +243,7 @@ test.cpp:
 #   39| test03(int, int, int *) -> int
 #   39|   Block 0
 #   39|     v0_0(void)                  = EnterFunction             : 
-#   39|     mu0_1(unknown)              = AliasedDefinition         : 
+#   39|     m0_1(unknown)               = AliasedDefinition         : 
 #   39|         valnum = unique
 #   39|     mu0_2(unknown)              = UnmodeledDefinition       : 
 #   39|         valnum = unique
@@ -299,7 +299,7 @@ test.cpp:
 #   44|         valnum = m0_8
 #   44|     m0_28(int)                  = Store                     : r0_27, r0_25
 #   44|         valnum = r0_25
-#   44|     m0_29(unknown)              = Chi                       : mu0_1, mu0_1, mu0_1, mu0_1, mu0_1, mu0_1, mu0_1, mu0_1, mu0_1, mu0_1, mu0_1, mu0_1, this:mu0_1, mu0_1, mu0_1, m0_28
+#   44|     m0_29(unknown)              = Chi                       : m0_1, m0_28
 #   44|         valnum = unique
 #   45|     r0_30(glval<int>)           = VariableAddress[p0]       : 
 #   45|         valnum = r0_3
@@ -501,7 +501,7 @@ test.cpp:
 #   75| test04(two_values *) -> void
 #   75|   Block 0
 #   75|     v0_0(void)                 = EnterFunction              : 
-#   75|     mu0_1(unknown)             = AliasedDefinition          : 
+#   75|     m0_1(unknown)              = AliasedDefinition          : 
 #   75|         valnum = unique
 #   75|     mu0_2(unknown)             = UnmodeledDefinition        : 
 #   75|         valnum = unique
@@ -515,9 +515,9 @@ test.cpp:
 #   77|         valnum = unique
 #   77|     r0_7(int)                  = Call                       : r0_6
 #   77|         valnum = unique
-#   77|     m0_8(unknown)              = ^CallSideEffect            : mu0_1
+#   77|     m0_8(unknown)              = ^CallSideEffect            : m0_1
 #   77|         valnum = unique
-#   77|     mu0_9(unknown)             = Chi                        : mu0_1, mu0_1, mu0_1, mu0_1, mu0_1, mu0_1, mu0_1, mu0_1, mu0_1, mu0_1, mu0_1, mu0_1, this:mu0_1, mu0_1, mu0_1, m0_8
+#   77|     m0_9(unknown)              = Chi                        : m0_1, m0_8
 #   77|         valnum = unique
 #   77|     r0_10(signed short)        = Convert                    : r0_7
 #   77|         valnum = r0_10
@@ -535,7 +535,7 @@ test.cpp:
 #   79|         valnum = m0_4
 #   79|     r0_17(glval<signed short>) = FieldAddress[val1]         : r0_16
 #   79|         valnum = unique
-#   79|     r0_18(signed short)        = Load                       : r0_17, mu0_9
+#   79|     r0_18(signed short)        = Load                       : r0_17, m0_9
 #   79|         valnum = unique
 #   79|     r0_19(int)                 = Convert                    : r0_18
 #   79|         valnum = unique
@@ -545,7 +545,7 @@ test.cpp:
 #   79|         valnum = m0_4
 #   79|     r0_22(glval<signed short>) = FieldAddress[val2]         : r0_21
 #   79|         valnum = unique
-#   79|     r0_23(signed short)        = Load                       : r0_22, mu0_9
+#   79|     r0_23(signed short)        = Load                       : r0_22, m0_9
 #   79|         valnum = unique
 #   79|     r0_24(int)                 = Convert                    : r0_23
 #   79|         valnum = unique
@@ -562,9 +562,9 @@ test.cpp:
 #   80|         valnum = unique
 #   80|     r1_1(int)                 = Call                       : r1_0
 #   80|         valnum = unique
-#   80|     m1_2(unknown)             = ^CallSideEffect            : mu0_9
+#   80|     m1_2(unknown)             = ^CallSideEffect            : m0_9
 #   80|         valnum = unique
-#   80|     m1_3(unknown)             = Chi                        : mu0_9, mu0_9, mu0_9, mu0_9, mu0_9, mu0_9, mu0_9, mu0_9, mu0_9, mu0_9, mu0_9, mu0_9, this:mu0_9, mu0_9, mu0_9, m1_2
+#   80|     m1_3(unknown)             = Chi                        : m0_9, m1_2
 #   80|         valnum = unique
 #   80|     r1_4(signed short)        = Convert                    : r1_1
 #   80|         valnum = r1_4
