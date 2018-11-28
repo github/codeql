@@ -1,0 +1,8 @@
+| InsecureProtocol.py:5:1:5:47 | ControlFlowNode for Attribute() | Insecure SSL/TLS protocol version specified in call to ssl.wrap_socket. |
+| InsecureProtocol.py:6:1:6:47 | ControlFlowNode for Attribute() | Insecure SSL/TLS protocol version specified in call to ssl.wrap_socket. |
+| InsecureProtocol.py:7:1:7:47 | ControlFlowNode for Attribute() | Insecure SSL/TLS protocol version specified in call to ssl.wrap_socket. |
+| InsecureProtocol.py:9:1:9:36 | ControlFlowNode for Attribute() | Insecure SSL/TLS protocol version specified in call to pyOpenSSL.SSL.Context. |
+| InsecureProtocol.py:10:1:10:37 | ControlFlowNode for Attribute() | Insecure SSL/TLS protocol version specified in call to pyOpenSSL.SSL.Context. |
+| InsecureProtocol.py:11:1:11:36 | ControlFlowNode for Attribute() | Insecure SSL/TLS protocol version specified in call to pyOpenSSL.SSL.Context. |
+| InsecureProtocol.py:12:1:12:36 | ControlFlowNode for Attribute() | Insecure SSL/TLS protocol version specified in call to pyOpenSSL.SSL.Context. |
+| InsecureProtocol.py:27:1:27:26 | ControlFlowNode for Attribute() | Insecure SSL/TLS protocol version specified in call to pyOpenSSL.SSL.Context. |

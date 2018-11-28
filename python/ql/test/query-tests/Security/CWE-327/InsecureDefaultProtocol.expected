@@ -1,0 +1,1 @@
+| InsecureProtocol.py:35:1:35:17 | ControlFlowNode for Attribute() | Call to ssl.wrap_socket does not specify a protocol, which may result in an insecure default being used. |
