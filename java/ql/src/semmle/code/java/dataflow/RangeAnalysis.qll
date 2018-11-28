@@ -232,11 +232,11 @@ private Guard boundFlowCond(SsaVariable v, Expr e, int delta, boolean upper, boo
     ) and
     (
       if v.getSourceVariable().getType() instanceof IntegralType
-      then (
+      then
         upper = true and strengthen = -1
         or
         upper = false and strengthen = 1
-      ) else strengthen = 0
+      else strengthen = 0
     ) and
     (
       exists(int k | modulusComparison(comp, testIsTrue, k) and d2 = strengthen * k)
@@ -402,17 +402,14 @@ private predicate boundFlowStep(Expr e2, Expr e1, int delta, boolean upper) {
     not x instanceof ConstantIntegerExpr and
     not e1 instanceof ConstantIntegerExpr and
     if strictlyPositive(x)
-    then (
-      upper = false and delta = 1
-    ) else
+    then upper = false and delta = 1
+    else
       if positive(x)
-      then (
-        upper = false and delta = 0
-      ) else
+      then upper = false and delta = 0
+      else
         if strictlyNegative(x)
-        then (
-          upper = true and delta = -1
-        ) else if negative(x) then (upper = true and delta = 0) else none()
+        then upper = true and delta = -1
+        else if negative(x) then upper = true and delta = 0 else none()
   )
   or
   exists(Expr x |
@@ -431,17 +428,14 @@ private predicate boundFlowStep(Expr e2, Expr e1, int delta, boolean upper) {
     // `x instanceof ConstantIntegerExpr` is covered by valueFlowStep
     not x instanceof ConstantIntegerExpr and
     if strictlyPositive(x)
-    then (
-      upper = true and delta = -1
-    ) else
+    then upper = true and delta = -1
+    else
       if positive(x)
-      then (
-        upper = true and delta = 0
-      ) else
+      then upper = true and delta = 0
+      else
         if strictlyNegative(x)
-        then (
-          upper = false and delta = 1
-        ) else if negative(x) then (upper = false and delta = 0) else none()
+        then upper = false and delta = 1
+        else if negative(x) then upper = false and delta = 0 else none()
   )
   or
   e2.(RemExpr).getRightOperand() = e1 and positive(e1) and delta = -1 and upper = true

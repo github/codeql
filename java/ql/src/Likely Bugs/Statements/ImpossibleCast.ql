@@ -66,11 +66,9 @@ where
   not rawTypeConversion(source, target) and
   (
     // No unchecked operations, so the cast would crash straight away.
-    (
-      not uncheckedCastType(target) and
-      message = "Impossible downcast: the cast from " + source.getName() + "[] to " +
-          target.getName() + "[] will always fail with a ClassCastException."
-    )
+    not uncheckedCastType(target) and
+    message = "Impossible downcast: the cast from " + source.getName() + "[] to " + target.getName()
+        + "[] will always fail with a ClassCastException."
     or
     // For unchecked operations, the crash would not occur at the cast site,
     // but only if/when the value is assigned to a variable of different array type.
@@ -78,16 +76,14 @@ where
     // APIs. We keep two cases:
     // - An array that is actually returned from the (non-private) method, or
     // - an array that is assigned to a field returned from another (non-private) method.
-    (
-      uncheckedCastType(target) and
-      returnedFrom(ce, ce.getEnclosingCallable()) and
-      ce.getEnclosingCallable().getReturnType().(Array).getElementType() = target and
-      not ce.getEnclosingCallable().isPrivate() and
-      message = "Impossible downcast: this is returned by " + ce.getEnclosingCallable().getName() +
-          " as a value of type " + target.getName() + "[], but the array has type " +
-          source.getName() + "[]. Callers of " + ce.getEnclosingCallable().getName() +
-          " may fail with a ClassCastException."
-    )
+    uncheckedCastType(target) and
+    returnedFrom(ce, ce.getEnclosingCallable()) and
+    ce.getEnclosingCallable().getReturnType().(Array).getElementType() = target and
+    not ce.getEnclosingCallable().isPrivate() and
+    message = "Impossible downcast: this is returned by " + ce.getEnclosingCallable().getName() +
+        " as a value of type " + target.getName() + "[], but the array has type " + source.getName()
+        + "[]. Callers of " + ce.getEnclosingCallable().getName() +
+        " may fail with a ClassCastException."
     or
     exists(Method m, Variable v |
       uncheckedCastType(target) and

@@ -106,7 +106,7 @@ class Annotatable extends Element {
    */
   predicate suppressesWarningsAbout(string category) {
     exists(string withQuotes |
-      withQuotes = (getAnAnnotation().(SuppressWarningsAnnotation)).getASuppressedWarning()
+      withQuotes = getAnAnnotation().(SuppressWarningsAnnotation).getASuppressedWarning()
     |
       category = withQuotes.substring(1, withQuotes.length() - 1)
     )

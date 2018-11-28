@@ -18,7 +18,7 @@ import Chaining
 
 predicate checkedMethodCall(MethodAccess ma) {
   relevantMethodCall(ma, _) and
-  not (ma.getParent() instanceof ExprStmt)
+  not ma.getParent() instanceof ExprStmt
 }
 
 /**
@@ -35,7 +35,7 @@ predicate isMockingMethod(Method m) {
 
 predicate isReceiverClauseMethod(Method m) {
   m.getDeclaringType().getASupertype*().hasQualifiedName("org.jmock.syntax", "ReceiverClause") and
-  (m.hasName("of"))
+  m.hasName("of")
 }
 
 predicate isCardinalityClauseMethod(Method m) {
@@ -70,7 +70,7 @@ predicate isStubberMethod(Method m) {
  */
 predicate isMustBeQualifierMockingMethod(Method m) {
   m.getDeclaringType().getASupertype*().hasQualifiedName("org.mockito", "Mockito") and
-  (m.hasName("verify"))
+  m.hasName("verify")
 }
 
 predicate relevantMethodCall(MethodAccess ma, Method m) {

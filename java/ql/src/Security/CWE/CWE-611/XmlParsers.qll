@@ -172,20 +172,18 @@ class SafeDocumentBuilderFactory extends VarAccess {
         config.enables(singleSafeConfig())
       )
       or
-      (
-        //These two need to be set together to work
-        exists(DocumentBuilderFactoryConfig config | config.getQualifier() = v.getAnAccess() |
-          config
-              .disables(any(ConstantStringExpr s |
-                  s.getStringValue() = "http://xml.org/sax/features/external-general-entities"
-                ))
-        ) and
-        exists(DocumentBuilderFactoryConfig config | config.getQualifier() = v.getAnAccess() |
-          config
-              .disables(any(ConstantStringExpr s |
-                  s.getStringValue() = "http://xml.org/sax/features/external-parameter-entities"
-                ))
-        )
+      //These two need to be set together to work
+      exists(DocumentBuilderFactoryConfig config | config.getQualifier() = v.getAnAccess() |
+        config
+            .disables(any(ConstantStringExpr s |
+                s.getStringValue() = "http://xml.org/sax/features/external-general-entities"
+              ))
+      ) and
+      exists(DocumentBuilderFactoryConfig config | config.getQualifier() = v.getAnAccess() |
+        config
+            .disables(any(ConstantStringExpr s |
+                s.getStringValue() = "http://xml.org/sax/features/external-parameter-entities"
+              ))
       )
     )
   }
@@ -682,25 +680,23 @@ class SafeXMLReaderFlowSink extends Expr {
 class ExplicitlySafeXMLReader extends VarAccess {
   ExplicitlySafeXMLReader() {
     exists(Variable v | v = this.getVariable() |
-      (
-        exists(XMLReaderConfig config | config.getQualifier() = v.getAnAccess() |
-          config
-              .disables(any(ConstantStringExpr s |
-                  s.getStringValue() = "http://xml.org/sax/features/external-general-entities"
-                ))
-        ) and
-        exists(XMLReaderConfig config | config.getQualifier() = v.getAnAccess() |
-          config
-              .disables(any(ConstantStringExpr s |
-                  s.getStringValue() = "http://xml.org/sax/features/external-parameter-entities"
-                ))
-        ) and
-        exists(XMLReaderConfig config | config.getQualifier() = v.getAnAccess() |
-          config
-              .disables(any(ConstantStringExpr s |
-                  s.getStringValue() = "http://apache.org/xml/features/nonvalidating/load-external-dtd"
-                ))
-        )
+      exists(XMLReaderConfig config | config.getQualifier() = v.getAnAccess() |
+        config
+            .disables(any(ConstantStringExpr s |
+                s.getStringValue() = "http://xml.org/sax/features/external-general-entities"
+              ))
+      ) and
+      exists(XMLReaderConfig config | config.getQualifier() = v.getAnAccess() |
+        config
+            .disables(any(ConstantStringExpr s |
+                s.getStringValue() = "http://xml.org/sax/features/external-parameter-entities"
+              ))
+      ) and
+      exists(XMLReaderConfig config | config.getQualifier() = v.getAnAccess() |
+        config
+            .disables(any(ConstantStringExpr s |
+                s.getStringValue() = "http://apache.org/xml/features/nonvalidating/load-external-dtd"
+              ))
       )
       or
       exists(XMLReaderConfig config | config.getQualifier() = v.getAnAccess() |

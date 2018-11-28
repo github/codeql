@@ -20,21 +20,21 @@ import JDK
 cached
 predicate hasSubtype(RefType t, Type sub) {
   // Direct subtype.
-  (extendsReftype(sub, t) and t != sub)
+  extendsReftype(sub, t) and t != sub
   or
   implInterface(sub, t)
   or
   // A parameterized type `T<A>` is a subtype of the corresponding raw type `T<>`.
-  (parSubtypeRaw(t, sub) and t != sub)
+  parSubtypeRaw(t, sub) and t != sub
   or
   // Array subtyping is covariant.
-  (arraySubtype(t, sub) and t != sub)
+  arraySubtype(t, sub) and t != sub
   or
   // Type parameter containment for parameterized types.
-  (parContainmentSubtype(t, sub) and t != sub)
+  parContainmentSubtype(t, sub) and t != sub
   or
   // Type variables are subtypes of their upper bounds.
-  (typeVarSubtypeBound(t, sub) and t != sub)
+  typeVarSubtypeBound(t, sub) and t != sub
 }
 
 private predicate typeVarSubtypeBound(RefType t, TypeVariable tv) {
@@ -825,21 +825,21 @@ class PrimitiveType extends Type, @primitive {
    * Gets the JVM descriptor for this type, as used in bytecode.
    */
   override string getTypeDescriptor() {
-    (this.hasName("float") and result = "F")
+    this.hasName("float") and result = "F"
     or
-    (this.hasName("double") and result = "D")
+    this.hasName("double") and result = "D"
     or
-    (this.hasName("int") and result = "I")
+    this.hasName("int") and result = "I"
     or
-    (this.hasName("boolean") and result = "Z")
+    this.hasName("boolean") and result = "Z"
     or
-    (this.hasName("short") and result = "S")
+    this.hasName("short") and result = "S"
     or
-    (this.hasName("byte") and result = "B")
+    this.hasName("byte") and result = "B"
     or
-    (this.hasName("char") and result = "C")
+    this.hasName("char") and result = "C"
     or
-    (this.hasName("long") and result = "J")
+    this.hasName("long") and result = "J"
   }
 
   /**
@@ -896,21 +896,21 @@ class BoxedType extends RefType {
 
   /** Gets the primitive type corresponding to this boxed type. */
   PrimitiveType getPrimitiveType() {
-    (this.hasName("Float") and result.hasName("float"))
+    this.hasName("Float") and result.hasName("float")
     or
-    (this.hasName("Double") and result.hasName("double"))
+    this.hasName("Double") and result.hasName("double")
     or
-    (this.hasName("Integer") and result.hasName("int"))
+    this.hasName("Integer") and result.hasName("int")
     or
-    (this.hasName("Boolean") and result.hasName("boolean"))
+    this.hasName("Boolean") and result.hasName("boolean")
     or
-    (this.hasName("Short") and result.hasName("short"))
+    this.hasName("Short") and result.hasName("short")
     or
-    (this.hasName("Byte") and result.hasName("byte"))
+    this.hasName("Byte") and result.hasName("byte")
     or
-    (this.hasName("Character") and result.hasName("char"))
+    this.hasName("Character") and result.hasName("char")
     or
-    (this.hasName("Long") and result.hasName("long"))
+    this.hasName("Long") and result.hasName("long")
   }
 }
 

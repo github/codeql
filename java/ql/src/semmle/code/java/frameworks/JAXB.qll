@@ -62,7 +62,7 @@ class JaxbType extends Class {
    * Gets the `XmlAccessType` associated with this class.
    */
   XmlAccessType getXmlAccessType() {
-    if (exists(getDeclaredAccessType()))
+    if exists(getDeclaredAccessType())
     then result = getDeclaredAccessType()
     else
       // Default access type, if not specified.
@@ -136,7 +136,7 @@ class JaxbBoundField extends Field {
         type.getXmlAccessType().isField()
         or
         // Only public fields are automatically bound in this access type.
-        (type.getXmlAccessType().isPublicMember() and isPublic())
+        type.getXmlAccessType().isPublicMember() and isPublic()
       )
     )
   }
@@ -192,7 +192,7 @@ class JaxbBoundGetterSetter extends GetterOrSetterMethod {
         isProperty() and
         (
           // In the `PUBLIC_MEMBER` case all public properties are considered bound.
-          (c.getXmlAccessType().isPublicMember() and isPublic())
+          c.getXmlAccessType().isPublicMember() and isPublic()
           or
           // In "property" all properties are considered bound.
           c.getXmlAccessType().isProperty()

@@ -68,7 +68,7 @@ class SessionEJB extends EJB {
 
   /** Any remote interfaces of this EJB. */
   LegacyEjbRemoteInterface getARemoteInterface() {
-    (result = this.getASupertype() and result instanceof ExtendedRemoteInterface)
+    result = this.getASupertype() and result instanceof ExtendedRemoteInterface
     or
     exists(AnnotatedRemoteHomeInterface i | i.getAnEJB() = this |
       result = i.getAnAssociatedRemoteInterface()
@@ -79,7 +79,7 @@ class SessionEJB extends EJB {
 
   /** Any remote home interfaces of this EJB. */
   LegacyEjbRemoteHomeInterface getARemoteHomeInterface() {
-    (result = this.getASupertype() and result instanceof ExtendedRemoteHomeInterface)
+    result = this.getASupertype() and result instanceof ExtendedRemoteHomeInterface
     or
     result.(AnnotatedRemoteHomeInterface).getAnEJB() = this
     or
@@ -88,7 +88,7 @@ class SessionEJB extends EJB {
 
   /** Any local interfaces of this EJB. */
   LegacyEjbLocalInterface getALocalInterface() {
-    (result = this.getASupertype() and result instanceof ExtendedLocalInterface)
+    result = this.getASupertype() and result instanceof ExtendedLocalInterface
     or
     exists(AnnotatedLocalHomeInterface i | i.getAnEJB() = this |
       result = i.getAnAssociatedLocalInterface()
@@ -99,7 +99,7 @@ class SessionEJB extends EJB {
 
   /** Any local home interfaces of this EJB. */
   LegacyEjbLocalHomeInterface getALocalHomeInterface() {
-    (result = this.getASupertype() and result instanceof ExtendedLocalHomeInterface)
+    result = this.getASupertype() and result instanceof ExtendedLocalHomeInterface
     or
     result.(AnnotatedLocalHomeInterface).getAnEJB() = this
     or
@@ -898,10 +898,8 @@ TransactionAttributeAnnotation getInnermostTransactionAttributeAnnotation(Method
   or
   // ...or if the declaring class has such an annotation, the annotation applies to
   // any method declared within the class that does not itself have such an annotation.
-  (
-    not exists(m.getAnAnnotation().(TransactionAttributeAnnotation)) and
-    result = m.getDeclaringType().getSourceDeclaration().getAnAnnotation()
-  )
+  not exists(m.getAnAnnotation().(TransactionAttributeAnnotation)) and
+  result = m.getDeclaringType().getSourceDeclaration().getAnAnnotation()
 }
 
 /*

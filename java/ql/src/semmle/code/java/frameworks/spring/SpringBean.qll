@@ -279,11 +279,9 @@ class SpringBean extends SpringXMLElement {
 
   /** Any `<property>` elements inherited from parent beans. */
   SpringProperty getAnInheritedProperty() {
-    (
-      not exists(SpringProperty thisProperty |
-        thisProperty = this.getADeclaredProperty() and
-        result.getPropertyName() = thisProperty.getPropertyName()
-      )
+    not exists(SpringProperty thisProperty |
+      thisProperty = this.getADeclaredProperty() and
+      result.getPropertyName() = thisProperty.getPropertyName()
     ) and
     (
       result = this.getBeanParent().getADeclaredProperty() or
@@ -305,11 +303,9 @@ class SpringBean extends SpringXMLElement {
 
   /** Gets a `<constructor-arg>` element inherited from the parent bean. */
   SpringConstructorArg getAnInheritedConstructorArg() {
-    (
-      not exists(SpringConstructorArg thisArg |
-        thisArg = this.getADeclaredConstructorArg() and
-        thisArg.conflictsWithArg(result)
-      )
+    not exists(SpringConstructorArg thisArg |
+      thisArg = this.getADeclaredConstructorArg() and
+      thisArg.conflictsWithArg(result)
     ) and
     (
       result = this.getBeanParent().getADeclaredConstructorArg() or
@@ -331,11 +327,9 @@ class SpringBean extends SpringXMLElement {
 
   /** Gets a `<lookup-method>` element inherited from the parent bean. */
   SpringLookupMethod getAnInheritedLookupMethod() {
-    (
-      not exists(SpringLookupMethod thisMethod |
-        thisMethod = this.getADeclaredLookupMethod() and
-        thisMethod.getMethodName() = result.getMethodName()
-      )
+    not exists(SpringLookupMethod thisMethod |
+      thisMethod = this.getADeclaredLookupMethod() and
+      thisMethod.getMethodName() = result.getMethodName()
     ) and
     (
       result = this.getBeanParent().getADeclaredLookupMethod() or
@@ -357,11 +351,9 @@ class SpringBean extends SpringXMLElement {
 
   /** Gets a `<replaced-method>` element inherited from the parent bean. */
   SpringReplacedMethod getAnInheritedReplacedMethod() {
-    (
-      not exists(SpringReplacedMethod thisMethod |
-        thisMethod = this.getADeclaredReplacedMethod() and
-        thisMethod.getMethodName() = result.getMethodName()
-      )
+    not exists(SpringReplacedMethod thisMethod |
+      thisMethod = this.getADeclaredReplacedMethod() and
+      thisMethod.getMethodName() = result.getMethodName()
     ) and
     (
       result = this.getBeanParent().getADeclaredReplacedMethod() or

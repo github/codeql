@@ -109,7 +109,7 @@ class Location extends @location {
     exists(@sourceline s | hasLocation(s, this) |
       numlines(s, result, _, _)
       or
-      (not numlines(s, _, _, _) and result = 0)
+      not numlines(s, _, _, _) and result = 0
     )
   }
 
@@ -118,7 +118,7 @@ class Location extends @location {
     exists(@sourceline s | hasLocation(s, this) |
       numlines(s, _, result, _)
       or
-      (not numlines(s, _, _, _) and result = 0)
+      not numlines(s, _, _, _) and result = 0
     )
   }
 
@@ -127,7 +127,7 @@ class Location extends @location {
     exists(@sourceline s | hasLocation(s, this) |
       numlines(s, _, _, result)
       or
-      (not numlines(s, _, _, _) and result = 0)
+      not numlines(s, _, _, _) and result = 0
     )
   }
 
@@ -169,5 +169,5 @@ cached
 private predicate fixedHasLocation(Top l, Location loc, File f) {
   hasSourceLocation(l, loc, f)
   or
-  (hasLocation(l, loc) and not hasSourceLocation(l, _, _) and locations_default(loc, f, _, _, _, _))
+  hasLocation(l, loc) and not hasSourceLocation(l, _, _) and locations_default(loc, f, _, _, _, _)
 }

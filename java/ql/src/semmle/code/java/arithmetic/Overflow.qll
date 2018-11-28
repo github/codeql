@@ -7,46 +7,46 @@ class OrdPrimitiveType extends PrimitiveType {
   predicate widerThanOrEqualTo(OrdPrimitiveType that) { getWidthRank() >= that.getWidthRank() }
 
   OrdPrimitiveType maxType(OrdPrimitiveType that) {
-    (this.widerThan(that) and result = this)
+    this.widerThan(that) and result = this
     or
-    (not this.widerThan(that) and result = that)
+    not this.widerThan(that) and result = that
   }
 
   int getWidthRank() {
-    (this.getName() = "byte" and result = 1)
+    this.getName() = "byte" and result = 1
     or
-    (this.getName() = "short" and result = 2)
+    this.getName() = "short" and result = 2
     or
-    (this.getName() = "int" and result = 3)
+    this.getName() = "int" and result = 3
     or
-    (this.getName() = "long" and result = 4)
+    this.getName() = "long" and result = 4
     or
-    (this.getName() = "float" and result = 5)
+    this.getName() = "float" and result = 5
     or
-    (this.getName() = "double" and result = 6)
+    this.getName() = "double" and result = 6
   }
 
   float getMaxValue() {
-    (this.getName() = "byte" and result = 127.0)
+    this.getName() = "byte" and result = 127.0
     or
-    (this.getName() = "short" and result = 32767.0)
+    this.getName() = "short" and result = 32767.0
     or
-    (this.getName() = "int" and result = 2147483647.0)
+    this.getName() = "int" and result = 2147483647.0
     or
     // Long.MAX_VALUE is 9223372036854775807 but floating point only has 53 bits of precision.
-    (this.getName() = "long" and result = 9223372036854776000.0)
+    this.getName() = "long" and result = 9223372036854776000.0
     // don't try for floats and doubles
   }
 
   float getMinValue() {
-    (this.getName() = "byte" and result = -128.0)
+    this.getName() = "byte" and result = -128.0
     or
-    (this.getName() = "short" and result = -32768.0)
+    this.getName() = "short" and result = -32768.0
     or
-    (this.getName() = "int" and result = -2147483648.0)
+    this.getName() = "int" and result = -2147483648.0
     or
     // Long.MIN_VALUE is -9223372036854775808 but floating point only has 53 bits of precision.
-    (this.getName() = "long" and result = -9223372036854776000.0)
+    this.getName() = "long" and result = -9223372036854776000.0
     // don't try for floats and doubles
   }
 }
@@ -59,9 +59,9 @@ class NumType extends Type {
 
   /** Gets the width-ordered primitive type corresponding to this type. */
   OrdPrimitiveType getOrdPrimitiveType() {
-    (this instanceof PrimitiveType and result = this)
+    this instanceof PrimitiveType and result = this
     or
-    (this instanceof BoxedType and result = this.(BoxedType).getPrimitiveType())
+    this instanceof BoxedType and result = this.(BoxedType).getPrimitiveType()
   }
 
   predicate widerThan(NumType that) {

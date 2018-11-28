@@ -37,7 +37,7 @@ class SuppressionComment extends Javadoc {
       result = "\\Q" + substring.replaceAll("\\E", "\\E\\\\E\\Q") + "\\E"
     )
     or
-    (result = ".*" and getASuppressionDirective() = "NOSEMMLE")
+    result = ".*" and getASuppressionDirective() = "NOSEMMLE"
   }
 
   predicate suppresses(DefectResult res) {

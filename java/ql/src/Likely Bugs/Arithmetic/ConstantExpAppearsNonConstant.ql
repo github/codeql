@@ -12,7 +12,7 @@
 import java
 
 int integralTypeWidth(IntegralType t) {
-  if (t.hasName("long") or t.hasName("Long")) then result = 64 else result = 32
+  if t.hasName("long") or t.hasName("Long") then result = 64 else result = 32
 }
 
 int eval(Expr e) { result = e.(CompileTimeConstantExpr).getIntValue() }

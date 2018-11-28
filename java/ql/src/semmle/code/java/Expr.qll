@@ -139,10 +139,8 @@ class CompileTimeConstantExpr extends Expr {
       // the bitwise and logical operators `&`, `^`, and `|`,
       // the conditional-and operator `&&` and the conditional-or operator `||`.
       // These are precisely the operators represented by `BinaryExpr`.
-      (
-        this.(BinaryExpr).getLeftOperand().isCompileTimeConstant() and
-        this.(BinaryExpr).getRightOperand().isCompileTimeConstant()
-      )
+      this.(BinaryExpr).getLeftOperand().isCompileTimeConstant() and
+      this.(BinaryExpr).getRightOperand().isCompileTimeConstant()
       or
       // The ternary conditional operator ` ? : `.
       exists(ConditionalExpr e | this = e |
@@ -252,17 +250,13 @@ class CompileTimeConstantExpr extends Expr {
         if left != right then result = true else result = false
       )
       or
-      (
-        (b instanceof AndBitwiseExpr or b instanceof AndLogicalExpr) and
-        result = left.booleanAnd(right)
-      )
+      (b instanceof AndBitwiseExpr or b instanceof AndLogicalExpr) and
+      result = left.booleanAnd(right)
       or
-      (
-        (b instanceof OrBitwiseExpr or b instanceof OrLogicalExpr) and
-        result = left.booleanOr(right)
-      )
+      (b instanceof OrBitwiseExpr or b instanceof OrLogicalExpr) and
+      result = left.booleanOr(right)
       or
-      (b instanceof XorBitwiseExpr and result = left.booleanXor(right))
+      b instanceof XorBitwiseExpr and result = left.booleanXor(right)
     )
     or
     // Handle binary expressions that have `String` operands and a boolean result.
@@ -342,7 +336,7 @@ class CompileTimeConstantExpr extends Expr {
       or
       result = this.(PlusExpr).getExpr().(CompileTimeConstantExpr).getIntValue()
       or
-      result = -(this.(MinusExpr).getExpr().(CompileTimeConstantExpr).getIntValue())
+      result = -this.(MinusExpr).getExpr().(CompileTimeConstantExpr).getIntValue()
       or
       result = this.(BitNotExpr).getExpr().(CompileTimeConstantExpr).getIntValue().bitNot()
       or
@@ -1189,12 +1183,7 @@ abstract class InstanceAccess extends Expr {
 class ThisAccess extends InstanceAccess, @thisaccess {
   /** Gets a printable representation of this expression. */
   override string toString() {
-    if exists(this.getQualifier())
-    then (
-      result = this.getQualifier() + ".this"
-    ) else (
-      result = "this"
-    )
+    if exists(this.getQualifier()) then result = this.getQualifier() + ".this" else result = "this"
   }
 }
 
@@ -1208,11 +1197,8 @@ class SuperAccess extends InstanceAccess, @superaccess {
   /** Gets a printable representation of this expression. */
   override string toString() {
     if exists(this.getQualifier())
-    then (
-      result = this.getQualifier() + ".super"
-    ) else (
-      result = "super"
-    )
+    then result = this.getQualifier() + ".super"
+    else result = "super"
   }
 }
 
@@ -1257,7 +1243,7 @@ class VarAccess extends Expr, @varaccess {
   override string toString() {
     result = this.getQualifier().toString() + "." + this.getVariable().getName()
     or
-    (not this.hasQualifier() and result = this.getVariable().getName())
+    not this.hasQualifier() and result = this.getVariable().getName()
   }
 
   /**
@@ -1391,7 +1377,7 @@ class TypeAccess extends Expr, Annotatable, @typeaccess {
   override string toString() {
     result = this.getQualifier().toString() + "." + this.getType().toString()
     or
-    (not this.hasQualifier() and result = this.getType().toString())
+    not this.hasQualifier() and result = this.getType().toString()
   }
 }
 

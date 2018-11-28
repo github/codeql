@@ -129,10 +129,8 @@ private Type parameterForSubTypes(ParameterizedType type) {
     // Must not be a catch-all.
     not catchallType(arg)
   |
-    (
-      // Simple case - this type is not a bounded type, so must represent exactly the `arg` class.
-      not arg instanceof BoundedType and result = arg
-    )
+    // Simple case - this type is not a bounded type, so must represent exactly the `arg` class.
+    not arg instanceof BoundedType and result = arg
     or
     exists(RefType upperBound |
       // Upper bound case
@@ -173,7 +171,7 @@ Type inferClassParameterType(Expr expr) {
       // We've been able to identify where this `Class` instance was created, and identified the
       // particular class that was loaded.
       result = pointsToReflectiveClassIdentifier(expr).getReflectivelyIdentifiedClass()
-    else (
+    else
       // If we haven't been able to find where the value for this expression was defined, then we
       // resort to the type `T` in `Class<T>`.
       //
@@ -183,7 +181,6 @@ Type inferClassParameterType(Expr expr) {
       // A "catch-all" type is something like `? extends Object` or `? extends Serialization`, which
       // would return too many sub-types.
       result = parameterForSubTypes(expr.getType())
-    )
   )
 }
 
@@ -290,12 +287,10 @@ class NewInstance extends MethodAccess {
     exists(CastExpr cast | cast.getExpr() = this or cast.getExpr().(ParExpr).getExpr() = this |
       result = cast.getType()
       or
-      (
-        // If we cast the result of this method, then this is either the type specified, or a
-        // sub-type of that type. Make sure we exclude overly generic types such as `Object`.
-        not overlyGenericType(cast.getType()) and
-        hasSubtype*(cast.getType(), result)
-      )
+      // If we cast the result of this method, then this is either the type specified, or a
+      // sub-type of that type. Make sure we exclude overly generic types such as `Object`.
+      not overlyGenericType(cast.getType()) and
+      hasSubtype*(cast.getType(), result)
     )
   }
 }

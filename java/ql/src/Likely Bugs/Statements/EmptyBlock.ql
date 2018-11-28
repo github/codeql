@@ -43,18 +43,14 @@ Stmt emptyBody() { result = emptyBlock() or result = emptyStmt() }
 predicate blockParent(Stmt empty, string msg) {
   empty = emptyBody() and
   (
-    (
-      empty.getParent() instanceof IfStmt and
-      msg = "The body of an if statement should not be empty."
-    )
+    empty.getParent() instanceof IfStmt and
+    msg = "The body of an if statement should not be empty."
     or
-    (empty.getParent() instanceof LoopStmt and msg = "The body of a loop should not be empty.")
+    empty.getParent() instanceof LoopStmt and msg = "The body of a loop should not be empty."
     or
-    (
-      empty.getParent() instanceof Block and
-      empty instanceof Block and
-      msg = "This block should not be empty."
-    )
+    empty.getParent() instanceof Block and
+    empty instanceof Block and
+    msg = "This block should not be empty."
   )
 }
 

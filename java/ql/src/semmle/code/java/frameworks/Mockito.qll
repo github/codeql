@@ -222,24 +222,20 @@ class MockitoInjectedField extends MockitoAnnotatedField {
       else
         if usingPropertyInjection()
         then
-          (
-            // We will call the no-arg constructor if the field wasn't initialized.
-            not exists(getInitializer()) and
-            result = mockInjectedClass.getNoArgsConstructor()
-          )
+          // We will call the no-arg constructor if the field wasn't initialized.
+          not exists(getInitializer()) and
+          result = mockInjectedClass.getNoArgsConstructor()
           or
-          (
-            // Perform property injection into setter fields, but only where there exists a mock
-            // that can be injected into the method. Otherwise, the setter method is never called.
-            result = mockInjectedClass.getASetterMethod() and
-            exists(MockitoMockedField mockedField |
-              mockedField.getDeclaringType() = this.getDeclaringType() and
-              mockedField.isValid()
-            |
-              // We make a simplifying assumption here - in theory, each mock can only be injected
-              // once, but we instead assume that there are sufficient mocks to go around.
-              mockedField.getType().(RefType).getAnAncestor() = result.getParameterType(0)
-            )
+          // Perform property injection into setter fields, but only where there exists a mock
+          // that can be injected into the method. Otherwise, the setter method is never called.
+          result = mockInjectedClass.getASetterMethod() and
+          exists(MockitoMockedField mockedField |
+            mockedField.getDeclaringType() = this.getDeclaringType() and
+            mockedField.isValid()
+          |
+            // We make a simplifying assumption here - in theory, each mock can only be injected
+            // once, but we instead assume that there are sufficient mocks to go around.
+            mockedField.getType().(RefType).getAnAncestor() = result.getParameterType(0)
           )
         else
           // There's no instance, and no no-arg constructor we can call, so injection fails.

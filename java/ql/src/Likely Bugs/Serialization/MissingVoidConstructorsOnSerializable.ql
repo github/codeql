@@ -22,7 +22,7 @@ where
   not exists(Constructor c |
     c = nonserial.getSourceDeclaration().getAConstructor() and
     c.hasNoParameters() and
-    not (c.isPrivate())
+    not c.isPrivate()
   ) and
   serial.fromSource()
 select serial,

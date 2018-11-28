@@ -33,7 +33,7 @@ class LocationOverridingMethodAccess extends MethodAccess {
       super.hasLocationInfo(path, slSuper, scSuper, elSuper, ecSuper)
     |
       (
-        if (exists(getTypeArgument(_)))
+        if exists(getTypeArgument(_))
         then
           exists(Location locTypeArg |
             locTypeArg = getTypeArgument(count(getTypeArgument(_)) - 1).getLocation()
@@ -56,7 +56,7 @@ class LocationOverridingMethodAccess extends MethodAccess {
         )
       ) and
       (
-        if (getNumArgument() > 0)
+        if getNumArgument() > 0
         then
           // Note: this needs to be the original (full) location of the first argument, not the modified one.
           exists(Location locArg | locArg = getArgument(0).getLocation() |
@@ -95,7 +95,7 @@ class LocationOverridingTypeAccess extends TypeAccess {
         )
       ) and
       (
-        if (exists(getTypeArgument(_)))
+        if exists(getTypeArgument(_))
         then
           // Note: this needs to be the original (full) location of the first type argument, not the modified one.
           exists(Location locArg | locArg = getTypeArgument(0).getLocation() |
@@ -119,7 +119,7 @@ class LocationOverridingFieldAccess extends FieldAccess {
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     super.hasLocationInfo(path, _, _, el, ec) and
     sl = el and
-    sc = ec - (getField().getName().length()) + 1
+    sc = ec - getField().getName().length() + 1
   }
 }
 
@@ -135,7 +135,7 @@ class LocationOverridingImportType extends ImportType {
       el = elSuper and
       ec = ecSuper - 1 and
       sl = el and
-      sc = ecSuper - (getImportedType().getName().length())
+      sc = ecSuper - getImportedType().getName().length()
     )
   }
 }
@@ -152,7 +152,7 @@ class LocationOverridingImportStaticTypeMember extends ImportStaticTypeMember {
       el = elSuper and
       ec = ecSuper - 1 and
       sl = el and
-      sc = ecSuper - (getName().length())
+      sc = ecSuper - getName().length()
     )
   }
 }

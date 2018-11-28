@@ -51,15 +51,11 @@ private predicate hasChildElement(Element parent, Element e) {
   or
   enclInReftype(e, parent)
   or
-  (
-    not (enclInReftype(e, _)) and
-    e.(Class).getCompilationUnit() = parent
-  )
+  not enclInReftype(e, _) and
+  e.(Class).getCompilationUnit() = parent
   or
-  (
-    not (enclInReftype(e, _)) and
-    e.(Interface).getCompilationUnit() = parent
-  )
+  not enclInReftype(e, _) and
+  e.(Interface).getCompilationUnit() = parent
   or
   methods(e, _, _, _, parent, _)
   or

@@ -28,7 +28,7 @@ RefType normalised(Type type) {
   or
   type.(BoundedType).getUpperBoundType() = result
   or
-  (not type instanceof RawType and not type instanceof ParameterizedType and type = result)
+  not type instanceof RawType and not type instanceof ParameterizedType and type = result
 }
 
 predicate equivalent(Array declared, Array used) {
