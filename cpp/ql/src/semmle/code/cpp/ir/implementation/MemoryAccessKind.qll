@@ -8,8 +8,8 @@ private newtype TMemoryAccessKind =
   TEscapedMemoryAccess() or
   TPhiMemoryAccess() or
   TUnmodeledMemoryAccess() or
-  TChiOldMemoryAccess() or
-  TChiUpdateMemoryAccess()
+  TChiTotalMemoryAccess() or
+  TChiPartialMemoryAccess()
 
 /**
  * Describes the set of memory locations memory accessed by a memory operand or
@@ -84,7 +84,7 @@ class PhiMemoryAccess extends MemoryAccessKind, TPhiMemoryAccess {
  * The operand is a ChiTotal operand, which accesses the same memory as its
  * definition.
  */
-class ChiTotalMemoryAccess extends MemoryAccessKind, TChiOldMemoryAccess {
+class ChiTotalMemoryAccess extends MemoryAccessKind, TChiTotalMemoryAccess {
   override string toString() {
     result = "chi(total)"
   }
@@ -94,7 +94,7 @@ class ChiTotalMemoryAccess extends MemoryAccessKind, TChiOldMemoryAccess {
  * The operand is a ChiPartial operand, which accesses the same memory as its
  * definition.
  */
-class ChiPartialMemoryAccess extends MemoryAccessKind, TChiUpdateMemoryAccess {
+class ChiPartialMemoryAccess extends MemoryAccessKind, TChiPartialMemoryAccess {
   override string toString() {
     result = "chi(partial)"
   }
