@@ -6,7 +6,7 @@
 <overview>
 <p>
 JavaScript makes it easy to look up object properties dynamically at runtime. In particular, methods
-can be looked up by name and then called. However, if he method name is user controlled, an attacker
+can be looked up by name and then called. However, if the method name is user-controlled, an attacker
 could choose a name that makes the application invoke an unexpected method, which may cause a runtime
 exception. If this exception is not handled, it could be used to mount a denial-of-service attack.
 </p>
@@ -33,7 +33,7 @@ If the dynamic method lookup cannot be avoided, consider whitelisting permitted 
 the very least, check that the method is an own property and not inherited from the prototype object.
 If the object on which the method is looked up contains properties that are not methods, you
 should additionally check that the result of the lookup is a function. Even if the object only
-contains methods it is still a good idea to perform this check in case other properties are
+contains methods, it is still a good idea to perform this check in case other properties are
 added to the object later on.
 </p>
 </recommendation>
