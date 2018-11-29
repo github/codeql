@@ -2,11 +2,9 @@
 
 ## General improvements
 
-A new predicate `Stmt.getAnEntryNode()` has been added to make it easier to write reachability queries involving statements.
-
 ### Representation of the control flow graph
 
-The representation of the control flow graph (CFG) has been modified to better reflect the semantics of Python.
+The representation of the control flow graph (CFG) has been modified to better reflect the semantics of Python. As part of these changes, a new predicate `Stmt.getAnEntryNode()` has been added to make it easier to write reachability queries involving statements.
 
 #### CFG nodes removed
 
@@ -37,13 +35,8 @@ with cm as var:
     body
 ```
 
-| Old CFG node order | New CFG node order |
-|--------------------|--------------------|
-|    `<with>`        |     `cm`           |
-|    `cm`            |     `<with>`       |
-|    `var`           |     `var`          |
-|    `body`          |     `body`         |
-
+* Previous CFG node order: `<with>` -> `cm` -> `var` -> `body`
+* New CFG node order: `cm` -> `<with>` -> `var` -> `body`
 
 ## New queries
 
