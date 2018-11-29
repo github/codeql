@@ -8,7 +8,7 @@
 
 | **Query**                                     | **Tags**                                             | **Purpose**                                                                                                                                                                 |
 |-----------------------------------------------|------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Useless comparison test | correctness | Highlight code that is unreachable due to a numeric comparison that is always true or alway false. |
+| Useless comparison test | correctness | Highlights code that is unreachable due to a numeric comparison that is always true or always false. |
 
 
 ## Changes to existing queries
