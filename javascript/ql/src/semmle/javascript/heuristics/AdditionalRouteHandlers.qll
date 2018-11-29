@@ -19,6 +19,17 @@ private class PromotedNodeJSLibCandidate extends NodeJSLib::RouteHandler, HTTP::
 }
 
 /**
+ * Adds `Hapi::RouteHandlerCandidate` to the extent of `Hapi::RouteHandler`.
+ */
+private class PromotedHapiCandidate extends Hapi::RouteHandler, HTTP::Servers::StandardRouteHandler {
+
+    PromotedHapiCandidate() {
+      this instanceof Hapi::RouteHandlerCandidate
+    }
+
+}
+
+/**
  * Adds `ConnectExpressShared::RouteHandlerCandidate` to the extent of `Express::RouteHandler`.
  */
 private class PromotedExpressCandidate extends Express::RouteHandler, HTTP::Servers::StandardRouteHandler {
