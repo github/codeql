@@ -132,7 +132,13 @@ predicate findNodeModulesFolder(Folder f, Folder nodeModules, int distance) {
  */
 private class RequireVariable extends Variable {
   RequireVariable() {
-    exists (ModuleScope m | this = m.getVariable("require"))
+    this = any(ModuleScope m).getVariable("require")
+    or
+    // cover cases where we failed to detect Node.js code
+    this.(GlobalVariable).getName() = "require"
+    or
+    // track through assignments to other variables
+    this.getAnAssignedExpr().(VarAccess).getVariable() instanceof RequireVariable
   }
 }
 
@@ -149,7 +155,9 @@ private predicate moduleInFile(Module m, File f) {
 class Require extends CallExpr, Import {
   Require() {
     exists (RequireVariable req |
-      this.getCallee() = req.getAnAccess()
+      this.getCallee() = req.getAnAccess() and
+      // `mjs` files explicitly disallow `require`
+      getFile().getExtension() != "mjs"
     )
   }
 
