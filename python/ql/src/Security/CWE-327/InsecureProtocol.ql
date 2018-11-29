@@ -68,7 +68,7 @@ ClassObject the_pyOpenSSL_Context_class() {
 predicate unsafe_pyOpenSSL_Context_call(CallNode call, string insecure_version) {
     call = the_pyOpenSSL_Context_class().getACall() and
     insecure_version = insecure_version_name() and
-    call.getArgByName("method").refersTo(the_pyOpenSSL_module().getAttribute(insecure_version))
+    call.getArg(0).refersTo(the_pyOpenSSL_module().getAttribute(insecure_version))
 }
 
 from CallNode call, string method_name, string insecure_version

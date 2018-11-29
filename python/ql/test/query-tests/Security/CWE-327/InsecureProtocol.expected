@@ -4,8 +4,8 @@
 | InsecureProtocol.py:10:1:10:42 | ControlFlowNode for SSLContext() | Insecure SSL/TLS protocol version PROTOCOL_SSLv2 specified in call to ssl.SSLContext. |
 | InsecureProtocol.py:11:1:11:42 | ControlFlowNode for SSLContext() | Insecure SSL/TLS protocol version PROTOCOL_SSLv3 specified in call to ssl.SSLContext. |
 | InsecureProtocol.py:12:1:12:42 | ControlFlowNode for SSLContext() | Insecure SSL/TLS protocol version PROTOCOL_TLSv1 specified in call to ssl.SSLContext. |
-| InsecureProtocol.py:14:1:14:36 | ControlFlowNode for Attribute() | Insecure SSL/TLS protocol version SSLv2_METHOD specified in call to pyOpenSSL.SSL.Context. |
-| InsecureProtocol.py:15:1:15:37 | ControlFlowNode for Attribute() | Insecure SSL/TLS protocol version SSLv23_METHOD specified in call to pyOpenSSL.SSL.Context. |
-| InsecureProtocol.py:16:1:16:36 | ControlFlowNode for Attribute() | Insecure SSL/TLS protocol version SSLv3_METHOD specified in call to pyOpenSSL.SSL.Context. |
-| InsecureProtocol.py:17:1:17:36 | ControlFlowNode for Attribute() | Insecure SSL/TLS protocol version TLSv1_METHOD specified in call to pyOpenSSL.SSL.Context. |
-| InsecureProtocol.py:32:1:32:26 | ControlFlowNode for Attribute() | Insecure SSL/TLS protocol version SSLv2_METHOD specified in call to pyOpenSSL.SSL.Context. |
+| InsecureProtocol.py:14:1:14:29 | ControlFlowNode for Attribute() | Insecure SSL/TLS protocol version SSLv2_METHOD specified in call to pyOpenSSL.SSL.Context. |
+| InsecureProtocol.py:15:1:15:30 | ControlFlowNode for Attribute() | Insecure SSL/TLS protocol version SSLv23_METHOD specified in call to pyOpenSSL.SSL.Context. |
+| InsecureProtocol.py:16:1:16:29 | ControlFlowNode for Attribute() | Insecure SSL/TLS protocol version SSLv3_METHOD specified in call to pyOpenSSL.SSL.Context. |
+| InsecureProtocol.py:17:1:17:29 | ControlFlowNode for Attribute() | Insecure SSL/TLS protocol version TLSv1_METHOD specified in call to pyOpenSSL.SSL.Context. |
+| InsecureProtocol.py:32:1:32:19 | ControlFlowNode for Attribute() | Insecure SSL/TLS protocol version SSLv2_METHOD specified in call to pyOpenSSL.SSL.Context. |
