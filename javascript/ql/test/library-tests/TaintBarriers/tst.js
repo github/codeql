@@ -362,3 +362,24 @@ function IndirectSanitizer () {
     }
 
 }
+
+function constantComparisonSanitizer2() {
+    var o = SOURCE();
+    SINK(o.p); // flagged
+
+    if (o.p == "white-listed") {
+        SINK(o.p); // not flagged
+    } else {
+        SINK(o.p); // flagged
+    }
+
+    for (var p in o) {
+      if (o[p] == "white-listed") {
+        SINK(o[p]); // not flagged
+        p = somethingElse();
+        SINK(o[p]); // flagged
+      } else {
+        SINK(o[p]); // flagged
+      }
+    }
+}
