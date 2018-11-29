@@ -1,4 +1,4 @@
-# Query file metadata and alert message style guide for contributions to the Semmle/ql repository
+# Query file metadata and alert message style-guide
 
 
 ## Introduction
