@@ -1,6 +1,5 @@
 import cpp
 import semmle.code.cpp.ir.implementation.raw.IR
-import IRBlockConstruction as BlockConstruction
 private import semmle.code.cpp.ir.internal.OperandTag
 private import semmle.code.cpp.ir.internal.TempVariableTag
 private import InstructionTag
@@ -166,6 +165,13 @@ cached private module Cached {
     exists(TranslatedElement element, InstructionTag tag |
       instructionOrigin(instruction, element, tag) and
       result = element.getInstructionResultSize(tag)
+    )
+  }
+
+  cached Instruction getPrimaryInstructionForSideEffect(Instruction instruction) {
+    exists(TranslatedElement element, InstructionTag tag |
+      instructionOrigin(instruction, element, tag) and
+      result = element.getPrimaryInstructionForSideEffect(tag)
     )
   }
 }
