@@ -376,23 +376,26 @@ module PointsTo {
 
         /* Holds if BasicBlock `b` is reachable, given the context `context`. */
        predicate reachableBlock(BasicBlock b, PointsToContext context) {
-            context.appliesToScope(b.getScope()) and
-            forall(ConditionBlock guard |
-                guard.controls(b, _) |
+            b = b.getScope().getEntryNode().getBasicBlock() and
+            context.appliesToScope(b.getScope())
+            or
+            exists(BasicBlock pred |
+                reachableBlock(pred, context) and
+                pred.getANormalSuccessor() = b |
+                not b = pred.getATrueSuccessor() and not b = pred.getAFalseSuccessor()
+                or
                 exists(Object value |
-                    points_to(guard.getLastNode(), context, value, _, _)
-                    |
-                    guard.controls(b, true) and not value.booleanValue() = false
+                    points_to(pred.getLastNode(), context, value, _, _) |
+                    b = pred.getATrueSuccessor() and not value.booleanValue() = false
                     or
-                    guard.controls(b, false) and not value.booleanValue() = true
+                    b = pred.getAFalseSuccessor() and not value.booleanValue() = true
                 )
                 or
                 /* Assume the true edge of an assert is reachable (except for assert 0/False) */
-                guard.controls(b, true) and
-                exists(Assert a, Expr test |
-                    a.getTest() = test and
-                    guard.getLastNode().getNode() = test and
-                    not test instanceof ImmutableLiteral
+                b = pred.getATrueSuccessor() and
+                exists(Assert a |
+                    a.getTest() = pred.getLastNode().getNode() and
+                    not a.getTest() instanceof ImmutableLiteral
                 )
             )
         }
@@ -780,31 +783,19 @@ module PointsTo {
             )
         )
     }
-/*
-    pragma [noinline]
-    private Object version_hex_compare(CompareNode cmp, PointsToContext context) {
-        exists(ControlFlowNode lesser, ControlFlowNode greater, boolean strict |
-            inequality(cmp, lesser, greater, strict) and
-            exists(TupleObject tuple, int comp |
-                points_to(lesser, context, tuple, _, _) and
-                points_to(greater, context, theSysHexVersionNumber(), _, _) and
-                comp = version_tuple_compare(tuple)
-                or
-                points_to(lesser, context, theSysHexVersionNumber(), _, _) and
-                points_to(greater, context, tuple, _, _) and
-                comp = version_hex_compare(tuple)*-1
-                |
-                comp = -1 and result = theTrueObject()
-                or
-                comp = 0 and strict = false and result = theTrueObject()
-                or
-                comp = 0 and strict = true and result = theFalseObject()
-                or
-                comp = 1 and result = theFalseObject()
-            )
+
+    /** Holds if `cls` is an element of the tuple referred to by `f`.
+     * Helper for relevant_subclass_relation
+     */
+    private predicate element_of_points_to_tuple(ControlFlowNode f, PointsToContext context, ClassObject cls) {
+        exists(TupleObject t |
+            points_to(f, context, t, _, _) |
+            cls = t.getBuiltinElement(_)
+            or
+            points_to(t.getSourceElement(_), _, cls, _, _)
         )
     }
-*/
+
     private predicate compare_expr_points_to(CompareNode cmp, PointsToContext context, Object value, ClassObject cls, ControlFlowNode origin) {
         equality_expr_points_to(cmp, context, value, cls, origin)
         or
@@ -2045,20 +2036,12 @@ module PointsTo {
         pragma [nomagic]
         private boolean issubclass_test_evaluates_boolean(ControlFlowNode expr, ControlFlowNode use, PointsToContext context, Object val, ClassObject cls, ControlFlowNode origin) {
             points_to(use, context, val, cls, origin) and
-            exists(ControlFlowNode clsNode |
-                BaseFilters::issubclass(expr, clsNode, use) |
-                exists(ClassObject scls |
-                    points_to(clsNode, context, scls, _, _) |
-                    result = Types::is_improper_subclass_bool(val, scls)
-                )
-                or exists(TupleObject t, ClassObject scls |
-                    points_to(clsNode, context, t, _, _) and
-                    result = Types::is_improper_subclass_bool(val, scls) and result = true
-                    |
-                    scls = t.getBuiltinElement(_)
-                    or
-                    points_to(t.getSourceElement(_), _, scls, _, _)
-                )
+            exists(ControlFlowNode clsNode, ClassObject scls |
+                BaseFilters::issubclass(expr, clsNode, use) and
+                result = Types::is_improper_subclass_bool(val, scls) |
+                points_to(clsNode, context, scls, _, _)
+                or
+                element_of_points_to_tuple(clsNode, context, scls) and result = true
                 or
                 val = unknownValue() and result = maybe()
                 or
@@ -2069,20 +2052,12 @@ module PointsTo {
         pragma [nomagic]
         private boolean isinstance_test_evaluates_boolean(ControlFlowNode expr, ControlFlowNode use, PointsToContext context, Object val, ClassObject cls, ControlFlowNode origin) {
             points_to(use, context, val, cls, origin) and
-            exists(ControlFlowNode clsNode |
-                BaseFilters::isinstance(expr, clsNode, use) |
-                exists(ClassObject scls |
-                    points_to(clsNode, context, scls, _, _) |
-                    result = Types::is_improper_subclass_bool(cls, scls)
-                )
-                or exists(TupleObject t, ClassObject scls |
-                    points_to(clsNode, context, t, _, _) and
-                    result = Types::is_improper_subclass_bool(cls, scls) and result = true
-                    |
-                    scls = t.getBuiltinElement(_)
-                    or
-                    points_to(t.getSourceElement(_), _, scls, _, _)
-                )
+            exists(ControlFlowNode clsNode, ClassObject scls |
+                BaseFilters::isinstance(expr, clsNode, use) and
+                result = Types::is_improper_subclass_bool(cls, scls) |
+                points_to(clsNode, context, scls, _, _)
+                or
+                element_of_points_to_tuple(clsNode, context, scls) and result = true
                 or
                 val = unknownValue() and result = maybe()
             )
@@ -2458,23 +2433,28 @@ module PointsTo {
         }
 
         private predicate relevant_subclass_relation(ClassObject cls, ClassObject sup) {
-            exists(ControlFlowNode supnode, ControlFlowNode use |
+            exists(ControlFlowNode supnode |
                 points_to(supnode, _, sup, _, _)
-                or exists(TupleObject t |
-                    points_to(supnode, _, t, _, _) |
-                    sup = t.getBuiltinElement(_)
-                    or
-                    points_to(t.getSourceElement(_), _, sup, _, _)
-                )
-                |
-                BaseFilters::issubclass(_, supnode, use) and points_to(use, _, cls, _, _)
                 or
-                BaseFilters::isinstance(_, supnode, use) and points_to(use, _, _, cls, _)
+                element_of_points_to_tuple(supnode, _, sup)
+                |
+                subclass_test(supnode, cls)
             )
             or
             exists(ClassObject sub |
                 relevant_subclass_relation(sub, sup) and
                 class_base_type(sub, _) = cls
+            )
+        }
+
+        /** Holds if there is a subclass test of `f` against class `cls`.
+         *  Helper for relevant_subclass_relation.
+         */
+        private predicate subclass_test(ControlFlowNode f, ClassObject cls) {
+            exists(ControlFlowNode use |
+                BaseFilters::issubclass(_, f, use) and points_to(use, _, cls, _, _)
+                or
+                BaseFilters::isinstance(_, f, use) and points_to(use, _, _, cls, _)
             )
         }
 

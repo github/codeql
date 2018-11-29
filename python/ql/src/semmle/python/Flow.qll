@@ -963,6 +963,10 @@ class BasicBlock extends @py_flow_node {
         result.getASuccessor() = this
     }
 
+    BasicBlock getANormalSuccessor() {
+        result = this.getLastNode().getANormalSuccessor().getBasicBlock()
+    }
+
     /** Whether flow from this basic block reaches a normal exit from its scope */
     predicate reachesExit() {
         exists(Scope s | s.getANormalExit().getBasicBlock() = this)
