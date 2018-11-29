@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Entities;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -98,5 +99,45 @@ namespace Semmle.Extraction.CSharp.Entities
         public override bool NeedsPopulation => Context.Defines(symbol);
 
         public Extraction.Entities.Location Location => Context.Create(ReportingLocation);
+
+        protected void ExtractMetadataHandle()
+        {
+            var handle = MetadataHandle;
+            if (!handle.IsNil)
+                Context.Emit(Tuples.metadata_handle(this, Location, handle.GetHashCode()));
+        }
+
+        public Handle MetadataHandle
+        {
+            get
+            {
+                var propertyInfo = symbol.GetType().GetProperty("Handle",
+                    System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.GetProperty);
+
+                if (propertyInfo != null)
+                {
+                    var value = propertyInfo.GetValue(symbol);
+
+                    if (value is MethodDefinitionHandle)
+                    {
+                        return (MethodDefinitionHandle)value;
+                    }
+                    else if(value is TypeDefinitionHandle)
+                    {
+                        return (TypeDefinitionHandle)value;
+                    }
+                    else if(value is PropertyDefinitionHandle)
+                    {
+                        return (PropertyDefinitionHandle)value;
+                    }
+                    else if(value is FieldDefinitionHandle)
+                    {
+                        return (FieldDefinitionHandle)value;
+                    }
+                }
+
+                return new Handle(); // A nil handle
+            }
+        }
     }
 }

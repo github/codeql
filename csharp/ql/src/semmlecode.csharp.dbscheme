@@ -1699,3 +1699,8 @@ cil_attribute_positional_argument(
 @dotnet_int_literal = @integer_literal_expr | @cil_ldc_i;
 @dotnet_float_literal = @float_literal_expr | @cil_ldc_r;
 @dotnet_null_literal = @null_literal_expr | @cil_ldnull;
+
+@metadata_entity = @cil_method | @cil_type | @cil_field | @cil_property | @field | @property |
+    @callable | @value_or_ref_type | @void_type;
+
+metadata_handle(int entity : @metadata_entity ref, int location: @assembly ref, int handle: int ref)

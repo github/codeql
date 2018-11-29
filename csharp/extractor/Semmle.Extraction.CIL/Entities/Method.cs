@@ -134,6 +134,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// </summary>
     class DefinitionMethod : Method, IMember
     {
+        readonly Handle handle;
         readonly MethodDefinition md;
         readonly PDB.IMethod methodDebugInformation;
 
@@ -147,6 +148,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             md = cx.mdReader.GetMethodDefinition(handle);
             this.gc = gc;
+            this.handle = handle;
             name = cx.GetId(md.Name);
 
             declaringType = (Type)cx.CreateGeneric(this, md.GetDeclaringType());
@@ -205,6 +207,7 @@ namespace Semmle.Extraction.CIL.Entities
                     Attribute.Populate(cx, pe, p.GetCustomAttributes());
                 }
 
+                yield return Tuples.metadata_handle(this, cx.assembly, handle.GetHashCode());
                 yield return Tuples.cil_method(this, Name, declaringType, typeSignature.ReturnType);
                 yield return Tuples.cil_method_source_declaration(this, this);
                 yield return Tuples.cil_method_location(this, cx.assembly);

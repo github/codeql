@@ -248,11 +248,13 @@ namespace Semmle.Extraction.CIL.Entities
     /// </summary>
     public sealed class TypeDefinitionType : Type
     {
+        Handle handle;
         readonly TypeDefinition td;
 
         public TypeDefinitionType(Context cx, TypeDefinitionHandle handle) : base(cx)
         {
             td = cx.mdReader.GetTypeDefinition(handle);
+            this.handle = handle;
 
             declType =
                 td.GetDeclaringType().IsNil ? null :
@@ -373,6 +375,8 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
+                yield return Tuples.metadata_handle(this, cx.assembly, handle.GetHashCode());
+
                 foreach (var c in base.Contents) yield return c;
 
                 MakeTypeParameters();

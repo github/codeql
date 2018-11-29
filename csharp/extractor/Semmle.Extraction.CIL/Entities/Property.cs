@@ -16,12 +16,14 @@ namespace Semmle.Extraction.CIL.Entities
     /// </summary>
     class Property : LabelledEntity, IProperty
     {
+        readonly Handle handle;
         readonly Type type;
         readonly PropertyDefinition pd;
         static readonly Id suffix = CIL.Id.Create(";cil-property");
 
         public Property(GenericContext gc, Type type, PropertyDefinitionHandle handle) : base(gc.cx)
         {
+            this.handle = handle;
             pd = cx.mdReader.GetPropertyDefinition(handle);
             this.type = type;
 
@@ -35,6 +37,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
+                yield return Tuples.metadata_handle(this, cx.assembly, handle.GetHashCode());
                 var sig = pd.DecodeSignature(cx.TypeSignatureDecoder, type);
 
                 yield return Tuples.cil_property(this, type, cx.ShortName(pd.Name), sig.ReturnType);

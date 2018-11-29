@@ -72,11 +72,13 @@ namespace Semmle.Extraction.CIL.Entities
 
     sealed class DefinitionField : Field
     {
+        readonly Handle handle;
         readonly FieldDefinition fd;
         readonly GenericContext gc;
 
         public DefinitionField(GenericContext gc, FieldDefinitionHandle handle) : base(gc.cx)
         {
+            this.handle = handle;
             this.gc = gc;
             fd = cx.mdReader.GetFieldDefinition(handle);
             ShortId = DeclaringType.ShortId + cx.Dot + Name;
@@ -86,6 +88,8 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
+                yield return Tuples.metadata_handle(this, cx.assembly, handle.GetHashCode());
+
                 foreach (var c in base.Contents)
                     yield return c;
 
