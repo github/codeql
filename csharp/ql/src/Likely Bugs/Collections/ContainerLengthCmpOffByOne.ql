@@ -17,34 +17,32 @@ import semmle.code.csharp.controlflow.Guards
 import semmle.code.csharp.commons.ComparisonTest
 
 /** A comparison of an index variable with the length of an array. */
-class IndexGuard extends Expr {
-  ComparisonTest ct;
+class IndexGuard extends ComparisonTest {
   VariableAccess indexAccess;
   Variable array;
   
   IndexGuard() {
-    ct.getExpr() = this and
-    ct.getFirstArgument() = indexAccess and
-    ct.getSecondArgument() = any(PropertyAccess lengthAccess | 
+    this.getFirstArgument() = indexAccess and
+    this.getSecondArgument() = any(PropertyAccess lengthAccess | 
       lengthAccess.getQualifier() = array.getAnAccess() and
       lengthAccess.getTarget().hasName("Length")
     )
   }
 
-  /** This comparison applies to array `arr` and index `ind`. */
+  /** Holds if this comparison applies to array `arr` and index `ind`. */
   predicate controls(Variable arr, Variable ind) {
     arr = array and
     ind.getAnAccess() = indexAccess
   }
 
-  /** This comparison guards `expr`. */
+  /** Holds if this comparison guards `expr`. */
   predicate guards(GuardedExpr expr, boolean condition) {
-    expr.isGuardedBy(this, indexAccess, condition)
+    expr.isGuardedBy(this.getExpr(), indexAccess, condition)
   }
 
-  /** This comparison is an incorrect `<=` or equivalent. */
+  /** Holds if this comparison is an incorrect `<=` or equivalent. */
   predicate isIncorrect() {
-    ct.getComparisonKind().isLessThanEquals()
+    this.getComparisonKind().isLessThanEquals()
   }
 }
 
