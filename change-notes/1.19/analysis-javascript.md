@@ -2,7 +2,7 @@
 
 ## General improvements
 
-* Modelling of taint flow through array operations has been improved. This may give additional results for the security queries.
+* Modelling of taint flow through array and buffer operations has been improved. This may give additional results for the security queries.
 
 * Support for AMD modules has been improved. This may give additional results for the security queries as well as any queries that use type inference on code bases that use such modules.
 

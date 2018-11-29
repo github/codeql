@@ -9,3 +9,5 @@ try {
 } catch(e) {
   console.log("Bigints not supported.");
 }
+
+require('babeface'); // OK

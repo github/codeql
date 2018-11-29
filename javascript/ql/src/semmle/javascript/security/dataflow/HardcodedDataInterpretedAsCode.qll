@@ -51,18 +51,21 @@ module HardcodedDataInterpretedAsCode {
     }
 
     override predicate isSanitizer(DataFlow::Node node) {
-      super.isSanitizer(node) or
       node instanceof Sanitizer
     }
   }
 
   /**
-   * A constant string consisting of eight or more hexadecimal characters, viewed
-   * as a source of hard-coded data that should not be interpreted as code.
+   * A constant string consisting of eight or more hexadecimal characters (including at
+   * least one digit), viewed as a source of hard-coded data that should not be
+   * interpreted as code.
    */
   private class DefaultSource extends Source, DataFlow::ValueNode {
     DefaultSource() {
-      astNode.(Expr).getStringValue().regexpMatch("[0-9a-fA-F]{8,}")
+      exists (string val | val = astNode.(Expr).getStringValue() |
+        val.regexpMatch("[0-9a-fA-F]{8,}") and
+        val.regexpMatch(".*[0-9].*")
+      )
     }
   }
 
