@@ -155,6 +155,10 @@
 | Guards.cs:196:31:196:31 | access to parameter s | Guards.cs:195:13:195:27 | call to method NotNullTest4 | Guards.cs:195:26:195:26 | access to parameter s | true |
 | Guards.cs:196:31:196:31 | access to parameter s | Guards.cs:195:26:195:26 | access to parameter s | Guards.cs:195:26:195:26 | access to parameter s | non-null |
 | Guards.cs:198:31:198:31 | access to parameter s | Guards.cs:197:14:197:29 | call to method NullTestWrong | Guards.cs:197:28:197:28 | access to parameter s | false |
+| Guards.cs:205:13:205:13 | access to parameter o | Guards.cs:203:13:203:13 | access to parameter o | Guards.cs:203:13:203:13 | access to parameter o | non-null |
+| Guards.cs:205:13:205:13 | access to parameter o | Guards.cs:203:13:203:21 | ... != ... | Guards.cs:203:13:203:13 | access to parameter o | true |
+| Guards.cs:208:17:208:17 | access to parameter o | Guards.cs:203:13:203:13 | access to parameter o | Guards.cs:203:13:203:13 | access to parameter o | non-null |
+| Guards.cs:208:17:208:17 | access to parameter o | Guards.cs:203:13:203:21 | ... != ... | Guards.cs:203:13:203:13 | access to parameter o | true |
 | Splitting.cs:13:17:13:17 | access to parameter o | Splitting.cs:12:17:12:17 | access to parameter o | Splitting.cs:12:17:12:17 | access to parameter o | non-null |
 | Splitting.cs:13:17:13:17 | access to parameter o | Splitting.cs:12:17:12:25 | ... != ... | Splitting.cs:12:17:12:17 | access to parameter o | true |
 | Splitting.cs:23:24:23:24 | access to parameter o | Splitting.cs:22:17:22:17 | access to parameter o | Splitting.cs:22:17:22:17 | access to parameter o | non-null |
