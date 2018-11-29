@@ -3,6 +3,7 @@
  * @description Generate trap files (in CSV form) for CPython objects.
  * @kind trap
  * @id cpp/c-python/c-object-trap
+ * @deprecated
  */
 
 import cpp

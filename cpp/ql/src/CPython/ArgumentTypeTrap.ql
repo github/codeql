@@ -3,6 +3,7 @@
  * @description Generate trap files (in CSV form) describing CPython extension function parameter types.
  * @kind trap
  * @id cpp/c-python/argument-type-trap
+ * @deprecated
  */
 
 import cpp

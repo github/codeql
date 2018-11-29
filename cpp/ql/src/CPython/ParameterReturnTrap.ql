@@ -3,6 +3,7 @@
  * @description Generate trap files (in CSV form) describing CPython extension functions return one of their parameters.
  * @kind trap
  * @id cpp/c-python/parameter-return-trap
+ * @deprecated
  */
 
 import cpp
