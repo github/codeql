@@ -194,22 +194,27 @@ module Hapi {
    */
   class RouteSetup extends MethodCallExpr, HTTP::Servers::StandardRouteSetup {
     ServerDefinition server;
-    string methodName;
+    Expr handler;
 
     RouteSetup() {
       server.flowsTo(getReceiver()) and
-      methodName = getMethodName() and
-      (methodName = "route" or methodName = "ext")
+      (
+        // server.route({ handler: fun })
+        getMethodName() = "route" and
+        hasOptionArgument(0, "handler", handler)
+        or
+        // server.ext('/', fun)
+        getMethodName() = "ext" and
+        handler = getArgument(1)
+      )
     }
 
     override DataFlow::SourceNode getARouteHandler() {
-      // server.route({ handler: fun })
-      methodName = "route" and
-      result.flowsToExpr(any(Expr e | hasOptionArgument(0, "handler", e)))
-      or
-      // server.ext('/', fun)
-      methodName = "ext" and
-      result.flowsToExpr(getArgument(1))
+      result.(DataFlow::SourceNode).flowsTo(handler.flow())
+    }
+
+    Expr getRouteHandlerExpr() {
+      result = handler
     }
 
     override Expr getServer() {
