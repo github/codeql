@@ -21,12 +21,12 @@ ClassObject ssl_Context_class() {
 }
 
 string insecure_version_name() {
-    // For the `ssl` module
+    // For `pyOpenSSL.SSL`
     result = "SSLv2_METHOD" or
     result = "SSLv23_METHOD" or
     result = "SSLv3_METHOD" or
     result = "TLSv1_METHOD" or
-    // For `pyOpenSSL.SSL`
+    // For the `ssl` module
     result = "PROTOCOL_SSLv2" or
     result = "PROTOCOL_SSLv3" or
     result = "PROTOCOL_TLSv1"
