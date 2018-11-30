@@ -47,3 +47,4 @@
 * The `Buffer.qll` library has more conservative treatment of arrays embedded in structs. This reduces false positives in a number of security queries, especially `cpp/overflow-buffer`.
     * Pre-C99 encodings of _flexible array members_ are recognized more reliably.
     * Arrays of zero size are now treated as a special case.
+* The library `semmle.code.cpp.dataflow.RecursionPrevention` is now deprecated. It was an aid for transitioning data-flow queries from 1.16 to 1.17, and it no longer has any function. Imports of this library should simply be deleted.
