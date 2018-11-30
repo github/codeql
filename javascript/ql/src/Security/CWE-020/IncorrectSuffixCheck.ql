@@ -99,7 +99,10 @@ predicate isDerivedFromLength(DataFlow::Node length, DataFlow::Node operand) {
 }
 
 /**
- * An equality comparison of form `A.indexOf(B) === A.length - B.length` or similar. 
+ * An equality comparison of form `A.indexOf(B) === A.length - B.length` or similar.
+ *
+ * We assume A and B are strings, even A and/or B could be also be arrays.
+ * The comparison with the length rarely occurs for arrays, however.
  */
 class UnsafeIndexOfComparison extends EqualityTest {
   IndexOfCall indexOf;
