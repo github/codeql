@@ -353,6 +353,12 @@ module ControlFlow {
         )
       }
 
+      /** Gets a comma-separated list of strings for each split in this node, if any. */
+      string getSplitsString() {
+        result = splits.toString() and
+        result != ""
+      }
+
       /** Gets a split for this control flow node, if any. */
       Split getASplit() {
         result = splits.getASplit()
