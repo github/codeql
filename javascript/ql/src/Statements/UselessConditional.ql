@@ -18,17 +18,26 @@ import semmle.javascript.dataflow.Refinements
 import semmle.javascript.DefensiveProgramming
 
 /**
+ * Gets the unique definition of `v`.
+ *
+ * If `v` has no definitions or more than one, or if its single definition
+ * is a destructuring assignment, this predicate is undefined.
+ */
+VarDef getSingleDef(Variable v) {
+  strictcount(VarDef vd | vd.getAVariable() = v) = 1 and
+  result.getTarget() = v.getAReference()
+}
+
+/**
  * Holds if variable `v` looks like a symbolic constant, that is, it is assigned
  * exactly once, either in a `const` declaration or with a constant initializer.
  *
  * We do not consider conditionals to be useless if they check a symbolic constant.
  */
 predicate isSymbolicConstant(Variable v) {
-  // defined exactly once
-  count(VarDef vd | vd.getAVariable() = v) = 1 and
-  // the definition is either a `const` declaration or it assigns a constant to it
-  exists(VarDef vd | vd.getAVariable() = v and count(vd.getAVariable()) = 1 |
-    vd.(VariableDeclarator).getDeclStmt() instanceof ConstDeclStmt or
+  exists(VarDef vd | vd = getSingleDef(v) |
+    vd.(VariableDeclarator).getDeclStmt() instanceof ConstDeclStmt
+    or
     isConstant(vd.getSource())
   )
 }
