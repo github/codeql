@@ -40,6 +40,22 @@ private ModuleObject the_pyOpenSSL_module() {
     result = any(ModuleObject m | m.getName() = "pyOpenSSL.SSL")
 }
 
+/* A syntactic check for cases where points-to analysis cannot infer the presence of
+ * a protocol constant, e.g. if it has been removed in later versions of the `ssl`
+ * library.
+ */
+predicate probable_insecure_ssl_constant(CallNode call, string insecure_version) {
+    exists(ControlFlowNode arg | arg = call.getArgByName("ssl_version") |
+        arg.(AttrNode).getObject(insecure_version).refersTo(the_ssl_module())
+        or
+        arg.(NameNode).getId() = insecure_version and
+        exists(Import imp |
+            imp.getAnImportedModuleName() = "ssl" and
+            imp.getAName().getAsname().(Name).getId() = insecure_version
+        )
+    )
+}
+
 predicate unsafe_ssl_wrap_socket_call(CallNode call, string method_name, string insecure_version) {
     (
         call = ssl_wrap_socket().getACall() and
@@ -54,10 +70,7 @@ predicate unsafe_ssl_wrap_socket_call(CallNode call, string method_name, string 
     (
         call.getArgByName("ssl_version").refersTo(the_ssl_module().getAttribute(insecure_version))
         or
-        // syntactic match, in case the version in question has been deprecated
-        exists(ControlFlowNode arg | arg = call.getArgByName("ssl_version") |
-            arg.(AttrNode).getObject(insecure_version).refersTo(the_ssl_module())
-        )
+        probable_insecure_ssl_constant(call, insecure_version)
     )
 }
 

@@ -40,3 +40,11 @@ SSL.Context(SSL.TLSv1_1_METHOD)
 # possibly insecure default
 ssl.wrap_socket()
 context = SSLContext()
+
+# importing the protocol constant directly
+
+from ssl import PROTOCOL_SSLv2
+
+ssl.wrap_socket(ssl_version=PROTOCOL_SSLv2)
+SSLContext(ssl_version=PROTOCOL_SSLv2)
+
