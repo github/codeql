@@ -1,6 +1,7 @@
 import cpp
 private import semmle.code.cpp.ir.implementation.Opcode
 private import semmle.code.cpp.ir.internal.OperandTag
+private import semmle.code.cpp.models.interfaces.SideEffectFunction
 private import InstructionTag
 private import TranslatedElement
 private import TranslatedExpr
@@ -37,9 +38,18 @@ abstract class TranslatedCall extends TranslatedExpr {
       isGLValue = false
     ) or
     (
+      hasSideEffect() and
       tag = CallSideEffectTag() and
-      opcode instanceof Opcode::CallSideEffect and
-      resultType instanceof UnknownType and
+      (
+        if hasWriteSideEffect() then (
+          opcode instanceof Opcode::CallSideEffect and
+          resultType instanceof UnknownType
+        )
+        else (
+          opcode instanceof Opcode::CallReadSideEffect and
+          resultType instanceof VoidType
+        )
+      ) and
       isGLValue = false
     )
   }
@@ -68,9 +78,13 @@ abstract class TranslatedCall extends TranslatedExpr {
     (
       (
         tag = CallTag() and
-        result = getInstruction(CallSideEffectTag())
+        if hasSideEffect() then
+          result = getInstruction(CallSideEffectTag())
+        else
+          result = getParent().getChildSuccessor(this)
       ) or
       (
+        hasSideEffect() and
         tag = CallSideEffectTag() and
         result = getParent().getChildSuccessor(this)
       )
@@ -183,6 +197,18 @@ abstract class TranslatedCall extends TranslatedExpr {
    * Holds if the call has any arguments, not counting the `this` argument.
    */
   abstract predicate hasArguments();
+
+  predicate hasReadSideEffect() {
+    any()
+  }
+
+  predicate hasWriteSideEffect() {
+    any()
+  }
+
+  private predicate hasSideEffect() {
+    hasReadSideEffect() or hasWriteSideEffect()
+  }
 }
 
 /**
@@ -279,6 +305,14 @@ class TranslatedFunctionCall extends TranslatedCallExpr, TranslatedDirectCall {
 
   override Function getInstructionFunction(InstructionTag tag) {
     tag = CallTargetTag() and result = funcCall.getTarget()
+  }
+
+  override predicate hasReadSideEffect() {
+    functionReadsMemory(funcCall.getTarget())
+  }
+
+  override predicate hasWriteSideEffect() {
+    functionWritesMemory(funcCall.getTarget())
   }
 }
 
