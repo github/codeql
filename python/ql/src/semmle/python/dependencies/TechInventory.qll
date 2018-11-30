@@ -50,7 +50,7 @@ class DistPackage extends ExternalPackage {
             parent = this.(ModuleObject).getPath().getParent() and
             parent.isImportRoot() and
             /* Not in standard library */
-            not parent.isStdLibRoot(_, _) and
+            not parent.isStdLibRoot() and
             /* Not in the source */
             not exists(parent.getRelativePath())
         )
