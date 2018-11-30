@@ -16,7 +16,7 @@ Query files have the extension `.ql`. Each file has two distinct areas:
     *   [QL language specification](https://help.semmle.com/QL/QLLanguageSpecification.html)
     *   [QL style Guide](https://github.com/Semmle/ql/blob/master/docs/ql-style-guide.md) 
 
-For examples of query files for the language supported by Semmle, see the following pages: 
+For examples of query files for the languages supported by Semmle, see the following pages: 
 
 *   [C/C++ queries](https://wiki.semmle.com/pages/viewpage.action?pageId=19334052)
 *   [C# queries](https://wiki.semmle.com/display/CSHARP/C%23+queries)
@@ -27,7 +27,7 @@ For examples of query files for the language supported by Semmle, see the follow
 
 ## Metadata area
 
-Query file metadata contains important information which defines the name and purpose of the query. In order to help others use your query, and to ensure that the query works correctly on LGTM.com, you should include all of the required information outlined below in the metadata, and as much of the optional information as as possible. For further information on query metadata see [Query file requirements](https://help.semmle.com/wiki/display/SD/Query+file+requirements).
+Query file metadata contains important information which defines the name and purpose of the query. In order to help others use your query, and to ensure that the query works correctly on LGTM.com, you should include all of the required information outlined below in the metadata, and as much of the optional information as possible. For further information on query metadata see [Query file requirements](https://help.semmle.com/wiki/display/SD/Query+file+requirements).
 
 ### Query name `@name`
 
@@ -41,7 +41,7 @@ You must specify an `@name` property for your query. This property defines the d
 
 ### Query descriptions `@description`
 
-You must define an `@description` property for your query. This property defines a short help message. Query descriptions should be written as a sentence or short-paragraph of plain prose, with sentence capitalization and full stop. The preferred pattern for alert queries is  `Syntax X causes behavior Y.` Any code elements included in the description should be enclosed in single quotes. For example:
+You must define an `@description` property for your query. This property defines a short help message. Query descriptions should be written as a sentence or short-paragraph of plain prose, with sentence capitalization and full stop. The preferred pattern for alert queries is  "Syntax X causes behavior Y." Any code elements included in the description should be enclosed in single quotes. For example:
 
 
 *   `@description Using a format string with an incorrect format causes a 'System.FormatException'.`
@@ -65,7 +65,7 @@ The `@id` should consist of a short noun phrase that identifies the issue that t
 *   `@id cs/command-line-injection`
 *   `@id java/string-concatenation-in-loop`
 
-Note, `@id` properties should be consistent for queries that highlight the same issue for different languages. For example, the following queries identify format strings which contain unsanitized input in Java and C++ code respectively:
+Note, `@id` properties should be consistent for queries that highlight the same issue for different languages. For example, the following queries identify format strings that contain unsanitized input in Java and C++ code respectively:
 
 
 
@@ -94,7 +94,7 @@ These `@kind` properties support two further mandatory properties which are adde
 *   `@problem.severity`–defines the level of severity of the alert: 
     *   `error`–an issue that is likely to cause incorrect program behavior, for example a crash or vulnerability.
     *   `warning`–an issue that indicates a potential problem in the code, or makes the code fragile if another (unrelated) part of code is changed.
-    *   `recommendation`–an issue that results in code that is hard to read, but is otherwise correct.
+    *   `recommendation`–an issue where the code behaves correctly, but it could be improved.
 
 The values of `@precision` and `@problem.severity` assigned to a query that is part of the standard set determine how the results are displayed by LGTM. See [About alerts](https://help.semmle.com/lgtm-enterprise/user/help/about-alerts.html) and [Alert interest](https://lgtm.com/help/lgtm/alert-interest) for further information. For information about using custom queries in LGTM on a 'per-project' basis, see [Writing custom queries to include in LGTM analysis](https://lgtm.com/help/lgtm/writing-custom-queries) and [About adding custom queries](https://help.semmle.com/lgtm-enterprise/admin/help/about-adding-custom-queries.html). 
 
@@ -102,9 +102,9 @@ The values of `@precision` and `@problem.severity` assigned to a query that is p
 
 The `@tags` property is used to define categories that the query relates to. Each query should belong to one (or more, if necessary) of the following four top-level categories:
 
-*   `@tags correctness`–for queries that detect common coding mistakes.
-*   `@tags maintainability`–for queries that detect opportunities for structural improvement.
-*   `@tags readability`–for queries that detect confusing or dangerous patterns that make it harder for developers to make correct changes to code.
+*   `@tags correctness`–for queries that detect incorrect program behavior.
+*   `@tags maintainability`–for queries that detect patterns that make it hard for developers to make changes to the code.
+*   `@tags readability`–for queries that detect confusing patterns that make it hard for developers to read the code.
 *   `@tags security`–for queries that detect security weaknesses. See below for further information.
 
 There are also more specific `@tags` that can be specified. See, the following pages for more information on the low-level tags:
@@ -138,10 +138,10 @@ When you tag a query like this, the associated CWE pages from [MITRE.org](http:/
 
 ### Alert  messages
 
-You must define an message in the select clause of an alert query to display with your results. Alert messages are strings that concisely describe the problem that the alert is highlighting and, if possible, also provide some context. For consistency, alert messages should adhere to the following guidelines:
+You must define a message in the select clause of an alert query to display with your results. Alert messages are strings that concisely describe the problem that the alert is highlighting and, if possible, also provide some context. For consistency, alert messages should adhere to the following guidelines:
 
 *   Each message should be a complete, standalone sentence. That is, it should be capitalized and have proper punctuation, including a full stop.
-*   The message should factually describe the problem that is being highlighted–they should not contain recommendations about how to fix the problem or value judgements.
+*   The message should factually describe the problem that is being highlighted–it should not contain recommendations about how to fix the problem or value judgements.
 *   Program element references should be in 'single quotes' to distinguish them from ordinary words. Quotes are not needed around substitutions ($@).
 *   Avoid constant alert message strings and include some context, if possible. For example, `The class 'Foo' is duplicated as 'Bar'.` is preferable to `This class is duplicated here.`
 *   Where you reference another program element, link to it if possible using a substitution (`$@`). Links should be used inline in the sentence, rather than as parenthesised lists or appositions.
