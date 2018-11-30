@@ -4,6 +4,9 @@
  * @kind problem
  * @id cpp/jpl-c/thread-safety
  * @problem.severity warning
+ * @tags correctness
+ *       concurrency
+ *       external/jpl
  */
 
 import cpp

@@ -4,6 +4,9 @@
  * @kind problem
  * @id cpp/jpl-c/avoid-nested-semaphores
  * @problem.severity warning
+ * @tags correctness
+ *       concurrency
+ *       external/jpl
  */
 
 import Semaphores
