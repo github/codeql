@@ -56,26 +56,47 @@ predicate calls(DataFlow::InvokeNode cs, Function callee, int imprecision) {
 
 /**
  * Gets a function that may be invoked at `cs`, preferring callees that
- * are less likely to be derived due to analysis imprecision.
+ * are less likely to be derived due to analysis imprecision and excluding
+ * whitelisted call sites and callees. Additionally, `isNew` is bound to
+ * `true` if `cs` is a `new` expression, and to `false` otherwise.
  */
-Function getALikelyCallee(DataFlow::InvokeNode cs) {
-  calls(cs, result, min(int p | calls(cs, _, p)))
+Function getALikelyCallee(DataFlow::InvokeNode cs, boolean isNew) {
+  calls(cs, result, min(int p | calls(cs, _, p))) and
+  not cs.isUncertain() and
+  not whitelistedCall(cs) and
+  not whitelistedCallee(result) and
+  (cs instanceof DataFlow::NewNode and isNew = true
+   or
+   cs instanceof DataFlow::CallNode and isNew = false)
+}
+
+/**
+ * Holds if `f` should be whitelisted, either because it guards against
+ * inconsistent `new` or we do not want to report it.
+ */
+predicate whitelistedCallee(Function f) {
+  // externs are special, so don't flag them
+  f.inExternsFile() or
+  // illegal constructor calls are flagged by query 'Illegal invocation',
+  // so don't flag them
+  f instanceof Constructor or
+  // if `f` itself guards against missing `new`, don't flag it
+  guardsAgainstMissingNew(f)
+}
+
+/**
+ * Holds if `call` should be whitelisted because it cannot cause problems
+ * with inconsistent `new`.
+ */
+predicate whitelistedCall(DataFlow::CallNode call) {
+  // super constructor calls behave more like `new`, so don't flag them
+  call.asExpr() instanceof SuperCall or
+  // don't flag if there is a receiver object
+  exists(call.getReceiver())
 }
 
 from Function f, DataFlow::NewNode new, DataFlow::CallNode call
-where // externs are special, so don't flag them
-      not f.inExternsFile() and
-      // illegal constructor calls are flagged by query 'Illegal invocation',
-      // so don't flag them
-      not f instanceof Constructor and
-      f = getALikelyCallee(new) and
-      f = getALikelyCallee(call) and
-      not guardsAgainstMissingNew(f) and
-      not new.isUncertain() and
-      not call.isUncertain() and
-      // super constructor calls behave more like `new`, so don't flag them
-      not call.asExpr() instanceof SuperCall and
-      // don't flag if there is a receiver object
-      not exists(call.getReceiver())
-select (FirstLineOf)f, capitalize(f.describe()) + " is invoked as a constructor here $@, " +
-      "and as a normal function here $@.", new, new.toString(), call, call.toString()
+where f = getALikelyCallee(new, true) and
+      f = getALikelyCallee(call, false)
+select (FirstLineOf)f, capitalize(f.describe()) + " is invoked as a constructor $@, " +
+      "and as a normal function $@.", new, "here", call, "here"
