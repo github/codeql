@@ -60,3 +60,5 @@
 | tst.js:356:16:356:27 | x10 !== null | ExampleConfiguration | false | tst.js:356:16:356:18 | x10 |
 | tst.js:356:32:356:48 | x10 !== undefined | ExampleConfiguration | false | tst.js:356:32:356:34 | x10 |
 | tst.js:358:9:358:14 | f10(v) | ExampleConfiguration | false | tst.js:358:13:358:13 | v |
+| tst.js:370:9:370:29 | o.p ==  ... listed" | ExampleConfiguration | true | tst.js:370:9:370:11 | o.p |
+| tst.js:377:11:377:32 | o[p] == ... listed" | ExampleConfiguration | true | tst.js:377:11:377:14 | o[p] |

@@ -200,3 +200,25 @@
 | Guards.cs:195:13:195:27 | call to method NotNullTest4 | true | Guards.cs:195:26:195:26 | access to parameter s | non-null |
 | Guards.cs:197:13:197:29 | !... | false | Guards.cs:197:14:197:29 | call to method NullTestWrong | true |
 | Guards.cs:197:13:197:29 | !... | true | Guards.cs:197:14:197:29 | call to method NullTestWrong | false |
+| Splitting.cs:12:17:12:25 | ... != ... | false | Splitting.cs:12:17:12:17 | access to parameter o | null |
+| Splitting.cs:12:17:12:25 | ... != ... | true | Splitting.cs:12:17:12:17 | access to parameter o | non-null |
+| Splitting.cs:22:17:22:25 | ... != ... | false | Splitting.cs:22:17:22:17 | access to parameter o | null |
+| Splitting.cs:22:17:22:25 | ... != ... | true | Splitting.cs:22:17:22:17 | access to parameter o | non-null |
+| Splitting.cs:32:17:32:25 | ... == ... | false | Splitting.cs:32:17:32:17 | access to parameter o | non-null |
+| Splitting.cs:32:17:32:25 | ... == ... | true | Splitting.cs:32:17:32:17 | access to parameter o | null |
+| Splitting.cs:41:13:41:21 | ... != ... | false | Splitting.cs:41:13:41:13 | access to parameter o | null |
+| Splitting.cs:41:13:41:21 | ... != ... | true | Splitting.cs:41:13:41:13 | access to parameter o | non-null |
+| Splitting.cs:54:13:54:21 | ... != ... | false | Splitting.cs:54:13:54:13 | access to parameter o | null |
+| Splitting.cs:54:13:54:21 | ... != ... | true | Splitting.cs:54:13:54:13 | access to parameter o | non-null |
+| Splitting.cs:65:13:65:21 | ... != ... | false | Splitting.cs:65:13:65:13 | access to parameter o | null |
+| Splitting.cs:65:13:65:21 | ... != ... | true | Splitting.cs:65:13:65:13 | access to parameter o | non-null |
+| Splitting.cs:76:13:76:21 | ... != ... | false | Splitting.cs:76:13:76:13 | access to parameter o | null |
+| Splitting.cs:76:13:76:21 | ... != ... | true | Splitting.cs:76:13:76:13 | access to parameter o | non-null |
+| Splitting.cs:87:26:87:34 | ... != ... | false | Splitting.cs:87:26:87:26 | access to parameter o | null |
+| Splitting.cs:87:26:87:34 | ... != ... | true | Splitting.cs:87:26:87:26 | access to parameter o | non-null |
+| Splitting.cs:97:26:97:34 | ... == ... | false | Splitting.cs:97:26:97:26 | access to parameter o | non-null |
+| Splitting.cs:97:26:97:34 | ... == ... | true | Splitting.cs:97:26:97:26 | access to parameter o | null |
+| Splitting.cs:105:22:105:30 | ... != ... | false | Splitting.cs:105:22:105:22 | access to parameter o | null |
+| Splitting.cs:105:22:105:30 | ... != ... | true | Splitting.cs:105:22:105:22 | access to parameter o | non-null |
+| Splitting.cs:116:22:116:30 | ... != ... | false | Splitting.cs:116:22:116:22 | access to parameter o | null |
+| Splitting.cs:116:22:116:30 | ... != ... | true | Splitting.cs:116:22:116:22 | access to parameter o | non-null |

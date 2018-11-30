@@ -183,7 +183,7 @@ module ControlFlow {
       )
     }
 
-    /** Gets a successor node of a given flow type, if any. */
+    /** Gets a successor node of a given type, if any. */
     Node getASuccessorByType(SuccessorType t) {
       result = getASuccessorByType(this, t)
     }
@@ -372,6 +372,7 @@ module ControlFlow {
     class EntryBlock = BBs::EntryBasicBlock;
     class ExitBlock = BBs::ExitBasicBlock;
     class JoinBlock = BBs::JoinBlock;
+    class JoinBlockPredecessor = BBs::JoinBlockPredecessor;
     class ConditionBlock = BBs::ConditionBlock;
   }
 
@@ -2549,7 +2550,7 @@ module ControlFlow {
           ) > 1
         }
 
-        private predicate isCandidateSuccessor(PreBasicBlock succ, ConditionalCompletion c) {
+        private predicate immediatelyControls(PreBasicBlock succ, ConditionalCompletion c) {
           succ = succ(this.getLastElement(), c) and
           forall(PreBasicBlock pred |
             pred = succ.getAPredecessor() and pred != this |
@@ -2559,7 +2560,7 @@ module ControlFlow {
 
         predicate controls(PreBasicBlock controlled, ConditionalSuccessor s) {
           exists(PreBasicBlock succ, ConditionalCompletion c |
-            isCandidateSuccessor(succ, c) |
+            immediatelyControls(succ, c) |
             succ.dominates(controlled) and
             s.matchesCompletion(c)
           )

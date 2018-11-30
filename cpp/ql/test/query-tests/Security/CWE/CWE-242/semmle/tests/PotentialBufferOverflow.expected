@@ -1,0 +1,7 @@
+| tests.cpp:112:9:112:12 | call to gets | gets does not guard against buffer overflow |
+| tests.cpp:249:2:249:5 | call to gets | gets does not guard against buffer overflow |
+| tests.cpp:250:2:250:5 | call to gets | gets does not guard against buffer overflow |
+| tests.cpp:258:2:258:8 | call to sprintf | This conversion may yield a string of length 17, which exceeds the allocated buffer size of 10 |
+| tests.cpp:259:2:259:8 | call to sprintf | This conversion may yield a string of length 17, which exceeds the allocated buffer size of 10 |
+| tests.cpp:272:2:272:8 | call to sprintf | This conversion may yield a string of length 9, which exceeds the allocated buffer size of 8 |
+| tests.cpp:273:2:273:8 | call to sprintf | This conversion may yield a string of length 9, which exceeds the allocated buffer size of 8 |
