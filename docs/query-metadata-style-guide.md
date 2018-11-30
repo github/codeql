@@ -65,6 +65,11 @@ The `@id` should consist of a short noun phrase that identifies the issue that t
 *   `@id cs/command-line-injection`
 *   `@id java/string-concatenation-in-loop`
 
+Further terms can be added to the `@id` to group queries that, for example, highlight similar issues or are of particular relevance to a certain framework. For example:
+
+*   `@id js/angular-js/missing-explicit-injection`
+*   `@id js/angular-js/duplicate-dependency`
+
 Note, `@id` properties should be consistent for queries that highlight the same issue for different languages. For example, the following queries identify format strings that contain unsanitized input in Java and C++ code respectively:
 
 
@@ -103,8 +108,8 @@ The values of `@precision` and `@problem.severity` assigned to a query that is p
 The `@tags` property is used to define categories that the query relates to. Each query should belong to one (or more, if necessary) of the following four top-level categories:
 
 *   `@tags correctness`–for queries that detect incorrect program behavior.
-*   `@tags maintainability`–for queries that detect patterns that make it hard for developers to make changes to the code.
-*   `@tags readability`–for queries that detect confusing patterns that make it hard for developers to read the code.
+*   `@tags maintainability`–for queries that detect patterns that make it harder for developers to make changes to the code.
+*   `@tags readability`–for queries that detect confusing patterns that make it harder for developers to read the code.
 *   `@tags security`–for queries that detect security weaknesses. See below for further information.
 
 There are also more specific `@tags` that can be specified. See, the following pages for more information on the low-level tags:
