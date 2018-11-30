@@ -971,8 +971,12 @@ export class TypeTable {
     }
     let selfType = this.getSelfType(type);
     if (selfType != null) {
-      this.checkExpansiveness(selfType);
       let id = this.getId(selfType);
+      let expansiveness = this.expansiveTypes.get(id);
+      if (expansiveness != null) {
+        return expansiveness;
+      }
+      this.checkExpansiveness(selfType);
       return this.expansiveTypes.get(id);
     }
     return false;
