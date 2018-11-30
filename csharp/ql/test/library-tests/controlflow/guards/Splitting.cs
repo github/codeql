@@ -119,4 +119,20 @@ public class Splitting
             o.ToString(); // null guarded
         return o.ToString(); // null guarded
     }
+
+    public void M12(int i, bool b)
+    {
+        object o = null;
+        do
+        {
+            if (o != null)
+            {
+                if (b)
+                    return;
+                o = M11(b, o);
+                o.GetHashCode(); // not null guarded
+            }
+        }
+        while (i > 0);
+    }
 }
