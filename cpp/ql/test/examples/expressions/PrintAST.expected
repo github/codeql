@@ -886,6 +886,9 @@ VacuousDestructorCall.cpp:
 #    4|       0: (vacuous destructor call)
 #    4|           Type = void
 #    4|           ValueCategory = prvalue
+#    4|         0: y
+#    4|             Type = int *
+#    4|             ValueCategory = prvalue(load)
 #    5|     2: return ...
 #    7| Vacuous(int) -> void
 #    7|   params: 
