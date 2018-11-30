@@ -12,6 +12,11 @@ interface AugmentedType extends ts.Type {
    * An internal property for predefined types, such as "true", "false", and "object".
    */
   intrinsicName?: string;
+
+  /**
+   * Cached ID of the type object.
+   */
+  $id?: number;
 }
 
 function isTypeReference(type: ts.Type): type is ts.TypeReference {
@@ -363,7 +368,7 @@ export class TypeTable {
    *
    * Returns `null` if we do not support extraction of this type.
    */
-  public getId(type: ts.Type): number | null {
+  public getId(type: AugmentedType): number | null {
     if (this.typeRecursionDepth > 100) {
       // Ignore infinitely nested anonymous types, such as `{x: {x: {x: ... }}}`.
       // Such a type can't be written directly with TypeScript syntax (as it would need to be named),
@@ -373,6 +378,10 @@ export class TypeTable {
     // Replace very long string literal types with `string`.
     if ((type.flags & ts.TypeFlags.StringLiteral) && ((type as ts.LiteralType).value as string).length > 30) {
       type = this.typeChecker.getBaseTypeOfLiteralType(type);
+    }
+    let cachedId = type.$id;
+    if (cachedId != null) {
+      return cachedId;
     }
     ++this.typeRecursionDepth;
     let content = this.getTypeString(type);
@@ -407,6 +416,8 @@ export class TypeTable {
         this.buildTypeWorklist.push([type, id]);
       }
     }
+    // Cache the ID on the type object.
+    type.$id = id;
     return id;
   }
 
