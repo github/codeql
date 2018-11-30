@@ -27,6 +27,7 @@
 | Missing return statement (`cpp/missing-return`) | Visible by default | The precision of this query has been increased from 'medium' to 'high', which makes it visible by default in LGTM. It was 'medium' in release 1.17 and 1.18 because it had false positives due to an extractor bug that was fixed in 1.18. |
 | Missing return statement | Fewer false positive results | The query is now produces correct results when a function returns a template-dependent type, or makes a non-returning call to another function. |
 | Multiplication result converted to larger type (`cpp/integer-multiplication-cast-to-long`) | Fewer false positive results | Char-typed numbers are no longer considered to potentially large. |
+| Non-virtual destructor in base class (`cpp/virtual-destructor`) | Fewer false positive results | This query was renamed from "No virtual destructor" and moved from file name `AV Rule 78.ql` to `NonVirtualDestructorInBaseClass.ql`. The new version ignores base classes with non-public destructors since we consider those to be adequately protected. |
 | Overloaded assignment does not return 'this' (`cpp/assignment-does-not-return-this`) | Fewer false positive results | This query now ignores any return statements that are unreachable. |
 | Static array access may cause overflow | More correct results | Data flow to the size argument of a buffer operation is now checked in this query. |
 | Call to memory access function may overflow buffer | More correct results | Array indexing with a negative index is now detected by this query. |
