@@ -779,8 +779,8 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override Id MakeId(bool inContext) => elementType.GetId(inContext) + openBracket + rank + closeBracket;
 
-        static readonly StringId openBracket = new StringId("[]");
-        static readonly StringId closeBracket = new StringId("[]");
+        static readonly StringId openBracket = new StringId("[");
+        static readonly StringId closeBracket = new StringId("]");
 
         public override Id Name => elementType.Name + openBracket + closeBracket;
 
@@ -1107,11 +1107,20 @@ namespace Semmle.Extraction.CIL.Entities
         ITypeSignature IConstructedTypeProvider<ITypeSignature>.GetGenericInstantiation(ITypeSignature genericType, ImmutableArray<ITypeSignature> typeArguments) =>
             new Instantiation { genericType = genericType, typeArguments = typeArguments };
 
+        static readonly Id open = Id.Create("{");
+        static readonly Id close = Id.Create("}");
+
         class GenericMethodParameter : ITypeSignature
         {
+            public object innerGc;
             public int index;
             static readonly Id excl = Id.Create("M!");
-            public Id MakeId(GenericContext gc) => excl + index;
+            public Id MakeId(GenericContext outerGc)
+            {
+                if (innerGc != outerGc && innerGc is Method method)
+                    return open + method.Label.Value + close + excl + index;
+                return excl + index;
+            }
         }
 
         class GenericTypeParameter : ITypeSignature
@@ -1122,7 +1131,7 @@ namespace Semmle.Extraction.CIL.Entities
         }
 
         ITypeSignature ISignatureTypeProvider<ITypeSignature, object>.GetGenericMethodParameter(object genericContext, int index) =>
-            new GenericMethodParameter { index = index };
+            new GenericMethodParameter { innerGc = genericContext, index = index };
 
         ITypeSignature ISignatureTypeProvider<ITypeSignature, object>.GetGenericTypeParameter(object genericContext, int index) =>
             new GenericTypeParameter { index = index };

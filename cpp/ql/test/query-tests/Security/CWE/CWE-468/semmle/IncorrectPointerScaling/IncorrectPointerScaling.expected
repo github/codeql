@@ -1,0 +1,3 @@
+| test.cpp:50:19:50:19 | p | This pointer might have type $@ (size 8), but the pointer arithmetic here is done with type int * (size 4). | test.cpp:45:11:45:11 | test.cpp:45:11:45:11 | double |
+| test.cpp:94:18:94:18 | x | This pointer might have type $@ (size 4), but the pointer arithmetic here is done with type short * (size 2). | test.cpp:88:21:88:21 | test.cpp:88:21:88:21 | int |
+| test.cpp:130:27:130:29 | arr | This pointer might have type $@ (size 4), but the pointer arithmetic here is done with type short * (size 2). | test.cpp:128:16:128:18 | test.cpp:128:16:128:18 | int |

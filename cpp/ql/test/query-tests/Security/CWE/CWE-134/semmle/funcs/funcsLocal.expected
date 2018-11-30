@@ -1,0 +1,8 @@
+| funcsLocal.c:17:9:17:10 | i1 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:16:8:16:9 | i1 | fread |
+| funcsLocal.c:27:9:27:10 | i3 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:26:8:26:9 | i3 | fgets |
+| funcsLocal.c:32:9:32:10 | i4 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:31:13:31:17 | call to fgets | fgets |
+| funcsLocal.c:37:9:37:10 | i5 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:36:7:36:8 | i5 | gets |
+| funcsLocal.c:42:9:42:10 | i6 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:41:13:41:16 | call to gets | gets |
+| funcsLocal.c:47:9:47:11 | * ... | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:46:7:46:9 | * ... | gets |
+| funcsLocal.c:53:9:53:11 | * ... | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:52:8:52:11 | call to gets | gets |
+| funcsLocal.c:58:9:58:10 | e1 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:16:8:16:9 | i1 | fread |

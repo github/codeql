@@ -1,0 +1,2 @@
+| search.c:17:8:17:12 | query | Cross-site scripting vulnerability due to $@. | search.c:41:21:41:26 | call to getenv | this query data |
+| search.c:23:39:23:43 | query | Cross-site scripting vulnerability due to $@. | search.c:41:21:41:26 | call to getenv | this query data |

@@ -2,6 +2,8 @@
 private import semmle.code.csharp.frameworks.system.Diagnostics
 private import semmle.code.csharp.frameworks.test.VisualStudio
 private import semmle.code.csharp.frameworks.System
+private import ControlFlow
+private import ControlFlow::BasicBlocks
 
 /** An assertion method. */
 abstract class AssertMethod extends Method {
@@ -45,6 +47,49 @@ class Assertion extends MethodCall {
   /** Gets the expression that this assertion pertains to. */
   Expr getExpr() {
     result = this.getArgumentForParameter(target.getAssertedParameter())
+  }
+
+  pragma[nomagic]
+  private JoinBlockPredecessor getAPossiblyDominatedPredecessor(JoinBlock jb) {
+    exists(BasicBlock bb |
+      bb = this.getAControlFlowNode().getBasicBlock() |
+      result = bb.getASuccessor*()
+    ) and
+    result.getASuccessor() = jb
+  }
+
+  pragma[nomagic]
+  private predicate isPossiblyDominatedJoinBlock(JoinBlock jb) {
+    exists(this.getAPossiblyDominatedPredecessor(jb)) and
+    forall(BasicBlock pred |
+      pred = jb.getAPredecessor() |
+      pred = this.getAPossiblyDominatedPredecessor(jb)
+    )
+  }
+
+  /**
+   * Holds if this assertion strictly dominates basic block `bb`. That is, `bb`
+   * can only be reached from the callable entry point by going via *some* basic
+   * block containing this element.
+   *
+   * This predicate is different from
+   * `this.getAControlFlowNode().getBasicBlock().strictlyDominates(bb)`
+   * in that it takes control flow splitting into account.
+   */
+  pragma[nomagic]
+  predicate strictlyDominates(BasicBlock bb) {
+    this.getAControlFlowNode().getBasicBlock().immediatelyDominates(bb)
+    or
+    if bb instanceof JoinBlock then
+      this.isPossiblyDominatedJoinBlock(bb) and
+      forall(BasicBlock pred |
+        pred = this.getAPossiblyDominatedPredecessor(bb) |
+        this.strictlyDominates(pred)
+        or
+        this.getAControlFlowNode().getBasicBlock() = pred
+      )
+    else
+      this.strictlyDominates(bb.getAPredecessor())
   }
 }
 

@@ -1,0 +1,3 @@
+| test3.c:12:31:12:34 | * ... | $@ flows to here and is used in an expression which might overflow negatively. | test3.c:11:15:11:18 | argv | User-provided value |
+| test3.c:13:16:13:19 | * ... | $@ flows to here and is used in an expression which might overflow negatively. | test3.c:11:15:11:18 | argv | User-provided value |
+| test4.cpp:13:17:13:20 | access to array | $@ flows to here and is used in an expression which might overflow negatively. | test4.cpp:9:13:9:16 | argv | User-provided value |

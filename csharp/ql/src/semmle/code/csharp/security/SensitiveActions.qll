@@ -190,3 +190,10 @@ class SendingMethod extends SensitiveExecutionMethod {
     )
   }
 }
+
+/** A call to a method that sends data, and so should not be run conditionally on user input. */
+class SensitiveExecutionMethodCall extends MethodCall {
+  SensitiveExecutionMethodCall() {
+    this.getTarget() instanceof SensitiveExecutionMethod
+  }
+}
