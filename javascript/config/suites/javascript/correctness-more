@@ -15,3 +15,4 @@
 + semmlecode-javascript-queries/Statements/ReturnOutsideFunction.ql: /Correctness/Statements
 + semmlecode-javascript-queries/Statements/SuspiciousUnusedLoopIterationVariable.ql: /Correctness/Statements
 + semmlecode-javascript-queries/Statements/UselessConditional.ql: /Correctness/Statements
++ semmlecode-javascript-queries/Statements/UselessComparisonTest.ql: /Correctness/Statements
