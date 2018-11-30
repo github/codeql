@@ -4,6 +4,9 @@
  * @kind problem
  * @id cpp/jpl-c/release-locks-when-acquired
  * @problem.severity warning
+ * @tags correctness
+ *       concurrency
+ *       external/jpl
  */
 
 import Semaphores

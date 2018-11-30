@@ -3,7 +3,10 @@
  * @description Macros shall not be #define'd within a function or a block.
  * @kind problem
  * @id cpp/jpl-c/macro-in-block
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
+ *       external/jpl
  */
 
 import cpp

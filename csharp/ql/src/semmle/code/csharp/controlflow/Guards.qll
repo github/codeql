@@ -285,7 +285,7 @@ class AccessOrCallExpr extends Expr {
   Declaration getTarget() { result = target }
 
   /**
-   * Gets the (non-trivial) SSA definition corresponding to the longest
+   * Gets a (non-trivial) SSA definition corresponding to the longest
    * qualifier chain of this expression, if any.
    *
    * This includes the case where this expression is itself an access to an
@@ -299,13 +299,11 @@ class AccessOrCallExpr extends Expr {
    * x.Foo().Bar(); // SSA qualifier: SSA definition for `x`
    * x;             // SSA qualifier: SSA definition for `x`
    * ```
+   *
+   * An expression can have more than one SSA qualifier in the presence
+   * of control flow splitting.
    */
-  Ssa::Definition getSsaQualifier() { result = getSsaQualifier(this) }
-
-  /**
-   * Holds if this expression has an SSA qualifier.
-   */
-  predicate hasSsaQualifier() { exists(this.getSsaQualifier()) }
+  Ssa::Definition getAnSsaQualifier() { result = getAnSsaQualifier(this) }
 }
 
 private Declaration getDeclarationTarget(Expr e) {
@@ -313,11 +311,11 @@ private Declaration getDeclarationTarget(Expr e) {
   result = e.(Call).getTarget()
 }
 
-private Ssa::Definition getSsaQualifier(Expr e) {
+private Ssa::Definition getAnSsaQualifier(Expr e) {
   e = getATrackedRead(result)
   or
   not e = getATrackedRead(_) and
-  result = getSsaQualifier(e.(QualifiableExpr).getQualifier())
+  result = getAnSsaQualifier(e.(QualifiableExpr).getQualifier())
 }
 
 private AssignableRead getATrackedRead(Ssa::Definition def) {
@@ -688,10 +686,9 @@ module Internal {
     predicate isGuardedBy(AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub, AbstractValue v) {
       isGuardedBy1(guarded, g, sub, v) and
       sub = g.getAChildExpr*() and
-      (
-        not guarded.hasSsaQualifier() and not sub.hasSsaQualifier()
-        or
-        guarded.getSsaQualifier() = sub.getSsaQualifier()
+      forall(Ssa::Definition def |
+        def = sub.getAnSsaQualifier() |
+        def = guarded.getAnSsaQualifier()
       )
     }
   }

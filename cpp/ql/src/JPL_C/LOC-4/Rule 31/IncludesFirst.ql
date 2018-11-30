@@ -3,7 +3,10 @@
  * @description #include directives in a file shall only be preceded by other preprocessor directives or comments.
  * @kind problem
  * @id cpp/jpl-c/includes-first
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
+ *       external/jpl
  */
 
 import cpp

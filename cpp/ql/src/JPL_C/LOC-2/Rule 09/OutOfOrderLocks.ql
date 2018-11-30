@@ -4,6 +4,9 @@
  * @kind problem
  * @id cpp/jpl-c/out-of-order-locks
  * @problem.severity warning
+ * @tags correctness
+ *       concurrency
+ *       external/jpl
  */
 
 import Semaphores

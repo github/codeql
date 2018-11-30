@@ -3,7 +3,10 @@
  * @description Typedefs that indicate size and signedness should be used in place of the basic types.
  * @kind problem
  * @id cpp/jpl-c/basic-int-types
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
+ *       external/jpl
  */
 
 import cpp
