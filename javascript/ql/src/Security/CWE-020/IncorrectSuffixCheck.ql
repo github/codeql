@@ -31,7 +31,7 @@ class IndexOfCall extends DataFlow::MethodCallNode {
   /**
    * Gets an `indexOf` call with the same receiver, argument, and method name, including this call itself.
    */
-  IndexOfCall getAnEqualiventIndexOfCall() {
+  IndexOfCall getAnEquivalentIndexOfCall() {
     result.getReceiver().getALocalSource() = this.getReceiver().getALocalSource() and
     result.getArgument(0).getALocalSource() = this.getArgument(0).getALocalSource() and
     result.getMethodName() = this.getMethodName()
@@ -118,13 +118,13 @@ class UnsafeIndexOfComparison extends EqualityTest {
 
     // Check for indexOf being -1
     not exists (EqualityTest test, Expr minusOne |
-      test.hasOperands(indexOf.getAnEqualiventIndexOfCall().asExpr(), minusOne) and
+      test.hasOperands(indexOf.getAnEquivalentIndexOfCall().asExpr(), minusOne) and
       minusOne.getIntValue() = -1
     ) and
     
     // Check for indexOf being >1, or >=0, etc
     not exists (RelationalComparison test |
-      test.getGreaterOperand() = indexOf.getAnEqualiventIndexOfCall().asExpr() and
+      test.getGreaterOperand() = indexOf.getAnEquivalentIndexOfCall().asExpr() and
       exists (int value | value = test.getLesserOperand().getIntValue() |
         value >= 0
         or
