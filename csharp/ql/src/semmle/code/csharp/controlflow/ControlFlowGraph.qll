@@ -3638,7 +3638,7 @@ module ControlFlow {
               kind = rank[r](BooleanSplitSubKind kind0 |
                 kind0.getEnclosingCallable() = c and
                 kind0.startsSplit(_) |
-                kind0 order by kind0.getLocation().getStartLine(), kind0.getLocation().getStartColumn()
+                kind0 order by kind0.getLocation().getStartLine(), kind0.getLocation().getStartColumn(), kind0.toString()
               )
             )
           }

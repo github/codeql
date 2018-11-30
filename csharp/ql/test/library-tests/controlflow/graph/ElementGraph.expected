@@ -524,7 +524,14 @@
 | Conditions.cs:133:17:133:22 | this access | Conditions.cs:133:17:133:22 | access to field Field1 | semmle.label | successor |
 | Conditions.cs:134:13:139:13 | {...} | Conditions.cs:135:17:138:17 | if (...) ... | semmle.label | successor |
 | Conditions.cs:135:17:138:17 | if (...) ... | Conditions.cs:135:21:135:26 | this access | semmle.label | successor |
+| Conditions.cs:135:21:135:26 | access to field Field2 | Conditions.cs:131:16:131:19 | true | semmle.label | false |
+| Conditions.cs:135:21:135:26 | access to field Field2 | Conditions.cs:136:17:138:17 | {...} | semmle.label | true |
 | Conditions.cs:135:21:135:26 | this access | Conditions.cs:135:21:135:26 | access to field Field2 | semmle.label | successor |
+| Conditions.cs:136:17:138:17 | {...} | Conditions.cs:137:21:137:38 | ...; | semmle.label | successor |
+| Conditions.cs:137:21:137:26 | access to field Field1 | Conditions.cs:137:21:137:37 | call to method ToString | semmle.label | successor |
+| Conditions.cs:137:21:137:26 | this access | Conditions.cs:137:21:137:26 | access to field Field1 | semmle.label | successor |
+| Conditions.cs:137:21:137:37 | call to method ToString | Conditions.cs:131:16:131:19 | true | semmle.label | successor |
+| Conditions.cs:137:21:137:38 | ...; | Conditions.cs:137:21:137:26 | this access | semmle.label | successor |
 | ExitMethods.cs:8:5:11:5 | {...} | ExitMethods.cs:9:9:9:25 | ...; | semmle.label | successor |
 | ExitMethods.cs:9:9:9:24 | call to method ErrorMaybe | ExitMethods.cs:10:9:10:15 | return ...; | semmle.label | successor |
 | ExitMethods.cs:9:9:9:25 | ...; | ExitMethods.cs:9:20:9:23 | true | semmle.label | successor |
