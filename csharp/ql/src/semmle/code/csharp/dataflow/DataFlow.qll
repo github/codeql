@@ -627,14 +627,14 @@ module DataFlow {
           result = sourceDecl
         else if sourceDecl instanceof CIL::Callable then
           // CIL callable with C# implementation in the database
-          sourceDecl.getLabel() = result.(Callable).getLabel()
+          sourceDecl.matchesHandle(result.(Callable))
           or
           // CIL callable without C# implementation in the database
-          not sourceDecl.getLabel() = any(Callable k).getLabel() and
+          not sourceDecl.matchesHandle(any(Callable k)) and
           result = sourceDecl
         else
           // C# callable without C# implementation in the database
-          sourceDecl.getLabel() = result.(CIL::Callable).getLabel()
+          sourceDecl.matchesHandle(result.(CIL::Callable))
       )
     }
 
