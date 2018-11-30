@@ -95,8 +95,20 @@ predicate whitelistedCall(DataFlow::CallNode call) {
   exists(call.getReceiver())
 }
 
+/**
+ * Get the `new` or call (depending on whether `isNew` is true or false) of `f`
+ * that comes first under a lexicographical ordering by file path, start line
+ * and start column.
+ */
+DataFlow::InvokeNode getFirstInvocation(Function f, boolean isNew) {
+  result = min(DataFlow::InvokeNode invk, string path, int line, int col |
+    f = getALikelyCallee(invk, isNew) and invk.hasLocationInfo(path, line, col, _, _) |
+    invk order by path, line, col
+  )
+}
+
 from Function f, DataFlow::NewNode new, DataFlow::CallNode call
-where f = getALikelyCallee(new, true) and
-      f = getALikelyCallee(call, false)
+where new = getFirstInvocation(f, true) and
+      call = getFirstInvocation(f, false)
 select (FirstLineOf)f, capitalize(f.describe()) + " is invoked as a constructor $@, " +
       "and as a normal function $@.", new, "here", call, "here"
