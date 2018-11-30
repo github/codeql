@@ -135,6 +135,7 @@ predicate bbStrictlyDominates(BasicBlock dominator, BasicBlock node) {
  * Holds if `postDominator` is a strict post-dominator of `node` in the control-flow
  * graph of basic blocks. Being strict means that `postDominator != node`.
  */
+pragma[nomagic] // magic prevents fastTC
 predicate bbStrictlyPostDominates(BasicBlock postDominator, BasicBlock node) {
   bbIPostDominates+(postDominator, node)
 }
