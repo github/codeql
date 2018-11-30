@@ -7,3 +7,4 @@
 | tst.js:39:10:39:49 | x.lastI ... .length | This suffix check is missing a length comparison to correctly handle lastIndexOf returning -1. |
 | tst.js:55:32:55:71 | x.index ... gth - 1 | This suffix check is missing a length comparison to correctly handle indexOf returning -1. |
 | tst.js:67:32:67:71 | x.index ... gth - 1 | This suffix check is missing a length comparison to correctly handle indexOf returning -1. |
+| tst.js:76:25:76:57 | index = ... gth - 1 | This suffix check is missing a length comparison to correctly handle indexOf returning -1. |

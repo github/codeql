@@ -36,10 +36,17 @@ class IndexOfCall extends DataFlow::MethodCallNode {
     result.getArgument(0).getALocalSource() = this.getArgument(0).getALocalSource() and
     result.getMethodName() = this.getMethodName()
   }
+
+  /**
+   * Gets an expression that refers to the return value of this call. 
+   */
+  Expr getAUse() {
+    this.flowsToExpr(result)
+  }
 }
 
 /**
- * Gets a source of the given string value.
+ * Gets a source of the given string value, or one of its operands if it is a concatenation.
  */
 DataFlow::SourceNode getStringSource(DataFlow::Node node) {
   result = node.getALocalSource()
@@ -65,7 +72,7 @@ class LiteralLengthExpr extends DotExpr {
 }
 
 /**
- * Holds if `node` is derived from the length of the given `indexOf`-operand.
+ * Holds if `length` is derived from the length of the given `indexOf`-operand.
  */
 predicate isDerivedFromLength(DataFlow::Node length, DataFlow::Node operand) {
   exists (IndexOfCall call | operand = call.getAnOperand() |
@@ -84,9 +91,7 @@ predicate isDerivedFromLength(DataFlow::Node length, DataFlow::Node operand) {
       length = lengthExpr.flow())
   )
   or
-  exists (DataFlow::Node mid |
-    isDerivedFromLength(mid, operand) and
-    length = mid.getASuccessor())
+  isDerivedFromLength(length.getAPredecessor(), operand)
   or
   exists (SubExpr sub |
     isDerivedFromLength(sub.getAnOperand().flow(), operand) and
@@ -101,7 +106,7 @@ class UnsafeIndexOfComparison extends EqualityTest {
   DataFlow::Node testedValue;
 
   UnsafeIndexOfComparison() {
-    hasOperands(indexOf.asExpr(), testedValue.asExpr()) and
+    hasOperands(indexOf.getAUse(), testedValue.asExpr()) and
     isDerivedFromLength(testedValue, indexOf.getReceiver()) and
     isDerivedFromLength(testedValue, indexOf.getArgument(0)) and
 
@@ -118,13 +123,13 @@ class UnsafeIndexOfComparison extends EqualityTest {
 
     // Check for indexOf being -1
     not exists (EqualityTest test, Expr minusOne |
-      test.hasOperands(indexOf.getAnEquivalentIndexOfCall().asExpr(), minusOne) and
+      test.hasOperands(indexOf.getAnEquivalentIndexOfCall().getAUse(), minusOne) and
       minusOne.getIntValue() = -1
     ) and
     
     // Check for indexOf being >1, or >=0, etc
     not exists (RelationalComparison test |
-      test.getGreaterOperand() = indexOf.getAnEquivalentIndexOfCall().asExpr() and
+      test.getGreaterOperand() = indexOf.getAnEquivalentIndexOfCall().getAUse() and
       exists (int value | value = test.getLesserOperand().getIntValue() |
         value >= 0
         or

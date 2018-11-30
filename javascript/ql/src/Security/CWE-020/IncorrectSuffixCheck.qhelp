@@ -8,7 +8,7 @@
 
         The <code>indexOf</code> and <code>lastIndexOf</code> methods are sometimes used to check
         if a substring occurs at a certain position in a string. However, if the returned index
-        is compared to an expression that might evaluate to -1, the check can may pass in some
+        is compared to an expression that might evaluate to -1, the check may pass in some
         cases where the substring was not found at all.
 
         </p>
@@ -26,7 +26,7 @@
 
             Use <code>String.prototype.endsWith</code> if it is available.
             Otherwise, explicitly handle the -1 case, either by checking the relative
-            lengths of the strings, or check if the returned index is -1.
+            lengths of the strings, or by checking if the returned index is -1.
 
         </p>
 
@@ -47,7 +47,7 @@
 
             However, if <code>y</code> is one character longer than <code>x</code>, the right-hand side
             <code>x.length - y.length</code> becomes -1, which then equals the return value
-            of <code>lastIndexOf</code>. This will make the test pass, evne though <code>x</code> does not
+            of <code>lastIndexOf</code>. This will make the test pass, even though <code>x</code> does not
             end with <code>y</code>.
 
         </p>

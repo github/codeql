@@ -70,3 +70,8 @@ function indexOfCheckBad(x, y) {
 function endsWithSlash(x) {
   return x.indexOf("/") === x.length - 1; // OK - even though it also matches the empty string
 }
+
+function withIndexOfCheckBad(x, y) {
+  let index = x.indexOf(y);
+  return index !== 0 && index === x.length - y.length - 1; // NOT OK
+}
