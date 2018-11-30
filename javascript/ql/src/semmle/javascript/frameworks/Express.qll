@@ -127,10 +127,12 @@ module Express {
     Expr getRouteHandlerExpr(int index) {
       // The first argument is a URI pattern if it is a string. If it could possibly be
       // a function, we consider it to be a route handler, otherwise a URI pattern.
-      if getArgument(0).analyze().getAType() = TTFunction() then
-        result = getArgument(index)
-      else
-        (index >= 0 and result = getArgument(index + 1))
+      exists (AnalyzedNode firstArg | firstArg = getArgument(0).analyze() |
+        if firstArg.getAType() = TTFunction() then
+          result = getArgument(index)
+        else
+          (index >= 0 and result = getArgument(index + 1))
+      )
     }
 
     /** Gets an argument that represents a route handler being registered. */
