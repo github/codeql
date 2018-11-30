@@ -175,33 +175,33 @@ public class JSDocParser {
 		throw new ParseError(message, null);
 	}
 
-	private static class TypeExpressionParser {
-		private enum Token {
-			ILLEGAL,    // ILLEGAL
-			DOT,        // .
-			DOT_LT,     // .<
-			REST,       // ...
-			LT,         // <
-			GT,         // >
-			LPAREN,     // (
-			RPAREN,     // )
-			LBRACE,     // {
-			RBRACE,     // }
-			LBRACK,    // [
-			RBRACK,    // ]
-			COMMA,     // ,
-			COLON,     // :
-			STAR,      // *
-			PIPE,      // |
-			QUESTION,  // ?
-			BANG,      // !
-			EQUAL,     // =
-			NAME,      // name token
-			STRING,    // string
-			NUMBER,    // number
-			EOF
-		};
+	private enum Token {
+		ILLEGAL,    // ILLEGAL
+		DOT,        // .
+		DOT_LT,     // .<
+		REST,       // ...
+		LT,         // <
+		GT,         // >
+		LPAREN,     // (
+		RPAREN,     // )
+		LBRACE,     // {
+		RBRACE,     // }
+		LBRACK,    // [
+		RBRACK,    // ]
+		COMMA,     // ,
+		COLON,     // :
+		STAR,      // *
+		PIPE,      // |
+		QUESTION,  // ?
+		BANG,      // !
+		EQUAL,     // =
+		NAME,      // name token
+		STRING,    // string
+		NUMBER,    // number
+		EOF
+	};
 
+	private class TypeExpressionParser {
 		String source;
 		int length;
 		int previous, index;
@@ -1161,9 +1161,9 @@ public class JSDocParser {
 			return expr;
 		}
 	}
-	private static TypeExpressionParser typed = new TypeExpressionParser();
+	private TypeExpressionParser typed = new TypeExpressionParser();
 
-	private static class JSDocTagParser {
+	private class JSDocTagParser {
 		int index, lineNumber, lineStart, length;
 		String source;
 		boolean recoverable = true, sloppy = false;
