@@ -23,8 +23,11 @@
 | Expression has no effect | Fewer false positive results | Expressions in template instantiations are now excluded from this query. |
 | Global could be static | Fewer false positive results | Variables with declarations in header files are now excluded from this query. |
 | Resource not released in destructor | Fewer false positive results | Placement new is now excluded from the query. Also fixed an issue where false positives could occur if the destructor body was not in the snapshot. |
+| Memory is never freed | Fewer false positive results | This query now accounts for C++ _placement new_, which returns a pointer that does not need to be freed. |
 | Missing return statement (`cpp/missing-return`) | Visible by default | The precision of this query has been increased from 'medium' to 'high', which makes it visible by default in LGTM. It was 'medium' in release 1.17 and 1.18 because it had false positives due to an extractor bug that was fixed in 1.18. |
 | Missing return statement | Fewer false positive results | The query is now produces correct results when a function returns a template-dependent type, or makes a non-returning call to another function. |
+| Multiplication result converted to larger type (`cpp/integer-multiplication-cast-to-long`) | Fewer false positive results | Char-typed numbers are no longer considered to potentially large. |
+| Overloaded assignment does not return 'this' (`cpp/assignment-does-not-return-this`) | Fewer false positive results | This query now ignores any return statements that are unreachable. |
 | Static array access may cause overflow | More correct results | Data flow to the size argument of a buffer operation is now checked in this query. |
 | Call to memory access function may overflow buffer | More correct results | Array indexing with a negative index is now detected by this query. |
 | Self comparison | Fewer false positive results | Code inside macro invocations is now excluded from the query. |
