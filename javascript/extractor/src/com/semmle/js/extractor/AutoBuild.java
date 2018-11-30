@@ -671,8 +671,10 @@ public class AutoBuild {
 			long start = logBeginProcess("Extracting " + file);
 			extractor.extract(f, state);
 			logEndProcess(start, "Done extracting " + file);
-		} catch (IOException e) {
-			throw new ResourceError("Exception while extracting " + file + ".", e);
+		} catch (Throwable t) {
+			System.err.println("Exception while extracting " + file + ".");
+			t.printStackTrace(System.err);
+			System.exit(1);
 		}
 	}
 
