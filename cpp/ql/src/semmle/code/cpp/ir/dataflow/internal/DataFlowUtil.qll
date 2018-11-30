@@ -131,7 +131,9 @@ UninitializedNode uninitializedNode(LocalVariable v) {
  */
 predicate localFlowStep(Node nodeFrom, Node nodeTo) {
   nodeTo.(CopyInstruction).getSourceValue() = nodeFrom or
-  nodeTo.(PhiInstruction).getAnOperand().getDefinitionInstruction() = nodeFrom
+  nodeTo.(PhiInstruction).getAnOperand().getDefinitionInstruction() = nodeFrom or
+  // Treat all conversions as flow, even conversions between different numeric types.
+  nodeTo.(ConvertInstruction).getOperand() = nodeFrom
 }
 
 /**
