@@ -197,4 +197,16 @@ public class Guards
         if (!NullTestWrong(s))
             Console.WriteLine(s); // not null guarded
     }
+
+    void M17(object o, string[] args)
+    {
+        if (o != null)
+        {
+            o.ToString(); // null guarded
+            foreach (var arg in args)
+            {
+                o.ToString(); // null guarded
+            }
+        }
+    }
 }

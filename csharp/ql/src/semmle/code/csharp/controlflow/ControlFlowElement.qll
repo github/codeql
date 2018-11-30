@@ -106,7 +106,8 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
       this.immediatelyControls(mid, s) |
       result = mid.getASuccessor*()
     ) and
-    result.getASuccessor() = controlled
+    result.getASuccessor() = controlled and
+    not controlled.dominates(result)
   }
 
   pragma[nomagic]
@@ -115,6 +116,8 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
     forall(BasicBlock pred |
       pred = controlled.getAPredecessor() |
       pred = this.getAPossiblyControlledPredecessor(controlled, s)
+      or
+      controlled.dominates(pred)
     )
   }
 
