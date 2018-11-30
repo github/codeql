@@ -81,21 +81,20 @@ class InvokeNode extends DataFlow::DefaultSourceNode {
   }
 
   /** Gets an abstract value representing possible callees of this call site. */
-  cached
-  AbstractValue getACalleeValue() { result = impl.getCalleeNode().analyze().getAValue() }
-
-  /** Gets a potential callee based on dataflow analysis results. */
-  private Function getACalleeFromDataflow() {
-    result = getACalleeValue().(AbstractCallable).getFunction()
-  }
+  AbstractValue getACalleeValue() { result = InvokeNode::getACalleeValue(this) }
 
   /** Gets a potential callee of this call site. */
-  Function getACallee() {
-    result = getACalleeFromDataflow()
-    or
-    not exists(getACalleeFromDataflow()) and
-    result = impl.(DataFlow::Impl::ExplicitInvokeNode).asExpr().(InvokeExpr).getResolvedCallee()
-  }
+  Function getACallee() { result = InvokeNode::getACallee(this) }
+
+  /**
+   * Gets a callee of this call site where `imprecision` is a heuristic measure of how
+   * likely it is that `callee` is only suggested as a potential callee due to
+   * imprecise analysis of global variables and is not, in fact, a viable callee at all.
+   *
+   * Callees with imprecision zero, in particular, have either been derived without
+   * considering global variables, or are calls to a global variable within the same file.
+   */
+  Function getACallee(int imprecision) { result = InvokeNode::getACallee(this, imprecision) }
 
   /**
    * Holds if the approximation of possible callees for this call site is
@@ -134,6 +133,60 @@ class InvokeNode extends DataFlow::DefaultSourceNode {
    * likely to be imprecise or incomplete.
    */
   predicate isUncertain() { isImprecise() or isIncomplete() }
+}
+
+/** Auxiliary module used to cache a few related predicates together. */
+cached
+private module InvokeNode {
+  /** Gets an abstract value representing possible callees of `invk`. */
+  cached
+  AbstractValue getACalleeValue(InvokeNode invk) {
+    result = invk.getCalleeNode().analyze().getAValue()
+  }
+
+  /** Gets a potential callee of `invk` based on dataflow analysis results. */
+  private Function getACalleeFromDataflow(InvokeNode invk) {
+    result = getACalleeValue(invk).(AbstractCallable).getFunction()
+  }
+
+  /** Gets a potential callee of `invk`. */
+  cached
+  Function getACallee(InvokeNode invk) {
+    result = getACalleeFromDataflow(invk)
+    or
+    not exists(getACalleeFromDataflow(invk)) and
+    result = invk.(DataFlow::Impl::ExplicitInvokeNode).asExpr().(InvokeExpr).getResolvedCallee()
+  }
+
+  /**
+   * Gets a callee of `invk` where `imprecision` is a heuristic measure of how
+   * likely it is that `callee` is only suggested as a potential callee due to
+   * imprecise analysis of global variables and is not, in fact, a viable callee at all.
+   *
+   * Callees with imprecision zero, in particular, have either been derived without
+   * considering global variables, or are calls to a global variable within the same file.
+   */
+  cached
+  Function getACallee(InvokeNode invk, int imprecision) {
+    result = getACallee(invk) and
+    (
+      // if global flow was used to derive the callee, we may be imprecise
+      if invk.isIndefinite("global")
+      then
+        // callees within the same file are probably genuine
+        result.getFile() = invk.getFile() and imprecision = 0
+        or
+        // calls to global functions declared in an externs file are fairly
+        // safe as well
+        result.inExternsFile() and imprecision = 1
+        or
+        // otherwise we make worst-case assumptions
+        imprecision = 2
+      else
+        // no global flow, so no imprecision
+        imprecision = 0
+    )
+  }
 }
 
 /** A data flow node corresponding to a function call without `new`. */

@@ -20,12 +20,7 @@ predicate shouldTrackProperties(AbstractValue obj) {
 /**
  * Holds if `invk` may invoke `f`.
  */
-predicate calls(DataFlow::InvokeNode invk, Function f) {
-  if invk.isIndefinite("global")
-  then (
-    f = invk.getACallee() and f.getFile() = invk.getFile()
-  ) else f = invk.getACallee()
-}
+predicate calls(DataFlow::InvokeNode invk, Function f) { f = invk.getACallee(0) }
 
 /**
  * Holds if `invk` may invoke `f` indirectly through the given `callback` argument.
