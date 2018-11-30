@@ -43,6 +43,7 @@
 
 ## Changes to QL libraries
 
-* Added a hash consing library for structural comparison of expressions.
-* `getBufferSize` now detects variable size structs more reliably.
-* Buffer.qll now treats arrays of zero size as a special case.
+* Added a hash consing library (`semmle.code.cpp.valuenumbering.HashCons`) for structural comparison of expressions. Unlike the existing library for global value numbering, this library implements a pure syntactic comparison of expressions and will equate expressions even if they may not compute the same value.
+* The `Buffer.qll` library has more conservative treatment of arrays embedded in structs. This reduces false positives in a number of security queries, especially `cpp/overflow-buffer`.
+    * Pre-C99 encodings of _flexible array members_ are recognized more reliably.
+    * Arrays of zero size are now treated as a special case.
