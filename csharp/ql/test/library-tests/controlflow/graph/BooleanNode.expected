@@ -1,3 +1,12 @@
+| Field1 (line 129): false | Conditions.cs:131:16:131:19 | [Field1 (line 129): false] true |
+| Field1 (line 129): false | Conditions.cs:132:9:140:9 | [Field1 (line 129): false] {...} |
+| Field1 (line 129): false | Conditions.cs:133:13:139:13 | [Field1 (line 129): false] if (...) ... |
+| Field1 (line 129): false | Conditions.cs:133:17:133:22 | [Field1 (line 129): false] access to field Field1 |
+| Field1 (line 129): false | Conditions.cs:133:17:133:22 | [Field1 (line 129): false] this access |
+| Field1 (line 129): true | Conditions.cs:134:13:139:13 | [Field1 (line 129): true] {...} |
+| Field1 (line 129): true | Conditions.cs:135:17:138:17 | [Field1 (line 129): true] if (...) ... |
+| Field1 (line 129): true | Conditions.cs:135:21:135:26 | [Field1 (line 129): true] access to field Field2 |
+| Field1 (line 129): true | Conditions.cs:135:21:135:26 | [Field1 (line 129): true] this access |
 | b2 (line 22): false | Conditions.cs:28:9:29:16 | [b2 (line 22): false] if (...) ... |
 | b2 (line 22): false | Conditions.cs:28:13:28:14 | [b2 (line 22): false] access to parameter b2 |
 | b2 (line 22): true | Conditions.cs:27:17:27:17 | [b2 (line 22): true] access to local variable x |

@@ -171,6 +171,9 @@
 | Conditions.cs:117:9:123:9 | {...} | Conditions.cs:119:18:119:21 | access to local variable last | 13 |
 | Conditions.cs:120:17:120:23 | [last (line 118): false] ...; | Conditions.cs:121:17:121:20 | [last (line 118): false] access to local variable last | 6 |
 | Conditions.cs:121:13:122:25 | [last (line 118): true] if (...) ... | Conditions.cs:122:17:122:24 | ... = ... | 6 |
+| Conditions.cs:129:10:129:12 | enter M10 | Conditions.cs:133:17:133:22 | access to field Field1 | 8 |
+| Conditions.cs:131:16:131:19 | [Field1 (line 129): false] true | Conditions.cs:133:17:133:22 | [Field1 (line 129): false] access to field Field1 | 5 |
+| Conditions.cs:134:13:139:13 | [Field1 (line 129): true] {...} | Conditions.cs:135:21:135:26 | [Field1 (line 129): true] access to field Field2 | 4 |
 | ExitMethods.cs:7:10:7:11 | enter M1 | ExitMethods.cs:7:10:7:11 | exit M1 | 7 |
 | ExitMethods.cs:13:10:13:11 | enter M2 | ExitMethods.cs:13:10:13:11 | exit M2 | 7 |
 | ExitMethods.cs:19:10:19:11 | enter M3 | ExitMethods.cs:19:10:19:11 | exit M3 | 6 |
