@@ -177,7 +177,11 @@ private int var_rank(EssaVariable v) {
 /** Underlying IPA type for EssaDefinition and EssaVariable. */
 private cached newtype TEssaDefinition =
     TEssaNodeDefinition(SsaSourceVariable v, BasicBlock b, int i) {
-        EssaDefinitions::variableUpdate(v, _, b, _, i)
+        EssaDefinitions::variableDefinition(v, _, b, _, i)
+    }
+    or
+    TEssaNodeRefinement(SsaSourceVariable v, BasicBlock b, int i) {
+        EssaDefinitions::variableRefinement(v, _, b, _, i)
     }
     or
     TEssaEdgeDefinition(SsaSourceVariable v, BasicBlock pred, BasicBlock succ) {
@@ -446,7 +450,12 @@ class PhiFunction extends EssaDefinition, TPhiFunction {
     }
 }
 
-library class EssaNode extends EssaDefinition, TEssaNodeDefinition {
+library class EssaNode extends EssaDefinition {
+
+    EssaNode() {
+        this instanceof TEssaNodeDefinition or
+        this instanceof TEssaNodeRefinement
+    }
 
     override string toString() {
         result = "Essa node definition"
@@ -460,6 +469,28 @@ library class EssaNode extends EssaDefinition, TEssaNodeDefinition {
     override Location getLocation() {
         result = this.getDefiningNode().getLocation()
     }
+
+    abstract override SsaSourceVariable getSourceVariable();
+
+    /** Gets a use of this definition as defined by the `SsaSourceVariable` class. */
+    abstract override ControlFlowNode getAUse();
+
+    /** Holds if this definition reaches the end of `b`. */
+    abstract override predicate reachesEndOfBlock(BasicBlock b);
+
+
+    abstract predicate definedBy(SsaSourceVariable v, ControlFlowNode def);
+
+    abstract override string getRepresentation();
+
+    abstract override Scope getScope();
+
+}
+
+/** A definition of an ESSA variable that is not directly linked to
+ * another ESSA variable.
+ */
+class EssaNodeDefinition extends EssaNode, TEssaNodeDefinition {
 
     override ControlFlowNode getAUse() {
         exists(SsaSourceVariable v, BasicBlock b, int i |
@@ -490,7 +521,7 @@ library class EssaNode extends EssaDefinition, TEssaNodeDefinition {
         )
     }
 
-    predicate definedBy(SsaSourceVariable v, ControlFlowNode def) {
+    override predicate definedBy(SsaSourceVariable v, ControlFlowNode def) {
         exists(BasicBlock b, int i |
             def = b.getNode(i) |
             this = TEssaNodeDefinition(v, b, i+i)
@@ -501,27 +532,10 @@ library class EssaNode extends EssaDefinition, TEssaNodeDefinition {
 
 }
 
-/** A definition of an ESSA variable that is not directly linked to
- * another ESSA variable.
- */
-class EssaNodeDefinition extends EssaNode {
-
-    EssaNodeDefinition() {
-        this.getSourceVariable().hasDefiningNode(this.getDefiningNode())
-    }
-
-}
-
 /** A definition of an ESSA variable that takes another ESSA variable as an input.
  */
-class EssaNodeRefinement extends EssaNode {
+class EssaNodeRefinement extends EssaNode, TEssaNodeRefinement {
 
-    EssaNodeRefinement() {
-        exists(SsaSourceVariable v, ControlFlowNode def |
-            this.definedBy(v, def) and
-            v.hasRefinement(_, def)
-        )
-    }
 
     override string toString() {
         result = "SSA filter definition"
@@ -533,8 +547,42 @@ class EssaNodeRefinement extends EssaNode {
         not result = potential_input(potential_input(this).getDefinition())
     }
 
+    override ControlFlowNode getAUse() {
+        exists(SsaSourceVariable v, BasicBlock b, int i |
+            this = TEssaNodeRefinement(v, b, i) and
+            SsaDefinitions::reachesUse(v, b, i, result)
+        )
+    }
+
+    override predicate reachesEndOfBlock(BasicBlock b) {
+        exists(BasicBlock defb, int i |
+            this = TEssaNodeRefinement(_, defb, i) and
+            SsaDefinitions::reachesEndOfBlock(this.getSourceVariable(), defb, i, b)
+        )
+    }
+
+    override SsaSourceVariable getSourceVariable() {
+        this = TEssaNodeRefinement(result, _, _)
+    }
+
     override string getRepresentation() {
-        result = this.getAQlClass() + "(" + this.getInput().getRepresentation() + ")"
+        result = this.getDefiningNode().toString()
+    }
+
+    override Scope getScope() {
+        exists(BasicBlock defb |
+            this = TEssaNodeRefinement(_, defb, _) and
+            result = defb.getScope()
+        )
+    }
+
+    override predicate definedBy(SsaSourceVariable v, ControlFlowNode def) {
+        exists(BasicBlock b, int i |
+            def = b.getNode(i) |
+            this = TEssaNodeRefinement(v, b, i+i)
+            or
+            this = TEssaNodeRefinement(v, b, i+i+1)
+        )
     }
 
 }

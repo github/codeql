@@ -31,6 +31,7 @@ abstract class PythonSsaSourceVariable extends SsaSourceVariable {
 
     abstract ControlFlowNode getAnImplicitUse();
 
+    pragma [noinline]
     abstract ControlFlowNode getScopeEntryDefinition();
 
     override ControlFlowNode getAUse() {
@@ -79,22 +80,11 @@ abstract class PythonSsaSourceVariable extends SsaSourceVariable {
     }
 
     override predicate hasRefinementEdge(ControlFlowNode use, BasicBlock pred, BasicBlock succ) {
+        test_contains(pred.getLastNode(), use) and
         use.(NameNode).uses(this) and
-        exists(ControlFlowNode test |
-            test.getAChild*() = use and
-            test.isBranch() and
-            test = pred.getLastNode()
-        ) and
-        (pred.getAFalseSuccessor() = succ or pred.getATrueSuccessor() = succ)
-        and
+        (pred.getAFalseSuccessor() = succ or pred.getATrueSuccessor() = succ) and
         /* There is a store to this variable -- We don't want to refine builtins */
-        exists(this.(Variable).getAStore()) and
-        /* There is at least one use or definition of the variable that is reachable by the test */
-        exists(ControlFlowNode n |
-            n = this.getAUse() or
-            this.hasDefiningNode(n) |
-            pred.(ConditionBlock).strictlyReaches(n.getBasicBlock())
-        )
+        exists(this.(Variable).getAStore())
     }
 
     override ControlFlowNode getASourceUse() {
@@ -305,7 +295,7 @@ class EscapingGlobalVariable extends ModuleVariable {
     }
 
     override CallNode redefinedAtCallSite() {
-        result.(CallNode).getScope().getScope*() = this.(GlobalVariable).getScope()
+        result.(CallNode).getEnclosingModule() = this.(GlobalVariable).getScope()
     }
 
 }

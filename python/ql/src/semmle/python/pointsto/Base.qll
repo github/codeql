@@ -202,10 +202,6 @@ predicate function_can_never_return(FunctionObject func) {
 /** Python specific sub-class of generic EssaNodeDefinition */
 class PyNodeDefinition extends EssaNodeDefinition {
 
-    PyNodeDefinition() {
-        this.getSourceVariable().hasDefiningNode(this.getDefiningNode())
-    }
-
     override string getRepresentation() {
         result = this.getAQlClass()
     }
@@ -336,7 +332,10 @@ class DeletionDefinition extends PyNodeDefinition {
 class ScopeEntryDefinition extends PyNodeDefinition {
 
     ScopeEntryDefinition() {
-        this.getDefiningNode() = this.getSourceVariable().(PythonSsaSourceVariable).getScopeEntryDefinition() and
+        exists(PythonSsaSourceVariable v, ControlFlowNode def |
+            this.definedBy(v, def) and
+            v.getScopeEntryDefinition() = def
+        ) and
         not this instanceof ImplicitSubModuleDefinition
     }
 
