@@ -21,23 +21,21 @@ class Node extends Instruction {
 
   /** Gets the type of this node. */
   Type getType() {
-    result = this.asExpr().getType()
-    or
-    result = this.getAST().(Variable).getType()
+    result = this.getResultType()
   }
 
   /** Gets the expression corresponding to this node, if any. */
   Expr asExpr() { result = this.getUnconvertedResultExpression() }
 
   /** Gets the parameter corresponding to this node, if any. */
-  Parameter asParameter() { result = this.(ParameterNode).getParameter() }
+  Parameter asParameter() { result = this.(InitializeParameterInstruction).getParameter() }
 
   /**
    * Gets the uninitialized local variable corresponding to this node, if
    * any.
    */
   LocalVariable asUninitialized() {
-    result = this.(UninitializedNode).getLocalVariable()
+    result = this.(UninitializedInstruction).getLocalVariable()
   }
 
   /**
@@ -73,8 +71,6 @@ class ParameterNode extends Node, InitializeParameterInstruction {
  * flow graph.
  */
 class UninitializedNode extends Node, UninitializedInstruction {
-  /** Gets the uninitialized local variable corresponding to this node. */
-  LocalVariable getLocalVariable() { result = this.getAST().(VariableDeclarationEntry).getDeclaration()}
 }
 
 /**

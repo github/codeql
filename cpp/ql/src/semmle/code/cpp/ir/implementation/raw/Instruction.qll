@@ -595,13 +595,20 @@ class FieldAddressInstruction extends FieldInstruction {
   }
 }
 
-class UninitializedInstruction extends Instruction {
+class UninitializedInstruction extends VariableInstruction {
   UninitializedInstruction() {
     opcode instanceof Opcode::Uninitialized
   }
 
   override final MemoryAccessKind getResultMemoryAccess() {
     result instanceof IndirectMemoryAccess
+  }
+
+  /**
+   * Gets the `LocalVariable` that is uninitialized.
+   */
+  final LocalVariable getLocalVariable() {
+    result = var.(IRUserVariable).getVariable()
   }
 }
 
