@@ -107,11 +107,11 @@ abstract class PythonSsaSourceVariable extends SsaSourceVariable {
 
 }
 
-
 class FunctionLocalVariable extends PythonSsaSourceVariable {
 
     FunctionLocalVariable() {
-        this.(LocalVariable).getScope() instanceof Function and not this.(LocalVariable).escapes()
+        this.(LocalVariable).getScope() instanceof Function and
+        not this instanceof NonLocalVariable
     }
 
     override ControlFlowNode getAnImplicitUse() {
@@ -120,8 +120,14 @@ class FunctionLocalVariable extends PythonSsaSourceVariable {
 
     override ControlFlowNode getScopeEntryDefinition() {
         not this.(LocalVariable).getId() = "*" and
-        not this.(LocalVariable).isParameter() and
-        this.(LocalVariable).getScope().getEntryNode() = result
+        exists(Scope s |
+            s.getEntryNode() = result |
+            s = this.(LocalVariable).getScope() and
+            not this.(LocalVariable).isParameter()
+            or
+            s != this.(LocalVariable).getScope() and
+            s = this.(LocalVariable).getALoad().getScope()
+        )
     }
 
     override CallNode redefinedAtCallSite() { none() }
@@ -131,7 +137,10 @@ class FunctionLocalVariable extends PythonSsaSourceVariable {
 class NonLocalVariable extends PythonSsaSourceVariable {
 
     NonLocalVariable() {
-        this.(LocalVariable).getScope() instanceof Function and this.(LocalVariable).escapes()
+        exists(Function f |
+            this.(LocalVariable).getScope() = f and
+            this.(LocalVariable).getAStore().getScope() != f
+        )
     }
 
     override ControlFlowNode getAnImplicitUse() {
