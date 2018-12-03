@@ -199,6 +199,19 @@
 | 121 | 17 | Conditions.cs:121:17:121:20 | [last (line 118): true] access to local variable last | true | 122 | 17 | Conditions.cs:122:17:122:25 | ...; |
 | 127 | 32 | cflow.cs:127:32:127:44 | ... == ... | false | 127 | 53 | cflow.cs:127:53:127:57 | this access |
 | 127 | 32 | cflow.cs:127:32:127:44 | ... == ... | true | 127 | 48 | cflow.cs:127:48:127:49 | "" |
+| 131 | 16 | Conditions.cs:131:16:131:19 | [Field1 (line 129): false] true | true | 132 | 9 | Conditions.cs:132:9:140:9 | [Field1 (line 129): false] {...} |
+| 131 | 16 | Conditions.cs:131:16:131:19 | [Field1 (line 129): true, Field2 (line 129): false] true | true | 132 | 9 | Conditions.cs:132:9:140:9 | [Field1 (line 129): true, Field2 (line 129): false] {...} |
+| 131 | 16 | Conditions.cs:131:16:131:19 | [Field1 (line 129): true, Field2 (line 129): true] true | true | 132 | 9 | Conditions.cs:132:9:140:9 | [Field1 (line 129): true, Field2 (line 129): true] {...} |
+| 131 | 16 | Conditions.cs:131:16:131:19 | true | true | 132 | 9 | Conditions.cs:132:9:140:9 | {...} |
+| 133 | 17 | Conditions.cs:133:17:133:22 | [Field1 (line 129): false] access to field Field1 | false | 131 | 16 | Conditions.cs:131:16:131:19 | [Field1 (line 129): false] true |
+| 133 | 17 | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): false] access to field Field1 | true | 134 | 13 | Conditions.cs:134:13:139:13 | [Field1 (line 129): true, Field2 (line 129): false] {...} |
+| 133 | 17 | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): true] access to field Field1 | true | 134 | 13 | Conditions.cs:134:13:139:13 | [Field1 (line 129): true, Field2 (line 129): true] {...} |
+| 133 | 17 | Conditions.cs:133:17:133:22 | access to field Field1 | false | 131 | 16 | Conditions.cs:131:16:131:19 | [Field1 (line 129): false] true |
+| 133 | 17 | Conditions.cs:133:17:133:22 | access to field Field1 | true | 134 | 13 | Conditions.cs:134:13:139:13 | [Field1 (line 129): true] {...} |
+| 135 | 21 | Conditions.cs:135:21:135:26 | [Field1 (line 129): true, Field2 (line 129): false] access to field Field2 | false | 131 | 16 | Conditions.cs:131:16:131:19 | [Field1 (line 129): true, Field2 (line 129): false] true |
+| 135 | 21 | Conditions.cs:135:21:135:26 | [Field1 (line 129): true, Field2 (line 129): true] access to field Field2 | true | 136 | 17 | Conditions.cs:136:17:138:17 | [Field1 (line 129): true, Field2 (line 129): true] {...} |
+| 135 | 21 | Conditions.cs:135:21:135:26 | [Field1 (line 129): true] access to field Field2 | false | 131 | 16 | Conditions.cs:131:16:131:19 | [Field1 (line 129): true, Field2 (line 129): false] true |
+| 135 | 21 | Conditions.cs:135:21:135:26 | [Field1 (line 129): true] access to field Field2 | true | 136 | 17 | Conditions.cs:136:17:138:17 | [Field1 (line 129): true, Field2 (line 129): true] {...} |
 | 162 | 48 | cflow.cs:162:48:162:51 | [exception: Exception] true | true | 163 | 9 | cflow.cs:163:9:165:9 | {...} |
 | 170 | 21 | cflow.cs:170:21:170:24 | true | true | 170 | 27 | cflow.cs:170:27:170:32 | throw ...; |
 | 194 | 48 | cflow.cs:194:48:194:51 | [exception: Exception] true | true | 195 | 9 | cflow.cs:195:9:197:9 | {...} |

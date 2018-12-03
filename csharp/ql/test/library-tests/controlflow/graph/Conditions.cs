@@ -122,4 +122,21 @@ class Conditions
                 s = null;
         }
     }
+
+    private bool Field1;
+    private bool Field2;
+
+    void M10()
+    {
+        while (true)
+        {
+            if (Field1)
+            {
+                if (Field2)
+                {
+                    Field1.ToString();
+                }
+            }
+        }
+    }
 }
