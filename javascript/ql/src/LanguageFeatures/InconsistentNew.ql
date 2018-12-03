@@ -110,5 +110,6 @@ DataFlow::InvokeNode getFirstInvocation(Function f, boolean isNew) {
 from Function f, DataFlow::NewNode new, DataFlow::CallNode call
 where new = getFirstInvocation(f, true) and
       call = getFirstInvocation(f, false)
-select (FirstLineOf)f, capitalize(f.describe()) + " is invoked as a constructor $@, " +
-      "and as a normal function $@.", new, "here", call, "here"
+select (FirstLineOf)f, capitalize(f.describe()) + " is sometimes invoked as a constructor " +
+      "(for example $@), and sometimes as a normal function (for example $@).",
+      new, "here", call, "here"
