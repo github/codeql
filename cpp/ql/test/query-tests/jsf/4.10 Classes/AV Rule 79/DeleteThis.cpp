@@ -102,24 +102,47 @@ class MyClass6 : public MyClass5
 {
 };
 
-class MyClass7
+class MyClass7 : public MyClass4
 {
 public:
-	MyClass7()
+	void Release()
+	{
+		// do nothing
+	}
+};
+
+class MyClass8 : public MyClass7
+{
+};
+
+class MyClass9
+{
+public:
+	MyClass9()
 	{
 		a = new MyClass5(); // GOOD
 		b = new MyClass5(); // GOOD
 		c = new MyClass6(); // GOOD
-	}
 
-	~MyClass7()
+		d = new MyClass7(); // BAD
+		e = new MyClass7(); // BAD [NOT DETECTED]
+		f = new MyClass8(); // BAD [NOT DETECTED]
+	}
+ 	~MyClass9()
 	{
-		a->Release();
-		b->Release();
-		c->Release();
-	}
+		a->Release(); // MyClass5::Release()
+		b->Release(); // MyClass5::Release()
+		c->Release(); // MyClass5::Release()
 
-	MyClass5 *a;
+		d->Release(); // MyClass7::Release()
+		e->Release(); // MyClass7::Release()
+		f->Release(); // MyClass7::Release() 
+	}
+ 	MyClass5 *a;
 	MyClass4 *b;
 	MyClass4 *c;
+
+	MyClass7 *d;
+	MyClass4 *e;
+	MyClass4 *f;
 };
