@@ -103,7 +103,6 @@
 | b_condition.py:82 | Local Variable foo | ControlFlowNode for callable() | refinement |
 | b_condition.py:83 | Local Variable bar | ControlFlowNode for bar | definition |
 | b_condition.py:83 | Local Variable foo | Entry node for Function bar | definition |
-| b_condition.py:84 | Local Variable foo | ControlFlowNode for foo() | refinement |
 | b_condition.py:87 | Global Variable split_bool1 | ControlFlowNode for split_bool1 | definition |
 | b_condition.py:87 | Local Variable x | ControlFlowNode for x | definition |
 | b_condition.py:87 | Local Variable y | ControlFlowNode for y | definition |
