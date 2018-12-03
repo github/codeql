@@ -8,7 +8,7 @@ import javascript
 private import semmle.javascript.frameworks.ConnectExpressShared
 
 /**
- * Adds `NodeJSLib::RouteHandlerCandidate` to the extent of `NodeJSLib::RouteHandler`.
+ * Add `NodeJSLib::RouteHandlerCandidate` to the extent of `NodeJSLib::RouteHandler`.
  */
 private class PromotedNodeJSLibCandidate extends NodeJSLib::RouteHandler, HTTP::Servers::StandardRouteHandler {
 
@@ -19,7 +19,7 @@ private class PromotedNodeJSLibCandidate extends NodeJSLib::RouteHandler, HTTP::
 }
 
 /**
- * Adds `Hapi::RouteHandlerCandidate` to the extent of `Hapi::RouteHandler`.
+ * Add `Hapi::RouteHandlerCandidate` to the extent of `Hapi::RouteHandler`.
  */
 private class PromotedHapiCandidate extends Hapi::RouteHandler, HTTP::Servers::StandardRouteHandler {
 
@@ -30,7 +30,7 @@ private class PromotedHapiCandidate extends Hapi::RouteHandler, HTTP::Servers::S
 }
 
 /**
- * Adds `ConnectExpressShared::RouteHandlerCandidate` to the extent of `Express::RouteHandler`.
+ * Add `ConnectExpressShared::RouteHandlerCandidate` to the extent of `Express::RouteHandler`.
  */
 private class PromotedExpressCandidate extends Express::RouteHandler, HTTP::Servers::StandardRouteHandler {
 
@@ -45,7 +45,7 @@ private class PromotedExpressCandidate extends Express::RouteHandler, HTTP::Serv
 }
 
 /**
- * Adds `ConnectExpressShared::RouteHandlerCandidate` to the extent of `Connect::RouteHandler`.
+ * Add `ConnectExpressShared::RouteHandlerCandidate` to the extent of `Connect::RouteHandler`.
  */
 private class PromotedConnectCandidate extends Connect::RouteHandler, HTTP::Servers::StandardRouteHandler {
 

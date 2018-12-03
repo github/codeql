@@ -228,9 +228,7 @@ module Hapi {
    *
    * For example, this could be the function `function(request, h){...}`.
    */
-  class RouteHandlerCandidate extends HTTP::RouteHandlerCandidate, DataFlow::FunctionNode {
-
-    override Function astNode;
+  class RouteHandlerCandidate extends HTTP::RouteHandlerCandidate {
 
     RouteHandlerCandidate() {
       exists (string request, string responseToolkit |
