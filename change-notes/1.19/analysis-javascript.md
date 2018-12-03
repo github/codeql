@@ -45,6 +45,7 @@
 | Conflicting HTML element attributes | Lower severity | The severity of this rule has been revised to "warning". |
 | Duplicate 'if' condition | Lower severity | The severity of this rule has been revised to "warning". |
 | Duplicate switch case | Lower severity | The severity of this rule has been revised to "warning". |
+| Inconsistent use of 'new' | Simpler result presentation | This rule now only shows one call with `new` and one without. |
 | Information exposure through a stack trace | More results | This rule now also flags cases where the entire exception object (including the stack trace) may be exposed. |
 | Missing 'this' qualifier | Fewer false-positive results | This rule now recognizes additional intentional calls to global functions. | 
 | Missing CSRF middleware | Fewer false-positive results | This rule now recognizes additional CSRF protection middlewares. |
