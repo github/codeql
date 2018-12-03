@@ -98,7 +98,7 @@ private predicate exprReleases(Expr e, Expr released, string kind) {
     // and `released` is the corresponding argument
     (
       e.(FunctionCall).getTarget() = f or
-      e.(FunctionCall).getTarget().(MemberFunction).getAnOverridingFunction*() = f
+      e.(FunctionCall).getTarget().(MemberFunction).getAnOverridingFunction+() = f
     ) and
     e.(FunctionCall).getArgument(arg) = released and
     exprReleases(_, exprOrDereference(f.getParameter(arg).getAnAccess()), kind)
@@ -107,7 +107,7 @@ private predicate exprReleases(Expr e, Expr released, string kind) {
     // is the object that is called
     (
       e.(FunctionCall).getTarget() = f or
-      e.(FunctionCall).getTarget().(MemberFunction).getAnOverridingFunction*() = f
+      e.(FunctionCall).getTarget().(MemberFunction).getAnOverridingFunction+() = f
     ) and
     e.(FunctionCall).getQualifier() = exprOrDereference(released) and
     innerThis.getEnclosingFunction() = f and
