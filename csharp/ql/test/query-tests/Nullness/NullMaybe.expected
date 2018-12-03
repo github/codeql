@@ -10,7 +10,6 @@
 | D.cs:32:9:32:13 | access to parameter param | Variable '$@' may be null here as suggested by $@ null check. | D.cs:26:32:26:36 | param | param | D.cs:28:13:28:25 | ... != ... | this |
 | D.cs:62:13:62:14 | access to local variable o5 | Variable '$@' may be null here because of $@ assignment. | D.cs:58:13:58:14 | o5 | o5 | D.cs:58:13:58:41 | String o5 = ... | this |
 | D.cs:73:13:73:14 | access to local variable o7 | Variable '$@' may be null here because of $@ assignment. | D.cs:68:13:68:14 | o7 | o7 | D.cs:68:13:68:34 | String o7 = ... | this |
-| D.cs:80:13:80:14 | access to local variable o8 | Variable '$@' may be null here because of $@ assignment. | D.cs:75:13:75:14 | o8 | o8 | D.cs:75:13:75:34 | String o8 = ... | this |
 | D.cs:82:13:82:14 | access to local variable o8 | Variable '$@' may be null here because of $@ assignment. | D.cs:75:13:75:14 | o8 | o8 | D.cs:75:13:75:34 | String o8 = ... | this |
 | D.cs:84:13:84:14 | access to local variable o8 | Variable '$@' may be null here because of $@ assignment. | D.cs:75:13:75:14 | o8 | o8 | D.cs:75:13:75:34 | String o8 = ... | this |
 | D.cs:91:13:91:14 | access to local variable xs | Variable '$@' may be null here because of $@ assignment. | D.cs:89:15:89:16 | xs | xs | D.cs:89:15:89:44 | Int32[] xs = ... | this |

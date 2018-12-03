@@ -190,7 +190,8 @@ private predicate defMaybeNull(Ssa::Definition def, string msg, Element reason) 
 
 /**
  * Holds if `def1` being `null` in basic block `bb1` implies that `def2` might
- * be null in basic block `bb2`. The SSA definitions share the same source variable.
+ * be `null` in basic block `bb2`. The SSA definitions share the same source
+ * variable.
  */
 private predicate defNullImpliesStep(Ssa::Definition def1, BasicBlock bb1, Ssa::Definition def2, BasicBlock bb2) {
   exists(Ssa::SourceVariable v |
@@ -374,10 +375,6 @@ class Dereference extends G::DereferenceableExpr {
     defReaches(v.getAnSsaDefinition(), this, true)
   }
 
-  /**
-   * Holds if assignable access `aa` is the first dereference of an assignable
-   * in a block, where it is suspected of being `null`.
-   */
   pragma[noinline]
   private predicate nullDerefCandidate(Ssa::Definition origin) {
     exists(Ssa::Definition ssa, BasicBlock bb |

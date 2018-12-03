@@ -956,13 +956,13 @@ module Internal {
    */
   private predicate guardImpliesNotEqual(Expr guard, AbstractValue vGuard, PreSsa::Definition def, AbstractValue vDef) {
     relevantEq(def, vDef) and
-    exists(DereferenceableExpr de |
-      de = def.getARead() |
+    exists(AssignableRead ar |
+      ar = def.getARead() |
       // For example:
       //   if (de == null); vGuard = TBooleanValue(false); vDef = TNullValue(true)
       // but not
       //   if (de == "abc"); vGuard = TBooleanValue(false); vDef = TNullValue(false)
-      guard = getAnEqualityCheckVal(de, vGuard.getDualValue(), vDef) and
+      guard = getAnEqualityCheckVal(ar, vGuard.getDualValue(), vDef) and
       vDef.isSingleton()
       or
       // For example:
@@ -970,13 +970,13 @@ module Internal {
       // or
       //   if (de == null); vGuard = TBooleanValue(true); vDef = TNullValue(false)
       exists(NullValue nv |
-        guard = de.getANullCheck(vGuard, any(boolean b | nv = TNullValue(b))) |
+        guard = ar.(DereferenceableExpr).getANullCheck(vGuard, any(boolean b | nv = TNullValue(b))) |
         vDef = nv.getDualValue()
       )
       or
       // For example:
-      //   if (de == null); vGuard = TBooleanValue(true); vDef = TNullValue(false)
-      guard = getAnEqualityCheckVal(de, vGuard, vDef.getDualValue())
+      //   if (de == false); vGuard = TBooleanValue(true); vDef = TBooleanValue(true)
+      guard = getAnEqualityCheckVal(ar, vGuard, vDef.getDualValue())
     )
   }
 
@@ -1040,7 +1040,7 @@ module Internal {
    * Holds if `e` has abstract value `v` and may be assigned to `def` without going
    * through back edges, and all other possible ultimate definitions of `def` do not
    * have abstract value `v`. The trivial case where `def` is an explicit update with
-   * source `e is excluded.
+   * source `e` is excluded.
    */
   private predicate uniqueValue(PreSsa::Definition def, Expr e, AbstractValue v) {
     possibleValue(def, false, e, v) and
@@ -1178,28 +1178,39 @@ module Internal {
         polarity = false
       )
       or
-      exists(ConditionalExpr cond, boolean branch, BoolLiteral boolLit, boolean b |
-        b = boolLit.getBoolValue() and
+      exists(ConditionalExpr cond, boolean branch, Expr e, AbstractValue v |
+        e = v.getAnExpr() and
         (
-          cond.getThen() = boolLit and branch = true
+          cond.getThen() = e and branch = true
           or
-          cond.getElse() = boolLit and branch = false
+          cond.getElse() = e and branch = false
         )
       |
         g1 = cond and
-        v1 = TBooleanValue(b.booleanNot()) and
+        v1 = v.getDualValue() and
         (
+          // g1 === g2 ? e : ...; 
           g2 = cond.getCondition() and
           v2 = TBooleanValue(branch.booleanNot())
           or
+          // g1 === ... ? g2 : e
           g2 = cond.getThen() and
           branch = false and
           v2 = v1
           or
+          // g1 === g2 ? ... : e
           g2 = cond.getElse() and
           branch = true and
           v2 = v1
         )
+      )
+      or
+      v1 = g1.getAValue() and
+      v1 = any(MatchValue mv |
+        mv.isMatch() and
+        g2 = g1 and
+        v2.getAnExpr() = mv.getCaseStmt().(ConstCase).getExpr() and
+        v1 != v2
       )
       or
       exists(boolean isNull |
@@ -1238,15 +1249,16 @@ module Internal {
       )
       or
       exists(PreSsa::Definition def, AbstractValue v |
-        // If `def = g2 ? v : ...` or `def = g2 ? ... : v` then a guard `g1`
-        // proving `def != v` ensures that `g2` evaluates to `b2`.
+        // If for example `def = g2 ? v : ...`, then a guard `g1` proving `def != v`
+        // ensures that `g2` evaluates to `false`.
         conditionalAssignVal(g2, v2.getDualValue(), def, v) and
         guardImpliesNotEqual(g1, v1, def, v)
       )
       or
       exists(PreSsa::Definition def, Expr e, AbstractValue v |
-        // If `def = g2 ? v : ...` and all other assignments to `def` are different from
-        // `v` then a guard proving `def == v` ensures that `g2` evaluates to `v2`.
+        // If for example `def = g2 ? v : ...` and all other assignments to `def` are
+        // different from `v`, then a guard proving `def == v` ensures that `g2`
+        // evaluates to `true`.
         uniqueValue(def, e, v) and
         guardImpliesEqual(g1, v1, def, v) and
         g2.preControlsDirect(any(PreBasicBlocks::PreBasicBlock bb | e = bb.getAnElement()), v2) and
