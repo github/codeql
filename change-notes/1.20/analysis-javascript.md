@@ -2,6 +2,9 @@
 
 ## General improvements
 
+* Support for popular libraries has been improved. Consequently, queries may produce more results on code bases that use the following features:
+  - servers, for example [hapi](https://hapijs.com/)
+
 ## New queries
 
 | **Query**                                     | **Tags**                                             | **Purpose**                                                                                                                                                                 |
