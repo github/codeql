@@ -180,6 +180,8 @@ abstract class ReactComponent extends ASTNode {
         // setState with object: `this.setState({foo: 42})`
         result = arg0
     )
+    or
+    result.flowsToExpr(getStaticMethod("getDerivedStateFromProps").getAReturnedExpr())
   }
 
   /**
@@ -197,6 +199,10 @@ abstract class ReactComponent extends ASTNode {
       or
       // componentDidUpdate: (prevProps, prevState)
       callback = getInstanceMethod("componentDidUpdate").flow() and
+      stateParameterIndex = 1
+      or
+      // getDerivedStateFromProps: (props, state)
+      callback = getStaticMethod("getDerivedStateFromProps").flow() and
       stateParameterIndex = 1
     )
   }
@@ -241,6 +247,10 @@ abstract class ReactComponent extends ASTNode {
       or
       // componentDidUpdate: (prevProps, prevState)
       callback = getInstanceMethod("componentDidUpdate").flow() and
+      propsParameterIndex = 0
+      or
+      // getDerivedStateFromProps: (props, state)
+      callback = getStaticMethod("getDerivedStateFromProps").flow() and
       propsParameterIndex = 0
     )
   }
