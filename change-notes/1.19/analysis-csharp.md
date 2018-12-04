@@ -10,15 +10,14 @@
 
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
-| Using a package with a known vulnerability (cs/use-of-vulnerable-package) | security, external/cwe/cwe-937 | Finds project build files that import packages with known vulnerabilities. This is included by default. |
-| Uncontrolled format string (cs/uncontrolled-format-string) | security, external/cwe/cwe-134 | Finds data flow from remote inputs to the format string in `String.Format`. This is included by default. |
+| Uncontrolled format string (`cs/uncontrolled-format-string`) | security, external/cwe/cwe-134 | Finds data flow from remote inputs to the format string in `String.Format`. This is included by default. |
+| Using a package with a known vulnerability `(`cs/use-of-vulnerable-package`) | security, external/cwe/cwe-937 | Finds project build files that import packages with known vulnerabilities. This is included by default. |
 
 ## Changes to existing queries
 
+| Cross-site scripting (`cs/web/xss`) | More results | This query now finds cross-site scripting vulnerabilities in ASP.NET Core applications. |
 | Inconsistent lock sequence (`cs/inconsistent-lock-sequence`) | More results | This query now finds inconsistent lock sequences globally across calls. |
 | Local scope variable shadows member (`cs/local-shadows-member`) | Fewer results | Results have been removed where a constructor parameter shadows a member, because the parameter is probably used to initialize the member. |
-| Cross-site scripting (`cs/web/xss`) | More results | This query now finds cross-site scripting vulnerabilities in ASP.NET Core applications. |
-| *@name of query (Query ID)*| *Impact on results*    | *How/why the query has changed*                                  |
 
 ## Changes to code extraction
 
