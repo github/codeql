@@ -40,7 +40,7 @@ string mode_from_mode_object(Object obj) {
         result = "MULTILINE" or result = "DOTALL" or result = "UNICODE" or
         result = "VERBOSE"
     ) and
-    ModuleObject::named("re").getAttribute(result) = obj
+    ModuleObject::named("sre_constants").getAttribute("SRE_FLAG_" + result) = obj
     or
     exists(BinaryExpr be, Object sub | obj.getOrigin() = be |
         be.getOp() instanceof BitOr and

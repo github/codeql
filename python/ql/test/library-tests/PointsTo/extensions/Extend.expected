@@ -1,0 +1,7 @@
+| test.py:4:1:4:3 | ControlFlowNode for one | int 1 |
+| test.py:5:1:5:3 | ControlFlowNode for two | int 2 |
+| test.py:8:1:8:1 | ControlFlowNode for IntegerLiteral | int 1 |
+| test.py:8:1:8:7 | ControlFlowNode for Tuple | Tuple |
+| test.py:8:3:8:3 | ControlFlowNode for IntegerLiteral | int 2 |
+| test.py:8:5:8:5 | ControlFlowNode for IntegerLiteral | int 3 |
+| test.py:8:7:8:7 | ControlFlowNode for IntegerLiteral | int 4 |

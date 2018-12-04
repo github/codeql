@@ -5,6 +5,10 @@
 
  > Changes that affect alerts in many files or from many queries
 > For example, changes to file classification
+
+The constants `MULTILINE` and `VERBOSE` in `re` module, are now understood for Python 3.6 and upward. 
+Removes false positives seen when using Python 3.6, but not when using earlier versions.
+
  ## New queries
 
  | **Query**                   | **Tags**  | **Purpose**                                                        |
