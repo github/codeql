@@ -50,20 +50,30 @@ namespace Semmle.Extraction
         /// <returns><code>true</code> iff the label already existed.</returns>
         public bool GetOrAddCachedLabel(ICachedEntity entity)
         {
-            var id = GetId(entity);
-            if (id == null)
-                throw new InternalError("Attempt to create a null entity for {0}", entity.GetType());
-
-            Label existingLabel;
-            if (labelCache.TryGetValue(id, out existingLabel))
+            // Look up the label in the entityLabelCache
+            if (entityLabelCache.TryGetValue(entity, out Label label))
             {
-                entity.Label = existingLabel;
+                entity.Label = label;
                 return true;
             }
 
-            entity.Label = new Label(NewId());
-            DefineLabel(entity.Label, id);
-            labelCache[id] = entity.Label;
+            var id = entity.Id;
+
+            if (id == null)
+                throw new InternalError("Attempt to create a null entity for {0}", entity.GetType());
+
+            // Look up the Id in the idLabelCache
+            if (idLabelCache.TryGetValue(id, out label))
+            {
+                entity.Label = label;
+                entityLabelCache[entity] = label;
+                return true;
+            }
+
+            entity.Label = label = new Label(NewId());
+            DefineLabel(label, id);
+            entityLabelCache[entity] = label;
+            idLabelCache[id] = label;
             return false;
         }
 
@@ -91,25 +101,6 @@ namespace Semmle.Extraction
         }
 
         /// <summary>
-        /// Gets the ID belonging to cached entity <paramref name="entity"/>.
-        ///
-        /// The ID itself is also cached, but unlike the label cache (which is used
-        /// to prevent reextraction/infinite loops), this is a pure performance
-        /// optimization. Moreover, the label cache is injective, which the ID cache
-        /// need not be.
-        /// </summary>
-        IId GetId(ICachedEntity entity)
-        {
-            IId id;
-            if (!idCache.TryGetValue(entity, out id))
-            {
-                id = entity.Id;
-                idCache[entity] = id;
-            }
-            return id;
-        }
-
-        /// <summary>
         /// Creates a fresh label with ID "*", and set it on the
         /// supplied <paramref name="entity"/> object.
         /// </summary>
@@ -120,7 +111,8 @@ namespace Semmle.Extraction
             entity.Label = label;
         }
 
-        readonly Dictionary<IId, Label> labelCache = new Dictionary<IId, Label>();
+        readonly Dictionary<IId, Label> idLabelCache = new Dictionary<IId, Label>();
+        readonly Dictionary<ICachedEntity, Label> entityLabelCache = new Dictionary<ICachedEntity, Label>();
         readonly HashSet<Label> extractedGenerics = new HashSet<Label>();
 
         public void DefineLabel(IEntity entity)
@@ -133,8 +125,6 @@ namespace Semmle.Extraction
         {
             TrapWriter.Emit(new DefineLabelEmitter(label, id));
         }
-
-        readonly Dictionary<object, IId> idCache = new Dictionary<object, IId>();
 
         /// <summary>
         /// Queue of items to populate later.
