@@ -36,4 +36,12 @@ module PropertyInjection {
     // Assume that a value that is invoked can refer to a function.
     exists (node.getAnInvocation())
   }
+
+  /**
+   * Holds if the `node` is of form `Object.create(null)` and so it has no prototype.
+   */
+  predicate isPrototypeLessObject(DataFlow::MethodCallNode node) {
+    node = DataFlow::globalVarRef("Object").getAMethodCall("create") and
+    node.getArgument(0).asExpr() instanceof NullLiteral
+  }
 }

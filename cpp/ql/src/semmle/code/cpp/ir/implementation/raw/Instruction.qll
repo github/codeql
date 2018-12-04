@@ -33,11 +33,18 @@ module InstructionSanity {
         ) or
         opcode instanceof CopyOpcode and tag instanceof CopySourceOperandTag or
         opcode instanceof MemoryAccessOpcode and tag instanceof AddressOperandTag or
+        opcode instanceof BufferAccessOpcode and tag instanceof BufferSizeOperand or
         opcode instanceof OpcodeWithCondition and tag instanceof ConditionOperandTag or
         opcode instanceof Opcode::ReturnValue and tag instanceof ReturnValueOperandTag or
         opcode instanceof Opcode::ThrowValue and tag instanceof ExceptionOperandTag or
         opcode instanceof Opcode::UnmodeledUse and tag instanceof UnmodeledUseOperandTag or
-        opcode instanceof Opcode::Call and tag instanceof CallTargetOperandTag
+        opcode instanceof Opcode::Call and tag instanceof CallTargetOperandTag or
+        opcode instanceof Opcode::Chi and tag instanceof ChiTotalOperandTag or
+        opcode instanceof Opcode::Chi and tag instanceof ChiPartialOperandTag or
+        (
+          (opcode instanceof ReadSideEffectOpcode or opcode instanceof MayWriteSideEffectOpcode) and
+          tag instanceof SideEffectOperandTag
+        )
       )
     )
   }
@@ -162,9 +169,9 @@ class Instruction extends Construction::TInstruction {
    */
   final string getOperationString() {
     if exists(getImmediateString()) then
-      result = opcode.toString() + "[" + getImmediateString() + "]"
+      result = getOperationPrefix() + opcode.toString() + "[" + getImmediateString() + "]"
     else
-      result = opcode.toString()
+      result = getOperationPrefix() + opcode.toString()
   }
 
   /**
@@ -172,6 +179,13 @@ class Instruction extends Construction::TInstruction {
    */
   string getImmediateString() {
     none()
+  }
+
+  private string getOperationPrefix() {
+    if this instanceof SideEffectInstruction then
+      result = "^"
+    else
+      result = ""
   }
 
   private string getResultPrefix() {
@@ -1084,6 +1098,9 @@ class SwitchInstruction extends Instruction {
   }
 }
 
+/**
+ * An instruction that calls a function.
+ */
 class CallInstruction extends Instruction {
   CallInstruction() {
     opcode instanceof Opcode::Call
@@ -1091,6 +1108,116 @@ class CallInstruction extends Instruction {
 
   final Instruction getCallTarget() {
     result = getAnOperand().(CallTargetOperand).getDefinitionInstruction()
+  }
+}
+
+/**
+ * An instruction representing a side effect of a function call.
+ */
+class SideEffectInstruction extends Instruction {
+  SideEffectInstruction() {
+    opcode instanceof SideEffectOpcode
+  }
+
+  final Instruction getPrimaryInstruction() {
+    result = Construction::getPrimaryInstructionForSideEffect(this)
+  }
+}
+
+/**
+ * An instruction representing the side effect of a function call on any memory that might be
+ * accessed by that call.
+ */
+class CallSideEffectInstruction extends SideEffectInstruction {
+  CallSideEffectInstruction() {
+    opcode instanceof Opcode::CallSideEffect
+  }
+
+  override final MemoryAccessKind getResultMemoryAccess() {
+    result instanceof EscapedMemoryAccess
+  }
+}
+
+/**
+ * An instruction representing the side effect of a function call on any memory that might be read
+ * by that call.
+ */
+class CallReadSideEffectInstruction extends SideEffectInstruction {
+  CallReadSideEffectInstruction() {
+    opcode instanceof Opcode::CallReadSideEffect
+  }
+}
+
+/**
+ * An instruction representing the read of an indirect parameter within a function call.
+ */
+class IndirectReadSideEffectInstruction extends SideEffectInstruction {
+  IndirectReadSideEffectInstruction() {
+    opcode instanceof Opcode::IndirectReadSideEffect
+  }
+}
+
+/**
+ * An instruction representing the read of an indirect buffer parameter within a function call.
+ */
+class BufferReadSideEffectInstruction extends SideEffectInstruction {
+  BufferReadSideEffectInstruction() {
+    opcode instanceof Opcode::BufferReadSideEffect
+  }
+}
+
+/**
+ * An instruction representing the write of an indirect parameter within a function call.
+ */
+class IndirectWriteSideEffectInstruction extends SideEffectInstruction {
+  IndirectWriteSideEffectInstruction() {
+    opcode instanceof Opcode::IndirectWriteSideEffect
+  }
+
+  override final MemoryAccessKind getResultMemoryAccess() {
+    result instanceof IndirectMemoryAccess
+  }
+}
+
+/**
+ * An instruction representing the write of an indirect buffer parameter within a function call. The
+ * entire buffer is overwritten.
+ */
+class BufferWriteSideEffectInstruction extends SideEffectInstruction {
+  BufferWriteSideEffectInstruction() {
+    opcode instanceof Opcode::BufferWriteSideEffect
+  }
+
+  override final MemoryAccessKind getResultMemoryAccess() {
+    result instanceof BufferMemoryAccess
+  }
+}
+
+/**
+ * An instruction representing the potential write of an indirect parameter within a function call.
+ * Unlike `IndirectWriteSideEffectInstruction`, the location might not be completely overwritten.
+ * written.
+ */
+class IndirectMayWriteSideEffectInstruction extends SideEffectInstruction {
+  IndirectMayWriteSideEffectInstruction() {
+    opcode instanceof Opcode::IndirectMayWriteSideEffect
+  }
+
+  override final MemoryAccessKind getResultMemoryAccess() {
+    result instanceof IndirectMayMemoryAccess
+  }
+}
+
+/**
+ * An instruction representing the write of an indirect buffer parameter within a function call.    
+ * Unlike `BufferWriteSideEffectInstruction`, the buffer might not be completely overwritten.
+ */
+class BufferMayWriteSideEffectInstruction extends SideEffectInstruction {
+  BufferMayWriteSideEffectInstruction() {
+    opcode instanceof Opcode::BufferMayWriteSideEffect
+  }
+  override final MemoryAccessKind getResultMemoryAccess() {
+    result instanceof BufferMayMemoryAccess
   }
 }
 
@@ -1195,6 +1322,19 @@ class UnmodeledDefinitionInstruction extends Instruction {
   }
 }
 
+/**
+ * An instruction that initializes all escaped memory.
+ */
+class AliasedDefinitionInstruction extends Instruction {
+  AliasedDefinitionInstruction() {
+    opcode instanceof Opcode::AliasedDefinition
+  }
+
+  override final MemoryAccessKind getResultMemoryAccess() {
+    result instanceof EscapedMemoryAccess
+  }
+}
+
 class UnmodeledUseInstruction extends Instruction {
   UnmodeledUseInstruction() {
     opcode instanceof Opcode::UnmodeledUse
@@ -1205,6 +1345,16 @@ class UnmodeledUseInstruction extends Instruction {
   }
 }
 
+/**
+ * An instruction representing the choice of one of multiple input values based on control flow.
+ *
+ * A `PhiInstruction` is inserted at the beginning of a block whenever two different definitions of
+ * the same variable reach that block. The `PhiInstruction` will have one operand corresponding to
+ * each control flow predecessor of the block, with that operand representing the version of the
+ * variable that flows from that predecessor. The result value of the `PhiInstruction` will be
+ * a copy of whichever operand corresponds to the actual predecessor that entered the block at
+ * runtime.
+ */
 class PhiInstruction extends Instruction {
   PhiInstruction() {
     opcode instanceof Opcode::Phi
@@ -1212,6 +1362,73 @@ class PhiInstruction extends Instruction {
 
   override final MemoryAccessKind getResultMemoryAccess() {
     result instanceof PhiMemoryAccess
+  }
+}
+
+/**
+ * An instruction representing the effect that a write to a memory may have on potential aliases of
+ * that memory.
+ *
+ * A `ChiInstruction` is inserted immediately after an instruction that writes to memory. The
+ * `ChiInstruction` has two operands. The first operand, given by `getTotalOperand()`, represents
+ * the previous state of all of the memory that might be alised by the memory write. The second
+ * operand, given by `getPartialOperand()`, represents the memory that was actually modified by the
+ * memory write. The result of the `ChiInstruction` represents the same memory as
+ * `getTotalOperand()`, updated to include the changes due to the value that was actually stored by
+ * the memory write.
+ *
+ * As an example, suppose that variable `p` and `q` are pointers that may or may not point to the
+ * same memory:
+ * ```
+ * *p = 5;
+ * x = *q;
+ * ```
+ *
+ * The IR would look like:
+ * ```
+ * r1_1 = VariableAddress[p]
+ * r1_2 = Load r1_1, m0_0  // Load the value of `p`
+ * r1_3 = Constant[5]
+ * m1_4 = Store r1_2, r1_3  // Store to `*p`
+ * m1_5 = ^Chi m0_1, m1_4  // Side effect of the previous Store on aliased memory
+ * r1_6 = VariableAddress[x]
+ * r1_7 = VariableAddress[q]
+ * r1_8 = Load r1_7, m0_2  // Load the value of `q`
+ * r1_9 = Load r1_8, m1_5  // Load the value of `*q`
+ * m1_10 = Store r1_6, r1_9  // Store to x
+ * ```
+ *
+ * Note the `Chi` instruction after the store to `*p`. The indicates that the previous contents of
+ * aliased memory (`m0_1`) are merged with the new value written by the store (`m1_4`), producing a
+ * new version of aliased memory (`m1_5`). On the subsequent load from `*q`, the source operand of
+ * `*q` is `m1_5`, indicating that the store to `*p` may (or may not) have updated the memory
+ * pointed to by `q`.
+ *
+ * For more information about how `Chi` instructions are used to model memory side effects, see
+ * https://link.springer.com/content/pdf/10.1007%2F3-540-61053-7_66.pdf.
+ */
+class ChiInstruction extends Instruction {
+  ChiInstruction() {
+    opcode instanceof Opcode::Chi
+  }
+
+  override final MemoryAccessKind getResultMemoryAccess() {
+    result instanceof ChiTotalMemoryAccess
+  }
+
+  /**
+   * Gets the operand that represents the previous state of all memory that might be aliased by the
+   * memory write.
+   */
+  final Instruction getTotalOperand() {
+    result = getAnOperand().(ChiTotalOperand).getDefinitionInstruction()
+  }
+
+  /**
+   * Gets the operand that represents the new value written by the memory write.
+   */
+  final Instruction getPartialOperand() {
+    result = getAnOperand().(ChiPartialOperand).getDefinitionInstruction()
   }
 }
 

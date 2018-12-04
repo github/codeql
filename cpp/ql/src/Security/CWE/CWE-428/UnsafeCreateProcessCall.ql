@@ -68,7 +68,7 @@ class NullAppNameCreateProcessFunctionConfiguration extends DataFlow::Configurat
   }
 
   override predicate isSource(DataFlow::Node source) {
-    nullValue(source.asExpr()) 
+    source.asExpr() instanceof NullValue
   }
 
   override predicate isSink(DataFlow::Node sink) {

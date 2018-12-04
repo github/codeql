@@ -73,14 +73,6 @@ module UnsafeDynamicMethodAccess {
       PropertyInjection::hasUnsafeMethods(node) // Redefined here so custom queries can override it
     }
 
-    /**
-     * Holds if the `node` is of form `Object.create(null)` and so it has no prototype.
-     */
-    predicate isPrototypeLessObject(DataFlow::MethodCallNode node) {
-      node = DataFlow::globalVarRef("Object").getAMethodCall("create") and
-      node.getArgument(0).asExpr() instanceof NullLiteral
-    }
-
     override predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node dst, DataFlow::FlowLabel srclabel, DataFlow::FlowLabel dstlabel) {
       // Reading a property of the global object or of a function
       exists (DataFlow::PropRead read |
@@ -92,7 +84,7 @@ module UnsafeDynamicMethodAccess {
       or
       // Reading a chain of properties from any object with a prototype can lead to Function
       exists (PropertyProjection proj |
-        not isPrototypeLessObject(proj.getObject().getALocalSource()) and
+        not PropertyInjection::isPrototypeLessObject(proj.getObject().getALocalSource()) and
         src = proj.getASelector() and
         dst = proj and
         (srclabel = data() or srclabel = taint()) and

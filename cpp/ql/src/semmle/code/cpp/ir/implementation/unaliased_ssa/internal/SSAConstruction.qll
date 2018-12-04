@@ -3,7 +3,6 @@ import cpp
 private import semmle.code.cpp.ir.implementation.Opcode
 private import semmle.code.cpp.ir.internal.OperandTag
 private import NewIR
-import IRBlockConstruction as BlockConstruction
 
 import Cached
 cached private module Cached {
@@ -18,6 +17,10 @@ cached private module Cached {
     } or
     PhiTag(Alias::VirtualVariable vvar, OldIR::IRBlock block) {
       hasPhiNode(vvar, block)
+    } or
+    ChiTag(OldIR::Instruction oldInstruction) {
+      not oldInstruction instanceof OldIR::PhiInstruction and
+      hasChiNode(_, oldInstruction)
     }
 
   cached class InstructionTagType extends TInstructionTag {
@@ -40,11 +43,27 @@ cached private module Cached {
     getOldInstruction(result) = instr
   }
 
+  /**
+   * Gets the chi node corresponding to `instr` if one is present, or the new `Instruction`
+   * corresponding to `instr` if there is no `Chi` node.
+   */
+  private Instruction getNewFinalInstruction(OldIR::Instruction instr) {
+    result = getChiInstruction(instr)
+    or
+    not exists(getChiInstruction(instr)) and
+    result = getNewInstruction(instr)
+  }
+
   private PhiInstruction getPhiInstruction(Function func, OldIR::IRBlock oldBlock,
     Alias::VirtualVariable vvar) {
     result.getFunction() = func and
     result.getAST() = oldBlock.getFirstInstruction().getAST() and
     result.getTag() = PhiTag(vvar, oldBlock)
+  }
+  
+  private ChiInstruction getChiInstruction (OldIR::Instruction instr) {
+    hasChiNode(_, instr) and
+    result.getTag() = ChiTag(instr)
   }
 
   private IRVariable getNewIRVariable(OldIR::IRVariable var) {
@@ -92,6 +111,15 @@ cached private module Cached {
       tag = PhiTag(vvar, block) and
       resultType = vvar.getType() and
       isGLValue = false
+    ) or
+    exists(OldIR::Instruction instr, Alias::VirtualVariable vvar |
+      hasChiNode(vvar, instr) and
+      instr.getFunction() = func and
+      opcode instanceof Opcode::Chi and
+      ast = instr.getAST() and
+      tag = ChiTag(instr) and
+      resultType = vvar.getType() and
+      isGLValue = false
     )
   }
 
@@ -125,11 +153,11 @@ cached private module Cached {
               hasUseAtRank(vvar, useBlock, useRank, oldInstruction) and
               definitionReachesUse(vvar, defBlock, defRank, useBlock, useRank) and
               if defIndex >= 0 then
-                result = getNewInstruction(defBlock.getInstruction(defIndex))
+                result = getNewFinalInstruction(defBlock.getInstruction(defIndex))
               else
-                result = getPhiInstruction(instruction.getFunction(), defBlock, vvar)      
+                result = getPhiInstruction(instruction.getFunction(), defBlock, vvar)
             )
-          ) 
+          )
           else (
             result = instruction.getFunctionIR().getUnmodeledDefinitionInstruction()
           )
@@ -146,7 +174,17 @@ cached private module Cached {
       )
       else 
         result = getNewInstruction(oldOperand.getDefinitionInstruction())
-    )
+    ) or
+    instruction.getTag() = ChiTag(getOldInstruction(result)) and
+    tag instanceof ChiPartialOperandTag
+    or
+    instruction instanceof UnmodeledUseInstruction and
+    tag instanceof UnmodeledUseOperandTag and
+    result  instanceof UnmodeledDefinitionInstruction and
+    instruction.getFunction() = result.getFunction()
+    or
+    tag instanceof ChiTotalOperandTag and
+    result = getChiInstructionTotalOperand(instruction)
   }
 
   cached Instruction getPhiInstructionOperandDefinition(PhiInstruction instr,
@@ -160,9 +198,24 @@ cached private module Cached {
       hasDefinitionAtRank(vvar, defBlock, defRank, defIndex) and
       definitionReachesEndOfBlock(vvar, defBlock, defRank, predBlock) and
       if defIndex >= 0 then
-        result = getNewInstruction(defBlock.getInstruction(defIndex))
+        result = getNewFinalInstruction(defBlock.getInstruction(defIndex))
       else
         result = getPhiInstruction(instr.getFunction(), defBlock, vvar)
+    )
+  }
+
+  cached Instruction getChiInstructionTotalOperand(ChiInstruction chiInstr) {
+    exists(Alias::VirtualVariable vvar, OldIR::Instruction oldInstr, OldIR::IRBlock defBlock,
+        int defRank, int defIndex, OldIR::IRBlock useBlock, int useRank |
+      ChiTag(oldInstr) = chiInstr.getTag() and
+      vvar = Alias::getResultMemoryAccess(oldInstr).getVirtualVariable() and
+      hasDefinitionAtRank(vvar, defBlock, defRank, defIndex) and
+      hasUseAtRank(vvar, useBlock, useRank, oldInstr) and
+      definitionReachesUse(vvar, defBlock, defRank, useBlock, useRank) and
+      if defIndex >= 0 then
+        result = getNewFinalInstruction(defBlock.getInstruction(defIndex))
+      else
+        result = getPhiInstruction(chiInstr.getFunction(), defBlock, vvar)
     )
   }
 
@@ -181,8 +234,24 @@ cached private module Cached {
     result = getOldInstruction(instruction).getUnconvertedResultExpression()
   }
 
+  /*
+   * This adds Chi nodes to the instruction successor relation; if an instruction has a Chi node,
+   * that node is its successor in the new successor relation, and the Chi node's successors are
+   * the new instructions generated from the successors of the old instruction
+   */
   cached Instruction getInstructionSuccessor(Instruction instruction, EdgeKind kind) {
-    result = getNewInstruction(getOldInstruction(instruction).getSuccessor(kind))
+    if(hasChiNode(_, getOldInstruction(instruction)))
+    then
+      result = getChiInstruction(getOldInstruction(instruction)) and
+      kind instanceof GotoEdge
+    else (
+      result = getNewInstruction(getOldInstruction(instruction).getSuccessor(kind))
+      or
+      exists(OldIR::Instruction oldInstruction |
+        instruction = getChiInstruction(oldInstruction) and
+        result = getNewInstruction(oldInstruction.getSuccessor(kind))
+      )
+    )
   }
 
   cached IRVariable getInstructionVariable(Instruction instruction) {
@@ -228,6 +297,18 @@ cached private module Cached {
     )
   }
 
+  cached Instruction getPrimaryInstructionForSideEffect(Instruction instruction) {
+    exists(OldIR::SideEffectInstruction oldInstruction |
+      oldInstruction = getOldInstruction(instruction) and
+      result = getNewInstruction(oldInstruction.getPrimaryInstruction())
+    )
+    or
+    exists(OldIR::Instruction oldInstruction |
+      instruction.getTag() = ChiTag(oldInstruction) and
+      result = getNewInstruction(oldInstruction)
+    )
+  }
+
   private predicate ssa_variableUpdate(Alias::VirtualVariable vvar,
     OldIR::Instruction instr, OldIR::IRBlock block, int index) {
     block.getInstruction(index) = instr and
@@ -253,7 +334,16 @@ cached private module Cached {
   private predicate hasUse(Alias::VirtualVariable vvar, 
     OldIR::Instruction use, OldIR::IRBlock block, int index) {
     exists(Alias::MemoryAccess access |
-      access = Alias::getOperandMemoryAccess(use.getAnOperand()) and
+      (
+        access = Alias::getOperandMemoryAccess(use.getAnOperand())
+        or
+        /*
+         * a partial write to a virtual variable is going to generate a use of that variable when
+         * Chi nodes are inserted, so we need to mark it as a use in the old IR
+         */
+        access = Alias::getResultMemoryAccess(use) and
+        access.isPartialMemoryAccess()
+      ) and
       block.getInstruction(index) = use and
       vvar = access.getVirtualVariable()
     )
@@ -383,6 +473,15 @@ cached private module Cached {
     OldIR::IRBlock phiBlock) {
     hasFrontierPhiNode(vvar, phiBlock)
     //or ssa_sanitized_custom_phi_node(vvar, block)
+  }
+  
+  private predicate hasChiNode(Alias::VirtualVariable vvar,
+    OldIR::Instruction def) {
+    exists(Alias::MemoryAccess ma |
+      ma = Alias::getResultMemoryAccess(def) and
+      ma.isPartialMemoryAccess() and
+      ma.getVirtualVariable() = vvar
+    )
   }
 }
 

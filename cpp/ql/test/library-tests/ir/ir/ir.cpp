@@ -1002,4 +1002,20 @@ void OperatorDeleteArray() {
 }
 #endif
 
+int ChiPhiNode(Point *p, bool which1, bool which2) {
+  if (which1) {
+    p->x++;
+  } else {
+    p->y++;
+  }
+
+  if (which2) {
+    p->x++;
+  } else {
+    p->y++;
+  }
+
+  return p->x + p->y;
+}
+
 // semmle-extractor-options: -std=c++17

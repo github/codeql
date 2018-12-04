@@ -23,3 +23,5 @@
 | tst.js:2:13:2:20 | source() | tst.js:41:14:41:16 | ary |
 | tst.js:2:13:2:20 | source() | tst.js:44:10:44:30 | innocen ... ) => x) |
 | tst.js:2:13:2:20 | source() | tst.js:45:10:45:24 | x.map(x2 => x2) |
+| tst.js:2:13:2:20 | source() | tst.js:47:10:47:30 | Buffer. ...  'hex') |
+| tst.js:2:13:2:20 | source() | tst.js:48:10:48:22 | new Buffer(x) |

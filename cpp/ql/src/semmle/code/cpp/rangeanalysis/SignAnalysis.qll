@@ -193,6 +193,13 @@ private Sign castSign(Sign s, boolean fromSigned, boolean toSigned, CastKind ck)
 
 /** Holds if the sign of `e` is too complicated to determine. */
 private predicate unknownSign(Instruction i) {
+  // REVIEW: This should probably be a list of the instructions that we _do_ understand, rather than
+  // the ones we don't understand. Currently, if we try to compute the sign of an instruction that
+  // we don't understand, and it isn't on this list, we incorrectly compute the sign as "none"
+  // instead of "+,0,-".
+  // Even better, we could track the state of each instruction as a power set of {non-negative,
+  // non-positive, non-zero}, which would mean that the representation of the sign of an unknown
+  // value would be the empty set.
   (
     i instanceof UnmodeledDefinitionInstruction
     or
@@ -203,6 +210,8 @@ private predicate unknownSign(Instruction i) {
     i instanceof BuiltInInstruction
     or
     i instanceof CallInstruction
+    or
+    i instanceof ChiInstruction
   )
 }
 

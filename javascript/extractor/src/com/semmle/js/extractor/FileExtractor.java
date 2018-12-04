@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -37,6 +38,11 @@ public class FileExtractor {
 	 * A pattern that matches strings starting with `{ "...":`, suggesting JSON data.
 	 */
 	public static final Pattern JSON_OBJECT_START = Pattern.compile("^(?s)\\s*\\{\\s*\"([^\"]|\\\\.)*\"\\s*:.*");
+
+	/**
+	 * The charset for decoding UTF-8 strings.
+	 */
+	private static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
 
 	/**
 	 * Information about supported file types.
@@ -169,6 +175,11 @@ public class FileExtractor {
 					if (isXml(bytes, length))
 						return true;
 
+					// Avoid files with an unrecognized shebang header.
+					if (hasUnrecognizedShebang(bytes, length)) {
+						return true;
+					}
+
 					return false;
 				} catch (IOException e) {
 					Exceptions.ignore(e, "Let extractor handle this one.");
@@ -247,6 +258,38 @@ public class FileExtractor {
 					}
 				}
 				return false;
+			}
+
+			/**
+			 * Returns true if the byte sequence starts with a shebang line that is not
+			 * recognized as a JavaScript interpreter.
+			 */
+			private boolean hasUnrecognizedShebang(byte[] bytes, int length) {
+				// Shebangs preceded by a BOM aren't recognized in UNIX, but the BOM might only
+				// be present in the source file, to be stripped out in the build process.
+				int startIndex = skipBOM(bytes, length);
+				if (startIndex + 2 >= length) return false;
+				if (bytes[startIndex] != '#' || bytes[startIndex + 1] != '!') {
+					return false;
+				}
+				int endOfLine = -1;
+				for (int i = startIndex; i < length; ++i) {
+					if (bytes[i] == '\r' || bytes[i] == '\n') {
+						endOfLine = i;
+						break;
+					}
+				}
+				if (endOfLine == -1) {
+					// The shebang is either very long or there are no other lines in the file.
+					// Treat this as unrecognized.
+					return true;
+				}
+				// Extract the shebang text
+				int startOfText = startIndex + "#!".length();
+				int lengthOfText = endOfLine - startOfText;
+				String text = new String(bytes, startOfText, lengthOfText, UTF8_CHARSET);
+				// Check if the shebang is a recognized JavaScript intepreter.
+				return !NODE_INVOCATION.matcher(text).find();
 			}
 
 			@Override
