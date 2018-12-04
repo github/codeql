@@ -29,7 +29,6 @@
 | Static array access may cause overflow (`cpp/static-buffer-overflow`) | More correct results | Data flow to the `size` argument of a buffer operation is now checked in this query. |
 | Suspicious add with sizeof (`cpp/suspicious-add-sizeof`) | Fewer false positive results | Arithmetic with void pointers (where allowed) is now excluded from results. |
 | Unsigned comparison to zero (`cpp/unsigned-comparison-zero`) | Fewer false positive results | Comparisons in template instantiations are now excluded from results. |
-| Variable scope too large (`TODO`) | Fewer false positive results | Variables with declarations in header files, or that are used at file scope, are now excluded from results. |
 | Wrong type of arguments to formatting function (`cpp/wrong-type-format-argument`) | Fewer false positive results | False positive results involving `typedef`s have been removed.  Expected argument types are determined more accurately, especially for wide string and pointer types.  Custom (non-standard) formatting functions are also identified more accurately. |
 
 ## Changes to other queries
@@ -39,10 +38,11 @@
 | Array offset used before range check (`cpp/offset-use-before-range-check`) | More results and fewer false positive results | Now recognizes array accesses in different positions within the expression.  Code where the range is checked before and after the array access is no longer highlighted. |
 | AV Rule 164 (`cpp/jsf/av-rule-164`) | Fewer false positive results | Now accounts for explicit casts. |
 | Call to memory access function may overflow buffer (`cpp/overflow-buffer`) | More correct results | Array indexing with a negative index is now detected by this query. |
-| Global could be static (`TODO`)| Fewer false positive results | Variables with declarations in header files are now excluded from results. |
+| Global could be static (`cpp/jpl-c/limited-scope-file` and `cpp/power-of-10/global-could-be-static`)| Fewer false positive results | Variables with declarations in header files are now excluded from results. |
 | Memory is never freed (`cpp/memory-never-freed`)| Fewer false positive results | No longer highlights uses of C++ _placement new_, which returns a pointer that does not need to be freed. |
 | Negation of unsigned value (`cpp/jsf/av-rule-165`) | Fewer false positive results | Now accounts for explicit casts. |
 | Suspicious call to memset (`cpp/suspicious-call-to-memset`) | Fewer false positive results | Types involving `decltype` are now correctly compared. |
+| Variable scope too large (`cpp/jpl-c/limited-scope-function` and `cpp/power-of-10/variable-scope-too-large`) | Fewer false positive results | Variables with declarations in header files, or that are used at file scope, are now excluded from results. |
 
 ## Changes to QL libraries
 
