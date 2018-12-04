@@ -35,6 +35,11 @@ abstract class ReactComponent extends ASTNode {
   abstract Function getInstanceMethod(string name);
 
   /**
+   * Gets a static method of this component with the given name.
+   */
+  abstract Function getStaticMethod(string name);
+
+  /**
    * Gets the abstract value that represents this component.
    */
   abstract AbstractValue getAbstractComponent();
@@ -272,6 +277,10 @@ class FunctionalComponent extends ReactComponent, Function {
     name = "render" and result = this
   }
 
+  override Function getStaticMethod(string name) {
+    none()
+  }
+
   override DataFlow::SourceNode getADirectPropsAccess() {
     result = DataFlow::parameterNode(getParameter(0))
   }
@@ -300,6 +309,14 @@ private abstract class SharedReactPreactClassComponent extends ReactComponent, C
 
   override Function getInstanceMethod(string name) {
     result = ClassDefinition.super.getInstanceMethod(name)
+  }
+
+  override Function getStaticMethod(string name) {
+    exists(MethodDeclaration decl |
+      decl = getMethod(name) and
+      decl.isStatic() and
+      result = decl.getBody()
+    )
   }
 
   override DataFlow::SourceNode getADirectPropsAccess() {
@@ -426,6 +443,10 @@ class ES5Component extends ReactComponent, ObjectExpr {
 
   override Function getInstanceMethod(string name) {
     result = getPropertyByName(name).getInit()
+  }
+
+  override Function getStaticMethod(string name) {
+    none()
   }
 
   override DataFlow::SourceNode getADirectPropsAccess() {
