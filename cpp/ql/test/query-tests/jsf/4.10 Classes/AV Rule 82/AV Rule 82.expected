@@ -3,5 +3,5 @@
 | AV Rule 82.cpp:63:29:63:29 | operator= | Assignment operator in class TemplateReturnAssignment<int> does not return a reference to *this. |
 | AV Rule 82.cpp:63:29:63:37 | operator= | Assignment operator in class TemplateReturnAssignment<T> does not return a reference to *this. |
 | AV Rule 82.cpp:192:55:192:63 | operator= | Assignment operator in class TemplatedAssignmentGood does not return a reference to *this. |
-| AV Rule 82.cpp:199:52:199:52 | operator= | Assignment operator in class TemplatedAssignmentBad does not return a reference to *this. |
+| AV Rule 82.cpp:199:52:199:52 | operator= | Assignment operator in class TemplatedAssignmentBad should have return type TemplatedAssignmentBad&. Otherwise a copy is created at each call. |
 | AV Rule 82.cpp:199:52:199:60 | operator= | Assignment operator in class TemplatedAssignmentBad does not return a reference to *this. |
