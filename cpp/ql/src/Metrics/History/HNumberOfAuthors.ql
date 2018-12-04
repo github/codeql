@@ -6,6 +6,7 @@
  * @treemap.warnOn highValues
  * @metricType file
  * @metricAggregate avg min max
+ * @tags external-data
  * @deprecated
  */
 import cpp

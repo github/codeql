@@ -7,6 +7,7 @@
  * @kind treemap
  * @id cpp/recent-defects-for-metric-filter
  * @tags filter
+ *       external-data
  * @deprecated
  */
 import cpp
