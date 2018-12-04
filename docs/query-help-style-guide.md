@@ -35,7 +35,7 @@ Section-level elements are used to group the information within the query help f
 1.  `overview`—a short summary of the issue that the query identifies, including an explanation of how it could affect the behavior of the program.
 2.  `recommendation`—information on how to fix the issue highlighted by the query.
 3.  `example`—an example of code showing the problem. Where possible, this section should also include a solution to the issue.
-4.  `references`—relevant references, such as authoritative sources on langauage semantics and best practice. 
+4.  `references`—relevant references, such as authoritative sources on language semantics and best practice. 
 
 For further information about the other section-level, block, list and table elements supported by the qhelp format, see [Qhelp files](https://wiki.semmle.com/display/SD/Qhelp+files).
 
