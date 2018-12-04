@@ -780,31 +780,19 @@ module PointsTo {
             )
         )
     }
-/*
-    pragma [noinline]
-    private Object version_hex_compare(CompareNode cmp, PointsToContext context) {
-        exists(ControlFlowNode lesser, ControlFlowNode greater, boolean strict |
-            inequality(cmp, lesser, greater, strict) and
-            exists(TupleObject tuple, int comp |
-                points_to(lesser, context, tuple, _, _) and
-                points_to(greater, context, theSysHexVersionNumber(), _, _) and
-                comp = version_tuple_compare(tuple)
-                or
-                points_to(lesser, context, theSysHexVersionNumber(), _, _) and
-                points_to(greater, context, tuple, _, _) and
-                comp = version_hex_compare(tuple)*-1
-                |
-                comp = -1 and result = theTrueObject()
-                or
-                comp = 0 and strict = false and result = theTrueObject()
-                or
-                comp = 0 and strict = true and result = theFalseObject()
-                or
-                comp = 1 and result = theFalseObject()
-            )
+
+    /** Holds if `cls` is an element of the tuple referred to by `f`.
+     * Helper for relevant_subclass_relation
+     */
+    private predicate element_of_points_to_tuple(ControlFlowNode f, PointsToContext context, ClassObject cls) {
+        exists(TupleObject t |
+            points_to(f, context, t, _, _) |
+            cls = t.getBuiltinElement(_)
+            or
+            points_to(t.getSourceElement(_), _, cls, _, _)
         )
     }
-*/
+
     private predicate compare_expr_points_to(CompareNode cmp, PointsToContext context, Object value, ClassObject cls, ControlFlowNode origin) {
         equality_expr_points_to(cmp, context, value, cls, origin)
         or
@@ -2046,18 +2034,14 @@ module PointsTo {
         private boolean issubclass_test_evaluates_boolean(ControlFlowNode expr, ControlFlowNode use, PointsToContext context, Object val, ClassObject cls, ControlFlowNode origin) {
             points_to(use, context, val, cls, origin) and
             exists(ControlFlowNode clsNode |
-                BaseFilters::issubclass(expr, clsNode, use) |
+                BaseFilters::issubclass(expr, clsNode, use)
+                |
                 exists(ClassObject scls |
-                    points_to(clsNode, context, scls, _, _) |
                     result = Types::is_improper_subclass_bool(val, scls)
-                )
-                or exists(TupleObject t, ClassObject scls |
-                    points_to(clsNode, context, t, _, _) and
-                    result = Types::is_improper_subclass_bool(val, scls) and result = true
                     |
-                    scls = t.getBuiltinElement(_)
+                    points_to(clsNode, context, scls, _, _)
                     or
-                    points_to(t.getSourceElement(_), _, scls, _, _)
+                    element_of_points_to_tuple(clsNode, context, scls) and result = true
                 )
                 or
                 val = unknownValue() and result = maybe()
@@ -2070,18 +2054,14 @@ module PointsTo {
         private boolean isinstance_test_evaluates_boolean(ControlFlowNode expr, ControlFlowNode use, PointsToContext context, Object val, ClassObject cls, ControlFlowNode origin) {
             points_to(use, context, val, cls, origin) and
             exists(ControlFlowNode clsNode |
-                BaseFilters::isinstance(expr, clsNode, use) |
+                BaseFilters::isinstance(expr, clsNode, use)
+                |
                 exists(ClassObject scls |
-                    points_to(clsNode, context, scls, _, _) |
                     result = Types::is_improper_subclass_bool(cls, scls)
-                )
-                or exists(TupleObject t, ClassObject scls |
-                    points_to(clsNode, context, t, _, _) and
-                    result = Types::is_improper_subclass_bool(cls, scls) and result = true
                     |
-                    scls = t.getBuiltinElement(_)
+                    points_to(clsNode, context, scls, _, _)
                     or
-                    points_to(t.getSourceElement(_), _, scls, _, _)
+                    element_of_points_to_tuple(clsNode, context, scls) and result = true
                 )
                 or
                 val = unknownValue() and result = maybe()
@@ -2458,23 +2438,28 @@ module PointsTo {
         }
 
         private predicate relevant_subclass_relation(ClassObject cls, ClassObject sup) {
-            exists(ControlFlowNode supnode, ControlFlowNode use |
+            exists(ControlFlowNode supnode |
                 points_to(supnode, _, sup, _, _)
-                or exists(TupleObject t |
-                    points_to(supnode, _, t, _, _) |
-                    sup = t.getBuiltinElement(_)
-                    or
-                    points_to(t.getSourceElement(_), _, sup, _, _)
-                )
-                |
-                BaseFilters::issubclass(_, supnode, use) and points_to(use, _, cls, _, _)
                 or
-                BaseFilters::isinstance(_, supnode, use) and points_to(use, _, _, cls, _)
+                element_of_points_to_tuple(supnode, _, sup)
+                |
+                subclass_test(supnode, cls)
             )
             or
             exists(ClassObject sub |
                 relevant_subclass_relation(sub, sup) and
                 class_base_type(sub, _) = cls
+            )
+        }
+
+        /** Holds if there is a subclass test of `f` against class `cls`.
+         *  Helper for relevant_subclass_relation.
+         */
+        private predicate subclass_test(ControlFlowNode f, ClassObject cls) {
+            exists(ControlFlowNode use |
+                BaseFilters::issubclass(_, f, use) and points_to(use, _, cls, _, _)
+                or
+                BaseFilters::isinstance(_, f, use) and points_to(use, _, _, cls, _)
             )
         }
 
