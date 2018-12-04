@@ -13,31 +13,36 @@
 | `NULL` application name with an unquoted path in call to `CreateProcess` (`cpp/unsafe-create-process-call`) | security, external/cwe/cwe-428 | Finds unsafe uses of the `CreateProcess` function.  Results are hidden on LGTM by default. |
 | Setting a DACL to `NULL` in a `SECURITY_DESCRIPTOR` (`cpp/unsafe-dacl-security-descriptor`) | security, external/cwe/cwe-732 | Finds code that creates world-writable objects on Windows by setting their DACL to `NULL`. Results are shown on LGTM by default. |
 
-## Changes to existing queries
+## Changes to existing LGTM queries
 
 | **Query**                  | **Expected impact**    | **Change**                                                       |
 |----------------------------|------------------------|------------------------------------------------------------------|
-| Array offset used before range check (`cpp/offset-use-before-range-check`) | More results and fewer false positive results | Now recognizes array accesses in different positions within the expression.  Code where the range is checked before and after the array access is no longer highlighted. Non-LGTM |
-| AV Rule 164 (`cpp/jsf/av-rule-164`) | Fewer false positive results | Now accounts for explicit casts. Non-LGTM |
-| Call to memory access function may overflow buffer (`cpp/overflow-buffer`) | More correct results | Array indexing with a negative index is now detected by this query. Non-LGTM |
 | Comparison result is always the same (`cpp/constant-comparison`) | Fewer false positive results | Comparisons in template instantiations are now excluded from results. |
 | Empty branch of conditional (`cpp/empty-block`) | Fewer false positive results | Now recognizes commented blocks more reliably. |
 | Expression has no effect (`cpp/useless-expression`) | Fewer false positive results | Expressions in template instantiations are now excluded from results. |
-| Global could be static (`TODO`)| Fewer false positive results | Variables with declarations in header files are now excluded from results. Non-LGTM |
-| Memory is never freed (`cpp/memory-never-freed`)| Fewer false positive results | No longer highlights uses of C++ _placement new_, which returns a pointer that does not need to be freed. Non-LGTM |
 | Missing return statement (`cpp/missing-return`) | Fewer false positive results, visible by default | Improved results when a function returns a template-dependent type, or makes a non-returning call to another function. Precision increased from 'medium' to 'high' so that alerts are shown by default in LGTM. |
 | Multiplication result converted to larger type (`cpp/integer-multiplication-cast-to-long`) | Fewer false positive results | Char-typed numbers are no longer considered to be potentially large. |
-| Negation of unsigned value (`cpp/jsf/av-rule-165`) | Fewer false positive results | Now accounts for explicit casts. Non-LGTM |
 | No virtual destructor (`cpp/jsf/av-rule-78`) | No results in LGTM | This query is part of the [Joint Strike Fighter](http://www.stroustrup.com/JSF-AV-rules.pdf) suite which defines strict coding rules for air vehicles. Its query identifier has been revised to reflect this. On LGTM this query has been replaced by the similar query "Non-virtual destructor in base class", see New queries above.  The new query highlights only code that is likely to be a problem in the majority of projects. |
 | Overloaded assignment does not return 'this' (`cpp/assignment-does-not-return-this`) | Fewer false positive results | Any return statements that are unreachable are now ignored. |
 | Resource not released in destructor (`cpp/resource-not-released-in-destructor`) | Fewer false positive results | No longer highlights uses of C++ _placement new_ and results are no longer reported for resources where the destructor body is not in the snapshot database. |
 | Self comparison (`cpp/comparison-of-identical-expressions`) | Fewer false positive results | Code inside macro invocations is now excluded from the query. |
 | Static array access may cause overflow (`cpp/static-buffer-overflow`) | More correct results | Data flow to the `size` argument of a buffer operation is now checked in this query. |
 | Suspicious add with sizeof (`cpp/suspicious-add-sizeof`) | Fewer false positive results | Arithmetic with void pointers (where allowed) is now excluded from results. |
-| Suspicious call to memset (`cpp/suspicious-call-to-memset`) | Fewer false positive results | Types involving `decltype` are now correctly compared. Non-LGTM |
 | Unsigned comparison to zero (`cpp/unsigned-comparison-zero`) | Fewer false positive results | Comparisons in template instantiations are now excluded from results. |
 | Variable scope too large (`TODO`) | Fewer false positive results | Variables with declarations in header files, or that are used at file scope, are now excluded from results. |
 | Wrong type of arguments to formatting function (`cpp/wrong-type-format-argument`) | Fewer false positive results | False positive results involving `typedef`s have been removed.  Expected argument types are determined more accurately, especially for wide string and pointer types.  Custom (non-standard) formatting functions are also identified more accurately. |
+
+## Changes to other queries
+
+| **Query**                  | **Expected impact**    | **Change**                                                       |
+|----------------------------|------------------------|------------------------------------------------------------------|
+| Array offset used before range check (`cpp/offset-use-before-range-check`) | More results and fewer false positive results | Now recognizes array accesses in different positions within the expression.  Code where the range is checked before and after the array access is no longer highlighted. |
+| AV Rule 164 (`cpp/jsf/av-rule-164`) | Fewer false positive results | Now accounts for explicit casts. |
+| Call to memory access function may overflow buffer (`cpp/overflow-buffer`) | More correct results | Array indexing with a negative index is now detected by this query. |
+| Global could be static (`TODO`)| Fewer false positive results | Variables with declarations in header files are now excluded from results. |
+| Memory is never freed (`cpp/memory-never-freed`)| Fewer false positive results | No longer highlights uses of C++ _placement new_, which returns a pointer that does not need to be freed. |
+| Negation of unsigned value (`cpp/jsf/av-rule-165`) | Fewer false positive results | Now accounts for explicit casts. |
+| Suspicious call to memset (`cpp/suspicious-call-to-memset`) | Fewer false positive results | Types involving `decltype` are now correctly compared. |
 
 ## Changes to QL libraries
 
