@@ -5,7 +5,7 @@
  *              locking is not thread-safe, and could result in unexpected
  *              behavior.
  * @kind problem
- * @problem.severity error
+ * @problem.severity warning
  * @precision high
  * @id java/unsafe-double-checked-locking-init-order
  * @tags reliability
