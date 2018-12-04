@@ -339,9 +339,21 @@ abstract class Container extends @container {
 
     /** Holds if this folder is the root folder for the standard library. */
     predicate isStdLibRoot(int major, int minor) {
-        allowable_version(major, minor) and
-        this.isImportRoot() and
-        this.getBaseName().regexpMatch("python" + major + "." + minor)
+        major = major_version() and minor = minor_version() and
+        this.isStdLibRoot()
+    }
+
+    /** Holds if this folder is the root folder for the standard library. */
+    predicate isStdLibRoot() {
+        /* Look for a standard lib module and find its import path
+         * We use `os` as it is the most likely to be imported and
+         * `tty` because it is small for testing.
+         */
+        exists(Module m |
+            m.getName() = "os" or m.getName() = "tty"
+            |
+            m.getFile().getImportRoot() = this
+        )
     }
 
     /** Gets the path element from which this container would be loaded. */
@@ -373,12 +385,6 @@ private string import_path_element(int n) {
 
 private string get_path(string name) {
     py_flags_versioned(name, result, _)
-}
-
-private predicate allowable_version(int major, int minor) {
-    major = 2 and minor in [6..7]
-    or
-    major = 3 and minor in [3..6]
 }
 
 class Location extends @location {

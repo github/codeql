@@ -292,14 +292,20 @@ module FlowVar_internal {
      * Gets a variable that is assigned in this loop and read outside the loop.
      */
     private Variable getARelevantVariable() {
-      exists(BasicBlock bbAssign |
-        assignmentLikeOperation(bbAssign.getANode(), result, _) and
-        this.bbInLoop(bbAssign)
-      ) and
+      result = this.getAVariableAssignedInLoop() and
       exists(VariableAccess va |
         va.getTarget() = result and
         readAccess(va) and
         bbNotInLoop(va.getBasicBlock())
+      )
+    }
+
+    /** Gets a variable that is assigned in this loop. */
+    pragma[noinline]
+    private Variable getAVariableAssignedInLoop() {
+      exists(BasicBlock bbAssign |
+        assignmentLikeOperation(bbAssign.getANode(), result, _) and
+        this.bbInLoop(bbAssign)
       )
     }
 

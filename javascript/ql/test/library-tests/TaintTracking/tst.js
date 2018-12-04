@@ -44,4 +44,6 @@ function test() {
     sink(innocent.map(() => x)); // NOT OK
     sink(x.map(x2 => x2)); // NOT OK
 
+    sink(Buffer.from(x, 'hex')); // NOT OK
+    sink(new Buffer(x));         // NOT OK
 }

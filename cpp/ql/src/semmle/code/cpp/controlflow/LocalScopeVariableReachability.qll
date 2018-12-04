@@ -96,9 +96,17 @@ abstract class LocalScopeVariableReachability extends string {
 
   private predicate bbEntryReachesLocally(BasicBlock bb, SemanticStackVariable v, ControlFlowNode node) {
     exists(int n |
-      node = bb.getNode(n) and isSink(node, v) |
-      not exists(int m | m < n | isBarrier(bb.getNode(m), v))
+      node = bb.getNode(n) and
+      isSink(node, v)
+    |
+      not exists(this.firstBarrierIndexIn(bb, v))
+      or
+      n <= this.firstBarrierIndexIn(bb, v)
     )
+  }
+
+  private int firstBarrierIndexIn(BasicBlock bb, SemanticStackVariable v) {
+    result = min(int m | isBarrier(bb.getNode(m), v))
   }
 }
 

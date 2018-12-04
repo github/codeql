@@ -15,6 +15,7 @@
 | IR: CallNestedTemplateFunc | 1 |
 | IR: CallViaFuncPtr | 1 |
 | IR: CastToVoid | 1 |
+| IR: ChiPhiNode | 7 |
 | IR: Comma | 1 |
 | IR: CompoundAssignment | 1 |
 | IR: ConditionValues | 13 |
@@ -97,7 +98,7 @@
 | IR: VirtualMemberFunction | 1 |
 | IR: WhileStatements | 4 |
 | IR: WhileStmtWithDeclaration | 8 |
-| IR: designatedInit | 4 |
+| IR: designatedInit | 1 |
 | IR: min | 4 |
 | IR: operator= | 1 |
 | IR: ~Base | 1 |
