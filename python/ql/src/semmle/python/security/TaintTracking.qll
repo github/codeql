@@ -416,7 +416,7 @@ abstract class TaintSource extends @py_flow_node {
  * Users of the taint tracking library can override this
  * class to provide their own sources on the ESSA graph.
  */
-abstract class TaintedDefinition extends EssaNode {
+abstract class TaintedDefinition extends EssaNodeDefinition {
 
     /**
      * Holds if `this` is a source of taint kind `kind`
@@ -1067,7 +1067,9 @@ library module TaintFlowImplementation {
                 not exists(Sanitizer san |
                     san.sanitizingDefinition(kind, def)
                     or
-                    san.sanitizingNode(kind, def.(EssaNode).getDefiningNode())
+                    san.sanitizingNode(kind, def.(EssaNodeDefinition).getDefiningNode())
+                    or
+                    san.sanitizingNode(kind, def.(EssaNodeRefinement).getDefiningNode())
                 )
             )
         )
