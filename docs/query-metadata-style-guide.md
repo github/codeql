@@ -27,7 +27,23 @@ For examples of query files for the languages supported by Semmle, see the follo
 
 ## Metadata area
 
-Query file metadata contains important information which defines the name and purpose of the query. In order to help others use your query, and to ensure that the query works correctly on LGTM.com, you should include all of the required information outlined below in the metadata, and as much of the optional information as possible. For further information on query metadata see [Query file requirements](https://help.semmle.com/wiki/display/SD/Query+file+requirements).
+Query file metadata contains important information which defines the name and purpose of the query. The metadata is included as the content of a valid QLDoc comment, on lines with leading whitespace followed by `*`, between an initial `/**` and a trailing `*/`. For example:
+
+```
+/**
+ * @name Useless assignment to local variable
+ * @description An assignment to a local variable that is not used later on, or whose value is always
+ *              overwritten, has no effect.
+ * @kind problem
+ * @problem.severity warning
+ * @id cs/useless-assignment-to-local
+ * @tags maintainability
+ *       external/cwe/cwe-563
+ * @precision very-high
+ */
+ ```
+
+In order to help others use your query, and to ensure that the query works correctly on LGTM.com, you should include all of the required information outlined below in the metadata, and as much of the optional information as possible. For further information on query metadata see [Query file requirements](https://help.semmle.com/wiki/display/SD/Query+file+requirements).
 
 ### Query name `@name`
 
