@@ -189,7 +189,7 @@ struct second {
 
 struct TemplatedAssignmentGood {
   template<typename T>
-  typename second<T, TemplatedAssignmentGood &>::type operator=(T val) { // GOOD [FALSE POSITIVE]
+  typename second<T, TemplatedAssignmentGood &>::type operator=(T val) { // GOOD
     return *this;
   }
 };

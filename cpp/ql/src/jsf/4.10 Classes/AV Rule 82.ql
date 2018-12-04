@@ -51,7 +51,6 @@ predicate dereferenceThis(Expr e) {
  * This includes functions whose body is not in the database.
  */
 predicate returnsPointerThis(Function f) {
-  f.getType().getUnspecifiedType() instanceof PointerType and
   forall(ReturnStmt s | s.getEnclosingFunction() = f and reachable(s) |
     // `return this`
     pointerThis(s.getExpr())
@@ -64,7 +63,6 @@ predicate returnsPointerThis(Function f) {
  * database.
  */
 predicate returnsDereferenceThis(Function f) {
-  f.getType().getUnspecifiedType() instanceof ReferenceType and
   forall(ReturnStmt s | s.getEnclosingFunction() = f and reachable(s) |
     // `return *this`
     dereferenceThis(s.getExpr())
