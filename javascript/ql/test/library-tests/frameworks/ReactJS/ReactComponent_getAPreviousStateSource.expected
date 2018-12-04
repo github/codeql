@@ -1,0 +1,2 @@
+| statePropertyReads.js:1:1:13:1 | class R ...     }\\n} | statePropertyReads.js:7:24:7:32 | prevState |
+| statePropertyReads.js:1:1:13:1 | class R ...     }\\n} | statePropertyReads.js:10:35:10:43 | prevState |

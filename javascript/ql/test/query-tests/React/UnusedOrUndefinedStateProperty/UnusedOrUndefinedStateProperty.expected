@@ -2,5 +2,7 @@
 | undefined.js:1:1:1:34 | class C ...     }\\n} | Component state property 'notWrittenButReadInChain' is $@, but it is never written. | undefined.js:9:9:9:43 | this.st ... InChain | read |
 | undefined.js:32:1:32:34 | class C ...     }\\n} | Component state property 'notWrittenThrougExternalPropertyAccess' is $@, but it is never written. | undefined.js:35:9:35:57 | this.st ... yAccess | read |
 | undefined.js:61:19:61:19 | {\\n    r ... ;\\n  }\\n} | Component state property 'notWrittenInKnownInitializerObject' is $@, but it is never written. | undefined.js:64:9:64:53 | this.st ... rObject | read |
+| undefined.js:159:1:159:35 | class C ...     }\\n} | Component state property 'writeIn_getDerivedStateFromProps' is $@, but it is never written. | undefined.js:166:9:166:51 | this.st ... omProps | read |
 | unused.js:1:1:1:34 | class C ...     }\\n} | Component state property 'notRead' is $@, but it is never read. | unused.js:6:9:6:26 | this.state.notRead | written |
 | unused.js:27:1:27:34 | class C ...     }\\n} | Component state property 'notReadThrougExternaPropertyAccess' is $@, but it is never read. | unused.js:30:9:30:53 | this.st ... yAccess | written |
+| unused.js:64:1:64:34 | class C ...    }\\n\\n} | Component state property 'readIn_getDerivedStateFromProps' is $@, but it is never read. | unused.js:71:9:71:50 | this.st ... omProps | written |
