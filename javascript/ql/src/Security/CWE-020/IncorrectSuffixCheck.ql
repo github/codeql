@@ -1,6 +1,6 @@
 /**
  * @name Incorrect suffix check
- * @description Using indexOf to implement endsWith functionality is error prone if the -1 case is not explicitly handled.
+ * @description Using indexOf to implement endsWith functionality is error-prone if the -1 case is not explicitly handled.
  * @kind problem
  * @problem.severity error
  * @precision high
