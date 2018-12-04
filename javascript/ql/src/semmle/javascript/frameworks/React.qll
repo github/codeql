@@ -200,17 +200,14 @@ abstract class ReactComponent extends ASTNode {
       callback = getAMethodCall("setState").getCallback(0) and
       stateParameterIndex = 0
       or
-      // componentDidUpdate: (prevProps, prevState)
-      callback = getInstanceMethod("componentDidUpdate").flow() and
-      stateParameterIndex = 1
-      or
-      // getDerivedStateFromProps: (props, state)
-      callback = getStaticMethod("getDerivedStateFromProps").flow() and
-      stateParameterIndex = 1
-      or
-      // getSnapshotBeforeUpdate: (prevProps, prevState)
-      callback = getInstanceMethod("getSnapshotBeforeUpdate").flow() and
-      stateParameterIndex = 1
+      stateParameterIndex = 1 and (
+        // componentDidUpdate: (prevProps, prevState)
+        callback = getInstanceMethod("componentDidUpdate").flow() or
+        // getDerivedStateFromProps: (props, state)
+        callback = getStaticMethod("getDerivedStateFromProps").flow() or
+        // getSnapshotBeforeUpdate: (prevProps, prevState)
+        callback = getInstanceMethod("getSnapshotBeforeUpdate").flow()
+      )
     )
   }
 
@@ -255,18 +252,14 @@ abstract class ReactComponent extends ASTNode {
       callback = getAMethodCall("setState").getCallback(0) and
       propsParameterIndex = 1
       or
-      // componentDidUpdate: (prevProps, prevState)
-      callback = getInstanceMethod("componentDidUpdate").flow() and
-      propsParameterIndex = 0
-      or
-      // getDerivedStateFromProps: (props, state)
-      callback = getStaticMethod("getDerivedStateFromProps").flow() and
-      propsParameterIndex = 0
-      or
-      // getSnapshotBeforeUpdate: (prevProps, prevState)
-      callback = getInstanceMethod("getSnapshotBeforeUpdate").flow() and
-      propsParameterIndex = 0
-
+      propsParameterIndex = 0 and (
+        // componentDidUpdate: (prevProps, prevState)
+        callback = getInstanceMethod("componentDidUpdate").flow() or
+        // getDerivedStateFromProps: (props, state)
+        callback = getStaticMethod("getDerivedStateFromProps").flow() or
+        // getSnapshotBeforeUpdate: (prevProps, prevState)
+        callback = getInstanceMethod("getSnapshotBeforeUpdate").flow()
+      )
     )
   }
 
