@@ -207,6 +207,10 @@ abstract class ReactComponent extends ASTNode {
       // getDerivedStateFromProps: (props, state)
       callback = getStaticMethod("getDerivedStateFromProps").flow() and
       stateParameterIndex = 1
+      or
+      // getSnapshotBeforeUpdate: (prevProps, prevState)
+      callback = getInstanceMethod("getSnapshotBeforeUpdate").flow() and
+      stateParameterIndex = 1
     )
   }
 
@@ -258,6 +262,11 @@ abstract class ReactComponent extends ASTNode {
       // getDerivedStateFromProps: (props, state)
       callback = getStaticMethod("getDerivedStateFromProps").flow() and
       propsParameterIndex = 0
+      or
+      // getSnapshotBeforeUpdate: (prevProps, prevState)
+      callback = getInstanceMethod("getSnapshotBeforeUpdate").flow() and
+      propsParameterIndex = 0
+
     )
   }
 
