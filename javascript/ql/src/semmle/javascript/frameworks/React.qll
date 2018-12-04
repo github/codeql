@@ -182,6 +182,9 @@ abstract class ReactComponent extends ASTNode {
     )
     or
     result.flowsToExpr(getStaticMethod("getDerivedStateFromProps").getAReturnedExpr())
+    or
+    // shouldComponentUpdate: (nextProps, nextState)
+    result = DataFlow::parameterNode(getInstanceMethod("shouldComponentUpdate").getParameter(1))
   }
 
   /**
@@ -216,6 +219,9 @@ abstract class ReactComponent extends ASTNode {
     result.flowsTo(getComponentCreatorSource().getAnInvocation().getArgument(0))
     or
     result = getADefaultPropsSource()
+    or
+    // shouldComponentUpdate: (nextProps, nextState)
+    result = DataFlow::parameterNode(getInstanceMethod("shouldComponentUpdate").getParameter(0))
   }
 
   /**
