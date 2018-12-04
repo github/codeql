@@ -32,10 +32,10 @@ The header and single top-level `qhelp` element are both mandatory.
 
 Section-level elements are used to group the information within the query help file. All query help files should include at least the following section elements, in the order specified:
 
-1.  `overview`—a summary of the purpose of the query, including an explanation of what the code does and the how the behavior of the program is affected.
+1.  `overview`—a short summary of the issue that the query identifies, including an explanation of how it could affect the behavior of the program.
 2.  `recommendation`—information on how to fix the issue highlighted by the query.
 3.  `example`—an example of code showing the problem. Where possible, this section should also include a solution to the issue.
-4.  `references`—relevant references to best practice. 
+4.  `references`—relevant references, such as authoritative sources on langauage semantics and best practice. 
 
 For further information about the other section-level, block, list and table elements supported by the qhelp format, see [Qhelp files](https://wiki.semmle.com/display/SD/Qhelp+files).
 
@@ -53,32 +53,11 @@ You should write the overview and recommendation elements in simple English that
 
 Whenever possible, you should include a code example that helps to explain the issue you are highlighting. Any code examples that you include should adhere to the following guidelines:
 
-*   The example should be less than 20 lines and ideally it should be runnable. If this is not possible, ensure that the example very clearly illustrates the issue that you are highlighting.
+*   The example should be less than 20 lines, but it should still clearly illustrate the issue that the query identifies.  If appropriate, then the example may also be runnable.
 *   Put the code example after the recommendation element where possible. Only include an example in the description element if absolutely necessary.
 *   If you are using an example to illustrate the solution to a problem, and the change required is minor, avoid repeating the whole example. It is preferable to either describe the change required or to include a smaller snippet of the corrected code.
 *   Clearly indicate which of the samples is an example of bad coding practice and which is recommended practice.
-
-There are several ways of including a code example in a query help file:
-
-*   Directly include the code as nested text in the `example` section, Use the `sample` block and define a `language` attribute to specify the language of the example:
-
-```       
-<example>
-<p>This example highlights poor coding practice</p>
-<sample language = "java" />
-
-Example of poor code
-
-<p>This example shows how to fix the code</p>
-<sample language = "java" />
-
-Example of correct code
-
-</example>
-```     
-
-
-*   Define the code example in a `src` file. The language is inferred from the file extension:
+*   Define the code examples in `src` files. The language is inferred from the file extension:
 
 ```
 <example>
@@ -91,10 +70,12 @@ Example of correct code
 <sample src = "example-code-fixed.java" />
 </example>
 ```
-     
+
+Note, if any code words are included in the `overview` and `recommendation` sections, they should be formatted with `<code> ... </code>` for emphasis.
+
 ## Including references
 
-You should include one or more references to provide further information about the problem that your query is designed to find. References can be of the following types:
+You should include one or more references, list formatted with `<li> ... </li>` for each item, to provide further information about the problem that your query is designed to find. References can be of the following types:
 
 ### Books
 
