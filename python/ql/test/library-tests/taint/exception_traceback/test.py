@@ -28,3 +28,7 @@ def foo():
 
 
 foo()
+
+
+#For test to find stdlib
+import os

@@ -158,7 +158,7 @@ class Module extends Module_, Scope, AstNode {
 
     /** Holds if this module is in the standard library */
     predicate inStdLib() {
-        this.inStdLib(_, _)
+        this.getLoadPath().isStdLibRoot()
     }
 
     override
