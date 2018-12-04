@@ -3,9 +3,7 @@ private import DataFlowUtil
 
 /**
  * A data flow node that occurs as the argument of a call and is passed as-is
- * to the callable. Arguments that are wrapped in an implicit varargs array
- * creation are not included, but the implicitly created array is.
- * Instance arguments are also included.
+ * to the callable. Instance arguments (`this` pointer) are also included.
  */
 class ArgumentNode extends Node {
   ArgumentNode() {
