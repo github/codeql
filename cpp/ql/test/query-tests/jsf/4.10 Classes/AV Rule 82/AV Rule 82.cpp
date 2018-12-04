@@ -181,11 +181,35 @@ private:
   Forgivable operator=(int *_val);
 };
 
+// This template has structure similar to `std::enable_if`.
+template<typename S, typename T>
+struct second {
+  typedef T type;
+};
+
+struct TemplatedAssignmentGood {
+  template<typename T>
+  typename second<T, TemplatedAssignmentGood &>::type operator=(T val) { // GOOD [FALSE POSITIVE]
+    return *this;
+  }
+};
+
+struct TemplatedAssignmentBad {
+  template<typename T>
+  typename second<T, TemplatedAssignmentBad>::type operator=(T val) { // BAD (missing &)
+    return *this;
+  }
+};
+
 int main() {
   Container c;
   c = c;
   TemplateReturnAssignment<int> tra(1);
   tra = 2;
   tra = true;
+  TemplatedAssignmentGood taGood;
+  taGood = 3;
+  TemplatedAssignmentBad taBad;
+  taBad = 4;
   return 0;
 }
