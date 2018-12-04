@@ -13,12 +13,13 @@ namespace Semmle.Autobuild
         /// </summary>
         const string MsBuild = "msbuild";
 
-        public BuildScript Analyse(Autobuilder builder)
+        public BuildScript Analyse(Autobuilder builder, bool auto)
         {
             if (!builder.ProjectsOrSolutionsToBuild.Any())
                 return BuildScript.Failure;
 
-            builder.Log(Severity.Info, "Attempting to build using MSBuild");
+            if (auto)
+                builder.Log(Severity.Info, "Attempting to build using MSBuild");
 
             var vsTools = GetVcVarsBatFile(builder);
 

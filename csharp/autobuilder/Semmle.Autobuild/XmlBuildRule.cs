@@ -7,7 +7,7 @@ namespace Semmle.Autobuild
     /// </summary>
     class XmlBuildRule : IBuildRule
     {
-        public BuildScript Analyse(Autobuilder builder)
+        public BuildScript Analyse(Autobuilder builder, bool auto)
         {
             var command = new CommandBuilder(builder.Actions).
                 RunCommand(builder.Odasa).

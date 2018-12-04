@@ -16,7 +16,8 @@ namespace Semmle.Autobuild
         /// Analyse the files and produce a build script.
         /// </summary>
         /// <param name="builder">The files and options relating to the build.</param>
-        BuildScript Analyse(Autobuilder builder);
+        /// <param name="auto">Whether this build rule is being automatically applied.</param>
+        BuildScript Analyse(Autobuilder builder, bool auto);
     }
 
     /// <summary>
@@ -135,9 +136,9 @@ namespace Semmle.Autobuild
                     foreach (var solution in options.Solution)
                     {
                         if (actions.FileExists(solution))
-                            ret.Add(new Solution(this, solution));
+                            ret.Add(new Solution(this, solution, true));
                         else
-                            Log(Severity.Error, $"The specified solution file {solution} was not found");
+                            Log(Severity.Error, $"The specified project or solution file {solution} was not found");
                     }
                     return ret;
                 }
@@ -172,7 +173,7 @@ namespace Semmle.Autobuild
                     return ret;
 
                 // Then look for `.sln` files
-                ret = FindFiles(".sln", f => new Solution(this, f))?.ToList();
+                ret = FindFiles(".sln", f => new Solution(this, f, false))?.ToList();
                 if (ret != null)
                     return ret;
 
@@ -250,17 +251,17 @@ namespace Semmle.Autobuild
             switch (GetCSharpBuildStrategy())
             {
                 case CSharpBuildStrategy.CustomBuildCommand:
-                    attempt = new BuildCommandRule().Analyse(this) & CheckExtractorRun(true);
+                    attempt = new BuildCommandRule().Analyse(this, false) & CheckExtractorRun(true);
                     break;
                 case CSharpBuildStrategy.Buildless:
                     // No need to check that the extractor has been executed in buildless mode
-                    attempt = new StandaloneBuildRule().Analyse(this);
+                    attempt = new StandaloneBuildRule().Analyse(this, false);
                     break;
                 case CSharpBuildStrategy.MSBuild:
-                    attempt = new MsBuildRule().Analyse(this) & CheckExtractorRun(true);
+                    attempt = new MsBuildRule().Analyse(this, false) & CheckExtractorRun(true);
                     break;
                 case CSharpBuildStrategy.DotNet:
-                    attempt = new DotNetRule().Analyse(this) & CheckExtractorRun(true);
+                    attempt = new DotNetRule().Analyse(this, false) & CheckExtractorRun(true);
                     break;
                 case CSharpBuildStrategy.Auto:
                     var cleanTrapFolder =
@@ -285,11 +286,11 @@ namespace Semmle.Autobuild
 
                     attempt =
                         // First try .NET Core
-                        IntermediateAttempt(new DotNetRule().Analyse(this)) |
+                        IntermediateAttempt(new DotNetRule().Analyse(this, true)) |
                         // Then MSBuild
-                        (() => IntermediateAttempt(new MsBuildRule().Analyse(this))) |
+                        (() => IntermediateAttempt(new MsBuildRule().Analyse(this, true))) |
                         // And finally look for a script that might be a build script
-                        (() => new BuildCommandAutoRule().Analyse(this) & CheckExtractorRun(true)) |
+                        (() => new BuildCommandAutoRule().Analyse(this, true) & CheckExtractorRun(true)) |
                         // All attempts failed: print message
                         AutobuildFailure();
                     break;
@@ -297,8 +298,8 @@ namespace Semmle.Autobuild
 
             return
                 attempt &
-                (() => new AspBuildRule().Analyse(this)) &
-                (() => new XmlBuildRule().Analyse(this));
+                (() => new AspBuildRule().Analyse(this, false)) &
+                (() => new XmlBuildRule().Analyse(this, false));
         }
 
         /// <summary>
@@ -337,13 +338,13 @@ namespace Semmle.Autobuild
         BuildScript GetCppBuildScript()
         {
             if (Options.BuildCommand != null)
-                return new BuildCommandRule().Analyse(this);
+                return new BuildCommandRule().Analyse(this, false);
 
             return
                 // First try MSBuild
-                new MsBuildRule().Analyse(this) |
+                new MsBuildRule().Analyse(this, true) |
                 // Then look for a script that might be a build script
-                (() => new BuildCommandAutoRule().Analyse(this)) |
+                (() => new BuildCommandAutoRule().Analyse(this, true)) |
                 // All attempts failed: print message
                 AutobuildFailure();
         }

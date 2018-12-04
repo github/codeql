@@ -5,7 +5,7 @@
     /// </summary>
     class BuildCommandRule : IBuildRule
     {
-        public BuildScript Analyse(Autobuilder builder)
+        public BuildScript Analyse(Autobuilder builder, bool auto)
         {
             if (builder.Options.BuildCommand == null)
                 return BuildScript.Failure;
