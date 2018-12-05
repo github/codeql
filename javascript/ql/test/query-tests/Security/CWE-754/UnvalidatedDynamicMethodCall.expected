@@ -45,7 +45,6 @@ nodes
 | tst.js:26:7:26:15 | obj[name] |
 | tst.js:26:11:26:14 | name |
 | tst.js:28:7:28:15 | obj[name] |
-| tst.js:28:7:28:15 | obj[name] |
 | tst.js:28:11:28:14 | name |
 | tst.js:47:39:47:40 | ev |
 | tst.js:48:9:48:39 | name |
@@ -102,7 +101,6 @@ edges
 | tst.js:26:11:26:14 | name | tst.js:26:7:26:15 | obj[name] |
 | tst.js:26:11:26:14 | name | tst.js:26:7:26:15 | obj[name] |
 | tst.js:28:11:28:14 | name | tst.js:28:7:28:15 | obj[name] |
-| tst.js:28:11:28:14 | name | tst.js:28:7:28:15 | obj[name] |
 | tst.js:47:39:47:40 | ev | tst.js:48:27:48:28 | ev |
 | tst.js:48:9:48:39 | name | tst.js:49:19:49:22 | name |
 | tst.js:48:16:48:34 | JSON.parse(ev.data) | tst.js:48:16:48:39 | JSON.pa ... a).name |
@@ -129,6 +127,5 @@ edges
 | tst.js:22:11:22:12 | fn | tst.js:6:39:6:40 | ev | tst.js:22:11:22:12 | fn | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | tst.js:6:39:6:40 | ev | user-controlled |
 | tst.js:26:7:26:15 | obj[name] | tst.js:6:39:6:40 | ev | tst.js:26:7:26:15 | obj[name] | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | tst.js:6:39:6:40 | ev | user-controlled |
 | tst.js:26:7:26:15 | obj[name] | tst.js:6:39:6:40 | ev | tst.js:26:7:26:15 | obj[name] | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | tst.js:6:39:6:40 | ev | user-controlled |
-| tst.js:28:7:28:15 | obj[name] | tst.js:6:39:6:40 | ev | tst.js:28:7:28:15 | obj[name] | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | tst.js:6:39:6:40 | ev | user-controlled |
 | tst.js:28:7:28:15 | obj[name] | tst.js:6:39:6:40 | ev | tst.js:28:7:28:15 | obj[name] | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | tst.js:6:39:6:40 | ev | user-controlled |
 | tst.js:50:5:50:6 | fn | tst.js:47:39:47:40 | ev | tst.js:50:5:50:6 | fn | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | tst.js:47:39:47:40 | ev | user-controlled |
