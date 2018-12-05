@@ -84,23 +84,15 @@ class UninitializedNode extends Node, UninitializedInstruction {
  * Nodes corresponding to AST elements, for example `ExprNode`, usually refer
  * to the value before the update with the exception of `ClassInstanceExpr`,
  * which represents the value after the constructor has run.
+ *
+ * This class exists to match the interface used by Java. There are currently no non-abstract
+ * classes that extend it. When we implement field flow, we can revisit this.
  */
 abstract class PostUpdateNode extends Node {
   /**
    * Gets the node before the state update.
    */
   abstract Node getPreUpdateNode();
-}
-
-class StoreDestinationAsPostUpdateNode extends PostUpdateNode {
-  StoreInstruction si;
-  StoreDestinationAsPostUpdateNode() {
-    this = si.getDestinationAddress()
-  }
-  
-  override Node getPreUpdateNode() {
-    result = si.getDestinationAddress()
-  }
 }
 
 /**
