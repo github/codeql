@@ -70,6 +70,11 @@ Most security alerts are now visible on LGTM by default. This means that you may
 
 ## Changes to code extraction
 
+## Improved reporting of encoding errors
+
+The extractor now outputs the location of the first character that triggers an `EncodingError`. 
+Any queries that report encoding errors will now show results at the location of the character that caused the error.
+
 ### Improved scalability
 
 Scaling is near linear to at least 20 CPU cores.
@@ -81,7 +86,6 @@ Scaling is near linear to at least 20 CPU cores.
 * The `--verbose` flag can be specified specified multiple times to increase the logging level once per flag added.
 * The `--quiet` flag can be specified multiple times to reduce the logging level once per flag added.
 * Log lines are now in the `[SEVERITY] message` style and never overlap.
-* The extractor now outputs the location of the first character that triggers an EncodingError.
 
 ## Changes to QL libraries
 
