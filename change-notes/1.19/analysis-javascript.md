@@ -46,31 +46,30 @@ to run queries and explore the data flow in results.
 
 | **Query**                      | **Expected impact**        | **Change**                                   |
 |--------------------------------|----------------------------|----------------------------------------------|
-| Ambiguous HTML id attribute | Lower severity | Severity revised to "warning". |
-| Clear-text logging of sensitive information | Fewer results | Query now tracks flow more precisely. |
-| Client side cross-site scripting | More results | HTML injection in the body of an email is also highlighted. |
-| Client-side URL redirect | Fewer false positive results | Safe redirects recognized in more cases. |
-| Conflicting HTML element attributes | Lower severity | Severity revised to "warning". |
-| Duplicate 'if' condition | Lower severity | Severity revised to "warning". |
-| Duplicate switch case | Lower severity | Severity revised to "warning". |
-| Inconsistent use of 'new' | Simpler result presentation | Results show one call with `new` and one without. |
-| Information exposure through a stack trace | More results | Cases where the entire exception object (including the stack trace) may be exposed are highlighted. |
-| Missing 'this' qualifier | Fewer false positive results | Additional intentional calls to global functions are recognized. |
-| Missing CSRF middleware | Fewer false positive results | Additional types of CSRF protection middleware are recognized. |
-| Missing variable declaration | Lower severity | Severity revised to "warning". |
-| Regular expression injection | Fewer false positive results | Calls to `String.prototype.search` are identified with more precision. |
-| Remote property injection | Fewer results | No longer highlights dynamic method calls, which are now handled by two new queries: TODO. The precision of this rule has been revised to "medium", reflecting the precision of the remaining results. Results are now hidden on LGTM by default. |
-| Self assignment | Fewer false positive results | Self-assignments preceded by a JSDoc comment with a `@type` tag are no longer highlighted. |
-| Server-side URL redirect | More results and fewer false positive results | More redirection calls are identified. More safe redirections are recognized and ignored. |
-| Unbound event handler receiver | Fewer false positive results | Additional ways that class methods can be bound are recognized. |
-| Uncontrolled data used in remote request | More results | Additional kinds of requests are identified. |
-| Unknown directive | Fewer false positives results | YUI compressor directives are now recognized. |
-| Unused import | Fewer false positive results | Imports used by the `transform-react-jsx` Babel plugin are no longer highlighted. |
-| Unused variable, import, function or class | Fewer false positive results and fewer results | Fewer variables that may be used by `eval` calls are highlighted. Only one result is reported for an import statement with multiple unused imports. |
-| Useless assignment to local variable | Fewer false positive results | Additional ways default values can be set are recognized. |
-| Useless conditional | More results, fewer false positive results | More types of conditional are recognized. Additional defensive coding patterns are now ignored. |
-| Whitespace contradicts operator precedence | Fewer false positive results | Operators with asymmetric whitespace are no longer highlighted. |
-| Wrong use of 'this' for static method | More results, fewer false-positive results | Inherited methods are now identified. |
+| Ambiguous HTML id attribute (`js/duplicate-html-id`) | Lower severity | Severity revised to "warning". |
+| Clear-text logging of sensitive information (`js/clear-text-logging`) | Fewer results | Query now tracks flow more precisely. |
+| Client side cross-site scripting (`js/xss`) | More results | HTML injection in the body of an email is also highlighted. |
+| Client-side URL redirect (`js/client-side-unvalidated-url-redirection`) | Fewer false positive results | Safe redirects recognized in more cases. |
+| Conflicting HTML element attributes (`js/conflicting-html-attribute`) | Lower severity | Severity revised to "warning". |
+| Duplicate 'if' condition (`js/duplicate-condition`) | Lower severity | Severity revised to "warning". |
+| Duplicate switch case (`js/duplicate-switch-case`) | Lower severity | Severity revised to "warning". |
+| Inconsistent use of 'new' (`js/inconsistent-use-of-new`) | Simpler result presentation | Results show one call with `new` and one without. |
+| Information exposure through a stack trace (`js/stack-trace-exposure`) | More results | Cases where the entire exception object (including the stack trace) may be exposed are highlighted. |
+| Missing 'this' qualifier (`js/missing-this-qualifier`) | Fewer false positive results | Additional intentional calls to global functions are recognized. |
+| Missing CSRF middleware (`js/missing-token-validation`) | Fewer false positive results | Additional types of CSRF protection middleware are recognized. |
+| Missing variable declaration (`js/missing-variable-declaration`) | Lower severity | Severity revised to "warning". |
+| Regular expression injection (`js/regex-injection`) | Fewer false positive results | Calls to `String.prototype.search` are identified with more precision. |
+| Remote property injection (`js/remote-property-injection`) | Fewer results | No longer highlights dynamic method calls, which are now handled by two new queries: TODO. The precision of this rule has been revised to "medium", reflecting the precision of the remaining results. Results are now hidden on LGTM by default. |
+| Self assignment (`js/redundant-assignment`) | Fewer false positive results | Self-assignments preceded by a JSDoc comment with a `@type` tag are no longer highlighted. |
+| Server-side URL redirect (`js/server-side-unvalidated-url-redirection`) | More results and fewer false positive results | More redirection calls are identified. More safe redirections are recognized and ignored. |
+| Unbound event handler receiver (`js/unbound-event-handler-receiver`) | Fewer false positive results | Additional ways that class methods can be bound are recognized. |
+| Uncontrolled data used in network request (`js/request-forgery`) | More results | Additional kinds of requests are identified. |
+| Unknown directive (`js/unknown-directive`) | Fewer false positives results | YUI compressor directives are now recognized. |
+| Unused variable, import, function or class (`js/unused-local-variable`) | Fewer false positive results and fewer results |  Imports used by the `transform-react-jsx` Babel plugin and fewer variables that may be used by `eval` calls are highlighted. Only one result is reported for an import statement with multiple unused imports. |
+| Useless assignment to local variable (`js/useless-assignment-to-local`) | Fewer false positive results | Additional ways default values can be set are recognized. |
+| Useless conditional (`js/trivial-conditional`) | More results, fewer false positive results | More types of conditional are recognized. Additional defensive coding patterns are now ignored. |
+| Whitespace contradicts operator precedence (`js/whitespace-contradicts-precedence`) | Fewer false positive results | Operators with asymmetric whitespace are no longer highlighted. |
+| Wrong use of 'this' for static method (`js/mixed-static-instance-this-access`) | More results, fewer false-positive results | Inherited methods are now identified. |
 
 ## Changes to QL libraries
 
