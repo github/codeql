@@ -19,12 +19,11 @@
 Use [QL for Eclipse](https://help.semmle.com/ql-for-eclipse/Content/WebHelp/getting-started.html) 
 to run queries and explore the data flow in results.
 
-## New queries
+## New LGTM queries
 
 | **Query**                                     | **Tags**                                             | **Purpose**                                                                                                                                                                 |
 |-----------------------------------------------|------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Enabling Node.js integration for Electron web content renderers (`js/enabling-electron-renderer-node-integration`) | security, frameworks/electron, external/cwe/cwe-094  | Highlights Electron web content renderer preferences with Node.js integration enabled, indicating a violation of [CWE-94](https://cwe.mitre.org/data/definitions/94.html). Results are hidden on LGTM by default. |
-| File data in outbound network request (`js/file-access-to-http`) | security, external/cwe/cwe-200 | Highlights locations where file data is sent in a network request. Non-LGTM |
 | Hard-coded data interpreted as code (`js/hardcoded-data-interpreted-as-code`) | security, external/cwe/cwe-506 | Highlights locations where hard-coded data is transformed and then executed as code or interpreted as an import path, which may indicate embedded malicious code ([CWE-506](https://cwe.mitre.org/data/definitions/506.html)). Results are hidden on LGTM by default. |
 | Host header poisoning in email generation (`js/host-header-forgery-in-email-generation`)|  security, external/cwe/cwe-640 | Highlights code that generates emails with links that can be hijacked by HTTP host header poisoning, indicating a violation of [CWE-640](https://cwe.mitre.org/data/definitions/640.html). Results shown on LGTM by default.  |
 | Replacement of a substring with itself (`js/identity-replacement`) | correctness, security, external/cwe/cwe-116 | Highlights string replacements that replace a string with itself, which usually indicates a mistake. Results shown on LGTM by default. |
@@ -34,7 +33,14 @@ to run queries and explore the data flow in results.
 | Unsafe dynamic method access (`js/unsafe-dynamic-method-access` ) | security, external/cwe/cwe-094 | Highlights code that invokes a user-controlled method on an object with unsafe methods. Results are shown on LGTM by default. |
 | Unvalidated dynamic method access (`js/unvalidated-dynamic-method-call` ) | security, external/cwe/cwe-754 | Highlights code that invokes a user-controlled method without guarding against exceptional circumstances. Results are shown on LGTM by default. |
 | Useless assignment to property (`js/useless-assignment-to-property`) | maintainability | Highlights property assignments whose value is always overwritten. Results are shown on LGTM by default. |
-| User-controlled data written to file (`js/http-to-file-access`) | security, external/cwe/cwe-912 | Highlights locations where user-controlled data is written to a file. Non-LGTM |
+
+## Other new queries
+
+| **Query**                                     | **Tags**                                             | **Purpose**                                                                                                                                                                 |
+|-----------------------------------------------|------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| File data in outbound network request (`js/file-access-to-http`) | security, external/cwe/cwe-200 | Highlights locations where file data is sent in a network request.|
+| User-controlled data written to file (`js/http-to-file-access`) | security, external/cwe/cwe-912 | Highlights locations where user-controlled data is written to a file. |
+
 
 ## Changes to existing queries
 
