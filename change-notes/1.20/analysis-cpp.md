@@ -11,6 +11,6 @@
 
 | **Query**                  | **Expected impact**    | **Change**                                                       |
 |----------------------------|------------------------|------------------------------------------------------------------|
-| Unused static variable | Fewer false positive results | Variables with the attribute `unused` are now excluded from the query. |
+| Unused static variable (`cpp/unused-static-variable`) | Fewer false positive results | Variables with the attribute `unused` are now excluded from the query. |
 
 ## Changes to QL libraries
