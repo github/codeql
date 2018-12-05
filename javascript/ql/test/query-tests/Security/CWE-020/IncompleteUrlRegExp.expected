@@ -1,0 +1,24 @@
+| tst-IncompleteUrlRegExp.js:3:2:3:28 | /http:\\ ... le.com/ | This regular expression has an unescaped '.', which means that 'example.com' might not match the intended host of a matched URL. |
+| tst-IncompleteUrlRegExp.js:5:2:5:28 | /http:\\ ... le.net/ | This regular expression has an unescaped '.', which means that 'example.net' might not match the intended host of a matched URL. |
+| tst-IncompleteUrlRegExp.js:6:2:6:42 | /http:\\ ... b).com/ | This regular expression has an unescaped '.', which means that '(example-a\|example-b).com' might not match the intended host of a matched URL. |
+| tst-IncompleteUrlRegExp.js:7:2:7:30 | /http:\\ ... le.com/ | This regular expression has an unescaped '.', which means that 'example.com' might not match the intended host of a matched URL. |
+| tst-IncompleteUrlRegExp.js:9:2:9:39 | /http:\\ ... le.com/ | This regular expression has an unescaped '.', which means that 'example.com' might not match the intended host of a matched URL. |
+| tst-IncompleteUrlRegExp.js:11:13:11:37 | "http:/ ... le.com" | This regular expression has an unescaped '.', which means that 'example.com' might not match the intended host of a matched URL. |
+| tst-IncompleteUrlRegExp.js:12:10:12:34 | "http:/ ... le.com" | This regular expression has an unescaped '.', which means that 'example.com' might not match the intended host of a matched URL. |
+| tst-IncompleteUrlRegExp.js:15:22:15:46 | "http:/ ... le.com" | This regular expression has an unescaped '.', which means that 'example.com' might not match the intended host of a matched URL. |
+| tst-IncompleteUrlRegExp.js:17:13:17:31 | `test.example.com$` | This regular expression has an unescaped '.', which means that 'example.com' might not match the intended host of a matched URL. |
+| tst-IncompleteUrlRegExp.js:17:14:17:30 | test.example.com$ | This regular expression has an unescaped '.', which means that 'example.com' might not match the intended host of a matched URL. |
+| tst-IncompleteUrlRegExp.js:19:17:19:34 | 'test.example.com' | This regular expression has an unescaped '.', which means that 'example.com' might not match the intended host of a matched URL. |
+| tst-IncompleteUrlRegExp.js:22:27:22:44 | 'test.example.com' | This regular expression has an unescaped '.', which means that 'example.com' might not match the intended host of a matched URL. |
+| tst-IncompleteUrlRegExp.js:28:22:28:39 | 'test.example.com' | This regular expression has an unescaped '.', which means that 'example.com' might not match the intended host of a matched URL. |
+| tst-IncompleteUrlRegExp.js:36:2:36:37 | /(.+\\.( ... \\.com)/ | This regular expression has an unescaped '.', which means that '(?:example-a\|example-b)\\.com' might not match the intended host of a matched URL. |
+| tst-IncompleteUrlRegExp.js:37:2:37:54 | /^(http ... =$\|\\/)/ | This regular expression has an unescaped '.', which means that ')?example.com' might not match the intended host of a matched URL. |
+| tst-IncompleteUrlRegExp.js:38:2:38:44 | /^(http ... p\\/f\\// | This regular expression has an unescaped '.', which means that 'example.com' might not match the intended host of a matched URL. |
+| tst-IncompleteUrlRegExp.js:39:2:39:34 | /\\(http ... m\\/\\)/g | This regular expression has an unescaped '.', which means that 'example.com' might not match the intended host of a matched URL. |
+| tst-IncompleteUrlRegExp.js:40:2:40:29 | /https? ... le.com/ | This regular expression has an unescaped '.', which means that 'example.com' might not match the intended host of a matched URL. |
+| tst-IncompleteUrlRegExp.js:41:13:41:68 | '^http: ... e\\.com' | This regular expression has an unescaped '.', which means that 'example.com' might not match the intended host of a matched URL. |
+| tst-IncompleteUrlRegExp.js:41:41:41:68 | '^https ... e\\.com' | This regular expression has an unescaped '.', which means that 'example.com' might not match the intended host of a matched URL. |
+| tst-IncompleteUrlRegExp.js:42:13:42:61 | 'http[s ... \\/(.+)' | This regular expression has an unescaped '.', which means that 'example.com' might not match the intended host of a matched URL. |
+| tst-IncompleteUrlRegExp.js:43:2:43:33 | /^https ... e.com$/ | This regular expression has an unescaped '.', which means that 'example.com' might not match the intended host of a matched URL. |
+| tst-IncompleteUrlRegExp.js:44:9:44:100 | 'protos ... ernal)' | This regular expression has an unescaped '.', which means that 'example-b.com' might not match the intended host of a matched URL. |
+| tst-IncompleteUrlRegExp.js:46:2:46:26 | /exampl ... le.com/ | This regular expression has an unescaped '.', which means that 'dev\|example.com' might not match the intended host of a matched URL. |
