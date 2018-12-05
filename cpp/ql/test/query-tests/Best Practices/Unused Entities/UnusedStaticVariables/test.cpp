@@ -6,7 +6,7 @@ static int staticVar3 = 3; // GOOD (used)
 static int staticVar4 = staticVar3; // GOOD (used)
 static int staticVar5; // BAD (unused)
 static int staticVar6 = 6; // BAD (unused)
-static __attribute__((__unused__)) int staticVar7; // GOOD (unused but this is expected) [FALSE POSITIVE]
+static __attribute__((__unused__)) int staticVar7; // GOOD (unused but this is expected)
 
 void f()
 {
