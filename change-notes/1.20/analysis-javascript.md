@@ -3,7 +3,8 @@
 ## General improvements
 
 * Support for popular libraries has been improved. Consequently, queries may produce more results on code bases that use the following features:
-  - servers, for example [hapi](https://hapijs.com/)
+  - client-side code, for example [React](https://reactjs.org/)
+  - server-side code, for example [hapi](https://hapijs.com/)
 
 ## New queries
 
