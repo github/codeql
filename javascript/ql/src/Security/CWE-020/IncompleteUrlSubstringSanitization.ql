@@ -19,8 +19,12 @@ where
       call.getMethodName() = name and
       substring = call.getArgument(0) and
       substring.mayHaveStringValue(target) and
-      // target contains a domain on a common TLD, and perhaps some other URL components
-      target.regexpMatch("(?i)([a-z]*:?//)?\\.?([a-z0-9-]+\\.)+(com|org|edu|gov|uk|net)(:[0-9]+)?/?") and
+      (
+        // target contains a domain on a common TLD, and perhaps some other URL components
+        target.regexpMatch("(?i)([a-z]*:?//)?\\.?([a-z0-9-]+\\.)+(com|org|edu|gov|uk|net)(:[0-9]+)?/?") or
+        // target is a HTTP URL to a domain on any TLD
+        target.regexpMatch("(?i)https?://([a-z0-9-]+\\.)+([a-z]+)(:[0-9]+)?/?")
+      ) and
       // whitelist
       not (
         name = "indexOf" and

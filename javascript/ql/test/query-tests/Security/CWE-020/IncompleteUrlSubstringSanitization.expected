@@ -10,3 +10,4 @@
 | tst-IncompleteUrlSubstringSanitization.js:32:5:32:35 | x.index ... e.com") | '$@' may be at an arbitrary position in the sanitized URL. | tst-IncompleteUrlSubstringSanitization.js:32:15:32:34 | "https://secure.com" | https://secure.com |
 | tst-IncompleteUrlSubstringSanitization.js:33:5:33:39 | x.index ... m:443") | '$@' may be at an arbitrary position in the sanitized URL. | tst-IncompleteUrlSubstringSanitization.js:33:15:33:38 | "https: ... om:443" | https://secure.com:443 |
 | tst-IncompleteUrlSubstringSanitization.js:34:5:34:36 | x.index ... .com/") | '$@' may be at an arbitrary position in the sanitized URL. | tst-IncompleteUrlSubstringSanitization.js:34:15:34:35 | "https: ... e.com/" | https://secure.com/ |
+| tst-IncompleteUrlSubstringSanitization.js:52:5:52:41 | x.index ... ernal") | '$@' may be at an arbitrary position in the sanitized URL. | tst-IncompleteUrlSubstringSanitization.js:52:15:52:40 | "https: ... ternal" | https://example.internal |

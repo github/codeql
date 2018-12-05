@@ -48,4 +48,7 @@
 
     x.indexOf("tar.gz") + offset // OK
     x.indexOf("tar.gz") - offset // OK
+
+    x.indexOf("https://example.internal"); // NOT OK
+    x.indexOf("https://"); // OK
 });
