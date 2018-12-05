@@ -232,6 +232,21 @@ module TaintTracking {
     }
   }
 
+  private class StorageTaintStep extends AdditionalTaintStep {
+
+    PersistentReadAccess read;
+
+    StorageTaintStep() {
+      this = read
+    }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+        pred = read.getAWrite().getValue() and
+        succ = read
+    }
+
+  }
+
   /**
    * A taint propagating data flow edge caused by the builtin array functions.
    */

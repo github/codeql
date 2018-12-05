@@ -65,3 +65,27 @@ abstract class DatabaseAccess extends DataFlow::Node {
   /** Gets an argument to this database access that is interpreted as a query. */
   abstract DataFlow::Node getAQueryArgument();
 }
+
+/**
+ * A data flow node that reads persistent data.
+ */
+abstract class PersistentReadAccess extends DataFlow::Node {
+
+  /**
+   * Gets the corresponding persistent write, if any.
+   */
+  abstract PersistentWriteAccess getAWrite();
+
+}
+
+/**
+ * A data flow node that writes persistent data.
+ */
+abstract class PersistentWriteAccess extends DataFlow::Node {
+
+  /**
+   * Gets the data flow node corresponding to the written value.
+   */
+  abstract DataFlow::Node getValue();
+
+}
