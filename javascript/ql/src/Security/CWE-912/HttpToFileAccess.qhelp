@@ -37,6 +37,7 @@
 </example>
 
 <references>
+  <li>OWASP: <a href="https://www.owasp.org/index.php/Trojan_Horse">Trojan Horse</a>.</li>
   <li>OWASP: <a href="https://www.owasp.org/index.php/Unrestricted_File_Upload">Unrestricted File Upload</a>.</li>
 </references>
 </qhelp>

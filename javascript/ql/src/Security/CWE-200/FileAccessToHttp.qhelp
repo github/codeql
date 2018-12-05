@@ -32,5 +32,6 @@
 <references>
   <li>ESLint Blog: <a href="https://eslint.org/blog/2018/07/postmortem-for-malicious-package-publishes">Postmortem for Malicious Packages Published on July 12th, 2018</a>.</li>
   <li>OWASP: <a href="https://www.owasp.org/index.php/Top_10-2017_A3-Sensitive_Data_Exposure">Sensitive Data Exposure</a>.</li>
+  <li>OWASP: <a href="https://www.owasp.org/index.php/Trojan_Horse">Trojan Horse</a>.</li>
 </references>
 </qhelp>
