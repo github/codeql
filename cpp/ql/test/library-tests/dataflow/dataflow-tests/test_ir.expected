@@ -10,8 +10,6 @@
 | test.cpp:76:8:76:9 | Load: u1 | test.cpp:75:7:75:8 | Uninitialized: definition of u1 |
 | test.cpp:84:8:84:18 | Load: ... ? ... : ... | test.cpp:83:7:83:8 | Uninitialized: definition of u2 |
 | test.cpp:86:8:86:9 | Load: i1 | test.cpp:83:7:83:8 | Uninitialized: definition of u2 |
-| test.cpp:90:8:90:14 | Load: source1 | test.cpp:89:28:89:34 | InitializeParameter: source1 |
-| test.cpp:92:8:92:14 | Load: source1 | test.cpp:89:28:89:34 | InitializeParameter: source1 |
 | test.cpp:132:22:132:23 | Load: m1 | test.cpp:122:18:122:30 | InitializeParameter: sourceStruct1 |
 | test.cpp:140:22:140:23 | Load: m1 | test.cpp:122:18:122:30 | InitializeParameter: sourceStruct1 |
 | test.cpp:188:8:188:8 | Load: y | test.cpp:186:27:186:32 | Call: call to source |

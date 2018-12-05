@@ -25,7 +25,7 @@ class Node extends Instruction {
   }
 
   /** Gets the expression corresponding to this node, if any. */
-  Expr asExpr() { result = this.getUnconvertedResultExpression() }
+  Expr asExpr() { result = this.getConvertedResultExpression() }
 
   /** Gets the parameter corresponding to this node, if any. */
   Parameter asParameter() { result = this.(InitializeParameterInstruction).getParameter() }
@@ -48,8 +48,10 @@ class Node extends Instruction {
  * An expression, viewed as a node in a data flow graph.
  */
 class ExprNode extends Node {
-  ExprNode() { getAST() instanceof Expr }
-  Expr getExpr() { result = getAST() }
+  Expr expr;
+
+  ExprNode() { expr = this.getConvertedResultExpression() }
+  Expr getExpr() { result = expr }
 }
 
 /**
