@@ -2249,6 +2249,9 @@ module Ssa {
       definesAt(this, bb, i, _)
     }
 
+    /** Gets the basic block to which this SSA definition belongs. */
+    BasicBlock getBasicBlock() { this.definesAt(result, _) }
+
     /**
      * Holds if this SSA definition assigns to `out`/`ref` parameter `p`, and the
      * parameter may remain unchanged throughout the rest of the enclosing callable.
