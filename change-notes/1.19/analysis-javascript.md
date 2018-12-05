@@ -59,7 +59,7 @@ to run queries and explore the data flow in results.
 | Missing CSRF middleware (`js/missing-token-validation`) | Fewer false positive results | Additional types of CSRF protection middleware are recognized. |
 | Missing variable declaration (`js/missing-variable-declaration`) | Lower severity | Severity revised to "warning". |
 | Regular expression injection (`js/regex-injection`) | Fewer false positive results | Calls to `String.prototype.search` are identified with more precision. |
-| Remote property injection (`js/remote-property-injection`) | Fewer results | No longer highlights dynamic method calls, which are now handled by two new queries: TODO. The precision of this rule has been revised to "medium", reflecting the precision of the remaining results. Results are now hidden on LGTM by default. |
+| Remote property injection (`js/remote-property-injection`) | Fewer results | No longer highlights dynamic method calls, which are now handled by two new queries: `js/unsafe-dynamic-method-access` and `js/unvalidated-dynamic-method-call`. The precision of this rule has been revised to "medium", reflecting the precision of the remaining results. Results are now hidden on LGTM by default. |
 | Self assignment (`js/redundant-assignment`) | Fewer false positive results | Self-assignments preceded by a JSDoc comment with a `@type` tag are no longer highlighted. |
 | Server-side URL redirect (`js/server-side-unvalidated-url-redirection`) | More results and fewer false positive results | More redirection calls are identified. More safe redirections are recognized and ignored. |
 | Unbound event handler receiver (`js/unbound-event-handler-receiver`) | Fewer false positive results | Additional ways that class methods can be bound are recognized. |
