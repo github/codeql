@@ -4185,6 +4185,13 @@ module ControlFlow {
       }
     }
     import Cached
+
+    /** A control flow element that is split into multiple control flow nodes. */
+    class SplitControlFlowElement extends ControlFlowElement {
+      SplitControlFlowElement() {
+        strictcount(this.getAControlFlowNode()) > 1
+      }
+    }
   }
   private import Internal
 }

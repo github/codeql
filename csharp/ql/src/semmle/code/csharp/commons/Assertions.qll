@@ -51,6 +51,9 @@ class Assertion extends MethodCall {
 
   pragma[nomagic]
   private JoinBlockPredecessor getAPossiblyDominatedPredecessor(JoinBlock jb) {
+    // Only calculate dominance by explicit recursion for split nodes;
+    // all other nodes can use regular CFG dominance
+    this instanceof ControlFlow::Internal::SplitControlFlowElement and
     exists(BasicBlock bb |
       bb = this.getAControlFlowNode().getBasicBlock() |
       result = bb.getASuccessor*()
@@ -70,6 +73,22 @@ class Assertion extends MethodCall {
     )
   }
 
+  pragma[nomagic]
+  private predicate strictlyDominatesSplit(BasicBlock bb) {
+    this.getAControlFlowNode().getBasicBlock().immediatelyDominates(bb)
+    or
+    if bb instanceof JoinBlock then
+      this.isPossiblyDominatedJoinBlock(bb) and
+      forall(BasicBlock pred |
+        pred = this.getAPossiblyDominatedPredecessor(bb) |
+        this.strictlyDominatesSplit(pred)
+        or
+        this.getAControlFlowNode().getBasicBlock() = pred
+      )
+    else
+      this.strictlyDominatesSplit(bb.getAPredecessor())
+  }
+
   /**
    * Holds if this assertion strictly dominates basic block `bb`. That is, `bb`
    * can only be reached from the callable entry point by going via *some* basic
@@ -81,18 +100,9 @@ class Assertion extends MethodCall {
    */
   pragma[nomagic]
   predicate strictlyDominates(BasicBlock bb) {
-    this.getAControlFlowNode().getBasicBlock().immediatelyDominates(bb)
+    this.strictlyDominatesSplit(bb)
     or
-    if bb instanceof JoinBlock then
-      this.isPossiblyDominatedJoinBlock(bb) and
-      forall(BasicBlock pred |
-        pred = this.getAPossiblyDominatedPredecessor(bb) |
-        this.strictlyDominates(pred)
-        or
-        this.getAControlFlowNode().getBasicBlock() = pred
-      )
-    else
-      this.strictlyDominates(bb.getAPredecessor())
+    this.getAControlFlowNode().getBasicBlock().strictlyDominates(bb)
   }
 }
 
