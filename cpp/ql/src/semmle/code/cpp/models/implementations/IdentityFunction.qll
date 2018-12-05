@@ -1,11 +1,13 @@
 import semmle.code.cpp.Function
+import semmle.code.cpp.models.interfaces.Alias
 import semmle.code.cpp.models.interfaces.DataFlow
-import semmle.code.cpp.models.interfaces.SideEffectFunction
+import semmle.code.cpp.models.interfaces.SideEffect
 
 /**
  * The standard function templates `std::move` and `std::identity`
  */
-class IdentityFunction extends DataFlowFunction, SideEffectFunction {
+class IdentityFunction extends DataFlowFunction, SideEffectModel::SideEffectFunction,
+    AliasModel::AliasFunction {
   IdentityFunction() {
     this.getNamespace().getParentNamespace() instanceof GlobalNamespace and
     this.getNamespace().getName() = "std" and
@@ -23,9 +25,16 @@ class IdentityFunction extends DataFlowFunction, SideEffectFunction {
     none()
   }
 
-  override predicate parameterEscapes(int index) {
-    // Note that returning the value of the parameter does not count as escaping.
-    none()
+  override AliasModel::ParameterEscape getParameterEscapeBehavior(int index) {
+    exists(getParameter(index)) and
+    if index = 0 then
+      result instanceof AliasModel::EscapesOnlyViaReturn
+    else
+      result instanceof AliasModel::DoesNotEscape
+  }
+
+  override predicate parameterIsAlwaysReturned(int index) {
+    index = 0
   }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {

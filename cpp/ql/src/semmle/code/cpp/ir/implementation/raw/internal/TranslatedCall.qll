@@ -1,7 +1,7 @@
 import cpp
 private import semmle.code.cpp.ir.implementation.Opcode
 private import semmle.code.cpp.ir.internal.OperandTag
-private import semmle.code.cpp.models.interfaces.SideEffectFunction
+private import semmle.code.cpp.models.interfaces.SideEffect
 private import InstructionTag
 private import TranslatedElement
 private import TranslatedExpr
@@ -308,11 +308,11 @@ class TranslatedFunctionCall extends TranslatedCallExpr, TranslatedDirectCall {
   }
 
   override predicate hasReadSideEffect() {
-    functionReadsMemory(funcCall.getTarget())
+    SideEffectModel::functionReadsMemory(funcCall.getTarget())
   }
 
   override predicate hasWriteSideEffect() {
-    functionWritesMemory(funcCall.getTarget())
+    SideEffectModel::functionWritesMemory(funcCall.getTarget())
   }
 }
 
@@ -336,4 +336,3 @@ class TranslatedStructorCall extends TranslatedFunctionCall {
     any()
   }
 }
-
