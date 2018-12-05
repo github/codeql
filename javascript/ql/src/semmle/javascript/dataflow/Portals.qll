@@ -51,26 +51,26 @@ private newtype TPortal =
 /**
  * A portal, that is, an interface point between different npm packages.
  */
-class Portal extends TPortal {
+cached class Portal extends TPortal {
   /**
    * Gets an exit node for this portal, that is, a node from which data
    * that comes through the portal emerges. The flag `isRemote`
    * indicates whether data read from this node may come from a different
    * package.
    */
-  abstract DataFlow::SourceNode getAnExitNode(boolean isRemote);
+  abstract cached DataFlow::SourceNode getAnExitNode(boolean isRemote);
 
   /**
    * Gets an entry node for this portal, that is, a node through which data
    * enters the portal. The flag `escapes` indicates whether data written to
    * the node may escape to a different package.
    */
-  abstract DataFlow::Node getAnEntryNode(boolean escapes);
+  abstract cached DataFlow::Node getAnEntryNode(boolean escapes);
 
   /**
    * Gets the member portal with the given `name` of this portal, if any.
    */
-  MemberPortal getMember(string name) {
+  cached MemberPortal getMember(string name) {
     result.getName() = name and
     result.getBasePortal() = this
   }
@@ -78,14 +78,14 @@ class Portal extends TPortal {
   /**
    * Gets the instance portal of this portal, if any.
    */
-  InstancePortal getInstance() {
+  cached InstancePortal getInstance() {
     result.getBasePortal() = this
   }
 
   /**
    * Gets the portal of parameter `idx` of this portal, if any.
    */
-  ParameterPortal getParameter(int idx) {
+  cached ParameterPortal getParameter(int idx) {
     result.getIndex() = idx and
     result.getBasePortal() = this
   }
@@ -93,7 +93,7 @@ class Portal extends TPortal {
   /**
    * Gets the return value portal of this portal, if any.
    */
-  ReturnPortal getReturn() {
+  cached ReturnPortal getReturn() {
     result.getBasePortal() = this
   }
 
@@ -103,7 +103,7 @@ class Portal extends TPortal {
    * Different portals must have different `toString`s, so the result of
    * this predicate can be used to uniquely identify a portal.
    */
-  abstract string toString();
+  cached abstract string toString();
 
   /**
    * INTERNAL: Do not use outside this library.
@@ -111,7 +111,7 @@ class Portal extends TPortal {
    * The constructor depth of this portal, used to limit the number of
    * portals.
    */
-  abstract int depth();
+  cached abstract int depth();
 }
 
 /**
@@ -220,7 +220,7 @@ private int maxdepth() {
 /**
  * A portal that is constructed over some base portal.
  */
-abstract class CompoundPortal extends Portal {
+private abstract class CompoundPortal extends Portal {
   Portal base;
 
   bindingset[this]
@@ -243,7 +243,7 @@ abstract class CompoundPortal extends Portal {
  * Entries to this portal are the right-hand sides of writes to the property, while
  * property reads are exits.
  */
-class MemberPortal extends CompoundPortal, MkMemberPortal {
+private class MemberPortal extends CompoundPortal, MkMemberPortal {
   string prop;
 
   MemberPortal() { this = MkMemberPortal(base, prop) }
@@ -319,7 +319,7 @@ private module MemberPortal {
  * non-primitive), while exits are `new` expressions and other expressions referring to
  * instances of functions/classes flowing through the base portal.
  */
-class InstancePortal extends CompoundPortal, MkInstancePortal {
+private class InstancePortal extends CompoundPortal, MkInstancePortal {
   InstancePortal() { this = MkInstancePortal(base) }
 
   override DataFlow::SourceNode getAnExitNode(boolean isRemote) {
