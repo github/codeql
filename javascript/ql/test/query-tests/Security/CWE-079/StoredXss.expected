@@ -54,6 +54,12 @@ nodes
 | react-native.js:7:17:7:33 | req.param("code") |
 | react-native.js:8:18:8:24 | tainted |
 | react-native.js:9:27:9:33 | tainted |
+| stored-xss.js:2:39:2:55 | document.location |
+| stored-xss.js:2:39:2:62 | documen ... .search |
+| stored-xss.js:3:35:3:51 | document.location |
+| stored-xss.js:3:35:3:58 | documen ... .search |
+| stored-xss.js:5:20:5:52 | session ... ssion') |
+| stored-xss.js:8:20:8:48 | localSt ... local') |
 | string-manipulations.js:3:16:3:32 | document.location |
 | string-manipulations.js:4:16:4:32 | document.location |
 | string-manipulations.js:4:16:4:37 | documen ... on.href |
@@ -262,6 +268,10 @@ edges
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:18:8:24 | tainted |
 | react-native.js:7:7:7:33 | tainted | react-native.js:9:27:9:33 | tainted |
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted |
+| stored-xss.js:2:39:2:55 | document.location | stored-xss.js:2:39:2:62 | documen ... .search |
+| stored-xss.js:2:39:2:62 | documen ... .search | stored-xss.js:5:20:5:52 | session ... ssion') |
+| stored-xss.js:3:35:3:51 | document.location | stored-xss.js:3:35:3:58 | documen ... .search |
+| stored-xss.js:3:35:3:58 | documen ... .search | stored-xss.js:8:20:8:48 | localSt ... local') |
 | string-manipulations.js:4:16:4:32 | document.location | string-manipulations.js:4:16:4:37 | documen ... on.href |
 | string-manipulations.js:5:16:5:32 | document.location | string-manipulations.js:5:16:5:37 | documen ... on.href |
 | string-manipulations.js:5:16:5:37 | documen ... on.href | string-manipulations.js:5:16:5:47 | documen ... lueOf() |
