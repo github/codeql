@@ -35,7 +35,7 @@
  * @externs
  * @fileoverview Definitions for module "fs"
  */
- var fs = {};
+var fs = {};
 
 /**
  * @param {string} filename
@@ -44,7 +44,8 @@
  * @return {void}
  */
 fs.writeFile = function(filename, data, callback) {};
- /**
+
+/**
  * @param {string} filename
  * @param {*} data
  * @param {{encoding: string, mode: number, flag: string}} options
@@ -52,11 +53,11 @@ fs.writeFile = function(filename, data, callback) {};
  * @return {void}
  */
 fs.writeFile = function(filename, data, options, callback) {};
- /**
+
+/**
  * @param {string} filename
  * @param {*} data
- * @param {{encoding: string, mode: string, flag: string}} options
- * @param {(function(NodeJS.ErrnoException): void)=} callback
+ * @param {{encoding: string, mode: string, flag: string}=} options
  * @return {void}
  */
-fs.writeFile = function(filename, data, options, callback) {};
+fs.writeFileSync = function(filename, data, options) {};
