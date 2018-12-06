@@ -43,11 +43,9 @@ bindingset[pattern]
 predicate isIncompleteHostNameRegExpPattern(string pattern, string hostPart) {
   hostPart = pattern.regexpCapture(
     "(?i).*" +
-    // Either:
-    // - an unescaped and repeated  `.`, followed by anything
-    // - a unescaped single `.`
-    "(?:(?<!\\\\)[.][+*].*?|(?<!\\\\)[.])" +
-    // a sequence of subdomains, perhaps with some regex characters mixed in, followed by a known TLD
+    // an unescaped single `.`
+    "(?<!\\\\)[.]" +
+    // immediately followed by a sequence of subdomains, perhaps with some regex characters mixed in, followed by a known TLD
     "([():|?a-z0-9-]+(\\\\)?[.](com|org|edu|gov|uk|net))" +
     ".*", 1)
 }

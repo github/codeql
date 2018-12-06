@@ -4,9 +4,9 @@
 	/http:\/\/test\\.example.com/; // OK
 	/http:\/\/test.example.net/; // NOT OK
 	/http:\/\/test.(example-a|example-b).com/; // NOT OK
-	/http:\/\/(.+)\\.example.com/; // NOT OK
+	/http:\/\/(.+)\\.example.com/; // NOT OK, but not yet supported with enough precision
 	/http:\/\/(\\.+)\\.example.com/; // OK
-	/http:\/\/(?:.+)\\.test\\.example.com/; // NOT OK
+	/http:\/\/(?:.+)\\.test\\.example.com/; // NOT OK, but not yet supported with enough precision
 	/http:\/\/test.example.com\/(?:.*)/; // OK
 	new RegExp("http://test.example.com"); // NOT OK
 	s.match("http://test.example.com"); // NOT OK
@@ -33,7 +33,7 @@
 	}
 	domains.map(d => convert(d));
 
-	/(.+\.(?:example-a|example-b)\.com)/; // NOT OK
+	/(.+\.(?:example-a|example-b)\.com)/; // NOT OK, but not yet supported with enough precision
 	/^(https?:)?\/\/((service|www).)?example.com(?=$|\/)/; // NOT OK
 	/^(http|https):\/\/www.example.com\/p\/f\//; // NOT OK
 	/\(http:\/\/sub.example.com\/\)/g; // NOT OK
