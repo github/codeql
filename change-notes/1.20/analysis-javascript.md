@@ -20,6 +20,7 @@
 | **Query**                                  | **Expected impact**          | **Change**                                                                   |
 |--------------------------------------------|------------------------------|------------------------------------------------------------------------------|
 | Client-side cross-site scripting           | More results                 | This rule now recognizes WinJS functions that are vulnerable to HTML injection. |
+| Insecure randomness | More results | This rule now flags insecure uses of `crypto.pseudoRandomBytes`. |
 | Unused variable, import, function or class | Fewer false-positive results | This rule now flags fewer variables that are implictly used by JSX elements. |
 
 ## Changes to QL libraries
