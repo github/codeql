@@ -15,7 +15,7 @@ extraction:
         - include: "**/*-min.js"
 ```
 
-* The TypeScript compiler is now included in the LGTM Enterprise and Ql command-line tools installations, and you no longer need to install it manually.
+* The TypeScript compiler is now included in the LGTM Enterprise and QL command-line tools installations, and you no longer need to install it manually.
   If you need to override the compiler version, set the `SEMMLE_TYPESCRIPT_HOME` environment variable to
   point to an installation of the `typescript` NPM package.
 
