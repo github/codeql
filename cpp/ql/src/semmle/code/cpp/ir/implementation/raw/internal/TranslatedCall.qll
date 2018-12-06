@@ -308,11 +308,11 @@ class TranslatedFunctionCall extends TranslatedCallExpr, TranslatedDirectCall {
   }
 
   override predicate hasReadSideEffect() {
-    SideEffectModel::functionReadsMemory(funcCall.getTarget())
+    not funcCall.getTarget().(SideEffectFunction).neverReadsMemory()
   }
 
   override predicate hasWriteSideEffect() {
-    SideEffectModel::functionWritesMemory(funcCall.getTarget())
+    not funcCall.getTarget().(SideEffectFunction).neverWritesMemory()
   }
 }
 

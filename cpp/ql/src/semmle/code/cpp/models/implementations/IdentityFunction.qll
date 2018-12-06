@@ -6,8 +6,7 @@ import semmle.code.cpp.models.interfaces.SideEffect
 /**
  * The standard function templates `std::move` and `std::identity`
  */
-class IdentityFunction extends DataFlowFunction, SideEffectModel::SideEffectFunction,
-    AliasModel::AliasFunction {
+class IdentityFunction extends DataFlowFunction, SideEffectFunction, AliasFunction {
   IdentityFunction() {
     this.getNamespace().getParentNamespace() instanceof GlobalNamespace and
     this.getNamespace().getName() = "std" and
@@ -17,23 +16,25 @@ class IdentityFunction extends DataFlowFunction, SideEffectModel::SideEffectFunc
     )
   }
 
-  override predicate readsMemory() {
+  override predicate neverReadsMemory() {
+    any()
+  }
+
+  override predicate neverWritesMemory() {
+    any()
+  }
+
+  override predicate parameterNeverEscapes(int index) {
     none()
   }
 
-  override predicate writesMemory() {
-    none()
-  }
-
-  override AliasModel::ParameterEscape getParameterEscapeBehavior(int index) {
-    exists(getParameter(index)) and
-    if index = 0 then
-      result instanceof AliasModel::EscapesOnlyViaReturn
-    else
-      result instanceof AliasModel::DoesNotEscape
+  override predicate parameterEscapesOnlyViaReturn(int index) {
+    // These functions simply return the argument value.
+    index = 0
   }
 
   override predicate parameterIsAlwaysReturned(int index) {
+    // These functions simply return the argument value.
     index = 0
   }
 
