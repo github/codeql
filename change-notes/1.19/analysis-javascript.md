@@ -38,7 +38,7 @@ to run queries and explore the data flow in results.
 
 | **Query**                                     | **Tags**                                             | **Purpose**                                                                                                                                                                 |
 |-----------------------------------------------|------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| File data in outbound network request (`js/file-access-to-http`) | security, external/cwe/cwe-200 | Highlights locations where file data is sent in a network request.|
+| File data in outbound network request (`js/file-access-to-http`) | security, external/cwe/cwe-200 | Highlights locations where file data is sent in a network request, possibly indicating a violation of [CWE-200](https://cwe.mitre.org/data/definitions/200.html). |
 | User-controlled data written to file (`js/http-to-file-access`) | security, external/cwe/cwe-912 | Highlights locations where user-controlled data is written to a file. |
 
 
