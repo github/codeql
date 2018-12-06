@@ -74,7 +74,7 @@ class Callable extends StmtParent, Member, @callable {
   }
 
   private string descriptorUpTo(int n) {
-    (n = 0 and result = "")
+    n = 0 and result = ""
     or
     exists(Parameter p | p = this.getParameter(n - 1) |
       result = descriptorUpTo(n - 1) + p.getType().getTypeDescriptor()

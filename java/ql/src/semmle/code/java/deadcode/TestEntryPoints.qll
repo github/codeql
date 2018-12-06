@@ -10,11 +10,9 @@ import semmle.code.java.UnitTests
  */
 class TestMethodEntry extends CallableEntryPoint {
   TestMethodEntry() {
-    (
-      this instanceof TestMethod and
-      // Ignored tests are not run
-      not this instanceof JUnitIgnoredMethod
-    )
+    this instanceof TestMethod and
+    // Ignored tests are not run
+    not this instanceof JUnitIgnoredMethod
     or
     this instanceof JUnit3TestSuite
     or

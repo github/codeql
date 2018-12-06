@@ -14,12 +14,10 @@ private string getStrutsMapperClass(RefType refType) {
  */
 class Struts2ActionClass extends Class {
   Struts2ActionClass() {
-    (
-      // If there are no XML files present, then we assume we any class that extends a struts 2
-      // action must be reflectively constructed, as we have no better indication.
-      not exists(XMLFile xmlFile) and
-      this.getAnAncestor().hasQualifiedName("com.opensymphony.xwork2", "Action")
-    )
+    // If there are no XML files present, then we assume we any class that extends a struts 2
+    // action must be reflectively constructed, as we have no better indication.
+    not exists(XMLFile xmlFile) and
+    this.getAnAncestor().hasQualifiedName("com.opensymphony.xwork2", "Action")
     or
     // If there is a struts.xml file, then any class that is specified as an action is considered
     // to be reflectively constructed.
@@ -37,7 +35,7 @@ class Struts2ActionClass extends Class {
     if
       getStrutsMapperClass(this) = "org.apache.struts2.dispatcher.mapper.Restful2ActionMapper" or
       getStrutsMapperClass(this) = "org.apache.struts2.dispatcher.mapper.RestfulActionMapper"
-    then (
+    then
       // The "Restful" action mapper maps rest APIs to specific methods
       result.hasName("index") or
       result.hasName("create") or
@@ -45,11 +43,11 @@ class Struts2ActionClass extends Class {
       result.hasName("view") or
       result.hasName("remove") or
       result.hasName("update")
-    ) else
+    else
       if
         getStrutsMapperClass(this) = "org.apache.struts2.rest.RestActionMapper" or
         getStrutsMapperClass(this) = "rest"
-      then (
+      then
         // The "Rest" action mapper is provided with the rest plugin, and maps rest APIs to specific
         // methods based on a "ruby-on-rails" style.
         result.hasName("index") or
@@ -59,7 +57,7 @@ class Struts2ActionClass extends Class {
         result.hasName("create") or
         result.hasName("update") or
         result.hasName("destroy")
-      ) else
+      else
         if exists(getStrutsMapperClass(this))
         then
           // Any method could be live, as this is a custom mapper
@@ -73,14 +71,12 @@ class Struts2ActionClass extends Class {
           or
           result = this.(Struts2ConventionActionClass).getAnActionMethod()
           or
+          // In the fall-back case, use both the "execute" and any annotated methods
+          not exists(XMLFile xmlFile) and
           (
-            // In the fall-back case, use both the "execute" and any annotated methods
-            not exists(XMLFile xmlFile) and
-            (
-              result.hasName("executes") or
-              exists(StrutsActionAnnotation actionAnnotation |
-                result = actionAnnotation.getActionCallable()
-              )
+            result.hasName("executes") or
+            exists(StrutsActionAnnotation actionAnnotation |
+              result = actionAnnotation.getActionCallable()
             )
           )
         )

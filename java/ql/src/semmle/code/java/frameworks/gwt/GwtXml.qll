@@ -39,7 +39,7 @@ class GwtXmlFile extends XMLFile {
    * Either the default `client` folder or as specified by `<source>` tags.
    */
   string getASourceSubPath() {
-    (result = "client" and not exists(getAnExplicitSourceSubPath()))
+    result = "client" and not exists(getAnExplicitSourceSubPath())
     or
     result = getAnExplicitSourceSubPath()
   }

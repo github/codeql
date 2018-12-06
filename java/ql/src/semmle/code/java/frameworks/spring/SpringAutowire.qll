@@ -78,30 +78,24 @@ class SpringBeanXMLAutowiredSetterMethod extends Method {
     exists(string xmlAutowire |
       xmlAutowire = this.getDeclaringType().(SpringBeanRefType).getSpringBean().getAutowire()
     |
-      (
-        xmlAutowire = "byName" and
-        // There is a bean whose name is the same as this setter method.
-        this.getName().toLowerCase() = "set" + result.getBeanIdentifier().toLowerCase()
-      )
+      xmlAutowire = "byName" and
+      // There is a bean whose name is the same as this setter method.
+      this.getName().toLowerCase() = "set" + result.getBeanIdentifier().toLowerCase()
       or
       (
-        (
-          xmlAutowire = "byType"
-          or
-          (
-            // When it is set to autodetect, we use "byType" if there is a no-arg constructor. This
-            // approach has been removed in Spring 4.x.
-            xmlAutowire = "autodetect" and
-            exists(Constructor c | c = this.getDeclaringType().getAConstructor() |
-              c.getNumberOfParameters() = 0
-            )
-          )
-        ) and
-        // The resulting bean is of the right type.
-        result.getClass().getAnAncestor() = getParameter(0).getType() and
-        getNumberOfParameters() = 1 and
-        this.getName().matches("set%")
-      )
+        xmlAutowire = "byType"
+        or
+        // When it is set to autodetect, we use "byType" if there is a no-arg constructor. This
+        // approach has been removed in Spring 4.x.
+        xmlAutowire = "autodetect" and
+        exists(Constructor c | c = this.getDeclaringType().getAConstructor() |
+          c.getNumberOfParameters() = 0
+        )
+      ) and
+      // The resulting bean is of the right type.
+      result.getClass().getAnAncestor() = getParameter(0).getType() and
+      getNumberOfParameters() = 1 and
+      this.getName().matches("set%")
     )
   }
 }
@@ -166,17 +160,17 @@ class SpringBeanAutowiredCallable extends Callable {
       result = getQualifier(pos).getSpringBean()
     else
       if exists(getQualifier()) and getNumberOfParameters() = 1
-      then (
+      then
         // Resolved by `@Qualifier("qualifier")` on the method
         pos = 0 and
         result = getQualifier().getSpringBean()
-      ) else
+      else
         if exists(getResource().getNameValue()) and getNumberOfParameters() = 1
-        then (
+        then
           // Resolved by looking at the name part of `@Resource(name="qualifier")`
           pos = 0 and
           result = getResource().getSpringBean()
-        ) else
+        else
           // Otherwise no restrictions, just by type
           any()
   }
@@ -195,17 +189,17 @@ class SpringBeanAutowiredCallable extends Callable {
       result = getQualifier(pos).getSpringComponent()
     else
       if exists(getQualifier()) and getNumberOfParameters() = 1
-      then (
+      then
         // Resolved by `@Qualifier("qualifier")` on the method
         pos = 0 and
         result = getQualifier().getSpringComponent()
-      ) else
+      else
         if exists(getResource().getNameValue()) and getNumberOfParameters() = 1
-        then (
+        then
           // Resolved by looking at the name part of `@Resource(name="qualifier")`
           pos = 0 and
           result = getResource().getSpringComponent()
-        ) else
+        else
           // Otherwise no restrictions, just by type
           any()
   }

@@ -25,10 +25,8 @@ class ConstantField extends Field {
         fa.getEnclosingCallable() instanceof InstanceInitializer
         or
         // It can be defined in the constructor if there is only one constructor.
-        (
-          fa.getEnclosingCallable() instanceof Constructor and
-          count(getDeclaringType().getAConstructor()) = 1
-        )
+        fa.getEnclosingCallable() instanceof Constructor and
+        count(getDeclaringType().getAConstructor()) = 1
       )
     )
   }
@@ -93,10 +91,8 @@ class ConstantExpr extends Expr {
       exists(this.(FieldRead).getField().(ConstantField).getConstantValue())
       or
       // A binary expression where both sides are constant
-      (
-        this.(BinaryExpr).getLeftOperand() instanceof ConstantExpr and
-        this.(BinaryExpr).getRightOperand() instanceof ConstantExpr
-      )
+      this.(BinaryExpr).getLeftOperand() instanceof ConstantExpr and
+      this.(BinaryExpr).getRightOperand() instanceof ConstantExpr
       or
       this.(ParExpr).getExpr() instanceof ConstantExpr
     )
@@ -179,7 +175,7 @@ class ConstSwitchStmt extends SwitchStmt {
   SwitchCase getMatchingCase() {
     // Must be a value we can deduce
     exists(getExpr().(ConstantExpr).getIntValue()) and
-    if (exists(getMatchingConstCase()))
+    if exists(getMatchingConstCase())
     then result = getMatchingConstCase()
     else result = getDefaultCase()
   }
@@ -216,14 +212,12 @@ class UnreachableBasicBlock extends BasicBlock {
     or
     // This block is not reachable in the CFG, and is not a callable, a body of a callable, an
     // expression in an annotation, an expression in an assert statement, or a catch clause.
-    (
-      forall(BasicBlock bb | bb = getABBPredecessor() | bb instanceof UnreachableBasicBlock) and
-      not exists(Callable c | c.getBody() = this) and
-      not this instanceof Callable and
-      not exists(Annotation a | a.getAChildExpr*() = this) and
-      not exists(AssertStmt a | a = this.(Expr).getEnclosingStmt()) and
-      not this instanceof CatchClause
-    )
+    forall(BasicBlock bb | bb = getABBPredecessor() | bb instanceof UnreachableBasicBlock) and
+    not exists(Callable c | c.getBody() = this) and
+    not this instanceof Callable and
+    not exists(Annotation a | a.getAChildExpr*() = this) and
+    not exists(AssertStmt a | a = this.(Expr).getEnclosingStmt()) and
+    not this instanceof CatchClause
     or
     // Switch statements with a constant comparison expression may have unreachable cases.
     exists(ConstSwitchStmt constSwitchStmt, BasicBlock failingCaseBlock |

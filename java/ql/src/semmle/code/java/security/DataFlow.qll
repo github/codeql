@@ -73,17 +73,13 @@ deprecated class FlowSource extends Expr {
       not isExcluded(tracked)
     |
       // Flow within a single method.
-      (
-        flowsTo(tracked, fromArg) and
-        localFlowStep(tracked, sink)
-      )
+      flowsTo(tracked, fromArg) and
+      localFlowStep(tracked, sink)
       or
       // Flow through a field.
-      (
-        flowsTo(tracked, _) and
-        staticFieldStep(tracked, sink) and
-        fromArg = false
-      )
+      flowsTo(tracked, _) and
+      staticFieldStep(tracked, sink) and
+      fromArg = false
       or
       // Flow through a method that returns one of its arguments.
       exists(MethodAccess call, int i |
@@ -104,11 +100,9 @@ deprecated class FlowSource extends Expr {
       // Flow out of a method.
       // This path is only enabled if the flow did not come from the argument;
       // such cases are handled by `methodReturnsArg`.
-      (
-        flowsTo(tracked, false) and
-        methodStep(tracked, sink) and
-        fromArg = false
-      )
+      flowsTo(tracked, false) and
+      methodStep(tracked, sink) and
+      fromArg = false
     )
   }
 
@@ -170,10 +164,8 @@ deprecated private Callable responderForArg(Call call, int i, FlowExpr tracked) 
 deprecated private Callable responder(Call call) {
   result = exactCallable(call)
   or
-  (
-    not exists(exactCallable(call)) and
-    result = call.getCallee()
-  )
+  not exists(exactCallable(call)) and
+  result = call.getCallee()
 }
 
 /** Holds if a method can return its argument. This is public for testing. */
@@ -240,7 +232,7 @@ deprecated private predicate localFlowStep(Expr tracked, Expr sink) {
   argToMethodStep(tracked, sink)
   or
   // An unsafe attempt to escape tainted input.
-  (unsafeEscape(sink) and sink.(MethodAccess).getQualifier() = tracked)
+  unsafeEscape(sink) and sink.(MethodAccess).getQualifier() = tracked
   or
   // A logic expression.
   sink.(LogicExpr).getAnOperand() = tracked
@@ -349,9 +341,9 @@ deprecated private predicate comparisonStep(Expr tracked, Expr sink) {
       exists(MethodAccess m | m.getMethod() instanceof EqualsMethod |
         m = sink and
         (
-          (m.getQualifier() = tracked and m.getArgument(0) = other)
+          m.getQualifier() = tracked and m.getArgument(0) = other
           or
-          (m.getQualifier() = other and m.getArgument(0) = tracked)
+          m.getQualifier() = other and m.getArgument(0) = tracked
         )
       )
     ) and
@@ -605,74 +597,54 @@ deprecated predicate qualifierToMethodStep(Expr tracked, MethodAccess sink) {
  */
 deprecated class DataPreservingMethod extends Method {
   DataPreservingMethod() {
+    this.getDeclaringType() instanceof TypeString and
     (
-      this.getDeclaringType() instanceof TypeString and
-      (
-        this.getName() = "endsWith" or
-        this.getName() = "getBytes" or
-        this.getName() = "split" or
-        this.getName() = "substring" or
-        this.getName() = "toCharArray" or
-        this.getName() = "toLowerCase" or
-        this.getName() = "toString" or
-        this.getName() = "toUpperCase" or
-        this.getName() = "trim"
-      )
+      this.getName() = "endsWith" or
+      this.getName() = "getBytes" or
+      this.getName() = "split" or
+      this.getName() = "substring" or
+      this.getName() = "toCharArray" or
+      this.getName() = "toLowerCase" or
+      this.getName() = "toString" or
+      this.getName() = "toUpperCase" or
+      this.getName() = "trim"
     )
     or
+    exists(Class c | c.getQualifiedName() = "java.lang.Number" |
+      hasSubtypeStar(c, this.getDeclaringType())
+    ) and
     (
-      exists(Class c | c.getQualifiedName() = "java.lang.Number" |
-        hasSubtypeStar(c, this.getDeclaringType())
-      ) and
-      (
-        this.getName().matches("to%String") or
-        this.getName() = "toByteArray" or
-        this.getName().matches("%Value")
-      )
+      this.getName().matches("to%String") or
+      this.getName() = "toByteArray" or
+      this.getName().matches("%Value")
     )
     or
-    (
-      this.getDeclaringType().getQualifiedName().matches("%Reader") and
-      this.getName().matches("read%")
-    )
+    this.getDeclaringType().getQualifiedName().matches("%Reader") and
+    this.getName().matches("read%")
+    or
+    this.getDeclaringType().getQualifiedName().matches("%StringWriter") and
+    this.getName() = "toString"
+    or
+    this.getDeclaringType().hasQualifiedName("java.util", "StringTokenizer") and
+    this.getName().matches("next%")
+    or
+    this.getDeclaringType().hasQualifiedName("java.io", "ByteArrayOutputStream") and
+    (this.getName() = "toByteArray" or this.getName() = "toString")
+    or
+    this.getDeclaringType().hasQualifiedName("java.io", "ObjectInputStream") and
+    this.getName().matches("read%")
     or
     (
-      this.getDeclaringType().getQualifiedName().matches("%StringWriter") and
-      this.getName() = "toString"
-    )
+      this.getDeclaringType().hasQualifiedName("java.lang", "StringBuilder") or
+      this.getDeclaringType().hasQualifiedName("java.lang", "StringBuffer")
+    ) and
+    (this.getName() = "toString" or this.getName() = "append")
     or
-    (
-      this.getDeclaringType().hasQualifiedName("java.util", "StringTokenizer") and
-      this.getName().matches("next%")
-    )
+    this.getDeclaringType().hasQualifiedName("javax.xml.transform.sax", "SAXSource") and
+    this.hasName("getInputSource")
     or
-    (
-      this.getDeclaringType().hasQualifiedName("java.io", "ByteArrayOutputStream") and
-      (this.getName() = "toByteArray" or this.getName() = "toString")
-    )
-    or
-    (
-      this.getDeclaringType().hasQualifiedName("java.io", "ObjectInputStream") and
-      this.getName().matches("read%")
-    )
-    or
-    (
-      (
-        this.getDeclaringType().hasQualifiedName("java.lang", "StringBuilder") or
-        this.getDeclaringType().hasQualifiedName("java.lang", "StringBuffer")
-      ) and
-      (this.getName() = "toString" or this.getName() = "append")
-    )
-    or
-    (
-      this.getDeclaringType().hasQualifiedName("javax.xml.transform.sax", "SAXSource") and
-      this.hasName("getInputSource")
-    )
-    or
-    (
-      this.getDeclaringType().hasQualifiedName("javax.xml.transform.stream", "StreamSource") and
-      this.hasName("getInputStream")
-    )
+    this.getDeclaringType().hasQualifiedName("javax.xml.transform.stream", "StreamSource") and
+    this.hasName("getInputStream")
   }
 }
 
@@ -681,89 +653,75 @@ deprecated class DataPreservingMethod extends Method {
  * is tainted.
  */
 deprecated predicate dataPreservingArgument(Method method, int arg) {
+  method instanceof StringReplaceMethod and
+  arg = 1
+  or
+  exists(Class c | c.getQualifiedName() = "java.lang.Number" |
+    hasSubtypeStar(c, method.getDeclaringType())
+  ) and
   (
-    method instanceof StringReplaceMethod and
-    arg = 1
+    method.getName().matches("parse%") and arg = 0
+    or
+    method.getName().matches("valueOf%") and arg = 0
+    or
+    method.getName().matches("to%String") and arg = 0
   )
   or
   (
-    exists(Class c | c.getQualifiedName() = "java.lang.Number" |
-      hasSubtypeStar(c, method.getDeclaringType())
-    ) and
-    (
-      (method.getName().matches("parse%") and arg = 0)
-      or
-      (method.getName().matches("valueOf%") and arg = 0)
-      or
-      (method.getName().matches("to%String") and arg = 0)
-    )
+    method.getDeclaringType().hasQualifiedName("java.lang", "StringBuilder") or
+    method.getDeclaringType().hasQualifiedName("java.lang", "StringBuffer")
+  ) and
+  (
+    method.getName() = "append" and arg = 0
+    or
+    method.getName() = "insert" and arg = 1
+    or
+    method.getName() = "replace" and arg = 2
   )
   or
   (
-    (
-      method.getDeclaringType().hasQualifiedName("java.lang", "StringBuilder") or
-      method.getDeclaringType().hasQualifiedName("java.lang", "StringBuffer")
-    ) and
-    (
-      method.getName() = "append" and arg = 0
-      or
-      method.getName() = "insert" and arg = 1
-      or
-      method.getName() = "replace" and arg = 2
-    )
+    method.getDeclaringType().hasQualifiedName("java.util", "Base64$Encoder") or
+    method.getDeclaringType().hasQualifiedName("java.util", "Base64$Decoder")
+  ) and
+  (
+    method.getName() = "encode" and arg = 0 and method.getNumberOfParameters() = 1
+    or
+    method.getName() = "decode" and arg = 0 and method.getNumberOfParameters() = 1
+    or
+    method.getName() = "encodeToString" and arg = 0
+    or
+    method.getName() = "wrap" and arg = 0
   )
   or
+  method.getDeclaringType().hasQualifiedName("org.apache.commons.io", "IOUtils") and
   (
-    (
-      method.getDeclaringType().hasQualifiedName("java.util", "Base64$Encoder") or
-      method.getDeclaringType().hasQualifiedName("java.util", "Base64$Decoder")
-    ) and
-    (
-      method.getName() = "encode" and arg = 0 and method.getNumberOfParameters() = 1
-      or
-      method.getName() = "decode" and arg = 0 and method.getNumberOfParameters() = 1
-      or
-      method.getName() = "encodeToString" and arg = 0
-      or
-      method.getName() = "wrap" and arg = 0
-    )
+    method.getName() = "buffer" and arg = 0
+    or
+    method.getName() = "readLines" and arg = 0
+    or
+    method.getName() = "readFully" and arg = 0 and method.getParameterType(1).hasName("int")
+    or
+    method.getName() = "toBufferedInputStream" and arg = 0
+    or
+    method.getName() = "toBufferedReader" and arg = 0
+    or
+    method.getName() = "toByteArray" and arg = 0
+    or
+    method.getName() = "toCharArray" and arg = 0
+    or
+    method.getName() = "toInputStream" and arg = 0
+    or
+    method.getName() = "toString" and arg = 0
   )
   or
-  (
-    (method.getDeclaringType().hasQualifiedName("org.apache.commons.io", "IOUtils")) and
-    (
-      method.getName() = "buffer" and arg = 0
-      or
-      method.getName() = "readLines" and arg = 0
-      or
-      method.getName() = "readFully" and arg = 0 and method.getParameterType(1).hasName("int")
-      or
-      method.getName() = "toBufferedInputStream" and arg = 0
-      or
-      method.getName() = "toBufferedReader" and arg = 0
-      or
-      method.getName() = "toByteArray" and arg = 0
-      or
-      method.getName() = "toCharArray" and arg = 0
-      or
-      method.getName() = "toInputStream" and arg = 0
-      or
-      method.getName() = "toString" and arg = 0
-    )
-  )
+  //A URI created from a tainted string is still tainted.
+  method.getDeclaringType().hasQualifiedName("java.net", "URI") and
+  method.hasName("create") and
+  arg = 0
   or
-  (
-    //A URI created from a tainted string is still tainted.
-    method.getDeclaringType().hasQualifiedName("java.net", "URI") and
-    method.hasName("create") and
-    arg = 0
-  )
-  or
-  (
-    method.getDeclaringType().hasQualifiedName("javax.xml.transform.sax", "SAXSource") and
-    method.hasName("sourceToInputSource") and
-    arg = 0
-  )
+  method.getDeclaringType().hasQualifiedName("javax.xml.transform.sax", "SAXSource") and
+  method.hasName("sourceToInputSource") and
+  arg = 0
 }
 
 deprecated class StringReplaceMethod extends Method {

@@ -18,35 +18,29 @@ predicate isLive(Callable c) {
  * would imply the liveness of `c`.
  */
 Callable possibleLivenessCause(Callable c, string reason) {
-  (
-    c.(Method).overridesOrInstantiates(result.(Method)) and
-    reason = "is overridden or instantiated by"
-  )
+  c.(Method).overridesOrInstantiates(result.(Method)) and
+  reason = "is overridden or instantiated by"
   or
-  (result.calls(c) and reason = "calls")
+  result.calls(c) and reason = "calls"
   or
-  (result.callsConstructor(c.(Constructor)) and reason = "calls constructor")
+  result.callsConstructor(c.(Constructor)) and reason = "calls constructor"
   or
   exists(ClassInstanceExpr e | e.getEnclosingCallable() = result |
     e.getConstructor() = c and reason = "constructs"
   )
   or
-  (c = result.getSourceDeclaration() and c != result and reason = "instantiates")
+  c = result.getSourceDeclaration() and c != result and reason = "instantiates"
   or
-  (
-    c.hasName("<clinit>") and
-    reason = "class initialization" and
-    exists(RefType clintedType | c = clintedType.getASupertype*().getACallable() |
-      result.getDeclaringType() = clintedType or
-      result.getAnAccessedField().getDeclaringType() = clintedType
-    )
+  c.hasName("<clinit>") and
+  reason = "class initialization" and
+  exists(RefType clintedType | c = clintedType.getASupertype*().getACallable() |
+    result.getDeclaringType() = clintedType or
+    result.getAnAccessedField().getDeclaringType() = clintedType
   )
   or
-  (
-    c.hasName("<obinit>") and
-    reason = "object initialization" and
-    result = c.getDeclaringType().getAConstructor()
-  )
+  c.hasName("<obinit>") and
+  reason = "object initialization" and
+  result = c.getDeclaringType().getAConstructor()
 }
 
 Callable possibleLivenessCause(Callable c) { result = possibleLivenessCause(c, _) }
@@ -91,7 +85,7 @@ class SuppressedConstructor extends Constructor {
       isPrivate()
       or
       // A protected, suppressed constructor only makes sense in a non-abstract class.
-      (isProtected() and not getDeclaringType().isAbstract())
+      isProtected() and not getDeclaringType().isAbstract()
     ) and
     // Must be no-arg in order to replace the compiler generated default constructor.
     getNumberOfParameters() = 0 and
@@ -167,13 +161,11 @@ class LiveClass extends SourceClassOrInterface {
       not f instanceof SerialVersionUIDField
     )
     or
-    (
-      // If this is a namespace class, it is live if there is at least one live nested class.
-      // The definition of `NamespaceClass` is such, that the nested classes must all be static.
-      // Static methods are handled above.
-      this instanceof NamespaceClass and
-      exists(NestedType r | r.getEnclosingType() = this | r instanceof LiveClass)
-    )
+    // If this is a namespace class, it is live if there is at least one live nested class.
+    // The definition of `NamespaceClass` is such, that the nested classes must all be static.
+    // Static methods are handled above.
+    this instanceof NamespaceClass and
+    exists(NestedType r | r.getEnclosingType() = this | r instanceof LiveClass)
     or
     // An annotation on the class is reflectively accessed.
     exists(ReflectiveAnnotationAccess reflectiveAnnotationAccess |
@@ -298,10 +290,8 @@ class RootdefCallable extends Callable {
     // Abstract, native and interface methods obviously won't access their own
     // parameters, so don't flag unless we can see an overriding method with
     // a body that also doesn't.
-    (
-      not hasUsefulBody(this) and
-      not exists(Method m | hasUsefulBody(m) | m.overridesOrInstantiates+(this))
-    )
+    not hasUsefulBody(this) and
+    not exists(Method m | hasUsefulBody(m) | m.overridesOrInstantiates+(this))
   }
 }
 

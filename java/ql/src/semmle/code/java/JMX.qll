@@ -56,11 +56,9 @@ class JMXRegistrationCall extends MethodAccess {
  */
 class JMXRegistrationMethod extends Method {
   JMXRegistrationMethod() {
-    (
-      // A direct registration with the `MBeanServer`.
-      getDeclaringType().hasQualifiedName("javax.management", "MBeanServer") and
-      getName() = "registerMBean"
-    )
+    // A direct registration with the `MBeanServer`.
+    getDeclaringType().hasQualifiedName("javax.management", "MBeanServer") and
+    getName() = "registerMBean"
     or
     // The `MBeanServer` is often wrapped by an application specific management class, so identify
     // methods that wrap a call to another `JMXRegistrationMethod`.
@@ -75,12 +73,10 @@ class JMXRegistrationMethod extends Method {
    * Gets the position of the parameter through which the "object" to be registered is passed.
    */
   int getObjectPosition() {
-    (
-      // Passed as the first argument to `registerMBean`.
-      getDeclaringType().hasQualifiedName("javax.management", "MBeanServer") and
-      getName() = "registerMBean" and
-      result = 0
-    )
+    // Passed as the first argument to `registerMBean`.
+    getDeclaringType().hasQualifiedName("javax.management", "MBeanServer") and
+    getName() = "registerMBean" and
+    result = 0
     or
     // Identify the position in this method where the object parameter should be passed.
     exists(JMXRegistrationCall c |

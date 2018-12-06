@@ -18,9 +18,9 @@ class ExternalData extends @externalDataElement {
   string toString() { result = getQueryPath() + ": " + buildTupleString(0) }
 
   private string buildTupleString(int start) {
-    (start = getNumFields() - 1 and result = getField(start))
+    start = getNumFields() - 1 and result = getField(start)
     or
-    (start < getNumFields() - 1 and result = getField(start) + "," + buildTupleString(start + 1))
+    start < getNumFields() - 1 and result = getField(start) + "," + buildTupleString(start + 1)
   }
 }
 
