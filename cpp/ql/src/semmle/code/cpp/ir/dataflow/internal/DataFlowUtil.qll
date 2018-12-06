@@ -50,7 +50,7 @@ class Node extends Instruction {
 class ExprNode extends Node {
   Expr expr;
 
-  ExprNode() { expr = this.getConvertedResultExpression() }
+  ExprNode() { expr = this.asExpr() }
   Expr getExpr() { result = expr }
 }
 
