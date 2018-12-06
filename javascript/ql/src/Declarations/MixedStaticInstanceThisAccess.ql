@@ -35,7 +35,6 @@ where
     fromKind = getKind(fromMethod) and
     toKind = getKind(toMethod) and
     toKind != fromKind and
-    not toKind = fromKind and
 
     // exceptions
     not (
