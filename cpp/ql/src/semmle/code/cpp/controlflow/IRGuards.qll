@@ -280,6 +280,17 @@ class IRGuardCondition extends Instruction {
           ne.controls(controlled, testIsTrue.booleanNot())) 
     }
 
+    cached predicate controlsEdge(ConditionalBranchInstruction branch, IRBlock succ, boolean testIsTrue) {
+      branch.getCondition() = this and
+      (
+        testIsTrue = true and
+        succ.getFirstInstruction() = branch.getTrueSuccessor()
+        or
+        testIsTrue = false and
+        succ.getFirstInstruction() = branch.getFalseSuccessor()
+      )
+    }
+
     /** Holds if (determined by this guard) `left < right + k` evaluates to `isLessThan` if this expression evaluates to `testIsTrue`. */
     cached predicate comparesLt(Operand left, Operand right, int k, boolean isLessThan, boolean testIsTrue) {
         compares_lt(this, left, right, k, isLessThan, testIsTrue)

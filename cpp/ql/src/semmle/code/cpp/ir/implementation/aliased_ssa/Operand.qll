@@ -21,6 +21,10 @@ class Operand extends TOperand {
     result = "Operand"
   }
 
+  Location getLocation() {
+    result = getInstruction().getLocation()
+  }
+
   /**
    * Gets the `Instruction` that consumes this operand.
    */

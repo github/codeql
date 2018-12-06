@@ -107,6 +107,7 @@ private class CongruentCopyInstruction extends CopyInstruction {
       def = this.getSourceValue() and
       (
         def.getResultMemoryAccess() instanceof IndirectMemoryAccess or
+        def.getResultMemoryAccess() instanceof PhiMemoryAccess or
         not def.hasMemoryResult()
       )
     )
