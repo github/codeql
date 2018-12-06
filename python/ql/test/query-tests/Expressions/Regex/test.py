@@ -133,3 +133,6 @@ VERBOSE_REGEX = r"""
 
 # Compiled regular expression marking it as verbose
 ODASA_6786 = re.compile(VERBOSE_REGEX, re.VERBOSE)
+
+#Named group with caret and empty choice.
+re.compile(r'(?:(?P<n1>^(?:|x)))')
