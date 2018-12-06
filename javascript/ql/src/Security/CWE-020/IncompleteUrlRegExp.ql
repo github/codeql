@@ -1,6 +1,6 @@
 /**
  * @name Incomplete URL regular expression
- * @description Security checks on URLs using regular expressions are sometimes vulnerable to bypassing.
+ * @description Using a regular expression that contains an 'any character' may match more URLs than expected.
  * @kind problem
  * @problem.severity error
  * @precision high
@@ -23,7 +23,7 @@ module IncompleteUrlRegExpTracking {
 
     override
     predicate isSource(DataFlow::Node source) {
-      isIncompleteHostNameRegExpPattern(source.asExpr().(ConstantString).getStringValue(), _)
+      isIncompleteHostNameRegExpPattern(source.asExpr().getStringValue(), _)
     }
 
     override
@@ -50,7 +50,7 @@ predicate isIncompleteHostNameRegExpPattern(string pattern, string hostPart) {
     ".*", 1)
 }
 
-from Expr e, string pattern, string intendedHost
+from Expr e, string pattern, string hostPart
 where
       (
         e.(RegExpLiteral).getValue() = pattern or
@@ -59,10 +59,10 @@ where
           e.mayHaveStringValue(pattern)
         )
       ) and
-      isIncompleteHostNameRegExpPattern(pattern, intendedHost)
+      isIncompleteHostNameRegExpPattern(pattern, hostPart)
       and
       // ignore patterns with capture groups after the TLD
       not pattern.regexpMatch("(?i).*[.](com|org|edu|gov|uk|net).*[(][?]:.*[)].*")
 
 
-select e, "This regular expression has an unescaped '.', which means that '" + intendedHost + "' might not match the intended host of a matched URL."
+select e, "This regular expression has an unescaped '.' before '" + hostPart + "', so it might match more hosts than expected."

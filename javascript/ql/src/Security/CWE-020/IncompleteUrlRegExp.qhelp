@@ -11,17 +11,17 @@
 			redirections. Usually, this is done by checking that the host of a URL
 			is in a set of allowed hosts.
 
-        </p>
+		</p>
 
-        <p>
+		<p>
 
-	        If a regular expression implements such a check, it is
-	        easy to accidentally make the check too permissive by not escaping the
-	        <code>.</code> meta-characters appropriately.
+			If a regular expression implements such a check, it is
+			easy to accidentally make the check too permissive by not escaping the
+			<code>.</code> meta-characters appropriately.
 
-	        Even if the check is not used in a security-critical
-	        context, the incomplete check may still cause undesirable behaviors
-	        when the check succeeds accidentally.
+			Even if the check is not used in a security-critical
+			context, the incomplete check may still cause undesirable behaviors
+			when the check succeeds accidentally.
 
 		</p>
 	</overview>
@@ -63,7 +63,7 @@
 	</example>
 
 	<references>
-        <li>OWASP: <a href="https://www.owasp.org/index.php/Server_Side_Request_Forgery">SSRF</a></li>
-        <li>OWASP: <a href="https://www.owasp.org/index.php/Unvalidated_Redirects_and_Forwards_Cheat_Sheet">XSS Unvalidated Redirects and Forwards Cheat Sheet</a>.</li>
+		<li>OWASP: <a href="https://www.owasp.org/index.php/Server_Side_Request_Forgery">SSRF</a></li>
+		<li>OWASP: <a href="https://www.owasp.org/index.php/Unvalidated_Redirects_and_Forwards_Cheat_Sheet">XSS Unvalidated Redirects and Forwards Cheat Sheet</a>.</li>
 	</references>
 </qhelp>
