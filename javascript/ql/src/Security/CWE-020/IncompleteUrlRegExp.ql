@@ -11,7 +11,6 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.RegExpInjection
 
 module IncompleteUrlRegExpTracking {
 
@@ -28,7 +27,7 @@ module IncompleteUrlRegExpTracking {
 
     override
     predicate isSink(DataFlow::Node sink) {
-      sink instanceof RegExpInjection::Sink
+      isInterpretedAsRegExp(sink)
     }
 
   }

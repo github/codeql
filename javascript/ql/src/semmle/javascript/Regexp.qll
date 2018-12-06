@@ -1,11 +1,12 @@
 /**
- * Provides classes for working with regular expression literals.
+ * Provides classes for working with regular expressions.
  *
- * Regular expressions are represented as an abstract syntax tree of regular expression
+ * Regular expression literals are represented as an abstract syntax tree of regular expression
  * terms.
  */
 
 import javascript
+private import semmle.javascript.dataflow.InferredTypes
 
 /**
  * An element containing a regular expression term, that is, either
@@ -483,4 +484,28 @@ class RegExpParseError extends Error, @regexp_parse_error {
   override string toString() {
     result = getMessage()
   }
+}
+
+/**
+ * Holds if `source` may be interpreted as a regular expression.
+ */
+predicate isInterpretedAsRegExp(DataFlow::Node source) {
+  // The first argument to an invocation of `RegExp` (with or without `new`).
+  source = DataFlow::globalVarRef("RegExp").getAnInvocation().getArgument(0)
+  or
+  // The argument of a call that coerces the argument to a regular expression.
+  exists(MethodCallExpr mce, string methodName |
+    mce.getReceiver().analyze().getAType() = TTString() and
+    mce.getMethodName() = methodName
+    |
+    (methodName = "match" and source.asExpr() = mce.getArgument(0) and mce.getNumArgument() = 1)
+    or
+    (
+      methodName = "search" and
+      source.asExpr() = mce.getArgument(0) and
+      mce.getNumArgument() = 1 and
+      // `String.prototype.search` returns a number, so exclude chained accesses
+      not exists(PropAccess p | p.getBase() = mce)
+    )
+  )
 }
