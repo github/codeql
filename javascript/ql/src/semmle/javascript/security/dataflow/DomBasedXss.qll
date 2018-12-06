@@ -96,6 +96,13 @@ module DomBasedXss {
       or
       // call to an Angular method that interprets its argument as HTML
       any(AngularJS::AngularJSCall call).interpretsArgumentAsHtml(this.asExpr())
+      or
+      // call to a WinJS function that interprets its argument as HTML
+      exists (DataFlow::MethodCallNode mcn, string m |
+        m = "setInnerHTMLUnsafe" or m = "setOuterHTMLUnsafe" |
+        mcn.getMethodName() = m and
+        this = mcn.getArgument(1)
+      )
     }
   }
 

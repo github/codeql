@@ -205,6 +205,12 @@ nodes
 | tst.js:244:39:244:55 | props.propTainted |
 | tst.js:248:60:248:82 | this.st ... Tainted |
 | tst.js:252:23:252:29 | tainted |
+| winjs.js:2:7:2:53 | tainted |
+| winjs.js:2:17:2:33 | document.location |
+| winjs.js:2:17:2:40 | documen ... .search |
+| winjs.js:2:17:2:53 | documen ... ring(1) |
+| winjs.js:3:43:3:49 | tainted |
+| winjs.js:4:43:4:49 | tainted |
 | xss-through-filenames.js:7:43:7:48 | files1 |
 | xss-through-filenames.js:8:18:8:23 | files1 |
 | xss-through-filenames.js:25:43:25:48 | files1 |
@@ -377,6 +383,11 @@ edges
 | tst.js:238:23:238:29 | tainted | tst.js:228:32:228:49 | prevProps.tainted4 |
 | tst.js:244:39:244:55 | props.propTainted | tst.js:248:60:248:82 | this.st ... Tainted |
 | tst.js:252:23:252:29 | tainted | tst.js:244:39:244:55 | props.propTainted |
+| winjs.js:2:7:2:53 | tainted | winjs.js:3:43:3:49 | tainted |
+| winjs.js:2:7:2:53 | tainted | winjs.js:4:43:4:49 | tainted |
+| winjs.js:2:17:2:33 | document.location | winjs.js:2:17:2:40 | documen ... .search |
+| winjs.js:2:17:2:40 | documen ... .search | winjs.js:2:17:2:53 | documen ... ring(1) |
+| winjs.js:2:17:2:53 | documen ... ring(1) | winjs.js:2:7:2:53 | tainted |
 | xss-through-filenames.js:7:43:7:48 | files1 | xss-through-filenames.js:8:18:8:23 | files1 |
 | xss-through-filenames.js:25:43:25:48 | files1 | xss-through-filenames.js:26:19:26:24 | files1 |
 | xss-through-filenames.js:25:43:25:48 | files1 | xss-through-filenames.js:30:34:30:37 | file |
