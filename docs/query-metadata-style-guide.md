@@ -1,4 +1,4 @@
-# Query file metadata and alert message style-guide
+# Query file metadata and alert message style guide
 
 
 ## Introduction
@@ -11,12 +11,13 @@ Query files have the extension `.ql`. Each file has two distinct areas:
 
 *   Metadata area–displayed at the top of the file, contains the metadata that defines how results for the query are interpreted and gives a brief description of the purpose of the query.
 *   Query definition–defined using QL. The query includes a select statement, which defines the content and format of the results. For further information about writing QL, see the following topics:
-    *   [Learning QL](https://help.semmle.com/wiki/display/QL/Learning+QL)
+    *   [Learning QL](https://help.semmle.com/QL/learn-ql/index.html)
     *   [QL language handbook](https://help.semmle.com/QL/ql-handbook/index.html)
-    *   [QL language specification](https://help.semmle.com/QL/QLLanguageSpecification.html)
-    *   [QL style Guide](https://github.com/Semmle/ql/blob/master/docs/ql-style-guide.md) 
+    *   [QL language specification](https://help.semmle.com/QL/ql-spec/language.html)
+    *   [QL style guide](https://github.com/Semmle/ql/blob/master/docs/ql-style-guide.md) 
 
-For examples of query files for the languages supported by Semmle, see the following pages: 
+
+For examples of query files for the languages supported by Semmle, visit the following links: 
 
 *   [C/C++ queries](https://wiki.semmle.com/pages/viewpage.action?pageId=19334052)
 *   [C# queries](https://wiki.semmle.com/display/CSHARP/C%23+queries)
@@ -27,7 +28,7 @@ For examples of query files for the languages supported by Semmle, see the follo
 
 ## Metadata area
 
-Query file metadata contains important information which defines the name and purpose of the query. The metadata is included as the content of a valid QLDoc comment, on lines with leading whitespace followed by `*`, between an initial `/**` and a trailing `*/`. For example:
+Query file metadata contains important information which defines the identifier and purpose of the query. The metadata is included as the content of a valid [QLDoc](https://help.semmle.com/QL/ql-spec/qldoc.html) comment, on lines with leading whitespace followed by `*`, between an initial `/**` and a trailing `*/`. For example:
 
 ```
 /**
@@ -43,11 +44,11 @@ Query file metadata contains important information which defines the name and pu
  */
  ```
 
-In order to help others use your query, and to ensure that the query works correctly on LGTM.com, you should include all of the required information outlined below in the metadata, and as much of the optional information as possible. For further information on query metadata see [Query file requirements](https://help.semmle.com/wiki/display/SD/Query+file+requirements).
+In order to help others use your query, and to ensure that the query works correctly on LGTM, you should include all of the required information outlined below in the metadata, and as much of the optional information as possible. For further information on query metadata see [Query file requirements](https://help.semmle.com/wiki/display/SD/Query+file+requirements).
 
 ### Query name `@name`
 
-You must specify an `@name` property for your query. This property defines the display name for the query. Query names should use sentence capitalization, but not include a full stop. Filter queries should specify the results that are excluded when you run the query. See the following examples for more detail:
+You must specify an `@name` property for your query. This property defines the display name for the query. Query names should use sentence capitalization, but not include a full stop. For example:
 
 *   `@name Access to variable in enclosing class`
 *   `@name Array argument size mismatch`
@@ -103,7 +104,7 @@ Note, `@id` properties should be consistent for queries that highlight the same 
 *   alerts (`@kind problem`)
 *   alerts containing path information (`@kind path-problem`)
 
-These `@kind` properties support two further mandatory properties which are added by Semmle after the query has been tested, prior to deployment to LGTM. The following information is for reference:
+These `@kind` properties support two further properties which are added by Semmle after the query has been tested, prior to deployment to LGTM. The following information is for reference:
 
 
 
@@ -128,7 +129,7 @@ The `@tags` property is used to define categories that the query relates to. Eac
 *   `@tags readability`–for queries that detect confusing patterns that make it harder for developers to read the code.
 *   `@tags security`–for queries that detect security weaknesses. See below for further information.
 
-There are also more specific `@tags` that can be specified. See, the following pages for more information on the low-level tags:
+There are also more specific `@tags` that can be specified. See, the the following pages for examples of the low-level tags:
 
 *   [C/C++ queries](https://wiki.semmle.com/pages/viewpage.action?pageId=19334052)
 *   [C# queries](https://wiki.semmle.com/display/CSHARP/C%23+queries)
@@ -153,21 +154,28 @@ If your query is a security query, use one or more `@tags` to associate it with 
 ||`external/cwe/cwe-036` |
 ||`external/cwe/cwe-073` |
 
-When you tag a query like this, the associated CWE pages from [MITRE.org](http://cwe.mitre.org/index.html) will automatically appear in the reference section of its associated qhelp file. For more information on qhelp files, see [Query help style guide](https://docs.google.com/document/d/14E-bne3sO3boo0jbmD68XMdTZknN5dXSTXBGQeAfj6A/edit#).
+When you tag a query like this, the associated CWE pages from [MITRE.org](http://cwe.mitre.org/index.html) will automatically appear in the reference section of its associated qhelp file.
 
 ## QL area
 
 ### Alert  messages
 
-You must define a message in the select clause of an alert query to display with your results. Alert messages are strings that concisely describe the problem that the alert is highlighting and, if possible, also provide some context. For consistency, alert messages should adhere to the following guidelines:
+The select clause of each alert query defines the alert message that is displayed for each result found by the query. Alert messages are strings that concisely describe the problem that the alert is highlighting and, if possible, also provide some context. For consistency, alert messages should adhere to the following guidelines:
 
 *   Each message should be a complete, standalone sentence. That is, it should be capitalized and have proper punctuation, including a full stop.
 *   The message should factually describe the problem that is being highlighted–it should not contain recommendations about how to fix the problem or value judgements.
 *   Program element references should be in 'single quotes' to distinguish them from ordinary words. Quotes are not needed around substitutions ($@).
 *   Avoid constant alert message strings and include some context, if possible. For example, `The class 'Foo' is duplicated as 'Bar'.` is preferable to `This class is duplicated here.`
-*   Where you reference another program element, link to it if possible using a substitution (`$@`). Links should be used inline in the sentence, rather than as parenthesised lists or appositions.
-*   When a message contains multiple links, construct a sentence that has the most variable link (that is, the link with most targets) last.
+*   Where you reference another program element, link to it if possible using a substitution (`$@`). Links should be used inline in the sentence, rather than as parenthesised lists or appositions. 
+*   When a message contains multiple links, construct a sentence that has the most variable link (that is, the link with most targets) last. For further information, see [Defining select statements](https://help.semmle.com/QL/learn-ql/ql/writing-queries/select-statement.html)
 
-See the query homepages for examples of alert messages.
+See the following pages for examples of alert messages:
 
-For further information on query writing, see  [Writing QL queries](https://lgtm.com/help/ql/writing-queries/writing-queries). For more information on learning QL, see [Learning QL](https://lgtm.com/help/lgtm/ql/learning-ql).
+*   [C/C++ queries](https://wiki.semmle.com/pages/viewpage.action?pageId=19334052)
+*   [C# queries](https://wiki.semmle.com/display/CSHARP/C%23+queries)
+*   [COBOL queries](https://wiki.semmle.com/display/COBOL/COBOL+queries)
+*   [Java queries](https://wiki.semmle.com/display/JAVA/Java+queries)
+*   [JavaScript queries](https://wiki.semmle.com/display/JS/JavaScript+queries)
+*   [Python queries](https://wiki.semmle.com/display/PYTHON/Python+queries)
+
+For further information on query writing, see  [Writing QL queries](https://help.semmle.com/QL/learn-ql/ql/writing-queries/writing-queries.html). For more information on learning QL, see [Learning QL](https://help.semmle.com/QL/learn-ql/index.html).
