@@ -187,7 +187,7 @@
 | ExitMethods.cs:43:9:46:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:43:9:46:9 | [exception: Exception] catch (...) {...} | 1 |
 | ExitMethods.cs:44:9:46:9 | {...} | ExitMethods.cs:45:13:45:19 | return ...; | 2 |
 | ExitMethods.cs:47:9:50:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:49:13:49:19 | return ...; | 3 |
-| ExitMethods.cs:53:10:53:11 | enter M7 | ExitMethods.cs:53:10:53:11 | exit M7 | 6 |
+| ExitMethods.cs:53:10:53:11 | enter M7 | ExitMethods.cs:53:10:53:11 | exit M7 | 5 |
 | ExitMethods.cs:59:10:59:11 | enter M8 | ExitMethods.cs:59:10:59:11 | exit M8 | 5 |
 | ExitMethods.cs:65:17:65:26 | enter ErrorMaybe | ExitMethods.cs:67:13:67:13 | access to parameter b | 4 |
 | ExitMethods.cs:65:17:65:26 | exit ErrorMaybe | ExitMethods.cs:65:17:65:26 | exit ErrorMaybe | 1 |

@@ -562,7 +562,6 @@
 | ExitMethods.cs:47:9:50:9 | catch (...) {...} | ExitMethods.cs:48:9:50:9 | {...} | semmle.label | match |
 | ExitMethods.cs:48:9:50:9 | {...} | ExitMethods.cs:49:13:49:19 | return ...; | semmle.label | successor |
 | ExitMethods.cs:54:5:57:5 | {...} | ExitMethods.cs:55:9:55:23 | ...; | semmle.label | successor |
-| ExitMethods.cs:55:9:55:22 | call to method ErrorAlways2 | ExitMethods.cs:56:9:56:15 | return ...; | semmle.label | successor |
 | ExitMethods.cs:55:9:55:23 | ...; | ExitMethods.cs:55:9:55:22 | call to method ErrorAlways2 | semmle.label | successor |
 | ExitMethods.cs:60:5:63:5 | {...} | ExitMethods.cs:61:9:61:23 | ...; | semmle.label | successor |
 | ExitMethods.cs:61:9:61:23 | ...; | ExitMethods.cs:61:9:61:22 | call to method ErrorAlways3 | semmle.label | successor |

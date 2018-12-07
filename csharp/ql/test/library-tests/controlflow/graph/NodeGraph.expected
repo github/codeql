@@ -859,9 +859,8 @@
 | ExitMethods.cs:49:13:49:19 | return ...; | ExitMethods.cs:37:10:37:11 | exit M6 | semmle.label | return |
 | ExitMethods.cs:53:10:53:11 | enter M7 | ExitMethods.cs:54:5:57:5 | {...} | semmle.label | successor |
 | ExitMethods.cs:54:5:57:5 | {...} | ExitMethods.cs:55:9:55:23 | ...; | semmle.label | successor |
-| ExitMethods.cs:55:9:55:22 | call to method ErrorAlways2 | ExitMethods.cs:56:9:56:15 | return ...; | semmle.label | successor |
+| ExitMethods.cs:55:9:55:22 | call to method ErrorAlways2 | ExitMethods.cs:53:10:53:11 | exit M7 | semmle.label | exception(Exception) |
 | ExitMethods.cs:55:9:55:23 | ...; | ExitMethods.cs:55:9:55:22 | call to method ErrorAlways2 | semmle.label | successor |
-| ExitMethods.cs:56:9:56:15 | return ...; | ExitMethods.cs:53:10:53:11 | exit M7 | semmle.label | return |
 | ExitMethods.cs:59:10:59:11 | enter M8 | ExitMethods.cs:60:5:63:5 | {...} | semmle.label | successor |
 | ExitMethods.cs:60:5:63:5 | {...} | ExitMethods.cs:61:9:61:23 | ...; | semmle.label | successor |
 | ExitMethods.cs:61:9:61:22 | call to method ErrorAlways3 | ExitMethods.cs:59:10:59:11 | exit M8 | semmle.label | exception(Exception) |

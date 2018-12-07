@@ -735,11 +735,10 @@
 | post | ExitMethods.cs:45:13:45:19 | return ...; | ExitMethods.cs:44:9:46:9 | {...} |
 | post | ExitMethods.cs:48:9:50:9 | {...} | ExitMethods.cs:47:9:50:9 | [exception: Exception] catch (...) {...} |
 | post | ExitMethods.cs:49:13:49:19 | return ...; | ExitMethods.cs:48:9:50:9 | {...} |
-| post | ExitMethods.cs:53:10:53:11 | exit M7 | ExitMethods.cs:56:9:56:15 | return ...; |
+| post | ExitMethods.cs:53:10:53:11 | exit M7 | ExitMethods.cs:55:9:55:22 | call to method ErrorAlways2 |
 | post | ExitMethods.cs:54:5:57:5 | {...} | ExitMethods.cs:53:10:53:11 | enter M7 |
 | post | ExitMethods.cs:55:9:55:22 | call to method ErrorAlways2 | ExitMethods.cs:55:9:55:23 | ...; |
 | post | ExitMethods.cs:55:9:55:23 | ...; | ExitMethods.cs:54:5:57:5 | {...} |
-| post | ExitMethods.cs:56:9:56:15 | return ...; | ExitMethods.cs:55:9:55:22 | call to method ErrorAlways2 |
 | post | ExitMethods.cs:59:10:59:11 | exit M8 | ExitMethods.cs:61:9:61:22 | call to method ErrorAlways3 |
 | post | ExitMethods.cs:60:5:63:5 | {...} | ExitMethods.cs:59:10:59:11 | enter M8 |
 | post | ExitMethods.cs:61:9:61:22 | call to method ErrorAlways3 | ExitMethods.cs:61:9:61:23 | ...; |
@@ -2959,9 +2958,8 @@
 | pre | ExitMethods.cs:48:9:50:9 | {...} | ExitMethods.cs:49:13:49:19 | return ...; |
 | pre | ExitMethods.cs:53:10:53:11 | enter M7 | ExitMethods.cs:54:5:57:5 | {...} |
 | pre | ExitMethods.cs:54:5:57:5 | {...} | ExitMethods.cs:55:9:55:23 | ...; |
-| pre | ExitMethods.cs:55:9:55:22 | call to method ErrorAlways2 | ExitMethods.cs:56:9:56:15 | return ...; |
+| pre | ExitMethods.cs:55:9:55:22 | call to method ErrorAlways2 | ExitMethods.cs:53:10:53:11 | exit M7 |
 | pre | ExitMethods.cs:55:9:55:23 | ...; | ExitMethods.cs:55:9:55:22 | call to method ErrorAlways2 |
-| pre | ExitMethods.cs:56:9:56:15 | return ...; | ExitMethods.cs:53:10:53:11 | exit M7 |
 | pre | ExitMethods.cs:59:10:59:11 | enter M8 | ExitMethods.cs:60:5:63:5 | {...} |
 | pre | ExitMethods.cs:60:5:63:5 | {...} | ExitMethods.cs:61:9:61:23 | ...; |
 | pre | ExitMethods.cs:61:9:61:22 | call to method ErrorAlways3 | ExitMethods.cs:59:10:59:11 | exit M8 |
