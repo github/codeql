@@ -5,9 +5,9 @@
 
 
 <overview>
-<p>If a variable is dereferenced, and the variable may have a <code>null</code>
-value on some execution paths leading to the dereferencing, the dereferencing
-may result in a <code>NullReferenceException</code>.
+<p>If a variable is dereferenced, for example as the qualifier in a method call, and the
+variable may have a <code>null</code> value on some execution paths leading to the
+dereferencing, the dereferencing may result in a <code>NullReferenceException</code>.
 </p>
 
 </overview>

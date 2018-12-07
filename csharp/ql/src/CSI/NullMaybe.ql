@@ -17,4 +17,4 @@ import semmle.code.csharp.dataflow.Nullness
 
 from Dereference d, Ssa::SourceVariable v, string msg, Element reason
 where d.isFirstMaybeNull(v.getAnSsaDefinition(), msg, reason)
-select d, "Variable '$@' may be null here " + msg + ".", v, v.toString(), reason, "this"
+select d, "Variable $@ may be null here " + msg + ".", v, v.toString(), reason, "this"

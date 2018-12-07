@@ -34,11 +34,11 @@ class B
         return !(b1 == b2);
     }
 
-    public struct CoOrds
+    public struct Coords
     {
         public int x, y;
 
-        public CoOrds(int p1, int p2)
+        public Coords(int p1, int p2)
         {
             x = p1;
             y = p2;
