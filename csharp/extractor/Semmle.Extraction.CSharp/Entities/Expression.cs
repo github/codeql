@@ -119,14 +119,15 @@ namespace Semmle.Extraction.CSharp.Entities
             var @operator = cx.GetSymbolInfo(node);
             var method = @operator.Symbol as IMethodSymbol;
 
-            if (GetCallType(cx, node) == CallType.Dynamic)
+            var callType = GetCallType(cx, node);
+            if (callType == CallType.Dynamic)
             {
                 UserOperator.OperatorSymbol(method.Name, out string operatorName);
                 cx.Emit(Tuples.dynamic_member_name(this, operatorName));
                 return;
             }
 
-            if (method != null)
+            if (callType != CallType.None)
                 cx.Emit(Tuples.expr_call(this, Method.Create(cx, method)));
         }
 
@@ -148,12 +149,9 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             var @operator = cx.GetSymbolInfo(node);
 
-            if (@operator.Symbol != null)
+            if (@operator.Symbol is IMethodSymbol method)
             {
-                var method = @operator.Symbol as IMethodSymbol;
-
-                var containingSymbol = method.ContainingSymbol as ITypeSymbol;
-                if (containingSymbol != null && containingSymbol.TypeKind == Microsoft.CodeAnalysis.TypeKind.Dynamic)
+                if (method.ContainingSymbol is ITypeSymbol containingSymbol && containingSymbol.TypeKind == Microsoft.CodeAnalysis.TypeKind.Dynamic)
                 {
                     return CallType.Dynamic;
                 }
