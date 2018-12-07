@@ -104,7 +104,7 @@ Note, `@id` properties should be consistent for queries that highlight the same 
 *   alerts (`@kind problem`)
 *   alerts containing path information (`@kind path-problem`)
 
-These `@kind` properties support two further properties which are added by Semmle after the query has been tested, prior to deployment to LGTM. The following information is for reference:
+Alert queries (`@kind problem` or `path-problem`) support two further properties. These are added by Semmle after the query has been tested, prior to deployment to LGTM. The following information is for reference:
 
 
 
@@ -129,7 +129,7 @@ The `@tags` property is used to define categories that the query relates to. Eac
 *   `@tags readability`–for queries that detect confusing patterns that make it harder for developers to read the code.
 *   `@tags security`–for queries that detect security weaknesses. See below for further information.
 
-There are also more specific `@tags` that can be specified. See, the the following pages for examples of the low-level tags:
+There are also more specific `@tags` that can be added. See, the following pages for examples of the low-level tags:
 
 *   [C/C++ queries](https://wiki.semmle.com/pages/viewpage.action?pageId=19334052)
 *   [C# queries](https://wiki.semmle.com/display/CSHARP/C%23+queries)
@@ -169,7 +169,7 @@ The select clause of each alert query defines the alert message that is displaye
 *   Where you reference another program element, link to it if possible using a substitution (`$@`). Links should be used inline in the sentence, rather than as parenthesised lists or appositions. 
 *   When a message contains multiple links, construct a sentence that has the most variable link (that is, the link with most targets) last. For further information, see [Defining select statements](https://help.semmle.com/QL/learn-ql/ql/writing-queries/select-statement.html)
 
-See the following pages for examples of alert messages:
+For examples of select clauses and alert messages, see the query source files at the following pages:
 
 *   [C/C++ queries](https://wiki.semmle.com/pages/viewpage.action?pageId=19334052)
 *   [C# queries](https://wiki.semmle.com/display/CSHARP/C%23+queries)
