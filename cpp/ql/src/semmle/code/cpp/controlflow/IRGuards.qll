@@ -280,6 +280,21 @@ class IRGuardCondition extends Instruction {
           ne.controls(controlled, testIsTrue.booleanNot())) 
     }
 
+    /**
+     * Holds if `branch` jumps directly to `succ` when this condition is `testIsTrue`.
+     * 
+     * This predicate is intended to help with situations in which an inference can only be made
+     * based on an edge between a block with multiple successors and a block with multiple
+     * predecessors. For example, in the following situation, an inference can be made about the
+     * value of `x` at the end of the `if` statement, but there is no block which is controlled by
+     * the `if` statement when `x >= y`.
+     * ```
+     * if (x < y) {
+     *   x = y;
+     * }
+     * return x;
+     * ```
+     */
     cached predicate controlsEdge(ConditionalBranchInstruction branch, IRBlock succ, boolean testIsTrue) {
       branch.getCondition() = this and
       (

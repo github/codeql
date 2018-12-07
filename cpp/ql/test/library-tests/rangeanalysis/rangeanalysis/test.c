@@ -20,7 +20,10 @@ int test2(int x, int y) {
 // for loops
 int test3(int x, void *p) {
   int i;
-  for (i = 0; i < x; i++) {
+  for(i = 0; i < x; i++) {
+    p[i];
+  }
+  for(i = x; i > 0; i++) {
     p[i];
   }
 }
@@ -32,3 +35,4 @@ int test4(int *begin, int *end) {
     begin++;
   }
 }
+

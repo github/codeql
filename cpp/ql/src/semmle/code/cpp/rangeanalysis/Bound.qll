@@ -18,7 +18,6 @@ private newtype TBound =
 abstract class Bound extends TBound {
   abstract string toString();
 
-// FIXME: operands?
   /** Gets an expression that equals this bound plus `delta`. */
   abstract Instruction getInstruction(int delta);
 
@@ -55,7 +54,9 @@ class InstructionBound extends Bound, TBoundInstruction {
   }
 }
 
-
+/**
+ * A bound corrseponding to the value of an `Operand`.
+ */
 class OperandBound extends Bound, TBoundOperand {
   Operand getOperand() {
     this = TBoundOperand(result)

@@ -76,9 +76,9 @@ cached private module RangeAnalysisCache {
 
   cached module RangeAnalysisPublic {
     /**
-     * Holds if `b + delta` is a valid bound for `e`.
-     * - `upper = true`  : `e <= b + delta`
-     * - `upper = false` : `e >= b + delta`
+     * Holds if `b + delta` is a valid bound for `i`.
+     * - `upper = true`  : `i <= b + delta`
+     * - `upper = false` : `i >= b + delta`
      *
      * The reason for the bound is given by `reason` and may be either a condition
      * or `NoReason` if the bound was proven directly without the use of a bounding
@@ -88,6 +88,15 @@ cached private module RangeAnalysisCache {
       boundedInstruction(i, b, delta, upper, _, _, reason)
     }
     
+    /**
+     * Holds if `b + delta` is a valid bound for `op`.
+     * - `upper = true`  : `op <= b + delta`
+     * - `upper = false` : `op >= b + delta`
+     *
+     * The reason for the bound is given by `reason` and may be either a condition
+     * or `NoReason` if the bound was proven directly without the use of a bounding
+     * condition.
+     */
     cached predicate boundedOperand(Operand op, Bound b, int delta, boolean upper, Reason reason) {
       boundedNonPhiOperand(op, b, delta, upper, _, _, reason)
       or
@@ -145,11 +154,11 @@ private predicate boundFlowStepSsa(
 }
 
 /**
- * Gets a condition that tests whether `v` is bounded by `e + delta`.
+ * Gets a condition that tests whether `op` is bounded by `bound + delta`.
  *
  * If the condition evaluates to `testIsTrue`:
- * - `upper = true`  : `v <= e + delta`
- * - `upper = false` : `v >= e + delta`
+ * - `upper = true`  : `op <= bound + delta`
+ * - `upper = false` : `op >= bound + delta`
  */
 private IRGuardCondition boundFlowCond(NonPhiOperand op, NonPhiOperand bound, int delta, boolean upper,
   boolean testIsTrue)
@@ -163,9 +172,10 @@ private IRGuardCondition boundFlowCond(NonPhiOperand op, NonPhiOperand bound, in
 }
 
 /**
- * Holds if `comp` corresponds to:
- * - `upper = true`  : `v <= e + delta` or `v < e + delta`
- * - `upper = false` : `v >= e + delta` or `v > e + delta`
+ * Gets a condition that tests whether `op` is bounded by `bound + delta`.
+ * 
+ * - `upper = true`  : `op <= bound + delta`
+ * - `upper = false` : `op >= bound + delta`
  */
 private IRGuardCondition boundFlowCondPhi(PhiOperand op, NonPhiOperand bound, int delta, boolean upper,
   boolean testIsTrue)
@@ -291,7 +301,7 @@ private predicate boundFlowStep(Instruction i, Operand op, int delta, boolean up
       sub.getAnOperand().(RightOperand) = x
     )
   |
-    // `x instanceof ConstantIntegerExpr` is covered by valueFlowStep
+    // `x` with constant value is covered by valueFlowStep
     not exists(getValue(getConstantValue(x.getInstruction()))) and
     if strictlyPositive(x)
     then (
@@ -383,7 +393,6 @@ private predicate boundFlowStepPhi(
   or
   exists(IRGuardCondition guard |
     guard = boundFlowCondPhi(op2, op1, delta, upper, _) and
-    // Java has guardDirectlyControlsSsaRead here
     reason = TCondReason(guard)
   )
 }
@@ -424,20 +433,6 @@ private predicate boundedPhiOperand(
 private predicate unequalOperand(Operand op, Bound b, int delta, Reason reason) {
   none()
 }
-
-/*
- * Notes on phi nodes in the C IR vs Java
- * 
- * the IR doesn't have edges as a type, but Java uses edges rather than predecessor blocks; is
- * there anything to be gained by distinguishing different edges from the same predecessor? (does
- * Java distinguish different edges from the same predecessor? can the IR actually generate multiple
- * edges from the same predecessor?)
- * 
- * Java identifies a phi operand using a tuple of a node, an input, and an edge; we might be able to
- * get away with just using a PhiOperand, which I believe uniquely identifies the phi node and
- * predecessor block.
- * 
- */
 
 private predicate boundedPhiCandValidForEdge(
   PhiInstruction phi, Bound b, int delta, boolean upper, boolean fromBackEdge, int origdelta,
@@ -544,7 +539,11 @@ private predicate boundedCastExpr(
 ) {
   boundedNonPhiOperand(cast.getAnOperand(), b, delta, upper, fromBackEdge, origdelta, reason)
 }
-
+/**
+ * Holds if `b + delta` is a valid bound for `i`.
+ * - `upper = true`  : `i <= b + delta`
+ * - `upper = false` : `i >= b + delta`
+ */
 private predicate boundedInstruction(
   Instruction i, Bound b, int delta, boolean upper, boolean fromBackEdge, int origdelta, Reason reason
 ) {
