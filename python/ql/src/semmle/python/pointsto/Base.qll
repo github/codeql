@@ -202,10 +202,6 @@ predicate function_can_never_return(FunctionObject func) {
 /** Python specific sub-class of generic EssaNodeDefinition */
 class PyNodeDefinition extends EssaNodeDefinition {
 
-    PyNodeDefinition() {
-        this.getSourceVariable().hasDefiningNode(this.getDefiningNode())
-    }
-
     override string getRepresentation() {
         result = this.getAQlClass()
     }

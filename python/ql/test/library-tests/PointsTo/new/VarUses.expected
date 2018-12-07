@@ -175,10 +175,8 @@
 | b_condition.py:81 | bar | Exit node for Function odasa6261 |
 | b_condition.py:81 | foo | Exit node for Function odasa6261 |
 | b_condition.py:82 | callable | ControlFlowNode for callable |
-| b_condition.py:82 | foo | ControlFlowNode for callable() |
 | b_condition.py:82 | foo | ControlFlowNode for foo |
 | b_condition.py:84 | foo | ControlFlowNode for foo |
-| b_condition.py:84 | foo | ControlFlowNode for foo() |
 | b_condition.py:87 | x | Exit node for Function split_bool1 |
 | b_condition.py:87 | y | Exit node for Function split_bool1 |
 | b_condition.py:88 | x | ControlFlowNode for x |

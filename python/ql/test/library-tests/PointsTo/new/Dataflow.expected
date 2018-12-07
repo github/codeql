@@ -698,10 +698,8 @@
 | r_regressions.py:61 | obj_0 = ParameterDefinition |
 | r_regressions.py:61 | obj_3 = phi(obj_1, obj_2) |
 | r_regressions.py:62 | is_class_0 = isinstance() |
-| r_regressions.py:62 | name_2 = CallsiteRefinement(name_1) |
 | r_regressions.py:62 | obj_1 = ArgumentRefinement(obj_0) |
 | r_regressions.py:64 | is_class_1 = Pi(is_class_0) [true] |
-| r_regressions.py:64 | name_3 = CallsiteRefinement(name_2) |
 | r_regressions.py:66 | func_1 = obj |
 | r_regressions.py:66 | is_class_2 = Pi(is_class_0) [false] |
 | r_regressions.py:68 | _wrapper_0 = FunctionExpr |
@@ -709,7 +707,6 @@
 | r_regressions.py:68 | func_2 = phi(func_0, func_1) |
 | r_regressions.py:68 | is_class_3 = phi(is_class_1, is_class_2) |
 | r_regressions.py:68 | kwargs_0 = ParameterDefinition |
-| r_regressions.py:68 | name_4 = phi(name_2, name_3) |
 | r_regressions.py:68 | self_0 = ParameterDefinition |
 | r_regressions.py:73 | is_class_4 = Pi(is_class_3) [true] |
 | r_regressions.py:73 | obj_2 = ArgumentRefinement(obj_1) |
