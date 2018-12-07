@@ -1,5 +1,5 @@
 /**
- * @name Incorrect Not Operator Usage
+ * @name Incorrect 'not' operator usage
  * @description Usage of a logical-not (!) operator as an operand for a bit-wise operation.
  *              This commonly indicates the usage of an incorrect operator instead of the bit-wise not (~) operator,
  *              also known as ones' complement operator.
