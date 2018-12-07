@@ -37,6 +37,36 @@ class ClientRequest extends DataFlow::InvokeNode {
    * Gets a node that contributes to the data-part this request.
    */
   DataFlow::Node getADataNode() { result = self.getADataNode() }
+
+  /**
+    * Gets a data flow node that refers to some representation of the response, possibly
+    * wrapped in a promise object.
+    *
+    * The `responseType` describes how the response is represented as a JavaScript value
+    * (after resolving promises).
+    *
+    * The response type may be any of the values supported by
+    * [XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseType),
+    * namely `arraybuffer`, `blob`, `document`, `json`, or `text`.
+    *
+    * Additionally, the `responseType` may have one of the following values:
+    * - `fetch.response`: The result is a `Response` object as defined by the [fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Response).
+    * - `stream`: The result is a Node.js stream
+    * - `error`: The result is an error in an unspecified format, possibly containing information from the response
+    *
+    *
+    * Custom implementations of `ClientRequest` may use other formats.
+    * If the responseType is not known the convention is to use an empty string.
+    */
+  DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
+    result = self.getAResponseDataNode(responseType, promise)
+  }
+
+  /**
+   * Gets a node that refers to data from the response, possibly
+   * wrapped in a promise object.
+   */
+  DataFlow::Node getAResponseDataNode() { result = getAResponseDataNode(_, _) }
 }
 
 module ClientRequest {
@@ -62,6 +92,14 @@ module ClientRequest {
      * Gets a node that contributes to the data-part this request.
      */
     abstract DataFlow::Node getADataNode();
+
+    /**
+     * Gets a data flow node that refers to some representation of the response, possibly
+     * wrapped in a promise object.
+     *
+     * See the decription of `responseType` in the corresponding predicate in `ClientRequest`.
+     */
+    DataFlow::Node getAResponseDataNode(string responseType, boolean promise) { none() }
   }
 }
 
@@ -83,14 +121,21 @@ private string urlPropertyName() {
 /**
  * A model of a URL request made using the `request` library.
  */
-private class RequestUrlRequest extends ClientRequest::Range {
+private class RequestUrlRequest extends ClientRequest::Range, DataFlow::CallNode {
+  boolean promise;
+
   RequestUrlRequest() {
     exists(string moduleName, DataFlow::SourceNode callee | this = callee.getACall() |
       (
-        moduleName = "request" or
-        moduleName = "request-promise" or
-        moduleName = "request-promise-any" or
-        moduleName = "request-promise-native"
+        promise = false and
+        moduleName = "request"
+        or
+        promise = true and
+        (
+          moduleName = "request-promise" or
+          moduleName = "request-promise-any" or
+          moduleName = "request-promise-native"
+        )
       ) and
       (
         callee = DataFlow::moduleImport(moduleName) or
@@ -105,6 +150,29 @@ private class RequestUrlRequest extends ClientRequest::Range {
   }
 
   override DataFlow::Node getHost() { none() }
+
+  string getResponseFormat() {
+    if getOptionArgument(0, "json").mayHaveBooleanValue(true) then
+      result = "json"
+    else
+      result = "text"
+  }
+
+  override DataFlow::Node getAResponseDataNode(string responseType, boolean pr) {
+    responseType = getResponseFormat() and
+    promise = true and
+    pr = true and
+    result = this
+    or
+    responseType = getResponseFormat() and
+    promise = false and
+    pr = false and
+    (
+      result = getCallback([1..2]).getParameter(2)
+      or
+      result = getCallback([1..2]).getParameter(1).getAPropertyRead("body")
+    )
+  }
 
   override DataFlow::Node getADataNode() { result = getArgument(1) }
 }
@@ -150,6 +218,24 @@ private class AxiosUrlRequest extends ClientRequest::Range {
       result = getOptionArgument([0 .. 2], name)
     )
   }
+
+  string getResponseFormat() {
+    exists(DataFlow::Node option | option = getOptionArgument([0 .. 2], "responseType") |
+      result = option.getStringValue()
+      or
+      not exists(option.getStringValue()) and
+      result = ""
+    )
+    or
+    not exists(getOptionArgument([0 .. 2], "responseType")) and
+    result = "json"
+  }
+
+  override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
+    responseType = getResponseFormat() and
+    promise = true and
+    result = this
+  }
 }
 
 /**
@@ -179,6 +265,12 @@ private class FetchUrlRequest extends ClientRequest::Range {
 
   override DataFlow::Node getADataNode() {
     exists(string name | name = "headers" or name = "body" | result = getOptionArgument(1, name))
+  }
+
+  override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
+    responseType = "fetch.response" and
+    promise = true and
+    result = this
   }
 }
 
@@ -215,6 +307,34 @@ private class GotUrlRequest extends ClientRequest::Range {
       result = getOptionArgument(1, name)
     )
   }
+
+  predicate isStream() {
+    getOptionArgument(1, "stream").mayHaveBooleanValue(true)
+    or
+    this = DataFlow::moduleMember("got", "stream").getACall()
+  }
+
+  predicate isJson() {
+    getOptionArgument(1, "json").mayHaveBooleanValue(true)
+  }
+
+  override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
+    result = this and
+    (
+      isStream() and
+      responseType = "stream" and
+      promise = false
+      or
+      isJson() and
+      responseType = "json" and
+      promise = true
+      or
+      not isStream() and
+      not isJson() and
+      responseType = "text" and
+      promise = true
+    )
+  }
 }
 
 /**
@@ -240,6 +360,22 @@ private class SuperAgentUrlRequest extends ClientRequest::Range {
       result = this.getAChainedMethodCall(name).getAnArgument()
     )
   }
+
+  override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
+    responseType = "text" and
+    promise = true and
+    result = this
+    or
+    exists(DataFlow::FunctionNode callback |
+      callback = getAChainedMethodCall("end").getCallback(0) and
+      promise = false and
+      (
+        responseType = "error" and result = callback.getParameter(0)
+        or
+        responseType = "text" and result = callback.getParameter(1)
+      )
+    )
+  }
 }
 
 /**
@@ -250,7 +386,7 @@ private class XMLHttpRequest extends ClientRequest::Range {
     this = DataFlow::globalVarRef("XMLHttpRequest").getAnInstantiation()
     or
     // closure shim for XMLHttpRequest
-    this = Closure::moduleImport("goog.net.XmlHttp").getAnInstantiation()
+    this = Closure::moduleImport("goog.net.XmlHttp").getAnInvocation()
   }
 
   override DataFlow::Node getUrl() { result = getAMethodCall("open").getArgument(1) }
@@ -258,17 +394,65 @@ private class XMLHttpRequest extends ClientRequest::Range {
   override DataFlow::Node getHost() { none() }
 
   override DataFlow::Node getADataNode() { result = getAMethodCall("send").getArgument(0) }
+
+  private string getAssignedResponseType() {
+    getAPropertyWrite("responseType").mayHaveStringValue(result)
+    or
+    getAPropertyWrite("responseType").mayHaveStringValue("") and
+    result = "text"
+    or
+    not exists(getAPropertyWrite("responseType")) and
+    result = "text"
+  }
+
+  private DataFlow::FunctionNode getAnEventListener() {
+    result = getAPropertyWrite("on" + any(string s)).getRhs().getAFunctionValue()
+    or
+    result = getAMethodCall("addEventListener").getArgument(1).getAFunctionValue()
+  }
+
+  private DataFlow::SourceNode getAnAlias() {
+    result = this
+    or
+    // The value of `this` in an event listener refers to the XHR object
+    result = getAnEventListener().getReceiver()
+  }
+
+  override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
+    promise = false and
+    (
+      exists(string prop | result = getAnAlias().getAPropertyRead(prop) |
+        prop = "response" and responseType = getAssignedResponseType()
+        or
+        prop = "responseText" and responseType = "text"
+        or
+        prop = "statusText" and responseType = "text"
+        or
+        prop = "responseXML" and responseType = "document"
+      )
+      or
+      responseType = "text" and
+      exists(string method | result = getAnAlias().getAMethodCall(method) |
+        method = "getAllResponseHeaders" or
+        method = "getResponseHeader"
+      )
+    )
+  }
 }
 
 /**
  * A model of a URL request made using the `XhrIo` class from the closure library.
  */
 private class ClosureXhrIoRequest extends ClientRequest::Range {
+  DataFlow::SourceNode xhrIo;
+  boolean static;
+
   ClosureXhrIoRequest() {
-    exists(DataFlow::SourceNode xhrIo | xhrIo = Closure::moduleImport("goog.net.XhrIo") |
-      this = xhrIo.getAMethodCall("send")
+    xhrIo = Closure::moduleImport("goog.net.XhrIo") and
+    (
+      this = xhrIo.getAMethodCall("send") and static = true
       or
-      this = xhrIo.getAnInstantiation().getAMethodCall("send")
+      this = xhrIo.getAnInstantiation().getAMethodCall("send") and static = false
     )
   }
 
@@ -279,5 +463,49 @@ private class ClosureXhrIoRequest extends ClientRequest::Range {
   override DataFlow::Node getADataNode() {
     result = getArgument(2) or
     result = getArgument(3)
+  }
+
+  /** Gets an event listener with `this` bound to this object. */
+  private DataFlow::FunctionNode getAnEventListener() {
+    result = getAnArgument().getAFunctionValue()
+    or
+    static = false and
+    exists(DataFlow::MethodCallNode listen, string name |
+      listen = getAMethodCall(name) and
+      (name = "listen" or name = "listenOnce") and
+      xhrIo.flowsTo(listen.getArgument(3)) and
+      result = listen
+    )
+  }
+
+  private DataFlow::SourceNode getAnAlias() {
+    static = false and
+    result = xhrIo
+    or
+    result = getAnEventListener().getReceiver()
+  }
+
+  private string getAssignedResponseType() {
+    getAMethodCall("setResponseType").getArgument(0).mayHaveStringValue(result)
+    or
+    not exists(getAMethodCall("setResponseType")) and
+    result = "text"
+  }
+
+  override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
+    promise = false and
+    exists(string method | result = getAnAlias().getAMethodCall(method) |
+      method = "getResponse" and responseType = getAssignedResponseType()
+      or
+      method = "getResponseHeader" and responseType = "text"
+      or
+      method = "getResponseJson" and responseType = "json"
+      or
+      method = "getResponseText" and responseType = "text"
+      or
+      method = "getResponseXml" and responseType = "document"
+      or
+      method = "getStatusText" and responseType = "text"
+    )
   }
 }
