@@ -285,7 +285,7 @@ namespace Semmle.Extraction
         public static string NestPaths(ILogger logger, string outerpath, string innerpath, InnerPathComputation innerPathComputation)
         {
             string nested = innerpath;
-            if (outerpath != null || outerpath.Length != 0)
+            if (!string.IsNullOrEmpty(outerpath))
             {
                 if (!Path.IsPathRooted(innerpath) && innerPathComputation == InnerPathComputation.ABSOLUTE)
                     innerpath = Path.GetFullPath(innerpath);
