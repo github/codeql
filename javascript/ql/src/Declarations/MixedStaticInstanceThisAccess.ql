@@ -17,33 +17,31 @@ predicate hasMethod(ClassDefinition base, string name, MethodDefinition m) {
 }
 
 /**
-* Holds if `access` is in`fromMethod`, and it references `toMethod` through `this`.
+* Holds if `access` is in`fromMethod`, and it references `toMethod` through `this`,
+* where `fromMethod` and `toMethod` are of kind `fromKind` and `toKind`, respectively.
 */
-predicate isLocalMethodAccess(PropAccess access, MethodDefinition fromMethod, MethodDefinition toMethod) {
-    hasMethod(fromMethod.getDeclaringClass(), access.getPropertyName(), toMethod) and
-    access.getEnclosingFunction() = fromMethod.getBody() and
-    access.getBase() instanceof ThisExpr
+predicate isLocalMethodAccess(PropAccess access, MethodDefinition fromMethod, string fromKind,
+  MethodDefinition toMethod, string toKind) {
+  hasMethod(fromMethod.getDeclaringClass(), access.getPropertyName(), toMethod) and
+  access.getEnclosingFunction() = fromMethod.getBody() and
+  access.getBase() instanceof ThisExpr and
+  fromKind = getKind(fromMethod) and
+  toKind = getKind(toMethod)
 }
 
 string getKind(MethodDefinition m) {
-    if m.isStatic() then result = "static" else result = "instance"
+  if m.isStatic() then result = "static" else result = "instance"
 }
 
 from PropAccess access, MethodDefinition fromMethod, MethodDefinition toMethod, string fromKind, string toKind
 where
-    isLocalMethodAccess(access, fromMethod, toMethod) and
-    fromKind = getKind(fromMethod) and
-    toKind = getKind(toMethod) and
+    isLocalMethodAccess(access, fromMethod, fromKind, toMethod, toKind) and
     toKind != fromKind and
-    not toKind = fromKind and
 
     // exceptions
     not (
         // the class has a second member with the same name and the right kind
-        exists (MethodDefinition toMethodWithSameKind |
-            isLocalMethodAccess(access, fromMethod, toMethodWithSameKind) and
-            fromKind = getKind(toMethodWithSameKind)
-        )
+        isLocalMethodAccess(access, fromMethod, _, _, fromKind)
         or
         // there is a dynamically assigned second member with the same name and the right kind
         exists (AnalyzedPropertyWrite apw, AbstractClass declaringClass, AbstractValue base |
