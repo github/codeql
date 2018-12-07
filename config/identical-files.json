@@ -72,5 +72,15 @@
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/gvn/ValueNumbering.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/gvn/ValueNumbering.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/gvn/ValueNumbering.qll"
+  ],
+  "C++ IR ConstantAnalysis": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/constant/ConstantAnalysis.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/constant/ConstantAnalysis.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/constant/ConstantAnalysis.qll"
+  ],
+  "C++ IR PrintConstantAnalysis": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/constant/PrintConstantAnalysis.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/constant/PrintConstantAnalysis.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/constant/PrintConstantAnalysis.qll"
   ]
 }
