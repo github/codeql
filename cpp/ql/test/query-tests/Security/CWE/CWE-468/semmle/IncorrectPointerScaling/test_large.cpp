@@ -6,5 +6,5 @@ struct MyStruct
 
 void test(MyStruct *ptr)
 {
-	MyStruct *new_ptr = ptr + 1; // GOOD [FALSE POSITIVE]
+	MyStruct *new_ptr = ptr + 1; // GOOD
 }
