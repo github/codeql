@@ -14,6 +14,8 @@
 		"js-extend": "^1.0.1",
 		"just-extend": "^1.1.27",
 		"lodash": "^4.17.10",
+		"lodash.defaultsdeep": "^4.6.0",
+		"lodash.mergewith": "^4.6.1",
 		"merge": "^1.2.0",
 		"merge-deep": "^3.0.2",
 		"merge-options": "^1.0.1",
