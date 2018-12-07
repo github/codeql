@@ -1,5 +1,8 @@
 | calls.cpp:8:5:8:5 | 1 | This expression has no effect. | calls.cpp:8:5:8:5 | 1 |  |
 | calls.cpp:12:5:12:16 | call to thingy | This expression has no effect (because $@ has no external side effects). | calls.cpp:7:15:7:20 | thingy | thingy |
+| expr.cpp:8:2:8:2 | 0 | This expression has no effect. | expr.cpp:8:2:8:2 | 0 |  |
+| expr.cpp:9:7:9:7 | 0 | This expression has no effect. | expr.cpp:9:7:9:7 | 0 |  |
+| expr.cpp:10:2:10:5 | ... , ... | This expression has no effect. | expr.cpp:10:2:10:5 | ... , ... |  |
 | preproc.c:89:2:89:4 | call to fn4 | This expression has no effect (because $@ has no external side effects). | preproc.c:33:5:33:7 | fn4 | fn4 |
 | preproc.c:94:2:94:4 | call to fn9 | This expression has no effect (because $@ has no external side effects). | preproc.c:78:5:78:7 | fn9 | fn9 |
 | template.cpp:19:3:19:3 | call to operator++ | This expression has no effect (because $@ has no external side effects). | template.cpp:9:10:9:19 | operator++ | operator++ |
