@@ -2497,7 +2497,11 @@ module ControlFlow {
       class PreBasicBlock extends ControlFlowElement {
         PreBasicBlock() { startsBB(this) }
 
-        PreBasicBlock getASuccessor() { result = succ(this.getLastElement(), _) }
+        PreBasicBlock getASuccessorByType(SuccessorType t) {
+          result = succ(this.getLastElement(), any(Completion c | t.matchesCompletion(c)))
+        }
+
+        PreBasicBlock getASuccessor() { result = this.getASuccessorByType(_) }
 
         PreBasicBlock getAPredecessor() {
           result.getASuccessor() = this
@@ -3099,6 +3103,12 @@ module ControlFlow {
           }
         }
 
+        pragma[noinline]
+        private ControlFlowElement getAChild(ControlFlowElement cfe, Callable c) {
+          result = cfe.getAChild() and
+          c = result.getEnclosingCallable()
+        }
+
         /**
          * Gets a descendant that belongs to the `finally` block of try statement
          * `try`.
@@ -3108,8 +3118,7 @@ module ControlFlow {
           or
           exists(ControlFlowElement mid |
             mid = getAFinallyDescendant(try) and
-            result = mid.getAChild() and
-            mid.getEnclosingCallable() = result.getEnclosingCallable() and
+            result = getAChild(mid, mid.getEnclosingCallable()) and
             not exists(TryStmt nestedTry |
               result = nestedTry.getFinally() and
               nestedTry != try
