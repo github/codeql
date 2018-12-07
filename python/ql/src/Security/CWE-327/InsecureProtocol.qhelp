@@ -29,7 +29,8 @@
           <sample src="examples/insecure_protocol.py" />
 
           <p>
-            In all of the above cases, a secure protocol should be used instead.
+            All cases should be updated to use a secure protocol, such as
+            <code>PROTOCOL_TLSv1_1</code>.
           </p>
           <p>
             Note that <code>ssl.wrap_socket</code> has been deprecated in

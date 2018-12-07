@@ -1,7 +1,7 @@
 /**
  * @name Default version of SSL/TLS may be insecure
- * @description No SSL/TLS version has been specified in a call to 'ssl.wrap_socket'.
- *              This may result in an insecure protocol being used.
+ * @description Leaving the SSL/TLS version unspecified may result in an insecure
+ *              default protocol being used.
  * @id py/insecure-default-protocol
  * @kind problem
  * @problem.severity warning

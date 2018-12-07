@@ -1,7 +1,6 @@
 /**
  * @name Use of insecure SSL/TLS version
- * @description An insecure version of SSL/TLS has been specified. This may
- *              leave the connection open to attacks.
+ * @description Using an insecure SSL/TLS version may leave the connection vulnerable to attacks.
  * @id py/insecure-protocol
  * @kind problem
  * @problem.severity warning

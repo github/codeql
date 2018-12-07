@@ -23,16 +23,18 @@
      </recommendation>
      <example>
 
-          <p>
-            The following code shows a variety of ways of setting up a
-            connection using SSL or TLS. They are all potentially insecure because the
-            default version is used.
+       <p>
+         The following code shows two different ways of setting up a connection
+         using SSL or TLS. They are both potentially insecure because the
+         default version is used.
           </p>
 
           <sample src="examples/insecure_default_protocol.py" />
 
           <p>
-            In all of the above cases, a secure protocol should be used instead.
+            Both of the cases above should be updated to use a secure protocol
+            instead, for instance by specifying
+            <code>ssl_version=PROTOCOL_TLSv1_1</code> as a keyword argument.
           </p>
           <p>
             Note that <code>ssl.wrap_socket</code> has been deprecated in
