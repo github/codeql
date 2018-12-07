@@ -93,6 +93,8 @@
 | IR: TryCatch | 15 |
 | IR: UninitializedVariables | 1 |
 | IR: UnionInit | 1 |
+| IR: UnreachableIf | 8 |
+| IR: UnreachableViaGoto | 3 |
 | IR: VarArgUsage | 1 |
 | IR: VarArgs | 1 |
 | IR: VirtualMemberFunction | 1 |

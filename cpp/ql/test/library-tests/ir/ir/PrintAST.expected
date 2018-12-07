@@ -6668,3 +6668,63 @@ ir.cpp:
 # 1018|           -1: p
 # 1018|               Type = Point *
 # 1018|               ValueCategory = prvalue(load)
+# 1021| UnreachableViaGoto() -> int
+# 1021|   params: 
+# 1021|   body: { ... }
+# 1022|     0: goto ...
+# 1023|     1: return ...
+# 1023|       0: 1
+# 1023|           Type = int
+# 1023|           Value = 1
+# 1023|           ValueCategory = prvalue
+# 1024|     2: label ...:
+# 1025|     3: return ...
+# 1025|       0: 0
+# 1025|           Type = int
+# 1025|           Value = 0
+# 1025|           ValueCategory = prvalue
+# 1028| UnreachableIf(bool) -> int
+# 1028|   params: 
+# 1028|     0: b
+# 1028|         Type = bool
+# 1028|   body: { ... }
+# 1029|     0: if (...) ... 
+# 1029|       0: b
+# 1029|           Type = bool
+# 1029|           ValueCategory = prvalue(load)
+# 1029|       1: { ... }
+# 1030|         0: if (...) ... 
+# 1030|           0: 0
+# 1030|               Type = bool
+# 1030|               Value = 0
+# 1030|               ValueCategory = prvalue
+# 1030|           1: { ... }
+# 1031|             0: return ...
+# 1031|               0: 1
+# 1031|                   Type = int
+# 1031|                   Value = 1
+# 1031|                   ValueCategory = prvalue
+# 1033|           2: { ... }
+# 1034|             0: return ...
+# 1034|               0: 0
+# 1034|                   Type = int
+# 1034|                   Value = 0
+# 1034|                   ValueCategory = prvalue
+# 1037|       2: { ... }
+# 1038|         0: if (...) ... 
+# 1038|           0: 1
+# 1038|               Type = bool
+# 1038|               Value = 1
+# 1038|               ValueCategory = prvalue
+# 1038|           1: { ... }
+# 1039|             0: return ...
+# 1039|               0: 0
+# 1039|                   Type = int
+# 1039|                   Value = 0
+# 1039|                   ValueCategory = prvalue
+# 1041|           2: { ... }
+# 1042|             0: return ...
+# 1042|               0: 1
+# 1042|                   Type = int
+# 1042|                   Value = 1
+# 1042|                   ValueCategory = prvalue
