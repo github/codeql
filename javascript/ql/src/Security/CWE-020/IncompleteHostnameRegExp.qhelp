@@ -46,7 +46,7 @@
 
 		</p>
 
-		<sample src="examples/IncompleteUrlRegExp.js"/>
+		<sample src="examples/IncompleteHostnameRegExp.js"/>
 
 		<p>
 

@@ -1,10 +1,10 @@
 /**
- * @name Incomplete URL regular expression
- * @description Using a regular expression that contains an 'any character' may match more URLs than expected.
+ * @name Incomplete regular expression for hostnames
+ * @description Matching a URL or hostname against a regular expression that contains an unescaped dot as part of the hostname might match more than expected.
  * @kind problem
- * @problem.severity error
+ * @problem.severity warning
  * @precision high
- * @id js/incomplete-url-regexp
+ * @id js/incomplete-hostname-regexp
  * @tags correctness
  *       security
  *       external/cwe/cwe-20
@@ -12,13 +12,13 @@
 
 import javascript
 
-module IncompleteUrlRegExpTracking {
+module IncompleteHostnameRegExpTracking {
 
   /**
-   * A taint tracking configuration for incomplete URL regular expressions sources.
+   * A taint tracking configuration for incomplete hostname regular expressions sources.
    */
   class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "IncompleteUrlRegExpTracking" }
+    Configuration() { this = "IncompleteHostnameRegExpTracking" }
 
     override
     predicate isSource(DataFlow::Node source) {
@@ -53,7 +53,7 @@ from Expr e, string pattern, string hostPart
 where
       (
         e.(RegExpLiteral).getValue() = pattern or
-        exists (IncompleteUrlRegExpTracking::Configuration cfg |
+        exists (IncompleteHostnameRegExpTracking::Configuration cfg |
           cfg.hasFlow(e.flow(), _) and
           e.mayHaveStringValue(pattern)
         )
