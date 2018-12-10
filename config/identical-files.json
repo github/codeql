@@ -82,5 +82,20 @@
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/constant/PrintConstantAnalysis.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/constant/PrintConstantAnalysis.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/constant/PrintConstantAnalysis.qll"
+  ],
+  "C++ IR ReachableBlock": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/internal/reachability/ReachableBlock.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/reachability/ReachableBlock.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/reachability/ReachableBlock.qll"
+  ],
+  "C++ IR PrintReachableBlock": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/internal/reachability/PrintReachableBlock.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/reachability/PrintReachableBlock.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/reachability/PrintReachableBlock.qll"
+  ],
+  "C++ IR Dominance": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/internal/reachability/Dominance.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/reachability/Dominance.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/reachability/Dominance.qll"
   ]
 }
