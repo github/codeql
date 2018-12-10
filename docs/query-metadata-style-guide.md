@@ -19,12 +19,11 @@ Query files have the extension `.ql`. Each file has two distinct areas:
 
 For examples of query files for the languages supported by Semmle, visit the following links: 
 
-*   [C/C++ queries](https://wiki.semmle.com/pages/viewpage.action?pageId=19334052)
-*   [C# queries](https://wiki.semmle.com/display/CSHARP/C%23+queries)
-*   [COBOL queries](https://wiki.semmle.com/display/COBOL/COBOL+queries)
-*   [Java queries](https://wiki.semmle.com/display/JAVA/Java+queries)
-*   [JavaScript queries](https://wiki.semmle.com/display/JS/JavaScript+queries)
-*   [Python queries](https://wiki.semmle.com/display/PYTHON/Python+queries)
+*   [C/C++ queries](https://help.semmle.com/wiki/display/CCPPOBJ/)
+*   [C# queries](https://help.semmle.com/wiki/display/CSHARP/)
+*   [Java queries](https://help.semmle.com/wiki/display/JAVA/)
+*   [JavaScript queries](https://help.semmle.com/wiki/display/JS/)
+*   [Python queries](https://help.semmle.com/wiki/display/PYTHON/)
 
 ## Metadata area
 
@@ -131,12 +130,11 @@ The `@tags` property is used to define categories that the query relates to. Eac
 
 There are also more specific `@tags` that can be added. See, the following pages for examples of the low-level tags:
 
-*   [C/C++ queries](https://wiki.semmle.com/pages/viewpage.action?pageId=19334052)
-*   [C# queries](https://wiki.semmle.com/display/CSHARP/C%23+queries)
-*   [COBOL queries](https://wiki.semmle.com/display/COBOL/COBOL+queries)
-*   [Java queries](https://wiki.semmle.com/display/JAVA/Java+queries)
-*   [JavaScript queries](https://wiki.semmle.com/display/JS/JavaScript+queries)
-*   [Python queries](https://wiki.semmle.com/display/PYTHON/Python+queries)
+*   [C/C++ queries](https://help.semmle.com/wiki/display/CCPPOBJ/)
+*   [C# queries](https://help.semmle.com/wiki/display/CSHARP/)
+*   [Java queries](https://help.semmle.com/wiki/display/JAVA/)
+*   [JavaScript queries](https://help.semmle.com/wiki/display/JS/)
+*   [Python queries](https://help.semmle.com/wiki/display/PYTHON/)
 
 If necessary, you can also define your own low-level tags to categorize the queries specific to your project or organization. When creating your own tags, you should:
 
@@ -171,11 +169,10 @@ The select clause of each alert query defines the alert message that is displaye
 
 For examples of select clauses and alert messages, see the query source files at the following pages:
 
-*   [C/C++ queries](https://wiki.semmle.com/pages/viewpage.action?pageId=19334052)
-*   [C# queries](https://wiki.semmle.com/display/CSHARP/C%23+queries)
-*   [COBOL queries](https://wiki.semmle.com/display/COBOL/COBOL+queries)
-*   [Java queries](https://wiki.semmle.com/display/JAVA/Java+queries)
-*   [JavaScript queries](https://wiki.semmle.com/display/JS/JavaScript+queries)
-*   [Python queries](https://wiki.semmle.com/display/PYTHON/Python+queries)
+*   [C/C++ queries](https://help.semmle.com/wiki/display/CCPPOBJ/)
+*   [C# queries](https://help.semmle.com/wiki/display/CSHARP/)
+*   [Java queries](https://help.semmle.com/wiki/display/JAVA/)
+*   [JavaScript queries](https://help.semmle.com/wiki/display/JS/)
+*   [Python queries](https://help.semmle.com/wiki/display/PYTHON/)
 
 For further information on query writing, see  [Writing QL queries](https://help.semmle.com/QL/learn-ql/ql/writing-queries/writing-queries.html). For more information on learning QL, see [Learning QL](https://help.semmle.com/QL/learn-ql/index.html).
