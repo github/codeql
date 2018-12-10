@@ -7,7 +7,7 @@ namespace Semmle.Autobuild
     /// </summary>
     class StandaloneBuildRule : IBuildRule
     {
-        public BuildScript Analyse(Autobuilder builder)
+        public BuildScript Analyse(Autobuilder builder, bool auto)
         {
             BuildScript GetCommand(string solution)
             {

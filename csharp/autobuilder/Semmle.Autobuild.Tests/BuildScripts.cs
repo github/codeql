@@ -130,7 +130,7 @@ namespace Semmle.Extraction.Tests
 
         string IBuildActions.PathCombine(params string[] parts)
         {
-            return string.Join('\\', parts.Where(p => !string.IsNullOrWhiteSpace(p)));
+            return string.Join(IsWindows ? '\\' : '/', parts.Where(p => !string.IsNullOrWhiteSpace(p)));
         }
 
         string IBuildActions.GetFullPath(string path) => path;
@@ -145,6 +145,13 @@ namespace Semmle.Extraction.Tests
             if (LoadXml.TryGetValue(filename, out var xml))
                 return xml;
             throw new ArgumentException("Missing LoadXml " + filename);
+        }
+
+        public string EnvironmentExpandEnvironmentVariables(string s)
+        {
+            foreach (var kvp in GetEnvironmentVariable)
+                s = s.Replace($"%{kvp.Key}%", kvp.Value);
+            return s;
         }
     }
 
@@ -394,9 +401,9 @@ namespace Semmle.Extraction.Tests
             Actions.RunProcess["dotnet --info"] = 0;
             Actions.RunProcess["dotnet clean test.csproj"] = 0;
             Actions.RunProcess["dotnet restore test.csproj"] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\odasa index --auto dotnet build --no-incremental /p:UseSharedCompilation=false test.csproj"] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\java\bin\java -jar C:\odasa\tools\extractor-asp.jar ."] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\odasa index --xml --extensions config csproj props xml"] = 0;
+            Actions.RunProcess[@"C:\odasa/tools/odasa index --auto dotnet build --no-incremental /p:UseSharedCompilation=false test.csproj"] = 0;
+            Actions.RunProcess[@"C:\odasa\tools\java/bin/java -jar C:\odasa/tools/extractor-asp.jar ."] = 0;
+            Actions.RunProcess[@"C:\odasa/tools/odasa index --xml --extensions config csproj props xml"] = 0;
             Actions.FileExists["csharp.log"] = true;
             Actions.FileExists["test.csproj"] = true;
             Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
@@ -470,6 +477,7 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void TestVsWhereSucceeded()
         {
+            Actions.IsWindows = true;
             Actions.GetEnvironmentVariable["ProgramFiles(x86)"] = @"C:\Program Files (x86)";
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"] = true;
             Actions.RunProcess[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe -prerelease -legacy -property installationPath"] = 0;
@@ -487,6 +495,7 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void TestVsWhereNotExist()
         {
+            Actions.IsWindows = true;
             Actions.GetEnvironmentVariable["ProgramFiles(x86)"] = @"C:\Program Files (x86)";
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"] = false;
 
@@ -497,6 +506,7 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void TestVcVarsAllBatFiles()
         {
+            Actions.IsWindows = true;
             Actions.GetEnvironmentVariable["ProgramFiles(x86)"] = @"C:\Program Files (x86)";
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"] = false;
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat"] = true;
@@ -511,9 +521,9 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void TestLinuxBuildlessExtractionSuccess()
         {
-            Actions.RunProcess[@"C:\odasa\tools\csharp\Semmle.Extraction.CSharp.Standalone --references:."] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\java\bin\java -jar C:\odasa\tools\extractor-asp.jar ."] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\odasa index --xml --extensions config csproj props xml"] = 0;
+            Actions.RunProcess[@"C:\odasa\tools/csharp/Semmle.Extraction.CSharp.Standalone --references:."] = 0;
+            Actions.RunProcess[@"C:\odasa\tools\java/bin/java -jar C:\odasa/tools/extractor-asp.jar ."] = 0;
+            Actions.RunProcess[@"C:\odasa/tools/odasa index --xml --extensions config csproj props xml"] = 0;
             Actions.FileExists["csharp.log"] = true;
             Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
             Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
@@ -527,9 +537,7 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void TestLinuxBuildlessExtractionFailed()
         {
-            Actions.RunProcess[@"C:\odasa\tools\csharp\Semmle.Extraction.CSharp.Standalone --references:."] = 10;
-            Actions.RunProcess[@"C:\odasa\tools\java\bin\java -jar C:\odasa\tools\extractor-asp.jar ."] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\odasa index --xml --extensions config"] = 0;
+            Actions.RunProcess[@"C:\odasa\tools/csharp/Semmle.Extraction.CSharp.Standalone --references:."] = 10;
             Actions.FileExists["csharp.log"] = true;
             Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
             Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
@@ -543,9 +551,9 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void TestLinuxBuildlessExtractionSolution()
         {
-            Actions.RunProcess[@"C:\odasa\tools\csharp\Semmle.Extraction.CSharp.Standalone foo.sln --references:."] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\java\bin\java -jar C:\odasa\tools\extractor-asp.jar ."] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\odasa index --xml --extensions config csproj props xml"] = 0;
+            Actions.RunProcess[@"C:\odasa\tools/csharp/Semmle.Extraction.CSharp.Standalone foo.sln --references:."] = 0;
+            Actions.RunProcess[@"C:\odasa\tools\java/bin/java -jar C:\odasa/tools/extractor-asp.jar ."] = 0;
+            Actions.RunProcess[@"C:\odasa/tools/odasa index --xml --extensions config csproj props xml"] = 0;
             Actions.FileExists["csharp.log"] = true;
             Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
             Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
@@ -587,9 +595,9 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void TestLinuxBuildCommand()
         {
-            Actions.RunProcess["C:\\odasa\\tools\\odasa index --auto \"./build.sh --skip-tests\""] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\java\bin\java -jar C:\odasa\tools\extractor-asp.jar ."] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\odasa index --xml --extensions config csproj props xml"] = 0;
+            Actions.RunProcess[@"C:\odasa/tools/odasa index --auto ""./build.sh --skip-tests"""] = 0;
+            Actions.RunProcess[@"C:\odasa\tools\java/bin/java -jar C:\odasa/tools/extractor-asp.jar ."] = 0;
+            Actions.RunProcess[@"C:\odasa/tools/odasa index --xml --extensions config csproj props xml"] = 0;
             Actions.FileExists["csharp.log"] = true;
             Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
             Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
@@ -610,10 +618,10 @@ namespace Semmle.Extraction.Tests
             Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
             Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
             Actions.RunProcess["/bin/chmod u+x build/build.sh"] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\odasa index --auto build/build.sh"] = 0;
-            Actions.RunProcessWorkingDirectory[@"C:\odasa\tools\odasa index --auto build/build.sh"] = "build";
-            Actions.RunProcess[@"C:\odasa\tools\java\bin\java -jar C:\odasa\tools\extractor-asp.jar ."] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\odasa index --xml --extensions config csproj props xml"] = 0;
+            Actions.RunProcess[@"C:\odasa/tools/odasa index --auto build/build.sh"] = 0;
+            Actions.RunProcessWorkingDirectory[@"C:\odasa/tools/odasa index --auto build/build.sh"] = "build";
+            Actions.RunProcess[@"C:\odasa\tools\java/bin/java -jar C:\odasa/tools/extractor-asp.jar ."] = 0;
+            Actions.RunProcess[@"C:\odasa/tools/odasa index --xml --extensions config csproj props xml"] = 0;
             Actions.FileExists["csharp.log"] = true;
 
             var autobuilder = CreateAutoBuilder("csharp", false);
@@ -629,8 +637,8 @@ namespace Semmle.Extraction.Tests
             Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
 
             Actions.RunProcess["/bin/chmod u+x build.sh"] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\odasa index --auto build.sh"] = 0;
-            Actions.RunProcessWorkingDirectory[@"C:\odasa\tools\odasa index --auto build.sh"] = "";
+            Actions.RunProcess[@"C:\odasa/tools/odasa index --auto build.sh"] = 0;
+            Actions.RunProcessWorkingDirectory[@"C:\odasa/tools/odasa index --auto build.sh"] = "";
             Actions.FileExists["csharp.log"] = false;
 
             var autobuilder = CreateAutoBuilder("csharp", false);
@@ -646,8 +654,8 @@ namespace Semmle.Extraction.Tests
             Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
 
             Actions.RunProcess["/bin/chmod u+x build.sh"] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\odasa index --auto build.sh"] = 5;
-            Actions.RunProcessWorkingDirectory[@"C:\odasa\tools\odasa index --auto build.sh"] = "";
+            Actions.RunProcess[@"C:\odasa/tools/odasa index --auto build.sh"] = 5;
+            Actions.RunProcessWorkingDirectory[@"C:\odasa/tools/odasa index --auto build.sh"] = "";
             Actions.FileExists["csharp.log"] = true;
 
             var autobuilder = CreateAutoBuilder("csharp", false);
@@ -796,9 +804,9 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void TestSkipNugetBuildless()
         {
-            Actions.RunProcess[@"C:\odasa\tools\csharp\Semmle.Extraction.CSharp.Standalone foo.sln --references:. --skip-nuget"] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\java\bin\java -jar C:\odasa\tools\extractor-asp.jar ."] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\odasa index --xml --extensions config csproj props xml"] = 0;
+            Actions.RunProcess[@"C:\odasa\tools/csharp/Semmle.Extraction.CSharp.Standalone foo.sln --references:. --skip-nuget"] = 0;
+            Actions.RunProcess[@"C:\odasa\tools\java/bin/java -jar C:\odasa/tools/extractor-asp.jar ."] = 0;
+            Actions.RunProcess[@"C:\odasa/tools/odasa index --xml --extensions config csproj props xml"] = 0;
             Actions.FileExists["csharp.log"] = true;
             Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
             Actions.GetEnvironmentVariable["SOURCE_ARCHIVE"] = null;
@@ -816,9 +824,9 @@ namespace Semmle.Extraction.Tests
             Actions.RunProcess["dotnet --info"] = 0;
             Actions.RunProcess["dotnet clean test.csproj"] = 0;
             Actions.RunProcess["dotnet restore test.csproj"] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\odasa index --auto dotnet build --no-incremental /p:UseSharedCompilation=false --no-restore test.csproj"] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\java\bin\java -jar C:\odasa\tools\extractor-asp.jar ."] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\odasa index --xml --extensions config csproj props xml"] = 0;
+            Actions.RunProcess[@"C:\odasa/tools/odasa index --auto dotnet build --no-incremental /p:UseSharedCompilation=false --no-restore test.csproj"] = 0;
+            Actions.RunProcess[@"C:\odasa\tools\java/bin/java -jar C:\odasa/tools/extractor-asp.jar ."] = 0;
+            Actions.RunProcess[@"C:\odasa/tools/odasa index --xml --extensions config csproj props xml"] = 0;
             Actions.FileExists["csharp.log"] = true;
             Actions.FileExists["test.csproj"] = true;
             Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
@@ -846,13 +854,13 @@ namespace Semmle.Extraction.Tests
             Actions.RunProcessOut["dotnet --list-sdks"] = "2.1.2 [C:\\Program Files\\dotnet\\sdks]\n2.1.4 [C:\\Program Files\\dotnet\\sdks]";
             Actions.RunProcess[@"curl -sO https://dot.net/v1/dotnet-install.sh"] = 0;
             Actions.RunProcess[@"chmod u+x dotnet-install.sh"] = 0;
-            Actions.RunProcess[@"./dotnet-install.sh --channel release --version 2.1.3 --install-dir C:\Project\.dotnet"] = 0;
-            Actions.RunProcess[@"C:\Project\.dotnet\dotnet --info"] = 0;
-            Actions.RunProcess[@"C:\Project\.dotnet\dotnet clean test.csproj"] = 0;
-            Actions.RunProcess[@"C:\Project\.dotnet\dotnet restore test.csproj"] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\odasa index --auto C:\Project\.dotnet\dotnet build --no-incremental /p:UseSharedCompilation=false test.csproj"] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\java\bin\java -jar C:\odasa\tools\extractor-asp.jar ."] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\odasa index --xml --extensions config csproj props xml"] = 0;
+            Actions.RunProcess[@"./dotnet-install.sh --channel release --version 2.1.3 --install-dir C:\Project/.dotnet"] = 0;
+            Actions.RunProcess[@"C:\Project/.dotnet/dotnet --info"] = 0;
+            Actions.RunProcess[@"C:\Project/.dotnet/dotnet clean test.csproj"] = 0;
+            Actions.RunProcess[@"C:\Project/.dotnet/dotnet restore test.csproj"] = 0;
+            Actions.RunProcess[@"C:\odasa/tools/odasa index --auto C:\Project/.dotnet/dotnet build --no-incremental /p:UseSharedCompilation=false test.csproj"] = 0;
+            Actions.RunProcess[@"C:\odasa\tools\java/bin/java -jar C:\odasa/tools/extractor-asp.jar ."] = 0;
+            Actions.RunProcess[@"C:\odasa/tools/odasa index --xml --extensions config csproj props xml"] = 0;
             Actions.FileExists["csharp.log"] = true;
             Actions.FileExists["test.csproj"] = true;
             Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
@@ -881,13 +889,13 @@ namespace Semmle.Extraction.Tests
             Actions.RunProcessOut["dotnet --list-sdks"] = "2.1.3 [C:\\Program Files\\dotnet\\sdks]\n2.1.4 [C:\\Program Files\\dotnet\\sdks]";
             Actions.RunProcess[@"curl -sO https://dot.net/v1/dotnet-install.sh"] = 0;
             Actions.RunProcess[@"chmod u+x dotnet-install.sh"] = 0;
-            Actions.RunProcess[@"./dotnet-install.sh --channel release --version 2.1.3 --install-dir C:\Project\.dotnet"] = 0;
-            Actions.RunProcess[@"C:\Project\.dotnet\dotnet --info"] = 0;
-            Actions.RunProcess[@"C:\Project\.dotnet\dotnet clean test.csproj"] = 0;
-            Actions.RunProcess[@"C:\Project\.dotnet\dotnet restore test.csproj"] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\odasa index --auto C:\Project\.dotnet\dotnet build --no-incremental /p:UseSharedCompilation=false test.csproj"] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\java\bin\java -jar C:\odasa\tools\extractor-asp.jar ."] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\odasa index --xml --extensions config csproj props xml"] = 0;
+            Actions.RunProcess[@"./dotnet-install.sh --channel release --version 2.1.3 --install-dir C:\Project/.dotnet"] = 0;
+            Actions.RunProcess[@"C:\Project/.dotnet/dotnet --info"] = 0;
+            Actions.RunProcess[@"C:\Project/.dotnet/dotnet clean test.csproj"] = 0;
+            Actions.RunProcess[@"C:\Project/.dotnet/dotnet restore test.csproj"] = 0;
+            Actions.RunProcess[@"C:\odasa/tools/odasa index --auto C:\Project/.dotnet/dotnet build --no-incremental /p:UseSharedCompilation=false test.csproj"] = 0;
+            Actions.RunProcess[@"C:\odasa\tools\java/bin/java -jar C:\odasa/tools/extractor-asp.jar ."] = 0;
+            Actions.RunProcess[@"C:\odasa/tools/odasa index --xml --extensions config csproj props xml"] = 0;
             Actions.FileExists["csharp.log"] = true;
             Actions.FileExists["test.csproj"] = true;
             Actions.GetEnvironmentVariable["TRAP_FOLDER"] = null;
@@ -988,10 +996,10 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void TestDirsProjLinux()
         {
-            Actions.RunProcess[@"mono C:\odasa\tools\csharp\nuget\nuget.exe restore dirs.proj"] = 1;
-            Actions.RunProcess[@"C:\odasa\tools\odasa index --auto msbuild dirs.proj /p:UseSharedCompilation=false /t:rebuild /p:MvcBuildViews=true"] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\java\bin\java -jar C:\odasa\tools\extractor-asp.jar ."] = 0;
-            Actions.RunProcess[@"C:\odasa\tools\odasa index --xml --extensions config csproj props xml"] = 0;
+            Actions.RunProcess[@"mono C:\odasa\tools/csharp/nuget/nuget.exe restore dirs.proj"] = 1;
+            Actions.RunProcess[@"C:\odasa/tools/odasa index --auto msbuild dirs.proj /p:UseSharedCompilation=false /t:rebuild /p:MvcBuildViews=true"] = 0;
+            Actions.RunProcess[@"C:\odasa\tools\java/bin/java -jar C:\odasa/tools/extractor-asp.jar ."] = 0;
+            Actions.RunProcess[@"C:\odasa/tools/odasa index --xml --extensions config csproj props xml"] = 0;
             Actions.FileExists["csharp.log"] = true;
             Actions.FileExists["a/test.csproj"] = true;
             Actions.FileExists["dirs.proj"] = true;
@@ -1041,6 +1049,22 @@ namespace Semmle.Extraction.Tests
 
             var autobuilder = CreateAutoBuilder("csharp", false);
             TestAutobuilderScript(autobuilder, 1, 0);
+        }
+
+        [Fact]
+        public void TestAsStringWithExpandedEnvVarsWindows()
+        {
+            Actions.IsWindows = true;
+            Actions.GetEnvironmentVariable["LGTM_SRC"] = @"C:\repo";
+            Assert.Equal(@"C:\repo\test", @"%LGTM_SRC%\test".AsStringWithExpandedEnvVars(Actions));
+        }
+
+        [Fact]
+        public void TestAsStringWithExpandedEnvVarsLinux()
+        {
+            Actions.IsWindows = false;
+            Actions.GetEnvironmentVariable["LGTM_SRC"] = "/tmp/repo";
+            Assert.Equal("/tmp/repo/test", "$LGTM_SRC/test".AsStringWithExpandedEnvVars(Actions));
         }
     }
 }

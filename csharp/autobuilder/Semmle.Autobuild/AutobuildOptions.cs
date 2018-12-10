@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Semmle.Autobuild
 {
@@ -37,14 +38,14 @@ namespace Semmle.Autobuild
         {
             RootDirectory = actions.GetCurrentDirectory();
             VsToolsVersion = actions.GetEnvironmentVariable(prefix + "VSTOOLS_VERSION");
-            MsBuildArguments = actions.GetEnvironmentVariable(prefix + "MSBUILD_ARGUMENTS");
+            MsBuildArguments = actions.GetEnvironmentVariable(prefix + "MSBUILD_ARGUMENTS").AsStringWithExpandedEnvVars(actions);
             MsBuildPlatform = actions.GetEnvironmentVariable(prefix + "MSBUILD_PLATFORM");
             MsBuildConfiguration = actions.GetEnvironmentVariable(prefix + "MSBUILD_CONFIGURATION");
             MsBuildTarget = actions.GetEnvironmentVariable(prefix + "MSBUILD_TARGET");
-            DotNetArguments = actions.GetEnvironmentVariable(prefix + "DOTNET_ARGUMENTS");
+            DotNetArguments = actions.GetEnvironmentVariable(prefix + "DOTNET_ARGUMENTS").AsStringWithExpandedEnvVars(actions);
             DotNetVersion = actions.GetEnvironmentVariable(prefix + "DOTNET_VERSION");
             BuildCommand = actions.GetEnvironmentVariable(prefix + "BUILD_COMMAND");
-            Solution = actions.GetEnvironmentVariable(prefix + "SOLUTION").AsList(new string[0]);
+            Solution = actions.GetEnvironmentVariable(prefix + "SOLUTION").AsListWithExpandedEnvVars(actions, new string[0]);
 
             IgnoreErrors = actions.GetEnvironmentVariable(prefix + "IGNORE_ERRORS").AsBool("ignore_errors", false);
             Buildless = actions.GetEnvironmentVariable(prefix + "BUILDLESS").AsBool("buildless", false);
@@ -92,12 +93,29 @@ namespace Semmle.Autobuild
             }
         }
 
-        public static string[] AsList(this string value, string[] defaultValue)
+        public static string[] AsListWithExpandedEnvVars(this string value, IBuildActions actions, string[] defaultValue)
         {
             if (value == null)
                 return defaultValue;
 
-            return value.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).ToArray();
+            return value.
+                Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).
+                Select(s => AsStringWithExpandedEnvVars(s, actions)).ToArray();
+        }
+
+        static readonly Regex linuxEnvRegEx = new Regex(@"\$([a-zA-Z_][a-zA-Z_0-9]*)", RegexOptions.Compiled);
+
+        public static string AsStringWithExpandedEnvVars(this string value, IBuildActions actions)
+        {
+            if (string.IsNullOrEmpty(value))
+                return value;
+
+            // `Environment.ExpandEnvironmentVariables` only works with Windows-style
+            // environment variables
+            var windowsStyle = actions.IsWindows()
+                ? value
+                : linuxEnvRegEx.Replace(value, m => $"%{m.Groups[1].Value}%");
+            return actions.EnvironmentExpandEnvironmentVariables(windowsStyle);
         }
     }
 }

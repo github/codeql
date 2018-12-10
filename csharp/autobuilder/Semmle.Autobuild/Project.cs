@@ -39,9 +39,9 @@ namespace Semmle.Autobuild
             {
                 projFile = builder.Actions.LoadXml(FullPath);
             }
-            catch (XmlException)
+            catch (Exception e) when (e is XmlException || e is FileNotFoundException)
             {
-                builder.Log(Severity.Info, $"Skipping project file {path} as it is not a valid XML document.");
+                builder.Log(Severity.Info, $"Unable to read project file {path}.");
                 return;
             }
 
@@ -80,7 +80,7 @@ namespace Semmle.Autobuild
                     var projectFilesIncludes = root.SelectNodes("//msbuild:Project/msbuild:ItemGroup/msbuild:ProjectFiles/@Include", mgr).OfType<XmlNode>();
                     foreach (var include in projectFileIncludes.Concat(projectFilesIncludes))
                     {
-                        var includePath = builder.Actions.IsWindows() ? include.Value : include.Value.Replace("\\", "/");
+                        var includePath = builder.Actions.PathCombine(include.Value.Split('\\', StringSplitOptions.RemoveEmptyEntries));
                         ret.Add(new Project(builder, builder.Actions.PathCombine(Path.GetDirectoryName(this.FullPath), includePath)));
                     }
                     return ret;
