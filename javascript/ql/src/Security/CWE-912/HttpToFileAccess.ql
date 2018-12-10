@@ -6,6 +6,7 @@
  * @id js/http-to-file-access
  * @tags security
  *       external/cwe/cwe-912
+ *       external/cwe/cwe-434
  */
 
 import javascript

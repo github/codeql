@@ -565,10 +565,8 @@ abstract class RegexString extends Expr {
         this.sequenceOrQualified(start, end) and not this.isOptionDivider(start-1) and
         item_start = start
         or
-        exists(int endp1 | end = endp1-1 |
-            start = end and not this.item_end(start) and this.isOptionDivider(endp1) and
-            item_start = start
-        )
+        start = end and not this.item_end(start) and this.isOptionDivider(end) and
+        item_start = start
         or
         exists(int mid |
             this.subalternation(start, mid, _) and

@@ -99,14 +99,31 @@ private cached module SsaComputeImpl {
     cached module EssaDefinitionsImpl {
 
         /** Whether `n` is a live update that is a definition of the variable `v`. */
-        cached predicate variableUpdate(SsaSourceVariable v, ControlFlowNode n, BasicBlock b, int rankix, int i) {
-            SsaComputeImpl::variableDef(v, n, b, i) and
+        cached predicate variableDefinition(SsaSourceVariable v, ControlFlowNode n, BasicBlock b, int rankix, int i) {
+            SsaComputeImpl::variableDefine(v, n, b, i) and
             SsaComputeImpl::defUseRank(v, b, rankix, i) and
            (
                 SsaComputeImpl::defUseRank(v, b, rankix+1, _) and not SsaComputeImpl::defRank(v, b, rankix+1, _)
                 or
                 not SsaComputeImpl::defUseRank(v, b, rankix+1, _) and Liveness::liveAtExit(v, b)
             )
+        }
+
+        /** Whether `n` is a live update that is a definition of the variable `v`. */
+        cached predicate variableRefinement(SsaSourceVariable v, ControlFlowNode n, BasicBlock b, int rankix, int i) {
+            SsaComputeImpl::variableRefine(v, n, b, i) and
+            SsaComputeImpl::defUseRank(v, b, rankix, i) and
+           (
+                SsaComputeImpl::defUseRank(v, b, rankix+1, _) and not SsaComputeImpl::defRank(v, b, rankix+1, _)
+                or
+                not SsaComputeImpl::defUseRank(v, b, rankix+1, _) and Liveness::liveAtExit(v, b)
+            )
+        }
+
+        cached predicate variableUpdate(SsaSourceVariable v, ControlFlowNode n, BasicBlock b, int rankix, int i) {
+            variableDefinition(v, n, b, rankix, i)
+            or
+            variableRefinement(v, n, b, rankix, i)
         }
 
         /** Holds if `def` is a pi-node for `v` on the edge `pred` -> `succ` */
@@ -128,13 +145,26 @@ private cached module SsaComputeImpl {
         }
     }
 
-    cached predicate variableDef(SsaSourceVariable v, ControlFlowNode n, BasicBlock b, int i) {
-        (v.hasDefiningNode(n) or v.hasRefinement(_, n))
+    cached predicate variableDefine(SsaSourceVariable v, ControlFlowNode n, BasicBlock b, int i) {
+        v.hasDefiningNode(n)
         and
         exists(int j |
-            n = b.getNode(j) and 
+            n = b.getNode(j) and
             i = j*2 + 1
         )
+    }
+
+    cached predicate variableRefine(SsaSourceVariable v, ControlFlowNode n, BasicBlock b, int i) {
+        v.hasRefinement(_, n)
+        and
+        exists(int j |
+            n = b.getNode(j) and
+            i = j*2 + 1
+        )
+    }
+
+    cached predicate variableDef(SsaSourceVariable v, ControlFlowNode n, BasicBlock b, int i) {
+        variableDefine(v, n, b, i) or variableRefine(v, n, b, i)
     }
 
     /**

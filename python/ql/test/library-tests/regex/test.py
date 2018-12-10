@@ -50,3 +50,10 @@ re.compile("", re.VERBOSE|re.DOTALL)
 re.compile("", flags=re.VERBOSE|re.IGNORECASE)
 re.search("", None, re.UNICODE)
 x = re.search("", flags=re.UNICODE)
+
+#empty choice
+re.compile(r'|x')
+re.compile(r'x|')
+
+#Named group with caret and empty choice.
+re.compile(r'(?:(?P<n1>^(?:|x)))')
