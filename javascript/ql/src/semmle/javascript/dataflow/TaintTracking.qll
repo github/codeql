@@ -232,6 +232,9 @@ module TaintTracking {
     }
   }
 
+  /**
+   * A taint propagating data flow edge through persistent storage.
+   */
   private class StorageTaintStep extends AdditionalTaintStep {
 
     PersistentReadAccess read;

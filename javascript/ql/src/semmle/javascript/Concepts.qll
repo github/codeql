@@ -72,7 +72,7 @@ abstract class DatabaseAccess extends DataFlow::Node {
 abstract class PersistentReadAccess extends DataFlow::Node {
 
   /**
-   * Gets the corresponding persistent write, if any.
+   * Gets a corresponding persistent write, if any.
    */
   abstract PersistentWriteAccess getAWrite();
 
