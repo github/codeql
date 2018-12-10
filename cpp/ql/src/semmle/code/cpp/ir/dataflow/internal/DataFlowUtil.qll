@@ -25,12 +25,7 @@ class Node extends Instruction {
   }
 
   /** Gets the expression corresponding to this node, if any. */
-  Expr asExpr() { 
-    result = this.getConvertedResultExpression() and
-    // Ignore conversions. The AST-based library does have an `ExprNode` for each `Conversion`, but
-    // there is no flow involving those nodes.
-    not result instanceof Conversion
-  }
+  Expr asExpr() { result = this.getConvertedResultExpression() }
 
   /** Gets the parameter corresponding to this node, if any. */
   Parameter asParameter() { result = this.(InitializeParameterInstruction).getParameter() }
@@ -105,9 +100,7 @@ abstract class PostUpdateNode extends Node {
 /**
  * Gets the `Node` corresponding to `e`.
  */
-ExprNode exprNode(Expr e) {
-  result.getExpr() = e
-}
+ExprNode exprNode(Expr e) { result.getExpr() = e }
 
 /**
  * Gets the `Node` corresponding to the value of `p` at function entry.
