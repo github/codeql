@@ -1,15 +1,14 @@
-# Query help style-guide
+# Query help style guide
 
 ## Introduction
 
 When you contribute a new query to Semmle/ql for inclusion in the standard queries, you should also write a query help file. This file provides detailed information about the purpose and use of the query, which is available to users in LGTM (for example [here](https://lgtm.com/rules/1506093386171/)) and on the query homepages:
 
-*   [C/C++ queries](https://wiki.semmle.com/pages/viewpage.action?pageId=19334052)
-*   [C# queries](https://wiki.semmle.com/display/CSHARP/C%23+queries)
-*   [COBOL queries](https://wiki.semmle.com/display/COBOL/COBOL+queries)
-*   [Java queries](https://wiki.semmle.com/display/JAVA/Java+queries)
-*   [JavaScript queries](https://wiki.semmle.com/display/JS/JavaScript+queries)
-*   [Python queries](https://wiki.semmle.com/display/PYTHON/Python+queries)
+*   [C/C++ queries](https://help.semmle.com/wiki/display/CCPPOBJ/)
+*   [C# queries](https://help.semmle.com/wiki/display/CSHARP/)
+*   [Java queries](https://help.semmle.com/wiki/display/JAVA/)
+*   [JavaScript queries](https://help.semmle.com/wiki/display/JS/)
+*   [Python queries](https://help.semmle.com/wiki/display/PYTHON/)
 
 ### Location and file name
 
@@ -37,7 +36,7 @@ Section-level elements are used to group the information within the query help f
 3.  `example`—an example of code showing the problem. Where possible, this section should also include a solution to the issue.
 4.  `references`—relevant references, such as authoritative sources on language semantics and best practice. 
 
-For further information about the other section-level, block, list and table elements supported by the qhelp format, see [Qhelp files](https://wiki.semmle.com/display/SD/Qhelp+files).
+For further information about the other section-level, block, list and table elements supported by the qhelp format, see [Qhelp files](https://help.semmle.com/wiki/display/SD/Qhelp+files).
 
 
 ## English style
