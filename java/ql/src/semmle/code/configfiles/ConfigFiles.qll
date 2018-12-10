@@ -22,23 +22,23 @@ abstract class ConfigLocatable extends @configLocatable {
 }
 
 /**
- * A logical line (possibly spread out over multiple actual lines)
- * containing a name-value pair.
+ * A name-value pair often used to store configuration properties
+ * for applications, such as the port, name or address of a database.
  */
-class ConfigLine extends @config, ConfigLocatable {
+class ConfigPair extends @config, ConfigLocatable {
 
-  /** If this configuration has a name element, return it. */
+  /** If this ConfigPair has a name element, return it. */
   ConfigName getNameElement() {
     configNames(result, this, _)
   }
 
-  /** If this configuration has a value element, return it. */
+  /** If this ConfigPair has a value element, return it. */
   ConfigValue getValueElement() {
     configValues(result, this, _)
   }
 
   /**
-   * If this configuration has a name element, return its string value.
+   * If this ConfigPair has a name element, return its string value.
    * Otherwise return the empty string.
    */
   string getEffectiveName() {
@@ -49,7 +49,7 @@ class ConfigLine extends @config, ConfigLocatable {
   }
 
   /**
-   * If this configuration has a value element, return its string value.
+   * If this ConfigPair has a value element, return its string value.
    * Otherwise return the empty string.
    */
   string getEffectiveValue() {
@@ -59,13 +59,13 @@ class ConfigLine extends @config, ConfigLocatable {
       result = ""
   }
 
-  /** A printable representation of this configuration line. */
+  /** A printable representation of this ConfigPair. */
   override string toString() {
     result = getEffectiveName() + "=" + getEffectiveValue()
   }
 }
 
-/** The name element of a configuration line. */
+/** The name element of a ConfigPair. */
 class ConfigName extends @configName, ConfigLocatable {
 
   /** Returns the name as a string. */
@@ -79,7 +79,7 @@ class ConfigName extends @configName, ConfigLocatable {
   }
 }
 
-/** The value element of a configuration line. */
+/** The value element of a ConfigPair. */
 class ConfigValue extends @configValue, ConfigLocatable {
 
   /** Returns the value as a string. */
@@ -94,7 +94,7 @@ class ConfigValue extends @configValue, ConfigLocatable {
 }
 
 /** A Java property is a name-value pair in a .properties file. */
-class JavaProperty extends ConfigLine {
+class JavaProperty extends ConfigPair {
   JavaProperty() {
     getFile().getExtension() = "properties"
   }
