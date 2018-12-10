@@ -66,3 +66,10 @@
 | CSharp7.cs:284:13:284:62 | IEnumerable<(Int32,String)> list = ... | CSharp7.cs:290:32:290:35 | access to local variable list |
 | CSharp7.cs:284:32:284:35 | item | CSharp7.cs:284:41:284:44 | access to parameter item |
 | CSharp7.cs:284:32:284:35 | item | CSharp7.cs:284:51:284:54 | access to parameter item |
+| CSharp7.cs:298:17:298:19 | Int32 x = ... | CSharp7.cs:298:22:298:22 | access to local variable x |
+| CSharp7.cs:298:17:298:19 | Int32 x = ... | CSharp7.cs:298:30:298:30 | access to local variable x |
+| CSharp7.cs:298:17:298:19 | Int32 x = ... | CSharp7.cs:298:44:298:44 | access to local variable x |
+| CSharp7.cs:298:35:298:39 | Int32 y | CSharp7.cs:300:31:300:31 | access to local variable y |
+| CSharp7.cs:298:42:298:44 | ++... | CSharp7.cs:298:22:298:22 | access to local variable x |
+| CSharp7.cs:298:42:298:44 | ++... | CSharp7.cs:298:30:298:30 | access to local variable x |
+| CSharp7.cs:298:42:298:44 | ++... | CSharp7.cs:298:44:298:44 | access to local variable x |

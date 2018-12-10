@@ -28,7 +28,10 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
                 Expression.Create(cx, init, this, child--);
             }
 
-            Statement.Create(cx, Stmt.Statement, this, 1 + Stmt.Incrementors.Count);
+            if (Stmt.Condition != null)
+            {
+                Expression.Create(cx, Stmt.Condition, this, 0);
+            }
 
             child = 1;
             foreach (var inc in Stmt.Incrementors)
@@ -36,10 +39,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
                 Expression.Create(cx, inc, this, child++);
             }
 
-            if (Stmt.Condition != null)
-            {
-                Expression.Create(cx, Stmt.Condition, this, 0);
-            }
+            Statement.Create(cx, Stmt.Statement, this, 1 + Stmt.Incrementors.Count);
         }
     }
 }

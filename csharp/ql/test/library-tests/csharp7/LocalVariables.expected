@@ -65,3 +65,5 @@
 | CSharp7.cs:288:30:288:30 | b | string |
 | CSharp7.cs:290:23:290:23 | a | int |
 | CSharp7.cs:290:26:290:26 | b | string |
+| CSharp7.cs:298:17:298:17 | x | int |
+| CSharp7.cs:298:39:298:39 | y | int |
