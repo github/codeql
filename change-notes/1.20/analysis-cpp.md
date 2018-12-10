@@ -2,6 +2,8 @@
 
 ## General improvements
 
+* The logic for identifying auto-generated files via `#line` directives has been improved.
+
 ## New queries
 
 | **Query**                   | **Tags**  | **Purpose**                                                        |
