@@ -155,6 +155,9 @@ private predicate defMaybeNull(Ssa::Definition def, string msg, Element reason) 
     reason = de.getANullCheck(_, true) and
     msg = "as suggested by $@ null check" and
     not def instanceof Ssa::PseudoDefinition and
+    strictcount(Location l |
+      l = any(Ssa::Definition def0 | de = def0.getARead()).getLocation()
+    ) = 1 and
     not nonNullDef(def) and
     // Don't use a check as reason if there is a `null` assignment
     not def.(Ssa::ExplicitDefinition).getADefinition().getSource() instanceof MaybeNullExpr

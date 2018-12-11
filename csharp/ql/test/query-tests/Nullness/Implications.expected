@@ -1453,6 +1453,9 @@
 | E.cs:293:13:293:13 | access to local variable s | non-null | E.cs:292:20:292:32 | ... ? ... : ... | non-null |
 | E.cs:293:13:293:13 | access to local variable s | null | E.cs:292:20:292:20 | access to parameter b | true |
 | E.cs:293:13:293:13 | access to local variable s | null | E.cs:292:20:292:32 | ... ? ... : ... | null |
+| E.cs:293:13:293:24 | ... == ... | true | E.cs:293:15:293:19 | call to method M2 | non-null |
+| E.cs:293:15:293:19 | call to method M2 | non-null | E.cs:293:13:293:13 | access to local variable s | non-null |
+| E.cs:293:15:293:19 | call to method M2 | null | E.cs:293:13:293:13 | access to local variable s | null |
 | E.cs:295:13:295:13 | access to local variable s | non-null | E.cs:292:20:292:32 | ... ? ... : ... | non-null |
 | E.cs:295:13:295:13 | access to local variable s | null | E.cs:292:20:292:32 | ... ? ... : ... | null |
 | E.cs:300:22:300:38 | ... ? ... : ... | non-null | E.cs:300:22:300:26 | access to field Field | false |

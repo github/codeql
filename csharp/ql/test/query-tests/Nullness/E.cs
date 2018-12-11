@@ -267,7 +267,7 @@ public class E
         try
         {
             o = Make();
-            o.ToString(); // GOOD (false positive)
+            o.ToString(); // GOOD
         }
         finally
         {
@@ -292,7 +292,7 @@ public class E
         string s = b ? null : "";
         if (s?.M2() == 0)
         {
-            s.ToString(); // GOOD (false positive)
+            s.ToString(); // GOOD
         }
     }
 

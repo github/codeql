@@ -68,9 +68,7 @@
 | E.cs:230:9:230:9 | access to local variable x | Variable $@ may be null here because of $@ assignment. | E.cs:225:13:225:13 | x | x | E.cs:227:13:227:20 | ... = ... | this |
 | E.cs:235:16:235:16 | access to parameter i | Variable $@ may be null here because it has a nullable type. | E.cs:233:26:233:26 | i | i | E.cs:233:26:233:26 | i | this |
 | E.cs:240:21:240:21 | access to parameter i | Variable $@ may be null here because it has a nullable type. | E.cs:238:26:238:26 | i | i | E.cs:238:26:238:26 | i | this |
-| E.cs:270:13:270:13 | access to local variable o | Variable $@ may be null here as suggested by $@ null check. | E.cs:266:16:266:16 | o | o | E.cs:274:17:274:25 | ... != ... | this |
 | E.cs:285:9:285:9 | access to local variable o | Variable $@ may be null here as suggested by $@ null check. | E.cs:283:13:283:13 | o | o | E.cs:284:9:284:9 | access to local variable o | this |
-| E.cs:295:13:295:13 | access to local variable s | Variable $@ may be null here because of $@ assignment. | E.cs:292:16:292:16 | s | s | E.cs:292:16:292:32 | String s = ... | this |
 | GuardedString.cs:35:31:35:31 | access to local variable s | Variable $@ may be null here because of $@ assignment. | GuardedString.cs:7:16:7:16 | s | s | GuardedString.cs:7:16:7:32 | String s = ... | this |
 | NullMaybeBad.cs:7:27:7:27 | access to parameter o | Variable $@ may be null here because of $@ null argument. | NullMaybeBad.cs:5:25:5:25 | o | o | NullMaybeBad.cs:13:17:13:20 | null | this |
 | StringConcatenation.cs:16:17:16:17 | access to local variable s | Variable $@ may be null here because of $@ assignment. | StringConcatenation.cs:14:16:14:16 | s | s | StringConcatenation.cs:14:16:14:23 | String s = ... | this |

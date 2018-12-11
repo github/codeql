@@ -578,8 +578,12 @@ module Internal {
    */
   Expr getNullEquivParent(Expr e) {
     result = any(QualifiableExpr qe |
-      qe.getQualifier() = e and
       qe.isConditional() and
+      (
+        e = qe.getQualifier()
+        or
+        e = qe.(ExtensionMethodCall).getArgument(0)
+      ) and
       (
         // The accessed declaration must have a value type in order
         // for `only if` to hold
