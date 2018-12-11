@@ -1,14 +1,14 @@
 /**
  * Provides classes and predicates for range analysis.
  *
- * An inferred bound can either be a specific integer, the abstract value of an
- * SSA variable, or the abstract value of an interesting expression. The latter
- * category includes array lengths that are not SSA variables.
+ * An inferred bound can either be a specific integer or the abstract value of
+ * an IR `Instruction`.
  *
  * If an inferred bound relies directly on a condition, then this condition is
  * reported as the reason for the bound.
  */
 
+// TODO: update the following comment
 /*
  * This library tackles range analysis as a flow problem. Consider e.g.:
  * ```
@@ -118,7 +118,7 @@ private import RangeAnalysisCache
 import RangeAnalysisPublic
 
 /**
- * Gets a condition that tests whether `i` equals `bound + delta` at `use`.
+ * Gets a condition that tests whether `op` equals `bound + delta`.
  *
  * If the condition evaluates to `testIsTrue`:
  * - `isEq = true`  : `i == bound + delta`
@@ -142,11 +142,11 @@ private IRGuardCondition eqFlowCond(Operand op, Operand bound, int delta,
 private predicate boundFlowStepSsa(
   NonPhiOperand op2, Operand op1, int delta, boolean upper, Reason reason
 ) {
-  op2.getDefinitionInstruction().getAnOperand().(CopySourceOperand) = op1 and
+  /*op2.getDefinitionInstruction().getAnOperand().(CopySourceOperand) = op1 and
   (upper = true or upper = false) and
   reason = TNoReason() and
   delta = 0
-  or
+  or*/
   exists(IRGuardCondition guard |
     guard = boundFlowCond(op2, op1, delta, upper, _) and
     reason = TCondReason(guard)
@@ -182,7 +182,7 @@ private IRGuardCondition boundFlowCondPhi(PhiOperand op, NonPhiOperand bound, in
 {
   exists(Operand compared |
     result.comparesLt(compared, bound, delta, upper, testIsTrue) and
-    result.controlsEdge(op.getPredecessorBlock().getLastInstruction(), op.getInstruction().getBlock(), testIsTrue) and
+    result.controlsEdgeDirectly(op.getPredecessorBlock().getLastInstruction(), op.getInstruction().getBlock(), testIsTrue) and
     valueNumber(compared.getDefinitionInstruction()) = valueNumber (op.getDefinitionInstruction())
   )
   or
@@ -219,12 +219,21 @@ class CondReason extends Reason, TCondReason {
  * range analysis.
  */
 private predicate safeCast(IntegralType fromtyp, IntegralType totyp) {
-  fromtyp.getSize() <= totyp.getSize() and
+  fromtyp.getSize() < totyp.getSize() and
   (
     fromtyp.isUnsigned()
     or
     totyp.isSigned()
+  ) or
+  fromtyp.getSize() <= totyp.getSize() and
+  (
+    fromtyp.isSigned() and
+    totyp.isSigned()
+    or
+    fromtyp.isUnsigned() and
+    totyp.isUnsigned()
   )
+  // TODO: infer safety using sign analysis?
 }
 
 private class SafeCastInstruction extends ConvertInstruction {
@@ -349,15 +358,17 @@ private predicate boundFlowStepDiv(Instruction i1, Operand op, int factor) {
   )
 }
 
+/**
+ * Holds if `b` is a valid bound for `op`
+ */
 pragma[noinline]
 private predicate boundedNonPhiOperand(NonPhiOperand op, Bound b, int delta, boolean upper,
   boolean fromBackEdge, int origdelta, Reason reason
 ) {
-  exists(NonPhiOperand op2, int d1, int d2, Reason r1, Reason r2 |
-    boundFlowStepSsa(op, op2, d1, upper, r1) and
-    boundedNonPhiOperand(op2, b, d2, upper, fromBackEdge, origdelta, r2) and
-    delta = d1 + d2 and
-    (if r1 instanceof NoReason then reason = r2 else reason = r1)
+  exists(NonPhiOperand op2, int d1, int d2 |
+    boundFlowStepSsa(op, op2, d1, upper, reason) and
+    boundedNonPhiOperand(op2, b, d2, upper, fromBackEdge, origdelta, _) and
+    delta = d1 + d2
   )
   or
   boundedInstruction(op.getDefinitionInstruction(), b, delta, upper, fromBackEdge, origdelta, reason)
@@ -402,7 +413,7 @@ private predicate boundedPhiOperand(
   PhiOperand op, Bound b, int delta, boolean upper, boolean fromBackEdge, int origdelta,
   Reason reason
 ) {
-  exists(NonPhiOperand op2, int d1, int d2, Reason r1, Reason r2 | // should mid be an `Operand`?
+  exists(NonPhiOperand op2, int d1, int d2, Reason r1, Reason r2 |
     boundFlowStepPhi(op, op2, d1, upper, r1) and
     boundedNonPhiOperand(op2, b, d2, upper, fromBackEdge, origdelta, r2) and
     delta = d1 + d2 and
@@ -431,6 +442,7 @@ private predicate boundedPhiOperand(
  * Holds if `op != b + delta` at `pos`.
  */
 private predicate unequalOperand(Operand op, Bound b, int delta, Reason reason) {
+  // TODO: implement this
   none()
 }
 
@@ -587,4 +599,10 @@ private predicate boundedInstruction(
     safeNarrowingCast(cast, upper.booleanNot()) and
     boundedCastExpr(cast, b, delta, upper, fromBackEdge, origdelta, reason)
   )
+}
+
+predicate backEdge(PhiInstruction phi, PhiOperand op) {
+  phi.getAnOperand() = op and
+  phi.getBlock().dominates(op.getPredecessorBlock())
+  // TODO: identify backedges during IR construction
 }

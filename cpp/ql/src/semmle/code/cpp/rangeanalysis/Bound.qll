@@ -55,7 +55,7 @@ class InstructionBound extends Bound, TBoundInstruction {
 }
 
 /**
- * A bound corrseponding to the value of an `Operand`.
+ * A bound corresponding to the value of an `Operand`.
  */
 class OperandBound extends Bound, TBoundOperand {
   Operand getOperand() {

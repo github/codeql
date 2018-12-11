@@ -45,10 +45,3 @@ predicate valueFlowStep(Instruction i, Operand op, int delta) {
     delta = -getValue(getConstantValue(x.getDefinitionInstruction()))
   )
 }
-
-predicate backEdge(PhiInstruction phi, PhiOperand op) {
-  phi.getAnOperand() = op and
-  (
-    phi.getBlock().dominates(op.getPredecessorBlock())
-  )
-}
