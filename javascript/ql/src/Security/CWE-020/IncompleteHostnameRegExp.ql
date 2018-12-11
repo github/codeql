@@ -12,27 +12,24 @@
 
 import javascript
 
-module IncompleteHostnameRegExpTracking {
+/**
+ * A taint tracking configuration for incomplete hostname regular expressions sources.
+ */
+class Configuration extends TaintTracking::Configuration {
+  Configuration() { this = "IncompleteHostnameRegExpTracking" }
 
-  /**
-   * A taint tracking configuration for incomplete hostname regular expressions sources.
-   */
-  class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "IncompleteHostnameRegExpTracking" }
+  override
+  predicate isSource(DataFlow::Node source) {
+    isIncompleteHostNameRegExpPattern(source.asExpr().getStringValue(), _)
+  }
 
-    override
-    predicate isSource(DataFlow::Node source) {
-      isIncompleteHostNameRegExpPattern(source.asExpr().getStringValue(), _)
-    }
-
-    override
-    predicate isSink(DataFlow::Node sink) {
-      isInterpretedAsRegExp(sink)
-    }
-
+  override
+  predicate isSink(DataFlow::Node sink) {
+    isInterpretedAsRegExp(sink)
   }
 
 }
+
 
 /**
  * Holds if `pattern` is a regular expression pattern for URLs with a host matched by `hostPart`,
@@ -45,7 +42,7 @@ predicate isIncompleteHostNameRegExpPattern(string pattern, string hostPart) {
     // an unescaped single `.`
     "(?<!\\\\)[.]" +
     // immediately followed by a sequence of subdomains, perhaps with some regex characters mixed in, followed by a known TLD
-    "([():|?a-z0-9-]+(\\\\)?[.](com|org|edu|gov|uk|net))" +
+    "([():|?a-z0-9-]+(\\\\)?[.](" + RegExpPatterns::commonTLD() + "))" +
     ".*", 1)
 }
 
@@ -53,7 +50,7 @@ from Expr e, string pattern, string hostPart
 where
       (
         e.(RegExpLiteral).getValue() = pattern or
-        exists (IncompleteHostnameRegExpTracking::Configuration cfg |
+        exists (Configuration cfg |
           cfg.hasFlow(e.flow(), _) and
           e.mayHaveStringValue(pattern)
         )
@@ -61,7 +58,7 @@ where
       isIncompleteHostNameRegExpPattern(pattern, hostPart)
       and
       // ignore patterns with capture groups after the TLD
-      not pattern.regexpMatch("(?i).*[.](com|org|edu|gov|uk|net).*[(][?]:.*[)].*")
+      not pattern.regexpMatch("(?i).*[.](" + RegExpPatterns::commonTLD() + ").*[(][?]:.*[)].*")
 
 
 select e, "This regular expression has an unescaped '.' before '" + hostPart + "', so it might match more hosts than expected."

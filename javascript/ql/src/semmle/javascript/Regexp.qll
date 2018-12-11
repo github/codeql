@@ -504,8 +504,22 @@ predicate isInterpretedAsRegExp(DataFlow::Node source) {
       methodName = "search" and
       source.asExpr() = mce.getArgument(0) and
       mce.getNumArgument() = 1 and
-      // `String.prototype.search` returns a number, so exclude chained accesses
+      // "search" is a common method name, and so we exclude chained accesses
+      // because `String.prototype.search` returns a number
       not exists(PropAccess p | p.getBase() = mce)
     )
   )
+}
+
+/**
+ * Provides regular expression patterns.
+ */
+module RegExpPatterns {
+  /**
+   * Gets a pattern that matches common top-level domain names.
+   */
+  string commonTLD() {
+    // according to ranking by http://google.com/search?q=site:.<<TLD>>
+    result = "com|org|edu|gov|uk|net|io"
+  }
 }
