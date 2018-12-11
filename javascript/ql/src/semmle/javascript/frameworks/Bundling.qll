@@ -222,10 +222,10 @@ predicate isMultiLicenseBundle(TopLevel tl) {
     )
   ) > 1
   or
-  // case: ordinary block comments with "@license" lines
+  // case: ordinary block comments lines that start with a license
   count(BlockComment head |
     head.getTopLevel() = tl and
-    head.getLine(_).regexpMatch("(?i)[\\s*]*@license\\b.*")
+    head.getLine(_).regexpMatch("(?i)[\\s*]*(@license\\b.*|The [a-z0-9-]+ License (\\([a-z0-9-]+\\))?\\s*)")
   ) > 1
 }
 
