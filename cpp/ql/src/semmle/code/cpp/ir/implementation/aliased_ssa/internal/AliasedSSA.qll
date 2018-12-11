@@ -19,6 +19,10 @@ private VirtualIRVariable getVirtualVariable(IRVariable var) {
   result.getIRVariable() = var
 }
 
+private UnknownVirtualVariable getUnknownVirtualVariable(FunctionIR f) {
+  result.getFunctionIR() = f
+}
+
 class VirtualVariable extends TVirtualVariable {
   string toString() {
     none()
@@ -83,10 +87,10 @@ class UnknownVirtualVariable extends VirtualVariable, TUnknownVirtualVariable {
 }
 
 private newtype TMemoryAccess =
-  TVariableMemoryAccess(VirtualIRVariable vvar, IntValue offset, IntValue size) {
+  TVariableMemoryAccess(IRVariable var, IntValue offset, IntValue size) {
     exists(Instruction instr |
       exists(MemoryAccessKind mak | instr.getResultMemoryAccess() = mak and not mak instanceof PhiMemoryAccess) and
-      resultPointsTo(instr.getAnOperand().(AddressOperand).getDefinitionInstruction(), vvar.getIRVariable(), offset) and
+      resultPointsTo(instr.getAnOperand().(AddressOperand).getDefinitionInstruction(), var, offset) and
       if exists(instr.getResultSize())
       then instr.getResultSize() = size
       else size = Ints::unknown()
@@ -97,7 +101,7 @@ private newtype TMemoryAccess =
   TTotalUnknownMemoryAccess(UnknownVirtualVariable uvv)
 
 private VariableMemoryAccess getVariableMemoryAccess(IRVariable var, IntValue offset, IntValue size) {
-  result.getVirtualVariable() = getVirtualVariable(var) and
+  result.getVariable() = var and
   result.getOffset() = offset and
   result.getSize() = size
 }
@@ -117,20 +121,21 @@ class MemoryAccess extends TMemoryAccess {
 }
 
 class VariableMemoryAccess extends TVariableMemoryAccess, MemoryAccess {
-  VirtualIRVariable vvar;
+  IRVariable var;
   IntValue offset;
   IntValue size;
 
   VariableMemoryAccess() {
-    this = TVariableMemoryAccess(vvar, offset, size)
+    this = TVariableMemoryAccess(var, offset, size)
   }
 
   override final string toString() {
-    result = vvar.toString()
+    result = var.toString() + "[" + offset.toString() + ".." + (offset + size - 1).toString() + "]"
   }
 
   final override VirtualVariable getVirtualVariable() {
-    result = vvar
+    result = getVirtualVariable(var) or
+    not exists(getVirtualVariable(var)) and result = getUnknownVirtualVariable(var.getFunctionIR())
   }
   
   IntValue getOffset() {
@@ -141,10 +146,15 @@ class VariableMemoryAccess extends TVariableMemoryAccess, MemoryAccess {
     result = size
   }
   
+  final IRVariable getVariable() {
+    result = var
+  }
+
   final override predicate isPartialMemoryAccess() {
+    not exists(getVirtualVariable(var)) or
     getOffset() != 0
     or
-    getSize() != vvar.getType().getSize()
+    getSize() != var.getType().getSize()
   }
 }
 
@@ -166,6 +176,7 @@ class UnknownMemoryAccess extends TUnknownMemoryAccess, MemoryAccess {
   final override predicate isPartialMemoryAccess() {
     any()
   }
+
   Type getType() {
     result instanceof UnknownType
   }

@@ -142,7 +142,10 @@ abstract class TranslatedVariableDeclaration extends TranslatedElement, Initiali
   }
 
   override IRVariable getInstructionVariable(InstructionTag tag) {
-    tag = InitializerVariableAddressTag() and
+    (
+      tag = InitializerVariableAddressTag() or
+      hasUninitializedInstruction() and tag = InitializerStoreTag()
+    ) and
     result = getIRUserVariable(getFunction(), getVariable())
   }
 

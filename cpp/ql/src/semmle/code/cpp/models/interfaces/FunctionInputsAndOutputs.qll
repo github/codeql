@@ -1,5 +1,5 @@
 /**
- * Provides a set of QL clcasses for indicating dataflows through a particular
+ * Provides a set of QL classes for indicating dataflows through a particular
  * parameter, return value, or qualifier, as well as flows at one level of
  * pointer indirection.
  */
