@@ -1612,7 +1612,7 @@ public class TypeScriptASTConverter {
 			if (hasChild(element, "dotDotDotToken")) {
 				propVal = new RestElement(eltLoc, propKey);
 			} else if (hasChild(element, "initializer")) {
-				propVal = new AssignmentPattern(eltLoc, "=", propKey, convertChild(element, "initializer"));
+				propVal = new AssignmentPattern(eltLoc, "=", convertChild(element, "name"), convertChild(element, "initializer"));
 			} else {
 				propVal = convertChild(element, "name");
 			}
