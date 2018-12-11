@@ -1215,10 +1215,7 @@ ir.cpp:
 #-----|   Goto -> Block 1
 
 #  283|   Block 3
-#  283|     v3_0(void) = NoOp         : 
-#  278|     v3_1(void) = ReturnVoid   : 
-#  278|     v3_2(void) = UnmodeledUse : mu*
-#  278|     v3_3(void) = ExitFunction : 
+#  283|     v3_0(void) = Unreached : 
 
 #  285| For_Update() -> void
 #  285|   Block 0
@@ -1264,10 +1261,7 @@ ir.cpp:
 #-----|   Goto -> Block 1
 
 #  296|   Block 3
-#  296|     v3_0(void) = NoOp         : 
-#  292|     v3_1(void) = ReturnVoid   : 
-#  292|     v3_2(void) = UnmodeledUse : mu*
-#  292|     v3_3(void) = ExitFunction : 
+#  296|     v3_0(void) = Unreached : 
 
 #  298| For_InitUpdate() -> void
 #  298|   Block 0
@@ -1480,22 +1474,18 @@ ir.cpp:
 #  335|     r2_2(int)        = Constant[5]        : 
 #  335|     r2_3(bool)       = CompareEQ          : r2_1, r2_2
 #  335|     v2_4(void)       = ConditionalBranch  : r2_3
-#-----|   False -> Block 4
-#-----|   True -> Block 3
+#-----|   False -> Block 3
+#-----|   True -> Block 4
 
-#  336|   Block 3
-#  336|     v3_0(void) = NoOp : 
-#-----|   Goto -> Block 4
-
-#  334|   Block 4
-#  334|     v4_0(void) = NoOp : 
+#  334|   Block 3
+#  334|     v3_0(void) = NoOp : 
 #-----|   Goto -> Block 1
 
+#  336|   Block 4
+#  336|     v4_0(void) = Unreached : 
+
 #  339|   Block 5
-#  339|     v5_0(void) = NoOp         : 
-#  333|     v5_1(void) = ReturnVoid   : 
-#  333|     v5_2(void) = UnmodeledUse : mu*
-#  333|     v5_3(void) = ExitFunction : 
+#  339|     v5_0(void) = Unreached : 
 
 #  341| Dereference(int *) -> int
 #  341|   Block 0
@@ -3179,7 +3169,7 @@ ir.cpp:
 #  728|     r3_2(char *)          = Convert                          : r3_1
 #  728|     m3_3(char *)          = Store                            : r3_0, r3_2
 #  728|     v3_4(void)            = ThrowValue                       : r3_0, m3_3
-#-----|   Exception -> Block 9
+#-----|   Exception -> Block 6
 
 #  730|   Block 4
 #  730|     r4_0(glval<int>) = VariableAddress[x] : 
@@ -3187,82 +3177,56 @@ ir.cpp:
 #  730|     r4_2(int)        = Constant[2]        : 
 #  730|     r4_3(bool)       = CompareLT          : r4_1, r4_2
 #  730|     v4_4(void)       = ConditionalBranch  : r4_3
-#-----|   False -> Block 8
-#-----|   True -> Block 5
+#-----|   False -> Block 5
+#-----|   True -> Block 12
 
-#  731|   Block 5
-#  731|     r5_0(glval<bool>) = VariableAddress[b] : 
-#  731|     r5_1(bool)        = Load               : r5_0, m0_4
-#  731|     v5_2(void)        = ConditionalBranch  : r5_1
-#-----|   False -> Block 7
-#-----|   True -> Block 6
+#  733|   Block 5
+#  733|     r5_0(int)        = Constant[7]        : 
+#  733|     r5_1(glval<int>) = VariableAddress[x] : 
+#  733|     m5_2(int)        = Store              : r5_1, r5_0
+#-----|   Goto -> Block 11
 
-#  731|   Block 6
-#  731|     r6_0(int)        = Constant[7]                  : 
-#  731|     r6_1(glval<int>) = VariableAddress[#temp731:11] : 
-#  731|     m6_2(int)        = Store                        : r6_1, r6_0
-#  731|     r6_3(glval<int>) = VariableAddress[#temp731:11] : 
-#  731|     r6_4(int)        = Load                         : r6_3, m6_2
-#  731|     r6_5(glval<int>) = VariableAddress[x]           : 
-#  731|     m6_6(int)        = Store                        : r6_5, r6_4
-#-----|   Goto -> Block 8
+#  735|   Block 6
+#  735|     v6_0(void) = CatchByType[const char *] : 
+#-----|   Exception -> Block 8
+#-----|   Goto -> Block 7
 
-#  731|   Block 7
-#  731|     r7_0(glval<String>)   = VariableAddress[#throw731:19]   : 
-#  731|     r7_1(glval<unknown>)  = FunctionAddress[String]         : 
-#  731|     r7_2(glval<char[14]>) = StringConstant["String object"] : 
-#  731|     r7_3(char *)          = Convert                         : r7_2
-#  731|     v7_4(void)            = Call                            : r7_1, this:r7_0, r7_3
-#  731|     m7_5(unknown)         = ^CallSideEffect                 : m0_1
-#  731|     m7_6(unknown)         = Chi                             : m0_1, m7_5
-#  731|     v7_7(void)            = ThrowValue                      : r7_0, mu0_2
-#-----|   Exception -> Block 9
-
-#  733|   Block 8
-#  733|     r8_0(int)        = Constant[7]        : 
-#  733|     r8_1(glval<int>) = VariableAddress[x] : 
-#  733|     m8_2(int)        = Store              : r8_1, r8_0
-#-----|   Goto -> Block 14
-
-#  735|   Block 9
-#  735|     m9_0(unknown) = Phi                       : from 3:m0_1, from 7:m7_6
-#  735|     v9_1(void)    = CatchByType[const char *] : 
-#-----|   Exception -> Block 11
-#-----|   Goto -> Block 10
-
-#  735|   Block 10
-#  735|     r10_0(glval<char *>)  = VariableAddress[s]           : 
-#  735|     m10_1(char *)         = InitializeParameter[s]       : r10_0
-#  736|     r10_2(glval<String>)  = VariableAddress[#throw736:5] : 
-#  736|     r10_3(glval<unknown>) = FunctionAddress[String]      : 
-#  736|     r10_4(glval<char *>)  = VariableAddress[s]           : 
-#  736|     r10_5(char *)         = Load                         : r10_4, m10_1
-#  736|     v10_6(void)           = Call                         : r10_3, this:r10_2, r10_5
-#  736|     m10_7(unknown)        = ^CallSideEffect              : m9_0
-#  736|     m10_8(unknown)        = Chi                          : m9_0, m10_7
-#  736|     v10_9(void)           = ThrowValue                   : r10_2, mu0_2
+#  735|   Block 7
+#  735|     r7_0(glval<char *>)  = VariableAddress[s]           : 
+#  735|     m7_1(char *)         = InitializeParameter[s]       : r7_0
+#  736|     r7_2(glval<String>)  = VariableAddress[#throw736:5] : 
+#  736|     r7_3(glval<unknown>) = FunctionAddress[String]      : 
+#  736|     r7_4(glval<char *>)  = VariableAddress[s]           : 
+#  736|     r7_5(char *)         = Load                         : r7_4, m7_1
+#  736|     v7_6(void)           = Call                         : r7_3, this:r7_2, r7_5
+#  736|     m7_7(unknown)        = ^CallSideEffect              : m0_1
+#  736|     m7_8(unknown)        = Chi                          : m0_1, m7_7
+#  736|     v7_9(void)           = ThrowValue                   : r7_2, mu0_2
 #-----|   Exception -> Block 2
 
-#  738|   Block 11
-#  738|     v11_0(void) = CatchByType[const String &] : 
-#-----|   Exception -> Block 13
-#-----|   Goto -> Block 12
+#  738|   Block 8
+#  738|     v8_0(void) = CatchByType[const String &] : 
+#-----|   Exception -> Block 10
+#-----|   Goto -> Block 9
 
-#  738|   Block 12
-#  738|     r12_0(glval<String &>) = VariableAddress[e]     : 
-#  738|     m12_1(String &)        = InitializeParameter[e] : r12_0
-#  738|     v12_2(void)            = NoOp                   : 
-#-----|   Goto -> Block 14
+#  738|   Block 9
+#  738|     r9_0(glval<String &>) = VariableAddress[e]     : 
+#  738|     m9_1(String &)        = InitializeParameter[e] : r9_0
+#  738|     v9_2(void)            = NoOp                   : 
+#-----|   Goto -> Block 11
 
-#  740|   Block 13
-#  740|     v13_0(void) = CatchAny : 
-#  741|     v13_1(void) = ReThrow  : 
+#  740|   Block 10
+#  740|     v10_0(void) = CatchAny : 
+#  741|     v10_1(void) = ReThrow  : 
 #-----|   Exception -> Block 2
 
-#  743|   Block 14
-#  743|     v14_0(void) = NoOp       : 
-#  724|     v14_1(void) = ReturnVoid : 
+#  743|   Block 11
+#  743|     v11_0(void) = NoOp       : 
+#  724|     v11_1(void) = ReturnVoid : 
 #-----|   Goto -> Block 1
+
+#  731|   Block 12
+#  731|     v12_0(void) = Unreached : 
 
 #  745| Base::Base(const Base &) -> void
 #  745|   Block 0
@@ -4596,14 +4560,20 @@ ir.cpp:
 
 # 1028| UnreachableIf(bool) -> int
 # 1028|   Block 0
-# 1028|     v0_0(void)        = EnterFunction          : 
-# 1028|     m0_1(unknown)     = AliasedDefinition      : 
-# 1028|     mu0_2(unknown)    = UnmodeledDefinition    : 
-# 1028|     r0_3(glval<bool>) = VariableAddress[b]     : 
-# 1028|     m0_4(bool)        = InitializeParameter[b] : r0_3
-# 1029|     r0_5(glval<bool>) = VariableAddress[b]     : 
-# 1029|     r0_6(bool)        = Load                   : r0_5, m0_4
-# 1029|     v0_7(void)        = ConditionalBranch      : r0_6
+# 1028|     v0_0(void)         = EnterFunction          : 
+# 1028|     m0_1(unknown)      = AliasedDefinition      : 
+# 1028|     mu0_2(unknown)     = UnmodeledDefinition    : 
+# 1028|     r0_3(glval<bool>)  = VariableAddress[b]     : 
+# 1028|     m0_4(bool)         = InitializeParameter[b] : r0_3
+# 1029|     r0_5(glval<int>)   = VariableAddress[x]     : 
+# 1029|     r0_6(int)          = Constant[5]            : 
+# 1029|     m0_7(int)          = Store                  : r0_5, r0_6
+# 1030|     r0_8(glval<int>)   = VariableAddress[y]     : 
+# 1030|     r0_9(int)          = Constant[10]           : 
+# 1030|     m0_10(int)         = Store                  : r0_8, r0_9
+# 1031|     r0_11(glval<bool>) = VariableAddress[b]     : 
+# 1031|     r0_12(bool)        = Load                   : r0_11, m0_4
+# 1031|     v0_13(void)        = ConditionalBranch      : r0_12
 #-----|   False -> Block 4
 #-----|   True -> Block 2
 
@@ -4614,32 +4584,40 @@ ir.cpp:
 # 1028|     v1_3(void)       = UnmodeledUse             : mu*
 # 1028|     v1_4(void)       = ExitFunction             : 
 
-# 1030|   Block 2
-# 1030|     r2_0(bool) = Constant[0]       : 
-# 1030|     v2_1(void) = ConditionalBranch : r2_0
+# 1032|   Block 2
+# 1032|     r2_0(glval<int>) = VariableAddress[x] : 
+# 1032|     r2_1(int)        = Load               : r2_0, m0_7
+# 1032|     r2_2(glval<int>) = VariableAddress[y] : 
+# 1032|     r2_3(int)        = Load               : r2_2, m0_10
+# 1032|     r2_4(bool)       = CompareEQ          : r2_1, r2_3
+# 1032|     v2_5(void)       = ConditionalBranch  : r2_4
 #-----|   False -> Block 3
-#-----|   True -> Block 7
+#-----|   True -> Block 6
 
-# 1034|   Block 3
-# 1034|     r3_0(glval<int>) = VariableAddress[#return] : 
-# 1034|     r3_1(int)        = Constant[0]              : 
-# 1034|     m3_2(int)        = Store                    : r3_0, r3_1
+# 1036|   Block 3
+# 1036|     r3_0(glval<int>) = VariableAddress[#return] : 
+# 1036|     r3_1(int)        = Constant[0]              : 
+# 1036|     m3_2(int)        = Store                    : r3_0, r3_1
 #-----|   Goto -> Block 1
 
-# 1038|   Block 4
-# 1038|     r4_0(bool) = Constant[1]       : 
-# 1038|     v4_1(void) = ConditionalBranch : r4_0
-#-----|   False -> Block 6
+# 1040|   Block 4
+# 1040|     r4_0(glval<int>) = VariableAddress[x] : 
+# 1040|     r4_1(int)        = Load               : r4_0, m0_7
+# 1040|     r4_2(glval<int>) = VariableAddress[y] : 
+# 1040|     r4_3(int)        = Load               : r4_2, m0_10
+# 1040|     r4_4(bool)       = CompareLT          : r4_1, r4_3
+# 1040|     v4_5(void)       = ConditionalBranch  : r4_4
+#-----|   False -> Block 7
 #-----|   True -> Block 5
 
-# 1039|   Block 5
-# 1039|     r5_0(glval<int>) = VariableAddress[#return] : 
-# 1039|     r5_1(int)        = Constant[0]              : 
-# 1039|     m5_2(int)        = Store                    : r5_0, r5_1
+# 1041|   Block 5
+# 1041|     r5_0(glval<int>) = VariableAddress[#return] : 
+# 1041|     r5_1(int)        = Constant[0]              : 
+# 1041|     m5_2(int)        = Store                    : r5_0, r5_1
 #-----|   Goto -> Block 1
 
-# 1042|   Block 6
-# 1042|     v6_0(void) = Unreached : 
+# 1033|   Block 6
+# 1033|     v6_0(void) = Unreached : 
 
-# 1031|   Block 7
-# 1031|     v7_0(void) = Unreached : 
+# 1044|   Block 7
+# 1044|     v7_0(void) = Unreached : 

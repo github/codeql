@@ -90,7 +90,7 @@
 | IR: StringLiteral | 1 |
 | IR: Switch | 8 |
 | IR: TakeReference | 1 |
-| IR: TryCatch | 15 |
+| IR: TryCatch | 13 |
 | IR: UninitializedVariables | 1 |
 | IR: UnionInit | 1 |
 | IR: UnreachableIf | 8 |

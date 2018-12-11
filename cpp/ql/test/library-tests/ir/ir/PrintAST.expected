@@ -6688,43 +6688,69 @@ ir.cpp:
 # 1028|     0: b
 # 1028|         Type = bool
 # 1028|   body: { ... }
-# 1029|     0: if (...) ... 
-# 1029|       0: b
-# 1029|           Type = bool
-# 1029|           ValueCategory = prvalue(load)
-# 1029|       1: { ... }
-# 1030|         0: if (...) ... 
-# 1030|           0: 0
-# 1030|               Type = bool
-# 1030|               Value = 0
+# 1029|     0: declaration
+# 1029|       0: definition of x
+# 1029|           Type = int
+# 1029|         init: initializer for x
+# 1029|           expr: 5
+# 1029|               Type = int
+# 1029|               Value = 5
+# 1029|               ValueCategory = prvalue
+# 1030|     1: declaration
+# 1030|       0: definition of y
+# 1030|           Type = int
+# 1030|         init: initializer for y
+# 1030|           expr: 10
+# 1030|               Type = int
+# 1030|               Value = 10
 # 1030|               ValueCategory = prvalue
-# 1030|           1: { ... }
-# 1031|             0: return ...
-# 1031|               0: 1
-# 1031|                   Type = int
-# 1031|                   Value = 1
-# 1031|                   ValueCategory = prvalue
-# 1033|           2: { ... }
-# 1034|             0: return ...
-# 1034|               0: 0
-# 1034|                   Type = int
-# 1034|                   Value = 0
-# 1034|                   ValueCategory = prvalue
-# 1037|       2: { ... }
-# 1038|         0: if (...) ... 
-# 1038|           0: 1
-# 1038|               Type = bool
-# 1038|               Value = 1
-# 1038|               ValueCategory = prvalue
-# 1038|           1: { ... }
-# 1039|             0: return ...
-# 1039|               0: 0
-# 1039|                   Type = int
-# 1039|                   Value = 0
-# 1039|                   ValueCategory = prvalue
-# 1041|           2: { ... }
-# 1042|             0: return ...
-# 1042|               0: 1
-# 1042|                   Type = int
-# 1042|                   Value = 1
-# 1042|                   ValueCategory = prvalue
+# 1031|     2: if (...) ... 
+# 1031|       0: b
+# 1031|           Type = bool
+# 1031|           ValueCategory = prvalue(load)
+# 1031|       1: { ... }
+# 1032|         0: if (...) ... 
+# 1032|           0: ... == ...
+# 1032|               Type = bool
+# 1032|               ValueCategory = prvalue
+# 1032|             0: x
+# 1032|                 Type = int
+# 1032|                 ValueCategory = prvalue(load)
+# 1032|             1: y
+# 1032|                 Type = int
+# 1032|                 ValueCategory = prvalue(load)
+# 1032|           1: { ... }
+# 1033|             0: return ...
+# 1033|               0: 1
+# 1033|                   Type = int
+# 1033|                   Value = 1
+# 1033|                   ValueCategory = prvalue
+# 1035|           2: { ... }
+# 1036|             0: return ...
+# 1036|               0: 0
+# 1036|                   Type = int
+# 1036|                   Value = 0
+# 1036|                   ValueCategory = prvalue
+# 1039|       2: { ... }
+# 1040|         0: if (...) ... 
+# 1040|           0: ... < ...
+# 1040|               Type = bool
+# 1040|               ValueCategory = prvalue
+# 1040|             0: x
+# 1040|                 Type = int
+# 1040|                 ValueCategory = prvalue(load)
+# 1040|             1: y
+# 1040|                 Type = int
+# 1040|                 ValueCategory = prvalue(load)
+# 1040|           1: { ... }
+# 1041|             0: return ...
+# 1041|               0: 0
+# 1041|                   Type = int
+# 1041|                   Value = 0
+# 1041|                   ValueCategory = prvalue
+# 1043|           2: { ... }
+# 1044|             0: return ...
+# 1044|               0: 1
+# 1044|                   Type = int
+# 1044|                   Value = 1
+# 1044|                   ValueCategory = prvalue

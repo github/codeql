@@ -39,8 +39,10 @@ skip:
 }
 
 int UnreachableIf(bool b) {
+  int x = 5;
+  int y = 10;
   if (b) {
-    if (false) {
+    if (x == y) {
       return 1;
     }
     else {
@@ -48,7 +50,7 @@ int UnreachableIf(bool b) {
     }
   }
   else {
-    if (true) {
+    if (x < y) {
       return 0;
     }
     else {
