@@ -5,6 +5,7 @@
 * Support for popular libraries has been improved. Consequently, queries may produce more results on code bases that use the following features:
   - client-side code, for example [React](https://reactjs.org/)
   - server-side code, for example [hapi](https://hapijs.com/)
+* File classification has been improved to recognize additional generated files, for example files from [HTML Tidy](html-tidy.org).
 
 ## New queries
 
