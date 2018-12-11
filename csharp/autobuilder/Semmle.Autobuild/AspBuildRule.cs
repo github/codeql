@@ -7,7 +7,7 @@ namespace Semmle.Autobuild
     /// </summary>
     class AspBuildRule : IBuildRule
     {
-        public BuildScript Analyse(Autobuilder builder)
+        public BuildScript Analyse(Autobuilder builder, bool auto)
         {
             var command = new CommandBuilder(builder.Actions).
                 RunCommand(builder.Actions.PathCombine(builder.SemmleJavaHome, "bin", "java")).

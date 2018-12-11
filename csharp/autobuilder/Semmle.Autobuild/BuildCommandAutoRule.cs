@@ -25,7 +25,7 @@ namespace Semmle.Autobuild
             "build"
         };
 
-        public BuildScript Analyse(Autobuilder builder)
+        public BuildScript Analyse(Autobuilder builder, bool auto)
         {
             builder.Log(Severity.Info, "Attempting to locate build script");
 
