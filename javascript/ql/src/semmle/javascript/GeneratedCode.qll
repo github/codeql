@@ -115,6 +115,17 @@ private predicate isData(File f) {
 }
 
 /**
+ * Holds if `f` is a generated HTML file.
+ */
+private predicate isGeneratedHtml(File f) {
+  exists(HTML::Element e |
+    e.getFile() = f and
+    e.getName() = "meta" and
+    e.getAttributeByName("name").getValue() = "generator"
+  )
+}
+
+/**
  * Holds if `tl` looks like it contains generated code.
  */
 predicate isGenerated(TopLevel tl) {
@@ -124,12 +135,14 @@ predicate isGenerated(TopLevel tl) {
   tl instanceof DartGeneratedTopLevel or
   exists (GeneratedCodeMarkerComment gcmc | tl = gcmc.getTopLevel()) or
   hasManyInvocations(tl) or
-  isData(tl.getFile())
+  isData(tl.getFile()) or
+  isGeneratedHtml(tl.getFile())
 }
 
 /**
  * Holds if `file` look like it contains generated code.
  */
 predicate isGeneratedCode(File file) {
-  isGenerated(file.getATopLevel())
+  isGenerated(file.getATopLevel()) or
+  isGeneratedHtml(file)
 }
