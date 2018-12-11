@@ -146,6 +146,10 @@ public class FlowParser extends ESNextParser {
 		boolean oldInType = inType;
 		inType = true;
 		this.expect(tok == null ? TokenType.colon : tok);
+		if (this.type == TokenType.modulo) {// an annotation like '%checks' without a preceeding type
+			inType = oldInType;
+			return;
+		}
 		if (allowLeadingPipeOrAnd) {
 			if (this.type == TokenType.bitwiseAND || this.type == TokenType.bitwiseOR) {
 				this.next();
@@ -223,12 +227,27 @@ public class FlowParser extends ESNextParser {
 		while (this.type != TokenType.braceR) {
 			Position stmtStart = startLoc;
 
-			// todo: declare check
-			this.next();
+			if (this.eat(TokenType._import)) {
+				this.flowParseDeclareImport(stmtStart);
+			} else {
+				// todo: declare check
+				this.next();
 
-			this.flowParseDeclare(stmtStart);
+				this.flowParseDeclare(stmtStart);
+			}
 		}
 		this.expect(TokenType.braceR);
+	}
+
+	private void flowParseDeclareImport(Position stmtStart) {
+		String kind = flowParseImportSpecifiers();
+		if (kind == null) {
+			this.raise(stmtStart, "Imports within a `declare module` body must always be `import type` or `import typeof`.");
+		}
+		this.expect(TokenType.name);
+		this.expectContextual("from");
+		this.expect(TokenType.string);
+		this.semicolon();
 	}
 
 	private void flowParseDeclareModuleExports() {
@@ -737,7 +756,7 @@ public class FlowParser extends ESNextParser {
 
 	private void flowParsePostfixType() {
 		this.flowParsePrimaryType();
-		if (this.type == TokenType.bracketL) {
+		while (this.type == TokenType.bracketL) {
 			this.expect(TokenType.bracketL);
 			this.expect(TokenType.bracketR);
 		}
@@ -807,9 +826,18 @@ public class FlowParser extends ESNextParser {
 			// if allowExpression is true then we're parsing an arrow function and if
 			// there's a return type then it's been handled elsewhere
 			this.flowParseTypeAnnotation();
+			this.flowParseChecksAnnotation();
 		}
 
 		return super.parseFunctionBody(id, params, isArrowFunction);
+	}
+
+	private void flowParseChecksAnnotation() {
+		// predicate functions with the special '%checks' annotation
+		if (this.type == TokenType.modulo && lookaheadIsIdent("checks", true)) {
+			this.next();
+			this.next();
+		}
 	}
 
 	// interfaces
@@ -975,24 +1003,30 @@ public class FlowParser extends ESNextParser {
 		return param;
 	}
 
+	private String flowParseImportSpecifiers() {
+		String kind = null;
+		if (this.type == TokenType._typeof) {
+			kind = "typeof";
+		} else if (this.isContextual("type")) {
+			kind = "type";
+		}
+		if (kind != null) {
+			String lh = lookahead(4);
+			if (!lh.isEmpty()) {
+				int c = lh.codePointAt(0);
+				if ((Identifiers.isIdentifierStart(c, true) && !"from".equals(lh)) || c == '{' || c == '*') {
+					this.next();
+				}
+			}
+		}
+		return kind;
+	}
+
 	@Override
 	protected List<ImportSpecifier> parseImportSpecifiers() {
 		String kind = null;
 		if (flow()) {
-			if (this.type == TokenType._typeof) {
-				kind = "typeof";
-			} else if (this.isContextual("type")) {
-				kind = "type";
-			}
-			if (kind != null) {
-				String lh = lookahead(4);
-				if (!lh.isEmpty()) {
-					int c = lh.codePointAt(0);
-					if ((Identifiers.isIdentifierStart(c, true) && !"from".equals(lh)) || c == '{' || c == '*') {
-						this.next();
-					}
-				}
-			}
+			kind = flowParseImportSpecifiers();
 		}
 
 		List<ImportSpecifier> specs = super.parseImportSpecifiers();
@@ -1102,6 +1136,7 @@ public class FlowParser extends ESNextParser {
 				boolean oldNoAnonFunctionType = noAnonFunctionType;
 				noAnonFunctionType = true;
 				flowParseTypeAnnotation();
+				flowParseChecksAnnotation();
 				noAnonFunctionType = oldNoAnonFunctionType;
 				if (this.type != TokenType.arrow)
 					unexpected();
@@ -1158,4 +1193,12 @@ public class FlowParser extends ESNextParser {
 			this.eat(TokenType.plusMin);
 		super.parsePropertyName(result);
 	}
+
+	@Override
+	protected boolean atGetterSetterName(PropertyInfo pi) {
+		if (flow() && this.isRelational("<"))
+			return false;
+		return super.atGetterSetterName(pi);
+	}
+
 }

@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Passing a local variable to a <code>del</code> statement results in that
+variable being removed from the local namespace. When exiting a function all
+local variables are deleted, so it is unnecessary to explicitly delete variables
+in such cases.</p>
+
+</overview>
+<recommendation>
+<p>Remove the <code>del</code> statement.</p>
+
+</recommendation>
+<example>
+  <p>
+    In the function below, the variable <code>x</code> is assigned a value that
+    is used for a calculation, and is then explicitly deleted before the
+    function exits. In this case, the delete statement can be removed without
+    changing the behavior of the function.
+  </p>
+<sample src="UnnecessaryDelete.py" />
+
+
+</example>
+
+
+<references>
+
+  <li>Python: <a href="https://docs.python.org/2/reference/simple_stmts.html#the-del-statement">The 'del' statement</a>.</li>
+  <li>Python/C API Reference Manual: <a href="https://docs.python.org/2.0/api/refcounts.html">Reference counts</a>.</li>
+</references>
+</qhelp>

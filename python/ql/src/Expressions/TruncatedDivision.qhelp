@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+  In Python 2, the result of dividing two integers is silently truncated into an integer. This may lead to unexpected behavior.
+</p>
+
+</overview>
+<recommendation>
+
+  <p>
+    If the division should never be truncated, add
+    <code>from __future__ import division</code>
+    to the beginning of the file. If the division should always
+    be truncated, replace the division operator <code>/</code> with the
+    truncated division operator <code>//</code>.
+  </p>
+
+</recommendation>
+<example>
+<p>
+  The first example shows a function for calculating the average of a sequence
+  of numbers. When the function runs under Python 2, and the sequence contains
+  only integers, an incorrect result may be returned because the result is
+  truncated. The second example corrects this error by following the
+  recommendation listed above.
+</p>
+
+<sample src="TruncatedDivision.py" />
+<sample src="TruncatedDivisionCorrect.py" />
+
+
+</example>
+<references>
+
+  <li>Python Language Reference: <a href="https://docs.python.org/2/reference/expressions.html#binary-arithmetic-operations">Binary arithmetic operations</a>.</li>
+  <li>PEP 238: <a href="https://www.python.org/dev/peps/pep-0238/">Changing the Division Operator</a>.</li>
+  <li>PEP 236: <a href="https://www.python.org/dev/peps/pep-0236/">Back to the __future__</a>.</li>
+</references>
+</qhelp>

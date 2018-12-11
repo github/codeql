@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>When two string literals abut each other the Python interpreter implicitly concatenates them into a 
+single string. On occasion this can be useful, but is more commonly misleading or incorrect.
+</p>
+
+</overview>
+
+<recommendation>
+
+<p>If the concatenation is deliberate, then use <code>+</code> to join the strings. This has no runtime overhead,
+and makes the intention clear.
+</p>
+
+
+</recommendation>
+<example>
+
+<p>
+In the first function below, <code>unclear</code>, implicit string concatenation is used twice; once deliberately and once by accident.
+In the second function, <code>clarified</code>, the first concatenation is made explicit and the second is removed.
+</p>
+
+<sample src="UnintentionalImplicitStringConcatenation.py"/>
+
+
+</example>
+
+
+<references>
+
+    <li>Python language reference: <a href="https://docs.python.org/3/reference/lexical_analysis.html#string-literal-concatenation">String literal concatenation</a>.</li>
+
+</references>
+</qhelp>

@@ -17,17 +17,17 @@ import com.semmle.js.extractor.trapcache.DummyTrapCache;
 import com.semmle.js.extractor.trapcache.ITrapCache;
 import com.semmle.js.parser.ParsedProject;
 import com.semmle.js.parser.TypeScriptParser;
-import com.semmle.ts.extractor.TypeTable;
 import com.semmle.ts.extractor.TypeExtractor;
+import com.semmle.ts.extractor.TypeTable;
 import com.semmle.util.data.StringUtil;
 import com.semmle.util.data.UnitParser;
-import com.semmle.util.defect.Language;
 import com.semmle.util.exception.ResourceError;
 import com.semmle.util.exception.UserError;
 import com.semmle.util.extraction.ExtractorOutputConfig;
 import com.semmle.util.files.FileUtil;
 import com.semmle.util.files.PathMatcher;
 import com.semmle.util.io.WholeIO;
+import com.semmle.util.language.LegacyLanguage;
 import com.semmle.util.process.ArgsParser;
 import com.semmle.util.process.ArgsParser.FileMode;
 import com.semmle.util.trap.TrapWriter;
@@ -41,7 +41,7 @@ public class Main {
 	 * such a way that it may produce different tuples for the same file under the same
 	 * {@link ExtractorConfig}.
 	 */
-	public static final String EXTRACTOR_VERSION = "2018-11-12";
+	public static final String EXTRACTOR_VERSION = "2018-11-22_a";
 
 	public static final Pattern NEWLINE = Pattern.compile("\n");
 
@@ -461,7 +461,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		try {
-			new Main(new ExtractorOutputConfig(Language.JAVASCRIPT)).run(args);
+			new Main(new ExtractorOutputConfig(LegacyLanguage.JAVASCRIPT)).run(args);
 		} catch (UserError e) {
 			System.err.println(e.getMessage());
 			if (!e.reportAsInfoMessage())

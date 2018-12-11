@@ -5,8 +5,12 @@
 
 
 <overview>
+
+<!-- Mention that this rule may not be applicable in projects that don't follow the JSF standard. -->
+<include src="cpp/jsfNote.qhelp" />
+
 <p>
-This rule finds variables with the <code>register</code> storage class specifier. Modern compilers are now capable of
+This query highlights variables with the <code>register</code> storage class specifier. Modern compilers are now capable of
 optimal register placement, and overriding it could lead to worse performance.
 </p>
 

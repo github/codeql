@@ -1,0 +1,2 @@
+| multiple_init.py:17:1:17:17 | class C3 | Class C3 may not be initialized properly as $@ may be called multiple times during initialization. | multiple_init.py:9:5:9:23 | Function __init__ | method C1.__init__ |
+| multiple_init.py:34:1:34:17 | class D3 | Class D3 may not be initialized properly as $@ may be called multiple times during initialization. | multiple_init.py:26:5:26:23 | Function __init__ | method D1.__init__ |

@@ -1,0 +1,5 @@
+| wrong_arguments.py:57:1:57:7 | f0() | Keyword argument 'y' is not a supported parameter name of $@. | wrong_arguments.py:3:1:3:10 | Function f0 | function f0 |
+| wrong_arguments.py:58:1:58:7 | f1() | Keyword argument 'z' is not a supported parameter name of $@. | wrong_arguments.py:6:1:6:20 | Function f1 | function f1 |
+| wrong_arguments.py:59:1:59:12 | f2() | Keyword argument 'y' is not a supported parameter name of $@. | wrong_arguments.py:9:1:9:14 | Function f2 | function f2 |
+| wrong_arguments.py:103:1:103:27 | f6() | Keyword argument 'z' is not a supported parameter name of $@. | wrong_arguments.py:21:1:21:13 | Function f6 | function f6 |
+| wrong_arguments.py:115:1:115:13 | f1() | Keyword argument 'z' is not a supported parameter name of $@. | wrong_arguments.py:6:1:6:20 | Function f1 | function f1 |

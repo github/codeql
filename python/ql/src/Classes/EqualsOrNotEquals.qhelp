@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>In order to conform to the object model, classes should define either no equality methods, or both 
+an equality and an inequality method. If only one of <code>__eq__</code> or <code>__ne__</code> is 
+defined then the method from the super class is used. This is unlikely to result in the expected 
+behavior.</p>
+
+</overview>
+<recommendation>
+
+<p>When you define an equality or an inequality method for a class, remember to implement both an 
+<code>__eq__</code> method and an <code>__ne__</code> method.</p>
+
+</recommendation>
+<example>
+<p>In the following example the <code>PointOriginal</code> class defines an equality method but 
+no inequality method. If this class is tested for inequality then a type error will be raised. The 
+<code>PointUpdated</code> class is better as it defines both an equality and an inequality method. To
+comply fully with the object model this class should also define a hash method (identified by
+a separate rule).</p>
+
+<sample src="EqualsOrNotEquals.py" />
+
+</example>
+<references>
+
+
+<li>Python Language Reference: <a href="http://docs.python.org/2/reference/datamodel.html#object.__ne__">object.__ne__</a>, 
+<a href="http://docs.python.org/2/reference/expressions.html#comparisons">Comparisons</a>.</li>
+
+
+</references>
+</qhelp>

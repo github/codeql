@@ -48,3 +48,26 @@ void templateFunctionUser(signed int x, unsigned int y) {
     twiceUsedTemplateFunction(y);
 }
 
+class C {
+    public:
+    int ff() {
+        int i;
+        gg(i);
+    }
+    // Although there is a declaration of gg starting here,
+    // the number of lines count shouldn't.
+    template<typename T>
+    void gg(T t);
+};
+
+
+
+template<typename T>
+void C::gg(T t) {
+    ;
+}
+void hh() {
+    C n;
+    n.ff();
+}
+

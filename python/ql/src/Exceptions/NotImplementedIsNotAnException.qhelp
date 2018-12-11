@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+
+<p><code>NotImplemented</code> is not an Exception, but is often mistakenly used in place of <code>NotImplementedError</code>.
+Executing <code>raise NotImplemented</code> or <code>raise NotImplemented()</code> will raise a <code>TypeError</code>.
+When <code>raise NotImplemented</code> is used to mark code that is genuinely never called, this mistake is benign.
+
+However, should it be called, then a <code>TypeError</code> will be raised rather than the expected <code>NotImplemented</code>,
+which might make debugging the issue difficult.
+</p>
+
+<p>The correct use of <code>NotImplemented</code> is to implement binary operators.
+Code that is not intended to be called should raise <code>NotImplementedError</code>.</p>
+
+</overview>
+<recommendation>
+<p>Replace uses of <code>NotImplemented</code> with <code>NotImplementedError</code>.</p>
+</recommendation>
+<example>
+
+<p>
+In the example below, the method <code>wrong</code> will incorrectly raise a <code>TypeError</code> when called.
+The method <code>right</code> will raise a <code>NotImplementedError</code>.
+</p>
+
+<sample src="NotImplemented.py" />
+
+
+</example>
+
+<references>
+
+    <li>Python Language Reference: <a href="https://docs.python.org/library/exceptions.html#NotImplementedError">The NotImplementedError exception</a>.</li>
+    <li>Python Language Reference: <a href="https://docs.python.org/3/reference/datamodel.html#emulating-numeric-types">Emulating numeric types</a>.</li>
+
+</references>
+
+</qhelp>

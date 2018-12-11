@@ -1,0 +1,2 @@
+| multiple_del.py:17:1:17:17 | class Y3 | Class Y3 may not be cleaned up properly as $@ may be called multiple times during destruction. | multiple_del.py:9:5:9:22 | Function __del__ | method Y1.__del__ |
+| multiple_del.py:34:1:34:17 | class Z3 | Class Z3 may not be cleaned up properly as $@ may be called multiple times during destruction. | multiple_del.py:26:5:26:22 | Function __del__ | method Z1.__del__ |

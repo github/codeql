@@ -6,16 +6,20 @@ import com.semmle.ts.ast.ITypeExpression;
 /**
  * A member expression, either computed (<code>e[f]</code>) or static (<code>e.f</code>).
  */
-public class MemberExpression extends Expression implements ITypeExpression, INodeWithSymbol {
+public class MemberExpression extends Expression implements ITypeExpression, INodeWithSymbol, Chainable {
 	private final Expression object, property;
 	private final boolean computed;
+	private final boolean optional;
+	private final boolean onOptionalChain;
 	private int symbol = -1;
 
-	public MemberExpression(SourceLocation loc, Expression object, Expression property, Boolean computed) {
+	public MemberExpression(SourceLocation loc, Expression object, Expression property, Boolean computed, Boolean optional, Boolean onOptionalChain) {
 		super("MemberExpression", loc);
 		this.object = object;
 		this.property = property;
 		this.computed = computed == Boolean.TRUE;
+		this.optional = optional == Boolean.TRUE;
+		this.onOptionalChain = onOptionalChain == Boolean.TRUE;
 	}
 
 	@Override
@@ -43,6 +47,16 @@ public class MemberExpression extends Expression implements ITypeExpression, INo
 	 */
 	public boolean isComputed() {
 		return computed;
+	}
+
+	@Override
+	public boolean isOptional() {
+		return optional;
+	}
+
+	@Override
+	public boolean isOnOptionalChain() {
+		return onOptionalChain;
 	}
 
 	@Override

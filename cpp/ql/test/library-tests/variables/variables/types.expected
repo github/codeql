@@ -20,6 +20,7 @@
 | __int128 | Int128Type |  |  |  |  |
 | __va_list_tag | DirectAccessHolder, MetricClass, Struct, StructLikeClass |  |  |  |  |
 | __va_list_tag & | LValueReferenceType |  | __va_list_tag |  |  |
+| __va_list_tag && | RValueReferenceType |  | __va_list_tag |  |  |
 | address | DirectAccessHolder, MetricClass, Struct, StructLikeClass |  |  |  |  |
 | address & | LValueReferenceType |  | address |  |  |
 | address && | RValueReferenceType |  | address |  |  |
@@ -41,6 +42,8 @@
 | char[10] | ArrayType | char | char |  |  |
 | char[53] | ArrayType | char | char |  |  |
 | char[] | ArrayType | char | char |  |  |
+| const __va_list_tag | SpecifiedType |  | __va_list_tag |  |  |
+| const __va_list_tag & | LValueReferenceType |  | const __va_list_tag |  |  |
 | const address | SpecifiedType |  | address |  |  |
 | const address & | LValueReferenceType |  | const address |  |  |
 | const char | SpecifiedType |  | char |  |  |

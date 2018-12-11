@@ -1,14 +1,16 @@
 | ODASA-5186.cpp:4:8:4:8 | operator= | operator= |  |  | ODASA-5186.cpp:4:8:4:8 | declaration |
 | ODASA-5186.cpp:4:8:4:8 | operator= | operator= |  |  | ODASA-5186.cpp:4:8:4:8 | declaration |
+| ODASA-5186.cpp:5:8:5:8 | operator== | operator== |  |  | ODASA-5186.cpp:5:8:5:8 | declaration |
+| ODASA-5186.cpp:5:8:5:8 | operator== | operator== |  |  | ODASA-5186.cpp:5:8:5:8 | definition |
 | ODASA-5186.cpp:5:8:5:17 | operator== | operator== |  |  | ODASA-5186.cpp:5:8:5:17 | declaration |
-| ODASA-5186.cpp:5:8:5:17 | operator== | operator== |  |  | ODASA-5186.cpp:5:8:5:17 | declaration |
-| ODASA-5186.cpp:5:8:5:17 | operator== | operator== |  |  | ODASA-5186.cpp:5:8:5:17 | definition |
 | ODASA-5186.cpp:5:8:5:17 | operator== | operator== |  |  | ODASA-5186.cpp:5:8:5:17 | definition |
 | ODASA-5186.cpp:8:6:8:9 | test | test | isTopLevel | TopLevelFunction | ODASA-5186.cpp:8:6:8:9 | declaration |
 | ODASA-5186.cpp:8:6:8:9 | test | test | isTopLevel | TopLevelFunction | ODASA-5186.cpp:8:6:8:9 | definition |
 | ODASA-5186.hpp:2:8:2:8 | operator= | operator= |  |  | ODASA-5186.hpp:2:8:2:8 | declaration |
 | ODASA-5186.hpp:2:8:2:8 | operator= | operator= |  |  | ODASA-5186.hpp:2:8:2:8 | declaration |
 | ODASA-5186.hpp:4:18:4:27 | operator!= | operator!= | isTopLevel | TopLevelFunction | ODASA-5186.hpp:4:18:4:27 | declaration |
+| ODASA-5186.hpp:4:18:4:27 | operator!= | operator!= | isTopLevel | TopLevelFunction | ODASA-5186.hpp:4:18:4:27 | declaration |
+| ODASA-5186.hpp:4:18:4:27 | operator!= | operator!= | isTopLevel | TopLevelFunction | ODASA-5186.hpp:4:18:4:27 | definition |
 | ODASA-5186.hpp:4:18:4:27 | operator!= | operator!= | isTopLevel | TopLevelFunction | ODASA-5186.hpp:4:18:4:27 | definition |
 | functions.cpp:1:6:1:6 | f | f | isTopLevel | TopLevelFunction | functions.cpp:1:6:1:6 | declaration |
 | functions.cpp:1:6:1:6 | f | f | isTopLevel | TopLevelFunction | functions.cpp:1:6:1:6 | definition |

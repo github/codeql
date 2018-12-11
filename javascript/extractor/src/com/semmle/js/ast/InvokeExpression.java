@@ -8,20 +8,24 @@ import com.semmle.ts.ast.ITypeExpression;
 /**
  * An invocation, that is, either a {@link CallExpression} or a {@link NewExpression}.
  */
-public abstract class InvokeExpression extends Expression implements INodeWithSymbol {
+public abstract class InvokeExpression extends Expression implements INodeWithSymbol, Chainable {
 	private final Expression callee;
 	private final List<ITypeExpression> typeArguments;
 	private final List<Expression> arguments;
+	private final boolean optional;
+	private final boolean onOptionalChain;
 	private int resolvedSignatureId = -1;
 	private int overloadIndex = -1;
 	private int symbol = -1;
 
 	public InvokeExpression(String type, SourceLocation loc, Expression callee, List<ITypeExpression> typeArguments,
-			List<Expression> arguments) {
+			List<Expression> arguments, Boolean optional, Boolean onOptionalChain) {
 		super(type, loc);
 		this.callee = callee;
 		this.typeArguments = typeArguments;
 		this.arguments = arguments;
+		this.optional = optional == Boolean.TRUE;
+		this.onOptionalChain = onOptionalChain == Boolean.TRUE;
 	}
 
 	/**
@@ -43,6 +47,16 @@ public abstract class InvokeExpression extends Expression implements INodeWithSy
 	 */
 	public List<Expression> getArguments() {
 		return arguments;
+	}
+
+	@Override
+	public boolean isOptional() {
+		return optional;
+	}
+
+	@Override
+	public boolean isOnOptionalChain() {
+		return onOptionalChain;
 	}
 
 	public int getResolvedSignatureId() {

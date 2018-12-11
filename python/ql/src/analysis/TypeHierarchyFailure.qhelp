@@ -1,0 +1,15 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>In order to analyse uses of a class, all its attributes need to be known. Without the full inheritance hierarchy this is impossible.
+This is an informational query only. 
+</p>
+
+<p>
+This is an informational query only, this query depends on points-to and type inference.
+</p>
+
+</overview>
+</qhelp>

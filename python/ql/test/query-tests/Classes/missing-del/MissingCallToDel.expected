@@ -1,0 +1,1 @@
+| missing_del.py:12:1:12:13 | class X3 | Class X3 may not be cleaned up properly as $@ is not called during deletion. | missing_del.py:9:5:9:22 | Function __del__ | method X2.__del__ |

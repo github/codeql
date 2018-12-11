@@ -1,0 +1,5 @@
+| make_request.py:5:1:5:48 | ControlFlowNode for Attribute() | Call to $@ with verify=$@ | ../lib/requests.py:2:1:2:36 | Function get | requests.get | make_request.py:5:43:5:47 | ControlFlowNode for False | False |
+| make_request.py:7:1:7:49 | ControlFlowNode for Attribute() | Call to $@ with verify=$@ | ../lib/requests.py:11:1:11:46 | Function post | requests.post | make_request.py:7:44:7:48 | ControlFlowNode for False | False |
+| make_request.py:12:1:12:39 | ControlFlowNode for put() | Call to $@ with verify=$@ | ../lib/requests.py:14:1:14:34 | Function put | requests.put | make_request.py:12:34:12:38 | ControlFlowNode for False | False |
+| make_request.py:28:5:28:46 | ControlFlowNode for patch() | Call to $@ with verify=$@ | ../lib/requests.py:17:1:17:36 | Function patch | requests.patch | make_request.py:30:6:30:10 | ControlFlowNode for False | False |
+| make_request.py:34:1:34:45 | ControlFlowNode for Attribute() | Call to $@ with verify=$@ | ../lib/requests.py:11:1:11:46 | Function post | requests.post | make_request.py:34:44:34:44 | ControlFlowNode for IntegerLiteral | False |

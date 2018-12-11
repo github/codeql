@@ -1,0 +1,33 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+    The dictionary returned by <code>locals()</code> is not a view of the function's locals, but a copy.
+    Therefore, modification of the dictionary returned from <code>locals()</code> will not modify the local
+    variables of the function.
+</p>
+
+
+</overview>
+<recommendation>
+
+<p>If the intention is to modify a local variable, then do so directly.
+</p>
+
+</recommendation>
+<example>
+<p>In this example, rather than assigning to the variable <code>z</code> directly, the dictionary returned by <code>locals()</code>
+is modified.
+
+</p><sample src="ModificationOfLocals.py" />
+
+</example>
+<references>
+
+  <li>Python Language Reference: <a href="http://docs.python.org/2/reference/compound_stmts.html#the-for-statement">The for statement</a>.</li>
+  <li>Python Tutorial: <a href="http://docs.python.org/2/tutorial/controlflow.html#for-statements">for statements</a>.</li>
+
+</references>
+</qhelp>

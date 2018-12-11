@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>A lambda that calls a function without modifying any of its parameters is unnecessary.
+Python functions are first class objects and can be passed around in the same way as the resulting lambda.
+</p>
+
+</overview>
+<recommendation>
+<p>Remove the lambda, use the function directly.</p>
+
+</recommendation>
+<example>
+<p>In this example a lambda is used unnecessarily in order to pass a method as an argument to <code>
+call_with_x_squared</code>.</p>
+<sample src="UnnecessaryLambda.py" />
+
+<p>This is not necessary as methods can be passed directly. They behave as callable objects.</p>
+<sample src="UnnecessaryLambdaFix.py" />
+
+</example>
+<references>
+
+  <li>Python: <a href="http://docs.python.org/2.7/reference/expressions.html#lambda">lambdas</a>.</li>
+
+</references>
+</qhelp>

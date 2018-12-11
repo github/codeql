@@ -1,0 +1,1 @@
+| functions_test.py:45:9:45:19 | Return | Explicit return in __init__ method. |
