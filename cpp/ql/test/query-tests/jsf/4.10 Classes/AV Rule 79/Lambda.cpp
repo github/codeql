@@ -9,7 +9,7 @@ public:
 			delete [] r;
 		};
 
-		r2 = new char[4096]; // GOOD [FALSE POSITIVE]
+		r2 = new char[4096]; // GOOD
 		auto deleter2 = [this]() {
 			delete [] r2;
 		};
