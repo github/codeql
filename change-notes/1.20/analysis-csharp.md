@@ -17,6 +17,8 @@
 
 ## Changes to code extraction
 
+* Fix extraction of `for` statements where the condition declares new variables using `is`.
+
 ## Changes to QL libraries
 
 ## Changes to the autobuilder
