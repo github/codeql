@@ -60,9 +60,12 @@ module UnsafeDynamicMethodAccess {
     }
 
     override predicate isSanitizer(DataFlow::Node node) {
-      super.isSanitizer(node) or
-      node instanceof Sanitizer or
-      node instanceof PropertyInjection::Sanitizer
+      super.isSanitizer(node)
+      or
+      node instanceof Sanitizer
+      or
+      exists(StringConcatenation::getOperand(node, _)) and
+      not StringConcatenation::isCoercion(node)
     }
 
     /**

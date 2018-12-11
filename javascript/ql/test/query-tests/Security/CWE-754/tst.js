@@ -32,9 +32,9 @@
     }
 
     let key = "$" + name;
-    obj[key]();     // NOT OK, but not flagged
+    obj[key]();     // NOT OK
     if (typeof obj[key] === 'function')
-      obj[key]();   // OK
+      obj[key]();   // OK - but stil flagged
 
     if (typeof fn === 'function') {
       fn.apply(obj); // OK

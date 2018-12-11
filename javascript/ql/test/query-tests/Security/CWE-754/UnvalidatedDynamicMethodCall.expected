@@ -46,6 +46,14 @@ nodes
 | tst.js:26:11:26:14 | name |
 | tst.js:28:7:28:15 | obj[name] |
 | tst.js:28:11:28:14 | name |
+| tst.js:34:9:34:24 | key |
+| tst.js:34:15:34:24 | "$" + name |
+| tst.js:34:21:34:24 | name |
+| tst.js:35:5:35:12 | obj[key] |
+| tst.js:35:5:35:12 | obj[key] |
+| tst.js:35:9:35:11 | key |
+| tst.js:37:7:37:14 | obj[key] |
+| tst.js:37:11:37:13 | key |
 | tst.js:47:39:47:40 | ev |
 | tst.js:48:9:48:39 | name |
 | tst.js:48:16:48:34 | JSON.parse(ev.data) |
@@ -78,6 +86,7 @@ edges
 | tst.js:7:9:7:39 | name | tst.js:21:11:21:14 | name |
 | tst.js:7:9:7:39 | name | tst.js:26:11:26:14 | name |
 | tst.js:7:9:7:39 | name | tst.js:28:11:28:14 | name |
+| tst.js:7:9:7:39 | name | tst.js:34:21:34:24 | name |
 | tst.js:7:16:7:34 | JSON.parse(ev.data) | tst.js:7:16:7:39 | JSON.pa ... a).name |
 | tst.js:7:16:7:39 | JSON.pa ... a).name | tst.js:7:9:7:39 | name |
 | tst.js:7:27:7:28 | ev | tst.js:7:27:7:33 | ev.data |
@@ -101,6 +110,13 @@ edges
 | tst.js:26:11:26:14 | name | tst.js:26:7:26:15 | obj[name] |
 | tst.js:26:11:26:14 | name | tst.js:26:7:26:15 | obj[name] |
 | tst.js:28:11:28:14 | name | tst.js:28:7:28:15 | obj[name] |
+| tst.js:34:9:34:24 | key | tst.js:35:9:35:11 | key |
+| tst.js:34:9:34:24 | key | tst.js:37:11:37:13 | key |
+| tst.js:34:15:34:24 | "$" + name | tst.js:34:9:34:24 | key |
+| tst.js:34:21:34:24 | name | tst.js:34:15:34:24 | "$" + name |
+| tst.js:35:9:35:11 | key | tst.js:35:5:35:12 | obj[key] |
+| tst.js:35:9:35:11 | key | tst.js:35:5:35:12 | obj[key] |
+| tst.js:37:11:37:13 | key | tst.js:37:7:37:14 | obj[key] |
 | tst.js:47:39:47:40 | ev | tst.js:48:27:48:28 | ev |
 | tst.js:48:9:48:39 | name | tst.js:49:19:49:22 | name |
 | tst.js:48:16:48:34 | JSON.parse(ev.data) | tst.js:48:16:48:39 | JSON.pa ... a).name |
@@ -128,4 +144,7 @@ edges
 | tst.js:26:7:26:15 | obj[name] | tst.js:6:39:6:40 | ev | tst.js:26:7:26:15 | obj[name] | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | tst.js:6:39:6:40 | ev | user-controlled |
 | tst.js:26:7:26:15 | obj[name] | tst.js:6:39:6:40 | ev | tst.js:26:7:26:15 | obj[name] | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | tst.js:6:39:6:40 | ev | user-controlled |
 | tst.js:28:7:28:15 | obj[name] | tst.js:6:39:6:40 | ev | tst.js:28:7:28:15 | obj[name] | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | tst.js:6:39:6:40 | ev | user-controlled |
+| tst.js:35:5:35:12 | obj[key] | tst.js:6:39:6:40 | ev | tst.js:35:5:35:12 | obj[key] | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | tst.js:6:39:6:40 | ev | user-controlled |
+| tst.js:35:5:35:12 | obj[key] | tst.js:6:39:6:40 | ev | tst.js:35:5:35:12 | obj[key] | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | tst.js:6:39:6:40 | ev | user-controlled |
+| tst.js:37:7:37:14 | obj[key] | tst.js:6:39:6:40 | ev | tst.js:37:7:37:14 | obj[key] | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | tst.js:6:39:6:40 | ev | user-controlled |
 | tst.js:50:5:50:6 | fn | tst.js:47:39:47:40 | ev | tst.js:50:5:50:6 | fn | Invocation of method with $@ name may dispatch to unexpected target and cause an exception. | tst.js:47:39:47:40 | ev | user-controlled |
