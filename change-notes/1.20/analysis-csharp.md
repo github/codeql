@@ -17,6 +17,8 @@
 
 ## Changes to code extraction
 
+* Initializers of `stackalloc` arrays are now extracted.
+
 ## Changes to QL libraries
 
 ## Changes to the autobuilder
