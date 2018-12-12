@@ -3,7 +3,7 @@
  * This tests the correct extraction of F<T>, and we should end up with
  * 2 constructed methods of F<T>.
  */
- 
+
 // semmle-extractor-options: --cil
 
 namespace Methods

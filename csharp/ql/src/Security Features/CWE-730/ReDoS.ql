@@ -19,7 +19,7 @@ from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode
 where
   c.hasFlowPath(source, sink) and
   // No global timeout set
-  not exists(RegexGlobalTimeout r) and 
+  not exists(RegexGlobalTimeout r) and
   (
     sink.getNode() instanceof Sink
     or

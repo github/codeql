@@ -20,10 +20,10 @@ import semmle.code.csharp.commons.ComparisonTest
 class IndexGuard extends ComparisonTest {
   VariableAccess indexAccess;
   Variable array;
-  
+
   IndexGuard() {
     this.getFirstArgument() = indexAccess and
-    this.getSecondArgument() = any(PropertyAccess lengthAccess | 
+    this.getSecondArgument() = any(PropertyAccess lengthAccess |
       lengthAccess.getQualifier() = array.getAnAccess() and
       lengthAccess.getTarget().hasName("Length")
     )
@@ -50,7 +50,7 @@ from IndexGuard incorrectGuard, Variable array, Variable index, ElementAccess ea
 where
   // Look for `index <= array.Length` or `array.Length >= index`
   incorrectGuard.controls(array, index) and
-  incorrectGuard.isIncorrect() and 
+  incorrectGuard.isIncorrect() and
   // Look for `array[index]`
   ea.getQualifier() = array.getAnAccess() and
   ea.getIndex(0) = indexAccess and
