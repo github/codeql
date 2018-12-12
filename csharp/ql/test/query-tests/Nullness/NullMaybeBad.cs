@@ -1,18 +1,15 @@
 using System;
 
-namespace NullMaybe
+class Bad
 {
-    class Bad
+    void DoPrint(object o)
     {
-        void DoPrint(object o)
-        {
-            Console.WriteLine(o.ToString());
-        }
+        Console.WriteLine(o.ToString());
+    }
 
-        void M()
-        {
-            DoPrint("Hello");
-            DoPrint(null);
-        }
+    void M()
+    {
+        DoPrint("Hello");
+        DoPrint(null);
     }
 }

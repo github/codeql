@@ -239,7 +239,7 @@
 | NullAlwaysBad.cs:9:17:9:25 | ... != ... | NullAlwaysBad.cs:9:17:9:17 | access to parameter s | true | false |
 | NullAlwaysGood.cs:9:17:9:25 | ... != ... | NullAlwaysGood.cs:9:17:9:17 | access to parameter s | false | true |
 | NullAlwaysGood.cs:9:17:9:25 | ... != ... | NullAlwaysGood.cs:9:17:9:17 | access to parameter s | true | false |
-| NullMaybeGood.cs:9:17:9:25 | ... != ... | NullMaybeGood.cs:9:17:9:17 | access to parameter o | false | true |
-| NullMaybeGood.cs:9:17:9:25 | ... != ... | NullMaybeGood.cs:9:17:9:17 | access to parameter o | true | false |
+| NullMaybeGood.cs:7:13:7:21 | ... != ... | NullMaybeGood.cs:7:13:7:13 | access to parameter o | false | true |
+| NullMaybeGood.cs:7:13:7:21 | ... != ... | NullMaybeGood.cs:7:13:7:13 | access to parameter o | true | false |
 | StringConcatenation.cs:15:16:15:22 | ... != ... | StringConcatenation.cs:15:16:15:16 | access to local variable s | false | false |
 | StringConcatenation.cs:22:16:22:22 | ... != ... | StringConcatenation.cs:22:16:22:16 | access to local variable s | false | false |

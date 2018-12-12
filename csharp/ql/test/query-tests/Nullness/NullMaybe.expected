@@ -69,5 +69,5 @@
 | E.cs:235:16:235:16 | access to parameter i | Variable $@ may be null here because it has a nullable type. | E.cs:233:26:233:26 | i | i | E.cs:233:26:233:26 | i | this |
 | E.cs:240:21:240:21 | access to parameter i | Variable $@ may be null here because it has a nullable type. | E.cs:238:26:238:26 | i | i | E.cs:238:26:238:26 | i | this |
 | GuardedString.cs:35:31:35:31 | access to local variable s | Variable $@ may be null here because of $@ assignment. | GuardedString.cs:7:16:7:16 | s | s | GuardedString.cs:7:16:7:32 | String s = ... | this |
-| NullMaybeBad.cs:9:31:9:31 | access to parameter o | Variable $@ may be null here because of $@ null argument. | NullMaybeBad.cs:7:29:7:29 | o | o | NullMaybeBad.cs:15:21:15:24 | null | this |
+| NullMaybeBad.cs:7:27:7:27 | access to parameter o | Variable $@ may be null here because of $@ null argument. | NullMaybeBad.cs:5:25:5:25 | o | o | NullMaybeBad.cs:13:17:13:20 | null | this |
 | StringConcatenation.cs:16:17:16:17 | access to local variable s | Variable $@ may be null here because of $@ assignment. | StringConcatenation.cs:14:16:14:16 | s | s | StringConcatenation.cs:14:16:14:23 | String s = ... | this |

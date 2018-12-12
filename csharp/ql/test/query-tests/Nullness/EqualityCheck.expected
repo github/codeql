@@ -225,8 +225,8 @@
 | NullAlwaysBad.cs:9:17:9:25 | ... != ... | false | NullAlwaysBad.cs:9:22:9:25 | null | NullAlwaysBad.cs:9:17:9:17 | access to parameter s |
 | NullAlwaysGood.cs:9:17:9:25 | ... != ... | false | NullAlwaysGood.cs:9:17:9:17 | access to parameter s | NullAlwaysGood.cs:9:22:9:25 | null |
 | NullAlwaysGood.cs:9:17:9:25 | ... != ... | false | NullAlwaysGood.cs:9:22:9:25 | null | NullAlwaysGood.cs:9:17:9:17 | access to parameter s |
-| NullMaybeGood.cs:9:17:9:25 | ... != ... | false | NullMaybeGood.cs:9:17:9:17 | access to parameter o | NullMaybeGood.cs:9:22:9:25 | null |
-| NullMaybeGood.cs:9:17:9:25 | ... != ... | false | NullMaybeGood.cs:9:22:9:25 | null | NullMaybeGood.cs:9:17:9:17 | access to parameter o |
+| NullMaybeGood.cs:7:13:7:21 | ... != ... | false | NullMaybeGood.cs:7:13:7:13 | access to parameter o | NullMaybeGood.cs:7:18:7:21 | null |
+| NullMaybeGood.cs:7:13:7:21 | ... != ... | false | NullMaybeGood.cs:7:18:7:21 | null | NullMaybeGood.cs:7:13:7:13 | access to parameter o |
 | StringConcatenation.cs:15:16:15:22 | ... != ... | false | StringConcatenation.cs:15:16:15:16 | access to local variable s | StringConcatenation.cs:15:21:15:22 | "" |
 | StringConcatenation.cs:15:16:15:22 | ... != ... | false | StringConcatenation.cs:15:21:15:22 | "" | StringConcatenation.cs:15:16:15:16 | access to local variable s |
 | StringConcatenation.cs:22:16:22:22 | ... != ... | false | StringConcatenation.cs:22:16:22:16 | access to local variable s | StringConcatenation.cs:22:21:22:22 | "" |
