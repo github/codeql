@@ -102,7 +102,8 @@ module InstructionSanity {
     not exists(instr.getASuccessor()) and
     not instr instanceof ExitFunctionInstruction and
     // Phi instructions aren't linked into the instruction-level flow graph.
-    not instr instanceof PhiInstruction
+    not instr instanceof PhiInstruction and
+    not instr instanceof UnreachedInstruction
   }
 
   /**
@@ -451,8 +452,7 @@ class Instruction extends Construction::TInstruction {
   final predicate isResultModeled() {
     // Register results are always in SSA form.
     not hasMemoryResult() or
-    // An unmodeled result will have a use on the `UnmodeledUse` instruction.
-    not (getAUse() instanceof UnmodeledUseOperand)
+    Construction::hasModeledMemoryResult(this)
   }
 
   /**
@@ -1466,6 +1466,17 @@ class ChiInstruction extends Instruction {
    */
   final Instruction getPartialOperand() {
     result = getAnOperand().(ChiPartialOperand).getDefinitionInstruction()
+  }
+}
+
+/**
+ * An instruction representing unreachable code. Inserted in place of the original target
+ * instruction of a `ConditionalBranch` or `Switch` instruction where that particular edge is
+ * infeasible.
+ */
+class UnreachedInstruction extends Instruction {
+  UnreachedInstruction() {
+    opcode instanceof Opcode::Unreached
   }
 }
 

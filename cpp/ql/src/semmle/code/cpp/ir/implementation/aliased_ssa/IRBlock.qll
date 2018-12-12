@@ -1,7 +1,7 @@
 private import internal.IRInternal
 import Instruction
 import semmle.code.cpp.ir.implementation.EdgeKind
-import Cached
+private import Cached
 
 class IRBlock extends TIRBlock {
   final string toString() {

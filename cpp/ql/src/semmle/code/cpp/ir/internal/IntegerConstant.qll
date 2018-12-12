@@ -103,6 +103,96 @@ IntValue div(IntValue a, IntValue b) {
 }
 
 /**
+ * Returns `a == b`. If either input is unknown, the result is unknown.
+ */
+bindingset[a, b]
+IntValue compareEQ(IntValue a, IntValue b) {
+  if hasValue(a) and hasValue(b) then (
+    if a = b then
+      result = 1
+    else
+      result = 0
+  )
+  else
+    result = unknown()
+}
+
+/**
+ * Returns `a != b`. If either input is unknown, the result is unknown.
+ */
+bindingset[a, b]
+IntValue compareNE(IntValue a, IntValue b) {
+  if hasValue(a) and hasValue(b) then (
+    if a != b then
+      result = 1
+    else
+      result = 0
+  )
+  else
+    result = unknown()
+}
+
+/**
+ * Returns `a < b`. If either input is unknown, the result is unknown.
+ */
+bindingset[a, b]
+IntValue compareLT(IntValue a, IntValue b) {
+  if hasValue(a) and hasValue(b) then (
+    if a < b then
+      result = 1
+    else
+      result = 0
+  )
+  else
+    result = unknown()
+}
+
+/**
+ * Returns `a > b`. If either input is unknown, the result is unknown.
+ */
+bindingset[a, b]
+IntValue compareGT(IntValue a, IntValue b) {
+  if hasValue(a) and hasValue(b) then (
+    if a > b then
+      result = 1
+    else
+      result = 0
+  )
+  else
+    result = unknown()
+}
+
+/**
+ * Returns `a <= b`. If either input is unknown, the result is unknown.
+ */
+bindingset[a, b]
+IntValue compareLE(IntValue a, IntValue b) {
+  if hasValue(a) and hasValue(b) then (
+    if a <= b then
+      result = 1
+    else
+      result = 0
+  )
+  else
+    result = unknown()
+}
+
+/**
+ * Returns `a >= b`. If either input is unknown, the result is unknown.
+ */
+bindingset[a, b]
+IntValue compareGE(IntValue a, IntValue b) {
+  if hasValue(a) and hasValue(b) then (
+    if a >= b then
+      result = 1
+    else
+      result = 0
+  )
+  else
+    result = unknown()
+}
+
+/**
  * Return `-a`. If `a` is unknown, the result is unknown.
  */
 bindingset[a]

@@ -268,9 +268,10 @@ MemoryAccess getOperandMemoryAccess(Operand operand) {
   if exists(IRVariable var, IntValue i |
     resultPointsTo(operand.getAddressOperand().getDefinitionInstruction(), var, i)
   )
-  then exists(IRVariable var, IntValue i |
+  then exists(IRVariable var, IntValue i, int size |
     resultPointsTo(operand.getAddressOperand().getDefinitionInstruction(), var, i) and
-    result = getVariableMemoryAccess(var, i, operand.getDefinitionInstruction().getResultSize())
+    result = getVariableMemoryAccess(var, i, size) and
+    size = operand.getDefinitionInstruction().getResultSize()
   )
   else (
     result = TUnknownMemoryAccess(TUnknownVirtualVariable(operand.getInstruction().getFunctionIR())) and

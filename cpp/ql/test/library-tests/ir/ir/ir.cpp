@@ -1018,4 +1018,32 @@ int ChiPhiNode(Point *p, bool which1, bool which2) {
   return p->x + p->y;
 }
 
+int UnreachableViaGoto() {
+  goto skip;
+  return 1;
+skip:
+  return 0;
+}
+
+int UnreachableIf(bool b) {
+  int x = 5;
+  int y = 10;
+  if (b) {
+    if (x == y) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+  else {
+    if (x < y) {
+      return 0;
+    }
+    else {
+      return 1;
+    }
+  }
+}
+
 // semmle-extractor-options: -std=c++17
