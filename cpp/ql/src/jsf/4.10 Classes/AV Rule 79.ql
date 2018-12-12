@@ -227,6 +227,11 @@ predicate leakedInSameMethod(Resource r, Expr acquire) {
         fc.getQualifier() = r.getAnAccess() or // e.g. `r->setOwner(this)`
         fc = acquire.getAChild*() // e.g. `r = new MyClass(this)`
       )
+    ) or exists(FunctionAccess fa, string kind |
+      // the address of a function that releases `r` is taken (and likely
+      // used to release `r` at some point).
+      r.acquisitionWithRequiredKind(acquire, kind) and
+      fa.getTarget() = r.getAReleaseExpr(kind).getEnclosingFunction()
     )
   )
 }

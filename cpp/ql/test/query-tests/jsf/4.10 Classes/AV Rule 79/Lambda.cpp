@@ -26,7 +26,7 @@ public:
 		r5 = new char[4096]; // GOOD
 		deleter5 = &deleter_for_r5;
 
-		r6 = new char[4096]; // GOOD [FALSE POSITIVE]
+		r6 = new char[4096]; // GOOD
 		deleter6 = &testLambda::deleter_for_r6;
 	}
 
