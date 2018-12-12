@@ -64,3 +64,32 @@ void test7(int i) {
   v = *(int *)(voidPointer + i); // GOOD (actually rather dubious, but this could be correct code)
   v = *(int *)(voidPointer + (i * sizeof(int))); // GOOD
 }
+
+typedef unsigned long size_t;
+
+void *malloc(size_t size);
+
+class MyABC
+{
+public:
+  int a, b, c;
+};
+
+typedef unsigned char myChar;
+typedef unsigned int myInt;
+
+class MyTest8Class
+{
+public:
+  MyTest8Class() :
+    pairPtr((myChar *)malloc(sizeof(MyABC) * 2)),
+    pairPtrInt((myInt *)malloc(sizeof(MyABC) * 2))
+  {
+    myChar *secondPtr = pairPtr + sizeof(MyABC); // GOOD [FALSE POSITIVE]
+    myInt *secondPtrInt = pairPtrInt + sizeof(MyABC); // BAD
+  }
+
+private:
+  myChar * const pairPtr;
+  myInt * const pairPtrInt;
+};
