@@ -28,6 +28,7 @@ module DataFlow {
     DotNet::Type getType() { none() }
 
     /** Gets the enclosing callable of this node. */
+    cached
     DotNet::Callable getEnclosingCallable() { none() }
 
     /** Gets a textual representation of this node. */
