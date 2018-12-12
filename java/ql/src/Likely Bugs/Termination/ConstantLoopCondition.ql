@@ -81,5 +81,5 @@ where
   not exists(MethodAccess ma | ma.getParent*() = cond) and
   not exists(FieldRead fa | fa.getParent*() = cond) and
   not exists(ArrayAccess aa | aa.getParent*() = cond)
-select loop, "Loop might not terminate, as this $@ is constant within the loop.", cond,
-  "loop condition"
+select cond, "$@ might not terminate, as this loop condition is constant within the loop.", loop,
+  "Loop"

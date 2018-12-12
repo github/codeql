@@ -22,7 +22,9 @@ class UnusedLocal extends LocalVariable {
     not exists(FunctionExpr fe | this = fe.getVariable()) and
     not exists(ClassExpr ce | this = ce.getVariable()) and
     not exists(ExportDeclaration ed | ed.exportsAs(this, _)) and
-    not exists(LocalVarTypeAccess type | type.getVariable() = this)
+    not exists(LocalVarTypeAccess type | type.getVariable() = this) and
+    // common convention: variables with leading underscore are intentionally unused
+    getName().charAt(0) != "_"
   }
 }
 
