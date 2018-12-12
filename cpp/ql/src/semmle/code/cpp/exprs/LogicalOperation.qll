@@ -73,7 +73,7 @@ class ConditionalExpr extends Operation, @conditionalexpr {
 
   /** Gets the 'then' expression of this conditional expression. */
   Expr getThen() {
-    if this.twoOperand()
+    if this.isTwoOperand()
     then result = this.getCondition()
     else expr_cond_true(underlyingElement(this), unresolveElement(result))
   }
@@ -86,7 +86,7 @@ class ConditionalExpr extends Operation, @conditionalexpr {
   /**
    * Holds if this expression used the two operand form `guard ? : false`.
    */
-  predicate twoOperand() {
+  predicate isTwoOperand() {
     expr_cond_two_operand(underlyingElement(this))
   }
 
