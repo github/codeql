@@ -21,7 +21,7 @@ predicate nonEmptyArrayLiteralOrNull(Expr e) {
     // Array creation with dimensions (but without initializers).
     // Empty if the first dimension is 0.
     exists(Expr dim | dim = arr.getDimension(0) |
-      not (dim.(CompileTimeConstantExpr).getIntValue() = 0)
+      not dim.(CompileTimeConstantExpr).getIntValue() = 0
     )
   )
   or

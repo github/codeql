@@ -4,6 +4,9 @@
  * @kind problem
  * @id cpp/jpl-c/checking-parameter-values
  * @problem.severity warning
+ * @tags correctness
+ *       reliability
+ *       external/jpl
  */
 
 import JPL_C.Tasks

@@ -44,17 +44,13 @@ private EnumConstant getAContainedEnumConstant(Expr enumSetRef) {
       exists(MethodAccess addToSet |
         addToSet.getQualifier() = enumSetAccess.getVariable().getAnAccess()
       |
-        (
-          // Call to `add(..)` on the enum set variable.
-          addToSet.getMethod().hasName("add") and
-          result = addToSet.getArgument(0).(VarAccess).getVariable()
-        )
+        // Call to `add(..)` on the enum set variable.
+        addToSet.getMethod().hasName("add") and
+        result = addToSet.getArgument(0).(VarAccess).getVariable()
         or
-        (
-          // Call to `addAll(..)` on the enum set variable.
-          addToSet.getMethod().hasName("addAll") and
-          result = getAContainedEnumConstant(addToSet.getArgument(0))
-        )
+        // Call to `addAll(..)` on the enum set variable.
+        addToSet.getMethod().hasName("addAll") and
+        result = getAContainedEnumConstant(addToSet.getArgument(0))
       )
     )
   )

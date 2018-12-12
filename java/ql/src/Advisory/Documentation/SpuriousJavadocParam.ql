@@ -15,7 +15,7 @@ where
   callable.(Documentable).getJavadoc().getAChild() = paramTag and
   (if callable instanceof Constructor then what = "constructor" else what = "method") and
   if exists(paramTag.getParamName())
-  then (
+  then
     // The tag's value is neither matched by a callable parameter name ...
     not callable.getAParameter().getName() = paramTag.getParamName() and
     // ... nor by a type parameter name.
@@ -24,7 +24,7 @@ where
     ) and
     msg = "@param tag \"" + paramTag.getParamName() + "\" does not match any actual parameter of " +
         what + " \"" + callable.getName() + "()\"."
-  ) else
+  else
     // The tag has no value at all.
     msg = "This @param tag does not have a value."
 select paramTag, msg

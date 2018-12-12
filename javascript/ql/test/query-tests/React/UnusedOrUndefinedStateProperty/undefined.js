@@ -156,4 +156,15 @@ React.createClass({
     mixins: [{ f: () => this.state.writtenThroughMixin = 42 }]
 });
 
+class C11 extends React.Component {
+
+    static getDerivedStateFromProps(p, s) {
+        return { writeIn_getDerivedStateFromProps};
+    }
+
+    otherMethod() {
+        this.state.writeIn_getDerivedStateFromProps; // OK
+    }
+}
+
 //semmle-extractor-options: --experimental

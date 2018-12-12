@@ -514,6 +514,24 @@
 | Conditions.cs:122:17:122:24 | ... = ... | Conditions.cs:116:41:116:41 | access to local variable i | semmle.label | successor |
 | Conditions.cs:122:17:122:25 | ...; | Conditions.cs:122:17:122:17 | access to local variable s | semmle.label | successor |
 | Conditions.cs:122:21:122:24 | null | Conditions.cs:122:17:122:24 | ... = ... | semmle.label | successor |
+| Conditions.cs:130:5:141:5 | {...} | Conditions.cs:131:9:140:9 | while (...) ... | semmle.label | successor |
+| Conditions.cs:131:9:140:9 | while (...) ... | Conditions.cs:131:16:131:19 | true | semmle.label | successor |
+| Conditions.cs:131:16:131:19 | true | Conditions.cs:132:9:140:9 | {...} | semmle.label | true |
+| Conditions.cs:132:9:140:9 | {...} | Conditions.cs:133:13:139:13 | if (...) ... | semmle.label | successor |
+| Conditions.cs:133:13:139:13 | if (...) ... | Conditions.cs:133:17:133:22 | this access | semmle.label | successor |
+| Conditions.cs:133:17:133:22 | access to field Field1 | Conditions.cs:131:16:131:19 | true | semmle.label | false |
+| Conditions.cs:133:17:133:22 | access to field Field1 | Conditions.cs:134:13:139:13 | {...} | semmle.label | true |
+| Conditions.cs:133:17:133:22 | this access | Conditions.cs:133:17:133:22 | access to field Field1 | semmle.label | successor |
+| Conditions.cs:134:13:139:13 | {...} | Conditions.cs:135:17:138:17 | if (...) ... | semmle.label | successor |
+| Conditions.cs:135:17:138:17 | if (...) ... | Conditions.cs:135:21:135:26 | this access | semmle.label | successor |
+| Conditions.cs:135:21:135:26 | access to field Field2 | Conditions.cs:131:16:131:19 | true | semmle.label | false |
+| Conditions.cs:135:21:135:26 | access to field Field2 | Conditions.cs:136:17:138:17 | {...} | semmle.label | true |
+| Conditions.cs:135:21:135:26 | this access | Conditions.cs:135:21:135:26 | access to field Field2 | semmle.label | successor |
+| Conditions.cs:136:17:138:17 | {...} | Conditions.cs:137:21:137:38 | ...; | semmle.label | successor |
+| Conditions.cs:137:21:137:26 | access to field Field1 | Conditions.cs:137:21:137:37 | call to method ToString | semmle.label | successor |
+| Conditions.cs:137:21:137:26 | this access | Conditions.cs:137:21:137:26 | access to field Field1 | semmle.label | successor |
+| Conditions.cs:137:21:137:37 | call to method ToString | Conditions.cs:131:16:131:19 | true | semmle.label | successor |
+| Conditions.cs:137:21:137:38 | ...; | Conditions.cs:137:21:137:26 | this access | semmle.label | successor |
 | ExitMethods.cs:8:5:11:5 | {...} | ExitMethods.cs:9:9:9:25 | ...; | semmle.label | successor |
 | ExitMethods.cs:9:9:9:24 | call to method ErrorMaybe | ExitMethods.cs:10:9:10:15 | return ...; | semmle.label | successor |
 | ExitMethods.cs:9:9:9:25 | ...; | ExitMethods.cs:9:20:9:23 | true | semmle.label | successor |
@@ -543,59 +561,66 @@
 | ExitMethods.cs:44:9:46:9 | {...} | ExitMethods.cs:45:13:45:19 | return ...; | semmle.label | successor |
 | ExitMethods.cs:47:9:50:9 | catch (...) {...} | ExitMethods.cs:48:9:50:9 | {...} | semmle.label | match |
 | ExitMethods.cs:48:9:50:9 | {...} | ExitMethods.cs:49:13:49:19 | return ...; | semmle.label | successor |
-| ExitMethods.cs:54:5:57:5 | {...} | ExitMethods.cs:55:9:56:34 | if (...) ... | semmle.label | successor |
-| ExitMethods.cs:55:9:56:34 | if (...) ... | ExitMethods.cs:55:13:55:13 | access to parameter b | semmle.label | successor |
-| ExitMethods.cs:55:13:55:13 | access to parameter b | ExitMethods.cs:56:19:56:33 | object creation of type Exception | semmle.label | true |
-| ExitMethods.cs:56:19:56:33 | object creation of type Exception | ExitMethods.cs:56:13:56:34 | throw ...; | semmle.label | successor |
-| ExitMethods.cs:60:5:65:5 | {...} | ExitMethods.cs:61:9:64:45 | if (...) ... | semmle.label | successor |
-| ExitMethods.cs:61:9:64:45 | if (...) ... | ExitMethods.cs:61:13:61:13 | access to parameter b | semmle.label | successor |
-| ExitMethods.cs:61:13:61:13 | access to parameter b | ExitMethods.cs:62:19:62:33 | object creation of type Exception | semmle.label | true |
-| ExitMethods.cs:61:13:61:13 | access to parameter b | ExitMethods.cs:64:41:64:43 | "b" | semmle.label | false |
-| ExitMethods.cs:62:19:62:33 | object creation of type Exception | ExitMethods.cs:62:13:62:34 | throw ...; | semmle.label | successor |
-| ExitMethods.cs:64:19:64:44 | object creation of type ArgumentException | ExitMethods.cs:64:13:64:45 | throw ...; | semmle.label | successor |
-| ExitMethods.cs:64:41:64:43 | "b" | ExitMethods.cs:64:19:64:44 | object creation of type ArgumentException | semmle.label | successor |
-| ExitMethods.cs:68:5:70:5 | {...} | ExitMethods.cs:69:9:69:28 | ...; | semmle.label | successor |
-| ExitMethods.cs:69:9:69:28 | ...; | ExitMethods.cs:69:26:69:26 | 0 | semmle.label | successor |
-| ExitMethods.cs:69:26:69:26 | 0 | ExitMethods.cs:69:9:69:27 | call to method Exit | semmle.label | successor |
-| ExitMethods.cs:73:5:83:5 | {...} | ExitMethods.cs:74:9:82:9 | try {...} ... | semmle.label | successor |
-| ExitMethods.cs:74:9:82:9 | try {...} ... | ExitMethods.cs:75:9:77:9 | {...} | semmle.label | successor |
-| ExitMethods.cs:75:9:77:9 | {...} | ExitMethods.cs:76:13:76:19 | ...; | semmle.label | successor |
-| ExitMethods.cs:76:13:76:18 | this access | ExitMethods.cs:76:13:76:18 | call to method Exit | semmle.label | successor |
-| ExitMethods.cs:76:13:76:19 | ...; | ExitMethods.cs:76:13:76:18 | this access | semmle.label | successor |
-| ExitMethods.cs:86:5:88:5 | {...} | ExitMethods.cs:87:9:87:48 | ...; | semmle.label | successor |
-| ExitMethods.cs:87:9:87:48 | ...; | ExitMethods.cs:87:9:87:47 | call to method Exit | semmle.label | successor |
-| ExitMethods.cs:91:5:93:5 | {...} | ExitMethods.cs:92:16:92:76 | ... ? ... : ... | semmle.label | successor |
-| ExitMethods.cs:92:16:92:20 | access to parameter input | ExitMethods.cs:92:25:92:25 | 0 | semmle.label | successor |
-| ExitMethods.cs:92:16:92:25 | ... != ... | ExitMethods.cs:92:29:92:29 | 1 | semmle.label | true |
-| ExitMethods.cs:92:16:92:25 | ... != ... | ExitMethods.cs:92:69:92:75 | "input" | semmle.label | false |
-| ExitMethods.cs:92:16:92:76 | ... ? ... : ... | ExitMethods.cs:92:16:92:20 | access to parameter input | semmle.label | successor |
-| ExitMethods.cs:92:25:92:25 | 0 | ExitMethods.cs:92:25:92:25 | (...) ... | semmle.label | successor |
-| ExitMethods.cs:92:25:92:25 | (...) ... | ExitMethods.cs:92:16:92:25 | ... != ... | semmle.label | successor |
-| ExitMethods.cs:92:29:92:29 | 1 | ExitMethods.cs:92:29:92:29 | (...) ... | semmle.label | successor |
-| ExitMethods.cs:92:29:92:29 | (...) ... | ExitMethods.cs:92:33:92:37 | access to parameter input | semmle.label | successor |
-| ExitMethods.cs:92:29:92:37 | ... / ... | ExitMethods.cs:92:9:92:77 | return ...; | semmle.label | successor |
-| ExitMethods.cs:92:33:92:37 | access to parameter input | ExitMethods.cs:92:29:92:37 | ... / ... | semmle.label | successor |
-| ExitMethods.cs:92:47:92:76 | object creation of type ArgumentException | ExitMethods.cs:92:41:92:76 | throw ... | semmle.label | successor |
-| ExitMethods.cs:92:69:92:75 | "input" | ExitMethods.cs:92:47:92:76 | object creation of type ArgumentException | semmle.label | successor |
-| ExitMethods.cs:96:5:98:5 | {...} | ExitMethods.cs:97:16:97:38 | ... ? ... : ... | semmle.label | successor |
-| ExitMethods.cs:97:16:97:16 | access to parameter s | ExitMethods.cs:97:27:97:29 | - | semmle.label | successor |
-| ExitMethods.cs:97:16:97:30 | call to method Contains | ExitMethods.cs:97:34:97:34 | 0 | semmle.label | true |
-| ExitMethods.cs:97:16:97:30 | call to method Contains | ExitMethods.cs:97:38:97:38 | 1 | semmle.label | false |
-| ExitMethods.cs:97:16:97:38 | ... ? ... : ... | ExitMethods.cs:97:16:97:16 | access to parameter s | semmle.label | successor |
-| ExitMethods.cs:97:27:97:29 | - | ExitMethods.cs:97:16:97:30 | call to method Contains | semmle.label | successor |
-| ExitMethods.cs:97:34:97:34 | 0 | ExitMethods.cs:97:9:97:39 | return ...; | semmle.label | successor |
-| ExitMethods.cs:97:38:97:38 | 1 | ExitMethods.cs:97:9:97:39 | return ...; | semmle.label | successor |
-| ExitMethods.cs:101:5:104:5 | {...} | ExitMethods.cs:102:9:102:29 | ...; | semmle.label | successor |
-| ExitMethods.cs:102:9:102:29 | ...; | ExitMethods.cs:102:23:102:27 | false | semmle.label | successor |
-| ExitMethods.cs:102:23:102:27 | false | ExitMethods.cs:102:9:102:28 | call to method IsTrue | semmle.label | successor |
-| ExitMethods.cs:107:5:110:5 | {...} | ExitMethods.cs:108:9:108:27 | ...; | semmle.label | successor |
-| ExitMethods.cs:108:9:108:26 | this access | ExitMethods.cs:108:9:108:26 | call to method FailingAssertion | semmle.label | successor |
-| ExitMethods.cs:108:9:108:27 | ...; | ExitMethods.cs:108:9:108:26 | this access | semmle.label | successor |
-| ExitMethods.cs:112:48:112:48 | access to parameter b | ExitMethods.cs:112:33:112:49 | call to method IsFalse | semmle.label | successor |
-| ExitMethods.cs:115:5:118:5 | {...} | ExitMethods.cs:116:9:116:26 | ...; | semmle.label | successor |
-| ExitMethods.cs:116:9:116:25 | this access | ExitMethods.cs:116:21:116:24 | true | semmle.label | successor |
-| ExitMethods.cs:116:9:116:26 | ...; | ExitMethods.cs:116:9:116:25 | this access | semmle.label | successor |
-| ExitMethods.cs:116:21:116:24 | true | ExitMethods.cs:116:9:116:25 | call to method AssertFalse | semmle.label | successor |
+| ExitMethods.cs:54:5:57:5 | {...} | ExitMethods.cs:55:9:55:23 | ...; | semmle.label | successor |
+| ExitMethods.cs:55:9:55:23 | ...; | ExitMethods.cs:55:9:55:22 | call to method ErrorAlways2 | semmle.label | successor |
+| ExitMethods.cs:60:5:63:5 | {...} | ExitMethods.cs:61:9:61:23 | ...; | semmle.label | successor |
+| ExitMethods.cs:61:9:61:23 | ...; | ExitMethods.cs:61:9:61:22 | call to method ErrorAlways3 | semmle.label | successor |
+| ExitMethods.cs:66:5:69:5 | {...} | ExitMethods.cs:67:9:68:34 | if (...) ... | semmle.label | successor |
+| ExitMethods.cs:67:9:68:34 | if (...) ... | ExitMethods.cs:67:13:67:13 | access to parameter b | semmle.label | successor |
+| ExitMethods.cs:67:13:67:13 | access to parameter b | ExitMethods.cs:68:19:68:33 | object creation of type Exception | semmle.label | true |
+| ExitMethods.cs:68:19:68:33 | object creation of type Exception | ExitMethods.cs:68:13:68:34 | throw ...; | semmle.label | successor |
+| ExitMethods.cs:72:5:77:5 | {...} | ExitMethods.cs:73:9:76:45 | if (...) ... | semmle.label | successor |
+| ExitMethods.cs:73:9:76:45 | if (...) ... | ExitMethods.cs:73:13:73:13 | access to parameter b | semmle.label | successor |
+| ExitMethods.cs:73:13:73:13 | access to parameter b | ExitMethods.cs:74:19:74:33 | object creation of type Exception | semmle.label | true |
+| ExitMethods.cs:73:13:73:13 | access to parameter b | ExitMethods.cs:76:41:76:43 | "b" | semmle.label | false |
+| ExitMethods.cs:74:19:74:33 | object creation of type Exception | ExitMethods.cs:74:13:74:34 | throw ...; | semmle.label | successor |
+| ExitMethods.cs:76:19:76:44 | object creation of type ArgumentException | ExitMethods.cs:76:13:76:45 | throw ...; | semmle.label | successor |
+| ExitMethods.cs:76:41:76:43 | "b" | ExitMethods.cs:76:19:76:44 | object creation of type ArgumentException | semmle.label | successor |
+| ExitMethods.cs:80:5:82:5 | {...} | ExitMethods.cs:81:15:81:29 | object creation of type Exception | semmle.label | successor |
+| ExitMethods.cs:81:15:81:29 | object creation of type Exception | ExitMethods.cs:81:9:81:30 | throw ...; | semmle.label | successor |
+| ExitMethods.cs:84:41:84:55 | object creation of type Exception | ExitMethods.cs:84:35:84:55 | throw ... | semmle.label | successor |
+| ExitMethods.cs:87:5:89:5 | {...} | ExitMethods.cs:88:9:88:28 | ...; | semmle.label | successor |
+| ExitMethods.cs:88:9:88:28 | ...; | ExitMethods.cs:88:26:88:26 | 0 | semmle.label | successor |
+| ExitMethods.cs:88:26:88:26 | 0 | ExitMethods.cs:88:9:88:27 | call to method Exit | semmle.label | successor |
+| ExitMethods.cs:92:5:102:5 | {...} | ExitMethods.cs:93:9:101:9 | try {...} ... | semmle.label | successor |
+| ExitMethods.cs:93:9:101:9 | try {...} ... | ExitMethods.cs:94:9:96:9 | {...} | semmle.label | successor |
+| ExitMethods.cs:94:9:96:9 | {...} | ExitMethods.cs:95:13:95:19 | ...; | semmle.label | successor |
+| ExitMethods.cs:95:13:95:18 | this access | ExitMethods.cs:95:13:95:18 | call to method Exit | semmle.label | successor |
+| ExitMethods.cs:95:13:95:19 | ...; | ExitMethods.cs:95:13:95:18 | this access | semmle.label | successor |
+| ExitMethods.cs:105:5:107:5 | {...} | ExitMethods.cs:106:9:106:48 | ...; | semmle.label | successor |
+| ExitMethods.cs:106:9:106:48 | ...; | ExitMethods.cs:106:9:106:47 | call to method Exit | semmle.label | successor |
+| ExitMethods.cs:110:5:112:5 | {...} | ExitMethods.cs:111:16:111:76 | ... ? ... : ... | semmle.label | successor |
+| ExitMethods.cs:111:16:111:20 | access to parameter input | ExitMethods.cs:111:25:111:25 | 0 | semmle.label | successor |
+| ExitMethods.cs:111:16:111:25 | ... != ... | ExitMethods.cs:111:29:111:29 | 1 | semmle.label | true |
+| ExitMethods.cs:111:16:111:25 | ... != ... | ExitMethods.cs:111:69:111:75 | "input" | semmle.label | false |
+| ExitMethods.cs:111:16:111:76 | ... ? ... : ... | ExitMethods.cs:111:16:111:20 | access to parameter input | semmle.label | successor |
+| ExitMethods.cs:111:25:111:25 | 0 | ExitMethods.cs:111:25:111:25 | (...) ... | semmle.label | successor |
+| ExitMethods.cs:111:25:111:25 | (...) ... | ExitMethods.cs:111:16:111:25 | ... != ... | semmle.label | successor |
+| ExitMethods.cs:111:29:111:29 | 1 | ExitMethods.cs:111:29:111:29 | (...) ... | semmle.label | successor |
+| ExitMethods.cs:111:29:111:29 | (...) ... | ExitMethods.cs:111:33:111:37 | access to parameter input | semmle.label | successor |
+| ExitMethods.cs:111:29:111:37 | ... / ... | ExitMethods.cs:111:9:111:77 | return ...; | semmle.label | successor |
+| ExitMethods.cs:111:33:111:37 | access to parameter input | ExitMethods.cs:111:29:111:37 | ... / ... | semmle.label | successor |
+| ExitMethods.cs:111:47:111:76 | object creation of type ArgumentException | ExitMethods.cs:111:41:111:76 | throw ... | semmle.label | successor |
+| ExitMethods.cs:111:69:111:75 | "input" | ExitMethods.cs:111:47:111:76 | object creation of type ArgumentException | semmle.label | successor |
+| ExitMethods.cs:115:5:117:5 | {...} | ExitMethods.cs:116:16:116:38 | ... ? ... : ... | semmle.label | successor |
+| ExitMethods.cs:116:16:116:16 | access to parameter s | ExitMethods.cs:116:27:116:29 | - | semmle.label | successor |
+| ExitMethods.cs:116:16:116:30 | call to method Contains | ExitMethods.cs:116:34:116:34 | 0 | semmle.label | true |
+| ExitMethods.cs:116:16:116:30 | call to method Contains | ExitMethods.cs:116:38:116:38 | 1 | semmle.label | false |
+| ExitMethods.cs:116:16:116:38 | ... ? ... : ... | ExitMethods.cs:116:16:116:16 | access to parameter s | semmle.label | successor |
+| ExitMethods.cs:116:27:116:29 | - | ExitMethods.cs:116:16:116:30 | call to method Contains | semmle.label | successor |
+| ExitMethods.cs:116:34:116:34 | 0 | ExitMethods.cs:116:9:116:39 | return ...; | semmle.label | successor |
+| ExitMethods.cs:116:38:116:38 | 1 | ExitMethods.cs:116:9:116:39 | return ...; | semmle.label | successor |
+| ExitMethods.cs:120:5:123:5 | {...} | ExitMethods.cs:121:9:121:29 | ...; | semmle.label | successor |
+| ExitMethods.cs:121:9:121:29 | ...; | ExitMethods.cs:121:23:121:27 | false | semmle.label | successor |
+| ExitMethods.cs:121:23:121:27 | false | ExitMethods.cs:121:9:121:28 | call to method IsTrue | semmle.label | successor |
+| ExitMethods.cs:126:5:129:5 | {...} | ExitMethods.cs:127:9:127:27 | ...; | semmle.label | successor |
+| ExitMethods.cs:127:9:127:26 | this access | ExitMethods.cs:127:9:127:26 | call to method FailingAssertion | semmle.label | successor |
+| ExitMethods.cs:127:9:127:27 | ...; | ExitMethods.cs:127:9:127:26 | this access | semmle.label | successor |
+| ExitMethods.cs:131:48:131:48 | access to parameter b | ExitMethods.cs:131:33:131:49 | call to method IsFalse | semmle.label | successor |
+| ExitMethods.cs:134:5:137:5 | {...} | ExitMethods.cs:135:9:135:26 | ...; | semmle.label | successor |
+| ExitMethods.cs:135:9:135:25 | this access | ExitMethods.cs:135:21:135:24 | true | semmle.label | successor |
+| ExitMethods.cs:135:9:135:26 | ...; | ExitMethods.cs:135:9:135:25 | this access | semmle.label | successor |
+| ExitMethods.cs:135:21:135:24 | true | ExitMethods.cs:135:9:135:25 | call to method AssertFalse | semmle.label | successor |
 | Extensions.cs:6:5:8:5 | {...} | Extensions.cs:7:28:7:28 | access to parameter s | semmle.label | successor |
 | Extensions.cs:7:16:7:29 | call to method Parse | Extensions.cs:7:9:7:30 | return ...; | semmle.label | successor |
 | Extensions.cs:7:28:7:28 | access to parameter s | Extensions.cs:7:16:7:29 | call to method Parse | semmle.label | successor |

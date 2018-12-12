@@ -16,10 +16,8 @@ import java
 predicate okForEquals(Class c) {
   c.getAMethod() instanceof EqualsMethod
   or
-  (
-    not exists(c.getAField()) and
-    okForEquals(c.getASupertype())
-  )
+  not exists(c.getAField()) and
+  okForEquals(c.getASupertype())
 }
 
 /** Holds if method `em` implements a reference equality check. */

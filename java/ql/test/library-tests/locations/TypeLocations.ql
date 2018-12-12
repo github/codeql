@@ -10,9 +10,9 @@ where
     or
     t instanceof NullType
     or
-    (t instanceof Wildcard and exists(WildcardTypeAccess wta | wta.getType() = t))
+    t instanceof Wildcard and exists(WildcardTypeAccess wta | wta.getType() = t)
     or
-    (t instanceof Array and exists(ArrayTypeAccess ata | ata.getType() = t))
+    t instanceof Array and exists(ArrayTypeAccess ata | ata.getType() = t)
     or
     t.fromSource()
   ) and

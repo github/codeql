@@ -3,7 +3,10 @@
  * @description Global and file-scope variables that are accessed by only one function should be scoped within that function.
  * @kind problem
  * @id cpp/jpl-c/limited-scope-function
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @precision low
+ * @tags maintainability
+ *       external/jpl
  */
 
 import cpp

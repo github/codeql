@@ -1,5 +1,5 @@
 /**
- * @name Client side cross-site scripting
+ * @name Client-side cross-site scripting
  * @description Writing user input directly to the DOM allows for
  *              a cross-site scripting vulnerability.
  * @kind path-problem

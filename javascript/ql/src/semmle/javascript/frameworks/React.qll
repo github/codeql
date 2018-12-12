@@ -35,6 +35,11 @@ abstract class ReactComponent extends ASTNode {
   abstract Function getInstanceMethod(string name);
 
   /**
+   * Gets a static method of this component with the given name.
+   */
+  abstract Function getStaticMethod(string name);
+
+  /**
    * Gets the abstract value that represents this component.
    */
   abstract AbstractValue getAbstractComponent();
@@ -175,6 +180,11 @@ abstract class ReactComponent extends ASTNode {
         // setState with object: `this.setState({foo: 42})`
         result = arg0
     )
+    or
+    result.flowsToExpr(getStaticMethod("getDerivedStateFromProps").getAReturnedExpr())
+    or
+    // shouldComponentUpdate: (nextProps, nextState)
+    result = DataFlow::parameterNode(getInstanceMethod("shouldComponentUpdate").getParameter(1))
   }
 
   /**
@@ -190,9 +200,14 @@ abstract class ReactComponent extends ASTNode {
       callback = getAMethodCall("setState").getCallback(0) and
       stateParameterIndex = 0
       or
-      // componentDidUpdate: (prevProps, prevState)
-      callback = getInstanceMethod("componentDidUpdate").flow() and
-      stateParameterIndex = 1
+      stateParameterIndex = 1 and (
+        // componentDidUpdate: (prevProps, prevState)
+        callback = getInstanceMethod("componentDidUpdate").flow() or
+        // getDerivedStateFromProps: (props, state)
+        callback = getStaticMethod("getDerivedStateFromProps").flow() or
+        // getSnapshotBeforeUpdate: (prevProps, prevState)
+        callback = getInstanceMethod("getSnapshotBeforeUpdate").flow()
+      )
     )
   }
 
@@ -205,6 +220,9 @@ abstract class ReactComponent extends ASTNode {
     result.flowsTo(getComponentCreatorSource().getAnInvocation().getArgument(0))
     or
     result = getADefaultPropsSource()
+    or
+    // shouldComponentUpdate: (nextProps, nextState)
+    result = DataFlow::parameterNode(getInstanceMethod("shouldComponentUpdate").getParameter(0))
   }
 
   /**
@@ -234,9 +252,14 @@ abstract class ReactComponent extends ASTNode {
       callback = getAMethodCall("setState").getCallback(0) and
       propsParameterIndex = 1
       or
-      // componentDidUpdate: (prevProps, prevState)
-      callback = getInstanceMethod("componentDidUpdate").flow() and
-      propsParameterIndex = 0
+      propsParameterIndex = 0 and (
+        // componentDidUpdate: (prevProps, prevState)
+        callback = getInstanceMethod("componentDidUpdate").flow() or
+        // getDerivedStateFromProps: (props, state)
+        callback = getStaticMethod("getDerivedStateFromProps").flow() or
+        // getSnapshotBeforeUpdate: (prevProps, prevState)
+        callback = getInstanceMethod("getSnapshotBeforeUpdate").flow()
+      )
     )
   }
 
@@ -272,6 +295,10 @@ class FunctionalComponent extends ReactComponent, Function {
     name = "render" and result = this
   }
 
+  override Function getStaticMethod(string name) {
+    none()
+  }
+
   override DataFlow::SourceNode getADirectPropsAccess() {
     result = DataFlow::parameterNode(getParameter(0))
   }
@@ -300,6 +327,14 @@ private abstract class SharedReactPreactClassComponent extends ReactComponent, C
 
   override Function getInstanceMethod(string name) {
     result = ClassDefinition.super.getInstanceMethod(name)
+  }
+
+  override Function getStaticMethod(string name) {
+    exists(MethodDeclaration decl |
+      decl = getMethod(name) and
+      decl.isStatic() and
+      result = decl.getBody()
+    )
   }
 
   override DataFlow::SourceNode getADirectPropsAccess() {
@@ -426,6 +461,10 @@ class ES5Component extends ReactComponent, ObjectExpr {
 
   override Function getInstanceMethod(string name) {
     result = getPropertyByName(name).getInit()
+  }
+
+  override Function getStaticMethod(string name) {
+    none()
   }
 
   override DataFlow::SourceNode getADirectPropsAccess() {

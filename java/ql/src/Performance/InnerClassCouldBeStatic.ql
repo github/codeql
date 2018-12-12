@@ -20,7 +20,7 @@ import java
 predicate inherits(Class c, Field f) {
   f = c.getAField()
   or
-  (not f.isPrivate() and c.getASupertype+().getAField() = f)
+  not f.isPrivate() and c.getASupertype+().getAField() = f
 }
 
 /**
@@ -37,10 +37,10 @@ RefType enclosingInstanceAccess(Expr expr) {
   exists(RefType enclosing | enclosing = expr.getEnclosingCallable().getDeclaringType() |
     // A direct qualified `this` access that doesn't refer to the containing
     // class must refer to an enclosing instance instead.
-    (result = expr.(ThisAccess).getType() and result != enclosing)
+    result = expr.(ThisAccess).getType() and result != enclosing
     or
     // A qualified `super` access qualified with a type that isn't the enclosing type.
-    (result = expr.(SuperAccess).getQualifier().(TypeAccess).getType() and result != enclosing)
+    result = expr.(SuperAccess).getQualifier().(TypeAccess).getType() and result != enclosing
     or
     // An unqualified `new` expression constructing a
     // non-static type that needs an enclosing instance.
@@ -94,7 +94,7 @@ predicate potentiallyStatic(InnerClass c) {
     InnerClass other // If nested and non-static, ...
   |
     // ... all supertypes (which are from source), ...
-    (other = c.getASourceSupertype() and other.fromSource())
+    other = c.getASourceSupertype() and other.fromSource()
     or
     // ... and the enclosing type, ...
     other = c.getEnclosingType()

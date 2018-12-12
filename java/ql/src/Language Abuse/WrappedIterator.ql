@@ -21,10 +21,8 @@ predicate iteratorWrapper(Iterable it, Field f, boolean wrap) {
   (
     f.isFinal()
     or
-    (
-      strictcount(f.getAnAssignedValue()) = 1 and
-      f.getAnAssignedValue().getEnclosingCallable() instanceof InitializerMethod
-    )
+    strictcount(f.getAnAssignedValue()) = 1 and
+    f.getAnAssignedValue().getEnclosingCallable() instanceof InitializerMethod
   ) and
   // ... whose type is a sub-type of `java.util.Iterator` and ...
   f

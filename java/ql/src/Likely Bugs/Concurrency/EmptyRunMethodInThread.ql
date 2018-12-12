@@ -25,16 +25,12 @@ class ThreadClass extends Class {
     (
       result.getNumberOfParameters() = 0
       or
-      (
-        result.getNumberOfParameters() = 1 and
-        result.getParameter(0).getType().(RefType).hasQualifiedName("java.lang", "String")
-      )
+      result.getNumberOfParameters() = 1 and
+      result.getParameter(0).getType().(RefType).hasQualifiedName("java.lang", "String")
       or
-      (
-        result.getNumberOfParameters() = 2 and
-        result.getParameter(0).getType().(RefType).hasQualifiedName("java.lang", "ThreadGroup") and
-        result.getParameter(1).getType().(RefType).hasQualifiedName("java.lang", "String")
-      )
+      result.getNumberOfParameters() = 2 and
+      result.getParameter(0).getType().(RefType).hasQualifiedName("java.lang", "ThreadGroup") and
+      result.getParameter(1).getType().(RefType).hasQualifiedName("java.lang", "String")
     )
   }
 

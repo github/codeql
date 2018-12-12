@@ -27,7 +27,7 @@ RefType aTypeVisibleFrom(TypeVariable var) {
     result = i.getImportedType()
   )
   or
-  (var.getPackage() = result.getPackage() and result instanceof TopLevelType)
+  var.getPackage() = result.getPackage() and result instanceof TopLevelType
 }
 
 from RefType hidden, TypeVariable var

@@ -1,0 +1,1 @@
+| A.java:25:7:30:7 | stmt | Double-checked locking on the non-volatile field $@ is not thread-safe. | A.java:21:13:21:14 | b1 | b1 |

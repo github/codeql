@@ -59,7 +59,7 @@ class Pom extends ProtoPom {
 
   override Group getGroup() {
     // For a project element, the group may be defined in the parent tags instead
-    if not (exists(super.getGroup()))
+    if not exists(super.getGroup())
     then exists(Parent p | p = this.getAChild() and result = p.getAChild())
     else result = super.getGroup()
   }
@@ -94,10 +94,8 @@ class Pom extends ProtoPom {
   PomProperty getAProperty() {
     result = getALocalProperty()
     or
-    (
-      result = getParentPom().getAProperty() and
-      not getALocalProperty().getName() = result.getName()
-    )
+    result = getParentPom().getAProperty() and
+    not getALocalProperty().getName() = result.getName()
   }
 
   /**
@@ -116,11 +114,9 @@ class Pom extends ProtoPom {
       // It must either be a child of the pom, or a child of the parent node of the pom
       result = getAChild()
       or
-      (
-        result = getParentPom().getAChild() and
-        // The parent project property is not shadowed by a local project property
-        not exists(PomElement p | p = getAChild() and p.getName() = result.getName())
-      )
+      result = getParentPom().getAChild() and
+      // The parent project property is not shadowed by a local project property
+      not exists(PomElement p | p = getAChild() and p.getName() = result.getName())
     ) and
     // Can't be a property if it has children of its own
     not exists(result.getAChild())

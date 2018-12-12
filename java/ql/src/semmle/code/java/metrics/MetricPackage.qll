@@ -61,8 +61,8 @@ class MetricPackage extends Package, MetricElement {
    */
   int getNumberOfPublicCallables() {
     result = sum(MetricRefType t, int toSum |
-        (t.getPackage() = this) and
-        (toSum = t.getNumberOfPublicCallables())
+        t.getPackage() = this and
+        toSum = t.getNumberOfPublicCallables()
       |
         toSum
       )
@@ -138,7 +138,7 @@ class MetricPackage extends Package, MetricElement {
       ecoupling = this.getEfferentCoupling() and
       sumcoupling = ecoupling + this.getAfferentCoupling() and
       sumcoupling > 0 and
-      result = ecoupling / (sumcoupling.(float))
+      result = ecoupling / sumcoupling.(float)
     )
   }
 
@@ -164,7 +164,7 @@ class MetricPackage extends Package, MetricElement {
     exists(int i, int j |
       i = count(RefType t | t.getPackage() = this) and
       j = count(RefType t | t.getPackage() = this and t.isAbstract()) and
-      result = j / (i.(float)) and
+      result = j / i.(float) and
       i > 0
     )
   }
@@ -221,8 +221,8 @@ class MetricPackage extends Package, MetricElement {
   float relationalCohesion() {
     result = 1 +
         avg(RefType t, float toAvg |
-          (t.getPackage() = this) and
-          (toAvg = this.countDependencies(t))
+          t.getPackage() = this and
+          toAvg = this.countDependencies(t)
         |
           toAvg
         )
@@ -265,8 +265,8 @@ class MetricPackage extends Package, MetricElement {
    */
   predicate isRepresentative() {
     this.getName() = min(MetricPackage p, string toMin |
-        (p = this.getACycleMember()) and
-        (toMin = p.getName())
+        p = this.getACycleMember() and
+        toMin = p.getName()
       |
         toMin
       )
@@ -280,7 +280,7 @@ class MetricPackage extends Package, MetricElement {
   float getAverageFanIn() {
     result = avg(RefType t, MetricCallable c, int toAvg |
         (c = t.getACallable() and t.getPackage() = this) and
-        (toAvg = c.getAfferentCoupling())
+        toAvg = c.getAfferentCoupling()
       |
         toAvg
       )

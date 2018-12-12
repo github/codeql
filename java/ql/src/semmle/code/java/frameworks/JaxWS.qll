@@ -15,11 +15,9 @@ class JaxWsEndpoint extends Class {
 
   Callable getARemoteMethod() {
     result = this.getACallable() and
-    (
-      exists(AnnotationType a | a = result.getAnAnnotation().getType() |
-        a.hasName("WebMethod") or
-        a.hasName("WebEndpoint")
-      )
+    exists(AnnotationType a | a = result.getAnAnnotation().getType() |
+      a.hasName("WebMethod") or
+      a.hasName("WebEndpoint")
     )
   }
 }

@@ -31,14 +31,10 @@ predicate collectionOrMapType(RefType t) { t instanceof CollectionType or t inst
 predicate serializableType(RefType t) {
   exists(RefType sup | sup = t.getASupertype*() | serializableOrExternalizable(sup))
   or
-  (
-    // Collection interfaces are not serializable, but their implementations are
-    // likely to be.
-    collectionOrMapType(t) and
-    forall(RefType param | param = t.(ParameterizedType).getATypeArgument() |
-      serializableType(param)
-    )
-  )
+  // Collection interfaces are not serializable, but their implementations are
+  // likely to be.
+  collectionOrMapType(t) and
+  forall(RefType param | param = t.(ParameterizedType).getATypeArgument() | serializableType(param))
   or
   exists(BoundedType bt | bt = t | serializableType(bt.getUpperBoundType()))
 }

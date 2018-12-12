@@ -118,7 +118,7 @@ class IfStmt extends ConditionalStmt, @ifstmt {
   override string pp() {
     result = "if (...) " + this.getThen().pp() + " else " + this.getElse().pp()
     or
-    (not exists(this.getElse()) and result = "if (...) " + this.getThen().pp())
+    not exists(this.getElse()) and result = "if (...) " + this.getThen().pp()
   }
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */
@@ -495,7 +495,7 @@ class ThrowStmt extends Stmt, @throwstmt {
   private CatchClause catchClauseForThis(TryStmt try) {
     result = try.getACatchClause() and
     result.getEnclosingCallable() = this.getEnclosingCallable() and
-    (getExpr().getType().(RefType)).hasSupertype*(result.getVariable().getType().(RefType)) and
+    getExpr().getType().(RefType).hasSupertype*(result.getVariable().getType().(RefType)) and
     not this.getParent+() = result
   }
 }
@@ -538,7 +538,7 @@ class JumpStmt extends Stmt {
   Stmt getTarget() {
     result = getLabelTarget()
     or
-    (not exists(getLabelTarget()) and result = getEnclosingTarget())
+    not exists(getLabelTarget()) and result = getEnclosingTarget()
   }
 }
 
