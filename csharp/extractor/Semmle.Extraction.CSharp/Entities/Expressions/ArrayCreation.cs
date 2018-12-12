@@ -9,55 +9,35 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         protected ArrayCreation(ExpressionNodeInfo info) : base(info) { }
     }
 
-    class StackAllocArrayCreation : ArrayCreation<StackAllocArrayCreationExpressionSyntax>
+    abstract class ExplicitArrayCreation<T> : ArrayCreation<T> where T:ExpressionSyntax
     {
-        StackAllocArrayCreation(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.ARRAY_CREATION)) { }
+        protected ExplicitArrayCreation(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.ARRAY_CREATION)) { }
 
-        public static Expression Create(ExpressionNodeInfo info) => new StackAllocArrayCreation(info).TryPopulate();
+        public abstract ArrayTypeSyntax TypeSyntax { get; }
 
-        protected override void Populate()
-        {
-            var arrayType = Syntax.Type as ArrayTypeSyntax;
-
-            if (arrayType == null)
-            {
-                cx.ModelError(Syntax, "Unexpected array type");
-                return;
-            }
-
-            var child = 0;
-
-            foreach (var rank in arrayType.RankSpecifiers.SelectMany(rs => rs.Sizes))
-            {
-                Create(cx, rank, this, child++);
-            }
-
-            cx.Emit(Tuples.explicitly_sized_array_creation(this));
-        }
-    }
-
-    class ExplicitArrayCreation : ArrayCreation<ArrayCreationExpressionSyntax>
-    {
-        ExplicitArrayCreation(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.ARRAY_CREATION)) { }
-
-        public static Expression Create(ExpressionNodeInfo info) => new ExplicitArrayCreation(info).TryPopulate();
+        public abstract InitializerExpressionSyntax  Initializer { get;  }
 
         protected override void Populate()
         {
             var child = 0;
             bool explicitlySized = false;
 
-            foreach (var rank in Syntax.Type.RankSpecifiers.SelectMany(rs => rs.Sizes))
+            if(TypeSyntax is null)
+            {
+                cx.ModelError(Syntax, "Array has unexpected type syntax");
+            }
+
+            foreach (var rank in TypeSyntax.RankSpecifiers.SelectMany(rs => rs.Sizes))
             {
                 if (rank is OmittedArraySizeExpressionSyntax)
                 {
                     // Create an expression which simulates the explicit size of the array
 
-                    if (Syntax.Initializer != null)
+                    if (Initializer != null)
                     {
                         // An implicitly-sized array must have an initializer.
                         // Guard it just in case.
-                        var size = Syntax.Initializer.Expressions.Count;
+                        var size = Initializer.Expressions.Count;
 
                         var info = new ExpressionInfo(
                             cx,
@@ -79,14 +59,36 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 }
                 child++;
             }
-            if (Syntax.Initializer != null)
+            if (Initializer != null)
             {
-                ArrayInitializer.Create(new ExpressionNodeInfo(cx, Syntax.Initializer, this, -1));
+                ArrayInitializer.Create(new ExpressionNodeInfo(cx, Initializer, this, -1));
             }
 
             if (explicitlySized)
                 cx.Emit(Tuples.explicitly_sized_array_creation(this));
         }
+    }
+
+    class NormalArrayCreation : ExplicitArrayCreation<ArrayCreationExpressionSyntax>
+    {
+        private NormalArrayCreation(ExpressionNodeInfo info) : base(info) { }
+
+        public override ArrayTypeSyntax TypeSyntax => Syntax.Type;
+
+        public override InitializerExpressionSyntax Initializer => Syntax.Initializer;
+
+        public static Expression Create(ExpressionNodeInfo info) => new NormalArrayCreation(info).TryPopulate();
+    }
+
+    class StackAllocArrayCreation : ExplicitArrayCreation<StackAllocArrayCreationExpressionSyntax>
+    {
+        StackAllocArrayCreation(ExpressionNodeInfo info) : base(info) { }
+
+        public override ArrayTypeSyntax TypeSyntax => Syntax.Type as ArrayTypeSyntax;
+
+        public override InitializerExpressionSyntax Initializer => Syntax.Initializer;
+
+        public static Expression Create(ExpressionNodeInfo info) => new StackAllocArrayCreation(info).TryPopulate();
     }
 
     class ImplicitArrayCreation : ArrayCreation<ImplicitArrayCreationExpressionSyntax>
