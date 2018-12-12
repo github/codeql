@@ -4,6 +4,9 @@
  * @kind problem
  * @id cpp/jpl-c/checking-return-values
  * @problem.severity warning
+ * @tags correctness
+ *       reliability
+ *       external/jpl
  */
 
 import cpp

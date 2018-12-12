@@ -198,18 +198,18 @@ class MetricRefType extends RefType, MetricElement {
       // is `C`, is `(C - 1) * C`.
       n = (((callables - 1) * callables) - (2 * linked)) / 2.0 and
       (
-        (n < 0 and result = 0)
+        n < 0 and result = 0
         or
-        (n >= 0 and result = n)
+        n >= 0 and result = n
       )
     )
   }
 
   /** Gets the length of _some_ path to the root of the hierarchy. */
   int getADepth() {
-    (this.hasQualifiedName("java.lang", "Object") and result = 0)
+    this.hasQualifiedName("java.lang", "Object") and result = 0
     or
-    (not cyclic() and result = this.getASupertype().(MetricRefType).getADepth() + 1)
+    not cyclic() and result = this.getASupertype().(MetricRefType).getADepth() + 1
   }
 
   /**
@@ -229,9 +229,9 @@ class MetricRefType extends RefType, MetricElement {
 
   /** Gets the length of _some_ path to the specified reference type. */
   int getADepth(RefType reference) {
-    (this = reference and result = 0)
+    this = reference and result = 0
     or
-    (not cyclic() and result = this.getASupertype().(MetricRefType).getADepth(reference) + 1)
+    not cyclic() and result = this.getASupertype().(MetricRefType).getADepth(reference) + 1
   }
 
   private predicate cyclic() { getASupertype+() = this }
@@ -278,9 +278,9 @@ class MetricRefType extends RefType, MetricElement {
     this.getAMethod() = result and
     exists(Method c |
       result.overrides(c) and
-      not (c.isAbstract())
+      not c.isAbstract()
     ) and
-    not (this.ignoreOverride(result))
+    not this.ignoreOverride(result)
   }
 
   /** Gets the number of methods that are overridden by this class. */
@@ -297,14 +297,14 @@ class MetricRefType extends RefType, MetricElement {
   float getSpecialisationIndex() {
     this.getNumberOfCallables() != 0 and
     result = (this.getNumberOverridden() * this.getInheritanceDepth()) /
-        (this.getNumberOfCallables().(float))
+        this.getNumberOfCallables().(float)
   }
 
   /** Gets the Halstead length of a type, estimated as the sum of the Halstead lengths of its callables. */
   override int getHalsteadLength() {
     result = sum(Callable c, int toSum |
-        (c = this.getACallable()) and
-        (toSum = c.getMetrics().getHalsteadLength())
+        c = this.getACallable() and
+        toSum = c.getMetrics().getHalsteadLength()
       |
         toSum
       )
@@ -313,8 +313,8 @@ class MetricRefType extends RefType, MetricElement {
   /** Gets the Halstead vocabulary of a type, estimated as the sum of the Halstead vocabularies of its callables. */
   override int getHalsteadVocabulary() {
     result = sum(Callable c, int toSum |
-        (c = this.getACallable()) and
-        (toSum = c.getMetrics().getHalsteadVocabulary())
+        c = this.getACallable() and
+        toSum = c.getMetrics().getHalsteadVocabulary()
       |
         toSum
       )
@@ -323,8 +323,8 @@ class MetricRefType extends RefType, MetricElement {
   /** Gets the cyclomatic complexity of a type, estimated as the sum of the cyclomatic complexities of its callables. */
   override int getCyclomaticComplexity() {
     result = sum(Callable c, int toSum |
-        (c = this.getACallable()) and
-        (toSum = c.getMetrics().getCyclomaticComplexity())
+        c = this.getACallable() and
+        toSum = c.getMetrics().getCyclomaticComplexity()
       |
         toSum
       )

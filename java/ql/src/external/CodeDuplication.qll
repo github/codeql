@@ -108,7 +108,7 @@ predicate similarLines(File f, int line) {
 private predicate similarLinesPerEquivalenceClass(int equivClass, int lines, File f) {
   lines = strictsum(SimilarBlock b, int toSum |
       (b.sourceFile() = f and b.getEquivalenceClass() = equivClass) and
-      (toSum = b.sourceLines())
+      toSum = b.sourceLines()
     |
       toSum
     )
@@ -143,7 +143,7 @@ predicate duplicateLines(File f, int line) {
 private predicate duplicateLinesPerEquivalenceClass(int equivClass, int lines, File f) {
   lines = strictsum(DuplicateBlock b, int toSum |
       (b.sourceFile() = f and b.getEquivalenceClass() = equivClass) and
-      (toSum = b.sourceLines())
+      toSum = b.sourceLines()
     |
       toSum
     )
@@ -227,25 +227,21 @@ predicate mostlyDuplicateClass(Class c, Class other, string message) {
     not c instanceof AnonymousClass and
     not other instanceof AnonymousClass and
     (
-      (
-        total != numDup and
-        exists(string s1, string s2, string s3, string name |
-          s1 = " out of " and
-          s2 = " methods in " and
-          s3 = " are duplicated in $@." and
-          name = c.getName()
-        |
-          message = numDup + s1 + total + s2 + name + s3
-        )
+      total != numDup and
+      exists(string s1, string s2, string s3, string name |
+        s1 = " out of " and
+        s2 = " methods in " and
+        s3 = " are duplicated in $@." and
+        name = c.getName()
+      |
+        message = numDup + s1 + total + s2 + name + s3
       )
       or
-      (
-        total = numDup and
-        exists(string s1, string s2, string name |
-          s1 = "All methods in " and s2 = " are identical in $@." and name = c.getName()
-        |
-          message = s1 + name + s2
-        )
+      total = numDup and
+      exists(string s1, string s2, string name |
+        s1 = "All methods in " and s2 = " are identical in $@." and name = c.getName()
+      |
+        message = s1 + name + s2
       )
     )
   )

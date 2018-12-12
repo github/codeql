@@ -47,11 +47,9 @@ class MethodRequiresSynch extends Method {
 private predicate synchronizedCallable(Callable c) {
   c.isSynchronized()
   or
-  (
-    c.isPrivate() and
-    forall(MethodAccess parent | parent.getCallee() = c |
-      synchronizedThisAccess(parent, c.getDeclaringType())
-    )
+  c.isPrivate() and
+  forall(MethodAccess parent | parent.getCallee() = c |
+    synchronizedThisAccess(parent, c.getDeclaringType())
   )
 }
 

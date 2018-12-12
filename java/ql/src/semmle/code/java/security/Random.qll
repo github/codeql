@@ -148,11 +148,9 @@ abstract class ReturnsPredictableExpr extends Method { }
 
 class ReturnsSystemTime extends ReturnsPredictableExpr {
   ReturnsSystemTime() {
-    (
-      this.getDeclaringType().hasQualifiedName("java.lang", "System") and
-      this.hasName("currentTimeMillis")
-    )
+    this.getDeclaringType().hasQualifiedName("java.lang", "System") and
+    this.hasName("currentTimeMillis")
     or
-    (this.getDeclaringType().hasQualifiedName("java.lang", "System") and this.hasName("nanoTime"))
+    this.getDeclaringType().hasQualifiedName("java.lang", "System") and this.hasName("nanoTime")
   }
 }

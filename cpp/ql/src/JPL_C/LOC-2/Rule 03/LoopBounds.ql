@@ -5,6 +5,8 @@
  * @kind problem
  * @id cpp/jpl-c/loop-bounds
  * @problem.severity warning
+ * @tags correctness
+ *       external/jpl
  */
 
 import cpp

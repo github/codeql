@@ -1,0 +1,4 @@
+| rare-lifecycle-methods.js:1:1:11:1 | class C ...     }\\n} | rare-lifecycle-methods.js:2:44:2:48 | state |
+| rare-lifecycle-methods.js:1:1:11:1 | class C ...     }\\n} | rare-lifecycle-methods.js:8:40:8:48 | prevState |
+| statePropertyReads.js:1:1:13:1 | class R ...     }\\n} | statePropertyReads.js:7:24:7:32 | prevState |
+| statePropertyReads.js:1:1:13:1 | class R ...     }\\n} | statePropertyReads.js:10:35:10:43 | prevState |

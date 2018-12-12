@@ -95,6 +95,34 @@ Expr clearlyNotNullExpr() { result = clearlyNotNullExpr(_) }
 predicate clearlyNotNull(SsaVariable v) { clearlyNotNull(v, _) }
 
 /**
+ * Holds if the evaluation of a call to `m` resulting in the value `branch`
+ * implies that the argument to the call is guaranteed to be null if `isnull`
+ * is true, and non-null if `isnull` is false.
+ */
+predicate nullCheckMethod(Method m, boolean branch, boolean isnull) {
+  exists(boolean polarity |
+    m.getDeclaringType().hasQualifiedName("java.util", "Objects") and
+    (
+      m.hasName("isNull") and polarity = true
+      or
+      m.hasName("nonNull") and polarity = false
+    ) and
+    (
+      branch = true and isnull = polarity
+      or
+      branch = false and isnull = polarity.booleanNot()
+    )
+  )
+  or
+  m instanceof EqualsMethod and branch = true and isnull = false
+  or
+  m.getDeclaringType().hasQualifiedName("org.apache.commons.lang3", "StringUtils") and
+  m.hasName("isBlank") and
+  branch = false and
+  isnull = false
+}
+
+/**
  * Gets an expression that directly tests whether a given expression, `e`, is null or not.
  *
  * If `result` evaluates to `branch`, then `e` is guaranteed to be null if `isnull`
@@ -114,29 +142,10 @@ Expr basicNullGuard(Expr e, boolean branch, boolean isnull) {
   or
   result.(InstanceOfExpr).getExpr() = e and branch = true and isnull = false
   or
-  exists(MethodAccess call, Method m, boolean polarity |
-    call = result and
-    call.getAnArgument() = e and
-    call.getMethod() = m and
-    m.getDeclaringType().hasQualifiedName("java.util", "Objects") and
-    (
-      m.hasName("isNull") and polarity = true
-      or
-      m.hasName("nonNull") and polarity = false
-    ) and
-    (
-      branch = true and isnull = polarity
-      or
-      branch = false and isnull = polarity.booleanNot()
-    )
-  )
-  or
   exists(MethodAccess call |
     call = result and
     call.getAnArgument() = e and
-    call.getMethod() instanceof EqualsMethod and
-    branch = true and
-    isnull = false
+    nullCheckMethod(call.getMethod(), branch, isnull)
   )
   or
   exists(EqualityTest eqtest |

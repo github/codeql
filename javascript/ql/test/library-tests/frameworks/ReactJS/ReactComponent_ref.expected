@@ -31,6 +31,10 @@
 | props.js:13:31:17:5 | {\\n      ... }\\n    } | props.js:14:24:14:23 | this |
 | props.js:26:5:28:5 | functio ... ;\\n    } | props.js:26:5:26:4 | this |
 | props.js:26:5:28:5 | functio ... ;\\n    } | props.js:34:5:34:55 | new C({ ... ctor"}) |
+| rare-lifecycle-methods.js:1:1:11:1 | class C ...     }\\n} | rare-lifecycle-methods.js:1:33:1:32 | this |
+| rare-lifecycle-methods.js:1:1:11:1 | class C ...     }\\n} | rare-lifecycle-methods.js:2:36:2:35 | this |
+| rare-lifecycle-methods.js:1:1:11:1 | class C ...     }\\n} | rare-lifecycle-methods.js:5:26:5:25 | this |
+| rare-lifecycle-methods.js:1:1:11:1 | class C ...     }\\n} | rare-lifecycle-methods.js:8:28:8:27 | this |
 | statePropertyReads.js:1:1:13:1 | class R ...     }\\n} | statePropertyReads.js:2:16:2:15 | this |
 | statePropertyReads.js:1:1:13:1 | class R ...     }\\n} | statePropertyReads.js:3:9:3:12 | this |
 | statePropertyReads.js:1:1:13:1 | class R ...     }\\n} | statePropertyReads.js:5:9:5:12 | this |

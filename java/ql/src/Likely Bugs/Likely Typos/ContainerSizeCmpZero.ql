@@ -56,33 +56,25 @@ private predicate comparisonOfContainerSizeToZero(
   BinaryExpr e, string containerKind, string trueOrFalse
 ) {
   exists(Expr l, Expr r | l = e.getLeftOperand() and r = e.getRightOperand() |
-    (
-      e instanceof LTExpr and
-      l.(SizeOfContainer).getContainerKind() = containerKind and
-      r instanceof IntegralZeroLiteral and
-      trueOrFalse = "false"
-    )
+    e instanceof LTExpr and
+    l.(SizeOfContainer).getContainerKind() = containerKind and
+    r instanceof IntegralZeroLiteral and
+    trueOrFalse = "false"
     or
-    (
-      e instanceof GTExpr and
-      l instanceof IntegralZeroLiteral and
-      r.(SizeOfContainer).getContainerKind() = containerKind and
-      trueOrFalse = "false"
-    )
+    e instanceof GTExpr and
+    l instanceof IntegralZeroLiteral and
+    r.(SizeOfContainer).getContainerKind() = containerKind and
+    trueOrFalse = "false"
     or
-    (
-      e instanceof GEExpr and
-      l.(SizeOfContainer).getContainerKind() = containerKind and
-      r instanceof IntegralZeroLiteral and
-      trueOrFalse = "true"
-    )
+    e instanceof GEExpr and
+    l.(SizeOfContainer).getContainerKind() = containerKind and
+    r instanceof IntegralZeroLiteral and
+    trueOrFalse = "true"
     or
-    (
-      e instanceof LEExpr and
-      l instanceof IntegralZeroLiteral and
-      r.(SizeOfContainer).getContainerKind() = containerKind and
-      trueOrFalse = "true"
-    )
+    e instanceof LEExpr and
+    l instanceof IntegralZeroLiteral and
+    r.(SizeOfContainer).getContainerKind() = containerKind and
+    trueOrFalse = "true"
   )
 }
 

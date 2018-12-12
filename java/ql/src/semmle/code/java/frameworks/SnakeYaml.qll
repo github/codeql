@@ -30,10 +30,8 @@ class SafeSnakeYamlConstruction extends ClassInstanceExpr {
   SafeSnakeYamlConstruction() {
     this.getConstructedType() instanceof SnakeYamlSafeConstructor
     or
-    (
-      this.getConstructedType() instanceof SnakeYamlConstructor and
-      this.getNumArgument() > 0
-    )
+    this.getConstructedType() instanceof SnakeYamlConstructor and
+    this.getNumArgument() > 0
   }
 }
 

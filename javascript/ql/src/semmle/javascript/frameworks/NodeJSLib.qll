@@ -612,9 +612,7 @@ module NodeJSLib {
    *
    * For example, this could be the function `function(req, res){...}`.
    */
-  class RouteHandlerCandidate extends HTTP::RouteHandlerCandidate, DataFlow::FunctionNode {
-
-    override Function astNode;
+  class RouteHandlerCandidate extends HTTP::RouteHandlerCandidate {
 
     RouteHandlerCandidate() {
       exists (string request, string response |

@@ -35,9 +35,9 @@ predicate sortedCollectionType(RefType t) {
 string nameFor(Class c) {
   nonSerializableComparator(c) and
   (
-    (c instanceof AnonymousClass and result = "This comparator")
+    c instanceof AnonymousClass and result = "This comparator"
     or
-    (not c instanceof AnonymousClass and result = c.getName())
+    not c instanceof AnonymousClass and result = c.getName()
   )
 }
 

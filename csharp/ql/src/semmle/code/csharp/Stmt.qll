@@ -966,10 +966,15 @@ class TryStmt extends Stmt, @try_stmt {
     exists(ControlFlowElement mid |
       mid = getATriedElement() and
       not mid instanceof TryStmt and
-      result = mid.getAChild() and
-      mid.getEnclosingCallable() = result.getEnclosingCallable()
+      result = getAChild(mid, mid.getEnclosingCallable())
     )
   }
+}
+
+pragma[noinline]
+private ControlFlowElement getAChild(ControlFlowElement cfe, Callable c) {
+  result = cfe.getAChild() and
+  c = result.getEnclosingCallable()
 }
 
 /**

@@ -18,12 +18,10 @@ class SpecialCollectionCreation extends MethodAccess {
     exists(Method m, RefType rt |
       m = this.(MethodAccess).getCallee() and rt = m.getDeclaringType()
     |
-      (rt.hasQualifiedName("java.util", "Arrays") and m.hasName("asList"))
+      rt.hasQualifiedName("java.util", "Arrays") and m.hasName("asList")
       or
-      (
-        rt.hasQualifiedName("java.util", "Collections") and
-        m.getName().regexpMatch("singleton.*|unmodifiable.*")
-      )
+      rt.hasQualifiedName("java.util", "Collections") and
+      m.getName().regexpMatch("singleton.*|unmodifiable.*")
     )
   }
 }

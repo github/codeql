@@ -83,10 +83,8 @@ private predicate closeableInit(Expr e, Expr parent) {
         parent = arg
       )
       or
-      (
-        not exists(Expr arg | arg = cie.getAnArgument() | closeableType(arg.getType())) and
-        parent = cie
-      )
+      not exists(Expr arg | arg = cie.getAnArgument() | closeableType(arg.getType())) and
+      parent = cie
     )
   )
   or
@@ -225,18 +223,16 @@ private predicate closeCalled(Variable v) {
   exists(MethodAccess e |
     v = getCloseableVariable(_) or v instanceof Parameter or v instanceof LocalVariableDecl
   |
-    (
-      e.getMethod().getName().toLowerCase().matches("%close%") and
-      exists(VarAccess va | va = v.getAnAccess() |
-        e.getQualifier() = va or
-        e.getAnArgument() = va
-      )
+    e.getMethod().getName().toLowerCase().matches("%close%") and
+    exists(VarAccess va | va = v.getAnAccess() |
+      e.getQualifier() = va or
+      e.getAnArgument() = va
     )
     or
     // The "close" call could happen indirectly inside a helper method of unknown name.
     exists(int i | exprs(v.getAnAccess(), _, _, e, i) |
       exists(Parameter p, int j | params(p, _, j, e.getMethod(), _) |
-        (closeCalled(p) and i = j)
+        closeCalled(p) and i = j
         or
         // The helper method could be iterating over a varargs parameter.
         exists(EnhancedForStmt for | for.getExpr() = p.getAnAccess() |
@@ -276,9 +272,9 @@ private predicate immediatelyClosed(ClassInstanceExpr cie) {
  * A unassigned or locally-assigned "closeable init" that does not escape and is not closed.
  */
 private predicate badCloseableInitImpl(CloseableInitExpr cie) {
-  (unassignedCloseableInit(cie) and not immediatelyClosed(cie) and not escapingCloseableInit(cie))
+  unassignedCloseableInit(cie) and not immediatelyClosed(cie) and not escapingCloseableInit(cie)
   or
-  (locallyInitializedCloseable(cie) and not closedResource(cie) and not escapingCloseableInit(cie))
+  locallyInitializedCloseable(cie) and not closedResource(cie) and not escapingCloseableInit(cie)
 }
 
 /**
@@ -297,7 +293,7 @@ predicate badCloseableInit(CloseableInitExpr cie) {
 predicate noNeedToClose(CloseableInitExpr cie) {
   locallyInitializedCloseable(cie) and
   (
-    (cie instanceof ClassInstanceExpr and not exists(cie.(ClassInstanceExpr).getAnArgument()))
+    cie instanceof ClassInstanceExpr and not exists(cie.(ClassInstanceExpr).getAnArgument())
     or
     exists(RefType t | t = cie.getType() and t.fromSource() |
       exists(Method close | close.getDeclaringType() = t and close.getName() = "close" |

@@ -22,10 +22,8 @@ class Struts1ActionEntryPoint extends EntryPoint, Class {
         result.(Method).overrides(methodFromAction)
       )
       or
-      (
-        this.getASupertype*().hasQualifiedName("org.apache.struts.actions", "DispatchAction") and
-        result.(Method).isPublic()
-      )
+      this.getASupertype*().hasQualifiedName("org.apache.struts.actions", "DispatchAction") and
+      result.(Method).isPublic()
       or
       result.(Constructor).getNumberOfParameters() = 0
     )

@@ -94,17 +94,14 @@ where
   exists(IfStmt unsyncNullCheck | unsyncNullCheck = init.getAnEnclosingNullCheck() |
     not unsyncNullCheck.getParent+() instanceof ValidSynchStmt
   ) and
-  if (i.getParent+() instanceof ValidSynchStmt)
+  if i.getParent+() instanceof ValidSynchStmt
   then (
     not init.getField().isVolatile() and
     message = "The field must be volatile."
   ) else (
-    if (i.getParent+() instanceof SynchronizedStmt)
-    then (
-      message = "Bad synchronization."
-    ) else (
-      message = "Missing synchronization."
-    )
+    if i.getParent+() instanceof SynchronizedStmt
+    then message = "Bad synchronization."
+    else message = "Missing synchronization."
   )
 select init, "Incorrect lazy initialization of static field $@: " + message, init.getField() as f,
   f.getName()

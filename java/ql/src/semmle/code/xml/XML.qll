@@ -142,15 +142,11 @@ class XMLDTD extends @xmldtd {
 
   /** Gets a printable representation of this DTD. */
   string toString() {
-    (
-      this.isPublic() and
-      result = this.getRoot() + " PUBLIC '" + this.getPublicId() + "' '" + this.getSystemId() + "'"
-    )
+    this.isPublic() and
+    result = this.getRoot() + " PUBLIC '" + this.getPublicId() + "' '" + this.getSystemId() + "'"
     or
-    (
-      not this.isPublic() and
-      result = this.getRoot() + " SYSTEM '" + this.getSystemId() + "'"
-    )
+    not this.isPublic() and
+    result = this.getRoot() + " SYSTEM '" + this.getSystemId() + "'"
   }
 }
 
@@ -233,9 +229,9 @@ class XMLNamespace extends @xmlnamespace {
 
   /** Gets a printable representation of this XML namespace. */
   string toString() {
-    (this.isDefault() and result = this.getURI())
+    this.isDefault() and result = this.getURI()
     or
-    (not this.isDefault() and result = this.getPrefix() + ":" + this.getURI())
+    not this.isDefault() and result = this.getPrefix() + ":" + this.getURI()
   }
 }
 

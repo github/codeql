@@ -352,7 +352,7 @@ private predicate candidateConstantForLiteral(
 }
 
 private RefType inheritsProtected(Field f) {
-  (f.isProtected() and result.getASupertype() = f.getDeclaringType())
+  f.isProtected() and result.getASupertype() = f.getDeclaringType()
   or
   exists(RefType mid | mid = inheritsProtected(f) and result.getASupertype() = mid)
 }
@@ -361,40 +361,32 @@ private predicate constantForLiteral(
   Field field, string value, RefType fromType, Literal magicLiteral, string context
 ) {
   //public fields in public classes
-  (
-    candidateConstantForLiteral(field, fromType, magicLiteral, context) and
-    relevantField(field, value) and
-    field.getDeclaringType().isPublic() and
-    field.isPublic() and
-    relevantType(fromType, value, _)
-  )
+  candidateConstantForLiteral(field, fromType, magicLiteral, context) and
+  relevantField(field, value) and
+  field.getDeclaringType().isPublic() and
+  field.isPublic() and
+  relevantType(fromType, value, _)
   or
   //in same class
-  (
-    candidateConstantForLiteral(field, fromType, magicLiteral, context) and
-    relevantField(field, value) and
-    fromType = field.getDeclaringType() and
-    relevantType(fromType, value, _)
-  )
+  candidateConstantForLiteral(field, fromType, magicLiteral, context) and
+  relevantField(field, value) and
+  fromType = field.getDeclaringType() and
+  relevantType(fromType, value, _)
   or
   //in subclass and not private
-  (
-    candidateConstantForLiteral(field, fromType, magicLiteral, context) and
-    relevantField(field, value) and
-    field.isProtected() and
-    fromType = inheritsProtected(field) and
-    relevantType(fromType, value, _)
-  )
+  candidateConstantForLiteral(field, fromType, magicLiteral, context) and
+  relevantField(field, value) and
+  field.isProtected() and
+  fromType = inheritsProtected(field) and
+  relevantType(fromType, value, _)
   or
   //not private and in same package
-  (
-    candidateConstantForLiteral(field, fromType, magicLiteral, context) and
-    relevantField(field, value) and
-    field.isPackageProtected() and
-    exists(Package p |
-      exists(CompilationUnit cu | cu = field.getCompilationUnit() and cu.getPackage() = p) and
-      relevantType(fromType, value, p)
-    )
+  candidateConstantForLiteral(field, fromType, magicLiteral, context) and
+  relevantField(field, value) and
+  field.isPackageProtected() and
+  exists(Package p |
+    exists(CompilationUnit cu | cu = field.getCompilationUnit() and cu.getPackage() = p) and
+    relevantType(fromType, value, p)
   )
 }
 

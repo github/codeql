@@ -14,9 +14,6 @@ import java
 from EmptyStmt empty, string action
 where
   if exists(LoopStmt l | l.getBody() = empty)
-  then (
-    action = "turned into '{}'"
-  ) else (
-    action = "deleted"
-  )
+  then action = "turned into '{}'"
+  else action = "deleted"
 select empty, "This empty statement should be " + action + "."

@@ -49,9 +49,9 @@ class DocuCallable extends Callable {
   predicate hasAcceptableDocText() { acceptableDocText(this.getDoc().getJavadoc()) }
 
   string toMethodOrConstructorString() {
-    (this instanceof Method and result = "method")
+    this instanceof Method and result = "method"
     or
-    (this instanceof Constructor and result = "constructor")
+    this instanceof Constructor and result = "constructor"
   }
 }
 

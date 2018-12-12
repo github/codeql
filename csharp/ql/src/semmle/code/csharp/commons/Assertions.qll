@@ -55,7 +55,8 @@ class Assertion extends MethodCall {
       bb = this.getAControlFlowNode().getBasicBlock() |
       result = bb.getASuccessor*()
     ) and
-    result.getASuccessor() = jb
+    result.getASuccessor() = jb and
+    not jb.dominates(result)
   }
 
   pragma[nomagic]
@@ -64,6 +65,8 @@ class Assertion extends MethodCall {
     forall(BasicBlock pred |
       pred = jb.getAPredecessor() |
       pred = this.getAPossiblyDominatedPredecessor(jb)
+      or
+      jb.dominates(pred)
     )
   }
 

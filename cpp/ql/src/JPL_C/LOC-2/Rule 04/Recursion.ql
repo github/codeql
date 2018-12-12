@@ -4,6 +4,10 @@
  * @kind problem
  * @id cpp/jpl-c/recursion
  * @problem.severity warning
+ * @tags maintainability
+ *       readability
+ *       testability
+ *       external/jpl
  */
 
 import cpp

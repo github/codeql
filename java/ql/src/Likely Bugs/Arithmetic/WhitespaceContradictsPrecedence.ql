@@ -71,26 +71,24 @@ class AssocNestedExpr extends BinaryExpr {
     exists(BinaryExpr parent, int idx | this.isNthChildOf(parent, idx) |
       // `+`, `*`, `&&`, `||` and the bitwise operations are associative.
       (
-        (
-          this instanceof AddExpr or
-          this instanceof MulExpr or
-          this instanceof BitwiseExpr or
-          this instanceof LogicalExpr
-        ) and
-        parent.getKind() = this.getKind()
-      )
+        this instanceof AddExpr or
+        this instanceof MulExpr or
+        this instanceof BitwiseExpr or
+        this instanceof LogicalExpr
+      ) and
+      parent.getKind() = this.getKind()
       or
       // Equality tests are associate over each other.
-      (this instanceof EqualityTest and parent instanceof EqualityTest)
+      this instanceof EqualityTest and parent instanceof EqualityTest
       or
       // (x*y)/z = x*(y/z)
-      (this instanceof MulExpr and parent instanceof DivExpr and idx = 0)
+      this instanceof MulExpr and parent instanceof DivExpr and idx = 0
       or
       // (x/y)%z = x/(y%z)
-      (this instanceof DivExpr and parent instanceof RemExpr and idx = 0)
+      this instanceof DivExpr and parent instanceof RemExpr and idx = 0
       or
       // (x+y)-z = x+(y-z)
-      (this instanceof AddExpr and parent instanceof SubExpr and idx = 0)
+      this instanceof AddExpr and parent instanceof SubExpr and idx = 0
     )
   }
 }
@@ -102,12 +100,10 @@ class AssocNestedExpr extends BinaryExpr {
 class HarmlessNestedExpr extends BinaryExpr {
   HarmlessNestedExpr() {
     exists(BinaryExpr parent | this = parent.getAChildExpr() |
-      (
-        parent instanceof RelationExpr and
-        (this instanceof ArithmeticExpr or this instanceof ShiftExpr)
-      )
+      parent instanceof RelationExpr and
+      (this instanceof ArithmeticExpr or this instanceof ShiftExpr)
       or
-      (parent instanceof LogicalExpr and this instanceof RelationExpr)
+      parent instanceof LogicalExpr and this instanceof RelationExpr
     )
   }
 }

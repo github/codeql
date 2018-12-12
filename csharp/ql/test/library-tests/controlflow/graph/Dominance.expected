@@ -661,6 +661,41 @@
 | post | Conditions.cs:122:17:122:24 | ... = ... | Conditions.cs:122:21:122:24 | null |
 | post | Conditions.cs:122:17:122:25 | ...; | Conditions.cs:121:17:121:20 | [last (line 118): true] access to local variable last |
 | post | Conditions.cs:122:21:122:24 | null | Conditions.cs:122:17:122:17 | access to local variable s |
+| post | Conditions.cs:130:5:141:5 | {...} | Conditions.cs:129:10:129:12 | enter M10 |
+| post | Conditions.cs:131:9:140:9 | while (...) ... | Conditions.cs:130:5:141:5 | {...} |
+| post | Conditions.cs:131:16:131:19 | [Field1 (line 129): true, Field2 (line 129): true] true | Conditions.cs:137:21:137:37 | [Field1 (line 129): true, Field2 (line 129): true] call to method ToString |
+| post | Conditions.cs:131:16:131:19 | true | Conditions.cs:131:9:140:9 | while (...) ... |
+| post | Conditions.cs:132:9:140:9 | [Field1 (line 129): false] {...} | Conditions.cs:131:16:131:19 | [Field1 (line 129): false] true |
+| post | Conditions.cs:132:9:140:9 | [Field1 (line 129): true, Field2 (line 129): false] {...} | Conditions.cs:131:16:131:19 | [Field1 (line 129): true, Field2 (line 129): false] true |
+| post | Conditions.cs:132:9:140:9 | [Field1 (line 129): true, Field2 (line 129): true] {...} | Conditions.cs:131:16:131:19 | [Field1 (line 129): true, Field2 (line 129): true] true |
+| post | Conditions.cs:132:9:140:9 | {...} | Conditions.cs:131:16:131:19 | true |
+| post | Conditions.cs:133:13:139:13 | [Field1 (line 129): false] if (...) ... | Conditions.cs:132:9:140:9 | [Field1 (line 129): false] {...} |
+| post | Conditions.cs:133:13:139:13 | [Field1 (line 129): true, Field2 (line 129): false] if (...) ... | Conditions.cs:132:9:140:9 | [Field1 (line 129): true, Field2 (line 129): false] {...} |
+| post | Conditions.cs:133:13:139:13 | [Field1 (line 129): true, Field2 (line 129): true] if (...) ... | Conditions.cs:132:9:140:9 | [Field1 (line 129): true, Field2 (line 129): true] {...} |
+| post | Conditions.cs:133:13:139:13 | if (...) ... | Conditions.cs:132:9:140:9 | {...} |
+| post | Conditions.cs:133:17:133:22 | [Field1 (line 129): false] access to field Field1 | Conditions.cs:133:17:133:22 | [Field1 (line 129): false] this access |
+| post | Conditions.cs:133:17:133:22 | [Field1 (line 129): false] this access | Conditions.cs:133:13:139:13 | [Field1 (line 129): false] if (...) ... |
+| post | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): false] access to field Field1 | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): false] this access |
+| post | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): false] this access | Conditions.cs:133:13:139:13 | [Field1 (line 129): true, Field2 (line 129): false] if (...) ... |
+| post | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): true] access to field Field1 | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): true] this access |
+| post | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): true] this access | Conditions.cs:133:13:139:13 | [Field1 (line 129): true, Field2 (line 129): true] if (...) ... |
+| post | Conditions.cs:133:17:133:22 | access to field Field1 | Conditions.cs:133:17:133:22 | this access |
+| post | Conditions.cs:133:17:133:22 | this access | Conditions.cs:133:13:139:13 | if (...) ... |
+| post | Conditions.cs:134:13:139:13 | [Field1 (line 129): true, Field2 (line 129): false] {...} | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): false] access to field Field1 |
+| post | Conditions.cs:134:13:139:13 | [Field1 (line 129): true, Field2 (line 129): true] {...} | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): true] access to field Field1 |
+| post | Conditions.cs:135:17:138:17 | [Field1 (line 129): true, Field2 (line 129): false] if (...) ... | Conditions.cs:134:13:139:13 | [Field1 (line 129): true, Field2 (line 129): false] {...} |
+| post | Conditions.cs:135:17:138:17 | [Field1 (line 129): true, Field2 (line 129): true] if (...) ... | Conditions.cs:134:13:139:13 | [Field1 (line 129): true, Field2 (line 129): true] {...} |
+| post | Conditions.cs:135:17:138:17 | [Field1 (line 129): true] if (...) ... | Conditions.cs:134:13:139:13 | [Field1 (line 129): true] {...} |
+| post | Conditions.cs:135:21:135:26 | [Field1 (line 129): true, Field2 (line 129): false] access to field Field2 | Conditions.cs:135:21:135:26 | [Field1 (line 129): true, Field2 (line 129): false] this access |
+| post | Conditions.cs:135:21:135:26 | [Field1 (line 129): true, Field2 (line 129): false] this access | Conditions.cs:135:17:138:17 | [Field1 (line 129): true, Field2 (line 129): false] if (...) ... |
+| post | Conditions.cs:135:21:135:26 | [Field1 (line 129): true, Field2 (line 129): true] access to field Field2 | Conditions.cs:135:21:135:26 | [Field1 (line 129): true, Field2 (line 129): true] this access |
+| post | Conditions.cs:135:21:135:26 | [Field1 (line 129): true, Field2 (line 129): true] this access | Conditions.cs:135:17:138:17 | [Field1 (line 129): true, Field2 (line 129): true] if (...) ... |
+| post | Conditions.cs:135:21:135:26 | [Field1 (line 129): true] access to field Field2 | Conditions.cs:135:21:135:26 | [Field1 (line 129): true] this access |
+| post | Conditions.cs:135:21:135:26 | [Field1 (line 129): true] this access | Conditions.cs:135:17:138:17 | [Field1 (line 129): true] if (...) ... |
+| post | Conditions.cs:137:21:137:26 | [Field1 (line 129): true, Field2 (line 129): true] access to field Field1 | Conditions.cs:137:21:137:26 | [Field1 (line 129): true, Field2 (line 129): true] this access |
+| post | Conditions.cs:137:21:137:26 | [Field1 (line 129): true, Field2 (line 129): true] this access | Conditions.cs:137:21:137:38 | [Field1 (line 129): true, Field2 (line 129): true] ...; |
+| post | Conditions.cs:137:21:137:37 | [Field1 (line 129): true, Field2 (line 129): true] call to method ToString | Conditions.cs:137:21:137:26 | [Field1 (line 129): true, Field2 (line 129): true] access to field Field1 |
+| post | Conditions.cs:137:21:137:38 | [Field1 (line 129): true, Field2 (line 129): true] ...; | Conditions.cs:136:17:138:17 | [Field1 (line 129): true, Field2 (line 129): true] {...} |
 | post | ExitMethods.cs:7:10:7:11 | exit M1 | ExitMethods.cs:10:9:10:15 | return ...; |
 | post | ExitMethods.cs:8:5:11:5 | {...} | ExitMethods.cs:7:10:7:11 | enter M1 |
 | post | ExitMethods.cs:9:9:9:24 | call to method ErrorMaybe | ExitMethods.cs:9:20:9:23 | true |
@@ -2828,6 +2863,45 @@
 | pre | Conditions.cs:122:17:122:17 | access to local variable s | Conditions.cs:122:21:122:24 | null |
 | pre | Conditions.cs:122:17:122:25 | ...; | Conditions.cs:122:17:122:17 | access to local variable s |
 | pre | Conditions.cs:122:21:122:24 | null | Conditions.cs:122:17:122:24 | ... = ... |
+| pre | Conditions.cs:129:10:129:12 | enter M10 | Conditions.cs:130:5:141:5 | {...} |
+| pre | Conditions.cs:130:5:141:5 | {...} | Conditions.cs:131:9:140:9 | while (...) ... |
+| pre | Conditions.cs:131:9:140:9 | while (...) ... | Conditions.cs:131:16:131:19 | true |
+| pre | Conditions.cs:131:16:131:19 | [Field1 (line 129): false] true | Conditions.cs:132:9:140:9 | [Field1 (line 129): false] {...} |
+| pre | Conditions.cs:131:16:131:19 | [Field1 (line 129): true, Field2 (line 129): false] true | Conditions.cs:132:9:140:9 | [Field1 (line 129): true, Field2 (line 129): false] {...} |
+| pre | Conditions.cs:131:16:131:19 | [Field1 (line 129): true, Field2 (line 129): true] true | Conditions.cs:132:9:140:9 | [Field1 (line 129): true, Field2 (line 129): true] {...} |
+| pre | Conditions.cs:131:16:131:19 | true | Conditions.cs:132:9:140:9 | {...} |
+| pre | Conditions.cs:132:9:140:9 | [Field1 (line 129): false] {...} | Conditions.cs:133:13:139:13 | [Field1 (line 129): false] if (...) ... |
+| pre | Conditions.cs:132:9:140:9 | [Field1 (line 129): true, Field2 (line 129): false] {...} | Conditions.cs:133:13:139:13 | [Field1 (line 129): true, Field2 (line 129): false] if (...) ... |
+| pre | Conditions.cs:132:9:140:9 | [Field1 (line 129): true, Field2 (line 129): true] {...} | Conditions.cs:133:13:139:13 | [Field1 (line 129): true, Field2 (line 129): true] if (...) ... |
+| pre | Conditions.cs:132:9:140:9 | {...} | Conditions.cs:133:13:139:13 | if (...) ... |
+| pre | Conditions.cs:133:13:139:13 | [Field1 (line 129): false] if (...) ... | Conditions.cs:133:17:133:22 | [Field1 (line 129): false] this access |
+| pre | Conditions.cs:133:13:139:13 | [Field1 (line 129): true, Field2 (line 129): false] if (...) ... | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): false] this access |
+| pre | Conditions.cs:133:13:139:13 | [Field1 (line 129): true, Field2 (line 129): true] if (...) ... | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): true] this access |
+| pre | Conditions.cs:133:13:139:13 | if (...) ... | Conditions.cs:133:17:133:22 | this access |
+| pre | Conditions.cs:133:17:133:22 | [Field1 (line 129): false] this access | Conditions.cs:133:17:133:22 | [Field1 (line 129): false] access to field Field1 |
+| pre | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): false] access to field Field1 | Conditions.cs:134:13:139:13 | [Field1 (line 129): true, Field2 (line 129): false] {...} |
+| pre | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): false] this access | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): false] access to field Field1 |
+| pre | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): true] access to field Field1 | Conditions.cs:134:13:139:13 | [Field1 (line 129): true, Field2 (line 129): true] {...} |
+| pre | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): true] this access | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): true] access to field Field1 |
+| pre | Conditions.cs:133:17:133:22 | access to field Field1 | Conditions.cs:131:16:131:19 | [Field1 (line 129): false] true |
+| pre | Conditions.cs:133:17:133:22 | access to field Field1 | Conditions.cs:134:13:139:13 | [Field1 (line 129): true] {...} |
+| pre | Conditions.cs:133:17:133:22 | this access | Conditions.cs:133:17:133:22 | access to field Field1 |
+| pre | Conditions.cs:134:13:139:13 | [Field1 (line 129): true, Field2 (line 129): false] {...} | Conditions.cs:135:17:138:17 | [Field1 (line 129): true, Field2 (line 129): false] if (...) ... |
+| pre | Conditions.cs:134:13:139:13 | [Field1 (line 129): true, Field2 (line 129): true] {...} | Conditions.cs:135:17:138:17 | [Field1 (line 129): true, Field2 (line 129): true] if (...) ... |
+| pre | Conditions.cs:134:13:139:13 | [Field1 (line 129): true] {...} | Conditions.cs:135:17:138:17 | [Field1 (line 129): true] if (...) ... |
+| pre | Conditions.cs:135:17:138:17 | [Field1 (line 129): true, Field2 (line 129): false] if (...) ... | Conditions.cs:135:21:135:26 | [Field1 (line 129): true, Field2 (line 129): false] this access |
+| pre | Conditions.cs:135:17:138:17 | [Field1 (line 129): true, Field2 (line 129): true] if (...) ... | Conditions.cs:135:21:135:26 | [Field1 (line 129): true, Field2 (line 129): true] this access |
+| pre | Conditions.cs:135:17:138:17 | [Field1 (line 129): true] if (...) ... | Conditions.cs:135:21:135:26 | [Field1 (line 129): true] this access |
+| pre | Conditions.cs:135:21:135:26 | [Field1 (line 129): true, Field2 (line 129): false] this access | Conditions.cs:135:21:135:26 | [Field1 (line 129): true, Field2 (line 129): false] access to field Field2 |
+| pre | Conditions.cs:135:21:135:26 | [Field1 (line 129): true, Field2 (line 129): true] this access | Conditions.cs:135:21:135:26 | [Field1 (line 129): true, Field2 (line 129): true] access to field Field2 |
+| pre | Conditions.cs:135:21:135:26 | [Field1 (line 129): true] access to field Field2 | Conditions.cs:131:16:131:19 | [Field1 (line 129): true, Field2 (line 129): false] true |
+| pre | Conditions.cs:135:21:135:26 | [Field1 (line 129): true] access to field Field2 | Conditions.cs:136:17:138:17 | [Field1 (line 129): true, Field2 (line 129): true] {...} |
+| pre | Conditions.cs:135:21:135:26 | [Field1 (line 129): true] this access | Conditions.cs:135:21:135:26 | [Field1 (line 129): true] access to field Field2 |
+| pre | Conditions.cs:136:17:138:17 | [Field1 (line 129): true, Field2 (line 129): true] {...} | Conditions.cs:137:21:137:38 | [Field1 (line 129): true, Field2 (line 129): true] ...; |
+| pre | Conditions.cs:137:21:137:26 | [Field1 (line 129): true, Field2 (line 129): true] access to field Field1 | Conditions.cs:137:21:137:37 | [Field1 (line 129): true, Field2 (line 129): true] call to method ToString |
+| pre | Conditions.cs:137:21:137:26 | [Field1 (line 129): true, Field2 (line 129): true] this access | Conditions.cs:137:21:137:26 | [Field1 (line 129): true, Field2 (line 129): true] access to field Field1 |
+| pre | Conditions.cs:137:21:137:37 | [Field1 (line 129): true, Field2 (line 129): true] call to method ToString | Conditions.cs:131:16:131:19 | [Field1 (line 129): true, Field2 (line 129): true] true |
+| pre | Conditions.cs:137:21:137:38 | [Field1 (line 129): true, Field2 (line 129): true] ...; | Conditions.cs:137:21:137:26 | [Field1 (line 129): true, Field2 (line 129): true] this access |
 | pre | ExitMethods.cs:7:10:7:11 | enter M1 | ExitMethods.cs:8:5:11:5 | {...} |
 | pre | ExitMethods.cs:8:5:11:5 | {...} | ExitMethods.cs:9:9:9:25 | ...; |
 | pre | ExitMethods.cs:9:9:9:24 | call to method ErrorMaybe | ExitMethods.cs:10:9:10:15 | return ...; |

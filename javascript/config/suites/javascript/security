@@ -1,5 +1,7 @@
 + semmlecode-javascript-queries/DOM/TargetBlank.ql: /Security/CWE/CWE-200
 + semmlecode-javascript-queries/Electron/EnablingNodeIntegration.ql: /Security/CWE/CWE-094
++ semmlecode-javascript-queries/Security/CWE-020/IncompleteUrlSubstringSanitization.ql: /Security/CWE/CWE-020
++ semmlecode-javascript-queries/Security/CWE-020/IncorrectSuffixCheck.ql: /Security/CWE/CWE-020
 + semmlecode-javascript-queries/Security/CWE-022/TaintedPath.ql: /Security/CWE/CWE-022
 + semmlecode-javascript-queries/Security/CWE-078/CommandInjection.ql: /Security/CWE/CWE-078
 + semmlecode-javascript-queries/Security/CWE-079/ReflectedXss.ql: /Security/CWE/CWE-079
@@ -9,6 +11,7 @@
 + semmlecode-javascript-queries/Security/CWE-094/CodeInjection.ql: /Security/CWE/CWE-094
 + semmlecode-javascript-queries/Security/CWE-094/UnsafeDynamicMethodAccess.ql: /Security/CWE/CWE-094
 + semmlecode-javascript-queries/Security/CWE-116/IncompleteSanitization.ql: /Security/CWE/CWE-116
++ semmlecode-javascript-queries/Security/CWE-116/DoubleEscaping.ql: /Security/CWE/CWE-116
 + semmlecode-javascript-queries/Security/CWE-134/TaintedFormatString.ql: /Security/CWE/CWE-134
 + semmlecode-javascript-queries/Security/CWE-209/StackTraceExposure.ql: /Security/CWE/CWE-209
 + semmlecode-javascript-queries/Security/CWE-312/CleartextStorage.ql: /Security/CWE/CWE-312

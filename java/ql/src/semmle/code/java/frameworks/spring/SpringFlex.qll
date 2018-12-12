@@ -44,13 +44,11 @@ class SpringRemotingDestinationClass extends Class {
       this = remotingDestination.getSpringBean().getClass()
     )
     or
+    hasAnnotation("org.springframework.flex.remoting", "RemotingDestination") and
+    // Must either be a live bean, or a live component.
     (
-      hasAnnotation("org.springframework.flex.remoting", "RemotingDestination") and
-      // Must either be a live bean, or a live component.
-      (
-        this.(SpringComponent).isLive() or
-        this instanceof SpringBeanRefType
-      )
+      this.(SpringComponent).isLive() or
+      this instanceof SpringBeanRefType
     )
   }
 

@@ -38,10 +38,8 @@ predicate useAndDef(Assignment a, Variable v) {
   (
     a instanceof AssignAddExpr
     or
-    (
-      exists(VarAccess use | use.getVariable() = v | use.getParent*() = a.getSource()) and
-      a.getSource() instanceof AddExpr
-    )
+    exists(VarAccess use | use.getVariable() = v | use.getParent*() = a.getSource()) and
+    a.getSource() instanceof AddExpr
   )
 }
 

@@ -422,7 +422,16 @@ module Ssa {
      * Gets an SSA definition that has this variable as its underlying
      * source variable.
      */
+    deprecated
     Definition getAnDefinition() {
+      result.getSourceVariable() = this
+    }
+
+    /**
+     * Gets an SSA definition that has this variable as its underlying
+     * source variable.
+     */
+    Definition getAnSsaDefinition() {
       result.getSourceVariable() = this
     }
   }
@@ -1113,7 +1122,8 @@ module Ssa {
           call = succ |
           callable = call.getTarget() or
           callable = call.getTarget().(Method).getAnOverrider+() or
-          callable = call.getTarget().(Method).getAnUltimateImplementor()
+          callable = call.getTarget().(Method).getAnUltimateImplementor() or
+          callable = getARuntimeDelegateTarget(call)
         )
         or
         pred = succ.(DelegateCreation).getArgument()
@@ -1975,6 +1985,25 @@ module Ssa {
 
   private import SsaImpl
 
+  private string getSplitString(Definition def) {
+    exists(BasicBlock bb, int i, ControlFlow::Node cfn |
+      definesAt(def, bb, i, _) and
+      result = cfn.(ControlFlow::Nodes::ElementNode).getSplitsString()
+    |
+      cfn = bb.getNode(i)
+      or
+      not exists(bb.getNode(i)) and
+      cfn = bb.getFirstNode()
+    )
+  }
+
+  private string getToStringPrefix(Definition def) {
+    result = "[" + getSplitString(def) + "] "
+    or
+    not exists(getSplitString(def)) and
+    result = ""
+  }
+
   /**
    * A static single assignment (SSA) definition. Either an explicit variable
    * definition (`ExplicitDefinition`), an implicit variable definition
@@ -2311,9 +2340,9 @@ module Ssa {
 
     override string toString() {
       if this.getADefinition() instanceof AssignableDefinitions::ImplicitParameterDefinition then
-        result = "SSA param(" + this.getSourceVariable() + ")"
+        result = getToStringPrefix(this) + "SSA param(" + this.getSourceVariable() + ")"
       else
-        result = "SSA def(" + this.getSourceVariable() + ")"
+        result = getToStringPrefix(this) + "SSA def(" + this.getSourceVariable() + ")"
     }
 
     override Location getLocation() {
@@ -2354,9 +2383,9 @@ module Ssa {
 
     override string toString() {
       if this.getSourceVariable().getAssignable() instanceof LocalScopeVariable then
-        result = "SSA capture def(" + this.getSourceVariable() + ")"
+        result = getToStringPrefix(this) + "SSA capture def(" + this.getSourceVariable() + ")"
       else
-        result = "SSA entry def(" + this.getSourceVariable() + ")"
+        result = getToStringPrefix(this) + "SSA entry def(" + this.getSourceVariable() + ")"
     }
 
     override Location getLocation() {
@@ -2391,7 +2420,7 @@ module Ssa {
     }
 
     override string toString() {
-      result = "SSA call def(" + getSourceVariable() + ")"
+      result = getToStringPrefix(this) + "SSA call def(" + getSourceVariable() + ")"
     }
 
     override Location getLocation() {
@@ -2410,7 +2439,7 @@ module Ssa {
     }
 
     override string toString() {
-      result = "SSA qualifier def(" + getSourceVariable() + ")"
+      result = getToStringPrefix(this) + "SSA qualifier def(" + getSourceVariable() + ")"
     }
 
     override Location getLocation() {
@@ -2435,7 +2464,7 @@ module Ssa {
     }
 
     override string toString() {
-      result = "SSA untracked def(" + getSourceVariable() + ")"
+      result = getToStringPrefix(this) + "SSA untracked def(" + getSourceVariable() + ")"
     }
 
     override Location getLocation() {
@@ -2497,7 +2526,7 @@ module Ssa {
     }
 
     override string toString() {
-      result = "SSA phi(" + getSourceVariable() + ")"
+      result = getToStringPrefix(this) + "SSA phi(" + getSourceVariable() + ")"
     }
 
     /*

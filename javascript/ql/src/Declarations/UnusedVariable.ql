@@ -49,24 +49,29 @@ predicate isPropertyFilter(UnusedLocal v) {
   )
 }
 
+predicate hasJsxInScope(UnusedLocal v) {
+  any(JSXNode n).getParent+() = v.getScope().getScopeElement()
+}
+
 /**
- * Holds if `v` is an import of React, and there is a JSX element that implicitly
- * references it.
- */
-predicate isReactImportForJSX(UnusedLocal v) {
-  exists (ImportSpecifier is |
-    is.getLocal() = v.getADeclaration() and
-    exists (JSXNode jsx | jsx.getTopLevel() = is.getTopLevel())
-    |
+ * Holds if `v` is a "React" variable that is implicitly used by a JSX element.
+*/
+predicate isReactForJSX(UnusedLocal v) {
+  hasJsxInScope(v) and
+  (
     v.getName() = "React"
     or
-    // legacy `@jsx` pragmas
-    exists (JSXPragma p | p.getTopLevel() = is.getTopLevel() | p.getDOMName() = v.getName())
-    or
-    // JSX pragma from a .babelrc file
-    exists (Babel::TransformReactJsxConfig plugin |
-      plugin.appliesTo(is.getTopLevel()) and
-      plugin.getJsxFactoryVariableName() = v.getName())
+    exists(TopLevel tl |
+      tl = v.getADeclaration().getTopLevel() |
+      // legacy `@jsx` pragmas
+      exists(JSXPragma p | p.getTopLevel() = tl | p.getDOMName() = v.getName())
+      or
+      // JSX pragma from a .babelrc file
+      exists(Babel::TransformReactJsxConfig plugin |
+        plugin.appliesTo(tl) and
+        plugin.getJsxFactoryVariableName() = v.getName()
+      )
+    )
   )
 }
 
@@ -150,7 +155,7 @@ predicate whitelisted(UnusedLocal v) {
   // exclude variables used to filter out unwanted properties
   isPropertyFilter(v) or
   // exclude imports of React that are implicitly referenced by JSX
-  isReactImportForJSX(v) or
+  isReactForJSX(v) or
   // exclude names that are used as types
   exists (VarDecl vd |
     v = vd.getVariable() |

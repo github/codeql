@@ -178,15 +178,13 @@ class SpringComponent extends RefType {
     // package.
     not isSpringXMLEnabled()
     or
+    exists(SpringBasePackage sbp |
+      this.getPackage().getName().prefix(sbp.length() + 1) = sbp + "." or
+      this.getPackage().getName() = sbp
+    ) and
     (
-      exists(SpringBasePackage sbp |
-        this.getPackage().getName().prefix(sbp.length() + 1) = sbp + "." or
-        this.getPackage().getName() = sbp
-      ) and
-      (
-        not exists(getAProfileExpr()) or
-        getAProfileExpr().(SpringProfileExpr).isActive()
-      )
+      not exists(getAProfileExpr()) or
+      getAProfileExpr().(SpringProfileExpr).isActive()
     )
   }
 

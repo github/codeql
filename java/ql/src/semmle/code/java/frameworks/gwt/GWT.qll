@@ -35,10 +35,8 @@ class GwtEntryPointClass extends Class {
     // are live.
     isGwtXmlIncluded()
     implies
-    (
-      // The entry point is live if it is specified in a `*.gwt.xml` file.
-      exists(getAGwtXmlFile())
-    )
+    // The entry point is live if it is specified in a `*.gwt.xml` file.
+    exists(getAGwtXmlFile())
   }
 }
 

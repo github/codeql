@@ -353,6 +353,12 @@ module ControlFlow {
         )
       }
 
+      /** Gets a comma-separated list of strings for each split in this node, if any. */
+      string getSplitsString() {
+        result = splits.toString() and
+        result != ""
+      }
+
       /** Gets a split for this control flow node, if any. */
       Split getASplit() {
         result = splits.getASplit()
@@ -2491,7 +2497,11 @@ module ControlFlow {
       class PreBasicBlock extends ControlFlowElement {
         PreBasicBlock() { startsBB(this) }
 
-        PreBasicBlock getASuccessor() { result = succ(this.getLastElement(), _) }
+        PreBasicBlock getASuccessorByType(SuccessorType t) {
+          result = succ(this.getLastElement(), any(Completion c | t.matchesCompletion(c)))
+        }
+
+        PreBasicBlock getASuccessor() { result = this.getASuccessorByType(_) }
 
         PreBasicBlock getAPredecessor() {
           result.getASuccessor() = this
@@ -3093,6 +3103,12 @@ module ControlFlow {
           }
         }
 
+        pragma[noinline]
+        private ControlFlowElement getAChild(ControlFlowElement cfe, Callable c) {
+          result = cfe.getAChild() and
+          c = result.getEnclosingCallable()
+        }
+
         /**
          * Gets a descendant that belongs to the `finally` block of try statement
          * `try`.
@@ -3102,8 +3118,7 @@ module ControlFlow {
           or
           exists(ControlFlowElement mid |
             mid = getAFinallyDescendant(try) and
-            result = mid.getAChild() and
-            mid.getEnclosingCallable() = result.getEnclosingCallable() and
+            result = getAChild(mid, mid.getEnclosingCallable()) and
             not exists(TryStmt nestedTry |
               result = nestedTry.getFinally() and
               nestedTry != try
@@ -3638,7 +3653,7 @@ module ControlFlow {
               kind = rank[r](BooleanSplitSubKind kind0 |
                 kind0.getEnclosingCallable() = c and
                 kind0.startsSplit(_) |
-                kind0 order by kind0.getLocation().getStartLine(), kind0.getLocation().getStartColumn()
+                kind0 order by kind0.getLocation().getStartLine(), kind0.getLocation().getStartColumn(), kind0.toString()
               )
             )
           }
