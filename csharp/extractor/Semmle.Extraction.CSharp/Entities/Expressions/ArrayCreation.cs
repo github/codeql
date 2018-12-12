@@ -9,7 +9,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         protected ArrayCreation(ExpressionNodeInfo info) : base(info) { }
     }
 
-    abstract class ExplicitArrayCreation<T> : ArrayCreation<T> where T:ExpressionSyntax
+    abstract class ExplicitArrayCreation<SyntaxNode> : ArrayCreation<SyntaxNode> where SyntaxNode : ExpressionSyntax
     {
         protected ExplicitArrayCreation(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.ARRAY_CREATION)) { }
 
