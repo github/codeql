@@ -10,9 +10,7 @@
 | DeleteThis.cpp:60:3:60:24 | ... = ... | Resource ptr14 is acquired by class MyClass3 but not released anywhere in this class. |
 | DeleteThis.cpp:127:3:127:20 | ... = ... | Resource d is acquired by class MyClass9 but not released anywhere in this class. |
 | ExternalOwners.cpp:49:3:49:20 | ... = ... | Resource a is acquired by class MyScreen but not released anywhere in this class. |
-| Lambda.cpp:7:3:7:21 | ... = ... | Resource r1 is acquired by class testLambda but not released anywhere in this class. |
 | Lambda.cpp:24:3:24:21 | ... = ... | Resource r4 is acquired by class testLambda but not released anywhere in this class. |
-| Lambda.cpp:26:3:26:21 | ... = ... | Resource r5 is acquired by class testLambda but not released anywhere in this class. |
 | Lambda.cpp:29:3:29:21 | ... = ... | Resource r6 is acquired by class testLambda but not released in the destructor. It is released from deleter_for_r6 on line 40, so this function may need to be called from the destructor. |
 | ListDelete.cpp:21:3:21:21 | ... = ... | Resource first is acquired by class MyThingColection but not released anywhere in this class. |
 | NoDestructor.cpp:23:3:23:20 | ... = ... | Resource n is acquired by class MyClass5 but not released anywhere in this class. |

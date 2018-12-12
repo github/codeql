@@ -167,6 +167,13 @@ predicate unreleasedResource(Resource r, Expr acquire, File f, int acquireLine) 
     and f = acquire.getFile()
     and acquireLine = acquire.getLocation().getStartLine()
 
+    and not exists(ExprCall exprCall |
+      // expression call (function pointer or lambda) with `r` as an
+      // argument, which could release it.
+      exprCall.getAnArgument() = r.getAnAccess() and
+      r.inDestructor(exprCall)
+    )
+
     // check that any destructor for this class has a block; if it doesn't,
     // we must be missing information.
     and forall(Class c, Destructor d |

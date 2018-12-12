@@ -4,7 +4,7 @@ class testLambda
 public:
 	testLambda()
 	{
-		r1 = new char[4096]; // GOOD [FALSE POSITIVE]
+		r1 = new char[4096]; // GOOD
 		deleter1 = [](char *r) {
 			delete [] r;
 		};
@@ -23,7 +23,7 @@ public:
 
 		r4 = new char[4096]; // BAD
 
-		r5 = new char[4096]; // GOOD [FALSE POSITIVE]
+		r5 = new char[4096]; // GOOD
 		deleter5 = &deleter_for_r5;
 
 		r6 = new char[4096]; // GOOD [FALSE POSITIVE]
