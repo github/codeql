@@ -207,7 +207,13 @@ private class PostMessageEventParameter extends RemoteFlowSource {
  */
 private class WindowNameAccess extends RemoteFlowSource {
   WindowNameAccess() {
-    this = DataFlow::globalVarRef("name")
+    this = DataFlow::globalObjectRef().getAPropertyRead("name")
+    or
+    // Reference to `name` on a container that does not assign to it.
+    this.accessesGlobal("name") and
+    not exists(VarDef def |
+      def.getAVariable().(GlobalVariable).getName() = "name" and
+      def.getContainer() = this.asExpr().getContainer())
   }
 
   override string getSourceType() {

@@ -205,6 +205,9 @@ nodes
 | tst.js:244:39:244:55 | props.propTainted |
 | tst.js:248:60:248:82 | this.st ... Tainted |
 | tst.js:252:23:252:29 | tainted |
+| tst.js:256:7:256:17 | window.name |
+| tst.js:257:7:257:10 | name |
+| tst.js:261:11:261:21 | window.name |
 | winjs.js:2:7:2:53 | tainted |
 | winjs.js:2:17:2:33 | document.location |
 | winjs.js:2:17:2:40 | documen ... .search |
