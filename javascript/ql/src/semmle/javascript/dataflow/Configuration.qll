@@ -750,12 +750,17 @@ private predicate onPath(DataFlow::Node nd, DataFlow::Configuration cfg, PathSum
 }
 
 /**
+ * Holds if `cfg` has at least one source and at least one sink.
+ */
+pragma[noinline]
+private predicate isLive(DataFlow::Configuration cfg) { isSource(_, cfg, _) and isSink(_, cfg, _) }
+
+/**
  * A data flow node on an inter-procedural path from a source.
  */
 private newtype TPathNode =
   MkPathNode(DataFlow::Node nd, DataFlow::Configuration cfg, PathSummary summary) {
-    isSource(_, cfg, _) and
-    isSink(_, cfg, _) and
+    isLive(cfg) and
     onPath(nd, cfg, summary)
   }
 
@@ -791,9 +796,7 @@ class PathNode extends TPathNode {
   DataFlow::Configuration getConfiguration() { result = cfg }
 
   /** Gets the summary of the path underlying this path node. */
-  PathSummary getPathSummary() {
-    result = summary
-  }
+  PathSummary getPathSummary() { result = summary }
 
   /** Gets a successor node of this path node. */
   PathNode getASuccessor() {
