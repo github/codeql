@@ -82,3 +82,67 @@ private:
 	MyClass2 *ptr10, *ptr11, *ptr12, *ptr13, *ptr14, *ptr15;
 	MyClass2 *ptr20;
 };
+
+class MyClass4
+{
+public:
+	virtual void Release() = 0;
+};
+
+class MyClass5 : public MyClass4
+{
+public:
+	void Release()
+	{
+		delete this;
+	}
+};
+
+class MyClass6 : public MyClass5
+{
+};
+
+class MyClass7 : public MyClass4
+{
+public:
+	void Release()
+	{
+		// do nothing
+	}
+};
+
+class MyClass8 : public MyClass7
+{
+};
+
+class MyClass9
+{
+public:
+	MyClass9()
+	{
+		a = new MyClass5(); // GOOD
+		b = new MyClass5(); // GOOD
+		c = new MyClass6(); // GOOD
+
+		d = new MyClass7(); // BAD
+		e = new MyClass7(); // BAD [NOT DETECTED]
+		f = new MyClass8(); // BAD [NOT DETECTED]
+	}
+ 	~MyClass9()
+	{
+		a->Release(); // MyClass5::Release()
+		b->Release(); // MyClass5::Release()
+		c->Release(); // MyClass5::Release()
+
+		d->Release(); // MyClass7::Release()
+		e->Release(); // MyClass7::Release()
+		f->Release(); // MyClass7::Release() 
+	}
+ 	MyClass5 *a;
+	MyClass4 *b;
+	MyClass4 *c;
+
+	MyClass7 *d;
+	MyClass4 *e;
+	MyClass4 *f;
+};

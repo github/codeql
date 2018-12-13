@@ -162,6 +162,12 @@ nodes
 | tst.js:244:39:244:55 | props.propTainted |
 | tst.js:248:60:248:82 | this.st ... Tainted |
 | tst.js:252:23:252:29 | tainted |
+| winjs.js:2:7:2:53 | tainted |
+| winjs.js:2:17:2:33 | document.location |
+| winjs.js:2:17:2:40 | documen ... .search |
+| winjs.js:2:17:2:53 | documen ... ring(1) |
+| winjs.js:3:43:3:49 | tainted |
+| winjs.js:4:43:4:49 | tainted |
 edges
 | addEventListener.js:1:43:1:47 | event | addEventListener.js:2:20:2:24 | event |
 | addEventListener.js:2:20:2:24 | event | addEventListener.js:2:20:2:29 | event.data |
@@ -288,6 +294,11 @@ edges
 | tst.js:238:23:238:29 | tainted | tst.js:228:32:228:49 | prevProps.tainted4 |
 | tst.js:244:39:244:55 | props.propTainted | tst.js:248:60:248:82 | this.st ... Tainted |
 | tst.js:252:23:252:29 | tainted | tst.js:244:39:244:55 | props.propTainted |
+| winjs.js:2:7:2:53 | tainted | winjs.js:3:43:3:49 | tainted |
+| winjs.js:2:7:2:53 | tainted | winjs.js:4:43:4:49 | tainted |
+| winjs.js:2:17:2:33 | document.location | winjs.js:2:17:2:40 | documen ... .search |
+| winjs.js:2:17:2:40 | documen ... .search | winjs.js:2:17:2:53 | documen ... ring(1) |
+| winjs.js:2:17:2:53 | documen ... ring(1) | winjs.js:2:7:2:53 | tainted |
 #select
 | addEventListener.js:2:20:2:29 | event.data | addEventListener.js:1:43:1:47 | event | addEventListener.js:2:20:2:29 | event.data | Cross-site scripting vulnerability due to $@. | addEventListener.js:1:43:1:47 | event | user-provided value |
 | jquery.js:4:5:4:11 | tainted | jquery.js:2:17:2:33 | document.location | jquery.js:4:5:4:11 | tainted | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:33 | document.location | user-provided value |
@@ -349,3 +360,5 @@ edges
 | tst.js:224:28:224:46 | this.props.tainted3 | tst.js:194:19:194:35 | document.location | tst.js:224:28:224:46 | this.props.tainted3 | Cross-site scripting vulnerability due to $@. | tst.js:194:19:194:35 | document.location | user-provided value |
 | tst.js:228:32:228:49 | prevProps.tainted4 | tst.js:194:19:194:35 | document.location | tst.js:228:32:228:49 | prevProps.tainted4 | Cross-site scripting vulnerability due to $@. | tst.js:194:19:194:35 | document.location | user-provided value |
 | tst.js:248:60:248:82 | this.st ... Tainted | tst.js:194:19:194:35 | document.location | tst.js:248:60:248:82 | this.st ... Tainted | Cross-site scripting vulnerability due to $@. | tst.js:194:19:194:35 | document.location | user-provided value |
+| winjs.js:3:43:3:49 | tainted | winjs.js:2:17:2:33 | document.location | winjs.js:3:43:3:49 | tainted | Cross-site scripting vulnerability due to $@. | winjs.js:2:17:2:33 | document.location | user-provided value |
+| winjs.js:4:43:4:49 | tainted | winjs.js:2:17:2:33 | document.location | winjs.js:4:43:4:49 | tainted | Cross-site scripting vulnerability due to $@. | winjs.js:2:17:2:33 | document.location | user-provided value |

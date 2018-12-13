@@ -197,4 +197,69 @@ public class Guards
         if (!NullTestWrong(s))
             Console.WriteLine(s); // not null guarded
     }
+
+    void M17(object o, string[] args)
+    {
+        if (o != null)
+        {
+            o.ToString(); // null guarded
+            foreach (var arg in args)
+            {
+                o.ToString(); // null guarded
+            }
+        }
+    }
+
+    void M18(bool b1)
+    {
+        var b2 = true;
+        if (b1)
+            b2 = false;
+        switch (b2)
+        {
+            case true :
+                return;
+            return;
+        }
+    }
+
+    void M19(bool b1)
+    {
+        var b2 = false;
+        if (b1)
+            b2 = true;
+        switch (b2)
+        {
+            case true :
+                return;
+            return;
+        }
+    }
+
+    void M20(bool b)
+    {
+        var i = 0;
+        if (b)
+            i = 1;
+        switch (i)
+        {
+            case 1 :
+                return;
+            return;
+        }
+    }
+
+    enum E { A, B, C }
+    void M21(bool b)
+    {
+        var e = E.A;
+        if (b)
+            e = E.B;
+        switch (e)
+        {
+            case E.B :
+                return;
+            return;
+        }
+    }
 }

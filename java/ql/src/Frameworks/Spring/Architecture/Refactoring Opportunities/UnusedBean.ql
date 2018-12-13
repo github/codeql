@@ -39,13 +39,11 @@ class ImpureStmt extends Stmt {
   ImpureStmt() {
     exists(Expr e | e.getEnclosingStmt() = this |
       // Only permit calls to set of whitelisted targets.
-      (
-        e instanceof Call and
-        not e.(Call).getCallee().getDeclaringType().hasQualifiedName("java.util", "Collections")
-      )
+      e instanceof Call and
+      not e.(Call).getCallee().getDeclaringType().hasQualifiedName("java.util", "Collections")
       or
       // Writing to a field that is not an instance field is a no-no
-      (e instanceof FieldWrite and not e instanceof InstanceFieldWrite)
+      e instanceof FieldWrite and not e instanceof InstanceFieldWrite
     )
   }
 }
@@ -68,22 +66,20 @@ private Stmt getANestedStmt(Block block) {
  */
 class SpringPureClass extends Class {
   SpringPureClass() {
-    (
-      // The only permitted statement in static initializers is the initialization of a static
-      // final or effectively final logger fields, or effectively immutable types.
-      forall(Stmt s | s = getANestedStmt(getAMember().(StaticInitializer).getBody()) |
-        exists(Field f | f = s.(ExprStmt).getExpr().(AssignExpr).getDest().(FieldWrite).getField() |
-          (
-            // A logger field
-            f.getName().toLowerCase() = "logger" or
-            f.getName().toLowerCase() = "log" or
-            // An immutable type
-            f.getType() instanceof ImmutableType
-          ) and
-          f.isStatic() and
-          // Only written to in this statement e.g. final or effectively final
-          forall(FieldWrite fw | fw = f.getAnAccess() | fw.getEnclosingStmt() = s)
-        )
+    // The only permitted statement in static initializers is the initialization of a static
+    // final or effectively final logger fields, or effectively immutable types.
+    forall(Stmt s | s = getANestedStmt(getAMember().(StaticInitializer).getBody()) |
+      exists(Field f | f = s.(ExprStmt).getExpr().(AssignExpr).getDest().(FieldWrite).getField() |
+        (
+          // A logger field
+          f.getName().toLowerCase() = "logger" or
+          f.getName().toLowerCase() = "log" or
+          // An immutable type
+          f.getType() instanceof ImmutableType
+        ) and
+        f.isStatic() and
+        // Only written to in this statement e.g. final or effectively final
+        forall(FieldWrite fw | fw = f.getAnAccess() | fw.getEnclosingStmt() = s)
       )
     ) and
     // No constructor, instance initializer or Spring bean init or setter method that is impure.
@@ -145,12 +141,10 @@ class SpringBeanFactory extends ClassOrInterface {
 class LiveSpringBean extends SpringBean {
   LiveSpringBean() {
     // Must not be needed for side effects due to construction
-    (
-      // Only loaded by the container when required, so construction cannot have any useful side-effects
-      not isLazyInit() and
-      // or has no side-effects when constructed
-      not getClass() instanceof SpringPureClass
-    )
+    // Only loaded by the container when required, so construction cannot have any useful side-effects
+    not isLazyInit() and
+    // or has no side-effects when constructed
+    not getClass() instanceof SpringPureClass
     or
     (
       // If the class does not exist for this bean, or the class is not a source bean, then this is

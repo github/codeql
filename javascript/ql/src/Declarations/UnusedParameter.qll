@@ -46,7 +46,9 @@ predicate isUnused(Function f, Parameter p, Variable pv, int i) {
   // functions without a body cannot use their parameters
   f.hasBody() and
   // field parameters are used to initialize a field
-  not p instanceof FieldParameter
+  not p instanceof FieldParameter and
+  // common convention: parameters with leading underscore are intentionally unused
+  pv.getName().charAt(0) != "_"
 }
 
 /**

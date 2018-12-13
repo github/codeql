@@ -15,6 +15,8 @@
         .run(f2)
         .run(["used2", "unused9", function(used2) {}]) // NOT OK
         .run(["unused10", "unused11", function() {}]) // NOT OK
+        .run(["used2", "unused12", function(used2) { // NOT OK (alert formatting for multi-line function)
+        }])
     ;
 })();
 angular.module('app2')

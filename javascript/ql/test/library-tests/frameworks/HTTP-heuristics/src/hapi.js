@@ -1,0 +1,1 @@
+function handler(request, h){}

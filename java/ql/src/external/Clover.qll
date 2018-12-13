@@ -120,7 +120,7 @@ class CloverClass extends CloverMetricsContainer {
     this.getName() = "class"
   }
 
-  CloverPackage getPackage() { result = (getParent().(CloverFile)).getParent() }
+  CloverPackage getPackage() { result = getParent().(CloverFile).getParent() }
 
   RefType getRealClass() {
     result

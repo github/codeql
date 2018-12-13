@@ -194,26 +194,83 @@ module Hapi {
    */
   class RouteSetup extends MethodCallExpr, HTTP::Servers::StandardRouteSetup {
     ServerDefinition server;
-    string methodName;
+    Expr handler;
 
     RouteSetup() {
       server.flowsTo(getReceiver()) and
-      methodName = getMethodName() and
-      (methodName = "route" or methodName = "ext")
+      (
+        // server.route({ handler: fun })
+        getMethodName() = "route" and
+        hasOptionArgument(0, "handler", handler)
+        or
+        // server.ext('/', fun)
+        getMethodName() = "ext" and
+        handler = getArgument(1)
+      )
     }
 
     override DataFlow::SourceNode getARouteHandler() {
-      // server.route({ handler: fun })
-      methodName = "route" and
-      result.flowsToExpr(any(Expr e | hasOptionArgument(0, "handler", e)))
-      or
-      // server.ext('/', fun)
-      methodName = "ext" and
-      result.flowsToExpr(getArgument(1))
+      result.(DataFlow::SourceNode).flowsTo(handler.flow()) or
+      result.(DataFlow::TrackedNode).flowsTo(handler.flow())
+    }
+
+    Expr getRouteHandlerExpr() {
+      result = handler
     }
 
     override Expr getServer() {
       result = server
     }
   }
+
+  /**
+   * A function that looks like a Hapi route handler.
+   *
+   * For example, this could be the function `function(request, h){...}`.
+   */
+  class RouteHandlerCandidate extends HTTP::RouteHandlerCandidate {
+
+    RouteHandlerCandidate() {
+      exists (string request, string responseToolkit |
+        (request = "request" or request = "req") and
+        responseToolkit = "h" and
+        // heuristic: parameter names match the Hapi documentation
+        astNode.getNumParameter() = 2 and
+        astNode.getParameter(0).getName() = request and
+        astNode.getParameter(1).getName() = responseToolkit |
+        not (
+          // heuristic: is not invoked (Hapi invokes this at a call site we cannot reason precisely about)
+          exists(DataFlow::InvokeNode cs | cs.getACallee() = astNode)
+        )
+      )
+    }
+  }
+
+  /**
+   * Tracking for `RouteHandlerCandidate`.
+   */
+  private class TrackedRouteHandlerCandidate extends DataFlow::TrackedNode {
+
+    TrackedRouteHandlerCandidate() {
+      this instanceof RouteHandlerCandidate
+    }
+
+  }
+
+  /**
+   * A function that looks like a Hapi route handler and flows to a route setup.
+   */
+  private class TrackedRouteHandlerCandidateWithSetup extends RouteHandler, HTTP::Servers::StandardRouteHandler, DataFlow::ValueNode {
+
+    override Function astNode;
+
+    TrackedRouteHandlerCandidateWithSetup() {
+      exists(TrackedRouteHandlerCandidate tracked |
+        tracked.flowsTo(any(RouteSetup s).getRouteHandlerExpr().flow()) and
+        this = tracked
+      )
+    }
+
+  }
+
 }

@@ -41,20 +41,16 @@ class MetricElement extends Element {
    */
   int getALevel() {
     this.fromSource() and
-    not (this.getADependencySrc+() = this) and
+    not this.getADependencySrc+() = this and
     (
-      (
-        not (exists(MetricElement t | t = this.getADependency())) and
-        result = 0
-      )
+      not exists(MetricElement t | t = this.getADependency()) and
+      result = 0
       or
-      (
-        not (this.getADependency().fromSource()) and
-        exists(MetricElement e | this.getADependency() = e) and
-        result = 1
-      )
+      not this.getADependency().fromSource() and
+      exists(MetricElement e | this.getADependency() = e) and
+      result = 1
       or
-      (result = this.getADependency().getALevel() + 1)
+      result = this.getADependency().getALevel() + 1
     )
   }
 

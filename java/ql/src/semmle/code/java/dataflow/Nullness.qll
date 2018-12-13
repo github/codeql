@@ -336,11 +336,11 @@ private predicate nullVarStep(
   not exists(boolean branch | nullGuard(midssa, branch, false).hasBranchEdge(mid, bb, branch)) and
   not (leavingFinally(mid, bb, true) and midstoredcompletion = true) and
   if bb.getFirstNode() = any(TryStmt try | | try.getFinally())
-  then (
+  then
     if bb.getFirstNode() = mid.getLastNode().getANormalSuccessor()
     then storedcompletion = false
     else storedcompletion = true
-  ) else
+  else
     if leavingFinally(mid, bb, _)
     then storedcompletion = false
     else storedcompletion = midstoredcompletion

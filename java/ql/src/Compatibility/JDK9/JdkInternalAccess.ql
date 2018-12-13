@@ -127,7 +127,7 @@ predicate jdkPackage(Package p) {
 from JdkInternalAccess ta, string repl, string msg
 where
   repl = ta.getReplacement() and
-  (if (repl = "unknown") then msg = "" else msg = " (" + repl + ")") and
+  (if repl = "unknown" then msg = "" else msg = " (" + repl + ")") and
   not jdkInternalApi(ta.getCompilationUnit().getPackage().getName()) and
   not jdkPackage(ta.getCompilationUnit().getPackage())
 select ta, "Access to unsupported JDK-internal API '" + ta.getAccessedApi() + "'." + msg

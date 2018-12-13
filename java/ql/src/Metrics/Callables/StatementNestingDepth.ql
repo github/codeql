@@ -24,7 +24,7 @@ predicate realParent(Stmt inner, Stmt outer) {
 
 predicate skipParent(Stmt s) {
   exists(Stmt parent | parent = s.getParent() |
-    (s instanceof IfStmt and parent.(IfStmt).getElse() = s)
+    s instanceof IfStmt and parent.(IfStmt).getElse() = s
     or
     parent instanceof Block
   )

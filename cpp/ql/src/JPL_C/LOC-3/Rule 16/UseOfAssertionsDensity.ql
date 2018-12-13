@@ -3,7 +3,10 @@
  * @description All functions of more than 10 lines should have at least one assertion.
  * @kind problem
  * @id cpp/jpl-c/use-of-assertions-density
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       reliability
+ *       external/jpl
  */
 
 import semmle.code.cpp.commons.Assertions

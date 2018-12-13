@@ -3,7 +3,11 @@
  * @description Global variables that are not accessed outside their own file should be made static to promote information hiding.
  * @kind problem
  * @id cpp/jpl-c/limited-scope-file
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @precision low
+ * @tags maintainability
+ *       modularity
+ *       external/jpl
  */
 
 import cpp

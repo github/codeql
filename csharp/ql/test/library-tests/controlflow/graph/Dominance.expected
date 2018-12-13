@@ -661,6 +661,41 @@
 | post | Conditions.cs:122:17:122:24 | ... = ... | Conditions.cs:122:21:122:24 | null |
 | post | Conditions.cs:122:17:122:25 | ...; | Conditions.cs:121:17:121:20 | [last (line 118): true] access to local variable last |
 | post | Conditions.cs:122:21:122:24 | null | Conditions.cs:122:17:122:17 | access to local variable s |
+| post | Conditions.cs:130:5:141:5 | {...} | Conditions.cs:129:10:129:12 | enter M10 |
+| post | Conditions.cs:131:9:140:9 | while (...) ... | Conditions.cs:130:5:141:5 | {...} |
+| post | Conditions.cs:131:16:131:19 | [Field1 (line 129): true, Field2 (line 129): true] true | Conditions.cs:137:21:137:37 | [Field1 (line 129): true, Field2 (line 129): true] call to method ToString |
+| post | Conditions.cs:131:16:131:19 | true | Conditions.cs:131:9:140:9 | while (...) ... |
+| post | Conditions.cs:132:9:140:9 | [Field1 (line 129): false] {...} | Conditions.cs:131:16:131:19 | [Field1 (line 129): false] true |
+| post | Conditions.cs:132:9:140:9 | [Field1 (line 129): true, Field2 (line 129): false] {...} | Conditions.cs:131:16:131:19 | [Field1 (line 129): true, Field2 (line 129): false] true |
+| post | Conditions.cs:132:9:140:9 | [Field1 (line 129): true, Field2 (line 129): true] {...} | Conditions.cs:131:16:131:19 | [Field1 (line 129): true, Field2 (line 129): true] true |
+| post | Conditions.cs:132:9:140:9 | {...} | Conditions.cs:131:16:131:19 | true |
+| post | Conditions.cs:133:13:139:13 | [Field1 (line 129): false] if (...) ... | Conditions.cs:132:9:140:9 | [Field1 (line 129): false] {...} |
+| post | Conditions.cs:133:13:139:13 | [Field1 (line 129): true, Field2 (line 129): false] if (...) ... | Conditions.cs:132:9:140:9 | [Field1 (line 129): true, Field2 (line 129): false] {...} |
+| post | Conditions.cs:133:13:139:13 | [Field1 (line 129): true, Field2 (line 129): true] if (...) ... | Conditions.cs:132:9:140:9 | [Field1 (line 129): true, Field2 (line 129): true] {...} |
+| post | Conditions.cs:133:13:139:13 | if (...) ... | Conditions.cs:132:9:140:9 | {...} |
+| post | Conditions.cs:133:17:133:22 | [Field1 (line 129): false] access to field Field1 | Conditions.cs:133:17:133:22 | [Field1 (line 129): false] this access |
+| post | Conditions.cs:133:17:133:22 | [Field1 (line 129): false] this access | Conditions.cs:133:13:139:13 | [Field1 (line 129): false] if (...) ... |
+| post | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): false] access to field Field1 | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): false] this access |
+| post | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): false] this access | Conditions.cs:133:13:139:13 | [Field1 (line 129): true, Field2 (line 129): false] if (...) ... |
+| post | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): true] access to field Field1 | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): true] this access |
+| post | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): true] this access | Conditions.cs:133:13:139:13 | [Field1 (line 129): true, Field2 (line 129): true] if (...) ... |
+| post | Conditions.cs:133:17:133:22 | access to field Field1 | Conditions.cs:133:17:133:22 | this access |
+| post | Conditions.cs:133:17:133:22 | this access | Conditions.cs:133:13:139:13 | if (...) ... |
+| post | Conditions.cs:134:13:139:13 | [Field1 (line 129): true, Field2 (line 129): false] {...} | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): false] access to field Field1 |
+| post | Conditions.cs:134:13:139:13 | [Field1 (line 129): true, Field2 (line 129): true] {...} | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): true] access to field Field1 |
+| post | Conditions.cs:135:17:138:17 | [Field1 (line 129): true, Field2 (line 129): false] if (...) ... | Conditions.cs:134:13:139:13 | [Field1 (line 129): true, Field2 (line 129): false] {...} |
+| post | Conditions.cs:135:17:138:17 | [Field1 (line 129): true, Field2 (line 129): true] if (...) ... | Conditions.cs:134:13:139:13 | [Field1 (line 129): true, Field2 (line 129): true] {...} |
+| post | Conditions.cs:135:17:138:17 | [Field1 (line 129): true] if (...) ... | Conditions.cs:134:13:139:13 | [Field1 (line 129): true] {...} |
+| post | Conditions.cs:135:21:135:26 | [Field1 (line 129): true, Field2 (line 129): false] access to field Field2 | Conditions.cs:135:21:135:26 | [Field1 (line 129): true, Field2 (line 129): false] this access |
+| post | Conditions.cs:135:21:135:26 | [Field1 (line 129): true, Field2 (line 129): false] this access | Conditions.cs:135:17:138:17 | [Field1 (line 129): true, Field2 (line 129): false] if (...) ... |
+| post | Conditions.cs:135:21:135:26 | [Field1 (line 129): true, Field2 (line 129): true] access to field Field2 | Conditions.cs:135:21:135:26 | [Field1 (line 129): true, Field2 (line 129): true] this access |
+| post | Conditions.cs:135:21:135:26 | [Field1 (line 129): true, Field2 (line 129): true] this access | Conditions.cs:135:17:138:17 | [Field1 (line 129): true, Field2 (line 129): true] if (...) ... |
+| post | Conditions.cs:135:21:135:26 | [Field1 (line 129): true] access to field Field2 | Conditions.cs:135:21:135:26 | [Field1 (line 129): true] this access |
+| post | Conditions.cs:135:21:135:26 | [Field1 (line 129): true] this access | Conditions.cs:135:17:138:17 | [Field1 (line 129): true] if (...) ... |
+| post | Conditions.cs:137:21:137:26 | [Field1 (line 129): true, Field2 (line 129): true] access to field Field1 | Conditions.cs:137:21:137:26 | [Field1 (line 129): true, Field2 (line 129): true] this access |
+| post | Conditions.cs:137:21:137:26 | [Field1 (line 129): true, Field2 (line 129): true] this access | Conditions.cs:137:21:137:38 | [Field1 (line 129): true, Field2 (line 129): true] ...; |
+| post | Conditions.cs:137:21:137:37 | [Field1 (line 129): true, Field2 (line 129): true] call to method ToString | Conditions.cs:137:21:137:26 | [Field1 (line 129): true, Field2 (line 129): true] access to field Field1 |
+| post | Conditions.cs:137:21:137:38 | [Field1 (line 129): true, Field2 (line 129): true] ...; | Conditions.cs:136:17:138:17 | [Field1 (line 129): true, Field2 (line 129): true] {...} |
 | post | ExitMethods.cs:7:10:7:11 | exit M1 | ExitMethods.cs:10:9:10:15 | return ...; |
 | post | ExitMethods.cs:8:5:11:5 | {...} | ExitMethods.cs:7:10:7:11 | enter M1 |
 | post | ExitMethods.cs:9:9:9:24 | call to method ErrorMaybe | ExitMethods.cs:9:20:9:23 | true |
@@ -700,77 +735,92 @@
 | post | ExitMethods.cs:45:13:45:19 | return ...; | ExitMethods.cs:44:9:46:9 | {...} |
 | post | ExitMethods.cs:48:9:50:9 | {...} | ExitMethods.cs:47:9:50:9 | [exception: Exception] catch (...) {...} |
 | post | ExitMethods.cs:49:13:49:19 | return ...; | ExitMethods.cs:48:9:50:9 | {...} |
-| post | ExitMethods.cs:53:17:53:26 | exit ErrorMaybe | ExitMethods.cs:55:13:55:13 | access to parameter b |
-| post | ExitMethods.cs:53:17:53:26 | exit ErrorMaybe | ExitMethods.cs:56:13:56:34 | throw ...; |
-| post | ExitMethods.cs:54:5:57:5 | {...} | ExitMethods.cs:53:17:53:26 | enter ErrorMaybe |
-| post | ExitMethods.cs:55:9:56:34 | if (...) ... | ExitMethods.cs:54:5:57:5 | {...} |
-| post | ExitMethods.cs:55:13:55:13 | access to parameter b | ExitMethods.cs:55:9:56:34 | if (...) ... |
-| post | ExitMethods.cs:56:13:56:34 | throw ...; | ExitMethods.cs:56:19:56:33 | object creation of type Exception |
-| post | ExitMethods.cs:59:17:59:27 | exit ErrorAlways | ExitMethods.cs:62:13:62:34 | throw ...; |
-| post | ExitMethods.cs:59:17:59:27 | exit ErrorAlways | ExitMethods.cs:64:13:64:45 | throw ...; |
-| post | ExitMethods.cs:60:5:65:5 | {...} | ExitMethods.cs:59:17:59:27 | enter ErrorAlways |
-| post | ExitMethods.cs:61:9:64:45 | if (...) ... | ExitMethods.cs:60:5:65:5 | {...} |
-| post | ExitMethods.cs:61:13:61:13 | access to parameter b | ExitMethods.cs:61:9:64:45 | if (...) ... |
-| post | ExitMethods.cs:62:13:62:34 | throw ...; | ExitMethods.cs:62:19:62:33 | object creation of type Exception |
-| post | ExitMethods.cs:64:13:64:45 | throw ...; | ExitMethods.cs:64:19:64:44 | object creation of type ArgumentException |
-| post | ExitMethods.cs:64:19:64:44 | object creation of type ArgumentException | ExitMethods.cs:64:41:64:43 | "b" |
-| post | ExitMethods.cs:67:10:67:13 | exit Exit | ExitMethods.cs:69:9:69:27 | call to method Exit |
-| post | ExitMethods.cs:68:5:70:5 | {...} | ExitMethods.cs:67:10:67:13 | enter Exit |
-| post | ExitMethods.cs:69:9:69:27 | call to method Exit | ExitMethods.cs:69:26:69:26 | 0 |
-| post | ExitMethods.cs:69:9:69:28 | ...; | ExitMethods.cs:68:5:70:5 | {...} |
-| post | ExitMethods.cs:69:26:69:26 | 0 | ExitMethods.cs:69:9:69:28 | ...; |
-| post | ExitMethods.cs:72:10:72:18 | exit ExitInTry | ExitMethods.cs:76:13:76:18 | call to method Exit |
-| post | ExitMethods.cs:73:5:83:5 | {...} | ExitMethods.cs:72:10:72:18 | enter ExitInTry |
-| post | ExitMethods.cs:74:9:82:9 | try {...} ... | ExitMethods.cs:73:5:83:5 | {...} |
-| post | ExitMethods.cs:75:9:77:9 | {...} | ExitMethods.cs:74:9:82:9 | try {...} ... |
-| post | ExitMethods.cs:76:13:76:18 | call to method Exit | ExitMethods.cs:76:13:76:18 | this access |
-| post | ExitMethods.cs:76:13:76:18 | this access | ExitMethods.cs:76:13:76:19 | ...; |
-| post | ExitMethods.cs:76:13:76:19 | ...; | ExitMethods.cs:75:9:77:9 | {...} |
-| post | ExitMethods.cs:85:10:85:24 | exit ApplicationExit | ExitMethods.cs:87:9:87:47 | call to method Exit |
-| post | ExitMethods.cs:86:5:88:5 | {...} | ExitMethods.cs:85:10:85:24 | enter ApplicationExit |
-| post | ExitMethods.cs:87:9:87:47 | call to method Exit | ExitMethods.cs:87:9:87:48 | ...; |
-| post | ExitMethods.cs:87:9:87:48 | ...; | ExitMethods.cs:86:5:88:5 | {...} |
-| post | ExitMethods.cs:90:13:90:21 | exit ThrowExpr | ExitMethods.cs:92:9:92:77 | return ...; |
-| post | ExitMethods.cs:90:13:90:21 | exit ThrowExpr | ExitMethods.cs:92:41:92:76 | throw ... |
-| post | ExitMethods.cs:91:5:93:5 | {...} | ExitMethods.cs:90:13:90:21 | enter ThrowExpr |
-| post | ExitMethods.cs:92:9:92:77 | return ...; | ExitMethods.cs:92:29:92:37 | ... / ... |
-| post | ExitMethods.cs:92:16:92:20 | access to parameter input | ExitMethods.cs:92:16:92:76 | ... ? ... : ... |
-| post | ExitMethods.cs:92:16:92:25 | ... != ... | ExitMethods.cs:92:25:92:25 | (...) ... |
-| post | ExitMethods.cs:92:16:92:76 | ... ? ... : ... | ExitMethods.cs:91:5:93:5 | {...} |
-| post | ExitMethods.cs:92:25:92:25 | 0 | ExitMethods.cs:92:16:92:20 | access to parameter input |
-| post | ExitMethods.cs:92:25:92:25 | (...) ... | ExitMethods.cs:92:25:92:25 | 0 |
-| post | ExitMethods.cs:92:29:92:29 | (...) ... | ExitMethods.cs:92:29:92:29 | 1 |
-| post | ExitMethods.cs:92:29:92:37 | ... / ... | ExitMethods.cs:92:33:92:37 | access to parameter input |
-| post | ExitMethods.cs:92:33:92:37 | access to parameter input | ExitMethods.cs:92:29:92:29 | (...) ... |
-| post | ExitMethods.cs:92:41:92:76 | throw ... | ExitMethods.cs:92:47:92:76 | object creation of type ArgumentException |
-| post | ExitMethods.cs:92:47:92:76 | object creation of type ArgumentException | ExitMethods.cs:92:69:92:75 | "input" |
-| post | ExitMethods.cs:95:16:95:34 | exit ExtensionMethodCall | ExitMethods.cs:97:9:97:39 | return ...; |
-| post | ExitMethods.cs:96:5:98:5 | {...} | ExitMethods.cs:95:16:95:34 | enter ExtensionMethodCall |
-| post | ExitMethods.cs:97:9:97:39 | return ...; | ExitMethods.cs:97:34:97:34 | 0 |
-| post | ExitMethods.cs:97:9:97:39 | return ...; | ExitMethods.cs:97:38:97:38 | 1 |
-| post | ExitMethods.cs:97:16:97:16 | access to parameter s | ExitMethods.cs:97:16:97:38 | ... ? ... : ... |
-| post | ExitMethods.cs:97:16:97:30 | call to method Contains | ExitMethods.cs:97:27:97:29 | - |
-| post | ExitMethods.cs:97:16:97:38 | ... ? ... : ... | ExitMethods.cs:96:5:98:5 | {...} |
-| post | ExitMethods.cs:97:27:97:29 | - | ExitMethods.cs:97:16:97:16 | access to parameter s |
-| post | ExitMethods.cs:100:17:100:32 | exit FailingAssertion | ExitMethods.cs:102:9:102:28 | call to method IsTrue |
-| post | ExitMethods.cs:101:5:104:5 | {...} | ExitMethods.cs:100:17:100:32 | enter FailingAssertion |
-| post | ExitMethods.cs:102:9:102:28 | call to method IsTrue | ExitMethods.cs:102:23:102:27 | false |
-| post | ExitMethods.cs:102:9:102:29 | ...; | ExitMethods.cs:101:5:104:5 | {...} |
-| post | ExitMethods.cs:102:23:102:27 | false | ExitMethods.cs:102:9:102:29 | ...; |
-| post | ExitMethods.cs:106:17:106:33 | exit FailingAssertion2 | ExitMethods.cs:108:9:108:26 | call to method FailingAssertion |
-| post | ExitMethods.cs:107:5:110:5 | {...} | ExitMethods.cs:106:17:106:33 | enter FailingAssertion2 |
-| post | ExitMethods.cs:108:9:108:26 | call to method FailingAssertion | ExitMethods.cs:108:9:108:26 | this access |
-| post | ExitMethods.cs:108:9:108:26 | this access | ExitMethods.cs:108:9:108:27 | ...; |
-| post | ExitMethods.cs:108:9:108:27 | ...; | ExitMethods.cs:107:5:110:5 | {...} |
-| post | ExitMethods.cs:112:10:112:20 | exit AssertFalse | ExitMethods.cs:112:33:112:49 | call to method IsFalse |
-| post | ExitMethods.cs:112:33:112:49 | call to method IsFalse | ExitMethods.cs:112:48:112:48 | access to parameter b |
-| post | ExitMethods.cs:112:48:112:48 | access to parameter b | ExitMethods.cs:112:10:112:20 | enter AssertFalse |
-| post | ExitMethods.cs:114:17:114:33 | exit FailingAssertion3 | ExitMethods.cs:116:9:116:25 | call to method AssertFalse |
-| post | ExitMethods.cs:115:5:118:5 | {...} | ExitMethods.cs:114:17:114:33 | enter FailingAssertion3 |
-| post | ExitMethods.cs:116:9:116:25 | call to method AssertFalse | ExitMethods.cs:116:21:116:24 | true |
-| post | ExitMethods.cs:116:9:116:25 | this access | ExitMethods.cs:116:9:116:26 | ...; |
-| post | ExitMethods.cs:116:9:116:26 | ...; | ExitMethods.cs:115:5:118:5 | {...} |
-| post | ExitMethods.cs:116:21:116:24 | true | ExitMethods.cs:116:9:116:25 | this access |
+| post | ExitMethods.cs:53:10:53:11 | exit M7 | ExitMethods.cs:55:9:55:22 | call to method ErrorAlways2 |
+| post | ExitMethods.cs:54:5:57:5 | {...} | ExitMethods.cs:53:10:53:11 | enter M7 |
+| post | ExitMethods.cs:55:9:55:22 | call to method ErrorAlways2 | ExitMethods.cs:55:9:55:23 | ...; |
+| post | ExitMethods.cs:55:9:55:23 | ...; | ExitMethods.cs:54:5:57:5 | {...} |
+| post | ExitMethods.cs:59:10:59:11 | exit M8 | ExitMethods.cs:61:9:61:22 | call to method ErrorAlways3 |
+| post | ExitMethods.cs:60:5:63:5 | {...} | ExitMethods.cs:59:10:59:11 | enter M8 |
+| post | ExitMethods.cs:61:9:61:22 | call to method ErrorAlways3 | ExitMethods.cs:61:9:61:23 | ...; |
+| post | ExitMethods.cs:61:9:61:23 | ...; | ExitMethods.cs:60:5:63:5 | {...} |
+| post | ExitMethods.cs:65:17:65:26 | exit ErrorMaybe | ExitMethods.cs:67:13:67:13 | access to parameter b |
+| post | ExitMethods.cs:65:17:65:26 | exit ErrorMaybe | ExitMethods.cs:68:13:68:34 | throw ...; |
+| post | ExitMethods.cs:66:5:69:5 | {...} | ExitMethods.cs:65:17:65:26 | enter ErrorMaybe |
+| post | ExitMethods.cs:67:9:68:34 | if (...) ... | ExitMethods.cs:66:5:69:5 | {...} |
+| post | ExitMethods.cs:67:13:67:13 | access to parameter b | ExitMethods.cs:67:9:68:34 | if (...) ... |
+| post | ExitMethods.cs:68:13:68:34 | throw ...; | ExitMethods.cs:68:19:68:33 | object creation of type Exception |
+| post | ExitMethods.cs:71:17:71:27 | exit ErrorAlways | ExitMethods.cs:74:13:74:34 | throw ...; |
+| post | ExitMethods.cs:71:17:71:27 | exit ErrorAlways | ExitMethods.cs:76:13:76:45 | throw ...; |
+| post | ExitMethods.cs:72:5:77:5 | {...} | ExitMethods.cs:71:17:71:27 | enter ErrorAlways |
+| post | ExitMethods.cs:73:9:76:45 | if (...) ... | ExitMethods.cs:72:5:77:5 | {...} |
+| post | ExitMethods.cs:73:13:73:13 | access to parameter b | ExitMethods.cs:73:9:76:45 | if (...) ... |
+| post | ExitMethods.cs:74:13:74:34 | throw ...; | ExitMethods.cs:74:19:74:33 | object creation of type Exception |
+| post | ExitMethods.cs:76:13:76:45 | throw ...; | ExitMethods.cs:76:19:76:44 | object creation of type ArgumentException |
+| post | ExitMethods.cs:76:19:76:44 | object creation of type ArgumentException | ExitMethods.cs:76:41:76:43 | "b" |
+| post | ExitMethods.cs:79:17:79:28 | exit ErrorAlways2 | ExitMethods.cs:81:9:81:30 | throw ...; |
+| post | ExitMethods.cs:80:5:82:5 | {...} | ExitMethods.cs:79:17:79:28 | enter ErrorAlways2 |
+| post | ExitMethods.cs:81:9:81:30 | throw ...; | ExitMethods.cs:81:15:81:29 | object creation of type Exception |
+| post | ExitMethods.cs:81:15:81:29 | object creation of type Exception | ExitMethods.cs:80:5:82:5 | {...} |
+| post | ExitMethods.cs:84:17:84:28 | exit ErrorAlways3 | ExitMethods.cs:84:35:84:55 | throw ... |
+| post | ExitMethods.cs:84:35:84:55 | throw ... | ExitMethods.cs:84:41:84:55 | object creation of type Exception |
+| post | ExitMethods.cs:84:41:84:55 | object creation of type Exception | ExitMethods.cs:84:17:84:28 | enter ErrorAlways3 |
+| post | ExitMethods.cs:86:10:86:13 | exit Exit | ExitMethods.cs:88:9:88:27 | call to method Exit |
+| post | ExitMethods.cs:87:5:89:5 | {...} | ExitMethods.cs:86:10:86:13 | enter Exit |
+| post | ExitMethods.cs:88:9:88:27 | call to method Exit | ExitMethods.cs:88:26:88:26 | 0 |
+| post | ExitMethods.cs:88:9:88:28 | ...; | ExitMethods.cs:87:5:89:5 | {...} |
+| post | ExitMethods.cs:88:26:88:26 | 0 | ExitMethods.cs:88:9:88:28 | ...; |
+| post | ExitMethods.cs:91:10:91:18 | exit ExitInTry | ExitMethods.cs:95:13:95:18 | call to method Exit |
+| post | ExitMethods.cs:92:5:102:5 | {...} | ExitMethods.cs:91:10:91:18 | enter ExitInTry |
+| post | ExitMethods.cs:93:9:101:9 | try {...} ... | ExitMethods.cs:92:5:102:5 | {...} |
+| post | ExitMethods.cs:94:9:96:9 | {...} | ExitMethods.cs:93:9:101:9 | try {...} ... |
+| post | ExitMethods.cs:95:13:95:18 | call to method Exit | ExitMethods.cs:95:13:95:18 | this access |
+| post | ExitMethods.cs:95:13:95:18 | this access | ExitMethods.cs:95:13:95:19 | ...; |
+| post | ExitMethods.cs:95:13:95:19 | ...; | ExitMethods.cs:94:9:96:9 | {...} |
+| post | ExitMethods.cs:104:10:104:24 | exit ApplicationExit | ExitMethods.cs:106:9:106:47 | call to method Exit |
+| post | ExitMethods.cs:105:5:107:5 | {...} | ExitMethods.cs:104:10:104:24 | enter ApplicationExit |
+| post | ExitMethods.cs:106:9:106:47 | call to method Exit | ExitMethods.cs:106:9:106:48 | ...; |
+| post | ExitMethods.cs:106:9:106:48 | ...; | ExitMethods.cs:105:5:107:5 | {...} |
+| post | ExitMethods.cs:109:13:109:21 | exit ThrowExpr | ExitMethods.cs:111:9:111:77 | return ...; |
+| post | ExitMethods.cs:109:13:109:21 | exit ThrowExpr | ExitMethods.cs:111:41:111:76 | throw ... |
+| post | ExitMethods.cs:110:5:112:5 | {...} | ExitMethods.cs:109:13:109:21 | enter ThrowExpr |
+| post | ExitMethods.cs:111:9:111:77 | return ...; | ExitMethods.cs:111:29:111:37 | ... / ... |
+| post | ExitMethods.cs:111:16:111:20 | access to parameter input | ExitMethods.cs:111:16:111:76 | ... ? ... : ... |
+| post | ExitMethods.cs:111:16:111:25 | ... != ... | ExitMethods.cs:111:25:111:25 | (...) ... |
+| post | ExitMethods.cs:111:16:111:76 | ... ? ... : ... | ExitMethods.cs:110:5:112:5 | {...} |
+| post | ExitMethods.cs:111:25:111:25 | 0 | ExitMethods.cs:111:16:111:20 | access to parameter input |
+| post | ExitMethods.cs:111:25:111:25 | (...) ... | ExitMethods.cs:111:25:111:25 | 0 |
+| post | ExitMethods.cs:111:29:111:29 | (...) ... | ExitMethods.cs:111:29:111:29 | 1 |
+| post | ExitMethods.cs:111:29:111:37 | ... / ... | ExitMethods.cs:111:33:111:37 | access to parameter input |
+| post | ExitMethods.cs:111:33:111:37 | access to parameter input | ExitMethods.cs:111:29:111:29 | (...) ... |
+| post | ExitMethods.cs:111:41:111:76 | throw ... | ExitMethods.cs:111:47:111:76 | object creation of type ArgumentException |
+| post | ExitMethods.cs:111:47:111:76 | object creation of type ArgumentException | ExitMethods.cs:111:69:111:75 | "input" |
+| post | ExitMethods.cs:114:16:114:34 | exit ExtensionMethodCall | ExitMethods.cs:116:9:116:39 | return ...; |
+| post | ExitMethods.cs:115:5:117:5 | {...} | ExitMethods.cs:114:16:114:34 | enter ExtensionMethodCall |
+| post | ExitMethods.cs:116:9:116:39 | return ...; | ExitMethods.cs:116:34:116:34 | 0 |
+| post | ExitMethods.cs:116:9:116:39 | return ...; | ExitMethods.cs:116:38:116:38 | 1 |
+| post | ExitMethods.cs:116:16:116:16 | access to parameter s | ExitMethods.cs:116:16:116:38 | ... ? ... : ... |
+| post | ExitMethods.cs:116:16:116:30 | call to method Contains | ExitMethods.cs:116:27:116:29 | - |
+| post | ExitMethods.cs:116:16:116:38 | ... ? ... : ... | ExitMethods.cs:115:5:117:5 | {...} |
+| post | ExitMethods.cs:116:27:116:29 | - | ExitMethods.cs:116:16:116:16 | access to parameter s |
+| post | ExitMethods.cs:119:17:119:32 | exit FailingAssertion | ExitMethods.cs:121:9:121:28 | call to method IsTrue |
+| post | ExitMethods.cs:120:5:123:5 | {...} | ExitMethods.cs:119:17:119:32 | enter FailingAssertion |
+| post | ExitMethods.cs:121:9:121:28 | call to method IsTrue | ExitMethods.cs:121:23:121:27 | false |
+| post | ExitMethods.cs:121:9:121:29 | ...; | ExitMethods.cs:120:5:123:5 | {...} |
+| post | ExitMethods.cs:121:23:121:27 | false | ExitMethods.cs:121:9:121:29 | ...; |
+| post | ExitMethods.cs:125:17:125:33 | exit FailingAssertion2 | ExitMethods.cs:127:9:127:26 | call to method FailingAssertion |
+| post | ExitMethods.cs:126:5:129:5 | {...} | ExitMethods.cs:125:17:125:33 | enter FailingAssertion2 |
+| post | ExitMethods.cs:127:9:127:26 | call to method FailingAssertion | ExitMethods.cs:127:9:127:26 | this access |
+| post | ExitMethods.cs:127:9:127:26 | this access | ExitMethods.cs:127:9:127:27 | ...; |
+| post | ExitMethods.cs:127:9:127:27 | ...; | ExitMethods.cs:126:5:129:5 | {...} |
+| post | ExitMethods.cs:131:10:131:20 | exit AssertFalse | ExitMethods.cs:131:33:131:49 | call to method IsFalse |
+| post | ExitMethods.cs:131:33:131:49 | call to method IsFalse | ExitMethods.cs:131:48:131:48 | access to parameter b |
+| post | ExitMethods.cs:131:48:131:48 | access to parameter b | ExitMethods.cs:131:10:131:20 | enter AssertFalse |
+| post | ExitMethods.cs:133:17:133:33 | exit FailingAssertion3 | ExitMethods.cs:135:9:135:25 | call to method AssertFalse |
+| post | ExitMethods.cs:134:5:137:5 | {...} | ExitMethods.cs:133:17:133:33 | enter FailingAssertion3 |
+| post | ExitMethods.cs:135:9:135:25 | call to method AssertFalse | ExitMethods.cs:135:21:135:24 | true |
+| post | ExitMethods.cs:135:9:135:25 | this access | ExitMethods.cs:135:9:135:26 | ...; |
+| post | ExitMethods.cs:135:9:135:26 | ...; | ExitMethods.cs:134:5:137:5 | {...} |
+| post | ExitMethods.cs:135:21:135:24 | true | ExitMethods.cs:135:9:135:25 | this access |
 | post | Extensions.cs:5:23:5:29 | exit ToInt32 | Extensions.cs:7:9:7:30 | return ...; |
 | post | Extensions.cs:6:5:8:5 | {...} | Extensions.cs:5:23:5:29 | enter ToInt32 |
 | post | Extensions.cs:7:9:7:30 | return ...; | Extensions.cs:7:16:7:29 | call to method Parse |
@@ -2828,6 +2878,45 @@
 | pre | Conditions.cs:122:17:122:17 | access to local variable s | Conditions.cs:122:21:122:24 | null |
 | pre | Conditions.cs:122:17:122:25 | ...; | Conditions.cs:122:17:122:17 | access to local variable s |
 | pre | Conditions.cs:122:21:122:24 | null | Conditions.cs:122:17:122:24 | ... = ... |
+| pre | Conditions.cs:129:10:129:12 | enter M10 | Conditions.cs:130:5:141:5 | {...} |
+| pre | Conditions.cs:130:5:141:5 | {...} | Conditions.cs:131:9:140:9 | while (...) ... |
+| pre | Conditions.cs:131:9:140:9 | while (...) ... | Conditions.cs:131:16:131:19 | true |
+| pre | Conditions.cs:131:16:131:19 | [Field1 (line 129): false] true | Conditions.cs:132:9:140:9 | [Field1 (line 129): false] {...} |
+| pre | Conditions.cs:131:16:131:19 | [Field1 (line 129): true, Field2 (line 129): false] true | Conditions.cs:132:9:140:9 | [Field1 (line 129): true, Field2 (line 129): false] {...} |
+| pre | Conditions.cs:131:16:131:19 | [Field1 (line 129): true, Field2 (line 129): true] true | Conditions.cs:132:9:140:9 | [Field1 (line 129): true, Field2 (line 129): true] {...} |
+| pre | Conditions.cs:131:16:131:19 | true | Conditions.cs:132:9:140:9 | {...} |
+| pre | Conditions.cs:132:9:140:9 | [Field1 (line 129): false] {...} | Conditions.cs:133:13:139:13 | [Field1 (line 129): false] if (...) ... |
+| pre | Conditions.cs:132:9:140:9 | [Field1 (line 129): true, Field2 (line 129): false] {...} | Conditions.cs:133:13:139:13 | [Field1 (line 129): true, Field2 (line 129): false] if (...) ... |
+| pre | Conditions.cs:132:9:140:9 | [Field1 (line 129): true, Field2 (line 129): true] {...} | Conditions.cs:133:13:139:13 | [Field1 (line 129): true, Field2 (line 129): true] if (...) ... |
+| pre | Conditions.cs:132:9:140:9 | {...} | Conditions.cs:133:13:139:13 | if (...) ... |
+| pre | Conditions.cs:133:13:139:13 | [Field1 (line 129): false] if (...) ... | Conditions.cs:133:17:133:22 | [Field1 (line 129): false] this access |
+| pre | Conditions.cs:133:13:139:13 | [Field1 (line 129): true, Field2 (line 129): false] if (...) ... | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): false] this access |
+| pre | Conditions.cs:133:13:139:13 | [Field1 (line 129): true, Field2 (line 129): true] if (...) ... | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): true] this access |
+| pre | Conditions.cs:133:13:139:13 | if (...) ... | Conditions.cs:133:17:133:22 | this access |
+| pre | Conditions.cs:133:17:133:22 | [Field1 (line 129): false] this access | Conditions.cs:133:17:133:22 | [Field1 (line 129): false] access to field Field1 |
+| pre | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): false] access to field Field1 | Conditions.cs:134:13:139:13 | [Field1 (line 129): true, Field2 (line 129): false] {...} |
+| pre | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): false] this access | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): false] access to field Field1 |
+| pre | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): true] access to field Field1 | Conditions.cs:134:13:139:13 | [Field1 (line 129): true, Field2 (line 129): true] {...} |
+| pre | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): true] this access | Conditions.cs:133:17:133:22 | [Field1 (line 129): true, Field2 (line 129): true] access to field Field1 |
+| pre | Conditions.cs:133:17:133:22 | access to field Field1 | Conditions.cs:131:16:131:19 | [Field1 (line 129): false] true |
+| pre | Conditions.cs:133:17:133:22 | access to field Field1 | Conditions.cs:134:13:139:13 | [Field1 (line 129): true] {...} |
+| pre | Conditions.cs:133:17:133:22 | this access | Conditions.cs:133:17:133:22 | access to field Field1 |
+| pre | Conditions.cs:134:13:139:13 | [Field1 (line 129): true, Field2 (line 129): false] {...} | Conditions.cs:135:17:138:17 | [Field1 (line 129): true, Field2 (line 129): false] if (...) ... |
+| pre | Conditions.cs:134:13:139:13 | [Field1 (line 129): true, Field2 (line 129): true] {...} | Conditions.cs:135:17:138:17 | [Field1 (line 129): true, Field2 (line 129): true] if (...) ... |
+| pre | Conditions.cs:134:13:139:13 | [Field1 (line 129): true] {...} | Conditions.cs:135:17:138:17 | [Field1 (line 129): true] if (...) ... |
+| pre | Conditions.cs:135:17:138:17 | [Field1 (line 129): true, Field2 (line 129): false] if (...) ... | Conditions.cs:135:21:135:26 | [Field1 (line 129): true, Field2 (line 129): false] this access |
+| pre | Conditions.cs:135:17:138:17 | [Field1 (line 129): true, Field2 (line 129): true] if (...) ... | Conditions.cs:135:21:135:26 | [Field1 (line 129): true, Field2 (line 129): true] this access |
+| pre | Conditions.cs:135:17:138:17 | [Field1 (line 129): true] if (...) ... | Conditions.cs:135:21:135:26 | [Field1 (line 129): true] this access |
+| pre | Conditions.cs:135:21:135:26 | [Field1 (line 129): true, Field2 (line 129): false] this access | Conditions.cs:135:21:135:26 | [Field1 (line 129): true, Field2 (line 129): false] access to field Field2 |
+| pre | Conditions.cs:135:21:135:26 | [Field1 (line 129): true, Field2 (line 129): true] this access | Conditions.cs:135:21:135:26 | [Field1 (line 129): true, Field2 (line 129): true] access to field Field2 |
+| pre | Conditions.cs:135:21:135:26 | [Field1 (line 129): true] access to field Field2 | Conditions.cs:131:16:131:19 | [Field1 (line 129): true, Field2 (line 129): false] true |
+| pre | Conditions.cs:135:21:135:26 | [Field1 (line 129): true] access to field Field2 | Conditions.cs:136:17:138:17 | [Field1 (line 129): true, Field2 (line 129): true] {...} |
+| pre | Conditions.cs:135:21:135:26 | [Field1 (line 129): true] this access | Conditions.cs:135:21:135:26 | [Field1 (line 129): true] access to field Field2 |
+| pre | Conditions.cs:136:17:138:17 | [Field1 (line 129): true, Field2 (line 129): true] {...} | Conditions.cs:137:21:137:38 | [Field1 (line 129): true, Field2 (line 129): true] ...; |
+| pre | Conditions.cs:137:21:137:26 | [Field1 (line 129): true, Field2 (line 129): true] access to field Field1 | Conditions.cs:137:21:137:37 | [Field1 (line 129): true, Field2 (line 129): true] call to method ToString |
+| pre | Conditions.cs:137:21:137:26 | [Field1 (line 129): true, Field2 (line 129): true] this access | Conditions.cs:137:21:137:26 | [Field1 (line 129): true, Field2 (line 129): true] access to field Field1 |
+| pre | Conditions.cs:137:21:137:37 | [Field1 (line 129): true, Field2 (line 129): true] call to method ToString | Conditions.cs:131:16:131:19 | [Field1 (line 129): true, Field2 (line 129): true] true |
+| pre | Conditions.cs:137:21:137:38 | [Field1 (line 129): true, Field2 (line 129): true] ...; | Conditions.cs:137:21:137:26 | [Field1 (line 129): true, Field2 (line 129): true] this access |
 | pre | ExitMethods.cs:7:10:7:11 | enter M1 | ExitMethods.cs:8:5:11:5 | {...} |
 | pre | ExitMethods.cs:8:5:11:5 | {...} | ExitMethods.cs:9:9:9:25 | ...; |
 | pre | ExitMethods.cs:9:9:9:24 | call to method ErrorMaybe | ExitMethods.cs:10:9:10:15 | return ...; |
@@ -2867,77 +2956,92 @@
 | pre | ExitMethods.cs:44:9:46:9 | {...} | ExitMethods.cs:45:13:45:19 | return ...; |
 | pre | ExitMethods.cs:47:9:50:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:48:9:50:9 | {...} |
 | pre | ExitMethods.cs:48:9:50:9 | {...} | ExitMethods.cs:49:13:49:19 | return ...; |
-| pre | ExitMethods.cs:53:17:53:26 | enter ErrorMaybe | ExitMethods.cs:54:5:57:5 | {...} |
-| pre | ExitMethods.cs:54:5:57:5 | {...} | ExitMethods.cs:55:9:56:34 | if (...) ... |
-| pre | ExitMethods.cs:55:9:56:34 | if (...) ... | ExitMethods.cs:55:13:55:13 | access to parameter b |
-| pre | ExitMethods.cs:55:13:55:13 | access to parameter b | ExitMethods.cs:53:17:53:26 | exit ErrorMaybe |
-| pre | ExitMethods.cs:55:13:55:13 | access to parameter b | ExitMethods.cs:56:19:56:33 | object creation of type Exception |
-| pre | ExitMethods.cs:56:19:56:33 | object creation of type Exception | ExitMethods.cs:56:13:56:34 | throw ...; |
-| pre | ExitMethods.cs:59:17:59:27 | enter ErrorAlways | ExitMethods.cs:60:5:65:5 | {...} |
-| pre | ExitMethods.cs:60:5:65:5 | {...} | ExitMethods.cs:61:9:64:45 | if (...) ... |
-| pre | ExitMethods.cs:61:9:64:45 | if (...) ... | ExitMethods.cs:61:13:61:13 | access to parameter b |
-| pre | ExitMethods.cs:61:13:61:13 | access to parameter b | ExitMethods.cs:62:19:62:33 | object creation of type Exception |
-| pre | ExitMethods.cs:61:13:61:13 | access to parameter b | ExitMethods.cs:64:41:64:43 | "b" |
-| pre | ExitMethods.cs:62:19:62:33 | object creation of type Exception | ExitMethods.cs:62:13:62:34 | throw ...; |
-| pre | ExitMethods.cs:64:19:64:44 | object creation of type ArgumentException | ExitMethods.cs:64:13:64:45 | throw ...; |
-| pre | ExitMethods.cs:64:41:64:43 | "b" | ExitMethods.cs:64:19:64:44 | object creation of type ArgumentException |
-| pre | ExitMethods.cs:67:10:67:13 | enter Exit | ExitMethods.cs:68:5:70:5 | {...} |
-| pre | ExitMethods.cs:68:5:70:5 | {...} | ExitMethods.cs:69:9:69:28 | ...; |
-| pre | ExitMethods.cs:69:9:69:27 | call to method Exit | ExitMethods.cs:67:10:67:13 | exit Exit |
-| pre | ExitMethods.cs:69:9:69:28 | ...; | ExitMethods.cs:69:26:69:26 | 0 |
-| pre | ExitMethods.cs:69:26:69:26 | 0 | ExitMethods.cs:69:9:69:27 | call to method Exit |
-| pre | ExitMethods.cs:72:10:72:18 | enter ExitInTry | ExitMethods.cs:73:5:83:5 | {...} |
-| pre | ExitMethods.cs:73:5:83:5 | {...} | ExitMethods.cs:74:9:82:9 | try {...} ... |
-| pre | ExitMethods.cs:74:9:82:9 | try {...} ... | ExitMethods.cs:75:9:77:9 | {...} |
-| pre | ExitMethods.cs:75:9:77:9 | {...} | ExitMethods.cs:76:13:76:19 | ...; |
-| pre | ExitMethods.cs:76:13:76:18 | call to method Exit | ExitMethods.cs:72:10:72:18 | exit ExitInTry |
-| pre | ExitMethods.cs:76:13:76:18 | this access | ExitMethods.cs:76:13:76:18 | call to method Exit |
-| pre | ExitMethods.cs:76:13:76:19 | ...; | ExitMethods.cs:76:13:76:18 | this access |
-| pre | ExitMethods.cs:85:10:85:24 | enter ApplicationExit | ExitMethods.cs:86:5:88:5 | {...} |
-| pre | ExitMethods.cs:86:5:88:5 | {...} | ExitMethods.cs:87:9:87:48 | ...; |
-| pre | ExitMethods.cs:87:9:87:47 | call to method Exit | ExitMethods.cs:85:10:85:24 | exit ApplicationExit |
-| pre | ExitMethods.cs:87:9:87:48 | ...; | ExitMethods.cs:87:9:87:47 | call to method Exit |
-| pre | ExitMethods.cs:90:13:90:21 | enter ThrowExpr | ExitMethods.cs:91:5:93:5 | {...} |
-| pre | ExitMethods.cs:91:5:93:5 | {...} | ExitMethods.cs:92:16:92:76 | ... ? ... : ... |
-| pre | ExitMethods.cs:92:16:92:20 | access to parameter input | ExitMethods.cs:92:25:92:25 | 0 |
-| pre | ExitMethods.cs:92:16:92:25 | ... != ... | ExitMethods.cs:92:29:92:29 | 1 |
-| pre | ExitMethods.cs:92:16:92:25 | ... != ... | ExitMethods.cs:92:69:92:75 | "input" |
-| pre | ExitMethods.cs:92:16:92:76 | ... ? ... : ... | ExitMethods.cs:92:16:92:20 | access to parameter input |
-| pre | ExitMethods.cs:92:25:92:25 | 0 | ExitMethods.cs:92:25:92:25 | (...) ... |
-| pre | ExitMethods.cs:92:25:92:25 | (...) ... | ExitMethods.cs:92:16:92:25 | ... != ... |
-| pre | ExitMethods.cs:92:29:92:29 | 1 | ExitMethods.cs:92:29:92:29 | (...) ... |
-| pre | ExitMethods.cs:92:29:92:29 | (...) ... | ExitMethods.cs:92:33:92:37 | access to parameter input |
-| pre | ExitMethods.cs:92:29:92:37 | ... / ... | ExitMethods.cs:92:9:92:77 | return ...; |
-| pre | ExitMethods.cs:92:33:92:37 | access to parameter input | ExitMethods.cs:92:29:92:37 | ... / ... |
-| pre | ExitMethods.cs:92:47:92:76 | object creation of type ArgumentException | ExitMethods.cs:92:41:92:76 | throw ... |
-| pre | ExitMethods.cs:92:69:92:75 | "input" | ExitMethods.cs:92:47:92:76 | object creation of type ArgumentException |
-| pre | ExitMethods.cs:95:16:95:34 | enter ExtensionMethodCall | ExitMethods.cs:96:5:98:5 | {...} |
-| pre | ExitMethods.cs:96:5:98:5 | {...} | ExitMethods.cs:97:16:97:38 | ... ? ... : ... |
-| pre | ExitMethods.cs:97:9:97:39 | return ...; | ExitMethods.cs:95:16:95:34 | exit ExtensionMethodCall |
-| pre | ExitMethods.cs:97:16:97:16 | access to parameter s | ExitMethods.cs:97:27:97:29 | - |
-| pre | ExitMethods.cs:97:16:97:30 | call to method Contains | ExitMethods.cs:97:34:97:34 | 0 |
-| pre | ExitMethods.cs:97:16:97:30 | call to method Contains | ExitMethods.cs:97:38:97:38 | 1 |
-| pre | ExitMethods.cs:97:16:97:38 | ... ? ... : ... | ExitMethods.cs:97:16:97:16 | access to parameter s |
-| pre | ExitMethods.cs:97:27:97:29 | - | ExitMethods.cs:97:16:97:30 | call to method Contains |
-| pre | ExitMethods.cs:100:17:100:32 | enter FailingAssertion | ExitMethods.cs:101:5:104:5 | {...} |
-| pre | ExitMethods.cs:101:5:104:5 | {...} | ExitMethods.cs:102:9:102:29 | ...; |
-| pre | ExitMethods.cs:102:9:102:28 | call to method IsTrue | ExitMethods.cs:100:17:100:32 | exit FailingAssertion |
-| pre | ExitMethods.cs:102:9:102:29 | ...; | ExitMethods.cs:102:23:102:27 | false |
-| pre | ExitMethods.cs:102:23:102:27 | false | ExitMethods.cs:102:9:102:28 | call to method IsTrue |
-| pre | ExitMethods.cs:106:17:106:33 | enter FailingAssertion2 | ExitMethods.cs:107:5:110:5 | {...} |
-| pre | ExitMethods.cs:107:5:110:5 | {...} | ExitMethods.cs:108:9:108:27 | ...; |
-| pre | ExitMethods.cs:108:9:108:26 | call to method FailingAssertion | ExitMethods.cs:106:17:106:33 | exit FailingAssertion2 |
-| pre | ExitMethods.cs:108:9:108:26 | this access | ExitMethods.cs:108:9:108:26 | call to method FailingAssertion |
-| pre | ExitMethods.cs:108:9:108:27 | ...; | ExitMethods.cs:108:9:108:26 | this access |
-| pre | ExitMethods.cs:112:10:112:20 | enter AssertFalse | ExitMethods.cs:112:48:112:48 | access to parameter b |
-| pre | ExitMethods.cs:112:33:112:49 | call to method IsFalse | ExitMethods.cs:112:10:112:20 | exit AssertFalse |
-| pre | ExitMethods.cs:112:48:112:48 | access to parameter b | ExitMethods.cs:112:33:112:49 | call to method IsFalse |
-| pre | ExitMethods.cs:114:17:114:33 | enter FailingAssertion3 | ExitMethods.cs:115:5:118:5 | {...} |
-| pre | ExitMethods.cs:115:5:118:5 | {...} | ExitMethods.cs:116:9:116:26 | ...; |
-| pre | ExitMethods.cs:116:9:116:25 | call to method AssertFalse | ExitMethods.cs:114:17:114:33 | exit FailingAssertion3 |
-| pre | ExitMethods.cs:116:9:116:25 | this access | ExitMethods.cs:116:21:116:24 | true |
-| pre | ExitMethods.cs:116:9:116:26 | ...; | ExitMethods.cs:116:9:116:25 | this access |
-| pre | ExitMethods.cs:116:21:116:24 | true | ExitMethods.cs:116:9:116:25 | call to method AssertFalse |
+| pre | ExitMethods.cs:53:10:53:11 | enter M7 | ExitMethods.cs:54:5:57:5 | {...} |
+| pre | ExitMethods.cs:54:5:57:5 | {...} | ExitMethods.cs:55:9:55:23 | ...; |
+| pre | ExitMethods.cs:55:9:55:22 | call to method ErrorAlways2 | ExitMethods.cs:53:10:53:11 | exit M7 |
+| pre | ExitMethods.cs:55:9:55:23 | ...; | ExitMethods.cs:55:9:55:22 | call to method ErrorAlways2 |
+| pre | ExitMethods.cs:59:10:59:11 | enter M8 | ExitMethods.cs:60:5:63:5 | {...} |
+| pre | ExitMethods.cs:60:5:63:5 | {...} | ExitMethods.cs:61:9:61:23 | ...; |
+| pre | ExitMethods.cs:61:9:61:22 | call to method ErrorAlways3 | ExitMethods.cs:59:10:59:11 | exit M8 |
+| pre | ExitMethods.cs:61:9:61:23 | ...; | ExitMethods.cs:61:9:61:22 | call to method ErrorAlways3 |
+| pre | ExitMethods.cs:65:17:65:26 | enter ErrorMaybe | ExitMethods.cs:66:5:69:5 | {...} |
+| pre | ExitMethods.cs:66:5:69:5 | {...} | ExitMethods.cs:67:9:68:34 | if (...) ... |
+| pre | ExitMethods.cs:67:9:68:34 | if (...) ... | ExitMethods.cs:67:13:67:13 | access to parameter b |
+| pre | ExitMethods.cs:67:13:67:13 | access to parameter b | ExitMethods.cs:65:17:65:26 | exit ErrorMaybe |
+| pre | ExitMethods.cs:67:13:67:13 | access to parameter b | ExitMethods.cs:68:19:68:33 | object creation of type Exception |
+| pre | ExitMethods.cs:68:19:68:33 | object creation of type Exception | ExitMethods.cs:68:13:68:34 | throw ...; |
+| pre | ExitMethods.cs:71:17:71:27 | enter ErrorAlways | ExitMethods.cs:72:5:77:5 | {...} |
+| pre | ExitMethods.cs:72:5:77:5 | {...} | ExitMethods.cs:73:9:76:45 | if (...) ... |
+| pre | ExitMethods.cs:73:9:76:45 | if (...) ... | ExitMethods.cs:73:13:73:13 | access to parameter b |
+| pre | ExitMethods.cs:73:13:73:13 | access to parameter b | ExitMethods.cs:74:19:74:33 | object creation of type Exception |
+| pre | ExitMethods.cs:73:13:73:13 | access to parameter b | ExitMethods.cs:76:41:76:43 | "b" |
+| pre | ExitMethods.cs:74:19:74:33 | object creation of type Exception | ExitMethods.cs:74:13:74:34 | throw ...; |
+| pre | ExitMethods.cs:76:19:76:44 | object creation of type ArgumentException | ExitMethods.cs:76:13:76:45 | throw ...; |
+| pre | ExitMethods.cs:76:41:76:43 | "b" | ExitMethods.cs:76:19:76:44 | object creation of type ArgumentException |
+| pre | ExitMethods.cs:79:17:79:28 | enter ErrorAlways2 | ExitMethods.cs:80:5:82:5 | {...} |
+| pre | ExitMethods.cs:80:5:82:5 | {...} | ExitMethods.cs:81:15:81:29 | object creation of type Exception |
+| pre | ExitMethods.cs:81:9:81:30 | throw ...; | ExitMethods.cs:79:17:79:28 | exit ErrorAlways2 |
+| pre | ExitMethods.cs:81:15:81:29 | object creation of type Exception | ExitMethods.cs:81:9:81:30 | throw ...; |
+| pre | ExitMethods.cs:84:17:84:28 | enter ErrorAlways3 | ExitMethods.cs:84:41:84:55 | object creation of type Exception |
+| pre | ExitMethods.cs:84:35:84:55 | throw ... | ExitMethods.cs:84:17:84:28 | exit ErrorAlways3 |
+| pre | ExitMethods.cs:84:41:84:55 | object creation of type Exception | ExitMethods.cs:84:35:84:55 | throw ... |
+| pre | ExitMethods.cs:86:10:86:13 | enter Exit | ExitMethods.cs:87:5:89:5 | {...} |
+| pre | ExitMethods.cs:87:5:89:5 | {...} | ExitMethods.cs:88:9:88:28 | ...; |
+| pre | ExitMethods.cs:88:9:88:27 | call to method Exit | ExitMethods.cs:86:10:86:13 | exit Exit |
+| pre | ExitMethods.cs:88:9:88:28 | ...; | ExitMethods.cs:88:26:88:26 | 0 |
+| pre | ExitMethods.cs:88:26:88:26 | 0 | ExitMethods.cs:88:9:88:27 | call to method Exit |
+| pre | ExitMethods.cs:91:10:91:18 | enter ExitInTry | ExitMethods.cs:92:5:102:5 | {...} |
+| pre | ExitMethods.cs:92:5:102:5 | {...} | ExitMethods.cs:93:9:101:9 | try {...} ... |
+| pre | ExitMethods.cs:93:9:101:9 | try {...} ... | ExitMethods.cs:94:9:96:9 | {...} |
+| pre | ExitMethods.cs:94:9:96:9 | {...} | ExitMethods.cs:95:13:95:19 | ...; |
+| pre | ExitMethods.cs:95:13:95:18 | call to method Exit | ExitMethods.cs:91:10:91:18 | exit ExitInTry |
+| pre | ExitMethods.cs:95:13:95:18 | this access | ExitMethods.cs:95:13:95:18 | call to method Exit |
+| pre | ExitMethods.cs:95:13:95:19 | ...; | ExitMethods.cs:95:13:95:18 | this access |
+| pre | ExitMethods.cs:104:10:104:24 | enter ApplicationExit | ExitMethods.cs:105:5:107:5 | {...} |
+| pre | ExitMethods.cs:105:5:107:5 | {...} | ExitMethods.cs:106:9:106:48 | ...; |
+| pre | ExitMethods.cs:106:9:106:47 | call to method Exit | ExitMethods.cs:104:10:104:24 | exit ApplicationExit |
+| pre | ExitMethods.cs:106:9:106:48 | ...; | ExitMethods.cs:106:9:106:47 | call to method Exit |
+| pre | ExitMethods.cs:109:13:109:21 | enter ThrowExpr | ExitMethods.cs:110:5:112:5 | {...} |
+| pre | ExitMethods.cs:110:5:112:5 | {...} | ExitMethods.cs:111:16:111:76 | ... ? ... : ... |
+| pre | ExitMethods.cs:111:16:111:20 | access to parameter input | ExitMethods.cs:111:25:111:25 | 0 |
+| pre | ExitMethods.cs:111:16:111:25 | ... != ... | ExitMethods.cs:111:29:111:29 | 1 |
+| pre | ExitMethods.cs:111:16:111:25 | ... != ... | ExitMethods.cs:111:69:111:75 | "input" |
+| pre | ExitMethods.cs:111:16:111:76 | ... ? ... : ... | ExitMethods.cs:111:16:111:20 | access to parameter input |
+| pre | ExitMethods.cs:111:25:111:25 | 0 | ExitMethods.cs:111:25:111:25 | (...) ... |
+| pre | ExitMethods.cs:111:25:111:25 | (...) ... | ExitMethods.cs:111:16:111:25 | ... != ... |
+| pre | ExitMethods.cs:111:29:111:29 | 1 | ExitMethods.cs:111:29:111:29 | (...) ... |
+| pre | ExitMethods.cs:111:29:111:29 | (...) ... | ExitMethods.cs:111:33:111:37 | access to parameter input |
+| pre | ExitMethods.cs:111:29:111:37 | ... / ... | ExitMethods.cs:111:9:111:77 | return ...; |
+| pre | ExitMethods.cs:111:33:111:37 | access to parameter input | ExitMethods.cs:111:29:111:37 | ... / ... |
+| pre | ExitMethods.cs:111:47:111:76 | object creation of type ArgumentException | ExitMethods.cs:111:41:111:76 | throw ... |
+| pre | ExitMethods.cs:111:69:111:75 | "input" | ExitMethods.cs:111:47:111:76 | object creation of type ArgumentException |
+| pre | ExitMethods.cs:114:16:114:34 | enter ExtensionMethodCall | ExitMethods.cs:115:5:117:5 | {...} |
+| pre | ExitMethods.cs:115:5:117:5 | {...} | ExitMethods.cs:116:16:116:38 | ... ? ... : ... |
+| pre | ExitMethods.cs:116:9:116:39 | return ...; | ExitMethods.cs:114:16:114:34 | exit ExtensionMethodCall |
+| pre | ExitMethods.cs:116:16:116:16 | access to parameter s | ExitMethods.cs:116:27:116:29 | - |
+| pre | ExitMethods.cs:116:16:116:30 | call to method Contains | ExitMethods.cs:116:34:116:34 | 0 |
+| pre | ExitMethods.cs:116:16:116:30 | call to method Contains | ExitMethods.cs:116:38:116:38 | 1 |
+| pre | ExitMethods.cs:116:16:116:38 | ... ? ... : ... | ExitMethods.cs:116:16:116:16 | access to parameter s |
+| pre | ExitMethods.cs:116:27:116:29 | - | ExitMethods.cs:116:16:116:30 | call to method Contains |
+| pre | ExitMethods.cs:119:17:119:32 | enter FailingAssertion | ExitMethods.cs:120:5:123:5 | {...} |
+| pre | ExitMethods.cs:120:5:123:5 | {...} | ExitMethods.cs:121:9:121:29 | ...; |
+| pre | ExitMethods.cs:121:9:121:28 | call to method IsTrue | ExitMethods.cs:119:17:119:32 | exit FailingAssertion |
+| pre | ExitMethods.cs:121:9:121:29 | ...; | ExitMethods.cs:121:23:121:27 | false |
+| pre | ExitMethods.cs:121:23:121:27 | false | ExitMethods.cs:121:9:121:28 | call to method IsTrue |
+| pre | ExitMethods.cs:125:17:125:33 | enter FailingAssertion2 | ExitMethods.cs:126:5:129:5 | {...} |
+| pre | ExitMethods.cs:126:5:129:5 | {...} | ExitMethods.cs:127:9:127:27 | ...; |
+| pre | ExitMethods.cs:127:9:127:26 | call to method FailingAssertion | ExitMethods.cs:125:17:125:33 | exit FailingAssertion2 |
+| pre | ExitMethods.cs:127:9:127:26 | this access | ExitMethods.cs:127:9:127:26 | call to method FailingAssertion |
+| pre | ExitMethods.cs:127:9:127:27 | ...; | ExitMethods.cs:127:9:127:26 | this access |
+| pre | ExitMethods.cs:131:10:131:20 | enter AssertFalse | ExitMethods.cs:131:48:131:48 | access to parameter b |
+| pre | ExitMethods.cs:131:33:131:49 | call to method IsFalse | ExitMethods.cs:131:10:131:20 | exit AssertFalse |
+| pre | ExitMethods.cs:131:48:131:48 | access to parameter b | ExitMethods.cs:131:33:131:49 | call to method IsFalse |
+| pre | ExitMethods.cs:133:17:133:33 | enter FailingAssertion3 | ExitMethods.cs:134:5:137:5 | {...} |
+| pre | ExitMethods.cs:134:5:137:5 | {...} | ExitMethods.cs:135:9:135:26 | ...; |
+| pre | ExitMethods.cs:135:9:135:25 | call to method AssertFalse | ExitMethods.cs:133:17:133:33 | exit FailingAssertion3 |
+| pre | ExitMethods.cs:135:9:135:25 | this access | ExitMethods.cs:135:21:135:24 | true |
+| pre | ExitMethods.cs:135:9:135:26 | ...; | ExitMethods.cs:135:9:135:25 | this access |
+| pre | ExitMethods.cs:135:21:135:24 | true | ExitMethods.cs:135:9:135:25 | call to method AssertFalse |
 | pre | Extensions.cs:5:23:5:29 | enter ToInt32 | Extensions.cs:6:5:8:5 | {...} |
 | pre | Extensions.cs:6:5:8:5 | {...} | Extensions.cs:7:28:7:28 | access to parameter s |
 | pre | Extensions.cs:7:9:7:30 | return ...; | Extensions.cs:5:23:5:29 | exit ToInt32 |

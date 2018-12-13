@@ -69,7 +69,7 @@ WARNING: Predicate getAFirstUncertainRead has been deprecated and may be removed
 | Capture.cs:236:9:236:12 | SSA call def(i) | Capture.cs:237:34:237:34 | access to local variable i |
 | Consistency.cs:7:25:7:25 | SSA param(b) | Consistency.cs:11:17:11:17 | access to parameter b |
 | Consistency.cs:15:17:15:21 | SSA def(i) | Consistency.cs:16:17:16:17 | access to local variable i |
-| Consistency.cs:15:17:15:21 | SSA def(i) | Consistency.cs:16:17:16:17 | access to local variable i |
+| Consistency.cs:15:17:15:21 | [finally: exception(Exception)] SSA def(i) | Consistency.cs:16:17:16:17 | access to local variable i |
 | Consistency.cs:25:29:25:29 | SSA def(c) | Consistency.cs:26:13:26:13 | access to local variable c |
 | Consistency.cs:25:29:25:29 | SSA qualifier def(c.Field) | Consistency.cs:26:13:26:19 | access to field Field |
 | Consistency.cs:32:9:32:29 | SSA def(c) | Consistency.cs:33:9:33:9 | access to parameter c |
@@ -318,7 +318,7 @@ WARNING: Predicate getAFirstUncertainRead has been deprecated and may be removed
 | Test.cs:46:10:46:10 | SSA entry def(this.field) | Test.cs:56:13:56:17 | access to field field |
 | Test.cs:46:16:46:18 | SSA param(in) | Test.cs:48:13:48:15 | access to parameter in |
 | Test.cs:57:9:57:17 | SSA def(this.field) | Test.cs:58:13:58:17 | access to field field |
-| Test.cs:68:45:68:45 | SSA def(e) | Test.cs:70:17:70:17 | access to local variable e |
+| Test.cs:68:45:68:45 | [exception: DivideByZeroException] SSA def(e) | Test.cs:70:17:70:17 | access to local variable e |
 | Tuples.cs:10:9:10:54 | SSA def(b) | Tuples.cs:12:13:12:13 | access to local variable b |
 | Tuples.cs:10:9:10:54 | SSA def(s) | Tuples.cs:13:13:13:13 | access to local variable s |
 | Tuples.cs:10:9:10:54 | SSA def(x) | Tuples.cs:11:13:11:13 | access to local variable x |

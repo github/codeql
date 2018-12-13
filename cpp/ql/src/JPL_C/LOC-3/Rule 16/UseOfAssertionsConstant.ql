@@ -4,6 +4,9 @@
  * @kind problem
  * @id cpp/jpl-c/use-of-assertions-constant
  * @problem.severity warning
+ * @tags maintainability
+ *       reliability
+ *       external/jpl
  */
 
 import semmle.code.cpp.commons.Assertions

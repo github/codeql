@@ -142,7 +142,7 @@ private string escapeForMatch(string s) { result = s.replaceAll("%", "\\%").repl
  */
 bindingset[matches, wildcardstring]
 private predicate strutsWildcardMatching(string matches, string wildcardstring) {
-  if (wildcardstring.matches("%{%}%"))
+  if wildcardstring.matches("%{%}%")
   then matches.matches(escapeForMatch(wildcardstring).regexpReplaceAll("\\{[0-9]\\}", "%"))
   else matches = wildcardstring
 }
@@ -169,7 +169,7 @@ class StrutsXMLAction extends StrutsXMLElement {
    */
   Method getActionMethod() {
     getActionClass().inherits(result) and
-    if (exists(getMethodName()))
+    if exists(getMethodName())
     then strutsWildcardMatching(result.getName(), getMethodName())
     else result.hasName("execute")
   }

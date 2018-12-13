@@ -30,4 +30,9 @@
 
     angular.module('app9').controller('controller9', ['name', function inline9(name){}]); // OK
 
+    function $Injected10(name){ // NOT OK (alert formatting for multi-line function)
+    }
+    $Injected10.$inject = ['name'];
+    angular.module('app10').controller('controller10', ['name', $Injected10]);
+
 })();

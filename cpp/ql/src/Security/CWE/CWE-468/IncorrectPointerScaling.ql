@@ -34,7 +34,6 @@ private Type baseType(Type t) {
   )
   // Make sure that the type has a size and that it isn't ambiguous.  
   and strictcount(result.getSize()) = 1
-    
 }
 
 /**
@@ -98,6 +97,7 @@ predicate defSourceType(SsaDefinition def, LocalScopeVariable v,
   | p = v and
     def.definedByParameter(p) and
     sourceType = p.getType().getUnspecifiedType() and
+    strictcount(p.getType()) = 1 and
     isPointerType(sourceType) and
     sourceLoc = p.getLocation())
 }

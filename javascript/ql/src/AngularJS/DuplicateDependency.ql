@@ -10,6 +10,7 @@
  */
 
 import javascript
+import semmle.javascript.RestrictedLocations
 
 predicate isRepeatedDependency(AngularJS::InjectableFunction f, string name, ASTNode location) {
   exists(int i, int j | i < j and
@@ -20,4 +21,4 @@ predicate isRepeatedDependency(AngularJS::InjectableFunction f, string name, AST
 from AngularJS::InjectableFunction f, ASTNode node, string name
 where isRepeatedDependency(f, name, node) and
       not count(f.asFunction().getParameterByName(name)) > 1 // avoid duplicating reports from js/duplicate-parameter-name
-select f, "This function has a duplicate dependency '$@'.", node, name
+select (FirstLineOf)f.asFunction(), "This function has a duplicate dependency '$@'.", node, name
