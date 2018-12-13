@@ -265,9 +265,11 @@ private class ImplicitStoreTarget extends ImplicitPostUpdateNode, TImplicitStore
 
 /** Holds if `n` is an access to an unqualified `this` at `cfgnode`. */
 private predicate thisAccess(Node n, ControlFlowNode cfgnode) {
-  n.(InstanceParameterNode).getCallable().getBody() = cfgnode
+  n.(InstanceParameterNode).getCallable().getBody().getControlFlowNode() = cfgnode
   or
-  exists(InstanceAccess ia | ia = n.asExpr() and ia = cfgnode and ia.isOwnInstanceAccess())
+  exists(InstanceAccess ia |
+    ia = n.asExpr() and ia.getControlFlowNode() = cfgnode and ia.isOwnInstanceAccess()
+  )
   or
   n.(ImplicitInstanceAccess).getInstanceAccess().(OwnInstanceAccess).getCfgNode() = cfgnode
 }

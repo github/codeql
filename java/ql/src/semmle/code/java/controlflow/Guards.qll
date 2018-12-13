@@ -125,7 +125,7 @@ class Guard extends ExprParent {
       branch = true and
       bb2.getFirstNode() = sc.getControlFlowNode() and
       pred = sc.getControlFlowNode().getAPredecessor() and
-      pred.(Expr).getParent*() = sc.getSwitch().getExpr() and
+      pred.asExpr().getParent*() = sc.getSwitch().getExpr() and
       bb1 = pred.getBasicBlock()
     )
   }
@@ -160,7 +160,7 @@ private predicate switchCaseControls(SwitchCase sc, BasicBlock bb) {
     caseblock.getFirstNode() = sc.getControlFlowNode() and
     caseblock.bbDominates(bb) and
     forall(ControlFlowNode pred | pred = sc.getControlFlowNode().getAPredecessor() |
-      pred.(Expr).getParent*() = ss.getExpr()
+      pred.asExpr().getParent*() = ss.getExpr()
     )
   )
 }

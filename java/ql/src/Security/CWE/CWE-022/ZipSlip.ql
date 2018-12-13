@@ -130,14 +130,14 @@ predicate validateFilePath(SsaVariable var, Guard check) {
  * Holds if `m` validates its `arg`th parameter.
  */
 predicate validationMethod(Method m, int arg) {
-  exists(Guard check, SsaImplicitInit var, ControlFlowNode exit, ControlFlowNode normexit |
+  exists(Guard check, SsaImplicitInit var, ControlFlow::ExitNode exit, ControlFlowNode normexit |
     validateFilePath(var, check) and
     var.isParameterDefinition(m.getParameter(arg)) and
-    exit = m and
+    exit.getEnclosingCallable() = m and
     normexit.getANormalSuccessor() = exit and
     1 = strictcount(ControlFlowNode n | n.getANormalSuccessor() = exit)
   |
-    check.(ConditionNode).getATrueSuccessor() = exit or
+    check.hasBranchEdge(_, exit.getBasicBlock(), true) or
     check.controls(normexit.getBasicBlock(), true)
   )
 }

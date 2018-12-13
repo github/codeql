@@ -61,7 +61,7 @@ predicate mainLoopCondition(LoopStmt loop, Expr cond) {
     else loopReentry = cond
   |
     last.getEnclosingStmt().getParent*() = loop.getBody() and
-    last.getASuccessor().(Expr).getParent*() = loopReentry
+    last.getASuccessor().asExpr().getParent*() = loopReentry
   )
 }
 
@@ -75,7 +75,7 @@ where
   // None of the ssa variables in `cond` are updated inside the loop.
   forex(SsaVariable ssa, RValue use | ssa.getAUse() = use and use.getParent*() = cond |
     not ssa.getCFGNode().getEnclosingStmt().getParent*() = loop or
-    ssa.getCFGNode().(Expr).getParent*() = loop.(ForStmt).getAnInit()
+    ssa.getCFGNode().asExpr().getParent*() = loop.(ForStmt).getAnInit()
   ) and
   // And `cond` does not use method calls, field reads, or array reads.
   not exists(MethodAccess ma | ma.getParent*() = cond) and

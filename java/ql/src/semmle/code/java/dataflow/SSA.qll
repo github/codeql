@@ -224,7 +224,7 @@ private module SsaImpl {
   /** Holds if `n` must update the locally tracked variable `v`. */
   cached
   predicate certainVariableUpdate(TrackedVar v, ControlFlowNode n, BasicBlock b, int i) {
-    exists(VariableUpdate a | a = n | getDestVar(a) = v) and
+    exists(VariableUpdate a | a.getControlFlowNode() = n | getDestVar(a) = v) and
     b.getNode(i) = n and
     hasDominanceInformation(b)
     or
@@ -233,8 +233,8 @@ private module SsaImpl {
 
   /** Gets the definition point of a nested class in the parent scope. */
   private ControlFlowNode parentDef(NestedClass nc) {
-    nc.(AnonymousClass).getClassInstanceExpr() = result or
-    nc.(LocalClass).getLocalClassDeclStmt() = result
+    nc.(AnonymousClass).getClassInstanceExpr().getControlFlowNode() = result or
+    nc.(LocalClass).getLocalClassDeclStmt().getControlFlowNode() = result
   }
 
   /**
@@ -272,7 +272,7 @@ private module SsaImpl {
 
   /** Holds if `VarAccess` `use` of `v` occurs in `b` at index `i`. */
   private predicate variableUse(TrackedVar v, RValue use, BasicBlock b, int i) {
-    v.getAnAccess() = use and b.getNode(i) = use
+    v.getAnAccess() = use and b.getNode(i) = use.getControlFlowNode()
   }
 
   /** Holds if the value of `v` is captured in `b` at index `i`. */
@@ -434,7 +434,7 @@ private module SsaImpl {
    * `f` has an update somewhere.
    */
   private predicate updateCandidate(TrackedField f, Call call, BasicBlock b, int i) {
-    b.getNode(i) = call and
+    b.getNode(i).asCall() = call and
     call.getEnclosingCallable() = f.getEnclosingCallable() and
     relevantFieldUpdate(_, f.getField(), _)
   }
@@ -559,7 +559,7 @@ private module SsaImpl {
   /** Holds if `n` might update the locally tracked variable `v`. */
   cached
   predicate uncertainVariableUpdate(TrackedVar v, ControlFlowNode n, BasicBlock b, int i) {
-    exists(Call c | c = n | updatesNamedField(c, v, _)) and
+    exists(Call c | c = n.asCall() | updatesNamedField(c, v, _)) and
     b.getNode(i) = n and
     hasDominanceInformation(b)
     or
@@ -583,12 +583,16 @@ private module SsaImpl {
   /** Holds if `v` has an implicit definition at the entry, `b`, of the callable. */
   cached
   predicate hasEntryDef(TrackedVar v, BasicBlock b) {
-    exists(LocalScopeVariable l, Callable c | v = TLocalVar(c, l) and c.getBody() = b |
+    exists(LocalScopeVariable l, Callable c |
+      v = TLocalVar(c, l) and c.getBody().getControlFlowNode() = b.getFirstNode()
+    |
       l instanceof Parameter or
       l.getCallable() != c
     )
     or
-    v instanceof SsaSourceField and v.getEnclosingCallable().getBody() = b and liveAtEntry(v, b)
+    v instanceof SsaSourceField and
+    v.getEnclosingCallable().getBody().getControlFlowNode() = b.getFirstNode() and
+    liveAtEntry(v, b)
   }
 
   /**
@@ -883,7 +887,7 @@ private newtype TSsaVariable =
   } or
   TSsaEntryDef(TrackedVar v, BasicBlock b) { hasEntryDef(v, b) } or
   TSsaUntracked(SsaSourceField nf, ControlFlowNode n) {
-    n = nf.getAnAccess().(FieldRead) and not trackField(nf)
+    n = nf.getAnAccess().(FieldRead).getControlFlowNode() and not trackField(nf)
   }
 
 /**
@@ -939,7 +943,7 @@ class SsaVariable extends TSsaVariable {
   /** Gets an access of this SSA variable. */
   RValue getAUse() {
     ssaDefReachesUse(_, this, result) or
-    this = TSsaUntracked(_, result)
+    this = TSsaUntracked(_, result.getControlFlowNode())
   }
 
   /**
@@ -953,7 +957,7 @@ class SsaVariable extends TSsaVariable {
    */
   RValue getAFirstUse() {
     firstUse(this, result) or
-    this = TSsaUntracked(_, result)
+    this = TSsaUntracked(_, result.getControlFlowNode())
   }
 
   /** Holds if this SSA variable is live at the end of `b`. */
@@ -988,14 +992,16 @@ class SsaUpdate extends SsaVariable {
 /** An SSA variable that is defined by a `VariableUpdate`. */
 class SsaExplicitUpdate extends SsaUpdate, TSsaCertainUpdate {
   SsaExplicitUpdate() {
-    exists(VariableUpdate upd | upd = this.getCFGNode() and getDestVar(upd) = getSourceVariable())
+    exists(VariableUpdate upd |
+      upd.getControlFlowNode() = this.getCFGNode() and getDestVar(upd) = getSourceVariable()
+    )
   }
 
   override string toString() { result = "SSA def(" + getSourceVariable() + ")" }
 
   /** Gets the `VariableUpdate` defining the SSA variable. */
   VariableUpdate getDefiningExpr() {
-    result = this.getCFGNode() and getDestVar(result) = getSourceVariable()
+    result.getControlFlowNode() = this.getCFGNode() and getDestVar(result) = getSourceVariable()
   }
 }
 
@@ -1035,7 +1041,7 @@ class SsaImplicitUpdate extends SsaUpdate {
     exists(SsaSourceField f, Callable setter |
       f = getSourceVariable() and
       relevantFieldUpdate(setter, f.getField(), result) and
-      updatesNamedField(getCFGNode(), f, setter)
+      updatesNamedField(getCFGNode().asCall(), f, setter)
     )
   }
 
@@ -1082,7 +1088,8 @@ class SsaImplicitInit extends SsaVariable, TSsaEntryDef {
    * Holds if the SSA variable is a parameter defined by its initial value in the callable.
    */
   predicate isParameterDefinition(Parameter p) {
-    getSourceVariable() = TLocalVar(p.getCallable(), p) and p.getCallable().getBody() = getCFGNode()
+    getSourceVariable() = TLocalVar(p.getCallable(), p) and
+    p.getCallable().getBody().getControlFlowNode() = getCFGNode()
   }
 }
 

@@ -10,13 +10,15 @@ private import semmle.code.java.ControlFlowGraph
  */
 
 /** Entry points for control-flow. */
-private predicate flowEntry(Stmt entry) {
-  exists(Callable c | entry = c.getBody())
-  or
-  // This disjunct is technically superfluous, but safeguards against extractor problems.
-  entry instanceof Block and
-  not exists(entry.getEnclosingCallable()) and
-  not entry.getParent() instanceof Stmt
+private predicate flowEntry(BasicBlock entry) {
+  exists(Stmt entrystmt | entrystmt = entry.getFirstNode().asStmt() |
+    exists(Callable c | entrystmt = c.getBody())
+    or
+    // This disjunct is technically superfluous, but safeguards against extractor problems.
+    entrystmt instanceof Block and
+    not exists(entry.getEnclosingCallable()) and
+    not entrystmt.getParent() instanceof Stmt
+  )
 }
 
 /** The successor relation for basic blocks. */
@@ -32,11 +34,8 @@ predicate hasDominanceInformation(BasicBlock bb) {
   exists(BasicBlock entry | flowEntry(entry) and bbSucc*(entry, bb))
 }
 
-/** Exit points for control-flow. */
-private predicate flowExit(Callable exit) { exists(ControlFlowNode s | s.getASuccessor() = exit) }
-
 /** Exit points for basic-block control-flow. */
-private predicate bbSink(BasicBlock exit) { flowExit(exit.getLastNode()) }
+private predicate bbSink(BasicBlock exit) { exit.getLastNode() instanceof ControlFlow::ExitNode }
 
 /** Reversed `bbSucc`. */
 private predicate bbPred(BasicBlock post, BasicBlock pre) { post = pre.getABBSuccessor() }

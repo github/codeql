@@ -71,15 +71,15 @@ private module SsaImpl {
   /** Holds if `n` updates the local variable `v`. */
   cached
   predicate variableUpdate(BaseSsaSourceVariable v, ControlFlowNode n, BasicBlock b, int i) {
-    exists(VariableUpdate a | a = n | getDestVar(a) = v) and
+    exists(VariableUpdate a | a.getControlFlowNode() = n | getDestVar(a) = v) and
     b.getNode(i) = n and
     hasDominanceInformation(b)
   }
 
   /** Gets the definition point of a nested class in the parent scope. */
   private ControlFlowNode parentDef(NestedClass nc) {
-    nc.(AnonymousClass).getClassInstanceExpr() = result or
-    nc.(LocalClass).getLocalClassDeclStmt() = result
+    nc.(AnonymousClass).getClassInstanceExpr().getControlFlowNode() = result or
+    nc.(LocalClass).getLocalClassDeclStmt().getControlFlowNode() = result
   }
 
   /**
@@ -119,7 +119,7 @@ private module SsaImpl {
 
   /** Holds if `VarAccess` `use` of `v` occurs in `b` at index `i`. */
   private predicate variableUse(BaseSsaSourceVariable v, RValue use, BasicBlock b, int i) {
-    v.getAnAccess() = use and b.getNode(i) = use
+    v.getAnAccess() = use and b.getNode(i) = use.getControlFlowNode()
   }
 
   /** Holds if the value of `v` is captured in `b` at index `i`. */
@@ -162,7 +162,9 @@ private module SsaImpl {
   /** Holds if `v` has an implicit definition at the entry, `b`, of the callable. */
   cached
   predicate hasEntryDef(BaseSsaSourceVariable v, BasicBlock b) {
-    exists(LocalScopeVariable l, Callable c | v = TLocalVar(c, l) and c.getBody() = b |
+    exists(LocalScopeVariable l, Callable c |
+      v = TLocalVar(c, l) and c.getBody().getControlFlowNode() = b.getFirstNode()
+    |
       l instanceof Parameter or
       l.getCallable() != c
     )
@@ -384,14 +386,16 @@ class BaseSsaVariable extends TBaseSsaVariable {
 /** An SSA variable that is defined by a `VariableUpdate`. */
 class BaseSsaUpdate extends BaseSsaVariable, TSsaUpdate {
   BaseSsaUpdate() {
-    exists(VariableUpdate upd | upd = this.getCFGNode() and getDestVar(upd) = getSourceVariable())
+    exists(VariableUpdate upd |
+      upd.getControlFlowNode() = this.getCFGNode() and getDestVar(upd) = getSourceVariable()
+    )
   }
 
   override string toString() { result = "SSA def(" + getSourceVariable() + ")" }
 
   /** Gets the `VariableUpdate` defining the SSA variable. */
   VariableUpdate getDefiningExpr() {
-    result = this.getCFGNode() and getDestVar(result) = getSourceVariable()
+    result.getControlFlowNode() = this.getCFGNode() and getDestVar(result) = getSourceVariable()
   }
 }
 
@@ -411,7 +415,8 @@ class BaseSsaImplicitInit extends BaseSsaVariable, TSsaEntryDef {
    * Holds if the SSA variable is a parameter defined by its initial value in the callable.
    */
   predicate isParameterDefinition(Parameter p) {
-    getSourceVariable() = TLocalVar(p.getCallable(), p) and p.getCallable().getBody() = getCFGNode()
+    getSourceVariable() = TLocalVar(p.getCallable(), p) and
+    p.getCallable().getBody().getControlFlowNode() = getCFGNode()
   }
 }
 

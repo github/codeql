@@ -132,7 +132,7 @@ private ControlFlowNode varDereference(SsaVariable v, VarAccess va) {
   exists(Expr e |
     dereference(e) and
     e = sameValue(v, va) and
-    result = e.getProperExpr()
+    result = e.getProperExpr().getControlFlowNode()
   )
 }
 
@@ -142,10 +142,10 @@ private ControlFlowNode varDereference(SsaVariable v, VarAccess va) {
  */
 private ControlFlowNode ensureNotNull(SsaVariable v) {
   result = varDereference(v, _) or
-  result.(AssertStmt).getExpr() = nullGuard(v, true, false) or
-  exists(AssertTrueMethod m | result = m.getACheck(nullGuard(v, true, false))) or
-  exists(AssertFalseMethod m | result = m.getACheck(nullGuard(v, false, false))) or
-  exists(AssertNotNullMethod m | result = m.getACheck(v.getAUse()))
+  result.asStmt().(AssertStmt).getExpr() = nullGuard(v, true, false) or
+  exists(AssertTrueMethod m | result.asExpr() = m.getACheck(nullGuard(v, true, false))) or
+  exists(AssertFalseMethod m | result.asExpr() = m.getACheck(nullGuard(v, false, false))) or
+  exists(AssertNotNullMethod m | result.asExpr() = m.getACheck(v.getAUse()))
 }
 
 /**
@@ -271,10 +271,10 @@ private predicate enhancedForEarlyExit(EnhancedForStmt for, ControlFlowNode n1, 
   exists(Expr forExpr |
     n1.getANormalSuccessor() = n2 and
     for.getExpr() = forExpr and
-    forExpr.getAChildExpr*() = n1 and
-    not forExpr.getAChildExpr*() = n2 and
-    n1.getANormalSuccessor() = for.getVariable() and
-    not n2 = for.getVariable()
+    forExpr.getAChildExpr*() = n1.asExpr() and
+    not forExpr.getAChildExpr*() = n2.asExpr() and
+    n1.getANormalSuccessor() = for.getVariable().getControlFlowNode() and
+    not n2 = for.getVariable().getControlFlowNode()
   )
 }
 
@@ -335,7 +335,7 @@ private predicate nullVarStep(
   not impossibleEdge(mid, bb) and
   not exists(boolean branch | nullGuard(midssa, branch, false).hasBranchEdge(mid, bb, branch)) and
   not (leavingFinally(mid, bb, true) and midstoredcompletion = true) and
-  if bb.getFirstNode() = any(TryStmt try | | try.getFinally())
+  if bb.getFirstNode().asStmt() = any(TryStmt try | | try.getFinally())
   then
     if bb.getFirstNode() = mid.getLastNode().getANormalSuccessor()
     then storedcompletion = false

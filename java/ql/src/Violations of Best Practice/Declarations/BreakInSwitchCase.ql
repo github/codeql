@@ -17,8 +17,8 @@ import Common
 from SwitchStmt s, Stmt c
 where
   c = s.getACase() and
-  not c.(ControlFlowNode).getASuccessor() instanceof ConstCase and
-  not c.(ControlFlowNode).getASuccessor() instanceof DefaultCase and
+  not c.getControlFlowNode().getASuccessor().asStmt() instanceof ConstCase and
+  not c.getControlFlowNode().getASuccessor().asStmt() instanceof DefaultCase and
   not s.(Annotatable).suppressesWarningsAbout("fallthrough") and
   mayDropThroughWithoutComment(s, c)
 select c,
