@@ -304,6 +304,13 @@ class PositionalArgumentOperand extends ArgumentOperand {
   override string toString() {
     result = "Arg(" + argIndex + ")"
   }
+
+  /**
+   * Gets the zero-based index of the argument.
+   */
+  final int getIndex() {
+    result = argIndex
+  }
 }
 
 class SideEffectOperand extends NonPhiOperand {

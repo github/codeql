@@ -102,7 +102,8 @@ module InstructionSanity {
     not exists(instr.getASuccessor()) and
     not instr instanceof ExitFunctionInstruction and
     // Phi instructions aren't linked into the instruction-level flow graph.
-    not instr instanceof PhiInstruction
+    not instr instanceof PhiInstruction and
+    not instr instanceof UnreachedInstruction
   }
 
   /**
@@ -451,8 +452,7 @@ class Instruction extends Construction::TInstruction {
   final predicate isResultModeled() {
     // Register results are always in SSA form.
     not hasMemoryResult() or
-    // An unmodeled result will have a use on the `UnmodeledUse` instruction.
-    not (getAUse() instanceof UnmodeledUseOperand)
+    Construction::hasModeledMemoryResult(this)
   }
 
   /**
@@ -595,13 +595,20 @@ class FieldAddressInstruction extends FieldInstruction {
   }
 }
 
-class UninitializedInstruction extends Instruction {
+class UninitializedInstruction extends VariableInstruction {
   UninitializedInstruction() {
     opcode instanceof Opcode::Uninitialized
   }
 
   override final MemoryAccessKind getResultMemoryAccess() {
     result instanceof IndirectMemoryAccess
+  }
+
+  /**
+   * Gets the `LocalVariable` that is uninitialized.
+   */
+  final LocalVariable getLocalVariable() {
+    result = var.(IRUserVariable).getVariable()
   }
 }
 
@@ -1106,8 +1113,38 @@ class CallInstruction extends Instruction {
     opcode instanceof Opcode::Call
   }
 
+  /**
+   * Gets the `Instruction` that computes the target function of the call. This is usually a
+   * `FunctionAddress` instruction, but can also be an arbitrary instruction that produces a
+   * function pointer.
+   */
   final Instruction getCallTarget() {
     result = getAnOperand().(CallTargetOperand).getDefinitionInstruction()
+  }
+
+  /**
+   * Gets all of the arguments of the call, including the `this` pointer, if any.
+   */
+  final Instruction getAnArgument() {
+    result = getAnOperand().(ArgumentOperand).getDefinitionInstruction()
+  }
+
+  /**
+   * Gets the `this` pointer argument of the call, if any.
+   */
+  final Instruction getThisArgument() {
+    result = getAnOperand().(ThisArgumentOperand).getDefinitionInstruction()
+  }
+
+  /**
+   * Gets the argument at the specified index.
+   */
+  final Instruction getPositionalArgument(int index) {
+    exists(PositionalArgumentOperand operand |
+      operand = getAnOperand() and
+      operand.getIndex() = index and
+      result = operand.getDefinitionInstruction()
+    )
   }
 }
 
@@ -1429,6 +1466,17 @@ class ChiInstruction extends Instruction {
    */
   final Instruction getPartialOperand() {
     result = getAnOperand().(ChiPartialOperand).getDefinitionInstruction()
+  }
+}
+
+/**
+ * An instruction representing unreachable code. Inserted in place of the original target
+ * instruction of a `ConditionalBranch` or `Switch` instruction where that particular edge is
+ * infeasible.
+ */
+class UnreachedInstruction extends Instruction {
+  UnreachedInstruction() {
+    opcode instanceof Opcode::Unreached
   }
 }
 

@@ -5,7 +5,7 @@ bad_asts.cpp:
 #   14|     mu0_1(unknown)       = AliasedDefinition               : 
 #   14|     mu0_2(unknown)       = UnmodeledDefinition             : 
 #   15|     r0_3(glval<S>)       = VariableAddress[s]              : 
-#   15|     mu0_4(S)             = Uninitialized                   : r0_3
+#   15|     mu0_4(S)             = Uninitialized[s]                : r0_3
 #   15|     r0_5(glval<int>)     = FieldAddress[x]                 : r0_3
 #   15|     r0_6(int)            = Constant[0]                     : 
 #   15|     mu0_7(int)           = Store                           : r0_5, r0_6
@@ -186,7 +186,7 @@ ir.cpp:
 #   50|     r0_5(glval<int>)   = VariableAddress[y]     : 
 #   50|     m0_6(int)          = InitializeParameter[y] : r0_5
 #   51|     r0_7(glval<int>)   = VariableAddress[z]     : 
-#   51|     m0_8(int)          = Uninitialized          : r0_7
+#   51|     m0_8(int)          = Uninitialized[z]       : r0_7
 #   53|     r0_9(glval<int>)   = VariableAddress[x]     : 
 #   53|     r0_10(int)         = Load                   : r0_9, m0_4
 #   53|     r0_11(glval<int>)  = VariableAddress[y]     : 
@@ -359,7 +359,7 @@ ir.cpp:
 #   87|     r0_5(glval<int>)   = VariableAddress[y]     : 
 #   87|     m0_6(int)          = InitializeParameter[y] : r0_5
 #   88|     r0_7(glval<bool>)  = VariableAddress[b]     : 
-#   88|     m0_8(bool)         = Uninitialized          : r0_7
+#   88|     m0_8(bool)         = Uninitialized[b]       : r0_7
 #   90|     r0_9(glval<int>)   = VariableAddress[x]     : 
 #   90|     r0_10(int)         = Load                   : r0_9, m0_4
 #   90|     r0_11(glval<int>)  = VariableAddress[y]     : 
@@ -415,7 +415,7 @@ ir.cpp:
 #   98|     r0_3(glval<int>)  = VariableAddress[x]     : 
 #   98|     m0_4(int)         = InitializeParameter[x] : r0_3
 #   99|     r0_5(glval<int>)  = VariableAddress[y]     : 
-#   99|     m0_6(int)         = Uninitialized          : r0_5
+#   99|     m0_6(int)         = Uninitialized[y]       : r0_5
 #  101|     r0_7(glval<int>)  = VariableAddress[x]     : 
 #  101|     r0_8(int)         = Load                   : r0_7, m0_4
 #  101|     r0_9(int)         = Constant[1]            : 
@@ -457,7 +457,7 @@ ir.cpp:
 #  107|     r0_3(glval<int>)    = VariableAddress[x]     : 
 #  107|     mu0_4(int)          = InitializeParameter[x] : r0_3
 #  108|     r0_5(glval<int *>)  = VariableAddress[p]     : 
-#  108|     m0_6(int *)         = Uninitialized          : r0_5
+#  108|     m0_6(int *)         = Uninitialized[p]       : r0_5
 #  110|     r0_7(glval<int>)    = VariableAddress[x]     : 
 #  110|     r0_8(int)           = Load                   : r0_7, mu0_2
 #  110|     r0_9(int)           = Constant[1]            : 
@@ -487,7 +487,7 @@ ir.cpp:
 #  114|     r0_5(glval<double>)  = VariableAddress[y]     : 
 #  114|     m0_6(double)         = InitializeParameter[y] : r0_5
 #  115|     r0_7(glval<double>)  = VariableAddress[z]     : 
-#  115|     m0_8(double)         = Uninitialized          : r0_7
+#  115|     m0_8(double)         = Uninitialized[z]       : r0_7
 #  117|     r0_9(glval<double>)  = VariableAddress[x]     : 
 #  117|     r0_10(double)        = Load                   : r0_9, m0_4
 #  117|     r0_11(glval<double>) = VariableAddress[y]     : 
@@ -569,7 +569,7 @@ ir.cpp:
 #  133|     r0_5(glval<double>)  = VariableAddress[y]     : 
 #  133|     m0_6(double)         = InitializeParameter[y] : r0_5
 #  134|     r0_7(glval<bool>)    = VariableAddress[b]     : 
-#  134|     m0_8(bool)           = Uninitialized          : r0_7
+#  134|     m0_8(bool)           = Uninitialized[b]       : r0_7
 #  136|     r0_9(glval<double>)  = VariableAddress[x]     : 
 #  136|     r0_10(double)        = Load                   : r0_9, m0_4
 #  136|     r0_11(glval<double>) = VariableAddress[y]     : 
@@ -625,7 +625,7 @@ ir.cpp:
 #  144|     r0_3(glval<float>)  = VariableAddress[x]     : 
 #  144|     m0_4(float)         = InitializeParameter[x] : r0_3
 #  145|     r0_5(glval<float>)  = VariableAddress[y]     : 
-#  145|     m0_6(float)         = Uninitialized          : r0_5
+#  145|     m0_6(float)         = Uninitialized[y]       : r0_5
 #  147|     r0_7(glval<float>)  = VariableAddress[x]     : 
 #  147|     r0_8(float)         = Load                   : r0_7, m0_4
 #  147|     r0_9(float)         = Constant[1.0]          : 
@@ -669,9 +669,9 @@ ir.cpp:
 #  153|     r0_5(glval<int>)    = VariableAddress[i]     : 
 #  153|     m0_6(int)           = InitializeParameter[i] : r0_5
 #  154|     r0_7(glval<int *>)  = VariableAddress[q]     : 
-#  154|     m0_8(int *)         = Uninitialized          : r0_7
+#  154|     m0_8(int *)         = Uninitialized[q]       : r0_7
 #  155|     r0_9(glval<bool>)   = VariableAddress[b]     : 
-#  155|     m0_10(bool)         = Uninitialized          : r0_9
+#  155|     m0_10(bool)         = Uninitialized[b]       : r0_9
 #  157|     r0_11(glval<int *>) = VariableAddress[p]     : 
 #  157|     r0_12(int *)        = Load                   : r0_11, m0_4
 #  157|     r0_13(glval<int>)   = VariableAddress[i]     : 
@@ -745,7 +745,7 @@ ir.cpp:
 #  171|     r0_5(glval<int>)      = VariableAddress[i]     : 
 #  171|     m0_6(int)             = InitializeParameter[i] : r0_5
 #  172|     r0_7(glval<int>)      = VariableAddress[x]     : 
-#  172|     m0_8(int)             = Uninitialized          : r0_7
+#  172|     m0_8(int)             = Uninitialized[x]       : r0_7
 #  174|     r0_9(glval<int *>)    = VariableAddress[p]     : 
 #  174|     r0_10(int *)          = Load                   : r0_9, m0_4
 #  174|     r0_11(glval<int>)     = VariableAddress[i]     : 
@@ -779,7 +779,7 @@ ir.cpp:
 #  178|     r0_39(int *)          = PointerAdd[4]          : r0_36, r0_38
 #  178|     mu0_40(int)           = Store                  : r0_39, r0_34
 #  180|     r0_41(glval<int[10]>) = VariableAddress[a]     : 
-#  180|     m0_42(int[10])        = Uninitialized          : r0_41
+#  180|     m0_42(int[10])        = Uninitialized[a]       : r0_41
 #  181|     r0_43(glval<int[10]>) = VariableAddress[a]     : 
 #  181|     r0_44(int *)          = Convert                : r0_43
 #  181|     r0_45(glval<int>)     = VariableAddress[i]     : 
@@ -860,7 +860,7 @@ ir.cpp:
 #  193|     r0_5(glval<int *>)  = VariableAddress[q]     : 
 #  193|     m0_6(int *)         = InitializeParameter[q] : r0_5
 #  194|     r0_7(glval<bool>)   = VariableAddress[b]     : 
-#  194|     m0_8(bool)          = Uninitialized          : r0_7
+#  194|     m0_8(bool)          = Uninitialized[b]       : r0_7
 #  196|     r0_9(glval<int *>)  = VariableAddress[p]     : 
 #  196|     r0_10(int *)        = Load                   : r0_9, m0_4
 #  196|     r0_11(glval<int *>) = VariableAddress[q]     : 
@@ -916,7 +916,7 @@ ir.cpp:
 #  204|     r0_3(glval<int *>)  = VariableAddress[p]     : 
 #  204|     m0_4(int *)         = InitializeParameter[p] : r0_3
 #  205|     r0_5(glval<int *>)  = VariableAddress[q]     : 
-#  205|     m0_6(int *)         = Uninitialized          : r0_5
+#  205|     m0_6(int *)         = Uninitialized[q]       : r0_5
 #  207|     r0_7(glval<int *>)  = VariableAddress[p]     : 
 #  207|     r0_8(int *)         = Load                   : r0_7, m0_4
 #  207|     r0_9(int)           = Constant[1]            : 
@@ -1000,7 +1000,7 @@ ir.cpp:
 #  230|     mu0_1(unknown)   = AliasedDefinition   : 
 #  230|     mu0_2(unknown)   = UnmodeledDefinition : 
 #  231|     r0_3(glval<int>) = VariableAddress[x]  : 
-#  231|     m0_4(int)        = Uninitialized       : r0_3
+#  231|     m0_4(int)        = Uninitialized[x]    : r0_3
 #  232|     r0_5(glval<int>) = VariableAddress[y]  : 
 #  232|     r0_6(glval<int>) = VariableAddress[x]  : 
 #  232|     r0_7(int)        = Load                : r0_6, m0_4
@@ -1163,17 +1163,12 @@ ir.cpp:
 #  265|     mu0_1(unknown)   = AliasedDefinition   : 
 #  265|     mu0_2(unknown)   = UnmodeledDefinition : 
 #  266|     r0_3(glval<int>) = VariableAddress[j]  : 
-#  266|     m0_4(int)        = Uninitialized       : r0_3
-#-----|   Goto -> Block 2
+#  266|     m0_4(int)        = Uninitialized[j]    : r0_3
+#-----|   Goto -> Block 1
 
-#  265|   Block 1
-#  265|     v1_0(void) = ReturnVoid   : 
-#  265|     v1_1(void) = UnmodeledUse : mu*
-#  265|     v1_2(void) = ExitFunction : 
-
-#  268|   Block 2
-#  268|     v2_0(void) = NoOp : 
-#-----|   Goto -> Block 2
+#  268|   Block 1
+#  268|     v1_0(void) = NoOp : 
+#-----|   Goto -> Block 1
 
 #  272| For_Init() -> void
 #  272|   Block 0
@@ -1183,16 +1178,11 @@ ir.cpp:
 #  273|     r0_3(glval<int>) = VariableAddress[i]  : 
 #  273|     r0_4(int)        = Constant[0]         : 
 #  273|     m0_5(int)        = Store               : r0_3, r0_4
-#-----|   Goto -> Block 2
+#-----|   Goto -> Block 1
 
-#  272|   Block 1
-#  272|     v1_0(void) = ReturnVoid   : 
-#  272|     v1_1(void) = UnmodeledUse : mu*
-#  272|     v1_2(void) = ExitFunction : 
-
-#  274|   Block 2
-#  274|     v2_0(void) = NoOp : 
-#-----|   Goto -> Block 2
+#  274|   Block 1
+#  274|     v1_0(void) = NoOp : 
+#-----|   Goto -> Block 1
 
 #  278| For_Condition() -> void
 #  278|   Block 0
@@ -1231,22 +1221,17 @@ ir.cpp:
 #  286|     r0_3(glval<int>) = VariableAddress[i]  : 
 #  286|     r0_4(int)        = Constant[0]         : 
 #  286|     m0_5(int)        = Store               : r0_3, r0_4
-#-----|   Goto -> Block 2
+#-----|   Goto -> Block 1
 
-#  285|   Block 1
-#  285|     v1_0(void) = ReturnVoid   : 
-#  285|     v1_1(void) = UnmodeledUse : mu*
-#  285|     v1_2(void) = ExitFunction : 
-
-#  288|   Block 2
-#  288|     m2_0(int)        = Phi                : from 0:m0_5, from 2:m2_6
-#  288|     v2_1(void)       = NoOp               : 
-#  287|     r2_2(int)        = Constant[1]        : 
-#  287|     r2_3(glval<int>) = VariableAddress[i] : 
-#  287|     r2_4(int)        = Load               : r2_3, m2_0
-#  287|     r2_5(int)        = Add                : r2_4, r2_2
-#  287|     m2_6(int)        = Store              : r2_3, r2_5
-#-----|   Goto -> Block 2
+#  288|   Block 1
+#  288|     m1_0(int)        = Phi                : from 0:m0_5, from 1:m1_6
+#  288|     v1_1(void)       = NoOp               : 
+#  287|     r1_2(int)        = Constant[1]        : 
+#  287|     r1_3(glval<int>) = VariableAddress[i] : 
+#  287|     r1_4(int)        = Load               : r1_3, m1_0
+#  287|     r1_5(int)        = Add                : r1_4, r1_2
+#  287|     m1_6(int)        = Store              : r1_3, r1_5
+#-----|   Goto -> Block 1
 
 #  292| For_InitCondition() -> void
 #  292|   Block 0
@@ -1285,22 +1270,17 @@ ir.cpp:
 #  299|     r0_3(glval<int>) = VariableAddress[i]  : 
 #  299|     r0_4(int)        = Constant[0]         : 
 #  299|     m0_5(int)        = Store               : r0_3, r0_4
-#-----|   Goto -> Block 2
+#-----|   Goto -> Block 1
 
-#  298|   Block 1
-#  298|     v1_0(void) = ReturnVoid   : 
-#  298|     v1_1(void) = UnmodeledUse : mu*
-#  298|     v1_2(void) = ExitFunction : 
-
-#  300|   Block 2
-#  300|     m2_0(int)        = Phi                : from 0:m0_5, from 2:m2_6
-#  300|     v2_1(void)       = NoOp               : 
-#  299|     r2_2(int)        = Constant[1]        : 
-#  299|     r2_3(glval<int>) = VariableAddress[i] : 
-#  299|     r2_4(int)        = Load               : r2_3, m2_0
-#  299|     r2_5(int)        = Add                : r2_4, r2_2
-#  299|     m2_6(int)        = Store              : r2_3, r2_5
-#-----|   Goto -> Block 2
+#  300|   Block 1
+#  300|     m1_0(int)        = Phi                : from 0:m0_5, from 1:m1_6
+#  300|     v1_1(void)       = NoOp               : 
+#  299|     r1_2(int)        = Constant[1]        : 
+#  299|     r1_3(glval<int>) = VariableAddress[i] : 
+#  299|     r1_4(int)        = Load               : r1_3, m1_0
+#  299|     r1_5(int)        = Add                : r1_4, r1_2
+#  299|     m1_6(int)        = Store              : r1_3, r1_5
+#-----|   Goto -> Block 1
 
 #  304| For_ConditionUpdate() -> void
 #  304|   Block 0
@@ -1709,78 +1689,66 @@ ir.cpp:
 #  384|     r0_3(glval<int>) = VariableAddress[x]     : 
 #  384|     m0_4(int)        = InitializeParameter[x] : r0_3
 #  385|     r0_5(glval<int>) = VariableAddress[y]     : 
-#  385|     m0_6(int)        = Uninitialized          : r0_5
+#  385|     m0_6(int)        = Uninitialized[y]       : r0_5
 #  386|     r0_7(glval<int>) = VariableAddress[x]     : 
 #  386|     r0_8(int)        = Load                   : r0_7, m0_4
 #  386|     v0_9(void)       = Switch                 : r0_8
-#-----|   Case[-1] -> Block 2
-#-----|   Case[1] -> Block 3
-#-----|   Case[2] -> Block 4
-#-----|   Case[3] -> Block 5
-#-----|   Case[4] -> Block 6
-#-----|   Default -> Block 7
+#-----|   Case[-1] -> Block 1
+#-----|   Case[1] -> Block 2
+#-----|   Case[2] -> Block 3
+#-----|   Case[3] -> Block 4
+#-----|   Case[4] -> Block 5
+#-----|   Default -> Block 6
 
-#  387|   Block 1
-#  387|     r1_0(int)        = Constant[1234]     : 
-#  387|     r1_1(glval<int>) = VariableAddress[y] : 
-#  387|     m1_2(int)        = Store              : r1_1, r1_0
-#-----|   Goto -> Block 2
+#  389|   Block 1
+#  389|     v1_0(void)       = NoOp               : 
+#  390|     r1_1(int)        = Constant[-1]       : 
+#  390|     r1_2(glval<int>) = VariableAddress[y] : 
+#  390|     m1_3(int)        = Store              : r1_2, r1_1
+#  391|     v1_4(void)       = NoOp               : 
+#-----|   Goto -> Block 7
 
-#  389|   Block 2
-#  389|     v2_0(void)       = NoOp               : 
-#  390|     r2_1(int)        = Constant[-1]       : 
-#  390|     r2_2(glval<int>) = VariableAddress[y] : 
-#  390|     m2_3(int)        = Store              : r2_2, r2_1
-#  391|     v2_4(void)       = NoOp               : 
-#-----|   Goto -> Block 9
+#  393|   Block 2
+#  393|     v2_0(void) = NoOp : 
+#-----|   Goto -> Block 3
 
-#  393|   Block 3
-#  393|     v3_0(void) = NoOp : 
-#-----|   Goto -> Block 4
+#  394|   Block 3
+#  394|     v3_0(void)       = NoOp               : 
+#  395|     r3_1(int)        = Constant[1]        : 
+#  395|     r3_2(glval<int>) = VariableAddress[y] : 
+#  395|     m3_3(int)        = Store              : r3_2, r3_1
+#  396|     v3_4(void)       = NoOp               : 
+#-----|   Goto -> Block 7
 
-#  394|   Block 4
-#  394|     v4_0(void)       = NoOp               : 
-#  395|     r4_1(int)        = Constant[1]        : 
-#  395|     r4_2(glval<int>) = VariableAddress[y] : 
-#  395|     m4_3(int)        = Store              : r4_2, r4_1
-#  396|     v4_4(void)       = NoOp               : 
-#-----|   Goto -> Block 9
+#  398|   Block 4
+#  398|     v4_0(void)       = NoOp               : 
+#  399|     r4_1(int)        = Constant[3]        : 
+#  399|     r4_2(glval<int>) = VariableAddress[y] : 
+#  399|     m4_3(int)        = Store              : r4_2, r4_1
+#-----|   Goto -> Block 5
 
-#  398|   Block 5
-#  398|     v5_0(void)       = NoOp               : 
-#  399|     r5_1(int)        = Constant[3]        : 
-#  399|     r5_2(glval<int>) = VariableAddress[y] : 
-#  399|     m5_3(int)        = Store              : r5_2, r5_1
-#-----|   Goto -> Block 6
+#  400|   Block 5
+#  400|     v5_0(void)       = NoOp               : 
+#  401|     r5_1(int)        = Constant[4]        : 
+#  401|     r5_2(glval<int>) = VariableAddress[y] : 
+#  401|     m5_3(int)        = Store              : r5_2, r5_1
+#  402|     v5_4(void)       = NoOp               : 
+#-----|   Goto -> Block 7
 
-#  400|   Block 6
-#  400|     v6_0(void)       = NoOp               : 
-#  401|     r6_1(int)        = Constant[4]        : 
-#  401|     r6_2(glval<int>) = VariableAddress[y] : 
-#  401|     m6_3(int)        = Store              : r6_2, r6_1
-#  402|     v6_4(void)       = NoOp               : 
-#-----|   Goto -> Block 9
+#  404|   Block 6
+#  404|     v6_0(void)       = NoOp               : 
+#  405|     r6_1(int)        = Constant[0]        : 
+#  405|     r6_2(glval<int>) = VariableAddress[y] : 
+#  405|     m6_3(int)        = Store              : r6_2, r6_1
+#  406|     v6_4(void)       = NoOp               : 
+#-----|   Goto -> Block 7
 
-#  404|   Block 7
-#  404|     v7_0(void)       = NoOp               : 
-#  405|     r7_1(int)        = Constant[0]        : 
-#  405|     r7_2(glval<int>) = VariableAddress[y] : 
-#  405|     m7_3(int)        = Store              : r7_2, r7_1
-#  406|     v7_4(void)       = NoOp               : 
-#-----|   Goto -> Block 9
-
-#  408|   Block 8
-#  408|     r8_0(int)        = Constant[5678]     : 
-#  408|     r8_1(glval<int>) = VariableAddress[y] : 
-#  408|     m8_2(int)        = Store              : r8_1, r8_0
-#-----|   Goto -> Block 9
-
-#  409|   Block 9
-#  409|     v9_0(void) = NoOp         : 
-#  410|     v9_1(void) = NoOp         : 
-#  384|     v9_2(void) = ReturnVoid   : 
-#  384|     v9_3(void) = UnmodeledUse : mu*
-#  384|     v9_4(void) = ExitFunction : 
+#  409|   Block 7
+#  409|     v7_0(void) = NoOp         : 
+#  410|     v7_1(void) = NoOp         : 
+#  384|     v7_2(void) = ReturnVoid   : 
+#  384|     v7_3(void) = UnmodeledUse : mu*
+#  384|     v7_4(void) = ExitFunction : 
 
 #  422| ReturnStruct(Point) -> Point
 #  422|   Block 0
@@ -1804,7 +1772,7 @@ ir.cpp:
 #  426|     mu0_1(unknown)      = AliasedDefinition   : 
 #  426|     mu0_2(unknown)      = UnmodeledDefinition : 
 #  427|     r0_3(glval<Point>)  = VariableAddress[pt] : 
-#  427|     mu0_4(Point)        = Uninitialized       : r0_3
+#  427|     mu0_4(Point)        = Uninitialized[pt]   : r0_3
 #  428|     r0_5(int)           = Constant[5]         : 
 #  428|     r0_6(glval<Point>)  = VariableAddress[pt] : 
 #  428|     r0_7(glval<int>)    = FieldAddress[x]     : r0_6
@@ -1834,7 +1802,7 @@ ir.cpp:
 #  433|     r0_5(glval<bool>) = VariableAddress[b]     : 
 #  433|     m0_6(bool)        = InitializeParameter[b] : r0_5
 #  434|     r0_7(glval<int>)  = VariableAddress[x]     : 
-#  434|     m0_8(int)         = Uninitialized          : r0_7
+#  434|     m0_8(int)         = Uninitialized[x]       : r0_7
 #  435|     r0_9(glval<bool>) = VariableAddress[a]     : 
 #  435|     r0_10(bool)       = Load                   : r0_9, m0_4
 #  435|     v0_11(void)       = ConditionalBranch      : r0_10
@@ -1896,7 +1864,7 @@ ir.cpp:
 #  447|     r0_5(glval<bool>) = VariableAddress[b]     : 
 #  447|     m0_6(bool)        = InitializeParameter[b] : r0_5
 #  448|     r0_7(glval<int>)  = VariableAddress[x]     : 
-#  448|     m0_8(int)         = Uninitialized          : r0_7
+#  448|     m0_8(int)         = Uninitialized[x]       : r0_7
 #  449|     r0_9(glval<bool>) = VariableAddress[a]     : 
 #  449|     r0_10(bool)       = Load                   : r0_9, m0_4
 #  449|     v0_11(void)       = ConditionalBranch      : r0_10
@@ -1958,7 +1926,7 @@ ir.cpp:
 #  461|     r0_5(glval<bool>) = VariableAddress[b]     : 
 #  461|     m0_6(bool)        = InitializeParameter[b] : r0_5
 #  462|     r0_7(glval<int>)  = VariableAddress[x]     : 
-#  462|     m0_8(int)         = Uninitialized          : r0_7
+#  462|     m0_8(int)         = Uninitialized[x]       : r0_7
 #  463|     r0_9(glval<bool>) = VariableAddress[a]     : 
 #  463|     r0_10(bool)       = Load                   : r0_9, m0_4
 #  463|     v0_11(void)       = ConditionalBranch      : r0_10
@@ -2013,7 +1981,7 @@ ir.cpp:
 #  475|     r0_5(glval<bool>) = VariableAddress[b]     : 
 #  475|     m0_6(bool)        = InitializeParameter[b] : r0_5
 #  476|     r0_7(glval<bool>) = VariableAddress[x]     : 
-#  476|     m0_8(bool)        = Uninitialized          : r0_7
+#  476|     m0_8(bool)        = Uninitialized[x]       : r0_7
 #  477|     r0_9(glval<bool>) = VariableAddress[a]     : 
 #  477|     r0_10(bool)       = Load                   : r0_9, m0_4
 #  477|     v0_11(void)       = ConditionalBranch      : r0_10
@@ -2163,9 +2131,9 @@ ir.cpp:
 #  486|     r0_3(glval<bool>)  = VariableAddress[a]     : 
 #  486|     m0_4(bool)         = InitializeParameter[a] : r0_3
 #  487|     r0_5(glval<int>)   = VariableAddress[x]     : 
-#  487|     mu0_6(int)         = Uninitialized          : r0_5
+#  487|     mu0_6(int)         = Uninitialized[x]       : r0_5
 #  488|     r0_7(glval<int>)   = VariableAddress[y]     : 
-#  488|     mu0_8(int)         = Uninitialized          : r0_7
+#  488|     mu0_8(int)         = Uninitialized[y]       : r0_7
 #  489|     r0_9(int)          = Constant[5]            : 
 #  489|     r0_10(glval<bool>) = VariableAddress[a]     : 
 #  489|     r0_11(bool)        = Load                   : r0_10, m0_4
@@ -2258,7 +2226,7 @@ ir.cpp:
 #  503|     r0_5(glval<float>)  = VariableAddress[f]     : 
 #  503|     m0_6(float)         = InitializeParameter[f] : r0_5
 #  504|     r0_7(glval<Point>)  = VariableAddress[pt1]   : 
-#  504|     m0_8(Point)         = Uninitialized          : r0_7
+#  504|     m0_8(Point)         = Uninitialized[pt1]     : r0_7
 #  504|     r0_9(glval<int>)    = FieldAddress[x]        : r0_7
 #  504|     r0_10(glval<int>)   = VariableAddress[x]     : 
 #  504|     r0_11(int)          = Load                   : r0_10, m0_4
@@ -2269,7 +2237,7 @@ ir.cpp:
 #  504|     r0_16(int)          = Convert                : r0_15
 #  504|     mu0_17(int)         = Store                  : r0_13, r0_16
 #  505|     r0_18(glval<Point>) = VariableAddress[pt2]   : 
-#  505|     m0_19(Point)        = Uninitialized          : r0_18
+#  505|     m0_19(Point)        = Uninitialized[pt2]     : r0_18
 #  505|     r0_20(glval<int>)   = FieldAddress[x]        : r0_18
 #  505|     r0_21(glval<int>)   = VariableAddress[x]     : 
 #  505|     r0_22(int)          = Load                   : r0_21, m0_4
@@ -2278,7 +2246,7 @@ ir.cpp:
 #  505|     r0_25(int)          = Constant[0]            : 
 #  505|     mu0_26(int)         = Store                  : r0_24, r0_25
 #  506|     r0_27(glval<Point>) = VariableAddress[pt3]   : 
-#  506|     m0_28(Point)        = Uninitialized          : r0_27
+#  506|     m0_28(Point)        = Uninitialized[pt3]     : r0_27
 #  506|     r0_29(glval<int>)   = FieldAddress[x]        : r0_27
 #  506|     r0_30(int)          = Constant[0]            : 
 #  506|     m0_31(int)          = Store                  : r0_29, r0_30
@@ -2306,7 +2274,7 @@ ir.cpp:
 #  512|     r0_5(glval<float>)  = VariableAddress[f]        : 
 #  512|     m0_6(float)         = InitializeParameter[f]    : r0_5
 #  513|     r0_7(glval<Rect>)   = VariableAddress[r1]       : 
-#  513|     m0_8(Rect)          = Uninitialized             : r0_7
+#  513|     m0_8(Rect)          = Uninitialized[r1]         : r0_7
 #  513|     r0_9(glval<Point>)  = FieldAddress[topLeft]     : r0_7
 #  513|     r0_10(Point)        = Constant[0]               : 
 #  513|     m0_11(Point)        = Store                     : r0_9, r0_10
@@ -2314,7 +2282,7 @@ ir.cpp:
 #  513|     r0_13(Point)        = Constant[0]               : 
 #  513|     mu0_14(Point)       = Store                     : r0_12, r0_13
 #  514|     r0_15(glval<Rect>)  = VariableAddress[r2]       : 
-#  514|     m0_16(Rect)         = Uninitialized             : r0_15
+#  514|     m0_16(Rect)         = Uninitialized[r2]         : r0_15
 #  514|     r0_17(glval<Point>) = FieldAddress[topLeft]     : r0_15
 #  514|     r0_18(glval<int>)   = FieldAddress[x]           : r0_17
 #  514|     r0_19(glval<int>)   = VariableAddress[x]        : 
@@ -2329,7 +2297,7 @@ ir.cpp:
 #  514|     r0_28(Point)        = Constant[0]               : 
 #  514|     mu0_29(Point)       = Store                     : r0_27, r0_28
 #  515|     r0_30(glval<Rect>)  = VariableAddress[r3]       : 
-#  515|     m0_31(Rect)         = Uninitialized             : r0_30
+#  515|     m0_31(Rect)         = Uninitialized[r3]         : r0_30
 #  515|     r0_32(glval<Point>) = FieldAddress[topLeft]     : r0_30
 #  515|     r0_33(glval<int>)   = FieldAddress[x]           : r0_32
 #  515|     r0_34(glval<int>)   = VariableAddress[x]        : 
@@ -2351,7 +2319,7 @@ ir.cpp:
 #  515|     r0_50(int)          = Convert                   : r0_49
 #  515|     mu0_51(int)         = Store                     : r0_47, r0_50
 #  516|     r0_52(glval<Rect>)  = VariableAddress[r4]       : 
-#  516|     m0_53(Rect)         = Uninitialized             : r0_52
+#  516|     m0_53(Rect)         = Uninitialized[r4]         : r0_52
 #  516|     r0_54(glval<Point>) = FieldAddress[topLeft]     : r0_52
 #  516|     r0_55(glval<int>)   = FieldAddress[x]           : r0_54
 #  516|     r0_56(glval<int>)   = VariableAddress[x]        : 
@@ -2383,13 +2351,13 @@ ir.cpp:
 #  519|     r0_5(glval<float>)   = VariableAddress[f]     : 
 #  519|     m0_6(float)          = InitializeParameter[f] : r0_5
 #  520|     r0_7(glval<int[3]>)  = VariableAddress[a1]    : 
-#  520|     mu0_8(int[3])        = Uninitialized          : r0_7
+#  520|     mu0_8(int[3])        = Uninitialized[a1]      : r0_7
 #  520|     r0_9(int)            = Constant[0]            : 
 #  520|     r0_10(glval<int>)    = PointerAdd             : r0_7, r0_9
 #  520|     r0_11(unknown[12])   = Constant[0]            : 
 #  520|     mu0_12(unknown[12])  = Store                  : r0_10, r0_11
 #  521|     r0_13(glval<int[3]>) = VariableAddress[a2]    : 
-#  521|     mu0_14(int[3])       = Uninitialized          : r0_13
+#  521|     mu0_14(int[3])       = Uninitialized[a2]      : r0_13
 #  521|     r0_15(int)           = Constant[0]            : 
 #  521|     r0_16(glval<int>)    = PointerAdd             : r0_13, r0_15
 #  521|     r0_17(glval<int>)    = VariableAddress[x]     : 
@@ -2406,7 +2374,7 @@ ir.cpp:
 #  521|     r0_28(int)           = Constant[0]            : 
 #  521|     mu0_29(int)          = Store                  : r0_27, r0_28
 #  522|     r0_30(glval<int[3]>) = VariableAddress[a3]    : 
-#  522|     mu0_31(int[3])       = Uninitialized          : r0_30
+#  522|     mu0_31(int[3])       = Uninitialized[a3]      : r0_30
 #  522|     r0_32(int)           = Constant[0]            : 
 #  522|     r0_33(glval<int>)    = PointerAdd             : r0_30, r0_32
 #  522|     r0_34(glval<int>)    = VariableAddress[x]     : 
@@ -2431,7 +2399,7 @@ ir.cpp:
 #  530|     r0_5(glval<float>)  = VariableAddress[f]     : 
 #  530|     m0_6(float)         = InitializeParameter[f] : r0_5
 #  531|     r0_7(glval<U>)      = VariableAddress[u1]    : 
-#  531|     m0_8(U)             = Uninitialized          : r0_7
+#  531|     m0_8(U)             = Uninitialized[u1]      : r0_7
 #  531|     r0_9(glval<double>) = FieldAddress[d]        : r0_7
 #  531|     r0_10(glval<float>) = VariableAddress[f]     : 
 #  531|     r0_11(float)        = Load                   : r0_10, m0_6
@@ -2603,15 +2571,15 @@ ir.cpp:
 #  574|     r0_17(char[5])        = Load                     : r0_16, mu0_2
 #  574|     m0_18(char[5])        = Store                    : r0_15, r0_17
 #  575|     r0_19(glval<char[2]>) = VariableAddress[b]       : 
-#  575|     m0_20(char[2])        = Uninitialized            : r0_19
+#  575|     m0_20(char[2])        = Uninitialized[b]         : r0_19
 #  576|     r0_21(glval<char[2]>) = VariableAddress[c]       : 
-#  576|     mu0_22(char[2])       = Uninitialized            : r0_21
+#  576|     mu0_22(char[2])       = Uninitialized[c]         : r0_21
 #  576|     r0_23(int)            = Constant[0]              : 
 #  576|     r0_24(glval<char>)    = PointerAdd               : r0_21, r0_23
 #  576|     r0_25(unknown[2])     = Constant[0]              : 
 #  576|     mu0_26(unknown[2])    = Store                    : r0_24, r0_25
 #  577|     r0_27(glval<char[2]>) = VariableAddress[d]       : 
-#  577|     mu0_28(char[2])       = Uninitialized            : r0_27
+#  577|     mu0_28(char[2])       = Uninitialized[d]         : r0_27
 #  577|     r0_29(int)            = Constant[0]              : 
 #  577|     r0_30(glval<char>)    = PointerAdd               : r0_27, r0_29
 #  577|     r0_31(char)           = Constant[0]              : 
@@ -2621,7 +2589,7 @@ ir.cpp:
 #  577|     r0_35(char)           = Constant[0]              : 
 #  577|     mu0_36(char)          = Store                    : r0_34, r0_35
 #  578|     r0_37(glval<char[2]>) = VariableAddress[e]       : 
-#  578|     mu0_38(char[2])       = Uninitialized            : r0_37
+#  578|     mu0_38(char[2])       = Uninitialized[e]         : r0_37
 #  578|     r0_39(int)            = Constant[0]              : 
 #  578|     r0_40(glval<char>)    = PointerAdd               : r0_37, r0_39
 #  578|     r0_41(char)           = Constant[0]              : 
@@ -2631,7 +2599,7 @@ ir.cpp:
 #  578|     r0_45(char)           = Constant[1]              : 
 #  578|     mu0_46(char)          = Store                    : r0_44, r0_45
 #  579|     r0_47(glval<char[3]>) = VariableAddress[f]       : 
-#  579|     mu0_48(char[3])       = Uninitialized            : r0_47
+#  579|     mu0_48(char[3])       = Uninitialized[f]         : r0_47
 #  579|     r0_49(int)            = Constant[0]              : 
 #  579|     r0_50(glval<char>)    = PointerAdd               : r0_47, r0_49
 #  579|     r0_51(char)           = Constant[0]              : 
@@ -2818,7 +2786,7 @@ ir.cpp:
 #  645|     r0_14(glval<int>) = FieldAddress[m_a]   : r0_13
 #  645|     mu0_15(int)       = Store               : r0_14, r0_12
 #  646|     r0_16(glval<int>) = VariableAddress[x]  : 
-#  646|     m0_17(int)        = Uninitialized       : r0_16
+#  646|     m0_17(int)        = Uninitialized[x]    : r0_16
 #  647|     r0_18(C *)        = CopyValue           : r0_3
 #  647|     r0_19(glval<int>) = FieldAddress[m_a]   : r0_18
 #  647|     r0_20(int)        = Load                : r0_19, mu0_2
@@ -2956,7 +2924,7 @@ ir.cpp:
 #  691|     mu0_1(unknown)          = AliasedDefinition   : 
 #  691|     mu0_2(unknown)          = UnmodeledDefinition : 
 #  692|     r0_3(glval<int[10]>)    = VariableAddress[a]  : 
-#  692|     mu0_4(int[10])          = Uninitialized       : r0_3
+#  692|     mu0_4(int[10])          = Uninitialized[a]    : r0_3
 #  693|     r0_5(glval<int(&)[10]>) = VariableAddress[ra] : 
 #  693|     r0_6(glval<int[10]>)    = VariableAddress[a]  : 
 #  693|     m0_7(int(&)[10])        = Store               : r0_5, r0_6
@@ -3871,7 +3839,7 @@ ir.cpp:
 #  871|     mu0_1(unknown)           = AliasedDefinition      : 
 #  871|     mu0_2(unknown)           = UnmodeledDefinition    : 
 #  872|     r0_3(glval<char[5]>)     = VariableAddress[a]     : 
-#  872|     mu0_4(char[5])           = Uninitialized          : r0_3
+#  872|     mu0_4(char[5])           = Uninitialized[a]       : r0_3
 #  873|     r0_5(glval<char *>)      = VariableAddress[p]     : 
 #  873|     r0_6(glval<char[5]>)     = VariableAddress[a]     : 
 #  873|     r0_7(char *)             = Convert                : r0_6
@@ -3944,13 +3912,13 @@ ir.cpp:
 #  888|     r0_3(glval<int>)               = VariableAddress[x]     : 
 #  888|     mu0_4(int)                     = InitializeParameter[x] : r0_3
 #  889|     r0_5(glval<__va_list_tag[1]>)  = VariableAddress[args]  : 
-#  889|     mu0_6(__va_list_tag[1])        = Uninitialized          : r0_5
+#  889|     mu0_6(__va_list_tag[1])        = Uninitialized[args]    : r0_5
 #  891|     r0_7(glval<__va_list_tag[1]>)  = VariableAddress[args]  : 
 #  891|     r0_8(__va_list_tag *)          = Convert                : r0_7
 #  891|     r0_9(glval<int>)               = VariableAddress[x]     : 
 #  891|     v0_10(void)                    = VarArgsStart           : r0_8, r0_9
 #  892|     r0_11(glval<__va_list_tag[1]>) = VariableAddress[args2] : 
-#  892|     mu0_12(__va_list_tag[1])       = Uninitialized          : r0_11
+#  892|     mu0_12(__va_list_tag[1])       = Uninitialized[args2]   : r0_11
 #  893|     r0_13(glval<__va_list_tag[1]>) = VariableAddress[args2] : 
 #  893|     r0_14(__va_list_tag *)         = Convert                : r0_13
 #  893|     r0_15(glval<__va_list_tag[1]>) = VariableAddress[args]  : 
@@ -4007,32 +3975,24 @@ ir.cpp:
 #  906|     r0_8(glval<int>)  = VariableAddress[b]     : 
 #  906|     r0_9(bool)        = Constant[1]            : 
 #  906|     v0_10(void)       = ConditionalBranch      : r0_9
-#-----|   False -> Block 3
-#-----|   True -> Block 2
+#-----|   False -> Block 2
+#-----|   True -> Block 1
 
 #  906|   Block 1
-#  906|     m1_0(int)        = Phi                          : from 2:m2_3, from 3:m3_3
-#  906|     r1_1(glval<int>) = VariableAddress[#temp906:11] : 
-#  906|     r1_2(int)        = Load                         : r1_1, m1_0
-#  906|     m1_3(int)        = Store                        : r0_8, r1_2
-#  907|     v1_4(void)       = NoOp                         : 
-#  904|     v1_5(void)       = ReturnVoid                   : 
-#  904|     v1_6(void)       = UnmodeledUse                 : mu*
-#  904|     v1_7(void)       = ExitFunction                 : 
+#  906|     r1_0(glval<int>) = VariableAddress[x]           : 
+#  906|     r1_1(int)        = Load                         : r1_0, m0_4
+#  906|     r1_2(glval<int>) = VariableAddress[#temp906:11] : 
+#  906|     m1_3(int)        = Store                        : r1_2, r1_1
+#  906|     r1_4(glval<int>) = VariableAddress[#temp906:11] : 
+#  906|     r1_5(int)        = Load                         : r1_4, m1_3
+#  906|     m1_6(int)        = Store                        : r0_8, r1_5
+#  907|     v1_7(void)       = NoOp                         : 
+#  904|     v1_8(void)       = ReturnVoid                   : 
+#  904|     v1_9(void)       = UnmodeledUse                 : mu*
+#  904|     v1_10(void)      = ExitFunction                 : 
 
 #  906|   Block 2
-#  906|     r2_0(glval<int>) = VariableAddress[x]           : 
-#  906|     r2_1(int)        = Load                         : r2_0, m0_4
-#  906|     r2_2(glval<int>) = VariableAddress[#temp906:11] : 
-#  906|     m2_3(int)        = Store                        : r2_2, r2_1
-#-----|   Goto -> Block 1
-
-#  906|   Block 3
-#  906|     r3_0(glval<int>) = VariableAddress[x]           : 
-#  906|     r3_1(int)        = Load                         : r3_0, m0_4
-#  906|     r3_2(glval<int>) = VariableAddress[#temp906:11] : 
-#  906|     m3_3(int)        = Store                        : r3_2, r3_1
-#-----|   Goto -> Block 1
+#  906|     v2_0(void) = Unreached : 
 
 #  940| OperatorNew() -> void
 #  940|   Block 0
@@ -4182,7 +4142,7 @@ ir.cpp:
 #  961|     mu0_1(unknown)          = AliasedDefinition        : 
 #  961|     mu0_2(unknown)          = UnmodeledDefinition      : 
 #  962|     r0_3(glval<int[1000]>)  = VariableAddress[a1]      : 
-#  962|     mu0_4(int[1000])        = Uninitialized            : r0_3
+#  962|     mu0_4(int[1000])        = Uninitialized[a1]        : r0_3
 #  962|     r0_5(int)               = Constant[0]              : 
 #  962|     r0_6(glval<int>)        = PointerAdd               : r0_3, r0_5
 #  962|     r0_7(unknown[8])        = Constant[0]              : 
@@ -4441,3 +4401,88 @@ ir.cpp:
 # 1005|     v6_12(void)          = ReturnValue              : r6_11, m6_10
 # 1005|     v6_13(void)          = UnmodeledUse             : mu*
 # 1005|     v6_14(void)          = ExitFunction             : 
+
+# 1021| UnreachableViaGoto() -> int
+# 1021|   Block 0
+# 1021|     v0_0(void)       = EnterFunction            : 
+# 1021|     mu0_1(unknown)   = AliasedDefinition        : 
+# 1021|     mu0_2(unknown)   = UnmodeledDefinition      : 
+# 1022|     v0_3(void)       = NoOp                     : 
+# 1024|     v0_4(void)       = NoOp                     : 
+# 1025|     r0_5(glval<int>) = VariableAddress[#return] : 
+# 1025|     r0_6(int)        = Constant[0]              : 
+# 1025|     m0_7(int)        = Store                    : r0_5, r0_6
+# 1021|     r0_8(glval<int>) = VariableAddress[#return] : 
+# 1021|     v0_9(void)       = ReturnValue              : r0_8, m0_7
+# 1021|     v0_10(void)      = UnmodeledUse             : mu*
+# 1021|     v0_11(void)      = ExitFunction             : 
+
+# 1028| UnreachableIf(bool) -> int
+# 1028|   Block 0
+# 1028|     v0_0(void)         = EnterFunction          : 
+# 1028|     mu0_1(unknown)     = AliasedDefinition      : 
+# 1028|     mu0_2(unknown)     = UnmodeledDefinition    : 
+# 1028|     r0_3(glval<bool>)  = VariableAddress[b]     : 
+# 1028|     m0_4(bool)         = InitializeParameter[b] : r0_3
+# 1029|     r0_5(glval<int>)   = VariableAddress[x]     : 
+# 1029|     r0_6(int)          = Constant[5]            : 
+# 1029|     m0_7(int)          = Store                  : r0_5, r0_6
+# 1030|     r0_8(glval<int>)   = VariableAddress[y]     : 
+# 1030|     r0_9(int)          = Constant[10]           : 
+# 1030|     m0_10(int)         = Store                  : r0_8, r0_9
+# 1031|     r0_11(glval<bool>) = VariableAddress[b]     : 
+# 1031|     r0_12(bool)        = Load                   : r0_11, m0_4
+# 1031|     v0_13(void)        = ConditionalBranch      : r0_12
+#-----|   False -> Block 5
+#-----|   True -> Block 2
+
+# 1028|   Block 1
+# 1028|     m1_0(int)        = Phi                      : from 3:m3_2, from 4:m4_2, from 6:m6_2, from 7:m7_2
+# 1028|     r1_1(glval<int>) = VariableAddress[#return] : 
+# 1028|     v1_2(void)       = ReturnValue              : r1_1, m1_0
+# 1028|     v1_3(void)       = UnmodeledUse             : mu*
+# 1028|     v1_4(void)       = ExitFunction             : 
+
+# 1032|   Block 2
+# 1032|     r2_0(glval<int>) = VariableAddress[x] : 
+# 1032|     r2_1(int)        = Load               : r2_0, m0_7
+# 1032|     r2_2(glval<int>) = VariableAddress[y] : 
+# 1032|     r2_3(int)        = Load               : r2_2, m0_10
+# 1032|     r2_4(bool)       = CompareEQ          : r2_1, r2_3
+# 1032|     v2_5(void)       = ConditionalBranch  : r2_4
+#-----|   False -> Block 4
+#-----|   True -> Block 3
+
+# 1033|   Block 3
+# 1033|     r3_0(glval<int>) = VariableAddress[#return] : 
+# 1033|     r3_1(int)        = Constant[1]              : 
+# 1033|     m3_2(int)        = Store                    : r3_0, r3_1
+#-----|   Goto -> Block 1
+
+# 1036|   Block 4
+# 1036|     r4_0(glval<int>) = VariableAddress[#return] : 
+# 1036|     r4_1(int)        = Constant[0]              : 
+# 1036|     m4_2(int)        = Store                    : r4_0, r4_1
+#-----|   Goto -> Block 1
+
+# 1040|   Block 5
+# 1040|     r5_0(glval<int>) = VariableAddress[x] : 
+# 1040|     r5_1(int)        = Load               : r5_0, m0_7
+# 1040|     r5_2(glval<int>) = VariableAddress[y] : 
+# 1040|     r5_3(int)        = Load               : r5_2, m0_10
+# 1040|     r5_4(bool)       = CompareLT          : r5_1, r5_3
+# 1040|     v5_5(void)       = ConditionalBranch  : r5_4
+#-----|   False -> Block 7
+#-----|   True -> Block 6
+
+# 1041|   Block 6
+# 1041|     r6_0(glval<int>) = VariableAddress[#return] : 
+# 1041|     r6_1(int)        = Constant[0]              : 
+# 1041|     m6_2(int)        = Store                    : r6_0, r6_1
+#-----|   Goto -> Block 1
+
+# 1044|   Block 7
+# 1044|     r7_0(glval<int>) = VariableAddress[#return] : 
+# 1044|     r7_1(int)        = Constant[1]              : 
+# 1044|     m7_2(int)        = Store                    : r7_0, r7_1
+#-----|   Goto -> Block 1
