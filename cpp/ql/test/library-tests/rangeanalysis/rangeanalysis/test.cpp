@@ -102,3 +102,16 @@ void test9(int x) {
     sink(x);
   }
 }
+
+int test10(int y, int z, bool use_y) {
+  int x;
+  if(use_y) {
+    x = y;
+  } else {
+    x = z;
+  }
+  sink();
+  for(int i = 0; i < x; i++) {
+    return i;
+  }
+}

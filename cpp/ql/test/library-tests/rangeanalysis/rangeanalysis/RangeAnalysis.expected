@@ -35,3 +35,6 @@
 | test.cpp:97:10:97:10 | Load: x | file://:0:0:0:0 | 0 | 1 | false | CompareLT: ... < ... | test.cpp:94:7:94:11 | test.cpp:94:7:94:11 |
 | test.cpp:100:10:100:10 | Load: x | file://:0:0:0:0 | 0 | 1 | true | CompareLE: ... <= ... | test.cpp:99:7:99:12 | test.cpp:99:7:99:12 |
 | test.cpp:102:10:102:10 | Load: x | file://:0:0:0:0 | 0 | 2 | false | CompareLE: ... <= ... | test.cpp:99:7:99:12 | test.cpp:99:7:99:12 |
+| test.cpp:106:5:106:10 | Phi: test10 | test.cpp:113:3:113:6 | Phi: call to sink | -1 | true | CompareLT: ... < ... | test.cpp:114:18:114:22 | test.cpp:114:18:114:22 |
+| test.cpp:106:5:106:10 | Phi: test10 | test.cpp:114:18:114:18 | Phi: i | 0 | false | NoReason | file://:0:0:0:0 | file://:0:0:0:0 |
+| test.cpp:106:5:106:10 | Phi: test10 | test.cpp:114:18:114:18 | Phi: i | 0 | true | NoReason | file://:0:0:0:0 | file://:0:0:0:0 |

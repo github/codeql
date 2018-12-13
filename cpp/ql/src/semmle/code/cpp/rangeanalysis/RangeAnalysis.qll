@@ -118,7 +118,7 @@ private import RangeAnalysisCache
 import RangeAnalysisPublic
 
 /**
- * Gets a condition that tests whether `op` equals `bound + delta`.
+ * Gets a condition that tests whether `vn` equals `bound + delta`.
  *
  * If the condition evaluates to `testIsTrue`:
  * - `isEq = true`  : `i == bound + delta`
@@ -151,11 +151,11 @@ private predicate boundFlowStepSsa(
 }
 
 /**
- * Gets a condition that tests whether `op` is bounded by `bound + delta`.
+ * Gets a condition that tests whether `vn` is bounded by `bound + delta`.
  *
  * If the condition evaluates to `testIsTrue`:
- * - `upper = true`  : `op <= bound + delta`
- * - `upper = false` : `op >= bound + delta`
+ * - `upper = true`  : `vn <= bound + delta`
+ * - `upper = false` : `vn >= bound + delta`
  */
 private IRGuardCondition boundFlowCond(ValueNumber vn, NonPhiOperand bound, int delta, boolean upper,
   boolean testIsTrue)
@@ -549,7 +549,6 @@ private predicate boundedInstruction(
     boundedPhiCandValidForEdge(i, b, delta, upper, fromBackEdge, origdelta, reason, op)
   )
   or
-  not i instanceof PhiInstruction and
   i = b.getInstruction(delta) and
   (upper = true or upper = false) and
   fromBackEdge = false and
