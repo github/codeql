@@ -5,11 +5,11 @@
 import javascript
 
 /**
- * Holds if `config` matches `spec`, that is, either `spec` is the name of `config`
+ * Holds if `config` matches `spec`, that is, either `spec` is the ID of `config`
  * or `spec` is the empty string and `config` is an arbitrary configuration.
  */
 predicate configSpec(DataFlow::Configuration config, string spec) {
-  config.toString() = spec
+  config.getId() = spec
   or
   spec = ""
 }

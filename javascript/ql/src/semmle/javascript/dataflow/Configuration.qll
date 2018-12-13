@@ -87,6 +87,12 @@ abstract class Configuration extends string {
   Configuration() { any() }
 
   /**
+   * Gets the unique identifier of this configuration among all data flow tracking
+   * configurations.
+   */
+  string getId() { result = this }
+
+  /**
    * Holds if `source` is a relevant data flow source for this configuration.
    */
   predicate isSource(DataFlow::Node source) { none() }
