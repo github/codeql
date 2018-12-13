@@ -13,16 +13,16 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
     {
         protected ExplicitArrayCreation(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.ARRAY_CREATION)) { }
 
-        public abstract ArrayTypeSyntax TypeSyntax { get; }
+        protected abstract ArrayTypeSyntax TypeSyntax { get; }
 
         public abstract InitializerExpressionSyntax  Initializer { get;  }
 
         protected override void Populate()
         {
             var child = 0;
-            bool explicitlySized = false;
+            var explicitlySized = false;
 
-            if(TypeSyntax is null)
+            if (TypeSyntax is null)
             {
                 cx.ModelError(Syntax, "Array has unexpected type syntax");
             }
@@ -33,7 +33,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 {
                     // Create an expression which simulates the explicit size of the array
 
-                    if (Initializer != null)
+                    if (!(Initializer is null))
                     {
                         // An implicitly-sized array must have an initializer.
                         // Guard it just in case.
@@ -59,7 +59,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 }
                 child++;
             }
-            if (Initializer != null)
+            if (!(Initializer is null))
             {
                 ArrayInitializer.Create(new ExpressionNodeInfo(cx, Initializer, this, -1));
             }
@@ -73,7 +73,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
     {
         private NormalArrayCreation(ExpressionNodeInfo info) : base(info) { }
 
-        public override ArrayTypeSyntax TypeSyntax => Syntax.Type;
+        protected override ArrayTypeSyntax TypeSyntax => Syntax.Type;
 
         public override InitializerExpressionSyntax Initializer => Syntax.Initializer;
 
@@ -84,7 +84,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
     {
         StackAllocArrayCreation(ExpressionNodeInfo info) : base(info) { }
 
-        public override ArrayTypeSyntax TypeSyntax => Syntax.Type as ArrayTypeSyntax;
+        protected override ArrayTypeSyntax TypeSyntax => Syntax.Type as ArrayTypeSyntax;
 
         public override InitializerExpressionSyntax Initializer => Syntax.Initializer;
 
