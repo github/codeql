@@ -1,11 +1,33 @@
 import cpp
 private import semmle.code.cpp.ir.IR
+private import semmle.code.cpp.ir.ValueNumbering
 
 private newtype TBound =
   TBoundZero() or
-  TBoundInstruction(Instruction i) {
-    i.getResultType() instanceof IntegralType or
-    i.getResultType() instanceof PointerType
+  TBoundValueNumber(ValueNumber vn) {
+    exists(Instruction i |
+      vn.getAnInstruction() = i and
+      (
+        i.getResultType() instanceof IntegralType or
+        i.getResultType() instanceof PointerType
+      )
+    |
+      i instanceof PhiInstruction
+      or
+      i instanceof InitializeParameterInstruction
+      or
+      i instanceof CallInstruction
+      or
+      i instanceof VariableAddressInstruction
+      or
+      i instanceof FieldAddressInstruction
+      or
+      i.(LoadInstruction).getSourceAddress() instanceof VariableAddressInstruction
+      or
+      i.(LoadInstruction).getSourceAddress() instanceof FieldAddressInstruction
+      or
+      i.getAUse() instanceof ArgumentOperand
+    )
   }
 
 /**
@@ -20,11 +42,8 @@ abstract class Bound extends TBound {
   /** Gets an expression that equals this bound. */
   Instruction getInstruction() { result = getInstruction(0) }
 
-  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
-  }
+  abstract Location getLocation();
 }
-
 
 /**
  * The bound that corresponds to the integer 0. This is used to represent all
@@ -34,18 +53,27 @@ class ZeroBound extends Bound, TBoundZero {
   override string toString() { result = "0" }
 
   override Instruction getInstruction(int delta) { result.(ConstantValueInstruction).getValue().toInt() = delta }
+  
+  override Location getLocation() {
+    result instanceof UnknownDefaultLocation
+  }
 }
-
 /**
  * A bound corresponding to the value of an `Instruction`.
  */
-class InstructionBound extends Bound, TBoundInstruction {
+class ValueNumberBound extends Bound, TBoundValueNumber {
+  ValueNumber vn;
+  
+  ValueNumberBound() {
+    this = TBoundValueNumber(vn)
+  }
+  
   /** Gets the SSA variable that equals this bound. */
-  override Instruction getInstruction(int delta) { this = TBoundInstruction(result) and delta = 0}
+  override Instruction getInstruction(int delta) { this = TBoundValueNumber(valueNumber(result)) and delta = 0}
 
-  override string toString() { result = getInstruction().toString() }
+  override string toString() { result = vn.getExampleInstruction().toString() }
 
-  override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    getInstruction().getLocation().hasLocationInfo(path, sl, sc, el, ec)
+  override Location getLocation() {
+    result = vn.getLocation()
   }
 }

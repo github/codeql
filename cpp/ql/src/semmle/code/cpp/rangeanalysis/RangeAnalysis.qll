@@ -465,7 +465,7 @@ private predicate boundedPhiInp(
   exists(int d, boolean fromBackEdge0 |
     boundedPhiOperand(op, b, d, upper, fromBackEdge0, origdelta, reason)
     or
-    b.(InstructionBound).getInstruction() = op.getDefinitionInstruction() and
+    b.(ValueNumberBound).getInstruction() = op.getDefinitionInstruction() and
     d = 0 and
     (upper = true or upper = false) and
     fromBackEdge0 = false and
@@ -494,7 +494,7 @@ private predicate boundedPhiInp1(
 }
 
 private predicate selfBoundedPhiInp(PhiInstruction phi, PhiOperand op, boolean upper) {
-  exists(int d, InstructionBound phibound |
+  exists(int d, ValueNumberBound phibound |
     phibound.getInstruction() = phi and
     boundedPhiInp(phi, op, phibound, d, upper, _, _, _) and
     (
