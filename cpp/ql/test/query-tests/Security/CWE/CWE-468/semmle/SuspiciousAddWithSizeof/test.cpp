@@ -85,7 +85,7 @@ public:
     pairPtr((myChar *)malloc(sizeof(MyABC) * 2)),
     pairPtrInt((myInt *)malloc(sizeof(MyABC) * 2))
   {
-    myChar *secondPtr = pairPtr + sizeof(MyABC); // GOOD [FALSE POSITIVE]
+    myChar *secondPtr = pairPtr + sizeof(MyABC); // GOOD
     myInt *secondPtrInt = pairPtrInt + sizeof(MyABC); // BAD
   }
 
