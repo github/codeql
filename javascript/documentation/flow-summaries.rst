@@ -198,11 +198,11 @@ Currently, we model five kinds of portals:
 
 - ``(root <uri>)``, representing the ``module`` object of the main module of the npm package
   described by ``<uri>``, which is a URL of the form ``https://www.npmjs.com/package/<pkg>``;
-- ``(member <base> <name>)``, representing property ``<name>`` of an object described by
+- ``(member <name> <base>)``, representing property ``<name>`` of an object described by
   portal ``<base>``;
 - ``(instance <base>)``, representing an instance of a (constructor) function or class
   described by portal ``base``;
-- ``(parameter <base> <i>)``, representing the ``i`` th parameter of a function described by
+- ``(parameter <i> <base>)``, representing the ``i`` th parameter of a function described by
   portal ``base``;
 - ``(return <base>)``, representing the return value of a function described by portal ``base``.
 
