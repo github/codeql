@@ -45,5 +45,39 @@ where
   expr = "INT_MAX / 0" and res = Ints::div(Ints::maxValue(), 0) or
   expr = "0 / unknown" and res = Ints::div(0, Ints::unknown()) or
   expr = "unknown / 3" and res = Ints::div(Ints::unknown(), 3) or
-  expr = "unknown / unknown" and res = Ints::div(Ints::unknown(), Ints::unknown())
+  expr = "unknown / unknown" and res = Ints::div(Ints::unknown(), Ints::unknown()) or
+  expr = "-3 == -3" and res = Ints::compareEQ(-3, -3) or
+  expr = "-3 == 6" and res = Ints::compareEQ(-3, 6) or
+  expr = "-3 == unknown" and res = Ints::compareEQ(-3, Ints::unknown()) or
+  expr = "unknown == 6" and res = Ints::compareEQ(Ints::unknown(), 6) or
+  expr = "unknown == unknown" and res = Ints::compareEQ(Ints::unknown(), Ints::unknown()) or
+  expr = "-3 != -3" and res = Ints::compareNE(-3, -3) or
+  expr = "-3 != 6" and res = Ints::compareNE(-3, 6) or
+  expr = "-3 != unknown" and res = Ints::compareNE(-3, Ints::unknown()) or
+  expr = "unknown != 6" and res = Ints::compareNE(Ints::unknown(), 6) or
+  expr = "unknown != unknown" and res = Ints::compareNE(Ints::unknown(), Ints::unknown()) or
+  expr = "-3 < -3" and res = Ints::compareLT(-3, -3) or
+  expr = "-3 < 6" and res = Ints::compareLT(-3, 6) or
+  expr = "-3 < -7" and res = Ints::compareLT(-3, -7) or
+  expr = "-3 < unknown" and res = Ints::compareLT(-3, Ints::unknown()) or
+  expr = "unknown < 6" and res = Ints::compareLT(Ints::unknown(), 6) or
+  expr = "unknown < unknown" and res = Ints::compareLT(Ints::unknown(), Ints::unknown()) or
+  expr = "-3 > -3" and res = Ints::compareGT(-3, -3) or
+  expr = "-3 > 6" and res = Ints::compareGT(-3, 6) or
+  expr = "-3 > -7" and res = Ints::compareGT(-3, -7) or
+  expr = "-3 > unknown" and res = Ints::compareGT(-3, Ints::unknown()) or
+  expr = "unknown > 6" and res = Ints::compareGT(Ints::unknown(), 6) or
+  expr = "unknown > unknown" and res = Ints::compareGT(Ints::unknown(), Ints::unknown()) or
+  expr = "-3 <= -3" and res = Ints::compareLE(-3, -3) or
+  expr = "-3 <= 6" and res = Ints::compareLE(-3, 6) or
+  expr = "-3 <= -7" and res = Ints::compareLE(-3, -7) or
+  expr = "-3 <= unknown" and res = Ints::compareLE(-3, Ints::unknown()) or
+  expr = "unknown <= 6" and res = Ints::compareLE(Ints::unknown(), 6) or
+  expr = "unknown <= unknown" and res = Ints::compareLE(Ints::unknown(), Ints::unknown()) or
+  expr = "-3 >= -3" and res = Ints::compareGE(-3, -3) or
+  expr = "-3 >= 6" and res = Ints::compareGE(-3, 6) or
+  expr = "-3 >= -7" and res = Ints::compareGE(-3, -7) or
+  expr = "-3 >= unknown" and res = Ints::compareGE(-3, Ints::unknown()) or
+  expr = "unknown >= 6" and res = Ints::compareGE(Ints::unknown(), 6) or
+  expr = "unknown >= unknown" and res = Ints::compareGE(Ints::unknown(), Ints::unknown())
 select expr, resultString(res)

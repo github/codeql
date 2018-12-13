@@ -26,6 +26,11 @@ to run queries and explore the data flow in results.
 
 ## Changes to QL libraries
 
+* The class `ControlFlowNode` (and by extension `BasicBlock`) has until now
+  been directly equatable to `Expr` and `Stmt`.  Exploiting these equalities,
+  for example by using casts, is now deprecated, and the conversions
+  `Expr.getControlFlowNode()` and `Stmt.getControlFlowNode()` should be used
+  instead.
 * The default set of taint sources in the `FlowSources` library is extended to
   cover parameters annotated with Spring framework annotations indicating
   remote user input from servlets. This affects all security queries, which
