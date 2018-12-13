@@ -200,3 +200,23 @@ private class PostMessageEventParameter extends RemoteFlowSource {
     result = "postMessage event"
   }
 }
+
+/**
+ * An access to `window.name`, which can be controlled by the opener of the window,
+ * even if the window is opened from a foreign domain.
+ */
+private class WindowNameAccess extends RemoteFlowSource {
+  WindowNameAccess() {
+    this = DataFlow::globalObjectRef().getAPropertyRead("name")
+    or
+    // Reference to `name` on a container that does not assign to it.
+    this.accessesGlobal("name") and
+    not exists(VarDef def |
+      def.getAVariable().(GlobalVariable).getName() = "name" and
+      def.getContainer() = this.asExpr().getContainer())
+  }
+
+  override string getSourceType() {
+    result = "Window name"
+  }
+}
