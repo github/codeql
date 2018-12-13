@@ -55,8 +55,11 @@ predicate stringArray(Variable arr, AggregateLiteral init) {
   // overwrite some of them with untrusted data.
 }
 
-predicate underscoreMacro(MacroInvocationExpr e) {
-  e.getMacroName() = "_"
+predicate underscoreMacro(Expr e) {
+  exists(MacroInvocation mi |
+    mi.getMacroName() = "_" and
+    mi.getExpr() = e
+  )
 }
 
 /**
