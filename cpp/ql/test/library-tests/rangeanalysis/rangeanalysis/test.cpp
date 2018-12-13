@@ -78,3 +78,27 @@ int test8(int x, int y) {
     }
   }
 }
+
+// >, >=, <=
+void test9(int x) {
+  if (x > 1) {
+    sink(x);
+  } else {
+    sink(x);
+  }
+  if (x >= 1) {
+    sink(x);
+  } else {
+    sink(x);
+  }
+  if (x < 1) {
+    sink(x);
+  } else {
+    sink(x);
+  }
+  if (x <= 1) {
+    sink(x);
+  } else {
+    sink(x);
+  }
+}

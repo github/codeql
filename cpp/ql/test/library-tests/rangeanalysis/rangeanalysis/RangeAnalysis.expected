@@ -27,3 +27,11 @@
 | test.cpp:77:12:77:12 | Load: i | file://:0:0:0:0 | 0 | 0 | false | NoReason | file://:0:0:0:0 | file://:0:0:0:0 |
 | test.cpp:77:12:77:12 | Load: i | test.cpp:72:15:72:15 | InitializeParameter: x | -1 | true | CompareLT: ... < ... | test.cpp:76:20:76:24 | test.cpp:76:20:76:24 |
 | test.cpp:77:12:77:12 | Load: i | test.cpp:72:22:72:22 | InitializeParameter: y | -1 | true | CompareLT: ... < ... | test.cpp:76:20:76:24 | test.cpp:76:20:76:24 |
+| test.cpp:85:10:85:10 | Load: x | file://:0:0:0:0 | 0 | 2 | false | CompareGT: ... > ... | test.cpp:84:7:84:11 | test.cpp:84:7:84:11 |
+| test.cpp:87:10:87:10 | Load: x | file://:0:0:0:0 | 0 | 1 | true | CompareGT: ... > ... | test.cpp:84:7:84:11 | test.cpp:84:7:84:11 |
+| test.cpp:90:10:90:10 | Load: x | file://:0:0:0:0 | 0 | 1 | false | CompareGE: ... >= ... | test.cpp:89:7:89:12 | test.cpp:89:7:89:12 |
+| test.cpp:92:10:92:10 | Load: x | file://:0:0:0:0 | 0 | 0 | true | CompareGE: ... >= ... | test.cpp:89:7:89:12 | test.cpp:89:7:89:12 |
+| test.cpp:95:10:95:10 | Load: x | file://:0:0:0:0 | 0 | 0 | true | CompareLT: ... < ... | test.cpp:94:7:94:11 | test.cpp:94:7:94:11 |
+| test.cpp:97:10:97:10 | Load: x | file://:0:0:0:0 | 0 | 1 | false | CompareLT: ... < ... | test.cpp:94:7:94:11 | test.cpp:94:7:94:11 |
+| test.cpp:100:10:100:10 | Load: x | file://:0:0:0:0 | 0 | 1 | true | CompareLE: ... <= ... | test.cpp:99:7:99:12 | test.cpp:99:7:99:12 |
+| test.cpp:102:10:102:10 | Load: x | file://:0:0:0:0 | 0 | 2 | false | CompareLE: ... <= ... | test.cpp:99:7:99:12 | test.cpp:99:7:99:12 |
