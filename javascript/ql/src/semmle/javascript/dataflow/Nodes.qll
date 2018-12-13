@@ -321,13 +321,13 @@ class FunctionNode extends DataFlow::ValueNode, DataFlow::DefaultSourceNode {
   }
 
   /**
-   * Gets the dataflow node holding the value of the `this` argument passed to the given function.
+   * Gets the dataflow node holding the value of the receiver passed to the given function.
    *
    * Has no result for arrow functions, as they ignore the receiver argument.
    *
-   * To get the data flow node for `this` in an arrow function, consider using `getThisBinder().getThisParameter()`.
+   * To get the data flow node for `this` in an arrow function, consider using `getThisBinder().getReceiver()`.
    */
-  ThisNode getThisParameter() {
+  ThisNode getReceiver() {
     result.getBinder() = this
   }
 }
