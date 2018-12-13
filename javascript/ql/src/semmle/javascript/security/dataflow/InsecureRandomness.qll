@@ -68,7 +68,7 @@ module InsecureRandomness {
    * A simple random number generator that is not cryptographically secure.
    */
   class DefaultSource extends Source, DataFlow::ValueNode {
-    override CallExpr astNode;
+    override InvokeExpr astNode;
 
     DefaultSource() {
       exists(DataFlow::ModuleImportNode mod, string name | mod.getPath() = name |
@@ -98,6 +98,9 @@ module InsecureRandomness {
       or
       // (new require('chance')).<name>()
       this = DataFlow::moduleImport("chance").getAnInstantiation().getAMemberInvocation(_)
+      or
+      // require('crypto').pseudoRandomBytes()
+      this = DataFlow::moduleMember("crypto", "pseudoRandomBytes").getAnInvocation()
     }
   }
 
