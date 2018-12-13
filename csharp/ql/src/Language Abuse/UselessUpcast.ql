@@ -118,8 +118,9 @@ class ExplicitUpcast extends ExplicitCast {
   }
 
   pragma [nomagic]
-  private predicate isDisambiguatingStaticCall0(StaticCall c, StaticCallable target, ValueOrRefType t) {
+  private predicate isDisambiguatingStaticCall0(StaticCall c, StaticCallable target, string name, ValueOrRefType t) {
     this.isArgument(c, target) and
+    name = target.getName() and
     (
       t = c.(QualifiableExpr).getQualifier().getType()
       or
@@ -131,9 +132,9 @@ class ExplicitUpcast extends ExplicitCast {
   /** Holds if this upcast may be used to disambiguate the target of a static call. */
   pragma [nomagic]
   private predicate isDisambiguatingStaticCall(StaticCallable other, int args) {
-    exists(StaticCall c, StaticCallable target, ValueOrRefType t |
-      this.isDisambiguatingStaticCall0(c, target, t) |
-      hasStaticCallable(t, other, target.getName()) and
+    exists(StaticCall c, StaticCallable target, ValueOrRefType t, string name |
+      this.isDisambiguatingStaticCall0(c, target, name, t) |
+      hasStaticCallable(t, other, name) and
       args = c.getNumberOfArguments() and
       other != target
     )

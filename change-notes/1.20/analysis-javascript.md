@@ -4,7 +4,11 @@
 
 * Support for popular libraries has been improved. Consequently, queries may produce more results on code bases that use the following features:
   - client-side code, for example [React](https://reactjs.org/)
+  - cookies and webstorage, for example [js-cookie](https://github.com/js-cookie/js-cookie)
   - server-side code, for example [hapi](https://hapijs.com/)
+* File classification has been improved to recognize additional generated files, for example files from [HTML Tidy](html-tidy.org).
+
+* The taint tracking library now recognizes flow through persistent storage, this may give more results for the security queries. 
 
 ## New queries
 
@@ -20,6 +24,7 @@
 | **Query**                                  | **Expected impact**          | **Change**                                                                   |
 |--------------------------------------------|------------------------------|------------------------------------------------------------------------------|
 | Client-side cross-site scripting           | More results                 | This rule now recognizes WinJS functions that are vulnerable to HTML injection. |
+| Insecure randomness | More results | This rule now flags insecure uses of `crypto.pseudoRandomBytes`. |
 | Unused parameter                           | Fewer false-positive results | This rule no longer flags parameters with leading underscore. |
 | Unused variable, import, function or class | Fewer false-positive results | This rule now flags fewer variables that are implictly used by JSX elements, and no longer flags variables with leading underscore. |
 

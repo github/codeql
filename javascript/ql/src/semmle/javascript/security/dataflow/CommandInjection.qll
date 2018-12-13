@@ -77,7 +77,7 @@ module CommandInjection {
     override predicate isSource(DataFlow::Node nd) {
       nd instanceof DataFlow::ArrayCreationNode
       or
-      exists (StringLiteral shell | shellCmd(shell, _) |
+      exists (ConstantString shell | shellCmd(shell, _) |
         nd = DataFlow::valueNode(shell)
       )
     }
@@ -96,14 +96,14 @@ module CommandInjection {
    * That is, either `shell` is a Unix shell (`sh` or similar) and
    * `arg` is `"-c"`, or `shell` is `cmd.exe` and `arg` is `"/c"`.
    */
-  private predicate shellCmd(StringLiteral shell, string arg) {
-    exists (string s | s = shell.getValue() |
+  private predicate shellCmd(ConstantString shell, string arg) {
+    exists (string s | s = shell.getStringValue() |
       (s = "sh" or s = "bash" or s = "/bin/sh" or s = "/bin/bash")
       and
       arg = "-c"
     )
     or
-    exists (string s | s = shell.getValue().toLowerCase() |
+    exists (string s | s = shell.getStringValue().toLowerCase() |
       (s = "cmd" or s = "cmd.exe")
       and
       (arg = "/c" or arg = "/C")
@@ -126,7 +126,7 @@ module CommandInjection {
    */
   private predicate indirectCommandInjection(DataFlow::Node sink, SystemCommandExecution sys) {
     exists (ArgumentListTracking cfg, DataFlow::ArrayCreationNode args,
-            StringLiteral shell, string dashC |
+            ConstantString shell, string dashC |
       shellCmd(shell, dashC) and
       cfg.hasFlow(DataFlow::valueNode(shell), sys.getACommandArgument()) and
       cfg.hasFlow(args, sys.getArgumentList()) and

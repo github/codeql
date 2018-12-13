@@ -25,7 +25,7 @@ string metachar() {
 string getAMatchedString(Expr e) {
   result = getAMatchedConstant(e.(RegExpLiteral).getRoot()).getValue()
   or
-  result = e.(StringLiteral).getValue()
+  result = e.getStringValue()
 }
 
 /** Gets a constant matched by `t`. */

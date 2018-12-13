@@ -168,6 +168,44 @@ class WebStorageWrite extends Expr {
 }
 
 /**
+ * Persistent storage through web storage such as `localStorage` or `sessionStorage`.
+ */
+private module PersistentWebStorage {
+  private DataFlow::SourceNode webStorage(string kind) {
+    (kind = "localStorage" or kind = "sessionStorage") and
+    result = DataFlow::globalVarRef(kind)
+  }
+
+  /**
+   * A read access.
+   */
+  class ReadAccess extends PersistentReadAccess, DataFlow::CallNode {
+    string kind;
+
+    ReadAccess() { this = webStorage(kind).getAMethodCall("getItem") }
+
+    override PersistentWriteAccess getAWrite() {
+      getArgument(0).mayHaveStringValue(result.(WriteAccess).getKey()) and
+      result.(WriteAccess).getKind() = kind
+    }
+  }
+
+  /**
+   * A write access.
+   */
+  class WriteAccess extends PersistentWriteAccess, DataFlow::CallNode {
+    string kind;
+
+    WriteAccess() { this = webStorage(kind).getAMethodCall("setItem") }
+
+    string getKey() { getArgument(0).mayHaveStringValue(result) }
+
+    string getKind() { result = kind }
+
+    override DataFlow::Node getValue() { result = getArgument(1) }
+  }
+}
+/**
  * An event handler that handles `postMessage` events.
  */
 class PostMessageEventHandler extends Function {
@@ -198,5 +236,25 @@ private class PostMessageEventParameter extends RemoteFlowSource {
 
   override string getSourceType() {
     result = "postMessage event"
+  }
+}
+
+/**
+ * An access to `window.name`, which can be controlled by the opener of the window,
+ * even if the window is opened from a foreign domain.
+ */
+private class WindowNameAccess extends RemoteFlowSource {
+  WindowNameAccess() {
+    this = DataFlow::globalObjectRef().getAPropertyRead("name")
+    or
+    // Reference to `name` on a container that does not assign to it.
+    this.accessesGlobal("name") and
+    not exists(VarDef def |
+      def.getAVariable().(GlobalVariable).getName() = "name" and
+      def.getContainer() = this.asExpr().getContainer())
+  }
+
+  override string getSourceType() {
+    result = "Window name"
   }
 }
