@@ -168,6 +168,44 @@ class WebStorageWrite extends Expr {
 }
 
 /**
+ * Persistent storage through web storage such as `localStorage` or `sessionStorage`.
+ */
+private module PersistentWebStorage {
+  private DataFlow::SourceNode webStorage(string kind) {
+    (kind = "localStorage" or kind = "sessionStorage") and
+    result = DataFlow::globalVarRef(kind)
+  }
+
+  /**
+   * A read access.
+   */
+  class ReadAccess extends PersistentReadAccess, DataFlow::CallNode {
+    string kind;
+
+    ReadAccess() { this = webStorage(kind).getAMethodCall("getItem") }
+
+    override PersistentWriteAccess getAWrite() {
+      getArgument(0).mayHaveStringValue(result.(WriteAccess).getKey()) and
+      result.(WriteAccess).getKind() = kind
+    }
+  }
+
+  /**
+   * A write access.
+   */
+  class WriteAccess extends PersistentWriteAccess, DataFlow::CallNode {
+    string kind;
+
+    WriteAccess() { this = webStorage(kind).getAMethodCall("setItem") }
+
+    string getKey() { getArgument(0).mayHaveStringValue(result) }
+
+    string getKind() { result = kind }
+
+    override DataFlow::Node getValue() { result = getArgument(1) }
+  }
+}
+/**
  * An event handler that handles `postMessage` events.
  */
 class PostMessageEventHandler extends Function {
