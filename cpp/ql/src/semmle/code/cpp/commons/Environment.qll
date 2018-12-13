@@ -34,11 +34,5 @@ private predicate readsEnvironment(Expr read, string sourceDescription) {
     read = call and
     call.getTarget().hasGlobalName(name) and
     (name = "getenv" or name = "secure_getenv" or name = "_wgetenv") and
-    sourceDescription = name) or
-  exists(MessageExpr getObjectKey, MessageExpr getEnviron |
-    read = getObjectKey and
-    getObjectKey.getTarget().getQualifiedName().matches("NSDictionary%::-objectForKey:") and
-    getObjectKey.getQualifier() = getEnviron and
-    getEnviron.getTarget().getQualifiedName().matches("NSProcessInfo%:-environment") and
-    sourceDescription = "NSProcessInfo")
+    sourceDescription = name)
 }

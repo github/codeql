@@ -20,3 +20,7 @@ uniqueRandom();
 var Chance = require('chance'),
     chance = new Chance();
 chance.XYZ();
+
+let crypto = require('crypto');
+crypto.pseudoRandomBytes(100);
+new crypto.pseudoRandomBytes(100);

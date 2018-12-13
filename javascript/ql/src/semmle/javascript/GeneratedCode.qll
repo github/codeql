@@ -42,8 +42,8 @@ class CodeGeneratorMarkerComment extends GeneratedCodeMarkerComment {
  */
 private predicate codeGeneratorMarkerComment(Comment c, string tool) {
   exists (string toolPattern |
-    toolPattern = "js_of_ocaml|CoffeeScript|LiveScript|dart2js|ANTLR|PEG\\.js|Opal|JSX|jison(?:-lex)?" and
-    tool = c.getText().regexpCapture("(?s)[\\s*]*(?:parser )?[gG]eneratedy? (?:from .*)?by (" + toolPattern + ")\\b.*", 1)
+    toolPattern = "js_of_ocaml|CoffeeScript|LiveScript|dart2js|ANTLR|PEG\\.js|Opal|JSX|jison(?:-lex)?|(?:Microsoft \\(R\\) AutoRest Code Generator)|purs" and
+    tool = c.getText().regexpCapture("(?s)[\\s*]*(?:parser |Code )?[gG]eneratedy? (?:from .*)?by (" + toolPattern + ")\\b.*", 1)
   )
 }
 
@@ -115,6 +115,17 @@ private predicate isData(File f) {
 }
 
 /**
+ * Holds if `f` is a generated HTML file.
+ */
+private predicate isGeneratedHtml(File f) {
+  exists(HTML::Element e |
+    e.getFile() = f and
+    e.getName() = "meta" and
+    e.getAttributeByName("name").getValue() = "generator"
+  )
+}
+
+/**
  * Holds if `tl` looks like it contains generated code.
  */
 predicate isGenerated(TopLevel tl) {
@@ -124,12 +135,14 @@ predicate isGenerated(TopLevel tl) {
   tl instanceof DartGeneratedTopLevel or
   exists (GeneratedCodeMarkerComment gcmc | tl = gcmc.getTopLevel()) or
   hasManyInvocations(tl) or
-  isData(tl.getFile())
+  isData(tl.getFile()) or
+  isGeneratedHtml(tl.getFile())
 }
 
 /**
  * Holds if `file` look like it contains generated code.
  */
 predicate isGeneratedCode(File file) {
-  isGenerated(file.getATopLevel())
+  isGenerated(file.getATopLevel()) or
+  isGeneratedHtml(file)
 }
