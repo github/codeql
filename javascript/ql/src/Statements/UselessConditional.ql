@@ -109,15 +109,26 @@ predicate whitelist(Expr e) {
 
 /**
  * Holds if `e` is part of a conditional node `cond` that evaluates
- * `e` and checks its value for truthiness.
+ * `e` and checks its value for truthiness, and the return value of `e`
+ * is not used for anything other than this truthiness check.
  */
-predicate isConditional(ASTNode cond, Expr e) {
+predicate isExplicitConditional(ASTNode cond, Expr e) {
   e = cond.(IfStmt).getCondition() or
   e = cond.(LoopStmt).getTest() or
   e = cond.(ConditionalExpr).getCondition() or
-  e = cond.(LogicalBinaryExpr).getLeftOperand() or
-  // Include `z` in `if (x && z)`.
-  isConditional(_, cond) and e = cond.(Expr).getUnderlyingValue().(LogicalBinaryExpr).getRightOperand()
+  isExplicitConditional(_, cond) and e = cond.(Expr).getUnderlyingValue().(LogicalBinaryExpr).getAnOperand()
+}
+
+/**
+ * Holds if `e` is part of a conditional node `cond` that evaluates
+ * `e` and checks its value for truthiness.
+ *
+ * The return value of `e` may have other uses besides the truthiness check,
+ * but if the truthiness check is always goes one way, it still indicates an error.
+ */
+predicate isConditional(ASTNode cond, Expr e) {
+  isExplicitConditional(cond, e) or
+  e = cond.(LogicalBinaryExpr).getLeftOperand()
 }
 
 from ASTNode cond, DataFlow::AnalyzedNode op, boolean cv, ASTNode sel, string msg
