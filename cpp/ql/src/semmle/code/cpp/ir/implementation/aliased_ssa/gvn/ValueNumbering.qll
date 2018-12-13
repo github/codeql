@@ -83,6 +83,10 @@ class ValueNumber extends TValueNumber {
       instr order by instr.getBlock().getDisplayIndex(), instr.getDisplayIndexInBlock()
     )
   }
+  
+  final Operand getAUse() {
+    this = valueNumber(result.getDefinitionInstruction())
+  }
 }
 
 /**
@@ -218,6 +222,13 @@ ValueNumber valueNumber(Instruction instr) {
     uniqueValueNumber(instr, funcIR) and
     result = TUniqueValueNumber(funcIR, instr)
   )
+}
+
+/**
+ * Gets the value number assigned to `instr`, if any. Returns at most one result.
+ */
+ValueNumber valueNumberOfOperand(Operand op) {
+  result = valueNumber(op.getDefinitionInstruction())
 }
 
 /**

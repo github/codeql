@@ -6,10 +6,6 @@ private newtype TBound =
   TBoundInstruction(Instruction i) {
     i.getResultType() instanceof IntegralType or
     i.getResultType() instanceof PointerType
-  } or
-  TBoundOperand(Operand o) {
-    o.getDefinitionInstruction().getResultType() instanceof IntegralType or
-    o.getDefinitionInstruction().getResultType() instanceof PointerType
   }
 
 /**
@@ -51,25 +47,5 @@ class InstructionBound extends Bound, TBoundInstruction {
 
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     getInstruction().getLocation().hasLocationInfo(path, sl, sc, el, ec)
-  }
-}
-
-/**
- * A bound corresponding to the value of an `Operand`.
- */
-class OperandBound extends Bound, TBoundOperand {
-  Operand getOperand() {
-    this = TBoundOperand(result)
-  }
-
-  override Instruction getInstruction(int delta) {
-    this = TBoundOperand(result.getAUse()) and
-    delta = 0
-  } 
-
-  override string toString() { result = getOperand().toString() }
-
-  override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    getOperand().getLocation().hasLocationInfo(path, sl, sc, el, ec)
   }
 }

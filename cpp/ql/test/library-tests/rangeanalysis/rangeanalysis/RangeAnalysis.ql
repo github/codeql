@@ -3,14 +3,23 @@ import semmle.code.cpp.ir.IR
 import semmle.code.cpp.controlflow.IRGuards
 import semmle.code.cpp.ir.ValueNumbering
 
-query predicate instructionBounds(Instruction i, Bound b, int delta, boolean upper, Reason reason) 
+query predicate instructionBounds(Instruction i, Bound b, int delta, boolean upper, Reason reason, 
+  Location reasonLoc)
 {
-  i instanceof LoadInstruction and
-  boundedInstruction(i, b, delta, upper, reason) and
   (
-    b.(InstructionBound).getInstruction() instanceof InitializeParameterInstruction or
-    b.(InstructionBound).getInstruction() instanceof CallInstruction or
-    b instanceof ZeroBound
+    i.getAUse() instanceof ArgumentOperand
+    or
+    i.getAUse() instanceof ReturnValueOperand
   ) and
-  not valueNumber(b.(InstructionBound).getInstruction()) = valueNumber(i)
+  (
+    upper = true and
+    delta = min(int d | boundedInstruction(i, b, d, upper, reason))
+    or
+    upper = false and
+    delta = max(int d | boundedInstruction(i, b, d, upper, reason))
+  ) and
+  not valueNumber(b.getInstruction()) = valueNumber(i)
+  and if reason instanceof CondReason
+    then reasonLoc = reason.(CondReason).getCond().getLocation()
+    else reasonLoc instanceof UnknownDefaultLocation
 }

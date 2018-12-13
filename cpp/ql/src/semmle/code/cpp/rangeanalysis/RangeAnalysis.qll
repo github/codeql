@@ -124,14 +124,10 @@ import RangeAnalysisPublic
  * - `isEq = true`  : `i == bound + delta`
  * - `isEq = false` : `i != bound + delta`
  */
-private IRGuardCondition eqFlowCond(Operand op, Operand bound, int delta,
+private IRGuardCondition eqFlowCond(ValueNumber vn, Operand bound, int delta,
   boolean isEq, boolean testIsTrue)
 {
-  exists(Operand compared |
-    result.ensuresEq(compared, bound, delta, op.getInstruction().getBlock(), isEq) and
-    result.controls(bound.getInstruction().getBlock(), testIsTrue) and
-    valueNumber(compared.getDefinitionInstruction()) = valueNumber (op.getDefinitionInstruction())
-  )
+  result.comparesEq(vn.getAUse(), bound, delta, isEq, testIsTrue)
 }
 
 /**
@@ -147,8 +143,9 @@ private predicate boundFlowStepSsa(
   reason = TNoReason() and
   delta = 0
   or*/
-  exists(IRGuardCondition guard |
-    guard = boundFlowCond(op2, op1, delta, upper, _) and
+  exists(IRGuardCondition guard, boolean testIsTrue |
+    guard = boundFlowCond(valueNumberOfOperand(op2), op1, delta, upper, testIsTrue) and
+    guard.controls(op2.getInstruction().getBlock(), testIsTrue) and
     reason = TCondReason(guard)
   )
 }
@@ -160,37 +157,19 @@ private predicate boundFlowStepSsa(
  * - `upper = true`  : `op <= bound + delta`
  * - `upper = false` : `op >= bound + delta`
  */
-private IRGuardCondition boundFlowCond(NonPhiOperand op, NonPhiOperand bound, int delta, boolean upper,
+private IRGuardCondition boundFlowCond(ValueNumber vn, NonPhiOperand bound, int delta, boolean upper,
   boolean testIsTrue)
 {
-  exists(Operand compared |
-    result.comparesLt(compared, bound, delta, upper, testIsTrue) and
-    result.controls(op.getInstruction().getBlock(), testIsTrue) and
-    valueNumber(compared.getDefinitionInstruction()) = valueNumber(op.getDefinitionInstruction())
-  )
-  // TODO: strengthening through modulus library
-}
-
-/**
- * Gets a condition that tests whether `op` is bounded by `bound + delta`.
- * 
- * - `upper = true`  : `op <= bound + delta`
- * - `upper = false` : `op >= bound + delta`
- */
-private IRGuardCondition boundFlowCondPhi(PhiOperand op, NonPhiOperand bound, int delta, boolean upper,
-  boolean testIsTrue)
-{
-  exists(Operand compared |
-    result.comparesLt(compared, bound, delta, upper, testIsTrue) and
-    result.controlsEdgeDirectly(op.getPredecessorBlock().getLastInstruction(), op.getInstruction().getBlock(), testIsTrue) and
-    valueNumber(compared.getDefinitionInstruction()) = valueNumber (op.getDefinitionInstruction())
+  exists(int d |
+    result.comparesLt(vn.getAUse(), bound, d, upper, testIsTrue) and
+    // strengthen from x < y to x <= y-1
+    if upper = true
+      then delta = d-1
+      else delta = d
   )
   or
-  exists(Operand compared |
-    result.comparesLt(compared, bound, delta, upper, testIsTrue) and
-    result.controls(op.getPredecessorBlock(), testIsTrue) and
-    valueNumber(compared.getDefinitionInstruction()) = valueNumber (op.getDefinitionInstruction())
-  )
+  result = eqFlowCond(vn, bound, delta, true, testIsTrue) and
+  (upper = true or upper = false)
   // TODO: strengthening through modulus library
 }
 
@@ -239,6 +218,9 @@ private predicate safeCast(IntegralType fromtyp, IntegralType totyp) {
 private class SafeCastInstruction extends ConvertInstruction {
   SafeCastInstruction() {
     safeCast(getResultType(), getOperand().getResultType())
+    or
+    getResultType() instanceof PointerType and
+    getOperand().getResultType() instanceof PointerType
   }
 }
 
@@ -402,8 +384,13 @@ private predicate boundFlowStepPhi(
   reason = TNoReason() and
   delta = 0
   or
-  exists(IRGuardCondition guard |
-    guard = boundFlowCondPhi(op2, op1, delta, upper, _) and
+  exists(IRGuardCondition guard, boolean testIsTrue |
+    guard = boundFlowCond(valueNumberOfOperand(op2), op1, delta, upper, testIsTrue) and
+    (
+      guard.hasBranchEdge(op2.getPredecessorBlock().getLastInstruction(), op2.getInstruction().getBlock(), testIsTrue)
+      or
+      guard.controls(op2.getPredecessorBlock(), testIsTrue)
+    ) and
     reason = TCondReason(guard)
   )
 }
@@ -472,12 +459,10 @@ private int weakenDelta(boolean upper, int delta) {
 
 private predicate boundedPhiInp(
   PhiInstruction phi, PhiOperand op, Bound b, int delta, boolean upper, boolean fromBackEdge,
-  int origdelta, Reason reason 
+  int origdelta, Reason reason
 ) {
   phi.getAnOperand() = op and
   exists(int d, boolean fromBackEdge0 |
-    boundedInstruction(op.getDefinitionInstruction(), b, d, upper, fromBackEdge0, origdelta, reason)
-    or
     boundedPhiOperand(op, b, d, upper, fromBackEdge0, origdelta, reason)
     or
     b.(InstructionBound).getInstruction() = op.getDefinitionInstruction() and
@@ -564,6 +549,7 @@ private predicate boundedInstruction(
     boundedPhiCandValidForEdge(i, b, delta, upper, fromBackEdge, origdelta, reason, op)
   )
   or
+  not i instanceof PhiInstruction and
   i = b.getInstruction(delta) and
   (upper = true or upper = false) and
   fromBackEdge = false and

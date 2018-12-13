@@ -295,7 +295,7 @@ class IRGuardCondition extends Instruction {
      * return x;
      * ```
      */
-    predicate controlsEdgeDirectly(ConditionalBranchInstruction branch, IRBlock succ, boolean testIsTrue) {
+    predicate hasBranchEdge(ConditionalBranchInstruction branch, IRBlock succ, boolean testIsTrue) {
       branch.getCondition() = this and
       (
         testIsTrue = true and

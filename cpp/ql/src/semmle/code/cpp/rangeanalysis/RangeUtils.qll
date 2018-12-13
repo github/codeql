@@ -44,4 +44,21 @@ predicate valueFlowStep(Instruction i, Operand op, int delta) {
     |
     delta = -getValue(getConstantValue(x.getDefinitionInstruction()))
   )
+  or
+  exists(Operand x |
+    i.(PointerAddInstruction).getAnOperand() = op and
+    i.(PointerAddInstruction).getAnOperand() = x and
+    op  != x
+    |
+    delta = i.(PointerAddInstruction).getElementSize() *
+      getValue(getConstantValue(x.getDefinitionInstruction()))
+  )
+  or
+  exists(Operand x |
+    i.(PointerSubInstruction).getAnOperand().(LeftOperand) = op and
+    i.(PointerSubInstruction).getAnOperand().(RightOperand) = x
+    |
+    delta = i.(PointerSubInstruction).getElementSize() * 
+      -getValue(getConstantValue(x.getDefinitionInstruction()))
+  )
 }

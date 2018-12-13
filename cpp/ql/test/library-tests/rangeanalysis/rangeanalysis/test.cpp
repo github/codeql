@@ -21,24 +21,28 @@ int test2(int x, int y) {
 }
 
 // for loops
-int test3(int x, int *p) {
+int test3(int x) {
   int i;
   for(i = 0; i < x; i++) {
-    p[i];
+    sink(i);
   }
   for(i = x; i > 0; i--) {
-    p[i];
+    sink(i);
+  }
+  for(i = 0; i < x + 2; i++) {
+    sink(i);
   }
 }
 
 // pointer bounds
 int test4(int *begin, int *end) {
   while (begin < end) {
-    *begin = (*begin) + 1;
+    sink(begin);
     begin++;
   }
 }
 
+// bound propagation through conditionals
 int test5(int x, int y, int z) {
   if (y < z) {
     if (x < y) {
@@ -48,6 +52,29 @@ int test5(int x, int y, int z) {
   if (x < y) {
     if (y < z) {
       sink(x); // x < z is not inferred here
+    }
+  }
+}
+
+// pointer arithmetic and sizes
+void test6(int *p) {
+  for (char *iter = (char *)p; iter < (char *)(p+1); iter++) {
+    sink(iter);
+  }
+
+  char *end = (char *)(p+1);
+  for (char *iter = (char *)p; iter < end; iter++) {
+    sink(iter);
+  }
+}
+
+// inference from equality
+int test8(int x, int y) {
+  int *p = new int[x];
+
+  if (x == y) {
+    for(int i = 0; i < y; ++i) {
+      sink(i);
     }
   }
 }
