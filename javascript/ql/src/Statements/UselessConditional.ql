@@ -124,7 +124,7 @@ predicate isExplicitConditional(ASTNode cond, Expr e) {
  * `e` and checks its value for truthiness.
  *
  * The return value of `e` may have other uses besides the truthiness check,
- * but if the truthiness check is always goes one way, it still indicates an error.
+ * but if the truthiness check always goes one way, it still indicates an error.
  */
 predicate isConditional(ASTNode cond, Expr e) {
   isExplicitConditional(cond, e) or
