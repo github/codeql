@@ -226,8 +226,6 @@ module TaintTracking {
     stringBuilderStep(src, sink)
     or
     serializationStep(src, sink)
-    or
-    qualifierToArgStep(src, sink)
   }
 
   private class BulkData extends RefType {
@@ -352,6 +350,10 @@ module TaintTracking {
     or
     m.getDeclaringType().hasQualifiedName("java.io", "ByteArrayOutputStream") and
     m.hasName("writeTo") and
+    arg = 0
+    or
+    m.getDeclaringType().hasQualifiedName("java.io", "InputStream") and
+    m.hasName("read") and
     arg = 0
   }
 
@@ -594,29 +596,6 @@ module TaintTracking {
     method.getDeclaringType().hasQualifiedName("java.io", "ByteArrayOutputStream") and
     method.hasName("write") and
     arg = 0
-  }
-
-  /**
-   * Holds if `tracked` is a qualifier and `sink` is an argument
-   * of a method that transfers taint from the qualifier to the argument.
-   */
-  private predicate qualifierToArgStep(Expr tracked, RValue sink) {
-    exists(MethodAccess ma, Method method, int i |
-      taintPreservingQualifierToArg(method, i) and
-      ma.getMethod() = method and
-      ma.getArgument(i) = sink and
-      ma.getQualifier() = tracked
-    )
-  }
-
-  /**
-   * Holds if `method` is a method that transfers taint from the qualifier
-   * to the `i`th argument.
-   */
-  private predicate taintPreservingQualifierToArg(Method method, int i) {
-    method.getDeclaringType().hasQualifiedName("java.io", "InputStream") and
-    method.hasName("read") and
-    i = 0
   }
 
   /** A comparison or equality test with a constant. */
