@@ -28,5 +28,6 @@
 | Insecure randomness | More results | This rule now flags insecure uses of `crypto.pseudoRandomBytes`. |
 | Unused parameter                           | Fewer false-positive results | This rule no longer flags parameters with leading underscore. |
 | Unused variable, import, function or class | Fewer false-positive results | This rule now flags fewer variables that are implictly used by JSX elements, and no longer flags variables with leading underscore. |
+| Uncontrolled data used in path expression | Fewer false-positive results | This rule now recognizes the Express `root` option, which prevents path traversal. |
 
 ## Changes to QL libraries
