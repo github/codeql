@@ -117,18 +117,19 @@ namespace Semmle.Extraction.CSharp.Entities
         public void OperatorCall(ExpressionSyntax node)
         {
             var @operator = cx.GetSymbolInfo(node);
-            var method = @operator.Symbol as IMethodSymbol;
-
-            var callType = GetCallType(cx, node);
-            if (callType == CallType.Dynamic)
+            if (@operator.Symbol is IMethodSymbol method)
             {
-                UserOperator.OperatorSymbol(method.Name, out string operatorName);
-                cx.Emit(Tuples.dynamic_member_name(this, operatorName));
-                return;
-            }
 
-            if (callType != CallType.None)
+                var callType = GetCallType(cx, node);
+                if (callType == CallType.Dynamic)
+                {
+                    UserOperator.OperatorSymbol(method.Name, out string operatorName);
+                    cx.Emit(Tuples.dynamic_member_name(this, operatorName));
+                    return;
+                }
+
                 cx.Emit(Tuples.expr_call(this, Method.Create(cx, method)));
+            }
         }
 
         public enum CallType
