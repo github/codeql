@@ -83,6 +83,11 @@ class AMDModuleDefinition extends CallExpr {
     )
   }
 
+  /** Gets a source node whose value becomes the definition of this module. */
+  DataFlow::SourceNode getAModuleSource() {
+    result.flowsToExpr(getModuleExpr())
+  }
+
   /**
    * Holds if `p` is the parameter corresponding to dependency `dep`.
    */
@@ -105,7 +110,7 @@ class AMDModuleDefinition extends CallExpr {
    * parameters `pdep1` and `pdep2` correspond to dependencies
    * `dep1` and `dep2`.
    */
-  private SimpleParameter getDependencyParameter(string name) {
+  Parameter getDependencyParameter(string name) {
     exists (PathExpr dep |
       dependencyParameter(dep, result) and
       dep.getValue() = name
@@ -172,7 +177,7 @@ class AMDModuleDefinition extends CallExpr {
    * Gets a call to `require` inside this module.
    */
   CallExpr getARequireCall() {
-    result.getCallee().stripParens() = getRequireVariable().getAnAccess()
+    result.getCallee().getUnderlyingValue() = getRequireVariable().getAnAccess()
   }
 }
 

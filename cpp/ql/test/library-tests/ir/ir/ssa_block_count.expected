@@ -8,6 +8,8 @@
 | IR: C | 1 |
 | IR: Call | 1 |
 | IR: CallAdd | 1 |
+| IR: CallBadMemberFunction | 1 |
+| IR: CallCopyConstructor | 1 |
 | IR: CallMethods | 1 |
 | IR: CallMin | 1 |
 | IR: CallNestedTemplateFunc | 1 |
@@ -53,6 +55,7 @@
 | IR: FunctionReferences | 1 |
 | IR: HierarchyConversions | 1 |
 | IR: IfStatements | 8 |
+| IR: IfStmtWithDeclaration | 7 |
 | IR: InitArray | 1 |
 | IR: InitList | 1 |
 | IR: InitReference | 1 |
@@ -73,6 +76,7 @@
 | IR: OperatorNew | 1 |
 | IR: OperatorNewArray | 1 |
 | IR: Parameters | 1 |
+| IR: Point | 1 |
 | IR: PointerCompare | 1 |
 | IR: PointerCrement | 1 |
 | IR: PointerOps | 1 |
@@ -92,6 +96,7 @@
 | IR: VarArgs | 1 |
 | IR: VirtualMemberFunction | 1 |
 | IR: WhileStatements | 4 |
+| IR: WhileStmtWithDeclaration | 8 |
 | IR: designatedInit | 4 |
 | IR: min | 4 |
 | IR: operator= | 1 |

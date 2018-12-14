@@ -6,9 +6,11 @@ import csharp
 
 module XSS {
   import semmle.code.csharp.dataflow.flowsources.Remote
+  import semmle.code.csharp.frameworks.microsoft.AspNetCore
   import semmle.code.csharp.frameworks.system.Net
   import semmle.code.csharp.frameworks.system.Web
   import semmle.code.csharp.frameworks.system.web.Mvc
+  import semmle.code.csharp.frameworks.system.web.WebPages
   import semmle.code.csharp.frameworks.system.web.UI
   import semmle.code.csharp.frameworks.system.web.ui.WebControls
   import semmle.code.csharp.frameworks.system.windows.Forms
@@ -512,6 +514,75 @@ module XSS {
   private class StringContent extends Sink {
     StringContent() {
       this.getExpr() = any(ObjectCreation oc | oc.getTarget().getDeclaringType().hasQualifiedName("System.Net.Http", "StringContent")).getArgumentForName("content")
+    }
+  }
+
+  /**
+   * An expression that is used as an argument to `Page.WriteLiteral`, typically in
+   * a `.cshtml` file.
+   */
+  class WebPageWriteLiteralSink extends Sink, HtmlSink {
+    WebPageWriteLiteralSink() {
+      this.getExpr() = any(WebPageClass h).getWriteLiteralMethod().getACall().getAnArgument()
+    }
+
+    override string explanation() {
+      result = "System.Web.WebPages.WebPage.WriteLiteral() method"
+    }
+  }
+
+  /**
+  * An expression that is used as an argument to `Page.WriteLiteralTo`, typically in
+  * a `.cshtml` file.
+  */
+  class WebPageWriteLiteralToSink extends Sink, HtmlSink {
+    WebPageWriteLiteralToSink() {
+      this.getExpr() = any(WebPageClass h).getWriteLiteralToMethod().getACall().getAnArgument()
+    }
+
+    override string explanation() {
+      result = "System.Web.WebPages.WebPage.WriteLiteralTo() method"
+    }
+  }
+
+  abstract class AspNetCoreSink extends Sink, HtmlSink { }
+
+  /**
+   * An expression that is used as an argument to `HtmlHelper.Raw`, typically in
+   * a `.cshtml` file.
+   */
+  class MicrosoftAspNetCoreMvcHtmlHelperRawSink extends AspNetCoreSink {
+    MicrosoftAspNetCoreMvcHtmlHelperRawSink() {
+      this.getExpr() = any(MicrosoftAspNetCoreMvcHtmlHelperClass h).getRawMethod().getACall().getAnArgument()
+    }
+
+    override string explanation() {
+      result = "Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.Raw() method"
+    }
+  }
+
+  /**
+   * An expression that is used as an argument to `Page.WriteLiteral` in ASP.NET 6.0 razor page, typically in
+   * a `.cshtml` file.
+   */
+  class MicrosoftAspNetRazorPageWriteLiteralSink extends AspNetCoreSink {
+    MicrosoftAspNetRazorPageWriteLiteralSink() {
+      this.getExpr() = any(MicrosoftAspNetCoreMvcRazorPageBase h).getWriteLiteralMethod().getACall().getAnArgument()
+    }
+
+    override string explanation() {
+      result = "Microsoft.AspNetCore.Mvc.Razor.RazorPageBase.WriteLiteral() method"
+    }
+  }
+
+  /**
+   * HtmlString that may be rendered as is need to have sanitized value
+   */
+  class MicrosoftAspNetHtmlStringSink extends AspNetCoreSink {
+    MicrosoftAspNetHtmlStringSink() {
+      exists (ObjectCreation c, MicrosoftAspNetCoreHttpHtmlString s |
+       c.getTarget() = s.getAConstructor() and
+       this.asExpr() = c.getAnArgument())
     }
   }
 }

@@ -46,18 +46,20 @@ private IntValue getFieldBitOffset(Field field) {
  * not result in any address held in that operand from escaping beyond the
  * instruction.
  */
-predicate operandIsConsumedWithoutEscaping(Instruction instr, OperandTag tag) {
-  exists(instr.getOperand(tag)) and
-  (
-    // The source/destination address of a Load/Store does not escape (but the
-    // loaded/stored value could).
-    tag instanceof LoadStoreAddressOperand or
-    // Neither operand of a Compare escapes.
-    instr instanceof CompareInstruction or
-    // Neither operand of a PointerDiff escapes.
-    instr instanceof PointerDiffInstruction or
-    // Converting an address to a `bool` does not escape the address.
-    instr.(ConvertInstruction).getResultType() instanceof BoolType
+predicate operandIsConsumedWithoutEscaping(Operand operand) {
+  // The source/destination address of a Load/Store does not escape (but the
+  // loaded/stored value could).
+  operand instanceof AddressOperand or
+  exists (Instruction instr |
+    instr = operand.getInstruction() and
+    (
+      // Neither operand of a Compare escapes.
+      instr instanceof CompareInstruction or
+      // Neither operand of a PointerDiff escapes.
+      instr instanceof PointerDiffInstruction or
+      // Converting an address to a `bool` does not escape the address.
+      instr.(ConvertInstruction).getResultType() instanceof BoolType
+    )
   )
 }
 
@@ -96,43 +98,44 @@ IntValue getPointerBitOffset(PointerOffsetInstruction instr) {
  * `bitOffset`. If the address is propagated, but the offset is not known to be
  * a constant, then `bitOffset` is unknown.
  */
-predicate operandIsPropagated(Instruction instr, OperandTag tag,
-  IntValue bitOffset) {
-  exists(instr.getOperand(tag)) and
-  (
-    // Converting to a non-virtual base class adds the offset of the base class.
-    exists(ConvertToBaseInstruction convert |
-      convert = instr and
-      bitOffset = Ints::mul(convert.getDerivation().getByteOffset(), 8)
-    ) or
-    // Converting to a derived class subtracts the offset of the base class.
-    exists(ConvertToDerivedInstruction convert |
-      convert = instr and
-      bitOffset = Ints::neg(Ints::mul(convert.getDerivation().getByteOffset(), 8))
-    ) or
-    // Converting to a virtual base class adds an unknown offset.
+predicate operandIsPropagated(Operand operand, IntValue bitOffset) {
+  exists(Instruction instr |
+    instr = operand.getInstruction() and
     (
-      instr instanceof ConvertToVirtualBaseInstruction and
-      bitOffset = Ints::unknown()
-    ) or
-    // Conversion to another pointer type propagates the source address.
-    exists(ConvertInstruction convert, Type resultType |
-      convert = instr and
-      resultType = convert.getResultType() and
+      // Converting to a non-virtual base class adds the offset of the base class.
+      exists(ConvertToBaseInstruction convert |
+        convert = instr and
+        bitOffset = Ints::mul(convert.getDerivation().getByteOffset(), 8)
+      ) or
+      // Converting to a derived class subtracts the offset of the base class.
+      exists(ConvertToDerivedInstruction convert |
+        convert = instr and
+        bitOffset = Ints::neg(Ints::mul(convert.getDerivation().getByteOffset(), 8))
+      ) or
+      // Converting to a virtual base class adds an unknown offset.
       (
-        resultType instanceof PointerType or
-        resultType instanceof Class  //REVIEW: Remove when all glvalues are pointers
-      ) and
-      bitOffset = 0
-    ) or
-    // Adding an integer to or subtracting an integer from a pointer propagates
-    // the address with an offset.
-    bitOffset = getPointerBitOffset(instr.(PointerOffsetInstruction)) or
-    // Computing a field address from a pointer propagates the address plus the
-    // offset of the field.
-    bitOffset = getFieldBitOffset(instr.(FieldAddressInstruction).getField()) or
-    // A copy propagates the source value.
-    tag instanceof CopySourceOperand and bitOffset = 0
+        instr instanceof ConvertToVirtualBaseInstruction and
+        bitOffset = Ints::unknown()
+      ) or
+      // Conversion to another pointer type propagates the source address.
+      exists(ConvertInstruction convert, Type resultType |
+        convert = instr and
+        resultType = convert.getResultType() and
+        (
+          resultType instanceof PointerType or
+          resultType instanceof Class  //REVIEW: Remove when all glvalues are pointers
+        ) and
+        bitOffset = 0
+      ) or
+      // Adding an integer to or subtracting an integer from a pointer propagates
+      // the address with an offset.
+      bitOffset = getPointerBitOffset(instr.(PointerOffsetInstruction)) or
+      // Computing a field address from a pointer propagates the address plus the
+      // offset of the field.
+      bitOffset = getFieldBitOffset(instr.(FieldAddressInstruction).getField()) or
+      // A copy propagates the source value.
+      operand instanceof CopySourceOperand and bitOffset = 0
+    )
   )
 }
 
@@ -140,16 +143,15 @@ predicate operandIsPropagated(Instruction instr, OperandTag tag,
  * Holds if any address held in operand number `tag` of instruction `instr`
  * escapes outside the domain of the analysis.
  */
-predicate operandEscapes(Instruction instr, OperandTag tag) {
-  exists(instr.getOperand(tag)) and 
+predicate operandEscapes(Operand operand) {
   // Conservatively assume that the address escapes unless one of the following
   // holds:
   not (
     // The operand is used in a way that does not escape the instruction
-    operandIsConsumedWithoutEscaping(instr, tag) or
+    operandIsConsumedWithoutEscaping(operand) or
     // The address is propagated to the result of the instruction, but that
     // result does not itself escape.
-    operandIsPropagated(instr, tag, _) and not resultEscapes(instr)
+    operandIsPropagated(operand, _) and not resultEscapes(operand.getInstruction())
   )
 }
 
@@ -159,10 +161,7 @@ predicate operandEscapes(Instruction instr, OperandTag tag) {
  */
 predicate resultEscapes(Instruction instr) {
   // The result escapes if it has at least one use that escapes.
-  exists(Instruction useInstr, OperandTag useOperandTag |
-    useInstr.getOperand(useOperandTag) = instr and
-    operandEscapes(useInstr, useOperandTag)
-  )
+  operandEscapes(instr.getAUse())
 }
 
 /**
@@ -203,12 +202,12 @@ predicate resultPointsTo(Instruction instr, IRVariable var, IntValue bitOffset) 
     instr.(VariableAddressInstruction).getVariable() = var and
     bitOffset = 0
   ) or
-  exists(OperandTag operandTag, IntValue originalBitOffset,
-    IntValue propagatedBitOffset |
+  exists(Operand operand, IntValue originalBitOffset, IntValue propagatedBitOffset |
+    operand = instr.getAnOperand() and
     // If an operand is propagated, then the result points to the same variable,
     // offset by the bit offset from the propagation.
-    resultPointsTo(instr.getOperand(operandTag), var, originalBitOffset) and
-    operandIsPropagated(instr, operandTag, propagatedBitOffset) and
+    resultPointsTo(operand.getDefinitionInstruction(), var, originalBitOffset) and
+    operandIsPropagated(operand, propagatedBitOffset) and
     bitOffset = Ints::add(originalBitOffset, propagatedBitOffset)
   )
 }

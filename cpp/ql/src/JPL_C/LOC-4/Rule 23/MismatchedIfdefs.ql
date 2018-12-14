@@ -4,6 +4,9 @@
  * @kind problem
  * @id cpp/jpl-c/mismatched-ifdefs
  * @problem.severity warning
+ * @tags maintainability
+ *       readability
+ *       external/jpl
  */
 
 import cpp

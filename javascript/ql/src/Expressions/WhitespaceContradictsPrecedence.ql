@@ -54,29 +54,6 @@ class HarmlessNestedExpr extends BinaryExpr {
   }
 }
 
-/** Holds if the right operand of `expr` starts on line `line`, at column `col`. */
-predicate startOfBinaryRhs(BinaryExpr expr, int line, int col) {
-  exists(Location rloc | rloc = expr.getRightOperand().getLocation() |
-    rloc.getStartLine() = line and rloc.getStartColumn() = col
-  )
-}
-
-/** Holds if the left operand of `expr` ends on line `line`, at column `col`. */
-predicate endOfBinaryLhs(BinaryExpr expr, int line, int col) {
-  exists(Location lloc | lloc = expr.getLeftOperand().getLocation() |
-    lloc.getEndLine() = line and lloc.getEndColumn() = col
-  )
-}
-
-/** Gets the number of whitespace characters around the operator of `expr`. */
-int operatorWS(BinaryExpr expr) {
-  exists(int line, int lcol, int rcol |
-    endOfBinaryLhs(expr, line, lcol) and
-    startOfBinaryRhs(expr, line, rcol) and
-    result = rcol - lcol + 1 - expr.getOperator().length()
-  )
-}
-
 /**
  * Holds if `inner` is an operand of `outer`, and the relative precedence
  * may not be immediately clear, but is important for the semantics of
@@ -88,10 +65,8 @@ predicate interestingNesting(BinaryExpr inner, BinaryExpr outer) {
   not inner instanceof HarmlessNestedExpr
 }
 
-from BinaryExpr inner, BinaryExpr outer, int wsouter, int wsinner
+from BinaryExpr inner, BinaryExpr outer
 where interestingNesting(inner, outer) and
-      wsinner = operatorWS(inner) and wsouter = operatorWS(outer) and
-      wsinner % 2 = 0 and wsouter % 2 = 0 and
-      wsinner > wsouter and
+      inner.getWhitespaceAroundOperator() > outer.getWhitespaceAroundOperator() and
       not outer.getTopLevel().isMinified()
 select outer, "Whitespace around nested operators contradicts precedence."

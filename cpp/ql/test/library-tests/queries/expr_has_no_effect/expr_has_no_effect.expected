@@ -1,8 +1,0 @@
-| calls.cpp:8:5:8:5 | 1 | This expression has no effect. | calls.cpp:8:5:8:5 | 1 |  |
-| calls.cpp:12:5:12:16 | call to thingy | This expression has no effect (because $@ has no external side effects). | calls.cpp:7:15:7:20 | thingy | thingy |
-| templatey.cpp:4:3:4:8 | ... << ... | This expression has no effect. | templatey.cpp:4:3:4:8 | ... << ... |  |
-| templatey.cpp:39:3:39:23 | call to pointless_add_numbers | This expression has no effect (because $@ has no external side effects). | templatey.cpp:29:5:29:25 | pointless_add_numbers | pointless_add_numbers |
-| volatile.c:9:5:9:5 | c | This expression has no effect. | volatile.c:9:5:9:5 | c |  |
-| volatile.c:12:5:12:9 | access to array | This expression has no effect. | volatile.c:12:5:12:9 | access to array |  |
-| volatile.c:16:5:16:7 | * ... | This expression has no effect. | volatile.c:16:5:16:7 | * ... |  |
-| volatile.c:20:5:20:13 | * ... | This expression has no effect. | volatile.c:20:5:20:13 | * ... |  |

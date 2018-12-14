@@ -3,7 +3,10 @@
  * @description Namespaces will not be nested more than two levels deep
  * @kind problem
  * @id cpp/jsf/av-rule-99
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
+ *       external/jsf
  */
 import cpp
 

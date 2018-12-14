@@ -5,18 +5,12 @@
 
 
 <overview>
-<p>This query finds namespaces that have an abstractness equal to 0. These namesspaces do not contain any abstract classes.</p>
-
+<p>This query finds namespaces that have an abstractness equal to 0. These namespaces do not contain any abstract classes.</p>
 </overview>
-<section title="How to Address the Query Results">
-<p />
 
-
-
-
-
-</section>
 <references>
-
+<li>C++ reference: <a href="https://en.cppreference.com/w/cpp/language/namespace">Namespaces</a>
+ </li>
+<li>Geeks for Geeks: <a href="https://www.geeksforgeeks.org/abstraction-in-c/">Abstraction in C++</a></li>
 </references>
 </qhelp>

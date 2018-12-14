@@ -9,6 +9,7 @@
  * @tags reliability
  *       correctness
  */
+
 import java
 
 from RefType t, Method equals
@@ -18,5 +19,4 @@ where
   equals.hasName("equals") and
   equals.getNumberOfParameters() = 1 and
   not t.getAMethod() instanceof EqualsMethod
-select equals,
-  "To override the equals method, the parameter must be of type java.lang.Object."
+select equals, "To override the equals method, the parameter must be of type java.lang.Object."

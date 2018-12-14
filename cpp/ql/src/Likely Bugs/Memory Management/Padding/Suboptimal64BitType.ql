@@ -4,7 +4,8 @@
  *    that by reordering them one could reduce the amount of internal padding on a 64-bit architecture.
  * @kind problem
  * @id cpp/suboptimal-64-bit-type
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags efficiency
  */
 
 import semmle.code.cpp.padding.Padding

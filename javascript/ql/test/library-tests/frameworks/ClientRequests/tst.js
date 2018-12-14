@@ -48,3 +48,36 @@ import {ClientRequest, net} from 'electron';
 
     unknown({ url:url });
 });
+
+(function() {
+    axios({data: data});
+
+    axios.get(x, {data: not_data});
+
+    axios.post(x, data1, {data: data2});
+
+    axios({headers: headerData, params: paramsData});
+
+    window.fetch(url, {headers: headerData, body: bodyData});
+
+    got(url, {headers: headerData, body: bodyData, quer: queryData});
+
+    superagent.get(url).query(data);
+    superagent.get(url).set('x', headerData)
+    superagent.post(url).send(bodyData);
+    superagent.get(url).set('x', headerData).query(queryData);
+    superagent.get(url).unknown(nonData).query(queryData);
+
+});
+
+(function() {
+    $.ajax(url, {data: data});
+    $.ajax({url: url, tdata: data});
+
+    $.getJSON(url, {data: data});
+    $.getJSON({url: url, tdata: data});
+
+    var xhr = new XMLHttpRequest();
+    xhr.open(_, url);
+    xhr.send(data);
+});

@@ -11,7 +11,7 @@
 
 import csharp
 import semmle.code.csharp.commons.StructuralComparison
-import semmle.code.csharp.controlflow.Guards
+import semmle.code.csharp.controlflow.Guards as G
 
 class SameElement extends StructuralComparisonConfiguration
 {
@@ -22,7 +22,7 @@ class SameElement extends StructuralComparisonConfiguration
     exists(MethodCall mc, IndexerRead access |
       mc.getTarget().hasName("ContainsKey")
       and
-      access.getQualifier().(GuardedExpr).isGuardedBy(mc, mc.getQualifier(), _)
+      access.getQualifier().(G::GuardedExpr).isGuardedBy(mc, mc.getQualifier(), _)
       and
       e1 = mc.getArgument(0)
       and

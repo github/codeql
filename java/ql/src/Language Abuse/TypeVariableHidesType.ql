@@ -14,10 +14,8 @@
 import java
 
 RefType anOuterType(TypeVariable var) {
-  var.getGenericCallable().getDeclaringType() = result
-  or
-  var.getGenericType() = result
-  or
+  var.getGenericCallable().getDeclaringType() = result or
+  var.getGenericType() = result or
   result = anOuterType(var).(NestedType).getEnclosingType()
 }
 
@@ -29,7 +27,7 @@ RefType aTypeVisibleFrom(TypeVariable var) {
     result = i.getImportedType()
   )
   or
-  (var.getPackage() = result.getPackage() and result instanceof TopLevelType)
+  var.getPackage() = result.getPackage() and result instanceof TopLevelType
 }
 
 from RefType hidden, TypeVariable var

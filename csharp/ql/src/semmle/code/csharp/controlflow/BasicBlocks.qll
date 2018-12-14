@@ -3,6 +3,7 @@
  */
 
 import csharp
+private import ControlFlow::SuccessorTypes
 
 /**
  * A basic block, that is, a maximal straight-line sequence of control flow nodes
@@ -14,9 +15,19 @@ class BasicBlock extends TBasicBlockStart {
     result.getFirstNode() = getLastNode().getASuccessor()
   }
 
+  /** Gets an immediate successor of this basic block of a given type, if any. */
+  BasicBlock getASuccessorByType(ControlFlow::SuccessorType t) {
+    result.getFirstNode() = this.getLastNode().getASuccessorByType(t)
+  }
+
   /** Gets an immediate predecessor of this basic block, if any. */
   BasicBlock getAPredecessor() {
     result.getASuccessor() = this
+  }
+
+  /** Gets an immediate predecessor of this basic block of a given type, if any. */
+  BasicBlock getAPredecessorByType(ControlFlow::SuccessorType t) {
+    result.getASuccessorByType(t) = this
   }
 
   /**
@@ -75,6 +86,7 @@ class BasicBlock extends TBasicBlockStart {
    * The node on line 2 is an immediate `null` successor of the node
    * `x` on line 1.
    */
+  deprecated
   BasicBlock getANullSuccessor() {
     result.getFirstNode() = getLastNode().getANullSuccessor()
   }
@@ -94,6 +106,7 @@ class BasicBlock extends TBasicBlockStart {
    * The node `x?.M()`, representing the call to `M`, is a non-`null` successor
    * of the node `x`.
    */
+  deprecated
   BasicBlock getANonNullSuccessor() {
     result.getFirstNode() = getLastNode().getANonNullSuccessor()
   }
@@ -124,6 +137,31 @@ class BasicBlock extends TBasicBlockStart {
   /** Gets the length of this basic block. */
   int length() {
     result = strictcount(getANode())
+  }
+
+  /**
+   * Holds if this basic block immediately dominates basic block `bb`.
+   *
+   * That is, all paths reaching basic block `bb` from some entry point
+   * basic block must go through this basic block (which is an immediate
+   * predecessor of `bb`).
+   *
+   * Example:
+   *
+   * ```
+   * int M(string s) {
+   *   if (s == null)
+   *     throw new ArgumentNullException(nameof(s));
+   *   return s.Length;
+   * }
+   * ```
+   *
+   * The basic block starting on line 2 strictly dominates the
+   * basic block on line 4 (all paths from the entry point of `M`
+   * to `return s.Length;` must go through the null check).
+   */
+  predicate immediatelyDominates(BasicBlock bb) {
+    bbIDominates(this, bb)
   }
 
   /**
@@ -411,11 +449,16 @@ private predicate exitBB(BasicBlock bb) {
   bb.getLastNode() instanceof ControlFlow::Nodes::ExitNode
 }
 
-/**
- * A basic block with more than one predecessor.
- */
+/** A basic block with more than one predecessor. */
 class JoinBlock extends BasicBlock {
   JoinBlock() { getFirstNode().isJoin() }
+}
+
+/** A basic block that is an immediate predecessor of a join block. */
+class JoinBlockPredecessor extends BasicBlock {
+  JoinBlockPredecessor() {
+    this.getASuccessor() instanceof JoinBlock
+  }
 }
 
 /** A basic block that terminates in a condition, splitting the subsequent control flow. */
@@ -425,12 +468,25 @@ class ConditionBlock extends BasicBlock {
   }
 
   /**
-   * Holds if basic block `controlled` is controlled by this basic block with
-   * Boolean value `testIsTrue`. That is, `controlled` can only be reached from
-   * the callable entry point by going via the true edge (`testIsTrue = true`)
-   * or false edge (`testIsTrue = false`) out of this basic block.
+   * Holds if basic block `succ` is immediately controlled by this basic
+   * block with conditional value `s`. That is, `succ` is an immediate
+   * successor of this block, and `succ` can only be reached from
+   * the callable entry point by going via the `s` edge out of this basic block.
    */
-  predicate controls(BasicBlock controlled, boolean testIsTrue) {
+  predicate immediatelyControls(BasicBlock succ, ConditionalSuccessor s) {
+    succ = this.getASuccessorByType(s) and
+    forall(BasicBlock pred |
+      pred = succ.getAPredecessor() and pred != this |
+      succ.dominates(pred)
+    )
+  }
+
+  /**
+   * Holds if basic block `controlled` is controlled by this basic block with
+   * conditional value `s`. That is, `controlled` can only be reached from
+   * the callable entry point by going via the `s` edge out of this basic block.
+   */
+  predicate controls(BasicBlock controlled, ConditionalSuccessor s) {
     /*
      * For this block to control the block `controlled` with `testIsTrue` the following must be true:
      * Execution must have passed through the test i.e. `this` must strictly dominate `controlled`.
@@ -465,7 +521,7 @@ class ConditionBlock extends BasicBlock {
      * directly.
      */
     exists(BasicBlock succ |
-      isCandidateSuccessor(succ, testIsTrue) |
+      this.immediatelyControls(succ, s) |
       succ.dominates(controlled)
     )
   }
@@ -476,11 +532,9 @@ class ConditionBlock extends BasicBlock {
    * the callable entry point by going via the `null` edge (`isNull = true`)
    * or non-`null` edge (`isNull = false`) out of this basic block.
    */
+  deprecated
   predicate controlsNullness(BasicBlock controlled, boolean isNull) {
-    exists(BasicBlock succ |
-      isCandidateSuccessorNullness(succ, isNull) |
-      succ.dominates(controlled)
-    )
+    this.controls(controlled, any(NullnessSuccessor s | s.getValue() = isNull))
   }
 
   /**
@@ -518,35 +572,10 @@ class ConditionBlock extends BasicBlock {
   //
   // In the former case, `x` and `y` control `A`, in the latter case
   // only `x & y` controls `A` if we do not take sub conditions into account.
+  deprecated
   predicate controlsSubCond(BasicBlock controlled, boolean testIsTrue, Expr cond, boolean condIsTrue) {
     impliesSub(getLastNode().getElement(), cond, testIsTrue, condIsTrue) and
-    controls(controlled, testIsTrue)
-  }
-
-  private predicate isCandidateSuccessor(BasicBlock succ, boolean testIsTrue) {
-    (
-      testIsTrue = true and succ = this.getATrueSuccessor()
-      or
-      testIsTrue = false and succ = this.getAFalseSuccessor()
-    )
-    and
-    forall(BasicBlock pred |
-      pred = succ.getAPredecessor() and pred != this |
-      succ.dominates(pred)
-    )
-  }
-
-  private predicate isCandidateSuccessorNullness(BasicBlock succ, boolean isNull) {
-    (
-      isNull = true and succ = this.getANullSuccessor()
-      or
-      isNull = false and succ = this.getANonNullSuccessor()
-    )
-    and
-    forall(BasicBlock pred |
-      pred = succ.getAPredecessor() and pred != this |
-      succ.dominates(pred)
-    )
+    controls(controlled, any(BooleanSuccessor s | s.getValue() = testIsTrue))
   }
 }
 
@@ -554,6 +583,7 @@ class ConditionBlock extends BasicBlock {
  * Holds if `e2` is a sub expression of (Boolean) expression `e1`, and
  * if `e1` has value `b1` then `e2` must have value `b2`.
  */
+deprecated
 private predicate impliesSub(Expr e1, Expr e2, boolean b1, boolean b2) {
   if e1 instanceof LogicalNotExpr then (
     impliesSub(e1.(LogicalNotExpr).getOperand(), e2, b1.booleanNot(), b2)

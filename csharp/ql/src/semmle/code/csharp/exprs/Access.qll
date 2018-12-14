@@ -174,6 +174,14 @@ class AssignableAccess extends Access, @assignable_access_expr {
     isOutArgument() or
     isRefArgument()
   }
+
+  /**
+   * Holds if this access passes the assignable being accessed as an `in`
+   * argument in a method call.
+   */
+  predicate isInArgument() {
+    expr_argument(this, 3)
+  }
 }
 
 /**

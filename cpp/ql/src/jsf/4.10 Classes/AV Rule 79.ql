@@ -8,6 +8,7 @@
  * @tags efficiency
  *       readability
  *       external/cwe/cwe-404
+ *       external/jsf
  */
 import cpp
 import Critical.NewDelete
@@ -95,13 +96,19 @@ private predicate exprReleases(Expr e, Expr released, string kind) {
   ) or exists(Function f, int arg |
     // `e` is a call to a function that releases one of it's parameters,
     // and `released` is the corresponding argument
-    e.(FunctionCall).getTarget() = f and
+    (
+      e.(FunctionCall).getTarget() = f or
+      e.(FunctionCall).getTarget().(MemberFunction).getAnOverridingFunction+() = f
+    ) and
     e.(FunctionCall).getArgument(arg) = released and
     exprReleases(_, exprOrDereference(f.getParameter(arg).getAnAccess()), kind)
   ) or exists(Function f, ThisExpr innerThis |
     // `e` is a call to a method that releases `this`, and `released`
     // is the object that is called
-    e.(FunctionCall).getTarget() = f and
+    (
+      e.(FunctionCall).getTarget() = f or
+      e.(FunctionCall).getTarget().(MemberFunction).getAnOverridingFunction+() = f
+    ) and
     e.(FunctionCall).getQualifier() = exprOrDereference(released) and
     innerThis.getEnclosingFunction() = f and
     exprReleases(_, innerThis, kind)
@@ -159,6 +166,17 @@ predicate unreleasedResource(Resource r, Expr acquire, File f, int acquireLine) 
     )
     and f = acquire.getFile()
     and acquireLine = acquire.getLocation().getStartLine()
+
+    // check that any destructor for this class has a block; if it doesn't,
+    // we must be missing information.
+    and forall(Class c, Destructor d |
+      r.getDeclaringType().isConstructedFrom*(c) and
+      d = c.getAMember() and
+      not d.isCompilerGenerated() and
+      not d.isDefaulted() and
+      not d.isDeleted() |
+      exists(d.getBlock())
+    ) 
 }
 
 predicate freedInSameMethod(Resource r, Expr acquire) {

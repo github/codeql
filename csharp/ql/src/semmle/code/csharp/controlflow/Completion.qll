@@ -59,6 +59,8 @@ private newtype TCompletion =
   TGotoDefaultCompletion()
   or
   TThrowCompletion(ExceptionClass ec)
+  or
+  TExitCompletion()
 
 /**
  * A completion of a statement or an expression.
@@ -401,10 +403,21 @@ private predicate inNullnessContext(Expr e, boolean isNullnessCompletionForParen
   )
 }
 
+/**
+ * Holds if `cfe` is the element inside case statement `cs`, belonging to `switch`
+ * statement `ss`, that has the matching completion.
+ */
+predicate switchMatching(SwitchStmt ss, CaseStmt cs, ControlFlowElement cfe) {
+  ss.getACase() = cs and
+  (
+    cfe = cs.(ConstCase).getExpr()
+    or
+    cfe = cs.(TypeCase).getTypeAccess() // use type access to represent the type test
+  )
+}
+
 private predicate mustHaveMatchingCompletion(SwitchStmt ss, ControlFlowElement cfe) {
-  cfe = ss.getAConstCase().getExpr()
-  or
-  cfe = ss.getATypeCase().getTypeAccess() // use type access to represent the type test
+  switchMatching(ss, _, cfe)
 }
 
 /**
@@ -418,11 +431,19 @@ private predicate mustHaveMatchingCompletion(ControlFlowElement cfe) {
 }
 
 /**
+ * Holds if `cfe` is the element inside foreach statement `fs` that has the emptiness
+ * completion.
+ */
+predicate foreachEmptiness(ForeachStmt fs, ControlFlowElement cfe) {
+  cfe = fs // use `foreach` statement itself to represent the emptiness test
+}
+
+/**
  * Holds if a normal completion of `cfe` must be an emptiness completion. Thats is,
  * whether `cfe` determines whether to execute the body of a `foreach` statement.
  */
 private predicate mustHaveEmptinessCompletion(ControlFlowElement cfe) {
-  cfe instanceof ForeachStmt // use `foreach` statement itself to represent the emptiness test
+  foreachEmptiness(_, cfe)
 }
 
 /**
@@ -630,4 +651,17 @@ class ThrowCompletion extends Completion, TThrowCompletion {
   ExceptionClass getExceptionClass() { this = TThrowCompletion(result) }
 
   override string toString() { result = "throw(" + getExceptionClass() + ")" }
+}
+
+/**
+ * A completion that represents evaluation of a statement or an
+ * expression resulting in a program exit, for example
+ * `System.Environment.Exit(0)`.
+ *
+ * An exit completion is different from a `return` completion; the former
+ * exits the whole application, and exists inside `try` statements skip
+ * `finally` blocks.
+ */
+class ExitCompletion extends Completion, TExitCompletion {
+  override string toString() { result = "exit" }
 }

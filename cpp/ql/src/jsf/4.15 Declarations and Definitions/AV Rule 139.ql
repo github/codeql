@@ -1,9 +1,11 @@
 /**
  * @name AV Rule 139
- * @description External objects will not be declared in more than one file
+ * @description External objects will not be declared in more than one file.
  * @kind problem
  * @id cpp/jsf/av-rule-139
  * @problem.severity warning
+ * @tags maintainability
+ *       external/jsf
  */
 import cpp
 

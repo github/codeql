@@ -160,17 +160,6 @@ predicate shellCommandPreface(string cmd, string flag) {
 }
 
 /**
- * An array element. This supports multiple kinds of array syntax.
- */
-private predicate arrayElement(Expr arrayLit, int idx, Expr element) {
-  exists (ArrayLiteral lit | lit = arrayLit |
-    lit.getElement(idx) = element)
-  or exists (MessageExpr arrayWithObjects | arrayWithObjects = arrayLit |
-    arrayWithObjects.getStaticTarget().getQualifiedName().matches("NSArray%::+arrayWithObjects:") and
-    arrayWithObjects.getArgument(idx) = element)
-}
-
-/**
  * A command that is used as a command, or component of a command,
  * that will be executed by a general-purpose command interpreter
  * such as sh or cmd.exe.
@@ -203,18 +192,5 @@ predicate shellCommand(Expr command, string callChain) {
     and arrayInitializer.getChild(idx) = command
     and shellCommandPreface(commandInterpreter.getValue(), flag.getValue())
     and idx > 1)
-      
-  // Creation of NSTask
-  or exists(
-    MessageExpr launchedTaskCall, TextLiteral commandInterpreter,
-    Expr arrayLiteral, TextLiteral flag
-  |
-    launchedTaskCall.getStaticTarget().getQualifiedName().matches("NSTask%::+launchedTaskWithLaunchPath:arguments:")
-    and commandInterpreter = launchedTaskCall.getArgument(0)
-    and arrayLiteral = launchedTaskCall.getArgument(1)
-    and arrayElement(arrayLiteral, 0, flag)
-    and arrayElement(arrayLiteral, 1, command)
-    and shellCommandPreface(commandInterpreter.getValue(), flag.getValue())
-    and callChain = "NSTask")
 }
 

@@ -3,7 +3,10 @@
  * @description The statements forming the body of an if, else if, else, while, do-while or for statement shall always be enclosed in braces, even if the braces form an empty block.
  * @kind problem
  * @id cpp/jsf/av-rule-59
- * @problem.severity error
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
+ *       external/jsf
  */
 import cpp
 

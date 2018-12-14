@@ -198,16 +198,36 @@ class NewNode extends InvokeNode {
   override DataFlow::Impl::NewNodeDef impl;
 }
 
-/** A data flow node corresponding to a `this` expression. */
-class ThisNode extends DataFlow::ValueNode, DataFlow::DefaultSourceNode {
-  override ThisExpr astNode;
+/** A data flow node corresponding to the `this` parameter in a function or `this` at the top-level. */
+class ThisNode extends DataFlow::Node, DataFlow::DefaultSourceNode {
+  ThisNode() {
+    DataFlow::thisNode(this, _)
+  }
 
   /**
    * Gets the function whose `this` binding this expression refers to,
    * which is the nearest enclosing non-arrow function.
    */
   FunctionNode getBinder() {
-    result = DataFlow::valueNode(astNode.getBinder())
+    exists (Function binder |
+      DataFlow::thisNode(this, binder) and
+      result = DataFlow::valueNode(binder))
+  }
+
+  /**
+   * Gets the function or top-level whose `this` binding this expression refers to,
+   * which is the nearest enclosing non-arrow function or top-level.
+   */
+  StmtContainer getBindingContainer() {
+    DataFlow::thisNode(this, result)
+  }
+
+  override string toString() { result = "this" }
+
+  override predicate hasLocationInfo(string filepath, int startline, int startcolumn,
+                                     int endline, int endcolumn) {
+    // Use the function entry as the location
+    getBindingContainer().getEntry().getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 
@@ -267,6 +287,16 @@ class FunctionNode extends DataFlow::ValueNode, DataFlow::DefaultSourceNode {
     result = getParameter(_)
   }
 
+  /** Gets the number of parameters declared on this function. */
+  int getNumParameter() {
+    result = count(astNode.getAParameter())
+  }
+
+  /** Holds if the last parameter of this function is a rest parameter. */
+  predicate hasRestParameter() {
+    astNode.hasRestParameter()
+  }
+
   /** Gets the name of this function, if it has one. */
   string getName() { result = astNode.getName() }
 
@@ -280,6 +310,25 @@ class FunctionNode extends DataFlow::ValueNode, DataFlow::DefaultSourceNode {
    */
   Function getFunction() {
     result = astNode
+  }
+
+  /**
+   * Gets the function whose `this` binding a `this` expression in this function refers to,
+   * which is the nearest enclosing non-arrow function.
+   */
+  FunctionNode getThisBinder() {
+    result.getFunction() = getFunction().getThisBinder()
+  }
+
+  /**
+   * Gets the dataflow node holding the value of the receiver passed to the given function.
+   *
+   * Has no result for arrow functions, as they ignore the receiver argument.
+   *
+   * To get the data flow node for `this` in an arrow function, consider using `getThisBinder().getReceiver()`.
+   */
+  ThisNode getReceiver() {
+    result.getBinder() = this
   }
 }
 
@@ -307,7 +356,7 @@ class ArrayLiteralNode extends DataFlow::ValueNode, DataFlow::DefaultSourceNode 
 /** A data flow node corresponding to a `new Array()` or `Array()` invocation. */
 class ArrayConstructorInvokeNode extends DataFlow::InvokeNode {
   ArrayConstructorInvokeNode() {
-    getCallee() = DataFlow::globalVarRef("Array")
+    getCalleeNode() = DataFlow::globalVarRef("Array")
   }
 
   /** Gets the `i`th initial element of this array, if one is provided. */
@@ -379,10 +428,8 @@ class ModuleImportNode extends DataFlow::DefaultSourceNode {
     )
     or
     // declared AMD dependency
-    exists (AMDModuleDefinition amd, PathExpr dep, Parameter p |
-      amd.dependencyParameter(dep, p) and
-      path = dep.getValue() and
-      this = DataFlow::parameterNode(p)
+    exists (AMDModuleDefinition amd |
+      this = DataFlow::parameterNode(amd.getDependencyParameter(path))
     )
     or
     // AMD require

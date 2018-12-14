@@ -3,11 +3,12 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>This rule identifies Windows form controls that have a default name such as <code>textBox1</code>
-.</p>
+<p>This query identifies Windows form controls that have a default name such as <code>textBox1</code>
+. Replacing the default names with names that describe their purpose makes it much easier for other 
+developers to understand your code.</p>
 
 </overview>
 <recommendation>
-<p>Give controls meaningful names that relate to their purpose.</p>
+<p>Give controls meaningful names that indicate their purpose.</p>
 </recommendation>
 </qhelp>

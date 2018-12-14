@@ -8,10 +8,11 @@
  * @id java/statements-per-function
  * @tags maintainability
  */
+
 import java
 
 from Callable c, int n
-where c.fromSource() and
-      n = count(Stmt s | s.getEnclosingCallable() = c)
-select c, n
-order by n desc
+where
+  c.fromSource() and
+  n = count(Stmt s | s.getEnclosingCallable() = c)
+select c, n order by n desc

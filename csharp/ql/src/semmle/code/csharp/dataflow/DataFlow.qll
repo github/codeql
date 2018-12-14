@@ -130,6 +130,9 @@ module DataFlow {
   module PathGraph {
     /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
     query predicate edges(PathNode a, PathNode b) { a.getASuccessor() = b }
+
+    /** Holds if `node` is a node in the graph of data flow path explanations. */
+    query predicate nodes(PathNode node) { any() }
   }
 
   /**

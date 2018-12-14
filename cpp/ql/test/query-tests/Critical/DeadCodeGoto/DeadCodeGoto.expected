@@ -1,0 +1,3 @@
+| test.cpp:2:2:2:12 | goto ... | This statement makes $@ unreachable. | test.cpp:3:2:3:5 | ExprStmt | ExprStmt |
+| test.cpp:9:3:9:8 | break; | This statement makes $@ unreachable. | test.cpp:10:3:10:6 | ExprStmt | ExprStmt |
+| test.cpp:37:3:37:8 | break; | This statement makes $@ unreachable. | test.cpp:38:3:38:11 | return ... | return ... |

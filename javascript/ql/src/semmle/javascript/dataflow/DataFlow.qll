@@ -32,6 +32,10 @@ module DataFlow {
   or TReflectiveCallNode(MethodCallExpr ce, string kind) {
        ce.getMethodName() = kind and (kind = "call" or kind = "apply")
      }
+  or TThisNode(StmtContainer f) { f.(Function).getThisBinder() = f or f instanceof TopLevel }
+  or TUnusedParameterNode(SimpleParameter p) {
+    not exists (SsaExplicitDefinition ssa | p = ssa.getDef())
+  }
 
   /**
    * A node in the data flow graph.
@@ -455,6 +459,11 @@ module DataFlow {
       prop = getPropertyName() and
       rhs = getRhs()
     }
+
+    /**
+     * Gets the node where the property write happens in the control flow graph.
+     */
+    abstract ControlFlowNode getWriteNode();
   }
 
   /**
@@ -480,6 +489,10 @@ module DataFlow {
     override Node getRhs() {
       result = valueNode(astNode.(LValue).getRhs())
     }
+
+    override ControlFlowNode getWriteNode() {
+      result = astNode.(LValue).getDefNode()
+    }
   }
 
   /**
@@ -503,6 +516,10 @@ module DataFlow {
 
     override Node getRhs() {
       result = valueNode(prop.(ValueProperty).getInit())
+    }
+
+    override ControlFlowNode getWriteNode() {
+      result = prop
     }
   }
 
@@ -533,6 +550,10 @@ module DataFlow {
         propdesc.hasPropertyWrite("value", result)
       )
     }
+
+    override ControlFlowNode getWriteNode() {
+      result = odp.getAstNode()
+    }
   }
 
   /**
@@ -559,6 +580,10 @@ module DataFlow {
       not prop instanceof AccessorMethodDefinition and
       result = valueNode(prop.getInit())
     }
+
+    override ControlFlowNode getWriteNode() {
+      result = prop
+    }
   }
 
   /**
@@ -582,6 +607,10 @@ module DataFlow {
 
     override Node getRhs() {
       result = valueNode(prop.getValue())
+    }
+
+    override ControlFlowNode getWriteNode() {
+      result = prop
     }
   }
 
@@ -671,6 +700,37 @@ module DataFlow {
   }
 
   /**
+   * A data flow node representing an unused parameter.
+   *
+   * This case exists to ensure all parameters have a corresponding data-flow node.
+   * In most cases, parameters are represented by SSA definitions or destructuring pattern nodes.
+   */
+  private class UnusedParameterNode extends DataFlow::Node, TUnusedParameterNode {
+    SimpleParameter p;
+
+    UnusedParameterNode() {
+      this = TUnusedParameterNode(p)
+    }
+
+    override string toString() {
+      result = p.toString()
+    }
+
+    override ASTNode getAstNode() {
+      result = p
+    }
+
+    override BasicBlock getBasicBlock() {
+      result = p.getBasicBlock()
+    }
+
+    override predicate hasLocationInfo(string filepath, int startline, int startcolumn,
+                                       int endline, int endcolumn) {
+      p.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+  }
+
+  /**
    * Provides classes representing various kinds of calls.
    *
    * Subclass the classes in this module to introduce new kinds of calls. If you want to
@@ -755,7 +815,7 @@ module DataFlow {
     /**
      * A data flow node representing an explicit (that is, non-reflective) function call.
      */
-    private class ExplicitCallNode extends CallNodeDef, ExplicitInvokeNode {
+    class ExplicitCallNode extends CallNodeDef, ExplicitInvokeNode {
       override CallExpr astNode;
     }
 
@@ -834,6 +894,11 @@ module DataFlow {
     override Node getBase() {
       result = valueNode(arr)
     }
+
+    override ControlFlowNode getWriteNode() {
+      result = arr
+    }
+
   }
 
   /**
@@ -865,6 +930,15 @@ module DataFlow {
     )
     or
     nd = TDestructuringPatternNode(p)
+    or
+    nd = TUnusedParameterNode(p)
+  }
+
+  /**
+   * INTERNAL: Use `thisNode(StmtContainer container)` instead.
+   */
+  predicate thisNode(DataFlow::Node node, StmtContainer container) {
+    node = TThisNode(container)
   }
 
   /**
@@ -970,6 +1044,11 @@ module DataFlow {
       pred = valueNode(defSourceNode(def)) and
       succ = TDestructuringPatternNode(def.getTarget())
     )
+    or
+    // flow from 'this' parameter into 'this' expressions
+    exists (ThisExpr thiz |
+      pred = TThisNode(thiz.getBindingContainer()) and
+      succ = valueNode(thiz))
   }
 
   /**

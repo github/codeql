@@ -1,0 +1,72 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+    <overview>
+        <p>
+
+        The <code>indexOf</code> and <code>lastIndexOf</code> methods are sometimes used to check
+        if a substring occurs at a certain position in a string. However, if the returned index
+        is compared to an expression that might evaluate to -1, the check may pass in some
+        cases where the substring was not found at all.
+
+        </p>
+        <p>
+
+        Specifically, this can easily happen when implementing <code>endsWith</code> using
+        <code>indexOf</code>.
+
+        </p>
+    </overview>
+
+    <recommendation>
+
+        <p>
+
+            Use <code>String.prototype.endsWith</code> if it is available.
+            Otherwise, explicitly handle the -1 case, either by checking the relative
+            lengths of the strings, or by checking if the returned index is -1.
+
+        </p>
+
+    </recommendation>
+
+    <example>
+
+        <p>
+
+            The following example uses <code>lastIndexOf</code> to determine if the string <code>x</code>
+            ends with the string <code>y</code>:
+
+        </p>
+
+        <sample src="examples/IncorrectSuffixCheck.js"/>
+        
+        <p>
+
+            However, if <code>y</code> is one character longer than <code>x</code>, the right-hand side
+            <code>x.length - y.length</code> becomes -1, which then equals the return value
+            of <code>lastIndexOf</code>. This will make the test pass, even though <code>x</code> does not
+            end with <code>y</code>.
+
+        </p>
+        
+        <p>
+
+            To avoid this, explicitly check for the -1 case:
+
+        </p>
+
+        <sample src="examples/IncorrectSuffixCheckGood.js"/>
+
+
+    </example>
+
+    <references>
+
+        <li>MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith">String.prototype.endsWith</a></li>
+        <li>MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/indexOf">String.prototype.indexOf</a></li>
+
+    </references>
+</qhelp>

@@ -1,6 +1,0 @@
-| SomeFields.java:6:9:6:21 | unusedDefault | Unused field unusedDefault in SomeFields. |
-| SomeFields.java:7:17:7:29 | unusedPrivate | Unused field unusedPrivate in SomeFields. |
-| SomeFields.java:20:17:20:32 | deprecatedString | Unused field deprecatedString in SomeFields. |
-| SomeFieldsInSerializable.java:14:19:14:40 | unusedTransientDefault | Unused field unusedTransientDefault in SomeFieldsInSerializable. |
-| SomeFieldsInSerializable.java:15:27:15:48 | unusedTransientPrivate | Unused field unusedTransientPrivate in SomeFieldsInSerializable. |
-| SomeFieldsInSerializable.java:34:27:34:51 | transientDeprecatedString | Unused field transientDeprecatedString in SomeFieldsInSerializable. |

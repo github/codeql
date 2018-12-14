@@ -3,7 +3,10 @@
  * @description Multiple variable declarations shall not be allowed on the same line.
  * @kind problem
  * @id cpp/jsf/av-rule-152
- * @problem.severity error
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
+ *       external/jsf
  */
 import cpp
 

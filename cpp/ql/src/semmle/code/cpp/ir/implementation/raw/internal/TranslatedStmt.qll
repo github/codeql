@@ -1,5 +1,6 @@
 import cpp
 private import semmle.code.cpp.ir.internal.TempVariableTag
+private import semmle.code.cpp.ir.internal.OperandTag
 private import InstructionTag
 private import TranslatedCondition
 private import TranslatedDeclarationEntry
@@ -732,7 +733,7 @@ class TranslatedSwitchStmt extends TranslatedStmt {
   override Instruction getInstructionOperand(InstructionTag tag,
       OperandTag operandTag) {
     tag = SwitchBranchTag() and
-    operandTag instanceof ConditionOperand and
+    operandTag instanceof ConditionOperandTag and
     result = getExpr().getResult()
   }
 

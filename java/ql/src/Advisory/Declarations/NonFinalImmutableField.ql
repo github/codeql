@@ -9,6 +9,7 @@
  * @id java/non-final-immutable-field
  * @tags reliability
  */
+
 import java
 
 class Initialization extends Callable {
@@ -41,7 +42,8 @@ class ImmutableField extends Field {
     forall(FieldAccess fw, AnyAssignment ae |
       fw.getField().getSourceDeclaration() = this and
       fw = ae.getDest()
-    | ae.getEnclosingCallable().getDeclaringType() = this.getDeclaringType() and
+    |
+      ae.getEnclosingCallable().getDeclaringType() = this.getDeclaringType() and
       ae.getEnclosingCallable() instanceof Initialization
     )
   }
@@ -49,4 +51,5 @@ class ImmutableField extends Field {
 
 from ImmutableField f
 where not f.isFinal()
-select f, "This immutable field is not declared final but is only assigned to during initialization."
+select f,
+  "This immutable field is not declared final but is only assigned to during initialization."

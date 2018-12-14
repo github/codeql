@@ -1,0 +1,3 @@
+| test.cpp:20:7:20:12 | call to strcmp | Untrusted input $@ might be vulnerable to a spoofing attack. | test.cpp:16:25:16:30 | call to getenv | call to getenv |
+| test.cpp:31:7:31:12 | call to strcmp | Untrusted input $@ might be vulnerable to a spoofing attack. | test.cpp:27:25:27:30 | call to getenv | call to getenv |
+| test.cpp:42:7:42:12 | call to strcmp | Untrusted input $@ might be vulnerable to a spoofing attack. | test.cpp:38:25:38:30 | call to getenv | call to getenv |

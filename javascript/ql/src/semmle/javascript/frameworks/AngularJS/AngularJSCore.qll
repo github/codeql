@@ -439,9 +439,9 @@ class GeneralDirective extends CustomDirective, MkCustomDirective {
     result = getMember("link")
     or
     // { link: { pre: function preLink() { ... }, post: function postLink() { ... } } }
-    exists (DataFlow::PropWrite pwn | kind = "pre" or kind = "post" |
-      pwn = getMember("link").getAPropertyWrite(kind) and
-      result.flowsTo(pwn.getRhs())
+    (
+      (kind = "pre" or kind = "post") and
+      result = getMember("link").getAPropertySource(kind)
     )
     or
     // { compile: function() { ... return link; } }
@@ -453,9 +453,9 @@ class GeneralDirective extends CustomDirective, MkCustomDirective {
       result = compileReturnSrc
       or
       // link = { pre: function preLink() { ... }, post: function postLink() { ... } }
-      exists (DataFlow::PropWrite pwn | kind = "pre" or kind = "post" |
-        pwn = compileReturnSrc.getAPropertyWrite(kind) and
-        result.flowsTo(pwn.getRhs())
+      (
+        (kind = "pre" or kind = "post") and
+        result = compileReturnSrc.getAPropertySource(kind)
       )
     )
   }

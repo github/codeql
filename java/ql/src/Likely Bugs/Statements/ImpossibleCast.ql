@@ -11,6 +11,7 @@
  *       logic
  *       external/cwe/cwe-704
  */
+
 import java
 
 /**
@@ -23,22 +24,14 @@ class ArrayCast extends CastExpr {
   }
 
   /** The type of the operand expression of this cast. */
-  Array getSourceType() {
-    result = getExpr().getType()
-  }
+  Array getSourceType() { result = getExpr().getType() }
 
   /** The result type of this cast. */
-  Array getTargetType() {
-    result = getType()
-  }
+  Array getTargetType() { result = getType() }
 
-  Type getSourceComponentType() {
-    result = getSourceType().getComponentType()
-  }
+  Type getSourceComponentType() { result = getSourceType().getComponentType() }
 
-  Type getTargetComponentType() {
-    result = getTargetType().getComponentType()
-  }
+  Type getTargetComponentType() { result = getTargetType().getComponentType() }
 }
 
 predicate uncheckedCastType(RefType t) {
@@ -46,14 +39,14 @@ predicate uncheckedCastType(RefType t) {
 }
 
 predicate castFlow(ArrayCast ce, Variable v) {
-  ce = v.getAnAssignedValue() or
+  ce = v.getAnAssignedValue()
+  or
   exists(Variable mid | castFlow(ce, mid) and mid.getAnAccess() = v.getAnAssignedValue())
 }
 
 predicate returnedFrom(ArrayCast ce, Method m) {
-  exists(ReturnStmt ret | ret.getEnclosingCallable() = m |
-    ret.getResult() = ce
-  ) or
+  exists(ReturnStmt ret | ret.getEnclosingCallable() = m | ret.getResult() = ce)
+  or
   exists(Variable v | castFlow(ce, v) | returnedVariableFrom(v, m))
 }
 
@@ -73,40 +66,35 @@ where
   not rawTypeConversion(source, target) and
   (
     // No unchecked operations, so the cast would crash straight away.
-    (
-      not uncheckedCastType(target) and
-      message = "Impossible downcast: the cast from " + source.getName() + "[] to " +
-                target.getName() + "[] will always fail with a ClassCastException."
-    )
+    not uncheckedCastType(target) and
+    message = "Impossible downcast: the cast from " + source.getName() + "[] to " + target.getName()
+        + "[] will always fail with a ClassCastException."
     or
-    /*
-     * For unchecked operations, the crash would not occur at the cast site,
-     * but only if/when the value is assigned to a variable of different array type.
-     * This would require tracking the flow of values, but we focus on finding problematic
-     * APIs. We keep two cases:
-     * - An array that is actually returned from the (non-private) method, or
-     * - an array that is assigned to a field returned from another (non-private) method.
-     */
-    (
-      uncheckedCastType(target) and
-      returnedFrom(ce, ce.getEnclosingCallable()) and
-      ce.getEnclosingCallable().getReturnType().(Array).getElementType() = target and
-      not ce.getEnclosingCallable().isPrivate() and
-      message =
-        "Impossible downcast: this is returned by " + ce.getEnclosingCallable().getName() +
-        " as a value of type " + target.getName() + "[], but the array has type " + source.getName() +
-        "[]. Callers of " + ce.getEnclosingCallable().getName() + " may fail with a ClassCastException."
-    )
+    // For unchecked operations, the crash would not occur at the cast site,
+    // but only if/when the value is assigned to a variable of different array type.
+    // This would require tracking the flow of values, but we focus on finding problematic
+    // APIs. We keep two cases:
+    // - An array that is actually returned from the (non-private) method, or
+    // - an array that is assigned to a field returned from another (non-private) method.
+    uncheckedCastType(target) and
+    returnedFrom(ce, ce.getEnclosingCallable()) and
+    ce.getEnclosingCallable().getReturnType().(Array).getElementType() = target and
+    not ce.getEnclosingCallable().isPrivate() and
+    message = "Impossible downcast: this is returned by " + ce.getEnclosingCallable().getName() +
+        " as a value of type " + target.getName() + "[], but the array has type " + source.getName()
+        + "[]. Callers of " + ce.getEnclosingCallable().getName() +
+        " may fail with a ClassCastException."
     or
     exists(Method m, Variable v |
       uncheckedCastType(target) and
-      castFlow(ce, v) and returnedVariableFrom(v, m) and
+      castFlow(ce, v) and
+      returnedVariableFrom(v, m) and
       m.getReturnType().(Array).getElementType() = target and
       not m.isPrivate() and
-      message =
-        "Impossible downcast: this is assigned to " + v.getName() + " which is returned by " + m +
-        " as a value of type " + target.getName() + "[], but the array has type " + source.getName() +
-        "[]. Callers of " + m.getName() + " may fail with a ClassCastException."
+      message = "Impossible downcast: this is assigned to " + v.getName() + " which is returned by "
+          + m + " as a value of type " + target.getName() + "[], but the array has type " +
+          source.getName() + "[]. Callers of " + m.getName() +
+          " may fail with a ClassCastException."
     )
   )
 select ce, message

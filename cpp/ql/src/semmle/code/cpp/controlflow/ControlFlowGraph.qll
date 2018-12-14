@@ -95,7 +95,7 @@ private cached module Cached {
     or
     reachable(n.getAPredecessor())
     or
-    n instanceof CatchBlock
+    n instanceof Handler
   }
 
   /** Holds if `condition` always evaluates to a nonzero value. */

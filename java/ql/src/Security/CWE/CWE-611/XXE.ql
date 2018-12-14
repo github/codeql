@@ -2,7 +2,7 @@
  * @name Resolving XML external entity in user-controlled data
  * @description Parsing user-controlled XML documents and allowing expansion of external entity
  * references may lead to disclosure of confidential data or denial of service.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id java/xxe
@@ -13,11 +13,17 @@
 import java
 import XmlParsers
 import semmle.code.java.dataflow.FlowSources
+import DataFlow::PathGraph
 
 class SafeSAXSourceFlowConfig extends TaintTracking::Configuration2 {
   SafeSAXSourceFlowConfig() { this = "XmlParsers::SafeSAXSourceFlowConfig" }
+
   override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeSAXSource }
-  override predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(XmlParserCall parse).getSink() }
+
+  override predicate isSink(DataFlow::Node sink) {
+    sink.asExpr() = any(XmlParserCall parse).getSink()
+  }
+
   override int fieldFlowBranchLimit() { result = 0 }
 }
 
@@ -33,10 +39,13 @@ class UnsafeXxeSink extends DataFlow::ExprNode {
 
 class XxeConfig extends TaintTracking::Configuration {
   XxeConfig() { this = "XXE.ql::XxeConfig" }
+
   override predicate isSource(DataFlow::Node src) { src instanceof RemoteUserInput }
+
   override predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeXxeSink }
 }
 
-from UnsafeXxeSink sink, RemoteUserInput source, XxeConfig conf
-where conf.hasFlow(source, sink)
-select sink, "Unsafe parsing of XML file from $@.", source, "user input"
+from DataFlow::PathNode source, DataFlow::PathNode sink, XxeConfig conf
+where conf.hasFlowPath(source, sink)
+select sink.getNode(), source, sink, "Unsafe parsing of XML file from $@.", source.getNode(),
+  "user input"

@@ -963,6 +963,27 @@ int designatedInit() {
   return a1[900];
 }
 
+void IfStmtWithDeclaration(int x, int y) {
+  if (bool b = x < y) {
+    x = 5;
+  }
+  else if (int z = x + y) {
+    y = 7;
+  }
+  else if (int* p = &x) {
+    *p = 2;
+  }
+}
+
+void WhileStmtWithDeclaration(int x, int y) {
+  while (bool b = x < y) {
+  }
+  while (int z = x + y) {
+  }
+  while (int* p = &x) {
+  }
+}
+
 #if 0
 void OperatorDelete() {
   delete static_cast<int*>(nullptr);  // No destructor

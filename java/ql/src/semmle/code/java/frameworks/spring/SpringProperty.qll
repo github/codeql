@@ -7,48 +7,35 @@ import semmle.code.java.frameworks.spring.SpringValue
 
 /** A `<property>` element in Spring XML files. */
 class SpringProperty extends SpringXMLElement {
-  SpringProperty() {
-    this.getName() = "property"
-  }
+  SpringProperty() { this.getName() = "property" }
 
-  override string toString() {
-    result = this.getPropertyName()
-  }
+  override string toString() { result = this.getPropertyName() }
 
   /** Gets the value of the `name` attribute. */
-  string getPropertyName() {
-    result = this.getAttributeValue("name")
-  }
+  string getPropertyName() { result = this.getAttributeValue("name") }
 
   /** Holds if this property has a `ref` attribute. */
-  predicate hasPropertyRefString() {
-    this.hasAttribute("ref")
-  }
+  predicate hasPropertyRefString() { this.hasAttribute("ref") }
 
   /** Gets the value of the `ref` attribute. */
-  string getPropertyRefString() {
-    result = this.getAttributeValue("ref")
-  }
+  string getPropertyRefString() { result = this.getAttributeValue("ref") }
 
   /** Gets the bean referred to by the `ref` attribute or a nested `<ref>` element. */
   SpringBean getPropertyRefBean() {
     if this.hasPropertyRefString()
     then result.getBeanIdentifier() = this.getPropertyRefString()
-    else exists(SpringAbstractRef ref |
-      ref = this.getASpringChild() and
-      result = ref.getBean()
-    )
+    else
+      exists(SpringAbstractRef ref |
+        ref = this.getASpringChild() and
+        result = ref.getBean()
+      )
   }
 
   /** Holds if this property has a `value` attribute. */
-  predicate hasPropertyValueString() {
-    this.hasAttribute("value")
-  }
+  predicate hasPropertyValueString() { this.hasAttribute("value") }
 
   /** Gets the value of the `value` attribute. */
-  string getPropertyValueString() {
-    result = this.getAttributeValue("value")
-  }
+  string getPropertyValueString() { result = this.getAttributeValue("value") }
 
   /**
    * Gets the value of the `value` attribute, or a nested `<value>` element,
@@ -57,10 +44,11 @@ class SpringProperty extends SpringXMLElement {
   string getPropertyValue() {
     if this.hasPropertyValueString()
     then result = this.getPropertyValueString()
-    else exists(SpringValue val |
-      val = this.getASpringChild() and
-      result = val.getContentString()
-    )
+    else
+      exists(SpringValue val |
+        val = this.getASpringChild() and
+        result = val.getContentString()
+      )
   }
 
   /**
@@ -68,8 +56,11 @@ class SpringProperty extends SpringXMLElement {
    * Currently only checks the property name and references to beans.
    */
   override predicate isSimilar(SpringXMLElement element) {
-    exists(SpringProperty other | other = element and this.getPropertyName() = other.getPropertyName() |
-      this.getPropertyRefBean() = other.getPropertyRefBean() or
+    exists(SpringProperty other |
+      other = element and this.getPropertyName() = other.getPropertyName()
+    |
+      this.getPropertyRefBean() = other.getPropertyRefBean()
+      or
       exists(SpringBean thisBean, SpringBean otherBean |
         thisBean = this.getASpringChild() and
         otherBean = other.getASpringChild() and

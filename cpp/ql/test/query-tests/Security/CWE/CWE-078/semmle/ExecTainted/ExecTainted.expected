@@ -1,0 +1,1 @@
+| test.c:21:12:21:19 | command1 | This argument to an OS command is derived from $@ and then passed to system(string) | test.c:14:20:14:23 | argv | user input (argv) |

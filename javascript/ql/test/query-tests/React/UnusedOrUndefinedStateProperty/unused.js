@@ -61,4 +61,16 @@ React.createClass({
     mixins: [{ f: () => this.state.readThroughMixin }]
 });
 
+class C6 extends React.Component {
+
+    static getDerivedStateFromProps(p, s) {
+        s.readIn_getDerivedStateFromProps;
+    }
+
+    constructor() {
+        this.state.readIn_getDerivedStateFromProps = 42; // OK
+    }
+
+}
+
 //semmle-extractor-options: --experimental

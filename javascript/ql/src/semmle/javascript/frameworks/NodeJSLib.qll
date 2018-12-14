@@ -146,12 +146,16 @@ module NodeJSLib {
       kind = "url" and
       this.asExpr().(PropAccess).accesses(request, "url")
       or
-      exists (PropAccess headers, string name |
-        // `req.headers.<name>`
-        if name = "cookie" then kind = "cookie" else kind= "header" |
+      exists (PropAccess headers |
+        // `req.headers.cookie`
+        kind = "cookie" and
         headers.accesses(request, "headers") and
-        this.asExpr().(PropAccess).accesses(headers, name)
+        this.asExpr().(PropAccess).accesses(headers, "cookie")
       )
+      or
+      exists (RequestHeaderAccess access | this = access |
+        request = access.getRequest() and
+        kind = "header")
     }
 
     override RouteHandler getRouteHandler() {
@@ -160,6 +164,38 @@ module NodeJSLib {
 
     override string getKind() {
       result = kind
+    }
+  }
+
+  /**
+   * An access to an HTTP header (other than "Cookie") on an incoming Node.js request object.
+   */
+  private class RequestHeaderAccess extends HTTP::RequestHeaderAccess {
+    RequestExpr request;
+
+    RequestHeaderAccess() {
+      exists (PropAccess headers, string name |
+        // `req.headers.<name>`
+        name != "cookie" and
+        headers.accesses(request, "headers") and
+        this.asExpr().(PropAccess).accesses(headers, name)
+      )
+    }
+
+    override string getAHeaderName() {
+      result = this.(DataFlow::PropRead).getPropertyName().toLowerCase()
+    }
+
+    override RouteHandler getRouteHandler() {
+      result = request.getRouteHandler()
+    }
+
+    override string getKind() {
+      result = "header"
+    }
+
+    RequestExpr getRequest() {
+      result = request
     }
   }
 
@@ -337,6 +373,23 @@ module NodeJSLib {
   }
 
   /**
+   * Holds if the `i`th parameter of method `methodName` of the Node.js
+   * `fs` module might represent a data parameter or buffer or a callback 
+   * that receives the data.
+   *
+   * We determine this by looking for an externs declaration for
+   * `fs.methodName` where the `i`th parameter's name is `data` or
+   * `buffer` or a `callback`.
+   */
+  private predicate fsDataParam(string methodName, int i, string n) {
+    exists (ExternalMemberDecl decl, Function f, JSDocParamTag p |
+      decl.hasQualifiedName("fs", methodName) and f = decl.getInit() and
+      p.getDocumentedParameter() = f.getParameter(i).getAVariable() and
+      n = p.getName().toLowerCase() |
+      n = "data" or n = "buffer" or n = "callback"
+    )
+  }
+  /**
    * A member `member` from module `fs` or its drop-in replacements `graceful-fs` or `fs-extra`.
    */
   private DataFlow::SourceNode fsModuleMember(string member) {
@@ -358,10 +411,128 @@ module NodeJSLib {
       this = fsModuleMember(methodName).getACall()
     }
 
+    /**
+     * Gets the name of the called method.
+     */
+    string getMethodName() {
+        result = methodName
+    }
+
     override DataFlow::Node getAPathArgument() {
-      exists (int i | fsFileParam(methodName, i) |
-        result = getArgument(i)
+      exists (int i | fsFileParam(methodName, i) | 
+        result = getArgument(i))
+    }
+  }
+
+  /** A write to the file system. */
+  private class NodeJSFileSystemAccessWrite extends FileSystemWriteAccess, NodeJSFileSystemAccess {
+    NodeJSFileSystemAccessWrite () {
+      methodName = "appendFile" or
+      methodName = "appendFileSync" or
+      methodName = "write" or
+      methodName = "writeFile" or
+      methodName = "writeFileSync" or
+      methodName = "writeSync"
+    }
+
+    override DataFlow::Node getADataNode() {
+      exists (int i, string paramName |
+        fsDataParam(methodName, i, paramName) |
+        if paramName = "callback" then
+          exists (DataFlow::ParameterNode p |
+            p = getCallback(i).getAParameter() and
+            p.getName().regexpMatch("(?i)data|buffer|string") and
+            result = p
+          )
+        else
+          result = getArgument(i)
       )
+    }
+
+  }
+
+  /** A file system read. */
+  private class NodeJSFileSystemAccessRead extends FileSystemReadAccess, NodeJSFileSystemAccess {
+    NodeJSFileSystemAccessRead () {
+      methodName = "read" or
+      methodName = "readSync" or
+      methodName = "readFile" or
+      methodName = "readFileSync"
+    }
+
+    override DataFlow::Node getADataNode() {
+      if methodName.regexpMatch(".*Sync") then
+        result = this
+      else
+        exists (int i, string paramName |
+          fsDataParam(methodName, i, paramName) |
+          if paramName = "callback" then
+            exists (DataFlow::ParameterNode p |
+              p = getCallback(i).getAParameter() and
+              p.getName().regexpMatch("(?i)data|buffer|string") and
+              result = p
+            )
+          else
+            result = getArgument(i)
+        )
+    }
+
+  }
+  
+  /**
+   * A write to the file system, using a stream.
+   */
+  private class FileStreamWrite extends FileSystemWriteAccess, DataFlow::CallNode {
+
+    NodeJSFileSystemAccess stream;
+
+    FileStreamWrite() {
+      stream.getMethodName() = "createWriteStream" and
+      exists (string method |
+        method = "write" or
+        method = "end" |
+        this = stream.getAMemberCall(method)
+      )
+    }
+
+    override DataFlow::Node getADataNode() {
+      result = getArgument(0)
+    }
+
+    override DataFlow::Node getAPathArgument() {
+      result = stream.getAPathArgument()
+    }
+  }
+
+  /**
+   * A read from the file system using a stream.
+   */
+  private class FileStreamRead extends FileSystemReadAccess, DataFlow::CallNode {
+
+    NodeJSFileSystemAccess stream;
+
+    string method;
+
+    FileStreamRead() {
+      stream.getMethodName() = "createReadStream" and
+      this = stream.getAMemberCall(method) and
+      (method = "read" or method = "pipe" or method = "on")
+    }
+
+    override DataFlow::Node getADataNode() {
+      method = "read" and
+      result = this
+      or
+      method = "pipe" and
+      result = getArgument(0)
+      or
+      method = "on" and
+      getArgument(0).mayHaveStringValue("data") and
+      result = getCallback(1).getParameter(0)
+    }
+
+    override DataFlow::Node getAPathArgument() {
+      result = stream.getAPathArgument()
     }
   }
 
@@ -380,7 +551,7 @@ module NodeJSLib {
     }
 
   }
-  
+
   /**
    * A call to a method from module `child_process`.
    */
@@ -426,9 +597,7 @@ module NodeJSLib {
    *
    * For example, this could be the function `function(req, res){...}`.
    */
-  class RouteHandlerCandidate extends HTTP::RouteHandlerCandidate, DataFlow::FunctionNode {
-
-    override Function astNode;
+  class RouteHandlerCandidate extends HTTP::RouteHandlerCandidate {
 
     RouteHandlerCandidate() {
       exists (string request, string response |
@@ -476,21 +645,21 @@ module NodeJSLib {
     }
 
   }
-  
+
   /**
    * A call to a method from module `vm`
    */
   class VmModuleMethodCall extends DataFlow::CallNode {
     string methodName;
-    
+
     VmModuleMethodCall() {
       this = DataFlow::moduleMember("vm", methodName).getACall()
     }
-    
+
     /**
      * Gets the code to be executed as part of this call.
      */
-    DataFlow::Node getACodeArgument() {      
+    DataFlow::Node getACodeArgument() {
       (
         methodName = "runInContext" or
         methodName = "runInNewContext" or
@@ -543,7 +712,7 @@ module NodeJSLib {
     }
 
   }
-  
+
   /**
    * A model of a URL request in the Node.js `http` library.
    */
@@ -568,8 +737,15 @@ module NodeJSLib {
       result = url
     }
 
+    override DataFlow::Node getADataNode() {
+      exists (string name |
+        name = "write" or name = "end" |
+        result =this.(DataFlow::SourceNode).getAMethodCall(name).getArgument(0)
+      )
+    }
+
   }
-  
+
   /**
    * A data flow node that is the parameter of a result callback for an HTTP or HTTPS request made by a Node.js process, for example `res` in `https.request(url, (res) => {})`.
    */
@@ -579,12 +755,12 @@ module NodeJSLib {
         this = req.(DataFlow::MethodCallNode).getCallback(1).getParameter(0)
       )
     }
-    
+
     override string getSourceType() {
       result = "NodeJSClientRequest callback parameter"
     }
   }
-  
+
   /**
    * A data flow node that is the parameter of a data callback for an HTTP or HTTPS request made by a Node.js process, for example `body` in `http.request(url, (res) => {res.on('data', (body) => {})})`.
    */
@@ -596,20 +772,19 @@ module NodeJSLib {
         this = mcn.getCallback(1).getParameter(0)
       )
     }
-    
+
     override string getSourceType() {
       result = "http.request data parameter"
     }
   }
-  
-  
-  /**
+
+ /**
    * A data flow node that is registered as a callback for an HTTP or HTTPS request made by a Node.js process, for example the function `handler` in `http.request(url).on(message, handler)`.
    */
   class ClientRequestHandler extends DataFlow::FunctionNode {
     string handledEvent;
     NodeJSClientRequest clientRequest;
-    
+
     ClientRequestHandler() {
       exists(DataFlow::MethodCallNode mcn |
         clientRequest.getAMethodCall("on") = mcn and
@@ -617,14 +792,14 @@ module NodeJSLib {
         flowsTo(mcn.getArgument(1))
       )
     }
-    
+
     /**
      * Gets the name of an event this callback is registered for.
      */
     string getAHandledEvent() {
       result = handledEvent
     }
-    
+
     /**
      * Gets a request this callback is registered for.
      */
@@ -632,7 +807,7 @@ module NodeJSLib {
       result = clientRequest
     }
   }
-  
+
   /**
    * A data flow node that is the parameter of a response callback for an HTTP or HTTPS request made by a Node.js process, for example `res` in `http.request(url).on('response', (res) => {})`.
    */
@@ -643,12 +818,12 @@ module NodeJSLib {
         handler.getAHandledEvent() = "response"
       )
     }
-    
+
     override string getSourceType() {
       result = "NodeJSClientRequest response event"
     }
   }
-  
+
   /**
    * A data flow node that is the parameter of a data callback for an HTTP or HTTPS request made by a Node.js process, for example `chunk` in `http.request(url).on('response', (res) => {res.on('data', (chunk) => {})})`.
    */
@@ -660,12 +835,12 @@ module NodeJSLib {
         this = mcn.getCallback(1).getParameter(0)
       )
     }
-    
+
     override string getSourceType() {
       result = "NodeJSClientRequest data event"
     }
   }
-  
+
   /**
    * A data flow node that is a login callback for an HTTP or HTTPS request made by a Node.js process.
    */
@@ -674,7 +849,7 @@ module NodeJSLib {
       getAHandledEvent() = "login"
     }
   }
-  
+
   /**
    * A data flow node that is a parameter of a login callback for an HTTP or HTTPS request made by a Node.js process, for example `res` in `http.request(url).on('login', (res, callback) => {})`.
    */
@@ -684,12 +859,12 @@ module NodeJSLib {
         this = handler.getParameter(0)
       )
     }
-    
+
     override string getSourceType() {
       result = "NodeJSClientRequest login event"
     }
   }
-  
+
   /**
    * A data flow node that is the login callback provided by an HTTP or HTTPS request made by a Node.js process, for example `callback` in `http.request(url).on('login', (res, callback) => {})`.
    */
@@ -700,7 +875,7 @@ module NodeJSLib {
       )
     }
   }
-  
+
   /**
    * A data flow node that is the username passed to the login callback provided by an HTTP or HTTPS request made by a Node.js process, for example `username` in `http.request(url).on('login', (res, cb) => {cb(username, password)})`.
    */
@@ -710,14 +885,14 @@ module NodeJSLib {
         this = callback.getACall().getArgument(0).asExpr()
       )
     }
-    
+
     override string getCredentialsKind() {
       result = "Node.js http(s) client login username"
     }
   }
-  
+
   /**
-   * A data flow node that is the password passed to the login callback provided by an HTTP or HTTPS request made by a Node.js process, for example `password` in `http.request(url).on('login', (res, cb) => {cb(username, password)})`. 
+   * A data flow node that is the password passed to the login callback provided by an HTTP or HTTPS request made by a Node.js process, for example `password` in `http.request(url).on('login', (res, cb) => {cb(username, password)})`.
    */
   private class ClientRequestLoginPassword extends CredentialsExpr {
     ClientRequestLoginPassword() {
@@ -725,13 +900,13 @@ module NodeJSLib {
         this = callback.getACall().getArgument(1).asExpr()
       )
     }
-    
+
     override string getCredentialsKind() {
       result = "Node.js http(s) client login password"
     }
   }
 
-  
+
   /**
    * A data flow node that is the parameter of an error callback for an HTTP or HTTPS request made by a Node.js process, for example `err` in `http.request(url).on('error', (err) => {})`.
    */
@@ -742,7 +917,7 @@ module NodeJSLib {
         handler.getAHandledEvent() = "error"
       )
     }
-    
+
     override string getSourceType() {
       result = "NodeJSClientRequest error event"
     }

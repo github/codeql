@@ -10,9 +10,7 @@ import semmle.code.java.frameworks.spring.SpringXMLElement
 
 /** Represents a `<remoting-destination>` element in Spring XML files. */
 class SpringRemotingDestination extends SpringXMLElement {
-  SpringRemotingDestination() {
-    this.getName() = "remoting-destination"
-  }
+  SpringRemotingDestination() { this.getName() = "remoting-destination" }
 
   /**
    * Gets the bean that this remoting destination refers to.
@@ -44,23 +42,20 @@ class SpringRemotingDestinationClass extends Class {
   SpringRemotingDestinationClass() {
     exists(SpringRemotingDestination remotingDestination |
       this = remotingDestination.getSpringBean().getClass()
-    ) or
+    )
+    or
+    hasAnnotation("org.springframework.flex.remoting", "RemotingDestination") and
+    // Must either be a live bean, or a live component.
     (
-      hasAnnotation("org.springframework.flex.remoting", "RemotingDestination") and
-      // Must either be a live bean, or a live component.
-      (
-        this.(SpringComponent).isLive() or
-        this instanceof SpringBeanRefType
-      )
+      this.(SpringComponent).isLive() or
+      this instanceof SpringBeanRefType
     )
   }
 
   /**
    * Gets the XML configuration of the remoting destination, if it was configured in XML.
    */
-  SpringRemotingDestination getRemotingDestinationXML() {
-    this = result.getSpringBean().getClass()
-  }
+  SpringRemotingDestination getRemotingDestinationXML() { this = result.getSpringBean().getClass() }
 
   /**
    * Holds if the class is operating on an "include" or "exclude" basis.
@@ -71,7 +66,10 @@ class SpringRemotingDestinationClass extends Class {
    * basis, only those methods that are not marked as excluded are exported.
    */
   predicate isIncluding() {
-    exists(Method m | m = getAMethod() | m.hasAnnotation("org.springframework.flex.remoting", "RemotingInclude")) or
+    exists(Method m | m = getAMethod() |
+      m.hasAnnotation("org.springframework.flex.remoting", "RemotingInclude")
+    )
+    or
     exists(getRemotingDestinationXML().getAnIncludeMethod())
   }
 
@@ -80,11 +78,11 @@ class SpringRemotingDestinationClass extends Class {
    */
   Method getARemotingMethod() {
     result = this.getAMethod() and
-    if isIncluding() then
+    if isIncluding()
+    then
       result.hasAnnotation("org.springframework.flex.remoting", "RemotingInclude") or
       result.getName() = getRemotingDestinationXML().getAnIncludeMethod()
-    else
-    (
+    else (
       not result.hasAnnotation("org.springframework.flex.remoting", "RemotingExclude") and
       not result.getName() = getRemotingDestinationXML().getAnExcludeMethod()
     )

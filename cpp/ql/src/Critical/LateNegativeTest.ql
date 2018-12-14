@@ -1,8 +1,8 @@
 /**
  * @name Pointer offset used before it is checked
- * @description A value is used as a pointer offset before it is tested for
- *              being positive/negative. This may mean that an unsuitable
- *              pointer offset will be used before the test occurs.
+ * @description Accessing a pointer or array using an offset before 
+ *              checking if the value is positive 
+ *              may result in unexpected behavior.
  * @kind problem
  * @id cpp/late-negative-test
  * @problem.severity warning

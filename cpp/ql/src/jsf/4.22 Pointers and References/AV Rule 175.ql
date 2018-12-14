@@ -3,7 +3,9 @@
  * @description A pointer shall not be compared to NULL or be assigned NULL; use plain 0 instead.
  * @kind problem
  * @id cpp/jsf/av-rule-175
- * @problem.severity error
+ * @problem.severity recommendation
+ * @tags correctness
+ *       external/jsf
  */
 import cpp
 

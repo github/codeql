@@ -14,18 +14,17 @@ private class TypeLiteralToParseAsFlowConfiguration extends DataFlow::Configurat
   TypeLiteralToParseAsFlowConfiguration() {
     this = "GoogleHttpClientApi::TypeLiteralToParseAsFlowConfiguration"
   }
-  override predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof TypeLiteral
-  }
+
+  override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof TypeLiteral }
+
   override predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess ma |
       ma.getAnArgument() = sink.asExpr() and
       ma.getMethod() instanceof ParseAsMethod
     )
   }
-  TypeLiteral getSourceWithFlowToParseAs() {
-    hasFlow(DataFlow::exprNode(result), _)
-  }
+
+  TypeLiteral getSourceWithFlowToParseAs() { hasFlow(DataFlow::exprNode(result), _) }
 }
 
 /** A field that is deserialized by `HttpResponse.parseAs`. */

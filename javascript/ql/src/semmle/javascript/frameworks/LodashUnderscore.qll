@@ -6,17 +6,40 @@ import javascript
 /** Provides a unified model of [lodash](https://lodash.com/) and [underscore](http://underscorejs.org/). */
 module LodashUnderscore {
   /**
+   * A data flow node that accesses a given member of `lodash` or `underscore`.
+   */
+  abstract class Member extends DataFlow::SourceNode {
+    /** Gets the name of the accessed member. */
+    abstract string getName();
+  }
+
+  /**
+   * An import of `lodash` or `underscore` accessing a given member of that package.
+   */
+  private class DefaultMember extends Member {
+    string name;
+
+    DefaultMember() {
+      this = DataFlow::moduleMember("underscore", name) or
+      this = DataFlow::moduleMember("lodash", name) or
+      this = DataFlow::moduleImport("lodash/" + name) or
+      this = DataFlow::moduleImport("lodash." + name) or
+      this = DataFlow::globalVarRef("_").getAPropertyRead(name)
+    }
+
+    override string getName() {
+      result = name
+    }
+  }
+
+  /**
    * Gets a data flow node that accesses the given member of `lodash` or `underscore`.
    *
    * In addition to normal imports, this supports per-method imports such as `require("lodash.map")` and `require("lodash/map")`.
    * In addition, the global variable `_` is assumed to refer to `lodash` or `underscore`.
    */
   DataFlow::SourceNode member(string name) {
-    result = DataFlow::moduleMember("underscore", name) or
-    result = DataFlow::moduleMember("lodash", name) or
-    result = DataFlow::moduleImport("lodash/" + name) or
-    result = DataFlow::moduleImport("lodash." + name) or
-    result = DataFlow::globalVarRef("_").getAPropertyRead(name)
+    result.(Member).getName() = name
   }
 }
 
@@ -27,9 +50,9 @@ module LodashUnderscore {
  * However, since the function could be invoked in another way, we additionally
  * still infer the ordinary abstract value.
  */
-private class AnalyzedThisInBoundCallback extends AnalyzedValueNode, DataFlow::ThisNode {
+private class AnalyzedThisInBoundCallback extends AnalyzedNode, DataFlow::ThisNode {
 
-  AnalyzedValueNode thisSource;
+  AnalyzedNode thisSource;
 
   AnalyzedThisInBoundCallback() {
     exists(DataFlow::CallNode bindingCall, string binderName, int callbackIndex, int contextIndex, int argumentCount |
@@ -128,7 +151,7 @@ private class AnalyzedThisInBoundCallback extends AnalyzedValueNode, DataFlow::T
 
   override AbstractValue getALocalValue() {
     result = thisSource.getALocalValue() or
-    result = AnalyzedValueNode.super.getALocalValue()
+    result = AnalyzedNode.super.getALocalValue()
   }
 
 }

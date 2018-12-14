@@ -137,6 +137,28 @@ private predicate impossibleDefaultSwitchEdge(Block switchBlock, DefaultCase dc)
 }
 
 /**
+ * Holds if the function `f` never returns due to not containing a return
+ * statement (explicit or compiler generated).  This can be thought of as
+ * a lightweight `potentiallyReturningFunction`- reachability of return
+ * statements is not checked.
+ */
+private predicate nonReturningFunction(Function f)
+{
+  exists(f.getBlock()) and
+  not exists(ReturnStmt ret | ret.getEnclosingFunction() = f) and
+  not getOptions().exits(f)
+}
+
+/**
+ * An edge from a call to a function that never returns is impossible.
+ */
+private predicate impossibleFunctionReturn(FunctionCall fc, Node succ) {
+  nonReturningFunction(fc.getTarget()) and
+  not fc.isVirtual() and
+  successors_extended(fc, succ)
+}
+
+/**
  * If `pred` is a function call with (at least) one function target,
  * (at least) one such target must be potentially returning.
  */
@@ -158,6 +180,7 @@ cached predicate successors_adapted(Node pred, Node succ) {
   and not impossibleTrueEdge(pred, succ)
   and not impossibleSwitchEdge(pred, succ)
   and not impossibleDefaultSwitchEdge(pred, succ)
+  and not impossibleFunctionReturn(pred, succ)
   and not getOptions().exprExits(pred)
 }
 
@@ -419,12 +442,17 @@ library class ExprEvaluator extends int {
     )
   }
 
+  /** Holds if the function `f` is considered by the analysis and may return `ret`. */
+  pragma[noinline]
+  private predicate interestingReturnValue(Function f, Expr ret) {
+    interestingFunction(_, f) and
+    returnStmt(f, ret)
+  }
+
   private int getFunctionValue(Function f) {
-    interestingFunction(_, f)
-    and
     // All returns must have the same int value
     // And it must have at least one return
-    forex(Expr ret | returnStmt(f, ret) | result = getValueInternalNonSubExpr(ret))
+    forex(Expr ret | interestingReturnValue(f, ret) | result = getValueInternalNonSubExpr(ret))
   }
 
   /**

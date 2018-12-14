@@ -1,7 +1,7 @@
 /**
  * @name Hard-coded credentials
  * @description Credentials are hard coded in the source code of the application.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id cs/hardcoded-credentials
@@ -11,13 +11,21 @@
  *       external/cwe/cwe-798
  */
 import csharp
-private import semmle.code.csharp.security.dataflow.HardcodedCredentials::HardcodedCredentials
+import semmle.code.csharp.security.dataflow.HardcodedCredentials::HardcodedCredentials
+import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
-from TaintTrackingConfiguration c, Source source, Sink sink, string value
-where c.hasFlow(source, sink)
+from TaintTrackingConfiguration c, Source source, Sink sink, DataFlow::PathNode sourcePath, DataFlow::PathNode sinkPath,
+  string value
+where
+  source = sourcePath.getNode() and
+  sink = sinkPath.getNode() and
+  c.hasFlow(source, sink) and
   // Print the source value if it's available
-  and if exists(source.asExpr().getValue()) then
+  if exists(source.asExpr().getValue()) then
     value = "The hard-coded value \"" + source.asExpr().getValue() + "\""
   else
     value = "This hard-coded value"
-select source, value + " flows to " + sink.getSinkDescription() + ".", sink, sink.getSinkName(), sink.getSupplementaryElement(), sink.getSupplementaryElement().toString()
+select source, sourcePath, sinkPath,
+  value + " flows to " + sink.getSinkDescription() + ".",
+  sink, sink.getSinkName(), sink.getSupplementaryElement(),
+  sink.getSupplementaryElement().toString()

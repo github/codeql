@@ -7,12 +7,10 @@ private import semmle.code.java.controlflow.Dominance
  *
  * A basic block that terminates in a condition, splitting the subsequent control flow.
  */
-deprecated
-class ConditionBlock = Guards::ConditionBlock;
+deprecated class ConditionBlock = Guards::ConditionBlock;
 
 /** Holds if `n` updates the locally scoped variable `v`. */
-deprecated
-predicate variableUpdate(ControlFlowNode n, LocalScopeVariable v) {
+deprecated predicate variableUpdate(ControlFlowNode n, LocalScopeVariable v) {
   exists(VariableUpdate a | a = n | a.getDestVar() = v)
 }
 
@@ -34,7 +32,9 @@ deprecated private predicate relevantVar(ConditionBlock cb, LocalScopeVariable v
 }
 
 /** Blocks controlled by the condition in `cb` for which `v` is unchanged. */
-deprecated private predicate controlsBlockWithSameVar(ConditionBlock cb, boolean testIsTrue, LocalScopeVariable v, BasicBlock controlled) {
+deprecated private predicate controlsBlockWithSameVar(
+  ConditionBlock cb, boolean testIsTrue, LocalScopeVariable v, BasicBlock controlled
+) {
   cb.controls(controlled, testIsTrue) and
   relevantVar(cb, v) and
   not needPhiNode(controlled, v) and
@@ -55,11 +55,15 @@ deprecated private predicate controlsBlockWithSameVar(ConditionBlock cb, boolean
  * Statements controlled by the condition in `s` for which `v` is unchanged (`v` is the same SSA
  * variable in both `s` and `controlled`). The condition in `s` must contain an access of `v`.
  */
-deprecated
-predicate controlsNodeWithSameVar(ConditionNode cn, boolean testIsTrue, LocalScopeVariable v, ControlFlowNode controlled) {
+deprecated predicate controlsNodeWithSameVar(
+  ConditionNode cn, boolean testIsTrue, LocalScopeVariable v, ControlFlowNode controlled
+) {
   exists(ConditionBlock cb, BasicBlock controlledBB, int i |
     cb.getConditionNode() = cn and
     controlsBlockWithSameVar(cb, testIsTrue, v, controlledBB) and
     controlled = controlledBB.getNode(i) and
-    not exists(ControlFlowNode update, int j | update = controlledBB.getNode(j) and j < i and variableUpdate(update, v)))
+    not exists(ControlFlowNode update, int j |
+      update = controlledBB.getNode(j) and j < i and variableUpdate(update, v)
+    )
+  )
 }

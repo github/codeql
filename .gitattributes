@@ -46,3 +46,4 @@
 *.jpg -text
 *.jpeg -text
 *.gif -text
+*.dll -text

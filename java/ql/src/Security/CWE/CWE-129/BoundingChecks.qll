@@ -24,9 +24,10 @@ int lowerBound(VarAccess va) {
   exists(ComparisonExpr greaterThanValue |
     // This condition should hold when the variable is later accessed.
     conditionHolds(greaterThanValue, va)
-    |
+  |
     greaterThanValue.getGreaterOperand() = va.getVariable().getAnAccess() and
-    if greaterThanValue.isStrict() then
+    if greaterThanValue.isStrict()
+    then
       // value > i, so value has a lower bound of i + 1
       result = greaterThanValue.getLesserOperand().(CompileTimeConstantExpr).getIntValue() + 1
     else
@@ -43,7 +44,7 @@ predicate lessthanLength(ArrayAccess a) {
   exists(ComparisonExpr lessThanLength, VarAccess va |
     va = a.getIndexExpr() and
     conditionHolds(lessThanLength, va)
-    |
+  |
     lessThanLength.getGreaterOperand().(FieldAccess).getQualifier() = arrayReference(a) and
     lessThanLength.getGreaterOperand().(FieldAccess).getField().hasName("length") and
     lessThanLength.getLesserOperand() = va.getVariable().getAnAccess() and
@@ -54,9 +55,11 @@ predicate lessthanLength(ArrayAccess a) {
 /**
  * Return all other references to the array accessed in the `ArrayAccess`.
  */
-private pragma[nomagic] Expr arrayReference(ArrayAccess arrayAccess) {
+pragma[nomagic]
+private Expr arrayReference(ArrayAccess arrayAccess) {
   // Array is stored in a variable.
-  result = arrayAccess.getArray().(VarAccess).getVariable().getAnAccess() or
+  result = arrayAccess.getArray().(VarAccess).getVariable().getAnAccess()
+  or
   // Array is returned from a method.
   result.(MethodAccess).getMethod() = arrayAccess.getArray().(MethodAccess).getMethod()
 }

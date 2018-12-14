@@ -10,6 +10,7 @@
  *       maintainability
  *       language-features
  */
+
 import java
 
 predicate nonSerializableComparator(Class c) {
@@ -34,8 +35,9 @@ predicate sortedCollectionType(RefType t) {
 string nameFor(Class c) {
   nonSerializableComparator(c) and
   (
-    (c instanceof AnonymousClass and result = "This comparator") or
-    (not c instanceof AnonymousClass and result = c.getName())
+    c instanceof AnonymousClass and result = "This comparator"
+    or
+    not c instanceof AnonymousClass and result = c.getName()
   )
 }
 
@@ -47,4 +49,4 @@ where
   sortedCollectionType(cie.getType())
 select arg,
   nameFor(c) + " is not serializable, so should not be used as the comparator in a " +
-  cie.getType().getName() + "."
+    cie.getType().getName() + "."

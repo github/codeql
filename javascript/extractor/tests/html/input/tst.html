@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <title>Test page</title>
+        <script src="external.js"></script>
+        <script>
+            alert("Hello, world!");
+        </script>
+        <script>;</script>
+    </head>
+    <body>
+        <a href="javascript:void(alert('Nope!'))">click here</a>
+        <div onclick="alert('I said don\'t click!')">don't click here</div>
+        <a onclick="return false;">can't click this one</a>
+    </body>
+    <script type="text/x-handlebars-template">Hello, {{name}}!</script>
+    <script TYPE="text/x-handlebars-template">HELLO, {{name}}!</script>
+    <script type=''></script>
+</html>

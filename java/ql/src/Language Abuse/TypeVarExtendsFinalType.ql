@@ -18,4 +18,5 @@ from TypeVariable v, RefType bound
 where
   v.getATypeBound().getType() = bound and
   bound.isFinal()
-select v, "Type '" + bound + "' is final, so <" + v.getName() + " extends " + bound + "> is confusing."
+select v,
+  "Type '" + bound + "' is final, so <" + v.getName() + " extends " + bound + "> is confusing."

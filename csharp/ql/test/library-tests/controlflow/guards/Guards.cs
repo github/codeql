@@ -124,4 +124,142 @@ public class Guards
         var b1 = s1.Equals(s2); // not null guarded
         var b2 = s1?.Equals(s1); // null guarded
     }
+
+    int M11(string s)
+    {
+        if (s is null)
+            return s.Length; // not null guarded
+        return s.Length; // null guarded
+    }
+
+    int M12(string s)
+    {
+        if (s is string)
+            return s.Length; // null guarded
+        return s.Length; // not null guarded
+    }
+
+    string M13(object o)
+    {
+        if (o is string s)
+            return s; // not null (but not a guard)
+        return o.ToString(); // not null guarded
+    }
+
+    string M14(object o)
+    {
+        switch (o)
+        {
+            case Action<object> _:
+                return o.ToString(); // null guarded
+            case Action<string> a:
+                return a.ToString(); // not null (but not a guard)
+            case "":
+                return o.ToString(); // null guarded
+            case null:
+                return o.ToString(); // not null guarded
+            default:
+                return o.ToString(); // null guarded
+        }
+    }
+
+    void M15(string x)
+    {
+        if (!string.IsNullOrWhiteSpace(x))
+            Console.WriteLine(x); // null guarded
+    }
+
+    bool NullTest1(object o) => o == null;
+
+    bool NullTest2(object o)
+    {
+        if (o is null)
+            return true;
+        return false;
+    }
+
+    bool NullTest3(object o) => o == null ? true : false;
+
+    bool NotNullTest4(object o) => !NullTest3(o);
+
+    bool NullTestWrong(object o) => o == null ? true : true;
+
+    void M16(string s)
+    {
+        if (!NullTest1(s))
+            Console.WriteLine(s); // null guarded
+        if (!NullTest2(s))
+            Console.WriteLine(s); // null guarded
+        if (!NullTest3(s))
+            Console.WriteLine(s); // null guarded
+        if (NotNullTest4(s))
+            Console.WriteLine(s); // null guarded
+        if (!NullTestWrong(s))
+            Console.WriteLine(s); // not null guarded
+    }
+
+    void M17(object o, string[] args)
+    {
+        if (o != null)
+        {
+            o.ToString(); // null guarded
+            foreach (var arg in args)
+            {
+                o.ToString(); // null guarded
+            }
+        }
+    }
+
+    void M18(bool b1)
+    {
+        var b2 = true;
+        if (b1)
+            b2 = false;
+        switch (b2)
+        {
+            case true :
+                return;
+            return;
+        }
+    }
+
+    void M19(bool b1)
+    {
+        var b2 = false;
+        if (b1)
+            b2 = true;
+        switch (b2)
+        {
+            case true :
+                return;
+            return;
+        }
+    }
+
+    void M20(bool b)
+    {
+        var i = 0;
+        if (b)
+            i = 1;
+        switch (i)
+        {
+            case 1 :
+                return;
+            return;
+        }
+    }
+
+    enum E { A, B, C }
+    void M21(bool b)
+    {
+        var e = E.A;
+        if (b)
+            e = E.B;
+        switch (e)
+        {
+            case E.B :
+                return;
+            return;
+        }
+    }
 }

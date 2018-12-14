@@ -10,20 +10,21 @@
  * @tags reliability
  *       correctness
  */
+
 import java
 
 predicate okForEquals(Class c) {
-  c.getAMethod() instanceof EqualsMethod or
-  (
-    not exists(c.getAField()) and
-    okForEquals(c.getASupertype())
-  )
+  c.getAMethod() instanceof EqualsMethod
+  or
+  not exists(c.getAField()) and
+  okForEquals(c.getASupertype())
 }
 
 /** Holds if method `em` implements a reference equality check. */
 predicate checksReferenceEquality(EqualsMethod em) {
   // `java.lang.Object.equals` is the prototypical reference equality implementation.
-  em.getDeclaringType() instanceof TypeObject or
+  em.getDeclaringType() instanceof TypeObject
+  or
   // Custom reference equality implementations observed in open-source projects.
   exists(SingletonBlock blk, EQExpr eq |
     blk = em.getBody() and
@@ -31,7 +32,8 @@ predicate checksReferenceEquality(EqualsMethod em) {
     eq.getAnOperand().(VarAccess).getVariable() = em.getParameter(0) and
     (
       // `{ return (ojb==this); }`
-      eq = blk.getStmt().(ReturnStmt).getResult().getProperExpr() or
+      eq = blk.getStmt().(ReturnStmt).getResult().getProperExpr()
+      or
       // `{ if (ojb==this) return true; else return false; }`
       exists(IfStmt ifStmt | ifStmt = blk.getStmt() |
         eq = ifStmt.getCondition().getProperExpr() and
@@ -39,7 +41,8 @@ predicate checksReferenceEquality(EqualsMethod em) {
         ifStmt.getElse().(ReturnStmt).getResult().(BooleanLiteral).getBooleanValue() = false
       )
     )
-  ) or
+  )
+  or
   // Check whether `em` delegates to another method checking reference equality.
   // More precisely, we check whether the body of `em` is of the form `return super.equals(o);`,
   // where `o` is the (only) parameter of `em`, and the invoked method is a reference equality check.
@@ -70,9 +73,7 @@ predicate overridesDelegateEquals(EqualsMethod em, Class c) {
   )
 }
 
-predicate readsOwnField(Method m) {
-  m.reads(m.getDeclaringType().getAField())
-}
+predicate readsOwnField(Method m) { m.reads(m.getDeclaringType().getAField()) }
 
 from Class c, InstanceField f, EqualsMethod em
 where
@@ -87,7 +88,5 @@ where
   c.fromSource() and
   not c instanceof EnumType and
   not f.isFinal()
-select
-  c, c.getName() + " inherits $@ but adds $@.",
-  em.getSourceDeclaration(), em.getDeclaringType().getName() + "." + em.getName(),
-  f, "the field " + f.getName()
+select c, c.getName() + " inherits $@ but adds $@.", em.getSourceDeclaration(),
+  em.getDeclaringType().getName() + "." + em.getName(), f, "the field " + f.getName()

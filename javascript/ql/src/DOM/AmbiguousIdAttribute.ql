@@ -4,7 +4,7 @@
  *              same id attribute, it may be interpreted differently
  *              by different browsers.
  * @kind problem
- * @problem.severity error
+ * @problem.severity warning
  * @id js/duplicate-html-id
  * @tags maintainability
  *       correctness

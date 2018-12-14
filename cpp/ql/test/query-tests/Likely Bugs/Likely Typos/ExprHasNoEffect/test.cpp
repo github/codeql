@@ -23,7 +23,7 @@ public:
 
 		++arg1; // pure, does nothing
 		++arg2; // pure, does nothing
-		++arg3; // not pure in all cases (when _It is int this has a side-effect) [FALSE POSITIVE]
+		++arg3; // not pure in all cases (when _It is int this has a side-effect)
 
 		return arg2;
 	}

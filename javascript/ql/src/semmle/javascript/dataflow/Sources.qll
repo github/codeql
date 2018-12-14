@@ -125,10 +125,30 @@ abstract class SourceNode extends DataFlow::Node {
    */
   DataFlow::CallNode getAMethodCall(string methodName) {
     exists (PropAccess pacc |
-      pacc = result.getCalleeNode().asExpr().stripParens() and
+      pacc = result.getCalleeNode().asExpr().getUnderlyingReference() and
       flowsToExpr(pacc.getBase()) and
       pacc.getPropertyName() = methodName
     )
+  }
+
+  /**
+   * Gets a method call that invokes a method on this node.
+   *
+   * This includes only calls that have the syntactic shape of a method call,
+   * that is, `o.m(...)` or `o[p](...)`.
+   */
+  DataFlow::CallNode getAMethodCall() {
+    result = getAMethodCall(_)
+  }
+
+  /**
+   * Gets a chained method call that invokes `methodName` last.
+   *
+   * The chain steps include only calls that have the syntactic shape of a method call,
+   * that is, `o.m(...)` or `o[p](...)`.
+   */
+  DataFlow::CallNode getAChainedMethodCall(string methodName) {
+    result = getAMethodCall*().getAMethodCall(methodName)
   }
 
   /**
@@ -158,6 +178,13 @@ abstract class SourceNode extends DataFlow::Node {
   DataFlow::NewNode getAnInstantiation() {
     result = getAnInvocation()
   }
+
+  /**
+   * Gets a source node whose value is stored in property `prop` of this node.
+   */
+  DataFlow::SourceNode getAPropertySource(string prop) {
+    result.flowsTo(getAPropertyWrite(prop).getRhs())
+  }
 }
 
 /**
@@ -185,7 +212,6 @@ class DefaultSourceNode extends SourceNode {
       astNode instanceof ObjectExpr or
       astNode instanceof ArrayExpr or
       astNode instanceof JSXNode or
-      astNode instanceof ThisExpr or
       astNode instanceof GlobalVarAccess or
       astNode instanceof ExternalModuleReference
     )
@@ -198,5 +224,7 @@ class DefaultSourceNode extends SourceNode {
     DataFlow::parameterNode(this, _)
     or
     this instanceof DataFlow::Impl::InvokeNodeDef
+    or
+    DataFlow::thisNode(this, _)
   }
 }

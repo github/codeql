@@ -70,21 +70,25 @@ class AssocNestedExpr extends BinaryExpr {
   AssocNestedExpr() {
     exists(BinaryExpr parent, int idx | this.isNthChildOf(parent, idx) |
       // `+`, `*`, `&&`, `||` and the bitwise operations are associative.
-      ((this instanceof AddExpr or this instanceof MulExpr or
-        this instanceof BitwiseExpr or this instanceof LogicalExpr) and
-        parent.getKind() = this.getKind())
+      (
+        this instanceof AddExpr or
+        this instanceof MulExpr or
+        this instanceof BitwiseExpr or
+        this instanceof LogicalExpr
+      ) and
+      parent.getKind() = this.getKind()
       or
       // Equality tests are associate over each other.
-      (this instanceof EqualityTest and parent instanceof EqualityTest)
+      this instanceof EqualityTest and parent instanceof EqualityTest
       or
       // (x*y)/z = x*(y/z)
-      (this instanceof MulExpr and parent instanceof DivExpr and idx = 0)
+      this instanceof MulExpr and parent instanceof DivExpr and idx = 0
       or
       // (x/y)%z = x/(y%z)
-      (this instanceof DivExpr and parent instanceof RemExpr and idx = 0)
+      this instanceof DivExpr and parent instanceof RemExpr and idx = 0
       or
       // (x+y)-z = x+(y-z)
-      (this instanceof AddExpr and parent instanceof SubExpr and idx = 0)
+      this instanceof AddExpr and parent instanceof SubExpr and idx = 0
     )
   }
 }
@@ -96,9 +100,10 @@ class AssocNestedExpr extends BinaryExpr {
 class HarmlessNestedExpr extends BinaryExpr {
   HarmlessNestedExpr() {
     exists(BinaryExpr parent | this = parent.getAChildExpr() |
-      (parent instanceof RelationExpr and (this instanceof ArithmeticExpr or this instanceof ShiftExpr))
+      parent instanceof RelationExpr and
+      (this instanceof ArithmeticExpr or this instanceof ShiftExpr)
       or
-      (parent instanceof LogicalExpr and this instanceof RelationExpr)
+      parent instanceof LogicalExpr and this instanceof RelationExpr
     )
   }
 }
@@ -134,7 +139,9 @@ predicate interestingNesting(BinaryExpr inner, BinaryExpr outer) {
 from BinaryExpr inner, BinaryExpr outer, int wsouter, int wsinner
 where
   interestingNesting(inner, outer) and
-  wsinner = operatorWS(inner) and wsouter = operatorWS(outer) and
-  wsinner % 2 = 0 and wsouter % 2 = 0 and
+  wsinner = operatorWS(inner) and
+  wsouter = operatorWS(outer) and
+  wsinner % 2 = 0 and
+  wsouter % 2 = 0 and
   wsinner > wsouter
 select outer, "Whitespace around nested operators contradicts precedence."

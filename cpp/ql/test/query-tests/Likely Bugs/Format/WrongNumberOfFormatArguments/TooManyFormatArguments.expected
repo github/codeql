@@ -1,5 +1,4 @@
 | custom_printf.cpp:31:5:31:12 | call to myPrintf | Format expects 2 arguments but given 3 |
-| custom_printf.cpp:44:2:44:7 | call to printf | Format expects 0 arguments but given 2 |
 | macros.cpp:12:2:12:31 | call to printf | Format expects 2 arguments but given 3 |
 | macros.cpp:16:2:16:30 | call to printf | Format expects 2 arguments but given 3 |
 | test.c:7:2:7:7 | call to printf | Format expects 0 arguments but given 1 |

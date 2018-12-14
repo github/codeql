@@ -9,13 +9,12 @@
  * @tags reliability
  *       correctness
  */
+
 import java
 
 /** A call to an `equals` method. */
 class EqualsCall extends MethodAccess {
-  EqualsCall() {
-    this.getMethod() instanceof EqualsMethod
-  }
+  EqualsCall() { this.getMethod() instanceof EqualsMethod }
 
   /**
    * A whitelist of method accesses allowed to perform
@@ -28,14 +27,10 @@ class EqualsCall extends MethodAccess {
   }
 
   /** Holds if the callee of this method access is `Object.equals`. */
-  predicate invokesObjectEquals() {
-    this.getMethod().getDeclaringType() instanceof TypeObject
-  }
+  predicate invokesObjectEquals() { this.getMethod().getDeclaringType() instanceof TypeObject }
 
   /** Return the (static) type of the argument to `equals`. */
-  RefType getArgumentType() {
-    result = this.getArgument(0).getType()
-  }
+  RefType getArgumentType() { result = this.getArgument(0).getType() }
 }
 
 /*
@@ -52,12 +47,17 @@ class EqualsCall extends MethodAccess {
  * operand to be a subtype of `A`. Hence, if `A` and the static type of the argument
  * have no intersection, the result is again guaranteed to be false.
  */
+
 from EqualsCall ma, RefType recvtp, RefType argtp
 where
   not ma.whitelisted() and
-  (if ma.invokesObjectEquals()
-   then recvtp = ma.getReceiverType()
-   else recvtp = ma.getMethod().getDeclaringType()) and
+  (
+    if ma.invokesObjectEquals()
+    then recvtp = ma.getReceiverType()
+    else recvtp = ma.getMethod().getDeclaringType()
+  ) and
   argtp = ma.getArgumentType() and
   not haveIntersection(recvtp, argtp)
-select ma, "Call to equals() comparing incomparable types " + recvtp.getName() + " and " + argtp.getName() + "."
+select ma,
+  "Call to equals() comparing incomparable types " + recvtp.getName() + " and " + argtp.getName() +
+    "."

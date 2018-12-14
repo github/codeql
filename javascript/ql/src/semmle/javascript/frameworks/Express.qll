@@ -127,10 +127,12 @@ module Express {
     Expr getRouteHandlerExpr(int index) {
       // The first argument is a URI pattern if it is a string. If it could possibly be
       // a function, we consider it to be a route handler, otherwise a URI pattern.
-      if getArgument(0).analyze().getAType() = TTFunction() then
-        result = getArgument(index)
-      else
-        (index >= 0 and result = getArgument(index + 1))
+      exists (AnalyzedNode firstArg | firstArg = getArgument(0).analyze() |
+        if firstArg.getAType() = TTFunction() then
+          result = getArgument(index)
+        else
+          (index >= 0 and result = getArgument(index + 1))
+      )
     }
 
     /** Gets an argument that represents a route handler being registered. */
@@ -471,18 +473,14 @@ module Express {
           propName = "originalUrl"
         )
         or
-        exists (string methodName |
-          // `req.get(...)` or `req.header(...)`
-          kind = "header" and
-          this.(DataFlow::MethodCallNode).calls(request, methodName) |
-          methodName = "get" or
-          methodName = "header"
-        )
-        or
         // `req.cookies`
         kind = "cookie" and
         this.(DataFlow::PropRef).accesses(request, "cookies")
       )
+      or
+      exists (RequestHeaderAccess access | this = access |
+        rh = access.getRouteHandler() and
+        kind = "header")
     }
 
     override RouteHandler getRouteHandler() {
@@ -491,6 +489,78 @@ module Express {
 
     override string getKind() {
       result = kind
+    }
+
+    override predicate isUserControlledObject() {
+      kind = "body" and
+      exists (ExpressLibraries::BodyParser bodyParser, RouteHandlerExpr expr |
+        expr.getBody() = rh and
+        bodyParser.producesUserControlledObjects() and
+        bodyParser.flowsToExpr(expr.getAMatchingAncestor())
+      )
+      or
+      // If we can't find the middlewares for the route handler,
+      // but all known body parsers are deep, assume req.body is a deep object.
+      kind = "body" and
+      forall(ExpressLibraries::BodyParser bodyParser | bodyParser.producesUserControlledObjects())
+      or
+      kind = "parameter" and
+      exists (DataFlow::Node request | request = DataFlow::valueNode(rh.getARequestExpr()) |
+        this.(DataFlow::MethodCallNode).calls(request, "param")
+        or
+        exists (DataFlow::PropRead base |
+          // `req.query.name`
+          base.accesses(request, "query") and
+          this = base.getAPropertyReference(_)
+        )
+      )
+    }
+  }
+
+  /**
+   * An access to a header on an Express request.
+   */
+  private class RequestHeaderAccess extends HTTP::RequestHeaderAccess {
+    RouteHandler rh;
+
+    RequestHeaderAccess() {
+      exists (DataFlow::Node request | request = DataFlow::valueNode(rh.getARequestExpr()) |
+        exists (string methodName |
+          // `req.get(...)` or `req.header(...)`
+          this.(DataFlow::MethodCallNode).calls(request, methodName) |
+          methodName = "get" or
+          methodName = "header"
+        )
+        or
+        exists (DataFlow::PropRead headers |
+          // `req.headers.name`
+          headers.accesses(request, "headers") and
+          this = headers.getAPropertyRead())
+        or
+        exists (string propName | propName = "host" or propName = "hostname" |
+          // `req.host` and `req.hostname` are derived from headers
+          this.(DataFlow::PropRead).accesses(request, propName))
+      )
+    }
+
+    override string getAHeaderName() {
+      exists (string name |
+        name = this.(DataFlow::PropRead).getPropertyName()
+        or
+        this.(DataFlow::CallNode).getArgument(0).mayHaveStringValue(name)
+        |
+        if name = "hostname" then
+          result = "host"
+        else
+          result = name.toLowerCase())
+    }
+
+    override RouteHandler getRouteHandler() {
+      result = rh
+    }
+
+    override string getKind() {
+      result = "header"
     }
   }
 
@@ -589,9 +659,9 @@ module Express {
       astNode.getMethodName() = any(string n | n = "set" or n = "header") and
       astNode.getNumArgument() = 1
     }
-    
+
     /**
-     * Gets a reference to the multiple headers object that is to be set. 
+     * Gets a reference to the multiple headers object that is to be set.
      */
     private DataFlow::SourceNode getAHeaderSource() {
       result.flowsToExpr(astNode.getArgument(0))
@@ -607,12 +677,12 @@ module Express {
     override RouteHandler getRouteHandler() {
       result = rh
     }
-    
+
     override Expr getNameExpr() {
-      exists (DataFlow::PropWrite write  | 
+      exists (DataFlow::PropWrite write  |
         getAHeaderSource().flowsTo(write.getBase()) and
         result = write.getPropertyNameExpr()
-      )      
+      )
     }
   }
 
@@ -781,12 +851,16 @@ module Express {
   }
 
   /** A call to `response.sendFile`, considered as a file system access. */
-  private class ResponseSendFileAsFileSystemAccess extends FileSystemAccess, DataFlow::ValueNode {
+  private class ResponseSendFileAsFileSystemAccess extends FileSystemReadAccess, DataFlow::ValueNode {
     override MethodCallExpr astNode;
 
     ResponseSendFileAsFileSystemAccess() {
       exists (string name | name = "sendFile" or name = "sendfile" |
         asExpr().(MethodCallExpr).calls(any(ResponseExpr res), name))
+    }
+
+    override DataFlow::Node getADataNode() {
+      none()
     }
 
     override DataFlow::Node getAPathArgument() {
@@ -844,7 +918,7 @@ module Express {
         getMethodName() = methodName and
         exists (DataFlow::ValueNode arg |
           arg = getAnArgument() |
-          exists (DataFlow::ArrayLiteralNode array |
+          exists (DataFlow::ArrayCreationNode array |
             array.flowsTo(arg) and
             routeHandlerArg = array.getAnElement()
           ) or

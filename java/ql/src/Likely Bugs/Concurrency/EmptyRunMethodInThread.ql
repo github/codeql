@@ -10,12 +10,11 @@
  *       correctness
  *       concurrency
  */
+
 import java
 
 class ThreadClass extends Class {
-  ThreadClass() {
-    this.hasQualifiedName("java.lang", "Thread")
-  }
+  ThreadClass() { this.hasQualifiedName("java.lang", "Thread") }
 
   /**
    * Any constructor of `java.lang.Thread` _without_ a parameter of type `Runnable`;
@@ -24,16 +23,14 @@ class ThreadClass extends Class {
   Constructor getAConstructorWithoutRunnableParam() {
     result = this.getAConstructor() and
     (
-      result.getNumberOfParameters() = 0 or
-      (
-        result.getNumberOfParameters() = 1 and
-        result.getParameter(0).getType().(RefType).hasQualifiedName("java.lang", "String")
-      ) or
-      (
-        result.getNumberOfParameters() = 2 and
-        result.getParameter(0).getType().(RefType).hasQualifiedName("java.lang", "ThreadGroup") and
-        result.getParameter(1).getType().(RefType).hasQualifiedName("java.lang", "String")
-      )
+      result.getNumberOfParameters() = 0
+      or
+      result.getNumberOfParameters() = 1 and
+      result.getParameter(0).getType().(RefType).hasQualifiedName("java.lang", "String")
+      or
+      result.getNumberOfParameters() = 2 and
+      result.getParameter(0).getType().(RefType).hasQualifiedName("java.lang", "ThreadGroup") and
+      result.getParameter(1).getType().(RefType).hasQualifiedName("java.lang", "String")
     )
   }
 
@@ -61,4 +58,5 @@ where
   ) and
   not cie.getConstructor().callsConstructor*(thread.getAConstructorWithRunnableParam()) and
   cie.getType().(RefType).getSourceDeclaration() = emptythread
-select cie, "Thread " + emptythread.getName() + " has a useless empty run() inherited from java.lang.Thread."
+select cie,
+  "Thread " + emptythread.getName() + " has a useless empty run() inherited from java.lang.Thread."

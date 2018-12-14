@@ -10,24 +10,16 @@ class SpringAbstractRef extends SpringXMLElement {
   }
 
   /** Holds if this reference has a bean attribute. */
-  predicate hasBeanName() {
-    this.hasAttribute("bean")
-  }
+  predicate hasBeanName() { this.hasAttribute("bean") }
 
   /** Gets the value of the bean attribute. */
-  string getBeanName() {
-    result = this.getAttributeValue("bean")
-  }
+  string getBeanName() { result = this.getAttributeValue("bean") }
 
   /** Holds if this reference has a local attribute. */
-  predicate hasBeanLocalName() {
-    this.hasAttribute("local")
-  }
+  predicate hasBeanLocalName() { this.hasAttribute("local") }
 
   /** Gets the value of the local attribute. */
-  string getBeanLocalName() {
-    result = this.getAttributeValue("local")
-  }
+  string getBeanLocalName() { result = this.getAttributeValue("local") }
 
   /** Gets the bean pointed to by this reference. */
   SpringBean getBean() {

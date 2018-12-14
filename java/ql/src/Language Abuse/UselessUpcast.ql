@@ -19,13 +19,13 @@ predicate usefulUpcast(CastExpr e) {
     target = c.getCallee() and
     // An upcast to the type of the corresponding parameter.
     e.getType() = target.getParameterType(i)
-    |
+  |
     // There is an overloaded method/constructor in the class that we might be trying to avoid.
     exists(Callable other |
       other.getName() = target.getName() and
       other.getSourceDeclaration() != target.getSourceDeclaration()
-      |
-      c.(MethodAccess).getReceiverType().(RefType).inherits((Method)other) or
+    |
+      c.(MethodAccess).getReceiverType().(RefType).inherits(other.(Method)) or
       other = target.(Constructor).getDeclaringType().getAConstructor()
     )
   )
@@ -36,7 +36,9 @@ predicate usefulUpcast(CastExpr e) {
   )
   or
   // Upcasts that are performed on an operand of a ternary expression.
-  exists(ConditionalExpr ce | e = ce.getTrueExpr().getProperExpr() or e = ce.getFalseExpr().getProperExpr())
+  exists(ConditionalExpr ce |
+    e = ce.getTrueExpr().getProperExpr() or e = ce.getFalseExpr().getProperExpr()
+  )
   or
   // Upcasts to raw types.
   e.getType() instanceof RawType
@@ -46,10 +48,13 @@ predicate usefulUpcast(CastExpr e) {
   // Upcasts that are performed to affect field, private method, or static method resolution.
   exists(FieldAccess fa | e = fa.getQualifier().getProperExpr() |
     not e.getExpr().getType().(RefType).inherits(fa.getField())
-  ) or
+  )
+  or
   exists(MethodAccess ma, Method m |
-    e = ma.getQualifier().getProperExpr() and m = ma.getMethod() and (m.isStatic() or m.isPrivate())
-    |
+    e = ma.getQualifier().getProperExpr() and
+    m = ma.getMethod() and
+    (m.isStatic() or m.isPrivate())
+  |
     not e.getExpr().getType().(RefType).inherits(m)
   )
 }
@@ -63,6 +68,5 @@ where
   ) and
   dest = src.getASupertype+() and
   not usefulUpcast(e)
-select e, "There is no need to upcast from $@ to $@ - the conversion can be done implicitly.",
-  src, src.getName(),
-  dest, dest.getName()
+select e, "There is no need to upcast from $@ to $@ - the conversion can be done implicitly.", src,
+  src.getName(), dest, dest.getName()

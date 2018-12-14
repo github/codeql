@@ -4,9 +4,7 @@ import semmle.code.xml.XML
 /**
  * Holds if any struts XML files are included in this snapshot.
  */
-predicate isStrutsXMLIncluded() {
-  exists(StrutsXMLFile strutsXML)
-}
+predicate isStrutsXMLIncluded() { exists(StrutsXMLFile strutsXML) }
 
 /**
  * A struts 2 configuration file.
@@ -21,42 +19,30 @@ abstract class StrutsXMLFile extends XMLFile {
   /**
    * Gets a "root" struts configuration file that includes this file.
    */
-  StrutsRootXMLFile getARoot() {
-    result.getAnIncludedFile() = this
-  }
+  StrutsRootXMLFile getARoot() { result.getAnIncludedFile() = this }
 
   /**
    * Gets a directly included file.
    */
   StrutsXMLFile getADirectlyIncludedFile() {
-    exists(StrutsXMLInclude include |
-      include.getFile() = this
-      |
-      result = include.getIncludedFile()
-    )
+    exists(StrutsXMLInclude include | include.getFile() = this | result = include.getIncludedFile())
   }
 
   /**
    * Gets a transitively included file.
    */
-  StrutsXMLFile getAnIncludedFile() {
-    result = getADirectlyIncludedFile*()
-  }
+  StrutsXMLFile getAnIncludedFile() { result = getADirectlyIncludedFile*() }
 
   /**
    * Gets a `<constant>` defined in this file, or an included file.
    */
-  StrutsXMLConstant getAConstant() {
-    result.getFile() = getAnIncludedFile()
-  }
+  StrutsXMLConstant getAConstant() { result.getFile() = getAnIncludedFile() }
 
   /**
    * Gets the value of the constant with the given `name`.
    */
   string getConstantValue(string name) {
-    exists(StrutsXMLConstant constant |
-      constant = getAConstant()
-      |
+    exists(StrutsXMLConstant constant | constant = getAConstant() |
       constant.getConstantName() = name and
       result = constant.getConstantValue()
     )
@@ -79,11 +65,7 @@ class StrutsRootXMLFile extends StrutsXMLFile {
  * A Struts 2 configuration XML file included, directly or indirectly, by a root Struts configuration.
  */
 class StrutsIncludedXMLFile extends StrutsXMLFile {
-  StrutsIncludedXMLFile() {
-    exists(StrutsXMLInclude include |
-      this = include.getIncludedFile()
-    )
-  }
+  StrutsIncludedXMLFile() { exists(StrutsXMLInclude include | this = include.getIncludedFile()) }
 }
 
 /**
@@ -91,9 +73,7 @@ class StrutsIncludedXMLFile extends StrutsXMLFile {
  */
 class StrutsFolder extends Folder {
   StrutsFolder() {
-    exists(Container c |
-      c = getAChildContainer()
-      |
+    exists(Container c | c = getAChildContainer() |
       c instanceof StrutsFolder or
       c instanceof StrutsXMLFile
     )
@@ -102,9 +82,7 @@ class StrutsFolder extends Folder {
   /**
    * Holds if this folder has a unique Struts root configuration file.
    */
-  predicate isUnique() {
-    count(getAStrutsRootFile()) = 1
-  }
+  predicate isUnique() { count(getAStrutsRootFile()) = 1 }
 
   /**
    * Gets a struts root configuration that applies to this folder.
@@ -119,16 +97,12 @@ class StrutsFolder extends Folder {
  * An XML element in a `StrutsXMLFile`.
  */
 class StrutsXMLElement extends XMLElement {
-  StrutsXMLElement() {
-    this.getFile() instanceof StrutsXMLFile
-  }
+  StrutsXMLElement() { this.getFile() instanceof StrutsXMLFile }
 
   /**
    * Gets the value for this element, with leading and trailing whitespace trimmed.
    */
-  string getValue() {
-    result = allCharactersString().trim()
-  }
+  string getValue() { result = allCharactersString().trim() }
 }
 
 /**
@@ -138,9 +112,7 @@ class StrutsXMLElement extends XMLElement {
  * configuration. The file is looked up using the classpath.
  */
 class StrutsXMLInclude extends StrutsXMLElement {
-  StrutsXMLInclude() {
-    this.getName() = "include"
-  }
+  StrutsXMLInclude() { this.getName() = "include" }
 
   /**
    * Gets the XMLFile that we believe is included by this include statement.
@@ -149,9 +121,7 @@ class StrutsXMLInclude extends StrutsXMLElement {
    * potentially be included.
    */
   XMLFile getIncludedFile() {
-    exists(string file |
-      file = getAttribute("file").getValue()
-      |
+    exists(string file | file = getAttribute("file").getValue() |
       result.getAbsolutePath().matches("%" + escapeForMatch(file))
     )
   }
@@ -161,9 +131,7 @@ class StrutsXMLInclude extends StrutsXMLElement {
  * Escape a string for use as the matcher in a string.match(..) call.
  */
 bindingset[s]
-private string escapeForMatch(string s) {
-  result = s.replaceAll("%", "\\%").replaceAll("_", "\\_")
-}
+private string escapeForMatch(string s) { result = s.replaceAll("%", "\\%").replaceAll("_", "\\_") }
 
 /**
  * Struts 2 wildcard matching.
@@ -174,19 +142,16 @@ private string escapeForMatch(string s) {
  */
 bindingset[matches, wildcardstring]
 private predicate strutsWildcardMatching(string matches, string wildcardstring) {
-  if (wildcardstring.matches("%{%}%")) then
-    matches.matches(escapeForMatch(wildcardstring).regexpReplaceAll("\\{[0-9]\\}", "%"))
-  else
-    matches = wildcardstring
+  if wildcardstring.matches("%{%}%")
+  then matches.matches(escapeForMatch(wildcardstring).regexpReplaceAll("\\{[0-9]\\}", "%"))
+  else matches = wildcardstring
 }
 
 /**
  * A `<action>` element within a `struts.xml` file.
  */
 class StrutsXMLAction extends StrutsXMLElement {
-  StrutsXMLAction() {
-    this.getName() = "action"
-  }
+  StrutsXMLAction() { this.getName() = "action" }
 
   /**
    * Gets the `Class` that is referenced by this Struts action.
@@ -195,9 +160,7 @@ class StrutsXMLAction extends StrutsXMLElement {
     strutsWildcardMatching(result.getQualifiedName(), getAttribute("class").getValue())
   }
 
-  string getMethodName() {
-    result = getAttribute("method").getValue()
-  }
+  string getMethodName() { result = getAttribute("method").getValue() }
 
   /**
    * Gets the `Method` which is referenced by this action.
@@ -206,10 +169,9 @@ class StrutsXMLAction extends StrutsXMLElement {
    */
   Method getActionMethod() {
     getActionClass().inherits(result) and
-    if (exists(getMethodName())) then
-      strutsWildcardMatching(result.getName(), getMethodName())
-    else
-      result.hasName("execute")
+    if exists(getMethodName())
+    then strutsWildcardMatching(result.getName(), getMethodName())
+    else result.hasName("execute")
   }
 }
 
@@ -217,15 +179,9 @@ class StrutsXMLAction extends StrutsXMLElement {
  * A `<constant>` property, representing a configuration parameter to struts.
  */
 class StrutsXMLConstant extends StrutsXMLElement {
-  StrutsXMLConstant() {
-    getName() = "constant"
-  }
+  StrutsXMLConstant() { getName() = "constant" }
 
-  string getConstantName() {
-    result = getAttribute("name").getValue()
-  }
+  string getConstantName() { result = getAttribute("name").getValue() }
 
-  string getConstantValue() {
-    result = getAttribute("value").getValue()
-  }
+  string getConstantValue() { result = getAttribute("value").getValue() }
 }

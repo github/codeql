@@ -71,7 +71,7 @@ private predicate defn(ControlFlowNode def, Expr lhs, AST::ValueNode rhs) {
 private predicate defn(ControlFlowNode def, Expr lhs) {
   defn(def, lhs, _) or
   lhs = def.(CompoundAssignExpr).getTarget() or
-  lhs = def.(UpdateExpr).getOperand().stripParens() or
+  lhs = def.(UpdateExpr).getOperand().getUnderlyingReference() or
   lhs = def.(ImportSpecifier).getLocal() or
   exists (EnhancedForLoop efl | def = efl.getIteratorExpr() |
     lhs = def.(Expr).stripParens() or
@@ -98,7 +98,8 @@ private predicate lvalAux(Expr l, ControlFlowNode def) {
   exists (ArrayPattern ap | lvalAux(ap, def) | l = ap.getAnElement().stripParens())
   or
   exists (ObjectPattern op | lvalAux(op, def) |
-    l = op.getAPropertyPattern().getValuePattern().stripParens()
+    l = op.getAPropertyPattern().getValuePattern().stripParens() or
+    l = op.getRest().stripParens()
   )
 }
 
@@ -142,7 +143,7 @@ class RValue extends RefExpr {
     not this instanceof LValue and not this instanceof VarDecl or
     // in `x++` and `x += 1`, `x` is both RValue and LValue
     this = any(CompoundAssignExpr a).getTarget() or
-    this = any(UpdateExpr u).getOperand().stripParens() or
+    this = any(UpdateExpr u).getOperand().getUnderlyingReference() or
     this = any(NamespaceDeclaration decl).getId()
   }
 }

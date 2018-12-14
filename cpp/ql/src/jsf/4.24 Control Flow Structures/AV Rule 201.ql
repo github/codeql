@@ -7,6 +7,7 @@
  * @id cpp/loop-variable-changed
  * @tags reliability
  *       readability
+ *       external/jsf
  */
 import cpp
 import Likely_Bugs.NestedLoopSameVar

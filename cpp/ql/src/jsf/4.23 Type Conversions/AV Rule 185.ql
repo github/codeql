@@ -4,7 +4,9 @@
  *              instead of the traditional C-style cast.
  * @kind problem
  * @id cpp/jsf/av-rule-185
- * @problem.severity error
+ * @problem.severity recommendation
+ * @tags correctness
+ *       external/jsf
  */
 import cpp
 

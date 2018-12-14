@@ -1,0 +1,2 @@
+| tests.c:103:3:103:9 | call to sprintf | This 'call to sprintf' operation may require 318 bytes because of float conversions, but the target is only 256 bytes. |
+| tests.c:105:3:105:9 | call to sprintf | This 'call to sprintf' operation may require 346 bytes because of float conversions, but the target is only 256 bytes. |

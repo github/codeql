@@ -15,7 +15,7 @@ class UrlRedirectSink extends DataFlow::ExprNode {
     exists(MethodAccess ma |
       ma.getMethod() instanceof ResponseSetHeaderMethod or
       ma.getMethod() instanceof ResponseAddHeaderMethod
-      |
+    |
       ma.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "Location" and
       this.asExpr() = ma.getArgument(1)
     )

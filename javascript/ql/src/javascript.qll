@@ -2,6 +2,7 @@
  * Provides classes for working with JavaScript programs, as well as JSON, YAML and HTML.
  */
 
+import semmle.javascript.Aliases
 import semmle.javascript.AMD
 import semmle.javascript.AST
 import semmle.javascript.BasicBlocks
@@ -13,6 +14,7 @@ import semmle.javascript.Constants
 import semmle.javascript.DataFlow
 import semmle.javascript.DefUse
 import semmle.javascript.DOM
+import semmle.javascript.EmailClients
 import semmle.javascript.Errors
 import semmle.javascript.ES2015Modules
 import semmle.javascript.Expr
@@ -34,6 +36,7 @@ import semmle.javascript.NPM
 import semmle.javascript.Paths
 import semmle.javascript.Promises
 import semmle.javascript.CanonicalNames
+import semmle.javascript.RangeAnalysis
 import semmle.javascript.Regexp
 import semmle.javascript.SSA
 import semmle.javascript.StandardLibrary
@@ -51,11 +54,13 @@ import semmle.javascript.dataflow.DataFlow
 import semmle.javascript.dataflow.TaintTracking
 import semmle.javascript.dataflow.TypeInference
 import semmle.javascript.frameworks.AngularJS
+import semmle.javascript.frameworks.AsyncPackage
 import semmle.javascript.frameworks.AWS
 import semmle.javascript.frameworks.Azure
 import semmle.javascript.frameworks.Babel
 import semmle.javascript.frameworks.ComposedFunctions
 import semmle.javascript.frameworks.ClientRequests
+import semmle.javascript.frameworks.CookieLibraries
 import semmle.javascript.frameworks.Credentials
 import semmle.javascript.frameworks.CryptoLibraries
 import semmle.javascript.frameworks.DigitalOcean

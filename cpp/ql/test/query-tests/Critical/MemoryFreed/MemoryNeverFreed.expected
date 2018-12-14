@@ -8,3 +8,5 @@
 | test.cpp:42:18:42:23 | call to malloc | This memory is never freed |
 | test.cpp:73:18:73:23 | call to malloc | This memory is never freed |
 | test.cpp:89:18:89:23 | call to malloc | This memory is never freed |
+| test.cpp:156:3:156:26 | new | This memory is never freed |
+| test.cpp:157:3:157:26 | new[] | This memory is never freed |

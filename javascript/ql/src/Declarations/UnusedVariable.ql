@@ -22,7 +22,9 @@ class UnusedLocal extends LocalVariable {
     not exists(FunctionExpr fe | this = fe.getVariable()) and
     not exists(ClassExpr ce | this = ce.getVariable()) and
     not exists(ExportDeclaration ed | ed.exportsAs(this, _)) and
-    not exists(LocalVarTypeAccess type | type.getVariable() = this)
+    not exists(LocalVarTypeAccess type | type.getVariable() = this) and
+    // common convention: variables with leading underscore are intentionally unused
+    getName().charAt(0) != "_"
   }
 }
 
@@ -49,17 +51,29 @@ predicate isPropertyFilter(UnusedLocal v) {
   )
 }
 
+predicate hasJsxInScope(UnusedLocal v) {
+  any(JSXNode n).getParent+() = v.getScope().getScopeElement()
+}
+
 /**
- * Holds if `v` is an import of React, and there is a JSX element that implicitly
- * references it.
- */
-predicate isReactImportForJSX(UnusedLocal v) {
-  exists (ImportSpecifier is |
-    is.getLocal() = v.getADeclaration() and
-    exists (JSXNode jsx | jsx.getTopLevel() = is.getTopLevel()) |
-    v.getName() = "React" or
-    // also accept legacy `@jsx` pragmas
-    exists (JSXPragma p | p.getTopLevel() = is.getTopLevel() | p.getDOMName() = v.getName())
+ * Holds if `v` is a "React" variable that is implicitly used by a JSX element.
+*/
+predicate isReactForJSX(UnusedLocal v) {
+  hasJsxInScope(v) and
+  (
+    v.getName() = "React"
+    or
+    exists(TopLevel tl |
+      tl = v.getADeclaration().getTopLevel() |
+      // legacy `@jsx` pragmas
+      exists(JSXPragma p | p.getTopLevel() = tl | p.getDOMName() = v.getName())
+      or
+      // JSX pragma from a .babelrc file
+      exists(Babel::TransformReactJsxConfig plugin |
+        plugin.appliesTo(tl) and
+        plugin.getJsxFactoryVariableName() = v.getName()
+      )
+    )
   )
 }
 
@@ -94,36 +108,101 @@ predicate isEnumMember(VarDecl decl) {
 }
 
 /**
- * Gets a description of the declaration `vd`, which is either of the form "function f" if
- * it is a function name, or "variable v" if it is not.
+ * Gets a description of the declaration `vd`, which is either of the form
+ * "function f", "variable v" or "class c".
  */
-string describe(VarDecl vd) {
+string describeVarDecl(VarDecl vd) {
   if vd = any(Function f).getId() then
     result = "function " + vd.getName()
   else if vd = any(ClassDefinition c).getIdentifier() then
     result = "class " + vd.getName()
-  else if (vd = any(ImportSpecifier im).getLocal() or vd = any(ImportEqualsDeclaration im).getId()) then
-    result = "import " + vd.getName()
   else
     result = "variable " + vd.getName()
 }
 
-from VarDecl vd, UnusedLocal v
-where v = vd.getVariable() and
-      // exclude variables mentioned in JSDoc comments in externs
-      not mentionedInJSDocComment(v) and
-      // exclude variables used to filter out unwanted properties
-      not isPropertyFilter(v) and
-      // exclude imports of React that are implicitly referenced by JSX
-      not isReactImportForJSX(v) and
-      // exclude names that are used as types
-      not isUsedAsType(vd) and
-      // exclude names that are used as namespaces from inside a type
-      not isUsedAsNamespace(vd) and
-      // exclude decorated functions and classes
-      not isDecorated(vd) and
-      // exclude names of enum members; they also define property names
-      not isEnumMember(vd) and
-      // ignore ambient declarations - too noisy
-      not vd.isAmbient()
-select vd, "Unused " + describe(vd) + "."
+/**
+ * An import statement that provides variable declarations.
+ */
+class ImportVarDeclProvider extends Stmt {
+
+  ImportVarDeclProvider() {
+    this instanceof ImportDeclaration or
+    this instanceof ImportEqualsDeclaration
+  }
+
+  /**
+   * Gets a variable declaration of this import.
+   */
+  VarDecl getAVarDecl() {
+    result = this.(ImportDeclaration).getASpecifier().getLocal() or
+    result = this.(ImportEqualsDeclaration).getId()
+  }
+
+  /**
+   * Gets an unacceptable unused variable declared by this import.
+   */
+  UnusedLocal getAnUnacceptableUnusedLocal() {
+    result = getAVarDecl().getVariable() and
+    not whitelisted(result)
+  }
+
+}
+
+/**
+ * Holds if it is acceptable that `v` is unused.
+ */
+predicate whitelisted(UnusedLocal v) {
+  // exclude variables mentioned in JSDoc comments in externs
+  mentionedInJSDocComment(v) or
+  // exclude variables used to filter out unwanted properties
+  isPropertyFilter(v) or
+  // exclude imports of React that are implicitly referenced by JSX
+  isReactForJSX(v) or
+  // exclude names that are used as types
+  exists (VarDecl vd |
+    v = vd.getVariable() |
+    isUsedAsType(vd) or
+    // exclude names that are used as namespaces from inside a type
+    isUsedAsNamespace(vd)or
+    // exclude decorated functions and classes
+    isDecorated(vd) or
+    // exclude names of enum members; they also define property names
+    isEnumMember(vd) or
+    // ignore ambient declarations - too noisy
+    vd.isAmbient()
+  ) or
+  exists (DirectEval eval |
+    // eval nearby
+    eval.getEnclosingFunction() = v.getADeclaration().getEnclosingFunction() and
+    // ... but not on the RHS
+    not v.getAnAssignedExpr() = eval
+  )
+}
+
+/**
+ * Holds if `vd` declares an unused variable that does not come from an import statement, as explained by `msg`.
+ */
+predicate unusedNonImports(VarDecl vd, string msg) {
+  exists (UnusedLocal v |
+    v = vd.getVariable() and
+    msg = "Unused " + describeVarDecl(vd) + "." and
+    not vd = any(ImportVarDeclProvider p).getAVarDecl() and
+    not whitelisted(v)
+  )
+}
+
+/**
+ * Holds if `provider` declares one or more unused variables, as explained by `msg`.
+ */
+predicate unusedImports(ImportVarDeclProvider provider, string msg) {
+  exists (string imports, string names |
+    imports = pluralize("import", count(provider.getAnUnacceptableUnusedLocal())) and
+    names = strictconcat(provider.getAnUnacceptableUnusedLocal().getName(), ", ") and
+    msg = "Unused " + imports + " " + names + "."
+  )
+}
+
+from ASTNode sel, string msg
+where unusedNonImports(sel, msg) or
+      unusedImports(sel, msg)
+select sel, msg

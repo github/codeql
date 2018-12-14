@@ -142,3 +142,18 @@ function v() {
   x = 42;
   return x;
 }
+
+(function(){
+	var x = (void 0);
+	var y = ((void 0));
+	var z1 = z2 = (void 0);
+	x = 42;
+	y = 42;
+	z1 = 42;
+	z2 = 42;
+	return x + y + z1 + z2;
+});
+
+(function() {
+	for (var a = (x, -1) in v = a, o);
+});

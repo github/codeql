@@ -12,12 +12,13 @@
  *       statistical
  *       non-attributable
  */
+
 import java
 import Chaining
 
 predicate checkedMethodCall(MethodAccess ma) {
   relevantMethodCall(ma, _) and
-  not (ma.getParent() instanceof ExprStmt)
+  not ma.getParent() instanceof ExprStmt
 }
 
 /**
@@ -32,14 +33,12 @@ predicate isMockingMethod(Method m) {
   isReceiverClauseMethod(m)
 }
 
-predicate isReceiverClauseMethod(Method m){
+predicate isReceiverClauseMethod(Method m) {
   m.getDeclaringType().getASupertype*().hasQualifiedName("org.jmock.syntax", "ReceiverClause") and
-  (
-    m.hasName("of")
-  )
+  m.hasName("of")
 }
 
-predicate isCardinalityClauseMethod(Method m){
+predicate isCardinalityClauseMethod(Method m) {
   m.getDeclaringType().getASupertype*().hasQualifiedName("org.jmock.syntax", "CardinalityClause") and
   (
     m.hasName("allowing") or
@@ -54,7 +53,7 @@ predicate isCardinalityClauseMethod(Method m){
   )
 }
 
-predicate isStubberMethod(Method m){
+predicate isStubberMethod(Method m) {
   m.getDeclaringType().getASupertype*().hasQualifiedName("org.mockito.stubbing", "Stubber") and
   (
     m.hasName("when") or
@@ -69,11 +68,9 @@ predicate isStubberMethod(Method m){
 /**
  * Some mocking methods must _always_ be used as a qualifier.
  */
-predicate isMustBeQualifierMockingMethod(Method m){
+predicate isMustBeQualifierMockingMethod(Method m) {
   m.getDeclaringType().getASupertype*().hasQualifiedName("org.mockito", "Mockito") and
-  (
-    m.hasName("verify")
-  )
+  m.hasName("verify")
 }
 
 predicate relevantMethodCall(MethodAccess ma, Method m) {
@@ -92,12 +89,11 @@ predicate methodStats(Method m, int used, int total, int percentage) {
 
 int chainedUses(Method m) {
   result = count(MethodAccess ma, MethodAccess qual |
-    ma.getMethod() = m and
-    ma.getQualifier() = qual and
-    qual.getMethod() = m
-  )
+      ma.getMethod() = m and
+      ma.getQualifier() = qual and
+      qual.getMethod() = m
+    )
 }
-
 
 from MethodAccess unchecked, Method m, int percent, int total
 where
@@ -107,5 +103,6 @@ where
   percent >= 90 and
   not designedForChaining(m) and
   chainedUses(m) * 100 / total <= 45 // no more than 45% of calls to this method are chained
-select unchecked, "The result of the call is ignored, but " + percent.toString()
-                  + "% of calls to " + m.getName() + " use the return value."
+select unchecked,
+  "The result of the call is ignored, but " + percent.toString() + "% of calls to " + m.getName() +
+    " use the return value."

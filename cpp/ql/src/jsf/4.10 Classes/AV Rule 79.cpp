@@ -2,17 +2,17 @@
 // cannot close the file
 class ResourceLeak {
 private:
-	int sockfd;
-	FILE* file;
+    int sockfd;
+    FILE* file;
 public:
-	C() {
-		sockfd = socket(AF_INET, SOCK_STREAM, 0);
-	}
+    C() {
+        sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    }
 
-	void f() {
-		file = fopen("foo.txt", "r");
-		...
-	}
+    void f() {
+        file = fopen("foo.txt", "r");
+        ...
+    }
 };
 
 // This class relies on its client to release any stream it

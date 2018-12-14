@@ -2,12 +2,13 @@ private import internal.IRInternal
 import FunctionIR
 import IRBlock
 import IRVariable
-import OperandTag
+import Operand
 import cpp
 import semmle.code.cpp.ir.implementation.EdgeKind
 import semmle.code.cpp.ir.implementation.MemoryAccessKind
 import semmle.code.cpp.ir.implementation.Opcode
 private import semmle.code.cpp.ir.implementation.Opcode
+private import semmle.code.cpp.ir.internal.OperandTag
 
 class InstructionTag = Construction::InstructionTagType;
 
@@ -22,21 +23,21 @@ module InstructionSanity {
     exists(Opcode opcode |
       opcode = instr.getOpcode() and
       (
-        opcode instanceof UnaryOpcode and tag instanceof UnaryOperand or
+        opcode instanceof UnaryOpcode and tag instanceof UnaryOperandTag or
         (
           opcode instanceof BinaryOpcode and
           (
-            tag instanceof LeftOperand or
-            tag instanceof RightOperand
+            tag instanceof LeftOperandTag or
+            tag instanceof RightOperandTag
           )
         ) or
-        opcode instanceof CopyOpcode and tag instanceof CopySourceOperand or
-        opcode instanceof MemoryAccessOpcode and tag instanceof LoadStoreAddressOperand or
-        opcode instanceof OpcodeWithCondition and tag instanceof ConditionOperand or
-        opcode instanceof Opcode::ReturnValue and tag instanceof ReturnValueOperand or
-        opcode instanceof Opcode::ThrowValue and tag instanceof ExceptionOperand or
-        opcode instanceof Opcode::UnmodeledUse and tag instanceof UnmodeledUseOperand or
-        opcode instanceof Opcode::Call and tag instanceof CallTargetOperand
+        opcode instanceof CopyOpcode and tag instanceof CopySourceOperandTag or
+        opcode instanceof MemoryAccessOpcode and tag instanceof AddressOperandTag or
+        opcode instanceof OpcodeWithCondition and tag instanceof ConditionOperandTag or
+        opcode instanceof Opcode::ReturnValue and tag instanceof ReturnValueOperandTag or
+        opcode instanceof Opcode::ThrowValue and tag instanceof ExceptionOperandTag or
+        opcode instanceof Opcode::UnmodeledUse and tag instanceof UnmodeledUseOperandTag or
+        opcode instanceof Opcode::Call and tag instanceof CallTargetOperandTag
       )
     )
   }
@@ -45,26 +46,34 @@ module InstructionSanity {
    * Holds if instruction `instr` is missing an expected operand with tag `tag`.
    */
   query predicate missingOperand(Instruction instr, OperandTag tag) {
-    expectsOperand(instr, tag) and not exists(instr.getOperand(tag))
+    expectsOperand(instr, tag) and
+    not exists(NonPhiOperand operand |
+      operand = instr.getAnOperand() and
+      operand.getOperandTag() = tag
+    )
   }
 
   /**
    * Holds if instruction `instr` has an unexpected operand with tag `tag`.
    */
   query predicate unexpectedOperand(Instruction instr, OperandTag tag) {
-    exists(instr.getOperand(tag)) and
+    exists(NonPhiOperand operand |
+      operand = instr.getAnOperand() and
+      operand.getOperandTag() = tag) and
     not expectsOperand(instr, tag) and
-    not (instr instanceof CallInstruction and tag instanceof ArgumentOperand) and
-    not (instr instanceof BuiltInInstruction and tag instanceof PositionalArgumentOperand) and
-    not (instr instanceof PhiInstruction and tag instanceof PhiOperand)
+    not (instr instanceof CallInstruction and tag instanceof ArgumentOperandTag) and
+    not (instr instanceof BuiltInInstruction and tag instanceof PositionalArgumentOperandTag)
   }
 
   /**
    * Holds if instruction `instr` has multiple operands with tag `tag`.
    */
   query predicate duplicateOperand(Instruction instr, OperandTag tag) {
-    strictcount(instr.getOperand(tag)) > 1 and
-    not tag instanceof UnmodeledUseOperand
+    strictcount(NonPhiOperand operand |
+      operand = instr.getAnOperand() and
+      operand.getOperandTag() = tag
+    ) > 1 and
+    not tag instanceof UnmodeledUseOperandTag
   }
 
   /**
@@ -74,7 +83,7 @@ module InstructionSanity {
   query predicate missingPhiOperand(PhiInstruction instr, IRBlock pred) {
     pred = instr.getBlock().getAPredecessor() and
     not exists(PhiOperand operand |
-      exists(instr.getOperand(operand)) and
+      operand = instr.getAnOperand() and
       operand.getPredecessorBlock() = pred
     )
   }
@@ -98,14 +107,13 @@ module InstructionSanity {
   }
 
   /**
-   * Holds if instruction `op` consumes an operand `operand` that was defined in
+   * Holds if operand `operand` consumes a value that was defined in
    * a different function.
    */
-  query predicate operandAcrossFunctions(
-    Instruction op, Instruction operand, OperandTag tag
-  ) {
-    operand = op.getOperand(tag) and
-    operand.getFunctionIR() != op.getFunctionIR()
+  query predicate operandAcrossFunctions(Operand operand, Instruction instr, Instruction defInstr) {
+    operand.getInstruction() = instr and
+    operand.getDefinitionInstruction() = defInstr and
+    instr.getFunctionIR() != defInstr.getFunctionIR()
   }
 
   /**
@@ -133,6 +141,16 @@ class Instruction extends Construction::TInstruction {
   }
 
   final string toString() {
+    result = getOpcode().toString() + ": " + getAST().toString()
+  }
+
+  /**
+   * Gets a string showing the result, opcode, and operands of the instruction, equivalent to what
+   * would be printed by PrintIR.ql. For example:
+   *
+   * `mu0_28(int) = Store r0_26, r0_27`
+   */
+  final string getDumpString() {
     result = getResultString() + " = " + getOperationString() + " " + getOperandsString()
   }
 
@@ -237,29 +255,15 @@ class Instruction extends Construction::TInstruction {
   }
 
   /**
-   * Gets a string describing the specified operand, suitable for display in IR
-   * dumps. This consists of the result ID of the instruction consumed by the
-   * operand, plus a label identifying the operand kind.
-   *
-   * For example: `this:r3_5`
-   */
-  string getOperandString(OperandTag tag) {
-    exists(Instruction operand |
-      operand = getOperand(tag) and
-      result = tag.getLabel() + operand.getResultId()
-    )
-  }
-
-  /**
    * Gets a string describing the operands of this instruction, suitable for
    * display in IR dumps.
    *
    * Example: `func:r3_4, this:r3_5`
    */
   string getOperandsString() {
-    result = concat(OperandTag tag, Instruction operand |
-      operand = getOperand(tag) |
-      tag.getLabel() + operand.getResultId(), ", " order by tag.getSortOrder()
+    result = concat(Operand operand |
+      operand = getAnOperand() |
+      operand.getDumpString(), ", " order by operand.getDumpSortOrder()
     )
   }
 
@@ -310,12 +314,19 @@ class Instruction extends Construction::TInstruction {
   }
 
   /**
-   * Gets the `Expr` whose results is computed by this instruction, if any.
+   * Gets the `Expr` whose result is computed by this instruction, if any.
    */
-  final Expr getResultExpression() {
-    result = Construction::getInstructionResultExpression(this) 
+  final Expr getConvertedResultExpression() {
+    result = Construction::getInstructionConvertedResultExpression(this) 
   }
-
+  
+    /**
+   * Gets the unconverted `Expr` whose result is computed by this instruction, if any.
+   */
+  final Expr getUnconvertedResultExpression() {
+    result = Construction::getInstructionUnconvertedResultExpression(this) 
+  }
+  
   /**
    * Gets the type of the result produced by this instruction. If the
    * instruction does not produce a result, its result type will be `VoidType`.
@@ -379,34 +390,18 @@ class Instruction extends Construction::TInstruction {
   }
 
   /**
-   * Gets the instruction that produced the value of the specified source
-   * operand.
+   * Gets all direct uses of the result of this instruction.
    */
-  final Instruction getOperand(OperandTag tag) {
-    result = Construction::getInstructionOperand(this, tag)
+  final Operand getAUse() {
+    result.getDefinitionInstruction() = this
   }
 
   /**
-   * Gets all instructions consumed by this instruction's operands.
+   * Gets all of this instruction's operands.
    */
-  final Instruction getAnOperand() {
-    result = getOperand(_)
+  final Operand getAnOperand() {
+    result.getInstruction() = this
   }
-
-  /**
-   * Holds if this instruction has a memory operand with the specified tag.
-   */
-  final predicate isMemoryOperand(OperandTag tag) {
-    exists(getOperandMemoryAccess(tag))
-  }
-
-  /**
-   * Gets the kind of memory access performed by the specified operand. Holds
-   * only for memory operands.
-   */
-  MemoryAccessKind getOperandMemoryAccess(OperandTag tag) {
-    none()
-  }  
 
   /**
    * Holds if this instruction produces a memory result.
@@ -443,9 +438,7 @@ class Instruction extends Construction::TInstruction {
     // Register results are always in SSA form.
     not hasMemoryResult() or
     // An unmodeled result will have a use on the `UnmodeledUse` instruction.
-    not exists(Instruction useInstr, UnmodeledUseOperand useTag |
-      this = useInstr.getOperand(useTag)
-    )
+    not (getAUse() instanceof UnmodeledUseOperand)
   }
 
   /**
@@ -584,7 +577,7 @@ class FieldAddressInstruction extends FieldInstruction {
   }
 
   final Instruction getObjectAddress() {
-    result = getOperand(unaryOperand())
+    result = getAnOperand().(UnaryOperand).getDefinitionInstruction()
   }
 }
 
@@ -622,12 +615,7 @@ class ReturnValueInstruction extends ReturnInstruction {
   }
 
   final Instruction getReturnValue() {
-    result = getOperand(returnValueOperand())
-  }
-
-  override final MemoryAccessKind getOperandMemoryAccess(OperandTag tag) {
-    exists(this.getOperand(tag.(ReturnValueOperand))) and
-    result instanceof IndirectMemoryAccess
+    result = getAnOperand().(ReturnValueOperand).getDefinitionInstruction()
   }
 }
 
@@ -637,7 +625,7 @@ class CopyInstruction extends Instruction {
   }
 
   final Instruction getSourceValue() {
-    result = getOperand(copySourceOperand())
+    result = getAnOperand().(CopySourceOperand).getDefinitionInstruction()
   }
 }
 
@@ -652,13 +640,8 @@ class LoadInstruction extends CopyInstruction {
     opcode instanceof Opcode::Load
   }
 
-  override final MemoryAccessKind getOperandMemoryAccess(OperandTag tag) {
-    exists(this.getOperand(tag.(CopySourceOperand))) and
-    result instanceof IndirectMemoryAccess
-  }
-
   final Instruction getSourceAddress() {
-    result = getOperand(loadStoreAddressOperand())
+    result = getAnOperand().(AddressOperand).getDefinitionInstruction()
   }
 }
 
@@ -672,7 +655,7 @@ class StoreInstruction extends CopyInstruction {
   }
 
   final Instruction getDestinationAddress() {
-    result = getOperand(loadStoreAddressOperand())
+    result = getAnOperand().(AddressOperand).getDefinitionInstruction()
   }
 }
 
@@ -682,7 +665,7 @@ class ConditionalBranchInstruction extends Instruction {
   }
 
   final Instruction getCondition() {
-    result = getOperand(conditionOperand())
+    result = getAnOperand().(ConditionOperand).getDefinitionInstruction()
   }
 
   final Instruction getTrueSuccessor() {
@@ -740,11 +723,11 @@ class BinaryInstruction extends Instruction {
   }
 
   final Instruction getLeftOperand() {
-    result = getOperand(leftOperand())
+    result = getAnOperand().(LeftOperand).getDefinitionInstruction()
   }
 
   final Instruction getRightOperand() {
-    result = getOperand(rightOperand())
+    result = getAnOperand().(RightOperand).getDefinitionInstruction()
   }
 }
 
@@ -775,6 +758,12 @@ class DivInstruction extends BinaryInstruction {
 class RemInstruction extends BinaryInstruction {
   RemInstruction() {
     opcode instanceof Opcode::Rem
+  }
+}
+
+class NegateInstruction extends UnaryInstruction {
+  NegateInstruction() {
+    opcode instanceof Opcode::Negate
   }
 }
 
@@ -855,7 +844,7 @@ class UnaryInstruction extends Instruction {
   }
 
   final Instruction getOperand() {
-    result = getOperand(unaryOperand())
+    result = getAnOperand().(UnaryOperand).getDefinitionInstruction()
   }
 }
 
@@ -967,27 +956,111 @@ class CompareNEInstruction extends CompareInstruction {
   }
 }
 
-class CompareLTInstruction extends CompareInstruction {
+/**
+ * Represents an instruction that does a relative comparison of two values, such as `<` or `>=`.
+ */
+class RelationalInstruction extends CompareInstruction {
+  RelationalInstruction() {
+    opcode instanceof RelationalOpcode
+  }
+
+  /**
+   * Gets the operand on the "greater" (or "greater-or-equal") side
+   * of this relational instruction, that is, the side that is larger
+   * if the overall instruction evaluates to `true`; for example on
+   * `x <= 20` this is the `20`, and on `y > 0` it is `y`.
+   */
+  Instruction getGreaterOperand() {
+    none()
+  }
+
+  /**
+   * Gets the operand on the "lesser" (or "lesser-or-equal") side
+   * of this relational instruction, that is, the side that is smaller
+   * if the overall instruction evaluates to `true`; for example on
+   * `x <= 20` this is `x`, and on `y > 0` it is the `0`.
+   */
+  Instruction getLesserOperand() {
+    none()
+  }
+
+  /**
+   * Holds if this relational instruction is strict (is not an "or-equal" instruction).
+   */
+  predicate isStrict() {
+    none()
+  }
+}
+
+class CompareLTInstruction extends RelationalInstruction {
   CompareLTInstruction() {
     opcode instanceof Opcode::CompareLT
   }
+
+  override Instruction getLesserOperand() {
+    result = getLeftOperand()
+  }
+
+  override Instruction getGreaterOperand() {
+    result = getRightOperand()
+  }
+
+  override predicate isStrict() {
+    any()
+  }
 }
 
-class CompareGTInstruction extends CompareInstruction {
+class CompareGTInstruction extends RelationalInstruction {
   CompareGTInstruction() {
     opcode instanceof Opcode::CompareGT
   }
-}
 
-class CompareLEInstruction extends CompareInstruction {
-  CompareLEInstruction() {
-    opcode instanceof Opcode::CompareLE
+  override Instruction getLesserOperand() {
+    result = getRightOperand()
+  }
+
+  override Instruction getGreaterOperand() {
+    result = getLeftOperand()
+  }
+
+  override predicate isStrict() {
+    any()
   }
 }
 
-class CompareGEInstruction extends CompareInstruction {
+class CompareLEInstruction extends RelationalInstruction {
+  CompareLEInstruction() {
+    opcode instanceof Opcode::CompareLE
+  }
+
+  override Instruction getLesserOperand() {
+    result = getLeftOperand()
+  }
+
+  override Instruction getGreaterOperand() {
+    result = getRightOperand()
+  }
+
+  override predicate isStrict() {
+    none()
+  }
+}
+
+class CompareGEInstruction extends RelationalInstruction {
   CompareGEInstruction() {
     opcode instanceof Opcode::CompareGE
+  }
+
+  override Instruction getLesserOperand() {
+    result = getRightOperand()
+  }
+
+  override Instruction getGreaterOperand() {
+    result = getLeftOperand()
+  }
+
+  override predicate isStrict() {
+    none()
   }
 }
 
@@ -997,7 +1070,7 @@ class SwitchInstruction extends Instruction {
   }
 
   final Instruction getExpression() {
-    result = getOperand(conditionOperand())
+    result = getAnOperand().(ConditionOperand).getDefinitionInstruction()
   }
 
   final Instruction getACaseSuccessor() {
@@ -1017,7 +1090,7 @@ class CallInstruction extends Instruction {
   }
 
   final Instruction getCallTarget() {
-    result = getOperand(callTargetOperand())
+    result = getAnOperand().(CallTargetOperand).getDefinitionInstruction()
   }
 }
 
@@ -1038,24 +1111,18 @@ class ThrowValueInstruction extends ThrowInstruction {
     opcode instanceof Opcode::ThrowValue
   }
 
-  override final MemoryAccessKind getOperandMemoryAccess(OperandTag tag) {
-    exists(this.getOperand(tag.(ExceptionOperand))) and
-    result instanceof IndirectMemoryAccess
-  }
-
-
   /**
    * Gets the address of the exception thrown by this instruction.
    */
   final Instruction getExceptionAddress() {
-    result = getOperand(loadStoreAddressOperand())
+    result = getAnOperand().(AddressOperand).getDefinitionInstruction()
   }
 
   /**
    * Gets the exception thrown by this instruction.
    */
   final Instruction getException() {
-    result = getOperand(exceptionOperand())
+    result = getAnOperand().(ExceptionOperand).getDefinitionInstruction()
   }
 }
 
@@ -1136,21 +1203,11 @@ class UnmodeledUseInstruction extends Instruction {
   override string getOperandsString() {
     result = "mu*"
   }
-
-  override final MemoryAccessKind getOperandMemoryAccess(OperandTag tag) {
-    exists(this.getOperand(tag.(UnmodeledUseOperand))) and
-    result instanceof UnmodeledMemoryAccess
-  }
 }
 
 class PhiInstruction extends Instruction {
   PhiInstruction() {
     opcode instanceof Opcode::Phi
-  }
-
-  override final MemoryAccessKind getOperandMemoryAccess(OperandTag tag) {
-    exists(this.getOperand(tag.(PhiOperand))) and
-    result instanceof PhiMemoryAccess
   }
 
   override final MemoryAccessKind getResultMemoryAccess() {

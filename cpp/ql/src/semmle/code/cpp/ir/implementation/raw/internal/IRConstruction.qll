@@ -1,6 +1,7 @@
 import cpp
 import semmle.code.cpp.ir.implementation.raw.IR
 import IRBlockConstruction as BlockConstruction
+private import semmle.code.cpp.ir.internal.OperandTag
 private import semmle.code.cpp.ir.internal.TempVariableTag
 private import InstructionTag
 private import TranslatedElement
@@ -37,14 +38,6 @@ cached private module Cached {
     exists(getTranslatedFunction(func))
   }
 
-  cached int getMaxCallArgIndex() {
-    result = max(int argIndex |
-      exists(FunctionCall call |
-        exists(call.getArgument(argIndex))
-      )
-    )
-  }
-
   cached newtype TInstruction =
     MkInstruction(FunctionIR funcIR, Opcode opcode, Locatable ast,
         InstructionTag tag, Type resultType, boolean isGLValue) {
@@ -74,16 +67,33 @@ cached private module Cached {
     none()
   }
 
-  cached Expr getInstructionResultExpression(Instruction instruction) {
+  cached Expr getInstructionConvertedResultExpression(Instruction instruction) {
     exists(TranslatedExpr translatedExpr |
       translatedExpr = getTranslatedExpr(result) and
       instruction = translatedExpr.getResult()
     )
   }
 
-  cached Instruction getInstructionOperand(Instruction instruction, OperandTag tag) {
+  cached Expr getInstructionUnconvertedResultExpression(Instruction instruction) {
+    exists(Expr converted, TranslatedExpr translatedExpr |
+      result = converted.(Conversion).getExpr+()
+      or
+      result = converted
+      |
+      not result instanceof Conversion and
+      translatedExpr = getTranslatedExpr(converted) and
+      instruction = translatedExpr.getResult()
+    )
+  }
+  
+  cached Instruction getInstructionOperandDefinition(Instruction instruction, OperandTag tag) {
     result = getInstructionTranslatedElement(instruction).getInstructionOperand(
       instruction.getTag(), tag)
+  }
+
+  cached Instruction getPhiInstructionOperandDefinition(Instruction instruction,
+      IRBlock predecessorBlock) {
+    none()
   }
 
   cached Instruction getPhiInstructionBlockStart(PhiInstruction instr) {

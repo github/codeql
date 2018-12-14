@@ -4,7 +4,6 @@
  */
 import cpp
 import external.DefectFilter
-import external.VCS
 
 from DefectResult res
 where res.getFile().getMetrics().getNumberOfLinesOfCode() > 200

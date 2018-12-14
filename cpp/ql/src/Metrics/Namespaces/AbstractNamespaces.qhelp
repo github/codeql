@@ -9,21 +9,17 @@
 
 <p>Abstractness measures the proportion of abstract types in
       a package relative to the total number of types in that package.
-      A highly abstract package (where the metric value is close 1)
-      that is furthermore instable is likely to be useless: the
-      class hierarchy has been over-engineered, and all those
-      abstract types are not heavily used.</p>
-
+      A metric value close to 1 indicates a highly abstract package
+      that is also unstable. The class hierarchy is probably over-engineered, and the abstract types are unlikely to be much used.</p>
 </overview>
-<section title="How to Address the Query Results">
-<p>Try to simplify the class hierarchy.</p>
 
+<recommendation>
+<p>Consider reducing the level of abstraction by simplifying the class hierarchy.</p>
+</recommendation>
 
-
-
-
-</section>
 <references>
-
+<li>C++ reference: <a href="https://en.cppreference.com/w/cpp/language/namespace">Namespaces</a>
+ </li>
+ <li>Geeks for Geeks: <a href="https://www.geeksforgeeks.org/abstraction-in-c/">Abstraction in C++</a></li>
 </references>
 </qhelp>

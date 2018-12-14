@@ -14,11 +14,10 @@ class JaxWsEndpoint extends Class {
   }
 
   Callable getARemoteMethod() {
-    result = this.getACallable() and (
-      exists(AnnotationType a | a = result.getAnAnnotation().getType() |
-        a.hasName("WebMethod") or
-        a.hasName("WebEndpoint")
-      )
+    result = this.getACallable() and
+    exists(AnnotationType a | a = result.getAnAnnotation().getType() |
+      a.hasName("WebMethod") or
+      a.hasName("WebEndpoint")
     )
   }
 }
@@ -30,7 +29,7 @@ private predicate hasPathAnnotation(Annotatable annotatable) {
   exists(AnnotationType a |
     a = annotatable.getAnAnnotation().getType() and
     a.getPackage().getName() = "javax.ws.rs"
-    |
+  |
     a.hasName("Path")
   )
 }
@@ -43,7 +42,7 @@ class JaxRsResourceMethod extends Method {
     exists(AnnotationType a |
       a = this.getAnAnnotation().getType() and
       a.getPackage().getName() = "javax.ws.rs"
-      |
+    |
       a.hasName("GET") or
       a.hasName("POST") or
       a.hasName("DELETE") or
@@ -63,15 +62,14 @@ class JaxRsResourceMethod extends Method {
 class JaxRsResourceClass extends Class {
   JaxRsResourceClass() {
     // A root resource class has a @Path annotation on the class.
-    hasPathAnnotation(this) or
+    hasPathAnnotation(this)
+    or
     // A sub-resource
     exists(JaxRsResourceClass resourceClass, Method method |
-      /*
-       * This is a sub-resource class is if it is referred to from the sub-resource locator of
-       * another resource class.
-       */
+      // This is a sub-resource class is if it is referred to from the sub-resource locator of
+      // another resource class.
       method = resourceClass.getASubResourceLocator()
-      |
+    |
       this = method.getReturnType()
     )
   }
@@ -100,9 +98,7 @@ class JaxRsResourceClass extends Class {
   /**
    * Holds if this class is a "root resource" class
    */
-  predicate isRootResource() {
-    hasPathAnnotation(this)
-  }
+  predicate isRootResource() { hasPathAnnotation(this) }
 
   /**
    * Gets a `Constructor` that may be called by a JaxRS container to construct this class reflectively.
@@ -117,14 +113,10 @@ class JaxRsResourceClass extends Class {
     // JaxRs Spec v2.0 - 3.12
     // Only root resources are constructed by the JaxRS container.
     isRootResource() and
-    /*
-     * JaxRS can only construct the class using constructors that are public, and where the
-     * container can provide all of the parameters. This includes the no-arg constructor.
-     */
+    // JaxRS can only construct the class using constructors that are public, and where the
+    // container can provide all of the parameters. This includes the no-arg constructor.
     result.isPublic() and
-    forall(Parameter p |
-      p = result.getAParameter()
-      |
+    forall(Parameter p | p = result.getAParameter() |
       p.getAnAnnotation() instanceof JaxRsInjectionAnnotation
     )
   }
@@ -156,7 +148,7 @@ class JaxRsInjectionAnnotation extends Annotation {
     exists(AnnotationType a |
       a = getType() and
       a.getPackage().getName() = "javax.ws.rs"
-      |
+    |
       a.hasName("BeanParam") or
       a.hasName("CookieParam") or
       a.hasName("FormParam") or
@@ -164,21 +156,18 @@ class JaxRsInjectionAnnotation extends Annotation {
       a.hasName("MatrixParam") or
       a.hasName("PathParam") or
       a.hasName("QueryParam")
-    ) or
+    )
+    or
     getType().hasQualifiedName("javax.ws.rs.core", "Context")
   }
 }
 
 class JaxRsResponse extends Class {
-  JaxRsResponse() {
-    this.hasQualifiedName("javax.ws.rs.core", "Response")
-  }
+  JaxRsResponse() { this.hasQualifiedName("javax.ws.rs.core", "Response") }
 }
 
 class JaxRsResponseBuilder extends Class {
-  JaxRsResponseBuilder() {
-    this.hasQualifiedName("javax.ws.rs.core", "ResponseBuilder")
-  }
+  JaxRsResponseBuilder() { this.hasQualifiedName("javax.ws.rs.core", "ResponseBuilder") }
 }
 
 /**
@@ -189,14 +178,12 @@ class JaxRsBeanParamConstructor extends Constructor {
   JaxRsBeanParamConstructor() {
     exists(JaxRsResourceClass resourceClass, Callable c, Parameter p |
       c = resourceClass.getAnInjectableCallable()
-      |
+    |
       p = c.getAParameter() and
       p.getAnAnnotation().getType().hasQualifiedName("javax.ws.rs", "BeanParam") and
       this.getDeclaringType().getSourceDeclaration() = p.getType().(RefType).getSourceDeclaration()
     ) and
-    forall(Parameter p |
-      p = getAParameter()
-      |
+    forall(Parameter p | p = getAParameter() |
       p.getAnAnnotation() instanceof JaxRsInjectionAnnotation
     )
   }
@@ -206,9 +193,7 @@ class JaxRsBeanParamConstructor extends Constructor {
  * The class `javax.ws.rs.ext.MessageBodyReader`.
  */
 class MessageBodyReader extends GenericInterface {
-  MessageBodyReader() {
-    this.hasQualifiedName("javax.ws.rs.ext", "MessageBodyReader")
-  }
+  MessageBodyReader() { this.hasQualifiedName("javax.ws.rs.ext", "MessageBodyReader") }
 }
 
 /**
@@ -226,6 +211,8 @@ class MessageBodyReaderReadFrom extends Method {
  */
 class MessageBodyReaderRead extends Method {
   MessageBodyReaderRead() {
-    exists(Method m | m.getSourceDeclaration() instanceof MessageBodyReaderReadFrom | this.overrides*(m))
+    exists(Method m | m.getSourceDeclaration() instanceof MessageBodyReaderReadFrom |
+      this.overrides*(m)
+    )
   }
 }

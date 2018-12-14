@@ -9,6 +9,7 @@ module UrlRedirect {
   import semmle.code.csharp.frameworks.system.Web
   import semmle.code.csharp.frameworks.system.web.Mvc
   import semmle.code.csharp.security.Sanitizers
+  import semmle.code.csharp.frameworks.microsoft.AspNetCore
 
   /**
    * A data flow source for unvalidated URL redirect vulnerabilities.
@@ -149,4 +150,65 @@ module UrlRedirect {
   private class SimpleTypeSanitizer extends Sanitizer, SimpleTypeSanitizedExpr { }
 
   private class GuidSanitizer extends Sanitizer, GuidSanitizedExpr { }
+
+   /**
+   * A URL argument to a call to `HttpResponse.Redirect()` or `Controller.Redirect()`, that is a
+   * sink for URL redirects.
+   */
+  class AspNetCoreRedirectSink extends Sink {
+    AspNetCoreRedirectSink() {
+      exists(MethodCall mc |
+        mc.getTarget() = any(MicrosoftAspNetCoreHttpHttpResponse response).getRedirectMethod() or
+        mc.getTarget() = any(MicrosoftAspNetCoreMvcController response).getARedirectMethod()
+        |
+        // Response.Redirect uses 'location' parameter
+        this.getExpr() = mc.getArgumentForName("location") or
+        // Redirect uses the parameter name 'url'
+        this.getExpr() = mc.getArgumentForName("url") or
+        // Controller.RedirectToAction*
+        this.getExpr() = mc.getArgumentForName("actionName") or
+        // Controller.RedirectToRoute*
+        this.getExpr() = mc.getArgumentForName("routeName") or
+        // Controller.RedirectToPage*
+        this.getExpr() = mc.getArgumentForName("pageName")
+      )
+    }
+  }
+
+  /**
+   * Anything that is setting "location" header in the response headers.
+   */
+  class AspNetCoreLocationHeaderSink extends Sink {
+    AspNetCoreLocationHeaderSink () {
+      // ResponseHeaders.Location = <user-provided value>
+      exists(AssignableDefinition def |
+        def.getTarget() = any(MicrosoftAspNetCoreHttpResponseHeaders headers).getLocationProperty() |
+        this.asExpr() = def.getSource()
+      )
+      or // HttpResponse.Headers.Append("location", <user-provided value>)
+      exists(MethodCall mc, MicrosoftAspNetCoreHttpHeaderDictionaryExtensions ext |
+        mc.getTarget() = ext.getAppendMethod() or
+        mc.getTarget() = ext.getAppendCommaSeparatedValuesMethod() or
+        mc.getTarget() = ext.getSetCommaSeparatedValuesMethod() |
+        mc.getArgumentForName("key").getValue().toLowerCase() = "location" and
+        this.getExpr() = mc.getArgument(2))
+      or // HttpResponse.Headers.Add("location", <user-provided value>)
+      exists(RefType cl, MicrosoftAspNetCoreHttpHttpResponse resp, PropertyAccess qualifier, MethodCall add |
+        qualifier.getTarget() = resp.getHeadersProperty() and
+        add.getTarget() = cl.getAMethod("Add") and
+        qualifier = add.getQualifier() and
+        add.getArgument(0).getValue().toLowerCase() = "location" and
+        this.getExpr() = add.getArgument(1))
+      or // HttpResponse.Headers["location"] = <user-provided value>
+      exists(RefType cl, MicrosoftAspNetCoreHttpHttpResponse resp, IndexerAccess ci, Call cs, PropertyAccess qualifier |
+        qualifier.getTarget() = resp.getHeadersProperty() and
+        ci.getTarget() = cl.getAnIndexer() and
+        qualifier = ci.getQualifier() and
+        cs.getTarget() = cl.getAnIndexer().getSetter() and
+        cs.getArgument(0).getValue().toLowerCase() = "location" and
+        this.asExpr() = cs.getArgument(1))
+    }
+  }
 }
+
+

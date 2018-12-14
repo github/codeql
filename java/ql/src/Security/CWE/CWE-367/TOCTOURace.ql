@@ -9,6 +9,7 @@
  * @tags security
  *       external/cwe/cwe-367
  */
+
 import java
 import semmle.code.java.Concurrency
 import semmle.code.java.controlflow.Guards
@@ -44,7 +45,9 @@ class PossiblyConcurrentCallable extends Callable {
     or
     exists(FieldAccess f | f.getVariable().isVolatile() | f.getEnclosingCallable() = this)
     or
-    exists(VarAccess v | v.getVariable().getType().(RefType).hasQualifiedName("java.lang", "ThreadLocal") |
+    exists(VarAccess v |
+      v.getVariable().getType().(RefType).hasQualifiedName("java.lang", "ThreadLocal")
+    |
       v.getEnclosingCallable() = this
     )
   }
@@ -57,7 +60,7 @@ predicate alwaysLocked(Field f) {
   exists(Variable lock |
     forex(VarAccess access |
       access = f.getAnAccess() and not access.getEnclosingCallable() instanceof InitializerMethod
-      |
+    |
       locallySynchronizedOn(access, _, lock)
     )
   )
@@ -65,7 +68,7 @@ predicate alwaysLocked(Field f) {
   exists(RefType thisType |
     forex(VarAccess access |
       access = f.getAnAccess() and not access.getEnclosingCallable() instanceof InitializerMethod
-      |
+    |
       locallySynchronizedOnThis(access, thisType)
     )
   )
@@ -73,7 +76,7 @@ predicate alwaysLocked(Field f) {
   exists(RefType classType |
     forex(VarAccess access |
       access = f.getAnAccess() and not access.getEnclosingCallable() instanceof InitializerMethod
-      |
+    |
       locallySynchronizedOnClass(access, classType)
     )
   )
@@ -84,14 +87,11 @@ predicate alwaysLocked(Field f) {
  */
 predicate probablyNeverEscapes(LocalVariableDecl v) {
   // Not passed into another function.
-  not exists(Call c | c.getAnArgument() = v.getAnAccess())
-  and
+  not exists(Call c | c.getAnArgument() = v.getAnAccess()) and
   // Not assigned directly to another variable.
-  not exists(Assignment a | a.getSource() = v.getAnAccess())
-  and
+  not exists(Assignment a | a.getSource() = v.getAnAccess()) and
   // Not returned.
-  not exists(ReturnStmt r | r.getResult() = v.getAnAccess())
-  and
+  not exists(ReturnStmt r | r.getResult() = v.getAnAccess()) and
   // All assignments are to new instances of a class.
   forex(Expr e | e = v.getAnAssignedValue() | e instanceof ClassInstanceExpr)
 }
@@ -99,34 +99,26 @@ predicate probablyNeverEscapes(LocalVariableDecl v) {
 // Loop conditions tend to be uninteresting, so are not included.
 from IfStmt check, MethodAccess call1, MethodAccess call2, Variable r
 where
-  check.getCondition().getAChildExpr*() = call1
-  and
+  check.getCondition().getAChildExpr*() = call1 and
   // This can happen if there are loops, etc.
-  not call1 = call2
-  and
+  not call1 = call2 and
   // The use is controlled by one of the branches of the condition, i.e. whether it
   // is reached actually depends on that condition.
-  call1.getBasicBlock().(ConditionBlock).controls(call2.getBasicBlock(), _)
-  and
+  call1.getBasicBlock().(ConditionBlock).controls(call2.getBasicBlock(), _) and
   // Two calls to synchronized methods on the same variable.
-  synchCallOn(call1, r) and synchCallOn(call2, r)
-  and
+  synchCallOn(call1, r) and
+  synchCallOn(call2, r) and
   // Not jointly synchronized on that variable.
   // (If the caller synchronizes on `r` then it takes the same monitor as the `synchronized` callees do.)
-  not commonSynchronization(call1, call2, r)
-  and
+  not commonSynchronization(call1, call2, r) and
   // Only include cases that look like they may be intended for concurrent usage.
-  check.getEnclosingCallable() instanceof PossiblyConcurrentCallable
-  and
+  check.getEnclosingCallable() instanceof PossiblyConcurrentCallable and
   // Ignore fields that look like they're consistently guarded with some other lock.
-  not alwaysLocked(r)
-  and
+  not alwaysLocked(r) and
   // Ignore local variables whose value probably never escapes, as they can't be accessed concurrently.
-  not probablyNeverEscapes(r)
-  and
+  not probablyNeverEscapes(r) and
   // The synchronized methods on `Throwable` are not interesting.
   not call1.getCallee().getDeclaringType() instanceof TypeThrowable
 select call2,
   "The state of $@ is checked $@, and then it is used here. But these are not jointly synchronized.",
-  r, r.getName(),
-  call1, "here"
+  r, r.getName(), call1, "here"

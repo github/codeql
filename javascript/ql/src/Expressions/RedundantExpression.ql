@@ -58,7 +58,7 @@ class RedundantIdemnecantOperand extends RedundantOperand {
     exists (IdemnecantExpr parent |
       parent = getParent() and
       // exclude trivial cases like `1-1`
-      not parent.getRightOperand().stripParens() instanceof Literal
+      not parent.getRightOperand().getUnderlyingValue() instanceof Literal
     )
   }
 }
@@ -80,7 +80,7 @@ class RedundantIdempotentOperand extends RedundantOperand {
  */
 class AverageExpr extends DivExpr {
   AverageExpr() {
-    getLeftOperand().stripParens() instanceof AddExpr and
+    getLeftOperand().getUnderlyingValue() instanceof AddExpr and
     getRightOperand().getIntValue() = 2
   }
 }
@@ -91,12 +91,12 @@ class AverageExpr extends DivExpr {
 class RedundantAverageOperand extends RedundantOperand {
   RedundantAverageOperand() {
     exists (AverageExpr aver |
-      (AddExpr)getParent() = aver.getLeftOperand().stripParens()
+      (AddExpr)getParent() = aver.getLeftOperand().getUnderlyingValue()
     )
   }
 
   override AverageExpr toReport() {
-    getParent() = result.getLeftOperand().stripParens()
+    getParent() = result.getLeftOperand().getUnderlyingValue()
   }
 }
 

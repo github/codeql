@@ -8,7 +8,7 @@ import semmle.code.csharp.controlflow.ControlFlowGraph
  */
 class UnknownCall extends MethodCall {
   UnknownCall() { not exists(this.getTarget()) }
-  
+
   override string toString() { result = "Call to unknown method" }
 }
 

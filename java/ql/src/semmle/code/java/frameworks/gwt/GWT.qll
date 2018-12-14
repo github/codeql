@@ -4,16 +4,12 @@ import GwtUiBinder
 
 /** The `com.google.gwt.core.client.EntryPoint` interface. */
 class GwtEntryPointInterface extends Interface {
-  GwtEntryPointInterface() {
-    this.hasQualifiedName("com.google.gwt.core.client", "EntryPoint")
-  }
+  GwtEntryPointInterface() { this.hasQualifiedName("com.google.gwt.core.client", "EntryPoint") }
 }
 
 /** A GWT class that implements the `EntryPoint` interface. */
 class GwtEntryPointClass extends Class {
-  GwtEntryPointClass() {
-    this.getAnAncestor() instanceof GwtEntryPointInterface
-  }
+  GwtEntryPointClass() { this.getAnAncestor() instanceof GwtEntryPointInterface }
 
   /** Gets the method serving as a GWT entry-point. */
   Method getOnModuleLoadMethod() {
@@ -34,18 +30,13 @@ class GwtEntryPointClass extends Class {
    * Holds if this entry point is live - that is, whether it is referred to within an XML element.
    */
   predicate isLive() {
-    /*
-     * We must have a `*.gwt.xml` in order to determine whether a particular `EntryPoint` is enabled.
-     * In the absence of such a file, we cannot guarantee that `EntryPoint`s without annotations
-     * are live.
-     */
-    isGwtXmlIncluded() implies
-    (
-      /*
-       * The entry point is live if it is specified in a `*.gwt.xml` file.
-       */
-      exists(getAGwtXmlFile())
-    )
+    // We must have a `*.gwt.xml` in order to determine whether a particular `EntryPoint` is enabled.
+    // In the absence of such a file, we cannot guarantee that `EntryPoint`s without annotations
+    // are live.
+    isGwtXmlIncluded()
+    implies
+    // The entry point is live if it is specified in a `*.gwt.xml` file.
+    exists(getAGwtXmlFile())
   }
 }
 
@@ -55,9 +46,7 @@ class GwtEntryPointClass extends Class {
  */
 class GwtCompilationUnit extends CompilationUnit {
   GwtCompilationUnit() {
-    exists(GwtXmlFile f |
-      getRelativePath().matches(f.getARelativeSourcePath() + "%")
-    )
+    exists(GwtXmlFile f | getRelativePath().matches(f.getARelativeSourcePath() + "%"))
   }
 }
 
@@ -77,12 +66,14 @@ private predicate jsniComment(Javadoc jsni, Method m) {
   // The comment must start with `-{` ...
   jsni.getChild(0).getText().matches("-{%") and
   // ... and it must end with `}-`.
-  jsni.getChild(jsni.getNumChild()-1).getText().matches("%}-") and
+  jsni.getChild(jsni.getNumChild() - 1).getText().matches("%}-") and
   // The associated callable must be marked as `native` ...
   m.isNative() and
   // ... and the comment has to be contained in `m`.
   jsni.getFile() = m.getFile() and
-  jsni.getLocation().getStartLine() in [m.getLocation().getStartLine()..m.getLocation().getEndLine()]
+  jsni.getLocation().getStartLine() in [m.getLocation().getStartLine() .. m
+          .getLocation()
+          .getEndLine()]
 }
 
 /**
@@ -90,26 +81,18 @@ private predicate jsniComment(Javadoc jsni, Method m) {
  * implementing a native method.
  */
 class JSNIComment extends Javadoc {
-  JSNIComment() {
-    jsniComment(this, _)
-  }
+  JSNIComment() { jsniComment(this, _) }
 
   /** Gets the method implemented by this comment. */
-  Method getImplementedMethod() {
-    jsniComment(this, result)
-  }
+  Method getImplementedMethod() { jsniComment(this, result) }
 }
 
 /**
  * A JavaScript Native Interface (JSNI) method.
  */
 class JSNIMethod extends Method {
-  JSNIMethod() {
-    jsniComment(_, this)
-  }
+  JSNIMethod() { jsniComment(_, this) }
 
   /** Gets the comment containing the JavaScript code for this method. */
-  JSNIComment getImplementation() {
-    jsniComment(result, this)
-  }
+  JSNIComment getImplementation() { jsniComment(result, this) }
 }

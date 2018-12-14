@@ -56,12 +56,12 @@
 | CatchInFinally.cs:17:41:17:43 | "1" | CatchInFinally.cs:17:27:17:44 | object creation of type Exception | 2 |
 | CatchInFinally.cs:17:41:17:43 | [finally: exception(ArgumentNullException)] "1" | CatchInFinally.cs:17:27:17:44 | [finally: exception(ArgumentNullException)] object creation of type Exception | 2 |
 | CatchInFinally.cs:17:41:17:43 | [finally: exception(Exception)] "1" | CatchInFinally.cs:17:27:17:44 | [finally: exception(Exception)] object creation of type Exception | 2 |
-| CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(ArgumentNullException)] catch (...) {...} | CatchInFinally.cs:19:39:19:54 | [exception: Exception, finally: exception(ArgumentNullException)] ... == ... | 6 |
-| CatchInFinally.cs:19:13:22:13 | [exception: Exception, finally: exception(Exception)] catch (...) {...} | CatchInFinally.cs:19:39:19:54 | [exception: Exception, finally: exception(Exception)] ... == ... | 6 |
 | CatchInFinally.cs:19:13:22:13 | [exception: Exception] catch (...) {...} | CatchInFinally.cs:19:39:19:54 | [exception: Exception] ... == ... | 6 |
-| CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] catch (...) {...} | CatchInFinally.cs:19:39:19:54 | [exception: NullReferenceException, finally: exception(ArgumentNullException)] ... == ... | 6 |
-| CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException, finally: exception(Exception)] catch (...) {...} | CatchInFinally.cs:19:39:19:54 | [exception: NullReferenceException, finally: exception(Exception)] ... == ... | 6 |
 | CatchInFinally.cs:19:13:22:13 | [exception: NullReferenceException] catch (...) {...} | CatchInFinally.cs:19:39:19:54 | [exception: NullReferenceException] ... == ... | 6 |
+| CatchInFinally.cs:19:13:22:13 | [finally: exception(ArgumentNullException), exception: Exception] catch (...) {...} | CatchInFinally.cs:19:39:19:54 | [finally: exception(ArgumentNullException), exception: Exception] ... == ... | 6 |
+| CatchInFinally.cs:19:13:22:13 | [finally: exception(ArgumentNullException), exception: NullReferenceException] catch (...) {...} | CatchInFinally.cs:19:39:19:54 | [finally: exception(ArgumentNullException), exception: NullReferenceException] ... == ... | 6 |
+| CatchInFinally.cs:19:13:22:13 | [finally: exception(Exception), exception: Exception] catch (...) {...} | CatchInFinally.cs:19:39:19:54 | [finally: exception(Exception), exception: Exception] ... == ... | 6 |
+| CatchInFinally.cs:19:13:22:13 | [finally: exception(Exception), exception: NullReferenceException] catch (...) {...} | CatchInFinally.cs:19:39:19:54 | [finally: exception(Exception), exception: NullReferenceException] ... == ... | 6 |
 | CatchInFinally.cs:20:13:22:13 | [finally: exception(ArgumentNullException)] {...} | CatchInFinally.cs:21:17:21:42 | [finally: exception(ArgumentNullException)] call to method WriteLine | 6 |
 | CatchInFinally.cs:20:13:22:13 | [finally: exception(Exception)] {...} | CatchInFinally.cs:21:17:21:42 | [finally: exception(Exception)] call to method WriteLine | 6 |
 | CatchInFinally.cs:20:13:22:13 | {...} | CatchInFinally.cs:21:17:21:42 | call to method WriteLine | 6 |
@@ -99,35 +99,120 @@
 | ConditionalAccess.cs:19:58:19:59 | access to parameter s2 | ConditionalAccess.cs:19:43:19:60 | call to method CommaJoinWith | 2 |
 | ConditionalAccess.cs:21:10:21:11 | enter M7 | ConditionalAccess.cs:21:10:21:11 | exit M7 | 20 |
 | ConditionalAccess.cs:31:26:31:38 | enter CommaJoinWith | ConditionalAccess.cs:31:26:31:38 | exit CommaJoinWith | 7 |
-| ExitMethods.cs:6:10:6:11 | enter M1 | ExitMethods.cs:6:10:6:11 | exit M1 | 7 |
-| ExitMethods.cs:12:10:12:11 | enter M2 | ExitMethods.cs:12:10:12:11 | exit M2 | 7 |
-| ExitMethods.cs:18:10:18:11 | enter M3 | ExitMethods.cs:18:10:18:11 | exit M3 | 6 |
-| ExitMethods.cs:24:10:24:11 | enter M4 | ExitMethods.cs:24:10:24:11 | exit M4 | 6 |
-| ExitMethods.cs:30:10:30:11 | enter M5 | ExitMethods.cs:30:10:30:11 | exit M5 | 6 |
-| ExitMethods.cs:36:10:36:11 | enter M6 | ExitMethods.cs:40:13:40:30 | call to method ErrorAlways | 7 |
-| ExitMethods.cs:36:10:36:11 | exit M6 | ExitMethods.cs:36:10:36:11 | exit M6 | 1 |
-| ExitMethods.cs:42:9:45:9 | [exception: ArgumentException] catch (...) {...} | ExitMethods.cs:42:9:45:9 | [exception: ArgumentException] catch (...) {...} | 1 |
-| ExitMethods.cs:42:9:45:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:42:9:45:9 | [exception: Exception] catch (...) {...} | 1 |
-| ExitMethods.cs:43:9:45:9 | {...} | ExitMethods.cs:44:13:44:19 | return ...; | 2 |
-| ExitMethods.cs:46:9:49:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:48:13:48:19 | return ...; | 3 |
-| ExitMethods.cs:52:17:52:26 | enter ErrorMaybe | ExitMethods.cs:54:13:54:13 | access to parameter b | 4 |
-| ExitMethods.cs:52:17:52:26 | exit ErrorMaybe | ExitMethods.cs:52:17:52:26 | exit ErrorMaybe | 1 |
-| ExitMethods.cs:55:19:55:33 | object creation of type Exception | ExitMethods.cs:55:13:55:34 | throw ...; | 2 |
-| ExitMethods.cs:58:17:58:27 | enter ErrorAlways | ExitMethods.cs:60:13:60:13 | access to parameter b | 4 |
-| ExitMethods.cs:58:17:58:27 | exit ErrorAlways | ExitMethods.cs:58:17:58:27 | exit ErrorAlways | 1 |
-| ExitMethods.cs:61:19:61:33 | object creation of type Exception | ExitMethods.cs:61:13:61:34 | throw ...; | 2 |
-| ExitMethods.cs:63:41:63:43 | "b" | ExitMethods.cs:63:13:63:45 | throw ...; | 3 |
-| ExitMethods.cs:66:10:66:13 | enter Exit | ExitMethods.cs:66:10:66:13 | exit Exit | 6 |
-| ExitMethods.cs:71:10:71:24 | enter ApplicationExit | ExitMethods.cs:71:10:71:24 | exit ApplicationExit | 5 |
-| ExitMethods.cs:76:13:76:21 | enter ThrowExpr | ExitMethods.cs:78:16:78:25 | ... != ... | 7 |
-| ExitMethods.cs:76:13:76:21 | exit ThrowExpr | ExitMethods.cs:76:13:76:21 | exit ThrowExpr | 1 |
-| ExitMethods.cs:78:29:78:29 | 1 | ExitMethods.cs:78:9:78:77 | return ...; | 5 |
-| ExitMethods.cs:78:69:78:75 | "input" | ExitMethods.cs:78:41:78:76 | throw ... | 3 |
-| ExitMethods.cs:81:16:81:34 | enter ExtensionMethodCall | ExitMethods.cs:83:16:83:30 | call to method Contains | 6 |
-| ExitMethods.cs:83:9:83:39 | return ...; | ExitMethods.cs:81:16:81:34 | exit ExtensionMethodCall | 2 |
-| ExitMethods.cs:83:34:83:34 | 0 | ExitMethods.cs:83:34:83:34 | 0 | 1 |
-| ExitMethods.cs:83:38:83:38 | 1 | ExitMethods.cs:83:38:83:38 | 1 | 1 |
-| ExitMethods.cs:91:28:91:31 | enter Exit | ExitMethods.cs:91:28:91:31 | exit Exit | 3 |
+| Conditions.cs:3:10:3:19 | enter IncrOrDecr | Conditions.cs:5:13:5:15 | access to parameter inc | 4 |
+| Conditions.cs:3:10:3:19 | exit IncrOrDecr | Conditions.cs:3:10:3:19 | exit IncrOrDecr | 1 |
+| Conditions.cs:6:13:6:16 | [inc (line 3): true] ...; | Conditions.cs:7:14:7:16 | [inc (line 3): true] access to parameter inc | 6 |
+| Conditions.cs:7:9:8:16 | [inc (line 3): false] if (...) ... | Conditions.cs:8:13:8:15 | ...-- | 6 |
+| Conditions.cs:11:9:11:10 | enter M1 | Conditions.cs:14:13:14:13 | access to parameter b | 8 |
+| Conditions.cs:15:13:15:16 | [b (line 11): true] ...; | Conditions.cs:16:13:16:17 | [b (line 11): true] ... > ... | 7 |
+| Conditions.cs:16:9:18:20 | [b (line 11): false] if (...) ... | Conditions.cs:16:13:16:17 | [b (line 11): false] ... > ... | 4 |
+| Conditions.cs:17:13:18:20 | [b (line 11): false] if (...) ... | Conditions.cs:18:17:18:19 | ...-- | 6 |
+| Conditions.cs:17:13:18:20 | [b (line 11): true] if (...) ... | Conditions.cs:17:18:17:18 | [b (line 11): true] access to parameter b | 3 |
+| Conditions.cs:19:16:19:16 | access to local variable x | Conditions.cs:11:9:11:10 | exit M1 | 3 |
+| Conditions.cs:22:9:22:10 | enter M2 | Conditions.cs:25:13:25:14 | access to parameter b1 | 8 |
+| Conditions.cs:26:13:27:20 | if (...) ... | Conditions.cs:26:17:26:18 | access to parameter b2 | 2 |
+| Conditions.cs:27:17:27:20 | [b2 (line 22): true] ...; | Conditions.cs:28:13:28:14 | [b2 (line 22): true] access to parameter b2 | 5 |
+| Conditions.cs:28:9:29:16 | [b2 (line 22): false] if (...) ... | Conditions.cs:28:13:28:14 | [b2 (line 22): false] access to parameter b2 | 2 |
+| Conditions.cs:28:9:29:16 | if (...) ... | Conditions.cs:28:13:28:14 | access to parameter b2 | 2 |
+| Conditions.cs:29:13:29:16 | ...; | Conditions.cs:29:13:29:15 | ...++ | 3 |
+| Conditions.cs:30:16:30:16 | access to local variable x | Conditions.cs:22:9:22:10 | exit M2 | 3 |
+| Conditions.cs:33:9:33:10 | enter M3 | Conditions.cs:37:13:37:14 | access to parameter b1 | 12 |
+| Conditions.cs:38:13:38:20 | ...; | Conditions.cs:38:13:38:19 | ... = ... | 4 |
+| Conditions.cs:39:9:40:16 | if (...) ... | Conditions.cs:39:13:39:14 | access to local variable b2 | 2 |
+| Conditions.cs:40:13:40:16 | [b2 (line 39): true] ...; | Conditions.cs:42:13:42:15 | ...++ | 8 |
+| Conditions.cs:41:9:42:16 | [b2 (line 39): false] if (...) ... | Conditions.cs:41:13:41:14 | [b2 (line 39): false] access to local variable b2 | 2 |
+| Conditions.cs:43:16:43:16 | access to local variable x | Conditions.cs:33:9:33:10 | exit M3 | 3 |
+| Conditions.cs:46:9:46:10 | enter M4 | Conditions.cs:49:16:49:22 | ... > ... | 11 |
+| Conditions.cs:49:16:49:16 | [b (line 46): false] access to parameter x | Conditions.cs:49:16:49:22 | [b (line 46): false] ... > ... | 4 |
+| Conditions.cs:50:9:53:9 | [b (line 46): false] {...} | Conditions.cs:51:17:51:17 | [b (line 46): false] access to parameter b | 3 |
+| Conditions.cs:50:9:53:9 | [b (line 46): true] {...} | Conditions.cs:51:17:51:17 | [b (line 46): true] access to parameter b | 3 |
+| Conditions.cs:50:9:53:9 | {...} | Conditions.cs:51:17:51:17 | access to parameter b | 3 |
+| Conditions.cs:52:17:52:20 | [b (line 46): true] ...; | Conditions.cs:49:16:49:22 | [b (line 46): true] ... > ... | 7 |
+| Conditions.cs:54:16:54:16 | access to local variable y | Conditions.cs:46:9:46:10 | exit M4 | 3 |
+| Conditions.cs:57:9:57:10 | enter M5 | Conditions.cs:60:16:60:22 | ... > ... | 11 |
+| Conditions.cs:60:16:60:16 | [b (line 57): false] access to parameter x | Conditions.cs:60:16:60:22 | [b (line 57): false] ... > ... | 4 |
+| Conditions.cs:61:9:64:9 | [b (line 57): false] {...} | Conditions.cs:62:17:62:17 | [b (line 57): false] access to parameter b | 3 |
+| Conditions.cs:61:9:64:9 | [b (line 57): true] {...} | Conditions.cs:62:17:62:17 | [b (line 57): true] access to parameter b | 3 |
+| Conditions.cs:61:9:64:9 | {...} | Conditions.cs:62:17:62:17 | access to parameter b | 3 |
+| Conditions.cs:63:17:63:20 | [b (line 57): true] ...; | Conditions.cs:60:16:60:22 | [b (line 57): true] ... > ... | 7 |
+| Conditions.cs:65:9:66:16 | [b (line 57): false] if (...) ... | Conditions.cs:65:13:65:13 | [b (line 57): false] access to parameter b | 2 |
+| Conditions.cs:65:9:66:16 | [b (line 57): true] if (...) ... | Conditions.cs:65:13:65:13 | [b (line 57): true] access to parameter b | 2 |
+| Conditions.cs:65:9:66:16 | if (...) ... | Conditions.cs:65:13:65:13 | access to parameter b | 2 |
+| Conditions.cs:66:13:66:16 | ...; | Conditions.cs:66:13:66:15 | ...++ | 3 |
+| Conditions.cs:67:16:67:16 | access to local variable y | Conditions.cs:57:9:57:10 | exit M5 | 3 |
+| Conditions.cs:70:9:70:10 | enter M6 | Conditions.cs:74:27:74:28 | access to parameter ss | 14 |
+| Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | 1 |
+| Conditions.cs:75:9:80:9 | {...} | Conditions.cs:76:17:76:17 | access to local variable b | 3 |
+| Conditions.cs:77:17:77:20 | ...; | Conditions.cs:77:17:77:19 | ...++ | 3 |
+| Conditions.cs:78:13:79:26 | if (...) ... | Conditions.cs:78:17:78:21 | ... > ... | 4 |
+| Conditions.cs:79:17:79:26 | ...; | Conditions.cs:79:17:79:25 | ... = ... | 4 |
+| Conditions.cs:81:9:82:16 | if (...) ... | Conditions.cs:81:12:81:12 | access to local variable b | 2 |
+| Conditions.cs:82:13:82:16 | ...; | Conditions.cs:82:13:82:15 | ...++ | 3 |
+| Conditions.cs:83:16:83:16 | access to local variable x | Conditions.cs:70:9:70:10 | exit M6 | 3 |
+| Conditions.cs:86:9:86:10 | enter M7 | Conditions.cs:90:27:90:28 | access to parameter ss | 14 |
+| Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | 1 |
+| Conditions.cs:91:9:98:9 | {...} | Conditions.cs:92:17:92:17 | access to local variable b | 3 |
+| Conditions.cs:93:17:93:20 | ...; | Conditions.cs:93:17:93:19 | ...++ | 3 |
+| Conditions.cs:94:13:95:26 | if (...) ... | Conditions.cs:94:17:94:21 | ... > ... | 4 |
+| Conditions.cs:95:17:95:26 | ...; | Conditions.cs:95:17:95:25 | ... = ... | 4 |
+| Conditions.cs:96:13:97:20 | if (...) ... | Conditions.cs:96:17:96:17 | access to local variable b | 2 |
+| Conditions.cs:97:17:97:20 | ...; | Conditions.cs:97:17:97:19 | ...++ | 3 |
+| Conditions.cs:99:16:99:16 | access to local variable x | Conditions.cs:86:9:86:10 | exit M7 | 3 |
+| Conditions.cs:102:12:102:13 | enter M8 | Conditions.cs:105:13:105:13 | access to parameter b | 9 |
+| Conditions.cs:106:13:106:20 | [b (line 102): true] ...; | Conditions.cs:107:13:107:24 | [b (line 102): true] ... > ... | 11 |
+| Conditions.cs:107:9:109:24 | [b (line 102): false] if (...) ... | Conditions.cs:107:13:107:24 | [b (line 102): false] ... > ... | 5 |
+| Conditions.cs:108:13:109:24 | [b (line 102): false] if (...) ... | Conditions.cs:109:17:109:23 | ... = ... | 9 |
+| Conditions.cs:108:13:109:24 | [b (line 102): true] if (...) ... | Conditions.cs:108:18:108:18 | [b (line 102): true] access to parameter b | 3 |
+| Conditions.cs:110:16:110:16 | access to local variable x | Conditions.cs:102:12:102:13 | exit M8 | 3 |
+| Conditions.cs:113:10:113:11 | enter M9 | Conditions.cs:116:17:116:21 | Int32 i = ... | 10 |
+| Conditions.cs:113:10:113:11 | exit M9 | Conditions.cs:113:10:113:11 | exit M9 | 1 |
+| Conditions.cs:116:24:116:24 | access to local variable i | Conditions.cs:116:24:116:38 | ... < ... | 4 |
+| Conditions.cs:116:41:116:41 | access to local variable i | Conditions.cs:116:41:116:43 | ...++ | 2 |
+| Conditions.cs:117:9:123:9 | {...} | Conditions.cs:119:18:119:21 | access to local variable last | 13 |
+| Conditions.cs:120:17:120:23 | [last (line 118): false] ...; | Conditions.cs:121:17:121:20 | [last (line 118): false] access to local variable last | 6 |
+| Conditions.cs:121:13:122:25 | [last (line 118): true] if (...) ... | Conditions.cs:122:17:122:24 | ... = ... | 6 |
+| Conditions.cs:129:10:129:12 | enter M10 | Conditions.cs:133:17:133:22 | access to field Field1 | 8 |
+| Conditions.cs:131:16:131:19 | [Field1 (line 129): false] true | Conditions.cs:133:17:133:22 | [Field1 (line 129): false] access to field Field1 | 5 |
+| Conditions.cs:131:16:131:19 | [Field1 (line 129): true, Field2 (line 129): false] true | Conditions.cs:135:21:135:26 | [Field1 (line 129): true, Field2 (line 129): false] access to field Field2 | 9 |
+| Conditions.cs:134:13:139:13 | [Field1 (line 129): true] {...} | Conditions.cs:135:21:135:26 | [Field1 (line 129): true] access to field Field2 | 4 |
+| Conditions.cs:136:17:138:17 | [Field1 (line 129): true, Field2 (line 129): true] {...} | Conditions.cs:135:21:135:26 | [Field1 (line 129): true, Field2 (line 129): true] access to field Field2 | 14 |
+| ExitMethods.cs:7:10:7:11 | enter M1 | ExitMethods.cs:7:10:7:11 | exit M1 | 7 |
+| ExitMethods.cs:13:10:13:11 | enter M2 | ExitMethods.cs:13:10:13:11 | exit M2 | 7 |
+| ExitMethods.cs:19:10:19:11 | enter M3 | ExitMethods.cs:19:10:19:11 | exit M3 | 6 |
+| ExitMethods.cs:25:10:25:11 | enter M4 | ExitMethods.cs:25:10:25:11 | exit M4 | 6 |
+| ExitMethods.cs:31:10:31:11 | enter M5 | ExitMethods.cs:31:10:31:11 | exit M5 | 6 |
+| ExitMethods.cs:37:10:37:11 | enter M6 | ExitMethods.cs:41:13:41:30 | call to method ErrorAlways | 7 |
+| ExitMethods.cs:37:10:37:11 | exit M6 | ExitMethods.cs:37:10:37:11 | exit M6 | 1 |
+| ExitMethods.cs:43:9:46:9 | [exception: ArgumentException] catch (...) {...} | ExitMethods.cs:43:9:46:9 | [exception: ArgumentException] catch (...) {...} | 1 |
+| ExitMethods.cs:43:9:46:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:43:9:46:9 | [exception: Exception] catch (...) {...} | 1 |
+| ExitMethods.cs:44:9:46:9 | {...} | ExitMethods.cs:45:13:45:19 | return ...; | 2 |
+| ExitMethods.cs:47:9:50:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:49:13:49:19 | return ...; | 3 |
+| ExitMethods.cs:53:10:53:11 | enter M7 | ExitMethods.cs:53:10:53:11 | exit M7 | 5 |
+| ExitMethods.cs:59:10:59:11 | enter M8 | ExitMethods.cs:59:10:59:11 | exit M8 | 5 |
+| ExitMethods.cs:65:17:65:26 | enter ErrorMaybe | ExitMethods.cs:67:13:67:13 | access to parameter b | 4 |
+| ExitMethods.cs:65:17:65:26 | exit ErrorMaybe | ExitMethods.cs:65:17:65:26 | exit ErrorMaybe | 1 |
+| ExitMethods.cs:68:19:68:33 | object creation of type Exception | ExitMethods.cs:68:13:68:34 | throw ...; | 2 |
+| ExitMethods.cs:71:17:71:27 | enter ErrorAlways | ExitMethods.cs:73:13:73:13 | access to parameter b | 4 |
+| ExitMethods.cs:71:17:71:27 | exit ErrorAlways | ExitMethods.cs:71:17:71:27 | exit ErrorAlways | 1 |
+| ExitMethods.cs:74:19:74:33 | object creation of type Exception | ExitMethods.cs:74:13:74:34 | throw ...; | 2 |
+| ExitMethods.cs:76:41:76:43 | "b" | ExitMethods.cs:76:13:76:45 | throw ...; | 3 |
+| ExitMethods.cs:79:17:79:28 | enter ErrorAlways2 | ExitMethods.cs:79:17:79:28 | exit ErrorAlways2 | 5 |
+| ExitMethods.cs:84:17:84:28 | enter ErrorAlways3 | ExitMethods.cs:84:17:84:28 | exit ErrorAlways3 | 4 |
+| ExitMethods.cs:86:10:86:13 | enter Exit | ExitMethods.cs:86:10:86:13 | exit Exit | 6 |
+| ExitMethods.cs:91:10:91:18 | enter ExitInTry | ExitMethods.cs:91:10:91:18 | exit ExitInTry | 8 |
+| ExitMethods.cs:104:10:104:24 | enter ApplicationExit | ExitMethods.cs:104:10:104:24 | exit ApplicationExit | 5 |
+| ExitMethods.cs:109:13:109:21 | enter ThrowExpr | ExitMethods.cs:111:16:111:25 | ... != ... | 7 |
+| ExitMethods.cs:109:13:109:21 | exit ThrowExpr | ExitMethods.cs:109:13:109:21 | exit ThrowExpr | 1 |
+| ExitMethods.cs:111:29:111:29 | 1 | ExitMethods.cs:111:9:111:77 | return ...; | 5 |
+| ExitMethods.cs:111:69:111:75 | "input" | ExitMethods.cs:111:41:111:76 | throw ... | 3 |
+| ExitMethods.cs:114:16:114:34 | enter ExtensionMethodCall | ExitMethods.cs:116:16:116:30 | call to method Contains | 6 |
+| ExitMethods.cs:116:9:116:39 | return ...; | ExitMethods.cs:114:16:114:34 | exit ExtensionMethodCall | 2 |
+| ExitMethods.cs:116:34:116:34 | 0 | ExitMethods.cs:116:34:116:34 | 0 | 1 |
+| ExitMethods.cs:116:38:116:38 | 1 | ExitMethods.cs:116:38:116:38 | 1 | 1 |
+| ExitMethods.cs:119:17:119:32 | enter FailingAssertion | ExitMethods.cs:119:17:119:32 | exit FailingAssertion | 6 |
+| ExitMethods.cs:125:17:125:33 | enter FailingAssertion2 | ExitMethods.cs:125:17:125:33 | exit FailingAssertion2 | 6 |
+| ExitMethods.cs:131:10:131:20 | enter AssertFalse | ExitMethods.cs:131:10:131:20 | exit AssertFalse | 4 |
+| ExitMethods.cs:133:17:133:33 | enter FailingAssertion3 | ExitMethods.cs:133:17:133:33 | exit FailingAssertion3 | 7 |
 | Extensions.cs:5:23:5:29 | enter ToInt32 | Extensions.cs:5:23:5:29 | exit ToInt32 | 6 |
 | Extensions.cs:10:24:10:29 | enter ToBool | Extensions.cs:10:24:10:29 | exit ToBool | 7 |
 | Extensions.cs:15:23:15:33 | enter CallToInt32 | Extensions.cs:15:23:15:33 | exit CallToInt32 | 4 |

@@ -4,7 +4,10 @@
  *              contain side effects.
  * @kind problem
  * @id cpp/jsf/av-rule-157
- * @problem.severity error
+ * @problem.severity warning
+ * @tags correctness
+ *       readability
+ *       external/jsf
  */
 import cpp
 

@@ -3,7 +3,10 @@
  * @description Members of the initialization list shall be listed in the order in which they are declared in the class.
  * @kind problem
  * @id cpp/jsf/av-rule-75
- * @problem.severity error
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
+ *       external/jsf
  */
 import cpp
 

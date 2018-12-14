@@ -47,7 +47,7 @@ class EqOrSwitch extends ASTNode {
 }
 
 from EqOrSwitch et, TypeofExpr typeof, ConstantString str
-where typeof = et.getAnOperand().stripParens() and
-      str = et.getAnOperand().stripParens() and
+where typeof = et.getAnOperand().getUnderlyingValue() and
+      str = et.getAnOperand().getUnderlyingValue() and
       not str.getStringValue().regexpMatch("undefined|boolean|number|string|object|function|symbol|unknown|date|bigint")
 select typeof, "The result of this 'typeof' expression is compared to '$@', but the two can never be equal.", str, str.getStringValue()

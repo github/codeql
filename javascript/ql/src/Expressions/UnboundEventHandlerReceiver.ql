@@ -22,10 +22,9 @@ private predicate isBoundInMethod(MethodDeclaration method) {
     or
     exists (string name |
       name = method.getName() |
-      exists (DataFlow::Node rhs, DataFlow::MethodCallNode bind |
+      exists (DataFlow::MethodCallNode bind |
         // this.<methodName> = <expr>.bind(...)
-        thiz.hasPropertyWrite(name, rhs) and
-        bind.flowsTo(rhs) and
+        bind = thiz.getAPropertySource(name) and
         bind.getMethodName() = "bind"
       )
       or
@@ -36,7 +35,7 @@ private predicate isBoundInMethod(MethodDeclaration method) {
         bindAll.getArgument(1).mayHaveStringValue(name)
         or
         // _.bindAll(this, [<name1>, <name2>])
-        exists (DataFlow::ArrayLiteralNode names |
+        exists (DataFlow::ArrayCreationNode names |
           names.flowsTo(bindAll.getArgument(1)) and
           names.getAnElement().mayHaveStringValue(name)
         )
@@ -45,7 +44,11 @@ private predicate isBoundInMethod(MethodDeclaration method) {
   )
   or
   exists (Expr decoration, string name |
-    decoration = method.getADecorator().getExpression() and
+    (
+      decoration = method.getADecorator().getExpression()
+      or
+      decoration = method.getDeclaringType().(ClassDefinition).getADecorator().getExpression()
+    ) and
     name.regexpMatch("(?i).*(bind|bound).*") |
     // @autobind
     decoration.(Identifier).getName() = name or

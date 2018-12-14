@@ -59,18 +59,36 @@ private predicate locationSortKeys(Locatable ast, string file, int line,
   )
 }
 
+private Function getEnclosingFunction(Locatable ast) {
+  result = ast.(Expr).getEnclosingFunction() or
+  result = ast.(Stmt).getEnclosingFunction() or
+  result = ast.(Initializer).getExpr().getEnclosingFunction() or
+  result = ast.(Parameter).getFunction() or
+  exists(DeclStmt stmt |
+    stmt.getADeclarationEntry() = ast and
+    result = stmt.getEnclosingFunction()
+  ) or
+  result = ast
+}
+
 /**
  * Most nodes are just a wrapper around `Locatable`, but we do synthesize new
  * nodes for things like parameter lists and constructor init lists.
  */
 private newtype TPrintASTNode =
-  TASTNode(Locatable ast) or
-  TParametersNode(Function func) or
+  TASTNode(Locatable ast) {
+    shouldPrintFunction(getEnclosingFunction(ast))
+  } or
+  TParametersNode(Function func) {
+    shouldPrintFunction(func)
+  } or
   TConstructorInitializersNode(Constructor ctor) {
-    ctor.hasEntryPoint()
+    ctor.hasEntryPoint() and
+    shouldPrintFunction(ctor)
   } or
   TDestructorDestructionsNode(Destructor dtor) {
-    dtor.hasEntryPoint()
+    dtor.hasEntryPoint() and
+    shouldPrintFunction(dtor)
   }
 
 /**
@@ -542,5 +560,5 @@ query predicate edges(PrintASTNode source, PrintASTNode target, string key, stri
 }
 
 query predicate graphProperties(string key, string value) {
-	key = "semmle.graphKind" and value = "tree"
+  key = "semmle.graphKind" and value = "tree"
 }

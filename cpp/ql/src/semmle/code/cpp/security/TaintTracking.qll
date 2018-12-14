@@ -238,21 +238,12 @@ predicate insideFunctionValueMoveTo(Element src, Element dest)
       returnArgument(c.getTarget(), sourceArg)
       and src = c.getArgument(sourceArg)
       and dest = c)
-    or exists (MessageExpr send |
-      methodReturningAnyArgument(send.getStaticTarget())
-      and not send instanceof FormattingFunctionCall
-      and src = send.getAnArgument()
-      and dest = send)
     or exists(FormattingFunctionCall formattingSend, int arg, FormatLiteral format, string argFormat |
       dest = formattingSend
       and formattingSend.getArgument(arg) = src
       and format = formattingSend.getFormat()
       and format.getConversionChar(arg - formattingSend.getTarget().getNumberOfParameters()) = argFormat
       and (argFormat = "s" or argFormat = "S" or argFormat = "@"))
-    or exists (ExprMessageExpr send |
-      methodReturningReceiver(send.getStaticTarget())
-      and src = send.getReceiver()
-      and dest = send)
     // Expressions computed from tainted data are also tainted
     or (exists (FunctionCall call | dest = call and isPureFunction(call.getTarget().getName()) |
       call.getAnArgument() = src
@@ -455,60 +446,6 @@ private predicate returnArgument(Function f, int sourceArg)
   or (f.hasGlobalName("inet_netof") and sourceArg = 0)
   or (f.hasGlobalName("gethostbyname") and sourceArg = 0)
   or (f.hasGlobalName("gethostbyaddr") and sourceArg = 0)
-}
-
-/** A method where if any argument is tainted, the return value should be, too */
-private predicate methodReturningAnyArgument(MemberFunction method) {
-  method.getQualifiedName().matches("NS%Array%::+array%") or
-  method.getQualifiedName().matches("NS%Array%::-arrayBy%") or
-  method.getQualifiedName().matches("NS%Array%::-componentsJoinedByString:") or
-  method.getQualifiedName().matches("NS%Array%::-init%") or
-  method.getQualifiedName().matches("NS%Data%::+dataWith%") or
-  method.getQualifiedName().matches("NS%Data%::-initWith%") or
-  method.getQualifiedName().matches("NS%String%::+pathWithComponents:") or
-  method.getQualifiedName().matches("NS%String%::+stringWith%") or
-  method.getQualifiedName().matches("NS%String%::-initWithCString:") or
-  method.getQualifiedName().matches("NS%String%::-initWithCString:length:") or
-  method.getQualifiedName().matches("NS%String%::-initWithCStringNoCopy:length:") or
-  method.getQualifiedName().matches("NS%String%::-initWithCharacters:length:") or
-  method.getQualifiedName().matches("NS%String%::-initWithCharactersNoCopy:length:freeWhenDone:") or
-  method.getQualifiedName().matches("NS%String%::-initWithFormat:") or
-  method.getQualifiedName().matches("NS%String%::-initWithFormat:arguments:") or
-  method.getQualifiedName().matches("NS%String%::-initWithString:") or
-  method.getQualifiedName().matches("NS%String%::-initWithUTF8String:") or
-  method.getQualifiedName().matches("NS%String%::-stringByAppendingFormat:") or
-  method.getQualifiedName().matches("NS%String%::-stringByAppendingString:") or
-  method.getQualifiedName().matches("NS%String%::-stringByPaddingToLength:withString:startingAtIndex:") or
-  method.getQualifiedName().matches("NS%String%::-stringByReplacing%") or
-  method.getQualifiedName().matches("NS%String%::-stringsByAppendingPaths:")
-}
-
-/** A method where if the receiver is tainted, the return value should be, too */
-private predicate methodReturningReceiver(MemberFunction method) {
-  method.getQualifiedName().matches("NS%Array%::-arrayBy%") or
-  method.getQualifiedName().matches("NS%Array%::-componentsJoinedByString:") or
-  method.getQualifiedName().matches("NS%Array%::-firstObject") or
-  method.getQualifiedName().matches("NS%Array%::-lastObject") or
-  method.getQualifiedName().matches("NS%Array%::-objectAt%") or
-  method.getQualifiedName().matches("NS%Array%::-pathsMatchingExtensions:") or
-  method.getQualifiedName().matches("NS%Array%::-sortedArray%") or
-  method.getQualifiedName().matches("NS%Array%::-subarrayWithRange:") or
-  method.getQualifiedName().matches("NS%Data%::-bytes") or
-  method.getQualifiedName().matches("NS%Data%::-subdataWithRange:") or
-  method.getQualifiedName().matches("NS%String%::-capitalizedString%") or
-  method.getQualifiedName().matches("NS%String%::-componentsSeparatedByCharactersInSet:") or
-  method.getQualifiedName().matches("NS%String%::-componentsSeparatedByString:") or
-  method.getQualifiedName().matches("NS%String%::-cStringUsingEncoding:") or
-  method.getQualifiedName().matches("NS%String%::-dataUsingEncoding:%") or
-  method.getQualifiedName().matches("NS%String%::-lowercaseString%") or
-  method.getQualifiedName().matches("NS%String%::-pathComponents") or
-  method.getQualifiedName().matches("NS%String%::-stringBy%") or
-  method.getQualifiedName().matches("NS%String%::-stringsByAppendingPaths:") or
-  method.getQualifiedName().matches("NS%String%::-substringFromIndex:") or
-  method.getQualifiedName().matches("NS%String%::-substringToIndex:") or
-  method.getQualifiedName().matches("NS%String%::-substringWithRange:") or
-  method.getQualifiedName().matches("NS%String%::-uppercaseString%") or
-  method.getQualifiedName().matches("NS%String%::-UTF8String")
 }
 
 /**

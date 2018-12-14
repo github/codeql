@@ -15,6 +15,7 @@
 
 import javascript
 import semmle.javascript.dataflow.CallGraph
+private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
 private import semmle.javascript.dataflow.InferredTypes
 
 /**
@@ -38,7 +39,9 @@ module TaintTracking {
      * The smaller this predicate is, the faster `hasFlow()` will converge.
      */
     // overridden to provide taint-tracking specific qldoc
-    abstract override predicate isSource(DataFlow::Node source);
+    override predicate isSource(DataFlow::Node source) {
+      super.isSource(source)
+    }
 
     /**
      * Holds if `sink` is a relevant taint sink.
@@ -46,7 +49,9 @@ module TaintTracking {
      * The smaller this predicate is, the faster `hasFlow()` will converge.
      */
     // overridden to provide taint-tracking specific qldoc
-    abstract override predicate isSink(DataFlow::Node sink);
+    override predicate isSink(DataFlow::Node sink) {
+      super.isSink(sink)
+    }
 
     /** Holds if the intermediate node `node` is a taint sanitizer. */
     predicate isSanitizer(DataFlow::Node node) {
@@ -55,6 +60,11 @@ module TaintTracking {
 
     /** Holds if the edge from `source` to `sink` is a taint sanitizer. */
     predicate isSanitizer(DataFlow::Node source, DataFlow::Node sink) {
+      none()
+    }
+
+    /** Holds if the edge from `source` to `sink` is a taint sanitizer for data labelled with `lbl`. */
+    predicate isSanitizer(DataFlow::Node source, DataFlow::Node sink, DataFlow::FlowLabel lbl) {
       none()
     }
 
@@ -80,6 +90,12 @@ module TaintTracking {
     override predicate isBarrier(DataFlow::Node source, DataFlow::Node sink) {
       super.isBarrier(source, sink) or
       isSanitizer(source, sink)
+    }
+
+    final
+    override predicate isBarrier(DataFlow::Node source, DataFlow::Node sink, DataFlow::FlowLabel lbl) {
+      super.isBarrier(source, sink, lbl) or
+      isSanitizer(source, sink, lbl)
     }
 
     final
@@ -115,7 +131,7 @@ module TaintTracking {
    * configurations it is used in.
    *
    * Note: For performance reasons, all subclasses of this class should be part
-   * of the standard library. Override `Configuration::isTaintSanitizerGuard`
+   * of the standard library. Override `Configuration::isSanitizer`
    * for analysis-specific taint steps.
    */
   abstract class AdditionalSanitizerGuardNode extends SanitizerGuardNode {
@@ -142,6 +158,12 @@ module TaintTracking {
      */
     abstract predicate sanitizes(boolean outcome, Expr e);
 
+  }
+
+  /**
+   * A sanitizer guard node that only blocks specific flow labels.
+   */
+  abstract class LabeledSanitizerGuardNode extends SanitizerGuardNode, DataFlow::LabeledBarrierGuardNode {
   }
 
   /**
@@ -208,6 +230,24 @@ module TaintTracking {
         succ = DataFlow::ssaDefinitionNode(ssa)
       )
     }
+  }
+
+  /**
+   * A taint propagating data flow edge through persistent storage.
+   */
+  private class StorageTaintStep extends AdditionalTaintStep {
+
+    PersistentReadAccess read;
+
+    StorageTaintStep() {
+      this = read
+    }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+        pred = read.getAWrite().getValue() and
+        succ = read
+    }
+
   }
 
   /**
@@ -614,6 +654,26 @@ module TaintTracking {
 
   }
 
+  /**
+   * A check of the form `if(<isWhitelisted>(x))`, which sanitizes `x` in its "then" branch.
+   *
+   * `<isWhitelisted>` is a call with callee name 'safe', 'whitelist', 'allow', or similar.
+   *
+   * This sanitizer is not enabled by default.
+   */
+  class AdHocWhitelistCheckSanitizer extends SanitizerGuardNode, DataFlow::CallNode {
+    AdHocWhitelistCheckSanitizer() {
+      getCalleeName().regexpMatch("(?i).*((?<!un)safe|whitelist|allow|(?<!un)auth(?!or\\b)).*") and
+      getNumArgument() = 1
+    }
+
+    override predicate sanitizes(boolean outcome, Expr e) {
+      outcome = true and
+      e = getArgument(0).asExpr()
+    }
+
+  }
+
   /** A check of the form `if(x in o)`, which sanitizes `x` in its "then" branch. */
   class InSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
 
@@ -768,6 +828,74 @@ module TaintTracking {
 
   }
 
+  /**
+   * A function that returns the result of a sanitizer check.
+   */
+  private class SanitizingFunction extends Function {
+    Parameter sanitizedParameter;
+
+    SanitizerGuardNode sanitizer;
+
+    boolean sanitizerOutcome;
+
+    SanitizingFunction() {
+      exists(Expr e |
+        exists(Expr returnExpr |
+          returnExpr = sanitizer.asExpr()
+          or
+          // ad hoc support for conjunctions:
+          returnExpr.(LogAndExpr).getAnOperand() = sanitizer.asExpr() and sanitizerOutcome = true
+          or
+          // ad hoc support for disjunctions:
+          returnExpr.(LogOrExpr).getAnOperand() = sanitizer.asExpr() and sanitizerOutcome = false
+          |
+          exists(SsaExplicitDefinition ssa |
+            ssa.getDef().getSource() = returnExpr and
+            ssa.getVariable().getAUse() = getAReturnedExpr()
+          )
+          or
+          returnExpr = getAReturnedExpr()
+        ) and
+        DataFlow::parameterNode(sanitizedParameter).flowsToExpr(e) and
+        sanitizer.sanitizes(sanitizerOutcome, e)
+      ) and
+      getNumParameter() = 1 and
+      sanitizedParameter = getParameter(0)
+    }
+
+    /**
+     * Holds if this function sanitizes argument `e` of call `call`, provided the call evaluates to `outcome`.
+     */
+    predicate isSanitizingCall(DataFlow::CallNode call, Expr e, boolean outcome) {
+      exists(DataFlow::Node arg |
+        arg.asExpr() = e and
+        arg = call.getArgument(0) and
+        call.getNumArgument() = 1 and
+        FlowSteps::argumentPassing(call, arg, this, sanitizedParameter) and
+        outcome = sanitizerOutcome
+      )
+    }
+
+    /**
+     * Holds if this function applies to the flow in `cfg`.
+     */
+    predicate appliesTo(Configuration cfg) {
+      cfg.isBarrierGuard(sanitizer)
+    }
+  }
+
+  /**
+   * A call that sanitizes an argument.
+   */
+  private class AdditionalSanitizingCall extends AdditionalSanitizerGuardNode, DataFlow::CallNode {
+    SanitizingFunction f;
+
+    AdditionalSanitizingCall() { f.isSanitizingCall(this, _, _) }
+
+    override predicate sanitizes(boolean outcome, Expr e) { f.isSanitizingCall(this, e, outcome) }
+
+    override predicate appliesTo(Configuration cfg) { f.appliesTo(cfg) }
+  }
 
   /**
    * An equality test on `e.origin` or `e.source` where `e` is a `postMessage` event object,

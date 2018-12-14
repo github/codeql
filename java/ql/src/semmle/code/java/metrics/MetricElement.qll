@@ -7,7 +7,6 @@ import semmle.code.java.Type
 
 /** This class provides access to metrics information for elements in Java programs. */
 class MetricElement extends Element {
-
   /**
    * A dependency of this element, intended to be overridden by subclasses,
    * for use with the "level metric".
@@ -23,14 +22,10 @@ class MetricElement extends Element {
    * It is typically a nondeterministic method, as an element may
    * depend on multiple other elements.
    */
-  MetricElement getADependency() {
-    result = this
-  }
+  MetricElement getADependency() { result = this }
 
   /** Gets a dependency of this element that is from source. */
-  MetricElement getADependencySrc() {
-    result = this.getADependency() and result.fromSource()
-  }
+  MetricElement getADependencySrc() { result = this.getADependency() and result.fromSource() }
 
   /**
    * An element has no level defined if it is cyclically dependent
@@ -46,29 +41,31 @@ class MetricElement extends Element {
    */
   int getALevel() {
     this.fromSource() and
-    not(this.getADependencySrc+() = this) and
+    not this.getADependencySrc+() = this and
     (
-      (not(exists(MetricElement t | t = this.getADependency())) and result = 0)
+      not exists(MetricElement t | t = this.getADependency()) and
+      result = 0
       or
-      (not(this.getADependency().fromSource()) and
-        exists(MetricElement e | this.getADependency() = e) and
-        result=1)
+      not this.getADependency().fromSource() and
+      exists(MetricElement e | this.getADependency() = e) and
+      result = 1
       or
-      (result = this.getADependency().getALevel() + 1)
+      result = this.getADependency().getALevel() + 1
     )
   }
 
   /** John Lakos' level metric. */
-  int getLevel() {
-    result = max(int d | d = this.getALevel())
-  }
+  int getLevel() { result = max(int d | d = this.getALevel()) }
 
   /** Gets the Halstead length of this element. This default implementation must be overridden in subclasses. */
   int getHalsteadLength() { result = 0 and none() }
+
   /** Gets the Halstead vocabulary of this element. This default implementation must be overridden in subclasses. */
   int getHalsteadVocabulary() { result = 0 and none() }
+
   /** Gets the cyclomatic complexity of this element. This default implementation must be overridden in subclasses. */
   int getCyclomaticComplexity() { result = 0 and none() }
+
   /** Gets the percentage of comments in this element. This default implementation must be overridden in subclasses. */
   float getPercentageOfComments() { result = 0 and none() }
 
@@ -82,9 +79,8 @@ class MetricElement extends Element {
 
   /** Gets the maintainability index without comment weight. */
   float getMaintainabilityIndexWithoutComments() {
-    result = 171 - 5.2 * this.getHalsteadVolume().log()
-                 - 0.23 * this.getCyclomaticComplexity()
-                 - 16.2 * this.getNumberOfLinesOfCode().log()
+    result = 171 - 5.2 * this.getHalsteadVolume().log() - 0.23 * this.getCyclomaticComplexity() -
+        16.2 * this.getNumberOfLinesOfCode().log()
   }
 
   /** Gets the maintainability index comment weight. */
@@ -105,16 +101,15 @@ class MetricElement extends Element {
    * `MetricRefType` and `MetricCallable` provide concrete implementations.
    */
   float getMaintainabilityIndex() {
-    result =   this.getMaintainabilityIndexWithoutComments()
-             + this.getMaintainabilityIndexCommentWeight()
+    result = this.getMaintainabilityIndexWithoutComments() +
+        this.getMaintainabilityIndexCommentWeight()
   }
 }
-
 /* ========================================================================= */
 /*                      METRICS LIBRARY                                      */
 /* ========================================================================= */
-
-/* QL metrics definitions. References for metrics defined here:
+/*
+ * QL metrics definitions. References for metrics defined here:
  *
  * http://en.wikipedia.org/wiki/Software_package_metrics
  *
@@ -153,3 +148,4 @@ class MetricElement extends Element {
  * ckjm: Chidamber and Kemerer Java Metrics:
  * http://www.spinellis.gr/sw/ckjm/
  */
+

@@ -29,3 +29,8 @@ var route = {handler: handler4};
 server2.route(route);
 
 server2.cache({ segment: 'countries', expiresIn: 60*60*1000 });
+
+function getHandler() {
+    return function (req, h){}
+}
+server2.route({handler: getHandler()});

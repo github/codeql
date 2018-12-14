@@ -14,9 +14,7 @@ import semmle.code.java.frameworks.j2objc.J2ObjC
  * - HTML entities in hexadecimal notation (e.g. `&#x705F;`)
  */
 private predicate looksLikeCode(JavadocText line) {
-  exists(string trimmed |
-    trimmed = trimmedCommentText(line)
-    |
+  exists(string trimmed | trimmed = trimmedCommentText(line) |
     (
       trimmed.matches("%;") or
       trimmed.matches("%{") or
@@ -37,10 +35,12 @@ private predicate looksLikeCode(JavadocText line) {
  * - HTML entities in hexadecimal notation (e.g. `&#x705F;`)
  */
 private string trimmedCommentText(JavadocText line) {
-  result = line.getText().trim()
-                         .regexpReplaceAll("\\s*//.*$", "")
-                         .regexpReplaceAll("\\{@[^}]+\\}", "")
-                         .regexpReplaceAll("(?i)&#?[a-z0-9]{1,31};", "")
+  result = line
+        .getText()
+        .trim()
+        .regexpReplaceAll("\\s*//.*$", "")
+        .regexpReplaceAll("\\{@[^}]+\\}", "")
+        .regexpReplaceAll("(?i)&#?[a-z0-9]{1,31};", "")
 }
 
 /**
@@ -49,7 +49,7 @@ private string trimmedCommentText(JavadocText line) {
 private predicate hasCodeTags(Javadoc j) {
   exists(string tag | tag = "pre" or tag = "code" |
     j.getAChild().(JavadocText).getText().matches("%<" + tag + ">%") and
-    j.getAChild().(JavadocText).getText().matches("%</"+ tag + ">%")
+    j.getAChild().(JavadocText).getText().matches("%</" + tag + ">%")
   )
 }
 
@@ -57,9 +57,7 @@ private predicate hasCodeTags(Javadoc j) {
  * The comment immediately following `c`.
  */
 private Javadoc getNextComment(Javadoc c) {
-  exists(int n, File f | javadocLines(c, f, _, n) |
-    javadocLines(result, f, n+1, _)
-  )
+  exists(int n, File f | javadocLines(c, f, _, n) | javadocLines(result, f, n + 1, _))
 }
 
 private predicate javadocLines(Javadoc j, File f, int start, int end) {
@@ -69,9 +67,7 @@ private predicate javadocLines(Javadoc j, File f, int start, int end) {
 }
 
 private class JavadocFirst extends Javadoc {
-  JavadocFirst() {
-    not exists(Javadoc prev | this = getNextComment(prev))
-  }
+  JavadocFirst() { not exists(Javadoc prev | this = getNextComment(prev)) }
 }
 
 /**
@@ -79,10 +75,10 @@ private class JavadocFirst extends Javadoc {
  */
 private int codeCount(JavadocFirst first) {
   result = sum(Javadoc following |
-    following = getNextComment*(first) and not hasCodeTags(following)
+      following = getNextComment*(first) and not hasCodeTags(following)
     |
-    count(JavadocText line | line = following.getAChild() and looksLikeCode(line))
-  )
+      count(JavadocText line | line = following.getAChild() and looksLikeCode(line))
+    )
 }
 
 /**
@@ -90,15 +86,16 @@ private int codeCount(JavadocFirst first) {
  */
 private int anyCount(JavadocFirst first) {
   result = sum(Javadoc following |
-    following = getNextComment*(first) and not hasCodeTags(following)
+      following = getNextComment*(first) and not hasCodeTags(following)
     |
-    count(JavadocText line | line = following.getAChild() and
-      not exists(string trimmed | trimmed = line.getText().trim() |
-        trimmed.regexpMatch("(|/\\*|/\\*\\*|\\*|\\*/)") or
-        trimmed.matches("@%")
-      )
+      count(JavadocText line |
+          line = following.getAChild() and
+          not exists(string trimmed | trimmed = line.getText().trim() |
+            trimmed.regexpMatch("(|/\\*|/\\*\\*|\\*|\\*/)") or
+            trimmed.matches("@%")
+          )
+        )
     )
-  )
 }
 
 /**
@@ -107,7 +104,7 @@ private int anyCount(JavadocFirst first) {
 class CommentedOutCode extends JavadocFirst {
   CommentedOutCode() {
     anyCount(this) > 0 and
-    ((float)codeCount(this))/((float)anyCount(this)) > 0.5 and
+    codeCount(this).(float) / anyCount(this).(float) > 0.5 and
     not this instanceof JSNIComment and
     not this instanceof OCNIComment
   }
@@ -115,9 +112,7 @@ class CommentedOutCode extends JavadocFirst {
   /**
    * The number of lines that appear to be commented-out code.
    */
-  int getCodeLines(){
-    result = codeCount(this)
-  }
+  int getCodeLines() { result = codeCount(this) }
 
   private Javadoc getLastSuccessor() {
     result = getNextComment*(this) and

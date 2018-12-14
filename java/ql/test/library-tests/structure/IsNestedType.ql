@@ -1,6 +1,7 @@
 /**
  * @name IsNestedType
  */
+
 import default
 
 from RefType t

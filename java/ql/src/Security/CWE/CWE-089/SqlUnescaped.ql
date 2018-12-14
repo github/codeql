@@ -23,22 +23,29 @@ class UncontrolledStringBuilderSource extends DataFlow::ExprNode {
 }
 
 class UncontrolledStringBuilderSourceFlowConfig extends TaintTracking::Configuration {
-  UncontrolledStringBuilderSourceFlowConfig() { this = "SqlUnescaped::UncontrolledStringBuilderSourceFlowConfig" }
+  UncontrolledStringBuilderSourceFlowConfig() {
+    this = "SqlUnescaped::UncontrolledStringBuilderSourceFlowConfig"
+  }
+
   override predicate isSource(DataFlow::Node src) { src instanceof UncontrolledStringBuilderSource }
+
   override predicate isSink(DataFlow::Node sink) { sink instanceof QueryInjectionSink }
-  override predicate isSanitizer(DataFlow::Node node) { node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType }
+
+  override predicate isSanitizer(DataFlow::Node node) {
+    node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType
+  }
 }
 
 from QueryInjectionSink query, Expr uncontrolled
 where
   (
-    builtFromUncontrolledConcat(query.getExpr(), uncontrolled) or
+    builtFromUncontrolledConcat(query.getExpr(), uncontrolled)
+    or
     exists(StringBuilderVar sbv, UncontrolledStringBuilderSourceFlowConfig conf |
       uncontrolledStringBuilderQuery(sbv, uncontrolled) and
       conf.hasFlow(DataFlow::exprNode(sbv.getToStringCall()), query)
     )
   ) and
-  not queryTaintedBy(query, _)
-select
-  query, "Query might not neutralize special characters in $@.",
-  uncontrolled, "this expression"
+  not queryTaintedBy(query, _, _)
+select query, "Query might not neutralize special characters in $@.", uncontrolled,
+  "this expression"

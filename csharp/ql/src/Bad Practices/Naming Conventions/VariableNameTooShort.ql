@@ -1,6 +1,6 @@
 /**
  * @name Variable name is too short
- * @description Variables should have meaningful names so that code is comprehensible. This query finds variable names that are too short.
+ * @description Using meaningful names for variables makes code easier to understand.
  * @kind problem
  * @problem.severity recommendation
  * @precision low

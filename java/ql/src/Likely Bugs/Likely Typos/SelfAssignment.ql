@@ -23,7 +23,8 @@ predicate toCompare(VarAccess left, VarAccess right) {
 }
 
 predicate local(RefType enclosingType, VarAccess v) {
-  enclosingType = v.getQualifier().(ThisAccess).getType() or
+  enclosingType = v.getQualifier().(ThisAccess).getType()
+  or
   not exists(v.getQualifier()) and enclosingType = v.getEnclosingCallable().getDeclaringType()
 }
 
@@ -35,10 +36,9 @@ predicate sameVariable(VarAccess left, VarAccess right) {
       q1 = left.getQualifier() and
       sameVariable(q1, q2) and
       q2 = right.getQualifier()
-    ) or
-    exists(RefType enclosingType |
-      local(enclosingType, left) and local(enclosingType, right)
     )
+    or
+    exists(RefType enclosingType | local(enclosingType, left) and local(enclosingType, right))
   )
 }
 
@@ -46,4 +46,4 @@ from AssignExpr assign
 where sameVariable(assign.getDest(), assign.getSource())
 select assign,
   "This assigns the variable " + assign.getDest().(VarAccess).getVariable().getName() +
-  " to itself and has no effect."
+    " to itself and has no effect."

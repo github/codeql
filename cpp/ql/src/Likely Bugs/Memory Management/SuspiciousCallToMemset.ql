@@ -41,24 +41,26 @@ Type stripType(Type t) {
   result = stripType(t.(ArrayType).getBaseType()) or
   result = stripType(t.(ReferenceType).getBaseType()) or
   result = stripType(t.(SpecifiedType).getBaseType()) or
+  result = stripType(t.(Decltype).getBaseType()) or
   (
     not t instanceof TypedefType and
     not t instanceof ArrayType and
     not t instanceof ReferenceType and
     not t instanceof SpecifiedType and
+    not t instanceof Decltype and
     result = t
   )
 }
 
 /**
  * Holds if `t` points to `base` via a specified number of levels of pointer
- * indirection.  Intermediate typedefs and array types are allowed.
+ * indirection.  Intermediate typedefs and array types are allowed. Note that
+ * `base` is a stripped type (via `stripType`).
  */
 predicate pointerIndirection(Type t, int indirection, Type base) {
-  exists(Type u |
-    u = stripType(t) and
-    u = stripType(base) and
-    not u instanceof PointerType and
+  (
+    base = stripType(t) and
+    not base instanceof PointerType and
     indirection = 0
   ) or (
     pointerIndirection(stripType(t).(PointerType).getBaseType(), indirection - 1, base)

@@ -91,17 +91,19 @@ class AnalyzedNode extends DataFlow::Node {
 
   /** Gets a type inferred for this node. */
   pragma[nomagic] InferredType getAType() {
-    result = getALocalValue().getType()
+    result = getAValue().getType()
   }
 
-  /** Gets a primitive type to which the value of this node can be coerced. */
+  /**
+   * Gets a primitive type to which the value of this node can be coerced.
+   */
   PrimitiveType getAPrimitiveType() {
-    result = getALocalValue().toPrimitive().getType()
+    result = getAValue().toPrimitive().getType()
   }
 
   /** Gets a Boolean value that this node evaluates to. */
   boolean getABooleanValue() {
-    result = getALocalValue().getBooleanValue()
+    result = getAValue().getBooleanValue()
   }
 
   /** Gets the unique Boolean value that this node evaluates to, if any. */
@@ -166,7 +168,7 @@ class AnalyzedNode extends DataFlow::Node {
 
   /** Holds if the flow analysis can infer at least one abstract value for this node. */
   predicate hasFlow() {
-    exists(getALocalValue())
+    exists(getAValue())
   }
 }
 
@@ -252,22 +254,18 @@ class AnalyzedFunction extends DataFlow::AnalyzedValueNode {
    * Gets a return value for a call to this function.
    */
   AbstractValue getAReturnValue() {
-    if astNode.isGenerator() or astNode.isAsync() then
-      result = TAbstractOtherObject()
-    else (
-      // explicit return value
-      result = astNode.getAReturnedExpr().analyze().getALocalValue()
+    // explicit return value
+    result = astNode.getAReturnedExpr().analyze().getALocalValue()
+    or
+    // implicit return value
+    (
+      // either because execution of the function may terminate normally
+      mayReturnImplicitly()
       or
-      // implicit return value
-      (
-        // either because execution of the function may terminate normally
-        mayReturnImplicitly()
-        or
-        // or because there is a bare `return;` statement
-        exists (ReturnStmt ret | ret = astNode.getAReturnStmt() | not exists(ret.getExpr()))
-      ) and
-      result = TAbstractUndefined()
-    )
+      // or because there is a bare `return;` statement
+      exists (ReturnStmt ret | ret = astNode.getAReturnStmt() | not exists(ret.getExpr()))
+    ) and
+    result = TAbstractUndefined()
   }
 
   /**
@@ -286,5 +284,26 @@ class AnalyzedFunction extends DataFlow::AnalyzedValueNode {
       not final instanceof ThrowStmt
     )
   }
+}
 
+/**
+ * Flow analysis for generator functions.
+ */
+private class AnalyzedGeneratorFunction extends AnalyzedFunction {
+  AnalyzedGeneratorFunction() { astNode.isGenerator() }
+
+  override AbstractValue getAReturnValue() {
+    result = TAbstractOtherObject()
+  }
+}
+
+/**
+ * Flow analysis for async functions.
+ */
+private class AnalyzedAsyncFunction extends AnalyzedFunction {
+  AnalyzedAsyncFunction() { astNode.isAsync() }
+
+  override AbstractValue getAReturnValue() {
+    result = TAbstractOtherObject()
+  }
 }

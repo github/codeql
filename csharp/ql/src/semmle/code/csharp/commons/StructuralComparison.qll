@@ -85,6 +85,7 @@ abstract class StructuralComparisonConfiguration extends string {
     value = x.getValue()
   }
 
+  pragma [nomagic]
   private predicate sameByStructure(Element x, Element y) {
     // At least one of `x` and `y` must not have a value, they must have
     // the same kind, and the same number of children
@@ -121,6 +122,7 @@ abstract class StructuralComparisonConfiguration extends string {
     not (x.(Expr).hasValue() and y.(Expr).hasValue())
   }
 
+  pragma [nomagic]
   private predicate sameInternal(Element x, Element y) {
     sameByValue(x, y)
     or
@@ -150,7 +152,7 @@ abstract class StructuralComparisonConfiguration extends string {
  */
 module Internal {
   // Import all uses of the internal library to make sure caching works
-  private import semmle.code.csharp.controlflow.Guards
+  private import semmle.code.csharp.controlflow.Guards as G
 
   /**
    * A configuration for performing structural comparisons of program elements
@@ -210,6 +212,7 @@ module Internal {
       value = x.getValue()
     }
 
+    pragma [nomagic]
     private predicate sameByStructure(Element x, Element y) {
       // At least one of `x` and `y` must not have a value, they must have
       // the same kind, and the same number of children
@@ -246,6 +249,7 @@ module Internal {
       not (x.(Expr).hasValue() and y.(Expr).hasValue())
     }
 
+    pragma [nomagic]
     private predicate sameInternal(Element x, Element y) {
       sameByValue(x, y)
       or

@@ -1,5 +1,6 @@
 import cpp
 private import semmle.code.cpp.ir.implementation.Opcode
+private import semmle.code.cpp.ir.internal.OperandTag
 private import InstructionTag
 private import TranslatedElement
 private import TranslatedExpr
@@ -205,15 +206,15 @@ class TranslatedSimpleDirectInitialization extends
   }
 
   override Instruction getInstructionOperand(InstructionTag tag,
-    OperandTag operandTag) {
+      OperandTag operandTag) {
     tag = InitializerStoreTag() and
     (
       (
-        operandTag instanceof LoadStoreAddressOperand and
+        operandTag instanceof AddressOperandTag and
         result = getContext().getTargetAddress()
       ) or
       (
-        operandTag instanceof CopySourceOperand and
+        operandTag instanceof CopySourceOperandTag and
         result = getInitializer().getResult()
       )
     )
@@ -332,11 +333,11 @@ class TranslatedStringLiteralInitialization extends
       tag = InitializerLoadStringTag() and
       (
         (
-          operandTag instanceof LoadStoreAddressOperand and
+          operandTag instanceof AddressOperandTag and
           result = getInitializer().getResult()
         ) or
         (
-          operandTag instanceof CopySourceOperand and
+          operandTag instanceof CopySourceOperandTag and
           result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
         )
       )
@@ -345,11 +346,11 @@ class TranslatedStringLiteralInitialization extends
       tag = InitializerStoreTag() and
       (
         (
-          operandTag instanceof LoadStoreAddressOperand and
+          operandTag instanceof AddressOperandTag and
           result = getContext().getTargetAddress()
         ) or
         (
-          operandTag instanceof CopySourceOperand and
+          operandTag instanceof CopySourceOperandTag and
           result = getInstruction(InitializerLoadStringTag())
         )
       )
@@ -358,11 +359,11 @@ class TranslatedStringLiteralInitialization extends
       tag = ZeroPadStringElementAddressTag() and
       (
         (
-          operandTag instanceof LeftOperand and
+          operandTag instanceof LeftOperandTag and
           result = getContext().getTargetAddress()
         ) or
         (
-          operandTag instanceof RightOperand and
+          operandTag instanceof RightOperandTag and
           result = getInstruction(ZeroPadStringElementIndexTag())
         )
       )
@@ -371,11 +372,11 @@ class TranslatedStringLiteralInitialization extends
       tag = ZeroPadStringStoreTag() and
       (
         (
-          operandTag instanceof LoadStoreAddressOperand and
+          operandTag instanceof AddressOperandTag and
           result = getInstruction(ZeroPadStringElementAddressTag())
         ) or
         (
-          operandTag instanceof CopySourceOperand and
+          operandTag instanceof CopySourceOperandTag and
           result = getInstruction(ZeroPadStringConstantTag())
         )
       )
@@ -450,7 +451,7 @@ class TranslatedConstructorInitialization extends
   }
 
   override Instruction getInstructionOperand(InstructionTag tag,
-    OperandTag operandTag) {
+      OperandTag operandTag) {
     none()
   }
 
@@ -514,9 +515,9 @@ abstract class TranslatedFieldInitialization extends TranslatedElement {
   }
 
   override Instruction getInstructionOperand(InstructionTag tag,
-    OperandTag operandTag) {
+      OperandTag operandTag) {
     tag = getFieldAddressTag() and
-    operandTag instanceof UnaryOperand and
+    operandTag instanceof UnaryOperandTag and
     result = getParent().(InitializationContext).getTargetAddress()
   }
 
@@ -633,17 +634,17 @@ class TranslatedFieldValueInitialization extends
   }
 
   override Instruction getInstructionOperand(InstructionTag tag,
-    OperandTag operandTag) {
+      OperandTag operandTag) {
     result = TranslatedFieldInitialization.super.getInstructionOperand(tag, operandTag) or
     (
       tag = getFieldDefaultValueStoreTag() and
       (
         (
-          operandTag instanceof LoadStoreAddressOperand and
+          operandTag instanceof AddressOperandTag and
           result = getInstruction(getFieldAddressTag())
         ) or
         (
-          operandTag instanceof CopySourceOperand and
+          operandTag instanceof CopySourceOperandTag and
           result = getInstruction(getFieldDefaultValueTag())
         )
       )
@@ -723,15 +724,15 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
   }
 
   override Instruction getInstructionOperand(InstructionTag tag,
-    OperandTag operandTag) {
+      OperandTag operandTag) {
     tag = getElementAddressTag() and
     (
       (
-        operandTag instanceof LeftOperand and
+        operandTag instanceof LeftOperandTag and
         result = getParent().(InitializationContext).getTargetAddress()
       ) or
       (
-        operandTag instanceof RightOperand and
+        operandTag instanceof RightOperandTag and
         result = getInstruction(getElementIndexTag())
       )
     )
@@ -882,17 +883,17 @@ class TranslatedElementValueInitialization extends
   }
 
   override Instruction getInstructionOperand(InstructionTag tag,
-    OperandTag operandTag) {
+      OperandTag operandTag) {
     result = TranslatedElementInitialization.super.getInstructionOperand(tag, operandTag) or
     (
       tag = getElementDefaultValueStoreTag() and
       (
         (
-          operandTag instanceof LoadStoreAddressOperand and
+          operandTag instanceof AddressOperandTag and
           result = getInstruction(getElementAddressTag())
         ) or
         (
-          operandTag instanceof CopySourceOperand and
+          operandTag instanceof CopySourceOperandTag and
           result = getInstruction(getElementDefaultValueTag())
         )
       )
@@ -981,9 +982,9 @@ abstract class TranslatedBaseStructorCall extends TranslatedStructorCallFromStru
   }
 
   override final Instruction getInstructionOperand(InstructionTag tag,
-    OperandTag operandTag) {
+      OperandTag operandTag) {
     tag = OnlyInstructionTag() and
-    operandTag instanceof UnaryOperand and
+    operandTag instanceof UnaryOperandTag and
     result = getTranslatedFunction(getFunction()).getInitializeThisInstruction()
   }
 

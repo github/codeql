@@ -1,29 +1,12 @@
 import SSAConstructionInternal
 import cpp
 private import semmle.code.cpp.ir.implementation.Opcode
-import NewIR
+private import semmle.code.cpp.ir.internal.OperandTag
+private import NewIR
 import IRBlockConstruction as BlockConstruction
 
 import Cached
 cached private module Cached {
-
-  private OldIR::OperandTag getOldOperandTag(OperandTag newTag) {
-    newTag instanceof LoadStoreAddressOperand and result instanceof OldIR::LoadStoreAddressOperand or
-    newTag instanceof CopySourceOperand and result instanceof OldIR::CopySourceOperand or
-    newTag instanceof UnaryOperand and result instanceof OldIR::UnaryOperand or
-    newTag instanceof LeftOperand and result instanceof OldIR::LeftOperand or
-    newTag instanceof RightOperand and result instanceof OldIR::RightOperand or
-    newTag instanceof ReturnValueOperand and result instanceof OldIR::ReturnValueOperand or
-    newTag instanceof ExceptionOperand and result instanceof OldIR::ExceptionOperand or
-    newTag instanceof ConditionOperand and result instanceof OldIR::ConditionOperand or
-    newTag instanceof UnmodeledUseOperand and result instanceof OldIR::UnmodeledUseOperand or
-    newTag instanceof CallTargetOperand and result instanceof OldIR::CallTargetOperand or
-    newTag instanceof ThisArgumentOperand and result instanceof OldIR::ThisArgumentOperand or
-    exists(PositionalArgumentOperand newArg |
-      newArg = newTag and
-      result.(OldIR::PositionalArgumentOperand).getArgIndex() = newArg.getArgIndex()
-    )
-  }
 
   private IRBlock getNewBlock(OldIR::IRBlock oldBlock) {
     result.getFirstInstruction() = getNewInstruction(oldBlock.getFirstInstruction())
@@ -46,14 +29,6 @@ cached private module Cached {
   cached predicate functionHasIR(Function func) {
     exists(OldIR::FunctionIR funcIR |
       funcIR.getFunction() = func
-    )
-  }
-
-  cached int getMaxCallArgIndex() {
-    result = max(int argIndex |
-      exists(OldIR::PositionalArgumentOperand oldOperand |
-        argIndex = oldOperand.getArgIndex()
-      )
     )
   }
 
@@ -135,18 +110,19 @@ cached private module Cached {
     instruction instanceof PhiInstruction  // Phis always have modeled results
   }
 
-  cached Instruction getInstructionOperand(Instruction instruction, OperandTag tag) {
-    exists(OldIR::Instruction oldUse, OldIR::OperandTag oldTag |
-      oldUse = getOldInstruction(instruction) and
-      oldTag = getOldOperandTag(tag) and
-      if oldUse.isMemoryOperand(oldTag) then (
+  cached Instruction getInstructionOperandDefinition(Instruction instruction, OperandTag tag) {
+    exists(OldIR::Instruction oldInstruction, OldIR::NonPhiOperand oldOperand |
+      oldInstruction = getOldInstruction(instruction) and
+      oldOperand = oldInstruction.getAnOperand() and
+      tag = oldOperand.getOperandTag() and
+      if oldOperand instanceof OldIR::MemoryOperand then (
         (
-          if exists(Alias::getOperandMemoryAccess(oldUse, oldTag)) then (
+          if exists(Alias::getOperandMemoryAccess(oldOperand)) then (
             exists(OldIR::IRBlock useBlock, int useRank, Alias::VirtualVariable vvar,
               OldIR::IRBlock defBlock, int defRank, int defIndex |
-              vvar = Alias::getOperandMemoryAccess(oldUse, oldTag).getVirtualVariable() and
+              vvar = Alias::getOperandMemoryAccess(oldOperand).getVirtualVariable() and
               hasDefinitionAtRank(vvar, defBlock, defRank, defIndex) and
-              hasUseAtRank(vvar, useBlock, useRank, oldUse) and
+              hasUseAtRank(vvar, useBlock, useRank, oldInstruction) and
               definitionReachesUse(vvar, defBlock, defRank, useBlock, useRank) and
               if defIndex >= 0 then
                 result = getNewInstruction(defBlock.getInstruction(defIndex))
@@ -162,25 +138,25 @@ cached private module Cached {
         // `UnmodeledUse` instruction.
         exists(OldIR::Instruction oldDefinition |
           instruction instanceof UnmodeledUseInstruction and
-          tag instanceof UnmodeledUseOperand and
-          oldDefinition = oldUse.getOperand(oldTag) and
+          tag instanceof UnmodeledUseOperandTag and
+          oldDefinition = oldOperand.getDefinitionInstruction() and
           not exists(Alias::getResultMemoryAccess(oldDefinition)) and
           result = getNewInstruction(oldDefinition)
         )
       )
       else 
-        result = getNewInstruction(oldUse.getOperand(oldTag))
-    ) or
-    result = getPhiInstructionOperand(instruction.(PhiInstruction), tag.(PhiOperand))
+        result = getNewInstruction(oldOperand.getDefinitionInstruction())
+    )
   }
 
-  cached Instruction getPhiInstructionOperand(PhiInstruction instr, PhiOperand tag) {
+  cached Instruction getPhiInstructionOperandDefinition(PhiInstruction instr,
+      IRBlock newPredecessorBlock) {
     exists(Alias::VirtualVariable vvar, OldIR::IRBlock phiBlock,
       OldIR::IRBlock defBlock, int defRank, int defIndex, OldIR::IRBlock predBlock |
       hasPhiNode(vvar, phiBlock) and
       predBlock = phiBlock.getAPredecessor() and
       instr.getTag() = PhiTag(vvar, phiBlock) and
-      tag.getPredecessorBlock() = getNewBlock(predBlock) and
+      newPredecessorBlock = getNewBlock(predBlock) and
       hasDefinitionAtRank(vvar, defBlock, defRank, defIndex) and
       definitionReachesEndOfBlock(vvar, defBlock, defRank, predBlock) and
       if defIndex >= 0 then
@@ -197,8 +173,12 @@ cached private module Cached {
     )
   }
 
-  cached Expr getInstructionResultExpression(Instruction instruction) {
-    result = getOldInstruction(instruction).getResultExpression()
+  cached Expr getInstructionConvertedResultExpression(Instruction instruction) {
+    result = getOldInstruction(instruction).getConvertedResultExpression()
+  }
+
+  cached Expr getInstructionUnconvertedResultExpression(Instruction instruction) {
+    result = getOldInstruction(instruction).getUnconvertedResultExpression()
   }
 
   cached Instruction getInstructionSuccessor(Instruction instruction, EdgeKind kind) {
@@ -273,7 +253,7 @@ cached private module Cached {
   private predicate hasUse(Alias::VirtualVariable vvar, 
     OldIR::Instruction use, OldIR::IRBlock block, int index) {
     exists(Alias::MemoryAccess access |
-      access = Alias::getOperandMemoryAccess(use, _) and
+      access = Alias::getOperandMemoryAccess(use.getAnOperand()) and
       block.getInstruction(index) = use and
       vvar = access.getVirtualVariable()
     )

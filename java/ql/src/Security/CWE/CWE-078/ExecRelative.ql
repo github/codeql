@@ -15,7 +15,6 @@ import semmle.code.java.Expr
 import semmle.code.java.security.RelativePaths
 import semmle.code.java.security.ExternalProcess
 
-
 from ArgumentToExec argument, string command
 where
   (

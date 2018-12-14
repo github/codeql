@@ -233,6 +233,42 @@ private class AnalyzedAmdExport extends AnalyzedPropertyWrite, DataFlow::ValueNo
 }
 
 /**
+ * Flow analysis for AMD imports, interpreted as an implicit read of
+ * the `module.exports` property of the imported module.
+ */
+private class AnalyzedAmdImport extends AnalyzedPropertyRead, DataFlow::Node {
+  Module required;
+
+  AnalyzedAmdImport() {
+    exists (AMDModule amd, PathExpr dep, Parameter p |
+      amd.getDefine().dependencyParameter(dep, p) and
+      this = DataFlow::parameterNode(p) and
+      required.getFile() = amd.resolve(dep)
+    )
+  }
+
+  override predicate reads(AbstractValue base, string propName) {
+    base = TAbstractModuleObject(required) and
+    propName = "exports"
+  }
+}
+
+/**
+ * Flow analysis for parameters corresponding to AMD imports.
+ */
+private class AnalyzedAmdParameter extends AnalyzedVarDef, @vardecl {
+  AnalyzedAmdImport imp;
+
+  AnalyzedAmdParameter() {
+    imp = DataFlow::parameterNode(this)
+  }
+
+  override AbstractValue getAnRhsValue() {
+    result = imp.getALocalValue()
+  }
+}
+
+/**
  * Flow analysis for exports that export a single value.
  */
 private class AnalyzedValueExport extends AnalyzedPropertyWrite, DataFlow::ValueNode {
@@ -268,6 +304,12 @@ private class AnalyzedVariableExport extends AnalyzedPropertyWrite, DataFlow::Va
     propName = name and
     source = varDef.getSource().analyze()
   }
+
+  override predicate writesValue(AbstractValue baseVal, string propName, AbstractValue val) {
+    baseVal = TAbstractExportsObject(export.getEnclosingModule()) and
+    propName = name and
+    val = varDef.getAnAssignedValue()
+  }
 }
 
 /**
@@ -301,7 +343,7 @@ private class AnalyzedExportAssign extends AnalyzedPropertyWrite, DataFlow::Valu
   }
 
   override predicate writes(AbstractValue baseVal, string propName, DataFlow::AnalyzedNode source) {
-    baseVal = TAbstractModuleObject(exportAssign.getContainer()) and
+    baseVal = TAbstractModuleObject(exportAssign.getTopLevel()) and
     propName = "exports" and
     source = this
   }

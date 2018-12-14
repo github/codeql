@@ -62,9 +62,9 @@ class JsonParseCall extends MethodCallExpr {
  * However, since the function could be invoked in another way, we additionally
  * still infer the ordinary abstract value.
  */
-private class AnalyzedThisInArrayIterationFunction extends AnalyzedValueNode, DataFlow::ThisNode {
+private class AnalyzedThisInArrayIterationFunction extends AnalyzedNode, DataFlow::ThisNode {
 
-  AnalyzedValueNode thisSource;
+  AnalyzedNode thisSource;
 
   AnalyzedThisInArrayIterationFunction() {
     exists(DataFlow::MethodCallNode bindingCall, string name |
@@ -82,7 +82,7 @@ private class AnalyzedThisInArrayIterationFunction extends AnalyzedValueNode, Da
 
   override AbstractValue getALocalValue() {
     result = thisSource.getALocalValue() or
-    result = AnalyzedValueNode.super.getALocalValue()
+    result = AnalyzedNode.super.getALocalValue()
   }
 
 }

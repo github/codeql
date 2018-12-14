@@ -15,23 +15,30 @@ import java
 
 class SpecialCollectionCreation extends MethodAccess {
   SpecialCollectionCreation() {
-    exists(Method m, RefType rt | m = this.(MethodAccess).getCallee() and rt = m.getDeclaringType() |
-      (rt.hasQualifiedName("java.util", "Arrays") and m.hasName("asList")) or
-      (rt.hasQualifiedName("java.util", "Collections") and m.getName().regexpMatch("singleton.*|unmodifiable.*"))
+    exists(Method m, RefType rt |
+      m = this.(MethodAccess).getCallee() and rt = m.getDeclaringType()
+    |
+      rt.hasQualifiedName("java.util", "Arrays") and m.hasName("asList")
+      or
+      rt.hasQualifiedName("java.util", "Collections") and
+      m.getName().regexpMatch("singleton.*|unmodifiable.*")
     )
   }
 }
 
 predicate containsSpecialCollection(Expr e, SpecialCollectionCreation origin) {
-  e = origin or
+  e = origin
+  or
   exists(Variable v |
     containsSpecialCollection(v.getAnAssignedValue(), origin) and
     e = v.getAnAccess()
-  ) or
+  )
+  or
   exists(Call c, int i |
     containsSpecialCollection(c.getArgument(i), origin) and
     e = c.getCallee().getParameter(i).getAnAccess()
-  ) or
+  )
+  or
   exists(Call c, ReturnStmt r | e = c |
     r.getEnclosingCallable() = c.getCallee() and
     containsSpecialCollection(r.getResult(), origin)
@@ -42,15 +49,18 @@ predicate iterOfSpecialCollection(Expr e, SpecialCollectionCreation origin) {
   exists(MethodAccess ma | ma = e |
     containsSpecialCollection(ma.getQualifier(), origin) and
     ma.getCallee().hasName("iterator")
-  ) or
+  )
+  or
   exists(Variable v |
     iterOfSpecialCollection(v.getAnAssignedValue(), origin) and
     e = v.getAnAccess()
-  ) or
+  )
+  or
   exists(Call c, int i |
     iterOfSpecialCollection(c.getArgument(i), origin) and
     e = c.getCallee().getParameter(i).getAnAccess()
-  ) or
+  )
+  or
   exists(Call c, ReturnStmt r | e = c |
     r.getEnclosingCallable() = c.getCallee() and
     iterOfSpecialCollection(r.getResult(), origin)

@@ -1746,3 +1746,28 @@ class SystemNetWebUtilityFlow extends LibraryTypeDataFlow, SystemNetWebUtility {
     preservesValue = false
   }
 }
+
+/**
+ * The `StringValues` class used in many .NET Core libraries. Requires special `LibraryTypeDataFlow` flow.
+ */
+class StringValues extends Struct {
+  StringValues() { this.hasQualifiedName("Microsoft.Extensions.Primitives", "StringValues") }
+}
+
+/**
+ * Custom flow through StringValues.StringValues library class
+ */
+class StringValuesFlow extends LibraryTypeDataFlow, StringValues {
+  override predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  ) {
+    c = any(Callable ca | this = ca.getDeclaringType()) and
+    (
+      source = any(CallableFlowSourceArg a) or
+      source = any(CallableFlowSourceQualifier q)
+    ) and
+    sink = any(CallableFlowSinkReturn r) and
+    preservesValue = false
+  }
+}

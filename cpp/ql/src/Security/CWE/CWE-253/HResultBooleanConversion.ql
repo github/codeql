@@ -1,8 +1,6 @@
 /**
- * @name Cast between semantically different integer types: HRESULT to/from a Boolean type
- * @description Cast between semantically different integer types: HRESULT to/from a Boolean type.
- *              Boolean types indicate success by a non-zero value, whereas success (S_OK) in HRESULT is indicated by a value of 0. 
- *              Casting an HRESULT to/from a Boolean type and then using it in a test expression will yield an incorrect result.
+ * @name Cast between HRESULT and a Boolean type
+ * @description Casting an HRESULT to/from a Boolean type and then using it in a test expression will yield an incorrect result because success (S_OK) in HRESULT is indicated by a value of 0.
  * @kind problem
  * @id cpp/hresult-boolean-conversion
  * @problem.severity error
@@ -50,6 +48,7 @@ where exists
     ctls.getControllingExpr() = e1
     and e1.getType().(TypedefType).hasName("HRESULT")
     and not isHresultBooleanConverted(e1)
+    and not ctls instanceof SwitchStmt // not controlled by a boolean condition
     and msg = "Direct usage of a type " + e1.getType().toString() + " as a conditional expression"
   ) 
   or

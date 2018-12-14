@@ -1,6 +1,7 @@
 import cpp
 import semmle.code.cpp.ir.implementation.raw.IR
 private import semmle.code.cpp.ir.implementation.Opcode
+private import semmle.code.cpp.ir.internal.OperandTag
 private import semmle.code.cpp.ir.internal.TempVariableTag
 private import InstructionTag
 private import TranslatedElement
@@ -210,10 +211,10 @@ class TranslatedFunction extends TranslatedElement,
   }
 
   override final Instruction getInstructionOperand(InstructionTag tag,
-    OperandTag operandTag) {
+      OperandTag operandTag) {
     (
       tag = UnmodeledUseTag() and
-      operandTag instanceof UnmodeledUseOperand and
+      operandTag instanceof UnmodeledUseOperandTag and
       result.getFunction() = func and
       result.hasMemoryResult()
     ) or
@@ -222,11 +223,11 @@ class TranslatedFunction extends TranslatedElement,
       not getReturnType() instanceof VoidType and
       (
         (
-          operandTag instanceof LoadStoreAddressOperand and
+          operandTag instanceof AddressOperandTag and
           result = getInstruction(ReturnValueAddressTag())
         ) or
         (
-          operandTag instanceof ReturnValueOperand and
+          operandTag instanceof ReturnValueOperandTag and
           result = getUnmodeledDefinitionInstruction()
         )
       )
@@ -374,11 +375,11 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
   }
 
   override final Instruction getInstructionOperand(InstructionTag tag,
-    OperandTag operandTag) {
+      OperandTag operandTag) {
     tag = InitializerStoreTag() and
     (
       (
-        operandTag instanceof LoadStoreAddressOperand and
+        operandTag instanceof AddressOperandTag and
         result = getInstruction(InitializerVariableAddressTag())
       )
     )

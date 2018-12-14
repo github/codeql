@@ -89,6 +89,7 @@ predicate defSourceType(SsaDefinition def, LocalScopeVariable v,
   | p = v and
     def.definedByParameter(p) and
     sourceType = p.getType().getUnspecifiedType() and
+    strictcount(p.getType()) = 1 and
     isPointerType(sourceType) and
     sourceLoc = p.getLocation())
 }

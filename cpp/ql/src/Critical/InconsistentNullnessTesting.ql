@@ -1,6 +1,6 @@
 /**
  * @name Inconsistent null check of pointer
- * @description A dereferenced pointer is not checked for nullness in the given location, but is checked in other locations. Dereferencing a NULL pointer leads to undefined results.
+ * @description A dereferenced pointer is not checked for nullness in this location, but it is checked in other locations. Dereferencing a null pointer leads to undefined results.
  * @kind problem
  * @id cpp/inconsistent-nullness-testing
  * @problem.severity warning

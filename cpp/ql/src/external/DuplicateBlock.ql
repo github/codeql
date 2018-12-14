@@ -4,6 +4,11 @@
  * @kind problem
  * @id cpp/duplicate-block
  * @problem.severity recommendation
+ * @precision medium
+ * @tags testability
+ *       maintainability
+ *       duplicate-code
+ *       non-attributable
  */
 import CodeDuplication
 

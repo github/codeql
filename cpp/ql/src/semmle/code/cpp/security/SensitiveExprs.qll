@@ -35,25 +35,3 @@ class SensitiveCall extends SensitiveExpr {
     )
   } 
 }
-
-class SensitivePropAccess extends SensitiveExpr {
-  SensitivePropAccess() {
-    exists (PropertyAccess acc, string name |
-      acc = this and
-      name = acc.getProperty().getName().toLowerCase() and
-      name.matches(suspicious()) and
-      not name.matches(nonSuspicious()))
-  }
-}
-
-/**
- * A read from the value of a text widget.
- */
-class SensitiveTextRead extends SensitiveExpr {
-  SensitiveTextRead() {
-    exists (PropertyAccess facc |
-      facc = this and
-      facc.getReceiver() instanceof SensitiveExpr and
-      facc.getProperty().getName() = "text")
-  }
-}

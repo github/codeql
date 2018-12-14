@@ -17,7 +17,7 @@ import javascript
  * Holds if `setupCall` is a call to `$sceDelegateProvider.resourceUrlWhitelist` with
  * argument `list`.
  */
-predicate isResourceUrlWhitelist(DataFlow::MethodCallNode setupCall, DataFlow::ArrayLiteralNode list) {
+predicate isResourceUrlWhitelist(DataFlow::MethodCallNode setupCall, DataFlow::ArrayCreationNode list) {
   exists (AngularJS::ServiceReference service |
     service.getName() = "$sceDelegateProvider" and
     setupCall.asExpr() = service.getAMethodCall("resourceUrlWhitelist") and
@@ -33,7 +33,7 @@ class ResourceUrlWhitelistEntry extends Expr {
   string pattern;
 
   ResourceUrlWhitelistEntry() {
-    exists (DataFlow::ArrayLiteralNode whitelist |
+    exists (DataFlow::ArrayCreationNode whitelist |
       isResourceUrlWhitelist(setupCall, whitelist) and
       this = whitelist.getAnElement().asExpr() and
       this.mayHaveStringValue(pattern)

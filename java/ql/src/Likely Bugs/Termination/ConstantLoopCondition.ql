@@ -16,7 +16,8 @@ import semmle.code.java.controlflow.Guards
 import semmle.code.java.dataflow.SSA
 
 predicate loopWhileTrue(LoopStmt loop) {
-  loop instanceof ForStmt and not exists(loop.getCondition()) or
+  loop instanceof ForStmt and not exists(loop.getCondition())
+  or
   loop.getCondition().(BooleanLiteral).getBooleanValue() = true
 }
 
@@ -43,9 +44,7 @@ predicate loopExitGuard(LoopStmt loop, Expr cond) {
   exists(ConditionBlock cb, boolean branch |
     cond = cb.getCondition() and
     cond.getEnclosingStmt().getParent*() = loop.getBody() and
-    forex(Stmt exit | loopExit(loop, exit) |
-      cb.controls(exit.getBasicBlock(), branch)
-    )
+    forex(Stmt exit | loopExit(loop, exit) | cb.controls(exit.getBasicBlock(), branch))
   )
 }
 
@@ -57,11 +56,10 @@ predicate loopExitGuard(LoopStmt loop, Expr cond) {
 predicate mainLoopCondition(LoopStmt loop, Expr cond) {
   loop.getCondition() = cond and
   exists(Expr loopReentry, ControlFlowNode last |
-    if exists(loop.(ForStmt).getAnUpdate()) then
-      loopReentry = loop.(ForStmt).getUpdate(0)
-    else
-      loopReentry = cond
-    |
+    if exists(loop.(ForStmt).getAnUpdate())
+    then loopReentry = loop.(ForStmt).getUpdate(0)
+    else loopReentry = cond
+  |
     last.getEnclosingStmt().getParent*() = loop.getBody() and
     last.getASuccessor().(Expr).getParent*() = loopReentry
   )
@@ -69,7 +67,11 @@ predicate mainLoopCondition(LoopStmt loop, Expr cond) {
 
 from LoopStmt loop, Expr cond
 where
-  (mainLoopCondition(loop, cond) or loopWhileTrue(loop) and loopExitGuard(loop, cond)) and
+  (
+    mainLoopCondition(loop, cond)
+    or
+    loopWhileTrue(loop) and loopExitGuard(loop, cond)
+  ) and
   // None of the ssa variables in `cond` are updated inside the loop.
   forex(SsaVariable ssa, RValue use | ssa.getAUse() = use and use.getParent*() = cond |
     not ssa.getCFGNode().getEnclosingStmt().getParent*() = loop or
@@ -79,4 +81,5 @@ where
   not exists(MethodAccess ma | ma.getParent*() = cond) and
   not exists(FieldRead fa | fa.getParent*() = cond) and
   not exists(ArrayAccess aa | aa.getParent*() = cond)
-select loop, "Loop might not terminate, as this $@ is constant within the loop.", cond, "loop condition"
+select cond, "$@ might not terminate, as this loop condition is constant within the loop.", loop,
+  "Loop"

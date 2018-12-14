@@ -5,7 +5,9 @@
  * @problem.severity recommendation
  * @precision high
  * @id cpp/undisciplined-multiple-inheritance
- * @tags readability
+ * @tags maintainability
+ *       readability
+ *       external/jsf
  */
 import cpp
 

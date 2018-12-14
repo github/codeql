@@ -62,3 +62,35 @@ void exit(int status);
 int f10() {
     exit(1);
 }
+
+int f11(int x)
+{
+    if (x < 10)
+    {
+        return x;
+    } else {
+        f10(); // GOOD
+    }
+}
+
+int f12(int x)
+{
+    while (1)
+    {
+        // ...
+
+        if (x == 10) return 1; // GOOD
+
+        // ...
+    }
+}
+
+void f13()
+{
+	f13_func(); // implicitly declared here
+}
+
+void f13_func(int x)
+{
+	if (x < 10) return; // GOOD
+}

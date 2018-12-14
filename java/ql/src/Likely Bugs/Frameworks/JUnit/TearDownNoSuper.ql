@@ -11,6 +11,7 @@
  *       maintainability
  *       frameworks/junit
  */
+
 import java
 
 from TearDownMethod m1

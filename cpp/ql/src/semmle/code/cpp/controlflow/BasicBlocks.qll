@@ -240,13 +240,18 @@ class BasicBlock extends ControlFlowNodeBase {
 
   /**
    * Holds if control flow may reach this basic block from a function entry
-   * point or a `catch` clause of a reachable `try` statement.
+   * point or any handler of a reachable `try` statement.
    */
   predicate isReachable() {
     exists(Function f | f.getBlock() = this)
     or
-    exists(TryStmt t, BasicBlock tryblock | this = t.getACatchClause() and tryblock.isReachable() and tryblock.contains(t))
-    or
+    exists(TryStmt t, BasicBlock tryblock |
+      // a `Handler` preceeds the `CatchBlock`, and is always the beginning
+      // of a new `BasicBlock` (see `primitive_basic_block_entry_node`).
+      this.(Handler).getTryStmt() = t and
+      tryblock.isReachable() and
+      tryblock.contains(t)
+    ) or
     exists(BasicBlock pred | pred.getASuccessor() = this and pred.isReachable())
   }
 
