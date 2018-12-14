@@ -26,13 +26,9 @@ cached private module Cached {
       hasChiNode(_, oldInstruction)
     } or
     UnreachedTag(OldInstruction oldInstruction, EdgeKind kind) {
-      // We need an `Unreached` instruction for the destination of any edge whose predecessor
-      // instruction is reachable, but whose successor block is not. This should occur only for
-      // infeasible edges.
-      exists(OldIR::Instruction succInstruction |
-        succInstruction = oldInstruction.getSuccessor(kind) and
-        not succInstruction instanceof OldInstruction
-      )
+      // We need an `Unreached` instruction for the destination of each infeasible edge whose
+      // predecessor is reachable.
+      Reachability::isInfeasibleInstructionSuccessor(oldInstruction, kind)
     }
 
   cached class InstructionTagType extends TInstructionTag {
@@ -213,7 +209,7 @@ cached private module Cached {
     exists(Alias::VirtualVariable vvar, OldBlock phiBlock,
         OldBlock defBlock, int defRank, int defIndex, OldBlock predBlock |
       hasPhiNode(vvar, phiBlock) and
-      predBlock = phiBlock.getAPredecessor() and
+      predBlock = phiBlock.getAFeasiblePredecessor() and
       instr.getTag() = PhiTag(vvar, phiBlock) and
       newPredecessorBlock = getNewBlock(predBlock) and
       hasDefinitionAtRank(vvar, defBlock, defRank, defIndex) and
@@ -266,13 +262,20 @@ cached private module Cached {
       result = getChiInstruction(getOldInstruction(instruction)) and
       kind instanceof GotoEdge
     else (
-      result = getNewInstruction(getOldInstruction(instruction).getSuccessor(kind))
-      or
+      exists(OldInstruction oldInstruction |
+        oldInstruction = getOldInstruction(instruction) and
+        (
+          result.getTag() = UnreachedTag(oldInstruction, kind) or
+          (
+            result = getNewInstruction(oldInstruction.getSuccessor(kind)) and
+            not exists(UnreachedTag(oldInstruction, kind))
+          )
+        )
+      ) or
       exists(OldInstruction oldInstruction |
         instruction = getChiInstruction(oldInstruction) and
         result = getNewInstruction(oldInstruction.getSuccessor(kind))
-      ) or
-      result.getTag() = UnreachedTag(getOldInstruction(instruction), kind)
+      )
     )
   }
 
@@ -380,7 +383,7 @@ cached private module Cached {
 
   pragma[noinline]
   private predicate variableLiveOnExitFromBlock(Alias::VirtualVariable vvar, OldBlock block) {
-    variableLiveOnEntryToBlock(vvar, block.getASuccessor())
+    variableLiveOnEntryToBlock(vvar, block.getAFeasibleSuccessor())
   }
 
   /**
@@ -474,7 +477,7 @@ cached private module Cached {
         useRank) or
       (
         definitionReachesEndOfBlock(vvar, defBlock, defRank,
-          useBlock.getAPredecessor()) and
+          useBlock.getAFeasiblePredecessor()) and
         not definitionReachesUseWithinBlock(vvar, useBlock, _, useBlock, useRank)
       )
     )

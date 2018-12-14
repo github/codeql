@@ -94,5 +94,9 @@
   "C++ IR Dominance": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/internal/reachability/Dominance.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/reachability/Dominance.qll"
+  ],
+  "C++ IR PrintDominance": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/internal/reachability/PrintDominance.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/reachability/PrintDominance.qll"
   ]
 }

@@ -31,6 +31,7 @@
 | IR: Derived | 1 |
 | IR: DerivedVB | 1 |
 | IR: DoStatements | 3 |
+| IR: DoWhileFalse | 3 |
 | IR: DynamicCast | 1 |
 | IR: EarlyReturn | 4 |
 | IR: EarlyReturnValue | 4 |

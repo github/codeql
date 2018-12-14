@@ -6754,3 +6754,31 @@ ir.cpp:
 # 1044|                   Type = int
 # 1044|                   Value = 1
 # 1044|                   ValueCategory = prvalue
+# 1049| DoWhileFalse() -> int
+# 1049|   params: 
+# 1049|   body: { ... }
+# 1050|     0: declaration
+# 1050|       0: definition of i
+# 1050|           Type = int
+# 1050|         init: initializer for i
+# 1050|           expr: 0
+# 1050|               Type = int
+# 1050|               Value = 0
+# 1050|               ValueCategory = prvalue
+# 1051|     1: do (...) ...
+# 1053|       0: 0
+# 1053|           Type = bool
+# 1053|           Value = 0
+# 1053|           ValueCategory = prvalue
+# 1051|       1: { ... }
+# 1052|         0: ExprStmt
+# 1052|           0: ... ++
+# 1052|               Type = int
+# 1052|               ValueCategory = prvalue
+# 1052|             0: i
+# 1052|                 Type = int
+# 1052|                 ValueCategory = lvalue
+# 1055|     2: return ...
+# 1055|       0: i
+# 1055|           Type = int
+# 1055|           ValueCategory = prvalue(load)
