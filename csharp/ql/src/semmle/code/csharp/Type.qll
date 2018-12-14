@@ -751,7 +751,6 @@ class Class extends RefType, @class_type {
  * ```
  */
 class AnonymousClass extends Class {
-
   AnonymousClass() { this.getName().matches("<%") }
 }
 

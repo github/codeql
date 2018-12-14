@@ -23,7 +23,6 @@ class Namespace extends DotNet::Namespace, TypeContainer, @namespace {
   override Namespace getParent() { result = this.getParentNamespace() }
   override Namespace getParentNamespace() { parent_namespace(this, result) }
   override string getName() { namespaces(this,result) }
-  string getUrl() { result="" }
   override Location getLocation() { none() }
 }
 
