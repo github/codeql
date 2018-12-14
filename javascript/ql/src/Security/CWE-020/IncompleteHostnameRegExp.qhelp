@@ -21,7 +21,7 @@
 
 			Even if the check is not used in a security-critical
 			context, the incomplete check may still cause undesirable behaviors
-			when the check succeeds accidentally.
+			when it accidentally succeeds.
 
 		</p>
 	</overview>
@@ -54,6 +54,9 @@
 			<code>.</code> allows for any character before
 			<code>example.com</code>, effectively allowing the redirect to go to
 			an attacker-controlled domain such as <code>wwwXexample.com</code>.
+
+		<p>
+		</p>
 
 			Address this vulnerability by escaping <code>.</code>
 			appropriately: <code>let regex = /(www|beta|)\.example\.com/</code>.

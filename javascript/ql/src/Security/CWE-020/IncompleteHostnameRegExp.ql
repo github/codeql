@@ -1,6 +1,6 @@
 /**
  * @name Incomplete regular expression for hostnames
- * @description Matching a URL or hostname against a regular expression that contains an unescaped dot as part of the hostname might match more than expected.
+ * @description Matching a URL or hostname against a regular expression that contains an unescaped dot as part of the hostname might match more hostnames than expected.
  * @kind problem
  * @problem.severity warning
  * @precision high
