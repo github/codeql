@@ -84,9 +84,7 @@ nodes
 | tainted-require.js:7:19:7:37 | req.param("module") |
 | tainted-sendFile.js:7:16:7:33 | req.param("gimme") |
 | tainted-sendFile.js:9:16:9:33 | req.param("gimme") |
-| tainted-sendFile.js:12:16:12:33 | req.param("gimme") |
-| tainted-sendFile.js:14:16:14:33 | req.param("gimme") |
-| tainted-sendFile.js:17:16:17:32 | req.param("file") |
+| tainted-sendFile.js:17:43:17:58 | req.param("dir") |
 | views.js:1:43:1:55 | req.params[0] |
 edges
 | TaintedPath-es6.js:7:7:7:44 | path | TaintedPath-es6.js:10:41:10:44 | path |
@@ -191,7 +189,5 @@ edges
 | tainted-require.js:7:19:7:37 | req.param("module") | tainted-require.js:7:19:7:37 | req.param("module") | tainted-require.js:7:19:7:37 | req.param("module") | This path depends on $@. | tainted-require.js:7:19:7:37 | req.param("module") | a user-provided value |
 | tainted-sendFile.js:7:16:7:33 | req.param("gimme") | tainted-sendFile.js:7:16:7:33 | req.param("gimme") | tainted-sendFile.js:7:16:7:33 | req.param("gimme") | This path depends on $@. | tainted-sendFile.js:7:16:7:33 | req.param("gimme") | a user-provided value |
 | tainted-sendFile.js:9:16:9:33 | req.param("gimme") | tainted-sendFile.js:9:16:9:33 | req.param("gimme") | tainted-sendFile.js:9:16:9:33 | req.param("gimme") | This path depends on $@. | tainted-sendFile.js:9:16:9:33 | req.param("gimme") | a user-provided value |
-| tainted-sendFile.js:12:16:12:33 | req.param("gimme") | tainted-sendFile.js:12:16:12:33 | req.param("gimme") | tainted-sendFile.js:12:16:12:33 | req.param("gimme") | This path depends on $@. | tainted-sendFile.js:12:16:12:33 | req.param("gimme") | a user-provided value |
-| tainted-sendFile.js:14:16:14:33 | req.param("gimme") | tainted-sendFile.js:14:16:14:33 | req.param("gimme") | tainted-sendFile.js:14:16:14:33 | req.param("gimme") | This path depends on $@. | tainted-sendFile.js:14:16:14:33 | req.param("gimme") | a user-provided value |
-| tainted-sendFile.js:17:16:17:32 | req.param("file") | tainted-sendFile.js:17:16:17:32 | req.param("file") | tainted-sendFile.js:17:16:17:32 | req.param("file") | This path depends on $@. | tainted-sendFile.js:17:16:17:32 | req.param("file") | a user-provided value |
+| tainted-sendFile.js:17:43:17:58 | req.param("dir") | tainted-sendFile.js:17:43:17:58 | req.param("dir") | tainted-sendFile.js:17:43:17:58 | req.param("dir") | This path depends on $@. | tainted-sendFile.js:17:43:17:58 | req.param("dir") | a user-provided value |
 | views.js:1:43:1:55 | req.params[0] | views.js:1:43:1:55 | req.params[0] | views.js:1:43:1:55 | req.params[0] | This path depends on $@. | views.js:1:43:1:55 | req.params[0] | a user-provided value |

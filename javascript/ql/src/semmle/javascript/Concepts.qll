@@ -28,7 +28,15 @@ abstract class FileSystemAccess extends DataFlow::Node {
 
   /** Gets an argument to this file system access that is interpreted as a path. */
   abstract DataFlow::Node getAPathArgument();
-  
+
+  /**
+   * Gets an argument to this file system access that is interpreted as a root folder
+   * in which the path arguments are constrained.
+   *
+   * In other words, if a root argument is provided, the underlying file access does its own
+   * sanitization to prevent the path arguments from traversing outside the root folder.
+   */
+  DataFlow::Node getRootPathArgument() { none() }
 }
 
 /**
