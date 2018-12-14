@@ -104,4 +104,9 @@ async function awaitFlow(){
     }
 });
 
+(function(x,y) {
+    let obj = (x && {}) || y; // OK
+    if ((x && {}) || y) {} // NOT OK
+});
+
 // semmle-extractor-options: --experimental

@@ -687,6 +687,7 @@ private predicate flowsTo(PathNode flowsource, DataFlow::Node source,
  * Holds if `nd` is reachable from a source under `cfg` along a path summarized by
  * `summary`.
  */
+pragma[nomagic]
 private predicate reachableFromSource(DataFlow::Node nd, DataFlow::Configuration cfg,
                                       PathSummary summary) {
   exists (FlowLabel lbl |

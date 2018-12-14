@@ -86,7 +86,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         return ExplicitObjectCreation.Create(info);
 
                     case SyntaxKind.ArrayCreationExpression:
-                        return ExplicitArrayCreation.Create(info);
+                        return NormalArrayCreation.Create(info);
 
                     case SyntaxKind.ObjectInitializerExpression:
                         return ObjectInitializer.Create(info);
