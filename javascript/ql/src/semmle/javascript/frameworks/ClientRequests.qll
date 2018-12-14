@@ -67,7 +67,7 @@ private string httpMethodName() {
 }
 
 /**
- * Gets the name of a property that likely contains a  URL value.
+ * Gets the name of a property that likely contains a URL value.
  */
 private string urlPropertyName() {
   result = "uri" or
@@ -93,16 +93,13 @@ private class RequestUrlRequest extends CustomClientRequest {
       (
         callee = DataFlow::moduleImport(moduleName) or
         callee = DataFlow::moduleMember(moduleName, httpMethodName())
-      ) and
-      (
-        url = getArgument(0) or
-        url = getOptionArgument(0, urlPropertyName())
       )
     )
   }
 
   override DataFlow::Node getUrl() {
-    result = url
+    result = getArgument(0) or
+    result = getOptionArgument(0, urlPropertyName())
   }
 
   override DataFlow::Node getADataNode() {
