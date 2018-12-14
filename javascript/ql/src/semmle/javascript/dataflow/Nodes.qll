@@ -311,6 +311,25 @@ class FunctionNode extends DataFlow::ValueNode, DataFlow::DefaultSourceNode {
   Function getFunction() {
     result = astNode
   }
+
+  /**
+   * Gets the function whose `this` binding a `this` expression in this function refers to,
+   * which is the nearest enclosing non-arrow function.
+   */
+  FunctionNode getThisBinder() {
+    result.getFunction() = getFunction().getThisBinder()
+  }
+
+  /**
+   * Gets the dataflow node holding the value of the receiver passed to the given function.
+   *
+   * Has no result for arrow functions, as they ignore the receiver argument.
+   *
+   * To get the data flow node for `this` in an arrow function, consider using `getThisBinder().getReceiver()`.
+   */
+  ThisNode getReceiver() {
+    result.getBinder() = this
+  }
 }
 
 /** A data flow node corresponding to an object literal expression. */
