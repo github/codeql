@@ -55,8 +55,8 @@
 			<code>example.com</code>, effectively allowing the redirect to go to
 			an attacker-controlled domain such as <code>wwwXexample.com</code>.
 
-		<p>
 		</p>
+		<p>
 
 			Address this vulnerability by escaping <code>.</code>
 			appropriately: <code>let regex = /(www|beta|)\.example\.com/</code>.
