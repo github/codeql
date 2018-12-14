@@ -39,6 +39,8 @@ class MaybeNullExpr extends Expr {
     this.(AssignExpr).getRValue() instanceof MaybeNullExpr
     or
     this.(Cast).getExpr() instanceof MaybeNullExpr
+    or
+    this instanceof AsExpr
   }
 }
 
