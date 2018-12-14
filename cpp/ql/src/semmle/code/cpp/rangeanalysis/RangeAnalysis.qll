@@ -197,6 +197,7 @@ class CondReason extends Reason, TCondReason {
  * Holds if a cast from `fromtyp` to `totyp` can be ignored for the purpose of
  * range analysis.
  */
+pragma[inline]
 private predicate safeCast(IntegralType fromtyp, IntegralType totyp) {
   fromtyp.getSize() < totyp.getSize() and
   (
@@ -256,7 +257,7 @@ private class NarrowingCastInstruction extends ConvertInstruction {
  * - `upper = true`  : `i <= op + delta`
  * - `upper = false` : `i >= op + delta`
  */
-private predicate boundFlowStep(Instruction i, Operand op, int delta, boolean upper) {
+private predicate boundFlowStep(Instruction i, NonPhiOperand op, int delta, boolean upper) {
   valueFlowStep(i, op, delta) and
   (upper = true or upper = false)
   or
@@ -425,12 +426,27 @@ private predicate boundedPhiOperand(
   )
 }
 
+/** Holds if `v != e + delta` at `pos`. */
+private predicate unequalFlowStep(
+ Operand op1, Operand op2, int delta, Reason reason
+) {
+  exists(IRGuardCondition guard, boolean testIsTrue |
+    guard = eqFlowCond(valueNumberOfOperand(op1), op2, delta, false, testIsTrue) and
+    guard.controls(op1.getInstruction().getBlock(), testIsTrue) and
+    reason = TCondReason(guard)
+  )
+}
+
 /**
  * Holds if `op != b + delta` at `pos`.
  */
 private predicate unequalOperand(Operand op, Bound b, int delta, Reason reason) {
-  // TODO: implement this
-  none()
+  exists(Operand op2, int d1, int d2 |
+    unequalFlowStep(op, op2, delta, reason) and
+    boundedNonPhiOperand(op2, b, d2, true, _, _, _) and
+    boundedNonPhiOperand(op2, b, d2, true, _, _, _) and
+    delta = d1 + d2
+  )
 }
 
 private predicate boundedPhiCandValidForEdge(
@@ -544,50 +560,47 @@ private predicate boundedCastExpr(
 private predicate boundedInstruction(
   Instruction i, Bound b, int delta, boolean upper, boolean fromBackEdge, int origdelta, Reason reason
 ) {
-  i instanceof PhiInstruction and
-  forex(PhiOperand op | op = i.getAnOperand() |
-    boundedPhiCandValidForEdge(i, b, delta, upper, fromBackEdge, origdelta, reason, op)
+  isReducibleCFG(i.getFunction()) and
+  (
+    i instanceof PhiInstruction and
+    forex(PhiOperand op | op = i.getAnOperand() |
+      boundedPhiCandValidForEdge(i, b, delta, upper, fromBackEdge, origdelta, reason, op)
+    )
+    or
+    i = b.getInstruction(delta) and
+    (upper = true or upper = false) and
+    fromBackEdge = false and
+    origdelta = delta and
+    reason = TNoReason()
+    or
+    exists(Operand mid, int d1, int d2 |
+      boundFlowStep(i, mid, d1, upper) and
+      boundedNonPhiOperand(mid, b, d2, upper, fromBackEdge, origdelta, reason) and
+      delta = d1 + d2 and
+      not exists(getValue(getConstantValue(i)))
+    )
+    or
+    exists(Operand mid, int factor, int d |
+      boundFlowStepMul(i, mid, factor) and
+      boundedNonPhiOperand(mid, b, d, upper, fromBackEdge, origdelta, reason) and
+      b instanceof ZeroBound and
+      delta = d*factor and
+      not exists(getValue(getConstantValue(i)))
+    )
+    or
+    exists(Operand mid, int factor, int d |
+      boundFlowStepDiv(i, mid, factor) and
+      boundedNonPhiOperand(mid, b, d, upper, fromBackEdge, origdelta, reason) and
+      d >= 0 and
+      b instanceof ZeroBound and
+      delta = d / factor and
+      not exists(getValue(getConstantValue(i)))
+    )
+    or
+    exists(NarrowingCastInstruction cast |
+      cast = i and
+      safeNarrowingCast(cast, upper.booleanNot()) and
+      boundedCastExpr(cast, b, delta, upper, fromBackEdge, origdelta, reason)
+    )
   )
-  or
-  i = b.getInstruction(delta) and
-  (upper = true or upper = false) and
-  fromBackEdge = false and
-  origdelta = delta and
-  reason = TNoReason()
-  or
-  exists(Operand mid, int d1, int d2 |
-    boundFlowStep(i, mid, d1, upper) and
-    boundedNonPhiOperand(mid, b, d2, upper, fromBackEdge, origdelta, reason) and
-    delta = d1 + d2 and
-    not exists(getValue(getConstantValue(i)))
-  )
-  or
-  exists(Operand mid, int factor, int d |
-    boundFlowStepMul(i, mid, factor) and
-    boundedNonPhiOperand(mid, b, d, upper, fromBackEdge, origdelta, reason) and
-    b instanceof ZeroBound and
-    delta = d*factor and
-    not exists(getValue(getConstantValue(i)))
-  )
-  or
-  exists(Operand mid, int factor, int d |
-    boundFlowStepDiv(i, mid, factor) and
-    boundedNonPhiOperand(mid, b, d, upper, fromBackEdge, origdelta, reason) and
-    d >= 0 and
-    b instanceof ZeroBound and
-    delta = d / factor and
-    not exists(getValue(getConstantValue(i)))
-  )
-  or
-  exists(NarrowingCastInstruction cast |
-    cast = i and
-    safeNarrowingCast(cast, upper.booleanNot()) and
-    boundedCastExpr(cast, b, delta, upper, fromBackEdge, origdelta, reason)
-  )
-}
-
-predicate backEdge(PhiInstruction phi, PhiOperand op) {
-  phi.getAnOperand() = op and
-  phi.getBlock().dominates(op.getPredecessorBlock())
-  // TODO: identify backedges during IR construction
 }

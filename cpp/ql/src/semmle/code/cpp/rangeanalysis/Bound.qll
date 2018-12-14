@@ -10,7 +10,8 @@ private newtype TBound =
       (
         i.getResultType() instanceof IntegralType or
         i.getResultType() instanceof PointerType
-      )
+      ) and
+      not vn.getAnInstruction() instanceof ConstantInstruction
     |
       i instanceof PhiInstruction
       or

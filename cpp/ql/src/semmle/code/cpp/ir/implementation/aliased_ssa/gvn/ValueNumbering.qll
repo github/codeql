@@ -216,7 +216,7 @@ private predicate uniqueValueNumber(Instruction instr, FunctionIR funcIR) {
 /**
  * Gets the value number assigned to `instr`, if any. Returns at most one result.
  */
-ValueNumber valueNumber(Instruction instr) {
+cached ValueNumber valueNumber(Instruction instr) {
   result = nonUniqueValueNumber(instr) or
   exists(FunctionIR funcIR |
     uniqueValueNumber(instr, funcIR) and

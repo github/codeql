@@ -103,6 +103,7 @@ void test9(int x) {
   }
 }
 
+// Phi nodes as bounds
 int test10(int y, int z, bool use_y) {
   int x;
   if(use_y) {
@@ -114,4 +115,36 @@ int test10(int y, int z, bool use_y) {
   for(int i = 0; i < x; i++) {
     return i;
   }
+}
+
+// Irreducible CFGs
+int test11(int y, int x) {
+  int i = 0;
+  if (x < y) {
+    x = y;
+  } else {
+    goto inLoop;
+  }
+  for(i = 0; i < x; i++) {
+    inLoop:
+    sink(i);
+  }
+}
+
+// do-while
+int test12(int x) {
+  int i = 0;
+  do {
+    i++;
+  } while(i < x);
+  return i;
+}
+
+// do while false
+int test13(int x) {
+  int i = 0;
+  do {
+    i++;
+  } while(false);
+  return i;
 }
