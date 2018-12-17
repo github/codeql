@@ -28,6 +28,7 @@ module DataFlow {
     DotNet::Type getType() { none() }
 
     /** Gets the enclosing callable of this node. */
+    cached
     DotNet::Callable getEnclosingCallable() { none() }
 
     /** Gets a textual representation of this node. */
@@ -52,9 +53,19 @@ module DataFlow {
 
     override DotNet::Callable getEnclosingCallable() { result = expr.getEnclosingCallable() }
 
-    override string toString() { result = expr.toString() }
+    override string toString() {
+      result = expr.(Expr).toString()
+      or
+      expr instanceof CIL::Expr and
+      result = "CIL expression"
+    }
 
-    override Location getLocation() { result = expr.getLocation() }
+    override Location getLocation() {
+      result = expr.(Expr).getLocation()
+      or
+      result.getFile().isPdbSourceFile() and
+      result = expr.(CIL::Expr).getALocation()
+    }
   }
 
   /**
