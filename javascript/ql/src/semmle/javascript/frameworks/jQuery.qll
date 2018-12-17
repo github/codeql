@@ -359,5 +359,7 @@ private class JQueryClientRequest extends CustomClientRequest {
     result = getOptionArgument([0 .. 1], "url")
   }
 
+  override DataFlow::Node getHost() { none() }
+
   override DataFlow::Node getADataNode() { result = getOptionArgument([0 .. 1], "data") }
 }

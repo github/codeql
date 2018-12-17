@@ -22,6 +22,11 @@ abstract class CustomClientRequest extends DataFlow::InvokeNode {
   abstract DataFlow::Node getUrl();
 
   /**
+   * Gets the host of the request.
+   */
+  abstract DataFlow::Node getHost();
+
+  /**
    * Gets a node that contributes to the data-part this request.
    */
   abstract DataFlow::Node getADataNode();
@@ -48,6 +53,13 @@ class ClientRequest extends DataFlow::InvokeNode {
    */
   DataFlow::Node getUrl() {
     result = custom.getUrl()
+  }
+
+  /**
+   * Gets the host of the request.
+   */
+  DataFlow::Node getHost() {
+    result = custom.getHost()
   }
 
   /**
@@ -102,6 +114,10 @@ private class RequestUrlRequest extends CustomClientRequest {
     result = getOptionArgument(0, urlPropertyName())
   }
 
+  override DataFlow::Node getHost() {
+    none()
+  }
+
   override DataFlow::Node getADataNode() {
     result = getArgument(1)
   }
@@ -126,10 +142,18 @@ private class AxiosUrlRequest extends CustomClientRequest {
     )
   }
 
+  private DataFlow::Node getOptionArgument(string name) {
+    // depends on the method name and the call arity, over-approximating slightly in the name of simplicity
+    result = getOptionArgument([0..2], name)
+  }
+
   override DataFlow::Node getUrl() {
     result = getArgument(0) or
-    // depends on the method name and the call arity, over-approximating slightly in the name of simplicity
-    result = getOptionArgument([0..2], urlPropertyName())
+    result = getOptionArgument(urlPropertyName())
+  }
+
+  override DataFlow::Node getHost() {
+    result = getOptionArgument("host")
   }
 
   override DataFlow::Node getADataNode() {
@@ -176,6 +200,8 @@ private class FetchUrlRequest extends CustomClientRequest {
     result = url
   }
 
+  override DataFlow::Node getHost() { none() }
+
   override DataFlow::Node getADataNode() {
     exists (string name |
       name = "headers" or name = "body" |
@@ -204,6 +230,14 @@ private class GotUrlRequest extends CustomClientRequest {
   override DataFlow::Node getUrl() {
     result = getArgument(0) and
     not exists (getOptionArgument(1, "baseUrl"))
+  }
+
+  override DataFlow::Node getHost() {
+    exists (string name |
+      name = "host" or
+      name = "hostname" |
+      result = getOptionArgument(1, name)
+    )
   }
 
   override DataFlow::Node getADataNode() {
@@ -235,6 +269,8 @@ private class SuperAgentUrlRequest extends CustomClientRequest {
     result = url
   }
 
+  override DataFlow::Node getHost() { none() }
+
   override DataFlow::Node getADataNode() {
     exists (string name |
       name = "set" or name = "send" or name = "query" |
@@ -252,5 +288,6 @@ private class XMLHttpRequest extends CustomClientRequest {
 
   override DataFlow::Node getUrl() { result = getAMethodCall("open").getArgument(1) }
 
+  override DataFlow::Node getHost() { none() }
   override DataFlow::Node getADataNode() { result = getAMethodCall("send").getArgument(0) }
 }
