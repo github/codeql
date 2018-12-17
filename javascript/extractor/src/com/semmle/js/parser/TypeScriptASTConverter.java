@@ -826,8 +826,9 @@ public class TypeScriptASTConverter {
 		Expression left = convertChild(node, "left");
 		Expression right = convertChild(node, "right");
 		JsonObject operatorToken = node.get("operatorToken").getAsJsonObject();
-		String operatorKind = getKind(operatorToken);
-		if ("CommaToken".equals(operatorKind)) {
+		String operator = getSourceLocation(operatorToken).getSource();
+		switch (operator) {
+		case ",":
 			List<Expression> expressions = new ArrayList<Expression>();
 			if (left instanceof SequenceExpression)
 				expressions.addAll(((SequenceExpression) left).getExpressions());
@@ -838,13 +839,30 @@ public class TypeScriptASTConverter {
 			else
 				expressions.add(right);
 			return new SequenceExpression(loc, expressions);
-		} else {
-			String operator = getSourceLocation(operatorToken).getSource();
-			if ("||".equals(operator) || "&&".equals(operator)) {
-				return new LogicalExpression(loc, operator, left, right);
-			}
-			if ("EqualsToken".equals(operatorKind))
-				left = convertLValue(left);
+
+		case "||":
+		case "&&":
+			return new LogicalExpression(loc, operator, left, right);
+
+		case "=":
+			left = convertLValue(left); // For plain assignments, the lhs can be a destructuring pattern.
+			return new AssignmentExpression(loc, operator, left, right);
+
+		case "+=":
+		case "-=":
+		case "*=":
+		case "**=":
+		case "/=":
+		case "%=":
+		case "^=":
+		case "&=":
+		case "|=":
+		case ">>=":
+		case "<<=":
+		case ">>>=":
+			return new AssignmentExpression(loc, operator, convertLValue(left), right);
+
+		default:
 			return new BinaryExpression(loc, operator, left, right);
 		}
 	}
