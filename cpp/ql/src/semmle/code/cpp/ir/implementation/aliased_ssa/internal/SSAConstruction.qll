@@ -25,11 +25,7 @@ cached private module Cached {
       not oldInstruction instanceof OldIR::PhiInstruction and
       hasChiNode(_, oldInstruction)
     } or
-    UnreachedTag(OldInstruction oldInstruction, EdgeKind kind) {
-      // We need an `Unreached` instruction for the destination of each infeasible edge whose
-      // predecessor is reachable.
-      Reachability::isInfeasibleInstructionSuccessor(oldInstruction, kind)
-    }
+    UnreachedTag()
 
   cached class InstructionTagType extends TInstructionTag {
     cached final string toString() {
@@ -129,11 +125,12 @@ cached private module Cached {
       resultType = vvar.getType() and
       isGLValue = false
     ) or
-    exists(OldInstruction oldInstruction, EdgeKind kind |
-      oldInstruction.getFunction() = func and
-      tag = UnreachedTag(oldInstruction, kind) and
+    exists(OldInstruction oldInstruction |
+      func = oldInstruction.getFunction() and
+      Reachability::isInfeasibleInstructionSuccessor(oldInstruction, _) and
+      tag = UnreachedTag() and
       opcode instanceof Opcode::Unreached and
-      ast = oldInstruction.getSuccessor(kind).getAST() and
+      ast = func and
       resultType instanceof VoidType and
       isGLValue = false
     )
@@ -265,10 +262,12 @@ cached private module Cached {
       exists(OldInstruction oldInstruction |
         oldInstruction = getOldInstruction(instruction) and
         (
-          result.getTag() = UnreachedTag(oldInstruction, kind) or
-          (
-            result = getNewInstruction(oldInstruction.getSuccessor(kind)) and
-            not exists(UnreachedTag(oldInstruction, kind))
+          if Reachability::isInfeasibleInstructionSuccessor(oldInstruction, kind) then (
+            result.getTag() = UnreachedTag() and
+            result.getFunction() = instruction.getFunction()
+          )
+          else (
+            result = getNewInstruction(oldInstruction.getSuccessor(kind))
           )
         )
       ) or
@@ -521,9 +520,9 @@ cached private module CachedForDebugging {
       instr.getTag() = PhiTag(vvar, phiBlock) and
       result = "Phi Block(" + phiBlock.getUniqueId() + "): " + vvar.getUniqueId() 
     ) or
-    exists(OldInstruction oldInstr, EdgeKind kind |
-      instr.getTag() = UnreachedTag(oldInstr, kind) and
-      result = "Unreached(" + oldInstr.getUniqueId() + ":" + kind.toString() + ")"
+    (
+      instr.getTag() = UnreachedTag() and
+      result = "Unreached"
     )
   }
 

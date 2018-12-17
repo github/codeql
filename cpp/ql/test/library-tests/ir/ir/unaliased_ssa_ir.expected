@@ -3991,8 +3991,8 @@ ir.cpp:
 #  904|     v1_9(void)       = UnmodeledUse                 : mu*
 #  904|     v1_10(void)      = ExitFunction                 : 
 
-#  906|   Block 2
-#  906|     v2_0(void) = Unreached : 
+#  904|   Block 2
+#  904|     v2_0(void) = Unreached : 
 
 #  940| OperatorNew() -> void
 #  940|   Block 0
@@ -4515,5 +4515,5 @@ ir.cpp:
 # 1049|     v1_6(void)       = UnmodeledUse             : mu*
 # 1049|     v1_7(void)       = ExitFunction             : 
 
-# 1052|   Block 2
-# 1052|     v2_0(void) = Unreached : 
+# 1049|   Block 2
+# 1049|     v2_0(void) = Unreached : 

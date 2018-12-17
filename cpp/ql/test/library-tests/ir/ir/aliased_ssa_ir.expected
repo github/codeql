@@ -1214,8 +1214,8 @@ ir.cpp:
 #  281|     v2_0(void) = NoOp : 
 #-----|   Goto -> Block 1
 
-#  283|   Block 3
-#  283|     v3_0(void) = Unreached : 
+#  278|   Block 3
+#  278|     v3_0(void) = Unreached : 
 
 #  285| For_Update() -> void
 #  285|   Block 0
@@ -1260,8 +1260,8 @@ ir.cpp:
 #  294|     v2_0(void) = NoOp : 
 #-----|   Goto -> Block 1
 
-#  296|   Block 3
-#  296|     v3_0(void) = Unreached : 
+#  292|   Block 3
+#  292|     v3_0(void) = Unreached : 
 
 #  298| For_InitUpdate() -> void
 #  298|   Block 0
@@ -1465,7 +1465,7 @@ ir.cpp:
 #  334|     r1_2(int)        = Constant[10]       : 
 #  334|     r1_3(bool)       = CompareLT          : r1_1, r1_2
 #  334|     v1_4(void)       = ConditionalBranch  : r1_3
-#-----|   False -> Block 5
+#-----|   False -> Block 4
 #-----|   True -> Block 2
 
 #  335|   Block 2
@@ -1481,11 +1481,8 @@ ir.cpp:
 #  334|     v3_0(void) = NoOp : 
 #-----|   Goto -> Block 1
 
-#  336|   Block 4
-#  336|     v4_0(void) = Unreached : 
-
-#  339|   Block 5
-#  339|     v5_0(void) = Unreached : 
+#  333|   Block 4
+#  333|     v4_0(void) = Unreached : 
 
 #  341| Dereference(int *) -> int
 #  341|   Block 0
@@ -3225,8 +3222,8 @@ ir.cpp:
 #  724|     v11_1(void) = ReturnVoid : 
 #-----|   Goto -> Block 1
 
-#  731|   Block 12
-#  731|     v12_0(void) = Unreached : 
+#  724|   Block 12
+#  724|     v12_0(void) = Unreached : 
 
 #  745| Base::Base(const Base &) -> void
 #  745|   Block 0
@@ -4101,8 +4098,8 @@ ir.cpp:
 #  904|     v1_9(void)       = UnmodeledUse                 : mu*
 #  904|     v1_10(void)      = ExitFunction                 : 
 
-#  906|   Block 2
-#  906|     v2_0(void) = Unreached : 
+#  904|   Block 2
+#  904|     v2_0(void) = Unreached : 
 
 #  940| OperatorNew() -> void
 #  940|   Block 0
@@ -4607,7 +4604,7 @@ ir.cpp:
 # 1040|     r4_3(int)        = Load               : r4_2, m0_10
 # 1040|     r4_4(bool)       = CompareLT          : r4_1, r4_3
 # 1040|     v4_5(void)       = ConditionalBranch  : r4_4
-#-----|   False -> Block 7
+#-----|   False -> Block 6
 #-----|   True -> Block 5
 
 # 1041|   Block 5
@@ -4616,11 +4613,8 @@ ir.cpp:
 # 1041|     m5_2(int)        = Store                    : r5_0, r5_1
 #-----|   Goto -> Block 1
 
-# 1033|   Block 6
-# 1033|     v6_0(void) = Unreached : 
-
-# 1044|   Block 7
-# 1044|     v7_0(void) = Unreached : 
+# 1028|   Block 6
+# 1028|     v6_0(void) = Unreached : 
 
 # 1049| DoWhileFalse() -> int
 # 1049|   Block 0
@@ -4650,5 +4644,5 @@ ir.cpp:
 # 1049|     v1_6(void)       = UnmodeledUse             : mu*
 # 1049|     v1_7(void)       = ExitFunction             : 
 
-# 1052|   Block 2
-# 1052|     v2_0(void) = Unreached : 
+# 1049|   Block 2
+# 1049|     v2_0(void) = Unreached : 
