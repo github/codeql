@@ -79,7 +79,7 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
    * `pred` ending with this element, and `pred` is an immediate predecessor
    * of `succ`.
    *
-   * Moroever, this control flow element corresponds to multiple control flow nodes,
+   * Moreover, this control flow element corresponds to multiple control flow nodes,
    * which is why
    *
    * ```
