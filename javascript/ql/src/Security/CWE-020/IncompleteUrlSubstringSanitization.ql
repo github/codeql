@@ -15,7 +15,7 @@ private import semmle.javascript.dataflow.InferredTypes
 
 from DataFlow::MethodCallNode call, string name, DataFlow::Node substring, string target
 where
-      (name = "indexOf" or name = "includes" or name = "startsWith" or name = "endsWith") and
+      (name = "indexOf" or name = "lastIndexOf" or name = "includes" or name = "startsWith" or name = "endsWith") and
       call.getMethodName() = name and
       substring = call.getArgument(0) and
       substring.mayHaveStringValue(target) and
@@ -27,7 +27,7 @@ where
       ) and
       // whitelist
       not (
-        name = "indexOf" and
+        (name = "indexOf" or name = "lastIndexOf") and
         (
           // arithmetic on the indexOf-result
           any(ArithmeticExpr e).getAnOperand().getUnderlyingValue() = call.asExpr()
