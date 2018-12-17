@@ -1190,22 +1190,6 @@ class UsingStmt extends Stmt, @using_stmt {
   /** Gets a local variable declaration of this `using` statement. */
   LocalVariableDeclExpr getAVariableDeclExpr() { result = this.getVariableDeclExpr(_) }
 
-  /** DEPRECATED: Use `getVariable(0)` instead. */
-  deprecated
-  LocalVariable getVariable() { result = getVariableDeclExpr().getVariable() }
-
-  /** DEPRECATED: Use `getAVariableDeclExpr()` instead. */
-  deprecated
-  LocalVariableDeclExpr getVariableDeclExpr() { result.getParent() = this }
-
-  /** DEPRECATED: Use `getAnExpr()` instead. */
-  deprecated Expr getInitializer() {
-    if exists(this.getVariableDeclExpr(0)) then
-      result = this.getVariableDeclExpr(0).getInitializer()
-    else
-      result.getParent() = this
-  }
-
   /**
    * Gets the expression directly used by this `using` statement, if any. For
    * example, `f` on line 2 in
@@ -1389,14 +1373,6 @@ class FixedStmt extends Stmt, @fixed_stmt {
   /** Gets a local variable declaration of this `fixed` statement. */
   LocalVariableDeclExpr getAVariableDeclExpr() { result = this.getVariableDeclExpr(_) }
 
-  /** DEPRECATED: Use `getVariable(0)` instead. */
-  deprecated
-  LocalVariable getVariable() { result = getVariableDeclExpr().getVariable() }
-
-  /** DEPRECATED: Use `getVariableDeclExpr(0) instead. */
-  deprecated
-  LocalVariableDeclExpr getVariableDeclExpr() { result.getParent() = this }
-
   /** Gets the body of this `fixed` statement. */
   Stmt getBody() { result.getParent() = this }
 
@@ -1440,10 +1416,6 @@ class LabeledStmt extends Stmt, @labeled_stmt {
     exists(int i | this = this.getParent().getChild(i)
                and result = this.getParent().getChild(i+1))
   }
-
-  /** DEPRECATED: Use `getStmt()` instead. */
-  deprecated
-  Stmt getReferredStatement() { result = this.getStmt() }
 
   /** Gets the label of this statement. */
   string getLabel() { exprorstmt_name(this, result) }

@@ -9,7 +9,3 @@ class SystemRuntimeNamespace extends Namespace {
     this.hasName("Runtime")
   }
 }
-
-/** DEPRECATED. Gets the `System.Runtime` namespace. */
-deprecated
-SystemRuntimeNamespace getSystemRuntimeNamespace() { any() }

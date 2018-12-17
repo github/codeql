@@ -10,10 +10,6 @@ class SystemWebUIWebControlsNamespace extends Namespace {
   }
 }
 
-/** DEPRECATED. Gets the `System.Web.UI.WebControls` namespace. */
-deprecated
-SystemWebUIWebControlsNamespace getSystemWebUIWebControlsNamespace() { any() }
-
 /** A class in the `System.Web.UI.WebControls` namespace. */
 class SystemWebUIWebControlsClass extends Class {
   SystemWebUIWebControlsClass() {
@@ -36,10 +32,6 @@ class SystemWebUIWebControlsTextBoxClass extends SystemWebUIWebControlsClass {
     result.getType() instanceof StringType
   }
 }
-
-/** DEPRECATED. Gets the `System.Web.UI.WebControls.TextBox` class. */
-deprecated
-SystemWebUIWebControlsTextBoxClass getSystemWebUIWebControlsTextBoxClass() { any() }
 
 /** The `System.Web.UI.WebControls.Label` class. */
 class SystemWebUIWebControlsLabelClass extends SystemWebUIWebControlsClass {

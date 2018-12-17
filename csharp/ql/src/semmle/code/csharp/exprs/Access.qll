@@ -129,28 +129,6 @@ class AssignableAccess extends Access, @assignable_access_expr {
   override Assignable getTarget() { none() }
 
   /**
-   * DEPRECATED: use the class `AssignableRead` instead.
-   */
-  deprecated predicate isReadAccess() {
-    this instanceof AssignableRead
-  }
-
-  /**
-   * DEPRECATED: use the class `AssignableWrite` instead.
-   */
-  deprecated predicate isWriteAccess() {
-    this instanceof AssignableWrite
-  }
-
-  /**
-   * DEPRECATED: use the classes `AssignableRead` and `AssignableWrite` instead.
-   */
-  deprecated predicate isReadWriteAccess() {
-    this instanceof AssignableRead and
-    this instanceof AssignableWrite
-  }
-
-  /**
    * Holds if this access passes the assignable being accessed as an `out`
    * argument in a method call.
    */
@@ -207,16 +185,6 @@ class VariableRead extends VariableAccess, AssignableRead {
   override VariableRead getAReachableRead() {
     result = AssignableRead.super.getAReachableRead()
   }
-
-  deprecated
-  override VariableRead getANextUncertainRead() {
-    result = AssignableRead.super.getANextUncertainRead()
-  }
-
-  deprecated
-  override VariableRead getAReachableUncertainRead() {
-    result = AssignableRead.super.getAReachableUncertainRead()
-  }
 }
 
 /**
@@ -248,16 +216,6 @@ class LocalScopeVariableRead extends LocalScopeVariableAccess, VariableRead {
 
   override LocalScopeVariableRead getAReachableRead() {
     result = VariableRead.super.getAReachableRead()
-  }
-
-  deprecated
-  override LocalScopeVariableRead getANextUncertainRead() {
-    result = VariableRead.super.getANextUncertainRead()
-  }
-
-  deprecated
-  override LocalScopeVariableRead getAReachableUncertainRead() {
-    result = VariableRead.super.getAReachableUncertainRead()
   }
 }
 
@@ -304,16 +262,6 @@ class ParameterRead extends ParameterAccess, LocalScopeVariableRead {
 
   override ParameterRead getAReachableRead() {
     result = LocalScopeVariableRead.super.getAReachableRead()
-  }
-
-  deprecated
-  override ParameterRead getANextUncertainRead() {
-    result = LocalScopeVariableRead.super.getANextUncertainRead()
-  }
-
-  deprecated
-  override ParameterRead getAReachableUncertainRead() {
-    result = LocalScopeVariableRead.super.getAReachableUncertainRead()
   }
 }
 
@@ -371,16 +319,6 @@ class LocalVariableRead extends LocalVariableAccess, LocalScopeVariableRead {
 
   override LocalVariableRead getAReachableRead() {
     result = LocalScopeVariableRead.super.getAReachableRead()
-  }
-
-  deprecated
-  override LocalVariableRead getANextUncertainRead() {
-    result = LocalScopeVariableRead.super.getANextUncertainRead()
-  }
-
-  deprecated
-  override LocalVariableRead getAReachableUncertainRead() {
-    result = LocalScopeVariableRead.super.getAReachableUncertainRead()
   }
 }
 
@@ -525,16 +463,6 @@ class PropertyRead extends PropertyAccess, AssignableRead {
 
   override PropertyRead getAReachableRead() {
     result = AssignableRead.super.getAReachableRead()
-  }
-
-  deprecated
-  override PropertyRead getANextUncertainRead() {
-    result = AssignableRead.super.getANextUncertainRead()
-  }
-
-  deprecated
-  override PropertyRead getAReachableUncertainRead() {
-    result = AssignableRead.super.getAReachableUncertainRead()
   }
 }
 
@@ -684,16 +612,6 @@ class IndexerRead extends IndexerAccess, AssignableRead {
 
   override IndexerRead getAReachableRead() {
     result = AssignableRead.super.getAReachableRead()
-  }
-
-  deprecated
-  override IndexerRead getANextUncertainRead() {
-    result = AssignableRead.super.getANextUncertainRead()
-  }
-
-  deprecated
-  override IndexerRead getAReachableUncertainRead() {
-    result = AssignableRead.super.getAReachableUncertainRead()
   }
 }
 

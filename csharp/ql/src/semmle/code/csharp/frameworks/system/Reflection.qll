@@ -10,10 +10,6 @@ class SystemReflectionNamespace extends Namespace {
   }
 }
 
-/** DEPRECATED. Gets the `System.Reflection` namespace. */
-deprecated
-SystemReflectionNamespace getSystemReflectionNamespace() { any() }
-
 /** A class in the `System.Reflection` namespace. */
 class SystemReflectionClass extends Class {
   SystemReflectionClass() {
@@ -58,17 +54,9 @@ class SystemReflectionMethodBaseClass extends SystemReflectionClass {
   }
 }
 
-/** DEPRECATED. Gets the `System.Reflection.MethodBase` class. */
-deprecated
-SystemReflectionMethodBaseClass getSystemReflectionMethodBaseClass() { any() }
-
 /** The `System.Reflection.MethodInfo` class. */
 class SystemReflectionMethodInfoClass extends SystemReflectionClass {
   SystemReflectionMethodInfoClass() {
     this.hasName("MethodInfo")
   }
 }
-
-/** DEPRECATED. Gets the `System.Reflection.MethodInfo` class. */
-deprecated
-SystemReflectionMethodInfoClass getSystemReflectionMethodInfoClass() { any() }
