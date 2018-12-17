@@ -90,7 +90,7 @@ module DataFlow {
     localFlowStep*(source, sink)
   }
 
-  predicate localFlowStep = localFlowStepCached/2;
+  predicate localFlowStep = Internal::LocalFlow::step/2;
 
   /**
    * A data flow node augmented with a call context and a configuration. Only
@@ -690,12 +690,14 @@ module DataFlow {
     /**
      * Provides predicates related to local data flow.
      */
-    private module LocalFlow {
+    module LocalFlow {
       /**
        * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
        * (intra-procedural) step.
        */
-      predicate localFlowStepNonCached(Node nodeFrom, Node nodeTo) {
+      cached
+      predicate step(Node nodeFrom, Node nodeTo) {
+        forceCachingInSameStage() and
         localFlowStepExpr(nodeFrom.asExpr(), nodeTo.asExpr())
         or
         // Flow from source to SSA definition
@@ -1119,6 +1121,8 @@ module DataFlow {
      * same stage.
      */
     cached module Cached {
+      cached predicate forceCachingInSameStage() { any() }
+
       cached newtype TNode =
         TExprNode(DotNet::Expr e)
         or
@@ -1136,14 +1140,6 @@ module DataFlow {
             v = def.getSourceVariable().getAssignable()
           )
         }
-
-      /**
-       * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
-       * (intra-procedural) step.
-       */
-      cached predicate localFlowStepCached(Node nodeFrom, Node nodeTo) {
-        LocalFlow::localFlowStepNonCached(nodeFrom, nodeTo)
-      }
 
       /**
        * Holds if `pred` can flow to `succ`, by jumping from one callable to
