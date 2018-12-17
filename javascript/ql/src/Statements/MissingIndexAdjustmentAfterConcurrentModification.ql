@@ -126,13 +126,21 @@ class ArrayIterationLoop extends ForStmt {
     hasPathTo(cfg.getAPredecessor()) and
     getLoopEntry().dominates(cfg.getBasicBlock()) and
     not hasIndexingManipulation(cfg) and
+
     // Ignore splice calls guarded by an index equality check.
     // This indicates that the index of an element is the basis for removal, not its value,
     // which means it may be okay to skip over elements.
     not exists (ConditionGuardNode guard, EqualityTest test | cfg = guard |
       test = guard.getTest() and
       test.getAnOperand() = getIndexVariable().getAnAccess() and
-      guard.getOutcome() = test.getPolarity())
+      guard.getOutcome() = test.getPolarity()) and
+
+    // Block flow after inspecting an array element other than that at the current index.
+    // For example, if the splice happens after inspecting `array[i + 1]`, then the next
+    // element has already been "looked at" and so it doesn't matter if we skip it.
+    not exists (IndexExpr index | cfg = index |
+      array.flowsToExpr(index.getBase()) and
+      not index.getIndex() = getIndexVariable().getAnAccess())
   }
 
   /**

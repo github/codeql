@@ -111,3 +111,13 @@ function removeFirstAndLast(string) {
   }
   return parts.join('/');
 }
+
+function inspectNextElement(string) {
+  let parts = string.split('/');
+  for (let i = 0; i < parts.length; ++i) {
+    if (i < parts.length - 1 && parts[i] === parts[i + 1]) {
+      parts.splice(i, 1); // OK - next element has been looked at
+    }
+  }
+  return parts.join('/');
+}
