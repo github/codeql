@@ -1,14 +1,13 @@
 /**
  * Provides classes and predicates for range analysis.
  *
- * An inferred bound can either be a specific integer or the abstract value of
- * an IR `Instruction`.
+ * An inferred bound can either be a specific integer or a `ValueNumber`
+ * representing the abstract value of a set of `Instruction`s.
  *
  * If an inferred bound relies directly on a condition, then this condition is
  * reported as the reason for the bound.
  */
 
-// TODO: update the following comment
 /*
  * This library tackles range analysis as a flow problem. Consider e.g.:
  * ```
@@ -21,24 +20,29 @@
  *   arr.length --> len = .. --> x < len --> x-1 --> y = .. --> y
  * ```
  *
- * In its simplest form the step relation `E1 --> E2` relates two expressions
- * such that `E1 <= B` implies `E2 <= B` for any `B` (with a second separate
+ * In its simplest form the step relation `I1 --> I2` relates two `Instruction`s
+ * such that `I1 <= B` implies `I2 <= B` for any `B` (with a second separate
  * step relation handling lower bounds). Examples of such steps include
- * assignments `E2 = E1` and conditions `x <= E1` where `E2` is a use of `x`
+ * assignments `I2 = I1` and conditions `x <= I1` where `I2` is a use of `x`
  * guarded by the condition.
  *
  * In order to handle subtractions and additions with constants, and strict
  * comparisons, the step relation is augmented with an integer delta. With this
- * generalization `E1 --(delta)--> E2` relates two expressions and an integer
- * such that `E1 <= B` implies `E2 <= B + delta` for any `B`. This corresponds
+ * generalization `I1 --(delta)--> I2` relates two `Instruction`s and an integer
+ * such that `I1 <= B` implies `I2 <= B + delta` for any `B`. This corresponds
  * to the predicate `boundFlowStep`.
  *
  * The complete range analysis is then implemented as the transitive closure of
- * the step relation summing the deltas along the way. If `E1` transitively
- * steps to `E2`, `delta` is the sum of deltas along the path, and `B` is an
- * interesting bound equal to the value of `E1` then `E2 <= B + delta`. This
- * corresponds to the predicate `bounded`.
+ * the step relation summing the deltas along the way. If `I1` transitively
+ * steps to `I2`, `delta` is the sum of deltas along the path, and `B` is an
+ * interesting bound equal to the value of `I1` then `I2 <= B + delta`. This
+ * corresponds to the predicate `boundedInstruction`.
  *
+ * Bounds come in two forms: either they are relative to zero (and thus provide
+ * a constant bound), or they are relative to some program value. This value is
+ * represented by the `ValueNumber` class, each instance of which represents a
+ * set of `Instructions` that must have the same value.
+ * 
  * Phi nodes need a little bit of extra handling. Consider `x0 = phi(x1, x2)`.
  * There are essentially two cases:
  * - If `x1 <= B + d1` and `x2 <= B + d2` then `x0 <= B + max(d1,d2)`.
@@ -121,8 +125,8 @@ import RangeAnalysisPublic
  * Gets a condition that tests whether `vn` equals `bound + delta`.
  *
  * If the condition evaluates to `testIsTrue`:
- * - `isEq = true`  : `i == bound + delta`
- * - `isEq = false` : `i != bound + delta`
+ * - `isEq = true`  : `vn == bound + delta`
+ * - `isEq = false` : `vn != bound + delta`
  */
 private IRGuardCondition eqFlowCond(ValueNumber vn, Operand bound, int delta,
   boolean isEq, boolean testIsTrue)
@@ -138,11 +142,6 @@ private IRGuardCondition eqFlowCond(ValueNumber vn, Operand bound, int delta,
 private predicate boundFlowStepSsa(
   NonPhiOperand op2, Operand op1, int delta, boolean upper, Reason reason
 ) {
-  /*op2.getDefinitionInstruction().getAnOperand().(CopySourceOperand) = op1 and
-  (upper = true or upper = false) and
-  reason = TNoReason() and
-  delta = 0
-  or*/
   exists(IRGuardCondition guard, boolean testIsTrue |
     guard = boundFlowCond(valueNumberOfOperand(op2), op1, delta, upper, testIsTrue) and
     guard.controls(op2.getInstruction().getBlock(), testIsTrue) and
@@ -170,7 +169,6 @@ private IRGuardCondition boundFlowCond(ValueNumber vn, NonPhiOperand bound, int 
   or
   result = eqFlowCond(vn, bound, delta, true, testIsTrue) and
   (upper = true or upper = false)
-  // TODO: strengthening through modulus library
 }
 
 private newtype TReason =
@@ -213,7 +211,6 @@ private predicate safeCast(IntegralType fromtyp, IntegralType totyp) {
     fromtyp.isUnsigned() and
     totyp.isUnsigned()
   )
-  // TODO: infer safety using sign analysis?
 }
 
 private class SafeCastInstruction extends ConvertInstruction {
@@ -357,7 +354,7 @@ private predicate boundedNonPhiOperand(NonPhiOperand op, Bound b, int delta, boo
   boundedInstruction(op.getDefinitionInstruction(), b, delta, upper, fromBackEdge, origdelta, reason)
   or
   exists(int d, Reason r1, Reason r2 |
-    boundedInstruction(op.getDefinitionInstruction(), b, d, upper, fromBackEdge, origdelta, r2)
+    boundedNonPhiOperand(op, b, d, upper, fromBackEdge, origdelta, r2)
   |
     unequalOperand(op, b, d, r1) and
     (
@@ -426,13 +423,13 @@ private predicate boundedPhiOperand(
   )
 }
 
-/** Holds if `v != e + delta` at `pos`. */
+/** Holds if `op2 != op1 + delta` at `pos`. */
 private predicate unequalFlowStep(
- Operand op1, Operand op2, int delta, Reason reason
+ Operand op2, Operand op1, int delta, Reason reason
 ) {
   exists(IRGuardCondition guard, boolean testIsTrue |
-    guard = eqFlowCond(valueNumberOfOperand(op1), op2, delta, false, testIsTrue) and
-    guard.controls(op1.getInstruction().getBlock(), testIsTrue) and
+    guard = eqFlowCond(valueNumberOfOperand(op2), op1, delta, false, testIsTrue) and
+    guard.controls(op2.getInstruction().getBlock(), testIsTrue) and
     reason = TCondReason(guard)
   )
 }
@@ -442,9 +439,9 @@ private predicate unequalFlowStep(
  */
 private predicate unequalOperand(Operand op, Bound b, int delta, Reason reason) {
   exists(Operand op2, int d1, int d2 |
-    unequalFlowStep(op, op2, delta, reason) and
+    unequalFlowStep(op, op2, d1, reason) and
     boundedNonPhiOperand(op2, b, d2, true, _, _, _) and
-    boundedNonPhiOperand(op2, b, d2, true, _, _, _) and
+    boundedNonPhiOperand(op2, b, d2, false, _, _, _) and
     delta = d1 + d2
   )
 }

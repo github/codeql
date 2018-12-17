@@ -148,3 +148,25 @@ int test13(int x) {
   } while(false);
   return i;
 }
+
+// unequal bound narrowing
+int test14(int x, int y) {
+  if(x < y) {
+    if (x == y-1) {
+      sink(x);
+    } else {
+      sink(x);
+    }
+    if (x != y-1) {
+      sink(x);
+    } else {
+      sink(x);
+    }
+  } else {
+    if (y == x-1) {
+      sink(x);
+    } else {
+      sink(x);
+    }
+  }
+}
