@@ -11,6 +11,7 @@
 
 import javascript
 import Declarations.UnusedParameter
+import semmle.javascript.RestrictedLocations
 
 predicate isUnusedParameter(Function f, string msg, Parameter parameter) {
   exists(Variable pv |
@@ -36,4 +37,4 @@ predicate isMissingParameter(AngularJS::InjectableFunction f, string msg, ASTNod
 
 from AngularJS::InjectableFunction f, string message, ASTNode location
 where isUnusedParameter(f.asFunction(), message, location) or isMissingParameter(f, message, location)
-select location, message
+select (FirstLineOf)location, message

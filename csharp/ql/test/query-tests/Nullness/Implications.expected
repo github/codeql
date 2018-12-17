@@ -1580,8 +1580,8 @@
 | NullAlwaysGood.cs:9:17:9:25 | ... != ... | true | NullAlwaysGood.cs:9:17:9:17 | access to parameter s | non-null |
 | NullAlwaysGood.cs:9:17:9:41 | ... && ... | true | NullAlwaysGood.cs:9:17:9:25 | ... != ... | true |
 | NullAlwaysGood.cs:9:17:9:41 | ... && ... | true | NullAlwaysGood.cs:9:30:9:41 | ... > ... | true |
-| NullMaybeGood.cs:9:17:9:25 | ... != ... | false | NullMaybeGood.cs:9:17:9:17 | access to parameter o | null |
-| NullMaybeGood.cs:9:17:9:25 | ... != ... | true | NullMaybeGood.cs:9:17:9:17 | access to parameter o | non-null |
+| NullMaybeGood.cs:7:13:7:21 | ... != ... | false | NullMaybeGood.cs:7:13:7:13 | access to parameter o | null |
+| NullMaybeGood.cs:7:13:7:21 | ... != ... | true | NullMaybeGood.cs:7:13:7:13 | access to parameter o | non-null |
 | StringConcatenation.cs:7:16:7:23 | String s = ... | non-null | StringConcatenation.cs:7:16:7:16 | access to local variable s | non-null |
 | StringConcatenation.cs:7:16:7:23 | String s = ... | null | StringConcatenation.cs:7:16:7:16 | access to local variable s | null |
 | StringConcatenation.cs:8:9:8:9 | access to local variable s | non-null | StringConcatenation.cs:7:20:7:23 | null | non-null |

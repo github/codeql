@@ -45,6 +45,29 @@ function bad11(s) {
   return s.replace("%25", "%"); // NOT OK
 }
 
+function bad12(s) {
+  return s.replace(`'`, ""); // NOT OK
+}
+
+function bad13(s) {
+  return s.replace("'", ``); // NOT OK
+}
+
+function bad14(s) {
+  return s.replace(`'`, ``); // NOT OK
+}
+
+function bad15(s) {
+  return s.replace("'" + "", ""); // NOT OK
+}
+
+function bad16(s) {
+  return s.replace("'", "" + ""); // NOT OK
+}
+
+function bad17(s) {
+  return s.replace("'" + "", "" + ""); // NOT OK
+}
 
 function good1(s) {
   while (s.indexOf("'") > 0)
@@ -120,6 +143,12 @@ app.get('/some/path', function(req, res) {
   bad9(untrusted);
   bad10(untrusted);
   bad11(untrusted);
+  bad12(untrusted);
+  bad13(untrusted);
+  bad14(untrusted);
+  bad15(untrusted);
+  bad16(untrusted);
+  bad17(untrusted);
 
   good1(untrusted);
   good2(untrusted);

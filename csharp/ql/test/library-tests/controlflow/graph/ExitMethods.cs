@@ -50,6 +50,18 @@ class ExitMethods
         }
     }
 
+    void M7()
+    {
+        ErrorAlways2();
+        return; // dead
+    }
+
+    void M8()
+    {
+        ErrorAlways3();
+        return; // dead
+    }
+
     static void ErrorMaybe(bool b)
     {
         if (b)
@@ -63,6 +75,13 @@ class ExitMethods
         else
             throw new ArgumentException("b");
     }
+
+    static void ErrorAlways2()
+    {
+        throw new Exception();
+    }
+
+    static void ErrorAlways3() => throw new Exception();
 
     void Exit()
     {

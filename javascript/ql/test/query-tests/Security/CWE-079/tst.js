@@ -251,3 +251,14 @@ function react(){
 
     (<C3 propTainted={tainted}/>);
 }
+
+function windowName() {
+    $(window.name); // NOT OK
+    $(name); // NOT OK
+}
+function windowNameAssigned() {
+    for (name of ['a', 'b']) {
+        $(window.name); // NOT OK
+        $(name); // OK
+    }
+}

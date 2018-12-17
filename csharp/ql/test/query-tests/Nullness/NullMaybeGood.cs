@@ -1,19 +1,16 @@
 using System;
 
-namespace NullMaybe
+class Good
 {
-    class Good
+    void DoPrint(object o)
     {
-        void DoPrint(object o)
-        {
-            if (o != null)
-                Console.WriteLine(o.ToString());
-        }
+        if (o != null)
+            Console.WriteLine(o.ToString());
+    }
 
-        void M()
-        {
-            DoPrint("Hello");
-            DoPrint(null);
-        }
+    void M()
+    {
+        DoPrint("Hello");
+        DoPrint(null);
     }
 }

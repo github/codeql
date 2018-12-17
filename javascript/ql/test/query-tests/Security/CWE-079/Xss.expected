@@ -17,6 +17,12 @@ nodes
 | react-native.js:7:17:7:33 | req.param("code") |
 | react-native.js:8:18:8:24 | tainted |
 | react-native.js:9:27:9:33 | tainted |
+| stored-xss.js:2:39:2:55 | document.location |
+| stored-xss.js:2:39:2:62 | documen ... .search |
+| stored-xss.js:3:35:3:51 | document.location |
+| stored-xss.js:3:35:3:58 | documen ... .search |
+| stored-xss.js:5:20:5:52 | session ... ssion') |
+| stored-xss.js:8:20:8:48 | localSt ... local') |
 | string-manipulations.js:3:16:3:32 | document.location |
 | string-manipulations.js:4:16:4:32 | document.location |
 | string-manipulations.js:4:16:4:37 | documen ... on.href |
@@ -162,6 +168,9 @@ nodes
 | tst.js:244:39:244:55 | props.propTainted |
 | tst.js:248:60:248:82 | this.st ... Tainted |
 | tst.js:252:23:252:29 | tainted |
+| tst.js:256:7:256:17 | window.name |
+| tst.js:257:7:257:10 | name |
+| tst.js:261:11:261:21 | window.name |
 | winjs.js:2:7:2:53 | tainted |
 | winjs.js:2:17:2:33 | document.location |
 | winjs.js:2:17:2:40 | documen ... .search |
@@ -183,6 +192,10 @@ edges
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:18:8:24 | tainted |
 | react-native.js:7:7:7:33 | tainted | react-native.js:9:27:9:33 | tainted |
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted |
+| stored-xss.js:2:39:2:55 | document.location | stored-xss.js:2:39:2:62 | documen ... .search |
+| stored-xss.js:2:39:2:62 | documen ... .search | stored-xss.js:5:20:5:52 | session ... ssion') |
+| stored-xss.js:3:35:3:51 | document.location | stored-xss.js:3:35:3:58 | documen ... .search |
+| stored-xss.js:3:35:3:58 | documen ... .search | stored-xss.js:8:20:8:48 | localSt ... local') |
 | string-manipulations.js:4:16:4:32 | document.location | string-manipulations.js:4:16:4:37 | documen ... on.href |
 | string-manipulations.js:5:16:5:32 | document.location | string-manipulations.js:5:16:5:37 | documen ... on.href |
 | string-manipulations.js:5:16:5:37 | documen ... on.href | string-manipulations.js:5:16:5:47 | documen ... lueOf() |
@@ -307,6 +320,8 @@ edges
 | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` | nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` | HTML injection vulnerability due to $@. | nodemailer.js:13:50:13:66 | req.query.message | user-provided value |
 | react-native.js:8:18:8:24 | tainted | react-native.js:7:17:7:33 | req.param("code") | react-native.js:8:18:8:24 | tainted | Cross-site scripting vulnerability due to $@. | react-native.js:7:17:7:33 | req.param("code") | user-provided value |
 | react-native.js:9:27:9:33 | tainted | react-native.js:7:17:7:33 | req.param("code") | react-native.js:9:27:9:33 | tainted | Cross-site scripting vulnerability due to $@. | react-native.js:7:17:7:33 | req.param("code") | user-provided value |
+| stored-xss.js:5:20:5:52 | session ... ssion') | stored-xss.js:2:39:2:55 | document.location | stored-xss.js:5:20:5:52 | session ... ssion') | Cross-site scripting vulnerability due to $@. | stored-xss.js:2:39:2:55 | document.location | user-provided value |
+| stored-xss.js:8:20:8:48 | localSt ... local') | stored-xss.js:3:35:3:51 | document.location | stored-xss.js:8:20:8:48 | localSt ... local') | Cross-site scripting vulnerability due to $@. | stored-xss.js:3:35:3:51 | document.location | user-provided value |
 | string-manipulations.js:3:16:3:32 | document.location | string-manipulations.js:3:16:3:32 | document.location | string-manipulations.js:3:16:3:32 | document.location | Cross-site scripting vulnerability due to $@. | string-manipulations.js:3:16:3:32 | document.location | user-provided value |
 | string-manipulations.js:4:16:4:37 | documen ... on.href | string-manipulations.js:4:16:4:32 | document.location | string-manipulations.js:4:16:4:37 | documen ... on.href | Cross-site scripting vulnerability due to $@. | string-manipulations.js:4:16:4:32 | document.location | user-provided value |
 | string-manipulations.js:5:16:5:47 | documen ... lueOf() | string-manipulations.js:5:16:5:32 | document.location | string-manipulations.js:5:16:5:47 | documen ... lueOf() | Cross-site scripting vulnerability due to $@. | string-manipulations.js:5:16:5:32 | document.location | user-provided value |
@@ -360,5 +375,8 @@ edges
 | tst.js:224:28:224:46 | this.props.tainted3 | tst.js:194:19:194:35 | document.location | tst.js:224:28:224:46 | this.props.tainted3 | Cross-site scripting vulnerability due to $@. | tst.js:194:19:194:35 | document.location | user-provided value |
 | tst.js:228:32:228:49 | prevProps.tainted4 | tst.js:194:19:194:35 | document.location | tst.js:228:32:228:49 | prevProps.tainted4 | Cross-site scripting vulnerability due to $@. | tst.js:194:19:194:35 | document.location | user-provided value |
 | tst.js:248:60:248:82 | this.st ... Tainted | tst.js:194:19:194:35 | document.location | tst.js:248:60:248:82 | this.st ... Tainted | Cross-site scripting vulnerability due to $@. | tst.js:194:19:194:35 | document.location | user-provided value |
+| tst.js:256:7:256:17 | window.name | tst.js:256:7:256:17 | window.name | tst.js:256:7:256:17 | window.name | Cross-site scripting vulnerability due to $@. | tst.js:256:7:256:17 | window.name | user-provided value |
+| tst.js:257:7:257:10 | name | tst.js:257:7:257:10 | name | tst.js:257:7:257:10 | name | Cross-site scripting vulnerability due to $@. | tst.js:257:7:257:10 | name | user-provided value |
+| tst.js:261:11:261:21 | window.name | tst.js:261:11:261:21 | window.name | tst.js:261:11:261:21 | window.name | Cross-site scripting vulnerability due to $@. | tst.js:261:11:261:21 | window.name | user-provided value |
 | winjs.js:3:43:3:49 | tainted | winjs.js:2:17:2:33 | document.location | winjs.js:3:43:3:49 | tainted | Cross-site scripting vulnerability due to $@. | winjs.js:2:17:2:33 | document.location | user-provided value |
 | winjs.js:4:43:4:49 | tainted | winjs.js:2:17:2:33 | document.location | winjs.js:4:43:4:49 | tainted | Cross-site scripting vulnerability due to $@. | winjs.js:2:17:2:33 | document.location | user-provided value |

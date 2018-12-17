@@ -18,6 +18,7 @@
 ## Changes to code extraction
 
 * Fix extraction of `for` statements where the condition declares new variables using `is`.
+* Initializers of `stackalloc` arrays are now extracted.
 
 ## Changes to QL libraries
 

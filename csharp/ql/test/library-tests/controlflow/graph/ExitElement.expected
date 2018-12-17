@@ -788,102 +788,117 @@
 | ExitMethods.cs:47:9:50:9 | catch (...) {...} | ExitMethods.cs:49:13:49:19 | return ...; | return |
 | ExitMethods.cs:48:9:50:9 | {...} | ExitMethods.cs:49:13:49:19 | return ...; | return |
 | ExitMethods.cs:49:13:49:19 | return ...; | ExitMethods.cs:49:13:49:19 | return ...; | return |
-| ExitMethods.cs:54:5:57:5 | {...} | ExitMethods.cs:55:13:55:13 | access to parameter b | false/false |
-| ExitMethods.cs:54:5:57:5 | {...} | ExitMethods.cs:56:13:56:34 | throw ...; | throw(Exception) |
-| ExitMethods.cs:55:9:56:34 | if (...) ... | ExitMethods.cs:55:13:55:13 | access to parameter b | false/false |
-| ExitMethods.cs:55:9:56:34 | if (...) ... | ExitMethods.cs:56:13:56:34 | throw ...; | throw(Exception) |
-| ExitMethods.cs:55:13:55:13 | access to parameter b | ExitMethods.cs:55:13:55:13 | access to parameter b | false/false |
-| ExitMethods.cs:55:13:55:13 | access to parameter b | ExitMethods.cs:55:13:55:13 | access to parameter b | true/true |
-| ExitMethods.cs:56:13:56:34 | throw ...; | ExitMethods.cs:56:13:56:34 | throw ...; | throw(Exception) |
-| ExitMethods.cs:56:19:56:33 | object creation of type Exception | ExitMethods.cs:56:19:56:33 | object creation of type Exception | normal |
-| ExitMethods.cs:60:5:65:5 | {...} | ExitMethods.cs:62:13:62:34 | throw ...; | throw(Exception) |
-| ExitMethods.cs:60:5:65:5 | {...} | ExitMethods.cs:64:13:64:45 | throw ...; | throw(ArgumentException) |
-| ExitMethods.cs:61:9:64:45 | if (...) ... | ExitMethods.cs:62:13:62:34 | throw ...; | throw(Exception) |
-| ExitMethods.cs:61:9:64:45 | if (...) ... | ExitMethods.cs:64:13:64:45 | throw ...; | throw(ArgumentException) |
-| ExitMethods.cs:61:13:61:13 | access to parameter b | ExitMethods.cs:61:13:61:13 | access to parameter b | false/false |
-| ExitMethods.cs:61:13:61:13 | access to parameter b | ExitMethods.cs:61:13:61:13 | access to parameter b | true/true |
-| ExitMethods.cs:62:13:62:34 | throw ...; | ExitMethods.cs:62:13:62:34 | throw ...; | throw(Exception) |
-| ExitMethods.cs:62:19:62:33 | object creation of type Exception | ExitMethods.cs:62:19:62:33 | object creation of type Exception | normal |
-| ExitMethods.cs:64:13:64:45 | throw ...; | ExitMethods.cs:64:13:64:45 | throw ...; | throw(ArgumentException) |
-| ExitMethods.cs:64:19:64:44 | object creation of type ArgumentException | ExitMethods.cs:64:19:64:44 | object creation of type ArgumentException | normal |
-| ExitMethods.cs:64:41:64:43 | "b" | ExitMethods.cs:64:41:64:43 | "b" | normal |
-| ExitMethods.cs:68:5:70:5 | {...} | ExitMethods.cs:69:9:69:27 | call to method Exit | exit |
-| ExitMethods.cs:69:9:69:27 | call to method Exit | ExitMethods.cs:69:9:69:27 | call to method Exit | exit |
-| ExitMethods.cs:69:9:69:28 | ...; | ExitMethods.cs:69:9:69:27 | call to method Exit | exit |
-| ExitMethods.cs:69:26:69:26 | 0 | ExitMethods.cs:69:26:69:26 | 0 | normal |
-| ExitMethods.cs:73:5:83:5 | {...} | ExitMethods.cs:76:13:76:18 | call to method Exit | exit |
-| ExitMethods.cs:73:5:83:5 | {...} | ExitMethods.cs:81:13:81:40 | call to method WriteLine | exit |
-| ExitMethods.cs:74:9:82:9 | try {...} ... | ExitMethods.cs:76:13:76:18 | call to method Exit | exit |
-| ExitMethods.cs:74:9:82:9 | try {...} ... | ExitMethods.cs:81:13:81:40 | call to method WriteLine | exit |
-| ExitMethods.cs:75:9:77:9 | {...} | ExitMethods.cs:76:13:76:18 | call to method Exit | exit |
-| ExitMethods.cs:76:13:76:18 | call to method Exit | ExitMethods.cs:76:13:76:18 | call to method Exit | exit |
-| ExitMethods.cs:76:13:76:18 | this access | ExitMethods.cs:76:13:76:18 | this access | normal |
-| ExitMethods.cs:76:13:76:19 | ...; | ExitMethods.cs:76:13:76:18 | call to method Exit | exit |
-| ExitMethods.cs:79:9:82:9 | {...} | ExitMethods.cs:81:13:81:40 | call to method WriteLine | normal |
-| ExitMethods.cs:81:13:81:40 | call to method WriteLine | ExitMethods.cs:81:13:81:40 | call to method WriteLine | normal |
-| ExitMethods.cs:81:13:81:41 | ...; | ExitMethods.cs:81:13:81:40 | call to method WriteLine | normal |
-| ExitMethods.cs:81:38:81:39 | "" | ExitMethods.cs:81:38:81:39 | "" | normal |
-| ExitMethods.cs:86:5:88:5 | {...} | ExitMethods.cs:87:9:87:47 | call to method Exit | exit |
-| ExitMethods.cs:87:9:87:47 | call to method Exit | ExitMethods.cs:87:9:87:47 | call to method Exit | exit |
-| ExitMethods.cs:87:9:87:48 | ...; | ExitMethods.cs:87:9:87:47 | call to method Exit | exit |
-| ExitMethods.cs:91:5:93:5 | {...} | ExitMethods.cs:92:9:92:77 | return ...; | return |
-| ExitMethods.cs:91:5:93:5 | {...} | ExitMethods.cs:92:41:92:76 | throw ... | throw(ArgumentException) |
-| ExitMethods.cs:92:9:92:77 | return ...; | ExitMethods.cs:92:9:92:77 | return ...; | return |
-| ExitMethods.cs:92:9:92:77 | return ...; | ExitMethods.cs:92:41:92:76 | throw ... | throw(ArgumentException) |
-| ExitMethods.cs:92:16:92:20 | access to parameter input | ExitMethods.cs:92:16:92:20 | access to parameter input | normal |
-| ExitMethods.cs:92:16:92:25 | ... != ... | ExitMethods.cs:92:16:92:25 | ... != ... | false/false |
-| ExitMethods.cs:92:16:92:25 | ... != ... | ExitMethods.cs:92:16:92:25 | ... != ... | true/true |
-| ExitMethods.cs:92:16:92:76 | ... ? ... : ... | ExitMethods.cs:92:29:92:37 | ... / ... | normal |
-| ExitMethods.cs:92:16:92:76 | ... ? ... : ... | ExitMethods.cs:92:41:92:76 | throw ... | throw(ArgumentException) |
-| ExitMethods.cs:92:25:92:25 | 0 | ExitMethods.cs:92:25:92:25 | 0 | normal |
-| ExitMethods.cs:92:25:92:25 | (...) ... | ExitMethods.cs:92:25:92:25 | (...) ... | normal |
-| ExitMethods.cs:92:29:92:29 | 1 | ExitMethods.cs:92:29:92:29 | 1 | normal |
-| ExitMethods.cs:92:29:92:29 | (...) ... | ExitMethods.cs:92:29:92:29 | (...) ... | normal |
-| ExitMethods.cs:92:29:92:37 | ... / ... | ExitMethods.cs:92:29:92:37 | ... / ... | normal |
-| ExitMethods.cs:92:33:92:37 | access to parameter input | ExitMethods.cs:92:33:92:37 | access to parameter input | normal |
-| ExitMethods.cs:92:41:92:76 | throw ... | ExitMethods.cs:92:41:92:76 | throw ... | throw(ArgumentException) |
-| ExitMethods.cs:92:47:92:76 | object creation of type ArgumentException | ExitMethods.cs:92:47:92:76 | object creation of type ArgumentException | normal |
-| ExitMethods.cs:92:69:92:75 | "input" | ExitMethods.cs:92:69:92:75 | "input" | normal |
-| ExitMethods.cs:96:5:98:5 | {...} | ExitMethods.cs:97:9:97:39 | return ...; | return |
-| ExitMethods.cs:97:9:97:39 | return ...; | ExitMethods.cs:97:9:97:39 | return ...; | return |
-| ExitMethods.cs:97:16:97:16 | access to parameter s | ExitMethods.cs:97:16:97:16 | access to parameter s | normal |
-| ExitMethods.cs:97:16:97:30 | call to method Contains | ExitMethods.cs:97:16:97:30 | call to method Contains | false/false |
-| ExitMethods.cs:97:16:97:30 | call to method Contains | ExitMethods.cs:97:16:97:30 | call to method Contains | true/true |
-| ExitMethods.cs:97:16:97:38 | ... ? ... : ... | ExitMethods.cs:97:34:97:34 | 0 | normal |
-| ExitMethods.cs:97:16:97:38 | ... ? ... : ... | ExitMethods.cs:97:38:97:38 | 1 | normal |
-| ExitMethods.cs:97:27:97:29 | - | ExitMethods.cs:97:27:97:29 | - | normal |
-| ExitMethods.cs:97:34:97:34 | 0 | ExitMethods.cs:97:34:97:34 | 0 | normal |
-| ExitMethods.cs:97:38:97:38 | 1 | ExitMethods.cs:97:38:97:38 | 1 | normal |
-| ExitMethods.cs:101:5:104:5 | {...} | ExitMethods.cs:102:9:102:28 | call to method IsTrue | throw(AssertFailedException) |
-| ExitMethods.cs:101:5:104:5 | {...} | ExitMethods.cs:103:13:103:17 | Int32 x = ... | normal |
-| ExitMethods.cs:102:9:102:28 | call to method IsTrue | ExitMethods.cs:102:9:102:28 | call to method IsTrue | throw(AssertFailedException) |
-| ExitMethods.cs:102:9:102:29 | ...; | ExitMethods.cs:102:9:102:28 | call to method IsTrue | throw(AssertFailedException) |
-| ExitMethods.cs:102:23:102:27 | false | ExitMethods.cs:102:23:102:27 | false | normal |
-| ExitMethods.cs:103:9:103:18 | ... ...; | ExitMethods.cs:103:13:103:17 | Int32 x = ... | normal |
-| ExitMethods.cs:103:13:103:13 | access to local variable x | ExitMethods.cs:103:13:103:13 | access to local variable x | normal |
-| ExitMethods.cs:103:13:103:17 | Int32 x = ... | ExitMethods.cs:103:13:103:17 | Int32 x = ... | normal |
-| ExitMethods.cs:103:17:103:17 | 0 | ExitMethods.cs:103:17:103:17 | 0 | normal |
-| ExitMethods.cs:107:5:110:5 | {...} | ExitMethods.cs:108:9:108:26 | call to method FailingAssertion | throw(AssertFailedException) |
-| ExitMethods.cs:107:5:110:5 | {...} | ExitMethods.cs:109:13:109:17 | Int32 x = ... | normal |
-| ExitMethods.cs:108:9:108:26 | call to method FailingAssertion | ExitMethods.cs:108:9:108:26 | call to method FailingAssertion | throw(AssertFailedException) |
-| ExitMethods.cs:108:9:108:26 | this access | ExitMethods.cs:108:9:108:26 | this access | normal |
-| ExitMethods.cs:108:9:108:27 | ...; | ExitMethods.cs:108:9:108:26 | call to method FailingAssertion | throw(AssertFailedException) |
-| ExitMethods.cs:109:9:109:18 | ... ...; | ExitMethods.cs:109:13:109:17 | Int32 x = ... | normal |
-| ExitMethods.cs:109:13:109:13 | access to local variable x | ExitMethods.cs:109:13:109:13 | access to local variable x | normal |
-| ExitMethods.cs:109:13:109:17 | Int32 x = ... | ExitMethods.cs:109:13:109:17 | Int32 x = ... | normal |
-| ExitMethods.cs:109:17:109:17 | 0 | ExitMethods.cs:109:17:109:17 | 0 | normal |
-| ExitMethods.cs:112:33:112:49 | call to method IsFalse | ExitMethods.cs:112:33:112:49 | call to method IsFalse | normal |
-| ExitMethods.cs:112:48:112:48 | access to parameter b | ExitMethods.cs:112:48:112:48 | access to parameter b | normal |
-| ExitMethods.cs:115:5:118:5 | {...} | ExitMethods.cs:116:9:116:25 | call to method AssertFalse | throw(AssertFailedException) |
-| ExitMethods.cs:115:5:118:5 | {...} | ExitMethods.cs:117:13:117:17 | Int32 x = ... | normal |
-| ExitMethods.cs:116:9:116:25 | call to method AssertFalse | ExitMethods.cs:116:9:116:25 | call to method AssertFalse | throw(AssertFailedException) |
-| ExitMethods.cs:116:9:116:25 | this access | ExitMethods.cs:116:9:116:25 | this access | normal |
-| ExitMethods.cs:116:9:116:26 | ...; | ExitMethods.cs:116:9:116:25 | call to method AssertFalse | throw(AssertFailedException) |
-| ExitMethods.cs:116:21:116:24 | true | ExitMethods.cs:116:21:116:24 | true | normal |
-| ExitMethods.cs:117:9:117:18 | ... ...; | ExitMethods.cs:117:13:117:17 | Int32 x = ... | normal |
-| ExitMethods.cs:117:13:117:13 | access to local variable x | ExitMethods.cs:117:13:117:13 | access to local variable x | normal |
-| ExitMethods.cs:117:13:117:17 | Int32 x = ... | ExitMethods.cs:117:13:117:17 | Int32 x = ... | normal |
-| ExitMethods.cs:117:17:117:17 | 0 | ExitMethods.cs:117:17:117:17 | 0 | normal |
+| ExitMethods.cs:54:5:57:5 | {...} | ExitMethods.cs:55:9:55:22 | call to method ErrorAlways2 | throw(Exception) |
+| ExitMethods.cs:54:5:57:5 | {...} | ExitMethods.cs:56:9:56:15 | return ...; | return |
+| ExitMethods.cs:55:9:55:22 | call to method ErrorAlways2 | ExitMethods.cs:55:9:55:22 | call to method ErrorAlways2 | throw(Exception) |
+| ExitMethods.cs:55:9:55:23 | ...; | ExitMethods.cs:55:9:55:22 | call to method ErrorAlways2 | throw(Exception) |
+| ExitMethods.cs:56:9:56:15 | return ...; | ExitMethods.cs:56:9:56:15 | return ...; | return |
+| ExitMethods.cs:60:5:63:5 | {...} | ExitMethods.cs:61:9:61:22 | call to method ErrorAlways3 | throw(Exception) |
+| ExitMethods.cs:60:5:63:5 | {...} | ExitMethods.cs:62:9:62:15 | return ...; | return |
+| ExitMethods.cs:61:9:61:22 | call to method ErrorAlways3 | ExitMethods.cs:61:9:61:22 | call to method ErrorAlways3 | throw(Exception) |
+| ExitMethods.cs:61:9:61:23 | ...; | ExitMethods.cs:61:9:61:22 | call to method ErrorAlways3 | throw(Exception) |
+| ExitMethods.cs:62:9:62:15 | return ...; | ExitMethods.cs:62:9:62:15 | return ...; | return |
+| ExitMethods.cs:66:5:69:5 | {...} | ExitMethods.cs:67:13:67:13 | access to parameter b | false/false |
+| ExitMethods.cs:66:5:69:5 | {...} | ExitMethods.cs:68:13:68:34 | throw ...; | throw(Exception) |
+| ExitMethods.cs:67:9:68:34 | if (...) ... | ExitMethods.cs:67:13:67:13 | access to parameter b | false/false |
+| ExitMethods.cs:67:9:68:34 | if (...) ... | ExitMethods.cs:68:13:68:34 | throw ...; | throw(Exception) |
+| ExitMethods.cs:67:13:67:13 | access to parameter b | ExitMethods.cs:67:13:67:13 | access to parameter b | false/false |
+| ExitMethods.cs:67:13:67:13 | access to parameter b | ExitMethods.cs:67:13:67:13 | access to parameter b | true/true |
+| ExitMethods.cs:68:13:68:34 | throw ...; | ExitMethods.cs:68:13:68:34 | throw ...; | throw(Exception) |
+| ExitMethods.cs:68:19:68:33 | object creation of type Exception | ExitMethods.cs:68:19:68:33 | object creation of type Exception | normal |
+| ExitMethods.cs:72:5:77:5 | {...} | ExitMethods.cs:74:13:74:34 | throw ...; | throw(Exception) |
+| ExitMethods.cs:72:5:77:5 | {...} | ExitMethods.cs:76:13:76:45 | throw ...; | throw(ArgumentException) |
+| ExitMethods.cs:73:9:76:45 | if (...) ... | ExitMethods.cs:74:13:74:34 | throw ...; | throw(Exception) |
+| ExitMethods.cs:73:9:76:45 | if (...) ... | ExitMethods.cs:76:13:76:45 | throw ...; | throw(ArgumentException) |
+| ExitMethods.cs:73:13:73:13 | access to parameter b | ExitMethods.cs:73:13:73:13 | access to parameter b | false/false |
+| ExitMethods.cs:73:13:73:13 | access to parameter b | ExitMethods.cs:73:13:73:13 | access to parameter b | true/true |
+| ExitMethods.cs:74:13:74:34 | throw ...; | ExitMethods.cs:74:13:74:34 | throw ...; | throw(Exception) |
+| ExitMethods.cs:74:19:74:33 | object creation of type Exception | ExitMethods.cs:74:19:74:33 | object creation of type Exception | normal |
+| ExitMethods.cs:76:13:76:45 | throw ...; | ExitMethods.cs:76:13:76:45 | throw ...; | throw(ArgumentException) |
+| ExitMethods.cs:76:19:76:44 | object creation of type ArgumentException | ExitMethods.cs:76:19:76:44 | object creation of type ArgumentException | normal |
+| ExitMethods.cs:76:41:76:43 | "b" | ExitMethods.cs:76:41:76:43 | "b" | normal |
+| ExitMethods.cs:80:5:82:5 | {...} | ExitMethods.cs:81:9:81:30 | throw ...; | throw(Exception) |
+| ExitMethods.cs:81:9:81:30 | throw ...; | ExitMethods.cs:81:9:81:30 | throw ...; | throw(Exception) |
+| ExitMethods.cs:81:15:81:29 | object creation of type Exception | ExitMethods.cs:81:15:81:29 | object creation of type Exception | normal |
+| ExitMethods.cs:84:35:84:55 | throw ... | ExitMethods.cs:84:35:84:55 | throw ... | throw(Exception) |
+| ExitMethods.cs:84:41:84:55 | object creation of type Exception | ExitMethods.cs:84:41:84:55 | object creation of type Exception | normal |
+| ExitMethods.cs:87:5:89:5 | {...} | ExitMethods.cs:88:9:88:27 | call to method Exit | exit |
+| ExitMethods.cs:88:9:88:27 | call to method Exit | ExitMethods.cs:88:9:88:27 | call to method Exit | exit |
+| ExitMethods.cs:88:9:88:28 | ...; | ExitMethods.cs:88:9:88:27 | call to method Exit | exit |
+| ExitMethods.cs:88:26:88:26 | 0 | ExitMethods.cs:88:26:88:26 | 0 | normal |
+| ExitMethods.cs:92:5:102:5 | {...} | ExitMethods.cs:95:13:95:18 | call to method Exit | exit |
+| ExitMethods.cs:92:5:102:5 | {...} | ExitMethods.cs:100:13:100:40 | call to method WriteLine | exit |
+| ExitMethods.cs:93:9:101:9 | try {...} ... | ExitMethods.cs:95:13:95:18 | call to method Exit | exit |
+| ExitMethods.cs:93:9:101:9 | try {...} ... | ExitMethods.cs:100:13:100:40 | call to method WriteLine | exit |
+| ExitMethods.cs:94:9:96:9 | {...} | ExitMethods.cs:95:13:95:18 | call to method Exit | exit |
+| ExitMethods.cs:95:13:95:18 | call to method Exit | ExitMethods.cs:95:13:95:18 | call to method Exit | exit |
+| ExitMethods.cs:95:13:95:18 | this access | ExitMethods.cs:95:13:95:18 | this access | normal |
+| ExitMethods.cs:95:13:95:19 | ...; | ExitMethods.cs:95:13:95:18 | call to method Exit | exit |
+| ExitMethods.cs:98:9:101:9 | {...} | ExitMethods.cs:100:13:100:40 | call to method WriteLine | normal |
+| ExitMethods.cs:100:13:100:40 | call to method WriteLine | ExitMethods.cs:100:13:100:40 | call to method WriteLine | normal |
+| ExitMethods.cs:100:13:100:41 | ...; | ExitMethods.cs:100:13:100:40 | call to method WriteLine | normal |
+| ExitMethods.cs:100:38:100:39 | "" | ExitMethods.cs:100:38:100:39 | "" | normal |
+| ExitMethods.cs:105:5:107:5 | {...} | ExitMethods.cs:106:9:106:47 | call to method Exit | exit |
+| ExitMethods.cs:106:9:106:47 | call to method Exit | ExitMethods.cs:106:9:106:47 | call to method Exit | exit |
+| ExitMethods.cs:106:9:106:48 | ...; | ExitMethods.cs:106:9:106:47 | call to method Exit | exit |
+| ExitMethods.cs:110:5:112:5 | {...} | ExitMethods.cs:111:9:111:77 | return ...; | return |
+| ExitMethods.cs:110:5:112:5 | {...} | ExitMethods.cs:111:41:111:76 | throw ... | throw(ArgumentException) |
+| ExitMethods.cs:111:9:111:77 | return ...; | ExitMethods.cs:111:9:111:77 | return ...; | return |
+| ExitMethods.cs:111:9:111:77 | return ...; | ExitMethods.cs:111:41:111:76 | throw ... | throw(ArgumentException) |
+| ExitMethods.cs:111:16:111:20 | access to parameter input | ExitMethods.cs:111:16:111:20 | access to parameter input | normal |
+| ExitMethods.cs:111:16:111:25 | ... != ... | ExitMethods.cs:111:16:111:25 | ... != ... | false/false |
+| ExitMethods.cs:111:16:111:25 | ... != ... | ExitMethods.cs:111:16:111:25 | ... != ... | true/true |
+| ExitMethods.cs:111:16:111:76 | ... ? ... : ... | ExitMethods.cs:111:29:111:37 | ... / ... | normal |
+| ExitMethods.cs:111:16:111:76 | ... ? ... : ... | ExitMethods.cs:111:41:111:76 | throw ... | throw(ArgumentException) |
+| ExitMethods.cs:111:25:111:25 | 0 | ExitMethods.cs:111:25:111:25 | 0 | normal |
+| ExitMethods.cs:111:25:111:25 | (...) ... | ExitMethods.cs:111:25:111:25 | (...) ... | normal |
+| ExitMethods.cs:111:29:111:29 | 1 | ExitMethods.cs:111:29:111:29 | 1 | normal |
+| ExitMethods.cs:111:29:111:29 | (...) ... | ExitMethods.cs:111:29:111:29 | (...) ... | normal |
+| ExitMethods.cs:111:29:111:37 | ... / ... | ExitMethods.cs:111:29:111:37 | ... / ... | normal |
+| ExitMethods.cs:111:33:111:37 | access to parameter input | ExitMethods.cs:111:33:111:37 | access to parameter input | normal |
+| ExitMethods.cs:111:41:111:76 | throw ... | ExitMethods.cs:111:41:111:76 | throw ... | throw(ArgumentException) |
+| ExitMethods.cs:111:47:111:76 | object creation of type ArgumentException | ExitMethods.cs:111:47:111:76 | object creation of type ArgumentException | normal |
+| ExitMethods.cs:111:69:111:75 | "input" | ExitMethods.cs:111:69:111:75 | "input" | normal |
+| ExitMethods.cs:115:5:117:5 | {...} | ExitMethods.cs:116:9:116:39 | return ...; | return |
+| ExitMethods.cs:116:9:116:39 | return ...; | ExitMethods.cs:116:9:116:39 | return ...; | return |
+| ExitMethods.cs:116:16:116:16 | access to parameter s | ExitMethods.cs:116:16:116:16 | access to parameter s | normal |
+| ExitMethods.cs:116:16:116:30 | call to method Contains | ExitMethods.cs:116:16:116:30 | call to method Contains | false/false |
+| ExitMethods.cs:116:16:116:30 | call to method Contains | ExitMethods.cs:116:16:116:30 | call to method Contains | true/true |
+| ExitMethods.cs:116:16:116:38 | ... ? ... : ... | ExitMethods.cs:116:34:116:34 | 0 | normal |
+| ExitMethods.cs:116:16:116:38 | ... ? ... : ... | ExitMethods.cs:116:38:116:38 | 1 | normal |
+| ExitMethods.cs:116:27:116:29 | - | ExitMethods.cs:116:27:116:29 | - | normal |
+| ExitMethods.cs:116:34:116:34 | 0 | ExitMethods.cs:116:34:116:34 | 0 | normal |
+| ExitMethods.cs:116:38:116:38 | 1 | ExitMethods.cs:116:38:116:38 | 1 | normal |
+| ExitMethods.cs:120:5:123:5 | {...} | ExitMethods.cs:121:9:121:28 | call to method IsTrue | throw(AssertFailedException) |
+| ExitMethods.cs:120:5:123:5 | {...} | ExitMethods.cs:122:13:122:17 | Int32 x = ... | normal |
+| ExitMethods.cs:121:9:121:28 | call to method IsTrue | ExitMethods.cs:121:9:121:28 | call to method IsTrue | throw(AssertFailedException) |
+| ExitMethods.cs:121:9:121:29 | ...; | ExitMethods.cs:121:9:121:28 | call to method IsTrue | throw(AssertFailedException) |
+| ExitMethods.cs:121:23:121:27 | false | ExitMethods.cs:121:23:121:27 | false | normal |
+| ExitMethods.cs:122:9:122:18 | ... ...; | ExitMethods.cs:122:13:122:17 | Int32 x = ... | normal |
+| ExitMethods.cs:122:13:122:13 | access to local variable x | ExitMethods.cs:122:13:122:13 | access to local variable x | normal |
+| ExitMethods.cs:122:13:122:17 | Int32 x = ... | ExitMethods.cs:122:13:122:17 | Int32 x = ... | normal |
+| ExitMethods.cs:122:17:122:17 | 0 | ExitMethods.cs:122:17:122:17 | 0 | normal |
+| ExitMethods.cs:126:5:129:5 | {...} | ExitMethods.cs:127:9:127:26 | call to method FailingAssertion | throw(AssertFailedException) |
+| ExitMethods.cs:126:5:129:5 | {...} | ExitMethods.cs:128:13:128:17 | Int32 x = ... | normal |
+| ExitMethods.cs:127:9:127:26 | call to method FailingAssertion | ExitMethods.cs:127:9:127:26 | call to method FailingAssertion | throw(AssertFailedException) |
+| ExitMethods.cs:127:9:127:26 | this access | ExitMethods.cs:127:9:127:26 | this access | normal |
+| ExitMethods.cs:127:9:127:27 | ...; | ExitMethods.cs:127:9:127:26 | call to method FailingAssertion | throw(AssertFailedException) |
+| ExitMethods.cs:128:9:128:18 | ... ...; | ExitMethods.cs:128:13:128:17 | Int32 x = ... | normal |
+| ExitMethods.cs:128:13:128:13 | access to local variable x | ExitMethods.cs:128:13:128:13 | access to local variable x | normal |
+| ExitMethods.cs:128:13:128:17 | Int32 x = ... | ExitMethods.cs:128:13:128:17 | Int32 x = ... | normal |
+| ExitMethods.cs:128:17:128:17 | 0 | ExitMethods.cs:128:17:128:17 | 0 | normal |
+| ExitMethods.cs:131:33:131:49 | call to method IsFalse | ExitMethods.cs:131:33:131:49 | call to method IsFalse | normal |
+| ExitMethods.cs:131:48:131:48 | access to parameter b | ExitMethods.cs:131:48:131:48 | access to parameter b | normal |
+| ExitMethods.cs:134:5:137:5 | {...} | ExitMethods.cs:135:9:135:25 | call to method AssertFalse | throw(AssertFailedException) |
+| ExitMethods.cs:134:5:137:5 | {...} | ExitMethods.cs:136:13:136:17 | Int32 x = ... | normal |
+| ExitMethods.cs:135:9:135:25 | call to method AssertFalse | ExitMethods.cs:135:9:135:25 | call to method AssertFalse | throw(AssertFailedException) |
+| ExitMethods.cs:135:9:135:25 | this access | ExitMethods.cs:135:9:135:25 | this access | normal |
+| ExitMethods.cs:135:9:135:26 | ...; | ExitMethods.cs:135:9:135:25 | call to method AssertFalse | throw(AssertFailedException) |
+| ExitMethods.cs:135:21:135:24 | true | ExitMethods.cs:135:21:135:24 | true | normal |
+| ExitMethods.cs:136:9:136:18 | ... ...; | ExitMethods.cs:136:13:136:17 | Int32 x = ... | normal |
+| ExitMethods.cs:136:13:136:13 | access to local variable x | ExitMethods.cs:136:13:136:13 | access to local variable x | normal |
+| ExitMethods.cs:136:13:136:17 | Int32 x = ... | ExitMethods.cs:136:13:136:17 | Int32 x = ... | normal |
+| ExitMethods.cs:136:17:136:17 | 0 | ExitMethods.cs:136:17:136:17 | 0 | normal |
 | Extensions.cs:6:5:8:5 | {...} | Extensions.cs:7:9:7:30 | return ...; | return |
 | Extensions.cs:7:9:7:30 | return ...; | Extensions.cs:7:9:7:30 | return ...; | return |
 | Extensions.cs:7:16:7:29 | call to method Parse | Extensions.cs:7:16:7:29 | call to method Parse | normal |
