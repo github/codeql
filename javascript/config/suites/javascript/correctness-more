@@ -12,6 +12,7 @@
 + semmlecode-javascript-queries/LanguageFeatures/InconsistentNew.ql: /Correctness/Language Features
 + semmlecode-javascript-queries/LanguageFeatures/SpuriousArguments.ql: /Correctness/Language Features
 + semmlecode-javascript-queries/Statements/MisleadingIndentationAfterControlStmt.ql: /Correctness/Statements
++ semmlecode-javascript-queries/Statements/MissingIndexAdjustmentAfterConcurrentModification.ql: /Correctness/Statements
 + semmlecode-javascript-queries/Statements/ReturnOutsideFunction.ql: /Correctness/Statements
 + semmlecode-javascript-queries/Statements/SuspiciousUnusedLoopIterationVariable.ql: /Correctness/Statements
 + semmlecode-javascript-queries/Statements/UselessConditional.ql: /Correctness/Statements
