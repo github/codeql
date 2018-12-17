@@ -60,6 +60,7 @@ import com.semmle.js.ast.ImportSpecifier;
 import com.semmle.js.ast.InvokeExpression;
 import com.semmle.js.ast.LabeledStatement;
 import com.semmle.js.ast.Literal;
+import com.semmle.js.ast.LogicalExpression;
 import com.semmle.js.ast.MemberDefinition;
 import com.semmle.js.ast.MemberExpression;
 import com.semmle.js.ast.DeclarationFlags;
@@ -839,6 +840,9 @@ public class TypeScriptASTConverter {
 			return new SequenceExpression(loc, expressions);
 		} else {
 			String operator = getSourceLocation(operatorToken).getSource();
+			if ("||".equals(operator) || "&&".equals(operator)) {
+				return new LogicalExpression(loc, operator, left, right);
+			}
 			if ("EqualsToken".equals(operatorKind))
 				left = convertLValue(left);
 			return new BinaryExpression(loc, operator, left, right);
