@@ -136,7 +136,6 @@
 | Properties.cs:75:23:75:23 | b | Properties.cs:75:23:75:35 | Action b = ... | Properties.cs:80:9:80:9 | access to local variable b |
 | Properties.cs:106:37:106:37 | p | Properties.cs:106:37:106:37 | p | Properties.cs:106:42:106:42 | access to parameter p |
 | Splitting.cs:3:18:3:18 | b | Splitting.cs:3:18:3:18 | b | Splitting.cs:6:13:6:13 | access to parameter b |
-| Splitting.cs:5:13:5:13 | x | Splitting.cs:7:13:7:19 | ... = ... | Splitting.cs:13:9:13:9 | access to local variable x |
 | Splitting.cs:5:13:5:13 | x | Splitting.cs:10:13:10:19 | ... = ... | Splitting.cs:11:13:11:13 | access to local variable x |
 | Splitting.cs:22:18:22:18 | b | Splitting.cs:22:18:22:18 | b | Splitting.cs:25:13:25:13 | access to parameter b |
 | Splitting.cs:24:13:24:13 | x | Splitting.cs:29:13:29:19 | ... = ... | Splitting.cs:30:13:30:13 | access to local variable x |

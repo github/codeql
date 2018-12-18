@@ -1,9 +1,19 @@
 import csharp
 import ControlFlow::Internal
 
-query predicate defReadInconsistency(
+class CallableWithSplitting extends Callable {
+  CallableWithSplitting() {
+    this = any(SplitControlFlowElement e).getEnclosingCallable()
+  }
+}
+
+query
+predicate defReadInconsistency(
   AssignableRead ar, Expr e, PreSsa::SimpleAssignable a, boolean b
 ) {
+  // Exclude definitions in callables with CFG splitting, as SSA definitions may be
+  // very different from pre-SSA definitions
+  not ar.getEnclosingCallable() instanceof CallableWithSplitting and
   exists(AssignableDefinition def | e = def.getExpr() |
     b = true and
     exists(PreSsa::Definition ssaDef | ssaDef.getAssignable() = a |
@@ -31,21 +41,33 @@ query predicate defReadInconsistency(
 query predicate readReadInconsistency(
   LocalScopeVariableRead read1, LocalScopeVariableRead read2, PreSsa::SimpleAssignable a, boolean b
 ) {
-  b = true and
-  a = read1.getTarget() and
-  PreSsa::adjacentReadPairSameVar(read1, read2) and
-  not Ssa::Internal::adjacentReadPairSameVar(read1, read2)
-  or
-  b = false and
-  a = read1.getTarget() and
-  Ssa::Internal::adjacentReadPairSameVar(read1, read2) and
-  read1.getTarget() instanceof PreSsa::SimpleAssignable and
-  not PreSsa::adjacentReadPairSameVar(read1, read2)
+  // Exclude definitions in callables with CFG splitting, as SSA definitions may be
+  // very different from pre-SSA definitions
+  not read1.getEnclosingCallable() instanceof CallableWithSplitting and
+  (
+    b = true and
+    a = read1.getTarget() and
+    PreSsa::adjacentReadPairSameVar(read1, read2) and
+    not Ssa::Internal::adjacentReadPairSameVar(read1.getAControlFlowNode(), read2.getAControlFlowNode())
+    or
+    b = false and
+    a = read1.getTarget() and
+    Ssa::Internal::adjacentReadPairSameVar(read1.getAControlFlowNode(), read2.getAControlFlowNode()) and
+    read1.getTarget() instanceof PreSsa::SimpleAssignable and
+    not PreSsa::adjacentReadPairSameVar(read1, read2) and
+    // Exclude split CFG elements because SSA may be more precise than pre-SSA
+    // in those cases
+    not read1 instanceof SplitControlFlowElement and
+    not read2 instanceof SplitControlFlowElement
+  )
 }
 
 query predicate phiInconsistency(
   ControlFlowElement cfe, Expr e, PreSsa::SimpleAssignable a, boolean b
 ) {
+  // Exclude definitions in callables with CFG splitting, as SSA definitions may be
+  // very different from pre-SSA definitions
+  not cfe.getEnclosingCallable() instanceof CallableWithSplitting and
   exists(AssignableDefinition adef | e = adef.getExpr() |
     b = true and
     exists(PreSsa::Definition def | a = def.getAssignable() |

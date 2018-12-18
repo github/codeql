@@ -423,20 +423,20 @@ private Ssa::Definition getAnUltimateDefinition(Ssa::Definition def) {
 }
 
 /**
- * Holds if SSA definition `def` can reach a read `ar`, without passing
+ * Holds if SSA definition `def` can reach a read at `cfn`, without passing
  * through an intermediate dereference that always (`always = true`) or
  * maybe (`always = false`) throws a null reference exception.
  */
-private predicate defReaches(Ssa::Definition def, AssignableRead ar, boolean always) {
-  ar = def.getAFirstRead() and
+private predicate defReaches(Ssa::Definition def, ControlFlow::Node cfn, boolean always) {
+  exists(def.getAFirstReadAtNode(cfn)) and
   (always = true or always = false)
   or
-  exists(AssignableRead mid |
+  exists(ControlFlow::Node mid |
     defReaches(def, mid, always) |
-    ar = mid.getANextRead() and
+    Ssa::Internal::adjacentReadPairSameVar(mid, cfn) and
     not mid = any(Dereference d |
       if always = true then d.isAlwaysNull(def.getSourceVariable()) else d.isMaybeNull(def, _, _, _, _)
-    )
+    ).getAControlFlowNode()
   )
 }
 
@@ -528,7 +528,7 @@ class Dereference extends G::DereferenceableExpr {
    */
   predicate isFirstAlwaysNull(Ssa::SourceVariable v) {
     this.isAlwaysNull(v) and
-    defReaches(v.getAnSsaDefinition(), this, true)
+    defReaches(v.getAnSsaDefinition(), this.getAControlFlowNode(), true)
   }
 
   /**
@@ -551,6 +551,6 @@ class Dereference extends G::DereferenceableExpr {
    */
   predicate isFirstMaybeNull(Ssa::Definition def, SourcePathNode source, SinkPathNode sink, string msg, Element reason) {
     this.isMaybeNull(def, source, sink, msg, reason) and
-    defReaches(def, this, false)
+    defReaches(def, this.getAControlFlowNode(), false)
   }
 }

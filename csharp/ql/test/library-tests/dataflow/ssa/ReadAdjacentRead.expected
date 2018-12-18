@@ -99,7 +99,6 @@
 | Properties.cs:104:16:104:20 | Props | Properties.cs:115:21:115:30 | access to field Props | Properties.cs:116:17:116:26 | access to field Props |
 | Properties.cs:104:16:104:20 | Props | Properties.cs:115:21:115:36 | access to field Props | Properties.cs:116:17:116:32 | access to field Props |
 | Splitting.cs:3:18:3:18 | b | Splitting.cs:6:13:6:13 | access to parameter b | Splitting.cs:15:13:15:13 | access to parameter b |
-| Splitting.cs:5:13:5:13 | x | Splitting.cs:11:13:11:13 | access to local variable x | Splitting.cs:13:9:13:9 | access to local variable x |
 | Splitting.cs:5:13:5:13 | x | Splitting.cs:13:9:13:9 | access to local variable x | Splitting.cs:14:9:14:9 | access to local variable x |
 | Splitting.cs:5:13:5:13 | x | Splitting.cs:14:9:14:9 | access to local variable x | Splitting.cs:17:13:17:13 | access to local variable x |
 | Splitting.cs:22:18:22:18 | b | Splitting.cs:25:13:25:13 | access to parameter b | Splitting.cs:35:13:35:13 | access to parameter b |
