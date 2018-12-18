@@ -217,6 +217,7 @@ nodes
 | tst.js:272:9:272:32 | loc3 |
 | tst.js:272:16:272:32 | document.location |
 | tst.js:275:7:275:10 | loc3 |
+| tst.js:277:22:277:29 | location |
 | winjs.js:2:7:2:53 | tainted |
 | winjs.js:2:17:2:33 | document.location |
 | winjs.js:2:17:2:40 | documen ... .search |
