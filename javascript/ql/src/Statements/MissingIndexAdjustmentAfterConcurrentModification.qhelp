@@ -15,6 +15,8 @@
 
 <p>
 Determine what the loop is supposed to do:
+</p>
+
 <ul>
   <li>
     If the intention is to remove <em>every occurence</em> of a certain value, decrement the loop counter after removing an element, to counterbalance
@@ -28,7 +30,6 @@ Determine what the loop is supposed to do:
     so it is clear that the loop is not a trivial array iteration loop.
   </li>
 </ul>
-</p>
 
 </recommendation>
 <example>
