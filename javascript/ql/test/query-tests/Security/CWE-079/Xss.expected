@@ -171,6 +171,18 @@ nodes
 | tst.js:256:7:256:17 | window.name |
 | tst.js:257:7:257:10 | name |
 | tst.js:261:11:261:21 | window.name |
+| tst.js:267:7:267:14 | location |
+| tst.js:268:7:268:21 | window.location |
+| tst.js:269:7:269:23 | document.location |
+| tst.js:270:9:270:23 | loc1 |
+| tst.js:270:16:270:23 | location |
+| tst.js:271:9:271:30 | loc2 |
+| tst.js:271:16:271:30 | window.location |
+| tst.js:272:9:272:32 | loc3 |
+| tst.js:272:16:272:32 | document.location |
+| tst.js:273:7:273:10 | loc1 |
+| tst.js:274:7:274:10 | loc2 |
+| tst.js:275:7:275:10 | loc3 |
 | winjs.js:2:7:2:53 | tainted |
 | winjs.js:2:17:2:33 | document.location |
 | winjs.js:2:17:2:40 | documen ... .search |
@@ -307,6 +319,12 @@ edges
 | tst.js:238:23:238:29 | tainted | tst.js:228:32:228:49 | prevProps.tainted4 |
 | tst.js:244:39:244:55 | props.propTainted | tst.js:248:60:248:82 | this.st ... Tainted |
 | tst.js:252:23:252:29 | tainted | tst.js:244:39:244:55 | props.propTainted |
+| tst.js:270:9:270:23 | loc1 | tst.js:273:7:273:10 | loc1 |
+| tst.js:270:16:270:23 | location | tst.js:270:9:270:23 | loc1 |
+| tst.js:271:9:271:30 | loc2 | tst.js:274:7:274:10 | loc2 |
+| tst.js:271:16:271:30 | window.location | tst.js:271:9:271:30 | loc2 |
+| tst.js:272:9:272:32 | loc3 | tst.js:275:7:275:10 | loc3 |
+| tst.js:272:16:272:32 | document.location | tst.js:272:9:272:32 | loc3 |
 | winjs.js:2:7:2:53 | tainted | winjs.js:3:43:3:49 | tainted |
 | winjs.js:2:7:2:53 | tainted | winjs.js:4:43:4:49 | tainted |
 | winjs.js:2:17:2:33 | document.location | winjs.js:2:17:2:40 | documen ... .search |
@@ -378,5 +396,14 @@ edges
 | tst.js:256:7:256:17 | window.name | tst.js:256:7:256:17 | window.name | tst.js:256:7:256:17 | window.name | Cross-site scripting vulnerability due to $@. | tst.js:256:7:256:17 | window.name | user-provided value |
 | tst.js:257:7:257:10 | name | tst.js:257:7:257:10 | name | tst.js:257:7:257:10 | name | Cross-site scripting vulnerability due to $@. | tst.js:257:7:257:10 | name | user-provided value |
 | tst.js:261:11:261:21 | window.name | tst.js:261:11:261:21 | window.name | tst.js:261:11:261:21 | window.name | Cross-site scripting vulnerability due to $@. | tst.js:261:11:261:21 | window.name | user-provided value |
+| tst.js:267:7:267:14 | location | tst.js:267:7:267:14 | location | tst.js:267:7:267:14 | location | Cross-site scripting vulnerability due to $@. | tst.js:267:7:267:14 | location | user-provided value |
+| tst.js:268:7:268:21 | window.location | tst.js:268:7:268:21 | window.location | tst.js:268:7:268:21 | window.location | Cross-site scripting vulnerability due to $@. | tst.js:268:7:268:21 | window.location | user-provided value |
+| tst.js:269:7:269:23 | document.location | tst.js:269:7:269:23 | document.location | tst.js:269:7:269:23 | document.location | Cross-site scripting vulnerability due to $@. | tst.js:269:7:269:23 | document.location | user-provided value |
+| tst.js:273:7:273:10 | loc1 | tst.js:270:16:270:23 | location | tst.js:273:7:273:10 | loc1 | Cross-site scripting vulnerability due to $@. | tst.js:270:16:270:23 | location | user-provided value |
+| tst.js:273:7:273:10 | loc1 | tst.js:273:7:273:10 | loc1 | tst.js:273:7:273:10 | loc1 | Cross-site scripting vulnerability due to $@. | tst.js:273:7:273:10 | loc1 | user-provided value |
+| tst.js:274:7:274:10 | loc2 | tst.js:271:16:271:30 | window.location | tst.js:274:7:274:10 | loc2 | Cross-site scripting vulnerability due to $@. | tst.js:271:16:271:30 | window.location | user-provided value |
+| tst.js:274:7:274:10 | loc2 | tst.js:274:7:274:10 | loc2 | tst.js:274:7:274:10 | loc2 | Cross-site scripting vulnerability due to $@. | tst.js:274:7:274:10 | loc2 | user-provided value |
+| tst.js:275:7:275:10 | loc3 | tst.js:272:16:272:32 | document.location | tst.js:275:7:275:10 | loc3 | Cross-site scripting vulnerability due to $@. | tst.js:272:16:272:32 | document.location | user-provided value |
+| tst.js:275:7:275:10 | loc3 | tst.js:275:7:275:10 | loc3 | tst.js:275:7:275:10 | loc3 | Cross-site scripting vulnerability due to $@. | tst.js:275:7:275:10 | loc3 | user-provided value |
 | winjs.js:3:43:3:49 | tainted | winjs.js:2:17:2:33 | document.location | winjs.js:3:43:3:49 | tainted | Cross-site scripting vulnerability due to $@. | winjs.js:2:17:2:33 | document.location | user-provided value |
 | winjs.js:4:43:4:49 | tainted | winjs.js:2:17:2:33 | document.location | winjs.js:4:43:4:49 | tainted | Cross-site scripting vulnerability due to $@. | winjs.js:2:17:2:33 | document.location | user-provided value |

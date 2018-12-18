@@ -262,3 +262,15 @@ function windowNameAssigned() {
         $(name); // OK
     }
 }
+
+function jqueryLocation() {
+    $(location); // OK
+    $(window.location); // OK
+    $(document.location); // OK
+    var loc1 = location;
+    var loc2 = window.location;
+    var loc3 = document.location;
+    $(loc1); // OK
+    $(loc2); // OK
+    $(loc3); // OK
+}
