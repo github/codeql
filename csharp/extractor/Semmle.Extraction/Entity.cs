@@ -79,6 +79,8 @@ namespace Semmle.Extraction
         void Populate();
 
         bool NeedsPopulation { get; }
+
+        object UnderlyingObject { get; }
     }
 
     /// <summary>

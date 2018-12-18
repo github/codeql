@@ -21,43 +21,19 @@ namespace Semmle.Extraction.CSharp.Entities
             var getter = symbol.GetMethod;
             var setter = symbol.SetMethod;
 
-            if (getter == null && setter == null)
+            if (getter is null && setter is null)
                 Context.ModelError(symbol, "No indexer accessor defined");
 
-            if (getter != null)
-            {
-                Getter = Accessor.Create(Context, getter);
-            }
+            if (!(getter is null))
+                Method.Create(Context, getter);
 
-            if (setter != null)
-            {
-                Setter = Accessor.Create(Context, setter);
-            }
+            if (!(setter is null))
+                Method.Create(Context, setter);
 
             for (var i = 0; i < symbol.Parameters.Length; ++i)
             {
                 var original = Parameter.Create(Context, symbol.OriginalDefinition.Parameters[i], OriginalDefinition);
                 Parameter.Create(Context, symbol.Parameters[i], this, original);
-            }
-
-            if (getter != null)
-            {
-                Getter = Accessor.Create(Context, getter);
-                Context.Emit(Tuples.accessors(Getter, 1, getter.Name, this, Getter.OriginalDefinition));
-
-                Context.Emit(Tuples.accessor_location(Getter, Getter.Location));
-                Getter.Overrides();
-                Getter.ExtractModifiers();
-            }
-
-            if (setter != null)
-            {
-                Setter = Accessor.Create(Context, setter);
-                Context.Emit(Tuples.accessors(Setter, 2, setter.Name, this, Setter.OriginalDefinition));
-
-                Context.Emit(Tuples.accessor_location(Setter, Setter.Location));
-                Setter.Overrides();
-                Setter.ExtractModifiers();
             }
 
             if (IsSourceDeclaration)

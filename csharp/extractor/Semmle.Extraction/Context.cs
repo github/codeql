@@ -57,23 +57,22 @@ namespace Semmle.Extraction
                 return true;
             }
 
-            var id = entity.Id;
-
-            if (id == null)
-                throw new InternalError("Attempt to create a null entity for {0}", entity.GetType());
-
-            // Look up the Id in the idLabelCache
-            if (idLabelCache.TryGetValue(id, out label))
-            {
-                entity.Label = label;
-                entityLabelCache[entity] = label;
-                return true;
-            }
-
             entity.Label = label = new Label(NewId());
-            DefineLabel(label, id);
             entityLabelCache[entity] = label;
-            idLabelCache[id] = label;
+
+            var id = entity.Id;
+            DefineLabel(label, id);
+
+#if DEBUG_LABELS
+            if (idLabelCache.TryGetValue(id, out var originalEntity))
+            {
+                Extractor.Message(new Message { message = "Label collision for " + id.ToString(), severity = Severity.Warning });
+            }
+            else
+            {
+                idLabelCache[id] = entity;
+            }
+#endif
             return false;
         }
 
@@ -111,7 +110,7 @@ namespace Semmle.Extraction
             entity.Label = label;
         }
 
-        readonly Dictionary<IId, Label> idLabelCache = new Dictionary<IId, Label>();
+        readonly Dictionary<IId, ICachedEntity> idLabelCache = new Dictionary<IId, ICachedEntity>();
         readonly Dictionary<ICachedEntity, Label> entityLabelCache = new Dictionary<ICachedEntity, Label>();
         readonly HashSet<Label> extractedGenerics = new HashSet<Label>();
 

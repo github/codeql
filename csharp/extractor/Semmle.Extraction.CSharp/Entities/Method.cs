@@ -256,7 +256,15 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             if (methodDecl == null) return null;
 
-            switch (methodDecl.MethodKind)
+            var methodKind = methodDecl.MethodKind;
+
+            if(methodKind == MethodKind.ExplicitInterfaceImplementation)
+            {
+                // Retrieve the original method kind
+                methodKind = methodDecl.ExplicitInterfaceImplementations.Select(m => m.MethodKind).FirstOrDefault();
+            }
+
+            switch (methodKind)
             {
                 case MethodKind.StaticConstructor:
                 case MethodKind.Constructor:
@@ -264,13 +272,12 @@ namespace Semmle.Extraction.CSharp.Entities
                 case MethodKind.ReducedExtension:
                 case MethodKind.Ordinary:
                 case MethodKind.DelegateInvoke:
-                case MethodKind.ExplicitInterfaceImplementation:
                     return OrdinaryMethod.Create(cx, methodDecl);
                 case MethodKind.Destructor:
                     return Destructor.Create(cx, methodDecl);
                 case MethodKind.PropertyGet:
                 case MethodKind.PropertySet:
-                    return Accessor.Create(cx, methodDecl);
+                    return methodDecl.AssociatedSymbol is null ? OrdinaryMethod.Create(cx, methodDecl) : (Method)Accessor.Create(cx, methodDecl);
                 case MethodKind.EventAdd:
                 case MethodKind.EventRemove:
                     return EventAccessor.Create(cx, methodDecl);

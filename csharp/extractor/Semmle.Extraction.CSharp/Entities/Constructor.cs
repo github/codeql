@@ -118,7 +118,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     if (symbol.IsStatic) tb.Append("static");
                     tb.Append(ContainingType);
                     AddParametersToId(Context, tb, symbol);
-                    tb.Append("; constructor");
+                    tb.Append(";constructor");
                 });
             }
         }

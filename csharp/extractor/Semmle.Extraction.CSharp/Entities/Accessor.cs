@@ -58,7 +58,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
             else
             {
-                Context.ModelError(symbol, "Undhandled accessor kind");
+                Context.ModelError(symbol, "Unhandled accessor kind");
                 return;
             }
 

@@ -2,7 +2,7 @@ using System.IO;
 
 namespace Semmle.Extraction.Entities
 {
-    class Folder : CachedEntity<DirectoryInfo>
+    sealed class Folder : CachedEntity<DirectoryInfo>
     {
         Folder(Context cx, DirectoryInfo init)
             : base(cx, init)
@@ -51,5 +51,12 @@ namespace Semmle.Extraction.Entities
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
+
+        public override int GetHashCode() => Path.GetHashCode();
+
+        public override bool Equals(object obj)
+        {
+            return obj is Folder folder && folder.Path == Path;
+        }
     }
 }
