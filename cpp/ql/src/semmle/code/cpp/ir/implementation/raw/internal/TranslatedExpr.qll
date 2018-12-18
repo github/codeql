@@ -959,7 +959,7 @@ class TranslatedFunctionAccess extends TranslatedNonConstantExpr {
 /**
  * IR translation of an expression whose value is not known at compile time.
  */
-abstract class TranslatedNonConstantExpr extends TranslatedCoreExpr {
+abstract class TranslatedNonConstantExpr extends TranslatedCoreExpr, TTranslatedValueExpr {
   TranslatedNonConstantExpr() {
     this = TTranslatedValueExpr(expr) and
     not expr.isConstant()
@@ -971,7 +971,7 @@ abstract class TranslatedNonConstantExpr extends TranslatedCoreExpr {
  * includes not only literals, but also "integral constant expressions" (e.g.
  * `1 + 2`).
  */
-abstract class TranslatedConstantExpr extends TranslatedCoreExpr {
+abstract class TranslatedConstantExpr extends TranslatedCoreExpr, TTranslatedValueExpr {
   TranslatedConstantExpr() {
     this = TTranslatedValueExpr(expr) and
     expr.isConstant()
