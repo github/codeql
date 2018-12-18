@@ -186,6 +186,16 @@
 | Properties.cs:78:9:78:15 | this.xs | Properties.cs:81:9:81:22 | SSA def(this.xs) | Properties.cs:81:9:81:22 | ... = ... |
 | Properties.cs:78:9:78:15 | this.xs | Properties.cs:83:9:83:22 | SSA def(this.xs) | Properties.cs:83:9:83:22 | ... = ... |
 | Properties.cs:106:37:106:37 | p | Properties.cs:106:37:106:37 | SSA param(p) | Properties.cs:106:37:106:37 | p |
+| Splitting.cs:3:18:3:18 | b | Splitting.cs:3:18:3:18 | SSA param(b) | Splitting.cs:3:18:3:18 | b |
+| Splitting.cs:5:13:5:13 | x | Splitting.cs:7:13:7:19 | [b (line 3): true] SSA def(x) | Splitting.cs:7:13:7:19 | ... = ... |
+| Splitting.cs:5:13:5:13 | x | Splitting.cs:10:13:10:19 | [b (line 3): false] SSA def(x) | Splitting.cs:10:13:10:19 | ... = ... |
+| Splitting.cs:22:18:22:18 | b | Splitting.cs:22:18:22:18 | SSA param(b) | Splitting.cs:22:18:22:18 | b |
+| Splitting.cs:24:13:24:13 | x | Splitting.cs:29:13:29:19 | [b (line 22): false] SSA def(x) | Splitting.cs:29:13:29:19 | ... = ... |
+| Splitting.cs:24:13:24:13 | x | Splitting.cs:32:9:32:15 | [b (line 22): false] SSA def(x) | Splitting.cs:32:9:32:15 | ... = ... |
+| Splitting.cs:24:13:24:13 | x | Splitting.cs:32:9:32:15 | [b (line 22): true] SSA def(x) | Splitting.cs:32:9:32:15 | ... = ... |
+| Splitting.cs:42:18:42:18 | b | Splitting.cs:42:18:42:18 | SSA param(b) | Splitting.cs:42:18:42:18 | b |
+| Splitting.cs:44:13:44:13 | x | Splitting.cs:46:13:46:19 | [b (line 42): true] SSA def(x) | Splitting.cs:46:13:46:19 | ... = ... |
+| Splitting.cs:44:13:44:13 | x | Splitting.cs:49:13:49:19 | [b (line 42): false] SSA def(x) | Splitting.cs:49:13:49:19 | ... = ... |
 | Test.cs:5:15:5:20 | param1 | Test.cs:5:15:5:20 | SSA param(param1) | Test.cs:5:15:5:20 | param1 |
 | Test.cs:5:15:5:20 | param1 | Test.cs:27:17:27:24 | SSA def(param1) | Test.cs:27:17:27:24 | ...++ |
 | Test.cs:5:15:5:20 | param1 | Test.cs:41:13:41:23 | SSA def(param1) | Test.cs:41:13:41:23 | ... = ... |

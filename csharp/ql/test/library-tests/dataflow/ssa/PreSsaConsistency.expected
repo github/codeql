@@ -1,3 +1,11 @@
 defReadInconsistency
+| Splitting.cs:13:9:13:9 | access to local variable x | Splitting.cs:7:13:7:19 | ... = ... | Splitting.cs:5:13:5:13 | x | false |
 readReadInconsistency
+| Splitting.cs:11:13:11:13 | access to local variable x | Splitting.cs:13:9:13:9 | access to local variable x | Splitting.cs:5:13:5:13 | x | false |
 phiInconsistency
+| Splitting.cs:13:9:13:21 | ...; | Splitting.cs:7:13:7:19 | ... = ... | Splitting.cs:5:13:5:13 | x | true |
+| Splitting.cs:13:9:13:21 | ...; | Splitting.cs:10:13:10:19 | ... = ... | Splitting.cs:5:13:5:13 | x | true |
+| Splitting.cs:52:9:53:22 | if (...) ... | Splitting.cs:46:13:46:19 | ... = ... | Splitting.cs:44:13:44:13 | x | true |
+| Splitting.cs:52:9:53:22 | if (...) ... | Splitting.cs:49:13:49:19 | ... = ... | Splitting.cs:44:13:44:13 | x | true |
+| Splitting.cs:54:9:54:21 | ...; | Splitting.cs:46:13:46:19 | ... = ... | Splitting.cs:44:13:44:13 | x | false |
+| Splitting.cs:54:9:54:21 | ...; | Splitting.cs:49:13:49:19 | ... = ... | Splitting.cs:44:13:44:13 | x | false |
