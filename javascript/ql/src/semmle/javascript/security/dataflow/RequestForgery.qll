@@ -72,8 +72,11 @@ module RequestForgery {
 
     ClientRequest request;
 
+    string kind;
+
     ClientRequestUrlAsSink() {
-      this = request.getUrl()
+      this = request.getUrl() and kind = "URL" or
+      this = request.getHost() and kind = "host"
     }
 
     override DataFlow::Node getARequest() {
@@ -81,7 +84,8 @@ module RequestForgery {
     }
 
     override string getKind() {
-      result = "URL"
+      result = kind
     }
+
   }
 }

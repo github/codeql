@@ -26,6 +26,7 @@
 |--------------------------------------------|------------------------------|------------------------------------------------------------------------------|
 | Client-side cross-site scripting           | More true-positive results, fewer false-positive results.                 | This rule now recognizes WinJS functions that are vulnerable to HTML injection, and no longer flags certain safe uses of jQuery. |
 | Insecure randomness | More results | This rule now flags insecure uses of `crypto.pseudoRandomBytes`. |
+| Uncontrolled data used in network request  | More results                 | This rule now recognizes host values that are vulnerable to injection. |
 | Unused parameter                           | Fewer false-positive results | This rule no longer flags parameters with leading underscore. |
 | Unused variable, import, function or class | Fewer false-positive results | This rule now flags fewer variables that are implictly used by JSX elements, and no longer flags variables with leading underscore. |
 

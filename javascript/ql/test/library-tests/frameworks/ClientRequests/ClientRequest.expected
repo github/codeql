@@ -32,3 +32,7 @@
 | tst.js:77:5:77:32 | $.getJS ...  data}) |
 | tst.js:78:5:78:38 | $.getJS ...  data}) |
 | tst.js:80:15:80:34 | new XMLHttpRequest() |
+| tst.js:87:5:87:39 | http.ge ...  host}) |
+| tst.js:89:5:89:23 | axios({host: host}) |
+| tst.js:91:5:91:34 | got(rel ...  host}) |
+| tst.js:93:5:93:35 | net.req ... host }) |
