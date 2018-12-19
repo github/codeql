@@ -14,10 +14,6 @@ class MicrosoftOwinNamespace extends Namespace {
   }
 }
 
-/** DEPRECATED. Gets the `Microsoft.Owin` namespace. */
-deprecated
-MicrosoftOwinNamespace getMicrosoftOwinNamespace() { any() }
-
 /** The `Microsoft.Owin.IOwinRequest` class. */
 class MicrosoftOwinIOwinRequestClass extends Class {
   MicrosoftOwinIOwinRequestClass() {

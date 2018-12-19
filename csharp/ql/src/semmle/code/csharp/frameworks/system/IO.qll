@@ -10,10 +10,6 @@ class SystemIONamespace extends Namespace {
   }
 }
 
-/** DEPRECATED. Gets the `System.IO` namespace. */
-deprecated
-SystemIONamespace getSystemIONamespace() { any() }
-
 /** A class in the `System.IO` namespace. */
 class SystemIOClass extends Class {
   SystemIOClass() {
@@ -34,11 +30,6 @@ class SystemIOFileClass extends SystemIOClass {
     this.hasName("File")
   }
 }
-
-/** DEPRECATED. Gets the `System.IO.File` class. */
-deprecated
-SystemIOFileClass getSystemIOFileClass() { any() }
-
 
 /** The `System.IO.FileStream` class. */
 class SystemIOFileStreamClass extends SystemIOClass {
@@ -61,20 +52,12 @@ class SystemIOPathClass extends SystemIOClass {
   }
 }
 
-/** DEPRECATED. Gets the `System.IO.Path` class. */
-deprecated
-SystemIOPathClass getSystemIOPathClass() { any() }
-
 /** The `System.IO.StringReader` class. */
 class SystemIOStringReaderClass extends SystemIOClass {
   SystemIOStringReaderClass() {
     this.hasName("StringReader")
   }
 }
-
-/** DEPRECATED. Gets the `System.IO.StringReader` class. */
-deprecated
-SystemIOStringReaderClass getSystemIOStringReaderClass() { any() }
 
 /** The `System.IO.Stream` class. */
 class SystemIOStreamClass extends SystemIOClass {
@@ -123,10 +106,6 @@ class SystemIOStreamClass extends SystemIOClass {
   }
 }
 
-/** DEPRECATED. Gets the `System.IO.Stream` class. */
-deprecated
-SystemIOStreamClass getSystemIOStreamClass() { any() }
-
 /** The `System.IO.MemoryStream` class. */
 class SystemIOMemoryStreamClass extends SystemIOClass {
   SystemIOMemoryStreamClass() {
@@ -139,7 +118,3 @@ class SystemIOMemoryStreamClass extends SystemIOClass {
     result.hasName("ToArray")
   }
 }
-
-/** DEPRECATED. Gets the `System.IO.MemoryStream` class. */
-deprecated
-SystemIOMemoryStreamClass getSystemIOMemoryStreamClass() { any() }

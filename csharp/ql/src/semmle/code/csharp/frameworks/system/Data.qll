@@ -10,10 +10,6 @@ class SystemDataNamespace extends Namespace {
   }
 }
 
-/** DEPRECATED. Gets the `System.Data` namespace. */
-deprecated
-SystemDataNamespace getSystemDataNamespace() { any() }
-
 /** An interface in the `System.Data` namespace. */
 class SystemDataInterface extends Interface {
   SystemDataInterface() {
@@ -36,10 +32,6 @@ class SystemDataIDbCommandInterface extends SystemDataInterface {
     result.getType() instanceof StringType
   }
 }
-
-/** DEPRECATED. Gets the `System.Data.IDbCommand` interface. */
-deprecated
-SystemDataIDbCommandInterface getSystemDataIDbCommandInterface() { any() }
 
 /** The `System.Data.IDbConnection` interface. */
 class SystemDataIDbConnectionInterface extends SystemDataInterface {

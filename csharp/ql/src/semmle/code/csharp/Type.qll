@@ -135,12 +135,6 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
   }
 
   /**
-   * DEPRECATED: Use `hasMethod()` instead.
-   */
-  deprecated
-  predicate inheritsMethod(Method m) { this.hasMethod(m) }
-
-  /**
    * Holds if this type has method `m`, that is, either `m` is declared in this
    * type, or `m` is inherited by this type.
    *
@@ -163,14 +157,6 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
    * ```
    */
   predicate hasMethod(Method m) { this.hasMember(m) }
-
-  /**
-   * DEPRECATED: Use `hasCallable()` instead.
-   */
-  deprecated
-  predicate inheritsCallable(Callable c) {
-    this.hasCallable(c)
-  }
 
   /**
    * Holds if this type has callable `c`, that is, either `c` is declared in this
@@ -200,14 +186,6 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
     hasMethod(c)
     or
     hasMember(c.(Accessor).getDeclaration())
-  }
-
-  /**
-   * DEPRECATED: Use `hasMember()` instead.
-   */
-  deprecated
-  predicate inheritsMember(Member m) {
-    this.hasMember(m)
   }
 
   /**

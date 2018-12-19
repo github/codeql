@@ -10,10 +10,6 @@ class SystemIOCompressionNamespace extends Namespace {
   }
 }
 
-/** DEPRECATED. Gets the `System.IO` namespace. */
-deprecated
-SystemIOCompressionNamespace getSystemIOCompressionNamespace() { any() }
-
 /** A class in the `System.IO.Compression` namespace. */
 class SystemIOCompressionClass extends Class {
   SystemIOCompressionClass() {

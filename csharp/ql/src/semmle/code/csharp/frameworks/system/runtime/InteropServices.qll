@@ -11,10 +11,6 @@ class SystemRuntimeInteropServicesNamespace extends Namespace {
   }
 }
 
-/** DEPRECATED. Gets the `System.Runtime.InteropServices` namespace. */
-deprecated
-SystemRuntimeInteropServicesNamespace getSystemRuntimeInteropServicesNamespace() { any() }
-
 /** A class in the `System.Runtime.InteropServices` namespace. */
 class SystemRuntimeInteropServicesClass extends Class {
   SystemRuntimeInteropServicesClass() {
@@ -28,10 +24,6 @@ class SystemRuntimeInteropServicesDllImportAttributeClass extends SystemRuntimeI
     this.hasName("DllImportAttribute")
   }
 }
-
-/** DEPRECATED. Gets the `System.Runtime.InteropServices.DllImportAttribute` class. */
-deprecated
-SystemRuntimeInteropServicesDllImportAttributeClass getSystemRuntimeInteropServicesDllImportAttributeClass() { any() }
 
 /** The `System.Runtime.InteropServices.Marshal` class. */
 class SystemRuntimeInteropServicesMarshalClass extends SystemRuntimeInteropServicesClass {
@@ -70,17 +62,9 @@ class SystemRuntimeInteropServicesMarshalClass extends SystemRuntimeInteropServi
   }
 }
 
-/** DEPRECATED. Gets the `System.Runtime.InteropServices.Marshal` class. */
-deprecated
-SystemRuntimeInteropServicesMarshalClass getSystemRuntimeInteropServicesMarshalClass() { any() }
-
 /** The `System.Runtime.InteropServices.ComImportAttribute` class. */
 class SystemRuntimeInteropServicesComImportAttributeClass extends SystemRuntimeInteropServicesClass {
   SystemRuntimeInteropServicesComImportAttributeClass() {
     this.hasName("ComImportAttribute")
   }
 }
-
-/** DEPRECATED. Gets the `System.Runtime.InteropServices.ComImportAttribute` class. */
-deprecated
-SystemRuntimeInteropServicesComImportAttributeClass getSystemRuntimeInteropServicesComImportAttributeClass() { any() }

@@ -10,10 +10,6 @@ class SystemCodeDomCompilerNamespace extends Namespace {
   }
 }
 
-/** DEPRECATED. Gets the `System.CodeDom.Compiler` namespace. */
-deprecated
-SystemCodeDomCompilerNamespace getSystemCodeDomCompilerNamespace() { any() }
-
 /** A reference type in the `System.CodeDom.Compiler` namespace. */
 class SystemCodeDomCompilerClass extends RefType {
   SystemCodeDomCompilerClass() {
@@ -27,10 +23,6 @@ class SystemCodeDomCompilerGeneratedCodeAttributeClass extends SystemCodeDomComp
     this.hasName("GeneratedCodeAttribute")
   }
 }
-
-/** DEPRECATED. Gets the `System.CodeDom.Compiler.GeneratedCodeAttribute` class. */
-deprecated
-SystemCodeDomCompilerGeneratedCodeAttributeClass getSystemCodeDomCompilerGeneratedCodeAttributeClass() { any() }
 
 /** The `System.CodeDom.Compiler.ICodeCompiler` class. */
 class SystemCodeDomCompilerICodeCompilerClass extends SystemCodeDomCompilerClass {
