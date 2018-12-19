@@ -484,6 +484,12 @@ class AssignableDefinition extends TAssignableDefinition {
    */
   Expr getExpr() { none() }
 
+  /**
+   * Gets the underlying element associated with this definition. This is either
+   * an expression or a parameter.
+   */
+  Element getElement() { result = this.getExpr() }
+
   /** DEPRECATED: Use `getAControlFlowNode()` instead. */
   deprecated
   ControlFlow::Node getControlFlowNode() { result = this.getAControlFlowNode() }
@@ -799,6 +805,8 @@ module AssignableDefinitions {
     override ControlFlow::Node getAControlFlowNode() {
       result = p.getCallable().getEntryPoint()
     }
+
+    override Parameter getElement() { result = p }
 
     override Callable getEnclosingCallable() {
       result = p.getCallable()
