@@ -1,7 +1,3 @@
-/**
- * @name Test for binding array types
- * @kind table
- */
 import csharp
 
 from Method m, ArrayType t1, ArrayType t2

@@ -1,7 +1,3 @@
-/**
- * @name Test for null type
- * @kind table
- */
 import csharp
 
 from NullLiteral l

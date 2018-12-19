@@ -1769,7 +1769,7 @@ module ControlFlow {
        * not return.
        */
       private module NonReturning {
-        private import semmle.code.csharp.ExprOrStmtParent
+        private import semmle.code.csharp.ExprOrStmtParent as ExprOrStmtParent
         private import semmle.code.csharp.commons.Assertions
         private import semmle.code.csharp.frameworks.System
 
@@ -1810,7 +1810,7 @@ module ControlFlow {
         private abstract class NonReturningCallable extends Callable {
           NonReturningCallable() {
             not exists(ReturnStmt ret | ret.getEnclosingCallable() = this) and
-            not hasAccessorAutoImplementation(this, _) and
+            not ExprOrStmtParent::hasAccessorAutoImplementation(this, _) and
             not exists(Virtualizable v |
               v.isOverridableOrImplementable() |
               v = this or
