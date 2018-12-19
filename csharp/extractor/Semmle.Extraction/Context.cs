@@ -43,37 +43,81 @@ namespace Semmle.Extraction
         int NewId() => TrapWriter.IdCounter++;
 
         /// <summary>
-        /// Gets the cached label for the given entity, or creates a new
-        /// (cached) label if it hasn't already been created. The label
-        /// is set on the supplied <paramref name="entity"/> object.
+        /// Creates a new entity using the factory.
         /// </summary>
-        /// <returns><code>true</code> iff the label already existed.</returns>
-        public bool GetOrAddCachedLabel(ICachedEntity entity)
+        /// <param name="factory">The entity factory.</param>
+        /// <param name="init">The initializer for the entity.</param>
+        /// <returns>The new/existing entity.</returns>
+        public Entity CreateEntity<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, Type init) where Entity : ICachedEntity
         {
-            // Look up the label in the entityLabelCache
-            if (entityLabelCache.TryGetValue(entity, out Label label))
+            return init == null ? CreateEntity2(factory, init) : CreateNonNullEntity(factory, init);
+        }
+
+        /// <summary>
+        /// Creates a new entity using the factory.
+        /// Uses a different cache to <see cref="CreateEntity{Type, Entity}(ICachedEntityFactory{Type, Entity}, Type)"/>,
+        /// and can store null values.
+        /// </summary>
+        /// <param name="factory">The entity factory.</param>
+        /// <param name="init">The initializer for the entity.</param>
+        /// <returns>The new/existing entity.</returns>
+        public Entity CreateEntity2<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, Type type) where Entity : ICachedEntity
+        {
+            using (StackGuard)
             {
-                entity.Label = label;
-                return true;
+                var entity = factory.Create(this, type);
+
+                if(entityLabelCache.TryGetValue(entity, out var label))
+                {
+                    entity.Label = label;
+                    return entity;
+                }
+                else
+                {
+                    var id = entity.Id;
+                    label = new Label(NewId());
+                    entity.Label = label;
+                    entityLabelCache[entity] = label;
+                    DefineLabel(label, id);
+                    if (entity.NeedsPopulation)
+                        Populate(null, entity);
+                    return entity;
+                }
             }
+        }
 
-            entity.Label = label = new Label(NewId());
-            entityLabelCache[entity] = label;
+        private Entity CreateNonNullEntity<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, Type init) where Entity : ICachedEntity
+        {
+            if (objectEntityCache.TryGetValue(init, out var cached))
+                return (Entity)cached;
 
-            var id = entity.Id;
-            DefineLabel(label, id);
+            using (StackGuard)
+            {
+                var label = new Label(NewId());
+                var entity = factory.Create(this, init);
+                entity.Label = label;
+
+                objectEntityCache[init] = entity;
+
+                var id = entity.Id;
+                DefineLabel(label, id);
 
 #if DEBUG_LABELS
-            if (idLabelCache.TryGetValue(id, out var originalEntity))
-            {
-                Extractor.Message(new Message { message = "Label collision for " + id.ToString(), severity = Severity.Warning });
-            }
-            else
-            {
-                idLabelCache[id] = entity;
-            }
+                if (idLabelCache.TryGetValue(id, out var originalEntity))
+                {
+                    Extractor.Message(new Message { message = "Label collision for " + id.ToString(), severity = Severity.Warning });
+                }
+                else
+                {
+                    idLabelCache[id] = entity;
+                }
 #endif
-            return false;
+
+                if (entity.NeedsPopulation)
+                    Populate(init as ISymbol, entity);
+
+                return entity;
+            }
         }
 
         /// <summary>
@@ -111,6 +155,7 @@ namespace Semmle.Extraction
         }
 
         readonly Dictionary<IId, ICachedEntity> idLabelCache = new Dictionary<IId, ICachedEntity>();
+        readonly Dictionary<object, ICachedEntity> objectEntityCache = new Dictionary<object, ICachedEntity>();
         readonly Dictionary<ICachedEntity, Label> entityLabelCache = new Dictionary<ICachedEntity, Label>();
         readonly HashSet<Label> extractedGenerics = new HashSet<Label>();
 

@@ -98,48 +98,36 @@ namespace Semmle.Extraction
     public static class ICachedEntityFactoryExtensions
     {
         public static Entity CreateEntity<Entity, T1, T2>(this ICachedEntityFactory<(T1, T2), Entity> factory, Context cx, T1 t1, T2 t2)
-            where Entity : ICachedEntity
-        {
-            return factory.CreateEntity(cx, (t1, t2));
-        }
+            where Entity : ICachedEntity => factory.CreateEntity2(cx, (t1, t2));
 
         public static Entity CreateEntity<Entity, T1, T2, T3>(this ICachedEntityFactory<(T1, T2, T3), Entity> factory, Context cx, T1 t1, T2 t2, T3 t3)
-            where Entity : ICachedEntity
-        {
-            return factory.CreateEntity(cx, (t1, t2, t3));
-        }
+            where Entity : ICachedEntity => factory.CreateEntity2(cx, (t1, t2, t3));
 
         public static Entity CreateEntity<Entity, T1, T2, T3, T4>(this ICachedEntityFactory<(T1, T2, T3, T4), Entity> factory, Context cx, T1 t1, T2 t2, T3 t3, T4 t4)
-            where Entity : ICachedEntity
-        {
-            return factory.CreateEntity(cx, (t1, t2, t3, t4));
-        }
+            where Entity : ICachedEntity => factory.CreateEntity2(cx, (t1, t2, t3, t4));
 
         /// <summary>
-        /// Creates a new entity or returns the existing one from the cache.
+        /// Creates and populates a new entity, or returns the existing one from the cache.
         /// </summary>
         /// <typeparam name="Type">The symbol type used to construct the entity.</typeparam>
         /// <typeparam name="Entity">The type of the entity to create.</typeparam>
         /// <param name="cx">The extractor context.</param>
         /// <param name="factory">The factory used to construct the entity.</param>
-        /// <param name="t">The initializer for the entity.</param>
-        /// <returns></returns>
+        /// <param name="init">The initializer for the entity, which may not be null.</param>
+        /// <returns>The entity.</returns>
         public static Entity CreateEntity<Type, Entity>(this ICachedEntityFactory<Type, Entity> factory, Context cx, Type init)
-            where Entity : ICachedEntity
-        {
-            using (cx.StackGuard)
-            {
-                var entity = factory.Create(cx, init);
-                if (cx.GetOrAddCachedLabel(entity))
-                    return entity;
+            where Entity : ICachedEntity => cx.CreateEntity(factory, init);
 
-                if (!entity.NeedsPopulation)
-                    return entity;
-
-                cx.Populate(init as ISymbol, entity);
-
-                return entity;
-            }
-        }
+        /// <summary>
+        /// Creates and populates a new entity, but uses a different cache.
+        /// </summary>
+        /// <typeparam name="Type">The symbol type used to construct the entity.</typeparam>
+        /// <typeparam name="Entity">The type of the entity to create.</typeparam>
+        /// <param name="cx">The extractor context.</param>
+        /// <param name="factory">The factory used to construct the entity.</param>
+        /// <param name="init">The initializer for the entity, which may be null.</param>
+        /// <returns>The entity.</returns>
+        public static Entity CreateEntity2<Type, Entity>(this ICachedEntityFactory<Type, Entity> factory, Context cx, Type init)
+            where Entity : ICachedEntity => cx.CreateEntity2(factory, init);
     }
 }
