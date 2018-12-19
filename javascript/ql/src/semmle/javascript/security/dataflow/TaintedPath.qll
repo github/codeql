@@ -71,7 +71,11 @@ module TaintedPath {
    */
   class FsPathSink extends Sink, DataFlow::ValueNode {
     FsPathSink() {
-      this = any(FileSystemAccess fs).getAPathArgument()
+      exists (FileSystemAccess fs |
+        this = fs.getAPathArgument() and
+        not exists(fs.getRootPathArgument())
+        or
+        this = fs.getRootPathArgument())
     }
   }
 
