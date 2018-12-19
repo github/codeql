@@ -8,7 +8,3 @@ class MicrosoftNamespace extends Namespace {
     this.hasName("Microsoft")
   }
 }
-
-/** DEPRECATED. Gets the `Microsoft` namespace. */
-deprecated
-MicrosoftNamespace getMicrosoftNamespace() { any() }

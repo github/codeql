@@ -10,10 +10,6 @@ class SystemTextNamespace extends Namespace {
   }
 }
 
-/** DEPRECATED. Gets the `System.Text` namespace. */
-deprecated
-SystemTextNamespace getSystemTextNamespace() { any() }
-
 /** A class in the `System.Text` namespace. */
 class SystemTextClass extends Class {
   SystemTextClass() {
@@ -32,10 +28,6 @@ class SystemTextStringBuilderClass extends SystemTextClass {
     result = this.getAMethod("AppendFormat")
   }
 }
-
-/** DEPRECATED. Gets the `System.Text.StringBuilder` class. */
-deprecated
-SystemTextStringBuilderClass getSystemTextStringBuilderClass() { any() }
 
 /** The `System.Text.Encoding` class. */
 class SystemTextEncodingClass extends SystemTextClass {
@@ -58,7 +50,3 @@ class SystemTextEncodingClass extends SystemTextClass {
     result = this.getAMethod("GetChars")
   }
 }
-
-/** DEPRECATED. Gets the `System.Text.Encoding` class. */
-deprecated
-SystemTextEncodingClass getSystemTextEncodingClass() { any() }

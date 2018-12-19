@@ -1,4 +1,3 @@
-| additionalCommandInjections.js:2:11:2:45 | "prgm - ... place() |
 | sinks.js:2:14:2:17 | sink |
 | sinks.js:3:5:3:17 | script + sink |
 | sinks.js:4:9:4:12 | sink |

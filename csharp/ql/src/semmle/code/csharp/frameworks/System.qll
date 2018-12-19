@@ -10,10 +10,6 @@ class SystemNamespace extends Namespace {
   }
 }
 
-/** DEPRECATED. Gets the `System` namespace. */
-deprecated
-SystemNamespace getSystemNamespace() { any() }
-
 /** A class in the `System` namespace. */
 class SystemClass extends Class {
   SystemClass() {
@@ -63,10 +59,6 @@ class SystemActionDelegateType extends SystemDelegateType {
   }
 }
 
-/** DEPRECATED. Gets the `System.Action` delegate type. */
-deprecated
-SystemActionDelegateType getSystemActionDelegateType() { any() }
-
 /** The `System.Action<T1, ..., Tn>` delegate type. */
 class SystemActionTDelegateType extends SystemUnboundGenericDelegateType {
   SystemActionTDelegateType() {
@@ -74,20 +66,12 @@ class SystemActionTDelegateType extends SystemUnboundGenericDelegateType {
   }
 }
 
-/** DEPRECATED. Gets a `System.Action<T1, ..., Tn>` delegate type. */
-deprecated
-SystemActionTDelegateType getSystemActionTDelegateType() { any() }
-
 /** `System.Array` class. */
 class SystemArrayClass extends SystemClass {
   SystemArrayClass() {
     this.hasName("Array")
   }
 }
-
-/** DEPRECATED. Gets the `System.Array` class. */
-deprecated
-SystemArrayClass getSystemArrayClass() { any() }
 
 /** The `System.Boolean` structure. */
 class SystemBooleanStruct extends BoolType {
@@ -120,20 +104,12 @@ class SystemBooleanStruct extends BoolType {
   }
 }
 
-/** DEPRECATED. Gets the `System.Boolean` structure. */
-deprecated
-SystemBooleanStruct getSystemBooleanStruct() { any() }
-
 /** The `System.Convert` class. */
 class SystemConvertClass extends SystemClass {
   SystemConvertClass() {
     this.hasName("Convert")
   }
 }
-
-/** DEPRECATED. Gets the `System.Convert` class. */
-deprecated
-SystemConvertClass getSystemConvertClass() { any() }
 
 /** `System.Delegate` class. */
 class SystemDelegateClass extends SystemClass {
@@ -142,20 +118,12 @@ class SystemDelegateClass extends SystemClass {
   }
 }
 
-/** DEPRECATED. Gets the `System.Delegate` class. */
-deprecated
-SystemDelegateClass getSystemDelegateClass() { any() }
-
 /** The `System.DivideByZeroException` class. */
 class SystemDivideByZeroExceptionClass extends SystemClass {
   SystemDivideByZeroExceptionClass() {
     this.hasName("DivideByZeroException")
   }
 }
-
-/** DEPRECATED. Gets the `System.DivideByZeroException` class. */
-deprecated
-SystemDivideByZeroExceptionClass getSystemDivideByZeroExceptionClass() { any() }
 
 /** The `System.Enum` class. */
 class SystemEnumClass extends SystemClass {
@@ -164,20 +132,12 @@ class SystemEnumClass extends SystemClass {
   }
 }
 
-/** DEPRECATED. Gets the `System.Enum` class. */
-deprecated
-SystemEnumClass getSystemEnumClass() { any() }
-
 /** The `System.Exception` class. */
 class SystemExceptionClass extends SystemClass {
   SystemExceptionClass() {
     this.hasName("Exception")
   }
 }
-
-/** DEPRECATED. Gets the `System.Exception` class. */
-deprecated
-SystemExceptionClass getSystemExceptionClass() { any() }
 
 /** The `System.Func<T1, ..., Tn, TResult>` delegate type. */
 class SystemFuncDelegateType extends SystemUnboundGenericDelegateType {
@@ -199,10 +159,6 @@ class SystemFuncDelegateType extends SystemUnboundGenericDelegateType {
   }
 }
 
-/** DEPRECATED. Gets a `System.Func<T1, ..., Tn, TResult>` delegate type. */
-deprecated
-SystemFuncDelegateType getSystemFuncDelegateType() { any() }
-
 /** The `System.IComparable` interface. */
 class SystemIComparableInterface extends SystemInterface {
   SystemIComparableInterface() {
@@ -222,10 +178,6 @@ class SystemIComparableInterface extends SystemInterface {
     result.getReturnType() instanceof IntType
   }
 }
-
-/** DEPRECATED. Gets the `System.IComparable` interface. */
-deprecated
-SystemIComparableInterface getSystemIComparableInterface() { any() }
 
 /** The `System.IComparable<T>` interface. */
 class SystemIComparableTInterface extends SystemUnboundGenericInterface {
@@ -247,10 +199,6 @@ class SystemIComparableTInterface extends SystemUnboundGenericInterface {
   }
 }
 
-/** DEPRECATED. Gets the `System.IComparable<T>` interface. */
-deprecated
-SystemIComparableTInterface getSystemIComparableTInterface() { any() }
-
 /** The `System.IEquatable<T>` interface. */
 class SystemIEquatableTInterface extends SystemUnboundGenericInterface {
   SystemIEquatableTInterface() {
@@ -271,20 +219,12 @@ class SystemIEquatableTInterface extends SystemUnboundGenericInterface {
   }
 }
 
-/** DEPRECATED. Gets the `System.IEquatable<T>` interface. */
-deprecated
-SystemIEquatableTInterface getSystemIEquatableTInterface() { any() }
-
 /** The `System.IFormatProvider` interface. */
 class SystemIFormatProviderInterface extends SystemInterface {
   SystemIFormatProviderInterface() {
     this.hasName("IFormatProvider")
   }
 }
-
-/** DEPRECATED. Gets the `System.IFormatProvider` interface. */
-deprecated
-SystemIFormatProviderInterface getSystemIFormatProviderInterface() { any() }
 
 /** The `System.Int32` structure. */
 class SystemInt32Struct extends IntType {
@@ -313,20 +253,12 @@ class SystemInt32Struct extends IntType {
   }
 }
 
-/** DEPRECATED. Gets the `System.Int32` structure. */
-deprecated
-SystemInt32Struct getSystemInt32Struct() { any() }
-
 /** The `System.InvalidCastException` class. */
 class SystemInvalidCastExceptionClass extends SystemClass {
   SystemInvalidCastExceptionClass() {
     this.hasName("InvalidCastException")
   }
 }
-
-/** DEPRECATED. Gets the `System.InvalidCastException` class. */
-deprecated
-SystemInvalidCastExceptionClass getSystemInvalidCastExceptionClass() { any() }
 
 /** The `System.Lazy<T>` class. */
 class SystemLazyClass extends SystemUnboundGenericClass {
@@ -346,20 +278,12 @@ class SystemLazyClass extends SystemUnboundGenericClass {
   }
 }
 
-/** DEPRECATED. Gets the `System.Lazy<T>` class. */
-deprecated
-SystemLazyClass getSystemLazyClass() { any() }
-
 /** The `System.NullReferenceException` class. */
 class SystemNullReferenceExceptionClass extends SystemClass {
   SystemNullReferenceExceptionClass() {
     this.hasName("NullReferenceException")
   }
 }
-
-/** DEPRECATED. Gets the `System.NullReferenceException` class. */
-deprecated
-SystemNullReferenceExceptionClass getSystemNullReferenceExceptionClass() { any() }
 
 /** The `System.Object` class. */
 class SystemObjectClass extends SystemClass {
@@ -448,10 +372,6 @@ class SystemObjectClass extends SystemClass {
   }
 }
 
-/** DEPRECATED. Gets the `System.Object` class. */
-deprecated
-SystemObjectClass getSystemObjectClass() { any() }
-
 /** The `System.OutOfMemoryException` class. */
 class SystemOutOfMemoryExceptionClass extends SystemClass {
   SystemOutOfMemoryExceptionClass() {
@@ -459,20 +379,12 @@ class SystemOutOfMemoryExceptionClass extends SystemClass {
   }
 }
 
-/** DEPRECATED. Gets the `System.OutOfMemoryException` class. */
-deprecated
-SystemOutOfMemoryExceptionClass getSystemOutOfMemoryExceptionClass() { any() }
-
 /** The `System.OverflowException` class. */
 class SystemOverflowExceptionClass extends SystemClass {
   SystemOverflowExceptionClass() {
     this.hasName("OverflowException")
   }
 }
-
-/** DEPRECATED. Gets the `System.OverflowException` class. */
-deprecated
-SystemOverflowExceptionClass getSystemOverflowExceptionClass() { any() }
 
 /** The `System.Predicate<T>` delegate type. */
 class SystemPredicateDelegateType extends SystemUnboundGenericDelegateType {
@@ -482,10 +394,6 @@ class SystemPredicateDelegateType extends SystemUnboundGenericDelegateType {
     this.getNumberOfTypeParameters() = 1
   }
 }
-
-/** DEPRECATED. Gets the `System.Predicate<T>` delegate type. */
-deprecated
-SystemPredicateDelegateType getSystemPredicateDelegateType() { any() }
 
 /** The `System.String` class. */
 class SystemStringClass extends StringType {
@@ -642,10 +550,6 @@ class SystemStringClass extends StringType {
   }
 }
 
-/** DEPRECATED. Gets the `System.String` class. */
-deprecated
-SystemStringClass getSystemStringClass() { any() }
-
 /** A `ToString()` method. */
 class ToStringMethod extends Method {
   ToStringMethod() {
@@ -693,10 +597,6 @@ class SystemTypeClass extends SystemClass {
   }
 }
 
-/** DEPRECATED. Gets the `System.Type` class. */
-deprecated
-SystemTypeClass getSystemTypeClass() { any() }
-
 /** The `System.Uri` class. */
 class SystemUriClass extends SystemClass {
   SystemUriClass() {
@@ -731,20 +631,12 @@ class SystemUriClass extends SystemClass {
   }
 }
 
-/** DEPRECATED. Gets the `System.Uri` class. */
-deprecated
-SystemUriClass getSystemUriClass() { any() }
-
 /** The `System.ValueType` class. */
 class SystemValueTypeClass extends SystemClass {
   SystemValueTypeClass() {
     this.hasName("ValueType")
   }
 }
-
-/** DEPRECATED. Gets the `System.ValueType` class. */
-deprecated
-SystemValueTypeClass getSystemValueTypeClass() { any() }
 
 /** The `System.IntPtr` type. */
 class SystemIntPtrType extends ValueType {
@@ -754,10 +646,6 @@ class SystemIntPtrType extends ValueType {
     this.hasName("IntPtr")
   }
 }
-
-/** DEPRECATED. Gets the `System.IntPtr` type. */
-deprecated
-SystemIntPtrType getSystemIntPtrType() { any() }
 
 /** The `System.IDisposable` interface. */
 class SystemIDisposableInterface extends SystemInterface {
@@ -776,10 +664,6 @@ class SystemIDisposableInterface extends SystemInterface {
     result.getReturnType() instanceof VoidType
   }
 }
-
-/** DEPRECATED. Gets the `System.IDisposable` interface. */
-deprecated
-SystemIDisposableInterface getSystemIDisposableInterface() { any() }
 
 /** A method that overrides `int object.GetHashCode()`. */
 class GetHashCodeMethod extends Method {

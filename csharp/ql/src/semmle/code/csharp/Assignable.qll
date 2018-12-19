@@ -113,49 +113,6 @@ class AssignableRead extends AssignableAccess {
   AssignableRead getAReachableRead() {
     result = this.getANextRead+()
   }
-
-  /**
-   * Gets a next uncertain read of the same underlying assignable. That is,
-   * a read that can be reached from this read without passing through any other
-   * reads, and which *may* read the same value. Example:
-   *
-   * ```
-   * int Field;
-   *
-   * void SetField(int i) {
-   *   this.Field = i;
-   *   Use(this.Field);
-   *   if (i > 0)
-   *     this.Field = i - 1;
-   *   else if (i < 0)
-   *     SetField(1);
-   *   Use(this.Field);
-   *   Use(this.Field);
-   * }
-   * ```
-   *
-   * - The read of `i` on line 6 is next to the read on line 4.
-   * - The reads of `i` on lines 7 and 8 are next to the read on line 6.
-   * - The read of `this.Field` on line 10 is next to the read on line 5.
-   *   (This is the only truly uncertain read.)
-   * - The read of `this.Field` on line 11 is next to the read on line 10.
-   */
-  deprecated
-  AssignableRead getANextUncertainRead() {
-    Ssa::Internal::adjacentReadPair(this, result)
-  }
-
-  /**
-   * Gets a next uncertain read of the same underlying assignable. That is,
-   * a read that can be reached from this read, and which *may* read the same
-   * value.
-   *
-   * This is the transitive closure of `getANextUncertainRead()`.
-   */
-  deprecated
-  AssignableRead getAReachableUncertainRead() {
-    result = this.getANextUncertainRead+()
-  }
 }
 
 /**
@@ -490,10 +447,6 @@ class AssignableDefinition extends TAssignableDefinition {
    */
   Element getElement() { result = this.getExpr() }
 
-  /** DEPRECATED: Use `getAControlFlowNode()` instead. */
-  deprecated
-  ControlFlow::Node getControlFlowNode() { result = this.getAControlFlowNode() }
-
   /** Gets the enclosing callable of this definition. */
   Callable getEnclosingCallable() { result = this.getExpr().getEnclosingCallable() }
 
@@ -564,56 +517,6 @@ class AssignableDefinition extends TAssignableDefinition {
    */
   AssignableRead getAReachableRead() {
     result = this.getAFirstRead().getANextRead*()
-  }
-
-  /**
-   * Gets a first uncertain read of the same underlying assignable. That is,
-   * a read that can be reached from this definition without passing through any
-   * other reads, and which *may* read the value assigned in this definition.
-   * Example:
-   *
-   * ```
-   * int Field;
-   *
-   * void SetField(int i) {
-   *   this.Field = i;
-   *   Use(this.Field);
-   *   if (i > 0)
-   *     this.Field = i - 1;
-   *   else if (i < 0)
-   *     SetField(1);
-   *   Use(this.Field);
-   *   Use(this.Field);
-   * }
-   * ```
-   *
-   * - The read of `i` on line 4 is a first read of the implicit parameter definition
-   *   on line 3.
-   * - The read of `this.Field` on line 5 is a first read of the definition on line 4.
-   * - The read of `this.Field` on line 10 is a first read of the definition on
-   *   line 7. (This is the only truly uncertain read.)
-   *
-   * Subsequent uncertain reads can be found by following the steps defined by
-   * `AssignableRead.getANextUncertainRead()`.
-   */
-  deprecated
-  AssignableRead getAFirstUncertainRead() {
-    exists(Ssa::ExplicitDefinition def |
-      def.getADefinition() = this |
-      result = def.getAFirstUncertainRead()
-    )
-  }
-
-  /**
-   * Gets a reachable uncertain read of the same underlying assignable. That is,
-   * a read that can be reached from this definition, and which *may* read the
-   * value assigned in this definition.
-   *
-   * This is the equivalent with `getAFirstUncertainRead().getANextUncertainRead*()`.
-   */
-  deprecated
-  AssignableRead getAReachableUncertainRead() {
-    result = this.getAFirstUncertainRead().getANextUncertainRead*()
   }
 
   /** Gets a textual representation of this assignable definition. */

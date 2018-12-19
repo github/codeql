@@ -10,10 +10,6 @@ class SystemDataSqlClientNamespace extends Namespace {
   }
 }
 
-/** DEPRECATED. Gets the `System.Data.SqlClient` namespace. */
-deprecated
-SystemDataSqlClientNamespace getSystemDataSqlClientNamespace() { any() }
-
 /** A class in the `System.Data.SqlClient` namespace. */
 class SystemDataSqlClientClass extends Class {
   SystemDataSqlClientClass() {
@@ -27,10 +23,6 @@ class SystemDataSqlClientSqlDataAdapterClass extends SystemDataSqlClientClass {
     this.hasQualifiedName("System.Data.SqlClient", "SqlDataAdapter")
   }
 }
-
-/** DEPRECATED. Gets the `System.Data.SqlClient.SqlDataAdapter` class. */
-deprecated
-SystemDataSqlClientSqlDataAdapterClass getSystemDataSqlClientSqlDataAdapterClass() { any() }
 
 /** The `System.Data.SqlClient.SqlConnection` class. */
 class SystemDataSqlClientSqlConnectionClass extends SystemDataSqlClientClass {

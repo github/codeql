@@ -290,3 +290,14 @@ class ForeachStatements
         foreach (var (a, b) in list) { }
     }
 }
+
+class ForLoops
+{
+    void Test()
+    {
+        for(int x=0; x<10 && x is int y; ++x)
+        {
+            Console.WriteLine(y);
+        }
+    }
+}

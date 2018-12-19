@@ -866,6 +866,10 @@ module Express {
     override DataFlow::Node getAPathArgument() {
       result = DataFlow::valueNode(astNode.getArgument(0))
     }
+
+    override DataFlow::Node getRootPathArgument() {
+      result = this.(DataFlow::CallNode).getOptionArgument(1, "root")
+    }
   }
 
   /**

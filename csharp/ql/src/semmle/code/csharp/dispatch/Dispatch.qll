@@ -269,13 +269,6 @@ private module Internal {
    * types for a given expression.
    */
   private module SimpleTypeDataFlow {
-    // A temporary workaround to get the right join-order in `Sink::getASource()`
-    private newtype ExprWrapper = TExprWrapper(Expr e)
-
-    private Expr unwrap(ExprWrapper ew) { ew = TExprWrapper(result) }
-
-    private ExprWrapper wrap(Expr e) { result = TExprWrapper(e) }
-
     /**
      * Holds if type `t` may be imprecise, that is, an expression of type `t` may
      * in fact have a more precise type.
@@ -321,34 +314,27 @@ private module Internal {
       typeMayBeImprecise(succ.getType())
     }
 
-    private predicate step(ExprWrapper succ, ExprWrapper pred) {
-      stepExpr(unwrap(succ), unwrap(pred))
-    }
-
-    private predicate isSink(ExprWrapper ew) {
-      exists(Expr e |
-        e = unwrap(ew) |
-        e = any(DynamicMemberAccess dma | isSink(wrap(dma))).getQualifier() or
-        e = any(AccessorCall ac).getAnArgument() or
-        e = any(DispatchReflectionOrDynamicCall c).getArgument(_) or
-        e = any(MethodCall mc | mc.getTarget() = any(SystemObjectClass c).getGetTypeMethod()).getQualifier() or
-        e = any(DispatchCallImpl c).getQualifier()
-      )
-    }
-
-    private predicate stepTC(ExprWrapper succ, ExprWrapper pred) =
-      boundedFastTC(step/2, isSink/1)(succ, pred)
+    private predicate stepTC(Expr succ, Expr pred) =
+      fastTC(stepExpr/2)(succ, pred)
 
     private class Source extends Expr {
       Source() { not stepExpr(this, _) }
     }
 
     private class Sink extends Expr {
-      Sink() { isSink(wrap(this)) }
-
-      Source getASource() {
-        stepTC(wrap(this), wrap(result))
+      Sink() {
+        this = any(DynamicMemberAccess dma | dma instanceof Sink).getQualifier()
+        or
+        this = any(AccessorCall ac).getAnArgument()
+        or
+        this = any(DispatchReflectionOrDynamicCall c).getArgument(_)
+        or
+        this = any(MethodCall mc | mc.getTarget() = any(SystemObjectClass c).getGetTypeMethod()).getQualifier()
+        or
+        this = any(DispatchCallImpl c).getQualifier()
       }
+
+      Source getASource() { stepTC(this, result) }
     }
 
     /** Holds if the expression `e` has an exact type. */
@@ -357,10 +343,7 @@ private module Internal {
       e instanceof BaseAccess
     }
 
-    /**
-     * Gets a source type for expression `e`, using simple data flow. The
-     * expression must be a member of the predicate `isSink()` above.
-     */
+    /** Gets a source type for expression `e`, using simple data flow. */
     Type getASourceType(Sink e, boolean isExact) {
       exists(Source s |
         s = e.getASource() or

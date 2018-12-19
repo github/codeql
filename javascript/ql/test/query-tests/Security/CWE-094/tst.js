@@ -11,7 +11,7 @@ setTimeout(document.location.protocol);
 $('. ' + document.location.hostname);
 
 // NOT OK
-Function(document.cookie.replace(/.*\bfoo\s*=\s*([^;]*).*/, "$1"));
+Function(document.location.search.replace(/.*\bfoo\s*=\s*([^;]*).*/, "$1"));
 
 // NOT OK
 WebAssembly.compile(document.location.hash);

@@ -10,10 +10,6 @@ class SystemThreadingTasksNamespace extends Namespace {
   }
 }
 
-/** DEPRECATED. Gets the `System.Threading.Tasks` namespace. */
-deprecated
-SystemThreadingTasksNamespace getSystemThreadingTasksNamespace() { any() }
-
 /** A class in the `System.Threading.Tasks` namespace. */
 class SystemThreadingTasksClass extends Class {
   SystemThreadingTasksClass() {
@@ -35,10 +31,6 @@ class SystemThreadingTasksTaskClass extends SystemThreadingTasksClass {
   }
 }
 
-/** DEPRECATED. Gets the `System.Threading.Tasks.Task` class. */
-deprecated
-SystemThreadingTasksTaskClass getSystemThreadingTasksTaskClass() { any() }
-
 /** The `System.Threading.Tasks.Task<T>` class. */
 class SystemThreadingTasksTaskTClass extends SystemThreadingTasksUnboundGenericClass {
   SystemThreadingTasksTaskTClass() {
@@ -54,7 +46,3 @@ class SystemThreadingTasksTaskTClass extends SystemThreadingTasksUnboundGenericC
     result.getType() = this.getTypeParameter(0)
   }
 }
-
-/** DEPRECATED. Gets the `System.Threading.Tasks.Task<T>` class. */
-deprecated
-SystemThreadingTasksTaskTClass getSystemThreadingTasksTaskTClass() { any() }

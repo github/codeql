@@ -81,3 +81,15 @@ import {ClientRequest, net} from 'electron';
     xhr.open(_, url);
     xhr.send(data);
 });
+
+(function() {
+
+    http.get(relativeUrl, {host: host});
+
+    axios({host: host});
+
+    got(relativeUrl, {host: host});
+
+    net.request({ hostname: host });
+
+});

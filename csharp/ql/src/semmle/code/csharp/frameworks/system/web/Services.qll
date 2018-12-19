@@ -10,10 +10,6 @@ class SystemWebServicesNamespace extends Namespace {
   }
 }
 
-/** DEPRECATED. Gets the `System.Web.Services` namespace. */
-deprecated
-SystemWebServicesNamespace getSystemWebServicesNamespace() { any() }
-
 /** A class in the `System.Web.Services` namespace. */
 class SystemWebServicesClass extends Class {
   SystemWebServicesClass() {
@@ -27,7 +23,3 @@ class SystemWebServicesWebMethodAttributeClass extends SystemWebServicesClass {
     this.hasName("WebMethodAttribute")
   }
 }
-
-/** DEPRECATED. Gets the `System.Web.Services.WebMethodAttribute` class. */
-deprecated
-SystemWebServicesWebMethodAttributeClass getSystemWebServicesWebMethodAttributeClass() { any() }

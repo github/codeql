@@ -286,7 +286,7 @@ class DereferenceableExpr extends Expr {
           ie = any(IsTypeExpr ite | ite.getCheckedType() = ite.getExpr().getType()) and
           branch = false and
           isNull = true
-        ) 
+        )
       )
       or
       this.hasNullableType() and
@@ -1217,7 +1217,7 @@ module Internal {
         g1 = cond and
         v1 = v.getDualValue() and
         (
-          // g1 === g2 ? e : ...; 
+          // g1 === g2 ? e : ...;
           g2 = cond.getCondition() and
           v2 = TBooleanValue(branch.booleanNot())
           or

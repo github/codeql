@@ -160,17 +160,6 @@ predicate shellCommandPreface(string cmd, string flag) {
 }
 
 /**
- * An array element. This supports multiple kinds of array syntax.
- */
-private predicate arrayElement(Expr arrayLit, int idx, Expr element) {
-  exists (ArrayLiteral lit | lit = arrayLit |
-    lit.getElement(idx) = element)
-  or exists (MessageExpr arrayWithObjects | arrayWithObjects = arrayLit |
-    arrayWithObjects.getStaticTarget().getQualifiedName().matches("NSArray%::+arrayWithObjects:") and
-    arrayWithObjects.getArgument(idx) = element)
-}
-
-/**
  * A command that is used as a command, or component of a command,
  * that will be executed by a general-purpose command interpreter
  * such as sh or cmd.exe.

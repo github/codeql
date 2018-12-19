@@ -16,17 +16,3 @@ abstract class RemoteFlowSource extends DataFlow::Node {
    */
   predicate isUserControlledObject() { none() }
 }
-
-/**
- * An access to `document.cookie`, viewed as a source of remote user input.
- */
-private class DocumentCookieSource extends RemoteFlowSource, DataFlow::ValueNode {
-  DocumentCookieSource() {
-    isDocument(astNode.(PropAccess).getBase()) and
-    astNode.(PropAccess).getPropertyName() = "cookie"
-  }
-
-  override string getSourceType() {
-    result = "document.cookie"
-  }
-}

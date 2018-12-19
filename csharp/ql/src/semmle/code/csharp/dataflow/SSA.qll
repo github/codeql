@@ -758,42 +758,6 @@ module Ssa {
       ssaRefRank(bb2, i2, v, _) = 1
     }
 
-    /**
-     * Holds if the value defined at non-trivial SSA definition `def` can reach `read`
-     * without passing through any other read, but possibly through pseudo definitions
-     * and uncertain definitions.
-     */
-    deprecated
-    predicate firstUncertainRead(TrackedDefinition def, AssignableRead read) {
-      firstReadSameVar(def, read)
-      or
-      exists(TrackedVar v, TrackedDefinition redef, BasicBlock b1, int i1, BasicBlock b2, int i2 |
-        redef instanceof UncertainDefinition or redef instanceof PseudoDefinition
-        |
-        adjacentVarRefs(v, b1, i1, b2, i2) and
-        definesAt(def, b1, i1, v) and
-        definesAt(redef, b2, i2, v) and
-        firstUncertainRead(redef, read)
-      )
-    }
-
-    /**
-     * INTERNAL: Use `AssignableRead.getANextUncertainRead()` instead.
-     */
-    deprecated
-    predicate adjacentReadPair(AssignableRead read1, AssignableRead read2) {
-      adjacentReadPairSameVar(read1, read2)
-      or
-      exists(TrackedVar v, TrackedDefinition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
-        adjacentVarRefs(v, bb1, i1, bb2, i2) and
-        variableRead(bb1, i1, v, read1.getAControlFlowNode(), _) and
-        definesAt(def, bb2, i2, v) and
-        firstUncertainRead(def, read2) |
-        def instanceof UncertainDefinition or
-        def instanceof PseudoDefinition
-      )
-    }
-
     private cached module Cached {
       /**
        * Holds if `read` is a last read of the non-trivial SSA definition `def`.
@@ -2147,47 +2111,6 @@ module Ssa {
     }
 
     /**
-     * Gets a first uncertain read of the source variable underlying this
-     * SSA definition. That is, a read that can be reached from this SSA definition
-     * without passing through any other reads or SSA definitions, except for
-     * phi nodes and uncertain updates. Example:
-     *
-     * ```
-     * int Field;
-     *
-     * void SetField(int i) {
-     *   this.Field = i;
-     *   Use(this.Field);
-     *   if (i > 0)
-     *     this.Field = i - 1;
-     *   else if (i < 0)
-     *     SetField(1);
-     *   Use(this.Field);
-     *   Use(this.Field);
-     * }
-     * ```
-     *
-     * - The read of `i` on line 4 can be reached from the explicit SSA
-     *   definition (wrapping an implicit entry definition) on line 3.
-     * - The reads of `i` on lines 6 and 7 are not the first reads of any SSA
-     *   definition.
-     * - The read of `this.Field` on line 5 can be reached from the explicit SSA
-     *   definition on line 4.
-     * - The read of `this.Field` on line 10 can be reached from the explicit SSA
-     *   definition on line 7, the implicit SSA definition on line 9, and the phi
-     *   node between lines 9 and 10.
-     * - The read of `this.Field` on line 11 is not the first read of any SSA
-     *   definition.
-     *
-     * Subsequent uncertain reads can be found by following the steps defined by
-     * `AssignableRead.getANextUncertainRead()`.
-     */
-    deprecated
-    AssignableRead getAFirstUncertainRead() {
-      firstUncertainRead(this, result)
-    }
-
-    /**
      * Gets a definition that ultimately defines this SSA definition and is
      * not itself a pseudo node. Example:
      *
@@ -2476,10 +2399,6 @@ module Ssa {
         this = TSsaImplicitUntrackedDef(v, bb, i) and
         result.getAControlFlowNode() = bb.getNode(i + 1)
       )
-    }
-
-    override AssignableRead getAFirstUncertainRead() {
-      result = this.getARead()
     }
 
     override string toString() {

@@ -737,6 +737,14 @@ module NodeJSLib {
       result = url
     }
 
+    override DataFlow::Node getHost() {
+      exists (string name |
+        name = "host" or
+        name = "hostname" |
+        result = getOptionArgument(1, name)
+      )
+    }
+
     override DataFlow::Node getADataNode() {
       exists (string name |
         name = "write" or name = "end" |
