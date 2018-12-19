@@ -75,7 +75,7 @@ angular.module('myApp', [])
     })
     .directive('myCustomer', function() {
         return {
-            templateUrl: document.cookie // NOT OK
+            templateUrl: Cookie.get("unsafe") // NOT OK
         }
     })
 
@@ -98,3 +98,7 @@ var server = http.createServer(function(req, res) {
     application.get('/views/*', views_imported);
 
 })();
+
+addEventListener('message', (ev) => {
+  Cookie.set("unsafe", ev.data);
+});
