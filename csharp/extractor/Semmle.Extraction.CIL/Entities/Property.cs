@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Reflection.Metadata;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Semmle.Extraction.CIL.Entities
 {
@@ -37,7 +38,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                yield return Tuples.metadata_handle(this, cx.assembly, handle.GetHashCode());
+                yield return Tuples.metadata_handle(this, cx.assembly, MetadataTokens.GetToken(handle));
                 var sig = pd.DecodeSignature(cx.TypeSignatureDecoder, type);
 
                 yield return Tuples.cil_property(this, type, cx.ShortName(pd.Name), sig.ReturnType);

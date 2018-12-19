@@ -16,7 +16,7 @@ namespace Semmle.Extraction.Entities
             private set;
         }
 
-        public string DatabasePath => File.FileAsDatabaseString(Path);
+        public string DatabasePath => File.PathAsDatabaseId(Path);
 
         public override void Populate()
         {
@@ -27,7 +27,7 @@ namespace Semmle.Extraction.Entities
             // On Windows: System.IO.DirectoryInfo.Name returns "L:\"
             string shortName = symbol.Parent == null ? "" : symbol.Name;
 
-            Context.Emit(Tuples.folders(this, DatabasePath, shortName));
+            Context.Emit(Tuples.folders(this, Semmle.Extraction.Entities.File.PathAsDatabaseString(Path), shortName));
             if (symbol.Parent != null)
             {
                 Context.Emit(Tuples.containerparent(Create(Context, symbol.Parent), this));

@@ -4,6 +4,7 @@ using Semmle.Extraction.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -103,11 +104,12 @@ namespace Semmle.Extraction.CSharp.Entities
         protected void ExtractMetadataHandle()
         {
             var handle = MetadataHandle;
-            if (!handle.IsNil)
-                Context.Emit(Tuples.metadata_handle(this, Location, handle.GetHashCode()));
+
+            if (handle.HasValue)
+                Context.Emit(Tuples.metadata_handle(this, Location, MetadataTokens.GetToken(handle.Value)));
         }
 
-        public Handle MetadataHandle
+        public Handle? MetadataHandle
         {
             get
             {
@@ -122,21 +124,21 @@ namespace Semmle.Extraction.CSharp.Entities
                     {
                         return (MethodDefinitionHandle)value;
                     }
-                    else if(value is TypeDefinitionHandle)
+                    else if (value is TypeDefinitionHandle)
                     {
                         return (TypeDefinitionHandle)value;
                     }
-                    else if(value is PropertyDefinitionHandle)
+                    else if (value is PropertyDefinitionHandle)
                     {
                         return (PropertyDefinitionHandle)value;
                     }
-                    else if(value is FieldDefinitionHandle)
+                    else if (value is FieldDefinitionHandle)
                     {
                         return (FieldDefinitionHandle)value;
                     }
                 }
 
-                return new Handle(); // A nil handle
+                return null;
             }
         }
     }

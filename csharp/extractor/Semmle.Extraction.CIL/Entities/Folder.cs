@@ -14,7 +14,7 @@ namespace Semmle.Extraction.CIL.Entities
         public Folder(Context cx, string path) : base(cx)
         {
             this.path = path;
-            ShortId = new StringId(path.Replace("\\", "/").Replace(":", "_"));
+            ShortId = new StringId(Semmle.Extraction.Entities.File.PathAsDatabaseId(path));
         }
 
         static readonly Id suffix = new StringId(";folder");
@@ -33,7 +33,7 @@ namespace Semmle.Extraction.CIL.Entities
                     yield return parentFolder;
                     yield return Tuples.containerparent(parentFolder, this);
                 }
-                yield return Tuples.folders(this, path, Path.GetFileName(path));
+                yield return Tuples.folders(this, Semmle.Extraction.Entities.File.PathAsDatabaseString(path), Path.GetFileName(path));
             }
         }
 

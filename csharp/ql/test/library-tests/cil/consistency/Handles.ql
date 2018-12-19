@@ -11,7 +11,7 @@ class MetadataEntity extends DotNet::NamedElement, @metadata_entity {
 }
 
 query predicate tooManyMatchingHandles(MetadataEntity e) {
-  count(MetadataEntity e2 | e.matchesHandle(e2))>2
+  strictcount(MetadataEntity e2 | e.matchesHandle(e2)) > 2
 }
 
 query predicate missingCil(Element e) {

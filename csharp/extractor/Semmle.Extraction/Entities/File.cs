@@ -19,7 +19,7 @@ namespace Semmle.Extraction.Entities
             private set;
         }
 
-        public string DatabasePath => FileAsDatabaseString(Path);
+        public string DatabasePath => PathAsDatabaseId(Path);
 
         public override bool NeedsPopulation => Context.DefinesFile(Path) || Path == Context.Extractor.OutputPath;
 
@@ -41,7 +41,7 @@ namespace Semmle.Extraction.Entities
                 // remove the dot from the extension
                 if (extension.Length > 0)
                     extension = extension.Substring(1);
-                Context.Emit(Tuples.files(this, DatabasePath, name, extension));
+                Context.Emit(Tuples.files(this, PathAsDatabaseString(Path), name, extension));
 
                 Context.Emit(Tuples.containerparent(Entities.Folder.Create(Context, fi.Directory), this));
                 if (fromSource == 1)
@@ -73,13 +73,20 @@ namespace Semmle.Extraction.Entities
             }
         }
 
-        internal static string FileAsDatabaseString(string fileName)
+        /// <summary>
+        /// Converts a path string into a string to use as an ID
+        /// in the QL database.
+        /// </summary>
+        /// <param name="path">An absolute path.</param>
+        /// <returns>The database ID.</returns>
+        public static string PathAsDatabaseId(string path)
         {
-            fileName = fileName.Replace('\\', '/');
-            if (fileName.Length > 1 && fileName[1] == ':')
-                fileName = Char.ToUpper(fileName[0]) + fileName.Substring(1);
-            return fileName;
+            if (path.Length >= 2 && path[1] == ':' && Char.IsLower(path[0]))
+                path = Char.ToUpper(path[0]) + "_" + path.Substring(2);
+            return path.Replace('\\', '/').Replace(":", "_");
         }
+
+        public static string PathAsDatabaseString(string path) => path.Replace('\\', '/');
 
         public static File Create(Context cx, string path) => FileFactory.Instance.CreateEntity(cx, path);
 

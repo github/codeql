@@ -248,7 +248,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// </summary>
     public sealed class TypeDefinitionType : Type
     {
-        Handle handle;
+        readonly Handle handle;
         readonly TypeDefinition td;
 
         public TypeDefinitionType(Context cx, TypeDefinitionHandle handle) : base(cx)

@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Semmle.Extraction.CIL.Entities
 {
@@ -207,7 +208,7 @@ namespace Semmle.Extraction.CIL.Entities
                     Attribute.Populate(cx, pe, p.GetCustomAttributes());
                 }
 
-                yield return Tuples.metadata_handle(this, cx.assembly, handle.GetHashCode());
+                yield return Tuples.metadata_handle(this, cx.assembly, MetadataTokens.GetToken(handle));
                 yield return Tuples.cil_method(this, Name, declaringType, typeSignature.ReturnType);
                 yield return Tuples.cil_method_source_declaration(this, this);
                 yield return Tuples.cil_method_location(this, cx.assembly);
