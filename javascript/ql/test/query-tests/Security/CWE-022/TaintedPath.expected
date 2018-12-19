@@ -53,7 +53,7 @@ nodes
 | TaintedPath.js:65:54:65:57 | path |
 | TaintedPath.js:67:29:67:61 | pathMod ... h(path) |
 | TaintedPath.js:67:57:67:60 | path |
-| TaintedPath.js:78:26:78:40 | document.cookie |
+| TaintedPath.js:78:26:78:45 | Cookie.get("unsafe") |
 | TaintedPath.js:84:31:84:70 | require ... eq.url) |
 | TaintedPath.js:84:31:84:76 | require ... ).query |
 | TaintedPath.js:84:63:84:69 | req.url |
@@ -64,6 +64,9 @@ nodes
 | TaintedPath.js:86:31:86:73 | require ... ).query |
 | TaintedPath.js:86:60:86:66 | req.url |
 | TaintedPath.js:94:48:94:60 | req.params[0] |
+| TaintedPath.js:102:30:102:31 | ev |
+| TaintedPath.js:103:24:103:25 | ev |
+| TaintedPath.js:103:24:103:30 | ev.data |
 | tainted-array-steps.js:9:7:9:48 | path |
 | tainted-array-steps.js:9:14:9:37 | url.par ... , true) |
 | tainted-array-steps.js:9:14:9:43 | url.par ... ).query |
@@ -143,6 +146,9 @@ edges
 | TaintedPath.js:85:61:85:67 | req.url | TaintedPath.js:85:31:85:68 | require ... eq.url) |
 | TaintedPath.js:86:31:86:67 | require ... eq.url) | TaintedPath.js:86:31:86:73 | require ... ).query |
 | TaintedPath.js:86:60:86:66 | req.url | TaintedPath.js:86:31:86:67 | require ... eq.url) |
+| TaintedPath.js:102:30:102:31 | ev | TaintedPath.js:103:24:103:25 | ev |
+| TaintedPath.js:103:24:103:25 | ev | TaintedPath.js:103:24:103:30 | ev.data |
+| TaintedPath.js:103:24:103:30 | ev.data | TaintedPath.js:78:26:78:45 | Cookie.get("unsafe") |
 | tainted-array-steps.js:9:7:9:48 | path | tainted-array-steps.js:11:40:11:43 | path |
 | tainted-array-steps.js:9:7:9:48 | path | tainted-array-steps.js:13:26:13:29 | path |
 | tainted-array-steps.js:9:14:9:37 | url.par ... , true) | tainted-array-steps.js:9:14:9:43 | url.par ... ).query |
@@ -178,7 +184,7 @@ edges
 | TaintedPath.js:63:29:63:52 | pathMod ... e(path) | TaintedPath.js:45:20:45:26 | req.url | TaintedPath.js:63:29:63:52 | pathMod ... e(path) | This path depends on $@. | TaintedPath.js:45:20:45:26 | req.url | a user-provided value |
 | TaintedPath.js:65:29:65:61 | pathMod ... ath, z) | TaintedPath.js:45:20:45:26 | req.url | TaintedPath.js:65:29:65:61 | pathMod ... ath, z) | This path depends on $@. | TaintedPath.js:45:20:45:26 | req.url | a user-provided value |
 | TaintedPath.js:67:29:67:61 | pathMod ... h(path) | TaintedPath.js:45:20:45:26 | req.url | TaintedPath.js:67:29:67:61 | pathMod ... h(path) | This path depends on $@. | TaintedPath.js:45:20:45:26 | req.url | a user-provided value |
-| TaintedPath.js:78:26:78:40 | document.cookie | TaintedPath.js:78:26:78:40 | document.cookie | TaintedPath.js:78:26:78:40 | document.cookie | This path depends on $@. | TaintedPath.js:78:26:78:40 | document.cookie | a user-provided value |
+| TaintedPath.js:78:26:78:45 | Cookie.get("unsafe") | TaintedPath.js:102:30:102:31 | ev | TaintedPath.js:78:26:78:45 | Cookie.get("unsafe") | This path depends on $@. | TaintedPath.js:102:30:102:31 | ev | a user-provided value |
 | TaintedPath.js:84:31:84:76 | require ... ).query | TaintedPath.js:84:63:84:69 | req.url | TaintedPath.js:84:31:84:76 | require ... ).query | This path depends on $@. | TaintedPath.js:84:63:84:69 | req.url | a user-provided value |
 | TaintedPath.js:85:31:85:74 | require ... ).query | TaintedPath.js:85:61:85:67 | req.url | TaintedPath.js:85:31:85:74 | require ... ).query | This path depends on $@. | TaintedPath.js:85:61:85:67 | req.url | a user-provided value |
 | TaintedPath.js:86:31:86:73 | require ... ).query | TaintedPath.js:86:60:86:66 | req.url | TaintedPath.js:86:31:86:73 | require ... ).query | This path depends on $@. | TaintedPath.js:86:60:86:66 | req.url | a user-provided value |
