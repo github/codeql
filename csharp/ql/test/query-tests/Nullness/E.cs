@@ -296,6 +296,12 @@ public class E
         }
     }
 
+    public void Ex25(object o)
+    {
+        var s = o as string;
+        s.ToString(); // BAD (maybe)
+    }
+
     public bool Field;
     string Make() => Field ? null : "";
 }
