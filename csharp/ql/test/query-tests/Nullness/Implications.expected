@@ -930,6 +930,8 @@
 | D.cs:187:13:187:28 | ... = ... | non-null | D.cs:187:20:187:28 | call to method MkMaybe | non-null |
 | D.cs:187:13:187:28 | ... = ... | null | D.cs:187:13:187:16 | access to local variable obj3 | null |
 | D.cs:187:13:187:28 | ... = ... | null | D.cs:187:20:187:28 | call to method MkMaybe | null |
+| D.cs:190:9:190:12 | access to local variable obj3 | non-null | D.cs:187:20:187:28 | call to method MkMaybe | non-null |
+| D.cs:190:9:190:12 | access to local variable obj3 | null | D.cs:187:20:187:28 | call to method MkMaybe | null |
 | D.cs:195:13:195:28 | Object o = ... | non-null | D.cs:195:13:195:13 | access to local variable o | non-null |
 | D.cs:195:13:195:28 | Object o = ... | null | D.cs:195:13:195:13 | access to local variable o | null |
 | D.cs:196:13:196:13 | access to local variable o | non-null | D.cs:195:17:195:28 | object creation of type Object | non-null |
@@ -985,6 +987,8 @@
 | D.cs:230:13:230:28 | ... = ... | non-null | D.cs:230:17:230:28 | object creation of type Object | non-null |
 | D.cs:230:13:230:28 | ... = ... | null | D.cs:230:13:230:13 | access to local variable o | null |
 | D.cs:230:13:230:28 | ... = ... | null | D.cs:230:17:230:28 | object creation of type Object | null |
+| D.cs:232:13:232:13 | access to local variable o | non-null | D.cs:230:17:230:28 | object creation of type Object | non-null |
+| D.cs:232:13:232:13 | access to local variable o | null | D.cs:230:17:230:28 | object creation of type Object | null |
 | D.cs:234:9:234:16 | ... = ... | non-null | D.cs:234:9:234:9 | access to local variable o | non-null |
 | D.cs:234:9:234:16 | ... = ... | non-null | D.cs:234:13:234:16 | null | non-null |
 | D.cs:234:9:234:16 | ... = ... | null | D.cs:234:9:234:9 | access to local variable o | null |
@@ -993,6 +997,8 @@
 | D.cs:236:13:236:18 | ... = ... | non-null | D.cs:236:17:236:18 | "" | non-null |
 | D.cs:236:13:236:18 | ... = ... | null | D.cs:236:13:236:13 | access to local variable o | null |
 | D.cs:236:13:236:18 | ... = ... | null | D.cs:236:17:236:18 | "" | null |
+| D.cs:238:13:238:13 | access to local variable o | non-null | D.cs:236:17:236:18 | "" | non-null |
+| D.cs:238:13:238:13 | access to local variable o | null | D.cs:236:17:236:18 | "" | null |
 | D.cs:240:9:240:16 | ... = ... | non-null | D.cs:240:9:240:9 | access to local variable o | non-null |
 | D.cs:240:9:240:16 | ... = ... | non-null | D.cs:240:13:240:16 | null | non-null |
 | D.cs:240:9:240:16 | ... = ... | null | D.cs:240:9:240:9 | access to local variable o | null |
@@ -1410,12 +1416,16 @@
 | E.cs:217:13:217:20 | ... = ... | non-null | E.cs:217:17:217:20 | null | non-null |
 | E.cs:217:13:217:20 | ... = ... | null | E.cs:217:13:217:13 | access to local variable x | null |
 | E.cs:217:13:217:20 | ... = ... | null | E.cs:217:17:217:20 | null | null |
+| E.cs:220:13:220:13 | access to local variable x | non-null | E.cs:217:17:217:20 | null | non-null |
+| E.cs:220:13:220:13 | access to local variable x | null | E.cs:217:17:217:20 | null | null |
 | E.cs:225:13:225:18 | String x = ... | non-null | E.cs:225:13:225:13 | access to local variable x | non-null |
 | E.cs:225:13:225:18 | String x = ... | null | E.cs:225:13:225:13 | access to local variable x | null |
 | E.cs:227:13:227:20 | ... = ... | non-null | E.cs:227:13:227:13 | access to local variable x | non-null |
 | E.cs:227:13:227:20 | ... = ... | non-null | E.cs:227:17:227:20 | null | non-null |
 | E.cs:227:13:227:20 | ... = ... | null | E.cs:227:13:227:13 | access to local variable x | null |
 | E.cs:227:13:227:20 | ... = ... | null | E.cs:227:17:227:20 | null | null |
+| E.cs:229:13:229:13 | access to local variable x | non-null | E.cs:227:17:227:20 | null | non-null |
+| E.cs:229:13:229:13 | access to local variable x | null | E.cs:227:17:227:20 | null | null |
 | E.cs:245:13:245:22 | access to property HasValue | false | E.cs:245:13:245:13 | access to parameter i | null |
 | E.cs:245:13:245:22 | access to property HasValue | true | E.cs:245:13:245:13 | access to parameter i | non-null |
 | E.cs:252:13:252:21 | ... != ... | false | E.cs:252:13:252:13 | access to parameter i | null |
@@ -1426,6 +1436,42 @@
 | E.cs:260:13:260:17 | ... = ... | non-null | E.cs:260:17:260:17 | (...) ... | non-null |
 | E.cs:260:13:260:17 | ... = ... | null | E.cs:260:13:260:13 | access to parameter i | null |
 | E.cs:260:13:260:17 | ... = ... | null | E.cs:260:17:260:17 | (...) ... | null |
+| E.cs:266:16:266:23 | Object o = ... | non-null | E.cs:266:16:266:16 | access to local variable o | non-null |
+| E.cs:266:16:266:23 | Object o = ... | null | E.cs:266:16:266:16 | access to local variable o | null |
+| E.cs:269:13:269:22 | ... = ... | non-null | E.cs:269:13:269:13 | access to local variable o | non-null |
+| E.cs:269:13:269:22 | ... = ... | non-null | E.cs:269:17:269:22 | call to method Make | non-null |
+| E.cs:269:13:269:22 | ... = ... | null | E.cs:269:13:269:13 | access to local variable o | null |
+| E.cs:269:13:269:22 | ... = ... | null | E.cs:269:17:269:22 | call to method Make | null |
+| E.cs:270:13:270:13 | access to local variable o | non-null | E.cs:269:17:269:22 | call to method Make | non-null |
+| E.cs:270:13:270:13 | access to local variable o | null | E.cs:269:17:269:22 | call to method Make | null |
+| E.cs:274:17:274:25 | ... != ... | false | E.cs:274:17:274:17 | access to local variable o | null |
+| E.cs:274:17:274:25 | ... != ... | true | E.cs:274:17:274:17 | access to local variable o | non-null |
+| E.cs:283:13:283:22 | String o = ... | non-null | E.cs:283:13:283:13 | access to local variable o | non-null |
+| E.cs:283:13:283:22 | String o = ... | null | E.cs:283:13:283:13 | access to local variable o | null |
+| E.cs:284:9:284:9 | access to local variable o | non-null | E.cs:283:17:283:22 | call to method Make | non-null |
+| E.cs:284:9:284:9 | access to local variable o | null | E.cs:283:17:283:22 | call to method Make | null |
+| E.cs:284:11:284:21 | call to method ToString | non-null | E.cs:284:9:284:9 | access to local variable o | non-null |
+| E.cs:285:9:285:9 | access to local variable o | non-null | E.cs:283:17:283:22 | call to method Make | non-null |
+| E.cs:285:9:285:9 | access to local variable o | null | E.cs:283:17:283:22 | call to method Make | null |
+| E.cs:292:16:292:32 | String s = ... | non-null | E.cs:292:16:292:16 | access to local variable s | non-null |
+| E.cs:292:16:292:32 | String s = ... | null | E.cs:292:16:292:16 | access to local variable s | null |
+| E.cs:292:20:292:32 | ... ? ... : ... | non-null | E.cs:292:20:292:20 | access to parameter b | false |
+| E.cs:292:20:292:32 | ... ? ... : ... | non-null | E.cs:292:31:292:32 | "" | non-null |
+| E.cs:292:20:292:32 | ... ? ... : ... | null | E.cs:292:20:292:20 | access to parameter b | true |
+| E.cs:292:20:292:32 | ... ? ... : ... | null | E.cs:292:24:292:27 | null | null |
+| E.cs:293:13:293:13 | access to local variable s | non-null | E.cs:292:20:292:20 | access to parameter b | false |
+| E.cs:293:13:293:13 | access to local variable s | non-null | E.cs:292:20:292:32 | ... ? ... : ... | non-null |
+| E.cs:293:13:293:13 | access to local variable s | null | E.cs:292:20:292:20 | access to parameter b | true |
+| E.cs:293:13:293:13 | access to local variable s | null | E.cs:292:20:292:32 | ... ? ... : ... | null |
+| E.cs:293:13:293:24 | ... == ... | true | E.cs:293:15:293:19 | call to method M2 | non-null |
+| E.cs:293:15:293:19 | call to method M2 | non-null | E.cs:293:13:293:13 | access to local variable s | non-null |
+| E.cs:293:15:293:19 | call to method M2 | null | E.cs:293:13:293:13 | access to local variable s | null |
+| E.cs:295:13:295:13 | access to local variable s | non-null | E.cs:292:20:292:32 | ... ? ... : ... | non-null |
+| E.cs:295:13:295:13 | access to local variable s | null | E.cs:292:20:292:32 | ... ? ... : ... | null |
+| E.cs:300:22:300:38 | ... ? ... : ... | non-null | E.cs:300:22:300:26 | access to field Field | false |
+| E.cs:300:22:300:38 | ... ? ... : ... | non-null | E.cs:300:37:300:38 | "" | non-null |
+| E.cs:300:22:300:38 | ... ? ... : ... | null | E.cs:300:22:300:26 | access to field Field | true |
+| E.cs:300:22:300:38 | ... ? ... : ... | null | E.cs:300:30:300:33 | null | null |
 | Forwarding.cs:7:16:7:23 | String s = ... | non-null | Forwarding.cs:7:16:7:16 | access to local variable s | non-null |
 | Forwarding.cs:7:16:7:23 | String s = ... | null | Forwarding.cs:7:16:7:16 | access to local variable s | null |
 | Forwarding.cs:9:13:9:30 | !... | false | Forwarding.cs:9:14:9:30 | call to method IsNullOrEmpty | true |

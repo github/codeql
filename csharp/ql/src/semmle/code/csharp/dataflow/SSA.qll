@@ -2172,6 +2172,21 @@ module Ssa {
       definesAt(this, bb, i, _)
     }
 
+    /** Gets the basic block to which this SSA definition belongs. */
+    BasicBlock getBasicBlock() { this.definesAt(result, _) }
+
+    /**
+     * Gets the syntax element associated with this SSA definition, if any.
+     * This is either an expression, for example `x = 0`, a parameter, or a
+     * callable. Pseudo nodes have no associated syntax element.
+     */
+    Element getElement() {
+      exists(BasicBlock bb, int i |
+        this.definesAt(bb, i) |
+        result = bb.getNode(i).getElement()
+      )
+    }
+
     /**
      * Holds if this SSA definition assigns to `out`/`ref` parameter `p`, and the
      * parameter may remain unchanged throughout the rest of the enclosing callable.
@@ -2261,6 +2276,8 @@ module Ssa {
       isCapturedVariableDefinitionFlowOut(this, cdef)
     }
 
+    override Element getElement() { result = ad.getElement() }
+
     override string toString() {
       if this.getADefinition() instanceof AssignableDefinitions::ImplicitParameterDefinition then
         result = getToStringPrefix(this) + "SSA param(" + this.getSourceVariable() + ")"
@@ -2303,6 +2320,8 @@ module Ssa {
         result = ebb.getCallable()
       )
     }
+
+    override Callable getElement() { result = this.getCallable() }
 
     override string toString() {
       if this.getSourceVariable().getAssignable() instanceof LocalScopeVariable then

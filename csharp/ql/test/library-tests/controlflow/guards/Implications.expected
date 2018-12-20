@@ -251,6 +251,10 @@
 | Guards.cs:106:9:106:25 | ... = ... | non-null | Guards.cs:106:22:106:25 | null | non-null |
 | Guards.cs:106:9:106:25 | ... = ... | null | Guards.cs:106:9:106:18 | access to property Property | null |
 | Guards.cs:106:9:106:25 | ... = ... | null | Guards.cs:106:22:106:25 | null | null |
+| Guards.cs:107:27:107:36 | access to property Property | non-null | Guards.cs:106:22:106:25 | null | non-null |
+| Guards.cs:107:27:107:36 | access to property Property | null | Guards.cs:106:22:106:25 | null | null |
+| Guards.cs:108:27:108:36 | access to property Property | non-null | Guards.cs:106:22:106:25 | null | non-null |
+| Guards.cs:108:27:108:36 | access to property Property | null | Guards.cs:106:22:106:25 | null | null |
 | Guards.cs:113:13:114:38 | String dummy = ... | non-null | Guards.cs:113:13:113:17 | access to local variable dummy | non-null |
 | Guards.cs:113:13:114:38 | String dummy = ... | null | Guards.cs:113:13:113:17 | access to local variable dummy | null |
 | Guards.cs:115:9:115:55 | ... = ... | non-null | Guards.cs:115:9:115:13 | access to local variable dummy | non-null |
@@ -261,6 +265,10 @@
 | Guards.cs:117:9:117:25 | ... = ... | non-null | Guards.cs:117:22:117:25 | null | non-null |
 | Guards.cs:117:9:117:25 | ... = ... | null | Guards.cs:117:9:117:18 | access to property Property | null |
 | Guards.cs:117:9:117:25 | ... = ... | null | Guards.cs:117:22:117:25 | null | null |
+| Guards.cs:118:27:118:36 | access to property Property | non-null | Guards.cs:117:22:117:25 | null | non-null |
+| Guards.cs:118:27:118:36 | access to property Property | null | Guards.cs:117:22:117:25 | null | null |
+| Guards.cs:119:27:119:36 | access to property Property | non-null | Guards.cs:117:22:117:25 | null | non-null |
+| Guards.cs:119:27:119:36 | access to property Property | null | Guards.cs:117:22:117:25 | null | null |
 | Guards.cs:124:13:124:30 | Boolean b1 = ... | false | Guards.cs:124:13:124:14 | access to local variable b1 | false |
 | Guards.cs:124:13:124:30 | Boolean b1 = ... | true | Guards.cs:124:13:124:14 | access to local variable b1 | true |
 | Guards.cs:125:13:125:31 | Nullable<Boolean> b2 = ... | non-null | Guards.cs:125:13:125:14 | access to local variable b2 | non-null |
