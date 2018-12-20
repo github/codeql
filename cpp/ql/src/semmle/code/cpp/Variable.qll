@@ -283,7 +283,11 @@ deprecated class StackVariable extends Variable {
 
 /**
  * A C/C++ local variable. In other words, any variable that has block
- * scope [N4140 3.3.3], but is not a function parameter.
+ * scope [N4140 3.3.3], but is not a parameter of a `Function` or `CatchBlock`.
+ * Local variables can be static; use the `isStatic` member predicate to detect
+ * those.
+ *
+ * A local variable can be declared by a `DeclStmt` or a `ConditionDeclExpr`.
  */
 class LocalVariable extends LocalScopeVariable, @localvariable {
   override string getName() { localvariables(underlyingElement(this),_,result) }
