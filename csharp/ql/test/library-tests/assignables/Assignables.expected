@@ -58,8 +58,6 @@
 | Assignables.cs:87:10:87:17 | Item1 |
 | Assignables.cs:87:10:87:17 | Property |
 | Assignables.cs:87:20:87:26 | Item2 |
-| Assignables.cs:87:32:87:32 | Item1 |
-| Assignables.cs:87:35:87:35 | Item2 |
 | Assignables.cs:88:10:88:10 | Item1 |
 | Assignables.cs:88:10:88:10 | x |
 | Assignables.cs:88:13:88:18 | Item2 |
@@ -69,13 +67,9 @@
 | Assignables.cs:88:17:88:17 | x |
 | Assignables.cs:88:24:88:24 | Item1 |
 | Assignables.cs:88:27:88:36 | Item2 |
-| Assignables.cs:88:28:88:32 | Item1 |
-| Assignables.cs:88:35:88:35 | Item2 |
 | Assignables.cs:89:10:89:10 | Item1 |
 | Assignables.cs:89:10:89:10 | b |
 | Assignables.cs:89:13:89:18 | Item2 |
-| Assignables.cs:89:24:89:27 | Item1 |
-| Assignables.cs:89:30:89:35 | Item2 |
 | Assignables.cs:92:6:92:8 | Item1 |
 | Assignables.cs:92:11:92:24 | Item2 |
 | Assignables.cs:92:12:92:15 | Item1 |

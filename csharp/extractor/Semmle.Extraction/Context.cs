@@ -61,30 +61,46 @@ namespace Semmle.Extraction
         /// <param name="factory">The entity factory.</param>
         /// <param name="init">The initializer for the entity.</param>
         /// <returns>The new/existing entity.</returns>
-        public Entity CreateEntity2<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, Type type) where Entity : ICachedEntity
+        public Entity CreateEntity2<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, Type init) where Entity : ICachedEntity
         {
             using (StackGuard)
             {
-                var entity = factory.Create(this, type);
+                var entity = factory.Create(this, init);
 
-                if(entityLabelCache.TryGetValue(entity, out var label))
+                if (entityLabelCache.TryGetValue(entity, out var label))
                 {
                     entity.Label = label;
-                    return entity;
                 }
                 else
                 {
                     var id = entity.Id;
+#if DEBUG_LABELS
+                    CheckEntityHasUniqueLabel(id, entity);
+#endif
                     label = new Label(NewId());
                     entity.Label = label;
                     entityLabelCache[entity] = label;
                     DefineLabel(label, id);
                     if (entity.NeedsPopulation)
-                        Populate(null, entity);
-                    return entity;
+                        Populate(init as ISymbol, entity);
                 }
+                return entity;
             }
         }
+
+#if DEBUG_LABELS
+        private void CheckEntityHasUniqueLabel(IId id, ICachedEntity entity)
+        {
+            if (idLabelCache.TryGetValue(id, out var originalEntity))
+            {
+                Extractor.Message(new Message { message = "Label collision for " + id.ToString(), severity = Severity.Warning });
+            }
+            else
+            {
+                idLabelCache[id] = entity;
+            }
+        }
+#endif
 
         private Entity CreateNonNullEntity<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, Type init) where Entity : ICachedEntity
         {
@@ -103,14 +119,7 @@ namespace Semmle.Extraction
                 DefineLabel(label, id);
 
 #if DEBUG_LABELS
-                if (idLabelCache.TryGetValue(id, out var originalEntity))
-                {
-                    Extractor.Message(new Message { message = "Label collision for " + id.ToString(), severity = Severity.Warning });
-                }
-                else
-                {
-                    idLabelCache[id] = entity;
-                }
+                CheckEntityHasUniqueLabel(id, entity);
 #endif
 
                 if (entity.NeedsPopulation)
@@ -154,7 +163,9 @@ namespace Semmle.Extraction
             entity.Label = label;
         }
 
+#if DEBUG_LABELS
         readonly Dictionary<IId, ICachedEntity> idLabelCache = new Dictionary<IId, ICachedEntity>();
+#endif
         readonly Dictionary<object, ICachedEntity> objectEntityCache = new Dictionary<object, ICachedEntity>();
         readonly Dictionary<ICachedEntity, Label> entityLabelCache = new Dictionary<ICachedEntity, Label>();
         readonly HashSet<Label> extractedGenerics = new HashSet<Label>();

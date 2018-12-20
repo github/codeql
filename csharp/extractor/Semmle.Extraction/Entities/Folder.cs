@@ -39,7 +39,7 @@ namespace Semmle.Extraction.Entities
         public override IId Id => new Key(DatabasePath, ";folder");
 
         public static Folder Create(Context cx, DirectoryInfo folder) =>
-            FolderFactory.Instance.CreateEntity(cx, folder);
+            FolderFactory.Instance.CreateEntity2(cx, folder);
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => null;
 
