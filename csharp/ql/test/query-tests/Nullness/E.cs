@@ -260,6 +260,50 @@ public class E
             i = 0;
         return i.Value; // GOOD
     }
+
+    public void Ex22()
+    {
+        object o = null;
+        try
+        {
+            o = Make();
+            o.ToString(); // GOOD
+        }
+        finally
+        {
+            if (o != null)
+                o.ToString(); // GOOD
+        }
+    }
+
+    public void Ex23(bool b)
+    {
+        if (b)
+            b.ToString();
+        var o = Make();
+        o?.ToString();
+        o.ToString(); // BAD (maybe)
+        if (b)
+            b.ToString();
+    }
+
+    public void Ex24(bool b)
+    {
+        string s = b ? null : "";
+        if (s?.M2() == 0)
+        {
+            s.ToString(); // GOOD
+        }
+    }
+
+    public void Ex25(object o)
+    {
+        var s = o as string;
+        s.ToString(); // BAD (maybe)
+    }
+
+    public bool Field;
+    string Make() => Field ? null : "";
 }
 
 public static class Extensions

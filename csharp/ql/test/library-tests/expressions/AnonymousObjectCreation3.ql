@@ -13,4 +13,4 @@ where
   p = a.getLValue().(PropertyAccess).getTarget() and
   p.hasName("PhoneNumbers") and
   p.getDeclaringType() = o.getObjectType()
-select o, p.getType()
+select o, p.getType().getName()

@@ -578,8 +578,12 @@ module Internal {
    */
   Expr getNullEquivParent(Expr e) {
     result = any(QualifiableExpr qe |
-      qe.getQualifier() = e and
       qe.isConditional() and
+      (
+        e = qe.getQualifier()
+        or
+        e = qe.(ExtensionMethodCall).getArgument(0)
+      ) and
       (
         // The accessed declaration must have a value type in order
         // for `only if` to hold
@@ -690,7 +694,7 @@ module Internal {
     predicate preControls(PreBasicBlocks::PreBasicBlock bb, AbstractValue v) {
       exists(AbstractValue v0, Guard g |
         g.preControlsDirect(bb, v0) |
-        impliesSteps(g, v0, this, v)
+        preImpliesSteps(g, v0, this, v)
       )
     }
 
@@ -777,7 +781,7 @@ module Internal {
       def.nullGuardedReturn(ret, isNull)
       or
       exists(NullValue nv |
-        impliesSteps(ret, retVal, def.getARead(), nv) |
+        preImpliesSteps(ret, retVal, def.getARead(), nv) |
         if nv.isNull() then isNull = true else isNull = false
       )
     )
@@ -1119,6 +1123,28 @@ module Internal {
         def = guarded.getAnSsaQualifier()
       )
     }
+
+    /**
+     * Holds if the assumption that `g1` has abstract value `v1` implies that
+     * `g2` has abstract value `v2`, using one step of reasoning. That is, the
+     * evaluation of `g2` to `v2` dominates the evaluation of `g1` to `v1`.
+     *
+     * This predicate relies on the control flow graph.
+     */
+    cached
+    predicate impliesStep(Guard g1, AbstractValue v1, Guard g2, AbstractValue v2) {
+      preImpliesStep(g1, v1, g2, v2)
+      or
+      forex(ControlFlow::Node cfn |
+        cfn = g1.getAControlFlowNode() |
+        exists(Ssa::ExplicitDefinition def |
+          def.getADefinition().getSource() = g2 |
+          g1 = def.getAReadAtNode(cfn) and
+          v1 = g1.getAValue() and
+          v2 = v1
+        )
+      )
+    }
   }
   import Cached
 
@@ -1139,9 +1165,11 @@ module Internal {
      * Holds if the assumption that `g1` has abstract value `v1` implies that
      * `g2` has abstract value `v2`, using one step of reasoning. That is, the
      * evaluation of `g2` to `v2` dominates the evaluation of `g1` to `v1`.
+     *
+     * This predicate does not rely on the control flow graph.
      */
     cached
-    predicate impliesStep(Guard g1, AbstractValue v1, Guard g2, AbstractValue v2) {
+    predicate preImpliesStep(Guard g1, AbstractValue v1, Guard g2, AbstractValue v2) {
       g1 = any(BinaryOperation bo |
         (
           bo instanceof BitwiseAndExpr or
@@ -1275,6 +1303,26 @@ module Internal {
    * Holds if the assumption that `g1` has abstract value `v1` implies that
    * `g2` has abstract value `v2`, using zero or more steps of reasoning. That is,
    * the evaluation of `g2` to `v2` dominates the evaluation of `g1` to `v1`.
+   *
+   * This predicate does not rely on the control flow graph.
+   */
+  predicate preImpliesSteps(Guard g1, AbstractValue v1, Guard g2, AbstractValue v2) {
+    g1 = g2 and
+    v1 = v2 and
+    v1 = g1.getAValue()
+    or
+    exists(Expr mid, AbstractValue vMid |
+      preImpliesSteps(g1, v1, mid, vMid) |
+      preImpliesStep(mid, vMid, g2, v2)
+    )
+  }
+
+  /**
+   * Holds if the assumption that `g1` has abstract value `v1` implies that
+   * `g2` has abstract value `v2`, using zero or more steps of reasoning. That is,
+   * the evaluation of `g2` to `v2` dominates the evaluation of `g1` to `v1`.
+   *
+   * This predicate relies on the control flow graph.
    */
   predicate impliesSteps(Guard g1, AbstractValue v1, Guard g2, AbstractValue v2) {
     g1 = g2 and

@@ -58,7 +58,34 @@ predicate alwaysDefaultToString(ValueOrRefType t) {
   )
 }
 
-from Expr e, ValueOrRefType t
-where invokesToString(e, t)
-  and alwaysDefaultToString(t)
-select e, "Default 'ToString()': $@ inherits 'ToString()' from 'Object', and so is not suitable for printing.", t, t.getName()
+newtype TDefaultToStringType =
+  TDefaultToStringType0(ValueOrRefType t) { alwaysDefaultToString(t) }
+
+class DefaultToStringType extends TDefaultToStringType {
+  ValueOrRefType t;
+
+  DefaultToStringType() { this = TDefaultToStringType0(t) }
+
+  ValueOrRefType getType() { result = t }
+
+  string toString() { result = t.toString() }
+
+  // A workaround for generating empty URLs for non-source locations, because qltest
+  // does not support non-source locations
+  string getURL() {
+    exists(Location l |
+      l = t.getLocation() |
+      if l instanceof SourceLocation then
+        exists(string path, int a, int b, int c, int d |
+          l.hasLocationInfo(path, a, b, c, d) |
+          toUrl(path, a, b, c, d, result)
+        )
+      else
+        result = ""
+    )
+  }
+}
+
+from Expr e, DefaultToStringType t
+where invokesToString(e, t.getType())
+select e, "Default 'ToString()': $@ inherits 'ToString()' from 'Object', and so is not suitable for printing.", t, t.getType().getName()

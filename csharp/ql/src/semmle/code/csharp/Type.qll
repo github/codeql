@@ -729,7 +729,6 @@ class Class extends RefType, @class_type {
  * ```
  */
 class AnonymousClass extends Class {
-
   AnonymousClass() { this.getName().matches("<%") }
 }
 
@@ -787,8 +786,7 @@ class DelegateType extends RefType, Parameterizable, @delegate_type {
 /**
  * The `null` type. The type of the `null` literal.
  */
-class NullType extends RefType, @null_type {
-}
+class NullType extends RefType, @null_type { }
 
 /**
  * A nullable type, for example `int?`.
@@ -869,6 +867,13 @@ class ArrayType extends DotNet::ArrayType, RefType, @array_type {
   }
 
   override Type getChild(int n) { result = getElementType() and n = 0 }
+
+  override Location getALocation() {
+    type_location(this, result)
+    or
+    not type_location(this, _) and
+    result = this.getElementType().getALocation()
+  }
 }
 
 /**
