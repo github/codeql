@@ -1,4 +1,6 @@
+using System;
 using System.IO;
+using System.Linq;
 
 namespace Semmle.Util
 {
@@ -49,6 +51,24 @@ namespace Semmle.Util
             {
                 // Ignore
             }
+        }
+
+        /// <summary>
+        /// Finds the path for the executable <paramref name="exe"/> based on the
+        /// <code>PATH</code> environment variable, and in the case of Windows the
+        /// <code>PATHEXT</code> environment variable.
+        /// 
+        /// Returns <code>null</code> of no path can be found.
+        /// </summary>
+        public static string FindExecutableOnPath(string exe)
+        {
+            var isWindows = Win32.IsWindows();
+            var paths = Environment.GetEnvironmentVariable("PATH").Split(isWindows ? ';' : ':');
+            var exes = isWindows
+                ? Environment.GetEnvironmentVariable("PATHEXT").Split(';').Select(ext => exe + ext)
+                : new[] { exe };
+            var candidates = paths.Where(path => exes.Any(exe0 => File.Exists(Path.Combine(path, exe0))));
+            return candidates.FirstOrDefault();
         }
     }
 }

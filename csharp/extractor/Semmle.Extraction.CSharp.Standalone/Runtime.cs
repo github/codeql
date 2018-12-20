@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.IO;
 using System.Linq;
+using Semmle.Util;
 
 namespace Semmle.Extraction.CSharp.Standalone
 {
@@ -20,11 +21,14 @@ namespace Semmle.Extraction.CSharp.Standalone
         {
             get
             {
-                string[] dotnetDirs = { "/usr/share/dotnet", @"C:\Program Files\dotnet" };
+                var dotnetPath = FileUtils.FindExecutableOnPath("dotnet");
+                var dotnetDirs = dotnetPath != null
+                    ? new[] { dotnetPath }
+                    : new[] { "/usr/share/dotnet", @"C:\Program Files\dotnet" };
+                var coreDirs = dotnetDirs.Select(d => Path.Combine(d, "shared", "Microsoft.NETCore.App"));
 
-                foreach (var dir in dotnetDirs.Where(Directory.Exists))
-                    return Directory.EnumerateDirectories(Path.Combine(dir, "shared", "Microsoft.NETCore.App")).
-                        OrderByDescending(d => Path.GetFileName(d));
+                foreach (var dir in coreDirs.Where(Directory.Exists))
+                    return Directory.EnumerateDirectories(dir).OrderByDescending(Path.GetFileName);
                 return Enumerable.Empty<string>();
             }
         }
@@ -37,19 +41,22 @@ namespace Semmle.Extraction.CSharp.Standalone
         {
             get
             {
-                string[] monoDirs = { "/usr/lib/mono", @"C:\Program Files\Mono\lib\mono" };
+                var monoPath = FileUtils.FindExecutableOnPath("mono");
+                var monoDirs = monoPath != null
+                    ? new[] { monoPath }
+                    : new[] { "/usr/lib/mono", @"C:\Program Files\Mono\lib\mono" };
 
                 if (Directory.Exists(@"C:\Windows\Microsoft.NET\Framework64"))
                 {
-                    return System.IO.Directory.EnumerateDirectories(@"C:\Windows\Microsoft.NET\Framework64", "v*").
-                        OrderByDescending(d => Path.GetFileName(d));
+                    return Directory.EnumerateDirectories(@"C:\Windows\Microsoft.NET\Framework64", "v*").
+                        OrderByDescending(Path.GetFileName);
                 }
 
                 foreach (var dir in monoDirs.Where(Directory.Exists))
                 {
-                    return System.IO.Directory.EnumerateDirectories(dir).
+                    return Directory.EnumerateDirectories(dir).
                         Where(d => Char.IsDigit(Path.GetFileName(d)[0])).
-                        OrderByDescending(d => Path.GetFileName(d));
+                        OrderByDescending(Path.GetFileName);
                 }
 
                 return Enumerable.Empty<string>();
