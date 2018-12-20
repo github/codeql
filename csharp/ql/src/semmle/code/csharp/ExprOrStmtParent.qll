@@ -346,7 +346,7 @@ private int getImplementationSize(ValueOrRefType t, File f) {
     result = getImplementationSize1(t, f)
 }
 
-cached module Internal {
+cached module ExprOrStmtParentCached {
   cached
   ControlFlowElement getTopLevelChild(ExprOrStmtParent p, int i) {
     result = p.(MultiImplementationsParent).getBestChild(i)
@@ -404,4 +404,4 @@ cached module Internal {
     result = ""
   }
 }
-private import Internal
+private import ExprOrStmtParentCached

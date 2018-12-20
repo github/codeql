@@ -13,7 +13,7 @@
  */
 
 import Stmt
-private import semmle.code.csharp.ExprOrStmtParent as ExprOrStmtParent
+private import semmle.code.csharp.ExprOrStmtParent
 
 /**
  * INTERNAL: Do not use.
@@ -35,7 +35,7 @@ cached module Internal {
     c.getAChildStmt+() = s
   }
 
-  private Expr getAChildExpr(ExprOrStmtParent::ExprOrStmtParent p) {
+  private Expr getAChildExpr(ExprOrStmtParent p) {
     result = p.getAChildExpr() or
     result = p.(AssignOperation).getExpandedAssignment()
   }

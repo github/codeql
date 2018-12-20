@@ -1,7 +1,7 @@
 /** Provides the class `ControlFlowElement`. */
 
 import csharp
-private import semmle.code.csharp.ExprOrStmtParent as ExprOrStmtParent
+private import semmle.code.csharp.ExprOrStmtParent
 private import ControlFlow
 private import ControlFlow::BasicBlocks
 private import SuccessorTypes
@@ -15,7 +15,7 @@ private import SuccessorTypes
  * control flow elements and control flow nodes. This allows control flow
  * splitting, for example modeling the control flow through `finally` blocks.
  */
-class ControlFlowElement extends ExprOrStmtParent::ExprOrStmtParent, @control_flow_element {
+class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
   /** Gets the enclosing callable of this element, if any. */
   Callable getEnclosingCallable() { none() }
 
