@@ -118,23 +118,12 @@ namespace Semmle.Extraction.CSharp.Entities
 
                 if (propertyInfo != null)
                 {
-                    var value = propertyInfo.GetValue(symbol);
-
-                    if (value is MethodDefinitionHandle)
+                    switch (propertyInfo.GetValue(symbol))
                     {
-                        return (MethodDefinitionHandle)value;
-                    }
-                    else if (value is TypeDefinitionHandle)
-                    {
-                        return (TypeDefinitionHandle)value;
-                    }
-                    else if (value is PropertyDefinitionHandle)
-                    {
-                        return (PropertyDefinitionHandle)value;
-                    }
-                    else if (value is FieldDefinitionHandle)
-                    {
-                        return (FieldDefinitionHandle)value;
+                        case MethodDefinitionHandle md: return md;
+                        case TypeDefinitionHandle td: return td;
+                        case PropertyDefinitionHandle pd: return pd;
+                        case FieldDefinitionHandle fd: return fd;
                     }
                 }
 
