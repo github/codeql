@@ -112,8 +112,12 @@ class Namespace extends DotNet::Namespace, TypeContainer, @namespace {
 
   override predicate fromLibrary() { not this.fromSource() }
 
-  /** Gets the URL of this namespace (which is empty in this case). */
-  string getURL() { result = "" }
+  /** Gets a declaration of this namespace, if any. */
+  NamespaceDeclaration getADeclaration() { result.getNamespace() = this }
+
+  override Location getALocation() {
+    result = this.getADeclaration().getALocation()
+  }
 }
 
 /**
@@ -193,7 +197,7 @@ class NamespaceDeclaration extends Element, @namespace_declaration {
    */
   ValueOrRefType getATypeDeclaration() { parent_namespace_declaration(result, this) }
 
-  override Location getALocation() { none() }
+  override Location getALocation() { namespace_declaration_location(this, result) }
 
   override string toString() { result = "namespace ... { ... }" }
 }
