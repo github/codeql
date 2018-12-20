@@ -1,6 +1,7 @@
 /**
  * @name Test for Linq calls
  */
+
 import csharp
 
 from MethodCall mc, int a1

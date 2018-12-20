@@ -1,6 +1,7 @@
 /**
  * @name Test for switch cases
  */
+
 import csharp
 
 from Method m, SwitchStmt s

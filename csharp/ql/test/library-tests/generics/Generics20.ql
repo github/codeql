@@ -5,5 +5,5 @@
 import csharp
 
 from UnboundGenericType t
-where type_location(t,_)
+where type_location(t, _)
 select 1

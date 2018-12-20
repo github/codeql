@@ -2,6 +2,7 @@
  * @name Test that the results of constant folding are recorded, but that the
  *       original AST is populated.
  */
+
 import csharp
 
 string lost(LocalVariable v) {
@@ -25,7 +26,8 @@ string correct(LocalVariable v) {
 }
 
 from LocalVariable v, string msg
-where msg = lost(v)
-   or msg = noValue(v)
-   or msg = correct(v)
+where
+  msg = lost(v) or
+  msg = noValue(v) or
+  msg = correct(v)
 select v, msg

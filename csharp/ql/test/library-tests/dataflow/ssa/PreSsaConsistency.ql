@@ -1,13 +1,12 @@
 import csharp
 import ControlFlow::Internal
 
-query
-predicate defReadInconsistency(AssignableRead ar, Expr e, PreSsa::SimpleAssignable a, boolean b) {
-  exists(AssignableDefinition def |
-    e = def.getExpr() |
+query predicate defReadInconsistency(
+  AssignableRead ar, Expr e, PreSsa::SimpleAssignable a, boolean b
+) {
+  exists(AssignableDefinition def | e = def.getExpr() |
     b = true and
-    exists(PreSsa::Definition ssaDef |
-      ssaDef.getAssignable() = a |
+    exists(PreSsa::Definition ssaDef | ssaDef.getAssignable() = a |
       PreSsa::firstReadSameVar(ssaDef, ar) and
       ssaDef.getDefinition() = def and
       not exists(Ssa::ExplicitDefinition edef |
@@ -29,8 +28,9 @@ predicate defReadInconsistency(AssignableRead ar, Expr e, PreSsa::SimpleAssignab
   )
 }
 
-query
-predicate readReadInconsistency(LocalScopeVariableRead read1, LocalScopeVariableRead read2, PreSsa::SimpleAssignable a, boolean b) {
+query predicate readReadInconsistency(
+  LocalScopeVariableRead read1, LocalScopeVariableRead read2, PreSsa::SimpleAssignable a, boolean b
+) {
   b = true and
   a = read1.getTarget() and
   PreSsa::adjacentReadPairSameVar(read1, read2) and
@@ -43,17 +43,17 @@ predicate readReadInconsistency(LocalScopeVariableRead read1, LocalScopeVariable
   not PreSsa::adjacentReadPairSameVar(read1, read2)
 }
 
-query
-predicate phiInconsistency(ControlFlowElement cfe, Expr e, PreSsa::SimpleAssignable a, boolean b) {
-  exists(AssignableDefinition adef |
-    e = adef.getExpr() |
+query predicate phiInconsistency(
+  ControlFlowElement cfe, Expr e, PreSsa::SimpleAssignable a, boolean b
+) {
+  exists(AssignableDefinition adef | e = adef.getExpr() |
     b = true and
-    exists(PreSsa::Definition def |
-      a = def.getAssignable() |
+    exists(PreSsa::Definition def | a = def.getAssignable() |
       adef = def.getAPhiInput+().getDefinition() and
       cfe = def.getBasicBlock().getFirstElement() and
       not exists(Ssa::PhiNode phi, ControlFlow::BasicBlock bb, Ssa::ExplicitDefinition edef |
-        edef = phi.getAnUltimateDefinition() |
+        edef = phi.getAnUltimateDefinition()
+      |
         edef.getADefinition() = adef and
         phi.definesAt(bb, _) and
         cfe = bb.getFirstNode().getElement()
@@ -62,7 +62,8 @@ predicate phiInconsistency(ControlFlowElement cfe, Expr e, PreSsa::SimpleAssigna
     or
     b = false and
     exists(Ssa::PhiNode phi, ControlFlow::BasicBlock bb, Ssa::ExplicitDefinition edef |
-      a = phi.getSourceVariable().getAssignable() |
+      a = phi.getSourceVariable().getAssignable()
+    |
       edef = phi.getAnUltimateDefinition() and
       edef.getADefinition() = adef and
       phi.definesAt(bb, _) and
