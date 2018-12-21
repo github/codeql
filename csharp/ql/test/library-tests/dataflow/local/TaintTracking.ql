@@ -6,5 +6,4 @@ where
   TaintTracking::localTaintStep+(source, DataFlow::exprNode(sink)) and
   exists(MethodCall mc | mc.getTarget().getName() = "Check" and mc.getAnArgument() = sink) and
   s = sink.toString()
-select s
-order by s asc
+select s order by s

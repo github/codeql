@@ -2,6 +2,7 @@
  * @name Test for struct type
  * @kind table
  */
+
 import csharp
 
 from Struct s

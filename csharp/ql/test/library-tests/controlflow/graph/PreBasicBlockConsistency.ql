@@ -2,9 +2,7 @@ import csharp
 import ControlFlow::Internal::PreBasicBlocks
 
 predicate bbStartInconsistency(ControlFlowElement cfe) {
-  exists(ControlFlow::BasicBlock bb |
-    bb.getFirstNode() = cfe.getAControlFlowNode()
-  ) and
+  exists(ControlFlow::BasicBlock bb | bb.getFirstNode() = cfe.getAControlFlowNode()) and
   not cfe = any(PreBasicBlock bb).getFirstElement()
 }
 

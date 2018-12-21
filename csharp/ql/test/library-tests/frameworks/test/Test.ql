@@ -7,17 +7,11 @@ where
     framework = e.(TestClass).getAQlClass() and type = "TestClass"
     or
     framework = e.(TestMethod).getAQlClass() and type = "TestMethod"
-  )
-  and
-  not framework = "NonNestedType"
-  and
-  not framework = "SourceDeclarationType"
-  and
-  not framework = "SourceDeclarationCallable"
-  and
-  not framework = "SourceDeclarationMethod"
-  and
-  not framework = "NonConstructedMethod"
-  and
+  ) and
+  not framework = "NonNestedType" and
+  not framework = "SourceDeclarationType" and
+  not framework = "SourceDeclarationCallable" and
+  not framework = "SourceDeclarationMethod" and
+  not framework = "NonConstructedMethod" and
   not framework = "RuntimeInstanceMethod"
 select e, type, framework

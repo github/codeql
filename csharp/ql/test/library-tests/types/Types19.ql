@@ -2,6 +2,7 @@
  * @name Test for class type
  * @kind table
  */
+
 import csharp
 
 from Class c

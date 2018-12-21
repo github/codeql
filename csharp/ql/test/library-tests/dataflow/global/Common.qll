@@ -10,8 +10,7 @@ class Config extends DataFlow::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() instanceof Access
-    and
+    sink.asExpr() instanceof Access and
     exists(MethodCall mc |
       mc.getTarget().getName() = "Check" and
       mc.getAnArgument() = sink.asExpr().getParent*()

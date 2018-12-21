@@ -1,8 +1,7 @@
 import csharp
 
-class DataflowConfiguration extends TaintTracking::Configuration
-{
-  DataflowConfiguration() { this="taint tracking configuration" }
+class DataflowConfiguration extends TaintTracking::Configuration {
+  DataflowConfiguration() { this = "taint tracking configuration" }
 
   override predicate isSource(DataFlow::Node source) {
     source.asExpr().(Expr).getValue() = "tainted"
