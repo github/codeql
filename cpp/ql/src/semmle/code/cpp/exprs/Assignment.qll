@@ -144,12 +144,29 @@ class AssignPointerSubExpr extends AssignOperation, @assignpsubexpr {
 /**
  * A C++ variable declaration in an expression where a condition is expected.
  * For example, on the `ConditionDeclExpr` in `if (bool c = x < y)`,
- * `getExpr()` is an access to `c` (with possible casts), and `getVariable` is
- * the variable `c`, which has an initializer `x < y`.
+ * `getVariableAccess()` is an access to `c` (with possible casts),
+ * `getVariable` is the variable `c`, which has an initializer `x < y`, and
+ * `getInitializingExpr` is `x < y`.
  */
 class ConditionDeclExpr extends Expr, @condition_decl {
-  /** Gets the access using the condition for this declaration. */
+  /**
+   * DEPRECATED: Use `getVariableAccess` or `getInitializingExpr` instead.
+   * Gets the access using the condition for this declaration.
+   */
+  deprecated
   Expr getExpr() { result = this.getChild(0) }
+
+  /**
+   * Gets the compiler-generated variable access that conceptually occurs after
+   * the initialization of the declared variable.
+   */
+  VariableAccess getVariableAccess() { result = this.getChild(0) }
+
+  /**
+   * Gets the expression that initializes the declared variable. This predicate
+   * always has a result.
+   */
+  Expr getInitializingExpr() { result = this.getVariable().getInitializer().getExpr() }
 
   /** Gets the variable that is declared. */
   Variable getVariable() { condition_decl_bind(underlyingElement(this),unresolveElement(result)) }

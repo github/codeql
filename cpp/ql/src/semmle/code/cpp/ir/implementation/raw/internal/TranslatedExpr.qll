@@ -2691,6 +2691,6 @@ class TranslatedConditionDeclExpr extends TranslatedNonConstantExpr {
   }
 
   private TranslatedExpr getConditionExpr() {
-    result = getTranslatedExpr(condDeclExpr.getExpr().getFullyConverted())
+    result = getTranslatedExpr(condDeclExpr.getVariableAccess().getFullyConverted())
   }
 }
