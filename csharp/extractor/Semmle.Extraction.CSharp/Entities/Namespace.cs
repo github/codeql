@@ -2,7 +2,7 @@ using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    class Namespace : CachedEntity<INamespaceSymbol>
+    sealed class Namespace : CachedEntity<INamespaceSymbol>
     {
         Namespace(Context cx, INamespaceSymbol init)
             : base(cx, init) { }
@@ -31,7 +31,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public static Namespace Create(Context cx, INamespaceSymbol ns) => NamespaceFactory.Instance.CreateEntity(cx, ns);
+        public static Namespace Create(Context cx, INamespaceSymbol ns) => NamespaceFactory.Instance.CreateEntity2(cx, ns);
 
         class NamespaceFactory : ICachedEntityFactory<INamespaceSymbol, Namespace>
         {
@@ -41,5 +41,14 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
+
+        public override int GetHashCode() => QualifiedName.GetHashCode();
+
+        string QualifiedName => symbol.ToDisplayString();
+
+        public override bool Equals(object obj)
+        {
+            return obj is Namespace ns && QualifiedName == ns.QualifiedName;
+        }
     }
 }
