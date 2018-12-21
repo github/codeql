@@ -16,7 +16,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public File(Context cx, string path) : base(cx)
         {
-            this.path = path;
+            this.path = Semmle.Extraction.Entities.File.PathAsDatabaseString(path);
             ShortId = new StringId(Semmle.Extraction.Entities.File.PathAsDatabaseId(path));
         }
 
@@ -27,7 +27,7 @@ namespace Semmle.Extraction.CIL.Entities
                 var parent = cx.CreateFolder(System.IO.Path.GetDirectoryName(path));
                 yield return parent;
                 yield return Tuples.containerparent(parent, this);
-                yield return Tuples.files(this, Semmle.Extraction.Entities.File.PathAsDatabaseString(path), System.IO.Path.GetFileNameWithoutExtension(path), System.IO.Path.GetExtension(path).Substring(1));
+                yield return Tuples.files(this, path, System.IO.Path.GetFileNameWithoutExtension(path), System.IO.Path.GetExtension(path).Substring(1));
             }
         }
 
