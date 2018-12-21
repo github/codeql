@@ -4513,3 +4513,34 @@ ir.cpp:
 # 1044|     r7_1(int)        = Constant[1]              : 
 # 1044|     mu7_2(int)       = Store                    : r7_0, r7_1
 #-----|   Goto -> Block 1
+
+# 1049| DoWhileFalse() -> int
+# 1049|   Block 0
+# 1049|     v0_0(void)       = EnterFunction       : 
+# 1049|     mu0_1(unknown)   = AliasedDefinition   : 
+# 1049|     mu0_2(unknown)   = UnmodeledDefinition : 
+# 1050|     r0_3(glval<int>) = VariableAddress[i]  : 
+# 1050|     r0_4(int)        = Constant[0]         : 
+# 1050|     mu0_5(int)       = Store               : r0_3, r0_4
+#-----|   Goto -> Block 1
+
+# 1052|   Block 1
+# 1052|     r1_0(glval<int>) = VariableAddress[i] : 
+# 1052|     r1_1(int)        = Load               : r1_0, mu0_2
+# 1052|     r1_2(int)        = Constant[1]        : 
+# 1052|     r1_3(int)        = Add                : r1_1, r1_2
+# 1052|     mu1_4(int)       = Store              : r1_0, r1_3
+# 1053|     r1_5(bool)       = Constant[0]        : 
+# 1053|     v1_6(void)       = ConditionalBranch  : r1_5
+#-----|   False -> Block 2
+#-----|   True -> Block 1
+
+# 1055|   Block 2
+# 1055|     r2_0(glval<int>) = VariableAddress[#return] : 
+# 1055|     r2_1(glval<int>) = VariableAddress[i]       : 
+# 1055|     r2_2(int)        = Load                     : r2_1, mu0_2
+# 1055|     mu2_3(int)       = Store                    : r2_0, r2_2
+# 1049|     r2_4(glval<int>) = VariableAddress[#return] : 
+# 1049|     v2_5(void)       = ReturnValue              : r2_4, mu0_2
+# 1049|     v2_6(void)       = UnmodeledUse             : mu*
+# 1049|     v2_7(void)       = ExitFunction             : 

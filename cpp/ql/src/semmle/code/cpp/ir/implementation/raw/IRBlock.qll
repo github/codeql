@@ -3,7 +3,18 @@ import Instruction
 import semmle.code.cpp.ir.implementation.EdgeKind
 private import Cached
 
-class IRBlock extends TIRBlock {
+/**
+ * A basic block in the IR. A basic block consists of a sequence of `Instructions` with the only
+ * incoming edges at the beginning of the sequence and the only outgoing edges at the end of the
+ * sequence.
+ *
+ * This class does not contain any members that query the predecessor or successor edges of the
+ * block. This allows different classes that extend `IRBlockBase` to expose different subsets of
+ * edges (e.g. ignoring unreachable edges).
+ *
+ * Most consumers should use the class `IRBlock`.
+ */
+class IRBlockBase extends TIRBlock {
   final string toString() {
     result = getFirstInstruction(this).toString()
   }
@@ -59,7 +70,14 @@ class IRBlock extends TIRBlock {
   final Function getFunction() {
     result = getFirstInstruction(this).getFunction()
   }
+}
 
+/**
+ * A basic block with additional information about its predecessor and successor edges. Each edge
+ * corresponds to the control flow between the last instruction of one block and the first
+ * instruction of another block.
+ */
+class IRBlock extends IRBlockBase {
   final IRBlock getASuccessor() {
     blockSuccessor(this, result)
   }

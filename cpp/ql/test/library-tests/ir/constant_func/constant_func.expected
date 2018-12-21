@@ -3,3 +3,4 @@
 | constant_func.cpp:25:5:25:25 | IR: ReturnConstantPhiLoop | 7 |
 | constant_func.cpp:34:5:34:22 | IR: UnreachableViaGoto | 0 |
 | constant_func.cpp:41:5:41:17 | IR: UnreachableIf | 0 |
+| constant_func.cpp:62:5:62:16 | IR: DoWhileFalse | 1 |

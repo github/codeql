@@ -31,6 +31,7 @@
 | IR: Derived | 1 |
 | IR: DerivedVB | 1 |
 | IR: DoStatements | 3 |
+| IR: DoWhileFalse | 3 |
 | IR: DynamicCast | 1 |
 | IR: EarlyReturn | 4 |
 | IR: EarlyReturnValue | 4 |
@@ -43,7 +44,7 @@
 | IR: For_Break | 6 |
 | IR: For_Condition | 4 |
 | IR: For_ConditionUpdate | 4 |
-| IR: For_Continue_NoUpdate | 6 |
+| IR: For_Continue_NoUpdate | 5 |
 | IR: For_Continue_Update | 6 |
 | IR: For_Empty | 2 |
 | IR: For_Init | 2 |
@@ -93,7 +94,7 @@
 | IR: TryCatch | 13 |
 | IR: UninitializedVariables | 1 |
 | IR: UnionInit | 1 |
-| IR: UnreachableIf | 8 |
+| IR: UnreachableIf | 7 |
 | IR: UnreachableViaGoto | 1 |
 | IR: VarArgUsage | 1 |
 | IR: VarArgs | 1 |

@@ -58,3 +58,13 @@ int UnreachableIf(bool b) {
     }
   }
 }
+
+int DoWhileFalse() {
+  int i = 0;
+  do {
+    i++;
+  } while (false);
+
+  return i;
+}
+

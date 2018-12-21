@@ -3,10 +3,9 @@ private import semmle.code.cpp.ir.internal.IntegerConstant
 private import IR
 private import ConstantAnalysis
 
-predicate isInfeasibleEdge(IRBlock block, EdgeKind kind) {
-  exists(ConditionalBranchInstruction instr, int conditionValue |
-    instr = block.getLastInstruction() and
-    conditionValue = getValue(getConstantValue(instr.getCondition())) and
+predicate isInfeasibleInstructionSuccessor(Instruction instr, EdgeKind kind) {
+  exists(int conditionValue |
+    conditionValue = getValue(getConstantValue(instr.(ConditionalBranchInstruction).getCondition())) and
     if conditionValue = 0 then
       kind instanceof TrueEdge
     else
@@ -14,29 +13,44 @@ predicate isInfeasibleEdge(IRBlock block, EdgeKind kind) {
   )
 }
 
-IRBlock getAFeasiblePredecessor(IRBlock successor) {
+predicate isInfeasibleEdge(IRBlockBase block, EdgeKind kind) {
+  isInfeasibleInstructionSuccessor(block.getLastInstruction(), kind)
+}
+
+private IRBlock getAFeasiblePredecessorBlock(IRBlock successor) {
   exists(EdgeKind kind |
     result.getSuccessor(kind) = successor and
     not isInfeasibleEdge(result, kind)
   )
 }
 
-predicate isBlockReachable(IRBlock block) {
+private predicate isBlockReachable(IRBlock block) {
   exists(FunctionIR f |
-    getAFeasiblePredecessor*(block) = f.getEntryBlock()
+    getAFeasiblePredecessorBlock*(block) = f.getEntryBlock()
   )
 }
 
-predicate isInstructionReachable(Instruction instr) {
-  isBlockReachable(instr.getBlock())
-}
-
-class ReachableBlock extends IRBlock {
+/**
+ * An IR block that is reachable from the entry block of the function, considering only feasible
+ * edges.
+ */
+class ReachableBlock extends IRBlockBase {
   ReachableBlock() {
     isBlockReachable(this)
   }
+
+  final ReachableBlock getAFeasiblePredecessor() {
+    result = getAFeasiblePredecessorBlock(this)
+  }
+
+  final ReachableBlock getAFeasibleSuccessor() {
+    this = getAFeasiblePredecessorBlock(result)
+  }
 }
 
+/**
+ * An instruction that is contained in a reachable block.
+ */
 class ReachableInstruction extends Instruction {
   ReachableInstruction() {
     this.getBlock() instanceof ReachableBlock
@@ -51,6 +65,6 @@ module Graph {
   }
 
   predicate blockSuccessor(ReachableBlock pred, ReachableBlock succ) {
-    succ = pred.getASuccessor()
+    succ = pred.getAFeasibleSuccessor()
   }
 }
