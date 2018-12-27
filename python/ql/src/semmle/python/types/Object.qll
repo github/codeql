@@ -51,7 +51,7 @@ class Object extends @py_object {
     }
 
     /** Retained for backwards compatibility. See Object.isBuiltin() */
-    predicate isC() {
+    deprecated predicate isC() {
         this.isBuiltin()
     }
 
@@ -75,7 +75,7 @@ class Object extends @py_object {
    }
 
     string toString() {
-        this.isC() and 
+        this.isBuiltin() and 
         not this = undefinedVariable() and not this = unknownValue() and
         exists(ClassObject type, string typename, string objname |
             py_cobjecttypes(this, type) and py_cobjectnames(this, objname) and typename = type.getName() |
@@ -90,18 +90,8 @@ class Object extends @py_object {
      *
      *  This exists primarily for internal use. Use getAnInferredType() instead.
      */
-    cached ClassObject simpleClass() {
-        result = comprehension(this.getOrigin())
-        or
-        result = collection_literal(this.getOrigin())
-        or
-        result = string_literal(this.getOrigin())
-        or
-        this.getOrigin() instanceof CallableExpr and result = thePyFunctionType()
-        or
-        this.getOrigin() instanceof Module and result = theModuleType()
-        or
-        py_cobjecttypes(this, result)
+    deprecated ClassObject simpleClass() {
+        result = this.getAnInferredType()
     }
 
     private
@@ -483,33 +473,6 @@ Object theNotImplementedObject() {
 
 Object theEmptyTupleObject() {
     py_cobjecttypes(result, theTupleType()) and not py_citems(result, _, _)
-}
-
-
-private ClassObject comprehension(Expr e) {
-    e instanceof ListComp and result = theListType()
-    or
-    e instanceof SetComp and result = theSetType()
-    or
-    e instanceof DictComp and result = theDictType()
-    or
-    e instanceof GeneratorExp and result = theGeneratorType()
-}
-
-private ClassObject collection_literal(Expr e) {
-    e instanceof List and result = theListType()
-    or
-    e instanceof Set and result = theSetType()
-    or
-    e instanceof Dict and result = theDictType()
-    or
-    e instanceof Tuple and result = theTupleType()
-}
-
-private ClassObject string_literal(Expr e) {
-    e instanceof Bytes and result = theBytesType()
-    or
-    e instanceof Unicode and result = theUnicodeType()
 }
 
 Object theUnknownType() {
