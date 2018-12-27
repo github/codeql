@@ -10,17 +10,47 @@ predicate is_c_metaclass(Object o) {
 }
 
 
-library class ObjectOrCfg extends @py_object {
+private newtype TOrigin =
+    SourceOrigin(ControlFlowNode n)
+    or
+    UnknownOrigin()
+
+library class Origin extends TOrigin {
 
     string toString() {
         /* Not to be displayed */
         none()
     }
 
-    ControlFlowNode getOrigin() {
-        result = this
+    /** Potentially lossy conversion from `Origin` to `ControlFlowNode`
+     * Will produce no result if this is unknown.
+     */
+    ControlFlowNode asFlowNode() {
+        SourceOrigin(result) = this
     }
 
+    pragma[inline]
+    ControlFlowNode asFlowNode(ControlFlowNode here) {
+        SourceOrigin(result) = this
+        or
+        this = UnknownOrigin() and result = here
+    }
+
+}
+
+deprecated class ObjectOrCfg = Origin;
+
+module Origin {
+
+    Origin unknown() {
+        result = UnknownOrigin()
+    }
+
+    Origin fromObject(Object obj) {
+        result = SourceOrigin(obj.(ControlFlowNode))
+        or
+        not obj instanceof ControlFlowNode and result = UnknownOrigin()
+    }
 }
 
 /** A class whose instances represents Python classes.
@@ -146,12 +176,12 @@ class ClassObject extends Object {
     }
 
     /** Whether the named attribute refers to the object and origin */
-    predicate attributeRefersTo(string name, Object obj, ControlFlowNode origin) {
+    predicate attributeRefersTo(string name, Object obj, Origin origin) {
         PointsTo::Types::class_attribute_lookup(this, name, obj, _, origin)
     }
 
     /** Whether the named attribute refers to the object, class and origin */
-    predicate attributeRefersTo(string name, Object obj, ClassObject cls, ControlFlowNode origin) {
+    predicate attributeRefersTo(string name, Object obj, ClassObject cls, Origin origin) {
         not obj = unknownValue() and
         PointsTo::Types::class_attribute_lookup(this, name, obj, cls, origin)
     }

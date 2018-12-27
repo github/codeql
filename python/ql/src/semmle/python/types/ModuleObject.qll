@@ -34,11 +34,11 @@ abstract class ModuleObject extends Object {
 
     /** Whether the named attribute of this module "refers-to" value, with a known origin.
      */
-    abstract predicate attributeRefersTo(string name, Object value, ControlFlowNode origin);
+    abstract predicate attributeRefersTo(string name, Object value, Origin origin);
 
     /** Whether the named attribute of this module "refers-to" value, with known class and a known origin.
      */
-    abstract predicate attributeRefersTo(string name, Object value, ClassObject cls, ControlFlowNode origin);
+    abstract predicate attributeRefersTo(string name, Object value, ClassObject cls, Origin origin);
 
     /** Gets the package for this module. */
     PackageObject getPackage() {
@@ -105,11 +105,11 @@ class BuiltinModuleObject extends ModuleObject {
         py_cmembers_versioned(this, name, _, major_version().toString())
     }
 
-    override predicate attributeRefersTo(string name, Object value, ControlFlowNode origin) {
+    override predicate attributeRefersTo(string name, Object value, Origin origin) {
         none() 
     }
 
-    override predicate attributeRefersTo(string name, Object value, ClassObject cls, ControlFlowNode origin) {
+    override predicate attributeRefersTo(string name, Object value, ClassObject cls, Origin origin) {
         none() 
     }
 
@@ -164,11 +164,11 @@ class PythonModuleObject extends ModuleObject {
         name = "__name__" or name = "__package__"
     }
 
-    override predicate attributeRefersTo(string name, Object value, ControlFlowNode origin) {
+    override predicate attributeRefersTo(string name, Object value, Origin origin) {
          PointsTo::py_module_attributes(this.getModule(), name, value, _, origin)
     }
 
-    override predicate attributeRefersTo(string name, Object value, ClassObject cls, ControlFlowNode origin) {
+    override predicate attributeRefersTo(string name, Object value, ClassObject cls, Origin origin) {
          PointsTo::py_module_attributes(this.getModule(), name, value, cls, origin)
     }
 
@@ -238,11 +238,11 @@ class PackageObject extends ModuleObject {
         this.getInitModule().hasAttribute(name)
     }
 
-    override predicate attributeRefersTo(string name, Object value, ControlFlowNode origin) {
+    override predicate attributeRefersTo(string name, Object value, Origin origin) {
         PointsTo::package_attribute_points_to(this, name, value, _, origin)
     }
 
-    override predicate attributeRefersTo(string name, Object value, ClassObject cls, ControlFlowNode origin) {
+    override predicate attributeRefersTo(string name, Object value, ClassObject cls, Origin origin) {
         PointsTo::package_attribute_points_to(this, name, value, cls, origin)
     }
 

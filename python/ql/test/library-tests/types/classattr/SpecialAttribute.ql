@@ -3,7 +3,7 @@ import python
 
 from ClassObject cls, string name, string kind, Object o
 where 
-not cls.isC() and
+not cls.isBuiltin() and
 name.matches("\\_\\_%\\_\\_") and
 not o = theObjectType().lookupAttribute(name) and
 (

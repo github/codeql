@@ -565,8 +565,8 @@ BuiltinCallable theTypeNewMethod() {
 
 /** Gets the `value, cls, origin` that `f` would refer to if it has not been assigned some other value */
 pragma [noinline]
-predicate potential_builtin_points_to(NameNode f, Object value, ClassObject cls, ControlFlowNode origin) {
-    f.isGlobal() and f.isLoad() and origin = f and
+predicate potential_builtin_points_to(NameNode f, Object value, ClassObject cls, Origin origin) {
+    f.isGlobal() and f.isLoad() and origin.asFlowNode() = f and
     (
         builtin_name_points_to(f.getId(), value, cls)
         or

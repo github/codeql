@@ -8,7 +8,7 @@ import python
 
 from ClassObject cls, string name, string kind, Object o
 where 
-not cls.isC() and 
+not cls.isBuiltin() and 
 not name.matches("\\_\\_%\\_\\_") and
 (
   o = cls.lookupAttribute(name) and kind = "has"
