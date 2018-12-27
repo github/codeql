@@ -44,7 +44,7 @@ class Module extends Module_, Scope, AstNode {
         result = Module_.super.getName() and legalDottedName(result)
         or
         not exists(Module_.super.getName()) and
-        result = moduleNameFromFile(this.getPath())
+        result = this.getPath().getModuleName()
     }
 
     /** Gets this module */
@@ -187,45 +187,5 @@ class Module extends Module_, Scope, AstNode {
 bindingset[name]
 private predicate legalDottedName(string name) {
     name.regexpMatch("(\\p{L}|_)(\\p{L}|\\d|_)*(\\.(\\p{L}|_)(\\p{L}|\\d|_)*)*")
-}
-
-bindingset[name]
-private predicate legalShortName(string name) {
-    name.regexpMatch("(\\p{L}|_)(\\p{L}|\\d|_)*")
-}
-
-/** Holds if `f` is potentially a source package.
- * Does it have an __init__.py file and is it within the source archive?
- */
-private predicate isPotentialSourcePackage(Folder f) {
-    f.getRelativePath() != "" and
-    exists(f.getFile("__init__.py"))
-}
-
-private string moduleNameFromBase(Container file) {
-    file instanceof Folder and result = file.getBaseName()
-    or
-    file instanceof File and result = file.getStem()
-}
-
-private string moduleNameFromFile(Container file) {
-    exists(string basename |
-        basename = moduleNameFromBase(file) and
-        legalShortName(basename)
-        |
-        result = moduleNameFromFile(file.getParent()) + "." + basename
-        or
-        isPotentialSourcePackage(file) and result = file.getStem() and
-        (not isPotentialSourcePackage(file.getParent()) or not legalShortName(file.getParent().getBaseName()))
-        or
-        result = file.getStem() and file.getParent() = file.getImportRoot()
-        or
-        result = file.getStem() and isStubRoot(file.getParent())
-    )
-}
-
-private predicate isStubRoot(Folder f) {
-    not f.getParent*().isImportRoot() and
-    f.getAbsolutePath().matches("%/data/python/stubs")
 }
 

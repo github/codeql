@@ -370,6 +370,12 @@ abstract class Container extends @container {
     /** Gets the path element from which this container would be loaded, given the index into the list of possible paths `n`. */
     abstract Container getImportRoot(int n);
 
+    /** Gets the module name for this container, as determined by the source code
+     * layout and import paths.
+     */
+    string getModuleName() {
+        result = moduleNameFromFile(this)
+    }
 }
 
 private string import_path_element(int n) {
@@ -503,4 +509,44 @@ class EncodingError extends SyntaxError {
 
 }
 
+
+bindingset[name]
+private predicate legalShortName(string name) {
+    name.regexpMatch("(\\p{L}|_)(\\p{L}|\\d|_)*")
+}
+
+/** Holds if `f` is potentially a source package.
+ * Does it have an __init__.py file and is it within the source archive?
+ */
+private predicate isPotentialSourcePackage(Folder f) {
+    f.getRelativePath() != "" and
+    exists(f.getFile("__init__.py"))
+}
+
+private string moduleNameFromBase(Container file) {
+    file instanceof Folder and result = file.getBaseName()
+    or
+    file instanceof File and result = file.getStem()
+}
+
+private string moduleNameFromFile(Container file) {
+    exists(string basename |
+        basename = moduleNameFromBase(file) and
+        legalShortName(basename)
+        |
+        result = moduleNameFromFile(file.getParent()) + "." + basename
+        or
+        isPotentialSourcePackage(file) and result = file.getStem() and
+        (not isPotentialSourcePackage(file.getParent()) or not legalShortName(file.getParent().getBaseName()))
+        or
+        result = file.getStem() and file.getParent() = file.getImportRoot()
+        or
+        result = file.getStem() and isStubRoot(file.getParent())
+    )
+}
+
+private predicate isStubRoot(Folder f) {
+    not f.getParent*().isImportRoot() and
+    f.getAbsolutePath().matches("%/data/python/stubs")
+}
 
