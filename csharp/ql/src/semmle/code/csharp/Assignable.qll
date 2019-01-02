@@ -509,7 +509,7 @@ class AssignableDefinition extends TAssignableDefinition {
       cfn = result.getAControlFlowNode() |
       exists(Ssa::ExplicitDefinition def |
         result = def.getAFirstReadAtNode(cfn) |
-        this = def.(Ssa::ExplicitDefinition).getADefinition()
+        this = def.getADefinition()
       )
     )
   }
