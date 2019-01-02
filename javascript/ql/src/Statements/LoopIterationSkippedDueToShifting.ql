@@ -1,10 +1,10 @@
 /**
- * @name Missing index adjustment after concurrent modification
+ * @name Loop iteration skipped due to shifting.
  * @description Removing elements from an array while iterating over it can cause the loop to skip over some elements,
  *              unless the loop index is decremented accordingly. 
  * @kind problem
  * @problem.severity warning
- * @id js/missing-index-adjustment-after-concurrent-modification
+ * @id js/loop-iteration-skipped-due-to-shifting
  * @tags correctness
  * @precision high
  */

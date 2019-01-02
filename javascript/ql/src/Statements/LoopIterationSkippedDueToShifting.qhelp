@@ -38,7 +38,7 @@ Determine what the loop is supposed to do:
 In this example, a function is intended to remove "<code>..</code>" parts from a path:
 </p>
 
-<sample src="examples/MissingIndexAdjustmentAfterConcurrentModification.js" />
+<sample src="examples/LoopIterationSkippedDueToShifting.js" />
 
 <p>
 However, whenever the input contain two "<code>..</code>" parts right after one another, only the first will be removed.
@@ -51,13 +51,13 @@ index 0 and will therefore be skipped.
 One way to avoid this is to decrement the loop counter after removing an element from the array:
 </p>
 
-<sample src="examples/MissingIndexAdjustmentAfterConcurrentModificationGood.js" />
+<sample src="examples/LoopIterationSkippedDueToShiftingGood.js" />
 
 <p>
 Alternatively, use the <code>filter</code> method:
 </p>
 
-<sample src="examples/MissingIndexAdjustmentAfterConcurrentModificationGoodFilter.js" />
+<sample src="examples/LoopIterationSkippedDueToShiftingGoodFilter.js" />
 
 </example>
 <references>
