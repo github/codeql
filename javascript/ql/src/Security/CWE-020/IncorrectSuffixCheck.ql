@@ -78,17 +78,21 @@ predicate isDerivedFromLength(DataFlow::Node length, DataFlow::Node operand) {
   exists (IndexOfCall call | operand = call.getAnOperand() |
     length = getStringSource(operand).getAPropertyRead("length")
     or
-    // Find a literal length with the same string constant
-    exists (LiteralLengthExpr lengthExpr |
-      lengthExpr.getContainer() = call.getContainer() and
-      lengthExpr.getBaseValue() = operand.asExpr().getStringValue() and
-      length = lengthExpr.flow())
-    or
-    // Find an integer constants that equals the length of string constant
-    exists (Expr lengthExpr |
-      lengthExpr.getContainer() = call.getContainer() and
-      lengthExpr.getIntValue() = operand.asExpr().getStringValue().length() and
-      length = lengthExpr.flow())
+    exists (string val | val = operand.asExpr().getStringValue() |
+      // Find a literal length with the same string constant
+      exists (LiteralLengthExpr lengthExpr |
+        lengthExpr.getContainer() = call.getContainer() and
+        lengthExpr.getBaseValue() = val and
+        length = lengthExpr.flow()
+      )
+      or
+      // Find an integer constant that equals the length of string constant
+      exists (Expr lengthExpr |
+        lengthExpr.getContainer() = call.getContainer() and
+        lengthExpr.getIntValue() = val.length() and
+        length = lengthExpr.flow()
+      )
+    )
   )
   or
   isDerivedFromLength(length.getAPredecessor(), operand)
