@@ -5,7 +5,7 @@
 <overview>
 <p>
   Items can be removed from an array using the <code>splice</code> method, but when doing so,
-  all subseequent items will be shifted to a lower index. If this is done while iterating over
+  all subsequent items will be shifted to a lower index. If this is done while iterating over
   the array, the shifting may cause the loop to skip over the element immediately after the
   removed element.
 </p>

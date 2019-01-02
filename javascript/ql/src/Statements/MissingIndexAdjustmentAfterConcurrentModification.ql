@@ -11,7 +11,7 @@
 import javascript
 
 /**
- * Operation that inserts or removes elements from an array while shifting all elements
+ * An operation that inserts or removes elements from an array while shifting all elements
  * occuring after the insertion/removal point.
  *
  * Does not include `push` and `pop` since these never shift any elements.
@@ -160,4 +160,4 @@ class ArrayIterationLoop extends ForStmt {
 
 from ArrayIterationLoop loop, SpliceCall splice
 where loop.hasPathThrough(splice, loop.getUpdate().getFirstControlFlowNode())
-select splice, "Missing loop index adjustment after removing array item. Some array items will be skipped due to shifting."
+select splice, "Removing an array item without adjusting the loop index '" + loop.getIndexVariable().getName() + "' causes the subsequent array item to be skipped."
