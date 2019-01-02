@@ -911,6 +911,11 @@ public class FlowParser extends ESNextParser {
 					List<ExportSpecifier> specifiers = this.parseExportSpecifiers(exports);
 					this.parseExportFrom(specifiers, null, false);
 					return null;
+				} else if (this.eat(TokenType.star)) {
+					if (this.eatContextual("as"))
+						this.parseIdent(true);
+					this.parseExportFrom(null, null, true);
+					return null;
 				} else {
 					// `export type Foo = Bar;`
 					this.flowParseTypeAlias(startLoc);
