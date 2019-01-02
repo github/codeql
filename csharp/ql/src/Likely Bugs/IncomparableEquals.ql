@@ -18,7 +18,7 @@ import semmle.code.csharp.frameworks.System
  */
 predicate whitelist(MethodCall mc) {
   // Allow tests to verify that equals methods return false
-  (mc.getParent*().(MethodCall)).getTarget().hasName("IsFalse")
+  mc.getParent*().(MethodCall).getTarget().hasName("IsFalse")
 }
 
 from EqualsMethod equals, MethodCall ma, Type i, Type j

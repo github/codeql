@@ -48,12 +48,9 @@ where
   // The method is not protected by a validate anti forgery token attribute
   not postMethod.getAnAttribute() instanceof ValidateAntiForgeryTokenAttribute and
   not c.getAnAttribute() instanceof ValidateAntiForgeryTokenAttribute and
-  /*
-   * Verify that validate anti forgery token attributes are used somewhere within this project, to
-   * avoid reporting false positives on projects that use an alternative approach to mitigate CSRF
-   * issues.
-   */
-
+  // Verify that validate anti forgery token attributes are used somewhere within this project, to
+  // avoid reporting false positives on projects that use an alternative approach to mitigate CSRF
+  // issues.
   exists(ValidateAntiForgeryTokenAttribute a, Element e | e = a.getTarget()) and
   // Also ignore cases where a global anti forgery filter is in use.
   not hasGlobalAntiForgeryFilter()

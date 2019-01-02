@@ -16,6 +16,6 @@ where
   c.isSourceDeclaration() and
   n = count(Stmt s |
       s.getEnclosingCallable() = c and
-      s != c.getAChild()
-    ) // we do not count the top-level block
+      s != c.getAChild() // we do not count the top-level block
+    )
 select c, n order by n desc

@@ -14,12 +14,11 @@ import csharp
 // any use of + that has string type
 class StringCat extends AddExpr { StringCat() { this.getType() instanceof StringType } }
 
-/*
- * an assignment of the form
- *     v = ... + ... v ...
- *   where v is a simple variable (and not, for example, a property)
+/**
+ * Holds if `e` is an assignment of the form
+ * `v = ... + ... v ...`
+ * where `v` is a simple variable (and not, for example, a property).
  */
-
 predicate isSelfConcatAssignExpr(AssignExpr e, Variable v) {
   not e = any(AssignAddExpr a).getExpandedAssignment() and
   exists(VariableAccess use |
@@ -34,12 +33,11 @@ predicate stringCatContains(StringCat expr, Expr child) {
   stringCatContains(expr, child.getParent())
 }
 
-/*
- * an assignment of the form
- *     v += ...
- *   where v is a simple variable (and not, for example, a property)
+/**
+ * Holds if `e` is an assignment of the form
+ * `v += ...`
+ * where `v` is a simple variable (and not, for example, a property).
  */
-
 predicate isConcatExpr(AssignAddExpr e, Variable v) {
   e.getLValue().getType() instanceof StringType and
   v = e.getTargetVariable()

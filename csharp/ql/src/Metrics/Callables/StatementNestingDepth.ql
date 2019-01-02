@@ -14,8 +14,8 @@ import csharp
 
 /**
  * The parent of a statement, excluding some common cases that don't really make
- *    sense for nesting depth. An example is: "if (...) { } else if (...) { }: we don't
- *    consider the second if nested. Blocks are also skipped
+ * sense for nesting depth. An example is: "if (...) { } else if (...) { }: we don't
+ * consider the second if nested. Blocks are also skipped
  */
 predicate realParent(Stmt inner, Stmt outer) {
   if skipParent(inner) then realParent(inner.getParent(), outer) else outer = inner.getParent()
@@ -23,7 +23,7 @@ predicate realParent(Stmt inner, Stmt outer) {
 
 predicate skipParent(Stmt s) {
   exists(Stmt parent | parent = s.getParent() |
-    (s instanceof IfStmt and (parent.(IfStmt)).getElse() = s)
+    s instanceof IfStmt and parent.(IfStmt).getElse() = s
     or
     parent instanceof BlockStmt
   )

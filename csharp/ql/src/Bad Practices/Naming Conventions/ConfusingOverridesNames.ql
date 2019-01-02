@@ -19,8 +19,8 @@ predicate hasSubtypeStar(RefType t, RefType u) {
 }
 
 /**
- * for each class, get all methods from this class or its
- *    superclasses, with their names in lowercase
+ * For each class, get all methods from this class or its
+ * superclasses, with their names in lowercase
  */
 predicate methodNames(RefType t, Method m, string lowercase) {
   exists(RefType t2 |
@@ -33,7 +33,7 @@ predicate methodNames(RefType t, Method m, string lowercase) {
 
 /**
  * For each class, find the pairs of methods that
- *    are candidates for being confusing in this class
+ * are candidates for being confusing in this class
  */
 predicate confusing(Method m1, Method m2) {
   exists(RefType t, string lower |

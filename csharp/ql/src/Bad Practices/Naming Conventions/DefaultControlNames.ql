@@ -1,7 +1,7 @@
 /**
  * @name Windows controls with generated names
  * @description Replacing the generated names in windows forms with meaningful names
- *                makes it easier for other developers to understand the code.
+ *              makes it easier for other developers to understand the code.
  * @kind problem
  * @problem.severity recommendation
  * @precision medium
