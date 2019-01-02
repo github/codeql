@@ -62,11 +62,17 @@ namespace Semmle.Util
         /// </summary>
         public static string FindExecutableOnPath(string exe)
         {
-            var isWindows = Win32.IsWindows();
-            var paths = Environment.GetEnvironmentVariable("PATH").Split(isWindows ? ';' : ':');
-            var exes = isWindows
-                ? Environment.GetEnvironmentVariable("PATHEXT").Split(';').Select(ext => exe + ext)
-                : new[] { exe };
+            var paths = Environment.GetEnvironmentVariable("PATH").Split(Path.PathSeparator);
+            string[] exes;
+            if (Win32.IsWindows())
+            {
+                var extensions = Environment.GetEnvironmentVariable("PATHEXT").Split(';').ToArray();
+                exes = extensions.Any(exe.EndsWith) ? new[] { exe } : extensions.Select(ext => exe + ext).ToArray();
+            }
+            else
+            {
+                exes = new[] { exe };
+            }
             var candidates = paths.Where(path => exes.Any(exe0 => File.Exists(Path.Combine(path, exe0))));
             return candidates.FirstOrDefault();
         }
