@@ -33,10 +33,10 @@ namespace Semmle.Extraction.CSharp.Entities
             var remover = symbol.RemoveMethod;
 
             if (!(adder is null))
-                EventAccessor.Create(Context, adder);
+                Method.Create(Context, adder);
 
             if (!(remover is null))
-                EventAccessor.Create(Context, remover);
+                Method.Create(Context, remover);
 
             ExtractModifiers();
             BindComments();
