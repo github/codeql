@@ -4,12 +4,12 @@
  * @kind treemap
  * @id cs/unchanged-lines-metric-filter
  */
+
 import csharp
 import external.ExternalArtifact
 import external.MetricFilter
 import ChangedLines
 
 from MetricResult res
-where
-  not changedLine(res.getFile(),_)
+where not changedLine(res.getFile(), _)
 select res, res.getValue()

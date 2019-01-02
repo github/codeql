@@ -17,10 +17,13 @@ abstract class Use extends @type_mention_parent {
    * For more information, see
    * [LGTM locations](https://lgtm.com/help/ql/locations).
    */
-  predicate hasLocationInfo(string filepath, int startline, int startcolumn, int endline, int endcolumn) {
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
     exists(Location l |
       l = this.(Element).getLocation() or
-      l = this.(TypeMention).getLocation() |
+      l = this.(TypeMention).getLocation()
+    |
       filepath = l.getFile().getAbsolutePath() and
       startline = l.getStartLine() and
       startcolumn = l.getStartColumn() and
@@ -54,46 +57,37 @@ class MethodUse extends Use, QualifiableExpr {
 
   /** Gets the qualifier of this method use, if any. */
   private Expr getFormatQualifier() {
-    if this.getQualifiedDeclaration().(Method).isExtensionMethod() then
-      result = this.(MethodCall).getArgument(0)
-    else
-      result = this.getQualifier() and not result.isImplicit()
+    if this.getQualifiedDeclaration().(Method).isExtensionMethod()
+    then result = this.(MethodCall).getArgument(0)
+    else result = this.getQualifier() and
+    not result.isImplicit()
   }
 
-  override predicate hasLocationInfo(string filepath, int startline, int startcolumn, int endline, int endcolumn) {
-    Use.super.hasLocationInfo(filepath, _, _, _, _)
-    and
-    endline = startline
-    and
-    endcolumn = startcolumn + this.getQualifiedDeclaration().getName().length() - 1
-    and
+  override predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    Use.super.hasLocationInfo(filepath, _, _, _, _) and
+    endline = startline and
+    endcolumn = startcolumn + this.getQualifiedDeclaration().getName().length() - 1 and
     (
-      exists(Location ql |
-        ql = this.getFormatQualifier().getLocation() |
+      exists(Location ql | ql = this.getFormatQualifier().getLocation() |
         startline = ql.getEndLine() and
         startcolumn = ql.getEndColumn() + 2
       )
       or
       not exists(this.getFormatQualifier()) and
-      exists(Location l |
-        l = this.getLocation() |
+      exists(Location l | l = this.getLocation() |
         startline = l.getStartLine() and
         startcolumn = l.getStartColumn()
       )
     )
   }
 
-  override Method getDefinition() {
-    result = getQualifiedDeclaration().getSourceDeclaration()
-  }
+  override Method getDefinition() { result = getQualifiedDeclaration().getSourceDeclaration() }
 
-  override string getUseType() {
-    result = "M"
-  }
+  override string getUseType() { result = "M" }
 
-  override string toString() {
-    result = this.(Expr).toString()
-  }
+  override string toString() { result = this.(Expr).toString() }
 }
 
 /** An access. */
@@ -113,9 +107,10 @@ class AccessUse extends Access, Use {
     not result.isImplicit()
   }
 
-  override predicate hasLocationInfo(string filepath, int startline, int startcolumn, int endline, int endcolumn) {
-    exists(Location ql |
-      ql = this.getFormatQualifier().getLocation() |
+  override predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    exists(Location ql | ql = this.getFormatQualifier().getLocation() |
       startline = ql.getEndLine() and
       startcolumn = ql.getEndColumn() + 2 and
       Use.super.hasLocationInfo(filepath, _, _, endline, endcolumn)
@@ -125,22 +120,18 @@ class AccessUse extends Access, Use {
     Use.super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 
-  override Declaration getDefinition() {
-    result = this.getTarget().getSourceDeclaration()
-  }
+  override Declaration getDefinition() { result = this.getTarget().getSourceDeclaration() }
 
   override string getUseType() {
-    if this instanceof Call or this instanceof LocalFunctionAccess then
-      result = "M"
-    else if this instanceof BaseAccess or this instanceof ThisAccess then
-      result = "T"
+    if this instanceof Call or this instanceof LocalFunctionAccess
+    then result = "M"
     else
-      result = "V"
+      if this instanceof BaseAccess or this instanceof ThisAccess
+      then result = "T"
+      else result = "V"
   }
 
-  override string toString() {
-    result = this.(Access).toString()
-  }
+  override string toString() { result = this.(Access).toString() }
 }
 
 /** A type mention. */
@@ -150,7 +141,8 @@ class TypeMentionUse extends Use, TypeMention {
     // uses for the nested type mentions
     forall(TypeMention child, Type t |
       child.getParent() = this and
-      t = this.getType() |
+      t = this.getType()
+    |
       not t instanceof ArrayType and
       not t instanceof NullableType and
       not t instanceof PointerType and
@@ -158,23 +150,19 @@ class TypeMentionUse extends Use, TypeMention {
     )
   }
 
-  override Type getDefinition() {
-    result = this.getType().getSourceDeclaration()
-  }
+  override Type getDefinition() { result = this.getType().getSourceDeclaration() }
 
   override string getUseType() {
-    if this.getTarget() instanceof ObjectCreation then
-      result = "M" // constructor call
-    else
-      result = "T"
+    if this.getTarget() instanceof ObjectCreation
+    then result = "M" // constructor call
+    else result = "T"
   }
 
-  override string toString() {
-    result = TypeMention.super.toString()
-  }
+  override string toString() { result = TypeMention.super.toString() }
 }
 
 from Use use, Declaration definition
-where definition = use.getDefinition()
-  and definition.fromSource()
+where
+  definition = use.getDefinition() and
+  definition.fromSource()
 select use, definition, use.getUseType()

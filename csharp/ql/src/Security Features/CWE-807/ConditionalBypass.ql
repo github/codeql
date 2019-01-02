@@ -11,6 +11,7 @@
  *       external/cwe/cwe-247
  *       external/cwe/cwe-350
  */
+
 import csharp
 import semmle.code.csharp.security.dataflow.ConditionalBypass::UserControlledBypassOfSensitiveMethod
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
@@ -18,5 +19,5 @@ import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink.getNode().(Sink).getSensitiveMethodCall(), source, sink,
-  "Sensitive method may not be executed depending on $@, which flows from $@.",
-  sink.getNode(), "this condition", source.getNode(), "user input"
+  "Sensitive method may not be executed depending on $@, which flows from $@.", sink.getNode(),
+  "this condition", source.getNode(), "user input"

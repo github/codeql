@@ -7,10 +7,15 @@
  * @metricAggregate avg sum max
  * @id cs/vcs/deleted-lines-per-file
  */
+
 import csharp
 import external.VCS
 
 from File f, int n
-where n = sum(Commit entry, int churn | churn = entry.getRecentDeletionsForFile(f) and not artificialChange(entry) | churn)
-select f, n
-order by n desc
+where
+  n = sum(Commit entry, int churn |
+      churn = entry.getRecentDeletionsForFile(f) and not artificialChange(entry)
+    |
+      churn
+    )
+select f, n order by n desc

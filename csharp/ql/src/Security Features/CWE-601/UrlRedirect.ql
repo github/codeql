@@ -9,11 +9,12 @@
  * @tags security
  *       external/cwe/cwe-601
  */
+
 import csharp
 import semmle.code.csharp.security.dataflow.UrlRedirect::UrlRedirect
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
 where c.hasFlowPath(source, sink)
-select sink.getNode(), source, sink,
-  "Untrusted URL redirection due to $@.", source.getNode(), "user-provided value"
+select sink.getNode(), source, sink, "Untrusted URL redirection due to $@.", source.getNode(),
+  "user-provided value"

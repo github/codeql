@@ -9,6 +9,7 @@
  * @tags maintainability
  *       modularity
  */
+
 import csharp
 
 class ConstantField extends Field {
@@ -20,11 +21,11 @@ class ConstantField extends Field {
 }
 
 from Class c
-where c.isSourceDeclaration()
-  and c.isAbstract()
-  and c.getAMember() instanceof ConstantField
-  and forex(Member m |
-    m = c.getAMember() |
+where
+  c.isSourceDeclaration() and
+  c.isAbstract() and
+  c.getAMember() instanceof ConstantField and
+  forex(Member m | m = c.getAMember() |
     m instanceof ConstantField or
     m instanceof Constructor
   )

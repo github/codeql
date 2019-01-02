@@ -14,9 +14,9 @@ import csharp
 
 from IsTypeExpr ise, ValueOrRefType t, ValueOrRefType ct
 where
-  t = ise.getExpr().getType()
-  and ct = ise.getCheckedType()
-  and ct = t.getABaseType+()
-select ise, "There is no need to test whether an instance of $@ is also an instance of $@ - it always is.",
-  t, t.getName(),
-  ct, ct.getName()
+  t = ise.getExpr().getType() and
+  ct = ise.getCheckedType() and
+  ct = t.getABaseType+()
+select ise,
+  "There is no need to test whether an instance of $@ is also an instance of $@ - it always is.", t,
+  t.getName(), ct, ct.getName()

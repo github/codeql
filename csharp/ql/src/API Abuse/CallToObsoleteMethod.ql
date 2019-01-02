@@ -14,13 +14,12 @@
 import csharp
 
 class ObsoleteAttribute extends Attribute {
-  ObsoleteAttribute() {
-    this.getType().hasQualifiedName("System", "ObsoleteAttribute")
-  }
+  ObsoleteAttribute() { this.getType().hasQualifiedName("System", "ObsoleteAttribute") }
 }
 
 from MethodCall c, Method m
-where m = c.getTarget()
-and m.getAnAttribute() instanceof ObsoleteAttribute
-and not c.getEnclosingCallable().(Attributable).getAnAttribute() instanceof ObsoleteAttribute
+where
+  m = c.getTarget() and
+  m.getAnAttribute() instanceof ObsoleteAttribute and
+  not c.getEnclosingCallable().(Attributable).getAnAttribute() instanceof ObsoleteAttribute
 select c, "Call to obsolete method $@.", m, m.getName()

@@ -16,8 +16,7 @@ import csharp
  * No other child nodes are boolean literals.
  */
 predicate literalChild(Expr expr, int child, boolean value) {
-  value = expr.getChild(child).(BoolLiteral).getBoolValue()
-  and
+  value = expr.getChild(child).(BoolLiteral).getBoolValue() and
   forall(int c | c != child | not expr.getChild(c) instanceof BoolLiteral)
 }
 
@@ -26,10 +25,8 @@ predicate literalChild(Expr expr, int child, boolean value) {
  * No other child nodes are boolean literals.
  */
 predicate literalChildren(Expr expr, int child1, boolean value1, int child2, boolean value2) {
-  value1 = expr.getChild(child1).(BoolLiteral).getBoolValue()
-  and
-  value2 = expr.getChild(child2).(BoolLiteral).getBoolValue()
-  and
+  value1 = expr.getChild(child1).(BoolLiteral).getBoolValue() and
+  value2 = expr.getChild(child2).(BoolLiteral).getBoolValue() and
   forall(int c | c != child1 and c != child2 | not expr.getChild(c) instanceof BoolLiteral)
 }
 
@@ -40,7 +37,10 @@ predicate rewriteBinaryExpr(BinaryOperation op, boolean value, string oldPattern
 }
 
 bindingset[withFalseOperand, withTrueOperand]
-predicate rewriteBinaryExpr(BinaryOperation op, string oldPattern, string withFalseOperand, string withTrueOperand, string newPattern) {
+predicate rewriteBinaryExpr(
+  BinaryOperation op, string oldPattern, string withFalseOperand, string withTrueOperand,
+  string newPattern
+) {
   rewriteBinaryExpr(op, false, oldPattern) and newPattern = withFalseOperand
   or
   rewriteBinaryExpr(op, true, oldPattern) and newPattern = withTrueOperand
@@ -55,7 +55,9 @@ predicate rewriteConditionalExpr(ConditionalExpr cond, string oldPattern, string
   or
   literalChild(cond, 2, true) and oldPattern = "A ? B : true" and newPattern = "!A || B"
   or
-  exists(boolean b | literalChildren(cond, 1, b, 2, b) | oldPattern = "A ? " + b + " : " + b and newPattern = b.toString())
+  exists(boolean b | literalChildren(cond, 1, b, 2, b) |
+    oldPattern = "A ? " + b + " : " + b and newPattern = b.toString()
+  )
   or
   literalChildren(cond, 1, true, 2, false) and oldPattern = "A ? true : false" and newPattern = "A"
   or
@@ -86,19 +88,18 @@ predicate pushNegation(LogicalNotExpr expr, string oldPattern, string newPattern
   expr.getOperand() instanceof LogicalNotExpr and oldPattern = "!!A" and newPattern = "A"
   or
   exists(string oldOperator, string newOperator |
-    oldOperator = expr.getOperand().(BinaryOperation).getOperator()
-    and
+    oldOperator = expr.getOperand().(BinaryOperation).getOperator() and
     negatedOperators(oldOperator, newOperator)
-    |
-    oldPattern = "!(A " + oldOperator + " B)"
-    and
+  |
+    oldPattern = "!(A " + oldOperator + " B)" and
     newPattern = "A " + newOperator + " B"
   )
 }
 
 predicate rewrite(Expr expr, string oldPattern, string newPattern) {
   exists(string withFalseOperand, string withTrueOperand |
-    simplifyBinaryExpr(expr.(BinaryOperation).getOperator(), withFalseOperand, withTrueOperand) |
+    simplifyBinaryExpr(expr.(BinaryOperation).getOperator(), withFalseOperand, withTrueOperand)
+  |
     rewriteBinaryExpr(expr, oldPattern, withFalseOperand, withTrueOperand, newPattern)
   )
   or
@@ -108,8 +109,9 @@ predicate rewrite(Expr expr, string oldPattern, string newPattern) {
 }
 
 from Expr expr, string oldPattern, string newPattern, string action
-where rewrite(expr, oldPattern, newPattern)
-  and if newPattern = "true" or newPattern = "false"
+where
+  rewrite(expr, oldPattern, newPattern) and
+  if newPattern = "true" or newPattern = "false"
   then action = "is always"
   else action = "can be simplified to"
 select expr, "The expression '" + oldPattern + "' " + action + " '" + newPattern + "'."

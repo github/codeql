@@ -19,16 +19,18 @@ class GenericCatchClause extends CatchClause {
     this instanceof GeneralCatchClause
     or
     this = any(SpecificCatchClause scc |
-      scc.getCaughtExceptionType() instanceof SystemExceptionClass and
-      not scc.hasFilterClause()
-    )
+        scc.getCaughtExceptionType() instanceof SystemExceptionClass and
+        not scc.hasFilterClause()
+      )
   }
 }
 
 from GenericCatchClause gcc
-where forall(ThrowStmt throw |
-  // ok to catch all exceptions if they may be rethrown
-  gcc.getBlock().getAChildStmt+() = throw |
-  exists(throw.getExpr())
-)
+where
+  forall(ThrowStmt throw |
+    // ok to catch all exceptions if they may be rethrown
+    gcc.getBlock().getAChildStmt+() = throw
+  |
+    exists(throw.getExpr())
+  )
 select gcc, "Generic catch clause."

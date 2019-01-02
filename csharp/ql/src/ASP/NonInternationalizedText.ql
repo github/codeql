@@ -12,6 +12,5 @@
 import semmle.code.asp.AspNet
 
 from AspText text
-where
-  exists(text.getBody().regexpFind("\\w{3,}", _, _))
+where exists(text.getBody().regexpFind("\\w{3,}", _, _))
 select text, "This text has not been internationalized."

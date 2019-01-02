@@ -29,7 +29,8 @@ ExceptionClass getAThrownException(Method m) {
   or
   exists(ControlFlowElement cfe |
     cfe = any(ThrowElement te | result = te.getExpr().getType()) or
-    cfe = any(MethodCall mc | result = getAThrownException(mc.getARuntimeTarget())) |
+    cfe = any(MethodCall mc | result = getAThrownException(mc.getARuntimeTarget()))
+  |
     cfe.getEnclosingCallable() = m and
     not isTriedAgainstException(cfe, result)
   )
@@ -39,7 +40,7 @@ ExceptionClass getAThrownException(Method m) {
  * Holds if control flow element is tried against throwing an exception of type
  * `ec`.
  */
-pragma [noinline]
+pragma[noinline]
 predicate isTriedAgainstException(ControlFlowElement cfe, ExceptionClass ec) {
   (cfe instanceof ThrowElement or cfe instanceof MethodCall) and
   exists(TryStmt ts |
@@ -53,22 +54,27 @@ predicate isTriedAgainstException(ControlFlowElement cfe, ExceptionClass ec) {
  */
 predicate disposeReachableFromDisposableCreation(MethodCall disposeCall, Expr disposableCreation) {
   // The qualifier of the Dispose call flows from something that introduced a disposable into scope
-  (disposableCreation instanceof LocalScopeDisposableCreation or disposableCreation instanceof MethodCall)
-  and DataFlow::localFlowStep+(DataFlow::exprNode(disposableCreation), DataFlow::exprNode(disposeCall.getQualifier()))
-  and disposeCall.getTarget() instanceof DisposeMethod
+  (
+    disposableCreation instanceof LocalScopeDisposableCreation or
+    disposableCreation instanceof MethodCall
+  ) and
+  DataFlow::localFlowStep+(DataFlow::exprNode(disposableCreation),
+    DataFlow::exprNode(disposeCall.getQualifier())) and
+  disposeCall.getTarget() instanceof DisposeMethod
 }
-
 
 from MethodCall disposeCall, Expr disposableCreation, MethodCall callThatThrows
 where
-  disposeReachableFromDisposableCreation(disposeCall, disposableCreation)
+  disposeReachableFromDisposableCreation(disposeCall, disposableCreation) and
   // The dispose call is not, itself, within a dispose method.
-  and not disposeCall.getEnclosingCallable() instanceof DisposeMethod
+  not disposeCall.getEnclosingCallable() instanceof DisposeMethod and
   // Dispose call not within a finally or catch block
-  and not exists(TryStmt ts |
-    ts.getACatchClause().getAChild*() = disposeCall or ts.getFinally().getAChild*() = disposeCall)
+  not exists(TryStmt ts |
+    ts.getACatchClause().getAChild*() = disposeCall or ts.getFinally().getAChild*() = disposeCall
+  ) and
   // At least one method call exists between the allocation and disposal that could throw
-  and disposableCreation.getAReachableElement() = callThatThrows
-  and callThatThrows.getAReachableElement() = disposeCall
-  and exists(getAThrownException(callThatThrows.getARuntimeTarget()))
-select disposeCall, "Dispose missed if exception is thrown by $@.", callThatThrows, callThatThrows.toString()
+  disposableCreation.getAReachableElement() = callThatThrows and
+  callThatThrows.getAReachableElement() = disposeCall and
+  exists(getAThrownException(callThatThrows.getARuntimeTarget()))
+select disposeCall, "Dispose missed if exception is thrown by $@.", callThatThrows,
+  callThatThrows.toString()

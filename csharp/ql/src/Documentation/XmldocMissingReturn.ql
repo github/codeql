@@ -12,9 +12,11 @@
 import Documentation
 
 from SourceMethod m
-where declarationHasXmlComment(m)
-and forall(ReturnsXmlComment c | c=getADeclarationXmlComment(m) |
-        forall(int offset | c.isOpenTag(offset) | c.isEmptyTag(offset) ) )
-and not m.getReturnType() instanceof VoidType
-and not getADeclarationXmlComment(m) instanceof InheritDocXmlComment
+where
+  declarationHasXmlComment(m) and
+  forall(ReturnsXmlComment c | c = getADeclarationXmlComment(m) |
+    forall(int offset | c.isOpenTag(offset) | c.isEmptyTag(offset))
+  ) and
+  not m.getReturnType() instanceof VoidType and
+  not getADeclarationXmlComment(m) instanceof InheritDocXmlComment
 select m, "Return value should be documented."

@@ -4,10 +4,10 @@
  * @kind treemap
  * @id cs/not-generated-file-metric-filter
  */
+
 import semmle.code.csharp.commons.GeneratedCode
 import external.MetricFilter
 
 from MetricResult res
 where not isGeneratedCode(res.getFile())
-select res,
-       res.getValue()
+select res, res.getValue()

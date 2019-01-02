@@ -17,15 +17,16 @@ import Dispose
 import semmle.code.csharp.frameworks.System
 
 from DisposableType t, DisposableField f, Method dispose
-where f.getDeclaringType() = t
-  and not f.isStatic()
-  and t.isSourceDeclaration()
-  and dispose = getInvokedDisposeMethod(t)
-  and dispose.getDeclaringType() = t
-  and not exists(MethodCall mc |
-    mc.getTarget() instanceof DisposeMethod
-    and mc.getQualifier() = f.getAnAccess()
-    and mc.getEnclosingCallable() = dispose
+where
+  f.getDeclaringType() = t and
+  not f.isStatic() and
+  t.isSourceDeclaration() and
+  dispose = getInvokedDisposeMethod(t) and
+  dispose.getDeclaringType() = t and
+  not exists(MethodCall mc |
+    mc.getTarget() instanceof DisposeMethod and
+    mc.getQualifier() = f.getAnAccess() and
+    mc.getEnclosingCallable() = dispose
   )
-select dispose, "This 'Dispose()' method does not call 'Dispose()' on `IDisposable` field $@.",
-  f, f.getName()
+select dispose, "This 'Dispose()' method does not call 'Dispose()' on `IDisposable` field $@.", f,
+  f.getName()

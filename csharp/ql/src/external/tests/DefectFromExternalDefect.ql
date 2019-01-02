@@ -5,8 +5,8 @@
  * @problem.severity warning
  * @deprecated
  */
-import csharp
 
+import csharp
 import external.ExternalArtifact
 
 class DuplicateCode extends ExternalDefect {

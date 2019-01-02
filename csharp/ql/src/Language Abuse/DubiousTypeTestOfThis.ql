@@ -15,11 +15,11 @@ import semmle.code.csharp.commons.Assertions
 
 from IsTypeExpr ise, ValueOrRefType t, ValueOrRefType ct
 where
-  ise.getExpr() instanceof ThisAccess
-  and t = ise.getExpr().getType()
-  and ct = ise.getCheckedType()
-  and ct.getABaseType*() = t
-  and not isExprInAssertion(ise)
-select ise, "Testing whether 'this' is an instance of $@ in $@ introduces a dependency cycle between the two types.",
-  ct, ct.getName(),
-  t, t.getName()
+  ise.getExpr() instanceof ThisAccess and
+  t = ise.getExpr().getType() and
+  ct = ise.getCheckedType() and
+  ct.getABaseType*() = t and
+  not isExprInAssertion(ise)
+select ise,
+  "Testing whether 'this' is an instance of $@ in $@ introduces a dependency cycle between the two types.",
+  ct, ct.getName(), t, t.getName()

@@ -10,6 +10,7 @@
  *       external/cwe/cwe-321
  *       external/cwe/cwe-798
  */
+
 import csharp
 import semmle.code.csharp.frameworks.system.Data
 import semmle.code.csharp.security.dataflow.HardcodedCredentials
@@ -28,27 +29,25 @@ class ConnectionStringPasswordOrUsername extends HardcodedCredentials::NonEmptyS
  * A taint-tracking configuration for tracking string literals to a `ConnectionString` property.
  */
 class ConnectionStringTaintTrackingConfiguration extends TaintTracking::Configuration {
-  ConnectionStringTaintTrackingConfiguration() {
-    this = "connectionstring"
+  ConnectionStringTaintTrackingConfiguration() { this = "connectionstring" }
+
+  override predicate isSource(DataFlow::Node source) {
+    source instanceof ConnectionStringPasswordOrUsername
   }
 
-  override
-  predicate isSource(DataFlow::Node source) {
-   source instanceof ConnectionStringPasswordOrUsername
+  override predicate isSink(DataFlow::Node sink) {
+    sink.asExpr() = any(SystemDataConnectionClass connection)
+          .getConnectionStringProperty()
+          .getAnAssignedValue()
   }
 
-  override
-  predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(SystemDataConnectionClass connection).getConnectionStringProperty().getAnAssignedValue()
-  }
-
-  override
-  predicate isSanitizer(DataFlow::Node node) {
+  override predicate isSanitizer(DataFlow::Node node) {
     node instanceof HardcodedCredentials::StringFormatSanitizer
   }
 }
 
-from ConnectionStringTaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
+from
+  ConnectionStringTaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
 where c.hasFlowPath(source, sink)
 select source.getNode(), source, sink,
   "'ConnectionString' property includes hard-coded credentials set in $@.",

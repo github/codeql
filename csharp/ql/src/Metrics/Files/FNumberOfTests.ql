@@ -9,10 +9,10 @@
  * @id cs/tests-in-files
  * @tags maintainability
  */
+
 import csharp
 import semmle.code.csharp.frameworks.Test
 
 from SourceFile f, int n
 where n = strictcount(TestMethod test | test.fromSource() and test.getFile() = f)
-select f, n
-order by n desc
+select f, n order by n desc

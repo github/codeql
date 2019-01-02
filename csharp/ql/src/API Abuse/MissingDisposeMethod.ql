@@ -17,10 +17,10 @@ import Dispose
 import semmle.code.csharp.frameworks.System
 
 from DisposableType t, DisposableField f
-where f.getDeclaringType() = t
-  and t.isSourceDeclaration()
-  and not f.isStatic()
-  and not implementsDispose(t)
-  and not isAutoDisposedWebControl(f)
-select t, "This type does not override 'Dispose()' but has disposable field $@.",
-  f, f.getName()
+where
+  f.getDeclaringType() = t and
+  t.isSourceDeclaration() and
+  not f.isStatic() and
+  not implementsDispose(t) and
+  not isAutoDisposedWebControl(f)
+select t, "This type does not override 'Dispose()' but has disposable field $@.", f, f.getName()

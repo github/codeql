@@ -8,9 +8,9 @@
  * @tags maintainability
  * @id cs/structs-per-file
  */
+
 import csharp
 
 from SourceFile f, int n
 where n = count(Struct s | s.getFile() = f and s.isSourceDeclaration())
-select f, n
-order by n desc
+select f, n order by n desc

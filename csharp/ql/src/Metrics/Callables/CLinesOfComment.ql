@@ -9,9 +9,9 @@
  *       documentation
  * @id cs/lines-of-comment-per-function
  */
+
 import csharp
 
 from Callable c
 where c.isSourceDeclaration()
-select c, c.getNumberOfLinesOfComments() as n
-order by n desc
+select c, c.getNumberOfLinesOfComments() as n order by n desc

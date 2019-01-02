@@ -13,8 +13,9 @@ import csharp
 import semmle.code.csharp.frameworks.Format
 
 from FormatCall format, ValidFormatString src, int used, int supplied
-where src = format.getAFormatSource()
-and used = src.getAnInsert()
-and supplied = format.getSuppliedArguments()
-and used >= supplied
+where
+  src = format.getAFormatSource() and
+  used = src.getAnInsert() and
+  supplied = format.getSuppliedArguments() and
+  used >= supplied
 select format, "Argument '{" + used + "}' has not been supplied to $@ format string.", src, "this"

@@ -11,11 +11,12 @@
  *       external/cwe/cwe-095
  *       external/cwe/cwe-096
  */
+
 import csharp
 import semmle.code.csharp.security.dataflow.CodeInjection::CodeInjection
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
 where c.hasFlowPath(source, sink)
-select sink.getNode(), source, sink,
-  "$@ flows to here and is compiled as code.", source.getNode(), "User-provided value"
+select sink.getNode(), source, sink, "$@ flows to here and is compiled as code.", source.getNode(),
+  "User-provided value"

@@ -9,9 +9,9 @@
  *       maintainability
  * @id cs/type-specialization-index
  */
+
 import csharp
 
 from RefType t
 where t.isSourceDeclaration()
-select t, t.getSpecialisationIndex() as n
-order by n desc
+select t, t.getSpecialisationIndex() as n order by n desc

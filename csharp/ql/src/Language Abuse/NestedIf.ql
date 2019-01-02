@@ -13,9 +13,7 @@ import csharp
 
 from IfStmt outer, IfStmt inner
 where
-  inner = outer.getThen().stripSingletonBlocks()
-and
-  not exists(outer.getElse())
-and
+  inner = outer.getThen().stripSingletonBlocks() and
+  not exists(outer.getElse()) and
   not exists(inner.getElse())
 select outer, "These 'if' statements can be combined."

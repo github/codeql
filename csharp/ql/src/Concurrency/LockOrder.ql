@@ -38,7 +38,8 @@ LockStmt getAReachableLockStmt(Callable callable) {
 predicate nestedLocks(Variable outerVariable, Variable innerVariable, LockStmt outer, LockStmt inner) {
   outerVariable = outer.getLockVariable() and
   innerVariable = inner.getLockVariable() and
-  outerVariable != innerVariable and (
+  outerVariable != innerVariable and
+  (
     inner = outer.getALockedStmt()
     or
     exists(Call call | call.getEnclosingStmt() = outer.getALockedStmt() |
@@ -54,9 +55,6 @@ where
   nestedLocks(v1, v2, outer1, inner1) and
   nestedLocks(v2, v1, outer2, inner2) and
   v1.getName() <= v2.getName()
-select v1, "Inconsistent lock sequence with $@. Lock sequences $@, $@ and $@, $@ found.",
-  v2, v2.getName(),
-  outer1, v1.getName(),
-  inner1, v2.getName(),
-  outer2, v2.getName(),
-  inner2, v1.getName()
+select v1, "Inconsistent lock sequence with $@. Lock sequences $@, $@ and $@, $@ found.", v2,
+  v2.getName(), outer1, v1.getName(), inner1, v2.getName(), outer2, v2.getName(), inner2,
+  v1.getName()

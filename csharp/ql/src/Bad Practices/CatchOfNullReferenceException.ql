@@ -9,6 +9,7 @@
  *       correctness
  *       external/cwe/cwe-395
  */
+
 import csharp
 
 from SpecificCatchClause scc

@@ -8,19 +8,20 @@
  * @tags reliability
  *       correctness
  */
+
 import csharp
 
 class ZeroFloatLiteral extends FloatLiteral {
   ZeroFloatLiteral() {
-    this.getValue() = "0"
-    or this.getValue() = "0.0"
+    this.getValue() = "0" or
+    this.getValue() = "0.0"
   }
 }
 
 from EqualityOperation e
 where
-  e.getAnOperand().getType() instanceof FloatingPointType
-  and not (
+  e.getAnOperand().getType() instanceof FloatingPointType and
+  not (
     e.getAnOperand() instanceof NullLiteral
     //Uncomment this to exclude comparisons to 0 literals
     //or e.getAnOperand() instanceof ZeroFloatLiteral

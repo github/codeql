@@ -18,12 +18,9 @@ import csharp
 /** An expression containing a qualified member access, a method call, or an array access. */
 class DangerousExpression extends Expr {
   DangerousExpression() {
-    exists(Expr e |
-      this = e.getParent*() |
-      exists(Expr q |
-        q = e.(MemberAccess).getQualifier() |
-        not q instanceof ThisAccess
-        and
+    exists(Expr e | this = e.getParent*() |
+      exists(Expr q | q = e.(MemberAccess).getQualifier() |
+        not q instanceof ThisAccess and
         not q instanceof BaseAccess
       )
       or
@@ -41,14 +38,10 @@ class NonShortCircuit extends BinaryBitwiseOperation {
       this instanceof BitwiseAndExpr
       or
       this instanceof BitwiseOrExpr
-    )
-    and
-    not exists(AssignBitwiseOperation abo | abo.getExpandedAssignment().getRValue() = this)
-    and
-    getLeftOperand().getType() instanceof BoolType
-    and
-    getRightOperand().getType() instanceof BoolType
-    and
+    ) and
+    not exists(AssignBitwiseOperation abo | abo.getExpandedAssignment().getRValue() = this) and
+    getLeftOperand().getType() instanceof BoolType and
+    getRightOperand().getType() instanceof BoolType and
     getRightOperand() instanceof DangerousExpression
   }
 }

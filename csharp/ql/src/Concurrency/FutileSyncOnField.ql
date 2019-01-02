@@ -21,8 +21,10 @@ predicate lockedFieldUpdate(LockStmt lock, Field f, AssignableDefinition def) {
 }
 
 from LockStmt lock, Expr e, Field f, AssignableDefinition def
-where e = lock.getExpr()
-  and f.getAnAccess() = e
-  and lockedFieldUpdate(lock, f, def)
-select e, "Locking field $@ guards the initial value, not the value which may be seen from another thread after $@.",
+where
+  e = lock.getExpr() and
+  f.getAnAccess() = e and
+  lockedFieldUpdate(lock, f, def)
+select e,
+  "Locking field $@ guards the initial value, not the value which may be seen from another thread after $@.",
   f, f.getName(), def, "reassignment"

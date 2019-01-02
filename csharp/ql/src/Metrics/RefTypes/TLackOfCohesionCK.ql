@@ -9,9 +9,9 @@
  *       maintainability
  * @id cs/lack-of-cohesion-ck
  */
+
 import csharp
 
 from ValueOrRefType t
 where t.isSourceDeclaration()
-select t, t.getLackOfCohesionCK() as n
-order by n desc
+select t, t.getLackOfCohesionCK() as n order by n desc

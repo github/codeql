@@ -13,20 +13,16 @@ import csharp
 import semmle.code.csharp.commons.StructuralComparison
 import semmle.code.csharp.controlflow.Guards as G
 
-class SameElement extends StructuralComparisonConfiguration
-{
+class SameElement extends StructuralComparisonConfiguration {
   SameElement() { this = "Same element" }
 
-  override predicate candidate(Element e1, Element e2)
-  {
+  override predicate candidate(Element e1, Element e2) {
     exists(MethodCall mc, IndexerRead access |
-      mc.getTarget().hasName("ContainsKey")
-      and
-      access.getQualifier().(G::GuardedExpr).isGuardedBy(mc, mc.getQualifier(), _)
-      and
-      e1 = mc.getArgument(0)
-      and
-      e2 = access.getIndex(0))
+      mc.getTarget().hasName("ContainsKey") and
+      access.getQualifier().(G::GuardedExpr).isGuardedBy(mc, mc.getQualifier(), _) and
+      e1 = mc.getArgument(0) and
+      e2 = access.getIndex(0)
+    )
   }
 }
 

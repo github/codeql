@@ -10,6 +10,7 @@
  *       external/cwe/cwe-730
  *       external/cwe/cwe-400
  */
+
 import csharp
 import semmle.code.csharp.security.dataflow.ReDoS::ReDoS
 import semmle.code.csharp.frameworks.system.text.RegularExpressions
@@ -26,4 +27,5 @@ where
     sink.getNode() instanceof ExponentialRegexSink
   )
 select sink.getNode(), source, sink,
-  "$@ flows to regular expression operation with dangerous regex.", source.getNode(), "User-provided value"
+  "$@ flows to regular expression operation with dangerous regex.", source.getNode(),
+  "User-provided value"

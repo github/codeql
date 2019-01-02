@@ -4,14 +4,13 @@
  * @kind problem
  * @id cs/recently-changed-file-filter
  */
+
 import csharp
 import external.DefectFilter
 import external.VCS
 
 private predicate recent(File file) {
-  exists(Commit e | file = e.getAnAffectedFile() |
-    e.isRecent()
-  )
+  exists(Commit e | file = e.getAnAffectedFile() | e.isRecent())
 }
 
 from DefectResult res

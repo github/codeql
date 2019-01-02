@@ -10,6 +10,7 @@
  *       frameworks/asp.net
  *       external/cwe/cwe-472
  */
+
 import csharp
 
 from ObjectCreation oc

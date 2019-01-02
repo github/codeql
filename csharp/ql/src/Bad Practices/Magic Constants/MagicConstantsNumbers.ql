@@ -8,15 +8,15 @@
  * @tags changeability
  *       maintainability
  */
+
 import csharp
 import MagicConstants
 
-predicate selection(Element e, string msg) {
-  magicConstant(e, msg)
-}
+predicate selection(Element e, string msg) { magicConstant(e, msg) }
 
 from Literal e, string msg
-where selection(e, msg)
-  and isNumber(e)
-  and not exists(Field f | f.getInitializer() = e)
+where
+  selection(e, msg) and
+  isNumber(e) and
+  not exists(Field f | f.getInitializer() = e)
 select e, msg

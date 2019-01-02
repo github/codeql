@@ -8,20 +8,28 @@
  * @tags security
  *       external/cwe/cwe-113
  */
+
 import csharp
 import semmle.code.asp.WebConfig
 
 from Element l
-where // header checking is disabled programmatically in the code
-      exists(Assignment a, PropertyAccess pa |
-            a.getLValue() = pa
-        and pa.getTarget().hasName("EnableHeaderChecking")
-        and pa.getTarget().getDeclaringType().hasQualifiedName("System.Web.Configuration", "HttpRuntimeSection")
-        and a.getRValue().getValue() = "false"
-        and a = l)
-   or // header checking is disabled in a configuration file
-      exists(HttpRuntimeXMLElement e, XMLAttribute a |
-            a = e.getAttribute("enableHeaderChecking")
-        and a.getValue().toLowerCase() = "false"
-        and a = l)
+where
+  // header checking is disabled programmatically in the code
+  exists(Assignment a, PropertyAccess pa |
+    a.getLValue() = pa and
+    pa.getTarget().hasName("EnableHeaderChecking") and
+    pa
+        .getTarget()
+        .getDeclaringType()
+        .hasQualifiedName("System.Web.Configuration", "HttpRuntimeSection") and
+    a.getRValue().getValue() = "false" and
+    a = l
+  )
+  or
+  // header checking is disabled in a configuration file
+  exists(HttpRuntimeXMLElement e, XMLAttribute a |
+    a = e.getAttribute("enableHeaderChecking") and
+    a.getValue().toLowerCase() = "false" and
+    a = l
+  )
 select l, "Do not disable header checking."

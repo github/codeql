@@ -9,6 +9,7 @@
  * @tags security
  *       external/cwe/cwe-359
  */
+
 import csharp
 import semmle.code.csharp.security.dataflow.ExposureOfPrivateInformation::ExposureOfPrivateInformation
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
@@ -16,4 +17,5 @@ import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
 where c.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
-  "Private data returned by $@ is written to an external location.", source.getNode(), source.getNode().toString()
+  "Private data returned by $@ is written to an external location.", source.getNode(),
+  source.getNode().toString()

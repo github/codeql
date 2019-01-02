@@ -12,6 +12,7 @@
 import csharp
 
 from Class c, Method m
-where m.hasModifier("extern")
-  and m.getDeclaringType() = c
+where
+  m.hasModifier("extern") and
+  m.getDeclaringType() = c
 select c, 1

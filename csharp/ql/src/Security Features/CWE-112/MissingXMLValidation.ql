@@ -9,6 +9,7 @@
  * @tags security
  *       external/cwe/cwe-112
  */
+
 import csharp
 import semmle.code.csharp.security.dataflow.MissingXMLValidation::MissingXMLValidation
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
@@ -16,4 +17,5 @@ import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
 where c.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
-  "$@ flows to here and is processed as XML without validation because " + sink.getNode().(Sink).getReason(), source.getNode(), "User-provided value"
+  "$@ flows to here and is processed as XML without validation because " +
+    sink.getNode().(Sink).getReason(), source.getNode(), "User-provided value"
