@@ -42,3 +42,7 @@ The following changes in version 1.23 affect C/C++ analysis in all applications.
   clarity (e.g. `isOutReturnPointer()` to `isReturnValueDeref()`). The existing member predicates
   have been deprecated, and will be removed in a future release. Code that uses the old member
   predicates should be updated to use the corresponding new member predicate.
+* The control-flow graph is now computed in QL, not in the extractor. This can
+  lead to regressions (or improvements) in how queries are optimized because
+  optimization in QL relies on static size estimates, and the control-flow edge
+  relations will now have different size estimates than before.
