@@ -20,3 +20,6 @@ var div2 = <div id="theDiff"></div>;
 
 // not OK
 var div3 = <div><div id="theDiff"></div><div id="theDiff"></div></div>;
+
+// not OK
+var div4 = <div id="theDiff" id="theDiff"></div>;
