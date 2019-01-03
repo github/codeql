@@ -21,6 +21,7 @@ import com.semmle.js.ast.Expression;
 import com.semmle.js.ast.ExpressionStatement;
 import com.semmle.js.ast.FieldDefinition;
 import com.semmle.js.ast.Identifier;
+import com.semmle.js.ast.ImportDeclaration;
 import com.semmle.js.ast.ImportSpecifier;
 import com.semmle.js.ast.MethodDefinition;
 import com.semmle.js.ast.Node;
@@ -226,28 +227,19 @@ public class FlowParser extends ESNextParser {
 		this.expect(TokenType.braceL);
 		while (this.type != TokenType.braceR) {
 			Position stmtStart = startLoc;
-
-			if (this.eat(TokenType._import)) {
-				this.flowParseDeclareImport(stmtStart);
-			} else {
-				// todo: declare check
-				this.next();
-
+			if (this.eatContextual("declare")) {
 				this.flowParseDeclare(stmtStart);
+			} else if (this.eat(TokenType._import)) {
+				if (peekAtSpecialFlowImportSpecifier() == null) {
+					this.raise(stmtStart,
+							"Imports within a `declare module` body must always be `import type` or `import typeof`.");
+				}
+				this.parseImportRest(new SourceLocation(stmtStart));
+			} else {
+				unexpected();
 			}
 		}
 		this.expect(TokenType.braceR);
-	}
-
-	private void flowParseDeclareImport(Position stmtStart) {
-		String kind = flowParseImportSpecifiers();
-		if (kind == null) {
-			this.raise(stmtStart, "Imports within a `declare module` body must always be `import type` or `import typeof`.");
-		}
-		this.expect(TokenType.name);
-		this.expectContextual("from");
-		this.expect(TokenType.string);
-		this.semicolon();
 	}
 
 	private void flowParseDeclareModuleExports() {
@@ -1004,12 +996,7 @@ public class FlowParser extends ESNextParser {
 	}
 
 	private String flowParseImportSpecifiers() {
-		String kind = null;
-		if (this.type == TokenType._typeof) {
-			kind = "typeof";
-		} else if (this.isContextual("type")) {
-			kind = "type";
-		}
+		String kind = peekAtSpecialFlowImportSpecifier();
 		if (kind != null) {
 			String lh = lookahead(4);
 			if (!lh.isEmpty()) {
@@ -1018,6 +1005,16 @@ public class FlowParser extends ESNextParser {
 					this.next();
 				}
 			}
+		}
+		return kind;
+	}
+
+	private String peekAtSpecialFlowImportSpecifier() {
+		String kind = null;
+		if (this.type == TokenType._typeof) {
+			kind = "typeof";
+		} else if (this.isContextual("type")) {
+			kind = "type";
 		}
 		return kind;
 	}
@@ -1037,7 +1034,7 @@ public class FlowParser extends ESNextParser {
 
 	@Override
 	protected ImportSpecifier parseImportSpecifier() {
-		if (this.type == TokenType._typeof || this.isContextual("type")) {
+		if (peekAtSpecialFlowImportSpecifier() != null) {
 			String lh = lookahead(2);
 			if (lh.charAt(0) == ',' || lh.charAt(0) == '}' || lh.equals("as"))
 				return super.parseImportSpecifier();
