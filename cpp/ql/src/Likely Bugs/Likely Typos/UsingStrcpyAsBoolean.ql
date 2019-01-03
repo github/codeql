@@ -33,31 +33,11 @@ predicate isBoolean( Expr e1 )
   )
 }
 
-class StringCopyToBooleanConfiguration extends DataFlow::Configuration {
-  StringCopyToBooleanConfiguration() {
-    this = "StringCopyToBooleanConfiguration"
-  }
-
-  override predicate isSource(DataFlow::Node source) {
-    exists( FunctionCall func |
-      func = source.asExpr()
-      and isStringComparisonFunction( func.getTarget().getQualifiedName())
-    )
-  }
- 
-  override predicate isSink(DataFlow::Node sink) {
-    exists( Expr expr1 |
-      expr1 = sink.asExpr()
-      and isBoolean( expr1.getConversion*())
-    )
-  }
-}
-
 predicate isStringCopyCastedAsBoolean( FunctionCall func, Expr expr1, string msg ) {
-  exists( StringCopyToBooleanConfiguration modeConfig |
-    modeConfig.hasFlow(DataFlow::exprNode(func), DataFlow::exprNode(expr1))
-    and msg = "Return Value of " + func.getTarget().getQualifiedName() + " used as boolean."
-  )
+  DataFlow::localFlow(DataFlow::exprNode(func), DataFlow::exprNode(expr1))
+  and isBoolean( expr1.getConversion*())
+  and isStringComparisonFunction( func.getTarget().getQualifiedName())
+  and msg = "Return Value of " + func.getTarget().getQualifiedName() + " used as boolean."
 }
 
 predicate isStringCopyUsedInCondition( FunctionCall func, Expr expr1, string msg ) {
