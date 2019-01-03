@@ -200,6 +200,9 @@ namespace Semmle.Extraction.CIL
         internal static Tuple locations_default(ISourceLocation label, IFile file, int startLine, int startCol, int endLine, int endCol) =>
             new Tuple("locations_default", label, file, startLine, startCol, endLine, endCol);
 
+        internal static Tuple metadata_handle(IEntity entity, Assembly assembly, int handleValue) =>
+            new Tuple("metadata_handle", entity, assembly, handleValue);
+
         internal static Tuple namespaces(INamespace ns, string name) =>
             new Tuple("namespaces", ns, name);
 

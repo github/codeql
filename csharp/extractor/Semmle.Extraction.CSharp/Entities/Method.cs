@@ -361,6 +361,7 @@ namespace Semmle.Extraction.CSharp.Entities
             ExtractParameters();
             ExtractMethodBody();
             ExtractGenerics();
+            ExtractMetadataHandle();
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.PushesLabel;

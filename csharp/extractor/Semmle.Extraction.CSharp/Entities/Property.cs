@@ -29,6 +29,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate()
         {
+            ExtractMetadataHandle();
             ExtractAttributes();
             ExtractModifiers();
             BindComments();

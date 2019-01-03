@@ -82,6 +82,14 @@ class NamedElement extends Element, @dotnet_named_element {
   /** Gets a unique string label for this element. */
   string getLabel() { none() }
 
+  /** Holds if `other` has the same metadata handle in the same assembly. */
+  predicate matchesHandle(NamedElement other) {
+    exists(Assembly asm, int handle |
+      metadata_handle(this, asm, handle) and
+      metadata_handle(other, asm, handle)
+    )
+  }
+
   /**
    * Holds if this element was compiled from source code that is also present in the
    * database. That is, this element corresponds to another element from source.
