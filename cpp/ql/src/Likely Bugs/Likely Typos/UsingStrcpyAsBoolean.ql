@@ -1,0 +1,92 @@
+/**
+ * @name Using the return value of a strcpy or related string copy function as a boolean operator
+ * @description The return value for strcpy, strncpy, or related string copy functions have no reserved return value to indicate an error.
+ *              Using the return values of these functions as boolean function .
+ *              Either the intent was to use a more secure version of a string copy function (such as strcpy_s), or a string compare function (such as strcmp).
+ * @kind problem
+ * @problem.severity error
+ * @precision high
+ * @id cpp/string-copy-return-value-as-boolean
+ * @tags external/microsoft/C6324
+ */
+
+import cpp
+import semmle.code.cpp.dataflow.DataFlow
+
+predicate isStringComparisonFunction(string functionName) {
+  functionName = "strcpy"
+  or functionName = "wcscpy"
+  or functionName = "_mbscpy"
+  or functionName = "strncpy"
+  or functionName = "_strncpy_l"
+  or functionName = "wcsncpy"
+  or functionName = "_wcsncpy_l"
+  or functionName = "_mbsncpy"
+  or functionName = "_mbsncpy_l"
+}
+
+predicate isBoolean( Expr e1 )
+{
+  exists ( Type t1 |
+    t1 = e1.getType() and
+    (t1.hasName("bool") or t1.hasName("BOOL") or t1.hasName("_Bool"))
+  )
+}
+
+class StringCopyToBooleanConfiguration extends DataFlow::Configuration {
+  StringCopyToBooleanConfiguration() {
+    this = "StringCopyToBooleanConfiguration"
+  }
+
+  override predicate isSource(DataFlow::Node source) {
+    exists( FunctionCall func |
+      func = source.asExpr()
+      and isStringComparisonFunction( func.getTarget().getQualifiedName())
+    )
+  }
+ 
+  override predicate isSink(DataFlow::Node sink) {
+    exists( Expr expr1 |
+      expr1 = sink.asExpr()
+      and isBoolean( expr1.getConversion*())
+    )
+  }
+}
+
+predicate isStringCopyCastedAsBoolean( FunctionCall func, Expr expr1, string msg ) {
+  exists( StringCopyToBooleanConfiguration modeConfig |
+    modeConfig.hasFlow(DataFlow::exprNode(func), DataFlow::exprNode(expr1))
+    and msg = "Return Value of " + func.getTarget().getQualifiedName() + " used as boolean."
+  )
+}
+
+predicate isStringCopyUsedInCondition( FunctionCall func, Expr expr1, string msg ) {
+  exists( ConditionalStmt condstmt |
+    condstmt.getAChild() = expr1 |
+    isStringComparisonFunction( func.getTarget().getQualifiedName() )
+    and ( 
+      // The string copy function is used directly as the conditional expression
+      func = condstmt.getChild(0)
+      // ... or it is being used in an equality or logical operation 
+      or exists( EqualityOperation eop |
+        eop = expr1
+        and func = eop.getAChild()
+      )
+      or exists( UnaryLogicalOperation ule |
+        expr1 = ule
+        and func = ule.getAChild()
+      )
+      or exists( BinaryLogicalOperation ble |
+        expr1 = ble
+        and func = ble.getAChild()
+      )
+    )
+    and msg = "Return Value of " + func.getTarget().getQualifiedName() + " used in a conditional."
+  )
+}
+
+from FunctionCall func, Expr expr1, string msg
+where 
+  isStringCopyCastedAsBoolean(func, expr1, msg)
+  or isStringCopyUsedInCondition(func, expr1, msg)
+select expr1, msg

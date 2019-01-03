@@ -124,6 +124,11 @@ void PositiveCases()
     {
     }
 
+	if (!strncpy(szbuf1, "test", 100))  // Bug
+	{
+	}
+
+	bool b = strncpy(szbuf1, "test", 100);
 }
 
 void NegativeCases()

@@ -49,6 +49,10 @@ void PositiveCases()
     if (strncpy(szbuf1, "test", 100))  // Bug
     {
     }
+
+	if (!strncpy(szbuf1, "test", 100))  // Bug
+	{
+	}
 }
 
 void NegativeCases()
