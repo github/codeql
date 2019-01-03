@@ -51,11 +51,13 @@ class Copy extends @duplication_or_similarity {
 }
 
 class DuplicateBlock extends Copy, @duplication {
-  string toString() { result = "Duplicate code: " + sourceLines() + " duplicated lines." }
+  override string toString() { result = "Duplicate code: " + sourceLines() + " duplicated lines." }
 }
 
 class SimilarBlock extends Copy, @similarity {
-  string toString() { result = "Similar code: " + sourceLines() + " almost duplicated lines." }
+  override string toString() {
+    result = "Similar code: " + sourceLines() + " almost duplicated lines."
+  }
 }
 
 Method sourceMethod() { hasLocation(result, _) and numlines(result, _, _, _) }
