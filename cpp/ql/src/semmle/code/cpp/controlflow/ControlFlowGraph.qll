@@ -77,6 +77,23 @@ class ControlFlowNode extends Locatable, ControlFlowNodeBase {
 
 import Cached
 private cached module Cached {
+  // The base case of `reachable` is factored out for performance. If it's
+  // written in-line in `reachable`, the compiler inserts a `n instanceof
+  // ControlFlowNode` check because the `not ... and not ...` case doesn't
+  // otherwise bind `n`. The problem is that this check is inserted at the
+  // outermost level of this predicate, so it covers all cases including the
+  // recursive case. The optimizer doesn't eliminate the check even though it's
+  // redundant, and having the check leads to needless extra computation and a
+  // risk of bad join orders.
+  private predicate reachableBaseCase(ControlFlowNode n) {
+    exists(Function f | f.getEntryPoint() = n)
+    or
+    // Okay to use successors_extended directly here
+    (not successors_extended(_,n) and not successors_extended(n,_))
+    or
+    n instanceof Handler
+  }
+
   /**
    * Holds if the control-flow node `n` is reachable, meaning that either
    * it is an entry point, or there exists a path in the control-flow
@@ -88,14 +105,9 @@ private cached module Cached {
   cached
   predicate reachable(ControlFlowNode n)
   {
-    exists(Function f | f.getEntryPoint() = n)
-    or
-    // Okay to use successors_extended directly here
-    (not successors_extended(_,n) and not successors_extended(n,_))
+    reachableBaseCase(n)
     or
     reachable(n.getAPredecessor())
-    or
-    n instanceof Handler
   }
 
   /** Holds if `condition` always evaluates to a nonzero value. */
