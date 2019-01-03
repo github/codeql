@@ -18,6 +18,7 @@
 | Incomplete regular expression for hostnames (`js/incomplete-hostname-regexp`) | correctness, security, external/cwe/cwe-020 |  Highlights hostname sanitizers that are likely to be incomplete, indicating a violation of [CWE-020](https://cwe.mitre.org/data/definitions/20.html). Results are shown on LGTM by default.|
 | Incomplete URL substring sanitization | correctness, security, external/cwe/cwe-020 | Highlights URL sanitizers that are likely to be incomplete, indicating a violation of [CWE-020](https://cwe.mitre.org/data/definitions/20.html). Results shown on LGTM by default. |
 | Incorrect suffix check (`js/incorrect-suffix-check`) | correctness, security, external/cwe/cwe-020 | Highlights error-prone suffix checks based on `indexOf`, indicating a potential violation of [CWE-20](https://cwe.mitre.org/data/definitions/20.html). Results are shown on LGTM by default. |
+| Loop iteration skipped due to shifting (`js/loop-iteration-skipped-due-to-shifting`) | correctness | Highlights code that removes an element from an array while iterating over it, causing the loop to skip over some elements. Results are shown on LGTM by default. |
 | Useless comparison test (`js/useless-comparison-test`) | correctness | Highlights code that is unreachable due to a numeric comparison that is always true or always false. Results are shown on LGTM by default. |
 
 ## Changes to existing queries
