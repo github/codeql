@@ -19,7 +19,7 @@ Determine what the loop is supposed to do:
 
 <ul>
   <li>
-    If the intention is to remove <em>every occurence</em> of a certain value, decrement the loop counter after removing an element, to counterbalance
+    If the intention is to remove <em>every occurrence</em> of a certain value, decrement the loop counter after removing an element, to counterbalance
     the shift.
   </li>
   <li>
