@@ -21,6 +21,12 @@ module DataFlow {
     /** Gets the expression corresponding to this node, if any. */
     DotNet::Expr asExpr() { result = this.(ExprNode).getExpr() }
 
+    /** Gets the expression corresponding to this node, at control flow node `cfn`, if any. */
+    Expr asExprAtNode(ControlFlow::Nodes::ElementNode cfn) {
+      this = TExprNode(cfn) and
+      result = cfn.getElement()
+    }
+
     /** Gets the parameter corresponding to this node, if any. */
     DotNet::Parameter asParameter() { result = this.(ParameterNode).getParameter() }
 
@@ -41,30 +47,47 @@ module DataFlow {
   /**
    * An expression, viewed as a node in a data flow graph.
    */
-  class ExprNode extends Node, TExprNode {
-    DotNet::Expr expr;
-
-    ExprNode() { this = TExprNode(expr) }
+  class ExprNode extends Node {
+    ExprNode() { this = TExprNode(_) or this = TCilExprNode(_) }
 
     /** Gets the expression corresponding to this node. */
-    DotNet::Expr getExpr() { result = expr }
+    DotNet::Expr getExpr() {
+      result = this.getExprAtNode(_)
+      or
+      this = TCilExprNode(result)
+    }
 
-    override DotNet::Type getType() { result = expr.getType() }
+    /** Gets the expression corresponding to this node, at control flow node `cfn`. */
+    Expr getExprAtNode(ControlFlow::Nodes::ElementNode cfn) {
+      this = TExprNode(cfn) and
+      result = cfn.getElement()
+    }
 
-    override DotNet::Callable getEnclosingCallable() { result = expr.getEnclosingCallable() }
+    override DotNet::Type getType() { result = this.getExpr().getType() }
+
+    override DotNet::Callable getEnclosingCallable() { result = this.getExpr().getEnclosingCallable() }
 
     override string toString() {
-      result = expr.(Expr).toString()
+      exists(ControlFlow::Nodes::ElementNode cfn |
+        this = TExprNode(cfn) |
+        result = cfn.toString()
+      )
       or
-      expr instanceof CIL::Expr and
+      this = TCilExprNode(_) and
       result = "CIL expression"
     }
 
     override Location getLocation() {
-      result = expr.(Expr).getLocation()
+      exists(ControlFlow::Nodes::ElementNode cfn |
+        this = TExprNode(cfn) |
+        result = cfn.getLocation()
+      )
       or
       result.getFile().isPdbSourceFile() and
-      result = expr.(CIL::Expr).getALocation()
+      exists(CIL::Expr e |
+        this = TCilExprNode(e) |
+        result = e.getALocation()
+      )
     }
   }
 
@@ -83,9 +106,7 @@ module DataFlow {
     DotNet::Parameter getParameter() { none() }
   }
 
-  /**
-   * Gets the node corresponding to expression `e`.
-   */
+  /** Gets a node corresponding to expression `e`. */
   ExprNode exprNode(DotNet::Expr e) { result.getExpr() = e }
 
   /**
@@ -258,9 +279,7 @@ module DataFlow {
     }
   }
 
-  /**
-   * INTERNAL: Do not use.
-   */
+  /** INTERNAL: Do not use. */
   module Internal {
     private import semmle.code.csharp.dataflow.DelegateDataFlow
     private import semmle.code.csharp.dispatch.Dispatch
@@ -473,6 +492,9 @@ module DataFlow {
       /** Gets the context corresponding to this argument node. */
       bindingset [config]
       abstract ArgumentContext getContext(Configuration config);
+
+      /** Holds if this argument node does not have an associated control flow node. */
+      abstract predicate hasNoControlFlowNode();
     }
 
     /** A data flow node that represents an explicit call argument. */
@@ -510,6 +532,11 @@ module DataFlow {
       bindingset [config]
       override ExplicitArgumentContext getContext(Configuration config) {
         result.getCallContext() = this.getArgumentCallContext(config)
+      }
+
+      override predicate hasNoControlFlowNode() {
+        this.asExpr() instanceof CIL::Expr or
+        this instanceof ImplicitDelegateCallNode
       }
     }
 
@@ -557,6 +584,8 @@ module DataFlow {
         result.getArgument() = this and
         exists(config) // eliminate warning
       }
+
+      override predicate hasNoControlFlowNode() { any() }
 
       override Type getType() { result = v.getType() }
 
@@ -699,9 +728,181 @@ module DataFlow {
     }
 
     /**
-     * Provides predicates related to local data flow.
+     * A helper class for defining expression-based data flow steps, while properly
+     * taking control flow into account.
      */
+    abstract class ExprStep extends string {
+      bindingset[this]
+      ExprStep() { any() }
+
+      /**
+       * Holds if data can flow from expression `exprFrom` to expression `exprTo`,
+       * but only by following control flow successors (resp. predecessors, as
+       * specified by `isSuccesor`) inside the scope `scope`. The Boolean `exactScope`
+       * indicates whether a transitive child of `scope` is allowed
+       * (`exactScope = false`).
+       */
+      predicate stepsToExpr(Expr exprFrom, Expr exprTo, ControlFlowElement scope, boolean exactScope, boolean isSuccessor) { none() }
+
+      /**
+       * Holds if data can flow from expression `exprFrom` to definition `defTo`,
+       * but only by following control flow successors (resp. predecessors, as
+       * specified by `isSuccesor`) inside the scope `scope`. The Bolean `exactScope`
+       * indicates whether a transitive child of `scope` is allowed (`exactScope = false`).
+       */
+      predicate stepsToDefinition(Expr exprFrom, AssignableDefinition defTo, ControlFlowElement scope, boolean exactScope, boolean isSuccessor) { none() }
+
+      private predicate reachesBasicBlockExprRec(Expr exprFrom, Expr exprTo, ControlFlowElement scope, boolean exactScope, boolean isSuccessor, ControlFlow::Nodes::ElementNode cfnFrom, ControlFlow::BasicBlock bb) {
+        exists(ControlFlow::BasicBlock mid |
+          this.reachesBasicBlockExpr(exprFrom, exprTo, scope, exactScope, isSuccessor, cfnFrom, mid) |
+          isSuccessor = true and
+          bb = mid.getASuccessor()
+          or
+          isSuccessor = false and
+          bb = mid.getAPredecessor()
+        )
+      }
+
+      pragma[nomagic]
+      private predicate reachesBasicBlockExpr(Expr exprFrom, Expr exprTo, ControlFlowElement scope, boolean exactScope, boolean isSuccessor, ControlFlow::Nodes::ElementNode cfnFrom, ControlFlow::BasicBlock bb) {
+        this.stepsToExpr(exprFrom, exprTo, scope, exactScope, isSuccessor) and
+        cfnFrom = exprFrom.getAControlFlowNode() and
+        bb = cfnFrom.getBasicBlock()
+        or
+        exists(ControlFlowElement scope0, boolean exactScope0 |
+          this.reachesBasicBlockExprRec(exprFrom, exprTo, scope0, exactScope0, isSuccessor, cfnFrom, bb) and
+          this.stepsToExpr(exprFrom, exprTo, scope, exactScope, isSuccessor)
+        |
+          exactScope0 = false and
+          bb.getANode().getElement() = scope0.getAChild*()
+          or
+          exactScope0 = true and
+          bb.getANode().getElement() = scope0
+        )
+      }
+
+      private predicate reachesBasicBlockDefinitionRec(Expr exprFrom, AssignableDefinition defTo, ControlFlowElement scope, boolean exactScope, boolean isSuccessor, ControlFlow::Nodes::ElementNode cfnFrom, ControlFlow::BasicBlock bb) {
+        exists(ControlFlow::BasicBlock mid |
+          this.reachesBasicBlockDefinition(exprFrom, defTo, scope, exactScope, isSuccessor, cfnFrom, mid) |
+          isSuccessor = true and
+          bb = mid.getASuccessor()
+          or
+          isSuccessor = false and
+          bb = mid.getAPredecessor()
+        )
+      }
+      
+
+      pragma[nomagic]
+      private predicate reachesBasicBlockDefinition(Expr exprFrom, AssignableDefinition defTo, ControlFlowElement scope, boolean exactScope, boolean isSuccessor, ControlFlow::Nodes::ElementNode cfnFrom, ControlFlow::BasicBlock bb) {
+        this.stepsToDefinition(exprFrom, defTo, scope, exactScope, isSuccessor) and
+        cfnFrom = exprFrom.getAControlFlowNode() and
+        bb = cfnFrom.getBasicBlock()
+        or
+        exists(ControlFlowElement scope0, boolean exactScope0 |
+          this.reachesBasicBlockDefinitionRec(exprFrom, defTo, scope0, exactScope0, isSuccessor, cfnFrom, bb) and
+          this.stepsToDefinition(exprFrom, defTo, scope, exactScope, isSuccessor)
+        |
+          exactScope0 = false and
+          bb.getANode().getElement() = scope0.getAChild*()
+          or
+          exactScope0 = true and
+          bb.getANode().getElement() = scope0
+        )
+      }
+
+      private predicate hasExprStep(ExprNode nodeFrom, ExprNode nodeTo) {
+        exists(Expr exprFrom, Expr exprTo, ControlFlow::Nodes::ElementNode cfnFrom, ControlFlow::BasicBlock bb |
+          this.reachesBasicBlockExpr(exprFrom, exprTo, _, _, _, cfnFrom, bb) |
+          exprFrom = nodeFrom.asExprAtNode(cfnFrom) and
+          exprTo = nodeTo.asExprAtNode(bb.getANode())
+        )
+      }
+
+      private predicate hasSsaDefinitionStep(ExprNode nodeFrom, SsaDefinitionNode nodeTo) {
+        exists(Expr exprFrom, AssignableDefinition defTo, Ssa::ExplicitDefinition ssaDef, ControlFlow::Nodes::ElementNode cfnFrom, ControlFlow::BasicBlock bb |
+          this.reachesBasicBlockDefinition(exprFrom, defTo, _, _, _, cfnFrom, bb) |
+          exprFrom = nodeFrom.asExprAtNode(cfnFrom) and
+          ssaDef.getADefinition() = defTo and
+          ssaDef.getBasicBlock() = bb and
+          nodeTo.getDefinition() = ssaDef
+        )
+      }
+
+      /**
+       * Holds if `stepsTo(Expr|SsaDefintion)()` induce a data flow step from
+       * `nodeFrom` to `nodeTo`.
+       */
+      predicate hasStep(ExprNode nodeFrom, Node nodeTo) {
+        this.hasExprStep(nodeFrom, nodeTo) or
+        this.hasSsaDefinitionStep(nodeFrom, nodeTo)
+      }
+    }
+
+    /** Provides predicates related to local data flow. */
     module LocalFlow {
+      private class LocalExprStep extends ExprStep {
+        LocalExprStep() { this = "LocalExprStep" }
+
+        override predicate stepsToExpr(Expr exprFrom, Expr exprTo, ControlFlowElement scope, boolean exactScope, boolean isSuccessor) {
+          exactScope = false and
+          (
+            // Flow using library code
+            libraryFlow(exprFrom, exprTo, scope, true) and
+            (isSuccessor = false or isSuccessor = true)
+            or
+            exprFrom = exprTo.(ParenthesizedExpr).getExpr() and
+            scope = exprTo and
+            isSuccessor = true
+            or
+            exprTo = any(ConditionalExpr ce |
+              exprFrom = ce.getThen() or
+              exprFrom = ce.getElse()
+            ) and
+            scope = exprTo and
+            isSuccessor = false
+            or
+            exprFrom = exprTo.(Cast).getExpr() and
+            scope = exprTo and
+            isSuccessor = true
+            or
+            exprFrom = exprTo.(AwaitExpr).getExpr() and
+            scope = exprTo and
+            isSuccessor = true
+            or
+            // An `=` expression, where the result of the expression is used
+            exprTo = any(AssignExpr ae |
+              ae.getParent() instanceof Expr and
+              exprFrom = ae.getRValue()
+            ) and
+            scope = exprTo and
+            isSuccessor = true
+          )
+        }
+
+        override predicate stepsToDefinition(Expr exprFrom, AssignableDefinition def, ControlFlowElement scope, boolean exactScope, boolean isSuccessor) {
+          // Flow from source to definition
+          exactScope = false and
+          def.getSource() = exprFrom and
+          (
+            scope = def.getExpr() and
+            isSuccessor = true
+            or
+            scope = def.(AssignableDefinitions::IsPatternDefinition).getIsPatternExpr() and
+            isSuccessor = false
+            or
+            exists(SwitchStmt ss |
+              ss = def.(AssignableDefinitions::TypeCasePatternDefinition).getTypeCase().getSwitchStmt() and
+              isSuccessor = true
+            |
+              scope = ss.getCondition()
+              or
+              scope = ss.getACase()
+            )
+          )
+        }
+      }
+
       /**
        * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
        * (intra-procedural) step.
@@ -709,18 +910,20 @@ module DataFlow {
       cached
       predicate step(Node nodeFrom, Node nodeTo) {
         forceCachingInSameStage() and
-        localFlowStepExpr(nodeFrom.asExpr(), nodeTo.asExpr())
-        or
-        // Flow from source to SSA definition
-        exists(Ssa::ExplicitDefinition def |
-          def.getADefinition().getSource() = nodeFrom.asExpr() |
-          nodeTo.(SsaDefinitionNode).getDefinition() = def
-        )
+        TaintTracking::Internal::Cached::forceCachingInSameStage() and
+        any(LocalExprStep x).hasStep(nodeFrom, nodeTo)
         or
         // Flow from SSA definition to first read
-        exists(Ssa::Definition def |
+        exists(Ssa::Definition def, ControlFlow::Node cfn |
           def = nodeFrom.(SsaDefinitionNode).getDefinition() |
-          nodeTo.asExpr() = def.getAFirstRead()
+          nodeTo.asExprAtNode(cfn) = def.getAFirstReadAtNode(cfn)
+        )
+        or
+        // Flow from read to next read
+        exists(ControlFlow::Node cfnFrom, ControlFlow::Node cfnTo |
+          Ssa::Internal::adjacentReadPairSameVar(cfnFrom, cfnTo) |
+          nodeFrom = TExprNode(cfnFrom) and
+          nodeTo = TExprNode(cfnTo)
         )
         or
         // Flow into SSA pseudo definition
@@ -779,9 +982,9 @@ module DataFlow {
         def = nodeFrom.(SsaDefinitionNode).getDefinition() and
         not exists(def.getARead())
         or
-        exists(AssignableRead read |
-          read = nodeFrom.asExpr() |
-          def.getALastRead() = read
+        exists(AssignableRead read, ControlFlow::Node cfn |
+          read = nodeFrom.asExprAtNode(cfn) |
+          def.getALastReadAtNode(cfn) = read
         )
       }
 
@@ -794,34 +997,25 @@ module DataFlow {
         )
       }
 
-      private predicate localFlowStepExpr(Expr exprFrom, Expr exprTo) {
-        // Flow using library code
-        libraryFlow(exprFrom, exprTo, true)
+      private Expr getALibraryFlowParent(Expr exprFrom, Expr exprTo, boolean preservesValue) {
+        libraryFlow(exprFrom, exprTo, preservesValue) and
+        result = exprFrom
         or
-        // Flow from read to next read
-        exprTo = exprFrom.(AssignableRead).getANextRead()
-        or
-        exprFrom = exprTo.(ParenthesizedExpr).getExpr()
-        or
-        exprTo = any(ConditionalExpr ce |
-          exprFrom = ce.getThen() or
-          exprFrom = ce.getElse()
+        exists(Expr mid |
+          mid = getALibraryFlowParent(exprFrom, exprTo, preservesValue) |
+          result.getAChildExpr() = mid and
+          not mid.getAChildExpr*() = exprTo
         )
-        or
-        exprFrom = exprTo.(Cast).getExpr()
-        or
-        exprFrom = exprTo.(AwaitExpr).getExpr()
-        or
-        // An `=` expression, where the result of the expression is used
-        exprTo = any(AssignExpr ae |
-          ae.getParent() instanceof Expr and
-          exprFrom = ae.getRValue()
-        )
+      }
+
+      predicate libraryFlow(Expr exprFrom, Expr exprTo, Expr scope, boolean preservesValue) {
+        scope = getALibraryFlowParent(exprFrom, exprTo, preservesValue) and
+        scope.getAChildExpr*() = exprTo
       }
 
       predicate localFlowStepNoConfig(Node pred, Node succ) {
         localFlowStep(pred, succ) or
-        flowThroughCallableLibraryOutRef(_, pred.asExpr(), succ, true)
+        flowThroughCallableLibraryOutRef(_, pred, succ, true)
       }
 
       /**
@@ -1135,13 +1329,17 @@ module DataFlow {
       cached predicate forceCachingInSameStage() { any() }
 
       cached newtype TNode =
-        TExprNode(DotNet::Expr e)
+        TExprNode(ControlFlow::Nodes::ElementNode cfn) {
+          cfn.getElement() instanceof Expr
+        }
         or
         TSsaDefinitionNode(Ssa::Definition def)
         or
         TCilParameterNode(CIL::Parameter p) {
           p.getMethod().hasBody()
         }
+        or
+        TCilExprNode(CIL::Expr e)
         or
         TImplicitDelegateCallNode(DelegateArgumentToLibraryCallable arg)
         or
@@ -1554,8 +1752,8 @@ module DataFlow {
      * Holds if data may flow from argument `mid` of a call, back out from the
      * call to `out`. The context after the call is `ctx`.
      */
-    pragma [noinline]
-    private predicate flowThroughCallable(FlowGraphNode mid, OutNode out, Context ctx) {
+    pragma[nomagic]
+    private predicate flowThroughCallable0(FlowGraphNode mid, OutNode out, Context ctx) {
       exists(CallNode call, ParameterNode p, ArgumentContext innerctx, CallContext cc |
         flowIntoCallable(mid, p, innerctx) and
         paramFlowsThrough(call, p, out, innerctx, cc) |
@@ -1579,6 +1777,44 @@ module DataFlow {
       )
     }
 
+    private predicate flowThroughCallable1Scope(OutNode out, Expr e) {
+      flowThroughCallable0(_, out, _) and
+      e = out.asExpr().(Expr).getAChildExpr*()
+    }
+
+    pragma[nomagic]
+    private predicate flowThroughCallable1(FlowGraphNode mid, OutNode out, ControlFlow::Nodes::ElementNode cfn, Context ctx) {
+      flowThroughCallable0(mid, out, ctx) and
+      exists(mid.getNode().asExprAtNode(cfn))
+      or
+      exists(ControlFlow::Nodes::ElementNode cfnMid |
+        flowThroughCallable1(mid, out, cfnMid, ctx) |
+        cfn = cfnMid.getASuccessor() and
+        flowThroughCallable1Scope(out, cfn.getElement())
+      )
+    }
+
+    /**
+     * Holds if data may flow from argument `mid` of a call, back out from the
+     * call to `out`. The context after the call is `ctx`.
+     */
+    pragma[nomagic]
+    private predicate flowThroughCallable(FlowGraphNode mid, OutNode out, Context ctx) {
+      // If both `mid` and `out` have associated control flow nodes, the latter
+      // must be reachable from the former
+      exists(ControlFlow::Node cfn |
+        flowThroughCallable1(mid, out, cfn, ctx) |
+        exists(out.asExprAtNode(cfn))
+      )
+      or
+      flowThroughCallable0(mid, out, ctx) and
+      (
+        mid.getNode().(ArgumentNode).hasNoControlFlowNode()
+        or
+        not out.asExpr() instanceof Expr
+      )
+    }
+
     /**
      * Holds if data can flow (inter-procedurally) from `source` to `sink`.
      *
@@ -1590,6 +1826,23 @@ module DataFlow {
       flowsource.getNode() = source and
       flowsource.getASuccessor*() = flowsink and
       flowsink.getNode() = sink
+    }
+
+    private class FlowThroughCallableLibraryOutRefStep extends ExprStep {
+      FlowThroughCallableLibraryOutRefStep() {
+        this = "FlowThroughCallableLibraryOutRefStep"
+      }
+
+      override predicate stepsToDefinition(Expr exprFrom, AssignableDefinition defTo, ControlFlowElement scope, boolean exactScope, boolean isSuccessor) {
+        exists(MethodCall mc, Parameter outRef |
+          libraryFlowOutRef(mc, exprFrom, outRef, _) |
+          defTo.getTargetAccess() = mc.getArgumentForParameter(outRef) and
+          defTo instanceof AssignableDefinitions::OutRefDefinition and
+          scope = mc and
+          isSuccessor = true and
+          exactScope = false
+        )
+      }
     }
 
     /**
@@ -1605,12 +1858,9 @@ module DataFlow {
      * `mc = Int32.TryParse("42", out i)`, `arg = "42"`, and `node` is the access
      * to `i` in `out i`.
      */
-    predicate flowThroughCallableLibraryOutRef(MethodCall mc, Expr arg, SsaDefinitionNode node, boolean preservesValue) {
-      exists(Parameter outRef, AssignableDefinitions::OutRefDefinition def |
-        libraryFlowOutRef(mc, arg, outRef, preservesValue) |
-        def = node.getDefinition().(Ssa::ExplicitDefinition).getADefinition() and
-        def.getTargetAccess() = mc.getArgumentForParameter(outRef)
-      )
+    predicate flowThroughCallableLibraryOutRef(MethodCall mc, ExprNode arg, SsaDefinitionNode node, boolean preservesValue) {
+      libraryFlowOutRef(mc, arg.getExpr(), _, preservesValue) and
+      any(FlowThroughCallableLibraryOutRefStep x).hasStep(arg, node)
     }
 
     /**

@@ -215,10 +215,18 @@ edges
 | GlobalDataFlow.cs:377:16:377:21 | access to local variable sink11 | GlobalDataFlow.cs:159:22:159:43 | call to method TaintedParam |
 | GlobalDataFlow.cs:399:9:399:11 | value | GlobalDataFlow.cs:399:41:399:46 | access to local variable sink20 |
 | GlobalDataFlow.cs:410:22:410:35 | "taint source" | GlobalDataFlow.cs:193:22:193:32 | access to property OutProperty |
-| Splitting.cs:3:28:3:34 | tainted | Splitting.cs:8:24:8:30 | access to parameter tainted |
-| Splitting.cs:8:17:8:31 | call to method Return | Splitting.cs:9:15:9:15 | access to local variable x |
-| Splitting.cs:8:17:8:31 | call to method Return | Splitting.cs:11:19:11:19 | access to local variable x |
-| Splitting.cs:8:24:8:30 | access to parameter tainted | Splitting.cs:8:17:8:31 | call to method Return |
+| Splitting.cs:3:28:3:34 | tainted | Splitting.cs:8:24:8:30 | [b (line 3): false] access to parameter tainted |
+| Splitting.cs:3:28:3:34 | tainted | Splitting.cs:8:24:8:30 | [b (line 3): true] access to parameter tainted |
+| Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return | Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x |
+| Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return | Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x |
+| Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return | Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x |
+| Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return | Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x |
+| Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return | Splitting.cs:11:19:11:19 | access to local variable x |
+| Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return | Splitting.cs:11:19:11:19 | access to local variable x |
+| Splitting.cs:8:24:8:30 | [b (line 3): false] access to parameter tainted | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return |
+| Splitting.cs:8:24:8:30 | [b (line 3): false] access to parameter tainted | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return |
+| Splitting.cs:8:24:8:30 | [b (line 3): true] access to parameter tainted | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return |
+| Splitting.cs:8:24:8:30 | [b (line 3): true] access to parameter tainted | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return |
 nodes
 | Capture.cs:7:20:7:26 | tainted |
 | Capture.cs:9:9:13:9 | SSA capture def(tainted) |
@@ -395,9 +403,17 @@ nodes
 | GlobalDataFlow.cs:399:41:399:46 | access to local variable sink20 |
 | GlobalDataFlow.cs:410:22:410:35 | "taint source" |
 | Splitting.cs:3:28:3:34 | tainted |
-| Splitting.cs:8:17:8:31 | call to method Return |
-| Splitting.cs:8:24:8:30 | access to parameter tainted |
-| Splitting.cs:9:15:9:15 | access to local variable x |
+| Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return |
+| Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return |
+| Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return |
+| Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return |
+| Splitting.cs:8:24:8:30 | [b (line 3): false] access to parameter tainted |
+| Splitting.cs:8:24:8:30 | [b (line 3): true] access to parameter tainted |
+| Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x |
+| Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x |
+| Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x |
+| Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x |
+| Splitting.cs:11:19:11:19 | access to local variable x |
 | Splitting.cs:11:19:11:19 | access to local variable x |
 #select
 | Capture.cs:12:19:12:24 | access to local variable sink27 | Capture.cs:7:20:7:26 | tainted | Capture.cs:12:19:12:24 | access to local variable sink27 | access to local variable sink27 |
@@ -454,5 +470,9 @@ nodes
 | GlobalDataFlow.cs:301:15:301:25 | access to parameter sinkParam11 | GlobalDataFlow.cs:201:39:201:45 | tainted | GlobalDataFlow.cs:301:15:301:25 | access to parameter sinkParam11 | access to parameter sinkParam11 |
 | GlobalDataFlow.cs:376:15:376:20 | access to local variable sink11 | GlobalDataFlow.cs:373:39:373:45 | tainted | GlobalDataFlow.cs:376:15:376:20 | access to local variable sink11 | access to local variable sink11 |
 | GlobalDataFlow.cs:399:41:399:46 | access to local variable sink20 | GlobalDataFlow.cs:17:27:17:40 | "taint source" | GlobalDataFlow.cs:399:41:399:46 | access to local variable sink20 | access to local variable sink20 |
-| Splitting.cs:9:15:9:15 | access to local variable x | Splitting.cs:3:28:3:34 | tainted | Splitting.cs:9:15:9:15 | access to local variable x | access to local variable x |
+| Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x | Splitting.cs:3:28:3:34 | tainted | Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x | [b (line 3): false] access to local variable x |
+| Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x | Splitting.cs:3:28:3:34 | tainted | Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x | [b (line 3): false] access to local variable x |
+| Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x | Splitting.cs:3:28:3:34 | tainted | Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x | [b (line 3): true] access to local variable x |
+| Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x | Splitting.cs:3:28:3:34 | tainted | Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x | [b (line 3): true] access to local variable x |
+| Splitting.cs:11:19:11:19 | access to local variable x | Splitting.cs:3:28:3:34 | tainted | Splitting.cs:11:19:11:19 | access to local variable x | access to local variable x |
 | Splitting.cs:11:19:11:19 | access to local variable x | Splitting.cs:3:28:3:34 | tainted | Splitting.cs:11:19:11:19 | access to local variable x | access to local variable x |

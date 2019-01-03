@@ -4,7 +4,7 @@ import semmle.code.csharp.controlflow.Guards
 
 predicate step(DataFlow::Node pred, DataFlow::Node succ) {
   TaintTracking::localTaintStep(pred, succ) and
-  not succ.asExpr() instanceof NullGuardedExpr
+  not succ instanceof NullGuardedDataFlowNode
 }
 
 from MyFlowSource source, DataFlow::Node sink, Access target

@@ -581,9 +581,73 @@ class GuardedControlFlowNode extends ControlFlow::Nodes::ElementNode {
   }
 }
 
+/**
+ * A guarded data flow node. A guarded data flow node is like a guarded expression
+ * (`GuardedExpr`), except control flow graph splitting is taken into account. That
+ * is, one data flow node belonging to an expression may be guarded, while another
+ * split need not be guarded:
+ *
+ * ```
+ * if (b)
+ *     if (x == null)
+ *         return;
+ * x.ToString();
+ * if (b)
+ *     ...
+ * ```
+ *
+ * In the example above, the node for `x.ToString()` is null-guarded in the
+ * split `b == true`, but not in the split `b == false`.
+ */
+class GuardedDataFlowNode extends DataFlow::ExprNode {
+  private Guard g;
+  private AccessOrCallExpr sub0;
+  private AbstractValue v0;
+
+  GuardedDataFlowNode() {
+    exists(ControlFlow::Nodes::ElementNode cfn |
+      exists(this.getExprAtNode(cfn)) |
+      isGuardedByNode(cfn, g, sub0, v0)
+    )
+  }
+
+  /**
+   * Gets an expression that guards this data flow node. That is, this data flow
+   * node is only reached when the returned expression has abstract value `v`.
+   *
+   * The expression `sub` is a sub expression of the guarding expression that is
+   * structurally equal to the expression belonging to this data flow node.
+   *
+   * In case this data flow node or `sub` accesses an SSA variable in its
+   * left-most qualifier, then so must the other (accessing the same SSA
+   * variable).
+   */
+  Expr getAGuard(Expr sub, AbstractValue v) {
+    result = g and
+    sub = sub0 and
+    v = v0
+  }
+
+  /**
+   * Holds if this data flow node must have abstract value `v`. That is, this
+   * data flow node is guarded by a structurally equal expression having
+   * abstract value `v`.
+   */
+  predicate mustHaveValue(AbstractValue v) {
+    exists(Expr e | e = this.getAGuard(e, v))
+  }
+}
+
 /** An expression guarded by a `null` check. */
 class NullGuardedExpr extends GuardedExpr {
   NullGuardedExpr() {
+    this.mustHaveValue(any(NullValue v | not v.isNull()))
+  }
+}
+
+/** A data flow node guarded by a `null` check. */
+class NullGuardedDataFlowNode extends GuardedDataFlowNode {
+  NullGuardedDataFlowNode() {
     this.mustHaveValue(any(NullValue v | not v.isNull()))
   }
 }

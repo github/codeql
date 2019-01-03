@@ -39,6 +39,12 @@ class AssignableMemberAccess extends MemberAccess, AssignableAccess {
   override AssignableMember getTarget() { result = AssignableAccess.super.getTarget() }
 }
 
+private predicate nameOfChild(NameOfExpr noe, Expr child) {
+  child = noe
+  or
+  exists(Expr mid | nameOfChild(noe, mid) | child = mid.getAChildExpr())
+}
+
 /**
  * An access to an assignable that reads the underlying value. Either a
  * variable read (`VariableRead`), a property read (`PropertyRead`), an
@@ -67,7 +73,7 @@ class AssignableRead extends AssignableAccess {
       or
       this = any(AssignableDefinitions::AddressOfDefinition def).getTargetAccess()
     ) and
-    not this = any(NameOfExpr noe).getAChildExpr*()
+    not nameOfChild(_, this)
   }
 
   /**
@@ -669,6 +675,9 @@ module AssignableDefinitions {
 
     IsPatternDefinition() { this = TIsPatternDefinition(ipe) }
 
+    /** Gets the underlying `is` expression. */
+    IsPatternExpr getIsPatternExpr() { result = ipe }
+
     /** Gets the underlying local variable declaration. */
     LocalVariableDeclExpr getDeclaration() { result = ipe.getVariableDeclExpr() }
 
@@ -695,6 +704,9 @@ module AssignableDefinitions {
     TypeCase tc;
 
     TypeCasePatternDefinition() { this = TTypeCasePatternDefinition(tc) }
+
+    /** Gets the underlying `case` statement. */
+    TypeCase getTypeCase() { result = tc }
 
     /** Gets the underlying local variable declaration. */
     LocalVariableDeclExpr getDeclaration() { result = tc.getVariableDeclExpr() }

@@ -506,7 +506,7 @@ class DelegateCall extends Call, @delegate_invocation_expr {
     )
     or
     exists(AddEventSource aes, CallContext::CallContext cc2 |
-      aes = this.getAnAddEventSource() and
+      aes = this.getAnAddEventSource(_) and
       result = aes.getARuntimeTarget(cc2)
     |
       aes = this.getAnAddEventSourceSameEnclosingCallable() and
@@ -518,18 +518,17 @@ class DelegateCall extends Call, @delegate_invocation_expr {
     )
   }
 
-  private AddEventSource getAnAddEventSource() {
-    this.getDelegateExpr().(EventAccess).getTarget() = result.getEvent()
+  private AddEventSource getAnAddEventSource(Callable enclosingCallable) {
+    this.getDelegateExpr().(EventAccess).getTarget() = result.getEvent() and
+    enclosingCallable = result.getExpr().getEnclosingCallable()
   }
 
   private AddEventSource getAnAddEventSourceSameEnclosingCallable() {
-    result = getAnAddEventSource() and
-    result.getExpr().getEnclosingCallable() = this.getEnclosingCallable()
+    result = getAnAddEventSource(this.getEnclosingCallable())
   }
 
   private AddEventSource getAnAddEventSourceDifferentEnclosingCallable() {
-    result = getAnAddEventSource() and
-    result.getExpr().getEnclosingCallable() != this.getEnclosingCallable()
+    exists(Callable c | result = getAnAddEventSource(c) | c != this.getEnclosingCallable())
   }
 
   override Callable getARuntimeTarget() { result = getARuntimeTarget(_) }

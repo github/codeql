@@ -670,7 +670,10 @@ class TupleExpr extends Expr, @tuple_expr {
   Expr getAnArgument() { result = getArgument(_) }
 
   /** Holds if this tuple is a read access. */
-  predicate isReadAccess() { not exists(AssignExpr e | this = e.getLValue().getAChildExpr*()) }
+  predicate isReadAccess() {
+    not exists(AssignExpr e | this = e.getLValue().getAChildExpr*()) and
+    not exists(ForeachStmt fs | this = fs.getVariableDeclTuple().getAChildExpr*())
+  }
 }
 
 /**

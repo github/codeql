@@ -3,7 +3,8 @@
 | LocalDataFlow.cs:71:15:71:19 | access to local variable sink2 |
 | LocalDataFlow.cs:81:15:81:19 | access to local variable sink5 |
 | LocalDataFlow.cs:89:15:89:19 | access to local variable sink6 |
-| LocalDataFlow.cs:97:15:97:19 | access to local variable sink7 |
+| LocalDataFlow.cs:97:15:97:19 | [b (line 49): false] access to local variable sink7 |
+| LocalDataFlow.cs:97:15:97:19 | [b (line 49): true] access to local variable sink7 |
 | LocalDataFlow.cs:105:15:105:19 | access to local variable sink8 |
 | LocalDataFlow.cs:113:15:113:19 | access to local variable sink9 |
 | LocalDataFlow.cs:121:15:121:20 | access to local variable sink10 |
@@ -70,8 +71,7 @@
 | SSA.cs:98:15:98:22 | access to local variable ssaSink4 |
 | SSA.cs:124:15:124:34 | access to field SsaFieldSink1 |
 | SSA.cs:180:15:180:22 | access to local variable ssaSink5 |
-| Splitting.cs:8:19:8:19 | access to local variable x |
-| Splitting.cs:12:15:12:15 | access to local variable x |
-| Splitting.cs:25:15:25:15 | access to local variable x |
+| Splitting.cs:8:19:8:19 | [b (line 3): true] access to local variable x |
+| Splitting.cs:12:15:12:15 | [b (line 3): false] access to local variable x |
+| Splitting.cs:25:15:25:15 | [b (line 17): true] access to local variable x |
 | Splitting.cs:27:19:27:19 | access to local variable x |
-| Splitting.cs:29:19:29:19 | access to local variable x |
