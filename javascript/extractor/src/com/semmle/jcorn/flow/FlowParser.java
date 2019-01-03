@@ -15,6 +15,7 @@ import com.semmle.jcorn.SyntaxError;
 import com.semmle.jcorn.TokenType;
 import com.semmle.jcorn.TokenType.Properties;
 import com.semmle.jcorn.Whitespace;
+import com.semmle.js.ast.BinaryExpression;
 import com.semmle.js.ast.ExportDeclaration;
 import com.semmle.js.ast.ExportSpecifier;
 import com.semmle.js.ast.Expression;
@@ -23,12 +24,15 @@ import com.semmle.js.ast.FieldDefinition;
 import com.semmle.js.ast.Identifier;
 import com.semmle.js.ast.ImportDeclaration;
 import com.semmle.js.ast.ImportSpecifier;
+import com.semmle.js.ast.Literal;
 import com.semmle.js.ast.MethodDefinition;
 import com.semmle.js.ast.Node;
 import com.semmle.js.ast.Position;
 import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.Statement;
 import com.semmle.js.ast.Token;
+import com.semmle.js.ast.UnaryExpression;
+import com.semmle.util.data.Pair;
 import com.semmle.util.exception.Exceptions;
 
 /**
@@ -1203,4 +1207,43 @@ public class FlowParser extends ESNextParser {
 		return super.atGetterSetterName(pi);
 	}
 
+    @Override
+	protected Pair<Expression, Boolean> parseSubscript(final Expression base, Position startLoc, boolean noCalls) {
+		if (!noCalls) {
+			maybeFlowParseTypeParameterInstantiation(base, true);
+		}
+		return super.parseSubscript(base, startLoc, noCalls);
+	}
+
+	private void maybeFlowParseTypeParameterInstantiation(Expression left, boolean requireParenL) {
+		if (flow() && this.isRelational("<")) {
+			// Ambiguous case: `e1<e2>(e3)` is parsed differently as JS and Flow code:
+			// JS: two relational comparisons: `e1 < e2 > e3`
+			// Flow: a call `e1(e3)` with explicit type parameter `e2`
+
+			// Heuristic: if the left operand of the `<` token is a primitive from a literal or unary/binary expression, then it probably isn't a call, as that would always crash
+			left = left.stripParens();
+			if (left instanceof Literal || left instanceof UnaryExpression || left instanceof BinaryExpression)
+				return;
+
+			// If it can be parsed as Flow, we use that, otherwise we parse it as JS
+			State backup = new State();
+			try {
+				this.flowParseTypeParameterInstantiation();
+				if (requireParenL && this.type != TokenType.parenL) {
+					unexpected();
+				}
+				backup.commit();
+			} catch (SyntaxError e) {
+				Exceptions.ignore(e, "Backtracking parser.");
+				backup.reset();
+			}
+		}
+	}
+
+	@Override
+	protected Expression parseNewArguments(Position startLoc, Expression callee) {
+		maybeFlowParseTypeParameterInstantiation(callee, false /* case: new e1<e2>e3 */);
+		return super.parseNewArguments(startLoc, callee);
+	}
 }
