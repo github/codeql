@@ -867,6 +867,8 @@ module ControlFlow {
      * pre-order.
      */
     private module Successor {
+      private import semmle.code.csharp.ExprOrStmtParent
+
       /**
        * A control flow element where the children are evaluated following a
        * standard left-to-right evaluation. The actual evaluation order is
@@ -2436,11 +2438,16 @@ module ControlFlow {
        * Gets the control flow element that is first executed when entering
        * callable `c`.
        */
-      ControlFlowElement succEntry(Callable c) {
-        if exists(c.(Constructor).getInitializer()) then
-          result = first(c.(Constructor).getInitializer())
-        else
-          result = first(c.getBody())
+      ControlFlowElement succEntry(@top_level_exprorstmt_parent p) {
+        p = any(Callable c |
+            if exists(c.(Constructor).getInitializer()) then
+              result = first(c.(Constructor).getInitializer())
+            else
+              result = first(c.getBody())
+          )
+        or
+        expr_parent_top_level_adjusted(any(Expr e | result = first(e)), _, p) and
+        not p instanceof Callable
       }
 
       /**
@@ -3807,8 +3814,8 @@ module ControlFlow {
        * Holds if `succ` with splits `succSplits` is the first element that is executed
        * when entering callable `pred`.
        */
-      pragma [noinline]
-      predicate succEntrySplits(Callable pred, ControlFlowElement succ, Splits succSplits, SuccessorType t) {
+      pragma[noinline]
+      predicate succEntrySplits(@top_level_exprorstmt_parent pred, ControlFlowElement succ, Splits succSplits, SuccessorType t) {
         succ = succEntry(pred) and
         t instanceof NormalSuccessor and
         succSplits = TSplitsNil() // initially no splits
