@@ -100,7 +100,10 @@ class AssignableRead extends AssignableAccess {
    * - The read of `this.Field` on line 11 is next to the read on line 10.
    */
   AssignableRead getANextRead() {
-    Ssa::Internal::adjacentReadPairSameVar(this, result)
+    forex(ControlFlow::Node cfn |
+      cfn = result.getAControlFlowNode() |
+      Ssa::Internal::adjacentReadPairSameVar(this.getAControlFlowNode(), cfn)
+    )
   }
 
   /**
@@ -502,9 +505,12 @@ class AssignableDefinition extends TAssignableDefinition {
    * `AssignableRead.getANextRead()`.
    */
   AssignableRead getAFirstRead() {
-    exists(Ssa::ExplicitDefinition def |
-      def.getADefinition() = this |
-      result = def.getAFirstRead()
+    forex(ControlFlow::Node cfn |
+      cfn = result.getAControlFlowNode() |
+      exists(Ssa::ExplicitDefinition def |
+        result = def.getAFirstReadAtNode(cfn) |
+        this = def.getADefinition()
+      )
     )
   }
 
