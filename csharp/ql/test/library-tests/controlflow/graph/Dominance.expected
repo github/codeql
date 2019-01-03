@@ -909,9 +909,9 @@
 | post | Initializers.cs:10:40:10:40 | access to field F | Initializers.cs:10:17:10:53 | object creation of type Initializers |
 | post | Initializers.cs:10:40:10:44 | ... = ... | Initializers.cs:10:44:10:44 | 0 |
 | post | Initializers.cs:10:44:10:44 | 0 | Initializers.cs:10:40:10:40 | access to field F |
-| post | Initializers.cs:10:47:10:47 | access to field G | Initializers.cs:10:40:10:44 | ... = ... |
+| post | Initializers.cs:10:47:10:47 | access to property G | Initializers.cs:10:40:10:44 | ... = ... |
 | post | Initializers.cs:10:47:10:51 | ... = ... | Initializers.cs:10:51:10:51 | 1 |
-| post | Initializers.cs:10:51:10:51 | 1 | Initializers.cs:10:47:10:47 | access to field G |
+| post | Initializers.cs:10:51:10:51 | 1 | Initializers.cs:10:47:10:47 | access to property G |
 | post | Initializers.cs:11:9:11:64 | ... ...; | Initializers.cs:10:13:10:53 | Initializers i = ... |
 | post | Initializers.cs:11:13:11:14 | access to local variable iz | Initializers.cs:11:9:11:64 | ... ...; |
 | post | Initializers.cs:11:13:11:63 | Initializers[] iz = ... | Initializers.cs:11:37:11:63 | { ..., ... } |
@@ -3152,9 +3152,9 @@
 | pre | Initializers.cs:10:34:10:35 | "" | Initializers.cs:10:17:10:53 | object creation of type Initializers |
 | pre | Initializers.cs:10:38:10:53 | { ..., ... } | Initializers.cs:10:13:10:53 | Initializers i = ... |
 | pre | Initializers.cs:10:40:10:40 | access to field F | Initializers.cs:10:44:10:44 | 0 |
-| pre | Initializers.cs:10:40:10:44 | ... = ... | Initializers.cs:10:47:10:47 | access to field G |
+| pre | Initializers.cs:10:40:10:44 | ... = ... | Initializers.cs:10:47:10:47 | access to property G |
 | pre | Initializers.cs:10:44:10:44 | 0 | Initializers.cs:10:40:10:44 | ... = ... |
-| pre | Initializers.cs:10:47:10:47 | access to field G | Initializers.cs:10:51:10:51 | 1 |
+| pre | Initializers.cs:10:47:10:47 | access to property G | Initializers.cs:10:51:10:51 | 1 |
 | pre | Initializers.cs:10:47:10:51 | ... = ... | Initializers.cs:10:38:10:53 | { ..., ... } |
 | pre | Initializers.cs:10:51:10:51 | 1 | Initializers.cs:10:47:10:51 | ... = ... |
 | pre | Initializers.cs:11:9:11:64 | ... ...; | Initializers.cs:11:13:11:14 | access to local variable iz |

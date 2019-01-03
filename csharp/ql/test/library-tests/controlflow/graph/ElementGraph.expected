@@ -693,9 +693,9 @@
 | Initializers.cs:10:34:10:35 | "" | Initializers.cs:10:17:10:53 | object creation of type Initializers | semmle.label | successor |
 | Initializers.cs:10:38:10:53 | { ..., ... } | Initializers.cs:10:13:10:53 | Initializers i = ... | semmle.label | successor |
 | Initializers.cs:10:40:10:40 | access to field F | Initializers.cs:10:44:10:44 | 0 | semmle.label | successor |
-| Initializers.cs:10:40:10:44 | ... = ... | Initializers.cs:10:47:10:47 | access to field G | semmle.label | successor |
+| Initializers.cs:10:40:10:44 | ... = ... | Initializers.cs:10:47:10:47 | access to property G | semmle.label | successor |
 | Initializers.cs:10:44:10:44 | 0 | Initializers.cs:10:40:10:44 | ... = ... | semmle.label | successor |
-| Initializers.cs:10:47:10:47 | access to field G | Initializers.cs:10:51:10:51 | 1 | semmle.label | successor |
+| Initializers.cs:10:47:10:47 | access to property G | Initializers.cs:10:51:10:51 | 1 | semmle.label | successor |
 | Initializers.cs:10:47:10:51 | ... = ... | Initializers.cs:10:38:10:53 | { ..., ... } | semmle.label | successor |
 | Initializers.cs:10:51:10:51 | 1 | Initializers.cs:10:47:10:51 | ... = ... | semmle.label | successor |
 | Initializers.cs:11:9:11:64 | ... ...; | Initializers.cs:11:13:11:14 | access to local variable iz | semmle.label | successor |
