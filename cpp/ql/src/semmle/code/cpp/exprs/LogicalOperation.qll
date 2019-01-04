@@ -67,13 +67,28 @@ class LogicalOrExpr extends BinaryLogicalOperation, @orlogicalexpr {
  */
 class ConditionalExpr extends Operation, @conditionalexpr {
   /** Gets the condition of this conditional expression. */
-  Expr getCondition() { this.hasChild(result,0) }
+  Expr getCondition() {
+    expr_cond_guard(underlyingElement(this), unresolveElement(result))
+  }
 
   /** Gets the 'then' expression of this conditional expression. */
-  Expr getThen() { this.hasChild(result,1) }
+  Expr getThen() {
+    if this.isTwoOperand()
+    then result = this.getCondition()
+    else expr_cond_true(underlyingElement(this), unresolveElement(result))
+  }
 
   /** Gets the 'else' expression of this conditional expression. */
-  Expr getElse() { this.hasChild(result,2) }
+  Expr getElse() {
+    expr_cond_false(underlyingElement(this), unresolveElement(result))
+  }
+
+  /**
+   * Holds if this expression used the two operand form `guard ? : false`.
+   */
+  predicate isTwoOperand() {
+    expr_cond_two_operand(underlyingElement(this))
+  }
 
   override string getOperator() { result = "?" }
 
