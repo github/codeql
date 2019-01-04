@@ -54,27 +54,29 @@ namespace Semmle.Util
         }
 
         /// <summary>
-        /// Finds the path for the executable <paramref name="exe"/> based on the
+        /// Finds the path for the program <paramref name="prog"/> based on the
         /// <code>PATH</code> environment variable, and in the case of Windows the
         /// <code>PATHEXT</code> environment variable.
         /// 
         /// Returns <code>null</code> of no path can be found.
         /// </summary>
-        public static string FindExecutableOnPath(string exe)
+        public static string FindProgramOnPath(string prog)
         {
-            var paths = Environment.GetEnvironmentVariable("PATH").Split(Path.PathSeparator);
+            var paths = Environment.GetEnvironmentVariable("PATH")?.Split(Path.PathSeparator);
             string[] exes;
             if (Win32.IsWindows())
             {
-                var extensions = Environment.GetEnvironmentVariable("PATHEXT").Split(';').ToArray();
-                exes = extensions.Any(exe.EndsWith) ? new[] { exe } : extensions.Select(ext => exe + ext).ToArray();
+                var extensions = Environment.GetEnvironmentVariable("PATHEXT")?.Split(';')?.ToArray();
+                exes = extensions == null || extensions.Any(prog.EndsWith)
+                    ? new[] { prog }
+                    : extensions.Select(ext => prog + ext).ToArray();
             }
             else
             {
-                exes = new[] { exe };
+                exes = new[] { prog };
             }
-            var candidates = paths.Where(path => exes.Any(exe0 => File.Exists(Path.Combine(path, exe0))));
-            return candidates.FirstOrDefault();
+            var candidates = paths?.Where(path => exes.Any(exe0 => File.Exists(Path.Combine(path, exe0))));
+            return candidates?.FirstOrDefault();
         }
     }
 }

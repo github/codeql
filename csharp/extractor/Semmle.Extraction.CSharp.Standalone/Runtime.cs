@@ -21,7 +21,7 @@ namespace Semmle.Extraction.CSharp.Standalone
         {
             get
             {
-                var dotnetPath = FileUtils.FindExecutableOnPath(Win32.IsWindows() ? "dotnet.exe" : "dotnet");
+                var dotnetPath = FileUtils.FindProgramOnPath(Win32.IsWindows() ? "dotnet.exe" : "dotnet");
                 var dotnetDirs = dotnetPath != null
                     ? new[] { dotnetPath }
                     : new[] { "/usr/share/dotnet", @"C:\Program Files\dotnet" };
@@ -41,7 +41,7 @@ namespace Semmle.Extraction.CSharp.Standalone
         {
             get
             {
-                var monoPath = FileUtils.FindExecutableOnPath(Win32.IsWindows() ? "mono.exe" : "mono");
+                var monoPath = FileUtils.FindProgramOnPath(Win32.IsWindows() ? "mono.exe" : "mono");
                 var monoDirs = monoPath != null
                     ? new[] { monoPath }
                     : new[] { "/usr/lib/mono", @"C:\Program Files\Mono\lib\mono" };
