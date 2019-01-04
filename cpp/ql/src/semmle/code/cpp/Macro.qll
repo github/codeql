@@ -55,10 +55,18 @@ class Macro extends PreprocessorDirective, @ppd_define {
 }
 
 /**
- * A macro access (macro expansion or other macro access).
+ * A macro access.  For example:
+ * ```
+ * #ifdef MACRO1     // this line contains a MacroAccess
+ *   int x = MACRO2; // this line contains a MacroAccess
+ * #endif
+ * ```
+ * 
+ * See also `MacroInvocation`, which represents only macro accesses
+ * that are expanded (such as in the second line of the example above).
  */
 class MacroAccess extends Locatable, @macroinvocation {
-  /** Gets the macro being invoked. */
+  /** Gets the macro that is being accessed. */
   Macro getMacro() { macroinvocations(underlyingElement(this),unresolveElement(result),_,_) }
 
   /**
@@ -73,7 +81,7 @@ class MacroAccess extends Locatable, @macroinvocation {
   }
 
   /**
-   * Gets the location of this macro invocation. For a nested invocation, where
+   * Gets the location of this macro access. For a nested access, where
    * `exists(this.getParentInvocation())`, this yields a location either inside
    * a `#define` directive or inside an argument to another macro.
    */
@@ -126,14 +134,22 @@ class MacroAccess extends Locatable, @macroinvocation {
 
   override string toString() { result = this.getMacro().getHead() }
 
-  /** Gets the name of the invoked macro. */
+  /** Gets the name of the accessed macro. */
   string getMacroName() {
     result = getMacro().getName()
   }
 }
 
 /**
- * A macro invocation (macro expansion).
+ * A macro invocation (macro access that is expanded).  For example:
+ * ```
+ * #ifdef MACRO1
+ *   int x = MACRO2; // this line contains a MacroInvocation
+ * #endif
+ * ```
+ * 
+ * See also `MacroAccess`, which also represents macro accesses where the macro
+ * is checked but not expanded (such as in the first line of the example above).
  */
 class MacroInvocation extends MacroAccess {
   MacroInvocation() {
@@ -174,7 +190,7 @@ class MacroInvocation extends MacroAccess {
   /**
    * Gets the top-level expression associated with this macro invocation,
    * if any. Note that this predicate will fail if the top-level expanded
-   * element is a statement rather than an expression.
+   * element is not an expression (for example if it is a statement).
    */
   Expr getExpr() {
     result = getAnExpandedElement() and
@@ -185,7 +201,7 @@ class MacroInvocation extends MacroAccess {
   /**
    * Gets the top-level statement associated with this macro invocation, if
    * any. Note that this predicate will fail if the top-level expanded
-   * element is an expression rather than a statement.
+   * element is not a statement (for example if it is an expression).
    */
   Stmt getStmt() {
     result = getAnExpandedElement() and
