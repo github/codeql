@@ -67,6 +67,8 @@ predicate isStringCopyUsedInCondition( FunctionCall func, Expr expr1, string msg
 
 from FunctionCall func, Expr expr1, string msg
 where 
-  isStringCopyCastedAsBoolean(func, expr1, msg)
+  ( isStringCopyCastedAsBoolean(func, expr1, msg) and 
+    not isStringCopyUsedInCondition(func, expr1, _)
+  )
   or isStringCopyUsedInCondition(func, expr1, msg)
 select expr1, msg
