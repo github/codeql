@@ -24,7 +24,13 @@ class Annotation extends @annotation, Expr {
   predicate isTypeAnnotation() { this instanceof TypeAnnotation }
 
   /** Gets the element being annotated. */
-  Element getAnnotatedElement() { this.getParent() = result }
+  Element getAnnotatedElement() {
+    this.getParent().(Field).getDeclaration().getAField() = result and
+    this.getCompilationUnit().fromSource()
+    or
+    not result.(Field).getCompilationUnit().fromSource() and
+    this.getParent() = result
+  }
 
   /** Gets the annotation type declaration for this annotation. */
   override AnnotationType getType() { result = Expr.super.getType() }
@@ -41,7 +47,7 @@ class Annotation extends @annotation, Expr {
   Expr getValue(string name) { filteredAnnotValue(this, this.getAnnotationElement(name), result) }
 
   /** Gets the element being annotated. */
-  Element getTarget() { exprs(this, _, _, result, _) }
+  Element getTarget() { result = getAnnotatedElement() }
 
   override string toString() { result = this.getType().getName() }
 

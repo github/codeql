@@ -24,6 +24,7 @@ import com.semmle.js.ast.BlockStatement;
 import com.semmle.js.ast.BreakStatement;
 import com.semmle.js.ast.CallExpression;
 import com.semmle.js.ast.CatchClause;
+import com.semmle.js.ast.Chainable;
 import com.semmle.js.ast.ClassBody;
 import com.semmle.js.ast.ClassDeclaration;
 import com.semmle.js.ast.ClassExpression;
@@ -330,9 +331,11 @@ public class CFGExtractor {
 			return nd.getKey().accept(this, v);
 		}
 
-		// for binary operators, the operands come first (but not for LogicalExpression, see above)
+		// for binary operators, the operands come first (but not for short-circuiting expressions), see above)
 		@Override
 		public Node visit(BinaryExpression nd, Void v) {
+			if ("??".equals(nd.getOperator()))
+				return nd;
 			return nd.getLeft().accept(this, v);
 		}
 
@@ -775,6 +778,9 @@ public class CFGExtractor {
 
 		// cache the set of normal control flow successors
 		private final Map<Node, Object> followingCache = new LinkedHashMap<Node, Object>();
+
+		// map from a node in a chain of property accesses or calls to the successor info for the first node in the chain
+		private final Map<Chainable, SuccessorInfo> chainRootSuccessors = new LinkedHashMap<Chainable, SuccessorInfo>();
 
 		/**
 		 * Generate entry node.
@@ -1579,8 +1585,16 @@ public class CFGExtractor {
 
 		@Override
 		public Void visit(BinaryExpression nd, SuccessorInfo i) {
-			this.seq(nd.getLeft(), nd.getRight(), nd);
-			succ(nd, i.getGuardedSuccessors(nd));
+			if ("??".equals(nd.getOperator())) {
+				// the nullish coalescing operator is short-circuiting, but we do not add guards for it
+				succ(nd, First.of(nd.getLeft()));
+				Object leftSucc = union(First.of(nd.getRight()), i.getAllSuccessors());  // short-circuiting happens with both truthy and falsy values
+				visit(nd.getLeft(), leftSucc, null);
+				nd.getRight().accept(this, i);
+			} else {
+				this.seq(nd.getLeft(), nd.getRight(), nd);
+				succ(nd, i.getGuardedSuccessors(nd));
+			}
 			return null;
 		}
 
@@ -1637,16 +1651,36 @@ public class CFGExtractor {
 			return null;
 		}
 
+		private void preVisitChainable(Chainable chainable, Expression base, SuccessorInfo i) {
+			if (!chainable.isOnOptionalChain()) // optimization: bookkeeping is only needed for optional chains
+				return;
+			// start of chain
+			chainRootSuccessors.putIfAbsent(chainable, i);
+			// next step in chain
+			if (base instanceof Chainable)
+				chainRootSuccessors.put((Chainable)base, chainRootSuccessors.get(chainable));
+		}
+
+		private void postVisitChainable(Chainable chainable, Expression base, boolean optional) {
+			if (optional) {
+				succ(base, chainRootSuccessors.get(chainable).getSuccessors(false));
+			}
+			chainRootSuccessors.remove(chainable);
+		}
+
 		@Override
 		public Void visit(MemberExpression nd, SuccessorInfo i) {
+			preVisitChainable(nd, nd.getObject(), i);
 			seq(nd.getObject(), nd.getProperty(), nd);
 			// property accesses may throw
 			succ(nd, union(this.findTarget(JumpType.THROW, null), i.getGuardedSuccessors(nd)));
+			postVisitChainable(nd, nd.getObject(), nd.isOptional());
 			return null;
 		}
 
 		@Override
 		public Void visit(InvokeExpression nd, SuccessorInfo i) {
+			preVisitChainable(nd, nd.getCallee(), i);
 			seq(nd.getCallee(), nd.getArguments(), nd);
 			Object succs = i.getGuardedSuccessors(nd);
 			if (nd instanceof CallExpression && nd.getCallee() instanceof Super && !instanceFields.isEmpty()) {
@@ -1660,6 +1694,7 @@ public class CFGExtractor {
 			}
 			// calls may throw
 			succ(nd, union(this.findTarget(JumpType.THROW, null), succs));
+			postVisitChainable(nd, nd.getCallee(), nd.isOptional());
 			return null;
 		}
 

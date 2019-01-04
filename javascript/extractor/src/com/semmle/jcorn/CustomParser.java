@@ -153,7 +153,7 @@ public class CustomParser extends FlowParser {
 			Identifier name = this.parseIdent(true);
 			this.expect(TokenType.parenL);
 			List<Expression> args = this.parseExprList(TokenType.parenR, false, false, null);
-			CallExpression node = new CallExpression(new SourceLocation(startLoc), name, new ArrayList<>(), args);
+			CallExpression node = new CallExpression(new SourceLocation(startLoc), name, new ArrayList<>(), args, false, false);
 			return this.finishNode(node);
 		} else {
 			return super.parseExprAtom(refDestructuringErrors);
@@ -212,7 +212,7 @@ public class CustomParser extends FlowParser {
 			 *   A.f = function f(...) { ... };
 			 */
 			SourceLocation memloc = new SourceLocation(iface.getName() + "::" + id.getName(), iface.getLoc().getStart(), id.getLoc().getEnd());
-			MemberExpression mem = new MemberExpression(memloc, iface, new Identifier(id.getLoc(), id.getName()), false);
+			MemberExpression mem = new MemberExpression(memloc, iface, new Identifier(id.getLoc(), id.getName()), false, false, false);
 			AssignmentExpression assgn = new AssignmentExpression(result.getLoc(), "=", mem, ((FunctionDeclaration)result).asFunctionExpression());
 			return new ExpressionStatement(result.getLoc(), assgn);
 		}

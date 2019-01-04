@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+    In Python variables have function-wide scope which means that if two variables have the same name in the
+    same scope, they are in fact one variable. Consequently, nested loops in which the target variables have
+    the same name in fact share a single variable. Such loops are difficult to understand as the inner loop will
+    modify the target variable of the outer loop; this may be a typographical error.
+</p>
+
+
+</overview>
+<recommendation>
+
+<p>Carefully examine the code and check for possible errors,
+particularly considering what would happen if the inner or outer variable were renamed.
+</p>
+
+</recommendation>
+<example>
+<sample src="NestedLoopsSameVariable.py" />
+
+</example>
+<references>
+
+  <li>Python Language Reference: <a href="http://docs.python.org/2/reference/compound_stmts.html#the-for-statement">The for statement</a>.</li>
+  <li>Python Tutorial: <a href="http://docs.python.org/2/tutorial/controlflow.html#for-statements">for statements</a>.</li>
+
+</references>
+</qhelp>

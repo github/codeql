@@ -1,0 +1,2 @@
+| test.py:5:1:5:13 | Import | The rfc822 module was deprecated in version 2.3. Use email module instead. |
+| test.py:6:1:6:16 | Import | The posixfile module was deprecated in version 1.5. Use email module instead. |

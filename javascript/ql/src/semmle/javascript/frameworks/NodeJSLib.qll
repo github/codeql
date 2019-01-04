@@ -297,7 +297,22 @@ module NodeJSLib {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       pred = tainted and succ = this
     }
+  }
 
+  /**
+   * A model of taint propagation through `new Buffer` and `Buffer.from`.
+   */
+  private class BufferTaintStep extends TaintTracking::AdditionalTaintStep, DataFlow::InvokeNode {
+    BufferTaintStep() {
+      this = DataFlow::globalVarRef("Buffer").getAnInstantiation()
+      or
+      this = DataFlow::globalVarRef("Buffer").getAMemberInvocation("from")
+    }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      pred = getArgument(0) and
+      succ = this
+    }
   }
 
   /**

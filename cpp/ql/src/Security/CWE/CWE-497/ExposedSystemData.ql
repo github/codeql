@@ -33,14 +33,7 @@ abstract class SystemData extends Element {
     result = getAnExpr() or
 
     // flow via global or member variable (conservative approximation)
-    exists(Variable var |
-      (
-        var.getAnAssignedValue() = getAnExprIndirect() or
-        var.getAnAccess() = getAnExprIndirect()
-      ) and
-      result = var.getAnAccess() and
-      not var instanceof LocalScopeVariable
-    ) or
+    result = getAnAffectedVar().getAnAccess() or
 
     // flow via stack variable
     definitionUsePair(_, getAnExprIndirect(), result) or
@@ -49,6 +42,17 @@ abstract class SystemData extends Element {
 
     // flow from assigned value to assignment expression
     result.(AssignExpr).getRValue() = getAnExprIndirect()
+  }
+
+  /** Gets a global or member variable that may be affected by this system
+   * data (conservative approximation).
+   */
+  private Variable getAnAffectedVar() {
+    (
+      result.getAnAssignedValue() = this.getAnExprIndirect() or
+      result.getAnAccess() = this.getAnExprIndirect()
+    ) and
+    not result instanceof LocalScopeVariable
   }
 }
 

@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The <code>__getslice__</code>, <code>__setslice__</code> and <code>__delslice__</code> methods have been deprecated since Python 2.0.
+In general, no class should implement these methods.
+</p>
+
+<p>
+The only exceptions to this rule are classes that inherit from <code>list</code> and override <code>__getitem__</code>,
+<code>__setitem__</code> or <code>__delitem__</code>.
+Since <code>list</code> implements the slicing methods any class inheriting from <code>list</code> must implement the 
+the slicing methods to ensure correct behavior of <code>__getitem__</code>, <code>__setitem__</code> and <code>__delitem__</code>.
+These exceptions to the rule will not be treated as violations.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Delete the slicing method. Any functionality should be moved to the equivalent <code>__xxxitem__</code> method:
+</p>
+<ul>
+    <li><code>__getslice__</code> should be replaced with <code>__getitem__</code></li>
+    <li><code>__setslice__</code> should be replaced with <code>__setitem__</code></li>
+    <li><code>__delslice__</code> should be replaced with <code>__delitem__</code></li>
+</ul>
+
+</recommendation>
+<references>
+
+<li>Python Language Reference: <a href="https://docs.python.org/2/reference/datamodel.html#additional-methods-for-emulation-of-sequence-types">
+Additional methods for emulation of sequence types</a>.
+</li>
+
+</references>
+</qhelp>

@@ -1,0 +1,10 @@
+| Function f | builtin-class NoneType |
+| Function f | builtin-class int |
+| Function g | builtin-class NoneType |
+| Function g | builtin-class float |
+| Function g | builtin-class int |
+| Function gen | builtin-class generator |
+| Function h | builtin-class NoneType |
+| Function h | builtin-class float |
+| Function h | builtin-class int |
+| Function not_none | builtin-class bool |

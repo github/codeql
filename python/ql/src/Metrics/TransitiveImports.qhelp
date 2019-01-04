@@ -1,0 +1,25 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This metric measures the number of modules that are imported by each module (file) - either directly 
+by an import statement or indirectly (that is, imported by a module that is imported). Modules that 
+import many other modules often have too many responsibilities and are not well-focused. 
+This makes it difficult to understand and maintain the module.
+</p>
+
+</overview>
+<recommendation>
+<p>Split and/or refactor files with too many responsibilities to create modules with a single, 
+well-defined role.</p>
+
+</recommendation>
+<references>
+
+<li>Python Language Reference: <a href="http://docs.python.org/2/reference/simple_stmts.html#import">The import statement</a>.
+</li><li>M. Fowler, <em>Refactoring</em>. Addison-Wesley, 1999.</li>
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Code_refactoring">Code refactoring</a>.</li>
+
+</references>
+</qhelp>

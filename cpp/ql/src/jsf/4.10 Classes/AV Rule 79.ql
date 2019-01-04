@@ -195,28 +195,31 @@ predicate freedInSameMethod(Resource r, Expr acquire) {
  */
 predicate leakedInSameMethod(Resource r, Expr acquire) {
   unreleasedResource(r, acquire, _, _) and
-  (
-    exists(FunctionCall fc |
-      // `r` (or something computed from it) is passed to another function
-      // near to where it's acquired, and might be stored elsewhere.
-      fc.getAnArgument().getAChild*() = r.getAnAccess() and
-      fc.getEnclosingFunction() = acquire.getEnclosingFunction()
-    ) or exists(Variable v, Expr e | 
-      // `r` (or something computed from it) is stored in another variable
-      // near to where it's acquired, and might be released through that
-      // variable.
-      v.getAnAssignedValue() = e and
-      e.getAChild*() = r.getAnAccess() and
-      e.getEnclosingFunction() = acquire.getEnclosingFunction()
-    ) or exists(FunctionCall fc |
-      // `this` (i.e. the class where `r` is acquired) is passed into `r` via a
-      // method, or the constructor.  `r` may use this to register itself with
-      // `this` in some way, ensuring it is later deleted.
-      fc.getEnclosingFunction() = acquire.getEnclosingFunction() and
-      fc.getAnArgument() instanceof ThisExpr and
-      (
-        fc.getQualifier() = r.getAnAccess() or // e.g. `r->setOwner(this)`
-        fc = acquire.getAChild*() // e.g. `r = new MyClass(this)`
+  exists(Function f |
+    acquire.getEnclosingFunction() = f and
+    (
+      exists(FunctionCall fc |
+        // `r` (or something computed from it) is passed to another function
+        // near to where it's acquired, and might be stored elsewhere.
+        fc.getAnArgument().getAChild*() = r.getAnAccess() and
+        fc.getEnclosingFunction() = f
+      ) or exists(Variable v, Expr e | 
+        // `r` (or something computed from it) is stored in another variable
+        // near to where it's acquired, and might be released through that
+        // variable.
+        v.getAnAssignedValue() = e and
+        e.getAChild*() = r.getAnAccess() and
+        e.getEnclosingFunction() = f
+      ) or exists(FunctionCall fc |
+        // `this` (i.e. the class where `r` is acquired) is passed into `r` via a
+        // method, or the constructor.  `r` may use this to register itself with
+        // `this` in some way, ensuring it is later deleted.
+        fc.getEnclosingFunction() = f and
+        fc.getAnArgument() instanceof ThisExpr and
+        (
+          fc.getQualifier() = r.getAnAccess() or // e.g. `r->setOwner(this)`
+          fc = acquire.getAChild*() // e.g. `r = new MyClass(this)`
+        )
       )
     )
   )

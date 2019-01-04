@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>All functions in Python return a value.
+If a function has no <code>return</code> statements or none of the <code>return</code> statements return a value
+then the function will return <code>None</code>. However, this value has no meaning and should be ignored.</p>
+
+<p>Using the return value of such a 'procedure' is confusing to the reader as it suggests
+that the value is significant.
+</p>
+
+</overview>
+<recommendation>
+<p>Do not use the return value of a procedure; replace <code>x = proc()</code> with <code>proc()</code>
+and replace any use of the value with <code>None</code>.</p>
+
+</recommendation>
+<example>
+<p>In this example, the <code>my_print</code> function is a procedure as it returns no value of any meaning.
+Using the return value is misleading in subsequent code.
+</p>
+<sample src="UseImplicitNoneReturnValue.py" />
+
+</example>
+<references>
+
+  <li>Python Library Reference: <a href="http://docs.python.org/library/constants.html#None">None</a>.</li>
+
+</references>
+</qhelp>

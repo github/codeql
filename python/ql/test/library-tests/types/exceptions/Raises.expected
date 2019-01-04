@@ -1,0 +1,37 @@
+| Function coro | Unknown |
+| Function f1 | None |
+| Function f2 | class ExceptionA |
+| Function f5 | class ExceptionA |
+| Function f6 | class ExceptionB |
+| Function f7 | class ExceptionA |
+| Function f7 | class ExceptionB |
+| Function f8 | class ExceptionA |
+| Function f8a | class ExceptionA |
+| Function f8a | class ExceptionB |
+| Function f9 | class ExceptionA |
+| Function f10 | None |
+| Function f11 | class ExceptionC |
+| Function f12 | builtin-class LookupError |
+| Function f13 | None |
+| Function f14 | None |
+| Function f15 | None |
+| Function f16 | None |
+| Function f17 | None |
+| Function f18 | builtin-class LookupError |
+| Function f19 | builtin-class IndexError |
+| Function f20 | None |
+| Function f21 | builtin-class IndexError |
+| Function f22 | builtin-class IndexError |
+| Function f23 | class ExceptionA |
+| Function f23 | class ExceptionB |
+| Function f23 | class ExceptionC |
+| Function f24 | class ExceptionA |
+| Function f24 | class ExceptionB |
+| Function f25 | class ExceptionA |
+| Function f25 | class ExceptionB |
+| Function f25 | class ExceptionC |
+| Function f26 | class ExceptionB |
+| Function f26 | class ExceptionC |
+| Function f27 | None |
+| Function test_handled | Unknown |
+| Function use_coro | Unknown |

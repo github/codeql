@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The <code>__init__</code> method of a class is used to initialize new objects,
+not create them. As such, it should not return any value. Returning <code>None</code>
+is correct in the sense that no runtime error will occur,
+but it suggests that the returned value is meaningful, which it is not.</p>
+
+</overview>
+<recommendation>
+<p>Convert the <code>return expr</code> statement to a plain <code>return</code> statement,
+or omit it altogether if it is at the end of the method.</p>
+
+</recommendation>
+<example>
+<p>In this example, the <code>__init__</code> method attempts to return the newly created 
+object. This is an error and the return method should be removed.</p>
+<sample src="ExplicitReturnInInit.py" />
+
+</example>
+<references>
+
+  <li>Python: <a href="http://docs.python.org/2.7/reference/datamodel.html#object.__init__">The __init__ method</a>.</li>
+
+</references>
+</qhelp>

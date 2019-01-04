@@ -1,7 +1,11 @@
-#-----| __va_list_tag::operator=() -> __va_list_tag &
+#-----| __va_list_tag::operator=(__va_list_tag &&) -> __va_list_tag &
 #-----|   params: 
-#-----| __va_list_tag::operator=() -> __va_list_tag &
+#-----|     0: p#0
+#-----|         Type = __va_list_tag &&
+#-----| __va_list_tag::operator=(const __va_list_tag &) -> __va_list_tag &
 #-----|   params: 
+#-----|     0: p#0
+#-----|         Type = const __va_list_tag &
 #-----| operator delete(void *, unsigned long) -> void
 #-----|   params: 
 #-----|     0: p#0
@@ -3321,10 +3325,10 @@ ir.cpp:
 #  504|           expr: {...}
 #  504|               Type = Point
 #  504|               ValueCategory = prvalue
-#  504|             0: x
+#  504|             .x: x
 #  504|                 Type = int
 #  504|                 ValueCategory = prvalue(load)
-#  504|             1: (int)...
+#  504|             .y: (int)...
 #  504|                 Conversion = floating point to integral conversion
 #  504|                 Type = int
 #  504|                 ValueCategory = prvalue
@@ -3338,7 +3342,7 @@ ir.cpp:
 #  505|           expr: {...}
 #  505|               Type = Point
 #  505|               ValueCategory = prvalue
-#  505|             0: x
+#  505|             .x: x
 #  505|                 Type = int
 #  505|                 ValueCategory = prvalue(load)
 #  506|     2: declaration
@@ -3386,13 +3390,13 @@ ir.cpp:
 #  514|           expr: {...}
 #  514|               Type = Rect
 #  514|               ValueCategory = prvalue
-#  514|             0: {...}
+#  514|             .topLeft: {...}
 #  514|                 Type = Point
 #  514|                 ValueCategory = prvalue
-#  514|               0: x
+#  514|               .x: x
 #  514|                   Type = int
 #  514|                   ValueCategory = prvalue(load)
-#  514|               1: (int)...
+#  514|               .y: (int)...
 #  514|                   Conversion = floating point to integral conversion
 #  514|                   Type = int
 #  514|                   ValueCategory = prvalue
@@ -3406,26 +3410,26 @@ ir.cpp:
 #  515|           expr: {...}
 #  515|               Type = Rect
 #  515|               ValueCategory = prvalue
-#  515|             0: {...}
+#  515|             .topLeft: {...}
 #  515|                 Type = Point
 #  515|                 ValueCategory = prvalue
-#  515|               0: x
+#  515|               .x: x
 #  515|                   Type = int
 #  515|                   ValueCategory = prvalue(load)
-#  515|               1: (int)...
+#  515|               .y: (int)...
 #  515|                   Conversion = floating point to integral conversion
 #  515|                   Type = int
 #  515|                   ValueCategory = prvalue
 #  515|                 expr: f
 #  515|                     Type = float
 #  515|                     ValueCategory = prvalue(load)
-#  515|             1: {...}
+#  515|             .bottomRight: {...}
 #  515|                 Type = Point
 #  515|                 ValueCategory = prvalue
-#  515|               0: x
+#  515|               .x: x
 #  515|                   Type = int
 #  515|                   ValueCategory = prvalue(load)
-#  515|               1: (int)...
+#  515|               .y: (int)...
 #  515|                   Conversion = floating point to integral conversion
 #  515|                   Type = int
 #  515|                   ValueCategory = prvalue
@@ -3439,16 +3443,16 @@ ir.cpp:
 #  516|           expr: {...}
 #  516|               Type = Rect
 #  516|               ValueCategory = prvalue
-#  516|             0: {...}
+#  516|             .topLeft: {...}
 #  516|                 Type = Point
 #  516|                 ValueCategory = prvalue
-#  516|               0: x
+#  516|               .x: x
 #  516|                   Type = int
 #  516|                   ValueCategory = prvalue(load)
-#  516|             1: {...}
+#  516|             .bottomRight: {...}
 #  516|                 Type = Point
 #  516|                 ValueCategory = prvalue
-#  516|               0: x
+#  516|               .x: x
 #  516|                   Type = int
 #  516|                   ValueCategory = prvalue(load)
 #  517|     4: return ...
@@ -3473,17 +3477,17 @@ ir.cpp:
 #  521|           expr: {...}
 #  521|               Type = int[3]
 #  521|               ValueCategory = prvalue
-#  521|             0: x
+#  521|             [0]: x
 #  521|                 Type = int
 #  521|                 ValueCategory = prvalue(load)
-#  521|             1: (int)...
+#  521|             [1]: (int)...
 #  521|                 Conversion = floating point to integral conversion
 #  521|                 Type = int
 #  521|                 ValueCategory = prvalue
 #  521|               expr: f
 #  521|                   Type = float
 #  521|                   ValueCategory = prvalue(load)
-#  521|             2: 0
+#  521|             [2]: 0
 #  521|                 Type = int
 #  521|                 Value = 0
 #  521|                 ValueCategory = prvalue
@@ -3494,7 +3498,7 @@ ir.cpp:
 #  522|           expr: {...}
 #  522|               Type = int[3]
 #  522|               ValueCategory = prvalue
-#  522|             0: x
+#  522|             [0]: x
 #  522|                 Type = int
 #  522|                 ValueCategory = prvalue(load)
 #  523|     3: return ...
@@ -3520,7 +3524,7 @@ ir.cpp:
 #  531|           expr: {...}
 #  531|               Type = U
 #  531|               ValueCategory = prvalue
-#  531|             0: (double)...
+#  531|             .d: (double)...
 #  531|                 Conversion = floating point conversion
 #  531|                 Type = double
 #  531|                 ValueCategory = prvalue
@@ -3704,7 +3708,7 @@ ir.cpp:
 #  577|           expr: {...}
 #  577|               Type = char[2]
 #  577|               ValueCategory = prvalue
-#  577|             0: (char)...
+#  577|             [0]: (char)...
 #  577|                 Conversion = integral conversion
 #  577|                 Type = char
 #  577|                 Value = 0
@@ -3720,7 +3724,7 @@ ir.cpp:
 #  578|           expr: {...}
 #  578|               Type = char[2]
 #  578|               ValueCategory = prvalue
-#  578|             0: (char)...
+#  578|             [0]: (char)...
 #  578|                 Conversion = integral conversion
 #  578|                 Type = char
 #  578|                 Value = 0
@@ -3729,7 +3733,7 @@ ir.cpp:
 #  578|                   Type = int
 #  578|                   Value = 0
 #  578|                   ValueCategory = prvalue
-#  578|             1: (char)...
+#  578|             [1]: (char)...
 #  578|                 Conversion = integral conversion
 #  578|                 Type = char
 #  578|                 Value = 1
@@ -3745,7 +3749,7 @@ ir.cpp:
 #  579|           expr: {...}
 #  579|               Type = char[3]
 #  579|               ValueCategory = prvalue
-#  579|             0: (char)...
+#  579|             [0]: (char)...
 #  579|                 Conversion = integral conversion
 #  579|                 Type = char
 #  579|                 Value = 0
@@ -6368,7 +6372,7 @@ ir.cpp:
 #  954|         1: {...}
 #  954|             Type = String[]
 #  954|             ValueCategory = prvalue
-#  954|           0: call to String
+#  954|           [0]: call to String
 #  954|               Type = void
 #  954|               ValueCategory = prvalue
 #  954|         2: n
@@ -6410,7 +6414,7 @@ ir.cpp:
 #  957|         1: {...}
 #  957|             Type = DefaultCtorWithDefaultParam[]
 #  957|             ValueCategory = prvalue
-#  957|           0: call to DefaultCtorWithDefaultParam
+#  957|           [0]: call to DefaultCtorWithDefaultParam
 #  957|               Type = void
 #  957|               ValueCategory = prvalue
 #  957|         2: n
@@ -6423,15 +6427,15 @@ ir.cpp:
 #  958|         1: {...}
 #  958|             Type = int[3]
 #  958|             ValueCategory = prvalue
-#  958|           0: 0
+#  958|           [0]: 0
 #  958|               Type = int
 #  958|               Value = 0
 #  958|               ValueCategory = prvalue
-#  958|           1: 1
+#  958|           [1]: 1
 #  958|               Type = int
 #  958|               Value = 1
 #  958|               ValueCategory = prvalue
-#  958|           2: 2
+#  958|           [2]: 2
 #  958|               Type = int
 #  958|               Value = 2
 #  958|               ValueCategory = prvalue
@@ -6449,11 +6453,11 @@ ir.cpp:
 #  962|           expr: {...}
 #  962|               Type = int[1000]
 #  962|               ValueCategory = prvalue
-#  962|             0: 10002
+#  962|             [2]: 10002
 #  962|                 Type = int
 #  962|                 Value = 10002
 #  962|                 ValueCategory = prvalue
-#  962|             1: 10900
+#  962|             [900]: 10900
 #  962|                 Type = int
 #  962|                 Value = 10900
 #  962|                 ValueCategory = prvalue
@@ -6587,3 +6591,194 @@ ir.cpp:
 #  983|               ValueCategory = prvalue(load)
 #  983|       1: { ... }
 #  985|     3: return ...
+# 1005| ChiPhiNode(Point *, bool, bool) -> int
+# 1005|   params: 
+# 1005|     0: p
+# 1005|         Type = Point *
+# 1005|     1: which1
+# 1005|         Type = bool
+# 1005|     2: which2
+# 1005|         Type = bool
+# 1005|   body: { ... }
+# 1006|     0: if (...) ... 
+# 1006|       0: which1
+# 1006|           Type = bool
+# 1006|           ValueCategory = prvalue(load)
+# 1006|       1: { ... }
+# 1007|         0: ExprStmt
+# 1007|           0: ... ++
+# 1007|               Type = int
+# 1007|               ValueCategory = prvalue
+# 1007|             0: x
+# 1007|                 Type = int
+# 1007|                 ValueCategory = lvalue
+# 1007|               -1: p
+# 1007|                   Type = Point *
+# 1007|                   ValueCategory = prvalue(load)
+# 1008|       2: { ... }
+# 1009|         0: ExprStmt
+# 1009|           0: ... ++
+# 1009|               Type = int
+# 1009|               ValueCategory = prvalue
+# 1009|             0: y
+# 1009|                 Type = int
+# 1009|                 ValueCategory = lvalue
+# 1009|               -1: p
+# 1009|                   Type = Point *
+# 1009|                   ValueCategory = prvalue(load)
+# 1012|     1: if (...) ... 
+# 1012|       0: which2
+# 1012|           Type = bool
+# 1012|           ValueCategory = prvalue(load)
+# 1012|       1: { ... }
+# 1013|         0: ExprStmt
+# 1013|           0: ... ++
+# 1013|               Type = int
+# 1013|               ValueCategory = prvalue
+# 1013|             0: x
+# 1013|                 Type = int
+# 1013|                 ValueCategory = lvalue
+# 1013|               -1: p
+# 1013|                   Type = Point *
+# 1013|                   ValueCategory = prvalue(load)
+# 1014|       2: { ... }
+# 1015|         0: ExprStmt
+# 1015|           0: ... ++
+# 1015|               Type = int
+# 1015|               ValueCategory = prvalue
+# 1015|             0: y
+# 1015|                 Type = int
+# 1015|                 ValueCategory = lvalue
+# 1015|               -1: p
+# 1015|                   Type = Point *
+# 1015|                   ValueCategory = prvalue(load)
+# 1018|     2: return ...
+# 1018|       0: ... + ...
+# 1018|           Type = int
+# 1018|           ValueCategory = prvalue
+# 1018|         0: x
+# 1018|             Type = int
+# 1018|             ValueCategory = prvalue(load)
+# 1018|           -1: p
+# 1018|               Type = Point *
+# 1018|               ValueCategory = prvalue(load)
+# 1018|         1: y
+# 1018|             Type = int
+# 1018|             ValueCategory = prvalue(load)
+# 1018|           -1: p
+# 1018|               Type = Point *
+# 1018|               ValueCategory = prvalue(load)
+# 1021| UnreachableViaGoto() -> int
+# 1021|   params: 
+# 1021|   body: { ... }
+# 1022|     0: goto ...
+# 1023|     1: return ...
+# 1023|       0: 1
+# 1023|           Type = int
+# 1023|           Value = 1
+# 1023|           ValueCategory = prvalue
+# 1024|     2: label ...:
+# 1025|     3: return ...
+# 1025|       0: 0
+# 1025|           Type = int
+# 1025|           Value = 0
+# 1025|           ValueCategory = prvalue
+# 1028| UnreachableIf(bool) -> int
+# 1028|   params: 
+# 1028|     0: b
+# 1028|         Type = bool
+# 1028|   body: { ... }
+# 1029|     0: declaration
+# 1029|       0: definition of x
+# 1029|           Type = int
+# 1029|         init: initializer for x
+# 1029|           expr: 5
+# 1029|               Type = int
+# 1029|               Value = 5
+# 1029|               ValueCategory = prvalue
+# 1030|     1: declaration
+# 1030|       0: definition of y
+# 1030|           Type = int
+# 1030|         init: initializer for y
+# 1030|           expr: 10
+# 1030|               Type = int
+# 1030|               Value = 10
+# 1030|               ValueCategory = prvalue
+# 1031|     2: if (...) ... 
+# 1031|       0: b
+# 1031|           Type = bool
+# 1031|           ValueCategory = prvalue(load)
+# 1031|       1: { ... }
+# 1032|         0: if (...) ... 
+# 1032|           0: ... == ...
+# 1032|               Type = bool
+# 1032|               ValueCategory = prvalue
+# 1032|             0: x
+# 1032|                 Type = int
+# 1032|                 ValueCategory = prvalue(load)
+# 1032|             1: y
+# 1032|                 Type = int
+# 1032|                 ValueCategory = prvalue(load)
+# 1032|           1: { ... }
+# 1033|             0: return ...
+# 1033|               0: 1
+# 1033|                   Type = int
+# 1033|                   Value = 1
+# 1033|                   ValueCategory = prvalue
+# 1035|           2: { ... }
+# 1036|             0: return ...
+# 1036|               0: 0
+# 1036|                   Type = int
+# 1036|                   Value = 0
+# 1036|                   ValueCategory = prvalue
+# 1039|       2: { ... }
+# 1040|         0: if (...) ... 
+# 1040|           0: ... < ...
+# 1040|               Type = bool
+# 1040|               ValueCategory = prvalue
+# 1040|             0: x
+# 1040|                 Type = int
+# 1040|                 ValueCategory = prvalue(load)
+# 1040|             1: y
+# 1040|                 Type = int
+# 1040|                 ValueCategory = prvalue(load)
+# 1040|           1: { ... }
+# 1041|             0: return ...
+# 1041|               0: 0
+# 1041|                   Type = int
+# 1041|                   Value = 0
+# 1041|                   ValueCategory = prvalue
+# 1043|           2: { ... }
+# 1044|             0: return ...
+# 1044|               0: 1
+# 1044|                   Type = int
+# 1044|                   Value = 1
+# 1044|                   ValueCategory = prvalue
+# 1049| DoWhileFalse() -> int
+# 1049|   params: 
+# 1049|   body: { ... }
+# 1050|     0: declaration
+# 1050|       0: definition of i
+# 1050|           Type = int
+# 1050|         init: initializer for i
+# 1050|           expr: 0
+# 1050|               Type = int
+# 1050|               Value = 0
+# 1050|               ValueCategory = prvalue
+# 1051|     1: do (...) ...
+# 1053|       0: 0
+# 1053|           Type = bool
+# 1053|           Value = 0
+# 1053|           ValueCategory = prvalue
+# 1051|       1: { ... }
+# 1052|         0: ExprStmt
+# 1052|           0: ... ++
+# 1052|               Type = int
+# 1052|               ValueCategory = prvalue
+# 1052|             0: i
+# 1052|                 Type = int
+# 1052|                 ValueCategory = lvalue
+# 1055|     2: return ...
+# 1055|       0: i
+# 1055|           Type = int
+# 1055|           ValueCategory = prvalue(load)

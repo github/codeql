@@ -16,8 +16,8 @@ namespace Semmle.Extraction.CIL.Entities
 
         public File(Context cx, string path) : base(cx)
         {
-            this.path = path.Replace("\\", "/");
-            ShortId = new StringId(path.Replace(":", "_"));
+            this.path = Semmle.Extraction.Entities.File.PathAsDatabaseString(path);
+            ShortId = new StringId(Semmle.Extraction.Entities.File.PathAsDatabaseId(path));
         }
 
         public override IEnumerable<IExtractionProduct> Contents

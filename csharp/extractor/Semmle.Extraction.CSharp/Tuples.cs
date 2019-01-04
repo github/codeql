@@ -130,6 +130,9 @@ namespace Semmle.Extraction.CSharp
 
         internal static Tuple localvars(LocalVariable key, int @const, string name, int @var, Type type, Expression expr) => new Tuple("localvars", key, @const, name, @var, type, expr);
 
+        public static Tuple metadata_handle(IEntity entity, Location assembly, int handleValue) =>
+            new Tuple("metadata_handle", entity, assembly, handleValue);
+
         internal static Tuple method_location(Method method, Location location) => new Tuple("method_location", method, location);
 
         internal static Tuple methods(Method method, string name, Type declType, Type retType, Method originalDefinition) => new Tuple("methods", method, name, declType, retType, originalDefinition);

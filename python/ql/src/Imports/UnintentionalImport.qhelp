@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>When you import a module using <code>from xxx import *</code> all public names defined in the
+module are imported and bound in the local namespace of the <code>import</code> statement. The
+public names are determined by checking the <code>__all__</code> variable for the module. If <code>
+__all__</code> is not defined then all names within the module that do not start with an underscore
+character are imported. This pollutes the current namespace with names that are not part of the
+public API for the module.
+</p>
+
+</overview>
+<recommendation>
+<p>There are two ways to address this problem:</p>
+<ul><li>where possible, modify the module being imported <em>from</em> and define <code>__all__
+</code> to restrict the names to be imported</li>
+<li>otherwise, explicitly import the values that you need.</li>
+</ul>
+
+</recommendation>
+<example>
+<p>The following simple example shows how <code>__all__</code> controls the public names for the
+module <code>finance</code>.</p>
+<sample src="UnintentionalImport.py" />
+
+<p>If the <code>finance</code> module did not include a definition of <code>__all__</code>, then you
+could replace <code>from finance import *</code> with <code>from finance import tax1, tax2</code>.
+</p>
+
+</example>
+<references>
+
+<li>Python Language Reference: <a href="http://docs.python.org/2/reference/simple_stmts.html#import">The import statement</a>.
+</li>
+<li>Python Tutorial: <a href="http://docs.python.org/2/tutorial/modules.html">Modules</a>.</li>
+
+
+
+
+</references>
+</qhelp>

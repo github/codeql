@@ -1,0 +1,24 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<fragment>
+
+<p> It is sometimes necessary to have a variable which is not used.
+These unused variables should have distinctive names, to make it clear to readers of the code that they are deliberately not used.
+The most common conventions for indicating this are to name the variable <code>_</code> or to start the name of the
+variable with <code>unused</code> or <code>_unused</code>.
+</p>
+
+<p>
+The query accepts the following names for variables that are intended to be unused:
+</p>
+<ul>
+<li>Any name consisting entirely of underscores.</li>
+<li>Any name containing <code>unused</code>.</li>
+<li>The names <code>dummy</code> or <code>empty</code>.</li>
+<li>Any "special" name of the form <code>__xxx__</code>.</li>
+</ul>
+
+</fragment>
+</qhelp>

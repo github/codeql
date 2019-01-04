@@ -542,6 +542,42 @@ class FunctionNode extends ASTNode {
   }
 }
 
+/**
+ * A node representing an `ClassAggregateLiteral`.
+ */
+class ClassAggregateLiteralNode extends ExprNode {
+  ClassAggregateLiteral list;
+
+  ClassAggregateLiteralNode() {
+    list = ast
+  }
+
+  override string getChildEdgeLabel(int childIndex) {
+    exists(Field field |
+      list.getFieldExpr(field) = list.getChild(childIndex) and
+      result = "." + field.getName()
+    )
+  }
+}
+
+/**
+ * A node representing an `ArrayAggregateLiteral`.
+ */
+class ArrayAggregateLiteralNode extends ExprNode {
+  ArrayAggregateLiteral list;
+
+  ArrayAggregateLiteralNode() {
+    list = ast
+  }
+
+  override string getChildEdgeLabel(int childIndex) {
+    exists(int elementIndex |
+      list.getElementExpr(elementIndex) = list.getChild(childIndex) and
+      result = "[" + elementIndex.toString() + "]"
+    )
+  }
+}
+
 query predicate nodes(PrintASTNode node, string key, string value) {
   node.shouldPrint() and
   value = node.getProperty(key)

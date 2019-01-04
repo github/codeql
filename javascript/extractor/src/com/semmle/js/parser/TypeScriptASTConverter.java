@@ -60,6 +60,7 @@ import com.semmle.js.ast.ImportSpecifier;
 import com.semmle.js.ast.InvokeExpression;
 import com.semmle.js.ast.LabeledStatement;
 import com.semmle.js.ast.Literal;
+import com.semmle.js.ast.LogicalExpression;
 import com.semmle.js.ast.MemberDefinition;
 import com.semmle.js.ast.MemberExpression;
 import com.semmle.js.ast.DeclarationFlags;
@@ -825,8 +826,9 @@ public class TypeScriptASTConverter {
 		Expression left = convertChild(node, "left");
 		Expression right = convertChild(node, "right");
 		JsonObject operatorToken = node.get("operatorToken").getAsJsonObject();
-		String operatorKind = getKind(operatorToken);
-		if ("CommaToken".equals(operatorKind)) {
+		String operator = getSourceLocation(operatorToken).getSource();
+		switch (operator) {
+		case ",":
 			List<Expression> expressions = new ArrayList<Expression>();
 			if (left instanceof SequenceExpression)
 				expressions.addAll(((SequenceExpression) left).getExpressions());
@@ -837,10 +839,30 @@ public class TypeScriptASTConverter {
 			else
 				expressions.add(right);
 			return new SequenceExpression(loc, expressions);
-		} else {
-			String operator = getSourceLocation(operatorToken).getSource();
-			if ("EqualsToken".equals(operatorKind))
-				left = convertLValue(left);
+
+		case "||":
+		case "&&":
+			return new LogicalExpression(loc, operator, left, right);
+
+		case "=":
+			left = convertLValue(left); // For plain assignments, the lhs can be a destructuring pattern.
+			return new AssignmentExpression(loc, operator, left, right);
+
+		case "+=":
+		case "-=":
+		case "*=":
+		case "**=":
+		case "/=":
+		case "%=":
+		case "^=":
+		case "&=":
+		case "|=":
+		case ">>=":
+		case "<<=":
+		case ">>>=":
+			return new AssignmentExpression(loc, operator, convertLValue(left), right);
+
+		default:
 			return new BinaryExpression(loc, operator, left, right);
 		}
 	}
@@ -860,7 +882,7 @@ public class TypeScriptASTConverter {
 		}
 		Expression callee = convertChild(node, "expression");
 		List<ITypeExpression> typeArguments = convertChildrenAsTypes(node, "typeArguments");
-		CallExpression call = new CallExpression(loc, callee, typeArguments, arguments);
+		CallExpression call = new CallExpression(loc, callee, typeArguments, arguments, false, false);
 		attachResolvedSignature(call, node);
 		return call;
 	}
@@ -1057,7 +1079,7 @@ public class TypeScriptASTConverter {
 			SourceLocation loc) throws ParseError {
 		Expression object = convertChild(node, "expression");
 		Expression property = convertChild(node, "argumentExpression");
-		return new MemberExpression(loc, object, property, true);
+		return new MemberExpression(loc, object, property, true, false, false);
 	}
 
 	private Node convertEmptyStatement(SourceLocation loc) {
@@ -1341,7 +1363,7 @@ public class TypeScriptASTConverter {
 		} else {
 			throw new ParseError("Unsupported syntax in import type", getSourceLocation(node).getStart());
 		}
-		MemberExpression member = new MemberExpression(getSourceLocation(node), (Expression) base, name, false);
+		MemberExpression member = new MemberExpression(getSourceLocation(node), (Expression) base, name, false, false, false);
 		attachSymbolInformation(member, node);
 		return member;
 	}
@@ -1612,7 +1634,7 @@ public class TypeScriptASTConverter {
 			if (hasChild(element, "dotDotDotToken")) {
 				propVal = new RestElement(eltLoc, propKey);
 			} else if (hasChild(element, "initializer")) {
-				propVal = new AssignmentPattern(eltLoc, "=", propKey, convertChild(element, "initializer"));
+				propVal = new AssignmentPattern(eltLoc, "=", convertChild(element, "name"), convertChild(element, "initializer"));
 			} else {
 				propVal = convertChild(element, "name");
 			}
@@ -1827,7 +1849,7 @@ public class TypeScriptASTConverter {
 
 	private Node convertPropertyAccessExpression(JsonObject node,
 			SourceLocation loc) throws ParseError {
-		return new MemberExpression(loc, convertChild(node, "expression"), convertChild(node, "name"), false);
+		return new MemberExpression(loc, convertChild(node, "expression"), convertChild(node, "name"), false, false, false);
 	}
 
 	private Node convertPropertyAssignment(JsonObject node,
@@ -1868,7 +1890,7 @@ public class TypeScriptASTConverter {
 	}
 
 	private Node convertQualifiedName(JsonObject node, SourceLocation loc) throws ParseError {
-		MemberExpression expr = new MemberExpression(loc, convertChild(node, "left"), convertChild(node, "right"), false);
+		MemberExpression expr = new MemberExpression(loc, convertChild(node, "left"), convertChild(node, "right"), false, false, false);
 		attachSymbolInformation(expr, node);
 		return expr;
 	}

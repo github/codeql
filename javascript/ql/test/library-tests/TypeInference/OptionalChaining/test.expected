@@ -1,0 +1,22 @@
+| tst.js:2:14:2:21 | (null)() | file://:0:0:0:0 | indefinite value (call) |
+| tst.js:3:14:3:23 | (null)?.() | file://:0:0:0:0 | indefinite value (call) |
+| tst.js:3:14:3:23 | (null)?.() | file://:0:0:0:0 | undefined |
+| tst.js:4:14:4:26 | (undefined)() | file://:0:0:0:0 | indefinite value (call) |
+| tst.js:5:14:5:28 | (undefined)?.() | file://:0:0:0:0 | indefinite value (call) |
+| tst.js:5:14:5:28 | (undefined)?.() | file://:0:0:0:0 | undefined |
+| tst.js:6:14:6:24 | (unknown)() | file://:0:0:0:0 | indefinite value (call) |
+| tst.js:7:14:7:26 | (unknown)?.() | file://:0:0:0:0 | indefinite value (call) |
+| tst.js:7:14:7:26 | (unknown)?.() | file://:0:0:0:0 | undefined |
+| tst.js:9:13:11:5 | unknown ... ;\\n    } | file://:0:0:0:0 | undefined |
+| tst.js:9:13:11:5 | unknown ... ;\\n    } | tst.js:9:33:11:5 | anonymous function |
+| tst.js:12:14:12:16 | f() | file://:0:0:0:0 | non-zero value |
+| tst.js:13:14:13:18 | f?.() | file://:0:0:0:0 | non-zero value |
+| tst.js:13:14:13:18 | f?.() | file://:0:0:0:0 | undefined |
+| tst.js:15:13:17:5 | functio ... ;\\n    } | tst.js:15:13:17:5 | function g |
+| tst.js:18:14:18:16 | g() | file://:0:0:0:0 | non-zero value |
+| tst.js:19:15:19:19 | g?.() | file://:0:0:0:0 | non-zero value |
+| tst.js:19:15:19:19 | g?.() | file://:0:0:0:0 | undefined |
+| tst.js:21:13:21:21 | undefined | file://:0:0:0:0 | undefined |
+| tst.js:22:15:22:17 | h() | file://:0:0:0:0 | indefinite value (call) |
+| tst.js:23:15:23:19 | h?.() | file://:0:0:0:0 | indefinite value (call) |
+| tst.js:23:15:23:19 | h?.() | file://:0:0:0:0 | undefined |

@@ -304,6 +304,45 @@ class PositionalArgumentOperand extends ArgumentOperand {
   override string toString() {
     result = "Arg(" + argIndex + ")"
   }
+
+  /**
+   * Gets the zero-based index of the argument.
+   */
+  final int getIndex() {
+    result = argIndex
+  }
+}
+
+class SideEffectOperand extends NonPhiOperand {
+  SideEffectOperand() {
+    this = TNonPhiOperand(_, sideEffectOperand(), _)
+  }
+  
+  override MemoryAccessKind getMemoryAccess() {
+    instr instanceof CallSideEffectInstruction and
+    result instanceof EscapedMemoryAccess
+    or
+    instr instanceof CallReadSideEffectInstruction and
+    result instanceof EscapedMemoryAccess
+    or
+    instr instanceof IndirectReadSideEffectInstruction and
+    result instanceof IndirectMemoryAccess
+    or
+    instr instanceof BufferReadSideEffectInstruction and
+    result instanceof BufferMemoryAccess
+    or
+    instr instanceof IndirectWriteSideEffectInstruction and
+    result instanceof IndirectMemoryAccess
+    or
+    instr instanceof BufferWriteSideEffectInstruction and
+    result instanceof BufferMemoryAccess
+    or
+    instr instanceof IndirectMayWriteSideEffectInstruction and
+    result instanceof IndirectMayMemoryAccess
+    or
+    instr instanceof BufferMayWriteSideEffectInstruction and
+    result instanceof BufferMayMemoryAccess
+  }
 }
 
 /**
@@ -356,5 +395,40 @@ class PhiOperand extends Operand, TPhiOperand {
 class MemoryOperand extends Operand {
   MemoryOperand() {
     exists(getMemoryAccess())
+  }
+}
+
+/**
+ * The total operand of a Chi node, representing the previous value of the memory.
+ */
+class ChiTotalOperand extends Operand {
+  ChiTotalOperand() {
+    this = TNonPhiOperand(_, chiTotalOperand(), _)
+  }
+
+  override string toString() {
+    result = "ChiTotal"
+  }
+
+  override final MemoryAccessKind getMemoryAccess() {
+    result instanceof ChiTotalMemoryAccess
+  }
+}
+
+
+/**
+ * The partial operand of a Chi node, representing the value being written to part of the memory.
+ */
+class ChiPartialOperand extends Operand {
+  ChiPartialOperand() {
+    this = TNonPhiOperand(_, chiPartialOperand(), _)
+  }
+
+  override string toString() {
+    result = "ChiPartial"
+  }
+
+  override final MemoryAccessKind getMemoryAccess() {
+    result instanceof ChiPartialMemoryAccess
   }
 }

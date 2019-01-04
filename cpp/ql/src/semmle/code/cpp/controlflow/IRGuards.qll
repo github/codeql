@@ -2,6 +2,17 @@ import cpp
 import semmle.code.cpp.ir.IR
 
 /**
+ * Holds if `block` consists of an `UnreachedInstruction`.
+ *
+ * We avoiding reporting an unreached block as being controlled by a guard. The unreached block
+ * has the AST for the `Function` itself, which tends to confuse mapping between the AST `BasicBlock`
+ * and the `IRBlock`.
+ */
+private predicate isUnreachedBlock(IRBlock block) {
+  block.getFirstInstruction() instanceof UnreachedInstruction
+}
+
+/**
  * A Boolean condition in the AST that guards one or more basic blocks. This includes
  * operands of logical operators but not switch statements.
  */
@@ -215,7 +226,8 @@ private class GuardConditionFromIR extends GuardCondition {
     private predicate controlsBlock(BasicBlock controlled, boolean testIsTrue) {
       exists(IRBlock irb |
         forex(IRGuardCondition inst | inst = ir | inst.controls(irb, testIsTrue)) and
-        irb.getAnInstruction().getAST().(ControlFlowNode).getBasicBlock() = controlled
+        irb.getAnInstruction().getAST().(ControlFlowNode).getBasicBlock() = controlled and
+        not isUnreachedBlock(irb)
       )
     }
 }
@@ -301,6 +313,7 @@ class IRGuardCondition extends Instruction {
      * `&&` and `||`. See the detailed explanation on predicate `controls`.
      */
     private predicate controlsBlock(IRBlock controlled, boolean testIsTrue) {
+        not isUnreachedBlock(controlled) and
         exists(IRBlock thisblock
         | thisblock.getAnInstruction() = this
         | exists(IRBlock succ, ConditionalBranchInstruction branch

@@ -818,4 +818,29 @@ xmllocations(
 
 @xmllocatable = @xmlcharacters | @xmlelement | @xmlcomment | @xmlattribute | @xmldtd | @file | @xmlnamespace;
 
+/*
+ * configuration files with key value pairs
+ */
 
+configs(
+  unique int id: @config
+);
+
+configNames(
+  unique int id: @configName,
+  int config: @config ref,
+  string name: string ref
+);
+
+configValues(
+  unique int id: @configValue,
+  int config: @config ref,
+  string value: string ref
+);
+
+configLocations(
+  int locatable: @configLocatable ref,
+  int location: @location_default ref
+);
+
+@configLocatable = @config | @configName | @configValue;

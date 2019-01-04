@@ -215,6 +215,7 @@ public class AST2JSON extends DefaultVisitor<Void, JsonElement> {
 		JsonObject result = this.mkNode(nd);
 		result.add("callee", visit(nd.getCallee()));
 		result.add("arguments", visit(nd.getArguments()));
+		result.add("optional", new JsonPrimitive(nd.isOptional()));
 		return result;
 	}
 
@@ -424,6 +425,7 @@ public class AST2JSON extends DefaultVisitor<Void, JsonElement> {
 		result.add("object", visit(nd.getObject()));
 		result.add("property", visit(nd.getProperty()));
 		result.add("computed", new JsonPrimitive(nd.isComputed()));
+		result.add("optional", new JsonPrimitive(nd.isOptional()));
 		return result;
 	}
 

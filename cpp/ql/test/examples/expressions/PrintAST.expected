@@ -1,7 +1,11 @@
-#-----| __va_list_tag::operator=() -> __va_list_tag &
+#-----| __va_list_tag::operator=(__va_list_tag &&) -> __va_list_tag &
 #-----|   params: 
-#-----| __va_list_tag::operator=() -> __va_list_tag &
+#-----|     0: p#0
+#-----|         Type = __va_list_tag &&
+#-----| __va_list_tag::operator=(const __va_list_tag &) -> __va_list_tag &
 #-----|   params: 
+#-----|     0: p#0
+#-----|         Type = const __va_list_tag &
 #-----| operator delete(void *) -> void
 #-----|   params: 
 #-----|     0: p#0
@@ -882,6 +886,9 @@ VacuousDestructorCall.cpp:
 #    4|       0: (vacuous destructor call)
 #    4|           Type = void
 #    4|           ValueCategory = prvalue
+#    4|         0: y
+#    4|             Type = int *
+#    4|             ValueCategory = prvalue(load)
 #    5|     2: return ...
 #    7| Vacuous(int) -> void
 #    7|   params: 

@@ -691,6 +691,7 @@ usertype_uuid(
 );
 
 is_pod_class(unique int id: @usertype ref);
+is_standard_layout_class(unique int id: @usertype ref);
 
 is_complete(unique int id: @usertype ref);
 
@@ -1170,6 +1171,41 @@ expr_deallocator(
     int form: int ref
 );
 
+/**
+ * Holds if the `@conditionalexpr` is of the two operand form
+ * `guard ? : false`.
+ */
+expr_cond_two_operand(
+    unique int cond: @conditionalexpr ref
+);
+
+/**
+ * The guard of `@conditionalexpr` `guard ? true : false`
+ */
+expr_cond_guard(
+    unique int cond: @conditionalexpr ref,
+    int guard: @expr ref
+);
+
+/**
+ * The expression used when the guard of `@conditionalexpr`
+ * `guard ? true : false` holds. For the two operand form
+ * `guard ?: false` consider using `expr_cond_guard` instead.
+ */
+expr_cond_true(
+    unique int cond: @conditionalexpr ref,
+    int true: @expr ref
+);
+
+/**
+ * The expression used when the guard of `@conditionalexpr`
+ * `guard ? true : false` does not hold.
+ */
+expr_cond_false(
+    unique int cond: @conditionalexpr ref,
+    int false: @expr ref
+);
+
 // the second field is a string representation of the value
 // the third field is the actual text in the source or the same as the second field
 values(
@@ -1429,6 +1465,9 @@ case @expr.kind of
 | 319 = @noexceptexpr
 | 320 = @builtinshufflevector
 | 321 = @builtinchooseexpr
+| 322 = @builtinaddressof
+| 323 = @vec_fill
+| 324 = @builtinconvertvector
 ;
 
 new_allocated_type(

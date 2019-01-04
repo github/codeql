@@ -148,7 +148,11 @@ class TranslatedArrayListInitialization extends
   }
 
   override TranslatedElement getChild(int id) {
-    result = getTranslatedElementInitialization(initList, id)
+    // The children are in initialization order
+    result = rank[id + 1](TranslatedElementInitialization init |
+      init.getInitList() = initList |
+      init order by init.getElementIndex()
+    )
   }
 }
 
@@ -669,15 +673,6 @@ class TranslatedFieldValueInitialization extends
 }
 
 /**
- * Gets the `TranslatedElementInitialization` for element `elementIndex` in
- * initializer list `initList`.
- */
-TranslatedElementInitialization getTranslatedElementInitialization(
-  ArrayAggregateLiteral initList, int elementIndex) {
-  result.getInitList() = initList and result.getElementIndex() = elementIndex
-}
-
-/**
  * Represents the IR translation of the initialization of an array element from
  * an element of an initializer list.
  */
@@ -717,7 +712,7 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag,
-    EdgeKind kind) {
+      EdgeKind kind) {
     tag = getElementIndexTag() and
     result = getInstruction(getElementAddressTag()) and
     kind instanceof GotoEdge
@@ -767,9 +762,8 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
  * Represents the IR translation of the initialization of an array element from
  * an explicit element in an initializer list.
  */
-class TranslatedExplicitElementInitialization extends
-  TranslatedElementInitialization, TTranslatedExplicitElementInitialization,
-  InitializationContext {
+class TranslatedExplicitElementInitialization extends TranslatedElementInitialization,
+    TTranslatedExplicitElementInitialization, InitializationContext {
   int elementIndex;
 
   TranslatedExplicitElementInitialization() {
@@ -785,7 +779,7 @@ class TranslatedExplicitElementInitialization extends
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag,
-    EdgeKind kind) {
+      EdgeKind kind) {
     result = TranslatedElementInitialization.super.getInstructionSuccessor(tag, kind) or
     (
       tag = getElementAddressTag() and
@@ -816,8 +810,8 @@ class TranslatedExplicitElementInitialization extends
  * Represents the IR translation of the initialization of a range of array
  * elements without corresponding elements in the initializer list.
  */
-class TranslatedElementValueInitialization extends
-  TranslatedElementInitialization, TTranslatedElementValueInitialization {
+class TranslatedElementValueInitialization extends TranslatedElementInitialization,
+    TTranslatedElementValueInitialization {
   int elementIndex;
   int elementCount;
 

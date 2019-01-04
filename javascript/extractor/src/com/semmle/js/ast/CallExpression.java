@@ -8,8 +8,8 @@ import com.semmle.ts.ast.ITypeExpression;
  * A function call expression such as <code>f(1, 1)</code>.
  */
 public class CallExpression extends InvokeExpression {
-	public CallExpression(SourceLocation loc, Expression callee, List<ITypeExpression> typeArguments, List<Expression> arguments) {
-		super("CallExpression", loc, callee, typeArguments, arguments);
+	public CallExpression(SourceLocation loc, Expression callee, List<ITypeExpression> typeArguments, List<Expression> arguments, Boolean optional, Boolean onOptionalChain) {
+		super("CallExpression", loc, callee, typeArguments, arguments, optional, onOptionalChain);
 	}
 
 	@Override

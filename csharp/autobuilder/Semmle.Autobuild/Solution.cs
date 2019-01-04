@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Semmle.Util;
+using System.IO;
+using Semmle.Util.Logging;
 
 namespace Semmle.Autobuild
 {
@@ -55,25 +57,33 @@ namespace Semmle.Autobuild
         public string DefaultPlatformName =>
             solution == null ? "" : solution.GetDefaultPlatformName();
 
-        public Solution(Autobuilder builder, string path) : base(builder, path)
+        public Solution(Autobuilder builder, string path, bool allowProject) : base(builder, path)
         {
             try
             {
                 solution = SolutionFile.Parse(FullPath);
-
-                includedProjects =
-                    solution.ProjectsInOrder.
-                    Where(p => p.ProjectType == SolutionProjectType.KnownToBeMSBuildFormat).
-                    Select(p => builder.Actions.GetFullPath(FileUtils.ConvertToNative(p.AbsolutePath))).
-                    Select(p => new Project(builder, p)).
-                    ToArray();
             }
-            catch (InvalidProjectFileException)
+            catch (Exception e) when (e is InvalidProjectFileException || e is FileNotFoundException)
             {
                 // We allow specifying projects as solutions in lgtm.yml, so model
                 // that scenario as a solution with just that one project
-                includedProjects = new[] { new Project(builder, path) };
+                if (allowProject)
+                {
+                    includedProjects = new[] { new Project(builder, path) };
+                    return;
+                }
+
+                builder.Log(Severity.Info, $"Unable to read solution file {path}.");
+                includedProjects = new Project[0];
+                return;
             }
+
+            includedProjects =
+                solution.ProjectsInOrder.
+                Where(p => p.ProjectType == SolutionProjectType.KnownToBeMSBuildFormat).
+                Select(p => builder.Actions.PathCombine(Path.GetDirectoryName(path), builder.Actions.PathCombine(p.RelativePath.Split('\\', StringSplitOptions.RemoveEmptyEntries)))).
+                Select(p => new Project(builder, p)).
+                ToArray();
         }
 
         IEnumerable<Version> ToolsVersions => includedProjects.Where(p => p.ValidToolsVersion).Select(p => p.ToolsVersion);

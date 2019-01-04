@@ -497,7 +497,12 @@ class DynamicCast extends Cast, @dynamic_cast {
  * specified by the `__declspec(uuid)` attribute.
  */
 class UuidofOperator extends Expr, @uuidof {
-  override string toString() { result = "__uuidof(" + getTypeOperand().getName() + ")" }
+  override string toString() {
+    if exists(getTypeOperand()) then
+      result = "__uuidof(" + getTypeOperand().getName() + ")"
+    else
+      result = "__uuidof(0)"
+  }
 
   override int getPrecedence() { result = 15 }
 

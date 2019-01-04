@@ -20,11 +20,14 @@
 | file://:0:0:0:0 | __float128 | __float128 |
 | file://:0:0:0:0 | __int128 | __int128 |
 | file://:0:0:0:0 | __va_list_tag & | __va_list_tag & |
+| file://:0:0:0:0 | __va_list_tag && | __va_list_tag && |
 | file://:0:0:0:0 | auto | auto |
 | file://:0:0:0:0 | bool | bool |
 | file://:0:0:0:0 | char | char |
 | file://:0:0:0:0 | char16_t | char16_t |
 | file://:0:0:0:0 | char32_t | char32_t |
+| file://:0:0:0:0 | const __va_list_tag | __va_list_tag |
+| file://:0:0:0:0 | const __va_list_tag & | __va_list_tag & |
 | file://:0:0:0:0 | decltype(nullptr) | decltype(nullptr) |
 | file://:0:0:0:0 | double | double |
 | file://:0:0:0:0 | error | error |

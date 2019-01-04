@@ -54,11 +54,22 @@ private newtype TOpcode =
   TUnwind() or
   TUnmodeledDefinition() or
   TUnmodeledUse() or
+  TAliasedDefinition() or
   TPhi() or
   TVarArgsStart() or
   TVarArgsEnd() or
   TVarArg() or
-  TVarArgCopy()
+  TVarArgCopy() or
+  TCallSideEffect() or
+  TCallReadSideEffect() or
+  TIndirectReadSideEffect() or
+  TIndirectWriteSideEffect() or
+  TIndirectMayWriteSideEffect() or
+  TBufferReadSideEffect() or
+  TBufferWriteSideEffect() or
+  TBufferMayWriteSideEffect() or
+  TChi() or
+  TUnreached()
 
 class Opcode extends TOpcode {
   string toString() {
@@ -91,6 +102,29 @@ abstract class CatchOpcode extends Opcode {}
 abstract class OpcodeWithCondition extends Opcode {}
 
 abstract class BuiltInOpcode extends Opcode {}
+
+abstract class SideEffectOpcode extends Opcode {}
+
+/**
+ * An opcode that reads from a set of memory locations as a side effect.
+ */
+abstract class ReadSideEffectOpcode extends SideEffectOpcode {}
+
+/**
+ * An opcode that writes to a set of memory locations as a side effect.
+ */
+abstract class WriteSideEffectOpcode extends SideEffectOpcode {}
+
+/**
+ * An opcode that may overwrite some, all, or none of an existing set of memory locations. Modeled
+ * as a read of the original contents, plus a "may" write of the new contents.
+ */
+abstract class MayWriteSideEffectOpcode extends SideEffectOpcode {}
+
+/**
+ * An opcode that accesses a buffer via an `AddressOperand` and a `BufferSizeOperand`.
+ */
+abstract class BufferAccessOpcode extends MemoryAccessOpcode {}
 
 module Opcode {
   class NoOp extends Opcode, TNoOp { override final string toString() { result = "NoOp" } }
@@ -148,9 +182,20 @@ module Opcode {
   class Unwind extends Opcode, TUnwind { override final string toString() { result = "Unwind" } }
   class UnmodeledDefinition extends Opcode, TUnmodeledDefinition { override final string toString() { result = "UnmodeledDefinition" } }
   class UnmodeledUse extends Opcode, TUnmodeledUse { override final string toString() { result = "UnmodeledUse" } }
+  class AliasedDefinition extends Opcode, TAliasedDefinition { override final string toString() { result = "AliasedDefinition" } }
   class Phi extends Opcode, TPhi { override final string toString() { result = "Phi" } }
   class VarArgsStart extends BuiltInOpcode, TVarArgsStart { override final string toString() { result = "VarArgsStart" } }
   class VarArgsEnd extends BuiltInOpcode, TVarArgsEnd { override final string toString() { result = "VarArgsEnd" } }
   class VarArg extends BuiltInOpcode, TVarArg { override final string toString() { result = "VarArg" } }
   class VarArgCopy extends BuiltInOpcode, TVarArgCopy { override final string toString() { result = "VarArgCopy" } }
+  class CallSideEffect extends MayWriteSideEffectOpcode, TCallSideEffect { override final string toString() { result = "CallSideEffect" } }
+  class CallReadSideEffect extends ReadSideEffectOpcode, TCallReadSideEffect { override final string toString() { result = "CallReadSideEffect" } }
+  class IndirectReadSideEffect extends ReadSideEffectOpcode, MemoryAccessOpcode, TIndirectReadSideEffect { override final string toString() { result = "IndirectReadSideEffect" } }
+  class IndirectWriteSideEffect extends WriteSideEffectOpcode, MemoryAccessOpcode, TIndirectWriteSideEffect { override final string toString() { result = "IndirectWriteSideEffect" } }
+  class IndirectMayWriteSideEffect extends MayWriteSideEffectOpcode, MemoryAccessOpcode, TIndirectMayWriteSideEffect { override final string toString() { result = "IndirectMayWriteSideEffect" } }
+  class BufferReadSideEffect extends ReadSideEffectOpcode, BufferAccessOpcode, TBufferReadSideEffect { override final string toString() { result = "BufferReadSideEffect" } }
+  class BufferWriteSideEffect extends WriteSideEffectOpcode, BufferAccessOpcode, TBufferWriteSideEffect { override final string toString() { result = "BufferWriteSideEffect" } }
+  class BufferMayWriteSideEffect extends MayWriteSideEffectOpcode, BufferAccessOpcode, TBufferMayWriteSideEffect { override final string toString() { result = "BufferMayWriteSideEffect" } }
+  class Chi extends Opcode, TChi { override final string toString() { result = "Chi" } }
+  class Unreached extends Opcode, TUnreached { override final string toString() { result = "Unreached" } }
 }

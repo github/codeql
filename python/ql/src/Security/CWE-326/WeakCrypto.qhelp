@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Modern encryption relies on it being computationally infeasible to break the cipher and decode a message without the key.
+As computational power increases, the ability to break ciphers grows and keys need to become larger.
+</p>
+<p>
+The three main asymmetric key algorithms currently in use are Rivest–Shamir–Adleman (RSA) cryptography, Digital Signature Algorithm (DSA), and Elliptic-curve cryptography (ECC).
+With current technology, key sizes of 2048 bits for RSA and DSA,
+or 224 bits for ECC, are regarded as unbreakable.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Increase the key size to the recommended amount or larger. For RSA or DSA this is at least 2048 bits, for ECC this is at least 224 bits.
+</p>
+</recommendation>
+
+<references>
+<li>
+Wikipedia:
+<a href="https://en.wikipedia.org/wiki/Digital_Signature_Algorithm">Digital Signature Algorithm</a>.
+</li>
+<li>
+Wikipedia:
+<a href="https://en.wikipedia.org/wiki/RSA_(cryptosystem)">RSA cryptosystem</a>.
+</li>
+<li>
+Wikipedia:
+<a href="https://en.wikipedia.org/wiki/Elliptic-curve_cryptography">Elliptic-curve cryptography</a>.
+</li>
+<li>
+Python cryptography module:
+<a href="https://cryptography.io/en/latest/">cryptography.io</a>.
+</li>
+<li>
+NIST:
+<a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar1.pdf">
+Recommendation for Transitioning the Use of Cryptographic Algorithms and Key Lengths</a>.
+</li>
+</references>
+</qhelp>
+

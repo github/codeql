@@ -14,22 +14,25 @@ namespace Semmle.Autobuild
     /// </summary>
     class DotNetRule : IBuildRule
     {
-        public BuildScript Analyse(Autobuilder builder)
+        public BuildScript Analyse(Autobuilder builder, bool auto)
         {
             if (!builder.ProjectsOrSolutionsToBuild.Any())
                 return BuildScript.Failure;
 
-            var notDotNetProject = builder.ProjectsOrSolutionsToBuild.
-                SelectMany(p => Enumerators.Singleton(p).Concat(p.IncludedProjects)).
-                OfType<Project>().
-                FirstOrDefault(p => !p.DotNetProject);
-            if (notDotNetProject != null)
+            if (auto)
             {
-                builder.Log(Severity.Info, "Not using .NET Core because of incompatible project {0}", notDotNetProject);
-                return BuildScript.Failure;
-            }
+                var notDotNetProject = builder.ProjectsOrSolutionsToBuild.
+                  SelectMany(p => Enumerators.Singleton(p).Concat(p.IncludedProjects)).
+                  OfType<Project>().
+                  FirstOrDefault(p => !p.DotNetProject);
+                if (notDotNetProject != null)
+                {
+                    builder.Log(Severity.Info, "Not using .NET Core because of incompatible project {0}", notDotNetProject);
+                    return BuildScript.Failure;
+                }
 
-            builder.Log(Severity.Info, "Attempting to build using .NET Core");
+                builder.Log(Severity.Info, "Attempting to build using .NET Core");
+            }
 
             return WithDotNet(builder, dotNet =>
                 {

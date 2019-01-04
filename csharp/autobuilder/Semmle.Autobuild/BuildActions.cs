@@ -113,6 +113,12 @@ namespace Semmle.Autobuild
         /// Loads the XML document from <paramref name="filename"/>.
         /// </summary>
         XmlDocument LoadXml(string filename);
+
+        /// <summary>
+        /// Expand all Windows-style environment variables in <paramref name="s"/>,
+        /// Environment.ExpandEnvironmentVariables()
+        /// </summary>
+        string EnvironmentExpandEnvironmentVariables(string s);
     }
 
     /// <summary>
@@ -186,6 +192,8 @@ namespace Semmle.Autobuild
         }
 
         string IBuildActions.GetFullPath(string path) => Path.GetFullPath(path);
+
+        public string EnvironmentExpandEnvironmentVariables(string s) => Environment.ExpandEnvironmentVariables(s);
 
         public static readonly IBuildActions Instance = new SystemBuildActions();
     }

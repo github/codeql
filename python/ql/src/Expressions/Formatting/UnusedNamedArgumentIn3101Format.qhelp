@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>A formatting expression, that is an expression of the form <code>the_format.format(args)</code> or <code>format(the_format, args)</code>
+can have keyword arguments of any name, as long as all the required names are provided.
+However, surplus keyword arguments, those with names that are not in the format, are redundant.
+These surplus arguments clutter the code, making it harder to read.
+</p>
+
+<p>
+It is also possible that surplus keyword arguments indicate a mistake in the format string.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Check that the format string is correct and then remove any surplus keyword arguments.
+</p>
+
+</recommendation>
+<example>
+<p>In the following example, the comment indicates that the <code>chips</code> keyword argument is no longer required and should be deleted.
+</p>
+<sample src="UnusedNamedArgumentIn3101Format.py" />
+
+</example>
+<references>
+
+  <li>Python Library Reference: <a href="https://docs.python.org/2/library/string.html#string-formatting">String Formatting.</a> </li>
+
+
+</references>
+</qhelp>

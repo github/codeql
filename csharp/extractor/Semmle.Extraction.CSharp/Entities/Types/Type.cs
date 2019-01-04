@@ -86,6 +86,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected void ExtractType()
         {
+            ExtractMetadataHandle();
             ExtractAttributes();
 
             var tb = new DisplayNameTrapBuilder();

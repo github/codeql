@@ -1,0 +1,13 @@
+| class A | [A, object] |
+| class B | [B, object] |
+| class C | [C, object] |
+| class D | [D, object] |
+| class E | [E, object] |
+| class K1 | [K1, A, B, C, object] |
+| class K2 | [K2, D, B, E, object] |
+| class K3 | [K3, D, A, object] |
+| class M | [M, K1, K2, K3, D, A, B, C, E, object] |
+| class T1 | [T1, object] |
+| class T2 | [T2, object] |
+| class T3 | [T3, T2, object] |
+| class Test | [Test, T3, T2, T1, object] |

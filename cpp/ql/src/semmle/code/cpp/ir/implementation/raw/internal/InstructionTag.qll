@@ -40,9 +40,11 @@ newtype TInstructionTag =
   ExitFunctionTag() or
   UnmodeledDefinitionTag() or
   UnmodeledUseTag() or
+  AliasedDefinitionTag() or
   SwitchBranchTag() or
   CallTargetTag() or
   CallTag() or
+  CallSideEffectTag() or
   AllocationSizeTag() or
   AllocationElementSizeTag() or
   AllocationExtentConvertTag() or
@@ -61,6 +63,7 @@ newtype TInstructionTag =
   CatchTag() or
   ThrowTag() or
   UnwindTag() or
+  InitializerUninitializedTag() or
   InitializerFieldAddressTag(Field field) {
     fieldIsInitialized(field)
   } or
@@ -91,6 +94,7 @@ string getInstructionTagId(TInstructionTag tag) {
   tag = OnlyInstructionTag() and result = "Only" or  // Single instruction (not including implicit Load)
   tag = InitializerVariableAddressTag() and result = "InitVarAddr" or
   tag = InitializerStoreTag() and result = "InitStore" or
+  tag = InitializerUninitializedTag() and result = "InitUninit" or
   tag = ZeroPadStringConstantTag() and result = "ZeroPadConst" or
   tag = ZeroPadStringElementIndexTag() and result = "ZeroPadElemIndex" or
   tag = ZeroPadStringElementAddressTag() and result = "ZeroPadElemAddr" or
@@ -110,9 +114,11 @@ string getInstructionTagId(TInstructionTag tag) {
   tag = ExitFunctionTag() and result = "ExitFunc" or
   tag = UnmodeledDefinitionTag() and result = "UnmodeledDef" or
   tag = UnmodeledUseTag() and result = "UnmodeledUse" or
+  tag = AliasedDefinitionTag() and result = "AliasedDef" or
   tag = SwitchBranchTag() and result = "SwitchBranch" or
   tag = CallTargetTag() and result = "CallTarget" or
   tag = CallTag() and result = "Call" or
+  tag = CallSideEffectTag() and result = "CallSideEffect" or
   tag = AllocationSizeTag() and result = "AllocSize" or
   tag = AllocationElementSizeTag() and result = "AllocElemSize" or
   tag = AllocationExtentConvertTag() and result = "AllocExtConv" or

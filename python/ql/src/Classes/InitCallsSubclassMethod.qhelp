@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+When an instance of a class is initialized, the super-class state should be
+fully initialized before it becomes visible to the subclass.
+Calling methods of the subclass in the superclass' <code>__init__</code>
+method violates this important invariant.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Do not use methods that are subclassed in the construction of an object.
+For simpler cases move the initialization into the superclass' <code>__init__</code> method,
+preventing it being overridden. Additional initialization of subclass should
+be done in the <code>__init__</code> method of the subclass.
+For more complex cases, it is advisable to use a static method or function to manage
+object creation.
+</p>
+
+<p>Alternatively, avoid inheritance altogether using composition instead.</p>
+
+</recommendation>
+<example>
+<sample src="InitCallsSubclassMethod.py" />
+
+</example>
+<references>
+
+
+<li>CERT Secure Coding: <a href="https://www.securecoding.cert.org/confluence/display/java/MET05-J.+Ensure+that+constructors+do+not+call+overridable+methods">
+Rule MET05-J</a>. Although this is a Java rule it applies to most object-oriented languages.</li>
+<li>Python Standard Library: <a href="http://docs.python.org/library/functions.html#staticmethod">Static methods</a>.</li>
+<li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Composition_over_inheritance">Composition over inheritance</a>.</li>
+
+
+
+</references>
+</qhelp>

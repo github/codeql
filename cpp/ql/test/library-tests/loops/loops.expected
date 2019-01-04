@@ -30,5 +30,6 @@
 | rbfl.cpp:11:3:13:3 | for(...:...) ... | (RangeBasedForStmt).getVariable() | rbfl.cpp:11:10:11:12 | itr |
 | rbfl.cpp:11:3:13:3 | for(...:...) ... | (RangeBasedForStmt).getVariable() | rbfl.cpp:11:10:11:12 | itr |
 | rbfl.cpp:11:3:13:3 | for(...:...) ... | getCondition() | file://:0:0:0:0 | ... != ... |
+| rbfl.cpp:11:3:13:3 | for(...:...) ... | getCondition() | file://:0:0:0:0 | <error expr> |
 | rbfl.cpp:11:3:13:3 | for(...:...) ... | getStmt() | rbfl.cpp:12:3:13:3 | { ... } |
 | rbfl.cpp:11:3:13:3 | for(...:...) ... | getStmt() | rbfl.cpp:12:3:13:3 | { ... } |

@@ -1,0 +1,12 @@
+| duplicate_test.py:9:1:9:16 | Function dis | All statements in dis are similar in $@. | duplicate_test.py:249:1:249:17 | Function dis3 | dis3 |
+| duplicate_test.py:9:1:9:16 | Function dis | All statements in dis are similar in $@. | duplicate_test.py:323:1:323:17 | Function dis5 | dis5 |
+| duplicate_test.py:47:1:47:17 | Function dis2 | All statements in dis2 are similar in $@. | duplicate_test.py:249:1:249:17 | Function dis3 | dis3 |
+| duplicate_test.py:47:1:47:17 | Function dis2 | All statements in dis2 are similar in $@. | duplicate_test.py:323:1:323:17 | Function dis5 | dis5 |
+| duplicate_test.py:249:1:249:17 | Function dis3 | All statements in dis3 are similar in $@. | duplicate_test.py:9:1:9:16 | Function dis | dis |
+| duplicate_test.py:249:1:249:17 | Function dis3 | All statements in dis3 are similar in $@. | duplicate_test.py:47:1:47:17 | Function dis2 | dis2 |
+| duplicate_test.py:249:1:249:17 | Function dis3 | All statements in dis3 are similar in $@. | duplicate_test.py:323:1:323:17 | Function dis5 | dis5 |
+| duplicate_test.py:287:1:287:17 | Function dis4 | All statements in dis4 are similar in $@. | duplicate_test.py:249:1:249:17 | Function dis3 | dis3 |
+| duplicate_test.py:287:1:287:17 | Function dis4 | All statements in dis4 are similar in $@. | duplicate_test.py:323:1:323:17 | Function dis5 | dis5 |
+| duplicate_test.py:323:1:323:17 | Function dis5 | All statements in dis5 are similar in $@. | duplicate_test.py:9:1:9:16 | Function dis | dis |
+| duplicate_test.py:323:1:323:17 | Function dis5 | All statements in dis5 are similar in $@. | duplicate_test.py:47:1:47:17 | Function dis2 | dis2 |
+| duplicate_test.py:323:1:323:17 | Function dis5 | All statements in dis5 are similar in $@. | duplicate_test.py:249:1:249:17 | Function dis3 | dis3 |

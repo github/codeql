@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Code is easier to read when each import statement is defined on a separate line.
+</p>
+
+</overview>
+<recommendation>
+<p>Update the code so that each import is defined on a separate line. PEP8 notes that it is
+acceptable to define multiple imports from a subprocess in a single statement.</p>
+
+</recommendation>
+<example>
+  <p>The import statement:</p>
+  <sample src="ImportTwiceOnALine.py" />
+  <p>should be changed to:</p>
+  <sample src="ImportOnTwoLines.py" />
+</example>
+<references>
+
+  <li>Python Language  Reference: <a href="http://docs.python.org/2/reference/simple_stmts.html#import">The import statement</a>.</li>
+  <li>Python PEP 8: <a href="http://www.python.org/dev/peps/pep-0008/#imports">Imports</a>.</li>
+
+</references>
+</qhelp>

@@ -1,0 +1,20 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The <code>global</code> statement is used to specify that assignments to that name are assignments to the
+variable in the global (module) scope, rather than in the local scope.
+At the module level, this statement is redundant because the local scope and global scope are the same.</p>
+
+</overview>
+<recommendation>
+<p>Remove the <code>global</code> statement.</p>
+
+</recommendation>
+<references>
+
+  <li>Python Language Reference: <a href="http://docs.python.org/reference/simple_stmts.html#the-global-statement">The global statement</a>.</li>
+
+</references>
+</qhelp>

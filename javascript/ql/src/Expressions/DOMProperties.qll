@@ -12,6 +12,7 @@ predicate isDOMRootType(ExternalType et) {
 }
 
 /** Holds if `p` is declared as a property of a DOM class or interface. */
+pragma[nomagic]
 predicate isDOMProperty(string p) {
   exists (ExternalMemberDecl emd | emd.getName() = p |
     isDOMRootType(emd.getDeclaringType().getASupertype*())

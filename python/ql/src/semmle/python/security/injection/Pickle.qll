@@ -1,0 +1,40 @@
+/** Provides class and predicates to track external data that
+ * may represent malicious pickles.
+ *
+ * This module is intended to be imported into a taint-tracking query
+ * to extend `TaintKind` and `TaintSink`.
+ *
+ */
+import python
+
+import semmle.python.security.TaintTracking
+import semmle.python.security.strings.Untrusted
+
+
+private ModuleObject pickleModule() {
+    result.getName() = "pickle"
+    or
+    result.getName() = "cPickle"
+}
+
+private FunctionObject pickleLoads() {
+    result = pickleModule().getAttribute("loads")
+}
+
+/** `pickle.loads(untrusted)` vulnerability. */
+class UnpicklingNode extends TaintSink {
+
+    override string toString() { result = "unpickling untrusted data" }
+
+    UnpicklingNode() {
+        exists(CallNode call |
+            pickleLoads().getACall() = call and
+            call.getAnArg() = this
+        )
+    }
+
+    override predicate sinks(TaintKind kind) {
+        kind instanceof ExternalStringKind
+    }
+
+}
