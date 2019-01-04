@@ -19,3 +19,4 @@
 ## Changes to code extraction
 
 * The extractor now supports [Nullish Coalescing](https://github.com/tc39/proposal-nullish-coalescing) expressions.
+* The TypeScript extractor now handles the control-flow of logical operators and destructuring assignments more accurately.

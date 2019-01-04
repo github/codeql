@@ -60,6 +60,7 @@ import com.semmle.js.ast.ImportSpecifier;
 import com.semmle.js.ast.InvokeExpression;
 import com.semmle.js.ast.LabeledStatement;
 import com.semmle.js.ast.Literal;
+import com.semmle.js.ast.LogicalExpression;
 import com.semmle.js.ast.MemberDefinition;
 import com.semmle.js.ast.MemberExpression;
 import com.semmle.js.ast.DeclarationFlags;
@@ -825,8 +826,9 @@ public class TypeScriptASTConverter {
 		Expression left = convertChild(node, "left");
 		Expression right = convertChild(node, "right");
 		JsonObject operatorToken = node.get("operatorToken").getAsJsonObject();
-		String operatorKind = getKind(operatorToken);
-		if ("CommaToken".equals(operatorKind)) {
+		String operator = getSourceLocation(operatorToken).getSource();
+		switch (operator) {
+		case ",":
 			List<Expression> expressions = new ArrayList<Expression>();
 			if (left instanceof SequenceExpression)
 				expressions.addAll(((SequenceExpression) left).getExpressions());
@@ -837,10 +839,30 @@ public class TypeScriptASTConverter {
 			else
 				expressions.add(right);
 			return new SequenceExpression(loc, expressions);
-		} else {
-			String operator = getSourceLocation(operatorToken).getSource();
-			if ("EqualsToken".equals(operatorKind))
-				left = convertLValue(left);
+
+		case "||":
+		case "&&":
+			return new LogicalExpression(loc, operator, left, right);
+
+		case "=":
+			left = convertLValue(left); // For plain assignments, the lhs can be a destructuring pattern.
+			return new AssignmentExpression(loc, operator, left, right);
+
+		case "+=":
+		case "-=":
+		case "*=":
+		case "**=":
+		case "/=":
+		case "%=":
+		case "^=":
+		case "&=":
+		case "|=":
+		case ">>=":
+		case "<<=":
+		case ">>>=":
+			return new AssignmentExpression(loc, operator, convertLValue(left), right);
+
+		default:
 			return new BinaryExpression(loc, operator, left, right);
 		}
 	}
