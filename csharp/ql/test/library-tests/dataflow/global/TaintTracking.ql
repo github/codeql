@@ -11,8 +11,6 @@ class TTConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { c.isSink(sink) }
 }
 
-from TTConfig c, DataFlow::Node source, DataFlow::Node sink, string s
-where
-  c.hasFlow(source, sink) and
-  s = sink.toString()
-select s order by s
+from TTConfig c, DataFlow::Node source, DataFlow::Node sink
+where c.hasFlow(source, sink)
+select sink
