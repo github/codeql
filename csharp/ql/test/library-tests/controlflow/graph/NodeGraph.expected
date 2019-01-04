@@ -1007,6 +1007,24 @@
 | Foreach.cs:20:29:20:38 | call to method ToArray | Foreach.cs:20:43:20:68 | call to method Empty | semmle.label | null |
 | Foreach.cs:20:43:20:68 | call to method Empty | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | semmle.label | successor |
 | Foreach.cs:21:11:21:11 | ; | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | semmle.label | successor |
+| Foreach.cs:24:10:24:11 | enter M4 | Foreach.cs:25:5:28:5 | {...} | semmle.label | successor |
+| Foreach.cs:25:5:28:5 | {...} | Foreach.cs:26:36:26:39 | access to parameter args | semmle.label | successor |
+| Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | Foreach.cs:24:10:24:11 | exit M4 | semmle.label | empty |
+| Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | Foreach.cs:27:11:27:11 | ; | semmle.label | non-empty |
+| Foreach.cs:26:36:26:39 | access to parameter args | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | semmle.label | successor |
+| Foreach.cs:27:11:27:11 | ; | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | semmle.label | successor |
+| Foreach.cs:30:10:30:11 | enter M5 | Foreach.cs:31:5:34:5 | {...} | semmle.label | successor |
+| Foreach.cs:31:5:34:5 | {...} | Foreach.cs:32:32:32:35 | access to parameter args | semmle.label | successor |
+| Foreach.cs:32:9:33:11 | foreach (... ... in ...) ... | Foreach.cs:30:10:30:11 | exit M5 | semmle.label | empty |
+| Foreach.cs:32:9:33:11 | foreach (... ... in ...) ... | Foreach.cs:33:11:33:11 | ; | semmle.label | non-empty |
+| Foreach.cs:32:32:32:35 | access to parameter args | Foreach.cs:32:9:33:11 | foreach (... ... in ...) ... | semmle.label | successor |
+| Foreach.cs:33:11:33:11 | ; | Foreach.cs:32:9:33:11 | foreach (... ... in ...) ... | semmle.label | successor |
+| Foreach.cs:36:10:36:11 | enter M6 | Foreach.cs:37:5:40:5 | {...} | semmle.label | successor |
+| Foreach.cs:37:5:40:5 | {...} | Foreach.cs:38:39:38:42 | access to parameter args | semmle.label | successor |
+| Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | Foreach.cs:36:10:36:11 | exit M6 | semmle.label | empty |
+| Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | Foreach.cs:39:11:39:11 | ; | semmle.label | non-empty |
+| Foreach.cs:38:39:38:42 | access to parameter args | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | semmle.label | successor |
+| Foreach.cs:39:11:39:11 | ; | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | semmle.label | successor |
 | Initializers.cs:6:5:6:16 | enter Initializers | Initializers.cs:6:28:6:30 | {...} | semmle.label | successor |
 | Initializers.cs:6:28:6:30 | {...} | Initializers.cs:6:5:6:16 | exit Initializers | semmle.label | successor |
 | Initializers.cs:8:10:8:10 | enter M | Initializers.cs:9:5:12:5 | {...} | semmle.label | successor |

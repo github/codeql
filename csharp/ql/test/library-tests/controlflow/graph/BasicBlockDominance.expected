@@ -477,6 +477,33 @@
 | post | Foreach.cs:20:22:20:22 | String x | Foreach.cs:20:22:20:22 | String x |
 | post | Foreach.cs:20:29:20:38 | call to method ToArray | Foreach.cs:20:29:20:38 | call to method ToArray |
 | post | Foreach.cs:20:43:20:68 | call to method Empty | Foreach.cs:20:43:20:68 | call to method Empty |
+| post | Foreach.cs:24:10:24:11 | enter M4 | Foreach.cs:24:10:24:11 | enter M4 |
+| post | Foreach.cs:24:10:24:11 | exit M4 | Foreach.cs:24:10:24:11 | enter M4 |
+| post | Foreach.cs:24:10:24:11 | exit M4 | Foreach.cs:24:10:24:11 | exit M4 |
+| post | Foreach.cs:24:10:24:11 | exit M4 | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... |
+| post | Foreach.cs:24:10:24:11 | exit M4 | Foreach.cs:27:11:27:11 | ; |
+| post | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | Foreach.cs:24:10:24:11 | enter M4 |
+| post | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... |
+| post | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | Foreach.cs:27:11:27:11 | ; |
+| post | Foreach.cs:27:11:27:11 | ; | Foreach.cs:27:11:27:11 | ; |
+| post | Foreach.cs:30:10:30:11 | enter M5 | Foreach.cs:30:10:30:11 | enter M5 |
+| post | Foreach.cs:30:10:30:11 | exit M5 | Foreach.cs:30:10:30:11 | enter M5 |
+| post | Foreach.cs:30:10:30:11 | exit M5 | Foreach.cs:30:10:30:11 | exit M5 |
+| post | Foreach.cs:30:10:30:11 | exit M5 | Foreach.cs:32:9:33:11 | foreach (... ... in ...) ... |
+| post | Foreach.cs:30:10:30:11 | exit M5 | Foreach.cs:33:11:33:11 | ; |
+| post | Foreach.cs:32:9:33:11 | foreach (... ... in ...) ... | Foreach.cs:30:10:30:11 | enter M5 |
+| post | Foreach.cs:32:9:33:11 | foreach (... ... in ...) ... | Foreach.cs:32:9:33:11 | foreach (... ... in ...) ... |
+| post | Foreach.cs:32:9:33:11 | foreach (... ... in ...) ... | Foreach.cs:33:11:33:11 | ; |
+| post | Foreach.cs:33:11:33:11 | ; | Foreach.cs:33:11:33:11 | ; |
+| post | Foreach.cs:36:10:36:11 | enter M6 | Foreach.cs:36:10:36:11 | enter M6 |
+| post | Foreach.cs:36:10:36:11 | exit M6 | Foreach.cs:36:10:36:11 | enter M6 |
+| post | Foreach.cs:36:10:36:11 | exit M6 | Foreach.cs:36:10:36:11 | exit M6 |
+| post | Foreach.cs:36:10:36:11 | exit M6 | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... |
+| post | Foreach.cs:36:10:36:11 | exit M6 | Foreach.cs:39:11:39:11 | ; |
+| post | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | Foreach.cs:36:10:36:11 | enter M6 |
+| post | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... |
+| post | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | Foreach.cs:39:11:39:11 | ; |
+| post | Foreach.cs:39:11:39:11 | ; | Foreach.cs:39:11:39:11 | ; |
 | post | Initializers.cs:6:5:6:16 | enter Initializers | Initializers.cs:6:5:6:16 | enter Initializers |
 | post | Initializers.cs:8:10:8:10 | enter M | Initializers.cs:8:10:8:10 | enter M |
 | post | NullCoalescing.cs:3:9:3:10 | enter M1 | NullCoalescing.cs:3:9:3:10 | enter M1 |
@@ -1856,6 +1883,33 @@
 | pre | Foreach.cs:20:22:20:22 | String x | Foreach.cs:20:22:20:22 | String x |
 | pre | Foreach.cs:20:29:20:38 | call to method ToArray | Foreach.cs:20:29:20:38 | call to method ToArray |
 | pre | Foreach.cs:20:43:20:68 | call to method Empty | Foreach.cs:20:43:20:68 | call to method Empty |
+| pre | Foreach.cs:24:10:24:11 | enter M4 | Foreach.cs:24:10:24:11 | enter M4 |
+| pre | Foreach.cs:24:10:24:11 | enter M4 | Foreach.cs:24:10:24:11 | exit M4 |
+| pre | Foreach.cs:24:10:24:11 | enter M4 | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... |
+| pre | Foreach.cs:24:10:24:11 | enter M4 | Foreach.cs:27:11:27:11 | ; |
+| pre | Foreach.cs:24:10:24:11 | exit M4 | Foreach.cs:24:10:24:11 | exit M4 |
+| pre | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | Foreach.cs:24:10:24:11 | exit M4 |
+| pre | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... |
+| pre | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | Foreach.cs:27:11:27:11 | ; |
+| pre | Foreach.cs:27:11:27:11 | ; | Foreach.cs:27:11:27:11 | ; |
+| pre | Foreach.cs:30:10:30:11 | enter M5 | Foreach.cs:30:10:30:11 | enter M5 |
+| pre | Foreach.cs:30:10:30:11 | enter M5 | Foreach.cs:30:10:30:11 | exit M5 |
+| pre | Foreach.cs:30:10:30:11 | enter M5 | Foreach.cs:32:9:33:11 | foreach (... ... in ...) ... |
+| pre | Foreach.cs:30:10:30:11 | enter M5 | Foreach.cs:33:11:33:11 | ; |
+| pre | Foreach.cs:30:10:30:11 | exit M5 | Foreach.cs:30:10:30:11 | exit M5 |
+| pre | Foreach.cs:32:9:33:11 | foreach (... ... in ...) ... | Foreach.cs:30:10:30:11 | exit M5 |
+| pre | Foreach.cs:32:9:33:11 | foreach (... ... in ...) ... | Foreach.cs:32:9:33:11 | foreach (... ... in ...) ... |
+| pre | Foreach.cs:32:9:33:11 | foreach (... ... in ...) ... | Foreach.cs:33:11:33:11 | ; |
+| pre | Foreach.cs:33:11:33:11 | ; | Foreach.cs:33:11:33:11 | ; |
+| pre | Foreach.cs:36:10:36:11 | enter M6 | Foreach.cs:36:10:36:11 | enter M6 |
+| pre | Foreach.cs:36:10:36:11 | enter M6 | Foreach.cs:36:10:36:11 | exit M6 |
+| pre | Foreach.cs:36:10:36:11 | enter M6 | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... |
+| pre | Foreach.cs:36:10:36:11 | enter M6 | Foreach.cs:39:11:39:11 | ; |
+| pre | Foreach.cs:36:10:36:11 | exit M6 | Foreach.cs:36:10:36:11 | exit M6 |
+| pre | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | Foreach.cs:36:10:36:11 | exit M6 |
+| pre | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... |
+| pre | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | Foreach.cs:39:11:39:11 | ; |
+| pre | Foreach.cs:39:11:39:11 | ; | Foreach.cs:39:11:39:11 | ; |
 | pre | Initializers.cs:6:5:6:16 | enter Initializers | Initializers.cs:6:5:6:16 | enter Initializers |
 | pre | Initializers.cs:8:10:8:10 | enter M | Initializers.cs:8:10:8:10 | enter M |
 | pre | NullCoalescing.cs:3:9:3:10 | enter M1 | NullCoalescing.cs:3:9:3:10 | enter M1 |

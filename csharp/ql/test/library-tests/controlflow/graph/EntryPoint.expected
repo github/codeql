@@ -62,6 +62,9 @@
 | Foreach.cs:6:10:6:11 | M1 | Foreach.cs:7:5:10:5 | {...} |
 | Foreach.cs:12:10:12:11 | M2 | Foreach.cs:13:5:16:5 | {...} |
 | Foreach.cs:18:10:18:11 | M3 | Foreach.cs:19:5:22:5 | {...} |
+| Foreach.cs:24:10:24:11 | M4 | Foreach.cs:25:5:28:5 | {...} |
+| Foreach.cs:30:10:30:11 | M5 | Foreach.cs:31:5:34:5 | {...} |
+| Foreach.cs:36:10:36:11 | M6 | Foreach.cs:37:5:40:5 | {...} |
 | Initializers.cs:6:5:6:16 | Initializers | Initializers.cs:6:28:6:30 | {...} |
 | Initializers.cs:8:10:8:10 | M | Initializers.cs:9:5:12:5 | {...} |
 | NullCoalescing.cs:3:9:3:10 | M1 | NullCoalescing.cs:3:23:3:28 | ... ?? ... |
