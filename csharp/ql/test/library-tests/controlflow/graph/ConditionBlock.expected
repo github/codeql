@@ -184,11 +184,11 @@
 | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:20:22:20:22 | String x | false |
 | Foreach.cs:20:27:20:27 | access to parameter e | Foreach.cs:20:29:20:38 | call to method ToArray | false |
 | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | Foreach.cs:24:10:24:11 | exit M4 | true |
-| Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | Foreach.cs:27:11:27:11 | ; | false |
+| Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | Foreach.cs:26:23:26:23 | String x | false |
 | Foreach.cs:32:9:33:11 | foreach (... ... in ...) ... | Foreach.cs:30:10:30:11 | exit M5 | true |
-| Foreach.cs:32:9:33:11 | foreach (... ... in ...) ... | Foreach.cs:33:11:33:11 | ; | false |
+| Foreach.cs:32:9:33:11 | foreach (... ... in ...) ... | Foreach.cs:32:23:32:23 | String x | false |
 | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | Foreach.cs:36:10:36:11 | exit M6 | true |
-| Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | Foreach.cs:39:11:39:11 | ; | false |
+| Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | Foreach.cs:38:26:38:26 | String x | false |
 | NullCoalescing.cs:3:23:3:23 | access to parameter i | NullCoalescing.cs:3:28:3:28 | 0 | true |
 | NullCoalescing.cs:5:25:5:25 | access to parameter b | NullCoalescing.cs:5:30:5:34 | false | true |
 | NullCoalescing.cs:5:25:5:25 | access to parameter b | NullCoalescing.cs:5:39:5:39 | 0 | true |
