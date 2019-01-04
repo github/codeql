@@ -69,8 +69,8 @@ namespace Semmle.Extraction.Entities
             get
             {
                 return assemblyPath == null
-                    ? new Key(assembly, ";sourcefile")
-                    : new Key(assembly, "#file:///", assemblyPath.Replace("\\", "/"), ";sourcefile");
+                    ? new Key(assembly, ";assembly")
+                    : new Key(assembly, "#file:///", assemblyPath.Replace("\\", "/"), ";assembly");
             }
         }
     }
