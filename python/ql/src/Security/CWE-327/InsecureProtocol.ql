@@ -28,6 +28,8 @@ string insecure_version_name() {
     // For the `ssl` module
     result = "PROTOCOL_SSLv2" or
     result = "PROTOCOL_SSLv3" or
+    result = "PROTOCOL_SSLv23" or
+    result = "PROTOCOL_TLS" or
     result = "PROTOCOL_TLSv1"
 }
 
