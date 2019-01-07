@@ -47,6 +47,8 @@ where
   e.getType() = sourceType and
   c.getConversionTarget() = destType and
   destType.widerThan(sourceType) and
+  // restrict attention to integral types
+  destType instanceof IntegralType and
   // not a trivial conversion
   not c.isTrivial() and
   // not an explicit conversion, which is probably intended by a user
