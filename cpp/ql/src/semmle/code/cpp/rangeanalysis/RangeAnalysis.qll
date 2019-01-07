@@ -161,11 +161,9 @@ private IRGuardCondition boundFlowCond(ValueNumber vn, NonPhiOperand bound, int 
 {
   exists(int d |
     result.comparesLt(vn.getAUse(), bound, d, upper, testIsTrue) and
-    /*
-     * `comparesLt` provides bounds of the form `x < y + k` or `x >= y + k`, but we need
-     * `x <= y + k` so we strengthen here. `testIsTrue` has the same semantics in `comparesLt` as
-     * it does here, so we don't need to account for it.
-     */
+    // `comparesLt` provides bounds of the form `x < y + k` or `x >= y + k`, but we need
+    // `x <= y + k` so we strengthen here. `testIsTrue` has the same semantics in `comparesLt` as
+    // it does here, so we don't need to account for it.
     if upper = true
       then delta = d-1
       else delta = d
