@@ -135,12 +135,6 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
   }
 
   /**
-   * DEPRECATED: Use `hasMethod()` instead.
-   */
-  deprecated
-  predicate inheritsMethod(Method m) { this.hasMethod(m) }
-
-  /**
    * Holds if this type has method `m`, that is, either `m` is declared in this
    * type, or `m` is inherited by this type.
    *
@@ -163,14 +157,6 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
    * ```
    */
   predicate hasMethod(Method m) { this.hasMember(m) }
-
-  /**
-   * DEPRECATED: Use `hasCallable()` instead.
-   */
-  deprecated
-  predicate inheritsCallable(Callable c) {
-    this.hasCallable(c)
-  }
 
   /**
    * Holds if this type has callable `c`, that is, either `c` is declared in this
@@ -200,14 +186,6 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
     hasMethod(c)
     or
     hasMember(c.(Accessor).getDeclaration())
-  }
-
-  /**
-   * DEPRECATED: Use `hasMember()` instead.
-   */
-  deprecated
-  predicate inheritsMember(Member m) {
-    this.hasMember(m)
   }
 
   /**
@@ -751,7 +729,6 @@ class Class extends RefType, @class_type {
  * ```
  */
 class AnonymousClass extends Class {
-
   AnonymousClass() { this.getName().matches("<%") }
 }
 
@@ -809,8 +786,7 @@ class DelegateType extends RefType, Parameterizable, @delegate_type {
 /**
  * The `null` type. The type of the `null` literal.
  */
-class NullType extends RefType, @null_type {
-}
+class NullType extends RefType, @null_type { }
 
 /**
  * A nullable type, for example `int?`.
@@ -891,6 +867,13 @@ class ArrayType extends DotNet::ArrayType, RefType, @array_type {
   }
 
   override Type getChild(int n) { result = getElementType() and n = 0 }
+
+  override Location getALocation() {
+    type_location(this, result)
+    or
+    not type_location(this, _) and
+    result = this.getElementType().getALocation()
+  }
 }
 
 /**

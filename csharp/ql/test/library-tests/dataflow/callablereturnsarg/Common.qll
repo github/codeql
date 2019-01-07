@@ -3,9 +3,7 @@ import semmle.code.csharp.dataflow.DefUse
 import semmle.code.csharp.controlflow.Guards
 
 class Configuration extends DataFlow::Configuration {
-  Configuration() {
-    this = "Configuration"
-  }
+  Configuration() { this = "Configuration" }
 
   override predicate isSource(DataFlow::Node source) { any() }
 
@@ -29,7 +27,10 @@ predicate flowOutFromParameter(DataFlow::Configuration c, Parameter p) {
 }
 
 predicate flowOutFromParameterOutOrRef(DataFlow::Configuration c, Parameter p, int outRef) {
-  exists(DataFlow::ExprNode ne, Ssa::ExplicitDefinition def, DataFlow::ParameterNode np, Parameter outRefParameter |
+  exists(
+    DataFlow::ExprNode ne, Ssa::ExplicitDefinition def, DataFlow::ParameterNode np,
+    Parameter outRefParameter
+  |
     outRefParameter.isOutOrRef() and
     np.getParameter() = p and
     ne.getExpr() = def.getADefinition().getSource() and

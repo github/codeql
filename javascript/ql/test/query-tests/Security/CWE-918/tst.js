@@ -28,4 +28,6 @@ var server = http.createServer(function(req, res) {
     request("http://example.com/" + tainted); // NOT OK
 
     request("http://example.com/?" + tainted); // OK
+
+    http.get(relativeUrl, {host: tainted}); // NOT OK
 })

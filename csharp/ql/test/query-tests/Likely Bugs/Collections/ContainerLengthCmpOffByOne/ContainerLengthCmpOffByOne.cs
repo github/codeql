@@ -48,7 +48,7 @@ class Test
     }
 
     void Test3(string[] args)
-    {    
+    {
         // GOOD: Guarded by ternary operator.
         for (int i = 0; i <= args.Length; i++)
         {
@@ -68,7 +68,7 @@ class Test
     }
 
     void Test5(string[] args)
-    {  
+    {
         // GOOD: A valid test of Length.
         for (int i = 0; i != args.Length; i++)
         {
@@ -94,6 +94,6 @@ class Test
         for (int i = 0; i <= args.Length; i++)
         {
             bool b = i == args.Length || args[i] == "x";
-        }        
+        }
     }
 }

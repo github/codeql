@@ -18,10 +18,6 @@ class SystemXmlSchemaNamespace extends Namespace {
   }
 }
 
-/** DEPRECATED. Gets the `System.Xml` namespace. */
-deprecated
-SystemXmlNamespace getSystemXmlNamespace() { any() }
-
 /** A class in the `System.Xml` namespace. */
 class SystemXmlClass extends Class {
   SystemXmlClass() {

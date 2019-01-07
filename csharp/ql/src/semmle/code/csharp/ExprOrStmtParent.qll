@@ -346,7 +346,7 @@ private int getImplementationSize(ValueOrRefType t, File f) {
     result = getImplementationSize1(t, f)
 }
 
-private cached module Cached {
+cached module ExprOrStmtParentCached {
   cached
   ControlFlowElement getTopLevelChild(ExprOrStmtParent p, int i) {
     result = p.(MultiImplementationsParent).getBestChild(i)
@@ -363,7 +363,7 @@ private cached module Cached {
    * in `f`.
    */
   cached
-  predicate mustHaveLocationInFileCached(Declaration d, File f) {
+  predicate mustHaveLocationInFile(Declaration d, File f) {
     exists(MultiImplementationsParent p, ValueOrRefType t |
       t = getTopLevelDeclaringType(p) and
       f = p.getBestFile() |
@@ -381,7 +381,7 @@ private cached module Cached {
    * locations, choose only one.
    */
   cached
-  Location bestLocationCached(Element e) {
+  Location bestLocation(Element e) {
     result = e.getALocation().(SourceLocation) and
     (mustHaveLocationInFile(e, _) implies mustHaveLocationInFile(e, result.getFile()))
     or
@@ -391,8 +391,17 @@ private cached module Cached {
       result = min(Location l | l = e.getALocation() | l order by l.getFile().toString())
     )
   }
-}
-private import Cached
 
-predicate mustHaveLocationInFile = mustHaveLocationInFileCached/2;
-predicate bestLocation = bestLocationCached/1;
+  cached
+  string getURL(Element e) {
+    exists(Location l, string path, int a, int b, int c, int d |
+      l = bestLocation(e) |
+      l.hasLocationInfo(path, a, b, c, d) and
+      toUrl(path, a, b, c, d, result)
+    )
+    or
+    not exists(bestLocation(e)) and
+    result = ""
+  }
+}
+private import ExprOrStmtParentCached

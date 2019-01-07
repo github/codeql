@@ -64,6 +64,14 @@ module Electron {
       result = getOptionArgument(0, "url")
     }
 
+    override DataFlow::Node getHost() {
+      exists (string name |
+        name = "host" or
+        name = "hostname" |
+        result = getOptionArgument(0, name)
+      )
+    }
+
     override DataFlow::Node getADataNode() {
       exists (string name |
         name = "write" or name = "end" |

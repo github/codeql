@@ -10,10 +10,6 @@ class SystemCollectionsGenericNamespace extends Namespace {
   }
 }
 
-/** DEPRECATED. Gets the `System.Collections.Generic` namespace. */
-deprecated
-SystemCollectionsGenericNamespace getSystemCollectionsGenericNamespace() { any() }
-
 /** An unbound generic interface in the `System.Collections.Generic` namespace. */
 class SystemCollectionsGenericUnboundGenericInterface extends UnboundGenericInterface {
   SystemCollectionsGenericUnboundGenericInterface() {
@@ -50,10 +46,6 @@ class SystemCollectionsGenericIComparerTInterface extends SystemCollectionsGener
   }
 }
 
-/** DEPRECATED. Gets the `System.Collections.Generic.IComparer<T>` interface. */
-deprecated
-SystemCollectionsGenericIComparerTInterface getSystemCollectionsGenericIComparerTInterface() { any() }
-
 /** The `System.Collections.Generic.IEqualityComparer<T>` interface. */
 class SystemCollectionsGenericIEqualityComparerTInterface extends SystemCollectionsGenericUnboundGenericInterface {
   SystemCollectionsGenericIEqualityComparerTInterface() {
@@ -76,10 +68,6 @@ class SystemCollectionsGenericIEqualityComparerTInterface extends SystemCollecti
   }
 }
 
-/** DEPRECATED. Gets the `System.Collections.Generic.IEqualityComparer<T>` interface. */
-deprecated
-SystemCollectionsGenericIEqualityComparerTInterface getSystemCollectionsGenericIEqualityComparerTInterface() { any() }
-
 /** The `System.Collections.Generic.IEnumerable<T>` interface. */
 class SystemCollectionsGenericIEnumerableTInterface extends SystemCollectionsGenericUnboundGenericInterface {
   SystemCollectionsGenericIEnumerableTInterface() {
@@ -88,10 +76,6 @@ class SystemCollectionsGenericIEnumerableTInterface extends SystemCollectionsGen
     this.getNumberOfTypeParameters() = 1
   }
 }
-
-/** DEPRECATED. Gets the `System.Collections.Generic.IEnumerable<T>` interface. */
-deprecated
-SystemCollectionsGenericIEnumerableTInterface getSystemCollectionsGenericIEnumerableTInterface() { any() }
 
 /** The `System.Collections.Generic.IEnumerator<T>` interface. */
 class SystemCollectionsGenericIEnumeratorInterface extends SystemCollectionsGenericUnboundGenericInterface {
@@ -111,10 +95,6 @@ class SystemCollectionsGenericIEnumeratorInterface extends SystemCollectionsGene
   }
 }
 
-/** DEPRECATED. Gets the `System.Collections.Generic.IEnumerator<T>` interface. */
-deprecated
-SystemCollectionsGenericIEnumeratorInterface getSystemCollectionsGenericIEnumeratorInterface() { any() }
-
 /** The `System.Collections.Generic.IList<T>` interface. */
 class SystemCollectionsGenericIListTInterface extends SystemCollectionsGenericUnboundGenericInterface {
   SystemCollectionsGenericIListTInterface() {
@@ -123,10 +103,6 @@ class SystemCollectionsGenericIListTInterface extends SystemCollectionsGenericUn
     this.getNumberOfTypeParameters() = 1
   }
 }
-
-/** DEPRECATED. Gets the `System.Collections.Generic.IList<T>` interface. */
-deprecated
-SystemCollectionsGenericIListTInterface getSystemCollectionsGenericIListTInterface() { any() }
 
 /** The `System.Collections.Generic.KeyValuePair<TKey, TValue>` structure. */
 class SystemCollectionsGenericKeyValuePairStruct extends SystemCollectionsGenericUnboundGenericStruct {
@@ -154,10 +130,6 @@ class SystemCollectionsGenericKeyValuePairStruct extends SystemCollectionsGeneri
     result.getType() = this.getTypeParameter(1)
   }
 }
-
-/** DEPRECATED. Gets the `System.Collections.Generic.KeyValuePair<TKey, TValue>` structure. */
-deprecated
-SystemCollectionsGenericKeyValuePairStruct getSystemCollectionsGenericKeyValuePairStruct() { any() }
 
 /** The `System.Collections.Generic.ICollection<>` interface. */
 class SystemCollectionsGenericICollectionInterface extends SystemCollectionsGenericUnboundGenericInterface {

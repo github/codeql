@@ -473,6 +473,7 @@ class ConditionBlock extends BasicBlock {
    * successor of this block, and `succ` can only be reached from
    * the callable entry point by going via the `s` edge out of this basic block.
    */
+  pragma[nomagic]
   predicate immediatelyControls(BasicBlock succ, ConditionalSuccessor s) {
     succ = this.getASuccessorByType(s) and
     forall(BasicBlock pred |

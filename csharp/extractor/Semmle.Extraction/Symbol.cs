@@ -30,6 +30,8 @@ namespace Semmle.Extraction
             get; private set;
         }
 
+        object ICachedEntity.UnderlyingObject => symbol;
+
         public abstract IId Id
         {
             get;

@@ -9,7 +9,3 @@ class SystemCodeDomNamespace extends Namespace {
     this.hasName("CodeDom")
   }
 }
-
-/** DEPRECATED. Gets the `System.CodeDom` namespace. */
-deprecated
-SystemCodeDomNamespace getSystemCodeDomNamespace() { any() }

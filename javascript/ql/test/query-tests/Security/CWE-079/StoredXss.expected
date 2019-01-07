@@ -214,6 +214,10 @@ nodes
 | tst.js:256:7:256:17 | window.name |
 | tst.js:257:7:257:10 | name |
 | tst.js:261:11:261:21 | window.name |
+| tst.js:272:9:272:32 | loc3 |
+| tst.js:272:16:272:32 | document.location |
+| tst.js:275:7:275:10 | loc3 |
+| tst.js:277:22:277:29 | location |
 | winjs.js:2:7:2:53 | tainted |
 | winjs.js:2:17:2:33 | document.location |
 | winjs.js:2:17:2:40 | documen ... .search |
@@ -396,6 +400,8 @@ edges
 | tst.js:238:23:238:29 | tainted | tst.js:228:32:228:49 | prevProps.tainted4 |
 | tst.js:244:39:244:55 | props.propTainted | tst.js:248:60:248:82 | this.st ... Tainted |
 | tst.js:252:23:252:29 | tainted | tst.js:244:39:244:55 | props.propTainted |
+| tst.js:272:9:272:32 | loc3 | tst.js:275:7:275:10 | loc3 |
+| tst.js:272:16:272:32 | document.location | tst.js:272:9:272:32 | loc3 |
 | winjs.js:2:7:2:53 | tainted | winjs.js:3:43:3:49 | tainted |
 | winjs.js:2:7:2:53 | tainted | winjs.js:4:43:4:49 | tainted |
 | winjs.js:2:17:2:33 | document.location | winjs.js:2:17:2:40 | documen ... .search |

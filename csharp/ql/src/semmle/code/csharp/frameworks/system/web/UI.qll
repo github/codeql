@@ -10,10 +10,6 @@ class SystemWebUINamespace extends Namespace {
   }
 }
 
-/** DEPRECATED. Gets the `System.Web.UI` namespace. */
-deprecated
-SystemWebUINamespace getSystemWebUINamespace() { any() }
-
 /** A class in the `System.Web.UI` namespace. */
 class SystemWebUIClass extends Class {
   SystemWebUIClass() {
@@ -27,10 +23,6 @@ class SystemWebUIControlClass extends SystemWebUIClass {
     this.hasName("Control")
   }
 }
-
-/** DEPRECATED. Gets the `System.UI.Control` class. */
-deprecated
-SystemWebUIControlClass getSystemWebUIControlClass() { any() }
 
 /** The `System.Web.UI.Page` class. */
 class SystemWebUIPageClass extends SystemWebUIClass {
@@ -75,10 +67,6 @@ class SystemWebUIPageClass extends SystemWebUIClass {
   }
 }
 
-/** DEPRECATED. Gets the `System.UI.Page` class. */
-deprecated
-SystemWebUIPageClass getSystemWebUIPageClass() { any() }
-
 /** The `System.Web.UI.HtmlTextWriter` class. */
 class SystemWebUIHtmlTextWriterClass extends SystemWebUIClass {
   SystemWebUIHtmlTextWriterClass() {
@@ -116,10 +104,6 @@ class SystemWebUIHtmlTextWriterClass extends SystemWebUIClass {
   }
 }
 
-/** DEPRECATED. Gets the `System.UI.HtmlTextWriter` class. */
-deprecated
-SystemWebUIHtmlTextWriterClass getSystemWebUIHtmlTextWriterClass() { any() }
-
 /** The `System.Web.UI.AttributeCollection` class. */
 class SystemWebUIAttributeCollectionClass extends SystemWebUIClass {
   SystemWebUIAttributeCollectionClass() {
@@ -139,10 +123,6 @@ class SystemWebUIAttributeCollectionClass extends SystemWebUIClass {
   }
 }
 
-/** DEPRECATED. Gets the `System.UI.AttributeCollection` class. */
-deprecated
-SystemWebUIAttributeCollectionClass getSystemWebUIAttributeCollectionClass() { any() }
-
 /** The `System.Web.UI.ClientScriptManager` class. */
 class SystemWebUIClientScriptManagerClass extends SystemWebUIClass {
   SystemWebUIClientScriptManagerClass() {
@@ -161,7 +141,3 @@ class SystemWebUIClientScriptManagerClass extends SystemWebUIClass {
     result.hasName("RegisterClientScriptBlock")
   }
 }
-
-/** DEPRECATED. Gets the `System.UI.ClientScriptManager` class. */
-deprecated
-SystemWebUIClientScriptManagerClass getSystemWebUIClientScriptManagerClass() { any() }

@@ -158,7 +158,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     var param = invokeMethod.Parameters[i];
                     var originalParam = invokeMethod.OriginalDefinition.Parameters[i];
                     var originalParamEntity = Equals(param, originalParam) ? null :
-                        DelegateTypeParameter.Create(Context, originalParam, Create(Context, ((INamedTypeSymbol)symbol).ConstructedFrom));
+                        DelegateTypeParameter.Create(Context, originalParam, Create(Context, ((INamedTypeSymbol)symbol).OriginalDefinition));
                     DelegateTypeParameter.Create(Context, param, this, originalParamEntity);
                 }
 

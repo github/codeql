@@ -159,17 +159,11 @@ class InvalidFormatString extends StringLiteral {
     result = this.getValue().regexpFind(getValidFormatRegex(),0,0).length()
   }
 
-  /**
-   * Holds if this element is at the specified location.
-   * The location spans column `startcolumn` of line `startline` to
-   * column `endcolumn` of line `endline` in file `filepath`.
-   * For more information, see
-   * [LGTM locations](https://lgtm.com/help/ql/locations).
-   */
-  predicate hasLocationInfo(string filepath, int startline, int startcolumn, int endline, int endcolumn) {
-    exists(int oldstartcolumn, int padding |
+  override string getURL() {
+    exists(string filepath, int startline, int startcolumn, int endline, int endcolumn, int oldstartcolumn, int padding |
       this.getLocation().hasLocationInfo(filepath, startline, oldstartcolumn, endline, endcolumn) and
-      startcolumn = padding + oldstartcolumn + getInvalidOffset() |
+      startcolumn = padding + oldstartcolumn + getInvalidOffset() and
+      toUrl(filepath, startline, startcolumn, endline, endcolumn, result) |
       // Single-line string literal beginning " or @"
       // Figure out the correct indent.
       startline = endline and

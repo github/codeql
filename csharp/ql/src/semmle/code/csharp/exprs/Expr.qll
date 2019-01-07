@@ -275,39 +275,7 @@ class IsExpr extends Expr, @is_expr {
    */
   Expr getExpr() { result = this.getChild(0) }
 
-  /**
-   * Deprecated: Use `IsTypeExpr.getTypeAccess()` instead.
-   * Gets the type access in this `is` expression, for example `string` in
-   * `x is string`.
-   */
-  deprecated
-  TypeAccess getTypeAccess() { none() }
-
-  /**
-   * Deprecated: Use `IsTypeExpr.getCheckedType()` instead.
-   * Gets the type being accessed in this `is` expression, for example `string`
-   * in `x is string`.
-   */
-  deprecated
-  Type getCheckedType() { none() }
-
   override string toString() { result = "... is ..." }
-
-  /**
-   * Deprecated: Use `IsPatternExpr.getVariableDeclExpr()` instead.
-   * Gets the local variable declaration in an `is` pattern expression,
-   * if any. For example `string s` in `x is string s`.
-   */
-  deprecated
-  LocalVariableDeclExpr getVariableDeclExpr() { none() }
-
-  /**
-   * Deprecated: Use `instanceof IsPatternExpr` instead.
-   * Holds if this `is` expression is an `is` pattern expression, for example
-   * `x is string s`.
-   */
-  deprecated
-  predicate isPattern() { this instanceof IsPatternExpr }
 }
 
 /**
@@ -322,13 +290,13 @@ class IsTypeExpr extends IsExpr
    * Gets the type being accessed in this `is` expression, for example `string`
    * in `x is string`.
    */
-  override Type getCheckedType() { result = typeAccess.getTarget() }
+  Type getCheckedType() { result = typeAccess.getTarget() }
 
   /**
    * Gets the type access in this `is` expression, for example `string` in
    * `x is string`.
    */
-  override TypeAccess getTypeAccess() { result = typeAccess }
+  TypeAccess getTypeAccess() { result = typeAccess }
 }
 
 /**
@@ -343,7 +311,7 @@ class IsPatternExpr extends IsTypeExpr
    * Gets the local variable declaration in this `is` pattern expression.
    * For example `string s` in `x is string s`.
    */
-  override LocalVariableDeclExpr getVariableDeclExpr() { result = typeDecl }
+  LocalVariableDeclExpr getVariableDeclExpr() { result = typeDecl }
 }
 
 /**

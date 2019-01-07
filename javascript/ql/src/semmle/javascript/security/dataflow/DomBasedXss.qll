@@ -91,7 +91,8 @@ module DomBasedXss {
           isPrefixOfJQueryHtmlString(astNode, prefix) and
           strval = prefix.asExpr().getStringValue() and
           not strval.regexpMatch("\\s*<.*")
-        )
+        ) and
+        not isDocumentURL(astNode)
       )
       or
       // call to an Angular method that interprets its argument as HTML

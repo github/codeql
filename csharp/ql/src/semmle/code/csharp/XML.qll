@@ -78,19 +78,6 @@ class XMLParent extends @xmlparent {
     result = count(int pos | xmlChars(_,_,this,pos,_,_))
   }
 
-  /**
-   * DEPRECATED: Internal.
-   *
-   * Append the character sequences of this XML parent from left to right, separated by a space,
-   * up to a specified (zero-based) index.
-   */
-  deprecated
-  string charsSetUpTo(int n) {
-    (n = 0 and xmlChars(_,result,this,0,_,_)) or
-    (n > 0 and exists(string chars | xmlChars(_,chars,this,n,_,_) |
-                         result = this.charsSetUpTo(n-1) + " " + chars))
-  }
-
   /** Append all the character sequences of this XML parent from left to right, separated by a space. */
   string allCharactersString() {
     result = concat(string chars, int pos | xmlChars(_, chars, this, pos, _, _) | chars, " " order by pos)

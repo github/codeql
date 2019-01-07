@@ -24,9 +24,6 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        protected Accessor Getter { get; set; }
-        protected Accessor Setter { get; set; }
-
         public override void Populate()
         {
             ExtractMetadataHandle();
@@ -38,12 +35,13 @@ namespace Semmle.Extraction.CSharp.Entities
             Context.Emit(Tuples.properties(this, symbol.GetName(), ContainingType, type.TypeRef, Create(Context, symbol.OriginalDefinition)));
 
             var getter = symbol.GetMethod;
-            if (getter != null)
-                Getter = Accessor.Create(Context, getter);
-
             var setter = symbol.SetMethod;
-            if (setter != null)
-                Setter = Accessor.Create(Context, setter);
+
+            if (!(getter is null))
+                Method.Create(Context, getter);
+
+            if (!(setter is null))
+                Method.Create(Context, setter);
 
             var declSyntaxReferences = IsSourceDeclaration ?
                 symbol.DeclaringSyntaxReferences.
@@ -101,7 +99,9 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static Property Create(Context cx, IPropertySymbol prop)
         {
-            return prop.IsIndexer ? Indexer.Create(cx, prop) : PropertyFactory.Instance.CreateEntity(cx, prop);
+            bool isIndexer = prop.IsIndexer || prop.ExplicitInterfaceImplementations.Any(e => e.IsIndexer);
+
+            return isIndexer ? Indexer.Create(cx, prop) : PropertyFactory.Instance.CreateEntity(cx, prop);
         }
 
         public void VisitDeclaration(Context cx, PropertyDeclarationSyntax p)

@@ -193,6 +193,13 @@
 | E.cs:252:13:252:21 | ... != ... | E.cs:252:13:252:13 | access to parameter i | true | false |
 | E.cs:259:13:259:21 | ... == ... | E.cs:259:13:259:13 | access to parameter i | false | false |
 | E.cs:259:13:259:21 | ... == ... | E.cs:259:13:259:13 | access to parameter i | true | true |
+| E.cs:274:17:274:25 | ... != ... | E.cs:274:17:274:17 | access to local variable o | false | true |
+| E.cs:274:17:274:25 | ... != ... | E.cs:274:17:274:17 | access to local variable o | true | false |
+| E.cs:284:9:284:9 | access to local variable o | E.cs:284:9:284:9 | access to local variable o | non-null | false |
+| E.cs:284:9:284:9 | access to local variable o | E.cs:284:9:284:9 | access to local variable o | null | true |
+| E.cs:293:13:293:13 | access to local variable s | E.cs:293:13:293:13 | access to local variable s | non-null | false |
+| E.cs:293:13:293:13 | access to local variable s | E.cs:293:13:293:13 | access to local variable s | null | true |
+| E.cs:293:13:293:24 | ... == ... | E.cs:293:15:293:19 | call to method M2 | true | false |
 | Forwarding.cs:9:14:9:30 | call to method IsNullOrEmpty | Forwarding.cs:9:14:9:14 | access to local variable s | false | false |
 | Forwarding.cs:14:13:14:32 | call to method IsNotNullOrEmpty | Forwarding.cs:14:13:14:13 | access to local variable s | true | false |
 | Forwarding.cs:19:14:19:23 | call to method IsNull | Forwarding.cs:19:14:19:14 | access to local variable s | false | false |

@@ -10,10 +10,6 @@ class SystemDiagnosticsNamespace extends Namespace {
   }
 }
 
-/** DEPRECATED. Gets the `System.Diagnostics` namespace. */
-deprecated
-SystemDiagnosticsNamespace getSystemDiagnosticsNamespace() { any() }
-
 /** A class in the `System.Diagnostics` namespace. */
 class SystemDiagnosticsClass extends Class {
   SystemDiagnosticsClass() {
@@ -39,10 +35,6 @@ class SystemDiagnosticsDebugClass extends SystemDiagnosticsClass {
     result.getReturnType() instanceof VoidType
   }
 }
-
-/** DEPRECATED. Gets the `System.Diagnostics.Debug` class. */
-deprecated
-SystemDiagnosticsDebugClass getSystemDiagnosticsDebugClass() { any() }
 
 /** The `System.Diagnostics.ProcessStartInfo` class. */
 class SystemDiagnosticsProcessStartInfoClass extends SystemDiagnosticsClass {
@@ -73,7 +65,3 @@ class SystemDiagnosticsProcessClass extends SystemDiagnosticsClass {
     result.getReturnType() instanceof SystemDiagnosticsProcessClass
   }
 }
-
-/** DEPRECATED. Gets the `System.Diagnostics.Process` class. */
-deprecated
-SystemDiagnosticsProcessClass getSystemDiagnosticsProcessClass() { any() }

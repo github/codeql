@@ -11,10 +11,6 @@ class SystemWebNamespace extends Namespace {
   }
 }
 
-/** DEPRECATED. Gets the `System.Web` namespace. */
-deprecated
-SystemWebNamespace getSystemWebNamespace() { any() }
-
 /** A class in the `System.Web` namespace. */
 class SystemWebClass extends Class {
   SystemWebClass() {
@@ -288,19 +284,3 @@ class SystemWebHtmlString extends SystemWebClass {
     this.hasName("HtmlString")
   }
 }
-
-/** DEPRECATED. Gets the `System.Web.HttpRequest` class. */
-deprecated
-SystemWebHttpRequestClass getSystemWebHttpRequestClass() { any() }
-
-/** DEPRECATED. Gets the `System.Web.UnvalidatedRequestValues` class. */
-deprecated
-SystemWebUnvalidatedRequestValues getSystemWebUnvalidatedRequestValues() { any() }
-
-/** DEPRECATED. Gets the `System.Web.HttpRequestMessage` class. */
-deprecated
-SystemWebHttpRequestMessageClass getSystemWebHttpRequestMessageClass() { any() }
-
-/** DEPRECATED. Gets the `System.Web.HttpResponse` class. */
-deprecated
-SystemWebHttpResponseClass getSystemWebHttpResponseClass() { any() }

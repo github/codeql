@@ -758,54 +758,18 @@ module Ssa {
       ssaRefRank(bb2, i2, v, _) = 1
     }
 
-    /**
-     * Holds if the value defined at non-trivial SSA definition `def` can reach `read`
-     * without passing through any other read, but possibly through pseudo definitions
-     * and uncertain definitions.
-     */
-    deprecated
-    predicate firstUncertainRead(TrackedDefinition def, AssignableRead read) {
-      firstReadSameVar(def, read)
-      or
-      exists(TrackedVar v, TrackedDefinition redef, BasicBlock b1, int i1, BasicBlock b2, int i2 |
-        redef instanceof UncertainDefinition or redef instanceof PseudoDefinition
-        |
-        adjacentVarRefs(v, b1, i1, b2, i2) and
-        definesAt(def, b1, i1, v) and
-        definesAt(redef, b2, i2, v) and
-        firstUncertainRead(redef, read)
-      )
-    }
-
-    /**
-     * INTERNAL: Use `AssignableRead.getANextUncertainRead()` instead.
-     */
-    deprecated
-    predicate adjacentReadPair(AssignableRead read1, AssignableRead read2) {
-      adjacentReadPairSameVar(read1, read2)
-      or
-      exists(TrackedVar v, TrackedDefinition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
-        adjacentVarRefs(v, bb1, i1, bb2, i2) and
-        variableRead(bb1, i1, v, read1.getAControlFlowNode(), _) and
-        definesAt(def, bb2, i2, v) and
-        firstUncertainRead(def, read2) |
-        def instanceof UncertainDefinition or
-        def instanceof PseudoDefinition
-      )
-    }
-
     private cached module Cached {
       /**
-       * Holds if `read` is a last read of the non-trivial SSA definition `def`.
-       * That is, `read` can reach the end of the enclosing callable, or another
+       * Holds if `cfn` is a last read of the non-trivial SSA definition `def`.
+       * That is, `cfn` can reach the end of the enclosing callable, or another
        * SSA definition for the underlying source variable, without passing through
        * another read.
        */
       cached
-      predicate lastRead(TrackedDefinition def, AssignableRead read) {
+      predicate lastRead(TrackedDefinition def, ControlFlow::Node cfn) {
         exists(TrackedVar v, BasicBlock bb, int i, int rnk |
-          read = def.getARead() and
-          variableRead(bb, i, v, read.getAControlFlowNode(), _) and
+          exists(def.getAReadAtNode(cfn)) and
+          variableRead(bb, i, v, cfn, _) and
           rnk = ssaRefRank(bb, i, v, SsaRead()) |
           // Next reference to `v` inside `bb` is a write
           rnk + 1 = ssaRefRank(bb, _, v, SsaDef())
@@ -890,27 +854,29 @@ module Ssa {
       }
 
       /**
-       * Holds if the value defined at non-trivial SSA definition `def` can reach `read`
-       * without passing through any other read.
+       * Holds if the value defined at non-trivial SSA definition `def` can reach a
+       * read at `cfn`, without passing through any other read.
        */
       cached
-      predicate firstReadSameVar(TrackedDefinition def, AssignableRead read) {
+      predicate firstReadSameVar(TrackedDefinition def, ControlFlow::Node cfn) {
         exists(TrackedVar v, BasicBlock b1, int i1, BasicBlock b2, int i2 |
           adjacentVarRefs(v, b1, i1, b2, i2) and
           definesAt(def, b1, i1, v) and
-          variableRead(b2, i2, v, read.getAControlFlowNode(), _)
+          variableRead(b2, i2, v, cfn, _)
         )
       }
 
       /**
-       * INTERNAL: Use `AssignableRead.getANextRead()` instead.
+       * Holds if the read at `cfn2` is a read of the same SSA definition as the
+       * read at `cfn1`, and `cfn2` can be reached from `cfn1` without passing
+       * through another read.
        */
       cached
-      predicate adjacentReadPairSameVar(AssignableRead read1, AssignableRead read2) {
+      predicate adjacentReadPairSameVar(ControlFlow::Node cfn1, ControlFlow::Node cfn2) {
         exists(TrackedVar v, BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
           adjacentVarRefs(v, bb1, i1, bb2, i2) and
-          variableRead(bb1, i1, v, read1.getAControlFlowNode(), _) and
-          variableRead(bb2, i2, v, read2.getAControlFlowNode(), _)
+          variableRead(bb1, i1, v, cfn1, _) and
+          variableRead(bb2, i2, v, cfn2, _)
         )
       }
     }
@@ -2110,8 +2076,45 @@ module Ssa {
      * Subsequent reads can be found by following the steps defined by
      * `AssignableRead.getANextRead()`.
      */
-    AssignableRead getAFirstRead() {
-      firstReadSameVar(this, result)
+    AssignableRead getAFirstRead() { result = this.getAFirstReadAtNode(_) }
+
+    /**
+     * Gets a read of the source variable underlying this SSA definition at
+     * control flow node `cfn` that can be reached from this SSA definition
+     * without passing through any other SSA definition or read. Example:
+     *
+     * ```
+     * int Field;
+     *
+     * void SetField(int i) {
+     *   this.Field = i;
+     *   Use(this.Field);
+     *   if (i > 0)
+     *     this.Field = i - 1;
+     *   else if (i < 0)
+     *     SetField(1);
+     *   Use(this.Field);
+     *   Use(this.Field);
+     * }
+     * ```
+     *
+     * - The read of `i` on line 4 can be reached from the explicit SSA
+     *   definition (wrapping an implicit entry definition) on line 3.
+     * - The reads of `i` on lines 6 and 7 are not the first reads of any SSA
+     *   definition.
+     * - The read of `this.Field` on line 5 can be reached from the explicit SSA
+     *   definition on line 4.
+     * - The read of `this.Field` on line 10 can be reached from the phi node
+     *   between lines 9 and 10.
+     * - The read of `this.Field` on line 11 is not the first read of any SSA
+     *   definition.
+     *
+     * Subsequent reads can be found by following the steps defined by
+     * `AssignableRead.getANextRead()`.
+     */
+    AssignableRead getAFirstReadAtNode(ControlFlow::Node cfn) {
+      firstReadSameVar(this, cfn) and
+      result.getAControlFlowNode() = cfn
     }
 
     /**
@@ -2142,15 +2145,13 @@ module Ssa {
      * - The read of `this.Field` on line 11 is a last read of the phi node
      *   between lines 9 and 10.
      */
-    AssignableRead getALastRead() {
-      lastRead(this, result)
-    }
+    AssignableRead getALastRead() { result = this.getALastReadAtNode(_) }
 
     /**
-     * Gets a first uncertain read of the source variable underlying this
-     * SSA definition. That is, a read that can be reached from this SSA definition
-     * without passing through any other reads or SSA definitions, except for
-     * phi nodes and uncertain updates. Example:
+     * Gets a last read of the source variable underlying this SSA definition at
+     * control flow node `cfn`. That is, a read that can reach the end of the
+     * enclosing callable, or another SSA definition for the source variable,
+     * without passing through any other read. Example:
      *
      * ```
      * int Field;
@@ -2167,24 +2168,16 @@ module Ssa {
      * }
      * ```
      *
-     * - The read of `i` on line 4 can be reached from the explicit SSA
-     *   definition (wrapping an implicit entry definition) on line 3.
-     * - The reads of `i` on lines 6 and 7 are not the first reads of any SSA
-     *   definition.
-     * - The read of `this.Field` on line 5 can be reached from the explicit SSA
-     *   definition on line 4.
-     * - The read of `this.Field` on line 10 can be reached from the explicit SSA
-     *   definition on line 7, the implicit SSA definition on line 9, and the phi
-     *   node between lines 9 and 10.
-     * - The read of `this.Field` on line 11 is not the first read of any SSA
-     *   definition.
-     *
-     * Subsequent uncertain reads can be found by following the steps defined by
-     * `AssignableRead.getANextUncertainRead()`.
+     * - The reads of `i` on lines 7 and 8 are the last reads for the implicit
+     *   parameter definition on line 3.
+     * - The read of `this.Field` on line 5 is a last read of the definition on
+     *   line 4.
+     * - The read of `this.Field` on line 11 is a last read of the phi node
+     *   between lines 9 and 10.
      */
-    deprecated
-    AssignableRead getAFirstUncertainRead() {
-      firstUncertainRead(this, result)
+    AssignableRead getALastReadAtNode(ControlFlow::Node cfn) {
+      lastRead(this, cfn) and
+      result.getAControlFlowNode() = cfn
     }
 
     /**
@@ -2247,6 +2240,21 @@ module Ssa {
      */
     predicate definesAt(BasicBlock bb, int i) {
       definesAt(this, bb, i, _)
+    }
+
+    /** Gets the basic block to which this SSA definition belongs. */
+    BasicBlock getBasicBlock() { this.definesAt(result, _) }
+
+    /**
+     * Gets the syntax element associated with this SSA definition, if any.
+     * This is either an expression, for example `x = 0`, a parameter, or a
+     * callable. Pseudo nodes have no associated syntax element.
+     */
+    Element getElement() {
+      exists(BasicBlock bb, int i |
+        this.definesAt(bb, i) |
+        result = bb.getNode(i).getElement()
+      )
     }
 
     /**
@@ -2338,6 +2346,8 @@ module Ssa {
       isCapturedVariableDefinitionFlowOut(this, cdef)
     }
 
+    override Element getElement() { result = ad.getElement() }
+
     override string toString() {
       if this.getADefinition() instanceof AssignableDefinitions::ImplicitParameterDefinition then
         result = getToStringPrefix(this) + "SSA param(" + this.getSourceVariable() + ")"
@@ -2380,6 +2390,8 @@ module Ssa {
         result = ebb.getCallable()
       )
     }
+
+    override Callable getElement() { result = this.getCallable() }
 
     override string toString() {
       if this.getSourceVariable().getAssignable() instanceof LocalScopeVariable then
@@ -2457,10 +2469,6 @@ module Ssa {
         this = TSsaImplicitUntrackedDef(v, bb, i) and
         result.getAControlFlowNode() = bb.getNode(i + 1)
       )
-    }
-
-    override AssignableRead getAFirstUncertainRead() {
-      result = this.getARead()
     }
 
     override string toString() {

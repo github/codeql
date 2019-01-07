@@ -12,6 +12,4 @@ class UnknownCall extends MethodCall {
   override string toString() { result = "Call to unknown method" }
 }
 
-query predicate edges(ControlFlow::Node n1, ControlFlow::Node n2) {
-  n2 = n1.getASuccessor()
-}
+query predicate edges(ControlFlow::Node n1, ControlFlow::Node n2) { n2 = n1.getASuccessor() }

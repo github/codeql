@@ -10,10 +10,6 @@ class SystemCollectionsSpecializedNamespace extends Namespace {
   }
 }
 
-/** DEPRECATED. Gets the `System.Collections.Specialized` namespace. */
-deprecated
-SystemCollectionsSpecializedNamespace getSystemCollectionsSpecializedNamespace() { any() }
-
 /** A class in the `System.Collections.Specialized` namespace. */
 class SystemCollectionsSpecializedClass extends Class {
   SystemCollectionsSpecializedClass() {
@@ -27,7 +23,3 @@ class SystemCollectionsSpecializedNameValueCollectionClass extends SystemCollect
     this.hasName("NameValueCollection")
   }
 }
-
-/** DEPRECATED. Gets the `System.Collections.Specialized.NameValueCollection` class. */
-deprecated
-SystemCollectionsSpecializedNameValueCollectionClass getSystemCollectionsSpecializedNameValueCollectionClass() { any() }

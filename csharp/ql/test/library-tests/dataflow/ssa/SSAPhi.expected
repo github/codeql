@@ -33,6 +33,8 @@
 | Properties.cs:33:19:33:22 | Properties.stat | Properties.cs:50:9:50:17 | SSA phi(Properties.stat) | Properties.cs:49:17:49:32 | SSA call def(Properties.stat) |
 | Properties.cs:61:23:61:23 | i | Properties.cs:63:16:63:16 | SSA phi(i) | Properties.cs:61:23:61:23 | SSA param(i) |
 | Properties.cs:61:23:61:23 | i | Properties.cs:63:16:63:16 | SSA phi(i) | Properties.cs:63:16:63:18 | SSA def(i) |
+| Splitting.cs:44:13:44:13 | x | Splitting.cs:54:9:54:21 | SSA phi(x) | Splitting.cs:46:13:46:19 | [b (line 42): true] SSA def(x) |
+| Splitting.cs:44:13:44:13 | x | Splitting.cs:54:9:54:21 | SSA phi(x) | Splitting.cs:49:13:49:19 | [b (line 42): false] SSA def(x) |
 | Test.cs:5:15:5:20 | param1 | Test.cs:25:16:25:16 | SSA phi(param1) | Test.cs:5:15:5:20 | SSA param(param1) |
 | Test.cs:5:15:5:20 | param1 | Test.cs:25:16:25:16 | SSA phi(param1) | Test.cs:27:17:27:24 | SSA def(param1) |
 | Test.cs:5:15:5:20 | param1 | Test.cs:33:9:33:19 | SSA phi(param1) | Test.cs:25:16:25:16 | SSA phi(param1) |

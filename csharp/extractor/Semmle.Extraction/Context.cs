@@ -43,28 +43,90 @@ namespace Semmle.Extraction
         int NewId() => TrapWriter.IdCounter++;
 
         /// <summary>
-        /// Gets the cached label for the given entity, or creates a new
-        /// (cached) label if it hasn't already been created. The label
-        /// is set on the supplied <paramref name="entity"/> object.
+        /// Creates a new entity using the factory.
         /// </summary>
-        /// <returns><code>true</code> iff the label already existed.</returns>
-        public bool GetOrAddCachedLabel(ICachedEntity entity)
+        /// <param name="factory">The entity factory.</param>
+        /// <param name="init">The initializer for the entity.</param>
+        /// <returns>The new/existing entity.</returns>
+        public Entity CreateEntity<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, Type init) where Entity : ICachedEntity
         {
-            var id = GetId(entity);
-            if (id == null)
-                throw new InternalError("Attempt to create a null entity for {0}", entity.GetType());
+            return init == null ? CreateEntity2(factory, init) : CreateNonNullEntity(factory, init);
+        }
 
-            Label existingLabel;
-            if (labelCache.TryGetValue(id, out existingLabel))
+        /// <summary>
+        /// Creates a new entity using the factory.
+        /// Uses a different cache to <see cref="CreateEntity{Type, Entity}(ICachedEntityFactory{Type, Entity}, Type)"/>,
+        /// and can store null values.
+        /// </summary>
+        /// <param name="factory">The entity factory.</param>
+        /// <param name="init">The initializer for the entity.</param>
+        /// <returns>The new/existing entity.</returns>
+        public Entity CreateEntity2<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, Type init) where Entity : ICachedEntity
+        {
+            using (StackGuard)
             {
-                entity.Label = existingLabel;
-                return true;
-            }
+                var entity = factory.Create(this, init);
 
-            entity.Label = new Label(NewId());
-            DefineLabel(entity.Label, id);
-            labelCache[id] = entity.Label;
-            return false;
+                if (entityLabelCache.TryGetValue(entity, out var label))
+                {
+                    entity.Label = label;
+                }
+                else
+                {
+                    var id = entity.Id;
+#if DEBUG_LABELS
+                    CheckEntityHasUniqueLabel(id, entity);
+#endif
+                    label = new Label(NewId());
+                    entity.Label = label;
+                    entityLabelCache[entity] = label;
+                    DefineLabel(label, id);
+                    if (entity.NeedsPopulation)
+                        Populate(init as ISymbol, entity);
+                }
+                return entity;
+            }
+        }
+
+#if DEBUG_LABELS
+        private void CheckEntityHasUniqueLabel(IId id, ICachedEntity entity)
+        {
+            if (idLabelCache.TryGetValue(id, out var originalEntity))
+            {
+                Extractor.Message(new Message { message = "Label collision for " + id.ToString(), severity = Severity.Warning });
+            }
+            else
+            {
+                idLabelCache[id] = entity;
+            }
+        }
+#endif
+
+        private Entity CreateNonNullEntity<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, Type init) where Entity : ICachedEntity
+        {
+            if (objectEntityCache.TryGetValue(init, out var cached))
+                return (Entity)cached;
+
+            using (StackGuard)
+            {
+                var label = new Label(NewId());
+                var entity = factory.Create(this, init);
+                entity.Label = label;
+
+                objectEntityCache[init] = entity;
+
+                var id = entity.Id;
+                DefineLabel(label, id);
+
+#if DEBUG_LABELS
+                CheckEntityHasUniqueLabel(id, entity);
+#endif
+
+                if (entity.NeedsPopulation)
+                    Populate(init as ISymbol, entity);
+
+                return entity;
+            }
         }
 
         /// <summary>
@@ -91,25 +153,6 @@ namespace Semmle.Extraction
         }
 
         /// <summary>
-        /// Gets the ID belonging to cached entity <paramref name="entity"/>.
-        ///
-        /// The ID itself is also cached, but unlike the label cache (which is used
-        /// to prevent reextraction/infinite loops), this is a pure performance
-        /// optimization. Moreover, the label cache is injective, which the ID cache
-        /// need not be.
-        /// </summary>
-        IId GetId(ICachedEntity entity)
-        {
-            IId id;
-            if (!idCache.TryGetValue(entity, out id))
-            {
-                id = entity.Id;
-                idCache[entity] = id;
-            }
-            return id;
-        }
-
-        /// <summary>
         /// Creates a fresh label with ID "*", and set it on the
         /// supplied <paramref name="entity"/> object.
         /// </summary>
@@ -120,7 +163,11 @@ namespace Semmle.Extraction
             entity.Label = label;
         }
 
-        readonly Dictionary<IId, Label> labelCache = new Dictionary<IId, Label>();
+#if DEBUG_LABELS
+        readonly Dictionary<IId, ICachedEntity> idLabelCache = new Dictionary<IId, ICachedEntity>();
+#endif
+        readonly Dictionary<object, ICachedEntity> objectEntityCache = new Dictionary<object, ICachedEntity>();
+        readonly Dictionary<ICachedEntity, Label> entityLabelCache = new Dictionary<ICachedEntity, Label>();
         readonly HashSet<Label> extractedGenerics = new HashSet<Label>();
 
         public void DefineLabel(IEntity entity)
@@ -133,8 +180,6 @@ namespace Semmle.Extraction
         {
             TrapWriter.Emit(new DefineLabelEmitter(label, id));
         }
-
-        readonly Dictionary<object, IId> idCache = new Dictionary<object, IId>();
 
         /// <summary>
         /// Queue of items to populate later.

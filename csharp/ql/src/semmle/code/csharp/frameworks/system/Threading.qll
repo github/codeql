@@ -9,7 +9,3 @@ class SystemThreadingNamespace extends Namespace {
     this.hasName("Threading")
   }
 }
-
-/** DEPRECATED. Gets the `System.Threading` namespace. */
-deprecated
-SystemThreadingNamespace getSystemThreadingNamespace() { any() }

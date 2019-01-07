@@ -193,3 +193,14 @@
 | CSharp7.cs:288:36:288:39 | access to local variable list | CSharp7.cs:290:32:290:35 | access to local variable list |
 | CSharp7.cs:290:23:290:23 | Int32 a | CSharp7.cs:290:18:290:27 | (..., ...) |
 | CSharp7.cs:290:26:290:26 | String b | CSharp7.cs:290:18:290:27 | (..., ...) |
+| CSharp7.cs:298:17:298:19 | SSA def(x) | CSharp7.cs:298:22:298:39 | SSA phi(x) |
+| CSharp7.cs:298:19:298:19 | 0 | CSharp7.cs:298:17:298:19 | SSA def(x) |
+| CSharp7.cs:298:22:298:22 | access to local variable x | CSharp7.cs:298:22:298:25 | ... < ... |
+| CSharp7.cs:298:22:298:22 | access to local variable x | CSharp7.cs:298:30:298:30 | access to local variable x |
+| CSharp7.cs:298:22:298:25 | ... < ... | CSharp7.cs:298:22:298:39 | ... && ... |
+| CSharp7.cs:298:22:298:39 | SSA phi(x) | CSharp7.cs:298:22:298:22 | access to local variable x |
+| CSharp7.cs:298:30:298:30 | access to local variable x | CSharp7.cs:298:35:298:39 | SSA def(y) |
+| CSharp7.cs:298:30:298:30 | access to local variable x | CSharp7.cs:298:44:298:44 | access to local variable x |
+| CSharp7.cs:298:30:298:39 | ... is ... | CSharp7.cs:298:22:298:39 | ... && ... |
+| CSharp7.cs:298:35:298:39 | SSA def(y) | CSharp7.cs:300:31:300:31 | access to local variable y |
+| CSharp7.cs:298:42:298:44 | SSA def(x) | CSharp7.cs:298:22:298:39 | SSA phi(x) |

@@ -37,24 +37,16 @@ class Location extends @location
   string toString() { none() }
 
   /** Gets the start line of this location. */
-  int getStartLine() {
-     locations_default(this,_,result,_,_,_)
-  }
+  final int getStartLine() { this.hasLocationInfo(_, result, _, _, _) }
 
   /** Gets the end line of this location. */
-  int getEndLine() {
-     locations_default(this,_,_,_,result,_)
-  }
+  final int getEndLine() { this.hasLocationInfo(_, _, _, result, _) }
 
   /** Gets the start column of this location. */
-  int getStartColumn() {
-     locations_default(this,_,_,result,_,_)
-  }
+  final int getStartColumn() { this.hasLocationInfo(_, _, result, _, _) }
 
   /** Gets the end column of this location. */
-  int getEndColumn() {
-     locations_default(this,_,_,_,_,result)
-  }
+  final int getEndColumn() { this.hasLocationInfo(_, _, _, _, result) }
 }
 
 /**

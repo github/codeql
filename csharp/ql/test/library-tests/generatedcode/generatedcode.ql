@@ -1,4 +1,3 @@
-
 import csharp
 import semmle.code.csharp.commons.GeneratedCode
 

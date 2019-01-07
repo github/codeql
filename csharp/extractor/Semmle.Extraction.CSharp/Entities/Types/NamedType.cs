@@ -174,7 +174,7 @@ namespace Semmle.Extraction.CSharp.Entities
             referencedType = Type.Create(cx, symbol);
         }
 
-        public static NamedTypeRef Create(Context cx, INamedTypeSymbol type) => NamedTypeRefFactory.Instance.CreateEntity(cx, type);
+        public static NamedTypeRef Create(Context cx, INamedTypeSymbol type) => NamedTypeRefFactory.Instance.CreateEntity2(cx, type);
 
         class NamedTypeRefFactory : ICachedEntityFactory<INamedTypeSymbol, NamedTypeRef>
         {

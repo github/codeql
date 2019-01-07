@@ -1,6 +1,6 @@
 /**
  * Provides a list of NuGet packages with known vulnerabilities.
- * 
+ *
  * To add a new vulnerability follow the existing pattern.
  * Create a new class that extends the abstract class `Vulnerability`,
  * supplying the name and the URL, and override one (or both) of
@@ -73,9 +73,9 @@ class MicrosoftAdvisory4021279 extends Vulnerability {
 
 class CVE_2017_8700 extends Vulnerability {
   CVE_2017_8700() { this = "CVE-2017-8700" }
-  
+
   override string getUrl() { result = "https://github.com/aspnet/Announcements/issues/279" }
-  
+
   override predicate matchesRange(string name, Version affected, Version fixed) {
     (
       name = "Microsoft.AspNetCore.Mvc.Core"
@@ -91,9 +91,9 @@ class CVE_2017_8700 extends Vulnerability {
 
 class CVE_2018_0765 extends Vulnerability {
   CVE_2018_0765() { this = "CVE-2018-0765" }
-  
+
   override string getUrl() { result = "https://github.com/dotnet/announcements/issues/67" }
-  
+
   override predicate matchesRange(string name, Version affected, Version fixed) {
     name = "System.Security.Cryptography.Xml" and
     affected = "0.0.0" and
@@ -103,7 +103,7 @@ class CVE_2018_0765 extends Vulnerability {
 
 class AspNetCore_Mar18 extends Vulnerability {
   AspNetCore_Mar18() { this = "ASPNETCore-Mar18" }
-  
+
   override string getUrl() { result = "https://github.com/aspnet/Announcements/issues/300" }
 
   override predicate matchesRange(string name, Version affected, Version fixed) {
@@ -125,9 +125,9 @@ class AspNetCore_Mar18 extends Vulnerability {
 
 class CVE_2018_8409 extends Vulnerability {
   CVE_2018_8409() { this = "CVE-2018-8409" }
-  
+
   override string getUrl() { result = "https://github.com/aspnet/Announcements/issues/316" }
-  
+
   override predicate matchesRange(string name, Version affected, Version fixed) {
     name = "System.IO.Pipelines" and affected = "4.5.0" and fixed = "4.5.1"
     or
@@ -138,9 +138,9 @@ class CVE_2018_8409 extends Vulnerability {
 
 class CVE_2018_8171 extends Vulnerability {
   CVE_2018_8171() { this = "CVE-2018-8171" }
-  
+
   override string getUrl() { result = "https://github.com/aspnet/Announcements/issues/310" }
-  
+
   override predicate matchesRange(string name, Version affected, Version fixed) {
     name = "Microsoft.AspNetCore.Identity" and (
       affected = "1.0.0" and fixed = "1.0.6"
@@ -204,7 +204,7 @@ class CVE_2018_8356 extends Vulnerability {
 
 class ASPNETCore_Jul18 extends Vulnerability {
   ASPNETCore_Jul18() { this = "ASPNETCore-July18" }
-  
+
   override string getUrl() { result = "https://github.com/aspnet/Announcements/issues/311" }
 
   override predicate matchesRange(string name, Version affected, Version fixed) {

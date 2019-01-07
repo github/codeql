@@ -30,12 +30,13 @@ namespace Semmle.Extraction.CSharp.Entities
             Context.Emit(Tuples.events(this, symbol.GetName(), ContainingType, type.TypeRef, Create(Context, symbol.OriginalDefinition)));
 
             var adder = symbol.AddMethod;
-            if (adder != null)
-                EventAccessor.Create(Context, adder);
-
             var remover = symbol.RemoveMethod;
-            if (remover != null)
-                EventAccessor.Create(Context, remover);
+
+            if (!(adder is null))
+                Method.Create(Context, adder);
+
+            if (!(remover is null))
+                Method.Create(Context, remover);
 
             ExtractModifiers();
             BindComments();

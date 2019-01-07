@@ -80,6 +80,7 @@ class NamedElement extends Element, @dotnet_named_element {
   }
 
   /** Gets a unique string label for this element. */
+  cached
   string getLabel() { none() }
 
   /** Holds if `other` has the same metadata handle in the same assembly. */

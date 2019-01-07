@@ -1,8 +1,7 @@
 import csharp
 
-class DataflowConfiguration extends DataFlow::Configuration
-{
-  DataflowConfiguration() { this="data flow configuration" }
+class DataflowConfiguration extends DataFlow::Configuration {
+  DataflowConfiguration() { this = "data flow configuration" }
 
   override predicate isSource(DataFlow::Node source) {
     source.asExpr().(Expr).getValue() = "tainted"
