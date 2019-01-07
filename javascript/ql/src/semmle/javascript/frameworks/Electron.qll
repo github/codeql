@@ -9,13 +9,12 @@ module Electron {
       exists(BrowserObject bo | this = bo.getOptionArgument(0, "webPreferences").getALocalSource())
     }
   }
-  
+
   /**
    * A data flow node that creates a new `BrowserWindow` or `BrowserView`.
    */
-  private abstract class BrowserObject extends DataFlow::NewNode {
-  }
-  
+  abstract private class BrowserObject extends DataFlow::NewNode { }
+
   /**
    * A data flow node that creates a new `BrowserWindow`.
    */
@@ -24,30 +23,24 @@ module Electron {
       this = DataFlow::moduleMember("electron", "BrowserWindow").getAnInstantiation()
     }
   }
-  
+
   /**
    * A data flow node that creates a new `BrowserView`.
    */
   class BrowserView extends BrowserObject {
-    BrowserView() {
-      this = DataFlow::moduleMember("electron", "BrowserView").getAnInstantiation()
-    }
+    BrowserView() { this = DataFlow::moduleMember("electron", "BrowserView").getAnInstantiation() }
   }
 
   /**
    * A Node.js-style HTTP or HTTPS request made using an Electron module.
    */
-  abstract class CustomElectronClientRequest extends NodeJSLib::CustomNodeJSClientRequest {}
+  abstract class CustomElectronClientRequest extends NodeJSLib::CustomNodeJSClientRequest { }
 
   /**
    * A Node.js-style HTTP or HTTPS request made using an Electron module.
    */
   class ElectronClientRequest extends NodeJSLib::NodeJSClientRequest {
-
-    ElectronClientRequest() {
-      this instanceof CustomElectronClientRequest
-    }
-
+    ElectronClientRequest() { this instanceof CustomElectronClientRequest }
   }
 
   /**
@@ -65,23 +58,21 @@ module Electron {
     }
 
     override DataFlow::Node getHost() {
-      exists (string name |
+      exists(string name |
         name = "host" or
-        name = "hostname" |
+        name = "hostname"
+      |
         result = getOptionArgument(0, name)
       )
     }
 
     override DataFlow::Node getADataNode() {
-      exists (string name |
-        name = "write" or name = "end" |
-        result =this.(DataFlow::SourceNode).getAMethodCall(name).getArgument(0)
+      exists(string name | name = "write" or name = "end" |
+        result = this.(DataFlow::SourceNode).getAMethodCall(name).getArgument(0)
       )
     }
-
   }
-  
-    
+
   /**
    * A data flow node that is the parameter of a redirect callback for an HTTP or HTTPS request made by a Node.js process, for example `res` in `net.request(url).on('redirect', (res) => {})`.
    */
@@ -93,9 +84,7 @@ module Electron {
         handler.getClientRequest() instanceof ElectronClientRequest
       )
     }
-    
-    override string getSourceType() {
-      result = "ElectronClientRequest redirect event"
-    }
+
+    override string getSourceType() { result = "ElectronClientRequest redirect event" }
   }
 }

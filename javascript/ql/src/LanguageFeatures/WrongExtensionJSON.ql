@@ -12,7 +12,8 @@
 import javascript
 
 from JSONValue v, File f
-where f = v.getFile() and
-      f.getExtension().regexpMatch("(?i)jsx?") and
-      not exists(v.getParent())
+where
+  f = v.getFile() and
+  f.getExtension().regexpMatch("(?i)jsx?") and
+  not exists(v.getParent())
 select v, "JSON data in file with extension '" + f.getExtension() + "'."

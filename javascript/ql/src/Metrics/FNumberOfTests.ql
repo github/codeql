@@ -13,5 +13,4 @@ import semmle.javascript.frameworks.Testing
 
 from File f, int n
 where n = strictcount(Test test | test.getFile() = f)
-select f, n
-order by n desc
+select f, n order by n desc

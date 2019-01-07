@@ -17,11 +17,7 @@ import javascript
  * A token that is relevant for this query, that is, an `if`, `else` or `}` token.
  */
 class RelevantToken extends Token {
-  RelevantToken() {
-    exists (string v | v = getValue() |
-      v = "if" or v = "else" or v = "}"
-    )
-  }
+  RelevantToken() { exists(string v | v = getValue() | v = "if" or v = "else" or v = "}") }
 }
 
 /**
@@ -54,9 +50,10 @@ int semanticIndent(RelevantToken tk) {
   not prevTokenOnSameLine(tk, _, _, _) and
   result = tk.getLocation().getStartColumn()
   or
-  exists (RelevantToken prev |
+  exists(RelevantToken prev |
     prevTokenOnSameLine(tk, "if", prev, "else") or
-    prevTokenOnSameLine(tk, "else", prev, "}") |
+    prevTokenOnSameLine(tk, "else", prev, "}")
+  |
     result = semanticIndent(prev)
   )
 }
@@ -64,24 +61,23 @@ int semanticIndent(RelevantToken tk) {
 /**
  * Gets the semantic indentation of the `if` token of statement `i`.
  */
-int ifIndent(IfStmt i) {
-  result = semanticIndent(i.getIfToken())
-}
+int ifIndent(IfStmt i) { result = semanticIndent(i.getIfToken()) }
 
 /**
  * Gets the semantic indentation of the `else` token of statement `i`,
  * if any.
  */
-int elseIndent(IfStmt i) {
-  result = semanticIndent(i.getElseToken())
-}
+int elseIndent(IfStmt i) { result = semanticIndent(i.getElseToken()) }
 
 from IfStmt outer, IfStmt inner, Token outerIf, Token innerIf, Token innerElse, int outerIndent
-where inner = outer.getThen().getAChildStmt*() and
-      outerIf = outer.getIfToken() and outerIndent = ifIndent(outer) and
-      innerIf = inner.getIfToken() and innerElse = inner.getElseToken() and
-      outerIndent < ifIndent(inner) and
-      outerIndent = elseIndent(inner) and
-      not outer.getTopLevel().isMinified()
+where
+  inner = outer.getThen().getAChildStmt*() and
+  outerIf = outer.getIfToken() and
+  outerIndent = ifIndent(outer) and
+  innerIf = inner.getIfToken() and
+  innerElse = inner.getElseToken() and
+  outerIndent < ifIndent(inner) and
+  outerIndent = elseIndent(inner) and
+  not outer.getTopLevel().isMinified()
 select innerElse, "This else branch belongs to $@, but its indentation suggests it belongs to $@.",
-                innerIf, "this if statement", outerIf, "this other if statement"
+  innerIf, "this if statement", outerIf, "this other if statement"

@@ -22,7 +22,7 @@ import semmle.javascript.RestrictedLocations
  * have to call itself using `new`, so that is what we look for.
  */
 predicate guardsAgainstMissingNew(Function f) {
-  exists (DataFlow::NewNode new |
+  exists(DataFlow::NewNode new |
     new.asExpr().getEnclosingFunction() = f and
     f = new.getACallee()
   )
@@ -38,7 +38,8 @@ predicate calls(DataFlow::InvokeNode cs, Function callee, int imprecision) {
   callee = cs.getACallee() and
   (
     // if global flow was used to derive the callee, we may be imprecise
-    if cs.isIndefinite("global") then
+    if cs.isIndefinite("global")
+    then
       // callees within the same file are probably genuine
       callee.getFile() = cs.getFile() and imprecision = 0
       or
@@ -65,9 +66,11 @@ Function getALikelyCallee(DataFlow::InvokeNode cs, boolean isNew) {
   not cs.isUncertain() and
   not whitelistedCall(cs) and
   not whitelistedCallee(result) and
-  (cs instanceof DataFlow::NewNode and isNew = true
-   or
-   cs instanceof DataFlow::CallNode and isNew = false)
+  (
+    cs instanceof DataFlow::NewNode and isNew = true
+    or
+    cs instanceof DataFlow::CallNode and isNew = false
+  )
 }
 
 /**
@@ -76,10 +79,12 @@ Function getALikelyCallee(DataFlow::InvokeNode cs, boolean isNew) {
  */
 predicate whitelistedCallee(Function f) {
   // externs are special, so don't flag them
-  f.inExternsFile() or
+  f.inExternsFile()
+  or
   // illegal constructor calls are flagged by query 'Illegal invocation',
   // so don't flag them
-  f instanceof Constructor or
+  f instanceof Constructor
+  or
   // if `f` itself guards against missing `new`, don't flag it
   guardsAgainstMissingNew(f)
 }
@@ -90,7 +95,8 @@ predicate whitelistedCallee(Function f) {
  */
 predicate whitelistedCall(DataFlow::CallNode call) {
   // super constructor calls behave more like `new`, so don't flag them
-  call.asExpr() instanceof SuperCall or
+  call.asExpr() instanceof SuperCall
+  or
   // don't flag if there is a receiver object
   exists(call.getReceiver())
 }
@@ -102,14 +108,19 @@ predicate whitelistedCall(DataFlow::CallNode call) {
  */
 DataFlow::InvokeNode getFirstInvocation(Function f, boolean isNew) {
   result = min(DataFlow::InvokeNode invk, string path, int line, int col |
-    f = getALikelyCallee(invk, isNew) and invk.hasLocationInfo(path, line, col, _, _) |
-    invk order by path, line, col
-  )
+      f = getALikelyCallee(invk, isNew) and invk.hasLocationInfo(path, line, col, _, _)
+    |
+      invk
+      order by
+        path, line, col
+    )
 }
 
 from Function f, DataFlow::NewNode new, DataFlow::CallNode call
-where new = getFirstInvocation(f, true) and
-      call = getFirstInvocation(f, false)
-select (FirstLineOf)f, capitalize(f.describe()) + " is sometimes invoked as a constructor " +
-      "(for example $@), and sometimes as a normal function (for example $@).",
-      new, "here", call, "here"
+where
+  new = getFirstInvocation(f, true) and
+  call = getFirstInvocation(f, false)
+select f.(FirstLineOf),
+  capitalize(f.describe()) + " is sometimes invoked as a constructor " +
+    "(for example $@), and sometimes as a normal function (for example $@).", new, "here", call,
+  "here"

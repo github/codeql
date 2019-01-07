@@ -13,5 +13,4 @@
 import javascript
 
 from Function f
-select f, f.getNumberOfLinesOfCode() as n
-order by n desc
+select f, f.getNumberOfLinesOfCode() as n order by n desc

@@ -26,9 +26,15 @@ class AssocNestedExpr extends BinaryExpr {
   AssocNestedExpr() {
     exists(BinaryExpr parent, int idx | this = parent.getChildExpr(idx) |
       // +, *, &&, || and the bitwise operations are associative
-      ((this instanceof AddExpr or this instanceof MulExpr or
-        this instanceof BitwiseExpr or this instanceof LogicalBinaryExpr) and
-        parent.getOperator() = this.getOperator())
+      (
+        (
+          this instanceof AddExpr or
+          this instanceof MulExpr or
+          this instanceof BitwiseExpr or
+          this instanceof LogicalBinaryExpr
+        ) and
+        parent.getOperator() = this.getOperator()
+      )
       or
       // (x*y)/z = x*(y/z)
       (this instanceof MulExpr and parent instanceof DivExpr and idx = 0)
@@ -37,7 +43,8 @@ class AssocNestedExpr extends BinaryExpr {
       (this instanceof DivExpr and parent instanceof ModExpr and idx = 0)
       or
       // (x+y)-z = x+(y-z)
-      (this instanceof AddExpr and parent instanceof SubExpr and idx = 0))
+      (this instanceof AddExpr and parent instanceof SubExpr and idx = 0)
+    )
   }
 }
 
@@ -48,9 +55,13 @@ class AssocNestedExpr extends BinaryExpr {
 class HarmlessNestedExpr extends BinaryExpr {
   HarmlessNestedExpr() {
     exists(BinaryExpr parent | this = parent.getAChildExpr() |
-      (parent instanceof Comparison and (this instanceof ArithmeticExpr or this instanceof ShiftExpr))
+      (
+        parent instanceof Comparison and
+        (this instanceof ArithmeticExpr or this instanceof ShiftExpr)
+      )
       or
-      (parent instanceof LogicalExpr and this instanceof Comparison))
+      (parent instanceof LogicalExpr and this instanceof Comparison)
+    )
   }
 }
 
@@ -66,7 +77,8 @@ predicate interestingNesting(BinaryExpr inner, BinaryExpr outer) {
 }
 
 from BinaryExpr inner, BinaryExpr outer
-where interestingNesting(inner, outer) and
-      inner.getWhitespaceAroundOperator() > outer.getWhitespaceAroundOperator() and
-      not outer.getTopLevel().isMinified()
+where
+  interestingNesting(inner, outer) and
+  inner.getWhitespaceAroundOperator() > outer.getWhitespaceAroundOperator() and
+  not outer.getTopLevel().isMinified()
 select outer, "Whitespace around nested operators contradicts precedence."

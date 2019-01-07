@@ -26,25 +26,29 @@ predicate isCommonPredefinedTypeName(string name) {
  */
 class DefiniteTypeDecl extends TypeDecl {
   DefiniteTypeDecl() {
-    this = any(ImportSpecifier im).getLocal()
-    implies
-    exists(getLocalTypeName().getAnAccess())
+    this = any(ImportSpecifier im).getLocal() implies exists(getLocalTypeName().getAnAccess())
   }
 }
 
 from SimpleParameter parameter, Function function, Locatable link, string linkText
-where function.getFile().getFileType().isTypeScript()
-  and function.getAParameter() = parameter
-  and not function.hasBody()
-  and not exists(parameter.getTypeAnnotation())
-  and (
-    isCommonPredefinedTypeName(parameter.getName()) and link = parameter and linkText = "predefined type '" + parameter.getName() + "'"
+where
+  function.getFile().getFileType().isTypeScript() and
+  function.getAParameter() = parameter and
+  not function.hasBody() and
+  not exists(parameter.getTypeAnnotation()) and
+  (
+    isCommonPredefinedTypeName(parameter.getName()) and
+    link = parameter and
+    linkText = "predefined type '" + parameter.getName() + "'"
     or
-    exists (DefiniteTypeDecl decl, LocalTypeName typename |
+    exists(DefiniteTypeDecl decl, LocalTypeName typename |
       decl = typename.getFirstDeclaration() and
       parameter.getVariable().getScope().getOuterScope*() = typename.getScope() and
       decl.getName() = parameter.getName() and
       link = decl and
-      linkText = decl.describe())
+      linkText = decl.describe()
+    )
   )
-select parameter, "The parameter '" + parameter.getName() + "' has type 'any', but its name coincides with the $@.", link, linkText
+select parameter,
+  "The parameter '" + parameter.getName() + "' has type 'any', but its name coincides with the $@.",
+  link, linkText

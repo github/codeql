@@ -1,6 +1,7 @@
 /**
  * Provides a taint tracking configuration for reasoning about cleartext storage of sensitive information.
  */
+
 import javascript
 private import semmle.javascript.security.SensitiveActions
 
@@ -35,20 +36,11 @@ module CleartextStorage {
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "ClearTextStorage" }
 
-    override
-    predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override
-    predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override
-    predicate isSanitizer(DataFlow::Node node) {
-      node instanceof Sanitizer
-    }
+    override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
   }
 
   /**
@@ -58,16 +50,13 @@ module CleartextStorage {
   class SensitiveExprSource extends Source, DataFlow::ValueNode {
     override SensitiveExpr astNode;
 
-    override string describe() {
-      result = astNode.describe()
-    }
+    override string describe() { result = astNode.describe() }
   }
 
   /** A call to any method whose name suggests that it encodes or encrypts the parameter. */
   class ProtectSanitizer extends Sanitizer, DataFlow::ValueNode {
     ProtectSanitizer() {
-      exists(string s |
-        astNode.(CallExpr).getCalleeName().regexpMatch("(?i).*" + s + ".*") |
+      exists(string s | astNode.(CallExpr).getCalleeName().regexpMatch("(?i).*" + s + ".*") |
         s = "protect" or s = "encode" or s = "encrypt"
       )
     }
@@ -78,7 +67,7 @@ module CleartextStorage {
    */
   class CookieStorageSink extends Sink {
     CookieStorageSink() {
-      exists (HTTP::CookieDefinition cookieDef |
+      exists(HTTP::CookieDefinition cookieDef |
         this.asExpr() = cookieDef.getValueArgument() or
         this.asExpr() = cookieDef.getHeaderArgument()
       )
@@ -89,9 +78,7 @@ module CleartextStorage {
    * An expression set as a value of localStorage or sessionStorage.
    */
   class WebStorageSink extends Sink {
-    WebStorageSink() {
-      this.asExpr() instanceof WebStorageWrite
-    }
+    WebStorageSink() { this.asExpr() instanceof WebStorageWrite }
   }
 
   /**

@@ -29,13 +29,9 @@ module ReflectedXss {
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "ReflectedXss" }
 
-    override predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
     override predicate isSanitizer(DataFlow::Node node) {
       super.isSanitizer(node) or
@@ -61,12 +57,11 @@ module ReflectedXss {
    */
   private class HttpResponseSink extends Sink {
     HttpResponseSink() {
-      exists (HTTP::ResponseSendArgument sendarg | sendarg = asExpr() |
-        forall (HTTP::HeaderDefinition hd |
-          hd = sendarg.getRouteHandler().getAResponseHeader("content-type") |
-          exists (string tp | hd.defines("content-type", tp) |
-            tp.toLowerCase().matches("%html%")
-          )
+      exists(HTTP::ResponseSendArgument sendarg | sendarg = asExpr() |
+        forall(HTTP::HeaderDefinition hd |
+          hd = sendarg.getRouteHandler().getAResponseHeader("content-type")
+        |
+          exists(string tp | hd.defines("content-type", tp) | tp.toLowerCase().matches("%html%"))
         )
       )
     }

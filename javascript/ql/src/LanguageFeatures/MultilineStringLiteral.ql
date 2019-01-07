@@ -13,6 +13,7 @@
 import javascript
 
 from StringLiteral sl, Location l
-where l = sl.getLocation() and
-      l.getStartLine() != l.getEndLine()
+where
+  l = sl.getLocation() and
+  l.getStartLine() != l.getEndLine()
 select sl, "Avoid multi-line string literals."

@@ -12,6 +12,7 @@
  * 3. The flow steps from `TaintedObject::step`.
  * 4. The sanitizing guards `TaintedObject::SanitizerGuard`.
  */
+
 import javascript
 
 module TaintedObject {
@@ -28,7 +29,7 @@ module TaintedObject {
    *
    * Note that the presence of the this label generally implies the presence of the `taint` label as well.
    */
-  FlowLabel label() { result instanceof TaintedObjectLabel  }
+  FlowLabel label() { result instanceof TaintedObjectLabel }
 
   /**
    * Holds for the flows steps that are relevant for tracking user-controlled JSON objects.
@@ -37,9 +38,10 @@ module TaintedObject {
     // JSON parsers map tainted inputs to tainted JSON
     (inlbl = FlowLabel::data() or inlbl = FlowLabel::taint()) and
     outlbl = label() and
-    exists (JsonParserCall parse |
+    exists(JsonParserCall parse |
       src = parse.getInput() and
-      trg = parse.getOutput())
+      trg = parse.getOutput()
+    )
     or
     // Property reads preserve deep object taint.
     inlbl = label() and
@@ -54,40 +56,35 @@ module TaintedObject {
     // Extending objects preserves deep object taint
     inlbl = label() and
     outlbl = label() and
-    exists (ExtendCall call |
+    exists(ExtendCall call |
       src = call.getAnOperand() and
       trg = call
       or
       src = call.getASourceOperand() and
-      trg = call.getDestinationOperand().getALocalSource())
+      trg = call.getDestinationOperand().getALocalSource()
+    )
   }
 
   /**
    * Holds if `node` is a source of JSON taint and label is the JSON taint label.
    */
-  predicate isSource(Node source, FlowLabel label) {
-    source instanceof Source and label = label()
-  }
+  predicate isSource(Node source, FlowLabel label) { source instanceof Source and label = label() }
 
   /**
    * A source of a user-controlled deep object.
    */
-  abstract class Source extends DataFlow::Node {}
+  abstract class Source extends DataFlow::Node { }
 
   /** Request input accesses as a JSON source. */
   private class RequestInputAsSource extends Source {
-    RequestInputAsSource() {
-      this.(HTTP::RequestInputAccess).isUserControlledObject()
-    }
+    RequestInputAsSource() { this.(HTTP::RequestInputAccess).isUserControlledObject() }
   }
 
   /**
    * Sanitizer guard that blocks deep object taint.
    */
   abstract class SanitizerGuard extends TaintTracking::LabeledSanitizerGuardNode {
-    override FlowLabel getALabel() {
-      result = label()
-    }
+    override FlowLabel getALabel() { result = label() }
   }
 
   /**
@@ -95,7 +92,9 @@ module TaintedObject {
    */
   private class TypeTestGuard extends SanitizerGuard, ValueNode {
     override EqualityTest astNode;
+
     TypeofExpr typeof;
+
     boolean polarity;
 
     TypeTestGuard() {

@@ -21,9 +21,7 @@ module NosqlInjection {
      *
      * Defaults to deeply tainted objects only.
      */
-    DataFlow::FlowLabel getAFlowLabel() {
-      result = TaintedObject::label()
-    }
+    DataFlow::FlowLabel getAFlowLabel() { result = TaintedObject::label() }
   }
 
   /**
@@ -37,9 +35,7 @@ module NosqlInjection {
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "NosqlInjection" }
 
-    override predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
     override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
       TaintedObject::isSource(source, label)
@@ -58,13 +54,15 @@ module NosqlInjection {
       guard instanceof TaintedObject::SanitizerGuard
     }
 
-    override predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node trg, DataFlow::FlowLabel inlbl, DataFlow::FlowLabel outlbl) {
+    override predicate isAdditionalFlowStep(
+      DataFlow::Node src, DataFlow::Node trg, DataFlow::FlowLabel inlbl, DataFlow::FlowLabel outlbl
+    ) {
       TaintedObject::step(src, trg, inlbl, outlbl)
       or
       // additional flow step to track taint through NoSQL query objects
       inlbl = TaintedObject::label() and
       outlbl = TaintedObject::label() and
-      exists (NoSQL::Query query, DataFlow::SourceNode queryObj |
+      exists(NoSQL::Query query, DataFlow::SourceNode queryObj |
         queryObj.flowsToExpr(query) and
         queryObj.flowsTo(trg) and
         src = queryObj.getAPropertyWrite().getRhs()
@@ -78,9 +76,7 @@ module NosqlInjection {
   }
 
   /** An expression interpreted as a NoSQL query, viewed as a sink. */
-  class NosqlQuerySink extends Sink, DataFlow::ValueNode {
-    override NoSQL::Query astNode;
-  }
+  class NosqlQuerySink extends Sink, DataFlow::ValueNode { override NoSQL::Query astNode; }
 }
 
 /** DEPRECATED: Use `NosqlInjection::Source` instead. */

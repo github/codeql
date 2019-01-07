@@ -18,9 +18,7 @@ module UnvalidatedDynamicMethodCall {
     /**
      * Gets the flow label relevant for this source.
      */
-    DataFlow::FlowLabel getFlowLabel() {
-      result = data()
-    }
+    DataFlow::FlowLabel getFlowLabel() { result = data() }
   }
 
   /**
@@ -75,16 +73,21 @@ module UnvalidatedDynamicMethodCall {
       nd instanceof PropertyInjection::Sanitizer
     }
 
-    override predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node dst, DataFlow::FlowLabel srclabel, DataFlow::FlowLabel dstlabel) {
-      exists (DataFlow::PropRead read |
+    override predicate isAdditionalFlowStep(
+      DataFlow::Node src, DataFlow::Node dst, DataFlow::FlowLabel srclabel,
+      DataFlow::FlowLabel dstlabel
+    ) {
+      exists(DataFlow::PropRead read |
         src = read.getPropertyNameExpr().flow() and
         dst = read and
         (srclabel = data() or srclabel = taint()) and
-        (dstlabel instanceof MaybeNonFunction
-         or
-         // a property of `Object.create(null)` cannot come from a prototype
-         not PropertyInjection::isPrototypeLessObject(read.getBase().getALocalSource()) and
-         dstlabel instanceof MaybeFromProto) and
+        (
+          dstlabel instanceof MaybeNonFunction
+          or
+          // a property of `Object.create(null)` cannot come from a prototype
+          not PropertyInjection::isPrototypeLessObject(read.getBase().getALocalSource()) and
+          dstlabel instanceof MaybeFromProto
+        ) and
         // avoid overlapping results with unsafe dynamic method access query
         not PropertyInjection::hasUnsafeMethods(read.getBase().getALocalSource())
       )
@@ -101,9 +104,7 @@ module UnvalidatedDynamicMethodCall {
   /**
    * The page URL considered as a flow source for unvalidated dynamic method calls.
    */
-  class DocumentUrlAsSource extends Source {
-    DocumentUrlAsSource() { isDocumentURL(asExpr()) }
-  }
+  class DocumentUrlAsSource extends Source { DocumentUrlAsSource() { isDocumentURL(asExpr()) } }
 
   /**
    * A function invocation of an unsafe function, as a sink for remote unvalidated dynamic method calls.
@@ -134,6 +135,7 @@ module UnvalidatedDynamicMethodCall {
    */
   class FunctionCheck extends TaintTracking::LabeledSanitizerGuardNode, DataFlow::ValueNode {
     override EqualityTest astNode;
+
     TypeofExpr t;
 
     FunctionCheck() {
@@ -146,8 +148,6 @@ module UnvalidatedDynamicMethodCall {
       e = t.getOperand().getUnderlyingValue()
     }
 
-    override DataFlow::FlowLabel getALabel() {
-      result instanceof MaybeNonFunction
-    }
+    override DataFlow::FlowLabel getALabel() { result instanceof MaybeNonFunction }
   }
 }

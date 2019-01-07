@@ -15,11 +15,15 @@ import javascript
 import semmle.javascript.RestrictedLocations
 
 from PropertySetter s, FunctionExpr f, SimpleParameter p
-where f = s.getInit() and
-      p = f.getAParameter() and
-      not exists (p.getVariable().getAnAccess()) and
-      not f.usesArgumentsObject() and
-      // the setter body is either empty, or it is not just a single 'throw' statement
-      (not exists(f.getABodyStmt()) or
-       exists (Stmt stmt | stmt = f.getABodyStmt() | not stmt instanceof ThrowStmt))
-select (FirstLineOf)s, "This setter function does not use its parameter $@.", p, p.getName()
+where
+  f = s.getInit() and
+  p = f.getAParameter() and
+  not exists(p.getVariable().getAnAccess()) and
+  not f.usesArgumentsObject() and
+  // the setter body is either empty, or it is not just a single 'throw' statement
+  (
+    not exists(f.getABodyStmt())
+    or
+    exists(Stmt stmt | stmt = f.getABodyStmt() | not stmt instanceof ThrowStmt)
+  )
+select s.(FirstLineOf), "This setter function does not use its parameter $@.", p, p.getName()

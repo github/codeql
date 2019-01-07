@@ -6,7 +6,6 @@ import semmle.javascript.security.dataflow.RemoteFlowSources
 import UrlConcatenation
 
 module RequestForgery {
-
   /**
    * A data flow source for request forgery.
    */
@@ -25,7 +24,6 @@ module RequestForgery {
      * Gets the kind of this sink.
      */
     abstract string getKind();
-
   }
 
   /**
@@ -37,17 +35,11 @@ module RequestForgery {
    * A taint tracking configuration for request forgery.
    */
   class Configuration extends TaintTracking::Configuration {
-    Configuration() {
-      this = "RequestForgery"
-    }
+    Configuration() { this = "RequestForgery" }
 
-    override predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
     override predicate isSanitizer(DataFlow::Node node) {
       super.isSanitizer(node) or
@@ -57,7 +49,6 @@ module RequestForgery {
     override predicate isSanitizer(DataFlow::Node source, DataFlow::Node sink) {
       sanitizingPrefixEdge(source, sink)
     }
-
   }
 
   /** A source of remote user input, considered as a flow source for request forgery. */
@@ -69,23 +60,18 @@ module RequestForgery {
    * The URL of a URL request, viewed as a sink for request forgery.
    */
   private class ClientRequestUrlAsSink extends Sink {
-
     ClientRequest request;
 
     string kind;
 
     ClientRequestUrlAsSink() {
-      this = request.getUrl() and kind = "URL" or
+      this = request.getUrl() and kind = "URL"
+      or
       this = request.getHost() and kind = "host"
     }
 
-    override DataFlow::Node getARequest() {
-      result = request
-    }
+    override DataFlow::Node getARequest() { result = request }
 
-    override string getKind() {
-      result = kind
-    }
-
+    override string getKind() { result = kind }
   }
 }

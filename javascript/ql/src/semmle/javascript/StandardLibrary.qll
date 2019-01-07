@@ -7,40 +7,30 @@ import javascript
  */
 class CallToObjectDefineProperty extends DataFlow::MethodCallNode {
   CallToObjectDefineProperty() {
-    exists (GlobalVariable obj |
+    exists(GlobalVariable obj |
       obj.getName() = "Object" and
       calls(DataFlow::valueNode(obj.getAnAccess()), "defineProperty")
     )
   }
 
   /** Gets the data flow node denoting the object on which the property is defined. */
-  DataFlow::Node getBaseObject() {
-    result = getArgument(0)
-  }
+  DataFlow::Node getBaseObject() { result = getArgument(0) }
 
   /** Gets the name of the property being defined, if it can be determined. */
-  string getPropertyName() {
-    result = getArgument(1).asExpr().(ConstantString).getStringValue()
-  }
+  string getPropertyName() { result = getArgument(1).asExpr().(ConstantString).getStringValue() }
 
   /** Gets the data flow node denoting the descriptor of the property being defined. */
-  DataFlow::Node getPropertyDescriptor() {
-    result = getArgument(2)
-  }
+  DataFlow::Node getPropertyDescriptor() { result = getArgument(2) }
 }
 
 /**
  * A direct call to `eval`.
  */
 class DirectEval extends CallExpr {
-  DirectEval() {
-    getCallee().(GlobalVarAccess).getName() = "eval"
-  }
+  DirectEval() { getCallee().(GlobalVarAccess).getName() = "eval" }
 
   /** Holds if this call could affect the value of `lv`. */
-  predicate mayAffect(LocalVariable lv) {
-    getParent+() = lv.getScope().getScopeElement()
-  }
+  predicate mayAffect(LocalVariable lv) { getParent+() = lv.getScope().getScopeElement() }
 }
 
 /**
@@ -48,11 +38,8 @@ class DirectEval extends CallExpr {
  *
  * A call to `JSON.parse`.
  */
-deprecated
-class JsonParseCall extends MethodCallExpr {
-  JsonParseCall() {
-    this = DataFlow::globalVarRef("JSON").getAMemberCall("parse").asExpr()
-  }
+deprecated class JsonParseCall extends MethodCallExpr {
+  JsonParseCall() { this = DataFlow::globalVarRef("JSON").getAMemberCall("parse").asExpr() }
 }
 
 /**
@@ -63,7 +50,6 @@ class JsonParseCall extends MethodCallExpr {
  * still infer the ordinary abstract value.
  */
 private class AnalyzedThisInArrayIterationFunction extends AnalyzedNode, DataFlow::ThisNode {
-
   AnalyzedNode thisSource;
 
   AnalyzedThisInArrayIterationFunction() {
@@ -72,7 +58,8 @@ private class AnalyzedThisInArrayIterationFunction extends AnalyzedNode, DataFlo
       name = "forEach" or
       name = "map" or
       name = "some" or
-      name = "every" |
+      name = "every"
+    |
       name = bindingCall.getMethodName() and
       2 = bindingCall.getNumArgument() and
       getBinder() = bindingCall.getCallback(0) and
@@ -84,7 +71,6 @@ private class AnalyzedThisInArrayIterationFunction extends AnalyzedNode, DataFlo
     result = thisSource.getALocalValue() or
     result = AnalyzedNode.super.getALocalValue()
   }
-
 }
 
 /**
@@ -95,14 +81,10 @@ abstract class PromiseDefinition extends DataFlow::DefaultSourceNode {
   abstract DataFlow::FunctionNode getExecutor();
 
   /** Gets the `resolve` parameter of the executor function. */
-  DataFlow::ParameterNode getResolveParameter() {
-    result = getExecutor().getParameter(0)
-  }
+  DataFlow::ParameterNode getResolveParameter() { result = getExecutor().getParameter(0) }
 
   /** Gets the `reject` parameter of the executor function. */
-  DataFlow::ParameterNode getRejectParameter() {
-    result = getExecutor().getParameter(1)
-  }
+  DataFlow::ParameterNode getRejectParameter() { result = getExecutor().getParameter(1) }
 
   /** Gets the `i`th callback handler installed by method `m`. */
   private DataFlow::FunctionNode getAHandler(string m, int i) {
@@ -131,16 +113,12 @@ abstract class PromiseDefinition extends DataFlow::DefaultSourceNode {
   /**
    * Gets a `catch` handler of this promise.
    */
-  DataFlow::FunctionNode getACatchHandler() {
-    result = getAHandler("catch", 0)
-  }
+  DataFlow::FunctionNode getACatchHandler() { result = getAHandler("catch", 0) }
 
   /**
    * Gets a `finally` handler of this promise.
    */
-  DataFlow::FunctionNode getAFinallyHandler() {
-    result = getAHandler("finally", 0)
-  }
+  DataFlow::FunctionNode getAFinallyHandler() { result = getAHandler("finally", 0) }
 }
 
 /** Holds if the `i`th callback handler is installed by method `m`. */
@@ -154,26 +132,20 @@ private predicate hasHandler(DataFlow::InvokeNode promise, string m, int i) {
  * For example, this could be the call `promise(f).then(function(v){...})`
  */
 class PromiseCandidate extends DataFlow::InvokeNode {
-
   PromiseCandidate() {
-    hasHandler(this, "then", [0..1]) or
+    hasHandler(this, "then", [0 .. 1]) or
     hasHandler(this, "catch", 0) or
     hasHandler(this, "finally", 0)
   }
-
 }
 
 /**
  * A promise object created by the standard ECMAScript 2015 `Promise` constructor.
  */
 private class ES2015PromiseDefinition extends PromiseDefinition, DataFlow::NewNode {
-  ES2015PromiseDefinition() {
-    this = DataFlow::globalVarRef("Promise").getAnInstantiation()
-  }
+  ES2015PromiseDefinition() { this = DataFlow::globalVarRef("Promise").getAnInstantiation() }
 
-  override DataFlow::FunctionNode getExecutor()  {
-    result = getCallback(0)
-  }
+  override DataFlow::FunctionNode getExecutor() { result = getCallback(0) }
 }
 
 /**
@@ -182,9 +154,7 @@ private class ES2015PromiseDefinition extends PromiseDefinition, DataFlow::NewNo
 private class PromiseFlowStep extends DataFlow::AdditionalFlowStep {
   PromiseDefinition p;
 
-  PromiseFlowStep() {
-    this = p
-  }
+  PromiseFlowStep() { this = p }
 
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     pred = p.getResolveParameter().getACall().getArgument(0) and
@@ -206,8 +176,9 @@ private predicate promiseTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
   succ = DataFlow::globalVarRef("Promise").getAMemberCall("resolve") and
   pred = succ.(DataFlow::CallNode).getArgument(0)
   or
-  exists (DataFlow::MethodCallNode thn, DataFlow::FunctionNode cb |
-    thn.getMethodName() = "then" and cb = thn.getCallback(0) |
+  exists(DataFlow::MethodCallNode thn, DataFlow::FunctionNode cb |
+    thn.getMethodName() = "then" and cb = thn.getCallback(0)
+  |
     // from `p` to `x` in `p.then(x => ...)`
     pred = thn.getReceiver() and
     succ = cb.getParameter(0)
@@ -224,9 +195,7 @@ private predicate promiseTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
 private class PromiseTaintStep extends TaintTracking::AdditionalTaintStep {
   DataFlow::Node source;
 
-  PromiseTaintStep() {
-    promiseTaintStep(source, this)
-  }
+  PromiseTaintStep() { promiseTaintStep(source, this) }
 
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     pred = source and succ = this

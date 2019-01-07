@@ -14,9 +14,11 @@ import javascript
 import semmle.javascript.RestrictedLocations
 
 from ConstDeclStmt cds, VariableDeclarator decl, VarDef def, Variable v
-where decl = cds.getADecl() and
-      def.getAVariable() = v and
-      decl.getBindingPattern().getAVariable() = v and
-      def != decl and
-      def.(ExprOrStmt).getTopLevel() = decl.getTopLevel()
-select def.(FirstLineOf), "Assignment to variable " + v.getName() + ", which is $@ constant.", cds, "declared"
+where
+  decl = cds.getADecl() and
+  def.getAVariable() = v and
+  decl.getBindingPattern().getAVariable() = v and
+  def != decl and
+  def.(ExprOrStmt).getTopLevel() = decl.getTopLevel()
+select def.(FirstLineOf), "Assignment to variable " + v.getName() + ", which is $@ constant.", cds,
+  "declared"

@@ -29,9 +29,10 @@ private predicate hasSanitizingSubstring(DataFlow::Node nd) {
  * This is considered as a sanitizing edge for the URL redirection queries.
  */
 predicate sanitizingPrefixEdge(DataFlow::Node source, DataFlow::Node sink) {
-  exists (DataFlow::Node operator, int n |
+  exists(DataFlow::Node operator, int n |
     StringConcatenation::taintStep(source, sink, operator, n) and
-    hasSanitizingSubstring(StringConcatenation::getOperand(operator, [0..n-1])))
+    hasSanitizingSubstring(StringConcatenation::getOperand(operator, [0 .. n - 1]))
+  )
 }
 
 /**
@@ -47,7 +48,7 @@ predicate sanitizingPrefixEdge(DataFlow::Node source, DataFlow::Node sink) {
  * the `//` separating the (optional) scheme from the hostname.
  */
 private predicate hasHostnameSanitizingSubstring(DataFlow::Node nd) {
-  nd.asExpr().getStringValue().regexpMatch(".*([?#]|[^?#:/\\\\][/\\\\]).*") 
+  nd.asExpr().getStringValue().regexpMatch(".*([?#]|[^?#:/\\\\][/\\\\]).*")
   or
   hasHostnameSanitizingSubstring(StringConcatenation::getAnOperand(nd))
   or
@@ -63,7 +64,8 @@ private predicate hasHostnameSanitizingSubstring(DataFlow::Node nd) {
  * This is considered as a sanitizing edge for the URL redirection queries.
  */
 predicate hostnameSanitizingPrefixEdge(DataFlow::Node source, DataFlow::Node sink) {
-  exists (DataFlow::Node operator, int n |
+  exists(DataFlow::Node operator, int n |
     StringConcatenation::taintStep(source, sink, operator, n) and
-    hasHostnameSanitizingSubstring(StringConcatenation::getOperand(operator, [0..n-1])))
+    hasHostnameSanitizingSubstring(StringConcatenation::getOperand(operator, [0 .. n - 1]))
+  )
 }

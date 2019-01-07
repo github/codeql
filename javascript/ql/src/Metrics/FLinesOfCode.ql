@@ -15,5 +15,4 @@ import javascript
 
 from File f, int n
 where n = f.getNumberOfLinesOfCode()
-select f, n
-order by n desc
+select f, n order by n desc

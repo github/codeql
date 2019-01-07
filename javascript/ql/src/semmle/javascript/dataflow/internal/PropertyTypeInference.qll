@@ -37,16 +37,15 @@ abstract class AnalyzedPropertyRead extends DataFlow::AnalyzedNode {
    */
   pragma[noinline]
   private AbstractProperty getASourceProperty() {
-    exists (AbstractValue base, string prop | reads(base, prop) |
+    exists(AbstractValue base, string prop | reads(base, prop) |
       result = MkAbstractProperty(base, prop)
     )
   }
 
   override predicate isIncomplete(DataFlow::Incompleteness cause) {
-    super.isIncomplete(cause) or
-    exists (AbstractValue base | reads(base, _) |
-      base.isIndefinite(cause)
-    )
+    super.isIncomplete(cause)
+    or
+    exists(AbstractValue base | reads(base, _) | base.isIndefinite(cause))
   }
 }
 
@@ -55,7 +54,9 @@ abstract class AnalyzedPropertyRead extends DataFlow::AnalyzedNode {
  */
 private class AnalyzedPropertyAccess extends AnalyzedPropertyRead, DataFlow::ValueNode {
   override PropAccess astNode;
+
   DataFlow::AnalyzedNode baseNode;
+
   string propName;
 
   AnalyzedPropertyAccess() {
@@ -74,7 +75,7 @@ private class AnalyzedPropertyAccess extends AnalyzedPropertyRead, DataFlow::Val
  * Holds if `prop` is a property name that does not look like an array index.
  */
 private predicate isNonNumericPropertyName(string prop) {
-  exists (PropAccess pacc |
+  exists(PropAccess pacc |
     prop = pacc.getPropertyName() and
     not exists(prop.toInt())
   )
@@ -84,9 +85,7 @@ private predicate isNonNumericPropertyName(string prop) {
  * Holds if properties named `prop` should be tracked.
  */
 pragma[noinline]
-private predicate isTrackedPropertyName(string prop) {
-  exists (MkAbstractProperty(_, prop))
-}
+private predicate isTrackedPropertyName(string prop) { exists(MkAbstractProperty(_, prop)) }
 
 /**
  * Flow analysis for property writes, including exports (which are
@@ -100,16 +99,14 @@ abstract class AnalyzedPropertyWrite extends DataFlow::Node {
    * Note that not all property writes have an explicit `source` node; use predicate
    * `writesValue` below to cover these cases.
    */
-  predicate writes(AbstractValue baseVal, string propName, DataFlow::AnalyzedNode source) {
-    none()
-  }
+  predicate writes(AbstractValue baseVal, string propName, DataFlow::AnalyzedNode source) { none() }
 
   /**
    * Holds if this property write assigns `val` to property `propName` of one of the
    * concrete objects represented by `baseVal`.
    */
   predicate writesValue(AbstractValue baseVal, string propName, AbstractValue val) {
-    exists (AnalyzedNode source |
+    exists(AnalyzedNode source |
       writes(baseVal, propName, source) and
       val = source.getALocalValue()
     )
@@ -126,9 +123,7 @@ abstract class AnalyzedPropertyWrite extends DataFlow::Node {
  * Flow analysis for property writes.
  */
 private class AnalyzedExplicitPropertyWrite extends AnalyzedPropertyWrite {
-  AnalyzedExplicitPropertyWrite() {
-    this instanceof DataFlow::PropWrite
-  }
+  AnalyzedExplicitPropertyWrite() { this instanceof DataFlow::PropWrite }
 
   override predicate writes(AbstractValue base, string prop, DataFlow::AnalyzedNode source) {
     explicitPropertyWrite(this, base, prop, source)
@@ -140,26 +135,26 @@ private class AnalyzedExplicitPropertyWrite extends AnalyzedPropertyWrite {
 }
 
 pragma[noopt]
-private predicate explicitPropertyWrite(DataFlow::PropWrite pw, AbstractValue base,
-                                        string prop, DataFlow::Node source) {
-  exists (DataFlow::AnalyzedNode baseNode |
+private predicate explicitPropertyWrite(
+  DataFlow::PropWrite pw, AbstractValue base, string prop, DataFlow::Node source
+) {
+  exists(DataFlow::AnalyzedNode baseNode |
     pw.writes(baseNode, prop, source) and
     isTrackedPropertyName(prop) and
     base = baseNode.getALocalValue() and
     shouldTrackProperties(base)
   )
 }
+
 /**
  * Flow analysis for `arguments.callee`. We assume it is never redefined,
  * which is unsound in practice, but pragmatically useful.
  */
 private class AnalyzedArgumentsCallee extends AnalyzedPropertyAccess {
-  AnalyzedArgumentsCallee() {
-    propName = "callee"
-  }
+  AnalyzedArgumentsCallee() { propName = "callee" }
 
   override AbstractValue getALocalValue() {
-    exists (AbstractArguments baseVal | reads(baseVal, _) |
+    exists(AbstractArguments baseVal | reads(baseVal, _) |
       result = TAbstractFunction(baseVal.getFunction())
     )
     or
@@ -173,7 +168,7 @@ private class AnalyzedArgumentsCallee extends AnalyzedPropertyAccess {
  */
 private predicate hasNonArgumentsBase(PropAccess pacc) {
   pacc.getPropertyName() = "callee" and
-  exists (AbstractValue baseVal |
+  exists(AbstractValue baseVal |
     baseVal = pacc.getBase().analyze().getALocalValue() and
     not baseVal instanceof AbstractArguments
   )

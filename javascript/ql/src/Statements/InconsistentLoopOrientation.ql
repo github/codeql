@@ -23,7 +23,8 @@ import javascript
  * downward.
  */
 predicate bounds(RelationalComparison test, Variable v, string direction) {
-  test.getLesserOperand() = v.getAnAccess() and direction = "upward" or
+  test.getLesserOperand() = v.getAnAccess() and direction = "upward"
+  or
   test.getGreaterOperand() = v.getAnAccess() and direction = "downward"
 }
 
@@ -36,12 +37,16 @@ predicate bounds(RelationalComparison test, Variable v, string direction) {
  */
 predicate updates(UpdateExpr upd, Variable v, string direction) {
   upd.getOperand() = v.getAnAccess() and
-  (upd instanceof IncExpr and direction = "upward" or
-   upd instanceof DecExpr and direction = "downward")
+  (
+    upd instanceof IncExpr and direction = "upward"
+    or
+    upd instanceof DecExpr and direction = "downward"
+  )
 }
 
 from ForStmt l, Variable v, string d1, string d2
-where bounds(l.getTest(), v, d1) and
-      updates(l.getUpdate(), v, d2) and
-      d1 != d2
+where
+  bounds(l.getTest(), v, d1) and
+  updates(l.getUpdate(), v, d2) and
+  d1 != d2
 select l, "This loop counts " + d2 + ", but its variable is bounded " + d1 + "."

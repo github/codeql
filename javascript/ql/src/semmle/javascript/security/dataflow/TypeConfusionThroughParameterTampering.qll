@@ -1,12 +1,12 @@
 /**
  * Provides a tracking configuration for reasoning about type confusion for HTTP request inputs.
  */
+
 import javascript
 import semmle.javascript.security.dataflow.RemoteFlowSources
 private import semmle.javascript.dataflow.InferredTypes
 
 module TypeConfusionThroughParameterTampering {
-
   /**
    * A data flow source for type confusion for HTTP request inputs.
    */
@@ -26,13 +26,9 @@ module TypeConfusionThroughParameterTampering {
    * A taint tracking configuration for type confusion for HTTP request inputs.
    */
   class Configuration extends DataFlow::Configuration {
-    Configuration() {
-      this = "TypeConfusionThroughParameterTampering"
-    }
+    Configuration() { this = "TypeConfusionThroughParameterTampering" }
 
-    override predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
     override predicate isSink(DataFlow::Node sink) {
       sink instanceof Sink and
@@ -40,10 +36,7 @@ module TypeConfusionThroughParameterTampering {
       sink.analyze().getAType() = TTObject()
     }
 
-    override predicate isBarrier(DataFlow::Node node) {
-      node instanceof Barrier
-    }
-
+    override predicate isBarrier(DataFlow::Node node) { node instanceof Barrier }
   }
 
   /**
@@ -52,29 +45,24 @@ module TypeConfusionThroughParameterTampering {
    * Node.js-based HTTP servers turn request parameters into arrays if their names are repeated.
    */
   private class TypeTamperableRequestParameter extends Source {
-
-    TypeTamperableRequestParameter() {
-      this.(HTTP::RequestInputAccess).isUserControlledObject()
-    }
-
+    TypeTamperableRequestParameter() { this.(HTTP::RequestInputAccess).isUserControlledObject() }
   }
 
   /**
    * Methods calls that behave slightly different for arrays and strings receivers.
    */
   private class StringArrayAmbiguousMethodCall extends Sink {
-
     StringArrayAmbiguousMethodCall() {
-      exists (string name, DataFlow::MethodCallNode mc |
+      exists(string name, DataFlow::MethodCallNode mc |
         name = "concat" or
         name = "includes" or
         name = "indexOf" or
         name = "lastIndexOf" or
-        name = "slice" |
+        name = "slice"
+      |
         mc.calls(this, name) and
         // ignore patterns that are innocent in practice
-        not exists (EqualityTest cmp, Expr op |
-          cmp.hasOperands(mc.asExpr(), op) |
+        not exists(EqualityTest cmp, Expr op | cmp.hasOperands(mc.asExpr(), op) |
           // prefix checking: `x.indexOf(prefix) === 0`
           name = "indexOf" and
           op.getIntValue() = 0
@@ -86,35 +74,27 @@ module TypeConfusionThroughParameterTampering {
         )
       )
     }
-
   }
 
   /**
    * An access to the `length` property of an object.
    */
   private class LengthAccess extends Sink {
-
     LengthAccess() {
-      exists (DataFlow::PropRead read |
+      exists(DataFlow::PropRead read |
         read.accesses(this, "length") and
         // exclude truthiness checks on the length: an array/string confusion cannot control an emptiness check
         not (
-          exists (ConditionGuardNode cond |
-            read.asExpr() = cond.getTest()
-          )
+          exists(ConditionGuardNode cond | read.asExpr() = cond.getTest())
           or
-          exists (Comparison cmp, Expr zero |
+          exists(Comparison cmp, Expr zero |
             zero.getIntValue() = 0 and
             cmp.hasOperands(read.asExpr(), zero)
           )
           or
-          exists (LogNotExpr neg |
-            neg.getOperand() = read.asExpr()
-          )
+          exists(LogNotExpr neg | neg.getOperand() = read.asExpr())
         )
       )
     }
-
   }
-
 }

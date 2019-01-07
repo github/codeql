@@ -20,9 +20,10 @@ module Babel {
      * Gets the configuration for the plugin with the given name.
      */
     JSONValue getPluginConfig(string pluginName) {
-      exists (JSONArray plugins |
+      exists(JSONArray plugins |
         plugins = getPropValue("plugins") and
-        result = plugins.getElementValue(_) |
+        result = plugins.getElementValue(_)
+      |
         result.(JSONString).getValue() = pluginName
         or
         result.(JSONArray).getElementStringValue(0) = pluginName
@@ -44,9 +45,7 @@ module Babel {
     /**
      * Holds if this configuration applies to `tl`.
      */
-    predicate appliesTo(TopLevel tl) {
-      tl.getFile() = getAContainerInScope()
-    }
+    predicate appliesTo(TopLevel tl) { tl.getFile() = getAContainerInScope() }
   }
 
   /**
@@ -54,36 +53,25 @@ module Babel {
    */
   class Plugin extends JSONValue {
     Config cfg;
+
     string pluginName;
 
-    Plugin() {
-      this = cfg.getPluginConfig(pluginName)
-    }
+    Plugin() { this = cfg.getPluginConfig(pluginName) }
 
     /** Gets the name of the plugin being installed. */
-    string getPluginName() {
-      result = pluginName
-    }
+    string getPluginName() { result = pluginName }
 
     /** Gets the enclosing Babel configuration object. */
-    Config getConfig() {
-      result = cfg
-    }
+    Config getConfig() { result = cfg }
 
     /** Gets the options value passed to the plugin, if any. */
-    JSONValue getOptions() {
-      result = this.(JSONArray).getElementValue(1)
-    }
+    JSONValue getOptions() { result = this.(JSONArray).getElementValue(1) }
 
     /** Gets a named option from the option object, if present. */
-    JSONValue getOption(string name) {
-      result = getOptions().(JSONObject).getPropValue(name)
-    }
+    JSONValue getOption(string name) { result = getOptions().(JSONObject).getPropValue(name) }
 
     /** Holds if this plugin applies to `tl`. */
-    predicate appliesTo(TopLevel tl) {
-      cfg.appliesTo(tl)
-    }
+    predicate appliesTo(TopLevel tl) { cfg.appliesTo(tl) }
   }
 
   /**
@@ -95,9 +83,7 @@ module Babel {
    * specifies a mapping from a path prefix to a root.
    */
   class RootImportConfig extends Plugin {
-    RootImportConfig() {
-      pluginName = "babel-plugin-root-import"
-    }
+    RootImportConfig() { pluginName = "babel-plugin-root-import" }
 
     /**
      * Gets the root specified for the given prefix.
@@ -119,13 +105,13 @@ module Babel {
       result = getOptions() and
       exists(result.getPropValue("rootPathSuffix"))
       or
-      exists (JSONArray pathSpecs |
+      exists(JSONArray pathSpecs |
         // ["babel-plugin-root-import", [ <spec>... ] ]
         pathSpecs = getOptions()
         or
         // ["babel-plugin-root-import", { "paths": [ <spec> ... ] }]
         pathSpecs = getOption("paths")
-        |
+      |
         result = pathSpecs.getElementValue(_)
       )
     }
@@ -134,22 +120,20 @@ module Babel {
      * Gets the (explicitly specified) root for the given prefix.
      */
     private string getExplicitRoot(string prefix) {
-      exists (JSONObject rootPathSpec |
+      exists(JSONObject rootPathSpec |
         rootPathSpec = getARootPathSpec() and
-        result = rootPathSpec.getPropStringValue("rootPathSuffix") |
-        if exists(rootPathSpec.getPropStringValue("rootPathPrefix")) then
-          prefix = rootPathSpec.getPropStringValue("rootPathPrefix")
-        else
-          prefix = "~"
+        result = rootPathSpec.getPropStringValue("rootPathSuffix")
+      |
+        if exists(rootPathSpec.getPropStringValue("rootPathPrefix"))
+        then prefix = rootPathSpec.getPropStringValue("rootPathPrefix")
+        else prefix = "~"
       )
     }
 
     /**
      * Gets the folder in which this configuration is located.
      */
-    Folder getFolder() {
-      result = getFile().getParentContainer()
-    }
+    Folder getFolder() { result = getFile().getParentContainer() }
   }
 
   /**
@@ -157,9 +141,13 @@ module Babel {
    */
   private class BabelRootTransformedPathExpr extends PathExpr, Expr {
     RootImportConfig plugin;
+
     string rawPath;
+
     string prefix;
+
     string mappedPrefix;
+
     string suffix;
 
     BabelRootTransformedPathExpr() {
@@ -172,13 +160,9 @@ module Babel {
     }
 
     /** Gets the configuration that applies to this path. */
-    RootImportConfig getPlugin() {
-      result = plugin
-    }
+    RootImportConfig getPlugin() { result = plugin }
 
-    override string getValue() {
-      result = mappedPrefix + "/" + suffix
-    }
+    override string getValue() { result = mappedPrefix + "/" + suffix }
 
     override Folder getSearchRoot(int priority) {
       priority = 0 and
@@ -192,13 +176,9 @@ module Babel {
   private class BabelRootTransformedPath extends PathString {
     BabelRootTransformedPathExpr pathExpr;
 
-    BabelRootTransformedPath() {
-      this = pathExpr.getValue()
-    }
+    BabelRootTransformedPath() { this = pathExpr.getValue() }
 
-    override Folder getARootFolder() {
-      result = pathExpr.getPlugin().getFolder()
-    }
+    override Folder getARootFolder() { result = pathExpr.getPlugin().getFolder() }
   }
 
   /**
@@ -208,13 +188,9 @@ module Babel {
    * JSX elements.
    */
   class TransformReactJsxConfig extends Plugin {
-    TransformReactJsxConfig() {
-      pluginName = "transform-react-jsx"
-    }
+    TransformReactJsxConfig() { pluginName = "transform-react-jsx" }
 
     /** Gets the name of the variable used to create JSX elements. */
-    string getJsxFactoryVariableName() {
-      result = getOption("pragma").(JSONString).getValue()
-    }
+    string getJsxFactoryVariableName() { result = getOption("pragma").(JSONString).getValue() }
   }
 }

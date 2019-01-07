@@ -16,18 +16,18 @@ import javascript
  * Gets a warning message for `pref` if one of the `nodeIntegration` features is enabled.
  */
 string getNodeIntegrationWarning(Electron::WebPreferences pref) {
-	exists (string feature |
-		feature = "nodeIntegration" or
-		feature = "nodeIntegrationInWorker" |
-		pref.getAPropertyWrite(feature).getRhs().mayHaveBooleanValue(true) and
-		result = "The `" + feature + "` feature has been enabled."
-	)
-	or
-	exists (string feature |
-		feature = "nodeIntegration" |
-		not exists(pref.getAPropertyWrite(feature)) and
-		result = "The `" + feature + "` feature is enabled by default."
-	)
+  exists(string feature |
+    feature = "nodeIntegration" or
+    feature = "nodeIntegrationInWorker"
+  |
+    pref.getAPropertyWrite(feature).getRhs().mayHaveBooleanValue(true) and
+    result = "The `" + feature + "` feature has been enabled."
+  )
+  or
+  exists(string feature | feature = "nodeIntegration" |
+    not exists(pref.getAPropertyWrite(feature)) and
+    result = "The `" + feature + "` feature is enabled by default."
+  )
 }
 
 from Electron::WebPreferences preferences

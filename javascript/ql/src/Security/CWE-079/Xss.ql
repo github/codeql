@@ -17,5 +17,6 @@ import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, sink.getNode().(Sink).getVulnerabilityKind() + " vulnerability due to $@.",
-       source.getNode(), "user-provided value"
+select sink.getNode(), source, sink,
+  sink.getNode().(Sink).getVulnerabilityKind() + " vulnerability due to $@.", source.getNode(),
+  "user-provided value"

@@ -25,14 +25,13 @@ newtype TAbstractProperty =
     prop = "__proto__"
   }
 
-
 /**
  * Holds if the result is known to be an initial value of property `propertyName` of one
  * of the concrete objects represented by `baseVal`.
  */
 AbstractValue getAnInitialPropertyValue(DefiniteAbstractValue baseVal, string propertyName) {
   // initially, `module.exports === exports`
-  exists (Module m |
+  exists(Module m |
     baseVal = TAbstractModuleObject(m) and
     propertyName = "exports" and
     result = TAbstractExportsObject(m)
@@ -42,7 +41,7 @@ AbstractValue getAnInitialPropertyValue(DefiniteAbstractValue baseVal, string pr
   result = getAnInitialMemberValue(getMember(baseVal, propertyName))
   or
   // object properties
-  exists (ValueProperty p |
+  exists(ValueProperty p |
     baseVal.(AbstractObjectLiteral).getObjectExpr() = p.getObjectExpr() and
     propertyName = p.getName() and
     result = p.getInit().analyze().getALocalValue()
@@ -59,11 +58,8 @@ AbstractValue getAnInitialPropertyValue(DefiniteAbstractValue baseVal, string pr
  * with the given `name`.
  */
 private MemberDefinition getMember(DefiniteAbstractValue baseVal, string name) {
-  exists (ClassDefinition c | result = c.getMember(name) |
-    if result.isStatic() then
-      baseVal = TAbstractClass(c)
-    else
-      baseVal = AbstractInstance::of(c)
+  exists(ClassDefinition c | result = c.getMember(name) |
+    if result.isStatic() then baseVal = TAbstractClass(c) else baseVal = AbstractInstance::of(c)
   )
 }
 

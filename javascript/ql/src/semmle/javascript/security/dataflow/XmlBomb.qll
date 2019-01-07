@@ -28,13 +28,9 @@ module XmlBomb {
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "XmlBomb" }
 
-    override predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
     override predicate isSanitizer(DataFlow::Node node) {
       super.isSanitizer(node) or
@@ -51,9 +47,7 @@ module XmlBomb {
    * An access to `document.location`, considered as a flow source for XML bomb vulnerabilities.
    */
   class LocationAsSource extends Source, DataFlow::ValueNode {
-    LocationAsSource() {
-      isLocation(astNode)
-    }
+    LocationAsSource() { isLocation(astNode) }
   }
 
   /**
@@ -62,7 +56,7 @@ module XmlBomb {
    */
   class XmlParsingWithEntityResolution extends Sink, DataFlow::ValueNode {
     XmlParsingWithEntityResolution() {
-      exists (XML::ParserInvocation parse | astNode = parse.getSourceArgument() |
+      exists(XML::ParserInvocation parse | astNode = parse.getSourceArgument() |
         parse.resolvesEntities(XML::InternalEntity())
       )
     }

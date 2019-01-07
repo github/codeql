@@ -12,6 +12,7 @@
 import javascript
 
 from DataFlow::PropWrite webSecurity, Electron::WebPreferences preferences
-where webSecurity = preferences.getAPropertyWrite("webSecurity")
-  and webSecurity.getRhs().mayHaveBooleanValue(false)
+where
+  webSecurity = preferences.getAPropertyWrite("webSecurity") and
+  webSecurity.getRhs().mayHaveBooleanValue(false)
 select webSecurity, "Disabling webSecurity is strongly discouraged."

@@ -14,8 +14,7 @@ private class ImpreciseLodashMember extends LodashUnderscore::Member {
   string name;
 
   ImpreciseLodashMember() {
-    exists (string lodash |
-      this = DataFlow::moduleMember(lodash, name) |
+    exists(string lodash | this = DataFlow::moduleMember(lodash, name) |
       lodash.matches("%-lodash") or lodash.matches("%-underscore")
     )
   }

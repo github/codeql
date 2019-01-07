@@ -6,28 +6,18 @@ import javascript
  * A JSDoc comment.
  */
 class JSDoc extends @jsdoc, Locatable {
-  override Location getLocation() {
-    hasLocation(this, result)
-  }
+  override Location getLocation() { hasLocation(this, result) }
 
   /** Gets the description text of this JSDoc comment. */
-  string getDescription() {
-    jsdoc(this, result, _)
-  }
+  string getDescription() { jsdoc(this, result, _) }
 
   /** Gets the raw comment this JSDoc comment is an interpretation of. */
-  Comment getComment() {
-    jsdoc(this, _, result)
-  }
+  Comment getComment() { jsdoc(this, _, result) }
 
   /** Gets a JSDoc tag within this JSDoc comment. */
-  JSDocTag getATag() {
-    result.getParent() = this
-  }
+  JSDocTag getATag() { result.getParent() = this }
 
-  override string toString() {
-    result = getComment().toString()
-  }
+  override string toString() { result = getComment().toString() }
 }
 
 /**
@@ -36,9 +26,7 @@ class JSDoc extends @jsdoc, Locatable {
 abstract class Documentable extends ASTNode {
   /** Gets the JSDoc comment for this element, if any. */
   cached
-  JSDoc getDocumentation() {
-    result.getComment().getNextToken() = getFirstToken()
-  }
+  JSDoc getDocumentation() { result.getComment().getNextToken() = getFirstToken() }
 }
 
 /**
@@ -54,72 +42,52 @@ class JSDocTypeExprParent extends @jsdoc_type_expr_parent {
  * A JSDoc tag such as `@param Object options An object literal with options.`
  */
 class JSDocTag extends @jsdoc_tag, JSDocTypeExprParent, Locatable {
-  override Location getLocation() {
-    hasLocation(this, result)
-  }
+  override Location getLocation() { hasLocation(this, result) }
 
   /** Gets the tag title; for instance, the title of a `@param` tag is `"param"`. */
-  string getTitle() {
-    jsdoc_tags (this, result, _, _, _)
-  }
+  string getTitle() { jsdoc_tags(this, result, _, _, _) }
 
   /** Gets the JSDoc comment this tag belongs to. */
-  JSDoc getParent() {
-    jsdoc_tags (this, _, result, _, _)
-  }
+  JSDoc getParent() { jsdoc_tags(this, _, result, _, _) }
 
   /** Gets the index of this tag within its parent comment. */
-  int getIndex() {
-    jsdoc_tags (this, _, _, result, _)
-  }
+  int getIndex() { jsdoc_tags(this, _, _, result, _) }
 
-  override string toString() {
-    jsdoc_tags (this, _, _, _, result)
-  }
+  override string toString() { jsdoc_tags(this, _, _, _, result) }
 
   /** Gets the description associated with the tag. */
-  string getDescription() {
-    jsdoc_tag_descriptions (this, result)
-  }
+  string getDescription() { jsdoc_tag_descriptions(this, result) }
 
   /**
    * Gets the (optional) name associated with the tag, such as the name of the documented parameter
    * for a `@param` tag.
    */
-  string getName() {
-    jsdoc_tag_names (this, result)
-  }
+  string getName() { jsdoc_tag_names(this, result) }
 
   /**
    * Gets the (optional) type associated with the tag, such as the type of the documented parameter
    * for a `@param` tag.
    */
-  JSDocTypeExpr getType() {
-    result.getParent() = this
-  }
+  JSDocTypeExpr getType() { result.getParent() = this }
 
   /** Holds if this tag documents a simple name (as opposed to a name path). */
   predicate documentsSimpleName() {
-    exists (string name | name = getName() | not name.matches("%.%"))
+    exists(string name | name = getName() | not name.matches("%.%"))
   }
 
   /** Gets the toplevel in which this tag appears. */
-  TopLevel getTopLevel() {
-    result = getParent().getComment().getTopLevel()
-  }
+  TopLevel getTopLevel() { result = getParent().getComment().getTopLevel() }
 }
 
 /**
  * A `@param` tag.
  */
 class JSDocParamTag extends JSDocTag {
-  JSDocParamTag() {
-    getTitle().regexpMatch("param|arg(ument)?")
-  }
+  JSDocParamTag() { getTitle().regexpMatch("param|arg(ument)?") }
 
   /** Gets the parameter this tag refers to, if it can be determined. */
   Variable getDocumentedParameter() {
-    exists (Parameterized parm | parm.getDocumentation() = getParent() |
+    exists(Parameterized parm | parm.getDocumentation() = getParent() |
       result = parm.getParameterVariable(getName())
     )
   }
@@ -133,16 +101,12 @@ class JSDocTypeExpr extends @jsdoc_type_expr, JSDocTypeExprParent {
    * Gets the syntactic element in which this type expression is nested, which may either
    * be another type expression or a JSDoc tag.
    */
-  JSDocTypeExprParent getParent() {
-    jsdoc_type_exprs (this, _, result, _, _)
-  }
+  JSDocTypeExprParent getParent() { jsdoc_type_exprs(this, _, result, _, _) }
 
   /**
    * Gets the index of this type expression within its parent.
    */
-  int getIndex() {
-    jsdoc_type_exprs (this, _, _, result, _)
-  }
+  int getIndex() { jsdoc_type_exprs(this, _, _, result, _) }
 
   /**
    * Gets the `i`th child type expression of this type expression.
@@ -150,29 +114,25 @@ class JSDocTypeExpr extends @jsdoc_type_expr, JSDocTypeExprParent {
    * _Note_: the indices of child type expressions in their parent elements are an implementation
    * detail that may change between versions of the extractor.
    */
-  JSDocTypeExpr getChild(int i) {
-    jsdoc_type_exprs (result, _, this, i, _)
-  }
+  JSDocTypeExpr getChild(int i) { jsdoc_type_exprs(result, _, this, i, _) }
 
-  override string toString() {
-    jsdoc_type_exprs (this, _, _, _, result)
-  }
+  override string toString() { jsdoc_type_exprs(this, _, _, _, result) }
 }
 
 /** An `any` type expression `*`. */
-class JSDocAnyTypeExpr extends @jsdoc_any_type_expr, JSDocTypeExpr {}
+class JSDocAnyTypeExpr extends @jsdoc_any_type_expr, JSDocTypeExpr { }
 
 /** A null type expression. */
-class JSDocNullTypeExpr extends @jsdoc_null_type_expr, JSDocTypeExpr {}
+class JSDocNullTypeExpr extends @jsdoc_null_type_expr, JSDocTypeExpr { }
 
 /** A type expression representing the type of `undefined`. */
-class JSDocUndefinedTypeExpr extends @jsdoc_undefined_type_expr, JSDocTypeExpr {}
+class JSDocUndefinedTypeExpr extends @jsdoc_undefined_type_expr, JSDocTypeExpr { }
 
 /** A type expression representing an unknown type `?`. */
-class JSDocUnknownTypeExpr extends @jsdoc_unknown_type_expr, JSDocTypeExpr {}
+class JSDocUnknownTypeExpr extends @jsdoc_unknown_type_expr, JSDocTypeExpr { }
 
 /** A type expression representing the void type. */
-class JSDocVoidTypeExpr extends @jsdoc_void_type_expr, JSDocTypeExpr {}
+class JSDocVoidTypeExpr extends @jsdoc_void_type_expr, JSDocTypeExpr { }
 
 /** A type expression referring to a named type. */
 class JSDocNamedTypeExpr extends @jsdoc_named_type_expr, JSDocTypeExpr {
@@ -229,7 +189,7 @@ class JSDocNonNullableTypeExpr extends @jsdoc_non_nullable_type_expr, JSDocTypeE
  */
 class JSDocRecordTypeExpr extends @jsdoc_record_type_expr, JSDocTypeExpr {
   /** Gets the name of the `i`th field of the record type. */
-  string getFieldName(int i) { jsdoc_record_field_name (this, i, result) }
+  string getFieldName(int i) { jsdoc_record_field_name(this, i, result) }
 
   /** Gets the name of some field of the record type. */
   string getAFieldName() { result = getFieldName(_) }
@@ -239,7 +199,7 @@ class JSDocRecordTypeExpr extends @jsdoc_record_type_expr, JSDocTypeExpr {
 
   /** Gets the type of the field with the given name. */
   JSDocTypeExpr getFieldTypeByName(string fieldname) {
-    exists (int idx | fieldname = getFieldName(idx) and result = getFieldType(idx))
+    exists(int idx | fieldname = getFieldName(idx) and result = getFieldType(idx))
   }
 }
 
@@ -303,17 +263,11 @@ class JSDocRestParameterTypeExpr extends @jsdoc_rest_type_expr, JSDocTypeExpr {
  */
 class JSDocError extends @jsdoc_error {
   /** Gets the tag that triggered the error. */
-  JSDocTag getTag() {
-    jsdoc_errors (this, result, _, _)
-  }
+  JSDocTag getTag() { jsdoc_errors(this, result, _, _) }
 
   /** Gets the message associated with the error. */
-  string getMessage() {
-    jsdoc_errors (this, _, result, _)
-  }
+  string getMessage() { jsdoc_errors(this, _, result, _) }
 
   /** Gets a textual representation of this element. */
-  string toString() {
-    jsdoc_errors (this, _, _, result)
-  }
+  string toString() { jsdoc_errors(this, _, _, result) }
 }

@@ -45,7 +45,8 @@ abstract class RefinementCandidate extends Expr {
   /**
    * Gets a refinement value inferred for this expression in context `ctxt`.
    */
-  abstract pragma[nomagic] RefinementValue eval(RefinementContext ctxt);
+  pragma[nomagic]
+  abstract RefinementValue eval(RefinementContext ctxt);
 }
 
 /**
@@ -61,64 +62,46 @@ class Refinement extends Expr {
   /**
    * Gets the variable refined by this expression, if any.
    */
-  SsaSourceVariable getRefinedVar() {
-    result = this.(RefinementCandidate).getARefinedVar()
-  }
+  SsaSourceVariable getRefinedVar() { result = this.(RefinementCandidate).getARefinedVar() }
 
   /**
    * Gets a refinement value inferred for this expression in context `ctxt`.
    */
-  RefinementValue eval(RefinementContext ctxt) {
-    result = this.(RefinementCandidate).eval(ctxt)
-  }
+  RefinementValue eval(RefinementContext ctxt) { result = this.(RefinementCandidate).eval(ctxt) }
 }
 
 /** A literal, viewed as a refinement expression. */
-private abstract class LiteralRefinement extends RefinementCandidate, Literal {
-  override SsaSourceVariable getARefinedVar() {
-    none()
-  }
+abstract private class LiteralRefinement extends RefinementCandidate, Literal {
+  override SsaSourceVariable getARefinedVar() { none() }
 
-  override RefinementValue eval(RefinementContext ctxt) {
-    ctxt.appliesTo(this) and result = eval()
-  }
+  override RefinementValue eval(RefinementContext ctxt) { ctxt.appliesTo(this) and result = eval() }
 
   /**
    * Gets the refinement value that represents this literal.
    */
-  RefinementValue eval() {
-    result = TAny()
-  }
+  RefinementValue eval() { result = TAny() }
 }
 
 /** A `null` literal, viewed as a refinement expression. */
 private class NullLiteralRefinement extends LiteralRefinement, NullLiteral {
-  override RefinementValue eval() {
-    result = TValueWithType(TTNull())
-  }
+  override RefinementValue eval() { result = TValueWithType(TTNull()) }
 }
 
 /** A Boolean literal, viewed as a refinement expression. */
 private class BoolRefinement extends LiteralRefinement, BooleanLiteral {
   override RefinementValue eval() {
-    exists (boolean b | b.toString() = getValue() |
-      result = TBoolConstant(b)
-    )
+    exists(boolean b | b.toString() = getValue() | result = TBoolConstant(b))
   }
 }
 
 /** A constant string, viewed as a refinement expression. */
 private class StringRefinement extends LiteralRefinement, ConstantString {
-  override RefinementValue eval() {
-    result = TStringConstant(getStringValue())
-  }
+  override RefinementValue eval() { result = TStringConstant(getStringValue()) }
 }
 
 /** A numeric literal, viewed as a refinement expression. */
-private abstract class NumberRefinement extends LiteralRefinement, NumberLiteral {
-  override RefinementValue eval() {
-    result = TValueWithType(TTNumber())
-  }
+abstract private class NumberRefinement extends LiteralRefinement, NumberLiteral {
+  override RefinementValue eval() { result = TValueWithType(TTNumber()) }
 }
 
 /**
@@ -130,19 +113,15 @@ private abstract class NumberRefinement extends LiteralRefinement, NumberLiteral
 private class IntRefinement extends NumberRefinement, NumberLiteral {
   IntRefinement() { getValue().toInt() = 0 }
 
-  override RefinementValue eval() {
-    result = TIntConstant(getValue().toInt())
-  }
+  override RefinementValue eval() { result = TIntConstant(getValue().toInt()) }
 }
 
 /**
  * A use of the global variable `undefined`, viewed as a refinement expression.
  */
-private class UndefinedInRefinement extends RefinementCandidate, SyntacticConstants::UndefinedConstant {
-
-  override SsaSourceVariable getARefinedVar() {
-    none()
-  }
+private class UndefinedInRefinement extends RefinementCandidate,
+  SyntacticConstants::UndefinedConstant {
+  override SsaSourceVariable getARefinedVar() { none() }
 
   override RefinementValue eval(RefinementContext ctxt) {
     ctxt.appliesTo(this) and
@@ -152,13 +131,9 @@ private class UndefinedInRefinement extends RefinementCandidate, SyntacticConsta
 
 /** A variable use, viewed as a refinement expression. */
 private class VariableRefinement extends RefinementCandidate, VarUse {
-  VariableRefinement() {
-    getVariable() instanceof SsaSourceVariable
-  }
+  VariableRefinement() { getVariable() instanceof SsaSourceVariable }
 
-  override SsaSourceVariable getARefinedVar() {
-    result = getVariable()
-  }
+  override SsaSourceVariable getARefinedVar() { result = getVariable() }
 
   override RefinementValue eval(RefinementContext ctxt) {
     ctxt.appliesTo(this) and
@@ -168,9 +143,7 @@ private class VariableRefinement extends RefinementCandidate, VarUse {
 
 /** A parenthesized refinement expression. */
 private class ParRefinement extends RefinementCandidate, ParExpr {
-  ParRefinement() {
-    getExpression() instanceof RefinementCandidate
-  }
+  ParRefinement() { getExpression() instanceof RefinementCandidate }
 
   override SsaSourceVariable getARefinedVar() {
     result = getExpression().(RefinementCandidate).getARefinedVar()
@@ -183,16 +156,14 @@ private class ParRefinement extends RefinementCandidate, ParExpr {
 
 /** A `typeof` refinement expression. */
 private class TypeofRefinement extends RefinementCandidate, TypeofExpr {
-  TypeofRefinement() {
-    getOperand() instanceof RefinementCandidate
-  }
+  TypeofRefinement() { getOperand() instanceof RefinementCandidate }
 
   override SsaSourceVariable getARefinedVar() {
     result = getOperand().(RefinementCandidate).getARefinedVar()
   }
 
   override RefinementValue eval(RefinementContext ctxt) {
-    exists (RefinementValue opVal |
+    exists(RefinementValue opVal |
       opVal = getOperand().(RefinementCandidate).eval(ctxt) and
       result = TStringConstant(opVal.typeof())
     )
@@ -212,26 +183,28 @@ private class EqRefinement extends RefinementCandidate, EqualityTest {
   }
 
   override RefinementValue eval(RefinementContext ctxt) {
-    exists (RefinementCandidate l, RefinementValue lv, RefinementCandidate r, RefinementValue rv |
-      l = getLeftOperand() and r = getRightOperand() and
-      lv = l.eval(ctxt) and rv = r.eval(ctxt) |
+    exists(RefinementCandidate l, RefinementValue lv, RefinementCandidate r, RefinementValue rv |
+      l = getLeftOperand() and
+      r = getRightOperand() and
+      lv = l.eval(ctxt) and
+      rv = r.eval(ctxt)
+    |
       // if both sides evaluate to a constant, compare them
-      if lv instanceof SingletonRefinementValue and rv instanceof SingletonRefinementValue then
-        exists (boolean s, boolean p | s = getStrictness() and p = getPolarity()|
-          if lv.(SingletonRefinementValue).equals(rv, s) then
-            result = TBoolConstant(p)
-          else
-            result = TBoolConstant(p.booleanNot())
+      if lv instanceof SingletonRefinementValue and rv instanceof SingletonRefinementValue
+      then
+        exists(boolean s, boolean p | s = getStrictness() and p = getPolarity() |
+          if lv.(SingletonRefinementValue).equals(rv, s)
+          then result = TBoolConstant(p)
+          else result = TBoolConstant(p.booleanNot())
         )
-      // otherwise give up
       else
+        // otherwise give up
         result = TValueWithType(TTBoolean())
     )
   }
 
   private boolean getStrictness() {
-    if this instanceof StrictEqualityTest then result = true
-    else result = false
+    if this instanceof StrictEqualityTest then result = true else result = false
   }
 }
 
@@ -248,14 +221,18 @@ private class IndexRefinement extends RefinementCandidate, IndexExpr {
   }
 
   override RefinementValue eval(RefinementContext ctxt) {
-    exists (RefinementCandidate base, RefinementValue baseVal,
-            RefinementCandidate index, RefinementValue indexVal |
-      base = getBase() and index = getIndex() and
-      baseVal = base.eval(ctxt) and indexVal = index.eval(ctxt) |
-      if exists(evalIndex(baseVal, indexVal)) then
-        result = evalIndex(baseVal, indexVal)
-      else
-        result = TAny()
+    exists(
+      RefinementCandidate base, RefinementValue baseVal, RefinementCandidate index,
+      RefinementValue indexVal
+    |
+      base = getBase() and
+      index = getIndex() and
+      baseVal = base.eval(ctxt) and
+      indexVal = index.eval(ctxt)
+    |
+      if exists(evalIndex(baseVal, indexVal))
+      then result = evalIndex(baseVal, indexVal)
+      else result = TAny()
     )
   }
 }
@@ -264,13 +241,13 @@ private class IndexRefinement extends RefinementCandidate, IndexExpr {
  * Gets the abstract value representing the `i`th character of `s`,
  * if any.
  */
-private bindingset[s, i]
-RefinementValue evalIndex(StringConstant s, IntConstant i) {
+bindingset[s, i]
+private RefinementValue evalIndex(StringConstant s, IntConstant i) {
   result = TStringConstant(s.getValue().charAt(i.getValue()))
 }
 
 /**
-  * A context in which a refinement expression is analyzed.
+ * A context in which a refinement expression is analyzed.
  */
 newtype TRefinementContext =
   /**
@@ -305,8 +282,9 @@ class RefinementContext extends TRefinementContext {
  */
 class VarRefinementContext extends RefinementContext, TVarRefinementContext {
   override predicate appliesTo(RefinementCandidate cand) {
-    exists (AnalyzedRefinement ref, SsaSourceVariable var |
-      this = TVarRefinementContext(ref, var, _) |
+    exists(AnalyzedRefinement ref, SsaSourceVariable var |
+      this = TVarRefinementContext(ref, var, _)
+    |
       cand = ref.getRefinement().getAChildExpr*() and
       not cand.getARefinedVar() != var
     )
@@ -316,51 +294,48 @@ class VarRefinementContext extends RefinementContext, TVarRefinementContext {
    * Gets the abstract refinement value the variable is assumed to have.
    */
   RefinementValue getAValue() {
-    exists (AbstractValue av | this = TVarRefinementContext(_, _, av) |
-      if av instanceof AbstractBoolean then
-        result.(BoolConstant).getValue() = av.(AbstractBoolean).getBooleanValue()
-      else if av instanceof AbstractZero then
-        result.(IntConstant).getValue() = 0
-      else if av instanceof AbstractEmpty then
-        result.(StringConstant).getValue() = ""
-      else if av instanceof AbstractNumString then
-        result instanceof NumString
-      else if av instanceof AbstractOtherString then
-        result instanceof NonEmptyNonNumString
-      else if av instanceof AbstractNonZero then
-        result instanceof NonZeroNumber
+    exists(AbstractValue av | this = TVarRefinementContext(_, _, av) |
+      if av instanceof AbstractBoolean
+      then result.(BoolConstant).getValue() = av.(AbstractBoolean).getBooleanValue()
       else
-        result.(ValueWithType).getType() = av.getType()
+        if av instanceof AbstractZero
+        then result.(IntConstant).getValue() = 0
+        else
+          if av instanceof AbstractEmpty
+          then result.(StringConstant).getValue() = ""
+          else
+            if av instanceof AbstractNumString
+            then result instanceof NumString
+            else
+              if av instanceof AbstractOtherString
+              then result instanceof NonEmptyNonNumString
+              else
+                if av instanceof AbstractNonZero
+                then result instanceof NonZeroNumber
+                else result.(ValueWithType).getType() = av.getType()
     )
   }
 
   override string toString() {
-    exists (Variable var, AbstractValue val | this = TVarRefinementContext(_, var, val) |
+    exists(Variable var, AbstractValue val | this = TVarRefinementContext(_, var, val) |
       result = "[" + var + " = " + val + "]"
     )
   }
 }
 
 /** Holds if `e` is nested inside a guard node. */
-private predicate inGuard(Expr e) {
-  e.getParentExpr*() = any(GuardControlFlowNode g).getTest()
-}
+private predicate inGuard(Expr e) { e.getParentExpr*() = any(GuardControlFlowNode g).getTest() }
 
 /**
  * An abstract value of a refinement expression.
  */
 private newtype TRefinementValue =
   /** An abstract value indicating that no refinement information is available. */
-  TAny()
-  or
+  TAny() or
   /** An abstract value representing all concrete values of type `tp`. */
-  TValueWithType(InferredType tp)
-  or
+  TValueWithType(InferredType tp) or
   /** An abstract value representing the Boolean value `b`. */
-  TBoolConstant(boolean b) {
-    b = true or b = false
-  }
-  or
+  TBoolConstant(boolean b) { b = true or b = false } or
   /**
    * An abstract value representing the string `s`.
    *
@@ -376,8 +351,7 @@ private newtype TRefinementValue =
     s = any(StringRefinement sr | inGuard(sr)).getValue()
     or
     s = any(TypeofTag t).charAt(_)
-  }
-  or
+  } or
   /**
    * An abstract value representing the integer `i`.
    *
@@ -387,19 +361,16 @@ private newtype TRefinementValue =
   TIntConstant(int i) {
     i = 0 or
     i = any(IntRefinement ir | inGuard(ir)).getValue().toInt()
-  }
-  or
+  } or
   /**
    * An abstract value representing a non-empty string that coerces to a number
    * (and not `NaN`).
    */
-  TNumString()
-  or
+  TNumString() or
   /**
    * An abstract value representing a string `s` such that `Number(s)` is `NaN`.
    */
-  TNonEmptyNonNumString()
-  or
+  TNonEmptyNonNumString() or
   /**
    * An abstract value representing a non-zero number.
    */
@@ -455,7 +426,8 @@ private class ValueWithType extends RefinementValue, TValueWithType {
   override string typeof() { result = getType().getTypeofTag() }
 
   override boolean getABooleanValue() {
-    result = true or
+    result = true
+    or
     // only primitive types can be falsy
     getType() instanceof PrimitiveType and result = false
   }
@@ -468,7 +440,8 @@ private class NullOrUndefined extends ValueWithType, SingletonRefinementValue {
   override boolean getABooleanValue() { result = false }
 
   override predicate equals(SingletonRefinementValue that, boolean isStrict) {
-    SingletonRefinementValue.super.equals(that, isStrict) or
+    SingletonRefinementValue.super.equals(that, isStrict)
+    or
     isStrict = false and that instanceof NullOrUndefined
   }
 }
@@ -489,11 +462,15 @@ private class BoolConstant extends SingletonRefinementValue, TBoolConstant {
   override boolean getABooleanValue() { result = value }
 
   override predicate equals(SingletonRefinementValue that, boolean isStrict) {
-    SingletonRefinementValue.super.equals(that, isStrict) or
-    isStrict = false and (
-      value = false and (that.(StringConstant).isEmptyOrZero() or that = TIntConstant(0))
+    SingletonRefinementValue.super.equals(that, isStrict)
+    or
+    isStrict = false and
+    (
+      value = false and
+      (that.(StringConstant).isEmptyOrZero() or that = TIntConstant(0))
       or
-      value = true and (that = TStringConstant("1") or that = TIntConstant(1))
+      value = true and
+      (that = TStringConstant("1") or that = TIntConstant(1))
     )
   }
 }
@@ -508,24 +485,19 @@ private class StringConstant extends SingletonRefinementValue, TStringConstant {
   string getValue() { this = TStringConstant(result) }
 
   /** Holds if this is the empty string or the string `"0"`. */
-  predicate isEmptyOrZero() {
-    value = "" or value = "0"
-  }
+  predicate isEmptyOrZero() { value = "" or value = "0" }
 
   override string toString() { result = "'" + value + "'" }
 
   override string typeof() { result = "string" }
 
-  override boolean getABooleanValue() {
-    if value = "" then
-      result = false
-    else
-      result = true
-  }
+  override boolean getABooleanValue() { if value = "" then result = false else result = true }
 
   override predicate equals(SingletonRefinementValue that, boolean isStrict) {
-    SingletonRefinementValue.super.equals(that, isStrict) or
-    isStrict = false and (
+    SingletonRefinementValue.super.equals(that, isStrict)
+    or
+    isStrict = false and
+    (
       isEmptyOrZero() and that = TBoolConstant(false)
       or
       value = "1" and that = TBoolConstant(true)
@@ -548,16 +520,13 @@ private class IntConstant extends SingletonRefinementValue, TIntConstant {
 
   override string typeof() { result = "number" }
 
-  override boolean getABooleanValue() {
-    if value = 0 then
-      result = false
-    else
-      result = true
-  }
+  override boolean getABooleanValue() { if value = 0 then result = false else result = true }
 
   override predicate equals(SingletonRefinementValue that, boolean isStrict) {
-    SingletonRefinementValue.super.equals(that, isStrict) or
-    isStrict = false and (
+    SingletonRefinementValue.super.equals(that, isStrict)
+    or
+    isStrict = false and
+    (
       value = 0 and that = TBoolConstant(false)
       or
       value = 1 and that = TBoolConstant(true)
@@ -573,7 +542,9 @@ private class IntConstant extends SingletonRefinementValue, TIntConstant {
  */
 private class NumString extends RefinementValue, TNumString {
   override string toString() { result = "numeric string" }
+
   override string typeof() { result = "string" }
+
   override boolean getABooleanValue() { result = true }
 }
 
@@ -583,7 +554,9 @@ private class NumString extends RefinementValue, TNumString {
  */
 private class NonEmptyNonNumString extends RefinementValue, TNonEmptyNonNumString {
   override string toString() { result = "non-empty, non-numeric string" }
+
   override string typeof() { result = "string" }
+
   override boolean getABooleanValue() { result = true }
 }
 
@@ -592,6 +565,8 @@ private class NonEmptyNonNumString extends RefinementValue, TNonEmptyNonNumStrin
  */
 private class NonZeroNumber extends RefinementValue, TNonZeroNumber {
   override string toString() { result = "non-zero number" }
+
   override string typeof() { result = "number" }
+
   override boolean getABooleanValue() { result = true }
 }

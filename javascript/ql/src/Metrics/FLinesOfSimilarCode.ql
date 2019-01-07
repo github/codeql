@@ -21,12 +21,9 @@ import external.CodeDuplication
  * of lines appearing somewhere else.
  */
 predicate simLine(int l, File f) {
-  exists (SimilarBlock d | d.sourceFile() = f |
-    l in [d.sourceStartLine()..d.sourceEndLine()]
-  )
+  exists(SimilarBlock d | d.sourceFile() = f | l in [d.sourceStartLine() .. d.sourceEndLine()])
 }
 
 from File f, int n
-where n = count (int l | simLine(l, f))
-select f, n
-order by n desc
+where n = count(int l | simLine(l, f))
+select f, n order by n desc

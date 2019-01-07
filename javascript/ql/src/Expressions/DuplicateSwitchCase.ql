@@ -17,12 +17,10 @@ import Clones
  * A clone detector for finding structurally identical case labels.
  */
 class DuplicateSwitchCase extends StructurallyCompared {
-  DuplicateSwitchCase() {
-    exists (Case c | this = c.getExpr())
-  }
+  DuplicateSwitchCase() { exists(Case c | this = c.getExpr()) }
 
   override Expr candidate() {
-    exists (SwitchStmt s, int i, int j |
+    exists(SwitchStmt s, int i, int j |
       this = s.getCase(i).getExpr() and
       result = s.getCase(j).getExpr() and
       i < j

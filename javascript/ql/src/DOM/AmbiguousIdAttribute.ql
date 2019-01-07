@@ -19,15 +19,17 @@ import javascript
  *
  * Furthermore, the id is required to be valid, and not look like a template.
  */
-predicate idAt(DOM::AttributeDefinition attr, string id, DOM::ElementDefinition root, int line, int column) {
-  exists (DOM::ElementDefinition elt |
-    attr = elt.getAttributeByName("id") |
+predicate idAt(
+  DOM::AttributeDefinition attr, string id, DOM::ElementDefinition root, int line, int column
+) {
+  exists(DOM::ElementDefinition elt | attr = elt.getAttributeByName("id") |
     id = attr.getStringValue() and
     root = elt.getRoot() and
     elt.getLocation().hasLocationInfo(_, line, column, _, _) and
     not (
       // exclude invalid ids (reported by another query)
-      DOM::isInvalidHtmlIdAttributeValue(attr, _) or
+      DOM::isInvalidHtmlIdAttributeValue(attr, _)
+      or
       // exclude attribute values that look like they might be templated
       attr.mayHaveTemplateValue()
     )
@@ -39,9 +41,11 @@ predicate idAt(DOM::AttributeDefinition attr, string id, DOM::ElementDefinition 
  * the same document, and `earlier` appears textually before `later`.
  */
 predicate sameId(DOM::AttributeDefinition earlier, DOM::AttributeDefinition later) {
-  exists (string id, DOM::ElementDefinition root, int l1, int c1, int l2, int c2 |
-    idAt(earlier, id, root, l1, c1) and idAt(later, id, root, l2, c2) |
-    l1 < l2 or
+  exists(string id, DOM::ElementDefinition root, int l1, int c1, int l2, int c2 |
+    idAt(earlier, id, root, l1, c1) and idAt(later, id, root, l2, c2)
+  |
+    l1 < l2
+    or
     l1 = l2 and c1 < c2
   )
 }

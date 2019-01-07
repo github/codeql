@@ -27,29 +27,18 @@ module XpathInjection {
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "XpathInjection" }
 
-    override
-    predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override
-    predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override
-    predicate isSanitizer(DataFlow::Node node) {
+    override predicate isSanitizer(DataFlow::Node node) {
       super.isSanitizer(node) or
       node instanceof Sanitizer
     }
   }
 
   /** A source of remote user input, considered as a flow source for XPath injection. */
-  class RemoteSource extends Source {
-    RemoteSource() {
-      this instanceof RemoteFlowSource
-    }
-  }
+  class RemoteSource extends Source { RemoteSource() { this instanceof RemoteFlowSource } }
 
   /**
    * The `expression` argument to `xpath.parse` or `xpath.select` (and similar) from
@@ -58,10 +47,10 @@ module XpathInjection {
   class XpathParseSelectSink extends Sink {
     XpathParseSelectSink() {
       // both packages appear to expose the same API
-      exists (string xpath | xpath = "xpath" or xpath = "xpath.js" |
+      exists(string xpath | xpath = "xpath" or xpath = "xpath.js" |
         // `xpath.parse`, `xpath.select` and `xpath.select1` all interpret their first
         // argument as an XPath expression
-        exists (string m | m = "parse" or m = "select" or m = "select1" |
+        exists(string m | m = "parse" or m = "select" or m = "select1" |
           this = DataFlow::moduleMember(xpath, m).getACall().getArgument(0)
         )
         or
@@ -74,9 +63,7 @@ module XpathInjection {
 
   /** A part of the document URL, considered as a flow source for XPath injection. */
   class DocumentUrlSource extends Source, DataFlow::ValueNode {
-    DocumentUrlSource() {
-      isDocumentURL(astNode)
-    }
+    DocumentUrlSource() { isDocumentURL(astNode) }
   }
 
   /**
@@ -85,7 +72,7 @@ module XpathInjection {
    */
   class DomXpathSink extends Sink {
     DomXpathSink() {
-      exists (string m | m = "evaluate" or m = "createExpression" |
+      exists(string m | m = "evaluate" or m = "createExpression" |
         this = document().getAMethodCall(m).getArgument(0)
       )
     }

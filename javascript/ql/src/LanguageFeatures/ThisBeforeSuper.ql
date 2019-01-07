@@ -30,12 +30,12 @@ predicate needsGuard(Expr e, string kind) {
  * a `super` call.
  */
 predicate unguardedBB(BasicBlock bb, Function ctor) {
-  exists (ClassDefinition c | exists(c.getSuperClass()) |
+  exists(ClassDefinition c | exists(c.getSuperClass()) |
     ctor = c.getConstructor().getBody() and
     bb = ctor.getStartBB()
   )
   or
-  exists (BasicBlock pred | pred = bb.getAPredecessor() |
+  exists(BasicBlock pred | pred = bb.getAPredecessor() |
     unguardedBB(pred, ctor) and
     not pred.getANode() instanceof SuperCall
   )
@@ -47,17 +47,19 @@ predicate unguardedBB(BasicBlock bb, Function ctor) {
  * a `super` call.
  */
 predicate unguarded(ControlFlowNode nd, Function ctor) {
-  exists (BasicBlock bb, int i | nd = bb.getNode(i) |
+  exists(BasicBlock bb, int i | nd = bb.getNode(i) |
     unguardedBB(bb, ctor) and
-    not bb.getNode([0..i-1]) instanceof SuperCall
+    not bb.getNode([0 .. i - 1]) instanceof SuperCall
   )
 }
 
 from Expr e, string kind, Function ctor
-where needsGuard(e, kind) and unguarded(e, ctor) and
-      // don't flag if there is a super call in a nested arrow function
-      not exists (SuperCall sc |
-        sc.getBinder() = ctor and
-        sc.getEnclosingFunction() != ctor
-      )
-select (FirstLineOf)ctor, "The super constructor must be called before using '$@'.", e, kind
+where
+  needsGuard(e, kind) and
+  unguarded(e, ctor) and
+  // don't flag if there is a super call in a nested arrow function
+  not exists(SuperCall sc |
+    sc.getBinder() = ctor and
+    sc.getEnclosingFunction() != ctor
+  )
+select ctor.(FirstLineOf), "The super constructor must be called before using '$@'.", e, kind

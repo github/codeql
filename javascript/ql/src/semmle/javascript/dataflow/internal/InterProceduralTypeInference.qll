@@ -10,14 +10,11 @@ import AbstractValuesImpl
 /**
  * Flow analysis for `this` expressions inside functions.
  */
-private abstract class AnalyzedThisExpr extends DataFlow::AnalyzedNode, DataFlow::ThisNode {
+abstract private class AnalyzedThisExpr extends DataFlow::AnalyzedNode, DataFlow::ThisNode {
   DataFlow::FunctionNode binder;
 
-  AnalyzedThisExpr() {
-    binder = getBinder()
-  }
+  AnalyzedThisExpr() { binder = getBinder() }
 }
-
 
 /**
  * Flow analysis for `this` expressions that are bound with
@@ -28,12 +25,10 @@ private abstract class AnalyzedThisExpr extends DataFlow::AnalyzedNode, DataFlow
  * "inherited", we additionally still infer the ordinary abstract value.
  */
 private class AnalyzedThisInBoundFunction extends AnalyzedThisExpr {
-
   AnalyzedNode thisSource;
 
   AnalyzedThisInBoundFunction() {
-    exists(string name |
-      name = "bind" or name = "call" or name = "apply" |
+    exists(string name | name = "bind" or name = "call" or name = "apply" |
       thisSource = binder.getAMethodCall(name).getArgument(0)
     )
     or
@@ -47,7 +42,6 @@ private class AnalyzedThisInBoundFunction extends AnalyzedThisExpr {
     result = thisSource.getALocalValue() or
     result = AnalyzedThisExpr.super.getALocalValue()
   }
-
 }
 
 /**
@@ -60,9 +54,7 @@ private class AnalyzedThisInBoundFunction extends AnalyzedThisExpr {
 private class AnalyzedThisInConstructorFunction extends AnalyzedThisExpr {
   AbstractValue value;
 
-  AnalyzedThisInConstructorFunction() {
-    value = AbstractInstance::of(binder.getFunction())
-  }
+  AnalyzedThisInConstructorFunction() { value = AbstractInstance::of(binder.getFunction()) }
 
   override AbstractValue getALocalValue() {
     result = value or
@@ -81,7 +73,7 @@ private class AnalyzedThisInInstanceMember extends AnalyzedThisExpr {
   ClassDefinition c;
 
   AnalyzedThisInInstanceMember() {
-    exists (MemberDefinition m |
+    exists(MemberDefinition m |
       m = c.getAMember() and
       not m.isStatic() and
       binder = DataFlow::valueNode(c.getAMember().getInit())
@@ -115,7 +107,7 @@ private class AnalyzedThisInPropertyFunction extends AnalyzedThisExpr {
   DataFlow::AnalyzedNode base;
 
   AnalyzedThisInPropertyFunction() {
-    exists (DataFlow::PropWrite pwn |
+    exists(DataFlow::PropWrite pwn |
       pwn.getRhs() = binder and
       base = pwn.getBase().analyze()
     )
@@ -131,7 +123,6 @@ private class AnalyzedThisInPropertyFunction extends AnalyzedThisExpr {
  * A call with inter-procedural type inference for the return value.
  */
 abstract class CallWithAnalyzedReturnFlow extends DataFlow::AnalyzedValueNode {
-
   /**
    * Gets a called function.
    */
@@ -149,7 +140,6 @@ abstract class CallWithAnalyzedReturnFlow extends DataFlow::AnalyzedValueNode {
  * Unlike `CallWithAnalyzedReturnFlow`, this only contributes to `getAValue()`, not `getALocalValue()`.
  */
 abstract class CallWithNonLocalAnalyzedReturnFlow extends DataFlow::AnalyzedValueNode {
-
   /**
    * Gets a called function.
    */
@@ -168,17 +158,11 @@ abstract class CallWithNonLocalAnalyzedReturnFlow extends DataFlow::AnalyzedValu
  * Flow analysis for the return value of IIFEs.
  */
 private class IIFEWithAnalyzedReturnFlow extends CallWithAnalyzedReturnFlow {
-  
   ImmediatelyInvokedFunctionExpr iife;
-  
-  IIFEWithAnalyzedReturnFlow() {
-    astNode = iife.getInvocation()
-  }
-  
-  override AnalyzedFunction getACallee() {
-    result = iife.analyze()
-  }
-  
+
+  IIFEWithAnalyzedReturnFlow() { astNode = iife.getInvocation() }
+
+  override AnalyzedFunction getACallee() { result = iife.analyze() }
 }
 
 /**
@@ -195,11 +179,10 @@ private VarAccess getOnlyAccess(FunctionDeclStmt fn, LocalVariable v) {
 
 /** A function that only is used locally, making it amenable to type inference. */
 class LocalFunction extends Function {
-
   DataFlow::Impl::ExplicitInvokeNode invk;
 
   LocalFunction() {
-    exists (LocalVariable v |
+    exists(LocalVariable v |
       getOnlyAccess(this, v) = invk.getCalleeNode().asExpr() and
       not exists(v.getAnAssignedExpr()) and
       not exists(ExportDeclaration export | export.exportsAs(v, _))
@@ -210,31 +193,24 @@ class LocalFunction extends Function {
   }
 
   /** Gets an invocation of this function. */
-  DataFlow::InvokeNode getAnInvocation() {
-    result = invk
-  }
-
+  DataFlow::InvokeNode getAnInvocation() { result = invk }
 }
 
 /**
  * Enables inter-procedural type inference for a call to a `LocalFunction`.
  */
 private class LocalFunctionCallWithAnalyzedReturnFlow extends CallWithAnalyzedReturnFlow {
-
   LocalFunction f;
 
-  LocalFunctionCallWithAnalyzedReturnFlow() {
-    this = f.getAnInvocation()
-  }
+  LocalFunctionCallWithAnalyzedReturnFlow() { this = f.getAnInvocation() }
 
-  override AnalyzedFunction getACallee() {
-    result = f.analyze()
-  }
-
+  override AnalyzedFunction getACallee() { result = f.analyze() }
 }
 
 pragma[noinline]
-private predicate hasExplicitDefiniteCallee(DataFlow::Impl::ExplicitCallNode call, DataFlow::AnalyzedNode callee) {
+private predicate hasExplicitDefiniteCallee(
+  DataFlow::Impl::ExplicitCallNode call, DataFlow::AnalyzedNode callee
+) {
   callee = call.getCalleeNode() and
   not callee.getALocalValue().isIndefinite(_)
 }
@@ -243,18 +219,14 @@ private predicate hasExplicitDefiniteCallee(DataFlow::Impl::ExplicitCallNode cal
  * Enables inter-procedural type inference for the return value of a call to a type-inferred callee.
  */
 private class TypeInferredCalleeWithAnalyzedReturnFlow extends CallWithNonLocalAnalyzedReturnFlow {
-
   DataFlow::FunctionNode fun;
 
   TypeInferredCalleeWithAnalyzedReturnFlow() {
-    exists (DataFlow::AnalyzedNode calleeNode |
+    exists(DataFlow::AnalyzedNode calleeNode |
       hasExplicitDefiniteCallee(this, calleeNode) and
       calleeNode.getALocalValue().(AbstractFunction).getFunction().flow() = fun
     )
   }
 
-  override AnalyzedFunction getACallee() {
-    result = fun
-  }
-
+  override AnalyzedFunction getACallee() { result = fun }
 }

@@ -12,17 +12,30 @@
  * peculiarities; in particular, their primitive coercion yields
  * a number (not a string, as for most other objects).
  */
-
-newtype TypeTag = TTNull() or TTUndefined() or TTBoolean() or TTNumber() or TTString()
-               or TTFunction() or TTClass() or TTDate() or TTRegExp() or TTObject()
+newtype TypeTag =
+  TTNull() or
+  TTUndefined() or
+  TTBoolean() or
+  TTNumber() or
+  TTString() or
+  TTFunction() or
+  TTClass() or
+  TTDate() or
+  TTRegExp() or
+  TTObject()
 
 /**
  * A `typeof` tag, that is, a possible result of the `typeof` operator.
  */
 class TypeofTag extends string {
   TypeofTag() {
-    this = "undefined" or this = "boolean" or this = "number" or this = "string" or
-    this = "function" or this = "object" or this = "symbol"
+    this = "undefined" or
+    this = "boolean" or
+    this = "number" or
+    this = "string" or
+    this = "function" or
+    this = "object" or
+    this = "symbol"
   }
 }
 
@@ -44,23 +57,34 @@ class InferredType extends TypeTag {
  */
 class PrimitiveType extends InferredType {
   PrimitiveType() {
-    this = TTNull() or this = TTUndefined() or
-    this = TTBoolean() or this = TTNumber() or this = TTString()
+    this = TTNull() or
+    this = TTUndefined() or
+    this = TTBoolean() or
+    this = TTNumber() or
+    this = TTString()
   }
 
   override string getTypeofTag() {
-    this = TTNull() and result = "object" or
-    this = TTUndefined() and result = "undefined" or
-    this = TTBoolean() and result = "boolean" or
-    this = TTNumber() and result = "number" or
+    this = TTNull() and result = "object"
+    or
+    this = TTUndefined() and result = "undefined"
+    or
+    this = TTBoolean() and result = "boolean"
+    or
+    this = TTNumber() and result = "number"
+    or
     this = TTString() and result = "string"
   }
 
   override string toString() {
-    this = TTNull() and result = "null" or
-    this = TTUndefined() and result = "undefined" or
-    this = TTBoolean() and result = "boolean" or
-    this = TTNumber() and result = "number" or
+    this = TTNull() and result = "null"
+    or
+    this = TTUndefined() and result = "undefined"
+    or
+    this = TTBoolean() and result = "boolean"
+    or
+    this = TTNumber() and result = "number"
+    or
     this = TTString() and result = "string"
   }
 }
@@ -71,24 +95,35 @@ class PrimitiveType extends InferredType {
  */
 class NonPrimitiveType extends InferredType {
   NonPrimitiveType() {
-    this = TTFunction() or this = TTClass() or
-    this = TTDate() or this = TTRegExp() or
+    this = TTFunction() or
+    this = TTClass() or
+    this = TTDate() or
+    this = TTRegExp() or
     this = TTObject()
   }
 
   override string getTypeofTag() {
-    this = TTFunction() and result = "function" or
-    this = TTClass() and result = "function" or
-    this = TTDate() and result = "object" or
-    this = TTRegExp() and (result = "object" or result = "function") or
+    this = TTFunction() and result = "function"
+    or
+    this = TTClass() and result = "function"
+    or
+    this = TTDate() and result = "object"
+    or
+    this = TTRegExp() and
+    (result = "object" or result = "function")
+    or
     this = TTObject() and result = "object"
   }
 
   override string toString() {
-    this = TTFunction() and result = "function" or
-    this = TTClass() and result = "class" or
-    this = TTDate() and result = "date" or
-    this = TTRegExp() and result = "regular expression" or
+    this = TTFunction() and result = "function"
+    or
+    this = TTClass() and result = "class"
+    or
+    this = TTDate() and result = "date"
+    or
+    this = TTRegExp() and result = "regular expression"
+    or
     this = TTObject() and result = "object"
   }
 }
@@ -99,6 +134,6 @@ class NonPrimitiveType extends InferredType {
  * Gets a pretty-printed list of all type tags in alphabetical order.
  */
 string ppAllTypeTags() {
-  result = "boolean, class, date, function, null, number, object, regular expression,"
-         + "string or undefined"
+  result = "boolean, class, date, function, null, number, object, regular expression," +
+      "string or undefined"
 }

@@ -12,9 +12,7 @@ module HardcodedDataInterpretedAsCode {
    */
   abstract class Source extends DataFlow::Node {
     /** Gets a flow label for which this is a source. */
-    DataFlow::FlowLabel getLabel() {
-      result = DataFlow::FlowLabel::data()
-    }
+    DataFlow::FlowLabel getLabel() { result = DataFlow::FlowLabel::data() }
   }
 
   /**
@@ -31,28 +29,24 @@ module HardcodedDataInterpretedAsCode {
   /**
    * A sanitizer for hard-coded data.
    */
-  abstract class Sanitizer extends DataFlow::Node {}
+  abstract class Sanitizer extends DataFlow::Node { }
 
   /**
    * A taint-tracking configuration for reasoning about hard-coded data
    * being interpreted as code
    */
   class Configuration extends TaintTracking::Configuration {
-    Configuration() {
-      this = "HardcodedDataInterpretedAsCode"
-    }
-  
+    Configuration() { this = "HardcodedDataInterpretedAsCode" }
+
     override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel lbl) {
       source.(Source).getLabel() = lbl
     }
-  
+
     override predicate isSink(DataFlow::Node nd, DataFlow::FlowLabel lbl) {
       nd.(Sink).getLabel() = lbl
     }
 
-    override predicate isSanitizer(DataFlow::Node node) {
-      node instanceof Sanitizer
-    }
+    override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
   }
 
   /**
@@ -62,7 +56,7 @@ module HardcodedDataInterpretedAsCode {
    */
   private class DefaultSource extends Source, DataFlow::ValueNode {
     DefaultSource() {
-      exists (string val | val = astNode.(Expr).getStringValue() |
+      exists(string val | val = astNode.(Expr).getStringValue() |
         val.regexpMatch("[0-9a-fA-F]{8,}") and
         val.regexpMatch(".*[0-9].*")
       )
@@ -74,7 +68,9 @@ module HardcodedDataInterpretedAsCode {
    */
   private class DefaultCodeInjectionSink extends Sink {
     DefaultCodeInjectionSink() { this instanceof CodeInjection::Sink }
+
     override DataFlow::FlowLabel getLabel() { result = DataFlow::FlowLabel::taint() }
+
     override string getKind() { result = "code" }
   }
 
@@ -82,9 +78,7 @@ module HardcodedDataInterpretedAsCode {
    * An argument to `require` path; hard-coded data should not flow here.
    */
   private class RequireArgumentSink extends Sink {
-    RequireArgumentSink() {
-      this = any(Require r).getAnArgument().flow()
-    }
+    RequireArgumentSink() { this = any(Require r).getAnArgument().flow() }
 
     override DataFlow::FlowLabel getLabel() {
       result = DataFlow::FlowLabel::data()

@@ -6,8 +6,7 @@ import javascript
 
 module SQL {
   /** A string-valued expression that is interpreted as a SQL command. */
-  abstract class SqlString extends Expr {
-  }
+  abstract class SqlString extends Expr { }
 
   /**
    * An expression that sanitizes a string to make it safe to embed into
@@ -15,17 +14,14 @@ module SQL {
    */
   abstract class SqlSanitizer extends Expr {
     Expr input;
+
     Expr output;
 
     /** Gets the input expression being sanitized. */
-    Expr getInput() {
-      result = input
-    }
+    Expr getInput() { result = input }
 
     /** Gets the output expression containing the sanitized value. */
-    Expr getOutput() {
-      result = output
-    }
+    Expr getOutput() { result = output }
   }
 }
 
@@ -34,9 +30,7 @@ module SQL {
  */
 private module MySql {
   /** Gets the package name `mysql` or `mysql2`. */
-  string mysql() {
-    result = "mysql" or result = "mysql2"
-  }
+  string mysql() { result = "mysql" or result = "mysql2" }
 
   /** Gets a call to `mysql.createConnection`. */
   DataFlow::SourceNode createConnection() {
@@ -60,8 +54,7 @@ private module MySql {
     override MethodCallExpr astNode;
 
     QueryCall() {
-      exists (DataFlow::SourceNode recv |
-        recv = createPool() or recv = connection() |
+      exists(DataFlow::SourceNode recv | recv = createPool() or recv = connection() |
         this = recv.getAMethodCall("query")
       )
     }
@@ -73,20 +66,20 @@ private module MySql {
 
   /** An expression that is passed to the `query` method and hence interpreted as SQL. */
   class QueryString extends SQL::SqlString {
-    QueryString() {
-      this = any(QueryCall qc).getAQueryArgument().asExpr()
-    }
+    QueryString() { this = any(QueryCall qc).getAQueryArgument().asExpr() }
   }
 
   /** A call to the `escape` or `escapeId` method that performs SQL sanitization. */
   class EscapingSanitizer extends SQL::SqlSanitizer, @callexpr {
     EscapingSanitizer() {
-      exists (string esc | esc = "escape" or esc = "escapeId" |
-        exists (DataFlow::SourceNode escape, MethodCallExpr mce |
+      exists(string esc | esc = "escape" or esc = "escapeId" |
+        exists(DataFlow::SourceNode escape, MethodCallExpr mce |
           escape = DataFlow::moduleMember(mysql(), esc) or
           escape = connection().getAPropertyRead(esc) or
-          escape = createPool().getAPropertyRead(esc) |
-          this = mce and mce = escape.getACall().asExpr() and
+          escape = createPool().getAPropertyRead(esc)
+        |
+          this = mce and
+          mce = escape.getACall().asExpr() and
           input = mce.getArgument(0) and
           output = mce
         )
@@ -99,21 +92,18 @@ private module MySql {
     string kind;
 
     Credentials() {
-      exists (DataFlow::SourceNode call, string prop |
-        (call = createConnection() or call = createPool())
-        and
-        call.asExpr().(CallExpr).hasOptionArgument(0, prop, this)
-        and
+      exists(DataFlow::SourceNode call, string prop |
+        (call = createConnection() or call = createPool()) and
+        call.asExpr().(CallExpr).hasOptionArgument(0, prop, this) and
         (
-          prop = "user" and kind = "user name" or
+          prop = "user" and kind = "user name"
+          or
           prop = "password" and kind = prop
         )
       )
     }
 
-    override string getCredentialsKind() {
-      result = kind
-    }
+    override string getCredentialsKind() { result = kind }
   }
 }
 
@@ -148,8 +138,7 @@ private module Postgres {
     override MethodCallExpr astNode;
 
     QueryCall() {
-      exists (DataFlow::SourceNode recv |
-        recv = client() or recv = newPool() |
+      exists(DataFlow::SourceNode recv | recv = client() or recv = newPool() |
         this = recv.getAMethodCall("query")
       )
     }
@@ -161,9 +150,7 @@ private module Postgres {
 
   /** An expression that is passed to the `query` method and hence interpreted as SQL. */
   class QueryString extends SQL::SqlString {
-    QueryString() {
-      this = any(QueryCall qc).getAQueryArgument().asExpr()
-    }
+    QueryString() { this = any(QueryCall qc).getAQueryArgument().asExpr() }
   }
 
   /** An expression that is passed as user name or password when creating a client or a pool. */
@@ -171,21 +158,18 @@ private module Postgres {
     string kind;
 
     Credentials() {
-      exists (DataFlow::InvokeNode call, string prop |
-        (call = newClient() or call = newPool())
-        and
-        this = call.getOptionArgument(0, prop).asExpr()
-        and
+      exists(DataFlow::InvokeNode call, string prop |
+        (call = newClient() or call = newPool()) and
+        this = call.getOptionArgument(0, prop).asExpr() and
         (
-          prop = "user" and kind = "user name" or
+          prop = "user" and kind = "user name"
+          or
           prop = "password" and kind = prop
         )
       )
     }
 
-    override string getCredentialsKind() {
-      result = kind
-    }
+    override string getCredentialsKind() { result = kind }
   }
 }
 
@@ -211,8 +195,14 @@ private module Sqlite {
     override MethodCallExpr astNode;
 
     QueryCall() {
-      exists (string meth |
-        meth = "all" or meth = "each" or meth = "exec" or meth = "get" or meth = "prepare" or meth = "run" |
+      exists(string meth |
+        meth = "all" or
+        meth = "each" or
+        meth = "exec" or
+        meth = "get" or
+        meth = "prepare" or
+        meth = "run"
+      |
         this = newDb().getAMethodCall(meth)
       )
     }
@@ -224,9 +214,7 @@ private module Sqlite {
 
   /** An expression that is passed to the `query` method and hence interpreted as SQL. */
   class QueryString extends SQL::SqlString {
-    QueryString() {
-      this = any(QueryCall qc).getAQueryArgument().asExpr()
-    }
+    QueryString() { this = any(QueryCall qc).getAQueryArgument().asExpr() }
   }
 }
 
@@ -235,9 +223,7 @@ private module Sqlite {
  */
 private module MsSql {
   /** Gets a reference to the `mssql` module. */
-  DataFlow::ModuleImportNode mssql() {
-    result.getPath() = "mssql"
-  }
+  DataFlow::ModuleImportNode mssql() { result.getPath() = "mssql" }
 
   /** Gets an expression that creates a request object. */
   DataFlow::SourceNode request() {
@@ -252,9 +238,7 @@ private module MsSql {
   private class QueryTemplateExpr extends DatabaseAccess, DataFlow::ValueNode {
     override TaggedTemplateExpr astNode;
 
-    QueryTemplateExpr() {
-      mssql().getAPropertyRead("query").flowsToExpr(astNode.getTag())
-    }
+    QueryTemplateExpr() { mssql().getAPropertyRead("query").flowsToExpr(astNode.getTag()) }
 
     override DataFlow::Node getAQueryArgument() {
       result = DataFlow::valueNode(astNode.getTemplate().getAnElement())
@@ -266,9 +250,7 @@ private module MsSql {
     override MethodCallExpr astNode;
 
     QueryCall() {
-      exists (string meth | this = request().getAMethodCall(meth) |
-        meth = "query" or meth = "batch"
-      )
+      exists(string meth | this = request().getAMethodCall(meth) | meth = "query" or meth = "batch")
     }
 
     override DataFlow::Node getAQueryArgument() {
@@ -279,8 +261,7 @@ private module MsSql {
   /** An expression that is passed to a method that interprets it as SQL. */
   class QueryString extends SQL::SqlString {
     QueryString() {
-      exists (DatabaseAccess dba |
-        dba instanceof QueryTemplateExpr or dba instanceof QueryCall |
+      exists(DatabaseAccess dba | dba instanceof QueryTemplateExpr or dba instanceof QueryCall |
         this = dba.getAQueryArgument().asExpr()
       )
     }
@@ -290,7 +271,8 @@ private module MsSql {
   class QueryTemplateSanitizer extends SQL::SqlSanitizer {
     QueryTemplateSanitizer() {
       this = any(QueryTemplateExpr qte).getAQueryArgument().asExpr() and
-      input = this and output = this
+      input = this and
+      output = this
     }
   }
 
@@ -299,25 +281,22 @@ private module MsSql {
     string kind;
 
     Credentials() {
-      exists (DataFlow::InvokeNode call, string prop |
+      exists(DataFlow::InvokeNode call, string prop |
         (
-         call = mssql().getAMemberCall("connect")
-         or
-         call = mssql().getAConstructorInvocation("ConnectionPool")
-        )
-        and
-        this = call.getOptionArgument(0, prop).asExpr()
-        and
+          call = mssql().getAMemberCall("connect")
+          or
+          call = mssql().getAConstructorInvocation("ConnectionPool")
+        ) and
+        this = call.getOptionArgument(0, prop).asExpr() and
         (
-          prop = "user" and kind = "user name" or
+          prop = "user" and kind = "user name"
+          or
           prop = "password" and kind = prop
         )
       )
     }
 
-    override string getCredentialsKind() {
-      result = kind
-    }
+    override string getCredentialsKind() { result = kind }
   }
 }
 
@@ -326,22 +305,16 @@ private module MsSql {
  */
 private module Sequelize {
   /** Gets an import of the `sequelize` module. */
-  DataFlow::ModuleImportNode sequelize() {
-    result.getPath() = "sequelize"
-  }
+  DataFlow::ModuleImportNode sequelize() { result.getPath() = "sequelize" }
 
   /** Gets an expression that creates an instance of the `Sequelize` class. */
-  DataFlow::SourceNode newSequelize() {
-    result = sequelize().getAnInstantiation()
-  }
+  DataFlow::SourceNode newSequelize() { result = sequelize().getAnInstantiation() }
 
   /** A call to `Sequelize.query`. */
   private class QueryCall extends DatabaseAccess, DataFlow::ValueNode {
     override MethodCallExpr astNode;
 
-    QueryCall() {
-      this = newSequelize().getAMethodCall("query")
-    }
+    QueryCall() { this = newSequelize().getAMethodCall("query") }
 
     override DataFlow::Node getAQueryArgument() {
       result = DataFlow::valueNode(astNode.getArgument(0))
@@ -350,9 +323,7 @@ private module Sequelize {
 
   /** An expression that is passed to `Sequelize.query` method and hence interpreted as SQL. */
   class QueryString extends SQL::SqlString {
-    QueryString() {
-      this = any(QueryCall qc).getAQueryArgument().asExpr()
-    }
+    QueryString() { this = any(QueryCall qc).getAQueryArgument().asExpr() }
   }
 
   /**
@@ -363,28 +334,24 @@ private module Sequelize {
     string kind;
 
     Credentials() {
-      exists (NewExpr ne, string prop |
-        ne = newSequelize().asExpr()
-        and
+      exists(NewExpr ne, string prop |
+        ne = newSequelize().asExpr() and
         (
-         this = ne.getArgument(1) and prop = "username"
-         or
-         this = ne.getArgument(2) and prop = "password"
-         or
-         ne.hasOptionArgument(ne.getNumArgument()-1, prop, this)
-        )
-        and
+          this = ne.getArgument(1) and prop = "username"
+          or
+          this = ne.getArgument(2) and prop = "password"
+          or
+          ne.hasOptionArgument(ne.getNumArgument() - 1, prop, this)
+        ) and
         (
-         prop = "username" and kind = "user name"
-         or
-         prop = "password" and kind = prop
+          prop = "username" and kind = "user name"
+          or
+          prop = "password" and kind = prop
         )
       )
     }
 
-    override string getCredentialsKind() {
-      result = kind
-    }
+    override string getCredentialsKind() { result = kind }
   }
 }
 
@@ -432,9 +399,7 @@ private module Spanner {
      * Gets the position of the query argument; default is zero, which can be overridden
      * by subclasses.
      */
-    int getQueryArgumentPosition() {
-      result = 0
-    }
+    int getQueryArgumentPosition() { result = 0 }
 
     override DataFlow::Node getAQueryArgument() {
       result = getArgument(getQueryArgumentPosition()) or
@@ -447,7 +412,7 @@ private module Spanner {
    */
   class DatabaseRunCall extends SqlExecution {
     DatabaseRunCall() {
-      exists (string run | run = "run" or run = "runPartitionedUpdate" or run = "runStream" |
+      exists(string run | run = "run" or run = "runPartitionedUpdate" or run = "runStream" |
         this = database().getAMethodCall(run)
       )
     }
@@ -458,7 +423,7 @@ private module Spanner {
    */
   class TransactionRunCall extends SqlExecution {
     TransactionRunCall() {
-      exists (string run | run = "run" or run = "runStream" or run = "runUpdate" |
+      exists(string run | run = "run" or run = "runStream" or run = "runUpdate" |
         this = transaction().getAMethodCall(run)
       )
     }
@@ -469,7 +434,7 @@ private module Spanner {
    */
   class ExecuteSqlCall extends SqlExecution {
     ExecuteSqlCall() {
-      exists (string exec | exec = "executeSql" or exec = "executeStreamingSql" |
+      exists(string exec | exec = "executeSql" or exec = "executeStreamingSql" |
         this = v1SpannerClient().getAMethodCall(exec)
       )
     }
@@ -484,8 +449,6 @@ private module Spanner {
    * An expression that is interpreted as a SQL string.
    */
   class QueryString extends SQL::SqlString {
-    QueryString() {
-      this = any(SqlExecution se).getAQueryArgument().asExpr()
-    }
+    QueryString() { this = any(SqlExecution se).getAQueryArgument().asExpr() }
   }
 }

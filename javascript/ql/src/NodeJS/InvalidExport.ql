@@ -17,7 +17,7 @@ import javascript
  * Holds if `assign` assigns the value of `nd` to `exportsVar`, which is an `exports` variable
  */
 predicate exportsAssign(Assignment assgn, Variable exportsVar, DataFlow::Node nd) {
-  exists (NodeModule m |
+  exists(NodeModule m |
     exportsVar = m.getScope().getVariable("exports") and
     assgn.getLhs() = exportsVar.getAnAccess() and
     nd = assgn.getRhs().flow()
@@ -38,12 +38,13 @@ predicate moduleExportsAssign(DataFlow::PropWrite pw, DataFlow::Node nd) {
 }
 
 from Assignment assgn, Variable exportsVar, DataFlow::Node exportsVal
-where exportsAssign(assgn, exportsVar, exportsVal) and
-      not exists(exportsVal.getAPredecessor()) and
-      not (
-        // this is OK if `exportsVal` flows into `module.exports`
-        moduleExportsAssign(_, exportsVal) and
-        // however, if there are no further uses of `exports` the assignment is useless anyway
-        strictcount (exportsVar.getAnAccess()) > 1
-      )
+where
+  exportsAssign(assgn, exportsVar, exportsVal) and
+  not exists(exportsVal.getAPredecessor()) and
+  not (
+    // this is OK if `exportsVal` flows into `module.exports`
+    moduleExportsAssign(_, exportsVal) and
+    // however, if there are no further uses of `exports` the assignment is useless anyway
+    strictcount(exportsVar.getAnAccess()) > 1
+  )
 select assgn, "Assigning to 'exports' does not export anything."

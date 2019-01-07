@@ -15,16 +15,17 @@
 import javascript
 
 from AngularJS::InjectableFunction f, SimpleParameter p, string msg
-where p = f.asFunction().getAParameter() and
-      (
-        not p = f.getDependencyParameter(_) and
-        msg = "This parameter has no injected dependency."
-        or
-        exists (string n | p = f.getDependencyParameter(n) |
-          p.getName() != n and
-          exists(f.getDependencyParameter(p.getName())) and
-          msg = "This parameter is named '" + p.getName() + "', " +
-                "but actually refers to dependency '" + n + "'."
-        )
-      )
+where
+  p = f.asFunction().getAParameter() and
+  (
+    not p = f.getDependencyParameter(_) and
+    msg = "This parameter has no injected dependency."
+    or
+    exists(string n | p = f.getDependencyParameter(n) |
+      p.getName() != n and
+      exists(f.getDependencyParameter(p.getName())) and
+      msg = "This parameter is named '" + p.getName() + "', " +
+          "but actually refers to dependency '" + n + "'."
+    )
+  )
 select p, msg

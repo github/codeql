@@ -10,17 +10,17 @@ class SourceMappingComment extends Comment {
   string url;
 
   SourceMappingComment() {
-    exists (string sourceMappingURLRegex |
-      sourceMappingURLRegex = "[@#]\\s*sourceMappingURL\\s*=\\s*(.*)\\s*" |
+    exists(string sourceMappingURLRegex |
+      sourceMappingURLRegex = "[@#]\\s*sourceMappingURL\\s*=\\s*(.*)\\s*"
+    |
       // either a line comment whose entire text matches the regex...
-      url = this.(SlashSlashComment).getText().regexpCapture(sourceMappingURLRegex, 1) or
+      url = this.(SlashSlashComment).getText().regexpCapture(sourceMappingURLRegex, 1)
+      or
       // ...or a block comment one of whose lines matches the regex
       url = this.(SlashStarComment).getLine(_).regexpCapture("//" + sourceMappingURLRegex, 1)
     )
   }
 
   /** Gets the URL of the source map referenced by this comment. */
-  string getSourceMappingURL() {
-    result = url
-  }
+  string getSourceMappingURL() { result = url }
 }

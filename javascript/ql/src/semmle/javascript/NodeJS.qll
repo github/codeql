@@ -13,33 +13,26 @@ class NodeModule extends Module {
   }
 
   /** Gets the `module` variable of this module. */
-  Variable getModuleVariable() {
-    result = getScope().getVariable("module")
-  }
+  Variable getModuleVariable() { result = getScope().getVariable("module") }
 
   /** Gets the `exports` variable of this module. */
-  Variable getExportsVariable() {
-    result = getScope().getVariable("exports")
-  }
+  Variable getExportsVariable() { result = getScope().getVariable("exports") }
 
   /** Gets the scope induced by this module. */
-  override ModuleScope getScope() {
-    result.getScopeElement() = this
-  }
+  override ModuleScope getScope() { result.getScopeElement() = this }
 
   /** Gets a module imported by this module. */
-  override Module getAnImportedModule() {
-    result = getAnImport().getImportedModule()
-  }
+  override Module getAnImportedModule() { result = getAnImport().getImportedModule() }
 
   /**
    * Gets an abstract value representing one or more values that may flow
    * into this module's `module.exports` property.
    */
   DefiniteAbstractValue getAModuleExportsValue() {
-    exists (AbstractProperty moduleExports |
+    exists(AbstractProperty moduleExports |
       moduleExports.getBase().(AbstractModuleObject).getModule() = this and
-      moduleExports.getPropertyName() = "exports" |
+      moduleExports.getPropertyName() = "exports"
+    |
       result = moduleExports.getAValue()
     )
   }
@@ -52,42 +45,46 @@ class NodeModule extends Module {
 
   override predicate exports(string name, ASTNode export) {
     // a property write whose base is `exports` or `module.exports`
-    exists (DataFlow::PropWrite pwn | export = pwn.getAstNode() |
+    exists(DataFlow::PropWrite pwn | export = pwn.getAstNode() |
       pwn.getBase().analyze().getAValue() = getAModuleExportsValue() and
       name = pwn.getPropertyName()
-    ) or
+    )
+    or
     // an externs definition (where appropriate)
-    exists (PropAccess pacc | export = pacc |
+    exists(PropAccess pacc | export = pacc |
       pacc.getBase().analyze().getAValue() = getAModuleExportsValue() and
       name = pacc.getPropertyName() and
-      isExterns() and exists(pacc.getDocumentation())
+      isExterns() and
+      exists(pacc.getDocumentation())
     )
   }
 
   /** Gets a symbol that the module object inherits from its prototypes. */
   private string getAnImplicitlyExportedSymbol() {
-    exists (ExternalConstructor ec | ec = getPrototypeOfExportedExpr() |
+    exists(ExternalConstructor ec | ec = getPrototypeOfExportedExpr() |
       result = ec.getAMember().getName()
       or
       ec instanceof FunctionExternal and result = "prototype"
       or
       ec instanceof ArrayExternal and
-      exists (NumberLiteral nl | result = nl.getValue() and exists(result.toInt()))
+      exists(NumberLiteral nl | result = nl.getValue() and exists(result.toInt()))
     )
   }
 
   /** Gets an externs declaration of the prototype object of a value exported by this module. */
   private ExternalConstructor getPrototypeOfExportedExpr() {
-    exists (AbstractValue exported | exported = getAModuleExportsValue() |
-      result instanceof ObjectExternal or
-      exported instanceof AbstractFunction and result instanceof FunctionExternal or
+    exists(AbstractValue exported | exported = getAModuleExportsValue() |
+      result instanceof ObjectExternal
+      or
+      exported instanceof AbstractFunction and result instanceof FunctionExternal
+      or
       exported instanceof AbstractOtherObject and result instanceof ArrayExternal
     )
   }
 
   override predicate searchRoot(PathExpr path, Folder searchRoot, int priority) {
     path.getEnclosingModule() = this and
-    exists (string pathval | pathval = path.getValue() |
+    exists(string pathval | pathval = path.getValue() |
       // paths starting with `./` or `../` are resolved relative to the importing
       // module's folder
       pathval.regexpMatch("\\.\\.?(/.*)?") and
@@ -123,8 +120,11 @@ class NodeModule extends Module {
  * </table>
  */
 predicate findNodeModulesFolder(Folder f, Folder nodeModules, int distance) {
-  nodeModules = f.getFolder("node_modules") and not f.getBaseName() = "node_modules" and distance = 0 or
-  findNodeModulesFolder(f.getParentContainer(), nodeModules, distance-1)
+  nodeModules = f.getFolder("node_modules") and
+  not f.getBaseName() = "node_modules" and
+  distance = 0
+  or
+  findNodeModulesFolder(f.getParentContainer(), nodeModules, distance - 1)
 }
 
 /**
@@ -145,29 +145,23 @@ private class RequireVariable extends Variable {
 /**
  * Holds if module `m` is in file `f`.
  */
-private predicate moduleInFile(Module m, File f) {
-  m.getFile() = f
-}
+private predicate moduleInFile(Module m, File f) { m.getFile() = f }
 
 /**
  * A `require` import.
  */
 class Require extends CallExpr, Import {
   Require() {
-    exists (RequireVariable req |
+    exists(RequireVariable req |
       this.getCallee() = req.getAnAccess() and
       // `mjs` files explicitly disallow `require`
       getFile().getExtension() != "mjs"
     )
   }
 
-  override PathExpr getImportedPath() {
-    result = getArgument(0)
-  }
+  override PathExpr getImportedPath() { result = getArgument(0) }
 
-  override Module getEnclosingModule() {
-    this = result.getAnImport()
-  }
+  override Module getEnclosingModule() { this = result.getAnImport() }
 
   override Module resolveImportedPath() {
     moduleInFile(result, load(min(int prio | moduleInFile(_, load(prio)))))
@@ -179,9 +173,7 @@ class Require extends CallExpr, Import {
    * The result can be a JavaScript file, a JSON file or a `.node` file.
    * Externs files are not treated differently from other files by this predicate.
    */
-  File getImportedFile() {
-    result = load(min(int prio | exists(load(prio))))
-  }
+  File getImportedFile() { result = load(min(int prio | exists(load(prio)))) }
 
   /**
    * Gets the file that this `require` refers to (which may not be a JavaScript file),
@@ -239,18 +231,17 @@ class Require extends CallExpr, Import {
    * `.js`, `.json` and `.node`.
    */
   private File load(int priority) {
-    exists (int r | getEnclosingModule().searchRoot(getImportedPath(), _, r) |
+    exists(int r | getEnclosingModule().searchRoot(getImportedPath(), _, r) |
       result = loadAsFile(this, r, priority - prioritiesPerCandidate() * r) or
-      result = loadAsDirectory(this, r, priority - (prioritiesPerCandidate() * r + numberOfExtensions() + 1))
+      result = loadAsDirectory(this, r,
+          priority - (prioritiesPerCandidate() * r + numberOfExtensions() + 1))
     )
   }
 }
 
 /** A literal path expression appearing in a `require` import. */
 private class LiteralRequiredPath extends PathExprInModule, ConstantString {
-  LiteralRequiredPath() {
-    exists (Require req | this.getParentExpr*() = req.getArgument(0))
-  }
+  LiteralRequiredPath() { exists(Require req | this.getParentExpr*() = req.getArgument(0)) }
 
   override string getValue() { result = this.getStringValue() }
 }
@@ -258,7 +249,7 @@ private class LiteralRequiredPath extends PathExprInModule, ConstantString {
 /** A literal path expression appearing in a call to `require.resolve`. */
 private class LiteralRequireResolvePath extends PathExprInModule, ConstantString {
   LiteralRequireResolvePath() {
-    exists (RequireVariable req, MethodCallExpr reqres |
+    exists(RequireVariable req, MethodCallExpr reqres |
       reqres.getReceiver() = req.getAnAccess() and
       reqres.getMethodName() = "resolve" and
       this.getParentExpr*() = reqres.getArgument(0)
@@ -275,9 +266,7 @@ private class DirNamePath extends PathExprInModule, VarAccess {
     getVariable().getScope() instanceof ModuleScope
   }
 
-  override string getValue() {
-    result = getFile().getParentContainer().getAbsolutePath()
-  }
+  override string getValue() { result = getFile().getParentContainer().getAbsolutePath() }
 }
 
 /** A `__filename` path expression. */
@@ -287,9 +276,7 @@ private class FileNamePath extends PathExprInModule, VarAccess {
     getVariable().getScope() instanceof ModuleScope
   }
 
-  override string getValue() {
-    result = getFile().getAbsolutePath()
-  }
+  override string getValue() { result = getFile().getAbsolutePath() }
 }
 
 /**
@@ -298,7 +285,7 @@ private class FileNamePath extends PathExprInModule, VarAccess {
  */
 private class JoinedPath extends PathExprInModule, @callexpr {
   JoinedPath() {
-    exists (MethodCallExpr call | call = this |
+    exists(MethodCallExpr call | call = this |
       call.getReceiver().(VarAccess).getName() = "path" and
       call.getMethodName() = "join" and
       call.getNumArgument() = 2 and
@@ -308,9 +295,11 @@ private class JoinedPath extends PathExprInModule, @callexpr {
   }
 
   override string getValue() {
-    exists (CallExpr call, PathExpr left, ConstantString right |
+    exists(CallExpr call, PathExpr left, ConstantString right |
       call = this and
-      left = call.getArgument(0) and right = call.getArgument(1) |
+      left = call.getArgument(0) and
+      right = call.getArgument(1)
+    |
       result = left.getValue() + "/" + right.getStringValue()
     )
   }
@@ -318,7 +307,5 @@ private class JoinedPath extends PathExprInModule, @callexpr {
 
 /** A reference to the special `module` variable. */
 class ModuleAccess extends VarAccess {
-  ModuleAccess() {
-    exists (ModuleScope ms | this = ms.getVariable("module").getAnAccess())
-  }
+  ModuleAccess() { exists(ModuleScope ms | this = ms.getVariable("module").getAnAccess()) }
 }

@@ -1,6 +1,7 @@
 /**
  * Provides a taint tracking configuration for reasoning about bypass of sensitive action guards.
  */
+
 import javascript
 private import semmle.javascript.security.SensitiveActions
 
@@ -18,7 +19,6 @@ module ConditionalBypass {
      * Gets the guarded sensitive action.
      */
     abstract SensitiveAction getAction();
-
   }
 
   /**
@@ -32,24 +32,16 @@ module ConditionalBypass {
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "ConditionalBypass" }
 
-    override
-    predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override
-    predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override
-    predicate isSanitizer(DataFlow::Node node) {
+    override predicate isSanitizer(DataFlow::Node node) {
       super.isSanitizer(node) or
       node instanceof Sanitizer
     }
 
-    override
-    predicate isAdditionalTaintStep(DataFlow::Node src, DataFlow::Node dst) {
+    override predicate isAdditionalTaintStep(DataFlow::Node src, DataFlow::Node dst) {
       // comparing a tainted expression against a constant gives a tainted result
       dst.asExpr().(Comparison).hasOperands(src.asExpr(), any(ConstantExpr c))
     }
@@ -69,7 +61,7 @@ module ConditionalBypass {
   private predicate dominatesSensitiveAction(ReachableBasicBlock bb, SensitiveAction action) {
     bb = action.getBasicBlock()
     or
-    exists (ReachableBasicBlock mid |
+    exists(ReachableBasicBlock mid |
       dominatesSensitiveAction(mid, action) and
       bb = mid.getImmediateDominator()
     )
@@ -79,20 +71,16 @@ module ConditionalBypass {
    * A conditional that guards a sensitive action, e.g. `ok` in `if (ok) login()`.
    */
   class SensitiveActionGuardConditional extends Sink {
-
     SensitiveAction action;
 
     SensitiveActionGuardConditional() {
-      exists (GuardControlFlowNode guard |
+      exists(GuardControlFlowNode guard |
         this.asExpr() = guard.getTest() and
         dominatesSensitiveAction(guard.getBasicBlock(), action)
       )
     }
 
-    override SensitiveAction getAction() {
-      result = action
-    }
-
+    override SensitiveAction getAction() { result = action }
   }
 }
 

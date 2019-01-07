@@ -27,13 +27,9 @@ module SqlInjection {
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "SqlInjection" }
 
-    override predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
     override predicate isSanitizer(DataFlow::Node node) {
       super.isSanitizer(node) or
@@ -47,15 +43,11 @@ module SqlInjection {
   }
 
   /** An SQL expression passed to an API call that executes SQL. */
-  class SqlInjectionExprSink extends Sink, DataFlow::ValueNode {
-    override SQL::SqlString astNode;
-  }
+  class SqlInjectionExprSink extends Sink, DataFlow::ValueNode { override SQL::SqlString astNode; }
 
   /** An expression that sanitizes a value for the purposes of SQL injection. */
   class SanitizerExpr extends Sanitizer, DataFlow::ValueNode {
-    SanitizerExpr() {
-      astNode = any(SQL::SqlSanitizer ss).getOutput()
-    }
+    SanitizerExpr() { astNode = any(SQL::SqlSanitizer ss).getOutput() }
   }
 }
 

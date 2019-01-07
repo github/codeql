@@ -25,14 +25,18 @@ abstract class HeuristicSink extends DataFlow::Node { }
 
 private class HeuristicCodeInjectionSink extends HeuristicSink, CodeInjection::Sink {
   HeuristicCodeInjectionSink() {
-    isAssignedToOrConcatenatedWith(this, "(?i)(command|cmd|exec|code|script|program)") or
-    isArgTo(this, "(?i)(eval|run)") or // "exec" clashes too often with `RegExp.prototype.exec`
-    exists (string srcPattern |
+    isAssignedToOrConcatenatedWith(this, "(?i)(command|cmd|exec|code|script|program)")
+    or
+    isArgTo(this, "(?i)(eval|run)") // "exec" clashes too often with `RegExp.prototype.exec`
+    or
+    exists(string srcPattern |
       // function/lambda syntax anywhere
       srcPattern = "(?s).*function\\s*\\(.*\\).*" or
-      srcPattern = "(?s).*(\\(.*\\)|[A-Za-z_]+)\\s?=>.*" |
+      srcPattern = "(?s).*(\\(.*\\)|[A-Za-z_]+)\\s?=>.*"
+    |
       isContatenatedWithString(this, srcPattern)
-    ) or
+    )
+    or
     // dynamic property name
     isContatenatedWithStrings("(?is)[a-z]+\\[", this, "(?s)\\].*")
   }
@@ -44,6 +48,7 @@ private class HeuristicCommandInjectionSink extends HeuristicSink, CommandInject
     isArgTo(this, "(?i)(a?sync)?(eval|run)(a?sync)?") // "exec" clashes too often with `RegExp.prototype.exec`
   }
 }
+
 private class HeuristicDomBasedXssSink extends HeuristicSink, DomBasedXss::DomBasedXss::Sink {
   HeuristicDomBasedXssSink() {
     isAssignedToOrConcatenatedWith(this, "(?i)(html|innerhtml)") or
@@ -66,7 +71,8 @@ private class HeuristicSqlInjectionSink extends HeuristicSink, SqlInjection::Sin
   HeuristicSqlInjectionSink() {
     isAssignedToOrConcatenatedWith(this, "(?i)(sql|query)") or
     isArgTo(this, "(?i)(query)") or
-    isContatenatedWithString(this, "(?s).*(ALTER|COUNT|CREATE|DATABASE|DELETE|DISTINCT|DROP|FROM|GROUP|INSERT|INTO|LIMIT|ORDER|SELECT|TABLE|UPDATE|WHERE).*")
+    isContatenatedWithString(this,
+      "(?s).*(ALTER|COUNT|CREATE|DATABASE|DELETE|DISTINCT|DROP|FROM|GROUP|INSERT|INTO|LIMIT|ORDER|SELECT|TABLE|UPDATE|WHERE).*")
   }
 }
 
@@ -79,14 +85,18 @@ private class HeuristicNosqlInjectionSink extends HeuristicSink, NosqlInjection:
 
 private class HeuristicTaintedPathSink extends HeuristicSink, TaintedPath::Sink {
   HeuristicTaintedPathSink() {
-    isAssignedToOrConcatenatedWith(this, "(?i)(file|folder|dir|absolute)") or // "path" is too noisy in practice
-    isArgTo(this, "(?i)(get|read)file") or
-    exists (string pathPattern |
+    isAssignedToOrConcatenatedWith(this, "(?i)(file|folder|dir|absolute)") // "path" is too noisy in practice
+    or
+    isArgTo(this, "(?i)(get|read)file")
+    or
+    exists(string pathPattern |
       // paths with at least two parts, and either a trailing or leading slash
       pathPattern = "(?i)([a-z0-9_.-]+/){2,}" or
-      pathPattern = "(?i)(/[a-z0-9_.-]+){2,}" |
+      pathPattern = "(?i)(/[a-z0-9_.-]+){2,}"
+    |
       isContatenatedWithString(this, pathPattern)
-    ) or
+    )
+    or
     isContatenatedWithStrings(".*/", this, "/.*")
   }
 }
@@ -113,9 +123,7 @@ private class HeuristicServerSideUrlRedirectSink extends HeuristicSink, ServerSi
 }
 
 private class HeuristicInsecureRandomTokenSink extends HeuristicSink, InsecureRandomness::Sink {
-
   HeuristicInsecureRandomTokenSink() {
     isAssignedToOrConcatenatedWith(this, "(?i)(token|csrf|unique)")
   }
-
 }

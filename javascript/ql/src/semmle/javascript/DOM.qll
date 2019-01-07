@@ -23,9 +23,7 @@ module DOM {
      * For example, the 0th (and only) attribute of `<a href="https://semmle.com">Semmle</a>`
      * is `href="https://semmle.com"`.
      */
-    AttributeDefinition getAttribute(int i) {
-      none()
-    }
+    AttributeDefinition getAttribute(int i) { none() }
 
     /**
      * Gets an attribute of this DOM element with name `name`.
@@ -41,9 +39,7 @@ module DOM {
     /**
      * Gets an attribute of this DOM element.
      */
-    AttributeDefinition getAnAttribute() {
-      result.getElement() = this
-    }
+    AttributeDefinition getAnAttribute() { result.getElement() = this }
 
     /**
      * Gets the parent element of this element.
@@ -54,10 +50,7 @@ module DOM {
      * Gets the root element (i.e. an element without a parent) in which this element is contained.
      */
     ElementDefinition getRoot() {
-      if not exists(getParent()) then
-        result = this
-      else
-        result = getParent().getRoot()
+      if not exists(getParent()) then result = this else result = getParent().getRoot()
     }
 
     /**
@@ -78,9 +71,7 @@ module DOM {
       result = this.(HTML::Element).getAttribute(i)
     }
 
-    override ElementDefinition getParent() {
-      result = this.(HTML::Element).getParent()
-    }
+    override ElementDefinition getParent() { result = this.(HTML::Element).getParent() }
   }
 
   /**
@@ -91,14 +82,9 @@ module DOM {
 
     override string getName() { result = this.(JSXElement).getName() }
 
-    override AttributeDefinition getAttribute(int i) {
-      result = this.(JSXElement).getAttribute(i)
-    }
+    override AttributeDefinition getAttribute(int i) { result = this.(JSXElement).getAttribute(i) }
 
-    override ElementDefinition getParent() {
-      result = this.(JSXElement).getJsxParent()
-    }
-
+    override ElementDefinition getParent() { result = this.(JSXElement).getJsxParent() }
   }
 
   /**
@@ -120,23 +106,17 @@ module DOM {
      * This is undefined for HTML elements, where the attribute value is not
      * computed but specified directly.
      */
-    DataFlow::Node getValueNode() {
-      none()
-    }
+    DataFlow::Node getValueNode() { none() }
 
     /**
      * Gets the value of this attribute, if it can be determined.
      */
-    string getStringValue() {
-      result = getValueNode().asExpr().getStringValue()
-    }
+    string getStringValue() { result = getValueNode().asExpr().getStringValue() }
 
     /**
      * Gets the DOM element this attribute belongs to.
      */
-    ElementDefinition getElement() {
-      this = result.getAttributeByName(_)
-    }
+    ElementDefinition getElement() { this = result.getAttributeByName(_) }
 
     /**
      * Holds if the value of this attribute might be a template value
@@ -145,7 +125,6 @@ module DOM {
     predicate mayHaveTemplateValue() {
       getStringValue().regexpMatch(Templating::getDelimiterMatchingRegexp())
     }
-
   }
 
   /**
@@ -153,8 +132,11 @@ module DOM {
    */
   private class HtmlAttributeDefinition extends AttributeDefinition, @xmlattribute {
     HtmlAttributeDefinition() { this instanceof HTML::Attribute }
+
     override string getName() { result = this.(HTML::Attribute).getName() }
+
     override string getStringValue() { result = this.(HTML::Attribute).getValue() }
+
     override ElementDefinition getElement() { result = this.(HTML::Attribute).getElement() }
   }
 
@@ -163,9 +145,13 @@ module DOM {
    */
   private class JsxAttributeDefinition extends AttributeDefinition, @jsx_attribute {
     JSXAttribute attr;
+
     JsxAttributeDefinition() { this = attr }
+
     override string getName() { result = attr.getName() }
+
     override DataFlow::Node getValueNode() { result = DataFlow::valueNode(attr.getValue()) }
+
     override ElementDefinition getElement() { result = attr.getElement() }
   }
 
@@ -174,9 +160,13 @@ module DOM {
    */
   class DocumentElementDefinition extends ElementDefinition {
     DocumentElementDefinition() { this.getName() = "html" }
+
     override string getName() { none() }
+
     override AttributeDefinition getAttribute(int i) { none() }
+
     override AttributeDefinition getAttributeByName(string name) { none() }
+
     override ElementDefinition getParent() { none() }
   }
 
@@ -184,16 +174,27 @@ module DOM {
    * Holds if the value of attribute `attr` is interpreted as a URL.
    */
   predicate isUrlValuedAttribute(AttributeDefinition attr) {
-    exists (string eltName, string attrName |
+    exists(string eltName, string attrName |
       eltName = attr.getElement().getName() and
-      attrName = attr.getName() |
-      (eltName = "script" or eltName = "iframe" or eltName = "embed" or
-       eltName = "video" or eltName = "audio" or eltName = "source" or
-       eltName = "track") and
+      attrName = attr.getName()
+    |
+      (
+        eltName = "script" or
+        eltName = "iframe" or
+        eltName = "embed" or
+        eltName = "video" or
+        eltName = "audio" or
+        eltName = "source" or
+        eltName = "track"
+      ) and
       attrName = "src"
       or
-      (eltName = "link" or eltName = "a" or eltName = "base" or
-       eltName = "area") and
+      (
+        eltName = "link" or
+        eltName = "a" or
+        eltName = "base" or
+        eltName = "area"
+      ) and
       attrName = "href"
       or
       eltName = "form" and
@@ -212,24 +213,16 @@ module DOM {
     ElementDefinition defn;
 
     /** Gets the definition of this element. */
-    ElementDefinition getDefinition() {
-      result = defn
-    }
+    ElementDefinition getDefinition() { result = defn }
 
     /** Gets the tag name of this DOM element. */
-    string getName() {
-      result = defn.getName()
-    }
+    string getName() { result = defn.getName() }
 
     /** Gets the `i`th attribute of this DOM element, if it can be determined. */
-    AttributeDefinition getAttribute(int i) {
-      result = defn.getAttribute(i)
-    }
+    AttributeDefinition getAttribute(int i) { result = defn.getAttribute(i) }
 
     /** Gets an attribute of this DOM element with the given `name`. */
-    AttributeDefinition getAttributeByName(string name) {
-      result = defn.getAttributeByName(name)
-    }
+    AttributeDefinition getAttributeByName(string name) { result = defn.getAttributeByName(name) }
   }
 
   /**
@@ -240,7 +233,7 @@ module DOM {
     DefaultElement() {
       defn = this
       or
-      exists (Element that |
+      exists(Element that |
         this.(Expr).flow().getALocalSource().asExpr() = that and
         defn = that.getDefinition()
       )
@@ -252,7 +245,7 @@ module DOM {
    */
   predicate isInvalidHtmlIdAttributeValue(DOM::AttributeDefinition attr, string reason) {
     attr.getName() = "id" and
-    exists (string v | v = attr.getStringValue() |
+    exists(string v | v = attr.getStringValue() |
       v = "" and
       reason = "must contain at least one character"
       or
@@ -260,5 +253,4 @@ module DOM {
       reason = "must not contain any space characters"
     )
   }
-
 }

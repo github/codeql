@@ -25,9 +25,9 @@ import semmle.javascript.DefensiveProgramming
  */
 predicate isSymbolicConstant(Variable v) {
   // defined exactly once
-  count (VarDef vd | vd.getAVariable() = v) = 1 and
+  count(VarDef vd | vd.getAVariable() = v) = 1 and
   // the definition is either a `const` declaration or it assigns a constant to it
-  exists (VarDef vd | vd.getAVariable() = v and count(vd.getAVariable()) = 1 |
+  exists(VarDef vd | vd.getAVariable() = v and count(vd.getAVariable()) = 1 |
     vd.(VariableDeclarator).getDeclStmt() instanceof ConstDeclStmt or
     isConstant(vd.getSource())
   )
@@ -46,7 +46,7 @@ predicate isConstant(Expr e) {
  */
 predicate isInitialParameterUse(Expr e) {
   // unlike `SimpleParameter.getAnInitialUse` this will not include uses we have refinement information for
-  exists (SimpleParameter p, SsaExplicitDefinition ssa |
+  exists(SimpleParameter p, SsaExplicitDefinition ssa |
     ssa.getDef() = p and
     ssa.getVariable().getAUse() = e and
     not p.isRestParameter()
@@ -60,11 +60,11 @@ predicate isInitialParameterUse(Expr e) {
  */
 predicate isConstantBooleanReturnValue(Expr e) {
   // unlike `SourceNode.flowsTo` this will not include uses we have refinement information for
-  exists (DataFlow::CallNode call |
-    exists (call.analyze().getTheBooleanValue()) |
-    e = call.asExpr() or
+  exists(DataFlow::CallNode call | exists(call.analyze().getTheBooleanValue()) |
+    e = call.asExpr()
+    or
     // also support return values that are assigned to variables
-    exists (SsaExplicitDefinition ssa |
+    exists(SsaExplicitDefinition ssa |
       ssa.getDef().getSource() = call.asExpr() and
       ssa.getVariable().getAUse() = e
     )
@@ -113,10 +113,14 @@ predicate whitelist(Expr e) {
  * is not used for anything other than this truthiness check.
  */
 predicate isExplicitConditional(ASTNode cond, Expr e) {
-  e = cond.(IfStmt).getCondition() or
-  e = cond.(LoopStmt).getTest() or
-  e = cond.(ConditionalExpr).getCondition() or
-  isExplicitConditional(_, cond) and e = cond.(Expr).getUnderlyingValue().(LogicalBinaryExpr).getAnOperand()
+  e = cond.(IfStmt).getCondition()
+  or
+  e = cond.(LoopStmt).getTest()
+  or
+  e = cond.(ConditionalExpr).getCondition()
+  or
+  isExplicitConditional(_, cond) and
+  e = cond.(Expr).getUnderlyingValue().(LogicalBinaryExpr).getAnOperand()
 }
 
 /**
@@ -132,19 +136,18 @@ predicate isConditional(ASTNode cond, Expr e) {
 }
 
 from ASTNode cond, DataFlow::AnalyzedNode op, boolean cv, ASTNode sel, string msg
-where isConditional(cond, op.asExpr()) and
-      cv = op.getTheBooleanValue()and
-      not whitelist(op.asExpr()) and
-
-      // if `cond` is of the form `<non-trivial truthy expr> && <something>`,
-      // we suggest replacing it with `<non-trivial truthy expr>, <something>`
-      if cond.(LogAndExpr).getLeftOperand() = op.asExpr() and cv = true and not op.asExpr().isPure() then
-        (sel = cond and msg = "This logical 'and' expression can be replaced with a comma expression.")
-
-      // otherwise we just report that `op` always evaluates to `cv`
-      else (
-        sel = op.asExpr().stripParens() and
-        msg = "This " + describeExpression(sel) + " always evaluates to " + cv + "."
-      )
-
+where
+  isConditional(cond, op.asExpr()) and
+  cv = op.getTheBooleanValue() and
+  not whitelist(op.asExpr()) and
+  // if `cond` is of the form `<non-trivial truthy expr> && <something>`,
+  // we suggest replacing it with `<non-trivial truthy expr>, <something>`
+  if cond.(LogAndExpr).getLeftOperand() = op.asExpr() and cv = true and not op.asExpr().isPure()
+  then (
+    sel = cond and msg = "This logical 'and' expression can be replaced with a comma expression."
+  ) else (
+    // otherwise we just report that `op` always evaluates to `cv`
+    sel = op.asExpr().stripParens() and
+    msg = "This " + describeExpression(sel) + " always evaluates to " + cv + "."
+  )
 select sel, msg

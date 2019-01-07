@@ -15,8 +15,7 @@ module CommandInjection {
   /**
    * A data flow sink for command-injection vulnerabilities.
    */
-  abstract class Sink extends DataFlow::Node {
-  }
+  abstract class Sink extends DataFlow::Node { }
 
   /**
    * A sanitizer for command-injection vulnerabilities.
@@ -29,9 +28,7 @@ module CommandInjection {
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "CommandInjection" }
 
-    override predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
     /**
      * Holds if `sink` is a data flow sink for command-injection vulnerabilities, and
@@ -43,13 +40,9 @@ module CommandInjection {
       indirectCommandInjection(sink, highlight)
     }
 
-    override predicate isSink(DataFlow::Node sink) {
-      isSinkWithHighlight(sink, _)
-    }
+    override predicate isSink(DataFlow::Node sink) { isSinkWithHighlight(sink, _) }
 
-    override predicate isSanitizer(DataFlow::Node node) {
-      node instanceof Sanitizer
-    }
+    override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
   }
 
   /** A source of remote user input, considered as a flow source for command injection. */
@@ -59,11 +52,9 @@ module CommandInjection {
 
   /**
    * A command argument to a function that initiates an operating system command.
-  */
+   */
   class SystemCommandExecutionSink extends Sink, DataFlow::ValueNode {
-    SystemCommandExecutionSink() {
-      this = any(SystemCommandExecution sys).getACommandArgument()
-    }
+    SystemCommandExecutionSink() { this = any(SystemCommandExecution sys).getACommandArgument() }
   }
 
   /**
@@ -77,13 +68,11 @@ module CommandInjection {
     override predicate isSource(DataFlow::Node nd) {
       nd instanceof DataFlow::ArrayCreationNode
       or
-      exists (ConstantString shell | shellCmd(shell, _) |
-        nd = DataFlow::valueNode(shell)
-      )
+      exists(ConstantString shell | shellCmd(shell, _) | nd = DataFlow::valueNode(shell))
     }
 
     override predicate isSink(DataFlow::Node nd) {
-      exists (SystemCommandExecution sys |
+      exists(SystemCommandExecution sys |
         nd = sys.getACommandArgument() or
         nd = sys.getArgumentList()
       )
@@ -97,15 +86,13 @@ module CommandInjection {
    * `arg` is `"-c"`, or `shell` is `cmd.exe` and `arg` is `"/c"`.
    */
   private predicate shellCmd(ConstantString shell, string arg) {
-    exists (string s | s = shell.getStringValue() |
-      (s = "sh" or s = "bash" or s = "/bin/sh" or s = "/bin/bash")
-      and
+    exists(string s | s = shell.getStringValue() |
+      (s = "sh" or s = "bash" or s = "/bin/sh" or s = "/bin/bash") and
       arg = "-c"
     )
     or
-    exists (string s | s = shell.getStringValue().toLowerCase() |
-      (s = "cmd" or s = "cmd.exe")
-      and
+    exists(string s | s = shell.getStringValue().toLowerCase() |
+      (s = "cmd" or s = "cmd.exe") and
       (arg = "/c" or arg = "/C")
     )
   }
@@ -125,8 +112,9 @@ module CommandInjection {
    * we want to report the `spawn` call as the sink, so we bind it to `sys`.
    */
   private predicate indirectCommandInjection(DataFlow::Node sink, SystemCommandExecution sys) {
-    exists (ArgumentListTracking cfg, DataFlow::ArrayCreationNode args,
-            ConstantString shell, string dashC |
+    exists(
+      ArgumentListTracking cfg, DataFlow::ArrayCreationNode args, ConstantString shell, string dashC
+    |
       shellCmd(shell, dashC) and
       cfg.hasFlow(DataFlow::valueNode(shell), sys.getACommandArgument()) and
       cfg.hasFlow(args, sys.getArgumentList()) and

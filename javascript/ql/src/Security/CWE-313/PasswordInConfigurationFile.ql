@@ -21,13 +21,12 @@ import javascript
  * Dependencies in `package.json` files are excluded by this predicate.
  */
 predicate config(string key, string val, Locatable valElement) {
-  exists (JSONObject obj |
-    not exists(PackageJSON p | obj = p.getADependenciesObject(_)) |
+  exists(JSONObject obj | not exists(PackageJSON p | obj = p.getADependenciesObject(_)) |
     obj.getPropValue(key) = valElement and
     val = valElement.(JSONString).getValue()
   )
   or
-  exists (YAMLMapping m, YAMLString keyElement |
+  exists(YAMLMapping m, YAMLString keyElement |
     m.maps(keyElement, valElement) and
     key = keyElement.getValue() and
     val = valElement.(YAMLString).getValue()
@@ -43,10 +42,14 @@ predicate exclude(File f) {
 }
 
 from string key, string val, Locatable valElement
-where config(key, val, valElement) and val != "" and
-      (key.toLowerCase() = "password"
-       or
-       key.toLowerCase() != "readme" and
-       val.regexpMatch("(?is).*password\\s*=(?!\\s*;).*")) and
-      not exclude(valElement.getFile())
+where
+  config(key, val, valElement) and
+  val != "" and
+  (
+    key.toLowerCase() = "password"
+    or
+    key.toLowerCase() != "readme" and
+    val.regexpMatch("(?is).*password\\s*=(?!\\s*;).*")
+  ) and
+  not exclude(valElement.getFile())
 select valElement, "Avoid plaintext passwords in configuration files."

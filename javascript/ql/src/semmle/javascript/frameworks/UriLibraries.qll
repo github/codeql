@@ -7,13 +7,12 @@ import javascript
 /**
  * A taint propagating data flow edge arising from an operation in a URI library.
  */
-abstract class UriLibraryStep extends DataFlow::ValueNode, TaintTracking::AdditionalTaintStep {}
+abstract class UriLibraryStep extends DataFlow::ValueNode, TaintTracking::AdditionalTaintStep { }
 
 /**
  * Provides classes for working with [urijs](http://medialize.github.io/URI.js/) code.
  */
 module urijs {
-
   /**
    * Gets a data flow source node for the urijs library.
    */
@@ -26,9 +25,7 @@ module urijs {
   /**
    * Gets a data flow source node for an invocation of the urijs function.
    */
-  private DataFlow::InvokeNode invocation() {
-    result = urijs().getAnInvocation()
-  }
+  private DataFlow::InvokeNode invocation() { result = urijs().getAnInvocation() }
 
   /**
    * Gets a data flow source node for a urijs instance.
@@ -60,45 +57,36 @@ module urijs {
    * A taint step in the urijs library.
    */
   private class Step extends UriLibraryStep {
-
     DataFlow::Node src;
 
     Step() {
       // flow through "constructors" (`new` is optional)
-      exists (DataFlow::InvokeNode invk | invk = this and invk = invocation() |
+      exists(DataFlow::InvokeNode invk | invk = this and invk = invocation() |
         src = invk.getAnArgument()
       )
       or
       // flow through chained calls
-      exists (DataFlow::MethodCallNode mc | mc = this and this = chainCall() |
+      exists(DataFlow::MethodCallNode mc | mc = this and this = chainCall() |
         src = mc.getReceiver() or
         src = mc.getAnArgument()
       )
       or
       // flow through getter calls
-      exists (DataFlow::MethodCallNode mc | mc = this and this = getter() |
-        src = mc.getReceiver()
-      )
+      exists(DataFlow::MethodCallNode mc | mc = this and this = getter() | src = mc.getReceiver())
     }
 
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = src and succ = this
-    }
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) { pred = src and succ = this }
   }
-
 }
 
 /**
  * Provides classes for working with [uri-js](https://github.com/garycourt/uri-js) code.
  */
 module uridashjs {
-
   /**
    * Gets a data flow source node for the uridashjs library.
    */
-  deprecated DataFlow::SourceNode uridashjs() {
-    result = DataFlow::moduleImport("uri-js")
-  }
+  deprecated DataFlow::SourceNode uridashjs() { result = DataFlow::moduleImport("uri-js") }
 
   /**
    * Gets a data flow source node for member `name` of the uridashjs library.
@@ -111,38 +99,32 @@ module uridashjs {
    * A taint step in the urijs library.
    */
   private class Step extends UriLibraryStep, DataFlow::CallNode {
-
     DataFlow::Node src;
 
     Step() {
-      exists (string name |
+      exists(string name |
         name = "parse" or
         name = "serialize" or
         name = "resolve" or
-        name = "normalize" |
+        name = "normalize"
+      |
         this = uridashjsMember(name).getACall() and
         src = getAnArgument()
       )
     }
 
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = src and succ = this
-    }
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) { pred = src and succ = this }
   }
-
 }
 
 /**
  * Provides classes for working with [punycode](https://github.com/bestiejs/punycode.js) code.
  */
 module punycode {
-
   /**
    * Gets a data flow source node for the punycode library.
    */
-  deprecated DataFlow::SourceNode punycode() {
-    result = DataFlow::moduleImport("punycode")
-  }
+  deprecated DataFlow::SourceNode punycode() { result = DataFlow::moduleImport("punycode") }
 
   /**
    * Gets a data flow source node for member `name` of the punycode library.
@@ -155,51 +137,42 @@ module punycode {
    * A taint step in the punycode library.
    */
   private class Step extends UriLibraryStep, DataFlow::CallNode {
-
     DataFlow::Node src;
 
     Step() {
-      exists (string name |
+      exists(string name |
         name = "decode" or
         name = "encode" or
         name = "toUnicode" or
-        name = "toASCII" |
+        name = "toASCII"
+      |
         this = punycodeMember(name).getACall() and
         src = getAnArgument()
       )
     }
 
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = src and succ = this
-    }
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) { pred = src and succ = this }
   }
-
 }
 
 /**
  * Provides classes for working with [url-parse](https://github.com/unshiftio/url-parse) code.
  */
 module urlParse {
-
   /**
    * Gets a data flow source node for the url-parse library.
    */
-  DataFlow::SourceNode urlParse() {
-    result = DataFlow::moduleImport("url-parse")
-  }
+  DataFlow::SourceNode urlParse() { result = DataFlow::moduleImport("url-parse") }
 
   /**
    * Gets a data flow source node for a call of the url-parse function.
    */
-  private DataFlow::InvokeNode call() {
-    result = urlParse().getACall()
-  }
+  private DataFlow::InvokeNode call() { result = urlParse().getACall() }
 
   /**
    * A taint step in the url-parse library.
    */
   private class Step extends UriLibraryStep, DataFlow::CallNode {
-
     DataFlow::Node src;
 
     Step() {
@@ -207,26 +180,23 @@ module urlParse {
       this = call() and
       src = getAnArgument()
       or
-      exists (DataFlow::MethodCallNode mc | this = mc and mc = call().getAMethodCall("set") |
+      exists(DataFlow::MethodCallNode mc | this = mc and mc = call().getAMethodCall("set") |
         // src = parse(...); src.set(x, y)
-        src = mc.getReceiver() or
+        src = mc.getReceiver()
+        or
         // parse(x).set(y, src)
         src = mc.getArgument(1)
       )
     }
 
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = src and succ = this
-    }
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) { pred = src and succ = this }
   }
-
 }
 
 /**
  * Provides classes for working with [querystringify](https://github.com/unshiftio/querystringify) code.
  */
 module querystringify {
-
   /**
    * Gets a data flow source node for the querystringify library.
    */
@@ -245,37 +215,32 @@ module querystringify {
    * A taint step in the querystringify library.
    */
   private class Step extends UriLibraryStep, DataFlow::CallNode {
-
     DataFlow::Node src;
 
     Step() {
-      exists (string name |
+      exists(string name |
         name = "parse" or
-        name = "stringify" |
+        name = "stringify"
+      |
         this = querystringifyMember(name).getACall() and
         src = getAnArgument()
       )
     }
 
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = src and succ = this
-    }
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) { pred = src and succ = this }
   }
-
 }
 
 /**
  * Provides classes for working with [query-string](https://github.com/sindresorhus/query-string) code.
  */
 module querydashstring {
-
   /**
    * Gets a data flow source node for the query-string library.
    */
   deprecated DataFlow::SourceNode querydashstring() {
     result = DataFlow::moduleImport("query-string")
   }
-
 
   /**
    * Gets a data flow source node for member `name` of the query-string library.
@@ -288,82 +253,67 @@ module querydashstring {
    * A taint step in the query-string library.
    */
   private class Step extends UriLibraryStep, DataFlow::CallNode {
-
     DataFlow::Node src;
 
     Step() {
-      exists (string name |
+      exists(string name |
         name = "parse" or
         name = "extract" or
         name = "parseUrl" or
-        name = "stringify" |
+        name = "stringify"
+      |
         this = querydashstringMember(name).getACall() and
         src = getAnArgument()
       )
     }
 
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = src and succ = this
-    }
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) { pred = src and succ = this }
   }
-
 }
 
 /**
  * Provides classes for working with [url](https://nodejs.org/api/url.html) code.
  */
 module url {
-
   /**
    * Gets a data flow source node for the url library.
    */
-  deprecated DataFlow::SourceNode url() {
-    result = DataFlow::moduleImport("url")
-  }
-
+  deprecated DataFlow::SourceNode url() { result = DataFlow::moduleImport("url") }
 
   /**
    * Gets a data flow source node for member `name` of the url library.
    */
-  DataFlow::SourceNode urlMember(string name) {
-    result = DataFlow::moduleMember("url", name)
-  }
+  DataFlow::SourceNode urlMember(string name) { result = DataFlow::moduleMember("url", name) }
 
   /**
    * A taint step in the url library.
    */
   private class Step extends UriLibraryStep, DataFlow::CallNode {
-
     DataFlow::Node src;
 
     Step() {
-      exists (string name |
+      exists(string name |
         name = "parse" or
         name = "format" or
-        name = "resolve" |
+        name = "resolve"
+      |
         this = urlMember(name).getACall() and
         src = getAnArgument()
       )
     }
 
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = src and succ = this
-    }
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) { pred = src and succ = this }
   }
-
 }
 
 /**
  * Provides classes for working with [querystring](https://nodejs.org/api/querystring.html) code.
  */
 module querystring {
-
   /**
    * Gets a data flow source node for the querystring library.
    */
-  deprecated DataFlow::SourceNode querystring() {
-    result = DataFlow::moduleImport("querystring")
-  }
+  deprecated DataFlow::SourceNode querystring() { result = DataFlow::moduleImport("querystring") }
 
   /**
    * Gets a data flow source node for member `name` of the querystring library.
@@ -376,23 +326,20 @@ module querystring {
    * A taint step in the querystring library.
    */
   private class Step extends UriLibraryStep, DataFlow::CallNode {
-
     DataFlow::Node src;
 
     Step() {
-      exists (string name |
+      exists(string name |
         name = "escape" or
         name = "unescape" or
         name = "parse" or
-        name = "stringify" |
+        name = "stringify"
+      |
         this = querystringMember(name).getACall() and
         src = getAnArgument()
       )
     }
 
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = src and succ = this
-    }
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) { pred = src and succ = this }
   }
-
 }

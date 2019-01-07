@@ -21,16 +21,19 @@ predicate nonLocalIterator(EnhancedForLoop f, string descr) {
   f.getIterator() instanceof PropAccess and descr = "a property"
   or
   // iterator is not a purely local variable:
-  exists (Variable v | v = f.getAnIterationVariable() |
+  exists(Variable v | v = f.getAnIterationVariable() |
     // either it is global...
-    v.isGlobal() and descr = "a global variable" or
+    v.isGlobal() and descr = "a global variable"
+    or
     // ...or it is captured by an inner function
     v.isLocal() and v.isCaptured() and descr = "captured"
   )
 }
 
 from EnhancedForLoop f, string reason
-where nonLocalIterator(f, reason) and
-      // exclude toplevel statements, since the toplevel is unlikely to be optimized anyway
-      not f.getContainer() instanceof TopLevel
-select f.getIterator(), "This loop may prevent optimization because its iteration variable is " + reason + "."
+where
+  nonLocalIterator(f, reason) and
+  // exclude toplevel statements, since the toplevel is unlikely to be optimized anyway
+  not f.getContainer() instanceof TopLevel
+select f.getIterator(),
+  "This loop may prevent optimization because its iteration variable is " + reason + "."
