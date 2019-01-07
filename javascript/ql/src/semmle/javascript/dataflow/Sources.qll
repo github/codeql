@@ -32,9 +32,7 @@ abstract class SourceNode extends DataFlow::Node {
    * Holds if this node flows into `sink` in zero or more local (that is,
    * intra-procedural) steps.
    */
-  predicate flowsToExpr(Expr sink) {
-    flowsTo(DataFlow::valueNode(sink))
-  }
+  predicate flowsToExpr(Expr sink) { flowsTo(DataFlow::valueNode(sink)) }
 
   /**
    * Gets a reference (read or write) of property `propName` on this node.
@@ -47,9 +45,7 @@ abstract class SourceNode extends DataFlow::Node {
   /**
    * Gets a read of property `propName` on this node.
    */
-  DataFlow::PropRead getAPropertyRead(string propName) {
-    result = getAPropertyReference(propName)
-  }
+  DataFlow::PropRead getAPropertyRead(string propName) { result = getAPropertyReference(propName) }
 
   /**
    * Gets a write of property `propName` on this node.
@@ -81,23 +77,17 @@ abstract class SourceNode extends DataFlow::Node {
   /**
    * Gets a reference (read or write) of any property on this node.
    */
-  DataFlow::PropRef getAPropertyReference() {
-    flowsTo(result.getBase())
-  }
+  DataFlow::PropRef getAPropertyReference() { flowsTo(result.getBase()) }
 
   /**
    * Gets a read of any property on this node.
    */
-  DataFlow::PropRead getAPropertyRead() {
-    result = getAPropertyReference()
-  }
+  DataFlow::PropRead getAPropertyRead() { result = getAPropertyReference() }
 
   /**
    * Gets a write of any property on this node.
    */
-  DataFlow::PropWrite getAPropertyWrite() {
-    result = getAPropertyReference()
-  }
+  DataFlow::PropWrite getAPropertyWrite() { result = getAPropertyReference() }
 
   /**
    * Gets an invocation of the method or constructor named `memberName` on this node.
@@ -113,9 +103,7 @@ abstract class SourceNode extends DataFlow::Node {
    * (as in `o.m(...)`), and calls where the callee undergoes some additional
    * data flow (as in `tmp = o.m; tmp(...)`).
    */
-  DataFlow::CallNode getAMemberCall(string memberName) {
-    result = getAMemberInvocation(memberName)
-  }
+  DataFlow::CallNode getAMemberCall(string memberName) { result = getAMemberInvocation(memberName) }
 
   /**
    * Gets a method call that invokes method `methodName` on this node.
@@ -124,7 +112,7 @@ abstract class SourceNode extends DataFlow::Node {
    * that is, `o.m(...)` or `o[p](...)`.
    */
   DataFlow::CallNode getAMethodCall(string methodName) {
-    exists (PropAccess pacc |
+    exists(PropAccess pacc |
       pacc = result.getCalleeNode().asExpr().getUnderlyingReference() and
       flowsToExpr(pacc.getBase()) and
       pacc.getPropertyName() = methodName
@@ -137,9 +125,7 @@ abstract class SourceNode extends DataFlow::Node {
    * This includes only calls that have the syntactic shape of a method call,
    * that is, `o.m(...)` or `o[p](...)`.
    */
-  DataFlow::CallNode getAMethodCall() {
-    result = getAMethodCall(_)
-  }
+  DataFlow::CallNode getAMethodCall() { result = getAMethodCall(_) }
 
   /**
    * Gets a chained method call that invokes `methodName` last.
@@ -161,23 +147,17 @@ abstract class SourceNode extends DataFlow::Node {
   /**
    * Gets an invocation (with our without `new`) of this node.
    */
-  DataFlow::InvokeNode getAnInvocation() {
-    flowsTo(result.getCalleeNode())
-  }
+  DataFlow::InvokeNode getAnInvocation() { flowsTo(result.getCalleeNode()) }
 
   /**
    * Gets a function call to this node.
    */
-  DataFlow::CallNode getACall() {
-    result = getAnInvocation()
-  }
+  DataFlow::CallNode getACall() { result = getAnInvocation() }
 
   /**
    * Gets a `new` call to this node.
    */
-  DataFlow::NewNode getAnInstantiation() {
-    result = getAnInvocation()
-  }
+  DataFlow::NewNode getAnInstantiation() { result = getAnInvocation() }
 
   /**
    * Gets a source node whose value is stored in property `prop` of this node.
@@ -205,7 +185,7 @@ abstract class SourceNode extends DataFlow::Node {
  */
 class DefaultSourceNode extends SourceNode {
   DefaultSourceNode() {
-    exists (ASTNode astNode | this = DataFlow::valueNode(astNode) |
+    exists(ASTNode astNode | this = DataFlow::valueNode(astNode) |
       astNode instanceof PropAccess or
       astNode instanceof Function or
       astNode instanceof ClassDefinition or
@@ -216,8 +196,9 @@ class DefaultSourceNode extends SourceNode {
       astNode instanceof ExternalModuleReference
     )
     or
-    exists (SsaExplicitDefinition ssa, VarDef def |
-      this = DataFlow::ssaDefinitionNode(ssa) and def = ssa.getDef() |
+    exists(SsaExplicitDefinition ssa, VarDef def |
+      this = DataFlow::ssaDefinitionNode(ssa) and def = ssa.getDef()
+    |
       def instanceof ImportSpecifier
     )
     or

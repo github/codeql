@@ -21,20 +21,19 @@ import external.CodeDuplication
  * Currently, only lines on which an import declaration occurs are excluded.
  */
 predicate whitelistedLineForDuplication(File f, int l) {
-  exists (ImportDeclaration i | i.getFile() = f and i.getLocation().getStartLine() = l)
+  exists(ImportDeclaration i | i.getFile() = f and i.getLocation().getStartLine() = l)
 }
 
 /**
  * Holds if line `l` of file `f` belongs to a block of lines that is duplicated somewhere else.
  */
 predicate dupLine(int l, File f) {
-  exists (DuplicateBlock d | d.sourceFile() = f |
-    l in [d.sourceStartLine()..d.sourceEndLine()] and
+  exists(DuplicateBlock d | d.sourceFile() = f |
+    l in [d.sourceStartLine() .. d.sourceEndLine()] and
     not whitelistedLineForDuplication(f, l)
   )
 }
 
 from File f, int n
-where n = count (int l | dupLine(l, f))
-select f, n
-order by n desc
+where n = count(int l | dupLine(l, f))
+select f, n order by n desc

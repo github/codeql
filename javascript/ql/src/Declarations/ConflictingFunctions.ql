@@ -15,11 +15,14 @@
 import javascript
 
 from FunctionDeclStmt f, FunctionDeclStmt g
-where f.getVariable() = g.getVariable() and
-      // ignore global functions; conflicts across scripts are usually false positives
-      not f.getVariable().isGlobal() and
-      // only report each pair once
-      f.getLocation().startsBefore(g.getLocation()) and
-      // ignore ambient, abstract, and overloaded declarations in TypeScript
-      f.hasBody() and g.hasBody()
-select f.getId(), "Declaration of " + f.describe() + " conflicts with $@ in the same scope.", g.getId(), "another declaration"
+where
+  f.getVariable() = g.getVariable() and
+  // ignore global functions; conflicts across scripts are usually false positives
+  not f.getVariable().isGlobal() and
+  // only report each pair once
+  f.getLocation().startsBefore(g.getLocation()) and
+  // ignore ambient, abstract, and overloaded declarations in TypeScript
+  f.hasBody() and
+  g.hasBody()
+select f.getId(), "Declaration of " + f.describe() + " conflicts with $@ in the same scope.",
+  g.getId(), "another declaration"

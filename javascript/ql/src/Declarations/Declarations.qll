@@ -12,7 +12,9 @@ import javascript
  * Note that references that are not declarations are called accesses elsewhere,
  * but they are not treated specially in this context.
  */
-newtype RefKind = Ref() or Decl()
+newtype RefKind =
+  Ref() or
+  Decl()
 
 /**
  * Gets a reference to `var` (if `kind` is `Ref()`) or declaration of
@@ -30,8 +32,9 @@ VarRef refInContainer(Variable var, RefKind kind, StmtContainer sc) {
  */
 VarRef firstRefInContainer(Variable var, RefKind kind, StmtContainer sc) {
   result = min(refInContainer(var, kind, sc) as ref
-               order by ref.getLocation().getStartLine(),
-                        ref.getLocation().getStartColumn())
+      order by
+        ref.getLocation().getStartLine(), ref.getLocation().getStartColumn()
+    )
 }
 
 /**
@@ -50,6 +53,7 @@ VarRef refInTopLevel(Variable var, RefKind kind, TopLevel tl) {
  */
 VarRef firstRefInTopLevel(Variable var, RefKind kind, TopLevel tl) {
   result = min(refInTopLevel(var, kind, tl) as ref
-               order by ref.getLocation().getStartLine(),
-                        ref.getLocation().getStartColumn())
+      order by
+        ref.getLocation().getStartLine(), ref.getLocation().getStartColumn()
+    )
 }

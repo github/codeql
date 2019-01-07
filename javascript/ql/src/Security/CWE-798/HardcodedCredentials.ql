@@ -17,11 +17,13 @@ private import semmle.javascript.security.dataflow.HardcodedCredentials::Hardcod
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, string value
-where cfg.hasFlowPath(source, sink) and
-      // use source value in message if it's available
-      if source.getNode().asExpr() instanceof ConstantString then
-        value = "The hard-coded value \"" + source.getNode().asExpr().(ConstantString).getStringValue() + "\""
-      else
-        value = "This hard-coded value"
-select source.getNode(), source, sink, value + " is used as $@.",
-       sink.getNode(), sink.getNode().(Sink).getKind()
+where
+  cfg.hasFlowPath(source, sink) and
+  // use source value in message if it's available
+  if source.getNode().asExpr() instanceof ConstantString
+  then
+    value = "The hard-coded value \"" + source.getNode().asExpr().(ConstantString).getStringValue() +
+        "\""
+  else value = "This hard-coded value"
+select source.getNode(), source, sink, value + " is used as $@.", sink.getNode(),
+  sink.getNode().(Sink).getKind()

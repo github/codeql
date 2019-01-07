@@ -30,13 +30,16 @@ import javascript
  */
 language[monotonicAggregates]
 string getStringValue(RegExpLiteral rl) {
-  exists (RegExpTerm root | root = rl.getRoot() |
+  exists(RegExpTerm root | root = rl.getRoot() |
     result = root.(RegExpConstant).getValue()
     or
     result = strictconcat(RegExpTerm ch, int i |
-      ch = root.(RegExpSequence).getChild(i) |
-      ch.(RegExpConstant).getValue() order by i
-    )
+        ch = root.(RegExpSequence).getChild(i)
+      |
+        ch.(RegExpConstant).getValue()
+        order by
+          i
+      )
   )
 }
 
@@ -67,7 +70,7 @@ class Replacement extends DataFlow::Node {
   RegExpLiteral pattern;
 
   Replacement() {
-    exists (DataFlow::MethodCallNode mcn | this = mcn |
+    exists(DataFlow::MethodCallNode mcn | this = mcn |
       mcn.getMethodName() = "replace" and
       mcn.getArgument(0).asExpr() = pattern and
       mcn.getNumArgument() = 2 and
@@ -79,7 +82,7 @@ class Replacement extends DataFlow::Node {
    * Holds if this replacement replaces the string `input` with `output`.
    */
   predicate replaces(string input, string output) {
-    exists (DataFlow::MethodCallNode mcn |
+    exists(DataFlow::MethodCallNode mcn |
       mcn = this and
       input = getStringValue(pattern) and
       output = mcn.getArgument(1).asExpr().getStringValue()
@@ -93,7 +96,7 @@ class Replacement extends DataFlow::Node {
    * using `&`.
    */
   predicate escapes(string char, string metachar) {
-    exists (string regexp, string repl |
+    exists(string regexp, string repl |
       escapingScheme(metachar, regexp) and
       replaces(char, repl) and
       repl.regexpMatch(regexp)
@@ -107,7 +110,7 @@ class Replacement extends DataFlow::Node {
    * `&lt;`) using `<`.
    */
   predicate unescapes(string metachar, string char) {
-    exists (string regexp, string orig |
+    exists(string regexp, string orig |
       escapingScheme(metachar, regexp) and
       replaces(orig, char) and
       orig.regexpMatch(regexp)
@@ -126,11 +129,10 @@ class Replacement extends DataFlow::Node {
    * performs an escaping.
    */
   Replacement getAnEarlierEscaping(string metachar) {
-    exists (Replacement pred | pred = this.getPreviousReplacement() |
-      if pred.escapes(_, metachar) then
-        result = pred
-      else
-        result = pred.getAnEarlierEscaping(metachar)
+    exists(Replacement pred | pred = this.getPreviousReplacement() |
+      if pred.escapes(_, metachar)
+      then result = pred
+      else result = pred.getAnEarlierEscaping(metachar)
     )
   }
 
@@ -139,21 +141,21 @@ class Replacement extends DataFlow::Node {
    * performs a unescaping.
    */
   Replacement getALaterUnescaping(string metachar) {
-    exists (Replacement succ | this = succ.getPreviousReplacement() |
-      if succ.unescapes(metachar, _) then
-        result = succ
-      else
-        result = succ.getALaterUnescaping(metachar)
+    exists(Replacement succ | this = succ.getPreviousReplacement() |
+      if succ.unescapes(metachar, _)
+      then result = succ
+      else result = succ.getALaterUnescaping(metachar)
     )
   }
 }
 
 from Replacement primary, Replacement supplementary, string message, string metachar
-where primary.escapes(metachar, _) and
-      supplementary = primary.getAnEarlierEscaping(metachar) and
-      message = "may double-escape '" + metachar + "' characters from $@"
-      or
-      primary.unescapes(_, metachar) and
-      supplementary = primary.getALaterUnescaping(metachar) and
-      message = "may produce '" + metachar + "' characters that are double-unescaped $@"
+where
+  primary.escapes(metachar, _) and
+  supplementary = primary.getAnEarlierEscaping(metachar) and
+  message = "may double-escape '" + metachar + "' characters from $@"
+  or
+  primary.unescapes(_, metachar) and
+  supplementary = primary.getALaterUnescaping(metachar) and
+  message = "may produce '" + metachar + "' characters that are double-unescaped $@"
 select primary, "This replacement " + message + ".", supplementary, "here"

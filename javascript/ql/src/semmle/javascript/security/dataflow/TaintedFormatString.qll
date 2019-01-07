@@ -25,33 +25,20 @@ module TaintedFormatString {
    * A taint-tracking configuration for format injections.
    */
   class Configuration extends TaintTracking::Configuration {
-    Configuration() {
-      this = "TaintedFormatString"
-    }
+    Configuration() { this = "TaintedFormatString" }
 
-    override
-    predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override
-    predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override
-    predicate isSanitizer(DataFlow::Node node) {
+    override predicate isSanitizer(DataFlow::Node node) {
       super.isSanitizer(node) or
       node instanceof Sanitizer
     }
   }
 
   /** A source of remote user input, considered as a flow source for format injection. */
-  class RemoteSource extends Source {
-    RemoteSource() {
-      this instanceof RemoteFlowSource
-    }
-  }
+  class RemoteSource extends Source { RemoteSource() { this instanceof RemoteFlowSource } }
 
   /**
    * A format argument to a printf-like function, considered as a flow sink for format injection.

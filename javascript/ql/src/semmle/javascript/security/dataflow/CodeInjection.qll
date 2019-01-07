@@ -27,13 +27,9 @@ module CodeInjection {
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "CodeInjection" }
 
-    override predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
     override predicate isSanitizer(DataFlow::Node node) {
       super.isSanitizer(node) or
@@ -56,9 +52,7 @@ module CodeInjection {
    * An access to a property that may hold (parts of) the document URL.
    */
   class LocationSource extends Source, DataFlow::ValueNode {
-    LocationSource() {
-      isDocumentURL(astNode)
-    }
+    LocationSource() { isDocumentURL(astNode) }
   }
 
   /**
@@ -71,42 +65,45 @@ module CodeInjection {
   }
 
   /**
-   * An expression which may be evaluated as JavaScript in NodeJS using the 
+   * An expression which may be evaluated as JavaScript in NodeJS using the
    * `vm` module.
    */
   class NodeJSVmSink extends Sink, DataFlow::ValueNode {
-    NodeJSVmSink() {
-      exists(NodeJSLib::VmModuleMethodCall call | 
-        this = call.getACodeArgument()
-      )
-    }
+    NodeJSVmSink() { exists(NodeJSLib::VmModuleMethodCall call | this = call.getACodeArgument()) }
   }
-  
+
   /**
    * An expression which may be evaluated as JavaScript.
    */
   class EvalJavaScriptSink extends Sink, DataFlow::ValueNode {
     EvalJavaScriptSink() {
-      exists (DataFlow::InvokeNode c, int index |
-        exists (string callName |
-          c = DataFlow::globalVarRef(callName).getAnInvocation() |
-          callName = "eval" and index = 0 or
-          callName = "Function" or
-          callName = "execScript" and index = 0 or
-          callName = "executeJavaScript" and index = 0 or
-          callName = "execCommand" and index = 0 or
-          callName = "setTimeout" and index = 0 or
-          callName = "setInterval" and index = 0 or
+      exists(DataFlow::InvokeNode c, int index |
+        exists(string callName | c = DataFlow::globalVarRef(callName).getAnInvocation() |
+          callName = "eval" and index = 0
+          or
+          callName = "Function"
+          or
+          callName = "execScript" and index = 0
+          or
+          callName = "executeJavaScript" and index = 0
+          or
+          callName = "execCommand" and index = 0
+          or
+          callName = "setTimeout" and index = 0
+          or
+          callName = "setInterval" and index = 0
+          or
           callName = "setImmediate" and index = 0
         )
         or
-        exists (DataFlow::GlobalVarRefNode wasm, string methodName |
-          wasm.getName() = "WebAssembly" and c = wasm.getAMemberCall(methodName) |
+        exists(DataFlow::GlobalVarRefNode wasm, string methodName |
+          wasm.getName() = "WebAssembly" and c = wasm.getAMemberCall(methodName)
+        |
           methodName = "compile" or
           methodName = "compileStreaming"
         )
       |
-      this = c.getArgument(index)
+        this = c.getArgument(index)
       )
     }
   }
@@ -116,7 +113,7 @@ module CodeInjection {
    */
   class WebViewInjectedJavaScriptSink extends Sink {
     WebViewInjectedJavaScriptSink() {
-      exists (ReactNative::WebViewElement webView |
+      exists(ReactNative::WebViewElement webView |
         // `injectedJavaScript` property of React Native `WebView`
         this = webView.getAPropertyWrite("injectedJavaScript").getRhs()
         or

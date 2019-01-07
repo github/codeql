@@ -25,28 +25,21 @@ import javascript
  * to that reference.
  */
 private predicate defn(ControlFlowNode def, Expr lhs, AST::ValueNode rhs) {
-  exists (AssignExpr assgn | def = assgn |
-    lhs = assgn.getTarget() and rhs = assgn.getRhs()
-  ) or
-  exists (VariableDeclarator vd | def = vd |
-    lhs = vd.getBindingPattern() and rhs = vd.getInit()
-  ) or
-  exists (Function f | def = f.getId() |
-    lhs = def and rhs = f
-  ) or
-  exists (ClassDefinition c | lhs = c.getIdentifier() |
-    def = c and rhs = c and not c.isAmbient()
-  ) or
-  exists (NamespaceDeclaration n | def = n |
-    lhs = n.getId() and rhs = n
-  ) or
-  exists (EnumDeclaration ed | def = ed.getIdentifier() |
-    lhs = def and rhs = ed
-  ) or
-  exists (ImportEqualsDeclaration i | def = i |
-    lhs = i.getId() and rhs = i.getImportedEntity()
-  ) or
-  exists (EnumMember member | def = member.getIdentifier() |
+  exists(AssignExpr assgn | def = assgn | lhs = assgn.getTarget() and rhs = assgn.getRhs())
+  or
+  exists(VariableDeclarator vd | def = vd | lhs = vd.getBindingPattern() and rhs = vd.getInit())
+  or
+  exists(Function f | def = f.getId() | lhs = def and rhs = f)
+  or
+  exists(ClassDefinition c | lhs = c.getIdentifier() | def = c and rhs = c and not c.isAmbient())
+  or
+  exists(NamespaceDeclaration n | def = n | lhs = n.getId() and rhs = n)
+  or
+  exists(EnumDeclaration ed | def = ed.getIdentifier() | lhs = def and rhs = ed)
+  or
+  exists(ImportEqualsDeclaration i | def = i | lhs = i.getId() and rhs = i.getImportedEntity())
+  or
+  exists(EnumMember member | def = member.getIdentifier() |
     lhs = def and rhs = member.getInitializer()
   )
 }
@@ -69,20 +62,28 @@ private predicate defn(ControlFlowNode def, Expr lhs, AST::ValueNode rhs) {
  * Additionally, parameters are also considered definitions, which are their own `lhs`.
  */
 private predicate defn(ControlFlowNode def, Expr lhs) {
-  defn(def, lhs, _) or
-  lhs = def.(CompoundAssignExpr).getTarget() or
-  lhs = def.(UpdateExpr).getOperand().getUnderlyingReference() or
-  lhs = def.(ImportSpecifier).getLocal() or
-  exists (EnhancedForLoop efl | def = efl.getIteratorExpr() |
+  defn(def, lhs, _)
+  or
+  lhs = def.(CompoundAssignExpr).getTarget()
+  or
+  lhs = def.(UpdateExpr).getOperand().getUnderlyingReference()
+  or
+  lhs = def.(ImportSpecifier).getLocal()
+  or
+  exists(EnhancedForLoop efl | def = efl.getIteratorExpr() |
     lhs = def.(Expr).stripParens() or
     lhs = def.(VariableDeclarator).getBindingPattern()
-  ) or
-  lhs = def and (
+  )
+  or
+  lhs = def and
+  (
     def instanceof Parameter or
     def = any(ComprehensionBlock cb).getIterator()
-  ) or
-  exists (EnumMember member | def = member.getIdentifier() |
-    lhs = def and not exists (member.getInitializer()))
+  )
+  or
+  exists(EnumMember member | def = member.getIdentifier() |
+    lhs = def and not exists(member.getInitializer())
+  )
 }
 
 /**
@@ -95,9 +96,9 @@ private predicate defn(ControlFlowNode def, Expr lhs) {
 private predicate lvalAux(Expr l, ControlFlowNode def) {
   defn(def, l)
   or
-  exists (ArrayPattern ap | lvalAux(ap, def) | l = ap.getAnElement().stripParens())
+  exists(ArrayPattern ap | lvalAux(ap, def) | l = ap.getAnElement().stripParens())
   or
-  exists (ObjectPattern op | lvalAux(op, def) |
+  exists(ObjectPattern op | lvalAux(op, def) |
     l = op.getAPropertyPattern().getValuePattern().stripParens() or
     l = op.getRest().stripParens()
   )
@@ -140,10 +141,13 @@ class LValue extends RefExpr {
  */
 class RValue extends RefExpr {
   RValue() {
-    not this instanceof LValue and not this instanceof VarDecl or
+    not this instanceof LValue and not this instanceof VarDecl
+    or
     // in `x++` and `x += 1`, `x` is both RValue and LValue
-    this = any(CompoundAssignExpr a).getTarget() or
-    this = any(UpdateExpr u).getOperand().getUnderlyingReference() or
+    this = any(CompoundAssignExpr a).getTarget()
+    or
+    this = any(UpdateExpr u).getOperand().getUnderlyingReference()
+    or
     this = any(NamespaceDeclaration decl).getId()
   }
 }
@@ -167,22 +171,16 @@ class RValue extends RefExpr {
  * `x` as well as property `p` of `z`.
  */
 class VarDef extends ControlFlowNode {
-  VarDef() {
-    defn(this, _)
-  }
+  VarDef() { defn(this, _) }
 
   /**
    * Gets the target of this definition, which is either a simple variable
    * reference, a destructuring pattern, or a property access.
    */
-  Expr getTarget() {
-    defn(this, result)
-  }
+  Expr getTarget() { defn(this, result) }
 
   /** Gets a variable defined by this node, if any. */
-  Variable getAVariable() {
-    result = getTarget().(BindingPattern).getAVariable()
-  }
+  Variable getAVariable() { result = getTarget().(BindingPattern).getAVariable() }
 
   /**
    * Gets the source of this definition, that is, the data flow node representing
@@ -191,17 +189,16 @@ class VarDef extends ControlFlowNode {
    * This predicate is not defined for `VarDef`s where the source is implicit,
    * such as `for-in` loops or parameters.
    */
-  AST::ValueNode getSource() {
-    defn(this, _, result)
-  }
+  AST::ValueNode getSource() { defn(this, _, result) }
 
   /**
    * Holds if this definition of `v` is overwritten by another definition, that is,
    * another definition of `v` is reachable from it in the CFG.
    */
   predicate isOverwritten(Variable v) {
-    exists (BasicBlock bb, int i | bb.defAt(i, v, this) |
-      exists (int j | bb.defAt(j, v, _) and j > i) or
+    exists(BasicBlock bb, int i | bb.defAt(i, v, this) |
+      exists(int j | bb.defAt(j, v, _) and j > i)
+      or
       bb.getASuccessor+().defAt(_, v, _)
     )
   }
@@ -213,14 +210,10 @@ class VarDef extends ControlFlowNode {
  * Some variable definitions are also uses, notably the operands of update expressions.
  */
 class VarUse extends ControlFlowNode, @varref {
-  VarUse() {
-    this instanceof RValue
-  }
+  VarUse() { this instanceof RValue }
 
   /** Gets the variable this use refers to. */
-  Variable getVariable() {
-    result = this.(VarRef).getVariable()
-  }
+  Variable getVariable() { result = this.(VarRef).getVariable() }
 
   /**
    * Gets a definition that may reach this use.
@@ -229,7 +222,7 @@ class VarUse extends ControlFlowNode, @varref {
    */
   VarDef getADef() {
     result = getSsaVariable().getDefinition().getAContributingVarDef() or
-    result.getAVariable() = (GlobalVariable)getVariable()
+    result.getAVariable() = getVariable().(GlobalVariable)
   }
 
   /**
@@ -237,9 +230,7 @@ class VarUse extends ControlFlowNode, @varref {
    *
    * This predicate is only defined for variables that can be SSA-converted.
    */
-  SsaVariable getSsaVariable() {
-    result.getAUse() = this
-  }
+  SsaVariable getSsaVariable() { result.getAUse() = this }
 }
 
 /**
@@ -248,10 +239,10 @@ class VarUse extends ControlFlowNode, @varref {
  */
 predicate definitionReaches(Variable v, VarDef def, VarUse use) {
   v = use.getVariable() and
-  exists (BasicBlock bb, int i, int next |
-    next = nextDefAfter(bb, v, i, def) |
-    exists (int j | j in [i+1..next-1] | bb.useAt(j, v, use)) or
-    exists (BasicBlock succ | succ = bb.getASuccessor() |
+  exists(BasicBlock bb, int i, int next | next = nextDefAfter(bb, v, i, def) |
+    exists(int j | j in [i + 1 .. next - 1] | bb.useAt(j, v, use))
+    or
+    exists(BasicBlock succ | succ = bb.getASuccessor() |
       succ.isLiveAtEntry(v, use) and
       next = bb.length()
     )
@@ -263,7 +254,7 @@ predicate definitionReaches(Variable v, VarDef def, VarUse use) {
  * without crossing another definition of `v`.
  */
 predicate localDefinitionReaches(LocalVariable v, VarDef def, VarUse use) {
-  exists (SsaExplicitDefinition ssa |
+  exists(SsaExplicitDefinition ssa |
     ssa.defines(def, v) and
     ssa = getAPseudoDefinitionInput*(use.getSsaVariable().getDefinition())
   )
@@ -280,7 +271,10 @@ private SsaDefinition getAPseudoDefinitionInput(SsaDefinition nd) {
  */
 private int nextDefAfter(BasicBlock bb, Variable v, int i, VarDef d) {
   bb.defAt(i, v, d) and
-  result = min(int jj | (bb.defAt(jj, v, _) or jj = bb.length()) and jj > i)
+  result = min(int jj |
+      (bb.defAt(jj, v, _) or jj = bb.length()) and
+      jj > i
+    )
 }
 
 /**
@@ -290,10 +284,10 @@ private int nextDefAfter(BasicBlock bb, Variable v, int i, VarDef d) {
  * another definition of `v`.
  */
 predicate localDefinitionOverwrites(LocalVariable v, VarDef earlier, VarDef later) {
-  exists (BasicBlock bb, int i, int next |
-    next = nextDefAfter(bb, v, i, earlier) |
-    bb.defAt(next, v, later) or
-    exists (BasicBlock succ | succ = bb.getASuccessor() |
+  exists(BasicBlock bb, int i, int next | next = nextDefAfter(bb, v, i, earlier) |
+    bb.defAt(next, v, later)
+    or
+    exists(BasicBlock succ | succ = bb.getASuccessor() |
       succ.localMayBeOverwritten(v, later) and
       next = bb.length()
     )

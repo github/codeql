@@ -8,12 +8,10 @@ import javascript
  * A call to a logging mechanism.
  */
 abstract class LoggerCall extends DataFlow::CallNode {
-
   /**
    * Gets a node that contributes to the logged message.
    */
   abstract DataFlow::Node getAMessageComponent();
-
 }
 
 /**
@@ -37,7 +35,6 @@ private string getAStandardLoggerMethodName() {
  * Provides classes for working the builtin Node.js/Browser `console`.
  */
 private module Console {
-
   /**
    * Gets a data flow source node for the console library.
    */
@@ -51,7 +48,7 @@ private module Console {
    */
   class ConsoleLoggerCall extends LoggerCall {
     string name;
-    
+
     ConsoleLoggerCall() {
       (
         name = getAStandardLoggerMethodName() or
@@ -61,21 +58,17 @@ private module Console {
     }
 
     override DataFlow::Node getAMessageComponent() {
-      if name = "assert" then
-        result = getArgument([1..getNumArgument()])
-      else
-        result = getAnArgument()
+      if name = "assert"
+      then result = getArgument([1 .. getNumArgument()])
+      else result = getAnArgument()
     }
-
   }
-
 }
 
 /**
  * Provides classes for working with [loglevel](https://github.com/pimterry/loglevel).
  */
 private module Loglevel {
-
   /**
    * A call to the loglevel logging mechanism.
    */
@@ -84,56 +77,46 @@ private module Loglevel {
       this = DataFlow::moduleMember("loglevel", getAStandardLoggerMethodName()).getACall()
     }
 
-    override DataFlow::Node getAMessageComponent() {
-      result = getAnArgument()
-    }
-
+    override DataFlow::Node getAMessageComponent() { result = getAnArgument() }
   }
-
 }
-
 
 /**
  * Provides classes for working with [winston](https://github.com/winstonjs/winston).
  */
 private module Winston {
-
   /**
    * A call to the winston logging mechanism.
    */
   class WinstonLoggerCall extends LoggerCall, DataFlow::MethodCallNode {
     WinstonLoggerCall() {
-      this = DataFlow::moduleMember("winston", "createLogger").getACall().getAMethodCall(getAStandardLoggerMethodName())
+      this = DataFlow::moduleMember("winston", "createLogger")
+            .getACall()
+            .getAMethodCall(getAStandardLoggerMethodName())
     }
 
     override DataFlow::Node getAMessageComponent() {
-      if getMethodName() = "log" then
-        result = getOptionArgument(0, "message")
-      else
-        result = getAnArgument()
+      if getMethodName() = "log"
+      then result = getOptionArgument(0, "message")
+      else result = getAnArgument()
     }
-
   }
-
 }
 
 /**
  * Provides classes for working with [log4js](https://github.com/log4js-node/log4js-node).
  */
 private module log4js {
-
   /**
    * A call to the log4js logging mechanism.
    */
   class Log4jsLoggerCall extends LoggerCall {
     Log4jsLoggerCall() {
-      this = DataFlow::moduleMember("log4js", "getLogger").getACall().getAMethodCall(getAStandardLoggerMethodName())
+      this = DataFlow::moduleMember("log4js", "getLogger")
+            .getACall()
+            .getAMethodCall(getAStandardLoggerMethodName())
     }
 
-    override DataFlow::Node getAMessageComponent() {
-      result = getAnArgument()
-    }
-
+    override DataFlow::Node getAMessageComponent() { result = getAnArgument() }
   }
-
 }

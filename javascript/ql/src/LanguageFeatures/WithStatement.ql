@@ -13,4 +13,4 @@ import javascript
 import semmle.javascript.RestrictedLocations
 
 from WithStmt ws
-select (FirstLineOf)ws, "Do not use 'with'."
+select ws.(FirstLineOf), "Do not use 'with'."

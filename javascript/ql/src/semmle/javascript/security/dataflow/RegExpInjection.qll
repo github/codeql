@@ -27,13 +27,9 @@ module RegExpInjection {
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "RegExpInjection" }
 
-    override predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
     override predicate isSanitizer(DataFlow::Node node) {
       super.isSanitizer(node) or
@@ -53,9 +49,7 @@ module RegExpInjection {
    * The source string of a regular expression.
    */
   class RegularExpressionSourceAsSink extends Sink {
-    RegularExpressionSourceAsSink() {
-      isInterpretedAsRegExp(this)
-    }
+    RegularExpressionSourceAsSink() { isInterpretedAsRegExp(this) }
   }
 
   /**
@@ -64,11 +58,12 @@ module RegExpInjection {
    */
   class RegExpSanitizationCall extends Sanitizer, DataFlow::ValueNode {
     RegExpSanitizationCall() {
-      exists (string calleeName, string sanitize, string regexp |
+      exists(string calleeName, string sanitize, string regexp |
         calleeName = astNode.(CallExpr).getCalleeName() and
-        sanitize = "(?:escape|saniti[sz]e)" and regexp = "regexp?" |
-        calleeName.regexpMatch("(?i)(" + sanitize + regexp + ")" +
-                                  "|(" + regexp + sanitize + ")")
+        sanitize = "(?:escape|saniti[sz]e)" and
+        regexp = "regexp?"
+      |
+        calleeName.regexpMatch("(?i)(" + sanitize + regexp + ")" + "|(" + regexp + sanitize + ")")
       )
     }
   }

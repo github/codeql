@@ -26,20 +26,13 @@ class InvokeNode extends DataFlow::DefaultSourceNode {
   InvokeNode() { this = impl }
 
   /** Gets the name of the function or method being invoked, if it can be determined. */
-  string getCalleeName() {
-    result = impl.getCalleeName()
-  }
+  string getCalleeName() { result = impl.getCalleeName() }
 
   /** DEPRECATED: Use `getCalleeNode()` instead. */
-  deprecated
-  DataFlow::Node getCallee() {
-    result = getCalleeNode()
-  }
+  deprecated DataFlow::Node getCallee() { result = getCalleeNode() }
 
   /** Gets the data flow node specifying the function to be called. */
-  DataFlow::Node getCalleeNode() {
-    result = impl.getCalleeNode()
-  }
+  DataFlow::Node getCalleeNode() { result = impl.getCalleeNode() }
 
   /**
    * Gets the data flow node corresponding to the `i`th argument of this invocation.
@@ -60,49 +53,36 @@ class InvokeNode extends DataFlow::DefaultSourceNode {
    * but the position of `z` cannot be determined, hence there are no first and second
    * argument nodes.
    */
-  DataFlow::Node getArgument(int i) {
-    result = impl.getArgument(i)
-  }
+  DataFlow::Node getArgument(int i) { result = impl.getArgument(i) }
 
   /** Gets the data flow node corresponding to an argument of this invocation. */
-  DataFlow::Node getAnArgument() {
-    result = impl.getAnArgument()
-  }
+  DataFlow::Node getAnArgument() { result = impl.getAnArgument() }
 
   /** Gets the data flow node corresponding to the last argument of this invocation. */
-  DataFlow::Node getLastArgument() {
-    result = getArgument(getNumArgument()-1)
-  }
+  DataFlow::Node getLastArgument() { result = getArgument(getNumArgument() - 1) }
 
   /** Gets the number of arguments of this invocation, if it can be determined. */
-  int getNumArgument() {
-    result = impl.getNumArgument()
-  }
+  int getNumArgument() { result = impl.getNumArgument() }
 
-  Function getEnclosingFunction() {
-    result = getBasicBlock().getContainer()
-  }
+  Function getEnclosingFunction() { result = getBasicBlock().getContainer() }
 
   /** Gets a function passed as the `i`th argument of this invocation. */
-  FunctionNode getCallback(int i) {
-    result.flowsTo(getArgument(i))
-  }
+  FunctionNode getCallback(int i) { result.flowsTo(getArgument(i)) }
 
   /**
    * Holds if the `i`th argument of this invocation is an object literal whose property
    * `name` is set to `result`.
    */
   DataFlow::ValueNode getOptionArgument(int i, string name) {
-    exists (ObjectLiteralNode obj |
+    exists(ObjectLiteralNode obj |
       obj.flowsTo(getArgument(i)) and
       obj.hasPropertyWrite(name, result)
     )
   }
 
   /** Gets an abstract value representing possible callees of this call site. */
-  cached AbstractValue getACalleeValue() {
-    result = impl.getCalleeNode().analyze().getAValue()
-  }
+  cached
+  AbstractValue getACalleeValue() { result = impl.getCalleeNode().analyze().getAValue() }
 
   /** Gets a potential callee based on dataflow analysis results. */
   private Function getACalleeFromDataflow() {
@@ -121,9 +101,7 @@ class InvokeNode extends DataFlow::DefaultSourceNode {
    * Holds if the approximation of possible callees for this call site is
    * affected by the given analysis incompleteness `cause`.
    */
-  predicate isIndefinite(DataFlow::Incompleteness cause) {
-    getACalleeValue().isIndefinite(cause)
-  }
+  predicate isIndefinite(DataFlow::Incompleteness cause) { getACalleeValue().isIndefinite(cause) }
 
   /**
    * Holds if our approximation of possible callees for this call site is
@@ -138,9 +116,7 @@ class InvokeNode extends DataFlow::DefaultSourceNode {
    */
   predicate isImprecise() {
     isIndefinite("global") and
-    exists (DefiniteAbstractValue v | v = getACalleeValue() |
-      not v instanceof AbstractCallable
-    )
+    exists(DefiniteAbstractValue v | v = getACalleeValue() | not v instanceof AbstractCallable)
   }
 
   /**
@@ -150,16 +126,14 @@ class InvokeNode extends DataFlow::DefaultSourceNode {
   predicate isIncomplete() {
     // the flow analysis identifies a source of incompleteness other than
     // global flow (which usually leads to imprecision rather than incompleteness)
-    any (DataFlow::Incompleteness cause | isIndefinite(cause)) != "global"
+    any(DataFlow::Incompleteness cause | isIndefinite(cause)) != "global"
   }
 
   /**
    * Holds if our approximation of possible callees for this call site is
    * likely to be imprecise or incomplete.
    */
-  predicate isUncertain() {
-    isImprecise() or isIncomplete()
-  }
+  predicate isUncertain() { isImprecise() or isIncomplete() }
 }
 
 /** A data flow node corresponding to a function call without `new`. */
@@ -171,9 +145,7 @@ class CallNode extends InvokeNode {
    *
    * For example, the receiver of `x.m()` is `x`.
    */
-  DataFlow::Node getReceiver() {
-    result = impl.getReceiver()
-  }
+  DataFlow::Node getReceiver() { result = impl.getReceiver() }
 }
 
 /** A data flow node corresponding to a method call. */
@@ -190,44 +162,42 @@ class MethodCallNode extends CallNode {
     receiver = getReceiver() and
     methodName = getMethodName()
   }
-
 }
 
 /** A data flow node corresponding to a `new` expression. */
-class NewNode extends InvokeNode {
-  override DataFlow::Impl::NewNodeDef impl;
-}
+class NewNode extends InvokeNode { override DataFlow::Impl::NewNodeDef impl; }
 
 /** A data flow node corresponding to the `this` parameter in a function or `this` at the top-level. */
 class ThisNode extends DataFlow::Node, DataFlow::DefaultSourceNode {
-  ThisNode() {
-    DataFlow::thisNode(this, _)
-  }
+  ThisNode() { DataFlow::thisNode(this, _) }
 
   /**
    * Gets the function whose `this` binding this expression refers to,
    * which is the nearest enclosing non-arrow function.
    */
   FunctionNode getBinder() {
-    exists (Function binder |
+    exists(Function binder |
       DataFlow::thisNode(this, binder) and
-      result = DataFlow::valueNode(binder))
+      result = DataFlow::valueNode(binder)
+    )
   }
 
   /**
    * Gets the function or top-level whose `this` binding this expression refers to,
    * which is the nearest enclosing non-arrow function or top-level.
    */
-  StmtContainer getBindingContainer() {
-    DataFlow::thisNode(this, result)
-  }
+  StmtContainer getBindingContainer() { DataFlow::thisNode(this, result) }
 
   override string toString() { result = "this" }
 
-  override predicate hasLocationInfo(string filepath, int startline, int startcolumn,
-                                     int endline, int endcolumn) {
+  override predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
     // Use the function entry as the location
-    getBindingContainer().getEntry().getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    getBindingContainer()
+        .getEntry()
+        .getLocation()
+        .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 
@@ -246,14 +216,14 @@ class GlobalVarRefNode extends DataFlow::ValueNode, DataFlow::DefaultSourceNode 
  */
 DataFlow::SourceNode globalObjectRef() {
   // top-level `this`
-  exists (ThisNode globalThis | result = globalThis |
-    not exists(globalThis.getBinder())
-  )
+  exists(ThisNode globalThis | result = globalThis | not exists(globalThis.getBinder()))
   or
   // DOM
-  result = globalVarRef("window") or
+  result = globalVarRef("window")
+  or
   // Node.js
-  result = globalVarRef("global") or
+  result = globalVarRef("global")
+  or
   // `require("global")`
   result = moduleImport("global")
 }
@@ -278,47 +248,33 @@ class FunctionNode extends DataFlow::ValueNode, DataFlow::DefaultSourceNode {
   override Function astNode;
 
   /** Gets the `i`th parameter of this function. */
-  ParameterNode getParameter(int i) {
-    result = DataFlow::parameterNode(astNode.getParameter(i))
-  }
+  ParameterNode getParameter(int i) { result = DataFlow::parameterNode(astNode.getParameter(i)) }
 
   /** Gets a parameter of this function. */
-  ParameterNode getAParameter() {
-    result = getParameter(_)
-  }
+  ParameterNode getAParameter() { result = getParameter(_) }
 
   /** Gets the number of parameters declared on this function. */
-  int getNumParameter() {
-    result = count(astNode.getAParameter())
-  }
+  int getNumParameter() { result = count(astNode.getAParameter()) }
 
   /** Holds if the last parameter of this function is a rest parameter. */
-  predicate hasRestParameter() {
-    astNode.hasRestParameter()
-  }
+  predicate hasRestParameter() { astNode.hasRestParameter() }
 
   /** Gets the name of this function, if it has one. */
   string getName() { result = astNode.getName() }
 
   /** Gets a data flow node corresponding to a return value of this function. */
-  DataFlow::Node getAReturn() {
-    result = astNode.getAReturnedExpr().flow()
-  }
+  DataFlow::Node getAReturn() { result = astNode.getAReturnedExpr().flow() }
 
   /**
    * Gets the function this node corresponds to.
    */
-  Function getFunction() {
-    result = astNode
-  }
+  Function getFunction() { result = astNode }
 
   /**
    * Gets the function whose `this` binding a `this` expression in this function refers to,
    * which is the nearest enclosing non-arrow function.
    */
-  FunctionNode getThisBinder() {
-    result.getFunction() = getFunction().getThisBinder()
-  }
+  FunctionNode getThisBinder() { result.getFunction() = getFunction().getThisBinder() }
 
   /**
    * Gets the dataflow node holding the value of the receiver passed to the given function.
@@ -327,9 +283,7 @@ class FunctionNode extends DataFlow::ValueNode, DataFlow::DefaultSourceNode {
    *
    * To get the data flow node for `this` in an arrow function, consider using `getThisBinder().getReceiver()`.
    */
-  ThisNode getReceiver() {
-    result.getBinder() = this
-  }
+  ThisNode getReceiver() { result.getBinder() = this }
 }
 
 /** A data flow node corresponding to an object literal expression. */
@@ -342,22 +296,15 @@ class ArrayLiteralNode extends DataFlow::ValueNode, DataFlow::DefaultSourceNode 
   override ArrayExpr astNode;
 
   /** Gets the `i`th element of this array literal. */
-  DataFlow::ValueNode getElement(int i) {
-    result = DataFlow::valueNode(astNode.getElement(i))
-  }
+  DataFlow::ValueNode getElement(int i) { result = DataFlow::valueNode(astNode.getElement(i)) }
 
   /** Gets an element of this array literal. */
-  DataFlow::ValueNode getAnElement() {
-    result = DataFlow::valueNode(astNode.getAnElement())
-  }
-
+  DataFlow::ValueNode getAnElement() { result = DataFlow::valueNode(astNode.getAnElement()) }
 }
 
 /** A data flow node corresponding to a `new Array()` or `Array()` invocation. */
 class ArrayConstructorInvokeNode extends DataFlow::InvokeNode {
-  ArrayConstructorInvokeNode() {
-    getCalleeNode() = DataFlow::globalVarRef("Array")
-  }
+  ArrayConstructorInvokeNode() { getCalleeNode() = DataFlow::globalVarRef("Array") }
 
   /** Gets the `i`th initial element of this array, if one is provided. */
   DataFlow::ValueNode getElement(int i) {
@@ -389,9 +336,7 @@ class ArrayCreationNode extends DataFlow::ValueNode, DataFlow::DefaultSourceNode
   }
 
   /** Gets an initial element of this array, if one if provided. */
-  DataFlow::ValueNode getAnElement() {
-    result = getElement(_)
-  }
+  DataFlow::ValueNode getAnElement() { result = getElement(_) }
 }
 
 /**
@@ -406,21 +351,20 @@ class ModuleImportNode extends DataFlow::DefaultSourceNode {
 
   ModuleImportNode() {
     // `require("http")`
-    exists (Require req | req.getImportedPath().getValue() = path |
-      this = DataFlow::valueNode(req)
-    )
+    exists(Require req | req.getImportedPath().getValue() = path | this = DataFlow::valueNode(req))
     or
     // `import http = require("http")`
-    exists (ExternalModuleReference req | req.getImportedPath().getValue() = path |
+    exists(ExternalModuleReference req | req.getImportedPath().getValue() = path |
       this = DataFlow::valueNode(req)
     )
     or
     // `import * as http from 'http'` or `import http from `http`'
-    exists (ImportDeclaration id, ImportSpecifier is, SsaExplicitDefinition ssa |
+    exists(ImportDeclaration id, ImportSpecifier is, SsaExplicitDefinition ssa |
       id.getImportedPath().getValue() = path and
       is = id.getASpecifier() and
       ssa.getDef() = is and
-      this = DataFlow::ssaDefinitionNode(ssa) |
+      this = DataFlow::ssaDefinitionNode(ssa)
+    |
       is instanceof ImportNamespaceSpecifier and
       count(id.getASpecifier()) = 1
       or
@@ -428,12 +372,12 @@ class ModuleImportNode extends DataFlow::DefaultSourceNode {
     )
     or
     // declared AMD dependency
-    exists (AMDModuleDefinition amd |
+    exists(AMDModuleDefinition amd |
       this = DataFlow::parameterNode(amd.getDependencyParameter(path))
     )
     or
     // AMD require
-    exists (AMDModuleDefinition amd, CallExpr req |
+    exists(AMDModuleDefinition amd, CallExpr req |
       req = amd.getARequireCall() and
       this = DataFlow::valueNode(req) and
       path = req.getArgument(0).(ConstantString).getStringValue()
@@ -441,17 +385,13 @@ class ModuleImportNode extends DataFlow::DefaultSourceNode {
   }
 
   /** Gets the path of the imported module. */
-  string getPath() {
-    result = path
-  }
+  string getPath() { result = path }
 }
 
 /**
  * Gets a (default) import of the module with the given path.
  */
-ModuleImportNode moduleImport(string path) {
-  result.getPath() = path
-}
+ModuleImportNode moduleImport(string path) { result.getPath() = path }
 
 /**
  * Gets a data flow node that either imports `m` from the module with
@@ -461,7 +401,7 @@ ModuleImportNode moduleImport(string path) {
 DataFlow::SourceNode moduleMember(string path, string m) {
   result = moduleImport(path).getAPropertyRead(m)
   or
-  exists (ImportDeclaration id, ImportSpecifier is, SsaExplicitDefinition ssa |
+  exists(ImportDeclaration id, ImportSpecifier is, SsaExplicitDefinition ssa |
     id.getImportedPath().getValue() = path and
     is = id.getASpecifier() and
     is.getImportedName() = m and

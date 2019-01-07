@@ -15,13 +15,9 @@ private import AbstractPropertiesImpl
 private class AnalyzedImportSpecifier extends AnalyzedVarDef, @importspecifier {
   ImportDeclaration id;
 
-  AnalyzedImportSpecifier() {
-    this = id.getASpecifier() and exists(id.resolveImportedPath())
-  }
+  AnalyzedImportSpecifier() { this = id.getASpecifier() and exists(id.resolveImportedPath()) }
 
-  override DataFlow::AnalyzedNode getRhs() {
-    result.(AnalyzedImport).getImportSpecifier() = this
-  }
+  override DataFlow::AnalyzedNode getRhs() { result.(AnalyzedImport).getImportSpecifier() = this }
 
   override predicate isIncomplete(DataFlow::Incompleteness cause) {
     // mark as incomplete if the import could rely on the lookup path
@@ -29,7 +25,7 @@ private class AnalyzedImportSpecifier extends AnalyzedVarDef, @importspecifier {
     cause = "import"
     or
     // mark as incomplete if we cannot fully analyze this import
-    exists (Module m | m = id.resolveImportedPath() |
+    exists(Module m | m = id.resolveImportedPath() |
       mayDynamicallyComputeExports(m)
       or
       incompleteExport(m, this.(ImportSpecifier).getImportedName())
@@ -44,9 +40,7 @@ private class AnalyzedImportSpecifier extends AnalyzedVarDef, @importspecifier {
  */
 bindingset[path]
 private predicate mayDependOnLookupPath(string path) {
-  exists (string firstChar | firstChar = path.charAt(0) |
-    firstChar != "." and firstChar != "/"
-  )
+  exists(string firstChar | firstChar = path.charAt(0) | firstChar != "." and firstChar != "/")
 }
 
 /**
@@ -55,7 +49,7 @@ private predicate mayDependOnLookupPath(string path) {
 private predicate mayDynamicallyComputeExports(Module m) {
   // if `m` accesses its `module` or `exports` variable, we conservatively assume the worst;
   // in particular, this makes all imports from CommonJS modules indefinite
-  exists (Variable v, VarAccess va | v.getName() = "module" or v.getName() = "exports" |
+  exists(Variable v, VarAccess va | v.getName() = "module" or v.getName() = "exports" |
     va = v.getAnAccess() and
     (
       v = m.getScope().getAVariable()
@@ -70,7 +64,7 @@ private predicate mayDynamicallyComputeExports(Module m) {
   m instanceof AMDModule
   or
   // `m` re-exports all exports of some other module that dynamically computes its exports
-  exists (BulkReExportDeclaration rexp | rexp = m.(ES2015Module).getAnExport() |
+  exists(BulkReExportDeclaration rexp | rexp = m.(ES2015Module).getAnExport() |
     mayDynamicallyComputeExports(rexp.getImportedModule())
   )
 }
@@ -79,12 +73,12 @@ private predicate mayDynamicallyComputeExports(Module m) {
  * Holds if `x` is imported from `m`, possibly through a chain of re-exports.
  */
 private predicate relevantExport(ES2015Module m, string x) {
-  exists (ImportDeclaration id |
+  exists(ImportDeclaration id |
     id.getImportedModule() = m and
     x = id.getASpecifier().getImportedName()
   )
   or
-  exists (ReExportDeclaration rexp, string y |
+  exists(ReExportDeclaration rexp, string y |
     rexp.getImportedModule() = m and
     reExportsAs(rexp, x, y)
   )
@@ -96,13 +90,13 @@ private predicate relevantExport(ES2015Module m, string x) {
 private predicate reExportsAs(ReExportDeclaration rexp, string x, string y) {
   relevantExport(rexp.getEnclosingModule(), y) and
   (
-   exists (ExportSpecifier spec | spec = rexp.(SelectiveReExportDeclaration).getASpecifier() |
-     x = spec.getLocalName() and
-     y = spec.getExportedName()
-   )
-   or
-   rexp instanceof BulkReExportDeclaration and
-   x = y
+    exists(ExportSpecifier spec | spec = rexp.(SelectiveReExportDeclaration).getASpecifier() |
+      x = spec.getLocalName() and
+      y = spec.getExportedName()
+    )
+    or
+    rexp instanceof BulkReExportDeclaration and
+    x = y
   )
 }
 
@@ -110,15 +104,15 @@ private predicate reExportsAs(ReExportDeclaration rexp, string x, string y) {
  * Holds if `m` re-exports `y`, but we cannot fully analyze this export.
  */
 private predicate incompleteExport(ES2015Module m, string y) {
-  exists (ReExportDeclaration rexp | rexp = m.getAnExport() |
-    exists (string x | reExportsAs(rexp, x, y) |
+  exists(ReExportDeclaration rexp | rexp = m.getAnExport() |
+    exists(string x | reExportsAs(rexp, x, y) |
       // path resolution could rely on lookup path
       mayDependOnLookupPath(rexp.getImportedPath().getStringValue())
       or
       // unresolvable path
       not exists(rexp.getImportedModule())
       or
-      exists (Module n | n = rexp.getImportedModule() |
+      exists(Module n | n = rexp.getImportedModule() |
         // re-export from CommonJS/AMD
         mayDynamicallyComputeExports(n)
         or
@@ -128,7 +122,7 @@ private predicate incompleteExport(ES2015Module m, string y) {
     )
     or
     // namespace re-export
-    exists (ExportNamespaceSpecifier ns |
+    exists(ExportNamespaceSpecifier ns |
       ns.getExportDeclaration() = rexp and
       ns.getExportedName() = y
     )
@@ -143,20 +137,19 @@ private class AnalyzedImport extends AnalyzedPropertyRead, DataFlow::ValueNode {
   Module imported;
 
   AnalyzedImport() {
-    exists (ImportDeclaration id |
+    exists(ImportDeclaration id |
       astNode = id.getASpecifier() and
       imported = id.getImportedModule()
     )
   }
 
   /** Gets the import specifier being analyzed. */
-  ImportSpecifier getImportSpecifier() {
-    result = astNode
-  }
+  ImportSpecifier getImportSpecifier() { result = astNode }
 
   override predicate reads(AbstractValue base, string propName) {
-    exists (AbstractProperty exports |
-      exports = MkAbstractProperty(TAbstractModuleObject(imported), "exports") |
+    exists(AbstractProperty exports |
+      exports = MkAbstractProperty(TAbstractModuleObject(imported), "exports")
+    |
       base = exports.getALocalValue() and
       propName = astNode.(ImportSpecifier).getImportedName()
     )
@@ -189,9 +182,7 @@ private class AnalyzedNamespaceImport extends AnalyzedImport {
 class AnalyzedRequireCall extends AnalyzedPropertyRead, DataFlow::ValueNode {
   Module required;
 
-  AnalyzedRequireCall() {
-    required = astNode.(Require).getImportedModule()
-  }
+  AnalyzedRequireCall() { required = astNode.(Require).getImportedModule() }
 
   override predicate reads(AbstractValue base, string propName) {
     base = TAbstractModuleObject(required) and
@@ -221,9 +212,7 @@ class AnalyzedExternalModuleReference extends AnalyzedPropertyRead, DataFlow::Va
 private class AnalyzedAmdExport extends AnalyzedPropertyWrite, DataFlow::ValueNode {
   AMDModule amd;
 
-  AnalyzedAmdExport() {
-    astNode = amd.getDefine().getModuleExpr()
-  }
+  AnalyzedAmdExport() { astNode = amd.getDefine().getModuleExpr() }
 
   override predicate writes(AbstractValue baseVal, string propName, DataFlow::AnalyzedNode source) {
     baseVal = TAbstractModuleObject(amd) and
@@ -240,7 +229,7 @@ private class AnalyzedAmdImport extends AnalyzedPropertyRead, DataFlow::Node {
   Module required;
 
   AnalyzedAmdImport() {
-    exists (AMDModule amd, PathExpr dep, Parameter p |
+    exists(AMDModule amd, PathExpr dep, Parameter p |
       amd.getDefine().dependencyParameter(dep, p) and
       this = DataFlow::parameterNode(p) and
       required.getFile() = amd.resolve(dep)
@@ -259,13 +248,9 @@ private class AnalyzedAmdImport extends AnalyzedPropertyRead, DataFlow::Node {
 private class AnalyzedAmdParameter extends AnalyzedVarDef, @vardecl {
   AnalyzedAmdImport imp;
 
-  AnalyzedAmdParameter() {
-    imp = DataFlow::parameterNode(this)
-  }
+  AnalyzedAmdParameter() { imp = DataFlow::parameterNode(this) }
 
-  override AbstractValue getAnRhsValue() {
-    result = imp.getALocalValue()
-  }
+  override AbstractValue getAnRhsValue() { result = imp.getALocalValue() }
 }
 
 /**
@@ -273,11 +258,10 @@ private class AnalyzedAmdParameter extends AnalyzedVarDef, @vardecl {
  */
 private class AnalyzedValueExport extends AnalyzedPropertyWrite, DataFlow::ValueNode {
   ExportDeclaration export;
+
   string name;
 
-  AnalyzedValueExport() {
-    this = export.getSourceNode(name)
-  }
+  AnalyzedValueExport() { this = export.getSourceNode(name) }
 
   override predicate writes(AbstractValue baseVal, string propName, DataFlow::AnalyzedNode source) {
     baseVal = TAbstractExportsObject(export.getEnclosingModule()) and
@@ -291,7 +275,9 @@ private class AnalyzedValueExport extends AnalyzedPropertyWrite, DataFlow::Value
  */
 private class AnalyzedVariableExport extends AnalyzedPropertyWrite, DataFlow::ValueNode {
   ExportDeclaration export;
+
   string name;
+
   AnalyzedVarDef varDef;
 
   AnalyzedVariableExport() {
@@ -323,7 +309,7 @@ private class AnalyzedDefaultExportDeclaration extends AnalyzedValueExport {
     or
     // some (presumably historic) transpilers treat `export default foo` as `module.exports = foo`,
     // so allow that semantics, too, but only if there isn't a named export in the same module.
-    exists (Module m |
+    exists(Module m |
       super.writes(TAbstractExportsObject(m), "default", source) and
       baseVal = TAbstractModuleObject(m) and
       propName = "exports" and
@@ -338,9 +324,7 @@ private class AnalyzedDefaultExportDeclaration extends AnalyzedValueExport {
 private class AnalyzedExportAssign extends AnalyzedPropertyWrite, DataFlow::ValueNode {
   ExportAssignDeclaration exportAssign;
 
-  AnalyzedExportAssign() {
-    astNode = exportAssign.getExpression()
-  }
+  AnalyzedExportAssign() { astNode = exportAssign.getExpression() }
 
   override predicate writes(AbstractValue baseVal, string propName, DataFlow::AnalyzedNode source) {
     baseVal = TAbstractModuleObject(exportAssign.getTopLevel()) and

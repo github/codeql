@@ -1,6 +1,7 @@
 /**
  * Provides classes for working with [lodash](https://lodash.com/) and [underscore](http://underscorejs.org/).
  */
+
 import javascript
 
 /** Provides a unified model of [lodash](https://lodash.com/) and [underscore](http://underscorejs.org/). */
@@ -27,9 +28,7 @@ module LodashUnderscore {
       this = DataFlow::globalVarRef("_").getAPropertyRead(name)
     }
 
-    override string getName() {
-      result = name
-    }
+    override string getName() { result = name }
   }
 
   /**
@@ -38,9 +37,7 @@ module LodashUnderscore {
    * In addition to normal imports, this supports per-method imports such as `require("lodash.map")` and `require("lodash/map")`.
    * In addition, the global variable `_` is assumed to refer to `lodash` or `underscore`.
    */
-  DataFlow::SourceNode member(string name) {
-    result.(Member).getName() = name
-  }
+  DataFlow::SourceNode member(string name) { result.(Member).getName() = name }
 }
 
 /**
@@ -51,15 +48,18 @@ module LodashUnderscore {
  * still infer the ordinary abstract value.
  */
 private class AnalyzedThisInBoundCallback extends AnalyzedNode, DataFlow::ThisNode {
-
   AnalyzedNode thisSource;
 
   AnalyzedThisInBoundCallback() {
-    exists(DataFlow::CallNode bindingCall, string binderName, int callbackIndex, int contextIndex, int argumentCount |
+    exists(
+      DataFlow::CallNode bindingCall, string binderName, int callbackIndex, int contextIndex,
+      int argumentCount
+    |
       bindingCall = LodashUnderscore::member(binderName).getACall() and
       bindingCall.getNumArgument() = argumentCount and
       getBinder() = bindingCall.getCallback(callbackIndex) and
-      thisSource = bindingCall.getArgument(contextIndex) |
+      thisSource = bindingCall.getArgument(contextIndex)
+    |
       (
         (
           binderName = "bind" or
@@ -69,7 +69,8 @@ private class AnalyzedThisInBoundCallback extends AnalyzedNode, DataFlow::ThisNo
         callbackIndex = 0 and
         contextIndex = 1 and
         argumentCount = 2
-      ) or
+      )
+      or
       (
         (
           binderName = "all" or
@@ -120,7 +121,9 @@ private class AnalyzedThisInBoundCallback extends AnalyzedNode, DataFlow::ThisNo
         callbackIndex = 1 and
         contextIndex = 2 and
         argumentCount = 3
-      ) or (
+      )
+      or
+      (
         (
           binderName = "foldl" or
           binderName = "foldr" or
@@ -132,13 +135,20 @@ private class AnalyzedThisInBoundCallback extends AnalyzedNode, DataFlow::ThisNo
         callbackIndex = 1 and
         contextIndex = 3 and
         argumentCount = 4
-      ) or (
+      )
+      or
+      (
         (
-          binderName = "sortedlastIndex" or
-          binderName = "assign" or
-          binderName = "eq" or
-          binderName = "extend" or
-          binderName = "merge" or
+          binderName = "sortedlastIndex"
+          or
+          binderName = "assign"
+          or
+          binderName = "eq"
+          or
+          binderName = "extend"
+          or
+          binderName = "merge"
+          or
           binderName = "sortedIndex" and
           binderName = "uniq"
         ) and
@@ -153,5 +163,4 @@ private class AnalyzedThisInBoundCallback extends AnalyzedNode, DataFlow::ThisNo
     result = thisSource.getALocalValue() or
     result = AnalyzedNode.super.getALocalValue()
   }
-
 }

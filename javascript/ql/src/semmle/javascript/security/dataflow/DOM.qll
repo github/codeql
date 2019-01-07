@@ -6,25 +6,26 @@ import javascript
 
 /** Holds if `tp` is one of the roots of the DOM type hierarchy. */
 predicate isDomRootType(ExternalType tp) {
-  exists (string qn | qn = tp.getQualifiedName() | qn = "EventTarget" or qn = "StyleSheet")
+  exists(string qn | qn = tp.getQualifiedName() | qn = "EventTarget" or qn = "StyleSheet")
 }
 
 /** A global variable whose declared type extends a DOM root type. */
 class DOMGlobalVariable extends GlobalVariable {
   DOMGlobalVariable() {
-    exists (ExternalVarDecl d | d.getQualifiedName() = this.getName() |
+    exists(ExternalVarDecl d | d.getQualifiedName() = this.getName() |
       isDomRootType(d.getTypeTag().getTypeDeclaration().getASupertype*())
     )
   }
 }
 
 private DataFlow::SourceNode domElementCollection() {
-  exists (string collectionName |
+  exists(string collectionName |
     collectionName = "getElementsByClassName" or
     collectionName = "getElementsByName" or
     collectionName = "getElementsByTagName" or
     collectionName = "getElementsByTagNameNS" or
-    collectionName = "querySelectorAll" |
+    collectionName = "querySelectorAll"
+  |
     (
       result = document().getAMethodCall(collectionName) or
       result = DataFlow::globalVarRef(collectionName).getACall()
@@ -33,11 +34,12 @@ private DataFlow::SourceNode domElementCollection() {
 }
 
 private DataFlow::SourceNode domElementCreationOrQuery() {
-  exists (string methodName |
+  exists(string methodName |
     methodName = "createElement" or
     methodName = "createElementNS" or
     methodName = "getElementById" or
-    methodName = "querySelector" |
+    methodName = "querySelector"
+  |
     result = document().getAMethodCall(methodName) or
     result = DataFlow::globalVarRef(methodName).getACall()
   )
@@ -51,9 +53,7 @@ private DataFlow::SourceNode domValueSource() {
 }
 
 /** Holds if `e` could hold a value that comes from the DOM. */
-predicate isDomValue(Expr e) {
-  domValueSource().flowsToExpr(e)
-}
+predicate isDomValue(Expr e) { domValueSource().flowsToExpr(e) }
 
 /** Holds if `e` could refer to the `location` property of a DOM node. */
 predicate isLocation(Expr e) {
@@ -64,24 +64,22 @@ predicate isLocation(Expr e) {
 /**
  * Gets a reference to the 'document' object.
  */
-DataFlow::SourceNode document() {
-  result = DataFlow::globalVarRef("document")
-}
+DataFlow::SourceNode document() { result = DataFlow::globalVarRef("document") }
 
 /** Holds if `e` could refer to the `document` object. */
-predicate isDocument(Expr e) {
-  document().flowsToExpr(e)
-}
+predicate isDocument(Expr e) { document().flowsToExpr(e) }
 
 /** Holds if `e` could refer to the document URL. */
 predicate isDocumentURL(Expr e) {
-  exists (Expr base, string propName | e.(PropAccess).accesses(base, propName) |
+  exists(Expr base, string propName | e.(PropAccess).accesses(base, propName) |
     isDocument(base) and
-    (propName = "documentURI" or
-     propName = "documentURIObject" or
-     propName = "location" or
-     propName = "referrer" or
-     propName = "URL")
+    (
+      propName = "documentURI" or
+      propName = "documentURIObject" or
+      propName = "location" or
+      propName = "referrer" or
+      propName = "URL"
+    )
     or
     isDomValue(base) and propName = "baseUri"
   )
@@ -95,8 +93,7 @@ predicate isDocumentURL(Expr e) {
  * `href`, `hash` and `search`.
  */
 predicate isSafeLocationProperty(PropAccess pacc) {
-  exists (Expr loc, string prop |
-    isLocation(loc) and pacc.accesses(loc, prop) |
+  exists(Expr loc, string prop | isLocation(loc) and pacc.accesses(loc, prop) |
     prop != "href" and prop != "hash" and prop != "search"
   )
 }
@@ -105,25 +102,31 @@ predicate isSafeLocationProperty(PropAccess pacc) {
  * A call to a DOM method.
  */
 class DomMethodCallExpr extends MethodCallExpr {
-  DomMethodCallExpr() {
-    isDomValue(getReceiver())
-  }
+  DomMethodCallExpr() { isDomValue(getReceiver()) }
 
   /**
    * Holds if `arg` is an argument that is interpreted as HTML.
    */
-  predicate interpretsArgumentsAsHTML(Expr arg){
-    exists (int argPos, string name |
+  predicate interpretsArgumentsAsHTML(Expr arg) {
+    exists(int argPos, string name |
       arg = getArgument(argPos) and
-      name = getMethodName() |
+      name = getMethodName()
+    |
       // individual signatures:
-      name = "write" or
-      name = "writeln" or
-      name = "insertAdjacentHTML" and argPos = 0 or
-      name = "insertAdjacentElement" and argPos = 0 or
-      name = "insertBefore" and argPos = 0 or
-      name = "createElement" and argPos = 0 or
-      name = "appendChild" and argPos = 0 or
+      name = "write"
+      or
+      name = "writeln"
+      or
+      name = "insertAdjacentHTML" and argPos = 0
+      or
+      name = "insertAdjacentElement" and argPos = 0
+      or
+      name = "insertBefore" and argPos = 0
+      or
+      name = "createElement" and argPos = 0
+      or
+      name = "appendChild" and argPos = 0
+      or
       name = "setAttribute" and argPos = 0
     )
   }
@@ -133,10 +136,9 @@ class DomMethodCallExpr extends MethodCallExpr {
  * An assignment to a property of a DOM object.
  */
 class DomPropWriteNode extends Assignment {
-
   PropAccess lhs;
 
-  DomPropWriteNode (){
+  DomPropWriteNode() {
     lhs = getLhs() and
     isDomValue(lhs.getBase())
   }
@@ -144,7 +146,7 @@ class DomPropWriteNode extends Assignment {
   /**
    * Holds if the assigned value is interpreted as HTML.
    */
-  predicate interpretsValueAsHTML(){
+  predicate interpretsValueAsHTML() {
     lhs.getPropertyName() = "innerHTML" or
     lhs.getPropertyName() = "outerHTML"
   }
@@ -154,10 +156,11 @@ class DomPropWriteNode extends Assignment {
  * A value written to web storage, like `localStorage` or `sessionStorage`.
  */
 class WebStorageWrite extends Expr {
-  WebStorageWrite(){
-    exists (DataFlow::SourceNode webStorage |
+  WebStorageWrite() {
+    exists(DataFlow::SourceNode webStorage |
       webStorage = DataFlow::globalVarRef("localStorage") or
-      webStorage = DataFlow::globalVarRef("sessionStorage") |
+      webStorage = DataFlow::globalVarRef("sessionStorage")
+    |
       // an assignment to `window.localStorage[someProp]`
       this = webStorage.getAPropertyWrite().getRhs().asExpr()
       or
@@ -205,12 +208,13 @@ private module PersistentWebStorage {
     override DataFlow::Node getValue() { result = getArgument(1) }
   }
 }
+
 /**
  * An event handler that handles `postMessage` events.
  */
 class PostMessageEventHandler extends Function {
   PostMessageEventHandler() {
-    exists (CallExpr addEventListener |
+    exists(CallExpr addEventListener |
       addEventListener.getCallee().accessesGlobal("addEventListener") and
       addEventListener.getArgument(0).mayHaveStringValue("message") and
       addEventListener.getArgument(1).analyze().getAValue().(AbstractFunction).getFunction() = this
@@ -220,9 +224,7 @@ class PostMessageEventHandler extends Function {
   /**
    * Gets the parameter that contains the event.
    */
-  SimpleParameter getEventParameter() {
-    result = getParameter(0)
-  }
+  SimpleParameter getEventParameter() { result = getParameter(0) }
 }
 
 /**
@@ -234,9 +236,7 @@ private class PostMessageEventParameter extends RemoteFlowSource {
     this = DataFlow::parameterNode(any(PostMessageEventHandler pmeh).getEventParameter())
   }
 
-  override string getSourceType() {
-    result = "postMessage event"
-  }
+  override string getSourceType() { result = "postMessage event" }
 }
 
 /**
@@ -251,10 +251,9 @@ private class WindowNameAccess extends RemoteFlowSource {
     this.accessesGlobal("name") and
     not exists(VarDef def |
       def.getAVariable().(GlobalVariable).getName() = "name" and
-      def.getContainer() = this.asExpr().getContainer())
+      def.getContainer() = this.asExpr().getContainer()
+    )
   }
 
-  override string getSourceType() {
-    result = "Window name"
-  }
+  override string getSourceType() { result = "Window name" }
 }

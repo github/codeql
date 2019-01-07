@@ -14,9 +14,10 @@ import semmle.javascript.RestrictedLocations
 import semmle.javascript.frameworks.Emscripten
 
 from LoopStmt l, BasicBlock body
-where body = l.getBody().getBasicBlock() and
-      not body.getASuccessor+() = body and
-      not l instanceof EnhancedForLoop and
-      // Emscripten generates lots of `do { ... } while(0);` loops, so exclude
-      not l.getTopLevel() instanceof EmscriptenGeneratedToplevel
-select (FirstLineOf)l, "This loop executes at most once."
+where
+  body = l.getBody().getBasicBlock() and
+  not body.getASuccessor+() = body and
+  not l instanceof EnhancedForLoop and
+  // Emscripten generates lots of `do { ... } while(0);` loops, so exclude
+  not l.getTopLevel() instanceof EmscriptenGeneratedToplevel
+select l.(FirstLineOf), "This loop executes at most once."

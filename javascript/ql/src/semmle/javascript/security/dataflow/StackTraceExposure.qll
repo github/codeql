@@ -19,9 +19,7 @@ module StackTraceExposure {
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "StackTraceExposure" }
 
-    override predicate isSource(DataFlow::Node src) {
-      src instanceof Source
-    }
+    override predicate isSource(DataFlow::Node src) { src instanceof Source }
 
     override predicate isSanitizer(DataFlow::Node nd) {
       super.isSanitizer(nd)
@@ -35,11 +33,8 @@ module StackTraceExposure {
       nd = StringConcatenation::getAnOperand(_)
     }
 
-    override predicate isSink(DataFlow::Node snk) {
-      snk instanceof Sink
-    }
+    override predicate isSink(DataFlow::Node snk) { snk instanceof Sink }
   }
-
 
   /**
    * A read of the `stack` property of an exception, viewed as a data flow
@@ -51,14 +46,12 @@ module StackTraceExposure {
       this = DataFlow::parameterNode(any(TryStmt try).getACatchClause().getAParameter())
     }
   }
-  
+
   /**
    * An expression that can become part of an HTTP response body, viewed
    * as a data flow sink for stack trace exposure vulnerabilities.
    */
-  class DefaultSink extends Sink, DataFlow::ValueNode {
-    override HTTP::ResponseBody astNode;
-  }
+  class DefaultSink extends Sink, DataFlow::ValueNode { override HTTP::ResponseBody astNode; }
 }
 
 /** DEPRECATED: Use `StackTraceExposure::Source` instead. */

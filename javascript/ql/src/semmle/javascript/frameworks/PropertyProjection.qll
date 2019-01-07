@@ -11,7 +11,6 @@ import javascript
  * A property projection call such as `_.get(o, 'a.b')`, which is equivalent to `o.a.b`.
  */
 abstract class CustomPropertyProjection extends DataFlow::CallNode {
-
   /**
    * Gets the argument for the object to project properties from, such as `o` in `_.get(o, 'a.b')`.
    */
@@ -26,14 +25,12 @@ abstract class CustomPropertyProjection extends DataFlow::CallNode {
    * Holds if this call returns the value of a single projected property, as opposed to an object that can contain multiple projected properties.
    */
   abstract predicate isSingletonProjection();
-
 }
 
 /**
  * A property projection call such as `_.get(o, 'a.b')`, which is equivalent to `o.a.b`.
  */
 class PropertyProjection extends DataFlow::CallNode {
-
   CustomPropertyProjection custom;
 
   PropertyProjection() { this = custom }
@@ -56,26 +53,26 @@ class PropertyProjection extends DataFlow::CallNode {
    * - This predicate does not hold for `_.pick({a: 'b', c: 'd'}}, 'a')`, which returns `{a: 'b'}`,
    */
   predicate isSingletonProjection() { custom.isSingletonProjection() }
-
 }
 
 /**
  * A simple model of common property projection functions.
  */
 private class SimplePropertyProjection extends CustomPropertyProjection {
-
   int objectIndex;
+
   int selectorIndex;
+
   boolean singleton;
 
   SimplePropertyProjection() {
-    exists (DataFlow::SourceNode callee |
-      this = callee.getACall() |
-      singleton = false and (
+    exists(DataFlow::SourceNode callee | this = callee.getACall() |
+      singleton = false and
+      (
         (
           callee = LodashUnderscore::member("pick") and
           objectIndex = 0 and
-          selectorIndex = [1..getNumArgument()]
+          selectorIndex = [1 .. getNumArgument()]
         )
         or
         (
@@ -84,10 +81,11 @@ private class SimplePropertyProjection extends CustomPropertyProjection {
           selectorIndex = 1
         )
         or
-        exists (string name |
+        exists(string name |
           name = "pick" or
           name = "pickAll" or
-          name = "pickBy" |
+          name = "pickBy"
+        |
           callee = DataFlow::moduleMember("ramda", name) and
           objectIndex = 1 and
           selectorIndex = 0
@@ -100,7 +98,8 @@ private class SimplePropertyProjection extends CustomPropertyProjection {
         )
       )
       or
-      singleton = true and (
+      singleton = true and
+      (
         (
           callee = LodashUnderscore::member("get") and
           objectIndex = 0 and
@@ -133,19 +132,15 @@ private class SimplePropertyProjection extends CustomPropertyProjection {
   override DataFlow::Node getASelector() { result = getArgument(selectorIndex) }
 
   override predicate isSingletonProjection() { singleton = true }
-
 }
 
 /**
  * A taint step for a property projection.
  */
 private class PropertyProjectionTaintStep extends TaintTracking::AdditionalTaintStep {
-
   PropertyProjection projection;
 
-  PropertyProjectionTaintStep() {
-    projection = this
-  }
+  PropertyProjectionTaintStep() { projection = this }
 
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     // reading from a tainted object yields a tainted result

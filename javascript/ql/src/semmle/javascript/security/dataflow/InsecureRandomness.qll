@@ -1,6 +1,7 @@
 /**
  * Provides a taint tracking configuration for reasoning about random values that are not cryptographically secure.
  */
+
 import javascript
 private import semmle.javascript.security.SensitiveActions
 
@@ -26,42 +27,34 @@ module InsecureRandomness {
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "InsecureRandomness" }
 
-    override
-    predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override
-    predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override
-    predicate isSanitizer(DataFlow::Node node) {
+    override predicate isSanitizer(DataFlow::Node node) {
       // not making use of `super.isSanitizer`: those sanitizers are not for this kind of data
       node instanceof Sanitizer
     }
 
-    override
-    predicate isSanitizer(DataFlow::Node pred, DataFlow::Node succ) {
+    override predicate isSanitizer(DataFlow::Node pred, DataFlow::Node succ) {
       // stop propagation at the sinks to avoid double reporting
       pred instanceof Sink and
       // constrain succ
       pred = succ.getAPredecessor()
-
     }
 
     override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
       // Assume that all operations on tainted values preserve taint: crypto is hard
-      succ.asExpr().(BinaryExpr).getAnOperand() = pred.asExpr() or
-      succ.asExpr().(UnaryExpr).getOperand() = pred.asExpr() or
-      exists (DataFlow::MethodCallNode mc |
+      succ.asExpr().(BinaryExpr).getAnOperand() = pred.asExpr()
+      or
+      succ.asExpr().(UnaryExpr).getOperand() = pred.asExpr()
+      or
+      exists(DataFlow::MethodCallNode mc |
         mc = DataFlow::globalVarRef("Math").getAMemberCall(_) and
-        pred = mc.getAnArgument() and succ = mc
+        pred = mc.getAnArgument() and
+        succ = mc
       )
-
     }
-
   }
 
   /**
@@ -108,18 +101,13 @@ module InsecureRandomness {
    * A sensitive write, considered as a sink for random values that are not cryptographically
    * secure.
    */
-  class SensitiveWriteSink extends Sink {
-    SensitiveWriteSink() { this instanceof SensitiveWrite }
-  }
+  class SensitiveWriteSink extends Sink { SensitiveWriteSink() { this instanceof SensitiveWrite } }
 
   /**
    * A cryptographic key, considered as a sink for random values that are not cryptographically
    * secure.
    */
-  class CryptoKeySink extends Sink {
-    CryptoKeySink() { this instanceof CryptographicKey }
-  }
-
+  class CryptoKeySink extends Sink { CryptoKeySink() { this instanceof CryptographicKey } }
 }
 
 /** DEPRECATED: Use `InsecureRandomness::Source` instead. */

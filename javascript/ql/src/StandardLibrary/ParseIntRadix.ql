@@ -15,6 +15,7 @@
 import javascript
 
 from DataFlow::CallNode parseInt
-where parseInt = DataFlow::globalVarRef("parseInt").getACall() and
-      parseInt.getNumArgument() = 1
+where
+  parseInt = DataFlow::globalVarRef("parseInt").getACall() and
+  parseInt.getNumArgument() = 1
 select parseInt, "Missing radix parameter."

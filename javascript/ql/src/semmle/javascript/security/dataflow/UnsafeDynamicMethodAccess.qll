@@ -9,7 +9,7 @@ import PropertyInjectionShared
 
 module UnsafeDynamicMethodAccess {
   private import DataFlow::FlowLabel
-  
+
   /**
    * A data flow source for unsafe dynamic method access.
    */
@@ -17,9 +17,7 @@ module UnsafeDynamicMethodAccess {
     /**
      * Gets the flow label relevant for this source.
      */
-    DataFlow::FlowLabel getFlowLabel() {
-      result = data()
-    }
+    DataFlow::FlowLabel getFlowLabel() { result = data() }
   }
 
   /**
@@ -42,6 +40,7 @@ module UnsafeDynamicMethodAccess {
    * function as a result of an attacker-controlled property name.
    */
   UnsafeFunction unsafeFunction() { any() }
+
   private class UnsafeFunction extends DataFlow::FlowLabel {
     UnsafeFunction() { this = "UnsafeFunction" }
   }
@@ -73,22 +72,27 @@ module UnsafeDynamicMethodAccess {
       PropertyInjection::hasUnsafeMethods(node) // Redefined here so custom queries can override it
     }
 
-    override predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node dst, DataFlow::FlowLabel srclabel, DataFlow::FlowLabel dstlabel) {
+    override predicate isAdditionalFlowStep(
+      DataFlow::Node src, DataFlow::Node dst, DataFlow::FlowLabel srclabel,
+      DataFlow::FlowLabel dstlabel
+    ) {
       // Reading a property of the global object or of a function
-      exists (DataFlow::PropRead read |
+      exists(DataFlow::PropRead read |
         hasUnsafeMethods(read.getBase().getALocalSource()) and
         src = read.getPropertyNameExpr().flow() and
         dst = read and
         (srclabel = data() or srclabel = taint()) and
-        dstlabel = unsafeFunction())
+        dstlabel = unsafeFunction()
+      )
       or
       // Reading a chain of properties from any object with a prototype can lead to Function
-      exists (PropertyProjection proj |
+      exists(PropertyProjection proj |
         not PropertyInjection::isPrototypeLessObject(proj.getObject().getALocalSource()) and
         src = proj.getASelector() and
         dst = proj and
         (srclabel = data() or srclabel = taint()) and
-        dstlabel = unsafeFunction())
+        dstlabel = unsafeFunction()
+      )
     }
   }
 
@@ -102,20 +106,14 @@ module UnsafeDynamicMethodAccess {
   /**
    * The page URL considered as a flow source for unsafe dynamic method access.
    */
-  class DocumentUrlAsSource extends Source {
-    DocumentUrlAsSource() { isDocumentURL(asExpr()) }
-  }
+  class DocumentUrlAsSource extends Source { DocumentUrlAsSource() { isDocumentURL(asExpr()) } }
 
   /**
    * A function invocation of an unsafe function, as a sink for remote unsafe dynamic method access.
    */
   class CalleeAsSink extends Sink {
-    CalleeAsSink() {
-      this = any(DataFlow::InvokeNode node).getCalleeNode()
-    }
+    CalleeAsSink() { this = any(DataFlow::InvokeNode node).getCalleeNode() }
 
-    override DataFlow::FlowLabel getFlowLabel() {
-      result = unsafeFunction()
-    }
+    override DataFlow::FlowLabel getFlowLabel() { result = unsafeFunction() }
   }
 }

@@ -1,6 +1,7 @@
 /**
  * Provides classes for working with [async](https://www.npmjs.com/package/async).
  */
+
 import javascript
 
 module AsyncPackage {
@@ -28,37 +29,27 @@ module AsyncPackage {
    * A call to `async.waterfall`.
    */
   class Waterfall extends DataFlow::InvokeNode {
-    Waterfall() {
-      this = member("waterfall").getACall()
-    }
+    Waterfall() { this = member("waterfall").getACall() }
 
     /**
      * Gets the array of tasks, if it can be found.
      */
-    DataFlow::ArrayCreationNode getTaskArray() {
-      result.flowsTo(getArgument(0))
-    }
+    DataFlow::ArrayCreationNode getTaskArray() { result.flowsTo(getArgument(0)) }
 
     /**
      * Gets the callback to invoke after the last task in the array completes.
      */
-    DataFlow::FunctionNode getFinalCallback() {
-      result.flowsTo(getArgument(1))
-    }
+    DataFlow::FunctionNode getFinalCallback() { result.flowsTo(getArgument(1)) }
 
     /**
      * Gets the `n`th task, if it can be found.
      */
-    DataFlow::FunctionNode getTask(int n) {
-      result.flowsTo(getTaskArray().getElement(n))
-    }
+    DataFlow::FunctionNode getTask(int n) { result.flowsTo(getTaskArray().getElement(n)) }
 
     /**
      * Gets the number of tasks.
      */
-    int getNumTasks() {
-      result = strictcount(getTaskArray().getAnElement())
-    }
+    int getNumTasks() { result = strictcount(getTaskArray().getAnElement()) }
   }
 
   /**
@@ -78,11 +69,10 @@ module AsyncPackage {
    */
   private class WaterfallNextTaskCall extends DataFlow::AdditionalPartialInvokeNode {
     Waterfall waterfall;
+
     int n;
 
-    WaterfallNextTaskCall() {
-      this = getLastParameter(waterfall.getTask(n)).getACall()
-    }
+    WaterfallNextTaskCall() { this = getLastParameter(waterfall.getTask(n)).getACall() }
 
     override predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) {
       // Pass results to next task
@@ -140,23 +130,17 @@ module AsyncPackage {
     /**
      * Gets the node holding the collection being iterated over.
      */
-    DataFlow::Node getCollection() {
-      result = getArgument(0)
-    }
+    DataFlow::Node getCollection() { result = getArgument(0) }
 
     /**
      * Gets the node holding the function being called for each element in the collection.
      */
-    DataFlow::Node getIteratorCallback() {
-      result = getArgument(getNumArgument() - 2)
-    }
+    DataFlow::Node getIteratorCallback() { result = getArgument(getNumArgument() - 2) }
 
     /**
      * Gets the node holding the function being invoked after iteration is complete.
      */
-    DataFlow::Node getFinalCallback() { 
-      result = getArgument(getNumArgument() - 1)
-    }
+    DataFlow::Node getFinalCallback() { result = getArgument(getNumArgument() - 1) }
   }
 
   /**
@@ -166,10 +150,11 @@ module AsyncPackage {
    */
   private class IterationInputTaintStep extends TaintTracking::AdditionalTaintStep, IterationCall {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      exists (DataFlow::FunctionNode iteratee |
+      exists(DataFlow::FunctionNode iteratee |
         iteratee = getIteratorCallback() and // Require a closure to avoid spurious call/return mismatch.
         pred = getCollection() and
-        succ = iteratee.getParameter(0))
+        succ = iteratee.getParameter(0)
+      )
     }
   }
 
@@ -188,11 +173,12 @@ module AsyncPackage {
     }
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      exists (DataFlow::FunctionNode iteratee, DataFlow::FunctionNode final, int i |
+      exists(DataFlow::FunctionNode iteratee, DataFlow::FunctionNode final, int i |
         iteratee = getIteratorCallback().getALocalSource() and
         final = getFinalCallback() and // Require a closure to avoid spurious call/return mismatch.
         pred = getLastParameter(iteratee).getACall().getArgument(i) and
-        succ = final.getParameter(i))
+        succ = final.getParameter(i)
+      )
     }
   }
 
@@ -204,15 +190,15 @@ module AsyncPackage {
   private class IterationPreserveTaintStep extends TaintTracking::AdditionalTaintStep, IterationCall {
     IterationPreserveTaintStep() {
       name = "sortBy"
-
       // We don't currently include `filter` and `reject` as they could act as sanitizers.
     }
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      exists (DataFlow::FunctionNode final |
+      exists(DataFlow::FunctionNode final |
         final = getFinalCallback() and // Require a closure to avoid spurious call/return mismatch.
         pred = getCollection() and
-        succ = final.getParameter(1))
+        succ = final.getParameter(1)
+      )
     }
   }
 }

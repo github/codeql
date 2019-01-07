@@ -1,11 +1,11 @@
 /**
  * Provides a taint tracking configuration for reasoning about file data in outbound network requests.
  */
+
 import javascript
 import semmle.javascript.security.dataflow.RemoteFlowSources
 
 module FileAccessToHttp {
-
   /**
    * A data flow source for file data in outbound network requests.
    */
@@ -25,17 +25,11 @@ module FileAccessToHttp {
    * A taint tracking configuration for file data in outbound network requests.
    */
   class Configuration extends TaintTracking::Configuration {
-    Configuration() {
-      this = "FileAccessToHttp"
-    }
+    Configuration() { this = "FileAccessToHttp" }
 
-    override predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
     override predicate isSanitizer(DataFlow::Node node) {
       super.isSanitizer(node) or
@@ -44,7 +38,7 @@ module FileAccessToHttp {
 
     override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
       // taint entire object on property write
-      exists (DataFlow::PropWrite pwr |
+      exists(DataFlow::PropWrite pwr |
         succ = pwr.getBase() and
         pred = pwr.getRhs()
       )
@@ -55,10 +49,8 @@ module FileAccessToHttp {
    * A file access parameter, considered as a flow source for file data in outbound network requests.
    */
   private class FileAccessArgumentAsSource extends Source {
-    FileAccessArgumentAsSource() {  
-      exists(FileSystemReadAccess src |
-        this = src.getADataNode().getALocalSource()
-      )
+    FileAccessArgumentAsSource() {
+      exists(FileSystemReadAccess src | this = src.getADataNode().getALocalSource())
     }
   }
 
@@ -66,8 +58,8 @@ module FileAccessToHttp {
    * The URL or data of a client request, considered as a flow source for file data in outbound network requests.
    */
   private class ClientRequestUrlOrDataAsSink extends Sink {
-    ClientRequestUrlOrDataAsSink () {
-      exists (ClientRequest req |
+    ClientRequestUrlOrDataAsSink() {
+      exists(ClientRequest req |
         this = req.getUrl() or
         this = req.getADataNode()
       )

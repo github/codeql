@@ -31,19 +31,21 @@ module Internal {
     DefensiveInit() {
       exists(VarAccess va, LogOrExpr o, VarRef va2 |
         va = astNode and
-        va = o.getLeftOperand().stripParens() and va2.getVariable() = va.getVariable() |
+        va = o.getLeftOperand().stripParens() and
+        va2.getVariable() = va.getVariable()
+      |
         exists(AssignExpr assgn | va2 = assgn.getTarget() |
           assgn = o.getRightOperand().stripParens() or
           o = assgn.getRhs().stripParens()
         )
         or
-        exists(VariableDeclarator vd | va2 = vd.getBindingPattern() | o = vd.getInit().stripParens())
+        exists(VariableDeclarator vd | va2 = vd.getBindingPattern() |
+          o = vd.getInit().stripParens()
+        )
       )
     }
 
-    override boolean getTheTestResult() {
-      result = analyze().getTheBooleanValue()
-    }
+    override boolean getTheTestResult() { result = analyze().getTheBooleanValue() }
   }
 
   /**
@@ -51,12 +53,13 @@ module Internal {
    * `polarity` is true iff the inner expression is nested in an even number of negations.
    */
   private Expr stripNotsAndParens(Expr e, boolean polarity) {
-    exists (Expr inner |
-      inner = e.getUnderlyingValue() |
-      if inner instanceof LogNotExpr then
-        (result = stripNotsAndParens(inner.(LogNotExpr).getOperand(), polarity.booleanNot()))
-      else
-        (result = inner and polarity = true)
+    exists(Expr inner | inner = e.getUnderlyingValue() |
+      if inner instanceof LogNotExpr
+      then (
+        result = stripNotsAndParens(inner.(LogNotExpr).getOperand(), polarity.booleanNot())
+      ) else (
+        result = inner and polarity = true
+      )
     )
   }
 
@@ -65,7 +68,7 @@ module Internal {
    *
    * Examples: `e === undefined` or `typeof e !== undefined`.
    */
-  private abstract class UndefinedNullTest extends EqualityTest {
+  abstract private class UndefinedNullTest extends EqualityTest {
     /** Gets the unique Boolean value that this test evaluates to, if any. */
     abstract boolean getTheTestResult();
 
@@ -81,13 +84,14 @@ module Internal {
    * Example: a branch in `x === null || x === undefined`.
    */
   private class CompositeUndefinedNullTestPart extends DefensiveExpressionTest {
-
     UndefinedNullTest test;
 
     boolean polarity;
 
-    CompositeUndefinedNullTestPart(){
-      exists (LogicalBinaryExpr composite, Variable v, Expr op, Expr opOther, UndefinedNullTest testOther |
+    CompositeUndefinedNullTestPart() {
+      exists(
+        LogicalBinaryExpr composite, Variable v, Expr op, Expr opOther, UndefinedNullTest testOther
+      |
         composite.hasOperands(op, opOther) and
         this = op.flow() and
         test = stripNotsAndParens(op, polarity) and
@@ -102,7 +106,6 @@ module Internal {
       or
       polarity = false and result = test.getTheTestResult().booleanNot()
     }
-
   }
 
   /**
@@ -111,13 +114,12 @@ module Internal {
    * Example: `if (x === null) ...`.
    */
   private class SanityCheckingUndefinedNullGuard extends DefensiveExpressionTest {
-
     UndefinedNullTest test;
 
     boolean polarity;
 
     SanityCheckingUndefinedNullGuard() {
-      exists (IfStmt c |
+      exists(IfStmt c |
         this = c.getCondition().flow() and
         test = stripNotsAndParens(c.getCondition(), polarity) and
         test.getOperand() instanceof VarRef
@@ -129,7 +131,6 @@ module Internal {
       or
       polarity = false and result = test.getTheTestResult().booleanNot()
     }
-
   }
 
   /**
@@ -143,9 +144,7 @@ module Internal {
   /**
    * Holds if `t` is not `null` or `undefined`.
    */
-  private predicate isNotNullOrUndefined(InferredType t) {
-    not isNullOrUndefined(t)
-  }
+  private predicate isNotNullOrUndefined(InferredType t) { not isNullOrUndefined(t) }
 
   /**
    * A value comparison for `null` and `undefined`.
@@ -153,14 +152,12 @@ module Internal {
    * Examples: `x === null` or `x != undefined`.
    */
   private class NullUndefinedComparison extends UndefinedNullTest {
-
     Expr operand;
 
     InferredType op2type;
 
     NullUndefinedComparison() {
-      exists (Expr op2 |
-        hasOperands(operand, op2) |
+      exists(Expr op2 | hasOperands(operand, op2) |
         op2type = TTNull() and SyntacticConstants::isNull(op2)
         or
         op2type = TTUndefined() and SyntacticConstants::isUndefined(op2)
@@ -170,7 +167,8 @@ module Internal {
     override boolean getTheTestResult() {
       result = getPolarity() and
       (
-        if this instanceof StrictEqualityTest then
+        if this instanceof StrictEqualityTest
+        then
           // case: `operand === null` or `operand === undefined`
           operand.analyze().getTheType() = op2type
         else
@@ -180,7 +178,8 @@ module Internal {
       or
       result = getPolarity().booleanNot() and
       (
-        if this instanceof StrictEqualityTest then
+        if this instanceof StrictEqualityTest
+        then
           // case: `operand !== null` or `operand !== undefined`
           not operand.analyze().getAType() = op2type
         else
@@ -189,9 +188,7 @@ module Internal {
       )
     }
 
-    override Expr getOperand() {
-      result = operand
-    }
+    override Expr getOperand() { result = operand }
   }
 
   /**
@@ -200,7 +197,6 @@ module Internal {
    * Examples: `sub.p` or `sub()`.
    */
   private class UndefinedNullCrashUse extends Expr {
-
     Expr target;
 
     UndefinedNullCrashUse() {
@@ -214,10 +210,7 @@ module Internal {
     /**
      * Gets the subexpression that will cause an exception to be thrown if it is `null` or `undefined`.
      */
-    Expr getVulnerableSubexpression() {
-      result = target
-    }
-
+    Expr getVulnerableSubexpression() { result = target }
   }
 
   /**
@@ -226,20 +219,14 @@ module Internal {
    * Example: `sub()`.
    */
   private class NonFunctionCallCrashUse extends Expr {
-
     Expr target;
 
-    NonFunctionCallCrashUse() {
-      this.(InvokeExpr).getCallee().getUnderlyingValue() = target
-    }
+    NonFunctionCallCrashUse() { this.(InvokeExpr).getCallee().getUnderlyingValue() = target }
 
     /**
      * Gets the subexpression that will cause an exception to be thrown if it is not a `function`.
      */
-    Expr getVulnerableSubexpression() {
-      result = target
-    }
-
+    Expr getVulnerableSubexpression() { result = target }
   }
 
   /**
@@ -253,15 +240,13 @@ module Internal {
     or
     exists(IfStmt c, ExprStmt guardedStmt |
       c.getCondition() = guard and
-      result = guardedStmt.getExpr() |
+      result = guardedStmt.getExpr()
+    |
       guardedStmt = c.getAControlledStmt() or
       guardedStmt = c.getAControlledStmt().(BlockStmt).getStmt(0)
     )
     or
-    exists (ConditionalExpr c |
-      c.getCondition() = guard |
-      result = c.getABranch()
-    )
+    exists(ConditionalExpr c | c.getCondition() = guard | result = c.getABranch())
   }
 
   /**
@@ -279,31 +264,29 @@ module Internal {
    * Examples: The condition in `if(x) { x.p; }` or `!x || x.m()`.
    */
   private class UndefinedNullTruthinessGuard extends DefensiveExpressionTest {
-
     VarRef guardVar;
 
     boolean polarity;
 
     UndefinedNullTruthinessGuard() {
-      exists (VarRef useVar |
+      exists(VarRef useVar |
         guardVar = stripNotsAndParens(this.asExpr(), polarity) and
-        guardVar.getVariable() = useVar.getVariable() |
-        getAGuardedExpr(this.asExpr()).getUnderlyingValue().(UndefinedNullCrashUse).getVulnerableSubexpression() = useVar and
+        guardVar.getVariable() = useVar.getVariable()
+      |
+        getAGuardedExpr(this.asExpr())
+            .getUnderlyingValue()
+            .(UndefinedNullCrashUse)
+            .getVulnerableSubexpression() = useVar and
         // exclude types whose truthiness depend on the value
         not isStringOrNumOrBool(guardVar.analyze().getAType())
       )
     }
 
     override boolean getTheTestResult() {
-      exists (boolean testResult |
-        testResult = guardVar.analyze().getTheBooleanValue() |
-        if polarity = true then
-          result = testResult
-        else
-          result = testResult.booleanNot()
+      exists(boolean testResult | testResult = guardVar.analyze().getTheBooleanValue() |
+        if polarity = true then result = testResult else result = testResult.booleanNot()
       )
     }
-
   }
 
   /**
@@ -312,18 +295,21 @@ module Internal {
    * Example: the condition in `if(x !== null) { x.p; }`.
    */
   private class UndefinedNullTypeGuard extends DefensiveExpressionTest {
-
     UndefinedNullTest test;
 
     boolean polarity;
 
     UndefinedNullTypeGuard() {
-      exists (Expr guard, VarRef guardVar, VarRef useVar |
+      exists(Expr guard, VarRef guardVar, VarRef useVar |
         this = guard.flow() and
         test = stripNotsAndParens(guard, polarity) and
         test.getOperand() = guardVar and
-        guardVar.getVariable() = useVar.getVariable() |
-        getAGuardedExpr(guard).getUnderlyingValue().(UndefinedNullCrashUse).getVulnerableSubexpression() = useVar
+        guardVar.getVariable() = useVar.getVariable()
+      |
+        getAGuardedExpr(guard)
+            .getUnderlyingValue()
+            .(UndefinedNullCrashUse)
+            .getVulnerableSubexpression() = useVar
       )
     }
 
@@ -332,7 +318,6 @@ module Internal {
       or
       polarity = false and result = test.getTheTestResult().booleanNot()
     }
-
   }
 
   /**
@@ -346,37 +331,31 @@ module Internal {
     TypeofTag tag;
 
     TypeofTest() {
-      exists (Expr op1, Expr op2 |
-        hasOperands(op1, op2) |
+      exists(Expr op1, Expr op2 | hasOperands(op1, op2) |
         operand = op1.(TypeofExpr).getOperand() and
         op2.mayHaveStringValue(tag)
       )
     }
 
     boolean getTheTestResult() {
-      exists (boolean testResult |
-        testResult = true and operand.analyze().getTheType().getTypeofTag() = tag or
-        testResult = false and not operand.analyze().getAType().getTypeofTag() = tag |
-        if getPolarity() = true then
-          result = testResult
-        else
-          result = testResult.booleanNot()
+      exists(boolean testResult |
+        testResult = true and operand.analyze().getTheType().getTypeofTag() = tag
+        or
+        testResult = false and not operand.analyze().getAType().getTypeofTag() = tag
+      |
+        if getPolarity() = true then result = testResult else result = testResult.booleanNot()
       )
     }
 
     /**
      * Gets the operand used in the `typeof` expression.
      */
-    Expr getOperand() {
-      result = operand
-    }
+    Expr getOperand() { result = operand }
 
     /**
      * Gets the `typeof` tag that is tested.
      */
-    TypeofTag getTag() {
-      result = tag
-    }
+    TypeofTag getTag() { result = tag }
   }
 
   /**
@@ -385,18 +364,21 @@ module Internal {
    * Example: the condition in `if(typeof x === 'function') x()`.
    */
   private class FunctionTypeGuard extends DefensiveExpressionTest {
-
     TypeofTest test;
 
     boolean polarity;
 
     FunctionTypeGuard() {
-      exists (Expr guard, VarRef guardVar, VarRef useVar |
+      exists(Expr guard, VarRef guardVar, VarRef useVar |
         this = guard.flow() and
         test = stripNotsAndParens(guard, polarity) and
         test.getOperand() = guardVar and
-        guardVar.getVariable() = useVar.getVariable() |
-        getAGuardedExpr(guard).getUnderlyingValue().(NonFunctionCallCrashUse).getVulnerableSubexpression() = useVar
+        guardVar.getVariable() = useVar.getVariable()
+      |
+        getAGuardedExpr(guard)
+            .getUnderlyingValue()
+            .(NonFunctionCallCrashUse)
+            .getVulnerableSubexpression() = useVar
       ) and
       test.getTag() = "function"
     }
@@ -406,7 +388,6 @@ module Internal {
       or
       polarity = false and result = test.getTheTestResult().booleanNot()
     }
-
   }
 
   /**
@@ -415,7 +396,6 @@ module Internal {
    * Example: `typeof x === undefined'.
    */
   class TypeofUndefinedTest extends UndefinedNullTest {
-
     TypeofTest test;
 
     TypeofUndefinedTest() {
@@ -423,14 +403,8 @@ module Internal {
       test.getTag() = "undefined"
     }
 
-    override boolean getTheTestResult() {
-      result = test.getTheTestResult()
-    }
+    override boolean getTheTestResult() { result = test.getTheTestResult() }
 
-    override Expr getOperand() {
-      result = test.getOperand()
-    }
-
+    override Expr getOperand() { result = test.getOperand() }
   }
-
 }

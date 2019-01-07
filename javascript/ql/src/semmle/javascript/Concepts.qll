@@ -25,7 +25,6 @@ abstract class SystemCommandExecution extends DataFlow::Node {
  * A data flow node that performs a file system access (read, write, copy, permissions, stats, etc).
  */
 abstract class FileSystemAccess extends DataFlow::Node {
-
   /** Gets an argument to this file system access that is interpreted as a path. */
   abstract DataFlow::Node getAPathArgument();
 
@@ -43,28 +42,22 @@ abstract class FileSystemAccess extends DataFlow::Node {
  * A data flow node that reads data from the file system.
  */
 abstract class FileSystemReadAccess extends FileSystemAccess {
-
   /** Gets a node that represents data from the file system. */
   abstract DataFlow::Node getADataNode();
-
 }
 
 /**
  * A data flow node that writes data to the file system.
  */
 abstract class FileSystemWriteAccess extends FileSystemAccess {
-
   /** Gets a node that represents data to be written to the file system. */
   abstract DataFlow::Node getADataNode();
-
 }
 
 /**
  * A data flow node that contains a file name or an array of file names from the local file system.
  */
-abstract class FileNameSource extends DataFlow::Node {
-
-}
+abstract class FileNameSource extends DataFlow::Node { }
 
 /**
  * A data flow node that performs a database access.
@@ -78,22 +71,18 @@ abstract class DatabaseAccess extends DataFlow::Node {
  * A data flow node that reads persistent data.
  */
 abstract class PersistentReadAccess extends DataFlow::Node {
-
   /**
    * Gets a corresponding persistent write, if any.
    */
   abstract PersistentWriteAccess getAWrite();
-
 }
 
 /**
  * A data flow node that writes persistent data.
  */
 abstract class PersistentWriteAccess extends DataFlow::Node {
-
   /**
    * Gets the data flow node corresponding to the written value.
    */
   abstract DataFlow::Node getValue();
-
 }

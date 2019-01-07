@@ -12,17 +12,14 @@ private newtype TPath =
   /** A root path. */
   TRootPath(string root) {
     root = any(Folder f | not exists(f.getParentContainer())).getAbsolutePath()
-  }
-  or
-  /** A path of the form `<parent>/<component>`.*/
+  } or
+  /** A path of the form `<parent>/<component>`. */
   TConsPath(Path parent, string component) {
     // make sure we can represent paths of files in snapshot
-    exists (Folder f | f = parent.getContainer() |
-      exists (f.getChildContainer(component))
-    )
+    exists(Folder f | f = parent.getContainer() | exists(f.getChildContainer(component)))
     or
     // make sure we can resolve path strings
-    exists (PathString p, int n |
+    exists(PathString p, int n |
       p.resolveUpTo(n, _) = parent and
       p.getComponent(n) = component and
       // the empty string, `.` and `..` are not valid path components
@@ -37,7 +34,7 @@ private newtype TPath =
 private string pp(TPath p) {
   p = TRootPath(result + "/")
   or
-  exists (TPath parent, string component | p = TConsPath(parent, component) |
+  exists(TPath parent, string component | p = TConsPath(parent, component) |
     result = pp(parent) + "/" + component
   )
 }
@@ -51,9 +48,7 @@ class Path extends TPath {
   /**
    * Gets the file or folder referred to by this path, if it exists.
    */
-  Container getContainer() {
-    result.getAbsolutePath() = this.toString()
-  }
+  Container getContainer() { result.getAbsolutePath() = this.toString() }
 
   /**
    * Gets a textual representation of the path, using slashes as delimiters.
@@ -65,9 +60,7 @@ class Path extends TPath {
  * The empty path, which refers to the file system root.
  */
 private class RootPath extends Path, TRootPath {
-  override string toString() {
-    this = TRootPath(result)
-  }
+  override string toString() { this = TRootPath(result) }
 }
 
 /**
@@ -75,18 +68,12 @@ private class RootPath extends Path, TRootPath {
  */
 private class ConsPath extends Path, TConsPath {
   /** Gets the parent path of this path. */
-  Path getParent() {
-    this = TConsPath(result, _)
-  }
+  Path getParent() { this = TConsPath(result, _) }
 
   /** Gets the last component of this path. */
-  string getComponent() {
-    this = TConsPath(_, result)
-  }
+  string getComponent() { this = TConsPath(_, result) }
 
-  override string toString() {
-    result = pp(this)
-  }
+  override string toString() { result = pp(this) }
 }
 
 /**
@@ -98,25 +85,20 @@ private class ConsPath extends Path, TConsPath {
  * lookup path as the fallback.
  */
 abstract class PathString extends string {
-  bindingset[this] PathString() { any() }
+  bindingset[this]
+  PathString() { any() }
 
   /** Gets a root folder relative to which this path can be resolved. */
   abstract Folder getARootFolder();
 
   /** Gets the `i`th component of this path. */
-  string getComponent(int i) {
-    result = this.splitAt("/", i)
-  }
+  string getComponent(int i) { result = this.splitAt("/", i) }
 
   /** Gets the number of components of this path. */
-  int getNumComponent() {
-    result = count(int i | exists(getComponent(i)))
-  }
+  int getNumComponent() { result = count(int i | exists(getComponent(i))) }
 
   /** Gets the base name of the folder or file this path refers to. */
-  string getBaseName() {
-    result = this.regexpCapture("(.*/|^)([^/]+)", 2)
-  }
+  string getBaseName() { result = this.regexpCapture("(.*/|^)([^/]+)", 2) }
 
   /**
    * Gets the absolute path that the sub-path consisting of the first `n`
@@ -124,18 +106,25 @@ abstract class PathString extends string {
    * given `root` folder.
    */
   Path resolveUpTo(int n, Folder root) {
-    n = 0 and result.getContainer() = root and root = getARootFolder() or
-    exists (Path base | base = resolveUpTo(n-1, root) |
-      exists (string next | next = getComponent(n-1) |
+    n = 0 and result.getContainer() = root and root = getARootFolder()
+    or
+    exists(Path base | base = resolveUpTo(n - 1, root) |
+      exists(string next | next = getComponent(n - 1) |
         // handle empty components and the special "." folder
-        (next = "" or next = ".") and result = base or
+        (next = "" or next = ".") and
+        result = base
+        or
         // handle the special ".." folder
-        next = ".." and result = base.(ConsPath).getParent() or
+        next = ".." and result = base.(ConsPath).getParent()
+        or
         // special handling for Windows drive letters when resolving absolute path:
         // the extractor populates "C:/" as a folder that has path "C:/" but name ""
-        n = 1 and next.regexpMatch("[A-Za-z]:") and
-        root.getBaseName() = "" and root.toString() = next.toUpperCase() + "/" and
-        result = base or
+        n = 1 and
+        next.regexpMatch("[A-Za-z]:") and
+        root.getBaseName() = "" and
+        root.toString() = next.toUpperCase() + "/" and
+        result = base
+        or
         // default case
         result = TConsPath(base, next)
       )
@@ -146,9 +135,7 @@ abstract class PathString extends string {
    * Gets the absolute path that this path refers to when resolved relative to
    * `root`.
    */
-  Path resolve(Folder root) {
-    result = resolveUpTo(getNumComponent(), root)
-  }
+  Path resolve(Folder root) { result = resolveUpTo(getNumComponent(), root) }
 }
 
 /**
@@ -156,9 +143,10 @@ abstract class PathString extends string {
  */
 private class PathExprBase extends Locatable {
   // We must put getEnclosingModule here for it to be usable in the characteristic predicate of PathExprInModule
-
   /** Gets the module containing this path expression, if any. */
-  Module getEnclosingModule() { result = this.(Expr).getTopLevel() or result = this.(Comment).getTopLevel() }
+  Module getEnclosingModule() {
+    result = this.(Expr).getTopLevel() or result = this.(Comment).getTopLevel()
+  }
 }
 
 /**
@@ -181,25 +169,20 @@ abstract class PathExpr extends PathExprBase {
   abstract Folder getSearchRoot(int priority);
 
   /** Gets the `i`th component of this path. */
-  string getComponent(int i) {
-    result = getValue().(PathString).getComponent(i)
-  }
+  string getComponent(int i) { result = getValue().(PathString).getComponent(i) }
 
   /** Gets the number of components of this path. */
-  int getNumComponent() {
-    result = getValue().(PathString).getNumComponent()
-  }
+  int getNumComponent() { result = getValue().(PathString).getNumComponent() }
 
   /** Gets the base name of the folder or file this path refers to. */
-  string getBaseName() {
-    result = getValue().(PathString).getBaseName()
-  }
+  string getBaseName() { result = getValue().(PathString).getBaseName() }
 
   /**
    * Gets the file or folder that the first `n` components of this path refer to
    * when resolved relative to the root folder of the given `priority`.
    */
-  pragma[nomagic] Container resolveUpTo(int n, int priority) {
+  pragma[nomagic]
+  Container resolveUpTo(int n, int priority) {
     result = getValue().(PathString).resolveUpTo(n, getSearchRoot(priority)).getContainer()
   }
 
@@ -207,28 +190,20 @@ abstract class PathExpr extends PathExprBase {
    * Gets the file or folder that this path refers to when resolved relative to
    * the root folder of the given `priority`.
    */
-  Container resolve(int priority) {
-    result = resolveUpTo(getNumComponent(), priority)
-  }
+  Container resolve(int priority) { result = resolveUpTo(getNumComponent(), priority) }
 
   /**
    * Gets the file or folder that the first `n` components of this path refer to.
    */
-  Container resolveUpTo(int n) {
-    result = resolveUpTo(n, min(int p | exists(resolveUpTo(n, p))))
-  }
+  Container resolveUpTo(int n) { result = resolveUpTo(n, min(int p | exists(resolveUpTo(n, p)))) }
 
   /** Gets the file or folder that this path refers to. */
-  Container resolve() {
-    result = resolveUpTo(getNumComponent())
-  }
+  Container resolve() { result = resolveUpTo(getNumComponent()) }
 }
 
 /** A path string derived from a path expression. */
 private class PathExprString extends PathString {
-  PathExprString() {
-    this = any(PathExpr pe).getValue()
-  }
+  PathExprString() { this = any(PathExpr pe).getValue() }
 
   override Folder getARootFolder() {
     result = any(PathExpr pe | this = pe.getValue()).getSearchRoot(_)
@@ -241,16 +216,18 @@ private class PathExprString extends PathString {
  */
 private class ConcatPath extends PathExpr {
   ConcatPath() {
-    exists (AddExpr add | this = add |
+    exists(AddExpr add | this = add |
       add.getLeftOperand() instanceof PathExpr and
       add.getRightOperand() instanceof PathExpr
     )
   }
 
   override string getValue() {
-    exists (AddExpr add, PathExpr left, PathExpr right |
+    exists(AddExpr add, PathExpr left, PathExpr right |
       this = add and
-      left = add.getLeftOperand() and right = add.getRightOperand() |
+      left = add.getLeftOperand() and
+      right = add.getRightOperand()
+    |
       result = left.getValue() + right.getValue()
     )
   }

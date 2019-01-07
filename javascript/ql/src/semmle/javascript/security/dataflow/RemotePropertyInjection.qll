@@ -18,7 +18,6 @@ module RemotePropertyInjection {
    * A data flow sink for remote property injection.
    */
   abstract class Sink extends DataFlow::Node {
-
     /**
      * Gets a string to identify the different types of sinks.
      */
@@ -36,13 +35,9 @@ module RemotePropertyInjection {
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "RemotePropertyInjection" }
 
-    override predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
     override predicate isSanitizer(DataFlow::Node node) {
       super.isSanitizer(node) or
@@ -62,15 +57,13 @@ module RemotePropertyInjection {
   /**
    * A sink for property writes with dynamically computed property name.
    */
-  class PropertyWriteSink extends Sink, DataFlow::ValueNode  {
+  class PropertyWriteSink extends Sink, DataFlow::ValueNode {
     PropertyWriteSink() {
-      exists (DataFlow::PropWrite pw | astNode = pw.getPropertyNameExpr()) or
-      exists (DeleteExpr expr | expr.getOperand().(PropAccess).getPropertyNameExpr() = astNode)
+      exists(DataFlow::PropWrite pw | astNode = pw.getPropertyNameExpr()) or
+      exists(DeleteExpr expr | expr.getOperand().(PropAccess).getPropertyNameExpr() = astNode)
     }
 
-    override string getMessage() {
-      result = " a property name to write to."
-    }
+    override string getMessage() { result = " a property name to write to." }
   }
 
   /**
@@ -80,16 +73,14 @@ module RemotePropertyInjection {
    * header names as properties. This case is already handled by
    * `PropertyWriteSink`.
    */
-  class HeaderNameSink extends Sink, DataFlow::ValueNode  {
+  class HeaderNameSink extends Sink, DataFlow::ValueNode {
     HeaderNameSink() {
-      exists (HTTP::ExplicitHeaderDefinition  hd |
+      exists(HTTP::ExplicitHeaderDefinition hd |
         not hd instanceof Express::SetMultipleHeaders and
         astNode = hd.getNameExpr()
       )
     }
 
-    override string getMessage() {
-      result = " a header name."
-    }
+    override string getMessage() { result = " a header name." }
   }
 }

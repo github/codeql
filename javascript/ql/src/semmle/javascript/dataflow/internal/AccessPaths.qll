@@ -22,12 +22,9 @@ import javascript
  * the value of an SSA variable.
  */
 private newtype PropertyName =
-  StaticPropertyName(string name) {
-    exists (PropAccess pa | name = pa.getPropertyName())
-  }
-  or
+  StaticPropertyName(string name) { exists(PropAccess pa | name = pa.getPropertyName()) } or
   DynamicPropertyName(SsaVariable var) {
-    exists (PropAccess pa | pa.getPropertyNameExpr() = var.getAUse())
+    exists(PropAccess pa | pa.getPropertyNameExpr() = var.getAUse())
   }
 
 /**
@@ -36,7 +33,7 @@ private newtype PropertyName =
 private PropertyName getPropertyName(PropAccess pacc) {
   result = StaticPropertyName(pacc.getPropertyName())
   or
-  exists (SsaVariable var |
+  exists(SsaVariable var |
     pacc.getPropertyNameExpr() = var.getAUse() and
     result = DynamicPropertyName(var)
   )
@@ -47,10 +44,9 @@ private PropertyName getPropertyName(PropAccess pacc) {
  * where each property name is either constant or itself an SSA variable.
  */
 private newtype TAccessPath =
-  MkRoot(SsaVariable var)
-  or
+  MkRoot(SsaVariable var) or
   MkAccessStep(AccessPath base, PropertyName name) {
-    exists (PropAccess pacc |
+    exists(PropAccess pacc |
       pacc.getBase() = base.getAnInstance() and
       getPropertyName(pacc) = name
     )
@@ -65,12 +61,12 @@ class AccessPath extends TAccessPath {
    * Gets an expression in `bb` represented by this access path.
    */
   Expr getAnInstanceIn(BasicBlock bb) {
-    exists (SsaVariable var |
+    exists(SsaVariable var |
       this = MkRoot(var) and
       result = var.getAUseIn(bb)
     )
     or
-    exists (PropertyName name |
+    exists(PropertyName name |
       result = getABaseInstanceIn(bb, name) and
       getPropertyName(result) = name
     )
@@ -86,7 +82,7 @@ class AccessPath extends TAccessPath {
    */
   pragma[noinline]
   private PropAccess getABaseInstanceIn(BasicBlock bb, PropertyName name) {
-    exists (AccessPath base | this = MkAccessStep(base, name) |
+    exists(AccessPath base | this = MkAccessStep(base, name) |
       result.getBase() = base.getAnInstanceIn(bb)
     )
   }
@@ -94,22 +90,20 @@ class AccessPath extends TAccessPath {
   /**
    * Gets an expression represented by this access path.
    */
-  Expr getAnInstance() {
-    result = getAnInstanceIn(_)
-  }
+  Expr getAnInstance() { result = getAnInstanceIn(_) }
 
   /**
    * Gets a textual representation of this access path.
    */
   string toString() {
-    exists (SsaVariable var | this = MkRoot(var) |
-      result = var.getSourceVariable().getName()
-    )
+    exists(SsaVariable var | this = MkRoot(var) | result = var.getSourceVariable().getName())
     or
-    exists (AccessPath base, PropertyName name, string rest |
+    exists(AccessPath base, PropertyName name, string rest |
       rest = "." + any(string s | name = StaticPropertyName(s))
       or
-      rest = "[" + any(SsaVariable var | name = DynamicPropertyName(var)).getSourceVariable().getName() + "]" |
+      rest = "[" +
+          any(SsaVariable var | name = DynamicPropertyName(var)).getSourceVariable().getName() + "]"
+    |
       result = base.toString() + rest and
       this = MkAccessStep(base, name)
     )

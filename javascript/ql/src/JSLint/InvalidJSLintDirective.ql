@@ -13,6 +13,9 @@
 import javascript
 
 from SlashStarComment c
-where // use possessive quantifiers '*+' and '++' to avoid backtracking
-      c.getText().regexpMatch("\\s+(global|properties|property|jslint)\\s(\\s*+[a-zA-Z$_][a-zA-Z0-9$_]*+(\\s*+:\\s*+\\w++)?\\s*+,?)++\\s*")
+where
+  // use possessive quantifiers '*+' and '++' to avoid backtracking
+  c
+      .getText()
+      .regexpMatch("\\s+(global|properties|property|jslint)\\s(\\s*+[a-zA-Z$_][a-zA-Z0-9$_]*+(\\s*+:\\s*+\\w++)?\\s*+,?)++\\s*")
 select c, "JSLint directives must not have whitespace characters before the directive name."

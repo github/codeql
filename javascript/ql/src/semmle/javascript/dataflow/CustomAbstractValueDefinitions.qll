@@ -18,57 +18,37 @@ private import InferredTypes
  * Wraps a `CustomAbstractValueDefinition`.
  */
 class CustomAbstractValueFromDefinition extends AbstractValue, TCustomAbstractValueFromDefinition {
-
   CustomAbstractValueDefinition def;
 
-  CustomAbstractValueFromDefinition() {
-    this = TCustomAbstractValueFromDefinition(def)
-  }
+  CustomAbstractValueFromDefinition() { this = TCustomAbstractValueFromDefinition(def) }
 
-  override InferredType getType() {
-    result = def.getType()
-  }
+  override InferredType getType() { result = def.getType() }
 
-  override boolean getBooleanValue() {
-    result = def.getBooleanValue()
-  }
+  override boolean getBooleanValue() { result = def.getBooleanValue() }
 
-  override PrimitiveAbstractValue toPrimitive() {
-    result = def.toPrimitive()
-  }
+  override PrimitiveAbstractValue toPrimitive() { result = def.toPrimitive() }
 
-  override predicate isCoercibleToNumber() {
-    def.isCoercibleToNumber()
-  }
+  override predicate isCoercibleToNumber() { def.isCoercibleToNumber() }
 
-  override predicate isIndefinite(DataFlow::Incompleteness cause) {
-    def.isIndefinite(cause)
-  }
+  override predicate isIndefinite(DataFlow::Incompleteness cause) { def.isIndefinite(cause) }
 
-  override DefiniteAbstractValue getAPrototype() {
-    result = def.getAPrototype()
-  }
+  override DefiniteAbstractValue getAPrototype() { result = def.getAPrototype() }
 
-  override predicate hasLocationInfo(string f, int startline, int startcolumn, int endline, int endcolumn) {
+  override predicate hasLocationInfo(
+    string f, int startline, int startcolumn, int endline, int endcolumn
+  ) {
     def.getLocation().hasLocationInfo(f, startline, startcolumn, endline, endcolumn)
   }
 
-  override string toString() {
-    result = def.toString()
-  }
+  override string toString() { result = def.toString() }
 
   /**
    * Gets the definition that induces this value.
    */
-  CustomAbstractValueDefinition getDefinition() {
-   result = def
-  }
+  CustomAbstractValueDefinition getDefinition() { result = def }
 
   /** Holds if this is a value whose properties the type inference tracks. */
-  predicate shouldTrackProperties() {
-    def.shouldTrackProperties()
-  }
-
+  predicate shouldTrackProperties() { def.shouldTrackProperties() }
 }
 
 /**
@@ -80,7 +60,6 @@ class CustomAbstractValueFromDefinition extends AbstractValue, TCustomAbstractVa
  * of the standard library.
  */
 abstract class CustomAbstractValueDefinition extends Locatable {
-
   /**
    * Gets the type of some concrete value represented by the induced
    * abstract value.
@@ -113,16 +92,14 @@ abstract class CustomAbstractValueDefinition extends Locatable {
    * Holds if the induced abstract value is an indefinite value arising
    * from the incompleteness `cause`.
    */
-  predicate isIndefinite(DataFlow::Incompleteness cause) {
-    none()
-  }
+  predicate isIndefinite(DataFlow::Incompleteness cause) { none() }
 
   /**
    * Gets an abstract value that represents a prototype object of the
    * induced abstract value.
    */
   AbstractValue getAPrototype() {
-    exists (AbstractProtoProperty proto |
+    exists(AbstractProtoProperty proto |
       proto.getBase() = getAbstractValue() and
       result = proto.getAValue()
     )
@@ -137,22 +114,17 @@ abstract class CustomAbstractValueDefinition extends Locatable {
 
   /** Holds if this is a value whose properties the type inference tracks. */
   abstract predicate shouldTrackProperties();
-
 }
 
 /**
  * Flow analysis for custom abstract values.
  */
 class CustomAbstractValueFromDefinitionNode extends DataFlow::AnalyzedNode, DataFlow::ValueNode {
-
   CustomAbstractValueFromDefinition val;
 
   CustomAbstractValueFromDefinitionNode() {
     val = TCustomAbstractValueFromDefinition(this.getAstNode())
   }
 
-  override AbstractValue getALocalValue() {
-    result = val
-  }
-
+  override AbstractValue getALocalValue() { result = val }
 }

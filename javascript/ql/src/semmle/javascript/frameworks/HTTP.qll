@@ -41,25 +41,18 @@ module HTTP {
     abstract RouteHandler getRouteHandler();
   }
 
-
   /**
    * An expression that sets HTTP response headers implicitly.
    */
   abstract class ImplicitHeaderDefinition extends HeaderDefinition {
-
-    override string getAHeaderName() {
-      defines(result, _)
-    }
+    override string getAHeaderName() { defines(result, _) }
   }
 
   /**
    * An expression that sets HTTP response headers explicitly.
    */
   abstract class ExplicitHeaderDefinition extends HeaderDefinition {
-
-    override string getAHeaderName() {
-      definesExplicitly(result, _)
-    }
+    override string getAHeaderName() { definesExplicitly(result, _) }
 
     override predicate defines(string headerName, string headerValue) {
       exists(Expr e |
@@ -128,9 +121,7 @@ module HTTP {
   /**
    * Gets the string `http` or `https`.
    */
-  string httpOrHttps() {
-    result = "http" or result = "https"
-  }
+  string httpOrHttps() { result = "http" or result = "https" }
 
   /**
    * An expression whose value is sent as (part of) the body of an HTTP response.
@@ -146,8 +137,7 @@ module HTTP {
    * An expression whose value is included directly (and not, say, via a template)
    * in the body of an HTTP response.
    */
-  abstract class ResponseSendArgument extends ResponseBody {
-  }
+  abstract class ResponseSendArgument extends ResponseBody { }
 
   /**
    * An expression that sets a cookie in an HTTP response.
@@ -187,9 +177,7 @@ module HTTP {
       header.(ExplicitHeaderDefinition).definesExplicitly("set-cookie", result)
     }
 
-    override RouteHandler getRouteHandler() {
-      result = header.getRouteHandler()
-    }
+    override RouteHandler getRouteHandler() { result = header.getRouteHandler() }
   }
 
   /**
@@ -218,24 +206,19 @@ module HTTP {
      * Gets an expression that contains a request object handled
      * by this handler.
      */
-    RequestExpr getARequestExpr() {
-      result.getRouteHandler() = this
-    }
+    RequestExpr getARequestExpr() { result.getRouteHandler() = this }
 
     /**
      * Gets an expression that contains a response object provided
      * by this handler.
      */
-    ResponseExpr getAResponseExpr() {
-      result.getRouteHandler() = this
-    }
+    ResponseExpr getAResponseExpr() { result.getRouteHandler() = this }
   }
 
   /**
    * An expression that sets up a route on a server.
    */
-  abstract class RouteSetup extends Expr {
-  }
+  abstract class RouteSetup extends Expr { }
 
   /**
    * An expression that may contain a request object.
@@ -257,22 +240,16 @@ module HTTP {
     abstract RouteHandler getRouteHandler();
   }
 
-
   /**
    * Boiler-plate implementation of a `Server` and its associated classes.
    * Made for easily defining new HTTP servers
    */
   module Servers {
-
     /**
      * A standard server definition.
      */
     abstract class StandardServerDefinition extends ServerDefinition, DataFlow::TrackedExpr {
-
-      override RouteHandler getARouteHandler() {
-        result.(StandardRouteHandler).getServer() = this
-      }
-
+      override RouteHandler getARouteHandler() { result.(StandardRouteHandler).getServer() = this }
     }
 
     /**
@@ -288,7 +265,7 @@ module HTTP {
        * Gets the server this route handler is registered on.
        */
       Expr getServer() {
-        exists (StandardRouteSetup setup | setup.getARouteHandler() = this |
+        exists(StandardRouteSetup setup | setup.getARouteHandler() = this |
           result = setup.getServer()
         )
       }
@@ -326,9 +303,7 @@ module HTTP {
 
       StandardRequestExpr() { src.flowsTo(DataFlow::valueNode(this)) }
 
-      override RouteHandler getRouteHandler() {
-        result = src.getRouteHandler()
-      }
+      override RouteHandler getRouteHandler() { result = src.getRouteHandler() }
     }
 
     /**
@@ -339,9 +314,7 @@ module HTTP {
 
       StandardResponseExpr() { src.flowsTo(DataFlow::valueNode(this)) }
 
-      override RouteHandler getRouteHandler() {
-        result = src.getRouteHandler()
-      }
+      override RouteHandler getRouteHandler() { result = src.getRouteHandler() }
     }
 
     /**
@@ -355,17 +328,13 @@ module HTTP {
         headerValue = astNode.getArgument(1)
       }
 
-      override Expr getNameExpr() {
-         result = astNode.getArgument(0)
-      }
-
+      override Expr getNameExpr() { result = astNode.getArgument(0) }
     }
 
     /**
      * A standard route setup on a server.
      */
     abstract class StandardRouteSetup extends RouteSetup {
-
       /**
        * Gets a route handler that is defined by this setup.
        */
@@ -376,16 +345,13 @@ module HTTP {
        */
       abstract Expr getServer();
     }
-
   }
 
   /**
    * An access to a user-controlled HTTP request input.
    */
   abstract class RequestInputAccess extends RemoteFlowSource {
-    override string getSourceType() {
-      result = "Server request " + getKind()
-    }
+    override string getSourceType() { result = "Server request " + getKind() }
 
     /**
      * Gets the route handler whose request input is accessed.
@@ -417,10 +383,11 @@ module HTTP {
      * third party does have some control over the the Referer and Origin headers.
      */
     predicate isThirdPartyControllable() {
-      exists (string kind | kind = getKind() |
+      exists(string kind | kind = getKind() |
         kind = "parameter" or
         kind = "url" or
-        kind = "body")
+        kind = "body"
+      )
     }
   }
 
@@ -444,7 +411,6 @@ module HTTP {
    * and exploratory queries.
    */
   abstract class RouteSetupCandidate extends DataFlow::ValueNode {
-
     /**
      * Gets an expression that contains a route handler of this setup.
      */
@@ -457,29 +423,22 @@ module HTTP {
    * This is useful for tasks such as heuristic analyses
    * and exploratory queries.
    */
-  abstract class RouteHandlerCandidate extends DataFlow::FunctionNode {
-  }
+  abstract class RouteHandlerCandidate extends DataFlow::FunctionNode { }
 
   /**
    * An expression that creates a route handler that parses cookies
    */
   abstract class CookieMiddlewareInstance extends DataFlow::SourceNode {
-
     /**
      * Gets a secret key used for signed cookies.
      */
     abstract DataFlow::Node getASecretKey();
-
   }
 
   /**
    * A key used for signed cookies, viewed as a `CryptographicKey`.
    */
   class CookieCryptographicKey extends CryptographicKey {
-
-    CookieCryptographicKey() {
-      this = any(CookieMiddlewareInstance instance).getASecretKey()
-    }
-
+    CookieCryptographicKey() { this = any(CookieMiddlewareInstance instance).getASecretKey() }
   }
 }

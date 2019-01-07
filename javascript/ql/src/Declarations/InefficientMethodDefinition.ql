@@ -18,7 +18,7 @@ import semmle.javascript.RestrictedLocations
  * Holds if `stmt` is of the form `this.<name> = <method>;`.
  */
 predicate methodDefinition(ExprStmt stmt, string name, Function method) {
-  exists (AssignExpr assgn, PropAccess pacc |
+  exists(AssignExpr assgn, PropAccess pacc |
     assgn = stmt.getExpr() and
     pacc = assgn.getLhs() and
     pacc.getBase() instanceof ThisExpr and
@@ -28,12 +28,14 @@ predicate methodDefinition(ExprStmt stmt, string name, Function method) {
 }
 
 from Function ctor, ExprStmt defn, string name, Function method
-where not ctor instanceof ImmediatelyInvokedFunctionExpr and
-      defn = ctor.getABodyStmt() and
-      methodDefinition(defn, name, method) and
-      // if the method captures a local variable of the constructor, it cannot
-      // easily be moved to the constructor object
-      not exists (Variable v | v.getScope() = ctor.getScope() |
-          v.getAnAccess().getContainer().getEnclosingContainer*() = method
-      )
-select (FirstLineOf)defn, name + " should be added to the prototype object rather than to each instance."
+where
+  not ctor instanceof ImmediatelyInvokedFunctionExpr and
+  defn = ctor.getABodyStmt() and
+  methodDefinition(defn, name, method) and
+  // if the method captures a local variable of the constructor, it cannot
+  // easily be moved to the constructor object
+  not exists(Variable v | v.getScope() = ctor.getScope() |
+    v.getAnAccess().getContainer().getEnclosingContainer*() = method
+  )
+select defn.(FirstLineOf),
+  name + " should be added to the prototype object rather than to each instance."

@@ -15,7 +15,6 @@ import javascript
  * contribute to the `data`.
  */
 abstract class CustomClientRequest extends DataFlow::InvokeNode {
-
   /**
    * Gets the URL of the request.
    */
@@ -30,7 +29,6 @@ abstract class CustomClientRequest extends DataFlow::InvokeNode {
    * Gets a node that contributes to the data-part this request.
    */
   abstract DataFlow::Node getADataNode();
-
 }
 
 /**
@@ -41,42 +39,30 @@ abstract class CustomClientRequest extends DataFlow::InvokeNode {
  * contribute to the `data`.
  */
 class ClientRequest extends DataFlow::InvokeNode {
-
   CustomClientRequest custom;
 
-  ClientRequest() {
-    this = custom
-  }
+  ClientRequest() { this = custom }
 
   /**
    * Gets the URL of the request.
    */
-  DataFlow::Node getUrl() {
-    result = custom.getUrl()
-  }
+  DataFlow::Node getUrl() { result = custom.getUrl() }
 
   /**
    * Gets the host of the request.
    */
-  DataFlow::Node getHost() {
-    result = custom.getHost()
-  }
+  DataFlow::Node getHost() { result = custom.getHost() }
 
   /**
    * Gets a node that contributes to the data-part this request.
    */
-  DataFlow::Node getADataNode() {
-    result = custom.getADataNode()
-  }
-
+  DataFlow::Node getADataNode() { result = custom.getADataNode() }
 }
 
 /**
  * Gets name of an HTTP request method, in all-lowercase.
  */
-private string httpMethodName() {
-  result = any(HTTP::RequestMethodName m).toLowerCase()
-}
+private string httpMethodName() { result = any(HTTP::RequestMethodName m).toLowerCase() }
 
 /**
  * Gets the name of a property that likely contains a URL value.
@@ -90,12 +76,10 @@ private string urlPropertyName() {
  * A model of a URL request made using the `request` library.
  */
 private class RequestUrlRequest extends CustomClientRequest {
-
   DataFlow::Node url;
 
   RequestUrlRequest() {
-    exists (string moduleName, DataFlow::SourceNode callee |
-      this = callee.getACall() |
+    exists(string moduleName, DataFlow::SourceNode callee | this = callee.getACall() |
       (
         moduleName = "request" or
         moduleName = "request-promise" or
@@ -114,37 +98,32 @@ private class RequestUrlRequest extends CustomClientRequest {
     result = getOptionArgument(0, urlPropertyName())
   }
 
-  override DataFlow::Node getHost() {
-    none()
-  }
+  override DataFlow::Node getHost() { none() }
 
-  override DataFlow::Node getADataNode() {
-    result = getArgument(1)
-  }
-
+  override DataFlow::Node getADataNode() { result = getArgument(1) }
 }
 
 /**
  * A model of a URL request made using the `axios` library.
  */
 private class AxiosUrlRequest extends CustomClientRequest {
-
   string method;
 
   AxiosUrlRequest() {
-    exists (string moduleName, DataFlow::SourceNode callee |
-      this = callee.getACall() |
+    exists(string moduleName, DataFlow::SourceNode callee | this = callee.getACall() |
       moduleName = "axios" and
       (
-        callee = DataFlow::moduleImport(moduleName) and method = "request" or
-        callee = DataFlow::moduleMember(moduleName, method) and (method = httpMethodName() or method = "request")
+        callee = DataFlow::moduleImport(moduleName) and method = "request"
+        or
+        callee = DataFlow::moduleMember(moduleName, method) and
+        (method = httpMethodName() or method = "request")
       )
     )
   }
 
   private DataFlow::Node getOptionArgument(string name) {
     // depends on the method name and the call arity, over-approximating slightly in the name of simplicity
-    result = getOptionArgument([0..2], name)
+    result = getOptionArgument([0 .. 2], name)
   }
 
   override DataFlow::Node getUrl() {
@@ -152,9 +131,7 @@ private class AxiosUrlRequest extends CustomClientRequest {
     result = getOptionArgument(urlPropertyName())
   }
 
-  override DataFlow::Node getHost() {
-    result = getOptionArgument("host")
-  }
+  override DataFlow::Node getHost() { result = getOptionArgument("host") }
 
   override DataFlow::Node getADataNode() {
     method = "request" and
@@ -163,24 +140,20 @@ private class AxiosUrlRequest extends CustomClientRequest {
     (method = "post" or method = "put" or method = "put") and
     (result = getArgument(1) or result = getOptionArgument(2, "data"))
     or
-    exists (string name |
-      name = "headers" or name = "params"|
-      result = getOptionArgument([0..2], name)
+    exists(string name | name = "headers" or name = "params" |
+      result = getOptionArgument([0 .. 2], name)
     )
   }
-
 }
 
 /**
  * A model of a URL request made using an implementation of the `fetch` API.
  */
 private class FetchUrlRequest extends CustomClientRequest {
-
   DataFlow::Node url;
 
   FetchUrlRequest() {
-    exists (string moduleName, DataFlow::SourceNode callee |
-      this = callee.getACall() |
+    exists(string moduleName, DataFlow::SourceNode callee | this = callee.getACall() |
       (
         moduleName = "node-fetch" or
         moduleName = "cross-fetch" or
@@ -196,29 +169,21 @@ private class FetchUrlRequest extends CustomClientRequest {
     )
   }
 
-  override DataFlow::Node getUrl() {
-    result = url
-  }
+  override DataFlow::Node getUrl() { result = url }
 
   override DataFlow::Node getHost() { none() }
 
   override DataFlow::Node getADataNode() {
-    exists (string name |
-      name = "headers" or name = "body" |
-      result = getOptionArgument(1, name)
-    )
+    exists(string name | name = "headers" or name = "body" | result = getOptionArgument(1, name))
   }
-
 }
 
 /**
  * A model of a URL request made using the `got` library.
  */
 private class GotUrlRequest extends CustomClientRequest {
-
   GotUrlRequest() {
-    exists (string moduleName, DataFlow::SourceNode callee |
-      this = callee.getACall() |
+    exists(string moduleName, DataFlow::SourceNode callee | this = callee.getACall() |
       moduleName = "got" and
       (
         callee = DataFlow::moduleImport(moduleName) or
@@ -229,55 +194,48 @@ private class GotUrlRequest extends CustomClientRequest {
 
   override DataFlow::Node getUrl() {
     result = getArgument(0) and
-    not exists (getOptionArgument(1, "baseUrl"))
+    not exists(getOptionArgument(1, "baseUrl"))
   }
 
   override DataFlow::Node getHost() {
-    exists (string name |
+    exists(string name |
       name = "host" or
-      name = "hostname" |
+      name = "hostname"
+    |
       result = getOptionArgument(1, name)
     )
   }
 
   override DataFlow::Node getADataNode() {
-    exists (string name |
-      name = "headers" or name = "body" or name = "query" |
+    exists(string name | name = "headers" or name = "body" or name = "query" |
       result = getOptionArgument(1, name)
     )
   }
-
 }
 
 /**
  * A model of a URL request made using the `superagent` library.
  */
 private class SuperAgentUrlRequest extends CustomClientRequest {
-
   DataFlow::Node url;
 
   SuperAgentUrlRequest() {
-    exists (string moduleName, DataFlow::SourceNode callee |
-      this = callee.getACall() |
+    exists(string moduleName, DataFlow::SourceNode callee | this = callee.getACall() |
       moduleName = "superagent" and
       callee = DataFlow::moduleMember(moduleName, httpMethodName()) and
       url = getArgument(0)
     )
   }
 
-  override DataFlow::Node getUrl() {
-    result = url
-  }
+  override DataFlow::Node getUrl() { result = url }
 
   override DataFlow::Node getHost() { none() }
 
   override DataFlow::Node getADataNode() {
-    exists (string name |
-      name = "set" or name = "send" or name = "query" |
+    exists(string name | name = "set" or name = "send" or name = "query" |
       result = this.getAChainedMethodCall(name).getAnArgument()
     )
   }
-
 }
 
 /**
@@ -289,5 +247,6 @@ private class XMLHttpRequest extends CustomClientRequest {
   override DataFlow::Node getUrl() { result = getAMethodCall("open").getArgument(1) }
 
   override DataFlow::Node getHost() { none() }
+
   override DataFlow::Node getADataNode() { result = getAMethodCall("send").getArgument(0) }
 }

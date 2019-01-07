@@ -1,11 +1,11 @@
 /**
  * Provides a taint tracking configuration for reasoning about writing user-controlled data to files.
  */
+
 import javascript
 import semmle.javascript.security.dataflow.RemoteFlowSources
 
 module HttpToFileAccess {
-
   /**
    * A data flow source for writing user-controlled data to files.
    */
@@ -25,17 +25,11 @@ module HttpToFileAccess {
    * A taint tracking configuration for writing user-controlled data to files.
    */
   class Configuration extends TaintTracking::Configuration {
-    Configuration() {
-      this = "HttpToFileAccess"
-    }
+    Configuration() { this = "HttpToFileAccess" }
 
-    override predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
     override predicate isSanitizer(DataFlow::Node node) {
       super.isSanitizer(node) or
@@ -50,10 +44,6 @@ module HttpToFileAccess {
 
   /** A sink that represents file access method (write, append) argument */
   class FileAccessAsSink extends Sink {
-    FileAccessAsSink () {
-      exists(FileSystemWriteAccess src |
-        this = src.getADataNode()
-      )
-    }
+    FileAccessAsSink() { exists(FileSystemWriteAccess src | this = src.getADataNode()) }
   }
 }

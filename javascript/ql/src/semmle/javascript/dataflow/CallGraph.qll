@@ -18,9 +18,8 @@ deprecated class CallSite extends @invokeexpr {
   CallSite() { invk = this }
 
   /** Gets an abstract value representing possible callees of this call site. */
-  cached AbstractValue getACalleeValue() {
-    result = invk.getCallee().analyze().getAValue()
-  }
+  cached
+  AbstractValue getACalleeValue() { result = invk.getCallee().analyze().getAValue() }
 
   /**
    * Gets the data flow node corresponding to the `i`th argument passed to the callee
@@ -46,8 +45,9 @@ deprecated class CallSite extends @invokeexpr {
 
   /** Holds if `invk` has a spread argument at index `i` or earlier. */
   private predicate earlierSpreadArgument(int i) {
-    invk.isSpreadArgument(i) or
-    (earlierSpreadArgument(i-1) and i < invk.getNumArgument())
+    invk.isSpreadArgument(i)
+    or
+    (earlierSpreadArgument(i - 1) and i < invk.getNumArgument())
   }
 
   /** Gets a potential callee based on dataflow analysis results. */
@@ -67,9 +67,7 @@ deprecated class CallSite extends @invokeexpr {
    * Holds if the approximation of possible callees for this call site is
    * affected by the given analysis incompleteness `cause`.
    */
-  predicate isIndefinite(DataFlow::Incompleteness cause) {
-    getACalleeValue().isIndefinite(cause)
-  }
+  predicate isIndefinite(DataFlow::Incompleteness cause) { getACalleeValue().isIndefinite(cause) }
 
   /**
    * Holds if our approximation of possible callees for this call site is
@@ -84,9 +82,7 @@ deprecated class CallSite extends @invokeexpr {
    */
   predicate isImprecise() {
     isIndefinite("global") and
-    exists (DefiniteAbstractValue v | v = getACalleeValue() |
-      not v instanceof AbstractCallable
-    )
+    exists(DefiniteAbstractValue v | v = getACalleeValue() | not v instanceof AbstractCallable)
   }
 
   /**
@@ -96,27 +92,21 @@ deprecated class CallSite extends @invokeexpr {
   predicate isIncomplete() {
     // the flow analysis identifies a source of incompleteness other than
     // global flow (which usually leads to imprecision rather than incompleteness)
-    any (DataFlow::Incompleteness cause | isIndefinite(cause)) != "global"
+    any(DataFlow::Incompleteness cause | isIndefinite(cause)) != "global"
   }
 
   /**
    * Holds if our approximation of possible callees for this call site is
    * likely to be imprecise or incomplete.
    */
-  predicate isUncertain() {
-    isImprecise() or isIncomplete()
-  }
+  predicate isUncertain() { isImprecise() or isIncomplete() }
 
   /**
    * Gets a textual representation of this invocation.
    */
-  string toString() {
-    result = this.(InvokeExpr).toString()
-  }
+  string toString() { result = this.(InvokeExpr).toString() }
 
-  Location getLocation() {
-    result = this.(InvokeExpr).getLocation()
-  }
+  Location getLocation() { result = this.(InvokeExpr).getLocation() }
 }
 
 /**
@@ -124,6 +114,7 @@ deprecated class CallSite extends @invokeexpr {
  */
 deprecated class ReflectiveCallSite extends CallSite {
   DataFlow::AnalyzedNode callee;
+
   string callMode;
 
   ReflectiveCallSite() {
@@ -131,12 +122,10 @@ deprecated class ReflectiveCallSite extends CallSite {
     (callMode = "call" or callMode = "apply")
   }
 
-  override AbstractValue getACalleeValue() {
-    result = callee.getAValue()
-  }
+  override AbstractValue getACalleeValue() { result = callee.getAValue() }
 
   override DataFlow::AnalyzedNode getArgumentNode(int i) {
     callMode = "call" and
-    result = super.getArgumentNode(i+1)
+    result = super.getArgumentNode(i + 1)
   }
 }

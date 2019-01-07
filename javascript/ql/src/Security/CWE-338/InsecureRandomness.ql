@@ -10,6 +10,7 @@
  * @tags security
  *       external/cwe/cwe-338
  */
+
 import javascript
 import semmle.javascript.security.dataflow.InsecureRandomness::InsecureRandomness
 import DataFlow::PathGraph
@@ -17,4 +18,4 @@ import DataFlow::PathGraph
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Cryptographically insecure $@ in a security context.",
-       source.getNode(), "random value"
+  source.getNode(), "random value"

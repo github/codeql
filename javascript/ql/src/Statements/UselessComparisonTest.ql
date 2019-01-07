@@ -17,18 +17,20 @@ import javascript
  * We use this to restrict reachability analysis to a small set of containers.
  */
 predicate hasContradictoryGuardNodes(StmtContainer container) {
-  exists (ConditionGuardNode guard |
+  exists(ConditionGuardNode guard |
     RangeAnalysis::isContradictoryGuardNode(guard) and
-    container = guard.getContainer())
+    container = guard.getContainer()
+  )
 }
 
 /**
  * Holds if `block` is reachable and is in a container with contradictory guard nodes.
  */
 predicate isReachable(BasicBlock block) {
-  exists (StmtContainer container |
+  exists(StmtContainer container |
     hasContradictoryGuardNodes(container) and
-    block = container.getEntryBB())
+    block = container.getEntryBB()
+  )
   or
   isReachable(block.getAPredecessor()) and
   not RangeAnalysis::isContradictoryGuardNode(block.getANode())
@@ -50,11 +52,13 @@ predicate isBlockedByContradictoryGuardNodes(BasicBlock block, ConditionGuardNod
  * Holds if the given guard node is contradictory and causes an expression or statement to be unreachable.
  */
 predicate isGuardNodeWithDeadCode(ConditionGuardNode guard) {
-  exists (BasicBlock block |
+  exists(BasicBlock block |
     isBlockedByContradictoryGuardNodes(block, guard) and
-    block.getANode() instanceof ExprOrStmt)
+    block.getANode() instanceof ExprOrStmt
+  )
 }
 
 from ConditionGuardNode guard
 where isGuardNodeWithDeadCode(guard)
-select guard.getTest(), "The condition '" + guard.getTest() + "' is always " + guard.getOutcome().booleanNot() + "."
+select guard.getTest(),
+  "The condition '" + guard.getTest() + "' is always " + guard.getOutcome().booleanNot() + "."

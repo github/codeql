@@ -20,21 +20,22 @@ import DataFlow::PathGraph
  * Holds if `tl` is used in a browser environment.
  */
 predicate inBrowserEnvironment(TopLevel tl) {
-  tl instanceof InlineScript or
-  tl instanceof CodeInAttribute or
-  exists (GlobalVarAccess e |
-    e.getTopLevel() = tl |
-    e.getName() = "window"
-  ) or
-  exists (Module m | inBrowserEnvironment(m) |
+  tl instanceof InlineScript
+  or
+  tl instanceof CodeInAttribute
+  or
+  exists(GlobalVarAccess e | e.getTopLevel() = tl | e.getName() = "window")
+  or
+  exists(Module m | inBrowserEnvironment(m) |
     tl = m.getAnImportedModule() or
     m = tl.(Module).getAnImportedModule()
   )
 }
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink) and
-      // ignore logging to the browser console (even though it is not a good practice)
-      not inBrowserEnvironment(sink.getNode().asExpr().getTopLevel())
+where
+  cfg.hasFlowPath(source, sink) and
+  // ignore logging to the browser console (even though it is not a good practice)
+  not inBrowserEnvironment(sink.getNode().asExpr().getTopLevel())
 select sink.getNode(), source, sink, "Sensitive data returned by $@ is logged here.",
-       source.getNode(), source.getNode().(Source).describe()
+  source.getNode(), source.getNode().(Source).describe()

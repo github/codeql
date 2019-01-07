@@ -17,27 +17,21 @@ import javascript
  * A call to `new Function(...)`.
  */
 class NewFunction extends DataFlow::NewNode {
-  NewFunction() {
-    this = DataFlow::globalVarRef("Function").getAnInvocation()
-  }
+  NewFunction() { this = DataFlow::globalVarRef("Function").getAnInvocation() }
 }
 
 /**
  * A call to `eval`.
  */
 class EvalCall extends DataFlow::CallNode {
-  EvalCall() {
-    this = DataFlow::globalVarRef("eval").getACall()
-  }
+  EvalCall() { this = DataFlow::globalVarRef("eval").getACall() }
 }
 
 /**
  * A call to `new Function(...)` or `eval`.
  */
 class EvalUse extends DataFlow::Node {
-  EvalUse() {
-    this instanceof NewFunction or this instanceof EvalCall
-  }
+  EvalUse() { this instanceof NewFunction or this instanceof EvalCall }
 }
 
 from EvalUse eval

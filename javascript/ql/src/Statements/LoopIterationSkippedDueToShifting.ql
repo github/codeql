@@ -1,13 +1,14 @@
 /**
  * @name Loop iteration skipped due to shifting
  * @description Removing elements from an array while iterating over it can cause the loop to skip over some elements,
- *              unless the loop index is decremented accordingly. 
+ *              unless the loop index is decremented accordingly.
  * @kind problem
  * @problem.severity warning
  * @id js/loop-iteration-skipped-due-to-shifting
  * @tags correctness
  * @precision high
  */
+
 import javascript
 
 /**
@@ -24,25 +25,19 @@ class ArrayShiftingCall extends DataFlow::MethodCallNode {
     (name = "splice" or name = "shift" or name = "unshift")
   }
 
-  DataFlow::SourceNode getArray() {
-    result = getReceiver().getALocalSource()
-  }
+  DataFlow::SourceNode getArray() { result = getReceiver().getALocalSource() }
 }
 
 /**
  * A call to `splice` on an array.
  */
 class SpliceCall extends ArrayShiftingCall {
-  SpliceCall() {
-    name = "splice"
-  }
+  SpliceCall() { name = "splice" }
 
   /**
    * Gets the index from which elements are removed and possibly new elemenst are inserted.
    */
-  DataFlow::Node getIndex() {
-    result = getArgument(0)
-  }
+  DataFlow::Node getIndex() { result = getArgument(0) }
 
   /**
    * Gets the number of removed elements.
@@ -66,21 +61,21 @@ class SpliceCall extends ArrayShiftingCall {
  */
 class ArrayIterationLoop extends ForStmt {
   DataFlow::SourceNode array;
+
   LocalVariable indexVariable;
-  
+
   ArrayIterationLoop() {
-    exists (RelationalComparison compare | compare = getTest() |
+    exists(RelationalComparison compare | compare = getTest() |
       compare.getLesserOperand() = indexVariable.getAnAccess() and
-      compare.getGreaterOperand() = array.getAPropertyRead("length").asExpr()) and
+      compare.getGreaterOperand() = array.getAPropertyRead("length").asExpr()
+    ) and
     getUpdate().(IncExpr).getOperand() = indexVariable.getAnAccess()
   }
 
   /**
    * Gets the variable holding the loop variable and current array index.
    */
-  LocalVariable getIndexVariable() {
-    result = indexVariable
-  }
+  LocalVariable getIndexVariable() { result = indexVariable }
 
   /**
    * Gets the loop entry point.
@@ -92,12 +87,10 @@ class ArrayIterationLoop extends ForStmt {
   /**
    * Gets a call that potentially shifts the elements of the given array.
    */
-  ArrayShiftingCall getAnArrayShiftingCall() {
-    result.getArray() = array
-  }
+  ArrayShiftingCall getAnArrayShiftingCall() { result.getArray() = array }
 
   /**
-   * Gets a call to `splice` that removes elements from the looped-over array at the current index 
+   * Gets a call to `splice` that removes elements from the looped-over array at the current index
    *
    * The `splice` call is not guaranteed to be inside the loop body.
    */
@@ -126,21 +119,21 @@ class ArrayIterationLoop extends ForStmt {
     hasPathTo(cfg.getAPredecessor()) and
     getLoopEntry().dominates(cfg.getBasicBlock()) and
     not hasIndexingManipulation(cfg) and
-
     // Ignore splice calls guarded by an index equality check.
     // This indicates that the index of an element is the basis for removal, not its value,
     // which means it may be okay to skip over elements.
-    not exists (ConditionGuardNode guard, EqualityTest test | cfg = guard |
+    not exists(ConditionGuardNode guard, EqualityTest test | cfg = guard |
       test = guard.getTest() and
       test.getAnOperand() = getIndexVariable().getAnAccess() and
-      guard.getOutcome() = test.getPolarity()) and
-
+      guard.getOutcome() = test.getPolarity()
+    ) and
     // Block flow after inspecting an array element other than that at the current index.
     // For example, if the splice happens after inspecting `array[i + 1]`, then the next
     // element has already been "looked at" and so it doesn't matter if we skip it.
-    not exists (IndexExpr index | cfg = index |
+    not exists(IndexExpr index | cfg = index |
       array.flowsToExpr(index.getBase()) and
-      not index.getIndex() = getIndexVariable().getAnAccess())
+      not index.getIndex() = getIndexVariable().getAnAccess()
+    )
   }
 
   /**
@@ -160,4 +153,6 @@ class ArrayIterationLoop extends ForStmt {
 
 from ArrayIterationLoop loop, SpliceCall splice
 where loop.hasPathThrough(splice, loop.getUpdate().getFirstControlFlowNode())
-select splice, "Removing an array item without adjusting the loop index '" + loop.getIndexVariable().getName() + "' causes the subsequent array item to be skipped."
+select splice,
+  "Removing an array item without adjusting the loop index '" + loop.getIndexVariable().getName() +
+    "' causes the subsequent array item to be skipped."

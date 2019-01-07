@@ -9,15 +9,14 @@ import semmle.javascript.frameworks.TestingCustomizations
 /**
  * A syntactic construct that represents a single test.
  */
-abstract class Test extends Locatable {
-}
+abstract class Test extends Locatable { }
 
 /**
  * A QUnit test, that is, an invocation of `QUnit.test`.
  */
 class QUnitTest extends Test, @callexpr {
   QUnitTest() {
-    exists (MethodCallExpr mce | mce = this |
+    exists(MethodCallExpr mce | mce = this |
       mce.getReceiver().(VarAccess).getName() = "QUnit" and
       mce.getMethodName() = "test"
     )
@@ -31,7 +30,7 @@ class QUnitTest extends Test, @callexpr {
  */
 class BDDTest extends Test, @callexpr {
   BDDTest() {
-    exists (CallExpr call | call = this |
+    exists(CallExpr call | call = this |
       call.getCallee().(VarAccess).getName() = "it" and
       exists(call.getArgument(0).getStringValue()) and
       call.getArgument(1).analyze().getAValue() instanceof AbstractFunction
@@ -43,25 +42,20 @@ class BDDTest extends Test, @callexpr {
  * A xUnit.js fact, that is, a function annotated with an xUnit.js
  * `Fact` annotation.
  */
-class XUnitTest extends Test, XUnitFact {
-}
+class XUnitTest extends Test, XUnitFact { }
 
 /**
  * A tape test, that is, an invocation of `require('tape').test`.
  */
 class TapeTest extends Test, @callexpr {
-  TapeTest() {
-    this = DataFlow::moduleMember("tape", "test").getACall().asExpr()
-  }
+  TapeTest() { this = DataFlow::moduleMember("tape", "test").getACall().asExpr() }
 }
 
 /**
  * An AVA test, that is, an invocation of `require('ava').test`.
  */
 class AvaTest extends Test, @callexpr {
-  AvaTest() {
-    this = DataFlow::moduleMember("ava", "test").getACall().asExpr()
-  }
+  AvaTest() { this = DataFlow::moduleMember("ava", "test").getACall().asExpr() }
 }
 
 /**

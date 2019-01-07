@@ -23,9 +23,7 @@ module DomBasedXss {
      * Defaults to `Cross-site scripting`, but may be overriden for sinks
      * that do not allow script injection, but injection of other undesirable HTML elements.
      */
-    string getVulnerabilityKind() {
-      result = "Cross-site scripting"
-    }
+    string getVulnerabilityKind() { result = "Cross-site scripting" }
   }
 
   /**
@@ -39,23 +37,22 @@ module DomBasedXss {
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "DomBasedXss" }
 
-    override predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
     override predicate isSanitizer(DataFlow::Node node) {
-      super.isSanitizer(node) or
-      exists (PropAccess pacc | pacc = node.asExpr() |
-        isSafeLocationProperty(pacc) or
+      super.isSanitizer(node)
+      or
+      exists(PropAccess pacc | pacc = node.asExpr() |
+        isSafeLocationProperty(pacc)
+        or
         // `$(location.hash)` is a fairly common and safe idiom
         // (because `location.hash` always starts with `#`),
         // so we mark `hash` as safe for the purposes of this query
         pacc.getPropertyName() = "hash"
-      ) or
+      )
+      or
       node instanceof Sanitizer
     }
   }
@@ -69,9 +66,7 @@ module DomBasedXss {
    * An access of the URL of this page, or of the referrer to this page.
    */
   class LocationSource extends Source, DataFlow::ValueNode {
-    LocationSource() {
-      isDocumentURL(astNode)
-    }
+    LocationSource() { isDocumentURL(astNode) }
   }
 
   /**
@@ -87,7 +82,7 @@ module DomBasedXss {
         or
         // or it doesn't start with something other than `<`, and so at least
         // _may_ be interpreted as HTML
-        not exists (DataFlow::Node prefix, string strval |
+        not exists(DataFlow::Node prefix, string strval |
           isPrefixOfJQueryHtmlString(astNode, prefix) and
           strval = prefix.asExpr().getStringValue() and
           not strval.regexpMatch("\\s*<.*")
@@ -99,8 +94,9 @@ module DomBasedXss {
       any(AngularJS::AngularJSCall call).interpretsArgumentAsHtml(this.asExpr())
       or
       // call to a WinJS function that interprets its argument as HTML
-      exists (DataFlow::MethodCallNode mcn, string m |
-        m = "setInnerHTMLUnsafe" or m = "setOuterHTMLUnsafe" |
+      exists(DataFlow::MethodCallNode mcn, string m |
+        m = "setInnerHTMLUnsafe" or m = "setOuterHTMLUnsafe"
+      |
         mcn.getMethodName() = m and
         this = mcn.getArgument(1)
       )
@@ -115,7 +111,7 @@ module DomBasedXss {
     any(JQueryMethodCall call).interpretsArgumentAsHtml(htmlString) and
     prefix = htmlString.flow()
     or
-    exists (DataFlow::Node pred | isPrefixOfJQueryHtmlString(htmlString, pred) |
+    exists(DataFlow::Node pred | isPrefixOfJQueryHtmlString(htmlString, pred) |
       prefix = StringConcatenation::getFirstOperand(pred)
       or
       prefix = pred.getAPredecessor()
@@ -132,15 +128,16 @@ module DomBasedXss {
       any(DomMethodCallExpr call).interpretsArgumentsAsHTML(this.asExpr())
       or
       // Assignment to a dangerous DOM property
-      exists (DomPropWriteNode pw |
+      exists(DomPropWriteNode pw |
         pw.interpretsValueAsHTML() and
         this = DataFlow::valueNode(pw.getRhs())
       )
       or
       // `html` or `source.html` properties of React Native `WebView`
-      exists (ReactNative::WebViewElement webView, DataFlow::SourceNode source |
+      exists(ReactNative::WebViewElement webView, DataFlow::SourceNode source |
         source = webView or
-        source = webView.getAPropertyWrite("source").getRhs().getALocalSource() |
+        source = webView.getAPropertyWrite("source").getRhs().getALocalSource()
+      |
         this = source.getAPropertyWrite("html").getRhs()
       )
     }
@@ -151,7 +148,7 @@ module DomBasedXss {
    */
   class DomParserSink extends Sink {
     DomParserSink() {
-      exists (DataFlow::GlobalVarRefNode domParser |
+      exists(DataFlow::GlobalVarRefNode domParser |
         domParser.getName() = "DOMParser" and
         this = domParser.getAnInstantiation().getAMethodCall("parseFromString").getArgument(0)
       )
@@ -166,16 +163,17 @@ module DomBasedXss {
    */
   class DangerouslySetInnerHtmlSink extends Sink, DataFlow::ValueNode {
     DangerouslySetInnerHtmlSink() {
-      exists (DataFlow::Node danger, DataFlow::SourceNode valueSrc |
-        exists (JSXAttribute attr |
+      exists(DataFlow::Node danger, DataFlow::SourceNode valueSrc |
+        exists(JSXAttribute attr |
           attr.getName() = "dangerouslySetInnerHTML" and
           attr.getValue() = danger.asExpr()
         )
         or
-        exists (ReactElementDefinition def, DataFlow::ObjectLiteralNode props |
+        exists(ReactElementDefinition def, DataFlow::ObjectLiteralNode props |
           props.flowsTo(def.getProps()) and
           props.hasPropertyWrite("dangerouslySetInnerHTML", danger)
-        ) |
+        )
+      |
         valueSrc.flowsTo(danger) and
         valueSrc.hasPropertyWrite("__html", this)
       )
@@ -186,13 +184,9 @@ module DomBasedXss {
    * The HTML body of an email, viewed as an XSS sink.
    */
   class EmailHtmlBodySink extends Sink {
-    EmailHtmlBodySink() {
-      this = any(EmailSender sender).getHtmlBody()
-    }
+    EmailHtmlBodySink() { this = any(EmailSender sender).getHtmlBody() }
 
-    override string getVulnerabilityKind() {
-      result = "HTML injection"
-    }
+    override string getVulnerabilityKind() { result = "HTML injection" }
   }
 }
 

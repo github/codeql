@@ -33,8 +33,9 @@ class UnusedLocal extends LocalVariable {
  * contains externs declarations.
  */
 predicate mentionedInJSDocComment(UnusedLocal v) {
-  exists (Externs ext, JSDoc jsdoc |
-    ext = v.getADeclaration().getTopLevel() and jsdoc.getComment().getTopLevel() = ext |
+  exists(Externs ext, JSDoc jsdoc |
+    ext = v.getADeclaration().getTopLevel() and jsdoc.getComment().getTopLevel() = ext
+  |
     jsdoc.getComment().getText().regexpMatch("(?s).*\\b" + v.getName() + "\\b.*")
   )
 }
@@ -46,7 +47,7 @@ predicate mentionedInJSDocComment(UnusedLocal v) {
  * copies all properties of `o` into `props`, except for `x` which is copied into `v`.
  */
 predicate isPropertyFilter(UnusedLocal v) {
-  exists (ObjectPattern op | exists(op.getRest()) |
+  exists(ObjectPattern op | exists(op.getRest()) |
     op.getAPropertyPattern().getValuePattern() = v.getADeclaration()
   )
 }
@@ -57,14 +58,13 @@ predicate hasJsxInScope(UnusedLocal v) {
 
 /**
  * Holds if `v` is a "React" variable that is implicitly used by a JSX element.
-*/
+ */
 predicate isReactForJSX(UnusedLocal v) {
   hasJsxInScope(v) and
   (
     v.getName() = "React"
     or
-    exists(TopLevel tl |
-      tl = v.getADeclaration().getTopLevel() |
+    exists(TopLevel tl | tl = v.getADeclaration().getTopLevel() |
       // legacy `@jsx` pragmas
       exists(JSXPragma p | p.getTopLevel() = tl | p.getDOMName() = v.getName())
       or
@@ -81,50 +81,46 @@ predicate isReactForJSX(UnusedLocal v) {
  * Holds if `decl` is both a variable declaration and a type declaration,
  * and the declared type has a use.
  */
-predicate isUsedAsType(VarDecl decl) {
-  exists (decl.(TypeDecl).getLocalTypeName().getAnAccess())
-}
+predicate isUsedAsType(VarDecl decl) { exists(decl.(TypeDecl).getLocalTypeName().getAnAccess()) }
 
 /**
  * Holds if `decl` declares a local alias for a namespace that is used from inside a type.
  */
 predicate isUsedAsNamespace(VarDecl decl) {
-  exists (decl.(LocalNamespaceDecl).getLocalNamespaceName().getAnAccess())
+  exists(decl.(LocalNamespaceDecl).getLocalNamespaceName().getAnAccess())
 }
 
 /**
  * Holds if the given identifier belongs to a decorated class or enum.
  */
 predicate isDecorated(VarDecl decl) {
-  exists (ClassDefinition cd | cd.getIdentifier() = decl | exists(cd.getDecorator(_))) or
-  exists (EnumDeclaration cd | cd.getIdentifier() = decl | exists(cd.getDecorator(_)))
+  exists(ClassDefinition cd | cd.getIdentifier() = decl | exists(cd.getDecorator(_)))
+  or
+  exists(EnumDeclaration cd | cd.getIdentifier() = decl | exists(cd.getDecorator(_)))
 }
 
 /**
  * Holds if this is the name of an enum member.
  */
-predicate isEnumMember(VarDecl decl) {
-  decl = any(EnumMember member).getIdentifier()
-}
+predicate isEnumMember(VarDecl decl) { decl = any(EnumMember member).getIdentifier() }
 
 /**
  * Gets a description of the declaration `vd`, which is either of the form
  * "function f", "variable v" or "class c".
  */
 string describeVarDecl(VarDecl vd) {
-  if vd = any(Function f).getId() then
-    result = "function " + vd.getName()
-  else if vd = any(ClassDefinition c).getIdentifier() then
-    result = "class " + vd.getName()
+  if vd = any(Function f).getId()
+  then result = "function " + vd.getName()
   else
-    result = "variable " + vd.getName()
+    if vd = any(ClassDefinition c).getIdentifier()
+    then result = "class " + vd.getName()
+    else result = "variable " + vd.getName()
 }
 
 /**
  * An import statement that provides variable declarations.
  */
 class ImportVarDeclProvider extends Stmt {
-
   ImportVarDeclProvider() {
     this instanceof ImportDeclaration or
     this instanceof ImportEqualsDeclaration
@@ -145,7 +141,6 @@ class ImportVarDeclProvider extends Stmt {
     result = getAVarDecl().getVariable() and
     not whitelisted(result)
   }
-
 }
 
 /**
@@ -153,25 +148,32 @@ class ImportVarDeclProvider extends Stmt {
  */
 predicate whitelisted(UnusedLocal v) {
   // exclude variables mentioned in JSDoc comments in externs
-  mentionedInJSDocComment(v) or
+  mentionedInJSDocComment(v)
+  or
   // exclude variables used to filter out unwanted properties
-  isPropertyFilter(v) or
+  isPropertyFilter(v)
+  or
   // exclude imports of React that are implicitly referenced by JSX
-  isReactForJSX(v) or
+  isReactForJSX(v)
+  or
   // exclude names that are used as types
-  exists (VarDecl vd |
-    v = vd.getVariable() |
-    isUsedAsType(vd) or
+  exists(VarDecl vd | v = vd.getVariable() |
+    isUsedAsType(vd)
+    or
     // exclude names that are used as namespaces from inside a type
-    isUsedAsNamespace(vd)or
+    isUsedAsNamespace(vd)
+    or
     // exclude decorated functions and classes
-    isDecorated(vd) or
+    isDecorated(vd)
+    or
     // exclude names of enum members; they also define property names
-    isEnumMember(vd) or
+    isEnumMember(vd)
+    or
     // ignore ambient declarations - too noisy
     vd.isAmbient()
-  ) or
-  exists (DirectEval eval |
+  )
+  or
+  exists(DirectEval eval |
     // eval nearby
     eval.getEnclosingFunction() = v.getADeclaration().getEnclosingFunction() and
     // ... but not on the RHS
@@ -183,7 +185,7 @@ predicate whitelisted(UnusedLocal v) {
  * Holds if `vd` declares an unused variable that does not come from an import statement, as explained by `msg`.
  */
 predicate unusedNonImports(VarDecl vd, string msg) {
-  exists (UnusedLocal v |
+  exists(UnusedLocal v |
     v = vd.getVariable() and
     msg = "Unused " + describeVarDecl(vd) + "." and
     not vd = any(ImportVarDeclProvider p).getAVarDecl() and
@@ -195,7 +197,7 @@ predicate unusedNonImports(VarDecl vd, string msg) {
  * Holds if `provider` declares one or more unused variables, as explained by `msg`.
  */
 predicate unusedImports(ImportVarDeclProvider provider, string msg) {
-  exists (string imports, string names |
+  exists(string imports, string names |
     imports = pluralize("import", count(provider.getAnUnacceptableUnusedLocal())) and
     names = strictconcat(provider.getAnUnacceptableUnusedLocal().getName(), ", ") and
     msg = "Unused " + imports + " " + names + "."
@@ -203,6 +205,7 @@ predicate unusedImports(ImportVarDeclProvider provider, string msg) {
 }
 
 from ASTNode sel, string msg
-where unusedNonImports(sel, msg) or
-      unusedImports(sel, msg)
+where
+  unusedNonImports(sel, msg) or
+  unusedImports(sel, msg)
 select sel, msg

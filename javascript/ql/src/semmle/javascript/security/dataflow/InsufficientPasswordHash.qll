@@ -1,6 +1,7 @@
 /**
  * Provides a taint tracking configuration for reasoning about password hashing with insufficient computational effort.
  */
+
 import javascript
 private import semmle.javascript.security.SensitiveActions
 private import semmle.javascript.frameworks.CryptoLibraries
@@ -36,18 +37,11 @@ module InsufficientPasswordHash {
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "InsufficientPasswordHash" }
 
-    override
-    predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override
-    predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override
-    predicate isSanitizer(DataFlow::Node node) {
+    override predicate isSanitizer(DataFlow::Node node) {
       super.isSanitizer(node) or
       node instanceof Sanitizer
     }
@@ -60,9 +54,7 @@ module InsufficientPasswordHash {
   class CleartextPasswordSource extends Source, DataFlow::ValueNode {
     override CleartextPasswordExpr astNode;
 
-    override string describe() {
-      result = astNode.describe()
-    }
+    override string describe() { result = astNode.describe() }
   }
 
   /**
@@ -72,7 +64,8 @@ module InsufficientPasswordHash {
     InsufficientPasswordHashAlgorithm() {
       exists(CryptographicOperation application |
         application.getAlgorithm().isWeak() or
-        not application.getAlgorithm() instanceof PasswordHashingAlgorithm |
+        not application.getAlgorithm() instanceof PasswordHashingAlgorithm
+      |
         this.asExpr() = application.getInput()
       )
     }
@@ -89,4 +82,5 @@ deprecated class InsufficientPasswordHashSink = InsufficientPasswordHash::Sink;
 deprecated class InsufficientPasswordHashSanitizer = InsufficientPasswordHash::Sanitizer;
 
 /** DEPRECATED: Use `InsufficientPasswordHash::Configuration` instead. */
-deprecated class InsufficientPasswordHashDataFlowConfiguration = InsufficientPasswordHash::Configuration;
+deprecated class InsufficientPasswordHashDataFlowConfiguration =
+  InsufficientPasswordHash::Configuration;

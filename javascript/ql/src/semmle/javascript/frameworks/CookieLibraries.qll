@@ -1,4 +1,3 @@
-
 /**
  * Provides classes for reasoning about cookies.
  */
@@ -76,11 +75,10 @@ private module LibCookie {
 
   class ReadAccess extends PersistentReadAccess {
     string key;
+
     ReadAccess() { this = libMemberCall("parse").getAPropertyRead(key) }
 
-    override PersistentWriteAccess getAWrite() {
-      key = result.(WriteAccess).getKey()
-    }
+    override PersistentWriteAccess getAWrite() { key = result.(WriteAccess).getKey() }
   }
 
   class WriteAccess extends PersistentWriteAccess, DataFlow::CallNode {

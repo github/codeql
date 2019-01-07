@@ -15,8 +15,13 @@
 import javascript
 
 from JSDocParamTag parm, string missing
-where // JSDoc comments in externs files are not necessarily meant for human readers, so don't complain
-      not parm.getFile().getATopLevel().isExterns() and
-      (not exists(parm.getName()) and missing = "name" or
-       (not exists(parm.getDescription()) or parm.getDescription().regexpMatch("\\s*")) and missing = "description")
+where
+  // JSDoc comments in externs files are not necessarily meant for human readers, so don't complain
+  not parm.getFile().getATopLevel().isExterns() and
+  (
+    not exists(parm.getName()) and missing = "name"
+    or
+    (not exists(parm.getDescription()) or parm.getDescription().regexpMatch("\\s*")) and
+    missing = "description"
+  )
 select parm, "@param tag is missing " + missing + "."

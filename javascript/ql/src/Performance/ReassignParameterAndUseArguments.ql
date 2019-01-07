@@ -13,10 +13,12 @@
 import javascript
 
 from Function f, SimpleParameter p, VarAccess assgn
-where p = f.getAParameter() and
-      f.usesArgumentsObject() and
-      assgn = p.getVariable().getAnAccess() and
-      assgn.isLValue()
-select p, "This parameter is reassigned $@, " +
-          "which may prevent optimization because the surrounding function " +
-          "uses the arguments object.", assgn, "here"
+where
+  p = f.getAParameter() and
+  f.usesArgumentsObject() and
+  assgn = p.getVariable().getAnAccess() and
+  assgn.isLValue()
+select p,
+  "This parameter is reassigned $@, " +
+    "which may prevent optimization because the surrounding function " +
+    "uses the arguments object.", assgn, "here"

@@ -40,7 +40,7 @@ predicate hasCookieMiddleware(Express::RouteHandlerExpr expr, Express::RouteHand
  * ```
  */
 DataFlow::CallNode csrfMiddlewareCreation() {
-  exists (DataFlow::SourceNode callee | result = callee.getACall() |
+  exists(DataFlow::SourceNode callee | result = callee.getACall() |
     callee = DataFlow::moduleImport("csurf")
     or
     callee = DataFlow::moduleImport("lusca") and
@@ -57,18 +57,17 @@ predicate hasCsrfMiddleware(Express::RouteHandlerExpr handler) {
   csrfMiddlewareCreation().flowsToExpr(handler.getAMatchingAncestor())
 }
 
-from Express::RouterDefinition router, Express::RouteSetup setup, Express::RouteHandlerExpr handler,
-     Express::RouteHandlerExpr cookie
-where router = setup.getRouter()
-  and handler = setup.getARouteHandlerExpr()
-
-  and hasCookieMiddleware(handler, cookie)
-  and not hasCsrfMiddleware(handler)
-
+from
+  Express::RouterDefinition router, Express::RouteSetup setup, Express::RouteHandlerExpr handler,
+  Express::RouteHandlerExpr cookie
+where
+  router = setup.getRouter() and
+  handler = setup.getARouteHandlerExpr() and
+  hasCookieMiddleware(handler, cookie) and
+  not hasCsrfMiddleware(handler) and
   // Only warn for the last handler in a chain.
-  and handler.isLastHandler()
-
+  handler.isLastHandler() and
   // Only warn for dangerous for handlers, such as for POST and PUT.
-  and not setup.getRequestMethod().isSafe()
-
-select cookie, "This cookie middleware is serving a request handler $@ without CSRF protection.", handler, "here"
+  not setup.getRequestMethod().isSafe()
+select cookie, "This cookie middleware is serving a request handler $@ without CSRF protection.",
+  handler, "here"

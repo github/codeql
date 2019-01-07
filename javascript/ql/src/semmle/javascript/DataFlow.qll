@@ -53,16 +53,14 @@ deprecated class DataFlowNode extends @dataflownode {
    * Gets another flow node from which data may flow to this node in one step,
    * either locally or non-locally.
    */
-  DataFlowNode flowPred() {
-    result = localFlowPred() or result = nonLocalFlowPred()
-  }
+  DataFlowNode flowPred() { result = localFlowPred() or result = nonLocalFlowPred() }
 
   /**
    * Gets a source flow node (that is, a node without a `localFlowPred()`) from which data
    * may flow to this node in zero or more local steps.
    */
-  cached deprecated
-  DataFlowNode getALocalSource() {
+  cached
+  deprecated DataFlowNode getALocalSource() {
     isLocalSource(result) and
     (
       result = this
@@ -76,10 +74,7 @@ deprecated class DataFlowNode extends @dataflownode {
    * may flow to this node in zero or more steps, considering both local and non-local flow.
    */
   DataFlowNode getASource() {
-    if exists(flowPred()) then
-      result = flowPred().getASource()
-    else
-      result = this
+    if exists(flowPred()) then result = flowPred().getASource() else result = this
   }
 
   /**
@@ -94,14 +89,10 @@ deprecated class DataFlowNode extends @dataflownode {
    * `p.getASource()` does _not_ return the corresponding argument, and
    * `p.isIncomplete("call")` holds.
    */
-  predicate isIncomplete(DataFlowIncompleteness cause) {
-    none()
-  }
+  predicate isIncomplete(DataFlowIncompleteness cause) { none() }
 
   /** Gets type inference results for this data flow node. */
-  DataFlow::AnalyzedNode analyze() {
-    result = DataFlow::valueNode(this).analyze()
-  }
+  DataFlow::AnalyzedNode analyze() { result = DataFlow::valueNode(this).analyze() }
 
   /** Gets a textual representation of this element. */
   string toString() { result = this.(ASTNode).toString() }
@@ -111,12 +102,10 @@ deprecated class DataFlowNode extends @dataflownode {
 }
 
 /** Holds if `nd` is a local source, that is, it has no local data flow predecessor. */
-private deprecated predicate isLocalSource(DataFlowNode nd) {
-  not exists(nd.localFlowPred())
-}
+deprecated private predicate isLocalSource(DataFlowNode nd) { not exists(nd.localFlowPred()) }
 
 /** Holds if data may flom from `nd` to `succ` in one local step. */
-private deprecated predicate localFlow(DataFlowNode nd, DataFlowNode succ) {
+deprecated private predicate localFlow(DataFlowNode nd, DataFlowNode succ) {
   nd = succ.localFlowPred()
 }
 
@@ -124,7 +113,7 @@ private deprecated predicate localFlow(DataFlowNode nd, DataFlowNode succ) {
  * Holds if `snk` is reachable from `src` in one or more local steps, where `src`
  * itself is reachable from a local source in zere or more local steps.
  */
-private deprecated predicate locallyReachable(DataFlowNode src, DataFlowNode snk) =
+deprecated private predicate locallyReachable(DataFlowNode src, DataFlowNode snk) =
   boundedFastTC(localFlow/2, isLocalSource/1)(src, snk)
 
 /**
@@ -133,12 +122,12 @@ private deprecated predicate locallyReachable(DataFlowNode src, DataFlowNode snk
  */
 deprecated class DataFlowIncompleteness extends string {
   DataFlowIncompleteness() {
-    this = "call" or   // lack of inter-procedural analysis
-    this = "heap" or   // lack of heap modeling
+    this = "call" or // lack of inter-procedural analysis
+    this = "heap" or // lack of heap modeling
     this = "import" or // lack of module import/export modeling
     this = "global" or // incomplete modeling of global object
-    this = "yield" or  // lack of yield/async/await modeling
-    this = "eval" or   // lack of reflection modeling
+    this = "yield" or // lack of yield/async/await modeling
+    this = "eval" or // lack of reflection modeling
     this = "namespace" // lack of exported variable modeling
   }
 }
@@ -146,7 +135,7 @@ deprecated class DataFlowIncompleteness extends string {
 /**
  * A variable access, viewed as a data flow node.
  */
-private deprecated class VarAccessFlow extends DataFlowNode, @varaccess {
+deprecated private class VarAccessFlow extends DataFlowNode, @varaccess {
   VarAccessFlow() { this instanceof RValue }
 
   /**
@@ -154,7 +143,7 @@ private deprecated class VarAccessFlow extends DataFlowNode, @varaccess {
    * this access may refer.
    */
   private VarDefFlow getALocalDef() {
-    exists (SsaDefinition def |
+    exists(SsaDefinition def |
       this = def.getVariable().getAUse() and
       result = def.getAContributingVarDef()
     )
@@ -166,7 +155,7 @@ private deprecated class VarAccessFlow extends DataFlowNode, @varaccess {
   }
 
   override DataFlowNode nonLocalFlowPred() {
-    exists (GlobalVariable v, VarDefFlow def |
+    exists(GlobalVariable v, VarDefFlow def |
       v = def.getAVariable() and
       result = def.getSourceNode() and
       this = v.getAnAccess()
@@ -174,16 +163,21 @@ private deprecated class VarAccessFlow extends DataFlowNode, @varaccess {
   }
 
   override predicate isIncomplete(DataFlowIncompleteness cause) {
-    exists (SsaDefinition ssa, VarDefFlow def |
-      this = ssa.getVariable().getAUse() and def = ssa.getAContributingVarDef() |
+    exists(SsaDefinition ssa, VarDefFlow def |
+      this = ssa.getVariable().getAUse() and def = ssa.getAContributingVarDef()
+    |
       def.isIncomplete(cause)
     )
     or
-    exists (Variable v | this = v.getAnAccess() |
-      v.isGlobal() and cause = "global" or
-      globalIsIncomplete(v, cause) or
-      v.isNamespaceExport() and cause = "namespace" or
-      v instanceof ArgumentsVariable and cause = "call" or
+    exists(Variable v | this = v.getAnAccess() |
+      v.isGlobal() and cause = "global"
+      or
+      globalIsIncomplete(v, cause)
+      or
+      v.isNamespaceExport() and cause = "namespace"
+      or
+      v instanceof ArgumentsVariable and cause = "call"
+      or
       any(DirectEval e).mayAffect(v) and cause = "eval"
     )
   }
@@ -196,8 +190,8 @@ private deprecated class VarAccessFlow extends DataFlowNode, @varaccess {
  * We exclude cause `"global"`, since all global variables have this incompleteness anyway.
  */
 pragma[noinline]
-private deprecated predicate globalIsIncomplete(GlobalVariable v, DataFlowIncompleteness cause) {
-  exists (VarDefFlow def |
+deprecated private predicate globalIsIncomplete(GlobalVariable v, DataFlowIncompleteness cause) {
+  exists(VarDefFlow def |
     v = def.getAVariable() and
     def.isIncomplete(cause) and
     cause != "global"
@@ -207,7 +201,7 @@ private deprecated predicate globalIsIncomplete(GlobalVariable v, DataFlowIncomp
 /**
  * A variable definition, viewed as a contributor to the data flow graph.
  */
-private deprecated class VarDefFlow extends VarDef {
+deprecated private class VarDefFlow extends VarDef {
   /**
    * Gets a data flow node representing the value assigned by this
    * definition.
@@ -223,10 +217,14 @@ private deprecated class VarDefFlow extends VarDef {
    * Holds if this definition is analyzed imprecisely due to `cause`.
    */
   predicate isIncomplete(DataFlowIncompleteness cause) {
-    this instanceof Parameter and cause = "call" or
-    this instanceof ImportSpecifier and cause = "import" or
-    exists (EnhancedForLoop efl | this = efl.getIteratorExpr()) and cause = "heap" or
-    exists (ComprehensionBlock cb | this = cb.getIterator()) and cause = "yield" or
+    this instanceof Parameter and cause = "call"
+    or
+    this instanceof ImportSpecifier and cause = "import"
+    or
+    exists(EnhancedForLoop efl | this = efl.getIteratorExpr()) and cause = "heap"
+    or
+    exists(ComprehensionBlock cb | this = cb.getIterator()) and cause = "yield"
+    or
     getTarget() instanceof DestructuringPattern and cause = "heap"
   }
 }
@@ -234,7 +232,7 @@ private deprecated class VarDefFlow extends VarDef {
 /**
  * An IIFE parameter, viewed as a contributor to the data flow graph.
  */
-private deprecated class IifeParameterFlow extends VarDefFlow {
+deprecated private class IifeParameterFlow extends VarDefFlow {
   /** The function of which this is a parameter. */
   ImmediatelyInvokedFunctionExpr iife;
 
@@ -243,9 +241,7 @@ private deprecated class IifeParameterFlow extends VarDefFlow {
     iife.argumentPassing(this, _)
   }
 
-  override DataFlowNode getSourceNode() {
-    iife.argumentPassing(this, result)
-  }
+  override DataFlowNode getSourceNode() { iife.argumentPassing(this, result) }
 
   override predicate isIncomplete(DataFlowIncompleteness cause) { none() }
 }
@@ -253,77 +249,60 @@ private deprecated class IifeParameterFlow extends VarDefFlow {
 /**
  * An ECMAScript 2015 import, viewed as a contributor to the data flow graph.
  */
-private deprecated class ImportSpecifierFlow extends VarDefFlow, ImportSpecifier {
-
-  override DataFlowNode getSourceNode() {
-    result = getLocal()
-  }
-
+deprecated private class ImportSpecifierFlow extends VarDefFlow, ImportSpecifier {
+  override DataFlowNode getSourceNode() { result = getLocal() }
 }
 
 /** A parenthesized expression, viewed as a data flow node. */
-private deprecated class ParExprFlow extends DataFlowNode, @parexpr {
-  override DataFlowNode localFlowPred() {
-    result = this.(ParExpr).getExpression()
-  }
+deprecated private class ParExprFlow extends DataFlowNode, @parexpr {
+  override DataFlowNode localFlowPred() { result = this.(ParExpr).getExpression() }
 }
 
 /** A type assertion, `E as T` or `<T> E`, viewed as a data flow node. */
-private deprecated class TypeAssertionFlow extends DataFlowNode, @typeassertion {
-  override DataFlowNode localFlowPred() {
-    result = this.(TypeAssertion).getExpression()
-  }
+deprecated private class TypeAssertionFlow extends DataFlowNode, @typeassertion {
+  override DataFlowNode localFlowPred() { result = this.(TypeAssertion).getExpression() }
 }
 
 /** A non-null assertion, `E!` viewed as a data flow node. */
-private deprecated class NonNullAssertionFlow extends DataFlowNode, @non_null_assertion {
-  override DataFlowNode localFlowPred() {
-    result = this.(NonNullAssertion).getExpression()
-  }
+deprecated private class NonNullAssertionFlow extends DataFlowNode, @non_null_assertion {
+  override DataFlowNode localFlowPred() { result = this.(NonNullAssertion).getExpression() }
 }
 
 /** An expression with type arguments, viewed as a data flow node. */
-private deprecated class ExpressionWithTypeArgumentsFlow extends DataFlowNode, @expressionwithtypearguments {
+deprecated private class ExpressionWithTypeArgumentsFlow extends DataFlowNode,
+  @expressionwithtypearguments {
   override DataFlowNode localFlowPred() {
     result = this.(ExpressionWithTypeArguments).getExpression()
   }
 }
 
 /** A sequence expression, viewed as a data flow node. */
-private deprecated class SeqExprFlow extends DataFlowNode, @seqexpr {
-  override DataFlowNode localFlowPred() {
-    result = this.(SeqExpr).getLastOperand()
-  }
+deprecated private class SeqExprFlow extends DataFlowNode, @seqexpr {
+  override DataFlowNode localFlowPred() { result = this.(SeqExpr).getLastOperand() }
 }
 
 /** A short-circuiting logical expression, viewed as a data flow node. */
-private deprecated class LogicalBinaryExprFlow extends DataFlowNode, @binaryexpr {
+deprecated private class LogicalBinaryExprFlow extends DataFlowNode, @binaryexpr {
   LogicalBinaryExprFlow() { this instanceof LogicalBinaryExpr }
 
-  override DataFlowNode localFlowPred() {
-    result = this.(LogicalBinaryExpr).getAnOperand()
-  }
+  override DataFlowNode localFlowPred() { result = this.(LogicalBinaryExpr).getAnOperand() }
 }
 
 /** An assignment expression, viewed as a data flow node. */
-private deprecated class AssignExprFlow extends DataFlowNode, @assignexpr {
-  override DataFlowNode localFlowPred() {
-    result = this.(AssignExpr).getRhs()
-  }
+deprecated private class AssignExprFlow extends DataFlowNode, @assignexpr {
+  override DataFlowNode localFlowPred() { result = this.(AssignExpr).getRhs() }
 }
 
 /** A conditional expression, viewed as a data flow node. */
-private deprecated class ConditionalExprFlow extends DataFlowNode, @conditionalexpr {
-  override DataFlowNode localFlowPred() {
-    result = this.(ConditionalExpr).getABranch()
-  }
+deprecated private class ConditionalExprFlow extends DataFlowNode, @conditionalexpr {
+  override DataFlowNode localFlowPred() { result = this.(ConditionalExpr).getABranch() }
 }
 
 /**
  * A data flow node whose value involves inter-procedural flow,
  * and which hence is analyzed incompletely.
  */
-private deprecated class InterProcFlow extends DataFlowNode, @expr {
+deprecated private class InterProcFlow extends DataFlowNode, @expr {
   InterProcFlow() {
     this instanceof InvokeExpr or
     this instanceof ThisExpr or
@@ -337,7 +316,7 @@ private deprecated class InterProcFlow extends DataFlowNode, @expr {
 }
 
 /** An external module reference, viewed as a data flow node. */
-private deprecated class ExternalModuleFlow extends DataFlowNode, @externalmodulereference {
+deprecated private class ExternalModuleFlow extends DataFlowNode, @externalmodulereference {
   override predicate isIncomplete(DataFlowIncompleteness cause) { cause = "import" }
 }
 
@@ -347,17 +326,13 @@ private deprecated class ExternalModuleFlow extends DataFlowNode, @externalmodul
  * Unlike other calls, we can analyze the value of an IIFE completely, hence
  * we override `InterProcFlow`.
  */
-private deprecated class IifeFlow extends InterProcFlow, @callexpr {
+deprecated private class IifeFlow extends InterProcFlow, @callexpr {
   /** The function this IIFE invokes. */
   ImmediatelyInvokedFunctionExpr iife;
 
-  IifeFlow() {
-    this = iife.getInvocation()
-  }
+  IifeFlow() { this = iife.getInvocation() }
 
-  override DataFlowNode localFlowPred() {
-    result = iife.getAReturnedExpr()
-  }
+  override DataFlowNode localFlowPred() { result = iife.getAReturnedExpr() }
 
   override predicate isIncomplete(DataFlowIncompleteness cause) { none() }
 }
@@ -365,7 +340,7 @@ private deprecated class IifeFlow extends InterProcFlow, @callexpr {
 /**
  * A property access, viewed as a data flow node.
  */
-private deprecated class PropAccessFlow extends DataFlowNode, @propaccess {
+deprecated private class PropAccessFlow extends DataFlowNode, @propaccess {
   override predicate isIncomplete(DataFlowIncompleteness cause) { cause = "heap" }
 }
 
@@ -373,7 +348,7 @@ private deprecated class PropAccessFlow extends DataFlowNode, @propaccess {
  * A data flow node whose value involves co-routines or promises,
  * and which hence is analyzed incompletely.
  */
-private deprecated class IteratorFlow extends DataFlowNode, @expr {
+deprecated private class IteratorFlow extends DataFlowNode, @expr {
   IteratorFlow() {
     this instanceof YieldExpr or
     this instanceof AwaitExpr or
@@ -439,11 +414,15 @@ abstract deprecated class PropWriteNode extends PropRefNode {
 /**
  * A property assignment, viewed as a data flow node.
  */
-private deprecated class PropAssignNode extends PropWriteNode, @propaccess {
+deprecated private class PropAssignNode extends PropWriteNode, @propaccess {
   PropAssignNode() { this instanceof LValue }
+
   override DataFlowNode getBase() { result = this.(PropAccess).getBase() }
+
   override Expr getPropertyNameExpr() { result = this.(PropAccess).getPropertyNameExpr() }
+
   override string getPropertyName() { result = this.(PropAccess).getPropertyName() }
+
   override DataFlowNode getRhs() { result = this.(LValue).getRhs() }
 }
 
@@ -451,12 +430,16 @@ private deprecated class PropAssignNode extends PropWriteNode, @propaccess {
  * A property of an object literal, viewed as a data flow node that writes
  * to the corresponding property.
  */
-private deprecated class PropInitNode extends PropWriteNode, @property {
+deprecated private class PropInitNode extends PropWriteNode, @property {
   /** Gets the property that this node wraps. */
   private Property getProperty() { result = this }
+
   override DataFlowNode getBase() { result = getProperty().getObjectExpr() }
+
   override Expr getPropertyNameExpr() { result = getProperty().getNameExpr() }
+
   override string getPropertyName() { result = getProperty().getName() }
+
   override DataFlowNode getRhs() { result = getProperty().(ValueProperty).getInit() }
 }
 
@@ -464,14 +447,19 @@ private deprecated class PropInitNode extends PropWriteNode, @property {
  * A call to `Object.defineProperty`, viewed as a data flow node that
  * writes to the corresponding property.
  */
-private deprecated class ObjectDefinePropNode extends PropWriteNode, @callexpr {
+deprecated private class ObjectDefinePropNode extends PropWriteNode, @callexpr {
   CallToObjectDefineProperty odp;
+
   ObjectDefinePropNode() { this = odp.asExpr() }
+
   override DataFlowNode getBase() { result = odp.getBaseObject().asExpr() }
+
   override Expr getPropertyNameExpr() { result = odp.getArgument(1).asExpr() }
+
   override string getPropertyName() { result = odp.getPropertyName() }
+
   override DataFlowNode getRhs() {
-    exists (ObjectExpr propdesc |
+    exists(ObjectExpr propdesc |
       propdesc = odp.getPropertyDescriptor().asExpr() and
       result = propdesc.getPropertyByName("value").getInit()
     )
@@ -482,15 +470,18 @@ private deprecated class ObjectDefinePropNode extends PropWriteNode, @callexpr {
  * A static member definition, viewed as a data flow node that adds
  * a property to the class.
  */
-private deprecated class StaticMemberAsWrite extends PropWriteNode, @expr {
-  StaticMemberAsWrite() {
-    exists (MemberDefinition md | md.isStatic() and this = md.getNameExpr())
-  }
+deprecated private class StaticMemberAsWrite extends PropWriteNode, @expr {
+  StaticMemberAsWrite() { exists(MemberDefinition md | md.isStatic() and this = md.getNameExpr()) }
+
   /** Gets the member definition that this node wraps. */
   private MemberDefinition getMember() { this = result.getNameExpr() }
+
   override DataFlowNode getBase() { result = getMember().getDeclaringClass() }
+
   override Expr getPropertyNameExpr() { result = getMember().getNameExpr() }
+
   override string getPropertyName() { result = getMember().getName() }
+
   override DataFlowNode getRhs() { result = getMember().getInit() }
 }
 
@@ -498,26 +489,34 @@ private deprecated class StaticMemberAsWrite extends PropWriteNode, @expr {
  * A spread property of an object literal, viewed as a data flow node that writes
  * properties of the object literal.
  */
-private deprecated class SpreadPropertyAsWrite extends PropWriteNode, @expr {
-  SpreadPropertyAsWrite() { exists (SpreadProperty prop | this = prop.getInit()) }
+deprecated private class SpreadPropertyAsWrite extends PropWriteNode, @expr {
+  SpreadPropertyAsWrite() { exists(SpreadProperty prop | this = prop.getInit()) }
+
   override DataFlowNode getBase() { result.(ObjectExpr).getAProperty().getInit() = this }
+
   override Expr getPropertyNameExpr() { none() }
+
   override string getPropertyName() { none() }
+
   override DataFlowNode getRhs() { none() }
 }
-
 
 /**
  * A JSX attribute, viewed as a data flow node that writes properties to
  * the JSX element it is in.
  */
-private deprecated class JSXAttributeAsWrite extends PropWriteNode, @identifier {
-  JSXAttributeAsWrite() { exists (JSXAttribute attr | this = attr.getNameExpr()) }
+deprecated private class JSXAttributeAsWrite extends PropWriteNode, @identifier {
+  JSXAttributeAsWrite() { exists(JSXAttribute attr | this = attr.getNameExpr()) }
+
   /** Gets the JSX attribute that this node wraps. */
   private JSXAttribute getAttribute() { result.getNameExpr() = this }
+
   override DataFlowNode getBase() { result = getAttribute().getElement() }
+
   override Expr getPropertyNameExpr() { result = this }
+
   override string getPropertyName() { result = this.(Identifier).getName() }
+
   override DataFlowNode getRhs() { result = getAttribute().getValue() }
 }
 
@@ -534,11 +533,15 @@ abstract deprecated class PropReadNode extends PropRefNode {
 /**
  * A property access in rvalue position.
  */
-private deprecated class PropAccessReadNode extends PropReadNode, @propaccess {
+deprecated private class PropAccessReadNode extends PropReadNode, @propaccess {
   PropAccessReadNode() { this instanceof RValue }
+
   override DataFlowNode getBase() { result = this.(PropAccess).getBase() }
+
   override Expr getPropertyNameExpr() { result = this.(PropAccess).getPropertyNameExpr() }
+
   override string getPropertyName() { result = this.(PropAccess).getPropertyName() }
+
   override DataFlowNode getDefault() { none() }
 }
 
@@ -546,18 +549,23 @@ private deprecated class PropAccessReadNode extends PropReadNode, @propaccess {
  * A property pattern viewed as a property read; for instance, in
  * `var { p: q } = o`, `p` is a read of property `p` of `o`.
  */
-private deprecated class PropPatternReadNode extends PropReadNode, @expr {
+deprecated private class PropPatternReadNode extends PropReadNode, @expr {
   PropPatternReadNode() { this = any(PropertyPattern p).getNameExpr() }
+
   /** Gets the property pattern that this node wraps. */
   private PropertyPattern getPropertyPattern() { this = result.getNameExpr() }
+
   override DataFlowNode getBase() {
-    exists (VarDef d |
+    exists(VarDef d |
       d.getTarget() = getPropertyPattern().getObjectPattern() and
       result = d.getSource()
     )
   }
+
   override Expr getPropertyNameExpr() { result = getPropertyPattern().getNameExpr() }
+
   override string getPropertyName() { result = getPropertyPattern().getName() }
+
   override DataFlowNode getDefault() { result = getPropertyPattern().getDefault() }
 }
 
@@ -565,15 +573,19 @@ private deprecated class PropPatternReadNode extends PropReadNode, @expr {
  * A rest pattern viewed as a property read; for instance, in
  * `var { ...ps } = o`, `ps` is a read of all properties of `o`.
  */
-private deprecated class RestPropertyAsRead extends PropReadNode {
+deprecated private class RestPropertyAsRead extends PropReadNode {
   RestPropertyAsRead() { this = any(ObjectPattern p).getRest() }
+
   override DataFlowNode getBase() {
-    exists (VarDef d |
+    exists(VarDef d |
       d.getTarget().(ObjectPattern).getRest() = this and
       result = d.getSource()
     )
   }
+
   override Expr getPropertyNameExpr() { none() }
+
   override string getPropertyName() { none() }
+
   override DataFlowNode getDefault() { none() }
 }

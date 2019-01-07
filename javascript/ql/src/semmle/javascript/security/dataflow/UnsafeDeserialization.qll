@@ -27,13 +27,9 @@ module UnsafeDeserialization {
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "UnsafeDeserialization" }
 
-    override predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
     override predicate isSanitizer(DataFlow::Node node) {
       super.isSanitizer(node) or
@@ -51,19 +47,18 @@ module UnsafeDeserialization {
    */
   class JsYamlUnsafeLoad extends Sink {
     JsYamlUnsafeLoad() {
-      exists (DataFlow::ModuleImportNode mi | mi.getPath() = "js-yaml" |
+      exists(DataFlow::ModuleImportNode mi | mi.getPath() = "js-yaml" |
         // the first argument to a call to `load` or `loadAll`
-        exists (string n | n = "load" or n = "loadAll" |
-          this = mi.getAMemberCall(n).getArgument(0)
-        )
+        exists(string n | n = "load" or n = "loadAll" | this = mi.getAMemberCall(n).getArgument(0))
         or
         // the first argument to a call to `safeLoad` or `safeLoadAll` where
         // the schema is specified to be `DEFAULT_FULL_SCHEMA`
-        exists (string n, DataFlow::CallNode c, DataFlow::Node fullSchema |
-          n = "safeLoad" or n = "safeLoadAll" |
+        exists(string n, DataFlow::CallNode c, DataFlow::Node fullSchema |
+          n = "safeLoad" or n = "safeLoadAll"
+        |
           c = mi.getAMemberCall(n) and
           this = c.getArgument(0) and
-          fullSchema = c.getOptionArgument(c.getNumArgument()-1, "schema") and
+          fullSchema = c.getOptionArgument(c.getNumArgument() - 1, "schema") and
           mi.getAPropertyRead("DEFAULT_FULL_SCHEMA").flowsTo(fullSchema)
         )
       )

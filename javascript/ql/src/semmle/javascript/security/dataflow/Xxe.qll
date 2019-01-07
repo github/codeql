@@ -28,13 +28,9 @@ module Xxe {
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "Xxe" }
 
-    override predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
     override predicate isSanitizer(DataFlow::Node node) {
       super.isSanitizer(node) or
@@ -51,9 +47,7 @@ module Xxe {
    * An access to `document.location`, considered as a flow source for XXE vulnerabilities.
    */
   class LocationAsSource extends Source, DataFlow::ValueNode {
-    LocationAsSource() {
-      isLocation(astNode)
-    }
+    LocationAsSource() { isLocation(astNode) }
   }
 
   /**
@@ -62,7 +56,7 @@ module Xxe {
    */
   class XmlParsingWithExternalEntityResolution extends Sink, DataFlow::ValueNode {
     XmlParsingWithExternalEntityResolution() {
-      exists (XML::ParserInvocation parse | astNode = parse.getSourceArgument() |
+      exists(XML::ParserInvocation parse | astNode = parse.getSourceArgument() |
         parse.resolvesEntities(XML::ExternalEntity(_))
         or
         parse.resolvesEntities(XML::ParameterEntity(true)) and

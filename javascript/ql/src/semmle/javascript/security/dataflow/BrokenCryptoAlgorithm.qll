@@ -1,6 +1,7 @@
 /**
  * Provides a taint tracking configuration for reasoning about sensitive information in broken or weak cryptographic algorithms.
  */
+
 import javascript
 private import semmle.javascript.security.SensitiveActions
 private import semmle.javascript.frameworks.CryptoLibraries
@@ -36,18 +37,11 @@ module BrokenCryptoAlgorithm {
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "BrokenCryptoAlgorithm" }
 
-    override
-    predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override
-    predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override
-    predicate isSanitizer(DataFlow::Node node) {
+    override predicate isSanitizer(DataFlow::Node node) {
       super.isSanitizer(node) or
       node instanceof Sanitizer
     }
@@ -60,9 +54,7 @@ module BrokenCryptoAlgorithm {
   class SensitiveExprSource extends Source, DataFlow::ValueNode {
     override SensitiveExpr astNode;
 
-    override string describe() {
-      result = astNode.describe()
-    }
+    override string describe() { result = astNode.describe() }
   }
 
   /**

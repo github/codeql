@@ -9,15 +9,13 @@ import javascript
  */
 class GoogFunctionCall extends CallExpr {
   GoogFunctionCall() {
-    exists (GlobalVariable gv | gv.getName() = "goog" |
+    exists(GlobalVariable gv | gv.getName() = "goog" |
       this.getCallee().(DotExpr).getBase() = gv.getAnAccess()
     )
   }
 
   /** Gets the name of the invoked function. */
-  string getFunctionName() {
-    result = getCallee().(DotExpr).getPropertyName()
-  }
+  string getFunctionName() { result = getCallee().(DotExpr).getPropertyName() }
 }
 
 /**
@@ -25,56 +23,38 @@ class GoogFunctionCall extends CallExpr {
  * in the `goog` namespace.
  */
 class GoogFunctionCallStmt extends ExprStmt {
-  GoogFunctionCallStmt() {
-    super.getExpr() instanceof GoogFunctionCall
-  }
+  GoogFunctionCallStmt() { super.getExpr() instanceof GoogFunctionCall }
 
-  override GoogFunctionCall getExpr() {
-    result = super.getExpr()
-  }
+  override GoogFunctionCall getExpr() { result = super.getExpr() }
 
   /** Gets the name of the invoked function. */
-  string getFunctionName() {
-    result = getExpr().getFunctionName()
-  }
+  string getFunctionName() { result = getExpr().getFunctionName() }
 
   /** Gets the `i`th argument to the invoked function. */
-  Expr getArgument(int i) {
-    result = getExpr().getArgument(i)
-  }
+  Expr getArgument(int i) { result = getExpr().getArgument(i) }
 
   /** Gets an argument to the invoked function. */
-  Expr getAnArgument() {
-    result = getArgument(_)
-  }
+  Expr getAnArgument() { result = getArgument(_) }
 }
 
 /**
  * A call to `goog.provide`.
  */
 class GoogProvide extends GoogFunctionCallStmt {
-  GoogProvide() {
-    getFunctionName() = "provide"
-  }
+  GoogProvide() { getFunctionName() = "provide" }
 
   /** Gets the identifier of the namespace created by this call. */
-  string getNamespaceId() {
-    result = getArgument(0).(ConstantString).getStringValue()
-  }
+  string getNamespaceId() { result = getArgument(0).(ConstantString).getStringValue() }
 }
 
 /**
  * A call to `goog.require`.
  */
 class GoogRequire extends GoogFunctionCallStmt {
-  GoogRequire() {
-    getFunctionName() = "require"
-  }
+  GoogRequire() { getFunctionName() = "require" }
 
   /** Gets the identifier of the namespace imported by this call. */
-  string getNamespaceId() {
-    result = getArgument(0).(ConstantString).getStringValue()
-  }
+  string getNamespaceId() { result = getArgument(0).(ConstantString).getStringValue() }
 }
 
 /**
@@ -88,12 +68,8 @@ class ClosureModule extends TopLevel {
   }
 
   /** Gets the identifier of a namespace required by this module. */
-  string getARequiredNamespace() {
-    result = getAChildStmt().(GoogRequire).getNamespaceId()
-  }
+  string getARequiredNamespace() { result = getAChildStmt().(GoogRequire).getNamespaceId() }
 
   /** Gets the identifer of a namespace provided by this module. */
-  string getAProvidedNamespace() {
-    result = getAChildStmt().(GoogProvide).getNamespaceId()
-  }
+  string getAProvidedNamespace() { result = getAChildStmt().(GoogProvide).getNamespaceId() }
 }

@@ -2,22 +2,20 @@
  * Provides predicates for reasoning about flow of user-controlled values that are used
  * as property names.
  */
+
 import javascript
 
 module PropertyInjection {
   /**
    * A data-flow node that sanitizes user-controlled property names that flow through it.
    */
-  abstract class Sanitizer extends DataFlow::Node {
-  }
+  abstract class Sanitizer extends DataFlow::Node { }
 
   /**
    * Concatenation with a constant, acting as a sanitizer.
    */
   private class ConcatSanitizer extends Sanitizer {
-    ConcatSanitizer() {
-      StringConcatenation::getAnOperand(this).asExpr() instanceof ConstantString
-    }
+    ConcatSanitizer() { StringConcatenation::getAnOperand(this).asExpr() instanceof ConstantString }
   }
 
   /**
@@ -34,7 +32,7 @@ module PropertyInjection {
     node.analyze().getAValue() instanceof AbstractCallable
     or
     // Assume that a value that is invoked can refer to a function.
-    exists (node.getAnInvocation())
+    exists(node.getAnInvocation())
   }
 
   /**

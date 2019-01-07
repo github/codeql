@@ -17,8 +17,9 @@ import javascript
  * and the same value, where `earlier` appears textually before `later`.
  */
 predicate duplicate(DOM::AttributeDefinition earlier, DOM::AttributeDefinition later) {
-  exists (DOM::ElementDefinition elt, int i, int j |
-    earlier = elt.getAttribute(i) and later = elt.getAttribute(j) |
+  exists(DOM::ElementDefinition elt, int i, int j |
+    earlier = elt.getAttribute(i) and later = elt.getAttribute(j)
+  |
     i < j and
     earlier.getName() = later.getName() and
     earlier.getStringValue() = later.getStringValue()
