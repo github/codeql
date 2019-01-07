@@ -40,15 +40,11 @@ predicate isStringCopyCastedAsBoolean( FunctionCall func, Expr expr1, string msg
   and msg = "Return Value of " + func.getTarget().getQualifiedName() + " used as boolean."
 }
 
-predicate isStringCopyUsedInCondition( FunctionCall func, Expr expr1, string msg ) {
-  exists( ConditionalStmt condstmt |
-    condstmt.getAChild() = expr1 |
+predicate isStringCopyUsedInLogicalOperationOrCondition( FunctionCall func, Expr expr1, string msg ) {
     isStringComparisonFunction( func.getTarget().getQualifiedName() )
-    and ( 
-      // The string copy function is used directly as the conditional expression
-      func = condstmt.getChild(0)
-      // ... or it is being used in an equality or logical operation 
-      or exists( EqualityOperation eop |
+    and ((( 
+      // it is being used in an equality or logical operation 
+      exists( EqualityOperation eop |
         eop = expr1
         and func = eop.getAChild()
       )
@@ -61,14 +57,21 @@ predicate isStringCopyUsedInCondition( FunctionCall func, Expr expr1, string msg
         and func = ble.getAChild()
       )
     )
-    and msg = "Return Value of " + func.getTarget().getQualifiedName() + " used in a conditional."
-  )
+    and msg = "Return Value of " + func.getTarget().getQualifiedName() + " used in a logical operation."
+    )
+    or
+      exists( ConditionalStmt condstmt |
+      condstmt.getAChild() = expr1 |
+      // or the string copy function is used directly as the conditional expression
+      func = condstmt.getChild(0)
+      and msg = "Return Value of " + func.getTarget().getQualifiedName() + " used directly in a conditional expression."
+    ))
 }
 
 from FunctionCall func, Expr expr1, string msg
 where 
   ( isStringCopyCastedAsBoolean(func, expr1, msg) and 
-    not isStringCopyUsedInCondition(func, expr1, _)
+    not isStringCopyUsedInLogicalOperationOrCondition(func, expr1, _)
   )
-  or isStringCopyUsedInCondition(func, expr1, msg)
+  or isStringCopyUsedInLogicalOperationOrCondition(func, expr1, msg)
 select expr1, msg
