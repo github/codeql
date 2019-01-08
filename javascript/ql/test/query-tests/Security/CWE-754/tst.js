@@ -34,7 +34,7 @@
     let key = "$" + name;
     obj[key]();     // NOT OK
     if (typeof obj[key] === 'function')
-      obj[key]();   // OK - but stil flagged
+      obj[key]();   // OK - but still flagged
 
     if (typeof fn === 'function') {
       fn.apply(obj); // OK
