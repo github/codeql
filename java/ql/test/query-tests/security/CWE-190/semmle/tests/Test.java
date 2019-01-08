@@ -37,7 +37,7 @@ class Test {
 		{
 			long timeInSeconds = 10000000L;
 
-			// BAD: same problem, but with longs
+			// same problem, but with longs; not reported as the conversion to double is not sufficient indication of a large number
 			double timeInNanos = timeInSeconds * 10000000L;
 		}
 
