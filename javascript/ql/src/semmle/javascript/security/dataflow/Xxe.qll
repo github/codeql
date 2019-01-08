@@ -65,15 +65,3 @@ module Xxe {
     }
   }
 }
-
-/** DEPRECATED: Use `Xxe::Source` instead. */
-deprecated class XxeSource = Xxe::Source;
-
-/** DEPRECATED: Use `Xxe::Sink` instead. */
-deprecated class XxeSink = Xxe::Sink;
-
-/** DEPRECATED: Use `Xxe::Sanitizer` instead. */
-deprecated class XxeSanitizer = Xxe::Sanitizer;
-
-/** DEPRECATED: Use `Xxe::Configuration` instead. */
-deprecated class XxeTrackingConfig = Xxe::Configuration;

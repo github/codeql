@@ -101,15 +101,3 @@ module ServerSideUrlRedirect {
     }
   }
 }
-
-/** DEPRECATED: Use `ServerSideUrlRedirect::Source` instead. */
-deprecated class ServerSideUrlRedirectSource = ServerSideUrlRedirect::Source;
-
-/** DEPRECATED: Use `ServerSideUrlRedirect::Sink` instead. */
-deprecated class ServerSideUrlRedirectSink = ServerSideUrlRedirect::Sink;
-
-/** DEPRECATED: Use `ServerSideUrlRedirect::Sanitizer` instead. */
-deprecated class ServerSideUrlRedirectSanitizer = ServerSideUrlRedirect::Sanitizer;
-
-/** DEPRECATED: Use `ServerSideUrlRedirect::Configuration` instead. */
-deprecated class ServerSideUrlRedirectDataFlowConfiguration = ServerSideUrlRedirect::Configuration;

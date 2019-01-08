@@ -71,16 +71,3 @@ module InsufficientPasswordHash {
     }
   }
 }
-
-/** DEPRECATED: Use `InsufficientPasswordHash::Source` instead. */
-deprecated class InsufficientPasswordHashSource = InsufficientPasswordHash::Source;
-
-/** DEPRECATED: Use `InsufficientPasswordHash::Sink` instead. */
-deprecated class InsufficientPasswordHashSink = InsufficientPasswordHash::Sink;
-
-/** DEPRECATED: Use `InsufficientPasswordHash::Sanitizer` instead. */
-deprecated class InsufficientPasswordHashSanitizer = InsufficientPasswordHash::Sanitizer;
-
-/** DEPRECATED: Use `InsufficientPasswordHash::Configuration` instead. */
-deprecated class InsufficientPasswordHashDataFlowConfiguration =
-  InsufficientPasswordHash::Configuration;

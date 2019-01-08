@@ -68,15 +68,3 @@ module RegExpInjection {
     }
   }
 }
-
-/** DEPRECATED: Use `RegExpInjection::Source` instead. */
-deprecated class RegExpInjectionSource = RegExpInjection::Source;
-
-/** DEPRECATED: Use `RegExpInjection::Sink` instead. */
-deprecated class RegExpInjectionSink = RegExpInjection::Sink;
-
-/** DEPRECATED: Use `RegExpInjection::Sanitizer` instead. */
-deprecated class RegExpInjectionSanitizer = RegExpInjection::Sanitizer;
-
-/** DEPRECATED: Use `RegExpInjection::Configuration` instead. */
-deprecated class RegExpInjectionTaintTrackingConfiguration = RegExpInjection::Configuration;

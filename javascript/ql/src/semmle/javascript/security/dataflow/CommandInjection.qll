@@ -123,15 +123,3 @@ module CommandInjection {
     )
   }
 }
-
-/** DEPRECATED: Use `CommandInjection::Source` instead. */
-deprecated class CommandInjectionSource = CommandInjection::Source;
-
-/** DEPRECATED: Use `CommandInjection::Sink` instead. */
-deprecated class CommandInjectionSink = CommandInjection::Sink;
-
-/** DEPRECATED: Use `CommandInjection::Sanitizer` instead. */
-deprecated class CommandInjectionSanitizer = CommandInjection::Sanitizer;
-
-/** DEPRECATED: Use `CommandInjection::Configuration` instead. */
-deprecated class CommandInjectionTrackingConfig = CommandInjection::Configuration;

@@ -53,12 +53,3 @@ module StackTraceExposure {
    */
   class DefaultSink extends Sink, DataFlow::ValueNode { override HTTP::ResponseBody astNode; }
 }
-
-/** DEPRECATED: Use `StackTraceExposure::Source` instead. */
-deprecated class StackTraceExposureSource = StackTraceExposure::Source;
-
-/** DEPRECATED: Use `StackTraceExposure::Sink` instead. */
-deprecated class StackTraceExposureSink = StackTraceExposure::Sink;
-
-/** DEPRECATED: Use `StackTraceExposure::Configuration` instead. */
-deprecated class StackTraceExposureTrackingConfig = StackTraceExposure::Configuration;

@@ -90,15 +90,3 @@ module CleartextStorage {
     }
   }
 }
-
-/** DEPRECATED: Use `CleartextStorage::Source` instead. */
-deprecated class CleartextStorageSource = CleartextStorage::Source;
-
-/** DEPRECATED: Use `CleartextStorage::Sink` instead. */
-deprecated class CleartextStorageSink = CleartextStorage::Sink;
-
-/** DEPRECATED: Use `CleartextStorage::Sanitizer` instead. */
-deprecated class CleartextStorageSanitizer = CleartextStorage::Sanitizer;
-
-/** DEPRECATED: Use `CleartextStorage::Configuration` instead. */
-deprecated class CleartextStorageDataFlowConfiguration = CleartextStorage::Configuration;

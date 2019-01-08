@@ -123,15 +123,3 @@ module CodeInjection {
     }
   }
 }
-
-/** DEPRECATED: Use `CodeInjection::Source` instead. */
-deprecated class CodeInjectionSource = CodeInjection::Source;
-
-/** DEPRECATED: Use `CodeInjection::Sink` instead. */
-deprecated class CodeInjectionSink = CodeInjection::Sink;
-
-/** DEPRECATED: Use `CodeInjection::Sanitizer` instead. */
-deprecated class CodeInjectionSanitizer = CodeInjection::Sanitizer;
-
-/** DEPRECATED: Use `CodeInjection::Configuration` instead. */
-deprecated class CodeInjectionDataFlowConfiguration = CodeInjection::Configuration;

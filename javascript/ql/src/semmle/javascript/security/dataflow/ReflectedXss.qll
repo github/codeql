@@ -67,15 +67,3 @@ module ReflectedXss {
     }
   }
 }
-
-/** DEPRECATED: Use `ReflectedXss::Source` instead. */
-deprecated class XssSource = ReflectedXss::Source;
-
-/** DEPRECATED: Use `ReflectedXss::Sink` instead. */
-deprecated class XssSink = ReflectedXss::Sink;
-
-/** DEPRECATED: Use `ReflectedXss::Sanitizer` instead. */
-deprecated class XssSanitizer = ReflectedXss::Sanitizer;
-
-/** DEPRECATED: Use `ReflectedXss::Configuration` instead. */
-deprecated class XssDataFlowConfiguration = ReflectedXss::Configuration;

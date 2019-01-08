@@ -189,15 +189,3 @@ module DomBasedXss {
     override string getVulnerabilityKind() { result = "HTML injection" }
   }
 }
-
-/** DEPRECATED: Use `DomBasedXss::Source` instead. */
-deprecated class XssSource = DomBasedXss::Source;
-
-/** DEPRECATED: Use `DomBasedXss::Sink` instead. */
-deprecated class XssSink = DomBasedXss::Sink;
-
-/** DEPRECATED: Use `DomBasedXss::Sanitizer` instead. */
-deprecated class XssSanitizer = DomBasedXss::Sanitizer;
-
-/** DEPRECATED: Use `DomBasedXss::Configuration` instead. */
-deprecated class XssDataFlowConfiguration = DomBasedXss::Configuration;

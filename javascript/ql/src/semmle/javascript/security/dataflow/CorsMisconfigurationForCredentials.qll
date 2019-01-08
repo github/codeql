@@ -87,18 +87,3 @@ module CorsMisconfigurationForCredentials {
     }
   }
 }
-
-/** DEPRECATED: Use `CorsMisconfigurationForCredentials::Source` instead. */
-deprecated class CorsMisconfigurationForCredentialsSource =
-  CorsMisconfigurationForCredentials::Source;
-
-/** DEPRECATED: Use `CorsMisconfigurationForCredentials::Sink` instead. */
-deprecated class CorsMisconfigurationForCredentialsSink = CorsMisconfigurationForCredentials::Sink;
-
-/** DEPRECATED: Use `CorsMisconfigurationForCredentials::Sanitizer` instead. */
-deprecated class CorsMisconfigurationForCredentialsSanitizer =
-  CorsMisconfigurationForCredentials::Sanitizer;
-
-/** DEPRECATED: Use `CorsMisconfigurationForCredentials::Configuration` instead. */
-deprecated class CorsMisconfigurationForCredentialsDataFlowConfiguration =
-  CorsMisconfigurationForCredentials::Configuration;
