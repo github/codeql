@@ -11,7 +11,6 @@ import semmle.javascript.Classes
 import semmle.javascript.Comments
 import semmle.javascript.Concepts
 import semmle.javascript.Constants
-import semmle.javascript.DataFlow
 import semmle.javascript.DefUse
 import semmle.javascript.DOM
 import semmle.javascript.EmailClients

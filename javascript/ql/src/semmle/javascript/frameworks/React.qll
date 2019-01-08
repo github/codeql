@@ -14,11 +14,6 @@ DataFlow::SourceNode react() {
 }
 
 /**
- * DEPRECATED: Use `react()` instead.
- */
-deprecated predicate isReactRef(DataFlowNode nd) { react().flowsToExpr(nd) }
-
-/**
  * An object that implements the React component interface.
  *
  * Instantiations include:

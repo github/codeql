@@ -23,11 +23,6 @@ DataFlow::SourceNode angular() {
   result = DataFlow::moduleImport("angular")
 }
 
-/**
- * DEPRECATED: Use `angular()` instead.
- */
-deprecated predicate isAngularRef(DataFlowNode nd) { angular().flowsToExpr(nd) }
-
 pragma[noopt]
 private predicate isAngularString(Expr s) {
   exists(DataFlow::SourceNode angular, StmtContainer sc, TopLevel tl |
