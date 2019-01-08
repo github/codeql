@@ -11,7 +11,7 @@ deprecated class ConditionBlock = Guards::ConditionBlock;
 
 /** Holds if `n` updates the locally scoped variable `v`. */
 deprecated predicate variableUpdate(ControlFlowNode n, LocalScopeVariable v) {
-  exists(VariableUpdate a | a = n | a.getDestVar() = v)
+  exists(VariableUpdate a | a.getControlFlowNode() = n | a.getDestVar() = v)
 }
 
 /** Holds if `bb` updates the locally scoped variable `v`. */

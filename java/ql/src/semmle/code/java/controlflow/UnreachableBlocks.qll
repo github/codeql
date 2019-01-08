@@ -210,14 +210,12 @@ class UnreachableBasicBlock extends BasicBlock {
       conditionBlock.controls(this, constant.booleanNot())
     )
     or
-    // This block is not reachable in the CFG, and is not a callable, a body of a callable, an
-    // expression in an annotation, an expression in an assert statement, or a catch clause.
+    // This block is not reachable in the CFG, and is not the entrypoint in a callable, an
+    // expression in an assert statement, or a catch clause.
     forall(BasicBlock bb | bb = getABBPredecessor() | bb instanceof UnreachableBasicBlock) and
-    not exists(Callable c | c.getBody() = this) and
-    not this instanceof Callable and
-    not exists(Annotation a | a.getAChildExpr*() = this) and
-    not exists(AssertStmt a | a = this.(Expr).getEnclosingStmt()) and
-    not this instanceof CatchClause
+    not exists(Callable c | c.getBody().getControlFlowNode() = this.getFirstNode()) and
+    not exists(AssertStmt a | a = this.getFirstNode().asExpr().getEnclosingStmt()) and
+    not this.getFirstNode().asStmt() instanceof CatchClause
     or
     // Switch statements with a constant comparison expression may have unreachable cases.
     exists(ConstSwitchStmt constSwitchStmt, BasicBlock failingCaseBlock |
@@ -226,7 +224,7 @@ class UnreachableBasicBlock extends BasicBlock {
       // Not accessible from the successful case
       not constSwitchStmt.getMatchingCase().getBasicBlock().getABBSuccessor*() = failingCaseBlock and
       // Blocks dominated by the failing case block are unreachable
-      constSwitchStmt.getAFailingCase().getBasicBlock().bbDominates(this)
+      failingCaseBlock.bbDominates(this)
     )
   }
 }

@@ -63,12 +63,12 @@ class ValidSynchStmt extends Stmt {
       exists(MethodAccess lockAction |
         lockAction.getQualifier() = lockField.getAnAccess() and
         lockAction.getMethod().getName() = "lock" and
-        dominates(lockAction, this)
+        dominates(lockAction.getControlFlowNode(), this.getControlFlowNode())
       ) and
       exists(MethodAccess unlockAction |
         unlockAction.getQualifier() = lockField.getAnAccess() and
         unlockAction.getMethod().getName() = "unlock" and
-        postDominates(unlockAction, this)
+        postDominates(unlockAction.getControlFlowNode(), this.getControlFlowNode())
       )
     )
   }

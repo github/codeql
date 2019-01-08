@@ -77,8 +77,8 @@ predicate badReentrantLockOrder(MethodAccess first, MethodAccess second, MethodA
     otherSecond = v1.getLockAction() and
     second = v2.getLockAction() and
     otherFirst = v2.getLockAction() and
-    first.(ControlFlowNode).getASuccessor+() = second and
-    otherFirst.(ControlFlowNode).getASuccessor+() = otherSecond
+    first.getControlFlowNode().getASuccessor+() = second.getControlFlowNode() and
+    otherFirst.getControlFlowNode().getASuccessor+() = otherSecond.getControlFlowNode()
   |
     v1 != v2
   )

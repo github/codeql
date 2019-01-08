@@ -135,11 +135,17 @@ private predicate evenlyDivisibleExpr(Expr e, int factor) {
   )
 }
 
-private predicate id(BasicBlock x, BasicBlock y) { x = y }
+private ExprParent getAst(BasicBlock bb) {
+  exists(ControlFlowNode n | bb.getFirstNode() = n | n.asExpr() = result or n.asStmt() = result)
+}
 
-private predicate idOf(BasicBlock x, int y) = equivalenceRelation(id/2)(x, y)
+private class AstAtBasicBlock extends ExprParent { AstAtBasicBlock() { this = getAst(_) } }
 
-private int getId(BasicBlock bb) { idOf(bb, result) }
+private predicate id(AstAtBasicBlock x, AstAtBasicBlock y) { x = y }
+
+private predicate idOf(AstAtBasicBlock x, int y) = equivalenceRelation(id/2)(x, y)
+
+private int getId(BasicBlock bb) { idOf(getAst(bb), result) }
 
 /**
  * Holds if `inp` is an input to `phi` along `edge` and this input has index `r`

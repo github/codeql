@@ -17,4 +17,14 @@
 
 ## Changes to QL libraries
 
+* The class `ControlFlowNode` (and by extension `BasicBlock`) is no longer
+  directly equatable to `Expr` and `Stmt`. Any queries that exploit these
+  equalities, for example by using casts, will now report compilation errors.
+  You can fix these errors by making minor changes to the affected queries.
+  The conversions can be inserted in either direction depending on what is most
+  convenient. Available conversions include `Expr.getControlFlowNode()`,
+  `Stmt.getControlFlowNode()`, `ControlFlowNode.asExpr()`,
+  `ControlFlowNode.asStmt()`, and `ControlFlowNode.asCall()`.
+  Exit nodes were until now modeled as a `ControlFlowNode` equal to its
+  enclosing `Callable`; these are now modeled by the class `ControlFlow::ExitNode`.
 
