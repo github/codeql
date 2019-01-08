@@ -4,7 +4,7 @@
  *              passing through authentication systems.
  * @kind path-problem
  * @problem.severity error
- * @precision high
+ * @precision medium
  * @id java/user-controlled-bypass
  * @tags security
  *       external/cwe/cwe-807
