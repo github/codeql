@@ -10,7 +10,6 @@
 import java
 import semmle.code.java.dataflow.Guards
 import semmle.code.java.dataflow.ParityAnalysis
-import semmle.code.java.security.DataFlow
 
 from File f, string tag
 where none()
