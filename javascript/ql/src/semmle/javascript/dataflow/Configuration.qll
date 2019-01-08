@@ -197,31 +197,6 @@ abstract class Configuration extends string {
   predicate hasFlowPath(SourcePathNode source, SinkPathNode sink) {
     flowsTo(source, _, sink, _, this)
   }
-
-  /**
-   * DEPRECATED: Use `hasFlowPath` instead.
-   *
-   * Holds if data may flow from `source` to `sink` for this configuration.
-   */
-  deprecated predicate hasPathFlow(SourcePathNode source, SinkPathNode sink) {
-    hasFlowPath(source, sink)
-  }
-
-  /**
-   * DEPRECATED: Use `hasFlow` instead.
-   *
-   * Holds if `source` flows to `sink`.
-   */
-  deprecated predicate flowsTo(DataFlow::Node source, DataFlow::Node sink) { hasFlow(source, sink) }
-
-  /**
-   * DEPRECATED: Use `hasFlow` instead.
-   *
-   * Holds if `source` flows to `sink`.
-   */
-  deprecated predicate flowsFrom(DataFlow::Node sink, DataFlow::Node source) {
-    hasFlow(source, sink)
-  }
 }
 
 /**
