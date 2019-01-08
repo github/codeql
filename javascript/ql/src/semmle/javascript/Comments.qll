@@ -44,15 +44,6 @@ class HtmlCommentStart extends @htmlcommentstart, HtmlLineComment { }
 /** An HTML comment end token interpreted as a line comment. */
 class HtmlCommentEnd extends @htmlcommentend, HtmlLineComment { }
 
-/** DERECATED: Use `HtmlLineComment` instead. */
-deprecated class HTMLComment = HtmlLineComment;
-
-/** DERECATED: Use `HtmlCommentStart` instead. */
-deprecated class HTMLCommentStart = HtmlCommentStart;
-
-/** DERECATED: Use `HtmlCommentEnd` instead. */
-deprecated class HTMLCommentEnd = HtmlCommentEnd;
-
 /** A `//` comment. */
 class SlashSlashComment extends @slashslashcomment, LineComment { }
 
