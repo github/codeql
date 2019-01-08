@@ -21,10 +21,14 @@ module LodashUnderscore {
     string name;
 
     DefaultMember() {
-      this = DataFlow::moduleMember("underscore", name) or
-      this = DataFlow::moduleMember("lodash", name) or
-      this = DataFlow::moduleImport("lodash/" + name) or
-      this = DataFlow::moduleImport("lodash." + name.toLowerCase()) and isLodashMember(name) or
+      this = DataFlow::moduleMember("underscore", name)
+      or
+      this = DataFlow::moduleMember("lodash", name)
+      or
+      this = DataFlow::moduleImport("lodash/" + name)
+      or
+      this = DataFlow::moduleImport("lodash." + name.toLowerCase()) and isLodashMember(name)
+      or
       this = DataFlow::globalVarRef("_").getAPropertyRead(name)
     }
 
