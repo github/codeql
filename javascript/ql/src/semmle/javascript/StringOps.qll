@@ -188,11 +188,14 @@ module StringOps {
   }
 
   /**
-   * A call to `_.includes`, assumed to operate on strings.
+   * A call to `_.includes` or similar, assumed to operate on strings.
    */
   private class Includes_Library extends Includes, DataFlow::CallNode {
     Includes_Library() {
-      this = LodashUnderscore::member("includes").getACall()
+      exists (string name |
+        this = LodashUnderscore::member(name).getACall() and
+        (name = "includes" or name = "include" or name = "contains")
+      )
     }
 
     override DataFlow::Node getBaseString() {
@@ -299,4 +302,66 @@ module StringOps {
     }
   }
 
+  /**
+   * An expression that appears to be part of an `endsWith`-check, that is,
+   * roughly equivalent to `A.endsWith(B)` or `!A.endsWith(B)`.
+   */
+  abstract class EndsWith extends DataFlow::Node {
+    /**
+     * Gets the `A` in `A.startsWith(B)`.
+     */
+    abstract DataFlow::Node getBaseString();
+
+    /**
+     * Gets the `B` in `A.startsWith(B)`.
+     */
+    abstract DataFlow::Node getSubstring();
+
+    /**
+     * Gets the polarity if the check.
+     *
+     * If the polarity is `false` the check returns `true` if the string does not start
+     * with the given substring.
+     */
+    boolean getPolarity() { result = true }
+  }
+
+  /**
+   * A call of form `A.endsWith(B)`.
+   */
+  private class EndsWith_Native extends EndsWith, DataFlow::MethodCallNode {
+    EndsWith_Native() {
+      getMethodName() = "endsWith" and
+      getNumArgument() = 1
+    }
+
+    override DataFlow::Node getBaseString() {
+      result = getReceiver()
+    }
+
+    override DataFlow::Node getSubstring() {
+      result = getArgument(0)
+    }
+  }
+
+  /**
+   * A call of form `_.endsWith(A, B)` or `ramda.endsWith(A, B)`.
+   */
+  private class EndsWith_Library extends StartsWith, DataFlow::CallNode {
+    EndsWith_Library() {
+      getNumArgument() = 2 and
+      exists (DataFlow::SourceNode callee | this = callee.getACall() |
+        callee = LodashUnderscore::member("endsWith") or
+        callee = DataFlow::moduleMember("ramda", "endsWith")
+      )
+    }
+
+    override DataFlow::Node getBaseString() {
+      result = getArgument(0)
+    }
+
+    override DataFlow::Node getSubstring() {
+      result = getArgument(1)
+    }
+  }
 }
