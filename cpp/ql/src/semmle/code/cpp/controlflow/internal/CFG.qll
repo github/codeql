@@ -1287,17 +1287,22 @@ private predicate conditionJumps(Expr test, boolean truth, Node n2, Pos p2) {
   )
 }
 
+// Factored out for performance. See QL-796.
+private predicate normalGroupMemberBaseCase(Node memberNode, Pos memberPos, Node atNode) {
+  memberNode = atNode and
+  memberPos.isAt() and
+  // We check for excludeNode here as it's slower to check in all the leaf
+  // cases during construction of the sub-graph.
+  not excludeNode(atNode)
+}
+
 /**
  * Holds if the sub-node `(memberNode, memberPos)` can reach `at(atNode)` by
  * following sub-edges forward without crossing another "at" node. Here,
  * `memberPos.isAt()` holds only when `memberNode = atNode`.
  */
 private predicate normalGroupMember(Node memberNode, Pos memberPos, Node atNode) {
-  memberNode = atNode and
-  memberPos.isAt() and
-  // We check for excludeNode here as it's slower to check in all the leaf
-  // cases during construction of the sub-graph.
-  not excludeNode(atNode)
+  normalGroupMemberBaseCase(memberNode, memberPos, atNode)
   or
   exists(Node succNode, Pos succPos |
     normalGroupMember(succNode, succPos, atNode) and
