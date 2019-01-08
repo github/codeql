@@ -48,7 +48,6 @@ import semmle.javascript.Util
 import semmle.javascript.Variables
 import semmle.javascript.XML
 import semmle.javascript.YAML
-import semmle.javascript.dataflow.CallGraph
 import semmle.javascript.dataflow.DataFlow
 import semmle.javascript.dataflow.TaintTracking
 import semmle.javascript.dataflow.TypeInference

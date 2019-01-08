@@ -14,7 +14,6 @@
  */
 
 import javascript
-import semmle.javascript.dataflow.CallGraph
 private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
 private import semmle.javascript.dataflow.InferredTypes
 
