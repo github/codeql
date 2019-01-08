@@ -17,4 +17,10 @@
 
 ## Changes to QL libraries
 
+* The deprecated library `semmle.code.java.security.DataFlow` has been removed.
+  Improved data flow libraries have been available in
+  `semmle.code.java.dataflow.DataFlow`,
+  `semmle.code.java.dataflow.TaintTracking`, and
+  `semmle.code.java.dataflow.FlowSources` since 1.16.
+
 
