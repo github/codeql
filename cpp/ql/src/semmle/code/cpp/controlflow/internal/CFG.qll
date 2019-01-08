@@ -175,37 +175,49 @@ predicate excludeNode(Node n) {
   excludeNode(n.getParentNode())
 }
 
+private newtype TPos =
+  PosBefore() or
+  PosAt() or
+  PosAfter() or
+  PosBeforeDestructors() or
+  PosAfterDestructors()
+
+/** A `Pos` without a `bindingset` requirement on the constructor. */
+private class AnyPos extends TPos {
+  string toString() { result = "Pos" }
+}
+
 /**
  * A constant that indicates the type of sub-node in a pair of `(Node, Pos)`.
  * See the comment block at the top of this file.
  */
-private class Pos extends int {
+private class Pos extends AnyPos {
   // This is to make sure we get compile errors in code that forgets to restrict a `Pos`.
   bindingset[this]
   Pos() { any() }
 
   /** Holds if this is the position just _before_ the associated `Node`. */
-  predicate isBefore() { this = -1 }
+  predicate isBefore() { this = PosBefore() }
 
   /** Holds if `(n, this)` is the sub-node that represents `n` itself. */
-  predicate isAt() { this = 0 }
+  predicate isAt() { this = PosAt() }
 
   /** Holds if this is the position just _after_ the associated `Node`. */
-  predicate isAfter() { this = 1 }
+  predicate isAfter() { this = PosAfter() }
 
   /**
    * Holds if `(n, this)` is the virtual sub-node that comes just _before_ any
    * implicit destructor calls following `n`. The node `n` will be some node
    * that may be followed by local variables going out of scope.
    */
-  predicate isBeforeDestructors() { this = 2 }
+  predicate isBeforeDestructors() { this = PosBeforeDestructors() }
 
   /**
    * Holds if `(n, this)` is the virtual sub-node that comes just _after_ any
    * implicit destructor calls following `n`. The node `n` will be some node
    * that may be followed by local variables going out of scope.
    */
-  predicate isAfterDestructors() { this = 3 }
+  predicate isAfterDestructors() { this = PosAfterDestructors() }
 
   pragma[inline]
   predicate nodeBefore(Node n, Node nEq) { this.isBefore() and n = nEq }
@@ -503,6 +515,17 @@ private Node getLastControlOrderChild(Node n) {
   result = getControlOrderChildDense(n, max(int i | exists(getControlOrderChildDense(n, i))))
 }
 
+private newtype TSpec =
+  SpecPos(AnyPos p) or
+  SpecAround() or
+  SpecAroundDestructors() or
+  SpecBarrier()
+
+/** A `Spec` without a `bindingset` requirement on the constructor. */
+private class AnySpec extends TSpec {
+  string toString() { result = "Spec" }
+}
+
 /**
  * A constant that represents two positions: one position for when it's used as
  * the _source_ of a sub-edge, and another position for when it's used as the
@@ -510,11 +533,25 @@ private Node getLastControlOrderChild(Node n) {
  * themselves as both source and target, as well as two _around_ values and a
  * _barrier_ value.
  */
-private class Spec extends Pos {
+private class Spec extends AnySpec {
   bindingset[this]
   Spec() { any() }
 
-  // Values -1 .. 3 are used by Pos
+  /** See Pos.isBefore. */
+  predicate isBefore() { this = SpecPos(PosBefore()) }
+
+  /** See Pos.isAt. */
+  predicate isAt() { this = SpecPos(PosAt()) }
+
+  /** See Pos.isAfter. */
+  predicate isAfter() { this = SpecPos(PosAfter()) }
+
+  /** See Pos.isBeforeDestructors. */
+  predicate isBeforeDestructors() { this = SpecPos(PosBeforeDestructors()) }
+
+  /** See Pos.isAfterDestructors. */
+  predicate isAfterDestructors() { this = SpecPos(PosAfterDestructors()) }
+
   /**
    * Holds if this spec, when used on a node `n` between `(n1, p1)` and
    * `(n2, p2)`, should add the following sub-edges.
@@ -522,7 +559,7 @@ private class Spec extends Pos {
    *     (n1, p1) ----> before(n)
    *     after(n) ----> (n2, p2)
    */
-  predicate isAround() { this = 4 }
+  predicate isAround() { this = SpecAround() }
 
   /**
    * Holds if this spec, when used on a node `n` between `(n1, p1)` and
@@ -531,17 +568,16 @@ private class Spec extends Pos {
    *     (n1, p1)            ----> beforeDestructors(n)
    *     afterDestructors(n) ----> (n2, p2)
    */
-  predicate isAroundDestructors() { this = 5 }
+  predicate isAroundDestructors() { this = SpecAroundDestructors() }
 
   /**
    * Holds if this node is a _barrier_. A barrier resolves to no positions and
    * can be inserted between nodes that should have no sub-edges between them.
    */
-  predicate isBarrier() { this = 6 }
+  predicate isBarrier() { this = SpecBarrier() }
 
   Pos getSourcePos() {
-    this = [-1 .. 3] and
-    result = this
+    this = SpecPos(result)
     or
     this.isAround() and
     result.isAfter()
@@ -551,8 +587,7 @@ private class Spec extends Pos {
   }
 
   Pos getTargetPos() {
-    this = [-1 .. 3] and
-    result = this
+    this = SpecPos(result)
     or
     this.isAround() and
     result.isBefore()
