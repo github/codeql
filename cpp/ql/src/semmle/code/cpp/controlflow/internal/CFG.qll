@@ -10,21 +10,23 @@
  * The calculation is in two stages. First, a graph of _sub-nodes_ is produced.
  * A sub-node is either an actual CFG node or a _virtual node_. Second, the
  * virtual nodes are eliminated from the graph by collapsing edges such that
- * any _actual nodes_ connected through zero or more _virtual nodes_ are still
- * connected in the final graph.
+ * any _actual sub-nodes_ connected through zero or more _virtual sub-nodes_
+ * are still connected in the final graph.
  *
  * The graph of sub-nodes is produced by a comprehensive case analysis that
  * specifies the shape of the CFG for all known language constructs. The case
  * analysis is large but does _not_ contain recursion. Recursion is needed in
  * the second stage in order to collapse virtual nodes, but that recursion is
- * simply a transitive closure and can be fast.
+ * simply a transitive closure and so is fast.
  *
  * A sub-node is a pair `(Node, Pos)`, where the type `Node` is
- * `ControlFlowNode`. `Pos` is either an "at"-position, which means it's the
- * control-flow node itself, or a different value, which means the sub-node is
- * virtual. The most important virtual positions are "before" and "after". They
- * represent the points in control flow just before and after evaluating the
- * associated node and its children.
+ * `ControlFlowNode`, and `Pos` is usually one of three values: "at", "before",
+ * or "after". The "at" position represents the control-flow node itself, and
+ * sub-nodes with "at"-positions are what we call _actual_ sub-nodes. Other
+ * positions are _virtual_, and they are used for forming paths between actual
+ * sub-nodes and will get erased to produce the final graph. The "before" and
+ * "after" positions represent the points in control flow just before and after
+ * evaluating the associated node and its children.
  *
  * The computation of the sub-edges is a large disjunction in which each case
  * contributes all the edges for a particular type of node. As an example,
@@ -41,7 +43,7 @@
  *     after(e2) -> at(e)
  *     at(e)     -> after(e)
  *
- * These three edges are not connected, but they will be part of a connected
+ * These four edges are not all connected, but they will be part of a connected
  * graph when all expressions under `e1` and `e2` are added as well. Suppose
  * `e1` and `e2` are of type Literal. Then they contribute the following edges.
  *
@@ -60,13 +62,13 @@
  * To produce all edges around each control-flow node without recursion, we
  * need to pre-compute the targets of exception sources (throw, propagating
  * handlers, ...) and short-circuiting operators (||, ? :, ...). This
- * pre-computation involves recursion, but it's quick to compute because in
+ * pre-computation involves recursion, but it's quick to compute because it
  * only involves the nodes themselves and their (transitive) parents.
  *
- * For many AST nodes, their control flow can be described in simpler terms
- * than the full generality of describing each of their individual sub-edges.
- * To add control flow for a new AST construct, one of the following predicates
- * can be used, listed roughly in order of increasing generality.
+ * Many kinds of AST nodes share the same pattern of control flow. To add
+ * control flow for a new AST construct, use one of the following predicates.
+ * They are listed in order of increasing generality, where less general
+ * predicates can be extended with less effort.
  *
  * - PostOrderNode and PreOrderNode
  * - straightLineSparse
@@ -80,7 +82,12 @@
 private import cpp
 private import semmle.code.cpp.controlflow.internal.SyntheticDestructorCalls
 
-/** A control-flow node. */
+/**
+ * A control-flow node. This class exists to provide a shorter name than
+ * `ControlFlowNodeBase` within this file and to avoid a seemingly cyclic
+ * dependency on the `ControlFlowNode` class, whose implementation relies on
+ * this file.
+ */
 private class Node extends ControlFlowNodeBase {
   /**
    * Gets the nearest control-flow node that's a parent of this one, never
@@ -91,11 +98,15 @@ private class Node extends ControlFlowNodeBase {
     or
     result = this.(Stmt).getParent()
     or
-    // An Initializer under a ConditionDeclExpr is not part of the CFG.
     result.(DeclStmt).getADeclaration().(LocalVariable) = this.(Initializer).getDeclaration()
     // It's possible that the VLA cases of DeclStmt (see
     // getControlOrderChildSparse) should also be here, but that currently
     // won't make a difference in practice.
+    //
+    // An `Initializer` under a `ConditionDeclExpr` is not part of the CFG;
+    // only the `getExpr()` of the `Initializer` is in the CFG. That can be
+    // changed when we no longer need compatibility with the extractor-based
+    // CFG.
   }
 }
 

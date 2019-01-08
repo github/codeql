@@ -49,7 +49,7 @@ class SyntheticDestructorCall extends FunctionCall {
 //   have multiple predecessors.
 //   - But after ReturnStmt, that may happen.
 /**
- * Describes a straight line of `SyntheticDestructorCall`s. Node that such
+ * Describes a straight line of `SyntheticDestructorCall`s. Note that such
  * lines can share tails.
  */
 private class SyntheticDestructorBlock extends ControlFlowNodeBase {
@@ -92,7 +92,7 @@ private class PrematureScopeExitNode extends ControlFlowNodeBase {
     or
     this instanceof MicrosoftTryExceptStmt
     or
-    // Detecting exception edges out of a MicrosoftTryExceptStmt is not
+    // Detecting exception edges out of a MicrosoftTryFinallyStmt is not
     // implemented. It may not be easy to do. It'll be something like finding
     // the first synthetic destructor call that crosses out of the scope of the
     // statement and does not belong to some other `PrematureScopeExitNode`.
