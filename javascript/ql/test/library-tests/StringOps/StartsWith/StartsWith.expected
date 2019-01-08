@@ -8,3 +8,7 @@
 | tst.js:12:9:12:20 | A.indexOf(B) | tst.js:12:9:12:9 | A | tst.js:12:19:12:19 | B | false |
 | tst.js:13:10:13:21 | A.indexOf(B) | tst.js:13:10:13:10 | A | tst.js:13:20:13:20 | B | false |
 | tst.js:14:11:14:22 | A.indexOf(B) | tst.js:14:11:14:11 | A | tst.js:14:21:14:21 | B | false |
+| tst.js:15:9:15:38 | A.subst ... ) === B | tst.js:15:9:15:9 | A | tst.js:15:38:15:38 | B | true |
+| tst.js:16:9:16:38 | A.subst ... ) !== B | tst.js:16:9:16:9 | A | tst.js:16:38:16:38 | B | false |
+| tst.js:17:9:17:35 | A.subst ... ) === B | tst.js:17:9:17:9 | A | tst.js:17:35:17:35 | B | true |
+| tst.js:18:9:18:36 | A.subst ...  "web/" | tst.js:18:9:18:9 | A | tst.js:18:31:18:36 | "web/" | true |

@@ -147,6 +147,37 @@ module StringOps {
     }
   }
 
+  /**
+   * A comparison of form `x.substring(0, y.length) === y`.
+   */
+  private class StartsWith_Substring extends StartsWith, DataFlow::ValueNode {
+    override EqualityTest astNode;
+    DataFlow::MethodCallNode call;
+    DataFlow::Node substring;
+
+    StartsWith_Substring() {
+      astNode.hasOperands(call.asExpr(), substring.asExpr()) and
+      (call.getMethodName() = "substring" or call.getMethodName() = "substr") and
+      call.getNumArgument() = 2 and
+      (
+        substring.getALocalSource().getAPropertyRead("length").flowsTo(call.getArgument(1))
+        or
+        substring.asExpr().getStringValue().length() = call.getArgument(1).asExpr().getIntValue()
+      )
+    }
+
+    override DataFlow::Node getBaseString() {
+      result = call.getReceiver()
+    }
+
+    override DataFlow::Node getSubstring() {
+      result = substring
+    }
+
+    override boolean getPolarity() {
+      result = astNode.getPolarity()
+    }
+  }
 
   /**
    * A expression that is equivalent to `A.includes(B)` or `!A.includes(B)`.

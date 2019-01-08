@@ -12,6 +12,10 @@ function f(A, B) {
     if (A.indexOf(B)) {}  // !startsWith
     if (!A.indexOf(B)) {} // startsWith
     if (!!A.indexOf(B)) {} // !startsWith
+    if (A.substring(0, B.length) === B) {}
+    if (A.substring(0, B.length) !== B) {}
+    if (A.substr(0, B.length) === B) {}
+    if (A.substring(0, 4) === "web/") {}
 
     // non-examples
     if (_.startsWith(A, B, 2)) {} 
@@ -22,4 +26,5 @@ function f(A, B) {
     if (A.indexOf(B, 2) === 0) {}
     if (A.indexOf(B, 2)) {}
     if (~A.indexOf(B)) {} // checks for existence, not startsWith
+    if (A.substring(B.length) === 0) {}
 }
