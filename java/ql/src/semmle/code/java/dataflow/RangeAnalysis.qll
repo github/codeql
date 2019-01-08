@@ -151,25 +151,6 @@ private predicate boundCondition(
   )
 }
 
-private predicate gcdInput(int x, int y) {
-  exists(ComparisonExpr comp, Bound b |
-    exprModulus(comp.getLesserOperand(), b, _, x) and
-    exprModulus(comp.getGreaterOperand(), b, _, y)
-  )
-  or
-  exists(int x0, int y0 |
-    gcdInput(x0, y0) and
-    x = y0 and
-    y = x0 % y0
-  )
-}
-
-private int gcd(int x, int y) {
-  result = x.abs() and y = 0 and gcdInput(x, y)
-  or
-  result = gcd(y, x % y) and y != 0 and gcdInput(x, y)
-}
-
 /**
  * Holds if `comp` is a comparison between `x` and `y` for which `y - x` has a
  * fixed value modulo some `mod > 1`, such that the comparison can be
@@ -187,7 +168,7 @@ private predicate modulusComparison(ComparisonExpr comp, boolean testIsTrue, int
     // thus `k - 1 < y - x` with `0 <= k - 1 < mod`.
     exprModulus(comp.getLesserOperand(), b, v1, mod1) and
     exprModulus(comp.getGreaterOperand(), b, v2, mod2) and
-    mod = gcd(mod1, mod2) and
+    mod = mod1.gcd(mod2) and
     mod != 1 and
     (testIsTrue = true or testIsTrue = false) and
     (

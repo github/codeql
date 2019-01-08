@@ -165,21 +165,6 @@ private predicate maxPhiInputRank(SsaPhiNode phi, int rix) {
   rix = max(int r | rankedPhiInput(phi, _, _, r))
 }
 
-private int gcdLim() { result = 128 }
-
-/**
- * Gets the greatest common divisor of `x` and `y`. This is restricted to small
- * inputs and the case when `x` and `y` are not relatively prime.
- */
-private int gcd(int x, int y) {
-  result != 1 and
-  result = x.abs() and
-  y = 0 and
-  x in [-gcdLim() .. gcdLim()]
-  or
-  result = gcd(y, x % y) and y != 0 and x in [-gcdLim() .. gcdLim()]
-}
-
 /**
  * Gets the remainder of `val` modulo `mod`.
  *
@@ -203,7 +188,7 @@ private predicate phiSelfModulus(
     edge.phiInput(phi, inp) and
     phibound.getSsa() = phi and
     ssaModulus(inp, edge, phibound, v, m) and
-    mod = gcd(m, v) and
+    mod = m.gcd(v) and
     mod != 1
   )
 }
@@ -233,14 +218,14 @@ private predicate phiModulusRankStep(SsaPhiNode phi, Bound b, int val, int mod, 
       rankedPhiInput(phi, inp, edge, rix) and
       phiModulusRankStep(phi, b, v1, m1, rix - 1) and
       ssaModulus(inp, edge, b, v2, m2) and
-      mod = gcd(gcd(m1, m2), v1 - v2)
+      mod = m1.gcd(m2).gcd(v1 - v2)
     )
     or
     exists(int m2 |
       rankedPhiInput(phi, inp, edge, rix) and
       phiModulusRankStep(phi, b, v1, m1, rix - 1) and
       phiSelfModulus(phi, inp, edge, m2) and
-      mod = gcd(m1, m2)
+      mod = m1.gcd(m2)
     )
   )
 }
@@ -301,7 +286,7 @@ predicate exprModulus(Expr e, Bound b, int val, int mod) {
     cond = e and
     condExprBranchModulus(cond, true, b, v1, m1) and
     condExprBranchModulus(cond, false, b, v2, m2) and
-    mod = gcd(gcd(m1, m2), v1 - v2) and
+    mod = m1.gcd(m2).gcd(v1 - v2) and
     mod != 1 and
     val = remainder(v1, mod)
   )
@@ -309,7 +294,7 @@ predicate exprModulus(Expr e, Bound b, int val, int mod) {
   exists(Bound b1, Bound b2, int v1, int v2, int m1, int m2 |
     addModulus(e, true, b1, v1, m1) and
     addModulus(e, false, b2, v2, m2) and
-    mod = gcd(m1, m2) and
+    mod = m1.gcd(m2) and
     mod != 1 and
     val = remainder(v1 + v2, mod)
   |
@@ -321,7 +306,7 @@ predicate exprModulus(Expr e, Bound b, int val, int mod) {
   exists(int v1, int v2, int m1, int m2 |
     subModulus(e, true, b, v1, m1) and
     subModulus(e, false, any(ZeroBound zb), v2, m2) and
-    mod = gcd(m1, m2) and
+    mod = m1.gcd(m2) and
     mod != 1 and
     val = remainder(v1 - v2, mod)
   )
