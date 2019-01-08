@@ -55,18 +55,6 @@ class SourceNode extends DataFlow::Node {
   }
 
   /**
-   * DEPRECATED: Use `getAPropertyReference` instead.
-   *
-   * Gets an access to property `propName` on this node, either through
-   * a dot expression (as in `x.propName`) or through an index expression
-   * (as in `x["propName"]`).
-   */
-  deprecated DataFlow::PropRead getAPropertyAccess(string propName) {
-    result = getAPropertyReference(propName) and
-    result.asExpr() instanceof PropAccess
-  }
-
-  /**
    * Holds if there is an assignment to property `propName` on this node,
    * and the right hand side of the assignment is `rhs`.
    */

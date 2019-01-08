@@ -28,9 +28,6 @@ class InvokeNode extends DataFlow::SourceNode {
   /** Gets the name of the function or method being invoked, if it can be determined. */
   string getCalleeName() { result = impl.getCalleeName() }
 
-  /** DEPRECATED: Use `getCalleeNode()` instead. */
-  deprecated DataFlow::Node getCallee() { result = getCalleeNode() }
-
   /** Gets the data flow node specifying the function to be called. */
   DataFlow::Node getCalleeNode() { result = impl.getCalleeNode() }
 

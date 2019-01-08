@@ -100,7 +100,6 @@ module TaintTracking {
 
     final override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
       isAdditionalTaintStep(pred, succ) or
-      pred = succ.(FlowTarget).getATaintSource() or
       any(AdditionalTaintStep dts).step(pred, succ)
     }
 
@@ -146,15 +145,6 @@ module TaintTracking {
     DataFlow::LabeledBarrierGuardNode { }
 
   /**
-   * DEPRECATED: Override `Configuration::isAdditionalTaintStep` or use
-   * `AdditionalTaintStep` instead.
-   */
-  abstract class FlowTarget extends DataFlow::Node {
-    /** Gets another data flow node from which taint is propagated to this node. */
-    abstract DataFlow::Node getATaintSource();
-  }
-
-  /**
    * A taint-propagating data flow edge that should be added to all taint tracking
    * configurations in addition to standard data flow edges.
    *
@@ -171,9 +161,6 @@ module TaintTracking {
     cached
     abstract predicate step(DataFlow::Node pred, DataFlow::Node succ);
   }
-
-  /** DEPRECATED: Use `AdditionalTaintStep` instead. */
-  deprecated class DefaultTaintStep = AdditionalTaintStep;
 
   /**
    * A taint propagating data flow edge through object or array elements and
@@ -880,31 +867,5 @@ module TaintTracking {
     }
 
     override predicate appliesTo(Configuration cfg) { any() }
-  }
-
-  /**
-   * An expression that can act as a sanitizer for a variable when appearing
-   * in a condition.
-   *
-   * DEPRECATED: use `AdditionalSanitizerGuardNode` instead.
-   */
-  abstract deprecated class SanitizingGuard extends Expr {
-    /**
-     * Holds if this expression sanitizes expression `e` for the purposes of taint-tracking
-     * configuration `cfg`, provided it evaluates to `outcome`.
-     */
-    abstract predicate sanitizes(Configuration cfg, boolean outcome, Expr e);
-  }
-
-  /**
-   * Support registration of sanitizers with the deprecated type `SanitizingGuard`.
-   */
-  deprecated private class AdditionalSanitizingGuard extends AdditionalSanitizerGuardNode,
-    DataFlow::ValueNode {
-    override SanitizingGuard astNode;
-
-    override predicate sanitizes(boolean outcome, Expr e) { astNode.sanitizes(_, outcome, e) }
-
-    override predicate appliesTo(Configuration cfg) { astNode.sanitizes(cfg, _, _) }
   }
 }

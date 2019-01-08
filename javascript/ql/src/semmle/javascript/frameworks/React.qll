@@ -55,30 +55,9 @@ abstract class ReactComponent extends ASTNode {
   }
 
   /**
-   * Gets the `this` node in an instance method of this component.
-   *
-   * DEPRECATED: Use `getAThisNode` instead.
-   */
-  deprecated DataFlow::SourceNode getAThisAccess() { result = getAThisNode() }
-
-  /**
-   * Gets an access to the `props` object of this component.
-   *
-   * DEPRECATED: Use `getADirectPropsAccess` instead.
-   */
-  deprecated DataFlow::SourceNode getAPropsSource() { result = getADirectPropsAccess() }
-
-  /**
    * Gets an access to the `props` object of this component.
    */
   abstract DataFlow::SourceNode getADirectPropsAccess();
-
-  /**
-   * Gets an access to the `state` object of this component.
-   *
-   * DEPRECATED: Use `getADirectStateAccess` instead.
-   */
-  deprecated DataFlow::SourceNode getAStateSource() { result = getADirectStateAccess() }
 
   /**
    * Gets an access to the `state` object of this component.

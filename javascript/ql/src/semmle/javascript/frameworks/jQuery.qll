@@ -58,30 +58,6 @@ class JQueryMethodCall extends CallExpr {
   string getMethodName() { result = name }
 
   /**
-   * DEPRECATED: Use `interpretsArgumentAsHtml` instead.
-   *
-   * Holds if this call interprets its arguments as HTML.
-   */
-  deprecated predicate interpretsArgumentsAsHtml() {
-    name = "addClass" or
-    name = "after" or
-    name = "append" or
-    name = "appendTo" or
-    name = "before" or
-    name = "html" or
-    name = "insertAfter" or
-    name = "insertBefore" or
-    name = "parseHTML" or
-    name = "prepend" or
-    name = "prependTo" or
-    name = "prop" or
-    name = "replaceWith" or
-    name = "wrap" or
-    name = "wrapAll" or
-    name = "wrapInner"
-  }
-
-  /**
    * Holds if `e` is an argument that this method may interpret as HTML.
    *
    * Note that some jQuery methods decide whether to interpret an argument
