@@ -1,0 +1,7 @@
+| tst.js:4:7:4:19 | A.includes(B) | tst.js:4:7:4:7 | A | tst.js:4:18:4:18 | B | true |
+| tst.js:5:7:5:22 | _.includes(A, B) | tst.js:5:18:5:18 | A | tst.js:5:21:5:21 | B | true |
+| tst.js:6:7:6:25 | A.indexOf(B) !== -1 | tst.js:6:7:6:7 | A | tst.js:6:17:6:17 | B | true |
+| tst.js:7:7:7:23 | A.indexOf(B) >= 0 | tst.js:7:7:7:7 | A | tst.js:7:17:7:17 | B | true |
+| tst.js:8:7:8:19 | ~A.indexOf(B) | tst.js:8:8:8:8 | A | tst.js:8:18:8:18 | B | true |
+| tst.js:11:7:11:25 | A.indexOf(B) === -1 | tst.js:11:7:11:7 | A | tst.js:11:17:11:17 | B | false |
+| tst.js:12:7:12:22 | A.indexOf(B) < 0 | tst.js:12:7:12:7 | A | tst.js:12:17:12:17 | B | false |

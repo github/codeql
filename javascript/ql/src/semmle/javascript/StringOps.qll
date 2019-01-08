@@ -250,7 +250,7 @@ module StringOps {
         polarity = true and
         greater = indexOf and
         (
-          lesser.getIntValue() >= 0
+          lesser.getIntValue() = 0 and astNode.isInclusive()
           or
           lesser.getIntValue() = -1 and not astNode.isInclusive()
         )
@@ -258,7 +258,7 @@ module StringOps {
         polarity = false and
         lesser = indexOf and
         (
-          greater.getIntValue() = -1
+          greater.getIntValue() = -1 and astNode.isInclusive()
           or
           greater.getIntValue() = 0 and not astNode.isInclusive()
         )

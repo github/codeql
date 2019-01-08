@@ -688,6 +688,31 @@ module TaintTracking {
     override predicate appliesTo(Configuration cfg) { any() }
   }
 
+  /**
+   * A check of form `x.indexOf(y) > 0` or similar, which sanitizes `y` in the "then" branch.
+   *
+   * The more typical case of `x.indexOf(y) >= 0` is covered by `StringInclusionSanitizer`.
+   */
+  class PositiveIndexOfSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
+    MethodCallExpr indexOf;
+    override RelationalComparison astNode;
+
+    PositiveIndexOfSanitizer() {
+      indexOf.getMethodName() = "indexOf" and
+      exists (int bound |
+        astNode.getGreaterOperand() = indexOf and
+        astNode.getLesserOperand().getIntValue() = bound and
+        bound >= 0)
+    }
+
+    override predicate sanitizes(boolean outcome, Expr e) {
+      outcome = true and
+      e = indexOf.getArgument(0)
+    }
+
+    override predicate appliesTo(Configuration cfg) { any() }
+  }
+
   /** A check of the form `if(x == 'some-constant')`, which sanitizes `x` in its "then" branch. */
   class ConstantComparison extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
     Expr x;
