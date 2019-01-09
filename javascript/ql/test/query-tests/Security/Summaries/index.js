@@ -135,23 +135,23 @@ function notASink(foo) {
 // this call should not make parameter `foo` a command injection sink
 eval(notASink(42));
 
-function cookieSource() {
-  return document.cookie;
+function taintedSource() {
+  return location.search;
 }
 
-function notACookieSource(x) {
+function notATaintedSource(x) {
   return x;
 }
 
-// this call should not make the return value of `notACookieSource` a remote flow source
-notACookieSource(document.cookie);
+// this call should not make the return value of `notATaintedSource` a remote flow source
+notATaintedSource(location.search);
 
 function invoke(cb, x) {
   cb(x);
 }
 
 // this call should not make the first argument to `cb` above a remote flow source
-invoke((x)=>x, document.cookie);
+invoke((x)=>x, location.search);
 
 function g(x) {
   h(x);
@@ -183,8 +183,8 @@ module.exports = {
     redirect: redirect,
     reflected: reflected,
     notASink: notASink,
-    cookieSource: cookieSource,
-    notACookieSource: notACookieSource,
+    taintedSource: taintedSource,
+    notATaintedSource: notATaintedSource,
     invoke: invoke,
     g: g,
     h: h,
