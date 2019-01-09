@@ -31,8 +31,15 @@ predicate hasWebConfigXFrameOptions() {
    * </system.webServer>
    * ```
    */
+
   exists(XMLElement element |
-    element = any(WebConfigXML webConfig).getARootElement().getAChild("system.webServer").getAChild("httpProtocol").getAChild("customHeaders").getAChild("add") |
+    element = any(WebConfigXML webConfig)
+          .getARootElement()
+          .getAChild("system.webServer")
+          .getAChild("httpProtocol")
+          .getAChild("customHeaders")
+          .getAChild("add")
+  |
     element.getAttributeValue("name") = "X-Frame-Options"
   )
 }
@@ -44,12 +51,14 @@ predicate hasWebConfigXFrameOptions() {
 predicate hasCodeXFrameOptions() {
   exists(MethodCall call |
     call.getTarget() = any(SystemWebHttpResponseClass r).getAppendHeaderMethod() or
-    call.getTarget() = any(SystemWebHttpResponseClass r).getAddHeaderMethod() |
+    call.getTarget() = any(SystemWebHttpResponseClass r).getAddHeaderMethod()
+  |
     call.getArgumentForName("name").getValue() = "X-Frame-Options"
   )
 }
 
 from WebConfigXML webConfig
-where not hasWebConfigXFrameOptions()
-  and not hasCodeXFrameOptions()
+where
+  not hasWebConfigXFrameOptions() and
+  not hasCodeXFrameOptions()
 select webConfig, "Configuration file is missing the X-Frame-Options setting."

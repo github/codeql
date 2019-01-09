@@ -9,6 +9,7 @@
  * @tags reliability
  *       external/cwe/cwe-485
  */
+
 import csharp
 import semmle.code.csharp.commons.Collections
 import DataFlow
@@ -31,13 +32,9 @@ predicate returnsCollection(Callable c, Field f) {
 predicate mayWriteToCollection(Expr modified) {
   modified instanceof CollectionModificationAccess
   or
-  exists(Expr mid |
-    mayWriteToCollection(mid) |
-    localFlow(exprNode(modified), exprNode(mid))
-  )
+  exists(Expr mid | mayWriteToCollection(mid) | localFlow(exprNode(modified), exprNode(mid)))
   or
-  exists(MethodCall mid, Callable c |
-    mayWriteToCollection(mid) |
+  exists(MethodCall mid, Callable c | mayWriteToCollection(mid) |
     mid.getTarget() = c and
     c.canReturn(modified)
   )
@@ -49,16 +46,12 @@ predicate modificationAfter(Expr before, Expr after) {
 }
 
 VariableAccess varPassedInto(Callable c, Parameter p) {
-  exists(Call call |
-    call.getTarget() = c |
-    call.getArgumentForParameter(p) = result
-  )
+  exists(Call call | call.getTarget() = c | call.getArgumentForParameter(p) = result)
 }
 
 predicate exposesByReturn(Callable c, Field f, Expr why, string whyText) {
   returnsCollection(c, f) and
-  exists(MethodCall ma |
-    ma.getTarget() = c |
+  exists(MethodCall ma | ma.getTarget() = c |
     mayWriteToCollection(ma) and
     why = ma and
     whyText = "after this call to " + c.getName()
@@ -75,8 +68,9 @@ predicate exposesByStore(Callable c, Field f, Expr why, string whyText) {
 }
 
 from Callable c, Field f, Expr why, string whyText
-where exposesByReturn(c, f, why, whyText) or
-      exposesByStore(c, f, why, whyText)
-select c, "'" + c.getName() + "' exposes the internal representation stored in field '" + f.getName() +
-          "'. The value may be modified $@.",
-          why.getLocation(), whyText
+where
+  exposesByReturn(c, f, why, whyText) or
+  exposesByStore(c, f, why, whyText)
+select c,
+  "'" + c.getName() + "' exposes the internal representation stored in field '" + f.getName() +
+    "'. The value may be modified $@.", why.getLocation(), whyText

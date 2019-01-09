@@ -11,14 +11,16 @@
  *       external/cwe/cwe-730
  *       external/cwe/cwe-400
  */
+
 import csharp
 import semmle.code.csharp.security.dataflow.RegexInjection::RegexInjection
 import semmle.code.csharp.frameworks.system.text.RegularExpressions
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
-where c.hasFlowPath(source, sink)
+where
+  c.hasFlowPath(source, sink) and
   // No global timeout set
-  and not exists(RegexGlobalTimeout r)
-select sink.getNode(), source, sink,
-  "$@ flows to the construction of a regular expression.", source.getNode(), "User-provided value"
+  not exists(RegexGlobalTimeout r)
+select sink.getNode(), source, sink, "$@ flows to the construction of a regular expression.",
+  source.getNode(), "User-provided value"

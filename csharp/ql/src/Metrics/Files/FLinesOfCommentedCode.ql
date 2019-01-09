@@ -14,10 +14,11 @@
 import csharp
 
 from SourceFile f, int n
-where n = count(CommentLine line |
-  exists(CommentBlock block |
-    block.getLocation().getFile() = f and
-    line = block.getAProbableCodeLine())
-  )
-select f, n
-order by n desc
+where
+  n = count(CommentLine line |
+      exists(CommentBlock block |
+        block.getLocation().getFile() = f and
+        line = block.getAProbableCodeLine()
+      )
+    )
+select f, n order by n desc

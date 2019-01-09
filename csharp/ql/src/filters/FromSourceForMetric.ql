@@ -4,10 +4,10 @@
  * @kind treemap
  * @id cs/source-metric-filter
  */
+
 import csharp
 import external.MetricFilter
 
 from MetricResult res
 where res.getFile().fromSource()
-select res,
-       res.getValue()
+select res, res.getValue()

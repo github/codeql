@@ -12,8 +12,9 @@
 import semmle.code.csharp.frameworks.system.Text
 
 from ObjectCreation c, Expr argument
-where c.getObjectType() instanceof SystemTextStringBuilderClass
-and argument = c.getAnArgument().stripCasts()
-and argument.getType() instanceof CharType
-select argument, "A character value passed to 'new StringBuilder()' is interpreted as the buffer capacity."
-
+where
+  c.getObjectType() instanceof SystemTextStringBuilderClass and
+  argument = c.getAnArgument().stripCasts() and
+  argument.getType() instanceof CharType
+select argument,
+  "A character value passed to 'new StringBuilder()' is interpreted as the buffer capacity."

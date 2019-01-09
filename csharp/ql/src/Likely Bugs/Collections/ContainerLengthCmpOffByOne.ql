@@ -9,7 +9,7 @@
  * @tags reliability
  *       correctness
  *       logic
-  *      external/cwe/cwe-193
+ *      external/cwe/cwe-193
  */
 
 import csharp
@@ -19,14 +19,15 @@ import semmle.code.csharp.commons.ComparisonTest
 /** A comparison of an index variable with the length of an array. */
 class IndexGuard extends ComparisonTest {
   VariableAccess indexAccess;
+
   Variable array;
 
   IndexGuard() {
     this.getFirstArgument() = indexAccess and
     this.getSecondArgument() = any(PropertyAccess lengthAccess |
-      lengthAccess.getQualifier() = array.getAnAccess() and
-      lengthAccess.getTarget().hasName("Length")
-    )
+        lengthAccess.getQualifier() = array.getAnAccess() and
+        lengthAccess.getTarget().hasName("Length")
+      )
   }
 
   /** Holds if this comparison applies to array `arr` and index `ind`. */
@@ -41,12 +42,12 @@ class IndexGuard extends ComparisonTest {
   }
 
   /** Holds if this comparison is an incorrect `<=` or equivalent. */
-  predicate isIncorrect() {
-    this.getComparisonKind().isLessThanEquals()
-  }
+  predicate isIncorrect() { this.getComparisonKind().isLessThanEquals() }
 }
 
-from IndexGuard incorrectGuard, Variable array, Variable index, ElementAccess ea, GuardedExpr indexAccess
+from
+  IndexGuard incorrectGuard, Variable array, Variable index, ElementAccess ea,
+  GuardedExpr indexAccess
 where
   // Look for `index <= array.Length` or `array.Length >= index`
   incorrectGuard.controls(array, index) and
@@ -63,4 +64,6 @@ where
     validGuard.controls(array, index) and
     validGuard.guards(indexAccess, _)
   )
-select incorrectGuard, "Off-by-one index comparison against length leads to possible out of bounds $@.", ea, ea.toString()
+select incorrectGuard,
+  "Off-by-one index comparison against length leads to possible out of bounds $@.", ea,
+  ea.toString()

@@ -5,13 +5,16 @@
  * @problem.severity warning
  * @deprecated
  */
+
 import csharp
 import external.VCS
 
 from File f, int numRecent, int loc
-where numRecent = strictcount(Commit e | f = e.getAnAffectedFile() and e.isRecent())
-  and loc = f.getNumberOfLinesOfCode()
-  and loc > 500
-  and numRecent > 0
-select f, "Large file (" + loc.toString() + " lines of code) actively being edited (" +
-          numRecent.toString() + " recent commits)."
+where
+  numRecent = strictcount(Commit e | f = e.getAnAffectedFile() and e.isRecent()) and
+  loc = f.getNumberOfLinesOfCode() and
+  loc > 500 and
+  numRecent > 0
+select f,
+  "Large file (" + loc.toString() + " lines of code) actively being edited (" + numRecent.toString()
+    + " recent commits)."

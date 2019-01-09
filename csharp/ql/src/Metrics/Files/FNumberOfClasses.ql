@@ -8,9 +8,9 @@
  * @tags maintainability
  * @id cs/classes-per-file
  */
+
 import csharp
 
 from SourceFile f, int n
 where n = count(Class c | c.getFile() = f and c.isSourceDeclaration())
-select f, n
-order by n desc
+select f, n order by n desc

@@ -11,6 +11,7 @@
  *       readability
  *       naming
  */
+
 import csharp
 
 class VisibleInstanceField extends Field {
@@ -20,14 +21,16 @@ class VisibleInstanceField extends Field {
   }
 }
 
-from RefType type, RefType supertype,
-     VisibleInstanceField masked, VisibleInstanceField masking
-where type.getABaseType+() =supertype and
-      masking.getDeclaringType() = type and
-      masked.getDeclaringType() = supertype and
-      masked.getName() = masking.getName() and
-      // exclude intentional masking
-      not exists(FieldAccess va | va.getTarget() = masked and
-                                va.getQualifier() instanceof BaseAccess) and
-      type.fromSource()
+from RefType type, RefType supertype, VisibleInstanceField masked, VisibleInstanceField masking
+where
+  type.getABaseType+() = supertype and
+  masking.getDeclaringType() = type and
+  masked.getDeclaringType() = supertype and
+  masked.getName() = masking.getName() and
+  // exclude intentional masking
+  not exists(FieldAccess va |
+    va.getTarget() = masked and
+    va.getQualifier() instanceof BaseAccess
+  ) and
+  type.fromSource()
 select masking, "This field shadows another field in a superclass."

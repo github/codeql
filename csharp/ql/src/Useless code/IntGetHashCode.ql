@@ -14,6 +14,7 @@ import csharp
 import semmle.code.csharp.frameworks.System
 
 from MethodCall mc, IntegralType t
-where mc.getTarget() instanceof GetHashCodeMethod
-and t = mc.getQualifier().getType()
+where
+  mc.getTarget() instanceof GetHashCodeMethod and
+  t = mc.getQualifier().getType()
 select mc, "Calling GetHashCode() on type " + t.toStringWithTypes() + " is redundant."

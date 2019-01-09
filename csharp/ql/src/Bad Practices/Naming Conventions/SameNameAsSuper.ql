@@ -9,10 +9,12 @@
  *       readability
  *       naming
  */
+
 import csharp
 
 from RefType sub, RefType sup
-where sub.getABaseType() = sup and
-      sub.getName() = sup.getName() and
-      sub.fromSource()
+where
+  sub.getABaseType() = sup and
+  sub.getName() = sup.getName() and
+  sub.fromSource()
 select sub, "Class has the same name as its base class."

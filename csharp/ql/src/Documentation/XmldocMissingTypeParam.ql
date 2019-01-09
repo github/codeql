@@ -12,11 +12,13 @@
 import Documentation
 
 from UnboundGeneric d, TypeParameter p
-where p=d.getATypeParameter()
-and declarationHasXmlComment(d)
-and not exists(TypeparamXmlComment comment, int offset |
-  comment = getADeclarationXmlComment(d)
-  and comment.getName(offset) = p.getName()
-  and comment.hasBody(offset) )
-and not getADeclarationXmlComment(d) instanceof InheritDocXmlComment
+where
+  p = d.getATypeParameter() and
+  declarationHasXmlComment(d) and
+  not exists(TypeparamXmlComment comment, int offset |
+    comment = getADeclarationXmlComment(d) and
+    comment.getName(offset) = p.getName() and
+    comment.hasBody(offset)
+  ) and
+  not getADeclarationXmlComment(d) instanceof InheritDocXmlComment
 select p, "Type parameter should be documented."

@@ -10,6 +10,7 @@
  *       external/cwe/cwe-827
  *       external/cwe/cwe-776
  */
+
 import csharp
 import semmle.code.csharp.security.dataflow.XMLEntityInjection::XMLEntityInjection
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
@@ -17,4 +18,5 @@ import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
 where c.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
-  "$@ flows to here and is loaded insecurely as XML (" + sink.getNode().(Sink).getReason() +").", source.getNode(), "User-provided value"
+  "$@ flows to here and is loaded insecurely as XML (" + sink.getNode().(Sink).getReason() + ").",
+  source.getNode(), "User-provided value"

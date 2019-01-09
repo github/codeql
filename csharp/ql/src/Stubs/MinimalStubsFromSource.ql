@@ -17,13 +17,14 @@ class UsedInSource extends GeneratedDeclaration {
       or
       this = any(Call c).getTarget()
       or
-      this  = any(TypeMention tm).getType()
+      this = any(TypeMention tm).getType()
       or
-      exists(Virtualizable v | v.fromSource() | this = v.getImplementee() or this = v.getOverridee())
+      exists(Virtualizable v | v.fromSource() |
+        this = v.getImplementee() or this = v.getOverridee()
+      )
       or
       this = any(Attribute a).getType().getAConstructor()
-    )
-    and
+    ) and
     this.fromLibrary()
   }
 }

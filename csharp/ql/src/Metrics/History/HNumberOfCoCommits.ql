@@ -7,12 +7,11 @@
  * @metricAggregate avg min max
  * @id cs/vcs/co-commits-per-file
  */
+
 import csharp
 import external.VCS
 
-int committedFiles(Commit commit) {
-  result = count(commit.getAnAffectedFile())
-}
+int committedFiles(Commit commit) { result = count(commit.getAnAffectedFile()) }
 
 from File f
-select f, avg(Commit commit | commit.getAnAffectedFile() = f | committedFiles(commit)-1)
+select f, avg(Commit commit | commit.getAnAffectedFile() = f | committedFiles(commit) - 1)

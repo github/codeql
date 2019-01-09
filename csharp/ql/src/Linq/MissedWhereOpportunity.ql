@@ -14,7 +14,8 @@ import Helpers
 
 from ForeachStmt fes, IfStmt is
 where
-  missedWhereOpportunity(fes, is)
-  and not missedAllOpportunity(fes)
-select fes, "This foreach loop implicitly filters its target sequence $@ - consider filtering the sequence explicitly using '.Where(...)'.",
+  missedWhereOpportunity(fes, is) and
+  not missedAllOpportunity(fes)
+select fes,
+  "This foreach loop implicitly filters its target sequence $@ - consider filtering the sequence explicitly using '.Where(...)'.",
   is.getCondition(), "here"

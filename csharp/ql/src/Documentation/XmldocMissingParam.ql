@@ -12,11 +12,13 @@
 import Documentation
 
 from SourceMethodOrConstructor m, SourceParameter p
-where p = m.getAParameter()
-and declarationHasXmlComment(m)
-and not exists( ParamXmlComment c, int offset |
-  c = getADeclarationXmlComment(m)
-  and c.getName(offset) = p.getName()
-  and c.hasBody(offset) )
-and not getADeclarationXmlComment(m) instanceof InheritDocXmlComment
+where
+  p = m.getAParameter() and
+  declarationHasXmlComment(m) and
+  not exists(ParamXmlComment c, int offset |
+    c = getADeclarationXmlComment(m) and
+    c.getName(offset) = p.getName() and
+    c.hasBody(offset)
+  ) and
+  not getADeclarationXmlComment(m) instanceof InheritDocXmlComment
 select p, "Parameter should be documented."

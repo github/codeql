@@ -10,13 +10,14 @@
  *       useless-code
  *       external/cwe/cwe-561
  */
+
 import csharp
 import DeadCode
 
 from Method m
 where
-  not extractionIsStandalone()
-  and m.fromSource()
-  and isDeadMethod(m)
-  and not m.getDeclaringType().isPartial()
+  not extractionIsStandalone() and
+  m.fromSource() and
+  isDeadMethod(m) and
+  not m.getDeclaringType().isPartial()
 select m, "Unused method (or method called from dead method only)"

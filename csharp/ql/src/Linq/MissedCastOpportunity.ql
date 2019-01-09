@@ -15,5 +15,6 @@ import Helpers
 
 from ForeachStmt fes, LocalVariableDeclStmt s
 where missedCastOpportunity(fes, s)
-select fes, "This foreach loop immediately casts its iteration variable to another type $@ - consider casting the sequence explicitly using '.Cast(...)'.",
+select fes,
+  "This foreach loop immediately casts its iteration variable to another type $@ - consider casting the sequence explicitly using '.Cast(...)'.",
   s, "here"

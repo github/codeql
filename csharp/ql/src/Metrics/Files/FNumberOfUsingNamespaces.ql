@@ -8,9 +8,9 @@
  * @tags maintainability
  * @id cs/using-namespaces-per-file
  */
+
 import csharp
 
 from SourceFile f, int n
 where n = count(UsingNamespaceDirective u | u.getFile() = f)
-select f, n
-order by n desc
+select f, n order by n desc

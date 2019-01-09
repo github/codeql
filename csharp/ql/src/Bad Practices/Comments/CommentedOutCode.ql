@@ -12,12 +12,10 @@
 
 import csharp
 
-class CommentedOutCode extends CommentBlock
-{
-  CommentedOutCode()
-  {
+class CommentedOutCode extends CommentBlock {
+  CommentedOutCode() {
     not isXmlCommentBlock() and
-    2*count(getAProbableCodeLine()) > count(getANonEmptyLine())
+    2 * count(getAProbableCodeLine()) > count(getANonEmptyLine())
   }
 }
 

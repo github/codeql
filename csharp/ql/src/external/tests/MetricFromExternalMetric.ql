@@ -8,16 +8,17 @@
  */
 
 import csharp
-
 import external.ExternalArtifact
 
 predicate numBuiltFiles(Folder fold, int i) {
   i = count(File f |
-    exists(ExternalMetric m | m.getQueryPath() = "filesBuilt.ql" and
-                              m.getValue() = 1.0 and
-                              m.getFile() = f) and
-    f.getParentContainer() = fold
-  )
+      exists(ExternalMetric m |
+        m.getQueryPath() = "filesBuilt.ql" and
+        m.getValue() = 1.0 and
+        m.getFile() = f
+      ) and
+      f.getParentContainer() = fold
+    )
 }
 
 from File f, int i

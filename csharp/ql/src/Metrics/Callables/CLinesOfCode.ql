@@ -9,9 +9,9 @@
  *       complexity
  * @id cs/lines-of-code-per-function
  */
+
 import csharp
 
 from Callable c
 where c.isSourceDeclaration()
-select c, c.getNumberOfLinesOfCode() as n
-order by n desc
+select c, c.getNumberOfLinesOfCode() as n order by n desc

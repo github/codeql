@@ -9,9 +9,9 @@
  *       modularity
  * @id cs/inheritance-depth
  */
+
 import csharp
 
 from ValueOrRefType t
 where t.isSourceDeclaration()
-select t, t.getInheritanceDepth() as n
-order by n desc
+select t, t.getInheritanceDepth() as n order by n desc

@@ -13,8 +13,7 @@
 import csharp
 
 predicate isReadonlyCompatibleDefinition(AssignableDefinition def, Field f) {
-  def.getTarget().getSourceDeclaration() = f
-  and
+  def.getTarget().getSourceDeclaration() = f and
   (
     def.getEnclosingCallable().(Constructor).getDeclaringType() = f.getDeclaringType()
     or
@@ -23,15 +22,15 @@ predicate isReadonlyCompatibleDefinition(AssignableDefinition def, Field f) {
 }
 
 predicate canBeReadonly(Field f) {
-  forex(AssignableDefinition def |
-    def.getTarget().getSourceDeclaration() = f |
+  forex(AssignableDefinition def | def.getTarget().getSourceDeclaration() = f |
     isReadonlyCompatibleDefinition(def, f)
   )
 }
 
 from Field f
-where canBeReadonly(f)
-  and not f.isConst()
-  and not f.isReadOnly()
-  and (f.isEffectivelyPrivate() or f.isEffectivelyInternal())
+where
+  canBeReadonly(f) and
+  not f.isConst() and
+  not f.isReadOnly() and
+  (f.isEffectivelyPrivate() or f.isEffectivelyInternal())
 select f, "Field '" + f.getName() + "' can be 'readonly'."

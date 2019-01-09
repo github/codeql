@@ -12,6 +12,7 @@
 import csharp
 
 from Class c, Method m
-where m.isExtern()
-  and m.getDeclaringType() = c
+where
+  m.isExtern() and
+  m.getDeclaringType() = c
 select m, "Minimise the use of unmanaged code."

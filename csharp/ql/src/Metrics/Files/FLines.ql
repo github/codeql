@@ -7,8 +7,8 @@
  * @metricAggregate avg sum max
  * @id cs/lines-per-file
  */
+
 import csharp
 
 from SourceFile f
-select f, f.getNumberOfLines() as n
-order by n desc
+select f, f.getNumberOfLines() as n order by n desc

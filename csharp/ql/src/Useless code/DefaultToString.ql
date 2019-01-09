@@ -9,6 +9,7 @@
  * @tags reliability
  *       maintainability
  */
+
 import csharp
 import semmle.code.csharp.commons.Strings
 import semmle.code.csharp.frameworks.System
@@ -19,8 +20,7 @@ import semmle.code.csharp.frameworks.System
  */
 predicate invokesToString(Expr e, ValueOrRefType t) {
   // Explicit invocation
-  exists(MethodCall mc |
-    mc.getQualifier() = e |
+  exists(MethodCall mc | mc.getQualifier() = e |
     mc.getTarget() instanceof ToStringMethod and
     t = mc.getQualifier().getType()
   )
@@ -33,7 +33,8 @@ predicate invokesToString(Expr e, ValueOrRefType t) {
   t = e.stripCasts().getType() and
   not t instanceof StringType and
   exists(AssignableDefinitions::ImplicitParameterDefinition def, Parameter p, ParameterRead pr |
-    e = p.getAnAssignedArgument() |
+    e = p.getAnAssignedArgument()
+  |
     def.getParameter() = p and
     pr = def.getAReachableRead() and
     pr.getAControlFlowNode().postDominates(p.getCallable().getEntryPoint()) and
@@ -46,20 +47,17 @@ predicate invokesToString(Expr e, ValueOrRefType t) {
  * method from `System.Object` or `System.ValueType`.
  */
 predicate alwaysDefaultToString(ValueOrRefType t) {
-  exists(ToStringMethod m |
-    t.hasMethod(m) |
+  exists(ToStringMethod m | t.hasMethod(m) |
     m.getDeclaringType() instanceof SystemObjectClass or
     m.getDeclaringType() instanceof SystemValueTypeClass
-  )
-  and
+  ) and
   not exists(RefType overriding |
     overriding.getAMethod() instanceof ToStringMethod and
     overriding.getABaseType+() = t
   )
 }
 
-newtype TDefaultToStringType =
-  TDefaultToStringType0(ValueOrRefType t) { alwaysDefaultToString(t) }
+newtype TDefaultToStringType = TDefaultToStringType0(ValueOrRefType t) { alwaysDefaultToString(t) }
 
 class DefaultToStringType extends TDefaultToStringType {
   ValueOrRefType t;
@@ -73,19 +71,19 @@ class DefaultToStringType extends TDefaultToStringType {
   // A workaround for generating empty URLs for non-source locations, because qltest
   // does not support non-source locations
   string getURL() {
-    exists(Location l |
-      l = t.getLocation() |
-      if l instanceof SourceLocation then
-        exists(string path, int a, int b, int c, int d |
-          l.hasLocationInfo(path, a, b, c, d) |
+    exists(Location l | l = t.getLocation() |
+      if l instanceof SourceLocation
+      then
+        exists(string path, int a, int b, int c, int d | l.hasLocationInfo(path, a, b, c, d) |
           toUrl(path, a, b, c, d, result)
         )
-      else
-        result = ""
+      else result = ""
     )
   }
 }
 
 from Expr e, DefaultToStringType t
 where invokesToString(e, t.getType())
-select e, "Default 'ToString()': $@ inherits 'ToString()' from 'Object', and so is not suitable for printing.", t, t.getType().getName()
+select e,
+  "Default 'ToString()': $@ inherits 'ToString()' from 'Object', and so is not suitable for printing.",
+  t, t.getType().getName()

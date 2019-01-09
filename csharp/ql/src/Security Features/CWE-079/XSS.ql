@@ -10,6 +10,7 @@
  *       external/cwe/cwe-079
  *       external/cwe/cwe-116
  */
+
 import csharp
 import semmle.code.csharp.security.dataflow.XSS::XSS
 

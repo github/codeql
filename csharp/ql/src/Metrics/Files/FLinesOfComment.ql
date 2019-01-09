@@ -10,8 +10,8 @@
  * @tags maintainability
  *       documentation
  */
+
 import csharp
 
 from SourceFile f
-select f, f.getNumberOfLinesOfComments() as n
-order by n desc
+select f, f.getNumberOfLinesOfComments() as n order by n desc

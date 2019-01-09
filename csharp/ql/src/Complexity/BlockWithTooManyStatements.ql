@@ -11,14 +11,15 @@
  *       testability
  *       complexity
  */
+
 import csharp
 
 class ComplexStmt extends Stmt {
   ComplexStmt() {
-    (this instanceof ForStmt or
-     this instanceof WhileStmt or
-     this instanceof DoStmt or
-     this instanceof SwitchStmt)
+    this instanceof ForStmt or
+    this instanceof WhileStmt or
+    this instanceof DoStmt or
+    this instanceof SwitchStmt
   }
 }
 

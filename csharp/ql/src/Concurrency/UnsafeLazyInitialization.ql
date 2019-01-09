@@ -15,7 +15,7 @@ import csharp
 import semmle.code.csharp.commons.StructuralComparison
 
 class DoubleCheckedLock extends StructuralComparisonConfiguration {
-  DoubleCheckedLock() { this="double checked lock" }
+  DoubleCheckedLock() { this = "double checked lock" }
 
   override predicate candidate(Element x, Element y) {
     exists(IfStmt unlockedIf, IfStmt lockedIf, LockStmt lock |
@@ -28,8 +28,7 @@ class DoubleCheckedLock extends StructuralComparisonConfiguration {
 }
 
 predicate doubleCheckedLock(Field field, IfStmt ifs) {
-  exists(DoubleCheckedLock config, LockStmt lock, Expr eq1, Expr eq2 |
-    ifs.getCondition() = eq1 |
+  exists(DoubleCheckedLock config, LockStmt lock, Expr eq1, Expr eq2 | ifs.getCondition() = eq1 |
     lock = ifs.getThen().stripSingletonBlocks() and
     config.same(eq1, eq2) and
     field.getAnAccess() = eq1.getAChildExpr*()
@@ -37,9 +36,7 @@ predicate doubleCheckedLock(Field field, IfStmt ifs) {
 }
 
 from Field field, IfStmt ifs
-where doubleCheckedLock(field, ifs)
-and not field.isVolatile()
-select ifs, "Field $@ should be 'volatile' for this double-checked lock.",
-  field, field.getName()
-
-
+where
+  doubleCheckedLock(field, ifs) and
+  not field.isVolatile()
+select ifs, "Field $@ should be 'volatile' for this double-checked lock.", field, field.getName()

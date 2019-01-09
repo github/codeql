@@ -9,13 +9,14 @@
  * @tags reliability
  *       maintainability
  */
+
 import csharp
 import semmle.code.csharp.frameworks.System
 
 from EqualsMethod caller, MethodCall call
 where
-  call.getEnclosingCallable() = caller
-  and call.getTarget() = caller
-  and (call.hasQualifier() implies call.hasThisQualifier())
-  and call.getArgument(0).stripCasts() = caller.getParameter(0).getAnAccess()
+  call.getEnclosingCallable() = caller and
+  call.getTarget() = caller and
+  (call.hasQualifier() implies call.hasThisQualifier()) and
+  call.getArgument(0).stripCasts() = caller.getParameter(0).getAnAccess()
 select call, "This call to 'Equals' is recursive: did you mean to cast the argument?"

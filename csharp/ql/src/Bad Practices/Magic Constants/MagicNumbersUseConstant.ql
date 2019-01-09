@@ -12,6 +12,7 @@
 import MagicConstants
 
 from Literal magicLiteral, string message, Field constant
-where isNumber(magicLiteral)
-  and literalInsteadOfConstant(magicLiteral, _, message, constant)
+where
+  isNumber(magicLiteral) and
+  literalInsteadOfConstant(magicLiteral, _, message, constant)
 select magicLiteral, message, constant, constant.getName()

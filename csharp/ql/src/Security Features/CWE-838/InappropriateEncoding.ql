@@ -1,14 +1,14 @@
 /**
-* @name Inappropriate encoding
-* @description Using an inappropriate encoding may give unintended results and may
-*              pose a security risk.
-* @kind path-problem
-* @problem.severity error
-* @precision low
-* @id cs/inappropriate-encoding
-* @tags security
-*       external/cwe/cwe-838
-*/
+ * @name Inappropriate encoding
+ * @description Using an inappropriate encoding may give unintended results and may
+ *              pose a security risk.
+ * @kind path-problem
+ * @problem.severity error
+ * @precision low
+ * @id cs/inappropriate-encoding
+ * @tags security
+ *       external/cwe/cwe-838
+ */
 
 import csharp
 import DataFlow
@@ -52,20 +52,15 @@ abstract class RequiresEncodingConfiguration extends TaintTracking::Configuratio
   override predicate isSource(Node source) {
     // all encoded values that do not match this configuration are
     // considered sources
-    exists(Expr e |
-      e = source.asExpr() |
+    exists(Expr e | e = source.asExpr() |
       e instanceof EncodedValue and
       not this.isPossibleEncodedValue(e)
     )
   }
 
-  override predicate isSink(Node sink) {
-    this.requiresEncoding(sink)
-  }
+  override predicate isSink(Node sink) { this.requiresEncoding(sink) }
 
-  override predicate isSanitizer(Node sanitizer) {
-    this.isPossibleEncodedValue(sanitizer.asExpr())
-  }
+  override predicate isSanitizer(Node sanitizer) { this.isPossibleEncodedValue(sanitizer.asExpr()) }
 }
 
 /** An encoded value, for example a call to `HttpServerUtility.HtmlEncode`. */
@@ -89,72 +84,50 @@ class EncodedValue extends Expr {
 module EncodingConfigurations {
   /** An encoding configuration for SQL expressions. */
   class SqlExpr extends RequiresEncodingConfiguration {
-    SqlExpr() {
-      this = "SqlExpr"
-    }
+    SqlExpr() { this = "SqlExpr" }
 
-    override string getKind() {
-      result = "SQL expression"
-    }
+    override string getKind() { result = "SQL expression" }
 
-    override predicate requiresEncoding(Node n) {
-      n instanceof SqlInjection::Sink
-    }
+    override predicate requiresEncoding(Node n) { n instanceof SqlInjection::Sink }
 
     // no override for `isPossibleEncodedValue` as SQL parameters should
     // be used instead of explicit encoding
-
     override predicate isSource(Node source) {
-      super.isSource(source) or
+      super.isSource(source)
+      or
       // consider quote-replacing calls as additional sources for
       // SQL expressions (e.g., `s.Replace("\"", "\"\"")`)
       source.asExpr() = any(MethodCall mc |
-        mc.getTarget() = any(SystemStringClass c).getReplaceMethod() and
-        mc.getArgument(0).getValue().regexpMatch("\"|'|`")
-      )
+          mc.getTarget() = any(SystemStringClass c).getReplaceMethod() and
+          mc.getArgument(0).getValue().regexpMatch("\"|'|`")
+        )
     }
   }
 
   /** An encoding configuration for HTML expressions. */
   class HtmlExpr extends RequiresEncodingConfiguration {
-    HtmlExpr() {
-      this = "HtmlExpr"
-    }
+    HtmlExpr() { this = "HtmlExpr" }
 
-    override string getKind() {
-      result = "HTML expression"
-    }
+    override string getKind() { result = "HTML expression" }
 
-    override predicate requiresEncoding(Node n) {
-      n instanceof XSS::HtmlSink
-    }
+    override predicate requiresEncoding(Node n) { n instanceof XSS::HtmlSink }
 
-    override predicate isPossibleEncodedValue(Expr e) {
-      e instanceof HtmlSanitizedExpr
-    }
+    override predicate isPossibleEncodedValue(Expr e) { e instanceof HtmlSanitizedExpr }
   }
 
   /** An encoding configuration for URL expressions. */
   class UrlExpr extends RequiresEncodingConfiguration {
-    UrlExpr() {
-      this = "UrlExpr"
-    }
+    UrlExpr() { this = "UrlExpr" }
 
-    override string getKind() {
-      result = "URL expression"
-    }
+    override string getKind() { result = "URL expression" }
 
-    override predicate requiresEncoding(Node n) {
-      n instanceof UrlRedirect::Sink
-    }
+    override predicate requiresEncoding(Node n) { n instanceof UrlRedirect::Sink }
 
-    override predicate isPossibleEncodedValue(Expr e) {
-      e instanceof UrlSanitizedExpr
-    }
+    override predicate isPossibleEncodedValue(Expr e) { e instanceof UrlSanitizedExpr }
   }
 }
 
 from RequiresEncodingConfiguration c, PathNode encodedValue, PathNode sink, string kind
 where c.hasWrongEncoding(encodedValue, sink, kind)
-select sink.getNode(), encodedValue, sink,
-  "This " + kind + " may include data from a $@.", encodedValue.getNode(), "possibly inappropriately encoded value"
+select sink.getNode(), encodedValue, sink, "This " + kind + " may include data from a $@.",
+  encodedValue.getNode(), "possibly inappropriately encoded value"

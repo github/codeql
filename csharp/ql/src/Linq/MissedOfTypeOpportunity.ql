@@ -15,5 +15,6 @@ import Helpers
 
 from ForeachStmt fes, LocalVariableDeclStmt s
 where missedOfTypeOpportunity(fes, s)
-select fes, "This foreach loop immediately uses 'as' to coerce its iteration variable to another type $@ - consider using '.OfType(...)' instead.",
+select fes,
+  "This foreach loop immediately uses 'as' to coerce its iteration variable to another type $@ - consider using '.OfType(...)' instead.",
   s, "here"

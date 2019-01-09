@@ -9,10 +9,14 @@
  *       external/cwe/cwe-258
  *       external/cwe/cwe-862
  */
+
 import csharp
 
 from XMLAttribute a
-where a.getName().toLowerCase() = "password" and a.getValue() = ""
-   or a.getName().toLowerCase() = "pwd" and a.getValue() = ""
-   or a.getValue().regexpMatch("(?is).*(pwd|password)\\s*=\\s*;.*")
+where
+  a.getName().toLowerCase() = "password" and a.getValue() = ""
+  or
+  a.getName().toLowerCase() = "pwd" and a.getValue() = ""
+  or
+  a.getValue().regexpMatch("(?is).*(pwd|password)\\s*=\\s*;.*")
 select a, "Do not use empty passwords."

@@ -9,6 +9,7 @@
  * @tags reliability
  *       correctness
  */
+
 import csharp
 
 predicate isDefinitelyPositive(Expr e) {
@@ -18,11 +19,16 @@ predicate isDefinitelyPositive(Expr e) {
 }
 
 from BinaryOperation t, RemExpr lhs, IntegerLiteral rhs, string parity
-where t.getLeftOperand() = lhs and
-      t.getRightOperand() = rhs and
-      not isDefinitelyPositive(lhs.getLeftOperand().stripCasts()) and
-      lhs.getRightOperand().(IntegerLiteral).getValue() = "2" and
-      ((t instanceof EQExpr and rhs.getValue() = "1" and parity = "oddness") or
-       (t instanceof NEExpr and rhs.getValue() = "1" and parity = "evenness") or
-       (t instanceof GTExpr and rhs.getValue() = "0" and parity = "oddness"))
+where
+  t.getLeftOperand() = lhs and
+  t.getRightOperand() = rhs and
+  not isDefinitelyPositive(lhs.getLeftOperand().stripCasts()) and
+  lhs.getRightOperand().(IntegerLiteral).getValue() = "2" and
+  (
+    t instanceof EQExpr and rhs.getValue() = "1" and parity = "oddness"
+    or
+    t instanceof NEExpr and rhs.getValue() = "1" and parity = "evenness"
+    or
+    t instanceof GTExpr and rhs.getValue() = "0" and parity = "oddness"
+  )
 select t, "Possibly invalid test for " + parity + ". This will fail for negative numbers."

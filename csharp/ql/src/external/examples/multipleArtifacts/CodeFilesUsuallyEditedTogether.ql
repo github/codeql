@@ -5,17 +5,16 @@
  * @problem.severity recommendation
  * @deprecated
  */
+
 import csharp
 import external.VCS
 
 int numberOfCommitsWith(File a, File b) {
-  result = count(Commit e | a = e.getAnAffectedFile() and b = e.getAnAffectedFile())
-  and a != b
+  result = count(Commit e | a = e.getAnAffectedFile() and b = e.getAnAffectedFile()) and
+  a != b
 }
 
-int totalCommits(File a) {
-  result = count(Commit e | a = e.getAnAffectedFile())
-}
+int totalCommits(File a) { result = count(Commit e | a = e.getAnAffectedFile()) }
 
 int percentagePairedCommits(File f, File with) {
   exists(int paired, int total |
@@ -27,8 +26,9 @@ int percentagePairedCommits(File f, File with) {
 }
 
 from File f, File other, int percent, int total
-where percent = percentagePairedCommits(f, other) and
-      total = totalCommits(f) and
-      percent >= 70 and
-      total >= 4
+where
+  percent = percentagePairedCommits(f, other) and
+  total = totalCommits(f) and
+  percent >= 70 and
+  total >= 4
 select f, "This file is usually edited together with " + other + " (" + percent + "% of commits)."

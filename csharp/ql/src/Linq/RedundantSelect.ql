@@ -13,10 +13,9 @@
 import csharp
 import Helpers
 
-predicate isIdentityFunction(AnonymousFunctionExpr afe)
-{
-  afe.getNumberOfParameters() = 1
-  and afe.getExpressionBody() = afe.getParameter(0).getAnAccess()
+predicate isIdentityFunction(AnonymousFunctionExpr afe) {
+  afe.getNumberOfParameters() = 1 and
+  afe.getExpressionBody() = afe.getParameter(0).getAnAccess()
 }
 
 from SelectCall sc
