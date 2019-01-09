@@ -1,13 +1,14 @@
 /**
- * @name Using the return value of a strcpy or related string copy function as a boolean operator
- * @description The return value for strcpy, strncpy, or related string copy functions have no reserved return value to indicate an error.
- *              Using the return values of these functions as boolean function .
- *              Either the intent was to use a more secure version of a string copy function (such as strcpy_s), or a string compare function (such as strcmp).
+ * @name Use of string copy function in a condition
+ * @description The return value for strcpy, strncpy, or related string copy
+ *              functions have no reserved return value to indicate an error.
+ *              Using them in a condition is likely to be a logic error.
  * @kind problem
  * @problem.severity error
  * @precision high
  * @id cpp/string-copy-return-value-as-boolean
  * @tags external/microsoft/C6324
+ *       correctness
  */
 
 import cpp
@@ -36,7 +37,7 @@ predicate isStringCopyCastedAsBoolean(FunctionCall func, Expr expr1, string msg)
   DataFlow::localFlow(DataFlow::exprNode(func), DataFlow::exprNode(expr1)) and
   isBoolean(expr1.getConversion*()) and
   isStringComparisonFunction(func.getTarget().getQualifiedName()) and
-  msg = "Return Value of " + func.getTarget().getQualifiedName() + " used as boolean."
+  msg = "Return value of " + func.getTarget().getQualifiedName() + " used as Boolean."
 }
 
 predicate isStringCopyUsedInLogicalOperationOrCondition(FunctionCall func, Expr expr1, string msg) {
@@ -60,14 +61,14 @@ predicate isStringCopyUsedInLogicalOperationOrCondition(FunctionCall func, Expr 
           func = ble.getAChild()
         )
       ) and
-      msg = "Return Value of " + func.getTarget().getQualifiedName() +
+      msg = "Return value of " + func.getTarget().getQualifiedName() +
           " used in a logical operation."
     )
     or
     exists(ConditionalStmt condstmt | condstmt.getAChild() = expr1 |
       // or the string copy function is used directly as the conditional expression
       func = condstmt.getChild(0) and
-      msg = "Return Value of " + func.getTarget().getQualifiedName() +
+      msg = "Return value of " + func.getTarget().getQualifiedName() +
           " used directly in a conditional expression."
     )
   )
