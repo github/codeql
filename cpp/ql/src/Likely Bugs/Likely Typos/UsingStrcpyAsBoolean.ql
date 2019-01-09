@@ -36,12 +36,12 @@ predicate isBoolean(Expr e1) {
 predicate isStringCopyCastedAsBoolean(FunctionCall func, Expr expr1, string msg) {
   DataFlow::localFlow(DataFlow::exprNode(func), DataFlow::exprNode(expr1)) and
   isBoolean(expr1.getConversion*()) and
-  isStringComparisonFunction(func.getTarget().getQualifiedName()) and
-  msg = "Return value of " + func.getTarget().getQualifiedName() + " used as Boolean."
+  isStringComparisonFunction(func.getTarget().getName()) and
+  msg = "Return value of " + func.getTarget().getName() + " used as Boolean."
 }
 
 predicate isStringCopyUsedInLogicalOperationOrCondition(FunctionCall func, Expr expr1, string msg) {
-  isStringComparisonFunction(func.getTarget().getQualifiedName()) and
+  isStringComparisonFunction(func.getTarget().getName()) and
   (
     (
       // it is being used in an equality or logical operation
@@ -60,7 +60,7 @@ predicate isStringCopyUsedInLogicalOperationOrCondition(FunctionCall func, Expr 
         func = ble.getAnOperand()
       )
     ) and
-    msg = "Return value of " + func.getTarget().getQualifiedName() +
+    msg = "Return value of " + func.getTarget().getName() +
         " used in a logical operation."
     or
     // or the string copy function is used directly as the conditional expression
@@ -75,7 +75,7 @@ predicate isStringCopyUsedInLogicalOperationOrCondition(FunctionCall func, Expr 
         func = ce.getCondition()
       )
     ) and
-    msg = "Return value of " + func.getTarget().getQualifiedName() +
+    msg = "Return value of " + func.getTarget().getName() +
         " used directly in a conditional expression."
   )
 }
