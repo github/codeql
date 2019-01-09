@@ -66,6 +66,11 @@ class Namespace extends NameQualifyingElement, @namespace {
   /** Gets a child namespace of this namespace. */
   Namespace getAChildNamespace() { namespacembrs(underlyingElement(this),unresolveElement(result)) }
 
+  /** Holds if the namespace is inline. */
+  predicate isInline() {
+    namespace_inline(underlyingElement(this))
+  }
+
   /** Holds if this namespace may be from source. */
   override predicate fromSource() { this.getADeclaration().fromSource() }
 
