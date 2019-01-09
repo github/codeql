@@ -36,3 +36,4 @@
 
 * `DataFlow::SourceNode` is no longer an abstract class; to add new source nodes, extend `DataFlow::SourceNode::Range` instead.
 * Subclasses of `DataFlow::PropRead` are no longer automatically made source nodes; you now need to additionally define a corresponding subclass of `DataFlow::SourceNode::Range` to achieve this.
+* The deprecated libraries `semmle.javascript.DataFlow` and `semmle.javascript.dataflow.CallGraph` have been removed; they are both superseded by `semmle.javascript.dataflow.DataFlow`.
