@@ -60,7 +60,7 @@ predicate nullCheckInCondition(Expr e, Variable v, Declaration qualifier) {
     or exists(NotExpr exp | exp = e and nullCheckInCondition(exp.getAnOperand(), v, qualifier))
     or exists(FunctionCall c | c = e and nullCheckInCondition(c.getAnArgument(), v, qualifier) and
                                          c.getTarget().getName() = "__builtin_expect")
-    or exists(ConditionDeclExpr d | d = e and nullCheckInCondition(d.getExpr(), v, qualifier))
+    or exists(ConditionDeclExpr d | d = e and nullCheckInCondition(d.getVariableAccess(), v, qualifier))
 }
 
 predicate hasNullCheck(Function enclosing, Variable v, Declaration qualifier) {

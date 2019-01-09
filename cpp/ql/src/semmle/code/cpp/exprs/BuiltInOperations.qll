@@ -42,10 +42,17 @@ class BuiltInNoOp extends BuiltInOperation, @noopexpr {
 }
 
 /**
- * A C++ `__offsetof` expression (used by some implementations of offsetof in the presence of user-defined `operator&amp;`).
+ * A C++ `__offsetof` expression (used by some implementations of offsetof in the presence of user-defined `operator&`).
  */
 class BuiltInOperationOffsetOf extends BuiltInOperation, @offsetofexpr {
   override string toString() { result = "__offsetof" }
+}
+
+/**
+ * A C/C++ `__INTADDR__` expression, used by EDG to implement `offsetof` in the presence of user-defined `operator&`.
+ */
+class BuiltInIntAddr extends BuiltInOperation, @intaddrexpr {
+  override string toString() { result = "__INTADDR__" }
 }
 
 /**
