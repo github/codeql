@@ -131,7 +131,7 @@ void PositiveCases()
     bool b = strncpy(szbuf1, "test", 100); // Bug
 
     bool result = !strncpy(szbuf1, "test", 100); // Bug
-
+    result = strcpy(szbuf1, "test") ? 1 : 0; // Bug
     result = strcpy(szbuf1, "test") && 1; // Bug
 
     result = strcpy(szbuf1, "test") == 0; // Bug
