@@ -8,6 +8,7 @@
 
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
+| Use of string copy function in a condition (`cpp/string-copy-return-value-as-boolean`) | correctness | This rule flags calls to string copy functions used in conditions, where it's likely that a different function was intended to be called. |
 
 ## Changes to existing queries
 
