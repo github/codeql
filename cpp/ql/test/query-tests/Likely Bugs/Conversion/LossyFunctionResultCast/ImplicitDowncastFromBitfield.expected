@@ -4,3 +4,9 @@
 | test.cpp:40:13:40:21 | call to getDouble | Return value of type double is implicitly converted to int here. |
 | test.cpp:43:6:43:12 | call to getMyLD | Return value of type long double is implicitly converted to bool here. |
 | test.cpp:45:13:45:19 | call to getMyLD | Return value of type long double is implicitly converted to int here. |
+| test.cpp:97:10:97:12 | call to pow | Return value of type double is implicitly converted to int here. |
+| test.cpp:99:10:99:12 | call to pow | Return value of type double is implicitly converted to int here. |
+| test.cpp:101:10:101:12 | call to pow | Return value of type double is implicitly converted to int here. |
+| test.cpp:103:10:103:12 | call to pow | Return value of type double is implicitly converted to int here. |
+| test.cpp:105:10:105:12 | call to pow | Return value of type double is implicitly converted to int here. |
+| test.cpp:118:10:118:16 | call to myRound | Return value of type double is implicitly converted to int here. |

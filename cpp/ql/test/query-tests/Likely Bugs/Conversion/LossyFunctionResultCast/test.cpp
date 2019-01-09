@@ -86,3 +86,34 @@ void test1()
 		setPosFloat(round(getDouble()));
 	}
 }
+
+double pow(double x, double y);
+
+int test2(double v, double w, int n)
+{
+	switch (n)
+	{
+	case 1:
+		return pow(2, v); // GOOD [FALSE POSITIVE]
+	case 2:
+		return pow(10, v); // GOOD [FALSE POSITIVE]
+	case 3:
+		return pow(2.5, v); // BAD
+	case 4:
+		return pow(v, 2); // BAD
+	case 5:
+		return pow(v, w); // BAD
+	};
+}
+
+double myRound(double v)
+{
+	double result = round(v);
+
+	return result;
+}
+
+void test3()
+{
+	int i = myRound(1.5); // GOOD [FALSE POSITIVE]
+}
