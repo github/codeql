@@ -6084,6 +6084,48 @@
 | caller | true | 21161 | 21159 |  |
 | caller | true | 21163 | 21116 |  |
 | caller | true | 21165 | 21126 |  |
+| cond_destruct::C::C | false | 4133 | 4133 | C |
+| cond_destruct::C::C | false | 4173 | 4173 | C |
+| cond_destruct::C::getInt | false | 4119 | 4119 | getInt |
+| cond_destruct::C::operator= | false | 4167 | 4167 | operator= |
+| cond_destruct::C::~C | false | 4163 | 4163 | ~C |
+| cond_destruct::f | false | 4107 | 4107 | f |
+| cond_destruct::f | false | 4115 | 4115 | declaration |
+| cond_destruct::f | false | 4117 | 4117 | declaration |
+| cond_destruct::f | false | 4122 | 4122 | call to getInt |
+| cond_destruct::f | false | 4128 | 4128 | x |
+| cond_destruct::f | false | 4130 | 4130 | (bool)... |
+| cond_destruct::f | false | 4131 | 4131 | call to C |
+| cond_destruct::f | false | 4134 | 4134 | (const C)... |
+| cond_destruct::f | false | 4137 | 4137 | call to C |
+| cond_destruct::f | false | 4139 | 4139 | initializer for local |
+| cond_destruct::f | false | 4142 | 4142 | local |
+| cond_destruct::f | false | 4144 | 4144 | (const C)... |
+| cond_destruct::f | false | 4146 | 4146 | ... ? ... : ... |
+| cond_destruct::f | false | 4148 | 4148 | (reference to) |
+| cond_destruct::f | false | 4149 | 4149 | initializer for ref |
+| cond_destruct::f | false | 4153 | 4153 | ref |
+| cond_destruct::f | false | 4155 | 4155 | (reference dereference) |
+| cond_destruct::f | false | 4156 | 4156 | return ... |
+| cond_destruct::f | false | 4158 | 4158 | { ... } |
+| cond_destruct::f | false | 4160 | 4160 | local |
+| cond_destruct::f | false | 4162 | 4162 | call to local.~C |
+| cond_destruct::f | true | 4115 | 4139 |  |
+| cond_destruct::f | true | 4117 | 4149 |  |
+| cond_destruct::f | true | 4122 | 4160 |  |
+| cond_destruct::f | true | 4128 | 4131 | T |
+| cond_destruct::f | true | 4128 | 4142 | F |
+| cond_destruct::f | true | 4131 | 4156 |  |
+| cond_destruct::f | true | 4137 | 4117 |  |
+| cond_destruct::f | true | 4139 | 4137 |  |
+| cond_destruct::f | true | 4142 | 4156 |  |
+| cond_destruct::f | true | 4146 | 4128 |  |
+| cond_destruct::f | true | 4149 | 4146 |  |
+| cond_destruct::f | true | 4153 | 4122 |  |
+| cond_destruct::f | true | 4156 | 4153 |  |
+| cond_destruct::f | true | 4158 | 4115 |  |
+| cond_destruct::f | true | 4160 | 4162 |  |
+| cond_destruct::f | true | 4162 | 4107 |  |
 | cpp_fun | false | 22196 | 22196 | cpp_fun |
 | cpp_fun | false | 22201 | 22201 | declaration |
 | cpp_fun | false | 22203 | 22203 | declaration |
