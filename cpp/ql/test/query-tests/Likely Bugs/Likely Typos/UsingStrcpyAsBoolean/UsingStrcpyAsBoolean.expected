@@ -5,6 +5,7 @@
 | test.c:50:9:50:15 | call to strncpy | Return value of strncpy used directly in a conditional expression. |
 | test.c:54:9:54:37 | ! ... | Return value of strncpy used in a logical operation. |
 | test.c:58:14:58:42 | ! ... | Return value of strncpy used in a logical operation. |
+| test.c:59:14:59:43 | ... ? ... : ... | Return value of strcpy used directly in a conditional expression. |
 | test.c:60:14:60:40 | ... && ... | Return value of strcpy used in a logical operation. |
 | test.c:62:14:62:40 | ... == ... | Return value of strcpy used in a logical operation. |
 | test.c:64:14:64:40 | ... != ... | Return value of strcpy used in a logical operation. |
@@ -24,7 +25,7 @@
 | test.cpp:127:9:127:37 | ! ... | Return value of strncpy used in a logical operation. |
 | test.cpp:131:14:131:20 | call to strncpy | Return value of strncpy used as Boolean. |
 | test.cpp:133:19:133:47 | ! ... | Return value of strncpy used in a logical operation. |
-| test.cpp:134:14:134:19 | call to strcpy | Return value of strcpy used as Boolean. |
+| test.cpp:134:14:134:43 | ... ? ... : ... | Return value of strcpy used directly in a conditional expression. |
 | test.cpp:135:14:135:40 | ... && ... | Return value of strcpy used in a logical operation. |
 | test.cpp:137:14:137:40 | ... == ... | Return value of strcpy used in a logical operation. |
 | test.cpp:139:14:139:40 | ... != ... | Return value of strcpy used in a logical operation. |

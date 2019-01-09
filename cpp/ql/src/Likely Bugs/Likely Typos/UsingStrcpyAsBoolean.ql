@@ -44,34 +44,39 @@ predicate isStringCopyUsedInLogicalOperationOrCondition(FunctionCall func, Expr 
   isStringComparisonFunction(func.getTarget().getQualifiedName()) and
   (
     (
-      (
-        // it is being used in an equality or logical operation
-        exists(EqualityOperation eop |
-          eop = expr1 and
-          func = eop.getAnOperand()
-        )
-        or
-        exists(UnaryLogicalOperation ule |
-          expr1 = ule and
-          func = ule.getOperand()
-        )
-        or
-        exists(BinaryLogicalOperation ble |
-          expr1 = ble and
-          func = ble.getAnOperand()
-        )
-      ) and
-      msg = "Return value of " + func.getTarget().getQualifiedName() +
-          " used in a logical operation."
-    )
+      // it is being used in an equality or logical operation
+      exists(EqualityOperation eop |
+        eop = expr1 and
+        func = eop.getAnOperand()
+      )
+      or
+      exists(UnaryLogicalOperation ule |
+        expr1 = ule and
+        func = ule.getOperand()
+      )
+      or
+      exists(BinaryLogicalOperation ble |
+        expr1 = ble and
+        func = ble.getAnOperand()
+      )
+    ) and
+    msg = "Return value of " + func.getTarget().getQualifiedName() +
+        " used in a logical operation."
     or
-    exists(ConditionalStmt condstmt |
-      // or the string copy function is used directly as the conditional expression
-      func = condstmt.getControllingExpr() and
-      expr1 = func and
-      msg = "Return value of " + func.getTarget().getQualifiedName() +
-          " used directly in a conditional expression."
-    )
+    // or the string copy function is used directly as the conditional expression
+    (
+      exists(ConditionalStmt condstmt |
+        func = condstmt.getControllingExpr() and
+        expr1 = func
+      )
+      or
+      exists(ConditionalExpr ce |
+        expr1 = ce and
+        func = ce.getCondition()
+      )
+    ) and
+    msg = "Return value of " + func.getTarget().getQualifiedName() +
+        " used directly in a conditional expression."
   )
 }
 
