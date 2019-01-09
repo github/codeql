@@ -29,7 +29,7 @@ void PositiveCases()
 {
     char szbuf1[100];
     char szbuf2[100];
-	int result;
+    int result;
 
     if (strcpy(szbuf1, "test")) // Bug, direct usage
     {
@@ -51,17 +51,17 @@ void PositiveCases()
     {
     }
 
-	if (!strncpy(szbuf1, "test", 100))  // Bug
-	{
-	}
+    if (!strncpy(szbuf1, "test", 100))  // Bug
+    {
+    }
 
-	result = !strncpy(szbuf1, "test", 100);
+    result = !strncpy(szbuf1, "test", 100); // Bug
 
-	result = strcpy(szbuf1, "test") && 1;
+    result = strcpy(szbuf1, "test") && 1; // Bug
 
-	result = strcpy(szbuf1, "test") == 0;
+    result = strcpy(szbuf1, "test") == 0; // Bug
 
-	result = strcpy(szbuf1, "test") != 0;
+    result = strcpy(szbuf1, "test") != 0; // Bug
 }
 
 void NegativeCases()
