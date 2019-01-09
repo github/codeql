@@ -8,6 +8,7 @@
  * @precision medium
  * @tags correctness
  */
+
 import cpp
 
 predicate whitelist(string fName) {
@@ -42,10 +43,23 @@ predicate whitelistPow(FunctionCall fc) {
   )
 }
 
+predicate whiteListWrapped(FunctionCall fc) {
+  whitelist(fc.getTarget().getName()) or
+  whitelistPow(fc) or
+  exists(ReturnStmt rs |
+    rs.getEnclosingFunction() = fc.getTarget() and
+    whiteListWrapped(rs.getExpr())
+  ) or
+  exists(ReturnStmt rs, Variable v |
+    rs.getEnclosingFunction() = fc.getTarget() and
+    rs.getExpr().(VariableAccess).getTarget() = v and
+    whiteListWrapped(v.getAnAssignedValue())
+  )
+}
+
 from FunctionCall c, FloatingPointType t1, IntegralType t2
 where t1 = c.getTarget().getType().getUnderlyingType() and
       t2 = c.getActualType() and
       c.hasImplicitConversion() and
-      not whitelist(c.getTarget().getName()) and
-      not whitelistPow(c)
+      not whiteListWrapped(c)
 select c, "Return value of type " + t1.toString() + " is implicitly converted to " + t2.toString() + " here."

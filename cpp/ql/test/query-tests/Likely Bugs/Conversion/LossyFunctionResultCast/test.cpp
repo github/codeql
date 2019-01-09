@@ -115,5 +115,5 @@ double myRound(double v)
 
 void test3()
 {
-	int i = myRound(1.5); // GOOD [FALSE POSITIVE]
+	int i = myRound(1.5); // GOOD
 }
