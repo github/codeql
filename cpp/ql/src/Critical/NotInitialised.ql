@@ -11,6 +11,7 @@
 import cpp
 
 // See also InitialisationNotRun.ql and GlobalUseBeforeInit.ql
+
 // Holds if s defines variable v (conservative)
 predicate defines(ControlFlowNode s, Variable lv) {
   exists(VariableAccess va | va = s and va.getTarget() = lv and va.isUsedAsLValue())
