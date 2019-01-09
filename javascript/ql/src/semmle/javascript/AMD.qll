@@ -52,14 +52,6 @@ class AMDModuleDefinition extends CallExpr {
   }
 
   /**
-   * DEPRECATED: Use `getFactoryNode` instead.
-   *
-   * Gets the factory expression of this module definition,
-   * which may be a function or a literal.
-   */
-  deprecated Expr getFactoryExpr() { result = getFactoryNode().asExpr() }
-
-  /**
    * Gets a data flow node containing the factory value of this module definition.
    */
   pragma[nomagic]

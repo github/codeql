@@ -50,15 +50,3 @@ module SqlInjection {
     SanitizerExpr() { astNode = any(SQL::SqlSanitizer ss).getOutput() }
   }
 }
-
-/** DEPRECATED: Use `SqlInjection::Source` instead. */
-deprecated class SqlInjectionSource = SqlInjection::Source;
-
-/** DEPRECATED: Use `SqlInjection::Sink` instead. */
-deprecated class SqlInjectionSink = SqlInjection::Sink;
-
-/** DEPRECATED: Use `SqlInjection::Sanitizer` instead. */
-deprecated class SqlInjectionSanitizer = SqlInjection::Sanitizer;
-
-/** DEPRECATED: Use `SqlInjection::Configuration` instead. */
-deprecated class SqlInjectionTrackingConfig = SqlInjection::Configuration;

@@ -35,25 +35,6 @@ module Express {
   }
 
   /**
-   * DEPRECATED: Use `appCreation()` instead.
-   *
-   * Holds if `e` is an expression that creates a new Express application.
-   */
-  deprecated predicate isAppCreation(InvokeExpr e) { e = appCreation().asExpr() }
-
-  /**
-   * DEPRECATED: Use `appCreation()` instead.
-   *
-   * Holds if `e` is an Express application object
-   */
-  deprecated predicate isApp(Expr e) { any(Application app).flowsTo(e) }
-
-  /**
-   * Holds if `e` creates an Express router (possibly an application).
-   */
-  deprecated predicate isRouterCreation(InvokeExpr e) { e = routerCreation().asExpr() }
-
-  /**
    * Holds if `e` may refer to the given `router` object.
    */
   private predicate isRouter(Expr e, RouterDefinition router) {

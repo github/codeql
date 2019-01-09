@@ -176,15 +176,3 @@ module ClientSideUrlRedirect {
     }
   }
 }
-
-/** DEPRECATED: Use `ClientSideUrlRedirect::Source` instead. */
-deprecated class ClientSideUrlRedirectSource = ClientSideUrlRedirect::Source;
-
-/** DEPRECATED: Use `ClientSideUrlRedirect::Sink` instead. */
-deprecated class ClientSideUrlRedirectSink = ClientSideUrlRedirect::Sink;
-
-/** DEPRECATED: Use `ClientSideUrlRedirect::Sanitizer` instead. */
-deprecated class ClientSideUrlRedirectSanitizer = ClientSideUrlRedirect::Sanitizer;
-
-/** DEPRECATED: Use `ClientSideUrlRedirect::Configuration` instead. */
-deprecated class ClientSideUrlRedirectDataFlowConfiguration = ClientSideUrlRedirect::Configuration;

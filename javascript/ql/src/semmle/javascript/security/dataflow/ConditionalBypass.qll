@@ -83,15 +83,3 @@ module ConditionalBypass {
     override SensitiveAction getAction() { result = action }
   }
 }
-
-/** DEPRECATED: Use `ConditionalBypass::Source` instead. */
-deprecated class ConditionalBypassSource = ConditionalBypass::Source;
-
-/** DEPRECATED: Use `ConditionalBypass::Sink` instead. */
-deprecated class ConditionalBypassSink = ConditionalBypass::Sink;
-
-/** DEPRECATED: Use `ConditionalBypass::Sanitizer` instead. */
-deprecated class ConditionalBypassSanitizer = ConditionalBypass::Sanitizer;
-
-/** DEPRECATED: Use `ConditionalBypass::Configuration` instead. */
-deprecated class ConditionalBypassDataFlowConfiguration = ConditionalBypass::Configuration;

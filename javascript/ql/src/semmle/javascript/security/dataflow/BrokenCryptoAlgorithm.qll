@@ -69,15 +69,3 @@ module BrokenCryptoAlgorithm {
     }
   }
 }
-
-/** DEPRECATED: Use `BrokenCryptoAlgorithm::Source` instead. */
-deprecated class BrokenCryptoAlgorithmSource = BrokenCryptoAlgorithm::Source;
-
-/** DEPRECATED: Use `BrokenCryptoAlgorithm::Sink` instead. */
-deprecated class BrokenCryptoAlgorithmSink = BrokenCryptoAlgorithm::Sink;
-
-/** DEPRECATED: Use `BrokenCryptoAlgorithm::Sanitizer` instead. */
-deprecated class BrokenCryptoAlgorithmSanitizer = BrokenCryptoAlgorithm::Sanitizer;
-
-/** DEPRECATED: Use `BrokenCryptoAlgorithm::Configuration` instead. */
-deprecated class BrokenCryptoAlgorithmDataFlowConfiguration = BrokenCryptoAlgorithm::Configuration;

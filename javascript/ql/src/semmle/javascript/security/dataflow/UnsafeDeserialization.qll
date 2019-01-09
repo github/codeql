@@ -65,15 +65,3 @@ module UnsafeDeserialization {
     }
   }
 }
-
-/** DEPRECATED: Use `UnsafeDeserialization::Source` instead. */
-deprecated class UnsafeDeserializationSource = UnsafeDeserialization::Source;
-
-/** DEPRECATED: Use `UnsafeDeserialization::Sink` instead. */
-deprecated class UnsafeDeserializationSink = UnsafeDeserialization::Sink;
-
-/** DEPRECATED: Use `UnsafeDeserialization::Sanitizer` instead. */
-deprecated class UnsafeDeserializationSanitizer = UnsafeDeserialization::Sanitizer;
-
-/** DEPRECATED: Use `UnsafeDeserialization::Configuration` instead. */
-deprecated class UnsafeDeserializationTrackingConfig = UnsafeDeserialization::Configuration;

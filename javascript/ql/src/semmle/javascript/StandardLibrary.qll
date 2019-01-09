@@ -34,15 +34,6 @@ class DirectEval extends CallExpr {
 }
 
 /**
- * DEPRECATED. Use `JsonParserCall` and the data flow API instead.
- *
- * A call to `JSON.parse`.
- */
-deprecated class JsonParseCall extends MethodCallExpr {
-  JsonParseCall() { this = DataFlow::globalVarRef("JSON").getAMemberCall("parse").asExpr() }
-}
-
-/**
  * Flow analysis for `this` expressions inside a function that is called with
  * `Array.prototype.map` or a similar Array function that binds `this`.
  *

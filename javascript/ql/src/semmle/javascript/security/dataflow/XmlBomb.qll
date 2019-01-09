@@ -62,15 +62,3 @@ module XmlBomb {
     }
   }
 }
-
-/** DEPRECATED: Use `XmlBomb::Source` instead. */
-deprecated class XmlBombSource = XmlBomb::Source;
-
-/** DEPRECATED: Use `XmlBomb::Sink` instead. */
-deprecated class XmlBombSink = XmlBomb::Sink;
-
-/** DEPRECATED: Use `XmlBomb::Sanitizer` instead. */
-deprecated class XmlBombSanitizer = XmlBomb::Sanitizer;
-
-/** DEPRECATED: Use `XmlBomb::Configuration` instead. */
-deprecated class XmlBomTrackingConfig = XmlBomb::Configuration;

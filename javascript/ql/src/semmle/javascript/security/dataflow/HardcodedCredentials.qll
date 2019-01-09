@@ -47,15 +47,3 @@ module HardcodedCredentials {
     override string getKind() { result = this.asExpr().(CredentialsExpr).getCredentialsKind() }
   }
 }
-
-/** DEPRECATED: Use `HardcodedCredentials::Source` instead. */
-deprecated class HardcodedCredentialsSource = HardcodedCredentials::Source;
-
-/** DEPRECATED: Use `HardcodedCredentials::Sink` instead. */
-deprecated class HardcodedCredentialsSink = HardcodedCredentials::Sink;
-
-/** DEPRECATED: Use `HardcodedCredentials::Sanitizer` instead. */
-deprecated class HardcodedCredentialsSanitizer = HardcodedCredentials::Sanitizer;
-
-/** DEPRECATED: Use `HardcodedCredentials::Configuration` instead. */
-deprecated class HardcodedCredentialsTrackingConfiguration = HardcodedCredentials::Configuration;

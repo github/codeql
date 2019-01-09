@@ -78,15 +78,3 @@ module NosqlInjection {
   /** An expression interpreted as a NoSQL query, viewed as a sink. */
   class NosqlQuerySink extends Sink, DataFlow::ValueNode { override NoSQL::Query astNode; }
 }
-
-/** DEPRECATED: Use `NosqlInjection::Source` instead. */
-deprecated class NosqlInjectionSource = NosqlInjection::Source;
-
-/** DEPRECATED: Use `NosqlInjection::Sink` instead. */
-deprecated class NosqlInjectionSink = NosqlInjection::Sink;
-
-/** DEPRECATED: Use `NosqlInjection::Sanitizer` instead. */
-deprecated class NosqlInjectionSanitizer = NosqlInjection::Sanitizer;
-
-/** DEPRECATED: Use `NosqlInjection::Configuration` instead. */
-deprecated class NosqlInjectionTrackingConfig = NosqlInjection::Configuration;

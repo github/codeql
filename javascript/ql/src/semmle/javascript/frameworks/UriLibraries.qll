@@ -84,11 +84,6 @@ module urijs {
  */
 module uridashjs {
   /**
-   * Gets a data flow source node for the uridashjs library.
-   */
-  deprecated DataFlow::SourceNode uridashjs() { result = DataFlow::moduleImport("uri-js") }
-
-  /**
    * Gets a data flow source node for member `name` of the uridashjs library.
    */
   DataFlow::SourceNode uridashjsMember(string name) {
@@ -121,11 +116,6 @@ module uridashjs {
  * Provides classes for working with [punycode](https://github.com/bestiejs/punycode.js) code.
  */
 module punycode {
-  /**
-   * Gets a data flow source node for the punycode library.
-   */
-  deprecated DataFlow::SourceNode punycode() { result = DataFlow::moduleImport("punycode") }
-
   /**
    * Gets a data flow source node for member `name` of the punycode library.
    */
@@ -198,13 +188,6 @@ module urlParse {
  */
 module querystringify {
   /**
-   * Gets a data flow source node for the querystringify library.
-   */
-  deprecated DataFlow::SourceNode querystringify() {
-    result = DataFlow::moduleImport("querystringify")
-  }
-
-  /**
    * Gets a data flow source node for member `name` of the querystringify library.
    */
   DataFlow::SourceNode querystringifyMember(string name) {
@@ -235,13 +218,6 @@ module querystringify {
  * Provides classes for working with [query-string](https://github.com/sindresorhus/query-string) code.
  */
 module querydashstring {
-  /**
-   * Gets a data flow source node for the query-string library.
-   */
-  deprecated DataFlow::SourceNode querydashstring() {
-    result = DataFlow::moduleImport("query-string")
-  }
-
   /**
    * Gets a data flow source node for member `name` of the query-string library.
    */
@@ -276,11 +252,6 @@ module querydashstring {
  */
 module url {
   /**
-   * Gets a data flow source node for the url library.
-   */
-  deprecated DataFlow::SourceNode url() { result = DataFlow::moduleImport("url") }
-
-  /**
    * Gets a data flow source node for member `name` of the url library.
    */
   DataFlow::SourceNode urlMember(string name) { result = DataFlow::moduleMember("url", name) }
@@ -310,11 +281,6 @@ module url {
  * Provides classes for working with [querystring](https://nodejs.org/api/querystring.html) code.
  */
 module querystring {
-  /**
-   * Gets a data flow source node for the querystring library.
-   */
-  deprecated DataFlow::SourceNode querystring() { result = DataFlow::moduleImport("querystring") }
-
   /**
    * Gets a data flow source node for member `name` of the querystring library.
    */

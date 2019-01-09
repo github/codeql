@@ -233,21 +233,3 @@ module HTML {
     override Location getLocation() { xmllocations(this, result) }
   }
 }
-
-/** DEPRECATED: Use `HTML::HtmlFile` instead. */
-deprecated class HTMLFile = HTML::HtmlFile;
-
-/** DEPRECATED: Use `HTML::Element` instead. */
-deprecated class HTMLElement = HTML::Element;
-
-/** DEPRECATED: Use `HTML::Attribute` instead. */
-deprecated class HTMLAttribute = HTML::Attribute;
-
-/** DEPRECATED: Use `HTML::DocumentElement` instead. */
-deprecated class HtmlDocumentElement = HTML::DocumentElement;
-
-/** DEPRECATED: Use `HTML::ScriptElement` instead. */
-deprecated class HtmlScriptElement = HTML::ScriptElement;
-
-/** DEPRECATED: Use `HTML::TextNode` instead. */
-deprecated class HtmlText = HTML::TextNode;

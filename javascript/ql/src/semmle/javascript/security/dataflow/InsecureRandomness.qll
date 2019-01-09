@@ -109,15 +109,3 @@ module InsecureRandomness {
    */
   class CryptoKeySink extends Sink { CryptoKeySink() { this instanceof CryptographicKey } }
 }
-
-/** DEPRECATED: Use `InsecureRandomness::Source` instead. */
-deprecated class InsecureRandomnessSource = InsecureRandomness::Source;
-
-/** DEPRECATED: Use `InsecureRandomness::Sink` instead. */
-deprecated class InsecureRandomnessSink = InsecureRandomness::Sink;
-
-/** DEPRECATED: Use `InsecureRandomness::Sanitizer` instead. */
-deprecated class InsecureRandomnessSanitizer = InsecureRandomness::Sanitizer;
-
-/** DEPRECATED: Use `InsecureRandomness::Configuration` instead. */
-deprecated class InsecureRandomnessDataFlowConfiguration = InsecureRandomness::Configuration;

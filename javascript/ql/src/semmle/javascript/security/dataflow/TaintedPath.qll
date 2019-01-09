@@ -150,15 +150,3 @@ module TaintedPath {
     }
   }
 }
-
-/** DEPRECATED: Use `TaintedPath::Source` instead. */
-deprecated class TaintedPathSource = TaintedPath::Source;
-
-/** DEPRECATED: Use `TaintedPath::Sink` instead. */
-deprecated class TaintedPathSink = TaintedPath::Sink;
-
-/** DEPRECATED: Use `TaintedPath::Sanitizer` instead. */
-deprecated class TaintedPathSanitizer = TaintedPath::Sanitizer;
-
-/** DEPRECATED: Use `TaintedPath::Configuration` instead. */
-deprecated class TaintedPathTrackingConfig = TaintedPath::Configuration;

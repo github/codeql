@@ -222,13 +222,6 @@ class TypeName extends CanonicalName {
   TypeReference getATypeReference() { result.getTypeName() = this }
 
   /**
-   * DEPRECATED. Use `getRelativeName()` or `hasQualifiedName()` instead.
-   *
-   * Gets the qualified name without the root.
-   */
-  deprecated string getQualifiedName() { result = getRelativeName() }
-
-  /**
    * Gets a type named in the `extends` or `implements` clause of this type.
    */
   TypeName getABaseTypeName() { base_type_names(this, result) }
@@ -264,13 +257,6 @@ class Namespace extends CanonicalName {
    * Gets a part of a type annotation that refers to this namespace.
    */
   NamespaceAccess getAnAccess() { result.getNamespace() = this }
-
-  /**
-   * DEPRECATED. Use `getRelativeName()` or `hasQualifiedName()` instead.
-   *
-   * Gets the qualified name without the root.
-   */
-  deprecated string getQualifiedName() { result = getRelativeName() }
 
   /** Gets a namespace nested in this one. */
   Namespace getNamespaceMember(string name) {
