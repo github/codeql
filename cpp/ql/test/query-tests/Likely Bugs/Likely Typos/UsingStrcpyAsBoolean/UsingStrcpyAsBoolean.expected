@@ -10,10 +10,8 @@
 | test.c:64:14:64:40 | ... != ... | Return value of strcpy used in a logical operation. |
 | test.cpp:75:9:75:14 | call to strcpy | Return value of strcpy used directly in a conditional expression. |
 | test.cpp:79:9:79:31 | ! ... | Return value of strcpy used in a logical operation. |
-| test.cpp:79:10:79:15 | call to strcpy | Return value of strcpy used as Boolean. |
 | test.cpp:83:9:83:35 | ... == ... | Return value of strcpy used in a logical operation. |
 | test.cpp:87:9:87:48 | ... && ... | Return value of strcpy used in a logical operation. |
-| test.cpp:87:27:87:32 | call to strcpy | Return value of strcpy used as Boolean. |
 | test.cpp:91:9:91:37 | call to wcscpy | Return value of wcscpy used directly in a conditional expression. |
 | test.cpp:95:9:95:14 | call to wcscpy | Return value of wcscpy used directly in a conditional expression. |
 | test.cpp:99:9:99:15 | call to _mbscpy | Return value of _mbscpy used directly in a conditional expression. |
@@ -24,11 +22,8 @@
 | test.cpp:119:9:119:18 | call to _wcsncpy_l | Return value of _wcsncpy_l used directly in a conditional expression. |
 | test.cpp:123:9:123:18 | call to _mbsncpy_l | Return value of _mbsncpy_l used directly in a conditional expression. |
 | test.cpp:127:9:127:37 | ! ... | Return value of strncpy used in a logical operation. |
-| test.cpp:127:10:127:16 | call to strncpy | Return value of strncpy used as Boolean. |
 | test.cpp:131:14:131:20 | call to strncpy | Return value of strncpy used as Boolean. |
 | test.cpp:133:19:133:47 | ! ... | Return value of strncpy used in a logical operation. |
-| test.cpp:133:20:133:26 | call to strncpy | Return value of strncpy used as Boolean. |
-| test.cpp:135:14:135:19 | call to strcpy | Return value of strcpy used as Boolean. |
 | test.cpp:135:14:135:40 | ... && ... | Return value of strcpy used in a logical operation. |
 | test.cpp:137:14:137:40 | ... == ... | Return value of strcpy used in a logical operation. |
 | test.cpp:139:14:139:40 | ... != ... | Return value of strcpy used in a logical operation. |

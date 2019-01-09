@@ -79,7 +79,7 @@ from FunctionCall func, Expr expr1, string msg
 where
   (
     isStringCopyCastedAsBoolean(func, expr1, msg) and
-    not isStringCopyUsedInLogicalOperationOrCondition(func, expr1, _)
+    not isStringCopyUsedInLogicalOperationOrCondition(func, _, _)
   )
   or
   isStringCopyUsedInLogicalOperationOrCondition(func, expr1, msg)
