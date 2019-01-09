@@ -1665,8 +1665,9 @@ module ControlFlow {
       }
 
       pragma [nomagic]
-      private ControlFlowElement lastForeachStmtVariableDeclExpr(ForeachStmt fs, Completion c) {
-        result = last(fs.getVariableDeclExpr(), c)
+      private ControlFlowElement lastForeachStmtVariableDecl(ForeachStmt fs, Completion c) {
+        result = last(fs.getVariableDeclExpr(), c) or
+        result = last(fs.getVariableDeclTuple(), c)
       }
 
       pragma [nomagic]
@@ -2286,12 +2287,15 @@ module ControlFlow {
           (
             result = first(fs.getVariableDeclExpr())
             or
+            result = first(fs.getVariableDeclTuple())
+            or
             not exists(fs.getVariableDeclExpr()) and
+            not exists(fs.getVariableDeclTuple()) and
             result = first(fs.getBody())
           )
           or
           // Flow from last element of variable declaration to first element of loop body
-          cfe = lastForeachStmtVariableDeclExpr(fs, c) and
+          cfe = lastForeachStmtVariableDecl(fs, c) and
           c instanceof SimpleCompletion and
           result = first(fs.getBody())
           or

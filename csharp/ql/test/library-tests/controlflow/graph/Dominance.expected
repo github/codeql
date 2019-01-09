@@ -872,6 +872,30 @@
 | post | Foreach.cs:20:27:20:27 | access to parameter e | Foreach.cs:20:27:20:68 | ... ?? ... |
 | post | Foreach.cs:20:27:20:68 | ... ?? ... | Foreach.cs:19:5:22:5 | {...} |
 | post | Foreach.cs:21:11:21:11 | ; | Foreach.cs:20:22:20:22 | String x |
+| post | Foreach.cs:24:10:24:11 | exit M4 | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... |
+| post | Foreach.cs:25:5:28:5 | {...} | Foreach.cs:24:10:24:11 | enter M4 |
+| post | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | Foreach.cs:26:36:26:39 | access to parameter args |
+| post | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | Foreach.cs:27:11:27:11 | ; |
+| post | Foreach.cs:26:18:26:31 | (..., ...) | Foreach.cs:26:30:26:30 | Int32 y |
+| post | Foreach.cs:26:30:26:30 | Int32 y | Foreach.cs:26:23:26:23 | String x |
+| post | Foreach.cs:26:36:26:39 | access to parameter args | Foreach.cs:25:5:28:5 | {...} |
+| post | Foreach.cs:27:11:27:11 | ; | Foreach.cs:26:18:26:31 | (..., ...) |
+| post | Foreach.cs:30:10:30:11 | exit M5 | Foreach.cs:32:9:33:11 | foreach (... ... in ...) ... |
+| post | Foreach.cs:31:5:34:5 | {...} | Foreach.cs:30:10:30:11 | enter M5 |
+| post | Foreach.cs:32:9:33:11 | foreach (... ... in ...) ... | Foreach.cs:32:32:32:35 | access to parameter args |
+| post | Foreach.cs:32:9:33:11 | foreach (... ... in ...) ... | Foreach.cs:33:11:33:11 | ; |
+| post | Foreach.cs:32:18:32:27 | (..., ...) | Foreach.cs:32:26:32:26 | Int32 y |
+| post | Foreach.cs:32:26:32:26 | Int32 y | Foreach.cs:32:23:32:23 | String x |
+| post | Foreach.cs:32:32:32:35 | access to parameter args | Foreach.cs:31:5:34:5 | {...} |
+| post | Foreach.cs:33:11:33:11 | ; | Foreach.cs:32:18:32:27 | (..., ...) |
+| post | Foreach.cs:36:10:36:11 | exit M6 | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... |
+| post | Foreach.cs:37:5:40:5 | {...} | Foreach.cs:36:10:36:11 | enter M6 |
+| post | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | Foreach.cs:38:39:38:42 | access to parameter args |
+| post | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | Foreach.cs:39:11:39:11 | ; |
+| post | Foreach.cs:38:18:38:34 | (..., ...) | Foreach.cs:38:33:38:33 | Int32 y |
+| post | Foreach.cs:38:33:38:33 | Int32 y | Foreach.cs:38:26:38:26 | String x |
+| post | Foreach.cs:38:39:38:42 | access to parameter args | Foreach.cs:37:5:40:5 | {...} |
+| post | Foreach.cs:39:11:39:11 | ; | Foreach.cs:38:18:38:34 | (..., ...) |
 | post | Initializers.cs:6:5:6:16 | exit Initializers | Initializers.cs:6:28:6:30 | {...} |
 | post | Initializers.cs:6:28:6:30 | {...} | Initializers.cs:6:5:6:16 | enter Initializers |
 | post | Initializers.cs:8:10:8:10 | exit M | Initializers.cs:11:13:11:63 | Initializers[] iz = ... |
@@ -3093,6 +3117,30 @@
 | pre | Foreach.cs:20:27:20:27 | access to parameter e | Foreach.cs:20:29:20:38 | call to method ToArray |
 | pre | Foreach.cs:20:27:20:27 | access to parameter e | Foreach.cs:20:43:20:68 | call to method Empty |
 | pre | Foreach.cs:20:27:20:68 | ... ?? ... | Foreach.cs:20:27:20:27 | access to parameter e |
+| pre | Foreach.cs:24:10:24:11 | enter M4 | Foreach.cs:25:5:28:5 | {...} |
+| pre | Foreach.cs:25:5:28:5 | {...} | Foreach.cs:26:36:26:39 | access to parameter args |
+| pre | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | Foreach.cs:24:10:24:11 | exit M4 |
+| pre | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | Foreach.cs:26:23:26:23 | String x |
+| pre | Foreach.cs:26:18:26:31 | (..., ...) | Foreach.cs:27:11:27:11 | ; |
+| pre | Foreach.cs:26:23:26:23 | String x | Foreach.cs:26:30:26:30 | Int32 y |
+| pre | Foreach.cs:26:30:26:30 | Int32 y | Foreach.cs:26:18:26:31 | (..., ...) |
+| pre | Foreach.cs:26:36:26:39 | access to parameter args | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... |
+| pre | Foreach.cs:30:10:30:11 | enter M5 | Foreach.cs:31:5:34:5 | {...} |
+| pre | Foreach.cs:31:5:34:5 | {...} | Foreach.cs:32:32:32:35 | access to parameter args |
+| pre | Foreach.cs:32:9:33:11 | foreach (... ... in ...) ... | Foreach.cs:30:10:30:11 | exit M5 |
+| pre | Foreach.cs:32:9:33:11 | foreach (... ... in ...) ... | Foreach.cs:32:23:32:23 | String x |
+| pre | Foreach.cs:32:18:32:27 | (..., ...) | Foreach.cs:33:11:33:11 | ; |
+| pre | Foreach.cs:32:23:32:23 | String x | Foreach.cs:32:26:32:26 | Int32 y |
+| pre | Foreach.cs:32:26:32:26 | Int32 y | Foreach.cs:32:18:32:27 | (..., ...) |
+| pre | Foreach.cs:32:32:32:35 | access to parameter args | Foreach.cs:32:9:33:11 | foreach (... ... in ...) ... |
+| pre | Foreach.cs:36:10:36:11 | enter M6 | Foreach.cs:37:5:40:5 | {...} |
+| pre | Foreach.cs:37:5:40:5 | {...} | Foreach.cs:38:39:38:42 | access to parameter args |
+| pre | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | Foreach.cs:36:10:36:11 | exit M6 |
+| pre | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | Foreach.cs:38:26:38:26 | String x |
+| pre | Foreach.cs:38:18:38:34 | (..., ...) | Foreach.cs:39:11:39:11 | ; |
+| pre | Foreach.cs:38:26:38:26 | String x | Foreach.cs:38:33:38:33 | Int32 y |
+| pre | Foreach.cs:38:33:38:33 | Int32 y | Foreach.cs:38:18:38:34 | (..., ...) |
+| pre | Foreach.cs:38:39:38:42 | access to parameter args | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... |
 | pre | Initializers.cs:6:5:6:16 | enter Initializers | Initializers.cs:6:28:6:30 | {...} |
 | pre | Initializers.cs:6:28:6:30 | {...} | Initializers.cs:6:5:6:16 | exit Initializers |
 | pre | Initializers.cs:8:10:8:10 | enter M | Initializers.cs:9:5:12:5 | {...} |

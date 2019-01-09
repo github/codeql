@@ -664,6 +664,27 @@
 | Foreach.cs:20:29:20:38 | call to method ToArray | Foreach.cs:20:43:20:68 | call to method Empty | semmle.label | null |
 | Foreach.cs:20:43:20:68 | call to method Empty | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | semmle.label | successor |
 | Foreach.cs:21:11:21:11 | ; | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | semmle.label | successor |
+| Foreach.cs:25:5:28:5 | {...} | Foreach.cs:26:36:26:39 | access to parameter args | semmle.label | successor |
+| Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | Foreach.cs:26:23:26:23 | String x | semmle.label | non-empty |
+| Foreach.cs:26:18:26:31 | (..., ...) | Foreach.cs:27:11:27:11 | ; | semmle.label | successor |
+| Foreach.cs:26:23:26:23 | String x | Foreach.cs:26:30:26:30 | Int32 y | semmle.label | successor |
+| Foreach.cs:26:30:26:30 | Int32 y | Foreach.cs:26:18:26:31 | (..., ...) | semmle.label | successor |
+| Foreach.cs:26:36:26:39 | access to parameter args | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | semmle.label | successor |
+| Foreach.cs:27:11:27:11 | ; | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | semmle.label | successor |
+| Foreach.cs:31:5:34:5 | {...} | Foreach.cs:32:32:32:35 | access to parameter args | semmle.label | successor |
+| Foreach.cs:32:9:33:11 | foreach (... ... in ...) ... | Foreach.cs:32:23:32:23 | String x | semmle.label | non-empty |
+| Foreach.cs:32:18:32:27 | (..., ...) | Foreach.cs:33:11:33:11 | ; | semmle.label | successor |
+| Foreach.cs:32:23:32:23 | String x | Foreach.cs:32:26:32:26 | Int32 y | semmle.label | successor |
+| Foreach.cs:32:26:32:26 | Int32 y | Foreach.cs:32:18:32:27 | (..., ...) | semmle.label | successor |
+| Foreach.cs:32:32:32:35 | access to parameter args | Foreach.cs:32:9:33:11 | foreach (... ... in ...) ... | semmle.label | successor |
+| Foreach.cs:33:11:33:11 | ; | Foreach.cs:32:9:33:11 | foreach (... ... in ...) ... | semmle.label | successor |
+| Foreach.cs:37:5:40:5 | {...} | Foreach.cs:38:39:38:42 | access to parameter args | semmle.label | successor |
+| Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | Foreach.cs:38:26:38:26 | String x | semmle.label | non-empty |
+| Foreach.cs:38:18:38:34 | (..., ...) | Foreach.cs:39:11:39:11 | ; | semmle.label | successor |
+| Foreach.cs:38:26:38:26 | String x | Foreach.cs:38:33:38:33 | Int32 y | semmle.label | successor |
+| Foreach.cs:38:33:38:33 | Int32 y | Foreach.cs:38:18:38:34 | (..., ...) | semmle.label | successor |
+| Foreach.cs:38:39:38:42 | access to parameter args | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | semmle.label | successor |
+| Foreach.cs:39:11:39:11 | ; | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | semmle.label | successor |
 | Initializers.cs:9:5:12:5 | {...} | Initializers.cs:10:9:10:54 | ... ...; | semmle.label | successor |
 | Initializers.cs:10:9:10:54 | ... ...; | Initializers.cs:10:13:10:13 | access to local variable i | semmle.label | successor |
 | Initializers.cs:10:13:10:13 | access to local variable i | Initializers.cs:10:34:10:35 | "" | semmle.label | successor |
