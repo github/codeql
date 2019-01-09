@@ -3,7 +3,7 @@ import javascript
 /**
  * An operation that sends an email.
  */
-abstract class EmailSender extends DataFlow::DefaultSourceNode {
+abstract class EmailSender extends DataFlow::SourceNode {
   /**
    * Gets a data flow node holding the plaintext version of the email body.
    */
