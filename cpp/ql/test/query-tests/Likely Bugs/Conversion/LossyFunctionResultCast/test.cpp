@@ -94,9 +94,9 @@ int test2(double v, double w, int n)
 	switch (n)
 	{
 	case 1:
-		return pow(2, v); // GOOD [FALSE POSITIVE]
+		return pow(2, v); // GOOD
 	case 2:
-		return pow(10, v); // GOOD [FALSE POSITIVE]
+		return pow(10, v); // GOOD
 	case 3:
 		return pow(2.5, v); // BAD
 	case 4:
