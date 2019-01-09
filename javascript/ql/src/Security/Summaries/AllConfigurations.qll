@@ -3,7 +3,6 @@
  */
 
 import javascript
-
 import semmle.javascript.security.dataflow.BrokenCryptoAlgorithm
 import semmle.javascript.security.dataflow.CleartextLogging
 import semmle.javascript.security.dataflow.CleartextStorage

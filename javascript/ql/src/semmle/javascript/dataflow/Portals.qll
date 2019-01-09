@@ -20,29 +20,25 @@ private newtype TPortal =
     NpmPackagePortal::imports(_, pkgName, _) or
     NpmPackagePortal::exports(pkgName, _) or
     MemberPortal::exports(pkgName, _, _)
-  }
-  or
+  } or
   MkMemberPortal(Portal base, string prop) {
     (
-     MemberPortal::reads(base, prop, _, _) or
-     MemberPortal::writes(base, prop, _, _)
+      MemberPortal::reads(base, prop, _, _) or
+      MemberPortal::writes(base, prop, _, _)
     ) and
     // only consider alpha-numeric properties, excluding special properties
     // and properties whose names look like they are meant to be internal
     prop.regexpMatch("(?!prototype$|__)[a-zA-Z_]\\w*")
-  }
-  or
+  } or
   MkInstancePortal(Portal base) {
     InstancePortal::instanceUse(base, _, _) or
     InstancePortal::instanceDef(base, _, _) or
     InstancePortal::instanceMemberDef(base, _, _, _)
-  }
-  or
+  } or
   MkParameterPortal(Portal base, int i) {
     ParameterPortal::parameter(base, i, _, _) or
     ParameterPortal::argument(base, i, _, _)
-  }
-  or
+  } or
   MkReturnPortal(Portal base) {
     ReturnPortal::calls(_, base, _) or
     ReturnPortal::returns(base, _, _)
@@ -51,26 +47,30 @@ private newtype TPortal =
 /**
  * A portal, that is, an interface point between different npm packages.
  */
-cached class Portal extends TPortal {
+cached
+class Portal extends TPortal {
   /**
    * Gets an exit node for this portal, that is, a node from which data
    * that comes through the portal emerges. The flag `isRemote`
    * indicates whether data read from this node may come from a different
    * package.
    */
-  abstract cached DataFlow::SourceNode getAnExitNode(boolean isRemote);
+  cached
+  abstract DataFlow::SourceNode getAnExitNode(boolean isRemote);
 
   /**
    * Gets an entry node for this portal, that is, a node through which data
    * enters the portal. The flag `escapes` indicates whether data written to
    * the node may escape to a different package.
    */
-  abstract cached DataFlow::Node getAnEntryNode(boolean escapes);
+  cached
+  abstract DataFlow::Node getAnEntryNode(boolean escapes);
 
   /**
    * Gets the member portal with the given `name` of this portal, if any.
    */
-  cached MemberPortal getMember(string name) {
+  cached
+  MemberPortal getMember(string name) {
     result.getName() = name and
     result.getBasePortal() = this
   }
@@ -78,14 +78,14 @@ cached class Portal extends TPortal {
   /**
    * Gets the instance portal of this portal, if any.
    */
-  cached InstancePortal getInstance() {
-    result.getBasePortal() = this
-  }
+  cached
+  InstancePortal getInstance() { result.getBasePortal() = this }
 
   /**
    * Gets the portal of parameter `idx` of this portal, if any.
    */
-  cached ParameterPortal getParameter(int idx) {
+  cached
+  ParameterPortal getParameter(int idx) {
     result.getIndex() = idx and
     result.getBasePortal() = this
   }
@@ -93,9 +93,8 @@ cached class Portal extends TPortal {
   /**
    * Gets the return value portal of this portal, if any.
    */
-  cached ReturnPortal getReturn() {
-    result.getBasePortal() = this
-  }
+  cached
+  ReturnPortal getReturn() { result.getBasePortal() = this }
 
   /**
    * Gets a textual representation of this portal.
@@ -103,7 +102,8 @@ cached class Portal extends TPortal {
    * Different portals must have different `toString`s, so the result of
    * this predicate can be used to uniquely identify a portal.
    */
-  cached abstract string toString();
+  cached
+  abstract string toString();
 
   /**
    * INTERNAL: Do not use outside this library.
@@ -111,7 +111,8 @@ cached class Portal extends TPortal {
    * The constructor depth of this portal, used to limit the number of
    * portals.
    */
-  cached abstract int depth();
+  cached
+  abstract int depth();
 }
 
 /**
@@ -125,14 +126,10 @@ cached class Portal extends TPortal {
 private class NpmPackagePortal extends Portal, MkNpmPackagePortal {
   string pkgName;
 
-  NpmPackagePortal() {
-    this = MkNpmPackagePortal(pkgName)
-  }
+  NpmPackagePortal() { this = MkNpmPackagePortal(pkgName) }
 
   /** Gets the name of the npm package. */
-  string getName() {
-    result = pkgName
-  }
+  string getName() { result = pkgName }
 
   override DataFlow::SourceNode getAnExitNode(boolean isRemote) {
     NpmPackagePortal::imports(result, pkgName) and
@@ -159,14 +156,16 @@ private module NpmPackagePortal {
 
   /** Gets an import of `member` from `imported` inside package `importer`. */
   pragma[noinline]
-  private DataFlow::SourceNode getAModuleMemberImport(NPMPackage importer, string imported, string member) {
+  private DataFlow::SourceNode getAModuleMemberImport(
+    NPMPackage importer, string imported, string member
+  ) {
     result = DataFlow::moduleMember(imported, member) and
     result.getTopLevel() = importer.getAModule()
   }
 
   /** Holds if `imp` is an import of package `pkgName`. */
   predicate imports(DataFlow::SourceNode imp, string pkgName) {
-    exists (NPMPackage pkg |
+    exists(NPMPackage pkg |
       imp = getAModuleImport(pkg, pkgName) and
       pkg.declaresDependency(pkgName, _)
     )
@@ -174,7 +173,7 @@ private module NpmPackagePortal {
 
   /** Holds if `imp` imports `member` from package `pkgName`. */
   predicate imports(DataFlow::SourceNode imp, string pkgName, string member) {
-    exists (NPMPackage pkg |
+    exists(NPMPackage pkg |
       imp = getAModuleMemberImport(pkg, pkgName, member) and
       pkg.declaresDependency(pkgName, _)
     )
@@ -182,11 +181,11 @@ private module NpmPackagePortal {
 
   /** Gets the main module of package `pkgName`. */
   Module packageMain(string pkgName) {
-    exists (PackageJSON pkg |
+    exists(PackageJSON pkg |
       // don't construct portals for private packages
       not pkg.isPrivate() and
       // don't construct portals for vendored-in packages
-      exists (Folder pkgDir | pkgDir = pkg.getFile().getParentContainer() |
+      exists(Folder pkgDir | pkgDir = pkg.getFile().getParentContainer() |
         pkgDir.getRelativePath() = ""
         or
         not pkgDir.getParentContainer().getBaseName() = "node_modules"
@@ -198,8 +197,8 @@ private module NpmPackagePortal {
 
   /** Holds if the main module of package `pkgName` exports `exp`. */
   predicate exports(string pkgName, DataFlow::Node exp) {
-    exists (Module m | m = packageMain(pkgName) |
-      exists (AnalyzedPropertyWrite apw |
+    exists(Module m | m = packageMain(pkgName) |
+      exists(AnalyzedPropertyWrite apw |
         apw.writes(m.(AnalyzedModule).getModuleObject(), "exports", exp)
       )
       or
@@ -213,14 +212,12 @@ private module NpmPackagePortal {
  *
  * This is a somewhat crude way of preventing us from constructing infinitely many portals.
  */
-private int maxdepth() {
-  result = 10
-}
+private int maxdepth() { result = 10 }
 
 /**
  * A portal that is constructed over some base portal.
  */
-private abstract class CompoundPortal extends Portal {
+abstract private class CompoundPortal extends Portal {
   Portal base;
 
   bindingset[this]
@@ -230,9 +227,7 @@ private abstract class CompoundPortal extends Portal {
   }
 
   /** Gets the base portal over which this portal is constructed. */
-  Portal getBasePortal() {
-    result = base
-  }
+  Portal getBasePortal() { result = base }
 
   override int depth() { result = base.depth() + 1 }
 }
@@ -249,9 +244,7 @@ private class MemberPortal extends CompoundPortal, MkMemberPortal {
   MemberPortal() { this = MkMemberPortal(base, prop) }
 
   /** Gets the name of this member. */
-  string getName() {
-    result = prop
-  }
+  string getName() { result = prop }
 
   override DataFlow::SourceNode getAnExitNode(boolean isRemote) {
     MemberPortal::reads(base, prop, result, isRemote)
@@ -277,7 +270,7 @@ private module MemberPortal {
     read = portalBaseRef(base, isRemote).getAPropertyRead(prop)
     or
     // imports are a kind of property read
-    exists (string pkg |
+    exists(string pkg |
       NpmPackagePortal::imports(read, pkg, prop) and
       base = MkNpmPackagePortal(pkg) and
       isRemote = false
@@ -286,7 +279,7 @@ private module MemberPortal {
 
   /** Holds if the main module of `pkgName` exports `rhs` under the name `prop`. */
   predicate exports(string pkgName, string prop, DataFlow::Node rhs) {
-    exists (AnalyzedModule m, AnalyzedPropertyWrite apw |
+    exists(AnalyzedModule m, AnalyzedPropertyWrite apw |
       m = NpmPackagePortal::packageMain(pkgName) and
       apw.writes(m.getAnExportsValue(), prop, rhs)
     )
@@ -302,7 +295,7 @@ private module MemberPortal {
     InstancePortal::instanceMemberDef(base.(InstancePortal).getBasePortal(), prop, rhs, escapes)
     or
     // exports are a kind of property write.
-    exists (string pkgName |
+    exists(string pkgName |
       exports(pkgName, prop, rhs) and
       base = MkNpmPackagePortal(pkgName) and
       escapes = true
@@ -341,11 +334,13 @@ private module InstancePortal {
   private predicate instantiable(DataFlow::Node ctor) {
     ctor.getAstNode() instanceof ClassDefinition
     or
-    exists (ThisExpr thiz | ctor = thiz.getBinder().flow())
+    exists(ThisExpr thiz | ctor = thiz.getBinder().flow())
   }
 
   /** Holds if `i` represents instances of `ctor`, which flows into `base`. */
-  private predicate isInstance(Portal base, DataFlow::SourceNode ctor, AbstractInstance i, boolean escapes) {
+  private predicate isInstance(
+    Portal base, DataFlow::SourceNode ctor, AbstractInstance i, boolean escapes
+  ) {
     ctor = DataFlow::valueNode(i.getConstructor().getDefinition()) and
     ctor.flowsTo(base.getAnEntryNode(escapes)) and
     instantiable(ctor)
@@ -363,17 +358,19 @@ private module InstancePortal {
    * right-hand side of that definition.
    */
   predicate instanceMemberDef(Portal base, string name, DataFlow::Node rhs, boolean escapes) {
-    exists (AbstractInstance i, DataFlow::SourceNode ctor | isInstance(base, ctor, i, escapes) |
+    exists(AbstractInstance i, DataFlow::SourceNode ctor | isInstance(base, ctor, i, escapes) |
       // ES2015 instance method
-      exists (MemberDefinition mem |
+      exists(MemberDefinition mem |
         mem = ctor.getAstNode().(ClassDefinition).getAMember() and
-        not mem.isStatic() and not mem instanceof ConstructorDefinition |
+        not mem.isStatic() and
+        not mem instanceof ConstructorDefinition
+      |
         name = mem.getName() and
         rhs = DataFlow::valueNode(mem.getInit())
       )
       or
       // ES5 instance method
-      exists (DataFlow::PropWrite pw |
+      exists(DataFlow::PropWrite pw |
         pw = ctor.getAPropertyRead("prototype").getAPropertyWrite(name) and
         rhs = pw.getRhs()
       )
@@ -382,7 +379,7 @@ private module InstancePortal {
 
   /** Holds if `nd` is a return node of a function flowing into `base`. */
   predicate instanceDef(Portal base, DataFlow::Node nd, boolean escapes) {
-    exists (DataFlow::FunctionNode fn |
+    exists(DataFlow::FunctionNode fn |
       isInstance(base, fn, _, escapes) and
       nd = fn.getAReturn() and
       instantiable(fn)
@@ -402,9 +399,7 @@ class ParameterPortal extends CompoundPortal, MkParameterPortal {
   ParameterPortal() { this = MkParameterPortal(base, i) }
 
   /** Gets the index of the parameterb represented by this portal. */
-  int getIndex() {
-    result = i
-  }
+  int getIndex() { result = i }
 
   override DataFlow::SourceNode getAnExitNode(boolean isRemote) {
     ParameterPortal::parameter(base, i, result, isRemote)
@@ -425,7 +420,7 @@ private module ParameterPortal {
 
   /** Holds if `arg` is the `i`th argument passed to an invocation of a function flowing through `base`. */
   predicate argument(Portal base, int i, DataFlow::Node arg, boolean escapes) {
-    exists (DataFlow::InvokeNode invk |
+    exists(DataFlow::InvokeNode invk |
       invk = base.getAnExitNode(escapes).getAnInvocation() and
       arg = invk.getArgument(i)
     )

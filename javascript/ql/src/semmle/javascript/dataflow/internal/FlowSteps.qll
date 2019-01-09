@@ -286,9 +286,7 @@ class PathSummary extends TPathSummary {
   boolean hasCall() { result = hasCall }
 
   /** Gets the flow label describing the value at the start of this flow path. */
-  FlowLabel getStartLabel() {
-    result = start
-  }
+  FlowLabel getStartLabel() { result = start }
 
   /** Gets the flow label describing the value at the end of this flow path. */
   FlowLabel getEndLabel() { result = end }

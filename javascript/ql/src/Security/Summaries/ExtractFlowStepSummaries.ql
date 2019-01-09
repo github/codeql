@@ -13,20 +13,20 @@ import AllConfigurations
 import PortalExitSource
 import PortalEntrySink
 
-from TaintTracking::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink,
-     Portal p1, Portal p2, DataFlow::FlowLabel lbl1, DataFlow::FlowLabel lbl2
-where cfg.hasFlowPath(source, sink) and
-      p1 = source.getNode().(PortalExitSource).getPortal() and
-      p2 = sink.getNode().(PortalEntrySink).getPortal() and
-      lbl1 = sink.getPathSummary().getStartLabel() and
-      lbl2 = sink.getPathSummary().getEndLabel() and
-      // avoid constructing infeasible paths
-      sink.getPathSummary().hasCall() = false and
-      sink.getPathSummary().hasReturn() = false and
-      // restrict to steps flow function parameters to returns
-      p1.(ParameterPortal).getBasePortal() = p2.(ReturnPortal).getBasePortal() and
-      // restrict to data/taint flow
-      lbl1 instanceof DataFlow::StandardFlowLabel
-select p1.toString(), lbl1.toString(),
-       p2.toString(), lbl2.toString(),
-       cfg.toString()
+from
+  TaintTracking::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Portal p1,
+  Portal p2, DataFlow::FlowLabel lbl1, DataFlow::FlowLabel lbl2
+where
+  cfg.hasFlowPath(source, sink) and
+  p1 = source.getNode().(PortalExitSource).getPortal() and
+  p2 = sink.getNode().(PortalEntrySink).getPortal() and
+  lbl1 = sink.getPathSummary().getStartLabel() and
+  lbl2 = sink.getPathSummary().getEndLabel() and
+  // avoid constructing infeasible paths
+  sink.getPathSummary().hasCall() = false and
+  sink.getPathSummary().hasReturn() = false and
+  // restrict to steps flow function parameters to returns
+  p1.(ParameterPortal).getBasePortal() = p2.(ReturnPortal).getBasePortal() and
+  // restrict to data/taint flow
+  lbl1 instanceof DataFlow::StandardFlowLabel
+select p1.toString(), lbl1.toString(), p2.toString(), lbl2.toString(), cfg.toString()

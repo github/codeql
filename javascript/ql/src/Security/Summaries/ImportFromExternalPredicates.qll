@@ -27,14 +27,18 @@ external predicate additionalSinks(string portal, string flowLabel, string confi
  *
  * This predicate can be populated from the output of the `ExtractFlowStepSummaries` query.
  */
-external predicate additionalSteps(string startPortal, string startFlowLabel, string endPortal, string endFlowLabel, string config);
+external predicate additionalSteps(
+  string startPortal, string startFlowLabel, string endPortal, string endFlowLabel, string config
+);
 
 /**
  * An additional source specified through the `additionalSources` predicate.
  */
 private class AdditionalSourceFromSpec extends DataFlow::AdditionalSource {
   Portal portal;
+
   string flowLabel;
+
   string config;
 
   AdditionalSourceFromSpec() {
@@ -52,7 +56,9 @@ private class AdditionalSourceFromSpec extends DataFlow::AdditionalSource {
  */
 private class AdditionalSinkFromSpec extends DataFlow::AdditionalSink {
   Portal portal;
+
   string flowLabel;
+
   string config;
 
   AdditionalSinkFromSpec() {
@@ -64,26 +70,33 @@ private class AdditionalSinkFromSpec extends DataFlow::AdditionalSink {
     configSpec(cfg, config) and sinkFlowLabelSpec(lbl, flowLabel)
   }
 }
+
 /**
  * An additional flow step specified through the `additionalSteps` predicate.
  */
 private class AdditionalFlowStepFromSpec extends DataFlow::Configuration {
   DataFlow::Node entry;
+
   string startFlowLabel;
+
   DataFlow::Node exit;
+
   string endFlowLabel;
 
   AdditionalFlowStepFromSpec() {
-    exists (Portal startPortal, Portal endPortal, string config |
-      additionalSteps(startPortal.toString(), startFlowLabel, endPortal.toString(), endFlowLabel, config) and
+    exists(Portal startPortal, Portal endPortal, string config |
+      additionalSteps(startPortal.toString(), startFlowLabel, endPortal.toString(), endFlowLabel,
+        config) and
       configSpec(this, config) and
       entry = startPortal.getAnEntryNode(_) and
       exit = endPortal.getAnExitNode(_)
     )
   }
 
-  override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ,
-                                          DataFlow::FlowLabel predlbl, DataFlow::FlowLabel succlbl) {
+  override predicate isAdditionalFlowStep(
+    DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel predlbl,
+    DataFlow::FlowLabel succlbl
+  ) {
     pred = entry and
     succ = exit and
     predlbl = startFlowLabel and

@@ -50,16 +50,14 @@ predicate sinkFlowLabelSpec(DataFlow::FlowLabel lbl, string spec) {
 class AnnotationComment extends Comment {
   string ann;
 
-  AnnotationComment() {
-    ann = getText().regexpCapture("(?s)\\s*Semmle:(.*)", 1)
-  }
+  AnnotationComment() { ann = getText().regexpCapture("(?s)\\s*Semmle:(.*)", 1) }
 
   /**
    * Holds if this comment applies to `nd`, that is, it starts on the same line on
    * which `nd` ends.
    */
   predicate appliesTo(DataFlow::Node nd) {
-    exists (string file, int line |
+    exists(string file, int line |
       getLocation().hasLocationInfo(file, line, _, _, _) and
       nd.hasLocationInfo(file, _, _, line, _)
     )
@@ -71,7 +69,7 @@ class AnnotationComment extends Comment {
    * any configuration.
    */
   predicate specifiesSource(DataFlow::FlowLabel label, DataFlow::Configuration config) {
-    exists (string spec |
+    exists(string spec |
       spec = ann.regexpFind("(?<=\\bsource:)\\s*[^\\s,]+(\\s*,\\s*[^\\s,])?", _, _) and
       sourceFlowLabelSpec(label, spec.splitAt(",", 0).trim()) and
       configSpec(config, spec.splitAt(",", 1).trim())
@@ -84,7 +82,7 @@ class AnnotationComment extends Comment {
    * any configuration.
    */
   predicate specifiesSink(string label, string config) {
-    exists (string spec |
+    exists(string spec |
       spec = ann.regexpFind("(?<=\\bsink:)\\s*[^\\s,]+(\\s*,\\s*[^\\s,]+)?", _, _) and
       sinkFlowLabelSpec(label, spec.splitAt(",", 0).trim()) and
       configSpec(config, spec.splitAt(",", 1).trim())

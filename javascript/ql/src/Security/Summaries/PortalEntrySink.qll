@@ -8,9 +8,7 @@ import semmle.javascript.dataflow.Portals
 class PortalEntrySink extends DataFlow::AdditionalSink {
   Portal p;
 
-  PortalEntrySink() {
-    this = p.getAnEntryNode(true)
-  }
+  PortalEntrySink() { this = p.getAnEntryNode(true) }
 
   override predicate isSinkFor(DataFlow::Configuration cfg, DataFlow::FlowLabel lbl) {
     cfg instanceof TaintTracking::Configuration and
@@ -18,7 +16,5 @@ class PortalEntrySink extends DataFlow::AdditionalSink {
   }
 
   /** Gets the portal of which this is an entry node. */
-  Portal getPortal() {
-    result = p
-  }
+  Portal getPortal() { result = p }
 }

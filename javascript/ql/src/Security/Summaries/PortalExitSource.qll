@@ -8,9 +8,7 @@ import semmle.javascript.dataflow.Portals
 class PortalExitSource extends DataFlow::AdditionalSource {
   Portal p;
 
-  PortalExitSource() {
-    this = p.getAnExitNode(true)
-  }
+  PortalExitSource() { this = p.getAnExitNode(true) }
 
   override predicate isSourceFor(DataFlow::Configuration cfg, DataFlow::FlowLabel lbl) {
     cfg instanceof TaintTracking::Configuration and
@@ -18,7 +16,5 @@ class PortalExitSource extends DataFlow::AdditionalSource {
   }
 
   /** Gets the portal of which this is an exit node. */
-  Portal getPortal() {
-    result = p
-  }
+  Portal getPortal() { result = p }
 }
