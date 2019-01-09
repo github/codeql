@@ -48,26 +48,27 @@ predicate isStringCopyUsedInLogicalOperationOrCondition(FunctionCall func, Expr 
         // it is being used in an equality or logical operation
         exists(EqualityOperation eop |
           eop = expr1 and
-          func = eop.getAChild()
+          func = eop.getAnOperand()
         )
         or
         exists(UnaryLogicalOperation ule |
           expr1 = ule and
-          func = ule.getAChild()
+          func = ule.getOperand()
         )
         or
         exists(BinaryLogicalOperation ble |
           expr1 = ble and
-          func = ble.getAChild()
+          func = ble.getAnOperand()
         )
       ) and
       msg = "Return value of " + func.getTarget().getQualifiedName() +
           " used in a logical operation."
     )
     or
-    exists(ConditionalStmt condstmt | condstmt.getAChild() = expr1 |
+    exists(ConditionalStmt condstmt |
       // or the string copy function is used directly as the conditional expression
-      func = condstmt.getChild(0) and
+      func = condstmt.getControllingExpr() and
+      expr1 = func and
       msg = "Return value of " + func.getTarget().getQualifiedName() +
           " used directly in a conditional expression."
     )
