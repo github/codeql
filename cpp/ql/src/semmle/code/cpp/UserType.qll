@@ -9,10 +9,15 @@ private import semmle.code.cpp.internal.ResolveClass
  * `Enum`, and `TypedefType`.
  */
 class UserType extends Type, Declaration, NameQualifyingElement, AccessHolder, @usertype {
-  /** the name of this type */
+  /** 
+   * Gets the name of this type.
+   */
   override string getName() { usertypes(underlyingElement(this),result,_) }
 
-  /** the simple name of this type, without any template parameters */
+  /**
+   * Gets the simple name of this type, without any template parameters.  For example
+   * if the name of the type is `"myType<int>"`, the simple name is just `"myType"`.
+   */
   string getSimpleName() {
     result = getName().regexpReplaceAll("<.*", "")
   }
@@ -20,6 +25,8 @@ class UserType extends Type, Declaration, NameQualifyingElement, AccessHolder, @
   override predicate hasName(string name) {
     usertypes(underlyingElement(this),name,_)
   }
+
+  /** Holds if this type is anonymous. */
   predicate isAnonymous() {
     getName().matches("(unnamed%")
   }
@@ -54,7 +61,6 @@ class UserType extends Type, Declaration, NameQualifyingElement, AccessHolder, @
     result.isDefinition()
   }
 
-  /** the location of the definition */
   override Location getDefinitionLocation() {
     if exists(getDefinition()) then
       result = getDefinition().getLocation()
@@ -62,12 +68,17 @@ class UserType extends Type, Declaration, NameQualifyingElement, AccessHolder, @
       exists(Class t | this.(Class).isConstructedFrom(t) and result = t.getDefinition().getLocation())
   }
 
-  /** Gets the function that directly encloses this type (if any). */
+  /**
+   * Gets the function that directly encloses this type (if any).
+   */
   Function getEnclosingFunction() {
     enclosingfunction(underlyingElement(this),unresolveElement(result))
   }
 
-  /** Whether this is a local type (i.e. a type that has a directly-enclosing function). */
+  /**
+   * Holds if this is a local type (that is, a type that has a directly-enclosing
+   * function).
+   */
   predicate isLocal() {
     exists(getEnclosingFunction())
   }
