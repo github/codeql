@@ -47,7 +47,7 @@ module LodashUnderscore {
    * Holds if `name` is the name of a member exported from the `lodash` package
    * which has a corresponding `lodash.xxx` NPM package.
    */
-  private predicate isLodashMember(string name) {
+  private predicate isLodashMember(string name) { // Can be generated using Object.keys(require('lodash'))
     name = "templateSettings" or
     name = "after" or
     name = "ary" or
