@@ -827,7 +827,8 @@ private predicate straightLineDense(Node scope, int rnk, Node nrnk, Spec spec) {
  * but most cases should be handled through one of the convenience predicates
  * as outlined in the comment at the top of this file.
  */
-private predicate subEdge(Node n1, Pos p1, Node n2, Pos p2) {
+// The parameters are ordered this way for performance.
+private predicate subEdge(Pos p1, Node n1, Node n2, Pos p2) {
   exists(Node scope, int rnk, Spec spec1, Spec spec2 |
     straightLineDense(scope, rnk, n1, spec1) and
     straightLineDense(scope, rnk + 1, n2, spec2) and
@@ -997,13 +998,13 @@ private predicate subEdge(Node n1, Pos p1, Node n2, Pos p2) {
  * predicate includes all sub-edges except those with true/false labels (see
  * `conditionJumps`).
  */
-private predicate subEdgeIncludingDestructors(Node n1, Pos p1, Node n2, Pos p2) {
-  subEdge(n1, p1, n2, p2)
+private predicate subEdgeIncludingDestructors(Pos p1, Node n1, Node n2, Pos p2) {
+  subEdge(p1, n1, n2, p2)
   or
   // If `n1` has sub-nodes to accomodate destructors, but there are none to be
   // called, connect the "before destructors" node directly to the "after
   // destructors" node. For performance, only do this when the nodes exist.
-  exists(Pos afterDtors | afterDtors.isAfterDestructors() | subEdge(n1, afterDtors, _, _)) and
+  exists(Pos afterDtors | afterDtors.isAfterDestructors() | subEdge(afterDtors, n1, _, _)) and
   not exists(getDestructorCallAfterNode(n1, 0)) and
   p1.nodeBeforeDestructors(n1, n1) and
   p2.nodeAfterDestructors(n2, n1)
@@ -1286,22 +1287,27 @@ private predicate conditionJumps(Expr test, boolean truth, Node n2, Pos p2) {
   )
 }
 
+// Factored out for performance. See QL-796.
+private predicate normalGroupMemberBaseCase(Node memberNode, Pos memberPos, Node atNode) {
+  memberNode = atNode and
+  memberPos.isAt() and
+  // We check for excludeNode here as it's slower to check in all the leaf
+  // cases during construction of the sub-graph.
+  not excludeNode(atNode)
+}
+
 /**
  * Holds if the sub-node `(memberNode, memberPos)` can reach `at(atNode)` by
  * following sub-edges forward without crossing another "at" node. Here,
  * `memberPos.isAt()` holds only when `memberNode = atNode`.
  */
 private predicate normalGroupMember(Node memberNode, Pos memberPos, Node atNode) {
-  memberNode = atNode and
-  memberPos.isAt() and
-  // We check for excludeNode here as it's slower to check in all the leaf
-  // cases during construction of the sub-graph.
-  not excludeNode(atNode)
+  normalGroupMemberBaseCase(memberNode, memberPos, atNode)
   or
   exists(Node succNode, Pos succPos |
     normalGroupMember(succNode, succPos, atNode) and
     not memberPos.isAt() and
-    subEdgeIncludingDestructors(memberNode, memberPos, succNode, succPos)
+    subEdgeIncludingDestructors(memberPos, memberNode, succNode, succPos)
   )
 }
 
@@ -1317,7 +1323,7 @@ private predicate precedesCondition(Node memberNode, Pos memberPos, Node test) {
   or
   exists(Node succNode, Pos succPos |
     precedesCondition(succNode, succPos, test) and
-    subEdgeIncludingDestructors(memberNode, memberPos, succNode, succPos) and
+    subEdgeIncludingDestructors(memberPos, memberNode, succNode, succPos) and
     // Unlike the similar TC in normalGroupMember we're here including the
     // At-node in the group. This should generalize better to the case where
     // the base case isn't always an After-node.
@@ -1355,7 +1361,7 @@ private module Cached {
   cached
   predicate qlCFGSuccessor(Node n1, Node n2) {
     exists(Node memberNode, Pos memberPos |
-      subEdgeIncludingDestructors(n1, any(Pos at | at.isAt()), memberNode, memberPos) and
+      subEdgeIncludingDestructors(any(Pos at | at.isAt()), n1, memberNode, memberPos) and
       normalGroupMember(memberNode, memberPos, n2)
     )
     or
