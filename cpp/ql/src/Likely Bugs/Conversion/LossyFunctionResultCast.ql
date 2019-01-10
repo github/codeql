@@ -10,6 +10,7 @@
  */
 
 import cpp
+import semmle.code.cpp.dataflow.DataFlow
 
 predicate whitelist(Function f) {
   exists(string fName |
@@ -52,14 +53,10 @@ predicate whitelistPow(FunctionCall fc) {
 predicate whiteListWrapped(FunctionCall fc) {
   whitelist(fc.getTarget()) or
   whitelistPow(fc) or
-  exists(ReturnStmt rs |
-    rs.getEnclosingFunction() = fc.getTarget() and
-    whiteListWrapped(rs.getExpr())
-  ) or
-  exists(ReturnStmt rs, Variable v |
-    rs.getEnclosingFunction() = fc.getTarget() and
-    rs.getExpr().(VariableAccess).getTarget() = v and
-    whiteListWrapped(v.getAnAssignedValue())
+  exists(Expr e, ReturnStmt rs |
+    whiteListWrapped(e) and
+    DataFlow::localFlow(DataFlow::exprNode(e), DataFlow::exprNode(rs.getExpr())) and
+    fc.getTarget() = rs.getEnclosingFunction()
   )
 }
 

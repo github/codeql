@@ -127,5 +127,5 @@ void test3()
 {
 	int i = myRound1(1.5); // GOOD
 	int j = myRound2(2.5); // GOOD
-	int k = myRound3(3.5); // GOOD [FALSE POSITIVE]
+	int k = myRound3(3.5); // GOOD
 }
