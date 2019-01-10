@@ -78,10 +78,8 @@ predicate isDeadAssignment(string name, DataFlow::PropWrite assign1, DataFlow::P
  */
 bindingset[name]
 predicate maybeAccessesAssignedPropInBlock(string name, DataFlow::PropWrite assign, boolean after) {
-  exists(ControlFlowNode write, ReachableBasicBlock block, int i, int j, Expr e |
-    write = assign.getWriteNode() and
-    block = assign.getBasicBlock() and
-    write = block.getNode(i) and
+  exists(ReachableBasicBlock block, int i, int j, Expr e |
+    assign.getWriteNode() = block.getNode(i) and
     e = block.getNode(j) and
     maybeAccessesProperty(e, name)
   |
