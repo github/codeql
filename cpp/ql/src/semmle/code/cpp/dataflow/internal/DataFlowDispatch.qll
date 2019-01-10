@@ -2,11 +2,36 @@ private import cpp
 private import DataFlowPrivate
 
 Function viableImpl(MethodAccess ma) {
-  result = ma.getTarget()
+  result = viableCallable(ma)
 }
 
+/**
+ * Gets a function that might be called by `call`.
+ */
 Function viableCallable(Call call) {
   result = call.getTarget()
+  or
+  // If the target of the call does not have a body in the snapshot, it might
+  // be because the target is just a header declaration, and the real target
+  // will be determined at run time when the caller and callee are linked
+  // together by the operating system's dynamic linker. In case a function with
+  // the right signature is present in the database, we return that as a
+  // potential callee.
+  exists(Function target |
+    target = call.getTarget() and
+    not exists(target.getBlock()) and
+    exists(result.getBlock()) and
+    exists(string qualifiedName, int nparams |
+      functionSignature(qualifiedName, nparams, target) and
+      functionSignature(qualifiedName, nparams, result)
+    )
+  )
+}
+
+private predicate functionSignature(string qualifiedName, int nparams, Function f) {
+  qualifiedName = f.getQualifiedName() and
+  nparams = f.getNumberOfParameters() and
+  not f.isStatic()
 }
 
 /**
