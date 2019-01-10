@@ -237,6 +237,10 @@ private predicate exprToExprStep_nocfg(Expr fromExpr, Expr toExpr) {
     moveCall.getTarget().getName() = "move" and
     fromExpr = moveCall.getArgument(0)
   )
+  or
+  toExpr = any(StmtExpr stmtExpr |
+    fromExpr = stmtExpr.getResultExpr()
+  )
 }
 
 VariableAccess getAnAccessToAssignedVariable(Expr assign) {
