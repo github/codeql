@@ -11,25 +11,31 @@
 
 import cpp
 
-predicate whitelist(string fName) {
-  fName = "ceil" or
-  fName = "ceilf" or
-  fName = "ceill" or
-  fName = "floor" or
-  fName = "floorf" or
-  fName = "floorl" or
-  fName = "nearbyint" or
-  fName = "nearbyintf" or
-  fName = "nearbyintl" or
-  fName = "rint" or
-  fName = "rintf" or
-  fName = "rintl" or
-  fName = "round" or
-  fName = "roundf" or
-  fName = "roundl" or
-  fName = "trunc" or
-  fName = "truncf" or
-  fName = "truncl"
+predicate whitelist(Function f) {
+  exists(string fName |
+    fName = f.getName() and
+    (
+      fName = "ceil" or
+      fName = "ceilf" or
+      fName = "ceill" or
+      fName = "floor" or
+      fName = "floorf" or
+      fName = "floorl" or
+      fName = "nearbyint" or
+      fName = "nearbyintf" or
+      fName = "nearbyintl" or
+      fName = "rint" or
+      fName = "rintf" or
+      fName = "rintl" or
+      fName = "round" or
+      fName = "roundf" or
+      fName = "roundl" or
+      fName = "trunc" or
+      fName = "truncf" or
+      fName = "truncl" or
+      fName.matches("__builtin_%")
+    )
+  )
 }
 
 predicate whitelistPow(FunctionCall fc) {
@@ -44,7 +50,7 @@ predicate whitelistPow(FunctionCall fc) {
 }
 
 predicate whiteListWrapped(FunctionCall fc) {
-  whitelist(fc.getTarget().getName()) or
+  whitelist(fc.getTarget()) or
   whitelistPow(fc) or
   exists(ReturnStmt rs |
     rs.getEnclosingFunction() = fc.getTarget() and
