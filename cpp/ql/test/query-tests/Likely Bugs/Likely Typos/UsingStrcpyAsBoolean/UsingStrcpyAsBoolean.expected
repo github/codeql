@@ -1,0 +1,34 @@
+| test.c:34:9:34:14 | call to strcpy | Return Value of strcpy used directly in a conditional expression. |
+| test.c:38:9:38:31 | ! ... | Return Value of strcpy used in a logical operation. |
+| test.c:42:9:42:35 | ... == ... | Return Value of strcpy used in a logical operation. |
+| test.c:46:9:46:48 | ... && ... | Return Value of strcpy used in a logical operation. |
+| test.c:50:9:50:15 | call to strncpy | Return Value of strncpy used directly in a conditional expression. |
+| test.c:54:6:54:34 | ! ... | Return Value of strncpy used in a logical operation. |
+| test.c:58:11:58:39 | ! ... | Return Value of strncpy used in a logical operation. |
+| test.c:60:11:60:37 | ... && ... | Return Value of strcpy used in a logical operation. |
+| test.c:62:11:62:37 | ... == ... | Return Value of strcpy used in a logical operation. |
+| test.c:64:11:64:37 | ... != ... | Return Value of strcpy used in a logical operation. |
+| test.cpp:75:9:75:14 | call to strcpy | Return Value of strcpy used directly in a conditional expression. |
+| test.cpp:79:9:79:31 | ! ... | Return Value of strcpy used in a logical operation. |
+| test.cpp:79:10:79:15 | call to strcpy | Return Value of strcpy used as boolean. |
+| test.cpp:83:9:83:35 | ... == ... | Return Value of strcpy used in a logical operation. |
+| test.cpp:87:9:87:48 | ... && ... | Return Value of strcpy used in a logical operation. |
+| test.cpp:87:27:87:32 | call to strcpy | Return Value of strcpy used as boolean. |
+| test.cpp:91:9:91:37 | call to wcscpy | Return Value of wcscpy used directly in a conditional expression. |
+| test.cpp:95:9:95:14 | call to wcscpy | Return Value of wcscpy used directly in a conditional expression. |
+| test.cpp:99:9:99:15 | call to _mbscpy | Return Value of _mbscpy used directly in a conditional expression. |
+| test.cpp:103:9:103:15 | call to strncpy | Return Value of strncpy used directly in a conditional expression. |
+| test.cpp:107:9:107:15 | call to wcsncpy | Return Value of wcsncpy used directly in a conditional expression. |
+| test.cpp:111:9:111:16 | call to _mbsncpy | Return Value of _mbsncpy used directly in a conditional expression. |
+| test.cpp:115:9:115:18 | call to _strncpy_l | Return Value of _strncpy_l used directly in a conditional expression. |
+| test.cpp:119:9:119:18 | call to _wcsncpy_l | Return Value of _wcsncpy_l used directly in a conditional expression. |
+| test.cpp:123:9:123:18 | call to _mbsncpy_l | Return Value of _mbsncpy_l used directly in a conditional expression. |
+| test.cpp:127:6:127:34 | ! ... | Return Value of strncpy used in a logical operation. |
+| test.cpp:127:7:127:13 | call to strncpy | Return Value of strncpy used as boolean. |
+| test.cpp:131:11:131:17 | call to strncpy | Return Value of strncpy used as boolean. |
+| test.cpp:133:16:133:44 | ! ... | Return Value of strncpy used in a logical operation. |
+| test.cpp:133:17:133:23 | call to strncpy | Return Value of strncpy used as boolean. |
+| test.cpp:135:11:135:16 | call to strcpy | Return Value of strcpy used as boolean. |
+| test.cpp:135:11:135:37 | ... && ... | Return Value of strcpy used in a logical operation. |
+| test.cpp:137:11:137:37 | ... == ... | Return Value of strcpy used in a logical operation. |
+| test.cpp:139:11:139:37 | ... != ... | Return Value of strcpy used in a logical operation. |
