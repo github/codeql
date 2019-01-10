@@ -40,9 +40,6 @@
 | test.cpp:140:10:140:10 | Store: i | test.cpp:135:16:135:16 | InitializeParameter: x | 0 | false | CompareLT: ... < ... | test.cpp:139:11:139:15 | test.cpp:139:11:139:15 |
 | test.cpp:140:10:140:10 | Store: i | test.cpp:138:5:138:5 | Phi: i | 1 | false | NoReason | file://:0:0:0:0 | file://:0:0:0:0 |
 | test.cpp:140:10:140:10 | Store: i | test.cpp:138:5:138:5 | Phi: i | 1 | true | NoReason | file://:0:0:0:0 | file://:0:0:0:0 |
-| test.cpp:149:10:149:10 | Store: i | file://:0:0:0:0 | 0 | 1 | false | NoReason | file://:0:0:0:0 | file://:0:0:0:0 |
-| test.cpp:149:10:149:10 | Store: i | test.cpp:147:5:147:5 | Phi: i | 1 | false | NoReason | file://:0:0:0:0 | file://:0:0:0:0 |
-| test.cpp:149:10:149:10 | Store: i | test.cpp:147:5:147:5 | Phi: i | 1 | true | NoReason | file://:0:0:0:0 | file://:0:0:0:0 |
 | test.cpp:156:12:156:12 | Load: x | test.cpp:153:23:153:23 | InitializeParameter: y | -1 | false | CompareEQ: ... == ... | test.cpp:155:9:155:16 | test.cpp:155:9:155:16 |
 | test.cpp:156:12:156:12 | Load: x | test.cpp:153:23:153:23 | InitializeParameter: y | -1 | true | CompareEQ: ... == ... | test.cpp:155:9:155:16 | test.cpp:155:9:155:16 |
 | test.cpp:156:12:156:12 | Load: x | test.cpp:153:23:153:23 | InitializeParameter: y | -1 | true | CompareLT: ... < ... | test.cpp:154:6:154:10 | test.cpp:154:6:154:10 |
