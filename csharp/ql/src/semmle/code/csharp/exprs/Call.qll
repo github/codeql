@@ -287,6 +287,7 @@ class Call extends DotNet::Call, Expr, @call {
  * }
  * ```
  */
+pragma[nomagic]
 private predicate isValidExplicitParamsType(Parameter p, Type t) {
   p.isParams() and
   t.isImplicitlyConvertibleTo(p.getType())
