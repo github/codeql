@@ -7,3 +7,4 @@
 | test.cpp:101:10:101:12 | call to pow | Return value of type double is implicitly converted to int here. |
 | test.cpp:103:10:103:12 | call to pow | Return value of type double is implicitly converted to int here. |
 | test.cpp:105:10:105:12 | call to pow | Return value of type double is implicitly converted to int here. |
+| test.cpp:130:10:130:17 | call to myRound3 | Return value of type double is implicitly converted to int here. |

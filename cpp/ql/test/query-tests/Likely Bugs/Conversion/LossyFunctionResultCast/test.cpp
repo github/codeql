@@ -106,14 +106,26 @@ int test2(double v, double w, int n)
 	};
 }
 
-double myRound(double v)
+double myRound1(double v)
+{
+	return round(v);
+}
+
+double myRound2(double v)
 {
 	double result = round(v);
 
 	return result;
 }
 
+double myRound3(double v)
+{
+	return (v > 0) ? round(v) : 0;
+}
+
 void test3()
 {
-	int i = myRound(1.5); // GOOD
+	int i = myRound1(1.5); // GOOD
+	int j = myRound2(2.5); // GOOD
+	int k = myRound3(3.5); // GOOD [FALSE POSITIVE]
 }
