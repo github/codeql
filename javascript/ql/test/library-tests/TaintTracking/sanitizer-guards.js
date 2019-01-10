@@ -25,5 +25,16 @@ class C {
     addEventListener('hey', () => {
 	  sink(this.x); // NOT OK
 	});
+
+	let self = this;
+	if (isSafe(self.x)) {
+	  sink(self.x); // OK
+	}
+
+	addEventListener('hey', function() {
+	  if (isSafe(self.x)) {
+	    sink(self.x); // OK
+	  }
+	});
   }
 }
