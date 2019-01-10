@@ -495,7 +495,7 @@ void intArraySourceCaller2() {
 ///////////////////////////////////////////////////////////////////////////////
 
 void throughStmtExpr(int source1, int clean1) {
-  sink( ({ source1; }) ); // tainted (FALSE NEGATIVE)
+  sink( ({ source1; }) ); // tainted
   sink( ({ clean1; }) ); // clean
 
   int local = ({
@@ -506,5 +506,5 @@ void throughStmtExpr(int source1, int clean1) {
       tmp = clean1;
     tmp;
   });
-  sink(local); // tainted (FALSE NEGATIVE)
+  sink(local); // tainted
 }
