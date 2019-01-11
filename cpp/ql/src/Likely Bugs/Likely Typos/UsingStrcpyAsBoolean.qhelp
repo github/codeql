@@ -4,7 +4,7 @@
 <qhelp>
 
 <overview>
-<p>This rule flags calls to string copy functions used in conditions, either
+<p>This query identifies calls to string copy functions used in conditions, either
 directly or as part of an equality operator or logical operator. The most
 common string copy functions always return their <code>destination</code>
 parameter and do not have a return value reserved to indicate an error.
@@ -39,7 +39,7 @@ context.</p>
 <references>
 <li>Microsoft Code Analysis for C/C++: <a href="https://docs.microsoft.com/en-us/previous-versions/visualstudio/visual-studio-2012/ccf4h9w8(v=vs.110)">C6324</a></li>
 <li>Microsoft C library reference: <a href="https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/strcpy-wcscpy-mbscpy">strcpy, wcscpy, _mbscpy</a></li>
-<li>US-CERT: <a href="https://www.us-cert.gov/bsi/articles/knowledge/coding-practices/strcpy_s-and-strcat_s">strncpy_s() and strncat_s()</a></li>
+<li>US-CERT: <a href="https://www.us-cert.gov/bsi/articles/knowledge/coding-practices/strcpy_s-and-strcat_s">strcpy_s() and strcat_s()</a></li>
 
 </references>
 </qhelp>
