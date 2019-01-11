@@ -18,7 +18,7 @@ where
   e.getEnclosingCallable() = m and
   e.getExpr().(VariableAccess).getTarget() = m.getParameter(0) and
   isType = e.getCheckedType() and
-  not (isType.isSealed()) and
+  not isType.isSealed() and
   not exists(MethodCall c |
     c.getEnclosingCallable() = m and
     c.getTarget().getName() = "GetType" and

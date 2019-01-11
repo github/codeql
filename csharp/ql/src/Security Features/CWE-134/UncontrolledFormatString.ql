@@ -18,10 +18,8 @@ import DataFlow::PathGraph
 
 class FormatStringConfiguration extends TaintTracking::Configuration {
   FormatStringConfiguration() { this = "FormatStringConfiguration" }
-  
-  override predicate isSource(DataFlow::Node source) {
-    source instanceof RemoteFlowSource
-  }
+
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(FormatCall call).getFormatExpr()
@@ -30,5 +28,5 @@ class FormatStringConfiguration extends TaintTracking::Configuration {
 
 from FormatStringConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select sink.getNode(), source, sink,
-  "$@ flows to here and is used as a format string.", source.getNode(), source.getNode().toString()
+select sink.getNode(), source, sink, "$@ flows to here and is used as a format string.",
+  source.getNode(), source.getNode().toString()

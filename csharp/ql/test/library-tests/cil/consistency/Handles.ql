@@ -2,11 +2,11 @@ import csharp
 import cil
 import dotnet
 
-class MetadataEntity extends DotNet::NamedElement, @metadata_entity {  
+class MetadataEntity extends DotNet::NamedElement, @metadata_entity {
   int getHandle() { metadata_handle(this, _, result) }
-  
+
   predicate hasHandle() { exists(getHandle()) }
-  
+
   Assembly getAssembly() { metadata_handle(this, result, _) }
 }
 
@@ -28,10 +28,8 @@ query predicate missingCil(Element e) {
 }
 
 query predicate cilLocationViolation(CIL::Element e) {
-  e instanceof MetadataEntity
-  and
-  exists(e.getALocation())
-  and
+  e instanceof MetadataEntity and
+  exists(e.getALocation()) and
   not e.getALocation() = e.(MetadataEntity).getAssembly()
 }
 
@@ -43,8 +41,8 @@ query predicate csharpLocationViolation(Element e) {
 
 query predicate matchingObjectMethods(string s1, string s2) {
   exists(Callable m1, CIL::Method m2 |
-    m1.getDeclaringType().getQualifiedName() = "System.Object"
-    and m1.matchesHandle(m2) and
+    m1.getDeclaringType().getQualifiedName() = "System.Object" and
+    m1.matchesHandle(m2) and
     s1 = m1.toStringWithTypes() and
     s2 = m2.toStringWithTypes()
   )

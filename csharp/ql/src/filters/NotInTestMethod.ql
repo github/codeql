@@ -11,7 +11,7 @@ import external.DefectFilter
 
 from DefectResult res
 where
-  not (res.getFile() instanceof TestFile)
+  not res.getFile() instanceof TestFile
   or
-  not (res.getStartLine() = res.getFile().(TestFile).lineInTestMethod())
+  not res.getStartLine() = res.getFile().(TestFile).lineInTestMethod()
 select res, res.getMessage()

@@ -87,7 +87,7 @@ where
   not exists(Assignment ae, Field g |
     ae.getLValue().(FieldAccess).getTarget() = g and
     g.getSourceDeclaration() = f and
-    not (ae.getRValue() instanceof NullLiteral)
+    not ae.getRValue() instanceof NullLiteral
   ) and
   not exists(MethodCall mc, int i, Field g |
     exists(Parameter p | mc.getTarget().getParameter(i) = p | p.isOut() or p.isRef()) and

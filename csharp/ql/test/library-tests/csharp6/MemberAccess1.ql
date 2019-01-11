@@ -6,7 +6,7 @@ import csharp
 
 from MemberAccess ma, string conditional
 where
-  (ma.isConditional() and conditional = "Conditional")
+  ma.isConditional() and conditional = "Conditional"
   or
-  (not ma.isConditional() and conditional = "Unconditional")
+  not ma.isConditional() and conditional = "Unconditional"
 select ma, ma.getQualifier(), conditional
