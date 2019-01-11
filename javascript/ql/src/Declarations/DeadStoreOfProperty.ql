@@ -106,8 +106,8 @@ predicate noPropAccessBetween(string name, DataFlow::PropWrite assign1, DataFlow
     then
       // same block: check for access between
       not exists(int i1, Expr mid, int i2 |
-        assign1.getWriteNode() = block1.getNode(i1) and
-        assign2.getWriteNode() = block2.getNode(i2) and
+        write1 = block1.getNode(i1) and
+        write2 = block2.getNode(i2) and
         mid = block1.getNode([i1 + 1 .. i2 - 1]) and
         maybeAccessesProperty(mid, name)
       )
