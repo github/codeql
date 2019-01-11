@@ -1,0 +1,5 @@
+| points.js:1:1:18:1 | class P ... ;\\n  }\\n} | dist | points.js:7:11:9:3 | () {\\n   ... y);\\n  } |
+| points.js:1:1:18:1 | class P ... ;\\n  }\\n} | toString | points.js:11:11:13:3 | () {\\n   ... )";\\n  } |
+| points.js:20:1:33:1 | class C ... ;\\n  }\\n} | toString | points.js:26:11:28:3 | () {\\n   ... ur;\\n  } |
+| tst.js:1:9:4:1 | class { ...  */ }\\n} | constructor | tst.js:3:18:3:56 | () { /* ... r. */ } |
+| tst.js:11:1:14:1 | class C ... () {}\\n} | m | tst.js:12:4:12:8 | () {} |

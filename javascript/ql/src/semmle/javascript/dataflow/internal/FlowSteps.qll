@@ -124,25 +124,9 @@ predicate callStep(DataFlow::Node pred, DataFlow::Node succ) {
  * of the methods of that class.
  */
 predicate constructorReceiverToMethodStep(DataFlow::Node pred, DataFlow::Node succ) {
-  exists (ClassDefinition class_ |
-    pred = DataFlow::thisNode(class_.getConstructor().getBody()) and
-    succ = DataFlow::thisNode(class_.getAMethod().getBody())
-  )
-  or
-  exists (DataFlow::FunctionNode ctor, DataFlow::SourceNode prototype, DataFlow::PropWrite write |
-    pred = ctor.getReceiver() and
-    (
-      prototype = ctor.getAPropertyRead("prototype")
-      or
-      prototype = ctor.getAPropertySource("prototype")
-      or
-      exists (DataFlow::ExtendCall call |
-        call.getDestinationOperand() = ctor.getAPropertyRead("prototype") and
-        prototype = call.getASourceOperand()
-      )
-    ) and
-    write = prototype.getAPropertyWrite() and
-    succ = write.getRhs().getALocalSource().(DataFlow::FunctionNode).getReceiver()
+  exists (DataFlow::ClassNode class_ |
+    pred = class_.getConstructor().getReceiver() and
+    succ = class_.getAnInstanceMethod().getReceiver()
   )
 }
 
