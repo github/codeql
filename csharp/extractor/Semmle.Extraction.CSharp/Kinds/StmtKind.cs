@@ -1,4 +1,4 @@
-namespace Semmle.Extraction.Kinds
+namespace Semmle.Extraction.Kinds  // lgtm[cs/similar-file]
 {
     /// <summary>
     /// This enum has been auto-generated from the C# DB scheme - do not edit.
