@@ -130,7 +130,7 @@ module InstructionSanity {
   query predicate instructionWithoutUniqueBlock(Instruction instr, int blockCount) {
     blockCount = count(instr.getBlock()) and
     blockCount != 1
-  } 
+  }
 }
 
 /**
@@ -749,6 +749,15 @@ class BinaryInstruction extends Instruction {
 
   final Instruction getRightOperand() {
     result = getAnOperand().(RightOperand).getDefinitionInstruction()
+  }
+  
+  /**
+   * Holds if this instruction's operands are `op1` and `op2`, in either order.
+   */
+  final predicate hasOperands(Operand op1, Operand op2) {
+    op1 = getAnOperand().(LeftOperand) and op2 = getAnOperand().(RightOperand)
+    or
+    op1 = getAnOperand().(RightOperand) and op2 = getAnOperand().(LeftOperand)
   }
 }
 
