@@ -87,11 +87,11 @@ predicate localFlowStep(
  * through invocation `invk` of function `f`.
  */
 predicate argumentPassing(
-  DataFlow::InvokeNode invk, DataFlow::ValueNode arg, Function f, Parameter parm
+  DataFlow::InvokeNode invk, DataFlow::ValueNode arg, Function f, DataFlow::ParameterNode parm
 ) {
   calls(invk, f) and
   exists(int i |
-    f.getParameter(i) = parm and
+    f.getParameter(i) = parm.getParameter() and
     not parm.isRestParameter() and
     arg = invk.getArgument(i)
   )
@@ -99,7 +99,7 @@ predicate argumentPassing(
   exists(DataFlow::Node callback, int i |
     invk.(DataFlow::AdditionalPartialInvokeNode).isPartialArgument(callback, arg, i) and
     partiallyCalls(invk, callback, f) and
-    parm = f.getParameter(i) and
+    parm.getParameter() = f.getParameter(i) and
     not parm.isRestParameter()
   )
 }
@@ -109,10 +109,7 @@ predicate argumentPassing(
  * to a function call.
  */
 predicate callStep(DataFlow::Node pred, DataFlow::Node succ) {
-  exists(Parameter parm |
-    argumentPassing(_, pred, _, parm) and
-    succ = DataFlow::parameterNode(parm)
-  )
+  argumentPassing(_, pred, _, succ)
 }
 
 /**

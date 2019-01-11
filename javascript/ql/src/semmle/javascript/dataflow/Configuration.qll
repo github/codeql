@@ -502,10 +502,7 @@ private predicate callInputStep(
 ) {
   (
     isRelevant(pred, cfg) and
-    exists(Parameter parm |
-      argumentPassing(invk, pred, f, parm) and
-      succ = DataFlow::parameterNode(parm)
-    )
+    argumentPassing(invk, pred, f, succ)
     or
     isRelevant(pred, cfg) and
     exists(SsaDefinition prevDef, SsaDefinition def |

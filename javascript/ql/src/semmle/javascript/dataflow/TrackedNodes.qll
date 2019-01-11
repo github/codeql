@@ -113,10 +113,7 @@ private module NodeTracking {
   ) {
     isRelevant(pred) and
     (
-      exists(Parameter parm |
-        argumentPassing(invk, pred, f, parm) and
-        succ = DataFlow::parameterNode(parm)
-      )
+      argumentPassing(invk, pred, f, succ)
       or
       exists(SsaDefinition prevDef, SsaDefinition def |
         pred = DataFlow::ssaDefinitionNode(prevDef) and
