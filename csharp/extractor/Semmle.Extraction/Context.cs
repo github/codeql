@@ -93,7 +93,7 @@ namespace Semmle.Extraction
         {
             if (idLabelCache.TryGetValue(id, out var originalEntity))
             {
-                Extractor.Message(new Message { message = "Label collision for " + id.ToString(), severity = Severity.Warning });
+                Extractor.Message(new Message { message = "Label collision for " + id, severity = Severity.Warning });
             }
             else
             {

@@ -1121,7 +1121,7 @@ namespace Semmle.Extraction.CIL.Entities
             static readonly Id excl = Id.Create("M!");
             public Id MakeId(GenericContext outerGc)
             {
-                if (innerGc != outerGc && innerGc is Method method)
+                if (!ReferenceEquals(innerGc, outerGc) && innerGc is Method method)
                     return open + method.Label.Value + close + excl + index;
                 return excl + index;
             }
