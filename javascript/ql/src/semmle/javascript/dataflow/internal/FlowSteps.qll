@@ -122,9 +122,11 @@ predicate callStep(DataFlow::Node pred, DataFlow::Node succ) {
  * from a function call.
  */
 predicate returnStep(DataFlow::Node pred, DataFlow::Node succ) {
-  exists(Function f |
-    returnExpr(f, pred, _) and
-    calls(succ, f)
+  exists(Function f | calls(succ, f) |
+    returnExpr(f, pred, _)
+    or
+    succ instanceof DataFlow::NewNode and
+    DataFlow::thisNode(pred, f)
   )
 }
 
