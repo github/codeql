@@ -88,7 +88,7 @@ struct Derived : Base {
     }
 
     // In case base class has data, now or in the future, copy that first.
-    Base::operator=(rhs); // GOOD [FALSE POSITIVE]
+    Base::operator=(rhs); // GOOD
 
     this->m_x = rhs.m_x;
     return *this;

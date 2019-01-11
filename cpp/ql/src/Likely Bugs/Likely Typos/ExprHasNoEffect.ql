@@ -97,6 +97,10 @@ where // EQExprs are covered by CompareWhereAssignMeant.ql
       not peivc instanceof EQExpr and
       // as is operator==
       not peivc.(FunctionCall).getTarget().hasName("operator==") and
+      // An assignment operator may have no side effects in its current
+      // implementation, but we should not advise callers to rely on this. That
+      // would break encapsulation.
+      not peivc.(FunctionCall).getTarget().hasName("operator=") and
       not accessInInitOfForStmt(peivc) and
       not peivc.isCompilerGenerated() and
       not exists(Macro m | peivc = m.getAnInvocation().getAnExpandedElement()) and
