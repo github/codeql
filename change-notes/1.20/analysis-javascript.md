@@ -31,6 +31,7 @@
 | Unused parameter                           | Fewer false-positive results | This rule no longer flags parameters with leading underscore. |
 | Unused variable, import, function or class | Fewer false-positive results | This rule now flags fewer variables that are implictly used by JSX elements, and no longer flags variables with leading underscore. |
 | Uncontrolled data used in path expression | Fewer false-positive results | This rule now recognizes the Express `root` option, which prevents path traversal. |
+| Useless assignment to property. | Fewer false-positive results | This rule now treats assignments with complex right-hand sides correctly. |
 
 ## Changes to QL libraries
 
