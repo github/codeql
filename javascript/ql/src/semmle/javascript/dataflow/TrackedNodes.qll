@@ -100,6 +100,8 @@ private module NodeTracking {
       basicStoreStep(mid, nd, _)
       or
       loadStep(mid, nd, _)
+      or
+      approximateCallbackStep(mid, nd)
     )
   }
 
@@ -204,6 +206,26 @@ private module NodeTracking {
   }
 
   /**
+   * Holds if `pred` is passed as an argument to a function `f` which also takes a
+   * callback parameter `cb` and then invokes `cb`, passing `pred` into parameter `succ`
+   * of `cb`.
+   */
+  private predicate flowIntoHigherOrderCall(
+    DataFlow::Node pred, DataFlow::Node succ, PathSummary summary
+  ) {
+    exists(
+      Function f, DataFlow::InvokeNode fCall, DataFlow::Node fArg, DataFlow::FunctionNode cb,
+      DataFlow::InvokeNode cbCall, int i, PathSummary oldSummary
+    |
+      reachableFromInput(f, fCall, pred, cbCall.getArgument(i), oldSummary) and
+      argumentPassing(fCall, fArg, f, cbCall.getCalleeNode().getALocalSource()) and
+      cb = fArg.getALocalSource() and
+      succ = cb.getParameter(i) and
+      summary = oldSummary.append(PathSummary::call())
+    )
+  }
+
+  /**
    * Holds if there is a flow step from `pred` to `succ` described by `summary`.
    */
   private predicate flowStep(DataFlow::Node pred, DataFlow::Node succ, PathSummary summary) {
@@ -216,6 +238,9 @@ private module NodeTracking {
     or
     // Flow through a property write/read pair
     flowThroughProperty(pred, succ, summary)
+    or
+    // Flow into higher-order call
+    flowIntoHigherOrderCall(pred, succ, summary)
   }
 
   /**

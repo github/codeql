@@ -236,6 +236,21 @@ predicate loadStep(DataFlow::Node pred, DataFlow::PropRead succ, string prop) {
 }
 
 /**
+ * Holds if there is a call with arguments `cb` and `pred`, and `succ` is
+ * a parameter of a function that may flow into `cb`.
+ *
+ * This is an over-approximation of a possible data flow step through a callback
+ * invocation.
+ */
+predicate approximateCallbackStep(DataFlow::Node pred, DataFlow::Node succ) {
+  exists (DataFlow::InvokeNode invk, DataFlow::FunctionNode cb |
+    pred = invk.getAnArgument() and
+    cb.flowsTo(invk.getAnArgument()) and
+    succ = cb.getAParameter()
+  )
+}
+
+/**
  * A utility class that is equivalent to `boolean` but does not require type joining.
  */
 class Boolean extends boolean { Boolean() { this = true or this = false } }

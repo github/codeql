@@ -441,7 +441,8 @@ private predicate exploratoryFlowStep(
 ) {
   basicFlowStep(pred, succ, _, cfg) or
   basicStoreStep(pred, succ, _) or
-  loadStep(pred, succ, _)
+  loadStep(pred, succ, _) or
+  approximateCallbackStep(pred, succ)
 }
 
 /**
@@ -619,6 +620,26 @@ private predicate flowThroughProperty(
 }
 
 /**
+ * Holds if `pred` is passed as an argument to a function `f` which also takes a
+ * callback parameter `cb` and then invokes `cb`, passing `pred` into parameter `succ`
+ * of `cb`.
+ */
+private predicate flowIntoHigherOrderCall(
+  DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg, PathSummary summary
+) {
+  exists(
+    Function f, DataFlow::InvokeNode fCall, DataFlow::Node fArg, DataFlow::FunctionNode cb,
+    DataFlow::InvokeNode cbCall, int i, PathSummary oldSummary
+  |
+    reachableFromInput(f, fCall, pred, cbCall.getArgument(i), cfg, oldSummary) and
+    argumentPassing(fCall, fArg, f, cbCall.getCalleeNode().getALocalSource()) and
+    cb = fArg.getALocalSource() and
+    succ = cb.getParameter(i) and
+    summary = oldSummary.append(PathSummary::call())
+  )
+}
+
+/**
  * Holds if there is a flow step from `pred` to `succ` described by `summary`
  * under configuration `cfg`.
  */
@@ -634,6 +655,9 @@ private predicate flowStep(
     or
     // Flow through a property write/read pair
     flowThroughProperty(pred, succ, cfg, summary)
+    or
+    // Flow into higher-order call
+    flowIntoHigherOrderCall(pred, succ, cfg, summary)
   ) and
   not cfg.isBarrier(succ) and
   not cfg.isBarrier(pred, succ) and
