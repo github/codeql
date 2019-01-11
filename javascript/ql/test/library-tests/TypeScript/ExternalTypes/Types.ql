@@ -1,10 +1,9 @@
 import javascript
 
 string getDefinition(TypeReference ref) {
-  if exists(ref.getADefinition()) then
-    result = "defined in " + ref.getADefinition().getFile().getBaseName()
-  else
-    result = "has no definition"
+  if exists(ref.getADefinition())
+  then result = "defined in " + ref.getADefinition().getFile().getBaseName()
+  else result = "has no definition"
 }
 
 from TypeReference type

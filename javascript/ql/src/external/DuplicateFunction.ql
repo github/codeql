@@ -19,8 +19,11 @@ import CodeDuplication
 import semmle.javascript.RestrictedLocations
 
 from Function f, Function g, float percent
-where duplicateContainers(f, g, percent) and
-      f.getNumBodyStmt() > 5 and
-      not duplicateContainers(f.getEnclosingStmt().getContainer(), g.getEnclosingStmt().getContainer(), _)
-select (FirstLineOf)f, percent.floor() + "% of statements in " + f.describe() +
-       " are duplicated in $@.", (FirstLineOf)g, g.describe()
+where
+  duplicateContainers(f, g, percent) and
+  f.getNumBodyStmt() > 5 and
+  not duplicateContainers(f.getEnclosingStmt().getContainer(), g.getEnclosingStmt().getContainer(),
+    _)
+select f.(FirstLineOf),
+  percent.floor() + "% of statements in " + f.describe() + " are duplicated in $@.",
+  g.(FirstLineOf), g.describe()

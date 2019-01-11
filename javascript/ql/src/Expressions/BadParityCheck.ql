@@ -92,18 +92,14 @@ where
   me.getRightOperand().getIntValue() = 2 and
   maybeNegative(me.getLeftOperand()) and
   (
-    (
-      (cmp instanceof EqExpr or cmp instanceof StrictEqExpr) and
-      num = 1 and
-      parity = "oddness"
-    )
+    (cmp instanceof EqExpr or cmp instanceof StrictEqExpr) and
+    num = 1 and
+    parity = "oddness"
     or
-    (
-      (cmp instanceof NEqExpr or cmp instanceof StrictNEqExpr) and
-      num = 1 and
-      parity = "evenness"
-    )
+    (cmp instanceof NEqExpr or cmp instanceof StrictNEqExpr) and
+    num = 1 and
+    parity = "evenness"
     or
-    (cmp instanceof GTExpr and num = 0 and parity = "oddness")
+    cmp instanceof GTExpr and num = 0 and parity = "oddness"
   )
 select cmp, "Test for " + parity + " does not take negative numbers into account."

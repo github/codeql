@@ -14,5 +14,5 @@ from Directive d
 where
   not d instanceof KnownDirective and
   // but exclude attribute top-levels: `<a href="javascript:'some-attribute-string'">`
-  not (d.getParent() instanceof CodeInAttribute)
+  not d.getParent() instanceof CodeInAttribute
 select d, "Unknown directive: '" + truncate(d.getDirectiveText(), 20, " ... (truncated)") + "'."

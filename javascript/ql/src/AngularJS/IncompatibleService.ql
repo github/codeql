@@ -67,31 +67,25 @@ predicate isCompatibleRequestedService(InjectableFunctionServiceRequest request,
   isWildcardKind(kind)
   or
   (
-    (
-      isServiceDirectiveOrFilterFunction(request) or
-      isRunMethod(request) or
-      isControllerFunction(request)
-    ) and
-    (
-      kind = "value" or
-      kind = "service" or
-      kind = "factory" or
-      kind = "constant" or
-      kind = "provider-value"
-    )
+    isServiceDirectiveOrFilterFunction(request) or
+    isRunMethod(request) or
+    isControllerFunction(request)
+  ) and
+  (
+    kind = "value" or
+    kind = "service" or
+    kind = "factory" or
+    kind = "constant" or
+    kind = "provider-value"
   )
   or
-  (
-    isControllerFunction(request) and
-    kind = "controller-only"
-  )
+  isControllerFunction(request) and
+  kind = "controller-only"
   or
+  isConfigMethod(request) and
   (
-    isConfigMethod(request) and
-    (
-      kind = "constant" or
-      kind = "provider"
-    )
+    kind = "constant" or
+    kind = "provider"
   )
 }
 
@@ -105,19 +99,19 @@ string getServiceKind(InjectableFunctionServiceRequest request, string serviceNa
     exists(CustomServiceDefinition custom |
       id = custom.getServiceReference() and
       (
-        (custom instanceof ValueRecipeDefinition and result = "value")
+        custom instanceof ValueRecipeDefinition and result = "value"
         or
-        (custom instanceof ServiceRecipeDefinition and result = "service")
+        custom instanceof ServiceRecipeDefinition and result = "service"
         or
-        (custom instanceof FactoryRecipeDefinition and result = "factory")
+        custom instanceof FactoryRecipeDefinition and result = "factory"
         or
-        (custom instanceof DecoratorRecipeDefinition and result = "decorator")
+        custom instanceof DecoratorRecipeDefinition and result = "decorator"
         or
-        (custom instanceof ConstantRecipeDefinition and result = "constant")
+        custom instanceof ConstantRecipeDefinition and result = "constant"
         or
         (
           custom instanceof ProviderRecipeDefinition and
-          if (serviceName.matches("%Provider"))
+          if serviceName.matches("%Provider")
           then result = "provider"
           else result = "provider-value"
         )
@@ -145,25 +139,17 @@ where
         compatibleKind
     ).regexpReplaceAll(",(?=[^,]+$)", " or") and
   (
-    (
-      isServiceDirectiveOrFilterFunction(request) and
-      componentDescriptionString = "Components such as services, directives, filters, and animations"
-    )
+    isServiceDirectiveOrFilterFunction(request) and
+    componentDescriptionString = "Components such as services, directives, filters, and animations"
     or
-    (
-      isControllerFunction(request) and
-      componentDescriptionString = "Controllers"
-    )
+    isControllerFunction(request) and
+    componentDescriptionString = "Controllers"
     or
-    (
-      isRunMethod(request) and
-      componentDescriptionString = "Run methods"
-    )
+    isRunMethod(request) and
+    componentDescriptionString = "Run methods"
     or
-    (
-      isConfigMethod(request) and
-      componentDescriptionString = "Config methods"
-    )
+    isConfigMethod(request) and
+    componentDescriptionString = "Config methods"
   )
 select request,
   "'" + name + "' is a dependency of kind '" + kind + "', and cannot be injected here. " +

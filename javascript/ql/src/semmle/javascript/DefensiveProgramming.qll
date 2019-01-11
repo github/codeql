@@ -55,9 +55,8 @@ module Internal {
   private Expr stripNotsAndParens(Expr e, boolean polarity) {
     exists(Expr inner | inner = e.getUnderlyingValue() |
       if inner instanceof LogNotExpr
-      then (
-        result = stripNotsAndParens(inner.(LogNotExpr).getOperand(), polarity.booleanNot())
-      ) else (
+      then result = stripNotsAndParens(inner.(LogNotExpr).getOperand(), polarity.booleanNot())
+      else (
         result = inner and polarity = true
       )
     )

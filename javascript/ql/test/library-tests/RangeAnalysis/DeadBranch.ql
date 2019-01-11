@@ -20,9 +20,10 @@ class AssertionComment extends LineComment {
     not exists(getAGuardNode()) and result = "Error: no guard node on this line"
     or
     isOK = true and
-    exists (ConditionGuardNode guard | guard = getAGuardNode() |
+    exists(ConditionGuardNode guard | guard = getAGuardNode() |
       RangeAnalysis::isContradictoryGuardNode(guard) and
-      result = "Error: analysis claims " + getTestExpr() + " is always " + guard.getOutcome().booleanNot()
+      result = "Error: analysis claims " + getTestExpr() + " is always " +
+          guard.getOutcome().booleanNot()
     )
     or
     isOK = false and

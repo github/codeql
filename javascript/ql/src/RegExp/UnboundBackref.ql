@@ -15,10 +15,11 @@
 import javascript
 
 from RegExpBackRef rebr, string ref
-where not exists(rebr.getGroup()) and
-      (
-       ref = rebr.getNumber().toString()
-       or
-       ref = "named '" + rebr.getName() + "'"
-      )
+where
+  not exists(rebr.getGroup()) and
+  (
+    ref = rebr.getNumber().toString()
+    or
+    ref = "named '" + rebr.getName() + "'"
+  )
 select rebr, "There is no capture group " + ref + " in this regular expression."

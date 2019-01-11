@@ -137,11 +137,9 @@ private class AnalyzedParameter extends AnalyzedVarDef, @vardecl {
   override predicate isIncomplete(DataFlow::Incompleteness cause) {
     getFunction().isIncomplete(cause)
     or
-    (
-      not getFunction().argumentPassing(this, _) and
-      getFunction().mayReceiveArgument(this) and
-      cause = "call"
-    )
+    not getFunction().argumentPassing(this, _) and
+    getFunction().mayReceiveArgument(this) and
+    cause = "call"
   }
 }
 

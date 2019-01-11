@@ -456,12 +456,10 @@ class PropertyPattern extends @property, ASTNode {
 
   /** Gets the name of the property matched by this pattern. */
   string getName() {
-    (
-      not isComputed() and
-      result = (getNameExpr().(Identifier)).getName()
-    )
+    not isComputed() and
+    result = getNameExpr().(Identifier).getName()
     or
-    result = (getNameExpr().(Literal)).getValue()
+    result = getNameExpr().(Literal).getValue()
   }
 
   /** Gets the object pattern this property pattern belongs to. */
@@ -472,7 +470,7 @@ class PropertyPattern extends @property, ASTNode {
 
   /** Holds if this pattern is impure, that is, if its evaluation could have side effects. */
   predicate isImpure() {
-    (isComputed() and getNameExpr().isImpure())
+    isComputed() and getNameExpr().isImpure()
     or
     getValuePattern().isImpure()
   }

@@ -1,7 +1,6 @@
 import javascript
 
 // Select all expressions whose string value contains the word "two"
-
 predicate containsTwo(DataFlow::Node node) {
   node.asExpr().getStringValue().regexpMatch(".*two.*")
   or

@@ -55,15 +55,15 @@ class PackageJSON extends JSONObject {
 
   /** Gets the path of a command defined for this package. */
   string getBin(string cmd) {
-    (cmd = getPackageName() and result = getPropStringValue("bin"))
+    cmd = getPackageName() and result = getPropStringValue("bin")
     or
-    result = (getPropValue("bin").(JSONObject)).getPropStringValue(cmd)
+    result = getPropValue("bin").(JSONObject).getPropStringValue(cmd)
   }
 
   /** Gets a manual page for this package. */
   string getAManFile() {
     result = getPropStringValue("man") or
-    result = (getPropValue("man").(JSONArray)).getElementStringValue(_)
+    result = getPropValue("man").(JSONArray).getElementStringValue(_)
   }
 
   /** Gets information about the directories of this package. */
@@ -129,7 +129,7 @@ class PackageJSON extends JSONObject {
   PackageDependencies getEngines() { result = getPropValue("engines") }
 
   /** Holds if this package has strict engine requirements. */
-  predicate isEngineStrict() { (getPropValue("engineStrict").(JSONBoolean)).getValue() = "true" }
+  predicate isEngineStrict() { getPropValue("engineStrict").(JSONBoolean).getValue() = "true" }
 
   /** Gets information about operating systems supported by this package. */
   JSONArray getOSs() { result = getPropValue("os") }
@@ -191,12 +191,12 @@ class BugTrackerInfo extends JSONValue {
 
   /** Gets the bug tracker URL. */
   string getURL() {
-    result = (this.(JSONObject)).getPropStringValue("url") or
-    result = (this.(JSONString)).getValue()
+    result = this.(JSONObject).getPropStringValue("url") or
+    result = this.(JSONString).getValue()
   }
 
   /** Gets the bug reporting email address. */
-  string getEmail() { result = (this.(JSONObject)).getPropStringValue("email") }
+  string getEmail() { result = this.(JSONObject).getPropStringValue("email") }
 }
 
 /**
@@ -217,26 +217,24 @@ class ContributorInfo extends JSONValue {
    * homepage URL.
    */
   private string parseInfo(int group) {
-    result = (this.(JSONString))
-          .getValue()
-          .regexpCapture("(.*?)(?: <(.*?)>)?(?: \\((.*)?\\))", group)
+    result = this.(JSONString).getValue().regexpCapture("(.*?)(?: <(.*?)>)?(?: \\((.*)?\\))", group)
   }
 
   /** Gets the contributor's name. */
   string getName() {
-    result = (this.(JSONObject)).getPropStringValue("name") or
+    result = this.(JSONObject).getPropStringValue("name") or
     result = parseInfo(1)
   }
 
   /** Gets the contributor's email address. */
   string getEmail() {
-    result = (this.(JSONObject)).getPropStringValue("email") or
+    result = this.(JSONObject).getPropStringValue("email") or
     result = parseInfo(2)
   }
 
   /** Gets the contributor's homepage URL. */
   string getURL() {
-    result = (this.(JSONObject)).getPropStringValue("url") or
+    result = this.(JSONObject).getPropStringValue("url") or
     result = parseInfo(3)
   }
 }

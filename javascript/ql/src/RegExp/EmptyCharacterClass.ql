@@ -13,6 +13,7 @@
 import javascript
 
 from RegExpCharacterClass recc
-where not exists(recc.getAChild()) and
-      not recc.isInverted()
+where
+  not exists(recc.getAChild()) and
+  not recc.isInverted()
 select recc, "Empty character class."

@@ -450,9 +450,9 @@ class NgFilterChain extends TNgFilterChain, NgAstNode {
   override string pp() { result = "(NgFilterChain: " + ppChildren() + ")" }
 
   override NgAstNode getChild(int n) {
-    (n = 0 and result = getExpr())
+    n = 0 and result = getExpr()
     or
-    (n = 1 and result = getFilter())
+    n = 1 and result = getFilter()
   }
 
   /**
@@ -482,9 +482,9 @@ class NgFilter extends TNgFilter, NgMaybeFilter {
   override string pp() { result = "(NgFilter: " + ppChildren() + ")" }
 
   override NgAstNode getChild(int n) {
-    (n = 0 and result = getHeadFilter())
+    n = 0 and result = getHeadFilter()
     or
-    (n = 1 and result = getTailFilter())
+    n = 1 and result = getTailFilter()
   }
 
   /**
@@ -585,9 +585,9 @@ class NgCallExpr extends TNgCallExpr, NgExpr {
   override string pp() { result = "(NgCallExpr: " + ppChildren() + ")" }
 
   override NgAstNode getChild(int n) {
-    (n = 0 and this = TNgCallExpr(_, _, result, _))
+    n = 0 and this = TNgCallExpr(_, _, result, _)
     or
-    (n = 1 and this = TNgCallExpr(_, _, _, result))
+    n = 1 and this = TNgCallExpr(_, _, _, result)
   }
 
   /**
@@ -660,9 +660,9 @@ class NgFilterArgument extends TNgFilterArgument, NgMaybeFilterArgument {
   override string pp() { result = "(NgFilterArgument: " + ppChildren() + ")" }
 
   override NgAstNode getChild(int n) {
-    (n = 0 and this = TNgFilterArgument(_, _, result, _))
+    n = 0 and this = TNgFilterArgument(_, _, result, _)
     or
-    (n = 1 and this = TNgFilterArgument(_, _, _, result))
+    n = 1 and this = TNgFilterArgument(_, _, _, result)
   }
 
   /**
@@ -689,9 +689,9 @@ class NgConsCallArgument extends TNgConsCallArgument, NgCallArguments {
   override string pp() { result = "(NgConsCallArgument: " + ppChildren() + ")" }
 
   override NgAstNode getChild(int n) {
-    (n = 0 and this = TNgConsCallArgument(_, _, result, _))
+    n = 0 and this = TNgConsCallArgument(_, _, result, _)
     or
-    (n = 1 and this = TNgConsCallArgument(_, _, _, result))
+    n = 1 and this = TNgConsCallArgument(_, _, _, result)
   }
 
   /**
@@ -761,7 +761,7 @@ private module Parser {
       not exists(start.pre()) and
       not exists(end.succ()) and
       exists(NgToken stmtStart |
-        if (start.(NgOtherToken).is(":") and start.succ().(NgOtherToken).is(":"))
+        if start.(NgOtherToken).is(":") and start.succ().(NgOtherToken).is(":")
         then (
           stmtStart = start.succ().succ() and oneTime = true
         ) else (

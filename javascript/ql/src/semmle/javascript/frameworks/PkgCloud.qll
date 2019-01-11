@@ -60,30 +60,24 @@ module PkgCloud {
          * - RedisToGo
          */
 
+        kind = "user name" and
         (
-          kind = "user name" and
-          (
-            propertyName = "account" or
-            propertyName = "keyId" or
-            propertyName = "storageAccount" or
-            propertyName = "username"
-          )
+          propertyName = "account" or
+          propertyName = "keyId" or
+          propertyName = "storageAccount" or
+          propertyName = "username"
         )
         or
+        kind = "password" and
         (
-          kind = "password" and
-          (
-            propertyName = "key" or
-            propertyName = "apiKey" or
-            propertyName = "storageAccessKey" or
-            propertyName = "password"
-          )
+          propertyName = "key" or
+          propertyName = "apiKey" or
+          propertyName = "storageAccessKey" or
+          propertyName = "password"
         )
         or
-        (
-          kind = "token" and
-          (propertyName = "token")
-        )
+        kind = "token" and
+        propertyName = "token"
       )
     }
 

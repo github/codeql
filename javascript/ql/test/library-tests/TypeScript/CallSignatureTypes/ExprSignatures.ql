@@ -8,6 +8,7 @@ string getASignatureOrElseType(Type t) {
 }
 
 from Expr expr
-where not exists(MethodDeclaration decl | decl.getNameExpr() = expr)
-  and not exists(DotExpr dot | expr = dot.getPropertyNameExpr())
+where
+  not exists(MethodDeclaration decl | decl.getNameExpr() = expr) and
+  not exists(DotExpr dot | expr = dot.getPropertyNameExpr())
 select expr, getASignatureOrElseType(expr.getType())

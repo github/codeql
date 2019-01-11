@@ -57,7 +57,7 @@ predicate postDominatedPropWrite(
  */
 bindingset[name]
 predicate maybeAccessesProperty(Expr e, string name) {
-  (e.(PropAccess).getPropertyName() = name and e instanceof RValue)
+  e.(PropAccess).getPropertyName() = name and e instanceof RValue
   or
   // conservatively reject all side-effects
   e.isImpure()

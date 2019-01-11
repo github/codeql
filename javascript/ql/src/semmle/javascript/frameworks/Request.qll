@@ -25,11 +25,11 @@ module Request {
           auth = action.getAMemberCall("auth").asExpr() and
           this = auth.getArgument(argIndex)
         |
-          (argIndex = 0 and kind = "user name")
+          argIndex = 0 and kind = "user name"
           or
-          (argIndex = 1 and kind = "password")
+          argIndex = 1 and kind = "password"
           or
-          (argIndex = 3 and kind = "token")
+          argIndex = 3 and kind = "token"
         )
         or
         exists(DataFlow::ObjectLiteralNode auth, string propertyName |
@@ -37,17 +37,13 @@ module Request {
           auth.flowsTo(action.getOptionArgument(1, "auth")) and
           auth.hasPropertyWrite(propertyName, DataFlow::valueNode(this))
         |
-          (
-            (propertyName = "user" or propertyName = "username") and
-            kind = "user name"
-          )
+          (propertyName = "user" or propertyName = "username") and
+          kind = "user name"
           or
-          (
-            (propertyName = "pass" or propertyName = "password") and
-            kind = "password"
-          )
+          (propertyName = "pass" or propertyName = "password") and
+          kind = "password"
           or
-          (propertyName = "bearer" and kind = "token")
+          propertyName = "bearer" and kind = "token"
         )
       )
     }
