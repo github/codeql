@@ -2,6 +2,7 @@
  * Provides classes that define callables that can be overridden or
  * implemented.
  */
+
 import csharp
 
 /**
@@ -134,8 +135,7 @@ class OverridableCallable extends Callable {
    * - `C2.M = C2.M.getInherited(C3)`.
    */
   Callable getInherited(SourceDeclarationType t) {
-    exists(Callable sourceDecl |
-      result = getInherited1(t, sourceDecl) |
+    exists(Callable sourceDecl | result = getInherited1(t, sourceDecl) |
       hasSourceDeclarationCallable(t, sourceDecl)
     )
   }
@@ -159,13 +159,13 @@ class OverridableCallable extends Callable {
     sourceDecl = result.getSourceDeclaration()
   }
 
-  pragma [noinline]
+  pragma[noinline]
   private ValueOrRefType hasOverrider(Callable c) {
     c = this.getAnOverrider*() and
     result = c.getDeclaringType()
   }
 
-  pragma [noinline]
+  pragma[noinline]
   private ValueOrRefType hasOverridingImplementor(Callable c) {
     c = this.getAnOverridingImplementor() and
     result = c.getDeclaringType()
@@ -207,10 +207,8 @@ class OverridableCallable extends Callable {
   }
 
   private TypeWithoutTypeParameters getAnOverriderBaseType(ValueOrRefType t) {
-    exists(getAnOverriderAux(t))
-    and
-    exists(Type t0 |
-      t0 = t.getABaseType*() |
+    exists(getAnOverriderAux(t)) and
+    exists(Type t0 | t0 = t.getABaseType*() |
       result = t0
       or
       result = t0.(ConstructedType).getUnboundGeneric()
@@ -238,8 +236,7 @@ class OverridableCallable extends Callable {
   }
 
   private predicate declaredInTypeWithTypeParameters() {
-    exists(ValueOrRefType t |
-      t = getDeclaringType() |
+    exists(ValueOrRefType t | t = getDeclaringType() |
       t.containsTypeParameters()
       or
       // Access to a local callable, `this.M()`, in a generic class
@@ -250,27 +247,18 @@ class OverridableCallable extends Callable {
   }
 }
 
-pragma [noinline]
+pragma[noinline]
 private predicate hasSourceDeclarationCallable(ValueOrRefType t, Callable sourceDecl) {
-  exists(Callable c |
-    t.hasCallable(c) |
-    sourceDecl = c.getSourceDeclaration()
-  )
+  exists(Callable c | t.hasCallable(c) | sourceDecl = c.getSourceDeclaration())
 }
 
 /** An overridable method. */
 class OverridableMethod extends Method, OverridableCallable {
-  override Method getAnOverrider() {
-    result = Method.super.getAnOverrider()
-  }
+  override Method getAnOverrider() { result = Method.super.getAnOverrider() }
 
-  override Method getAnImplementor(ValueOrRefType t) {
-    result = Method.super.getAnImplementor(t)
-  }
+  override Method getAnImplementor(ValueOrRefType t) { result = Method.super.getAnImplementor(t) }
 
-  override Method getAnUltimateImplementor() {
-    result = Method.super.getAnUltimateImplementor()
-  }
+  override Method getAnUltimateImplementor() { result = Method.super.getAnUltimateImplementor() }
 
   override Method getInherited(SourceDeclarationType t) {
     result = OverridableCallable.super.getInherited(t)
@@ -283,9 +271,7 @@ class OverridableMethod extends Method, OverridableCallable {
 
 /** An overridable accessor. */
 class OverridableAccessor extends Accessor, OverridableCallable {
-  override Accessor getAnOverrider() {
-    overrides(result, this)
-  }
+  override Accessor getAnOverrider() { overrides(result, this) }
 
   override Accessor getAnImplementor(ValueOrRefType t) {
     exists(Virtualizable implementor, int kind |
@@ -337,14 +323,10 @@ private int getAccessorKind(Accessor a) {
 
 /** A type not containing type parameters. */
 class TypeWithoutTypeParameters extends Type {
-  TypeWithoutTypeParameters() {
-    not containsTypeParameters()
-  }
+  TypeWithoutTypeParameters() { not containsTypeParameters() }
 }
 
 /** A source declared type. */
 class SourceDeclarationType extends TypeWithoutTypeParameters {
-  SourceDeclarationType() {
-    this = getSourceDeclaration()
-  }
+  SourceDeclarationType() { this = getSourceDeclaration() }
 }

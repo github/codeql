@@ -84,49 +84,44 @@ private newtype TComparisonTest =
     kind.isLessThanEquals() and
     first = co.getLeftOperand() and
     second = co.getRightOperand()
-  }
-  or
+  } or
   TEqualsCall(MethodCall mc) {
-    exists(Method m |
-      m = mc.getTarget() |
+    exists(Method m | m = mc.getTarget() |
       m instanceof EqualsMethod or
       m instanceof IEquatableEqualsMethod
     )
-  }
-  or
+  } or
   TStaticEqualsCall(MethodCall mc) {
-    exists(Method m |
-      m = mc.getTarget() |
+    exists(Method m | m = mc.getTarget() |
       m = any(SystemObjectClass c).getStaticEqualsMethod() or
       m = any(SystemObjectClass c).getReferenceEqualsMethod()
     )
-  }
-  or
+  } or
   TCompareToCall(MethodCall mc) {
     exists(Method m, Method target |
       target = mc.getTarget() and
-      (target = m or target = m.getAnUltimateImplementor()) |
+      (target = m or target = m.getAnUltimateImplementor())
+    |
       m = any(SystemIComparableInterface i).getCompareToMethod()
       or
       m = any(SystemIComparableTInterface i).getAConstructedGeneric().getAMethod() and
       m.getSourceDeclaration() = any(SystemIComparableTInterface i).getCompareToMethod()
     )
-  }
-  or
+  } or
   TCompareCall(MethodCall mc) {
     exists(Method m, Method target |
       target = mc.getTarget() and
-      (target = m or target = m.getAnUltimateImplementor()) |
+      (target = m or target = m.getAnUltimateImplementor())
+    |
       m = any(SystemCollectionsIComparerInterface i).getCompareMethod()
       or
       m = any(SystemCollectionsGenericIComparerTInterface i).getAConstructedGeneric().getAMethod() and
-      m.getSourceDeclaration() = any(SystemCollectionsGenericIComparerTInterface i).getCompareMethod()
+      m.getSourceDeclaration() = any(SystemCollectionsGenericIComparerTInterface i)
+            .getCompareMethod()
     )
-  }
-  or
+  } or
   TComparisonOperatorCall(OperatorCall oc, ComparisonKind kind, Expr first, Expr second) {
-    exists(Operator o |
-      o = oc.getTarget() |
+    exists(Operator o | o = oc.getTarget() |
       o instanceof EQOperator and
       kind.isEquality() and
       first = oc.getArgument(0) and
@@ -157,15 +152,16 @@ private newtype TComparisonTest =
       first = oc.getArgument(0) and
       second = oc.getArgument(1)
     )
-  }
-  or
+  } or
   TCompareWithConstant(ComparisonTest outer, ComparisonKind kind, Expr first, Expr second) {
     exists(ComparisonKind outerKind, ComparisonTest compare, int i |
       compare.getComparisonKind().isCompare() and
       outerKind = outer.getComparisonKind() and
       outer.getAnArgument() = compare.getExpr() and
-      i = outer.getAnArgument().getValue().toInt() |
-      outerKind.isEquality() and (
+      i = outer.getAnArgument().getValue().toInt()
+    |
+      outerKind.isEquality() and
+      (
         // `x.CompareTo(y) == 0` => `x = y`
         i = 0 and
         kind.isEquality() and
@@ -185,8 +181,10 @@ private newtype TComparisonTest =
         second = compare.getSecondArgument()
       )
       or
-      outerKind.isLessThan() and (
-        outer.getFirstArgument() = compare.getExpr() and (
+      outerKind.isLessThan() and
+      (
+        outer.getFirstArgument() = compare.getExpr() and
+        (
           // `x.CompareTo(y) < 1` => `x <= y`
           i = 1 and
           kind.isLessThanEquals() and
@@ -200,7 +198,8 @@ private newtype TComparisonTest =
           second = compare.getSecondArgument()
         )
         or
-        outer.getSecondArgument() = compare.getExpr() and (
+        outer.getSecondArgument() = compare.getExpr() and
+        (
           // `-1 < x.CompareTo(y)` => `x >= y`
           i = -1 and
           kind.isLessThanEquals() and
@@ -215,8 +214,10 @@ private newtype TComparisonTest =
         )
       )
       or
-      outerKind.isLessThanEquals() and (
-        outer.getFirstArgument() = compare.getExpr() and (
+      outerKind.isLessThanEquals() and
+      (
+        outer.getFirstArgument() = compare.getExpr() and
+        (
           // `x.CompareTo(y) <= 0` => `x <= y`
           i = 0 and
           kind.isLessThanEquals() and
@@ -230,7 +231,8 @@ private newtype TComparisonTest =
           second = compare.getSecondArgument()
         )
         or
-        outer.getSecondArgument() = compare.getExpr() and (
+        outer.getSecondArgument() = compare.getExpr() and
+        (
           // `0 <= x.CompareTo(y)` => `x >= y`
           i = 0 and
           kind.isLessThanEquals() and
@@ -262,12 +264,18 @@ class ComparisonTest extends TComparisonTest {
 
   /** Gets the comparison kind. */
   final ComparisonKind getComparisonKind() {
-    this = TComparisonOperation(_, result, _, _) or
-    this = TEqualsCall(_) and result.isEquality() or
-    this = TCompareToCall(_) and result.isCompare() or
-    this = TStaticEqualsCall(_) and result.isEquality() or
-    this = TCompareCall(_) and result.isCompare() or
-    this = TComparisonOperatorCall(_, result, _, _) or
+    this = TComparisonOperation(_, result, _, _)
+    or
+    this = TEqualsCall(_) and result.isEquality()
+    or
+    this = TCompareToCall(_) and result.isCompare()
+    or
+    this = TStaticEqualsCall(_) and result.isEquality()
+    or
+    this = TCompareCall(_) and result.isCompare()
+    or
+    this = TComparisonOperatorCall(_, result, _, _)
+    or
     this = TCompareWithConstant(_, result, _, _)
   }
 

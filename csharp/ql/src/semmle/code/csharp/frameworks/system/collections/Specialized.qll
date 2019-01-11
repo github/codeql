@@ -1,4 +1,5 @@
 /** Provides definitions related to the namespace `System.Collections.Specialized`. */
+
 import csharp
 private import semmle.code.csharp.frameworks.system.Collections
 
@@ -19,7 +20,5 @@ class SystemCollectionsSpecializedClass extends Class {
 
 /** The `System.Collections.Specialized.NameValueCollection` class. */
 class SystemCollectionsSpecializedNameValueCollectionClass extends SystemCollectionsSpecializedClass {
-  SystemCollectionsSpecializedNameValueCollectionClass() {
-    this.hasName("NameValueCollection")
-  }
+  SystemCollectionsSpecializedNameValueCollectionClass() { this.hasName("NameValueCollection") }
 }

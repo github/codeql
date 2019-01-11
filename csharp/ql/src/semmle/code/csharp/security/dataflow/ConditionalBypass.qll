@@ -2,6 +2,7 @@
  * Provides a taint-tracking configuration for reasoning about user-controlled bypass of sensitive
  * methods.
  */
+
 import csharp
 
 module UserControlledBypassOfSensitiveMethod {
@@ -34,43 +35,30 @@ module UserControlledBypassOfSensitiveMethod {
    * A taint-tracking configuration for user-controlled bypass of sensitive method.
    */
   class Configuration extends TaintTracking::Configuration {
-    Configuration() {
-      this = "UserControlledBypassOfSensitiveMethodConfiguration"
-    }
+    Configuration() { this = "UserControlledBypassOfSensitiveMethodConfiguration" }
 
-    override
-    predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override
-    predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override
-    predicate isSanitizer(DataFlow::Node node) {
-      node instanceof Sanitizer
-    }
+    override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
   }
 
   /** A source of remote user input. */
-  class RemoteSource extends Source {
-    RemoteSource() {
-      this instanceof RemoteFlowSource
-    }
-  }
+  class RemoteSource extends Source { RemoteSource() { this instanceof RemoteFlowSource } }
 
   /** The result of a reverse dns may be user-controlled. */
   class ReverseDnsSource extends Source {
     ReverseDnsSource() {
-      this.asExpr().(MethodCall).getTarget() = any(SystemNetDnsClass dns).getGetHostByAddressMethod()
+      this.asExpr().(MethodCall).getTarget() = any(SystemNetDnsClass dns)
+            .getGetHostByAddressMethod()
     }
   }
 
-  private predicate conditionControlsCall(SensitiveExecutionMethodCall call, SensitiveExecutionMethod def, Expr e, boolean cond) {
-    exists(ControlFlow::SuccessorTypes::BooleanSuccessor s |
-      cond = s.getValue() |
+  private predicate conditionControlsCall(
+    SensitiveExecutionMethodCall call, SensitiveExecutionMethod def, Expr e, boolean cond
+  ) {
+    exists(ControlFlow::SuccessorTypes::BooleanSuccessor s | cond = s.getValue() |
       e.controlsElement(call, s)
     ) and
     def = call.getTarget()
@@ -87,6 +75,7 @@ module UserControlledBypassOfSensitiveMethod {
        * Exclude this condition if the other branch also contains a call to the same security
        * sensitive method.
        */
+
       not conditionControlsCall(_, def, e, cond.booleanNot())
     )
   }
@@ -96,27 +85,28 @@ module UserControlledBypassOfSensitiveMethod {
    */
   class ConditionControllingSensitiveAction extends Sink {
     private MethodCall sensitiveMethodCall;
+
     ConditionControllingSensitiveAction() {
       // A condition used to guard a sensitive method call
-      conditionControlsMethod(sensitiveMethodCall, this.getExpr()) or
+      conditionControlsMethod(sensitiveMethodCall, this.getExpr())
+      or
       /*
        * A condition used to guard a sensitive method call, where the condition is `EndsWith`,
        * `StartsWith` or `Contains` on a tainted value. Tracking from strings to booleans doesn't
        * make sense in all contexts, so this is restricted to this case.
        */
+
       exists(MethodCall stringComparisonCall, string methodName |
         methodName = "EndsWith" or
         methodName = "StartsWith" or
-        methodName = "Contains" |
+        methodName = "Contains"
+      |
         stringComparisonCall = any(SystemStringClass s).getAMethod(methodName).getACall() and
         conditionControlsMethod(sensitiveMethodCall, stringComparisonCall) and
         stringComparisonCall.getQualifier() = this.getExpr()
       )
     }
 
-    override
-    MethodCall getSensitiveMethodCall() {
-      result = sensitiveMethodCall
-    }
+    override MethodCall getSensitiveMethodCall() { result = sensitiveMethodCall }
   }
 }

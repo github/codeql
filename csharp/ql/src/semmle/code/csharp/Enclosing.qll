@@ -18,13 +18,15 @@ private import semmle.code.csharp.ExprOrStmtParent
 /**
  * INTERNAL: Do not use.
  */
-cached module Internal {
+cached
+module Internal {
   /**
    * INTERNAL: Do not use.
    *
    * Holds if `c` is the enclosing callable of statement `s`.
    */
-  cached predicate enclosingCallable(Stmt s, Callable c) {
+  cached
+  predicate enclosingCallable(Stmt s, Callable c) {
     /*
      * Compute the enclosing callable for a statement. This walks up through
      * enclosing statements until it hits a callable. It's unambiguous, since
@@ -32,6 +34,7 @@ cached module Internal {
      * or the body of an anonymous function declaration, in each of which cases the
      * non-statement parent is in fact the enclosing callable.
      */
+
     c.getAChildStmt+() = s
   }
 
@@ -45,21 +48,22 @@ cached module Internal {
    *
    * Holds if `s` is the enclosing statement of expression `e`.
    */
-  cached predicate enclosingStmt(Expr e, Stmt s) {
+  cached
+  predicate enclosingStmt(Expr e, Stmt s) {
     /*
      * Compute the enclosing statement for an expression. Note that this need
      * not exist, since expressions can occur in contexts where they have no
      * enclosing statement (examples include field initialisers, both inline
      * and explicit on constructor definitions, and annotation arguments).
      */
+
     getAChildExpr+(s) = e
   }
 
   private predicate childExprOfCallable(Callable parent, Expr child) {
     child = getAChildExpr(parent)
     or
-    exists(Expr mid |
-      childExprOfCallable(parent, mid) |
+    exists(Expr mid | childExprOfCallable(parent, mid) |
       not mid instanceof Callable and
       child = getAChildExpr(mid)
     )
@@ -70,7 +74,8 @@ cached module Internal {
    *
    * Holds if `c` is the enclosing callable of expression `e`.
    */
-  cached predicate exprEnclosingCallable(Expr e, Callable c) {
+  cached
+  predicate exprEnclosingCallable(Expr e, Callable c) {
     /*
      * Compute the enclosing callable of an expression. Note that expressions in
      * lambda functions should have the lambdas as enclosing callables, and their
@@ -78,6 +83,7 @@ cached module Internal {
      * lambda; thus, it is *not* safe to go up to the enclosing statement and
      * take its own enclosing callable.
      */
+
     childExprOfCallable(c, e)
     or
     not childExprOfCallable(_, e) and

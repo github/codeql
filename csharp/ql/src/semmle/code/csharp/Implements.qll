@@ -6,6 +6,7 @@
  * Do not use the predicates in this library directly; use the methods
  * of the class `Virtualizable` instead.
  */
+
 import csharp
 private import Conversion
 private import dispatch.Dispatch
@@ -76,7 +77,8 @@ private Virtualizable getAnImplementedInterfaceMemberForSubType(Virtualizable m,
   )
 }
 
-pragma [noinline] // predicate folding for proper join order
+// predicate folding for proper join order
+pragma[noinline]
 private predicate hasMemberCompatibleWithInterfaceMember(ValueOrRefType t, Virtualizable m) {
   m = getACompatibleInterfaceMember(t.getAMember())
 }
@@ -121,15 +123,16 @@ private DeclarationWithAccessors getACompatibleInterfaceAccessor(DeclarationWith
 }
 
 private DeclarationWithAccessors getACompatibleInterfaceAccessorCandidate(DeclarationWithAccessors d) {
-  getACompatibleInterfaceAccessorAux(result, d.getDeclaringType(), d.getName())
-  and
-  not d instanceof Indexer
-  and
+  getACompatibleInterfaceAccessorAux(result, d.getDeclaringType(), d.getName()) and
+  not d instanceof Indexer and
   d.isPublic()
 }
 
-pragma [noinline] // predicate folding for proper join-order
-private predicate getACompatibleInterfaceAccessorAux(DeclarationWithAccessors d, ValueOrRefType t, string name) {
+// predicate folding for proper join-order
+pragma[noinline]
+private predicate getACompatibleInterfaceAccessorAux(
+  DeclarationWithAccessors d, ValueOrRefType t, string name
+) {
   t = getAPossibleImplementor(d.getDeclaringType()) and
   name = d.getName()
 }
@@ -155,8 +158,7 @@ private predicate getACompatibleInterfaceAccessorAux(DeclarationWithAccessors d,
  */
 pragma[nomagic]
 ValueOrRefType getAPossibleImplementor(Interface i) {
-  result.getASubType*().getABaseInterface+() = i
-  and
+  result.getASubType*().getABaseInterface+() = i and
   not result instanceof Interface
 }
 
@@ -166,36 +168,33 @@ ValueOrRefType getAPossibleImplementor(Interface i) {
  * the interface indexer is accessed.
  */
 private Indexer getACompatibleInterfaceIndexer(Indexer i) {
-  result = getACompatibleInterfaceIndexerCandidate(i)
-  and
-  convIdentity(i.getType(), result.getType())
-  and
-  forex(int j |
-    j in [0 .. i.getNumberOfParameters() - 1] |
+  result = getACompatibleInterfaceIndexerCandidate(i) and
+  convIdentity(i.getType(), result.getType()) and
+  forex(int j | j in [0 .. i.getNumberOfParameters() - 1] |
     convIdentity(i.getParameter(j).getType(), result.getParameter(j).getType())
   )
 }
 
 private Indexer getACompatibleInterfaceIndexerCandidate(Indexer i) {
-  getACompatibleInterfaceIndexerAux(result, i.getDeclaringType())
-  and
+  getACompatibleInterfaceIndexerAux(result, i.getDeclaringType()) and
   i.isPublic()
 }
 
-pragma [noinline] // predicate folding for proper join-order
+// predicate folding for proper join-order
+pragma[noinline]
 private predicate getACompatibleInterfaceIndexerAux(Indexer i, ValueOrRefType t) {
   t = getAPossibleImplementor(i.getDeclaringType())
 }
 
 private Method getACompatibleInterfaceMethod(Method m) {
-  result = getAnInterfaceMethodCandidate(m)
-  and
-  forex(int i |
-    i in [0 .. m.getNumberOfParameters()] |
+  result = getAnInterfaceMethodCandidate(m) and
+  forex(int i | i in [0 .. m.getNumberOfParameters()] |
     exists(Type t1, Type t2 |
       t1 = getArgumentOrReturnType(m, i) and
-      t2 = getArgumentOrReturnType(result, i) |
-      convIdentity(t1, t2) or
+      t2 = getArgumentOrReturnType(result, i)
+    |
+      convIdentity(t1, t2)
+      or
       // In the case where both `m` and `result` are unbound generic methods,
       // we need to do check for structural equality modulo the method type
       // parameters
@@ -211,13 +210,16 @@ private Method getACompatibleInterfaceMethod(Method m) {
  * in a type that is a possible implementor type for the interface type.
  */
 private Method getAnInterfaceMethodCandidate(Method m) {
-  getAPotentialInterfaceMethodAux(result, m.getDeclaringType(), m.getName(), m.getNumberOfParameters())
-  and
+  getAPotentialInterfaceMethodAux(result, m.getDeclaringType(), m.getName(),
+    m.getNumberOfParameters()) and
   m.isPublic()
 }
 
-pragma [nomagic] // predicate folding for proper join-order
-private predicate getAPotentialInterfaceMethodAux(Method m, ValueOrRefType t, string name, int params) {
+// predicate folding for proper join-order
+pragma[nomagic]
+private predicate getAPotentialInterfaceMethodAux(
+  Method m, ValueOrRefType t, string name, int params
+) {
   t = getAPossibleImplementor(m.getDeclaringType()) and
   name = m.getName() and
   params = m.getNumberOfParameters()
@@ -239,37 +241,37 @@ private Type getArgumentOrReturnType(Method m, int i) {
  * Here, compatibility means that the two types are structurally equal
  * modulo identity conversions and method type parameters.
  */
-private predicate structurallyCompatible(UnboundGenericMethod m1, UnboundGenericMethod m2, Type t1, Type t2) {
+private predicate structurallyCompatible(
+  UnboundGenericMethod m1, UnboundGenericMethod m2, Type t1, Type t2
+) {
   candidateTypes(m1, m2, t1, t2) and
   (
     // Base case: identity convertible
     convIdentity(t1, t2)
     or
     // Base case: method type parameter (at same index)
-    exists(int i |
-      structurallyCompatibleTypeParameter(m1, m2, i, t1, m2.getTypeParameter(i))
-    )
+    exists(int i | structurallyCompatibleTypeParameter(m1, m2, i, t1, m2.getTypeParameter(i)))
     or
     // Recursive case
     (
-      (
-        t1 instanceof PointerType and t2 instanceof PointerType
-        or
-        t1 instanceof NullableType and t2 instanceof NullableType
-        or
-        t1.(ArrayType).hasSameShapeAs((ArrayType)t2)
-        or
-        t1.(ConstructedType).getUnboundGeneric() = t2.(ConstructedType).getUnboundGeneric()
-      )
-      and
-      structurallyCompatibleChildren(m1, m2, t1, t2, t1.getNumberOfChildren() - 1)
-    )
+      t1 instanceof PointerType and t2 instanceof PointerType
+      or
+      t1 instanceof NullableType and t2 instanceof NullableType
+      or
+      t1.(ArrayType).hasSameShapeAs(t2.(ArrayType))
+      or
+      t1.(ConstructedType).getUnboundGeneric() = t2.(ConstructedType).getUnboundGeneric()
+    ) and
+    structurallyCompatibleChildren(m1, m2, t1, t2, t1.getNumberOfChildren() - 1)
   )
 }
 
 // Predicate folding to force joining on `candidateTypes` first
-pragma [nomagic] // to prevent `private#structurallyCompatibleTypeParameter#fbbfb`
-private predicate structurallyCompatibleTypeParameter(UnboundGenericMethod m1, UnboundGenericMethod m2, int i, Type t1, Type t2) {
+// to prevent `private#structurallyCompatibleTypeParameter#fbbfb`
+pragma[nomagic]
+private predicate structurallyCompatibleTypeParameter(
+  UnboundGenericMethod m1, UnboundGenericMethod m2, int i, Type t1, Type t2
+) {
   candidateTypes(m1, m2, t1, t2) and
   t1 = m1.getTypeParameter(i)
 }
@@ -277,7 +279,9 @@ private predicate structurallyCompatibleTypeParameter(UnboundGenericMethod m1, U
 /**
  * Holds if the `i+1` first children of types `x` and `y` are compatible.
  */
-private predicate structurallyCompatibleChildren(UnboundGenericMethod m1, UnboundGenericMethod m2, Type t1, Type t2, int i) {
+private predicate structurallyCompatibleChildren(
+  UnboundGenericMethod m1, UnboundGenericMethod m2, Type t1, Type t2, int i
+) {
   exists(Type t3, Type t4 |
     i = 0 and
     candidateChildren(t1, t2, i, t3, t4) and
@@ -293,8 +297,7 @@ private predicate structurallyCompatibleChildren(UnboundGenericMethod m1, Unboun
 
 // manual magic predicate used to enumerate types relevant for structural comparison
 private predicate candidateTypes(UnboundGenericMethod m1, UnboundGenericMethod m2, Type t1, Type t2) {
-  m2 = getAnInterfaceMethodCandidate(m1)
-  and
+  m2 = getAnInterfaceMethodCandidate(m1) and
   (
     exists(int i |
       t1 = getArgumentOrReturnType(m1, i) and
@@ -309,7 +312,8 @@ private predicate candidateTypes(UnboundGenericMethod m1, UnboundGenericMethod m
   )
 }
 
-pragma [noinline] // predicate folding for proper join-order
+// predicate folding for proper join-order
+pragma[noinline]
 private predicate candidateChildren(Type t1, Type t2, int i, Type t3, Type t4) {
   candidateTypes(_, _, t1, t2) and
   t3 = t1.getChild(i) and

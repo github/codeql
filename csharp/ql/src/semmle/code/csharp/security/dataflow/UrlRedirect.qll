@@ -1,6 +1,7 @@
 /**
  * Provides a taint-tracking configuration for reasoning about unvalidated URL redirect problems.
  */
+
 import csharp
 
 module UrlRedirect {
@@ -30,32 +31,17 @@ module UrlRedirect {
    * A taint-tracking configuration for reasoning about unvalidated URL redirect vulnerabilities.
    */
   class TaintTrackingConfiguration extends TaintTracking::Configuration {
-    TaintTrackingConfiguration() {
-      this = "UrlRedirect"
-    }
+    TaintTrackingConfiguration() { this = "UrlRedirect" }
 
-    override
-    predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override
-    predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override
-    predicate isSanitizer(DataFlow::Node node) {
-      node instanceof Sanitizer
-    }
+    override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
   }
 
   /** A source of remote user input. */
-  class RemoteSource extends Source {
-    RemoteSource() {
-      this instanceof RemoteFlowSource
-    }
-  }
+  class RemoteSource extends Source { RemoteSource() { this instanceof RemoteFlowSource } }
 
   /**
    * A URL argument to a call to `HttpResponse.Redirect()` or `Controller.Redirect()`, that is a
@@ -66,11 +52,13 @@ module UrlRedirect {
       exists(MethodCall mc |
         mc.getTarget() = any(SystemWebHttpResponseClass response).getRedirectMethod() or
         mc.getTarget() = any(SystemWebMvcControllerClass response).getARedirectMethod()
-        |
+      |
         // Redirect uses the parameter name url
-        this.getExpr() = mc.getArgumentForName("url") or
+        this.getExpr() = mc.getArgumentForName("url")
+        or
         // RedirectToAction
-        this.getExpr() = mc.getArgumentForName("actionName") or
+        this.getExpr() = mc.getArgumentForName("actionName")
+        or
         // RedirectToRoute
         this.getExpr() = mc.getArgumentForName("routeName")
       )
@@ -84,7 +72,8 @@ module UrlRedirect {
     LocationHeaderSink() {
       exists(MethodCall call |
         call.getTarget() = any(SystemWebHttpResponseClass r).getAppendHeaderMethod() or
-        call.getTarget() = any(SystemWebHttpResponseClass r).getAddHeaderMethod() |
+        call.getTarget() = any(SystemWebHttpResponseClass r).getAddHeaderMethod()
+      |
         call.getArgumentForName("name").getValue() = "Location" and
         this.getExpr() = call.getArgumentForName("value")
       )
@@ -97,7 +86,8 @@ module UrlRedirect {
   class HttpServerTransferSink extends Sink {
     HttpServerTransferSink() {
       exists(MethodCall call |
-        call.getTarget() = any(SystemWebHttpServerUtility s).getTransferMethod() |
+        call.getTarget() = any(SystemWebHttpServerUtility s).getTransferMethod()
+      |
         this.getExpr() = call.getArgumentForName("path")
       )
     }
@@ -108,8 +98,7 @@ module UrlRedirect {
    */
   class IsLocalUrlSanitizer extends Sanitizer {
     IsLocalUrlSanitizer() {
-      exists(MethodCall mc |
-        mc.getTarget().hasName("IsLocalUrl") |
+      exists(MethodCall mc | mc.getTarget().hasName("IsLocalUrl") |
         this.getExpr().(GuardedExpr).isGuardedBy(mc, mc.getArgument(0), true)
       )
     }
@@ -142,16 +131,14 @@ module UrlRedirect {
 
   /** A call to an URL encoder. */
   class UrlEncodeSanitizer extends Sanitizer {
-    UrlEncodeSanitizer() {
-      this.getExpr() instanceof UrlSanitizedExpr
-    }
+    UrlEncodeSanitizer() { this.getExpr() instanceof UrlSanitizedExpr }
   }
 
   private class SimpleTypeSanitizer extends Sanitizer, SimpleTypeSanitizedExpr { }
 
   private class GuidSanitizer extends Sanitizer, GuidSanitizedExpr { }
 
-   /**
+  /**
    * A URL argument to a call to `HttpResponse.Redirect()` or `Controller.Redirect()`, that is a
    * sink for URL redirects.
    */
@@ -160,15 +147,19 @@ module UrlRedirect {
       exists(MethodCall mc |
         mc.getTarget() = any(MicrosoftAspNetCoreHttpHttpResponse response).getRedirectMethod() or
         mc.getTarget() = any(MicrosoftAspNetCoreMvcController response).getARedirectMethod()
-        |
+      |
         // Response.Redirect uses 'location' parameter
-        this.getExpr() = mc.getArgumentForName("location") or
+        this.getExpr() = mc.getArgumentForName("location")
+        or
         // Redirect uses the parameter name 'url'
-        this.getExpr() = mc.getArgumentForName("url") or
+        this.getExpr() = mc.getArgumentForName("url")
+        or
         // Controller.RedirectToAction*
-        this.getExpr() = mc.getArgumentForName("actionName") or
+        this.getExpr() = mc.getArgumentForName("actionName")
+        or
         // Controller.RedirectToRoute*
-        this.getExpr() = mc.getArgumentForName("routeName") or
+        this.getExpr() = mc.getArgumentForName("routeName")
+        or
         // Controller.RedirectToPage*
         this.getExpr() = mc.getArgumentForName("pageName")
       )
@@ -179,36 +170,48 @@ module UrlRedirect {
    * Anything that is setting "location" header in the response headers.
    */
   class AspNetCoreLocationHeaderSink extends Sink {
-    AspNetCoreLocationHeaderSink () {
+    AspNetCoreLocationHeaderSink() {
       // ResponseHeaders.Location = <user-provided value>
       exists(AssignableDefinition def |
-        def.getTarget() = any(MicrosoftAspNetCoreHttpResponseHeaders headers).getLocationProperty() |
+        def.getTarget() = any(MicrosoftAspNetCoreHttpResponseHeaders headers).getLocationProperty()
+      |
         this.asExpr() = def.getSource()
       )
-      or // HttpResponse.Headers.Append("location", <user-provided value>)
+      or
+      // HttpResponse.Headers.Append("location", <user-provided value>)
       exists(MethodCall mc, MicrosoftAspNetCoreHttpHeaderDictionaryExtensions ext |
         mc.getTarget() = ext.getAppendMethod() or
         mc.getTarget() = ext.getAppendCommaSeparatedValuesMethod() or
-        mc.getTarget() = ext.getSetCommaSeparatedValuesMethod() |
+        mc.getTarget() = ext.getSetCommaSeparatedValuesMethod()
+      |
         mc.getArgumentForName("key").getValue().toLowerCase() = "location" and
-        this.getExpr() = mc.getArgument(2))
-      or // HttpResponse.Headers.Add("location", <user-provided value>)
-      exists(RefType cl, MicrosoftAspNetCoreHttpHttpResponse resp, PropertyAccess qualifier, MethodCall add |
+        this.getExpr() = mc.getArgument(2)
+      )
+      or
+      // HttpResponse.Headers.Add("location", <user-provided value>)
+      exists(
+        RefType cl, MicrosoftAspNetCoreHttpHttpResponse resp, PropertyAccess qualifier,
+        MethodCall add
+      |
         qualifier.getTarget() = resp.getHeadersProperty() and
         add.getTarget() = cl.getAMethod("Add") and
         qualifier = add.getQualifier() and
         add.getArgument(0).getValue().toLowerCase() = "location" and
-        this.getExpr() = add.getArgument(1))
-      or // HttpResponse.Headers["location"] = <user-provided value>
-      exists(RefType cl, MicrosoftAspNetCoreHttpHttpResponse resp, IndexerAccess ci, Call cs, PropertyAccess qualifier |
+        this.getExpr() = add.getArgument(1)
+      )
+      or
+      // HttpResponse.Headers["location"] = <user-provided value>
+      exists(
+        RefType cl, MicrosoftAspNetCoreHttpHttpResponse resp, IndexerAccess ci, Call cs,
+        PropertyAccess qualifier
+      |
         qualifier.getTarget() = resp.getHeadersProperty() and
         ci.getTarget() = cl.getAnIndexer() and
         qualifier = ci.getQualifier() and
         cs.getTarget() = cl.getAnIndexer().getSetter() and
         cs.getArgument(0).getValue().toLowerCase() = "location" and
-        this.asExpr() = cs.getArgument(1))
+        this.asExpr() = cs.getArgument(1)
+      )
     }
   }
 }
-
-

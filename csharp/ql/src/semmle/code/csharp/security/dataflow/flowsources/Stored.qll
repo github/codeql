@@ -1,14 +1,14 @@
 /**
  * Provides classes representing sources of stored data.
  */
+
 import csharp
 private import semmle.code.csharp.frameworks.system.data.Common
 private import semmle.code.csharp.frameworks.system.data.Entity
 private import semmle.code.csharp.frameworks.Sql
 
 /** A data flow source of stored user input. */
-abstract class StoredFlowSource extends DataFlow::Node {
-}
+abstract class StoredFlowSource extends DataFlow::Node { }
 
 /** An access of an Entity Framework `Entity` property that may hold stored data. */
 class EntityPropertyStoredFlowSource extends StoredFlowSource {
@@ -42,7 +42,8 @@ class DbDataReaderStoredFlowSource extends StoredFlowSource {
  */
 class DbDataReaderMethodStoredFlowSource extends StoredFlowSource {
   DbDataReaderMethodStoredFlowSource() {
-    this.asExpr().(MethodCall).getTarget().getDeclaringType() = any(SystemDataCommon::DbDataReader dataReader).getASubType*()
+    this.asExpr().(MethodCall).getTarget().getDeclaringType() = any(SystemDataCommon::DbDataReader dataReader
+      ).getASubType*()
   }
 }
 
@@ -51,6 +52,7 @@ class DbDataReaderMethodStoredFlowSource extends StoredFlowSource {
  */
 class DbDataReaderPropertyStoredFlowSource extends StoredFlowSource {
   DbDataReaderPropertyStoredFlowSource() {
-    this.asExpr().(PropertyAccess).getTarget().getDeclaringType() = any(SystemDataCommon::DbDataReader dataReader).getASubType*()
+    this.asExpr().(PropertyAccess).getTarget().getDeclaringType() = any(SystemDataCommon::DbDataReader dataReader
+      ).getASubType*()
   }
 }

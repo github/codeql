@@ -37,13 +37,9 @@ class Generic extends DotNet::Generic, Declaration, @generic {
 class UnboundGeneric extends DotNet::UnboundGeneric, Generic {
   UnboundGeneric() { is_generic(this) }
 
-  override TypeParameter getTypeParameter(int n) {
-    type_parameters(result, n, this, _)
-  }
+  override TypeParameter getTypeParameter(int n) { type_parameters(result, n, this, _) }
 
-  override ConstructedGeneric getAConstructedGeneric() {
-    result.getUnboundGeneric() = this
-  }
+  override ConstructedGeneric getAConstructedGeneric() { result.getUnboundGeneric() = this }
 
   override TypeParameter getATypeParameter() {
     result = DotNet::UnboundGeneric.super.getATypeParameter()
@@ -59,24 +55,20 @@ class UnboundGeneric extends DotNet::UnboundGeneric, Generic {
 class ConstructedGeneric extends DotNet::ConstructedGeneric, Generic {
   ConstructedGeneric() { is_constructed(this) }
 
-  override UnboundGeneric getUnboundGeneric() {
-    constructed_generic(this, result)
-  }
+  override UnboundGeneric getUnboundGeneric() { constructed_generic(this, result) }
 
   override UnboundGeneric getSourceDeclaration() {
     result = getUnboundGeneric().getSourceDeclaration()
   }
 
   override int getNumberOfTypeArguments() {
-   // getTypeArgument() could fail if the type does not exist in the database
-   result = count(int i | type_arguments(_, i, this))
+    // getTypeArgument() could fail if the type does not exist in the database
+    result = count(int i | type_arguments(_, i, this))
   }
 
   override Type getTypeArgument(int i) { none() }
 
-  override Type getATypeArgument() {
-    result=getTypeArgument(_)
-  }
+  override Type getATypeArgument() { result = getTypeArgument(_) }
 }
 
 /**
@@ -105,13 +97,11 @@ class UnboundGenericType extends ValueOrRefType, UnboundGeneric {
    * arguments being the corresponding type parameter.
    */
   ConstructedType getInstanceType() {
-    result = this.getAConstructedGeneric()
-    and forall(TypeParameter tp, int i | tp = this.getTypeParameter(i) | tp = result.getTypeArgument(i))
+    result = this.getAConstructedGeneric() and
+    forall(TypeParameter tp, int i | tp = this.getTypeParameter(i) | tp = result.getTypeArgument(i))
   }
 
-  override Location getALocation() {
-    type_location(this, result)
-  }
+  override Location getALocation() { type_location(this, result) }
 
   /** Gets the name of this generic type without the `<...>` brackets. */
   string getNameWithoutBrackets() {
@@ -134,17 +124,14 @@ class UnboundGenericType extends ValueOrRefType, UnboundGeneric {
  */
 class TypeParameter extends DotNet::TypeParameter, Type, @type_parameter {
   /** Gets the constraints on this type parameter, if any. */
-  TypeParameterConstraints getConstraints() {
-    result.getTypeParameter() = this
-  }
+  TypeParameterConstraints getConstraints() { result.getTypeParameter() = this }
 
   /**
    * Holds if this type parameter is guaranteed to always be instantiated
    * to a reference type.
    */
   predicate isRefType() {
-    exists(TypeParameterConstraints tpc |
-      tpc = getConstraints() |
+    exists(TypeParameterConstraints tpc | tpc = getConstraints() |
       tpc.hasRefTypeConstraint() or
       exists(tpc.getClassConstraint()) or
       tpc.getATypeParameterConstraint().isRefType()
@@ -157,50 +144,48 @@ class TypeParameter extends DotNet::TypeParameter, Type, @type_parameter {
    * to a value type.
    */
   predicate isValueType() {
-    exists(TypeParameterConstraints tpc |
-      tpc = getConstraints() |
+    exists(TypeParameterConstraints tpc | tpc = getConstraints() |
       tpc.hasValueTypeConstraint() or
       tpc.getATypeParameterConstraint().isValueType()
     )
   }
 
   /** Holds if this type parameter is contravariant. */
-  predicate isIn() {
-    type_parameters(this, _, _, 2)
-  }
+  predicate isIn() { type_parameters(this, _, _, 2) }
 
   /** Holds if this type parameter is covariant. */
-  predicate isOut() {
-    type_parameters(this, _, _, 1)
-  }
+  predicate isOut() { type_parameters(this, _, _, 1) }
 
   /** Gets a type that was supplied for this parameter. */
-  Type getASuppliedType()
-  {
-    /* A type parameter either comes from the source declaration
-      or from a partially constructed generic.
+  Type getASuppliedType() {
+    /*
+     * A type parameter either comes from the source declaration
+     *      or from a partially constructed generic.
+     *
+     *      When from a source declaration, return type arguments from all ConstructedGenerics,
+     *      and when from a partially constructed UnboundGeneric, return type arguments from
+     *      directly ConstructedGenerics.
+     *
+     *      e.g.
+     *
+     *      class A<T1> { class B<T2> { } }
+     *
+     *      A<T1>.B<T2> is the UnboundGenericClass source declaration,
+     *      A<int>.B<T2> is a partially constructed UnboundGenericClass and
+     *      A<int>.B<int> is a ConstructedGenericClass.
+     */
 
-      When from a source declaration, return type arguments from all ConstructedGenerics,
-      and when from a partially constructed UnboundGeneric, return type arguments from
-      directly ConstructedGenerics.
-
-      e.g.
-
-      class A<T1> { class B<T2> { } }
-
-      A<T1>.B<T2> is the UnboundGenericClass source declaration,
-      A<int>.B<T2> is a partially constructed UnboundGenericClass and
-      A<int>.B<int> is a ConstructedGenericClass.
-    */
     exists(ConstructedGeneric c, UnboundGeneric u, int tpi |
       this = u.getTypeParameter(tpi) and
       (u = c.getUnboundGeneric() or u = c.getSourceDeclaration()) and
-      result = c.getTypeArgument(tpi) )
+      result = c.getTypeArgument(tpi)
+    )
   }
 
   /** Gets a non-type-parameter type that was transitively supplied for this parameter. */
   Type getAnUltimatelySuppliedType() {
-    result = getASuppliedType() and not result instanceof TypeParameter or
+    result = getASuppliedType() and not result instanceof TypeParameter
+    or
     result = getASuppliedType().(TypeParameter).getAnUltimatelySuppliedType()
   }
 
@@ -222,7 +207,6 @@ class TypeParameter extends DotNet::TypeParameter, Type, @type_parameter {
  * ```
  */
 class TypeParameterConstraints extends Element, @type_parameter_constraints {
-
   /** Gets a specific interface constraint (if any). */
   Interface getAnInterfaceConstraint() {
     specific_type_parameter_constraints(this, getTypeRef(result))
@@ -234,38 +218,24 @@ class TypeParameterConstraints extends Element, @type_parameter_constraints {
   }
 
   /** Gets the specific class constraint (if any). */
-  Class getClassConstraint() {
-    specific_type_parameter_constraints(this, getTypeRef(result))
-  }
+  Class getClassConstraint() { specific_type_parameter_constraints(this, getTypeRef(result)) }
 
-  override Location getALocation() {
-    type_parameter_constraints_location(this, result)
-  }
+  override Location getALocation() { type_parameter_constraints_location(this, result) }
 
   /** Gets the type parameter to which these constraints apply. */
-  TypeParameter getTypeParameter() {
-    type_parameter_constraints(this, result)
-  }
+  TypeParameter getTypeParameter() { type_parameter_constraints(this, result) }
 
   /** Holds if these constraints include a constructor constraint. */
-  predicate hasConstructorConstraint() {
-    general_type_parameter_constraints(this, 3)
-  }
+  predicate hasConstructorConstraint() { general_type_parameter_constraints(this, 3) }
 
   /** Holds if these constraints include a general reference type constraint. */
-  predicate hasRefTypeConstraint() {
-    general_type_parameter_constraints(this, 1)
-  }
+  predicate hasRefTypeConstraint() { general_type_parameter_constraints(this, 1) }
 
   /** Holds if these constraints include a general value type constraint. */
-  predicate hasValueTypeConstraint() {
-    general_type_parameter_constraints(this, 2)
-  }
+  predicate hasValueTypeConstraint() { general_type_parameter_constraints(this, 2) }
 
   /** Gets a textual representation of these constraints. */
-  override string toString() {
-    result = "where " + this.getTypeParameter().toString() + ": ..."
-  }
+  override string toString() { result = "where " + this.getTypeParameter().toString() + ": ..." }
 }
 
 /**
@@ -364,7 +334,8 @@ class UnboundGenericDelegateType extends DelegateType, UnboundGenericType {
   }
 
   override string toStringWithTypes() {
-    result = getNameWithoutBrackets() + "<" + this.typeParametersToString() + ">(" + parameterTypesToString() + ")"
+    result = getNameWithoutBrackets() + "<" + this.typeParametersToString() + ">(" +
+        parameterTypesToString() + ")"
   }
 }
 
@@ -384,17 +355,11 @@ class ConstructedType extends ValueOrRefType, ConstructedGeneric {
     result = ConstructedGeneric.super.getSourceDeclaration()
   }
 
-  override Location getALocation() {
-    result = this.getSourceDeclaration().getALocation()
-  }
+  override Location getALocation() { result = this.getSourceDeclaration().getALocation() }
 
-  override Type getTypeArgument(int n) {
-    type_arguments(getTypeRef(result), n, getTypeRef(this))
-  }
+  override Type getTypeArgument(int n) { type_arguments(getTypeRef(result), n, getTypeRef(this)) }
 
-  override UnboundGenericType getUnboundGeneric() {
-    constructed_generic(this, getTypeRef(result))
-  }
+  override UnboundGenericType getUnboundGeneric() { constructed_generic(this, getTypeRef(result)) }
 
   override string toStringWithTypes() {
     result = getUnboundGeneric().getNameWithoutBrackets() + "<" + this.typeArgumentsToString() + ">"
@@ -516,7 +481,8 @@ class UnboundGenericMethod extends Method, UnboundGeneric {
   }
 
   override string toStringWithTypes() {
-    result = getName() + "<" + this.typeParametersToString() + ">" + "(" + parameterTypesToString() + ")"
+    result = getName() + "<" + this.typeParametersToString() + ">" + "(" + parameterTypesToString() +
+        ")"
   }
 }
 
@@ -539,20 +505,15 @@ class UnboundGenericMethod extends Method, UnboundGeneric {
  * corresponds to `UnboundGenericType`.
  */
 class ConstructedMethod extends Method, ConstructedGeneric {
-  override Location getALocation() {
-    result = this.getSourceDeclaration().getALocation()
-  }
+  override Location getALocation() { result = this.getSourceDeclaration().getALocation() }
 
-  override Type getTypeArgument(int n) {
-    type_arguments(getTypeRef(result), n, this)
-  }
+  override Type getTypeArgument(int n) { type_arguments(getTypeRef(result), n, this) }
 
-  override UnboundGenericMethod getUnboundGeneric() {
-    constructed_generic(this, result)
-  }
+  override UnboundGenericMethod getUnboundGeneric() { constructed_generic(this, result) }
 
   override string toStringWithTypes() {
-    result = getName() + "<" + this.typeArgumentsToString() + ">" + "(" + parameterTypesToString() + ")"
+    result = getName() + "<" + this.typeArgumentsToString() + ">" + "(" + parameterTypesToString() +
+        ")"
   }
 
   override UnboundGenericMethod getSourceDeclaration() {
@@ -571,8 +532,7 @@ class ConstructedMethod extends Method, ConstructedGeneric {
  * }
  * ```
  */
-class UnboundLocalFunction extends LocalFunction, UnboundGeneric
-{
+class UnboundLocalFunction extends LocalFunction, UnboundGeneric {
   override ConstructedLocalFunction getAConstructedGeneric() {
     result = UnboundGeneric.super.getAConstructedGeneric()
   }
@@ -591,10 +551,9 @@ class UnboundLocalFunction extends LocalFunction, UnboundGeneric
  * }
  * ```
  */
-class ConstructedLocalFunction extends LocalFunction, ConstructedGeneric
-{
+class ConstructedLocalFunction extends LocalFunction, ConstructedGeneric {
   override UnboundLocalFunction getSourceDeclaration() {
-    result=LocalFunction.super.getSourceDeclaration()
+    result = LocalFunction.super.getSourceDeclaration()
   }
 
   override UnboundLocalFunction getUnboundGeneric() {
@@ -607,9 +566,7 @@ class ConstructedLocalFunction extends LocalFunction, ConstructedGeneric
  * not a generic method or an unbound generic method (`UnboundGenericMethod`).
  */
 class NonConstructedMethod extends Method {
-  NonConstructedMethod() {
-    not this instanceof ConstructedMethod
-  }
+  NonConstructedMethod() { not this instanceof ConstructedMethod }
 
   /**
    * Gets a method that either equals this non-constructed method, or

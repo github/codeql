@@ -1,4 +1,5 @@
 /** Provides classes related to the namespace `System.Net.Mail`. */
+
 import csharp
 private import semmle.code.csharp.frameworks.system.Net
 
@@ -12,17 +13,12 @@ class SystemNetMailNamespace extends Namespace {
 
 /** A class in the `System.Net.Mail` namespace. */
 class SystemNetMailClass extends Class {
-  SystemNetMailClass() {
-    this.getNamespace() instanceof SystemNetMailNamespace
-  }
+  SystemNetMailClass() { this.getNamespace() instanceof SystemNetMailNamespace }
 }
-
 
 /** The class `System.Net.Mail.MailMessage`. */
 class SystemNetMailMailMessageClass extends SystemNetMailClass {
-  SystemNetMailMailMessageClass() {
-    this.hasName("MailMessage")
-  }
+  SystemNetMailMailMessageClass() { this.hasName("MailMessage") }
 
   /** Gets the `Body` property. */
   Property getBodyProperty() { result = this.getProperty("Body") }

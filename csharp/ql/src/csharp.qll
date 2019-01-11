@@ -35,13 +35,10 @@ import semmle.code.csharp.dataflow.TaintTracking
 import semmle.code.csharp.dataflow.SSA
 
 /** DEPRECATED: Use `ControlFlow` instead. */
-deprecated
-module ControlFlowGraph {
+deprecated module ControlFlowGraph {
   import semmle.code.csharp.controlflow.ControlFlowGraph
   import ControlFlow
 }
 
 /** Whether the source was extracted without a build command. */
-predicate extractionIsStandalone() {
-  exists(SourceFile f | f.extractedStandalone())
-}
+predicate extractionIsStandalone() { exists(SourceFile f | f.extractedStandalone()) }

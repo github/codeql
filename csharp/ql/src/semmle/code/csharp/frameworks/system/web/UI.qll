@@ -1,4 +1,5 @@
 /** Provides definitions related to the namespace `System.Web.UI`. */
+
 import csharp
 private import semmle.code.csharp.frameworks.system.Web
 
@@ -12,23 +13,17 @@ class SystemWebUINamespace extends Namespace {
 
 /** A class in the `System.Web.UI` namespace. */
 class SystemWebUIClass extends Class {
-  SystemWebUIClass() {
-    this.getNamespace() instanceof SystemWebUINamespace
-  }
+  SystemWebUIClass() { this.getNamespace() instanceof SystemWebUINamespace }
 }
 
 /** The `System.Web.UI.Control` class. */
 class SystemWebUIControlClass extends SystemWebUIClass {
-  SystemWebUIControlClass() {
-    this.hasName("Control")
-  }
+  SystemWebUIControlClass() { this.hasName("Control") }
 }
 
 /** The `System.Web.UI.Page` class. */
 class SystemWebUIPageClass extends SystemWebUIClass {
-  SystemWebUIPageClass() {
-    this.hasName("Page")
-  }
+  SystemWebUIPageClass() { this.hasName("Page") }
 
   /** Get the `ID` property. */
   Property getIDProperty() {
@@ -54,7 +49,7 @@ class SystemWebUIPageClass extends SystemWebUIClass {
     result.hasName("Title")
   }
 
-    /** Get the `RegisterStartupScript` method. */
+  /** Get the `RegisterStartupScript` method. */
   Method getRegisterStartupScriptMethod() {
     result.getDeclaringType() = this and
     result.hasName("RegisterStartupScript")
@@ -69,9 +64,7 @@ class SystemWebUIPageClass extends SystemWebUIClass {
 
 /** The `System.Web.UI.HtmlTextWriter` class. */
 class SystemWebUIHtmlTextWriterClass extends SystemWebUIClass {
-  SystemWebUIHtmlTextWriterClass() {
-    this.hasName("HtmlTextWriter")
-  }
+  SystemWebUIHtmlTextWriterClass() { this.hasName("HtmlTextWriter") }
 
   /** Get a `Write` method. */
   Method getAWriteMethod() {
@@ -106,9 +99,7 @@ class SystemWebUIHtmlTextWriterClass extends SystemWebUIClass {
 
 /** The `System.Web.UI.AttributeCollection` class. */
 class SystemWebUIAttributeCollectionClass extends SystemWebUIClass {
-  SystemWebUIAttributeCollectionClass() {
-    this.hasName("AttributeCollection")
-  }
+  SystemWebUIAttributeCollectionClass() { this.hasName("AttributeCollection") }
 
   /** Get the `Add` method. */
   Method getAddMethod() {
@@ -125,11 +116,9 @@ class SystemWebUIAttributeCollectionClass extends SystemWebUIClass {
 
 /** The `System.Web.UI.ClientScriptManager` class. */
 class SystemWebUIClientScriptManagerClass extends SystemWebUIClass {
-  SystemWebUIClientScriptManagerClass() {
-    this.hasName("ClientScriptManager")
-  }
+  SystemWebUIClientScriptManagerClass() { this.hasName("ClientScriptManager") }
 
-    /** Get the `RegisterStartupScript` method. */
+  /** Get the `RegisterStartupScript` method. */
   Method getRegisterStartupScriptMethod() {
     result.getDeclaringType() = this and
     result.hasName("RegisterStartupScript")

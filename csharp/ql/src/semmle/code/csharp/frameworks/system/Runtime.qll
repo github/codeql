@@ -1,4 +1,5 @@
 /** Provides definitions related to the namespace `System.Runtime`. */
+
 import csharp
 private import semmle.code.csharp.frameworks.System
 

@@ -16,26 +16,35 @@ class MicrosoftAdvisory4021279 extends Vulnerability {
   override string getUrl() { result = "https://github.com/dotnet/corefx/issues/19535" }
 
   override predicate matchesRange(string name, Version affected, Version fixed) {
-    name = "System.Text.Encodings.Web" and (
+    name = "System.Text.Encodings.Web" and
+    (
       affected = "4.0.0" and fixed = "4.0.1"
       or
       affected = "4.3.0" and fixed = "4.3.1"
-    ) or
-    name = "System.Net.Http" and (
+    )
+    or
+    name = "System.Net.Http" and
+    (
       affected = "4.1.1" and fixed = "4.1.2"
       or
       affected = "4.3.1" and fixed = "4.3.2"
-    ) or
-    name = "System.Net.Http.WinHttpHandler" and (
+    )
+    or
+    name = "System.Net.Http.WinHttpHandler" and
+    (
       affected = "4.0.1" and fixed = "4.0.2"
       or
       affected = "4.3.0" and fixed = "4.3.1"
-    ) or
-    name = "System.Net.Security" and (
+    )
+    or
+    name = "System.Net.Security" and
+    (
       affected = "4.0.0" and fixed = "4.0.1"
       or
       affected = "4.3.0" and fixed = "4.3.1"
-    ) or (
+    )
+    or
+    (
       name = "Microsoft.AspNetCore.Mvc"
       or
       name = "Microsoft.AspNetCore.Mvc.Core"
@@ -63,7 +72,8 @@ class MicrosoftAdvisory4021279 extends Vulnerability {
       name = "Microsoft.AspNetCore.Mvc.ViewFeatures"
       or
       name = "Microsoft.AspNetCore.Mvc.WebApiCompatShim"
-    ) and (
+    ) and
+    (
       affected = "1.0.0" and fixed = "1.0.4"
       or
       affected = "1.1.0" and fixed = "1.1.3"
@@ -81,7 +91,8 @@ class CVE_2017_8700 extends Vulnerability {
       name = "Microsoft.AspNetCore.Mvc.Core"
       or
       name = "Microsoft.AspNetCore.Mvc.Cors"
-    ) and (
+    ) and
+    (
       affected = "1.0.0" and fixed = "1.0.6"
       or
       affected = "1.1.0" and fixed = "1.1.6"
@@ -132,7 +143,8 @@ class CVE_2018_8409 extends Vulnerability {
     name = "System.IO.Pipelines" and affected = "4.5.0" and fixed = "4.5.1"
     or
     (name = "Microsoft.AspNetCore.All" or name = "Microsoft.AspNetCore.App") and
-    affected = "2.1.0" and fixed = "2.1.4"
+    affected = "2.1.0" and
+    fixed = "2.1.4"
   }
 }
 
@@ -142,7 +154,8 @@ class CVE_2018_8171 extends Vulnerability {
   override string getUrl() { result = "https://github.com/aspnet/Announcements/issues/310" }
 
   override predicate matchesRange(string name, Version affected, Version fixed) {
-    name = "Microsoft.AspNetCore.Identity" and (
+    name = "Microsoft.AspNetCore.Identity" and
+    (
       affected = "1.0.0" and fixed = "1.0.6"
       or
       affected = "1.1.0" and fixed = "1.1.6"
@@ -166,7 +179,8 @@ class CVE_2018_8356 extends Vulnerability {
       name = "System.ServiceModel.Http"
       or
       name = "System.ServiceModel.NetTcp"
-    ) and (
+    ) and
+    (
       affected = "4.0.0" and fixed = "4.1.3"
       or
       affected = "4.3.0" and fixed = "4.3.3"
@@ -180,7 +194,8 @@ class CVE_2018_8356 extends Vulnerability {
       name = "System.ServiceModel.Duplex"
       or
       name = "System.ServiceModel.Security"
-    ) and (
+    ) and
+    (
       affected = "4.0.0" and fixed = "4.0.4"
       or
       affected = "4.3.0" and fixed = "4.3.3"
@@ -190,7 +205,8 @@ class CVE_2018_8356 extends Vulnerability {
       affected = "4.5.0" and fixed = "4.5.3"
     )
     or
-    name = "System.ServiceModel.NetTcp" and (
+    name = "System.ServiceModel.NetTcp" and
+    (
       affected = "4.0.0" and fixed = "4.1.3"
       or
       affected = "4.3.0" and fixed = "4.3.3"
@@ -208,13 +224,15 @@ class ASPNETCore_Jul18 extends Vulnerability {
   override string getUrl() { result = "https://github.com/aspnet/Announcements/issues/311" }
 
   override predicate matchesRange(string name, Version affected, Version fixed) {
-    name = "Microsoft.AspNetCore.Server.Kestrel.Core" and (
+    name = "Microsoft.AspNetCore.Server.Kestrel.Core" and
+    (
       affected = "2.0.0" and fixed = "2.0.4"
       or
       affected = "2.1.0" and fixed = "2.1.2"
     )
     or
-    name = "Microsoft.AspNetCore.All" and (
+    name = "Microsoft.AspNetCore.All" and
+    (
       affected = "2.0.0" and fixed = "2.0.9"
       or
       affected = "2.1.0" and fixed = "2.1.2"
@@ -232,7 +250,8 @@ class CVE_2018_8292 extends Vulnerability {
   override string getUrl() { result = "https://github.com/dotnet/announcements/issues/88" }
 
   override predicate matchesVersion(string name, Version affected, Version fixed) {
-    name = "System.Net.Http" and (
+    name = "System.Net.Http" and
+    (
       affected = "2.0" or
       affected = "4.0.0" or
       affected = "4.1.0" or
@@ -265,12 +284,14 @@ class CVE_2018_0786 extends Vulnerability {
       name = "System.ServiceModel.Security"
       or
       name = "System.Private.ServiceModel"
-    ) and (
+    ) and
+    (
       affected = "4.4.0" and fixed = "4.4.1"
       or
       affected = "4.3.0" and fixed = "4.3.1"
     )
-    or (
+    or
+    (
       name = "System.ServiceModel.Primitives"
       or
       name = "System.ServiceModel.Http"
@@ -281,7 +302,8 @@ class CVE_2018_0786 extends Vulnerability {
     ) and
     affected = "4.1.0" and
     fixed = "4.1.1"
-    or (
+    or
+    (
       name = "System.ServiceModel.Duplex"
       or
       name = "System.ServiceModel.Security"

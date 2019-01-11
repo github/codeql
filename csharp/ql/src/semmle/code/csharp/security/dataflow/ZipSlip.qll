@@ -1,6 +1,7 @@
 /**
  * Provides a taint tracking configuration for reasoning about unsafe zip extraction.
  */
+
 import csharp
 
 module ZipSlip {
@@ -23,28 +24,19 @@ module ZipSlip {
 
   /** A taint tracking configuration for Zip Slip */
   class TaintTrackingConfiguration extends TaintTracking::Configuration {
-    TaintTrackingConfiguration() {
-      this = "ZipSlipTaintTracking"
-    }
+    TaintTrackingConfiguration() { this = "ZipSlipTaintTracking" }
 
-    override predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override predicate isSanitizer(DataFlow::Node node) {
-      node instanceof Sanitizer
-    }
+    override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
   }
 
   /** An access to the `FullName` property of a `ZipArchiveEntry`. */
   class ArchiveFullNameSource extends Source {
     ArchiveFullNameSource() {
-      exists(PropertyAccess pa |
-        this.asExpr() = pa |
+      exists(PropertyAccess pa | this.asExpr() = pa |
         pa.getTarget().getDeclaringType().hasQualifiedName("System.IO.Compression.ZipArchiveEntry") and
         pa.getTarget().getName() = "FullName"
       )
@@ -67,7 +59,8 @@ module ZipSlip {
       exists(MethodCall mc |
         mc.getTarget().hasQualifiedName("System.IO.File", "Open") or
         mc.getTarget().hasQualifiedName("System.IO.File", "OpenWrite") or
-        mc.getTarget().hasQualifiedName("System.IO.File", "Create") |
+        mc.getTarget().hasQualifiedName("System.IO.File", "Create")
+      |
         this.asExpr() = mc.getArgumentForName("path")
       )
     }
@@ -77,7 +70,8 @@ module ZipSlip {
   class FileStreamArgSink extends Sink {
     FileStreamArgSink() {
       exists(ObjectCreation oc |
-        oc.getTarget().getDeclaringType().hasQualifiedName("System.IO.FileStream") |
+        oc.getTarget().getDeclaringType().hasQualifiedName("System.IO.FileStream")
+      |
         this.asExpr() = oc.getArgumentForName("path")
       )
     }
@@ -91,7 +85,8 @@ module ZipSlip {
   class FileInfoArgSink extends Sink {
     FileInfoArgSink() {
       exists(ObjectCreation oc |
-        oc.getTarget().getDeclaringType().hasQualifiedName("System.IO.FileInfo") |
+        oc.getTarget().getDeclaringType().hasQualifiedName("System.IO.FileInfo")
+      |
         this.asExpr() = oc.getArgumentForName("fileName")
       )
     }
@@ -104,8 +99,7 @@ module ZipSlip {
    */
   class GetFileNameSanitizer extends Sanitizer {
     GetFileNameSanitizer() {
-      exists(MethodCall mc |
-        mc.getTarget().hasQualifiedName("System.IO.Path", "GetFileName") |
+      exists(MethodCall mc | mc.getTarget().hasQualifiedName("System.IO.Path", "GetFileName") |
         this.asExpr() = mc
       )
     }
@@ -119,8 +113,7 @@ module ZipSlip {
    */
   class SubstringSanitizer extends Sanitizer {
     SubstringSanitizer() {
-      exists(MethodCall mc |
-        mc.getTarget().hasQualifiedName("System.String", "Substring") |
+      exists(MethodCall mc | mc.getTarget().hasQualifiedName("System.String", "Substring") |
         this.asExpr() = mc
       )
     }
@@ -136,16 +129,19 @@ module ZipSlip {
     StringCheckSanitizer() {
       exists(GuardedExpr ge, MethodCall mc, Expr startsWithQualifier |
         ge = this.asExpr() and
-        ge.isGuardedBy(mc, startsWithQualifier, true) |
+        ge.isGuardedBy(mc, startsWithQualifier, true)
+      |
         mc.getTarget().hasQualifiedName("System.String", "StartsWith") and
         mc.getQualifier() = startsWithQualifier and
         /*
          * A StartsWith check against Path.Combine is not sufficient, because the ".." elements have
          * not yet been resolved.
          */
+
         not exists(MethodCall combineCall |
           combineCall.getTarget().hasQualifiedName("System.IO.Path", "Combine") and
-          DataFlow::localFlow(DataFlow::exprNode(combineCall), DataFlow::exprNode(startsWithQualifier))
+          DataFlow::localFlow(DataFlow::exprNode(combineCall),
+            DataFlow::exprNode(startsWithQualifier))
         )
       )
     }

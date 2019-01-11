@@ -1,4 +1,5 @@
 /** Provides definitions related to the namespace `System.CodeDom`. */
+
 import csharp
 private import semmle.code.csharp.frameworks.System
 

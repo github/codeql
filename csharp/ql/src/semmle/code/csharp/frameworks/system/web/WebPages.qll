@@ -1,6 +1,6 @@
 /** Definitions related to the namespace `System.Web.WebPages`, ASP.NET */
-import csharp
 
+import csharp
 private import semmle.code.csharp.frameworks.system.Web
 
 /** The `System.Web.WebPages` namespace. */
@@ -21,17 +21,11 @@ class SystemWebWebPagesWebPageExecutingBaseClass extends Class {
 
 /** A class that derives from `System.Web.WebPages.WebPageExecutingBase`. */
 class WebPageClass extends Class {
-  WebPageClass () {
-    this.getBaseClass*() instanceof SystemWebWebPagesWebPageExecutingBaseClass
-  }
+  WebPageClass() { this.getBaseClass*() instanceof SystemWebWebPagesWebPageExecutingBaseClass }
 
   /** Gets the `WriteLiteral` method. */
-  Method getWriteLiteralMethod() {
-    result = getAMethod("WriteLiteral")
-  }
+  Method getWriteLiteralMethod() { result = getAMethod("WriteLiteral") }
 
   /** Gets the `WriteLiteralTo` method. */
-  Method getWriteLiteralToMethod() {
-    result = getAMethod("WriteLiteralTo")
-  }
+  Method getWriteLiteralToMethod() { result = getAMethod("WriteLiteralTo") }
 }

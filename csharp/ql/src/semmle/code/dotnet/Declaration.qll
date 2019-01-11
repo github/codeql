@@ -7,10 +7,10 @@ import Type
 
 /** A declaration. */
 class Declaration extends NamedElement, @dotnet_declaration {
-   override predicate hasQualifiedName(string qualifier, string name) {
-     qualifier = this.getDeclaringType().getQualifiedName() and
-     name = this.getName()
-   }
+  override predicate hasQualifiedName(string qualifier, string name) {
+    qualifier = this.getDeclaringType().getQualifiedName() and
+    name = this.getName()
+  }
 
   /** Gets the name of this declaration, without additional decoration such as `<...>`. */
   string getUndecoratedName() { none() }

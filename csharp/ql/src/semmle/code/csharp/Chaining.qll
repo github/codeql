@@ -19,20 +19,14 @@ import csharp
  *   callable), the return type of `c` must be a subtype of `c`'s
  *   declaring type, and `c` must be non-static.
  */
-predicate designedForChaining(Callable c) {
-  not nonChaining(c)
-}
+predicate designedForChaining(Callable c) { not nonChaining(c) }
 
 private predicate nonChaining(Callable c) {
   exists(Type t | t = c.getDeclaringType() | not t instanceof RefType)
   or
-  exists(Method override |
-    override.getOverridee() = c |
-    nonChaining(override)
-  )
+  exists(Method override | override.getOverridee() = c | nonChaining(override))
   or
-  exists(Getter override |
-    override.getDeclaration().getOverridee() = c.(Getter).getDeclaration() |
+  exists(Getter override | override.getDeclaration().getOverridee() = c.(Getter).getDeclaration() |
     nonChaining(override)
   )
   or
@@ -47,25 +41,24 @@ private predicate nonChainingBody(Callable c) {
 }
 
 private Expr returnedValue(Callable c) {
-  exists(Expr e |
-    c.canReturn(e) |
-    if e instanceof ConditionalExpr then
+  exists(Expr e | c.canReturn(e) |
+    if e instanceof ConditionalExpr
+    then
       result = e.(ConditionalExpr).getThen() or
       result = e.(ConditionalExpr).getElse()
-    else
-      result = e
+    else result = e
   )
 }
 
 /** Holds if `c` can return a non-`this` value. */
 private predicate nonChainingReturn(Callable c) {
-  exists(Expr ret |
-    ret = returnedValue(c) |
+  exists(Expr ret | ret = returnedValue(c) |
     // The result of a call is returned
-    exists(Callable other |
-      other = ret.(Call).getTarget() |
-      nonChaining(other) or
-      exists(MethodCall mc | mc = ret | not mc.hasThisQualifier()) or
+    exists(Callable other | other = ret.(Call).getTarget() |
+      nonChaining(other)
+      or
+      exists(MethodCall mc | mc = ret | not mc.hasThisQualifier())
+      or
       exists(MemberAccess ma | ma = ret | not ma.hasThisQualifier())
     )
     or
