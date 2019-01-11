@@ -55,9 +55,9 @@ namespace Semmle.Extraction.CSharp.Populators
                 {
                     return symbol.Accept(new Symbols(cx));
                 }
-                catch (Exception e)
+                catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
                 {
-                    cx.ModelError(symbol, "Exception processing symbol '{2}' of type '{0}': {1}", symbol.Kind, e, symbol);
+                    cx.ModelError(symbol, "Exception processing symbol '{2}' of type '{0}': {1}", symbol.Kind, ex, symbol);
                     return null;
                 }
             }

@@ -11,14 +11,14 @@ namespace Semmle.Util
     public class Win32
     {
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        public static extern int GetFinalPathNameByHandle(
+        public static extern int GetFinalPathNameByHandle(  // lgtm[cs/unmanaged-code]
             SafeHandle handle,
             [In, Out] StringBuilder path,
             int bufLen,
             int flags);
 
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        public static extern SafeFileHandle CreateFile(
+        public static extern SafeFileHandle CreateFile(  // lgtm[cs/unmanaged-code]
             string filename,
             uint desiredAccess,
             uint shareMode,

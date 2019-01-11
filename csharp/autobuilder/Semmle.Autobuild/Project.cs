@@ -39,7 +39,7 @@ namespace Semmle.Autobuild
             {
                 projFile = builder.Actions.LoadXml(FullPath);
             }
-            catch (Exception e) when (e is XmlException || e is FileNotFoundException)
+            catch (Exception ex) when (ex is XmlException || ex is FileNotFoundException)
             {
                 builder.Log(Severity.Info, $"Unable to read project file {path}.");
                 return;

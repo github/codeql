@@ -183,10 +183,10 @@ namespace Semmle.BuildAnalyser
                     }
                 }
             }
-            catch (Exception e)
-                when (e is System.ComponentModel.Win32Exception || e is FileNotFoundException)
+            catch (Exception ex)
+                when (ex is System.ComponentModel.Win32Exception || ex is FileNotFoundException)
             {
-                pm.FailedNugetCommand(pi.FileName, pi.Arguments, e.Message);
+                pm.FailedNugetCommand(pi.FileName, pi.Arguments, ex.Message);
             }
         }
 

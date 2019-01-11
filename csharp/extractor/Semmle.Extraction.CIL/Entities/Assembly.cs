@@ -143,7 +143,7 @@ namespace Semmle.Extraction.CIL.Entities
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
                 logger.Log(Severity.Error, string.Format("Exception extracting {0}: {1}", assemblyPath, ex));
             }

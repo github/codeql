@@ -190,7 +190,7 @@ namespace Semmle.Extraction
                     FileUtils.TryDelete(tmpFile);
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
                 Logger.Log(Severity.Error, "Failed to move the trap file from {0} to {1} because {2}", tmpFile, TrapFile, ex);
             }
