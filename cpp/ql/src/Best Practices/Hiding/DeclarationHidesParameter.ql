@@ -11,13 +11,14 @@
 
 import cpp
 
-// Names of parameters in the implementation of a function.
-// Notice that we need to exclude parameter names used in prototype
-// declarations and only include the ones from the actual definition.
-// We also exclude names from functions that have multiple definitions.
-// This should not happen in a single application but since we
-// have a system wide view it is likely to happen for instance for
-// the main function.
+/**
+ * Gets the parameter of `f` with name `name`, which has to come from the
+ * _definition_ of `f` and not a prototype declaration.
+ * We also exclude names from functions that have multiple definitions.
+ * This should not happen in a single application but since we
+ * have a system wide view it is likely to happen for instance for
+ * the main function.
+ */
 ParameterDeclarationEntry functionParameterNames(Function f, string name) {
   exists(FunctionDeclarationEntry fe |
     result.getFunctionDeclarationEntry() = fe and
@@ -29,6 +30,7 @@ ParameterDeclarationEntry functionParameterNames(Function f, string name) {
   )
 }
 
+/** Gets a local variable in `f` with name `name`. */
 pragma[nomagic]
 LocalVariable localVariableNames(Function f, string name) {
   name = result.getName() and
