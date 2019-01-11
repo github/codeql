@@ -9,7 +9,7 @@ import javascript
  * Holds if `nd` starts a new basic block.
  */
 private predicate startsBB(ControlFlowNode nd) {
-  (not exists(nd.getAPredecessor()) and exists(nd.getASuccessor()))
+  not exists(nd.getAPredecessor()) and exists(nd.getASuccessor())
   or
   nd.isJoin()
   or
@@ -194,7 +194,7 @@ class BasicBlock extends @cfg_node, Locatable {
   predicate isLiveAtEntry(Variable v) {
     isLocallyLiveAtEntry(v, _)
     or
-    (not this.defAt(_, v, _) and getASuccessor().isLiveAtEntry(v))
+    not this.defAt(_, v, _) and getASuccessor().isLiveAtEntry(v)
   }
 
   /**
@@ -204,7 +204,7 @@ class BasicBlock extends @cfg_node, Locatable {
   predicate localIsLiveAtEntry(LocalVariable v, VarUse u) {
     isLocallyLiveAtEntry(v, u)
     or
-    (not this.defAt(_, v, _) and getASuccessor().localIsLiveAtEntry(v, u))
+    not this.defAt(_, v, _) and getASuccessor().localIsLiveAtEntry(v, u)
   }
 
   /**
@@ -213,7 +213,7 @@ class BasicBlock extends @cfg_node, Locatable {
   predicate localIsLiveAtEntry(LocalVariable v) {
     isLocallyLiveAtEntry(v, _)
     or
-    (not this.defAt(_, v, _) and getASuccessor().localIsLiveAtEntry(v))
+    not this.defAt(_, v, _) and getASuccessor().localIsLiveAtEntry(v)
   }
 
   /**
@@ -223,7 +223,7 @@ class BasicBlock extends @cfg_node, Locatable {
   predicate localMayBeOverwritten(LocalVariable v, VarDef d) {
     isLocallyOverwritten(v, d)
     or
-    (not defAt(_, v, _) and getASuccessor().localMayBeOverwritten(v, d))
+    not defAt(_, v, _) and getASuccessor().localMayBeOverwritten(v, d)
   }
 
   /**

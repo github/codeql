@@ -33,9 +33,8 @@ private predicate partiallyCalls(
   invk.isPartialArgument(callback, _, _) and
   exists(AbstractFunction callee | callee = callback.getAValue() |
     if callback.getAValue().isIndefinite("global")
-    then (
-      f = callee.getFunction() and f.getFile() = invk.getFile()
-    ) else f = callee.getFunction()
+    then f = callee.getFunction() and f.getFile() = invk.getFile()
+    else f = callee.getFunction()
   )
 }
 

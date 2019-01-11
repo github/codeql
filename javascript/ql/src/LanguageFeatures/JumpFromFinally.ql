@@ -25,8 +25,8 @@ class Jump extends Stmt {
 
   /** Gets the target to which this jump refers. */
   Stmt getTarget() {
-    result = (this.(BreakOrContinueStmt)).getTarget() or
-    result = ((this.(ReturnStmt)).getContainer().(Function)).getBody()
+    result = this.(BreakOrContinueStmt).getTarget() or
+    result = this.(ReturnStmt).getContainer().(Function).getBody()
   }
 }
 

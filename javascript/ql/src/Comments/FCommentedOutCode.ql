@@ -13,6 +13,4 @@
 import CommentedOut
 
 from File f
-select f, sum(CommentedOutCode comment |
-              comment.getFile() = f |
-              comment.getNumCodeLines())
+select f, sum(CommentedOutCode comment | comment.getFile() = f | comment.getNumCodeLines())

@@ -19,9 +19,10 @@ import CodeDuplication
 import semmle.javascript.RestrictedLocations
 
 from TopLevel one, TopLevel another, float percent
-where similarContainers(one, another, percent) and
-    one.getNumChildStmt() > 5 and
-    not duplicateContainers(one, another, _)
-select (FirstLineOf)one, percent.floor() + "% of statements in this script are similar to statements in $@.",
-   (FirstLineOf)another,
-   "another script"
+where
+  similarContainers(one, another, percent) and
+  one.getNumChildStmt() > 5 and
+  not duplicateContainers(one, another, _)
+select one.(FirstLineOf),
+  percent.floor() + "% of statements in this script are similar to statements in $@.",
+  another.(FirstLineOf), "another script"

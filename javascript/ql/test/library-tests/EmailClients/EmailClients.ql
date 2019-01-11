@@ -1,4 +1,5 @@
 import javascript
 
 from EmailSender send
-select send, send.getFrom(), send.getTo(), send.getSubject(), send.getPlainTextBody(), send.getHtmlBody()
+select send, send.getFrom(), send.getTo(), send.getSubject(), send.getPlainTextBody(),
+  send.getHtmlBody()

@@ -30,7 +30,7 @@ predicate inVoidContext(Expr e) {
       or
       // if the toplevel in its entirety is of the form `({ ... })`,
       // it is probably a configuration object (e.g., a require.js build configuration)
-      (tl.getNumChildStmt() = 1 and e.stripParens() instanceof ObjectExpr)
+      tl.getNumChildStmt() = 1 and e.stripParens() instanceof ObjectExpr
     )
   )
   or

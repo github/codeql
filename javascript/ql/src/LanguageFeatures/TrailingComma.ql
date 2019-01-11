@@ -22,8 +22,8 @@ class ArrayOrObjectExpr extends Expr {
 
   /** Holds if this array or object expression has a trailing comma. */
   predicate hasTrailingComma() {
-    (this.(ArrayExpr)).hasTrailingComma() or
-    (this.(ObjectExpr)).hasTrailingComma()
+    this.(ArrayExpr).hasTrailingComma() or
+    this.(ObjectExpr).hasTrailingComma()
   }
 
   /** Gets a short description of this expression. */

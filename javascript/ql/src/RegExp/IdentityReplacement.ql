@@ -17,7 +17,7 @@ import javascript
  * `s` and nothing else.
  */
 predicate matchesString(Expr e, string s) {
-  exists (RegExpLiteral rl |
+  exists(RegExpLiteral rl |
     rl = e and
     not rl.isIgnoreCase() and
     regExpMatchesString(rl.getRoot(), s)
@@ -35,34 +35,41 @@ predicate regExpMatchesString(RegExpTerm t, string s) {
   s = t.(RegExpConstant).getValue()
   or
   // assertions match the empty string
-  (t instanceof RegExpCaret or
-   t instanceof RegExpDollar or
-   t instanceof RegExpWordBoundary or
-   t instanceof RegExpNonWordBoundary or
-   t instanceof RegExpLookahead or
-   t instanceof RegExpLookbehind) and
+  (
+    t instanceof RegExpCaret or
+    t instanceof RegExpDollar or
+    t instanceof RegExpWordBoundary or
+    t instanceof RegExpNonWordBoundary or
+    t instanceof RegExpLookahead or
+    t instanceof RegExpLookbehind
+  ) and
   s = ""
   or
   // groups match their content
   regExpMatchesString(t.(RegExpGroup).getAChild(), s)
   or
   // single-character classes match that character
-  exists (RegExpCharacterClass recc | recc = t and not recc.isInverted() |
+  exists(RegExpCharacterClass recc | recc = t and not recc.isInverted() |
     recc.getNumChild() = 1 and
     regExpMatchesString(recc.getChild(0), s)
   )
   or
   // sequences match the concatenation of their elements
-  exists (RegExpSequence seq | seq = t |
-    s = concat(int i, RegExpTerm child | child = seq.getChild(i) |
-      any(string subs | regExpMatchesString(child, subs)) order by i
-    )
+  exists(RegExpSequence seq | seq = t |
+    s = concat(int i, RegExpTerm child |
+        child = seq.getChild(i)
+      |
+        any(string subs | regExpMatchesString(child, subs))
+        order by
+          i
+      )
   )
 }
 
 from MethodCallExpr repl, string s, string friendly
-where repl.getMethodName() = "replace" and
-      matchesString(repl.getArgument(0), s) and
-      repl.getArgument(1).getStringValue() = s and
-      (if s = "" then friendly = "the empty string" else friendly = "'" + s + "'")
+where
+  repl.getMethodName() = "replace" and
+  matchesString(repl.getArgument(0), s) and
+  repl.getArgument(1).getStringValue() = s and
+  (if s = "" then friendly = "the empty string" else friendly = "'" + s + "'")
 select repl.getArgument(0), "This replaces " + friendly + " with itself."

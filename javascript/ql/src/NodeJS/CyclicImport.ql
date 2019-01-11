@@ -69,10 +69,10 @@ where
   r = m.getAnImport() and
   imported = r.getImportedModule() and
   if imported = m
-  then (
+  then
     // set linktarget and linktext to dummy values in this case
     msg = "directly imports itself" and linktarget = m and linktext = ""
-  ) else
+  else
     // find an import in `imported` that (directly or indirectly) imports `m`
     exists(Require r2, Module imported2 |
       r2 = imported.getAnImport() and imported2 = r2.getImportedModule()

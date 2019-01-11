@@ -386,7 +386,7 @@ class Property extends @property, Documentable {
    * its initializer expression could have side effects.
    */
   predicate isImpure() {
-    (isComputed() and getNameExpr().isImpure())
+    isComputed() and getNameExpr().isImpure()
     or
     getInit().isImpure()
   }
@@ -530,8 +530,8 @@ class InvokeExpr extends @invokeexpr, Expr {
   /** Gets the name of the function or method being invoked, if it can be determined. */
   string getCalleeName() {
     exists(Expr callee | callee = getCallee().getUnderlyingValue() |
-      result = (callee.(Identifier)).getName() or
-      result = (callee.(PropAccess)).getPropertyName()
+      result = callee.(Identifier).getName() or
+      result = callee.(PropAccess).getPropertyName()
     )
   }
 
@@ -710,7 +710,7 @@ class IndexExpr extends @indexexpr, PropAccess {
   /** Gets the expression specifying the name of the accessed property. */
   Expr getIndex() { result = getChildExpr(1) }
 
-  override string getPropertyName() { result = (getIndex().(Literal)).getValue() }
+  override string getPropertyName() { result = getIndex().(Literal).getValue() }
 
   override predicate isImpure() {
     getBase().isImpure() or

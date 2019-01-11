@@ -1,10 +1,9 @@
 import javascript
 
 string getRest(TupleType tuple) {
-  if tuple.hasRestElement() then
-    result = tuple.getRestElementType().toString()
-  else
-    result = "no-rest"
+  if tuple.hasRestElement()
+  then result = tuple.getRestElementType().toString()
+  else result = "no-rest"
 }
 
 from Expr e, TupleType tuple, int n

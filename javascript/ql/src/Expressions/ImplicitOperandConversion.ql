@@ -50,7 +50,7 @@ abstract class ImplicitConversionWithWhitelist extends ImplicitConversion {
 
   override string getAnImplicitConversionTarget(AbstractValue v) {
     v = getAValue() and
-    not (v.getType() = getAWhitelistedType()) and
+    not v.getType() = getAWhitelistedType() and
     result = getConversionTarget()
   }
 }

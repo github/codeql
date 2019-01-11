@@ -15,5 +15,5 @@
 import javascript
 
 from Comparison cmp
-where (cmp.getAnOperand().(GlobalVarAccess)).getName() = "NaN"
+where cmp.getAnOperand().(GlobalVarAccess).getName() = "NaN"
 select cmp, "Useless comparison with NaN."

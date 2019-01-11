@@ -47,12 +47,12 @@ class ASTNode extends @ast_node, Locatable {
       (
         sl < tksl
         or
-        (sl = tksl and sc <= tksc)
+        sl = tksl and sc <= tksc
       ) and
       (
         tkel < el
         or
-        (tkel = el and tkec <= ec)
+        tkel = el and tkec <= ec
       )
     ) and
     // exclude empty EOF token
@@ -236,7 +236,7 @@ class StmtContainer extends @stmt_container, ASTNode {
    * function boundaries.  In plain JavaScript, all containers are function boundaries.
    */
   StmtContainer getFunctionBoundary() {
-    if (this instanceof Function or this instanceof TopLevel)
+    if this instanceof Function or this instanceof TopLevel
     then result = this
     else result = getEnclosingContainer().getFunctionBoundary()
   }

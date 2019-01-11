@@ -398,10 +398,8 @@ class GeneralDirective extends CustomDirective, MkCustomDirective {
     result = getMember("link")
     or
     // { link: { pre: function preLink() { ... }, post: function postLink() { ... } } }
-    (
-      (kind = "pre" or kind = "post") and
-      result = getMember("link").getAPropertySource(kind)
-    )
+    (kind = "pre" or kind = "post") and
+    result = getMember("link").getAPropertySource(kind)
     or
     // { compile: function() { ... return link; } }
     exists(Expr compileReturn, DataFlow::SourceNode compileReturnSrc |
@@ -413,10 +411,8 @@ class GeneralDirective extends CustomDirective, MkCustomDirective {
       result = compileReturnSrc
       or
       // link = { pre: function preLink() { ... }, post: function postLink() { ... } }
-      (
-        (kind = "pre" or kind = "post") and
-        result = compileReturnSrc.getAPropertySource(kind)
-      )
+      (kind = "pre" or kind = "post") and
+      result = compileReturnSrc.getAPropertySource(kind)
     )
   }
 
@@ -732,20 +728,16 @@ private class ServiceMethodCall extends AngularJSCall {
       service.getName() = "$sce" and
       mce = service.getAMethodCall(methodName)
     |
-      (
-        // specialized call
-        (methodName = "trustAsHtml" or methodName = "trustAsCss") and
-        e = mce.getArgument(0)
-      )
+      // specialized call
+      (methodName = "trustAsHtml" or methodName = "trustAsCss") and
+      e = mce.getArgument(0)
       or
-      (
-        // generic call with enum argument
-        methodName = "trustAs" and
-        exists(DataFlow::PropRead prn |
-          prn.asExpr() = mce.getArgument(0) and
-          (prn = service.getAPropertyAccess("HTML") or prn = service.getAPropertyAccess("CSS")) and
-          e = mce.getArgument(1)
-        )
+      // generic call with enum argument
+      methodName = "trustAs" and
+      exists(DataFlow::PropRead prn |
+        prn.asExpr() = mce.getArgument(0) and
+        (prn = service.getAPropertyAccess("HTML") or prn = service.getAPropertyAccess("CSS")) and
+        e = mce.getArgument(1)
       )
     )
   }
@@ -755,18 +747,14 @@ private class ServiceMethodCall extends AngularJSCall {
       service.getName() = serviceName and
       mce = service.getAMethodCall(methodName)
     |
-      (
-        // AngularJS caches (only available during runtime, so similar to sessionStorage)
-        (serviceName = "$cacheFactory" or serviceName = "$templateCache") and
-        methodName = "put" and
-        e = mce.getArgument(1)
-      )
+      // AngularJS caches (only available during runtime, so similar to sessionStorage)
+      (serviceName = "$cacheFactory" or serviceName = "$templateCache") and
+      methodName = "put" and
+      e = mce.getArgument(1)
       or
-      (
-        serviceName = "$cookies" and
-        (methodName = "put" or methodName = "putObject") and
-        e = mce.getArgument(1)
-      )
+      serviceName = "$cookies" and
+      (methodName = "put" or methodName = "putObject") and
+      e = mce.getArgument(1)
     )
   }
 

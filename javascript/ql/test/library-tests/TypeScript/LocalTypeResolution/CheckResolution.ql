@@ -1,8 +1,6 @@
 import javascript
 
-abstract class Violation extends ASTNode {
-  abstract string reason();
-}
+abstract class Violation extends ASTNode { abstract string reason(); }
 
 /**
  * Holds for tuples of form `[X, "name1"]` where `X` is a simple type access
@@ -12,8 +10,11 @@ abstract class Violation extends ASTNode {
  */
 class TypeResolutionAssertion extends TupleTypeExpr, Violation {
   InterfaceDeclaration interface;
+
   LocalTypeAccess typeAccess;
+
   string expected;
+
   string actual;
 
   TypeResolutionAssertion() {
