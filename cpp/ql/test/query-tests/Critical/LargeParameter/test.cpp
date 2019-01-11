@@ -49,6 +49,6 @@ struct CustomAssignmentOp {
   // GOOD: it's an accepted pattern to implement copy assignment via copy and
   // swap. This delegates the resource management involved in copying to the
   // copy constructor so that logic only has to be written once.
-  CustomAssignmentOp &operator=(CustomAssignmentOp rhs); // FALSE POSITIVE
+  CustomAssignmentOp &operator=(CustomAssignmentOp rhs);
   char data[4096];
 };

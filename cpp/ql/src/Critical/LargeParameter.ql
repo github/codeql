@@ -18,6 +18,7 @@ where f.getAParameter() = p
   and t.getSize() = size
   and size > 64
   and not t.getUnderlyingType() instanceof ArrayType
+  and not f instanceof CopyAssignmentOperator
 select
   p, "This parameter of type $@ is " + size.toString() + " bytes - consider passing a pointer/reference instead.",
   t, t.toString()
