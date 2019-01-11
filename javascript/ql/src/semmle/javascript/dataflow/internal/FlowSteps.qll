@@ -236,17 +236,17 @@ predicate loadStep(DataFlow::Node pred, DataFlow::PropRead succ, string prop) {
 }
 
 /**
- * Holds if there is a call with arguments `cb` and `pred`, and `succ` is
- * a parameter of a function that may flow into `cb`.
+ * Holds if there is a call with argument `pred`, and `succ` flows into the callee
+ * position of that call.
  *
  * This is an over-approximation of a possible data flow step through a callback
  * invocation.
  */
-predicate approximateCallbackStep(DataFlow::Node pred, DataFlow::Node succ) {
-  exists (DataFlow::InvokeNode invk, DataFlow::FunctionNode cb |
+predicate approximateCallbackStep(DataFlow::Node pred, DataFlow::SourceNode succ) {
+  exists (DataFlow::InvokeNode invk, DataFlow::ParameterNode cb |
     pred = invk.getAnArgument() and
-    cb.flowsTo(invk.getAnArgument()) and
-    succ = cb.getAParameter()
+    cb.flowsTo(invk.getCalleeNode()) and
+    callStep(any(DataFlow::Node nd | succ.flowsTo(nd)), cb)
   )
 }
 

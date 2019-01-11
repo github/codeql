@@ -102,6 +102,8 @@ private module NodeTracking {
       loadStep(mid, nd, _)
       or
       approximateCallbackStep(mid, nd)
+      or
+      nd = mid.(DataFlow::FunctionNode).getAParameter()
     )
   }
 
@@ -213,9 +215,20 @@ private module NodeTracking {
   private predicate higherOrderCall(
     DataFlow::Node arg, DataFlow::Node cb, int i, PathSummary summary
   ) {
-    exists (Function f, DataFlow::InvokeNode outer, DataFlow::InvokeNode inner |
-      reachableFromInput(f, outer, arg, inner.getArgument(i), summary) and
-      argumentPassing(outer, cb, f, inner.getCalleeNode().getALocalSource())
+    exists (Function f, DataFlow::InvokeNode outer, DataFlow::InvokeNode inner, int j,
+      DataFlow::Node innerArg, DataFlow::ParameterNode cbParm, PathSummary oldSummary |
+      reachableFromInput(f, outer, arg, innerArg, oldSummary) and
+      argumentPassing(outer, cb, f, cbParm) and
+      innerArg = inner.getArgument(j) |
+      cbParm.flowsTo(inner.getCalleeNode()) and
+      i = j and
+      summary = oldSummary
+      or
+      exists (DataFlow::Node cbArg, PathSummary newSummary |
+        cbParm.flowsTo(cbArg) and
+        higherOrderCall(innerArg, cbArg, i, newSummary) and
+        summary = oldSummary.append(PathSummary::call()).append(newSummary)
+      )
     )
   }
 

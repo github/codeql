@@ -20,4 +20,12 @@ call(store, confounder); // call with different argument to make sure the call g
                          // doesn't resolve the call on line 2 for us
 map(store, [source2]);
 
+function call2(x, f) {
+  call(f, x);
+}
+
+let source3 = "source3";
+call2(source3, store);
+call2(source3, confounder);
+
 // semmle-extractor-options: --source-type module
