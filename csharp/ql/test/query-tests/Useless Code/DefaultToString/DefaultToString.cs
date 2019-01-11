@@ -29,6 +29,9 @@ class DefaultToString
 
         var sb = new StringBuilder();
         sb.Append(new char[] { 'a', 'b', 'c' }, 0, 3); // GOOD
+
+        IInterface f = null;
+        Console.WriteLine(f);  // GOOD
     }
 
     class A
@@ -47,6 +50,10 @@ class DefaultToString
     class D : C
     {
         override public string ToString() { return "D"; }
+    }
+    
+    interface IInterface
+    {
     }
 }
 

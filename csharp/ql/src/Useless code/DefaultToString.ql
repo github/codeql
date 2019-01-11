@@ -54,7 +54,9 @@ predicate alwaysDefaultToString(ValueOrRefType t) {
   not exists(RefType overriding |
     overriding.getAMethod() instanceof ToStringMethod and
     overriding.getABaseType+() = t
-  )
+  ) and
+  not t.isAbstract() and
+  not t instanceof Interface
 }
 
 newtype TDefaultToStringType = TDefaultToStringType0(ValueOrRefType t) { alwaysDefaultToString(t) }
