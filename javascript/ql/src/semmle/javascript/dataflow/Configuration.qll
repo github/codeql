@@ -87,6 +87,12 @@ abstract class Configuration extends string {
   Configuration() { any() }
 
   /**
+   * Gets the unique identifier of this configuration among all data flow tracking
+   * configurations.
+   */
+  string getId() { result = this }
+
+  /**
    * Holds if `source` is a relevant data flow source for this configuration.
    */
   predicate isSource(DataFlow::Node source) { none() }
@@ -221,7 +227,7 @@ class TaintKind = FlowLabel;
 /**
  * A standard flow label, that is, either `FlowLabel::data()` or `FlowLabel::taint()`.
  */
-private class StandardFlowLabel extends FlowLabel {
+class StandardFlowLabel extends FlowLabel {
   StandardFlowLabel() { this = "data" or this = "taint" }
 }
 
@@ -299,7 +305,19 @@ abstract class AdditionalFlowStep extends DataFlow::Node {
    * Holds if `pred` &rarr; `succ` should be considered a data flow edge.
    */
   cached
-  abstract predicate step(DataFlow::Node pred, DataFlow::Node succ);
+  predicate step(DataFlow::Node pred, DataFlow::Node succ) { none() }
+
+  /**
+   * Holds if `pred` &rarr; `succ` should be considered a data flow edge
+   * transforming values with label `predlbl` to have label `succlbl`.
+   */
+  cached
+  predicate step(
+    DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel predlbl,
+    DataFlow::FlowLabel succlbl
+  ) {
+    none()
+  }
 }
 
 /**
@@ -311,7 +329,13 @@ abstract class AdditionalSource extends DataFlow::Node {
    * Holds if this data flow node should be considered a source node for
    * configuration `cfg`.
    */
-  abstract predicate isSourceFor(Configuration cfg);
+  predicate isSourceFor(Configuration cfg) { none() }
+
+  /**
+   * Holds if this data flow node should be considered a source node for
+   * values labeled with `lbl` under configuration `cfg`.
+   */
+  predicate isSourceFor(Configuration cfg, FlowLabel lbl) { none() }
 }
 
 /**
@@ -323,7 +347,13 @@ abstract class AdditionalSink extends DataFlow::Node {
    * Holds if this data flow node should be considered a sink node for
    * configuration `cfg`.
    */
-  abstract predicate isSinkFor(Configuration cfg);
+  predicate isSinkFor(Configuration cfg) { none() }
+
+  /**
+   * Holds if this data flow node should be considered a sink node for
+   * values labeled with `lbl` under configuration `cfg`.
+   */
+  predicate isSinkFor(Configuration cfg, FlowLabel lbl) { none() }
 }
 
 /**
@@ -451,6 +481,8 @@ private predicate isSource(DataFlow::Node nd, DataFlow::Configuration cfg, FlowL
   (cfg.isSource(nd) or nd.(AdditionalSource).isSourceFor(cfg)) and
   lbl = FlowLabel::data()
   or
+  nd.(AdditionalSource).isSourceFor(cfg, lbl)
+  or
   cfg.isSource(nd, lbl)
 }
 
@@ -460,6 +492,8 @@ private predicate isSource(DataFlow::Node nd, DataFlow::Configuration cfg, FlowL
 private predicate isSink(DataFlow::Node nd, DataFlow::Configuration cfg, FlowLabel lbl) {
   (cfg.isSink(nd) or nd.(AdditionalSink).isSinkFor(cfg)) and
   lbl = any(StandardFlowLabel f)
+  or
+  nd.(AdditionalSink).isSinkFor(cfg, lbl)
   or
   cfg.isSink(nd, lbl)
 }
@@ -697,12 +731,17 @@ private predicate onPath(DataFlow::Node nd, DataFlow::Configuration cfg, PathSum
 }
 
 /**
+ * Holds if `cfg` has at least one source and at least one sink.
+ */
+pragma[noinline]
+private predicate isLive(DataFlow::Configuration cfg) { isSource(_, cfg, _) and isSink(_, cfg, _) }
+
+/**
  * A data flow node on an inter-procedural path from a source.
  */
 private newtype TPathNode =
   MkPathNode(DataFlow::Node nd, DataFlow::Configuration cfg, PathSummary summary) {
-    isSource(_, cfg, _) and
-    isSink(_, cfg, _) and
+    isLive(cfg) and
     onPath(nd, cfg, summary)
   }
 
@@ -736,6 +775,9 @@ class PathNode extends TPathNode {
 
   /** Gets the underlying data flow tracking configuration of this path node. */
   DataFlow::Configuration getConfiguration() { result = cfg }
+
+  /** Gets the summary of the path underlying this path node. */
+  PathSummary getPathSummary() { result = summary }
 
   /** Gets a successor node of this path node. */
   PathNode getASuccessor() {

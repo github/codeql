@@ -88,6 +88,9 @@ module DataFlow {
     /** Gets the container in which this node occurs. */
     StmtContainer getContainer() { result = getBasicBlock().getContainer() }
 
+    /** Gets the toplevel in which this node occurs. */
+    TopLevel getTopLevel() { result = getContainer().getTopLevel() }
+
     /**
      * Holds if this data flow node accesses the global variable `g`, either directly
      * or through the `window` object.

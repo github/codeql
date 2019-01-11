@@ -318,6 +318,11 @@ class NPMPackage extends @folder {
    * Gets the main module of this package.
    */
   Module getMainModule() { result = pkg.getMainModule() }
+
+  /**
+   * Holds if this package declares a dependency on version `v` of package `p`.
+   */
+  predicate declaresDependency(string p, string v) { pkg.declaresDependency(p, v) }
 }
 
 /**

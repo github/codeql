@@ -260,8 +260,18 @@ class AbstractRegExp extends DefiniteAbstractValue, TAbstractRegExp {
 abstract class AbstractCallable extends DefiniteAbstractValue {
   /**
    * Gets the function represented by this abstract value.
+   *
+   * For abstract class values, this is the constructor method of the class.
    */
   abstract Function getFunction();
+
+  /**
+   * Gets the definition of the function or class represented by this abstract value.
+   *
+   * For abstract class values, this is the definition of the class itself (and not
+   * its constructor).
+   */
+  abstract AST::ValueNode getDefinition();
 }
 
 /**
@@ -269,6 +279,8 @@ abstract class AbstractCallable extends DefiniteAbstractValue {
  */
 class AbstractFunction extends AbstractCallable, TAbstractFunction {
   override Function getFunction() { this = TAbstractFunction(result) }
+
+  override AST::ValueNode getDefinition() { result = getFunction() }
 
   override boolean getBooleanValue() { result = true }
 
@@ -297,6 +309,8 @@ class AbstractClass extends AbstractCallable, TAbstractClass {
   ClassDefinition getClass() { this = TAbstractClass(result) }
 
   override Function getFunction() { result = getClass().getConstructor().getBody() }
+
+  override AST::ValueNode getDefinition() { result = getClass() }
 
   override boolean getBooleanValue() { result = true }
 
