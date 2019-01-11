@@ -206,19 +206,33 @@ private module NodeTracking {
   }
 
   /**
+   * Holds if `arg` and `cb` are passed as arguments to a function which in turn
+   * invokes `cb`, passing `arg` as its `i`th argument. `arg` flows along a path summarized
+   * by `summary`, while `cb` is only tracked locally.
+   */
+  private predicate higherOrderCall(
+    DataFlow::Node arg, DataFlow::Node cb, int i, PathSummary summary
+  ) {
+    exists (Function f, DataFlow::InvokeNode outer, DataFlow::InvokeNode inner |
+      reachableFromInput(f, outer, arg, inner.getArgument(i), summary) and
+      argumentPassing(outer, cb, f, inner.getCalleeNode().getALocalSource())
+    )
+  }
+
+  /**
    * Holds if `pred` is passed as an argument to a function `f` which also takes a
    * callback parameter `cb` and then invokes `cb`, passing `pred` into parameter `succ`
-   * of `cb`.
+   * of `cb`. `arg` flows along a path summarized by `summary`, while `cb` is only tracked
+   * locally.
    */
   private predicate flowIntoHigherOrderCall(
     DataFlow::Node pred, DataFlow::Node succ, PathSummary summary
   ) {
     exists(
-      Function f, DataFlow::InvokeNode fCall, DataFlow::Node fArg, DataFlow::FunctionNode cb,
-      DataFlow::InvokeNode cbCall, int i, PathSummary oldSummary
+      DataFlow::Node fArg, DataFlow::FunctionNode cb,
+      int i, PathSummary oldSummary
     |
-      reachableFromInput(f, fCall, pred, cbCall.getArgument(i), oldSummary) and
-      argumentPassing(fCall, fArg, f, cbCall.getCalleeNode().getALocalSource()) and
+      higherOrderCall(pred, fArg, i, oldSummary) and
       cb = fArg.getALocalSource() and
       succ = cb.getParameter(i) and
       summary = oldSummary.append(PathSummary::call())
