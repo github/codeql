@@ -28,9 +28,15 @@ ParameterDeclarationEntry functionParameterNames(Function f, string name) {
   )
 }
 
-from Function f, LocalVariable lv, ParameterDeclarationEntry pde
+pragma[nomagic]
+LocalVariable localVariableNames(Function f, string name) {
+  name = result.getName() and
+  f = result.getFunction()
+}
+
+from Function f, LocalVariable lv, ParameterDeclarationEntry pde, string name
 where
-  f = lv.getFunction() and
-  pde = functionParameterNames(f, lv.getName()) and
+  lv = localVariableNames(f, name) and
+  pde = functionParameterNames(f, name) and
   not lv.isInMacroExpansion()
 select lv, "Local variable '" + lv.getName() + "' hides a $@.", pde, "parameter of the same name"
