@@ -489,114 +489,161 @@ DataFlow::SourceNode moduleMember(string path, string m) {
  * });
  * ```
  */
-class ClassNode extends DataFlow::SourceNode, DataFlow::ValueNode {
-  ClassNode() {
-    astNode instanceof ClassDefinition
-    or
-    astNode instanceof Function and
-    exists(getAPropertyReference("prototype"))
-  }
+class ClassNode extends DataFlow::SourceNode {
+  ClassNode::Range impl;
+
+  ClassNode() { this = impl }
 
   /**
    * Gets the name of the class, if it has one.
    */
-  string getName() {
-    result = astNode.(ClassDefinition).getName()
-    or
-    result = astNode.(Function).getName()
-  }
+  string getName() { result = impl.getName() }
 
   /**
    * Gets a description of the class.
    */
-  string describe() {
-    result = astNode.(ClassDefinition).describe()
-    or
-    result = astNode.(Function).describe()
-  }
+  string desribe() { result = impl.describe() }
 
   /**
    * Gets the constructor function of this class.
    */
-  FunctionNode getConstructor() {
-    result = astNode.(ClassDefinition).getConstructor().getBody().flow()
-    or
-    result = this
-  }
+  FunctionNode getConstructor() { result = impl.getConstructor() }
 
   /**
    * Gets an instance method with the given name, if any.
    */
-  FunctionNode getInstanceMethod(string name) {
-    exists(MethodDeclaration method |
-      method = astNode.(ClassDefinition).getMethod(name) and
-      not method.isStatic() and
-      not method.isAmbient() and
-      not method instanceof ConstructorDeclaration and
-      result = method.getBody().flow()
-    )
-    or
-    result = getAPrototypeReference().getAPropertyWrite(name).getRhs().getALocalSource()
-  }
+  FunctionNode getInstanceMethod(string name) { result = impl.getInstanceMethod(name) }
 
   /**
    * Gets an instance method of this class.
    *
    * The constructor is not considered an instance method.
    */
-  FunctionNode getAnInstanceMethod() {
-    exists(MethodDeclaration method |
-      method = astNode.(ClassDefinition).getAMethod() and
-      not method.isStatic() and
-      not method.isAmbient() and
-      not method instanceof ConstructorDeclaration and
-      result = method.getBody().flow()
-    )
-    or
-    result = getAPrototypeReference().getAPropertyWrite().getRhs().getALocalSource()
-  }
+  FunctionNode getAnInstanceMethod() { result = impl.getAnInstanceMethod() }
 
   /**
    * Gets the static method of this class with the given name.
    */
-  FunctionNode getStaticMethod(string name) {
-    exists(MethodDeclaration method |
-      method = astNode.(ClassDefinition).getMethod(name) and
-      method.isStatic() and
-      not method.isAmbient() and
-      result = method.getBody().flow()
-    )
-    or
-    result = getAPropertyWrite(name).getRhs().getALocalSource()
-  }
+  FunctionNode getStaticMethod(string name) { result = impl.getStaticMethod(name) }
 
   /**
    * Gets a static method of this class.
    *
    * The constructor is not considered a static method.
    */
-  FunctionNode getAStaticMethod() {
-    exists(MethodDeclaration method |
-      method = astNode.(ClassDefinition).getAMethod() and
-      method.isStatic() and
-      not method.isAmbient() and
-      result = method.getBody().flow()
-    )
-    or
-    result = getAPropertyWrite().getRhs().getALocalSource()
-  }
+  FunctionNode getAStaticMethod() { result = impl.getAStaticMethod() }
+}
 
-  /**
-   * Gets a reference to the prototype of this class.
-   */
-  private DataFlow::SourceNode getAPrototypeReference() {
-    result = getAPropertyRead("prototype")
-    or
-    result = getAPropertySource("prototype")
-    or
-    exists(ExtendCall call |
-      call.getDestinationOperand() = getAPropertyRead("prototype") and
-      result = call.getASourceOperand()
-    )
+module ClassNode {
+  class Range extends DataFlow::SourceNode, DataFlow::ValueNode {
+    Range() {
+      astNode instanceof ClassDefinition
+      or
+      astNode instanceof Function and
+      exists(getAPropertyReference("prototype"))
+    }
+
+    /**
+     * Gets the name of the class, if it has one.
+     */
+    string getName() {
+      result = astNode.(ClassDefinition).getName()
+      or
+      result = astNode.(Function).getName()
+    }
+
+    /**
+     * Gets a description of the class.
+     */
+    string describe() {
+      result = astNode.(ClassDefinition).describe()
+      or
+      result = astNode.(Function).describe()
+    }
+
+    /**
+     * Gets the constructor function of this class.
+     */
+    FunctionNode getConstructor() {
+      result = astNode.(ClassDefinition).getConstructor().getBody().flow()
+      or
+      result = this
+    }
+
+    /**
+     * Gets an instance method with the given name, if any.
+     */
+    FunctionNode getInstanceMethod(string name) {
+      exists(MethodDeclaration method |
+        method = astNode.(ClassDefinition).getMethod(name) and
+        not method.isStatic() and
+        not method.isAmbient() and
+        not method instanceof ConstructorDeclaration and
+        result = method.getBody().flow()
+      )
+      or
+      result = getAPrototypeReference().getAPropertyWrite(name).getRhs().getALocalSource()
+    }
+
+    /**
+     * Gets an instance method of this class.
+     *
+     * The constructor is not considered an instance method.
+     */
+    FunctionNode getAnInstanceMethod() {
+      exists(MethodDeclaration method |
+        method = astNode.(ClassDefinition).getAMethod() and
+        not method.isStatic() and
+        not method.isAmbient() and
+        not method instanceof ConstructorDeclaration and
+        result = method.getBody().flow()
+      )
+      or
+      result = getAPrototypeReference().getAPropertyWrite().getRhs().getALocalSource()
+    }
+
+    /**
+     * Gets the static method of this class with the given name.
+     */
+    FunctionNode getStaticMethod(string name) {
+      exists(MethodDeclaration method |
+        method = astNode.(ClassDefinition).getMethod(name) and
+        method.isStatic() and
+        not method.isAmbient() and
+        result = method.getBody().flow()
+      )
+      or
+      result = getAPropertyWrite(name).getRhs().getALocalSource()
+    }
+
+    /**
+     * Gets a static method of this class.
+     *
+     * The constructor is not considered a static method.
+     */
+    FunctionNode getAStaticMethod() {
+      exists(MethodDeclaration method |
+        method = astNode.(ClassDefinition).getAMethod() and
+        method.isStatic() and
+        not method.isAmbient() and
+        result = method.getBody().flow()
+      )
+      or
+      result = getAPropertyWrite().getRhs().getALocalSource()
+    }
+
+    /**
+     * Gets a reference to the prototype of this class.
+     */
+    private DataFlow::SourceNode getAPrototypeReference() {
+      result = getAPropertyRead("prototype")
+      or
+      result = getAPropertySource("prototype")
+      or
+      exists(ExtendCall call |
+        call.getDestinationOperand() = getAPropertyRead("prototype") and
+        result = call.getASourceOperand()
+      )
+    }
   }
 }
