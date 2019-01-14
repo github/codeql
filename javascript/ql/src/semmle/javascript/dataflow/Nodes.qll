@@ -502,7 +502,7 @@ class ClassNode extends DataFlow::SourceNode {
   /**
    * Gets a description of the class.
    */
-  string desribe() { result = impl.describe() }
+  string describe() { result = impl.describe() }
 
   /**
    * Gets the constructor function of this class.
@@ -535,79 +535,88 @@ class ClassNode extends DataFlow::SourceNode {
 }
 
 module ClassNode {
-  class Range extends DataFlow::SourceNode, DataFlow::ValueNode {
-    Range() {
-      astNode instanceof ClassDefinition
-      or
-      astNode instanceof Function and
-      exists(getAPropertyReference("prototype"))
-    }
-
+  /**
+   * A dataflow node that should be considered a class node.
+   *
+   * Subclass this to introduce new kinds of class nodes. If you want to refine
+   * the definition of existing class nodes, subclass `DataFlow::ClassNode` instead.
+   */
+  abstract class Range extends DataFlow::SourceNode {
     /**
      * Gets the name of the class, if it has one.
      */
-    string getName() {
-      result = astNode.(ClassDefinition).getName()
-      or
-      result = astNode.(Function).getName()
-    }
+    abstract string getName();
 
     /**
      * Gets a description of the class.
      */
-    string describe() {
-      result = astNode.(ClassDefinition).describe()
-      or
-      result = astNode.(Function).describe()
-    }
+    abstract string describe();
 
     /**
      * Gets the constructor function of this class.
      */
-    FunctionNode getConstructor() {
-      result = astNode.(ClassDefinition).getConstructor().getBody().flow()
-      or
-      result = this
-    }
+    abstract FunctionNode getConstructor();
 
     /**
      * Gets an instance method with the given name, if any.
      */
-    FunctionNode getInstanceMethod(string name) {
-      exists(MethodDeclaration method |
-        method = astNode.(ClassDefinition).getMethod(name) and
-        not method.isStatic() and
-        not method.isAmbient() and
-        not method instanceof ConstructorDeclaration and
-        result = method.getBody().flow()
-      )
-      or
-      result = getAPrototypeReference().getAPropertyWrite(name).getRhs().getALocalSource()
-    }
+    abstract FunctionNode getInstanceMethod(string name);
 
     /**
      * Gets an instance method of this class.
      *
      * The constructor is not considered an instance method.
      */
-    FunctionNode getAnInstanceMethod() {
+    abstract FunctionNode getAnInstanceMethod();
+
+    /**
+     * Gets the static method of this class with the given name.
+     */
+    abstract FunctionNode getStaticMethod(string name);
+
+    /**
+     * Gets a static method of this class.
+     *
+     * The constructor is not considered a static method.
+     */
+    abstract FunctionNode getAStaticMethod();
+  }
+
+  /**
+   * An ES6 class as a `ClassNode` instance.
+   */
+  private class ES6Class extends Range, DataFlow::ValueNode {
+    override ClassDefinition astNode;
+
+    override string getName() { result = astNode.getName() }
+
+    override string describe() { result = astNode.describe() }
+
+    override FunctionNode getConstructor() { result = astNode.getConstructor().getBody().flow() }
+
+    override FunctionNode getInstanceMethod(string name) {
       exists(MethodDeclaration method |
-        method = astNode.(ClassDefinition).getAMethod() and
+        method = astNode.getMethod(name) and
         not method.isStatic() and
         not method.isAmbient() and
         not method instanceof ConstructorDeclaration and
         result = method.getBody().flow()
       )
-      or
-      result = getAPrototypeReference().getAPropertyWrite().getRhs().getALocalSource()
     }
 
-    /**
-     * Gets the static method of this class with the given name.
-     */
-    FunctionNode getStaticMethod(string name) {
+    override FunctionNode getAnInstanceMethod() {
       exists(MethodDeclaration method |
-        method = astNode.(ClassDefinition).getMethod(name) and
+        method = astNode.getAMethod() and
+        not method.isStatic() and
+        not method.isAmbient() and
+        not method instanceof ConstructorDeclaration and
+        result = method.getBody().flow()
+      )
+    }
+
+    override FunctionNode getStaticMethod(string name) {
+      exists(MethodDeclaration method |
+        method = astNode.getMethod(name) and
         method.isStatic() and
         not method.isAmbient() and
         result = method.getBody().flow()
@@ -616,19 +625,43 @@ module ClassNode {
       result = getAPropertyWrite(name).getRhs().getALocalSource()
     }
 
-    /**
-     * Gets a static method of this class.
-     *
-     * The constructor is not considered a static method.
-     */
-    FunctionNode getAStaticMethod() {
+    override FunctionNode getAStaticMethod() {
       exists(MethodDeclaration method |
         method = astNode.(ClassDefinition).getAMethod() and
         method.isStatic() and
         not method.isAmbient() and
         result = method.getBody().flow()
       )
-      or
+    }
+  }
+
+  /**
+   * A function definition with prototype manipulation as a `ClassNode` instance.
+   */
+  class FunctionStyleClass extends Range, DataFlow::ValueNode {
+    override Function astNode;
+
+    FunctionStyleClass() { exists(getAPropertyReference("prototype")) }
+
+    override string getName() { result = astNode.getName() }
+
+    override string describe() { result = astNode.describe() }
+
+    override FunctionNode getConstructor() { result = this }
+
+    override FunctionNode getInstanceMethod(string name) {
+      result = getAPrototypeReference().getAPropertyWrite(name).getRhs().getALocalSource()
+    }
+
+    override FunctionNode getAnInstanceMethod() {
+      result = getAPrototypeReference().getAPropertyWrite().getRhs().getALocalSource()
+    }
+
+    override FunctionNode getStaticMethod(string name) {
+      result = getAPropertyWrite(name).getRhs().getALocalSource()
+    }
+
+    override FunctionNode getAStaticMethod() {
       result = getAPropertyWrite().getRhs().getALocalSource()
     }
 
