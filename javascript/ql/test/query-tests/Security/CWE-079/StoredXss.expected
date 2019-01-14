@@ -199,6 +199,7 @@ nodes
 | tst.js:209:28:209:46 | this.state.tainted1 |
 | tst.js:210:28:210:46 | this.state.tainted2 |
 | tst.js:211:28:211:46 | this.state.tainted3 |
+| tst.js:211:28:211:46 | this.state.tainted3 |
 | tst.js:215:32:215:49 | prevState.tainted4 |
 | tst.js:222:28:222:46 | this.props.tainted1 |
 | tst.js:223:28:223:46 | this.props.tainted2 |
@@ -392,6 +393,7 @@ edges
 | tst.js:201:35:201:41 | tainted | tst.js:209:28:209:46 | this.state.tainted1 |
 | tst.js:203:27:203:26 | tainted | tst.js:203:46:203:52 | tainted |
 | tst.js:203:46:203:52 | tainted | tst.js:210:28:210:46 | this.state.tainted2 |
+| tst.js:204:38:204:44 | tainted | tst.js:211:28:211:46 | this.state.tainted3 |
 | tst.js:204:38:204:44 | tainted | tst.js:211:28:211:46 | this.state.tainted3 |
 | tst.js:205:35:205:41 | tainted | tst.js:215:32:215:49 | prevState.tainted4 |
 | tst.js:233:35:233:41 | tainted | tst.js:222:28:222:46 | this.props.tainted1 |
