@@ -12,5 +12,7 @@ def hello():
     pickle.loads(payload)
     yaml.load(payload)
     marshal.loads(payload)
+    import dill
+    dill.loads(payload)
 
 

@@ -15,6 +15,8 @@ private ModuleObject pickleModule() {
     result.getName() = "pickle"
     or
     result.getName() = "cPickle"
+    or
+    result.getName() = "dill"
 }
 
 private FunctionObject pickleLoads() {
