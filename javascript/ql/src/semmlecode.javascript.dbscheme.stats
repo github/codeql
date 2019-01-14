@@ -814,6 +814,10 @@
 <v>100</v>
 </e>
 <e>
+<k>@bigintliteraltypeexpr</k>
+<v>100</v>
+</e>
+<e>
 <k>@generictypeexpr</k>
 <v>5220</v>
 </e>
@@ -971,6 +975,14 @@
 </e>
 <e>
 <k>@unknowntype</k>
+<v>100</v>
+</e>
+<e>
+<k>@biginttype</k>
+<v>100</v>
+</e>
+<e>
+<k>@bigintliteraltype</k>
 <v>100</v>
 </e>
 <e>
