@@ -20,4 +20,5 @@
 
 * The extractor now supports additional [Flow](https://flow.org/) syntax.
 * The extractor now supports [Nullish Coalescing](https://github.com/tc39/proposal-nullish-coalescing) expressions.
+* The extractor now supports [TypeScript 3.2](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-2.html).
 * The TypeScript extractor now handles the control-flow of logical operators and destructuring assignments more accurately.
