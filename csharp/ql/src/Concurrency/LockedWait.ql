@@ -29,6 +29,6 @@ where
       lockedItem = "typeof(" + t.getName() + ")"
     )
     or
-    (l.isLockThis() and not w.isWaitThis() and lockedItem = "this")
+    l.isLockThis() and not w.isWaitThis() and lockedItem = "this"
   )
 select w, "'" + lockedItem + "' is locked during this wait."

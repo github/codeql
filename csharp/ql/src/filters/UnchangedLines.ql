@@ -17,6 +17,6 @@ where
     or
     changedLine(res.getFile(), res.getEndLine())
     or
-    (res.getStartLine() = 0 and changedLine(res.getFile(), _))
+    res.getStartLine() = 0 and changedLine(res.getFile(), _)
   )
 select res, res.getMessage()

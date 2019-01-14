@@ -18,7 +18,7 @@ predicate ignoredLine(File f, int line) {
 
 from DefectResult res
 where
-  not (res.getFile() instanceof TestFile)
+  not res.getFile() instanceof TestFile
   or
   not ignoredLine(res.getFile(), res.getStartLine())
 select res, res.getMessage()

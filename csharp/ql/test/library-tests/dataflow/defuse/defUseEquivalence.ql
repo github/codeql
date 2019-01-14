@@ -28,15 +28,11 @@ private LocalScopeVariableRead getAReachableUncertainRead(AssignableDefinition d
 
 from AssignableDefinition def, LocalScopeVariableRead read, string s
 where
-  (
-    read = getAReachableUncertainRead(def) and
-    not defUsePair(def, read) and
-    s = "not a def/use pair"
-  )
+  read = getAReachableUncertainRead(def) and
+  not defUsePair(def, read) and
+  s = "not a def/use pair"
   or
-  (
-    defUsePair(def, read) and
-    not read = getAReachableUncertainRead(def) and
-    s = "missing def/use pair"
-  )
+  defUsePair(def, read) and
+  not read = getAReachableUncertainRead(def) and
+  s = "missing def/use pair"
 select def, read, s

@@ -2,13 +2,10 @@ import csharp
 import ControlFlow::Internal
 
 class CallableWithSplitting extends Callable {
-  CallableWithSplitting() {
-    this = any(SplitControlFlowElement e).getEnclosingCallable()
-  }
+  CallableWithSplitting() { this = any(SplitControlFlowElement e).getEnclosingCallable() }
 }
 
-query
-predicate defReadInconsistency(
+query predicate defReadInconsistency(
   AssignableRead ar, Expr e, PreSsa::SimpleAssignable a, boolean b
 ) {
   // Exclude definitions in callables with CFG splitting, as SSA definitions may be
@@ -48,7 +45,8 @@ query predicate readReadInconsistency(
     b = true and
     a = read1.getTarget() and
     PreSsa::adjacentReadPairSameVar(read1, read2) and
-    not Ssa::Internal::adjacentReadPairSameVar(read1.getAControlFlowNode(), read2.getAControlFlowNode())
+    not Ssa::Internal::adjacentReadPairSameVar(read1.getAControlFlowNode(),
+      read2.getAControlFlowNode())
     or
     b = false and
     a = read1.getTarget() and

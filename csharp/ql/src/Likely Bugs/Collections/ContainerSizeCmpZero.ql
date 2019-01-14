@@ -24,18 +24,16 @@ private predicate propertyOverrides(Property p, string baseClass, string propert
 
 private predicate containerSizeAccess(PropertyAccess pa, string containerKind) {
   (
-    (
-      propertyOverrides(pa.getTarget(), "System.Collections.Generic.ICollection<>", "Count") or
-      propertyOverrides(pa.getTarget(), "System.Collections.Generic.IReadOnlyCollection<>", "Count") or
-      propertyOverrides(pa.getTarget(), "System.Collections.ICollection", "Count")
-    ) and
-    containerKind = "a collection"
-  )
+    propertyOverrides(pa.getTarget(), "System.Collections.Generic.ICollection<>", "Count") or
+    propertyOverrides(pa.getTarget(), "System.Collections.Generic.IReadOnlyCollection<>", "Count") or
+    propertyOverrides(pa.getTarget(), "System.Collections.ICollection", "Count")
+  ) and
+  containerKind = "a collection"
   or
   (
-    (propertyOverrides(pa.getTarget(), "System.String", "Length") and containerKind = "a string")
+    propertyOverrides(pa.getTarget(), "System.String", "Length") and containerKind = "a string"
     or
-    (propertyOverrides(pa.getTarget(), "System.Array", "Length") and containerKind = "an array")
+    propertyOverrides(pa.getTarget(), "System.Array", "Length") and containerKind = "an array"
   )
 }
 
@@ -45,29 +43,21 @@ class ZeroLiteral extends Expr { ZeroLiteral() { getValue() = "0" } }
  * Whether `smaller` is checked to be no greater than `greater` by `e` being `trueOrFalse`
  */
 private predicate checkedLT(BinaryOperation e, Expr greater, Expr smaller, string trueOrFalse) {
-  (
-    greater = e.(GEExpr).getLeftOperand() and
-    smaller = e.(GEExpr).getRightOperand() and
-    trueOrFalse = "true"
-  )
+  greater = e.(GEExpr).getLeftOperand() and
+  smaller = e.(GEExpr).getRightOperand() and
+  trueOrFalse = "true"
   or
-  (
-    greater = e.(LEExpr).getRightOperand() and
-    smaller = e.(LEExpr).getLeftOperand() and
-    trueOrFalse = "true"
-  )
+  greater = e.(LEExpr).getRightOperand() and
+  smaller = e.(LEExpr).getLeftOperand() and
+  trueOrFalse = "true"
   or
-  (
-    greater = e.(GTExpr).getRightOperand() and
-    smaller = e.(GTExpr).getLeftOperand() and
-    trueOrFalse = "false"
-  )
+  greater = e.(GTExpr).getRightOperand() and
+  smaller = e.(GTExpr).getLeftOperand() and
+  trueOrFalse = "false"
   or
-  (
-    greater = e.(LTExpr).getLeftOperand() and
-    smaller = e.(LTExpr).getRightOperand() and
-    trueOrFalse = "false"
-  )
+  greater = e.(LTExpr).getLeftOperand() and
+  smaller = e.(LTExpr).getRightOperand() and
+  trueOrFalse = "false"
 }
 
 private predicate comparisonOfContainerSizeToZero(

@@ -29,7 +29,7 @@ where
     a instanceof NoAddAccess or a instanceof EmptyInitializationAccess
   ) and
   // Attributes indicate some kind of reflection
-  (not exists(Attribute a | v = a.getTarget())) and
+  not exists(Attribute a | v = a.getTarget()) and
   // There is at least one non-assignment access
   v.getAnAccess() instanceof NoAddAccess
 select v, "The contents of this container are never initialized."

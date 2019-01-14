@@ -17,5 +17,5 @@ where
   total = f.getNumberOfLinesOfCode() + f.getNumberOfLinesOfComments() and
   if total = 0
   then ratio = 0.0
-  else ratio = 100.0 * (f.getNumberOfLinesOfComments().(float)) / (total.(float))
+  else ratio = 100.0 * f.getNumberOfLinesOfComments().(float) / total.(float)
 select f, ratio order by ratio desc

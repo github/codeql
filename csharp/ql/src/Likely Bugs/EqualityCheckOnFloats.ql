@@ -21,9 +21,5 @@ class ZeroFloatLiteral extends FloatLiteral {
 from EqualityOperation e
 where
   e.getAnOperand().getType() instanceof FloatingPointType and
-  not (
-    e.getAnOperand() instanceof NullLiteral
-    //Uncomment this to exclude comparisons to 0 literals
-    //or e.getAnOperand() instanceof ZeroFloatLiteral
-  )
+  not e.getAnOperand() instanceof NullLiteral
 select e, "Equality checks on floating point values can yield unexpected results."

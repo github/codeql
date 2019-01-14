@@ -22,7 +22,7 @@ predicate logicalParent(LogicalOperation op, LogicalOperation parent) { parent =
 
 from Expr e, int operators
 where
-  not (e.getParent() instanceof LogicalOperation) and
+  not e.getParent() instanceof LogicalOperation and
   operators = count(BinaryLogicalOperation op |
       logicalParent*(op, e) and nontrivialLogicalOperator(op)
     ) and

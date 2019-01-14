@@ -1,9 +1,9 @@
 import csharp
 
 ControlFlow::Node successor(ControlFlow::Node node, boolean kind) {
-  (kind = true and result = node.getATrueSuccessor())
+  kind = true and result = node.getATrueSuccessor()
   or
-  (kind = false and result = node.getAFalseSuccessor())
+  kind = false and result = node.getAFalseSuccessor()
 }
 
 from ControlFlow::Node node, ControlFlow::Node successor, Location nl, Location sl, boolean kind
