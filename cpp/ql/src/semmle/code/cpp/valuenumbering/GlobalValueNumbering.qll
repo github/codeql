@@ -3,8 +3,8 @@
  * See https://en.wikipedia.org/wiki/Global_value_numbering
  *
  * The predicate `globalValueNumber` converts an expression into a `GVN`,
- * which is an abstract type presenting the value of the expression. If
- * two expressions have the `GVN` then they compute the same value.
+ * which is an abstract type representing the value of the expression. If
+ * two expressions have the same `GVN` then they compute the same value.
  * For example:
  *
  * ```
