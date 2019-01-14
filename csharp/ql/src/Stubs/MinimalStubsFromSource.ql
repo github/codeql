@@ -1,4 +1,4 @@
-/*
+/**
  * Tool to generate C# stubs from a qltest snapshot.
  *
  * It finds all declarations used in the source code,

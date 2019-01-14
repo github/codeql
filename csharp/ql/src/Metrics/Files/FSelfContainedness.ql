@@ -13,7 +13,7 @@
 import csharp
 import semmle.code.csharp.metrics.Coupling
 
-/* Self-containedness on file level */
+// Self-containedness on file level
 from File f, float selfContaindness, int efferentSourceCoupling, int efferentCoupling
 where
   efferentSourceCoupling = count(File g |

@@ -158,23 +158,20 @@ class TypeParameter extends DotNet::TypeParameter, Type, @type_parameter {
 
   /** Gets a type that was supplied for this parameter. */
   Type getASuppliedType() {
-    /*
-     * A type parameter either comes from the source declaration
-     *      or from a partially constructed generic.
-     *
-     *      When from a source declaration, return type arguments from all ConstructedGenerics,
-     *      and when from a partially constructed UnboundGeneric, return type arguments from
-     *      directly ConstructedGenerics.
-     *
-     *      e.g.
-     *
-     *      class A<T1> { class B<T2> { } }
-     *
-     *      A<T1>.B<T2> is the UnboundGenericClass source declaration,
-     *      A<int>.B<T2> is a partially constructed UnboundGenericClass and
-     *      A<int>.B<int> is a ConstructedGenericClass.
-     */
-
+    // A type parameter either comes from the source declaration
+    // or from a partially constructed generic.
+    //
+    // When from a source declaration, return type arguments from all ConstructedGenerics,
+    // and when from a partially constructed UnboundGeneric, return type arguments from
+    // directly ConstructedGenerics.
+    //
+    // For example:
+    //
+    // class A<T1> { class B<T2> { } }
+    //
+    // A<T1>.B<T2> is the UnboundGenericClass source declaration,
+    // A<int>.B<T2> is a partially constructed UnboundGenericClass and
+    // A<int>.B<int> is a ConstructedGenericClass.
     exists(ConstructedGeneric c, UnboundGeneric u, int tpi |
       this = u.getTypeParameter(tpi) and
       (u = c.getUnboundGeneric() or u = c.getSourceDeclaration()) and

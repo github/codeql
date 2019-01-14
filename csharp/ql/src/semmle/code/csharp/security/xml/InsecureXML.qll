@@ -13,12 +13,9 @@ module InsecureXML {
    */
   bindingset[version]
   private predicate isNetFrameworkBefore(Type t, string version) {
-    /*
-     * For assemblies compiled against framework versions before 4 the TargetFrameworkAttribute
-     * will not be present. In this case, we can revert back to the assembly version, which may not
-     * contain full minor version information.
-     */
-
+    // For assemblies compiled against framework versions before 4 the TargetFrameworkAttribute
+    // will not be present. In this case, we can revert back to the assembly version, which may not
+    // contain full minor version information.
     exists(string assemblyVersion |
       assemblyVersion = t
             .getALocation()
@@ -31,11 +28,8 @@ module InsecureXML {
       assemblyVersion.toFloat() < 4.0
     )
     or
-    /*
-     * For 4.0 and above the TargetFrameworkAttribute should be present to provide detailed version
-     * information.
-     */
-
+    // For 4.0 and above the TargetFrameworkAttribute should be present to provide detailed version
+    // information.
     exists(TargetFrameworkAttribute tfa |
       tfa.hasElement(t) and
       tfa.isNetFramework() and

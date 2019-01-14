@@ -774,12 +774,9 @@ private module Internal {
       )
     }
 
-    /*
-     * The set of static targets is all callables with matching
-     * names and number of parameters. This set is further reduced in
-     * `getADynamicTarget()` by taking type information into account.
-     */
-
+    // The set of static targets is all callables with matching
+    // names and number of parameters. This set is further reduced in
+    // `getADynamicTarget()` by taking type information into account.
     override Callable getAStaticTarget() {
       result = getACallableWithMatchingName() and
       exists(int minArgs |
@@ -800,23 +797,20 @@ private module Internal {
       result.getName() = getName()
     }
 
-    /*
-     * A callable is viable if the following conditions are all satisfied:
-     *
-     * 1. It is a viable candidate (see `getADynamicTargetCandidate()`).
-     * 2. The argument types are compatible with the parameter types. Here,
-     *    type compatibility means that an argument type must be implicitly
-     *    convertible to a type that equals the corresponding parameter type
-     *    modulo type parameters. For example, an argument type `int` is
-     *    compatible with a parameter type `IEquatable<T>`, because `int` is
-     *    implicitly convertible to `IEquatable<int>`, which equals
-     *    `IEquatable<T>` modulo type parameters. Note that potential type
-     *    parameter constraints are not taken into account, nor is the
-     *    possibility of matching a given type parameter with multiple,
-     *    conflicting types (for example, `Tuple<int, string>` is considered
-     *    compatible with `Tuple<T, T>`).
-     */
-
+    // A callable is viable if the following conditions are all satisfied:
+    //
+    // 1. It is a viable candidate (see `getADynamicTargetCandidate()`).
+    // 2. The argument types are compatible with the parameter types. Here,
+    //    type compatibility means that an argument type must be implicitly
+    //    convertible to a type that equals the corresponding parameter type
+    //    modulo type parameters. For example, an argument type `int` is
+    //    compatible with a parameter type `IEquatable<T>`, because `int` is
+    //    implicitly convertible to `IEquatable<int>`, which equals
+    //    `IEquatable<T>` modulo type parameters. Note that potential type
+    //    parameter constraints are not taken into account, nor is the
+    //    possibility of matching a given type parameter with multiple,
+    //    conflicting types (for example, `Tuple<int, string>` is considered
+    //    compatible with `Tuple<T, T>`).
     override RuntimeCallable getADynamicTarget() {
       // Condition 1
       result = getADynamicTargetCandidate() and

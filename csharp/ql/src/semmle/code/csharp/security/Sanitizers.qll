@@ -16,16 +16,13 @@ class HtmlSanitizedExpr extends Expr {
       m = any(SystemWebHttpUtility c).getAnHtmlAttributeEncodeMethod() or
       m = any(SystemNetWebUtility h).getAnHtmlEncodeMethod()
     |
-      /*
-       * All four utility classes provide the same pair of Html[Attribute]Encode methods:
-       *
-       *  - `string Html[Attribute]Encode(string value)`
-       *  - `void Html[Attribute]Encode(string value, TextWriter output)`
-       *
-       * In the first form, we treat the call as sanitized, and in the second form
-       * we treat any subsequent uses of the `output` argument as sanitized.
-       */
-
+      // All four utility classes provide the same pair of Html[Attribute]Encode methods:
+      //
+      //  - `string Html[Attribute]Encode(string value)`
+      //  - `void Html[Attribute]Encode(string value, TextWriter output)`
+      //
+      // In the first form, we treat the call as sanitized, and in the second form
+      // we treat any subsequent uses of the `output` argument as sanitized.
       m.getNumberOfParameters() = 1 and
       this = m.getACall()
       or

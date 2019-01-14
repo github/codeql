@@ -755,15 +755,12 @@ module Ssa {
         BasicBlock bb, TrackedDefinition def, TrackedVar v
       ) {
         exists(BasicBlock idom | ssaDefReachesEndOfBlock(idom, def, v) |
-          /*
-           * The construction of SSA form ensures that each read of a variable is
-           * dominated by its definition. An SSA definition therefore reaches a
-           * control flow node if it is the _closest_ SSA definition that dominates
-           * the node. If two definitions dominate a node then one must dominate the
-           * other, so therefore the definition of _closest_ is given by the dominator
-           * tree. Thus, reaching definitions can be calculated in terms of dominance.
-           */
-
+          // The construction of SSA form ensures that each read of a variable is
+          // dominated by its definition. An SSA definition therefore reaches a
+          // control flow node if it is the _closest_ SSA definition that dominates
+          // the node. If two definitions dominate a node then one must dominate the
+          // other, so therefore the definition of _closest_ is given by the dominator
+          // tree. Thus, reaching definitions can be calculated in terms of dominance.
           idom = bb.getImmediateDominator()
         )
       }

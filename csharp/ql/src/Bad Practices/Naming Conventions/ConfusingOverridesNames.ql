@@ -43,19 +43,16 @@ predicate confusing(Method m1, Method m2) {
   )
 }
 
-/*
- * Two method names are confusing if all of the following conditions hold:
- *   They are both static methods or both instance methods.
- *   They are not declared in the same class, and the superclass method is
- *     not overridden in an intermediate class
- *   They have different names.
- *   They have the same names if case is ignored.
- *   There is no method in the subclass that has the same name as
- *     the superclass method
- * There is an additional check that only methods with names longer than one character
- * can be considered confusing.
- */
-
+// Two method names are confusing if all of the following conditions hold:
+//   They are both static methods or both instance methods.
+//   They are not declared in the same class, and the superclass method is
+//     not overridden in an intermediate class
+//   They have different names.
+//   They have the same names if case is ignored.
+//   There is no method in the subclass that has the same name as
+//     the superclass method
+// There is an additional check that only methods with names longer than one character
+// can be considered confusing.
 from Method m1, Method m2
 where
   confusing(m1, m2) and

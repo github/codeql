@@ -45,18 +45,12 @@ module CommandInjection {
    */
   class SystemProcessCommandInjectionSink extends Sink {
     SystemProcessCommandInjectionSink() {
-      /*
-       * Arguments passed directly to the `System.Diagnostics.Process.Start` method.
-       */
-
+      // Arguments passed directly to the `System.Diagnostics.Process.Start` method
       exists(SystemDiagnosticsProcessClass processClass |
         this.getExpr() = processClass.getAStartMethod().getAParameter().getAnAssignedArgument()
       )
       or
-      /*
-       * Values set on a `System.Diagnostics.ProcessStartInfo` class.
-       */
-
+      // Values set on a `System.Diagnostics.ProcessStartInfo` class
       exists(SystemDiagnosticsProcessStartInfoClass startInfoClass |
         this.getExpr() = startInfoClass.getAConstructor().getACall().getAnArgument()
         or

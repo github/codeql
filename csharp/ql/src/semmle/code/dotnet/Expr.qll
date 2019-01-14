@@ -29,7 +29,7 @@ class Call extends Expr, @dotnet_call {
   /** Gets the target of this call. */
   Callable getTarget() { none() }
 
-  /* Gets any potential target of this call. */
+  /** Gets any potential target of this call. */
   Callable getARuntimeTarget() { none() }
 
   /**

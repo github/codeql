@@ -64,16 +64,13 @@ module MissingXMLValidation {
       result = "there is no 'XmlReaderSettings' instance specifying schema validation." and
       not exists(createCall.getSettings())
       or
-      /*
-       * An XmlReaderSettings instance is passed where:
-       *  - The ValidationType is not set to Schema; or
-       *  - The ValidationType is set to Schema, but:
-       *     - The ProcessInlineSchema option is set (this allows the document to set a schema
-       *       internally); or
-       *     - The ProcessSchemaLocation option is set (this allows the document to reference a
-       *       schema by location that this document will validate against).
-       */
-
+      // An XmlReaderSettings instance is passed where:
+      //  - The ValidationType is not set to Schema; or
+      //  - The ValidationType is set to Schema, but:
+      //     - The ProcessInlineSchema option is set (this allows the document to set a schema
+      //       internally); or
+      //     - The ProcessSchemaLocation option is set (this allows the document to reference a
+      //       schema by location that this document will validate against).
       result = "the 'XmlReaderSettings' instance does not specify the 'ValidationType' as 'Schema'." and
       exists(XmlReaderSettingsCreation settingsCreation |
         settingsCreation = createCall.getSettings().getASettingsCreation()

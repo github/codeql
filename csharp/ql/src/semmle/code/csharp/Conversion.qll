@@ -307,24 +307,22 @@ private module Identity {
   private predicate convIdentityStrictConstructedType(
     IdentityConvertibleConstructedType fromType, IdentityConvertibleConstructedType toType
   ) {
-    /*
-     * Semantically equivalent with
-     * ```
-     * ugt = fromType.getUnboundGeneric()
-     * and
-     * forex(int i |
-     *   i in [0 .. ugt.getNumberOfTypeParameters() - 1] |
-     *   exists(Type t1, Type t2 |
-     *     t1 = getTypeArgument(ugt, fromType, i, _) and
-     *     t2 = getTypeArgument(ugt, toType, i, _) |
-     *     convIdentity(t1, t2)
-     *   )
-     * )
-     * ```
-     * but performance is improved by explicitly evaluating the `i`th argument
-     * only when all preceding arguments are convertible.
-     */
-
+    // Semantically equivalent with
+    // ```
+    // ugt = fromType.getUnboundGeneric()
+    // and
+    // forex(int i |
+    //   i in [0 .. ugt.getNumberOfTypeParameters() - 1] |
+    //   exists(Type t1, Type t2 |
+    //     t1 = getTypeArgument(ugt, fromType, i, _) and
+    //     t2 = getTypeArgument(ugt, toType, i, _) |
+    //     convIdentity(t1, t2)
+    //   )
+    // )
+    // ```
+    // but performance is improved by explicitly evaluating the `i`th argument
+    // only when all preceding arguments are convertible.
+    //
     fromType != toType and
     (
       convIdentitySingle(_, fromType, toType)
@@ -462,11 +460,8 @@ predicate convNullableType(ValueOrRefType fromType, NullableType toType) {
   )
 }
 
-/*
- * This is a deliberate, small Cartesian product, so we have manually lifted it to force the
- * evaluator to evaluate it in its entirety, rather than trying to optimize it in context.
- */
-
+// This is a deliberate, small Cartesian product, so we have manually lifted it to force the
+// evaluator to evaluate it in its entirety, rather than trying to optimize it in context.
 pragma[noinline]
 private predicate defaultNullConversion(Type fromType, Type toType) {
   fromType instanceof NullType and convNullType(toType)
@@ -491,21 +486,15 @@ private predicate convRefTypeNonNull(Type fromType, Type toType) {
   convRefTypeParameter(fromType, toType)
 }
 
-/*
- * This is a deliberate, small cartesian product, so we have manually lifted it to force the
- * evaluator to evaluate it in its entirety, rather than trying to optimize it in context.
- */
-
+// This is a deliberate, small cartesian product, so we have manually lifted it to force the
+// evaluator to evaluate it in its entirety, rather than trying to optimize it in context.
 pragma[noinline]
 private predicate defaultDynamicConversion(Type fromType, Type toType) {
   fromType instanceof RefType and toType instanceof DynamicType
 }
 
-/*
- * This is a deliberate, small cartesian product, so we have manually lifted it to force the
- * evaluator to evaluate it in its entirety, rather than trying to optimize it in context.
- */
-
+// This is a deliberate, small cartesian product, so we have manually lifted it to force the
+// evaluator to evaluate it in its entirety, rather than trying to optimize it in context.
 pragma[noinline]
 private predicate defaultDelegateConversion(RefType fromType, RefType toType) {
   fromType instanceof DelegateType and toType = any(SystemDelegateClass c).getABaseType*()
@@ -525,11 +514,8 @@ private predicate convRefTypeRefType(RefType fromType, RefType toType) {
   )
 }
 
-/*
- * This is a deliberate, small cartesian product, so we have manually lifted it to force the
- * evaluator to evaluate it in its entirety, rather than trying to optimize it in context.
- */
-
+// This is a deliberate, small cartesian product, so we have manually lifted it to force the
+// evaluator to evaluate it in its entirety, rather than trying to optimize it in context.
 pragma[noinline]
 private predicate defaultArrayConversion(Type fromType, RefType toType) {
   fromType instanceof ArrayType and toType = any(SystemArrayClass c).getABaseType*()
@@ -745,28 +731,25 @@ predicate convConversionOperator(Type fromType, Type toType) {
 
 /** 13.1.3.2: Variance conversion. */
 private predicate convVariance(ConstructedType fromType, ConstructedType toType) {
-  /*
-   * Semantically equivalent with
-   * ```
-   * ugt = fromType.getUnboundGeneric()
-   * and
-   * forex(int i |
-   *   i in [0 .. ugt.getNumberOfTypeParameters() - 1] |
-   *   exists(Type t1, Type t2, TypeParameter tp |
-   *     t1 = getTypeArgument(ugt, fromType, i, tp) and
-   *     t2 = getTypeArgument(ugt, toType, i, tp) |
-   *     convIdentity(t1, t2)
-   *     or
-   *     convRefTypeNonNull(t1, t2) and tp.isOut()
-   *     or
-   *     convRefTypeNonNull(t2, t1) and tp.isIn()
-   *   )
-   * )
-   * ```
-   * but performance is improved by explicitly evaluating the `i`th argument
-   * only when all preceding arguments are convertible.
-   */
-
+  // Semantically equivalent with
+  // ```
+  // ugt = fromType.getUnboundGeneric()
+  // and
+  // forex(int i |
+  //   i in [0 .. ugt.getNumberOfTypeParameters() - 1] |
+  //   exists(Type t1, Type t2, TypeParameter tp |
+  //     t1 = getTypeArgument(ugt, fromType, i, tp) and
+  //     t2 = getTypeArgument(ugt, toType, i, tp) |
+  //     convIdentity(t1, t2)
+  //     or
+  //     convRefTypeNonNull(t1, t2) and tp.isOut()
+  //     or
+  //     convRefTypeNonNull(t2, t1) and tp.isIn()
+  //   )
+  // )
+  // ```
+  // but performance is improved by explicitly evaluating the `i`th argument
+  // only when all preceding arguments are convertible.
   Variance::convVarianceSingle(_, fromType, toType)
   or
   exists(UnboundGenericType ugt |

@@ -71,11 +71,8 @@ module UserControlledBypassOfSensitiveMethod {
   predicate conditionControlsMethod(SensitiveExecutionMethodCall call, Expr e) {
     exists(SensitiveExecutionMethod def, boolean cond |
       conditionControlsCall(call, def, e, cond) and
-      /*
-       * Exclude this condition if the other branch also contains a call to the same security
-       * sensitive method.
-       */
-
+      // Exclude this condition if the other branch also contains a call to the same security
+      // sensitive method.
       not conditionControlsCall(_, def, e, cond.booleanNot())
     )
   }
@@ -90,12 +87,9 @@ module UserControlledBypassOfSensitiveMethod {
       // A condition used to guard a sensitive method call
       conditionControlsMethod(sensitiveMethodCall, this.getExpr())
       or
-      /*
-       * A condition used to guard a sensitive method call, where the condition is `EndsWith`,
-       * `StartsWith` or `Contains` on a tainted value. Tracking from strings to booleans doesn't
-       * make sense in all contexts, so this is restricted to this case.
-       */
-
+      // A condition used to guard a sensitive method call, where the condition is `EndsWith`,
+      // `StartsWith` or `Contains` on a tainted value. Tracking from strings to booleans doesn't
+      // make sense in all contexts, so this is restricted to this case.
       exists(MethodCall stringComparisonCall, string methodName |
         methodName = "EndsWith" or
         methodName = "StartsWith" or

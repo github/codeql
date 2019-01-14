@@ -123,10 +123,7 @@ module TaintedPath {
    */
   class PathCheck extends Sanitizer {
     PathCheck() {
-      /*
-       * This expression is structurally replicated in a dominating guard which is not a "weak" check.
-       */
-
+      // This expression is structurally replicated in a dominating guard which is not a "weak" check.
       exists(Expr e |
         this.getExpr().(GuardedExpr).isGuardedBy(_, e, _) and
         not inWeakCheck(e)

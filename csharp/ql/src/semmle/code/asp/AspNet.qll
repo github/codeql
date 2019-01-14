@@ -184,15 +184,12 @@ class PageDirective extends AspDirective {
   ValueOrRefType getInheritedType() { result.getQualifiedName() = getInheritedTypeQualifiedName() }
 
   private string getInheritedTypeQualifiedName() {
-    /*
-     * Relevant attributes:
-     * - `Inherits`: determines the class to inherit from, this is what we want
-     * - `ClassName`: determines the name to use for the compiled class, can
-     *   provide a fallback namespace if `Inherits` does not have one
-     * - `CodeBehindFile`/`CodeFile`: used by tooling, but not semantically
-     *   relevant at runtime
-     */
-
+    // Relevant attributes:
+    // - `Inherits`: determines the class to inherit from, this is what we want
+    // - `ClassName`: determines the name to use for the compiled class, can
+    //   provide a fallback namespace if `Inherits` does not have one
+    // - `CodeBehindFile`/`CodeFile`: used by tooling, but not semantically
+    //   relevant at runtime
     exists(string inherits | inherits = getAttributeByName("Inherits").getBody() |
       if inherits.indexOf(".") != -1
       then result = inherits

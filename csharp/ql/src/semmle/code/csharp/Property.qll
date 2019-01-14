@@ -178,11 +178,8 @@ class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @proper
   override Expr getAnAssignedValue() {
     result = DeclarationWithGetSetAccessors.super.getAnAssignedValue()
     or
-    /*
-     * For library types, we don't know about assignments in constructors. We instead assume that
-     * arguments passed to parameters of constructors with suitable names.
-     */
-
+    // For library types, we don't know about assignments in constructors. We instead assume that
+    // arguments passed to parameters of constructors with suitable names.
     getDeclaringType().fromLibrary() and
     exists(Parameter param, Constructor c, string propertyName |
       propertyName = getName() and

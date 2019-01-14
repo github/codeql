@@ -133,11 +133,8 @@ module ZipSlip {
       |
         mc.getTarget().hasQualifiedName("System.String", "StartsWith") and
         mc.getQualifier() = startsWithQualifier and
-        /*
-         * A StartsWith check against Path.Combine is not sufficient, because the ".." elements have
-         * not yet been resolved.
-         */
-
+        // A StartsWith check against Path.Combine is not sufficient, because the ".." elements have
+        // not yet been resolved.
         not exists(MethodCall combineCall |
           combineCall.getTarget().hasQualifiedName("System.IO.Path", "Combine") and
           DataFlow::localFlow(DataFlow::exprNode(combineCall),

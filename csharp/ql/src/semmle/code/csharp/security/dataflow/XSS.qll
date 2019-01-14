@@ -184,12 +184,9 @@ module XSS {
           m = writeClass.getAWriteAttributeMethod()
         )
         or
-        /*
-         * The second parameter to the `WriteAttribute` method is the attribute value, which we
-         * should only consider as tainted if the call does not ask for the attribute value to be
-         * encoded using the final parameter.
-         */
-
+        // The second parameter to the `WriteAttribute` method is the attribute value, which we
+        // should only consider as tainted if the call does not ask for the attribute value to be
+        // encoded using the final parameter.
         m = writeClass.getAWriteAttributeMethod() and
         paramPos = 1 and
         not c.getArgumentForParameter(m.getParameter(2)).(BoolLiteral).getBoolValue() = true
@@ -378,13 +375,10 @@ module XSS {
    * `f1.f2...fn[...]()`. The `i`th member is `fi` in all cases.
    */
   private string getMemberAccessNameByIndex(AspInlineCode code, int i) {
-    /*
-     * Strip:
-     * - leading and trailing whitespace, which apparently you're allowed to have
-     * - trailing parens, so we can recognize nullary method calls
-     * - trailing square brackets with some contents, to recognize indexing into arrays
-     */
-
+    // Strip:
+    // - leading and trailing whitespace, which apparently you're allowed to have
+    // - trailing parens, so we can recognize nullary method calls
+    // - trailing square brackets with some contents, to recognize indexing into arrays
     result = code.getBody().splitAt(".", i).regexpCapture("\\s*(.*?)(\\[.*\\])?(\\(\\))?\\s*", 1)
   }
 
