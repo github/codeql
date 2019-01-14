@@ -134,4 +134,25 @@ class Component2 extends React.Component {
     }
 
 }
+
+class Component3 extends React.Component {
+
+    render() {
+        return <div>
+            <div onClick={this.bound_throughIterator}/> // OK
+            </div>
+    }
+
+    constructor(props) {
+        super(props);
+	    Object.getOwnPropertyNames( Component3.prototype )
+		    .filter( prop => typeof this[ prop ] === 'function' )
+		    .forEach( prop => ( this[ prop ] = this[ prop ].bind( this ) ) );
+    }
+
+    bound_throughIterator() {
+        this.setState({ });
+    }
+}
+
 // semmle-extractor-options: --experimental
