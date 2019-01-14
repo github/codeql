@@ -582,6 +582,9 @@ class TypeExpr extends ExprOrType, @typeexpr {
   /** Holds if this is the `unknown` type. */
   predicate isUnknownKeyword() { none() }
 
+  /** Holds if this is the `bigint` type. */
+  predicate isBigInt() { none() }
+
   /** Gets this type expression, with any surrounding parentheses removed. */
   override TypeExpr stripParens() { result = this }
 
@@ -633,6 +636,8 @@ private class KeywordTypeExpr extends @keywordtypeexpr, TypeExpr {
   override predicate isObjectKeyword() { getName() = "object" }
 
   override predicate isUnknownKeyword() { getName() = "unknown" }
+
+  override predicate isBigInt() { getName() = "bigint" }
 }
 
 /**
@@ -796,6 +801,18 @@ class BooleanLiteralTypeExpr extends @booleanliteraltypeexpr, LiteralTypeExpr {
   predicate isTrue() { getValue() = "true" }
 
   predicate isFalse() { getValue() = "false" }
+}
+
+/** A bigint literal used as a TypeScript type annotation. */
+class BigIntLiteralTypeExpr extends @bigintliteraltypeexpr, LiteralTypeExpr {
+  /** Gets the integer value of the bigint literal, if it can be represented as a QL integer. */
+  int getIntValue() { result = getValue().toInt() }
+
+  /**
+   * Gets the floating point value of this literal if it can be represented
+   * as a QL floating point value.
+   */
+  float getFloatValue() { result = getValue().toFloat() }
 }
 
 /**
@@ -1951,6 +1968,11 @@ class StringType extends Type, @stringtype { }
 class NumberType extends Type, @numbertype { }
 
 /**
+ * The predefined `bigint` type.
+ */
+class BigIntType extends Type, @biginttype { }
+
+/**
  * A boolean, number, or string literal type.
  */
 class LiteralType extends Type, @literaltype {
@@ -1996,6 +2018,23 @@ class NumberLiteralType extends LiteralType, @numberliteraltype {
  */
 class StringLiteralType extends LiteralType, @stringliteraltype {
   override string getStringValue() { type_literal_value(this, result) }
+}
+
+/**
+ * A bigint literal as a static type.
+ */
+class BigIntLiteralType extends LiteralType {
+  override string getStringValue() { type_literal_value(this, result) }
+
+  /**
+   * Gets the value of the literal as an integer.
+   */
+  int getIntValue() { result = getStringValue().toInt() }
+
+  /**
+   * Gets the value of the literal as a floating-point value.
+   */
+  float getFloatValue() { result = getStringValue().toFloat() }
 }
 
 /**

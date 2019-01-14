@@ -369,6 +369,10 @@ public class TypeScriptASTConverter {
 			return convertAsExpression(node, loc);
 		case "AwaitExpression":
 			return convertAwaitExpression(node, loc);
+		case "BigIntKeyword":
+			return convertKeywordTypeExpr(node, loc, "bigint");
+		case "BigIntLiteral":
+			return convertBigIntLiteral(node, loc);
 		case "BinaryExpression":
 			return convertBinaryExpression(node, loc);
 		case "Block":
@@ -820,6 +824,12 @@ public class TypeScriptASTConverter {
 
 	private Node convertAwaitExpression(JsonObject node, SourceLocation loc) throws ParseError {
 		return new AwaitExpression(loc, convertChild(node, "expression"));
+	}
+
+	private Node convertBigIntLiteral(JsonObject node, SourceLocation loc) throws ParseError {
+		String text = node.get("text").getAsString();
+		String value = text.substring(0, text.length() - 1); // Remove the 'n' suffix.
+		return new Literal(loc, TokenType.bigint, value);
 	}
 
 	private Node convertBinaryExpression(JsonObject node, SourceLocation loc) throws ParseError {
