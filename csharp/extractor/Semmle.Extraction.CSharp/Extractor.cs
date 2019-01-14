@@ -165,9 +165,9 @@ namespace Semmle.Extraction.CSharp
 
                     return analyser.TotalErrors == 0 ? ExitCode.Ok : ExitCode.Errors;
                 }
-                catch (Exception e)
+                catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
                 {
-                    logger.Log(Severity.Error, "  Unhandled exception: {0}", e);
+                    logger.Log(Severity.Error, "  Unhandled exception: {0}", ex);
                     return ExitCode.Errors;
                 }
             }
@@ -354,9 +354,9 @@ namespace Semmle.Extraction.CSharp
 
                     pm.MissingSummary(analyser.MissingTypes.Count(), analyser.MissingNamespaces.Count());
                 }
-                catch (Exception e)
+                catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
                 {
-                    analyser.Logger.Log(Severity.Error, "  Unhandled exception: {0}", e);
+                    analyser.Logger.Log(Severity.Error, "  Unhandled exception: {0}", ex);
                 }
             }
         }

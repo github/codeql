@@ -134,6 +134,9 @@ namespace Semmle.Extraction.CSharp.Entities
             if (symbol.Kind == SymbolKind.NamedType)
             {
                 INamedTypeSymbol nt = symbol as INamedTypeSymbol;
+                if (nt is null)
+                    throw new InternalError(symbol, "Symbol kind is inconsistent with its type");
+
                 if (nt.TypeKind == TypeKind.Struct)
                 {
                     // Sadly, these properties are internal so cannot be accessed directly.

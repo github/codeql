@@ -70,7 +70,7 @@ namespace Semmle.Util
         /// <returns>The canonical path.</returns>
         public override string GetCanonicalPath(string path, IPathCache cache)
         {
-            using (var hFile = Win32.CreateFile(
+            using (var hFile = Win32.CreateFile(  // lgtm[cs/call-to-unmanaged-code]
                 path,
                 0,
                 Win32.FILE_SHARE_READ | Win32.FILE_SHARE_WRITE,
@@ -88,13 +88,13 @@ namespace Semmle.Util
                 else
                 {
                     StringBuilder outPath = new StringBuilder(Win32.MAX_PATH);
-                    int length = Win32.GetFinalPathNameByHandle(hFile, outPath, outPath.Capacity, 0);
+                    int length = Win32.GetFinalPathNameByHandle(hFile, outPath, outPath.Capacity, 0);  // lgtm[cs/call-to-unmanaged-code]
                     if (length >= outPath.Capacity)
                     {
                         // Path length exceeded MAX_PATH.
                         // Possible if target has a long path.
                         outPath = new StringBuilder(length + 1);
-                        length = Win32.GetFinalPathNameByHandle(hFile, outPath, outPath.Capacity, 0);
+                        length = Win32.GetFinalPathNameByHandle(hFile, outPath, outPath.Capacity, 0);  // lgtm[cs/call-to-unmanaged-code]
                     }
 
                     const int PREAMBLE = 4; // outPath always starts \\?\

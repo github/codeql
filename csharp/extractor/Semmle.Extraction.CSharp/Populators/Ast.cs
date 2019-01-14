@@ -54,9 +54,9 @@ namespace Semmle.Extraction.CSharp.Populators
                 {
                     node.Accept(new Ast(cx, parent, child));
                 }
-                catch (System.Exception e)
+                catch (System.Exception ex)  // lgtm[cs/catch-of-all-exceptions]
                 {
-                    cx.ModelError(node, "Exception processing syntax node of type {0}: {1}", node.Kind(), e);
+                    cx.ModelError(node, "Exception processing syntax node of type {0}: {1}", node.Kind(), ex);
                 }
             }
         }
