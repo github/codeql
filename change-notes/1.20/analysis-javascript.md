@@ -8,7 +8,7 @@
   - server-side code, for example [hapi](https://hapijs.com/)
 * File classification has been improved to recognize additional generated files, for example files from [HTML Tidy](html-tidy.org).
 
-* The taint tracking library now recognizes flow through persistent storage, this may give more results for the security queries. 
+* The taint tracking library now recognizes flow through persistent storage and callbacks in certain cases. This may give more results for the security queries.
 
 ## New queries
 
