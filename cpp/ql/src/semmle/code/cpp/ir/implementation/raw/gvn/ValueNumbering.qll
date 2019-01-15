@@ -83,6 +83,10 @@ class ValueNumber extends TValueNumber {
       instr order by instr.getBlock().getDisplayIndex(), instr.getDisplayIndexInBlock()
     )
   }
+  
+  final Operand getAUse() {
+    this = valueNumber(result.getDefinitionInstruction())
+  }
 }
 
 /**
@@ -212,12 +216,19 @@ private predicate uniqueValueNumber(Instruction instr, FunctionIR funcIR) {
 /**
  * Gets the value number assigned to `instr`, if any. Returns at most one result.
  */
-ValueNumber valueNumber(Instruction instr) {
+cached ValueNumber valueNumber(Instruction instr) {
   result = nonUniqueValueNumber(instr) or
   exists(FunctionIR funcIR |
     uniqueValueNumber(instr, funcIR) and
     result = TUniqueValueNumber(funcIR, instr)
   )
+}
+
+/**
+ * Gets the value number assigned to `instr`, if any. Returns at most one result.
+ */
+ValueNumber valueNumberOfOperand(Operand op) {
+  result = valueNumber(op.getDefinitionInstruction())
 }
 
 /**

@@ -751,6 +751,9 @@ class BinaryInstruction extends Instruction {
     result = getAnOperand().(RightOperand).getDefinitionInstruction()
   }
   
+  /**
+   * Holds if this instruction's operands are `op1` and `op2`, in either order.
+   */
   final predicate hasOperands(Operand op1, Operand op2) {
     op1 = getAnOperand().(LeftOperand) and op2 = getAnOperand().(RightOperand)
     or
