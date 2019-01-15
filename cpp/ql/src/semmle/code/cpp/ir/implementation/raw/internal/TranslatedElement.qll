@@ -50,6 +50,13 @@ private Element getRealParent(Expr expr) {
 }
 
 /**
+ * Holds if `expr` is a constant of a type that can be replaced directly with
+ * its value in the IR. This does not include address constants as we have no
+ * means to express those as QL values.
+ */
+predicate isIRConstant(Expr expr) { exists(expr.getValue()) }
+
+/**
  * Holds if `expr` and all of its descendants should be ignored for the purposes
  * of IR generation due to some property of `expr` itself. Unlike
  * `ignoreExpr()`, this predicate does not ignore an expression solely because
@@ -63,7 +70,7 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   getRealParent(expr) instanceof SwitchCase or
   // Ignore descendants of constant expressions, since we'll just substitute the
   // constant value.
-  getRealParent(expr).(Expr).isConstant() or
+  isIRConstant(getRealParent(expr)) or
   // The `DestructorCall` node for a `DestructorFieldDestruction` has a `FieldAccess`
   // node as its qualifier, but that `FieldAccess` does not have a child of its own.
   // We'll ignore that `FieldAccess`, and supply the receiver as part of the calling
@@ -146,7 +153,7 @@ private predicate translateStmt(Stmt stmt) {
  */
 private predicate isNativeCondition(Expr expr) {
   expr instanceof BinaryLogicalOperation and
-  not expr.isConstant()
+  not isIRConstant(expr)
 }
 
 /**
@@ -159,7 +166,7 @@ private predicate isFlexibleCondition(Expr expr) {
     expr instanceof NotExpr
   ) and
   usedAsCondition(expr) and
-  not expr.isConstant()
+  not isIRConstant(expr)
 }
 
 /**
