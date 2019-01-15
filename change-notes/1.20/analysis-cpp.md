@@ -18,3 +18,5 @@
 | Resource not released in destructor (`cpp/resource-not-released-in-destructor`) | Fewer false positive results | Fix false positives where a resource is released via a virtual method call. |
 
 ## Changes to QL libraries
+
+There is a new `Namespace.isInline()` predicate, which holds if the namespace was declared as `inline namespace`.
