@@ -1,6 +1,7 @@
 /**
  * Provides a taint-tracking configuration for reasoning about user input treated as code vulnerabilities.
  */
+
 import csharp
 
 module CodeInjection {
@@ -27,32 +28,17 @@ module CodeInjection {
    * A taint-tracking configuration for user input treated as code vulnerabilities.
    */
   class TaintTrackingConfiguration extends TaintTracking::Configuration {
-    TaintTrackingConfiguration() {
-      this = "CodeInjection"
-    }
+    TaintTrackingConfiguration() { this = "CodeInjection" }
 
-    override
-    predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override
-    predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override
-    predicate isSanitizer(DataFlow::Node node) {
-      node instanceof Sanitizer
-    }
+    override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
   }
 
   /** A source of remote user input. */
-  class RemoteSource extends Source {
-    RemoteSource() {
-      this instanceof RemoteFlowSource
-    }
-  }
+  class RemoteSource extends Source { RemoteSource() { this instanceof RemoteFlowSource } }
 
   private class SimpleTypeSanitizer extends Sanitizer, SimpleTypeSanitizedExpr { }
 
@@ -67,7 +53,8 @@ module CodeInjection {
       exists(Method m, MethodCall mc |
         m.getName().matches("CompileAssemblyFromSource%") and
         m = any(SystemCodeDomCompilerICodeCompilerClass c).getAMethod() and
-        mc = m.getAnOverrider*().getACall() |
+        mc = m.getAnOverrider*().getACall()
+      |
         this.getExpr() = mc.getArgumentForName("source") or
         this.getExpr() = mc.getArgumentForName("sources")
       )
@@ -82,7 +69,8 @@ module CodeInjection {
   class RoslynCSharpScriptSink extends Sink {
     RoslynCSharpScriptSink() {
       exists(Class c |
-        c.hasQualifiedName("Microsoft.CodeAnalysis.CSharp.Scripting", "CSharpScript") |
+        c.hasQualifiedName("Microsoft.CodeAnalysis.CSharp.Scripting", "CSharpScript")
+      |
         this.getExpr() = c.getAMethod().getACall().getArgumentForName("code")
       )
     }

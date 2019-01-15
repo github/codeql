@@ -1,4 +1,5 @@
 /** Provides classes for assertions. */
+
 private import semmle.code.csharp.frameworks.system.Diagnostics
 private import semmle.code.csharp.frameworks.test.VisualStudio
 private import semmle.code.csharp.frameworks.System
@@ -11,29 +12,23 @@ abstract class AssertMethod extends Method {
   abstract int getAssertionIndex();
 
   /** Gets the parameter being asserted. */
-  final Parameter getAssertedParameter() {
-    result = this.getParameter(this.getAssertionIndex())
-  }
+  final Parameter getAssertedParameter() { result = this.getParameter(this.getAssertionIndex()) }
 
   /** Gets the exception being thrown if the assertion fails, if any. */
   abstract ExceptionClass getExceptionClass();
 }
 
 /** A positive assertion method. */
-abstract class AssertTrueMethod extends AssertMethod {
-}
+abstract class AssertTrueMethod extends AssertMethod { }
 
 /** A negated assertion method. */
-abstract class AssertFalseMethod extends AssertMethod {
-}
+abstract class AssertFalseMethod extends AssertMethod { }
 
 /** A `null` assertion method. */
-abstract class AssertNullMethod extends AssertMethod {
-}
+abstract class AssertNullMethod extends AssertMethod { }
 
 /** A non-`null` assertion method. */
-abstract class AssertNonNullMethod extends AssertMethod {
-}
+abstract class AssertNonNullMethod extends AssertMethod { }
 
 /** An assertion, that is, a call to an assertion method. */
 class Assertion extends MethodCall {
@@ -45,17 +40,14 @@ class Assertion extends MethodCall {
   AssertMethod getAssertMethod() { result = target }
 
   /** Gets the expression that this assertion pertains to. */
-  Expr getExpr() {
-    result = this.getArgumentForParameter(target.getAssertedParameter())
-  }
+  Expr getExpr() { result = this.getArgumentForParameter(target.getAssertedParameter()) }
 
   pragma[nomagic]
   private JoinBlockPredecessor getAPossiblyDominatedPredecessor(JoinBlock jb) {
     // Only calculate dominance by explicit recursion for split nodes;
     // all other nodes can use regular CFG dominance
     this instanceof ControlFlow::Internal::SplitControlFlowElement and
-    exists(BasicBlock bb |
-      bb = this.getAControlFlowNode().getBasicBlock() |
+    exists(BasicBlock bb | bb = this.getAControlFlowNode().getBasicBlock() |
       result = bb.getASuccessor*()
     ) and
     result.getASuccessor() = jb and
@@ -65,8 +57,7 @@ class Assertion extends MethodCall {
   pragma[nomagic]
   private predicate isPossiblyDominatedJoinBlock(JoinBlock jb) {
     exists(this.getAPossiblyDominatedPredecessor(jb)) and
-    forall(BasicBlock pred |
-      pred = jb.getAPredecessor() |
+    forall(BasicBlock pred | pred = jb.getAPredecessor() |
       pred = this.getAPossiblyDominatedPredecessor(jb)
       or
       jb.dominates(pred)
@@ -77,16 +68,15 @@ class Assertion extends MethodCall {
   private predicate strictlyDominatesSplit(BasicBlock bb) {
     this.getAControlFlowNode().getBasicBlock().immediatelyDominates(bb)
     or
-    if bb instanceof JoinBlock then
+    if bb instanceof JoinBlock
+    then
       this.isPossiblyDominatedJoinBlock(bb) and
-      forall(BasicBlock pred |
-        pred = this.getAPossiblyDominatedPredecessor(bb) |
+      forall(BasicBlock pred | pred = this.getAPossiblyDominatedPredecessor(bb) |
         this.strictlyDominatesSplit(pred)
         or
         this.getAControlFlowNode().getBasicBlock() = pred
       )
-    else
-      this.strictlyDominatesSplit(bb.getAPredecessor())
+    else this.strictlyDominatesSplit(bb.getAPredecessor())
   }
 
   /**
@@ -111,7 +101,8 @@ class FailingAssertion extends Assertion {
   FailingAssertion() {
     exists(AssertMethod am, Expr e |
       am = this.getAssertMethod() and
-      e = this.getExpr() |
+      e = this.getExpr()
+    |
       am instanceof AssertTrueMethod and
       e.getValue() = "false"
       or
@@ -140,9 +131,7 @@ class SystemDiagnosticsDebugAssertTrueMethod extends AssertTrueMethod {
 
 /** A Visual Studio assertion method. */
 class VSTestAssertTrueMethod extends AssertTrueMethod {
-  VSTestAssertTrueMethod() {
-    this = any(VSTestAssertClass c).getIsTrueMethod()
-  }
+  VSTestAssertTrueMethod() { this = any(VSTestAssertClass c).getIsTrueMethod() }
 
   override int getAssertionIndex() { result = 0 }
 
@@ -151,9 +140,7 @@ class VSTestAssertTrueMethod extends AssertTrueMethod {
 
 /** A Visual Studio negated assertion method. */
 class VSTestAssertFalseMethod extends AssertFalseMethod {
-  VSTestAssertFalseMethod() {
-    this = any(VSTestAssertClass c).getIsFalseMethod()
-  }
+  VSTestAssertFalseMethod() { this = any(VSTestAssertClass c).getIsFalseMethod() }
 
   override int getAssertionIndex() { result = 0 }
 
@@ -162,9 +149,7 @@ class VSTestAssertFalseMethod extends AssertFalseMethod {
 
 /** A Visual Studio `null` assertion method. */
 class VSTestAssertNullMethod extends AssertNullMethod {
-  VSTestAssertNullMethod() {
-    this = any(VSTestAssertClass c).getIsNullMethod()
-  }
+  VSTestAssertNullMethod() { this = any(VSTestAssertClass c).getIsNullMethod() }
 
   override int getAssertionIndex() { result = 0 }
 
@@ -173,9 +158,7 @@ class VSTestAssertNullMethod extends AssertNullMethod {
 
 /** A Visual Studio non-`null` assertion method. */
 class VSTestAssertNonNullMethod extends AssertNonNullMethod {
-  VSTestAssertNonNullMethod() {
-    this = any(VSTestAssertClass c).getIsNotNullMethod()
-  }
+  VSTestAssertNonNullMethod() { this = any(VSTestAssertClass c).getIsNotNullMethod() }
 
   override int getAssertionIndex() { result = 0 }
 
@@ -185,13 +168,13 @@ class VSTestAssertNonNullMethod extends AssertNonNullMethod {
 /** A method that forwards to another assertion method. */
 class ForwarderAssertMethod extends AssertMethod {
   Assertion a;
+
   Parameter p;
 
   ForwarderAssertMethod() {
     p = this.getAParameter() and
     strictcount(AssignableDefinition def | def.getTarget() = p) = 1 and
-    forex(ControlFlowElement body |
-      body = this.getABody() |
+    forex(ControlFlowElement body | body = this.getABody() |
       bodyAsserts(this, body, a) and
       a.getExpr() = p.getAnAccess()
     )
@@ -227,33 +210,23 @@ private Stmt getAnAssertingStmt(Assertion a) {
 
 /** A method that forwards to a positive assertion method. */
 class ForwarderAssertTrueMethod extends ForwarderAssertMethod, AssertTrueMethod {
-  ForwarderAssertTrueMethod() {
-    this.getUnderlyingAssertMethod() instanceof AssertTrueMethod
-  }
+  ForwarderAssertTrueMethod() { this.getUnderlyingAssertMethod() instanceof AssertTrueMethod }
 }
 
 /** A method that forwards to a negated assertion method. */
 class ForwarderAssertFalseMethod extends ForwarderAssertMethod, AssertFalseMethod {
-  ForwarderAssertFalseMethod() {
-    this.getUnderlyingAssertMethod() instanceof AssertFalseMethod
-  }
+  ForwarderAssertFalseMethod() { this.getUnderlyingAssertMethod() instanceof AssertFalseMethod }
 }
 
 /** A method that forwards to a `null` assertion method. */
 class ForwarderAssertNullMethod extends ForwarderAssertMethod, AssertNullMethod {
-  ForwarderAssertNullMethod() {
-    this.getUnderlyingAssertMethod() instanceof AssertNullMethod
-  }
+  ForwarderAssertNullMethod() { this.getUnderlyingAssertMethod() instanceof AssertNullMethod }
 }
 
 /** A method that forwards to a non-`null` assertion method. */
 class ForwarderAssertNonNullMethod extends ForwarderAssertMethod, AssertNonNullMethod {
-  ForwarderAssertNonNullMethod() {
-    this.getUnderlyingAssertMethod() instanceof AssertNonNullMethod
-  }
+  ForwarderAssertNonNullMethod() { this.getUnderlyingAssertMethod() instanceof AssertNonNullMethod }
 }
 
 /** Holds if expression `e` appears in an assertion. */
-predicate isExprInAssertion(Expr e) {
-  e = any(Assertion a).getExpr().getAChildExpr*()
-}
+predicate isExprInAssertion(Expr e) { e = any(Assertion a).getExpr().getAChildExpr*() }

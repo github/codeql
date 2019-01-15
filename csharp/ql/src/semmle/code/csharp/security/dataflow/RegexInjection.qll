@@ -2,6 +2,7 @@
  * Provides a taint-tracking configuration for reasoning about untrusted user input used to construct
  * regular expressions.
  */
+
 import csharp
 
 module RegexInjection {
@@ -28,32 +29,17 @@ module RegexInjection {
    * A taint-tracking configuration for untrusted user input used to construct regular expressions.
    */
   class TaintTrackingConfiguration extends TaintTracking::Configuration {
-    TaintTrackingConfiguration() {
-      this = "RegexInjection"
-    }
+    TaintTrackingConfiguration() { this = "RegexInjection" }
 
-    override
-    predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override
-    predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override
-    predicate isSanitizer(DataFlow::Node node) {
-      node instanceof Sanitizer
-    }
+    override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
   }
 
   /** A source of remote user input. */
-  class RemoteSource extends Source {
-    RemoteSource() {
-      this instanceof RemoteFlowSource
-    }
-  }
+  class RemoteSource extends Source { RemoteSource() { this instanceof RemoteFlowSource } }
 
   /**
    * A `pattern` argument to a construction of a `Regex`.
@@ -70,7 +56,8 @@ module RegexInjection {
   /** A call to `Regex.Escape` that sanitizes the user input for use in a regex. */
   class RegexEscapeSanitizer extends Sanitizer {
     RegexEscapeSanitizer() {
-      this.getExpr().(MethodCall).getTarget() = any(SystemTextRegularExpressionsRegexClass r).getAMethod("Escape")
+      this.getExpr().(MethodCall).getTarget() = any(SystemTextRegularExpressionsRegexClass r)
+            .getAMethod("Escape")
     }
   }
 

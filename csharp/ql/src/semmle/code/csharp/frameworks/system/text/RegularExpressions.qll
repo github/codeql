@@ -18,19 +18,13 @@ class SystemTextRegularExpressionsClass extends Class {
 
 /** The `System.Text.RegularExpressions.Regex` class. */
 class SystemTextRegularExpressionsRegexClass extends SystemTextRegularExpressionsClass {
-  SystemTextRegularExpressionsRegexClass() {
-    this.hasName("Regex")
-  }
+  SystemTextRegularExpressionsRegexClass() { this.hasName("Regex") }
 
   /** Gets a `Replace` method. */
-  Method getAReplaceMethod() {
-    result = this.getAMethod("Replace")
-  }
+  Method getAReplaceMethod() { result = this.getAMethod("Replace") }
 
   /** Gets a `Match` method. */
-  Method getAMatchMethod() {
-    result = this.getAMethod("Match")
-  }
+  Method getAMatchMethod() { result = this.getAMethod("Match") }
 }
 
 /**
@@ -48,20 +42,17 @@ class RegexGlobalTimeout extends MethodCall {
  */
 class RegexOperation extends Call {
   Expr pattern;
+
   RegexOperation() {
     this.getTarget() = any(SystemTextRegularExpressionsRegexClass r).getAMember() and
     pattern = this.getArgumentForName("pattern")
   }
 
   /** Gets the `pattern` argument. */
-  Expr getPattern() {
-    result = pattern
-  }
+  Expr getPattern() { result = pattern }
 
   /** Holds if this regular expression has a timeout. */
-  predicate hasTimeout() {
-    exists(this.getArgumentForName("matchTimeout"))
-  }
+  predicate hasTimeout() { exists(this.getArgumentForName("matchTimeout")) }
 
   /**
    * Gets an `input` argument used with this regex.
@@ -71,15 +62,17 @@ class RegexOperation extends Call {
    * the `Regex` is declared in a field.
    */
   Expr getInput() {
-    if this instanceof MethodCall then
-      result = getArgumentForName("input")
+    if this instanceof MethodCall
+    then result = getArgumentForName("input")
     else
       exists(MethodCall call |
         call.getTarget() = any(SystemTextRegularExpressionsRegexClass rs).getAMethod() and
-        result = call.getArgumentForName("input") |
+        result = call.getArgumentForName("input")
+      |
         // e.g. `new Regex(...).Match(...)`
         // or   `var r = new Regex(...); r.Match(...)`
-        DataFlow::localFlow(DataFlow::exprNode(this), DataFlow::exprNode(call.getQualifier())) or
+        DataFlow::localFlow(DataFlow::exprNode(this), DataFlow::exprNode(call.getQualifier()))
+        or
         // e.g. `private string r = new Regex(...); public void foo() { r.Match(...); }`
         call.getQualifier().(FieldAccess).getTarget().getInitializer() = this
       )

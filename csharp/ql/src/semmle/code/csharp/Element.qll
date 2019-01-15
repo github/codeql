@@ -48,15 +48,11 @@ class Element extends DotNet::Element, @element {
 
   /** Gets the number of children of this element. */
   pragma[nomagic]
-  int getNumberOfChildren() {
-    result = count(int i | exists(this.getChild(i)))
-  }
+  int getNumberOfChildren() { result = count(int i | exists(this.getChild(i))) }
 
   /**
    * Gets the index of this element among its parent's
    * other children (zero-based).
    */
-  int getIndex() {
-    exists(Element parent | parent.getChild(result) = this)
-  }
+  int getIndex() { exists(Element parent | parent.getChild(result) = this) }
 }

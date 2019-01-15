@@ -29,7 +29,7 @@ class Call extends Expr, @dotnet_call {
   /** Gets the target of this call. */
   Callable getTarget() { none() }
 
-  /* Gets any potential target of this call. */
+  /** Gets any potential target of this call. */
   Callable getARuntimeTarget() { none() }
 
   /**
@@ -42,25 +42,20 @@ class Call extends Expr, @dotnet_call {
   Expr getArgument(int i) { none() }
 
   /** Gets an argument to this call. */
-  Expr getAnArgument() { result=getArgument(_) }
+  Expr getAnArgument() { result = getArgument(_) }
 
   /** Gets the expression that is supplied for parameter `p`. */
   Expr getArgumentForParameter(Parameter p) { none() }
 }
 
 /** A literal expression. */
-class Literal extends Expr, @dotnet_literal {
-}
+class Literal extends Expr, @dotnet_literal { }
 
 /** A string literal expression. */
-class StringLiteral extends Literal, @dotnet_string_literal {
-}
+class StringLiteral extends Literal, @dotnet_string_literal { }
 
 /** An integer literal expression. */
-class IntLiteral extends Literal, @dotnet_int_literal {
-}
+class IntLiteral extends Literal, @dotnet_int_literal { }
 
 /** A `null` literal expression. */
-class NullLiteral extends Literal, @dotnet_null_literal {
-}
-
+class NullLiteral extends Literal, @dotnet_null_literal { }

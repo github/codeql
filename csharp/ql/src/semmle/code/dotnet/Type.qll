@@ -20,7 +20,6 @@ class Type extends Declaration, @dotnet_type {
  * A value or reference type.
  */
 class ValueOrRefType extends Type, @dotnet_valueorreftype {
-
   /** Gets the namespace declaring this type, if any. */
   Namespace getDeclaringNamespace() { none() }
 
@@ -44,20 +43,15 @@ class ValueOrRefType extends Type, @dotnet_valueorreftype {
  * A type parameter, for example `T` in `System.Nullable<T>`.
  */
 class TypeParameter extends Type, @dotnet_type_parameter {
-
   /** Gets the generic type or method declaring this type parameter. */
   UnboundGeneric getDeclaringGeneric() { this = result.getATypeParameter() }
 
   /** Gets the index of this type parameter. For example the index of `U` in `Func<T,U>` is 1. */
   int getIndex() { none() }
 
-  final override string getLabel() {
-    result = "!" + getIndex()
-  }
+  final override string getLabel() { result = "!" + getIndex() }
 
-  override string getUndecoratedName() {
-    result = "!" + getIndex()
-  }
+  override string getUndecoratedName() { result = "!" + getIndex() }
 }
 
 /** A pointer type. */

@@ -1,4 +1,5 @@
 /** Provides definitions related to the namespace `System.Windows`. */
+
 import csharp
 private import semmle.code.csharp.frameworks.System
 
@@ -12,7 +13,5 @@ class SystemWindowsNamespace extends Namespace {
 
 /** A class in the `System.Windows` namespace. */
 class SystemWindowsClass extends Class {
-  SystemWindowsClass() {
-    this.getNamespace() instanceof SystemWindowsNamespace
-  }
+  SystemWindowsClass() { this.getNamespace() instanceof SystemWindowsNamespace }
 }

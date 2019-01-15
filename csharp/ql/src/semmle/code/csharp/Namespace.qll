@@ -106,7 +106,8 @@ class Namespace extends DotNet::Namespace, TypeContainer, @namespace {
   DelegateType getADelegate() { result = this.getATypeDeclaration() }
 
   override predicate fromSource() {
-    exists(ValueOrRefType t | t.getNamespace() = this and t.fromSource()) or
+    exists(ValueOrRefType t | t.getNamespace() = this and t.fromSource())
+    or
     exists(Namespace n | n.getParentNamespace() = this and n.fromSource())
   }
 
@@ -115,18 +116,13 @@ class Namespace extends DotNet::Namespace, TypeContainer, @namespace {
   /** Gets a declaration of this namespace, if any. */
   NamespaceDeclaration getADeclaration() { result.getNamespace() = this }
 
-  override Location getALocation() {
-    result = this.getADeclaration().getALocation()
-  }
+  override Location getALocation() { result = this.getADeclaration().getALocation() }
 }
 
 /**
  * The global namespace. This is the root of all namespaces.
  */
-class GlobalNamespace extends Namespace {
-
-  GlobalNamespace() { this.hasName("") }
-}
+class GlobalNamespace extends Namespace { GlobalNamespace() { this.hasName("") } }
 
 /**
  * An explicit namespace declaration in a source file. For example:
@@ -138,7 +134,6 @@ class GlobalNamespace extends Namespace {
  * ```
  */
 class NamespaceDeclaration extends Element, @namespace_declaration {
-
   /**
    * Gets the declared namespace, for example `N1.N2` in
    *
@@ -148,7 +143,7 @@ class NamespaceDeclaration extends Element, @namespace_declaration {
    * }
    * ```
    */
-  Namespace getNamespace() { namespace_declarations(this,result) }
+  Namespace getNamespace() { namespace_declarations(this, result) }
 
   /**
    * Gets the parent namespace declaration, if any. In the following example,
@@ -168,7 +163,9 @@ class NamespaceDeclaration extends Element, @namespace_declaration {
    * }
    * ```
    */
-  NamespaceDeclaration getParentNamespaceDeclaration() { parent_namespace_declaration(this,result) }
+  NamespaceDeclaration getParentNamespaceDeclaration() {
+    parent_namespace_declaration(this, result)
+  }
 
   /**
    * Gets a child namespace declaration, if any. In the following example,
@@ -182,8 +179,10 @@ class NamespaceDeclaration extends Element, @namespace_declaration {
    *   }
    * }
    * ```
-    */
-  NamespaceDeclaration getAChildNamespaceDeclaration() { parent_namespace_declaration(result,this) }
+   */
+  NamespaceDeclaration getAChildNamespaceDeclaration() {
+    parent_namespace_declaration(result, this)
+  }
 
   /**
    * Gets a type directly declared within this namespace declaration.

@@ -1,4 +1,5 @@
 /** Provides definitions related to the namespace `System.DirectoryServices.Protocols`. */
+
 import csharp
 private import semmle.code.csharp.frameworks.system.DirectoryServices
 
@@ -19,7 +20,5 @@ class SystemDirectoryServicesProtocolsClass extends Class {
 
 /** The `System.DirectoryServices.Protocols.SearchRequest` class. */
 class SystemDirectoryServicesProtocolsSearchRequest extends SystemDirectoryServicesProtocolsClass {
-  SystemDirectoryServicesProtocolsSearchRequest() {
-    this.hasName("SearchRequest")
-  }
+  SystemDirectoryServicesProtocolsSearchRequest() { this.hasName("SearchRequest") }
 }

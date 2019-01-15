@@ -2,6 +2,7 @@
  * Provides functionality for performing structural comparison of
  * expressions and statements.
  */
+
 import csharp
 
 /** Gets the declaration referenced by the expression `e`, if any. */
@@ -21,10 +22,9 @@ private int elementKind(Element e) {
 }
 
 private int getNumberOfActualChildren(Element e) {
-  if e.(MemberAccess).targetIsThisInstance() then
-    result = e.getNumberOfChildren() - 1
-  else
-    result = e.getNumberOfChildren()
+  if e.(MemberAccess).targetIsThisInstance()
+  then result = e.getNumberOfChildren() - 1
+  else result = e.getNumberOfChildren()
 }
 
 /**
@@ -61,68 +61,53 @@ abstract class StructuralComparisonConfiguration extends string {
     (
       candidate(x, y)
       or
-      exists(Element xParent, Element yParent, int i |
-        candidateInternal(xParent, yParent) |
-        hasChild(xParent, i, x)
-        and
+      exists(Element xParent, Element yParent, int i | candidateInternal(xParent, yParent) |
+        hasChild(xParent, i, x) and
         hasChild(yParent, i, y)
       )
     )
   }
 
-  pragma [noinline]
-  private predicate hasChild(Element e, int i, Element child) {
-    child = e.getChild(i)
-  }
+  pragma[noinline]
+  private predicate hasChild(Element e, int i, Element child) { child = e.getChild(i) }
 
-  private predicate sameByValue(Expr x, Expr y) {
-    sameByValueAux(x, y, y.getValue())
-  }
+  private predicate sameByValue(Expr x, Expr y) { sameByValueAux(x, y, y.getValue()) }
 
-  pragma [noinline]
+  pragma[noinline]
   private predicate sameByValueAux(Expr x, Expr y, string value) {
     candidateInternal(x, y) and
     value = x.getValue()
   }
 
-  pragma [nomagic]
+  pragma[nomagic]
   private predicate sameByStructure(Element x, Element y) {
     // At least one of `x` and `y` must not have a value, they must have
     // the same kind, and the same number of children
-    sameByStructureCandidate(x, y, elementKind(y), getNumberOfActualChildren(y))
-    and
+    sameByStructureCandidate(x, y, elementKind(y), getNumberOfActualChildren(y)) and
     // If one of them has a reference attribute, they should both reference
     // the same node
-    (exists(referenceAttribute(x)) implies
-      referenceAttribute(x) = referenceAttribute(y))
-    and
+    (exists(referenceAttribute(x)) implies referenceAttribute(x) = referenceAttribute(y)) and
     // x is a member access on `this` iff y is
-    (x.(MemberAccess).targetIsThisInstance() implies
-      y.(MemberAccess).targetIsThisInstance())
-    and
-    (y.(MemberAccess).targetIsThisInstance() implies
-      x.(MemberAccess).targetIsThisInstance())
-    and
+    (x.(MemberAccess).targetIsThisInstance() implies y.(MemberAccess).targetIsThisInstance()) and
+    (y.(MemberAccess).targetIsThisInstance() implies x.(MemberAccess).targetIsThisInstance()) and
     // All of their corresponding children must be structurally equal
     forall(int i, Element xc |
       xc = x.getChild(i) and
       // exclude `this` qualifier, which has been checked above
-      not (i = -1 and x.(MemberAccess).targetIsThisInstance()) |
+      not (i = -1 and x.(MemberAccess).targetIsThisInstance())
+    |
       sameInternal(xc, y.getChild(i))
     )
   }
 
   private predicate sameByStructureCandidate(Element x, Element y, int elementKind, int children) {
-    candidateInternal(x, y)
-    and
-    elementKind = elementKind(x)
-    and
-    children = getNumberOfActualChildren(x)
-    and
+    candidateInternal(x, y) and
+    elementKind = elementKind(x) and
+    children = getNumberOfActualChildren(x) and
     not (x.(Expr).hasValue() and y.(Expr).hasValue())
   }
 
-  pragma [nomagic]
+  pragma[nomagic]
   private predicate sameInternal(Element x, Element y) {
     sameByValue(x, y)
     or
@@ -135,8 +120,7 @@ abstract class StructuralComparisonConfiguration extends string {
    * `candidate(x, y)` must hold.
    */
   predicate same(Element x, Element y) {
-    candidate(x, y)
-    and
+    candidate(x, y) and
     sameInternal(x, y)
   }
 }
@@ -188,68 +172,53 @@ module Internal {
       (
         candidate(x, y)
         or
-        exists(Element xParent, Element yParent, int i |
-          candidateInternal(xParent, yParent) |
-          hasChild(xParent, i, x)
-          and
+        exists(Element xParent, Element yParent, int i | candidateInternal(xParent, yParent) |
+          hasChild(xParent, i, x) and
           hasChild(yParent, i, y)
         )
       )
     }
 
-    pragma [noinline]
-    private predicate hasChild(Element e, int i, Element child) {
-      child = e.getChild(i)
-    }
+    pragma[noinline]
+    private predicate hasChild(Element e, int i, Element child) { child = e.getChild(i) }
 
-    private predicate sameByValue(Expr x, Expr y) {
-      sameByValueAux(x, y, y.getValue())
-    }
+    private predicate sameByValue(Expr x, Expr y) { sameByValueAux(x, y, y.getValue()) }
 
-    pragma [noinline]
+    pragma[noinline]
     private predicate sameByValueAux(Expr x, Expr y, string value) {
       candidateInternal(x, y) and
       value = x.getValue()
     }
 
-    pragma [nomagic]
+    pragma[nomagic]
     private predicate sameByStructure(Element x, Element y) {
       // At least one of `x` and `y` must not have a value, they must have
       // the same kind, and the same number of children
-      sameByStructureCandidate(x, y, elementKind(y), getNumberOfActualChildren(y))
-      and
+      sameByStructureCandidate(x, y, elementKind(y), getNumberOfActualChildren(y)) and
       // If one of them has a reference attribute, they should both reference
       // the same node
-      (exists(referenceAttribute(x)) implies
-        referenceAttribute(x) = referenceAttribute(y))
-      and
+      (exists(referenceAttribute(x)) implies referenceAttribute(x) = referenceAttribute(y)) and
       // x is a member access on `this` iff y is
-      (x.(MemberAccess).targetIsThisInstance() implies
-        y.(MemberAccess).targetIsThisInstance())
-      and
-      (y.(MemberAccess).targetIsThisInstance() implies
-        x.(MemberAccess).targetIsThisInstance())
-      and
+      (x.(MemberAccess).targetIsThisInstance() implies y.(MemberAccess).targetIsThisInstance()) and
+      (y.(MemberAccess).targetIsThisInstance() implies x.(MemberAccess).targetIsThisInstance()) and
       // All of their corresponding children must be structurally equal
       forall(int i, Element xc |
         xc = x.getChild(i) and
         // exclude `this` qualifier, which has been checked above
-        not (i = -1 and x.(MemberAccess).targetIsThisInstance()) |
+        not (i = -1 and x.(MemberAccess).targetIsThisInstance())
+      |
         sameInternal(xc, y.getChild(i))
       )
     }
 
     private predicate sameByStructureCandidate(Element x, Element y, int elementKind, int children) {
-      candidateInternal(x, y)
-      and
-      elementKind = elementKind(x)
-      and
-      children = getNumberOfActualChildren(x)
-      and
+      candidateInternal(x, y) and
+      elementKind = elementKind(x) and
+      children = getNumberOfActualChildren(x) and
       not (x.(Expr).hasValue() and y.(Expr).hasValue())
     }
 
-    pragma [nomagic]
+    pragma[nomagic]
     private predicate sameInternal(Element x, Element y) {
       sameByValue(x, y)
       or
@@ -262,8 +231,7 @@ module Internal {
      * `candidate(x, y)` must hold.
      */
     predicate same(Element x, Element y) {
-      candidate(x, y)
-      and
+      candidate(x, y) and
       sameInternal(x, y)
     }
   }

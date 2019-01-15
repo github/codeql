@@ -19,19 +19,16 @@ import semmle.code.csharp.frameworks.system.Web
  * Holds if there exists a `Web.config` file in the snapshot that adds an `X-Frame-Options` header.
  */
 predicate hasWebConfigXFrameOptions() {
-  /*
-   * Looking for an entry in a Web.config file that looks like this:
-   * ```
-   * <system.webServer>
-   *   <httpProtocol>
-   *    <customHeaders>
-   *      <add name="X-Frame-Options" value="SAMEORIGIN" />
-   *    </customHeaders>
-   *   </httpProtocol>
-   * </system.webServer>
-   * ```
-   */
-
+  // Looking for an entry in a Web.config file that looks like this:
+  // ```
+  // <system.webServer>
+  //   <httpProtocol>
+  //    <customHeaders>
+  //      <add name="X-Frame-Options" value="SAMEORIGIN" />
+  //    </customHeaders>
+  //   </httpProtocol>
+  // </system.webServer>
+  // ```
   exists(XMLElement element |
     element = any(WebConfigXML webConfig)
           .getARootElement()

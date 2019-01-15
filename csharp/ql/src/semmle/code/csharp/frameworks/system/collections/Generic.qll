@@ -1,4 +1,5 @@
 /** Provides definitions related to the namespace `System.Collections.Generic`. */
+
 import csharp
 private import semmle.code.csharp.frameworks.system.Collections
 
@@ -26,44 +27,30 @@ class SystemCollectionsGenericUnboundGenericStruct extends UnboundGenericStruct 
 
 /** The `System.Collections.Generic.IComparer<T>` interface. */
 class SystemCollectionsGenericIComparerTInterface extends SystemCollectionsGenericUnboundGenericInterface {
-  SystemCollectionsGenericIComparerTInterface() {
-    this.hasName("IComparer<>")
-  }
+  SystemCollectionsGenericIComparerTInterface() { this.hasName("IComparer<>") }
 
   /** Gets the `int Compare(T, T)` method. */
   Method getCompareMethod() {
-    result.getDeclaringType() = this
-    and
-    result.hasName("Compare")
-    and
-    result.getNumberOfParameters() = 2
-    and
-    result.getParameter(0).getType() = getTypeParameter(0)
-    and
-    result.getParameter(1).getType() = getTypeParameter(0)
-    and
+    result.getDeclaringType() = this and
+    result.hasName("Compare") and
+    result.getNumberOfParameters() = 2 and
+    result.getParameter(0).getType() = getTypeParameter(0) and
+    result.getParameter(1).getType() = getTypeParameter(0) and
     result.getReturnType() instanceof IntType
   }
 }
 
 /** The `System.Collections.Generic.IEqualityComparer<T>` interface. */
 class SystemCollectionsGenericIEqualityComparerTInterface extends SystemCollectionsGenericUnboundGenericInterface {
-  SystemCollectionsGenericIEqualityComparerTInterface() {
-    this.hasName("IEqualityComparer<>")
-  }
+  SystemCollectionsGenericIEqualityComparerTInterface() { this.hasName("IEqualityComparer<>") }
 
   /** Gets the `bool Equals(T, T)` method. */
   Method getEqualsMethod() {
-    result.getDeclaringType() = this
-    and
-    result.hasName("Equals")
-    and
-    result.getNumberOfParameters() = 2
-    and
-    result.getParameter(0).getType() = getTypeParameter(0)
-    and
-    result.getParameter(1).getType() = getTypeParameter(0)
-    and
+    result.getDeclaringType() = this and
+    result.hasName("Equals") and
+    result.getNumberOfParameters() = 2 and
+    result.getParameter(0).getType() = getTypeParameter(0) and
+    result.getParameter(1).getType() = getTypeParameter(0) and
     result.getReturnType() instanceof BoolType
   }
 }
@@ -71,8 +58,7 @@ class SystemCollectionsGenericIEqualityComparerTInterface extends SystemCollecti
 /** The `System.Collections.Generic.IEnumerable<T>` interface. */
 class SystemCollectionsGenericIEnumerableTInterface extends SystemCollectionsGenericUnboundGenericInterface {
   SystemCollectionsGenericIEnumerableTInterface() {
-    this.hasName("IEnumerable<>")
-    and
+    this.hasName("IEnumerable<>") and
     this.getNumberOfTypeParameters() = 1
   }
 }
@@ -80,17 +66,14 @@ class SystemCollectionsGenericIEnumerableTInterface extends SystemCollectionsGen
 /** The `System.Collections.Generic.IEnumerator<T>` interface. */
 class SystemCollectionsGenericIEnumeratorInterface extends SystemCollectionsGenericUnboundGenericInterface {
   SystemCollectionsGenericIEnumeratorInterface() {
-    this.hasName("IEnumerator<>")
-    and
+    this.hasName("IEnumerator<>") and
     this.getNumberOfTypeParameters() = 1
   }
 
   /** Gets the `Current` property. */
   Property getCurrentProperty() {
-    result.getDeclaringType() = this
-    and
-    result.hasName("Current")
-    and
+    result.getDeclaringType() = this and
+    result.hasName("Current") and
     result.getType() = this.getTypeParameter(0)
   }
 }
@@ -98,8 +81,7 @@ class SystemCollectionsGenericIEnumeratorInterface extends SystemCollectionsGene
 /** The `System.Collections.Generic.IList<T>` interface. */
 class SystemCollectionsGenericIListTInterface extends SystemCollectionsGenericUnboundGenericInterface {
   SystemCollectionsGenericIListTInterface() {
-    this.hasName("IList<>")
-    and
+    this.hasName("IList<>") and
     this.getNumberOfTypeParameters() = 1
   }
 }
@@ -107,33 +89,26 @@ class SystemCollectionsGenericIListTInterface extends SystemCollectionsGenericUn
 /** The `System.Collections.Generic.KeyValuePair<TKey, TValue>` structure. */
 class SystemCollectionsGenericKeyValuePairStruct extends SystemCollectionsGenericUnboundGenericStruct {
   SystemCollectionsGenericKeyValuePairStruct() {
-    this.hasName("KeyValuePair<,>")
-    and
+    this.hasName("KeyValuePair<,>") and
     this.getNumberOfTypeParameters() = 2
   }
 
   /** Gets the `Key` property. */
   Property getKeyProperty() {
-    result.getDeclaringType() = this
-    and
-    result.hasName("Key")
-    and
+    result.getDeclaringType() = this and
+    result.hasName("Key") and
     result.getType() = this.getTypeParameter(0)
   }
 
   /** Gets the `Value` property. */
   Property getValueProperty() {
-    result.getDeclaringType() = this
-    and
-    result.hasName("Value")
-    and
+    result.getDeclaringType() = this and
+    result.hasName("Value") and
     result.getType() = this.getTypeParameter(1)
   }
 }
 
 /** The `System.Collections.Generic.ICollection<>` interface. */
 class SystemCollectionsGenericICollectionInterface extends SystemCollectionsGenericUnboundGenericInterface {
-  SystemCollectionsGenericICollectionInterface() {
-    this.hasName("ICollection<>")
-  }
+  SystemCollectionsGenericICollectionInterface() { this.hasName("ICollection<>") }
 }

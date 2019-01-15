@@ -1,4 +1,5 @@
 /** Provides definitions related to the namespace `Microsoft`. */
+
 import csharp
 
 /** The `Microsoft` namespace. */

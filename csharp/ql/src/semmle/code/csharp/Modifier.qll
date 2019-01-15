@@ -6,7 +6,6 @@ import Element
  * A modifier, for example `static`, `virtual`, `public` and so on.
  */
 class Modifier extends Element, @modifier {
-
   /** Gets the name of this modifier, for example `public`. */
   string getName() { modifiers(this, result) }
 

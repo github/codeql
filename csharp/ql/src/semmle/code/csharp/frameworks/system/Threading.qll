@@ -1,4 +1,5 @@
 /** Provides definitions related to the namespace `System.Threading`. */
+
 import csharp
 private import semmle.code.csharp.frameworks.System
 

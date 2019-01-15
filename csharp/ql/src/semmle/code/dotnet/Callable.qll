@@ -13,9 +13,7 @@ class Callable extends Declaration, @dotnet_callable {
   /** Holds if this callable has a body or an implementation. */
   predicate hasBody() { none() }
 
-  override Callable getSourceDeclaration() {
-    result = Declaration.super.getSourceDeclaration()
-  }
+  override Callable getSourceDeclaration() { result = Declaration.super.getSourceDeclaration() }
 
   /** Gets the number of parameters of this callable. */
   int getNumberOfParameters() { result = count(getAParameter()) }
@@ -30,33 +28,35 @@ class Callable extends Declaration, @dotnet_callable {
   predicate canReturn(Expr e) { none() }
 
   final override string getLabel() {
-    result = getReturnTypeLabel() + " " + getDeclaringType().getLabel() + "." + getUndecoratedName() +
-      getGenericsLabel(this) + getMethodParams()
+    result = getReturnTypeLabel() + " " + getDeclaringType().getLabel() + "." + getUndecoratedName()
+        + getGenericsLabel(this) + getMethodParams()
   }
 
   private string getReturnTypeLabel() {
-    if exists(getReturnType())
-    then result = getReturnType().getLabel()
-    else result = "System.Void"
+    if exists(getReturnType()) then result = getReturnType().getLabel() else result = "System.Void"
   }
 
   private string getMethodParams() { result = "(" + getMethodParamList() + ")" }
 
-  language [monotonicAggregates]
+  language[monotonicAggregates]
   private string getMethodParamList() {
-    result = concat(int p | exists(getParameter(p)) | getParameter(p).getType().getLabel(), "," order by p)
+    result = concat(int p |
+        exists(getParameter(p))
+      |
+        getParameter(p).getType().getLabel(), ","
+        order by
+          p
+      )
   }
 
-  override string getUndecoratedName() { result=getName() }
+  override string getUndecoratedName() { result = getName() }
 
   /** Gets the return type of this callable. */
   Type getReturnType() { none() }
 }
 
 /** A constructor. */
-abstract class Constructor extends Callable {
-}
+abstract class Constructor extends Callable { }
 
 /** A destructor/finalizer. */
-abstract class Destructor extends Callable {
-}
+abstract class Destructor extends Callable { }

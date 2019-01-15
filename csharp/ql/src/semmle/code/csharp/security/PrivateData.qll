@@ -8,6 +8,7 @@
  * This library is not concerned with credentials. See `SensitiveActions` for expressions related
  * to credentials.
  */
+
 import csharp
 
 /** A string for `match` that identifies strings that look like they represent private data. */
@@ -40,26 +41,20 @@ abstract class PrivateDataExpr extends Expr { }
 /** A method call that might produce private data. */
 class PrivateMethodCall extends PrivateDataExpr, MethodCall {
   PrivateMethodCall() {
-    exists(string s | this.getTarget().getName().toLowerCase() = s |
-      s.matches(privateNames())
-    )
+    exists(string s | this.getTarget().getName().toLowerCase() = s | s.matches(privateNames()))
   }
 }
 
 /** An indexer access that might produce private data. */
 class PrivateIndexerAccess extends PrivateDataExpr, IndexerAccess {
   PrivateIndexerAccess() {
-    exists(string s | this.getAnIndex().getValue().toLowerCase() = s |
-      s.matches(privateNames())
-    )
+    exists(string s | this.getAnIndex().getValue().toLowerCase() = s | s.matches(privateNames()))
   }
 }
 
 /** An access to a variable that might contain private data. */
 class PrivateVariableAccess extends PrivateDataExpr, VariableAccess {
   PrivateVariableAccess() {
-    exists(string s | this.getTarget().getName().toLowerCase() = s |
-      s.matches(privateNames())
-    )
+    exists(string s | this.getTarget().getName().toLowerCase() = s | s.matches(privateNames()))
   }
 }
