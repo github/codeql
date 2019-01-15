@@ -1,0 +1,3 @@
+| tst.js:11:1:11:21 | class A ... ds A {} | A2 | tst.js:3:1:8:1 | class A ... () {}\\n} | A |
+| tst.js:13:1:13:15 | function B() {} | B | tst.js:3:1:8:1 | class A ... () {}\\n} | A |
+| tst.js:17:1:17:15 | function C() {} | C | tst.js:13:1:13:15 | function B() {} | B |

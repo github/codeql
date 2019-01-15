@@ -538,6 +538,18 @@ class ClassNode extends DataFlow::SourceNode {
    * The constructor is not considered a static method.
    */
   FunctionNode getAStaticMethod() { result = impl.getAStaticMethod() }
+
+  /**
+   * Gets a direct super class of this class.
+   */
+  ClassNode getADirectSuperClass() {
+    result.getConstructor().getAstNode() = impl
+          .getASuperClassNode()
+          .analyze()
+          .getAValue()
+          .(AbstractCallable)
+          .getFunction()
+  }
 }
 
 module ClassNode {
@@ -586,6 +598,12 @@ module ClassNode {
      * The constructor is not considered a static method.
      */
     abstract FunctionNode getAStaticMethod();
+
+    /**
+     * Gets a dataflow node representing a class to be used as the super-class
+     * of this node.
+     */
+    abstract DataFlow::Node getASuperClassNode();
   }
 
   /**
@@ -635,6 +653,8 @@ module ClassNode {
         result = method.getBody().flow()
       )
     }
+
+    override DataFlow::Node getASuperClassNode() { result = astNode.getSuperClass().flow() }
   }
 
   /**
@@ -678,6 +698,23 @@ module ClassNode {
       exists(ExtendCall call |
         call.getDestinationOperand() = getAPropertyRead("prototype") and
         result = call.getASourceOperand()
+      )
+    }
+
+    override DataFlow::Node getASuperClassNode() {
+      // C.prototype = Object.create(D.prototype)
+      exists(DataFlow::InvokeNode objectCreate, DataFlow::PropRead superProto |
+        getAPropertySource("prototype") = objectCreate and
+        objectCreate = DataFlow::globalVarRef("Object").getAMemberCall("create") and
+        superProto.flowsTo(objectCreate.getArgument(0)) and
+        superProto.getPropertyName() = "prototype" and
+        result = superProto.getBase()
+      )
+      or
+      // C.prototype = new D()
+      exists(DataFlow::NewNode newCall |
+        getAPropertySource("prototype") = newCall and
+        result = newCall.getCalleeNode()
       )
     }
   }
