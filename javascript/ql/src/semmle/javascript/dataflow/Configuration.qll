@@ -442,7 +442,9 @@ private predicate exploratoryFlowStep(
   basicFlowStep(pred, succ, _, cfg) or
   basicStoreStep(pred, succ, _) or
   loadStep(pred, succ, _) or
-  approximateCallbackStep(pred, succ) or
+  // the following two disjuncts taken together over-approximate flow through
+  // higher-order calls
+  callback(pred, succ) or
   succ = pred.(DataFlow::FunctionNode).getAParameter()
 }
 
@@ -622,9 +624,10 @@ private predicate flowThroughProperty(
 
 /**
  * Holds if `arg` and `cb` are passed as arguments to a function which in turn
- * invokes `cb`, passing `arg` as its `i`th argument. All of this is done under
- * configuration `cfg`, and `arg` flows along a path summarized by `summary`,
- * while `cb` is only tracked locally.
+ * invokes `cb`, passing `arg` as its `i`th argument.
+ *
+ * All of this is done under configuration `cfg`, and `arg` flows along a path
+ * summarized by `summary`, while `cb` is only tracked locally.
  */
 private predicate higherOrderCall(
   DataFlow::Node arg, DataFlow::Node cb, int i, DataFlow::Configuration cfg, PathSummary summary
@@ -634,10 +637,12 @@ private predicate higherOrderCall(
     reachableFromInput(f, outer, arg, innerArg, cfg, oldSummary) and
     argumentPassing(outer, cb, f, cbParm) and
     innerArg = inner.getArgument(j) |
+    // direct higher-order call
     cbParm.flowsTo(inner.getCalleeNode()) and
     i = j and
     summary = oldSummary
     or
+    // indirect higher-order call
     exists (DataFlow::Node cbArg, PathSummary newSummary |
       cbParm.flowsTo(cbArg) and
       higherOrderCall(innerArg, cbArg, i, cfg, newSummary) and
@@ -649,7 +654,9 @@ private predicate higherOrderCall(
 /**
  * Holds if `pred` is passed as an argument to a function `f` which also takes a
  * callback parameter `cb` and then invokes `cb`, passing `pred` into parameter `succ`
- * of `cb`. All of this is done under configuration `cfg`, and `arg` flows along a path
+ * of `cb`.
+ *
+ * All of this is done under configuration `cfg`, and `arg` flows along a path
  * summarized by `summary`, while `cb` is only tracked locally.
  */
 private predicate flowIntoHigherOrderCall(

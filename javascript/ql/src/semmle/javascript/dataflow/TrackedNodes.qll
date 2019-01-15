@@ -101,7 +101,7 @@ private module NodeTracking {
       or
       loadStep(mid, nd, _)
       or
-      approximateCallbackStep(mid, nd)
+      callback(mid, nd)
       or
       nd = mid.(DataFlow::FunctionNode).getAParameter()
     )
@@ -220,10 +220,12 @@ private module NodeTracking {
       reachableFromInput(f, outer, arg, innerArg, oldSummary) and
       argumentPassing(outer, cb, f, cbParm) and
       innerArg = inner.getArgument(j) |
+      // direct higher-order call
       cbParm.flowsTo(inner.getCalleeNode()) and
       i = j and
       summary = oldSummary
       or
+      // indirect higher-order call
       exists (DataFlow::Node cbArg, PathSummary newSummary |
         cbParm.flowsTo(cbArg) and
         higherOrderCall(innerArg, cbArg, i, newSummary) and
