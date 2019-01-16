@@ -18,6 +18,14 @@
 | boolops.py | 10 | boolops.py:10:20:10:21 | ControlFlowNode for y2 | ControlFlowNode for z2 | True |
 | boolops.py | 11 | boolops.py:11:20:11:21 | ControlFlowNode for z2 | ControlFlowNode for UnaryExpr | False |
 | boolops.py | 11 | boolops.py:11:20:11:21 | ControlFlowNode for z2 | ControlFlowNode for UnaryExpr | True |
+| compare.py | 3 | compare.py:3:12:3:23 | ControlFlowNode for Compare | ControlFlowNode for Assert | False |
+| compare.py | 3 | compare.py:3:12:3:23 | ControlFlowNode for Compare | ControlFlowNode for Assert | True |
+| compare.py | 7 | compare.py:7:12:7:27 | ControlFlowNode for Compare | ControlFlowNode for Assert | False |
+| compare.py | 7 | compare.py:7:12:7:27 | ControlFlowNode for Compare | ControlFlowNode for Assert | True |
+| compare.py | 11 | compare.py:11:8:11:19 | ControlFlowNode for Compare | ControlFlowNode for FloatLiteral | False |
+| compare.py | 11 | compare.py:11:8:11:19 | ControlFlowNode for Compare | ControlFlowNode for IntegerLiteral | True |
+| compare.py | 17 | compare.py:17:8:17:23 | ControlFlowNode for Compare | ControlFlowNode for FloatLiteral | False |
+| compare.py | 17 | compare.py:17:8:17:23 | ControlFlowNode for Compare | ControlFlowNode for IntegerLiteral | True |
 | true_false_test.py | 3 | true_false_test.py:3:8:3:12 | ControlFlowNode for cond1 | ControlFlowNode for cond2 | False |
 | true_false_test.py | 3 | true_false_test.py:3:8:3:12 | ControlFlowNode for cond1 | ControlFlowNode for true1 | True |
 | true_false_test.py | 5 | true_false_test.py:5:8:5:12 | ControlFlowNode for cond2 | ControlFlowNode for Pass | True |
