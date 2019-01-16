@@ -162,9 +162,8 @@ module AssignableInternal {
    * Holds if the `ref` assignment to `aa` via call `c` is relevant.
    */
   private predicate isRelevantRefCall(Call c, AssignableAccess aa) {
-    c.getAnArgument() = aa and
-    aa.isRefArgument() and
-    (isNonAnalyzableRefCall(c, aa, _) or exists(getAnAnalyzableRefDef(c, aa, _)))
+    isNonAnalyzableRefCall(c, aa) or
+    exists(getAnAnalyzableRefDef(c, aa, _))
   }
 
   private Callable getRefCallTarget(Call c, AssignableAccess aa, Parameter p) {
@@ -220,10 +219,16 @@ module AssignableInternal {
    * Equivalent with `not isAnalyzableRefCall(mc, aa, p)`, but avoids negative
    * recursion.
    */
-  private predicate isNonAnalyzableRefCall(Call c, AssignableAccess aa, Parameter p) {
-    exists(Callable callable | callable = getRefCallTarget(c, aa, p) |
-      callable.(Virtualizable).isOverridableOrImplementable() or
-      not callable.hasBody()
+  private predicate isNonAnalyzableRefCall(Call c, AssignableAccess aa) {
+    aa = c.getAnArgument() and
+    aa.isRefArgument() and
+    (
+      not exists(getRefCallTarget(c, aa, _))
+      or
+      exists(Callable callable | callable = getRefCallTarget(c, aa, _) |
+        callable.(Virtualizable).isOverridableOrImplementable() or
+        not callable.hasBody()
+      )
     )
   }
 
@@ -275,7 +280,8 @@ module AssignableInternal {
         not lvde.hasInitializer() and
         not exists(getTupleSource(TTupleAssignmentDefinition(_, lvde))) and
         not lvde = any(IsPatternExpr ipe).getVariableDeclExpr() and
-        not lvde = any(TypeCase tc).getVariableDeclExpr()
+        not lvde = any(TypeCase tc).getVariableDeclExpr() and
+        not lvde.isOutArgument()
       } or
       TImplicitParameterDefinition(Parameter p) {
         exists(Callable c | p = c.getAParameter() |
