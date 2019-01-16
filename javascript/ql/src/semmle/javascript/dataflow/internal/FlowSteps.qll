@@ -115,12 +115,14 @@ predicate callStep(DataFlow::Node pred, DataFlow::Node succ) {
 
 /**
  * Holds if there is a flow step from `pred` to `succ` through returning
- * from a function call.
+ * from a function call or the receiver flowing out of a constructor call.
  */
 predicate returnStep(DataFlow::Node pred, DataFlow::Node succ) {
-  exists(Function f |
-    returnExpr(f, pred, _) and
-    calls(succ, f)
+  exists(Function f | calls(succ, f) |
+    returnExpr(f, pred, _)
+    or
+    succ instanceof DataFlow::NewNode and
+    DataFlow::thisNode(pred, f)
   )
 }
 
@@ -262,6 +264,21 @@ predicate callback(DataFlow::Node arg, DataFlow::SourceNode cb) {
     callStep(cbArg, cbParm) and
     cb.flowsTo(cbArg)
   )
+}
+
+/**
+ * Holds if `f` may return `base`, which has a write of property `prop` with right-hand side `rhs`.
+ */
+predicate returnedPropWrite(Function f, DataFlow::SourceNode base, string prop, DataFlow::Node rhs) {
+  base.hasPropertyWrite(prop, rhs) and
+  base.flowsToExpr(f.getAReturnedExpr())
+}
+
+/**
+ * Holds if `f` may assign `rhs` to `this.prop`.
+ */
+predicate receiverPropWrite(Function f, string prop, DataFlow::Node rhs) {
+  DataFlow::thisNode(f).hasPropertyWrite(prop, rhs)
 }
 
 /**

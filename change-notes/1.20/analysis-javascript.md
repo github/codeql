@@ -8,7 +8,7 @@
   - server-side code, for example [hapi](https://hapijs.com/)
 * File classification has been improved to recognize additional generated files, for example files from [HTML Tidy](html-tidy.org).
 
-* The taint tracking library now recognizes flow through persistent storage and callbacks in certain cases. This may give more results for the security queries.
+* The taint tracking library now recognizes flow through persistent storage, class fields, and callbacks in certain cases. This may give more results for the security queries.
 
 ## New queries
 
@@ -41,3 +41,4 @@
 * `DataFlow::SourceNode` is no longer an abstract class; to add new source nodes, extend `DataFlow::SourceNode::Range` instead.
 * Subclasses of `DataFlow::PropRead` are no longer automatically made source nodes; you now need to additionally define a corresponding subclass of `DataFlow::SourceNode::Range` to achieve this.
 * The deprecated libraries `semmle.javascript.DataFlow` and `semmle.javascript.dataflow.CallGraph` have been removed; they are both superseded by `semmle.javascript.dataflow.DataFlow`.
+* The predicate `DataFlow::returnedPropWrite` was intended for internal use only and is no longer available.
