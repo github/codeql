@@ -10,6 +10,7 @@
  */
 
 import csharp
+import semmle.code.csharp.frameworks.system.windows.Forms
 
 /**
  * A string for `match` that identifies strings that look like they represent secret data.
@@ -108,7 +109,11 @@ private predicate expressionHasName(Expr expr, string name) {
 
 /** An expression that may contain a password. */
 class PasswordExpr extends Expr {
-  PasswordExpr() { exists(string name | expressionHasName(this, name) and isPassword(name)) }
+  PasswordExpr() {
+    exists(string name | expressionHasName(this, name) and isPassword(name))
+    or
+    this instanceof PasswordTextboxText
+  }
 }
 
 /** An expression that might contain sensitive data. */
@@ -128,6 +133,26 @@ class SensitiveMethodAccess extends SensitiveExpr, MethodCall {
 /** An access to a variable that might contain sensitive data. */
 class SensitiveVariableAccess extends SensitiveExpr, VariableAccess {
   SensitiveVariableAccess() { isSuspicious(this.getTarget().getName()) }
+}
+
+/** Reading the `Text` property of a password text box. */
+class PasswordTextboxText extends SensitiveExpr, PropertyRead {
+  PasswordTextboxText() {
+    this = any(PasswordField p).getARead()
+  }
+}
+
+/** A field containing a text box used as a password. */
+class PasswordField extends TextControl
+{
+  PasswordField() {
+    isSuspicious(this.getName())
+    or
+    exists(PropertyWrite write | write.getQualifier() = this.getAnAccess() |
+        write.getTarget().getName() = "UseSystemPasswordChar" or
+        write.getTarget().getName() = "PasswordChar"
+    )
+  }
 }
 
 /** A method that may produce sensitive data. */
