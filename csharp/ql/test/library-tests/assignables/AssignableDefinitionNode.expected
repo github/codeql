@@ -77,6 +77,10 @@
 | Assignables.cs:115:13:115:13 | Int32 i | Assignables.cs:115:13:115:13 | Int32 i |
 | Assignables.cs:116:13:116:25 | String s = ... | Assignables.cs:116:13:116:25 | String s = ... |
 | Assignables.cs:117:9:117:30 | ... = ... | Assignables.cs:117:9:117:30 | ... = ... |
+| Assignables.cs:121:31:121:31 | d | Assignables.cs:121:10:121:20 | enter DelegateRef |
+| Assignables.cs:123:13:123:17 | Int32 x = ... | Assignables.cs:123:13:123:17 | Int32 x = ... |
+| Assignables.cs:124:29:124:29 | String s | Assignables.cs:124:9:124:30 | delegate call |
+| Assignables.cs:124:29:124:29 | String s | Assignables.cs:124:29:124:29 | String s |
 | Discards.cs:5:30:5:30 | x | Discards.cs:5:19:5:19 | enter f |
 | Discards.cs:7:9:7:17 | ... = ... | Discards.cs:7:9:7:17 | ... = ... |
 | Discards.cs:13:9:13:20 | ... = ... | Discards.cs:13:9:13:20 | ... = ... |
