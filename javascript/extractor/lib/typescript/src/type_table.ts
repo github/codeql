@@ -505,6 +505,9 @@ export class TypeTable {
     if (flags === ts.TypeFlags.Never) {
       return "never";
     }
+    if (flags === ts.TypeFlags.BigInt) {
+      return "bigint";
+    }
     if (flags & ts.TypeFlags.Null) {
       return "null";
     }
@@ -535,6 +538,11 @@ export class TypeTable {
     }
     if (flags & ts.TypeFlags.StringLiteral) {
       return "strlit;" + (type as ts.LiteralType).value;
+    }
+    if (flags & ts.TypeFlags.BigIntLiteral) {
+      let literalType = type as ts.LiteralType;
+      let value = literalType.value as ts.PseudoBigInt;
+      return "bigintlit;" + (value.negative ? "-" : "") + value.base10Value;
     }
     if (flags & ts.TypeFlags.Union) {
       let unionType = type as ts.UnionType;

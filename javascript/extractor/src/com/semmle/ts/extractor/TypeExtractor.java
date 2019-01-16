@@ -31,6 +31,7 @@ public class TypeExtractor {
 	private static final int thisKind = 20;
 	private static final int numberLiteralTypeKind = 21;
 	private static final int stringLiteralTypeKind = 22;
+	private static final int bigintLiteralTypeKind = 25;
 
 	static {
 		tagToKind.put("any", 0);
@@ -57,6 +58,8 @@ public class TypeExtractor {
 		tagToKind.put("numlit", numberLiteralTypeKind);
 		tagToKind.put("strlit", stringLiteralTypeKind);
 		tagToKind.put("unknown", 23);
+		tagToKind.put("bigint", 24);
+		tagToKind.put("bigintlit", bigintLiteralTypeKind);
 	}
 
 	private static final Map<String, Integer> symbolKind = new LinkedHashMap<String, Integer>();
@@ -126,6 +129,7 @@ public class TypeExtractor {
 
 		case numberLiteralTypeKind:
 		case stringLiteralTypeKind:
+		case bigintLiteralTypeKind:
 			firstChild = parts.length; // No children.
 			// The string value may contain `;` so don't use the split().
 			String value = contents.substring(parts[0].length() + 1);

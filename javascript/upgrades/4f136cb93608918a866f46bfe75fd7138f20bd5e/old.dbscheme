@@ -560,13 +560,12 @@ case @typeexpr.kind of
 | 32 = @importvartypeaccess
 | 33 = @optionaltypeexpr
 | 34 = @resttypeexpr
-| 35 = @bigintliteraltypeexpr
 ;
 
 @typeref = @typeaccess | @typedecl;
 @typeidentifier = @typedecl | @localtypeaccess | @typelabel | @localvartypeaccess | @localnamespaceaccess;
 @typeexpr_parent = @expr | @stmt | @property | @typeexpr;
-@literaltypeexpr = @stringliteraltypeexpr | @numberliteraltypeexpr | @booleanliteraltypeexpr | @bigintliteraltypeexpr;
+@literaltypeexpr = @stringliteraltypeexpr | @numberliteraltypeexpr | @booleanliteraltypeexpr;
 @typeaccess = @localtypeaccess | @qualifiedtypeaccess | @importtypeaccess;
 @vartypeaccess = @localvartypeaccess | @qualifiedvartypeaccess | @thisvartypeaccess | @importvartypeaccess;
 @namespaceaccess = @localnamespaceaccess | @qualifiednamespaceaccess | @importnamespaceaccess;
@@ -613,8 +612,6 @@ case @type.kind of
 | 21 = @numberliteraltype
 | 22 = @stringliteraltype
 | 23 = @unknowntype
-| 24 = @biginttype
-| 25 = @bigintliteraltype
 ;
 
 @booleanliteraltype = @truetype | @falsetype;
@@ -681,8 +678,8 @@ type_property(
   varchar(900) name: string ref,
   int propertyType: @type ref);
 
-@literaltype = @stringliteraltype | @numberliteraltype | @booleanliteraltype | @bigintliteraltype;
-@type_with_literal_value = @stringliteraltype | @numberliteraltype | @bigintliteraltype;
+@literaltype = @stringliteraltype | @numberliteraltype | @booleanliteraltype;
+@type_with_literal_value = @stringliteraltype | @numberliteraltype;
 type_literal_value(
   unique int typ: @type_with_literal_value ref,
   varchar(900) value: string ref);
