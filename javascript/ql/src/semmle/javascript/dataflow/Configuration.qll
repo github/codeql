@@ -607,7 +607,7 @@ private predicate storeStep(
   summary = PathSummary::level()
   or
   exists(Function f, DataFlow::Node mid |
-    // `f` stores its parameter `pred` in property `prop` of a value that it returns,
+    // `f` stores its parameter `pred` in property `prop` of a value that flows back to the caller,
     // and `succ` is an invocation of `f`
     reachableFromInput(f, succ, pred, mid, cfg, summary) and
     (
@@ -617,21 +617,6 @@ private predicate storeStep(
       receiverPropWrite(f, prop, mid)
     )
   )
-}
-
-/**
- * Holds if `f` may return `base`, which has a write of property `prop` with right-hand side `rhs`.
- */
-predicate returnedPropWrite(Function f, DataFlow::SourceNode base, string prop, DataFlow::Node rhs) {
-  base.hasPropertyWrite(prop, rhs) and
-  base.flowsToExpr(f.getAReturnedExpr())
-}
-
-/**
- * Holds if `f` may return `base`, which has a write of property `prop` with right-hand side `rhs`.
- */
-predicate receiverPropWrite(Function f, string prop, DataFlow::Node rhs) {
-  DataFlow::thisNode(f).hasPropertyWrite(prop, rhs)
 }
 
 /**

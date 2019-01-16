@@ -167,12 +167,16 @@ private module NodeTracking {
     basicStoreStep(pred, succ, prop) and
     summary = PathSummary::level()
     or
-    exists(Function f, DataFlow::Node mid, DataFlow::SourceNode base |
-      // `f` stores its parameter `pred` in property `prop` of a value that it returns,
+    exists(Function f, DataFlow::Node mid |
+      // `f` stores its parameter `pred` in property `prop` of a value that flows back to the caller,
       // and `succ` is an invocation of `f`
       reachableFromInput(f, succ, pred, mid, summary) and
-      base.hasPropertyWrite(prop, mid) and
-      base.flowsToExpr(f.getAReturnedExpr())
+      (
+        returnedPropWrite(f, _, prop, mid)
+        or
+        succ instanceof DataFlow::NewNode and
+        receiverPropWrite(f, prop, mid)
+      )
     )
   }
 
