@@ -17,6 +17,9 @@ class ParameterNode extends DataFlow::SourceNode {
 
   /** Gets the name of this parameter. */
   string getName() { result = p.getName() }
+
+  /** Holds if this parameter is a rest parameter. */
+  predicate isRestParameter() { p.isRestParameter() }
 }
 
 /** A data flow node corresponding to a function invocation (with or without `new`). */

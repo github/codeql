@@ -88,11 +88,11 @@ predicate localFlowStep(
  * through invocation `invk` of function `f`.
  */
 predicate argumentPassing(
-  DataFlow::InvokeNode invk, DataFlow::ValueNode arg, Function f, Parameter parm
+  DataFlow::InvokeNode invk, DataFlow::ValueNode arg, Function f, DataFlow::ParameterNode parm
 ) {
   calls(invk, f) and
   exists(int i |
-    f.getParameter(i) = parm and
+    f.getParameter(i) = parm.getParameter() and
     not parm.isRestParameter() and
     arg = invk.getArgument(i)
   )
@@ -100,7 +100,7 @@ predicate argumentPassing(
   exists(DataFlow::Node callback, int i |
     invk.(DataFlow::AdditionalPartialInvokeNode).isPartialArgument(callback, arg, i) and
     partiallyCalls(invk, callback, f) and
-    parm = f.getParameter(i) and
+    parm.getParameter() = f.getParameter(i) and
     not parm.isRestParameter()
   )
 }
@@ -110,10 +110,7 @@ predicate argumentPassing(
  * to a function call.
  */
 predicate callStep(DataFlow::Node pred, DataFlow::Node succ) {
-  exists(Parameter parm |
-    argumentPassing(_, pred, _, parm) and
-    succ = DataFlow::parameterNode(parm)
-  )
+  argumentPassing(_, pred, _, succ)
 }
 
 /**
@@ -237,6 +234,34 @@ predicate basicStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) 
  */
 predicate loadStep(DataFlow::Node pred, DataFlow::PropRead succ, string prop) {
   succ.accesses(pred, prop)
+}
+
+/**
+ * Holds if there is a higher-order call with argument `arg`, and `cb` is the local
+ * source of an argument that flows into the callee position of that call:
+ *
+ * ```
+ * function f(x, g) {
+ *   g(
+ *     x                 // arg
+ *   );
+ * }
+ *
+ * function cb() {      // cb
+ * }
+ *
+ * f(arg, cb);
+ *
+ * This is an over-approximation of a possible data flow step through a callback
+ * invocation.
+ */
+predicate callback(DataFlow::Node arg, DataFlow::SourceNode cb) {
+  exists (DataFlow::InvokeNode invk, DataFlow::ParameterNode cbParm, DataFlow::Node cbArg |
+    arg = invk.getAnArgument() and
+    cbParm.flowsTo(invk.getCalleeNode()) and
+    callStep(cbArg, cbParm) and
+    cb.flowsTo(cbArg)
+  )
 }
 
 /**

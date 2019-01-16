@@ -471,7 +471,11 @@ private predicate exploratoryFlowStep(
 ) {
   basicFlowStep(pred, succ, _, cfg) or
   basicStoreStep(pred, succ, _) or
-  loadStep(pred, succ, _)
+  loadStep(pred, succ, _) or
+  // the following two disjuncts taken together over-approximate flow through
+  // higher-order calls
+  callback(pred, succ) or
+  succ = pred.(DataFlow::FunctionNode).getAParameter()
 }
 
 /**
@@ -536,10 +540,7 @@ private predicate callInputStep(
 ) {
   (
     isRelevant(pred, cfg) and
-    exists(Parameter parm |
-      argumentPassing(invk, pred, f, parm) and
-      succ = DataFlow::parameterNode(parm)
-    )
+    argumentPassing(invk, pred, f, succ)
     or
     isRelevant(pred, cfg) and
     exists(SsaDefinition prevDef, SsaDefinition def |
@@ -656,6 +657,57 @@ private predicate flowThroughProperty(
 }
 
 /**
+ * Holds if `arg` and `cb` are passed as arguments to a function which in turn
+ * invokes `cb`, passing `arg` as its `i`th argument.
+ *
+ * All of this is done under configuration `cfg`, and `arg` flows along a path
+ * summarized by `summary`, while `cb` is only tracked locally.
+ */
+private predicate higherOrderCall(
+  DataFlow::Node arg, DataFlow::Node cb, int i, DataFlow::Configuration cfg, PathSummary summary
+) {
+  exists (Function f, DataFlow::InvokeNode outer, DataFlow::InvokeNode inner, int j,
+    DataFlow::Node innerArg, DataFlow::ParameterNode cbParm, PathSummary oldSummary |
+    reachableFromInput(f, outer, arg, innerArg, cfg, oldSummary) and
+    argumentPassing(outer, cb, f, cbParm) and
+    innerArg = inner.getArgument(j) |
+    // direct higher-order call
+    cbParm.flowsTo(inner.getCalleeNode()) and
+    i = j and
+    summary = oldSummary
+    or
+    // indirect higher-order call
+    exists (DataFlow::Node cbArg, PathSummary newSummary |
+      cbParm.flowsTo(cbArg) and
+      higherOrderCall(innerArg, cbArg, i, cfg, newSummary) and
+      summary = oldSummary.append(PathSummary::call()).append(newSummary)
+    )
+  )
+}
+
+/**
+ * Holds if `pred` is passed as an argument to a function `f` which also takes a
+ * callback parameter `cb` and then invokes `cb`, passing `pred` into parameter `succ`
+ * of `cb`.
+ *
+ * All of this is done under configuration `cfg`, and `arg` flows along a path
+ * summarized by `summary`, while `cb` is only tracked locally.
+ */
+private predicate flowIntoHigherOrderCall(
+  DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg, PathSummary summary
+) {
+  exists(
+    DataFlow::Node fArg, DataFlow::FunctionNode cb,
+    int i, PathSummary oldSummary
+  |
+    higherOrderCall(pred, fArg, i, cfg, oldSummary) and
+    cb = fArg.getALocalSource() and
+    succ = cb.getParameter(i) and
+    summary = oldSummary.append(PathSummary::call())
+  )
+}
+
+/**
  * Holds if there is a flow step from `pred` to `succ` described by `summary`
  * under configuration `cfg`.
  */
@@ -671,6 +723,9 @@ private predicate flowStep(
     or
     // Flow through a property write/read pair
     flowThroughProperty(pred, succ, cfg, summary)
+    or
+    // Flow into higher-order call
+    flowIntoHigherOrderCall(pred, succ, cfg, summary)
   ) and
   not cfg.isBarrier(succ) and
   not cfg.isBarrier(pred, succ) and

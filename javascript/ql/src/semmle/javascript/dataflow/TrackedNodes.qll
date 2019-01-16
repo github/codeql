@@ -100,6 +100,10 @@ private module NodeTracking {
       basicStoreStep(mid, nd, _)
       or
       loadStep(mid, nd, _)
+      or
+      callback(mid, nd)
+      or
+      nd = mid.(DataFlow::FunctionNode).getAParameter()
     )
   }
 
@@ -113,10 +117,7 @@ private module NodeTracking {
   ) {
     isRelevant(pred) and
     (
-      exists(Parameter parm |
-        argumentPassing(invk, pred, f, parm) and
-        succ = DataFlow::parameterNode(parm)
-      )
+      argumentPassing(invk, pred, f, succ)
       or
       exists(SsaDefinition prevDef, SsaDefinition def |
         pred = DataFlow::ssaDefinitionNode(prevDef) and
@@ -207,6 +208,53 @@ private module NodeTracking {
   }
 
   /**
+   * Holds if `arg` and `cb` are passed as arguments to a function which in turn
+   * invokes `cb`, passing `arg` as its `i`th argument. `arg` flows along a path summarized
+   * by `summary`, while `cb` is only tracked locally.
+   */
+  private predicate higherOrderCall(
+    DataFlow::Node arg, DataFlow::Node cb, int i, PathSummary summary
+  ) {
+    exists (Function f, DataFlow::InvokeNode outer, DataFlow::InvokeNode inner, int j,
+      DataFlow::Node innerArg, DataFlow::ParameterNode cbParm, PathSummary oldSummary |
+      reachableFromInput(f, outer, arg, innerArg, oldSummary) and
+      argumentPassing(outer, cb, f, cbParm) and
+      innerArg = inner.getArgument(j) |
+      // direct higher-order call
+      cbParm.flowsTo(inner.getCalleeNode()) and
+      i = j and
+      summary = oldSummary
+      or
+      // indirect higher-order call
+      exists (DataFlow::Node cbArg, PathSummary newSummary |
+        cbParm.flowsTo(cbArg) and
+        higherOrderCall(innerArg, cbArg, i, newSummary) and
+        summary = oldSummary.append(PathSummary::call()).append(newSummary)
+      )
+    )
+  }
+
+  /**
+   * Holds if `pred` is passed as an argument to a function `f` which also takes a
+   * callback parameter `cb` and then invokes `cb`, passing `pred` into parameter `succ`
+   * of `cb`. `arg` flows along a path summarized by `summary`, while `cb` is only tracked
+   * locally.
+   */
+  private predicate flowIntoHigherOrderCall(
+    DataFlow::Node pred, DataFlow::Node succ, PathSummary summary
+  ) {
+    exists(
+      DataFlow::Node fArg, DataFlow::FunctionNode cb,
+      int i, PathSummary oldSummary
+    |
+      higherOrderCall(pred, fArg, i, oldSummary) and
+      cb = fArg.getALocalSource() and
+      succ = cb.getParameter(i) and
+      summary = oldSummary.append(PathSummary::call())
+    )
+  }
+
+  /**
    * Holds if there is a flow step from `pred` to `succ` described by `summary`.
    */
   private predicate flowStep(DataFlow::Node pred, DataFlow::Node succ, PathSummary summary) {
@@ -219,6 +267,9 @@ private module NodeTracking {
     or
     // Flow through a property write/read pair
     flowThroughProperty(pred, succ, summary)
+    or
+    // Flow into higher-order call
+    flowIntoHigherOrderCall(pred, succ, summary)
   }
 
   /**
