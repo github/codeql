@@ -18,7 +18,15 @@ private predicate isBoundInMethod(MethodDeclaration method) {
     bindingMethod.getDeclaringClass() = method.getDeclaringClass() and
     not bindingMethod.isStatic() and
     thiz.getBinder().getAstNode() = bindingMethod.getBody()
-  |
+    |
+    exists (DataFlow::MethodCallNode bind, DataFlow::PropWrite w |
+      // this[x] = <expr>.bind(...)
+      w = thiz.getAPropertyWrite() and
+      not exists(w.getPropertyName()) and
+      bind.getMethodName() = "bind" and
+      bind.flowsTo(w.getRhs())
+    )
+    or
     // require("auto-bind")(this)
     thiz.flowsTo(DataFlow::moduleImport("auto-bind").getACall().getArgument(0))
     or
