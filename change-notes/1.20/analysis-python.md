@@ -23,4 +23,4 @@
 
  ## Changes to QL libraries
 
- * *Series of bullet points*
+ * Added support for the `dill` pickle library.
