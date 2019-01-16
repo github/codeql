@@ -68,10 +68,7 @@ module UnvalidatedDynamicMethodCall {
       sink.(Sink).getFlowLabel() = label
     }
 
-    override predicate isSanitizer(DataFlow::Node nd) {
-      super.isSanitizer(nd) or
-      nd instanceof PropertyInjection::Sanitizer
-    }
+    override predicate isSanitizer(DataFlow::Node nd) { super.isSanitizer(nd) }
 
     override predicate isAdditionalFlowStep(
       DataFlow::Node src, DataFlow::Node dst, DataFlow::FlowLabel srclabel,

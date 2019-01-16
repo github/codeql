@@ -13,4 +13,10 @@ window.addEventListener('message', (ev) => {
     obj[message.name](message.payload); // OK - may crash, but no code execution involved
 
     window[ev](ev); // NOT OK
+
+    window[configData() + ' ' + message.name](message.payload); // OK - concatenation restricts choice of methods
+
+    window[configData() + message.name](message.payload); // OK - concatenation restricts choice of methods
+
+    window['' + message.name](message.payload); // NOT OK - coercion does not restrict choice of methods
 });
