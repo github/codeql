@@ -1,3 +1,7 @@
+| test2.cpp:13:1:13:33 | /* JSON example: {"foo":"bar"} */ | This comment appears to contain commented-out code |
+| test2.cpp:33:1:33:17 | // { 1, 2, 3, 4 } | This comment appears to contain commented-out code |
+| test2.cpp:35:1:35:26 | // Example: { 1, 2, 3, 4 } | This comment appears to contain commented-out code |
+| test2.cpp:37:1:37:39 | // int myFunction() { return myValue; } | This comment appears to contain commented-out code |
 | test.c:2:1:2:22 | // commented out code; | This comment appears to contain commented-out code |
 | test.c:4:1:7:8 | // some; | This comment appears to contain commented-out code |
 | test.c:9:1:13:8 | // also; | This comment appears to contain commented-out code |
