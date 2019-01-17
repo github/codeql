@@ -211,13 +211,13 @@ described by the portal
 
 .. code-block:: lisp
 
-  (parameter (member (root https://www.npmjs.com/package/mkdirp) default) 0)
+  (parameter 0 (member default (root https://www.npmjs.com/package/mkdirp))
 
 As a more complicated example,
 
 .. code-block:: lisp
 
-  (parameter (parameter (member (instance (member (root https://www.npmjs.com/package/bluebird) Promise)) then) 1) 0)
+  (parameter 0 (parameter 1 (member then (instance (member Promise (root https://www.npmjs.com/package/bluebird))))))
 
 describes the first parameter of a function passed as second argument to the ``then`` method of
 the ``Promise`` constructor exported by package ``bluebird``.
