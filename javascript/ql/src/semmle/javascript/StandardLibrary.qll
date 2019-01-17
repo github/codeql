@@ -185,8 +185,7 @@ private predicate promiseTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
   pred = succ.(PromiseDefinition).getResolveParameter().getACall().getArgument(0)
   or
   // from `x` to `Promise.resolve(x)`
-  succ = DataFlow::globalVarRef("Promise").getAMemberCall("resolve") and
-  pred = succ.(DataFlow::CallNode).getArgument(0)
+  pred = succ.(ResolvedPromiseDefinition).getValue()
   or
   exists(DataFlow::MethodCallNode thn, DataFlow::FunctionNode cb |
     thn.getMethodName() = "then" and cb = thn.getCallback(0)
@@ -204,7 +203,7 @@ private predicate promiseTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
 /**
  * An additional taint step that involves promises.
  */
-private class PromiseTaintStep extends TaintTracking::AdditionalTaintStep {
+private class PromiseTaintStep extends TaintTracking::AdditionalTaintStep {  
   DataFlow::Node source;
 
   PromiseTaintStep() { promiseTaintStep(source, this) }
