@@ -44,4 +44,7 @@
 	RegExp('protos?://(localhost|.+.example.net|.+.example-a.com|.+.example-b.com|.+.example.internal)'); // NOT OK
 
 	/example.dev|example.com/; // OK, but still flagged
+
+	new RegExp(`test.example.com is my home page`); // OK
+	new RegExp(`test.example.com/foo/bar/baz/foo/bar/baz/foo/bar/baz/foo/bar/baz/foo/bar/baz/foo/bar/baz/foo/bar/baz`); // OK
 });

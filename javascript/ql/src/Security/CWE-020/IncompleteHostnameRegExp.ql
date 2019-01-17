@@ -46,7 +46,12 @@ where
     or
     exists(Configuration cfg |
       cfg.hasFlow(e.flow(), _) and
-      e.mayHaveStringValue(pattern)
+      e.mayHaveStringValue(pattern) and
+      // ignore strings that are unlikely to be regular expressions for URLs
+      not (
+        pattern.length() > 50 or
+        pattern.regexpMatch(".*\\s.*")
+      )
     )
   ) and
   isIncompleteHostNameRegExpPattern(pattern, hostPart) and
