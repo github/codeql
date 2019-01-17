@@ -133,7 +133,7 @@ class PromiseCandidate extends DataFlow::InvokeNode {
 /**
  * A promise object created by the standard ECMAScript 2015 `Promise` constructor.
  */
-private class ES2015PromiseDefinition extends PromiseDefinition, DataFlow::NewNode {
+private class ES2015PromiseDefinition extends PromiseDefinition, DataFlow::NewNode {  
   ES2015PromiseDefinition() { this = DataFlow::globalVarRef("Promise").getAnInstantiation() }
 
   override DataFlow::FunctionNode getExecutor() { result = getCallback(0) }
