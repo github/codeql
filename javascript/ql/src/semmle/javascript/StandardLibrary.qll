@@ -142,7 +142,7 @@ private class ES2015PromiseDefinition extends PromiseDefinition, DataFlow::NewNo
 /**
  * A data flow edge from a promise reaction to the corresponding handler.
  */
-private class PromiseFlowStep extends DataFlow::AdditionalFlowStep {
+private class PromiseFlowStep extends DataFlow::AdditionalFlowStep {  
   PromiseDefinition p;
 
   PromiseFlowStep() { this = p }

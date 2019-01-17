@@ -5,23 +5,6 @@
 import javascript
 
 /**
- * A data flow edge from a promise reaction to the corresponding handler.
- */
-private class PromiseFlowStep extends DataFlow::AdditionalFlowStep {
-  PromiseDefinition p;
-
-  PromiseFlowStep() { this = p }
-
-  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    pred = p.getResolveParameter().getACall().getArgument(0) and
-    succ = p.getAResolveHandler().getParameter(0)
-    or
-    pred = p.getRejectParameter().getACall().getArgument(0) and
-    succ = p.getARejectHandler().getParameter(0)
-  }
-}
-
-/**
  * Holds if taint propagates from `pred` to `succ` through promises.
  */
 private predicate promiseTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
