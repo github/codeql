@@ -72,4 +72,40 @@ public class A {
     }
     return b4;
   }
+
+  static class FinalHelper<T> {
+    public final T x;
+    public FinalHelper(T x) {
+      this.x = x;
+    }
+  }
+
+  private FinalHelper<B> b5;
+  public B getter5() {
+    if (b5 == null) {
+      synchronized(this) {
+        if (b5 == null) {
+          B b = new B();
+          b5 = new FinalHelper<B>(b); // BAD, racy read on b5 outside synchronized-block
+        }
+      }
+    }
+    return b5.x; // Potential NPE here, as the two b5 reads may be reordered
+  }
+
+  private FinalHelper<B> b6;
+  public B getter6() {
+    FinalHelper<B> a = b6;
+    if (a == null) {
+      synchronized(this) {
+        a = b6;
+        if (a == null) {
+          B b = new B();
+          a = new FinalHelper<B>(b);
+          b6 = a; // OK, published through final field with a single non-synced read
+        }
+      }
+    }
+    return a.x;
+  }
 }

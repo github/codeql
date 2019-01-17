@@ -14,6 +14,7 @@
 
 | **Query**                  | **Expected impact**    | **Change**                                                       |
 |----------------------------|------------------------|------------------------------------------------------------------|
+| Double-checked locking is not thread-safe (`java/unsafe-double-checked-locking`) | Fewer false positive results | Results that use safe publication through a `final` field are no longer reported. |
 | Result of multiplication cast to wider type (`java/integer-multiplication-cast-to-long`) | Fewer results | Results involving conversions to `float` or `double` are no longer reported, as they were almost exclusively false positives. |
 
 ## Changes to QL libraries
