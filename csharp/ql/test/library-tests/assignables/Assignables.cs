@@ -116,4 +116,11 @@ class Assignables
         var s = nameof(i); // not a read of `i`
         s = nameof(this.Field); // not a read of `this.Field`
     }
+
+    delegate void Delegate(ref int i, out string s);
+    void DelegateRef(Delegate d)
+    {
+        var x = 0;
+        d(ref x, out string s);
+    }
 }

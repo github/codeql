@@ -82,6 +82,17 @@
 | Assignables.cs:109:16:109:16 | s |
 | Assignables.cs:115:13:115:13 | i |
 | Assignables.cs:116:13:116:13 | s |
+| Assignables.cs:120:36:120:36 | i |
+| Assignables.cs:120:36:120:36 | i |
+| Assignables.cs:120:36:120:36 | i |
+| Assignables.cs:120:36:120:36 | i |
+| Assignables.cs:120:50:120:50 | s |
+| Assignables.cs:120:50:120:50 | s |
+| Assignables.cs:120:50:120:50 | s |
+| Assignables.cs:120:50:120:50 | s |
+| Assignables.cs:121:31:121:31 | d |
+| Assignables.cs:123:13:123:13 | x |
+| Assignables.cs:124:29:124:29 | s |
 | Discards.cs:5:6:5:8 | Item1 |
 | Discards.cs:5:11:5:16 | Item2 |
 | Discards.cs:5:30:5:30 | x |
