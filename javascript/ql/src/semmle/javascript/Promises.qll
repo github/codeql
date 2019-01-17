@@ -81,24 +81,3 @@ module Q {
     override DataFlow::FunctionNode getExecutor() { result = getCallback(0) }
   }
 }
-
-/**
- * A promise that is resolved with the given value.
- */
-abstract class ResolvedPromiseDefinition extends DataFlow::CallNode {
-  /**
-   * Gets the value this promise is resolved with.
-   */
-  abstract DataFlow::Node getValue();
-}
-
-/**
- * A resolved promise created by the standard ECMAScript 2015 `Promise.resolve` function.
- */
-class ResolvedES2015PromiseDefinition extends ResolvedPromiseDefinition {
-  ResolvedES2015PromiseDefinition() {
-    this = DataFlow::globalVarRef("Promise").getAMemberCall("resolve")
-  }
-
-  override DataFlow::Node getValue() { result = getArgument(0) }
-}
