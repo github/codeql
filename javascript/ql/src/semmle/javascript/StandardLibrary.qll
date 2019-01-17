@@ -133,7 +133,7 @@ class PromiseCandidate extends DataFlow::InvokeNode {
 /**
  * A promise object created by the standard ECMAScript 2015 `Promise` constructor.
  */
-private class ES2015PromiseDefinition extends PromiseDefinition, DataFlow::NewNode {  
+private class ES2015PromiseDefinition extends PromiseDefinition, DataFlow::NewNode {
   ES2015PromiseDefinition() { this = DataFlow::globalVarRef("Promise").getAnInstantiation() }
 
   override DataFlow::FunctionNode getExecutor() { result = getCallback(0) }
@@ -163,7 +163,7 @@ class ResolvedES2015PromiseDefinition extends ResolvedPromiseDefinition {
 /**
  * A data flow edge from a promise reaction to the corresponding handler.
  */
-private class PromiseFlowStep extends DataFlow::AdditionalFlowStep {  
+private class PromiseFlowStep extends DataFlow::AdditionalFlowStep {
   PromiseDefinition p;
 
   PromiseFlowStep() { this = p }
@@ -203,7 +203,7 @@ private predicate promiseTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
 /**
  * An additional taint step that involves promises.
  */
-private class PromiseTaintStep extends TaintTracking::AdditionalTaintStep {  
+private class PromiseTaintStep extends TaintTracking::AdditionalTaintStep {
   DataFlow::Node source;
 
   PromiseTaintStep() { promiseTaintStep(source, this) }
