@@ -1,168 +1,159 @@
-| escape.cpp:6:5:6:20 | VariableAddress[#return] | #return+0:0 |
-| escape.cpp:6:27:6:30 | VariableAddress[no_p] | no_p+0:0 |
-| escape.cpp:7:3:7:15 | VariableAddress[#return] | #return+0:0 |
-| escape.cpp:7:11:7:14 | VariableAddress[no_p] | no_p+0:0 |
-| escape.cpp:10:5:10:22 | VariableAddress[#return] | #return+0:0 |
-| escape.cpp:10:29:10:32 | VariableAddress[no_r] | no_r+0:0 |
-| escape.cpp:11:3:11:14 | VariableAddress[#return] | #return+0:0 |
-| escape.cpp:11:10:11:13 | VariableAddress[no_r] | no_r+0:0 |
-| escape.cpp:14:6:14:18 | VariableAddress[#return] | #return+0:0 |
-| escape.cpp:14:25:14:28 | VariableAddress[no_p] | no_p+0:0 |
-| escape.cpp:15:3:15:14 | VariableAddress[#return] | #return+0:0 |
-| escape.cpp:15:10:15:13 | VariableAddress[no_p] | no_p+0:0 |
-| escape.cpp:18:6:18:20 | VariableAddress[#return] | #return+0:0 |
-| escape.cpp:18:27:18:30 | VariableAddress[no_r] | no_r+0:0 |
-| escape.cpp:19:3:19:14 | VariableAddress[#return] | #return+0:0 |
-| escape.cpp:19:10:19:13 | VariableAddress[no_r] | no_r+0:0 |
-| escape.cpp:22:36:22:39 | VariableAddress[no_p] | no_p+0:0 |
-| escape.cpp:23:17:23:20 | VariableAddress[no_p] | no_p+0:0 |
-| escape.cpp:26:38:26:41 | VariableAddress[no_r] | no_r+0:0 |
-| escape.cpp:27:19:27:22 | VariableAddress[no_r] | no_r+0:0 |
-| escape.cpp:30:6:30:16 | VariableAddress[#return] | #return+0:0 |
-| escape.cpp:30:23:30:26 | VariableAddress[no_p] | no_p+0:0 |
-| escape.cpp:30:34:30:37 | VariableAddress[no_q] | no_q+0:0 |
-| escape.cpp:30:45:30:48 | VariableAddress[no_b] | no_b+0:0 |
-| escape.cpp:31:7:31:10 | VariableAddress[no_b] | no_b+0:0 |
-| escape.cpp:32:5:32:16 | VariableAddress[#return] | #return+0:0 |
-| escape.cpp:32:12:32:15 | VariableAddress[no_p] | no_p+0:0 |
-| escape.cpp:34:5:34:16 | VariableAddress[#return] | #return+0:0 |
-| escape.cpp:34:12:34:15 | VariableAddress[no_q] | no_q+0:0 |
-| escape.cpp:38:6:38:20 | VariableAddress[#return] | #return+0:0 |
-| escape.cpp:38:27:38:30 | VariableAddress[no_r] | no_r+0:0 |
-| escape.cpp:39:19:39:22 | VariableAddress[no_r] | no_r+0:0 |
-| escape.cpp:40:3:40:14 | VariableAddress[#return] | #return+0:0 |
-| escape.cpp:40:10:40:13 | VariableAddress[no_r] | no_r+0:0 |
-| escape.cpp:71:9:71:17 | VariableAddress[no_result] | no_result+0:0 |
-| escape.cpp:72:9:72:11 | VariableAddress[no_] | no_+0:0 |
-| escape.cpp:74:5:74:7 | VariableAddress[no_] | no_+0:0 |
-| escape.cpp:75:5:75:7 | VariableAddress[no_] | no_+0:0 |
-| escape.cpp:75:11:75:13 | VariableAddress[no_] | no_+0:0 |
-| escape.cpp:76:5:76:13 | VariableAddress[no_result] | no_result+0:0 |
-| escape.cpp:76:17:76:19 | VariableAddress[no_] | no_+0:0 |
-| escape.cpp:77:5:77:13 | VariableAddress[no_result] | no_result+0:0 |
-| escape.cpp:77:19:77:21 | VariableAddress[no_] | no_+0:0 |
-| escape.cpp:79:5:79:7 | VariableAddress[no_] | no_+0:0 |
-| escape.cpp:80:6:80:8 | VariableAddress[no_] | no_+0:0 |
-| escape.cpp:81:5:81:13 | VariableAddress[no_result] | no_result+0:0 |
-| escape.cpp:81:19:81:28 | PointerAdd[4] | no_+0:0 |
-| escape.cpp:81:21:81:23 | VariableAddress[no_] | no_+0:0 |
-| escape.cpp:82:5:82:13 | VariableAddress[no_result] | no_result+0:0 |
-| escape.cpp:82:19:82:28 | PointerSub[4] | no_+0:0 |
-| escape.cpp:82:21:82:23 | VariableAddress[no_] | no_+0:0 |
-| escape.cpp:83:5:83:13 | VariableAddress[no_result] | no_result+0:0 |
-| escape.cpp:83:19:83:26 | PointerAdd[4] | no_+0:0 |
-| escape.cpp:83:24:83:26 | VariableAddress[no_] | no_+0:0 |
-| escape.cpp:84:10:84:12 | VariableAddress[no_] | no_+0:0 |
-| escape.cpp:86:13:86:15 | VariableAddress[no_] | no_+0:0 |
-| escape.cpp:89:15:89:17 | VariableAddress[no_] | no_+0:0 |
-| escape.cpp:90:10:90:12 | VariableAddress[no_] | no_+0:0 |
-| escape.cpp:90:16:90:18 | VariableAddress[no_] | no_+0:0 |
-| escape.cpp:90:22:90:24 | VariableAddress[no_] | no_+0:0 |
-| escape.cpp:93:10:93:12 | VariableAddress[no_] | no_+0:0 |
-| escape.cpp:95:13:95:15 | VariableAddress[no_] | no_+0:0 |
-| escape.cpp:98:9:98:16 | VariableAddress[no_Array] | no_Array+0:0 |
-| escape.cpp:99:5:99:12 | VariableAddress[no_Array] | no_Array+0:0 |
-| escape.cpp:100:5:100:18 | Convert | no_Array+0:0 |
-| escape.cpp:100:11:100:18 | Convert | no_Array+0:0 |
-| escape.cpp:100:11:100:18 | VariableAddress[no_Array] | no_Array+0:0 |
-| escape.cpp:101:5:101:12 | Convert | no_Array+0:0 |
-| escape.cpp:101:5:101:12 | VariableAddress[no_Array] | no_Array+0:0 |
-| escape.cpp:101:5:101:15 | PointerAdd[4] | no_Array+20:0 |
-| escape.cpp:102:5:102:15 | PointerAdd[4] | no_Array+20:0 |
-| escape.cpp:102:7:102:14 | Convert | no_Array+0:0 |
-| escape.cpp:102:7:102:14 | VariableAddress[no_Array] | no_Array+0:0 |
-| escape.cpp:103:5:103:13 | VariableAddress[no_result] | no_result+0:0 |
-| escape.cpp:103:17:103:24 | Convert | no_Array+0:0 |
-| escape.cpp:103:17:103:24 | VariableAddress[no_Array] | no_Array+0:0 |
-| escape.cpp:103:17:103:27 | PointerAdd[4] | no_Array+20:0 |
-| escape.cpp:104:5:104:13 | VariableAddress[no_result] | no_result+0:0 |
-| escape.cpp:104:17:104:27 | PointerAdd[4] | no_Array+20:0 |
-| escape.cpp:104:19:104:26 | Convert | no_Array+0:0 |
-| escape.cpp:104:19:104:26 | VariableAddress[no_Array] | no_Array+0:0 |
-| escape.cpp:106:11:106:18 | VariableAddress[no_Point] | no_Point+0:0 |
-| escape.cpp:106:21:106:32 | FieldAddress[x] | no_Point+0:0 |
-| escape.cpp:106:21:106:32 | FieldAddress[y] | no_Point+4:0 |
-| escape.cpp:106:21:106:32 | FieldAddress[z] | no_Point+8:0 |
-| escape.cpp:107:11:107:14 | VariableAddress[no_x] | no_x+0:0 |
-| escape.cpp:107:18:107:25 | VariableAddress[no_Point] | no_Point+0:0 |
-| escape.cpp:107:27:107:27 | FieldAddress[x] | no_Point+0:0 |
-| escape.cpp:108:5:108:12 | VariableAddress[no_Point] | no_Point+0:0 |
-| escape.cpp:108:14:108:14 | FieldAddress[y] | no_Point+4:0 |
-| escape.cpp:108:18:108:21 | VariableAddress[no_x] | no_x+0:0 |
-| escape.cpp:109:11:109:14 | VariableAddress[no_y] | no_y+0:0 |
-| escape.cpp:109:20:109:27 | VariableAddress[no_Point] | no_Point+0:0 |
-| escape.cpp:109:31:109:31 | FieldAddress[y] | no_Point+4:0 |
-| escape.cpp:110:7:110:14 | VariableAddress[no_Point] | no_Point+0:0 |
-| escape.cpp:110:18:110:18 | FieldAddress[y] | no_Point+4:0 |
-| escape.cpp:110:22:110:25 | VariableAddress[no_y] | no_y+0:0 |
-| escape.cpp:111:11:111:14 | VariableAddress[no_z] | no_z+0:0 |
-| escape.cpp:111:21:111:28 | VariableAddress[no_Point] | no_Point+0:0 |
-| escape.cpp:111:30:111:30 | FieldAddress[z] | no_Point+8:0 |
-| escape.cpp:112:8:112:15 | VariableAddress[no_Point] | no_Point+0:0 |
-| escape.cpp:112:17:112:17 | FieldAddress[z] | no_Point+8:0 |
-| escape.cpp:112:22:112:25 | VariableAddress[no_z] | no_z+0:0 |
-| escape.cpp:114:13:114:22 | VariableAddress[no_Derived] | no_Derived+0:0 |
-| escape.cpp:115:5:115:14 | ConvertToBase[Derived : Intermediate1] | no_Derived+0:0 |
-| escape.cpp:115:5:115:14 | ConvertToBase[Intermediate1 : Base] | no_Derived+0:0 |
-| escape.cpp:115:5:115:14 | VariableAddress[no_Derived] | no_Derived+0:0 |
-| escape.cpp:115:16:115:16 | FieldAddress[b] | no_Derived+0:0 |
-| escape.cpp:116:11:116:14 | VariableAddress[no_b] | no_b+0:0 |
-| escape.cpp:116:18:116:27 | ConvertToBase[Derived : Intermediate1] | no_Derived+0:0 |
-| escape.cpp:116:18:116:27 | ConvertToBase[Intermediate1 : Base] | no_Derived+0:0 |
-| escape.cpp:116:18:116:27 | VariableAddress[no_Derived] | no_Derived+0:0 |
-| escape.cpp:116:29:116:29 | FieldAddress[b] | no_Derived+0:0 |
-| escape.cpp:117:5:117:14 | ConvertToBase[Derived : Intermediate2] | no_Derived+12:0 |
-| escape.cpp:117:5:117:14 | VariableAddress[no_Derived] | no_Derived+0:0 |
-| escape.cpp:117:16:117:17 | FieldAddress[i2] | no_Derived+16:0 |
-| escape.cpp:118:11:118:15 | VariableAddress[no_i2] | no_i2+0:0 |
-| escape.cpp:118:19:118:28 | ConvertToBase[Derived : Intermediate2] | no_Derived+12:0 |
-| escape.cpp:118:19:118:28 | VariableAddress[no_Derived] | no_Derived+0:0 |
-| escape.cpp:118:30:118:31 | FieldAddress[i2] | no_Derived+16:0 |
-| escape.cpp:120:9:120:21 | VariableAddress[no_ssa_addrOf] | no_ssa_addrOf+0:0 |
-| escape.cpp:121:10:121:13 | VariableAddress[no_p] | no_p+0:0 |
-| escape.cpp:121:17:121:30 | Store | no_ssa_addrOf+0:0 |
-| escape.cpp:121:18:121:30 | VariableAddress[no_ssa_addrOf] | no_ssa_addrOf+0:0 |
-| escape.cpp:123:9:123:20 | VariableAddress[no_ssa_refTo] | no_ssa_refTo+0:0 |
-| escape.cpp:124:10:124:13 | VariableAddress[no_r] | no_r+0:0 |
-| escape.cpp:124:17:124:28 | Store | no_ssa_refTo+0:0 |
-| escape.cpp:124:17:124:28 | VariableAddress[no_ssa_refTo] | no_ssa_refTo+0:0 |
-| escape.cpp:126:9:126:32 | VariableAddress[no_ssa_refToArrayElement] | no_ssa_refToArrayElement+0:0 |
-| escape.cpp:127:10:127:15 | VariableAddress[no_rae] | no_rae+0:0 |
-| escape.cpp:127:19:127:42 | Convert | no_ssa_refToArrayElement+0:0 |
-| escape.cpp:127:19:127:42 | VariableAddress[no_ssa_refToArrayElement] | no_ssa_refToArrayElement+0:0 |
-| escape.cpp:127:19:127:45 | PointerAdd[4] | no_ssa_refToArrayElement+20:0 |
-| escape.cpp:127:19:127:45 | Store | no_ssa_refToArrayElement+20:0 |
-| escape.cpp:129:9:129:25 | VariableAddress[no_ssa_refToArray] | no_ssa_refToArray+0:0 |
-| escape.cpp:130:11:130:15 | VariableAddress[no_ra] | no_ra+0:0 |
-| escape.cpp:130:24:130:40 | Store | no_ssa_refToArray+0:0 |
-| escape.cpp:130:24:130:40 | VariableAddress[no_ssa_refToArray] | no_ssa_refToArray+0:0 |
-| escape.cpp:132:9:132:17 | VariableAddress[passByPtr] | passByPtr+0:0 |
-| escape.cpp:133:20:133:28 | VariableAddress[passByPtr] | passByPtr+0:0 |
-| escape.cpp:135:9:135:17 | VariableAddress[passByRef] | passByRef+0:0 |
-| escape.cpp:136:21:136:29 | VariableAddress[passByRef] | passByRef+0:0 |
-| escape.cpp:138:9:138:24 | VariableAddress[no_ssa_passByPtr] | no_ssa_passByPtr+0:0 |
-| escape.cpp:139:23:139:38 | VariableAddress[no_ssa_passByPtr] | no_ssa_passByPtr+0:0 |
-| escape.cpp:141:9:141:24 | VariableAddress[no_ssa_passByRef] | no_ssa_passByRef+0:0 |
-| escape.cpp:142:24:142:39 | VariableAddress[no_ssa_passByRef] | no_ssa_passByRef+0:0 |
-| escape.cpp:144:9:144:28 | VariableAddress[no_ssa_passByPtr_ret] | no_ssa_passByPtr_ret+0:0 |
-| escape.cpp:145:23:145:42 | VariableAddress[no_ssa_passByPtr_ret] | no_ssa_passByPtr_ret+0:0 |
-| escape.cpp:147:9:147:28 | VariableAddress[no_ssa_passByRef_ret] | no_ssa_passByRef_ret+0:0 |
-| escape.cpp:148:24:148:43 | VariableAddress[no_ssa_passByRef_ret] | no_ssa_passByRef_ret+0:0 |
-| escape.cpp:150:9:150:18 | VariableAddress[passByPtr2] | passByPtr2+0:0 |
-| escape.cpp:151:31:151:40 | VariableAddress[passByPtr2] | passByPtr2+0:0 |
-| escape.cpp:153:9:153:18 | VariableAddress[passByRef2] | passByRef2+0:0 |
-| escape.cpp:154:32:154:41 | VariableAddress[passByRef2] | passByRef2+0:0 |
-| escape.cpp:156:9:156:18 | VariableAddress[passByPtr3] | passByPtr3+0:0 |
-| escape.cpp:157:45:157:54 | VariableAddress[passByPtr3] | passByPtr3+0:0 |
-| escape.cpp:159:9:159:18 | VariableAddress[passByRef3] | passByRef3+0:0 |
-| escape.cpp:160:48:160:57 | VariableAddress[passByRef3] | passByRef3+0:0 |
-| escape.cpp:162:9:162:18 | VariableAddress[passByPtr4] | passByPtr4+0:0 |
-| escape.cpp:163:9:163:18 | VariableAddress[passByPtr5] | passByPtr5+0:0 |
-| escape.cpp:164:10:164:14 | VariableAddress[no_b2] | no_b2+0:0 |
-| escape.cpp:165:18:165:27 | VariableAddress[passByPtr4] | passByPtr4+0:0 |
-| escape.cpp:165:31:165:40 | VariableAddress[passByPtr5] | passByPtr5+0:0 |
-| escape.cpp:165:43:165:47 | VariableAddress[no_b2] | no_b2+0:0 |
-| escape.cpp:167:9:167:18 | VariableAddress[passByRef6] | passByRef6+0:0 |
-| escape.cpp:168:21:168:30 | VariableAddress[passByRef6] | passByRef6+0:0 |
-| escape.cpp:170:9:170:25 | VariableAddress[no_ssa_passByRef7] | no_ssa_passByRef7+0:0 |
-| escape.cpp:171:21:171:37 | VariableAddress[no_ssa_passByRef7] | no_ssa_passByRef7+0:0 |
+| escape.cpp:6:27:6:30 | VariableAddress[no_p] | no_p+0:0 | no_p+0:0 |
+| escape.cpp:7:11:7:14 | VariableAddress[no_p] | no_p+0:0 | no_p+0:0 |
+| escape.cpp:10:29:10:32 | VariableAddress[no_r] | no_r+0:0 | no_r+0:0 |
+| escape.cpp:11:10:11:13 | VariableAddress[no_r] | no_r+0:0 | no_r+0:0 |
+| escape.cpp:14:25:14:28 | VariableAddress[no_p] | no_p+0:0 | no_p+0:0 |
+| escape.cpp:15:10:15:13 | VariableAddress[no_p] | no_p+0:0 | no_p+0:0 |
+| escape.cpp:18:27:18:30 | VariableAddress[no_r] | no_r+0:0 | no_r+0:0 |
+| escape.cpp:19:10:19:13 | VariableAddress[no_r] | no_r+0:0 | no_r+0:0 |
+| escape.cpp:22:36:22:39 | VariableAddress[no_p] | no_p+0:0 | no_p+0:0 |
+| escape.cpp:23:17:23:20 | VariableAddress[no_p] | no_p+0:0 | no_p+0:0 |
+| escape.cpp:26:38:26:41 | VariableAddress[no_r] | no_r+0:0 | no_r+0:0 |
+| escape.cpp:27:19:27:22 | VariableAddress[no_r] | no_r+0:0 | no_r+0:0 |
+| escape.cpp:30:23:30:26 | VariableAddress[no_p] | no_p+0:0 | no_p+0:0 |
+| escape.cpp:30:34:30:37 | VariableAddress[no_q] | no_q+0:0 | no_q+0:0 |
+| escape.cpp:30:45:30:48 | VariableAddress[no_b] | no_b+0:0 | no_b+0:0 |
+| escape.cpp:31:7:31:10 | VariableAddress[no_b] | no_b+0:0 | no_b+0:0 |
+| escape.cpp:32:12:32:15 | VariableAddress[no_p] | no_p+0:0 | no_p+0:0 |
+| escape.cpp:34:12:34:15 | VariableAddress[no_q] | no_q+0:0 | no_q+0:0 |
+| escape.cpp:38:27:38:30 | VariableAddress[no_r] | no_r+0:0 | no_r+0:0 |
+| escape.cpp:39:19:39:22 | VariableAddress[no_r] | no_r+0:0 | no_r+0:0 |
+| escape.cpp:40:10:40:13 | VariableAddress[no_r] | no_r+0:0 | no_r+0:0 |
+| escape.cpp:71:9:71:17 | VariableAddress[no_result] | no_result+0:0 | no_result+0:0 |
+| escape.cpp:72:9:72:11 | VariableAddress[no_] | no_+0:0 | no_+0:0 |
+| escape.cpp:74:5:74:7 | VariableAddress[no_] | no_+0:0 | no_+0:0 |
+| escape.cpp:75:5:75:7 | VariableAddress[no_] | no_+0:0 | no_+0:0 |
+| escape.cpp:75:11:75:13 | VariableAddress[no_] | no_+0:0 | no_+0:0 |
+| escape.cpp:76:5:76:13 | VariableAddress[no_result] | no_result+0:0 | no_result+0:0 |
+| escape.cpp:76:17:76:19 | VariableAddress[no_] | no_+0:0 | no_+0:0 |
+| escape.cpp:77:5:77:13 | VariableAddress[no_result] | no_result+0:0 | no_result+0:0 |
+| escape.cpp:77:19:77:21 | VariableAddress[no_] | no_+0:0 | no_+0:0 |
+| escape.cpp:79:5:79:7 | VariableAddress[no_] | no_+0:0 | no_+0:0 |
+| escape.cpp:80:6:80:8 | VariableAddress[no_] | no_+0:0 | no_+0:0 |
+| escape.cpp:81:5:81:13 | VariableAddress[no_result] | no_result+0:0 | no_result+0:0 |
+| escape.cpp:81:19:81:28 | PointerAdd[4] | no_+0:0 | no_+0:0 |
+| escape.cpp:81:21:81:23 | VariableAddress[no_] | no_+0:0 | no_+0:0 |
+| escape.cpp:82:5:82:13 | VariableAddress[no_result] | no_result+0:0 | no_result+0:0 |
+| escape.cpp:82:19:82:28 | PointerSub[4] | no_+0:0 | no_+0:0 |
+| escape.cpp:82:21:82:23 | VariableAddress[no_] | no_+0:0 | no_+0:0 |
+| escape.cpp:83:5:83:13 | VariableAddress[no_result] | no_result+0:0 | no_result+0:0 |
+| escape.cpp:83:19:83:26 | PointerAdd[4] | no_+0:0 | no_+0:0 |
+| escape.cpp:83:24:83:26 | VariableAddress[no_] | no_+0:0 | no_+0:0 |
+| escape.cpp:84:10:84:12 | VariableAddress[no_] | no_+0:0 | no_+0:0 |
+| escape.cpp:86:13:86:15 | VariableAddress[no_] | no_+0:0 | no_+0:0 |
+| escape.cpp:89:15:89:17 | VariableAddress[no_] | no_+0:0 | no_+0:0 |
+| escape.cpp:90:10:90:12 | VariableAddress[no_] | no_+0:0 | no_+0:0 |
+| escape.cpp:90:16:90:18 | VariableAddress[no_] | no_+0:0 | no_+0:0 |
+| escape.cpp:90:22:90:24 | VariableAddress[no_] | no_+0:0 | no_+0:0 |
+| escape.cpp:93:10:93:12 | VariableAddress[no_] | no_+0:0 | no_+0:0 |
+| escape.cpp:95:13:95:15 | VariableAddress[no_] | no_+0:0 | no_+0:0 |
+| escape.cpp:98:9:98:16 | VariableAddress[no_Array] | no_Array+0:0 | no_Array+0:0 |
+| escape.cpp:99:5:99:12 | VariableAddress[no_Array] | no_Array+0:0 | no_Array+0:0 |
+| escape.cpp:100:5:100:18 | Convert | no_Array+0:0 | no_Array+0:0 |
+| escape.cpp:100:11:100:18 | Convert | no_Array+0:0 | no_Array+0:0 |
+| escape.cpp:100:11:100:18 | VariableAddress[no_Array] | no_Array+0:0 | no_Array+0:0 |
+| escape.cpp:101:5:101:12 | Convert | no_Array+0:0 | no_Array+0:0 |
+| escape.cpp:101:5:101:12 | VariableAddress[no_Array] | no_Array+0:0 | no_Array+0:0 |
+| escape.cpp:101:5:101:15 | PointerAdd[4] | no_Array+20:0 | no_Array+20:0 |
+| escape.cpp:102:5:102:15 | PointerAdd[4] | no_Array+20:0 | no_Array+20:0 |
+| escape.cpp:102:7:102:14 | Convert | no_Array+0:0 | no_Array+0:0 |
+| escape.cpp:102:7:102:14 | VariableAddress[no_Array] | no_Array+0:0 | no_Array+0:0 |
+| escape.cpp:103:5:103:13 | VariableAddress[no_result] | no_result+0:0 | no_result+0:0 |
+| escape.cpp:103:17:103:24 | Convert | no_Array+0:0 | no_Array+0:0 |
+| escape.cpp:103:17:103:24 | VariableAddress[no_Array] | no_Array+0:0 | no_Array+0:0 |
+| escape.cpp:103:17:103:27 | PointerAdd[4] | no_Array+20:0 | no_Array+20:0 |
+| escape.cpp:104:5:104:13 | VariableAddress[no_result] | no_result+0:0 | no_result+0:0 |
+| escape.cpp:104:17:104:27 | PointerAdd[4] | no_Array+20:0 | no_Array+20:0 |
+| escape.cpp:104:19:104:26 | Convert | no_Array+0:0 | no_Array+0:0 |
+| escape.cpp:104:19:104:26 | VariableAddress[no_Array] | no_Array+0:0 | no_Array+0:0 |
+| escape.cpp:106:11:106:18 | VariableAddress[no_Point] | no_Point+0:0 | no_Point+0:0 |
+| escape.cpp:106:21:106:32 | FieldAddress[x] | no_Point+0:0 | no_Point+0:0 |
+| escape.cpp:106:21:106:32 | FieldAddress[y] | no_Point+4:0 | no_Point+4:0 |
+| escape.cpp:106:21:106:32 | FieldAddress[z] | no_Point+8:0 | no_Point+8:0 |
+| escape.cpp:107:11:107:14 | VariableAddress[no_x] | no_x+0:0 | no_x+0:0 |
+| escape.cpp:107:18:107:25 | VariableAddress[no_Point] | no_Point+0:0 | no_Point+0:0 |
+| escape.cpp:107:27:107:27 | FieldAddress[x] | no_Point+0:0 | no_Point+0:0 |
+| escape.cpp:108:5:108:12 | VariableAddress[no_Point] | no_Point+0:0 | no_Point+0:0 |
+| escape.cpp:108:14:108:14 | FieldAddress[y] | no_Point+4:0 | no_Point+4:0 |
+| escape.cpp:108:18:108:21 | VariableAddress[no_x] | no_x+0:0 | no_x+0:0 |
+| escape.cpp:109:11:109:14 | VariableAddress[no_y] | no_y+0:0 | no_y+0:0 |
+| escape.cpp:109:20:109:27 | VariableAddress[no_Point] | no_Point+0:0 | no_Point+0:0 |
+| escape.cpp:109:31:109:31 | FieldAddress[y] | no_Point+4:0 | no_Point+4:0 |
+| escape.cpp:110:7:110:14 | VariableAddress[no_Point] | no_Point+0:0 | no_Point+0:0 |
+| escape.cpp:110:18:110:18 | FieldAddress[y] | no_Point+4:0 | no_Point+4:0 |
+| escape.cpp:110:22:110:25 | VariableAddress[no_y] | no_y+0:0 | no_y+0:0 |
+| escape.cpp:111:11:111:14 | VariableAddress[no_z] | no_z+0:0 | no_z+0:0 |
+| escape.cpp:111:21:111:28 | VariableAddress[no_Point] | no_Point+0:0 | no_Point+0:0 |
+| escape.cpp:111:30:111:30 | FieldAddress[z] | no_Point+8:0 | no_Point+8:0 |
+| escape.cpp:112:8:112:15 | VariableAddress[no_Point] | no_Point+0:0 | no_Point+0:0 |
+| escape.cpp:112:17:112:17 | FieldAddress[z] | no_Point+8:0 | no_Point+8:0 |
+| escape.cpp:112:22:112:25 | VariableAddress[no_z] | no_z+0:0 | no_z+0:0 |
+| escape.cpp:114:13:114:22 | VariableAddress[no_Derived] | no_Derived+0:0 | no_Derived+0:0 |
+| escape.cpp:115:5:115:14 | ConvertToBase[Derived : Intermediate1] | no_Derived+0:0 | no_Derived+0:0 |
+| escape.cpp:115:5:115:14 | ConvertToBase[Intermediate1 : Base] | no_Derived+0:0 | no_Derived+0:0 |
+| escape.cpp:115:5:115:14 | VariableAddress[no_Derived] | no_Derived+0:0 | no_Derived+0:0 |
+| escape.cpp:115:16:115:16 | FieldAddress[b] | no_Derived+0:0 | no_Derived+0:0 |
+| escape.cpp:116:11:116:14 | VariableAddress[no_b] | no_b+0:0 | no_b+0:0 |
+| escape.cpp:116:18:116:27 | ConvertToBase[Derived : Intermediate1] | no_Derived+0:0 | no_Derived+0:0 |
+| escape.cpp:116:18:116:27 | ConvertToBase[Intermediate1 : Base] | no_Derived+0:0 | no_Derived+0:0 |
+| escape.cpp:116:18:116:27 | VariableAddress[no_Derived] | no_Derived+0:0 | no_Derived+0:0 |
+| escape.cpp:116:29:116:29 | FieldAddress[b] | no_Derived+0:0 | no_Derived+0:0 |
+| escape.cpp:117:5:117:14 | ConvertToBase[Derived : Intermediate2] | no_Derived+12:0 | no_Derived+12:0 |
+| escape.cpp:117:5:117:14 | VariableAddress[no_Derived] | no_Derived+0:0 | no_Derived+0:0 |
+| escape.cpp:117:16:117:17 | FieldAddress[i2] | no_Derived+16:0 | no_Derived+16:0 |
+| escape.cpp:118:11:118:15 | VariableAddress[no_i2] | no_i2+0:0 | no_i2+0:0 |
+| escape.cpp:118:19:118:28 | ConvertToBase[Derived : Intermediate2] | no_Derived+12:0 | no_Derived+12:0 |
+| escape.cpp:118:19:118:28 | VariableAddress[no_Derived] | no_Derived+0:0 | no_Derived+0:0 |
+| escape.cpp:118:30:118:31 | FieldAddress[i2] | no_Derived+16:0 | no_Derived+16:0 |
+| escape.cpp:120:9:120:21 | VariableAddress[no_ssa_addrOf] | no_ssa_addrOf+0:0 | no_ssa_addrOf+0:0 |
+| escape.cpp:121:10:121:13 | VariableAddress[no_p] | no_p+0:0 | no_p+0:0 |
+| escape.cpp:121:17:121:30 | Store | no_ssa_addrOf+0:0 | no_ssa_addrOf+0:0 |
+| escape.cpp:121:18:121:30 | VariableAddress[no_ssa_addrOf] | no_ssa_addrOf+0:0 | no_ssa_addrOf+0:0 |
+| escape.cpp:123:9:123:20 | VariableAddress[no_ssa_refTo] | no_ssa_refTo+0:0 | no_ssa_refTo+0:0 |
+| escape.cpp:124:10:124:13 | VariableAddress[no_r] | no_r+0:0 | no_r+0:0 |
+| escape.cpp:124:17:124:28 | Store | no_ssa_refTo+0:0 | no_ssa_refTo+0:0 |
+| escape.cpp:124:17:124:28 | VariableAddress[no_ssa_refTo] | no_ssa_refTo+0:0 | no_ssa_refTo+0:0 |
+| escape.cpp:126:9:126:32 | VariableAddress[no_ssa_refToArrayElement] | no_ssa_refToArrayElement+0:0 | no_ssa_refToArrayElement+0:0 |
+| escape.cpp:127:10:127:15 | VariableAddress[no_rae] | no_rae+0:0 | no_rae+0:0 |
+| escape.cpp:127:19:127:42 | Convert | no_ssa_refToArrayElement+0:0 | no_ssa_refToArrayElement+0:0 |
+| escape.cpp:127:19:127:42 | VariableAddress[no_ssa_refToArrayElement] | no_ssa_refToArrayElement+0:0 | no_ssa_refToArrayElement+0:0 |
+| escape.cpp:127:19:127:45 | PointerAdd[4] | no_ssa_refToArrayElement+20:0 | no_ssa_refToArrayElement+20:0 |
+| escape.cpp:127:19:127:45 | Store | no_ssa_refToArrayElement+20:0 | no_ssa_refToArrayElement+20:0 |
+| escape.cpp:129:9:129:25 | VariableAddress[no_ssa_refToArray] | no_ssa_refToArray+0:0 | no_ssa_refToArray+0:0 |
+| escape.cpp:130:11:130:15 | VariableAddress[no_ra] | no_ra+0:0 | no_ra+0:0 |
+| escape.cpp:130:24:130:40 | Store | no_ssa_refToArray+0:0 | no_ssa_refToArray+0:0 |
+| escape.cpp:130:24:130:40 | VariableAddress[no_ssa_refToArray] | no_ssa_refToArray+0:0 | no_ssa_refToArray+0:0 |
+| escape.cpp:132:9:132:17 | VariableAddress[passByPtr] | passByPtr+0:0 | passByPtr+0:0 |
+| escape.cpp:133:20:133:28 | VariableAddress[passByPtr] | passByPtr+0:0 | passByPtr+0:0 |
+| escape.cpp:135:9:135:17 | VariableAddress[passByRef] | passByRef+0:0 | passByRef+0:0 |
+| escape.cpp:136:21:136:29 | VariableAddress[passByRef] | passByRef+0:0 | passByRef+0:0 |
+| escape.cpp:138:9:138:24 | VariableAddress[no_ssa_passByPtr] | no_ssa_passByPtr+0:0 | no_ssa_passByPtr+0:0 |
+| escape.cpp:139:23:139:38 | VariableAddress[no_ssa_passByPtr] | no_ssa_passByPtr+0:0 | no_ssa_passByPtr+0:0 |
+| escape.cpp:141:9:141:24 | VariableAddress[no_ssa_passByRef] | no_ssa_passByRef+0:0 | no_ssa_passByRef+0:0 |
+| escape.cpp:142:24:142:39 | VariableAddress[no_ssa_passByRef] | no_ssa_passByRef+0:0 | no_ssa_passByRef+0:0 |
+| escape.cpp:144:9:144:28 | VariableAddress[no_ssa_passByPtr_ret] | no_ssa_passByPtr_ret+0:0 | no_ssa_passByPtr_ret+0:0 |
+| escape.cpp:145:23:145:42 | VariableAddress[no_ssa_passByPtr_ret] | no_ssa_passByPtr_ret+0:0 | no_ssa_passByPtr_ret+0:0 |
+| escape.cpp:147:9:147:28 | VariableAddress[no_ssa_passByRef_ret] | no_ssa_passByRef_ret+0:0 | no_ssa_passByRef_ret+0:0 |
+| escape.cpp:148:24:148:43 | VariableAddress[no_ssa_passByRef_ret] | no_ssa_passByRef_ret+0:0 | no_ssa_passByRef_ret+0:0 |
+| escape.cpp:150:9:150:18 | VariableAddress[passByPtr2] | passByPtr2+0:0 | passByPtr2+0:0 |
+| escape.cpp:151:31:151:40 | VariableAddress[passByPtr2] | passByPtr2+0:0 | passByPtr2+0:0 |
+| escape.cpp:153:9:153:18 | VariableAddress[passByRef2] | passByRef2+0:0 | passByRef2+0:0 |
+| escape.cpp:154:32:154:41 | VariableAddress[passByRef2] | passByRef2+0:0 | passByRef2+0:0 |
+| escape.cpp:156:9:156:18 | VariableAddress[passByPtr3] | passByPtr3+0:0 | passByPtr3+0:0 |
+| escape.cpp:157:30:157:42 | Call | none | passByPtr3+? |
+| escape.cpp:157:45:157:54 | VariableAddress[passByPtr3] | passByPtr3+0:0 | passByPtr3+0:0 |
+| escape.cpp:159:9:159:18 | VariableAddress[passByRef3] | passByRef3+0:0 | passByRef3+0:0 |
+| escape.cpp:160:32:160:46 | Call | none | passByRef3+? |
+| escape.cpp:160:48:160:57 | VariableAddress[passByRef3] | passByRef3+0:0 | passByRef3+0:0 |
+| escape.cpp:162:9:162:18 | VariableAddress[passByPtr4] | passByPtr4+0:0 | passByPtr4+0:0 |
+| escape.cpp:163:9:163:18 | VariableAddress[passByPtr5] | passByPtr5+0:0 | passByPtr5+0:0 |
+| escape.cpp:164:10:164:14 | VariableAddress[no_b2] | no_b2+0:0 | no_b2+0:0 |
+| escape.cpp:165:18:165:27 | VariableAddress[passByPtr4] | passByPtr4+0:0 | passByPtr4+0:0 |
+| escape.cpp:165:31:165:40 | VariableAddress[passByPtr5] | passByPtr5+0:0 | passByPtr5+0:0 |
+| escape.cpp:165:43:165:47 | VariableAddress[no_b2] | no_b2+0:0 | no_b2+0:0 |
+| escape.cpp:167:9:167:18 | VariableAddress[passByRef6] | passByRef6+0:0 | passByRef6+0:0 |
+| escape.cpp:168:5:168:19 | Call | none | passByRef6+? |
+| escape.cpp:168:21:168:30 | VariableAddress[passByRef6] | passByRef6+0:0 | passByRef6+0:0 |
+| escape.cpp:170:9:170:25 | VariableAddress[no_ssa_passByRef7] | no_ssa_passByRef7+0:0 | no_ssa_passByRef7+0:0 |
+| escape.cpp:171:5:171:19 | Call | none | no_ssa_passByRef7+? |
+| escape.cpp:171:21:171:37 | VariableAddress[no_ssa_passByRef7] | no_ssa_passByRef7+0:0 | no_ssa_passByRef7+0:0 |

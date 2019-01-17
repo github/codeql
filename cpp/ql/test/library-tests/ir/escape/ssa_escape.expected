@@ -1,5 +1,0 @@
-| escape.cpp:138:9:138:24 | no_ssa_passByPtr |
-| escape.cpp:141:9:141:24 | no_ssa_passByRef |
-| escape.cpp:144:9:144:28 | no_ssa_passByPtr_ret |
-| escape.cpp:147:9:147:28 | no_ssa_passByRef_ret |
-| escape.cpp:170:9:170:25 | no_ssa_passByRef7 |
