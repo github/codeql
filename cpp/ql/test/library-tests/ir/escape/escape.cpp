@@ -1,5 +1,44 @@
 void CallByPointer(int* p);
 void CallByReference(int& r);
+int *GetPointer();
+int &GetReference();
+
+int FetchFromPointer(int *no_p) {
+  return *no_p;
+}
+
+int FetchFromReference(int &no_r) {
+  return no_r;
+}
+
+int *ReturnPointer(int *no_p) {
+  return no_p;
+}
+
+int &ReturnReference(int &no_r) {
+  return no_r;
+}
+
+void CallByPointerParamEscape(int *no_p) {
+  CallByPointer(no_p);
+}
+
+void CallByReferenceParamEscape(int &no_r) {
+  CallByReference(no_r);
+}
+
+int *MaybeReturn(int *no_p, int *no_q, bool no_b) {
+  if (no_b) {
+    return no_p;
+  } else {
+    return no_q;
+  }
+}
+
+int &EscapeAndReturn(int &no_r) {
+  CallByReference(no_r);
+  return no_r;
+}
 
 struct Point {
     float x;
@@ -95,4 +134,39 @@ void Escape()
 
     int passByRef;
     CallByReference(passByRef);
+
+    int no_ssa_passByPtr;
+    FetchFromPointer(&no_ssa_passByPtr);
+
+    int no_ssa_passByRef;
+    FetchFromReference(no_ssa_passByRef);
+
+    int no_ssa_passByPtr_ret;
+    FetchFromPointer(&no_ssa_passByPtr_ret);
+
+    int no_ssa_passByRef_ret;
+    FetchFromReference(no_ssa_passByRef_ret);
+
+    int passByPtr2;
+    CallByPointerParamEscape(&passByPtr2);
+
+    int passByRef2;
+    CallByReferenceParamEscape(passByRef2);
+
+    int passByPtr3;
+    CallByPointerParamEscape(ReturnPointer(&passByPtr3));
+
+    int passByRef3;
+    CallByReferenceParamEscape(ReturnReference(passByRef3));
+
+    int passByPtr4;
+    int passByPtr5;
+    bool no_b2 = false;
+    MaybeReturn(&passByPtr4, &passByPtr5, no_b2);
+
+    int passByRef6;
+    EscapeAndReturn(passByRef6);
+
+    int no_ssa_passByRef7;
+    ReturnReference(no_ssa_passByRef7);
 }
