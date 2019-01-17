@@ -13,6 +13,7 @@ predicate isInfeasibleInstructionSuccessor(Instruction instr, EdgeKind kind) {
   )
 }
 
+pragma[noinline]
 predicate isInfeasibleEdge(IRBlockBase block, EdgeKind kind) {
   isInfeasibleInstructionSuccessor(block.getLastInstruction(), kind)
 }
