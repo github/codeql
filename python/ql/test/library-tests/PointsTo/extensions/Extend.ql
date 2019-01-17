@@ -5,7 +5,7 @@ import python
 private import semmle.python.types.Extensions
 
 
-class CfgExtension  extends CustomPointsToOriginFact {
+class CfgExtension extends CustomPointsToOriginFact {
 
     CfgExtension() {
         this.(NameNode).getId() = "one"
@@ -21,6 +21,21 @@ class CfgExtension  extends CustomPointsToOriginFact {
             this.(NameNode).getId() = "two" and value.(NumericObject).intValue() = 2
         )
     }
+}
+
+class AttributeExtension  extends CustomPointsToAttribute {
+
+    AttributeExtension() { any() }
+
+    override predicate attributePointsTo(string name, Object value, ClassObject cls, ControlFlowNode origin) {
+        cls = theIntType() and origin = any(Module m).getEntryNode() and
+        (
+            name = "three" and value.(NumericObject).intValue() = 3
+            or
+            name = "four" and value.(NumericObject).intValue() = 4
+        )
+    }
+
 }
 
 from ControlFlowNode f, Object o
