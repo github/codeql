@@ -1,5 +1,5 @@
 /**
- * Provides classes for working with promises.
+ * Provides classes for modelling promise libraries.
  */
 
 import javascript
