@@ -264,6 +264,12 @@ predicate callback(DataFlow::Node arg, DataFlow::SourceNode cb) {
     callStep(cbArg, cbParm) and
     cb.flowsTo(cbArg)
   )
+  or
+  exists (DataFlow::ParameterNode cbParm, DataFlow::Node cbArg |
+    callback(arg, cbParm) and
+    callStep(cbArg, cbParm) and
+    cb.flowsTo(cbArg)
+  )
 }
 
 /**

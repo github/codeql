@@ -660,7 +660,7 @@ private predicate flowThroughProperty(
  * All of this is done under configuration `cfg`, and `arg` flows along a path
  * summarized by `summary`, while `cb` is only tracked locally.
  */
-private predicate higherOrderCall(
+private predicate summarizedHigherOrderCall(
   DataFlow::Node arg, DataFlow::Node cb, int i, DataFlow::Configuration cfg, PathSummary summary
 ) {
   exists (Function f, DataFlow::InvokeNode outer, DataFlow::InvokeNode inner, int j,
@@ -676,11 +676,51 @@ private predicate higherOrderCall(
     // indirect higher-order call
     exists (DataFlow::Node cbArg, PathSummary newSummary |
       cbParm.flowsTo(cbArg) and
-      higherOrderCall(innerArg, cbArg, i, cfg, newSummary) and
+      summarizedHigherOrderCall(innerArg, cbArg, i, cfg, newSummary) and
       summary = oldSummary.append(PathSummary::call()).append(newSummary)
     )
   )
 }
+
+/**
+ * Holds if `arg` is passed as the `i`th argument to `callback` through a callback invocation.
+ *
+ * This can be a summarized call, that is, `arg` and `callback` flow into a call,
+ * `f(arg, callback)`, which  performs the invocation.
+ *
+ * Alternatively, the callback can flow into a call `f(callback)` which itself provides the `arg`.
+ * That is, `arg` refers to a value defined in `f` or one of its callees.
+ */
+predicate higherOrderCall(
+  DataFlow::Node arg, DataFlow::SourceNode callback, int i, DataFlow::Configuration cfg,
+  PathSummary summary
+) {
+  // Summarized call
+  exists (DataFlow::Node cb |
+    summarizedHigherOrderCall(arg, cb, i, cfg, summary) and
+    callback.flowsTo(cb)
+  )
+  or
+  // Local invocation of a parameter
+  isRelevant(arg, cfg) and
+  exists (DataFlow::InvokeNode invoke |
+    arg = invoke.getArgument(i) and
+    invoke = callback.(DataFlow::ParameterNode).getACall() and
+    summary = PathSummary::call()
+  )
+  or
+  // Forwarding of the callback parameter  (but not the argument).
+  // We use a return summary since flow moves back towards the call site.
+  // This ensures that an argument that is only tainted in some contexts cannot flow
+  // out to every callback.
+  exists(DataFlow::Node cbArg, DataFlow::SourceNode innerCb, PathSummary oldSummary |
+    higherOrderCall(arg, innerCb, i, cfg, oldSummary) and
+    callStep(cbArg, innerCb) and
+    callback.flowsTo(cbArg) and
+    summary = PathSummary::return().append(oldSummary)
+  )
+}
+
 
 /**
  * Holds if `pred` is passed as an argument to a function `f` which also takes a
@@ -693,12 +733,8 @@ private predicate higherOrderCall(
 private predicate flowIntoHigherOrderCall(
   DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg, PathSummary summary
 ) {
-  exists(
-    DataFlow::Node fArg, DataFlow::FunctionNode cb,
-    int i, PathSummary oldSummary
-  |
-    higherOrderCall(pred, fArg, i, cfg, oldSummary) and
-    cb = fArg.getALocalSource() and
+  exists(DataFlow::FunctionNode cb, int i, PathSummary oldSummary |
+    higherOrderCall(pred, cb, i, cfg, oldSummary) and
     succ = cb.getParameter(i) and
     summary = oldSummary.append(PathSummary::call())
   )
