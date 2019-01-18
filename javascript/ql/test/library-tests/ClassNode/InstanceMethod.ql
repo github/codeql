@@ -1,4 +1,4 @@
 import javascript
 
 from DataFlow::ClassNode cls, string name
-select cls.getAnInstanceMethod(name), cls.getName() + "." + name
+select cls.getInstanceMethod(name), cls.getName() + "." + name

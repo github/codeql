@@ -5,6 +5,8 @@ class A {
   static staticMethod() {}
   
   bar() {}
+  
+  get baz() {}
 }
 
 
@@ -17,3 +19,10 @@ B.prototype.foo = function() {}
 function C() {}
 C.prototype = new B();
 C.prototype.bar = function() {}
+
+function D() {}
+D.prototype = {
+  get getter() {},
+  set setter(x) {},
+  m() {}
+}

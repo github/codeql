@@ -467,6 +467,44 @@ DataFlow::SourceNode moduleMember(string path, string m) {
 }
 
 /**
+ * The string `method`, `getter`, or `setter`, representing the kind of a function member
+ * in a class.
+ *
+ * Can can be used with `ClassNode.getInstanceMember` to obtain members of a specific kind.
+ */
+class MemberKind extends string {
+  MemberKind() { this = "method" or this = "getter" or this = "setter" }
+}
+
+module MemberKind {
+  /** The kind of a method, such as `m() {}` */
+  MemberKind method() { result = "method" }
+
+  /** The kind of a getter accessor, such as `get f() {}`. */
+  MemberKind getter() { result = "getter" }
+
+  /** The kind of a setter accessor, such as `set f() {}`. */
+  MemberKind setter() { result = "setter" }
+
+  /** The `getter` and `setter` kinds. */
+  MemberKind accessor() { result = getter() or result = setter() }
+
+  /**
+   * Gets the member kind of a given syntactic member declaration in a class.
+   */
+  MemberKind of(MemberDeclaration decl) {
+    decl instanceof GetterMethodDeclaration and result = getter()
+    or
+    decl instanceof SetterMethodDeclaration and result = setter()
+    or
+    decl instanceof MethodDeclaration and
+    not decl instanceof AccessorMethodDeclaration and
+    not decl instanceof ConstructorDeclaration and
+    result = method()
+  }
+}
+
+/**
  * A data flow node corresponding to a class definition or a function definition
  * acting as a class.
  *
@@ -516,7 +554,7 @@ class ClassNode extends DataFlow::SourceNode {
    *
    * Does not include methods from superclasses.
    */
-  FunctionNode getInstanceMethod(string name) { result = impl.getInstanceMethod(name) }
+  FunctionNode getInstanceMethod(string name) { result = impl.getInstanceMember(name, MemberKind::method()) }
 
   /**
    * Gets an instance method declared in this class.
@@ -525,7 +563,28 @@ class ClassNode extends DataFlow::SourceNode {
    *
    * Does not include methods from superclasses.
    */
-  FunctionNode getAnInstanceMethod() { result = impl.getAnInstanceMethod() }
+  FunctionNode getAnInstanceMethod() { result = impl.getAnInstanceMember(MemberKind::method()) }
+
+  /**
+   * Gets the instance method, getter, or setter with the given name and kind.
+   *
+   * Does not include members from superclasses.
+   */
+  FunctionNode getInstanceMember(string name, MemberKind kind) { result = impl.getInstanceMember(name, kind) }
+
+  /**
+   * Gets an instance method, getter, or setter with the given kind.
+   *
+   * Does not include members from superclasses.
+   */
+  FunctionNode getAnInstanceMember(MemberKind kind) { result = impl.getAnInstanceMember(kind) }
+
+  /**
+   * Gets an instance method, getter, or setter declared in this class.
+   *
+   * Does not include members from superclasses.
+   */
+  FunctionNode getAnInstanceMember() { result = impl.getAnInstanceMember(_) }
 
   /**
    * Gets the static method declared in this class with the given name.
@@ -576,16 +635,14 @@ module ClassNode {
     abstract FunctionNode getConstructor();
 
     /**
-     * Gets an instance method with the given name, if any.
+     * Gets the instance member with the given name and kind.
      */
-    abstract FunctionNode getInstanceMethod(string name);
+    abstract FunctionNode getInstanceMember(string name, MemberKind kind);
 
     /**
-     * Gets an instance method of this class.
-     *
-     * The constructor is not considered an instance method.
+     * Gets an instance member with the given kind.
      */
-    abstract FunctionNode getAnInstanceMethod();
+    abstract FunctionNode getAnInstanceMember(MemberKind kind);
 
     /**
      * Gets the static method of this class with the given name.
@@ -618,20 +675,20 @@ module ClassNode {
 
     override FunctionNode getConstructor() { result = astNode.getConstructor().getBody().flow() }
 
-    override FunctionNode getInstanceMethod(string name) {
+    override FunctionNode getInstanceMember(string name, MemberKind kind) {
       exists(MethodDeclaration method |
         method = astNode.getMethod(name) and
         not method.isStatic() and
-        not method instanceof ConstructorDeclaration and
+        kind = MemberKind::of(method) and
         result = method.getBody().flow()
       )
     }
 
-    override FunctionNode getAnInstanceMethod() {
+    override FunctionNode getAnInstanceMember(MemberKind kind) {
       exists(MethodDeclaration method |
         method = astNode.getAMethod() and
         not method.isStatic() and
-        not method instanceof ConstructorDeclaration and
+        kind = MemberKind::of(method) and
         result = method.getBody().flow()
       )
     }
@@ -671,12 +728,36 @@ module ClassNode {
 
     override FunctionNode getConstructor() { result = this }
 
-    override FunctionNode getInstanceMethod(string name) {
-      result = getAPrototypeReference().getAPropertySource(name)
+    private PropertyAccessor getAnAccessor(MemberKind kind) {
+      result.getObjectExpr() = getAPrototypeReference().asExpr() and
+      (
+        kind = MemberKind::getter() and
+        result instanceof PropertyGetter
+        or
+        kind = MemberKind::setter() and
+        result instanceof PropertySetter
+      )
     }
 
-    override FunctionNode getAnInstanceMethod() {
+    override FunctionNode getInstanceMember(string name, MemberKind kind) {
+      kind = MemberKind::method() and
+      result = getAPrototypeReference().getAPropertySource(name)
+      or
+      exists (PropertyAccessor accessor |
+        accessor = getAnAccessor(kind) and
+        accessor.getName() = name and
+        result = accessor.getInit().flow()
+      )
+    }
+
+    override FunctionNode getAnInstanceMember(MemberKind kind) {
+      kind = MemberKind::method() and
       result = getAPrototypeReference().getAPropertyWrite().getRhs().getALocalSource()
+      or
+      exists (PropertyAccessor accessor |
+        accessor = getAnAccessor(kind) and
+        result = accessor.getInit().flow()
+      )
     }
 
     override FunctionNode getStaticMethod(string name) {
