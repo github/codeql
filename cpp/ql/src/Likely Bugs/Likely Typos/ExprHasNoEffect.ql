@@ -91,16 +91,27 @@ predicate definedInIfDef(Function f) {
   )
 }
 
+/**
+ * Holds if `call` has the form `B::f()` or `q.B::f()`, where `B` is a base
+ * class of the class containing `call`.
+ *
+ * This is most often used for calling base-class functions from within
+ * overrides. Those functions may have no side effect in the current
+ * implementation, but we should not advise callers to rely on this. That would
+ * break encapsulation.
+ */
+predicate baseCall(FunctionCall call) {
+  call.getNameQualifier().getQualifyingElement() =
+    call.getEnclosingFunction().getDeclaringType().(Class).getABaseClass+()
+}
+
 from PureExprInVoidContext peivc, Locatable parent,
   Locatable info, string info_text, string tail
 where // EQExprs are covered by CompareWhereAssignMeant.ql
       not peivc instanceof EQExpr and
       // as is operator==
       not peivc.(FunctionCall).getTarget().hasName("operator==") and
-      // An assignment operator may have no side effects in its current
-      // implementation, but we should not advise callers to rely on this. That
-      // would break encapsulation.
-      not peivc.(FunctionCall).getTarget().hasName("operator=") and
+      not baseCall(peivc) and
       not accessInInitOfForStmt(peivc) and
       not peivc.isCompilerGenerated() and
       not exists(Macro m | peivc = m.getAnInvocation().getAnExpandedElement()) and
