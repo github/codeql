@@ -663,18 +663,21 @@ private predicate flowThroughProperty(
 private predicate summarizedHigherOrderCall(
   DataFlow::Node arg, DataFlow::Node cb, int i, DataFlow::Configuration cfg, PathSummary summary
 ) {
-  exists (Function f, DataFlow::InvokeNode outer, DataFlow::InvokeNode inner, int j,
-    DataFlow::Node innerArg, DataFlow::ParameterNode cbParm, PathSummary oldSummary |
+  exists(
+    Function f, DataFlow::InvokeNode outer, DataFlow::InvokeNode inner, int j,
+    DataFlow::Node innerArg, DataFlow::ParameterNode cbParm, PathSummary oldSummary
+  |
     reachableFromInput(f, outer, arg, innerArg, cfg, oldSummary) and
     argumentPassing(outer, cb, f, cbParm) and
-    innerArg = inner.getArgument(j) |
+    innerArg = inner.getArgument(j)
+  |
     // direct higher-order call
     cbParm.flowsTo(inner.getCalleeNode()) and
     i = j and
     summary = oldSummary
     or
     // indirect higher-order call
-    exists (DataFlow::Node cbArg, PathSummary newSummary |
+    exists(DataFlow::Node cbArg, PathSummary newSummary |
       cbParm.flowsTo(cbArg) and
       summarizedHigherOrderCall(innerArg, cbArg, i, cfg, newSummary) and
       summary = oldSummary.append(PathSummary::call()).append(newSummary)
@@ -696,14 +699,14 @@ predicate higherOrderCall(
   PathSummary summary
 ) {
   // Summarized call
-  exists (DataFlow::Node cb |
+  exists(DataFlow::Node cb |
     summarizedHigherOrderCall(arg, cb, i, cfg, summary) and
     callback.flowsTo(cb)
   )
   or
   // Local invocation of a parameter
   isRelevant(arg, cfg) and
-  exists (DataFlow::InvokeNode invoke |
+  exists(DataFlow::InvokeNode invoke |
     arg = invoke.getArgument(i) and
     invoke = callback.(DataFlow::ParameterNode).getACall() and
     summary = PathSummary::call()
@@ -720,7 +723,6 @@ predicate higherOrderCall(
     summary = PathSummary::return().append(oldSummary)
   )
 }
-
 
 /**
  * Holds if `pred` is passed as an argument to a function `f` which also takes a
