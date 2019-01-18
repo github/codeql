@@ -260,7 +260,7 @@ class PackageObject extends ModuleObject {
 /** Utility module for predicates relevant to the `ModuleObject` class. */
 module ModuleObject {
 
-    /** Gets a `ModuleObject` who's name is `name` */
+    /** Gets a `ModuleObject` called `name`, if it exists. */
     ModuleObject named(string name) {
         result.getName() = name
     }
