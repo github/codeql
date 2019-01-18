@@ -192,10 +192,11 @@ cached private module Cached {
     instruction.getTag() = ChiTag(getOldInstruction(result)) and
     tag instanceof ChiPartialOperandTag
     or
-    instruction instanceof UnmodeledUseInstruction and
-    tag instanceof UnmodeledUseOperandTag and
-    result  instanceof UnmodeledDefinitionInstruction and
-    instruction.getFunction() = result.getFunction()
+    exists(FunctionIR f |
+      tag instanceof UnmodeledUseOperandTag and
+      result = f.getUnmodeledDefinitionInstruction() and
+      instruction = f.getUnmodeledUseInstruction()
+    )
     or
     tag instanceof ChiTotalOperandTag and
     result = getChiInstructionTotalOperand(instruction)
