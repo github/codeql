@@ -6,16 +6,31 @@ public class A {
     }
   }
 
-  private String s;
-  public String getString() {
-    if (s == null) {
+  private String s1;
+  public String getString1() {
+    if (s1 == null) {
       synchronized(this) {
-        if (s == null) {
-          s = "string"; // OK, immutable
+        if (s1 == null) {
+          s1 = "string"; // BAD, immutable but read twice outside sync
         }
       }
     }
-    return s;
+    return s1;
+  }
+
+  private String s2;
+  public String getString2() {
+    String x = s2;
+    if (x == null) {
+      synchronized(this) {
+        x = s2;
+        if (x == null) {
+          x = "string"; // OK, immutable and read once outside sync
+          s2 = x;
+        }
+      }
+    }
+    return x;
   }
 
   private B b1;

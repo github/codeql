@@ -17,6 +17,11 @@ import DoubleCheckedLocking
 
 predicate allFieldsFinal(Class c) { forex(Field f | c.inherits(f) | f.isFinal()) }
 
+predicate immutableFieldType(Type t) {
+  allFieldsFinal(t) or
+  t instanceof ImmutableType
+}
+
 from IfStmt if1, IfStmt if2, SynchronizedStmt sync, Field f
 where
   doubleCheckedLocking(if1, if2, sync, f) and
@@ -24,7 +29,7 @@ where
   not (
     // Non-volatile double-checked locking is ok when the object is immutable and
     // there is only a single non-synchronized field read.
-    allFieldsFinal(f.getType()) and
+    immutableFieldType(f.getType()) and
     1 = strictcount(FieldAccess fa |
         fa.getField() = f and
         fa.getEnclosingCallable() = sync.getEnclosingCallable() and
