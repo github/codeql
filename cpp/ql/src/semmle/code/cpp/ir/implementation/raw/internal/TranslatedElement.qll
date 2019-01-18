@@ -18,35 +18,14 @@ Type getIntType() {
 }
 
 /**
- * If `expr` is a conversion, gets the expression being converted. Otherwise,
- * returns `expr`.
- */
-private Expr getUnconvertedExpr(Expr expr) {
-  if expr instanceof Conversion then (
-    result = getUnconvertedExpr(expr.(Conversion).getExpr())
-  ) else (
-    result = expr
-  )
-}
-
-/**
  * Gets the "real" parent of `expr`. This predicate treats conversions as if
  * they were explicit nodes in the expression tree, rather than as implicit
  * nodes as in the regular AST representation.
  */
 private Element getRealParent(Expr expr) {
-  if expr.hasConversion() then (
-    // The expression has a conversion, so treat that as its parent
-    result = expr.getConversion()
-  )
-  else (
-    // Either the expression is a top-level conversion, or it's not a
-    // conversion. The real parent is the parent of the original unconverted
-    // expression.
-    result = getUnconvertedExpr(expr).getParent() or
-    // The parent of a DestructorDestruction is the destructor itself.
-    result.(Destructor).getADestruction() = expr
-  )
+  result = expr.getParentWithConversions()
+  or
+  result.(Destructor).getADestruction() = expr
 }
 
 /**
