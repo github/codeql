@@ -29,6 +29,7 @@ class Assignables
         Out(out Field);
         RefCertain(variable, ref Field, true);
         RefUncertain(variable, ref Field);
+        RefUncertain2(variable, ref Field);
         NonRef(variable, ref Field);
         RefCertainOneOf(ref Field, ref Field); // incorrectly marked as uncertain
     }
@@ -50,6 +51,14 @@ class Assignables
     {
         if (x > y)
             y = x;
+    }
+
+    void RefUncertain2(int x, ref int y)
+    {
+        if (x > y)
+            y = x;
+        else
+            RefUncertain(x, ref y);
     }
 
     void RefCertainOneOf(ref int x, ref int y)
