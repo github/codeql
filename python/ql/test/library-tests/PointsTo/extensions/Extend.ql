@@ -25,7 +25,7 @@ class CfgExtension extends CustomPointsToOriginFact {
 
 class AttributeExtension  extends CustomPointsToAttribute {
 
-    AttributeExtension() { any() }
+    AttributeExtension() { this = this }
 
     override predicate attributePointsTo(string name, Object value, ClassObject cls, ControlFlowNode origin) {
         cls = theIntType() and origin = any(Module m).getEntryNode() and
