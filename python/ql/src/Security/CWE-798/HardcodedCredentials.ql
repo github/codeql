@@ -42,7 +42,7 @@ predicate possible_reflective_name(string name) {
     or
     any(ModuleObject m).getName() = name
     or
-    exists(builtin_object(name))
+    exists(Object::builtin(name))
 }
 
 int char_count(StrConst str) {

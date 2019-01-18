@@ -90,8 +90,8 @@ predicate use_of_exec(Module m) {
     or
     exists(CallNode call, FunctionObject exec |
         exec.getACall() = call and call.getScope() = m |
-        exec = builtin_object("exec") or
-        exec = builtin_object("execfile")
+        exec = Object::builtin("exec") or
+        exec = Object::builtin("execfile")
     )
 }
 

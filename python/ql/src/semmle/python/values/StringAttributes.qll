@@ -18,7 +18,7 @@ predicate tracked_object(ControlFlowNode obj, string attr) {
 }
 
 predicate open_file(Object obj) {
-    obj.(CallNode).getFunction().refersTo(theOpenFunction())
+    obj.(CallNode).getFunction().refersTo(BuiltinFunctionObject::open())
 }
 
 predicate string_attribute_any(ControlFlowNode n, string attr) {
@@ -26,9 +26,9 @@ predicate string_attribute_any(ControlFlowNode n, string attr) {
     exists(Object input |
         n.(CallNode).getFunction().refersTo(input) |
         if major_version() = 2 then
-            input = builtin_object("raw_input")
+            input = Object::builtin("raw_input")
         else
-            input = theInputFunction()
+            input = BuiltinFunctionObject::input()
     )
     or
     attr = "file-input" and

@@ -348,21 +348,21 @@ class BuiltinFunctionObject extends BuiltinCallable {
     override ClassObject getAReturnType() {
         /* Enumerate the types of a few builtin functions, that the CPython analysis misses.
         */
-        this = builtin_object("hex") and result = theStrType()
+        this = Object::builtin("hex") and result = theStrType()
         or
-        this = builtin_object("oct") and result = theStrType()
+        this = Object::builtin("oct") and result = theStrType()
         or
-        this = builtin_object("intern") and result = theStrType()
+        this = Object::builtin("intern") and result = theStrType()
         or
         /* Fix a few minor inaccuracies in the CPython analysis */ 
         ext_rettype(this, result) and not (
-            this = builtin_object("__import__") and result = theNoneType()
+            this = Object::builtin("__import__") and result = theNoneType()
             or
-            this = builtin_object("compile") and result = theNoneType()
+            this = Object::builtin("compile") and result = theNoneType()
             or
-            this = builtin_object("sum")
+            this = Object::builtin("sum")
             or
-            this = builtin_object("filter")
+            this = Object::builtin("filter")
         )
     }
 
@@ -376,4 +376,107 @@ class BuiltinFunctionObject extends BuiltinCallable {
 
 }
 
+module BuiltinFunctionObject {
+
+    /** The builtin function apply (Python 2 only) */
+    BuiltinFunctionObject apply() {
+        result = Object::builtin("apply")
+    }
+
+    /** The builtin function `hasattr` */
+    BuiltinFunctionObject hasattr() {
+        result = Object::builtin("hasattr")
+    }
+
+    /** The builtin function `len` */
+    BuiltinFunctionObject len() {
+        result = Object::builtin("len")
+    }
+
+    BuiltinFunctionObject format() {
+        result = Object::builtin("format")
+    }
+
+    /** The builtin function open */
+    BuiltinFunctionObject open() {
+        result = Object::builtin("open")
+    }
+
+    /** The builtin function print (Python 2.7 upwards) */
+    BuiltinFunctionObject print() {
+        result = Object::builtin("print")
+    }
+
+    /** The builtin function input (Python 2 only) */
+    BuiltinFunctionObject input() {
+        result = Object::builtin("input")
+    }
+
+    /** The builtin function locals */
+    BuiltinFunctionObject locals() {
+        py_special_objects(result, "locals")
+    }
+
+    /** The builtin function globals */
+    BuiltinFunctionObject globals() {
+        py_special_objects(result, "globals")
+    }
+
+    /** The builtin function sys.exit */
+    BuiltinFunctionObject sysExit() {
+        py_cmembers_versioned(theSysModuleObject(), "exit", result, major_version().toString())
+    }
+
+}
+
+
+/** DEPRECATED -- Use `BuiltinFunctionObject::apply()` instead. */
+Object theApplyFunction() {
+    result = BuiltinFunctionObject::apply()
+}
+
+/** DEPRECATED -- Use `BuiltinFunctionObject::hasattr()` instead. */
+Object theHasattrFunction() {
+    result = BuiltinFunctionObject::hasattr()
+}
+
+/** DEPRECATED -- Use `BuiltinFunctionObject::len()` instead. */
+Object theLenFunction() {
+    result = BuiltinFunctionObject::len()
+}
+
+/** DEPRECATED -- Use `BuiltinFunctionObject::format()` instead. */
+Object theFormatFunction() {
+    result = BuiltinFunctionObject::format()
+}
+
+/** DEPRECATED -- Use `BuiltinFunctionObject::open()` instead. */
+Object theOpenFunction() {
+    result = BuiltinFunctionObject::open()
+}
+
+/** DEPRECATED -- Use `BuiltinFunctionObject::print()` instead. */
+Object thePrintFunction() {
+    result = BuiltinFunctionObject::print()
+}
+
+/** DEPRECATED -- Use `BuiltinFunctionObject::input()` instead. */
+Object theInputFunction() {
+    result = BuiltinFunctionObject::input()
+}
+
+/** DEPRECATED -- Use `BuiltinFunctionObject::locals()` instead. */
+Object theLocalsFunction() {
+    result = BuiltinFunctionObject::locals()
+}
+
+/** DEPRECATED -- Use `BuiltinFunctionObject::globals()` instead. */
+Object theGlobalsFunction() {
+    result = BuiltinFunctionObject::globals()
+}
+
+/** DEPRECATED -- Use `BuiltinFunctionObject::sysExit()` instead. */
+Object theExitFunctionObject() {
+    result = BuiltinFunctionObject::sysExit()
+}
 

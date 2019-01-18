@@ -128,7 +128,7 @@ predicate function_should_close_parameter(Function func) {
 }
 
 predicate function_opens_file(FunctionObject f) {
-    f = theOpenFunction()
+    f = BuiltinFunctionObject::open()
     or
     exists(EssaVariable v, Return ret |
         ret.getScope() = f.getFunction() |

@@ -14,5 +14,5 @@ import python
 
 from CallNode call, Context context, ControlFlowNode func
 where
-context.getAVersion().includes(2, _) and call.getFunction() = func and func.refersTo(context, theInputFunction(), _, _)
+context.getAVersion().includes(2, _) and call.getFunction() = func and func.refersTo(context, BuiltinFunctionObject::input(), _, _)
 select call, "The unsafe built-in function 'input' is used."
