@@ -598,7 +598,6 @@ module ClassNode {
       exists(MethodDeclaration method |
         method = astNode.getMethod(name) and
         not method.isStatic() and
-        not method.isAmbient() and
         not method instanceof ConstructorDeclaration and
         result = method.getBody().flow()
       )
@@ -608,7 +607,6 @@ module ClassNode {
       exists(MethodDeclaration method |
         method = astNode.getAMethod() and
         not method.isStatic() and
-        not method.isAmbient() and
         not method instanceof ConstructorDeclaration and
         result = method.getBody().flow()
       )
@@ -618,7 +616,6 @@ module ClassNode {
       exists(MethodDeclaration method |
         method = astNode.getMethod(name) and
         method.isStatic() and
-        not method.isAmbient() and
         result = method.getBody().flow()
       )
       or
@@ -629,7 +626,6 @@ module ClassNode {
       exists(MethodDeclaration method |
         method = astNode.(ClassDefinition).getAMethod() and
         method.isStatic() and
-        not method.isAmbient() and
         result = method.getBody().flow()
       )
     }
