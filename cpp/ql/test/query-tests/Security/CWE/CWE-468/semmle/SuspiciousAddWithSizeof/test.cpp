@@ -82,14 +82,14 @@ class MyTest8Class
 {
 public:
   MyTest8Class() :
-    pairPtr((myChar *)malloc(sizeof(MyABC) * 2)),
-    pairPtrInt((myInt *)malloc(sizeof(MyABC) * 2))
+    myCharsPointer((myChar *)malloc(sizeof(MyABC) * 2)),
+    myIntsPointer((myInt *)malloc(sizeof(MyABC) * 2))
   {
-    myChar *secondPtr = pairPtr + sizeof(MyABC); // GOOD
-    myInt *secondPtrInt = pairPtrInt + sizeof(MyABC); // BAD
+    myChar *secondPtr = myCharsPointer + sizeof(MyABC); // GOOD
+    myInt *secondPtrInt = myIntsPointer + sizeof(MyABC); // BAD
   }
 
 private:
-  myChar * const pairPtr;
-  myInt * const pairPtrInt;
+  myChar * const myCharsPointer;
+  myInt * const myIntsPointer;
 };
