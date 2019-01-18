@@ -477,7 +477,7 @@ private module Internal {
 
     override Expr getArgument(int i) { result = getCall().getArgument(i) }
 
-    override Expr getQualifier() { result = getCall().(MemberAccess).getQualifier() }
+    override Expr getQualifier() { result = getCall().getAccess().getQualifier() }
 
     override Accessor getAStaticTarget() { result = getCall().getTarget() }
 

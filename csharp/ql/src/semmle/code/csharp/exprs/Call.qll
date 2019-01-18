@@ -11,13 +11,24 @@ private import semmle.code.csharp.dataflow.DelegateDataFlow
 private import semmle.code.csharp.dispatch.Dispatch
 private import dotnet
 
+/** INTERNAL: Do not use. */
+library class CallImpl extends Expr {
+  cached
+  CallImpl() {
+    this instanceof @call and
+    not this instanceof @call_access_expr
+    or
+    this instanceof AccessorCallImpl::AccessorCallImpl
+  }
+}
+
 /**
  * A call. Either a method call (`MethodCall`), a constructor initializer call
  * (`ConstructorInitializer`), a call to a user-defined operator (`OperatorCall`),
- * a delegate call (`DelegateCall`), an accessor call (`AccessorCall`), or a
- * constructor call (`ObjectCreation`).
+ * a delegate call (`DelegateCall`), an accessor call (`AccessorCall`), a
+ * constructor call (`ObjectCreation`), or a local function call (`LocalFunctionCall`).
  */
-class Call extends DotNet::Call, Expr, @call {
+class Call extends DotNet::Call, CallImpl {
   /**
    * Gets the static (compile-time) target of this call. For example, the
    * static target of `x.M()` on line 9 is `A.M` in
@@ -556,14 +567,158 @@ class DelegateCall extends Call, @delegate_invocation_expr {
 }
 
 /**
+ * Provides logic for determining the syntactic nodes associated with calls
+ * to accessors. Example:
+ *
+ * ```
+ * int Prop { get; set; }
+ * public int GetProp() => Prop;
+ * public void SetProp(int i) { Prop = i + 1; }
+ * ```
+ *
+ * In the body of `GetProp()`, the call to the accessor `get_Prop()` is simply
+ * the access `Prop`. However, in the body of `SetProp()`, the call to the accessor
+ * `set_Prop()` is not the access `Prop`, but rather the assignment `Prop = i + 1`.
+ * (Using `Prop` as the call to `set_Prop()` will yield an incorrect control flow
+ * graph, where `set_Prop()` is called before `i + 1` is evaluated.)
+ */
+private module AccessorCallImpl {
+  /**
+   * Holds if `e` is a tuple assignment with multiple setter assignments,
+   * for example `(Prop1, Prop2) = (0, 1)`, where both `Prop1` and `Prop2`
+   * are properties.
+   *
+   * In such cases, we cannot associate the compound assignment with the
+   * setter calls, so we instead revert to representing the calls via the
+   * individual accesses on the left hand side.
+   */
+  private predicate multiTupleSetter(Expr e) {
+    strictcount(AssignableDefinitions::TupleAssignmentDefinition def |
+      def.getExpr() = e and
+      def.getTargetAccess().getTarget() instanceof DeclarationWithGetSetAccessors
+    ) > 1
+  }
+
+  abstract class AccessorCallImpl extends Expr {
+    abstract Access getAccess();
+
+    abstract Accessor getTarget();
+
+    abstract Expr getArgument(int i);
+  }
+
+  abstract class PropertyCallImpl extends AccessorCallImpl {
+    PropertyAccess pa;
+
+    override PropertyAccess getAccess() { result = pa }
+
+    abstract override Accessor getTarget();
+
+    abstract override Expr getArgument(int i);
+  }
+
+  class PropertyGetterCall extends PropertyCallImpl, @property_access_expr {
+    PropertyGetterCall() {
+      this instanceof AssignableRead and
+      pa = this
+    }
+
+    override Getter getTarget() { result = pa.getProperty().getGetter() }
+
+    override Expr getArgument(int i) { none() }
+  }
+
+  class PropertySetterCall extends PropertyCallImpl {
+    PropertySetterCall() {
+      exists(AssignableDefinition def | pa = def.getTargetAccess() |
+        (if multiTupleSetter(def.getExpr()) then this = pa else this = def.getExpr()) and
+        not def.getExpr().(AssignOperation).hasExpandedAssignment()
+      )
+    }
+
+    override Expr getArgument(int i) {
+      i = 0 and
+      result = AssignableInternal::getAccessorCallValueArgument(pa)
+    }
+
+    override Setter getTarget() { result = pa.getProperty().getSetter() }
+  }
+
+  abstract class IndexerCallImpl extends AccessorCallImpl {
+    IndexerAccess ia;
+
+    override IndexerAccess getAccess() { result = ia }
+
+    abstract override Accessor getTarget();
+
+    abstract override Expr getArgument(int i);
+  }
+
+  class IndexerGetterCall extends IndexerCallImpl, @indexer_access_expr {
+    IndexerGetterCall() {
+      this instanceof AssignableRead and
+      ia = this
+    }
+
+    override Getter getTarget() { result = ia.getIndexer().getGetter() }
+
+    override Expr getArgument(int i) { result = ia.getIndex(i) }
+  }
+
+  class IndexerSetterCall extends IndexerCallImpl {
+    IndexerSetterCall() {
+      exists(AssignableDefinition def | ia = def.getTargetAccess() |
+        (if multiTupleSetter(def.getExpr()) then this = ia else this = def.getExpr()) and
+        not def.getExpr().(AssignOperation).hasExpandedAssignment()
+      )
+    }
+
+    override Setter getTarget() { result = ia.getIndexer().getSetter() }
+
+    override Expr getArgument(int i) {
+      result = ia.getIndex(i)
+      or
+      i = count(ia.getAnIndex()) and
+      result = AssignableInternal::getAccessorCallValueArgument(ia)
+    }
+  }
+
+  class EventCallImpl extends AccessorCallImpl, @assign_event_expr {
+    override EventAccess getAccess() { result = this.(AddOrRemoveEventExpr).getLValue() }
+
+    override EventAccessor getTarget() {
+      exists(Event e | e = this.getAccess().getEvent() |
+        this instanceof AddEventExpr and result = e.getAddEventAccessor()
+        or
+        this instanceof RemoveEventExpr and result = e.getRemoveEventAccessor()
+      )
+    }
+
+    override Expr getArgument(int i) {
+      i = 0 and
+      result = this.(AddOrRemoveEventExpr).getRValue()
+    }
+  }
+}
+
+/**
  * A call to an accessor. Either a property accessor call (`PropertyCall`),
  * an indexer accessor call (`IndexerCall`), or an event accessor call
  * (`EventCall`).
  */
-class AccessorCall extends Call, QualifiableExpr, @call_access_expr {
-  override Accessor getTarget() { none() }
+class AccessorCall extends Call {
+  private AccessorCallImpl::AccessorCallImpl impl;
 
-  override Expr getArgument(int i) { none() }
+  AccessorCall() { this = impl }
+
+  /** Gets the underlying access. */
+  MemberAccess getAccess() { result = impl.getAccess() }
+
+  override Accessor getTarget() { result = impl.getTarget() }
+
+  override Expr getArgument(int i) { result = impl.getArgument(i) }
+
+  override string toString() { none() } // avoid multiple `toString()`s
 
   override Accessor getARuntimeTarget() { result = Call.super.getARuntimeTarget() }
 }
@@ -582,21 +737,15 @@ class AccessorCall extends Call, QualifiableExpr, @call_access_expr {
  * }
  * ```
  */
-class PropertyCall extends AccessorCall, PropertyAccessExpr {
-  override Accessor getTarget() {
-    exists(PropertyAccess pa, Property p | pa = this and p = getProperty() |
-      pa instanceof AssignableRead and result = p.getGetter()
-      or
-      pa instanceof AssignableWrite and result = p.getSetter()
-    )
-  }
+class PropertyCall extends AccessorCall {
+  private AccessorCallImpl::PropertyCallImpl impl;
 
-  override Expr getArgument(int i) {
-    i = 0 and
-    result = AssignableInternal::getAccessorCallValueArgument(this)
-  }
+  PropertyCall() { this = impl }
 
-  override string toString() { result = PropertyAccessExpr.super.toString() }
+  override PropertyAccess getAccess() { result = impl.getAccess() }
+
+  /** Gets property targeted by this property call. */
+  Property getProperty() { result = this.getAccess().getTarget() }
 }
 
 /**
@@ -615,23 +764,15 @@ class PropertyCall extends AccessorCall, PropertyAccessExpr {
  * }
  * ```
  */
-class IndexerCall extends AccessorCall, IndexerAccessExpr {
-  override Accessor getTarget() {
-    exists(IndexerAccess ia, Indexer i | ia = this and i = getIndexer() |
-      ia instanceof AssignableRead and result = i.getGetter()
-      or
-      ia instanceof AssignableWrite and result = i.getSetter()
-    )
-  }
+class IndexerCall extends AccessorCall {
+  private AccessorCallImpl::IndexerCallImpl impl;
 
-  override Expr getArgument(int i) {
-    result = this.(ElementAccess).getIndex(i)
-    or
-    i = count(this.(ElementAccess).getAnIndex()) and
-    result = AssignableInternal::getAccessorCallValueArgument(this)
-  }
+  IndexerCall() { this = impl }
 
-  override string toString() { result = IndexerAccessExpr.super.toString() }
+  override IndexerAccess getAccess() { result = impl.getAccess() }
+
+  /** Gets indexer targeted by this index call. */
+  Indexer getIndexer() { result = this.getAccess().getTarget() }
 }
 
 /**
@@ -655,27 +796,15 @@ class IndexerCall extends AccessorCall, IndexerAccessExpr {
  * }
  * ```
  */
-class EventCall extends AccessorCall, EventAccessExpr {
-  override EventAccessor getTarget() {
-    exists(Event e, AddOrRemoveEventExpr aoree |
-      e = getEvent() and
-      aoree.getLValue() = this
-    |
-      aoree instanceof AddEventExpr and result = e.getAddEventAccessor()
-      or
-      aoree instanceof RemoveEventExpr and result = e.getRemoveEventAccessor()
-    )
-  }
+class EventCall extends AccessorCall, @assign_event_expr {
+  private AccessorCallImpl::EventCallImpl impl;
 
-  override Expr getArgument(int i) {
-    i = 0 and
-    exists(AddOrRemoveEventExpr aoree |
-      aoree.getLValue() = this and
-      result = aoree.getRValue()
-    )
-  }
+  EventCall() { this = impl }
 
-  override string toString() { result = EventAccessExpr.super.toString() }
+  override EventAccess getAccess() { result = impl.getAccess() }
+
+  /** Gets event targeted by this event call. */
+  Event getEvent() { result = this.getAccess().getTarget() }
 }
 
 /**

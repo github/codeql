@@ -513,7 +513,7 @@ class IndexerProperty extends Property {
   IndexerCall getAnIndexerCall() {
     result = getType().(RefType).getAnIndexer().getAnAccessor().getACall() and
     // The qualifier of this indexer call should be a value returned from an access of this property
-    exists(Expr qualifier | qualifier = result.(IndexerAccess).getQualifier() |
+    exists(Expr qualifier | qualifier = result.getAccess().getQualifier() |
       DataFlow::localFlow(DataFlow::exprNode(this.getAnAccess()), DataFlow::exprNode(qualifier))
     )
   }
