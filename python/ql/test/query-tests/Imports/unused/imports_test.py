@@ -61,3 +61,12 @@ import module1 as different
 #Use it
 different
 
+import used_in_doctest
+
+def f():
+    '''
+    >>> unrelated
+    >>> used_in_doctest.thing() == f()
+    True
+    '''
+    return 5

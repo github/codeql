@@ -16,6 +16,7 @@
 
  | **Query**                  | **Expected impact**    | **Change**                                                       |
 |----------------------------|------------------------|------------------------------------------------------------------|
+| Unused import (`py/unused-import`) | Fewer false positive results | Results where the imported module is used in a doctest string are no longer reported |
 
  ## Changes to code extraction
 
