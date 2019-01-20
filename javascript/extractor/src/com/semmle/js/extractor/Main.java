@@ -41,7 +41,7 @@ public class Main {
 	 * such a way that it may produce different tuples for the same file under the same
 	 * {@link ExtractorConfig}.
 	 */
-	public static final String EXTRACTOR_VERSION = "2019-14-01";
+	public static final String EXTRACTOR_VERSION = "2019-01-17";
 
 	public static final Pattern NEWLINE = Pattern.compile("\n");
 
@@ -125,7 +125,7 @@ public class Main {
 				ap.error(P_TRAP_CACHE_BOUND + " should only be specified together with " + P_TRAP_CACHE + ".");
 			trapCache = new DummyTrapCache();
 		}
-		fileExtractor = new FileExtractor(extractorConfig, extractorOutputConfig, trapCache, extractorState);
+		fileExtractor = new FileExtractor(extractorConfig, extractorOutputConfig, trapCache);
 
 		setupMatchers(ap);
 
@@ -211,7 +211,7 @@ public class Main {
 		}
 		long start = verboseLogStartTimer(ap, "Extracting " + f);
 		try {
-			fileExtractor.extract(f.getAbsoluteFile());
+			fileExtractor.extract(f.getAbsoluteFile(), extractorState);
 			verboseLogEndTimer(ap, start);
 		} catch (IOException e) {
 			throw new ResourceError("Extraction of " + f + " failed.", e);
