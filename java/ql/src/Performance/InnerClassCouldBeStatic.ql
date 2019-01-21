@@ -52,6 +52,18 @@ RefType enclosingInstanceAccess(Expr expr) {
       not t.getEnclosingType*() = enclosing
     )
     or
+    // An unqualified `new` expression constructing another instance of the
+    // class it is itself located in, calling a constructor that uses an
+    // enclosing instance.
+    exists(ClassInstanceExpr new, Constructor ctor, Expr e2 |
+      new = expr and
+      not exists(new.getQualifier()) and
+      ctor = new.getConstructor() and
+      enclosing.getEnclosingType*().(InnerClass) = ctor.getDeclaringType() and
+      ctor = e2.getEnclosingCallable() and
+      result = enclosingInstanceAccess(e2)
+    )
+    or
     // An unqualified method or field access to a member that isn't inherited
     // must refer to an enclosing instance.
     exists(FieldAccess fa | fa = expr |
