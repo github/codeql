@@ -22,7 +22,7 @@ class DoubleCheckedLock extends StructuralComparisonConfiguration {
       x = unlockedIf.getCondition() and
       y = lockedIf.getCondition() and
       lock = unlockedIf.getThen().stripSingletonBlocks() and
-      lockedIf = lock.getBlock().stripSingletonBlocks()
+      lockedIf.getParent*() = lock.getBlock()
     )
   }
 }
@@ -38,5 +38,7 @@ predicate doubleCheckedLock(Field field, IfStmt ifs) {
 from Field field, IfStmt ifs
 where
   doubleCheckedLock(field, ifs) and
-  not field.isVolatile()
+  not field.isVolatile() and
+  exists(VariableWrite write | write = ifs.getThen().getAChild+() and write.getTarget() = field) and
+  not field.getType() instanceof Struct
 select ifs, "Field $@ should be 'volatile' for this double-checked lock.", field, field.getName()
