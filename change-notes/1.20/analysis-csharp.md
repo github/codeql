@@ -18,7 +18,8 @@
 | Use of default ToString() (cs/call-to-object-tostring) | Fewer false positives | Results have been removed for `char` arrays passed to `StringBuilder.Append()`, which were incorrectly marked as using `ToString`. |
 | Use of default ToString() (cs/call-to-object-tostring) | Fewer results | Results have been removed when the object is an interface or an abstract class. |
 | Unused format argument (cs/format-argument-unused) | Fewer false positives | Results have been removed where the format string is empty. This is often used as a default value and is not an interesting result. |
- 
+| Double-checked lock is not thread-safe (cs/unsafe-double-checked-lock) | Fewer false positives, more true positives | Results have been removed where the underlying field was not updated in the `lock` statement, or where the field is a `struct`. Results have been added where there are other statements inside the `lock` statement. |
+
 ## Changes to code extraction
 
 * Fix extraction of `for` statements where the condition declares new variables using `is`.

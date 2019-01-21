@@ -1,10 +1,10 @@
 /**
  * @name Double-checked lock is not thread-safe
- * @description A repeated check on a non-volatile field is not thread-safe, and
- *              could result in unexpected behavior.
+ * @description A repeated check on a non-volatile field is not thread-safe on some platforms,
+ *              and could result in unexpected behavior.
  * @kind problem
- * @problem.severity error
- * @precision high
+ * @problem.severity recommendation
+ * @precision medium
  * @id cs/unsafe-double-checked-lock
  * @tags correctness
  *       concurrency
