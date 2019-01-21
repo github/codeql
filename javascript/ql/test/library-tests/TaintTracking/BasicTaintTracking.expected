@@ -12,6 +12,10 @@
 | partialCalls.js:4:17:4:24 | source() | partialCalls.js:51:14:51:14 | x |
 | promise.js:4:24:4:31 | source() | promise.js:4:8:4:32 | Promise ... urce()) |
 | promise.js:5:25:5:32 | source() | promise.js:5:8:5:33 | bluebir ... urce()) |
+| sanitizer-guards.js:2:11:2:18 | source() | sanitizer-guards.js:4:8:4:8 | x |
+| sanitizer-guards.js:13:14:13:21 | source() | sanitizer-guards.js:15:10:15:15 | this.x |
+| sanitizer-guards.js:13:14:13:21 | source() | sanitizer-guards.js:21:14:21:19 | this.x |
+| sanitizer-guards.js:13:14:13:21 | source() | sanitizer-guards.js:26:9:26:14 | this.x |
 | thisAssignments.js:4:17:4:24 | source() | thisAssignments.js:5:10:5:18 | obj.field |
 | thisAssignments.js:7:19:7:26 | source() | thisAssignments.js:8:10:8:20 | this.field2 |
 | tst.js:2:13:2:20 | source() | tst.js:4:10:4:10 | x |
