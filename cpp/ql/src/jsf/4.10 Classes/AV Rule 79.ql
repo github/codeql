@@ -191,9 +191,7 @@ predicate freedInSameMethod(Resource r, Expr acquire) {
   exists(Expr releaseExpr, string kind |
     r.acquisitionWithRequiredKind(acquire, kind) and
     releaseExpr = r.getAReleaseExpr(kind) and
-    releaseExpr.getEnclosingFunction().getEnclosingAccessHolder*() = acquire.getEnclosingFunction()
-    	// here, `getEnclosingAccessHolder*` allows us to go from a nested function or lambda
-    	// expression to the class method enclosing it.
+    releaseExpr.getEnclosingElement*() = acquire.getEnclosingFunction()
   )
 }
 
