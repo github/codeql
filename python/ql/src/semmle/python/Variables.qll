@@ -4,6 +4,13 @@ import python
 /** A variable, either a global or local variable (including parameters) */
 class Variable extends @py_variable {
 
+    Variable() {
+        exists(string name |
+            variable(this, _, name) and
+            not name = "*" and not name = "$"
+        )
+    }
+
     /** Gets the identifier (name) of this variable */
     string getId() {
         variable(this, _, result)
