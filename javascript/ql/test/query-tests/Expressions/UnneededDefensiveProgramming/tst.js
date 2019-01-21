@@ -171,4 +171,9 @@
     if (typeof window !== "undefined" && window.document);
     if (typeof module !== "undefined" && module.exports);
     if (typeof global !== "undefined" && global.process);
+
+	u && (f(), u.p);
+	u && (u.p, f()); // technically not OK, but it seems like an unlikely pattern
+	u && !u.p; // NOT OK
+	u && !u(); // NOT OK
 });

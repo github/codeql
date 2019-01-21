@@ -70,3 +70,5 @@
 | tst.js:140:13:140:22 | x === null | This guard always evaluates to false. |
 | tst.js:156:23:156:31 | x != null | This guard always evaluates to true. |
 | tst.js:158:13:158:21 | x != null | This guard always evaluates to true. |
+| tst.js:177:2:177:2 | u | This guard always evaluates to false. |
+| tst.js:178:2:178:2 | u | This guard always evaluates to false. |
