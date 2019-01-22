@@ -6,16 +6,31 @@ public class A {
     }
   }
 
-  private String s;
-  public String getString() {
-    if (s == null) {
+  private String s1;
+  public String getString1() {
+    if (s1 == null) {
       synchronized(this) {
-        if (s == null) {
-          s = "string"; // OK, immutable
+        if (s1 == null) {
+          s1 = "string"; // BAD, immutable but read twice outside sync
         }
       }
     }
-    return s;
+    return s1;
+  }
+
+  private String s2;
+  public String getString2() {
+    String x = s2;
+    if (x == null) {
+      synchronized(this) {
+        x = s2;
+        if (x == null) {
+          x = "string"; // OK, immutable and read once outside sync
+          s2 = x;
+        }
+      }
+    }
+    return x;
   }
 
   private B b1;
@@ -71,5 +86,41 @@ public class A {
       }
     }
     return b4;
+  }
+
+  static class FinalHelper<T> {
+    public final T x;
+    public FinalHelper(T x) {
+      this.x = x;
+    }
+  }
+
+  private FinalHelper<B> b5;
+  public B getter5() {
+    if (b5 == null) {
+      synchronized(this) {
+        if (b5 == null) {
+          B b = new B();
+          b5 = new FinalHelper<B>(b); // BAD, racy read on b5 outside synchronized-block
+        }
+      }
+    }
+    return b5.x; // Potential NPE here, as the two b5 reads may be reordered
+  }
+
+  private FinalHelper<B> b6;
+  public B getter6() {
+    FinalHelper<B> a = b6;
+    if (a == null) {
+      synchronized(this) {
+        a = b6;
+        if (a == null) {
+          B b = new B();
+          a = new FinalHelper<B>(b);
+          b6 = a; // OK, published through final field with a single non-synced read
+        }
+      }
+    }
+    return a.x;
   }
 }
