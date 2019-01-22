@@ -409,10 +409,10 @@ class SwitchCase extends Stmt, @case {
   SwitchStmt getSwitch() { result.getACase() = this }
 
   /** Gets the switch expression to which this case belongs, if any. */
-  SwitchExpr getSwitchExpr() { result.getACase() = this }
+  deprecated SwitchExpr getSwitchExpr() { result.getACase() = this }
 
   /** Holds if this `case` is a switch labeled rule of the form `... -> ...`. */
-  predicate isRule() {
+  deprecated predicate isRule() {
     exists(Expr e | e.getParent() = this | e.getIndex() = -1)
     or
     exists(Stmt s | s.getParent() = this | s.getIndex() = -1)
@@ -427,13 +427,13 @@ class ConstCase extends SwitchCase {
   Expr getValue() { result.getParent() = this and result.getIndex() = 0 }
 
   /** Gets the `case` constant at the specified index. */
-  Expr getValue(int i) { result.getParent() = this and result.getIndex() = i and i >= 0 }
+  deprecated Expr getValue(int i) { result.getParent() = this and result.getIndex() = i and i >= 0 }
 
   /** Gets the expression on the right-hand side of the arrow, if any. */
-  Expr getRuleExpression() { result.getParent() = this and result.getIndex() = -1 }
+  deprecated Expr getRuleExpression() { result.getParent() = this and result.getIndex() = -1 }
 
   /** Gets the statement on the right-hand side of the arrow, if any. */
-  Stmt getRuleStatement() { result.getParent() = this and result.getIndex() = -1 }
+  deprecated Stmt getRuleStatement() { result.getParent() = this and result.getIndex() = -1 }
 
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
   override string pp() { result = "case ..." }
@@ -573,10 +573,10 @@ class BreakStmt extends Stmt, @breakstmt {
   predicate hasLabel() { exists(string s | s = this.getLabel()) }
 
   /** Gets the value of this `break` statement, if any. */
-  Expr getValue() { result.getParent() = this }
+  deprecated Expr getValue() { result.getParent() = this }
 
   /** Holds if this `break` statement has a value. */
-  predicate hasValue() { exists(Expr e | e.getParent() = this) }
+  deprecated predicate hasValue() { exists(Expr e | e.getParent() = this) }
 
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
   override string pp() {

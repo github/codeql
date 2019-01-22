@@ -1094,7 +1094,7 @@ class ConditionalExpr extends Expr, @conditionalexpr {
 }
 
 /** A `switch` expression. */
-class SwitchExpr extends Expr, @switchexpr {
+deprecated class SwitchExpr extends Expr, @switchexpr {
   /** Gets an immediate child statement of this `switch` expression. */
   Stmt getAStmt() { result.getParent() = this }
 
