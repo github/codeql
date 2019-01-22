@@ -371,7 +371,7 @@ stmts(
   int bodydecl: @callable ref
 );
 
-@stmtparent = @callable | @stmt;
+@stmtparent = @callable | @stmt | @switchexpr;
 
 case @stmt.kind of
   0 = @block
@@ -491,6 +491,7 @@ case @expr.kind of
 | 70  = @annotatedtypeaccess
 | 71  = @typeannotation
 | 72  = @intersectiontypeaccess
+| 73  = @switchexpr
 ;
 
 @classinstancexpr = @newexpr | @lambdaexpr | @memberref
