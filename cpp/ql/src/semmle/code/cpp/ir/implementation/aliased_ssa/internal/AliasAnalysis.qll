@@ -153,13 +153,19 @@ predicate operandIsPropagated(Operand operand, IntValue bitOffset) {
     operandIsPropagated(operand, _) and not resultEscapes(operand.getUseInstruction())
     or
     // The address is passed as an argument to a function from which it does not escape
-    exists(CallInstruction ci, FunctionIR f, InitializeParameterInstruction ipi |
+    exists(CallInstruction ci, FunctionIR f, Instruction init |
       ci = operand.getUseInstruction() and
       f.getFunction() = ci.getStaticCallTarget() and
-      ipi.getParameter() = f.getFunction().getParameter(operand.(PositionalArgumentOperand).getIndex()) and
-      not resultEscapesNonReturn(ipi) and
       (
-        not resultReturned(ipi)
+        init.(InitializeParameterInstruction).getParameter() = f.getFunction().getParameter(operand.(PositionalArgumentOperand).getIndex())
+        or
+        init instanceof InitializeThisInstruction and
+        init.getEnclosingFunctionIR() = f and
+        operand instanceof ThisArgumentOperand
+      ) and
+      not resultEscapesNonReturn(init) and
+      (
+        not resultReturned(init)
         or
         not resultEscapes(operand.getUseInstruction())
       )
@@ -179,11 +185,17 @@ predicate operandEscapesNonReturn(Operand operand) {
     not resultEscapesNonReturn(operand.getUseInstruction())
     or
     // The operand is used in a function call from which the operand does not escape
-    exists(CallInstruction ci, FunctionIR f, InitializeParameterInstruction ipi |
+    exists(CallInstruction ci, FunctionIR f, Instruction init |
       ci = operand.getUseInstruction() and
       f.getFunction() = ci.getStaticCallTarget() and
-      ipi.getParameter() = f.getFunction().getParameter(operand.(PositionalArgumentOperand).getIndex()) and
-      not resultEscapesNonReturn(ipi) and
+      (
+        init.(InitializeParameterInstruction).getParameter() = f.getFunction().getParameter(operand.(PositionalArgumentOperand).getIndex())
+        or
+        init instanceof InitializeThisInstruction and
+        init.getEnclosingFunctionIR() = f and
+        operand instanceof ThisArgumentOperand
+      ) and
+      not resultEscapesNonReturn(init) and
       not resultEscapesNonReturn(ci)
     ) or
     operand instanceof ReturnValueOperand
@@ -200,6 +212,20 @@ predicate operandReturned(Operand operand) {
     f.getFunction() = ci.getStaticCallTarget() and
     ipi.getParameter() = f.getFunction().getParameter(operand.(PositionalArgumentOperand).getIndex()) and
     resultReturned(ipi) and
+    resultReturned(ci)
+  )
+  or
+  exists(CallInstruction ci, FunctionIR f, Instruction init |
+    ci = operand.getUseInstruction() and
+    f.getFunction() = ci.getStaticCallTarget() and
+    (
+      init.(InitializeParameterInstruction).getParameter() = f.getFunction().getParameter(operand.(PositionalArgumentOperand).getIndex())
+      or
+      init instanceof InitializeThisInstruction and
+      init.getEnclosingFunctionIR() = f and
+      operand instanceof ThisArgumentOperand
+    ) and
+    resultReturned(init) and
     resultReturned(ci)
   )
   or
@@ -271,11 +297,17 @@ predicate resultPointsTo(Instruction instr, IRVariable var, IntValue bitOffset) 
     (
       operandIsPropagated(operand, propagatedBitOffset)
       or
-      exists(CallInstruction ci, FunctionIR f, InitializeParameterInstruction ipi |
+      exists(CallInstruction ci, FunctionIR f, Instruction init |
         ci = operand.getUseInstruction() and
         f.getFunction() = ci.getStaticCallTarget() and
-        ipi.getParameter() = f.getFunction().getParameter(operand.(PositionalArgumentOperand).getIndex()) and
-        resultReturned(ipi) and
+        (
+          init.(InitializeParameterInstruction).getParameter() = f.getFunction().getParameter(operand.(PositionalArgumentOperand).getIndex())
+          or
+          init instanceof InitializeThisInstruction and
+          init.getEnclosingFunctionIR() = f and
+          operand instanceof ThisArgumentOperand
+        ) and
+        resultReturned(init) and
         propagatedBitOffset = Ints::unknown()
       )
     ) and

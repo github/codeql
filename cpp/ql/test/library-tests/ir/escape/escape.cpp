@@ -66,6 +66,21 @@ struct Derived : Intermediate1, Intermediate2 {
     float d;
 };
 
+class C;
+
+void CEscapes(C *no_c);
+
+class C {
+public:
+  void ThisEscapes() {
+    CEscapes(this);
+  }
+
+  C *ThisReturned() {
+    return this;
+  }
+};
+
 void Escape()
 {
     int no_result;
@@ -169,4 +184,24 @@ void Escape()
 
     int no_ssa_passByRef7;
     ReturnReference(no_ssa_passByRef7);
+
+    C no_ssa_c;
+
+    no_ssa_c.ThisReturned();
+
+    C c;
+
+    c.ThisEscapes();
+
+    C c2;
+
+    CEscapes(&c2);
+
+    C c3;
+
+    c3.ThisReturned()->ThisEscapes();
+
+    C c4;
+
+    CEscapes(c4.ThisReturned());
 }
