@@ -191,7 +191,7 @@ predicate freedInSameMethod(Resource r, Expr acquire) {
   exists(Expr releaseExpr, string kind |
     r.acquisitionWithRequiredKind(acquire, kind) and
     releaseExpr = r.getAReleaseExpr(kind) and
-    releaseExpr.getEnclosingElement*() = acquire.getEnclosingFunction()
+    releaseExpr.getEnclosingElement+() = acquire.getEnclosingFunction()
   )
 }
 
