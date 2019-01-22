@@ -57,6 +57,21 @@ predicate imported_module_used_in_doctest(Import imp) {
     )
 }
 
+predicate imported_module_used_in_typehint(Import imp) {
+    exists(string modname |
+        ((Name)imp.getAName().getAsname()).getId() = modname
+        and
+        /* Look for typehints containing the patterns:
+         * # type: …name…
+         */
+        exists(Comment tyephint |
+            tyephint.getLocation().getFile() = imp.getScope().(Module).getFile() and
+            tyephint.getText().regexpMatch("# type:.*" + modname + ".*")
+        )
+    )
+}
+
+
 predicate unused_import(Import imp, Variable name) {
     ((Name)imp.getAName().getAsname()).getVariable() = name
     and
@@ -83,6 +98,8 @@ predicate unused_import(Import imp, Variable name) {
     not all_not_understood(imp.getEnclosingModule())
     and
     not imported_module_used_in_doctest(imp)
+    and
+    not imported_module_used_in_typehint(imp)
 }
 
 

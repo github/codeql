@@ -70,3 +70,9 @@ def f():
     True
     '''
     return 5
+
+#Used in Python2 type hint
+import typing
+
+foo = None # type: typing.Optional[int]
+
