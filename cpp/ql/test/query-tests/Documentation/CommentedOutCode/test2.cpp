@@ -35,3 +35,7 @@
 // Example: { 1, 2, 3, 4 }
 
 // int myFunction() { return myValue; }
+
+// int myFunction() const { return myValue; }
+
+// int myFunction() const noexcept { return myValue; }

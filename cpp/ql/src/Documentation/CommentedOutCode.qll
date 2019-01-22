@@ -25,12 +25,12 @@ private predicate looksLikeCode(string line) {
               // brace that's preceded by something other than whitespace ...
               trimmed.regexpMatch(".*.\\}")
               implies
-              // ... then there has to be ") {" (with some variation of
-              // whitespace) on the line, suggesting it's a statement like `if`
+              // ... then there has to be ") {" (or some variation)
+              // on the line, suggesting it's a statement like `if`
               // or a function declaration. Otherwise it's likely to be a
               // benign use of braces such as a JSON example or explanatory
               // pseudocode.
-              trimmed.regexpMatch(".*\\)\\s*\\{.*")
+              trimmed.regexpMatch(".*(\\)|const|volatile|override|final|noexcept|&)\\s*\\{.*")
            )
            and not trimmed.regexpMatch("(>.*|.*[\\\\@][{}].*|(optional|repeated) .*;|.*(\\{\\{\\{|\\}\\}\\}).*|\\{[-0-9a-zA-Z]+\\})"))
 }
