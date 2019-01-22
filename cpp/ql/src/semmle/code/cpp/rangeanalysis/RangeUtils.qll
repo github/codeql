@@ -81,6 +81,5 @@ predicate isReducibleCFG(Function f) {
 
 predicate backEdge(PhiInstruction phi, PhiOperand op) {
   phi.getAnOperand() = op and
-  phi.getBlock().dominates(op.getPredecessorBlock())
-  // TODO: identify backedges during IR construction
+  phi.getBlock() = op.getPredecessorBlock().getBackEdgeSuccessor(_)
 }
