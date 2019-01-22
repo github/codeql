@@ -335,10 +335,10 @@ class Expr extends StmtParent, @expr {
   /** Gets the fully converted form of this expression, including all type casts and other conversions. */
   cached
   Expr getFullyConverted() {
-    if this.hasConversion() then
-      result = this.getConversion().getFullyConverted()
-    else
-      result = this
+    hasNoConversions(this) and
+    result = this
+    or
+    result = this.getConversion().getFullyConverted()
   }
 
   /**
@@ -977,3 +977,6 @@ private predicate isStandardPlacementNewAllocator(Function operatorNew) {
   operatorNew.getNumberOfParameters() = 2 and
   operatorNew.getParameter(1).getType() instanceof VoidPointerType
 }
+
+// Pulled out for performance. See QL-796.
+private predicate hasNoConversions(Expr e) { not e.hasConversion() }
