@@ -1,7 +1,7 @@
 using System;
 using System.Text;
 
-class DefaultToString
+public class DefaultToString
 {
     void M()
     {
@@ -32,6 +32,11 @@ class DefaultToString
 
         IInterface f = null;
         Console.WriteLine(f);  // GOOD
+        IPrivate f = null;
+        Console.WriteLine(f);  // BAD
+
+        IPublic g = null;
+        Console.WriteLine(g);  // GOOD
     }
 
     class A
@@ -51,8 +56,12 @@ class DefaultToString
     {
         override public string ToString() { return "D"; }
     }
-    
-    interface IInterface
+
+    public interface IPublic
+    {
+    }
+
+    private interface IPrivate
     {
     }
 }

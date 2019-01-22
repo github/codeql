@@ -294,7 +294,7 @@ private module Internal {
       |
         succ.(AssignableRead) = a.getAnAccess() and
         pred = a.getAnAssignedValue() and
-        a = any(Modifiable m | m.isEffectivelyInternal() or m.isEffectivelyPrivate())
+        a = any(Modifiable m | not m.isEffectivelyPublic())
       )
     }
 

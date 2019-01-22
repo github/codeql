@@ -36,5 +36,5 @@ where
   canBeReadonly(f) and
   not f.isConst() and
   not f.isReadOnly() and
-  (f.isEffectivelyPrivate() or f.isEffectivelyInternal())
+  not f.isEffectivelyPublic()
 select f, "Field '" + f.getName() + "' can be 'readonly'."
