@@ -16,9 +16,7 @@ abstract class LocalUserInputSource extends LocalFlowSource { }
 
 /** The text of a `TextBox`. */
 class TextFieldSource extends LocalUserInputSource {
-  TextFieldSource() {
-    this.asExpr() = any(TextControl control).getARead()
-  }
+  TextFieldSource() { this.asExpr() = any(TextControl control).getARead() }
 
   override string getSourceType() { result = "TextBox text" }
 }

@@ -26,9 +26,7 @@ class SystemWindowsFormsHtmlElement extends SystemWindowsFormsClass {
 
 /** The `System.Windows.Forms.TextBoxBase` class. */
 class SystemWindowsFormsTextBoxBase extends SystemWindowsFormsClass {
-  SystemWindowsFormsTextBoxBase() {
-    this.hasName("TextBoxBase")
-  }
+  SystemWindowsFormsTextBoxBase() { this.hasName("TextBoxBase") }
 
   /** Gets the `Text` property. */
   Property getTextProperty() { result = this.getProperty("Text") }
@@ -36,9 +34,7 @@ class SystemWindowsFormsTextBoxBase extends SystemWindowsFormsClass {
 
 /** The `System.Windows.Forms.RichTextBox` class. */
 class SystemWindowsFormsRichTextBox extends SystemWindowsFormsClass {
-  SystemWindowsFormsRichTextBox() {
-    this.hasName("RichTextBox")
-  }
+  SystemWindowsFormsRichTextBox() { this.hasName("RichTextBox") }
 
   /** Gets the `Rtf` property. */
   Property getRtfProperty() { result = this.getProperty("Rtf") }
@@ -52,19 +48,15 @@ class SystemWindowsFormsRichTextBox extends SystemWindowsFormsClass {
 
 /** The `System.Windows.Forms.HtmlDocument` class. */
 class SystemWindowsFormsHtmlDocumentClass extends SystemWindowsFormsClass {
-  SystemWindowsFormsHtmlDocumentClass() {
-    this.hasName("HtmlDocument")
-  }
+  SystemWindowsFormsHtmlDocumentClass() { this.hasName("HtmlDocument") }
 
   /** Gets the `Write` method. */
-  Method getWriteMethod() { result = this.getAMethod() and result.hasName("Write") }  
+  Method getWriteMethod() { result = this.getAMethod("Write") }
 }
 
 /** The `System.Windows.Forms.WebBrowser` class. */
 class SystemWindowsFormsWebBrowserClass extends SystemWindowsFormsClass {
-  SystemWindowsFormsWebBrowserClass() {
-    this.hasName("WebBrowser")
-  }
+  SystemWindowsFormsWebBrowserClass() { this.hasName("WebBrowser") }
 
   /** Gets the `DocumentText` property. */
   Property getDocumentTextProperty() { result = this.getProperty("DocumentText") }
@@ -78,23 +70,19 @@ private class TextProperty extends Property {
       this = c.getSelectedRtfProperty()
     )
     or
-    exists(SystemWindowsFormsTextBoxBase tb |
-      this = tb.getTextProperty().getAnOverrider*()
-    )
+    exists(SystemWindowsFormsTextBoxBase tb | this = tb.getTextProperty().getAnOverrider*())
   }
 }
 
-/** A field that contains a text control. */
-class TextControl extends Field
-{
+/** A variable that contains a text control. */
+class TextControl extends Variable {
   TextControl() {
     this.getType().(ValueOrRefType).getBaseClass*() instanceof SystemWindowsFormsTextBoxBase
   }
 
   /** Gets a read of the text property. */
   PropertyRead getARead() {
-    result.getTarget() instanceof TextProperty
-    and
+    result.getTarget() instanceof TextProperty and
     result.getQualifier() = this.getAnAccess()
   }
 }

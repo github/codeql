@@ -137,20 +137,17 @@ class SensitiveVariableAccess extends SensitiveExpr, VariableAccess {
 
 /** Reading the `Text` property of a password text box. */
 class PasswordTextboxText extends SensitiveExpr, PropertyRead {
-  PasswordTextboxText() {
-    this = any(PasswordField p).getARead()
-  }
+  PasswordTextboxText() { this = any(PasswordField p).getARead() }
 }
 
 /** A field containing a text box used as a password. */
-class PasswordField extends TextControl
-{
+class PasswordField extends TextControl {
   PasswordField() {
     isSuspicious(this.getName())
     or
     exists(PropertyWrite write | write.getQualifier() = this.getAnAccess() |
-        write.getTarget().getName() = "UseSystemPasswordChar" or
-        write.getTarget().getName() = "PasswordChar"
+      write.getTarget().getName() = "UseSystemPasswordChar" or
+      write.getTarget().getName() = "PasswordChar"
     )
   }
 }
