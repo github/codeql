@@ -278,6 +278,14 @@ cached private module Cached {
     )
   }
 
+  cached Instruction getInstructionBackEdgeSuccessor(Instruction instruction, EdgeKind kind) {
+    exists(OldInstruction oldInstruction |
+      oldInstruction = getOldInstruction(instruction) and
+      result = getNewInstruction(oldInstruction.getBackEdgeSuccessor(kind)) and
+      not Reachability::isInfeasibleInstructionSuccessor(oldInstruction, kind)
+    )
+  }
+
   cached IRVariable getInstructionVariable(Instruction instruction) {
     result = getNewIRVariable(getOldInstruction(instruction).(OldIR::VariableInstruction).getVariable())
   }

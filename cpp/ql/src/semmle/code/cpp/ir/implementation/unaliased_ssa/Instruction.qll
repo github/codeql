@@ -464,6 +464,16 @@ class Instruction extends Construction::TInstruction {
   }
 
   /**
+   * Gets the a _back-edge successor_ of this instruction along the control
+   * flow edge specified by `kind`. A back edge in the control-flow graph is
+   * intuitively the edge that goes back around a loop. If all back edges are
+   * removed from the control-flow graph, it becomes acyclic.
+   */
+  final Instruction getBackEdgeSuccessor(EdgeKind kind) {
+    result = Construction::getInstructionBackEdgeSuccessor(this, kind)
+  }
+
+  /**
    * Gets all direct successors of this instruction.
    */
   final Instruction getASuccessor() {

@@ -90,6 +90,10 @@ class IRBlock extends IRBlockBase {
     blockSuccessor(this, result, kind)
   }
 
+  final IRBlock getBackEdgeSuccessor(EdgeKind kind) {
+    backEdgeSuccessor(this, result, kind)
+  }
+
   final predicate immediatelyDominates(IRBlock block) {
     blockImmediatelyDominates(this, block)
   }
@@ -132,7 +136,10 @@ private predicate startsBasicBlock(Instruction instr) {
     exists(Instruction predecessor, EdgeKind kind |
       instr = predecessor.getSuccessor(kind) and
       not kind instanceof GotoEdge
-    )  // Incoming edge is not a GotoEdge
+    ) or  // Incoming edge is not a GotoEdge
+    exists(Instruction predecessor |
+      instr = predecessor.getBackEdgeSuccessor(_)
+    )  // A back edge enters this instruction
   )
 }
 
@@ -180,6 +187,14 @@ private cached module Cached {
     exists(Instruction predLast, Instruction succFirst |
       predLast = getInstruction(pred, getInstructionCount(pred) - 1) and
       succFirst = predLast.getSuccessor(kind) and
+      succ = MkIRBlock(succFirst)
+    )
+  }
+
+  cached predicate backEdgeSuccessor(TIRBlock pred, TIRBlock succ, EdgeKind kind) {
+    exists(Instruction predLast, Instruction succFirst |
+      predLast = getInstruction(pred, getInstructionCount(pred) - 1) and
+      succFirst = predLast.getBackEdgeSuccessor(kind) and
       succ = MkIRBlock(succFirst)
     )
   }
