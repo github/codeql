@@ -560,6 +560,7 @@ public class ASTExtractor {
 			} else if (sourceType == SourceType.MODULE) {
 				Label moduleScopeKey = trapwriter.globalID("module;{" + locationManager.getFileLabel() + "}," + locationManager.getStartLine() + "," + locationManager.getStartColumn());
 				scopeManager.enterScope(3, moduleScopeKey, toplevelLabel);
+				scopeManager.addVariables("exports"); // needed for Closure modules - spuriously added for ES6 modules
 				trapwriter.addTuple("isModule", toplevelLabel);
 			}
 

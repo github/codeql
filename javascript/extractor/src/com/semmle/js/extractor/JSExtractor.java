@@ -29,8 +29,8 @@ public class JSExtractor {
 		this.config = config;
 	}
 
-	// heuristic: if `import` or `export` appears at the beginning of a line, it's probably a module
-	private static final Pattern containsImportOrExport = Pattern.compile("(?m)^([ \t]*)(import|export)\\b");
+	// heuristic: if `import`, `export`, or `goog.module` appears at the beginning of a line, it's probably a module
+	private static final Pattern containsModuleIndicator = Pattern.compile("(?m)^([ \t]*)(import|export|goog\\.module)\\b");
 
 	public Pair<Label, LoCInfo> extract(TextualExtractor textualExtractor, String source, int toplevelKind, ScopeManager scopeManager) throws ParseError {
 		// if the file starts with `{ "<string>":` it won't parse as JavaScript; try parsing as JSON instead
@@ -69,7 +69,7 @@ public class JSExtractor {
 		if (sourceType != SourceType.AUTO)
 			return sourceType;
 		if (config.getEcmaVersion().compareTo(ECMAVersion.ECMA2015) >= 0) {
-			Matcher m = containsImportOrExport.matcher(source);
+			Matcher m = containsModuleIndicator.matcher(source);
 			if (m.find() && (allowLeadingWS || m.group(1).isEmpty()))
 				return SourceType.MODULE;
 		}
