@@ -410,10 +410,10 @@ class SwitchCase extends Stmt, @case {
 
 /** A constant `case` of a switch statement. */
 class ConstCase extends SwitchCase {
-  ConstCase() { exists(Expr e | e.getParent() = this) }
+  ConstCase() { exists(Expr e | e.getParent() = this | e.getIndex() >= 0) }
 
   /** Gets the expression of this `case`. */
-  Expr getValue() { result.getParent() = this }
+  Expr getValue() { result.getParent() = this and result.getIndex() = 0 }
 
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
   override string pp() { result = "case ...:" }
@@ -424,7 +424,7 @@ class ConstCase extends SwitchCase {
 
 /** A `default` case of a `switch` statement */
 class DefaultCase extends SwitchCase {
-  DefaultCase() { not exists(Expr e | e.getParent() = this) }
+  DefaultCase() { not exists(Expr e | e.getParent() = this | e.getIndex() >= 0) }
 
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
   override string pp() { result = "default" }
