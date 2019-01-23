@@ -6,6 +6,7 @@ import csharp
 
 module ResourceInjection {
   import semmle.code.csharp.dataflow.flowsources.Remote
+  import semmle.code.csharp.dataflow.flowsources.Local
   import semmle.code.csharp.frameworks.system.Data
   import semmle.code.csharp.security.Sanitizers
 
@@ -39,6 +40,9 @@ module ResourceInjection {
 
   /** A source of remote user input. */
   class RemoteSource extends Source { RemoteSource() { this instanceof RemoteFlowSource } }
+
+  /** A source of local user input. */
+  class LocalSource extends Source { LocalSource() { this instanceof LocalFlowSource } }
 
   /** An argument to the `ConnectionString` property on a data connection class. */
   class SqlConnectionStringSink extends Sink {
