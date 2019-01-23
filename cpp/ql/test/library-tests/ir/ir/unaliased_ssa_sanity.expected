@@ -3,6 +3,8 @@ unexpectedOperand
 duplicateOperand
 missingPhiOperand
 instructionWithoutSuccessor
+ambiguousSuccessors
+unexplainedLoop
 unnecessaryPhiInstruction
 operandAcrossFunctions
 instructionWithoutUniqueBlock
