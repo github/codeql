@@ -22,5 +22,5 @@ predicate part(Regex r, int start, int end, string kind) {
 }
 
 from Regex r, int start, int end, string kind
-where part(r, start, end, kind)
+where part(r, start, end, kind) and r.getLocation().getFile().getBaseName() = "test.py"
 select r.getText(), kind, start, end
