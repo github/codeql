@@ -114,7 +114,7 @@ diagnostic_for(
 /**
  * If extraction was successful, then `cpu_seconds` and
  * `elapsed_seconds` are the CPU time and elapsed time (respectively)
- * that extractino took for compiler invocation `id`.
+ * that extraction took for compiler invocation `id`.
  */
 compilation_finished(
     unique int id : @compilation ref,
