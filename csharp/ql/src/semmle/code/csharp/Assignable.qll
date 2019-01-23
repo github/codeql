@@ -161,7 +161,7 @@ module AssignableInternal {
   /**
    * A `ref` argument in a call.
    *
-   * All predicates in this class deliberatly do not use the `Call` class, or any
+   * All predicates in this class deliberately do not use the `Call` class, or any
    * subclass thereof, as that results in too conservative negative recursion
    * compilation errors.
    */
@@ -205,11 +205,8 @@ module AssignableInternal {
     }
 
     private Callable getSourceDeclarationTarget(Parameter p) {
-      exists(Parameter parg |
-        parg = this.getParameter() and
-        p = parg.getSourceDeclaration() and
-        result.getAParameter() = p
-      )
+      p = this.getParameter().getSourceDeclaration() and
+      result.getAParameter() = p
     }
 
     /**
@@ -244,8 +241,8 @@ module AssignableInternal {
       )
     }
 
-    /** Holds if this `ref` assignment is relevant. */
-    predicate isRelevant() {
+    /** Holds if this `ref` access is a potential assignment. */
+    predicate isPotentialAssignment() {
       this.isNonAnalyzable() or
       exists(this.getAnAnalyzableRefDef(_))
     }
@@ -306,7 +303,7 @@ module AssignableInternal {
       TOutRefDefinition(AssignableAccess aa) {
         aa.isOutArgument()
         or
-        aa.(RefArg).isRelevant()
+        aa.(RefArg).isPotentialAssignment()
       } or
       TMutationDefinition(MutatorOperation mo) or
       TLocalVariableDefinition(LocalVariableDeclExpr lvde) {
@@ -347,7 +344,7 @@ module AssignableInternal {
      */
     cached
     predicate isUncertainRefCall(RefArg arg) {
-      arg.isRelevant() and
+      arg.isPotentialAssignment() and
       exists(ControlFlow::BasicBlock bb, Parameter p | arg.isAnalyzable(p) |
         parameterReachesWithoutDef(p, bb) and
         bb.getLastNode() = p.getCallable().getExitPoint()
