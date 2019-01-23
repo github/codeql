@@ -43,7 +43,7 @@ predicate all_not_understood(Module m) {
 
 predicate imported_module_used_in_doctest(Import imp) {
     exists(string modname |
-        ((Name)imp.getAName().getAsname()).getId() = modname
+        imp.getAName().getAsname().(Name).getId() = modname
         and
         /* Look for doctests containing the patterns:
          * >>> …name…
@@ -59,14 +59,14 @@ predicate imported_module_used_in_doctest(Import imp) {
 
 predicate imported_module_used_in_typehint(Import imp) {
     exists(string modname |
-        ((Name)imp.getAName().getAsname()).getId() = modname
+        imp.getAName().getAsname().(Name).getId() = modname
         and
         /* Look for typehints containing the patterns:
          * # type: …name…
          */
-        exists(Comment tyephint |
-            tyephint.getLocation().getFile() = imp.getScope().(Module).getFile() and
-            tyephint.getText().regexpMatch("# type:.*" + modname + ".*")
+        exists(Comment typehint |
+            typehint.getLocation().getFile() = imp.getScope().(Module).getFile() and
+            typehint.getText().regexpMatch("# type:.*" + modname + ".*")
         )
     )
 }
