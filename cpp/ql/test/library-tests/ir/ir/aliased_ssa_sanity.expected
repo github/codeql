@@ -6,3 +6,6 @@ instructionWithoutSuccessor
 unnecessaryPhiInstruction
 operandAcrossFunctions
 instructionWithoutUniqueBlock
+containsLoopOfForwardEdges
+lostReachability
+backEdgeCountMismatch

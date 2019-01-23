@@ -131,6 +131,54 @@ module InstructionSanity {
     blockCount = count(instr.getBlock()) and
     blockCount != 1
   }
+
+  private predicate forwardEdge(IRBlock b1, IRBlock b2) {
+    b1.getASuccessor() = b2 and
+    not b1.getBackEdgeSuccessor(_) = b2
+  }
+
+  /**
+   * Holds if `f` contains a loop in which no edge is a back edge.
+   *
+   * This check ensures we don't have too _few_ back edges.
+   */
+  query predicate containsLoopOfForwardEdges(FunctionIR f) {
+    exists(IRBlock block |
+      forwardEdge+(block, block) and
+      block.getFunctionIR() = f
+    )
+  }
+
+  /**
+   * Holds if `block` is reachable from its function entry point but would not
+   * be reachable by traversing only forward edges. This check is skipped for
+   * functions containing `goto` statements as the property does not generally
+   * hold there.
+   *
+   * This check ensures we don't have too _many_ back edges.
+   */
+  query predicate lostReachability(IRBlock block) {
+    exists(FunctionIR f, IRBlock entry |
+      entry = f.getEntryBlock() and
+      entry.getASuccessor+() = block and
+      not forwardEdge+(entry, block) and
+      not exists(GotoStmt s | s.getEnclosingFunction() = f.getFunction())
+    )
+  }
+
+  /**
+   * Holds if the number of back edges differs between the `Instruction` graph
+   * and the `IRBlock` graph.
+   */
+  query predicate backEdgeCountMismatch(Function f, int fromInstr, int fromBlock) {
+    fromInstr = count(Instruction i1, Instruction i2 |
+        i1.getFunction() = f and i1.getBackEdgeSuccessor(_) = i2
+      ) and
+    fromBlock = count(IRBlock b1, IRBlock b2 |
+        b1.getFunction() = f and b1.getBackEdgeSuccessor(_) = b2
+      ) and
+    fromInstr != fromBlock
+  }
 }
 
 /**
