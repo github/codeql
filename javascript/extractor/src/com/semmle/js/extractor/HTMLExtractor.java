@@ -140,14 +140,14 @@ public class HTMLExtractor implements IExtractor {
 		if ("text/babel".equals(scriptType)) {
 			String plugins = getAttributeValueLC(script, "data-plugins");
 			if (plugins != null && plugins.contains("transform-es2015-modules-umd")) {
-				return SourceType.MODULE;
+				return SourceType.ES6_MODULE;
 			}
 			return config.getSourceType();
 		}
 
 		// if `type` is "module", extract as module
 		if ("module".equals(scriptType))
-			return SourceType.MODULE;
+			return SourceType.ES6_MODULE;
 
 		return null;
 	}

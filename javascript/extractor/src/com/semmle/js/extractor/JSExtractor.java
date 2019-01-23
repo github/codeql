@@ -70,8 +70,9 @@ public class JSExtractor {
 			return sourceType;
 		if (config.getEcmaVersion().compareTo(ECMAVersion.ECMA2015) >= 0) {
 			Matcher m = containsModuleIndicator.matcher(source);
-			if (m.find() && (allowLeadingWS || m.group(1).isEmpty()))
-				return SourceType.MODULE;
+			if (m.find() && (allowLeadingWS || m.group(1).isEmpty())) {
+				return m.group(2).startsWith("goog") ? SourceType.CLOSURE_MODULE : SourceType.ES6_MODULE;
+			}
 		}
 		return SourceType.SCRIPT;
 	}
@@ -125,7 +126,7 @@ public class JSExtractor {
 
 		if (config.isExterns())
 			textualExtractor.getTrapwriter().addTuple("isExterns", toplevelLabel);
-		if (platform == Platform.NODE && sourceType != SourceType.MODULE)
+		if (platform == Platform.NODE && sourceType != SourceType.ES6_MODULE && sourceType != SourceType.CLOSURE_MODULE)
 			textualExtractor.getTrapwriter().addTuple("isNodejs", toplevelLabel);
 
 		return Pair.make(toplevelLabel, loc);

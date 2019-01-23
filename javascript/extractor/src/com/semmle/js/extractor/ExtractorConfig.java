@@ -51,7 +51,7 @@ public class ExtractorConfig {
     };
 
     public static enum SourceType {
-        SCRIPT, MODULE, AUTO;
+        SCRIPT, ES6_MODULE, CLOSURE_MODULE, AUTO;
 
         @Override
         public String toString() {

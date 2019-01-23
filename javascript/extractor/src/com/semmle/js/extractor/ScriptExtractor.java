@@ -52,7 +52,7 @@ public class ScriptExtractor implements IExtractor {
 		// Some file extensions are interpreted as modules by default.
 		if (isAlwaysModule(locationManager.getSourceFileExtension())) {
 			if (config.getSourceType() == SourceType.AUTO)
-				config = config.withSourceType(SourceType.MODULE);
+				config = config.withSourceType(SourceType.ES6_MODULE);
 		}
 
 		ScopeManager scopeManager = new ScopeManager(textualExtractor.getTrapwriter(), config.getEcmaVersion());
