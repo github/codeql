@@ -1,11 +1,5 @@
 import python
-
-string loc(ControlFlowNode f) {
-    exists(Location l |
-        l = f.getLocation() |
-        result = l.getFile().getBaseName() + ":" + l.getStartLine() + ":" + l.getStartColumn()
-    )
-}
+import semmle.python.TestUtils
 
 from ControlFlowNode p, ControlFlowNode s, string what
 where
@@ -20,4 +14,5 @@ or
 // Add fake edges for node that raise out of scope
 p.isExceptionalExit(_) and s = p.getScope().getEntryNode() and what = "exit"
 
-select loc(p), p.getNode().toString(), loc(s), s.getNode().toString(), what
+select compact_location(p.getNode()), p.getNode().toString(),
+       compact_location(s.getNode()), s.getNode().toString(), what

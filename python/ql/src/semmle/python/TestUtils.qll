@@ -22,3 +22,11 @@ string remove_prefix_before_substring(string str, string sub) {
 string remove_library_prefix(Location loc) {
   result = remove_prefix_before_substring(loc.toString(), "resources/lib")
 }
+
+/** Returns the location of an AST node in compact form: `basename:line:column` */
+string compact_location(AstNode a) {
+    exists(Location l |
+        l = a.getLocation() |
+        result = l.getFile().getBaseName() + ":" + l.getStartLine() + ":" + l.getStartColumn()
+    )
+}
