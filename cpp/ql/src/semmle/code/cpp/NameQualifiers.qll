@@ -67,7 +67,10 @@ class NameQualifier extends NameQualifiableElement, @namequalifier {
  * the latter is qualified by `N1`.
  */
 class NameQualifiableElement extends Element, @namequalifiableelement {
-  /** Gets the name qualifier associated with this element. */
+  /**
+   * Gets the name qualifier associated with this element. For example, the
+   * name qualifier of `N::f()` is `N`.
+   */
   NameQualifier getNameQualifier() {
     namequalifiers(unresolveElement(result),underlyingElement(this),_,_)
   }
