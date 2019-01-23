@@ -20,7 +20,7 @@ module StringOps {
     abstract DataFlow::Node getSubstring();
 
     /**
-     * Gets the polarity if the check.
+     * Gets the polarity of the check.
      *
      * If the polarity is `false` the check returns `true` if the string does not start
      * with the given substring.
@@ -192,7 +192,7 @@ module StringOps {
     abstract DataFlow::Node getSubstring();
 
     /**
-     * Gets the polarity if the check.
+     * Gets the polarity of the check.
      *
      * If the polarity is `false` the check returns `true` if the string does not start
      * with the given substring.
