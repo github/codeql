@@ -5,6 +5,7 @@
  */
 
 import javascript
+private import semmle.javascript.Closure
 private import AbstractValuesImpl
 private import semmle.javascript.dataflow.InferredTypes
 private import AbstractPropertiesImpl
@@ -331,4 +332,51 @@ private class AnalyzedExportAssign extends AnalyzedPropertyWrite, DataFlow::Valu
     propName = "exports" and
     source = this
   }
+}
+
+/**
+ * Flow analysis for assignments to the `exports` variable in a Closure module.
+ */
+private class AnalyzedClosureExportAssign extends AnalyzedPropertyWrite, DataFlow::ValueNode {
+  ClosureModule mod;
+
+  AnalyzedClosureExportAssign() {
+    astNode.(AssignExpr).getLhs() = mod.getExportsVariable().getAReference()
+  }
+
+  override predicate writes(AbstractValue baseVal, string propName, DataFlow::AnalyzedNode source) {
+    baseVal = TAbstractModuleObject(astNode.getTopLevel()) and
+    propName = "exports" and
+    source = astNode.(AssignExpr).getRhs().flow()
+  }
+}
+
+/**
+ * Read of a global access path exported by a Closure library.
+ *
+ * This adds a direct flow edge to the assigned value.
+ */
+private class AnalyzedClosureGlobalAccessPath extends AnalyzedNode, AnalyzedPropertyRead {
+  string accessPath;
+
+  AnalyzedClosureGlobalAccessPath() {
+    accessPath = getClosureLibraryAccessPath(this)
+  }
+
+  override AnalyzedNode localFlowPred() {
+    exists (DataFlow::PropWrite write |
+      getWrittenClosureLibraryAccessPath(write) = accessPath and
+      result = write.getRhs()
+    )
+    or
+    result = AnalyzedNode.super.localFlowPred()
+  }
+
+  override predicate reads(AbstractValue base, string propName) {
+    exists (ClosureModule mod |
+      mod.getNamespaceId() = accessPath and
+      base = TAbstractModuleObject(mod) and
+      propName = "exports"
+    )
+  }  
 }

@@ -46,5 +46,7 @@ where
     moduleExportsAssign(_, exportsVal) and
     // however, if there are no further uses of `exports` the assignment is useless anyway
     strictcount(exportsVar.getAnAccess()) > 1
-  )
+  ) and
+  // export assignments do work in closure modules
+  not assgn.getTopLevel() instanceof ClosureModule
 select assgn, "Assigning to 'exports' does not export anything."
