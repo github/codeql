@@ -265,3 +265,13 @@ class G(object):
 
 # Self can only be of a class that is instantiated.
 Derived4()
+
+
+class DiGraph(object):
+
+    def __init__(self):
+        self.pred = {}
+
+    def add_node(self, n):
+        self.pred[n] = 0
+
