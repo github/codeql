@@ -14,12 +14,12 @@ void test() {
   not_yet_declared1(1); // BAD
   not_yet_declared2(1); // GOOD
 
-  declared_empty_defined_with(); // BAD
+  declared_empty_defined_with(); // BAD [NOT DETECTED]
   declared_empty_defined_with(1); // GOOD
 
   int x;
-  declared_empty_defined_with(&x); // BAD
-  declared_empty_defined_with(x, x); // BAD
+  declared_empty_defined_with(&x); // BAD [NOT DETECTED]
+  declared_empty_defined_with(x, x); // BAD [NOT DETECTED]
 }
 
 void not_yet_declared1();

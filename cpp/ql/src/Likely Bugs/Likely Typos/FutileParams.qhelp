@@ -8,6 +8,11 @@
 <p>A function is called with arguments despite having an empty parameter list. This may indicate
 that the incorrect function is being called, or that the author misunderstood the function.</p>
 
+<p>In C, a function declared with an empty parameter list `()` is considered to have an unknown
+parameter list, and therefore can be called with any set of arguments. To declare a function
+which takes no arguments, you must use `(void)` as the parameter list in any forward declarations.
+In C++, either style of declaration will be considered to take no arguments.</p>
+
 </overview>
 <recommendation>
 <p>Call the function without arguments, or call a different function that expects the arguments
