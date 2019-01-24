@@ -16,15 +16,8 @@ private predicate addressConstantVariable(Variable v) {
   addressConstantExpression(v.getInitializer().getExpr().getFullyConverted()) and
   // Here we should also require that `v` is constexpr, but we don't have that
   // information in the db. See CPP-314. Instead, we require that the variable
-  // is not assigned to.
-  not exists(VariableAccess va | va.getTarget() = v |
-    // `v` may be assigned to, completely or partially
-    exists(Expr lvalue | variableAccessedAsValue(va, lvalue) |
-      lvalue = any(Assignment a).getLValue().getFullyConverted()
-      or
-      lvalue = any(CrementOperation c).getOperand().getFullyConverted()
-    )
-  )
+  // is never defined except in its initializer.
+  forall(Expr def | definition(v, def) | def = any(Initializer init).getExpr())
 }
 
 /**
