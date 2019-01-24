@@ -203,7 +203,7 @@ header_to_external_package(
  */
 
 svnentries(
-    int id : @svnentry,
+    unique int id : @svnentry,
     string revision : string ref,
     string author : string ref,
     date revisionDate : date ref,
@@ -217,7 +217,7 @@ svnaffectedfiles(
 )
 
 svnentrymsg(
-    int id : @svnentry ref,
+    unique int id : @svnentry ref,
     string message : string ref
 )
 
@@ -404,7 +404,7 @@ functions(
     int kind: int ref
 );
 
-function_entry_point(int id: @function ref, int entry_point: @stmt ref);
+function_entry_point(int id: @function ref, unique int entry_point: @stmt ref);
 
 function_return_type(int id: @function ref, int return_type: @type ref);
 
@@ -430,6 +430,7 @@ fun_decl_specifiers(
     int id: @fun_decl ref,
     string name: string ref
 )
+#keyset[fun_decl, index]
 fun_decl_throws(
     int fun_decl: @fun_decl ref,
     int index: int ref,
@@ -503,6 +504,8 @@ static_asserts(
 );
 
 // each function has an ordered list of parameters
+#keyset[id, type_id]
+#keyset[function, index, type_id]
 params(
     int id: @parameter,
     int function: @functionorblock ref,
@@ -1641,6 +1644,7 @@ do_body(
     int body_id: @stmt ref
 );
 
+#keyset[switch_stmt, index]
 switch_case(
     int switch_stmt: @stmt_switch ref,
     int index: int ref,
@@ -1648,27 +1652,27 @@ switch_case(
 );
 
 switch_body(
-    int switch_stmt: @stmt_switch ref,
+    unique int switch_stmt: @stmt_switch ref,
     int body_id: @stmt ref
 );
 
 for_initialization(
-    int for_stmt: @stmt_for ref,
+    unique int for_stmt: @stmt_for ref,
     int init_id: @stmt ref
 );
 
 for_condition(
-    int for_stmt: @stmt_for ref,
+    unique int for_stmt: @stmt_for ref,
     int condition_id: @expr ref
 );
 
 for_update(
-    int for_stmt: @stmt_for ref,
+    unique int for_stmt: @stmt_for ref,
     int update_id: @expr ref
 );
 
 for_body(
-    int for_stmt: @stmt_for ref,
+    unique int for_stmt: @stmt_for ref,
     int body_id: @stmt ref
 );
 
@@ -1712,7 +1716,7 @@ stmt_decl_entry_bind(
 @functionorblock = @function | @stmt_block;
 
 blockscope(
-    int block: @stmt_block ref,
+    unique int block: @stmt_block ref,
     int enclosing: @functionorblock ref
 );
 
