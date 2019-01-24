@@ -17,6 +17,7 @@ where f = c.getTarget() and
         b = paramType.getArraySize() and
         argType.getBaseType().getSize() = paramType.getBaseType().getSize() and
         a < b and
+        a > 0 and
         // filter out results for inconsistent declarations
         strictcount(f.getParameter(i).getType().getSize()) = 1
 select c.getArgument(i), "Array of size " + a +

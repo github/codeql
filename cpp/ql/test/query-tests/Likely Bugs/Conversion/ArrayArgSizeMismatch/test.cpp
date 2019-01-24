@@ -37,7 +37,7 @@ void test(float f3[3], float f4[4], float f5[5], float *fp)
 		ms = (myStruct *)malloc(sizeof(myStruct) + (4 * sizeof(float)));
 		ms->num  = 4;
 		ms->data[0] = ms->data[1] = ms->data[2] = ms->data[3] = 0;
-		h(ms->data); // GOOD [FALSE POSITIVE]
+		h(ms->data); // GOOD
 	}
 	
 	{
