@@ -1472,10 +1472,16 @@
 | E.cs:301:13:301:27 | String s = ... | null | E.cs:301:13:301:13 | access to local variable s | null |
 | E.cs:302:9:302:9 | access to local variable s | non-null | E.cs:301:17:301:27 | ... as ... | non-null |
 | E.cs:302:9:302:9 | access to local variable s | null | E.cs:301:17:301:27 | ... as ... | null |
-| E.cs:306:22:306:38 | ... ? ... : ... | non-null | E.cs:306:22:306:26 | access to field Field | false |
-| E.cs:306:22:306:38 | ... ? ... : ... | non-null | E.cs:306:37:306:38 | "" | non-null |
-| E.cs:306:22:306:38 | ... ? ... : ... | null | E.cs:306:22:306:26 | access to field Field | true |
-| E.cs:306:22:306:38 | ... ? ... : ... | null | E.cs:306:30:306:33 | null | null |
+| E.cs:306:45:306:53 | ... = ... | non-null | E.cs:306:45:306:45 | access to field l | non-null |
+| E.cs:306:45:306:53 | ... = ... | non-null | E.cs:306:49:306:53 | (...) ... | non-null |
+| E.cs:306:45:306:53 | ... = ... | null | E.cs:306:45:306:45 | access to field l | null |
+| E.cs:306:45:306:53 | ... = ... | null | E.cs:306:49:306:53 | (...) ... | null |
+| E.cs:309:13:309:22 | access to property HasValue | false | E.cs:309:13:309:13 | access to field l | null |
+| E.cs:309:13:309:22 | access to property HasValue | true | E.cs:309:13:309:13 | access to field l | non-null |
+| E.cs:317:22:317:38 | ... ? ... : ... | non-null | E.cs:317:22:317:26 | access to field Field | false |
+| E.cs:317:22:317:38 | ... ? ... : ... | non-null | E.cs:317:37:317:38 | "" | non-null |
+| E.cs:317:22:317:38 | ... ? ... : ... | null | E.cs:317:22:317:26 | access to field Field | true |
+| E.cs:317:22:317:38 | ... ? ... : ... | null | E.cs:317:30:317:33 | null | null |
 | Forwarding.cs:7:16:7:23 | String s = ... | non-null | Forwarding.cs:7:16:7:16 | access to local variable s | non-null |
 | Forwarding.cs:7:16:7:23 | String s = ... | null | Forwarding.cs:7:16:7:16 | access to local variable s | null |
 | Forwarding.cs:9:13:9:30 | !... | false | Forwarding.cs:9:14:9:30 | call to method IsNullOrEmpty | true |

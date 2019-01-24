@@ -5,6 +5,7 @@
 import Expr
 import Type
 import Callable
+private import csharp as CS
 
 /** An expression. */
 class Expr extends Element, @dotnet_expr {
@@ -25,7 +26,9 @@ class Expr extends Element, @dotnet_expr {
 }
 
 /** A call. */
-class Call extends Expr, @dotnet_call {
+class Call extends Expr {
+  Call() { this instanceof @cil_call_any or this instanceof CS::CallImpl }
+
   /** Gets the target of this call. */
   Callable getTarget() { none() }
 
