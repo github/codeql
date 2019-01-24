@@ -338,16 +338,17 @@ private class AnalyzedExportAssign extends AnalyzedPropertyWrite, DataFlow::Valu
  * Flow analysis for assignments to the `exports` variable in a Closure module.
  */
 private class AnalyzedClosureExportAssign extends AnalyzedPropertyWrite, DataFlow::ValueNode {
+  override AssignExpr astNode;
   ClosureModule mod;
 
   AnalyzedClosureExportAssign() {
-    astNode.(AssignExpr).getLhs() = mod.getExportsVariable().getAReference()
+    astNode.getLhs() = mod.getExportsVariable().getAReference()
   }
 
   override predicate writes(AbstractValue baseVal, string propName, DataFlow::AnalyzedNode source) {
     baseVal = TAbstractModuleObject(astNode.getTopLevel()) and
     propName = "exports" and
-    source = astNode.(AssignExpr).getRhs().flow()
+    source = astNode.getRhs().flow()
   }
 }
 

@@ -48,7 +48,7 @@ class GoogProvide extends GoogFunctionCallStmt, GoogNamespaceRef {
   GoogProvide() { getFunctionName() = "provide" }
 
   /** Gets the identifier of the namespace created by this call. */
-  override string getNamespaceId() { result = getArgument(0).(ConstantString).getStringValue() }
+  override string getNamespaceId() { result = getArgument(0).getStringValue() }
 }
 
 /**
@@ -58,7 +58,7 @@ class GoogRequire extends GoogFunctionCall, GoogNamespaceRef {
   GoogRequire() { getFunctionName() = "require" }
 
   /** Gets the identifier of the namespace imported by this call. */
-  override string getNamespaceId() { result = getArgument(0).(ConstantString).getStringValue() }
+  override string getNamespaceId() { result = getArgument(0).getStringValue() }
 }
 
 private class GoogRequireImport extends GoogRequire, Import {
@@ -81,7 +81,7 @@ class GoogModuleDeclaration extends GoogFunctionCallStmt, GoogNamespaceRef {
   }
 
   /** Gets the identifier of the namespace imported by this call. */
-  override string getNamespaceId() { result = getArgument(0).(ConstantString).getStringValue() }
+  override string getNamespaceId() { result = getArgument(0).getStringValue() }
 }
 
 /**
@@ -93,7 +93,7 @@ class ClosureModule extends Module {
   }
 
   /**
-   * Gets the call to `goog.module()` or `goog.declareModuleId` in this module.
+   * Gets the call to `goog.module` or `goog.declareModuleId` in this module.
    */
   GoogModuleDeclaration getModuleDeclaration() {
     result = getAChildStmt()
@@ -121,8 +121,7 @@ class ClosureModule extends Module {
    */
   Variable getExportsVariable() {
     getModuleDeclaration().getFunctionName() = "module" and
-    result.getScope() = this.getScope() and
-    result.getName() = "exports"
+    result = getScope().getVariable("exports")
   }
 
   override predicate exports(string name, ASTNode export) {

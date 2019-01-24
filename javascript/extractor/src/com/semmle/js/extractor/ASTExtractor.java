@@ -306,7 +306,7 @@ public class ASTExtractor {
 		public V(Platform platform, SourceType sourceType) {
 			this.platform = platform;
 			this.sourceType = sourceType;
-			this.isStrict = sourceType == SourceType.ES6_MODULE || sourceType == SourceType.CLOSURE_MODULE;
+			this.isStrict = sourceType == SourceType.MODULE || sourceType == SourceType.CLOSURE_MODULE;
 		}
 
 		private Label visit(INode child, Label parent, int childIndex) {
@@ -557,7 +557,7 @@ public class ASTExtractor {
 				if (!".mjs".equals(locationManager.getSourceFileExtension()))
 					scopeManager.addVariables("require", "module", "exports", "__filename", "__dirname", "arguments");
 				trapwriter.addTuple("isModule", toplevelLabel);
-			} else if (sourceType == SourceType.ES6_MODULE || sourceType == SourceType.CLOSURE_MODULE) {
+			} else if (sourceType == SourceType.MODULE || sourceType == SourceType.CLOSURE_MODULE) {
 				Label moduleScopeKey = trapwriter.globalID("module;{" + locationManager.getFileLabel() + "}," + locationManager.getStartLine() + "," + locationManager.getStartColumn());
 				scopeManager.enterScope(3, moduleScopeKey, toplevelLabel);
 				if (sourceType == SourceType.CLOSURE_MODULE) {
@@ -572,8 +572,8 @@ public class ASTExtractor {
 
 			visitAll(nd.getBody(), toplevelLabel);
 
-			// if we're extracting a Node.js/ES2015 module, leave its scope
-			if (platform == Platform.NODE || sourceType == SourceType.ES6_MODULE || sourceType == SourceType.CLOSURE_MODULE)
+			// if we're extracting a module, leave its scope
+			if (platform == Platform.NODE || sourceType == SourceType.MODULE || sourceType == SourceType.CLOSURE_MODULE)
 				scopeManager.leaveScope();
 
 			contextManager.leaveContainer();

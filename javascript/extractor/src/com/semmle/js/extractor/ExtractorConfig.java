@@ -5,6 +5,7 @@ import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
 
+import com.semmle.js.parser.JcornWrapper;
 import com.semmle.util.data.StringUtil;
 import com.semmle.util.exception.UserError;
 
@@ -50,8 +51,26 @@ public class ExtractorConfig {
         }
     };
 
+    /**
+	 * The type of a source file, which together with the {@link Platform}
+	 * determines how the top-level scope of the file behaves, and whether ES2015
+	 * module syntax should be allowed.
+	 * <p>
+	 * Note that the names of these enum members are depended on by {@link Main},
+	 * {@link AutoBuild}, and {@link JcornWrapper}.
+	 */
     public static enum SourceType {
-        SCRIPT, ES6_MODULE, CLOSURE_MODULE, AUTO;
+		/** A script executed in the global scope. */
+		SCRIPT,
+
+		/** An ES2015 module. */
+		MODULE,
+
+		/** A Closure-Library module, defined using `goog.module()`. */
+		CLOSURE_MODULE,
+
+		/** Automatically determined source type. */
+		AUTO;
 
         @Override
         public String toString() {
