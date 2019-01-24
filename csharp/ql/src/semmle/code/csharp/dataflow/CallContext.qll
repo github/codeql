@@ -7,17 +7,11 @@ private import semmle.code.csharp.dataflow.DelegateDataFlow
 private import dotnet
 
 // Internal representation of call contexts
-cached private newtype TCallContext =
-  TEmptyCallContext()
-  or
-  TArgCallContext(DotNet::Call c, int i) {
-    exists(c.getArgument(i))
-  }
-  or
-  TDynamicAccessorArgCallContext(DynamicAccessorCall dac, int i) {
-    exists(dac.getArgument(i))
-  }
-  or
+cached
+private newtype TCallContext =
+  TEmptyCallContext() or
+  TArgCallContext(DotNet::Call c, int i) { exists(c.getArgument(i)) } or
+  TDynamicAccessorArgCallContext(DynamicAccessorCall dac, int i) { exists(dac.getArgument(i)) } or
   TDelegateToLibraryCallableArgCallContext(DelegateArgumentToLibraryCallable arg, int i) {
     exists(arg.getDelegateType().getParameter(i))
   }
@@ -55,47 +49,37 @@ abstract class ArgumentCallContext extends CallContext {
 /** An argument of an ordinary call. */
 class CallArgumentCallContext extends ArgumentCallContext, TArgCallContext {
   DotNet::Call c;
+
   int arg;
 
-  CallArgumentCallContext() {
-    this = TArgCallContext(c, arg)
-  }
+  CallArgumentCallContext() { this = TArgCallContext(c, arg) }
 
   override predicate isArgument(DotNet::Expr call, int i) {
     call = c and
     i = arg
   }
 
-  override string toString() {
-    result = c.getArgument(arg).toString()
-  }
+  override string toString() { result = c.getArgument(arg).toString() }
 
-  override Location getLocation() {
-    result = c.getArgument(arg).getLocation()
-  }
+  override Location getLocation() { result = c.getArgument(arg).getLocation() }
 }
 
 /** An argument of a dynamic accessor call. */
 class DynamicAccessorArgumentCallContext extends ArgumentCallContext, TDynamicAccessorArgCallContext {
   DynamicAccessorCall dac;
+
   int arg;
 
-  DynamicAccessorArgumentCallContext() {
-    this = TDynamicAccessorArgCallContext(dac, arg)
-  }
+  DynamicAccessorArgumentCallContext() { this = TDynamicAccessorArgCallContext(dac, arg) }
 
   override predicate isArgument(DotNet::Expr call, int i) {
     call = dac and
     i = arg
   }
 
-  override string toString() {
-    result = dac.getArgument(arg).toString()
-  }
+  override string toString() { result = dac.getArgument(arg).toString() }
 
-  override Location getLocation() {
-    result = dac.getArgument(arg).getLocation()
-  }
+  override Location getLocation() { result = dac.getArgument(arg).getLocation() }
 }
 
 /**
@@ -107,8 +91,10 @@ class DynamicAccessorArgumentCallContext extends ArgumentCallContext, TDynamicAc
  * in the database, so the delegate argument `y => y` is used to
  * represent the call.
  */
-class DelegateArgumentToLibraryCallableArgumentContext extends ArgumentCallContext, TDelegateToLibraryCallableArgCallContext {
+class DelegateArgumentToLibraryCallableArgumentContext extends ArgumentCallContext,
+  TDelegateToLibraryCallableArgCallContext {
   DotNet::Expr delegate;
+
   int arg;
 
   DelegateArgumentToLibraryCallableArgumentContext() {
@@ -120,11 +106,7 @@ class DelegateArgumentToLibraryCallableArgumentContext extends ArgumentCallConte
     i = arg
   }
 
-  override string toString() {
-    result = "argument " + arg + " of " + delegate.toString()
-  }
+  override string toString() { result = "argument " + arg + " of " + delegate.toString() }
 
-  override Location getLocation() {
-    result = delegate.getLocation()
-  }
+  override Location getLocation() { result = delegate.getLocation() }
 }

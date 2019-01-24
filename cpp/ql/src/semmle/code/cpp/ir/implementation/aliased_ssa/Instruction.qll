@@ -107,6 +107,32 @@ module InstructionSanity {
   }
 
   /**
+   * Holds if there are multiple (`n`) edges of kind `kind` from `source`,
+   * where `target` is among the targets of those edges.
+   */
+  query predicate ambiguousSuccessors(
+    Instruction source, EdgeKind kind, int n, Instruction target
+  ) {
+    n = strictcount(Instruction t | source.getSuccessor(kind) = t) and
+    n > 1 and
+    source.getSuccessor(kind) = target
+  }
+
+  /**
+   * Holds if `instr` in `f` is part of a loop even though the AST of `f`
+   * contains no element that can cause loops.
+   */
+  query predicate unexplainedLoop(Function f, Instruction instr) {
+    exists(IRBlock block |
+      instr.getBlock() = block and
+      block.getFunction() = f and
+      block.getASuccessor+() = block
+    ) and
+    not exists(Loop l | l.getEnclosingFunction() = f) and
+    not exists(GotoStmt s | s.getEnclosingFunction() = f)
+  }
+
+  /**
    * Holds if a `Phi` instruction is present in a block with fewer than two
    * predecessors.
    */
@@ -130,7 +156,7 @@ module InstructionSanity {
   query predicate instructionWithoutUniqueBlock(Instruction instr, int blockCount) {
     blockCount = count(instr.getBlock()) and
     blockCount != 1
-  } 
+  }
 }
 
 /**
@@ -749,6 +775,15 @@ class BinaryInstruction extends Instruction {
 
   final Instruction getRightOperand() {
     result = getAnOperand().(RightOperand).getDefinitionInstruction()
+  }
+  
+  /**
+   * Holds if this instruction's operands are `op1` and `op2`, in either order.
+   */
+  final predicate hasOperands(Operand op1, Operand op2) {
+    op1 = getAnOperand().(LeftOperand) and op2 = getAnOperand().(RightOperand)
+    or
+    op1 = getAnOperand().(RightOperand) and op2 = getAnOperand().(LeftOperand)
   }
 }
 

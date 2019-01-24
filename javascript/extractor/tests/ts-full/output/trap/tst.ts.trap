@@ -344,7 +344,7 @@ locations_default(#20096,#10000,11,5,11,15)
 hasLocation(#20095,#20096)
 enclosingStmt(#20095,#20091)
 exprContainers(#20095,#20001)
-#20097=@"type;257"
+#20097=@"type;260"
 ast_node_type(#20095,#20097)
 literals("numberArray","numberArray",#20095)
 decl(#20095,#20011)
@@ -378,7 +378,7 @@ exprs(#20105,78,#20103,-1,"fun")
 locations_default(#20106,#10000,13,10,13,12)
 hasLocation(#20105,#20106)
 exprContainers(#20105,#20103)
-#20107=@"type;283"
+#20107=@"type;287"
 ast_node_type(#20105,#20107)
 literals("fun","fun",#20105)
 decl(#20105,#20003)
@@ -411,7 +411,7 @@ locations_default(#20116,#10000,14,1,14,5)
 hasLocation(#20115,#20116)
 enclosingStmt(#20115,#20113)
 exprContainers(#20115,#20001)
-#20117=@"type;62"
+#20117=@"type;65"
 ast_node_type(#20115,#20117)
 #20118=*
 exprs(#20118,79,#20115,-1,"fun")
@@ -423,7 +423,7 @@ exprContainers(#20118,#20001)
 ast_node_type(#20118,#20107)
 literals("fun","fun",#20118)
 bind(#20118,#20003)
-#20120=@"signature;238"
+#20120=@"signature;243"
 invoke_expr_signature(#20115,#20120)
 invoke_expr_overload_index(#20115,0)
 ast_node_symbol(#20115,#20110)
@@ -464,11 +464,11 @@ locations_default(#20130,#10000,15,5,15,9)
 hasLocation(#20129,#20130)
 enclosingStmt(#20129,#20121)
 exprContainers(#20129,#20001)
-#20131=@"type;284"
+#20131=@"type;288"
 ast_node_type(#20129,#20131)
 literals("Class","Class",#20129)
 bind(#20129,#20005)
-#20132=@"signature;239"
+#20132=@"signature;244"
 invoke_expr_signature(#20127,#20132)
 #20133=*
 exprs(#20133,0,#20125,1,"m")

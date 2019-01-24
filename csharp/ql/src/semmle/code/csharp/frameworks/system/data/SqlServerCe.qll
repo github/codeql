@@ -1,4 +1,5 @@
 /** Provides definitions related to the namespace `System.Data.SqlServerCe`. */
+
 import csharp
 private import semmle.code.csharp.frameworks.system.Data
 
@@ -12,14 +13,10 @@ class SystemDataSqlServerCeNamespace extends Namespace {
 
 /** A class in the `System.Data.SqlServerCe` namespace. */
 class SystemDataSqlServerCeClass extends Class {
-  SystemDataSqlServerCeClass() {
-    this.getNamespace() instanceof SystemDataSqlServerCeNamespace
-  }
+  SystemDataSqlServerCeClass() { this.getNamespace() instanceof SystemDataSqlServerCeNamespace }
 }
 
 /** The `System.Data.SqlServerCe.SqlCeConnection` class. */
 class SystemDataSqlServerCeSqlCeConnectionClass extends SystemDataSqlServerCeClass {
-  SystemDataSqlServerCeSqlCeConnectionClass() {
-    this.hasName("SqlCeConnection")
-  }
+  SystemDataSqlServerCeSqlCeConnectionClass() { this.hasName("SqlCeConnection") }
 }

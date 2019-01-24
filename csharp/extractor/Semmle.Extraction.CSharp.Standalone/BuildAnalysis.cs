@@ -283,7 +283,7 @@ namespace Semmle.BuildAnalyser
                     }
                     ++succeededProjects;
                 }
-                catch (Exception ex)
+                catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
                 {
                     ++failedProjects;
                     progressMonitor.FailedProjectFile(proj.FullName, ex.Message);

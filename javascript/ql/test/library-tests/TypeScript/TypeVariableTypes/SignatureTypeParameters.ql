@@ -10,4 +10,3 @@ string getBound(CallSignatureType sig, int n) {
 
 from CallSignatureType sig, int n
 select sig, sig.getNumTypeParameter(), n, sig.getTypeParameterName(n), getBound(sig, n)
-

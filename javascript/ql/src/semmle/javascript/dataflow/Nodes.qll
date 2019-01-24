@@ -17,6 +17,9 @@ class ParameterNode extends DataFlow::SourceNode {
 
   /** Gets the name of this parameter. */
   string getName() { result = p.getName() }
+
+  /** Holds if this parameter is a rest parameter. */
+  predicate isRestParameter() { p.isRestParameter() }
 }
 
 /** A data flow node corresponding to a function invocation (with or without `new`). */
@@ -78,21 +81,20 @@ class InvokeNode extends DataFlow::SourceNode {
   }
 
   /** Gets an abstract value representing possible callees of this call site. */
-  cached
-  AbstractValue getACalleeValue() { result = impl.getCalleeNode().analyze().getAValue() }
-
-  /** Gets a potential callee based on dataflow analysis results. */
-  private Function getACalleeFromDataflow() {
-    result = getACalleeValue().(AbstractCallable).getFunction()
-  }
+  AbstractValue getACalleeValue() { result = InvokeNode::getACalleeValue(this) }
 
   /** Gets a potential callee of this call site. */
-  Function getACallee() {
-    result = getACalleeFromDataflow()
-    or
-    not exists(getACalleeFromDataflow()) and
-    result = impl.(DataFlow::Impl::ExplicitInvokeNode).asExpr().(InvokeExpr).getResolvedCallee()
-  }
+  Function getACallee() { result = InvokeNode::getACallee(this) }
+
+  /**
+   * Gets a callee of this call site where `imprecision` is a heuristic measure of how
+   * likely it is that `callee` is only suggested as a potential callee due to
+   * imprecise analysis of global variables and is not, in fact, a viable callee at all.
+   *
+   * Callees with imprecision zero, in particular, have either been derived without
+   * considering global variables, or are calls to a global variable within the same file.
+   */
+  Function getACallee(int imprecision) { result = InvokeNode::getACallee(this, imprecision) }
 
   /**
    * Holds if the approximation of possible callees for this call site is
@@ -131,6 +133,60 @@ class InvokeNode extends DataFlow::SourceNode {
    * likely to be imprecise or incomplete.
    */
   predicate isUncertain() { isImprecise() or isIncomplete() }
+}
+
+/** Auxiliary module used to cache a few related predicates together. */
+cached
+private module InvokeNode {
+  /** Gets an abstract value representing possible callees of `invk`. */
+  cached
+  AbstractValue getACalleeValue(InvokeNode invk) {
+    result = invk.getCalleeNode().analyze().getAValue()
+  }
+
+  /** Gets a potential callee of `invk` based on dataflow analysis results. */
+  private Function getACalleeFromDataflow(InvokeNode invk) {
+    result = getACalleeValue(invk).(AbstractCallable).getFunction()
+  }
+
+  /** Gets a potential callee of `invk`. */
+  cached
+  Function getACallee(InvokeNode invk) {
+    result = getACalleeFromDataflow(invk)
+    or
+    not exists(getACalleeFromDataflow(invk)) and
+    result = invk.(DataFlow::Impl::ExplicitInvokeNode).asExpr().(InvokeExpr).getResolvedCallee()
+  }
+
+  /**
+   * Gets a callee of `invk` where `imprecision` is a heuristic measure of how
+   * likely it is that `callee` is only suggested as a potential callee due to
+   * imprecise analysis of global variables and is not, in fact, a viable callee at all.
+   *
+   * Callees with imprecision zero, in particular, have either been derived without
+   * considering global variables, or are calls to a global variable within the same file.
+   */
+  cached
+  Function getACallee(InvokeNode invk, int imprecision) {
+    result = getACallee(invk) and
+    (
+      // if global flow was used to derive the callee, we may be imprecise
+      if invk.isIndefinite("global")
+      then
+        // callees within the same file are probably genuine
+        result.getFile() = invk.getFile() and imprecision = 0
+        or
+        // calls to global functions declared in an externs file are fairly
+        // safe as well
+        result.inExternsFile() and imprecision = 1
+        or
+        // otherwise we make worst-case assumptions
+        imprecision = 2
+      else
+        // no global flow, so no imprecision
+        imprecision = 0
+    )
+  }
 }
 
 /** A data flow node corresponding to a function call without `new`. */
@@ -408,4 +464,339 @@ DataFlow::SourceNode moduleMember(string path, string m) {
     ssa.getDef() = is and
     result = DataFlow::ssaDefinitionNode(ssa)
   )
+}
+
+/**
+ * The string `method`, `getter`, or `setter`, representing the kind of a function member
+ * in a class.
+ *
+ * Can can be used with `ClassNode.getInstanceMember` to obtain members of a specific kind.
+ */
+class MemberKind extends string {
+  MemberKind() { this = "method" or this = "getter" or this = "setter" }
+}
+
+module MemberKind {
+  /** The kind of a method, such as `m() {}` */
+  MemberKind method() { result = "method" }
+
+  /** The kind of a getter accessor, such as `get f() {}`. */
+  MemberKind getter() { result = "getter" }
+
+  /** The kind of a setter accessor, such as `set f() {}`. */
+  MemberKind setter() { result = "setter" }
+
+  /** The `getter` and `setter` kinds. */
+  MemberKind accessor() { result = getter() or result = setter() }
+
+  /**
+   * Gets the member kind of a given syntactic member declaration in a class.
+   */
+  MemberKind of(MemberDeclaration decl) {
+    decl instanceof GetterMethodDeclaration and result = getter()
+    or
+    decl instanceof SetterMethodDeclaration and result = setter()
+    or
+    decl instanceof MethodDeclaration and
+    not decl instanceof AccessorMethodDeclaration and
+    not decl instanceof ConstructorDeclaration and
+    result = method()
+  }
+}
+
+/**
+ * A data flow node corresponding to a class definition or a function definition
+ * acting as a class.
+ *
+ * The following patterns are recognized as classes and methods:
+ * ```
+ * class C {
+ *   method()
+ * }
+ *
+ * function F() {}
+ *
+ * F.prototype.method = function() {}
+ *
+ * F.prototype = {
+ *   method: function() {}
+ * }
+ *
+ * extend(F.prototype, {
+ *   method: function() {}
+ * });
+ * ```
+ *
+ * Additional patterns can be recognized as class nodes, by extending `DataFlow::ClassNode::Range`.
+ */
+class ClassNode extends DataFlow::SourceNode {
+  ClassNode::Range impl;
+
+  ClassNode() { this = impl }
+
+  /**
+   * Gets the name of the class, if it has one.
+   */
+  string getName() { result = impl.getName() }
+
+  /**
+   * Gets a description of the class.
+   */
+  string describe() { result = impl.describe() }
+
+  /**
+   * Gets the constructor function of this class.
+   */
+  FunctionNode getConstructor() { result = impl.getConstructor() }
+
+  /**
+   * Gets an instance method declared in this class, with the given name, if any.
+   *
+   * Does not include methods from superclasses.
+   */
+  FunctionNode getInstanceMethod(string name) { result = impl.getInstanceMember(name, MemberKind::method()) }
+
+  /**
+   * Gets an instance method declared in this class.
+   *
+   * The constructor is not considered an instance method.
+   *
+   * Does not include methods from superclasses.
+   */
+  FunctionNode getAnInstanceMethod() { result = impl.getAnInstanceMember(MemberKind::method()) }
+
+  /**
+   * Gets the instance method, getter, or setter with the given name and kind.
+   *
+   * Does not include members from superclasses.
+   */
+  FunctionNode getInstanceMember(string name, MemberKind kind) { result = impl.getInstanceMember(name, kind) }
+
+  /**
+   * Gets an instance method, getter, or setter with the given kind.
+   *
+   * Does not include members from superclasses.
+   */
+  FunctionNode getAnInstanceMember(MemberKind kind) { result = impl.getAnInstanceMember(kind) }
+
+  /**
+   * Gets an instance method, getter, or setter declared in this class.
+   *
+   * Does not include members from superclasses.
+   */
+  FunctionNode getAnInstanceMember() { result = impl.getAnInstanceMember(_) }
+
+  /**
+   * Gets the static method declared in this class with the given name.
+   */
+  FunctionNode getStaticMethod(string name) { result = impl.getStaticMethod(name) }
+
+  /**
+   * Gets a static method declared in this class.
+   *
+   * The constructor is not considered a static method.
+   */
+  FunctionNode getAStaticMethod() { result = impl.getAStaticMethod() }
+
+  /**
+   * Gets a direct super class of this class.
+   */
+  ClassNode getADirectSuperClass() {
+    result.getConstructor().getAstNode() = impl
+          .getASuperClassNode()
+          .analyze()
+          .getAValue()
+          .(AbstractCallable)
+          .getFunction()
+  }
+}
+
+module ClassNode {
+  /**
+   * A dataflow node that should be considered a class node.
+   *
+   * Subclass this to introduce new kinds of class nodes. If you want to refine
+   * the definition of existing class nodes, subclass `DataFlow::ClassNode` instead.
+   */
+  abstract class Range extends DataFlow::SourceNode {
+    /**
+     * Gets the name of the class, if it has one.
+     */
+    abstract string getName();
+
+    /**
+     * Gets a description of the class.
+     */
+    abstract string describe();
+
+    /**
+     * Gets the constructor function of this class.
+     */
+    abstract FunctionNode getConstructor();
+
+    /**
+     * Gets the instance member with the given name and kind.
+     */
+    abstract FunctionNode getInstanceMember(string name, MemberKind kind);
+
+    /**
+     * Gets an instance member with the given kind.
+     */
+    abstract FunctionNode getAnInstanceMember(MemberKind kind);
+
+    /**
+     * Gets the static method of this class with the given name.
+     */
+    abstract FunctionNode getStaticMethod(string name);
+
+    /**
+     * Gets a static method of this class.
+     *
+     * The constructor is not considered a static method.
+     */
+    abstract FunctionNode getAStaticMethod();
+
+    /**
+     * Gets a dataflow node representing a class to be used as the super-class
+     * of this node.
+     */
+    abstract DataFlow::Node getASuperClassNode();
+  }
+
+  /**
+   * An ES6 class as a `ClassNode` instance.
+   */
+  private class ES6Class extends Range, DataFlow::ValueNode {
+    override ClassDefinition astNode;
+
+    override string getName() { result = astNode.getName() }
+
+    override string describe() { result = astNode.describe() }
+
+    override FunctionNode getConstructor() { result = astNode.getConstructor().getBody().flow() }
+
+    override FunctionNode getInstanceMember(string name, MemberKind kind) {
+      exists(MethodDeclaration method |
+        method = astNode.getMethod(name) and
+        not method.isStatic() and
+        kind = MemberKind::of(method) and
+        result = method.getBody().flow()
+      )
+    }
+
+    override FunctionNode getAnInstanceMember(MemberKind kind) {
+      exists(MethodDeclaration method |
+        method = astNode.getAMethod() and
+        not method.isStatic() and
+        kind = MemberKind::of(method) and
+        result = method.getBody().flow()
+      )
+    }
+
+    override FunctionNode getStaticMethod(string name) {
+      exists(MethodDeclaration method |
+        method = astNode.getMethod(name) and
+        method.isStatic() and
+        result = method.getBody().flow()
+      )
+      or
+      result = getAPropertySource(name)
+    }
+
+    override FunctionNode getAStaticMethod() {
+      exists(MethodDeclaration method |
+        method = astNode.getAMethod() and
+        method.isStatic() and
+        result = method.getBody().flow()
+      )
+    }
+
+    override DataFlow::Node getASuperClassNode() { result = astNode.getSuperClass().flow() }
+  }
+
+  /**
+   * A function definition with prototype manipulation as a `ClassNode` instance.
+   */
+  class FunctionStyleClass extends Range, DataFlow::ValueNode {
+    override Function astNode;
+
+    FunctionStyleClass() { exists(getAPropertyReference("prototype")) }
+
+    override string getName() { result = astNode.getName() }
+
+    override string describe() { result = astNode.describe() }
+
+    override FunctionNode getConstructor() { result = this }
+
+    private PropertyAccessor getAnAccessor(MemberKind kind) {
+      result.getObjectExpr() = getAPrototypeReference().asExpr() and
+      (
+        kind = MemberKind::getter() and
+        result instanceof PropertyGetter
+        or
+        kind = MemberKind::setter() and
+        result instanceof PropertySetter
+      )
+    }
+
+    override FunctionNode getInstanceMember(string name, MemberKind kind) {
+      kind = MemberKind::method() and
+      result = getAPrototypeReference().getAPropertySource(name)
+      or
+      exists (PropertyAccessor accessor |
+        accessor = getAnAccessor(kind) and
+        accessor.getName() = name and
+        result = accessor.getInit().flow()
+      )
+    }
+
+    override FunctionNode getAnInstanceMember(MemberKind kind) {
+      kind = MemberKind::method() and
+      result = getAPrototypeReference().getAPropertyWrite().getRhs().getALocalSource()
+      or
+      exists (PropertyAccessor accessor |
+        accessor = getAnAccessor(kind) and
+        result = accessor.getInit().flow()
+      )
+    }
+
+    override FunctionNode getStaticMethod(string name) {
+      result = getAPropertySource(name)
+    }
+
+    override FunctionNode getAStaticMethod() {
+      result = getAPropertyWrite().getRhs().getALocalSource()
+    }
+
+    /**
+     * Gets a reference to the prototype of this class.
+     */
+    private DataFlow::SourceNode getAPrototypeReference() {
+      result = getAPropertyRead("prototype")
+      or
+      result = getAPropertySource("prototype")
+      or
+      exists(ExtendCall call |
+        call.getDestinationOperand() = getAPropertyRead("prototype") and
+        result = call.getASourceOperand()
+      )
+    }
+
+    override DataFlow::Node getASuperClassNode() {
+      // C.prototype = Object.create(D.prototype)
+      exists(DataFlow::InvokeNode objectCreate, DataFlow::PropRead superProto |
+        getAPropertySource("prototype") = objectCreate and
+        objectCreate = DataFlow::globalVarRef("Object").getAMemberCall("create") and
+        superProto.flowsTo(objectCreate.getArgument(0)) and
+        superProto.getPropertyName() = "prototype" and
+        result = superProto.getBase()
+      )
+      or
+      // C.prototype = new D()
+      exists(DataFlow::NewNode newCall |
+        getAPropertySource("prototype") = newCall and
+        result = newCall.getCalleeNode()
+      )
+    }
+  }
 }

@@ -44,7 +44,8 @@ private PropertyName getPropertyName(PropAccess pacc) {
  * where each property name is either constant or itself an SSA variable.
  */
 private newtype TAccessPath =
-  MkRoot(SsaVariable var) or
+  MkSsaRoot(SsaVariable var) or
+  MkThisRoot(Function function) { function.getThisBinder() = function } or
   MkAccessStep(AccessPath base, PropertyName name) {
     exists(PropAccess pacc |
       pacc.getBase() = base.getAnInstance() and
@@ -62,8 +63,14 @@ class AccessPath extends TAccessPath {
    */
   Expr getAnInstanceIn(BasicBlock bb) {
     exists(SsaVariable var |
-      this = MkRoot(var) and
+      this = MkSsaRoot(var) and
       result = var.getAUseIn(bb)
+    )
+    or
+    exists(ThisExpr this_ |
+      this = MkThisRoot(this_.getBinder()) and
+      result = this_ and
+      this_.getBasicBlock() = bb
     )
     or
     exists(PropertyName name |
@@ -96,7 +103,9 @@ class AccessPath extends TAccessPath {
    * Gets a textual representation of this access path.
    */
   string toString() {
-    exists(SsaVariable var | this = MkRoot(var) | result = var.getSourceVariable().getName())
+    exists(SsaVariable var | this = MkSsaRoot(var) | result = var.getSourceVariable().getName())
+    or
+    this = MkThisRoot(_) and result = "this"
     or
     exists(AccessPath base, PropertyName name, string rest |
       rest = "." + any(string s | name = StaticPropertyName(s))

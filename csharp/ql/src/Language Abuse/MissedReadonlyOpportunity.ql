@@ -12,8 +12,12 @@
 
 import csharp
 
+predicate defTargetsField(AssignableDefinition def, Field f) {
+  def.getTarget().getSourceDeclaration() = f
+}
+
 predicate isReadonlyCompatibleDefinition(AssignableDefinition def, Field f) {
-  def.getTarget().getSourceDeclaration() = f and
+  defTargetsField(def, f) and
   (
     def.getEnclosingCallable().(Constructor).getDeclaringType() = f.getDeclaringType()
     or
@@ -22,7 +26,7 @@ predicate isReadonlyCompatibleDefinition(AssignableDefinition def, Field f) {
 }
 
 predicate canBeReadonly(Field f) {
-  forex(AssignableDefinition def | def.getTarget().getSourceDeclaration() = f |
+  forex(AssignableDefinition def | defTargetsField(def, f) |
     isReadonlyCompatibleDefinition(def, f)
   )
 }

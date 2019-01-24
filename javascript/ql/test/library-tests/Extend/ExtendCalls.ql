@@ -6,21 +6,20 @@ class Assertion extends CallExpr {
     getCalleeName() = "checkShallow"
   }
 
-  predicate shouldBeDeep() {
-    getCalleeName() = "checkDeep"
-  }
+  predicate shouldBeDeep() { getCalleeName() = "checkDeep" }
 
   ExtendCall getExtendCall() { result = getArgument(0).flow() }
 
   string getMessage() {
-    if not exists(getExtendCall()) then
-      result = "Not an extend call"
-    else if shouldBeDeep() and not getExtendCall().isDeep() then
-      result = "Not deep"
-    else if not shouldBeDeep() and getExtendCall().isDeep() then
-      result = "Not shallow"
+    if not exists(getExtendCall())
+    then result = "Not an extend call"
     else
-      result = "OK"
+      if shouldBeDeep() and not getExtendCall().isDeep()
+      then result = "Not deep"
+      else
+        if not shouldBeDeep() and getExtendCall().isDeep()
+        then result = "Not shallow"
+        else result = "OK"
   }
 }
 

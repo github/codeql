@@ -213,10 +213,8 @@ module Hapi {
         astNode.getParameter(0).getName() = request and
         astNode.getParameter(1).getName() = responseToolkit
       |
-        not (
-          // heuristic: is not invoked (Hapi invokes this at a call site we cannot reason precisely about)
-          exists(DataFlow::InvokeNode cs | cs.getACallee() = astNode)
-        )
+        // heuristic: is not invoked (Hapi invokes this at a call site we cannot reason precisely about)
+        not exists(DataFlow::InvokeNode cs | cs.getACallee() = astNode)
       )
     }
   }

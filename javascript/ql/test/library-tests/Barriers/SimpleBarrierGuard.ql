@@ -1,16 +1,14 @@
 import javascript
 
 class Configuration extends DataFlow::Configuration {
-  Configuration() {
-    this = "SimpleBarrierGuard"
-  }
+  Configuration() { this = "SimpleBarrierGuard" }
 
   override predicate isSource(DataFlow::Node source) {
     source.(DataFlow::InvokeNode).getCalleeName() = "SOURCE"
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists (DataFlow::InvokeNode call |
+    exists(DataFlow::InvokeNode call |
       call.getCalleeName() = "SINK" and
       sink = call.getArgument(0)
     )
@@ -19,14 +17,10 @@ class Configuration extends DataFlow::Configuration {
   override predicate isBarrierGuard(DataFlow::BarrierGuardNode guard) {
     guard instanceof SimpleBarrierGuardNode
   }
-
 }
 
 class SimpleBarrierGuardNode extends DataFlow::BarrierGuardNode, DataFlow::InvokeNode {
-
-  SimpleBarrierGuardNode() {
-    getCalleeName() = "BARRIER"
-  }
+  SimpleBarrierGuardNode() { getCalleeName() = "BARRIER" }
 
   override predicate blocks(boolean outcome, Expr e) {
     outcome = true and

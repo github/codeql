@@ -17,7 +17,7 @@ import semmle.javascript.RestrictedLocations
 from ReturnStmt r, AssignExpr assgn, Variable v
 where
   assgn = r.getExpr().stripParens() and
-  v = (r.getContainer().(Function)).getScope().getAVariable() and
+  v = r.getContainer().(Function).getScope().getAVariable() and
   not v.isCaptured() and
   assgn.getLhs() = v.getAnAccess()
 select r.(FirstLineOf),

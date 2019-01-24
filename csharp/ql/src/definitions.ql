@@ -57,9 +57,11 @@ class MethodUse extends Use, QualifiableExpr {
 
   /** Gets the qualifier of this method use, if any. */
   private Expr getFormatQualifier() {
-    if this.getQualifiedDeclaration().(Method).isExtensionMethod()
-    then result = this.(MethodCall).getArgument(0)
-    else result = this.getQualifier() and
+    (
+      if this.getQualifiedDeclaration().(Method).isExtensionMethod()
+      then result = this.(MethodCall).getArgument(0)
+      else result = this.getQualifier()
+    ) and
     not result.isImplicit()
   }
 

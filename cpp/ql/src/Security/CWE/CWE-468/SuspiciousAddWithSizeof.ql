@@ -15,9 +15,9 @@ import IncorrectPointerScalingCommon
 
 private predicate isCharSzPtrExpr(Expr e) {
   exists (PointerType pt
-  | pt = e.getFullyConverted().getUnderlyingType()
-  | pt.getBaseType().getUnspecifiedType() instanceof CharType
-  or pt.getBaseType().getUnspecifiedType() instanceof VoidType)
+  | pt = e.getFullyConverted().getType().getUnspecifiedType()
+  | pt.getBaseType() instanceof CharType
+  or pt.getBaseType() instanceof VoidType)
 }
 
 from Expr sizeofExpr, Expr e

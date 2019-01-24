@@ -11,9 +11,10 @@
 import javascript
 
 from VarUse u, int n, SsaVariable v
-where u.getVariable() instanceof SsaSourceVariable and
-      exists (ReachableBasicBlock bb | u = bb.getANode()) and
-      n = count(u.getSsaVariable()) and
-      n > 1 and
-      v = u.getSsaVariable()
+where
+  u.getVariable() instanceof SsaSourceVariable and
+  exists(ReachableBasicBlock bb | u = bb.getANode()) and
+  n = count(u.getSsaVariable()) and
+  n > 1 and
+  v = u.getSsaVariable()
 select u, "Variable use has " + n + " corresponding SSA variables: $@.", v, v.toString()

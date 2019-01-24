@@ -116,121 +116,115 @@ private string getBuiltinKind(string name) {
   // according to https://docs.angularjs.org/api
   result = "controller-only" and name = "$scope"
   or
+  result = "service" and
   (
-    result = "service" and
-    (
-      // ng
-      name = "$anchorScroll" or
-      name = "$animate" or
-      name = "$animateCss" or
-      name = "$cacheFactory" or
-      name = "$controller" or
-      name = "$document" or
-      name = "$exceptionHandler" or
-      name = "$filter" or
-      name = "$http" or
-      name = "$httpBackend" or
-      name = "$httpParamSerializer" or
-      name = "$httpParamSerializerJQLike" or
-      name = "$interpolate" or
-      name = "$interval" or
-      name = "$jsonpCallbacks" or
-      name = "$locale" or
-      name = "$location" or
-      name = "$log" or
-      name = "$parse" or
-      name = "$q" or
-      name = "$rootElement" or
-      name = "$rootScope" or
-      name = "$sce" or
-      name = "$sceDelegate" or
-      name = "$templateCache" or
-      name = "$templateRequest" or
-      name = "$timeout" or
-      name = "$window" or
-      name = "$xhrFactory" or
-      // auto
-      name = "$injector" or
-      name = "$provide" or
-      // ngAnimate
-      name = "$animate" or
-      name = "$animateCss" or
-      // ngAria
-      name = "$aria" or
-      // ngComponentRouter
-      name = "$rootRouter" or
-      name = "$routerRootComponent" or
-      // ngCookies
-      name = "$cookieStore" or
-      name = "$cookies" or
-      //ngMock
-      name = "$animate" or
-      name = "$componentController" or
-      name = "$controller" or
-      name = "$exceptionHandler" or
-      name = "$httpBackend" or
-      name = "$interval" or
-      name = "$log" or
-      name = "$timeout" or
-      //ngMockE2E
-      name = "$httpBackend" or
-      // ngResource
-      name = "$resource" or
-      // ngRoute
-      name = "$route" or
-      name = "$routeParams" or
-      // ngSanitize
-      name = "$sanitize" or
-      // ngTouch
-      name = "$swipe"
-    )
+    // ng
+    name = "$anchorScroll" or
+    name = "$animate" or
+    name = "$animateCss" or
+    name = "$cacheFactory" or
+    name = "$controller" or
+    name = "$document" or
+    name = "$exceptionHandler" or
+    name = "$filter" or
+    name = "$http" or
+    name = "$httpBackend" or
+    name = "$httpParamSerializer" or
+    name = "$httpParamSerializerJQLike" or
+    name = "$interpolate" or
+    name = "$interval" or
+    name = "$jsonpCallbacks" or
+    name = "$locale" or
+    name = "$location" or
+    name = "$log" or
+    name = "$parse" or
+    name = "$q" or
+    name = "$rootElement" or
+    name = "$rootScope" or
+    name = "$sce" or
+    name = "$sceDelegate" or
+    name = "$templateCache" or
+    name = "$templateRequest" or
+    name = "$timeout" or
+    name = "$window" or
+    name = "$xhrFactory" or
+    // auto
+    name = "$injector" or
+    name = "$provide" or
+    // ngAnimate
+    name = "$animate" or
+    name = "$animateCss" or
+    // ngAria
+    name = "$aria" or
+    // ngComponentRouter
+    name = "$rootRouter" or
+    name = "$routerRootComponent" or
+    // ngCookies
+    name = "$cookieStore" or
+    name = "$cookies" or
+    //ngMock
+    name = "$animate" or
+    name = "$componentController" or
+    name = "$controller" or
+    name = "$exceptionHandler" or
+    name = "$httpBackend" or
+    name = "$interval" or
+    name = "$log" or
+    name = "$timeout" or
+    //ngMockE2E
+    name = "$httpBackend" or
+    // ngResource
+    name = "$resource" or
+    // ngRoute
+    name = "$route" or
+    name = "$routeParams" or
+    // ngSanitize
+    name = "$sanitize" or
+    // ngTouch
+    name = "$swipe"
   )
   or
+  result = "provider" and
   (
-    result = "provider" and
-    (
-      // ng
-      name = "$anchorScrollProvider" or
-      name = "$animateProvider" or
-      name = "$compileProvider" or
-      name = "$controllerProvider" or
-      name = "$filterProvider" or
-      name = "$httpProvider" or
-      name = "$interpolateProvider" or
-      name = "$locationProvider" or
-      name = "$logProvider" or
-      name = "$parseProvider" or
-      name = "$provider" or
-      name = "$qProvider" or
-      name = "$rootScopeProvider" or
-      name = "$sceDelegateProvider" or
-      name = "$sceProvider" or
-      name = "$templateRequestProvider" or
-      // ngAria
-      name = "$ariaProvider" or
-      // ngCookies
-      name = "$cookiesProvider" or
-      // ngmock
-      name = "$exceptionHandlerProvider" or
-      // ngResource
-      name = "$resourceProvider" or
-      // ngRoute
-      name = "$routeProvider" or
-      // ngSanitize
-      name = "$sanitizeProvider"
-    )
+    // ng
+    name = "$anchorScrollProvider" or
+    name = "$animateProvider" or
+    name = "$compileProvider" or
+    name = "$controllerProvider" or
+    name = "$filterProvider" or
+    name = "$httpProvider" or
+    name = "$interpolateProvider" or
+    name = "$locationProvider" or
+    name = "$logProvider" or
+    name = "$parseProvider" or
+    name = "$provider" or
+    name = "$qProvider" or
+    name = "$rootScopeProvider" or
+    name = "$sceDelegateProvider" or
+    name = "$sceProvider" or
+    name = "$templateRequestProvider" or
+    // ngAria
+    name = "$ariaProvider" or
+    // ngCookies
+    name = "$cookiesProvider" or
+    // ngmock
+    name = "$exceptionHandlerProvider" or
+    // ngResource
+    name = "$resourceProvider" or
+    // ngRoute
+    name = "$routeProvider" or
+    // ngSanitize
+    name = "$sanitizeProvider"
   )
   or
+  result = "type" and
   (
-    result = "type" and
-    (
-      // ng
-      name = "$cacheFactory" or
-      name = "$compile" or
-      name = "$rootScope" or
-      // ngMock
-      name = "$rootScope"
-    )
+    // ng
+    name = "$cacheFactory" or
+    name = "$compile" or
+    name = "$rootScope" or
+    // ngMock
+    name = "$rootScope"
   )
 }
 
@@ -319,16 +313,12 @@ private predicate isCustomServiceDefinitionOnProvider(
 ) {
   mce = builtinServiceRef(providerName).getAMethodCall(providerMethodName) and
   (
-    (
-      mce.getNumArgument() = 1 and
-      factoryFunction.flowsTo(mce.getOptionArgument(0, serviceName))
-    )
+    mce.getNumArgument() = 1 and
+    factoryFunction.flowsTo(mce.getOptionArgument(0, serviceName))
     or
-    (
-      mce.getNumArgument() = 2 and
-      mce.getArgument(0).asExpr().mayHaveStringValue(serviceName) and
-      factoryFunction.flowsTo(mce.getArgument(1))
-    )
+    mce.getNumArgument() = 2 and
+    mce.getArgument(0).asExpr().mayHaveStringValue(serviceName) and
+    factoryFunction.flowsTo(mce.getArgument(1))
   )
 }
 

@@ -140,12 +140,12 @@ class Resource extends MemberVariable {
     )
   }
 
-  predicate acquisitionWithRequiredRelease(Assignment acquireAssign, string kind) {
+  predicate acquisitionWithRequiredKind(Assignment acquireAssign, string kind) {
     // acquireAssign is an assignment to this resource
     acquireAssign.(Assignment).getLValue() = this.getAnAccess() and
     // Should be in this class, but *any* member method will do
     this.inSameClass(acquireAssign) and
-    // Check that it is an acquisition function and return the corresponding free
+    // Check that it is an acquisition function and return the corresponding kind
     acquireExpr(acquireAssign.getRValue(), kind)
   }
 
@@ -158,14 +158,21 @@ predicate unreleasedResource(Resource r, Expr acquire, File f, int acquireLine) 
     // Note: there could be several release functions, because there could be
     // several functions called 'fclose' for example. We want to check that
     // *none* of these functions are called to release the resource
-    r.acquisitionWithRequiredRelease(acquire, _) and
-    not exists(Expr releaseExpr, string releaseName |
-         r.acquisitionWithRequiredRelease(acquire, releaseName) and
-         releaseExpr = r.getAReleaseExpr(releaseName) and
+    r.acquisitionWithRequiredKind(acquire, _) and
+    not exists(Expr releaseExpr, string kind |
+         r.acquisitionWithRequiredKind(acquire, kind) and
+         releaseExpr = r.getAReleaseExpr(kind) and
          r.inDestructor(releaseExpr)
     )
     and f = acquire.getFile()
     and acquireLine = acquire.getLocation().getStartLine()
+
+    and not exists(ExprCall exprCall |
+      // expression call (function pointer or lambda) with `r` as an
+      // argument, which could release it.
+      exprCall.getAnArgument() = r.getAnAccess() and
+      r.inDestructor(exprCall)
+    )
 
     // check that any destructor for this class has a block; if it doesn't,
     // we must be missing information.
@@ -181,10 +188,10 @@ predicate unreleasedResource(Resource r, Expr acquire, File f, int acquireLine) 
 
 predicate freedInSameMethod(Resource r, Expr acquire) {
   unreleasedResource(r, acquire, _, _) and
-  exists(Expr releaseExpr, string releaseName |
-    r.acquisitionWithRequiredRelease(acquire, releaseName) and
-    releaseExpr = r.getAReleaseExpr(releaseName) and
-    releaseExpr.getEnclosingFunction() = acquire.getEnclosingFunction()
+  exists(Expr releaseExpr, string kind |
+    r.acquisitionWithRequiredKind(acquire, kind) and
+    releaseExpr = r.getAReleaseExpr(kind) and
+    releaseExpr.getEnclosingElement+() = acquire.getEnclosingFunction()
   )
 }
 
@@ -221,16 +228,21 @@ predicate leakedInSameMethod(Resource r, Expr acquire) {
           fc = acquire.getAChild*() // e.g. `r = new MyClass(this)`
         )
       )
+    ) or exists(FunctionAccess fa, string kind |
+      // the address of a function that releases `r` is taken (and likely
+      // used to release `r` at some point).
+      r.acquisitionWithRequiredKind(acquire, kind) and
+      fa.getTarget() = r.getAReleaseExpr(kind).getEnclosingFunction()
     )
   )
 }
 
 pragma[noopt] predicate badRelease(Resource r, Expr acquire, Function functionCallingRelease, int line) {
   unreleasedResource(r, acquire, _, _) and
-  exists(Expr releaseExpr, string releaseName,
+  exists(Expr releaseExpr, string kind,
          Location releaseExprLocation, Function acquireFunction |
-    r.acquisitionWithRequiredRelease(acquire, releaseName) and
-    releaseExpr = r.getAReleaseExpr(releaseName) and
+    r.acquisitionWithRequiredKind(acquire, kind) and
+    releaseExpr = r.getAReleaseExpr(kind) and
     releaseExpr.getEnclosingFunction() = functionCallingRelease and
     functionCallingRelease.getDeclaringType() = r.getDeclaringType() and
     releaseExprLocation = releaseExpr.getLocation() and

@@ -11,8 +11,7 @@ private import semmle.code.csharp.ExprOrStmtParent
  * a destructor (`Destructor`), a callable accessor (`CallableAccessor`), a value or reference type
  * (`ValueOrRefType`), or a declaration with accessors (`DeclarationWithAccessors`).
  */
-class Attributable extends @attributable
-{
+class Attributable extends @attributable {
   /** Gets an attribute attached to this element, if any. */
   final Attribute getAnAttribute() { result.getTarget() = this }
 
@@ -36,7 +35,6 @@ class Attributable extends @attributable
  * ```
  */
 class Attribute extends TopLevelExprParent, @attribute {
-
   /** Gets the type of this attribute. */
   Class getType() { attributes(this, getTypeRef(result), _) }
 
@@ -49,13 +47,8 @@ class Attribute extends TopLevelExprParent, @attribute {
   override Location getALocation() { attribute_location(this, result) }
 
   override string toString() {
-    exists(string type, string name |
-      type = getType().toString() |
-      if type.matches("%Attribute") then
-        name = type.prefix(type.length() - 9)
-      else
-        name = type
-      and
+    exists(string type, string name | type = getType().toString() |
+      (if type.matches("%Attribute") then name = type.prefix(type.length() - 9) else name = type) and
       result = "[" + name + "(...)]"
     )
   }

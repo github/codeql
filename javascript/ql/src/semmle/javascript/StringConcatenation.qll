@@ -75,4 +75,35 @@ module StringConcatenation {
    * Holds if there is a taint step from `src` to `dst` through string concatenation.
    */
   predicate taintStep(DataFlow::Node src, DataFlow::Node dst) { taintStep(src, dst, _, _) }
+
+  /**
+   * Holds if `node` is the root of a concatenation tree, that is,
+   * it is a concatenation operator that is not itself the immediate operand to
+   * another concatenation operator.
+   */
+  predicate isRoot(DataFlow::Node node) {
+    exists(getAnOperand(node)) and
+    not node = getAnOperand(_)
+  }
+
+  /**
+   * Gets the root of the concatenation tree in which `node` is an operand or operator.
+   */
+  DataFlow::Node getRoot(DataFlow::Node node) {
+    isRoot(node) and
+    result = node
+    or
+    exists(DataFlow::Node operator |
+      node = getAnOperand(operator) and
+      result = getRoot(operator)
+    )
+  }
+
+  /**
+   * Holds if `node` is a string concatenation that only acts as a string coercion.
+   */
+  predicate isCoercion(DataFlow::Node node) {
+    getNumOperand(node) = 2 and
+    getOperand(node, _).asExpr().getStringValue() = ""
+  }
 }

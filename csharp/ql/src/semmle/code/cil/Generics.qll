@@ -1,4 +1,5 @@
 /** Provides classes for generic types and methods. */
+
 private import CIL
 private import dotnet
 
@@ -15,24 +16,16 @@ class Generic extends DotNet::Generic, Declaration, TypeContainer {
 
 /** An unbound generic type or method. */
 class UnboundGeneric extends Generic, DotNet::UnboundGeneric {
-  UnboundGeneric() {
-    cil_type_parameter(this, _, _)
-  }
+  UnboundGeneric() { cil_type_parameter(this, _, _) }
 
-  final override TypeParameter getTypeParameter(int n) {
-    cil_type_parameter(this, n, result)
-  }
+  final override TypeParameter getTypeParameter(int n) { cil_type_parameter(this, n, result) }
 }
 
 /** A constructed generic type or method. */
 class ConstructedGeneric extends Generic, DotNet::ConstructedGeneric {
-  ConstructedGeneric() {
-    cil_type_argument(this, _, _)
-  }
+  ConstructedGeneric() { cil_type_argument(this, _, _) }
 
-  final override Type getTypeArgument(int n) {
-    cil_type_argument(this, n, result)
-  }
+  final override Type getTypeArgument(int n) { cil_type_argument(this, n, result) }
 }
 
 /** An unbound generic type. */
@@ -48,7 +41,5 @@ class ConstructedType extends ConstructedGeneric, Type { }
 class ConstructedMethod extends ConstructedGeneric, Method {
   final override UnboundGenericMethod getUnboundGeneric() { result = getUnboundMethod() }
 
-  final override Location getLocation() {
-    result = getUnboundGeneric().getLocation()
-  }
+  final override Location getLocation() { result = getUnboundGeneric().getLocation() }
 }

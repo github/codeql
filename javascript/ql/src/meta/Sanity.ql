@@ -16,10 +16,10 @@ import javascript
  */
 predicate exprWithoutEnclosingStmt(Expr e) {
   // Function names, parameters, default values and bodies do not have an enclosing statement.
-  exists (Function f | e = f.getAChild()) or
-  exists (Parameter p | e = p.getDefault()) or
+  exists(Function f | e = f.getAChild()) or
+  exists(Parameter p | e = p.getDefault()) or
   // Class members do not have enclosing statements.
-  exists (MemberDefinition md | e = md.getAChild()) or
+  exists(MemberDefinition md | e = md.getAChild()) or
   // If an expression's parent has no enclosing statement, then neither does the expression itself.
   exprWithoutEnclosingStmt(e.getParent()) or
   // Some expressions have non-expression parents that we want to skip over.
@@ -38,14 +38,27 @@ predicate exprWithoutEnclosingStmt(Expr e) {
  * `"3 results for toString()"`.
  */
 predicate uniqueness_error(int number, string what, string problem) {
-  (what = "toString" or what = "getLocation" or
-   what = "getTopLevel" or what = "getEnclosingStmt" or what = "getContainer" or what = "getEnclosingContainer" or
-   what = "getEntry" or what = "getExit" or what = "getFirstControlFlowNode" or
-   what = "getOuterScope" or what = "getScopeElement" or
-   what = "getBaseName" or what = "getOperator" or what = "getTest") and
-  (number = 0 and problem = "no results for " + what + "()"
-   or
-   number in [2 .. 10]  and problem = number.toString() + " results for " + what + "()")
+  (
+    what = "toString" or
+    what = "getLocation" or
+    what = "getTopLevel" or
+    what = "getEnclosingStmt" or
+    what = "getContainer" or
+    what = "getEnclosingContainer" or
+    what = "getEntry" or
+    what = "getExit" or
+    what = "getFirstControlFlowNode" or
+    what = "getOuterScope" or
+    what = "getScopeElement" or
+    what = "getBaseName" or
+    what = "getOperator" or
+    what = "getTest"
+  ) and
+  (
+    number = 0 and problem = "no results for " + what + "()"
+    or
+    number in [2 .. 10] and problem = number.toString() + " results for " + what + "()"
+  )
 }
 
 /**
@@ -54,33 +67,52 @@ predicate uniqueness_error(int number, string what, string problem) {
  * the violation, and `what` gives location information where possible.
  */
 predicate ast_sanity(string clsname, string problem, string what) {
-  exists (Locatable l | clsname = l.getAQlClass() |
-    uniqueness_error(count(l.toString()), "toString", problem) and what = "at " + l.getLocation() or
-    uniqueness_error(strictcount(l.getLocation()), "getLocation", problem) and what = l.getLocation().toString() or
+  exists(Locatable l | clsname = l.getAQlClass() |
+    uniqueness_error(count(l.toString()), "toString", problem) and what = "at " + l.getLocation()
+    or
+    uniqueness_error(strictcount(l.getLocation()), "getLocation", problem) and
+    what = l.getLocation().toString()
+    or
     not exists(l.getLocation()) and problem = "no location" and what = l.toString()
-  ) or
-  exists (ASTNode nd | clsname = nd.getAQlClass() |
-    uniqueness_error(count(nd.getTopLevel()), "getTopLevel", problem) and what = "at " + nd.getLocation()
-  ) or
-  exists (Expr e | clsname = e.getAQlClass() |
-    uniqueness_error(count(e.getContainer()), "getContainer", problem) and what = "at " + e.getLocation() or
-    (not exprWithoutEnclosingStmt(e) and
-     uniqueness_error(count(e.getEnclosingStmt()), "getEnclosingStmt", problem) and what = "at " + e.getLocation())
-  ) or
-  exists (Stmt s | clsname = s.getAQlClass() |
-    uniqueness_error(count(s.getContainer()), "getContainer", problem) and what = "at " + s.getLocation()
-  ) or
-  exists (StmtContainer cont | not cont instanceof TopLevel and clsname = cont.getAQlClass() |
-    uniqueness_error(count(cont.getEnclosingContainer()), "getEnclosingContainer", problem) and what = "at " + cont.getLocation()
-  ) or
-  exists (UnaryExpr ue | clsname = ue.getAQlClass() |
-    uniqueness_error(count(ue.getOperator()), "getOperator", problem) and what = "at " + ue.getLocation()
-  ) or
-  exists (UpdateExpr ue | clsname = ue.getAQlClass() |
-    uniqueness_error(count(ue.getOperator()), "getOperator", problem) and what = "at " + ue.getLocation()
-  ) or
-  exists (BinaryExpr be | clsname = be.getAQlClass() |
-    uniqueness_error(count(be.getOperator()), "getOperator", problem) and what = "at " + be.getLocation()
+  )
+  or
+  exists(ASTNode nd | clsname = nd.getAQlClass() |
+    uniqueness_error(count(nd.getTopLevel()), "getTopLevel", problem) and
+    what = "at " + nd.getLocation()
+  )
+  or
+  exists(Expr e | clsname = e.getAQlClass() |
+    uniqueness_error(count(e.getContainer()), "getContainer", problem) and
+    what = "at " + e.getLocation()
+    or
+    not exprWithoutEnclosingStmt(e) and
+    uniqueness_error(count(e.getEnclosingStmt()), "getEnclosingStmt", problem) and
+    what = "at " + e.getLocation()
+  )
+  or
+  exists(Stmt s | clsname = s.getAQlClass() |
+    uniqueness_error(count(s.getContainer()), "getContainer", problem) and
+    what = "at " + s.getLocation()
+  )
+  or
+  exists(StmtContainer cont | not cont instanceof TopLevel and clsname = cont.getAQlClass() |
+    uniqueness_error(count(cont.getEnclosingContainer()), "getEnclosingContainer", problem) and
+    what = "at " + cont.getLocation()
+  )
+  or
+  exists(UnaryExpr ue | clsname = ue.getAQlClass() |
+    uniqueness_error(count(ue.getOperator()), "getOperator", problem) and
+    what = "at " + ue.getLocation()
+  )
+  or
+  exists(UpdateExpr ue | clsname = ue.getAQlClass() |
+    uniqueness_error(count(ue.getOperator()), "getOperator", problem) and
+    what = "at " + ue.getLocation()
+  )
+  or
+  exists(BinaryExpr be | clsname = be.getAQlClass() |
+    uniqueness_error(count(be.getOperator()), "getOperator", problem) and
+    what = "at " + be.getLocation()
   )
 }
 
@@ -89,8 +121,9 @@ predicate ast_sanity(string clsname, string problem, string what) {
  * where `problem` describes the problem and `what` gives location information where possible.
  */
 predicate location_sanity(string clsname, string problem, string what) {
-  exists (Location l | clsname = l.getAQlClass() |
-    uniqueness_error(count(l.toString()), "toString", problem) and what = "at " + l or
+  exists(Location l | clsname = l.getAQlClass() |
+    uniqueness_error(count(l.toString()), "toString", problem) and what = "at " + l
+    or
     not exists(l.toString()) and problem = "no toString" and what = "a location"
   )
 }
@@ -98,9 +131,7 @@ predicate location_sanity(string clsname, string problem, string what) {
 /**
  * Holds if function or toplevel `sc` is expected to have an associated control flow graph.
  */
-predicate hasCFG(StmtContainer sc) {
-  not exists (Error err | err.getFile() = sc.getFile())
-}
+predicate hasCFG(StmtContainer sc) { not exists(Error err | err.getFile() = sc.getFile()) }
 
 /**
  * Holds if a contract involving the CFG structure is violated, where `clsname`
@@ -108,12 +139,15 @@ predicate hasCFG(StmtContainer sc) {
  * the violation, and `what` gives location information.
  */
 predicate cfg_sanity(string clsname, string problem, string what) {
-  exists (StmtContainer cont | clsname = cont.getAQlClass() and hasCFG(cont) |
-    uniqueness_error(count(cont.getEntry()), "getEntry", problem) and what = "at " + cont.getLocation() or
-    uniqueness_error(count(cont.getExit()), "getExit", problem) and what = "at " + cont.getLocation()
+  exists(StmtContainer cont | clsname = cont.getAQlClass() and hasCFG(cont) |
+    uniqueness_error(count(cont.getEntry()), "getEntry", problem) and
+    what = "at " + cont.getLocation()
+    or
+    uniqueness_error(count(cont.getExit()), "getExit", problem) and
+    what = "at " + cont.getLocation()
   )
   or
-  exists (ASTNode nd | clsname = nd.getAQlClass() and hasCFG(nd.getTopLevel()) |
+  exists(ASTNode nd | clsname = nd.getAQlClass() and hasCFG(nd.getTopLevel()) |
     uniqueness_error(count(nd.getFirstControlFlowNode()), "getFirstControlFlowNode", problem) and
     what = "at " + nd.getLocation()
   )
@@ -125,13 +159,19 @@ predicate cfg_sanity(string clsname, string problem, string what) {
  * the violation, and `what` gives location information.
  */
 predicate scope_sanity(string clsname, string problem, string what) {
-  exists (Scope s | clsname = s.getAQlClass() |
-    uniqueness_error(count(s.toString()), "toString", problem) and what = "a scope" or
+  exists(Scope s | clsname = s.getAQlClass() |
+    uniqueness_error(count(s.toString()), "toString", problem) and what = "a scope"
+    or
     not s instanceof GlobalScope and
-    (uniqueness_error(count(s.getOuterScope()), "getOuterScope", problem) and what = s.toString() or
-     uniqueness_error(count(s.getScopeElement()), "getScopeElement", problem) and what = s.toString())
-  ) or
-  exists (int n | n = count(GlobalScope g) and n != 1 |
+    (
+      uniqueness_error(count(s.getOuterScope()), "getOuterScope", problem) and what = s.toString()
+      or
+      uniqueness_error(count(s.getScopeElement()), "getScopeElement", problem) and
+      what = s.toString()
+    )
+  )
+  or
+  exists(int n | n = count(GlobalScope g) and n != 1 |
     clsname = "GlobalScope" and what = "" and problem = n + " instances"
   )
 }
@@ -141,7 +181,7 @@ predicate scope_sanity(string clsname, string problem, string what) {
  * where `problem` describes the problem and `what` is the empty string.
  */
 predicate jsdoc_sanity(string clsname, string problem, string what) {
-  exists (JSDocTypeExprParent jsdtep | clsname = jsdtep.getAQlClass() |
+  exists(JSDocTypeExprParent jsdtep | clsname = jsdtep.getAQlClass() |
     uniqueness_error(count(jsdtep.toString()), "toString", problem) and what = ""
   )
 }
@@ -151,7 +191,7 @@ predicate jsdoc_sanity(string clsname, string problem, string what) {
  * where `problem` describes the problem and `what` is the name of the variable.
  */
 predicate varref_sanity(string clsname, string problem, string what) {
-  exists (VarRef vr, int n | n = count(vr.getVariable()) and n != 1 |
+  exists(VarRef vr, int n | n = count(vr.getVariable()) and n != 1 |
     clsname = vr.getAQlClass() and
     what = vr.getName() and
     problem = n + " target variables instead of one"
@@ -159,10 +199,11 @@ predicate varref_sanity(string clsname, string problem, string what) {
 }
 
 from string clsname, string problem, string what
-where ast_sanity(clsname, problem, what) or
-      location_sanity(clsname, problem, what) or
-      scope_sanity(clsname, problem, what) or
-      cfg_sanity(clsname, problem, what) or
-      jsdoc_sanity(clsname, problem, what) or
-      varref_sanity(clsname, problem, what)
+where
+  ast_sanity(clsname, problem, what) or
+  location_sanity(clsname, problem, what) or
+  scope_sanity(clsname, problem, what) or
+  cfg_sanity(clsname, problem, what) or
+  jsdoc_sanity(clsname, problem, what) or
+  varref_sanity(clsname, problem, what)
 select clsname + " " + what + " has " + problem

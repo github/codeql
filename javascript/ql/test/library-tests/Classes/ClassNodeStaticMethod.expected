@@ -1,0 +1,3 @@
+| points.js:1:1:18:1 | class P ... ;\\n  }\\n} | className | points.js:15:19:17:3 | () {\\n   ... t";\\n  } |
+| points.js:20:1:33:1 | class C ... ;\\n  }\\n} | className | points.js:30:19:32:3 | () {\\n   ... t";\\n  } |
+| staticConstructor.js:1:1:3:1 | class M ... r"; }\\n} | constructor | staticConstructor.js:2:21:2:59 | () { re ... tor"; } |

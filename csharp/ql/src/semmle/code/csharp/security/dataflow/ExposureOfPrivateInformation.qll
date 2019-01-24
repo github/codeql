@@ -1,6 +1,7 @@
 /**
  * Provides a taint-tracking configuration for reasoning about private information flowing unencrypted to an external location.
  */
+
 import csharp
 
 module ExposureOfPrivateInformation {
@@ -27,35 +28,20 @@ module ExposureOfPrivateInformation {
    * A taint-tracking configuration for private information flowing unencrypted to an external location.
    */
   class TaintTrackingConfiguration extends TaintTracking::Configuration {
-    TaintTrackingConfiguration() {
-      this = "ExposureOfPrivateInformation"
-    }
+    TaintTrackingConfiguration() { this = "ExposureOfPrivateInformation" }
 
-    override
-    predicate isSource(DataFlow::Node source) {
-      source instanceof Source
-    }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override
-    predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override
-    predicate isSanitizer(DataFlow::Node node) {
-      node instanceof Sanitizer
-    }
+    override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
   }
 
   class PrivateDataSource extends Source {
-    PrivateDataSource() {
-      this.getExpr() instanceof PrivateDataExpr
-    }
+    PrivateDataSource() { this.getExpr() instanceof PrivateDataExpr }
   }
 
   class ExternalLocation extends Sink {
-    ExternalLocation() {
-      this instanceof ExternalLocationSink
-    }
+    ExternalLocation() { this instanceof ExternalLocationSink }
   }
 }

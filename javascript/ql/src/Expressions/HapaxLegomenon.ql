@@ -36,7 +36,7 @@ abstract class Hapax extends @expr {
   abstract string getName();
 
   /** Gets a textual representation of this element. */
-  string toString() { result = (this.(Expr)).toString() }
+  string toString() { result = this.(Expr).toString() }
 }
 
 /**

@@ -339,3 +339,17 @@
 | 264 | ControlFlowNode for self | self |
 | 267 | ControlFlowNode for Derived4 | class Derived4 |
 | 267 | ControlFlowNode for Derived4() | Derived4() |
+| 270 | ControlFlowNode for ClassExpr | class DiGraph |
+| 270 | ControlFlowNode for DiGraph | class DiGraph |
+| 270 | ControlFlowNode for object | builtin-class object |
+| 272 | ControlFlowNode for FunctionExpr | Function __init__ |
+| 272 | ControlFlowNode for __init__ | Function __init__ |
+| 273 | ControlFlowNode for Attribute | Dict |
+| 273 | ControlFlowNode for Dict | Dict |
+| 273 | ControlFlowNode for self | self |
+| 275 | ControlFlowNode for FunctionExpr | Function add_node |
+| 275 | ControlFlowNode for add_node | Function add_node |
+| 276 | ControlFlowNode for Attribute | Dict |
+| 276 | ControlFlowNode for IntegerLiteral | int 0 |
+| 276 | ControlFlowNode for Subscript | int 0 |
+| 276 | ControlFlowNode for self | self |

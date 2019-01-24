@@ -34,6 +34,13 @@ abstract class CustomPointsToOriginFact extends CustomPointsToFact {
 
 }
 
+/** INTERNAL -- Do not use */
+abstract class CustomPointsToAttribute extends Object {
+
+    abstract predicate attributePointsTo(string name, Object value, ClassObject cls, ControlFlowNode origin);
+
+}
+
 /* An example */
 
 /** Any variable iterating over range or xrange must be an integer */
@@ -55,5 +62,22 @@ class RangeIterationVariableFact extends CustomPointsToFact {
         context.appliesTo(this)
     }
 }
+
+/* Python 3.6+ regex module constants */
+
+class ReModulePointToExtension extends CustomPointsToAttribute {
+
+    ReModulePointToExtension() {
+        this.(ModuleObject).getName() = "re"
+    }
+
+    override predicate attributePointsTo(string name, Object value, ClassObject cls, ControlFlowNode origin) {
+        exists(ModuleObject sre_constants |
+            sre_constants.getName() = "sre_constants" and
+            sre_constants.attributeRefersTo("SRE_FLAG_" + name, value, cls, origin)
+        )
+    }
+}
+
 
 

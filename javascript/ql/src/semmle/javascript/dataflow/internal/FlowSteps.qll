@@ -20,12 +20,7 @@ predicate shouldTrackProperties(AbstractValue obj) {
 /**
  * Holds if `invk` may invoke `f`.
  */
-predicate calls(DataFlow::InvokeNode invk, Function f) {
-  if invk.isIndefinite("global")
-  then (
-    f = invk.getACallee() and f.getFile() = invk.getFile()
-  ) else f = invk.getACallee()
-}
+predicate calls(DataFlow::InvokeNode invk, Function f) { f = invk.getACallee(0) }
 
 /**
  * Holds if `invk` may invoke `f` indirectly through the given `callback` argument.
@@ -38,9 +33,8 @@ private predicate partiallyCalls(
   invk.isPartialArgument(callback, _, _) and
   exists(AbstractFunction callee | callee = callback.getAValue() |
     if callback.getAValue().isIndefinite("global")
-    then (
-      f = callee.getFunction() and f.getFile() = invk.getFile()
-    ) else f = callee.getFunction()
+    then f = callee.getFunction() and f.getFile() = invk.getFile()
+    else f = callee.getFunction()
   )
 }
 
@@ -75,6 +69,8 @@ predicate localFlowStep(
   or
   any(DataFlow::AdditionalFlowStep afs).step(pred, succ) and predlbl = succlbl
   or
+  any(DataFlow::AdditionalFlowStep afs).step(pred, succ, predlbl, succlbl)
+  or
   exists(boolean vp | configuration.isAdditionalFlowStep(pred, succ, vp) |
     vp = true and
     predlbl = succlbl
@@ -92,11 +88,11 @@ predicate localFlowStep(
  * through invocation `invk` of function `f`.
  */
 predicate argumentPassing(
-  DataFlow::InvokeNode invk, DataFlow::ValueNode arg, Function f, Parameter parm
+  DataFlow::InvokeNode invk, DataFlow::ValueNode arg, Function f, DataFlow::ParameterNode parm
 ) {
   calls(invk, f) and
   exists(int i |
-    f.getParameter(i) = parm and
+    f.getParameter(i) = parm.getParameter() and
     not parm.isRestParameter() and
     arg = invk.getArgument(i)
   )
@@ -104,7 +100,7 @@ predicate argumentPassing(
   exists(DataFlow::Node callback, int i |
     invk.(DataFlow::AdditionalPartialInvokeNode).isPartialArgument(callback, arg, i) and
     partiallyCalls(invk, callback, f) and
-    parm = f.getParameter(i) and
+    parm.getParameter() = f.getParameter(i) and
     not parm.isRestParameter()
   )
 }
@@ -114,20 +110,19 @@ predicate argumentPassing(
  * to a function call.
  */
 predicate callStep(DataFlow::Node pred, DataFlow::Node succ) {
-  exists(Parameter parm |
-    argumentPassing(_, pred, _, parm) and
-    succ = DataFlow::parameterNode(parm)
-  )
+  argumentPassing(_, pred, _, succ)
 }
 
 /**
  * Holds if there is a flow step from `pred` to `succ` through returning
- * from a function call.
+ * from a function call or the receiver flowing out of a constructor call.
  */
 predicate returnStep(DataFlow::Node pred, DataFlow::Node succ) {
-  exists(Function f |
-    returnExpr(f, pred, _) and
-    calls(succ, f)
+  exists(Function f | calls(succ, f) |
+    returnExpr(f, pred, _)
+    or
+    succ instanceof DataFlow::NewNode and
+    DataFlow::thisNode(pred, f)
   )
 }
 
@@ -244,6 +239,49 @@ predicate loadStep(DataFlow::Node pred, DataFlow::PropRead succ, string prop) {
 }
 
 /**
+ * Holds if there is a higher-order call with argument `arg`, and `cb` is the local
+ * source of an argument that flows into the callee position of that call:
+ *
+ * ```
+ * function f(x, g) {
+ *   g(
+ *     x                 // arg
+ *   );
+ * }
+ *
+ * function cb() {      // cb
+ * }
+ *
+ * f(arg, cb);
+ *
+ * This is an over-approximation of a possible data flow step through a callback
+ * invocation.
+ */
+predicate callback(DataFlow::Node arg, DataFlow::SourceNode cb) {
+  exists (DataFlow::InvokeNode invk, DataFlow::ParameterNode cbParm, DataFlow::Node cbArg |
+    arg = invk.getAnArgument() and
+    cbParm.flowsTo(invk.getCalleeNode()) and
+    callStep(cbArg, cbParm) and
+    cb.flowsTo(cbArg)
+  )
+}
+
+/**
+ * Holds if `f` may return `base`, which has a write of property `prop` with right-hand side `rhs`.
+ */
+predicate returnedPropWrite(Function f, DataFlow::SourceNode base, string prop, DataFlow::Node rhs) {
+  base.hasPropertyWrite(prop, rhs) and
+  base.flowsToExpr(f.getAReturnedExpr())
+}
+
+/**
+ * Holds if `f` may assign `rhs` to `this.prop`.
+ */
+predicate receiverPropWrite(Function f, string prop, DataFlow::Node rhs) {
+  DataFlow::thisNode(f).hasPropertyWrite(prop, rhs)
+}
+
+/**
  * A utility class that is equivalent to `boolean` but does not require type joining.
  */
 class Boolean extends boolean { Boolean() { this = true or this = false } }
@@ -282,6 +320,9 @@ class PathSummary extends TPathSummary {
 
   /** Indicates whether the path represented by this summary contains any call steps. */
   boolean hasCall() { result = hasCall }
+
+  /** Gets the flow label describing the value at the start of this flow path. */
+  FlowLabel getStartLabel() { result = start }
 
   /** Gets the flow label describing the value at the end of this flow path. */
   FlowLabel getEndLabel() { result = end }

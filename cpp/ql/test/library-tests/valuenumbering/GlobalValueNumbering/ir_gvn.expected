@@ -365,7 +365,7 @@ test.cpp:
 
 #   53|   Block 1
 #   53|     m1_0(unsigned int)  = Phi                  : from 0:m0_11, from 8:m8_4
-#   53|         valnum = unique
+#   53|         valnum = m1_0
 #   53|     r1_1(glval<char *>) = VariableAddress[str] : 
 #   53|         valnum = r0_3
 #   53|     r1_2(char *)        = Load                 : r1_1, m0_4
@@ -395,11 +395,11 @@ test.cpp:
 
 #   56|   Block 3
 #   56|     m3_0(char *)        = Phi                  : from 2:m2_3, from 5:m5_4
-#   56|         valnum = unique
+#   56|         valnum = m3_0
 #   56|     r3_1(glval<char *>) = VariableAddress[ptr] : 
 #   56|         valnum = r0_7
 #   56|     r3_2(char *)        = Load                 : r3_1, m3_0
-#   56|         valnum = unique
+#   56|         valnum = m3_0
 #   56|     r3_3(char)          = Load                 : r3_2, m0_1
 #   56|         valnum = unique
 #   56|     r3_4(int)           = Convert              : r3_3
@@ -422,7 +422,7 @@ test.cpp:
 #   56|     r4_0(glval<char *>) = VariableAddress[ptr] : 
 #   56|         valnum = r0_7
 #   56|     r4_1(char *)        = Load                 : r4_0, m3_0
-#   56|         valnum = unique
+#   56|         valnum = m3_0
 #   56|     r4_2(char)          = Load                 : r4_1, m0_1
 #   56|         valnum = unique
 #   56|     r4_3(int)           = Convert              : r4_2
@@ -439,7 +439,7 @@ test.cpp:
 #   56|     r5_0(glval<char *>) = VariableAddress[ptr] : 
 #   56|         valnum = r0_7
 #   56|     r5_1(char *)        = Load                 : r5_0, m3_0
-#   56|         valnum = unique
+#   56|         valnum = m3_0
 #   56|     r5_2(int)           = Constant[1]          : 
 #   56|         valnum = unique
 #   56|     r5_3(char *)        = PointerAdd[1]        : r5_1, r5_2
@@ -452,7 +452,7 @@ test.cpp:
 #   59|     r6_0(glval<char *>) = VariableAddress[ptr] : 
 #   59|         valnum = r0_7
 #   59|     r6_1(char *)        = Load                 : r6_0, m3_0
-#   59|         valnum = unique
+#   59|         valnum = m3_0
 #   59|     r6_2(char)          = Load                 : r6_1, m0_1
 #   59|         valnum = unique
 #   59|     r6_3(int)           = Convert              : r6_2
@@ -473,7 +473,7 @@ test.cpp:
 #   62|     r8_0(glval<unsigned int>) = VariableAddress[result] : 
 #   62|         valnum = r0_9
 #   62|     r8_1(unsigned int)        = Load                    : r8_0, m1_0
-#   62|         valnum = unique
+#   62|         valnum = m1_0
 #   62|     r8_2(unsigned int)        = Constant[1]             : 
 #   62|         valnum = unique
 #   62|     r8_3(unsigned int)        = Add                     : r8_1, r8_2
@@ -489,9 +489,9 @@ test.cpp:
 #   65|     r9_2(glval<unsigned int>) = VariableAddress[result]  : 
 #   65|         valnum = r0_9
 #   65|     r9_3(unsigned int)        = Load                     : r9_2, m1_0
-#   65|         valnum = r9_3
+#   65|         valnum = m1_0
 #   65|     m9_4(unsigned int)        = Store                    : r9_1, r9_3
-#   65|         valnum = r9_3
+#   65|         valnum = m1_0
 #   49|     r9_5(glval<unsigned int>) = VariableAddress[#return] : 
 #   49|         valnum = r9_1
 #   49|     v9_6(void)                = ReturnValue              : r9_5, m9_4
@@ -639,15 +639,15 @@ test.cpp:
 
 #   88|   Block 3
 #   88|     m3_0(int)        = Phi                        : from 1:m1_3, from 2:m2_3
-#   88|         valnum = unique
+#   88|         valnum = m3_0
 #   88|     r3_1(glval<int>) = VariableAddress[#temp88:7] : 
 #   88|         valnum = r1_2
 #   88|     r3_2(int)        = Load                       : r3_1, m3_0
-#   88|         valnum = r3_2
+#   88|         valnum = m3_0
 #   88|     r3_3(glval<int>) = VariableAddress[v]         : 
 #   88|         valnum = r0_9
 #   88|     m3_4(int)        = Store                      : r3_3, r3_2
-#   88|         valnum = r3_2
+#   88|         valnum = m3_0
 #   89|     v3_5(void)       = NoOp                       : 
 #   84|     v3_6(void)       = ReturnVoid                 : 
 #   84|     v3_7(void)       = UnmodeledUse               : mu*

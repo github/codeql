@@ -6,6 +6,10 @@
 | Class Base2 | 178 | ControlFlowNode for x | int 1 |
 | Class Derived4 | 182 | ControlFlowNode for FunctionExpr | Function __init__ |
 | Class Derived4 | 182 | ControlFlowNode for __init__ | Function __init__ |
+| Class DiGraph | 272 | ControlFlowNode for FunctionExpr | Function __init__ |
+| Class DiGraph | 272 | ControlFlowNode for __init__ | Function __init__ |
+| Class DiGraph | 275 | ControlFlowNode for FunctionExpr | Function add_node |
+| Class DiGraph | 275 | ControlFlowNode for add_node | Function add_node |
 | Class E | 195 | ControlFlowNode for FunctionExpr | Function _internal |
 | Class E | 195 | ControlFlowNode for _internal | Function _internal |
 | Class E | 201 | ControlFlowNode for _internal | Function _internal |
@@ -176,3 +180,6 @@
 | Module pointsto_test | 254 | ControlFlowNode for object | builtin-class object |
 | Module pointsto_test | 267 | ControlFlowNode for Derived4 | class Derived4 |
 | Module pointsto_test | 267 | ControlFlowNode for Derived4() | Derived4() |
+| Module pointsto_test | 270 | ControlFlowNode for ClassExpr | class DiGraph |
+| Module pointsto_test | 270 | ControlFlowNode for DiGraph | class DiGraph |
+| Module pointsto_test | 270 | ControlFlowNode for object | builtin-class object |

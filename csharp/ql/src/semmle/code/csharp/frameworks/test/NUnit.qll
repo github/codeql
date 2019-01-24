@@ -1,12 +1,12 @@
 /** Provides definitions related to the NUnit test framework. */
+
 import csharp
 import semmle.code.csharp.frameworks.Test
 
 /** A class that is an NUnit test fixture */
 class NUnitFixture extends TestClass {
   NUnitFixture() {
-    exists(Attribute fixture |
-      fixture.getType().hasName("TestFixtureAttribute") |
+    exists(Attribute fixture | fixture.getType().hasName("TestFixtureAttribute") |
       fixture.getTarget() = this
     )
     or
@@ -19,7 +19,8 @@ class NUnitTestMethod extends TestMethod {
   NUnitTestMethod() {
     exists(Attribute test |
       test.getType().hasName("TestAttribute") or
-      test.getType().hasName("TestCaseAttribute") |
+      test.getType().hasName("TestCaseAttribute")
+    |
       test.getTarget() = this
     )
   }
@@ -35,11 +36,10 @@ class NUnitTestMethod extends TestMethod {
     exists(Attribute expected |
       expected.getType().hasName("ExpectedExceptionAttribute") and
       expected.getTarget() = this
-      |
-      if expected.getArgument(0).getType() instanceof StringType then
-        result.hasQualifiedName(expected.getArgument(0).getValue())
-      else
-        result = expected.getArgument(0).(TypeofExpr).getTypeAccess().getTarget()
+    |
+      if expected.getArgument(0).getType() instanceof StringType
+      then result.hasQualifiedName(expected.getArgument(0).getValue())
+      else result = expected.getArgument(0).(TypeofExpr).getTypeAccess().getTarget()
     )
   }
 }
@@ -56,9 +56,7 @@ class NUnitFile extends TestFile {
 
 /** An attribute of type `NUnit.Framework.ValueSourceAttribute`. */
 class ValueSourceAttribute extends Attribute {
-  ValueSourceAttribute() {
-    this.getType().hasQualifiedName("NUnit.Framework.ValueSourceAttribute")
-  }
+  ValueSourceAttribute() { this.getType().hasQualifiedName("NUnit.Framework.ValueSourceAttribute") }
 
   /** Holds if the first argument is the target type. */
   private predicate typeSpecified() {
@@ -68,25 +66,16 @@ class ValueSourceAttribute extends Attribute {
 
   /** Gets the class where the value source method is declared. */
   ValueOrRefType getSourceType() {
-    if
-      this.typeSpecified()
-    then
-      result = this.getArgument(0).(TypeofExpr).getTypeAccess().getType()
-    else
-      exists(Method m |
-        m.getAParameter() = this.getTarget() |
-        result = m.getDeclaringType()
-      )
+    if this.typeSpecified()
+    then result = this.getArgument(0).(TypeofExpr).getTypeAccess().getType()
+    else exists(Method m | m.getAParameter() = this.getTarget() | result = m.getDeclaringType())
   }
 
   /** Gets the name of the value source method. */
   string getMethodName() {
-    if
-      this.typeSpecified()
-    then
-      result = this.getArgument(1).getValue()
-    else
-      result = this.getArgument(0).getValue()
+    if this.typeSpecified()
+    then result = this.getArgument(1).getValue()
+    else result = this.getArgument(0).getValue()
   }
 
   /** Gets the method acting as the value source. */
@@ -110,22 +99,16 @@ class TestCaseSourceAttribute extends Attribute {
 
   /** Gets the class where the value is declared. */
   ValueOrRefType getSourceType() {
-    if
-      this.typeSpecified()
-    then
-      result = this.getArgument(0).(TypeofExpr).getTypeAccess().getType()
-    else
-      result = this.getTarget().(Method).getDeclaringType()
+    if this.typeSpecified()
+    then result = this.getArgument(0).(TypeofExpr).getTypeAccess().getType()
+    else result = this.getTarget().(Method).getDeclaringType()
   }
 
   /** Gets the name of the value. */
   string getFieldName() {
-    if
-      this.typeSpecified()
-    then
-      result = this.getArgument(1).getValue()
-    else
-      result = this.getArgument(0).getValue()
+    if this.typeSpecified()
+    then result = this.getArgument(1).getValue()
+    else result = this.getArgument(0).getValue()
   }
 
   /** Gets the declaration where the values are declared. */

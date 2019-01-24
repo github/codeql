@@ -63,7 +63,7 @@ namespace Semmle.Autobuild
             {
                 solution = SolutionFile.Parse(FullPath);
             }
-            catch (Exception e) when (e is InvalidProjectFileException || e is FileNotFoundException)
+            catch (Exception ex) when (ex is InvalidProjectFileException || ex is FileNotFoundException)
             {
                 // We allow specifying projects as solutions in lgtm.yml, so model
                 // that scenario as a solution with just that one project

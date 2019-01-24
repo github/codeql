@@ -42,7 +42,7 @@ module RemotePropertyInjection {
     override predicate isSanitizer(DataFlow::Node node) {
       super.isSanitizer(node) or
       node instanceof Sanitizer or
-      node instanceof PropertyInjection::Sanitizer
+      node = StringConcatenation::getRoot(any(ConstantString str).flow())
     }
   }
 

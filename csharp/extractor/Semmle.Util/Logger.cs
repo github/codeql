@@ -74,9 +74,9 @@ namespace Semmle.Util.Logging
                     FileShare.ReadWrite, 8192));
                 writer.AutoFlush = true;
             }
-            catch (Exception e)
+            catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
-                Console.Error.WriteLine("SEMMLE: Couldn't initialise C# extractor output: " + e.Message + "\n" + e.StackTrace);
+                Console.Error.WriteLine("SEMMLE: Couldn't initialise C# extractor output: " + ex.Message + "\n" + ex.StackTrace);
                 Console.Error.Flush();
                 throw;
             }

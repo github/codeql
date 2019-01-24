@@ -17,14 +17,16 @@ private import semmle.code.csharp.frameworks.system.Web
 private import semmle.code.csharp.frameworks.system.web.ui.WebControls
 private import semmle.code.csharp.frameworks.system.Xml
 
-private cached module Cached {
+cached
+private module Cached {
   /**
    * INTERNAL: Do not use.
    *
    * Holds if `source` can flow to `sink` using a call to a library
    * callable.
    */
-  cached predicate libraryFlow(Expr source, Expr sink, boolean preservesValue) {
+  cached
+  predicate libraryFlow(Expr source, Expr sink, boolean preservesValue) {
     exists(LibraryTypeDataFlow ltdf, CallableFlowSource csource, CallableFlowSink csink, Call c |
       source = csource.getSource(c) and
       ltdf.callableFlow(csource, csink, c.getTarget().getSourceDeclaration(), preservesValue) and
@@ -38,7 +40,8 @@ private cached module Cached {
    * Holds if `source` can flow to the `out`/`ref` argument `outRef` using a call to a library
    * callable.
    */
-  cached predicate libraryFlowOutRef(MethodCall mc, Expr source, Parameter outRef, boolean preservesValue) {
+  cached
+  predicate libraryFlowOutRef(MethodCall mc, Expr source, Parameter outRef, boolean preservesValue) {
     exists(LibraryTypeDataFlow ltdf, CallableFlowSource csource, CallableFlowSinkArg csink |
       source = csource.getSource(mc) and
       mc.getTarget().getAParameter() = outRef and
@@ -62,7 +65,10 @@ private cached module Cached {
    * Holds if output from the `i`th delegate argument of `call` can flow to `sink`, using
    * the library target `callable`.
    */
-  cached predicate libraryFlowDelegateCallOut(Call call, Callable callable, Expr sink, boolean preservesValue, int i) {
+  cached
+  predicate libraryFlowDelegateCallOut(
+    Call call, Callable callable, Expr sink, boolean preservesValue, int i
+  ) {
     exists(LibraryTypeDataFlow ltdf, CallableFlowSourceDelegateArg csource, CallableFlowSink csink |
       ltdf.callableFlow(csource, csink, callable, preservesValue) and
       call.getTarget().getSourceDeclaration() = callable and
@@ -79,7 +85,10 @@ private cached module Cached {
    * `j`. The call `call` is the call in which `sink` is an argument and`callable`
    * is the library target.
    */
-  cached predicate libraryFlowDelegateCallIn(Call call, Callable callable, Expr source, boolean preservesValue, int i, int j) {
+  cached
+  predicate libraryFlowDelegateCallIn(
+    Call call, Callable callable, Expr source, boolean preservesValue, int i, int j
+  ) {
     exists(LibraryTypeDataFlow ltdf, CallableFlowSource csource, CallableFlowSinkDelegateArg csink |
       ltdf.callableFlow(csource, csink, callable, preservesValue) and
       call.getTarget().getSourceDeclaration() = callable and
@@ -96,8 +105,14 @@ private cached module Cached {
    * Holds if output from the `i`th delegate argument of `call` can flow to the `j`th parameter
    * of the of delegate at argument `k`, using the library target `callable`.
    */
-  cached predicate libraryFlowDelegateCallOutIn(Call call, Callable callable, boolean preservesValue, int i, int j, int k) {
-    exists(LibraryTypeDataFlow ltdf, CallableFlowSourceDelegateArg csource, CallableFlowSinkDelegateArg csink |
+  cached
+  predicate libraryFlowDelegateCallOutIn(
+    Call call, Callable callable, boolean preservesValue, int i, int j, int k
+  ) {
+    exists(
+      LibraryTypeDataFlow ltdf, CallableFlowSourceDelegateArg csource,
+      CallableFlowSinkDelegateArg csink
+    |
       ltdf.callableFlow(csource, csink, callable, preservesValue) and
       call.getTarget().getSourceDeclaration() = callable and
       csource.getCallable() = callable and
@@ -112,9 +127,7 @@ import Cached
 
 /** An unbound callable. */
 library class SourceDeclarationCallable extends Callable {
-  SourceDeclarationCallable() {
-    this = getSourceDeclaration()
-  }
+  SourceDeclarationCallable() { this = getSourceDeclaration() }
 }
 
 /** An unbound method. */
@@ -122,25 +135,25 @@ library class SourceDeclarationMethod extends SourceDeclarationCallable, Method 
 
 // Internal representation of callable flow sources
 private newtype TCallableFlowSource =
-  TCallableFlowSourceQualifier()
-  or
+  TCallableFlowSourceQualifier() or
   TCallableFlowSourceArg(SourceDeclarationCallable callable, int i) {
     exists(int arity |
-      if callable.getAParameter().isParams() then
+      if callable.getAParameter().isParams()
+      then
         arity = max(Call call |
-          call.getTarget().getSourceDeclaration() = callable |
-          call.getNumberOfArguments()
-        )
-      else
-        arity = callable.getNumberOfParameters()
-      |
+            call.getTarget().getSourceDeclaration() = callable
+          |
+            call.getNumberOfArguments()
+          )
+      else arity = callable.getNumberOfParameters()
+    |
       i in [0 .. arity - 1]
     )
-  }
-  or
+  } or
   TCallableFlowSourceDelegateArg(SourceDeclarationCallable c, int i) {
     exists(DelegateType dt |
-      dt = c.getParameter(i).getType().(SystemLinqExpressions::DelegateExtType).getDelegateType() |
+      dt = c.getParameter(i).getType().(SystemLinqExpressions::DelegateExtType).getDelegateType()
+    |
       not dt.getReturnType() instanceof VoidType
     )
   }
@@ -158,33 +171,23 @@ class CallableFlowSource extends TCallableFlowSource {
 class CallableFlowSourceQualifier extends CallableFlowSource, TCallableFlowSourceQualifier {
   override string toString() { result = "qualifier" }
 
-  override Expr getSource(Call c) {
-    result = c.getChild(-1)
-  }
+  override Expr getSource(Call c) { result = c.getChild(-1) }
 }
 
 /** A flow source in a call to a library callable: argument. */
 class CallableFlowSourceArg extends CallableFlowSource, TCallableFlowSourceArg {
   override string toString() {
-    exists(int i |
-      this = TCallableFlowSourceArg(_, i) |
-      result = "argument " + i.toString()
-    )
+    exists(int i | this = TCallableFlowSourceArg(_, i) | result = "argument " + i.toString())
   }
 
   /** Gets the callable containing this flow source. */
-  Callable getCallable() {
-    this = TCallableFlowSourceArg(result, _)
-  }
+  Callable getCallable() { this = TCallableFlowSourceArg(result, _) }
 
   /** Gets the index of this argument. */
-  int getArgumentIndex() {
-    this = TCallableFlowSourceArg(_, result)
-  }
+  int getArgumentIndex() { this = TCallableFlowSourceArg(_, result) }
 
   override Expr getSource(Call c) {
-    exists(int i |
-      this = TCallableFlowSourceArg(c.getTarget().getSourceDeclaration(), i) |
+    exists(int i | this = TCallableFlowSourceArg(c.getTarget().getSourceDeclaration(), i) |
       result = c.getArgument(i)
     )
   }
@@ -193,40 +196,29 @@ class CallableFlowSourceArg extends CallableFlowSource, TCallableFlowSourceArg {
 /** A flow source in a call to a library callable: output from delegate argument. */
 class CallableFlowSourceDelegateArg extends CallableFlowSource, TCallableFlowSourceDelegateArg {
   override string toString() {
-    exists(int i |
-      this = TCallableFlowSourceDelegateArg(_, i) |
+    exists(int i | this = TCallableFlowSourceDelegateArg(_, i) |
       result = "output from argument " + i.toString()
     )
   }
 
   /** Gets the callable containing this flow source. */
-  Callable getCallable() {
-    this = TCallableFlowSourceDelegateArg(result, _)
-  }
+  Callable getCallable() { this = TCallableFlowSourceDelegateArg(result, _) }
 
   /** Gets the index of this delegate argument. */
-  int getArgumentIndex() {
-    this = TCallableFlowSourceDelegateArg(_, result)
-  }
+  int getArgumentIndex() { this = TCallableFlowSourceDelegateArg(_, result) }
 
-  override Expr getSource(Call c) {
-    none()
-  }
+  override Expr getSource(Call c) { none() }
 }
 
 // Internal representation of callable flow sinks
 private newtype TCallableFlowSink =
-  TCallableFlowSinkQualifier()
-  or
-  TCallableFlowSinkReturn()
-  or
-  TCallableFlowSinkArg(SourceDeclarationCallable c, int i) {
-    exists(c.getParameter(i))
-  }
-  or
+  TCallableFlowSinkQualifier() or
+  TCallableFlowSinkReturn() or
+  TCallableFlowSinkArg(SourceDeclarationCallable c, int i) { exists(c.getParameter(i)) } or
   TCallableFlowSinkDelegateArg(SourceDeclarationCallable c, int i, int j) {
     exists(DelegateType dt |
-      dt = c.getParameter(i).getType().(SystemLinqExpressions::DelegateExtType).getDelegateType() |
+      dt = c.getParameter(i).getType().(SystemLinqExpressions::DelegateExtType).getDelegateType()
+    |
       exists(dt.getParameter(j))
     )
   }
@@ -244,38 +236,27 @@ class CallableFlowSink extends TCallableFlowSink {
 class CallableFlowSinkQualifier extends CallableFlowSink, TCallableFlowSinkQualifier {
   override string toString() { result = "qualifier" }
 
-  override Expr getSink(Call c) {
-    result = c.getChild(-1)
-  }
+  override Expr getSink(Call c) { result = c.getChild(-1) }
 }
 
 /** A flow sink in a call to a library callable: return value. */
 class CallableFlowSinkReturn extends CallableFlowSink, TCallableFlowSinkReturn {
   override string toString() { result = "return" }
 
-  override Expr getSink(Call c) {
-    result = c
-  }
+  override Expr getSink(Call c) { result = c }
 }
 
 /** The flow sink in an argument to a call to a library method. */
 class CallableFlowSinkArg extends CallableFlowSink, TCallableFlowSinkArg {
   override string toString() {
-    exists(int i |
-      this = TCallableFlowSinkArg(_, i) |
-      result = "argument " + i.toString()
-    )
+    exists(int i | this = TCallableFlowSinkArg(_, i) | result = "argument " + i.toString())
   }
 
   /** Gets the callable containing this flow sink. */
-  Callable getCallable() {
-    this = TCallableFlowSinkArg(result, _)
-  }
+  Callable getCallable() { this = TCallableFlowSinkArg(result, _) }
 
   /** Gets the index of this `out`/`ref` argument. */
-  int getArgumentIndex() {
-    this = TCallableFlowSinkArg(_, result)
-  }
+  int getArgumentIndex() { this = TCallableFlowSinkArg(_, result) }
 
   override Expr getSink(Call c) {
     // The uses of the `i`th argument are the actual sinks
@@ -286,8 +267,7 @@ class CallableFlowSinkArg extends CallableFlowSink, TCallableFlowSinkArg {
 /** The flow sink in a call to a library callable: parameter of a delegate argument. */
 class CallableFlowSinkDelegateArg extends CallableFlowSink, TCallableFlowSinkDelegateArg {
   override string toString() {
-    exists(int i, int j |
-      this = TCallableFlowSinkDelegateArg(_, i, j) |
+    exists(int i, int j | this = TCallableFlowSinkDelegateArg(_, i, j) |
       result = "parameter " + j.toString() + " of argument " + i.toString()
     )
   }
@@ -298,28 +278,20 @@ class CallableFlowSinkDelegateArg extends CallableFlowSink, TCallableFlowSinkDel
   }
 
   /** Gets the callable containing this flow sink. */
-  Callable getCallable() {
-    this = TCallableFlowSinkDelegateArg(result, _, _)
-  }
+  Callable getCallable() { this = TCallableFlowSinkDelegateArg(result, _, _) }
 
   /** Gets the index of the delegate argument. */
-  int getDelegateIndex() {
-    this = TCallableFlowSinkDelegateArg(_, result, _)
-  }
+  int getDelegateIndex() { this = TCallableFlowSinkDelegateArg(_, result, _) }
 
   /** Gets the index of the delegate parameter. */
-  int getDelegateParameterIndex() {
-    this = TCallableFlowSinkDelegateArg(_, _, result)
-  }
+  int getDelegateParameterIndex() { this = TCallableFlowSinkDelegateArg(_, _, result) }
 }
 
 /**
  * A specification of data flow for a library (non-source code) type.
  */
 abstract class LibraryTypeDataFlow extends Type {
-  LibraryTypeDataFlow() {
-    this = getSourceDeclaration()
-  }
+  LibraryTypeDataFlow() { this = getSourceDeclaration() }
 
   /**
    * Holds if data may flow from `source` to `sink` when calling callable `c`.
@@ -328,50 +300,61 @@ abstract class LibraryTypeDataFlow extends Type {
    * (possibly copied) to `sink`. For example, the value is preserved from `x`
    * to `x.ToString()` when `x` is a `string`, but not from `x` to `x.ToLower()`.
    */
-  pragma [nomagic]
-  abstract predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue);
+  pragma[nomagic]
+  abstract predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  );
 }
 
 /** Data flow for `System.Int32`. */
 class SystemInt32Flow extends LibraryTypeDataFlow, SystemInt32Struct {
-  override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
+  override predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  ) {
     methodFlow(source, sink, c) and
     preservesValue = false
   }
 
-  private predicate methodFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m) {
-    (
-      m = getParseMethod() and
-      source = TCallableFlowSourceArg(m, 0) and
-      sink = TCallableFlowSinkReturn()
-    )
+  private predicate methodFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m
+  ) {
+    m = getParseMethod() and
+    source = TCallableFlowSourceArg(m, 0) and
+    sink = TCallableFlowSinkReturn()
     or
+    m = getTryParseMethod() and
+    source = TCallableFlowSourceArg(m, 0) and
     (
-      m = getTryParseMethod() and
-      source = TCallableFlowSourceArg(m, 0) and
-      (
-        sink = TCallableFlowSinkReturn()
-        or
-        sink = TCallableFlowSinkArg(m, any(int i | m.getParameter(i).isOutOrRef()))
-      )
+      sink = TCallableFlowSinkReturn()
+      or
+      sink = TCallableFlowSinkArg(m, any(int i | m.getParameter(i).isOutOrRef()))
     )
   }
 }
 
 /** Data flow for `System.Boolean`. */
 class SystemBooleanFlow extends LibraryTypeDataFlow, SystemBooleanStruct {
-  override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
+  override predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  ) {
     methodFlow(source, sink, c) and
     preservesValue = false
   }
 
-  private predicate methodFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m) {
-    m = getParseMethod() and (
+  private predicate methodFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m
+  ) {
+    m = getParseMethod() and
+    (
       source = TCallableFlowSourceArg(m, 0) and
       sink = TCallableFlowSinkReturn()
     )
     or
-    m = getTryParseMethod() and (
+    m = getTryParseMethod() and
+    (
       source = TCallableFlowSourceArg(m, 0) and
       (
         sink = TCallableFlowSinkReturn()
@@ -384,7 +367,10 @@ class SystemBooleanFlow extends LibraryTypeDataFlow, SystemBooleanStruct {
 
 /** Data flow for `System.Uri`. */
 class SystemUriFlow extends LibraryTypeDataFlow, SystemUriClass {
-  override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
+  override predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  ) {
     (
       constructorFlow(source, sink, c)
       or
@@ -396,28 +382,23 @@ class SystemUriFlow extends LibraryTypeDataFlow, SystemUriClass {
         sink = TCallableFlowSinkReturn() and
         c = p.getGetter()
       )
-    )
-    and
+    ) and
     preservesValue = false
   }
 
   private predicate constructorFlow(CallableFlowSource source, CallableFlowSink sink, Constructor c) {
-    c = getAMember()
-    and
-    c.getParameter(0).getType() instanceof StringType
-    and
-    source = TCallableFlowSourceArg(c, 0)
-    and
+    c = getAMember() and
+    c.getParameter(0).getType() instanceof StringType and
+    source = TCallableFlowSourceArg(c, 0) and
     sink = TCallableFlowSinkReturn()
   }
 
-  private predicate methodFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m) {
-    m.getDeclaringType() = getABaseType*()
-    and
-    m = any(SystemObjectClass c).getToStringMethod().getAnOverrider*()
-    and
-    source = TCallableFlowSourceQualifier()
-    and
+  private predicate methodFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m
+  ) {
+    m.getDeclaringType() = getABaseType*() and
+    m = any(SystemObjectClass c).getToStringMethod().getAnOverrider*() and
+    source = TCallableFlowSourceQualifier() and
     sink = TCallableFlowSinkReturn()
   }
 
@@ -432,70 +413,74 @@ class SystemUriFlow extends LibraryTypeDataFlow, SystemUriClass {
 
 /** Data flow for `System.IO.StringReader`. */
 class SystemIOStringReaderFlow extends LibraryTypeDataFlow, SystemIOStringReaderClass {
-  override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
+  override predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  ) {
     (
       constructorFlow(source, sink, c)
       or
       methodFlow(source, sink, c)
-    )
-    and
+    ) and
     preservesValue = false
   }
 
   private predicate constructorFlow(CallableFlowSource source, CallableFlowSink sink, Constructor c) {
-    c = getAMember()
-    and
-    c.getParameter(0).getType() instanceof StringType
-    and
-    source = TCallableFlowSourceArg(c, 0)
-    and
+    c = getAMember() and
+    c.getParameter(0).getType() instanceof StringType and
+    source = TCallableFlowSourceArg(c, 0) and
     sink = TCallableFlowSinkReturn()
   }
 
-  private predicate methodFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m) {
-    m.getDeclaringType() = getABaseType*()
-    and
-    m.getName().matches("Read%")
-    and
-    source = TCallableFlowSourceQualifier()
-    and
+  private predicate methodFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m
+  ) {
+    m.getDeclaringType() = getABaseType*() and
+    m.getName().matches("Read%") and
+    source = TCallableFlowSourceQualifier() and
     sink = TCallableFlowSinkReturn()
   }
 }
 
 /** Data flow for `System.String`. */
 class SystemStringFlow extends LibraryTypeDataFlow, SystemStringClass {
-  override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
+  override predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  ) {
     constructorFlow(source, sink, c) and preservesValue = false
     or
     methodFlow(source, sink, c, preservesValue)
   }
 
   private predicate constructorFlow(CallableFlowSource source, CallableFlowSink sink, Constructor c) {
-    c = getAMember()
-    and
-    c.getParameter(0).getType().(ArrayType).getElementType() instanceof CharType
-    and
-    source = TCallableFlowSourceArg(c, 0)
-    and
+    c = getAMember() and
+    c.getParameter(0).getType().(ArrayType).getElementType() instanceof CharType and
+    source = TCallableFlowSourceArg(c, 0) and
     sink = TCallableFlowSinkReturn()
   }
 
-  private predicate methodFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m, boolean preservesValue) {
-    m = getAMethod() and (
+  private predicate methodFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m,
+    boolean preservesValue
+  ) {
+    m = getAMethod() and
+    (
       m = any(SystemObjectClass c).getToStringMethod().getAnOverrider*() and
       source = TCallableFlowSourceQualifier() and
       sink = TCallableFlowSinkReturn() and
       preservesValue = true
     )
     or
-    m = getSplitMethod() and (
+    m = getSplitMethod() and
+    (
       source = TCallableFlowSourceQualifier() and
       sink = TCallableFlowSinkReturn() and
       preservesValue = false
     )
     or
-    m = getReplaceMethod() and (
+    m = getReplaceMethod() and
+    (
       source = TCallableFlowSourceQualifier() and
       sink = TCallableFlowSinkReturn() and
       preservesValue = false
@@ -505,19 +490,22 @@ class SystemStringFlow extends LibraryTypeDataFlow, SystemStringClass {
       preservesValue = false
     )
     or
-    m = getSubstringMethod() and (
+    m = getSubstringMethod() and
+    (
       source = TCallableFlowSourceQualifier() and
       sink = TCallableFlowSinkReturn() and
       preservesValue = false
     )
     or
-    m = getCloneMethod() and (
+    m = getCloneMethod() and
+    (
       source = TCallableFlowSourceQualifier() and
       sink = TCallableFlowSinkReturn() and
       preservesValue = true
     )
     or
-    m = getInsertMethod() and (
+    m = getInsertMethod() and
+    (
       source = TCallableFlowSourceQualifier() and
       sink = TCallableFlowSinkReturn() and
       preservesValue = false
@@ -527,44 +515,53 @@ class SystemStringFlow extends LibraryTypeDataFlow, SystemStringClass {
       preservesValue = false
     )
     or
-    m = getNormalizeMethod() and (
+    m = getNormalizeMethod() and
+    (
       source = TCallableFlowSourceQualifier() and
       sink = TCallableFlowSinkReturn() and
       preservesValue = false
     )
     or
-    m = getRemoveMethod() and (
+    m = getRemoveMethod() and
+    (
       source = TCallableFlowSourceQualifier() and
       sink = TCallableFlowSinkReturn() and
       preservesValue = false
     )
     or
-    m = getAMethod() and (
-      m.getName().regexpMatch("((ToLower|ToUpper)(Invariant)?)|(Trim(Start|End)?)|(Pad(Left|Right))") and
+    m = getAMethod() and
+    (
+      m
+          .getName()
+          .regexpMatch("((ToLower|ToUpper)(Invariant)?)|(Trim(Start|End)?)|(Pad(Left|Right))") and
       source = TCallableFlowSourceQualifier() and
       sink = TCallableFlowSinkReturn() and
       preservesValue = false
     )
     or
-    m = getConcatMethod() and (
+    m = getConcatMethod() and
+    (
       source = TCallableFlowSourceArg(m, _) and
       sink = TCallableFlowSinkReturn() and
       preservesValue = false
     )
     or
-    m = getCopyMethod() and (
+    m = getCopyMethod() and
+    (
       source = TCallableFlowSourceArg(m, 0) and
       sink = TCallableFlowSinkReturn() and
       preservesValue = true
     )
     or
-    m = getJoinMethod() and (
+    m = getJoinMethod() and
+    (
       source = TCallableFlowSourceArg(m, _) and
       sink = TCallableFlowSinkReturn() and
       preservesValue = false
     )
     or
-    m = getFormatMethod() and exists(int i |
+    m = getFormatMethod() and
+    exists(int i |
       (m.getParameter(0).getType() instanceof SystemIFormatProviderInterface implies i != 0) and
       source = TCallableFlowSourceArg(m, i) and
       sink = TCallableFlowSinkReturn() and
@@ -575,38 +572,42 @@ class SystemStringFlow extends LibraryTypeDataFlow, SystemStringClass {
 
 /** Data flow for `System.Text.StringBuilder`. */
 class SystemTextStringBuilderFlow extends LibraryTypeDataFlow, SystemTextStringBuilderClass {
-  override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
+  override predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  ) {
     (
       constructorFlow(source, sink, c)
       or
       methodFlow(source, sink, c)
-    )
-    and
+    ) and
     preservesValue = false
   }
 
   private predicate constructorFlow(CallableFlowSource source, CallableFlowSink sink, Constructor c) {
-    c = getAMember()
-    and
-    c.getParameter(0).getType() instanceof StringType
-    and
-    source = TCallableFlowSourceArg(c, 0)
-    and
+    c = getAMember() and
+    c.getParameter(0).getType() instanceof StringType and
+    source = TCallableFlowSourceArg(c, 0) and
     sink = TCallableFlowSinkReturn()
   }
 
-  private predicate methodFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m) {
-    m.getDeclaringType() = getABaseType*() and (
+  private predicate methodFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m
+  ) {
+    m.getDeclaringType() = getABaseType*() and
+    (
       m = any(SystemObjectClass c).getToStringMethod().getAnOverrider*() and
       source = TCallableFlowSourceQualifier() and
       sink = TCallableFlowSinkReturn()
     )
     or
-    m = getAMethod() and exists(int i, Type t |
+    m = getAMethod() and
+    exists(int i, Type t |
       m.getName().regexpMatch("Append(Format|Line)?") and
       t = m.getParameter(i).getType() and
       source = TCallableFlowSourceArg(m, i) and
-      sink = TCallableFlowSinkQualifier() |
+      sink = TCallableFlowSinkQualifier()
+    |
       t instanceof StringType or
       t instanceof ObjectType
     )
@@ -615,11 +616,12 @@ class SystemTextStringBuilderFlow extends LibraryTypeDataFlow, SystemTextStringB
 
 /** Data flow for `System.Lazy<>`. */
 class SystemLazyFlow extends LibraryTypeDataFlow {
-  SystemLazyFlow() {
-    this instanceof SystemLazyClass
-  }
+  SystemLazyFlow() { this instanceof SystemLazyClass }
 
-  override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
+  override predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  ) {
     (
       constructorFlow(source, sink, c)
       or
@@ -629,27 +631,22 @@ class SystemLazyFlow extends LibraryTypeDataFlow {
         sink = TCallableFlowSinkReturn() and
         c = p.getGetter()
       )
-    )
-    and
+    ) and
     preservesValue = true
   }
 
-  private predicate constructorFlow(CallableFlowSourceDelegateArg source, CallableFlowSink sink, Constructor c) {
-    exists(SystemFuncDelegateType t, int i |
-      t.getNumberOfTypeParameters() = 1 |
-      c.getDeclaringType() = this
-      and
-      c.getParameter(i).getType().getSourceDeclaration() = t
-      and
-      source = TCallableFlowSourceDelegateArg(c, i)
-      and
+  private predicate constructorFlow(
+    CallableFlowSourceDelegateArg source, CallableFlowSink sink, Constructor c
+  ) {
+    exists(SystemFuncDelegateType t, int i | t.getNumberOfTypeParameters() = 1 |
+      c.getDeclaringType() = this and
+      c.getParameter(i).getType().getSourceDeclaration() = t and
+      source = TCallableFlowSourceDelegateArg(c, i) and
       sink = TCallableFlowSinkReturn()
     )
   }
 
-  private predicate propertyFlow(Property p) {
-    p = this.(SystemLazyClass).getValueProperty()
-  }
+  private predicate propertyFlow(Property p) { p = this.(SystemLazyClass).getValueProperty() }
 }
 
 /**
@@ -658,17 +655,20 @@ class SystemLazyFlow extends LibraryTypeDataFlow {
  */
 class IEnumerableFlow extends LibraryTypeDataFlow {
   IEnumerableFlow() {
-    exists(RefType t |
-      t = this.(RefType).getABaseType*() |
+    exists(RefType t | t = this.(RefType).getABaseType*() |
       t instanceof SystemCollectionsIEnumerableInterface
       or
       t instanceof SystemCollectionsGenericIEnumerableTInterface
       or
-      t.(ConstructedInterface).getUnboundGeneric() instanceof SystemCollectionsGenericIEnumerableTInterface
+      t.(ConstructedInterface).getUnboundGeneric() instanceof
+        SystemCollectionsGenericIEnumerableTInterface
     )
   }
 
-  override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
+  override predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  ) {
     (
       methodFlow(source, sink, c)
       or
@@ -678,25 +678,28 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
         sink = TCallableFlowSinkReturn() and
         c = p.getGetter()
       )
-    )
-    and
+    ) and
     preservesValue = false
   }
 
-  private predicate methodFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m) {
+  private predicate methodFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m
+  ) {
     methodFlowLINQ(source, sink, m)
     or
     methodFlowSpecific(source, sink, m)
   }
 
   /** Flow for LINQ methods. */
-  private predicate methodFlowLINQ(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m) {
-    m.(ExtensionMethod).getExtendedType().getSourceDeclaration() = this
-    and
-    exists(string name, int arity |
-      name = m.getName() and arity = m.getNumberOfParameters() |
-      name = "Aggregate" and (
-        arity = 2 and (
+  private predicate methodFlowLINQ(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m
+  ) {
+    m.(ExtensionMethod).getExtendedType().getSourceDeclaration() = this and
+    exists(string name, int arity | name = m.getName() and arity = m.getNumberOfParameters() |
+      name = "Aggregate" and
+      (
+        arity = 2 and
+        (
           source = TCallableFlowSourceArg(m, 0) and
           sink = TCallableFlowSinkDelegateArg(m, 1, 1)
           or
@@ -704,7 +707,8 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
           sink = TCallableFlowSinkReturn()
         )
         or
-        arity = 3 and (
+        arity = 3 and
+        (
           source = TCallableFlowSourceArg(m, 0) and
           sink = TCallableFlowSinkDelegateArg(m, 2, 1)
           or
@@ -715,7 +719,8 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
           sink = TCallableFlowSinkReturn()
         )
         or
-        arity = 4 and (
+        arity = 4 and
+        (
           source = TCallableFlowSourceArg(m, 0) and
           sink = TCallableFlowSinkDelegateArg(m, 2, 1)
           or
@@ -730,38 +735,45 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
         )
       )
       or
-      name = "All" and (
+      name = "All" and
+      (
         arity = 2 and
         source = TCallableFlowSourceArg(m, 0) and
         sink = TCallableFlowSinkDelegateArg(m, 1, 0)
       )
       or
-      name = "Any" and (
+      name = "Any" and
+      (
         arity = 2 and
         source = TCallableFlowSourceArg(m, 0) and
         sink = TCallableFlowSinkDelegateArg(m, 1, 0)
       )
       or
-      name = "AsEnumerable" and (
+      name = "AsEnumerable" and
+      (
         arity = 1 and
         source = TCallableFlowSourceArg(m, 0) and
         sink = TCallableFlowSinkReturn()
       )
       or
-      name = "Average" and (
+      name = "Average" and
+      (
         arity = 2 and
         source = TCallableFlowSourceArg(m, 0) and
         sink = TCallableFlowSinkDelegateArg(m, 1, 0)
       )
       or
-      name = "Cast" and (
+      name = "Cast" and
+      (
         arity = 1 and
         source = TCallableFlowSourceArg(m, 0) and
         sink = TCallableFlowSinkReturn()
       )
       or
-      name = "Concat" and (
-        arity = 2 and (
+      name = "Concat" and
+      (
+        arity = 2 and
+        (
           source = TCallableFlowSourceArg(m, 0) and
           sink = TCallableFlowSinkReturn()
           or
@@ -770,13 +782,15 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
         )
       )
       or
-      name.regexpMatch("(Long)?Count") and (
+      name.regexpMatch("(Long)?Count") and
+      (
         arity = 2 and
         source = TCallableFlowSourceArg(m, 0) and
         sink = TCallableFlowSinkDelegateArg(m, 1, 0)
       )
       or
-      name = "DefaultIfEmpty" and (
+      name = "DefaultIfEmpty" and
+      (
         arity in [1 .. 2] and
         source = TCallableFlowSourceArg(m, 0) and
         sink = TCallableFlowSinkReturn()
@@ -786,38 +800,46 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
         sink = TCallableFlowSinkReturn()
       )
       or
-      name = "Distinct" and (
+      name = "Distinct" and
+      (
         arity in [1 .. 2] and
         source = TCallableFlowSourceArg(m, 0) and
         sink = TCallableFlowSinkReturn()
       )
       or
-      name.regexpMatch("ElementAt(OrDefault)?") and (
+      name.regexpMatch("ElementAt(OrDefault)?") and
+      (
         arity = 2 and
         source = TCallableFlowSourceArg(m, 0) and
         sink = TCallableFlowSinkReturn()
       )
       or
-      name = "Except" and (
+      name = "Except" and
+      (
         arity in [2 .. 3] and
         source = TCallableFlowSourceArg(m, 0) and
         sink = TCallableFlowSinkReturn()
       )
       or
-      name.regexpMatch("(First|Single)(OrDefault)?") and (
-        arity in [1 .. 2] and (
+      name.regexpMatch("(First|Single)(OrDefault)?") and
+      (
+        arity in [1 .. 2] and
+        (
           source = TCallableFlowSourceArg(m, 0) and
           sink = TCallableFlowSinkReturn()
         )
         or
-        arity = 2 and (
+        arity = 2 and
+        (
           source = TCallableFlowSourceArg(m, 0) and
           sink = TCallableFlowSinkDelegateArg(m, 1, 0)
         )
       )
       or
-      name = "GroupBy" and (
-        arity = 3 and (
+      name = "GroupBy" and
+      (
+        arity = 3 and
+        (
           source = TCallableFlowSourceArg(m, 0) and
           sink = TCallableFlowSinkDelegateArg(m, 1, 0)
           or
@@ -833,16 +855,19 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
           source = TCallableFlowSourceDelegateArg(m, 1) and
           sink = TCallableFlowSinkDelegateArg(m, 2, 0)
           or
-          not m.getParameter(2).getType().getSourceDeclaration() instanceof SystemCollectionsGenericIEqualityComparerTInterface and
+          not m.getParameter(2).getType().getSourceDeclaration() instanceof
+            SystemCollectionsGenericIEqualityComparerTInterface and
           source = TCallableFlowSourceDelegateArg(m, 2) and
           sink = TCallableFlowSinkReturn()
           or
-          m.getParameter(2).getType().getSourceDeclaration() instanceof SystemCollectionsGenericIEqualityComparerTInterface and
+          m.getParameter(2).getType().getSourceDeclaration() instanceof
+            SystemCollectionsGenericIEqualityComparerTInterface and
           source = TCallableFlowSourceArg(m, 0) and
           sink = TCallableFlowSinkReturn()
         )
         or
-        arity in [4 .. 5] and (
+        arity in [4 .. 5] and
+        (
           source = TCallableFlowSourceArg(m, 0) and
           sink = TCallableFlowSinkDelegateArg(m, 1, 0)
           or
@@ -860,8 +885,10 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
         )
       )
       or
-      name.regexpMatch("(Group)?Join") and (
-        arity in [5 .. 6] and (
+      name.regexpMatch("(Group)?Join") and
+      (
+        arity in [5 .. 6] and
+        (
           source = TCallableFlowSourceArg(m, 0) and
           sink = TCallableFlowSinkDelegateArg(m, 2, 0)
           or
@@ -879,8 +906,10 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
         )
       )
       or
-      name = "Intersect" and (
-        arity in [2 .. 3] and (
+      name = "Intersect" and
+      (
+        arity in [2 .. 3] and
+        (
           source = TCallableFlowSourceArg(m, 0) and
           sink = TCallableFlowSinkReturn()
           or
@@ -889,34 +918,43 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
         )
       )
       or
-      name.regexpMatch("Last(OrDefault)?") and (
-        arity in [1 .. 2] and (
+      name.regexpMatch("Last(OrDefault)?") and
+      (
+        arity in [1 .. 2] and
+        (
           source = TCallableFlowSourceArg(m, 0) and
           sink = TCallableFlowSinkReturn()
         )
         or
-        arity = 2 and (
+        arity = 2 and
+        (
           source = TCallableFlowSourceArg(m, 0) and
           sink = TCallableFlowSinkDelegateArg(m, 1, 0)
         )
       )
       or
-      name.regexpMatch("Max|Min|Sum") and (
-        arity = 2 and (
+      name.regexpMatch("Max|Min|Sum") and
+      (
+        arity = 2 and
+        (
           source = TCallableFlowSourceArg(m, 0) and
           sink = TCallableFlowSinkDelegateArg(m, 1, 0)
         )
       )
       or
-      name = "OfType" and (
-        arity = 1 and (
+      name = "OfType" and
+      (
+        arity = 1 and
+        (
           source = TCallableFlowSourceArg(m, 0) and
           sink = TCallableFlowSinkReturn()
         )
       )
       or
-      name.regexpMatch("OrderBy(Descending)?") and (
-        arity in [2 .. 3] and (
+      name.regexpMatch("OrderBy(Descending)?") and
+      (
+        arity in [2 .. 3] and
+        (
           source = TCallableFlowSourceArg(m, 0) and
           sink = TCallableFlowSinkReturn()
           or
@@ -925,22 +963,28 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
         )
       )
       or
-      name = "Repeat" and (
-        arity = 2 and (
+      name = "Repeat" and
+      (
+        arity = 2 and
+        (
           source = TCallableFlowSourceArg(m, 0) and
           sink = TCallableFlowSinkReturn()
         )
       )
       or
-      name = "Reverse" and (
-        arity = 1 and (
+      name = "Reverse" and
+      (
+        arity = 1 and
+        (
           source = TCallableFlowSourceArg(m, 0) and
           sink = TCallableFlowSinkReturn()
         )
       )
       or
-      name.regexpMatch("Select(Many)?") and (
-        arity = 2 and (
+      name.regexpMatch("Select(Many)?") and
+      (
+        arity = 2 and
+        (
           source = TCallableFlowSourceArg(m, 0) and
           sink = TCallableFlowSinkDelegateArg(m, 1, 0)
           or
@@ -949,8 +993,10 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
         )
       )
       or
-      name = "SelectMany" and (
-        arity = 3 and (
+      name = "SelectMany" and
+      (
+        arity = 3 and
+        (
           source = TCallableFlowSourceArg(m, 0) and
           sink = TCallableFlowSinkDelegateArg(m, 1, 0)
           or
@@ -965,22 +1011,28 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
         )
       )
       or
-      name.regexpMatch("(Skip|Take)(While)?") and (
-        arity = 2 and (
+      name.regexpMatch("(Skip|Take)(While)?") and
+      (
+        arity = 2 and
+        (
           source = TCallableFlowSourceArg(m, 0) and
           sink = TCallableFlowSinkReturn()
         )
       )
       or
-      name.regexpMatch("(Skip|Take)While") and (
-        arity = 2 and (
+      name.regexpMatch("(Skip|Take)While") and
+      (
+        arity = 2 and
+        (
           source = TCallableFlowSourceArg(m, 0) and
           sink = TCallableFlowSinkDelegateArg(m, 1, 0)
         )
       )
       or
-      name.regexpMatch("ThenBy(Descending)?") and (
-        arity in [2 .. 3] and (
+      name.regexpMatch("ThenBy(Descending)?") and
+      (
+        arity in [2 .. 3] and
+        (
           source = TCallableFlowSourceArg(m, 0) and
           sink = TCallableFlowSinkDelegateArg(m, 1, 0)
           or
@@ -989,15 +1041,19 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
         )
       )
       or
-      name.regexpMatch("To(Array|List)") and (
-        arity = 1 and (
+      name.regexpMatch("To(Array|List)") and
+      (
+        arity = 1 and
+        (
           source = TCallableFlowSourceArg(m, 0) and
           sink = TCallableFlowSinkReturn()
         )
       )
       or
-      name.regexpMatch("To(Dictionary|Lookup)") and (
-        arity in [2 .. 3] and (
+      name.regexpMatch("To(Dictionary|Lookup)") and
+      (
+        arity in [2 .. 3] and
+        (
           source = TCallableFlowSourceArg(m, 0) and
           sink = TCallableFlowSinkDelegateArg(m, 1, 0)
           or
@@ -1006,7 +1062,8 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
           not m.getParameter(2).getType() instanceof DelegateType
         )
         or
-        arity in [3 .. 4] and (
+        arity in [3 .. 4] and
+        (
           source = TCallableFlowSourceArg(m, 0) and
           sink = TCallableFlowSinkDelegateArg(m, 1, 0)
           or
@@ -1018,8 +1075,10 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
         )
       )
       or
-      name = "Union" and (
-        arity in [2 .. 3] and (
+      name = "Union" and
+      (
+        arity in [2 .. 3] and
+        (
           source = TCallableFlowSourceArg(m, 0) and
           sink = TCallableFlowSinkReturn()
           or
@@ -1028,8 +1087,10 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
         )
       )
       or
-      name = "Where" and (
-        arity = 2 and (
+      name = "Where" and
+      (
+        arity = 2 and
+        (
           source = TCallableFlowSourceArg(m, 0) and
           sink = TCallableFlowSinkDelegateArg(m, 1, 0)
           or
@@ -1038,8 +1099,10 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
         )
       )
       or
-      name = "Zip" and (
-        arity = 3 and (
+      name = "Zip" and
+      (
+        arity = 3 and
+        (
           source = TCallableFlowSourceArg(m, 0) and
           sink = TCallableFlowSinkDelegateArg(m, 2, 0)
           or
@@ -1054,18 +1117,19 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
   }
 
   /** Flow for specific enumerables (e.g., `List<T>` and `Stack<T>`). */
-  private predicate methodFlowSpecific(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m) {
+  private predicate methodFlowSpecific(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m
+  ) {
     m = getFind() and
-    if m.isStatic() then
-      source = TCallableFlowSourceArg(m, 0)
-      and
+    if m.isStatic()
+    then
+      source = TCallableFlowSourceArg(m, 0) and
       (
         sink = TCallableFlowSinkReturn() or
         sink = TCallableFlowSinkDelegateArg(m, 1, 0)
       )
     else (
-      source = TCallableFlowSourceQualifier()
-      and
+      source = TCallableFlowSourceQualifier() and
       (
         sink = TCallableFlowSinkReturn() or
         sink = TCallableFlowSinkDelegateArg(m, 0, 0)
@@ -1075,30 +1139,37 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
     exists(string name, int arity |
       name = m.getName() and
       arity = m.getNumberOfParameters() and
-      m.getDeclaringType() = this.(RefType).getABaseType*() |
-      name = "FixedSize" and (
+      m.getDeclaringType() = this.(RefType).getABaseType*()
+    |
+      name = "FixedSize" and
+      (
         source = TCallableFlowSourceArg(m, 0) and
         sink = TCallableFlowSinkReturn()
       )
       or
-      name.regexpMatch("GetByIndex|Peek|Pop|AsReadOnly|Clone|GetRange|MemberwiseClone|Reverse|GetEnumerator|GetValueList") and (
+      name
+          .regexpMatch("GetByIndex|Peek|Pop|AsReadOnly|Clone|GetRange|MemberwiseClone|Reverse|GetEnumerator|GetValueList") and
+      (
         source = TCallableFlowSourceQualifier() and
         sink = TCallableFlowSinkReturn()
       )
       or
-      name.regexpMatch("Add(Range)?") and (
+      name.regexpMatch("Add(Range)?") and
+      (
         arity = 1 and
         source = TCallableFlowSourceArg(m, 0) and
         sink = TCallableFlowSinkQualifier()
       )
       or
-      name = "Add" and (
+      name = "Add" and
+      (
         arity = 2 and
         source = TCallableFlowSourceArg(m, 1) and
         sink = TCallableFlowSinkQualifier()
       )
       or
-      name.regexpMatch("Insert(Range)?") and (
+      name.regexpMatch("Insert(Range)?") and
+      (
         not this instanceof StringType and
         arity = 2 and
         source = TCallableFlowSourceArg(m, 1) and
@@ -1110,26 +1181,31 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
   private SourceDeclarationMethod getFind() {
     exists(string name |
       name = result.getName() and
-      result.getDeclaringType() = this.(RefType).getABaseType*() |
+      result.getDeclaringType() = this.(RefType).getABaseType*()
+    |
       name.regexpMatch("Find(All|Last)?")
     )
   }
 
   private predicate propertyFlow(Property p) {
-    this.(RefType).getABaseType*() = p.getDeclaringType()
-    and
+    this.(RefType).getABaseType*() = p.getDeclaringType() and
     p.hasName("Values")
   }
 }
 
 /** Data flow for `System.Convert`. */
 class SystemConvertFlow extends LibraryTypeDataFlow, SystemConvertClass {
-  override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
+  override predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  ) {
     methodFlow(source, sink, c) and
     preservesValue = false
   }
 
-  private predicate methodFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m) {
+  private predicate methodFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m
+  ) {
     m = getAMethod() and
     source = TCallableFlowSourceArg(m, 0) and
     sink = TCallableFlowSinkReturn()
@@ -1144,34 +1220,37 @@ class SystemConvertFlow extends LibraryTypeDataFlow, SystemConvertClass {
  * (a tainted data contract object implies tainted data members).
  */
 class DataContractFlow extends LibraryTypeDataFlow, DataContractClass {
-  override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
+  override predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  ) {
     exists(Property p |
       propertyFlow(p) and
       source = TCallableFlowSourceQualifier() and
       sink = TCallableFlowSinkReturn() and
       c = p.getGetter()
-    )
-    and
+    ) and
     preservesValue = false
   }
 
   private predicate propertyFlow(Property p) {
-    p.getDeclaringType() = this
-    and
+    p.getDeclaringType() = this and
     p.getAnAttribute() instanceof DataMemberAttribute
   }
 }
 
 /** Data flow for `System.Web.HttpCookie`. */
 class SystemWebHttpCookieFlow extends LibraryTypeDataFlow, SystemWebHttpCookie {
-  override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
+  override predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  ) {
     exists(Property p |
       propertyFlow(p) and
       source = TCallableFlowSourceQualifier() and
       sink = TCallableFlowSinkReturn() and
       c = p.getGetter()
-    )
-    and
+    ) and
     preservesValue = false
   }
 
@@ -1183,32 +1262,34 @@ class SystemWebHttpCookieFlow extends LibraryTypeDataFlow, SystemWebHttpCookie {
 
 /** Data flow for `System.Net.Cookie`. */
 class SystemNetCookieFlow extends LibraryTypeDataFlow, SystemNetCookieClass {
-  override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
+  override predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  ) {
     exists(Property p |
       propertyFlow(p) and
       source = TCallableFlowSourceQualifier() and
       sink = TCallableFlowSinkReturn() and
       c = p.getGetter()
-    )
-    and
+    ) and
     preservesValue = false
   }
 
-  private predicate propertyFlow(Property p) {
-    p = this.getValueProperty()
-  }
+  private predicate propertyFlow(Property p) { p = this.getValueProperty() }
 }
 
 /** Data flow for `System.Net.IPHostEntry`. */
 class SystemNetIPHostEntryFlow extends LibraryTypeDataFlow, SystemNetIPHostEntryClass {
-  override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
+  override predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  ) {
     exists(Property p |
       propertyFlow(p) and
       source = TCallableFlowSourceQualifier() and
       sink = TCallableFlowSinkReturn() and
       c = p.getGetter()
-    )
-    and
+    ) and
     preservesValue = false
   }
 
@@ -1219,21 +1300,22 @@ class SystemNetIPHostEntryFlow extends LibraryTypeDataFlow, SystemNetIPHostEntry
 }
 
 /** Data flow for `System.Web.UI.WebControls.TextBox`. */
-class SystemWebUIWebControlsTextBoxFlow extends LibraryTypeDataFlow, SystemWebUIWebControlsTextBoxClass {
-  override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
+class SystemWebUIWebControlsTextBoxFlow extends LibraryTypeDataFlow,
+  SystemWebUIWebControlsTextBoxClass {
+  override predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  ) {
     exists(Property p |
       propertyFlow(p) and
       source = TCallableFlowSourceQualifier() and
       sink = TCallableFlowSinkReturn() and
       c = p.getGetter()
-    )
-    and
+    ) and
     preservesValue = false
   }
 
-  private predicate propertyFlow(Property p) {
-    p = getTextProperty()
-  }
+  private predicate propertyFlow(Property p) { p = getTextProperty() }
 }
 
 /**
@@ -1246,7 +1328,10 @@ class SystemCollectionsGenericKeyValuePairStructFlow extends LibraryTypeDataFlow
     this instanceof SystemCollectionsGenericKeyValuePairStruct
   }
 
-  override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
+  override predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  ) {
     (
       constructorFlow(source, sink, c)
       or
@@ -1256,16 +1341,13 @@ class SystemCollectionsGenericKeyValuePairStructFlow extends LibraryTypeDataFlow
         sink = TCallableFlowSinkReturn() and
         c = p.getGetter()
       )
-    )
-    and
+    ) and
     preservesValue = true
   }
 
   private predicate constructorFlow(CallableFlowSource source, CallableFlowSink sink, Constructor c) {
-    c.getDeclaringType() = this
-    and
-    source = TCallableFlowSourceArg(c, 1)
-    and
+    c.getDeclaringType() = this and
+    source = TCallableFlowSourceArg(c, 1) and
     sink = TCallableFlowSinkReturn()
   }
 
@@ -1280,14 +1362,16 @@ class SystemCollectionsGenericIEnumeratorInterfaceFlow extends LibraryTypeDataFl
     this instanceof SystemCollectionsGenericIEnumeratorInterface
   }
 
-  override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
+  override predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  ) {
     exists(Property p |
       propertyFlow(p) and
       source = TCallableFlowSourceQualifier() and
       sink = TCallableFlowSinkReturn() and
       c = p.getGetter()
-    )
-    and
+    ) and
     preservesValue = true
   }
 
@@ -1297,38 +1381,42 @@ class SystemCollectionsGenericIEnumeratorInterfaceFlow extends LibraryTypeDataFl
 }
 
 /** Data flow for `System.Collections.IEnumerator`. */
-class SystemCollectionsIEnumeratorInterfaceFlow extends LibraryTypeDataFlow, SystemCollectionsIEnumeratorInterface {
-  override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
+class SystemCollectionsIEnumeratorInterfaceFlow extends LibraryTypeDataFlow,
+  SystemCollectionsIEnumeratorInterface {
+  override predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  ) {
     exists(Property p |
       propertyFlow(p) and
       source = TCallableFlowSourceQualifier() and
       sink = TCallableFlowSinkReturn() and
       c = p.getGetter()
-    )
-    and
+    ) and
     preservesValue = true
   }
 
-  private predicate propertyFlow(Property p) {
-    p = getCurrentProperty()
-  }
+  private predicate propertyFlow(Property p) { p = getCurrentProperty() }
 }
 
 /** Data flow for `System.Threading.Tasks.Task`. */
 class SystemThreadingTasksTaskFlow extends LibraryTypeDataFlow, SystemThreadingTasksTaskClass {
-  override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
+  override predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  ) {
     (
       constructorFlow(source, sink, c)
       or
       methodFlow(source, sink, c)
-    )
-    and
+    ) and
     preservesValue = true
   }
 
   private predicate constructorFlow(CallableFlowSource source, CallableFlowSink sink, Constructor c) {
     // flow from supplied state to supplied delegate
-    c.getDeclaringType() = this and exists(ConstructedDelegateType action |
+    c.getDeclaringType() = this and
+    exists(ConstructedDelegateType action |
       c.getParameter(1).getType() instanceof ObjectType and
       c.getParameter(0).getType() = action and
       action.getUnboundGeneric().(SystemActionTDelegateType).getNumberOfTypeParameters() = 1 and
@@ -1338,11 +1426,13 @@ class SystemThreadingTasksTaskFlow extends LibraryTypeDataFlow, SystemThreadingT
     )
   }
 
-  private predicate methodFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m) {
-    m.getDeclaringType() = this
-    and
+  private predicate methodFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m
+  ) {
+    m.getDeclaringType() = this and
     (
-      m.hasName("ContinueWith") and (
+      m.hasName("ContinueWith") and
+      (
         // flow from supplied state to supplied delegate
         exists(ConstructedDelegateType delegate, int i, int j, int k |
           m.getParameter(i).getType() instanceof ObjectType and
@@ -1365,19 +1455,22 @@ class SystemThreadingTasksTaskFlow extends LibraryTypeDataFlow, SystemThreadingT
         )
       )
       or
-      m.hasName("FromResult") and (
+      m.hasName("FromResult") and
+      (
         source = TCallableFlowSourceArg(m, 0) and
         sink = TCallableFlowSinkReturn()
       )
       or
-      m.hasName("Run") and (
+      m.hasName("Run") and
+      (
         m.getReturnType() = any(SystemThreadingTasksTaskTClass c).getAConstructedGeneric() and
         m.(UnboundGenericMethod).getNumberOfTypeParameters() = 1 and
         source = TCallableFlowSourceDelegateArg(m, 0) and
         sink = TCallableFlowSinkReturn()
       )
       or
-      m.getName().regexpMatch("WhenAll|WhenAny") and (
+      m.getName().regexpMatch("WhenAll|WhenAny") and
+      (
         m.getReturnType() = any(SystemThreadingTasksTaskTClass c).getAConstructedGeneric() and
         m.(UnboundGenericMethod).getNumberOfTypeParameters() = 1 and
         source = TCallableFlowSourceArg(m, _) and
@@ -1389,11 +1482,12 @@ class SystemThreadingTasksTaskFlow extends LibraryTypeDataFlow, SystemThreadingT
 
 /** Data flow for `System.Threading.Tasks.Task<>`. */
 class SystemThreadingTasksTaskTFlow extends LibraryTypeDataFlow {
-  SystemThreadingTasksTaskTFlow() {
-    this instanceof SystemThreadingTasksTaskTClass
-  }
+  SystemThreadingTasksTaskTFlow() { this instanceof SystemThreadingTasksTaskTClass }
 
-  override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
+  override predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  ) {
     (
       constructorFlow(source, sink, c)
       or
@@ -1405,21 +1499,22 @@ class SystemThreadingTasksTaskTFlow extends LibraryTypeDataFlow {
         sink = TCallableFlowSinkReturn() and
         c = p.getGetter()
       )
-    )
-    and
+    ) and
     preservesValue = true
   }
 
   private predicate constructorFlow(CallableFlowSource source, CallableFlowSink sink, Constructor c) {
     // flow from supplied function into constructed Task
-    c.getDeclaringType() = this and (
+    c.getDeclaringType() = this and
+    (
       c.getParameter(0).getType() = any(SystemFuncDelegateType t).getAConstructedGeneric() and
       source = TCallableFlowSourceDelegateArg(c, 0) and
       sink = TCallableFlowSinkReturn()
     )
     or
     // flow from supplied state to supplied delegate
-    c.getDeclaringType() = this and exists(ConstructedDelegateType func |
+    c.getDeclaringType() = this and
+    exists(ConstructedDelegateType func |
       c.getParameter(1).getType() instanceof ObjectType and
       c.getParameter(0).getType() = func and
       func.getUnboundGeneric().(SystemFuncDelegateType).getNumberOfTypeParameters() = 2 and
@@ -1429,16 +1524,19 @@ class SystemThreadingTasksTaskTFlow extends LibraryTypeDataFlow {
     )
   }
 
-  private predicate methodFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m) {
+  private predicate methodFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m
+  ) {
     m.getDeclaringType() = this and
-    m.hasName("ContinueWith") and (
+    m.hasName("ContinueWith") and
+    (
       exists(ConstructedDelegateType delegate, int i, int j |
         m.getParameter(i).getType() = delegate and
         (
           delegate.getUnboundGeneric() instanceof SystemActionTDelegateType or
           delegate.getUnboundGeneric() instanceof SystemFuncDelegateType
         )
-        |
+      |
         // flow from supplied state to supplied delegate
         exists(int k |
           delegate.getTypeArgument(j) instanceof ObjectType and
@@ -1471,21 +1569,25 @@ class SystemThreadingTasksTaskTFlow extends LibraryTypeDataFlow {
 /** Data flow for `System.Threading.Tasks.TaskFactory`(`<TResult>`). */
 class SystemThreadingTasksFactoryFlow extends LibraryTypeDataFlow {
   SystemThreadingTasksFactoryFlow() {
-    this instanceof SystemThreadingTasksClass
-    and
+    this instanceof SystemThreadingTasksClass and
     getName().regexpMatch("TaskFactory(<>)?")
   }
 
-  override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
+  override predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  ) {
     methodFlow(source, sink, c) and
     preservesValue = true
   }
 
-  private predicate methodFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m) {
-    m.getDeclaringType() = this
-    and
+  private predicate methodFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m
+  ) {
+    m.getDeclaringType() = this and
     (
-      m.getName().regexpMatch("ContinueWhen(All|Any)") and (
+      m.getName().regexpMatch("ContinueWhen(All|Any)") and
+      (
         // flow into supplied function
         exists(ConstructedDelegateType delegate, ArrayType at, int i, int j, int k |
           at = m.getParameter(i).getType() and
@@ -1509,7 +1611,8 @@ class SystemThreadingTasksFactoryFlow extends LibraryTypeDataFlow {
         )
       )
       or
-      m.hasName("StartNew") and (
+      m.hasName("StartNew") and
+      (
         // flow from supplied state to supplied delegate
         exists(ConstructedDelegateType delegate, int i, int j, int k |
           m.getParameter(i).getType() instanceof ObjectType and
@@ -1537,7 +1640,10 @@ class SystemThreadingTasksFactoryFlow extends LibraryTypeDataFlow {
 
 /** Data flow for `System.Text.Encoding`. */
 library class SystemTextEncodingFlow extends LibraryTypeDataFlow, SystemTextEncodingClass {
-  override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
+  override predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  ) {
     (c = getGetBytesMethod() or c = getGetStringMethod() or c = getGetCharsMethod()) and
     source = TCallableFlowSourceArg(c, 0) and
     sink = TCallableFlowSinkReturn() and
@@ -1547,134 +1653,126 @@ library class SystemTextEncodingFlow extends LibraryTypeDataFlow, SystemTextEnco
 
 /** Data flow for `System.IO.MemoryStream`. */
 library class SystemIOMemoryStreamFlow extends LibraryTypeDataFlow, SystemIOMemoryStreamClass {
-  override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
+  override predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  ) {
     (
       constructorFlow(source, sink, c)
       or
-      (
-        c = getToArrayMethod().getAnOverrider*()
-        and
-        source = TCallableFlowSourceQualifier()
-        and
-        sink = TCallableFlowSinkReturn()
-      )
-    )
-    and
+      c = getToArrayMethod().getAnOverrider*() and
+      source = TCallableFlowSourceQualifier() and
+      sink = TCallableFlowSinkReturn()
+    ) and
     preservesValue = false
   }
 
   private predicate constructorFlow(CallableFlowSource source, CallableFlowSink sink, Constructor c) {
-    c = getAMember()
-    and
-    c.getParameter(0).getType().(ArrayType).getElementType() instanceof ByteType
-    and
-    source = TCallableFlowSourceArg(c, 0)
-    and
+    c = getAMember() and
+    c.getParameter(0).getType().(ArrayType).getElementType() instanceof ByteType and
+    source = TCallableFlowSourceArg(c, 0) and
     sink = TCallableFlowSinkReturn()
   }
 }
 
 /** Data flow for `System.IO.Stream`. */
 class SystemIOStreamFlow extends LibraryTypeDataFlow, SystemIOStreamClass {
-  override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
+  override predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  ) {
     (
-      (
-        c = getAReadMethod().getAnOverrider*()
-        and
-        c.getParameter(0).getType().(ArrayType).getElementType() instanceof ByteType
-        and
-        sink = TCallableFlowSinkArg(c, 0)
-        and
-        source = TCallableFlowSourceQualifier()
-      ) or (
-        c = getAWriteMethod().getAnOverrider*()
-        and
-        c.getParameter(0).getType().(ArrayType).getElementType() instanceof ByteType
-        and
-        source = TCallableFlowSourceArg(c, 0)
-        and
-        sink = TCallableFlowSinkQualifier()
-      ) or (
-        c = any(Method m | m = getAMethod() and m.getName().matches("CopyTo%")).getAnOverrider*()
-        and
-        c.getParameter(0).getType() instanceof SystemIOStreamClass
-        and
-        source = TCallableFlowSourceQualifier()
-        and
-        sink = TCallableFlowSinkArg(c, 0)
-      )
-    )
-    and
+      c = getAReadMethod().getAnOverrider*() and
+      c.getParameter(0).getType().(ArrayType).getElementType() instanceof ByteType and
+      sink = TCallableFlowSinkArg(c, 0) and
+      source = TCallableFlowSourceQualifier()
+      or
+      c = getAWriteMethod().getAnOverrider*() and
+      c.getParameter(0).getType().(ArrayType).getElementType() instanceof ByteType and
+      source = TCallableFlowSourceArg(c, 0) and
+      sink = TCallableFlowSinkQualifier()
+      or
+      c = any(Method m | m = getAMethod() and m.getName().matches("CopyTo%")).getAnOverrider*() and
+      c.getParameter(0).getType() instanceof SystemIOStreamClass and
+      source = TCallableFlowSourceQualifier() and
+      sink = TCallableFlowSinkArg(c, 0)
+    ) and
     preservesValue = false
   }
 }
 
 /** Data flow for `System.IO.Compression.DeflateStream`. */
-class SystemIOCompressionDeflateStreamFlow extends LibraryTypeDataFlow, SystemIOCompressionDeflateStream {
-  override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
+class SystemIOCompressionDeflateStreamFlow extends LibraryTypeDataFlow,
+  SystemIOCompressionDeflateStream {
+  override predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  ) {
     constructorFlow(source, sink, c) and
     preservesValue = false
   }
 
   private predicate constructorFlow(CallableFlowSource source, CallableFlowSink sink, Constructor c) {
-    c = getAMember()
-    and
-    source = TCallableFlowSourceArg(c, 0)
-    and
+    c = getAMember() and
+    source = TCallableFlowSourceArg(c, 0) and
     sink = TCallableFlowSinkReturn()
   }
 }
 
 /** Data flow for `System.Xml.XmlReader`. */
 class SystemXmlXmlReaderFlow extends LibraryTypeDataFlow, SystemXmlXmlReaderClass {
-  override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
-    c = getCreateMethod()
-    and
-    source = TCallableFlowSourceArg(c, 0)
-    and
-    sink = TCallableFlowSinkReturn()
-    and
+  override predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  ) {
+    c = getCreateMethod() and
+    source = TCallableFlowSourceArg(c, 0) and
+    sink = TCallableFlowSinkReturn() and
     preservesValue = false
   }
 }
 
 /** Data flow for `System.Xml.XmlDocument`. */
 class SystemXmlXmlDocumentFlow extends LibraryTypeDataFlow, SystemXmlXmlDocumentClass {
-  override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
-    c = getLoadMethod()
-    and
-    source = TCallableFlowSourceArg(c, 0)
-    and
-    sink = TCallableFlowSinkQualifier()
-    and
+  override predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  ) {
+    c = getLoadMethod() and
+    source = TCallableFlowSourceArg(c, 0) and
+    sink = TCallableFlowSinkQualifier() and
     preservesValue = false
   }
 }
 
 /** Data flow for `System.Xml.XmlNode`. */
 class SystemXmlXmlNodeFlow extends LibraryTypeDataFlow, SystemXmlXmlNodeClass {
-  override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
+  override predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  ) {
     (
       exists(Property p |
         p = getAProperty() and
         c = p.getGetter() and
         source = TCallableFlowSourceQualifier() and
         sink = TCallableFlowSinkReturn()
-      ) or
-      (
-        c = getASelectNodeMethod() and
-        source = TCallableFlowSourceQualifier() and
-        sink = TCallableFlowSinkReturn()
       )
-    )
-    and
+      or
+      c = getASelectNodeMethod() and
+      source = TCallableFlowSourceQualifier() and
+      sink = TCallableFlowSinkReturn()
+    ) and
     preservesValue = false
   }
 }
 
 /** Data flow for `System.Xml.XmlNamedNodeMap`. */
 class SystemXmlXmlNamedNodeMapFlow extends LibraryTypeDataFlow, SystemXmlXmlNamedNodeMapClass {
-  override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
+  override predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  ) {
     c = getGetNamedItemMethod() and
     source = TCallableFlowSourceQualifier() and
     sink = TCallableFlowSinkReturn() and
@@ -1684,13 +1782,15 @@ class SystemXmlXmlNamedNodeMapFlow extends LibraryTypeDataFlow, SystemXmlXmlName
 
 /** Data flow for `System.IO.Path`. */
 class SystemIOPathFlow extends LibraryTypeDataFlow, SystemIOPathClass {
-  override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
-    (
-      c = getAMethod("Combine") and
-      source = TCallableFlowSourceArg(c, _) and
-      sink = TCallableFlowSinkReturn() and
-      preservesValue = false
-    ) or
+  override predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  ) {
+    c = getAMethod("Combine") and
+    source = TCallableFlowSourceArg(c, _) and
+    sink = TCallableFlowSinkReturn() and
+    preservesValue = false
+    or
     exists(Parameter p |
       c = getAMethod() and
       c.getName().matches("Get%") and
@@ -1705,14 +1805,16 @@ class SystemIOPathFlow extends LibraryTypeDataFlow, SystemIOPathClass {
 
 /** Data flow for `System.Web.HttpUtility`. */
 class SystemWebHttpUtilityFlow extends LibraryTypeDataFlow, SystemWebHttpUtility {
-  override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
+  override predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  ) {
     (
       c = getAnHtmlAttributeEncodeMethod() or
       c = getAnHtmlEncodeMethod() or
       c = getAJavaScriptStringEncodeMethod() or
       c = getAnUrlEncodeMethod()
-    )
-    and
+    ) and
     source = TCallableFlowSourceArg(c, 0) and
     sink = TCallableFlowSinkReturn() and
     preservesValue = false
@@ -1721,12 +1823,14 @@ class SystemWebHttpUtilityFlow extends LibraryTypeDataFlow, SystemWebHttpUtility
 
 /** Data flow for `System.Web.HttpServerUtility`. */
 class SystemWebHttpServerUtilityFlow extends LibraryTypeDataFlow, SystemWebHttpServerUtility {
-  override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
+  override predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  ) {
     (
       c = getAnHtmlEncodeMethod() or
       c = getAnUrlEncodeMethod()
-    )
-    and
+    ) and
     source = TCallableFlowSourceArg(c, 0) and
     sink = TCallableFlowSinkReturn() and
     preservesValue = false
@@ -1735,12 +1839,14 @@ class SystemWebHttpServerUtilityFlow extends LibraryTypeDataFlow, SystemWebHttpS
 
 /** Data flow for `System.Net.WebUtility`. */
 class SystemNetWebUtilityFlow extends LibraryTypeDataFlow, SystemNetWebUtility {
-  override predicate callableFlow(CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c, boolean preservesValue) {
+  override predicate callableFlow(
+    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
+    boolean preservesValue
+  ) {
     (
       c = getAnHtmlEncodeMethod() or
       c = getAnUrlEncodeMethod()
-    )
-    and
+    ) and
     source = TCallableFlowSourceArg(c, 0) and
     sink = TCallableFlowSinkReturn() and
     preservesValue = false

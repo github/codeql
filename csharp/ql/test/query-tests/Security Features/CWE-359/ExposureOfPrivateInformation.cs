@@ -1,4 +1,4 @@
-// semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Web.cs /r:System.Collections.Specialized.dll
+// semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Web.cs /r:System.Collections.Specialized.dll ${testdir}/../../../resources/stubs/System.Windows.cs
 
 using System.Web;
 
@@ -32,6 +32,14 @@ public class ExposureOfPrivateInformationHandler : IHttpHandler
         {
             return true;
         }
+    }
+
+    System.Windows.Forms.TextBox postcode;
+
+    void OnButtonClicked()
+    {
+        ILogger logger = new ILogger();
+        logger.Warn(postcode.Text);
     }
 }
 

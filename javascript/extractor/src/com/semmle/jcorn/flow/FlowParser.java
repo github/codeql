@@ -15,19 +15,24 @@ import com.semmle.jcorn.SyntaxError;
 import com.semmle.jcorn.TokenType;
 import com.semmle.jcorn.TokenType.Properties;
 import com.semmle.jcorn.Whitespace;
+import com.semmle.js.ast.BinaryExpression;
 import com.semmle.js.ast.ExportDeclaration;
 import com.semmle.js.ast.ExportSpecifier;
 import com.semmle.js.ast.Expression;
 import com.semmle.js.ast.ExpressionStatement;
 import com.semmle.js.ast.FieldDefinition;
 import com.semmle.js.ast.Identifier;
+import com.semmle.js.ast.ImportDeclaration;
 import com.semmle.js.ast.ImportSpecifier;
+import com.semmle.js.ast.Literal;
 import com.semmle.js.ast.MethodDefinition;
 import com.semmle.js.ast.Node;
 import com.semmle.js.ast.Position;
 import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.Statement;
 import com.semmle.js.ast.Token;
+import com.semmle.js.ast.UnaryExpression;
+import com.semmle.util.data.Pair;
 import com.semmle.util.exception.Exceptions;
 
 /**
@@ -226,28 +231,19 @@ public class FlowParser extends ESNextParser {
 		this.expect(TokenType.braceL);
 		while (this.type != TokenType.braceR) {
 			Position stmtStart = startLoc;
-
-			if (this.eat(TokenType._import)) {
-				this.flowParseDeclareImport(stmtStart);
-			} else {
-				// todo: declare check
-				this.next();
-
+			if (this.eatContextual("declare")) {
 				this.flowParseDeclare(stmtStart);
+			} else if (this.eat(TokenType._import)) {
+				if (peekAtSpecialFlowImportSpecifier() == null) {
+					this.raise(stmtStart,
+							"Imports within a `declare module` body must always be `import type` or `import typeof`.");
+				}
+				this.parseImportRest(new SourceLocation(stmtStart));
+			} else {
+				unexpected();
 			}
 		}
 		this.expect(TokenType.braceR);
-	}
-
-	private void flowParseDeclareImport(Position stmtStart) {
-		String kind = flowParseImportSpecifiers();
-		if (kind == null) {
-			this.raise(stmtStart, "Imports within a `declare module` body must always be `import type` or `import typeof`.");
-		}
-		this.expect(TokenType.name);
-		this.expectContextual("from");
-		this.expect(TokenType.string);
-		this.semicolon();
 	}
 
 	private void flowParseDeclareModuleExports() {
@@ -919,6 +915,11 @@ public class FlowParser extends ESNextParser {
 					List<ExportSpecifier> specifiers = this.parseExportSpecifiers(exports);
 					this.parseExportFrom(specifiers, null, false);
 					return null;
+				} else if (this.eat(TokenType.star)) {
+					if (this.eatContextual("as"))
+						this.parseIdent(true);
+					this.parseExportFrom(null, null, true);
+					return null;
 				} else {
 					// `export type Foo = Bar;`
 					this.flowParseTypeAlias(startLoc);
@@ -1004,12 +1005,7 @@ public class FlowParser extends ESNextParser {
 	}
 
 	private String flowParseImportSpecifiers() {
-		String kind = null;
-		if (this.type == TokenType._typeof) {
-			kind = "typeof";
-		} else if (this.isContextual("type")) {
-			kind = "type";
-		}
+		String kind = peekAtSpecialFlowImportSpecifier();
 		if (kind != null) {
 			String lh = lookahead(4);
 			if (!lh.isEmpty()) {
@@ -1018,6 +1014,16 @@ public class FlowParser extends ESNextParser {
 					this.next();
 				}
 			}
+		}
+		return kind;
+	}
+
+	private String peekAtSpecialFlowImportSpecifier() {
+		String kind = null;
+		if (this.type == TokenType._typeof) {
+			kind = "typeof";
+		} else if (this.isContextual("type")) {
+			kind = "type";
 		}
 		return kind;
 	}
@@ -1037,7 +1043,7 @@ public class FlowParser extends ESNextParser {
 
 	@Override
 	protected ImportSpecifier parseImportSpecifier() {
-		if (this.type == TokenType._typeof || this.isContextual("type")) {
+		if (peekAtSpecialFlowImportSpecifier() != null) {
 			String lh = lookahead(2);
 			if (lh.charAt(0) == ',' || lh.charAt(0) == '}' || lh.equals("as"))
 				return super.parseImportSpecifier();
@@ -1201,4 +1207,43 @@ public class FlowParser extends ESNextParser {
 		return super.atGetterSetterName(pi);
 	}
 
+    @Override
+	protected Pair<Expression, Boolean> parseSubscript(final Expression base, Position startLoc, boolean noCalls) {
+		if (!noCalls) {
+			maybeFlowParseTypeParameterInstantiation(base, true);
+		}
+		return super.parseSubscript(base, startLoc, noCalls);
+	}
+
+	private void maybeFlowParseTypeParameterInstantiation(Expression left, boolean requireParenL) {
+		if (flow() && this.isRelational("<")) {
+			// Ambiguous case: `e1<e2>(e3)` is parsed differently as JS and Flow code:
+			// JS: two relational comparisons: `e1 < e2 > e3`
+			// Flow: a call `e1(e3)` with explicit type parameter `e2`
+
+			// Heuristic: if the left operand of the `<` token is a primitive from a literal or unary/binary expression, then it probably isn't a call, as that would always crash
+			left = left.stripParens();
+			if (left instanceof Literal || left instanceof UnaryExpression || left instanceof BinaryExpression)
+				return;
+
+			// If it can be parsed as Flow, we use that, otherwise we parse it as JS
+			State backup = new State();
+			try {
+				this.flowParseTypeParameterInstantiation();
+				if (requireParenL && this.type != TokenType.parenL) {
+					unexpected();
+				}
+				backup.commit();
+			} catch (SyntaxError e) {
+				Exceptions.ignore(e, "Backtracking parser.");
+				backup.reset();
+			}
+		}
+	}
+
+	@Override
+	protected Expression parseNewArguments(Position startLoc, Expression callee) {
+		maybeFlowParseTypeParameterInstantiation(callee, false /* case: new e1<e2>e3 */);
+		return super.parseNewArguments(startLoc, callee);
+	}
 }

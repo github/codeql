@@ -1744,6 +1744,10 @@ public class Parser {
 		if (isOnOptionalChain(false, callee))
 			this.raise(callee, "An optional chain may not be used in a `new` expression.");
 
+		return parseNewArguments(startLoc, callee);
+	}
+
+	protected Expression parseNewArguments(Position startLoc, Expression callee) {
 		List<Expression> arguments;
 		if (this.eat(TokenType.parenL))
 			arguments = this.parseExprList(TokenType.parenR, this.options.ecmaVersion() >= 8, false, null);

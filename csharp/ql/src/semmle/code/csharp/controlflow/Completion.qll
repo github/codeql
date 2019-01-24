@@ -25,41 +25,22 @@ private import semmle.code.csharp.frameworks.System
 
 // Internal representation of completions
 private newtype TCompletion =
-  TNormalCompletion()
-  or
+  TNormalCompletion() or
   TBooleanCompletion(boolean outerValue, boolean innerValue) {
     (outerValue = true or outerValue = false) and
     (innerValue = true or innerValue = false)
-  }
-  or
-  TNullnessCompletion(boolean isNull) {
-    isNull = true or isNull = false
-  }
-  or
-  TMatchingCompletion(boolean isMatch) {
-    isMatch = true or isMatch = false
-  }
-  or
-  TEmptinessCompletion(boolean isEmpty) {
-    isEmpty = true or isEmpty = false
-  }
-  or
-  TReturnCompletion()
-  or
-  TBreakCompletion()
-  or
-  TBreakNormalCompletion()
-  or
-  TContinueCompletion()
-  or
-  TGotoLabelCompletion(GotoLabelStmt goto)
-  or
-  TGotoCaseCompletion(GotoCaseStmt goto)
-  or
-  TGotoDefaultCompletion()
-  or
-  TThrowCompletion(ExceptionClass ec)
-  or
+  } or
+  TNullnessCompletion(boolean isNull) { isNull = true or isNull = false } or
+  TMatchingCompletion(boolean isMatch) { isMatch = true or isMatch = false } or
+  TEmptinessCompletion(boolean isEmpty) { isEmpty = true or isEmpty = false } or
+  TReturnCompletion() or
+  TBreakCompletion() or
+  TBreakNormalCompletion() or
+  TContinueCompletion() or
+  TGotoLabelCompletion(GotoLabelStmt goto) or
+  TGotoCaseCompletion(GotoCaseStmt goto) or
+  TGotoDefaultCompletion() or
+  TThrowCompletion(ExceptionClass ec) or
   TExitCompletion()
 
 /**
@@ -81,9 +62,9 @@ class Completion extends TCompletion {
   predicate isValidFor(ControlFlowElement cfe) {
     this.(ThrowCompletion).getExceptionClass() = cfe.(TriedControlFlowElement).getAThrownException()
     or
-    if mustHaveBooleanCompletion(cfe) then
-      exists(boolean value |
-        isBooleanConstant(cfe, value) |
+    if mustHaveBooleanCompletion(cfe)
+    then
+      exists(boolean value | isBooleanConstant(cfe, value) |
         this = TBooleanCompletion(value, value)
       )
       or
@@ -95,26 +76,24 @@ class Completion extends TCompletion {
       // non-`null` completion)
       mustHaveNullnessCompletion(cfe) and
       this = TNullnessCompletion(true)
-    else if mustHaveNullnessCompletion(cfe) then
-      exists(boolean value |
-        isNullnessConstant(cfe, value) |
-        this = TNullnessCompletion(value)
-      )
-      or
-      not isNullnessConstant(cfe, _) and
-      this = TNullnessCompletion(_)
-    else if mustHaveMatchingCompletion(cfe) then
-      exists(boolean value |
-        isMatchingConstant(cfe, value) |
-        this = TMatchingCompletion(value)
-      )
-      or
-      not isMatchingConstant(cfe, _) and
-      this = TMatchingCompletion(_)
-    else if mustHaveEmptinessCompletion(cfe) then
-      this = TEmptinessCompletion(_)
     else
-      this = TNormalCompletion()
+      if mustHaveNullnessCompletion(cfe)
+      then
+        exists(boolean value | isNullnessConstant(cfe, value) | this = TNullnessCompletion(value))
+        or
+        not isNullnessConstant(cfe, _) and
+        this = TNullnessCompletion(_)
+      else
+        if mustHaveMatchingCompletion(cfe)
+        then
+          exists(boolean value | isMatchingConstant(cfe, value) | this = TMatchingCompletion(value))
+          or
+          not isMatchingConstant(cfe, _) and
+          this = TMatchingCompletion(_)
+        else
+          if mustHaveEmptinessCompletion(cfe)
+          then this = TEmptinessCompletion(_)
+          else this = TNormalCompletion()
   }
 
   /**
@@ -147,14 +126,13 @@ private predicate isBooleanConstant(Expr e, boolean value) {
  */
 private predicate isNullnessConstant(Expr e, boolean value) {
   mustHaveNullnessCompletion(e) and
-  exists(Expr stripped |
-    stripped = e.stripCasts() |
+  exists(Expr stripped | stripped = e.stripCasts() |
     stripped.getType() = any(ValueType t |
-      not t instanceof NullableType and
-      // Extractor bug: the type of `x?.Length` is reported as `int`, but it should
-      // be `int?`
-      not getQualifier*(stripped).(QualifiableExpr).isConditional()
-    ) and
+        not t instanceof NullableType and
+        // Extractor bug: the type of `x?.Length` is reported as `int`, but it should
+        // be `int?`
+        not getQualifier*(stripped).(QualifiableExpr).isConditional()
+      ) and
     value = false
     or
     stripped instanceof NullLiteral and
@@ -176,22 +154,17 @@ private Expr getQualifier(QualifiableExpr e) {
  * non-matches (`value = false`).
  */
 private predicate isMatchingConstant(Expr e, boolean value) {
-  exists(SwitchStmt ss |
-    mustHaveMatchingCompletion(ss, e) |
-    exists(Expr stripped |
-      stripped = ss.getCondition().stripCasts() |
+  exists(SwitchStmt ss | mustHaveMatchingCompletion(ss, e) |
+    exists(Expr stripped | stripped = ss.getCondition().stripCasts() |
       exists(ConstCase cc, string strippedValue |
         cc = ss.getAConstCase() and
         e = cc.getExpr() and
-        strippedValue = stripped.getValue() |
-        if strippedValue = e.getValue() then
-          value = true
-        else
-          value = false
+        strippedValue = stripped.getValue()
+      |
+        if strippedValue = e.getValue() then value = true else value = false
       )
       or
-      exists(TypeCase tc, Type t, Type strippedType |
-        tc = ss.getATypeCase() |
+      exists(TypeCase tc, Type t, Type strippedType | tc = ss.getATypeCase() |
         e = tc.getTypeAccess() and
         t = e.getType() and
         strippedType = stripped.getType() and
@@ -207,36 +180,34 @@ private predicate isMatchingConstant(Expr e, boolean value) {
 
 /** A control flow element that is inside a `try` block. */
 private class TriedControlFlowElement extends ControlFlowElement {
-  TriedControlFlowElement() {
-    this = any(TryStmt try).getATriedElement()
-  }
+  TriedControlFlowElement() { this = any(TryStmt try).getATriedElement() }
 
   /**
    * Gets an exception class that is potentially thrown by this element, if any.
    */
   ExceptionClass getAThrownException() {
     this = any(UnaryOperation uo |
-      not uo instanceof UnaryBitwiseOperation and
-      uo.getType() instanceof IntegralType and
-      result instanceof SystemOverflowExceptionClass
-    )
+        not uo instanceof UnaryBitwiseOperation and
+        uo.getType() instanceof IntegralType and
+        result instanceof SystemOverflowExceptionClass
+      )
     or
     this = any(CastExpr ce |
-      ce.getType() instanceof IntegralType and
-      result instanceof SystemOverflowExceptionClass
-      or
-      invalidCastCandidate(ce) and
-      result instanceof SystemInvalidCastExceptionClass
-    )
+        ce.getType() instanceof IntegralType and
+        result instanceof SystemOverflowExceptionClass
+        or
+        invalidCastCandidate(ce) and
+        result instanceof SystemInvalidCastExceptionClass
+      )
     or
     this instanceof Call and
     result instanceof SystemExceptionClass
     or
     this = any(MemberAccess ma |
-      not ma.isConditional() and
-      ma.hasQualifier() and
-      result instanceof SystemNullReferenceExceptionClass
-    )
+        not ma.isConditional() and
+        ma.hasQualifier() and
+        result instanceof SystemNullReferenceExceptionClass
+      )
     or
     this instanceof DelegateCreation and
     result instanceof SystemOutOfMemoryExceptionClass
@@ -245,27 +216,27 @@ private class TriedControlFlowElement extends ControlFlowElement {
     result instanceof SystemOutOfMemoryExceptionClass
     or
     this = any(AddExpr ae |
-      ae.getType() instanceof StringType and
-      result instanceof SystemOutOfMemoryExceptionClass
-      or
-      ae.getType() instanceof IntegralType and
-      result instanceof SystemOverflowExceptionClass
-    )
+        ae.getType() instanceof StringType and
+        result instanceof SystemOutOfMemoryExceptionClass
+        or
+        ae.getType() instanceof IntegralType and
+        result instanceof SystemOverflowExceptionClass
+      )
     or
     this = any(SubExpr se |
-      se.getType() instanceof IntegralType and
-      result instanceof SystemOverflowExceptionClass
-    )
+        se.getType() instanceof IntegralType and
+        result instanceof SystemOverflowExceptionClass
+      )
     or
     this = any(MulExpr me |
-      me.getType() instanceof IntegralType and
-      result instanceof SystemOverflowExceptionClass
-    )
+        me.getType() instanceof IntegralType and
+        result instanceof SystemOverflowExceptionClass
+      )
     or
     this = any(DivExpr de |
-      not de.getDenominator().getValue().toInt() != 0 and
-      result instanceof SystemDivideByZeroExceptionClass
-    )
+        not de.getDenominator().getValue().toInt() != 0 and
+        result instanceof SystemDivideByZeroExceptionClass
+      )
     or
     this instanceof RemExpr and
     result instanceof SystemDivideByZeroExceptionClass
@@ -278,7 +249,7 @@ private class TriedControlFlowElement extends ControlFlowElement {
   }
 }
 
-pragma [noinline]
+pragma[noinline]
 private predicate invalidCastCandidate(CastExpr ce) {
   ce.getType() = ce.getExpr().getType().(ValueOrRefType).getASubType+()
 }
@@ -301,28 +272,15 @@ private predicate mustHaveBooleanCompletion(Expr e) {
  * `B` is the Boolean completion of `A && B`.
  */
 private predicate inBooleanContext(Expr e, boolean isBooleanCompletionForParent) {
-  exists(IfStmt is |
-    is.getCondition() = e |
-    isBooleanCompletionForParent = false
-  )
+  exists(IfStmt is | is.getCondition() = e | isBooleanCompletionForParent = false)
   or
-  exists(LoopStmt ls |
-    ls.getCondition() = e |
-    isBooleanCompletionForParent = false
-  )
+  exists(LoopStmt ls | ls.getCondition() = e | isBooleanCompletionForParent = false)
   or
-  exists(CaseStmt cs |
-    cs.getCondition() = e |
-    isBooleanCompletionForParent = false
-  )
+  exists(CaseStmt cs | cs.getCondition() = e | isBooleanCompletionForParent = false)
   or
-  exists(SpecificCatchClause scc |
-    scc.getFilterClause() = e |
-    isBooleanCompletionForParent = false
-  )
+  exists(SpecificCatchClause scc | scc.getFilterClause() = e | isBooleanCompletionForParent = false)
   or
-  exists(LogicalNotExpr lne |
-    lne.getAnOperand() = e |
+  exists(LogicalNotExpr lne | lne.getAnOperand() = e |
     inBooleanContext(lne, _) and
     isBooleanCompletionForParent = true
   )
@@ -354,8 +312,7 @@ private predicate inBooleanContext(Expr e, boolean isBooleanCompletionForParent)
     isBooleanCompletionForParent = true
   )
   or
-  exists(NullCoalescingExpr nce |
-    nce.getAnOperand() = e |
+  exists(NullCoalescingExpr nce | nce.getAnOperand() = e |
     inBooleanContext(nce, _) and
     isBooleanCompletionForParent = true
   )
@@ -379,25 +336,19 @@ private predicate mustHaveNullnessCompletion(Expr e) {
  * is the nullness completion of `A ?? B`.
  */
 private predicate inNullnessContext(Expr e, boolean isNullnessCompletionForParent) {
-  exists(NullCoalescingExpr nce |
-    e = nce.getLeftOperand() |
-    isNullnessCompletionForParent = false
-  )
+  exists(NullCoalescingExpr nce | e = nce.getLeftOperand() | isNullnessCompletionForParent = false)
   or
-  exists(QualifiableExpr qe |
-    qe.isConditional() |
+  exists(QualifiableExpr qe | qe.isConditional() |
     e = qe.getChildExpr(-1) and
     isNullnessCompletionForParent = false
   )
   or
-  exists(ConditionalExpr ce |
-    inNullnessContext(ce, _) |
+  exists(ConditionalExpr ce | inNullnessContext(ce, _) |
     (e = ce.getThen() or e = ce.getElse()) and
     isNullnessCompletionForParent = true
   )
   or
-  exists(NullCoalescingExpr nce |
-    inNullnessContext(nce, _) |
+  exists(NullCoalescingExpr nce | inNullnessContext(nce, _) |
     e = nce.getRightOperand() and
     isNullnessCompletionForParent = true
   )
@@ -442,9 +393,7 @@ predicate foreachEmptiness(ForeachStmt fs, ControlFlowElement cfe) {
  * Holds if a normal completion of `cfe` must be an emptiness completion. Thats is,
  * whether `cfe` determines whether to execute the body of a `foreach` statement.
  */
-private predicate mustHaveEmptinessCompletion(ControlFlowElement cfe) {
-  foreachEmptiness(_, cfe)
-}
+private predicate mustHaveEmptinessCompletion(ControlFlowElement cfe) { foreachEmptiness(_, cfe) }
 
 /**
  * A completion that represents normal evaluation of a statement or an
@@ -456,9 +405,7 @@ abstract class NormalCompletion extends Completion { }
  * A class to make `TNormalCompletion` a `NormalCompletion`
  */
 class SimpleCompletion extends NormalCompletion, TNormalCompletion {
-  override string toString() {
-    result = "normal"
-  }
+  override string toString() { result = "normal" }
 }
 
 /**
@@ -480,20 +427,14 @@ class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
   /** Gets the value that this expression completes with. */
   boolean getOuterValue() { this = TBooleanCompletion(result, _) }
 
-  override string toString() {
-    result = getOuterValue() + "/" + getInnerValue()
-  }
+  override string toString() { result = getOuterValue() + "/" + getInnerValue() }
 }
 
 /** A Boolean `true` completion. */
-class TrueCompletion extends BooleanCompletion {
-  TrueCompletion() { getOuterValue() = true }
-}
+class TrueCompletion extends BooleanCompletion { TrueCompletion() { getOuterValue() = true } }
 
 /** A Boolean `false` completion. */
-class FalseCompletion extends BooleanCompletion {
-  FalseCompletion() { getOuterValue() = false }
-}
+class FalseCompletion extends BooleanCompletion { FalseCompletion() { getOuterValue() = false } }
 
 /**
  * A completion that represents evaluation of an expression that is either
@@ -503,12 +444,7 @@ class NullnessCompletion extends ConditionalCompletion, TNullnessCompletion {
   /** Holds if the last sub expression of this expression evaluates to `null`. */
   predicate isNull() { this = TNullnessCompletion(true) }
 
-  override string toString() {
-    if this.isNull() then
-      result = "null"
-    else
-      result = "non-null"
-  }
+  override string toString() { if this.isNull() then result = "null" else result = "non-null" }
 }
 
 /**
@@ -519,12 +455,7 @@ class MatchingCompletion extends ConditionalCompletion, TMatchingCompletion {
   /** Holds if there is a match. */
   predicate isMatch() { this = TMatchingCompletion(true) }
 
-  override string toString() {
-    if this.isMatch() then
-      result = "match"
-    else
-      result = "no-match"
-  }
+  override string toString() { if this.isMatch() then result = "match" else result = "no-match" }
 }
 
 /**
@@ -535,12 +466,7 @@ class EmptinessCompletion extends ConditionalCompletion, TEmptinessCompletion {
   /** Holds if the emptiness test evaluates to `true`. */
   predicate isEmpty() { this = TEmptinessCompletion(true) }
 
-  override string toString() {
-    if this.isEmpty() then
-      result = "empty"
-    else
-      result = "non-empty"
-  }
+  override string toString() { if this.isEmpty() then result = "empty" else result = "non-empty" }
 }
 
 /**

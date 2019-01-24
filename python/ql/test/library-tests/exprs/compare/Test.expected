@@ -1,0 +1,12 @@
+| compare.py:2:1 | Compare | a | Lt | b |
+| compare.py:2:1 | Compare | b | Lt | c |
+| compare.py:4:1 | Compare | x | In | y |
+| compare.py:5:1 | Compare | x | NotIn | y |
+| compare.py:6:1 | Compare | x | Is | y |
+| compare.py:7:1 | Compare | x | IsNot | y |
+| compare.py:8:1 | Compare | x | Lt | y |
+| compare.py:9:1 | Compare | x | Gt | y |
+| compare.py:10:1 | Compare | x | GtE | y |
+| compare.py:11:1 | Compare | x | LtE | y |
+| compare.py:12:1 | Compare | x | Eq | y |
+| compare.py:13:1 | Compare | x | NotEq | y |

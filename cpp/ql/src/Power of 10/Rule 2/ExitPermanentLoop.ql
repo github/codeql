@@ -10,13 +10,15 @@ import cpp
 
 Stmt exitFrom(Loop l) {
   l.getAChild+() = result and
-  (result instanceof ReturnStmt or
-    exists(BreakStmt break | break = result |
-      not l.getAChild*() = break.getTarget())
+  (
+    result instanceof ReturnStmt
+    or
+    exists(BreakStmt break | break = result | not l.getAChild*() = break.getTarget())
   )
 }
 
 from Loop l, Stmt exit
-where l.getControllingExpr().getValue().toInt() != 0 and
-      exit = exitFrom(l)
+where
+  l.getControllingExpr().getValue().toInt() != 0 and
+  exit = exitFrom(l)
 select exit, "$@ should not be exited.", l, "This permanent loop"

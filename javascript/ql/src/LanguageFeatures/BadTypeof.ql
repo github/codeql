@@ -37,7 +37,7 @@ class EqOrSwitch extends ASTNode {
    * of `case 1:` in `switch (y) { case 1: ... }` are `y` and `1`.
    */
   Expr getAnOperand() {
-    result = (this.(EqualityTest)).getAnOperand()
+    result = this.(EqualityTest).getAnOperand()
     or
     exists(Case c | c = this |
       result = c.getSwitch().getExpr() or

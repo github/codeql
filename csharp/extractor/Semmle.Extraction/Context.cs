@@ -93,7 +93,7 @@ namespace Semmle.Extraction
         {
             if (idLabelCache.TryGetValue(id, out var originalEntity))
             {
-                Extractor.Message(new Message { message = "Label collision for " + id.ToString(), severity = Severity.Warning });
+                Extractor.Message(new Message { message = "Label collision for " + id, severity = Severity.Warning });
             }
             else
             {
@@ -216,13 +216,13 @@ namespace Semmle.Extraction
                 {
                     populateQueue.Dequeue()();
                 }
-                catch (InternalError e)
+                catch (InternalError ex)
                 {
-                    Extractor.Message(e.ExtractionMessage);
+                    Extractor.Message(ex.ExtractionMessage);
                 }
-                catch (Exception e)
+                catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
                 {
-                    Extractor.Message(new Message { severity = Severity.Error, exception = e, message = "Uncaught exception" });
+                    Extractor.Message(new Message { severity = Severity.Error, exception = ex, message = "Uncaught exception" });
                 }
             }
         }
@@ -504,7 +504,7 @@ namespace Semmle.Extraction
             {
                 a();
             }
-            catch (Exception ex)
+            catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
                 var internalError = ex as InternalError;
                 var message = internalError != null

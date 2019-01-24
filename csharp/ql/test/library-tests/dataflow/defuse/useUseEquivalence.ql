@@ -62,7 +62,7 @@ private LocalScopeVariableRead getAReachableRead(LocalScopeVariableRead read) {
 
 from LocalScopeVariableRead read1, LocalScopeVariableRead read2, string s
 where
-  (read2 = getAReachableRead(read1) and not useUsePair(read1, read2) and s = "not a use/use pair")
+  read2 = getAReachableRead(read1) and not useUsePair(read1, read2) and s = "not a use/use pair"
   or
-  (useUsePair(read1, read2) and not read2 = getAReachableRead(read1) and s = "missing use/use pair")
+  useUsePair(read1, read2) and not read2 = getAReachableRead(read1) and s = "missing use/use pair"
 select read1, read2, s

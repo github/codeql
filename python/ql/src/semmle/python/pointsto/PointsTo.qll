@@ -266,7 +266,6 @@ module PointsTo {
             SSA::ssa_definition_points_to(var.getDefinition(), context, value, cls, origin)
         }
 
-
     }
 
     predicate name_maybe_imported_from(ModuleObject mod, string name) {
@@ -635,6 +634,11 @@ module PointsTo {
         )
         or
         points_to(f.getObject(), context, unknownValue(), theUnknownType(), origin) and value = unknownValue() and cls = theUnknownType()
+        or
+        exists(CustomPointsToAttribute object, string name |
+            points_to(f.getObject(name), context, object, _, _) and
+            object.attributePointsTo(name, value, cls, origin)
+        )
     }
 
     /** Holds if `f` is an expression node `tval if cond else fval` and points to `(value, cls, origin)`. */

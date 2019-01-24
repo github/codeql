@@ -97,7 +97,7 @@ namespace Semmle.Extraction.CSharp
                         extractor.SetAssemblyFile(assemblyIdentity, refPath);
                     }
                 }
-                catch (Exception ex)
+                catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
                 {
                     extractor.Message(new Message
                     {
@@ -272,7 +272,7 @@ namespace Semmle.Extraction.CSharp
                     ReportProgress(assemblyPath, trapWriter.TrapFile, stopwatch.Elapsed, skipExtraction ? AnalysisAction.UpToDate : AnalysisAction.Extracted);
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
                 Logger.Log(Severity.Error, "  Unhandled exception analyzing {0}: {1}", r.FilePath, ex);
             }
@@ -354,7 +354,7 @@ namespace Semmle.Extraction.CSharp
 
                 ReportProgress(sourcePath, trapPath, stopwatch.Elapsed, excluded ? AnalysisAction.Excluded : upToDate ? AnalysisAction.UpToDate : AnalysisAction.Extracted);
             }
-            catch (Exception ex)
+            catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
                 extractor.Message(new Message { exception = ex, message = string.Format("Unhandled exception processing {0}: {1}", tree.FilePath, ex), severity = Severity.Error });
             }

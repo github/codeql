@@ -99,7 +99,7 @@ class DiscardedMethodCall extends MethodCall {
       // to deliberately ignore the returned value
       not getEnclosingCallable().getStatementBody().getNumberOfStmts() = 1
     |
-      (important(m) and result = "should always be checked")
+      important(m) and result = "should always be checked"
       or
       exists(int percentage | dubious(m, percentage) |
         result = percentage.toString() + "% of calls to this method have their result used"

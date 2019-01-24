@@ -85,7 +85,7 @@ class SpuriousArguments extends Expr {
 from SpuriousArguments args, Function f, string arguments
 where
   f = args.getCall().getACallee() and
-  if args.getCount() = 1 then arguments = "argument" else arguments = "arguments" and
+  (if args.getCount() = 1 then arguments = "argument" else arguments = "arguments") and
   (
     // exclude empty functions, they are probably commented out debug utilities ...
     exists(f.getABodyStmt()) or

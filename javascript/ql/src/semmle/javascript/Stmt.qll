@@ -270,7 +270,7 @@ abstract class JumpStmt extends Stmt {
 /** A break or continue statement. */
 abstract class BreakOrContinueStmt extends JumpStmt {
   /** Gets the label this statement refers to, if any. */
-  string getTargetLabel() { result = (getChildExpr(0).(Identifier)).getName() }
+  string getTargetLabel() { result = getChildExpr(0).(Identifier).getName() }
 
   /** Holds if this statement has an explicit target label. */
   predicate hasTargetLabel() { exists(getTargetLabel()) }
@@ -355,10 +355,10 @@ class ThrowStmt extends @throwstmt, JumpStmt {
    */
   override ASTNode getTarget() {
     if exists(TryStmt ts | getParentStmt+() = ts.getBody())
-    then (
-      getParentStmt+() = (result.(TryStmt)).getBody() and
+    then
+      getParentStmt+() = result.(TryStmt).getBody() and
       not exists(TryStmt mid | getParentStmt+() = mid.getBody() and mid.getParentStmt+() = result)
-    ) else result = getContainer()
+    else result = getContainer()
   }
 
   override ControlFlowNode getFirstControlFlowNode() {

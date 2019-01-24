@@ -163,10 +163,8 @@ private class FetchUrlRequest extends CustomClientRequest {
       url = getArgument(0)
     )
     or
-    (
-      this = DataFlow::globalVarRef("fetch").getACall() and
-      url = getArgument(0)
-    )
+    this = DataFlow::globalVarRef("fetch").getACall() and
+    url = getArgument(0)
   }
 
   override DataFlow::Node getUrl() { result = url }

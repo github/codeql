@@ -1,0 +1,2 @@
+| InsecureProtocol.py:41:1:41:17 | ControlFlowNode for Attribute() | Call to deprecated method ssl.wrap_socket does not specify a protocol, which may result in an insecure default being used. |
+| InsecureProtocol.py:42:11:42:22 | ControlFlowNode for SSLContext() | Call to ssl.SSLContext does not specify a protocol, which may result in an insecure default being used. |

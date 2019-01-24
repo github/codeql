@@ -216,3 +216,21 @@ def not_dup_key():
             u"😆" : 3
             }
 
+# Lookup of unhashable object triggers TypeError, but the
+# exception is caught, so it's not a bug. This used to be
+# a false positive of the HashedButNoHash query.
+def func():
+    unhash = list()
+    try:
+      hash(unhash)
+    except TypeError:
+      return 1
+    return 0
+
+def func():
+    mapping = dict(); unhash = list()
+    try:
+      mapping[unhash]
+    except TypeError:
+      return 1
+    return 0

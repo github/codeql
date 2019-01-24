@@ -16,19 +16,17 @@ private class DelegateFlowSource extends DataFlow::ExprNode {
 
   DelegateFlowSource() {
     this.getExpr() = any(Expr e |
-      c = e.(AnonymousFunctionExpr) or
-      c = e.(CallableAccess).getTarget().getSourceDeclaration()
-    )
+        c = e.(AnonymousFunctionExpr) or
+        c = e.(CallableAccess).getTarget().getSourceDeclaration()
+      )
   }
 
   /** Gets the callable that is referenced in this delegate flow source. */
-  Callable getCallable() {
-    result = c
-  }
+  Callable getCallable() { result = c }
 }
 
 /** A sink of flow for a delegate expression. */
-private abstract class DelegateFlowSink extends DataFlow::ExprNode {
+abstract private class DelegateFlowSink extends DataFlow::ExprNode {
   /**
    * Gets an actual run-time target of this delegate call in the given call
    * context, if any. The call context records the *last* call required to
@@ -93,19 +91,16 @@ private abstract class DelegateFlowSink extends DataFlow::ExprNode {
 library class DelegateCallExpr extends DelegateFlowSink {
   DelegateCall dc;
 
-  DelegateCallExpr() {
-    this.getExpr() = dc.getDelegateExpr()
-  }
+  DelegateCallExpr() { this.getExpr() = dc.getDelegateExpr() }
 
   /** Gets the delegate call that this expression belongs to. */
-  DelegateCall getDelegateCall() {
-    result = dc
-  }
+  DelegateCall getDelegateCall() { result = dc }
 }
 
 /** A delegate expression that is passed as the argument to a library callable. */
 library class DelegateArgumentToLibraryCallable extends Expr {
   DelegateType dt;
+
   Call call;
 
   DelegateArgumentToLibraryCallable() {
@@ -118,14 +113,10 @@ library class DelegateArgumentToLibraryCallable extends Expr {
   }
 
   /** Gets the call that this argument belongs to. */
-  Call getCall() {
-    result = call
-  }
+  Call getCall() { result = call }
 
   /** Gets the delegate type of this argument. */
-  DelegateType getDelegateType() {
-    result = dt
-  }
+  DelegateType getDelegateType() { result = dt }
 
   /**
    * Gets an actual run-time target of this delegate call in the given call
@@ -133,8 +124,7 @@ library class DelegateArgumentToLibraryCallable extends Expr {
    * resolve the target, if any. Example:
    */
   Callable getARuntimeTarget(CallContext context) {
-    exists(DelegateArgumentToLibraryCallableSink sink |
-      sink.getExpr() = this |
+    exists(DelegateArgumentToLibraryCallableSink sink | sink.getExpr() = this |
       result = sink.getARuntimeTarget(context)
     )
   }
@@ -151,14 +141,10 @@ private class DelegateArgumentToLibraryCallableSink extends DelegateFlowSink {
 library class AddEventSource extends DelegateFlowSink {
   AddEventExpr ae;
 
-  AddEventSource() {
-    this.getExpr() = ae.getRValue()
-  }
+  AddEventSource() { this.getExpr() = ae.getRValue() }
 
   /** Gets the event that this delegate is added to. */
-  Event getEvent() {
-    result = ae.getTarget()
-  }
+  Event getEvent() { result = ae.getTarget() }
 }
 
 /**
@@ -169,15 +155,16 @@ library class AddEventSource extends DelegateFlowSink {
  * `node` goes through a returned expression. The call context `lastCall`
  * records the last call on the path from `node` to `sink`, if any.
  */
-private predicate flowsFrom(DelegateFlowSink sink, DataFlow::Node node, boolean isReturned, CallContext lastCall) {
+private predicate flowsFrom(
+  DelegateFlowSink sink, DataFlow::Node node, boolean isReturned, CallContext lastCall
+) {
   // Base case
   sink = node and
   isReturned = false and
   lastCall instanceof EmptyCallContext
   or
   // Local flow
-  exists(DataFlow::Node mid |
-    flowsFrom(sink, mid, isReturned, lastCall) |
+  exists(DataFlow::Node mid | flowsFrom(sink, mid, isReturned, lastCall) |
     DataFlow::localFlowStep(node, mid) or
     node.asExpr() = mid.asExpr().(DelegateCreation).getArgument()
   )
@@ -191,7 +178,9 @@ private predicate flowsFrom(DelegateFlowSink sink, DataFlow::Node node, boolean 
   )
   or
   // Flow into a callable (non-delegate call)
-  exists(DataFlow::Internal::ExplicitParameterNode mid, CallContext prevLastCall, Expr call, Parameter p |
+  exists(
+    DataFlow::Internal::ExplicitParameterNode mid, CallContext prevLastCall, Expr call, Parameter p
+  |
     flowsFrom(sink, mid, isReturned, prevLastCall) and
     isReturned = false and
     p = mid.getParameter() and
@@ -200,7 +189,10 @@ private predicate flowsFrom(DelegateFlowSink sink, DataFlow::Node node, boolean 
   )
   or
   // Flow into a callable (delegate call)
-  exists(DataFlow::Internal::ExplicitParameterNode mid, CallContext prevLastCall, DelegateCall dc, Callable c, Parameter p, int i |
+  exists(
+    DataFlow::Internal::ExplicitParameterNode mid, CallContext prevLastCall, DelegateCall dc,
+    Callable c, Parameter p, int i
+  |
     flowsFrom(sink, mid, isReturned, prevLastCall) and
     isReturned = false and
     flowIntoDelegateCall(dc, c, node.asExpr(), i) and
@@ -229,7 +221,7 @@ private predicate flowsFrom(DelegateFlowSink sink, DataFlow::Node node, boolean 
  * `prevLastCall` is the previous last call, so the result is the
  * previous call if it exists, otherwise `call` is the last call.
  */
-bindingset [call, i]
+bindingset[call, i]
 private CallContext getLastCall(CallContext prevLastCall, Expr call, int i) {
   prevLastCall instanceof EmptyCallContext and
   result.(ArgumentCallContext).isArgument(call, i)

@@ -45,6 +45,6 @@ where
   // exclude wildcards since the check is not applicable to them
   not (i instanceof TypeParameter or j instanceof TypeParameter) and
   // exclude calls of the form x.Equals(null), since they're highlighted by a different query
-  not (i instanceof NullType)
+  not i instanceof NullType
 select ma, "Call to 'Equals()' comparing incomparable types $@ and $@.", j, j.getName(), i,
   i.getName()

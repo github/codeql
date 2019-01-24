@@ -10,5 +10,5 @@ import semmle.code.csharp.frameworks.Test
 import external.DefectFilter
 
 from DefectResult res
-where not (res.getFile() instanceof TestFile)
+where not res.getFile() instanceof TestFile
 select res, res.getMessage()

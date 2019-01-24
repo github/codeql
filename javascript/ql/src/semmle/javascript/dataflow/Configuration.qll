@@ -87,6 +87,12 @@ abstract class Configuration extends string {
   Configuration() { any() }
 
   /**
+   * Gets the unique identifier of this configuration among all data flow tracking
+   * configurations.
+   */
+  string getId() { result = this }
+
+  /**
    * Holds if `source` is a relevant data flow source for this configuration.
    */
   predicate isSource(DataFlow::Node source) { none() }
@@ -221,7 +227,7 @@ class TaintKind = FlowLabel;
 /**
  * A standard flow label, that is, either `FlowLabel::data()` or `FlowLabel::taint()`.
  */
-private class StandardFlowLabel extends FlowLabel {
+class StandardFlowLabel extends FlowLabel {
   StandardFlowLabel() { this = "data" or this = "taint" }
 }
 
@@ -299,7 +305,19 @@ abstract class AdditionalFlowStep extends DataFlow::Node {
    * Holds if `pred` &rarr; `succ` should be considered a data flow edge.
    */
   cached
-  abstract predicate step(DataFlow::Node pred, DataFlow::Node succ);
+  predicate step(DataFlow::Node pred, DataFlow::Node succ) { none() }
+
+  /**
+   * Holds if `pred` &rarr; `succ` should be considered a data flow edge
+   * transforming values with label `predlbl` to have label `succlbl`.
+   */
+  cached
+  predicate step(
+    DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel predlbl,
+    DataFlow::FlowLabel succlbl
+  ) {
+    none()
+  }
 }
 
 /**
@@ -311,7 +329,13 @@ abstract class AdditionalSource extends DataFlow::Node {
    * Holds if this data flow node should be considered a source node for
    * configuration `cfg`.
    */
-  abstract predicate isSourceFor(Configuration cfg);
+  predicate isSourceFor(Configuration cfg) { none() }
+
+  /**
+   * Holds if this data flow node should be considered a source node for
+   * values labeled with `lbl` under configuration `cfg`.
+   */
+  predicate isSourceFor(Configuration cfg, FlowLabel lbl) { none() }
 }
 
 /**
@@ -323,7 +347,13 @@ abstract class AdditionalSink extends DataFlow::Node {
    * Holds if this data flow node should be considered a sink node for
    * configuration `cfg`.
    */
-  abstract predicate isSinkFor(Configuration cfg);
+  predicate isSinkFor(Configuration cfg) { none() }
+
+  /**
+   * Holds if this data flow node should be considered a sink node for
+   * values labeled with `lbl` under configuration `cfg`.
+   */
+  predicate isSinkFor(Configuration cfg, FlowLabel lbl) { none() }
 }
 
 /**
@@ -441,7 +471,11 @@ private predicate exploratoryFlowStep(
 ) {
   basicFlowStep(pred, succ, _, cfg) or
   basicStoreStep(pred, succ, _) or
-  loadStep(pred, succ, _)
+  loadStep(pred, succ, _) or
+  // the following two disjuncts taken together over-approximate flow through
+  // higher-order calls
+  callback(pred, succ) or
+  succ = pred.(DataFlow::FunctionNode).getAParameter()
 }
 
 /**
@@ -450,6 +484,8 @@ private predicate exploratoryFlowStep(
 private predicate isSource(DataFlow::Node nd, DataFlow::Configuration cfg, FlowLabel lbl) {
   (cfg.isSource(nd) or nd.(AdditionalSource).isSourceFor(cfg)) and
   lbl = FlowLabel::data()
+  or
+  nd.(AdditionalSource).isSourceFor(cfg, lbl)
   or
   cfg.isSource(nd, lbl)
 }
@@ -460,6 +496,8 @@ private predicate isSource(DataFlow::Node nd, DataFlow::Configuration cfg, FlowL
 private predicate isSink(DataFlow::Node nd, DataFlow::Configuration cfg, FlowLabel lbl) {
   (cfg.isSink(nd) or nd.(AdditionalSink).isSinkFor(cfg)) and
   lbl = any(StandardFlowLabel f)
+  or
+  nd.(AdditionalSink).isSinkFor(cfg, lbl)
   or
   cfg.isSink(nd, lbl)
 }
@@ -502,10 +540,7 @@ private predicate callInputStep(
 ) {
   (
     isRelevant(pred, cfg) and
-    exists(Parameter parm |
-      argumentPassing(invk, pred, f, parm) and
-      succ = DataFlow::parameterNode(parm)
-    )
+    argumentPassing(invk, pred, f, succ)
     or
     isRelevant(pred, cfg) and
     exists(SsaDefinition prevDef, SsaDefinition def |
@@ -571,20 +606,17 @@ private predicate storeStep(
   basicStoreStep(pred, succ, prop) and
   summary = PathSummary::level()
   or
-  exists(Function f, DataFlow::Node mid, DataFlow::Node base |
-    // `f` stores its parameter `pred` in property `prop` of a value that it returns,
+  exists(Function f, DataFlow::Node mid |
+    // `f` stores its parameter `pred` in property `prop` of a value that flows back to the caller,
     // and `succ` is an invocation of `f`
     reachableFromInput(f, succ, pred, mid, cfg, summary) and
-    returnedPropWrite(f, base, prop, mid)
+    (
+      returnedPropWrite(f, _, prop, mid)
+      or
+      succ instanceof DataFlow::NewNode and
+      receiverPropWrite(f, prop, mid)
+    )
   )
-}
-
-/**
- * Holds if `f` may return `base`, which has a write of property `prop` with right-hand side `rhs`.
- */
-predicate returnedPropWrite(Function f, DataFlow::SourceNode base, string prop, DataFlow::Node rhs) {
-  base.hasPropertyWrite(prop, rhs) and
-  base.flowsToExpr(f.getAReturnedExpr())
 }
 
 /**
@@ -622,6 +654,57 @@ private predicate flowThroughProperty(
 }
 
 /**
+ * Holds if `arg` and `cb` are passed as arguments to a function which in turn
+ * invokes `cb`, passing `arg` as its `i`th argument.
+ *
+ * All of this is done under configuration `cfg`, and `arg` flows along a path
+ * summarized by `summary`, while `cb` is only tracked locally.
+ */
+private predicate higherOrderCall(
+  DataFlow::Node arg, DataFlow::Node cb, int i, DataFlow::Configuration cfg, PathSummary summary
+) {
+  exists (Function f, DataFlow::InvokeNode outer, DataFlow::InvokeNode inner, int j,
+    DataFlow::Node innerArg, DataFlow::ParameterNode cbParm, PathSummary oldSummary |
+    reachableFromInput(f, outer, arg, innerArg, cfg, oldSummary) and
+    argumentPassing(outer, cb, f, cbParm) and
+    innerArg = inner.getArgument(j) |
+    // direct higher-order call
+    cbParm.flowsTo(inner.getCalleeNode()) and
+    i = j and
+    summary = oldSummary
+    or
+    // indirect higher-order call
+    exists (DataFlow::Node cbArg, PathSummary newSummary |
+      cbParm.flowsTo(cbArg) and
+      higherOrderCall(innerArg, cbArg, i, cfg, newSummary) and
+      summary = oldSummary.append(PathSummary::call()).append(newSummary)
+    )
+  )
+}
+
+/**
+ * Holds if `pred` is passed as an argument to a function `f` which also takes a
+ * callback parameter `cb` and then invokes `cb`, passing `pred` into parameter `succ`
+ * of `cb`.
+ *
+ * All of this is done under configuration `cfg`, and `arg` flows along a path
+ * summarized by `summary`, while `cb` is only tracked locally.
+ */
+private predicate flowIntoHigherOrderCall(
+  DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg, PathSummary summary
+) {
+  exists(
+    DataFlow::Node fArg, DataFlow::FunctionNode cb,
+    int i, PathSummary oldSummary
+  |
+    higherOrderCall(pred, fArg, i, cfg, oldSummary) and
+    cb = fArg.getALocalSource() and
+    succ = cb.getParameter(i) and
+    summary = oldSummary.append(PathSummary::call())
+  )
+}
+
+/**
  * Holds if there is a flow step from `pred` to `succ` described by `summary`
  * under configuration `cfg`.
  */
@@ -637,6 +720,9 @@ private predicate flowStep(
     or
     // Flow through a property write/read pair
     flowThroughProperty(pred, succ, cfg, summary)
+    or
+    // Flow into higher-order call
+    flowIntoHigherOrderCall(pred, succ, cfg, summary)
   ) and
   not cfg.isBarrier(succ) and
   not cfg.isBarrier(pred, succ) and
@@ -697,12 +783,17 @@ private predicate onPath(DataFlow::Node nd, DataFlow::Configuration cfg, PathSum
 }
 
 /**
+ * Holds if `cfg` has at least one source and at least one sink.
+ */
+pragma[noinline]
+private predicate isLive(DataFlow::Configuration cfg) { isSource(_, cfg, _) and isSink(_, cfg, _) }
+
+/**
  * A data flow node on an inter-procedural path from a source.
  */
 private newtype TPathNode =
   MkPathNode(DataFlow::Node nd, DataFlow::Configuration cfg, PathSummary summary) {
-    isSource(_, cfg, _) and
-    isSink(_, cfg, _) and
+    isLive(cfg) and
     onPath(nd, cfg, summary)
   }
 
@@ -736,6 +827,9 @@ class PathNode extends TPathNode {
 
   /** Gets the underlying data flow tracking configuration of this path node. */
   DataFlow::Configuration getConfiguration() { result = cfg }
+
+  /** Gets the summary of the path underlying this path node. */
+  PathSummary getPathSummary() { result = summary }
 
   /** Gets a successor node of this path node. */
   PathNode getASuccessor() {

@@ -28,15 +28,11 @@ private LocalScopeVariableRead getAReachableUncertainRead(
 
 from AssignableDefinitions::ImplicitParameterDefinition p, AssignableRead read, string s
 where
-  (
-    read = getAReachableUncertainRead(p) and
-    not parameterUsePair(p.getParameter(), read) and
-    s = "not a param/use pair"
-  )
+  read = getAReachableUncertainRead(p) and
+  not parameterUsePair(p.getParameter(), read) and
+  s = "not a param/use pair"
   or
-  (
-    parameterUsePair(p.getParameter(), read) and
-    not read = getAReachableUncertainRead(p) and
-    s = "missing param/use pair"
-  )
+  parameterUsePair(p.getParameter(), read) and
+  not read = getAReachableUncertainRead(p) and
+  s = "missing param/use pair"
 select p, read, s

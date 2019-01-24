@@ -28,11 +28,9 @@ where
       itemText = "here"
     )
     or
-    (
-      item = c.getAnOperator().(EQOperator) and
-      message = "but it implements $@" and
-      itemText = "operator =="
-    )
+    item = c.getAnOperator().(EQOperator) and
+    message = "but it implements $@" and
+    itemText = "operator =="
     or
     exists(IEquatableEqualsMethod eq |
       item = eq and

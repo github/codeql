@@ -38,6 +38,5 @@ predicate doubleCheckedLocking(IfStmt if1, IfStmt if2, SynchronizedStmt sync, Fi
   if1.getThen() = sync.getParent*() and
   sync.getBlock() = if2.getParent*() and
   if1.getCondition() = getANullCheck(f) and
-  if2.getCondition() = getANullCheck(f) and
-  not f.getType() instanceof ImmutableType
+  if2.getCondition() = getANullCheck(f)
 }

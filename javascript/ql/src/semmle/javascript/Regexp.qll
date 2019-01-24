@@ -373,16 +373,14 @@ predicate isInterpretedAsRegExp(DataFlow::Node source) {
     mce.getReceiver().analyze().getAType() = TTString() and
     mce.getMethodName() = methodName
   |
-    (methodName = "match" and source.asExpr() = mce.getArgument(0) and mce.getNumArgument() = 1)
+    methodName = "match" and source.asExpr() = mce.getArgument(0) and mce.getNumArgument() = 1
     or
-    (
-      methodName = "search" and
-      source.asExpr() = mce.getArgument(0) and
-      mce.getNumArgument() = 1 and
-      // "search" is a common method name, and so we exclude chained accesses
-      // because `String.prototype.search` returns a number
-      not exists(PropAccess p | p.getBase() = mce)
-    )
+    methodName = "search" and
+    source.asExpr() = mce.getArgument(0) and
+    mce.getNumArgument() = 1 and
+    // "search" is a common method name, and so we exclude chained accesses
+    // because `String.prototype.search` returns a number
+    not exists(PropAccess p | p.getBase() = mce)
   )
 }
 

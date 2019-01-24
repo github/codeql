@@ -20,10 +20,8 @@ predicate implementsIComparable(ValueOrRefType t, Type paramType) {
   or
   t instanceof SystemIComparableTInterface
   or
-  (
-    t.getABaseType*() instanceof SystemIComparableInterface and
-    paramType instanceof ObjectType
-  )
+  t.getABaseType*() instanceof SystemIComparableInterface and
+  paramType instanceof ObjectType
 }
 
 predicate compareToMethod(Method m, Type paramType) {

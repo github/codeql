@@ -1,0 +1,7 @@
+| fields.js:1:1:4:1 | class C ...  = 42\\n} | fields.js:1:9:1:8 | () {} |
+| points.js:1:1:18:1 | class P ... ;\\n  }\\n} | points.js:2:14:5:3 | (x, y)  ...  y;\\n  } |
+| points.js:20:1:33:1 | class C ... ;\\n  }\\n} | points.js:21:14:24:3 | (x, y,  ...  c;\\n  } |
+| staticConstructor.js:1:1:3:1 | class M ... r"; }\\n} | staticConstructor.js:1:15:1:14 | () {} |
+| tst.js:1:9:4:1 | class { ...  */ }\\n} | tst.js:2:16:2:50 | () { /* ... r. */ } |
+| tst.js:6:1:8:1 | class B ... t); }\\n} | tst.js:7:14:7:38 | () { su ... get); } |
+| tst.js:11:1:14:1 | class C ... () {}\\n} | tst.js:11:9:11:8 | () {} |

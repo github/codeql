@@ -1,5 +1,6 @@
 package com.semmle.js.extractor;
 
+import com.semmle.jcorn.TokenType;
 import com.semmle.js.ast.DefaultVisitor;
 import com.semmle.js.ast.INode;
 import com.semmle.js.ast.Identifier;
@@ -64,6 +65,7 @@ public class TypeExprKinds {
 	private static final int importVarTypeAccess = 32;
 	private static final int optionalTypeExpr = 33;
 	private static final int restTypeExpr = 34;
+	private static final int bigintLiteralTypeExpr = 35;
 
 	public static int getTypeExprKind(final INode type, final IdContext idcontext) {
 		Integer kind = type.accept(new DefaultVisitor<Void, Integer>() {
@@ -159,6 +161,7 @@ public class TypeExprKinds {
 
 			@Override
 			public Integer visit(Literal nd, Void c) {
+				TokenType type = nd.getTokenType();
 				if (nd.getValue() == null) {
 					// We represent the null type as a keyword type in QL, but in the extractor AST
 					// it is a Literal because the TypeScript AST does not distinguish those.
@@ -167,12 +170,14 @@ public class TypeExprKinds {
 					// - TypeScript documentation does not treat the null type as a literal type.
 					// - There is an "undefined" type, but there is no "undefined" literal.
 					return keywordTypeExpr;
-				} else if (nd.getValue() instanceof String) {
+				} else if (type == TokenType.string) {
 					return stringLiteralTypeExpr;
-				} else if (nd.getValue() instanceof Number) {
+				} else if (type == TokenType.num) {
 					return numberLiteralTypeExpr;
-				} else if (nd.getValue() instanceof Boolean) {
+				} else if (type == TokenType._true || type == TokenType._false) {
 					return booeleanLiteralTypeExpr;
+				} else if (type == TokenType.bigint) {
+					return bigintLiteralTypeExpr;
 				} else {
 					throw new CatastrophicError("Unsupported literal type expression kind: " + nd.getValue().getClass());
 				}

@@ -57,7 +57,7 @@ predicate postDominatedPropWrite(
  */
 bindingset[name]
 predicate maybeAccessesProperty(Expr e, string name) {
-  (e.(PropAccess).getPropertyName() = name and e instanceof RValue)
+  e.(PropAccess).getPropertyName() = name and e instanceof RValue
   or
   // conservatively reject all side-effects
   e.isImpure()
@@ -78,10 +78,8 @@ predicate isDeadAssignment(string name, DataFlow::PropWrite assign1, DataFlow::P
  */
 bindingset[name]
 predicate maybeAccessesAssignedPropInBlock(string name, DataFlow::PropWrite assign, boolean after) {
-  exists(ControlFlowNode write, ReachableBasicBlock block, int i, int j, Expr e |
-    write = assign.getWriteNode() and
-    block = assign.getBasicBlock() and
-    write = block.getNode(i) and
+  exists(ReachableBasicBlock block, int i, int j, Expr e |
+    assign.getWriteNode() = block.getNode(i) and
     e = block.getNode(j) and
     maybeAccessesProperty(e, name)
   |
@@ -108,8 +106,8 @@ predicate noPropAccessBetween(string name, DataFlow::PropWrite assign1, DataFlow
     then
       // same block: check for access between
       not exists(int i1, Expr mid, int i2 |
-        assign1.getWriteNode() = block1.getNode(i1) and
-        assign2.getWriteNode() = block2.getNode(i2) and
+        write1 = block1.getNode(i1) and
+        write2 = block2.getNode(i2) and
         mid = block1.getNode([i1 + 1 .. i2 - 1]) and
         maybeAccessesProperty(mid, name)
       )

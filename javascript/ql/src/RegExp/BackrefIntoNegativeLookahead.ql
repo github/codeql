@@ -14,9 +14,10 @@
 import javascript
 
 from RegExpNegativeLookahead neg, RegExpGroup grp, RegExpBackRef back
-where grp.getParent+() = neg and
-      grp = back.getGroup() and
-      not back.getParent+() = neg
-select back, "This back reference always matches the empty string, since it refers to $@, which is contained in $@.",
-       grp, "this capture group",
-       neg, "a negative lookahead assertion"
+where
+  grp.getParent+() = neg and
+  grp = back.getGroup() and
+  not back.getParent+() = neg
+select back,
+  "This back reference always matches the empty string, since it refers to $@, which is contained in $@.",
+  grp, "this capture group", neg, "a negative lookahead assertion"

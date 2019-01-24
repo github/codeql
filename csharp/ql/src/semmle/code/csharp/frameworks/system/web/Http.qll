@@ -1,4 +1,5 @@
 /** Provides classes related to the namespace `System.Web.Http`. */
+
 import csharp
 private import semmle.code.csharp.frameworks.system.Web
 
@@ -12,44 +13,32 @@ class SystemWebHttpNamespace extends Namespace {
 
 /** A class in the `System.Web.Http` namespace. */
 class SystemWebHttpClass extends Class {
-  SystemWebHttpClass() {
-    this.getNamespace() instanceof SystemWebHttpNamespace
-  }
+  SystemWebHttpClass() { this.getNamespace() instanceof SystemWebHttpNamespace }
 }
 
 /** An interface in the `System.Web.Http` namespace. */
 class SystemWebHttpInterface extends Interface {
-  SystemWebHttpInterface() {
-    this.getNamespace() instanceof SystemWebHttpNamespace
-  }
+  SystemWebHttpInterface() { this.getNamespace() instanceof SystemWebHttpNamespace }
 }
 
 /** An attribute whose type is in the `System.Web.Http` namespace. */
 class SystemWebHttpAttribute extends Attribute {
-  SystemWebHttpAttribute() {
-    this.getType().getNamespace() instanceof SystemWebHttpNamespace
-  }
+  SystemWebHttpAttribute() { this.getType().getNamespace() instanceof SystemWebHttpNamespace }
 }
 
 /** An attribute whose type is `System.Web.Http.NonAction`. */
 class SystemWebHttpNonActionAttribute extends SystemWebHttpAttribute {
-  SystemWebHttpNonActionAttribute() {
-    this.getType().hasName("NonActionAttribute")
-  }
+  SystemWebHttpNonActionAttribute() { this.getType().hasName("NonActionAttribute") }
 }
 
 /** The `System.Web.Http.ApiController` class. */
 class SystemWebHttpApiControllerClass extends SystemWebHttpClass {
-  SystemWebHttpApiControllerClass() {
-    this.hasName("ApiController")
-  }
+  SystemWebHttpApiControllerClass() { this.hasName("ApiController") }
 }
 
 /** A subtype of `System.Web.Http.ApiController`. */
 class ApiController extends Class {
-  ApiController() {
-    this.getABaseType*() instanceof SystemWebHttpApiControllerClass
-  }
+  ApiController() { this.getABaseType*() instanceof SystemWebHttpApiControllerClass }
 
   /** Gets an action method for this controller. */
   Method getAnActionMethod() {
@@ -65,7 +54,8 @@ class ApiController extends Class {
  * Holds if this expression is a constant that evaluates to the name of an IIS server variable.
  */
 predicate isServerVariable(Expr e) {
-  exists(string s | s = e.getValue() and
+  exists(string s |
+    s = e.getValue() and
     (
       s = "ALL_HTTP" or
       s = "ALL_RAW" or
@@ -127,7 +117,7 @@ predicate isServerVariable(Expr e) {
       s = "SERVER_SOFTWARE" or
       s = "SSI_EXEC_DISABLED" or
       s = "UNENCODED_URL" or
-      s.matches("UNICODE\\_%") or  // UNICODE_<server_variable_name>
+      s.matches("UNICODE\\_%") or // UNICODE_<server_variable_name>
       s = "UNMAPPED_REMOTE_USER" or
       s = "URL" or
       s = "URL_PATH_INFO"

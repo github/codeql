@@ -140,6 +140,27 @@ private class ES2015PromiseDefinition extends PromiseDefinition, DataFlow::NewNo
 }
 
 /**
+ * A promise that is resolved with the given value.
+ */
+abstract class ResolvedPromiseDefinition extends DataFlow::CallNode {
+  /**
+   * Gets the value this promise is resolved with.
+   */
+  abstract DataFlow::Node getValue();
+}
+
+/**
+ * A resolved promise created by the standard ECMAScript 2015 `Promise.resolve` function.
+ */
+class ResolvedES2015PromiseDefinition extends ResolvedPromiseDefinition {
+  ResolvedES2015PromiseDefinition() {
+    this = DataFlow::globalVarRef("Promise").getAMemberCall("resolve")
+  }
+
+  override DataFlow::Node getValue() { result = getArgument(0) }
+}
+
+/**
  * A data flow edge from a promise reaction to the corresponding handler.
  */
 private class PromiseFlowStep extends DataFlow::AdditionalFlowStep {
@@ -164,8 +185,7 @@ private predicate promiseTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
   pred = succ.(PromiseDefinition).getResolveParameter().getACall().getArgument(0)
   or
   // from `x` to `Promise.resolve(x)`
-  succ = DataFlow::globalVarRef("Promise").getAMemberCall("resolve") and
-  pred = succ.(DataFlow::CallNode).getArgument(0)
+  pred = succ.(ResolvedPromiseDefinition).getValue()
   or
   exists(DataFlow::MethodCallNode thn, DataFlow::FunctionNode cb |
     thn.getMethodName() = "then" and cb = thn.getCallback(0)

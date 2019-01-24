@@ -1,3 +1,6 @@
+| test2.cpp:37:1:37:39 | // int myFunction() { return myValue; } | This comment appears to contain commented-out code |
+| test2.cpp:39:1:39:45 | // int myFunction() const { return myValue; } | This comment appears to contain commented-out code |
+| test2.cpp:41:1:41:54 | // int myFunction() const noexcept { return myValue; } | This comment appears to contain commented-out code |
 | test.c:2:1:2:22 | // commented out code; | This comment appears to contain commented-out code |
 | test.c:4:1:7:8 | // some; | This comment appears to contain commented-out code |
 | test.c:9:1:13:8 | // also; | This comment appears to contain commented-out code |

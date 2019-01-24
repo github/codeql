@@ -88,6 +88,9 @@ module DataFlow {
     /** Gets the container in which this node occurs. */
     StmtContainer getContainer() { result = getBasicBlock().getContainer() }
 
+    /** Gets the toplevel in which this node occurs. */
+    TopLevel getTopLevel() { result = getContainer().getTopLevel() }
+
     /**
      * Holds if this data flow node accesses the global variable `g`, either directly
      * or through the `window` object.
@@ -798,6 +801,13 @@ module DataFlow {
    * INTERNAL: Use `thisNode(StmtContainer container)` instead.
    */
   predicate thisNode(DataFlow::Node node, StmtContainer container) { node = TThisNode(container) }
+
+  /**
+   * Gets the node representing the receiver of the given function, or `this` in the given top-level.
+   *
+   * Has no result if `container` is an arrow function.
+   */
+  DataFlow::ThisNode thisNode(StmtContainer container) { result = TThisNode(container) }
 
   /**
    * A classification of flows that are not modeled, or only modeled incompletely, by

@@ -36,11 +36,9 @@ class StructuralComparisonConfig extends StructuralComparisonConfiguration {
 from IfStmt is, string what
 where
   (
-    (
-      is.getThen().stripSingletonBlocks() instanceof ReturnStmt and
-      is.getElse().stripSingletonBlocks() instanceof ReturnStmt and
-      what = "return"
-    )
+    is.getThen().stripSingletonBlocks() instanceof ReturnStmt and
+    is.getElse().stripSingletonBlocks() instanceof ReturnStmt and
+    what = "return"
     or
     exists(StructuralComparisonConfig c |
       is = c.getIfStmt() and

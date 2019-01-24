@@ -3,6 +3,7 @@
  *
  * All calls have the common base class `Call`.
  */
+
 import Expr
 import semmle.code.csharp.Callable
 import semmle.code.csharp.dataflow.CallContext as CallContext
@@ -40,27 +41,17 @@ class Call extends DotNet::Call, Expr, @call {
    */
   override Callable getTarget() { none() }
 
-  override Expr getArgument(int i) {
-    result = this.getChild(i) and i >= 0
-  }
+  override Expr getArgument(int i) { result = this.getChild(i) and i >= 0 }
 
-  override Expr getRawArgument(int i) {
-    result = this.getArgument(i)
-  }
+  override Expr getRawArgument(int i) { result = this.getArgument(i) }
 
-  override Expr getAnArgument() {
-    result = getArgument(_)
-  }
+  override Expr getAnArgument() { result = getArgument(_) }
 
   /** Gets the number of arguments of this call. */
-  int getNumberOfArguments() {
-    result = count(this.getAnArgument())
-  }
+  int getNumberOfArguments() { result = count(this.getAnArgument()) }
 
   /** Holds if this call has no arguments. */
-  predicate hasNoArguments() {
-    not exists(this.getAnArgument())
-  }
+  predicate hasNoArguments() { not exists(this.getAnArgument()) }
 
   /**
    * Gets the argument for this call associated with the parameter `p`, if any.
@@ -86,8 +77,7 @@ class Call extends DotNet::Call, Expr, @call {
    * ```
    */
   override Expr getArgumentForParameter(DotNet::Parameter p) {
-    getTarget().getAParameter() = p
-    and
+    getTarget().getAParameter() = p and
     (
       // Appears in the positional part of the call
       result = this.getImplicitArgument(p.getPosition()) and
@@ -111,20 +101,21 @@ class Call extends DotNet::Call, Expr, @call {
    * of the targeted callable.
    */
   private predicate hasMultipleParamsArguments() {
-    exists(Parameter p |
-      p = this.getTarget().getAParameter() |
+    exists(Parameter p | p = this.getTarget().getAParameter() |
       p.isParams() and
       exists(this.getArgument(any(int i | i > p.getPosition())))
     )
   }
 
-  pragma [noinline] // predicate folding to get proper join-order
+  // predicate folding to get proper join-order
+  pragma[noinline]
   private Expr getImplicitArgument(int pos) {
     result = getArgument(pos) and
     not exists(result.getExplicitArgumentName())
   }
 
-  pragma [noinline] // predicate folding to get proper join-order
+  // predicate folding to get proper join-order
+  pragma[noinline]
   private Expr getExplicitArgument(string name) {
     result = getAnArgument() and
     result.getExplicitArgumentName() = name
@@ -248,25 +239,19 @@ class Call extends DotNet::Call, Expr, @call {
    * Gets an argument that corresponds to a parameter of a potential
    * run-time target of this call.
    */
-  Expr getARuntimeArgument() {
-    result = getRuntimeArgument(_)
-  }
+  Expr getARuntimeArgument() { result = getRuntimeArgument(_) }
 
   /**
    * Gets the number of arguments that correspond to a parameter of a potential
    * run-time target of this call.
    */
-  int getNumberOfRuntimeArguments() {
-    result = count(getARuntimeArgument())
-  }
+  int getNumberOfRuntimeArguments() { result = count(getARuntimeArgument()) }
 
   /**
    * Holds if this call has no arguments that correspond to a parameter of a
    * potential (run-time) target of this call.
    */
-  predicate hasNoRuntimeArguments() {
-    not exists(getARuntimeArgument())
-  }
+  predicate hasNoRuntimeArguments() { not exists(getARuntimeArgument()) }
 
   override string toString() { result = "call" }
 }
@@ -287,6 +272,7 @@ class Call extends DotNet::Call, Expr, @call {
  * }
  * ```
  */
+pragma[nomagic]
 private predicate isValidExplicitParamsType(Parameter p, Type t) {
   p.isParams() and
   t.isImplicitlyConvertibleTo(p.getType())
@@ -306,21 +292,18 @@ private predicate isValidExplicitParamsType(Parameter p, Type t) {
  * ```
  */
 class MethodCall extends Call, QualifiableExpr, LateBindableExpr, @method_invocation_expr {
-  override Method getTarget() {
-    expr_call(this, result)
-  }
+  override Method getTarget() { expr_call(this, result) }
 
-  override Method getQualifiedDeclaration() {
-    result = getTarget()
-  }
+  override Method getQualifiedDeclaration() { result = getTarget() }
 
-  override string toString() {
-    result = "call to method " + this.getTarget().getName()
-  }
+  override string toString() { result = "call to method " + this.getTarget().getName() }
 
   override Expr getRawArgument(int i) {
     if exists(getQualifier())
-    then (i=0 and result = getQualifier() or result = getArgument(i-1))
+    then
+      i = 0 and result = getQualifier()
+      or
+      result = getArgument(i - 1)
     else result = getArgument(i)
   }
 }
@@ -344,21 +327,13 @@ class MethodCall extends Call, QualifiableExpr, LateBindableExpr, @method_invoca
  * 6), in order to be properly matched with the parameter `i` on line 2.
  */
 class ExtensionMethodCall extends MethodCall {
-  ExtensionMethodCall() {
-    this.getTarget() instanceof ExtensionMethod
-  }
+  ExtensionMethodCall() { this.getTarget() instanceof ExtensionMethod }
 
-  override TypeAccess getQualifier() {
-    result = this.getChildExpr(-1)
-  }
+  override TypeAccess getQualifier() { result = this.getChildExpr(-1) }
 
   override Expr getArgument(int i) {
-    exists(int j |
-      result = this.getChildExpr(j) |
-      if isOrdinaryStaticCall() then
-        (j = i and j >= 0)
-      else
-        (j = i - 1 and j >= -1)
+    exists(int j | result = this.getChildExpr(j) |
+      if isOrdinaryStaticCall() then (j = i and j >= 0) else (j = i - 1 and j >= -1)
     )
   }
 
@@ -400,13 +375,10 @@ class ExtensionMethodCall extends MethodCall {
  * ```
  */
 class VirtualMethodCall extends MethodCall {
-
   VirtualMethodCall() {
-    not getQualifier() instanceof BaseAccess
-    and
+    not getQualifier() instanceof BaseAccess and
     getTarget().isOverridableOrImplementable()
   }
-
 }
 
 /**
@@ -426,17 +398,11 @@ class VirtualMethodCall extends MethodCall {
  * ```
  */
 class ConstructorInitializer extends Call, @constructor_init_expr {
-  override Constructor getTarget() {
-    expr_call(this, result)
-  }
+  override Constructor getTarget() { expr_call(this, result) }
 
-  override Constructor getARuntimeTarget() {
-    result = Call.super.getARuntimeTarget()
-  }
+  override Constructor getARuntimeTarget() { result = Call.super.getARuntimeTarget() }
 
-  override string toString() {
-    result = "call to constructor " + this.getTarget().getName()
-  }
+  override string toString() { result = "call to constructor " + this.getTarget().getName() }
 
   /**
    * Gets the constructor that this initializer call belongs to. For example,
@@ -459,7 +425,7 @@ class ConstructorInitializer extends Call, @constructor_init_expr {
   override Expr getRawArgument(int i) {
     if this.getTarget().isStatic()
     then result = this.getArgument(i)
-    else result = this.getArgument(i-1)
+    else result = this.getArgument(i - 1)
   }
 }
 
@@ -480,17 +446,11 @@ class ConstructorInitializer extends Call, @constructor_init_expr {
  * ```
  */
 class OperatorCall extends Call, LateBindableExpr, @operator_invocation_expr {
-  override Operator getTarget() {
-    expr_call(this, result)
-  }
+  override Operator getTarget() { expr_call(this, result) }
 
-  override Operator getARuntimeTarget() {
-    result = Call.super.getARuntimeTarget()
-  }
+  override Operator getARuntimeTarget() { result = Call.super.getARuntimeTarget() }
 
-  override string toString() {
-    result = "call to operator " + this.getTarget().getName()
-  }
+  override string toString() { result = "call to operator " + this.getTarget().getName() }
 }
 
 /**
@@ -510,13 +470,13 @@ class OperatorCall extends Call, LateBindableExpr, @operator_invocation_expr {
  * ```
  */
 class MutatorOperatorCall extends OperatorCall {
-  MutatorOperatorCall() { mutator_invocation_mode(this,_) }
+  MutatorOperatorCall() { mutator_invocation_mode(this, _) }
 
   /** Holds if the operator is in prefix position. */
-  predicate isPrefix() { mutator_invocation_mode(this,1) }
+  predicate isPrefix() { mutator_invocation_mode(this, 1) }
 
   /** Holds if the operator is in postfix position. */
-  predicate isPostfix() { mutator_invocation_mode(this,2) }
+  predicate isPostfix() { mutator_invocation_mode(this, 2) }
 }
 
 /**
@@ -547,7 +507,8 @@ class DelegateCall extends Call, @delegate_invocation_expr {
     or
     exists(AddEventSource aes, CallContext::CallContext cc2 |
       aes = this.getAnAddEventSource() and
-      result = aes.getARuntimeTarget(cc2) |
+      result = aes.getARuntimeTarget(cc2)
+    |
       aes = this.getAnAddEventSourceSameEnclosingCallable() and
       cc = cc2
       or
@@ -571,13 +532,9 @@ class DelegateCall extends Call, @delegate_invocation_expr {
     result.getExpr().getEnclosingCallable() != this.getEnclosingCallable()
   }
 
-  override Callable getARuntimeTarget() {
-    result = getARuntimeTarget(_)
-  }
+  override Callable getARuntimeTarget() { result = getARuntimeTarget(_) }
 
-  override Expr getRuntimeArgument(int i) {
-    result = getArgument(i)
-  }
+  override Expr getRuntimeArgument(int i) { result = getArgument(i) }
 
   /**
    * Gets the delegate expression of this delegate call. For example, the
@@ -593,13 +550,9 @@ class DelegateCall extends Call, @delegate_invocation_expr {
    * }
    * ```
    */
-  Expr getDelegateExpr() {
-    result = this.getChild(-1)
-  }
+  Expr getDelegateExpr() { result = this.getChild(-1) }
 
-  override string toString() {
-    result = "delegate call"
-  }
+  override string toString() { result = "delegate call" }
 }
 
 /**
@@ -612,9 +565,7 @@ class AccessorCall extends Call, QualifiableExpr, @call_access_expr {
 
   override Expr getArgument(int i) { none() }
 
-  override Accessor getARuntimeTarget() {
-    result = Call.super.getARuntimeTarget()
-  }
+  override Accessor getARuntimeTarget() { result = Call.super.getARuntimeTarget() }
 }
 
 /**
@@ -633,8 +584,7 @@ class AccessorCall extends Call, QualifiableExpr, @call_access_expr {
  */
 class PropertyCall extends AccessorCall, PropertyAccessExpr {
   override Accessor getTarget() {
-    exists(PropertyAccess pa, Property p |
-      pa = this and p = getProperty() |
+    exists(PropertyAccess pa, Property p | pa = this and p = getProperty() |
       pa instanceof AssignableRead and result = p.getGetter()
       or
       pa instanceof AssignableWrite and result = p.getSetter()
@@ -646,9 +596,7 @@ class PropertyCall extends AccessorCall, PropertyAccessExpr {
     result = AssignableInternal::getAccessorCallValueArgument(this)
   }
 
-  override string toString() {
-    result = PropertyAccessExpr.super.toString()
-  }
+  override string toString() { result = PropertyAccessExpr.super.toString() }
 }
 
 /**
@@ -669,8 +617,7 @@ class PropertyCall extends AccessorCall, PropertyAccessExpr {
  */
 class IndexerCall extends AccessorCall, IndexerAccessExpr {
   override Accessor getTarget() {
-    exists(IndexerAccess ia, Indexer i |
-      ia = this and i = getIndexer() |
+    exists(IndexerAccess ia, Indexer i | ia = this and i = getIndexer() |
       ia instanceof AssignableRead and result = i.getGetter()
       or
       ia instanceof AssignableWrite and result = i.getSetter()
@@ -712,7 +659,8 @@ class EventCall extends AccessorCall, EventAccessExpr {
   override EventAccessor getTarget() {
     exists(Event e, AddOrRemoveEventExpr aoree |
       e = getEvent() and
-      aoree.getLValue() = this |
+      aoree.getLValue() = this
+    |
       aoree instanceof AddEventExpr and result = e.getAddEventAccessor()
       or
       aoree instanceof RemoveEventExpr and result = e.getRemoveEventAccessor()
@@ -727,9 +675,7 @@ class EventCall extends AccessorCall, EventAccessExpr {
     )
   }
 
-  override string toString() {
-    result = EventAccessExpr.super.toString()
-  }
+  override string toString() { result = EventAccessExpr.super.toString() }
 }
 
 /**
@@ -746,11 +692,7 @@ class EventCall extends AccessorCall, EventAccessExpr {
  * ```
  */
 class LocalFunctionCall extends Call, @local_function_invocation_expr {
-  override LocalFunction getTarget() {
-    expr_call(this, result)
-  }
+  override LocalFunction getTarget() { expr_call(this, result) }
 
-  override string toString() {
-    result = "call to local function " + getTarget().getName()
-  }
+  override string toString() { result = "call to local function " + getTarget().getName() }
 }

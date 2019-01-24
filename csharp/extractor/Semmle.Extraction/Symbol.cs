@@ -57,7 +57,7 @@ namespace Semmle.Extraction
         public override bool Equals(object obj)
         {
             var other = obj as CachedEntity<Initializer>;
-            return obj != null && obj.GetType() == GetType() && Equals(other.symbol, symbol);
+            return other?.GetType() == GetType() && Equals(other.symbol, symbol);
         }
 
         public abstract TrapStackBehaviour TrapStackBehaviour { get; }

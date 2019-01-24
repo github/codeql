@@ -1039,6 +1039,10 @@ namespaces(
     string name: string ref
 );
 
+namespace_inline(
+    unique int id: @namespace ref
+);
+
 namespacembrs(
     int parentid: @namespace ref,
     unique int memberid: @namespacembr ref

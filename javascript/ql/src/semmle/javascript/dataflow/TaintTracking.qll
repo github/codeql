@@ -782,7 +782,7 @@ module TaintTracking {
    * A function that returns the result of a sanitizer check.
    */
   private class SanitizingFunction extends Function {
-    Parameter sanitizedParameter;
+    DataFlow::ParameterNode sanitizedParameter;
 
     SanitizerGuardNode sanitizer;
 
@@ -806,11 +806,11 @@ module TaintTracking {
           or
           returnExpr = getAReturnedExpr()
         ) and
-        DataFlow::parameterNode(sanitizedParameter).flowsToExpr(e) and
+        sanitizedParameter.flowsToExpr(e) and
         sanitizer.sanitizes(sanitizerOutcome, e)
       ) and
       getNumParameter() = 1 and
-      sanitizedParameter = getParameter(0)
+      sanitizedParameter.getParameter() = getParameter(0)
     }
 
     /**

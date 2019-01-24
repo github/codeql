@@ -260,4 +260,14 @@ public class Classes {
 			};
 		}
 	}
+
+	/** Has a method that calls a constructor that accessing an enclosing instance of this class. */
+	class CannotBeStatic4 {
+		CannotBeStatic4() {
+			System.out.println(foo);
+		}
+		void foo() {
+			new CannotBeStatic4();
+		}
+	}
 }

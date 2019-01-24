@@ -69,17 +69,13 @@ private class SimplePropertyProjection extends CustomPropertyProjection {
     exists(DataFlow::SourceNode callee | this = callee.getACall() |
       singleton = false and
       (
-        (
-          callee = LodashUnderscore::member("pick") and
-          objectIndex = 0 and
-          selectorIndex = [1 .. getNumArgument()]
-        )
+        callee = LodashUnderscore::member("pick") and
+        objectIndex = 0 and
+        selectorIndex = [1 .. getNumArgument()]
         or
-        (
-          callee = LodashUnderscore::member("pickBy") and
-          objectIndex = 0 and
-          selectorIndex = 1
-        )
+        callee = LodashUnderscore::member("pickBy") and
+        objectIndex = 0 and
+        selectorIndex = 1
         or
         exists(string name |
           name = "pick" or
@@ -91,38 +87,28 @@ private class SimplePropertyProjection extends CustomPropertyProjection {
           selectorIndex = 0
         )
         or
-        (
-          callee = DataFlow::moduleMember("dotty", "search") and
-          objectIndex = 0 and
-          selectorIndex = 1
-        )
+        callee = DataFlow::moduleMember("dotty", "search") and
+        objectIndex = 0 and
+        selectorIndex = 1
       )
       or
       singleton = true and
       (
-        (
-          callee = LodashUnderscore::member("get") and
-          objectIndex = 0 and
-          selectorIndex = 1
-        )
+        callee = LodashUnderscore::member("get") and
+        objectIndex = 0 and
+        selectorIndex = 1
         or
-        (
-          callee = DataFlow::moduleMember("ramda", "path") and
-          objectIndex = 1 and
-          selectorIndex = 0
-        )
+        callee = DataFlow::moduleMember("ramda", "path") and
+        objectIndex = 1 and
+        selectorIndex = 0
         or
-        (
-          callee = DataFlow::moduleMember("dottie", "get") and
-          objectIndex = 0 and
-          selectorIndex = 1
-        )
+        callee = DataFlow::moduleMember("dottie", "get") and
+        objectIndex = 0 and
+        selectorIndex = 1
         or
-        (
-          callee = DataFlow::moduleMember("dotty", "get") and
-          objectIndex = 0 and
-          selectorIndex = 1
-        )
+        callee = DataFlow::moduleMember("dotty", "get") and
+        objectIndex = 0 and
+        selectorIndex = 1
       )
     )
   }

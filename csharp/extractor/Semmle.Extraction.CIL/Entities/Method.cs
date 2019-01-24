@@ -402,6 +402,9 @@ namespace Semmle.Extraction.CIL.Entities
 
             declType = parentMethod == null ? parent as Type : parentMethod.DeclaringType;
 
+            if (declType is null)
+                throw new InternalError("Parent context of method is not a type");
+
             ShortId = MakeMethodId(declType, nameLabel);
 
             var typeSourceDeclaration = declType.SourceDeclaration;

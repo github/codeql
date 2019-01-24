@@ -27,9 +27,7 @@ class Assignable extends Declaration, @assignable {
  * property (`Property`), an indexer (`Indexer`), or an event (`Event`).
  */
 class AssignableMember extends Member, Assignable {
-  override AssignableMemberAccess getAnAccess() {
-    result = Assignable.super.getAnAccess()
-  }
+  override AssignableMemberAccess getAnAccess() { result = Assignable.super.getAnAccess() }
 }
 
 /**
@@ -38,9 +36,7 @@ class AssignableMember extends Member, Assignable {
  * (`IndexerAccess`), or an event access (`EventAccess`).
  */
 class AssignableMemberAccess extends MemberAccess, AssignableAccess {
-  override AssignableMember getTarget() {
-    result = AssignableAccess.super.getTarget()
-  }
+  override AssignableMember getTarget() { result = AssignableAccess.super.getTarget() }
 }
 
 /**
@@ -70,8 +66,7 @@ class AssignableRead extends AssignableAccess {
       this.isRefArgument()
       or
       this = any(AssignableDefinitions::AddressOfDefinition def).getTargetAccess()
-    )
-    and
+    ) and
     not this = any(NameOfExpr noe).getAChildExpr*()
   }
 
@@ -100,8 +95,7 @@ class AssignableRead extends AssignableAccess {
    * - The read of `this.Field` on line 11 is next to the read on line 10.
    */
   AssignableRead getANextRead() {
-    forex(ControlFlow::Node cfn |
-      cfn = result.getAControlFlowNode() |
+    forex(ControlFlow::Node cfn | cfn = result.getAControlFlowNode() |
       Ssa::Internal::adjacentReadPairSameVar(this.getAControlFlowNode(), cfn)
     )
   }
@@ -113,9 +107,7 @@ class AssignableRead extends AssignableAccess {
    *
    * This is the transitive closure of `getANextRead()`.
    */
-  AssignableRead getAReachableRead() {
-    result = this.getANextRead+()
-  }
+  AssignableRead getAReachableRead() { result = this.getANextRead+() }
 }
 
 /**
@@ -136,11 +128,7 @@ class AssignableRead extends AssignableAccess {
  * ```
  */
 class AssignableWrite extends AssignableAccess {
-  AssignableWrite() {
-    exists(AssignableDefinition def |
-      def.getTargetAccess() = this
-    )
-  }
+  AssignableWrite() { exists(AssignableDefinition def | def.getTargetAccess() = this) }
 }
 
 /** INTERNAL: Do not use. */
@@ -164,8 +152,7 @@ module AssignableInternal {
     left = ae.getLValue() and
     right = ae.getRValue()
     or
-    exists(TupleExpr l, TupleExpr r, int i |
-      tupleAssignmentPair(ae, l, r) |
+    exists(TupleExpr l, TupleExpr r, int i | tupleAssignmentPair(ae, l, r) |
       left = l.getArgument(i) and
       right = r.getArgument(i)
     )
@@ -175,9 +162,8 @@ module AssignableInternal {
    * Holds if the `ref` assignment to `aa` via call `c` is relevant.
    */
   private predicate isRelevantRefCall(Call c, AssignableAccess aa) {
-    c.getAnArgument() = aa and
-    aa.isRefArgument() and
-    (isNonAnalyzableRefCall(c, aa, _) or exists(getAnAnalyzableRefDef(c, aa, _)))
+    isNonAnalyzableRefCall(c, aa) or
+    exists(getAnAnalyzableRefDef(c, aa, _))
   }
 
   private Callable getRefCallTarget(Call c, AssignableAccess aa, Parameter p) {
@@ -196,12 +182,10 @@ module AssignableInternal {
    * recursion error).
    */
   private Expr getArgumentForParameter(Call c, Parameter p) {
-    exists(Callable callable |
-      p = callable.getAParameter() |
+    exists(Callable callable | p = callable.getAParameter() |
       callable = c.(MethodCall).getTarget() or
       callable = c.(ObjectCreation).getTarget()
-    )
-    and
+    ) and
     (
       // Appears in the positional part of the call
       result = c.getArgument(p.getPosition()) and
@@ -212,7 +196,8 @@ module AssignableInternal {
     )
   }
 
-  pragma [noinline] // predicate folding to get proper join-order
+  // predicate folding to get proper join-order
+  pragma[noinline]
   private Expr getExplicitArgument(Call c, string name) {
     result = c.getAnArgument() and
     result.getExplicitArgumentName() = name
@@ -223,8 +208,7 @@ module AssignableInternal {
    * the target callable is non-overridable and from source.
    */
   private predicate isAnalyzableRefCall(Call c, AssignableAccess aa, Parameter p) {
-    exists(Callable callable |
-      callable = getRefCallTarget(c, aa, p) |
+    exists(Callable callable | callable = getRefCallTarget(c, aa, p) |
       not callable.(Virtualizable).isOverridableOrImplementable() and
       callable.hasBody()
     )
@@ -235,11 +219,16 @@ module AssignableInternal {
    * Equivalent with `not isAnalyzableRefCall(mc, aa, p)`, but avoids negative
    * recursion.
    */
-  private predicate isNonAnalyzableRefCall(Call c, AssignableAccess aa, Parameter p) {
-    exists(Callable callable |
-      callable = getRefCallTarget(c, aa, p) |
-      callable.(Virtualizable).isOverridableOrImplementable() or
-      not callable.hasBody()
+  private predicate isNonAnalyzableRefCall(Call c, AssignableAccess aa) {
+    aa = c.getAnArgument() and
+    aa.isRefArgument() and
+    (
+      not exists(getRefCallTarget(c, aa, _))
+      or
+      exists(Callable callable | callable = getRefCallTarget(c, aa, _) |
+        callable.(Virtualizable).isOverridableOrImplementable() or
+        not callable.hasBody()
+      )
     )
   }
 
@@ -259,14 +248,12 @@ module AssignableInternal {
    * any assignments to `p`.
    */
   private predicate parameterReachesWithoutDef(Parameter p, ControlFlow::BasicBlock bb) {
-    not basicBlockRefParamDef(bb, p)
-    and
+    not basicBlockRefParamDef(bb, p) and
     (
       isAnalyzableRefCall(_, _, p) and
       p.getCallable().getEntryPoint() = bb.getFirstNode()
       or
-      exists(ControlFlow::BasicBlock mid |
-        parameterReachesWithoutDef(p, mid) |
+      exists(ControlFlow::BasicBlock mid | parameterReachesWithoutDef(p, mid) |
         bb = mid.getASuccessor()
       )
     )
@@ -277,45 +264,34 @@ module AssignableInternal {
     bb.getANode() = getAnAnalyzableRefDef(_, _, p).getAControlFlowNode()
   }
 
-  private cached module Cached {
-    cached newtype TAssignableDefinition =
-      TAssignmentDefinition(Assignment a) {
-        not a.getLValue() instanceof TupleExpr
-      }
-      or
-      TTupleAssignmentDefinition(AssignExpr ae, Expr leaf) {
-        tupleAssignmentDefinition(ae, leaf)
-      }
-      or
+  cached
+  private module Cached {
+    cached
+    newtype TAssignableDefinition =
+      TAssignmentDefinition(Assignment a) { not a.getLValue() instanceof TupleExpr } or
+      TTupleAssignmentDefinition(AssignExpr ae, Expr leaf) { tupleAssignmentDefinition(ae, leaf) } or
       TOutRefDefinition(AssignableAccess aa) {
         aa.isOutArgument()
         or
         isRelevantRefCall(_, aa)
-      }
-      or
-      TMutationDefinition(MutatorOperation mo)
-      or
+      } or
+      TMutationDefinition(MutatorOperation mo) or
       TLocalVariableDefinition(LocalVariableDeclExpr lvde) {
         not lvde.hasInitializer() and
         not exists(getTupleSource(TTupleAssignmentDefinition(_, lvde))) and
         not lvde = any(IsPatternExpr ipe).getVariableDeclExpr() and
-        not lvde = any(TypeCase tc).getVariableDeclExpr()
-      }
-      or
+        not lvde = any(TypeCase tc).getVariableDeclExpr() and
+        not lvde.isOutArgument()
+      } or
       TImplicitParameterDefinition(Parameter p) {
-        exists(Callable c |
-          p = c.getAParameter() |
+        exists(Callable c | p = c.getAParameter() |
           c.hasBody() or
           c.(Constructor).hasInitializer()
         )
-      }
-      or
-      TAddressOfDefinition(AddressOfExpr aoe)
-      or
-      TIsPatternDefinition(IsPatternExpr ipe)
-      or
-      TTypeCasePatternDefinition(TypeCase tc)
-      or
+      } or
+      TAddressOfDefinition(AddressOfExpr aoe) or
+      TIsPatternDefinition(IsPatternExpr ipe) or
+      TTypeCasePatternDefinition(TypeCase tc) or
       TInitializer(Assignable a, Expr e) {
         e = a.(Field).getInitializer() or
         e = a.(Property).getInitializer()
@@ -324,9 +300,9 @@ module AssignableInternal {
     /**
      * Gets the source expression assigned in tuple definition `def`, if any.
      */
-    cached Expr getTupleSource(TTupleAssignmentDefinition def) {
-      exists(AssignExpr ae, Expr leaf |
-        def = TTupleAssignmentDefinition(ae, leaf) |
+    cached
+    Expr getTupleSource(TTupleAssignmentDefinition def) {
+      exists(AssignExpr ae, Expr leaf | def = TTupleAssignmentDefinition(ae, leaf) |
         tupleAssignmentPair(ae, leaf, result)
       )
     }
@@ -334,48 +310,44 @@ module AssignableInternal {
     /**
      * Holds if the `ref` assignment to `aa` via call `c` is uncertain.
      */
-    cached predicate isUncertainRefCall(Call c, AssignableAccess aa) {
-      isRelevantRefCall(c, aa)
-      and
-      exists(ControlFlow::BasicBlock bb, Parameter p |
-        isAnalyzableRefCall(c, aa, p) |
+    cached
+    predicate isUncertainRefCall(Call c, AssignableAccess aa) {
+      isRelevantRefCall(c, aa) and
+      exists(ControlFlow::BasicBlock bb, Parameter p | isAnalyzableRefCall(c, aa, p) |
         parameterReachesWithoutDef(p, bb) and
         bb.getLastNode() = p.getCallable().getExitPoint()
       )
     }
 
     // Not defined by dispatch in order to avoid too conservative negative recursion error
-    cached Assignable getTarget(AssignableDefinition def) {
+    cached
+    Assignable getTarget(AssignableDefinition def) {
       result = def.getTargetAccess().getTarget()
       or
-      exists(Expr leaf |
-        def = TTupleAssignmentDefinition(_, leaf) |
+      exists(Expr leaf | def = TTupleAssignmentDefinition(_, leaf) |
         result = leaf.(LocalVariableDeclExpr).getVariable()
       )
       or
-      def = any(AssignableDefinitions::ImplicitParameterDefinition p |
-        result = p.getParameter()
-      )
+      def = any(AssignableDefinitions::ImplicitParameterDefinition p | result = p.getParameter())
       or
       def = any(AssignableDefinitions::LocalVariableDefinition decl |
-        result = decl.getDeclaration().getVariable()
-      )
+          result = decl.getDeclaration().getVariable()
+        )
       or
       def = any(AssignableDefinitions::IsPatternDefinition is |
-        result = is.getDeclaration().getVariable()
-      )
+          result = is.getDeclaration().getVariable()
+        )
       or
       def = any(AssignableDefinitions::TypeCasePatternDefinition case |
-        result = case.getDeclaration().getVariable()
-      )
+          result = case.getDeclaration().getVariable()
+        )
       or
-      def = any(AssignableDefinitions::InitializerDefinition init |
-        result = init.getAssignable()
-      )
+      def = any(AssignableDefinitions::InitializerDefinition init | result = init.getAssignable())
     }
 
     // Not defined by dispatch in order to avoid too conservative negative recursion error
-    cached AssignableAccess getTargetAccess(AssignableDefinition def) {
+    cached
+    AssignableAccess getTargetAccess(AssignableDefinition def) {
       def = TAssignmentDefinition(any(Assignment a | a.getLValue() = result))
       or
       def = TTupleAssignmentDefinition(_, result)
@@ -391,14 +363,13 @@ module AssignableInternal {
      * Gets the argument for the implicit `value` parameter in the accessor call
      * `ac`, if any.
      */
-    cached Expr getAccessorCallValueArgument(AccessorCall ac) {
-      exists(AssignExpr ae |
-        tupleAssignmentDefinition(ae, ac) |
+    cached
+    Expr getAccessorCallValueArgument(AccessorCall ac) {
+      exists(AssignExpr ae | tupleAssignmentDefinition(ae, ac) |
         tupleAssignmentPair(ae, ac, result)
       )
       or
-      exists(Assignment a |
-        ac = a.getLValue() |
+      exists(Assignment a | ac = a.getLValue() |
         result = a.getRValue() and
         not a.(AssignOperation).hasExpandedAssignment()
       )
@@ -406,7 +377,6 @@ module AssignableInternal {
   }
   import Cached
 }
-
 private import AssignableInternal
 
 /**
@@ -431,9 +401,7 @@ class AssignableDefinition extends TAssignableDefinition {
    * the definitions of `x` and `y` in `M(out x, out y)` and `(x, y) = (0, 1)`
    * relate to the same call to `M` and assignment node, respectively.
    */
-  ControlFlow::Node getAControlFlowNode() {
-    result = this.getExpr().getAControlFlowNode()
-  }
+  ControlFlow::Node getAControlFlowNode() { result = this.getExpr().getAControlFlowNode() }
 
   /**
    * Gets the underlying expression that updates the targeted assignable when
@@ -505,10 +473,8 @@ class AssignableDefinition extends TAssignableDefinition {
    * `AssignableRead.getANextRead()`.
    */
   AssignableRead getAFirstRead() {
-    forex(ControlFlow::Node cfn |
-      cfn = result.getAControlFlowNode() |
-      exists(Ssa::ExplicitDefinition def |
-        result = def.getAFirstReadAtNode(cfn) |
+    forex(ControlFlow::Node cfn | cfn = result.getAControlFlowNode() |
+      exists(Ssa::ExplicitDefinition def | result = def.getAFirstReadAtNode(cfn) |
         this = def.getADefinition()
       )
     )
@@ -521,17 +487,13 @@ class AssignableDefinition extends TAssignableDefinition {
    *
    * This is the equivalent with `getAFirstRead().getANextRead*()`.
    */
-  AssignableRead getAReachableRead() {
-    result = this.getAFirstRead().getANextRead*()
-  }
+  AssignableRead getAReachableRead() { result = this.getAFirstRead().getANextRead*() }
 
   /** Gets a textual representation of this assignable definition. */
   string toString() { none() }
 
   /** Gets the location of this assignable definition. */
-  Location getLocation() {
-    result = this.getExpr().getLocation()
-  }
+  Location getLocation() { result = this.getExpr().getLocation() }
 }
 
 /** Provides different types of `AssignableDefinition`s. */
@@ -542,14 +504,10 @@ module AssignableDefinitions {
   class AssignmentDefinition extends AssignableDefinition, TAssignmentDefinition {
     Assignment a;
 
-    AssignmentDefinition() {
-      this = TAssignmentDefinition(a)
-    }
+    AssignmentDefinition() { this = TAssignmentDefinition(a) }
 
     /** Gets the underlying assignment. */
-    Assignment getAssignment() {
-      result = a
-    }
+    Assignment getAssignment() { result = a }
 
     override Expr getExpr() { result = a }
 
@@ -558,9 +516,7 @@ module AssignableDefinitions {
       not a instanceof AssignOperation
     }
 
-    override string toString() {
-      result = a.toString()
-    }
+    override string toString() { result = a.toString() }
   }
 
   /**
@@ -569,16 +525,13 @@ module AssignableDefinitions {
    */
   class TupleAssignmentDefinition extends AssignableDefinition, TTupleAssignmentDefinition {
     AssignExpr ae;
+
     Expr leaf;
 
-    TupleAssignmentDefinition() {
-      this = TTupleAssignmentDefinition(ae, leaf)
-    }
+    TupleAssignmentDefinition() { this = TTupleAssignmentDefinition(ae, leaf) }
 
     /** Gets the underlying assignment. */
-    AssignExpr getAssignment() {
-      result = ae
-    }
+    AssignExpr getAssignment() { result = ae }
 
     /**
      * Gets the evaluation order of this definition among the other definitions
@@ -587,9 +540,12 @@ module AssignableDefinitions {
      */
     int getEvaluationOrder() {
       leaf = rank[result + 1](Expr leaf0 |
-        exists(TTupleAssignmentDefinition(ae, leaf0)) |
-        leaf0 order by leaf0.getLocation().getStartLine(), leaf0.getLocation().getStartColumn()
-      )
+          exists(TTupleAssignmentDefinition(ae, leaf0))
+        |
+          leaf0
+          order by
+            leaf0.getLocation().getStartLine(), leaf0.getLocation().getStartColumn()
+        )
     }
 
     override Expr getExpr() { result = ae }
@@ -598,9 +554,7 @@ module AssignableDefinitions {
       result = getTupleSource(this) // need not exist
     }
 
-    override string toString() {
-      result = ae.toString()
-    }
+    override string toString() { result = ae.toString() }
   }
 
   /**
@@ -610,14 +564,10 @@ module AssignableDefinitions {
   class OutRefDefinition extends AssignableDefinition, TOutRefDefinition {
     AssignableAccess aa;
 
-    OutRefDefinition() {
-      this = TOutRefDefinition(aa)
-    }
+    OutRefDefinition() { this = TOutRefDefinition(aa) }
 
     /** Gets the underlying call. */
-    Call getCall() {
-      result.getAnArgument() = aa
-    }
+    Call getCall() { result.getAnArgument() = aa }
 
     /**
      * Gets the index of this definition among the other definitions in the
@@ -625,14 +575,13 @@ module AssignableDefinitions {
      * the definitions of `x` and `y` are 0 and 1, respectively.
      */
     int getIndex() {
-      exists(ControlFlow::BasicBlock bb, int i |
-        bb.getNode(i).getElement() = aa |
+      exists(ControlFlow::BasicBlock bb, int i | bb.getNode(i).getElement() = aa |
         i = rank[result + 1](int j, OutRefDefinition def |
-          bb.getNode(j).getElement() = def.getTargetAccess() and
-          this.getCall() = def.getCall()
+            bb.getNode(j).getElement() = def.getTargetAccess() and
+            this.getCall() = def.getCall()
           |
-          j
-        )
+            j
+          )
       )
     }
 
@@ -642,13 +591,9 @@ module AssignableDefinitions {
       not isUncertainRefCall(this.getCall(), this.getTargetAccess())
     }
 
-    override string toString() {
-      result = aa.toString()
-    }
+    override string toString() { result = aa.toString() }
 
-    override Location getLocation() {
-      result = aa.getLocation()
-    }
+    override Location getLocation() { result = aa.getLocation() }
   }
 
   /**
@@ -657,20 +602,14 @@ module AssignableDefinitions {
   class MutationDefinition extends AssignableDefinition, TMutationDefinition {
     MutatorOperation mo;
 
-    MutationDefinition() {
-      this = TMutationDefinition(mo)
-    }
+    MutationDefinition() { this = TMutationDefinition(mo) }
 
     /** Gets the underlying mutator operation. */
-    MutatorOperation getMutatorOperation() {
-      result = mo
-    }
+    MutatorOperation getMutatorOperation() { result = mo }
 
     override Expr getExpr() { result = mo }
 
-    override string toString() {
-      result = mo.toString()
-    }
+    override string toString() { result = mo.toString() }
   }
 
   /**
@@ -679,20 +618,14 @@ module AssignableDefinitions {
   class LocalVariableDefinition extends AssignableDefinition, TLocalVariableDefinition {
     LocalVariableDeclExpr lvde;
 
-    LocalVariableDefinition() {
-      this = TLocalVariableDefinition(lvde)
-    }
+    LocalVariableDefinition() { this = TLocalVariableDefinition(lvde) }
 
     /** Gets the underlying local variable declaration. */
-    LocalVariableDeclExpr getDeclaration() {
-      result = lvde
-    }
+    LocalVariableDeclExpr getDeclaration() { result = lvde }
 
     override Expr getExpr() { result = lvde }
 
-    override string toString() {
-      result = lvde.toString()
-    }
+    override string toString() { result = lvde.toString() }
   }
 
   /**
@@ -702,32 +635,20 @@ module AssignableDefinitions {
   class ImplicitParameterDefinition extends AssignableDefinition, TImplicitParameterDefinition {
     Parameter p;
 
-    ImplicitParameterDefinition() {
-      this = TImplicitParameterDefinition(p)
-    }
+    ImplicitParameterDefinition() { this = TImplicitParameterDefinition(p) }
 
     /** Gets the underlying parameter. */
-    Parameter getParameter() {
-      result = p
-    }
+    Parameter getParameter() { result = p }
 
-    override ControlFlow::Node getAControlFlowNode() {
-      result = p.getCallable().getEntryPoint()
-    }
+    override ControlFlow::Node getAControlFlowNode() { result = p.getCallable().getEntryPoint() }
 
     override Parameter getElement() { result = p }
 
-    override Callable getEnclosingCallable() {
-      result = p.getCallable()
-    }
+    override Callable getEnclosingCallable() { result = p.getCallable() }
 
-    override string toString() {
-      result = p.toString()
-    }
+    override string toString() { result = p.toString() }
 
-    override Location getLocation() {
-      result = this.getTarget().getLocation()
-    }
+    override Location getLocation() { result = this.getTarget().getLocation() }
   }
 
   /**
@@ -736,20 +657,14 @@ module AssignableDefinitions {
   class AddressOfDefinition extends AssignableDefinition, TAddressOfDefinition {
     AddressOfExpr aoe;
 
-    AddressOfDefinition() {
-      this = TAddressOfDefinition(aoe)
-    }
+    AddressOfDefinition() { this = TAddressOfDefinition(aoe) }
 
     /** Gets the underlying address-of expression. */
-    AddressOfExpr getAddressOf() {
-      result = aoe
-    }
+    AddressOfExpr getAddressOf() { result = aoe }
 
     override Expr getExpr() { result = aoe }
 
-    override string toString() {
-      result = aoe.toString()
-    }
+    override string toString() { result = aoe.toString() }
   }
 
   /**
@@ -758,24 +673,16 @@ module AssignableDefinitions {
   class IsPatternDefinition extends AssignableDefinition, TIsPatternDefinition {
     IsPatternExpr ipe;
 
-    IsPatternDefinition() {
-      this = TIsPatternDefinition(ipe)
-    }
+    IsPatternDefinition() { this = TIsPatternDefinition(ipe) }
 
     /** Gets the underlying local variable declaration. */
-    LocalVariableDeclExpr getDeclaration() {
-      result = ipe.getVariableDeclExpr()
-    }
+    LocalVariableDeclExpr getDeclaration() { result = ipe.getVariableDeclExpr() }
 
     override Expr getExpr() { result = this.getDeclaration() }
 
-    override Expr getSource() {
-      result = ipe.getExpr()
-    }
+    override Expr getSource() { result = ipe.getExpr() }
 
-    override string toString() {
-      result = this.getDeclaration().toString()
-    }
+    override string toString() { result = this.getDeclaration().toString() }
   }
 
   /**
@@ -793,14 +700,10 @@ module AssignableDefinitions {
   class TypeCasePatternDefinition extends AssignableDefinition, TTypeCasePatternDefinition {
     TypeCase tc;
 
-    TypeCasePatternDefinition() {
-      this = TTypeCasePatternDefinition(tc)
-    }
+    TypeCasePatternDefinition() { this = TTypeCasePatternDefinition(tc) }
 
     /** Gets the underlying local variable declaration. */
-    LocalVariableDeclExpr getDeclaration() {
-      result = tc.getVariableDeclExpr()
-    }
+    LocalVariableDeclExpr getDeclaration() { result = tc.getVariableDeclExpr() }
 
     override Expr getExpr() { result = this.getDeclaration() }
 
@@ -808,9 +711,7 @@ module AssignableDefinitions {
       result = any(SwitchStmt ss | ss.getATypeCase() = tc).getCondition()
     }
 
-    override string toString() {
-      result = this.getDeclaration().toString()
-    }
+    override string toString() { result = this.getDeclaration().toString() }
   }
 
   /**
@@ -825,27 +726,18 @@ module AssignableDefinitions {
    */
   class InitializerDefinition extends AssignableDefinition, TInitializer {
     Assignable a;
+
     Expr e;
 
-    InitializerDefinition() {
-      this = TInitializer(a, e)
-    }
+    InitializerDefinition() { this = TInitializer(a, e) }
 
     /** Gets the assignable (field or property) being initialized. */
-    Assignable getAssignable() {
-      result = a
-    }
+    Assignable getAssignable() { result = a }
 
-    override Expr getSource() {
-      result = e
-    }
+    override Expr getSource() { result = e }
 
-    override string toString() {
-      result = e.toString()
-    }
+    override string toString() { result = e.toString() }
 
-    override Location getLocation() {
-      result = e.getLocation()
-    }
+    override Location getLocation() { result = e.getLocation() }
   }
 }

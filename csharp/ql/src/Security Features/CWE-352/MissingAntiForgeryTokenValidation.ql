@@ -26,10 +26,7 @@ class AntiForgeryAuthorizationFilter extends AuthorizationFilter {
  * Holds if the project has a global anti forgery filter.
  */
 predicate hasGlobalAntiForgeryFilter() {
-  /*
-   * A global filter added
-   */
-
+  // A global filter added
   exists(MethodCall addGlobalFilter |
     // addGlobalFilter adds a filter to the global filter collection
     addGlobalFilter.getTarget() = any(GlobalFilterCollection gfc).getAddMethod() and

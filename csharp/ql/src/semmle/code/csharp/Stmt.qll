@@ -25,11 +25,8 @@ private import semmle.code.csharp.frameworks.System
  * (`FixedStmt`).
  */
 class Stmt extends ControlFlowElement, @stmt {
-
   /** Gets the enclosing callable of this statement. */
-  override Callable getEnclosingCallable() {
-    enclosingCallable(this, result)
-  }
+  override Callable getEnclosingCallable() { enclosingCallable(this, result) }
 
   override string toString() { result = "Statement" }
 
@@ -54,7 +51,6 @@ class Stmt extends ControlFlowElement, @stmt {
  * ```
  */
 class BlockStmt extends Stmt, @block_stmt {
-
   /** Gets a statement in this block, if any. */
   Stmt getAStmt() { result.getParent() = this }
 
@@ -74,10 +70,9 @@ class BlockStmt extends Stmt, @block_stmt {
   predicate isEmpty() { not exists(this.getAStmt()) }
 
   override Stmt stripSingletonBlocks() {
-    if getNumberOfStmts() = 1 then
-      result = getAChildStmt().stripSingletonBlocks()
-    else
-      result = this
+    if getNumberOfStmts() = 1
+    then result = getAChildStmt().stripSingletonBlocks()
+    else result = this
   }
 
   override string toString() { result = "{...}" }
@@ -97,7 +92,6 @@ class BlockStmt extends Stmt, @block_stmt {
  * ```
  */
 class ExprStmt extends Stmt, @expr_stmt {
-
   /** Gets the expression in this expression statement. */
   Expr getExpr() { result.getParent() = this }
 
@@ -110,7 +104,6 @@ class ExprStmt extends Stmt, @expr_stmt {
  * Either an `if` statement (`IfStmt`) or a `switch` statement (`SwitchStmt`).
  */
 class SelectionStmt extends Stmt, @cond_stmt {
-
   /** Gets the condition of this selection statement. */
   Expr getCondition() { none() }
 }
@@ -129,7 +122,6 @@ class SelectionStmt extends Stmt, @cond_stmt {
  * The `else` part is optional.
  */
 class IfStmt extends SelectionStmt, @if_stmt {
-
   override Expr getCondition() { result = this.getChild(0) }
 
   /** Gets the `then` (true) branch of this `if` statement. */
@@ -151,7 +143,6 @@ class IfStmt extends SelectionStmt, @if_stmt {
  * ```
  */
 class SwitchStmt extends SelectionStmt, @switch_stmt {
-
   override Expr getCondition() { result = this.getChild(0) }
 
   /**
@@ -217,16 +208,14 @@ class SwitchStmt extends SelectionStmt, @switch_stmt {
   Stmt getAStmt() { result = this.getStmt(_) }
 }
 
-private cached module SwithStmtInternal {
+cached
+private module SwithStmtInternal {
   cached
   CaseStmt getCase(SwitchStmt ss, int i) {
     exists(int index, int rankIndex |
       result = ss.getChildStmt(index) and
       rankIndex = i + 1 and
-      index = rank[rankIndex](int j, CaseStmt cs |
-        cs = ss.getChildStmt(j) |
-        j
-      )
+      index = rank[rankIndex](int j, CaseStmt cs | cs = ss.getChildStmt(j) | j)
     )
   }
 
@@ -236,12 +225,13 @@ private cached module SwithStmtInternal {
       result = ss.getChildStmt(index) and
       rankIndex = i + 1 and
       index = rank[rankIndex](int j, Stmt s |
-        // `getChild` includes both labeled statements and the targeted
-        // statements of labeled statement as separate children, but we
-        // only want the labeled statement
-        s = getLabeledStmt(ss, j) |
-        j
-      )
+          // `getChild` includes both labeled statements and the targeted
+          // statements of labeled statement as separate children, but we
+          // only want the labeled statement
+          s = getLabeledStmt(ss, j)
+        |
+          j
+        )
     )
   }
 
@@ -271,9 +261,7 @@ class CaseStmt extends Stmt, @case {
    * }
    * ```
    */
-  Expr getCondition() {
-    result = this.getChild(2)
-  }
+  Expr getCondition() { result = this.getChild(2) }
 }
 
 /**
@@ -318,9 +306,7 @@ class ConstCase extends LabeledStmt, CaseStmt {
  * ```
  */
 class TypeCase extends LabeledStmt, CaseStmt {
-  TypeCase() {
-    this.getChild(1) instanceof TypeAccess
-  }
+  TypeCase() { this.getChild(1) instanceof TypeAccess }
 
   /**
    * Gets the local variable declaration of this type case, if any. For example,
@@ -337,9 +323,7 @@ class TypeCase extends LabeledStmt, CaseStmt {
    * }
    * ```
    */
-  LocalVariableDeclExpr getVariableDeclExpr() {
-    result = getChild(0)
-  }
+  LocalVariableDeclExpr getVariableDeclExpr() { result = getChild(0) }
 
   /**
    * Gets the type access of this case, for example access to `string` or
@@ -354,9 +338,7 @@ class TypeCase extends LabeledStmt, CaseStmt {
    * }
    * ```
    */
-  TypeAccess getTypeAccess() {
-    result = getChild(1)
-  }
+  TypeAccess getTypeAccess() { result = getChild(1) }
 
   /**
    * Gets the type being checked by this case. For example, the type being checked
@@ -371,17 +353,14 @@ class TypeCase extends LabeledStmt, CaseStmt {
    * }
    * ```
    */
-  Type getCheckedType() {
-    result = getTypeAccess().getType()
-  }
+  Type getCheckedType() { result = getTypeAccess().getType() }
 
   override string toString() {
     exists(string var |
-      if exists(this.getVariableDeclExpr()) then
-        var = " " + this.getVariableDeclExpr().getName()
-      else
-        var = ""
-      |
+      if exists(this.getVariableDeclExpr())
+      then var = " " + this.getVariableDeclExpr().getName()
+      else var = ""
+    |
       result = "case " + this.getTypeAccess().getType().getName() + var + ":"
     )
   }
@@ -399,7 +378,6 @@ class TypeCase extends LabeledStmt, CaseStmt {
  * ```
  */
 class DefaultCase extends CaseStmt {
-
   DefaultCase() { not exists(Expr e | e.getParent() = this) }
 
   override string toString() { result = "default:" }
@@ -413,7 +391,6 @@ class DefaultCase extends CaseStmt {
  * (`ForeachStmt`).
  */
 class LoopStmt extends Stmt, @loop_stmt {
-
   /** Gets the body of this loop statement. */
   Stmt getBody() { result.getParent() = this }
 
@@ -431,7 +408,6 @@ class LoopStmt extends Stmt, @loop_stmt {
  * ```
  */
 class WhileStmt extends LoopStmt, @while_stmt {
-
   override Expr getCondition() { result.getParent() = this }
 
   override string toString() { result = "while (...) ..." }
@@ -448,7 +424,6 @@ class WhileStmt extends LoopStmt, @while_stmt {
  * ```
  */
 class DoStmt extends LoopStmt, @do_stmt {
-
   override Expr getCondition() { result.getParent() = this }
 
   override string toString() { result = "do ... while (...);" }
@@ -464,7 +439,6 @@ class DoStmt extends LoopStmt, @do_stmt {
  * ```
  */
 class ForStmt extends LoopStmt, @for_stmt {
-
   /**
    * Gets an initializer expression of this `for` loop, if any.
    *
@@ -490,7 +464,9 @@ class ForStmt extends LoopStmt, @for_stmt {
    * }
    * ```
    */
-  Expr getInitializer(int n) { exists(int i | result = this.getChild(i) and n = -1-i and i <= -1) }
+  Expr getInitializer(int n) {
+    exists(int i | result = this.getChild(i) and n = -1 - i and i <= -1)
+  }
 
   override Expr getCondition() { result = this.getChild(0) }
 
@@ -518,7 +494,7 @@ class ForStmt extends LoopStmt, @for_stmt {
    * }
    * ```
    */
-  Expr getUpdate(int n) { exists(int i | result = this.getChild(i) and n = i-1 and i >= 1) }
+  Expr getUpdate(int n) { exists(int i | result = this.getChild(i) and n = i - 1 and i >= 1) }
 
   override string toString() { result = "for (...;...;...) ..." }
 }
@@ -532,8 +508,7 @@ class ForStmt extends LoopStmt, @for_stmt {
  * }
  * ```
  */
-class ForeachStmt extends LoopStmt, @foreach_stmt  {
-
+class ForeachStmt extends LoopStmt, @foreach_stmt {
   /**
    * Gets the local variable of this `foreach` loop, if any.
    *
@@ -572,8 +547,9 @@ class ForeachStmt extends LoopStmt, @foreach_stmt  {
    * ```
    */
   LocalVariableDeclExpr getVariableDeclExpr(int i) {
-    result = getVariableDeclTuple().getArgument(i) or
-    i=0 and result = this.getChild(0)
+    result = getVariableDeclTuple().getArgument(i)
+    or
+    i = 0 and result = this.getChild(0)
   }
 
   /**
@@ -665,9 +641,7 @@ class JumpStmt extends Stmt, @jump_stmt { }
  * }
  * ```
  */
-class BreakStmt extends JumpStmt, @break_stmt {
-  override string toString() { result = "break;" }
-}
+class BreakStmt extends JumpStmt, @break_stmt { override string toString() { result = "break;" } }
 
 /**
  * A `continue` statement, for example line 4 in
@@ -690,7 +664,6 @@ class ContinueStmt extends JumpStmt, @continue_stmt {
  *
  * Either a `goto` label (`GotoLabelStmt`), a `goto case` (`GotoCaseStmt`), or
  * a `goto default` (`GotoDefaultStmt`).
- *
  */
 class GotoStmt extends JumpStmt, @goto_any_stmt { }
 
@@ -707,7 +680,6 @@ class GotoStmt extends JumpStmt, @goto_any_stmt { }
  * ```
  */
 class GotoLabelStmt extends GotoStmt, @goto_stmt {
-
   /** Gets the label that this `goto` statement jumps to. */
   string getLabel() { exprorstmt_name(this, result) }
 
@@ -715,8 +687,7 @@ class GotoLabelStmt extends GotoStmt, @goto_stmt {
 
   /** Gets the target statement that this `goto` statement jumps to. */
   LabeledStmt getTarget() {
-    result.getEnclosingCallable() = getEnclosingCallable()
-    and
+    result.getEnclosingCallable() = getEnclosingCallable() and
     result.getLabel() = getLabel()
   }
 }
@@ -738,7 +709,6 @@ class GotoLabelStmt extends GotoStmt, @goto_stmt {
  * ```
  */
 class GotoCaseStmt extends GotoStmt, @goto_case_stmt {
-
   /** Gets the constant expression that this `goto case` statement jumps to. */
   Expr getExpr() { result = this.getChild(0) }
 
@@ -803,9 +773,7 @@ class ThrowStmt extends JumpStmt, ThrowElement, @throw_stmt {
  * and may be thrown as an exception.
  */
 class ExceptionClass extends Class {
-  ExceptionClass() {
-    getBaseClass*() instanceof SystemExceptionClass
-  }
+  ExceptionClass() { getBaseClass*() instanceof SystemExceptionClass }
 }
 
 /**
@@ -818,7 +786,6 @@ class ExceptionClass extends Class {
  * ```
  */
 class ReturnStmt extends JumpStmt, @return_stmt {
-
   /** Gets the expression being returned, if any. */
   Expr getExpr() { result.getParent() = this }
 
@@ -832,7 +799,6 @@ class ReturnStmt extends JumpStmt, @return_stmt {
  * `yield break` statement (`YieldBreakStmt`).
  */
 class YieldStmt extends JumpStmt, @yield_stmt {
-
   /** Gets the expression being yielded, if any. */
   Expr getExpr() { result.getParent() = this }
 }
@@ -893,7 +859,6 @@ class YieldReturnStmt extends YieldStmt {
  * ```
  */
 class TryStmt extends Stmt, @try_stmt {
-
   /** Gets the block of this `try` statement. */
   BlockStmt getBlock() { result = this.getChild(0) }
 
@@ -901,7 +866,7 @@ class TryStmt extends Stmt, @try_stmt {
   CatchClause getACatchClause() { result = this.getAChild() }
 
   /** Gets the `n`th catch clause of this `try` statement. */
-  CatchClause getCatchClause(int n) { exists(int i | result = this.getChild(i) and n = i-1) }
+  CatchClause getCatchClause(int n) { exists(int i | result = this.getChild(i) and n = i - 1) }
 
   /** Gets the `finally` block of this `try` statement, if any. */
   BlockStmt getFinally() { result = this.getChild(-1) }
@@ -912,18 +877,14 @@ class TryStmt extends Stmt, @try_stmt {
   override string toString() { result = "try {...} ..." }
 
   /** Gets the `catch` clause that handles an exception of type `ex`, if any. */
-  CatchClause getAnExceptionHandler(ExceptionClass ex) {
-    result = clauseHandlesException(ex, 0)
-  }
+  CatchClause getAnExceptionHandler(ExceptionClass ex) { result = clauseHandlesException(ex, 0) }
 
   /**
    * Holds if catch clause `cc` definitely handles exceptions of type `ex`.
    */
   predicate definitelyHandles(ExceptionClass ex, CatchClause cc) {
-    cc=getACatchClause()
-    and
-    not exists(cc.getFilterClause())
-    and
+    cc = getACatchClause() and
+    not exists(cc.getFilterClause()) and
     (
       cc.getCaughtExceptionType() = ex.getBaseClass*()
       or
@@ -932,26 +893,23 @@ class TryStmt extends Stmt, @try_stmt {
   }
 
   private predicate maybeHandles(ExceptionClass ex, CatchClause cc) {
-    cc=getACatchClause()
-    and
+    cc = getACatchClause() and
     cc.getCaughtExceptionType().getBaseClass*() = ex
   }
 
   private CatchClause clauseHandlesException(ExceptionClass ex, int n) {
-    exists(CatchClause clause |
-      clause = getCatchClause(n) |
-      if
-        definitelyHandles(ex, clause)
-      then
-        result = clause
-      else if
-        maybeHandles(ex, clause)
-      then
-        result = clause or
-        result = clauseHandlesException(ex, n+1)
-      else // Does not handle
-        result = clauseHandlesException(ex, n+1)
-      )
+    exists(CatchClause clause | clause = getCatchClause(n) |
+      if definitelyHandles(ex, clause)
+      then result = clause
+      else
+        if maybeHandles(ex, clause)
+        then
+          result = clause or
+          result = clauseHandlesException(ex, n + 1)
+        else
+          // Does not handle
+          result = clauseHandlesException(ex, n + 1)
+    )
   }
 
   /**
@@ -1003,7 +961,7 @@ class CatchClause extends Stmt, @catch {
    * }
    * ```
    */
-  ExceptionClass getCaughtExceptionType() { catch_type(this,getTypeRef(result),_) }
+  ExceptionClass getCaughtExceptionType() { catch_type(this, getTypeRef(result), _) }
 
   /**
    * Gets the `catch` filter clause, if any. For example, the filter expression
@@ -1018,7 +976,7 @@ class CatchClause extends Stmt, @catch {
    * }
    * ```
    */
-  Expr getFilterClause() { result=getChild(2) }
+  Expr getFilterClause() { result = getChild(2) }
 
   /** Holds if this `catch` clause has a filter. */
   predicate hasFilterClause() { exists(getFilterClause()) }
@@ -1050,8 +1008,7 @@ class CatchClause extends Stmt, @catch {
  * The exception variable (`ex`) is optional.
  */
 class SpecificCatchClause extends CatchClause {
-
-  SpecificCatchClause() { catch_type(this,_,1) }
+  SpecificCatchClause() { catch_type(this, _, 1) }
 
   /** Gets the local variable of this catch clause, if any. */
   LocalVariable getVariable() { result = this.getVariableDeclExpr().getVariable() }
@@ -1077,11 +1034,9 @@ class SpecificCatchClause extends CatchClause {
  * ```
  */
 class GeneralCatchClause extends CatchClause {
-
-  GeneralCatchClause() { catch_type(this,_,2) }
+  GeneralCatchClause() { catch_type(this, _, 2) }
 
   override string toString() { result = "catch {...}" }
-
 }
 
 /**
@@ -1095,7 +1050,6 @@ class GeneralCatchClause extends CatchClause {
  * ```
  */
 class CheckedStmt extends Stmt, @checked_stmt {
-
   /** Gets the block of this `checked` statement. */
   BlockStmt getBlock() { result.getParent() = this }
 
@@ -1113,7 +1067,6 @@ class CheckedStmt extends Stmt, @checked_stmt {
  * ```
  */
 class UncheckedStmt extends Stmt, @unchecked_stmt {
-
   /** Gets the block of this unchecked statement. */
   BlockStmt getBlock() { result.getParent() = this }
 
@@ -1130,7 +1083,6 @@ class UncheckedStmt extends Stmt, @unchecked_stmt {
  * ```
  */
 class LockStmt extends Stmt, @lock_stmt {
-
   /** Gets the expression being locked. */
   Expr getExpr() { result.getParent() = this }
 
@@ -1140,31 +1092,22 @@ class LockStmt extends Stmt, @lock_stmt {
   override string toString() { result = "lock (...) {...}" }
 
   /** Gets the variable being locked, if any. */
-  Variable getLockVariable()
-  {
-    result.getAnAccess() = getExpr()
-  }
+  Variable getLockVariable() { result.getAnAccess() = getExpr() }
 
   /** Gets a statement in the scope of this `lock` statement. */
-  Stmt getALockedStmt()
-  {
+  Stmt getALockedStmt() {
     // Do this instead of getParent+, because we don't want to escape
     // delegates and lambdas
     result.getParent() = this
-    or exists( Stmt mid | mid=getALockedStmt() and result.getParent()=mid )
+    or
+    exists(Stmt mid | mid = getALockedStmt() and result.getParent() = mid)
   }
 
   /** Holds if this statement is of the form `lock(this) { ... }`. */
-  predicate isLockThis()
-  {
-    getExpr() instanceof ThisAccess
-  }
+  predicate isLockThis() { getExpr() instanceof ThisAccess }
 
   /** Gets the type `T` if this statement is of the form `lock(typeof(T)) { ... }`. */
-  Type getLockTypeObject()
-  {
-    result = ((TypeofExpr)getExpr()).getTypeAccess().getTarget()
-  }
+  Type getLockTypeObject() { result = getExpr().(TypeofExpr).getTypeAccess().getTarget() }
 }
 
 /**
@@ -1177,7 +1120,6 @@ class LockStmt extends Stmt, @lock_stmt {
  * ```
  */
 class UsingStmt extends Stmt, @using_stmt {
-
   /** Gets the `i`th local variable of this `using` statement. */
   LocalVariable getVariable(int i) { result = this.getVariableDeclExpr(i).getVariable() }
 
@@ -1201,9 +1143,7 @@ class UsingStmt extends Stmt, @using_stmt {
    * }
    * ```
    */
-  Expr getExpr() {
-    result = this.getChild(0)
-  }
+  Expr getExpr() { result = this.getChild(0) }
 
   /**
    * Gets an expression that is used in this `using` statement. Either an
@@ -1247,7 +1187,6 @@ class UsingStmt extends Stmt, @using_stmt {
  * ```
  */
 class LocalVariableDeclStmt extends Stmt, @decl_stmt {
-
   /**
    * Gets a local variable declaration, for example `x = null` and
    * `y = ""` in
@@ -1273,7 +1212,6 @@ class LocalVariableDeclStmt extends Stmt, @decl_stmt {
   LocalVariableDeclExpr getVariableDeclExpr(int n) { result = this.getChild(n) }
 
   override string toString() { result = "... ...;" }
-
 }
 
 /**
@@ -1286,7 +1224,6 @@ class LocalVariableDeclStmt extends Stmt, @decl_stmt {
  * ```
  */
 class LocalConstantDeclStmt extends LocalVariableDeclStmt, @const_decl_stmt {
-
   /**
    * Gets a local constant declaration, for example `x = 1` and `y = 2` in
    *
@@ -1322,10 +1259,7 @@ class LocalConstantDeclStmt extends LocalVariableDeclStmt, @const_decl_stmt {
  * }
  * ```
  */
-class EmptyStmt extends Stmt, @empty_stmt {
-
-  override string toString() { result = ";" }
-}
+class EmptyStmt extends Stmt, @empty_stmt { override string toString() { result = ";" } }
 
 /**
  * An `unsafe` statement, for example
@@ -1340,7 +1274,6 @@ class EmptyStmt extends Stmt, @empty_stmt {
  * ```
  */
 class UnsafeStmt extends Stmt, @unsafe_stmt {
-
   /** Gets the block of this unsafe statement. */
   BlockStmt getBlock() { result.getParent() = this }
 
@@ -1360,7 +1293,6 @@ class UnsafeStmt extends Stmt, @unsafe_stmt {
  * ```
  */
 class FixedStmt extends Stmt, @fixed_stmt {
-
   /** Gets the `i`th local variable of this `fixed` statement. */
   LocalVariable getVariable(int i) { result = this.getVariableDeclExpr(i).getVariable() }
 
@@ -1392,8 +1324,7 @@ class FixedStmt extends Stmt, @fixed_stmt {
  * exit: ...
  * ```
  */
-class LabelStmt extends LabeledStmt, @label_stmt {
-}
+class LabelStmt extends LabeledStmt, @label_stmt { }
 
 /**
  * A labeled statement.
@@ -1401,7 +1332,6 @@ class LabelStmt extends LabeledStmt, @label_stmt {
  * Either a `case` statement (`ConstCase`) or a label statement (`LabelStmt`).
  */
 class LabeledStmt extends Stmt, @labeled_stmt {
-
   /**
    * Gets the next statement after this labeled statement.
    *
@@ -1413,8 +1343,10 @@ class LabeledStmt extends Stmt, @labeled_stmt {
    * ```
    */
   Stmt getStmt() {
-    exists(int i | this = this.getParent().getChild(i)
-               and result = this.getParent().getChild(i+1))
+    exists(int i |
+      this = this.getParent().getChild(i) and
+      result = this.getParent().getChild(i + 1)
+    )
   }
 
   /** Gets the label of this statement. */
@@ -1438,11 +1370,8 @@ class LabeledStmt extends Stmt, @labeled_stmt {
  * ```
  */
 class LocalFunctionStmt extends Stmt, @local_function_stmt {
-
   /** Gets the local function defined by this statement. */
-  LocalFunction getLocalFunction() {
-    local_function_stmts(this, result)
-  }
+  LocalFunction getLocalFunction() { local_function_stmts(this, result) }
 
   override string toString() { result = getLocalFunction().getName() + "(...)" }
 }

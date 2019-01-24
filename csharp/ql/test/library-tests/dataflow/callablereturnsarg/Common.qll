@@ -1,5 +1,4 @@
 import csharp
-import semmle.code.csharp.dataflow.DefUse
 import semmle.code.csharp.controlflow.Guards
 
 class Configuration extends DataFlow::Configuration {

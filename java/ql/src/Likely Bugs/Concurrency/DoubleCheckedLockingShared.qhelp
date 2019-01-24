@@ -66,6 +66,26 @@ variable can be used to avoid reading the field more times than neccessary.
 </p>
 <sample src="DoubleCheckedLockingGood.java"/>
 
+<p>
+As a final note, it is possible to use double-checked locking correctly without
+<code>volatile</code> if the object you construct is immutable (that is, the
+object declares all fields as <code>final</code>), and the double-checked field
+is read exactly once outside the synchronized block.
+</p>
+<p>
+Given that all fields in <code>MyImmutableObject</code> are declared
+<code>final</code> then the following example is protected against exposing
+uninitialized fields to another thread. However, since there are two reads of
+<code>f</code> without synchronization, it is possible that these are
+reordered, which means that this method can return <code>null</code>.
+</p>
+<sample src="DoubleCheckedLockingBad3.java"/>
+<p>
+In this case, using a local variable to minimize the number of field reads is
+no longer a performance improvement, but rather a crucial detail that is
+necessary for correctness.
+</p>
+
 </example>
 
 <references>
@@ -79,6 +99,14 @@ Java Language Specification:
 </li>
 <li>
 Wikipedia: <a href="https://en.wikipedia.org/wiki/Double-checked_locking">Double-checked locking</a>.
+</li>
+<li>
+Aleksey Shipilëv:
+<a href="https://shipilev.net/blog/2014/safe-public-construction/">Safe Publication and Safe Initialization in Java</a>.
+</li>
+<li>
+Aleksey Shipilëv:
+<a href="https://shipilev.net/blog/2016/close-encounters-of-jmm-kind/">Close Encounters of The Java Memory Model Kind</a>.
 </li>
 
 </references>

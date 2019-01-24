@@ -1,6 +1,7 @@
 /**
  * Provides the `Namespace` class to represent .Net namespaces.
  */
+
 private import Element
 
 /** A namespace. */

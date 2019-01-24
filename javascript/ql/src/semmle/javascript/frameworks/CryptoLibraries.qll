@@ -88,19 +88,19 @@ private import AlgorithmNames
  */
 private newtype TCryptographicAlgorithm =
   MkHashingAlgorithm(string name, boolean isWeak) {
-    (isStrongHashingAlgorithm(name) and isWeak = false)
+    isStrongHashingAlgorithm(name) and isWeak = false
     or
-    (isWeakHashingAlgorithm(name) and isWeak = true)
+    isWeakHashingAlgorithm(name) and isWeak = true
   } or
   MkEncryptionAlgorithm(string name, boolean isWeak) {
-    (isStrongEncryptionAlgorithm(name) and isWeak = false)
+    isStrongEncryptionAlgorithm(name) and isWeak = false
     or
-    (isWeakEncryptionAlgorithm(name) and isWeak = true)
+    isWeakEncryptionAlgorithm(name) and isWeak = true
   } or
   MkPasswordHashingAlgorithm(string name, boolean isWeak) {
-    (isStrongPasswordHashingAlgorithm(name) and isWeak = false)
+    isStrongPasswordHashingAlgorithm(name) and isWeak = false
     or
-    (isWeakPasswordHashingAlgorithm(name) and isWeak = true)
+    isWeakPasswordHashingAlgorithm(name) and isWeak = true
   }
 
 /**

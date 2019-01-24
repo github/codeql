@@ -1,4 +1,5 @@
 /** Provides definitions related to SQL frameworks. */
+
 import csharp
 private import semmle.code.csharp.frameworks.system.Data
 private import semmle.code.csharp.frameworks.system.data.Entity
@@ -15,44 +16,38 @@ class CommandTextAssignmentSqlExpr extends SqlExpr, AssignExpr {
   CommandTextAssignmentSqlExpr() {
     exists(Property p, SystemDataIDbCommandInterface i, Property text |
       p = this.getLValue().(PropertyAccess).getTarget() and
-      text = i.getCommandTextProperty() |
+      text = i.getCommandTextProperty()
+    |
       p.overridesOrImplementsOrEquals(text)
     )
   }
 
-  override
-  Expr getSql() { result = getRValue() }
+  override Expr getSql() { result = getRValue() }
 }
 
 /** A construction of an `IDbCommand` object. */
 class IDbCommandConstructionSqlExpr extends SqlExpr, ObjectCreation {
   IDbCommandConstructionSqlExpr() {
-    exists(InstanceConstructor ic |
-      ic = this.getTarget() |
-      ic.getDeclaringType().getABaseType*() instanceof SystemDataIDbCommandInterface
-      and
+    exists(InstanceConstructor ic | ic = this.getTarget() |
+      ic.getDeclaringType().getABaseType*() instanceof SystemDataIDbCommandInterface and
       ic.getParameter(0).getType() instanceof StringType
     )
   }
 
-  override
-  Expr getSql() { result = getArgument(0) }
+  override Expr getSql() { result = getArgument(0) }
 }
 
 /** A construction of an `SqlDataAdapter` object. */
 class SqlDataAdapterConstructionSqlExpr extends SqlExpr, ObjectCreation {
   SqlDataAdapterConstructionSqlExpr() {
     exists(InstanceConstructor ic |
-      ic = this.getTarget()
-      and
-      ic.getDeclaringType() instanceof SystemDataSqlClientSqlDataAdapterClass
-      and
+      ic = this.getTarget() and
+      ic.getDeclaringType() instanceof SystemDataSqlClientSqlDataAdapterClass and
       ic.getParameter(0).getType() instanceof StringType
     )
   }
 
-  override
-  Expr getSql() { result = getArgument(0) }
+  override Expr getSql() { result = getArgument(0) }
 }
 
 /** A `MySql.Data.MySqlClient.MySqlHelper` method. */
@@ -61,8 +56,7 @@ class MySqlHelperMethodCallSqlExpr extends SqlExpr, MethodCall {
     this.getQualifier().getType().(Class).hasQualifiedName("MySql.Data.MySqlClient", "MySqlHelper")
   }
 
-  override
-  Expr getSql() {
+  override Expr getSql() {
     exists(int i |
       result = getArgument(i) and
       this.getTarget().getParameter(i).hasName("commandText") and
@@ -74,11 +68,14 @@ class MySqlHelperMethodCallSqlExpr extends SqlExpr, MethodCall {
 /** A `Microsoft.ApplicationBlocks.Data.SqlHelper` method. */
 class MicrosoftSqlHelperMethodCallSqlExpr extends SqlExpr, MethodCall {
   MicrosoftSqlHelperMethodCallSqlExpr() {
-    this.getQualifier().getType().(Class).hasQualifiedName("Microsoft.ApplicationBlocks.Data", "SqlHelper")
+    this
+        .getQualifier()
+        .getType()
+        .(Class)
+        .hasQualifiedName("Microsoft.ApplicationBlocks.Data", "SqlHelper")
   }
 
-  override
-  Expr getSql() {
+  override Expr getSql() {
     exists(int i |
       result = getArgument(i) and
       this.getTarget().getParameter(i).hasName("commandText") and
@@ -93,10 +90,7 @@ class SystemDataEntityDbSetSqlExpr extends SqlExpr, MethodCall {
     this.getTarget() = any(SystemDataEntity::DbSet dbSet).getSqlQueryMethod()
   }
 
-  override
-  Expr getSql() {
-    result = getArgumentForName("sql")
-  }
+  override Expr getSql() { result = getArgumentForName("sql") }
 }
 
 /** A call to a method in `System.Data.Entity.Database` that executes SQL. */
@@ -109,8 +103,5 @@ class SystemDataEntityDatabaseSqlExpr extends SqlExpr, MethodCall {
     )
   }
 
-  override
-  Expr getSql() {
-    result = getArgumentForName("sql")
-  }
+  override Expr getSql() { result = getArgumentForName("sql") }
 }

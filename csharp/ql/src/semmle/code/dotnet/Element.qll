@@ -1,6 +1,7 @@
 /**
  * Provides the .Net `Element` class.
  */
+
 private import DotNet
 import semmle.code.csharp.Location
 
@@ -14,10 +15,10 @@ class Element extends @dotnet_element {
   /** Gets the location of this element. */
   Location getLocation() { none() }
 
- /**
-  * Gets a location of this element, which can include locations in
-  * both DLLs and source files.
-  */
+  /**
+   * Gets a location of this element, which can include locations in
+   * both DLLs and source files.
+   */
   Location getALocation() { none() }
 
   /** Gets the file containing this element. */
@@ -57,12 +58,8 @@ class NamedElement extends Element, @dotnet_named_element {
    * ```
    */
   final string getQualifiedName() {
-    exists(string qualifier, string name |
-      this.hasQualifiedName(qualifier, name) |
-      if qualifier = "" then
-        result = name
-      else
-        result = qualifier + "." + name
+    exists(string qualifier, string name | this.hasQualifiedName(qualifier, name) |
+      if qualifier = "" then result = name else result = qualifier + "." + name
     )
   }
 
@@ -70,9 +67,7 @@ class NamedElement extends Element, @dotnet_named_element {
    * Holds if this element has qualified name `qualifiedName`, for example
    * `System.Console.WriteLine`.
    */
-  final predicate hasQualifiedName(string qualifiedName) {
-    qualifiedName = this.getQualifiedName()
-  }
+  final predicate hasQualifiedName(string qualifiedName) { qualifiedName = this.getQualifiedName() }
 
   /** Holds if this element has the qualified name `qualifier`.`name`. */
   predicate hasQualifiedName(string qualifier, string name) {
@@ -96,10 +91,8 @@ class NamedElement extends Element, @dotnet_named_element {
    * database. That is, this element corresponds to another element from source.
    */
   predicate compiledFromSource() {
-    not this.fromSource()
-    and
-    exists(NamedElement other |
-      other != this |
+    not this.fromSource() and
+    exists(NamedElement other | other != this |
       other.getLabel() = this.getLabel() and
       other.fromSource()
     )
