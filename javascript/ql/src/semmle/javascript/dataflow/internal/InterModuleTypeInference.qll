@@ -338,11 +338,10 @@ private class AnalyzedExportAssign extends AnalyzedPropertyWrite, DataFlow::Valu
  */
 private class AnalyzedClosureExportAssign extends AnalyzedPropertyWrite, DataFlow::ValueNode {
   override AssignExpr astNode;
+
   Closure::ClosureModule mod;
 
-  AnalyzedClosureExportAssign() {
-    astNode.getLhs() = mod.getExportsVariable().getAReference()
-  }
+  AnalyzedClosureExportAssign() { astNode.getLhs() = mod.getExportsVariable().getAReference() }
 
   override predicate writes(AbstractValue baseVal, string propName, DataFlow::AnalyzedNode source) {
     baseVal = TAbstractModuleObject(astNode.getTopLevel()) and
@@ -359,12 +358,10 @@ private class AnalyzedClosureExportAssign extends AnalyzedPropertyWrite, DataFlo
 private class AnalyzedClosureGlobalAccessPath extends AnalyzedNode, AnalyzedPropertyRead {
   string accessPath;
 
-  AnalyzedClosureGlobalAccessPath() {
-    accessPath = Closure::getLibraryAccessPath(this)
-  }
+  AnalyzedClosureGlobalAccessPath() { accessPath = Closure::getLibraryAccessPath(this) }
 
   override AnalyzedNode localFlowPred() {
-    exists (DataFlow::PropWrite write |
+    exists(DataFlow::PropWrite write |
       Closure::getWrittenLibraryAccessPath(write) = accessPath and
       result = write.getRhs()
     )
@@ -373,10 +370,10 @@ private class AnalyzedClosureGlobalAccessPath extends AnalyzedNode, AnalyzedProp
   }
 
   override predicate reads(AbstractValue base, string propName) {
-    exists (Closure::ClosureModule mod |
+    exists(Closure::ClosureModule mod |
       mod.getNamespaceId() = accessPath and
       base = TAbstractModuleObject(mod) and
       propName = "exports"
     )
-  }  
+  }
 }
