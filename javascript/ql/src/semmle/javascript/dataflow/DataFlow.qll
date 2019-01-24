@@ -19,7 +19,6 @@
  */
 
 import javascript
-private import semmle.javascript.Closure
 
 module DataFlow {
   cached
@@ -1040,7 +1039,7 @@ module DataFlow {
     or
     exists(GlobalVarAccess va |
       nd = valueNode(va.(VarUse)) and
-      if isClosureLibraryNamespacePath(va.getName()) then
+      if Closure::isLibraryNamespacePath(va.getName()) then
         cause = "heap"
       else
         cause = "global"

@@ -5,7 +5,6 @@
  */
 
 import javascript
-private import semmle.javascript.Closure
 private import AbstractValuesImpl
 private import semmle.javascript.dataflow.InferredTypes
 private import AbstractPropertiesImpl
@@ -339,7 +338,7 @@ private class AnalyzedExportAssign extends AnalyzedPropertyWrite, DataFlow::Valu
  */
 private class AnalyzedClosureExportAssign extends AnalyzedPropertyWrite, DataFlow::ValueNode {
   override AssignExpr astNode;
-  ClosureModule mod;
+  Closure::ClosureModule mod;
 
   AnalyzedClosureExportAssign() {
     astNode.getLhs() = mod.getExportsVariable().getAReference()
@@ -361,12 +360,12 @@ private class AnalyzedClosureGlobalAccessPath extends AnalyzedNode, AnalyzedProp
   string accessPath;
 
   AnalyzedClosureGlobalAccessPath() {
-    accessPath = getClosureLibraryAccessPath(this)
+    accessPath = Closure::getLibraryAccessPath(this)
   }
 
   override AnalyzedNode localFlowPred() {
     exists (DataFlow::PropWrite write |
-      getWrittenClosureLibraryAccessPath(write) = accessPath and
+      Closure::getWrittenLibraryAccessPath(write) = accessPath and
       result = write.getRhs()
     )
     or
@@ -374,7 +373,7 @@ private class AnalyzedClosureGlobalAccessPath extends AnalyzedNode, AnalyzedProp
   }
 
   override predicate reads(AbstractValue base, string propName) {
-    exists (ClosureModule mod |
+    exists (Closure::ClosureModule mod |
       mod.getNamespaceId() = accessPath and
       base = TAbstractModuleObject(mod) and
       propName = "exports"
