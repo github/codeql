@@ -191,4 +191,18 @@ module Closure {
   string getWrittenLibraryAccessPath(DataFlow::PropWrite node) {
     result = getLibraryAccessPath(node.getBase().getALocalSource()) + "." + node.getPropertyName()
   }
+
+  /**
+   * Gets a dataflow node that refers to the given Closure module.
+   */
+  DataFlow::SourceNode moduleImport(string moduleName) {
+    getLibraryAccessPath(result) = moduleName
+  }
+
+  /**
+   * Gets a dataflow node that refers to the given member of a Closure module.
+   */
+  DataFlow::SourceNode moduleMember(string moduleName, string memberName) {
+    result = moduleImport(moduleName).getAPropertyRead(memberName)
+  }
 }
