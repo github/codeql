@@ -109,4 +109,35 @@ async function awaitFlow(){
     if ((x && {}) || y) {} // NOT OK
 });
 
+(function(){
+    function constantFalse1() {
+        return false;
+    }
+    if (constantFalse1()) // OK
+        return;
+
+	function constantFalse2() {
+		return false;
+    }
+	let constantFalse = unknown? constantFalse1 : constantFalse2;
+    if (constantFalse2()) // OK
+        return;
+
+	function constantUndefined() {
+        return undefined;
+    }
+	if (constantUndefined()) // NOT OK
+        return;
+
+	function constantFalseOrUndefined1() {
+		return unknown? false: undefined;
+	}
+	if (constantFalseOrUndefined1()) // NOT OK
+        return;
+
+	let constantFalseOrUndefined2 = unknown? constantFalse1 : constantUndefined;
+	if (constantFalseOrUndefined2())  // NOT OK
+        return;
+
+});
 // semmle-extractor-options: --experimental

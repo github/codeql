@@ -65,17 +65,24 @@ predicate isInitialParameterUse(Expr e) {
 }
 
 /**
- * Holds if `e` directly uses the returned value from a function call that returns a constant boolean value.
+ * Holds if `e` directly uses the returned value from functions that return constant boolean values.
  */
 predicate isConstantBooleanReturnValue(Expr e) {
   // unlike `SourceNode.flowsTo` this will not include uses we have refinement information for
-  exists(DataFlow::CallNode call | exists(call.analyze().getTheBooleanValue()) |
-    e = call.asExpr()
-    or
-    // also support return values that are assigned to variables
-    exists(SsaExplicitDefinition ssa |
-      ssa.getDef().getSource() = call.asExpr() and
-      ssa.getVariable().getAUse() = e
+  exists(string b | (b = "true" or b = "false") |
+    forex(DataFlow::CallNode call, Expr ret |
+      ret = call.getACallee().getAReturnedExpr() and
+      (
+        e = call.asExpr()
+        or
+        // also support return values that are assigned to variables
+        exists(SsaExplicitDefinition ssa |
+          ssa.getDef().getSource() = call.asExpr() and
+          ssa.getVariable().getAUse() = e
+        )
+      )
+      |
+      ret.(BooleanLiteral).getValue() = b
     )
   )
   or

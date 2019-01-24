@@ -35,6 +35,7 @@
 | Useless assignment to property. | Fewer false-positive results | This rule now treats assignments with complex right-hand sides correctly. |
 | Unsafe dynamic method access              | Fewer false-positive results | This rule no longer flags concatenated strings as unsafe method names. |
 | Unvalidated dynamic method call           | More true-positive results | This rule now flags concatenated strings as unvalidated method names in more cases. |
+| Useless conditional | More true-positive results | More true-positive results | This rule now flags additional uses of function call values. | 
 
 ## Changes to QL libraries
 

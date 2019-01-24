@@ -22,6 +22,9 @@
 | UselessConditional.js:102:19:102:19 | x | This use of variable 'x' always evaluates to false. |
 | UselessConditional.js:103:23:103:23 | x | This use of variable 'x' always evaluates to false. |
 | UselessConditional.js:109:15:109:16 | {} | This expression always evaluates to true. |
+| UselessConditional.js:129:6:129:24 | constantUndefined() | This call to constantUndefined always evaluates to false. |
+| UselessConditional.js:135:6:135:32 | constan ... ined1() | This call to constantFalseOrUndefined1 always evaluates to false. |
+| UselessConditional.js:139:6:139:32 | constan ... ined2() | This call to constantFalseOrUndefined2 always evaluates to false. |
 | UselessConditionalGood.js:58:12:58:13 | x2 | This use of variable 'x2' always evaluates to false. |
 | UselessConditionalGood.js:69:12:69:13 | xy | This use of variable 'xy' always evaluates to false. |
 | UselessConditionalGood.js:85:12:85:13 | xy | This use of variable 'xy' always evaluates to false. |
