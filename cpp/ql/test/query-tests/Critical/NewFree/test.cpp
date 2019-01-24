@@ -295,3 +295,45 @@ static void map_shutdown()
 	delete map; // BAD: new[] -> delete
 	map = 0;
 }
+
+// ---
+
+class Test10
+{
+public:
+	Test10() : data(new char[10])
+	{
+	}
+
+	~Test10()
+	{
+		delete data; // BAD: new[] -> delete
+	}
+
+	char *data;
+};
+
+class Test11
+{
+public:
+	Test11()
+	{
+		data = new char[10];
+	}
+
+	void resize(int size)
+	{
+		if (size > 0)
+		{
+			delete [] data; // GOOD
+			data = new char[size];
+		}
+	}
+
+	~Test11()
+	{
+		delete data; // BAD: new[] -> delete [NOT DETECTED]
+	}
+
+	char *data;
+};
