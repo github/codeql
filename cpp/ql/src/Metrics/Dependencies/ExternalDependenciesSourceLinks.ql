@@ -3,6 +3,7 @@
  * @kind source-link
  * @metricType externalDependency
  * @id cpp/dependency-source-links
+ * @tags modularity
  */
 
 import ExternalDependencies

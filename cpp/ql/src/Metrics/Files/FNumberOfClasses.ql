@@ -6,6 +6,8 @@
  * @metricType file
  * @metricAggregate avg sum max
  * @tags maintainability
+ * @tags maintainability
+ *       modularity
  */
 import cpp
 

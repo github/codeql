@@ -4,6 +4,7 @@
  * @kind chart
  * @id cpp/stable-namespaces
  * @chart.type bar
+ * @tags maintainability
  */
 import cpp
 

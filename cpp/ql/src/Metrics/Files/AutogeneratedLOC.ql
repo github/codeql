@@ -8,6 +8,7 @@
  * @treemap.warnOn highValues
  * @metricType file
  * @metricAggregate sum
+ * @tags maintainability
  */
  
 import cpp
