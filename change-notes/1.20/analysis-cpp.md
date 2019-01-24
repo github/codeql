@@ -8,6 +8,7 @@
 
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
+| Use of string copy function in a condition (`cpp/string-copy-return-value-as-boolean`) | correctness | This query identifies calls to string copy functions used in conditions, where it's likely that a different function was intended to be called. |
 | Lossy function result cast (`cpp/lossy-function-result-cast`) | correctness | Finds function calls whose result type is a floating point type, which are implicitly cast to an integral type.  Newly available but not displayed by default on LGTM. |
 
 ## Changes to existing queries
