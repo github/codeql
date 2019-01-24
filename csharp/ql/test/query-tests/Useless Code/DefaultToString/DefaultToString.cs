@@ -26,6 +26,9 @@ class DefaultToString
 
         C c = new D();
         Console.WriteLine(c); // GOOD
+
+        var sb = new StringBuilder();
+        sb.Append(new char[] { 'a', 'b', 'c' }, 0, 3); // GOOD
     }
 
     class A
