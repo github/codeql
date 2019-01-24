@@ -332,7 +332,7 @@ public:
 
 	~Test11()
 	{
-		delete data; // BAD: new[] -> delete [NOT DETECTED]
+		delete data; // BAD: new[] -> delete
 	}
 
 	char *data;
