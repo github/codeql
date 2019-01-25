@@ -4517,3 +4517,44 @@ ir.cpp:
 
 # 1049|   Block 2
 # 1049|     v2_0(void) = Unreached : 
+
+# 1058| chiNodeAtEndOfLoop(int, char *) -> void
+# 1058|   Block 0
+# 1058|     v0_0(void)          = EnterFunction          : 
+# 1058|     mu0_1(unknown)      = AliasedDefinition      : 
+# 1058|     mu0_2(unknown)      = UnmodeledDefinition    : 
+# 1058|     r0_3(glval<int>)    = VariableAddress[n]     : 
+# 1058|     m0_4(int)           = InitializeParameter[n] : r0_3
+# 1058|     r0_5(glval<char *>) = VariableAddress[p]     : 
+# 1058|     m0_6(char *)        = InitializeParameter[p] : r0_5
+#-----|   Goto -> Block 3
+
+# 1060|   Block 1
+# 1060|     r1_0(char)          = Constant[0]        : 
+# 1060|     r1_1(glval<char *>) = VariableAddress[p] : 
+# 1060|     r1_2(char *)        = Load               : r1_1, m3_1
+# 1060|     r1_3(int)           = Constant[1]        : 
+# 1060|     r1_4(char *)        = PointerAdd[1]      : r1_2, r1_3
+# 1060|     m1_5(char *)        = Store              : r1_1, r1_4
+# 1060|     mu1_6(char)         = Store              : r1_2, r1_0
+#-----|   Goto (back edge) -> Block 3
+
+# 1061|   Block 2
+# 1061|     v2_0(void) = NoOp         : 
+# 1058|     v2_1(void) = ReturnVoid   : 
+# 1058|     v2_2(void) = UnmodeledUse : mu*
+# 1058|     v2_3(void) = ExitFunction : 
+
+# 1059|   Block 3
+# 1059|     m3_0(int)        = Phi                : from 0:m0_4, from 1:m3_6
+# 1059|     m3_1(char *)     = Phi                : from 0:m0_6, from 1:m1_5
+# 1059|     r3_2(glval<int>) = VariableAddress[n] : 
+# 1059|     r3_3(int)        = Load               : r3_2, m3_0
+# 1059|     r3_4(int)        = Constant[1]        : 
+# 1059|     r3_5(int)        = Sub                : r3_3, r3_4
+# 1059|     m3_6(int)        = Store              : r3_2, r3_5
+# 1059|     r3_7(int)        = Constant[0]        : 
+# 1059|     r3_8(bool)       = CompareGT          : r3_3, r3_7
+# 1059|     v3_9(void)       = ConditionalBranch  : r3_8
+#-----|   False -> Block 2
+#-----|   True -> Block 1

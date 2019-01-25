@@ -8,4 +8,6 @@ operandAcrossFunctions
 instructionWithoutUniqueBlock
 containsLoopOfForwardEdges
 lostReachability
+| ir.cpp:1060:12:1060:12 | Constant: (char)... |
+| ir.cpp:1061:1:1061:1 | NoOp: return ... |
 backEdgeCountMismatch
