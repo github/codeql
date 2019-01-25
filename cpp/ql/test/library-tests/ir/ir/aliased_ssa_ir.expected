@@ -4687,5 +4687,5 @@ ir.cpp:
 # 1059|     r3_8(int)        = Constant[0]        : 
 # 1059|     r3_9(bool)       = CompareGT          : r3_4, r3_8
 # 1059|     v3_10(void)      = ConditionalBranch  : r3_9
-#-----|   False (back edge) -> Block 2
-#-----|   True (back edge) -> Block 1
+#-----|   False -> Block 2
+#-----|   True -> Block 1
