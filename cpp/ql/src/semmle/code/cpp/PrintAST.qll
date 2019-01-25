@@ -490,7 +490,7 @@ class FunctionNode extends ASTNode {
   }
 
   override string toString() {
-    result = func.getFullSignature()
+    result = func.getIdentityString()
   }
 
   override PrintASTNode getChild(int childIndex) {
@@ -528,7 +528,7 @@ class FunctionNode extends ASTNode {
         file,
         line,
         column,
-        function.getFullSignature()
+        function.getIdentityString()
     )
   }
   

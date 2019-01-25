@@ -2,6 +2,7 @@ import semmle.code.cpp.Declaration
 import semmle.code.cpp.Type
 import semmle.code.cpp.Member
 import semmle.code.cpp.Function
+private import semmle.code.cpp.internal.IdentityString
 private import semmle.code.cpp.internal.ResolveClass
 
 /**
@@ -90,6 +91,35 @@ class UserType extends Type, Declaration, NameQualifyingElement, AccessHolder, @
   Declaration getADeclaration() { none() }
 
   override string explain() { result = this.getName() }
+
+  override string getIdentityString() {
+    exists(string simpleName |
+      (
+        if this instanceof Closure then
+          simpleName = "(" + getSimpleName() + ")"
+        else
+          simpleName = getSimpleName()
+      ) and
+      result = getScopePrefix(this) + simpleName + getTemplateArgumentsString()
+    )
+  }
+
+  language[monotonicAggregates]
+  private string getTemplateArgumentsString() {
+    if exists(this.(Class).getATemplateArgument()) then (
+      result = "<" +
+        concat(int i |
+          exists(this.(Class).getTemplateArgument(i)) |
+            this.(Class).getTemplateArgument(i).getTypeIdentityString(), ", " order by i
+        ) + ">"
+    )
+    else
+      result = ""
+  }
+
+  override string getDeclaratorPrefix() {
+    result = getIdentityString()
+  }
 
   // further overridden in LocalClass
   override AccessHolder getEnclosingAccessHolder() {

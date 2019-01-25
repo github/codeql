@@ -1,6 +1,7 @@
 import semmle.code.cpp.Element
 import semmle.code.cpp.exprs.Access
 import semmle.code.cpp.Initializer
+private import semmle.code.cpp.internal.IdentityString
 private import semmle.code.cpp.internal.ResolveClass
 
 /**
@@ -74,6 +75,27 @@ class Variable extends Declaration, @variable {
    * keyword.
    */
   predicate declaredUsingAutoType() { autoderivation(underlyingElement(this), _) }
+
+  override string getIdentityString() {
+    exists(Type type |
+      (this instanceof MemberVariable or this instanceof GlobalOrNamespaceVariable) and
+      type = this.getType() and
+      result = type.getTypeSpecifier() + type.getDeclaratorPrefix() + " " + getScopePrefix(this) + this.getName() + this.getTemplateArgumentsString() + type.getDeclaratorSuffixBeforeQualifiers() + type.getDeclaratorSuffix()
+    )
+  }
+
+  language[monotonicAggregates]
+  private string getTemplateArgumentsString() {
+    if exists(getATemplateArgument()) then (
+      result = "<" +
+        concat(int i |
+          exists(getTemplateArgument(i)) |
+            getTemplateArgument(i).getTypeIdentityString(), ", " order by i
+        ) + ">"
+    )
+    else
+      result = ""
+  }
 
   override VariableDeclarationEntry getADeclarationEntry() {
     result.getDeclaration() = this

@@ -1,6 +1,7 @@
 import semmle.code.cpp.Element
 import semmle.code.cpp.Specifier
 import semmle.code.cpp.Namespace
+private import semmle.code.cpp.internal.IdentityString
 
 /**
  * A C/C++ declaration: for example, a variable declaration, a type
@@ -87,6 +88,17 @@ abstract class Declaration extends Locatable, @declaration {
   }
 
   override string toString() { result = this.getName() }
+
+  /**
+   * Gets a string that uniquely identifies this declaration, suitable for use when debugging queries. Only holds for
+   * functions, user-defined types, global and namespace-scope variables, and member variables.
+   *
+   * This operation is very expensive, and should not be used in production queries. Consider using `hasName()` or
+   * `hasQualifiedName()` for identifying known declarations in production queries.
+   */
+  string getIdentityString() {
+    none()
+  }
 
   /**
    * Gets the name of this declaration.

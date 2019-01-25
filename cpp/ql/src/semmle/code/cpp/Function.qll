@@ -5,6 +5,7 @@ import semmle.code.cpp.Parameter
 import semmle.code.cpp.exprs.Call
 import semmle.code.cpp.metrics.MetricFunction
 import semmle.code.cpp.Linkage
+private import semmle.code.cpp.internal.IdentityString
 private import semmle.code.cpp.internal.ResolveClass
 
 /**
@@ -53,6 +54,48 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
           getParameter(i).getType().toString(), ", " order by i
         ) + ")"
      )
+  }
+
+  override string getIdentityString() {
+    result = getType().getTypeSpecifier() + getType().getDeclaratorPrefix() + " " + getScopePrefix(this) + getName() + getTemplateArgumentsString() + getDeclaratorSuffixBeforeQualifiers() + getDeclaratorSuffix()
+  }
+
+  language[monotonicAggregates]
+  private string getTemplateArgumentsString() {
+    if exists(getATemplateArgument()) then (
+      result = "<" +
+        concat(int i |
+          exists(getTemplateArgument(i)) |
+            getTemplateArgument(i).getTypeIdentityString(), ", " order by i
+        ) + ">"
+    )
+    else
+      result = ""
+  }
+
+  language[monotonicAggregates]
+  private string getDeclaratorSuffixBeforeQualifiers() {
+    result = "(" +
+      concat(int i |
+        exists(getParameter(i).getType()) |
+        getParameterTypeString(getParameter(i).getType()), ", " order by i
+      ) + ")" + getQualifierString()
+  }
+
+  private string getQualifierString() {
+    if exists(getACVQualifier()) then
+      result = " " + concat(string qualifier | qualifier = getACVQualifier() | qualifier, " ")
+    else
+      result = ""
+  }
+
+  private string getACVQualifier() {
+    result = getASpecifier().getName() and
+    (result = "const" or result = "volatile")
+  }
+
+  private string getDeclaratorSuffix() {
+    result = getType().getDeclaratorSuffixBeforeQualifiers() + getType().getDeclaratorSuffix()
   }
 
   /** Gets a specifier of this function. */
@@ -1088,8 +1131,14 @@ class TemplateFunction extends Function {
  * A function that is an instantiation of a template.
  */
 class FunctionTemplateInstantiation extends Function {
+  TemplateFunction tf;
+
   FunctionTemplateInstantiation() {
-    exists(TemplateFunction tf | tf.getAnInstantiation() = this)
+    tf.getAnInstantiation() = this
+  }
+
+  TemplateFunction getTemplate() { 
+    result = tf
   }
 }
 

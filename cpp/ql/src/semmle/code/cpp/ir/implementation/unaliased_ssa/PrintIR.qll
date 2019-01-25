@@ -130,7 +130,7 @@ class PrintableFunctionIR extends PrintableIRNode, TPrintableFunctionIR {
   }
 
   override string getLabel() {
-    result = funcIR.getFunction().getFullSignature()
+    result = funcIR.getFunction().getIdentityString()
   }
 
   override int getOrder() {
