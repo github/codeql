@@ -538,12 +538,12 @@ void test20()
 		// ...
 	}
 
-	if (fread(charBuffer, sizeof(char), 101, fileSource) > 0) // BAD [NOT DETECTED]
+	if (fread(charBuffer, sizeof(char), 101, fileSource) > 0) // BAD
 	{
 		// ...
 	}
 
-	if (fread(charBuffer, sizeof(int), 100, fileSource) > 0) // BAD [NOT DETECTED]
+	if (fread(charBuffer, sizeof(int), 100, fileSource) > 0) // BAD
 	{
 		// ...
 	}
