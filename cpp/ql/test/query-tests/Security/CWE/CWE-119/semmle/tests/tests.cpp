@@ -522,6 +522,44 @@ void test19(bool b)
 	}
 }
 
+typedef struct {} FILE;
+FILE *fileSource;
+
+size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream);
+
+void test20()
+{
+	char charBuffer[100];
+	int intBuffer[100];
+	int num;
+
+	if (fread(charBuffer, sizeof(char), 100, fileSource) > 0) // GOOD
+	{
+		// ...
+	}
+
+	if (fread(charBuffer, sizeof(char), 101, fileSource) > 0) // BAD [NOT DETECTED]
+	{
+		// ...
+	}
+
+	if (fread(charBuffer, sizeof(int), 100, fileSource) > 0) // BAD [NOT DETECTED]
+	{
+		// ...
+	}
+
+	if (fread(intBuffer, sizeof(int), 100, fileSource) > 0) // GOOD
+	{
+		// ...
+	}
+
+	num = 101;
+	if (fread(intBuffer, sizeof(int), num, fileSource) > 0) // BAD [NOT DETECTED]
+	{
+		// ...
+	}
+}
+
 int main(int argc, char *argv[])
 {
 	long long arr17[19];
@@ -543,6 +581,7 @@ int main(int argc, char *argv[])
 	test17(arr17);
 	test18();
 	test19(argc == 0);
+	test20();
 
 	return 0;
 }
