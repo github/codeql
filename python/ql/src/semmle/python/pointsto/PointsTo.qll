@@ -31,14 +31,27 @@ private import Filters as BaseFilters
 import semmle.dataflow.SSA
 private import MRO
 
-/** Get a `ControlFlowNode` from an object or `here`.
- * If the object is a ControlFlowNode then use that, otherwise fall back on `here`
- */
-pragma[inline]
-private ControlFlowNode origin_from_object_or_here(ObjectOrCfg object, ControlFlowNode here) {
-    result = object
-    or
-    not object instanceof ControlFlowNode and result = here
+library class ObjectOrCfg extends @py_object {
+
+    string toString() {
+        /* Not to be displayed */
+        none()
+    }
+
+    ControlFlowNode getOrigin() {
+        result = this
+    }
+
+    /** Get a `ControlFlowNode` from `this` or `here`.
+     * If `this` is a ControlFlowNode then use that, otherwise fall back on `here`
+     */
+    pragma[inline]
+    ControlFlowNode fromObjectOrHere(ControlFlowNode here) {
+        result = this
+        or
+        not this instanceof ControlFlowNode and result = here
+    }
+
 }
 
 module PointsTo {
@@ -144,7 +157,7 @@ module PointsTo {
                 ssa_variable_points_to(var, imp, obj, cls, orig) and
                 imp.isImport() and
                 obj != undefinedVariable() |
-                origin = origin_from_object_or_here(orig, exit)
+                origin = orig.fromObjectOrHere(exit)
             )
             or
             not exists(EssaVariable var | var.getAUse() = m.getANormalExit() and var.getSourceVariable().getName() = name) and
@@ -563,7 +576,7 @@ module PointsTo {
         exists(ObjectOrCfg origin_or_obj |
             value != undefinedVariable() and
             use_points_to_maybe_origin(f, context, value, cls, origin_or_obj) |
-            origin = origin_from_object_or_here(origin_or_obj, f)
+            origin = origin_or_obj.fromObjectOrHere(f)
         )
     }
 
@@ -637,7 +650,7 @@ module PointsTo {
         exists(Object cls_or_mod, string name, ObjectOrCfg orig |
             receiver_object(f, context, cls_or_mod, name) and
             class_or_module_attribute(cls_or_mod, name, value, cls, orig) and
-            origin = origin_from_object_or_here(orig, f)
+            origin = orig.fromObjectOrHere(f)
         )
         or
         points_to(f.getObject(), context, unknownValue(), theUnknownType(), origin) and value = unknownValue() and cls = theUnknownType()
@@ -667,7 +680,7 @@ module PointsTo {
     private predicate from_import_points_to(ImportMemberNode f, PointsToContext context, Object value, ClassObject cls, ControlFlowNode origin) {
         exists(string name, ModuleObject mod, ObjectOrCfg orig |
             points_to(f.getModule(name), context, mod, _, _) and
-            origin = origin_from_object_or_here(orig, f)
+            origin = orig.fromObjectOrHere(f)
             |
             mod.getSourceModule() = f.getEnclosingModule() and
             exists(EssaVariable var |
@@ -2014,7 +2027,7 @@ module PointsTo {
                 exists(ObjectOrCfg obj |
                     Layer::module_attribute_points_to(mod, name, value, cls, obj) and
                     not exists(Variable v | v.getId() = name and v.getScope() = imp.getScope()) and
-                    origin = origin_from_object_or_here(obj, imp)
+                    origin = obj.fromObjectOrHere(imp)
                 )
                 or
                 /* Retain value held before import */

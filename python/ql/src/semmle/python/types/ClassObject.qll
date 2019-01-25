@@ -10,19 +10,6 @@ predicate is_c_metaclass(Object o) {
 }
 
 
-library class ObjectOrCfg extends @py_object {
-
-    string toString() {
-        /* Not to be displayed */
-        none()
-    }
-
-    ControlFlowNode getOrigin() {
-        result = this
-    }
-
-}
-
 /** A class whose instances represents Python classes.
  *  Instances of this class represent either builtin classes 
  *  such as `list` or `str`, or program-defined Python classes 
