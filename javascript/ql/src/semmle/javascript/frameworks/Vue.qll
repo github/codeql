@@ -3,7 +3,6 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.DomBasedXss
 
 module Vue {
   /**
@@ -372,5 +371,4 @@ module Vue {
    * A `.vue` file.
    */
   class VueFile extends File { VueFile() { getExtension() = "vue" } }
-
 }
