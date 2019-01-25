@@ -41,6 +41,37 @@ predicate all_not_understood(Module m) {
     )
 }
 
+predicate imported_module_used_in_doctest(Import imp) {
+    exists(string modname |
+        imp.getAName().getAsname().(Name).getId() = modname
+        and
+        /* Look for doctests containing the patterns:
+         * >>> …name…
+         * ... …name…
+         */
+        exists(StrConst doc |
+            doc.getEnclosingModule() = imp.getScope() and
+            doc.isDocString() and
+            doc.getText().regexpMatch("[\\s\\S]*(>>>|\\.\\.\\.).*" + modname + "[\\s\\S]*")
+        )
+    )
+}
+
+predicate imported_module_used_in_typehint(Import imp) {
+    exists(string modname |
+        imp.getAName().getAsname().(Name).getId() = modname
+        and
+        /* Look for typehints containing the patterns:
+         * # type: …name…
+         */
+        exists(Comment typehint |
+            typehint.getLocation().getFile() = imp.getScope().(Module).getFile() and
+            typehint.getText().regexpMatch("# type:.*" + modname + ".*")
+        )
+    )
+}
+
+
 predicate unused_import(Import imp, Variable name) {
     ((Name)imp.getAName().getAsname()).getVariable() = name
     and
@@ -65,6 +96,10 @@ predicate unused_import(Import imp, Variable name) {
     and
     /* Assume that opaque `__all__` includes imported module */
     not all_not_understood(imp.getEnclosingModule())
+    and
+    not imported_module_used_in_doctest(imp)
+    and
+    not imported_module_used_in_typehint(imp)
 }
 
 

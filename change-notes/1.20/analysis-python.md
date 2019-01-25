@@ -20,6 +20,8 @@ Removes false positives seen when using Python 3.6, but not when using earlier v
 
  | **Query**                  | **Expected impact**    | **Change**                                                       |
 |----------------------------|------------------------|------------------------------------------------------------------|
+| Unused import (`py/unused-import`) | Fewer false positive results | Results where the imported module is used in a `doctest` string are no longer reported. |
+| Unused import (`py/unused-import`) | Fewer false positive results | Results where the imported module is used in a type-hint comment are no longer reported. |
 
  ## Changes to code extraction
 
