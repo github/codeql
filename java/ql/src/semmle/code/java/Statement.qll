@@ -408,10 +408,18 @@ class SwitchCase extends Stmt, @case {
   /** Gets the switch statement to which this case belongs, if any. */
   SwitchStmt getSwitch() { result.getACase() = this }
 
-  /** Gets the switch expression to which this case belongs, if any. */
+  /**
+   * DEPRECATED: Preview feature in Java 12. Subject to removal in a future release.
+   *
+   * Gets the switch expression to which this case belongs, if any.
+   */
   deprecated SwitchExpr getSwitchExpr() { result.getACase() = this }
 
-  /** Holds if this `case` is a switch labeled rule of the form `... -> ...`. */
+  /**
+   * DEPRECATED: Preview feature in Java 12. Subject to removal in a future release.
+   *
+   * Holds if this `case` is a switch labeled rule of the form `... -> ...`.
+   */
   deprecated predicate isRule() {
     exists(Expr e | e.getParent() = this | e.getIndex() = -1)
     or
@@ -426,13 +434,25 @@ class ConstCase extends SwitchCase {
   /** Gets the `case` constant at index 0. */
   Expr getValue() { result.getParent() = this and result.getIndex() = 0 }
 
-  /** Gets the `case` constant at the specified index. */
+  /**
+   * DEPRECATED: Preview feature in Java 12. Subject to removal in a future release.
+   *
+   * Gets the `case` constant at the specified index.
+   */
   deprecated Expr getValue(int i) { result.getParent() = this and result.getIndex() = i and i >= 0 }
 
-  /** Gets the expression on the right-hand side of the arrow, if any. */
+  /**
+   * DEPRECATED: Preview feature in Java 12. Subject to removal in a future release.
+   *
+   * Gets the expression on the right-hand side of the arrow, if any.
+   */
   deprecated Expr getRuleExpression() { result.getParent() = this and result.getIndex() = -1 }
 
-  /** Gets the statement on the right-hand side of the arrow, if any. */
+  /**
+   * DEPRECATED: Preview feature in Java 12. Subject to removal in a future release.
+   *
+   * Gets the statement on the right-hand side of the arrow, if any.
+   */
   deprecated Stmt getRuleStatement() { result.getParent() = this and result.getIndex() = -1 }
 
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
@@ -572,10 +592,18 @@ class BreakStmt extends Stmt, @breakstmt {
   /** Holds if this `break` statement has an explicit label. */
   predicate hasLabel() { exists(string s | s = this.getLabel()) }
 
-  /** Gets the value of this `break` statement, if any. */
+  /**
+   * DEPRECATED: Preview feature in Java 12. Subject to removal in a future release.
+   *
+   * Gets the value of this `break` statement, if any.
+   */
   deprecated Expr getValue() { result.getParent() = this }
 
-  /** Holds if this `break` statement has a value. */
+  /**
+   * DEPRECATED: Preview feature in Java 12. Subject to removal in a future release.
+   *
+   * Holds if this `break` statement has a value.
+   */
   deprecated predicate hasValue() { exists(Expr e | e.getParent() = this) }
 
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */

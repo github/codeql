@@ -1093,7 +1093,11 @@ class ConditionalExpr extends Expr, @conditionalexpr {
   override string toString() { result = "...?...:..." }
 }
 
-/** A `switch` expression. */
+/**
+ * DEPRECATED: Preview feature in Java 12. Subject to removal in a future release.
+ *
+ * A `switch` expression.
+ */
 deprecated class SwitchExpr extends Expr, @switchexpr {
   /** Gets an immediate child statement of this `switch` expression. */
   Stmt getAStmt() { result.getParent() = this }
