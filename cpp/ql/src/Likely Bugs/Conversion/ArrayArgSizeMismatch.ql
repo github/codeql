@@ -9,6 +9,7 @@
  * @tags reliability
  */
 import cpp
+import semmle.code.cpp.commons.Buffer
 
 from Function f, FunctionCall c, int i, ArrayType argType, ArrayType paramType, int a, int b
 where f = c.getTarget() and
@@ -18,7 +19,7 @@ where f = c.getTarget() and
         b = paramType.getArraySize() and
         argType.getBaseType().getSize() = paramType.getBaseType().getSize() and
         a < b and
-        a > 0 and
+        not memberMayBeVarSize(_, c.getArgument(i).(VariableAccess).getTarget()) and
         // filter out results for inconsistent declarations
         strictcount(f.getParameter(i).getType().getSize()) = 1
 select c.getArgument(i), "Array of size " + a +
