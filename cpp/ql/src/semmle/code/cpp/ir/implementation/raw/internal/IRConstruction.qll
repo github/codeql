@@ -180,15 +180,7 @@ cached private module Cached {
 
   /** Holds if `goto` jumps strictly forward in the program text. */
   private predicate isStrictlyForwardGoto(GotoStmt goto) {
-    exists(string gotoFile, int gotoLine, string targetFile, int targetLine |
-      goto.getLocation().hasLocationInfo(gotoFile, gotoLine, _, _, _) and
-      goto.getTarget().getLocation().hasLocationInfo(targetFile, targetLine, _, _, _) and
-      targetLine > gotoLine and
-      // We avoid `=` for equality here since that might tempt the join orderer
-      // into joining on the file name too early.
-      gotoFile >= targetFile and
-      gotoFile <= targetFile
-    )
+    goto.getLocation().isBefore(goto.getTarget().getLocation())
   }
 
   cached IRVariable getInstructionVariable(Instruction instruction) {
