@@ -125,7 +125,7 @@ cached private module Cached {
       )
     )
     or
-    // The back edge should be the (unique) edge from the condition to the
+    // The back edge should be the edge(s) from the condition to the
     // body. This ensures that it's the back edge that will be pruned in a `do
     // { ... } while (0)` statement. Note that all `continue` statements in a
     // do-while loop produce forward edges.
