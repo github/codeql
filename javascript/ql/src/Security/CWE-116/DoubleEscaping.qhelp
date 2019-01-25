@@ -52,13 +52,13 @@ The following example shows a pair of hand-written HTML encoding and decoding fu
 <p>
 The encoding function correctly handles ampersand before the other characters. For example,
 the string <code>me &amp; "you"</code> is encoded as <code>me &amp;amp; &amp;quot;you&amp;quot;</code>,
-and the string <code>&quot;</code> is encoded as <code>&amp;quot;</code>.
+and the string <code>&amp;quot;</code> is encoded as <code>&amp;amp;quot;</code>.
 </p>
 
 <p>
 The decoding function, however, incorrectly decodes <code>&amp;amp;</code> into <code>&amp;</code>
 before handling the other characters. So while it correctly decodes the first example above,
-it decodes the second example (<code>&amp;quot;</code>) to <code>&quot;</code> (a single double quote),
+it decodes the second example (<code>&amp;amp;quot;</code>) to <code>&quot;</code> (a single double quote),
 which is not correct.
 </p>
 
