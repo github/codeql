@@ -130,15 +130,14 @@ module TaintTracking {
       result = ea.getQualifier()
     }
 
-    private class LocalTaintExprStep extends DataFlow::Internal::ExprStep {
-      LocalTaintExprStep() { this = "LocalTaintExprStep" }
+    private class LocalTaintExprStepConfiguration extends DataFlow::Internal::ExprStepConfiguration {
+      LocalTaintExprStepConfiguration() { this = "LocalTaintExprStepConfiguration" }
 
       override predicate stepsToExpr(Expr exprFrom, Expr exprTo, ControlFlowElement scope, boolean exactScope, boolean isSuccessor) {
         exactScope = false and
         (
           // Taint propagation using library code
-          DataFlow::Internal::LocalFlow::libraryFlow(exprFrom, exprTo, scope, false) and
-          (isSuccessor = false or isSuccessor = true)
+          DataFlow::Internal::LocalFlow::libraryFlow(exprFrom, exprTo, scope, isSuccessor, false)
           or
           // Taint from assigned value to element qualifier (`x[i] = 0`)
           exists(AssignExpr ae |
@@ -232,7 +231,7 @@ module TaintTracking {
 
       cached predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
         DataFlow::Internal::Cached::forceCachingInSameStage() and
-        any(LocalTaintExprStep x).hasStep(nodeFrom, nodeTo)
+        any(LocalTaintExprStepConfiguration x).hasStep(nodeFrom, nodeTo)
         or
         DataFlow::Internal::flowOutOfDelegateLibraryCall(nodeFrom, nodeTo, false)
         or

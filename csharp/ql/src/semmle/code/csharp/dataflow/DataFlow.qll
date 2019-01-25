@@ -731,9 +731,9 @@ module DataFlow {
      * A helper class for defining expression-based data flow steps, while properly
      * taking control flow into account.
      */
-    abstract class ExprStep extends string {
+    abstract class ExprStepConfiguration extends string {
       bindingset[this]
-      ExprStep() { any() }
+      ExprStepConfiguration() { any() }
 
       /**
        * Holds if data can flow from expression `exprFrom` to expression `exprTo`,
@@ -841,15 +841,14 @@ module DataFlow {
 
     /** Provides predicates related to local data flow. */
     module LocalFlow {
-      private class LocalExprStep extends ExprStep {
-        LocalExprStep() { this = "LocalExprStep" }
+      private class LocalExprStepConfiguration extends ExprStepConfiguration {
+        LocalExprStepConfiguration() { this = "LocalExprStepConfiguration" }
 
         override predicate stepsToExpr(Expr exprFrom, Expr exprTo, ControlFlowElement scope, boolean exactScope, boolean isSuccessor) {
           exactScope = false and
           (
             // Flow using library code
-            libraryFlow(exprFrom, exprTo, scope, true) and
-            (isSuccessor = false or isSuccessor = true)
+            libraryFlow(exprFrom, exprTo, scope, isSuccessor, true)
             or
             exprFrom = exprTo.(ParenthesizedExpr).getExpr() and
             scope = exprTo and
@@ -911,7 +910,7 @@ module DataFlow {
       predicate step(Node nodeFrom, Node nodeTo) {
         forceCachingInSameStage() and
         TaintTracking::Internal::Cached::forceCachingInSameStage() and
-        any(LocalExprStep x).hasStep(nodeFrom, nodeTo)
+        any(LocalExprStepConfiguration x).hasStep(nodeFrom, nodeTo)
         or
         // Flow from SSA definition to first read
         exists(Ssa::Definition def, ControlFlow::Node cfn |
@@ -1008,9 +1007,14 @@ module DataFlow {
         )
       }
 
-      predicate libraryFlow(Expr exprFrom, Expr exprTo, Expr scope, boolean preservesValue) {
+      predicate libraryFlow(Expr exprFrom, Expr exprTo, Expr scope, boolean isSuccessor, boolean preservesValue) {
+        // To not pollute the definitions in `LibraryTypeDataFlow.qll` with syntactic scope,
+        // simply use the nearest common parent expression for `exprFrom` and `exprTo`
         scope = getALibraryFlowParent(exprFrom, exprTo, preservesValue) and
-        scope.getAChildExpr*() = exprTo
+        scope.getAChildExpr*() = exprTo and
+        // Similarly, for simplicity allow following both forwards and backwards edges from
+        // `exprFrom` to `exprTo`
+        (isSuccessor = true or isSuccessor = false)
       }
 
       predicate localFlowStepNoConfig(Node pred, Node succ) {
@@ -1828,9 +1832,9 @@ module DataFlow {
       flowsink.getNode() = sink
     }
 
-    private class FlowThroughCallableLibraryOutRefStep extends ExprStep {
-      FlowThroughCallableLibraryOutRefStep() {
-        this = "FlowThroughCallableLibraryOutRefStep"
+    private class FlowThroughCallableLibraryOutRefStepConfiguration extends ExprStepConfiguration {
+      FlowThroughCallableLibraryOutRefStepConfiguration() {
+        this = "FlowThroughCallableLibraryOutRefStepConfiguration"
       }
 
       override predicate stepsToDefinition(Expr exprFrom, AssignableDefinition defTo, ControlFlowElement scope, boolean exactScope, boolean isSuccessor) {
@@ -1860,7 +1864,7 @@ module DataFlow {
      */
     predicate flowThroughCallableLibraryOutRef(MethodCall mc, ExprNode arg, SsaDefinitionNode node, boolean preservesValue) {
       libraryFlowOutRef(mc, arg.getExpr(), _, preservesValue) and
-      any(FlowThroughCallableLibraryOutRefStep x).hasStep(arg, node)
+      any(FlowThroughCallableLibraryOutRefStepConfiguration x).hasStep(arg, node)
     }
 
     /**
