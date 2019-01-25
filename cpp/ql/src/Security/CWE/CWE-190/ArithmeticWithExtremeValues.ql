@@ -18,19 +18,29 @@ import semmle.code.cpp.security.Overflow
 import semmle.code.cpp.security.Security
 import semmle.code.cpp.security.TaintTracking
 
-predicate isMaxValue(MacroInvocationExpr mie) {
-  mie.getMacroName() = "CHAR_MAX" or
-  mie.getMacroName() = "LLONG_MAX" or
-  mie.getMacroName() = "INT_MAX" or
-  mie.getMacroName() = "SHRT_MAX" or
-  mie.getMacroName() = "UINT_MAX"
+predicate isMaxValue(Expr mie) {
+  exists(MacroInvocation mi |
+    mi.getExpr() = mie and
+    (
+      mi.getMacroName() = "CHAR_MAX" or
+      mi.getMacroName() = "LLONG_MAX" or
+      mi.getMacroName() = "INT_MAX" or
+      mi.getMacroName() = "SHRT_MAX" or
+      mi.getMacroName() = "UINT_MAX"
+    )
+  )
 }
 
-predicate isMinValue(MacroInvocationExpr mie) {
-  mie.getMacroName() = "CHAR_MIN" or
-  mie.getMacroName() = "LLONG_MIN" or
-  mie.getMacroName() = "INT_MIN" or
-  mie.getMacroName() = "SHRT_MIN"
+predicate isMinValue(Expr mie) {
+  exists(MacroInvocation mi |
+    mi.getExpr() = mie and
+    (
+      mi.getMacroName() = "CHAR_MIN" or
+      mi.getMacroName() = "LLONG_MIN" or
+      mi.getMacroName() = "INT_MIN" or
+      mi.getMacroName() = "SHRT_MIN"
+    )
+  )
 }
 
 class SecurityOptionsArith extends SecurityOptions {
