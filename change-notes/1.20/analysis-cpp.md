@@ -23,9 +23,9 @@
 | Lossy function result cast (`cpp/lossy-function-result-cast`) | Fewer false positive results | The whitelist of rounding functions built into this query has been expanded. |
 | Unused static variable (`cpp/unused-static-variable`) | Fewer false positive results | Variables with the attribute `unused` are now excluded from the query. |
 | Resource not released in destructor (`cpp/resource-not-released-in-destructor`) | Fewer false positive results | Fix false positives where a resource is released via a virtual method call, function pointer, or lambda. |
-| 'new[]' array freed with 'delete' | More correct results | Data flow through global variables for this query has been improved. |
-| 'new' object freed with 'delete[]' | More correct results | Data flow through global variables for this query has been improved. |
-| Mismatching new/free or malloc/delete | More correct results | Data flow through global variables for this query has been improved. |
+| 'new[]' array freed with 'delete' (`cpp/new-array-delete-mismatch`) | More correct results | Data flow through global variables for this query has been improved. |
+| 'new' object freed with 'delete[]' (`cpp/new-delete-array-mismatch`) | More correct results | Data flow through global variables for this query has been improved. |
+| Mismatching new/free or malloc/delete (`cpp/new-free-mismatch`) | More correct results | Data flow through global variables for this query has been improved. |
 | Use of inherently dangerous function (`cpp/potential-buffer-overflow`) | Cleaned up | This query no longer catches uses of `gets`, and has been renamed 'Potential buffer overflow'. |
 | Use of potentially dangerous function (`cpp/potentially-dangerous-function`) | More correct results | This query now catches uses of `gets`. |
 
