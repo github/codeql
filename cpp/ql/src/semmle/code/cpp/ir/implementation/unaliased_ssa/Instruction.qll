@@ -518,7 +518,15 @@ class Instruction extends Construction::TInstruction {
    * removed from the control-flow graph, it becomes acyclic.
    */
   final Instruction getBackEdgeSuccessor(EdgeKind kind) {
-    result = Construction::getInstructionBackEdgeSuccessor(this, kind)
+    // We don't take these edges from
+    // `Construction::getInstructionBackEdgeSuccessor` since that relation has
+    // not been treated to remove any loops that might be left over due to
+    // flaws in the IR construction or back-edge detection.
+    exists(IRBlock block |
+      block = this.getBlock() and
+      this = block.getLastInstruction() and
+      result = block.getBackEdgeSuccessor(kind).getFirstInstruction()
+    )
   }
 
   /**
