@@ -112,6 +112,7 @@ cached private module Cached {
   // - Restrict to edges that originate within the loop (/ 2).
   pragma[noopt]
   cached Instruction getInstructionBackEdgeSuccessor(Instruction instruction, EdgeKind kind) {
+    // While loop:
     // Any edge from within the body of the loop to the condition of the loop
     // is a back edge. This includes edges from `continue` and the fall-through
     // edge(s) after the last instruction(s) in the body.
@@ -125,6 +126,7 @@ cached private module Cached {
       )
     )
     or
+    // Do-while loop:
     // The back edge should be the edge(s) from the condition to the
     // body. This ensures that it's the back edge that will be pruned in a `do
     // { ... } while (0)` statement. Note that all `continue` statements in a
@@ -141,11 +143,12 @@ cached private module Cached {
       )
     )
     or
+    // For loop:
     // Any edge from within the body or update of the loop to the condition of
-    // the loop is a back edge.  This includes edges from `continue` and the
-    // fall-through edge(s) after the last instruction(s) in the body. A `for`
-    // loop may not have a condition, in which case
-    // `getFirstConditionInstruction` returns the body instead.
+    // the loop is a back edge. When there is no loop update expression, this
+    // includes edges from `continue` and the fall-through edge(s) after the
+    // last instruction(s) in the body. A for loop may not have a condition, in
+    // which case `getFirstConditionInstruction` returns the body instead.
     exists(TranslatedForStmt s |
       s instanceof TranslatedForStmt and
       result = s.getFirstConditionInstruction() and
@@ -162,6 +165,7 @@ cached private module Cached {
       )
     )
     or
+    // Goto statement:
     // As a conservative approximation, any edge out of `goto` is a back edge
     // unless it goes strictly forward in the program text. A `goto` whose
     // source and target are both inside a macro will be seen as having the
