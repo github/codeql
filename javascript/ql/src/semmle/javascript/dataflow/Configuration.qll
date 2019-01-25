@@ -712,7 +712,7 @@ predicate higherOrderCall(
     summary = PathSummary::call()
   )
   or
-  // Forwarding of the callback parameter  (but not the argument).
+  // Forwarding of the callback parameter (but not the argument).
   // We use a return summary since flow moves back towards the call site.
   // This ensures that an argument that is only tainted in some contexts cannot flow
   // out to every callback.
