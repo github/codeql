@@ -31,35 +31,8 @@ private import Filters as BaseFilters
 import semmle.dataflow.SSA
 private import MRO
 
-//library class ObjectOrCfg extends @py_object {
-//
-//    string toString() {
-//        /* Not to be displayed */
-//        none()
-//    }
-//
-//    ControlFlowNode getOrigin() {
-//        result = this
-//    }
-//
-//    /** Get a `ControlFlowNode` from `this` or `here`.
-//     * If `this` is a ControlFlowNode then use that, otherwise fall back on `here`
-//     */
-//    pragma[inline]
-//    ControlFlowNode fromObjectOrHere(ControlFlowNode here) {
-//        result = this
-//        or
-//        not this instanceof ControlFlowNode and result = here
-//    }
-//
-//}
-
-private newtype TObjectOrCfg =
-    TUnknownOrigin()
-    or
-    TCfgOrigin(ControlFlowNode f)
-
-library class ObjectOrCfg extends TObjectOrCfg {
+/* Use this version for speed */
+library class ObjectOrCfg extends @py_object {
 
     string toString() {
         /* Not to be displayed */
@@ -70,31 +43,70 @@ library class ObjectOrCfg extends TObjectOrCfg {
      * If `this` is a ControlFlowNode then use that, otherwise fall back on `here`
      */
     pragma[inline]
-    ControlFlowNode fromObjectOrHere(ControlFlowNode here) {
-        this = TUnknownOrigin() and result = here
+    ControlFlowNode asCfgNodeOrHere(ControlFlowNode here) {
+        result = this
         or
-        this = TCfgOrigin(result)
+        not this instanceof ControlFlowNode and result = here
     }
 
     ControlFlowNode toCfgNode() {
-        this = TCfgOrigin(result)
+        result = this
     }
 
+    pragma[inline]
     ObjectOrCfg fix(ControlFlowNode here) {
-        this = TUnknownOrigin() and result = TCfgOrigin(here)
-        or
-        not this = TUnknownOrigin() and result = this
+        if this = unknownValue() then
+            result = here
+        else
+            result = this
     }
+
 }
+
+/* Use this version for stronger type-checking */
+//private newtype TObjectOrCfg =
+//    TUnknownOrigin()
+//    or
+//    TCfgOrigin(ControlFlowNode f)
+//
+//library class ObjectOrCfg extends TObjectOrCfg {
+//
+//    string toString() {
+//        /* Not to be displayed */
+//        none()
+//    }
+//
+//    /** Get a `ControlFlowNode` from `this` or `here`.
+//     * If `this` is a ControlFlowNode then use that, otherwise fall back on `here`
+//     */
+//    pragma[inline]
+//    ControlFlowNode asCfgNodeOrHere(ControlFlowNode here) {
+//        this = TUnknownOrigin() and result = here
+//        or
+//        this = TCfgOrigin(result)
+//    }
+//
+//    ControlFlowNode toCfgNode() {
+//        this = TCfgOrigin(result)
+//    }
+//
+//    ObjectOrCfg fix(ControlFlowNode here) {
+//        this = TUnknownOrigin() and result = TCfgOrigin(here)
+//        or
+//        not this = TUnknownOrigin() and result = this
+//    }
+//}
+//
+
 
 module ObjectOrCfg {
 
     ObjectOrCfg fromCfgNode(ControlFlowNode f) {
-        result = TCfgOrigin(f)
+        result = f
     }
 
     ObjectOrCfg unknown() {
-        result = TUnknownOrigin()
+        result = unknownValue()
     }
 
 }
@@ -479,7 +491,7 @@ module PointsTo {
             or
             package_attribute_points_to(mod, name, value, cls, origin)
             or
-            builtin_module_attribute(mod, name, value, cls) and origin = TUnknownOrigin()
+            builtin_module_attribute(mod, name, value, cls) and origin = ObjectOrCfg::unknown()
         }
 
     }
@@ -520,7 +532,7 @@ module PointsTo {
         or
         exists(ObjectOrCfg orig |
             getattr_points_to(f, context, value, cls, orig) and
-            origin = orig.fromObjectOrHere(f)
+            origin = orig.asCfgNodeOrHere(f)
         )
         or
         if_exp_points_to(f, context, value, cls, origin)
@@ -627,7 +639,7 @@ module PointsTo {
         exists(ObjectOrCfg origin_or_obj |
             value != undefinedVariable() and
             use_points_to_maybe_origin(f, context, value, cls, origin_or_obj) |
-            origin = origin_or_obj.fromObjectOrHere(f)
+            origin = origin_or_obj.asCfgNodeOrHere(f)
         )
     }
 
@@ -667,7 +679,7 @@ module PointsTo {
         f.isLoad() and
         exists(string name |
             exists(ObjectOrCfg orig |
-                origin = orig.fromObjectOrHere(f) and
+                origin = orig.asCfgNodeOrHere(f) and
                 named_attribute_points_to(f.getObject(name), context, name, value, cls, orig)
             )
             or
@@ -707,7 +719,7 @@ module PointsTo {
         exists(Object cls_or_mod, string name, ObjectOrCfg orig |
             receiver_object(f, context, cls_or_mod, name) and
             class_or_module_attribute(cls_or_mod, name, value, cls, orig) and
-            origin = orig.fromObjectOrHere(f)
+            origin = orig.asCfgNodeOrHere(f)
         )
         or
         points_to(f.getObject(), context, unknownValue(), theUnknownType(), origin) and value = unknownValue() and cls = theUnknownType()
@@ -737,7 +749,7 @@ module PointsTo {
     private predicate from_import_points_to(ImportMemberNode f, PointsToContext context, Object value, ClassObject cls, ControlFlowNode origin) {
         exists(string name, ModuleObject mod, ObjectOrCfg orig |
             points_to(f.getModule(name), context, mod, _, _) and
-            origin = orig.fromObjectOrHere(f)
+            origin = orig.asCfgNodeOrHere(f)
             |
             mod.getSourceModule() = f.getEnclosingModule() and
             exists(EssaVariable var |
@@ -1653,7 +1665,7 @@ module PointsTo {
             )
             or
             exists(EssaVariable obj, PointsToContext caller, ObjectOrCfg orig |
-                origin = orig.fromObjectOrHere(def.getDefiningNode()) and
+                origin = orig.asCfgNodeOrHere(def.getDefiningNode()) and
                 ssa_variable_points_to(obj, caller, value, cls, orig) and
                 callsite_self_argument_transfer(obj, caller, def, context)
             )
@@ -1758,7 +1770,7 @@ module PointsTo {
             exists(EssaVariable var, PointsToContext outer, ObjectOrCfg orig |
                 Flow::scope_entry_value_transfer(var, outer, def, context) and
                 ssa_variable_points_to(var, outer, value, cls, orig) and
-                origin = orig.fromObjectOrHere(def.getDefiningNode())
+                origin = orig.asCfgNodeOrHere(def.getDefiningNode())
             )
             or
             /* Undefined variable */
@@ -1950,7 +1962,7 @@ module PointsTo {
             exists(EssaVariable var, PointsToContext outer, ObjectOrCfg orig |
                 Flow::scope_entry_value_transfer(var, outer, def, context) and
                 ssa_variable_named_attribute_points_to(var, outer, name, value, cls, orig) and
-                origin = orig.fromObjectOrHere(def.getDefiningNode())
+                origin = orig.asCfgNodeOrHere(def.getDefiningNode())
             )
             or
             origin = def.getDefiningNode() and
@@ -1968,7 +1980,7 @@ module PointsTo {
         private predicate assignment_named_attribute_points_to(AssignmentDefinition def, PointsToContext context, string name, Object value, ClassObject cls, ControlFlowNode origin) {
             exists(ObjectOrCfg orig |
                 named_attribute_points_to(def.getValue(), context, name, value, cls, orig) and
-                origin = orig.fromObjectOrHere(def.getDefiningNode())
+                origin = orig.asCfgNodeOrHere(def.getDefiningNode())
             )
         }
 
