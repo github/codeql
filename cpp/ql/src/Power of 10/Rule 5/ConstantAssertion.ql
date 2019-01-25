@@ -4,6 +4,9 @@
  * @kind problem
  * @id cpp/power-of-10/constant-assertion
  * @problem.severity warning
+ * @tags maintainability
+ *       reliability
+ *       external/powerof10
  */
 
 import semmle.code.cpp.commons.Assertions

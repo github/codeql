@@ -5,6 +5,7 @@
  * @kind chart
  * @id cpp/high-afferent-coupling-namespaces
  * @chart.type bar
+ * @tags maintainability
  */
 import cpp
 

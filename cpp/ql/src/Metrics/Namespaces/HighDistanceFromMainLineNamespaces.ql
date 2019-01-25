@@ -5,6 +5,7 @@
  * @kind chart
  * @id cpp/high-distance-from-main-line-namespaces
  * @chart.type bar
+ * @tags maintainability
  */
 import cpp
 

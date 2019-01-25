@@ -3,6 +3,8 @@
  * @description Finds classes that belong to no namespace.
  * @kind table
  * @id cpp/architecture/global-namespace-classes
+ * @tags maintainability
+ *       modularity
  */
 import cpp
 

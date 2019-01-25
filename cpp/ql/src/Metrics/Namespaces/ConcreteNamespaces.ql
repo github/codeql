@@ -3,6 +3,7 @@
  * @description Finds namespaces that have an abstractness equal to 0.
  * @kind tree
  * @id cpp/concrete-namespaces
+ * @tags maintainability
  */
 import cpp
 

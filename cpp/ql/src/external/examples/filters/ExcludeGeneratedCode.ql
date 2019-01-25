@@ -4,6 +4,7 @@
  *              they meet certain criteria. In this example, results are
  *              only returned if they do not come from a file which
  *              contains 'generated' anywhere in its path.
+ * @tags filter
  */
 import cpp
 import external.DefectFilter

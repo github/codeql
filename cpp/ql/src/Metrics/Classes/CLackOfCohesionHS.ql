@@ -6,6 +6,7 @@
  * @treemap.warnOn highValues
  * @metricType reftype
  * @metricAggregate avg max
+ * @tags modularity
  */
 import cpp
 

@@ -5,6 +5,7 @@
  *              located in files for which we have source code.
  * @kind problem
  * @id cpp/from-source-filter
+ * @tags filter
  */
 
 import cpp

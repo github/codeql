@@ -4,6 +4,9 @@
  * @kind problem
  * @id cpp/power-of-10/check-return-values
  * @problem.severity warning
+ * @tags correctness
+ *       reliability
+ *       external/powerof10
  */
 
 import cpp

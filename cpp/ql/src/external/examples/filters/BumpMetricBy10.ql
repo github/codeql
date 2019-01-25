@@ -3,6 +3,7 @@
  * @description This filter demonstrates how to change the value
  *              computed by the metric that it is filtering. In this
  *              example the value is increased by 10.
+ * @tags filter
  */
 import cpp
 import external.MetricFilter

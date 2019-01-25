@@ -3,6 +3,7 @@
  * @description Insert description here...
  * @kind problem
  * @problem.severity warning
+ * @tags external-data
  */
 
 import cpp
