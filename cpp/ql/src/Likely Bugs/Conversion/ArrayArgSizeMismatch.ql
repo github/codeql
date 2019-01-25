@@ -5,7 +5,7 @@
  * @kind problem
  * @id cpp/array-arg-size-mismatch
  * @problem.severity warning
- * @precision medium
+ * @precision high
  * @tags reliability
  */
 import cpp
