@@ -118,13 +118,14 @@ module Closure {
     }
 
     override predicate exports(string name, ASTNode export) {
-      // exports.foo = bar
-      export.(AssignExpr).getLhs().(PropAccess).accesses(getExportsVariable().getAnAccess(), name)
-      or
-      // exports = { foo: bar }
-      exists(VarDef def |
-        def.getTarget() = getExportsVariable().getAReference() and
-        def.getSource().(ObjectExpr).getPropertyByName(name) = export
+      exists(DataFlow::PropWrite write, Expr base |
+        write.getAstNode() = export and
+        write.writes(base.flow(), name, _) and
+        (
+          base = getExportsVariable().getAReference()
+          or
+          base = getExportsVariable().getAnAssignedExpr()
+        )
       )
     }
   }
