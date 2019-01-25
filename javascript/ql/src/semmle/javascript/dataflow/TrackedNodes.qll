@@ -251,8 +251,7 @@ private module NodeTracking {
    * That is, `arg` refers to a value defined in `f` or one of its callees.
    */
   predicate higherOrderCall(
-    DataFlow::Node arg, DataFlow::SourceNode callback, int i,
-    PathSummary summary
+    DataFlow::Node arg, DataFlow::SourceNode callback, int i, PathSummary summary
   ) {
     // Summarized call
     exists(DataFlow::Node cb |
@@ -287,7 +286,7 @@ private module NodeTracking {
    * locally.
    */
   private predicate flowIntoHigherOrderCall(
-    DataFlow::Node pred, DataFlow::Node succ,  PathSummary summary
+    DataFlow::Node pred, DataFlow::Node succ, PathSummary summary
   ) {
     exists(DataFlow::FunctionNode cb, int i, PathSummary oldSummary |
       higherOrderCall(pred, cb, i, oldSummary) and
