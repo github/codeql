@@ -134,7 +134,7 @@ class ClassObject extends Object {
 
     /** Whether the named attribute refers to the object and origin */
     predicate attributeRefersTo(string name, Object obj, ControlFlowNode origin) {
-        exists(ObjectOrCfg orig |
+        exists(CfgOrigin orig |
             origin = orig.toCfgNode() and
             PointsTo::Types::class_attribute_lookup(this, name, obj, _, orig)
         )
@@ -143,7 +143,7 @@ class ClassObject extends Object {
     /** Whether the named attribute refers to the object, class and origin */
     predicate attributeRefersTo(string name, Object obj, ClassObject cls, ControlFlowNode origin) {
         not obj = unknownValue() and
-        exists(ObjectOrCfg orig |
+        exists(CfgOrigin orig |
             origin = orig.toCfgNode() and
             PointsTo::Types::class_attribute_lookup(this, name, obj, cls, orig)
         )

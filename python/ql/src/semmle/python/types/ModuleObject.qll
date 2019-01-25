@@ -174,14 +174,14 @@ class PythonModuleObject extends ModuleObject {
     }
 
     override predicate attributeRefersTo(string name, Object value, ControlFlowNode origin) {
-        exists(ObjectOrCfg orig |
+        exists(CfgOrigin orig |
             origin = orig.toCfgNode() and
             PointsTo::py_module_attributes(this.getModule(), name, value, _, orig)
         )
     }
 
     override predicate attributeRefersTo(string name, Object value, ClassObject cls, ControlFlowNode origin) {
-        exists(ObjectOrCfg orig |
+        exists(CfgOrigin orig |
             origin = orig.toCfgNode() and
             PointsTo::py_module_attributes(this.getModule(), name, value, cls, orig)
         )
@@ -266,14 +266,14 @@ class PackageObject extends ModuleObject {
     }
 
     override predicate attributeRefersTo(string name, Object value, ControlFlowNode origin) {
-        exists(ObjectOrCfg orig |
+        exists(CfgOrigin orig |
             origin = orig.toCfgNode() and
             PointsTo::package_attribute_points_to(this, name, value, _, orig)
         )
     }
 
     override predicate attributeRefersTo(string name, Object value, ClassObject cls, ControlFlowNode origin) {
-        exists(ObjectOrCfg orig |
+        exists(CfgOrigin orig |
             origin = orig.toCfgNode() and
             PointsTo::package_attribute_points_to(this, name, value, cls, orig)
         )
