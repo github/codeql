@@ -194,8 +194,8 @@ module StringOps {
     /**
      * Gets the polarity of the check.
      *
-     * If the polarity is `false` the check returns `true` if the string does not start
-     * with the given substring.
+     * If the polarity is `false` the check returns `true` if the string does not contain
+     * the given substring.
      */
     boolean getPolarity() { result = true }
   }
@@ -334,8 +334,7 @@ module StringOps {
   }
 
   /**
-   * An expression that appears to be part of an `endsWith`-check, that is,
-   * roughly equivalent to `A.endsWith(B)` or `!A.endsWith(B)`.
+   * An expression that is equivalent to `A.endsWith(B)` or `!A.endsWith(B)`.
    */
   abstract class EndsWith extends DataFlow::Node {
     /**
@@ -351,7 +350,7 @@ module StringOps {
     /**
      * Gets the polarity if the check.
      *
-     * If the polarity is `false` the check returns `true` if the string does not start
+     * If the polarity is `false` the check returns `true` if the string does not end
      * with the given substring.
      */
     boolean getPolarity() { result = true }
