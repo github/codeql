@@ -689,10 +689,24 @@ private predicate summarizedHigherOrderCall(
  * Holds if `arg` is passed as the `i`th argument to `callback` through a callback invocation.
  *
  * This can be a summarized call, that is, `arg` and `callback` flow into a call,
- * `f(arg, callback)`, which  performs the invocation.
+ * `f(arg, callback)`, which performs the invocation.
  *
  * Alternatively, the callback can flow into a call `f(callback)` which itself provides the `arg`.
  * That is, `arg` refers to a value defined in `f` or one of its callees.
+ *
+ * In the latter case, the summary will consists of both a `return` and `call` step, for the following reasons:
+ *
+ * - Having `return` in the summary ensures that arguments passsed to `f` can't propagate back out along this edge.
+ *   This is, `arg` should be defined in `f` or one of its callees, since a context-dependent value (i.e. parameter)
+ *   should not propagate to every callback passed to `f`.
+ *   In reality, `arg` may refer to a parameter, but in that case, the `return` summary prevents the edge from ever
+ *   being used.
+ *
+ * - Having `call` in the summary ensures that values we propagate into the callback definition along this edge
+ *   can't propagate out to other callers of that function through a return statement.
+ *
+ * - The flow label mapping of the summary corresponds to the transformation from `arg` to the
+ *   invocation of the callback.
  */
 predicate higherOrderCall(
   DataFlow::Node arg, DataFlow::SourceNode callback, int i, DataFlow::Configuration cfg,
@@ -713,13 +727,11 @@ predicate higherOrderCall(
   )
   or
   // Forwarding of the callback parameter (but not the argument).
-  // We use a return summary since flow moves back towards the call site.
-  // This ensures that an argument that is only tainted in some contexts cannot flow
-  // out to every callback.
   exists(DataFlow::Node cbArg, DataFlow::SourceNode innerCb, PathSummary oldSummary |
     higherOrderCall(arg, innerCb, i, cfg, oldSummary) and
     callStep(cbArg, innerCb) and
     callback.flowsTo(cbArg) and
+    // Prepend a 'return' summary to prevent context-dependent values (i.e. parameters) from using this edge.
     summary = PathSummary::return().append(oldSummary)
   )
 }
