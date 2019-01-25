@@ -3,7 +3,7 @@
 ## General improvements
 
 * Support for popular libraries has been improved. Consequently, queries may produce better results on code bases that use the following features:
-  - client-side code, for example [React](https://reactjs.org/)
+  - client-side code, for example [React](https://reactjs.org/) and [Vue](https://vuejs.org/)
   - cookies and webstorage, for example [js-cookie](https://github.com/js-cookie/js-cookie)
   - server-side code, for example [hapi](https://hapijs.com/)
 * File classification has been improved to recognize additional generated files, for example files from [HTML Tidy](html-tidy.org).
