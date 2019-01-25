@@ -56,9 +56,8 @@
 
         </p>
         <p>
-            This vulnerability is addressed in the <code>safe</code> check, which
-            escapes the <code>.</code> and will reject <code>wwwXexample.com</code>.
-
+            The <code>safe</code> check closes this vulnerability by escaping the <code>.</code>
+            so that URLs of the form <code>wwwXexample.com</code> are rejected.
         </p>
 
     </example>
