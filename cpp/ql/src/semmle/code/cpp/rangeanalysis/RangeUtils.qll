@@ -63,22 +63,6 @@ predicate valueFlowStep(Instruction i, Operand op, int delta) {
   )
 }
 
-predicate isReducibleCFG(Function f) {
-  not exists(LabelStmt l, GotoStmt goto |
-    goto.getTarget() = l and
-    l.getLocation().isBefore(goto.getLocation()) and
-    l.getEnclosingFunction() = f
-  ) and
-  not exists(LabelStmt ls, Loop l |
-    ls.getParent*() = l and
-    l.getEnclosingFunction() = f
-  ) and
-  not exists(SwitchCase cs |
-    cs.getSwitchStmt().getStmt() != cs.getParentStmt() and
-    cs.getEnclosingFunction() = f
-  )
-}
-
 predicate backEdge(PhiInstruction phi, PhiOperand op) {
   phi.getAnOperand() = op and
   phi.getBlock() = op.getPredecessorBlock().getBackEdgeSuccessor(_)
