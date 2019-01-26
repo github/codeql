@@ -1,21 +1,21 @@
-#-----| __va_list_tag::operator=(__va_list_tag &&) -> __va_list_tag &
-#-----|   params: 
-#-----|     0: p#0
-#-----|         Type = __va_list_tag &&
-#-----| __va_list_tag::operator=(const __va_list_tag &) -> __va_list_tag &
+#-----| __va_list_tag& __va_list_tag::operator=(__va_list_tag const&)
 #-----|   params: 
 #-----|     0: p#0
 #-----|         Type = const __va_list_tag &
-#-----| operator delete(void *) -> void
+#-----| __va_list_tag& __va_list_tag::operator=(__va_list_tag&&)
+#-----|   params: 
+#-----|     0: p#0
+#-----|         Type = __va_list_tag &&
+#-----| void operator delete(void*)
 #-----|   params: 
 #-----|     0: p#0
 #-----|         Type = void *
-#-----| operator new(unsigned long) -> void *
+#-----| void* operator new(unsigned long)
 #-----|   params: 
 #-----|     0: p#0
 #-----|         Type = unsigned long
 AddressOf.c:
-#    1| AddressOf(int) -> void
+#    1| void AddressOf(int)
 #    1|   params: 
 #    1|     0: i
 #    1|         Type = int
@@ -32,7 +32,7 @@ AddressOf.c:
 #    2|                 ValueCategory = lvalue
 #    3|     1: return ...
 ArrayToPointer.c:
-#    5| ArrayToPointer() -> void
+#    5| void ArrayToPointer()
 #    5|   params: 
 #    6|   body: { ... }
 #    7|     0: declaration
@@ -64,7 +64,7 @@ ArrayToPointer.c:
 #    9|               ValueCategory = lvalue
 #   10|     3: return ...
 Cast.c:
-#    1| Cast(char *, void *) -> void
+#    1| void Cast(char*, void*)
 #    1|   params: 
 #    1|     0: c
 #    1|         Type = char *
@@ -87,7 +87,7 @@ Cast.c:
 #    2|               ValueCategory = prvalue(load)
 #    3|     1: return ...
 ConditionDecl.cpp:
-#    1| ConditionDecl() -> void
+#    1| void ConditionDecl()
 #    1|   params: 
 #    1|   body: { ... }
 #    2|     0: declaration
@@ -112,59 +112,59 @@ ConditionDecl.cpp:
 #    3|       1: { ... }
 #    5|     2: return ...
 ConstructorCall.cpp:
-#    1| C::C(C &&) -> void
-#    1|   params: 
-#-----|     0: p#0
-#-----|         Type = C &&
-#    1| C::C(const C &) -> void
+#    1| C& C::operator=(C const&)
 #    1|   params: 
 #-----|     0: p#0
 #-----|         Type = const C &
-#    1| C::operator=(C &&) -> C &
+#    1| C& C::operator=(C&&)
 #    1|   params: 
 #-----|     0: p#0
 #-----|         Type = C &&
-#    1| C::operator=(const C &) -> C &
+#    1| void C::C(C const&)
 #    1|   params: 
 #-----|     0: p#0
 #-----|         Type = const C &
-#    3| C::C(int) -> void
+#    1| void C::C(C&&)
+#    1|   params: 
+#-----|     0: p#0
+#-----|         Type = C &&
+#    3| void C::C(int)
 #    3|   params: 
 #    3|     0: i
 #    3|         Type = int
 #    3|   initializations: 
 #    3|   body: { ... }
 #    4|     0: return ...
-#    7| D::D(D &&) -> void
-#    7|   params: 
-#-----|     0: p#0
-#-----|         Type = D &&
-#    7| D::D(const D &) -> void
+#    7| D& D::operator=(D const&)
 #    7|   params: 
 #-----|     0: p#0
 #-----|         Type = const D &
-#    7| D::operator=(D &&) -> D &
+#    7| D& D::operator=(D&&)
 #    7|   params: 
 #-----|     0: p#0
 #-----|         Type = D &&
-#    7| D::operator=(const D &) -> D &
+#    7| void D::D(D const&)
 #    7|   params: 
 #-----|     0: p#0
 #-----|         Type = const D &
-#    9| D::D() -> void
+#    7| void D::D(D&&)
+#    7|   params: 
+#-----|     0: p#0
+#-----|         Type = D &&
+#    9| void D::D()
 #    9|   params: 
 #    9|   initializations: 
 #    9|   body: { ... }
 #   10|     0: return ...
-#   13| E::operator=(E &&) -> E &
-#   13|   params: 
-#-----|     0: p#0
-#-----|         Type = E &&
-#   13| E::operator=(const E &) -> E &
+#   13| E& E::operator=(E const&)
 #   13|   params: 
 #-----|     0: p#0
 #-----|         Type = const E &
-#   17| ConstructorCall(C *, D *, E *) -> void
+#   13| E& E::operator=(E&&)
+#   13|   params: 
+#-----|     0: p#0
+#-----|         Type = E &&
+#   17| void ConstructorCall(C*, D*, E*)
 #   17|   params: 
 #   17|     0: c
 #   17|         Type = C *
@@ -219,7 +219,7 @@ ConstructorCall.cpp:
 #   20|               ValueCategory = prvalue
 #   21|     3: return ...
 Conversion1.c:
-#    1| Conversion1() -> void
+#    1| void Conversion1()
 #    1|   params: 
 #    1|   body: { ... }
 #    2|     0: declaration
@@ -237,7 +237,7 @@ Conversion1.c:
 #    2|                 ValueCategory = prvalue
 #    3|     1: return ...
 Conversion2.c:
-#    1| Conversion2(int) -> void
+#    1| void Conversion2(int)
 #    1|   params: 
 #    1|     0: x
 #    1|         Type = int
@@ -273,7 +273,7 @@ Conversion2.c:
 #    2|                 ValueCategory = prvalue
 #    3|     1: return ...
 Conversion3.cpp:
-#    1| Conversion3(int) -> void
+#    1| void Conversion3(int)
 #    1|   params: 
 #    1|     0: x
 #    1|         Type = int
@@ -323,7 +323,7 @@ Conversion3.cpp:
 #    2|                   ValueCategory = prvalue
 #    3|     1: return ...
 Conversion4.c:
-#    1| Conversion4(int) -> void
+#    1| void Conversion4(int)
 #    1|   params: 
 #    1|     0: x
 #    1|         Type = int
@@ -350,12 +350,12 @@ Conversion4.c:
 #    2|                 ValueCategory = prvalue
 #    3|     1: return ...
 DestructorCall.cpp:
-#    3| C::~C() -> void
+#    3| void C::~C()
 #    3|   params: 
 #    3|   body: { ... }
 #    4|     0: return ...
 #    3|   destructions: 
-#   11| DestructorCall(C *, D *) -> void
+#   11| void DestructorCall(C*, D*)
 #   11|   params: 
 #   11|     0: c
 #   11|         Type = C *
@@ -381,21 +381,7 @@ DestructorCall.cpp:
 #   13|             ValueCategory = prvalue(load)
 #   14|     2: return ...
 DynamicCast.cpp:
-#    1| Base::Base() -> void
-#    1|   params: 
-#    1| Base::Base(Base &&) -> void
-#    1|   params: 
-#-----|     0: p#0
-#-----|         Type = Base &&
-#    1| Base::Base(const Base &) -> void
-#    1|   params: 
-#-----|     0: p#0
-#-----|         Type = const Base &
-#    1| Base::operator=(Base &&) -> Base &
-#    1|   params: 
-#-----|     0: p#0
-#-----|         Type = Base &&
-#    1| Base::operator=(const Base &) -> Base &
+#    1| Base& Base::operator=(Base const&)
 #    1|   params: 
 #-----|     0: p#0
 #-----|         Type = const Base &
@@ -410,25 +396,25 @@ DynamicCast.cpp:
 #-----|           0: this
 #-----|               Type = Base *
 #-----|               ValueCategory = prvalue(load)
-#    2| Base::f() -> void
+#    1| Base& Base::operator=(Base&&)
+#    1|   params: 
+#-----|     0: p#0
+#-----|         Type = Base &&
+#    1| void Base::Base()
+#    1|   params: 
+#    1| void Base::Base(Base const&)
+#    1|   params: 
+#-----|     0: p#0
+#-----|         Type = const Base &
+#    1| void Base::Base(Base&&)
+#    1|   params: 
+#-----|     0: p#0
+#-----|         Type = Base &&
+#    2| void Base::f()
 #    2|   params: 
 #    2|   body: { ... }
 #    2|     0: return ...
-#    4| Derived::Derived() -> void
-#    4|   params: 
-#    4| Derived::Derived(Derived &&) -> void
-#    4|   params: 
-#-----|     0: p#0
-#-----|         Type = Derived &&
-#    4| Derived::Derived(const Derived &) -> void
-#    4|   params: 
-#-----|     0: p#0
-#-----|         Type = const Derived &
-#    4| Derived::operator=(Derived &&) -> Derived &
-#    4|   params: 
-#-----|     0: p#0
-#-----|         Type = Derived &&
-#    4| Derived::operator=(const Derived &) -> Derived &
+#    4| Derived& Derived::operator=(Derived const&)
 #    4|   params: 
 #-----|     0: p#0
 #-----|         Type = const Derived &
@@ -476,11 +462,25 @@ DynamicCast.cpp:
 #-----|           0: this
 #-----|               Type = Derived *
 #-----|               ValueCategory = prvalue(load)
-#    5| Derived::f() -> void
+#    4| Derived& Derived::operator=(Derived&&)
+#    4|   params: 
+#-----|     0: p#0
+#-----|         Type = Derived &&
+#    4| void Derived::Derived()
+#    4|   params: 
+#    4| void Derived::Derived(Derived const&)
+#    4|   params: 
+#-----|     0: p#0
+#-----|         Type = const Derived &
+#    4| void Derived::Derived(Derived&&)
+#    4|   params: 
+#-----|     0: p#0
+#-----|         Type = Derived &&
+#    5| void Derived::f()
 #    5|   params: 
 #    5|   body: { ... }
 #    5|     0: return ...
-#    8| DynamicCast(Base *, Derived *) -> void
+#    8| void DynamicCast(Base*, Derived*)
 #    8|   params: 
 #    8|     0: bp
 #    8|         Type = Base *
@@ -502,7 +502,7 @@ DynamicCast.cpp:
 #    9|               Type = Base *
 #    9|               ValueCategory = prvalue(load)
 #   10|     1: return ...
-#   12| DynamicCastRef(Base &, Derived &) -> void
+#   12| void DynamicCastRef(Base&, Derived&)
 #   12|   params: 
 #   12|     0: bp
 #   12|         Type = Base &
@@ -541,7 +541,7 @@ DynamicCast.cpp:
 #   13|                       ValueCategory = prvalue(load)
 #   14|     1: return ...
 Parenthesis.c:
-#    1| Parenthesis(int) -> void
+#    1| void Parenthesis(int)
 #    1|   params: 
 #    1|     0: i
 #    1|         Type = int
@@ -575,7 +575,7 @@ Parenthesis.c:
 #    2|               ValueCategory = prvalue
 #    3|     1: return ...
 PointerDereference.c:
-#    1| PointerDereference(int *, int) -> void
+#    1| void PointerDereference(int*, int)
 #    1|   params: 
 #    1|     0: i
 #    1|         Type = int *
@@ -597,7 +597,7 @@ PointerDereference.c:
 #    2|               ValueCategory = prvalue(load)
 #    3|     1: return ...
 ReferenceDereference.cpp:
-#    4| ReferenceDereference(int &, int) -> void
+#    4| void ReferenceDereference(int&, int)
 #    4|   params: 
 #    4|     0: i
 #    4|         Type = int &
@@ -619,7 +619,7 @@ ReferenceDereference.cpp:
 #    5|               ValueCategory = prvalue(load)
 #    6|     1: return ...
 ReferenceTo.cpp:
-#    1| ReferenceTo(int *) -> int &
+#    1| int& ReferenceTo(int*)
 #    1|   params: 
 #    1|     0: i
 #    1|         Type = int *
@@ -635,7 +635,7 @@ ReferenceTo.cpp:
 #    2|               Type = int *
 #    2|               ValueCategory = prvalue(load)
 Sizeof.c:
-#    1| Sizeof(int[]) -> void
+#    1| void Sizeof(int[])
 #    1|   params: 
 #    1|     0: array
 #    1|         Type = int[]
@@ -674,7 +674,7 @@ Sizeof.c:
 #    3|                     ValueCategory = lvalue
 #    4|     2: return ...
 StatementExpr.c:
-#    1| StatementExpr() -> void
+#    1| void StatementExpr()
 #    1|   params: 
 #    1|   body: { ... }
 #    2|     0: declaration
@@ -686,15 +686,15 @@ StatementExpr.c:
 #    2|               ValueCategory = prvalue
 #    3|     1: return ...
 StaticMemberAccess.cpp:
-#    1| X::operator=(X &&) -> X &
-#    1|   params: 
-#-----|     0: p#0
-#-----|         Type = X &&
-#    1| X::operator=(const X &) -> X &
+#    1| X& X::operator=(X const&)
 #    1|   params: 
 #-----|     0: p#0
 #-----|         Type = const X &
-#    5| StaticMemberAccess(int, X &) -> void
+#    1| X& X::operator=(X&&)
+#    1|   params: 
+#-----|     0: p#0
+#-----|         Type = X &&
+#    5| void StaticMemberAccess(int, X&)
 #    5|   params: 
 #    5|     0: i
 #    5|         Type = int
@@ -719,7 +719,7 @@ StaticMemberAccess.cpp:
 #    7|                 ValueCategory = prvalue(load)
 #    9|     1: return ...
 Subscript.c:
-#    1| Subscript(int[], int) -> void
+#    1| void Subscript(int[], int)
 #    1|   params: 
 #    1|     0: i
 #    1|         Type = int[]
@@ -745,31 +745,31 @@ Subscript.c:
 #    2|               ValueCategory = prvalue
 #    3|     1: return ...
 Throw.cpp:
-#    2| F::F(F &&) -> void
+#    2| F& F::operator=(F const&)
+#    2|   params: 
+#-----|     0: p#0
+#-----|         Type = const F &
+#    2| F& F::operator=(F&&)
+#    2|   params: 
+#-----|     0: p#0
+#-----|         Type = F &&
+#    2| void F::F(F const&)
+#    2|   params: 
+#-----|     0: p#0
+#-----|         Type = const F &
+#    2| void F::F(F&&)
 #    2|   params: 
 #-----|     0: p#0
 #-----|         Type = F &&
 #    2|   initializations: 
 #    2|   body: { ... }
 #    2|     0: return ...
-#    2| F::F(const F &) -> void
-#    2|   params: 
-#-----|     0: p#0
-#-----|         Type = const F &
-#    2| F::operator=(F &&) -> F &
-#    2|   params: 
-#-----|     0: p#0
-#-----|         Type = F &&
-#    2| F::operator=(const F &) -> F &
-#    2|   params: 
-#-----|     0: p#0
-#-----|         Type = const F &
-#    4| F::F() -> void
+#    4| void F::F()
 #    4|   params: 
 #    4|   initializations: 
 #    4|   body: { ... }
 #    4|     0: return ...
-#    6| Throw(int) -> void
+#    6| void Throw(int)
 #    6|   params: 
 #    6|     0: i
 #    6|         Type = int
@@ -806,21 +806,21 @@ Throw.cpp:
 #   13|                 Type = void
 #   13|                 ValueCategory = prvalue
 Typeid.cpp:
-#    4| std::type_info::operator=(const type_info &) -> type_info &
+#    4| std::type_info& std::type_info::operator=(std::type_info const&)
 #    4|   params: 
 #-----|     0: p#0
 #-----|         Type = const type_info &
-#    4| std::type_info::operator=(type_info &&) -> type_info &
+#    4| std::type_info& std::type_info::operator=(std::type_info&&)
 #    4|   params: 
 #-----|     0: p#0
 #-----|         Type = type_info &&
-#    7| std::type_info::name() -> const char *
+#    7| char const* std::type_info::name() const
 #    7|   params: 
-#   13| Base::v() -> void
+#   13| void Base::v()
 #   13|   params: 
 #   13|   body: { ... }
 #   13|     0: return ...
-#   18| TypeId(Base *) -> void
+#   18| void TypeId(Base*)
 #   18|   params: 
 #   18|     0: bp
 #   18|         Type = Base *
@@ -840,7 +840,7 @@ Typeid.cpp:
 #   19|                   ValueCategory = lvalue
 #   20|     1: return ...
 VacuousDestructorCall.cpp:
-#    2| CallDestructor<T>(T, T *) -> void
+#    2| void CallDestructor<T>(T, T*)
 #    2|   params: 
 #    2|     0: x
 #    2|         Type = T
@@ -868,7 +868,7 @@ VacuousDestructorCall.cpp:
 #    4|               Type = T *
 #    4|               ValueCategory = prvalue(load)
 #    5|     2: return ...
-#    2| CallDestructor<int>(int, int *) -> void
+#    2| void CallDestructor<int>(int, int*)
 #    2|   params: 
 #    2|     0: x
 #    2|         Type = int
@@ -890,7 +890,7 @@ VacuousDestructorCall.cpp:
 #    4|             Type = int *
 #    4|             ValueCategory = prvalue(load)
 #    5|     2: return ...
-#    7| Vacuous(int) -> void
+#    7| void Vacuous(int)
 #    7|   params: 
 #    7|     0: i
 #    7|         Type = int
@@ -910,7 +910,7 @@ VacuousDestructorCall.cpp:
 #   10|               ValueCategory = lvalue
 #   11|     1: return ...
 Varargs.c:
-#    8| VarArgs(const char *) -> void
+#    8| void VarArgs(char const*)
 #    8|   params: 
 #    8|     0: text
 #    8|         Type = const char *

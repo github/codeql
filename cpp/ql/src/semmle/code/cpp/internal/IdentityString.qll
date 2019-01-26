@@ -18,7 +18,8 @@ string getScopePrefix(Declaration decl) {
   ) or
   exists(UserType type |
     type = decl and type.isLocal() and result = "(" + type.getEnclosingFunction().getIdentityString() + ")::"
-  )
+  ) or
+  decl instanceof TemplateParameter and result = ""
 }
 
 /**

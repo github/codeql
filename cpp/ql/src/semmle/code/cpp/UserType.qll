@@ -117,7 +117,7 @@ class UserType extends Type, Declaration, NameQualifyingElement, AccessHolder, @
       result = ""
   }
 
-  override string getDeclaratorPrefix() {
+  override string getTypeSpecifier() {
     result = getIdentityString()
   }
 
