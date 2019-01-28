@@ -513,6 +513,25 @@ module DataFlow {
   }
 
   /**
+   * A field induced by an initializing constructor parameter, seen as a property write (TypeScript only).
+   */
+  private class ParameterFieldAsPropWrite extends PropWrite, PropNode {
+    override ParameterField prop;
+
+    override Node getBase() {
+      result = thisNode(prop.getDeclaringClass().getConstructor().getBody())
+    }
+
+    override Expr getPropertyNameExpr() { result = prop.getNameExpr() }
+
+    override string getPropertyName() { result = prop.getName() }
+
+    override Node getRhs() { result = parameterNode(prop.getParameter()) }
+
+    override ControlFlowNode getWriteNode() { result = prop.getParameter() }
+  }
+
+  /**
    * A data flow node that reads an object property.
    */
   abstract class PropRead extends PropRef, SourceNode { }
