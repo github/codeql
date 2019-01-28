@@ -14,7 +14,7 @@ void useTaintedInt()
 {
 	int x, y;
 
-	x = getTaintedInt() * 1024; // BAD: arithmetic on a tainted value [NOT DETECTED]
+	x = getTaintedInt() * 1024; // BAD: arithmetic on a tainted value
 	y = getTaintedInt();
 	y = y * 1024; // BAD: arithmetic on a tainted value
 }
