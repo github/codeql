@@ -1,4 +1,3 @@
-| __init__.py:0 | *_2 | Exit node for Module code.test_package.__init__ |
 | __init__.py:0 | __name___0 | Exit node for Module code.__init__ |
 | __init__.py:0 | __name___0 | Exit node for Module code.package.__init__ |
 | __init__.py:0 | __name___2 | Exit node for Module code.test_package.__init__ |
@@ -12,11 +11,9 @@
 | __init__.py:0 | moduleX_1 | Exit node for Module code.package.__init__ |
 | __init__.py:0 | module_0 | Exit node for Module code.package.__init__ |
 | __init__.py:0 | sys_2 | Exit node for Module code.test_package.__init__ |
-| __init__.py:1 | *_0 | ControlFlowNode for from module1 import * |
 | __init__.py:1 | __name___0 | ControlFlowNode for from module1 import * |
 | __init__.py:1 | __package___0 | ControlFlowNode for from module1 import * |
 | __init__.py:1 | sys_0 | ControlFlowNode for from module1 import * |
-| __init__.py:2 | *_1 | ControlFlowNode for from module2 import * |
 | __init__.py:2 | __name___1 | ControlFlowNode for from module2 import * |
 | __init__.py:2 | __package___1 | ControlFlowNode for from module2 import * |
 | __init__.py:2 | sys_1 | ControlFlowNode for from module2 import * |

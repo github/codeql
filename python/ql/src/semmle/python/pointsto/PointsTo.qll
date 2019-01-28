@@ -119,7 +119,7 @@ module PointsTo {
             or
             exists(Module init |
                 init = package.getInitModule().getModule() |
-                not exists(Variable v | v.getScope() = init | v.getId() = name or v.getId() = "*")
+                not exists(PythonSsaSourceVariable v | v.getScope() = init | v.getName() = name or v.getName() = "*")
                 or
                 exists(EssaVariable v, PointsToContext imp |
                     v.getScope() = init and v.getName() = "*" and v.getAUse() = init.getANormalExit() |
@@ -145,7 +145,7 @@ module PointsTo {
             or
             not exists(EssaVariable var | var.getAUse() = m.getANormalExit() and var.getSourceVariable().getName() = name) and
             exists(EssaVariable var, PointsToContext imp |
-                var.getAUse() = m.getANormalExit() and var.getSourceVariable().getName() = "*" |
+                var.getAUse() = m.getANormalExit() and var.getName() = "*" |
                 SSA::ssa_variable_named_attribute_points_to(var, imp, name, obj, cls, origin) and
                 imp.isImport() and obj != undefinedVariable()
             )

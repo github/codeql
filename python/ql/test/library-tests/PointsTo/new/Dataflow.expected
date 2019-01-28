@@ -1,14 +1,11 @@
-| __init__.py:0 | *_0 = ScopeEntryDefinition |
 | __init__.py:0 | __name___0 = ScopeEntryDefinition |
 | __init__.py:0 | __package___0 = ScopeEntryDefinition |
 | __init__.py:0 | module2_0 = ImplicitSubModuleDefinition |
 | __init__.py:0 | moduleX_0 = ImplicitSubModuleDefinition |
 | __init__.py:0 | sys_0 = ScopeEntryDefinition |
-| __init__.py:1 | *_1 = ImportStarRefinement(*_0) |
 | __init__.py:1 | __name___1 = ImportStarRefinement(__name___0) |
 | __init__.py:1 | __package___1 = ImportStarRefinement(__package___0) |
 | __init__.py:1 | sys_1 = ImportStarRefinement(sys_0) |
-| __init__.py:2 | *_2 = ImportStarRefinement(*_1) |
 | __init__.py:2 | __name___2 = ImportStarRefinement(__name___1) |
 | __init__.py:2 | __package___2 = ImportStarRefinement(__package___1) |
 | __init__.py:2 | module_0 = ImportMember |
@@ -498,7 +495,6 @@
 | h_classes.py:52 | arg1_0 = ParameterDefinition |
 | h_classes.py:52 | n_0 = FunctionExpr |
 | h_classes.py:52 | self_0 = ParameterDefinition |
-| i_imports.py:0 | *_0 = ScopeEntryDefinition |
 | i_imports.py:0 | BytesIO_0 = ScopeEntryDefinition |
 | i_imports.py:0 | StringIO_0 = ScopeEntryDefinition |
 | i_imports.py:0 | __name___0 = ScopeEntryDefinition |
@@ -513,7 +509,6 @@
 | i_imports.py:3 | a_0 = IntegerLiteral |
 | i_imports.py:4 | b_0 = IntegerLiteral |
 | i_imports.py:5 | c_0 = IntegerLiteral |
-| i_imports.py:7 | *_1 = ImportStarRefinement(*_0) |
 | i_imports.py:7 | BytesIO_1 = ImportStarRefinement(BytesIO_0) |
 | i_imports.py:7 | StringIO_1 = ImportStarRefinement(StringIO_0) |
 | i_imports.py:7 | __name___1 = ImportStarRefinement(__name___0) |
@@ -528,7 +523,6 @@
 | i_imports.py:13 | argv_1 = ImportMember |
 | i_imports.py:17 | sys_1 = ImportExpr |
 | i_imports.py:23 | code_1 = ImportExpr |
-| i_imports.py:27 | *_2 = ImportStarRefinement(*_1) |
 | i_imports.py:27 | __name___2 = ImportStarRefinement(__name___1) |
 | i_imports.py:27 | __package___2 = ImportStarRefinement(__package___1) |
 | i_imports.py:27 | a_2 = ImportStarRefinement(a_1) |
