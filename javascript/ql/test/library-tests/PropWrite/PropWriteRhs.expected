@@ -1,9 +1,7 @@
 | tst.js:3:5:3:8 | x: 4 | tst.js:3:8:3:8 | 4 |
 | tst.js:4:5:6:5 | func: f ... ;\\n    } | tst.js:4:11:6:5 | functio ... ;\\n    } |
 | tst.js:7:5:9:5 | f() {\\n  ... ;\\n    } | tst.js:7:6:9:5 | () {\\n   ... ;\\n    } |
-| tst.js:12:9:12:8 | constructor() {} | tst.js:12:9:12:8 | () {} |
 | tst.js:13:3:15:3 | static  ... x);\\n  } | tst.js:13:14:15:3 | (x) {\\n  ... x);\\n  } |
-| tst.js:16:3:18:3 | f(x) {\\n ... x);\\n  } | tst.js:16:4:18:3 | (x) {\\n  ... x);\\n  } |
 | tst.js:21:1:21:6 | C.prop | tst.js:21:10:21:11 | 56 |
 | tst.js:24:13:24:27 | onClick={click} | tst.js:24:22:24:26 | click |
 | tst.js:32:5:32:8 | n: 1 | tst.js:32:8:32:8 | 1 |

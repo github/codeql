@@ -478,10 +478,9 @@ module DataFlow {
   private class ClassMemberAsPropWrite extends PropWrite, PropNode {
     override MemberDefinition prop;
 
-    override Node getBase() {
-      prop.isStatic() and
-      result = valueNode(prop.getDeclaringClass())
-    }
+    ClassMemberAsPropWrite() { prop.isStatic() }
+
+    override Node getBase() { result = valueNode(prop.getDeclaringClass()) }
 
     override Expr getPropertyNameExpr() { result = prop.getNameExpr() }
 
