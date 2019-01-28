@@ -109,9 +109,7 @@ predicate argumentPassing(
  * Holds if there is a flow step from `pred` to `succ` through parameter passing
  * to a function call.
  */
-predicate callStep(DataFlow::Node pred, DataFlow::Node succ) {
-  argumentPassing(_, pred, _, succ)
-}
+predicate callStep(DataFlow::Node pred, DataFlow::Node succ) { argumentPassing(_, pred, _, succ) }
 
 /**
  * Holds if there is a flow step from `pred` to `succ` through returning
@@ -258,9 +256,15 @@ predicate loadStep(DataFlow::Node pred, DataFlow::PropRead succ, string prop) {
  * invocation.
  */
 predicate callback(DataFlow::Node arg, DataFlow::SourceNode cb) {
-  exists (DataFlow::InvokeNode invk, DataFlow::ParameterNode cbParm, DataFlow::Node cbArg |
+  exists(DataFlow::InvokeNode invk, DataFlow::ParameterNode cbParm, DataFlow::Node cbArg |
     arg = invk.getAnArgument() and
     cbParm.flowsTo(invk.getCalleeNode()) and
+    callStep(cbArg, cbParm) and
+    cb.flowsTo(cbArg)
+  )
+  or
+  exists(DataFlow::ParameterNode cbParm, DataFlow::Node cbArg |
+    callback(arg, cbParm) and
     callStep(cbArg, cbParm) and
     cb.flowsTo(cbArg)
   )

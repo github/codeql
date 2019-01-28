@@ -1,4 +1,14 @@
 | advanced-callgraph.js:2:13:2:20 | source() | advanced-callgraph.js:6:22:6:22 | v |
+| callbacks.js:4:6:4:13 | source() | callbacks.js:34:27:34:27 | x |
+| callbacks.js:4:6:4:13 | source() | callbacks.js:35:27:35:27 | x |
+| callbacks.js:5:6:5:13 | source() | callbacks.js:34:27:34:27 | x |
+| callbacks.js:5:6:5:13 | source() | callbacks.js:35:27:35:27 | x |
+| callbacks.js:25:16:25:23 | source() | callbacks.js:47:26:47:26 | x |
+| callbacks.js:25:16:25:23 | source() | callbacks.js:48:26:48:26 | x |
+| callbacks.js:37:17:37:24 | source() | callbacks.js:37:37:37:37 | x |
+| callbacks.js:44:17:44:24 | source() | callbacks.js:41:10:41:10 | x |
+| callbacks.js:50:18:50:25 | source() | callbacks.js:30:29:30:29 | y |
+| callbacks.js:51:18:51:25 | source() | callbacks.js:30:29:30:29 | y |
 | constructor-calls.js:4:18:4:25 | source() | constructor-calls.js:18:8:18:14 | c.taint |
 | constructor-calls.js:4:18:4:25 | source() | constructor-calls.js:22:8:22:19 | c_safe.taint |
 | constructor-calls.js:10:16:10:23 | source() | constructor-calls.js:26:8:26:14 | d.taint |
