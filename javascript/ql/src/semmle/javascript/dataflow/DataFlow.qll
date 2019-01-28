@@ -532,6 +532,31 @@ module DataFlow {
   }
 
   /**
+   * An instance field with an initializer expression, seen as a property write.
+   */
+  private class InstanceFieldAsPropWrite extends PropWrite, PropNode {
+    override FieldDefinition prop;
+
+    InstanceFieldAsPropWrite() {
+      not prop.isStatic() and
+      exists(prop.getInit()) and
+      not prop instanceof ParameterField
+    }
+
+    override Node getBase() {
+      result = thisNode(prop.getDeclaringClass().getConstructor().getBody())
+    }
+
+    override Expr getPropertyNameExpr() { result = prop.getNameExpr() }
+
+    override string getPropertyName() { result = prop.getName() }
+
+    override Node getRhs() { result = valueNode(prop.getInit()) }
+
+    override ControlFlowNode getWriteNode() { result = prop }
+  }
+
+  /**
    * A data flow node that reads an object property.
    */
   abstract class PropRead extends PropRef, SourceNode { }
