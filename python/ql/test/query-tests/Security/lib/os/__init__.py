@@ -6,3 +6,6 @@ def popen(cmd, *args, **kwargs):
 
 def chmod(path, mode):
     pass
+
+def open(path, flags, mode):
+    pass

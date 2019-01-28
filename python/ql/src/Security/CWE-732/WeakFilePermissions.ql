@@ -34,9 +34,20 @@ string permissive_permission(int p) {
     world_permission(p) = 0 and result = "group " + access(group_permission(p))
 }
 
-from FunctionObject chmod, CallNode call, NumericObject num, string permission
-where
+predicate chmod_call(CallNode call, FunctionObject chmod, NumericObject num) {
     any(ModuleObject os | os.getName() = "os").getAttribute("chmod") = chmod and
-    chmod.getACall() = call and call.getArg(1).refersTo(num) and
+    chmod.getACall() = call and call.getArg(1).refersTo(num)
+}
+
+predicate open_call(CallNode call, FunctionObject open, NumericObject num) {
+    any(ModuleObject os | os.getName() = "os").getAttribute("open") = open and
+    open.getACall() = call and call.getArg(2).refersTo(num)
+}
+
+
+from CallNode call, FunctionObject func, NumericObject num, string permission
+where
+    (chmod_call(call, func, num) or open_call(call, func, num))
+    and
     permission = permissive_permission(num.intValue())
-select call, "Overly permissive mask in chmod sets file to " + permission + "."
+select call, "Overly permissive mask in " + func.getName() + " sets file to " + permission + "."
