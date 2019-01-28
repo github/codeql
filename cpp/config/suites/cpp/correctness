@@ -8,7 +8,7 @@
 + semmlecode-cpp-queries/Likely Bugs/Conversion/ImplicitDowncastFromBitfield.ql: /Correctness/Dangerous Conversions
 + semmlecode-cpp-queries/Likely Bugs/Conversion/CastArrayPointerArithmetic.ql: /Correctness/Dangerous Conversions
 + semmlecode-cpp-queries/Security/CWE/CWE-253/HResultBooleanConversion.ql: /Correctness/Dangerous Conversions
-  # Consistent Use 
+  # Consistent Use
 + semmlecode-cpp-queries/Critical/ReturnValueIgnored.ql: /Correctness/Consistent Use
 + semmlecode-cpp-queries/Likely Bugs/InconsistentCheckReturnNull.ql: /Correctness/Consistent Use
 + semmlecode-cpp-queries/Likely Bugs/InconsistentCallOnResult.ql: /Correctness/Consistent Use
@@ -16,6 +16,7 @@
 + semmlecode-cpp-queries/Likely Bugs/Likely Typos/AssignWhereCompareMeant.ql: /Correctness/Common Errors
 + semmlecode-cpp-queries/Likely Bugs/Likely Typos/CompareWhereAssignMeant.ql: /Correctness/Common Errors
 + semmlecode-cpp-queries/Likely Bugs/Likely Typos/ExprHasNoEffect.ql: /Correctness/Common Errors
++ semmlecode-cpp-queries/Likely Bugs/Likely Typos/FutileParams.ql: /Correctness/Common Errors
 + semmlecode-cpp-queries/Likely Bugs/Likely Typos/ShortCircuitBitMask.ql: /Correctness/Common Errors
 + semmlecode-cpp-queries/Likely Bugs/Likely Typos/MissingEnumCaseInSwitch.ql: /Correctness/Common Errors
 + semmlecode-cpp-queries/Likely Bugs/Arithmetic/FloatComparison.ql: /Correctness/Common Errors
