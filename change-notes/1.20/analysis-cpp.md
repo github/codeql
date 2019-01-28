@@ -9,6 +9,7 @@
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
 | Lossy function result cast (`cpp/lossy-function-result-cast`) | correctness | Finds function calls whose result type is a floating point type, which are implicitly cast to an integral type.  Newly available but not displayed by default on LGTM. |
+| Array argument size mismatch (`cpp/array-arg-size-mismatch`) | reliability | Finds function calls where the size of an array being passed is smaller than the array size of the declared parameter.  Newly displayed on LGTM. |
 
 ## Changes to existing queries
 
