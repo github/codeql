@@ -48,5 +48,5 @@ where
     strictcount(exportsVar.getAnAccess()) > 1
   ) and
   // export assignments do work in closure modules
-  not assgn.getTopLevel() instanceof ClosureModule
+  not assgn.getTopLevel() instanceof Closure::ClosureModule
 select assgn, "Assigning to 'exports' does not export anything."
