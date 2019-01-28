@@ -79,6 +79,25 @@ public:
   C *ThisReturned() {
     return this;
   }
+
+  virtual C *Overridden() {
+    CEscapes(this);
+    return nullptr;
+  }
+};
+
+class OverrideReturns : C {
+public:
+  virtual C *Overridden() {
+    return this;
+  }
+};
+
+class OverrideNone : C {
+public:
+  virtual C *Overridden() {
+    return nullptr;
+  }
 };
 
 void Escape()
@@ -204,4 +223,21 @@ void Escape()
     C c4;
 
     CEscapes(c4.ThisReturned());
+
+    C c5;
+
+    c5.Overridden();
+
+    OverrideReturns or1;
+    or1.Overridden();
+
+    OverrideReturns or2;
+    CEscapes(or2.Overridden());
+
+    OverrideNone on1;
+    on1.Overridden();
+
+    OverrideNone on2;
+    CEscapes(on2.Overridden());
 }
+
