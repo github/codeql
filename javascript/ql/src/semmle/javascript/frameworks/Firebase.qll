@@ -80,13 +80,37 @@ module Firebase {
   DataFlow::SourceNode ref() {
     result = ref(_)
   }
+
+  /** Gets a node that refers to a `Query` or `Reference` object. */
+  DataFlow::SourceNode query(DataFlow::TypeTracker t) {
+    t.start() and
+    (
+      result = ref(t) // a Reference can be used as a Query
+      or
+      exists (string name | result = query(_).getAMethodCall(name) |
+        name = "endAt" or
+        name = "limitTo" + any(string s) or
+        name = "orderBy" + any(string s) or
+        name = "startAt"
+      )
+    )
+    or
+    exists (DataFlow::TypeTracker t2 |
+      result = query(t2).track(t2, t)
+    )
+  }
+
+  /** Gets a node that refers to a `Query` or `Reference` object. */
+  DataFlow::SourceNode query() {
+    result = query(_)
+  }
   
   /**
-   * A call of form `ref.on(...)` or `ref.once(...)`.
+   * A call of form `query.on(...)` or `query.once(...)`.
    */
-  class RefListenCall extends DataFlow::MethodCallNode {
-    RefListenCall() {
-      this = ref().getAMethodCall() and
+  class QueryListenCall extends DataFlow::MethodCallNode {
+    QueryListenCall() {
+      this = query().getAMethodCall() and
       (getMethodName() = "on" or getMethodName() = "once")
     }
 
@@ -100,7 +124,7 @@ module Firebase {
    */
   DataFlow::SourceNode snapshotCallback(DataFlow::TypeTracker t) {
     t.start() and
-    result = any(RefListenCall call).getCallbackNode().getALocalSource()
+    result = any(QueryListenCall call).getCallbackNode().getALocalSource()
     or
     exists (DataFlow::TypeTracker t2 |
       result = snapshotCallback(t2).backtrack(t2, t)
@@ -115,15 +139,14 @@ module Firebase {
   }
 
   /**
-   * Gets a node that refers to a `DataSnapshot` value, such as `x` in
-   * `firebase.database().ref().on('value', x => {...})`.
+   * Gets a node that refers to a `DataSnapshot` value or a promise thereof.
    */
   DataFlow::SourceNode snapshot(DataFlow::TypeTracker t) {
     t.start() and
     (
       result = snapshotCallback().(DataFlow::FunctionNode).getParameter(0)
       or
-      result instanceof RefListenCall // returns promise
+      result instanceof QueryListenCall // returns promise
       or
       result = snapshot(_).getAMethodCall("child")
       or
