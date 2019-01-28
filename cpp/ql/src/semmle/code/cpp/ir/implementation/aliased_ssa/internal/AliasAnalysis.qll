@@ -152,7 +152,7 @@ predicate operandIsPropagated(Operand operand, IntValue bitOffset) {
     // result does not itself escape.
     operandIsPropagated(operand, _) and not resultEscapes(operand.getUseInstruction())
     or
-    // The address is passed as an argument to a function from which it does not escape
+    // The operand is used in a function call from which the operand does not escape
     exists(CallInstruction ci, FunctionIR f, Instruction init |
       ci = operand.getUseInstruction() and
       f.getFunction() = ci.getStaticCallTarget() and
@@ -163,6 +163,7 @@ predicate operandIsPropagated(Operand operand, IntValue bitOffset) {
         init.getEnclosingFunctionIR() = f and
         operand instanceof ThisArgumentOperand
       ) and
+      not exists(f.getFunction().getAnOverload()) and
       not resultEscapesNonReturn(init) and
       (
         not resultReturned(init)
@@ -195,6 +196,7 @@ predicate operandEscapesNonReturn(Operand operand) {
         init.getEnclosingFunctionIR() = f and
         operand instanceof ThisArgumentOperand
       ) and
+      not exists(f.getFunction().getAnOverload()) and
       not resultEscapesNonReturn(init) and
       not resultEscapesNonReturn(ci)
     ) or
