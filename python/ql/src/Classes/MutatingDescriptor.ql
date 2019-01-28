@@ -14,8 +14,13 @@ import python
 
 predicate mutates_descriptor(ClassObject cls, SelfAttributeStore s) {
     cls.isDescriptorType() and
-    exists(PyFunctionObject f |
-        cls.lookupAttribute(_) = f and 
+    exists(PyFunctionObject f, PyFunctionObject get_set |
+        exists(string name |
+            cls.lookupAttribute(name) = get_set |
+            name = "__get__" or name = "__set__" or name = "__delete__"
+        ) and
+        cls.lookupAttribute(_) = f and
+        get_set.getACallee*() = f and
         not f.getName() = "__init__" and
         s.getScope() = f.getFunction()
     )
