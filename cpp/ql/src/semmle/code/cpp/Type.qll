@@ -470,7 +470,7 @@ class IntegralType extends ArithmeticType, IntegralOrEnumType {
    * For an explicitly signed type, this gives the plain version of that type (e.g. `signed short` -> `short`), except
    * that `signed char` -> `signed char`.
    */
-  IntegralType getCanonical() {
+  IntegralType getCanonicalArithmeticType() {
     exists(int canonicalKind |
       integralTypeMapping(kind, canonicalKind, _, _) and
       builtintypes(unresolveElement(result), _, canonicalKind, _, _, _)
@@ -854,20 +854,9 @@ class Decltype extends Type, @decltype {
 }
 
 /**
- * A C/C++ pointer or reference type.
- */
-class PointerIshType extends DerivedType {
-  PointerIshType() { 
-    derivedtypes(underlyingElement(this), _, 1, _) or
-    derivedtypes(underlyingElement(this), _, 2, _) or
-    derivedtypes(underlyingElement(this), _, 8, _)
-  }
-}
-
-/**
  * A C/C++ pointer type. See 4.9.1.
  */
-class PointerType extends PointerIshType {
+class PointerType extends DerivedType {
 
   PointerType() { derivedtypes(underlyingElement(this),_,1,_) }
 
@@ -890,7 +879,7 @@ class PointerType extends PointerIshType {
  * For C++11 code bases, this includes both lvalue references (&amp;) and rvalue references (&amp;&amp;).
  * To distinguish between them, use the LValueReferenceType and RValueReferenceType classes.
  */
-class ReferenceType extends PointerIshType {
+class ReferenceType extends DerivedType {
 
   ReferenceType() { derivedtypes(underlyingElement(this),_,2,_) or derivedtypes(underlyingElement(this),_,8,_) }
 

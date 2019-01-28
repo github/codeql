@@ -122,7 +122,7 @@ private class BuiltInDumpType extends DumpType, BuiltInType {
 
 private class IntegralDumpType extends BuiltInDumpType, IntegralType {
   override string getTypeSpecifier() {
-    result = getCanonical().toString()
+    result = getCanonicalArithmeticType().toString()
   }
 }
 
