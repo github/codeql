@@ -15,15 +15,21 @@ class TornadoRequest extends TaintKind {
         result instanceof ExternalStringDictKind and
         (
             name = "headers" or
-            name = "arguments" or
             name = "cookies"
         )
         or
         result instanceof ExternalStringKind and
         (
-            name = "path" or
+            name = "uri" or
             name = "query" or
             name = "body"
+        )
+        or
+        result instanceof ExternalStringSequenceDictKind and
+        (
+            name = "arguments" or
+            name = "query_arguments" or
+            name = "body_arguments"
         )
     }
 
