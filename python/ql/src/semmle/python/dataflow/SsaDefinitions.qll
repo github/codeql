@@ -404,11 +404,11 @@ cached module SsaSource {
      * to the __init__ module of that package.
      */
     cached predicate init_module_submodule_defn(PythonSsaSourceVariable var, ControlFlowNode f) {
+        var instanceof GlobalVariable and
         exists(Module init |
             init.isPackageInit() and exists(init.getPackage().getSubModule(var.getName())) and
             init.getEntryNode() = f and
-            var.getScope() = init and
-            var instanceof GlobalVariable
+            var.getScope() = init
         )
     }
 
