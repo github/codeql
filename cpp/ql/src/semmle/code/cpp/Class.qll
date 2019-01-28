@@ -886,8 +886,19 @@ class TemplateClass extends Class {
  * A class that is an instantiation of a template.
  */
 class ClassTemplateInstantiation extends Class {
+  TemplateClass tc;
+
   ClassTemplateInstantiation() {
-    exists(TemplateClass tc | tc.getAnInstantiation() = this)
+    tc.getAnInstantiation() = this
+  }
+
+  /**
+   * Gets the class template from which this instantiation was instantiated.
+   *
+   * Example: For `std::vector<float>()`, returns `std::vector<T>`.
+   */
+  TemplateClass getTemplate() {
+    result = tc
   }
 }
 

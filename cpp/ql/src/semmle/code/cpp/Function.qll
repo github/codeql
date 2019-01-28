@@ -5,7 +5,6 @@ import semmle.code.cpp.Parameter
 import semmle.code.cpp.exprs.Call
 import semmle.code.cpp.metrics.MetricFunction
 import semmle.code.cpp.Linkage
-private import semmle.code.cpp.internal.IdentityString
 private import semmle.code.cpp.internal.ResolveClass
 
 /**
@@ -21,6 +20,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
   override string getName() { functions(underlyingElement(this),result,_) }
 
   /**
+   * DEPRECATED: Use `getIdentityString(Declaration)` from `semmle.code.cpp.Print` instead.
    * Gets the full signature of this function, including return type, parameter
    * types, and template arguments.
    *
@@ -33,7 +33,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    * "min<int>(int, int) -> int", and the full signature of the uninstantiated
    * template on the first line would be "min<T>(T, T) -> T".
    */
-  string getFullSignature() {
+  deprecated string getFullSignature() {
     exists(string name, string templateArgs, string args |
       result = name + templateArgs + args + " -> " + getType().toString() and
       name = getQualifiedName() and
@@ -54,48 +54,6 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
           getParameter(i).getType().toString(), ", " order by i
         ) + ")"
      )
-  }
-
-  override string getIdentityString() {
-    result = getType().getTypeSpecifier() + getType().getDeclaratorPrefix() + " " + getScopePrefix(this) + getName() + getTemplateArgumentsString() + getDeclaratorSuffixBeforeQualifiers() + getDeclaratorSuffix()
-  }
-
-  language[monotonicAggregates]
-  private string getTemplateArgumentsString() {
-    if exists(getATemplateArgument()) then (
-      result = "<" +
-        concat(int i |
-          exists(getTemplateArgument(i)) |
-            getTemplateArgument(i).getTypeIdentityString(), ", " order by i
-        ) + ">"
-    )
-    else
-      result = ""
-  }
-
-  language[monotonicAggregates]
-  private string getDeclaratorSuffixBeforeQualifiers() {
-    result = "(" +
-      concat(int i |
-        exists(getParameter(i).getType()) |
-        getParameterTypeString(getParameter(i).getType()), ", " order by i
-      ) + ")" + getQualifierString()
-  }
-
-  private string getQualifierString() {
-    if exists(getACVQualifier()) then
-      result = " " + concat(string qualifier | qualifier = getACVQualifier() | qualifier, " ")
-    else
-      result = ""
-  }
-
-  private string getACVQualifier() {
-    result = getASpecifier().getName() and
-    (result = "const" or result = "volatile")
-  }
-
-  private string getDeclaratorSuffix() {
-    result = getType().getDeclaratorSuffixBeforeQualifiers() + getType().getDeclaratorSuffix()
   }
 
   /** Gets a specifier of this function. */
@@ -1137,6 +1095,11 @@ class FunctionTemplateInstantiation extends Function {
     tf.getAnInstantiation() = this
   }
 
+  /**
+   * Gets the function template from which this instantiation was instantiated.
+   *
+   * Example: For `min<int>()`, returns `min<T>`.
+   */
   TemplateFunction getTemplate() { 
     result = tf
   }

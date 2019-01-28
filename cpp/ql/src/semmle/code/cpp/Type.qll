@@ -1,7 +1,6 @@
 import semmle.code.cpp.Element
 import semmle.code.cpp.Member
 import semmle.code.cpp.Function
-private import semmle.code.cpp.internal.IdentityString
 private import semmle.code.cpp.internal.ResolveClass
 
 /**
@@ -144,66 +143,6 @@ class Type extends Locatable, @type {
    * An example output is "const {pointer to {const {char}}}".
    */
   string explain() { result = "type" } // Concrete base impl to allow filters on Type
-
-  /**
-   * Gets a string that uniquely identifies this type, suitable for use when debugging queries. All typedefs and
-   * decltypes are expanded, and all symbol names are fully qualified.
-   *
-   * This operation is very expensive, and should not be used in production queries.
-   */
-  final string getTypeIdentityString() {
-    /*
-      The identity string of a type is just the concatenation of the four components below. To create the type
-      identity for a derived type, insert the declarator of the derived type between the `getDeclaratorPrefix()` and
-      `getDeclaratorSuffixBeforeQualifiers()`. To create the type identity for a `SpecifiedType`, insert the qualifiers
-      after `getDeclaratorSuffixBeforeQualifiers()`.
-    */
-    result = getTypeSpecifier() + getDeclaratorPrefix() + getDeclaratorSuffixBeforeQualifiers() + getDeclaratorSuffix()
-  }
-
-  /**
-   * Gets the "type specifier" part of this type's name. This is generally the "leaf" type from which the type was
-   * constructed.
-   *
-   * Examples:
-   * - `int` -> `int`
-   * - `int*` -> `int`
-   * - `int (*&)(float, double) const` -> `int`
-   *
-   * This predicate is intended to be used only by the implementation of `getTypeIdentityString`.
-   */
-  string getTypeSpecifier() {
-    result = ""
-  }
-
-  /**
-   * Gets the portion of this type's declarator that comes before the declarator for any derived type.
-   *
-   * This predicate is intended to be used only by the implementation of `getTypeIdentityString`.
-   */
-  string getDeclaratorPrefix() {
-    result = ""
-  }
-
-  /**
-   * Gets the portion of this type's declarator that comes after the declarator for any derived type, but before any
-   * qualifiers on the current type.
-   *
-   * This predicate is intended to be used only by the implementation of `getTypeIdentityString`.
-   */
-  string getDeclaratorSuffixBeforeQualifiers() {
-    result = ""
-  }
-
-  /**
-   * Gets the portion of this type's declarator that comes after the declarator for any derived type and after any
-   * qualifiers on the current type.
-   *
-   * This predicate is intended to be used only by the implementation of `getTypeIdentityString`.
-   */
-  string getDeclaratorSuffix() {
-    result = ""
-  }
 
   /**
    * Holds if this type is constant and only contains constant types.
@@ -373,10 +312,6 @@ class BuiltInType extends Type, @builtintype {
 
   override string explain() { result = this.getName() }
 
-  override string getTypeSpecifier() {
-    result = toString()
-  }
-
   override predicate isDeeplyConstBelow() { any() } // No subparts
 }
 
@@ -540,10 +475,6 @@ class IntegralType extends ArithmeticType, IntegralOrEnumType {
       integralTypeMapping(kind, canonicalKind, _, _) and
       builtintypes(unresolveElement(result), _, canonicalKind, _, _, _)
     )
-  }
-
-  override string getTypeSpecifier() {
-    result = getCanonical().toString()
   }
 }
 
@@ -781,18 +712,6 @@ class DerivedType extends Type, @derivedtype {
 
   override string getName() { derivedtypes(underlyingElement(this),result,_,_) }
 
-  override string getTypeSpecifier() {
-    result = getBaseType().getTypeSpecifier()
-  }
-
-  override string getDeclaratorSuffixBeforeQualifiers() {
-    result = getBaseType().getDeclaratorSuffixBeforeQualifiers()
-  }
-
-  override string getDeclaratorSuffix() {
-    result = getBaseType().getDeclaratorSuffix()
-  }
-
   /**
    * Gets the base type of this derived type.
    *
@@ -893,18 +812,6 @@ class Decltype extends Type, @decltype {
     result = "decltype(...)"
   }
 
-  override string getTypeSpecifier() {
-    result = getBaseType().getTypeSpecifier()
-  }
-
-  override string getDeclaratorPrefix() {
-    result = getBaseType().getDeclaratorPrefix()
-  }
-
-  override string getDeclaratorSuffix() {
-    result = getBaseType().getDeclaratorSuffix()
-  }
-
   override string getName() {
     none()
   }
@@ -955,23 +862,6 @@ class PointerIshType extends DerivedType {
     derivedtypes(underlyingElement(this), _, 2, _) or
     derivedtypes(underlyingElement(this), _, 8, _)
   }
-
-  override string getDeclaratorPrefix() {
-    exists(string declarator |
-      result = getBaseType().getDeclaratorPrefix() + declarator and
-      if getBaseType().getUnspecifiedType() instanceof ArrayType then
-        declarator = "(" + getDeclaratorToken() + ")"
-      else
-        declarator = getDeclaratorToken()
-    )
-  }
-
-  /**
-   * Gets the token used when declaring this kind of type (e.g. `*`, `&`, `&&`)/
-   */
-  string getDeclaratorToken() {
-    result = ""
-  }
 }
 
 /**
@@ -986,10 +876,6 @@ class PointerType extends PointerIshType {
   }
 
   override string explain() { result = "pointer to {" + this.getBaseType().explain() + "}" }
-
-  override string getDeclaratorToken() {
-    result = "*"
-  }
 
   override predicate isDeeplyConstBelow() { this.getBaseType().isDeeplyConst() }
 
@@ -1032,10 +918,6 @@ class ReferenceType extends PointerIshType {
  */
 class LValueReferenceType extends ReferenceType {
   LValueReferenceType() { derivedtypes(underlyingElement(this),_,2,_) }
-
-  override string getDeclaratorToken() {
-    result = "&"
-  }
 }
 
 /**
@@ -1045,10 +927,6 @@ class RValueReferenceType extends ReferenceType {
   RValueReferenceType() { derivedtypes(underlyingElement(this),_,8,_) }
 
   override string explain() { result = "rvalue " + super.explain() }
-
-  override string getDeclaratorToken() {
-    result = "&&"
-  }
 }
 
 /**
@@ -1074,30 +952,6 @@ class SpecifiedType extends DerivedType {
   }
 
   override string explain() { result = this.getSpecifierString() + "{" + this.getBaseType().explain() + "}" }
-
-  override string getDeclaratorPrefix() {
-    exists(string basePrefix |
-      basePrefix = getBaseType().getDeclaratorPrefix() and
-      if getBaseType().getUnspecifiedType() instanceof RoutineType then
-        result = basePrefix
-      else
-        result = basePrefix + " " + getSpecifierString().trim()
-    )
-  }
-
-  override string getDeclaratorSuffixBeforeQualifiers() {
-    exists(string baseSuffix |
-      baseSuffix = getBaseType().getDeclaratorSuffixBeforeQualifiers() and
-      if getBaseType().getUnspecifiedType() instanceof RoutineType then
-        result = baseSuffix + " " + getSpecifierString().trim()
-      else
-        result = baseSuffix
-    )
-  }
-
-  override string getDeclaratorSuffix() {
-    result = getBaseType().getDeclaratorSuffix()
-  }
 
   override predicate isDeeplyConst() { this.getASpecifier().getName() = "const" and this.getBaseType().isDeeplyConstBelow() }
 
@@ -1154,17 +1008,6 @@ class ArrayType extends DerivedType {
       result = "array of " + this.getArraySize().toString() + " {" + this.getBaseType().explain() + "}"
     else
       result = "array of {" + this.getBaseType().explain() + "}"
-  }
-
-  override string getDeclaratorPrefix() {
-    result = getBaseType().getDeclaratorPrefix()
-  }
-
-  override string getDeclaratorSuffixBeforeQualifiers() {
-    if exists(getArraySize()) then
-      result = "[" + getArraySize().toString() + "]" + getBaseType().getDeclaratorSuffixBeforeQualifiers()
-    else
-      result = "[]" + getBaseType().getDeclaratorSuffixBeforeQualifiers()
   }
 
   override predicate isDeeplyConst() { this.getBaseType().isDeeplyConst() } // No such thing as a const array type
@@ -1228,10 +1071,6 @@ class FunctionPointerType extends FunctionPointerIshType {
   }
 
   override string explain() { result = "pointer to {" + this.getBaseType().(RoutineType).explain() + "}" }
-
-  override string getDeclaratorToken() {
-    result = "*"
-  }
 }
 
 /**
@@ -1247,10 +1086,6 @@ class FunctionReferenceType extends FunctionPointerIshType {
   }
 
   override string explain() { result = "reference to {" + this.getBaseType().(RoutineType).explain() + "}" }
-
-  override string getDeclaratorToken() {
-    result = "&"
-  }
 }
 
 /**
@@ -1269,10 +1104,6 @@ class BlockType extends FunctionPointerIshType {
   }
 
   override string explain() { result = "block of {" + this.getBaseType().(RoutineType).explain() + "}" }
-
-  override string getDeclaratorToken() {
-    result = "^"
-  }
 }
 
 /**
@@ -1283,25 +1114,6 @@ class FunctionPointerIshType extends DerivedType {
     derivedtypes(underlyingElement(this),_,6, _) or
     derivedtypes(underlyingElement(this),_,7, _) or
     derivedtypes(underlyingElement(this),_,10,_)
-  }
-
-  override string getDeclaratorSuffixBeforeQualifiers() {
-    result = ")" + getBaseType().getDeclaratorSuffixBeforeQualifiers()
-  }
-
-  override string getDeclaratorSuffix() {
-    result = getBaseType().getDeclaratorSuffix()
-  }
-
-  override string getDeclaratorPrefix() {
-    result = getBaseType().getDeclaratorPrefix() + "(" + getDeclaratorToken()
-  }
-
-  /**
-   * Gets the token used when declaring this kind of type (e.g. `*`, `&`, `^`)/
-   */
-  string getDeclaratorToken() {
-    result = ""
   }
 
   /** the return type of this function pointer type */
@@ -1359,36 +1171,6 @@ class PointerToMemberType extends Type, @ptrtomember {
 
   override string explain() { result = "pointer to member of " + this.getClass().toString() + " with type {" + this.getBaseType().explain() + "}" }
 
-  override string getTypeSpecifier() {
-    result = getBaseType().getTypeSpecifier()
-  }
-
-  override string getDeclaratorPrefix() {
-    exists(string declarator, string parenDeclarator, Type baseType |
-      declarator = getClass().getTypeIdentityString() + "::*" and
-      result = getBaseType().getDeclaratorPrefix() + " " + parenDeclarator and
-      baseType = getBaseType().getUnspecifiedType() and
-      if (baseType instanceof ArrayType) or (baseType instanceof RoutineType) then
-        parenDeclarator = "(" + declarator
-      else
-        parenDeclarator = declarator
-    )
-  }
-
-  override string getDeclaratorSuffixBeforeQualifiers() {
-    exists(Type baseType |
-      baseType = getBaseType().getUnspecifiedType() and
-      if (baseType instanceof ArrayType) or (baseType instanceof RoutineType) then
-        result = ")" + getBaseType().getDeclaratorSuffixBeforeQualifiers()
-      else
-        result = getBaseType().getDeclaratorSuffixBeforeQualifiers()
-    )
-  }
-
-  override string getDeclaratorSuffix() {
-    result = getBaseType().getDeclaratorSuffix()
-  }
-  
   override predicate involvesTemplateParameter() {
     getBaseType().involvesTemplateParameter()
   }
@@ -1414,27 +1196,6 @@ class RoutineType extends Type, @routinetype {
   override string explain() {
       result = "function returning {" + this.getReturnType().explain() +
           "} with arguments (" + this.explainParameters(0) + ")"
-  }
-
-  override string getTypeSpecifier() {
-    result = getReturnType().getTypeSpecifier()
-  }
-
-  override string getDeclaratorPrefix() {
-    result = getReturnType().getDeclaratorPrefix()
-  }
-
-  language[monotonicAggregates]
-  override string getDeclaratorSuffixBeforeQualifiers() {
-    result = "(" +
-      concat(int i |
-        exists(getParameterType(i)) |
-        getParameterTypeString(getParameterType(i)), ", " order by i
-      ) + ")"
-  }
-
-  override string getDeclaratorSuffix() {
-    result = getReturnType().getDeclaratorSuffixBeforeQualifiers() + getReturnType().getDeclaratorSuffix()
   }
 
   /**
@@ -1535,4 +1296,3 @@ class TypeMention extends Locatable, @type_mention {
   
   override Location getLocation() { type_mentions(underlyingElement(this), _, result, _)}
 }
-

@@ -1,4 +1,5 @@
 import cpp
+import semmle.code.cpp.Print
 
 abstract class CheckCall extends FunctionCall {
   abstract string getActualString();
@@ -22,8 +23,8 @@ class CheckTypeCall extends CheckCall {
   }
 
   override string getActualString() {
-    result = getSpecifiedType().getTypeIdentityString() or
-    not exists(getSpecifiedType().getTypeIdentityString()) and result = "<missing>"
+    result = getTypeIdentityString(getSpecifiedType()) or
+    not exists(getTypeIdentityString(getSpecifiedType())) and result = "<missing>"
   }
 
   override string explain() {
@@ -41,8 +42,8 @@ class CheckFuncCall extends CheckCall {
   }
 
   override string getActualString() {
-    result = getSpecifiedFunction().getIdentityString() or
-    not exists(getSpecifiedFunction().getIdentityString()) and result = "<missing>"
+    result = getIdentityString(getSpecifiedFunction()) or
+    not exists(getIdentityString(getSpecifiedFunction())) and result = "<missing>"
   }
 
   override string explain() {
@@ -60,8 +61,8 @@ class CheckVarCall extends CheckCall {
   }
 
   override string getActualString() {
-    result = getSpecifiedVariable().getIdentityString() or
-    not exists(getSpecifiedVariable().getIdentityString()) and result = "<missing>"
+    result = getIdentityString(getSpecifiedVariable()) or
+    not exists(getIdentityString(getSpecifiedVariable())) and result = "<missing>"
   }
 
   override string explain() {
