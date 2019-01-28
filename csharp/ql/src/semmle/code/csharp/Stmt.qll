@@ -262,6 +262,9 @@ class CaseStmt extends Stmt, @case {
    * ```
    */
   Expr getCondition() { result = this.getChild(2) }
+
+  /** Gets the `switch` statement that this `case` statement belongs to. */
+  SwitchStmt getSwitchStmt() { result.getACase() = this }
 }
 
 /**

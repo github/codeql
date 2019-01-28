@@ -1034,6 +1034,10 @@
 | Foreach.cs:38:33:38:33 | Int32 y | Foreach.cs:38:18:38:34 | (..., ...) | semmle.label | successor |
 | Foreach.cs:38:39:38:42 | access to parameter args | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | semmle.label | successor |
 | Foreach.cs:39:11:39:11 | ; | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | semmle.label | successor |
+| Initializers.cs:3:13:3:13 | access to field H | Initializers.cs:3:17:3:17 | 1 | semmle.label | successor |
+| Initializers.cs:3:17:3:17 | 1 | Initializers.cs:3:13:3:17 | ... + ... | semmle.label | successor |
+| Initializers.cs:4:27:4:27 | access to field H | Initializers.cs:4:31:4:31 | 2 | semmle.label | successor |
+| Initializers.cs:4:31:4:31 | 2 | Initializers.cs:4:27:4:31 | ... + ... | semmle.label | successor |
 | Initializers.cs:6:5:6:16 | enter Initializers | Initializers.cs:6:28:6:30 | {...} | semmle.label | successor |
 | Initializers.cs:6:28:6:30 | {...} | Initializers.cs:6:5:6:16 | exit Initializers | semmle.label | successor |
 | Initializers.cs:8:10:8:10 | enter M | Initializers.cs:9:5:12:5 | {...} | semmle.label | successor |
@@ -1045,9 +1049,9 @@
 | Initializers.cs:10:34:10:35 | "" | Initializers.cs:10:17:10:53 | object creation of type Initializers | semmle.label | successor |
 | Initializers.cs:10:38:10:53 | { ..., ... } | Initializers.cs:10:13:10:53 | Initializers i = ... | semmle.label | successor |
 | Initializers.cs:10:40:10:40 | access to field F | Initializers.cs:10:44:10:44 | 0 | semmle.label | successor |
-| Initializers.cs:10:40:10:44 | ... = ... | Initializers.cs:10:47:10:47 | access to field G | semmle.label | successor |
+| Initializers.cs:10:40:10:44 | ... = ... | Initializers.cs:10:47:10:47 | access to property G | semmle.label | successor |
 | Initializers.cs:10:44:10:44 | 0 | Initializers.cs:10:40:10:44 | ... = ... | semmle.label | successor |
-| Initializers.cs:10:47:10:47 | access to field G | Initializers.cs:10:51:10:51 | 1 | semmle.label | successor |
+| Initializers.cs:10:47:10:47 | access to property G | Initializers.cs:10:51:10:51 | 1 | semmle.label | successor |
 | Initializers.cs:10:47:10:51 | ... = ... | Initializers.cs:10:38:10:53 | { ..., ... } | semmle.label | successor |
 | Initializers.cs:10:51:10:51 | 1 | Initializers.cs:10:47:10:51 | ... = ... | semmle.label | successor |
 | Initializers.cs:11:9:11:64 | ... ...; | Initializers.cs:11:13:11:14 | access to local variable iz | semmle.label | successor |

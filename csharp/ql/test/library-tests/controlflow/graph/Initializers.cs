@@ -1,7 +1,7 @@
 class Initializers
 {
-    int F;
-    int G;
+    int F = H + 1;
+    int G { get; set; } = H + 2;
 
     Initializers(string s) { }
 
@@ -10,4 +10,6 @@ class Initializers
         var i = new Initializers("") { F = 0, G = 1 };
         var iz = new Initializers[] { i, new Initializers("") };
     }
+
+    static int H = 1;
 }
