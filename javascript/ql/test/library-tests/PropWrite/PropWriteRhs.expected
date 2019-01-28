@@ -1,3 +1,5 @@
+| classes.ts:4:3:4:24 | instanc ...  foo(); | classes.ts:4:19:4:23 | foo() |
+| classes.ts:8:15:8:35 | public  ... erField | classes.ts:8:22:8:35 | parameterField |
 | tst.js:3:5:3:8 | x: 4 | tst.js:3:8:3:8 | 4 |
 | tst.js:4:5:6:5 | func: f ... ;\\n    } | tst.js:4:11:6:5 | functio ... ;\\n    } |
 | tst.js:7:5:9:5 | f() {\\n  ... ;\\n    } | tst.js:7:6:9:5 | () {\\n   ... ;\\n    } |
