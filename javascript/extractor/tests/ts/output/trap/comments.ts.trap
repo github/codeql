@@ -109,6 +109,7 @@ locations_default(#20032,#10000,4,5,4,4)
 hasLocation(#20031,#20032)
 next_token(#20016,#20031)
 next_token(#20018,#20031)
+next_token(#20020,#20031)
 #20033=*
 entry_cfg_node(#20033,#20001)
 #20034=@"loc,{#10000},2,1,2,0"
