@@ -9,3 +9,9 @@ def chmod(path, mode):
 
 def open(path, flags, mode):
     pass
+
+def tempnam(*args):
+    pass
+
+def tmpnam(*args):
+    pass
