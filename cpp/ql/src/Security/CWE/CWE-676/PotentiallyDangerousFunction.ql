@@ -11,14 +11,16 @@
  */
 import cpp
 
-
-predicate dangerousFunction(Function function) {
-  exists (string name | name = function.getQualifiedName() |
-    name = "gmtime")
+predicate potentiallyDangerousFunction(Function f, string message) {
+  (
+    f.getQualifiedName() = "gmtime" and
+    message = "Call to gmtime is potentially dangerous"
+  )
 }
 
 
-from FunctionCall call, Function target
-where call.getTarget() = target
-  and dangerousFunction(target)
-select call, "Call to " + target.getQualifiedName() + " is potentially dangerous"
+from FunctionCall call, Function target, string message
+where
+  call.getTarget() = target and
+  potentiallyDangerousFunction(target, message)
+select call, message
