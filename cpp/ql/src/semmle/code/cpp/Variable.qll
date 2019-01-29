@@ -264,7 +264,8 @@ class ParameterDeclarationEntry extends VariableDeclarationEntry {
 
 /**
  * A C/C++ variable with block scope [N4140 3.3.3]. In other words, a local
- * variable or a function parameter.
+ * variable or a function parameter. Local variables can be static; use the
+ * `isStatic` member predicate to detect those.
  */
 class LocalScopeVariable extends Variable, @localscopevariable {
   /** Gets the function to which this variable belongs. */
@@ -376,8 +377,10 @@ class MemberVariable extends Variable, @membervariable {
 
 /**
  * A C/C++ function pointer variable.
+ *
+ * DEPRECATED: use `Variable.getType() instanceof FunctionPointerType` instead. 
  */
-class FunctionPointerVariable extends Variable {
+deprecated class FunctionPointerVariable extends Variable {
   FunctionPointerVariable() {
     this.getType() instanceof FunctionPointerType
   }
@@ -385,8 +388,10 @@ class FunctionPointerVariable extends Variable {
 
 /**
  * A C/C++ function pointer member variable.
+ *
+ * DEPRECATED: use `MemberVariable.getType() instanceof FunctionPointerType` instead.
  */
-class FunctionPointerMemberVariable extends MemberVariable {
+deprecated class FunctionPointerMemberVariable extends MemberVariable {
   FunctionPointerMemberVariable() {
     this instanceof FunctionPointerVariable
   }
@@ -397,6 +402,10 @@ class FunctionPointerMemberVariable extends MemberVariable {
  */
 class TemplateVariable extends Variable {
   TemplateVariable() { is_variable_template(underlyingElement(this)) }
+
+  /**
+   * Gets an instantiation of this variable template.
+   */
   Variable getAnInstantiation() { result.isConstructedFrom(this) }
 }
 

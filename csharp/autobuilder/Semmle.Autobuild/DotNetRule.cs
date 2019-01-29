@@ -185,7 +185,12 @@ Invoke-Command -ScriptBlock $ScriptBlock";
                             Argument(version).
                             Argument("-InstallDir").
                             Argument(path);
-                        return install.Script;
+
+                        var removeScript = new CommandBuilder(builder.Actions).
+                            RunCommand("del").
+                            Argument(psScriptFile);
+
+                        return install.Script & BuildScript.Try(removeScript.Script);
                     }
                     else
                     {
@@ -208,7 +213,11 @@ Invoke-Command -ScriptBlock $ScriptBlock";
                             Argument("--install-dir").
                             Argument(path);
 
-                        return curl.Script & chmod.Script & install.Script;
+                        var removeScript = new CommandBuilder(builder.Actions).
+                            RunCommand("rm").
+                            Argument("dotnet-install.sh");
+
+                        return curl.Script & chmod.Script & install.Script & BuildScript.Try(removeScript.Script);
                     }
                 });
         }

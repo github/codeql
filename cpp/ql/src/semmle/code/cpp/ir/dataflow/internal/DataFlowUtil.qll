@@ -24,8 +24,22 @@ class Node extends Instruction {
     result = this.getResultType()
   }
 
-  /** Gets the expression corresponding to this node, if any. */
-  Expr asExpr() { result = this.getConvertedResultExpression() }
+  /**
+   * Gets the non-conversion expression corresponding to this node, if any. If
+   * this node strictly (in the sense of `asConvertedExpr`) corresponds to a
+   * `Conversion`, then the result is that `Conversion`'s non-`Conversion` base
+   * expression.
+   */
+  Expr asExpr() {
+    result.getConversion*() = this.getConvertedResultExpression() and
+    not result instanceof Conversion
+  }
+
+  /**
+   * Gets the expression corresponding to this node, if any. The returned
+   * expression may be a `Conversion`.
+   */
+  Expr asConvertedExpr() { result = this.getConvertedResultExpression() }
 
   /** Gets the parameter corresponding to this node, if any. */
   Parameter asParameter() { result = this.(InitializeParameterInstruction).getParameter() }
@@ -48,10 +62,21 @@ class Node extends Instruction {
  * An expression, viewed as a node in a data flow graph.
  */
 class ExprNode extends Node {
-  Expr expr;
+  ExprNode() { exists(this.asExpr()) }
 
-  ExprNode() { expr = this.asExpr() }
-  Expr getExpr() { result = expr }
+  /**
+   * Gets the non-conversion expression corresponding to this node, if any. If
+   * this node strictly (in the sense of `getConvertedExpr`) corresponds to a
+   * `Conversion`, then the result is that `Conversion`'s non-`Conversion` base
+   * expression.
+   */
+  Expr getExpr() { result = this.asExpr() }
+
+  /**
+   * Gets the expression corresponding to this node, if any. The returned
+   * expression may be a `Conversion`.
+   */
+  Expr getConvertedExpr() { result = this.asConvertedExpr() }
 }
 
 /**
@@ -98,9 +123,16 @@ abstract class PostUpdateNode extends Node {
 }
 
 /**
- * Gets the `Node` corresponding to `e`.
+ * Gets a `Node` corresponding to `e` or any of its conversions. There is no
+ * result if `e` is a `Conversion`.
  */
 ExprNode exprNode(Expr e) { result.getExpr() = e }
+
+/**
+ * Gets the `Node` corresponding to `e`, if any. Here, `e` may be a
+ * `Conversion`.
+ */
+ExprNode convertedExprNode(Expr e) { result.getExpr() = e }
 
 /**
  * Gets the `Node` corresponding to the value of `p` at function entry.

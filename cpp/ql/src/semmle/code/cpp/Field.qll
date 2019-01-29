@@ -96,6 +96,7 @@ class BitField extends Field {
    */
   int getBitOffset() { fieldoffsets(underlyingElement(this),_,result) }
 
+  /** Holds if this bitfield is anonymous. */
   predicate isAnonymous() {
     hasName("(unnamed bitfield)")
   }

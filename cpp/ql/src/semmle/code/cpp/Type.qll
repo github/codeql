@@ -1201,11 +1201,11 @@ class AutoType extends TemplateParameter
 // Internal implementation predicates
 //
 
-predicate allSpecifiers(int i, string s) {
+private predicate allSpecifiers(int i, string s) {
   s = rank[i](string t | specifiers(_, t) | t)
 }
 
-predicate internalSpecString(Type t, string res, int i) {
+private predicate internalSpecString(Type t, string res, int i) {
      (if allSpecifiers(i, t.getASpecifier().getName())
       then exists(string spec, string rest
                 | allSpecifiers(i, spec) and res = spec + " " + rest

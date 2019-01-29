@@ -98,8 +98,9 @@ module UrlRedirect {
    */
   class IsLocalUrlSanitizer extends Sanitizer {
     IsLocalUrlSanitizer() {
-      exists(MethodCall mc | mc.getTarget().hasName("IsLocalUrl") |
-        this.getExpr().(GuardedExpr).isGuardedBy(mc, mc.getArgument(0), true)
+      exists(MethodCall mc, AbstractValues::BooleanValue v | mc.getTarget().hasName("IsLocalUrl") |
+        mc = this.(GuardedDataFlowNode).getAGuard(mc.getArgument(0), v) and
+        v.getValue() = true
       )
     }
   }

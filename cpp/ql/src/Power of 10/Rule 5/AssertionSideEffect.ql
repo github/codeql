@@ -5,6 +5,8 @@
  * @kind problem
  * @id cpp/power-of-10/assertion-side-effect
  * @problem.severity warning
+ * @tags correctness
+ *       external/powerof10
  */
 
 import semmle.code.cpp.commons.Assertions

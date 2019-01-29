@@ -1,0 +1,25 @@
+|  |  |
+|  | separatorAndValue1 |
+|  | separatorAndValue2 |
+| Can:you=spot theactual=separator? | I betitwill=take:you a moment! |
+| a | unicode value |
+| co | lon |
+| duplicate | value1 |
+| duplicate | value2 |
+| indented | value |
+| multilinename | value |
+| name with spaces | value   with  spaces      |
+| nameAndSeparator1 |  |
+| nameAndSeparator2 |  |
+| nameAndSeparator3? |  |
+| nameOnly |  |
+| property1 | value |
+| property2 | value |
+| property3 | value |
+| property4 | valueWithTrailingSpaces     |
+| property5 | multi  linevalue     |
+| sortOfEmptyButNotReally |   |
+| space | separator    |
+| this | is a new property because the previous line has spaces after the backslash |
+| thisIsANameNotAValue! |  |
+| with | line\nbreak |

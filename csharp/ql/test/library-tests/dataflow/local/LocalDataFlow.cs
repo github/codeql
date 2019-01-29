@@ -46,7 +46,7 @@ namespace System.Runtime.Serialization
 /// </summary>
 public class LocalDataFlow
 {
-    public async void M()
+    public async void M(bool b)
     {
         // Assignment, tainted
         var sink0 = "taint source";
@@ -93,11 +93,11 @@ public class LocalDataFlow
         Check(nonSink0);
 
         // Conditional expression, tainted
-        var sink7 = 1 > 2 ? "a" : sink6;
+        var sink7 = b ? "a" : sink6;
         Check(sink7);
 
         // Conditional expression, not tainted
-        nonSink0 = 4 == 2 ? "abc" : "def";
+        nonSink0 = b ? "abc" : "def";
         Check(nonSink0);
 
         // Cast, tainted

@@ -593,7 +593,9 @@ module TaintTracking {
   /**
    * A check of the form `if(o.<contains>(x))`, which sanitizes `x` in its "then" branch.
    *
-   * `<contains>` is one of: `contains`, `has`, `hasOwnProperty`, `includes`
+   * `<contains>` is one of: `contains`, `has`, `hasOwnProperty`
+   *
+   * Note that the `includes` method is covered by `StringInclusionSanitizer`.
    */
   class WhitelistContainmentCallSanitizer extends AdditionalSanitizerGuardNode,
     DataFlow::MethodCallNode {
@@ -601,8 +603,7 @@ module TaintTracking {
       exists(string name |
         name = "contains" or
         name = "has" or
-        name = "hasOwnProperty" or
-        name = "includes"
+        name = "hasOwnProperty"
       |
         getMethodName() = name
       )
@@ -673,86 +674,35 @@ module TaintTracking {
     override predicate appliesTo(Configuration cfg) { any() }
   }
 
-  /** A check of the form `if(whitelist.indexOf(x) != -1)`, which sanitizes `x` in its "then" branch. */
-  class IndexOfSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
-    MethodCallExpr indexOf;
+  /** A check of the form `whitelist.includes(x)` or equivalent, which sanitizes `x` in its "then" branch. */
+  class StringInclusionSanitizer extends AdditionalSanitizerGuardNode {
+    StringOps::Includes includes;
 
-    override EqualityTest astNode;
-
-    IndexOfSanitizer() {
-      exists(Expr index | astNode.hasOperands(indexOf, index) |
-        // one operand is of the form `whitelist.indexOf(x)`
-        indexOf.getMethodName() = "indexOf" and
-        // and the other one is -1
-        index.getIntValue() = -1
-      )
-    }
+    StringInclusionSanitizer() { this = includes }
 
     override predicate sanitizes(boolean outcome, Expr e) {
-      outcome = astNode.getPolarity().booleanNot() and
-      e = indexOf.getArgument(0)
+      outcome = includes.getPolarity() and
+      e = includes.getSubstring().asExpr()
     }
 
     override predicate appliesTo(Configuration cfg) { any() }
   }
 
   /**
-   * A check of the form `if(whitelist.indexOf(x) >= 0)`, which sanitizes `x` in its "then" branch.
+   * A check of form `x.indexOf(y) > 0` or similar, which sanitizes `y` in the "then" branch.
    *
-   * Similar relational checks are also supported.
+   * The more typical case of `x.indexOf(y) >= 0` is covered by `StringInclusionSanitizer`.
    */
-  private class RelationalIndexOfSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
+  class PositiveIndexOfSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
     MethodCallExpr indexOf;
-
     override RelationalComparison astNode;
 
-    boolean polarity;
-
-    RelationalIndexOfSanitizer() {
-      exists(Expr lesser, Expr greater |
-        astNode.getLesserOperand() = lesser and
-        astNode.getGreaterOperand() = greater and
-        indexOf.getMethodName() = "indexOf"
-      |
-        polarity = true and
-        greater = indexOf and
-        (
-          lesser.getIntValue() >= 0
-          or
-          lesser.getIntValue() = -1 and not astNode.isInclusive()
-        )
-        or
-        polarity = false and
-        lesser = indexOf and
-        (
-          greater.getIntValue() = -1
-          or
-          greater.getIntValue() = 0 and not astNode.isInclusive()
-        )
-      )
-    }
-
-    override predicate sanitizes(boolean outcome, Expr e) {
-      outcome = polarity and
-      e = indexOf.getArgument(0)
-    }
-
-    override predicate appliesTo(Configuration cfg) { any() }
-  }
-
-  /**
-   * A check of the form `if(~whitelist.indexOf(x))`, which sanitizes `x` in its "then" branch.
-   *
-   * This sanitizer is equivalent to `if(whitelist.indexOf(x) != -1)`, since `~n = 0` iff `n = -1`.
-   */
-  private class BitwiseIndexOfSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
-    MethodCallExpr indexOf;
-
-    override BitNotExpr astNode;
-
-    BitwiseIndexOfSanitizer() {
-      astNode.getOperand() = indexOf and
-      indexOf.getMethodName() = "indexOf"
+    PositiveIndexOfSanitizer() {
+      indexOf.getMethodName() = "indexOf" and
+      exists (int bound |
+        astNode.getGreaterOperand() = indexOf and
+        astNode.getLesserOperand().getIntValue() = bound and
+        bound >= 0)
     }
 
     override predicate sanitizes(boolean outcome, Expr e) {

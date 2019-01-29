@@ -176,7 +176,11 @@ private predicate defMaybeNull(Ssa::Definition def, string msg, Element reason) 
   or
   // A parameter might be `null` if there is a `null` argument somewhere
   isMaybeNullArgument(def, reason) and
-  msg = "because of $@ null argument"
+  (
+    if reason instanceof AlwaysNullExpr
+    then msg = "because of $@ null argument"
+    else msg = "because of $@ potential null argument"
+  )
   or
   // If the source of a variable is `null` then the variable may be `null`
   exists(AssignableDefinition adef | adef = def.(Ssa::ExplicitDefinition).getADefinition() |

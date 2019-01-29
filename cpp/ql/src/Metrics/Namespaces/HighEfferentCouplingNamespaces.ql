@@ -4,6 +4,8 @@
  * @kind chart
  * @id cpp/high-efferent-coupling-namespaces
  * @chart.type bar
+ * @tags maintainability
+ *       modularity
  */
 import cpp
 

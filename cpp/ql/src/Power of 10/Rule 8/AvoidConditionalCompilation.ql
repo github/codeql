@@ -3,7 +3,10 @@
  * @description The use of conditional compilation directives must be kept to a minimum -- e.g. for header guards only.
  * @kind problem
  * @id cpp/power-of-10/avoid-conditional-compilation
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       readability
+ *       external/powerof10
  */
 
 import cpp

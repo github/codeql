@@ -16,7 +16,7 @@
 | in | Capture.cs:182:17:182:17 | i | Capture.cs:188:13:188:17 | SSA def(i) | Capture.cs:183:13:186:13 | SSA capture def(i) | Capture.cs:189:13:189:17 | call to local function M11 |
 | in | Capture.cs:197:17:197:17 | i | Capture.cs:197:17:197:21 | SSA def(i) | Capture.cs:198:33:198:44 | SSA capture def(i) | Capture.cs:200:13:200:19 | delegate call |
 | in | Capture.cs:197:17:197:17 | i | Capture.cs:197:17:197:21 | SSA def(i) | Capture.cs:203:34:203:45 | SSA capture def(i) | Capture.cs:200:13:200:19 | delegate call |
-| in | Capture.cs:209:17:209:17 | i | Capture.cs:209:17:209:21 | SSA def(i) | Capture.cs:212:39:212:71 | SSA capture def(i) | Capture.cs:213:17:213:24 | access to event Exited |
+| in | Capture.cs:209:17:209:17 | i | Capture.cs:209:17:209:21 | SSA def(i) | Capture.cs:212:39:212:71 | SSA capture def(i) | Capture.cs:213:17:213:34 | ... += ... |
 | in | Capture.cs:229:13:229:13 | i | Capture.cs:232:9:232:13 | SSA def(i) | Capture.cs:231:9:231:49 | SSA capture def(i) | Capture.cs:233:9:233:12 | call to local function M2 |
 | in | Fields.cs:77:13:77:13 | f | Fields.cs:77:13:77:45 | SSA def(f) | Fields.cs:78:27:78:54 | SSA capture def(f) | Fields.cs:81:9:81:11 | delegate call |
 | in | Fields.cs:77:13:77:13 | f | Fields.cs:77:13:77:45 | SSA def(f) | Fields.cs:78:27:78:54 | SSA capture def(f) | Fields.cs:86:9:86:47 | call to method Select |

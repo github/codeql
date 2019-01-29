@@ -24,7 +24,7 @@
 
 
 
-#ODASA-4519
+
 #OK as we are using identity tests for unique objects
 V2 = "v2"
 V3 = "v3"
@@ -84,4 +84,22 @@ def both_sides_known(zero_based="auto", query_id=False):
         zero_based = True
     if zero_based is False: # False positive here
         pass
+
+#Avoid depending on enum back port for Python 2 tests:
+class Enum(object):
+    pass
+
+class MyEnum(Enum):
+
+    memberA = None
+    memberB = 10
+    memberC = ("Hello", "World")
+
+def comp_enum(x):
+    if x is MyEnum.memberA:
+        return
+    if x is MyEnum.memberB:
+        return
+    if x is MyEnum.memberC:
+        return
 

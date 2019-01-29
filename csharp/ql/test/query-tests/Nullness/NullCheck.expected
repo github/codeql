@@ -200,6 +200,10 @@
 | E.cs:293:13:293:13 | access to local variable s | E.cs:293:13:293:13 | access to local variable s | non-null | false |
 | E.cs:293:13:293:13 | access to local variable s | E.cs:293:13:293:13 | access to local variable s | null | true |
 | E.cs:293:13:293:24 | ... == ... | E.cs:293:15:293:19 | call to method M2 | true | false |
+| E.cs:306:31:306:31 | access to field l | E.cs:306:31:306:31 | access to field l | non-null | false |
+| E.cs:306:31:306:31 | access to field l | E.cs:306:31:306:31 | access to field l | null | true |
+| E.cs:309:13:309:22 | access to property HasValue | E.cs:309:13:309:13 | access to field l | false | true |
+| E.cs:309:13:309:22 | access to property HasValue | E.cs:309:13:309:13 | access to field l | true | false |
 | Forwarding.cs:9:14:9:30 | call to method IsNullOrEmpty | Forwarding.cs:9:14:9:14 | access to local variable s | false | false |
 | Forwarding.cs:14:13:14:32 | call to method IsNotNullOrEmpty | Forwarding.cs:14:13:14:13 | access to local variable s | true | false |
 | Forwarding.cs:19:14:19:23 | call to method IsNull | Forwarding.cs:19:14:19:14 | access to local variable s | false | false |

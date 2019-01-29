@@ -32,9 +32,12 @@
 | Unused parameter                           | Fewer false-positive results | This rule no longer flags parameters with leading underscore. |
 | Unused variable, import, function or class | Fewer false-positive results | This rule now flags fewer variables that are implictly used by JSX elements, and no longer flags variables with leading underscore. |
 | Uncontrolled data used in path expression | Fewer false-positive results | This rule now recognizes the Express `root` option, which prevents path traversal. |
+| Unneeded defensive code | More true-positive results, fewer false-positive results. | This rule now recognizes additional defensive code patterns. |
+| Useless conditional | Fewer results | Additional defensive coding patterns are now ignored. |
 | Useless assignment to property. | Fewer false-positive results | This rule now treats assignments with complex right-hand sides correctly. |
 | Unsafe dynamic method access              | Fewer false-positive results | This rule no longer flags concatenated strings as unsafe method names. |
 | Unvalidated dynamic method call           | More true-positive results | This rule now flags concatenated strings as unvalidated method names in more cases. |
+| Useless conditional | More true-positive results | This rule now flags additional uses of function call values. | 
 
 ## Changes to QL libraries
 

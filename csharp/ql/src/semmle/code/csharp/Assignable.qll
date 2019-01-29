@@ -39,6 +39,12 @@ class AssignableMemberAccess extends MemberAccess, AssignableAccess {
   override AssignableMember getTarget() { result = AssignableAccess.super.getTarget() }
 }
 
+private predicate nameOfChild(NameOfExpr noe, Expr child) {
+  child = noe
+  or
+  exists(Expr mid | nameOfChild(noe, mid) | child = mid.getAChildExpr())
+}
+
 /**
  * An access to an assignable that reads the underlying value. Either a
  * variable read (`VariableRead`), a property read (`PropertyRead`), an
@@ -67,7 +73,7 @@ class AssignableRead extends AssignableAccess {
       or
       this = any(AssignableDefinitions::AddressOfDefinition def).getTargetAccess()
     ) and
-    not this = any(NameOfExpr noe).getAChildExpr*()
+    not nameOfChild(_, this)
   }
 
   /**
@@ -159,87 +165,101 @@ module AssignableInternal {
   }
 
   /**
-   * Holds if the `ref` assignment to `aa` via call `c` is relevant.
+   * A `ref` argument in a call.
+   *
+   * All predicates in this class deliberately do not use the `Call` class, or any
+   * subclass thereof, as that results in too conservative negative recursion
+   * compilation errors.
    */
-  private predicate isRelevantRefCall(Call c, AssignableAccess aa) {
-    isNonAnalyzableRefCall(c, aa) or
-    exists(getAnAnalyzableRefDef(c, aa, _))
-  }
+  private class RefArg extends AssignableAccess {
+    private Expr call;
 
-  private Callable getRefCallTarget(Call c, AssignableAccess aa, Parameter p) {
-    exists(Parameter parg |
-      c.getAnArgument() = aa and
-      aa.isRefArgument() and
-      getArgumentForParameter(c, parg) = aa and
-      p = parg.getSourceDeclaration() and
+    private int position;
+
+    RefArg() {
+      this.isRefArgument() and
+      this = call.getChildExpr(position) and
+      (
+        call instanceof @method_invocation_expr
+        or
+        call instanceof @delegate_invocation_expr
+        or
+        call instanceof @local_function_invocation_expr
+        or
+        call instanceof @object_creation_expr
+      )
+    }
+
+    pragma[noinline]
+    Parameter getAParameter(string name) {
+      exists(Callable callable | result = callable.getAParameter() |
+        expr_call(call, callable) and
+        result.getName() = name
+      )
+    }
+
+    /** Gets the parameter that this argument corresponds to. */
+    private Parameter getParameter() {
+      exists(string name | result = this.getAParameter(name) |
+        // Appears in the positional part of the call
+        result.getPosition() = position and
+        not exists(this.getExplicitArgumentName())
+        or
+        // Appears in the named part of the call
+        name = this.getExplicitArgumentName()
+      )
+    }
+
+    private Callable getSourceDeclarationTarget(Parameter p) {
+      p = this.getParameter().getSourceDeclaration() and
       result.getAParameter() = p
-    )
-  }
+    }
 
-  /**
-   * A verbatim copy of `Call.getArgumentForParameter()` specialized to
-   * `MethodCall`/`ObjectCreation` (needed to avoid too conservative negative
-   * recursion error).
-   */
-  private Expr getArgumentForParameter(Call c, Parameter p) {
-    exists(Callable callable | p = callable.getAParameter() |
-      callable = c.(MethodCall).getTarget() or
-      callable = c.(ObjectCreation).getTarget()
-    ) and
-    (
-      // Appears in the positional part of the call
-      result = c.getArgument(p.getPosition()) and
-      not exists(result.getExplicitArgumentName())
+    /**
+     * Holds if the assignment to this `ref` argument via parameter `p` is
+     * analyzable. That is, the target callable is non-overridable and from
+     * source.
+     */
+    predicate isAnalyzable(Parameter p) {
+      exists(Callable callable | callable = this.getSourceDeclarationTarget(p) |
+        not callable.(Virtualizable).isOverridableOrImplementable() and
+        callable.hasBody()
+      )
+    }
+
+    /** Gets an assignment to analyzable parameter `p`. */
+    AssignableDefinition getAnAnalyzableRefDef(Parameter p) {
+      this.isAnalyzable(p) and
+      result.getTarget() = p and
+      not result = TImplicitParameterDefinition(_)
+    }
+
+    /**
+     * Holds if this `ref` assignment is *not* analyzable. Equivalent with
+     * `not this.isAnalyzable(_)`, but avoids negative recursion.
+     */
+    private predicate isNonAnalyzable() {
+      call instanceof @delegate_invocation_expr
       or
-      // Appears in the named part of the call
-      result = getExplicitArgument(c, p.getName())
-    )
-  }
-
-  // predicate folding to get proper join-order
-  pragma[noinline]
-  private Expr getExplicitArgument(Call c, string name) {
-    result = c.getAnArgument() and
-    result.getExplicitArgumentName() = name
-  }
-
-  /**
-   * Holds if the `ref` assignment to `aa` via parameter `p` is analyzable. That is,
-   * the target callable is non-overridable and from source.
-   */
-  private predicate isAnalyzableRefCall(Call c, AssignableAccess aa, Parameter p) {
-    exists(Callable callable | callable = getRefCallTarget(c, aa, p) |
-      not callable.(Virtualizable).isOverridableOrImplementable() and
-      callable.hasBody()
-    )
-  }
-
-  /**
-   * Holds if the `ref` assignment to `aa` via parameter `p` is *not* analyzable.
-   * Equivalent with `not isAnalyzableRefCall(mc, aa, p)`, but avoids negative
-   * recursion.
-   */
-  private predicate isNonAnalyzableRefCall(Call c, AssignableAccess aa) {
-    aa = c.getAnArgument() and
-    aa.isRefArgument() and
-    (
-      not exists(getRefCallTarget(c, aa, _))
-      or
-      exists(Callable callable | callable = getRefCallTarget(c, aa, _) |
+      exists(Callable callable | callable = this.getSourceDeclarationTarget(_) |
         callable.(Virtualizable).isOverridableOrImplementable() or
         not callable.hasBody()
       )
-    )
+    }
+
+    /** Holds if this `ref` access is a potential assignment. */
+    predicate isPotentialAssignment() {
+      this.isNonAnalyzable() or
+      exists(this.getAnAnalyzableRefDef(_))
+    }
   }
 
-  /**
-   * Gets an assignment to parameter `p`, where the `ref` assignment to `aa` via
-   * parameter `p` is analyzable.
-   */
-  private AssignableDefinition getAnAnalyzableRefDef(Call c, AssignableAccess aa, Parameter p) {
-    isAnalyzableRefCall(c, aa, p) and
-    result.getTarget() = p and
-    not result = TImplicitParameterDefinition(_)
+  /** Holds if a node in basic block `bb` assigns to `ref` parameter `p` via definition `def`. */
+  private predicate basicBlockRefParamDef(
+    ControlFlow::BasicBlock bb, Parameter p, AssignableDefinition def
+  ) {
+    def = any(RefArg arg).getAnAnalyzableRefDef(p) and
+    bb.getANode() = def.getAControlFlowNode()
   }
 
   /**
@@ -248,9 +268,11 @@ module AssignableInternal {
    * any assignments to `p`.
    */
   private predicate parameterReachesWithoutDef(Parameter p, ControlFlow::BasicBlock bb) {
-    not basicBlockRefParamDef(bb, p) and
+    forall(AssignableDefinition def | basicBlockRefParamDef(bb, p, def) |
+      isUncertainRefCall(def.getTargetAccess())
+    ) and
     (
-      isAnalyzableRefCall(_, _, p) and
+      any(RefArg arg).isAnalyzable(p) and
       p.getCallable().getEntryPoint() = bb.getFirstNode()
       or
       exists(ControlFlow::BasicBlock mid | parameterReachesWithoutDef(p, mid) |
@@ -259,9 +281,23 @@ module AssignableInternal {
     )
   }
 
-  /** Holds if a node in basic block `bb` assigns to `ref` parameter `p`. */
-  private predicate basicBlockRefParamDef(ControlFlow::BasicBlock bb, Parameter p) {
-    bb.getANode() = getAnAnalyzableRefDef(_, _, p).getAControlFlowNode()
+  // Not defined by dispatch in order to avoid too conservative negative recursion error
+  Expr getExpr(AssignableDefinition def) {
+    def = TAssignmentDefinition(result)
+    or
+    def = TTupleAssignmentDefinition(result, _)
+    or
+    def = TOutRefDefinition(any(AssignableAccess aa | result = aa.getParent()))
+    or
+    def = TMutationDefinition(result)
+    or
+    def = TLocalVariableDefinition(result)
+    or
+    def = TAddressOfDefinition(result)
+    or
+    def = TIsPatternDefinition(any(IsPatternExpr ipe | result = ipe.getVariableDeclExpr()))
+    or
+    def = TTypeCasePatternDefinition(any(TypeCase tc | result = tc.getVariableDeclExpr()))
   }
 
   cached
@@ -273,7 +309,7 @@ module AssignableInternal {
       TOutRefDefinition(AssignableAccess aa) {
         aa.isOutArgument()
         or
-        isRelevantRefCall(_, aa)
+        aa.(RefArg).isPotentialAssignment()
       } or
       TMutationDefinition(MutatorOperation mo) or
       TLocalVariableDefinition(LocalVariableDeclExpr lvde) {
@@ -285,8 +321,10 @@ module AssignableInternal {
       } or
       TImplicitParameterDefinition(Parameter p) {
         exists(Callable c | p = c.getAParameter() |
-          c.hasBody() or
-          c.(Constructor).hasInitializer()
+          c.hasBody()
+          or
+          // Same as `c.(Constructor).hasInitializer()`, but avoids negative recursion warning
+          c.getAChildExpr() instanceof @constructor_init_expr
         )
       } or
       TAddressOfDefinition(AddressOfExpr aoe) or
@@ -311,9 +349,9 @@ module AssignableInternal {
      * Holds if the `ref` assignment to `aa` via call `c` is uncertain.
      */
     cached
-    predicate isUncertainRefCall(Call c, AssignableAccess aa) {
-      isRelevantRefCall(c, aa) and
-      exists(ControlFlow::BasicBlock bb, Parameter p | isAnalyzableRefCall(c, aa, p) |
+    predicate isUncertainRefCall(RefArg arg) {
+      arg.isPotentialAssignment() and
+      exists(ControlFlow::BasicBlock bb, Parameter p | arg.isAnalyzable(p) |
         parameterReachesWithoutDef(p, bb) and
         bb.getLastNode() = p.getCallable().getExitPoint()
       )
@@ -360,18 +398,21 @@ module AssignableInternal {
     }
 
     /**
-     * Gets the argument for the implicit `value` parameter in the accessor call
-     * `ac`, if any.
+     * Gets the argument for the implicit `value` parameter in accessor access
+     * `a`, if any.
      */
     cached
-    Expr getAccessorCallValueArgument(AccessorCall ac) {
-      exists(AssignExpr ae | tupleAssignmentDefinition(ae, ac) |
-        tupleAssignmentPair(ae, ac, result)
-      )
-      or
-      exists(Assignment a | ac = a.getLValue() |
-        result = a.getRValue() and
-        not a.(AssignOperation).hasExpandedAssignment()
+    Expr getAccessorCallValueArgument(Access a) {
+      a.getTarget() instanceof DeclarationWithAccessors and
+      (
+        exists(AssignExpr ae | tupleAssignmentDefinition(ae, a) |
+          tupleAssignmentPair(ae, a, result)
+        )
+        or
+        exists(Assignment ass | a = ass.getLValue() |
+          result = ass.getRValue() and
+          not ass.(AssignOperation).hasExpandedAssignment()
+        )
       )
     }
   }
@@ -410,7 +451,7 @@ class AssignableDefinition extends TAssignableDefinition {
    * Not all definitions have an associated expression, for example implicit
    * parameter definitions.
    */
-  Expr getExpr() { none() }
+  final Expr getExpr() { result = getExpr(this) }
 
   /**
    * Gets the underlying element associated with this definition. This is either
@@ -509,8 +550,6 @@ module AssignableDefinitions {
     /** Gets the underlying assignment. */
     Assignment getAssignment() { result = a }
 
-    override Expr getExpr() { result = a }
-
     override Expr getSource() {
       result = a.getRValue() and
       not a instanceof AssignOperation
@@ -548,8 +587,6 @@ module AssignableDefinitions {
         )
     }
 
-    override Expr getExpr() { result = ae }
-
     override Expr getSource() {
       result = getTupleSource(this) // need not exist
     }
@@ -585,11 +622,7 @@ module AssignableDefinitions {
       )
     }
 
-    override Expr getExpr() { result = this.getCall() }
-
-    override predicate isCertain() {
-      not isUncertainRefCall(this.getCall(), this.getTargetAccess())
-    }
+    override predicate isCertain() { not isUncertainRefCall(this.getTargetAccess()) }
 
     override string toString() { result = aa.toString() }
 
@@ -607,8 +640,6 @@ module AssignableDefinitions {
     /** Gets the underlying mutator operation. */
     MutatorOperation getMutatorOperation() { result = mo }
 
-    override Expr getExpr() { result = mo }
-
     override string toString() { result = mo.toString() }
   }
 
@@ -622,8 +653,6 @@ module AssignableDefinitions {
 
     /** Gets the underlying local variable declaration. */
     LocalVariableDeclExpr getDeclaration() { result = lvde }
-
-    override Expr getExpr() { result = lvde }
 
     override string toString() { result = lvde.toString() }
   }
@@ -662,8 +691,6 @@ module AssignableDefinitions {
     /** Gets the underlying address-of expression. */
     AddressOfExpr getAddressOf() { result = aoe }
 
-    override Expr getExpr() { result = aoe }
-
     override string toString() { result = aoe.toString() }
   }
 
@@ -675,10 +702,11 @@ module AssignableDefinitions {
 
     IsPatternDefinition() { this = TIsPatternDefinition(ipe) }
 
+    /** Gets the underlying `is` expression. */
+    IsPatternExpr getIsPatternExpr() { result = ipe }
+
     /** Gets the underlying local variable declaration. */
     LocalVariableDeclExpr getDeclaration() { result = ipe.getVariableDeclExpr() }
-
-    override Expr getExpr() { result = this.getDeclaration() }
 
     override Expr getSource() { result = ipe.getExpr() }
 
@@ -702,10 +730,11 @@ module AssignableDefinitions {
 
     TypeCasePatternDefinition() { this = TTypeCasePatternDefinition(tc) }
 
+    /** Gets the underlying `case` statement. */
+    TypeCase getTypeCase() { result = tc }
+
     /** Gets the underlying local variable declaration. */
     LocalVariableDeclExpr getDeclaration() { result = tc.getVariableDeclExpr() }
-
-    override Expr getExpr() { result = this.getDeclaration() }
 
     override Expr getSource() {
       result = any(SwitchStmt ss | ss.getATypeCase() = tc).getCondition()
