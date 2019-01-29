@@ -114,19 +114,22 @@ module PointsTo {
         /** INTERNAL -- Do not use.
          *
          * Holds if `package.name` points to `(value, cls, origin)`, where `package` is a package object. */
-        cached predicate package_attribute_points_to(PackageObject package, string name, Object value, ClassObject cls, ControlFlowNode origin) {
+        cached predicate package_attribute_points_to(PackageObject package, string name, Object value, ClassObject cls, ObjectOrCfg origin) {
             py_module_attributes(package.getInitModule().getModule(), name, value, cls, origin)
             or
             exists(Module init |
-                init = package.getInitModule().getModule() |
-                not exists(PythonSsaSourceVariable v | v.getScope() = init | v.getName() = name or v.getName() = "$")
-                or
-                exists(EssaVariable v, PointsToContext imp |
-                    v.getScope() = init and v.getName() = "$" and v.getAUse() = init.getANormalExit() |
-                    SSA::ssa_variable_named_attribute_points_to(v, imp, name, undefinedVariable(), _, _) and
-                    imp.isImport()
+                init = package.getInitModule().getModule() and
+                not exists(EssaVariable var | var.getAUse() = init.getANormalExit() and var.getSourceVariable().getName() = name) and
+                exists(EssaVariable var, Context context | var.getName() = "$" and
+                    context.isImport() and
+                    SSA::ssa_variable_named_attribute_points_to(var, context, name, undefinedVariable(), _, _) and
+                    origin = value and
+                    value = package.submodule(name) and
+                    cls = theModuleType()
                 )
-            ) and explicitly_imported(value) and
+            )
+            or
+            package.hasNoInitModule() and
             value = package.submodule(name) and cls = theModuleType() and origin = value
         }
 
@@ -662,19 +665,25 @@ module PointsTo {
     /** Holds if `f` is a "from import" expression, `from mod import x` and points to `(value, cls, origin)`. */
     pragma [nomagic]
     private predicate from_import_points_to(ImportMemberNode f, PointsToContext context, Object value, ClassObject cls, ControlFlowNode origin) {
-        exists(EssaVariable var, ObjectOrCfg orig |
-            live_import_from_dot_in_init(f, var) and
-            ssa_variable_points_to(var, context, value, cls, orig) and
+        exists(string name, ModuleObject mod, ObjectOrCfg orig |
+            points_to(f.getModule(name), context, mod, _, _) and
             origin = origin_from_object_or_here(orig, f)
-        )
-        or
-        not live_import_from_dot_in_init(f, _) and
-        exists(string name, ModuleObject mod |
-            points_to(f.getModule(name), context, mod, _, _) |
-            exists(ObjectOrCfg orig |
-                Layer::module_attribute_points_to(mod, name, value, cls, orig) and
-                origin = origin_from_object_or_here(orig, f)
+            |
+            mod.getSourceModule() = f.getEnclosingModule() and
+            exists(EssaVariable var |
+                var.getSourceVariable().getName() = name and var.getAUse() = f and
+                ssa_variable_points_to(var, context, value, cls, orig)
             )
+            or
+            mod.getSourceModule() = f.getEnclosingModule() and
+            not exists(EssaVariable var | var.getSourceVariable().getName() = name and var.getAUse() = f) and
+            exists(EssaVariable dollar | 
+                dollar.getName() = "$" and dollar.getAUse() = f and
+                SSA::ssa_variable_named_attribute_points_to(dollar, context, name, value, cls, orig)
+            )
+            or
+            not mod.getSourceModule() = f.getEnclosingModule() and
+            Layer::module_attribute_points_to(mod, name, value, cls, orig)
         )
     }
 
