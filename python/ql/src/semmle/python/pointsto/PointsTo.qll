@@ -119,10 +119,10 @@ module PointsTo {
             or
             exists(Module init |
                 init = package.getInitModule().getModule() |
-                not exists(PythonSsaSourceVariable v | v.getScope() = init | v.getName() = name or v.getName() = "*")
+                not exists(PythonSsaSourceVariable v | v.getScope() = init | v.getName() = name or v.getName() = "$")
                 or
                 exists(EssaVariable v, PointsToContext imp |
-                    v.getScope() = init and v.getName() = "*" and v.getAUse() = init.getANormalExit() |
+                    v.getScope() = init and v.getName() = "$" and v.getAUse() = init.getANormalExit() |
                     SSA::ssa_variable_named_attribute_points_to(v, imp, name, undefinedVariable(), _, _) and
                     imp.isImport()
                 )
@@ -145,7 +145,7 @@ module PointsTo {
             or
             not exists(EssaVariable var | var.getAUse() = m.getANormalExit() and var.getSourceVariable().getName() = name) and
             exists(EssaVariable var, PointsToContext imp |
-                var.getAUse() = m.getANormalExit() and var.getName() = "*" |
+                var.getAUse() = m.getANormalExit() and var.getName() = "$" |
                 SSA::ssa_variable_named_attribute_points_to(var, imp, name, obj, cls, origin) and
                 imp.isImport() and obj != undefinedVariable()
             )
@@ -1680,7 +1680,7 @@ module PointsTo {
             /* Undefined variable */
             exists(Scope scope |
                 not def.getVariable().getName() = "__name__" and
-                not def.getVariable().getName() = "*" and
+                not def.getVariable().getName() = "$" and
                 def.getScope() = scope and context.appliesToScope(scope) |
                 def.getSourceVariable() instanceof GlobalVariable and scope instanceof Module
                 or
@@ -1853,7 +1853,7 @@ module PointsTo {
             )
             or
             origin = def.getDefiningNode() and
-            def.getSourceVariable().getName() = "*" and
+            def.getSourceVariable().getName() = "$" and
             context.isImport() and
             exists(PackageObject package |
                 package.getInitModule().getModule() = def.getScope() |
@@ -1964,7 +1964,7 @@ module PointsTo {
         /* Helper for import_star_named_attribute_points_to */
         pragma [noinline]
         private predicate star_variable_import_star_module(ImportStarRefinement def, ImportStarNode imp, PointsToContext context, ModuleObject mod) {
-            def.getSourceVariable().getName() = "*" and
+            def.getSourceVariable().getName() = "$" and
             exists(ControlFlowNode fmod |
                 fmod = imp.getModule() and
                 imp = def.getDefiningNode() and
@@ -1984,7 +1984,7 @@ module PointsTo {
         /* Helper for ssa_star_variable_input_points_to */
         pragma [noinline]
         private predicate ssa_star_import_star_input(ImportStarRefinement def, EssaVariable var) {
-            def.getSourceVariable().getName() = "*" and var = def.getInput()
+            def.getSourceVariable().getName() = "$" and var = def.getInput()
         }
 
         pragma [noinline]
