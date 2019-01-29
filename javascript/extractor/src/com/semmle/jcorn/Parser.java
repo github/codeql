@@ -2921,9 +2921,9 @@ public class Parser {
 			if (this.eat(TokenType.eq)) {
 				init = this.parseMaybeAssign(isFor, null, null);
 			} else if (kind.equals("const") && !(this.type == TokenType._in || (this.options.ecmaVersion() >= 6 && this.isContextual("of")))) {
-				this.unexpected();
+				this.raiseRecoverable(this.lastTokEnd, "Constant declarations require an initialization value");
 			} else if (!(id instanceof Identifier) && !(isFor && (this.type == TokenType._in || this.isContextual("of")))) {
-				this.raise(this.lastTokEnd, "Complex binding patterns require an initialization value");
+				this.raiseRecoverable(this.lastTokEnd, "Complex binding patterns require an initialization value");
 			}
 			declarations.add(this.finishNode(
 					new VariableDeclarator(new SourceLocation(varDeclStart), (IPattern) id, init, noTypeAnnotation, DeclarationFlags.none)));
