@@ -1691,25 +1691,32 @@ public class Parser {
 				first = false;
 			else
 				this.expect(TokenType.comma);
-			if (allowTrailingComma && this.afterTrailingComma(TokenType.parenR, true)) {
-				parenExprs.lastIsComma = true;
+			if (!parseParenthesisedExpression(refDestructuringErrors, allowTrailingComma, parenExprs, first))
 				break;
-			} else if (this.type == TokenType.ellipsis) {
-				parenExprs.spreadStart = this.start;
-				parenExprs.exprList.add(this.parseParenItem(this.parseRest(false), -1, null));
-				if (this.type == TokenType.comma)
-					this.raise(this.startLoc, "Comma is not permitted after the rest element");
-				break;
-			} else {
-				if (this.type == TokenType.parenL && parenExprs.innerParenStart == 0) {
-					parenExprs.innerParenStart = this.start;
-				}
-				parenExprs.exprList.add(this.parseMaybeAssign(false, refDestructuringErrors, this::parseParenItem));
-			}
 		}
 		parenExprs.endLoc = this.startLoc;
 		this.expect(TokenType.parenR);
 		return parenExprs;
+	}
+
+	protected boolean parseParenthesisedExpression(DestructuringErrors refDestructuringErrors,
+			boolean allowTrailingComma, ParenthesisedExpressions parenExprs, boolean first) {
+		if (allowTrailingComma && this.afterTrailingComma(TokenType.parenR, true)) {
+			parenExprs.lastIsComma = true;
+			return false;
+		} else if (this.type == TokenType.ellipsis) {
+			parenExprs.spreadStart = this.start;
+			parenExprs.exprList.add(this.parseParenItem(this.parseRest(false), -1, null));
+			if (this.type == TokenType.comma)
+				this.raise(this.startLoc, "Comma is not permitted after the rest element");
+			return false;
+		} else {
+			if (this.type == TokenType.parenL && parenExprs.innerParenStart == 0) {
+				parenExprs.innerParenStart = this.start;
+			}
+			parenExprs.exprList.add(this.parseMaybeAssign(false, refDestructuringErrors, this::parseParenItem));
+		}
+		return true;
 	}
 
 	protected Expression parseParenItem(Expression left, int startPos, Position startLoc) {
