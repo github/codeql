@@ -1,5 +1,5 @@
 /**
- * @name Use of inherently dangerous function
+ * @name Potential buffer overflow
  * @description Using a library function that does not check buffer bounds
  *              requires the surrounding program to be very carefully written
  *              to avoid buffer overflows.
