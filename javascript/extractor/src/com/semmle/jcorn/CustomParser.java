@@ -196,8 +196,12 @@ public class CustomParser extends FlowParser {
 		this.expect(TokenType.parenR);
 
 		if (this.type == TokenType.braceL) {
-			if (!maybeStatement)
-				this.unexpected();
+			if (!maybeStatement) {
+				// must be the start of an object literal
+				Expression body = this.parseObj(false, null);
+				return this.finishNode(new LetExpression(new SourceLocation(startLoc), decl.getDeclarations(), body));
+			}
+
 			BlockStatement body = this.parseBlock(false);
 			return this.finishNode(new LetStatement(new SourceLocation(startLoc), decl.getDeclarations(), body));
 		} else if (maybeStatement) {
