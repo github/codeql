@@ -40,6 +40,7 @@ import com.semmle.js.ast.jsx.JSXMemberExpression;
 import com.semmle.js.ast.jsx.JSXNamespacedName;
 import com.semmle.js.ast.jsx.JSXOpeningElement;
 import com.semmle.js.ast.jsx.JSXSpreadAttribute;
+import com.semmle.util.data.Either;
 
 /**
  * Java port of <a href="https://github.com/RReverser/acorn-jsx">Acorn-JSX</a> as of version
@@ -92,37 +93,47 @@ public class JSXParser extends Parser {
 		for (;;) {
 			if (this.pos >= this.input.length())
 				this.raise(this.start, "Unterminated JSX contents");
-			int ch = this.charAt(this.pos);
+			Either<Integer, Token> chunk = jsx_readChunk(out, chunkStart, this.charAt(this.pos));
+			if (chunk.isRight())
+				return chunk.getRight();
+			chunkStart = chunk.getLeft();
+		}
+	}
 
-			switch (ch) {
-			case 60: // '<'
-			case 123: // '{'
-				if (this.pos == this.start) {
-					if (ch == 60 && this.exprAllowed) {
-						++this.pos;
-						return this.finishToken(jsxTagStart);
-					}
-					return this.getTokenFromCode(ch);
-				}
-				out.append(inputSubstring(chunkStart, this.pos));
-				return this.finishToken(jsxText, out.toString());
-
-			case 38: // '&'
-				out.append(inputSubstring(chunkStart, this.pos));
-				out.append(this.jsx_readEntity());
-				chunkStart = this.pos;
-				break;
-
-			default:
-				if (isNewLine(ch)) {
-					out.append(inputSubstring(chunkStart, this.pos));
-					out.append(this.jsx_readNewLine(true));
-					chunkStart = this.pos;
-				} else {
+	/**
+	 * Reads a chunk of inline JSX content, returning either the start of the next chunk
+	 * or the completed content token.
+	 */
+	protected Either<Integer, Token> jsx_readChunk(StringBuilder out, int chunkStart, int ch) {
+		switch (ch) {
+		case 60: // '<'
+		case 123: // '{'
+			if (this.pos == this.start) {
+				if (ch == 60 && this.exprAllowed) {
 					++this.pos;
+					return Either.right(this.finishToken(jsxTagStart));
 				}
+				return Either.right(this.getTokenFromCode(ch));
+			}
+			out.append(inputSubstring(chunkStart, this.pos));
+			return Either.right(this.finishToken(jsxText, out.toString()));
+
+		case 38: // '&'
+			out.append(inputSubstring(chunkStart, this.pos));
+			out.append(this.jsx_readEntity());
+			chunkStart = this.pos;
+			break;
+
+		default:
+			if (isNewLine(ch)) {
+				out.append(inputSubstring(chunkStart, this.pos));
+				out.append(this.jsx_readNewLine(true));
+				chunkStart = this.pos;
+			} else {
+				++this.pos;
 			}
 		}
+		return Either.left(chunkStart);
 	}
 
 	private String jsx_readNewLine(boolean normalizeCRLF) {
