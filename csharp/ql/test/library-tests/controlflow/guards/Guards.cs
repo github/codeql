@@ -262,4 +262,12 @@ public class Guards
             return;
         }
     }
+
+    void M22(object o1, object o2)
+    {
+        if (o1?.GetType() == o2.GetType())
+          o1.ToString(); // null guarded
+        if (o1?.GetType() == o2?.GetType())
+          o1.ToString(); // not null guarded
+    }
 }
