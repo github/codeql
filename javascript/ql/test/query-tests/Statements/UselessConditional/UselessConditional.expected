@@ -25,6 +25,8 @@
 | UselessConditional.js:129:6:129:24 | constantUndefined() | This call to constantUndefined always evaluates to false. |
 | UselessConditional.js:135:6:135:32 | constan ... ined1() | This call to constantFalseOrUndefined1 always evaluates to false. |
 | UselessConditional.js:139:6:139:32 | constan ... ined2() | This call to constantFalseOrUndefined2 always evaluates to false. |
+| UselessConditional.js:148:6:148:8 | p() | This call to p always evaluates to true. |
+| UselessConditional.js:163:5:163:17 | findOrThrow() | This call to findOrThrow always evaluates to true. |
 | UselessConditionalGood.js:58:12:58:13 | x2 | This use of variable 'x2' always evaluates to false. |
 | UselessConditionalGood.js:69:12:69:13 | xy | This use of variable 'xy' always evaluates to false. |
 | UselessConditionalGood.js:85:12:85:13 | xy | This use of variable 'xy' always evaluates to false. |
