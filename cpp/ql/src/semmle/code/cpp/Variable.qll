@@ -131,18 +131,11 @@ class Variable extends Declaration, @variable {
   }
 
   /**
-   * Gets an argument used to instantiate this variable from a template
-   * variable.
+   * Gets the `i`th template argument used to instantiate this variable from a
+   * variable template. When called on a variable template, this will return the
+   * `i`th template parameter.
    */
-  Type getATemplateArgument() {
-    exists(int i | this.getTemplateArgument(i) = result)
-  }
-
-  /**
-   * Gets a particular argument used to instantiate this variable from a
-   * template variable.
-   */
-  Type getTemplateArgument(int index) {
+  override Type getTemplateArgument(int index) {
     variable_template_argument(underlyingElement(this), index, unresolveElement(result))
   }
 

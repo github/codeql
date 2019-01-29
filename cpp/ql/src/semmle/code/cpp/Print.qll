@@ -46,6 +46,19 @@ private abstract class DumpDeclaration extends Declaration {
   string getIdentityString() {
     none()
   }
+
+  language[monotonicAggregates]
+  final string getTemplateArgumentsString() {
+    if exists(this.getATemplateArgument()) then (
+      result = "<" +
+        strictconcat(int i |
+          exists(this.getTemplateArgument(i)) |
+            this.getTemplateArgument(i).(DumpType).getTypeIdentityString(), ", " order by i
+        ) + ">"
+    )
+    else
+      result = ""
+  }
 }
 
 /**
@@ -342,19 +355,6 @@ private class UserDumpType extends DumpType, DumpDeclaration, UserType {
     )
   }
 
-  language[monotonicAggregates]
-  private string getTemplateArgumentsString() {
-    if exists(this.(Class).getATemplateArgument()) then (
-      result = "<" +
-        strictconcat(int i |
-          exists(this.(Class).getTemplateArgument(i)) |
-            this.(Class).getTemplateArgument(i).(DumpType).getTypeIdentityString(), ", " order by i
-        ) + ">"
-    )
-    else
-      result = ""
-  }
-
   override string getTypeSpecifier() {
     result = getIdentityString()
   }
@@ -368,37 +368,11 @@ private class DumpVariable extends DumpDeclaration, Variable {
       result = type.getTypeSpecifier() + type.getDeclaratorPrefix() + " " + getScopePrefix(this) + this.getName() + this.getTemplateArgumentsString() + type.getDeclaratorSuffixBeforeQualifiers() + type.getDeclaratorSuffix()
     )
   }
-
-  language[monotonicAggregates]
-  private string getTemplateArgumentsString() {
-    if exists(getATemplateArgument()) then (
-      result = "<" +
-        strictconcat(int i |
-          exists(getTemplateArgument(i)) |
-            getTemplateArgument(i).(DumpType).getTypeIdentityString(), ", " order by i
-        ) + ">"
-    )
-    else
-      result = ""
-  }
 }
 
 private class DumpFunction extends DumpDeclaration, Function {
   override string getIdentityString() {
     result = getType().(DumpType).getTypeSpecifier() + getType().(DumpType).getDeclaratorPrefix() + " " + getScopePrefix(this) + getName() + getTemplateArgumentsString() + getDeclaratorSuffixBeforeQualifiers() + getDeclaratorSuffix()
-  }
-
-  language[monotonicAggregates]
-  private string getTemplateArgumentsString() {
-    if exists(getATemplateArgument()) then (
-      result = "<" +
-        strictconcat(int i |
-          exists(getTemplateArgument(i)) |
-            getTemplateArgument(i).(DumpType).getTypeIdentityString(), ", " order by i
-        ) + ">"
-    )
-    else
-      result = ""
   }
 
   language[monotonicAggregates]
