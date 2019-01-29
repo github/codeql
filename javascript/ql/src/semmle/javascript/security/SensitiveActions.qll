@@ -33,6 +33,15 @@ module HeuristicNames {
   string nonSuspicious() {
     result = "(?is).*(redact|censor|obfuscate|hash|md5|sha|((?<!un)(en))?(crypt|code)).*"
   }
+
+  /**
+   * Gets a regular expression that identifies names that look like they represent credential information.
+   */
+  string suspiciousCredentials() {
+    result = "(?i).*pass(wd|word|code|phrase)(?!.*question).*" or
+    result = "(?i).*(puid|username|userid).*" or
+    result = "(?i).*(cert)(?!.*(format|name)).*"
+  }
 }
 private import HeuristicNames
 
