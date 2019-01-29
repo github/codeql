@@ -9,7 +9,7 @@ MyClass *test1()
 {
 	MyClass mc;
 
-	return &mc; // BAD [NOT DETECTED]
+	return &mc; // BAD
 }
 
 MyClass *test2()
@@ -17,7 +17,7 @@ MyClass *test2()
 	MyClass mc;
 	MyClass *ptr = &mc;
 
-	return ptr; // BAD [NOT DETECTED]
+	return ptr; // BAD
 }
 
 MyClass *test3()
@@ -70,7 +70,7 @@ MyClass *test10()
 		ptr = &mc;
 	}
 
-	return ptr; // BAD [NOT DETECTED]
+	return ptr; // BAD
 }
 
 MyClass *test11(MyClass *param)

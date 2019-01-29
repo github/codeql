@@ -1,1 +1,4 @@
+| test.cpp:12:2:12:12 | return ... | May return stack-allocated memory. |
+| test.cpp:20:2:20:12 | return ... | May return stack-allocated memory. |
+| test.cpp:73:2:73:12 | return ... | May return stack-allocated memory. |
 | test.cpp:93:2:93:12 | return ... | May return stack-allocated memory. |

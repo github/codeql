@@ -22,16 +22,7 @@ predicate exprMaybeStackAllocated(Expr e) {
 // is initialized to/assigned a possibly stack allocated expression
 predicate varMaybeStackAllocated(LocalVariable lv) {
   not lv.isStatic() and
-  (
-    lv.getType().getUnderlyingType() instanceof ArrayType
-    or
-    exprMaybeStackAllocated(lv.getInitializer().getExpr())
-    or
-    exists(AssignExpr a |
-      a.getLValue().(VariableAccess).getTarget() = lv and
-      exprMaybeStackAllocated(a.getRValue())
-    )
-  )
+  not lv.getType() instanceof ReferenceType
 }
 
 // an expression possibly points to the stack if it takes the address of
