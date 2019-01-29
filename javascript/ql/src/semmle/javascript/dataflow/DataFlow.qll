@@ -495,6 +495,29 @@ module DataFlow {
   }
 
   /**
+   * An instance method definition, viewed as a data flow node that adds
+   * a property to an unseen value.
+   */
+  private class InstanceMethodAsPropWrite extends PropWrite, PropNode {
+    override MethodDefinition prop;
+
+    InstanceMethodAsPropWrite() { not prop.isStatic() }
+
+    override Node getBase() { none() } // The prototype has no DataFlow node
+
+    override Expr getPropertyNameExpr() { result = prop.getNameExpr() }
+
+    override string getPropertyName() { result = prop.getName() }
+
+    override Node getRhs() {
+      not prop instanceof AccessorMethodDefinition and
+      result = valueNode(prop.getInit())
+    }
+
+    override ControlFlowNode getWriteNode() { result = prop }
+  }
+
+  /**
    * A JSX attribute definition, viewed as a data flow node that writes properties to
    * the JSX element it is in.
    */
@@ -532,14 +555,13 @@ module DataFlow {
   }
 
   /**
-   * An instance field with an initializer expression, seen as a property write.
+   * An instance field, seen as a property write.
    */
   private class InstanceFieldAsPropWrite extends PropWrite, PropNode {
     override FieldDefinition prop;
 
     InstanceFieldAsPropWrite() {
       not prop.isStatic() and
-      exists(prop.getInit()) and
       not prop instanceof ParameterField
     }
 
