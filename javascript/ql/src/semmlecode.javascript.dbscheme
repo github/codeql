@@ -341,6 +341,13 @@ case @expr.kind of
 | 105 = @non_null_assertion
 | 106 = @bigintliteral
 | 107 = @nullishcoalescingexpr
+| 108 = @e4x_xml_anyname
+| 109 = @e4x_xml_static_attribute_selector
+| 110 = @e4x_xml_dynamic_attribute_selector
+| 111 = @e4x_xml_filter_expression
+| 112 = @e4x_xml_static_qualident
+| 113 = @e4x_xml_dynamic_qualident
+| 114 = @e4x_xml_dotdotexpr
 ;
 
 @varaccess = @proper_varaccess | @export_varaccess;
@@ -385,6 +392,9 @@ case @expr.kind of
 @lexical_decl = @vardecl | @typedecl;
 @lexical_access = @varaccess | @localtypeaccess | @localvartypeaccess | @localnamespaceaccess;
 @lexical_ref = @lexical_decl | @lexical_access;
+
+@e4x_xml_attribute_selector = @e4x_xml_static_attribute_selector | @e4x_xml_dynamic_attribute_selector;
+@e4x_xml_qualident = @e4x_xml_static_qualident | @e4x_xml_dynamic_qualident;
 
 // scopes
 scopes (unique int id: @scope,

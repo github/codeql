@@ -1478,7 +1478,7 @@ public class Parser {
 		}
 	}
 
-	private boolean isOnOptionalChain(boolean optional, Expression base) {
+	protected boolean isOnOptionalChain(boolean optional, Expression base) {
 		return optional || base instanceof Chainable && ((Chainable)base).isOnOptionalChain();
 	}
 

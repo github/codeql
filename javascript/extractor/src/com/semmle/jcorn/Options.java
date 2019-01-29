@@ -32,7 +32,7 @@ public class Options {
 	}
 
 	private boolean allowHashBang, allowReturnOutsideFunction, allowImportExportEverywhere;
-	private boolean preserveParens, mozExtensions, jscript, esnext, v8Extensions;
+	private boolean preserveParens, mozExtensions, jscript, esnext, v8Extensions, e4x;
 	private int ecmaVersion;
 	private AllowReserved allowReserved;
 	private String sourceType;
@@ -59,6 +59,7 @@ public class Options {
 		this.jscript = false;
 		this.esnext = false;
 		this.v8Extensions = false;
+		this.e4x = false;
 		this.onRecoverableError = null;
 	}
 
@@ -71,6 +72,7 @@ public class Options {
 		this.jscript = that.jscript;
 		this.esnext = that.esnext;
 		this.v8Extensions = that.v8Extensions;
+		this.e4x = that.e4x;
 		this.ecmaVersion = that.ecmaVersion;
 		this.allowReserved = that.allowReserved;
 		this.sourceType = that.sourceType;
@@ -112,6 +114,10 @@ public class Options {
 
 	public boolean v8Extensions() {
 		return v8Extensions;
+	}
+
+	public boolean e4x() {
+		return e4x;
 	}
 
 	public Identifiers.Dialect getDialect() {
@@ -181,6 +187,10 @@ public class Options {
 
 	public void v8Extensions(boolean v8Extensions) {
 		this.v8Extensions = v8Extensions;
+	}
+
+	public void e4x(boolean e4x) {
+		this.e4x = e4x;
 	}
 
 	public Options preserveParens(boolean preserveParens) {

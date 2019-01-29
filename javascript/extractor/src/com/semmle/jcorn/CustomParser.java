@@ -4,14 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 
+import com.semmle.jcorn.TokenType.Properties;
 import com.semmle.jcorn.flow.FlowParser;
 import com.semmle.js.ast.ArrayExpression;
 import com.semmle.js.ast.AssignmentExpression;
 import com.semmle.js.ast.BlockStatement;
 import com.semmle.js.ast.CallExpression;
 import com.semmle.js.ast.CatchClause;
+import com.semmle.js.ast.ClassExpression;
 import com.semmle.js.ast.ComprehensionBlock;
 import com.semmle.js.ast.ComprehensionExpression;
+import com.semmle.js.ast.Decorator;
 import com.semmle.js.ast.Expression;
 import com.semmle.js.ast.ExpressionStatement;
 import com.semmle.js.ast.ForInStatement;
@@ -28,8 +31,14 @@ import com.semmle.js.ast.Node;
 import com.semmle.js.ast.Position;
 import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.Statement;
+import com.semmle.js.ast.Token;
 import com.semmle.js.ast.TryStatement;
 import com.semmle.js.ast.VariableDeclaration;
+import com.semmle.js.ast.XMLAnyName;
+import com.semmle.js.ast.XMLAttributeSelector;
+import com.semmle.js.ast.XMLDotDotExpression;
+import com.semmle.js.ast.XMLFilterExpression;
+import com.semmle.js.ast.XMLQualifiedIdentifier;
 import com.semmle.util.data.Pair;
 
 /**
@@ -155,6 +164,20 @@ public class CustomParser extends FlowParser {
 			List<Expression> args = this.parseExprList(TokenType.parenR, false, false, null);
 			CallExpression node = new CallExpression(new SourceLocation(startLoc), name, new ArrayList<>(), args, false, false);
 			return this.finishNode(node);
+		} else if (options.e4x() && this.type == at) {
+			// this could be either a decorator or an attribute selector; we first
+			// try parsing it as a decorator, and then convert it to an attribute selector
+			// if the next token turns out not to be `class`
+			List<Decorator> decorators = parseDecorators();
+			Expression attr = null;
+			if (decorators.size() > 1 ||
+					this.type == TokenType._class ||
+					((attr = decoratorToAttributeSelector(decorators.get(0))) == null)) {
+				ClassExpression ce = (ClassExpression) this.parseClass(startLoc, false);
+				ce.addDecorators(decorators);
+				return ce;
+			}
+			return attr;
 		} else {
 			return super.parseExprAtom(refDestructuringErrors);
 		}
@@ -319,5 +342,171 @@ public class CustomParser extends FlowParser {
 			res = this.finishNode(res);
 		}
 		return res;
+	}
+
+	/*
+	 * E4X
+	 *
+	 * PrimaryExpression :
+	 *     PropertyIdentifier
+	 *     XMLInitialiser
+	 *     XMLListInitialiser
+	 *
+	 * PropertyIdentifier :
+	 *     AttributeIdentifier
+	 *     QualifiedIdentifier
+	 *     WildcardIdent
+	 *
+	 * AttributeIdentifier :
+	 *     @ PropertySelector
+	 *     @ QualifiedIdentifier
+	 *     @ [ Expression ]
+	 *
+	 * PropertySelector :
+	 *     Identifier
+	 *     WildcardIdentifier
+	 *
+	 * QualifiedIdentifier :
+	 *     PropertySelector :: PropertySelector
+	 *     PropertySelector :: [ Expression ]
+	 *
+	 * WildcardIdentifier :
+	 *     *
+	 *
+	 * MemberExpression :
+	 *     MemberExpression . PropertyIdentifier
+	 *     MemberExpression .. Identifier
+	 *     MemberExpression .. PropertyIdentifier
+	 *     MemberExpression . ( Expression )
+	 *
+	 * DefaultXMLNamespaceStatement :
+	 *     default xml namespace = Expression
+	 */
+
+	protected TokenType doubleDot = new TokenType(new Properties(":").beforeExpr());
+
+	@Override
+	protected Token getTokenFromCode(int code) {
+		if (options.e4x() && code == '.' && charAt(this.pos+1) == '.' && charAt(this.pos+2) != '.') {
+			this.pos += 2;
+			return this.finishToken(doubleDot);
+		}
+		return super.getTokenFromCode(code);
+	}
+
+	// add parsing of E4X property, attribute and descendant accesses, as well as filter expressions
+	@Override
+	protected Pair<Expression, Boolean> parseSubscript(Expression base, Position startLoc, boolean noCalls) {
+		if (options.e4x() && this.eat(TokenType.dot)) {
+			SourceLocation start = new SourceLocation(startLoc);
+			if (this.eat(TokenType.parenL)) {
+				Expression filter = parseExpression(false, null);
+				this.expect(TokenType.parenR);
+				return Pair.make(this.finishNode(new XMLFilterExpression(start, base, filter)), true);
+			}
+
+			Expression property = this.parsePropertyIdentifierOrIdentifier();
+			MemberExpression node = new MemberExpression(start, base, property, false, false, isOnOptionalChain(false, base));
+			return Pair.make(this.finishNode(node), true);
+		} else if (this.eat(doubleDot)) {
+			SourceLocation start = new SourceLocation(startLoc);
+			Expression property = this.parsePropertyIdentifierOrIdentifier();
+			return Pair.make(this.finishNode(new XMLDotDotExpression(start, base, property)), true);
+		}
+		return super.parseSubscript(base, startLoc, noCalls);
+	}
+
+	/**
+	 * Parse a an attribute identifier, a wildcard identifier, a qualified identifier,
+	 * or a plain identifier.
+	 */
+	protected Expression parsePropertyIdentifierOrIdentifier() {
+		Position start = this.startLoc;
+		if (this.eat(at)) {
+			// attribute identifier
+			return parseAttributeIdentifier(new SourceLocation(start));
+		} else {
+			return parsePossiblyQualifiedIdentifier();
+		}
+	}
+
+	/**
+	 * Parse a wildcard identifier, a qualified identifier, or a plain identifier.
+	 */
+	protected Expression parsePossiblyQualifiedIdentifier() {
+		SourceLocation start = new SourceLocation(startLoc);
+		Expression res = parsePropertySelector(start);
+
+		if (!this.eat(doubleColon))
+			return res;
+
+		if (this.eat(TokenType.bracketL)) {
+			Expression e = parseExpression(false, null);
+			this.expect(TokenType.bracketR);
+			return this.finishNode(new XMLQualifiedIdentifier(start, res, e, true));
+		} else {
+			Expression e = parsePropertySelector(new SourceLocation(startLoc));
+			return this.finishNode(new XMLQualifiedIdentifier(start, res, e, false));
+		}
+	}
+
+	/**
+	 * Parse a property selector, that is, either a wildcard identifier or a plain identifier.
+	 */
+	protected Expression parsePropertySelector(SourceLocation start) {
+		Expression res;
+		if (this.eat(TokenType.star)) {
+			// wildcard identifier
+			res = this.finishNode(new XMLAnyName(start));
+		} else {
+			res = this.parseIdent(true);
+		}
+		return res;
+	}
+
+	/**
+	 * Parse an attribute identifier, either computed ({@code [ Expr ]}) or a possibly
+	 * qualified identifier.
+	 */
+	protected Expression parseAttributeIdentifier(SourceLocation start) {
+		if (this.eat(TokenType.bracketL)) {
+			Expression idx = parseExpression(false, null);
+			this.expect(TokenType.bracketR);
+			return this.finishNode(new XMLAttributeSelector(start, idx, true));
+		} else {
+			return this.finishNode(new XMLAttributeSelector(start, parsePossiblyQualifiedIdentifier(), false));
+		}
+	}
+
+	@Override
+	protected Expression parseDecoratorBody() {
+		SourceLocation start = new SourceLocation(startLoc);
+		if (options.e4x() && this.eat(TokenType.bracketL)) {
+			// this must be an attribute selector, so only allow a single expression
+			// followed by a right bracket, which will later be converted by
+			// `decoratorToAttributeSelector` below
+			List<Expression> elements = new ArrayList<>();
+			elements.add(parseExpression(false, null));
+			this.expect(TokenType.bracketR);
+			return this.finishNode(new ArrayExpression(start, elements));
+		}
+
+		return super.parseDecoratorBody();
+	}
+
+	/**
+	 * Convert a decorator that resulted from mis-parsing an attribute selector into
+	 * an attribute selector.
+	 */
+	protected XMLAttributeSelector decoratorToAttributeSelector(Decorator d) {
+		Expression e = d.getExpression();
+		if (e instanceof ArrayExpression) {
+			ArrayExpression ae = (ArrayExpression) e;
+			if (ae.getElements().size() == 1)
+				return new XMLAttributeSelector(d.getLoc(), ae.getElements().get(0), true);
+		} else if (e instanceof Identifier) {
+			return new XMLAttributeSelector(d.getLoc(), e, false);
+		}
+		return null;
 	}
 }

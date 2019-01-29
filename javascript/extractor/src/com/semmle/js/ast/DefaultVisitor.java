@@ -734,4 +734,29 @@ public class DefaultVisitor<C, R> implements Visitor<C, R> {
 	public R visit(RestTypeExpr nd, C c) {
 		return visit((TypeExpression) nd, c);
 	}
+
+	@Override
+	public R visit(XMLAnyName nd, C c) {
+		return visit((Expression) nd, c);
+	}
+
+	@Override
+	public R visit(XMLAttributeSelector nd, C c) {
+		return visit((Expression) nd, c);
+	}
+
+	@Override
+	public R visit(XMLFilterExpression nd, C c) {
+		return visit((Expression) nd, c);
+	}
+
+	@Override
+	public R visit(XMLQualifiedIdentifier nd, C c) {
+		return visit((Expression) nd, c);
+	}
+
+	@Override
+	public R visit(XMLDotDotExpression nd, C c) {
+		return visit((Expression) nd, c);
+	}
 }

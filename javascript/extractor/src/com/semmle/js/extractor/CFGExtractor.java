@@ -91,6 +91,11 @@ import com.semmle.js.ast.VariableDeclarator;
 import com.semmle.js.ast.Visitor;
 import com.semmle.js.ast.WhileStatement;
 import com.semmle.js.ast.WithStatement;
+import com.semmle.js.ast.XMLAnyName;
+import com.semmle.js.ast.XMLAttributeSelector;
+import com.semmle.js.ast.XMLDotDotExpression;
+import com.semmle.js.ast.XMLFilterExpression;
+import com.semmle.js.ast.XMLQualifiedIdentifier;
 import com.semmle.js.ast.YieldExpression;
 import com.semmle.js.ast.jsx.IJSXName;
 import com.semmle.js.ast.jsx.JSXAttribute;
@@ -506,6 +511,26 @@ public class CFGExtractor {
 		@Override
 		public Node visit(EnhancedForStatement nd, Void c) {
 			return nd.getRight().accept(this, null);
+		}
+
+		@Override
+		public Node visit(XMLAttributeSelector nd, Void c) {
+			return nd.getAttribute().accept(this, c);
+		}
+
+		@Override
+		public Node visit(XMLFilterExpression nd, Void c) {
+			return nd.getLeft().accept(this, c);
+		}
+
+		@Override
+		public Node visit(XMLQualifiedIdentifier nd, Void c) {
+			return nd.getLeft().accept(this, c);
+		}
+
+		@Override
+		public Node visit(XMLDotDotExpression nd, Void c) {
+			return nd.getLeft().accept(this, c);
 		}
 
 		public static Node of(Node nd) {
@@ -1962,6 +1987,40 @@ public class CFGExtractor {
 		@Override
 		public Void visit(DecoratorList nd, SuccessorInfo c) {
 			seq(nd.getDecorators(), nd);
+			succ(nd, c.getAllSuccessors());
+			return null;
+		}
+
+		@Override
+		public Void visit(XMLAnyName nd, SuccessorInfo c) {
+			succ(nd, c.getAllSuccessors());
+			return null;
+		}
+
+		@Override
+		public Void visit(XMLAttributeSelector nd, SuccessorInfo c) {
+			seq(nd.getAttribute(), nd);
+			succ(nd, c.getAllSuccessors());
+			return null;
+		}
+
+		@Override
+		public Void visit(XMLFilterExpression nd, SuccessorInfo c) {
+			seq(nd.getLeft(), nd.getRight(), nd);
+			succ(nd, c.getAllSuccessors());
+			return null;
+		}
+
+		@Override
+		public Void visit(XMLQualifiedIdentifier nd, SuccessorInfo c) {
+			seq(nd.getLeft(), nd.getRight(), nd);
+			succ(nd, c.getAllSuccessors());
+			return null;
+		}
+
+		@Override
+		public Void visit(XMLDotDotExpression nd, SuccessorInfo c) {
+			seq(nd.getLeft(), nd.getRight(), nd);
 			succ(nd, c.getAllSuccessors());
 			return null;
 		}

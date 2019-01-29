@@ -704,4 +704,29 @@ public class NodeCopier implements Visitor<Void, INode> {
 	public INode visit(RestTypeExpr nd, Void c) {
 		return new RestTypeExpr(visit(nd.getLoc()), copy(nd.getArrayType()));
 	}
+
+	@Override
+	public INode visit(XMLAnyName nd, Void c) {
+		return new XMLAnyName(visit(nd.getLoc()));
+	}
+
+	@Override
+	public INode visit(XMLAttributeSelector nd, Void c) {
+		return new XMLAttributeSelector(visit(nd.getLoc()), copy(nd.getAttribute()), nd.isComputed());
+	}
+
+	@Override
+	public INode visit(XMLFilterExpression nd, Void c) {
+		return new XMLFilterExpression(visit(nd.getLoc()), copy(nd.getLeft()), copy(nd.getRight()));
+	}
+
+	@Override
+	public INode visit(XMLQualifiedIdentifier nd, Void c) {
+		return new XMLQualifiedIdentifier(visit(nd.getLoc()), copy(nd.getLeft()), copy(nd.getRight()), nd.isComputed());
+	}
+
+	@Override
+	public INode visit(XMLDotDotExpression nd, Void c) {
+		return new XMLDotDotExpression(visit(nd.getLoc()), copy(nd.getLeft()), copy(nd.getRight()));
+	}
 }
