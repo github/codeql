@@ -9,6 +9,7 @@ module TaintTracking {
   private import semmle.code.csharp.dataflow.LibraryTypeDataFlow
   private import semmle.code.csharp.dispatch.Dispatch
   private import semmle.code.csharp.commons.ComparisonTest
+  private import semmle.code.csharp.frameworks.JsonNET
   private import cil
   private import dotnet
 
@@ -17,6 +18,9 @@ module TaintTracking {
    * (intra-procedural) steps.
    */
   predicate localTaint(DataFlow::Node source, DataFlow::Node sink) { localTaintStep*(source, sink) }
+
+  /** A member (property or field) that is tainted if its containing object is tainted. */
+  abstract class TaintedMember extends AssignableMember { }
 
   /**
    * Holds if taint propagates from `nodeFrom` to `nodeTo` in exactly one local
@@ -243,6 +247,16 @@ module TaintTracking {
         DataFlow::Internal::flowOutOfDelegateLibraryCall(nodeFrom, nodeTo, false)
         or
         localTaintStepCil(nodeFrom, nodeTo)
+        or
+        // Taint members
+        exists(Access access |
+          access = nodeTo.asExpr() and
+          access.getTarget() instanceof TaintedMember
+        |
+          access.(FieldRead).getQualifier() = nodeFrom.asExpr()
+          or
+          access.(PropertyRead).getQualifier() = nodeFrom.asExpr()
+        )
       }
     }
     import Cached
