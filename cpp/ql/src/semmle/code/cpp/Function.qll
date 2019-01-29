@@ -33,7 +33,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    * "min<int>(int, int) -> int", and the full signature of the uninstantiated
    * template on the first line would be "min<T>(T, T) -> T".
    */
-  deprecated string getFullSignature() {
+  string getFullSignature() {
     exists(string name, string templateArgs, string args |
       result = name + templateArgs + args + " -> " + getType().toString() and
       name = getQualifiedName() and
