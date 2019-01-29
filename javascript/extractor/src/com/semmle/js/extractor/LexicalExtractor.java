@@ -173,4 +173,12 @@ public class LexicalExtractor {
 	public String mkToString(SourceElement nd) {
 		return textualExtractor.mkToString(nd);
 	}
+
+	/**
+	 * Purge token and comments information to reduce heap pressure.
+	 */
+	public void purge() {
+		this.tokens.clear();
+		this.comments.clear();
+	}
 }

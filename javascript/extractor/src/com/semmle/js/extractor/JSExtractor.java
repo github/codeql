@@ -94,12 +94,14 @@ public class JSExtractor {
 			ASTExtractor scriptExtractor = new ASTExtractor(lexicalExtractor, scopeManager);
 			toplevelLabel = scriptExtractor.getToplevelLabel();
 
-			scriptExtractor.extract(ast, platform, sourceType, toplevelKind);
 			lexicalExtractor.extractComments(toplevelLabel);
 			loc = lexicalExtractor.extractLines(parserRes.getSource(), toplevelLabel);
 			lexicalExtractor.extractTokens(toplevelLabel);
-			new CFGExtractor(scriptExtractor).extract(ast);
 			new JSDocExtractor(textualExtractor).extract(lexicalExtractor.getComments());
+			lexicalExtractor.purge();
+
+			scriptExtractor.extract(ast, platform, sourceType, toplevelKind);
+			new CFGExtractor(scriptExtractor).extract(ast);
 		} else {
 			lexicalExtractor = new LexicalExtractor(textualExtractor, new ArrayList<Token>(), new ArrayList<Comment>());
 			ASTExtractor scriptExtractor = new ASTExtractor(lexicalExtractor, null);
