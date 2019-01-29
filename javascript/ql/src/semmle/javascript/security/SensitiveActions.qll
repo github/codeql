@@ -17,17 +17,17 @@ import javascript
  * INTERNAL: Do not use directly.
  */
 module HeuristicNames {
-  /** A regular expression that identifies strings that look like they represent secret data that are not passwords. */
+  /** Gets a regular expression that identifies strings that look like they represent secret data that are not passwords. */
   string suspiciousNonPassword() { result = "(?is).*(secret|account|accnt|(?<!un)trusted).*" }
 
-  /** A regular expression that identifies strings that look like they represent secret data that are passwords. */
+  /** Gets a regular expression that identifies strings that look like they represent secret data that are passwords. */
   string suspiciousPassword() { result = "(?is).*(password|passwd).*" }
 
-  /** A regular expression that identifies strings that look like they represent secret data. */
+  /** Gets a regular expression that identifies strings that look like they represent secret data. */
   string suspicious() { result = suspiciousPassword() or result = suspiciousNonPassword() }
 
   /**
-   * A regular expression that identifies strings that look like they represent data that is
+   * Gets a regular expression that identifies strings that look like they represent data that is
    * hashed or encrypted.
    */
   string nonSuspicious() {
