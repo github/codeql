@@ -95,6 +95,11 @@ module Vue {
     }
 
     /**
+     * Gets the template element used by this instance, if any.
+     */
+    abstract Template::Element getTemplateElement();
+
+    /**
      * Gets the node for the `data` option object of this instance.
      */
     DataFlow::Node getData() {
@@ -245,6 +250,8 @@ module Vue {
     }
 
     override DataFlow::Node getOwnOption(string name) { result = def.getOptionArgument(0, name) }
+
+    override Template::Element getTemplateElement() { none() }
   }
 
   /**
@@ -264,6 +271,8 @@ module Vue {
     }
 
     override DataFlow::Node getOwnOption(string name) { result = extend.getOptionArgument(0, name) }
+
+    override Template::Element getTemplateElement() { none() }
   }
 
   /**
@@ -291,6 +300,8 @@ module Vue {
       or
       result = MkExtendedVue(extend).(ExtendedVue).getOption(name)
     }
+
+    override Template::Element getTemplateElement() { none() }
   }
 
   /**
@@ -310,6 +321,8 @@ module Vue {
     }
 
     override DataFlow::Node getOwnOption(string name) { result = def.getOptionArgument(1, name) }
+
+    override Template::Element getTemplateElement() { none() }
   }
 
   /**
@@ -319,6 +332,14 @@ module Vue {
     VueFile file;
 
     SingleFileComponent() { this = MkSingleFileComponent(file) }
+
+    override Template::Element getTemplateElement() {
+      exists(HTML::Element e | result.(Template::HtmlElement).getElement() = e |
+        e.getFile() = file and
+        e.getName() = "template" and
+        e.isTopLevel()
+      )
+    }
 
     override predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -385,6 +406,62 @@ module Vue {
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       pred = src and succ = this
+    }
+
+  }
+
+  /*
+   * Provides classes for working with Vue templates.
+   */
+  module Template {
+    // Currently only supports HTML elements, but it may be possible to parse simple string templates later
+    private newtype TElement =
+      MkHtmlElement(HTML::Element e) { exists(VueFile f | e.getFile() = f) }
+
+    /**
+     * An element of a template.
+     */
+    abstract class Element extends TElement {
+      /** Gets a textual representation of this element. */
+      string toString() { result = "<" + getName() + ">...</>" }
+
+      /**
+       * Holds if this element is at the specified location.
+       * The location spans column `startcolumn` of line `startline` to
+       * column `endcolumn` of line `endline` in file `filepath`.
+       * For more information, see
+       * [LGTM locations](https://lgtm.com/help/ql/locations).
+       */
+      predicate hasLocationInfo(
+        string filepath, int startline, int startcolumn, int endline, int endcolumn
+      ) {
+        filepath = "" and
+        startline = 0 and
+        startcolumn = 0 and
+        endline = 0 and
+        endcolumn = 0
+      }
+
+      abstract string getName();
+    }
+
+    /**
+     * An HTML element as a template element.
+     */
+    class HtmlElement extends Element, MkHtmlElement {
+      HTML::Element elem;
+
+      HtmlElement() { this = MkHtmlElement(elem) }
+
+      override predicate hasLocationInfo(
+        string filepath, int startline, int startcolumn, int endline, int endcolumn
+      ) {
+        elem.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      }
+
+      override string getName() { result = elem.getName() }
+
+      HTML::Element getElement() { result = elem }
     }
   }
 
