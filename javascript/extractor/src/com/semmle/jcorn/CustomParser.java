@@ -274,16 +274,17 @@ public class CustomParser extends FlowParser {
 		List<ComprehensionBlock> blocks = new ArrayList<ComprehensionBlock>();
 		while (this.type == TokenType._for) {
 			SourceLocation blockStart = new SourceLocation(this.startLoc);
+			boolean of = false;
 			this.next();
+			if (this.eatContextual("each"))
+				of = true;
 			this.expect(TokenType.parenL);
 			Expression left = this.parseBindingAtom();
 			this.checkLVal(left, true, null);
-			boolean of;
 			if (this.eatContextual("of")) {
 				of = true;
 			} else {
 				this.expect(TokenType._in);
-				of = false;
 			}
 			Expression right = this.parseExpression(false, null);
 			this.expect(TokenType.parenR);
