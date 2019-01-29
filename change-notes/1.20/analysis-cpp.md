@@ -17,6 +17,7 @@
 | **Query**                  | **Expected impact**    | **Change**                                                       |
 |----------------------------|------------------------|------------------------------------------------------------------|
 | Array argument size mismatch (`cpp/array-arg-size-mismatch`) | Fewer false positives | An exception has been added to this query for variable sized arrays. |
+| Returning stack-allocated memory (`cpp/return-stack-allocated-memory`) | More correct results | Many more stack allocated expressions are now recognized. |
 | Suspicious add with sizeof (`cpp/suspicious-add-sizeof`) | Fewer false positives | Pointer arithmetic on `char * const` expressions (and other variations of `char *`) are now correctly excluded from the results. |
 | Suspicious pointer scaling (`cpp/suspicious-pointer-scaling`) | Fewer false positives | False positives involving types that are not uniquely named in the snapshot have been fixed. |
 | Call to memory access function may overflow buffer (`cpp/overflow-buffer`) | More correct results | Calls to `fread` are now examined by this query. |
