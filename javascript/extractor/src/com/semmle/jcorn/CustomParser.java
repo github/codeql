@@ -217,7 +217,7 @@ public class CustomParser extends FlowParser {
 	protected INode parseFunction(Position startLoc, boolean isStatement, boolean allowExpressionBody, boolean isAsync) {
 		if (isFunctionSent(isStatement))
 			return super.parseFunction(startLoc, isStatement, allowExpressionBody, isAsync);
-		allowExpressionBody = allowExpressionBody || options.mozExtensions() && !isStatement;
+		allowExpressionBody = allowExpressionBody || options.mozExtensions();
 		boolean oldInGen = this.inGenerator, oldInAsync = this.inAsync;
 		int oldYieldPos = this.yieldPos, oldAwaitPos = this.awaitPos;
 		Pair<Boolean, Identifier> p = parseFunctionName(isStatement, isAsync);

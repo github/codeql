@@ -2991,7 +2991,7 @@ public class Parser {
 		IFunction node;
 		SourceLocation loc = new SourceLocation(startLoc);
 		if (isStatement && id != null)
-			node = new FunctionDeclaration(loc, id, params, (BlockStatement) body, generator, async);
+			node = new FunctionDeclaration(loc, id, params, body, generator, async);
 		else
 			node = new FunctionExpression(loc, id, params, body, generator, async);
 		return this.finishNode(node);
