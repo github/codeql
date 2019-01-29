@@ -127,7 +127,7 @@ class CommentBlock extends Comment {
      * The location spans column `startcolumn` of line `startline` to
      * column `endcolumn` of line `endline` in file `filepath`.
      * For more information, see
-     * [LGTM locations](https://lgtm.com/help/ql/locations).
+     * [LGTM locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
      */
     predicate hasLocationInfo(string filepath, int startline, int startcolumn, int endline, int endcolumn) {
         this.getLocation().hasLocationInfo(filepath, startline, startcolumn, _, _) and

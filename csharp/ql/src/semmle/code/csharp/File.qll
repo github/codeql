@@ -33,7 +33,7 @@ class Container extends @container {
   /**
    * Gets a URL representing the location of this container.
    *
-   * For more information see https://lgtm.com/help/ql/locations#providing-urls.
+   * For more information see https://help.semmle.com/QL/learn-ql/ql/locations.html#providing-urls.
    */
   string getURL() { none() }
 
