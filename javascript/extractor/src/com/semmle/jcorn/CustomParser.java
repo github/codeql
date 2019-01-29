@@ -28,6 +28,7 @@ import com.semmle.js.ast.LetStatement;
 import com.semmle.js.ast.MemberExpression;
 import com.semmle.js.ast.NewExpression;
 import com.semmle.js.ast.Node;
+import com.semmle.js.ast.ParenthesizedExpression;
 import com.semmle.js.ast.Position;
 import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.Statement;
@@ -137,7 +138,9 @@ public class CustomParser extends FlowParser {
 			this.next();
 			// check whether this is array comprehension or regular array
 			if (this.type == TokenType._for) {
-				return (Expression) this.parseComprehension(startLoc, false, null);
+				ComprehensionExpression c = this.parseComprehension(startLoc, false, null);
+				this.expect(TokenType.bracketR);
+				return this.finishNode(c);
 			}
 			List<Expression> elements;
 			if (this.type == TokenType.comma || this.type == TokenType.bracketR ||
@@ -147,7 +150,9 @@ public class CustomParser extends FlowParser {
 				Expression firstExpr = this.parseMaybeAssign(true, refDestructuringErrors, null);
 				// check whether this is a postfix array comprehension
 				if (this.type == TokenType._for || this.type == TokenType._if) {
-					return (Expression) this.parseComprehension(startLoc, false, firstExpr);
+					ComprehensionExpression c = this.parseComprehension(startLoc, false, firstExpr);
+					this.expect(TokenType.bracketR);
+					return this.finishNode(c);
 				} else {
 					this.eat(TokenType.comma);
 					elements = new ArrayList<Expression>();
@@ -265,7 +270,7 @@ public class CustomParser extends FlowParser {
 	}
 
 	// add parsing of comprehensions
-	protected Node parseComprehension(Position startLoc, boolean isGenerator, Expression body) {
+	protected ComprehensionExpression parseComprehension(Position startLoc, boolean isGenerator, Expression body) {
 		List<ComprehensionBlock> blocks = new ArrayList<ComprehensionBlock>();
 		while (this.type == TokenType._for) {
 			SourceLocation blockStart = new SourceLocation(this.startLoc);
@@ -287,9 +292,8 @@ public class CustomParser extends FlowParser {
 		Expression filter = this.eat(TokenType._if) ? this.parseParenExpression() : null;
 		if (body == null)
 			body = this.parseExpression(false, null);
-		this.expect(isGenerator ? TokenType.parenR : TokenType.bracketR);
 
-		return this.finishNode(new ComprehensionExpression(new SourceLocation(startLoc), body, blocks, filter, isGenerator));
+		return new ComprehensionExpression(new SourceLocation(startLoc), body, blocks, filter, isGenerator);
 	}
 
 	@Override
@@ -303,7 +307,9 @@ public class CustomParser extends FlowParser {
 						"for".equals(input.substring(m.end(), m.end()+3)) &&
 						!Identifiers.isIdentifierChar(input.charAt(m.end()+3), true)) {
 					next();
-					return (Expression) parseComprehension(startLoc, true, null);
+					ComprehensionExpression c = parseComprehension(startLoc, true, null);
+					this.expect(TokenType.parenR);
+					return this.finishNode(c);
 				}
 			}
 		}
