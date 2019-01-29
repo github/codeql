@@ -39,7 +39,7 @@ predicate varMaybeStackAllocated(LocalVariable lv) {
 // that possibly points to the stack, or if it is a possibly stack allocated array
 // that is converted (implicitly or explicitly) to a pointer
 predicate exprMayPointToStack(Expr e) {
-  e instanceof AddressOfExpr and exprMaybeStackAllocated(e.(AddressOfExpr).getAnOperand())
+  exprMaybeStackAllocated(e.(AddressOfExpr).getAnOperand())
   or
   varMayPointToStack(e.(VariableAccess).getTarget())
   or
