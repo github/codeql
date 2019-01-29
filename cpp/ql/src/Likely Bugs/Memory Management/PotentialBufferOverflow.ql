@@ -18,20 +18,6 @@ abstract class PotentiallyDangerousFunctionCall extends FunctionCall {
   abstract string getDescription();
 }
 
-class GetsCall extends PotentiallyDangerousFunctionCall {
-  GetsCall() {
-    this.getTarget().hasName("gets")
-  }
-
-  override predicate isDangerous() {
-    any()
-  }
-
-  override string getDescription() {
-    result = "gets does not guard against buffer overflow"
-  }
-}
-
 class SprintfCall extends PotentiallyDangerousFunctionCall {
   SprintfCall() {
     this.getTarget().hasName("sprintf") or this.getTarget().hasName("vsprintf")
