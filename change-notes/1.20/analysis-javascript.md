@@ -10,6 +10,8 @@
 
 * The taint tracking library now recognizes flow through persistent storage, class fields, and callbacks in certain cases. This may give more results for the security queries.
 
+* Type inference for function calls has been improved. This may give additional results for queries that rely on type inference.
+
 ## New queries
 
 | **Query**                                     | **Tags**                                             | **Purpose**                                                                                                                                                                 |
