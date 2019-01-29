@@ -40,6 +40,7 @@ import com.semmle.js.ast.XMLAttributeSelector;
 import com.semmle.js.ast.XMLDotDotExpression;
 import com.semmle.js.ast.XMLFilterExpression;
 import com.semmle.js.ast.XMLQualifiedIdentifier;
+import com.semmle.util.data.Either;
 import com.semmle.util.data.Pair;
 
 /**
@@ -537,5 +538,25 @@ public class CustomParser extends FlowParser {
 			return new XMLAttributeSelector(d.getLoc(), e, false);
 		}
 		return null;
+	}
+
+	@Override
+	protected Either<Integer, Token> jsx_readChunk(StringBuilder out, int chunkStart, int ch) {
+		// skip HTML comments (which are allowed in E4X, but not in JSX)
+		if (this.options.e4x() && ch == '<' && charAt(this.pos+1) == '!' &&
+				charAt(this.pos+2) == '-' && charAt(this.pos+3) == '-') {
+			out.append(inputSubstring(chunkStart, this.pos));
+			this.pos += 4;
+			while (this.pos+2 < this.input.length()) {
+				if (charAt(this.pos) == '-' && charAt(this.pos+1) == '-' && charAt(this.pos+2) == '>') {
+					this.pos += 3;
+					break;
+				}
+				++this.pos;
+			}
+			return Either.left(this.pos);
+		}
+
+		return super.jsx_readChunk(out, chunkStart, ch);
 	}
 }

@@ -6,3 +6,7 @@ message.@soap::encodingStyle;
 message.soap::Body;
 items.@[f()];
 message.soap::[g()];
+
+var e = <elt>
+  <!-- comment -->
+  </elt>;
