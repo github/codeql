@@ -144,6 +144,15 @@ class AuthorizationCall extends SensitiveAction, DataFlow::CallNode {
   }
 }
 
+/** A call to a function whose name suggests that it encodes or encrypts its arguments. */
+class ProtectCall extends DataFlow::CallNode {
+  ProtectCall() {
+    exists(string s | getCalleeName().regexpMatch("(?i).*" + s + ".*") |
+      s = "protect" or s = "encode" or s = "encrypt"
+    )
+  }
+}
+
 /**
  * Classes for expressions containing cleartext passwords.
  */
