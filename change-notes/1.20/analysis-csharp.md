@@ -27,5 +27,6 @@
 ## Changes to QL libraries
 
 * The class `TrivialProperty` now includes library properties determined to be trivial using CIL analysis. This may increase the number of results for all queries that use data flow.
+* Taint-tracking steps have been added for the `Json.NET` package. This will improve results for queries that use taint-tracking.
 
 ## Changes to the autobuilder
