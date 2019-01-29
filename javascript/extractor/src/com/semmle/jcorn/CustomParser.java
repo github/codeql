@@ -314,7 +314,29 @@ public class CustomParser extends FlowParser {
 			}
 		}
 
-		return super.parseParenAndDistinguishExpression(canBeArrow);
+		Expression res = super.parseParenAndDistinguishExpression(canBeArrow);
+		if (res instanceof ParenthesizedExpression) {
+			ParenthesizedExpression p = (ParenthesizedExpression) res;
+			if (p.getExpression() instanceof ComprehensionExpression) {
+				ComprehensionExpression c = (ComprehensionExpression) p.getExpression();
+				if (c.isGenerator())
+					return new ComprehensionExpression(p.getLoc(), c.getBody(), c.getBlocks(), c.getFilter(), c.isGenerator());
+			}
+		}
+		return res;
+	}
+
+	@Override
+	protected boolean parseParenthesisedExpression(DestructuringErrors refDestructuringErrors,
+			boolean allowTrailingComma, ParenthesisedExpressions parenExprs, boolean first) {
+		boolean cont = super.parseParenthesisedExpression(refDestructuringErrors, allowTrailingComma, parenExprs, first);
+		if (options.mozExtensions() && parenExprs.exprList.size() == 1 && this.type == TokenType._for) {
+			Expression body = parenExprs.exprList.remove(0);
+			ComprehensionExpression c = parseComprehension(body.getLoc().getStart(), true, body);
+			parenExprs.exprList.add(this.finishNode(c));
+			return false;
+		}
+		return cont;
 	}
 
 	// add parsing of for-each loops
