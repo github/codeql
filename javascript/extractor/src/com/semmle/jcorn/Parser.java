@@ -2106,8 +2106,10 @@ public class Parser {
 			if (this.inAsync && this.value.equals("await"))
 				this.raiseRecoverable(this.start, "Can not use 'await' as identifier inside an async function");
 			name = String.valueOf(this.value);
-		} else if (liberal && this.type.keyword != null) {
+		} else if (this.type.keyword != null) {
 			name = this.type.keyword;
+			if (!liberal)
+				raiseRecoverable(this.start, "Cannot use keyword '" + name + "' as an identifier.");
 		} else {
 			this.unexpected();
 		}
@@ -2264,9 +2266,6 @@ public class Parser {
 		if (this.options.ecmaVersion() < 6)
 			return this.parseIdent(false);
 
-		if (this.type == TokenType.name)
-			return this.parseIdent(false);
-
 		if (this.type == TokenType.bracketL) {
 			Position start = this.startLoc;
 			this.next();
@@ -2278,8 +2277,7 @@ public class Parser {
 		if (this.type == TokenType.braceL)
 			return this.parseObj(true, null);
 
-		this.unexpected();
-		return null;
+		return this.parseIdent(false);
 	}
 
 	protected List<Expression> parseBindingList(TokenType close, boolean allowEmpty, boolean allowTrailingComma, boolean allowNonIdent) {
