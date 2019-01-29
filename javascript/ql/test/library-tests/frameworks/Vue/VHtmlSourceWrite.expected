@@ -1,0 +1,2 @@
+| single-component-file-1.vue:6:40:6:41 | 42 | single-component-file-1.vue:6:40:6:41 | 42 | single-component-file-1.vue:2:8:2:21 | v-html=dataA |
+| single-file-component-3-script.js:4:37:4:38 | 42 | single-file-component-3-script.js:4:37:4:38 | 42 | single-file-component-3.vue:2:8:2:21 | v-html=dataA |

@@ -199,6 +199,39 @@ module DomBasedXss {
   }
 
   /**
+   * A Vue `v-html` attribute, viewed as an XSS sink.
+   */
+  class VHtmlSink extends DomBasedXss::Sink {
+    HTML::Attribute attr;
+    VHtmlSink() { this = DataFlow::THtmlAttributeNode(attr) and attr.getName() = "v-html" }
+    HTML::Attribute getAttr() {
+      result = attr
+    }
+  }
+
+  /**
+   * A taint propagating data flow edge through a string interpolation of a
+   * Vue instance property to a `v-html` attribute.
+   */
+  class VHtmlSourceWrite extends TaintTracking::AdditionalTaintStep {
+    VHtmlSink attr;
+
+    VHtmlSourceWrite() {
+      exists(Vue::Instance instance, string expr |
+        attr.getAttr().getRoot() = instance.getTemplateElement().(Vue::Template::HtmlElement).getElement() and
+        expr = attr.getAttr().getValue() and
+        // only support for simple identifier expressions
+        expr.regexpMatch("(?i)[a-z0-9_]+") and
+        this = instance.getAPropertyValue(expr)
+      )
+    }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      pred = this and succ = attr
+    }
+  }
+
+  /**
    * A regexp replacement involving an HTML meta-character, viewed as a sanitizer for
    * XSS vulnerabilities.
    *
