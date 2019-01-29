@@ -4,9 +4,14 @@ module Firebase {
   
   /** Gets a reference to the firebase API object. */
   private DataFlow::SourceNode firebase(DataFlow::TypeTracker t) {
-    result = DataFlow::moduleImport("firebase/app") and t.start()
-    or
-    result = DataFlow::globalVarRef("firebase") and t.start()
+    t.start() and
+    (
+      result = DataFlow::moduleImport("firebase/app")
+      or
+      result = DataFlow::moduleImport("firebase-admin")
+      or
+      result = DataFlow::globalVarRef("firebase")
+    )
     or
     exists (DataFlow::TypeTracker t2 |
       result = firebase(t2).track(t2, t)
