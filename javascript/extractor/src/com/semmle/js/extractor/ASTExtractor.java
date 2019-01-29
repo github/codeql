@@ -823,7 +823,6 @@ public class ASTExtractor {
 
 			contextManager.leaveContainer();
 			scopeManager.leaveScope();
-			lexicalExtractor.emitNumlines(key, nd.getLoc().getStart(), nd.getLoc().getEnd());
 		}
 
 		private void extractParameterDefaultsAndTypes(IFunction nd, Label key, int paramCount) {
