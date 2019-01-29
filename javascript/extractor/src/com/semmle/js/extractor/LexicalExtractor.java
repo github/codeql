@@ -133,7 +133,7 @@ public class LexicalExtractor {
 			locationManager.emitNodeLocation(token, key);
 
 			// fill in next_token relation
-			while (j < comments.size() && comments.get(j).getLoc().getEnd().compareTo(token.getLoc().getStart()) < 0)
+			while (j < comments.size() && comments.get(j).getLoc().getEnd().compareTo(token.getLoc().getStart()) <= 0)
 				trapwriter.addTuple("next_token", this.trapwriter.localID(comments.get(j++)), key);
 
 			// the parser sometimes duplicates tokens; skip the second one by nulling it out
