@@ -13,12 +13,7 @@
 import cpp
 import semmle.code.cpp.commons.Buffer
 
-abstract class PotentiallyDangerousFunctionCall extends FunctionCall {
-  abstract predicate isDangerous();
-  abstract string getDescription();
-}
-
-class SprintfCall extends PotentiallyDangerousFunctionCall {
+class SprintfCall extends FunctionCall {
   SprintfCall() {
     this.getTarget().hasName("sprintf") or this.getTarget().hasName("vsprintf")
   }
@@ -31,16 +26,16 @@ class SprintfCall extends PotentiallyDangerousFunctionCall {
     result = this.getArgument(1).(FormatLiteral).getMaxConvertedLength()
   }
 
-  override predicate isDangerous() {
+  predicate isDangerous() {
     this.getMaxConvertedLength() > this.getBufferSize()
   }
 
-  override string getDescription() {
+  string getDescription() {
     result = "This conversion may yield a string of length "+this.getMaxConvertedLength().toString()+
              ", which exceeds the allocated buffer size of "+this.getBufferSize().toString()
   }
 }
 
-from PotentiallyDangerousFunctionCall c
+from SprintfCall c
 where c.isDangerous()
 select c, c.getDescription()
