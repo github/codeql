@@ -97,7 +97,7 @@ char *testArray2()
 {
 	char arr[256];
 
-	return &(arr[10]); // BAD [NOT DETECTED]
+	return &(arr[10]); // BAD
 }
 
 char testArray3()

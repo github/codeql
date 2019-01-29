@@ -15,7 +15,8 @@ import cpp
 // or accesses a possibly stack allocated local variables
 predicate exprMaybeStackAllocated(Expr e) {
   e instanceof AggregateLiteral or
-  varMaybeStackAllocated(e.(VariableAccess).getTarget())
+  varMaybeStackAllocated(e.(VariableAccess).getTarget()) or
+  exprMayPointToStack(e.(ArrayExpr).getArrayBase())
 }
 
 // a local variable is possibly stack allocated if it is not static and
@@ -34,9 +35,11 @@ predicate exprMayPointToStack(Expr e) {
   or
   varMayPointToStack(e.(VariableAccess).getTarget())
   or
-  exprMaybeStackAllocated(e) and
-  e.getType() instanceof ArrayType and
-  e.getFullyConverted().getType() instanceof PointerType
+  (
+    exprMaybeStackAllocated(e) and
+    e.getType() instanceof ArrayType and
+    e.getFullyConverted().getType() instanceof PointerType
+  )
 }
 
 // a local variable possibly points to the stack if it is initialized to/assigned to
