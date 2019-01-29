@@ -107,6 +107,20 @@ predicate invalid_portable_is_comparison(Compare comp, Cmpop op, ClassObject cls
         left.refersTo(obj) and right.refersTo(obj) and
         exists(ImmutableLiteral il | il.getLiteralObject() = obj)
     )
+    and
+    /* OK to use 'is' when comparing with a member of an enum */
+    not exists(Expr left, Expr right, AstNode origin |
+        comp.compares(left, op, right) and
+        enum_member(origin) |
+        left.refersTo(_, origin) or right.refersTo(_, origin)
+    )
 }
 
+private predicate enum_member(AstNode obj) {
+    exists(ClassObject cls, AssignStmt asgn |
+        cls.getASuperType().getName() = "Enum" |
+        cls.getPyClass() = asgn.getScope() and
+        asgn.getValue() = obj
+    )
+}
 

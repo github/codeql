@@ -19,8 +19,7 @@ class TwistedRequest extends TaintKind {
         or
         result instanceof ExternalStringKind and
         (
-            name = "uri" or
-            name = "path"
+            name = "uri"
         )
     }
 

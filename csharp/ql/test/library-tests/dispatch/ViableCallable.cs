@@ -433,10 +433,10 @@ abstract class C16<T1, T2>
 
 class C17 : C16<string, int>
 {
-    int M(int i)
+    void M(int i)
     {
         // Viable callables: C16<string, int>.M1()
-        return this.M1("");
+        this.M1("");
 
         // Viable callables: C16<string, int>.M2<int>()
         this.M2(() => i);

@@ -127,10 +127,10 @@ module ZipSlip {
    */
   class StringCheckSanitizer extends Sanitizer {
     StringCheckSanitizer() {
-      exists(GuardedExpr ge, MethodCall mc, Expr startsWithQualifier |
-        ge = this.asExpr() and
-        ge.isGuardedBy(mc, startsWithQualifier, true)
+      exists(MethodCall mc, Expr startsWithQualifier, AbstractValues::BooleanValue v |
+        mc = this.(GuardedDataFlowNode).getAGuard(startsWithQualifier, v)
       |
+        v.getValue() = true and
         mc.getTarget().hasQualifiedName("System.String", "StartsWith") and
         mc.getQualifier() = startsWithQualifier and
         // A StartsWith check against Path.Combine is not sufficient, because the ".." elements have

@@ -31,87 +31,6 @@ module TaintTracking {
     localAdditionalTaintStep(nodeFrom, nodeTo)
   }
 
-  private CIL::DataFlowNode asCilDataFlowNode(DataFlow::Node node) {
-    result = node.asParameter() or
-    result = node.asExpr()
-  }
-
-  private predicate localTaintStepCil(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    asCilDataFlowNode(nodeFrom).getALocalFlowSucc(asCilDataFlowNode(nodeTo), any(CIL::Tainted t))
-  }
-
-  private cached predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    localAdditionalTaintStepExpr(nodeFrom.asExpr(), nodeTo.asExpr())
-    or
-    DataFlow::Internal::flowOutOfDelegateLibraryCall(nodeFrom, nodeTo, false)
-    or
-    // Taint from `foreach` expression
-    exists(ForeachStmt fs, AssignableDefinitions::LocalVariableDefinition def, Ssa::ExplicitDefinition ssaDef |
-      nodeFrom.asExpr() = fs.getIterableExpr() and
-      def.getTarget() = fs.getVariable() and
-      ssaDef.getADefinition() = def and
-      nodeTo.(DataFlow::Internal::SsaDefinitionNode).getDefinition() = ssaDef
-    )
-    or
-    localTaintStepCil(nodeFrom, nodeTo)
-  }
-
-  private predicate localAdditionalTaintStepExpr(Expr exprFrom, Expr exprTo) {
-    // Taint propagation using library code
-    libraryFlow(exprFrom, exprTo, false)
-    or
-    // Taint from assigned value to element qualifier (`x[i] = 0`)
-    exists(AssignExpr ae |
-      exprFrom = ae.getRValue() and
-      exprTo.(AssignableRead) = getElementAccessQualifier+(ae.getLValue())
-    )
-    or
-    // Taint from array initializer
-    exprFrom = exprTo.(ArrayCreation).getInitializer().getAnElement()
-    or
-    // Taint from object initializer
-    exists(ElementInitializer ei |
-      ei = exprTo.(ObjectCreation).getInitializer().(CollectionInitializer).getAnElementInitializer() and
-      exprFrom = ei.getArgument(ei.getNumberOfArguments() - 1) // assume the last argument is the value (i.e., not a key)
-    )
-    or
-    // Taint from element qualifier
-    exprFrom = exprTo.(ElementAccess).getQualifier()
-    or
-    exprFrom = exprTo.(AddExpr).getAnOperand()
-    or
-    // A comparison expression where taint can flow from one of the
-    // operands if the other operand is a constant value.
-    exists(ComparisonTest ct, Expr other |
-      ct.getExpr() = exprTo and
-      exprFrom = ct.getAnArgument() and
-      other = ct.getAnArgument() and
-      other.stripCasts().hasValue() and
-      exprFrom != other
-    )
-    or
-    exprFrom = exprTo.(LogicalOperation).getAnOperand()
-    or
-    // Taint from tuple argument
-    exprTo = any(TupleExpr te |
-      exprFrom = te.getAnArgument() and
-      te.isReadAccess()
-    )
-    or
-    exprFrom = exprTo.(InterpolatedStringExpr).getAChild()
-    or
-    // Taint from tuple expression
-    exprTo = any(MemberAccess ma |
-      ma.getQualifier().getType() instanceof TupleType and
-      exprFrom = ma.getQualifier()
-    )
-  }
-
-  /** Gets the qualifier of element access `ea`. */
-  private Expr getElementAccessQualifier(ElementAccess ea) {
-    result = ea.getQualifier()
-  }
-
   /**
    * A taint tracking configuration.
    *
@@ -163,7 +82,7 @@ module TaintTracking {
     override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
       isAdditionalTaintStep(pred, succ) or
       localAdditionalTaintStep(pred, succ) or
-      DataFlow::Internal::flowThroughCallableLibraryOutRef(_, pred.asExpr(), succ, false)
+      DataFlow::Internal::flowThroughCallableLibraryOutRef(_, pred, succ, false)
     }
 
     final
@@ -191,7 +110,135 @@ module TaintTracking {
     }
   }
 
-  private predicate canYieldReturn(Callable c, Expr e) {
-    c.getSourceDeclaration().canYieldReturn(e)
+  /** INTERNAL: Do not use. */
+  module Internal {
+    predicate canYieldReturn(Callable c, Expr e) {
+      c.getSourceDeclaration().canYieldReturn(e)
+    }
+
+    private CIL::DataFlowNode asCilDataFlowNode(DataFlow::Node node) {
+      result = node.asParameter() or
+      result = node.asExpr()
+    }
+
+    private predicate localTaintStepCil(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      asCilDataFlowNode(nodeFrom).getALocalFlowSucc(asCilDataFlowNode(nodeTo), any(CIL::Tainted t))
+    }
+
+    /** Gets the qualifier of element access `ea`. */
+    private Expr getElementAccessQualifier(ElementAccess ea) {
+      result = ea.getQualifier()
+    }
+
+    private class LocalTaintExprStepConfiguration extends DataFlow::Internal::ExprStepConfiguration {
+      LocalTaintExprStepConfiguration() { this = "LocalTaintExprStepConfiguration" }
+
+      override predicate stepsToExpr(Expr exprFrom, Expr exprTo, ControlFlowElement scope, boolean exactScope, boolean isSuccessor) {
+        exactScope = false and
+        (
+          // Taint propagation using library code
+          DataFlow::Internal::LocalFlow::libraryFlow(exprFrom, exprTo, scope, isSuccessor, false)
+          or
+          // Taint from assigned value to element qualifier (`x[i] = 0`)
+          exists(AssignExpr ae |
+            exprFrom = ae.getRValue() and
+            exprTo.(AssignableRead) = getElementAccessQualifier+(ae.getLValue()) and
+            scope = ae and
+            isSuccessor = false
+          )
+          or
+          // Taint from array initializer
+          exprFrom = exprTo.(ArrayCreation).getInitializer().getAnElement() and
+          scope = exprTo and
+          isSuccessor = false
+          or
+          // Taint from object initializer
+          exists(ElementInitializer ei |
+            ei = exprTo.(ObjectCreation).getInitializer().(CollectionInitializer).getAnElementInitializer() and
+            exprFrom = ei.getArgument(ei.getNumberOfArguments() - 1) and // assume the last argument is the value (i.e., not a key)
+            scope = exprTo and
+            isSuccessor = false
+          )
+          or
+          // Taint from element qualifier
+          exprFrom = exprTo.(ElementAccess).getQualifier() and
+          scope = exprTo and
+          isSuccessor = true
+          or
+          exprFrom = exprTo.(AddExpr).getAnOperand() and
+          scope = exprTo and
+          isSuccessor = true
+          or
+          // A comparison expression where taint can flow from one of the
+          // operands if the other operand is a constant value.
+          exists(ComparisonTest ct, Expr other |
+            ct.getExpr() = exprTo and
+            exprFrom = ct.getAnArgument() and
+            other = ct.getAnArgument() and
+            other.stripCasts().hasValue() and
+            exprFrom != other and
+            scope = exprTo and
+            isSuccessor = true
+          )
+          or
+          exprFrom = exprTo.(LogicalOperation).getAnOperand() and
+          scope = exprTo and
+          isSuccessor = false
+          or
+          // Taint from tuple argument
+          exprTo = any(TupleExpr te |
+            exprFrom = te.getAnArgument() and
+            te.isReadAccess() and
+            scope = exprTo and
+            isSuccessor = true
+          )
+          or
+          exprFrom = exprTo.(InterpolatedStringExpr).getAChild() and
+          scope = exprTo and
+          isSuccessor = true
+          or
+          // Taint from tuple expression
+          exprTo = any(MemberAccess ma |
+            ma.getQualifier().getType() instanceof TupleType and
+            exprFrom = ma.getQualifier() and
+            scope = exprTo and
+            isSuccessor = true
+          )
+        )
+      }
+
+      override predicate stepsToDefinition(Expr exprFrom, AssignableDefinition defTo, ControlFlowElement scope, boolean exactScope, boolean isSuccessor) {
+        // Taint from `foreach` expression
+        exists(ForeachStmt fs |
+          exprFrom = fs.getIterableExpr() and
+          defTo.(AssignableDefinitions::LocalVariableDefinition).getDeclaration() = fs.getVariableDeclExpr() and
+          isSuccessor = true
+        |
+          scope = fs and
+          exactScope = true
+          or
+          scope = fs.getIterableExpr() and
+          exactScope = false
+          or
+          scope = fs.getVariableDeclExpr() and
+          exactScope = false
+        )
+      }
+    }
+
+    cached module Cached {
+      cached predicate forceCachingInSameStage() { any() }
+
+      cached predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        DataFlow::Internal::Cached::forceCachingInSameStage() and
+        any(LocalTaintExprStepConfiguration x).hasStep(nodeFrom, nodeTo)
+        or
+        DataFlow::Internal::flowOutOfDelegateLibraryCall(nodeFrom, nodeTo, false)
+        or
+        localTaintStepCil(nodeFrom, nodeTo)
+      }
+    }
+    import Cached
   }
+  private import Internal
 }
