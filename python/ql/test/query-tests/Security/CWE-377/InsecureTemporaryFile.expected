@@ -1,1 +1,1 @@
-| InsecureTemporaryFile.py:4:16:4:23 | ControlFlowNode for mktemp() | Call to deprecated function mktemp may be insecure. |
+| InsecureTemporaryFile.py:5:16:5:23 | ControlFlowNode for mktemp() | Call to deprecated function $@.$@ may be insecure. | tempfile | mktemp |

@@ -3,13 +3,14 @@
 
 <overview>
 <p>
-Creating a new temporary file using the <code>mktemp</code> function in the
-<code>tempfile</code> does not ensure exclusive access to the file, as it simply
-returns a filename that is guaranteed to be unique at the point when
-<code>mktemp</code> returns. Opening a file with this name must then happen
-separately, and there is no guarantee that these operations will happen
-atomically. Because of this, it may be possible for an attacker to interfere
-with the file before it is opened.
+Functions that create temporary file names (such as <code>tempfile.mktemp</code>
+and <code>os.tempnam</code>) are fundamentally insecure, as they do not
+ensure exclusive access to a file with the temporary name they return.
+The file name returned by these functions is guaranteed to be unique on
+creation but the file must be opened in a separate operation. There is no
+guarantee that the creation and open operations will happen atomically. This
+provides an opportunity for an attacker to interfere with the file before it is
+opened.
 </p>
 <p>
 Note that <code>mktemp</code> has been deprecated since Python 2.3.
@@ -28,8 +29,8 @@ file is intended to be accessed from other processes, consider using the
 <example>
 <p>
 The following piece of code opens a temporary file and writes a set of results
-to it. Because the filename is created using <code>mktemp</code>, another
-process may have accessed this file before it is opened using <code>open</code>.
+to it. Because the file name is created using <code>mktemp</code>, another
+process may access this file before it is opened using <code>open</code>.
 </p>
 <sample src="InsecureTemporaryFile.py" />
 
