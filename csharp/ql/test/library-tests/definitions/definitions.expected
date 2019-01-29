@@ -30,7 +30,7 @@
 | definitions.cs:57:13:57:23 | Enumeration | definitions.cs:13:10:13:20 | Enumeration | T |
 | definitions.cs:57:29:57:39 | Enumeration | definitions.cs:13:10:13:20 | Enumeration | T |
 | definitions.cs:57:41:57:42 | access to constant e1 | definitions.cs:15:9:15:10 | e1 | V |
-| definitions.cs:60:13:60:21 | access to property property1 | definitions.cs:24:20:24:28 | property1 | M |
+| definitions.cs:60:13:60:21 | access to property property1 | definitions.cs:24:20:24:28 | property1 | V |
 | definitions.cs:60:25:60:33 | access to property property1 | definitions.cs:24:20:24:28 | property1 | M |
 | definitions.cs:63:13:63:14 | C1 | definitions.cs:18:11:18:12 | C1 | T |
 | definitions.cs:64:13:64:14 | S1 | definitions.cs:78:12:78:13 | S1 | T |
@@ -45,11 +45,11 @@
 | definitions.cs:92:31:92:32 | S1 | definitions.cs:78:12:78:13 | S1 | T |
 | definitions.cs:93:24:93:25 | S1 | definitions.cs:78:12:78:13 | S1 | M |
 | definitions.cs:101:22:101:33 | EventHandler | definitions.cs:99:30:99:41 | EventHandler | T |
-| definitions.cs:105:13:105:17 | access to event Click | definitions.cs:101:35:101:39 | Click | M |
+| definitions.cs:105:13:105:17 | access to event Click | definitions.cs:101:35:101:39 | Click | V |
 | definitions.cs:105:22:105:22 | access to method M | definitions.cs:103:32:103:32 | M | M |
-| definitions.cs:107:13:107:17 | access to event Click | definitions.cs:101:35:101:39 | Click | M |
+| definitions.cs:107:13:107:17 | access to event Click | definitions.cs:101:35:101:39 | Click | V |
 | definitions.cs:107:22:107:34 | access to local function LocalFunction | definitions.cs:106:13:106:36 | LocalFunction | M |
-| definitions.cs:108:13:108:17 | access to event Click | definitions.cs:101:35:101:39 | Click | M |
+| definitions.cs:108:13:108:17 | access to event Click | definitions.cs:101:35:101:39 | Click | V |
 | definitions.cs:114:28:114:28 | T | definitions.cs:114:17:114:17 | T | T |
 | definitions.cs:114:32:114:32 | A | definitions.cs:97:11:97:11 | A | T |
 | definitions.cs:117:27:117:27 | T | definitions.cs:117:18:117:18 | T | T |
@@ -109,7 +109,7 @@
 | definitions.cs:171:13:171:17 | C1 | definitions.cs:18:11:18:12 | C1 | T |
 | definitions.cs:171:27:171:31 | C1 | definitions.cs:18:11:18:12 | C1 | M |
 | definitions.cs:172:13:172:13 | access to local variable c | definitions.cs:171:19:171:19 | c | V |
-| definitions.cs:172:15:172:23 | access to property property1 | definitions.cs:24:20:24:28 | property1 | M |
+| definitions.cs:172:15:172:23 | access to property property1 | definitions.cs:24:20:24:28 | property1 | V |
 | definitions.cs:172:27:172:27 | access to local variable c | definitions.cs:171:19:171:19 | c | V |
 | definitions.cs:172:29:172:37 | access to property property1 | definitions.cs:24:20:24:28 | property1 | M |
 | definitions.cs:173:13:173:15 | C5 | definitions.cs:164:11:164:12 | C5 | T |
@@ -117,7 +117,7 @@
 | definitions.cs:173:34:173:35 | C5 | definitions.cs:164:11:164:12 | C5 | T |
 | definitions.cs:174:13:174:14 | access to local variable c5 | definitions.cs:173:17:173:18 | c5 | V |
 | definitions.cs:174:16:174:17 | access to field c1 | definitions.cs:167:12:167:13 | c1 | V |
-| definitions.cs:174:19:174:27 | access to property property1 | definitions.cs:24:20:24:28 | property1 | M |
+| definitions.cs:174:19:174:27 | access to property property1 | definitions.cs:24:20:24:28 | property1 | V |
 | definitions.cs:175:24:175:25 | access to local variable c5 | definitions.cs:173:17:173:18 | c5 | V |
 | definitions.cs:175:30:175:34 | C4 | definitions.cs:151:11:151:12 | C4 | T |
 | definitions.cs:175:36:175:41 | Nested<I4> | definitions.cs:158:22:158:30 | Nested<> | T |

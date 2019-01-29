@@ -36,7 +36,7 @@ class Namespace extends NameQualifyingElement, @namespace {
   /** Holds if this element is named `name`. */
   predicate hasName(string name) { name = this.getName() }
 
-  /** Holds if the namespace is anonymous. */
+  /** Holds if this namespace is anonymous. */
   predicate isAnonymous() {
     hasName("(unnamed namespace)")
   }

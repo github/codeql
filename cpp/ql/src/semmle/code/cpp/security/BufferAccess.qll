@@ -293,6 +293,32 @@ class MemchrBA extends BufferAccess {
 }
 
 /**
+ * Calls to fread.
+ *  fread(buffer, size, number, file)
+ */
+class FreadBA extends BufferAccess {
+  FreadBA() {
+    this.(FunctionCall).getTarget().getName() = "fread"
+  }
+  
+  override string getName() {
+    result = this.(FunctionCall).getTarget().getName()
+  }
+
+  override Expr getBuffer(string bufferDesc, int accessType) {
+    result = this.(FunctionCall).getArgument(0) and
+    bufferDesc = "destination buffer" and
+    accessType = 2
+  }
+
+  override int getSize() {
+    result =
+      this.(FunctionCall).getArgument(1).getValue().toInt() *
+      this.(FunctionCall).getArgument(2).getValue().toInt()
+  }
+}
+
+/**
  * A array access on a buffer:
  *  buffer[ix]
  * but not:

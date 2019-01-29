@@ -19,7 +19,7 @@ class TestAllocationConfig extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node sink) {
     exists(FunctionCall call |
       call.getTarget().getName() = "sink" and
-      sink.asExpr() = call.getAnArgument().getFullyConverted()
+      sink.asExpr() = call.getAnArgument()
     )
   }
 

@@ -151,6 +151,14 @@ class Object extends @py_object {
         )
     }
 
+    final predicate maybe() {
+        not exists(this.booleanValue())
+    }
+
+    predicate notClass() {
+        any()
+    }
+
     /** Holds if this object can be referred to by `longName`
      * For example, the modules `dict` in the `sys` module
      * has the long name `sys.modules` and the name `os.path.join`

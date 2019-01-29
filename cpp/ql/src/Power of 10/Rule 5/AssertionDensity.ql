@@ -3,7 +3,10 @@
  * @description Each function over 20 logical lines should have at least two assertions.
  * @kind problem
  * @id cpp/power-of-10/assertion-density
- * @problem.severity warning
+ * @problem.severity recommendation
+ * @tags maintainability
+ *       reliability
+ *       external/powerof10
  */
 
 import semmle.code.cpp.commons.Assertions

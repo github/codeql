@@ -185,14 +185,8 @@
 | CSharp7.cs:284:41:284:48 | access to property Key | CSharp7.cs:284:40:284:61 | (..., ...) |
 | CSharp7.cs:284:51:284:54 | access to parameter item | CSharp7.cs:284:51:284:60 | access to property Value |
 | CSharp7.cs:284:51:284:60 | access to property Value | CSharp7.cs:284:40:284:61 | (..., ...) |
-| CSharp7.cs:286:23:286:23 | Int32 a | CSharp7.cs:286:18:286:34 | (..., ...) |
-| CSharp7.cs:286:33:286:33 | String b | CSharp7.cs:286:18:286:34 | (..., ...) |
 | CSharp7.cs:286:39:286:42 | access to local variable list | CSharp7.cs:288:36:288:39 | access to local variable list |
-| CSharp7.cs:288:23:288:23 | Int32 a | CSharp7.cs:288:18:288:31 | (..., ...) |
-| CSharp7.cs:288:30:288:30 | String b | CSharp7.cs:288:18:288:31 | (..., ...) |
 | CSharp7.cs:288:36:288:39 | access to local variable list | CSharp7.cs:290:32:290:35 | access to local variable list |
-| CSharp7.cs:290:23:290:23 | Int32 a | CSharp7.cs:290:18:290:27 | (..., ...) |
-| CSharp7.cs:290:26:290:26 | String b | CSharp7.cs:290:18:290:27 | (..., ...) |
 | CSharp7.cs:298:17:298:19 | SSA def(x) | CSharp7.cs:298:22:298:39 | SSA phi(x) |
 | CSharp7.cs:298:19:298:19 | 0 | CSharp7.cs:298:17:298:19 | SSA def(x) |
 | CSharp7.cs:298:22:298:22 | access to local variable x | CSharp7.cs:298:22:298:25 | ... < ... |

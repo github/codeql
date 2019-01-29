@@ -31,13 +31,13 @@ class NestedUnion extends Union {
     this.isMember()
   }
 
-  /** Whether this member is private. */
+  /** Holds if this member is private. */
   predicate isPrivate() { this.hasSpecifier("private") }
 
-  /** Whether this member is protected. */
+  /** Holds if this member is protected. */
   predicate isProtected() { this.hasSpecifier("protected") }
 
-  /** Whether this member is public. */
+  /** Holds if this member is public. */
   predicate isPublic() { this.hasSpecifier("public") }
 
 }

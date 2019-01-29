@@ -3,6 +3,7 @@
  * @description Shows general statistics about the application.
  * @kind table
  * @id cpp/architecture/general-statistics
+ * @tags maintainability
  */
 import cpp
 

@@ -119,7 +119,7 @@ module PointsTo {
             or
             exists(Module init |
                 init = package.getInitModule().getModule() |
-                not exists(Variable v | v.getScope() = init | v.getId() = name or v.getId() = "*")
+                not exists(PythonSsaSourceVariable v | v.getScope() = init | v.getName() = name or v.getName() = "*")
                 or
                 exists(EssaVariable v, PointsToContext imp |
                     v.getScope() = init and v.getName() = "*" and v.getAUse() = init.getANormalExit() |
@@ -139,15 +139,15 @@ module PointsTo {
                 var.getSourceVariable().getName() = name and
                 ssa_variable_points_to(var, imp, obj, cls, orig) and
                 imp.isImport() and
-                not obj = undefinedVariable() |
+                obj != undefinedVariable() |
                 origin = origin_from_object_or_here(orig, exit)
             )
             or
             not exists(EssaVariable var | var.getAUse() = m.getANormalExit() and var.getSourceVariable().getName() = name) and
             exists(EssaVariable var, PointsToContext imp |
-                var.getAUse() = m.getANormalExit() and var.getSourceVariable().getName() = "*" |
+                var.getAUse() = m.getANormalExit() and var.getName() = "*" |
                 SSA::ssa_variable_named_attribute_points_to(var, imp, name, obj, cls, origin) and
-                imp.isImport() and not obj = undefinedVariable()
+                imp.isImport() and obj != undefinedVariable()
             )
         }
 
@@ -257,7 +257,7 @@ module PointsTo {
         /** Holds if `f` is the instantiation of an object, `cls(...)`.  */
         cached predicate instantiation(CallNode f, PointsToContext context, ClassObject cls) {
             points_to(f.getFunction(), context, cls, _, _) and
-            not cls = theTypeType() and
+            cls != theTypeType() and
             Types::callToClassWillReturnInstance(cls)
         }
 
@@ -265,7 +265,6 @@ module PointsTo {
         cached predicate ssa_variable_points_to(EssaVariable var, PointsToContext context, Object value, ClassObject cls, ObjectOrCfg origin) {
             SSA::ssa_definition_points_to(var.getDefinition(), context, value, cls, origin)
         }
-
 
     }
 
@@ -313,7 +312,7 @@ module PointsTo {
             )
             or
             exists(Object obj |
-                not obj = undefinedVariable() and
+                obj != undefinedVariable() and
                 py_module_attributes(mod.getModule(), name, obj, _, _)
             ) and result = true
             or
@@ -346,7 +345,7 @@ module PointsTo {
     private boolean package_exports_boolean(PackageObject pack, string name) {
         explicitly_imported(pack.submodule(name)) and
         (
-            not exists(pack.getInitModule())
+            pack.hasNoInitModule()
             or
             exists(ModuleObject init |
                 pack.getInitModule() = init |
@@ -382,9 +381,11 @@ module PointsTo {
                 exists(Object value |
                     points_to(guard.getLastNode(), context, value, _, _)
                     |
-                    guard.controls(b, true) and not value.booleanValue() = false
+                    guard.controls(b, _) and value.maybe()
                     or
-                    guard.controls(b, false) and not value.booleanValue() = true
+                    guard.controls(b, true) and value.booleanValue() = true
+                    or
+                    guard.controls(b, false) and value.booleanValue() = false
                 )
                 or
                 /* Assume the true edge of an assert is reachable (except for assert 0/False) */
@@ -403,9 +404,11 @@ module PointsTo {
             exists(ConditionBlock guard, Object value |
                 points_to(guard.getLastNode(), context, value, _, _)
                 |
-                guard.controlsEdge(pred, succ, true) and not value.booleanValue() = false
+                guard.controlsEdge(pred, succ, _) and value.maybe()
                 or
-                guard.controlsEdge(pred, succ, false) and not value.booleanValue() = true
+                guard.controlsEdge(pred, succ, true) and value.booleanValue() = true
+                or
+                guard.controlsEdge(pred, succ, false) and value.booleanValue() = false
             )
         }
 
@@ -554,7 +557,7 @@ module PointsTo {
     /** Gets an object pointed to by a use (of a variable). */
     private predicate use_points_to(NameNode f, PointsToContext context, Object value, ClassObject cls, ControlFlowNode origin) {
         exists(ObjectOrCfg origin_or_obj |
-            not value = undefinedVariable() and
+            value != undefinedVariable() and
             use_points_to_maybe_origin(f, context, value, cls, origin_or_obj) |
             origin = origin_from_object_or_here(origin_or_obj, f)
         )
@@ -578,7 +581,7 @@ module PointsTo {
     pragma [noinline]
     private predicate class_or_module_attribute(Object obj, string name, Object value, ClassObject cls, ObjectOrCfg orig) {
         /* Normal class attributes */
-        Types::class_attribute_lookup(obj, name, value, cls, orig) and not cls = theStaticMethodType() and not cls = theClassMethodType()
+        Types::class_attribute_lookup(obj, name, value, cls, orig) and cls != theStaticMethodType() and cls != theClassMethodType()
         or
         /* Static methods of the class */
         exists(CallNode sm | Types::class_attribute_lookup(obj, name, sm, theStaticMethodType(), _) and sm.getArg(0) = value and cls = thePyFunctionType() and orig = value)
@@ -635,6 +638,11 @@ module PointsTo {
         )
         or
         points_to(f.getObject(), context, unknownValue(), theUnknownType(), origin) and value = unknownValue() and cls = theUnknownType()
+        or
+        exists(CustomPointsToAttribute object, string name |
+            points_to(f.getObject(name), context, object, _, _) and
+            object.attributePointsTo(name, value, cls, origin)
+        )
     }
 
     /** Holds if `f` is an expression node `tval if cond else fval` and points to `(value, cls, origin)`. */
@@ -849,9 +857,13 @@ module PointsTo {
         exists(Object operand |
             points_to(f.getOperand(), context, operand, _, _)
             |
-            not operand.booleanValue() = true and value = theTrueObject()
+            operand.maybe() and value = theTrueObject()
             or
-            not operand.booleanValue() = false and value = theFalseObject()
+            operand.maybe() and value = theFalseObject()
+            or
+            operand.booleanValue() = false and value = theTrueObject()
+            or
+            operand.booleanValue() = true and value = theFalseObject()
         )
     }
 
@@ -999,17 +1011,18 @@ module PointsTo {
          pragma [noinline]
          predicate call_points_to_builtin_function(CallNode f, PointsToContext context, Object value, ClassObject cls, ControlFlowNode origin) {
              exists(BuiltinCallable b |
-                 not b = builtin_object("isinstance") and
-                 not b = builtin_object("issubclass") and
-                 not b = builtin_object("callable") and
+                 b != builtin_object("isinstance") and
+                 b != builtin_object("issubclass") and
+                 b != builtin_object("callable") and
                  f = get_a_call(b, context) and
                  cls = b.getAReturnType()
              ) and
              f = origin and
-             if cls = theNoneType() then
-                 value = theNoneObject()
-             else
-                 value = f
+             (
+                cls = theNoneType() and value = theNoneObject()
+                or
+                cls != theNoneType() and value = f
+             )
          }
 
          /** Holds if call is to an object that always returns its first argument.
@@ -1156,7 +1169,7 @@ module PointsTo {
              cls != theSuperType() and
              exists(Object o |
                  /* list.__init__() is not a call to type.__init__() */
-                 not o instanceof ClassObject |
+                 o.notClass() |
                  points_to(n.(AttrNode).getObject(name), context, o, cls, _)
              )
              or
@@ -1199,12 +1212,14 @@ module PointsTo {
 
          /** Holds if `func` implicitly returns the `None` object */
          predicate implicitly_returns(PyFunctionObject func, Object none_, ClassObject noneType) {
-            noneType = theNoneType() and not func.getFunction().isGenerator() and none_ = theNoneObject() and
-            (
-              not exists(func.getAReturnedNode()) and exists(func.getFunction().getANormalExit())
-              or
-              exists(Return ret | ret.getScope() = func.getFunction() and not exists(ret.getValue()))
-            )
+             noneType = theNoneType() and none_ = theNoneObject() and
+             exists(Function f |
+                 f = func.getFunction() and not f.isGenerator()
+                 |
+                 not exists(Return ret | ret.getScope() = f) and exists(f.getANormalExit())
+                 or
+                 exists(Return ret | ret.getScope() = f and not exists(ret.getValue()))
+             )
          }
 
     }
@@ -1240,7 +1255,10 @@ module PointsTo {
                  * is available to all functions. Although not strictly true, this gives less surprising
                  * results in practice. */
                 pred_context.isMain() and pred_scope instanceof Module and succ_context.fromRuntime() and
-                not strictcount(pred_var.getSourceVariable().(Variable).getAStore()) > 1
+                exists(Variable v |
+                    v = pred_var.getSourceVariable() and
+                    not strictcount(v.getAStore()) > 1
+                )
             )
             or
             exists(NonEscapingGlobalVariable var |
@@ -1567,8 +1585,8 @@ module PointsTo {
                 deco = f.getADecorator().getAFlowNode() |
                 exists(Object o |
                     points_to(deco, _, o, _, _) |
-                    not o = theStaticMethodType() and
-                    not o = theClassMethodType()
+                    o != theStaticMethodType() and
+                    o != theClassMethodType()
                 )
                 or not deco instanceof NameNode
             )
@@ -1585,7 +1603,7 @@ module PointsTo {
                 |
                 obj instanceof ClassObject and value = obj and cls = objcls
                 or
-                not obj instanceof ClassObject and value = objcls and cls = Types::class_get_meta_class(objcls)
+                obj.notClass() and value = objcls and cls = Types::class_get_meta_class(objcls)
              )
         }
 
@@ -1703,16 +1721,17 @@ module PointsTo {
                 call = def.getCall() and
                 var = def.getSourceVariable() and
                 context.untrackableCall(call) and
-                exists(PyFunctionObject modifier |
+                exists(PyFunctionObject modifier, Function f |
+                    f = modifier.getFunction() and
                     call = get_a_call(modifier, context) and
-                    not modifies_escaping_variable(modifier, var)
+                    not modifies_escaping_variable(f, var)
                 )
             )
         }
 
-        private predicate modifies_escaping_variable(FunctionObject modifier, PythonSsaSourceVariable var) {
+        private predicate modifies_escaping_variable(Function modifier, PythonSsaSourceVariable var) {
             exists(var.redefinedAtCallSite()) and
-            modifier.getFunction().getBody().contains(var.(Variable).getAStore())
+            modifier.getBody().contains(var.(Variable).getAStore())
         }
 
         pragma [noinline]
@@ -2316,7 +2335,7 @@ module PointsTo {
             or
             cls = theObjectType() and result = 0
             or
-            exists(builtin_base_type(cls)) and not cls = theObjectType() and result = 1
+            exists(builtin_base_type(cls)) and cls != theObjectType() and result = 1
             or
             cls = theUnknownType() and result = 1
         }
@@ -2472,7 +2491,7 @@ module PointsTo {
         /** INTERNAL -- Use `ClassObject.declaredAttribute(name). instead. */
         cached predicate class_declared_attribute(ClassObject owner, string name, Object value, ClassObject vcls, ObjectOrCfg origin) {
             /* Note that src_var must be a local variable, we aren't interested in the value that any global variable may hold */
-             not value = undefinedVariable() and
+             value != undefinedVariable() and
              exists(EssaVariable var, LocalVariable src_var |
                 var.getSourceVariable() = src_var and
                 src_var.getId() = name and
@@ -2557,7 +2576,12 @@ module PointsTo {
             or
             exists(int i | failed_inference(class_base_type(cls, i), _) and reason = "Failed inference for base class at position " + i)
             or
-            exists(int i | strictcount(class_base_type(cls, i)) > 1 and reason = "Multiple bases at position " + i)
+            exists(int i, Object base1, Object base2 |
+                base1 = class_base_type(cls, i) and
+                base2 = class_base_type(cls, i) and
+                base1 != base2 and
+                reason = "Multiple bases at position " + i
+            )
             or
             exists(int i, int j | class_base_type(cls, i) = class_base_type(cls, j) and i != j and reason = "Duplicate bases classes")
             or
@@ -2577,7 +2601,7 @@ module PointsTo {
 
         private ClassObject declared_meta_class(ClassObject cls) {
             exists(Object obj |
-                ssa_variable_points_to(metaclass_var(cls), _, obj, _, _) |
+                ssa_variable_points_to(metaclass_var(cls.getPyClass()), _, obj, _, _) |
                 result = obj
                 or
                 obj = unknownValue() and result = theUnknownType()
@@ -2593,28 +2617,30 @@ module PointsTo {
 
         private boolean has_metaclass_var_metaclass(ClassObject cls) {
             exists(Object obj |
-                ssa_variable_points_to(metaclass_var(cls), _, obj, _, _) |
+                ssa_variable_points_to(metaclass_var(cls.getPyClass()), _, obj, _, _) |
                 obj = undefinedVariable() and result = false
                 or
                 obj != undefinedVariable() and result = true
             )
             or
-            not exists(metaclass_var(cls)) and result = false
+            exists(Class pycls |
+                pycls = cls.getPyClass() and
+                not exists(metaclass_var(pycls)) and result = false
+            )
         }
 
         private boolean has_declared_metaclass(ClassObject cls) {
             py_cobjecttypes(cls, _) and result = true
             or
-            not cls.isBuiltin() and
             result = has_six_add_metaclass(cls).booleanOr(has_metaclass_var_metaclass(cls))
         }
 
-        private EssaVariable metaclass_var(ClassObject cls) {
-            result.getASourceUse() = cls.getPyClass().getMetaClass().getAFlowNode()
+        private EssaVariable metaclass_var(Class cls) {
+            result.getASourceUse() = cls.getMetaClass().getAFlowNode()
             or
-            major_version() = 2 and not exists(cls.getPyClass().getMetaClass()) and
+            major_version() = 2 and not exists(cls.getMetaClass()) and
             result.getName() = "__metaclass__" and
-            cls.getPyClass().(ImportTimeScope).entryEdge(result.getAUse(), _)
+            cls.(ImportTimeScope).entryEdge(result.getAUse(), _)
         }
 
         private ClassObject get_inherited_metaclass(ClassObject cls) {
@@ -2624,7 +2650,7 @@ module PointsTo {
             exists(Object base |
                 base = class_base_type(cls, _) and
                 result = theUnknownType() |
-                not base instanceof ClassObject
+                base.notClass()
                 or
                 base = theUnknownType()
             )

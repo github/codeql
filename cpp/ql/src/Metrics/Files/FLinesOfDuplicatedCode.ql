@@ -8,9 +8,9 @@
  * @metricType file
  * @metricAggregate avg sum max
  * @precision high
+ * @id cpp/duplicated-lines-in-files
  * @tags testability
  *       modularity
- * @id cpp/duplicated-lines-in-files
  */
 import external.CodeDuplication
 

@@ -417,7 +417,9 @@ class AccessOrCallExpr extends Expr {
    * An expression can have more than one SSA qualifier in the presence
    * of control flow splitting.
    */
-  Ssa::Definition getAnSsaQualifier() { result = getAnSsaQualifier(this) }
+  Ssa::Definition getAnSsaQualifier(ControlFlow::Node cfn) {
+    result = getAnSsaQualifier(this, cfn)
+  }
 }
 
 private Declaration getDeclarationTarget(Expr e) {
@@ -425,18 +427,20 @@ private Declaration getDeclarationTarget(Expr e) {
   result = e.(Call).getTarget()
 }
 
-private Ssa::Definition getAnSsaQualifier(Expr e) {
-  e = getATrackedAccess(result)
+private Ssa::Definition getAnSsaQualifier(Expr e, ControlFlow::Node cfn) {
+  e = getATrackedAccess(result, cfn)
   or
-  not e = getATrackedAccess(_) and
-  result = getAnSsaQualifier(e.(QualifiableExpr).getQualifier())
+  not e = getATrackedAccess(_, _) and
+  result = getAnSsaQualifier(e.(QualifiableExpr).getQualifier(), cfn)
 }
 
-private AssignableAccess getATrackedAccess(Ssa::Definition def) {
+private AssignableAccess getATrackedAccess(Ssa::Definition def, ControlFlow::Node cfn) {
   (
-    result = def.getARead()
+    result = def.getAReadAtNode(cfn)
     or
-    result = def.(Ssa::ExplicitDefinition).getADefinition().getTargetAccess()
+    result = def.(Ssa::ExplicitDefinition).getADefinition().getTargetAccess() and
+    result.getAControlFlowNode() = cfn and
+    cfn.getBasicBlock() = def.getBasicBlock()
   ) and
   not def instanceof Ssa::ImplicitUntrackedDefinition
 }
@@ -483,7 +487,7 @@ class GuardedExpr extends AccessOrCallExpr {
   private AccessOrCallExpr sub0;
   private AbstractValue v0;
 
-  GuardedExpr() { isGuardedBy(this, g, sub0, v0) }
+  GuardedExpr() { isGuardedByExpr(this, g, sub0, v0) }
 
   /**
    * Gets an expression that guards this expression. That is, this expression is
@@ -525,9 +529,125 @@ class GuardedExpr extends AccessOrCallExpr {
   }
 }
 
+/**
+ * A guarded control flow node. A guarded control flow node is like a guarded
+ * expression (`GuardedExpr`), except control flow graph splitting is taken
+ * into account. That is, one control flow node belonging to an expression may
+ * be guarded, while another split need not be guarded:
+ *
+ * ```
+ * if (b)
+ *     if (x == null)
+ *         return;
+ * x.ToString();
+ * if (b)
+ *     ...
+ * ```
+ *
+ * In the example above, the node for `x.ToString()` is null-guarded in the
+ * split `b == true`, but not in the split `b == false`.
+ */
+class GuardedControlFlowNode extends ControlFlow::Nodes::ElementNode {
+  private Guard g;
+  private AccessOrCallExpr sub0;
+  private AbstractValue v0;
+
+  GuardedControlFlowNode() { isGuardedByNode(this, g, sub0, v0) }
+
+  /**
+   * Gets an expression that guards this control flow node. That is, this control
+   * flow node is only reached when the returned expression has abstract value `v`.
+   *
+   * The expression `sub` is a sub expression of the guarding expression that is
+   * structurally equal to the expression belonging to this control flow node.
+   *
+   * In case this control flow node or `sub` accesses an SSA variable in its
+   * left-most qualifier, then so must the other (accessing the same SSA
+   * variable).
+   */
+  Expr getAGuard(Expr sub, AbstractValue v) {
+    result = g and
+    sub = sub0 and
+    v = v0
+  }
+
+  /**
+   * Holds if this control flow node must have abstract value `v`. That is, this
+   * control flow node is guarded by a structurally equal expression having
+   * abstract value `v`.
+   */
+  predicate mustHaveValue(AbstractValue v) {
+    exists(Expr e | e = this.getAGuard(e, v))
+  }
+}
+
+/**
+ * A guarded data flow node. A guarded data flow node is like a guarded expression
+ * (`GuardedExpr`), except control flow graph splitting is taken into account. That
+ * is, one data flow node belonging to an expression may be guarded, while another
+ * split need not be guarded:
+ *
+ * ```
+ * if (b)
+ *     if (x == null)
+ *         return;
+ * x.ToString();
+ * if (b)
+ *     ...
+ * ```
+ *
+ * In the example above, the node for `x.ToString()` is null-guarded in the
+ * split `b == true`, but not in the split `b == false`.
+ */
+class GuardedDataFlowNode extends DataFlow::ExprNode {
+  private Guard g;
+  private AccessOrCallExpr sub0;
+  private AbstractValue v0;
+
+  GuardedDataFlowNode() {
+    exists(ControlFlow::Nodes::ElementNode cfn |
+      exists(this.getExprAtNode(cfn)) |
+      isGuardedByNode(cfn, g, sub0, v0)
+    )
+  }
+
+  /**
+   * Gets an expression that guards this data flow node. That is, this data flow
+   * node is only reached when the returned expression has abstract value `v`.
+   *
+   * The expression `sub` is a sub expression of the guarding expression that is
+   * structurally equal to the expression belonging to this data flow node.
+   *
+   * In case this data flow node or `sub` accesses an SSA variable in its
+   * left-most qualifier, then so must the other (accessing the same SSA
+   * variable).
+   */
+  Expr getAGuard(Expr sub, AbstractValue v) {
+    result = g and
+    sub = sub0 and
+    v = v0
+  }
+
+  /**
+   * Holds if this data flow node must have abstract value `v`. That is, this
+   * data flow node is guarded by a structurally equal expression having
+   * abstract value `v`.
+   */
+  predicate mustHaveValue(AbstractValue v) {
+    exists(Expr e | e = this.getAGuard(e, v))
+  }
+}
+
 /** An expression guarded by a `null` check. */
 class NullGuardedExpr extends GuardedExpr {
   NullGuardedExpr() {
+    this.mustHaveValue(any(NullValue v | not v.isNull()))
+  }
+}
+
+/** A data flow node guarded by a `null` check. */
+class NullGuardedDataFlowNode extends GuardedDataFlowNode {
+  NullGuardedDataFlowNode() {
     this.mustHaveValue(any(NullValue v | not v.isNull()))
   }
 }
@@ -653,7 +773,7 @@ module Internal {
      * Holds if control flow node `cfn` only is reached when this guard evaluates to `v`,
      * because of an assertion.
      */
-    private predicate assertionControlsNode(ControlFlow::Node cfn, AbstractValue v) {
+    predicate assertionControlsNode(ControlFlow::Node cfn, AbstractValue v) {
       exists(Assertion a, Guard g, AbstractValue v0 |
         asserts(a, g, v0) and
         impliesSteps(g, v0, this, v)
@@ -1097,17 +1217,17 @@ module Internal {
 
   private cached module Cached {
     pragma[noinline]
-    private predicate isGuardedBy0(ControlFlow::Node cfn, AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub, AbstractValue v) {
+    private predicate isGuardedByNode0(ControlFlow::Node cfn, AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub, AbstractValue v) {
       cfn = guarded.getAControlFlowNode() and
       g.controls(cfn.getBasicBlock(), v) and
       exists(ConditionOnExprComparisonConfig c | c.same(sub, guarded))
     }
 
     pragma[noinline]
-    private predicate isGuardedBy1(AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub, AbstractValue v) {
+    private predicate isGuardedByExpr1(AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub, AbstractValue v) {
       forex(ControlFlow::Node cfn |
         cfn = guarded.getAControlFlowNode() |
-        isGuardedBy0(cfn, guarded, g, sub, v)
+        isGuardedByNode0(cfn, guarded, g, sub, v)
       )
       or
       g.assertionControlsElement(guarded, v) and
@@ -1115,12 +1235,33 @@ module Internal {
     }
 
     cached
-    predicate isGuardedBy(AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub, AbstractValue v) {
-      isGuardedBy1(guarded, g, sub, v) and
+    predicate isGuardedByExpr(AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub, AbstractValue v) {
+      isGuardedByExpr1(guarded, g, sub, v) and
       sub = g.getAChildExpr*() and
       forall(Ssa::Definition def |
-        def = sub.getAnSsaQualifier() |
-        def = guarded.getAnSsaQualifier()
+        def = sub.getAnSsaQualifier(_) |
+        def = guarded.getAnSsaQualifier(_)
+      )
+    }
+
+    pragma[noinline]
+    private predicate isGuardedByNode1(ControlFlow::Nodes::ElementNode guarded, Guard g, AccessOrCallExpr sub, AbstractValue v) {
+      isGuardedByNode0(guarded, _, g, sub, v)
+      or
+      g.assertionControlsNode(guarded, v) and
+      exists(ConditionOnExprComparisonConfig c | c.same(sub, guarded.getElement()))
+    }
+
+    cached
+    predicate isGuardedByNode(ControlFlow::Nodes::ElementNode guarded, Guard g, AccessOrCallExpr sub, AbstractValue v) {
+      isGuardedByNode1(guarded, g, sub, v) and
+      sub = g.getAChildExpr*() and
+      forall(Ssa::Definition def |
+        def = sub.getAnSsaQualifier(_) |
+        exists(ControlFlow::Node cfn |
+          def = guarded.getElement().(AccessOrCallExpr).getAnSsaQualifier(cfn) |
+          cfn.getBasicBlock() = guarded.getBasicBlock()
+        )
       )
     }
 

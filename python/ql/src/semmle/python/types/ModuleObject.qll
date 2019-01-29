@@ -226,6 +226,14 @@ class PackageObject extends ModuleObject {
         result.getModule() = this.getModule().getInitModule()
     }
 
+    /** Holds if this package has no `__init__.py` file. */
+    predicate hasNoInitModule() {
+        not exists(Module m |
+            m.isPackageInit() and
+            m.getFile().getParent() = this.getPath()
+        )
+    }
+
     override predicate exportsComplete() {
         not exists(this.getInitModule())
         or
@@ -257,3 +265,12 @@ class PackageObject extends ModuleObject {
 
 }
 
+/** Utility module for predicates relevant to the `ModuleObject` class. */
+module ModuleObject {
+
+    /** Gets a `ModuleObject` called `name`, if it exists. */
+    ModuleObject named(string name) {
+        result.getName() = name
+    }
+
+}

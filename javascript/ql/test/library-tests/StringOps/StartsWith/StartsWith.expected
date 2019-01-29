@@ -1,0 +1,14 @@
+| tst.js:5:9:5:23 | A.startsWith(B) | tst.js:5:9:5:9 | A | tst.js:5:22:5:22 | B | true |
+| tst.js:6:9:6:26 | _.startsWith(A, B) | tst.js:6:22:6:22 | A | tst.js:6:25:6:25 | B | true |
+| tst.js:7:9:7:26 | R.startsWith(A, B) | tst.js:7:22:7:22 | A | tst.js:7:25:7:25 | B | true |
+| tst.js:8:9:8:26 | A.indexOf(B) === 0 | tst.js:8:9:8:9 | A | tst.js:8:19:8:19 | B | true |
+| tst.js:9:9:9:26 | A.indexOf(B) !== 0 | tst.js:9:9:9:9 | A | tst.js:9:19:9:19 | B | false |
+| tst.js:10:9:10:26 | 0 !== A.indexOf(B) | tst.js:10:15:10:15 | A | tst.js:10:25:10:25 | B | false |
+| tst.js:11:9:11:25 | 0 != A.indexOf(B) | tst.js:11:14:11:14 | A | tst.js:11:24:11:24 | B | false |
+| tst.js:12:9:12:20 | A.indexOf(B) | tst.js:12:9:12:9 | A | tst.js:12:19:12:19 | B | false |
+| tst.js:13:10:13:21 | A.indexOf(B) | tst.js:13:10:13:10 | A | tst.js:13:20:13:20 | B | false |
+| tst.js:14:11:14:22 | A.indexOf(B) | tst.js:14:11:14:11 | A | tst.js:14:21:14:21 | B | false |
+| tst.js:15:9:15:38 | A.subst ... ) === B | tst.js:15:9:15:9 | A | tst.js:15:38:15:38 | B | true |
+| tst.js:16:9:16:38 | A.subst ... ) !== B | tst.js:16:9:16:9 | A | tst.js:16:38:16:38 | B | false |
+| tst.js:17:9:17:35 | A.subst ... ) === B | tst.js:17:9:17:9 | A | tst.js:17:35:17:35 | B | true |
+| tst.js:18:9:18:36 | A.subst ...  "web/" | tst.js:18:9:18:9 | A | tst.js:18:31:18:36 | "web/" | true |

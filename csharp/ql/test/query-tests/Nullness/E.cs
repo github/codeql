@@ -302,6 +302,17 @@ public class E
         s.ToString(); // BAD (maybe)
     }
 
+    private long? l;
+    public long Long { get => l ?? 0; set { l = value; } }
+    public void Ex26(E e)
+    {
+        if (l.HasValue)
+        {
+            e.Long = l.Value; // GOOD
+        }
+        return;
+    }
+
     public bool Field;
     string Make() => Field ? null : "";
 }

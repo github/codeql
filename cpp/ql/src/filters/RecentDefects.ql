@@ -6,6 +6,8 @@
  *              before the date of the snapshot.
  * @kind problem
  * @id cpp/recent-defects-filter
+ * @tags filter
+ *       external-data
  * @deprecated
  */
 import cpp

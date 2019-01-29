@@ -4,6 +4,8 @@
  * @kind graph
  * @id cpp/architecture/namespace-dependencies
  * @graph.layout hierarchical
+ * @tags maintainability
+ *       modularity
  */
 import cpp
 

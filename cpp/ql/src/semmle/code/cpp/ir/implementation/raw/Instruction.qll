@@ -107,6 +107,32 @@ module InstructionSanity {
   }
 
   /**
+   * Holds if there are multiple (`n`) edges of kind `kind` from `source`,
+   * where `target` is among the targets of those edges.
+   */
+  query predicate ambiguousSuccessors(
+    Instruction source, EdgeKind kind, int n, Instruction target
+  ) {
+    n = strictcount(Instruction t | source.getSuccessor(kind) = t) and
+    n > 1 and
+    source.getSuccessor(kind) = target
+  }
+
+  /**
+   * Holds if `instr` in `f` is part of a loop even though the AST of `f`
+   * contains no element that can cause loops.
+   */
+  query predicate unexplainedLoop(Function f, Instruction instr) {
+    exists(IRBlock block |
+      instr.getBlock() = block and
+      block.getFunction() = f and
+      block.getASuccessor+() = block
+    ) and
+    not exists(Loop l | l.getEnclosingFunction() = f) and
+    not exists(GotoStmt s | s.getEnclosingFunction() = f)
+  }
+
+  /**
    * Holds if a `Phi` instruction is present in a block with fewer than two
    * predecessors.
    */

@@ -26,7 +26,11 @@ abstract class PythonSsaSourceVariable extends SsaSourceVariable {
     }
 
     override string getName() {
-        result = this.(Variable).getId()
+        variable(this, _, result)
+    }
+
+    Scope getScope() {
+        variable(this, result, _)
     }
 
     abstract ControlFlowNode getAnImplicitUse();
@@ -46,7 +50,7 @@ abstract class PythonSsaSourceVariable extends SsaSourceVariable {
         /* Add a use at the end of scope for all variables to keep them live 
          * This is necessary for taint-tracking.
          */
-        result = this.(Variable).getScope().getANormalExit()
+        result = this.getScope().getANormalExit()
     }
 
     override predicate hasDefiningNode(ControlFlowNode def) {
@@ -107,7 +111,6 @@ class FunctionLocalVariable extends PythonSsaSourceVariable {
     }
 
     override ControlFlowNode getScopeEntryDefinition() {
-        not this.(LocalVariable).getId() = "*" and
         exists(Scope s |
             s.getEntryNode() = result |
             s = this.(LocalVariable).getScope() and
@@ -146,7 +149,6 @@ class NonLocalVariable extends PythonSsaSourceVariable {
     }
 
     override CallNode redefinedAtCallSite() {
-        not this.(LocalVariable).getId() = "*" and
         result.getScope().getScope*() = this.(LocalVariable).getScope()
     }
 
@@ -163,7 +165,6 @@ class ClassLocalVariable extends PythonSsaSourceVariable {
     }
 
     override ControlFlowNode getScopeEntryDefinition() {
-        not this.(LocalVariable).getId() = "*" and
         result = this.(LocalVariable).getScope().getEntryNode()
     }
 
@@ -235,7 +236,6 @@ class ModuleVariable extends PythonSsaSourceVariable {
     }
 
     override ControlFlowNode getScopeEntryDefinition() {
-        not this.(GlobalVariable).getId() = "*" and
         exists(Scope s |
             s.getEntryNode() = result |
             /* Module entry point */
@@ -252,13 +252,6 @@ class ModuleVariable extends PythonSsaSourceVariable {
             scope.entryEdge(_, result) |
             this = scope.getOuterVariable(_) or
             this.(Variable).getAUse().getScope() = scope
-        )
-        or
-        this.(GlobalVariable).getId() = "*" and
-        exists(Scope s |
-            s.getEntryNode() = result and
-            this.(Variable).getScope() = s and
-            exists(ImportStar is | is.getScope() = s)
         )
     }
 
@@ -307,6 +300,29 @@ class EscapingGlobalVariable extends ModuleVariable {
 
 }
 
+class SpecialSsaSourceVariable extends PythonSsaSourceVariable {
+
+    SpecialSsaSourceVariable() {
+        variable(this, _, "*") or variable(this, _, "$")
+    }
+
+    override ControlFlowNode getAnImplicitUse() {
+        exists(ImportTimeScope s |
+            result = s.getANormalExit() and this.getScope() = s
+        )
+    }
+
+    override ControlFlowNode getScopeEntryDefinition() {
+        /* Module entry point */
+        this.getScope().getEntryNode() = result
+    }
+
+    override CallNode redefinedAtCallSite() {
+        result.(CallNode).getScope().getScope*() = this.(GlobalVariable).getScope()
+    }
+
+}
+
 private predicate variable_or_attribute_defined_out_of_scope(Variable v) {
     exists(NameNode n | n.defines(v) and not n.getScope() = v.getScope())
     or
@@ -330,7 +346,7 @@ cached module SsaSource {
 
     /** Holds if `v` is used as the receiver in a method call. */
     cached predicate method_call_refinement(Variable v, ControlFlowNode use, CallNode call) {
-        use = v.getAUse() and 
+        use = v.getAUse() and
         call.getFunction().(AttrNode).getObject() = use
     }
 
@@ -387,16 +403,17 @@ cached module SsaSource {
     /** Holds if the name of `var` refers to a submodule of a package and `f` is the entry point
      * to the __init__ module of that package.
      */
-    cached predicate init_module_submodule_defn(Variable var, ControlFlowNode f) {
+    cached predicate init_module_submodule_defn(PythonSsaSourceVariable var, ControlFlowNode f) {
+        var instanceof GlobalVariable and
         exists(Module init |
-            init.isPackageInit() and exists(init.getPackage().getSubModule(var.getId())) and
-            var instanceof GlobalVariable and init.getEntryNode() = f and
+            init.isPackageInit() and exists(init.getPackage().getSubModule(var.getName())) and
+            init.getEntryNode() = f and
             var.getScope() = init
         )
     }
 
     /** Holds if the `v` is in scope at a `from import ... *` and may thus be redefined by that statement */
-    cached predicate import_star_refinement(Variable v, ControlFlowNode use, ControlFlowNode def) {
+    cached predicate import_star_refinement(PythonSsaSourceVariable v, ControlFlowNode use, ControlFlowNode def) {
         use = def and def instanceof ImportStarNode
         and
         (
@@ -443,7 +460,7 @@ cached module SsaSource {
 
 }
 
-private predicate refinement(Variable v, ControlFlowNode use, ControlFlowNode def) {
+private predicate refinement(PythonSsaSourceVariable v, ControlFlowNode use, ControlFlowNode def) {
     SsaSource::import_star_refinement(v, use, def)
     or
     SsaSource::attribute_assignment_refinement(v, use, def)
@@ -456,5 +473,5 @@ private predicate refinement(Variable v, ControlFlowNode use, ControlFlowNode de
     or
     SsaSource::method_call_refinement(v, use, def)
     or
-    def = v.(PythonSsaSourceVariable).redefinedAtCallSite() and def = use
+    def = v.redefinedAtCallSite() and def = use
 }

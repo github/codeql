@@ -19,6 +19,9 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
@@ -159,22 +162,27 @@ import com.semmle.util.trap.TrapWriter;
  * </p>
  *
  * <p>
- * Finally, the environment variables <code>LGTM_TRAP_CACHE</code> and
- * <code>LGTM_TRAP_CACHE_BOUND</code> can optionally be used to specify the location and size
- * of a trap cache to be used during extraction.
+ * To customise the actual extraction (as opposed to determining which files to extract),
+ * the following environment variables are available:
  * </p>
+ * <ul>
+ * <li><code>LGTM_INDEX_THREADS</code> determines how many threads are used for parallel extraction
+ * of JavaScript files (TypeScript files cannot currently be extracted in parallel). If left
+ * unspecified, the extractor uses as many threads as there are cores.</li>
+ * <li><code>LGTM_TRAP_CACHE</code> and <code>LGTM_TRAP_CACHE_BOUND</code> can be used to specify the
+ * location and size of a trap cache to be used during extraction.</li>
+ * </ul>
  */
 public class AutoBuild {
 	private final ExtractorOutputConfig outputConfig;
 	private final ITrapCache trapCache;
-	private Set<Path> includes = new LinkedHashSet<>();
-	private Set<Path> excludes = new LinkedHashSet<>();
+	private final Set<Path> includes = new LinkedHashSet<>();
+	private final Set<Path> excludes = new LinkedHashSet<>();
 	private ProjectLayout filters;
 	private final Path LGTM_SRC, SEMMLE_DIST;
 	private final TypeScriptMode typeScriptMode;
 	private final String defaultEncoding;
-	private ExtractorState extractorState;
-	private long timedLogMessageStart = 0;
+	private ExecutorService threadPool;
 
 	public AutoBuild() {
 		this.LGTM_SRC = toRealPath(getPathFromEnvVar("LGTM_SRC"));
@@ -183,7 +191,6 @@ public class AutoBuild {
 		this.trapCache = mkTrapCache();
 		this.typeScriptMode = getEnumFromEnvVar("LGTM_INDEX_TYPESCRIPT", TypeScriptMode.class, TypeScriptMode.BASIC);
 		this.defaultEncoding = getEnvVar("LGTM_INDEX_DEFAULT_ENCODING");
-		this.extractorState = new ExtractorState();
 		setupMatchers();
 	}
 
@@ -375,8 +382,36 @@ public class AutoBuild {
 	 * Perform extraction.
 	 */
 	public void run() throws IOException {
-		extractExterns();
-		extractSource();
+		startThreadPool();
+		try {
+			extractSource();
+			extractExterns();
+		} finally {
+			shutdownThreadPool();
+		}
+	}
+
+	private void startThreadPool() {
+		int defaultNumThreads = Runtime.getRuntime().availableProcessors();
+		int numThreads = Env.systemEnv().getInt("LGTM_INDEX_THREADS", defaultNumThreads);
+		if (numThreads > 1) {
+			System.out.println("Parallel extraction with " + numThreads + " threads.");
+			threadPool = Executors.newFixedThreadPool(numThreads);
+		} else {
+			System.out.println("Single-threaded extraction.");
+			threadPool = null;
+		}
+	}
+
+	private void shutdownThreadPool() {
+		if (threadPool != null) {
+			threadPool.shutdown();
+			try {
+				threadPool.awaitTermination(365, TimeUnit.DAYS);
+			} catch (InterruptedException e) {
+				Exceptions.ignore(e, "Awaiting termination is not essential.");
+			}
+		}
 	}
 
 	/**
@@ -414,12 +449,12 @@ public class AutoBuild {
 			}
 		}
 
-		FileExtractor extractor = new FileExtractor(config, outputConfig, trapCache, extractorState);
+		FileExtractor extractor = new FileExtractor(config, outputConfig, trapCache);
 		FileVisitor<? super Path> visitor = new SimpleFileVisitor<Path>() {
 			@Override
 			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
 				if (".js".equals(FileUtil.extension(file.toString())))
-					extract(extractor, file);
+					extract(extractor, file, null);
 				return super.visitFile(file, attrs);
 			}
 		};
@@ -436,10 +471,91 @@ public class AutoBuild {
 		config = config.withTypeScriptMode(typeScriptMode);
 		if (defaultEncoding != null)
 			config = config.withDefaultEncoding(defaultEncoding);
-		FileExtractor extractor = new FileExtractor(config, outputConfig, trapCache, extractorState);
+		FileExtractor extractor = new FileExtractor(config, outputConfig, trapCache);
+
+		Set<Path> filesToExtract = new LinkedHashSet<>();
+		List<Path> tsconfigFiles = new ArrayList<>();
+		findFilesToExtract(extractor, filesToExtract, tsconfigFiles);
+
+		// extract TypeScript projects and files
+		Set<Path> extractedFiles = extractTypeScript(extractor, filesToExtract, tsconfigFiles);
+
+		// extract remaining files
+		for (Path f : filesToExtract) {
+			if (extractedFiles.add(f)) {
+				extract(extractor, f, null);
+			}
+		}
+	}
+
+	private Set<Path> extractTypeScript(FileExtractor extractor, Set<Path> files, List<Path> tsconfig) {
+		Set<Path> extractedFiles = new LinkedHashSet<>();
+
+		if (hasTypeScriptFiles(files) || !tsconfig.isEmpty()) {
+			ExtractorState extractorState = new ExtractorState();
+			TypeScriptParser tsParser = extractorState.getTypeScriptParser();
+			verifyTypeScriptInstallation(extractorState);
+
+			// Extract TypeScript projects
+			for (Path projectPath : tsconfig) {
+				File projectFile = projectPath.toFile();
+				long start = logBeginProcess("Opening project " + projectFile);
+				ParsedProject project = tsParser.openProject(projectFile);
+				logEndProcess(start, "Done opening project " + projectFile);
+				// Extract all files belonging to this project which are also matched
+				// by our include/exclude filters.
+				List<File> typeScriptFiles = new ArrayList<File>();
+				for (File sourceFile : project.getSourceFiles()) {
+					Path sourcePath = sourceFile.toPath();
+					if (!files.contains(normalizePath(sourcePath)))
+						continue;
+					if (!extractedFiles.contains(sourcePath)) {
+						typeScriptFiles.add(sourcePath.toFile());
+					}
+				}
+				extractTypeScriptFiles(typeScriptFiles, extractedFiles, extractor, extractorState);
+				tsParser.closeProject(projectFile);
+			}
+	
+			// Extract all the types discovered when extracting the ASTs.
+			if (!tsconfig.isEmpty()) {
+				TypeTable typeTable = tsParser.getTypeTable();
+				extractTypeTable(tsconfig.iterator().next(), typeTable);
+			}
+	
+			// Extract remaining TypeScript files.
+			List<File> remainingTypeScriptFiles = new ArrayList<File>();
+			for (Path f : files) {
+				if (!extractedFiles.contains(f) && FileType.forFileExtension(f.toFile()) == FileType.TYPESCRIPT) {
+					remainingTypeScriptFiles.add(f.toFile());
+				}
+			}
+			if (!remainingTypeScriptFiles.isEmpty()) {
+				extractTypeScriptFiles(remainingTypeScriptFiles, extractedFiles, extractor, extractorState);
+			}
+	
+			// The TypeScript compiler instance is no longer needed.
+			tsParser.killProcess();
+		}
+
+		return extractedFiles;
+	}
+
+	private boolean hasTypeScriptFiles(Set<Path> filesToExtract) {
+		for (Path file : filesToExtract) {
+			// Check if there are any files with the TypeScript extension.
+			// Do not use FileType.forFile as it involves I/O for file header checks,
+			// and files with a bad header have already been excluded.
+			if (FileType.forFileExtension(file.toFile()) == FileType.TYPESCRIPT)
+				return true;
+		}
+		return false;
+	}
+
+	private void findFilesToExtract(FileExtractor extractor,
+			final Set<Path> filesToExtract, final List<Path> tsconfigFiles)
+					throws IOException {
 		Path[] currentRoot = new Path[1];
-		final Set<Path> filesToExtract = new LinkedHashSet<>();
-		final List<Path> tsconfigFiles = new ArrayList<>();
 		FileVisitor<? super Path> visitor = new SimpleFileVisitor<Path>() {
 			private boolean isFileIncluded(Path file) {
 				// normalise path for matching
@@ -481,87 +597,23 @@ public class AutoBuild {
 			currentRoot[0] = root;
 			Files.walkFileTree(currentRoot[0], visitor);
 		}
-
-		// If there are any .ts files, verify that TypeScript is installed.
-		TypeScriptParser tsParser = extractorState.getTypeScriptParser();
-		boolean hasTypeScriptFiles = false;
-		for (Path file : filesToExtract) {
-			// Check if there are any files with the TypeScript extension.
-			// Do not use FileType.forFile as it involves I/O for file header checks,
-			// and files with a bad header have already been excluded.
-			if (FileType.forFileExtension(file.toFile()) == FileType.TYPESCRIPT) {
-				hasTypeScriptFiles = true;
-				break;
-			}
-		}
-		if (hasTypeScriptFiles || !tsconfigFiles.isEmpty()) {
-			verifyTypeScriptInstallation();
-		}
-
-		// Extract TypeScript projects
-		Set<Path> extractedFiles = new LinkedHashSet<>();
-		for (Path projectPath : tsconfigFiles) {
-			File projectFile = projectPath.toFile();
-			logBeginProcess("Opening project " + projectFile);
-			ParsedProject project = tsParser.openProject(projectFile);
-			logEndProcess();
-			// Extract all files belonging to this project which are also matched
-			// by our include/exclude filters.
-			List<File> typeScriptFiles = new ArrayList<File>();
-			for (File sourceFile : project.getSourceFiles()) {
-				Path sourcePath = sourceFile.toPath();
-				if (!filesToExtract.contains(normalizePath(sourcePath)))
-					continue;
-				if (!extractedFiles.contains(sourcePath)) {
-					typeScriptFiles.add(sourcePath.toFile());
-				}
-			}
-			extractTypeScriptFiles(typeScriptFiles, extractedFiles, extractor);
-			tsParser.closeProject(projectFile);
-		}
-
-		if (!tsconfigFiles.isEmpty()) {
-			// Extract all the types discovered when extracting the ASTs.
-			TypeTable typeTable = tsParser.getTypeTable();
-			extractTypeTable(tsconfigFiles.iterator().next(), typeTable);
-		}
-
-		// Extract remaining TypeScript files.
-		List<File> remainingTypeScriptFiles = new ArrayList<File>();
-		for (Path f : filesToExtract) {
-			if (!extractedFiles.contains(f) && FileType.forFileExtension(f.toFile()) == FileType.TYPESCRIPT) {
-				remainingTypeScriptFiles.add(f.toFile());
-			}
-		}
-		if (!remainingTypeScriptFiles.isEmpty()) {
-			extractTypeScriptFiles(remainingTypeScriptFiles, extractedFiles, extractor);
-		}
-
-		// The TypeScript compiler instance is no longer needed.
-		tsParser.killProcess();
-
-		// Extract non-TypeScript files
-		for (Path f : filesToExtract) {
-			if (extractedFiles.add(f)) {
-				extract(extractor, f);
-			}
-		}
 	}
 
 	/**
 	 * Verifies that Node.js and the TypeScript compiler are installed and can be
 	 * found.
 	 */
-	public void verifyTypeScriptInstallation() {
+	public void verifyTypeScriptInstallation(ExtractorState extractorState) {
 		extractorState.getTypeScriptParser().verifyInstallation(true);
 	}
 
-	public void extractTypeScriptFiles(List<File> files, Set<Path> extractedFiles, FileExtractor extractor) throws IOException {
+	public void extractTypeScriptFiles(List<File> files, Set<Path> extractedFiles,
+			FileExtractor extractor, ExtractorState extractorState) {
 		extractorState.getTypeScriptParser().prepareFiles(files);
 		for (File f : files) {
 			Path path = f.toPath();
 			extractedFiles.add(path);
-			extract(extractor, f.toPath());
+			extract(extractor, f.toPath(), extractorState);
 		}
 	}
 
@@ -596,18 +648,34 @@ public class AutoBuild {
 	}
 
 	/**
-	 * Extract a single file.
+	 * Extract a single file using the given extractor and state.
+	 *
+	 * If the state is {@code null}, the extraction job will be submitted to the {@link #threadPool},
+	 * otherwise extraction will happen on the main thread.
 	 */
-	protected void extract(FileExtractor extractor, Path file) throws IOException {
+	protected void extract(FileExtractor extractor, Path file, ExtractorState state) {
+		if (state == null && threadPool != null)
+			threadPool.submit(() -> doExtract(extractor, file, state));
+		else
+			doExtract(extractor, file, state);
+	}
+
+	private void doExtract(FileExtractor extractor, Path file, ExtractorState state) {
 		File f = file.toFile();
 		if (!f.exists()) {
 			warn("Skipping " + file + ", which does not exist.");
 			return;
 		}
 
-		logBeginProcess("Extracting " + file);
-		extractor.extract(f);
-		logEndProcess();
+		try {
+			long start = logBeginProcess("Extracting " + file);
+			extractor.extract(f, state);
+			logEndProcess(start, "Done extracting " + file);
+		} catch (Throwable t) {
+			System.err.println("Exception while extracting " + file + ".");
+			t.printStackTrace(System.err);
+			System.exit(1);
+		}
 	}
 
 	private void warn(String msg) {
@@ -615,16 +683,16 @@ public class AutoBuild {
 		System.err.flush();
 	}
 
-	private void logBeginProcess(String message) {
-		System.out.print(message + "...");
-		System.out.flush();
-		this.timedLogMessageStart = System.nanoTime();
+	private long logBeginProcess(String message) {
+		System.out.println(message);
+		return System.nanoTime();
 	}
 
-	private void logEndProcess() {
+	private void logEndProcess(long timedLogMessageStart, String message) {
 		long end = System.nanoTime();
-		int milliseconds = (int) ((end - this.timedLogMessageStart) / 1000000);
-		System.out.println(" done (" + milliseconds + " ms)");
+		int milliseconds = (int) ((end - timedLogMessageStart) / 1_000_000);
+		System.out.println(message + " (" + milliseconds + " ms)");
+		System.out.flush();
 	}
 
 	public static void main(String[] args) {

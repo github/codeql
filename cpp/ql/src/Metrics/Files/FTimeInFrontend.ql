@@ -7,6 +7,8 @@
  * @id cpp/time-in-frontend-per-file
  * @metricType fileCompilation
  * @metricAggregate avg sum max
+ * @tags maintainability
+ *       testability
  */
 import cpp
 

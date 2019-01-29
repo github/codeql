@@ -606,20 +606,17 @@ private predicate storeStep(
   basicStoreStep(pred, succ, prop) and
   summary = PathSummary::level()
   or
-  exists(Function f, DataFlow::Node mid, DataFlow::Node base |
-    // `f` stores its parameter `pred` in property `prop` of a value that it returns,
+  exists(Function f, DataFlow::Node mid |
+    // `f` stores its parameter `pred` in property `prop` of a value that flows back to the caller,
     // and `succ` is an invocation of `f`
     reachableFromInput(f, succ, pred, mid, cfg, summary) and
-    returnedPropWrite(f, base, prop, mid)
+    (
+      returnedPropWrite(f, _, prop, mid)
+      or
+      succ instanceof DataFlow::NewNode and
+      receiverPropWrite(f, prop, mid)
+    )
   )
-}
-
-/**
- * Holds if `f` may return `base`, which has a write of property `prop` with right-hand side `rhs`.
- */
-predicate returnedPropWrite(Function f, DataFlow::SourceNode base, string prop, DataFlow::Node rhs) {
-  base.hasPropertyWrite(prop, rhs) and
-  base.flowsToExpr(f.getAReturnedExpr())
 }
 
 /**
@@ -663,25 +660,79 @@ private predicate flowThroughProperty(
  * All of this is done under configuration `cfg`, and `arg` flows along a path
  * summarized by `summary`, while `cb` is only tracked locally.
  */
-private predicate higherOrderCall(
+private predicate summarizedHigherOrderCall(
   DataFlow::Node arg, DataFlow::Node cb, int i, DataFlow::Configuration cfg, PathSummary summary
 ) {
-  exists (Function f, DataFlow::InvokeNode outer, DataFlow::InvokeNode inner, int j,
-    DataFlow::Node innerArg, DataFlow::ParameterNode cbParm, PathSummary oldSummary |
+  exists(
+    Function f, DataFlow::InvokeNode outer, DataFlow::InvokeNode inner, int j,
+    DataFlow::Node innerArg, DataFlow::ParameterNode cbParm, PathSummary oldSummary
+  |
     reachableFromInput(f, outer, arg, innerArg, cfg, oldSummary) and
     argumentPassing(outer, cb, f, cbParm) and
-    innerArg = inner.getArgument(j) |
+    innerArg = inner.getArgument(j)
+  |
     // direct higher-order call
     cbParm.flowsTo(inner.getCalleeNode()) and
     i = j and
     summary = oldSummary
     or
     // indirect higher-order call
-    exists (DataFlow::Node cbArg, PathSummary newSummary |
+    exists(DataFlow::Node cbArg, PathSummary newSummary |
       cbParm.flowsTo(cbArg) and
-      higherOrderCall(innerArg, cbArg, i, cfg, newSummary) and
+      summarizedHigherOrderCall(innerArg, cbArg, i, cfg, newSummary) and
       summary = oldSummary.append(PathSummary::call()).append(newSummary)
     )
+  )
+}
+
+/**
+ * Holds if `arg` is passed as the `i`th argument to `callback` through a callback invocation.
+ *
+ * This can be a summarized call, that is, `arg` and `callback` flow into a call,
+ * `f(arg, callback)`, which performs the invocation.
+ *
+ * Alternatively, the callback can flow into a call `f(callback)` which itself provides the `arg`.
+ * That is, `arg` refers to a value defined in `f` or one of its callees.
+ *
+ * In the latter case, the summary will consists of both a `return` and `call` step, for the following reasons:
+ *
+ * - Having `return` in the summary ensures that arguments passsed to `f` can't propagate back out along this edge.
+ *   This is, `arg` should be defined in `f` or one of its callees, since a context-dependent value (i.e. parameter)
+ *   should not propagate to every callback passed to `f`.
+ *   In reality, `arg` may refer to a parameter, but in that case, the `return` summary prevents the edge from ever
+ *   being used.
+ *
+ * - Having `call` in the summary ensures that values we propagate into the callback definition along this edge
+ *   can't propagate out to other callers of that function through a return statement.
+ *
+ * - The flow label mapping of the summary corresponds to the transformation from `arg` to the
+ *   invocation of the callback.
+ */
+predicate higherOrderCall(
+  DataFlow::Node arg, DataFlow::SourceNode callback, int i, DataFlow::Configuration cfg,
+  PathSummary summary
+) {
+  // Summarized call
+  exists(DataFlow::Node cb |
+    summarizedHigherOrderCall(arg, cb, i, cfg, summary) and
+    callback.flowsTo(cb)
+  )
+  or
+  // Local invocation of a parameter
+  isRelevant(arg, cfg) and
+  exists(DataFlow::InvokeNode invoke |
+    arg = invoke.getArgument(i) and
+    invoke = callback.(DataFlow::ParameterNode).getACall() and
+    summary = PathSummary::call()
+  )
+  or
+  // Forwarding of the callback parameter (but not the argument).
+  exists(DataFlow::Node cbArg, DataFlow::SourceNode innerCb, PathSummary oldSummary |
+    higherOrderCall(arg, innerCb, i, cfg, oldSummary) and
+    callStep(cbArg, innerCb) and
+    callback.flowsTo(cbArg) and
+    // Prepend a 'return' summary to prevent context-dependent values (i.e. parameters) from using this edge.
+    summary = PathSummary::return().append(oldSummary)
   )
 }
 
@@ -696,12 +747,8 @@ private predicate higherOrderCall(
 private predicate flowIntoHigherOrderCall(
   DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg, PathSummary summary
 ) {
-  exists(
-    DataFlow::Node fArg, DataFlow::FunctionNode cb,
-    int i, PathSummary oldSummary
-  |
-    higherOrderCall(pred, fArg, i, cfg, oldSummary) and
-    cb = fArg.getALocalSource() and
+  exists(DataFlow::FunctionNode cb, int i, PathSummary oldSummary |
+    higherOrderCall(pred, cb, i, cfg, oldSummary) and
     succ = cb.getParameter(i) and
     summary = oldSummary.append(PathSummary::call())
   )

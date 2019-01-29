@@ -8,6 +8,8 @@
  * @treemap.warnOn highValues
  * @metricType file
  * @metricAggregate avg sum max
+ * @tags maintainability
+ *       readability
  */
 import cpp
 import semmle.code.cpp.headers.MultipleInclusion

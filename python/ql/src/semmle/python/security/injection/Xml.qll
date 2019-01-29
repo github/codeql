@@ -33,10 +33,7 @@ private class ExpatParser extends TaintKind {
 }
 
 private FunctionObject expatCreateParseFunction() {
-    exists(ModuleObject expat |
-        expat.getName() = "xml.parsers.expat" and
-        result = expat.getAttribute("ParserCreate")
-    )
+    result = ModuleObject::named("xml.parsers.expat").getAttribute("ParserCreate")
 }
 
 private class ExpatCreateParser extends TaintSource {

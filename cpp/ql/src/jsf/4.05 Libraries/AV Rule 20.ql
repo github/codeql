@@ -3,7 +3,7 @@
  * @description The setjmp macro and the longjmp function shall not be used.
  * @kind problem
  * @id cpp/jsf/av-rule-20
- * @problem.severity error
+ * @problem.severity warning
  * @tags correctness
  *       portability
  *       readability

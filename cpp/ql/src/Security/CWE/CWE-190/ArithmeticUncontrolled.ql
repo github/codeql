@@ -18,9 +18,9 @@ import semmle.code.cpp.security.TaintTracking
 
 predicate isRandValue(Expr e) {
   e.(FunctionCall).getTarget().getName() = "rand" or
-  exists(FunctionCall fc |
-    fc = e.(MacroInvocationExpr).getInvocation().getExpr().getAChild*()
-  | fc.getTarget().getName() = "rand"
+  exists(MacroInvocation mi |
+    e = mi.getExpr() and
+    e.getAChild*().(FunctionCall).getTarget().getName() = "rand"
   )
 }
 

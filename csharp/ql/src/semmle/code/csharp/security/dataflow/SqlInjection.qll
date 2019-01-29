@@ -6,6 +6,7 @@ import csharp
 
 module SqlInjection {
   import semmle.code.csharp.dataflow.flowsources.Remote
+  import semmle.code.csharp.dataflow.flowsources.Local
   import semmle.code.csharp.frameworks.Sql
   import semmle.code.csharp.security.Sanitizers
 
@@ -39,6 +40,9 @@ module SqlInjection {
 
   /** A source of remote user input. */
   class RemoteSource extends Source { RemoteSource() { this instanceof RemoteFlowSource } }
+
+  /** A source of local user input. */
+  class LocalSource extends Source { LocalSource() { this instanceof LocalFlowSource } }
 
   /** An SQL expression passed to an API call that executes SQL. */
   class SqlInjectionExprSink extends Sink {

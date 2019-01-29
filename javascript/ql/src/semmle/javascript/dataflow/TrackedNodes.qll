@@ -167,12 +167,16 @@ private module NodeTracking {
     basicStoreStep(pred, succ, prop) and
     summary = PathSummary::level()
     or
-    exists(Function f, DataFlow::Node mid, DataFlow::SourceNode base |
-      // `f` stores its parameter `pred` in property `prop` of a value that it returns,
+    exists(Function f, DataFlow::Node mid |
+      // `f` stores its parameter `pred` in property `prop` of a value that flows back to the caller,
       // and `succ` is an invocation of `f`
       reachableFromInput(f, succ, pred, mid, summary) and
-      base.hasPropertyWrite(prop, mid) and
-      base.flowsToExpr(f.getAReturnedExpr())
+      (
+        returnedPropWrite(f, _, prop, mid)
+        or
+        succ instanceof DataFlow::NewNode and
+        receiverPropWrite(f, prop, mid)
+      )
     )
   }
 
@@ -212,25 +216,66 @@ private module NodeTracking {
    * invokes `cb`, passing `arg` as its `i`th argument. `arg` flows along a path summarized
    * by `summary`, while `cb` is only tracked locally.
    */
-  private predicate higherOrderCall(
+  private predicate summarizedHigherOrderCall(
     DataFlow::Node arg, DataFlow::Node cb, int i, PathSummary summary
   ) {
-    exists (Function f, DataFlow::InvokeNode outer, DataFlow::InvokeNode inner, int j,
-      DataFlow::Node innerArg, DataFlow::ParameterNode cbParm, PathSummary oldSummary |
+    exists(
+      Function f, DataFlow::InvokeNode outer, DataFlow::InvokeNode inner, int j,
+      DataFlow::Node innerArg, DataFlow::ParameterNode cbParm, PathSummary oldSummary
+    |
       reachableFromInput(f, outer, arg, innerArg, oldSummary) and
       argumentPassing(outer, cb, f, cbParm) and
-      innerArg = inner.getArgument(j) |
+      innerArg = inner.getArgument(j)
+    |
       // direct higher-order call
       cbParm.flowsTo(inner.getCalleeNode()) and
       i = j and
       summary = oldSummary
       or
       // indirect higher-order call
-      exists (DataFlow::Node cbArg, PathSummary newSummary |
+      exists(DataFlow::Node cbArg, PathSummary newSummary |
         cbParm.flowsTo(cbArg) and
-        higherOrderCall(innerArg, cbArg, i, newSummary) and
+        summarizedHigherOrderCall(innerArg, cbArg, i, newSummary) and
         summary = oldSummary.append(PathSummary::call()).append(newSummary)
       )
+    )
+  }
+
+  /**
+   * Holds if `arg` is passed as the `i`th argument to `callback` through a callback invocation.
+   *
+   * This can be a summarized call, that is, `arg` and `callback` flow into a call,
+   * `f(arg, callback)`, which  performs the invocation.
+   *
+   * Alternatively, the callback can flow into a call `f(callback)` which itself provides the `arg`.
+   * That is, `arg` refers to a value defined in `f` or one of its callees.
+   */
+  predicate higherOrderCall(
+    DataFlow::Node arg, DataFlow::SourceNode callback, int i, PathSummary summary
+  ) {
+    // Summarized call
+    exists(DataFlow::Node cb |
+      summarizedHigherOrderCall(arg, cb, i, summary) and
+      callback.flowsTo(cb)
+    )
+    or
+    // Local invocation of a parameter
+    isRelevant(arg) and
+    exists(DataFlow::InvokeNode invoke |
+      arg = invoke.getArgument(i) and
+      invoke = callback.(DataFlow::ParameterNode).getACall() and
+      summary = PathSummary::call()
+    )
+    or
+    // Forwarding of the callback parameter  (but not the argument).
+    // We use a return summary since flow moves back towards the call site.
+    // This ensures that an argument that is only tainted in some contexts cannot flow
+    // out to every callback.
+    exists(DataFlow::Node cbArg, DataFlow::SourceNode innerCb, PathSummary oldSummary |
+      higherOrderCall(arg, innerCb, i, oldSummary) and
+      callStep(cbArg, innerCb) and
+      callback.flowsTo(cbArg) and
+      summary = PathSummary::return().append(oldSummary)
     )
   }
 
@@ -243,12 +288,8 @@ private module NodeTracking {
   private predicate flowIntoHigherOrderCall(
     DataFlow::Node pred, DataFlow::Node succ, PathSummary summary
   ) {
-    exists(
-      DataFlow::Node fArg, DataFlow::FunctionNode cb,
-      int i, PathSummary oldSummary
-    |
-      higherOrderCall(pred, fArg, i, oldSummary) and
-      cb = fArg.getALocalSource() and
+    exists(DataFlow::FunctionNode cb, int i, PathSummary oldSummary |
+      higherOrderCall(pred, cb, i, oldSummary) and
       succ = cb.getParameter(i) and
       summary = oldSummary.append(PathSummary::call())
     )

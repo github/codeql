@@ -5,6 +5,7 @@
  * @kind treemap
  * @id cpp/architecture/hub-classes
  * @treemap.warnOn highValues
+ * @tags maintainability
  */
 import cpp
 

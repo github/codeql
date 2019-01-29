@@ -14,7 +14,13 @@ import csharp
 import semmle.code.csharp.security.dataflow.SqlInjection::SqlInjection
 import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
+string getSourceType(DataFlow::Node node) {
+  result = node.(RemoteFlowSource).getSourceType()
+  or
+  result = node.(LocalFlowSource).getSourceType()
+}
+
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
 where c.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Query might include code from $@.", source,
-  ("this " + source.getNode().(RemoteFlowSource).getSourceType())
+  ("this " + getSourceType(source.getNode()))

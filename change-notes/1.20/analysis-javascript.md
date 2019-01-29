@@ -8,7 +8,7 @@
   - server-side code, for example [hapi](https://hapijs.com/)
 * File classification has been improved to recognize additional generated files, for example files from [HTML Tidy](html-tidy.org).
 
-* The taint tracking library now recognizes flow through persistent storage and callbacks in certain cases. This may give more results for the security queries.
+* The taint tracking library now recognizes flow through persistent storage, class fields, and callbacks in certain cases. This may give more results for the security queries.
 
 ## New queries
 
@@ -32,12 +32,16 @@
 | Unused parameter                           | Fewer false-positive results | This rule no longer flags parameters with leading underscore. |
 | Unused variable, import, function or class | Fewer false-positive results | This rule now flags fewer variables that are implictly used by JSX elements, and no longer flags variables with leading underscore. |
 | Uncontrolled data used in path expression | Fewer false-positive results | This rule now recognizes the Express `root` option, which prevents path traversal. |
+| Unneeded defensive code | More true-positive results, fewer false-positive results. | This rule now recognizes additional defensive code patterns. |
+| Useless conditional | Fewer results | Additional defensive coding patterns are now ignored. |
 | Useless assignment to property. | Fewer false-positive results | This rule now treats assignments with complex right-hand sides correctly. |
 | Unsafe dynamic method access              | Fewer false-positive results | This rule no longer flags concatenated strings as unsafe method names. |
 | Unvalidated dynamic method call           | More true-positive results | This rule now flags concatenated strings as unvalidated method names in more cases. |
+| Useless conditional | More true-positive results | This rule now flags additional uses of function call values. | 
 
 ## Changes to QL libraries
 
 * `DataFlow::SourceNode` is no longer an abstract class; to add new source nodes, extend `DataFlow::SourceNode::Range` instead.
 * Subclasses of `DataFlow::PropRead` are no longer automatically made source nodes; you now need to additionally define a corresponding subclass of `DataFlow::SourceNode::Range` to achieve this.
 * The deprecated libraries `semmle.javascript.DataFlow` and `semmle.javascript.dataflow.CallGraph` have been removed; they are both superseded by `semmle.javascript.dataflow.DataFlow`.
+* The predicate `DataFlow::returnedPropWrite` was intended for internal use only and is no longer available.

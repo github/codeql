@@ -855,6 +855,7 @@ namespace Semmle.Extraction.Tests
             Actions.RunProcess[@"curl -sO https://dot.net/v1/dotnet-install.sh"] = 0;
             Actions.RunProcess[@"chmod u+x dotnet-install.sh"] = 0;
             Actions.RunProcess[@"./dotnet-install.sh --channel release --version 2.1.3 --install-dir C:\Project/.dotnet"] = 0;
+            Actions.RunProcess[@"rm dotnet-install.sh"] = 0;
             Actions.RunProcess[@"C:\Project/.dotnet/dotnet --info"] = 0;
             Actions.RunProcess[@"C:\Project/.dotnet/dotnet clean test.csproj"] = 0;
             Actions.RunProcess[@"C:\Project/.dotnet/dotnet restore test.csproj"] = 0;
@@ -879,7 +880,7 @@ namespace Semmle.Extraction.Tests
             Actions.LoadXml["test.csproj"] = xml;
 
             var autobuilder = CreateAutoBuilder("csharp", false, dotnetVersion: "2.1.3");
-            TestAutobuilderScript(autobuilder, 0, 10);
+            TestAutobuilderScript(autobuilder, 0, 11);
         }
 
         [Fact]
@@ -890,6 +891,7 @@ namespace Semmle.Extraction.Tests
             Actions.RunProcess[@"curl -sO https://dot.net/v1/dotnet-install.sh"] = 0;
             Actions.RunProcess[@"chmod u+x dotnet-install.sh"] = 0;
             Actions.RunProcess[@"./dotnet-install.sh --channel release --version 2.1.3 --install-dir C:\Project/.dotnet"] = 0;
+            Actions.RunProcess[@"rm dotnet-install.sh"] = 0;
             Actions.RunProcess[@"C:\Project/.dotnet/dotnet --info"] = 0;
             Actions.RunProcess[@"C:\Project/.dotnet/dotnet clean test.csproj"] = 0;
             Actions.RunProcess[@"C:\Project/.dotnet/dotnet restore test.csproj"] = 0;
@@ -914,7 +916,7 @@ namespace Semmle.Extraction.Tests
             Actions.LoadXml["test.csproj"] = xml;
 
             var autobuilder = CreateAutoBuilder("csharp", false, dotnetVersion: "2.1.3");
-            TestAutobuilderScript(autobuilder, 0, 10);
+            TestAutobuilderScript(autobuilder, 0, 11);
         }
 
         [Fact]
@@ -923,6 +925,7 @@ namespace Semmle.Extraction.Tests
             Actions.RunProcess["cmd.exe /C dotnet --list-sdks"] = 0;
             Actions.RunProcessOut["cmd.exe /C dotnet --list-sdks"] = "2.1.3 [C:\\Program Files\\dotnet\\sdks]\n2.1.4 [C:\\Program Files\\dotnet\\sdks]";
             Actions.RunProcess[@"cmd.exe /C powershell -NoProfile -ExecutionPolicy unrestricted -file C:\Project\install-dotnet.ps1 -Version 2.1.3 -InstallDir C:\Project\.dotnet"] = 0;
+            Actions.RunProcess[@"cmd.exe /C del C:\Project\install-dotnet.ps1"] = 0;
             Actions.RunProcess[@"cmd.exe /C C:\Project\.dotnet\dotnet --info"] = 0;
             Actions.RunProcess[@"cmd.exe /C C:\Project\.dotnet\dotnet clean test.csproj"] = 0;
             Actions.RunProcess[@"cmd.exe /C C:\Project\.dotnet\dotnet restore test.csproj"] = 0;
@@ -947,7 +950,7 @@ namespace Semmle.Extraction.Tests
             Actions.LoadXml["test.csproj"] = xml;
 
             var autobuilder = CreateAutoBuilder("csharp", true, dotnetVersion: "2.1.3");
-            TestAutobuilderScript(autobuilder, 0, 8);
+            TestAutobuilderScript(autobuilder, 0, 9);
         }
 
         [Fact]

@@ -4,6 +4,10 @@
  * @kind problem
  * @id cpp/power-of-10/use-of-jmp
  * @problem.severity warning
+ * @tags correctness
+ *       portability
+ *       readability
+ *       external/powerof10
  */
 
 import cpp

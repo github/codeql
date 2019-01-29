@@ -6,6 +6,7 @@
  * @metricType externalDependency
  * @precision medium
  * @id cpp/external-dependencies
+ * @tags modularity
  */
 
 import ExternalDependencies

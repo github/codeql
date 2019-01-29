@@ -37,16 +37,6 @@
 | g_class_init.py:52 | self_3 | version | phi(self_1, self_2) | 'v2' | runtime |
 | g_class_init.py:52 | self_3 | version | phi(self_1, self_2) | 'v3' | runtime |
 | g_class_init.py:54 | self_1 | version | Pi(self_0) [true] | 'v2' | runtime |
-| i_imports.py:7 | *_1 | x | ImportStarRefinement(*_0) | float 1.0 | import |
-| i_imports.py:7 | *_1 | y | ImportStarRefinement(*_0) | float 2.0 | import |
-| i_imports.py:27 | *_2 | module1 | ImportStarRefinement(*_1) | Module code.test_package.module1 | import |
-| i_imports.py:27 | *_2 | module2 | ImportStarRefinement(*_1) | Module code.test_package.module2 | import |
-| i_imports.py:27 | *_2 | p | ImportStarRefinement(*_1) | int 1 | import |
-| i_imports.py:27 | *_2 | q | ImportStarRefinement(*_1) | int 2 | import |
-| i_imports.py:27 | *_2 | r | ImportStarRefinement(*_1) | Dict | import |
-| i_imports.py:27 | *_2 | s | ImportStarRefinement(*_1) | NoneType None | import |
-| i_imports.py:27 | *_2 | x | ImportStarRefinement(*_1) | float 1.0 | import |
-| i_imports.py:27 | *_2 | y | ImportStarRefinement(*_1) | float 2.0 | import |
 | k_getsetattr.py:6 | self_0 | a | ParameterDefinition | float 7.0 | code/k_getsetattr.py:15 from runtime |
 | k_getsetattr.py:6 | self_0 | c | ParameterDefinition | int 2 | code/k_getsetattr.py:15 from runtime |
 | k_getsetattr.py:7 | self_1 | a | ArgumentRefinement(self_0) | int 0 | code/k_getsetattr.py:15 from runtime |

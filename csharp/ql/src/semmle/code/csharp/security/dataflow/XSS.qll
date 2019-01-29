@@ -572,9 +572,7 @@ module XSS {
     }
   }
 
-  /**
-   * HtmlString that may be rendered as is need to have sanitized value
-   */
+  /** `HtmlString` that may be rendered as is need to have sanitized value. */
   class MicrosoftAspNetHtmlStringSink extends AspNetCoreSink {
     MicrosoftAspNetHtmlStringSink() {
       exists(ObjectCreation c, MicrosoftAspNetCoreHttpHtmlString s |

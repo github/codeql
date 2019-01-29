@@ -10,6 +10,7 @@
  */
 
 import csharp
+import semmle.code.csharp.frameworks.system.windows.Forms
 
 /** A string for `match` that identifies strings that look like they represent private data. */
 private string privateNames() {
@@ -56,5 +57,12 @@ class PrivateIndexerAccess extends PrivateDataExpr, IndexerAccess {
 class PrivateVariableAccess extends PrivateDataExpr, VariableAccess {
   PrivateVariableAccess() {
     exists(string s | this.getTarget().getName().toLowerCase() = s | s.matches(privateNames()))
+  }
+}
+
+/** Reading the text property of a control that might contain private data. */
+class PrivateControlAccess extends PrivateDataExpr {
+  PrivateControlAccess() {
+    exists(TextControl c | this = c.getARead() and c.getName().toLowerCase().matches(privateNames()))
   }
 }

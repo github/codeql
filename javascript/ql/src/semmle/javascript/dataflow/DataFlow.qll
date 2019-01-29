@@ -803,6 +803,13 @@ module DataFlow {
   predicate thisNode(DataFlow::Node node, StmtContainer container) { node = TThisNode(container) }
 
   /**
+   * Gets the node representing the receiver of the given function, or `this` in the given top-level.
+   *
+   * Has no result if `container` is an arrow function.
+   */
+  DataFlow::ThisNode thisNode(StmtContainer container) { result = TThisNode(container) }
+
+  /**
    * A classification of flows that are not modeled, or only modeled incompletely, by
    * `DataFlowNode`:
    *

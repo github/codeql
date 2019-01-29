@@ -1,19 +1,23 @@
-| access to field SsaFieldSink0 |
-| access to field SsaFieldSink1 |
-| access to local variable sink0 |
-| access to local variable sink40 |
-| access to local variable sink41 |
-| access to local variable sink42 |
-| access to local variable sink43 |
-| access to local variable sink67 |
-| access to local variable sink68 |
-| access to local variable sink70 |
-| access to local variable sink71 |
-| access to local variable sink72 |
-| access to local variable ssaSink0 |
-| access to local variable ssaSink1 |
-| access to local variable ssaSink2 |
-| access to local variable ssaSink3 |
-| access to local variable ssaSink4 |
-| access to local variable ssaSink5 |
-| access to parameter tainted |
+| LocalDataFlow.cs:53:15:53:19 | access to local variable sink0 |
+| LocalDataFlow.cs:300:15:300:20 | access to local variable sink40 |
+| LocalDataFlow.cs:302:15:302:20 | access to local variable sink41 |
+| LocalDataFlow.cs:304:15:304:20 | access to local variable sink42 |
+| LocalDataFlow.cs:306:15:306:20 | access to local variable sink43 |
+| LocalDataFlow.cs:392:15:392:20 | access to local variable sink67 |
+| LocalDataFlow.cs:394:15:394:20 | access to local variable sink68 |
+| LocalDataFlow.cs:412:15:412:20 | access to local variable sink70 |
+| LocalDataFlow.cs:420:19:420:24 | access to local variable sink71 |
+| LocalDataFlow.cs:430:23:430:28 | access to local variable sink72 |
+| LocalDataFlow.cs:466:15:466:21 | access to parameter tainted |
+| SSA.cs:9:15:9:22 | access to local variable ssaSink0 |
+| SSA.cs:25:15:25:22 | access to local variable ssaSink1 |
+| SSA.cs:43:15:43:22 | access to local variable ssaSink2 |
+| SSA.cs:60:15:60:22 | access to local variable ssaSink3 |
+| SSA.cs:69:15:69:34 | access to field SsaFieldSink0 |
+| SSA.cs:98:15:98:22 | access to local variable ssaSink4 |
+| SSA.cs:124:15:124:34 | access to field SsaFieldSink1 |
+| SSA.cs:180:15:180:22 | access to local variable ssaSink5 |
+| Splitting.cs:8:19:8:19 | [b (line 3): true] access to local variable x |
+| Splitting.cs:12:15:12:15 | [b (line 3): false] access to local variable x |
+| Splitting.cs:25:15:25:15 | [b (line 17): true] access to local variable x |
+| Splitting.cs:27:19:27:19 | access to local variable x |

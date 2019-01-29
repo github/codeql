@@ -5,6 +5,7 @@
  *              the result's location.
  * @kind problem
  * @id cpp/macros-filter
+ * @tags filter
  */
 import cpp
 import external.DefectFilter

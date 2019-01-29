@@ -392,6 +392,10 @@ class ClassObject extends Object {
         result.getFunction().refersTo(this)
     }
 
+    predicate notClass() {
+        none()
+    }
+
 }
 
 /** The 'str' class. This is the same as the 'bytes' class for

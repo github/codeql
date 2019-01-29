@@ -53,7 +53,7 @@ module Internal {
    * `polarity` is true iff the inner expression is nested in an even number of negations.
    */
   private Expr stripNotsAndParens(Expr e, boolean polarity) {
-    exists(Expr inner | inner = e.getUnderlyingValue() |
+    exists(Expr inner | inner = e.stripParens() |
       if inner instanceof LogNotExpr
       then result = stripNotsAndParens(inner.(LogNotExpr).getOperand(), polarity.booleanNot())
       else (
@@ -199,11 +199,14 @@ module Internal {
     Expr target;
 
     UndefinedNullCrashUse() {
-      this.(InvokeExpr).getCallee().getUnderlyingValue() = target
-      or
-      this.(PropAccess).getBase().getUnderlyingValue() = target
-      or
-      this.(MethodCallExpr).getReceiver().getUnderlyingValue() = target
+      exists (Expr thrower |
+        stripNotsAndParens(this, _) = thrower |
+        thrower.(InvokeExpr).getCallee().getUnderlyingValue() = target
+        or
+        thrower.(PropAccess).getBase().getUnderlyingValue() = target
+        or
+        thrower.(MethodCallExpr).getReceiver().getUnderlyingValue() = target
+      )
     }
 
     /**
@@ -220,7 +223,8 @@ module Internal {
   private class NonFunctionCallCrashUse extends Expr {
     Expr target;
 
-    NonFunctionCallCrashUse() { this.(InvokeExpr).getCallee().getUnderlyingValue() = target }
+    NonFunctionCallCrashUse() {
+      stripNotsAndParens(this, _).(InvokeExpr).getCallee().getUnderlyingValue() = target }
 
     /**
      * Gets the subexpression that will cause an exception to be thrown if it is not a `function`.
@@ -273,7 +277,6 @@ module Internal {
         guardVar.getVariable() = useVar.getVariable()
       |
         getAGuardedExpr(this.asExpr())
-            .getUnderlyingValue()
             .(UndefinedNullCrashUse)
             .getVulnerableSubexpression() = useVar and
         // exclude types whose truthiness depend on the value
@@ -306,7 +309,6 @@ module Internal {
         guardVar.getVariable() = useVar.getVariable()
       |
         getAGuardedExpr(guard)
-            .getUnderlyingValue()
             .(UndefinedNullCrashUse)
             .getVulnerableSubexpression() = useVar
       )
@@ -375,7 +377,6 @@ module Internal {
         guardVar.getVariable() = useVar.getVariable()
       |
         getAGuardedExpr(guard)
-            .getUnderlyingValue()
             .(NonFunctionCallCrashUse)
             .getVulnerableSubexpression() = useVar
       ) and

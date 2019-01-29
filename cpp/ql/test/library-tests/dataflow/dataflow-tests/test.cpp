@@ -1,5 +1,5 @@
 int source();
-void sink(...);
+void sink(int); void sink(const int *); void sink(int **);
 
 void intraprocedural_with_local_flow() {
   int t2;

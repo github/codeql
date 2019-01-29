@@ -16,7 +16,7 @@ import python
  * For sequences, the index must be an int, which are hashable, so we don't need to treat them specially.
  * For numpy arrays, the index may be a list, which are not hashable and needs to be treated specially.
  */
- 
+
 predicate numpy_array_type(ClassObject na) {
     exists(ModuleObject np | np.getName() = "numpy" or np.getName() = "numpy.core" |
         na.getAnImproperSuperType() = np.getAttribute("ndarray")
@@ -51,9 +51,30 @@ predicate is_unhashable(ControlFlowNode f, ClassObject cls, ControlFlowNode orig
     )
 }
 
+/**
+ * Holds if `f` is inside a `try` that catches `TypeError`. For example:
+ *
+ *    try:
+ *       ... f ...
+ *    except TypeError:
+ *       ...
+ *
+ * This predicate is used to eliminate false positive results. If `hash`
+ * is called on an unhashable object then a `TypeError` will be thrown.
+ * But this is not a bug if the code catches the `TypeError` and handles
+ * it.
+ */
+predicate typeerror_is_caught(ControlFlowNode f) {
+    exists (Try try |
+        try.getBody().contains(f.getNode()) and
+        try.getAHandler().getType().refersTo(theTypeErrorType()))
+}
+
 from ControlFlowNode f, ClassObject c, ControlFlowNode origin
-where 
-explicitly_hashed(f) and is_unhashable(f, c, origin)
-or
-unhashable_subscript(f, c, origin)
+where
+not typeerror_is_caught(f)
+and
+(explicitly_hashed(f) and is_unhashable(f, c, origin)
+ or
+ unhashable_subscript(f, c, origin))
 select f.getNode(), "This $@ of $@ is unhashable.", origin, "instance", c, c.getQualifiedName()
