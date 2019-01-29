@@ -15,9 +15,9 @@
 
 		<p>
 
-			However, it is notoriously error-prone to treat the URL as
-			a string and check if one of the allowed hosts is a substring of the
-			URL. Malicious URLs can bypass such security checks by embedding one
+			However, treating the URL as a string and checking if one of the
+			allowed hosts is a substring of the URL is very prone to errors.
+			Malicious URLs can bypass such security checks by embedding one
 			of the allowed hosts in an unexpected location.
 
 		</p>
