@@ -206,7 +206,6 @@ stmts(#20055,0,#20046,2,";")
 locations_default(#20056,#10000,6,22,6,22)
 hasLocation(#20055,#20056)
 stmtContainers(#20055,#20037)
-numlines(#20037,3,3,0)
 #20057=*
 lines(#20057,#20001,"for (let x of [1,2,3]) {","
 ")

@@ -61,7 +61,6 @@ stmts(#20015,1,#20004,-2,"{\n}")
 locations_default(#20016,#10000,1,22,2,1)
 hasLocation(#20015,#20016)
 stmtContainers(#20015,#20004)
-numlines(#20004,2,2,0)
 #20017=*
 lines(#20017,#20001,"function f(x, ...ys) {","
 ")

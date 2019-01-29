@@ -63,7 +63,6 @@ hasLocation(#20014,#20015)
 exprContainers(#20014,#20008)
 literals("x","x",#20014)
 bind(#20014,#20011)
-numlines(#20008,1,1,0)
 #20016=*
 lines(#20016,#20001,"f = async ((x)) => x","")
 hasLocation(#20016,#20002)

@@ -93,7 +93,6 @@ stmts(#20024,0,#20017,-1,";")
 locations_default(#20025,#10000,3,20,3,20)
 hasLocation(#20024,#20025)
 stmtContainers(#20024,#20004)
-numlines(#20004,4,4,0)
 #20026=*
 lines(#20026,#20001,"function test() {","
 ")

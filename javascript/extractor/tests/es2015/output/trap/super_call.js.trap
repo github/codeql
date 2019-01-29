@@ -129,7 +129,6 @@ hasLocation(#20034,#20035)
 enclosingStmt(#20034,#20022)
 exprContainers(#20034,#20016)
 literals("19","19",#20034)
-numlines(#20016,3,3,0)
 isMethod(#20012)
 #20036=*
 properties(#20036,#20005,3,0,"constru ... rgs); }")
@@ -193,7 +192,6 @@ enclosingStmt(#20049,#20045)
 exprContainers(#20049,#20039)
 literals("args","args",#20049)
 bind(#20049,#20041)
-numlines(#20039,1,0,0)
 isMethod(#20036)
 #20050=*
 lines(#20050,#20001,"class A extends B {","

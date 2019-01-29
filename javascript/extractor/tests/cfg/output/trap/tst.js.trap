@@ -225,7 +225,6 @@ hasLocation(#20060,#20061)
 enclosingStmt(#20060,#20058)
 exprContainers(#20060,#20005)
 literals("true","true",#20060)
-numlines(#20005,10,10,0)
 #20062=*
 stmts(#20062,14,#20001,1,"for (;a ... ntinue;")
 #20063=@"loc,{#10000},12,1,13,13"
@@ -345,7 +344,6 @@ stmts(#20094,0,#20090,1,";")
 locations_default(#20095,#10000,17,15,17,15)
 hasLocation(#20094,#20095)
 stmtContainers(#20094,#20069)
-numlines(#20069,4,4,0)
 #20096=*
 stmts(#20096,11,#20001,3,"try  {\n ... lly {\n}")
 #20097=@"loc,{#10000},20,1,24,1"

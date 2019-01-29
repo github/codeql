@@ -166,7 +166,6 @@ enclosingStmt(#20041,#20037)
 exprContainers(#20041,#20031)
 literals("args","args",#20041)
 bind(#20041,#20033)
-numlines(#20031,1,0,0)
 isMethod(#20028)
 #20042=*
 lines(#20042,#20001,"class Point extends (Math.random() ? Object : Array) {}","")

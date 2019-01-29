@@ -84,7 +84,6 @@ enclosingStmt(#20023,#20019)
 exprContainers(#20023,#20004)
 literals("i","i",#20023)
 decl(#20023,#20009)
-numlines(#20004,6,6,0)
 #20024=*
 lines(#20024,#20001,"function g() {","
 ")

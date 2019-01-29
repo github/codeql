@@ -132,7 +132,6 @@ enclosingStmt(#20034,#20028)
 exprContainers(#20034,#20004)
 literals("index","index",#20034)
 bind(#20034,#20008)
-numlines(#20004,5,5,1)
 #20036=*
 comments(#20036,0,#20001," when index reaches 2, yield's done will be true and its value will be undefined;","// when ... efined;")
 #20037=@"loc,{#10000},3,21,3,103"

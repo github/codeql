@@ -71,7 +71,6 @@ hasLocation(#20018,#20019)
 enclosingStmt(#20018,#20016)
 exprContainers(#20018,#20004)
 literals("use strict","'use strict'",#20018)
-numlines(#20004,1,1,0)
 #20020=*
 lines(#20020,#20001,"function f(a=2) { 'use strict'; }","")
 hasLocation(#20020,#20002)

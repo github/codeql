@@ -108,7 +108,6 @@ enclosingStmt(#20025,#20021)
 exprContainers(#20025,#20015)
 literals("args","args",#20025)
 bind(#20025,#20017)
-numlines(#20015,1,0,0)
 isMethod(#20012)
 #20026=*
 lines(#20026,#20001,"class Point extends Object {}","")

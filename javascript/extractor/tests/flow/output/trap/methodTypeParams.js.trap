@@ -100,7 +100,6 @@ enclosingStmt(#20026,#20024)
 exprContainers(#20026,#20015)
 literals("a","a",#20026)
 bind(#20026,#20018)
-numlines(#20015,3,3,0)
 isMethod(#20011)
 #20028=*
 lines(#20028,#20001,"var o = {","

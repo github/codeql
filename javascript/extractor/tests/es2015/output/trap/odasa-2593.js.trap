@@ -88,7 +88,6 @@ enclosingStmt(#20022,#20015)
 exprContainers(#20022,#20004)
 literals("arguments","arguments",#20022)
 bind(#20022,#20008)
-numlines(#20004,4,4,0)
 #20024=*
 lines(#20024,#20001,"function test() {","
 ")

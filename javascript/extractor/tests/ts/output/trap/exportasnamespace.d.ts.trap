@@ -48,7 +48,6 @@ scopenesting(#20011,#20003)
 #20012=@"var;{arguments};{#20011}"
 variables(#20012,"arguments",#20011)
 isArgumentsObject(#20012)
-numlines(#20006,1,1,0)
 #20013=*
 stmts(#20013,38,#20001,1,"export  ... ce bar;")
 #20014=@"loc,{#10000},2,1,2,24"

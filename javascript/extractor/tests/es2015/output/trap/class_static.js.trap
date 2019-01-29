@@ -82,7 +82,6 @@ hasLocation(#20021,#20022)
 enclosingStmt(#20021,#20019)
 exprContainers(#20021,#20013)
 literals("A","""A""",#20021)
-numlines(#20013,3,3,0)
 isMethod(#20009)
 isStatic(#20009)
 #20023=*
@@ -112,7 +111,6 @@ isArgumentsObject(#20028)
 stmts(#20029,1,#20026,-2,"{}")
 hasLocation(#20029,#20024)
 stmtContainers(#20029,#20026)
-numlines(#20026,1,0,0)
 isMethod(#20023)
 #20030=*
 lines(#20030,#20001,"class A {","

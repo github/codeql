@@ -995,7 +995,6 @@ locations_default(#20291,#10000,27,31,27,36)
 hasLocation(#20290,#20291)
 exprContainers(#20290,#20287)
 literals("number","number",#20290)
-numlines(#20287,1,1,0)
 #20292=*
 stmts(#20292,18,#20001,22,"var con ...  Point;")
 #20293=@"loc,{#10000},28,1,28,40"
@@ -1045,7 +1044,6 @@ hasLocation(#20303,#20304)
 exprContainers(#20303,#20300)
 literals("Point","Point",#20303)
 typebind(#20303,#20049)
-numlines(#20300,1,1,0)
 #20305=*
 stmts(#20305,18,#20001,23,"var cal ... > void;")
 #20306=@"loc,{#10000},29,1,29,35"
@@ -1094,7 +1092,6 @@ locations_default(#20317,#10000,29,31,29,34)
 hasLocation(#20316,#20317)
 exprContainers(#20316,#20313)
 literals("void","void",#20316)
-numlines(#20313,1,1,0)
 #20318=*
 stmts(#20318,18,#20001,24,"var cal ...  never;")
 #20319=@"loc,{#10000},30,1,30,36"
@@ -1143,7 +1140,6 @@ locations_default(#20330,#10000,30,31,30,35)
 hasLocation(#20329,#20330)
 exprContainers(#20329,#20326)
 literals("never","never",#20329)
-numlines(#20326,1,1,0)
 #20331=*
 stmts(#20331,18,#20001,25,"var uni ... string;")
 #20332=@"loc,{#10000},31,1,31,40"
@@ -1578,7 +1574,6 @@ hasLocation(#20446,#20445)
 exprContainers(#20446,#20433)
 literals("T","T",#20446)
 typedecl(#20446,#20435)
-numlines(#20433,1,1,0)
 #20447=*
 stmts(#20447,18,#20001,35,"var gen ... ) => T;")
 #20448=@"loc,{#10000},41,1,41,47"
@@ -1660,7 +1655,6 @@ hasLocation(#20468,#20467)
 exprContainers(#20468,#20455)
 literals("T","T",#20468)
 typedecl(#20468,#20457)
-numlines(#20455,1,1,0)
 #20469=*
 stmts(#20469,18,#20001,36,"var key ... f Point")
 #20470=@"loc,{#10000},42,1,42,35"
@@ -2113,7 +2107,6 @@ hasLocation(#20587,#20588)
 exprContainers(#20587,#20579)
 literals("T","T",#20587)
 typebind(#20587,#20563)
-numlines(#20579,1,1,0)
 isMethod(#20575)
 isAbstractMember(#20575)
 #20589=*
@@ -2252,7 +2245,6 @@ hasLocation(#20623,#20624)
 exprContainers(#20623,#20615)
 literals("T","T",#20623)
 typebind(#20623,#20594)
-numlines(#20615,1,1,0)
 isMethod(#20611)
 isAbstractMember(#20611)
 #20625=*
@@ -2281,7 +2273,6 @@ isArgumentsObject(#20629)
 stmts(#20630,1,#20608,-2,"{}")
 hasLocation(#20630,#20626)
 stmtContainers(#20630,#20608)
-numlines(#20608,1,0,0)
 isMethod(#20625)
 #20631=*
 stmts(#20631,26,#20001,45,"class Fish {}")
@@ -2330,7 +2321,6 @@ isArgumentsObject(#20641)
 stmts(#20642,1,#20639,-2,"{}")
 hasLocation(#20642,#20637)
 stmtContainers(#20642,#20639)
-numlines(#20639,1,0,0)
 isMethod(#20636)
 #20643=*
 stmts(#20643,26,#20001,46,"class Bird {}")
@@ -2379,7 +2369,6 @@ isArgumentsObject(#20653)
 stmts(#20654,1,#20651,-2,"{}")
 hasLocation(#20654,#20649)
 stmtContainers(#20654,#20651)
-numlines(#20651,1,0,0)
 isMethod(#20648)
 #20655=*
 stmts(#20655,17,#20001,47,"functio ... Fish {}")
@@ -2462,7 +2451,6 @@ stmts(#20676,1,#20655,-2,"{}")
 locations_default(#20677,#10000,61,49,61,50)
 hasLocation(#20676,#20677)
 stmtContainers(#20676,#20655)
-numlines(#20655,1,1,0)
 #20678=*
 stmts(#20678,26,#20001,48,"class T ... is; }\n}")
 #20679=@"loc,{#10000},63,1,65,1"
@@ -2551,7 +2539,6 @@ locations_default(#20702,#10000,64,33,64,36)
 hasLocation(#20701,#20702)
 enclosingStmt(#20701,#20699)
 exprContainers(#20701,#20687)
-numlines(#20687,1,1,0)
 isMethod(#20683)
 #20703=*
 properties(#20703,#20678,3,0,"constructor() {}")
@@ -2580,7 +2567,6 @@ isArgumentsObject(#20708)
 stmts(#20709,1,#20706,-2,"{}")
 hasLocation(#20709,#20704)
 stmtContainers(#20709,#20706)
-numlines(#20706,1,0,0)
 isMethod(#20703)
 #20710=*
 lines(#20710,#20001,"interface Point { x: number; y: number }","

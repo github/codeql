@@ -121,8 +121,6 @@ enclosingStmt(#20035,#20031)
 exprContainers(#20035,#20016)
 literals("x","x",#20035)
 decl(#20035,#20021)
-numlines(#20016,6,6,0)
-numlines(#20004,8,8,0)
 #20036=*
 lines(#20036,#20001,"function f(x) {","
 ")

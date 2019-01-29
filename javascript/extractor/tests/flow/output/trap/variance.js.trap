@@ -82,7 +82,6 @@ isArgumentsObject(#20020)
 stmts(#20021,1,#20015,-2,"{}")
 hasLocation(#20021,#20017)
 stmtContainers(#20021,#20015)
-numlines(#20015,1,0,0)
 isMethod(#20016)
 #20022=*
 lines(#20022,#20001,"export type PackagerAsset = {","

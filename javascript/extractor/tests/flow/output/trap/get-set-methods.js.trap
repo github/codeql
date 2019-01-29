@@ -80,7 +80,6 @@ stmts(#20021,1,#20014,-2,"{ }")
 locations_default(#20022,#10000,2,18,2,20)
 hasLocation(#20021,#20022)
 stmtContainers(#20021,#20014)
-numlines(#20014,1,1,0)
 isMethod(#20010)
 #20023=*
 properties(#20023,#20005,3,0,"set<T>(v: T) { }")
@@ -125,7 +124,6 @@ stmts(#20034,1,#20027,-2,"{ }")
 locations_default(#20035,#10000,3,18,3,20)
 hasLocation(#20034,#20035)
 stmtContainers(#20034,#20027)
-numlines(#20027,1,1,0)
 isMethod(#20023)
 #20036=*
 properties(#20036,#20005,4,0,"constructor() {}")
@@ -154,7 +152,6 @@ isArgumentsObject(#20041)
 stmts(#20042,1,#20039,-2,"{}")
 hasLocation(#20042,#20037)
 stmtContainers(#20042,#20039)
-numlines(#20039,1,0,0)
 isMethod(#20036)
 #20043=*
 lines(#20043,#20001,"class C {","

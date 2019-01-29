@@ -104,7 +104,6 @@ enclosingStmt(#20024,#20020)
 exprContainers(#20024,#20014)
 literals("args","args",#20024)
 bind(#20024,#20016)
-numlines(#20014,1,0,0)
 isMethod(#20011)
 #20025=*
 lines(#20025,#20001,"!class extends B {};","")

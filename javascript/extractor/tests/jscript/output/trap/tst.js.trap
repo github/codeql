@@ -94,7 +94,6 @@ stmts(#20023,1,#20012,-2,"{ }")
 locations_default(#20024,#10000,1,50,1,52)
 hasLocation(#20023,#20024)
 stmtContainers(#20023,#20012)
-numlines(#20012,1,1,0)
 #20025=*
 lines(#20025,#20001,"function ISMTPOnArrival::OnArrival( Msg, States) { }","")
 hasLocation(#20025,#20002)

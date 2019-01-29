@@ -193,7 +193,6 @@ enclosingStmt(#20052,#20050)
 exprContainers(#20052,#20036)
 literals("x","x",#20052)
 bind(#20052,#20041)
-numlines(#20036,4,4,0)
 #20054=*
 stmts(#20054,17,#20001,6,"functio ... {}\n\t}\n}")
 #20055=@"loc,{#10000},12,1,19,1"
@@ -293,7 +292,6 @@ stmts(#20081,1,#20075,-2,"{}")
 locations_default(#20082,#10000,16,16,16,17)
 hasLocation(#20081,#20082)
 stmtContainers(#20081,#20075)
-numlines(#20075,1,1,0)
 #20083=*
 stmts(#20083,2,#20073,1,"!function k() {}")
 #20084=@"loc,{#10000},17,3,17,18"
@@ -335,8 +333,6 @@ stmts(#20093,1,#20086,-2,"{}")
 locations_default(#20094,#10000,17,17,17,18)
 hasLocation(#20093,#20094)
 stmtContainers(#20093,#20086)
-numlines(#20086,1,1,0)
-numlines(#20054,8,8,0)
 #20095=*
 lines(#20095,#20001,"var global;","
 ")

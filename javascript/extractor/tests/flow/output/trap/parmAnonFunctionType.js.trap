@@ -82,7 +82,6 @@ hasLocation(#20021,#20022)
 enclosingStmt(#20021,#20015)
 exprContainers(#20021,#20004)
 literals("42","42",#20021)
-numlines(#20004,3,3,0)
 #20023=*
 lines(#20023,#20001,"function f(g: ({y: int}) => void) {","
 ")

@@ -115,7 +115,6 @@ isArgumentsObject(#20030)
 stmts(#20031,1,#20028,-2,"{}")
 hasLocation(#20031,#20026)
 stmtContainers(#20031,#20028)
-numlines(#20028,1,0,0)
 isMethod(#20025)
 #20032=*
 stmts(#20032,29,#20001,2,"export  ...  f() {}")
@@ -150,7 +149,6 @@ stmts(#20040,1,#20034,-2,"{}")
 locations_default(#20041,#10000,5,29,5,30)
 hasLocation(#20040,#20041)
 stmtContainers(#20040,#20034)
-numlines(#20034,1,1,0)
 #20042=*
 stmts(#20042,0,#20001,3,";")
 #20043=@"loc,{#10000},5,31,5,31"

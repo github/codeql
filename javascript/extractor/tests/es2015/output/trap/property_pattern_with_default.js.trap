@@ -69,7 +69,6 @@ hasLocation(#20017,#20018)
 exprContainers(#20017,#20004)
 literals("x","x",#20017)
 bind(#20017,#20007)
-numlines(#20004,1,1,0)
 #20019=*
 lines(#20019,#20001,"({x = 1}) => x;","")
 hasLocation(#20019,#20002)

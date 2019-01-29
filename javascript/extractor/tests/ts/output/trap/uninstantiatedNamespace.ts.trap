@@ -271,7 +271,6 @@ locations_default(#20078,#10000,17,14,17,19)
 hasLocation(#20077,#20078)
 exprContainers(#20077,#20074)
 literals("number","number",#20077)
-numlines(#20074,1,1,0)
 isMethod(#20070)
 isAbstractMember(#20070)
 #20079=*

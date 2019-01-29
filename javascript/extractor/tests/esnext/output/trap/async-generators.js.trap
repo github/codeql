@@ -46,7 +46,6 @@ stmts(#20011,1,#20005,-2,"{\n}")
 locations_default(#20012,#10000,1,23,2,1)
 hasLocation(#20011,#20012)
 stmtContainers(#20011,#20005)
-numlines(#20005,2,2,0)
 #20013=*
 stmts(#20013,17,#20001,1,"async f ... o());\n}")
 #20014=@"loc,{#10000},4,1,6,1"
@@ -126,7 +125,6 @@ locations_default(#20034,#10000,5,28,5,28)
 hasLocation(#20033,#20034)
 stmtContainers(#20033,#20013)
 isForAwaitOf(#20022)
-numlines(#20013,3,3,0)
 #20035=*
 lines(#20035,#20001,"async function *foo() {","
 ")

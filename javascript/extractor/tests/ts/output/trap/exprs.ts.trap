@@ -171,7 +171,6 @@ enclosingStmt(#20043,#20033)
 exprContainers(#20043,#20004)
 literals("z","z",#20043)
 bind(#20043,#20008)
-numlines(#20004,5,5,0)
 #20045=*
 lines(#20045,#20001,"function f(z) {","
 ")

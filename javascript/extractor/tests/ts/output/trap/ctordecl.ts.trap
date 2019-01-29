@@ -95,7 +95,6 @@ locations_default(#20025,#10000,3,17,3,22)
 hasLocation(#20024,#20025)
 exprContainers(#20024,#20013)
 literals("string","string",#20024)
-numlines(#20013,1,1,0)
 isMethod(#20016)
 #20026=*
 properties(#20026,#20005,4,0,"constru ... any) {}")
@@ -143,7 +142,6 @@ stmts(#20037,1,#20029,-2,"{}")
 locations_default(#20038,#10000,4,22,4,23)
 hasLocation(#20037,#20038)
 stmtContainers(#20037,#20029)
-numlines(#20029,1,1,0)
 isMethod(#20026)
 #20039=*
 lines(#20039,#20001,"class A {","

@@ -96,7 +96,6 @@ hasLocation(#20025,#20026)
 enclosingStmt(#20025,#20019)
 exprContainers(#20025,#20013)
 literals("_x","_x",#20025)
-numlines(#20013,3,3,0)
 isMethod(#20009)
 #20027=*
 properties(#20027,#20005,3,2,"set x(v ... +v;\n  }")
@@ -192,7 +191,6 @@ enclosingStmt(#20052,#20040)
 exprContainers(#20052,#20031)
 literals("v","v",#20052)
 bind(#20052,#20034)
-numlines(#20031,3,3,0)
 isMethod(#20027)
 #20054=*
 properties(#20054,#20005,4,0,"constructor() {}")
@@ -221,7 +219,6 @@ isArgumentsObject(#20059)
 stmts(#20060,1,#20057,-2,"{}")
 hasLocation(#20060,#20055)
 stmtContainers(#20060,#20057)
-numlines(#20057,1,0,0)
 isMethod(#20054)
 #20061=*
 lines(#20061,#20001,"class A {","

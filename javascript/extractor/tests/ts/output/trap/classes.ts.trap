@@ -134,7 +134,6 @@ enclosingStmt(#20032,#20028)
 exprContainers(#20032,#20022)
 literals("args","args",#20032)
 bind(#20032,#20024)
-numlines(#20022,1,0,0)
 isMethod(#20019)
 #20033=*
 lines(#20033,#20001,"abstract class C extends D, implements E<F>","

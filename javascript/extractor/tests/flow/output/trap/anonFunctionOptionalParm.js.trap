@@ -64,7 +64,6 @@ stmts(#20016,1,#20010,-2,"{}")
 locations_default(#20017,#10000,1,21,1,22)
 hasLocation(#20016,#20017)
 stmtContainers(#20016,#20010)
-numlines(#20010,1,1,0)
 #20018=*
 lines(#20018,#20001,"var f = (x?:int) => {};","
 ")

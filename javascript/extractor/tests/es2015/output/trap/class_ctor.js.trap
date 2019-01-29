@@ -122,7 +122,6 @@ enclosingStmt(#20032,#20022)
 exprContainers(#20032,#20013)
 literals("x","x",#20032)
 bind(#20032,#20016)
-numlines(#20013,3,3,0)
 isMethod(#20009)
 #20034=*
 lines(#20034,#20001,"class A {","

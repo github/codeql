@@ -71,7 +71,6 @@ literals("foo","foo",#20017)
 #20019=@"var;{foo};{#20000}"
 variables(#20019,"foo",#20000)
 bind(#20017,#20019)
-numlines(#20010,1,1,0)
 #20020=*
 lines(#20020,#20001,"let f = async() : Promise<string> => await foo();","
 ")

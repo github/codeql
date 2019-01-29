@@ -195,7 +195,6 @@ hasLocation(#20051,#20052)
 enclosingStmt(#20051,#20049)
 exprContainers(#20051,#20043)
 literals("56","56",#20051)
-numlines(#20043,1,1,0)
 isMethod(#20039)
 #20053=*
 lines(#20053,#20001,"var x = 42,","

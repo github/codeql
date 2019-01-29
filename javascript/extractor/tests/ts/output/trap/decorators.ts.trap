@@ -150,7 +150,6 @@ hasLocation(#20041,#20042)
 enclosingStmt(#20041,#20035)
 exprContainers(#20041,#20028)
 literals("field","field",#20041)
-numlines(#20028,1,1,0)
 isMethod(#20019)
 #20043=*
 properties(#20043,#20009,3,8,"field: number;")
@@ -218,7 +217,6 @@ isArgumentsObject(#20059)
 stmts(#20060,1,#20052,-2,"{}")
 hasLocation(#20060,#20056)
 stmtContainers(#20060,#20052)
-numlines(#20052,1,0,0)
 isMethod(#20055)
 #20061=*
 stmts(#20061,17,#20001,1,"@functi ... un() {}")
@@ -247,7 +245,6 @@ stmts(#20067,1,#20061,-2,"{}")
 locations_default(#20068,#10000,11,16,11,17)
 hasLocation(#20067,#20068)
 stmtContainers(#20067,#20061)
-numlines(#20061,2,2,0)
 #20069=*
 stmts(#20069,30,#20001,2,"export  ... ass2 {}")
 #20070=@"loc,{#10000},14,1,14,22"
@@ -319,7 +316,6 @@ isArgumentsObject(#20086)
 stmts(#20087,1,#20084,-2,"{}")
 hasLocation(#20087,#20082)
 stmtContainers(#20087,#20084)
-numlines(#20084,1,0,0)
 isMethod(#20081)
 #20088=*
 lines(#20088,#20001,"@classDecorator","

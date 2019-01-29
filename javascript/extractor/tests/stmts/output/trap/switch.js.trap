@@ -207,7 +207,6 @@ hasLocation(#20057,#20058)
 enclosingStmt(#20057,#20055)
 exprContainers(#20057,#20025)
 literals("56","56",#20057)
-numlines(#20025,10,10,0)
 #20059=*
 lines(#20059,#20001,"switch (x) {","
 ")

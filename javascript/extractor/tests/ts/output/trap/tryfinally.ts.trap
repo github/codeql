@@ -107,7 +107,6 @@ enclosingStmt(#20029,#20027)
 exprContainers(#20029,#20004)
 literals("x","x",#20029)
 bind(#20029,#20009)
-numlines(#20004,7,7,0)
 #20031=*
 lines(#20031,#20001,"function foo() {","
 ")

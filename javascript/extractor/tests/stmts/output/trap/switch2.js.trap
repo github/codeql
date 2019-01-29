@@ -121,7 +121,6 @@ hasLocation(#20033,#20034)
 enclosingStmt(#20033,#20031)
 exprContainers(#20033,#20004)
 literals("56","56",#20033)
-numlines(#20004,9,9,0)
 #20035=*
 lines(#20035,#20001,"function f() {","
 ")

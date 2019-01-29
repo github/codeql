@@ -250,7 +250,6 @@ enclosingStmt(#20068,#20057)
 exprContainers(#20068,#20005)
 literals("d","d",#20068)
 bind(#20068,#20052)
-numlines(#20005,8,8,0)
 #20070=*
 stmts(#20070,17,#20001,1,"functio ... rn w;\n}")
 #20071=@"loc,{#10000},10,1,13,1"
@@ -394,7 +393,6 @@ enclosingStmt(#20109,#20107)
 exprContainers(#20109,#20070)
 literals("w","w",#20109)
 bind(#20109,#20075)
-numlines(#20070,4,4,0)
 #20111=*
 lines(#20111,#20001,"function f([x, y]) {","
 ")

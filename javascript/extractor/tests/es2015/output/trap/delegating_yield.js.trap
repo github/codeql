@@ -73,7 +73,6 @@ literals("g","g",#20017)
 variables(#20019,"g",#20000)
 bind(#20017,#20019)
 isDelegating(#20013)
-numlines(#20004,3,3,0)
 #20020=*
 lines(#20020,#20001,"function* f() {","
 ")

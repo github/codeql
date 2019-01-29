@@ -104,7 +104,6 @@ hasLocation(#20027,#20028)
 enclosingStmt(#20027,#20017)
 exprContainers(#20027,#20004)
 literals("!","""!""",#20027)
-numlines(#20004,3,3,0)
 #20029=*
 stmts(#20029,2,#20001,1,"alert(g ... rld""));")
 #20030=@"loc,{#10000},5,1,5,24"

@@ -107,7 +107,6 @@ hasLocation(#20028,#20029)
 enclosingStmt(#20028,#20022)
 exprContainers(#20028,#20016)
 literals("42","42",#20028)
-numlines(#20016,3,3,0)
 isMethod(#20012)
 #20030=*
 lines(#20030,#20001,"class A extends B {","

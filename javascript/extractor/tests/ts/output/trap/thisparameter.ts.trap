@@ -74,7 +74,6 @@ stmts(#20021,1,#20008,-2,"{}")
 locations_default(#20022,#10000,1,45,1,46)
 hasLocation(#20021,#20022)
 stmtContainers(#20021,#20008)
-numlines(#20008,1,1,0)
 #20023=*
 stmts(#20023,18,#20001,1,"var f = ... ber) {}")
 #20024=@"loc,{#10000},3,1,3,44"
@@ -141,7 +140,6 @@ stmts(#20040,1,#20029,-2,"{}")
 locations_default(#20041,#10000,3,43,3,44)
 hasLocation(#20040,#20041)
 stmtContainers(#20040,#20029)
-numlines(#20029,1,1,0)
 #20042=*
 stmts(#20042,17,#20001,2,"declare ... umber);")
 #20043=@"loc,{#10000},5,1,5,50"
@@ -190,7 +188,6 @@ locations_default(#20055,#10000,5,43,5,48)
 hasLocation(#20054,#20055)
 exprContainers(#20054,#20042)
 literals("number","number",#20054)
-numlines(#20042,1,1,0)
 #20056=*
 stmts(#20056,26,#20001,3,"class C ... C) {}\n}")
 #20057=@"loc,{#10000},7,1,9,1"
@@ -242,7 +239,6 @@ stmts(#20068,1,#20065,-2,"{}")
 locations_default(#20069,#10000,8,19,8,20)
 hasLocation(#20068,#20069)
 stmtContainers(#20068,#20065)
-numlines(#20065,1,1,0)
 isMethod(#20061)
 #20070=*
 properties(#20070,#20056,3,0,"constructor() {}")
@@ -271,7 +267,6 @@ isArgumentsObject(#20075)
 stmts(#20076,1,#20073,-2,"{}")
 hasLocation(#20076,#20071)
 stmtContainers(#20076,#20073)
-numlines(#20073,1,0,0)
 isMethod(#20070)
 #20077=*
 stmts(#20077,34,#20001,4,"interfa ... : I);\n}")
@@ -313,7 +308,6 @@ scopenesting(#20086,#20000)
 #20087=@"var;{arguments};{#20086}"
 variables(#20087,"arguments",#20086)
 isArgumentsObject(#20087)
-numlines(#20085,1,1,0)
 isMethod(#20081)
 isAbstractMember(#20081)
 #20088=*

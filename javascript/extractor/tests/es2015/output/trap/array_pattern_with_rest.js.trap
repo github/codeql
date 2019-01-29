@@ -106,7 +106,6 @@ enclosingStmt(#20027,#20025)
 exprContainers(#20027,#20004)
 literals("ys","ys",#20027)
 bind(#20027,#20008)
-numlines(#20004,4,4,0)
 #20029=*
 lines(#20029,#20001,"function cdr(o) {","
 ")

@@ -62,7 +62,6 @@ isArgumentsObject(#20014)
 stmts(#20015,1,#20012,-2,"{}")
 hasLocation(#20015,#20010)
 stmtContainers(#20015,#20012)
-numlines(#20012,1,0,0)
 isMethod(#20009)
 #20016=*
 lines(#20016,#20001,"class Point {}","")

@@ -62,7 +62,6 @@ stmts(#20015,1,#20009,-2,"{}")
 locations_default(#20016,#10000,1,46,1,47)
 hasLocation(#20015,#20016)
 stmtContainers(#20015,#20009)
-numlines(#20009,1,1,0)
 #20017=*
 lines(#20017,#20001,"var f = (viewable: ViewToken): ?ViewToken => {};","")
 hasLocation(#20017,#20002)

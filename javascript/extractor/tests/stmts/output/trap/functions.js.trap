@@ -95,7 +95,6 @@ enclosingStmt(#20025,#20019)
 exprContainers(#20025,#20005)
 literals("y","y",#20025)
 bind(#20025,#20013)
-numlines(#20005,3,3,0)
 #20027=*
 stmts(#20027,17,#20001,1,"function h() {}")
 #20028=@"loc,{#10000},5,1,5,15"
@@ -123,7 +122,6 @@ stmts(#20033,1,#20027,-2,"{}")
 locations_default(#20034,#10000,5,14,5,15)
 hasLocation(#20033,#20034)
 stmtContainers(#20033,#20027)
-numlines(#20027,1,1,0)
 #20035=*
 stmts(#20035,2,#20001,2,"k = fun ... turn;\n}")
 #20036=@"loc,{#10000},7,1,9,1"
@@ -172,7 +170,6 @@ stmts(#20047,9,#20045,0,"return;")
 locations_default(#20048,#10000,8,5,8,11)
 hasLocation(#20047,#20048)
 stmtContainers(#20047,#20041)
-numlines(#20041,3,3,0)
 #20049=*
 stmts(#20049,2,#20001,3,"l = function f() {}")
 #20050=@"loc,{#10000},11,1,11,19"
@@ -225,7 +222,6 @@ stmts(#20062,1,#20055,-2,"{}")
 locations_default(#20063,#10000,11,18,11,19)
 hasLocation(#20062,#20063)
 stmtContainers(#20062,#20055)
-numlines(#20055,1,1,0)
 #20064=*
 stmts(#20064,2,#20001,4,"function() {}")
 #20065=@"loc,{#10000},13,1,13,13"
@@ -250,7 +246,6 @@ stmts(#20069,1,#20066,-2,"{}")
 locations_default(#20070,#10000,13,12,13,13)
 hasLocation(#20069,#20070)
 stmtContainers(#20069,#20066)
-numlines(#20066,1,1,0)
 #20071=*
 lines(#20071,#20001,"function g(x, y) {","
 ")

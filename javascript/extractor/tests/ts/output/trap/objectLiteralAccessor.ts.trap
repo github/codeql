@@ -89,7 +89,6 @@ hasLocation(#20023,#20024)
 enclosingStmt(#20023,#20021)
 exprContainers(#20023,#20016)
 literals("1","1",#20023)
-numlines(#20016,1,1,0)
 isMethod(#20012)
 #20025=*
 properties(#20025,#20010,1,2,"set foo(v) {}")
@@ -132,7 +131,6 @@ stmts(#20035,1,#20029,-2,"{}")
 locations_default(#20036,#10000,3,14,3,15)
 hasLocation(#20035,#20036)
 stmtContainers(#20035,#20029)
-numlines(#20029,1,1,0)
 isMethod(#20025)
 #20037=*
 lines(#20037,#20001,"var x = {","

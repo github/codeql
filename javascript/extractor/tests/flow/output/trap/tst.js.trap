@@ -86,7 +86,6 @@ stmts(#20024,1,#20020,-2,"{}")
 locations_default(#20025,#10000,8,15,8,16)
 hasLocation(#20024,#20025)
 stmtContainers(#20024,#20020)
-numlines(#20020,1,1,0)
 isMethod(#20016)
 #20026=*
 properties(#20026,#20006,4,0,"constructor() {}")
@@ -114,7 +113,6 @@ isArgumentsObject(#20030)
 stmts(#20031,1,#20015,-2,"{}")
 hasLocation(#20031,#20027)
 stmtContainers(#20031,#20015)
-numlines(#20015,1,0,0)
 isMethod(#20026)
 #20032=*
 stmts(#20032,17,#20001,1,"functio ... :\n  }\n}")
@@ -181,7 +179,6 @@ hasLocation(#20049,#20050)
 enclosingStmt(#20049,#20045)
 exprContainers(#20049,#20032)
 literals("42","42",#20049)
-numlines(#20032,5,5,0)
 #20051=*
 lines(#20051,#20001,"type Point = {","
 ")

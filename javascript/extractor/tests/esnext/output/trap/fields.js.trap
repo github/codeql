@@ -91,7 +91,6 @@ isArgumentsObject(#20025)
 stmts(#20026,1,#20018,-2,"{}")
 hasLocation(#20026,#20022)
 stmtContainers(#20026,#20018)
-numlines(#20018,1,0,0)
 isMethod(#20021)
 #20027=*
 stmts(#20027,26,#20001,1,"class B ... er.x;\n}")
@@ -216,7 +215,6 @@ enclosingStmt(#20057,#20053)
 exprContainers(#20057,#20038)
 literals("args","args",#20057)
 bind(#20057,#20049)
-numlines(#20038,1,0,0)
 isMethod(#20045)
 #20058=*
 stmts(#20058,26,#20001,2,"class C {\n  async;\n}")
@@ -278,7 +276,6 @@ isArgumentsObject(#20072)
 stmts(#20073,1,#20067,-2,"{}")
 hasLocation(#20073,#20069)
 stmtContainers(#20073,#20067)
-numlines(#20067,1,0,0)
 isMethod(#20068)
 #20074=*
 lines(#20074,#20001,"class A {","

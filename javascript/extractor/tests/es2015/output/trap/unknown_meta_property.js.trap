@@ -53,7 +53,6 @@ locations_default(#20014,#10000,2,3,2,12)
 hasLocation(#20013,#20014)
 enclosingStmt(#20013,#20011)
 exprContainers(#20013,#20004)
-numlines(#20004,3,3,0)
 #20015=*
 lines(#20015,#20001,"function g() {","
 ")

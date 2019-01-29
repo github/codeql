@@ -91,7 +91,6 @@ literals("ctor","ctor",#20024)
 #20026=@"var;{ctor};{#20000}"
 variables(#20026,"ctor",#20000)
 bind(#20024,#20026)
-numlines(#20016,3,3,0)
 isMethod(#20012)
 #20027=*
 properties(#20027,#20007,3,8,"x;")
@@ -153,7 +152,6 @@ stmts(#20043,1,#20039,-2,"{}")
 locations_default(#20044,#10000,7,7,7,8)
 hasLocation(#20043,#20044)
 stmtContainers(#20043,#20039)
-numlines(#20039,1,1,0)
 isMethod(#20035)
 #20045=*
 properties(#20045,#20007,6,0,"static g() {}")
@@ -188,7 +186,6 @@ stmts(#20053,1,#20049,-2,"{}")
 locations_default(#20054,#10000,8,14,8,15)
 hasLocation(#20053,#20054)
 stmtContainers(#20053,#20049)
-numlines(#20049,1,1,0)
 isMethod(#20045)
 isStatic(#20045)
 #20055=*
@@ -307,7 +304,6 @@ literals("after","after",#20085)
 #20087=@"var;{after};{#20000}"
 variables(#20087,"after",#20000)
 bind(#20085,#20087)
-numlines(#20066,5,5,0)
 isMethod(#20062)
 #20088=*
 properties(#20088,#20055,3,8,"z;")

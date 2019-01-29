@@ -490,7 +490,6 @@ locations_default(#20143,#10000,13,28,13,31)
 hasLocation(#20142,#20143)
 exprContainers(#20142,#20139)
 literals("void","void",#20142)
-numlines(#20139,1,1,0)
 #20144=*
 stmts(#20144,35,#20007,5,"type T4 ... ing[]>;")
 #20145=@"loc,{#10000},14,3,14,31"
@@ -616,7 +615,6 @@ locations_default(#20176,#10000,17,39,17,42)
 hasLocation(#20175,#20176)
 exprContainers(#20175,#20172)
 literals("void","void",#20175)
-numlines(#20172,1,1,0)
 #20177=*
 stmts(#20177,35,#20007,7,"type T1 ... fined>;")
 #20178=@"loc,{#10000},18,3,18,53"
@@ -1643,7 +1641,6 @@ locations_default(#20440,#10000,34,44,34,47)
 hasLocation(#20439,#20440)
 exprContainers(#20439,#20436)
 literals("void","void",#20439)
-numlines(#20436,1,1,0)
 #20441=*
 typeexprs(#20441,0,#20422,1,"Function")
 #20442=@"loc,{#10000},34,51,34,58"
@@ -1739,7 +1736,6 @@ locations_default(#20465,#10000,35,46,35,49)
 hasLocation(#20464,#20465)
 exprContainers(#20464,#20461)
 literals("void","void",#20464)
-numlines(#20461,1,1,0)
 #20466=*
 typeexprs(#20466,0,#20447,1,"Function")
 #20467=@"loc,{#10000},35,53,35,60"
@@ -2092,7 +2088,6 @@ enclosingStmt(#20557,#20551)
 exprContainers(#20557,#20525)
 literals("y","y",#20557)
 bind(#20557,#20534)
-numlines(#20525,3,3,1)
 #20559=*
 stmts(#20559,17,#20007,25,"functio ...  Ok\n  }")
 #20560=@"loc,{#10000},46,3,49,3"
@@ -2282,7 +2277,6 @@ hasLocation(#20610,#20611)
 enclosingStmt(#20610,#20602)
 exprContainers(#20610,#20559)
 literals("string","string",#20610)
-numlines(#20559,4,4,2)
 #20612=*
 stmts(#20612,35,#20007,26,"type Fu ... yof T];")
 #20613=@"loc,{#10000},51,3,51,97"
@@ -2909,7 +2903,6 @@ locations_default(#20773,#10000,61,27,61,32)
 hasLocation(#20772,#20773)
 exprContainers(#20772,#20764)
 literals("string","string",#20772)
-numlines(#20764,1,1,0)
 isMethod(#20760)
 isAbstractMember(#20760)
 #20774=*
@@ -3190,7 +3183,6 @@ hasLocation(#20844,#20845)
 exprContainers(#20844,#20831)
 literals("any","any",#20844)
 hasRestParameter(#20831)
-numlines(#20831,1,1,0)
 #20846=*
 typeexprs(#20846,0,#20823,2,"R")
 #20847=@"loc,{#10000},69,64,69,64"
@@ -3445,7 +3437,6 @@ hasLocation(#20918,#20919)
 exprContainers(#20918,#20905)
 literals("any","any",#20918)
 hasRestParameter(#20905)
-numlines(#20905,1,1,0)
 #20920=*
 typeexprs(#20920,0,#20897,2,"U")
 #20921=@"loc,{#10000},75,45,75,45"
@@ -3673,7 +3664,6 @@ locations_default(#20977,#10000,81,28,81,33)
 hasLocation(#20976,#20977)
 exprContainers(#20976,#20973)
 literals("string","string",#20976)
-numlines(#20973,1,1,0)
 #20978=*
 stmts(#20978,35,#20850,4,"type T3 ... ring>>;")
 #20979=@"loc,{#10000},82,3,82,38"
@@ -4297,7 +4287,6 @@ typeexprs(#21142,1,#21140,0,"U")
 hasLocation(#21142,#21141)
 exprContainers(#21142,#21130)
 literals("U","U",#21142)
-numlines(#21130,1,1,0)
 #21143=*
 properties(#21143,#21122,1,8,"b: (x:  ... => void")
 #21144=@"loc,{#10000},90,54,90,76"
@@ -4365,7 +4354,6 @@ typeexprs(#21161,1,#21159,0,"U")
 hasLocation(#21161,#21160)
 exprContainers(#21161,#21149)
 literals("U","U",#21161)
-numlines(#21149,1,1,0)
 #21162=*
 typeexprs(#21162,0,#21118,2,"U")
 #21163=@"loc,{#10000},90,82,90,82"
@@ -4477,7 +4465,6 @@ locations_default(#21191,#10000,91,27,91,32)
 hasLocation(#21190,#21191)
 exprContainers(#21190,#21182)
 literals("string","string",#21190)
-numlines(#21182,1,1,0)
 #21192=*
 properties(#21192,#21174,1,8,"b: (x:  ... => void")
 #21193=@"loc,{#10000},91,44,91,65"
@@ -4535,7 +4522,6 @@ locations_default(#21207,#10000,91,51,91,56)
 hasLocation(#21206,#21207)
 exprContainers(#21206,#21198)
 literals("string","string",#21206)
-numlines(#21198,1,1,0)
 #21208=*
 stmts(#21208,35,#20850,12,"type T2 ... oid }>;")
 #21209=@"loc,{#10000},92,3,92,69"
@@ -4631,7 +4617,6 @@ locations_default(#21233,#10000,92,27,92,32)
 hasLocation(#21232,#21233)
 exprContainers(#21232,#21224)
 literals("string","string",#21232)
-numlines(#21224,1,1,0)
 #21234=*
 properties(#21234,#21216,1,8,"b: (x:  ... => void")
 #21235=@"loc,{#10000},92,44,92,65"
@@ -4689,7 +4674,6 @@ locations_default(#21249,#10000,92,51,92,56)
 hasLocation(#21248,#21249)
 exprContainers(#21248,#21240)
 literals("number","number",#21248)
-numlines(#21240,1,1,0)
 #21250=*
 stmts(#21250,17,#20850,13,"declare ... number;")
 #21251=@"loc,{#10000},94,3,94,42"
@@ -4738,7 +4722,6 @@ locations_default(#21263,#10000,94,27,94,32)
 hasLocation(#21262,#21263)
 exprContainers(#21262,#21250)
 literals("string","string",#21262)
-numlines(#21250,1,1,0)
 #21264=*
 stmts(#21264,17,#20850,14,"declare ... string;")
 #21265=@"loc,{#10000},95,3,95,42"
@@ -4785,7 +4768,6 @@ locations_default(#21276,#10000,95,27,95,32)
 hasLocation(#21275,#21276)
 exprContainers(#21275,#21264)
 literals("number","number",#21275)
-numlines(#21264,1,1,0)
 #21277=*
 stmts(#21277,17,#20850,15,"declare ... number;")
 #21278=@"loc,{#10000},96,3,96,60"
@@ -4858,7 +4840,6 @@ locations_default(#21297,#10000,96,36,96,41)
 hasLocation(#21296,#21297)
 exprContainers(#21296,#21277)
 literals("number","number",#21296)
-numlines(#21277,1,1,0)
 #21298=*
 stmts(#21298,35,#20850,16,"type T3 ... f foo>;")
 #21299=@"loc,{#10000},97,3,97,36"
@@ -4971,7 +4952,6 @@ hasLocation(#21326,#21327)
 exprContainers(#21326,#21316)
 literals("any","any",#21326)
 hasRestParameter(#21316)
-numlines(#21316,1,1,0)
 #21328=*
 stmts(#21328,35,#20850,18,"type Re ...  : any;")
 #21329=@"loc,{#10000},100,3,100,91"
@@ -5101,7 +5081,6 @@ hasLocation(#21361,#21362)
 exprContainers(#21361,#21348)
 literals("any","any",#21361)
 hasRestParameter(#21348)
-numlines(#21348,1,1,0)
 #21363=*
 typeexprs(#21363,0,#21340,2,"R")
 #21364=@"loc,{#10000},100,84,100,84"
