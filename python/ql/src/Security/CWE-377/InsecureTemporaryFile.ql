@@ -27,5 +27,5 @@ FunctionObject temporary_name_function(string mod, string function) {
 
 from CallNode c, string mod, string function
 where
-  c.getFunction().refersTo(temporary_name_function(mod, function))
+    temporary_name_function(mod, function).getACall() = c
 select c, "Call to deprecated function $@.$@ may be insecure.", mod, function
