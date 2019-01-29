@@ -22,6 +22,7 @@
 + semmlecode-javascript-queries/Security/CWE-338/InsecureRandomness.ql: /Security/CWE/CWE-338
 + semmlecode-javascript-queries/Security/CWE-346/CorsMisconfigurationForCredentials.ql: /Security/CWE/CWE-346
 + semmlecode-javascript-queries/Security/CWE-352/MissingCsrfMiddleware.ql: /Security/CWE/CWE-352
++ semmlecode-javascript-queries/Security/CWE-359/PostMessageStar.ql: /Security/CWE/CWE-359
 + semmlecode-javascript-queries/Security/CWE-400/RemotePropertyInjection.ql: /Security/CWE/CWE-400
 + semmlecode-javascript-queries/Security/CWE-502/UnsafeDeserialization.ql: /Security/CWE/CWE-502
 + semmlecode-javascript-queries/Security/CWE-506/HardcodedDataInterpretedAsCode.ql: /Security/CWE/CWE-506
