@@ -22,7 +22,7 @@ class HasTypeFact extends CustomPointsToOriginFact {
             name.prefix("has_type_".length()) = "has_type_" |
             cls.getName() = name.suffix("has_type_".length())
         ) and
-        value = this
+        value = Object::fromCfgNode(this)
     }
 
 }
