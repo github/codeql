@@ -51,7 +51,7 @@ where
     name = "endsWith" and
     target.regexpMatch("(?i)\\.([a-z0-9-]+)(\\.[a-z0-9-]+)+")
     or
-    // the trailing slash makes the prefix-check safe
+    // the trailing port or slash makes the prefix-check safe
     (
       name = "startsWith"
       or
@@ -61,6 +61,6 @@ where
         n.getIntValue() = 0
       )
     ) and
-    target.regexpMatch(".*/")
+    target.regexpMatch(".*(:[0-9]+|/)")
   )
 select call, "'$@' may be at an arbitrary position in the sanitized URL.", substring, target
