@@ -245,9 +245,10 @@ predicate insideFunctionValueMoveTo(Element src, Element dest)
       and format.getConversionChar(arg - formattingSend.getTarget().getNumberOfParameters()) = argFormat
       and (argFormat = "s" or argFormat = "S" or argFormat = "@"))
     // Expressions computed from tainted data are also tainted
-    or (exists (FunctionCall call | dest = call and isPureFunction(call.getTarget().getName()) |
-      call.getAnArgument() = src
-      and forall(Expr arg | arg = call.getAnArgument() | arg = src or predictable(arg))))
+    or exists(FunctionCall call | dest = call and isPureFunction(call.getTarget().getName()) |
+      call.getAnArgument() = src and
+      forall(Expr arg | arg = call.getAnArgument() | arg = src or predictable(arg))
+    )
     or exists(Element a, Element b |
       moveToDependingOnSide(a, b) and
       if insideValueSource(a) then

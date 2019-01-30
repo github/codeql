@@ -39,20 +39,20 @@ int main(int argc, char **argv) {
 	int tainted = atoi(argv[1]);
 
 	MyStruct *arr1 = (MyStruct *)malloc(sizeof(MyStruct)); // GOOD
-	MyStruct *arr2 = (MyStruct *)malloc(tainted); // BAD [NOT DETECTED]
+	MyStruct *arr2 = (MyStruct *)malloc(tainted); // BAD
 	MyStruct *arr3 = (MyStruct *)malloc(tainted * sizeof(MyStruct)); // BAD
 	MyStruct *arr4 = (MyStruct *)malloc(getTainted() * sizeof(MyStruct)); // BAD [NOT DETECTED]
 	MyStruct *arr5 = (MyStruct *)malloc(sizeof(MyStruct) + tainted); // BAD [NOT DETECTED]
 
 	int size = tainted * 8;
-	char *chars1 = (char *)malloc(size); // BAD [NOT DETECTED]
-	char *chars2 = new char[size]; // BAD [NOT DETECTED]
+	char *chars1 = (char *)malloc(size); // BAD
+	char *chars2 = new char[size]; // BA
 	char *chars3 = new char[8]; // GOOD
 
 	arr1 = (MyStruct *)realloc(arr1, sizeof(MyStruct) * tainted); // BAD
 
 	size = 8;
-	chars3 = new char[size]; // GOOD
+	chars3 = new char[size]; // GOOD [FALSE POSITIVE]
 
 	return 0;
 }
