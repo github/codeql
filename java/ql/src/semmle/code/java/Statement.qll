@@ -24,6 +24,16 @@ class Stmt extends StmtParent, ExprParent, @stmt {
   /** Gets the parent of this statement. */
   StmtParent getParent() { stmts(this, _, result, _, _) }
 
+  /**
+   * DEPRECATED: Preview feature in Java 12. Subject to removal in a future release.
+   *
+   * Gets the statement containing this statement, if any.
+   */
+  deprecated Stmt getEnclosingStmt() {
+    result = this.getParent() or
+    result = this.getParent().(SwitchExpr).getEnclosingStmt()
+  }
+
   /** Holds if this statement is the child of the specified parent at the specified (zero-based) position. */
   predicate isNthChildOf(StmtParent parent, int index) {
     this.getParent() = parent and this.getIndex() = index
@@ -425,6 +435,20 @@ class SwitchCase extends Stmt, @case {
     or
     exists(Stmt s | s.getParent() = this | s.getIndex() = -1)
   }
+
+  /**
+   * DEPRECATED: Preview feature in Java 12. Subject to removal in a future release.
+   *
+   * Gets the expression on the right-hand side of the arrow, if any.
+   */
+  deprecated Expr getRuleExpression() { result.getParent() = this and result.getIndex() = -1 }
+
+  /**
+   * DEPRECATED: Preview feature in Java 12. Subject to removal in a future release.
+   *
+   * Gets the statement on the right-hand side of the arrow, if any.
+   */
+  deprecated Stmt getRuleStatement() { result.getParent() = this and result.getIndex() = -1 }
 }
 
 /** A constant `case` of a switch statement. */
@@ -440,20 +464,6 @@ class ConstCase extends SwitchCase {
    * Gets the `case` constant at the specified index.
    */
   deprecated Expr getValue(int i) { result.getParent() = this and result.getIndex() = i and i >= 0 }
-
-  /**
-   * DEPRECATED: Preview feature in Java 12. Subject to removal in a future release.
-   *
-   * Gets the expression on the right-hand side of the arrow, if any.
-   */
-  deprecated Expr getRuleExpression() { result.getParent() = this and result.getIndex() = -1 }
-
-  /**
-   * DEPRECATED: Preview feature in Java 12. Subject to removal in a future release.
-   *
-   * Gets the statement on the right-hand side of the arrow, if any.
-   */
-  deprecated Stmt getRuleStatement() { result.getParent() = this and result.getIndex() = -1 }
 
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
   override string pp() { result = "case ..." }
@@ -554,14 +564,14 @@ class JumpStmt extends Stmt {
    * `continue` statement refers to, if any.
    */
   LabeledStmt getTargetLabel() {
-    this.getParent+() = result and
+    this.getEnclosingStmt+() = result and
     namestrings(result.getLabel(), _, this)
   }
 
   private Stmt getLabelTarget() { result = getTargetLabel().getStmt() }
 
   private Stmt getAPotentialTarget() {
-    this.getParent+() = result and
+    this.getEnclosingStmt+() = result and
     (
       result instanceof LoopStmt
       or
@@ -569,15 +579,22 @@ class JumpStmt extends Stmt {
     )
   }
 
-  private Stmt getEnclosingTarget() {
+  private SwitchExpr getSwitchExprTarget() {
+    this.(BreakStmt).hasValue() and result = this.getParent+()
+  }
+
+  private StmtParent getEnclosingTarget() {
+    result = getSwitchExprTarget()
+    or
+    not exists(getSwitchExprTarget()) and
     result = getAPotentialTarget() and
     not exists(Stmt other | other = getAPotentialTarget() | other.getParent+() = result)
   }
 
   /**
-   * Gets the statement that this `break` or `continue` jumps to.
+   * Gets the statement or `switch` expression that this `break` or `continue` jumps to.
    */
-  Stmt getTarget() {
+  StmtParent getTarget() {
     result = getLabelTarget()
     or
     not exists(getLabelTarget()) and result = getEnclosingTarget()
@@ -610,7 +627,7 @@ class BreakStmt extends Stmt, @breakstmt {
   override string pp() {
     if this.hasLabel()
     then result = "break " + this.getLabel()
-    else (if this.hasValue() then result = "break ..." else result = "break")
+    else if this.hasValue() then result = "break ..." else result = "break"
   }
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */

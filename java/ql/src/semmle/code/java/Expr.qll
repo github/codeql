@@ -1122,6 +1122,15 @@ deprecated class SwitchExpr extends Expr, @switchexpr {
 
   /** Gets the expression of this `switch` expression. */
   Expr getExpr() { result.getParent() = this }
+
+  /** Gets a result expression of this `switch` expression. */
+  deprecated Expr getAResult() {
+    result = getACase().getRuleExpression()
+    or
+    exists(BreakStmt break |
+      break.(JumpStmt).getTarget() = this and result = break.getValue()
+    )
+  }
 }
 
 /** A parenthesised expression. */
