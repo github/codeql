@@ -51,4 +51,12 @@
 
     x.indexOf("https://example.internal"); // NOT OK
     x.indexOf("https://"); // OK
+
+    x.startsWith("https://example.internal"); // NOT OK
+    x.indexOf('https://example.internal.org') !== 0; // NOT OK
+    x.indexOf('https://example.internal.org') === 0; // NOT OK
+    x.endsWith("internal.com"); // NOT OK
+    x.startsWith("https://example.internal:80"); // OK
+
+	x.indexOf("secure.com") !== -1; // NOT OK
 });
