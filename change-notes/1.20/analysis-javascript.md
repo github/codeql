@@ -27,6 +27,7 @@
 | **Query**                                  | **Expected impact**          | **Change**                                                                   |
 |--------------------------------------------|------------------------------|------------------------------------------------------------------------------|
 | Client-side cross-site scripting           | More true-positive results, fewer false-positive results.                 | This rule now recognizes WinJS functions that are vulnerable to HTML injection, and no longer flags certain safe uses of jQuery. |
+| Hard-coded credentials                     | Fewer false-positive results | This rule no longer flag the empty string as a hardcoded username. |
 | Insecure randomness | More results | This rule now flags insecure uses of `crypto.pseudoRandomBytes`. |
 | Uncontrolled data used in network request  | More results                 | This rule now recognizes host values that are vulnerable to injection. |
 | Unused parameter                           | Fewer false-positive results | This rule no longer flags parameters with leading underscore. |
