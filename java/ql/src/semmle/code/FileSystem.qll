@@ -33,7 +33,7 @@ class Container extends @container, Top {
   /**
    * Gets a URL representing the location of this container.
    *
-   * For more information see https://help.semmle.com/QL/learn-ql/ql/locations.html#providing-urls.
+   * For more information see [Providing URLs](https://help.semmle.com/QL/learn-ql/ql/locations.html#providing-urls).
    */
   abstract string getURL();
 

@@ -6,7 +6,7 @@ private string relativePath(File file) { result = file.getRelativePath().replace
  * Holds if the `index`-th token of block `copy` is in file `file`, spanning
  * column `sc` of line `sl` to column `ec` of line `el`.
  *
- * For more information, see [LGTM locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+ * For more information, see [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
  */
 pragma[nomagic]
 predicate tokenLocation(File file, int sl, int sc, int ec, int el, Copy copy, int index) {

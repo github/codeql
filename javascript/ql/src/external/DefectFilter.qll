@@ -8,7 +8,7 @@ import semmle.javascript.Files
  * column `startcolumn` of line `startline` to column `endcolumn` of line `endline`
  * in file `filepath`.
  *
- * For more information, see [LGTM locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+ * For more information, see [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
  */
 external predicate defectResults(
   int id, string queryPath, string file, int startline, int startcol, int endline, int endcol,

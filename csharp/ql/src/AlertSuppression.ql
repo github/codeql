@@ -53,7 +53,7 @@ class SuppressionScope extends @commentline {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [LGTM locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
