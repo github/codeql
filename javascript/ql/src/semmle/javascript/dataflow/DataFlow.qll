@@ -475,10 +475,10 @@ module DataFlow {
    * A static member definition, viewed as a data flow node that adds
    * a property to the class.
    */
-  private class ClassMemberAsPropWrite extends PropWrite, PropNode {
+  private class StaticClassMemberAsPropWrite extends PropWrite, PropNode {
     override MemberDefinition prop;
 
-    ClassMemberAsPropWrite() { prop.isStatic() }
+    StaticClassMemberAsPropWrite() { prop.isStatic() }
 
     override Node getBase() { result = valueNode(prop.getDeclaringClass()) }
 
