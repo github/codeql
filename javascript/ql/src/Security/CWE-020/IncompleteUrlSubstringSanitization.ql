@@ -13,17 +13,27 @@
 import javascript
 private import semmle.javascript.dataflow.InferredTypes
 
-from DataFlow::MethodCallNode call, string name, DataFlow::Node substring, string target
+/**
+ * A check on a string for whether it contains a given substring, possibly with restrictions on the location of the substring.
+ */
+class SomeSubstringCheck extends DataFlow::Node {
+  DataFlow::Node substring;
+
+  SomeSubstringCheck() {
+    this.(StringOps::StartsWith).getSubstring() = substring or
+    this.(StringOps::Includes).getSubstring() = substring or
+    this.(StringOps::EndsWith).getSubstring() = substring
+  }
+
+  /**
+   * Gets the substring.
+   */
+  DataFlow::Node getSubstring() { result = substring }
+}
+
+from SomeSubstringCheck check, DataFlow::Node substring, string target, string msg
 where
-  (
-    name = "indexOf" or
-    name = "lastIndexOf" or
-    name = "includes" or
-    name = "startsWith" or
-    name = "endsWith"
-  ) and
-  call.getMethodName() = name and
-  substring = call.getArgument(0) and
+  substring = check.getSubstring() and
   substring.mayHaveStringValue(target) and
   (
     // target contains a domain on a common TLD, and perhaps some other URL components
@@ -34,33 +44,22 @@ where
     // target is a HTTP URL to a domain on any TLD
     target.regexpMatch("(?i)https?://([a-z0-9-]+\\.)+([a-z]+)(:[0-9]+)?/?")
   ) and
+  (
+    if check instanceof StringOps::StartsWith
+    then msg = "may be followed by an arbitrary host name"
+    else
+      if check instanceof StringOps::EndsWith
+      then msg = "may be preceded by an arbitrary host name"
+      else msg = "can be anywhere in the URL, and arbitrary hosts may come before or after it"
+  ) and
   // whitelist
   not (
-    (name = "indexOf" or name = "lastIndexOf") and
-    (
-      // arithmetic on the indexOf-result
-      any(ArithmeticExpr e).getAnOperand().getUnderlyingValue() = call.asExpr()
-      or
-      // non-trivial position check on the indexOf-result
-      exists(EqualityTest test, Expr n | test.hasOperands(call.asExpr(), n) |
-        not n.getIntValue() = [-1 .. 0]
-      )
-    )
-    or
     // the leading dot in a subdomain sequence makes the suffix-check safe (if it is performed on the host of the url)
-    name = "endsWith" and
+    check instanceof StringOps::EndsWith and
     target.regexpMatch("(?i)\\.([a-z0-9-]+)(\\.[a-z0-9-]+)+")
     or
     // the trailing port or slash makes the prefix-check safe
-    (
-      name = "startsWith"
-      or
-      name = "indexOf" and
-      exists(EqualityTest test, Expr n |
-        test.hasOperands(call.asExpr(), n) and
-        n.getIntValue() = 0
-      )
-    ) and
+    check instanceof StringOps::StartsWith and
     target.regexpMatch(".*(:[0-9]+|/)")
   )
-select call, "'$@' may be at an arbitrary position in the sanitized URL.", substring, target
+select check, "'$@' " + msg + ".", substring, target
