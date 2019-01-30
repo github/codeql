@@ -155,15 +155,7 @@ predicate operandIsPropagated(Operand operand, IntValue bitOffset) {
     // The operand is used in a function call from which the operand does not escape
     exists(CallInstruction ci, FunctionIR f, Instruction init |
       ci = operand.getUseInstruction() and
-      f.getFunction() = ci.getStaticCallTarget() and
-      (
-        init.(InitializeParameterInstruction).getParameter() = f.getFunction().getParameter(operand.(PositionalArgumentOperand).getIndex())
-        or
-        init instanceof InitializeThisInstruction and
-        init.getEnclosingFunctionIR() = f and
-        operand instanceof ThisArgumentOperand
-      ) and
-      not exists(f.getFunction().getAnOverload()) and
+      isArgumentForParameter(ci, operand, init) and
       not resultEscapesNonReturn(init) and
       (
         not resultReturned(init)
@@ -186,23 +178,15 @@ predicate operandEscapesNonReturn(Operand operand) {
     not resultEscapesNonReturn(operand.getUseInstruction())
     or
     // The operand is used in a function call from which the operand does not escape
-    exists(CallInstruction ci, FunctionIR f, Instruction init |
-      ci = operand.getUseInstruction() and
-      f.getFunction() = ci.getStaticCallTarget() and
-      (
-        init.(InitializeParameterInstruction).getParameter() = f.getFunction().getParameter(operand.(PositionalArgumentOperand).getIndex())
-        or
-        init instanceof InitializeThisInstruction and
-        init.getEnclosingFunctionIR() = f and
-        operand instanceof ThisArgumentOperand
-      ) and
-      not exists(f.getFunction().getAnOverload()) and
+    exists(CallInstruction ci, Instruction init |
+      isArgumentForParameter(ci, operand, init) and
       not resultEscapesNonReturn(init) and
       not resultEscapesNonReturn(ci)
     ) or
     operand instanceof ReturnValueOperand
   )
 }
+
 
 predicate operandReturned(Operand operand) {
   // The address is propagated to the result of the instruction, and that result itself is returned
@@ -217,22 +201,30 @@ predicate operandReturned(Operand operand) {
     resultReturned(ci)
   )
   or
-  exists(CallInstruction ci, FunctionIR f, Instruction init |
+  exists(CallInstruction ci, Instruction init |
     ci = operand.getUseInstruction() and
-    f.getFunction() = ci.getStaticCallTarget() and
-    (
-      init.(InitializeParameterInstruction).getParameter() = f.getFunction().getParameter(operand.(PositionalArgumentOperand).getIndex())
-      or
-      init instanceof InitializeThisInstruction and
-      init.getEnclosingFunctionIR() = f and
-      operand instanceof ThisArgumentOperand
-    ) and
+    isArgumentForParameter(ci, operand, init) and
     resultReturned(init) and
     resultReturned(ci)
   )
   or
   // The address is returned
   operand instanceof ReturnValueOperand
+}
+
+predicate isArgumentForParameter(CallInstruction ci, Operand operand, Instruction init) {
+  exists(Function f |
+    ci = operand.getUseInstruction() and
+    f = ci.getStaticCallTarget() and
+    (
+      init.(InitializeParameterInstruction).getParameter() = f.getParameter(operand.(PositionalArgumentOperand).getIndex())
+      or
+      init instanceof InitializeThisInstruction and
+      init.getEnclosingFunction() = f and
+      operand instanceof ThisArgumentOperand
+    ) and
+    not f.isVirtual()
+  )
 }
 
 predicate resultReturned(Instruction instr) {
