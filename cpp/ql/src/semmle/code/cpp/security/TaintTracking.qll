@@ -247,7 +247,11 @@ predicate insideFunctionValueMoveTo(Element src, Element dest)
     // Expressions computed from tainted data are also tainted
     or exists(FunctionCall call | dest = call and isPureFunction(call.getTarget().getName()) |
       call.getAnArgument() = src and
-      forall(Expr arg | arg = call.getAnArgument() | arg = src or predictable(arg))
+      forall(Expr arg | arg = call.getAnArgument() | arg = src or predictable(arg)) and
+
+      // flow through `strlen` tends to cause dubious results, if the length is
+      // bounded.
+      not call.getTarget().getName() = "strlen"
     )
     or exists(Element a, Element b |
       moveToDependingOnSide(a, b) and
