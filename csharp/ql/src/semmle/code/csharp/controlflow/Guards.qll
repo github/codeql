@@ -682,6 +682,11 @@ module Internal {
     or
     e instanceof AddExpr and
     e.getType() instanceof StringType
+    or
+    e = any(MethodCall mc |
+      mc.getTarget() = any(SystemObjectClass c).getGetTypeMethod() and
+      not mc.isConditional()
+    )
   }
 
   /** Holds if expression `e2` is a non-`null` value whenever `e1` is. */

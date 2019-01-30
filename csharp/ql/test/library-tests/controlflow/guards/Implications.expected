@@ -345,6 +345,10 @@
 | Guards.cs:258:17:258:17 | access to local variable e | match case ...: | Guards.cs:256:13:256:13 | access to parameter b | true |
 | Guards.cs:258:17:258:17 | access to local variable e | match case ...: | Guards.cs:258:17:258:17 | access to local variable e | 1 |
 | Guards.cs:258:17:258:17 | access to local variable e | non-match case ...: | Guards.cs:256:13:256:13 | access to parameter b | false |
+| Guards.cs:268:13:268:41 | call to operator == | true | Guards.cs:268:16:268:25 | call to method GetType | non-null |
+| Guards.cs:268:16:268:25 | call to method GetType | non-null | Guards.cs:268:13:268:14 | access to parameter o1 | non-null |
+| Guards.cs:270:16:270:25 | call to method GetType | non-null | Guards.cs:270:13:270:14 | access to parameter o1 | non-null |
+| Guards.cs:270:33:270:42 | call to method GetType | non-null | Guards.cs:270:30:270:31 | access to parameter o2 | non-null |
 | Splitting.cs:12:17:12:25 | ... != ... | false | Splitting.cs:12:17:12:17 | access to parameter o | null |
 | Splitting.cs:12:17:12:25 | ... != ... | true | Splitting.cs:12:17:12:17 | access to parameter o | non-null |
 | Splitting.cs:22:17:22:25 | ... != ... | false | Splitting.cs:22:17:22:17 | access to parameter o | null |
