@@ -17,7 +17,7 @@ class RangeFunction extends Function {
   * The location spans column `startcolumn` of line `startline` to
   * column `endcolumn` of line `endline` in file `filepath`.
   * For more information, see
-  * [LGTM locations](https://lgtm.com/help/ql/locations).
+  * [LGTM locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
   */
   predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     super.getLocation().hasLocationInfo(path, sl, sc, _, _)
