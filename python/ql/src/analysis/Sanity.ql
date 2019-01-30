@@ -75,31 +75,31 @@ string best_description_builtin_object(Object o) {
     (
         result = o.toString()
         or
-        not exists(o.toString()) and py_cobjectnames(o, result)
+        not exists(o.toString()) and result = o.getBuiltinName()
         or
-        not exists(o.toString()) and not py_cobjectnames(o, _) and result = "builtin object of type " + o.getAnInferredType().toString()
+        not exists(o.toString()) and not py_cobjectnames(o.asBuiltin(), _) and result = "builtin object of type " + o.getAnInferredType().toString()
         or
-        not exists(o.toString()) and not py_cobjectnames(o, _) and not exists(o.getAnInferredType().toString()) and result = "builtin object"
+        not exists(o.toString()) and not py_cobjectnames(o.asBuiltin(), _) and not exists(o.getAnInferredType().toString()) and result = "builtin object"
     )
 }
 
 private predicate introspected_builtin_object(Object o) {
     /* Only check objects from the extractor, missing data for objects generated from C source code analysis is OK.
      * as it will be ignored if it doesn't match up with the introspected form. */
-    py_cobject_sources(o, 0)
+    py_cobject_sources(o.asBuiltin(), 0)
 }
 
 predicate builtin_object_sanity(string clsname, string problem, string what) {
     exists(Object o |
         clsname = o.getAQlClass() and what = best_description_builtin_object(o) and introspected_builtin_object(o) |
-        not exists(o.getAnInferredType()) and not py_cobjectnames(o, _) and problem = "neither name nor type"
+        not exists(o.getAnInferredType()) and not exists(o.getBuiltinName()) and problem = "neither name nor type"
         or
-        uniqueness_error(count(string name | py_cobjectnames(o, name)), "name", problem)
+        uniqueness_error(count(string name | name = o.getBuiltinName()), "name", problem)
         or
         not exists(o.getAnInferredType()) and problem = "no results for getAnInferredType"
         or
         not exists(o.toString()) and problem = "no toString" and 
-        not exists(string name | name.prefix(7) = "_semmle" | py_special_objects(o, name)) and
+        not exists(string name | name.prefix(7) = "_semmle" | py_special_objects(o.asBuiltin(), name)) and
         not o = unknownValue()
     )
 }

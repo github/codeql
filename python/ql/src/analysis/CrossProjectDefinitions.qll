@@ -103,13 +103,13 @@ class Symbol extends TSymbol {
 /* Helper for `Symbol`.resolvesTo() */
 private Object attribute_in_scope(Object obj, string name) {
     exists(ClassObject cls |
-        cls = obj |
-        cls.lookupAttribute(name) = result and result.(ControlFlowNode).getScope() = cls.getPyClass()
+        cls = obj and exists(cls.getPyClass()) and
+        cls.declaredAttribute(name) = result
     )
     or
-    exists(ModuleObject mod |
+    exists(PythonModuleObject mod |
         mod = obj |
-        mod.getAttribute(name) = result and result.(ControlFlowNode).getScope() = mod.getModule()
-        and not result.(ControlFlowNode).isEntryNode()
+        mod.getAttribute(name) = result and result.asCfgNode().(ControlFlowNode).getScope() = mod.getModule()
+        and not result.asCfgNode().(ControlFlowNode).isEntryNode()
     )
 }

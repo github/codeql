@@ -51,7 +51,7 @@ predicate points_to_call_to_range(ControlFlowNode f) {
         range = builtin_object("xrange")
     |
         f.refersTo(call) and
-        call.(CallNode).getFunction().refersTo(range)
+        call.asCfgNode().(CallNode).getFunction().refersTo(range)
     )
     or
     /* In case points-to fails due to 'from six.moves import range' or similar. */
@@ -62,7 +62,7 @@ predicate points_to_call_to_range(ControlFlowNode f) {
     or
     /* If range is wrapped in a list it is still a range */
     exists(CallNode call |
-        f.refersTo(call) and
+        f.refersTo(Object::fromCfgNode(call)) and
         call = theListType().getACall() and
         points_to_call_to_range(call.getArg(0))
     )
