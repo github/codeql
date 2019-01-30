@@ -562,6 +562,9 @@ public class ASTExtractor {
 				scopeManager.enterScope(3, moduleScopeKey, toplevelLabel);
 				if (sourceType == SourceType.CLOSURE_MODULE) {
 					scopeManager.addVariables("exports");
+					trapwriter.addTuple("isClosureModule", toplevelLabel);
+				} else {
+					trapwriter.addTuple("isES2015Module", toplevelLabel);
 				}
 				trapwriter.addTuple("isModule", toplevelLabel);
 			}
