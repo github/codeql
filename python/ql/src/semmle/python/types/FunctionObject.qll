@@ -257,23 +257,23 @@ abstract class BuiltinCallable extends FunctionObject {
 class BuiltinMethodObject extends BuiltinCallable {
 
     BuiltinMethodObject() {
-        py_cobjecttypes(this, theMethodDescriptorType())
+        this.getBuiltinClass() = theMethodDescriptorType()
         or
-        py_cobjecttypes(this, theBuiltinFunctionType()) and exists(ClassObject c | py_cmembers_versioned(c, _, this, major_version().toString()))
+        this.getBuiltinClass() = theBuiltinFunctionType() and exists(ClassObject c | py_cmembers_versioned(c.asBuiltin(), _, this.asBuiltin(), major_version().toString()))
         or
-        exists(ClassObject wrapper_descriptor | 
-            py_cobjecttypes(this, wrapper_descriptor) and
-            py_cobjectnames(wrapper_descriptor, "wrapper_descriptor")
+        exists(ClassObject wrapper_descriptor |
+            wrapper_descriptor = this.getBuiltinClass() and
+            wrapper_descriptor.getBuiltinName() = "wrapper_descriptor"
         )
     }
 
     override string getQualifiedName() {
         exists(ClassObject cls |
-            py_cmembers_versioned(cls, _, this, major_version().toString()) |
+            py_cmembers_versioned(cls.asBuiltin(), _, this.asBuiltin(), major_version().toString()) |
             result = cls.getName() + "." + this.getName()
         )
         or
-        not exists(ClassObject cls | py_cmembers_versioned(cls, _, this, major_version().toString())) and
+        not exists(ClassObject cls | py_cmembers_versioned(cls.asBuiltin(), _, this.asBuiltin(), major_version().toString())) and
         result = this.getName()
     }
 
@@ -282,7 +282,7 @@ class BuiltinMethodObject extends BuiltinCallable {
     }
 
     override string getName() {
-        py_cobjectnames(this, result)
+        result = this.getBuiltinName()
     }
 
     override string toString() {
@@ -308,7 +308,7 @@ class BuiltinMethodObject extends BuiltinCallable {
     }
 
     override ClassObject getAReturnType() {
-        ext_rettype(this, result)
+        ext_rettype(this.asBuiltin(), result.asBuiltin())
     }
 
 }
@@ -316,11 +316,11 @@ class BuiltinMethodObject extends BuiltinCallable {
 class BuiltinFunctionObject extends BuiltinCallable {
 
     BuiltinFunctionObject() {
-        py_cobjecttypes(this, theBuiltinFunctionType()) and exists(ModuleObject m | py_cmembers_versioned(m, _, this, major_version().toString()))
+        this.getBuiltinClass() = theBuiltinFunctionType() and exists(ModuleObject m | py_cmembers_versioned(m.asBuiltin(), _, this.asBuiltin(), major_version().toString()))
     }
 
     override string getName() {
-        py_cobjectnames(this, result)
+        result = this.getBuiltinName()
     }
 
     override string getQualifiedName() {
@@ -355,7 +355,7 @@ class BuiltinFunctionObject extends BuiltinCallable {
         this = builtin_object("intern") and result = theStrType()
         or
         /* Fix a few minor inaccuracies in the CPython analysis */ 
-        ext_rettype(this, result) and not (
+        ext_rettype(this.asBuiltin(), result.asBuiltin()) and not (
             this = builtin_object("__import__") and result = theNoneType()
             or
             this = builtin_object("compile") and result = theNoneType()

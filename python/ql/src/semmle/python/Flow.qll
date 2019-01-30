@@ -223,7 +223,7 @@ class ControlFlowNode extends @py_flow_node {
      *  If the class is unimportant then use `refersTo(value)` or `refersTo(value, origin)` instead.
      */
     predicate refersTo(Object value, ClassObject cls, ControlFlowNode origin) {
-        not py_special_objects(cls, "_semmle_unknown_type")
+        not cls = theUnknownType()
         and
         not value = unknownValue()
         and
@@ -233,7 +233,7 @@ class ControlFlowNode extends @py_flow_node {
     /** Gets what this expression might "refer-to" in the given `context`.
      */
     predicate refersTo(Context context, Object value, ClassObject cls, ControlFlowNode origin) {
-        not py_special_objects(cls, "_semmle_unknown_type")
+        not cls = theUnknownType()
         and
         PointsTo::points_to(this, context, value, cls, origin)
     }

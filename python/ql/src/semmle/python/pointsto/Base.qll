@@ -15,9 +15,9 @@ module BasePointsTo {
     pragma [noinline]
     predicate points_to(ControlFlowNode f, Object value, ControlFlowNode origin) {
     (
-            f.isLiteral() and value = f and not f.getNode() instanceof ImmutableLiteral
+            f.isLiteral() and value.asCfgNode() = f and not f.getNode() instanceof ImmutableLiteral
             or
-            f.isFunction() and value = f
+            f.isFunction() and value.asCfgNode() = f
         ) and origin = f
     }
 }
@@ -73,10 +73,10 @@ private ClassObject collection_literal(Expr e) {
 }
 
 private int tuple_index_value(Object t, int i) {
-    result = t.(TupleNode).getElement(i).getNode().(Num).getN().toInt()
+    result = t.asCfgNode().(TupleNode).getElement(i).getNode().(Num).getN().toInt()
     or
     exists(Object item |
-         py_citems(t, i, item) and
+        py_citems(t.asBuiltin(), i, item.asBuiltin()) and
         result = item.(NumericObject).intValue()
     )
 }
@@ -128,26 +128,26 @@ predicate baseless_is_new_style(ClassObject cls) {
 pragma [noinline]
 ClassObject builtin_base_type(ClassObject cls) {
     /* The extractor uses the special name ".super." to indicate the super class of a builtin class */
-    py_cmembers_versioned(cls, ".super.", result, _)
+    py_cmembers_versioned(cls.asBuiltin(), ".super.", result.asBuiltin(), _)
 }
 
 /** Gets the `name`d attribute of built-in class `cls` */
 pragma [noinline]
 Object builtin_class_attribute(ClassObject cls, string name) {
     not name = ".super." and
-    py_cmembers_versioned(cls, name, result, _)
+    py_cmembers_versioned(cls.asBuiltin(), name, result.asBuiltin(), _)
 }
 
 /** Holds if the `name`d attribute of built-in module `m` is `value` of `cls` */
 pragma [noinline]
 predicate builtin_module_attribute(ModuleObject m, string name, Object value, ClassObject cls) {
-    py_cmembers_versioned(m, name, value, _) and cls = builtin_object_type(value)
+    py_cmembers_versioned(m.asBuiltin(), name, value.asBuiltin(), _) and cls = builtin_object_type(value)
 }
 
 /** Gets the (built-in) class of the built-in object `obj` */
 pragma [noinline]
 ClassObject builtin_object_type(Object obj) {
-    py_cobjecttypes(obj, result) and not obj = unknownValue()
+    py_cobjecttypes(obj.asBuiltin(), result.asBuiltin()) and not obj = unknownValue()
     or
     obj = unknownValue() and result = theUnknownType()
 }
@@ -551,16 +551,16 @@ predicate import_from_dot_in_init(ImportExprNode f) {
 
 /** Gets the pseudo-object representing the value referred to by an undefined variable */
 Object undefinedVariable() {
-    py_special_objects(result, "_semmle_undefined_value")
+    py_special_objects(result.asBuiltin(), "_semmle_undefined_value")
 }
 
 /** Gets the pseudo-object representing an unknown value */
 Object unknownValue() {
-    py_special_objects(result, "_1")
+    py_special_objects(result.asBuiltin(), "_1")
 }
 
 BuiltinCallable theTypeNewMethod() {
-    py_cmembers_versioned(theTypeType(), "__new__", result, major_version().toString())
+    py_cmembers_versioned(theTypeType().asBuiltin(), "__new__", result.asBuiltin(), major_version().toString())
 }
 
 /** Gets the `value, cls, origin` that `f` would refer to if it has not been assigned some other value */
@@ -576,7 +576,7 @@ predicate potential_builtin_points_to(NameNode f, Object value, ClassObject cls,
 
 pragma [noinline]
 predicate builtin_name_points_to(string name, Object value, ClassObject cls) {
-    value = builtin_object(name) and py_cobjecttypes(value, cls)
+    value = builtin_object(name) and py_cobjecttypes(value.asBuiltin(), cls.asBuiltin())
 }
 
 module BaseFlow {
@@ -610,9 +610,9 @@ module BaseFlow {
 
 /** Points-to for syntactic elements where context is not relevant */
 predicate simple_points_to(ControlFlowNode f, Object value, ClassObject cls, ControlFlowNode origin) {
-    kwargs_points_to(f, cls) and value = f and origin = f
+    kwargs_points_to(f, cls) and value.asCfgNode() = f and origin = f
     or
-    varargs_points_to(f, cls) and value = f and origin = f
+    varargs_points_to(f, cls) and value.asCfgNode() = f and origin = f
     or
     BasePointsTo::points_to(f, value, origin) and cls = simple_types(value)
     or

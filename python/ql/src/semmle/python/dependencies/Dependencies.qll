@@ -28,7 +28,7 @@ private predicate importDependency(Object target, AstNode source) {
             exists(ImportMember im | imp_stmt.contains(im) |
                 importee.importedAs(im.getModule().(ImportExpr).getImportedModuleName())  
                 and
-                defn_of_module_attribute(target, importee.getModule(), im.getName())
+                defn_of_module_attribute(target.asCfgNode(), importee.getModule(), im.getName())
             )
         )
     )
@@ -48,7 +48,7 @@ class PythonImport extends DependencyKind {
 }
 
 private predicate interesting(Object target) {
-    target.(ControlFlowNode).getNode() instanceof Scope
+    target.asCfgNode().(ControlFlowNode).getNode() instanceof Scope
     or
     target instanceof FunctionObject
     or
@@ -66,7 +66,7 @@ class PythonUse extends DependencyKind {
     override predicate isADependency(AstNode source, Object target) {
         interesting(target) and
         this = this and
-        source != target.(ControlFlowNode).getNode() and
+        source != target.asCfgNode().(ControlFlowNode).getNode() and
         exists(ControlFlowNode use, Object obj |
             use.getNode() = source and
             use.refersTo(obj) and
@@ -156,13 +156,13 @@ private predicate use_of_attribute(Attribute attr, Scope s, string name) {
 
 private predicate defn_of_attribute(Object target, Scope s, string name) {
     exists(Assign asgn |
-        target.(ControlFlowNode).getNode() = asgn |
+        target.asCfgNode().(ControlFlowNode).getNode() = asgn |
         defn_of_instance_attribute(asgn, s, name)
         or
         defn_of_class_attribute(asgn, s, name)
     )
     or
-    defn_of_module_attribute(target, s, name)
+    defn_of_module_attribute(target.asCfgNode(), s, name)
 }
 
 /* Whether asgn defines an instance attribute, that is does

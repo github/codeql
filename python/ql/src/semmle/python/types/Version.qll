@@ -20,15 +20,15 @@ class Version extends int {
 }
 
 Object theSysVersionInfoTuple() {
-    py_cmembers_versioned(theSysModuleObject(), "version_info", result, major_version().toString())
+    py_cmembers_versioned(theSysModuleObject().asBuiltin(), "version_info", result.asBuiltin(), major_version().toString())
 }
 
 Object theSysHexVersionNumber() {
-    py_cmembers_versioned(theSysModuleObject(), "hexversion", result, major_version().toString())
+    py_cmembers_versioned(theSysModuleObject().asBuiltin(), "hexversion", result.asBuiltin(), major_version().toString())
 }
 
 Object theSysVersionString() {
-    py_cmembers_versioned(theSysModuleObject(), "version", result, major_version().toString())
+    py_cmembers_versioned(theSysModuleObject().asBuiltin(), "version", result.asBuiltin(), major_version().toString())
 }
 
 
@@ -75,7 +75,7 @@ class VersionGuard extends ConditionBlock {
 
     VersionGuard() {
         exists(VersionTest v |
-            PointsTo::points_to(this.getLastNode(), _, v, _, _) or
+            PointsTo::points_to(this.getLastNode(), _, Object::fromCfgNode(v), _, _) or
             PointsTo::points_to(this.getLastNode(), _, _, _, v)
         )
     }
@@ -83,7 +83,7 @@ class VersionGuard extends ConditionBlock {
     predicate isTrue() {
         exists(VersionTest v |
             v.isTrue() |
-            PointsTo::points_to(this.getLastNode(), _, v, _, _) or
+            PointsTo::points_to(this.getLastNode(), _, Object::fromCfgNode(v), _, _) or
             PointsTo::points_to(this.getLastNode(), _, _, _, v)
         )
     }
@@ -154,13 +154,13 @@ class OsGuard extends ConditionBlock {
 
     OsGuard() {
         exists(OsTest t |
-            PointsTo::points_to(this.getLastNode(), _, theBoolType(), t, _)
+            PointsTo::points_to(this.getLastNode(), _, theBoolType(), Object::fromCfgNode(t), _)
         )
     }
 
     string getOs() {
         exists(OsTest t |
-            PointsTo::points_to(this.getLastNode(), _, theBoolType(), t, _) and result = t.getOs()
+            PointsTo::points_to(this.getLastNode(), _, theBoolType(), Object::fromCfgNode(t), _) and result = t.getOs()
         )
     }
 

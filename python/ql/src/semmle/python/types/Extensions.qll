@@ -56,7 +56,7 @@ class RangeIterationVariableFact extends CustomPointsToFact {
     }
 
     override predicate pointsTo(Context context, Object value, ClassObject cls, ControlFlowNode origin) {
-        value = this and 
+        value.asCfgNode() = this and 
         origin = this and
         cls = theIntType() and
         context.appliesTo(this)

@@ -15,13 +15,13 @@ class BoundMethod extends Object {
 
 }
 
-private predicate bound_method(AttrNode binding, FunctionObject method) {
-    binding = method.getAMethodCall().getFunction()
+private predicate bound_method(Object binding, FunctionObject method) {
+    binding.asCfgNode().(AttrNode) = method.getAMethodCall().getFunction()
 }
 
 private predicate decorator_call(Object method, ClassObject decorator, FunctionObject func) {
     exists(CallNode f |
-        method = f and
+        method = Object::fromCfgNode(f) and
         f.getFunction().refersTo(decorator) and
         PointsTo::points_to(f.getArg(0), _, func, _, _)
     )

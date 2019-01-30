@@ -6,9 +6,9 @@ private import semmle.python.types.ModuleKind
 abstract class ModuleObject extends Object {
 
     ModuleObject () {
-        exists(Module m | m.getEntryNode() = this)
+        exists(Module m | m.getEntryNode() = this.asCfgNode())
         or
-        py_cobjecttypes(this, theModuleType())
+        this.getBuiltinClass() = theModuleType()
     }
 
     /** Gets the scope corresponding to this module, if this is a Python module */
@@ -90,19 +90,19 @@ abstract class ModuleObject extends Object {
 class BuiltinModuleObject extends ModuleObject {
 
     BuiltinModuleObject () {
-        py_cobjecttypes(this, theModuleType())
+        this.getBuiltinClass() = theModuleType()
     }
 
     override string getName() {
-        py_cobjectnames(this, result)
+        result = this.getBuiltinName()
     }
 
     override Object getAttribute(string name) {
-        py_cmembers_versioned(this, name, result, major_version().toString())
+        py_cmembers_versioned(this.asBuiltin(), name, result.asBuiltin(), major_version().toString())
     }
 
     override predicate hasAttribute(string name) {
-        py_cmembers_versioned(this, name, _, major_version().toString())
+        py_cmembers_versioned(this.asBuiltin(), name, _, major_version().toString())
     }
 
     override predicate attributeRefersTo(string name, Object value, ControlFlowNode origin) {
@@ -123,7 +123,7 @@ class BuiltinModuleObject extends ModuleObject {
 class PythonModuleObject extends ModuleObject {
 
     PythonModuleObject() {
-        exists(Module m | m.getEntryNode() = this |
+        exists(Module m | m.getEntryNode() = this.asCfgNode() |
             not m.isPackage()
         )
     }
@@ -180,26 +180,10 @@ class PythonModuleObject extends ModuleObject {
 
 }
 
-/**  Primarily for internal use.
- *
- * Gets the object for the string text. 
- * The extractor will have populated a str object 
- * for each module name, with the name b'text' or u'text' (including the quotes).
- */
-Object object_for_string(string text) {
-    py_cobjecttypes(result, theStrType()) and
-    exists(string repr |
-        py_cobjectnames(result, repr) and
-        repr.charAt(1) = "'" |
-        /* Strip quotes off repr */
-        text = repr.substring(2, repr.length()-1)
-    )
-}
-
 class PackageObject extends ModuleObject {
 
     PackageObject() {
-        exists(Module p | p.getEntryNode() = this |
+        exists(Module p | p.getEntryNode() = this.asCfgNode() |
             p.isPackage()
         )
     }

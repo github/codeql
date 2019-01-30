@@ -8,11 +8,11 @@ import python
  *  Also any instances of types.GetSetDescriptorType (which are equivalent, but implemented in C)
  */
 abstract class PropertyObject extends Object {
-  
+
     PropertyObject() {
-        property_getter(this, _)
+        property_getter(this.asCfgNode(), _)
         or
-        py_cobjecttypes(this, theBuiltinPropertyType())
+        this.getBuiltinClass() = theBuiltinPropertyType()
     }
 
     /** Gets the name of this property */
@@ -47,7 +47,7 @@ abstract class PropertyObject extends Object {
 class PythonPropertyObject extends PropertyObject {
 
     PythonPropertyObject() {
-        property_getter(this, _)
+        property_getter(this.asCfgNode(), _)
     }
 
     override string getName() {
@@ -56,7 +56,7 @@ class PythonPropertyObject extends PropertyObject {
 
     /** Gets the getter function of this property */
     override FunctionObject getGetter() {
-         property_getter(this, result)
+         property_getter(this.asCfgNode(), result)
     }
 
     override ClassObject getInferredPropertyType() {
@@ -65,12 +65,12 @@ class PythonPropertyObject extends PropertyObject {
 
     /** Gets the setter function of this property */
     override FunctionObject getSetter() {
-         property_setter(this, result)
+         property_setter(this.asCfgNode(), result)
     }
 
     /** Gets the deleter function of this property */
     override FunctionObject getDeleter() {
-         property_deleter(this, result)
+         property_deleter(this.asCfgNode(), result)
     }
 
 }
@@ -78,16 +78,16 @@ class PythonPropertyObject extends PropertyObject {
 class BuiltinPropertyObject extends PropertyObject {
 
     BuiltinPropertyObject() {
-        py_cobjecttypes(this, theBuiltinPropertyType())
+        this.getBuiltinClass() = theBuiltinPropertyType()
     }
 
     override string getName() {
-        py_cobjectnames(this, result)
+        result = this.getBuiltinName()
     }
 
     /** Gets the getter method wrapper of this property */
     override Object getGetter() {
-         py_cmembers_versioned(this, "__get__", result, major_version().toString())
+         py_cmembers_versioned(this.asBuiltin(), "__get__", result.asBuiltin(), major_version().toString())
     }
 
     override ClassObject getInferredPropertyType() {
@@ -96,12 +96,12 @@ class BuiltinPropertyObject extends PropertyObject {
 
     /** Gets the setter method wrapper of this property */
     override Object getSetter() {
-         py_cmembers_versioned(this, "__set__", result, major_version().toString())
+         py_cmembers_versioned(this.asBuiltin(), "__set__", result.asBuiltin(), major_version().toString())
     }
 
     /** Gets the deleter method wrapper of this property */
     override Object getDeleter() {
-         py_cmembers_versioned(this, "__delete__", result, major_version().toString())
+         py_cmembers_versioned(this.asBuiltin(), "__delete__", result.asBuiltin(), major_version().toString())
     }
 
 }
@@ -116,7 +116,7 @@ private predicate property_setter(CallNode decorated, FunctionObject setter) {
     property_getter(decorated, _)
     and
     exists(CallNode setter_call, AttrNode prop_setter |
-        prop_setter.getObject("setter").refersTo((Object)decorated) |
+        prop_setter.getObject("setter").refersTo(Object::fromCfgNode(decorated)) |
         setter_call.getArg(0).refersTo(setter)
         and
         setter_call.getFunction() = prop_setter
@@ -131,7 +131,7 @@ private predicate property_deleter(CallNode decorated, FunctionObject deleter) {
     property_getter(decorated, _)
     and
     exists(CallNode deleter_call, AttrNode prop_deleter |
-        prop_deleter.getObject("deleter").refersTo((Object)decorated) |
+        prop_deleter.getObject("deleter").refersTo(Object::fromCfgNode(decorated)) |
         deleter_call.getArg(0).refersTo(deleter)
         and
         deleter_call.getFunction() = prop_deleter

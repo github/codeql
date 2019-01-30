@@ -17,12 +17,12 @@ private StringObject first_part(ControlFlowNode command) {
     or
     exists(CallNode call, SequenceObject seq |
         call = command |
-        call = theStrType().lookupAttribute("join") and
+        call.getFunction().(AttrNode).getObject("join").refersTo(_, theStrType(), _) and
         call.getArg(0).refersTo(seq) and
         seq.getInferredElement(0) = result
     )
     or
-    command.(BinaryExprNode).getOp() instanceof Mod and 
+    command.(BinaryExprNode).getOp() instanceof Mod and
     command.getNode().(StrConst).getLiteralObject() = result
 }
 
