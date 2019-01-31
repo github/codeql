@@ -2116,10 +2116,15 @@ module PointsTo {
         private boolean truth_test_evaluates_boolean(ControlFlowNode expr, ControlFlowNode use, PointsToContext context, Object val, ClassObject cls, ControlFlowNode origin) {
             contains_interesting_expression_within_test(expr, use) and
             points_to(use, context, val, cls, origin) and
+            expr = use and
             (
-                expr = use and val.booleanValue() = result
+                val.booleanValue() = result
                 or
-                expr = use and Types::instances_always_true(cls) and result = true
+                Types::instances_always_true(cls) and result = true
+                or
+                val.maybe() and result = true
+                or
+                val.maybe() and result = false
             )
         }
 
