@@ -8,6 +8,7 @@
  * @precision high
  * @id js/cross-window-information-leak
  * @tags security
+ *       external/cwe/cwe-201
  *       external/cwe/cwe-359
  */
 
