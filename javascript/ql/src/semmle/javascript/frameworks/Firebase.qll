@@ -238,7 +238,8 @@ module Firebase {
   }
 
   /**
-   * Gets a node that refers to a `DataSnapshot` value or a promise thereof.
+   * Gets a node that refers to a `DataSnapshot` value or a promise or `Change`
+   * object containing `DataSnapshot`s.
    */
   DataFlow::SourceNode snapshot(DataFlow::TypeTracker t) {
     t.start() and
@@ -250,6 +251,11 @@ module Firebase {
       result = snapshot(_).getAMethodCall("child")
       or
       result = snapshot(_).getAMethodCall("forEach").getCallback(0).getParameter(0)
+      or
+      exists (string prop | result = snapshot(_).getAPropertyRead(prop) |
+        prop = "before" or // only defined on Change objects
+        prop = "after"
+      )
     )
     or
     promiseTaintStep(snapshot(t), result)
