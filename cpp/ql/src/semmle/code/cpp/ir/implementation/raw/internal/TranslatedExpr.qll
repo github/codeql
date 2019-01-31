@@ -2343,7 +2343,7 @@ class TranslatedThrowValueExpr extends TranslatedThrowExpr,
  * IR translation of a `throw` expression with no argument (e.g. `throw;`).
  */
 class TranslatedReThrowExpr extends TranslatedThrowExpr {
-  override ThrowExpr expr;
+  override ReThrowExpr expr;
 
   override TranslatedElement getChild(int id) {
     none()
