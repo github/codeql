@@ -52,9 +52,13 @@ newtype Completion =
     (innerValue = true or innerValue = false)
   } or
   /**
-   * The expression or statement completes via a `break` statement.
+   * The expression or statement completes via a `break` statement without a value.
    */
   BreakCompletion(MaybeLabel l) or
+  /**
+   * The expression or statement completes via a value `break` statement.
+   */
+  ValueBreakCompletion(NormalOrBooleanCompletion c) or
   /**
    * The expression or statement completes via a `continue` statement.
    */
@@ -63,6 +67,14 @@ newtype Completion =
    * The expression or statement completes by throwing a `ThrowableType`.
    */
   ThrowCompletion(ThrowableType tt)
+
+class NormalOrBooleanCompletion extends Completion {
+  NormalOrBooleanCompletion() {
+    this instanceof NormalCompletion or this instanceof BooleanCompletion
+  }
+
+  string toString() { result = "completion" }
+}
 
 ContinueCompletion anonymousContinueCompletion() { result = ContinueCompletion(NoLabel()) }
 

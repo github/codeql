@@ -194,7 +194,7 @@ private module ControlFlowGraphImpl {
    */
   private predicate uncheckedExceptionFromFinally(ControlFlowNode n, ThrowableType t) {
     exists(TryStmt try |
-      n.getEnclosingStmt().getParent+() = try.getBlock() or
+      n.getEnclosingStmt().getEnclosingStmt+() = try.getBlock() or
       n.(Expr).getParent*() = try.getAResource()
     |
       exists(try.getFinally()) and
@@ -208,7 +208,7 @@ private module ControlFlowGraphImpl {
    */
   private predicate uncheckedExceptionFromCatch(ControlFlowNode n, ThrowableType t) {
     exists(TryStmt try, UncheckedThrowableSuperType caught |
-      n.getEnclosingStmt().getParent+() = try.getBlock() or
+      n.getEnclosingStmt().getEnclosingStmt+() = try.getBlock() or
       n.(Expr).getParent*() = try.getAResource()
     |
       t = caught.getAnUncheckedSubtype() and
@@ -222,7 +222,7 @@ private module ControlFlowGraphImpl {
    */
   private ThrowableType thrownInBody(TryStmt try) {
     exists(ControlFlowNode n | mayThrow(n, result) |
-      n.getEnclosingStmt().getParent+() = try.getBlock() or
+      n.getEnclosingStmt().getEnclosingStmt+() = try.getBlock() or
       n.(Expr).getParent*() = try.getAResource()
     )
   }
@@ -296,6 +296,11 @@ private module ControlFlowGraphImpl {
       or
       (condexpr.getTrueExpr() = b or condexpr.getFalseExpr() = b) and
       inBooleanContext(condexpr)
+    )
+    or
+    exists(SwitchExpr switch |
+      inBooleanContext(switch) and
+      switch.getAResult() = b
     )
     or
     exists(ConditionalStmt condstmt | condstmt.getCondition() = b)
@@ -447,7 +452,7 @@ private module ControlFlowGraphImpl {
       or
       this.(Block).getNumStmt() = 0
       or
-      this instanceof SwitchCase
+      this instanceof SwitchCase and not this.(SwitchCase).isRule()
       or
       this instanceof EmptyStmt
       or
@@ -551,7 +556,7 @@ private module ControlFlowGraphImpl {
     // somewhere inside this loop; we don't particularly care whether that
     // `continue` could actually target this loop, we just want to restrict
     // the size of the predicate
-    exists(ContinueStmt cnt | cnt.getParent+() = loop |
+    exists(ContinueStmt cnt | cnt.getEnclosingStmt+() = loop |
       completion = anonymousContinueCompletion() or
       completion = labelledContinueCompletion(getLabel(loop))
     )
@@ -651,8 +656,9 @@ private module ControlFlowGraphImpl {
    */
   private predicate last(ControlFlowNode n, ControlFlowNode last, Completion completion) {
     // Exceptions are propagated from any sub-expression.
+    // As are any break, continue, or return completions.
     exists(Expr e | e.getParent() = n |
-      last(e, last, completion) and completion = ThrowCompletion(_)
+      last(e, last, completion) and not completion instanceof NormalOrBooleanCompletion
     )
     or
     // If an expression doesn't finish with a throw completion, then it executes normally with
@@ -796,6 +802,28 @@ private module ControlFlowGraphImpl {
       completion = NormalCompletion()
     )
     or
+    // handle `switch` expression
+    exists(SwitchExpr switch | switch = n |
+      // value `break` terminates the `switch`
+      last(switch.getAStmt(), last, ValueBreakCompletion(completion))
+      or
+      // any other abnormal completion is propagated
+      last(switch.getAStmt(), last, completion) and
+      not completion instanceof ValueBreakCompletion and
+      completion != NormalCompletion()
+    )
+    or
+    // the last node in a case rule is the last node in the right-hand side
+    last(n.(SwitchCase).getRuleStatement(), last, completion)
+    or
+    // ...and if the rhs is an expression we wrap the completion as a value break
+    exists(Completion caseCompletion |
+      last(n.(SwitchCase).getRuleExpression(), last, caseCompletion) and
+      if caseCompletion instanceof NormalOrBooleanCompletion
+      then completion = ValueBreakCompletion(caseCompletion)
+      else completion = caseCompletion
+    )
+    or
     // the last statement of a synchronized statement is the last statement of its body
     last(n.(SynchronizedStmt).getBlock(), last, completion)
     or
@@ -805,11 +833,19 @@ private module ControlFlowGraphImpl {
     // `throw` statements or throwing calls give rise to ` Throw` completion
     exists(ThrowableType tt | mayThrow(n, tt) | last = n and completion = ThrowCompletion(tt))
     or
-    // `break` statements give rise to a `Break` completion
-    exists(BreakStmt break | break = n and last = n |
+    // `break` statements without value give rise to a `Break` completion
+    exists(BreakStmt break | break = n and last = n and not break.hasValue() |
       completion = labelledBreakCompletion(MkLabel(break.getLabel()))
       or
       not exists(break.getLabel()) and completion = anonymousBreakCompletion()
+    )
+    or
+    // value break statements get their completion wrapped as a value break
+    exists(Completion caseCompletion |
+      last(n.(BreakStmt).getValue(), last, caseCompletion) and
+      if caseCompletion instanceof NormalOrBooleanCompletion
+      then completion = ValueBreakCompletion(caseCompletion)
+      else completion = caseCompletion
     )
     or
     // `continue` statements give rise to a `Continue` completion
@@ -1055,7 +1091,32 @@ private module ControlFlowGraphImpl {
       )
     )
     or
-    // No edges in a SwitchCase - the constant expression in a ConstCase isn't included in the CFG.
+    // Switch expressions
+    exists(SwitchExpr switch | completion = NormalCompletion() |
+      // From the entry point control is transferred first to the expression...
+      n = switch and result = first(switch.getExpr())
+      or
+      // ...and then to one of the cases.
+      last(switch.getExpr(), n, completion) and result = first(switch.getACase())
+      or
+      // Statements within a switch body execute sequentially.
+      exists(int i |
+        last(switch.getStmt(i), n, completion) and result = first(switch.getStmt(i + 1))
+      )
+    )
+    or
+    // No edges in a non-rule SwitchCase - the constant expression in a ConstCase isn't included in the CFG.
+    exists(SwitchCase case | completion = NormalCompletion() |
+      n = case and result = first(case.getRuleExpression())
+      or
+      n = case and result = first(case.getRuleStatement())
+    )
+    or
+    // Value break
+    exists(BreakStmt break | completion = NormalCompletion() |
+      n = break and result = first(break.getValue())
+    )
+    or
     // Synchronized statements execute their expression _before_ synchronization, so the CFG reflects that.
     exists(SynchronizedStmt synch | completion = NormalCompletion() |
       last(synch.getExpr(), n, completion) and result = synch

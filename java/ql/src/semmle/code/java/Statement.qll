@@ -535,12 +535,12 @@ class ThrowStmt extends Stmt, @throwstmt {
   }
 
   private Stmt findEnclosing() {
-    result = getParent()
+    result = getEnclosingStmt()
     or
     exists(Stmt mid |
       mid = findEnclosing() and
       not exists(this.catchClauseForThis(mid.(TryStmt))) and
-      result = mid.getParent()
+      result = mid.getEnclosingStmt()
     )
   }
 
@@ -548,7 +548,7 @@ class ThrowStmt extends Stmt, @throwstmt {
     result = try.getACatchClause() and
     result.getEnclosingCallable() = this.getEnclosingCallable() and
     getExpr().getType().(RefType).hasSupertype*(result.getVariable().getType().(RefType)) and
-    not this.getParent+() = result
+    not this.getEnclosingStmt+() = result
   }
 }
 
@@ -588,7 +588,7 @@ class JumpStmt extends Stmt {
     or
     not exists(getSwitchExprTarget()) and
     result = getAPotentialTarget() and
-    not exists(Stmt other | other = getAPotentialTarget() | other.getParent+() = result)
+    not exists(Stmt other | other = getAPotentialTarget() | other.getEnclosingStmt+() = result)
   }
 
   /**
