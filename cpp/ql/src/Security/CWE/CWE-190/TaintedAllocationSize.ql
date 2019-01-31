@@ -18,7 +18,8 @@ predicate taintedAllocSize(Expr e, Expr source, string taintCause) {
   (
     isAllocationExpr(e) or
     any(MulExpr me | me.getAChild() instanceof SizeofOperator) = e
-  ) and exists(Expr tainted |
+  ) and
+  exists(Expr tainted |
     tainted = e.getAChild() and
     tainted.getType().getUnspecifiedType() instanceof IntegralType and
     isUserInput(source, taintCause) and
@@ -27,9 +28,6 @@ predicate taintedAllocSize(Expr e, Expr source, string taintCause) {
 }
 
 from Expr e, Expr source, string taintCause
-where
-  taintedAllocSize(e, source, taintCause)
-select
-  e, "This allocation size is derived from $@ and might overflow",
-  source, "user input (" + taintCause + ")"
- 
+where taintedAllocSize(e, source, taintCause)
+select e, "This allocation size is derived from $@ and might overflow", source,
+  "user input (" + taintCause + ")"
