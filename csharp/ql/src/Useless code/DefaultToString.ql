@@ -54,6 +54,11 @@ predicate alwaysDefaultToString(ValueOrRefType t) {
   not exists(RefType overriding |
     overriding.getAMethod() instanceof ToStringMethod and
     overriding.getABaseType+() = t
+  ) and
+  (
+    (t.isAbstract() or t instanceof Interface)
+    implies
+    not t.isEffectivelyPublic()
   )
 }
 

@@ -18,7 +18,7 @@ where
   v.getType() instanceof CollectionType and
   (
     v instanceof LocalVariable or
-    v = any(Field f | f.isEffectivelyPrivate() or f.isEffectivelyInternal())
+    v = any(Field f | not f.isEffectivelyPublic())
   ) and
   forex(Access a | a = v.getAnAccess() |
     a = any(ModifierMethodCall m).getQualifier() or

@@ -48,8 +48,7 @@ module Steps {
    * or because one of `m`'s enclosing types is).
    */
   private predicate isEffectivelyInternalOrPrivate(Modifiable m) {
-    m.isEffectivelyInternal() or
-    m.isEffectivelyPrivate()
+    not m.isEffectivelyPublic()
   }
 
   private predicate flowIn(Parameter p, Expr pred, AssignableRead succ) {
