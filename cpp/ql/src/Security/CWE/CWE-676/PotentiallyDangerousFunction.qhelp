@@ -54,5 +54,6 @@ rules for the following CWEs:</p>
 <references>
 <li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Morris_worm">Morris worm</a>.</li>
 <li>E. Spafford. <i>The Internet Worm Program: An Analysis</i>. Purdue Technical Report CSD-TR-823, <a href="http://www.textfiles.com/100/tr823.txt">(online)</a>, 1988.</li>
+<li>SEI CERT C Coding Standard: <a href="https://wiki.sei.cmu.edu/confluence/display/c/CON33-C.+Avoid+race+conditions+when+using+library+functions">CON33-C. Avoid race conditions when using library functions</a>.</li>
 </references>
 </qhelp>
