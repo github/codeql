@@ -225,3 +225,5 @@
 | r_regressions.py:52 | ControlFlowNode for msg | 51 |
 | r_regressions.py:64 | ControlFlowNode for do_validation | 64 |
 | r_regressions.py:64 | ControlFlowNode for do_validation() | 64 |
+| r_regressions.py:90 | ControlFlowNode for Attribute | 90 |
+| r_regressions.py:90 | ControlFlowNode for Attribute() | 90 |

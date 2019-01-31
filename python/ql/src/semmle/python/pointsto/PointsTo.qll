@@ -610,7 +610,6 @@ module PointsTo {
                 points_to(obj_node, context, x, icls, _) and
                 (not x instanceof ModuleObject and not x instanceof ClassObject) and
                 not icls.isBuiltin() and
-                Types::class_has_attribute_bool(icls, name) = false and
                 value = unknownValue() and cls = theUnknownType() and origin = f
             )
         )
