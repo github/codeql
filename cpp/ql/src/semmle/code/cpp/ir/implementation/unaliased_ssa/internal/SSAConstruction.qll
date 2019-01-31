@@ -279,6 +279,23 @@ cached private module Cached {
     )
   }
 
+  cached Instruction getInstructionBackEdgeSuccessor(Instruction instruction, EdgeKind kind) {
+    exists(OldInstruction oldInstruction |
+      not Reachability::isInfeasibleInstructionSuccessor(oldInstruction, kind) and
+      // There is only one case for the translation into `result` because the
+      // SSA construction never inserts extra instructions _before_ an existing
+      // instruction.
+      getOldInstruction(result) = oldInstruction.getBackEdgeSuccessor(kind) and
+      // There are two cases for the translation into `instruction` because the
+      // SSA construction might have inserted a chi node _after_
+      // `oldInstruction`, in which case the back edge should come out of the
+      // chi node instead.
+      if hasChiNode(_, oldInstruction)
+      then instruction = getChiInstruction(oldInstruction)
+      else instruction = getNewInstruction(oldInstruction)
+    )
+  }
+
   cached IRVariable getInstructionVariable(Instruction instruction) {
     result = getNewIRVariable(getOldInstruction(instruction).(OldIR::VariableInstruction).getVariable())
   }

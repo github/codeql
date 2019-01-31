@@ -101,6 +101,7 @@
 | IR: VirtualMemberFunction | 1 |
 | IR: WhileStatements | 4 |
 | IR: WhileStmtWithDeclaration | 8 |
+| IR: chiNodeAtEndOfLoop | 4 |
 | IR: designatedInit | 1 |
 | IR: min | 4 |
 | IR: operator= | 1 |

@@ -6782,3 +6782,47 @@ ir.cpp:
 # 1055|       0: i
 # 1055|           Type = int
 # 1055|           ValueCategory = prvalue(load)
+# 1058| chiNodeAtEndOfLoop(int, char *) -> void
+# 1058|   params: 
+# 1058|     0: n
+# 1058|         Type = int
+# 1058|     1: p
+# 1058|         Type = char *
+# 1058|   body: { ... }
+# 1059|     0: while (...) ...
+# 1059|       0: ... > ...
+# 1059|           Type = bool
+# 1059|           ValueCategory = prvalue
+# 1059|         0: ... --
+# 1059|             Type = int
+# 1059|             ValueCategory = prvalue
+# 1059|           0: n
+# 1059|               Type = int
+# 1059|               ValueCategory = lvalue
+# 1059|         1: 0
+# 1059|             Type = int
+# 1059|             Value = 0
+# 1059|             ValueCategory = prvalue
+# 1060|       1: ExprStmt
+# 1060|         0: ... = ...
+# 1060|             Type = char
+# 1060|             ValueCategory = lvalue
+# 1060|           0: * ...
+# 1060|               Type = char
+# 1060|               ValueCategory = lvalue
+# 1060|             0: ... ++
+# 1060|                 Type = char *
+# 1060|                 ValueCategory = prvalue
+# 1060|               0: p
+# 1060|                   Type = char *
+# 1060|                   ValueCategory = lvalue
+# 1060|           1: (char)...
+# 1060|               Conversion = integral conversion
+# 1060|               Type = char
+# 1060|               Value = 0
+# 1060|               ValueCategory = prvalue
+# 1060|             expr: 0
+# 1060|                 Type = int
+# 1060|                 Value = 0
+# 1060|                 ValueCategory = prvalue
+# 1061|     1: return ...

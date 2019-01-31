@@ -287,7 +287,9 @@ query predicate edges(PrintableIRBlock pred, PrintableIRBlock succ, string key, 
     (
       (
         key = "semmle.label" and
-        value = kind.toString()
+        if predBlock.getBackEdgeSuccessor(kind) = succBlock
+        then value = kind.toString() + " (back edge)"
+        else value = kind.toString()
       ) or
       (
         key = "semmle.order" and

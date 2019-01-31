@@ -8,3 +8,6 @@ unexplainedLoop
 unnecessaryPhiInstruction
 operandAcrossFunctions
 instructionWithoutUniqueBlock
+containsLoopOfForwardEdges
+lostReachability
+backEdgeCountMismatch

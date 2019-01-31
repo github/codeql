@@ -170,3 +170,19 @@ int test14(int x, int y) {
     }
   }
 }
+
+// more interesting bounds with irreducible CFG
+int test15(int i, int x) {
+  if (x < i) {
+    sink(i); // i >= x + 1
+  } else {
+    sink(i); // i <= x
+    goto inLoop;
+  }
+  for(; i < x; i++) {
+    sink(i); // i <= x - 1
+    inLoop:
+    sink(i); // i <= x
+  }
+  return i;
+}
