@@ -9,3 +9,5 @@ window.parent.postMessage(password, '*'); // NOT OK
   window.parent.postMessage(data.foo, '*'); // NOT OK
   window.parent.postMessage(data.bar, '*'); // OK
 })();
+
+window.parent.postMessage(authKey, '*');

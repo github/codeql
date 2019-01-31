@@ -40,7 +40,8 @@ module HeuristicNames {
   string suspiciousCredentials() {
     result = "(?i).*pass(wd|word|code|phrase)(?!.*question).*" or
     result = "(?i).*(puid|username|userid).*" or
-    result = "(?i).*(cert)(?!.*(format|name)).*"
+    result = "(?i).*(cert)(?!.*(format|name)).*" or
+    result = "(?i).*(auth(entication|ori[sz]ation)?)key.*"
   }
 }
 private import HeuristicNames
