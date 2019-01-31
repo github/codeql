@@ -346,8 +346,13 @@ private class UserDumpType extends DumpType, DumpDeclaration, UserType {
   override string getIdentityString() {
     exists(string simpleName |
       (
-        if this instanceof Closure then
-          simpleName = "(" + getSimpleName() + ")"
+        if this instanceof Closure then (
+          // Parenthesize the name of the lambda because it's freeform text similar to
+          // "lambda [] type at line 12, col. 40"
+          // Use `min(getSimpleName())` to work around an extractor bug where a lambda can have different names
+          // from different compilation units.
+          simpleName = "(" + min(getSimpleName()) + ")"
+        )
         else
           simpleName = getSimpleName()
       ) and
@@ -357,6 +362,12 @@ private class UserDumpType extends DumpType, DumpDeclaration, UserType {
 
   override string getTypeSpecifier() {
     result = getIdentityString()
+  }
+}
+
+private class DumpProxyClass extends UserDumpType, ProxyClass {
+  override string getIdentityString() {
+    result = getName()
   }
 }
 

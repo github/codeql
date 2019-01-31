@@ -9,6 +9,12 @@ void check_var(TVar var, const char* expected);
 
 struct S
 {
+  enum NestedEnum
+  {
+    Blah,
+    Bluh
+  };
+
   int i;
   float f;
 };
@@ -16,6 +22,13 @@ struct S
 struct T
 {
   bool b;
+};
+
+enum E
+{
+  One,
+  Two,
+  Three
 };
 
 void checks()
@@ -120,6 +133,9 @@ void checks()
   check_type<AI>("int[10]");
   check_type<CAI>("int const[10]");
   check_type<int const[10]>("int const[10]");
+
+  check_type<E>("E");
+  check_type<S::NestedEnum>("S::NestedEnum");
 }
 
 int globalVariable;
