@@ -85,7 +85,7 @@ private module Cached {
     exists(LibraryTypeDataFlow ltdf, CallableFlowSource csource, CallableFlowSinkDelegateArg csink |
       ltdf.callableFlow(csource, csink, callable, preservesValue) and
       call.getTarget().getSourceDeclaration() = callable and
-      csink = getDelegateFlowSinkArg(callable, i, j) and
+      csink = getDelegateFlowSinkArg(callable, j, i) and
       source = csource.getSource(call)
     )
   }
@@ -107,7 +107,7 @@ private module Cached {
       ltdf.callableFlow(csource, csink, callable, preservesValue) and
       call.getTarget().getSourceDeclaration() = callable and
       csource = getDelegateFlowSourceArg(callable, i) and
-      csink = getDelegateFlowSinkArg(callable, j, k)
+      csink = getDelegateFlowSinkArg(callable, k, j)
     )
   }
 }
