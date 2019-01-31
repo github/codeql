@@ -46,7 +46,7 @@ int main(int argc, char **argv) {
 
 	int size = tainted * 8;
 	char *chars1 = (char *)malloc(size); // BAD
-	char *chars2 = new char[size]; // BA
+	char *chars2 = new char[size]; // BAD
 	char *chars3 = new char[8]; // GOOD
 
 	arr1 = (MyStruct *)realloc(arr1, sizeof(MyStruct) * tainted); // BAD
