@@ -42,21 +42,15 @@ private module Cached {
    */
   cached
   predicate libraryFlowOutRef(MethodCall mc, Expr source, Parameter outRef, boolean preservesValue) {
-    exists(LibraryTypeDataFlow ltdf, CallableFlowSource csource, CallableFlowSinkArg csink |
+    exists(
+      LibraryTypeDataFlow ltdf, CallableFlowSource csource, CallableFlowSinkArg csink, Method sm
+    |
       source = csource.getSource(mc) and
       mc.getTarget().getAParameter() = outRef and
-      ltdf.callableFlow(csource, csink, mc.getTarget().getSourceDeclaration(), preservesValue) and
-      outRef = getAParameterForFlowSink(csink)
+      sm = mc.getTarget().getSourceDeclaration() and
+      ltdf.callableFlow(csource, csink, sm, preservesValue) and
+      csink = getFlowSinkArg(sm, outRef.getPosition())
     )
-  }
-
-  /**
-   * Gets a parameter whose declaring callable's source declaration contains the flow sink `csink`,
-   * and which corresponds to the same parameter index.
-   */
-  private Parameter getAParameterForFlowSink(CallableFlowSinkArg csink) {
-    result.getPosition() = csink.getArgumentIndex() and
-    result.getCallable().getSourceDeclaration() = csink.getCallable()
   }
 
   /**
@@ -136,20 +130,7 @@ library class SourceDeclarationMethod extends SourceDeclarationCallable, Method 
 // Internal representation of callable flow sources
 private newtype TCallableFlowSource =
   TCallableFlowSourceQualifier() or
-  TCallableFlowSourceArg(SourceDeclarationCallable callable, int i) {
-    exists(int arity |
-      if callable.getAParameter().isParams()
-      then
-        arity = max(Call call |
-            call.getTarget().getSourceDeclaration() = callable
-          |
-            call.getNumberOfArguments()
-          )
-      else arity = callable.getNumberOfParameters()
-    |
-      i in [0 .. arity - 1]
-    )
-  } or
+  TCallableFlowSourceArg(int i) { hasArgumentPosition(_, i) } or
   TCallableFlowSourceDelegateArg(SourceDeclarationCallable c, int i) {
     exists(DelegateType dt |
       dt = c.getParameter(i).getType().(SystemLinqExpressions::DelegateExtType).getDelegateType()
@@ -157,6 +138,21 @@ private newtype TCallableFlowSource =
       not dt.getReturnType() instanceof VoidType
     )
   }
+
+private predicate hasArgumentPosition(SourceDeclarationCallable callable, int position) {
+  exists(int arity |
+    if callable.getAParameter().isParams()
+    then
+      arity = max(Call call |
+          call.getTarget().getSourceDeclaration() = callable
+        |
+          call.getNumberOfArguments()
+        )
+    else arity = callable.getNumberOfParameters()
+  |
+    position in [0 .. arity - 1]
+  )
+}
 
 /** A flow source in a call to a library callable. */
 class CallableFlowSource extends TCallableFlowSource {
@@ -176,21 +172,18 @@ class CallableFlowSourceQualifier extends CallableFlowSource, TCallableFlowSourc
 
 /** A flow source in a call to a library callable: argument. */
 class CallableFlowSourceArg extends CallableFlowSource, TCallableFlowSourceArg {
-  override string toString() {
-    exists(int i | this = TCallableFlowSourceArg(_, i) | result = "argument " + i.toString())
-  }
-
-  /** Gets the callable containing this flow source. */
-  Callable getCallable() { this = TCallableFlowSourceArg(result, _) }
+  override string toString() { result = "argument " + this.getArgumentIndex() }
 
   /** Gets the index of this argument. */
-  int getArgumentIndex() { this = TCallableFlowSourceArg(_, result) }
+  int getArgumentIndex() { this = TCallableFlowSourceArg(result) }
 
-  override Expr getSource(Call c) {
-    exists(int i | this = TCallableFlowSourceArg(c.getTarget().getSourceDeclaration(), i) |
-      result = c.getArgument(i)
-    )
-  }
+  override Expr getSource(Call c) { result = c.getArgument(getArgumentIndex()) }
+}
+
+/** Gets an argument flow source for callable `callable` with argument `i`. */
+CallableFlowSourceArg getFlowSourceArg(Callable callable, int i) {
+  i = result.getArgumentIndex() and
+  hasArgumentPosition(callable, i)
 }
 
 /** A flow source in a call to a library callable: output from delegate argument. */
@@ -214,7 +207,7 @@ class CallableFlowSourceDelegateArg extends CallableFlowSource, TCallableFlowSou
 private newtype TCallableFlowSink =
   TCallableFlowSinkQualifier() or
   TCallableFlowSinkReturn() or
-  TCallableFlowSinkArg(SourceDeclarationCallable c, int i) { exists(c.getParameter(i)) } or
+  TCallableFlowSinkArg(int i) { exists(SourceDeclarationCallable c | exists(c.getParameter(i))) } or
   TCallableFlowSinkDelegateArg(SourceDeclarationCallable c, int i, int j) {
     exists(DelegateType dt |
       dt = c.getParameter(i).getType().(SystemLinqExpressions::DelegateExtType).getDelegateType()
@@ -248,20 +241,21 @@ class CallableFlowSinkReturn extends CallableFlowSink, TCallableFlowSinkReturn {
 
 /** The flow sink in an argument to a call to a library method. */
 class CallableFlowSinkArg extends CallableFlowSink, TCallableFlowSinkArg {
-  override string toString() {
-    exists(int i | this = TCallableFlowSinkArg(_, i) | result = "argument " + i.toString())
-  }
-
-  /** Gets the callable containing this flow sink. */
-  Callable getCallable() { this = TCallableFlowSinkArg(result, _) }
+  override string toString() { result = "argument " + this.getArgumentIndex() }
 
   /** Gets the index of this `out`/`ref` argument. */
-  int getArgumentIndex() { this = TCallableFlowSinkArg(_, result) }
+  int getArgumentIndex() { this = TCallableFlowSinkArg(result) }
 
   override Expr getSink(Call c) {
     // The uses of the `i`th argument are the actual sinks
     none()
   }
+}
+
+/** Gets an argument flow sink for callable `callable` with argument `i`. */
+CallableFlowSinkArg getFlowSinkArg(Callable callable, int i) {
+  i = result.getArgumentIndex() and
+  hasArgumentPosition(callable, i)
 }
 
 /** The flow sink in a call to a library callable: parameter of a delegate argument. */
@@ -321,15 +315,15 @@ class SystemInt32Flow extends LibraryTypeDataFlow, SystemInt32Struct {
     CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m
   ) {
     m = getParseMethod() and
-    source = TCallableFlowSourceArg(m, 0) and
+    source = TCallableFlowSourceArg(0) and
     sink = TCallableFlowSinkReturn()
     or
     m = getTryParseMethod() and
-    source = TCallableFlowSourceArg(m, 0) and
+    source = TCallableFlowSourceArg(0) and
     (
       sink = TCallableFlowSinkReturn()
       or
-      sink = TCallableFlowSinkArg(m, any(int i | m.getParameter(i).isOutOrRef()))
+      sink = TCallableFlowSinkArg(any(int i | m.getParameter(i).isOutOrRef()))
     )
   }
 }
@@ -349,17 +343,17 @@ class SystemBooleanFlow extends LibraryTypeDataFlow, SystemBooleanStruct {
   ) {
     m = getParseMethod() and
     (
-      source = TCallableFlowSourceArg(m, 0) and
+      source = TCallableFlowSourceArg(0) and
       sink = TCallableFlowSinkReturn()
     )
     or
     m = getTryParseMethod() and
     (
-      source = TCallableFlowSourceArg(m, 0) and
+      source = TCallableFlowSourceArg(0) and
       (
         sink = TCallableFlowSinkReturn()
         or
-        sink = TCallableFlowSinkArg(m, any(int i | m.getParameter(i).isOutOrRef()))
+        sink = TCallableFlowSinkArg(any(int i | m.getParameter(i).isOutOrRef()))
       )
     )
   }
@@ -389,7 +383,7 @@ class SystemUriFlow extends LibraryTypeDataFlow, SystemUriClass {
   private predicate constructorFlow(CallableFlowSource source, CallableFlowSink sink, Constructor c) {
     c = getAMember() and
     c.getParameter(0).getType() instanceof StringType and
-    source = TCallableFlowSourceArg(c, 0) and
+    source = TCallableFlowSourceArg(0) and
     sink = TCallableFlowSinkReturn()
   }
 
@@ -428,7 +422,7 @@ class SystemIOStringReaderFlow extends LibraryTypeDataFlow, SystemIOStringReader
   private predicate constructorFlow(CallableFlowSource source, CallableFlowSink sink, Constructor c) {
     c = getAMember() and
     c.getParameter(0).getType() instanceof StringType and
-    source = TCallableFlowSourceArg(c, 0) and
+    source = TCallableFlowSourceArg(0) and
     sink = TCallableFlowSinkReturn()
   }
 
@@ -456,7 +450,7 @@ class SystemStringFlow extends LibraryTypeDataFlow, SystemStringClass {
   private predicate constructorFlow(CallableFlowSource source, CallableFlowSink sink, Constructor c) {
     c = getAMember() and
     c.getParameter(0).getType().(ArrayType).getElementType() instanceof CharType and
-    source = TCallableFlowSourceArg(c, 0) and
+    source = TCallableFlowSourceArg(0) and
     sink = TCallableFlowSinkReturn()
   }
 
@@ -485,7 +479,7 @@ class SystemStringFlow extends LibraryTypeDataFlow, SystemStringClass {
       sink = TCallableFlowSinkReturn() and
       preservesValue = false
       or
-      source = TCallableFlowSourceArg(m, 1) and
+      source = TCallableFlowSourceArg(1) and
       sink = TCallableFlowSinkReturn() and
       preservesValue = false
     )
@@ -510,7 +504,7 @@ class SystemStringFlow extends LibraryTypeDataFlow, SystemStringClass {
       sink = TCallableFlowSinkReturn() and
       preservesValue = false
       or
-      source = TCallableFlowSourceArg(m, 1) and
+      source = TCallableFlowSourceArg(1) and
       sink = TCallableFlowSinkReturn() and
       preservesValue = false
     )
@@ -541,21 +535,21 @@ class SystemStringFlow extends LibraryTypeDataFlow, SystemStringClass {
     or
     m = getConcatMethod() and
     (
-      source = TCallableFlowSourceArg(m, _) and
+      source = getFlowSourceArg(m, _) and
       sink = TCallableFlowSinkReturn() and
       preservesValue = false
     )
     or
     m = getCopyMethod() and
     (
-      source = TCallableFlowSourceArg(m, 0) and
+      source = TCallableFlowSourceArg(0) and
       sink = TCallableFlowSinkReturn() and
       preservesValue = true
     )
     or
     m = getJoinMethod() and
     (
-      source = TCallableFlowSourceArg(m, _) and
+      source = getFlowSourceArg(m, _) and
       sink = TCallableFlowSinkReturn() and
       preservesValue = false
     )
@@ -563,7 +557,7 @@ class SystemStringFlow extends LibraryTypeDataFlow, SystemStringClass {
     m = getFormatMethod() and
     exists(int i |
       (m.getParameter(0).getType() instanceof SystemIFormatProviderInterface implies i != 0) and
-      source = TCallableFlowSourceArg(m, i) and
+      source = getFlowSourceArg(m, i) and
       sink = TCallableFlowSinkReturn() and
       preservesValue = false
     )
@@ -587,7 +581,7 @@ class SystemTextStringBuilderFlow extends LibraryTypeDataFlow, SystemTextStringB
   private predicate constructorFlow(CallableFlowSource source, CallableFlowSink sink, Constructor c) {
     c = getAMember() and
     c.getParameter(0).getType() instanceof StringType and
-    source = TCallableFlowSourceArg(c, 0) and
+    source = TCallableFlowSourceArg(0) and
     sink = TCallableFlowSinkReturn()
   }
 
@@ -605,7 +599,7 @@ class SystemTextStringBuilderFlow extends LibraryTypeDataFlow, SystemTextStringB
     exists(int i, Type t |
       m.getName().regexpMatch("Append(Format|Line)?") and
       t = m.getParameter(i).getType() and
-      source = TCallableFlowSourceArg(m, i) and
+      source = getFlowSourceArg(m, i) and
       sink = TCallableFlowSinkQualifier()
     |
       t instanceof StringType or
@@ -700,7 +694,7 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
       (
         arity = 2 and
         (
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkDelegateArg(m, 1, 1)
           or
           source = TCallableFlowSourceDelegateArg(m, 1) and
@@ -709,10 +703,10 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
         or
         arity = 3 and
         (
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkDelegateArg(m, 2, 1)
           or
-          source = TCallableFlowSourceArg(m, 1) and
+          source = TCallableFlowSourceArg(1) and
           sink = TCallableFlowSinkDelegateArg(m, 2, 0)
           or
           source = TCallableFlowSourceDelegateArg(m, 2) and
@@ -721,10 +715,10 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
         or
         arity = 4 and
         (
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkDelegateArg(m, 2, 1)
           or
-          source = TCallableFlowSourceArg(m, 1) and
+          source = TCallableFlowSourceArg(1) and
           sink = TCallableFlowSinkDelegateArg(m, 2, 0)
           or
           source = TCallableFlowSourceDelegateArg(m, 2) and
@@ -738,35 +732,35 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
       name = "All" and
       (
         arity = 2 and
-        source = TCallableFlowSourceArg(m, 0) and
+        source = TCallableFlowSourceArg(0) and
         sink = TCallableFlowSinkDelegateArg(m, 1, 0)
       )
       or
       name = "Any" and
       (
         arity = 2 and
-        source = TCallableFlowSourceArg(m, 0) and
+        source = TCallableFlowSourceArg(0) and
         sink = TCallableFlowSinkDelegateArg(m, 1, 0)
       )
       or
       name = "AsEnumerable" and
       (
         arity = 1 and
-        source = TCallableFlowSourceArg(m, 0) and
+        source = TCallableFlowSourceArg(0) and
         sink = TCallableFlowSinkReturn()
       )
       or
       name = "Average" and
       (
         arity = 2 and
-        source = TCallableFlowSourceArg(m, 0) and
+        source = TCallableFlowSourceArg(0) and
         sink = TCallableFlowSinkDelegateArg(m, 1, 0)
       )
       or
       name = "Cast" and
       (
         arity = 1 and
-        source = TCallableFlowSourceArg(m, 0) and
+        source = TCallableFlowSourceArg(0) and
         sink = TCallableFlowSinkReturn()
       )
       or
@@ -774,10 +768,10 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
       (
         arity = 2 and
         (
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkReturn()
           or
-          source = TCallableFlowSourceArg(m, 1) and
+          source = TCallableFlowSourceArg(1) and
           sink = TCallableFlowSinkReturn()
         )
       )
@@ -785,39 +779,39 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
       name.regexpMatch("(Long)?Count") and
       (
         arity = 2 and
-        source = TCallableFlowSourceArg(m, 0) and
+        source = TCallableFlowSourceArg(0) and
         sink = TCallableFlowSinkDelegateArg(m, 1, 0)
       )
       or
       name = "DefaultIfEmpty" and
       (
         arity in [1 .. 2] and
-        source = TCallableFlowSourceArg(m, 0) and
+        source = TCallableFlowSourceArg(0) and
         sink = TCallableFlowSinkReturn()
         or
         arity = 2 and
-        source = TCallableFlowSourceArg(m, 1) and
+        source = TCallableFlowSourceArg(1) and
         sink = TCallableFlowSinkReturn()
       )
       or
       name = "Distinct" and
       (
         arity in [1 .. 2] and
-        source = TCallableFlowSourceArg(m, 0) and
+        source = TCallableFlowSourceArg(0) and
         sink = TCallableFlowSinkReturn()
       )
       or
       name.regexpMatch("ElementAt(OrDefault)?") and
       (
         arity = 2 and
-        source = TCallableFlowSourceArg(m, 0) and
+        source = TCallableFlowSourceArg(0) and
         sink = TCallableFlowSinkReturn()
       )
       or
       name = "Except" and
       (
         arity in [2 .. 3] and
-        source = TCallableFlowSourceArg(m, 0) and
+        source = TCallableFlowSourceArg(0) and
         sink = TCallableFlowSinkReturn()
       )
       or
@@ -825,13 +819,13 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
       (
         arity in [1 .. 2] and
         (
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkReturn()
         )
         or
         arity = 2 and
         (
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkDelegateArg(m, 1, 0)
         )
       )
@@ -840,15 +834,15 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
       (
         arity = 3 and
         (
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkDelegateArg(m, 1, 0)
           or
           m.getParameter(2).getType().(ConstructedDelegateType).getNumberOfTypeArguments() = 2 and
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkDelegateArg(m, 2, 0)
           or
           m.getParameter(2).getType().(ConstructedDelegateType).getNumberOfTypeArguments() = 3 and
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkDelegateArg(m, 2, 1)
           or
           m.getParameter(2).getType().(ConstructedDelegateType).getNumberOfTypeArguments() = 3 and
@@ -862,16 +856,16 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
           or
           m.getParameter(2).getType().getSourceDeclaration() instanceof
             SystemCollectionsGenericIEqualityComparerTInterface and
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkReturn()
         )
         or
         arity in [4 .. 5] and
         (
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkDelegateArg(m, 1, 0)
           or
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkDelegateArg(m, 2, 0)
           or
           source = TCallableFlowSourceDelegateArg(m, 1) and
@@ -889,16 +883,16 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
       (
         arity in [5 .. 6] and
         (
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkDelegateArg(m, 2, 0)
           or
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkDelegateArg(m, 4, 0)
           or
-          source = TCallableFlowSourceArg(m, 1) and
+          source = TCallableFlowSourceArg(1) and
           sink = TCallableFlowSinkDelegateArg(m, 3, 0)
           or
-          source = TCallableFlowSourceArg(m, 1) and
+          source = TCallableFlowSourceArg(1) and
           sink = TCallableFlowSinkDelegateArg(m, 4, 1)
           or
           source = TCallableFlowSourceDelegateArg(m, 4) and
@@ -910,10 +904,10 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
       (
         arity in [2 .. 3] and
         (
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkReturn()
           or
-          source = TCallableFlowSourceArg(m, 1) and
+          source = TCallableFlowSourceArg(1) and
           sink = TCallableFlowSinkReturn()
         )
       )
@@ -922,13 +916,13 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
       (
         arity in [1 .. 2] and
         (
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkReturn()
         )
         or
         arity = 2 and
         (
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkDelegateArg(m, 1, 0)
         )
       )
@@ -937,7 +931,7 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
       (
         arity = 2 and
         (
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkDelegateArg(m, 1, 0)
         )
       )
@@ -946,7 +940,7 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
       (
         arity = 1 and
         (
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkReturn()
         )
       )
@@ -955,10 +949,10 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
       (
         arity in [2 .. 3] and
         (
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkReturn()
           or
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkDelegateArg(m, 1, 0)
         )
       )
@@ -967,7 +961,7 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
       (
         arity = 2 and
         (
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkReturn()
         )
       )
@@ -976,7 +970,7 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
       (
         arity = 1 and
         (
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkReturn()
         )
       )
@@ -985,7 +979,7 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
       (
         arity = 2 and
         (
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkDelegateArg(m, 1, 0)
           or
           source = TCallableFlowSourceDelegateArg(m, 1) and
@@ -997,10 +991,10 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
       (
         arity = 3 and
         (
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkDelegateArg(m, 1, 0)
           or
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkDelegateArg(m, 2, 0)
           or
           source = TCallableFlowSourceDelegateArg(m, 1) and
@@ -1015,7 +1009,7 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
       (
         arity = 2 and
         (
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkReturn()
         )
       )
@@ -1024,7 +1018,7 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
       (
         arity = 2 and
         (
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkDelegateArg(m, 1, 0)
         )
       )
@@ -1033,10 +1027,10 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
       (
         arity in [2 .. 3] and
         (
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkDelegateArg(m, 1, 0)
           or
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkReturn()
         )
       )
@@ -1045,7 +1039,7 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
       (
         arity = 1 and
         (
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkReturn()
         )
       )
@@ -1054,20 +1048,20 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
       (
         arity in [2 .. 3] and
         (
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkDelegateArg(m, 1, 0)
           or
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkReturn() and
           not m.getParameter(2).getType() instanceof DelegateType
         )
         or
         arity in [3 .. 4] and
         (
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkDelegateArg(m, 1, 0)
           or
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkDelegateArg(m, 2, 0)
           or
           source = TCallableFlowSourceDelegateArg(m, 2) and
@@ -1079,10 +1073,10 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
       (
         arity in [2 .. 3] and
         (
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkReturn()
           or
-          source = TCallableFlowSourceArg(m, 1) and
+          source = TCallableFlowSourceArg(1) and
           sink = TCallableFlowSinkReturn()
         )
       )
@@ -1091,10 +1085,10 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
       (
         arity = 2 and
         (
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkDelegateArg(m, 1, 0)
           or
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkReturn()
         )
       )
@@ -1103,10 +1097,10 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
       (
         arity = 3 and
         (
-          source = TCallableFlowSourceArg(m, 0) and
+          source = TCallableFlowSourceArg(0) and
           sink = TCallableFlowSinkDelegateArg(m, 2, 0)
           or
-          source = TCallableFlowSourceArg(m, 1) and
+          source = TCallableFlowSourceArg(1) and
           sink = TCallableFlowSinkDelegateArg(m, 2, 1)
           or
           source = TCallableFlowSourceDelegateArg(m, 2) and
@@ -1123,7 +1117,7 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
     m = getFind() and
     if m.isStatic()
     then
-      source = TCallableFlowSourceArg(m, 0) and
+      source = TCallableFlowSourceArg(0) and
       (
         sink = TCallableFlowSinkReturn() or
         sink = TCallableFlowSinkDelegateArg(m, 1, 0)
@@ -1143,7 +1137,7 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
     |
       name = "FixedSize" and
       (
-        source = TCallableFlowSourceArg(m, 0) and
+        source = TCallableFlowSourceArg(0) and
         sink = TCallableFlowSinkReturn()
       )
       or
@@ -1157,14 +1151,14 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
       name.regexpMatch("Add(Range)?") and
       (
         arity = 1 and
-        source = TCallableFlowSourceArg(m, 0) and
+        source = TCallableFlowSourceArg(0) and
         sink = TCallableFlowSinkQualifier()
       )
       or
       name = "Add" and
       (
         arity = 2 and
-        source = TCallableFlowSourceArg(m, 1) and
+        source = TCallableFlowSourceArg(1) and
         sink = TCallableFlowSinkQualifier()
       )
       or
@@ -1172,7 +1166,7 @@ class IEnumerableFlow extends LibraryTypeDataFlow {
       (
         not this instanceof StringType and
         arity = 2 and
-        source = TCallableFlowSourceArg(m, 1) and
+        source = TCallableFlowSourceArg(1) and
         sink = TCallableFlowSinkQualifier()
       )
     )
@@ -1207,7 +1201,7 @@ class SystemConvertFlow extends LibraryTypeDataFlow, SystemConvertClass {
     CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m
   ) {
     m = getAMethod() and
-    source = TCallableFlowSourceArg(m, 0) and
+    source = TCallableFlowSourceArg(0) and
     sink = TCallableFlowSinkReturn()
   }
 }
@@ -1347,7 +1341,7 @@ class SystemCollectionsGenericKeyValuePairStructFlow extends LibraryTypeDataFlow
 
   private predicate constructorFlow(CallableFlowSource source, CallableFlowSink sink, Constructor c) {
     c.getDeclaringType() = this and
-    source = TCallableFlowSourceArg(c, 1) and
+    source = getFlowSourceArg(c, 1) and
     sink = TCallableFlowSinkReturn()
   }
 
@@ -1421,7 +1415,7 @@ class SystemThreadingTasksTaskFlow extends LibraryTypeDataFlow, SystemThreadingT
       c.getParameter(0).getType() = action and
       action.getUnboundGeneric().(SystemActionTDelegateType).getNumberOfTypeParameters() = 1 and
       action.getTypeArgument(0) instanceof ObjectType and
-      source = TCallableFlowSourceArg(c, 1) and
+      source = TCallableFlowSourceArg(1) and
       sink = TCallableFlowSinkDelegateArg(c, 0, 0)
     )
   }
@@ -1442,7 +1436,7 @@ class SystemThreadingTasksTaskFlow extends LibraryTypeDataFlow, SystemThreadingT
             delegate.getUnboundGeneric() instanceof SystemFuncDelegateType
           ) and
           delegate.getTypeArgument(k) instanceof ObjectType and
-          source = TCallableFlowSourceArg(m, i) and
+          source = TCallableFlowSourceArg(i) and
           sink = TCallableFlowSinkDelegateArg(m, j, k)
         )
         or
@@ -1457,7 +1451,7 @@ class SystemThreadingTasksTaskFlow extends LibraryTypeDataFlow, SystemThreadingT
       or
       m.hasName("FromResult") and
       (
-        source = TCallableFlowSourceArg(m, 0) and
+        source = TCallableFlowSourceArg(0) and
         sink = TCallableFlowSinkReturn()
       )
       or
@@ -1473,7 +1467,7 @@ class SystemThreadingTasksTaskFlow extends LibraryTypeDataFlow, SystemThreadingT
       (
         m.getReturnType() = any(SystemThreadingTasksTaskTClass c).getAConstructedGeneric() and
         m.(UnboundGenericMethod).getNumberOfTypeParameters() = 1 and
-        source = TCallableFlowSourceArg(m, _) and
+        source = getFlowSourceArg(m, _) and
         sink = TCallableFlowSinkReturn()
       )
     )
@@ -1519,7 +1513,7 @@ class SystemThreadingTasksTaskTFlow extends LibraryTypeDataFlow {
       c.getParameter(0).getType() = func and
       func.getUnboundGeneric().(SystemFuncDelegateType).getNumberOfTypeParameters() = 2 and
       func.getTypeArgument(0) instanceof ObjectType and
-      source = TCallableFlowSourceArg(c, 1) and
+      source = TCallableFlowSourceArg(1) and
       sink = TCallableFlowSinkDelegateArg(c, 0, 0)
     )
   }
@@ -1541,7 +1535,7 @@ class SystemThreadingTasksTaskTFlow extends LibraryTypeDataFlow {
         exists(int k |
           delegate.getTypeArgument(j) instanceof ObjectType and
           m.getParameter(k).getType() instanceof ObjectType and
-          source = TCallableFlowSourceArg(m, k) and
+          source = TCallableFlowSourceArg(k) and
           sink = TCallableFlowSinkDelegateArg(m, i, j)
         )
         or
@@ -1598,7 +1592,7 @@ class SystemThreadingTasksFactoryFlow extends LibraryTypeDataFlow {
             delegate.getUnboundGeneric() instanceof SystemActionTDelegateType or
             delegate.getUnboundGeneric() instanceof SystemFuncDelegateType
           ) and
-          source = TCallableFlowSourceArg(m, i) and
+          source = TCallableFlowSourceArg(i) and
           sink = TCallableFlowSinkDelegateArg(m, j, k)
         )
         or
@@ -1622,7 +1616,7 @@ class SystemThreadingTasksFactoryFlow extends LibraryTypeDataFlow {
             delegate.getUnboundGeneric() instanceof SystemFuncDelegateType
           ) and
           delegate.getTypeArgument(k) instanceof ObjectType and
-          source = TCallableFlowSourceArg(m, i) and
+          source = TCallableFlowSourceArg(i) and
           sink = TCallableFlowSinkDelegateArg(m, j, k)
         )
         or
@@ -1645,7 +1639,7 @@ library class SystemTextEncodingFlow extends LibraryTypeDataFlow, SystemTextEnco
     boolean preservesValue
   ) {
     (c = getGetBytesMethod() or c = getGetStringMethod() or c = getGetCharsMethod()) and
-    source = TCallableFlowSourceArg(c, 0) and
+    source = TCallableFlowSourceArg(0) and
     sink = TCallableFlowSinkReturn() and
     preservesValue = false
   }
@@ -1670,7 +1664,7 @@ library class SystemIOMemoryStreamFlow extends LibraryTypeDataFlow, SystemIOMemo
   private predicate constructorFlow(CallableFlowSource source, CallableFlowSink sink, Constructor c) {
     c = getAMember() and
     c.getParameter(0).getType().(ArrayType).getElementType() instanceof ByteType and
-    source = TCallableFlowSourceArg(c, 0) and
+    source = TCallableFlowSourceArg(0) and
     sink = TCallableFlowSinkReturn()
   }
 }
@@ -1684,18 +1678,18 @@ class SystemIOStreamFlow extends LibraryTypeDataFlow, SystemIOStreamClass {
     (
       c = getAReadMethod().getAnOverrider*() and
       c.getParameter(0).getType().(ArrayType).getElementType() instanceof ByteType and
-      sink = TCallableFlowSinkArg(c, 0) and
+      sink = TCallableFlowSinkArg(0) and
       source = TCallableFlowSourceQualifier()
       or
       c = getAWriteMethod().getAnOverrider*() and
       c.getParameter(0).getType().(ArrayType).getElementType() instanceof ByteType and
-      source = TCallableFlowSourceArg(c, 0) and
+      source = TCallableFlowSourceArg(0) and
       sink = TCallableFlowSinkQualifier()
       or
       c = any(Method m | m = getAMethod() and m.getName().matches("CopyTo%")).getAnOverrider*() and
       c.getParameter(0).getType() instanceof SystemIOStreamClass and
       source = TCallableFlowSourceQualifier() and
-      sink = TCallableFlowSinkArg(c, 0)
+      sink = TCallableFlowSinkArg(0)
     ) and
     preservesValue = false
   }
@@ -1714,7 +1708,7 @@ class SystemIOCompressionDeflateStreamFlow extends LibraryTypeDataFlow,
 
   private predicate constructorFlow(CallableFlowSource source, CallableFlowSink sink, Constructor c) {
     c = getAMember() and
-    source = TCallableFlowSourceArg(c, 0) and
+    source = TCallableFlowSourceArg(0) and
     sink = TCallableFlowSinkReturn()
   }
 }
@@ -1726,7 +1720,7 @@ class SystemXmlXmlReaderFlow extends LibraryTypeDataFlow, SystemXmlXmlReaderClas
     boolean preservesValue
   ) {
     c = getCreateMethod() and
-    source = TCallableFlowSourceArg(c, 0) and
+    source = TCallableFlowSourceArg(0) and
     sink = TCallableFlowSinkReturn() and
     preservesValue = false
   }
@@ -1739,7 +1733,7 @@ class SystemXmlXmlDocumentFlow extends LibraryTypeDataFlow, SystemXmlXmlDocument
     boolean preservesValue
   ) {
     c = getLoadMethod() and
-    source = TCallableFlowSourceArg(c, 0) and
+    source = TCallableFlowSourceArg(0) and
     sink = TCallableFlowSinkQualifier() and
     preservesValue = false
   }
@@ -1787,7 +1781,7 @@ class SystemIOPathFlow extends LibraryTypeDataFlow, SystemIOPathClass {
     boolean preservesValue
   ) {
     c = getAMethod("Combine") and
-    source = TCallableFlowSourceArg(c, _) and
+    source = getFlowSourceArg(c, _) and
     sink = TCallableFlowSinkReturn() and
     preservesValue = false
     or
@@ -1796,7 +1790,7 @@ class SystemIOPathFlow extends LibraryTypeDataFlow, SystemIOPathClass {
       c.getName().matches("Get%") and
       p = c.getAParameter() and
       p.hasName("path") and
-      source = TCallableFlowSourceArg(c, p.getPosition()) and
+      source = getFlowSourceArg(c, p.getPosition()) and
       sink = TCallableFlowSinkReturn() and
       preservesValue = false
     )
@@ -1815,7 +1809,7 @@ class SystemWebHttpUtilityFlow extends LibraryTypeDataFlow, SystemWebHttpUtility
       c = getAJavaScriptStringEncodeMethod() or
       c = getAnUrlEncodeMethod()
     ) and
-    source = TCallableFlowSourceArg(c, 0) and
+    source = TCallableFlowSourceArg(0) and
     sink = TCallableFlowSinkReturn() and
     preservesValue = false
   }
@@ -1831,7 +1825,7 @@ class SystemWebHttpServerUtilityFlow extends LibraryTypeDataFlow, SystemWebHttpS
       c = getAnHtmlEncodeMethod() or
       c = getAnUrlEncodeMethod()
     ) and
-    source = TCallableFlowSourceArg(c, 0) and
+    source = TCallableFlowSourceArg(0) and
     sink = TCallableFlowSinkReturn() and
     preservesValue = false
   }
@@ -1847,7 +1841,7 @@ class SystemNetWebUtilityFlow extends LibraryTypeDataFlow, SystemNetWebUtility {
       c = getAnHtmlEncodeMethod() or
       c = getAnUrlEncodeMethod()
     ) and
-    source = TCallableFlowSourceArg(c, 0) and
+    source = TCallableFlowSourceArg(0) and
     sink = TCallableFlowSinkReturn() and
     preservesValue = false
   }
