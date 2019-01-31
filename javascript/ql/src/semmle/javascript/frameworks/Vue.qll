@@ -333,13 +333,8 @@ module Vue {
     }
 
     private Module getModule() {
-      exists(HTML::ScriptElement script | script.getFile() = file |
-        result.getTopLevel() = script.resolveSource()
-        or
-        not exists(script.getSourcePath()) and
-        // XXX is there no way explicit relation between a script tag and its inline script?
-        result.getTopLevel() instanceof InlineScript and
-        result.getFile() = script.getFile()
+      exists(HTML::ScriptElement elem | elem.getFile() = file |
+        result.getTopLevel() = elem.getScript()
       )
     }
 
