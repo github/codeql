@@ -153,7 +153,7 @@ predicate operandIsPropagated(Operand operand, IntValue bitOffset) {
     operandIsPropagated(operand, _) and not resultEscapes(operand.getUseInstruction())
     or
     // The operand is used in a function call from which the operand does not escape
-    exists(CallInstruction ci, FunctionIR f, Instruction init |
+    exists(CallInstruction ci, Instruction init |
       ci = operand.getUseInstruction() and
       isArgumentForParameter(ci, operand, init) and
       not resultEscapesNonReturn(init) and
@@ -183,7 +183,7 @@ predicate operandEscapesNonReturn(Operand operand) {
       not resultEscapesNonReturn(init) and
       not resultEscapesNonReturn(ci)
     ) or
-    operand instanceof ReturnValueOperand
+    operand.getUseInstruction() instanceof ReturnValueInstruction
   )
 }
 
@@ -193,14 +193,6 @@ predicate operandReturned(Operand operand) {
   operandIsPropagated(operand, _) and resultReturned(operand.getUseInstruction())
   or
   // The operand is used in a function call which returns it, and the return value is then returned
-  exists(CallInstruction ci, FunctionIR f, InitializeParameterInstruction ipi |
-    ci = operand.getUseInstruction() and
-    f.getFunction() = ci.getStaticCallTarget() and
-    ipi.getParameter() = f.getFunction().getParameter(operand.(PositionalArgumentOperand).getIndex()) and
-    resultReturned(ipi) and
-    resultReturned(ci)
-  )
-  or
   exists(CallInstruction ci, Instruction init |
     ci = operand.getUseInstruction() and
     isArgumentForParameter(ci, operand, init) and
@@ -209,7 +201,7 @@ predicate operandReturned(Operand operand) {
   )
   or
   // The address is returned
-  operand instanceof ReturnValueOperand
+  operand.getUseInstruction() instanceof ReturnValueInstruction
 }
 
 predicate isArgumentForParameter(CallInstruction ci, Operand operand, Instruction init) {
