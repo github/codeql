@@ -962,7 +962,7 @@ class TranslatedFunctionAccess extends TranslatedNonConstantExpr {
 abstract class TranslatedNonConstantExpr extends TranslatedCoreExpr, TTranslatedValueExpr {
   TranslatedNonConstantExpr() {
     this = TTranslatedValueExpr(expr) and
-    not expr.isConstant()
+    not isIRConstant(expr)
   }
 }
 
@@ -974,7 +974,7 @@ abstract class TranslatedNonConstantExpr extends TranslatedCoreExpr, TTranslated
 abstract class TranslatedConstantExpr extends TranslatedCoreExpr, TTranslatedValueExpr {
   TranslatedConstantExpr() {
     this = TTranslatedValueExpr(expr) and
-    expr.isConstant()
+    isIRConstant(expr)
   }
 
   override final Instruction getFirstInstruction() {

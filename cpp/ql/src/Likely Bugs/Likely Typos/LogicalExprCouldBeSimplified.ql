@@ -43,7 +43,7 @@ string comparisonOnLiterals(ComparisonOperation op) {
   simple(op.getLeftOperand()) and
   simple(op.getRightOperand()) and
   not op.getAnOperand().isInMacroExpansion() and
-  if op.isConstant()
+  if exists(op.getValue())
   then result = "This comparison involves two literals and is always " + op.getValue() + "."
   else result = "This comparison involves two literals and should be simplified."
 }
