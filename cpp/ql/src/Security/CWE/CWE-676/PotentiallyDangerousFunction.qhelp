@@ -8,7 +8,7 @@ use. Currently, it checks for calls
 to <code>gets</code> and <code>gmtime</code>. See <strong>Related rules</strong>
 below for rules that identify other dangerous functions.</p>
 
-<p>The <code>gets</code> function is one of the vulnerabilities exploited by the Internet Worm of 1988, one of the first computer worms to spread through the Internet.</p>
+<p>The <code>gets</code> function is one of the vulnerabilities exploited by the Internet Worm of 1988, one of the first computer worms to spread through the Internet.  The <code>gets</code> function provides no way to limit the amount of data that is read and stored, so without prior knowledge of the input it is impossible to use it safely with any size of buffer.</p>
 
 <p>The <code>gmtime</code> function fills data into a <code>tm</code>
 struct in shared memory and then returns a pointer to that struct. If
