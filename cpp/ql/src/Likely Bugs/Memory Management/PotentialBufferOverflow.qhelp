@@ -4,7 +4,7 @@
 <qhelp>
 <overview>
 <p>This rule highlights potentially overflowing calls to the functions <code>sprintf</code> and <code>vsprintf</code> with a warning. 
-These functions allow unbounded writes to buffers, which may cause an overflow when used on untrusted data or without adequate checks on the size of the data. Function calls of this type constitute a security risk through buffer overflows.
+These functions allow unbounded writes to buffers, which may cause an overflow when used on untrusted data or without adequate checks on the size of the data. Function calls of this type constitute a security risk through buffer overflows.</p>
 
 </overview>
 <recommendation>
