@@ -4,6 +4,10 @@ import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import com.semmle.js.parser.JcornWrapper;
 import com.semmle.util.data.StringUtil;
@@ -69,12 +73,49 @@ public class ExtractorConfig {
         /** A Closure-Library module, defined using `goog.module()`. */
         CLOSURE_MODULE,
 
+        /** A CommonJS module that is not also an ES2015 module. */
+        COMMONJS_MODULE,
+
         /** Automatically determined source type. */
         AUTO;
 
         @Override
         public String toString() {
             return StringUtil.lc(name());
+        }
+
+        /**
+         * Returns true if this source is executed directly in the global scope,
+         * or false if it has its own local scope.
+         */
+        public boolean hasLocalScope() {
+            return this != SCRIPT;
+        }
+
+        /**
+         * Returns true if this source is implicitly in strict mode.
+         */
+        public boolean isStrictMode() {
+            return this == MODULE;
+        }
+
+        private static final Set<String> closureLocals = Collections.singleton("exports");
+        private static final Set<String> commonJsLocals = new LinkedHashSet<>(Arrays.asList("require", "module", "exports", "__filename", "__dirname", "arguments"));
+
+        /**
+         * Returns the set of local variables in scope at the top-level of this module.
+         * <p/>
+         * If this source type has no local scope, the empty set is returned.
+         */
+        public Set<String> getPredefinedLocals() {
+            switch (this) {
+            case CLOSURE_MODULE:
+                return closureLocals;
+            case COMMONJS_MODULE:
+                return commonJsLocals;
+            default:
+                return Collections.emptySet();
+            }
         }
     };
 
@@ -84,6 +125,15 @@ public class ExtractorConfig {
         @Override
         public String toString() {
             return StringUtil.lc(name());
+        }
+
+        private static final Set<String> nodejsGlobals = new LinkedHashSet<>(Arrays.asList("global", "process", "console", "Buffer"));
+
+        /**
+         * Gets the set of predefined globals for this platform.
+         */
+        public Set<String> getPredefinedGlobals() {
+            return this == NODE ? nodejsGlobals : Collections.emptySet();
         }
     }
 

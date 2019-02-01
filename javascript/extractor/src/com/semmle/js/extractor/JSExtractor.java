@@ -90,6 +90,9 @@ public class JSExtractor {
 		LoCInfo loc;
 		if (ast != null) {
 			platform = getPlatform(platform, ast);
+			if (sourceType == SourceType.SCRIPT && platform == Platform.NODE) {
+				sourceType = SourceType.COMMONJS_MODULE;
+			}
 
 			lexicalExtractor = new LexicalExtractor(textualExtractor, parserRes.getTokens(), parserRes.getComments());
 			ASTExtractor scriptExtractor = new ASTExtractor(lexicalExtractor, scopeManager);
@@ -126,7 +129,7 @@ public class JSExtractor {
 
 		if (config.isExterns())
 			textualExtractor.getTrapwriter().addTuple("isExterns", toplevelLabel);
-		if (platform == Platform.NODE && sourceType != SourceType.MODULE && sourceType != SourceType.CLOSURE_MODULE)
+		if (platform == Platform.NODE && sourceType == SourceType.COMMONJS_MODULE)
 			textualExtractor.getTrapwriter().addTuple("isNodejs", toplevelLabel);
 
 		return Pair.make(toplevelLabel, loc);
