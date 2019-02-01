@@ -1725,8 +1725,6 @@ class TranslatedAssignOperation extends TranslatedAssignment {
  */
 abstract class TranslatedAllocationSize extends TranslatedExpr,
     TTranslatedAllocationSize {
-  override NewOrNewArrayExpr expr;
-  
   TranslatedAllocationSize() {
     this = TTranslatedAllocationSize(expr)
   }
@@ -1768,7 +1766,7 @@ class TranslatedConstantAllocationSize extends TranslatedAllocationSize {
       Type resultType, boolean isGLValue) {
     tag = AllocationSizeTag() and
     opcode instanceof Opcode::Constant and
-    resultType = expr.getAllocator().getParameter(0).getType().getUnspecifiedType() and
+    resultType = expr.(NewOrNewArrayExpr).getAllocator().getParameter(0).getType().getUnspecifiedType() and
     isGLValue = false
   }
 
@@ -1789,7 +1787,7 @@ class TranslatedConstantAllocationSize extends TranslatedAllocationSize {
 
   override final string getInstructionConstantValue(InstructionTag tag) {
     tag = AllocationSizeTag() and
-    result = expr.getAllocatedType().getSize().toString()
+    result = expr.(NewOrNewArrayExpr).getAllocatedType().getSize().toString()
   }
 }
 
@@ -1883,8 +1881,6 @@ class TranslatedNonConstantAllocationSize extends TranslatedAllocationSize {
  */
 class TranslatedAllocatorCall extends TTranslatedAllocatorCall,
     TranslatedDirectCall {
-  override NewOrNewArrayExpr expr;
-
   TranslatedAllocatorCall() {
     this = TTranslatedAllocatorCall(expr)
   }
@@ -1898,11 +1894,11 @@ class TranslatedAllocatorCall extends TTranslatedAllocatorCall,
   }
 
   override Function getInstructionFunction(InstructionTag tag) {
-    tag = CallTargetTag() and result = expr.getAllocator()
+    tag = CallTargetTag() and result = expr.(NewOrNewArrayExpr).getAllocator()
   }
 
   override final Type getCallResultType() {
-    result = expr.getAllocator().getType().getUnspecifiedType()
+    result = expr.(NewOrNewArrayExpr).getAllocator().getType().getUnspecifiedType()
   }
 
   override final TranslatedExpr getQualifier() {
@@ -1923,10 +1919,10 @@ class TranslatedAllocatorCall extends TTranslatedAllocatorCall,
     // case.
     if index = 0 then
       result = getTranslatedAllocationSize(expr)
-    else if(index = 1 and expr.hasAlignedAllocation()) then
-      result = getTranslatedExpr(expr.getAlignmentArgument())
+    else if(index = 1 and expr.(NewOrNewArrayExpr).hasAlignedAllocation()) then
+      result = getTranslatedExpr(expr.(NewOrNewArrayExpr).getAlignmentArgument())
     else
-      result = getTranslatedExpr(expr.getAllocatorCall().getArgument(index))
+      result = getTranslatedExpr(expr.(NewOrNewArrayExpr).getAllocatorCall().getArgument(index))
   }
 }
 

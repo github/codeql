@@ -255,22 +255,20 @@ abstract class TranslatedDirectCall extends TranslatedCall {
  */
 abstract class TranslatedCallExpr extends TranslatedNonConstantExpr,
     TranslatedCall {
-  override Call expr;
-
   override final Type getCallResultType() {
     result = getResultType()
   }
 
   override final predicate hasArguments() {
-    exists(expr.getArgument(0))
+    exists(expr.(Call).getArgument(0))
   }
 
   override final TranslatedExpr getQualifier() {
-    result = getTranslatedExpr(expr.getQualifier().getFullyConverted())
+    result = getTranslatedExpr(expr.(Call).getQualifier().getFullyConverted())
   }
 
   override final TranslatedExpr getArgument(int index) {
-    result = getTranslatedExpr(expr.getArgument(index).getFullyConverted())
+    result = getTranslatedExpr(expr.(Call).getArgument(index).getFullyConverted())
   }
 }
 
@@ -290,18 +288,20 @@ class TranslatedExprCall extends TranslatedCallExpr {
  * Represents the IR translation of a direct function call.
  */
 class TranslatedFunctionCall extends TranslatedCallExpr, TranslatedDirectCall {
-  override FunctionCall expr;
+  Function target;
+
+  TranslatedFunctionCall() { target = expr.(FunctionCall).getTarget() }
 
   override Function getInstructionFunction(InstructionTag tag) {
-    tag = CallTargetTag() and result = expr.getTarget()
+    tag = CallTargetTag() and result = target
   }
 
   override predicate hasReadSideEffect() {
-    not expr.getTarget().(SideEffectFunction).neverReadsMemory()
+    not target.(SideEffectFunction).neverReadsMemory()
   }
 
   override predicate hasWriteSideEffect() {
-    not expr.getTarget().(SideEffectFunction).neverWritesMemory()
+    not target.(SideEffectFunction).neverWritesMemory()
   }
 }
 
