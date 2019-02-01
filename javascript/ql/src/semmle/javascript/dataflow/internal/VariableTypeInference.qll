@@ -42,6 +42,27 @@ private class SsaVarAccessAnalysis extends DataFlow::AnalyzedValueNode {
 }
 
 /**
+ * Flow analysis for accesses to SSA variables.
+ *
+ * Unlike `SsaVarAccessAnalysis`, this only contributes to `getAValue()`, not `getALocalValue()`.
+ */
+private class SsaVarAccessWithNonLocalAnalysis extends SsaVarAccessAnalysis {
+  DataFlow::AnalyzedValueNode src;
+
+  SsaVarAccessWithNonLocalAnalysis() {
+    exists(VarDef varDef |
+      varDef = def.(SsaExplicitDefinition).getDef() and
+      varDef.getSource().flow() = src and
+      src instanceof CallWithNonLocalAnalyzedReturnFlow and
+      // avoid relating `v` and `f()` in `var {v} = f();`
+      not varDef.getTarget() instanceof DestructuringPattern
+    )
+  }
+
+  override AbstractValue getAValue() { result = src.getAValue() }
+}
+
+/**
  * Flow analysis for `VarDef`s.
  */
 class AnalyzedVarDef extends VarDef {
