@@ -4,7 +4,7 @@
  */
 
 import javascript
-private import semmle.javascript.security.SensitiveActions
+private import semmle.javascript.security.SensitiveActions::HeuristicNames
 
 module PostMessageStar {
   /**
@@ -70,7 +70,7 @@ module PostMessageStar {
       )
       or
       // `toString` or `JSON.toString` on a partially tainted object gives a tainted value
-      exists (DataFlow::InvokeNode toString | toString = trg |
+      exists(DataFlow::InvokeNode toString | toString = trg |
         toString.(DataFlow::MethodCallNode).calls(src, "toString")
         or
         toString = DataFlow::globalVarRef("JSON").getAMemberCall("stringify") and
@@ -91,23 +91,6 @@ module PostMessageStar {
    * with unrestricted origin.
    */
   class SensitiveExprSource extends Source, DataFlow::ValueNode { override SensitiveExpr astNode; }
-
-  /**
-   * A variable/property access or function call whose name suggests that it may contain credentials,
-   * viewed as a data flow source for cross-window communication with unrestricted origin.
-   */
-  class CredentialsSource extends Source {
-    CredentialsSource() {
-      exists(string name |
-        name = this.(DataFlow::InvokeNode).getCalleeName() or
-        name = this.(DataFlow::PropRead).getPropertyName() or
-        name = this.asExpr().(VarUse).getVariable().getName()
-      |
-        name.regexpMatch(HeuristicNames::suspiciousCredentials()) and
-        not name.regexpMatch(HeuristicNames::nonSuspicious())
-      )
-    }
-  }
 
   /** A call to any function whose name suggests that it encodes or encrypts its arguments. */
   class ProtectSanitizer extends Sanitizer { ProtectSanitizer() { this instanceof ProtectCall } }

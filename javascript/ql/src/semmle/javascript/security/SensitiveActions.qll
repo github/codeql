@@ -17,31 +17,44 @@ import javascript
  * INTERNAL: Do not use directly.
  */
 module HeuristicNames {
-  /** Gets a regular expression that identifies strings that look like they represent secret data that are not passwords. */
-  string suspiciousNonPassword() { result = "(?is).*(secret|account|accnt|(?<!un)trusted).*" }
-
-  /** Gets a regular expression that identifies strings that look like they represent secret data that are passwords. */
-  string suspiciousPassword() { result = "(?is).*(password|passwd).*" }
-
-  /** Gets a regular expression that identifies strings that look like they represent secret data. */
-  string suspicious() { result = suspiciousPassword() or result = suspiciousNonPassword() }
+  /**
+   * Gets a regular expression that identifies strings that look like they represent secret
+   * or trusted data.
+   */
+  string maybeSecret() { result = "(?is).*((?<!is)secret|(?<!un|is)trusted).*" }
 
   /**
-   * Gets a regular expression that identifies strings that look like they represent data that is
-   * hashed or encrypted.
+   * Gets a regular expression that identifies strings that look like they represent user names or other
+   * account information.
    */
-  string nonSuspicious() {
-    result = "(?is).*(redact|censor|obfuscate|hash|md5|sha|((?<!un)(en))?(crypt|code)).*"
+  string maybeAccountInfo() {
+    result = "(?is).*acc(ou)?nt.*" or
+    result = "(?is).*(puid|username|userid).*"
   }
 
   /**
-   * Gets a regular expression that identifies names that look like they represent credential information.
+   * Gets a regular expression that identifies strings that look like they represent a password,
+   * a certificate, an authorization key, or similar.
    */
-  string suspiciousCredentials() {
-    result = "(?i).*pass(wd|word|code|phrase)(?!.*question).*" or
-    result = "(?i).*(puid|username|userid).*" or
-    result = "(?i).*(cert)(?!.*(format|name)).*" or
-    result = "(?i).*(auth(entication|ori[sz]ation)?)key.*"
+  string maybePassword() {
+    result = "(?is).*pass(wd|word|code|phrase)(?!.*question).*" or
+    result = "(?is).*(cert)(?!.*(format|name)).*" or
+    result = "(?is).*(auth(entication|ori[sz]ation)?)key.*"
+  }
+
+  /** Gets a regular expression that identifies strings that look like they represent secret data. */
+  string maybeSensitive() {
+    result = maybeSecret() or
+    result = maybeAccountInfo() or
+    result = maybePassword()
+  }
+
+  /**
+   * Gets a regular expression that identifies strings that look like they represent data that is
+   * hashed or encrypted, and hence rendered non-sensitive.
+   */
+  string notSensitive() {
+    result = "(?is).*(redact|censor|obfuscate|hash|md5|sha|((?<!un)(en))?(crypt|code)).*"
   }
 }
 private import HeuristicNames
@@ -60,8 +73,8 @@ class SensitiveCall extends SensitiveExpr, InvokeExpr {
     // This is particularly to pick up methods with an argument like "password", which
     // may indicate a lookup.
     exists(string s | this.getAnArgument().mayHaveStringValue(s) |
-      s.regexpMatch(suspicious()) and
-      not s.regexpMatch(nonSuspicious())
+      s.regexpMatch(maybeSensitive()) and
+      not s.regexpMatch(notSensitive())
     )
   }
 
@@ -91,8 +104,8 @@ abstract class SensitiveWrite extends DataFlow::Node { }
 private class BasicSensitiveWrite extends SensitiveWrite {
   BasicSensitiveWrite() {
     exists(string name |
-      name.regexpMatch(suspicious()) and
-      not name.regexpMatch(nonSuspicious())
+      name.regexpMatch(maybeSensitive()) and
+      not name.regexpMatch(notSensitive())
     |
       exists(DataFlow::PropWrite pwn |
         pwn.getPropertyName() = name and
@@ -115,7 +128,7 @@ private class BasicSensitiveWrite extends SensitiveWrite {
 /** An access to a variable or property that might contain sensitive data. */
 private class BasicSensitiveVariableAccess extends SensitiveVariableAccess {
   BasicSensitiveVariableAccess() {
-    name.regexpMatch(suspicious()) and not name.regexpMatch(nonSuspicious())
+    name.regexpMatch(maybeSensitive()) and not name.regexpMatch(notSensitive())
   }
 }
 
@@ -133,7 +146,7 @@ abstract class SensitiveDataFunctionName extends SensitiveFunctionName { }
 
 /** A method that might return sensitive data, based on the name. */
 class CredentialsFunctionName extends SensitiveDataFunctionName {
-  CredentialsFunctionName() { this.regexpMatch(suspicious()) }
+  CredentialsFunctionName() { this.regexpMatch(maybeSensitive()) }
 }
 
 /**
@@ -169,8 +182,8 @@ class ProtectCall extends DataFlow::CallNode {
 private module CleartextPasswords {
   bindingset[name]
   private predicate isCleartextPasswordIndicator(string name) {
-    name.regexpMatch(suspiciousPassword()) and
-    not name.regexpMatch(nonSuspicious())
+    name.regexpMatch(maybePassword()) and
+    not name.regexpMatch(notSensitive())
   }
 
   /** An expression that might contain a cleartext password. */
