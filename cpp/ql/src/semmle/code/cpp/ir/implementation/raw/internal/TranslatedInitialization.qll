@@ -120,16 +120,12 @@ abstract class TranslatedListInitialization extends TranslatedInitialization,
 class TranslatedClassListInitialization extends
   TranslatedListInitialization
 {
-  ClassAggregateLiteral initList;
-  
-  TranslatedClassListInitialization() {
-    initList = expr
-  }
+  override ClassAggregateLiteral expr;
 
   override TranslatedElement getChild(int id) {
     exists(TranslatedFieldInitialization fieldInit |
       result = fieldInit and
-      fieldInit = getTranslatedFieldInitialization(initList, _) and
+      fieldInit = getTranslatedFieldInitialization(expr, _) and
       fieldInit.getOrder() = id
     )
   }
@@ -141,16 +137,12 @@ class TranslatedClassListInitialization extends
  */
 class TranslatedArrayListInitialization extends
   TranslatedListInitialization {
-  ArrayAggregateLiteral initList;
-
-  TranslatedArrayListInitialization() {
-    initList = expr
-  }
+  override ArrayAggregateLiteral expr;
 
   override TranslatedElement getChild(int id) {
     // The children are in initialization order
     result = rank[id + 1](TranslatedElementInitialization init |
-      init.getInitList() = initList |
+      init.getInitList() = expr |
       init order by init.getElementIndex()
     )
   }
@@ -231,9 +223,7 @@ class TranslatedSimpleDirectInitialization extends
  */
 class TranslatedStringLiteralInitialization extends
     TranslatedDirectInitialization {
-  TranslatedStringLiteralInitialization() {
-    expr instanceof StringLiteral
-  }
+  override StringLiteral expr;
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
       Type resultType, boolean isGLValue) {
@@ -434,11 +424,7 @@ class TranslatedStringLiteralInitialization extends
 
 class TranslatedConstructorInitialization extends
     TranslatedDirectInitialization, StructorCallContext {
-  ConstructorCall ctorCall;
-
-  TranslatedConstructorInitialization() {
-    ctorCall = expr
-  }
+  override ConstructorCall expr;
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
     Type resultType, boolean isGLValue) {
@@ -1008,9 +994,7 @@ TranslatedConstructorCallFromConstructor getTranslatedConstructorBaseInit(Constr
  * Represents the IR translation of a delegating constructor call from within a constructor.
  */
 class TranslatedConstructorDelegationInit extends TranslatedConstructorCallFromConstructor {
-  TranslatedConstructorDelegationInit() {
-    call instanceof ConstructorDelegationInit
-  }
+  override ConstructorDelegationInit call;
 
   override final string toString() {
     result = "delegation construct: " + call.toString()
