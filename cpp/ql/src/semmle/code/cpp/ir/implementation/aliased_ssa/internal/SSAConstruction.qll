@@ -7,6 +7,26 @@ private import NewIR
 private class OldBlock = Reachability::ReachableBlock;
 private class OldInstruction = Reachability::ReachableInstruction;
 
+InstructionTag getInstructionTag(Instruction instruction) {
+  instruction = MkInstruction(_, _, _, result, _, _)
+}
+
+Locatable getInstructionAST(Instruction instruction) {
+  instruction = MkInstruction(_, _, result, _, _, _)
+}
+
+predicate instructionHasType(Instruction instruction, Type type, boolean isGLValue) {
+  instruction = MkInstruction(_, _, _, _, type, isGLValue)
+}
+
+Opcode getInstructionOpcode(Instruction instruction) {
+  instruction = MkInstruction(_, result, _, _, _, _)
+}
+
+FunctionIR getInstructionEnclosingFunctionIR(Instruction instruction) {
+  instruction = MkInstruction(result, _, _, _, _, _)
+}
+
 import Cached
 cached private module Cached {
 
