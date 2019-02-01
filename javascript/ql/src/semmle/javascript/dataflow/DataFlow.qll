@@ -475,13 +475,35 @@ module DataFlow {
    * A static member definition, viewed as a data flow node that adds
    * a property to the class.
    */
-  private class ClassMemberAsPropWrite extends PropWrite, PropNode {
+  private class StaticClassMemberAsPropWrite extends PropWrite, PropNode {
     override MemberDefinition prop;
 
-    override Node getBase() {
-      prop.isStatic() and
-      result = valueNode(prop.getDeclaringClass())
+    StaticClassMemberAsPropWrite() { prop.isStatic() }
+
+    override Node getBase() { result = valueNode(prop.getDeclaringClass()) }
+
+    override Expr getPropertyNameExpr() { result = prop.getNameExpr() }
+
+    override string getPropertyName() { result = prop.getName() }
+
+    override Node getRhs() {
+      not prop instanceof AccessorMethodDefinition and
+      result = valueNode(prop.getInit())
     }
+
+    override ControlFlowNode getWriteNode() { result = prop }
+  }
+
+  /**
+   * An instance method definition, viewed as a data flow node that adds
+   * a property to an unseen value.
+   */
+  private class InstanceMethodAsPropWrite extends PropWrite, PropNode {
+    override MethodDefinition prop;
+
+    InstanceMethodAsPropWrite() { not prop.isStatic() }
+
+    override Node getBase() { none() } // The prototype has no DataFlow node
 
     override Expr getPropertyNameExpr() { result = prop.getNameExpr() }
 
@@ -509,6 +531,49 @@ module DataFlow {
     override string getPropertyName() { result = prop.getName() }
 
     override Node getRhs() { result = valueNode(prop.getValue()) }
+
+    override ControlFlowNode getWriteNode() { result = prop }
+  }
+
+  /**
+   * A field induced by an initializing constructor parameter, seen as a property write (TypeScript only).
+   */
+  private class ParameterFieldAsPropWrite extends PropWrite, PropNode {
+    override ParameterField prop;
+
+    override Node getBase() {
+      result = thisNode(prop.getDeclaringClass().getConstructor().getBody())
+    }
+
+    override Expr getPropertyNameExpr() { result = prop.getNameExpr() }
+
+    override string getPropertyName() { result = prop.getName() }
+
+    override Node getRhs() { result = parameterNode(prop.getParameter()) }
+
+    override ControlFlowNode getWriteNode() { result = prop.getParameter() }
+  }
+
+  /**
+   * An instance field, seen as a property write.
+   */
+  private class InstanceFieldAsPropWrite extends PropWrite, PropNode {
+    override FieldDefinition prop;
+
+    InstanceFieldAsPropWrite() {
+      not prop.isStatic() and
+      not prop instanceof ParameterField
+    }
+
+    override Node getBase() {
+      result = thisNode(prop.getDeclaringClass().getConstructor().getBody())
+    }
+
+    override Expr getPropertyNameExpr() { result = prop.getNameExpr() }
+
+    override string getPropertyName() { result = prop.getName() }
+
+    override Node getRhs() { result = valueNode(prop.getInit()) }
 
     override ControlFlowNode getWriteNode() { result = prop }
   }

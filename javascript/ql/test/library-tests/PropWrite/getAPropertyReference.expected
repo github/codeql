@@ -1,3 +1,5 @@
+| classes.ts:3:21:3:20 | this | classes.ts:4:3:4:24 | instanc ...  foo(); |
+| classes.ts:8:3:8:2 | this | classes.ts:8:15:8:35 | public  ... erField |
 | tst.js:1:1:1:0 | this | tst.js:23:15:23:29 | this.someMethod |
 | tst.js:1:1:1:0 | this | tst.js:24:36:24:45 | this.state |
 | tst.js:2:11:10:1 | {\\n    x ...     }\\n} | tst.js:3:5:3:8 | x: 4 |
