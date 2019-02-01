@@ -10,8 +10,6 @@ import semmle.code.cpp.ir.implementation.Opcode
 private import semmle.code.cpp.ir.implementation.Opcode
 private import semmle.code.cpp.ir.internal.OperandTag
 
-class InstructionTag = Construction::InstructionTagType;
-
 module InstructionSanity {
   /**
    * Holds if the instruction `instr` should be expected to have an operand
@@ -461,10 +459,6 @@ class Instruction extends Construction::TInstruction {
    */
   final Opcode getOpcode() {
     result = Construction::getInstructionOpcode(this)
-  }
-
-  final InstructionTag getTag() {
-    result = Construction::getInstructionTag(this)
   }
 
   /**
