@@ -392,9 +392,15 @@ cached private module Cached {
   }
 
   private predicate variableLiveOnEntryToBlock(Alias::VirtualVariable vvar, OldBlock block) {
-    exists (int index | hasUse(vvar, _, block, index) |
-      not exists (int j | ssa_variableUpdate(vvar, _, block, j) | j < index)
-    ) or
+    exists(int firstAccess |
+      hasUse(vvar, _, block, firstAccess) and
+      firstAccess = min(int index |
+          hasUse(vvar, _, block, index)
+          or
+          ssa_variableUpdate(vvar, _, block, index)
+        )
+    )
+    or
     (variableLiveOnExitFromBlock(vvar, block) and not ssa_variableUpdate(vvar, _, block, _))
   }
 
