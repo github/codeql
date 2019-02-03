@@ -36,10 +36,8 @@ private Element getRealParent(Expr expr) {
 predicate isIRConstant(Expr expr) { exists(expr.getValue()) }
 
 /**
- * Holds if `expr` and all of its descendants should be ignored for the purposes
- * of IR generation due to some property of `expr` itself. Unlike
- * `ignoreExpr()`, this predicate does not ignore an expression solely because
- * it is a descendant of an ignored element.
+ * Holds if `expr` should be ignored for the purposes of IR generation due to
+ * some property of `expr` or one of its ancestors.
  */
 private predicate ignoreExprAndDescendants(Expr expr) {
   // Ignore parentless expressions
@@ -59,7 +57,8 @@ private predicate ignoreExprAndDescendants(Expr expr) {
     // REVIEW: Ignore initializers for `NewArrayExpr` until we determine how to
     // represent them.
     newExpr.getInitializer().getFullyConverted() = expr
-  )
+  ) or
+  ignoreExprAndDescendants(getRealParent(expr)) // recursive case
 }
 
 /**
@@ -80,7 +79,7 @@ private predicate ignoreExprOnly(Expr expr) {
  */
 private predicate ignoreExpr(Expr expr) {
   ignoreExprOnly(expr) or
-  ignoreExprAndDescendants(getRealParent*(expr))
+  ignoreExprAndDescendants(expr)
 }
 
 /**
