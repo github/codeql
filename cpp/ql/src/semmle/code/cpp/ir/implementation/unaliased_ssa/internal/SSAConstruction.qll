@@ -352,7 +352,7 @@ cached private module Cached {
   }
 
   private predicate ssa_variableUpdate(Alias::VirtualVariable vvar,
-      OldInstruction instr, OldBlock block, int index) {
+      OldBlock block, int index, OldInstruction instr) {
     block.getInstruction(index) = instr and
     Alias::getResultMemoryAccess(instr).getVirtualVariable() = vvar
   }
@@ -370,11 +370,11 @@ cached private module Cached {
   }
 
   private predicate defUseRank(Alias::VirtualVariable vvar, OldBlock block, int rankIndex, int index) {
-    index = rank[rankIndex](int j | hasDefinition(vvar, block, j) or hasUse(vvar, _, block, j))
+    index = rank[rankIndex](int j | hasDefinition(vvar, block, j) or hasUse(vvar, block, j, _))
   }
 
-  private predicate hasUse(Alias::VirtualVariable vvar, OldInstruction use, OldBlock block,
-      int index) {
+  private predicate hasUse(Alias::VirtualVariable vvar, OldBlock block, int index,
+      OldInstruction use) {
     exists(Alias::MemoryAccess access |
       (
         access = Alias::getOperandMemoryAccess(use.getAnOperand())
@@ -393,15 +393,15 @@ cached private module Cached {
 
   private predicate variableLiveOnEntryToBlock(Alias::VirtualVariable vvar, OldBlock block) {
     exists(int firstAccess |
-      hasUse(vvar, _, block, firstAccess) and
+      hasUse(vvar, block, firstAccess, _) and
       firstAccess = min(int index |
-          hasUse(vvar, _, block, index)
+          hasUse(vvar, block, index, _)
           or
-          ssa_variableUpdate(vvar, _, block, index)
+          ssa_variableUpdate(vvar, block, index, _)
         )
     )
     or
-    (variableLiveOnExitFromBlock(vvar, block) and not ssa_variableUpdate(vvar, _, block, _))
+    (variableLiveOnExitFromBlock(vvar, block) and not ssa_variableUpdate(vvar, block, _, _))
   }
 
   pragma[noinline]
@@ -428,7 +428,7 @@ cached private module Cached {
   private predicate hasUseAtRank(Alias::VirtualVariable vvar, OldBlock block, int rankIndex,
       OldInstruction use) {
     exists(int index |
-      hasUse(vvar, use, block, index) and
+      hasUse(vvar, block, index, use) and
       defUseRank(vvar, block, rankIndex, index)
     )
   }
