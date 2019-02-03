@@ -35,13 +35,18 @@ private Element getRealParent(Expr expr) {
  */
 predicate isIRConstant(Expr expr) { exists(expr.getValue()) }
 
+// Pulled out to work around QL-796
+private predicate isOrphan(Expr expr) {
+  not exists(getRealParent(expr))
+}
+
 /**
  * Holds if `expr` should be ignored for the purposes of IR generation due to
  * some property of `expr` or one of its ancestors.
  */
 private predicate ignoreExprAndDescendants(Expr expr) {
   // Ignore parentless expressions
-  not exists(getRealParent(expr)) or
+  isOrphan(expr) or
   // Ignore the constants in SwitchCase, since their values are embedded in the
   // CaseEdge.
   getRealParent(expr) instanceof SwitchCase or
