@@ -773,13 +773,17 @@ public class CFGExtractor {
 			public <Q, A> A accept(Visitor<Q, A> v, Q q) { return null; }
 		}
 
-		// associate statements with their (direct or indirect) labels
+		// associate statements with their (direct or indirect) labels;
+		// per-function cache, cleared after each function
 		private Map<Statement, Set<String>> loopLabels = new LinkedHashMap<Statement, Set<String>>();
 
-		// cache the set of normal control flow successors
+		// cache the set of normal control flow successors;
+		// per-function cache, cleared after each function
 		private Map<Node, Object> followingCache = new LinkedHashMap<Node, Object>();
 
-		// map from a node in a chain of property accesses or calls to the successor info for the first node in the chain
+		// map from a node in a chain of property accesses or calls to the successor info
+		// for the first node in the chain;
+		// per-function cache, cleared after each function
 		private Map<Chainable, SuccessorInfo> chainRootSuccessors = new LinkedHashMap<Chainable, SuccessorInfo>();
 
 		/**
