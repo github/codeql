@@ -239,9 +239,10 @@ private class GuardConditionFromIR extends GuardCondition {
  * IRGuardConditions.
  */
 class IRGuardCondition extends Instruction {
-
+    ConditionalBranchInstruction branch;
+    
     IRGuardCondition() {
-        is_condition(this)
+        branch = get_branch_for_condition(this)
     }
 
     /**
@@ -295,8 +296,7 @@ class IRGuardCondition extends Instruction {
      * return x;
      * ```
      */
-    predicate hasBranchEdge(ConditionalBranchInstruction branch, IRBlock succ, boolean testIsTrue) {
-      branch.getCondition() = this and
+    predicate hasBranchEdge(IRBlock succ, boolean testIsTrue) {
       (
         testIsTrue = true and
         succ.getFirstInstruction() = branch.getTrueSuccessor()
@@ -340,9 +340,9 @@ class IRGuardCondition extends Instruction {
      */
     private predicate controlsBlock(IRBlock controlled, boolean testIsTrue) {
         not isUnreachedBlock(controlled) and
-        exists(IRBlock thisblock
-        | thisblock.getAnInstruction() = this
-        | exists(IRBlock succ, ConditionalBranchInstruction branch
+        exists(IRBlock branchBlock
+        | branchBlock.getAnInstruction() = branch
+        | exists(IRBlock succ
           | testIsTrue = true and succ.getFirstInstruction() = branch.getTrueSuccessor()
             or
             testIsTrue = false and succ.getFirstInstruction() = branch.getFalseSuccessor()
@@ -350,16 +350,16 @@ class IRGuardCondition extends Instruction {
             succ.dominates(controlled) and
             forall(IRBlock pred
             | pred.getASuccessor() = succ
-            | pred = thisblock or succ.dominates(pred) or not pred.isReachableFromFunctionEntry())))
+            | pred = branchBlock or succ.dominates(pred) or not pred.isReachableFromFunctionEntry())))
     }
 }
 
-private predicate is_condition(Instruction guard) {
+private ConditionalBranchInstruction get_branch_for_condition(Instruction guard) {
   exists(ConditionalBranchInstruction branch|
     branch.getCondition() = guard
   )
   or
-  exists(LogicalNotInstruction cond | is_condition(cond) and cond.getUnary() = guard)
+  exists(LogicalNotInstruction cond | result = get_branch_for_condition(cond) and cond.getUnary() = guard)
 }
 
 /**
