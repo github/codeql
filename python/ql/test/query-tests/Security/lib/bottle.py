@@ -64,3 +64,7 @@ class LocalResponse(LocalProxy):
 request = LocalRequest()
 response = LocalResponse()
 
+
+def redirect(url, code=None):
+    pass
+

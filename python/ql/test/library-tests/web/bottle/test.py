@@ -1,6 +1,6 @@
 
 
-from bottle import Bottle, route, request
+from bottle import Bottle, route, request, redirect
 
 app = Bottle()
 
@@ -17,3 +17,16 @@ def bye(name = "World!"):
 def other():
     name = request.cookies.username
     return "User name is " + name
+
+
+@route('/wrong/url')
+def safe():
+    redirect("/right/url")
+
+@route('/wrong/<where>')
+def unsafe(where="/right/url"):
+    redirect(where)
+
+@route('/args')
+def unsafe2():
+    redirect(request.query.where, code)
