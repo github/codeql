@@ -281,6 +281,16 @@ class IRGuardCondition extends Instruction {
           ne.controls(controlled, testIsTrue.booleanNot())) 
     }
 
+    predicate controlsEdge(IRBlock pred, IRBlock succ, boolean testIsTrue) {
+      pred.getASuccessor() = succ and
+      controls(pred, testIsTrue)
+      or
+      hasBranchEdge(succ, testIsTrue) and
+      branch.getCondition() = this and
+      branch.getBlock() = pred
+    }
+
+
     /**
      * Holds if `branch` jumps directly to `succ` when this condition is `testIsTrue`.
      * 
@@ -296,7 +306,8 @@ class IRGuardCondition extends Instruction {
      * return x;
      * ```
      */
-    predicate hasBranchEdge(IRBlock succ, boolean testIsTrue) {
+    private predicate hasBranchEdge(IRBlock succ, boolean testIsTrue) {
+      branch.getCondition() = this and
       (
         testIsTrue = true and
         succ.getFirstInstruction() = branch.getTrueSuccessor()
@@ -319,6 +330,14 @@ class IRGuardCondition extends Instruction {
         )
     }
 
+    /** Holds if (determined by this guard) `left < right + k` must be `isLessThan` on the edge from
+     * `pred` to `succ`. If `isLessThan = false` then this implies `left >= right + k`.  */
+    cached predicate ensuresLtEdge(Operand left, Operand right, int k, IRBlock pred, IRBlock succ, boolean isLessThan) {
+        exists(boolean testIsTrue |
+            compares_lt(this, left, right, k, isLessThan, testIsTrue) and this.controlsEdge(pred, succ, testIsTrue)
+        )
+    }
+
     /** Holds if (determined by this guard) `left == right + k` evaluates to `areEqual` if this expression evaluates to `testIsTrue`. */
     cached predicate comparesEq(Operand left, Operand right, int k, boolean areEqual, boolean testIsTrue) {
         compares_eq(this, left, right, k, areEqual, testIsTrue)
@@ -330,6 +349,13 @@ class IRGuardCondition extends Instruction {
         exists(boolean testIsTrue |
             compares_eq(this, left, right, k, areEqual, testIsTrue) and this.controls(block, testIsTrue)
         )
+    }
+    /** Holds if (determined by this guard) `left == right + k` must be `areEqual` on the edge from
+     * `pred` to `succ`. If `areEqual = false` then this implies `left != right + k`.  */
+    cached predicate ensuresEqEdge(Operand left, Operand right, int k, IRBlock pred, IRBlock succ, boolean areEqual) {
+      exists(boolean testIsTrue |
+        compares_eq(this, left, right, k, areEqual, testIsTrue) and this.controlsEdge(pred, succ, testIsTrue)
+      )
     }
 
     /**
