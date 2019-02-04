@@ -546,12 +546,21 @@ public class CustomParser extends FlowParser {
 
 	@Override
 	protected Token readToken(int code) {
-		// skip XML processing instructions (which are allowed in E4X, but not in JSX)
+		// skip XML processing instructions (which are allowed in E4X, but not in JSX);
+		// there is a lexical ambiguity between an XML processing instruction starting a
+		// chunk of E4X content and a Flow type annotation (both can start with `<?`)
+		// hence if we can't find the closing `?>` of a putative XML processing instruction
+		// we backtrack and try lexing as something else
 		if (this.options.e4x()) {
 			while (code == '<') {
 				if (charAt(this.pos+1) == '?') {
+					int oldPos = this.pos;
 					this.pos += 2;
-					jsx_readUntil("?>");
+					if (!jsx_readUntil("?>")) {
+						// didn't find a closing `?>`, so backtrack
+						this.pos = oldPos;
+						break;
+					}
 				} else {
 					break;
 				}
@@ -564,7 +573,10 @@ public class CustomParser extends FlowParser {
 
 	@Override
 	protected Either<Integer, Token> jsx_readChunk(StringBuilder out, int chunkStart, int ch) {
-		// skip XML comments, processing instructions and CDATA (which are allowed in E4X, but not in JSX)
+		// skip XML comments, processing instructions and CDATA (which are allowed in E4X,
+		// but not in JSX)
+		// unlike in `readToken` above, we know that we're inside JSX/E4X code, so there is
+		// no ambiguity with Flow type annotations
 		if (this.options.e4x() && ch == '<') {
 			if (inputSubstring(this.pos+1, this.pos+4).equals("!--")) {
 				out.append(inputSubstring(chunkStart, this.pos));
@@ -589,15 +601,16 @@ public class CustomParser extends FlowParser {
 		return super.jsx_readChunk(out, chunkStart, ch);
 	}
 
-	private void jsx_readUntil(String terminator) {
+	private boolean jsx_readUntil(String terminator) {
 		char fst = terminator.charAt(0);
 		while (this.pos+terminator.length() <= this.input.length()) {
 			if (charAt(this.pos) == fst &&
 					inputSubstring(this.pos, this.pos+terminator.length()).equals(terminator)) {
 				this.pos += terminator.length();
-				break;
+				return true;
 			}
 			++this.pos;
 		}
+		return false;
 	}
 }
