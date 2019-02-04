@@ -2051,13 +2051,20 @@ module PointsTo {
                 context.isRuntime() and executes_in_runtime_context(def.getScope()) and
                 ssa_variable_named_attribute_points_to(preceding_self_variable(def), context, name, value, vcls, orig)
                 or
-                exists(FunctionObject meth, CallNode call, PointsToContext caller_context, ControlFlowNode obj |
-                    meth.getFunction() = def.getScope() and
-                    method_call(meth, caller_context, call) and
-                    call.getFunction().(AttrNode).getObject() = obj and
-                    context.fromCall(call, meth, caller_context) and
+                exists(PointsToContext caller_context, ControlFlowNode obj |
+                    self_parameter_interprocedural_flow(obj, caller_context, def, context) and
                     named_attribute_points_to(obj, caller_context, name, value, vcls, orig)
                 )
+            )
+        }
+
+        /* Helper for self_parameter_named_attribute_points_to */
+        private predicate self_parameter_interprocedural_flow(ControlFlowNode obj, PointsToContext caller_context, ParameterDefinition def, PointsToContext context) {
+            exists(FunctionObject meth, CallNode call |
+                meth.getFunction() = def.getScope() and
+                method_call(meth, caller_context, call) and
+                call.getFunction().(AttrNode).getObject() = obj and
+                context.fromCall(call, meth, caller_context)
             )
         }
 
