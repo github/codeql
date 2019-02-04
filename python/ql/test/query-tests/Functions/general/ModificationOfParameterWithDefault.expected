@@ -1,2 +1,20 @@
-| functions_test.py:40:5:40:17 | Attribute() | Modification of parameter $@, which has mutable default value. | functions_test.py:39:9:39:9 | Parameter | x |
-| functions_test.py:239:5:239:14 | AugAssign | Modification of parameter $@, which has mutable default value. | functions_test.py:238:15:238:15 | Parameter | x |
+edges
+| functions_test.py:36:9:36:9 | mutable value | functions_test.py:37:16:37:16 | mutable value |
+| functions_test.py:39:9:39:9 | mutable value | functions_test.py:40:5:40:5 | mutable value |
+| functions_test.py:238:15:238:15 | mutable value | functions_test.py:239:5:239:5 | mutable value |
+| functions_test.py:290:25:290:25 | mutable value | functions_test.py:291:5:291:5 | mutable value |
+| functions_test.py:293:21:293:21 | mutable value | functions_test.py:294:5:294:5 | mutable value |
+| functions_test.py:296:27:296:27 | mutable value | functions_test.py:297:25:297:25 | mutable value |
+| functions_test.py:296:27:296:27 | mutable value | functions_test.py:298:21:298:21 | mutable value |
+| functions_test.py:297:25:297:25 | mutable value | functions_test.py:290:25:290:25 | mutable value |
+| functions_test.py:298:21:298:21 | mutable value | functions_test.py:293:21:293:21 | mutable value |
+parents
+| functions_test.py:290:25:290:25 | mutable value | functions_test.py:297:25:297:25 | mutable value |
+| functions_test.py:291:5:291:5 | mutable value | functions_test.py:297:25:297:25 | mutable value |
+| functions_test.py:293:21:293:21 | mutable value | functions_test.py:298:21:298:21 | mutable value |
+| functions_test.py:294:5:294:5 | mutable value | functions_test.py:298:21:298:21 | mutable value |
+#select
+| functions_test.py:40:5:40:5 | Taint sink | functions_test.py:39:9:39:9 | mutable value | functions_test.py:40:5:40:5 | mutable value | $@ flows to here and is mutated. | functions_test.py:39:9:39:9 | mutable default value | Default value |
+| functions_test.py:239:5:239:5 | Taint sink | functions_test.py:238:15:238:15 | mutable value | functions_test.py:239:5:239:5 | mutable value | $@ flows to here and is mutated. | functions_test.py:238:15:238:15 | mutable default value | Default value |
+| functions_test.py:291:5:291:5 | Taint sink | functions_test.py:296:27:296:27 | mutable value | functions_test.py:291:5:291:5 | mutable value | $@ flows to here and is mutated. | functions_test.py:296:27:296:27 | mutable default value | Default value |
+| functions_test.py:294:5:294:5 | Taint sink | functions_test.py:296:27:296:27 | mutable value | functions_test.py:294:5:294:5 | mutable value | $@ flows to here and is mutated. | functions_test.py:296:27:296:27 | mutable default value | Default value |

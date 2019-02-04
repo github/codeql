@@ -24,6 +24,7 @@ Removes false positives seen when using Python 3.6, but not when using earlier v
  | **Query**                  | **Expected impact**    | **Change**                                                       |
 |----------------------------|------------------------|------------------------------------------------------------------|
 | Comparison using is when operands support \_\_eq\_\_ (`py/comparison-using-is`) | Fewer false positive results | Results where one of the objects being compared is an enum member are no longer reported. |
+| Modification of parameter with default (`py/modification-of-default-value`) | More true positive results | Instances where the mutable default value is mutated inside other functions are now reported correctly. |
 | Unused import (`py/unused-import`) | Fewer false positive results | Results where the imported module is used in a `doctest` string are no longer reported. |
 | Unused import (`py/unused-import`) | Fewer false positive results | Results where the imported module is used in a type-hint comment are no longer reported. |
 
