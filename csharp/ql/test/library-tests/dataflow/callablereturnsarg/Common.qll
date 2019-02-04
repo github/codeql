@@ -10,7 +10,8 @@ class Configuration extends DataFlow::Configuration {
 
   override predicate isBarrier(DataFlow::Node node) {
     exists(EQExpr eq, Expr e, AbstractValues::BooleanValue v |
-      eq = node.(GuardedDataFlowNode).getAGuard(e, v) |
+      eq = node.(GuardedDataFlowNode).getAGuard(e, v)
+    |
       v.getValue() = true and
       eq.getAnOperand() = e and
       eq.getAnOperand() instanceof NullLiteral

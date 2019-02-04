@@ -155,7 +155,8 @@ class XmlReaderSettingsCreation extends ObjectCreation {
     p = this.getType().(RefType).getAProperty() and
     exists(PropertyCall set, Expr arg |
       set.getTarget() = p.getSetter() and
-      DataFlow::localFlow(DataFlow::exprNode(this), DataFlow::exprNode(set.getAccess().getQualifier())) and
+      DataFlow::localFlow(DataFlow::exprNode(this),
+        DataFlow::exprNode(set.getAccess().getQualifier())) and
       arg = set.getAnArgument() and
       result = getBitwiseOrOperand*(arg)
     )
