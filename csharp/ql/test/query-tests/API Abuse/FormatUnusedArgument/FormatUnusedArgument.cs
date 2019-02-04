@@ -36,6 +36,10 @@ class C
 
         // BAD: Would display "{0}"
         String.Format("{{0}}", 1);
+
+        // GOOD: Ignore the empty string as it's often used as the default value
+        // of GetResource(). False positive.
+        String.Format("", 1);
     }
 
     object[] ps;
