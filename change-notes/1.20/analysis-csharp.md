@@ -25,6 +25,4 @@
 
 ## Changes to QL libraries
 
-* The class `AccessorCall` (and subclasses `PropertyCall`, `IndexerCall`, and `EventCall`) have been redefined, so the expressions they represent are not necessarily the accesses themselves, but rather the expressions that give rise to the accessor calls. For example, in the property assignment `x.Prop = 0`, the call to the setter for `Prop` is no longer represented by the access `x.Prop`, but instead the whole assignment. Consequently, it is no longer safe to cast directly between `AccessorCall`s and `Access`es, and the predicate `AccessorCall::getAccess()` should be used instead.
-
 ## Changes to the autobuilder
