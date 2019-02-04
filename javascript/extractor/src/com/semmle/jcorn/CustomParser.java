@@ -545,22 +545,52 @@ public class CustomParser extends FlowParser {
 	}
 
 	@Override
-	protected Either<Integer, Token> jsx_readChunk(StringBuilder out, int chunkStart, int ch) {
-		// skip HTML comments (which are allowed in E4X, but not in JSX)
-		if (this.options.e4x() && ch == '<' && charAt(this.pos+1) == '!' &&
-				charAt(this.pos+2) == '-' && charAt(this.pos+3) == '-') {
-			out.append(inputSubstring(chunkStart, this.pos));
-			this.pos += 4;
-			while (this.pos+2 < this.input.length()) {
-				if (charAt(this.pos) == '-' && charAt(this.pos+1) == '-' && charAt(this.pos+2) == '>') {
-					this.pos += 3;
+	protected Token readToken(int code) {
+		// skip XML processing instructions (which are allowed in E4X, but not in JSX)
+		if (this.options.e4x()) {
+			while (code == '<') {
+				if (charAt(this.pos+1) == '?') {
+					this.pos += 2;
+					jsx_readUntil("?>");
+				} else {
 					break;
 				}
-				++this.pos;
+				this.skipSpace();
+				code = this.fullCharCodeAtPos();
 			}
-			return Either.left(this.pos);
+		}
+		return super.readToken(code);
+	}
+
+	@Override
+	protected Either<Integer, Token> jsx_readChunk(StringBuilder out, int chunkStart, int ch) {
+		// skip XML comments and processing instructions (which are allowed in E4X, but not in JSX)
+		if (this.options.e4x() && ch == '<') {
+			if (inputSubstring(this.pos+1, this.pos+4).equals("!--")) {
+				out.append(inputSubstring(chunkStart, this.pos));
+				this.pos += 4;
+				jsx_readUntil("-->");
+				return Either.left(this.pos);
+			} else if (charAt(this.pos+1) == '?') {
+				out.append(inputSubstring(chunkStart, this.pos));
+				this.pos += 2;
+				jsx_readUntil("?>");
+				return Either.left(this.pos);
+			}
 		}
 
 		return super.jsx_readChunk(out, chunkStart, ch);
+	}
+
+	private void jsx_readUntil(String terminator) {
+		char fst = terminator.charAt(0);
+		while (this.pos+terminator.length() <= this.input.length()) {
+			if (charAt(this.pos) == fst &&
+					inputSubstring(this.pos, this.pos+terminator.length()).equals(terminator)) {
+				this.pos += terminator.length();
+				break;
+			}
+			++this.pos;
+		}
 	}
 }
