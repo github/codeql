@@ -564,7 +564,7 @@ public class CustomParser extends FlowParser {
 
 	@Override
 	protected Either<Integer, Token> jsx_readChunk(StringBuilder out, int chunkStart, int ch) {
-		// skip XML comments and processing instructions (which are allowed in E4X, but not in JSX)
+		// skip XML comments, processing instructions and CDATA (which are allowed in E4X, but not in JSX)
 		if (this.options.e4x() && ch == '<') {
 			if (inputSubstring(this.pos+1, this.pos+4).equals("!--")) {
 				out.append(inputSubstring(chunkStart, this.pos));
@@ -575,6 +575,13 @@ public class CustomParser extends FlowParser {
 				out.append(inputSubstring(chunkStart, this.pos));
 				this.pos += 2;
 				jsx_readUntil("?>");
+				return Either.left(this.pos);
+			} else if (inputSubstring(this.pos+1,  this.pos+9).equals("![CDATA[")) {
+				out.append(inputSubstring(chunkStart, this.pos));
+				this.pos += 9;
+				int cdataStart = this.pos;
+				jsx_readUntil("]]>");
+				out.append(inputSubstring(cdataStart, this.pos-3));
 				return Either.left(this.pos);
 			}
 		}
