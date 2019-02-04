@@ -1,11 +1,11 @@
 private import internal.ConstantAnalysisInternal
-import semmle.code.cpp.ir.internal.IntegerConstant
+private import semmle.code.cpp.ir.internal.IntegerPartial
 private import IR
 
 language[monotonicAggregates]
-IntValue getConstantValue(Instruction instr) {
+int getConstantValue(Instruction instr) {
   result = instr.(IntegerConstantInstruction).getValue().toInt() or
-  exists(BinaryInstruction binInstr, IntValue left, IntValue right |
+  exists(BinaryInstruction binInstr, int left, int right |
     binInstr = instr and
     left = getConstantValue(binInstr.getLeftOperand()) and
     right = getConstantValue(binInstr.getRightOperand()) and
@@ -22,7 +22,7 @@ IntValue getConstantValue(Instruction instr) {
       binInstr instanceof CompareGEInstruction and result = compareGE(left, right)
     )
   ) or
-  exists(UnaryInstruction unaryInstr, IntValue src |
+  exists(UnaryInstruction unaryInstr, int src |
     unaryInstr = instr and
     src = getConstantValue(unaryInstr.getOperand()) and
     (
