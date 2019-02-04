@@ -553,7 +553,7 @@ public class ASTExtractor {
 			if (sourceType.hasLocalScope()) {
 				Label moduleScopeKey = trapwriter.globalID("module;{" + locationManager.getFileLabel() + "}," + locationManager.getStartLine() + "," + locationManager.getStartColumn());
 				scopeManager.enterScope(3, moduleScopeKey, toplevelLabel);
-				scopeManager.addVariables(sourceType.getPredefinedLocals());
+				scopeManager.addVariables(sourceType.getPredefinedLocals(platform));
 				trapwriter.addTuple("isModule", toplevelLabel);
 			}
 
