@@ -16,20 +16,12 @@ class InstructionTagType extends TInstructionTag {
 
 private TranslatedElement getInstructionTranslatedElement(
     Instruction instruction) {
-  result = getInstructionTranslatedElementAndTag(instruction, _)
+  instruction = result.getInstruction(_)
 }
 
 private TranslatedElement getInstructionTranslatedElementAndTag(
     Instruction instruction, InstructionTag tag) {
-  result.getAST() = instruction.getAST() and
-  tag = instruction.getTag() and
-  result.hasInstruction(_, tag, _, _)
-}
-
-private TranslatedElement getTempVariableTranslatedElement(
-  IRTempVariable var) {
-  result.getAST() = var.getAST() and
-  result.hasTempVariable(var.getTag(), _)
+  instruction = result.getInstruction(tag)
 }
 
 import Cached
@@ -262,8 +254,10 @@ cached private module Cached {
 import CachedForDebugging
 cached private module CachedForDebugging {
   cached string getTempVariableUniqueId(IRTempVariable var) {
-    result = getTempVariableTranslatedElement(var).getId() + ":" +
-      getTempVariableTagId(var.getTag())
+    exists(TranslatedElement element |
+      var = element.getTempVariable(_) and
+      result = element.getId() + ":" + getTempVariableTagId(var.getTag())
+    )
   }
 
   cached string getInstructionUniqueId(Instruction instruction) {
