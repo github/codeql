@@ -4,10 +4,12 @@ private import semmle.code.cpp.ir.implementation.raw.internal.IRConstruction as 
 
 newtype TIRVariable =
   TIRAutomaticUserVariable(LocalScopeVariable var, Function func) {
+    Construction::functionHasIR(func) and
     var.getFunction() = func or
     var.(Parameter).getCatchBlock().getEnclosingFunction() = func
   } or
   TIRStaticUserVariable(Variable var, Function func) {
+    Construction::functionHasIR(func) and
     (
       var instanceof GlobalOrNamespaceVariable or
       var instanceof MemberVariable and not var instanceof Field
