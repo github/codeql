@@ -49,9 +49,9 @@ class BottleFormsDict extends TaintKind {
     }
 
     override TaintKind getTaintForFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
-        /* Cannot use `getTaintOfAttribute()` as it doesn't bind name */
+        /* Cannot use `getTaintOfAttribute(name)` as it wouldn't bind `name` */
         exists(string name |
-            tonode = fromnode.(AttrNode).getObject(name) and 
+            fromnode = tonode.(AttrNode).getObject(name) and 
             result instanceof UntrustedStringKind
             |
             name != "get" and name != "getunicode" and name != "getall"
@@ -108,7 +108,7 @@ class BottleRequestParameter extends TaintSource {
     }
 
     override string toString() {
-        result = "flask.request.args"
+        result = "bottle handler function argument"
     }
 
 }
