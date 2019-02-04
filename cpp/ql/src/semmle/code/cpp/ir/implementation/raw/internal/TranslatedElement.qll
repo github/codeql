@@ -35,15 +35,18 @@ private Element getRealParent(Expr expr) {
  */
 predicate isIRConstant(Expr expr) { exists(expr.getValue()) }
 
+// Pulled out to work around QL-796
+private predicate isOrphan(Expr expr) {
+  not exists(getRealParent(expr))
+}
+
 /**
- * Holds if `expr` and all of its descendants should be ignored for the purposes
- * of IR generation due to some property of `expr` itself. Unlike
- * `ignoreExpr()`, this predicate does not ignore an expression solely because
- * it is a descendant of an ignored element.
+ * Holds if `expr` should be ignored for the purposes of IR generation due to
+ * some property of `expr` or one of its ancestors.
  */
 private predicate ignoreExprAndDescendants(Expr expr) {
   // Ignore parentless expressions
-  not exists(getRealParent(expr)) or
+  isOrphan(expr) or
   // Ignore the constants in SwitchCase, since their values are embedded in the
   // CaseEdge.
   getRealParent(expr) instanceof SwitchCase or
@@ -59,7 +62,8 @@ private predicate ignoreExprAndDescendants(Expr expr) {
     // REVIEW: Ignore initializers for `NewArrayExpr` until we determine how to
     // represent them.
     newExpr.getInitializer().getFullyConverted() = expr
-  )
+  ) or
+  ignoreExprAndDescendants(getRealParent(expr)) // recursive case
 }
 
 /**
@@ -80,7 +84,7 @@ private predicate ignoreExprOnly(Expr expr) {
  */
 private predicate ignoreExpr(Expr expr) {
   ignoreExprOnly(expr) or
-  ignoreExprAndDescendants(getRealParent*(expr))
+  ignoreExprAndDescendants(expr)
 }
 
 /**
