@@ -585,6 +585,13 @@ class Parameter extends BindingPattern {
   int getNumDecorator() { result = count(getADecorator()) }
 
   override predicate isLValue() { any() }
+
+  /**
+   * Gets the JSDoc tag describing this parameter, if any.
+   */
+  JSDocTag getJSDocTag() {
+    none() // overridden in SimpleParameter
+  }
 }
 
 /** A parameter declaration that is not an object or array pattern. */
@@ -599,6 +606,15 @@ class SimpleParameter extends Parameter, VarDecl {
     exists(SsaDefinition ssa |
       ssa.getAContributingVarDef() = this and
       result = ssa.getVariable().getAUse()
+    )
+  }
+
+  override JSDocTag getJSDocTag() {
+    exists(Function fun |
+      this = fun.getAParameter() and
+      result = fun.getDocumentation().getATag() and
+      result.getTitle() = "param" and
+      result.getName() = getName()
     )
   }
 }
