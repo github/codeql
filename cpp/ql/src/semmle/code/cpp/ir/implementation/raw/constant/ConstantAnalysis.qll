@@ -5,23 +5,7 @@ private import IR
 language[monotonicAggregates]
 int getConstantValue(Instruction instr) {
   result = instr.(IntegerConstantInstruction).getValue().toInt() or
-  exists(BinaryInstruction binInstr, int left, int right |
-    binInstr = instr and
-    left = getConstantValue(binInstr.getLeftOperand()) and
-    right = getConstantValue(binInstr.getRightOperand()) and
-    (
-      binInstr instanceof AddInstruction and result = add(left, right) or
-      binInstr instanceof SubInstruction and result = sub(left, right) or
-      binInstr instanceof MulInstruction and result = mul(left, right) or
-      binInstr instanceof DivInstruction and result = div(left, right) or
-      binInstr instanceof CompareEQInstruction and result = compareEQ(left, right) or
-      binInstr instanceof CompareNEInstruction and result = compareNE(left, right) or
-      binInstr instanceof CompareLTInstruction and result = compareLT(left, right) or
-      binInstr instanceof CompareGTInstruction and result = compareGT(left, right) or
-      binInstr instanceof CompareLEInstruction and result = compareLE(left, right) or
-      binInstr instanceof CompareGEInstruction and result = compareGE(left, right)
-    )
-  ) or
+  result = getBinaryInstructionValue(instr) or
   exists(UnaryInstruction unaryInstr, int src |
     unaryInstr = instr and
     src = getConstantValue(unaryInstr.getOperand()) and
@@ -34,5 +18,30 @@ int getConstantValue(Instruction instr) {
     phi = instr and
     result = max(PhiOperand operand | operand = phi.getAnOperand() | getConstantValue(operand.getDefinitionInstruction())) and
     result = min(PhiOperand operand | operand = phi.getAnOperand() | getConstantValue(operand.getDefinitionInstruction()))
+  )
+}
+
+pragma[noinline]
+private predicate binaryInstructionOperands(BinaryInstruction instr, int left, int right) {
+  left = getConstantValue(instr.getLeftOperand()) and
+  right = getConstantValue(instr.getRightOperand())
+}
+
+pragma[noinline]
+private int getBinaryInstructionValue(BinaryInstruction instr) {
+  exists(int left, int right |
+    binaryInstructionOperands(instr, left, right) and
+    (
+      instr instanceof AddInstruction and result = add(left, right) or
+      instr instanceof SubInstruction and result = sub(left, right) or
+      instr instanceof MulInstruction and result = mul(left, right) or
+      instr instanceof DivInstruction and result = div(left, right) or
+      instr instanceof CompareEQInstruction and result = compareEQ(left, right) or
+      instr instanceof CompareNEInstruction and result = compareNE(left, right) or
+      instr instanceof CompareLTInstruction and result = compareLT(left, right) or
+      instr instanceof CompareGTInstruction and result = compareGT(left, right) or
+      instr instanceof CompareLEInstruction and result = compareLE(left, right) or
+      instr instanceof CompareGEInstruction and result = compareGE(left, right)
+    )
   )
 }
