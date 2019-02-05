@@ -47,9 +47,7 @@ module Steps {
    * Holds if modifiable `m` is effectively private or internal (either directly
    * or because one of `m`'s enclosing types is).
    */
-  private predicate isEffectivelyInternalOrPrivate(Modifiable m) {
-    not m.isEffectivelyPublic()
-  }
+  private predicate isEffectivelyInternalOrPrivate(Modifiable m) { not m.isEffectivelyPublic() }
 
   private predicate flowIn(Parameter p, Expr pred, AssignableRead succ) {
     exists(AssignableDefinitions::ImplicitParameterDefinition def, Call c | succ = getARead(def) |

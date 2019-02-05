@@ -26,9 +26,7 @@ predicate isReadonlyCompatibleDefinition(AssignableDefinition def, Field f) {
 }
 
 predicate canBeReadonly(Field f) {
-  forex(AssignableDefinition def | defTargetsField(def, f) |
-    isReadonlyCompatibleDefinition(def, f)
-  )
+  forex(AssignableDefinition def | defTargetsField(def, f) | isReadonlyCompatibleDefinition(def, f))
 }
 
 from Field f

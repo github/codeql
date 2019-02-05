@@ -33,14 +33,10 @@ module ControlFlow {
     Location getLocation() { result = getElement().getLocation() }
 
     /** Holds if this control flow node has conditional successors. */
-    predicate isCondition() {
-      exists(getASuccessorByType(any(ConditionalSuccessor e)))
-    }
+    predicate isCondition() { exists(getASuccessorByType(any(ConditionalSuccessor e))) }
 
     /** Gets the basic block that this control flow node belongs to. */
-    BasicBlock getBasicBlock() {
-      result.getANode() = this
-    }
+    BasicBlock getBasicBlock() { result.getANode() = this }
 
     /**
      * Holds if this node dominates `that` node.
@@ -65,7 +61,8 @@ module ControlFlow {
      * This predicate is *reflexive*, so for example `if (s == null)` dominates
      * itself.
      */
-    pragma [inline] // potentially very large predicate, so must be inlined
+    // potentially very large predicate, so must be inlined
+    pragma[inline]
     predicate dominates(Node that) {
       strictlyDominates(that)
       or
@@ -94,15 +91,14 @@ module ControlFlow {
      * (all paths from the entry point of `M` to `return s.Length;` must go
      * through the null check).
      */
-    pragma [inline] // potentially very large predicate, so must be inlined
+    // potentially very large predicate, so must be inlined
+    pragma[inline]
     predicate strictlyDominates(Node that) {
       this.getBasicBlock().strictlyDominates(that.getBasicBlock())
       or
       exists(BasicBlock bb, int i, int j |
-        bb.getNode(i) = this
-        and
-        bb.getNode(j) = that
-        and
+        bb.getNode(i) = this and
+        bb.getNode(j) = that and
         i < j
       )
     }
@@ -136,7 +132,8 @@ module ControlFlow {
      * This predicate is *reflexive*, so for example `Console.WriteLine("M");`
      * post-dominates itself.
      */
-    pragma [inline] // potentially very large predicate, so must be inlined
+    // potentially very large predicate, so must be inlined
+    pragma[inline]
     predicate postDominates(Node that) {
       strictlyPostDominates(that)
       or
@@ -170,31 +167,26 @@ module ControlFlow {
      * paths to the exit point of `M` from `return s.Length;` must go through
      * the `WriteLine` call).
      */
-    pragma [inline] // potentially very large predicate, so must be inlined
+    // potentially very large predicate, so must be inlined
+    pragma[inline]
     predicate strictlyPostDominates(Node that) {
       this.getBasicBlock().strictlyPostDominates(that.getBasicBlock())
       or
       exists(BasicBlock bb, int i, int j |
-        bb.getNode(i) = this
-        and
-        bb.getNode(j) = that
-        and
+        bb.getNode(i) = this and
+        bb.getNode(j) = that and
         i > j
       )
     }
 
     /** Gets a successor node of a given type, if any. */
-    Node getASuccessorByType(SuccessorType t) {
-      result = getASuccessorByType(this, t)
-    }
+    Node getASuccessorByType(SuccessorType t) { result = getASuccessorByType(this, t) }
 
     /** Gets an immediate successor, if any. */
     Node getASuccessor() { result = getASuccessorByType(_) }
 
     /** Gets an immediate predecessor node of a given flow type, if any. */
-    Node getAPredecessorByType(SuccessorType t) {
-      result.getASuccessorByType(t) = this
-    }
+    Node getAPredecessorByType(SuccessorType t) { result.getASuccessorByType(t) = this }
 
     /** Gets an immediate predecessor, if any. */
     Node getAPredecessor() { result = getAPredecessorByType(_) }
@@ -255,8 +247,7 @@ module ControlFlow {
      * The node on line 2 is an immediate `null` successor of the node
      * `x` on line 1.
      */
-    deprecated
-    Node getANullSuccessor() {
+    deprecated Node getANullSuccessor() {
       result = getASuccessorByType(any(NullnessSuccessor t | t.isNull()))
     }
 
@@ -275,15 +266,12 @@ module ControlFlow {
      * The node `x?.M()`, representing the call to `M`, is a non-`null` successor
      * of the node `x`.
      */
-    deprecated
-    Node getANonNullSuccessor() {
+    deprecated Node getANonNullSuccessor() {
       result = getASuccessorByType(any(NullnessSuccessor t | not t.isNull()))
     }
 
     /** Holds if this node has more than one predecessor. */
-    predicate isJoin() {
-      strictcount(getAPredecessor()) > 1
-    }
+    predicate isJoin() { strictcount(getAPredecessor()) > 1 }
   }
 
   /** Provides different types of control flow nodes. */
@@ -293,17 +281,11 @@ module ControlFlow {
       /** Gets the callable that this entry applies to. */
       Callable getCallable() { this = TEntryNode(result) }
 
-      override BasicBlocks::EntryBlock getBasicBlock() {
-        result = Node.super.getBasicBlock()
-      }
+      override BasicBlocks::EntryBlock getBasicBlock() { result = Node.super.getBasicBlock() }
 
-      override Location getLocation() {
-        result = getCallable().getLocation()
-      }
+      override Location getLocation() { result = getCallable().getLocation() }
 
-      override string toString() {
-        result = "enter " + getCallable().toString()
-      }
+      override string toString() { result = "enter " + getCallable().toString() }
     }
 
     /** A node for a callable exit point. */
@@ -311,17 +293,11 @@ module ControlFlow {
       /** Gets the callable that this exit applies to. */
       Callable getCallable() { this = TExitNode(result) }
 
-      override BasicBlocks::ExitBlock getBasicBlock() {
-        result = Node.super.getBasicBlock()
-      }
+      override BasicBlocks::ExitBlock getBasicBlock() { result = Node.super.getBasicBlock() }
 
-      override Location getLocation() {
-        result = getCallable().getLocation()
-      }
+      override Location getLocation() { result = getCallable().getLocation() }
 
-      override string toString() {
-        result = "exit " + getCallable().toString()
-      }
+      override string toString() { result = "exit " + getCallable().toString() }
     }
 
     /**
@@ -333,15 +309,12 @@ module ControlFlow {
      */
     class ElementNode extends Node, TElementNode {
       private Splits splits;
+
       private ControlFlowElement cfe;
 
-      ElementNode() {
-        this = TElementNode(cfe, splits)
-      }
+      ElementNode() { this = TElementNode(cfe, splits) }
 
-      override ControlFlowElement getElement() {
-        result = cfe
-      }
+      override ControlFlowElement getElement() { result = cfe }
 
       override string toString() {
         result = "[" + this.getSplitsString() + "] " + cfe.toString()
@@ -360,8 +333,11 @@ module ControlFlow {
     }
 
     class Split = SplitImpl;
+
     class FinallySplit = FinallySplitting::FinallySplitImpl;
+
     class ExceptionHandlerSplit = ExceptionHandlerSplitting::ExceptionHandlerSplitImpl;
+
     class BooleanSplit = BooleanSplitting::BooleanSplitImpl;
   }
 
@@ -370,9 +346,13 @@ module ControlFlow {
   /** Provides different types of basic blocks. */
   module BasicBlocks {
     class EntryBlock = BBs::EntryBasicBlock;
+
     class ExitBlock = BBs::ExitBasicBlock;
+
     class JoinBlock = BBs::JoinBlock;
+
     class JoinBlockPredecessor = BBs::JoinBlockPredecessor;
+
     class ConditionBlock = BBs::ConditionBlock;
   }
 
@@ -476,18 +456,12 @@ module ControlFlow {
 
       override boolean getValue() { this = TNullnessSuccessor(result) }
 
-      override string toString() {
-        if this.isNull() then
-          result = "null"
-        else
-          result = "non-null"
-      }
+      override string toString() { if this.isNull() then result = "null" else result = "non-null" }
 
       override predicate matchesCompletion(Completion c) {
-        if this.isNull() then
-          c.(NullnessCompletion).isNull()
-        else
-          c = any(NullnessCompletion nc | not nc.isNull())
+        if this.isNull()
+        then c.(NullnessCompletion).isNull()
+        else c = any(NullnessCompletion nc | not nc.isNull())
       }
     }
 
@@ -530,17 +504,13 @@ module ControlFlow {
       override boolean getValue() { this = TMatchingSuccessor(result) }
 
       override string toString() {
-        if this.isMatch() then
-          result = "match"
-        else
-          result = "no-match"
+        if this.isMatch() then result = "match" else result = "no-match"
       }
 
       override predicate matchesCompletion(Completion c) {
-        if this.isMatch() then
-          c.(MatchingCompletion).isMatch()
-        else
-          c = any(MatchingCompletion mc | not mc.isMatch())
+        if this.isMatch()
+        then c.(MatchingCompletion).isMatch()
+        else c = any(MatchingCompletion mc | not mc.isMatch())
       }
     }
 
@@ -583,17 +553,13 @@ module ControlFlow {
       override boolean getValue() { this = TEmptinessSuccessor(result) }
 
       override string toString() {
-        if this.isEmpty() then
-          result = "empty"
-        else
-          result = "non-empty"
+        if this.isEmpty() then result = "empty" else result = "non-empty"
       }
 
       override predicate matchesCompletion(Completion c) {
-        if this.isEmpty() then
-          c.(EmptinessCompletion).isEmpty()
-        else
-          c = any(EmptinessCompletion ec | not ec.isEmpty())
+        if this.isEmpty()
+        then c.(EmptinessCompletion).isEmpty()
+        else c = any(EmptinessCompletion ec | not ec.isEmpty())
       }
     }
 
@@ -615,9 +581,7 @@ module ControlFlow {
     class ReturnSuccessor extends SuccessorType, TReturnSuccessor {
       override string toString() { result = "return" }
 
-      override predicate matchesCompletion(Completion c) {
-        c instanceof ReturnCompletion
-      }
+      override predicate matchesCompletion(Completion c) { c instanceof ReturnCompletion }
     }
 
     /**
@@ -670,9 +634,7 @@ module ControlFlow {
     class ContinueSuccessor extends SuccessorType, TContinueSuccessor {
       override string toString() { result = "continue" }
 
-      override predicate matchesCompletion(Completion c) {
-        c instanceof ContinueCompletion
-      }
+      override predicate matchesCompletion(Completion c) { c instanceof ContinueCompletion }
     }
 
     /**
@@ -754,9 +716,7 @@ module ControlFlow {
     class GotoDefaultSuccessor extends SuccessorType, TGotoDefaultSuccessor {
       override string toString() { result = "goto default" }
 
-      override predicate matchesCompletion(Completion c) {
-        c instanceof GotoDefaultCompletion
-      }
+      override predicate matchesCompletion(Completion c) { c instanceof GotoDefaultCompletion }
     }
 
     /**
@@ -806,9 +766,7 @@ module ControlFlow {
     class ExitSuccessor extends SuccessorType, TExitSuccessor {
       override string toString() { result = "exit" }
 
-      override predicate matchesCompletion(Completion c) {
-        c instanceof ExitCompletion
-      }
+      override predicate matchesCompletion(Completion c) { c instanceof ExitCompletion }
     }
   }
   private import SuccessorTypes
@@ -868,16 +826,12 @@ module ControlFlow {
        * standard left-to-right evaluation. The actual evaluation order is
        * determined by the predicate `getChildElement()`.
        */
-      private abstract class StandardElement extends ControlFlowElement {
+      abstract private class StandardElement extends ControlFlowElement {
         /** Gets the first child element of this element. */
-        ControlFlowElement getFirstChildElement() {
-          result = this.getChildElement(0)
-        }
+        ControlFlowElement getFirstChildElement() { result = this.getChildElement(0) }
 
         /** Holds if this element has no children. */
-        predicate isLeafElement() {
-          not exists(this.getFirstChildElement())
-        }
+        predicate isLeafElement() { not exists(this.getFirstChildElement()) }
 
         /** Gets the last child element of this element. */
         ControlFlowElement getLastChildElement() {
@@ -915,31 +869,30 @@ module ControlFlow {
           not this instanceof UsingStmt and
           result = this.getChild(i)
           or
-          this = any(GeneralCatchClause gcc |
-            i = 0 and result = gcc.getBlock()
-          )
+          this = any(GeneralCatchClause gcc | i = 0 and result = gcc.getBlock())
           or
           this = any(FixedStmt fs |
-            result = fs.getVariableDeclExpr(i)
-            or
-            result = fs.getBody() and
-            i = max(int j | exists(fs.getVariableDeclExpr(j))) + 1
-          )
+              result = fs.getVariableDeclExpr(i)
+              or
+              result = fs.getBody() and
+              i = max(int j | exists(fs.getVariableDeclExpr(j))) + 1
+            )
           or
           this = any(UsingStmt us |
-            if exists(us.getExpr()) then (
-              result = us.getExpr() and
-              i = 0
-              or
-              result = us.getBody() and
-              i = 1
-            ) else (
-              result = us.getVariableDeclExpr(i)
-              or
-              result = us.getBody() and
-              i = max(int j | exists(us.getVariableDeclExpr(j))) + 1
+              if exists(us.getExpr())
+              then (
+                result = us.getExpr() and
+                i = 0
+                or
+                result = us.getBody() and
+                i = 1
+              ) else (
+                result = us.getVariableDeclExpr(i)
+                or
+                result = us.getBody() and
+                i = max(int j | exists(us.getVariableDeclExpr(j))) + 1
+              )
             )
-          )
         }
       }
 
@@ -949,16 +902,12 @@ module ControlFlow {
        * tracking.
        */
       private class AssignOperationWithExpandedAssignment extends AssignOperation {
-        AssignOperationWithExpandedAssignment() {
-          this.hasExpandedAssignment()
-        }
+        AssignOperationWithExpandedAssignment() { this.hasExpandedAssignment() }
       }
 
       /** A conditionally qualified expression. */
       private class ConditionalQualifiableExpr extends QualifiableExpr {
-        ConditionalQualifiableExpr() {
-          this.isConditional()
-        }
+        ConditionalQualifiableExpr() { this.isConditional() }
       }
 
       private class StandardExpr extends StandardElement, Expr {
@@ -992,9 +941,7 @@ module ControlFlow {
           not this instanceof @unknown_expr and
           result = this.getChild(i)
           or
-          this = any(ExtensionMethodCall emc |
-            result = emc.getArgument(i)
-          )
+          this = any(ExtensionMethodCall emc | result = emc.getArgument(i))
           or
           result = getQualifiableExprChild(this, i)
           or
@@ -1016,10 +963,9 @@ module ControlFlow {
         i >= 0 and
         not qe instanceof ExtensionMethodCall and
         not qe.isConditional() and
-        if exists(Expr q | q = qe.getQualifier() | not q instanceof TypeAccess) then
-          result = qe.getChild(i - 1)
-        else
-          result = qe.getChild(i)
+        if exists(Expr q | q = qe.getQualifier() | not q instanceof TypeAccess)
+        then result = qe.getChild(i - 1)
+        else result = qe.getChild(i)
       }
 
       private ControlFlowElement getAssignmentChild(Assignment a, int i) {
@@ -1044,9 +990,8 @@ module ControlFlow {
       }
 
       private ControlFlowElement getUnknownExprChild(@unknown_expr e, int i) {
-        exists(int c |
-          result = e.(Expr).getChild(c) |
-          c = rank[i+1](int j | exists(e.(Expr).getChild(j)))
+        exists(int c | result = e.(Expr).getChild(c) |
+          c = rank[i + 1](int j | exists(e.(Expr).getChild(j)))
         )
       }
 
@@ -1065,51 +1010,62 @@ module ControlFlow {
         or
         // Post-order: first element of first child (or self, if no children)
         cfe = any(PostOrderElement poe |
-          result = first(poe.getFirstChild())
-          or
-          not exists(poe.getFirstChild()) and
-          result = poe
-        )
+            result = first(poe.getFirstChild())
+            or
+            not exists(poe.getFirstChild()) and
+            result = poe
+          )
         or
         cfe = any(AssignOperationWithExpandedAssignment a |
-          result = first(a.getExpandedAssignment())
-        )
+            result = first(a.getExpandedAssignment())
+          )
         or
-        cfe = any(ConditionalQualifiableExpr cqe |
-          result = first(cqe.getChildExpr(-1))
-        )
+        cfe = any(ConditionalQualifiableExpr cqe | result = first(cqe.getChildExpr(-1)))
         or
         cfe = any(ArrayCreation ac |
-          if ac.isImplicitlySized() then
-            // No length argument: element itself
-            result = ac
-          else
-            // First element of first length argument
-            result = first(ac.getLengthArgument(0))
-        )
+            if ac.isImplicitlySized()
+            then
+              // No length argument: element itself
+              result = ac
+            else
+              // First element of first length argument
+              result = first(ac.getLengthArgument(0))
+          )
         or
         cfe = any(ForeachStmt fs |
-          // Unlike most other statements, `foreach` statements are not modelled in
-          // pre-order, because we use the `foreach` node itself to represent the
-          // emptiness test that determines whether to execute the loop body
-          result = first(fs.getIterableExpr())
-        )
+            // Unlike most other statements, `foreach` statements are not modelled in
+            // pre-order, because we use the `foreach` node itself to represent the
+            // emptiness test that determines whether to execute the loop body
+            result = first(fs.getIterableExpr())
+          )
       }
 
       private class PreOrderElement extends ControlFlowElement {
         PreOrderElement() {
-          this instanceof StandardStmt or
-          this instanceof IfStmt or
-          this instanceof SwitchStmt or
-          this instanceof ConstCase or
-          this instanceof TypeCase or
-          this instanceof TryStmt or
-          this instanceof SpecificCatchClause or
-          (this instanceof LoopStmt and not this instanceof ForeachStmt) or
-          this instanceof LogicalNotExpr or
-          this instanceof LogicalAndExpr or
-          this instanceof LogicalOrExpr or
-          this instanceof NullCoalescingExpr or
+          this instanceof StandardStmt
+          or
+          this instanceof IfStmt
+          or
+          this instanceof SwitchStmt
+          or
+          this instanceof ConstCase
+          or
+          this instanceof TypeCase
+          or
+          this instanceof TryStmt
+          or
+          this instanceof SpecificCatchClause
+          or
+          this instanceof LoopStmt and not this instanceof ForeachStmt
+          or
+          this instanceof LogicalNotExpr
+          or
+          this instanceof LogicalAndExpr
+          or
+          this instanceof LogicalOrExpr
+          or
+          this instanceof NullCoalescingExpr
+          or
           this instanceof ConditionalExpr
         }
       }
@@ -1140,12 +1096,12 @@ module ControlFlow {
       ControlFlowElement last(ControlFlowElement cfe, Completion c) {
         // Pre-order: last element of last child (or self, if no children)
         cfe = any(StandardStmt ss |
-          result = last(ss.getLastChildElement(), c)
-          or
-          ss.isLeafElement() and
-          result = ss and
-          c.isValidFor(result)
-        )
+            result = last(ss.getLastChildElement(), c)
+            or
+            ss.isLeafElement() and
+            result = ss and
+            c.isValidFor(result)
+          )
         or
         // Post-order: element itself
         cfe instanceof StandardExpr and
@@ -1158,192 +1114,192 @@ module ControlFlow {
         not c instanceof NormalCompletion
         or
         cfe = any(LogicalNotExpr lne |
-          // Operand exits with a Boolean completion
-          exists(BooleanCompletion operandCompletion |
-            result = lastLogicalNotExprOperand(lne, operandCompletion) |
-            c = any(BooleanCompletion bc |
-              bc.getOuterValue() = operandCompletion.getOuterValue().booleanNot() and
-              bc.getInnerValue() = operandCompletion.getInnerValue()
+            // Operand exits with a Boolean completion
+            exists(BooleanCompletion operandCompletion |
+              result = lastLogicalNotExprOperand(lne, operandCompletion)
+            |
+              c = any(BooleanCompletion bc |
+                  bc.getOuterValue() = operandCompletion.getOuterValue().booleanNot() and
+                  bc.getInnerValue() = operandCompletion.getInnerValue()
+                )
             )
+            or
+            // Operand exits with a non-Boolean completion
+            result = lastLogicalNotExprOperand(lne, c) and
+            not c instanceof BooleanCompletion
           )
-          or
-          // Operand exits with a non-Boolean completion
-          result = lastLogicalNotExprOperand(lne, c) and
-          not c instanceof BooleanCompletion
-        )
         or
         cfe = any(LogicalAndExpr lae |
-          // Left operand exits with a false completion
-          result = lastLogicalAndExprLeftOperand(lae, c) and
-          c instanceof FalseCompletion
-          or
-          // Left operand exits abnormally
-          result = lastLogicalAndExprLeftOperand(lae, c) and
-          not c instanceof NormalCompletion
-          or
-          // Right operand exits with any completion
-          result = lastLogicalAndExprRightOperand(lae, c)
-        )
+            // Left operand exits with a false completion
+            result = lastLogicalAndExprLeftOperand(lae, c) and
+            c instanceof FalseCompletion
+            or
+            // Left operand exits abnormally
+            result = lastLogicalAndExprLeftOperand(lae, c) and
+            not c instanceof NormalCompletion
+            or
+            // Right operand exits with any completion
+            result = lastLogicalAndExprRightOperand(lae, c)
+          )
         or
         cfe = any(LogicalOrExpr loe |
-          // Left operand exits with a true completion
-          result = lastLogicalOrExprLeftOperand(loe, c) and
-          c instanceof TrueCompletion
-          or
-          // Left operand exits abnormally
-          result = lastLogicalOrExprLeftOperand(loe, c) and
-          not c instanceof NormalCompletion
-          or
-          // Right operand exits with any completion
-          result = lastLogicalOrExprRightOperand(loe, c)
-        )
+            // Left operand exits with a true completion
+            result = lastLogicalOrExprLeftOperand(loe, c) and
+            c instanceof TrueCompletion
+            or
+            // Left operand exits abnormally
+            result = lastLogicalOrExprLeftOperand(loe, c) and
+            not c instanceof NormalCompletion
+            or
+            // Right operand exits with any completion
+            result = lastLogicalOrExprRightOperand(loe, c)
+          )
         or
         cfe = any(NullCoalescingExpr nce |
-          // Left operand exits with any non-`null` completion
-          result = lastNullCoalescingExprLeftOperand(nce, c) and
-          not c.(NullnessCompletion).isNull()
-          or
-          // Right operand exits with any completion
-          result = lastNullCoalescingExprRightOperand(nce, c)
-        )
+            // Left operand exits with any non-`null` completion
+            result = lastNullCoalescingExprLeftOperand(nce, c) and
+            not c.(NullnessCompletion).isNull()
+            or
+            // Right operand exits with any completion
+            result = lastNullCoalescingExprRightOperand(nce, c)
+          )
         or
         cfe = any(ConditionalExpr ce |
-          // Condition exits abnormally
-          result = lastConditionalExprCondition(ce, c) and
-          not c instanceof NormalCompletion
-          or
-          // Then branch exits with any completion
-          result = lastConditionalExprThen(ce, c)
-          or
-          // Else branch exits with any completion
-          result = lastConditionalExprElse(ce, c)
-        )
+            // Condition exits abnormally
+            result = lastConditionalExprCondition(ce, c) and
+            not c instanceof NormalCompletion
+            or
+            // Then branch exits with any completion
+            result = lastConditionalExprThen(ce, c)
+            or
+            // Else branch exits with any completion
+            result = lastConditionalExprElse(ce, c)
+          )
         or
         result = lastAssignOperationWithExpandedAssignmentExpandedAssignment(cfe, c)
         or
         cfe = any(ConditionalQualifiableExpr cqe |
-          // Post-order: element itself
-          result = cqe and
-          c.isValidFor(cqe)
-          or
-          // Qualifier exits with a `null` completion
-          result = lastConditionalQualifiableExprChildExpr(cqe, -1, c) and
-          c.(NullnessCompletion).isNull()
-        )
+            // Post-order: element itself
+            result = cqe and
+            c.isValidFor(cqe)
+            or
+            // Qualifier exits with a `null` completion
+            result = lastConditionalQualifiableExprChildExpr(cqe, -1, c) and
+            c.(NullnessCompletion).isNull()
+          )
         or
         cfe = any(ThrowExpr te |
-          // Post-order: element itself
-          te.getThrownExceptionType() = c.(ThrowCompletion).getExceptionClass() and
-          result = te
-          or
-          // Expression being thrown exits abnormally
-          result = lastThrowExprExpr(te, c) and
-          not c instanceof NormalCompletion
-        )
+            // Post-order: element itself
+            te.getThrownExceptionType() = c.(ThrowCompletion).getExceptionClass() and
+            result = te
+            or
+            // Expression being thrown exits abnormally
+            result = lastThrowExprExpr(te, c) and
+            not c instanceof NormalCompletion
+          )
         or
         cfe = any(ObjectCreation oc |
-          // Post-order: element itself (when no initializer)
-          result = oc and
-          not oc.hasInitializer() and
-          c.isValidFor(result)
-          or
-          // Last element of initializer
-          result = lastObjectCreationInitializer(oc, c)
-        )
+            // Post-order: element itself (when no initializer)
+            result = oc and
+            not oc.hasInitializer() and
+            c.isValidFor(result)
+            or
+            // Last element of initializer
+            result = lastObjectCreationInitializer(oc, c)
+          )
         or
         cfe = any(ArrayCreation ac |
-          // Post-order: element itself (when no initializer)
-          result = ac and
-          not ac.hasInitializer() and
-          c.isValidFor(result)
-          or
-          // Last element of initializer
-          result = lastArrayCreationInitializer(ac, c)
-        )
+            // Post-order: element itself (when no initializer)
+            result = ac and
+            not ac.hasInitializer() and
+            c.isValidFor(result)
+            or
+            // Last element of initializer
+            result = lastArrayCreationInitializer(ac, c)
+          )
         or
         cfe = any(IfStmt is |
-          // Condition exits with a false completion and there is no `else` branch
-          result = lastIfStmtCondition(is, c) and
-          c instanceof FalseCompletion and
-          not exists(is.getElse())
-          or
-          // Condition exits abnormally
-          result = lastIfStmtCondition(is, c) and
-          not c instanceof NormalCompletion
-          or
-          // Then branch exits with any completion
-          result = lastIfStmtThen(is, c)
-          or
-          // Else branch exits with any completion
-          result = lastIfStmtElse(is, c)
-        )
+            // Condition exits with a false completion and there is no `else` branch
+            result = lastIfStmtCondition(is, c) and
+            c instanceof FalseCompletion and
+            not exists(is.getElse())
+            or
+            // Condition exits abnormally
+            result = lastIfStmtCondition(is, c) and
+            not c instanceof NormalCompletion
+            or
+            // Then branch exits with any completion
+            result = lastIfStmtThen(is, c)
+            or
+            // Else branch exits with any completion
+            result = lastIfStmtElse(is, c)
+          )
         or
         cfe = any(SwitchStmt ss |
-          // Switch expression exits normally and there are no cases
-          result = lastSwitchStmtCondition(ss, c) and
-          not exists(ss.getACase()) and
-          c instanceof NormalCompletion
-          or
-          // Switch expression exits abnormally
-          result = lastSwitchStmtCondition(ss, c) and
-          not c instanceof NormalCompletion
-          or
-          // A statement exits with a `break` completion
-          result = lastSwitchStmtStmt(ss, _, any(BreakCompletion bc)) and
-          c instanceof BreakNormalCompletion
-          or
-          // A statement exits abnormally
-          result = lastSwitchStmtStmt(ss, _, c) and
-          not c instanceof BreakCompletion and
-          not c instanceof NormalCompletion and
-          not c instanceof GotoDefaultCompletion and
-          not c instanceof GotoCaseCompletion
-          or
-          // Last case exits with a non-match
-          exists(int last |
-            last = max(int i | exists(ss.getCase(i))) |
-            result = lastConstCaseNoMatch(ss.getCase(last), c) or
-            result = lastTypeCaseNoMatch(ss.getCase(last), c)
+            // Switch expression exits normally and there are no cases
+            result = lastSwitchStmtCondition(ss, c) and
+            not exists(ss.getACase()) and
+            c instanceof NormalCompletion
+            or
+            // Switch expression exits abnormally
+            result = lastSwitchStmtCondition(ss, c) and
+            not c instanceof NormalCompletion
+            or
+            // A statement exits with a `break` completion
+            result = lastSwitchStmtStmt(ss, _, any(BreakCompletion bc)) and
+            c instanceof BreakNormalCompletion
+            or
+            // A statement exits abnormally
+            result = lastSwitchStmtStmt(ss, _, c) and
+            not c instanceof BreakCompletion and
+            not c instanceof NormalCompletion and
+            not c instanceof GotoDefaultCompletion and
+            not c instanceof GotoCaseCompletion
+            or
+            // Last case exits with a non-match
+            exists(int last | last = max(int i | exists(ss.getCase(i))) |
+              result = lastConstCaseNoMatch(ss.getCase(last), c) or
+              result = lastTypeCaseNoMatch(ss.getCase(last), c)
+            )
+            or
+            // Last statement exits with any non-break completion
+            exists(int last | last = max(int i | exists(ss.getStmt(i))) |
+              result = lastSwitchStmtStmt(ss, last, c) and
+              not c instanceof BreakCompletion
+            )
           )
-          or
-          // Last statement exits with any non-break completion
-          exists(int last |
-            last = max(int i | exists(ss.getStmt(i))) |
-            result = lastSwitchStmtStmt(ss, last, c) and
-            not c instanceof BreakCompletion
-          )
-        )
         or
         cfe = any(ConstCase cc |
-          // Case expression exits with a non-match
-          result = lastConstCaseNoMatch(cc, c)
-          or
-          // Case expression exits abnormally
-          result = lastConstCaseExpr(cc, c) and
-          not c instanceof NormalCompletion
-        )
+            // Case expression exits with a non-match
+            result = lastConstCaseNoMatch(cc, c)
+            or
+            // Case expression exits abnormally
+            result = lastConstCaseExpr(cc, c) and
+            not c instanceof NormalCompletion
+          )
         or
         cfe = any(TypeCase tc |
-          // Type test exits with a non-match
-          result = lastTypeCaseNoMatch(tc, c)
-        )
+            // Type test exits with a non-match
+            result = lastTypeCaseNoMatch(tc, c)
+          )
         or
         cfe = any(CaseStmt cs |
-          // Condition exists with a `false` completion
-          result = lastCaseCondition(cs, c) and
-          c instanceof FalseCompletion
-          or
-          // Condition exists abnormally
-          result = lastCaseCondition(cs, c) and
-          not c instanceof NormalCompletion
-          or
-          // Case statement exits with any completion
-          result = lastCaseStmt(cs, c)
-        )
+            // Condition exists with a `false` completion
+            result = lastCaseCondition(cs, c) and
+            c instanceof FalseCompletion
+            or
+            // Condition exists abnormally
+            result = lastCaseCondition(cs, c) and
+            not c instanceof NormalCompletion
+            or
+            // Case statement exits with any completion
+            result = lastCaseStmt(cs, c)
+          )
         or
         exists(LoopStmt ls |
           cfe = ls and
-          not ls instanceof ForeachStmt |
+          not ls instanceof ForeachStmt
+        |
           // Condition exits with a false completion
           result = lastLoopStmtCondition(ls, c) and
           c instanceof FalseCompletion
@@ -1352,9 +1308,9 @@ module ControlFlow {
           result = lastLoopStmtCondition(ls, c) and
           not c instanceof NormalCompletion
           or
-          exists(Completion bodyCompletion |
-            result = lastLoopStmtBody(ls, bodyCompletion) |
-            if bodyCompletion instanceof BreakCompletion then
+          exists(Completion bodyCompletion | result = lastLoopStmtBody(ls, bodyCompletion) |
+            if bodyCompletion instanceof BreakCompletion
+            then
               // Body exits with a break completion; the loop exits normally
               // Note: we use a `BreakNormalCompletion` rather than a `NormalCompletion`
               // in order to be able to get the correct break label in the control flow
@@ -1369,124 +1325,125 @@ module ControlFlow {
         )
         or
         cfe = any(ForeachStmt fs |
-          // Iterator expression exits abnormally
-          result = lastForeachStmtIterableExpr(fs, c) and
-          not c instanceof NormalCompletion
-          or
-          // Emptiness test exits with no more elements
-          result = fs and
-          c.(EmptinessCompletion).isEmpty()
-          or
-          exists(Completion bodyCompletion |
-            result = lastLoopStmtBody(fs, bodyCompletion) |
-            if bodyCompletion instanceof BreakCompletion then
-              // Body exits with a break completion; the loop exits normally
-              // Note: we use a `BreakNormalCompletion` rather than a `NormalCompletion`
-              // in order to be able to get the correct break label in the control flow
-              // graph from the `result` node to the node after the loop.
-              c instanceof BreakNormalCompletion
-            else (
-              // Body exits abnormally
-              c = bodyCompletion and
-              not c instanceof NormalCompletion and
-              not c instanceof ContinueCompletion
+            // Iterator expression exits abnormally
+            result = lastForeachStmtIterableExpr(fs, c) and
+            not c instanceof NormalCompletion
+            or
+            // Emptiness test exits with no more elements
+            result = fs and
+            c.(EmptinessCompletion).isEmpty()
+            or
+            exists(Completion bodyCompletion | result = lastLoopStmtBody(fs, bodyCompletion) |
+              if bodyCompletion instanceof BreakCompletion
+              then
+                // Body exits with a break completion; the loop exits normally
+                // Note: we use a `BreakNormalCompletion` rather than a `NormalCompletion`
+                // in order to be able to get the correct break label in the control flow
+                // graph from the `result` node to the node after the loop.
+                c instanceof BreakNormalCompletion
+              else (
+                // Body exits abnormally
+                c = bodyCompletion and
+                not c instanceof NormalCompletion and
+                not c instanceof ContinueCompletion
+              )
             )
           )
-        )
         or
         cfe = any(TryStmt ts |
-          // If the `finally` block completes normally, it resumes any non-normal
-          // completion that was current before the `finally` block was entered
-          exists(Completion finallyCompletion |
-            result = lastTryStmtFinally(ts, finallyCompletion) and
-            finallyCompletion instanceof NormalCompletion
+            // If the `finally` block completes normally, it resumes any non-normal
+            // completion that was current before the `finally` block was entered
+            exists(Completion finallyCompletion |
+              result = lastTryStmtFinally(ts, finallyCompletion) and
+              finallyCompletion instanceof NormalCompletion
             |
-            exists(getBlockOrCatchFinallyPred(ts, any(NormalCompletion nc))) and
-            c = finallyCompletion
-            or
-            exists(getBlockOrCatchFinallyPred(ts, c)) and
-            not c instanceof NormalCompletion
-          )
-          or
-          // If the `finally` block completes abnormally, take the completion of
-          // the `finally` block itself
-          result = lastTryStmtFinally(ts, c) and
-          not c instanceof NormalCompletion
-          or
-          result = getBlockOrCatchFinallyPred(ts, c) and
-          (
-            // If there is no `finally` block, last elements are from the body, from
-            // the blocks of one of the `catch` clauses, or from the last `catch` clause
-            not ts.hasFinally()
-            or
-            // Exit completions ignore the `finally` block
-            c instanceof ExitCompletion
-          )
-        )
-        or
-        cfe = any(SpecificCatchClause scc |
-          // Last element of `catch` block
-          result = lastCatchClauseBlock(cfe, c)
-          or
-          (
-            if scc.isLast() then (
-              // Last `catch` clause inherits throw completions from the `try` block,
-              // when the clause does not match
-              throwMayBeUncaught(scc, c) and
-              (
-                // Incompatible exception type: clause itself
-                result = scc
-                or
-                // Incompatible filter
-                result = lastSpecificCatchClauseFilterClause(scc, _)
-              )
-            ) else (
-              // Incompatible exception type: clause itself
-              result = scc and
-              c = any(MatchingCompletion mc | not mc.isMatch())
+              exists(getBlockOrCatchFinallyPred(ts, any(NormalCompletion nc))) and
+              c = finallyCompletion
               or
-              // Incompatible filter
-              result = lastSpecificCatchClauseFilterClause(scc, c) and
-              c instanceof FalseCompletion
+              exists(getBlockOrCatchFinallyPred(ts, c)) and
+              not c instanceof NormalCompletion
+            )
+            or
+            // If the `finally` block completes abnormally, take the completion of
+            // the `finally` block itself
+            result = lastTryStmtFinally(ts, c) and
+            not c instanceof NormalCompletion
+            or
+            result = getBlockOrCatchFinallyPred(ts, c) and
+            (
+              // If there is no `finally` block, last elements are from the body, from
+              // the blocks of one of the `catch` clauses, or from the last `catch` clause
+              not ts.hasFinally()
+              or
+              // Exit completions ignore the `finally` block
+              c instanceof ExitCompletion
             )
           )
-        )
+        or
+        cfe = any(SpecificCatchClause scc |
+            // Last element of `catch` block
+            result = lastCatchClauseBlock(cfe, c)
+            or
+            (
+              if scc.isLast()
+              then (
+                // Last `catch` clause inherits throw completions from the `try` block,
+                // when the clause does not match
+                throwMayBeUncaught(scc, c) and
+                (
+                  // Incompatible exception type: clause itself
+                  result = scc
+                  or
+                  // Incompatible filter
+                  result = lastSpecificCatchClauseFilterClause(scc, _)
+                )
+              ) else (
+                // Incompatible exception type: clause itself
+                result = scc and
+                c = any(MatchingCompletion mc | not mc.isMatch())
+                or
+                // Incompatible filter
+                result = lastSpecificCatchClauseFilterClause(scc, c) and
+                c instanceof FalseCompletion
+              )
+            )
+          )
         or
         cfe = any(JumpStmt js |
-          // Post-order: element itself
-          result = js and
-          (
-            js instanceof BreakStmt and c instanceof BreakCompletion
+            // Post-order: element itself
+            result = js and
+            (
+              js instanceof BreakStmt and c instanceof BreakCompletion
+              or
+              js instanceof ContinueStmt and c instanceof ContinueCompletion
+              or
+              js = c.(GotoLabelCompletion).getGotoStmt()
+              or
+              js = c.(GotoCaseCompletion).getGotoStmt()
+              or
+              js instanceof GotoDefaultStmt and c instanceof GotoDefaultCompletion
+              or
+              js.(ThrowStmt).getThrownExceptionType() = c.(ThrowCompletion).getExceptionClass()
+              or
+              js instanceof ReturnStmt and c instanceof ReturnCompletion
+              or
+              // `yield break` behaves like a return statement
+              js instanceof YieldBreakStmt and c instanceof ReturnCompletion
+              or
+              // `yield return` behaves like a normal statement
+              js instanceof YieldReturnStmt and c.isValidFor(js)
+            )
             or
-            js instanceof ContinueStmt and c instanceof ContinueCompletion
-            or
-            js = c.(GotoLabelCompletion).getGotoStmt()
-            or
-            js = c.(GotoCaseCompletion).getGotoStmt()
-            or
-            js instanceof GotoDefaultStmt and c instanceof GotoDefaultCompletion
-            or
-            js.(ThrowStmt).getThrownExceptionType() = c.(ThrowCompletion).getExceptionClass()
-            or
-            js instanceof ReturnStmt and c instanceof ReturnCompletion
-            or
-            // `yield break` behaves like a return statement
-            js instanceof YieldBreakStmt and c instanceof ReturnCompletion
-            or
-            // `yield return` behaves like a normal statement
-            js instanceof YieldReturnStmt and c.isValidFor(js)
+            // Child exits abnormally
+            result = lastJumpStmtChild(cfe, c) and
+            not c instanceof NormalCompletion
           )
-          or
-          // Child exits abnormally
-          result = lastJumpStmtChild(cfe, c) and
-          not c instanceof NormalCompletion
-        )
         or
         // Propagate completion from a call to a non-terminating callable
         cfe = any(NonReturningCall nrc |
-          result = nrc and
-          c = nrc.getACompletion()
-        )
+            result = nrc and
+            c = nrc.getACompletion()
+          )
       }
 
       private ControlFlowElement lastConstCaseNoMatch(ConstCase cc, MatchingCompletion c) {
@@ -1500,213 +1457,227 @@ module ControlFlow {
         c.isValidFor(result)
       }
 
-      pragma [nomagic]
-      private ControlFlowElement lastStandardElementGetNonLastChildElement(StandardElement se, int i, Completion c) {
+      pragma[nomagic]
+      private ControlFlowElement lastStandardElementGetNonLastChildElement(
+        StandardElement se, int i, Completion c
+      ) {
         result = last(se.getNonLastChildElement(i), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private ControlFlowElement lastThrowExprExpr(ThrowExpr te, Completion c) {
         result = last(te.getExpr(), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private ControlFlowElement lastLogicalNotExprOperand(LogicalNotExpr lne, Completion c) {
         result = last(lne.getOperand(), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private ControlFlowElement lastLogicalAndExprLeftOperand(LogicalAndExpr lae, Completion c) {
         result = last(lae.getLeftOperand(), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private ControlFlowElement lastLogicalAndExprRightOperand(LogicalAndExpr lae, Completion c) {
         result = last(lae.getRightOperand(), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private ControlFlowElement lastLogicalOrExprLeftOperand(LogicalOrExpr loe, Completion c) {
         result = last(loe.getLeftOperand(), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private ControlFlowElement lastLogicalOrExprRightOperand(LogicalOrExpr loe, Completion c) {
         result = last(loe.getRightOperand(), c)
       }
 
-      pragma [nomagic]
-      private ControlFlowElement lastNullCoalescingExprLeftOperand(NullCoalescingExpr nce, Completion c) {
+      pragma[nomagic]
+      private ControlFlowElement lastNullCoalescingExprLeftOperand(
+        NullCoalescingExpr nce, Completion c
+      ) {
         result = last(nce.getLeftOperand(), c)
       }
 
-      pragma [nomagic]
-      private ControlFlowElement lastNullCoalescingExprRightOperand(NullCoalescingExpr nce, Completion c) {
+      pragma[nomagic]
+      private ControlFlowElement lastNullCoalescingExprRightOperand(
+        NullCoalescingExpr nce, Completion c
+      ) {
         result = last(nce.getRightOperand(), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private ControlFlowElement lastConditionalExprCondition(ConditionalExpr ce, Completion c) {
         result = last(ce.getCondition(), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private ControlFlowElement lastConditionalExprThen(ConditionalExpr ce, Completion c) {
         result = last(ce.getThen(), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private ControlFlowElement lastConditionalExprElse(ConditionalExpr ce, Completion c) {
         result = last(ce.getElse(), c)
       }
 
-      pragma [nomagic]
-      private ControlFlowElement lastAssignOperationWithExpandedAssignmentExpandedAssignment(AssignOperationWithExpandedAssignment a, Completion c) {
+      pragma[nomagic]
+      private ControlFlowElement lastAssignOperationWithExpandedAssignmentExpandedAssignment(
+        AssignOperationWithExpandedAssignment a, Completion c
+      ) {
         result = last(a.getExpandedAssignment(), c)
       }
 
-      pragma [nomagic]
-      private ControlFlowElement lastConditionalQualifiableExprChildExpr(ConditionalQualifiableExpr cqe, int i, Completion c) {
+      pragma[nomagic]
+      private ControlFlowElement lastConditionalQualifiableExprChildExpr(
+        ConditionalQualifiableExpr cqe, int i, Completion c
+      ) {
         result = last(cqe.getChildExpr(i), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private ControlFlowElement lastObjectCreationArgument(ObjectCreation oc, int i, Completion c) {
         result = last(oc.getArgument(i), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private ControlFlowElement lastObjectCreationInitializer(ObjectCreation oc, Completion c) {
         result = last(oc.getInitializer(), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private ControlFlowElement lastArrayCreationInitializer(ArrayCreation ac, Completion c) {
         result = last(ac.getInitializer(), c)
       }
 
-      pragma [nomagic]
-      private ControlFlowElement lastArrayCreationLengthArgument(ArrayCreation ac, int i, Completion c) {
+      pragma[nomagic]
+      private ControlFlowElement lastArrayCreationLengthArgument(
+        ArrayCreation ac, int i, Completion c
+      ) {
         not ac.isImplicitlySized() and
         result = last(ac.getLengthArgument(i), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private ControlFlowElement lastIfStmtCondition(IfStmt is, Completion c) {
         result = last(is.getCondition(), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private ControlFlowElement lastIfStmtThen(IfStmt is, Completion c) {
         result = last(is.getThen(), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private ControlFlowElement lastIfStmtElse(IfStmt is, Completion c) {
         result = last(is.getElse(), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private ControlFlowElement lastSwitchStmtCondition(SwitchStmt ss, Completion c) {
         result = last(ss.getCondition(), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private ControlFlowElement lastSwitchStmtStmt(SwitchStmt ss, int i, Completion c) {
         result = last(ss.getStmt(i), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private ControlFlowElement lastSwitchStmtCaseStmt(SwitchStmt ss, int i, Completion c) {
         result = last(ss.getStmt(i).(ConstCase).getStmt(), c) or
         result = last(ss.getStmt(i).(TypeCase).getStmt(), c) or
         result = last(ss.getStmt(i).(DefaultCase), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private ControlFlowElement lastConstCaseExpr(ConstCase cc, Completion c) {
         result = last(cc.getExpr(), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private ControlFlowElement lastCaseStmt(CaseStmt cs, Completion c) {
         result = last(cs.(TypeCase).getStmt(), c)
         or
         result = last(cs.(ConstCase).getStmt(), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private ControlFlowElement lastCaseCondition(CaseStmt cs, Completion c) {
         result = last(cs.getCondition(), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private ControlFlowElement lastTypeCaseVariableDeclExpr(TypeCase tc, Completion c) {
         result = last(tc.getVariableDeclExpr(), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private ControlFlowElement lastLoopStmtCondition(LoopStmt ls, Completion c) {
         result = last(ls.getCondition(), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private ControlFlowElement lastLoopStmtBody(LoopStmt ls, Completion c) {
         result = last(ls.getBody(), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private ControlFlowElement lastForeachStmtIterableExpr(ForeachStmt fs, Completion c) {
         result = last(fs.getIterableExpr(), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private ControlFlowElement lastForeachStmtVariableDecl(ForeachStmt fs, Completion c) {
         result = last(fs.getVariableDeclExpr(), c) or
         result = last(fs.getVariableDeclTuple(), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private ControlFlowElement lastJumpStmtChild(JumpStmt js, Completion c) {
         result = last(js.getChild(0), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       ControlFlowElement lastTryStmtFinally(TryStmt ts, Completion c) {
         result = last(ts.getFinally(), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private ControlFlowElement lastTryStmtBlock(TryStmt ts, Completion c) {
         result = last(ts.getBlock(), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       ControlFlowElement lastTryStmtCatchClause(TryStmt ts, int i, Completion c) {
         result = last(ts.getCatchClause(i), c)
       }
 
-      pragma [nomagic]
-      private ControlFlowElement lastSpecificCatchClauseFilterClause(SpecificCatchClause scc, Completion c) {
+      pragma[nomagic]
+      private ControlFlowElement lastSpecificCatchClauseFilterClause(
+        SpecificCatchClause scc, Completion c
+      ) {
         result = last(scc.getFilterClause(), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private ControlFlowElement lastCatchClauseBlock(CatchClause cc, Completion c) {
         result = last(cc.getBlock(), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private ControlFlowElement lastStandardExprLastChildElement(StandardExpr se, Completion c) {
         result = last(se.getLastChildElement(), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private ControlFlowElement lastForStmtUpdate(ForStmt fs, int i, Completion c) {
         result = last(fs.getUpdate(i), c)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private ControlFlowElement lastForStmtInitializer(ForStmt fs, int i, Completion c) {
         result = last(fs.getInitializer(i), c)
       }
@@ -1716,7 +1687,7 @@ module ControlFlow {
        * that may finish with completion `c`, such that control may be transferred
        * to the `finally` block (if it exists).
        */
-      pragma [nomagic]
+      pragma[nomagic]
       private ControlFlowElement getBlockOrCatchFinallyPred(TryStmt ts, Completion c) {
         result = lastTryStmtBlock(ts, c) and
         (
@@ -1733,8 +1704,7 @@ module ControlFlow {
         result = lastCatchClauseBlock(ts.getACatchClause(), c)
         or
         // Last element of last `catch` clause continues to the `finally` block
-        exists(int last |
-          ts.getCatchClause(last).isLast() |
+        exists(int last | ts.getCatchClause(last).isLast() |
           result = lastTryStmtCatchClause(ts, last, c)
         )
       }
@@ -1745,14 +1715,13 @@ module ControlFlow {
        * The catch clause `last` is the last catch clause in the `try` statement
        * that it belongs to.
        */
-      pragma [nomagic]
+      pragma[nomagic]
       private predicate throwMayBeUncaught(SpecificCatchClause last, ThrowCompletion c) {
         exists(TryStmt ts |
           ts = last.getTryStmt() and
           exists(lastTryStmtBlock(ts, c)) and
           not ts.getACatchClause() instanceof GeneralCatchClause and
-          forall(SpecificCatchClause scc |
-            scc = ts.getACatchClause() |
+          forall(SpecificCatchClause scc | scc = ts.getACatchClause() |
             scc.hasFilterClause()
             or
             not c.getExceptionClass().getABaseType*() = scc.getCaughtExceptionType()
@@ -1780,8 +1749,7 @@ module ControlFlow {
           ExitingCall() {
             this.getTarget() instanceof ExitingCallable
             or
-            exists(AssertMethod m |
-              m = this.(FailingAssertion).getAssertMethod() |
+            exists(AssertMethod m | m = this.(FailingAssertion).getAssertMethod() |
               not exists(m.getExceptionClass())
             )
           }
@@ -1795,8 +1763,7 @@ module ControlFlow {
           ThrowingCall() {
             c = this.getTarget().(ThrowingCallable).getACallCompletion()
             or
-            exists(AssertMethod m |
-              m = this.(FailingAssertion).getAssertMethod() |
+            exists(AssertMethod m | m = this.(FailingAssertion).getAssertMethod() |
               c.getExceptionClass() = m.getExceptionClass()
             )
           }
@@ -1804,35 +1771,31 @@ module ControlFlow {
           override ThrowCompletion getACompletion() { result = c }
         }
 
-        private abstract class NonReturningCallable extends Callable {
+        abstract private class NonReturningCallable extends Callable {
           NonReturningCallable() {
             not exists(ReturnStmt ret | ret.getEnclosingCallable() = this) and
             not hasAccessorAutoImplementation(this, _) and
-            not exists(Virtualizable v |
-              v.isOverridableOrImplementable() |
+            not exists(Virtualizable v | v.isOverridableOrImplementable() |
               v = this or
               v = this.(Accessor).getDeclaration()
             )
           }
         }
 
-        private abstract class ExitingCallable extends NonReturningCallable { }
+        abstract private class ExitingCallable extends NonReturningCallable { }
 
         private class DirectlyExitingCallable extends ExitingCallable {
           DirectlyExitingCallable() {
             this = any(Method m |
-              m.hasQualifiedName("System.Environment", "Exit") or
-              m.hasQualifiedName("System.Windows.Forms.Application", "Exit")
-            )
+                m.hasQualifiedName("System.Environment", "Exit") or
+                m.hasQualifiedName("System.Windows.Forms.Application", "Exit")
+              )
           }
         }
 
         private class IndirectlyExitingCallable extends ExitingCallable {
           IndirectlyExitingCallable() {
-            forex(ControlFlowElement body |
-              body = this.getABody() |
-              body = getAnExitingElement()
-            )
+            forex(ControlFlowElement body | body = this.getABody() | body = getAnExitingElement())
           }
         }
 
@@ -1856,16 +1819,11 @@ module ControlFlow {
 
         private class ThrowingCallable extends NonReturningCallable {
           ThrowingCallable() {
-            forex(ControlFlowElement body |
-              body = this.getABody() |
-              body = getAThrowingElement(_)
-            )
+            forex(ControlFlowElement body | body = this.getABody() | body = getAThrowingElement(_))
           }
 
           /** Gets a valid completion for a call to this throwing callable. */
-          ThrowCompletion getACallCompletion() {
-            this.getABody() = getAThrowingElement(result)
-          }
+          ThrowCompletion getACallCompletion() { this.getABody() = getAThrowingElement(result) }
         }
 
         private predicate directlyThrows(ThrowElement te, ThrowCompletion c) {
@@ -1893,7 +1851,8 @@ module ControlFlow {
           exists(IfStmt ifStmt, ThrowCompletion c1, ThrowCompletion c2 |
             result = ifStmt and
             ifStmt.getThen() = getAThrowingStmt(c1) and
-            ifStmt.getElse() = getAThrowingStmt(c2) |
+            ifStmt.getElse() = getAThrowingStmt(c2)
+          |
             c = c1
             or
             c = c2
@@ -1902,8 +1861,7 @@ module ControlFlow {
 
         /** Holds if `throw` element `te` indicates a stub implementation. */
         private predicate isStub(ThrowElement te) {
-          exists(Expr e |
-            e = te.getExpr() |
+          exists(Expr e | e = te.getExpr() |
             e instanceof NullLiteral or
             e.getType() instanceof SystemNotImplementedExceptionClass
           )
@@ -1915,13 +1873,13 @@ module ControlFlow {
        * Gets a control flow successor for control flow element `cfe`, given that
        * `cfe` finishes with completion `c`.
        */
-      pragma [nomagic]
+      pragma[nomagic]
       ControlFlowElement succ(ControlFlowElement cfe, Completion c) {
         // Pre-order: flow from element itself to first element of first child
         cfe = any(StandardStmt ss |
-          result = first(ss.getFirstChildElement()) and
-          c instanceof SimpleCompletion
-        )
+            result = first(ss.getFirstChildElement()) and
+            c instanceof SimpleCompletion
+          )
         or
         // Post-order: flow from last element of last child to element itself
         cfe = lastStandardExprLastChildElement(result, c) and
@@ -1935,10 +1893,10 @@ module ControlFlow {
         )
         or
         cfe = any(LogicalNotExpr lne |
-          // Pre-order: flow from expression itself to first element of operand
-          result = first(lne.getOperand()) and
-          c instanceof SimpleCompletion
-        )
+            // Pre-order: flow from expression itself to first element of operand
+            result = first(lne.getOperand()) and
+            c instanceof SimpleCompletion
+          )
         or
         exists(LogicalAndExpr lae |
           // Pre-order: flow from expression itself to first element of left operand
@@ -1997,7 +1955,7 @@ module ControlFlow {
           cfe = lastConditionalQualifiableExprChildExpr(parent, i, c) and
           c instanceof NormalCompletion and
           not c.(NullnessCompletion).isNull()
-          |
+        |
           // Post-order: flow from last element of last child to element itself
           i = max(int j | exists(parent.getChildExpr(j))) and
           result = parent
@@ -2012,15 +1970,13 @@ module ControlFlow {
         or
         exists(ObjectCreation oc |
           // Flow from last element of argument `i` to first element of argument `i+1`
-          exists(int i |
-            cfe = lastObjectCreationArgument(oc, i, c) |
+          exists(int i | cfe = lastObjectCreationArgument(oc, i, c) |
             result = first(oc.getArgument(i + 1)) and
             c instanceof NormalCompletion
           )
           or
           // Flow from last element of last argument to self
-          exists(int last |
-            last = max(int i | exists(oc.getArgument(i))) |
+          exists(int last | last = max(int i | exists(oc.getArgument(i))) |
             cfe = lastObjectCreationArgument(oc, last, c) and
             result = oc and
             c instanceof NormalCompletion
@@ -2040,7 +1996,8 @@ module ControlFlow {
           or
           exists(int i |
             cfe = lastArrayCreationLengthArgument(ac, i, c) and
-            c instanceof SimpleCompletion |
+            c instanceof SimpleCompletion
+          |
             // Flow from last length argument to self
             i = max(int j | exists(ac.getLengthArgument(j))) and
             result = ac
@@ -2056,8 +2013,7 @@ module ControlFlow {
           result = first(is.getCondition()) and
           c instanceof SimpleCompletion
           or
-          cfe = lastIfStmtCondition(is, c)
-          and
+          cfe = lastIfStmtCondition(is, c) and
           (
             // Flow from last element of condition to first element of then branch
             c instanceof TrueCompletion and result = first(is.getThen())
@@ -2079,31 +2035,27 @@ module ControlFlow {
           result = first(ss.getStmt(0))
           or
           // Flow from last element of non-`case` statement `i` to first element of statement `i+1`
-          exists(int i |
-            cfe = lastSwitchStmtStmt(ss, i, c) |
+          exists(int i | cfe = lastSwitchStmtStmt(ss, i, c) |
             not ss.getStmt(i) instanceof CaseStmt and
             c instanceof NormalCompletion and
             result = first(ss.getStmt(i + 1))
           )
           or
           // Flow from last element of `case` statement `i` to first element of statement `i+1`
-          exists(int i |
-            cfe = lastSwitchStmtCaseStmt(ss, i, c) |
+          exists(int i | cfe = lastSwitchStmtCaseStmt(ss, i, c) |
             c instanceof NormalCompletion and
             result = first(ss.getStmt(i + 1))
           )
           or
           // Flow from last element of case expression to next case
-          exists(ConstCase cc, int i |
-            cc = ss.getCase(i) |
+          exists(ConstCase cc, int i | cc = ss.getCase(i) |
             cfe = lastConstCaseExpr(cc, c) and
             c = any(MatchingCompletion mc | not mc.isMatch()) and
             result = first(ss.getCase(i + 1))
           )
           or
           // Flow from last element of condition to next case
-          exists(CaseStmt tc, int i |
-            tc = ss.getCase(i) |
+          exists(CaseStmt tc, int i | tc = ss.getCase(i) |
             cfe = lastCaseCondition(tc, c) and
             c instanceof FalseCompletion and
             result = first(ss.getCase(i + 1))
@@ -2111,7 +2063,8 @@ module ControlFlow {
           or
           exists(GotoCompletion gc |
             cfe = lastSwitchStmtStmt(ss, _, gc) and
-            gc = c |
+            gc = c
+          |
             // Flow from last element of a statement with a `goto default` completion
             // to first element `default` statement
             gc instanceof GotoDefaultCompletion and
@@ -2134,8 +2087,10 @@ module ControlFlow {
           c instanceof SimpleCompletion
           or
           cfe = lastConstCaseExpr(cc, c) and
-          c.(MatchingCompletion).isMatch() and (
-            if exists(cc.getCondition()) then
+          c.(MatchingCompletion).isMatch() and
+          (
+            if exists(cc.getCondition())
+            then
               // Flow from the last element of case expression to the condition
               result = first(cc.getCondition())
             else
@@ -2158,26 +2113,30 @@ module ControlFlow {
           cfe = tc.getTypeAccess() and
           c.isValidFor(cfe) and
           c = any(MatchingCompletion mc |
-            if mc.isMatch() then
-              if exists(tc.getVariableDeclExpr()) then
-                // Flow from type test to first element of variable declaration
-                result = first(tc.getVariableDeclExpr())
-              else if exists(tc.getCondition()) then
-                // Flow from type test to first element of condition
-                result = first(tc.getCondition())
+              if mc.isMatch()
+              then
+                if exists(tc.getVariableDeclExpr())
+                then
+                  // Flow from type test to first element of variable declaration
+                  result = first(tc.getVariableDeclExpr())
+                else
+                  if exists(tc.getCondition())
+                  then
+                    // Flow from type test to first element of condition
+                    result = first(tc.getCondition())
+                  else
+                    // Flow from type test to first element of statement
+                    result = first(tc.getStmt())
               else
-                // Flow from type test to first element of statement
-                result = first(tc.getStmt())
-            else
-              // Flow from type test to first element of next case
-              exists(SwitchStmt ss, int i |
-                tc = ss.getCase(i) |
-                result = first(ss.getCase(i + 1))
-              )
-          )
+                // Flow from type test to first element of next case
+                exists(SwitchStmt ss, int i | tc = ss.getCase(i) |
+                  result = first(ss.getCase(i + 1))
+                )
+            )
           or
           cfe = lastTypeCaseVariableDeclExpr(tc, c) and
-          if exists(tc.getCondition()) then
+          if exists(tc.getCondition())
+          then
             // Flow from variable declaration to first element of condition
             result = first(tc.getCondition())
           else
@@ -2204,16 +2163,16 @@ module ControlFlow {
         )
         or
         cfe = any(WhileStmt ws |
-          // Pre-order: flow from statement itself to first element of condition
-          result = first(ws.getCondition()) and
-          c instanceof SimpleCompletion
-        )
+            // Pre-order: flow from statement itself to first element of condition
+            result = first(ws.getCondition()) and
+            c instanceof SimpleCompletion
+          )
         or
         cfe = any(DoStmt ds |
-          // Pre-order: flow from statement itself to first element of body
-          result = first(ds.getBody()) and
-          c instanceof SimpleCompletion
-        )
+            // Pre-order: flow from statement itself to first element of body
+            result = first(ds.getBody()) and
+            c instanceof SimpleCompletion
+          )
         or
         exists(ForStmt fs |
           // Pre-order: flow from statement itself to first element of first initializer/
@@ -2221,7 +2180,8 @@ module ControlFlow {
           exists(ControlFlowElement next |
             cfe = fs and
             result = first(next) and
-            c instanceof SimpleCompletion |
+            c instanceof SimpleCompletion
+          |
             next = fs.getInitializer(0)
             or
             not exists(fs.getInitializer(0)) and
@@ -2229,15 +2189,13 @@ module ControlFlow {
           )
           or
           // Flow from last element of initializer `i` to first element of initializer `i+1`
-          exists(int i |
-            cfe = lastForStmtInitializer(fs, i, c) |
+          exists(int i | cfe = lastForStmtInitializer(fs, i, c) |
             c instanceof NormalCompletion and
             result = first(fs.getInitializer(i + 1))
           )
           or
           // Flow from last element of last initializer to first element of condition/loop body
-          exists(int last |
-            last = max(int i | exists(fs.getInitializer(i))) |
+          exists(int last | last = max(int i | exists(fs.getInitializer(i))) |
             cfe = lastForStmtInitializer(fs, last, c) and
             c instanceof NormalCompletion and
             result = first(getForStmtConditionOrBody(fs))
@@ -2253,10 +2211,9 @@ module ControlFlow {
             cfe = lastLoopStmtBody(fs, c) and
             c.continuesLoop() and
             result = first(next) and
-            if exists(fs.getUpdate(0)) then
-              next = fs.getUpdate(0)
-            else
-              next = getForStmtConditionOrBody(fs)
+            if exists(fs.getUpdate(0))
+            then next = fs.getUpdate(0)
+            else next = getForStmtConditionOrBody(fs)
           )
           or
           // Flow from last element of update to first element of next update/condition/loop body
@@ -2264,10 +2221,9 @@ module ControlFlow {
             cfe = lastForStmtUpdate(fs, i, c) and
             c instanceof NormalCompletion and
             result = first(next) and
-            if exists(fs.getUpdate(i + 1)) then
-              next = fs.getUpdate(i + 1)
-            else
-              next = getForStmtConditionOrBody(fs)
+            if exists(fs.getUpdate(i + 1))
+            then next = fs.getUpdate(i + 1)
+            else next = getForStmtConditionOrBody(fs)
           )
         )
         or
@@ -2311,8 +2267,7 @@ module ControlFlow {
           exists(getAThrownException(ts, cfe, c)) and
           result = first(ts.getCatchClause(0))
           or
-          exists(SpecificCatchClause scc, int i |
-            scc = ts.getCatchClause(i) |
+          exists(SpecificCatchClause scc, int i | scc = ts.getCatchClause(i) |
             cfe = scc and
             scc = lastTryStmtCatchClause(ts, i, c) and
             (
@@ -2349,36 +2304,29 @@ module ControlFlow {
           cfe = lastTryStmtBlock(ts, c) and
           result = first(ts.getFinally()) and
           not c instanceof ExitCompletion and
-          (
-            c instanceof ThrowCompletion
-            implies
-            not exists(ts.getACatchClause())
-          )
+          (c instanceof ThrowCompletion implies not exists(ts.getACatchClause()))
         )
         or
         exists(SpecificCatchClause scc |
           // Flow from catch clause to variable declaration/filter clause/block
           cfe = scc and
           c.(MatchingCompletion).isMatch() and
-          exists(ControlFlowElement next |
-            result = first(next) |
-            if exists(scc.getVariableDeclExpr()) then
-              next = scc.getVariableDeclExpr()
-            else if exists(scc.getFilterClause()) then
-              next = scc.getFilterClause()
+          exists(ControlFlowElement next | result = first(next) |
+            if exists(scc.getVariableDeclExpr())
+            then next = scc.getVariableDeclExpr()
             else
-              next = scc.getBlock()
+              if exists(scc.getFilterClause())
+              then next = scc.getFilterClause()
+              else next = scc.getBlock()
           )
           or
           // Flow from variable declaration to filter clause/block
           cfe = last(scc.getVariableDeclExpr(), c) and
           c instanceof SimpleCompletion and
-          exists(ControlFlowElement next |
-            result = first(next) |
-            if exists(scc.getFilterClause()) then
-              next = scc.getFilterClause()
-            else
-              next = scc.getBlock()
+          exists(ControlFlowElement next | result = first(next) |
+            if exists(scc.getFilterClause())
+            then next = scc.getFilterClause()
+            else next = scc.getBlock()
           )
           or
           // Flow from filter to block
@@ -2393,20 +2341,20 @@ module ControlFlow {
         or
         // Flow from constructor initializer to first element of constructor body
         cfe = any(ConstructorInitializer ci |
-          c instanceof SimpleCompletion and
-          result = first(ci.getConstructor().getBody())
-        )
+            c instanceof SimpleCompletion and
+            result = first(ci.getConstructor().getBody())
+          )
         or
         // Flow from element with `goto` completion to first element of relevant
         // target
         c = any(GotoLabelCompletion glc |
-          cfe = last(_, glc) and
-          // Special case: when a `goto` happens inside a `try` statement with a
-          // `finally` block, flow does not go directly to the target, but instead
-          // to the `finally` block (and from there possibly to the target)
-          not cfe = getBlockOrCatchFinallyPred(any(TryStmt ts | ts.hasFinally()), _) and
-          result = first(glc.getGotoStmt().getTarget())
-        )
+            cfe = last(_, glc) and
+            // Special case: when a `goto` happens inside a `try` statement with a
+            // `finally` block, flow does not go directly to the target, but instead
+            // to the `finally` block (and from there possibly to the target)
+            not cfe = getBlockOrCatchFinallyPred(any(TryStmt ts | ts.hasFinally()), _) and
+            result = first(glc.getGotoStmt().getTarget())
+          )
       }
 
       /**
@@ -2434,10 +2382,9 @@ module ControlFlow {
        */
       ControlFlowElement succEntry(@top_level_exprorstmt_parent p) {
         p = any(Callable c |
-            if exists(c.(Constructor).getInitializer()) then
-              result = first(c.(Constructor).getInitializer())
-            else
-              result = first(c.getBody())
+            if exists(c.(Constructor).getInitializer())
+            then result = first(c.(Constructor).getInitializer())
+            else result = first(c.getBody())
           )
         or
         expr_parent_top_level_adjusted(any(Expr e | result = first(e)), _, p) and
@@ -2476,7 +2423,8 @@ module ControlFlow {
         or
         exists(ControlFlowElement pred, int i |
           cfe = succ(pred, _) and
-          i = count(ControlFlowElement succ, Completion c | succ = succ(pred, c)) |
+          i = count(ControlFlowElement succ, Completion c | succ = succ(pred, c))
+        |
           i > 1
           or
           i = 1 and
@@ -2496,9 +2444,7 @@ module ControlFlow {
         succ = pred.getASuccessor()
       }
 
-      private predicate entryBB(PreBasicBlock bb) {
-        bb = succEntry(_)
-      }
+      private predicate entryBB(PreBasicBlock bb) { bb = succEntry(_) }
 
       private predicate bbIDominates(PreBasicBlock dom, PreBasicBlock bb) =
         idominance(entryBB/1, succBB/2)(_, dom, bb)
@@ -2512,37 +2458,21 @@ module ControlFlow {
 
         PreBasicBlock getASuccessor() { result = this.getASuccessorByType(_) }
 
-        PreBasicBlock getAPredecessor() {
-          result.getASuccessor() = this
-        }
+        PreBasicBlock getAPredecessor() { result.getASuccessor() = this }
 
-        ControlFlowElement getElement(int pos) {
-          bbIndex(this, result, pos)
-        }
+        ControlFlowElement getElement(int pos) { bbIndex(this, result, pos) }
 
-        ControlFlowElement getAnElement() {
-          result = this.getElement(_)
-        }
+        ControlFlowElement getAnElement() { result = this.getElement(_) }
 
-        ControlFlowElement getFirstElement() {
-          result = this
-        }
+        ControlFlowElement getFirstElement() { result = this }
 
-        ControlFlowElement getLastElement() {
-          result = this.getElement(length() - 1)
-        }
+        ControlFlowElement getLastElement() { result = this.getElement(length() - 1) }
 
-        int length() {
-          result = strictcount(getAnElement())
-        }
+        int length() { result = strictcount(getAnElement()) }
 
-        predicate immediatelyDominates(PreBasicBlock bb) {
-          bbIDominates(this, bb)
-        }
+        predicate immediatelyDominates(PreBasicBlock bb) { bbIDominates(this, bb) }
 
-        predicate strictlyDominates(PreBasicBlock bb) {
-          this.immediatelyDominates+(bb)
-        }
+        predicate strictlyDominates(PreBasicBlock bb) { this.immediatelyDominates+(bb) }
 
         predicate dominates(PreBasicBlock bb) {
           bb = this
@@ -2571,15 +2501,13 @@ module ControlFlow {
 
         private predicate immediatelyControls(PreBasicBlock succ, ConditionalCompletion c) {
           succ = succ(this.getLastElement(), c) and
-          forall(PreBasicBlock pred |
-            pred = succ.getAPredecessor() and pred != this |
+          forall(PreBasicBlock pred | pred = succ.getAPredecessor() and pred != this |
             succ.dominates(pred)
           )
         }
 
         predicate controls(PreBasicBlock controlled, ConditionalSuccessor s) {
-          exists(PreBasicBlock succ, ConditionalCompletion c |
-            immediatelyControls(succ, c) |
+          exists(PreBasicBlock succ, ConditionalCompletion c | immediatelyControls(succ, c) |
             succ.dominates(controlled) and
             s.matchesCompletion(c)
           )
@@ -2614,18 +2542,13 @@ module ControlFlow {
             or
             this = any(TrivialProperty tp | not tp.isOverridableOrImplementable())
           ) and
-          forall(AssignableDefinition def |
-            def.getTarget() = this |
+          forall(AssignableDefinition def | def.getTarget() = this |
             c = def.getEnclosingCallable()
             or
             def.getEnclosingCallable() instanceof Constructor
           ) and
-          exists(AssignableAccess aa |
-            aa.getTarget() = this |
-            c = aa.getEnclosingCallable()
-          ) and
-          forall(QualifiableExpr qe |
-            qe.(AssignableAccess).getTarget() = this |
+          exists(AssignableAccess aa | aa.getTarget() = this | c = aa.getEnclosingCallable()) and
+          forall(QualifiableExpr qe | qe.(AssignableAccess).getTarget() = this |
             qe.targetIsThisInstance()
           )
         }
@@ -2636,18 +2559,15 @@ module ControlFlow {
 
       class Definition extends TPreSsaDef {
         string toString() {
-          exists(AssignableDefinition def |
-            this = TExplicitPreSsaDef(_, _, def, _) |
+          exists(AssignableDefinition def | this = TExplicitPreSsaDef(_, _, def, _) |
             result = def.toString()
           )
           or
-          exists(SimpleAssignable a |
-            this = TImplicitEntryPreSsaDef(_, _, a) |
+          exists(SimpleAssignable a | this = TImplicitEntryPreSsaDef(_, _, a) |
             result = "implicit(" + a + ")"
           )
           or
-          exists(SimpleAssignable a |
-            this = TPhiPreSsaDef(_, a) |
+          exists(SimpleAssignable a | this = TPhiPreSsaDef(_, a) |
             result = "phi(" + a.toString() + ")"
           )
         }
@@ -2663,27 +2583,19 @@ module ControlFlow {
         AssignableRead getARead() {
           firstReadSameVar(this, result)
           or
-          exists(AssignableRead read |
-            firstReadSameVar(this, read) |
+          exists(AssignableRead read | firstReadSameVar(this, read) |
             adjacentReadPairSameVar+(read, result)
           )
         }
 
         Location getLocation() {
-          exists(AssignableDefinition def |
-            this = TExplicitPreSsaDef(_, _, def, _) |
+          exists(AssignableDefinition def | this = TExplicitPreSsaDef(_, _, def, _) |
             result = def.getLocation()
           )
           or
-          exists(Callable c |
-            this = TImplicitEntryPreSsaDef(c, _, _) |
-            result = c.getLocation()
-          )
+          exists(Callable c | this = TImplicitEntryPreSsaDef(c, _, _) | result = c.getLocation())
           or
-          exists(PreBasicBlock bb |
-            this = TPhiPreSsaDef(bb, _) |
-            result = bb.getLocation()
-          )
+          exists(PreBasicBlock bb | this = TPhiPreSsaDef(bb, _) | result = bb.getLocation())
         }
 
         PreBasicBlock getBasicBlock() {
@@ -2694,17 +2606,14 @@ module ControlFlow {
           this = TPhiPreSsaDef(result, _)
         }
 
-        Callable getCallable() {
-          result = this.getBasicBlock().getEnclosingCallable()
-        }
+        Callable getCallable() { result = this.getBasicBlock().getEnclosingCallable() }
 
-        AssignableDefinition getDefinition() {
-          this = TExplicitPreSsaDef(_, _, result, _)
-        }
+        AssignableDefinition getDefinition() { this = TExplicitPreSsaDef(_, _, result, _) }
 
         Definition getAPhiInput() {
           exists(PreBasicBlock bb, PreBasicBlock phiPred, SimpleAssignable a |
-            this = TPhiPreSsaDef(bb, a) |
+            this = TPhiPreSsaDef(bb, a)
+          |
             bb.getAPredecessor() = phiPred and
             ssaDefReachesEndOfBlock(phiPred, result, a)
           )
@@ -2717,20 +2626,20 @@ module ControlFlow {
         bb = succEntry(c)
       }
 
-      private predicate assignableDefAt(PreBasicBlocks::PreBasicBlock bb, int i, AssignableDefinition def, SimpleAssignable a) {
+      private predicate assignableDefAt(
+        PreBasicBlocks::PreBasicBlock bb, int i, AssignableDefinition def, SimpleAssignable a
+      ) {
         bb.getElement(i) = def.getExpr() and
         a = def.getTarget() and
         // In cases like `(x, x) = (0, 1)`, we discard the first (dead) definition of `x`
-        not exists(TupleAssignmentDefinition first, TupleAssignmentDefinition second |
-          first = def |
+        not exists(TupleAssignmentDefinition first, TupleAssignmentDefinition second | first = def |
           second.getAssignment() = first.getAssignment() and
           second.getEvaluationOrder() > first.getEvaluationOrder() and
           second.getTarget() = a
         )
         or
         def.(ImplicitParameterDefinition).getParameter() = a and
-        exists(Callable c |
-          a = c.getAParameter() |
+        exists(Callable c | a = c.getAParameter() |
           bb = succEntry(c) and
           i = -1
         )
@@ -2754,17 +2663,15 @@ module ControlFlow {
       }
 
       private newtype RefKind =
-        Read()
-        or
+        Read() or
         Write(boolean certain) { certain = true or certain = false }
 
       private predicate ref(PreBasicBlock bb, int i, SimpleAssignable a, RefKind k) {
         (readAt(bb, i, _, a) or outRefExitRead(bb, i, a)) and
         k = Read()
         or
-        exists(AssignableDefinition def, boolean certain |
-          assignableDefAt(bb, i, def, a) |
-          if def.getTargetAccess().isRefArgument() then certain = false else certain = true and
+        exists(AssignableDefinition def, boolean certain | assignableDefAt(bb, i, def, a) |
+          (if def.getTargetAccess().isRefArgument() then certain = false else certain = true) and
           k = Write(certain)
         )
       }
@@ -2781,11 +2688,11 @@ module ControlFlow {
 
       private int firstReadOrCertainWrite(PreBasicBlock bb, SimpleAssignable a) {
         result = min(int r, RefKind k |
-          r = refRank(bb, _, a, k) and
-          k != Write(false)
+            r = refRank(bb, _, a, k) and
+            k != Write(false)
           |
-          r
-        )
+            r
+          )
       }
 
       predicate liveAtEntry(PreBasicBlock bb, SimpleAssignable a) {
@@ -2799,10 +2706,11 @@ module ControlFlow {
         liveAtEntry(bb.getASuccessor(), a)
       }
 
-      predicate assignableDefAtLive(PreBasicBlocks::PreBasicBlock bb, int i, AssignableDefinition def, SimpleAssignable a) {
+      predicate assignableDefAtLive(
+        PreBasicBlocks::PreBasicBlock bb, int i, AssignableDefinition def, SimpleAssignable a
+      ) {
         assignableDefAt(bb, i, def, a) and
-        exists(int rnk |
-          rnk = refRank(bb, i, a, Write(_)) |
+        exists(int rnk | rnk = refRank(bb, i, a, Write(_)) |
           rnk + 1 = refRank(bb, _, a, Read())
           or
           rnk = maxRefRank(bb, a) and
@@ -2818,7 +2726,9 @@ module ControlFlow {
         def = TPhiPreSsaDef(bb, a) and i = -1
       }
 
-      private newtype SsaRefKind = SsaRead() or SsaDef()
+      private newtype SsaRefKind =
+        SsaRead() or
+        SsaDef()
 
       private predicate ssaRef(PreBasicBlock bb, int i, SimpleAssignable a, SsaRefKind k) {
         readAt(bb, i, _, a) and
@@ -2849,10 +2759,7 @@ module ControlFlow {
       }
 
       private predicate reachesEndOf(Definition def, SimpleAssignable a, PreBasicBlock bb) {
-        exists(int last |
-          last = maxSsaRefRank(bb, a) |
-          defReachesRank(bb, def, a, last)
-        )
+        exists(int last | last = maxSsaRefRank(bb, a) | defReachesRank(bb, def, a, last))
         or
         exists(PreBasicBlock mid |
           reachesEndOf(def, a, mid) and
@@ -2865,7 +2772,7 @@ module ControlFlow {
         exists(ssaRefRank(bb, _, a, _))
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private predicate blockPrecedesVar(SimpleAssignable a, PreBasicBlock bb) {
         varOccursInBlock(a, bb.getASuccessor*())
       }
@@ -2879,10 +2786,9 @@ module ControlFlow {
         blockPrecedesVar(a, bb2)
       }
 
-      pragma [nomagic]
+      pragma[nomagic]
       private predicate varBlockReachesRec(SimpleAssignable a, PreBasicBlock bb1, PreBasicBlock bb2) {
-        exists(PreBasicBlock mid |
-          varBlockReaches(a, bb1, mid) |
+        exists(PreBasicBlock mid | varBlockReaches(a, bb1, mid) |
           bb2 = mid.getASuccessor() and
           not varOccursInBlock(a, mid)
         )
@@ -2893,7 +2799,9 @@ module ControlFlow {
         varOccursInBlock(a, bb2)
       }
 
-      private predicate adjacentVarRefs(SimpleAssignable a, PreBasicBlock bb1, int i1, PreBasicBlock bb2, int i2) {
+      private predicate adjacentVarRefs(
+        SimpleAssignable a, PreBasicBlock bb1, int i1, PreBasicBlock bb2, int i2
+      ) {
         exists(int rankix |
           bb1 = bb2 and
           rankix = ssaRefRank(bb1, i1, a, _) and
@@ -2922,16 +2830,16 @@ module ControlFlow {
       }
 
       pragma[noinline]
-      private predicate ssaDefReachesEndOfBlockRec(PreBasicBlock bb, Definition def, SimpleAssignable a) {
-        exists(PreBasicBlock idom |
-          ssaDefReachesEndOfBlock(idom, def, a) |
+      private predicate ssaDefReachesEndOfBlockRec(
+        PreBasicBlock bb, Definition def, SimpleAssignable a
+      ) {
+        exists(PreBasicBlock idom | ssaDefReachesEndOfBlock(idom, def, a) |
           idom.immediatelyDominates(bb)
         )
       }
 
       predicate ssaDefReachesEndOfBlock(PreBasicBlock bb, Definition def, SimpleAssignable a) {
-        exists(int last |
-          last = maxSsaRefRank(bb, a) |
+        exists(int last | last = maxSsaRefRank(bb, a) |
           defReachesRank(bb, def, a, last) and
           liveAtExit(bb, a)
         )
@@ -2964,9 +2872,7 @@ module ControlFlow {
         SplitInternal getASplit() { result.getKind() = this }
 
         /** Holds if some split of this kind applies to control flow element `cfe`. */
-        predicate appliesTo(ControlFlowElement cfe) {
-          this.getASplit().appliesTo(cfe)
-        }
+        predicate appliesTo(ControlFlowElement cfe) { this.getASplit().appliesTo(cfe) }
 
         /**
          * Gets a unique integer representing this split kind. The integer is used
@@ -2981,10 +2887,7 @@ module ControlFlow {
          */
         int getListRank(ControlFlowElement cfe) {
           this.appliesTo(cfe) and
-          this = rank[result](SplitKind sk |
-            sk.appliesTo(cfe) |
-            sk order by sk.getListOrder()
-          )
+          this = rank[result](SplitKind sk | sk.appliesTo(cfe) | sk order by sk.getListOrder())
         }
 
         /** Gets a textual representation of this split kind. */
@@ -3027,16 +2930,15 @@ module ControlFlow {
          *
          * Invariant: `hasSuccessor(pred, succ, c) implies succ = Successor::succ(pred, c)`
          */
-        abstract predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c);
+        abstract predicate hasSuccessor(
+          ControlFlowElement pred, ControlFlowElement succ, Completion c
+        );
 
         /** Holds if this split applies to control flow element `cfe`. */
         final predicate appliesTo(ControlFlowElement cfe) {
           this.hasEntry(_, cfe, _)
           or
-          exists(ControlFlowElement pred |
-            this.appliesTo(pred) |
-            this.hasSuccessor(pred, cfe, _)
-          )
+          exists(ControlFlowElement pred | this.appliesTo(pred) | this.hasSuccessor(pred, cfe, _))
         }
       }
 
@@ -3050,18 +2952,16 @@ module ControlFlow {
          * the `finally` block exits normally).
          */
         class FinallySplitType extends SuccessorType {
-          FinallySplitType() {
-            not this instanceof ConditionalSuccessor
-          }
+          FinallySplitType() { not this instanceof ConditionalSuccessor }
 
           /** Holds if this split type matches entry into a `finally` block with completion `c`. */
           predicate isSplitForEntryCompletion(Completion c) {
-            if c instanceof NormalCompletion then
+            if c instanceof NormalCompletion
+            then
               // If the entry into the `finally` block completes with any normal completion,
               // it simply means normal execution after the `finally` block
               this instanceof NormalSuccessor
-            else
-              this.matchesCompletion(c)
+            else this.matchesCompletion(c)
           }
         }
 
@@ -3090,16 +2990,11 @@ module ControlFlow {
 
         /** A control flow element that belongs to a `finally` block. */
         private class FinallyControlFlowElement extends ControlFlowElement {
-          FinallyControlFlowElement() {
-            this = getAFinallyDescendant(_)
-          }
+          FinallyControlFlowElement() { this = getAFinallyDescendant(_) }
 
           /** Holds if this node is the entry node in the `finally` block it belongs to. */
           predicate isEntryNode() {
-            exists(TryStmt try |
-              this = getAFinallyDescendant(try) |
-              this = first(try.getFinally())
-            )
+            exists(TryStmt try | this = getAFinallyDescendant(try) | this = first(try.getFinally()))
           }
 
           /**
@@ -3114,9 +3009,7 @@ module ControlFlow {
 
         /** A control flow element that does not belong to a `finally` block. */
         private class NonFinallyControlFlowElement extends ControlFlowElement {
-          NonFinallyControlFlowElement() {
-            not this = getAFinallyDescendant(_)
-          }
+          NonFinallyControlFlowElement() { not this = getAFinallyDescendant(_) }
         }
 
         /**
@@ -3148,20 +3041,18 @@ module ControlFlow {
            * Gets the type of this `finally` split, that is, how to continue execution after the
            * `finally` block.
            */
-          FinallySplitType getType() {
-            result = type
-          }
+          FinallySplitType getType() { result = type }
 
           override string toString() {
-            if type instanceof NormalSuccessor then
-              result = ""
-            else
-              result = "finally: " + type.toString()
+            if type instanceof NormalSuccessor
+            then result = ""
+            else result = "finally: " + type.toString()
           }
         }
 
         private class FinallySplitKind extends SplitKind, TFinallySplitKind {
           override int getListOrder() { result = 0 }
+
           override string toString() { result = "Finally" }
         }
 
@@ -3196,8 +3087,10 @@ module ControlFlow {
             this.appliesToPredecessor(pred) and
             exists(TryStmt try, FinallySplitType type |
               type = this.getType() and
-              pred = last(try, c) |
-              if pred.(FinallyControlFlowElement).isExitNode(try, c) then (
+              pred = last(try, c)
+            |
+              if pred.(FinallyControlFlowElement).isExitNode(try, c)
+              then (
                 // Finally block can itself exit with completion `c`: either `c` must
                 // match this split, `c` must be an abnormal completion, or this split
                 // does not require another completion to be recovered
@@ -3240,23 +3133,29 @@ module ControlFlow {
             )
           }
 
-          override predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+          override predicate hasSuccessor(
+            ControlFlowElement pred, ControlFlowElement succ, Completion c
+          ) {
             this.appliesToPredecessor(pred) and
             succ = succ(pred, c) and
             succ = any(FinallyControlFlowElement fcfe |
-              if fcfe.isEntryNode() then
-                // Entering a nested `finally` block normally must remember the outer split
-                c instanceof NormalCompletion
-              else
-                // Staying in the same `finally` block should maintain this split
-                not this.hasEntry(pred, succ, c)
-            )
+                if fcfe.isEntryNode()
+                then
+                  // Entering a nested `finally` block normally must remember the outer split
+                  c instanceof NormalCompletion
+                else
+                  // Staying in the same `finally` block should maintain this split
+                  not this.hasEntry(pred, succ, c)
+              )
           }
         }
       }
 
       module ExceptionHandlerSplitting {
-        private newtype TMatch = TAlways() or TMaybe() or TNever()
+        private newtype TMatch =
+          TAlways() or
+          TMaybe() or
+          TNever()
 
         /**
          * A split for elements belonging to a `catch` clause, which determines the type of
@@ -3306,6 +3205,7 @@ module ControlFlow {
 
         private class ExceptionHandlerSplitKind extends SplitKind, TExceptionHandlerSplitKind {
           override int getListOrder() { result = 1 }
+
           override string toString() { result = "ExceptionHandler" }
         }
 
@@ -3314,8 +3214,7 @@ module ControlFlow {
 
           override predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
             // Entry into first catch clause
-            exists(TryStmt ts |
-              this.getExceptionClass() = getAThrownException(ts, pred, c) |
+            exists(TryStmt ts | this.getExceptionClass() = getAThrownException(ts, pred, c) |
               succ = succ(pred, c) and
               succ = ts.getCatchClause(0).(SpecificCatchClause)
             )
@@ -3330,13 +3229,14 @@ module ControlFlow {
             exists(TryStmt ts, ExceptionClass ec |
               ec = this.getExceptionClass() and
               ec = getAThrownException(ts, _, _) and
-              scc = ts.getACatchClause() |
-              if scc.getCaughtExceptionType() = ec.getABaseType*() then
-                match = TAlways()
-              else if scc.getCaughtExceptionType() = ec.getASubType+() then
-                match = TMaybe()
+              scc = ts.getACatchClause()
+            |
+              if scc.getCaughtExceptionType() = ec.getABaseType*()
+              then match = TAlways()
               else
-                match = TNever()
+                if scc.getCaughtExceptionType() = ec.getASubType+()
+                then match = TMaybe()
+                else match = TNever()
             )
           }
 
@@ -3351,25 +3251,21 @@ module ControlFlow {
               pred instanceof SpecificCatchClause
               implies
               pred = any(SpecificCatchClause scc |
-                if c instanceof MatchingCompletion then
-                  exists(TMatch match |
-                    this.appliesToCatchClause(scc, match) |
-                    c = any(MatchingCompletion mc |
-                      if mc.isMatch() then
-                        match != TNever()
-                      else
-                        match != TAlways()
+                  if c instanceof MatchingCompletion
+                  then
+                    exists(TMatch match | this.appliesToCatchClause(scc, match) |
+                      c = any(MatchingCompletion mc |
+                          if mc.isMatch() then match != TNever() else match != TAlways()
+                        )
+                    )
+                  else (
+                    (scc.isLast() and c instanceof ThrowCompletion)
+                    implies
+                    exists(TMatch match | this.appliesToCatchClause(scc, match) |
+                      match != TAlways()
                     )
                   )
-                else (
-                  (scc.isLast() and c instanceof ThrowCompletion)
-                  implies
-                  exists(TMatch match |
-                    this.appliesToCatchClause(scc, match) |
-                    match != TAlways()
-                  )
                 )
-              )
             )
           }
 
@@ -3381,7 +3277,8 @@ module ControlFlow {
           private predicate hasLastExit(ControlFlowElement pred, ThrowCompletion c) {
             this.appliesToPredecessor(pred, c) and
             exists(TryStmt ts, SpecificCatchClause scc, int last |
-              pred = lastTryStmtCatchClause(ts, last, c) |
+              pred = lastTryStmtCatchClause(ts, last, c)
+            |
               ts.getCatchClause(last) = scc and
               scc.isLast() and
               c.getExceptionClass() = this.getExceptionClass()
@@ -3409,13 +3306,16 @@ module ControlFlow {
             exists(succExit(pred, c))
           }
 
-          override predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+          override predicate hasSuccessor(
+            ControlFlowElement pred, ControlFlowElement succ, Completion c
+          ) {
             this.appliesToPredecessor(pred, c) and
             succ = succ(pred, c) and
             not succ = first(any(SpecificCatchClause scc).getBlock()) and
             not succ instanceof GeneralCatchClause and
             not exists(TryStmt ts, SpecificCatchClause scc, int last |
-              pred = lastTryStmtCatchClause(ts, last, c) |
+              pred = lastTryStmtCatchClause(ts, last, c)
+            |
               ts.getCatchClause(last) = scc and
               scc.isLast()
             )
@@ -3447,7 +3347,9 @@ module ControlFlow {
            * the branch taken in the condition on line 2 can be recorded, and the
            * recorded value will detmine the branch taken in the condition on line 4.
            */
-          abstract predicate correlatesConditions(ConditionBlock cb1, ConditionBlock cb2, boolean inverted);
+          abstract predicate correlatesConditions(
+            ConditionBlock cb1, ConditionBlock cb2, boolean inverted
+          );
 
           /** Holds if control flow element `cfe` starts a split of this kind. */
           predicate startsSplit(ControlFlowElement cfe) {
@@ -3488,16 +3390,12 @@ module ControlFlow {
         class SsaBooleanSplitSubKind extends BooleanSplitSubKind, TSsaBooleanSplitSubKind {
           private PreSsa::Definition def;
 
-          SsaBooleanSplitSubKind() {
-            this = TSsaBooleanSplitSubKind(def)
-          }
+          SsaBooleanSplitSubKind() { this = TSsaBooleanSplitSubKind(def) }
 
           /**
            * Holds if condition `cb` is a read of the SSA variable in this split.
            */
-          private predicate defCondition(ConditionBlock cb) {
-            cb.getLastElement() = def.getARead()
-          }
+          private predicate defCondition(ConditionBlock cb) { cb.getLastElement() = def.getARead() }
 
           /**
            * Holds if condition `cb` is a read of the SSA variable in this split,
@@ -3508,8 +3406,7 @@ module ControlFlow {
             this.defCondition(cb) and
             read = cb.getLastElement()
             or
-            exists(AssignableRead mid |
-              this.defConditionReachableFromRead(cb, mid) |
+            exists(AssignableRead mid | this.defConditionReachableFromRead(cb, mid) |
               adjacentReadPairSameVar(read, mid) and
               not this.defCondition(read)
             )
@@ -3521,13 +3418,14 @@ module ControlFlow {
            * another condition that reads the same SSA variable.
            */
           private predicate firstDefCondition(ConditionBlock cb) {
-            exists(AssignableRead read |
-              this.defConditionReachableFromRead(cb, read) |
+            exists(AssignableRead read | this.defConditionReachableFromRead(cb, read) |
               firstReadSameVar(def, read)
             )
           }
 
-          override predicate correlatesConditions(ConditionBlock cb1, ConditionBlock cb2, boolean inverted) {
+          override predicate correlatesConditions(
+            ConditionBlock cb1, ConditionBlock cb2, boolean inverted
+          ) {
             this.firstDefCondition(cb1) and
             exists(AssignableRead read1, AssignableRead read2 |
               read1 = cb1.getLastElement() and
@@ -3541,24 +3439,17 @@ module ControlFlow {
             this.correlatesConditions(_, bb, _) and
             not def.getBasicBlock() = bb
             or
-            exists(PreBasicBlock mid |
-              this.canReachCorrelatedCondition(mid) |
+            exists(PreBasicBlock mid | this.canReachCorrelatedCondition(mid) |
               bb = mid.getAPredecessor() and
               not def.getBasicBlock() = bb
             )
           }
 
-          override Callable getEnclosingCallable() {
-            result = def.getCallable()
-          }
+          override Callable getEnclosingCallable() { result = def.getCallable() }
 
-          override string toString() {
-            result = def.getAssignable().toString()
-          }
+          override string toString() { result = def.getAssignable().toString() }
 
-          override Location getLocation() {
-            result = def.getLocation()
-          }
+          override Location getLocation() { result = def.getLocation() }
         }
 
         /**
@@ -3578,11 +3469,10 @@ module ControlFlow {
          */
         class BooleanSplitImpl extends SplitImpl, TBooleanSplit {
           private BooleanSplitSubKind kind;
+
           private boolean branch;
 
-          BooleanSplitImpl() {
-            this = TBooleanSplit(kind, branch)
-          }
+          BooleanSplitImpl() { this = TBooleanSplit(kind, branch) }
 
           /** Gets the kind of this Boolean split. */
           BooleanSplitSubKind getSubKind() { result = kind }
@@ -3601,22 +3491,23 @@ module ControlFlow {
         private class BooleanSplitKind extends SplitKind, TBooleanSplitKind {
           private BooleanSplitSubKind kind;
 
-          BooleanSplitKind() {
-            this = TBooleanSplitKind(kind)
-          }
+          BooleanSplitKind() { this = TBooleanSplitKind(kind) }
 
           /** Gets the sub kind of this Boolean split kind. */
           BooleanSplitSubKind getSubKind() { result = kind }
 
           override int getListOrder() {
-            exists(Callable c, int r |
-              c = kind.getEnclosingCallable() |
+            exists(Callable c, int r | c = kind.getEnclosingCallable() |
               result = r + 1 and // start the ordering from 2
               kind = rank[r](BooleanSplitSubKind kind0 |
-                kind0.getEnclosingCallable() = c and
-                kind0.startsSplit(_) |
-                kind0 order by kind0.getLocation().getStartLine(), kind0.getLocation().getStartColumn(), kind0.toString()
-              )
+                  kind0.getEnclosingCallable() = c and
+                  kind0.startsSplit(_)
+                |
+                  kind0
+                  order by
+                    kind0.getLocation().getStartLine(), kind0.getLocation().getStartColumn(),
+                    kind0.toString()
+                )
             )
           }
 
@@ -3624,9 +3515,7 @@ module ControlFlow {
         }
 
         private class BooleanSplitInternal extends SplitInternal, BooleanSplitImpl {
-          override BooleanSplitKind getKind() {
-            result.getSubKind() = this.getSubKind()
-          }
+          override BooleanSplitKind getKind() { result.getSubKind() = this.getSubKind() }
 
           override predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
             succ = succ(pred, c) and
@@ -3644,22 +3533,21 @@ module ControlFlow {
            */
           private predicate appliesToBlock(PreBasicBlock bb, Completion c) {
             this.appliesTo(bb) and
-            exists(ControlFlowElement last |
-              last = bb.getLastElement() |
+            exists(ControlFlowElement last | last = bb.getLastElement() |
               (exists(succ(last, c)) or exists(succExit(last, c))) and
               // Respect the value recorded in this split for all correlated conditions
-              forall(boolean inverted |
-                bb = this.getACorrelatedCondition(inverted) |
+              forall(boolean inverted | bb = this.getACorrelatedCondition(inverted) |
                 c instanceof BooleanCompletion
                 implies
-                c = any(BooleanCompletion bc | bc.getInnerValue() = this.getBranch().booleanXor(inverted))
+                c = any(BooleanCompletion bc |
+                    bc.getInnerValue() = this.getBranch().booleanXor(inverted)
+                  )
               )
             )
           }
 
           override predicate hasExit(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-            exists(PreBasicBlock bb |
-              this.appliesToBlock(bb, c) |
+            exists(PreBasicBlock bb | this.appliesToBlock(bb, c) |
               pred = bb.getLastElement() and
               succ = succ(pred, c) and
               // Exit this split if we can no longer reach a correlated condition
@@ -3668,24 +3556,26 @@ module ControlFlow {
           }
 
           override predicate hasExit(ControlFlowElement pred, Completion c) {
-            exists(PreBasicBlock bb |
-              this.appliesToBlock(bb, c) |
+            exists(PreBasicBlock bb | this.appliesToBlock(bb, c) |
               pred = bb.getLastElement() and
               exists(succExit(pred, c))
             )
           }
 
-          override predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-            exists(PreBasicBlock bb, Completion c0 |
-              this.appliesToBlock(bb, c0) |
+          override predicate hasSuccessor(
+            ControlFlowElement pred, ControlFlowElement succ, Completion c
+          ) {
+            exists(PreBasicBlock bb, Completion c0 | this.appliesToBlock(bb, c0) |
               pred = bb.getAnElement() and
               succ = succ(pred, c) and
               (
                 pred = bb.getLastElement()
                 implies
-                // We must still be able to reach a correlated condition to stay in this split
-                this.getSubKind().canReachCorrelatedCondition(succ) and
-                c = c0
+                (
+                  // We must still be able to reach a correlated condition to stay in this split
+                  this.getSubKind().canReachCorrelatedCondition(succ) and
+                  c = c0
+                )
               )
             )
           }
@@ -3703,22 +3593,22 @@ module ControlFlow {
           result = ""
           or
           exists(SplitInternal head, Splits tail, string headString, string tailString |
-            this = TSplitsCons(head, tail) |
+            this = TSplitsCons(head, tail)
+          |
             headString = head.toString() and
             tailString = tail.toString() and
-            if tailString = "" then
-              result = headString
-            else if headString = "" then
-              result = tailString
+            if tailString = ""
+            then result = headString
             else
-              result = headString + ", " + tailString
+              if headString = ""
+              then result = tailString
+              else result = headString + ", " + tailString
           )
         }
 
         /** Gets a split belonging to this set of splits. */
         SplitInternal getASplit() {
-          exists(SplitInternal head, Splits tail |
-            this = TSplitsCons(head, tail) |
+          exists(SplitInternal head, Splits tail | this = TSplitsCons(head, tail) |
             result = head
             or
             result = tail.getASplit()
@@ -3731,7 +3621,10 @@ module ControlFlow {
        * when entering callable `pred`.
        */
       pragma[noinline]
-      predicate succEntrySplits(@top_level_exprorstmt_parent pred, ControlFlowElement succ, Splits succSplits, SuccessorType t) {
+      predicate succEntrySplits(
+        @top_level_exprorstmt_parent pred, ControlFlowElement succ, Splits succSplits,
+        SuccessorType t
+      ) {
         succ = succEntry(pred) and
         t instanceof NormalSuccessor and
         succSplits = TSplitsNil() // initially no splits
@@ -3741,14 +3634,14 @@ module ControlFlow {
        * Holds if `pred` with splits `predSplits` can exit the enclosing callable
        * `succ` with type `t`.
        */
-      predicate succExitSplits(ControlFlowElement pred, Splits predSplits, Callable succ, SuccessorType t) {
-        exists(Reachability::SameSplitsBlock b, Completion c |
-          pred = b.getAnElement() |
+      predicate succExitSplits(
+        ControlFlowElement pred, Splits predSplits, Callable succ, SuccessorType t
+      ) {
+        exists(Reachability::SameSplitsBlock b, Completion c | pred = b.getAnElement() |
           b.isReachable(predSplits) and
           t.matchesCompletion(c) and
           succ = succExit(pred, c) and
-          forall(SplitInternal predSplit |
-            predSplit = predSplits.getASplit() |
+          forall(SplitInternal predSplit | predSplit = predSplits.getASplit() |
             predSplit.hasExit(pred, c)
           )
         )
@@ -3796,16 +3689,22 @@ module ControlFlow {
        * The predicates in this module are named after the cases above.
        */
       private module SuccSplits {
-        private predicate succInvariant1(Reachability::SameSplitsBlock b, ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c) {
+        private predicate succInvariant1(
+          Reachability::SameSplitsBlock b, ControlFlowElement pred, Splits predSplits,
+          ControlFlowElement succ, Completion c
+        ) {
           pred = b.getAnElement() and
           b.isReachable(predSplits) and
           succ = succ(pred, c)
         }
 
-        private predicate case1b0(ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c) {
+        private predicate case1b0(
+          ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c
+        ) {
           exists(Reachability::SameSplitsBlock b |
             // Invariant 1
-            succInvariant1(b, pred, predSplits, succ, c) |
+            succInvariant1(b, pred, predSplits, succ, c)
+          |
             (succ = b.getAnElement() implies succ = b) and
             // Invariant 4
             not exists(SplitInternal split | split.hasEntry(pred, succ, c))
@@ -3822,21 +3721,24 @@ module ControlFlow {
          * The predicate is written using explicit recursion, as opposed to a `forall`,
          * to avoid negative recursion.
          */
-        private predicate case1bForall(ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c, Splits except) {
+        private predicate case1bForall(
+          ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c,
+          Splits except
+        ) {
           case1b0(pred, predSplits, succ, c) and
           except = predSplits
           or
-          exists(Splits mid, SplitInternal split |
-            case1bForall(pred, predSplits, succ, c, mid) |
+          exists(Splits mid, SplitInternal split | case1bForall(pred, predSplits, succ, c, mid) |
             mid = TSplitsCons(split, except) and
             split.hasSuccessor(pred, succ, c)
           )
         }
 
-        private predicate case1(ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c) {
+        private predicate case1(
+          ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c
+        ) {
           // Case 1a
-          exists(Reachability::SameSplitsBlock b |
-            succInvariant1(b, pred, predSplits, succ, c) |
+          exists(Reachability::SameSplitsBlock b | succInvariant1(b, pred, predSplits, succ, c) |
             succ = b.getAnElement() and
             not succ = b
           )
@@ -3845,7 +3747,9 @@ module ControlFlow {
           case1bForall(pred, predSplits, succ, c, TSplitsNil())
         }
 
-        private predicate case2aux(ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c) {
+        private predicate case2aux(
+          ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c
+        ) {
           exists(Reachability::SameSplitsBlock b |
             succInvariant1(b, pred, predSplits, succ, c) and
             (succ = b.getAnElement() implies succ = b)
@@ -3863,7 +3767,10 @@ module ControlFlow {
          * The predicate is written using explicit recursion, as opposed to a `forall`,
          * to avoid negative recursion.
          */
-        private predicate case2aNoneInheritedOfKindForall(ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c, SplitKind sk, Splits except) {
+        private predicate case2aNoneInheritedOfKindForall(
+          ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c,
+          SplitKind sk, Splits except
+        ) {
           case2aux(pred, predSplits, succ, c) and
           sk.appliesTo(succ) and
           except = predSplits
@@ -3880,7 +3787,10 @@ module ControlFlow {
 
         /** Holds if `succSplits` should not have a split of kind `sk`. */
         pragma[noinline]
-        private predicate case2aNoneOfKind(ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c, SplitKind sk) {
+        private predicate case2aNoneOfKind(
+          ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c,
+          SplitKind sk
+        ) {
           // None inherited from predecessor
           case2aNoneInheritedOfKindForall(pred, predSplits, succ, c, sk, TSplitsNil()) and
           // None newly entered into
@@ -3889,28 +3799,34 @@ module ControlFlow {
 
         /** Holds if `succSplits` should not have a split of kind `sk` at rank `rnk`. */
         pragma[noinline]
-        private predicate case2aNoneAtRank(ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c, int rnk) {
-          exists(SplitKind sk |
-            case2aNoneOfKind(pred, predSplits, succ, c, sk) |
+        private predicate case2aNoneAtRank(
+          ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c, int rnk
+        ) {
+          exists(SplitKind sk | case2aNoneOfKind(pred, predSplits, succ, c, sk) |
             rnk = sk.getListRank(succ)
           )
         }
 
         /** Gets a split that should be in `succSplits`. */
         pragma[nomagic]
-        private SplitInternal case2aSome(ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c) {
+        private SplitInternal case2aSome(
+          ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c
+        ) {
           case2aux(pred, predSplits, succ, c) and
           (
             result = predSplits.getASplit() and
             result.hasSuccessor(pred, succ, c)
             or
             result.hasEntry(pred, succ, c) and
-            case2aNoneInheritedOfKindForall(pred, predSplits, succ, c, result.getKind(), TSplitsNil())
+            case2aNoneInheritedOfKindForall(pred, predSplits, succ, c, result.getKind(),
+              TSplitsNil())
           )
         }
 
         /** Gets a split that should be in `succSplits` at rank `rnk`. */
-        SplitInternal case2aSomeAtRank(ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c, int rnk) {
+        SplitInternal case2aSomeAtRank(
+          ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c, int rnk
+        ) {
           result = case2aSome(pred, predSplits, succ, c) and
           rnk = result.getKind().getListRank(succ)
         }
@@ -3930,7 +3846,10 @@ module ControlFlow {
          *   and
          * - invariant 4 holds for all splits in `succSplits` with rank at least `rnk`.
          */
-        predicate case2aFromRank(ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits, Completion c, int rnk) {
+        predicate case2aFromRank(
+          ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits,
+          Completion c, int rnk
+        ) {
           case2aux(pred, predSplits, succ, c) and
           succSplits = TSplitsNil() and
           rnk = max(any(SplitKind sk).getListRank(succ)) + 1
@@ -3939,13 +3858,17 @@ module ControlFlow {
           case2aNoneAtRank(pred, predSplits, succ, c, rnk)
           or
           exists(Splits mid, SplitInternal split |
-            split = case2aCons(pred, predSplits, succ, mid, c, rnk) |
+            split = case2aCons(pred, predSplits, succ, mid, c, rnk)
+          |
             succSplits = TSplitsCons(split, mid)
           )
         }
 
         pragma[noinline]
-        private SplitInternal case2aCons(ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits, Completion c, int rnk) {
+        private SplitInternal case2aCons(
+          ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits,
+          Completion c, int rnk
+        ) {
           case2aFromRank(pred, predSplits, succ, succSplits, c, rnk + 1) and
           result = case2aSomeAtRank(pred, predSplits, succ, c, rnk)
         }
@@ -3960,22 +3883,27 @@ module ControlFlow {
          * The predicate is written using explicit recursion, as opposed to a `forall`,
          * to avoid negative recursion.
          */
-        private predicate case2bForall(ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c, Splits except) {
+        private predicate case2bForall(
+          ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c,
+          Splits except
+        ) {
           // Invariant 1
           case2aux(pred, predSplits, succ, c) and
           // Invariants 4 and 5
           not any(SplitKind sk).appliesTo(succ) and
           except = predSplits
           or
-          exists(Splits mid, SplitInternal split |
-            case2bForall(pred, predSplits, succ, c, mid) |
+          exists(Splits mid, SplitInternal split | case2bForall(pred, predSplits, succ, c, mid) |
             mid = TSplitsCons(split, except) and
             // Invariants 2 and 3
             split.hasExit(pred, succ, c)
           )
         }
 
-        private predicate case2(ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits, Completion c) {
+        private predicate case2(
+          ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits,
+          Completion c
+        ) {
           case2aFromRank(pred, predSplits, succ, succSplits, c, 1)
           or
           case2bForall(pred, predSplits, succ, c, TSplitsNil()) and
@@ -3986,7 +3914,10 @@ module ControlFlow {
          * Holds if `succ` with splits `succSplits` is a successor of type `t` for `pred`
          * with splits `predSplits`.
          */
-        predicate succSplits(ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits, Completion c) {
+        predicate succSplits(
+          ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits,
+          Completion c
+        ) {
           case1(pred, predSplits, succ, c) and
           succSplits = predSplits
           or
@@ -4013,8 +3944,7 @@ module ControlFlow {
           s.hasExit(_, cfe, _)
         )
         or
-        exists(ControlFlowElement pred, SplitInternal split, Completion c |
-          cfe = succ(pred, c) |
+        exists(ControlFlowElement pred, SplitInternal split, Completion c | cfe = succ(pred, c) |
           split.appliesTo(pred) and
           not split.hasSuccessor(pred, cfe, c)
         )
@@ -4033,9 +3963,7 @@ module ControlFlow {
        * to remain unchanged, represented by the first element in the block.
        */
       class SameSplitsBlock extends ControlFlowElement {
-        SameSplitsBlock() {
-          startsSplits(this)
-        }
+        SameSplitsBlock() { startsSplits(this) }
 
         /** Gets a control flow element in this block. */
         ControlFlowElement getAnElement() {
@@ -4045,8 +3973,7 @@ module ControlFlow {
         }
 
         private SameSplitsBlock getASuccessor(Splits predSplits, Splits succSplits) {
-          exists(ControlFlowElement pred |
-            pred = this.getAnElement() |
+          exists(ControlFlowElement pred | pred = this.getAnElement() |
             succSplits(pred, predSplits, result, succSplits, _)
           )
         }
@@ -4060,62 +3987,57 @@ module ControlFlow {
           succEntrySplits(_, this, splits, _)
           or
           // Recursive case
-          exists(SameSplitsBlock pred, Splits predSplits |
-            pred.isReachable(predSplits) |
+          exists(SameSplitsBlock pred, Splits predSplits | pred.isReachable(predSplits) |
             this = pred.getASuccessor(predSplits, splits)
           )
         }
       }
     }
 
-    private cached module Cached {
+    cached
+    private module Cached {
       private import semmle.code.csharp.controlflow.Guards as Guards
 
       pragma[noinline]
-      private predicate phiNodeMaybeLive(PreBasicBlocks::PreBasicBlock bb, PreSsa::SimpleAssignable a) {
-        exists(PreBasicBlocks::PreBasicBlock def |
-          PreSsa::defAt(def, _, _, a) |
+      private predicate phiNodeMaybeLive(
+        PreBasicBlocks::PreBasicBlock bb, PreSsa::SimpleAssignable a
+      ) {
+        exists(PreBasicBlocks::PreBasicBlock def | PreSsa::defAt(def, _, _, a) |
           def.inDominanceFrontier(bb)
         )
       }
 
       cached
       newtype TPreSsaDef =
-        TExplicitPreSsaDef(PreBasicBlocks::PreBasicBlock bb, int i, AssignableDefinition def, PreSsa::SimpleAssignable a) {
+        TExplicitPreSsaDef(
+          PreBasicBlocks::PreBasicBlock bb, int i, AssignableDefinition def,
+          PreSsa::SimpleAssignable a
+        ) {
           Guards::Internal::CachedWithCFG::forceCachingInSameStage() and
           PreSsa::assignableDefAtLive(bb, i, def, a)
-        }
-        or
+        } or
         TImplicitEntryPreSsaDef(Callable c, PreBasicBlocks::PreBasicBlock bb, Assignable a) {
           PreSsa::implicitEntryDef(c, bb, a) and
           PreSsa::liveAtEntry(bb, a)
-        }
-        or
+        } or
         TPhiPreSsaDef(PreBasicBlocks::PreBasicBlock bb, PreSsa::SimpleAssignable a) {
           phiNodeMaybeLive(bb, a) and
           PreSsa::liveAtEntry(bb, a)
         }
 
       cached
-      newtype TBooleanSplitSubKind =
-        TSsaBooleanSplitSubKind(PreSsa::Definition def)
+      newtype TBooleanSplitSubKind = TSsaBooleanSplitSubKind(PreSsa::Definition def)
 
       cached
       newtype TSplitKind =
-        TFinallySplitKind()
-        or
-        TExceptionHandlerSplitKind()
-        or
-        TBooleanSplitKind(BooleanSplitting::BooleanSplitSubKind kind) {
-          kind.startsSplit(_)
-        }
+        TFinallySplitKind() or
+        TExceptionHandlerSplitKind() or
+        TBooleanSplitKind(BooleanSplitting::BooleanSplitSubKind kind) { kind.startsSplit(_) }
 
       cached
       newtype TSplit =
-        TFinallySplit(FinallySplitting::FinallySplitType type)
-        or
-        TExceptionHandlerSplit(ExceptionClass ec)
-        or
+        TFinallySplit(FinallySplitting::FinallySplitType type) or
+        TExceptionHandlerSplit(ExceptionClass ec) or
         TBooleanSplit(BooleanSplitting::BooleanSplitSubKind kind, boolean branch) {
           kind.startsSplit(_) and
           (branch = true or branch = false)
@@ -4123,11 +4045,14 @@ module ControlFlow {
 
       cached
       newtype TSplits =
-        TSplitsNil()
-        or
+        TSplitsNil() or
         TSplitsCons(SplitInternal head, Splits tail) {
-          exists(ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c, int rnk |
-            case2aFromRank(pred, predSplits, succ, tail, c, rnk + 1) |
+          exists(
+            ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c,
+            int rnk
+          |
+            case2aFromRank(pred, predSplits, succ, tail, c, rnk + 1)
+          |
             head = case2aSomeAtRank(pred, predSplits, succ, c, rnk)
           )
         }
@@ -4138,61 +4063,33 @@ module ControlFlow {
        */
       cached
       newtype TNode =
-        TEntryNode(Callable c) {
-          succEntrySplits(c, _, _, _)
-        }
-        or
+        TEntryNode(Callable c) { succEntrySplits(c, _, _, _) } or
         TExitNode(Callable c) {
-          exists(Reachability::SameSplitsBlock b |
-            b.isReachable(_) |
+          exists(Reachability::SameSplitsBlock b | b.isReachable(_) |
             succExitSplits(b.getAnElement(), _, c, _)
           )
-        }
-        or
+        } or
         TElementNode(ControlFlowElement cfe, Splits splits) {
-          exists(Reachability::SameSplitsBlock b |
-            b.isReachable(splits) |
-            cfe = b.getAnElement()
-          )
+          exists(Reachability::SameSplitsBlock b | b.isReachable(splits) | cfe = b.getAnElement())
         }
 
       /** Internal representation of types of control flow. */
       cached
       newtype TSuccessorType =
-        TSuccessorSuccessor()
-        or
-        TBooleanSuccessor(boolean b) {
-          b = true or b = false
-        }
-        or
-        TNullnessSuccessor(boolean isNull) {
-          isNull = true or isNull = false
-        }
-        or
-        TMatchingSuccessor(boolean isMatch) {
-          isMatch = true or isMatch = false
-        }
-        or
-        TEmptinessSuccessor(boolean isEmpty) {
-          isEmpty = true or isEmpty = false
-        }
-        or
-        TReturnSuccessor()
-        or
-        TBreakSuccessor()
-        or
-        TContinueSuccessor()
-        or
-        TGotoLabelSuccessor(GotoLabelStmt goto)
-        or
-        TGotoCaseSuccessor(GotoCaseStmt goto)
-        or
-        TGotoDefaultSuccessor()
-        or
+        TSuccessorSuccessor() or
+        TBooleanSuccessor(boolean b) { b = true or b = false } or
+        TNullnessSuccessor(boolean isNull) { isNull = true or isNull = false } or
+        TMatchingSuccessor(boolean isMatch) { isMatch = true or isMatch = false } or
+        TEmptinessSuccessor(boolean isEmpty) { isEmpty = true or isEmpty = false } or
+        TReturnSuccessor() or
+        TBreakSuccessor() or
+        TContinueSuccessor() or
+        TGotoLabelSuccessor(GotoLabelStmt goto) or
+        TGotoCaseSuccessor(GotoCaseStmt goto) or
+        TGotoDefaultSuccessor() or
         TExceptionSuccessor(ExceptionClass ec) {
           exists(ThrowCompletion c | c.getExceptionClass() = ec)
-        }
-        or
+        } or
         TExitSuccessor()
 
       /** Gets a successor node of a given flow type, if any. */
@@ -4200,18 +4097,21 @@ module ControlFlow {
       Node getASuccessorByType(Node pred, SuccessorType t) {
         // Callable entry node -> callable body
         exists(ControlFlowElement succElement, Splits succSplits |
-          result = TElementNode(succElement, succSplits) |
+          result = TElementNode(succElement, succSplits)
+        |
           succEntrySplits(pred.(Nodes::EntryNode).getCallable(), succElement, succSplits, t)
         )
         or
         exists(ControlFlowElement predElement, Splits predSplits |
-          pred = TElementNode(predElement, predSplits) |
+          pred = TElementNode(predElement, predSplits)
+        |
           // Element node -> callable exit
           succExitSplits(predElement, predSplits, result.(Nodes::ExitNode).getCallable(), t)
           or
           // Element node -> element node
           exists(ControlFlowElement succElement, Splits succSplits, Completion c |
-            result = TElementNode(succElement, succSplits) |
+            result = TElementNode(succElement, succSplits)
+          |
             succSplits(predElement, predSplits, succElement, succSplits, c) and
             t.matchesCompletion(c)
           )
@@ -4222,51 +4122,39 @@ module ControlFlow {
        * Gets a first control flow element executed within `cfe`.
        */
       cached
-      ControlFlowElement getAControlFlowEntryNode(ControlFlowElement cfe) {
-        result = first(cfe)
-      }
+      ControlFlowElement getAControlFlowEntryNode(ControlFlowElement cfe) { result = first(cfe) }
 
       /**
        * Gets a potential last control flow element executed within `cfe`.
        */
       cached
-      ControlFlowElement getAControlFlowExitNode(ControlFlowElement cfe) {
-        result = last(cfe, _)
-      }
+      ControlFlowElement getAControlFlowExitNode(ControlFlowElement cfe) { result = last(cfe, _) }
     }
     import Cached
 
     /** A control flow element that is split into multiple control flow nodes. */
     class SplitControlFlowElement extends ControlFlowElement {
-      SplitControlFlowElement() {
-        strictcount(this.getAControlFlowNode()) > 1
-      }
+      SplitControlFlowElement() { strictcount(this.getAControlFlowNode()) > 1 }
     }
   }
   private import Internal
 }
 
 // The code below is all for backwards-compatibility; should be deleted eventually
+deprecated class ControlFlowNode = ControlFlow::Node;
 
-deprecated
-class ControlFlowNode = ControlFlow::Node;
+deprecated class CallableEntryNode = ControlFlow::Nodes::EntryNode;
 
-deprecated
-class CallableEntryNode = ControlFlow::Nodes::EntryNode;
-
-deprecated
-class CallableExitNode = ControlFlow::Nodes::ExitNode;
+deprecated class CallableExitNode = ControlFlow::Nodes::ExitNode;
 
 /**
  * DEPRECATED: Use `ElementNode` instead.
  *
  * A node for a control flow element.
  */
-deprecated
-class NormalControlFlowNode extends ControlFlow::Nodes::ElementNode {
+deprecated class NormalControlFlowNode extends ControlFlow::Nodes::ElementNode {
   NormalControlFlowNode() {
-    forall(ControlFlow::Nodes::FinallySplit s |
-      s = this.getASplit() |
+    forall(ControlFlow::Nodes::FinallySplit s | s = this.getASplit() |
       s.getType() instanceof ControlFlow::SuccessorTypes::NormalSuccessor
     )
   }
@@ -4277,11 +4165,11 @@ class NormalControlFlowNode extends ControlFlow::Nodes::ElementNode {
  *
  * A split node for a control flow element that belongs to a `finally` block.
  */
-deprecated
-class FinallySplitControlFlowNode extends ControlFlow::Nodes::ElementNode {
+deprecated class FinallySplitControlFlowNode extends ControlFlow::Nodes::ElementNode {
   FinallySplitControlFlowNode() {
     exists(ControlFlow::Internal::FinallySplitting::FinallySplitType type |
-      type = this.getASplit().(ControlFlow::Nodes::FinallySplit).getType() |
+      type = this.getASplit().(ControlFlow::Nodes::FinallySplit).getType()
+    |
       not type instanceof ControlFlow::SuccessorTypes::NormalSuccessor
     )
   }
@@ -4293,57 +4181,43 @@ class FinallySplitControlFlowNode extends ControlFlow::Nodes::ElementNode {
 }
 
 /** DEPRECATED: Use `ControlFlow::SuccessorType` instead. */
-deprecated
-class ControlFlowEdgeType = ControlFlow::SuccessorType;
+deprecated class ControlFlowEdgeType = ControlFlow::SuccessorType;
 
 /** DEPRECATED: Use `ControlFlow::NormalSuccessor` instead. */
-deprecated
-class ControlFlowEdgeSuccessor = ControlFlow::SuccessorTypes::NormalSuccessor;
+deprecated class ControlFlowEdgeSuccessor = ControlFlow::SuccessorTypes::NormalSuccessor;
 
 /** DEPRECATED: Use `ControlFlow::ConditionalSuccessor` instead. */
-deprecated
-class ControlFlowEdgeConditional = ControlFlow::SuccessorTypes::ConditionalSuccessor;
+deprecated class ControlFlowEdgeConditional = ControlFlow::SuccessorTypes::ConditionalSuccessor;
 
 /** DEPRECATED: Use `ControlFlow::BooleanSuccessor` instead. */
-deprecated
-class ControlFlowEdgeBoolean = ControlFlow::SuccessorTypes::BooleanSuccessor;
+deprecated class ControlFlowEdgeBoolean = ControlFlow::SuccessorTypes::BooleanSuccessor;
 
 /** DEPRECATED: Use `ControlFlow::NullnessSuccessor` instead. */
-deprecated
-class ControlFlowEdgeNullness = ControlFlow::SuccessorTypes::NullnessSuccessor;
+deprecated class ControlFlowEdgeNullness = ControlFlow::SuccessorTypes::NullnessSuccessor;
 
 /** DEPRECATED: Use `ControlFlow::MatchingSuccessor` instead. */
-deprecated
-class ControlFlowEdgeMatching = ControlFlow::SuccessorTypes::MatchingSuccessor;
+deprecated class ControlFlowEdgeMatching = ControlFlow::SuccessorTypes::MatchingSuccessor;
 
 /** DEPRECATED: Use `ControlFlow::EmptinessSuccessor` instead. */
-deprecated
-class ControlFlowEdgeEmptiness = ControlFlow::SuccessorTypes::EmptinessSuccessor;
+deprecated class ControlFlowEdgeEmptiness = ControlFlow::SuccessorTypes::EmptinessSuccessor;
 
 /** DEPRECATED: Use `ControlFlow::ReturnSuccessor` instead. */
-deprecated
-class ControlFlowEdgeReturn = ControlFlow::SuccessorTypes::ReturnSuccessor;
+deprecated class ControlFlowEdgeReturn = ControlFlow::SuccessorTypes::ReturnSuccessor;
 
 /** DEPRECATED: Use `ControlFlow::BreakSuccessor` instead. */
-deprecated
-class ControlFlowEdgeBreak = ControlFlow::SuccessorTypes::BreakSuccessor;
+deprecated class ControlFlowEdgeBreak = ControlFlow::SuccessorTypes::BreakSuccessor;
 
 /** DEPRECATED: Use `ControlFlow::ContinueSuccessor` instead. */
-deprecated
-class ControlFlowEdgeContinue = ControlFlow::SuccessorTypes::ContinueSuccessor;
+deprecated class ControlFlowEdgeContinue = ControlFlow::SuccessorTypes::ContinueSuccessor;
 
 /** DEPRECATED: Use `ControlFlow::GotoLabelSuccessor` instead. */
-deprecated
-class ControlFlowEdgeGotoLabel = ControlFlow::SuccessorTypes::GotoLabelSuccessor;
+deprecated class ControlFlowEdgeGotoLabel = ControlFlow::SuccessorTypes::GotoLabelSuccessor;
 
 /** DEPRECATED: Use `ControlFlow::GotoCaseSuccessor` instead. */
-deprecated
-class ControlFlowEdgeGotoCase = ControlFlow::SuccessorTypes::GotoCaseSuccessor;
+deprecated class ControlFlowEdgeGotoCase = ControlFlow::SuccessorTypes::GotoCaseSuccessor;
 
 /** DEPRECATED: Use `ControlFlow::GotoDefaultSuccessor` instead. */
-deprecated
-class ControlFlowEdgeGotoDefault = ControlFlow::SuccessorTypes::GotoDefaultSuccessor;
+deprecated class ControlFlowEdgeGotoDefault = ControlFlow::SuccessorTypes::GotoDefaultSuccessor;
 
 /** DEPRECATED: Use `ControlFlow::ExceptionSuccessor` instead. */
-deprecated
-class ControlFlowEdgeException = ControlFlow::SuccessorTypes::ExceptionSuccessor;
+deprecated class ControlFlowEdgeException = ControlFlow::SuccessorTypes::ExceptionSuccessor;

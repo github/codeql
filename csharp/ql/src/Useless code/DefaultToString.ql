@@ -55,11 +55,7 @@ predicate alwaysDefaultToString(ValueOrRefType t) {
     overriding.getAMethod() instanceof ToStringMethod and
     overriding.getABaseType+() = t
   ) and
-  (
-    (t.isAbstract() or t instanceof Interface)
-    implies
-    not t.isEffectivelyPublic()
-  )
+  ((t.isAbstract() or t instanceof Interface) implies not t.isEffectivelyPublic())
 }
 
 newtype TDefaultToStringType = TDefaultToStringType0(ValueOrRefType t) { alwaysDefaultToString(t) }
