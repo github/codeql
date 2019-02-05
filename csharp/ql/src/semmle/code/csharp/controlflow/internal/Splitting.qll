@@ -48,6 +48,22 @@ private module Cached {
         head = case2aSomeAtRank(pred, predSplits, succ, c, rnk)
       )
     }
+
+  cached
+  string splitsToString(Splits splits) {
+    splits = TSplitsNil() and
+    result = ""
+    or
+    exists(SplitInternal head, Splits tail, string headString, string tailString |
+      splits = TSplitsCons(head, tail)
+    |
+      headString = head.toString() and
+      tailString = tail.toString() and
+      if tailString = ""
+      then result = headString
+      else if headString = "" then result = tailString else result = headString + ", " + tailString
+    )
+  }
 }
 private import Cached
 
@@ -768,20 +784,7 @@ module BooleanSplitting {
  */
 class Splits extends TSplits {
   /** Gets a textual representation of this set of splits. */
-  string toString() {
-    this = TSplitsNil() and
-    result = ""
-    or
-    exists(SplitInternal head, Splits tail, string headString, string tailString |
-      this = TSplitsCons(head, tail)
-    |
-      headString = head.toString() and
-      tailString = tail.toString() and
-      if tailString = ""
-      then result = headString
-      else if headString = "" then result = tailString else result = headString + ", " + tailString
-    )
-  }
+  string toString() { result = splitsToString(this) }
 
   /** Gets a split belonging to this set of splits. */
   SplitInternal getASplit() {
