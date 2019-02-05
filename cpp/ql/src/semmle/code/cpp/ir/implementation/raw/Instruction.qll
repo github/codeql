@@ -1484,6 +1484,17 @@ class PhiInstruction extends Instruction {
   override final MemoryAccessKind getResultMemoryAccess() {
     result instanceof PhiMemoryAccess
   }
+
+  /**
+   * Gets an instruction that defines the input to one of the operands of this
+   * instruction. It's possible for more than one operand to have the same
+   * defining instruction, so this predicate will have the same number of
+   * results as `getAnOperand()` or fewer.
+   */
+  pragma[noinline]
+  final Instruction getAnOperandDefinitionInstruction() {
+    result = this.getAnOperand().(PhiOperand).getDefinitionInstruction()
+  }
 }
 
 /**
@@ -1492,7 +1503,7 @@ class PhiInstruction extends Instruction {
  *
  * A `ChiInstruction` is inserted immediately after an instruction that writes to memory. The
  * `ChiInstruction` has two operands. The first operand, given by `getTotalOperand()`, represents
- * the previous state of all of the memory that might be alised by the memory write. The second
+ * the previous state of all of the memory that might be aliased by the memory write. The second
  * operand, given by `getPartialOperand()`, represents the memory that was actually modified by the
  * memory write. The result of the `ChiInstruction` represents the same memory as
  * `getTotalOperand()`, updated to include the changes due to the value that was actually stored by
