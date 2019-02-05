@@ -12,6 +12,7 @@ import javascript
  * <tr><td><code>x = y</code><td><code>x = y</code><td><code>x</code><td><code>y</code></tr>
  * <tr><td><code>var a = b</code><td><code>var a = b</code><td><code>a</code><td><code>b</code></tr>
  * <tr><td><code>function f { ... }</code><td><code>f</code><td><code>f</code><td><code>function f { ... }</code></tr>
+ * <tr><td><code>function f ( x = y ){ ... }</code><td><code>x</code><td><code>x</code><td><code>y</code></tr>
  * <tr><td><code>class C { ... }</code><td><code>C</code><td><code>C</code><td><code>class C { ... }</code></tr>
  * <tr><td><code>namespace N { ... }</code><td><code>N</code><td><code>N</code><td><code>namespace N { ... }</code></tr>
  * <tr><td><code>enum E { ... }</code><td><code>E</code><td><code>E</code><td><code>enum E { ... }</code></tr>
@@ -42,6 +43,8 @@ private predicate defn(ControlFlowNode def, Expr lhs, AST::ValueNode rhs) {
   exists(EnumMember member | def = member.getIdentifier() |
     lhs = def and rhs = member.getInitializer()
   )
+  or
+  lhs = def and def.(Parameter).getDefault() = rhs
 }
 
 /**

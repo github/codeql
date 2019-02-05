@@ -143,7 +143,7 @@ private class AnalyzedParameter extends AnalyzedVarDef, @vardecl {
 
   override DataFlow::AnalyzedNode getRhs() {
     getFunction().argumentPassing(this, result.asExpr()) or
-    result = this.(Parameter).getDefault().analyze()
+    result = AnalyzedVarDef.super.getRhs()
   }
 
   override AbstractValue getAnRhsValue() {
