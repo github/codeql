@@ -5,7 +5,7 @@ import csharp
  */
 module ControlFlow {
   private import semmle.code.csharp.controlflow.BasicBlocks as BBs
-  private import semmle.code.csharp.controlflow.Completion
+  private import semmle.code.csharp.controlflow.internal.Completion
 
   /**
    * A control flow node.

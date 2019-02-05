@@ -1,5 +1,5 @@
 import csharp
-import semmle.code.csharp.controlflow.Completion
+import semmle.code.csharp.controlflow.internal.Completion
 import ControlFlow
 import ControlFlow::Internal
 

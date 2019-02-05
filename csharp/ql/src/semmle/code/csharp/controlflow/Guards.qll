@@ -8,7 +8,7 @@ private import semmle.code.csharp.commons.Assertions
 private import semmle.code.csharp.commons.ComparisonTest
 private import semmle.code.csharp.commons.StructuralComparison::Internal
 private import semmle.code.csharp.controlflow.BasicBlocks
-private import semmle.code.csharp.controlflow.Completion
+private import semmle.code.csharp.controlflow.internal.Completion
 private import semmle.code.csharp.dataflow.Nullness
 private import semmle.code.csharp.frameworks.System
 
