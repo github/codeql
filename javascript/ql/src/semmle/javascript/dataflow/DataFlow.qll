@@ -1004,15 +1004,19 @@ module DataFlow {
   private Node defSourceNode(VarDef def, SsaSourceVariable v) {
     exists(BindingPattern lhs, VarRef r |
       lhs = def.getTarget() and r = lhs.getABindingVarRef() and r.getVariable() = v
-    |
+      |
       // follow one step of the def-use chain if the lhs is a simple variable reference
       lhs = r and
       result = TValueNode(defSourceNode(def))
       or
       // handle destructuring assignments
-      exists(PropertyPattern pp | r = pp.getValuePattern() | result = TPropNode(pp))
+      exists(PropertyPattern pp | r = pp.getValuePattern() |
+        result = TPropNode(pp) or result = pp.getDefault().flow()
+      )
       or
       result = TElementPatternNode(_, r)
+      or
+      exists(ArrayPattern ap, int i | ap.getElement(i) = r and result = ap.getDefault(i).flow())
     )
   }
 
