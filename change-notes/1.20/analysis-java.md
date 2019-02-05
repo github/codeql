@@ -24,5 +24,8 @@
   `semmle.code.java.dataflow.DataFlow`,
   `semmle.code.java.dataflow.TaintTracking`, and
   `semmle.code.java.dataflow.FlowSources` since 1.16.
+* Taint tracking now includes additional default data-flow steps through
+  collections, maps, and iterators. This affects all security queries, which
+  can report more results based on such paths.
 
 
