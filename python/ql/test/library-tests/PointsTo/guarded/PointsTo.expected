@@ -61,6 +61,7 @@
 | test.py | 408 | ControlFlowNode for x | int 1 | 404 |
 | test.py | 420 | ControlFlowNode for Attribute | NoneType None | 418 |
 | test.py | 427 | ControlFlowNode for Attribute | NoneType None | 418 |
+| test.py | 435 | ControlFlowNode for y | int 1 | 433 |
 | type_test.py | 5 | ControlFlowNode for d | Dict | 2 |
 | type_test.py | 14 | ControlFlowNode for x | int 0 | 11 |
 | type_test.py | 16 | ControlFlowNode for x | float 1.0 | 11 |

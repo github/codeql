@@ -159,24 +159,13 @@ private cached module Cached {
     not startsBasicBlock(i2)
   }
 
-  /** Gets the index of `i` in its `IRBlock`. */
-  private int getMemberIndex(Instruction i) {
-    startsBasicBlock(i) and
-    result = 0
-    or
-    exists(Instruction iPrev |
-      adjacentInBlock(iPrev, i) and
-      result = getMemberIndex(iPrev) + 1
-    )
-  }
+  /** Holds if `i` is the `index`th instruction the block starting with `first`. */
+  private Instruction getInstructionFromFirst(Instruction first, int index) =
+    shortestDistances(startsBasicBlock/1, adjacentInBlock/2)(first, result, index)
 
   /** Holds if `i` is the `index`th instruction in `block`. */
   cached Instruction getInstruction(TIRBlock block, int index) {
-    exists(Instruction first |
-      block = MkIRBlock(first) and
-      index = getMemberIndex(result) and
-      adjacentInBlock*(first, result)
-    )
+    result = getInstructionFromFirst(getFirstInstruction(block), index)
   }
 
   cached int getInstructionCount(TIRBlock block) {

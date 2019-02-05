@@ -381,6 +381,17 @@ class MemberConstantAccess extends FieldAccess {
 }
 
 /**
+ * An internal helper class to share logic between `PropertyAccess` and
+ * `PropertyCall`.
+ */
+library class PropertyAccessExpr extends Expr, @property_access_expr {
+  /** Gets the target of this property access. */
+  Property getProperty() { expr_access(this, result) }
+
+  override string toString() { result = "access to property " + this.getProperty().getName() }
+}
+
+/**
  * An access to a property, for example the access to `P` on line 5 in
  *
  * ```
@@ -393,13 +404,8 @@ class MemberConstantAccess extends FieldAccess {
  * }
  * ```
  */
-class PropertyAccess extends AssignableMemberAccess, @property_access_expr {
-  /** Gets the target of this property access. */
-  Property getProperty() { expr_access(this, result) }
-
+class PropertyAccess extends AssignableMemberAccess, PropertyAccessExpr {
   override Property getTarget() { result = this.getProperty() }
-
-  override string toString() { result = "access to property " + this.getProperty().getName() }
 }
 
 /**
@@ -510,6 +516,17 @@ class ElementRead extends ElementAccess, AssignableRead { }
 class ElementWrite extends ElementAccess, AssignableWrite { }
 
 /**
+ * An internal helper class to share logic between `IndexerAccess` and
+ * `IndexerCall`.
+ */
+library class IndexerAccessExpr extends Expr, @indexer_access_expr {
+  /** Gets the target of this indexer access. */
+  Indexer getIndexer() { expr_access(this, result) }
+
+  override string toString() { result = "access to indexer" }
+}
+
+/**
  * An access to an indexer, for example the access to `c` on line 5 in
  *
  * ```
@@ -522,17 +539,12 @@ class ElementWrite extends ElementAccess, AssignableWrite { }
  * }
  * ```
  */
-class IndexerAccess extends AssignableMemberAccess, ElementAccess, @indexer_access_expr {
-  /** Gets the target of this indexer access. */
-  Indexer getIndexer() { expr_access(this, result) }
-
+class IndexerAccess extends AssignableMemberAccess, ElementAccess, IndexerAccessExpr {
   override Indexer getTarget() { result = this.getIndexer() }
 
   override Indexer getQualifiedDeclaration() {
     result = ElementAccess.super.getQualifiedDeclaration()
   }
-
-  override string toString() { result = "access to indexer" }
 }
 
 /**
@@ -589,6 +601,17 @@ class VirtualIndexerAccess extends IndexerAccess {
 }
 
 /**
+ * An internal helper class to share logic between `EventAccess` and
+ * `EventCall`.
+ */
+library class EventAccessExpr extends Expr, @event_access_expr {
+  /** Gets the target of this event access. */
+  Event getEvent() { expr_access(this, result) }
+
+  override string toString() { result = "access to event " + this.getEvent().getName() }
+}
+
+/**
  * An access to an event, for example the accesses to `Click` on lines
  * 7 and 8 in
  *
@@ -605,13 +628,8 @@ class VirtualIndexerAccess extends IndexerAccess {
  * }
  * ```
  */
-class EventAccess extends AssignableMemberAccess, @event_access_expr {
-  /** Gets the target of this event access. */
-  Event getEvent() { expr_access(this, result) }
-
+class EventAccess extends AssignableMemberAccess, EventAccessExpr {
   override Event getTarget() { result = getEvent() }
-
-  override string toString() { result = "access to event " + this.getEvent().getName() }
 }
 
 /**

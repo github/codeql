@@ -8,6 +8,6 @@ int doFoo(Names n) { //wrong: n is passed by value (meaning the entire structure
     ...
 }
 
-int doBar(Names &n) { //better, only a reference is passed
+int doBar(const Names &n) { //better, only a reference is passed
     ...
 }
