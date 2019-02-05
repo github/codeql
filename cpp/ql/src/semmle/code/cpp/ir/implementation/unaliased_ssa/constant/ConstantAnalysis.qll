@@ -6,13 +6,7 @@ language[monotonicAggregates]
 int getConstantValue(Instruction instr) {
   result = instr.(IntegerConstantInstruction).getValue().toInt() or
   result = getBinaryInstructionValue(instr) or
-  exists(UnaryInstruction unaryInstr, int src |
-    unaryInstr = instr and
-    src = getConstantValue(unaryInstr.getOperand()) and
-    (
-      unaryInstr instanceof NegateInstruction and result = neg(src)
-    )
-  ) or
+  result = neg(getConstantValue(instr.(NegateInstruction).getOperand())) or
   result = getConstantValue(instr.(CopyInstruction).getSourceValue()) or
   exists(PhiInstruction phi |
     phi = instr and
