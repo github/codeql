@@ -6,6 +6,7 @@
   - client-side code, for example [React](https://reactjs.org/)
   - cookies and webstorage, for example [js-cookie](https://github.com/js-cookie/js-cookie)
   - server-side code, for example [hapi](https://hapijs.com/)
+  - asynchronous code, for example [a-sync-waterfall](https://www.npmjs.com/package/a-sync-waterfall)
 * File classification has been improved to recognize additional generated files, for example files from [HTML Tidy](html-tidy.org).
 
 * The taint tracking library now recognizes flow through persistent storage, class fields, and callbacks in certain cases. This may give more results for the security queries.
