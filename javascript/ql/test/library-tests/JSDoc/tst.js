@@ -358,3 +358,27 @@ function f(x) {}
  * @param {function(x:!number, y:!number):number} fn - the comparator function
  */
 function sort(array, fn) {}
+
+var literalWithMethods = {
+  /**
+   * @param {T1} p
+   */
+  classicMethod: function(p) {},
+  
+  /**
+   * @param {T2} p
+   */
+  fancyMethod(p) {}
+};
+
+class C {
+  /**
+   * @param {T3} p
+   */
+  constructor(p) {}
+
+  /**
+   * @param {T4} p
+   */
+  classMethod(p) {}
+}
