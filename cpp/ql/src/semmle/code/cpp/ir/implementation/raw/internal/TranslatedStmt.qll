@@ -69,11 +69,7 @@ class TranslatedEmptyStmt extends TranslatedStmt {
 }
 
 class TranslatedDeclStmt extends TranslatedStmt {
-  DeclStmt declStmt;
-
-  TranslatedDeclStmt() {
-    declStmt = stmt
-  }
+  override DeclStmt stmt;
 
   override TranslatedElement getChild(int id) {
     result = getDeclarationEntry(id)
@@ -89,11 +85,11 @@ class TranslatedDeclStmt extends TranslatedStmt {
   }
 
   private int getChildCount() {
-    result = declStmt.getNumDeclarations()
+    result = stmt.getNumDeclarations()
   }
 
   private TranslatedDeclarationEntry getDeclarationEntry(int index) {
-    result = getTranslatedDeclarationEntry(declStmt.getDeclarationEntry(index))
+    result = getTranslatedDeclarationEntry(stmt.getDeclarationEntry(index))
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag,
@@ -113,9 +109,7 @@ class TranslatedDeclStmt extends TranslatedStmt {
 }
 
 class TranslatedExprStmt extends TranslatedStmt {
-  TranslatedExprStmt() {
-    stmt instanceof ExprStmt
-  }
+  override ExprStmt stmt;
 
   TranslatedExpr getExpr() {
     result = getTranslatedExpr(stmt.(ExprStmt).getExpr().getFullyConverted())
@@ -146,21 +140,17 @@ class TranslatedExprStmt extends TranslatedStmt {
 }
 
 abstract class TranslatedReturnStmt extends TranslatedStmt {
-  ReturnStmt returnStmt;
-
-  TranslatedReturnStmt() {
-    returnStmt = stmt
-  }
+  override ReturnStmt stmt;
 
   final TranslatedFunction getEnclosingFunction() {
-    result = getTranslatedFunction(returnStmt.getEnclosingFunction())
+    result = getTranslatedFunction(stmt.getEnclosingFunction())
   }
 }
 
 class TranslatedReturnValueStmt extends TranslatedReturnStmt,
   InitializationContext {
   TranslatedReturnValueStmt() {
-    returnStmt.hasExpr()
+    stmt.hasExpr()
   }
 
   override TranslatedElement getChild(int id) {
@@ -206,13 +196,13 @@ class TranslatedReturnValueStmt extends TranslatedReturnStmt,
 
   TranslatedInitialization getInitialization() {
     result = getTranslatedInitialization(
-      returnStmt.getExpr().getFullyConverted())
+      stmt.getExpr().getFullyConverted())
   }
 }
 
 class TranslatedReturnVoidStmt extends TranslatedReturnStmt {
   TranslatedReturnVoidStmt() {
-    not returnStmt.hasExpr()
+    not stmt.hasExpr()
   }
 
   override TranslatedElement getChild(int id) {
@@ -247,11 +237,7 @@ class TranslatedReturnVoidStmt extends TranslatedReturnStmt {
  * The IR translation of a C++ `try` statement.
  */
 class TranslatedTryStmt extends TranslatedStmt {
-  TryStmt try;
-
-  TranslatedTryStmt() {
-    try = stmt
-  }
+  override TryStmt stmt;
 
   override TranslatedElement getChild(int id) {
     id = 0 and result = getBody() or
@@ -286,7 +272,7 @@ class TranslatedTryStmt extends TranslatedStmt {
       // The last catch clause flows to the exception successor of the parent
       // of the `try`, because the exception successor of the `try` itself is
       // the first catch clause.
-      handler = getHandler(try.getNumberOfCatchClauses()) and
+      handler = getHandler(stmt.getNumberOfCatchClauses()) and
       result = getParent().getExceptionSuccessorInstruction()
     )
   }
@@ -296,20 +282,16 @@ class TranslatedTryStmt extends TranslatedStmt {
   }
 
   private TranslatedHandler getHandler(int index) {
-    result = getTranslatedStmt(try.getChild(index + 1))
+    result = getTranslatedStmt(stmt.getChild(index + 1))
   }
 
   private TranslatedStmt getBody() {
-    result = getTranslatedStmt(try.getStmt())
+    result = getTranslatedStmt(stmt.getStmt())
   }
 }
 
 class TranslatedBlock extends TranslatedStmt {
-  Block block;
-
-  TranslatedBlock() {
-    block = stmt
-  }
+  override Block stmt;
 
   override TranslatedElement getChild(int id) {
     result = getStmt(id)
@@ -332,15 +314,15 @@ class TranslatedBlock extends TranslatedStmt {
   }
 
   private predicate isEmpty() {
-    not exists(block.getStmt(0))
+    not exists(stmt.getStmt(0))
   }
 
   private TranslatedStmt getStmt(int index) {
-    result = getTranslatedStmt(block.getStmt(index))
+    result = getTranslatedStmt(stmt.getStmt(index))
   }
 
   private int getStmtCount() {
-    result = block.getNumStmt()
+    result = stmt.getNumStmt()
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag,
@@ -365,11 +347,7 @@ class TranslatedBlock extends TranslatedStmt {
  * The IR translation of a C++ `catch` handler.
  */
 abstract class TranslatedHandler extends TranslatedStmt {
-  Handler handler;
-
-  TranslatedHandler() {
-    handler = stmt
-  }
+  override Handler stmt;
 
   override TranslatedElement getChild(int id) {
     id = 1 and result = getBlock()
@@ -390,7 +368,7 @@ abstract class TranslatedHandler extends TranslatedStmt {
   }
 
   TranslatedStmt getBlock() {
-    result = getTranslatedStmt(handler.getBlock())
+    result = getTranslatedStmt(stmt.getBlock())
   }
 }
 
@@ -400,7 +378,7 @@ abstract class TranslatedHandler extends TranslatedStmt {
  */
 class TranslatedCatchByTypeHandler extends TranslatedHandler {
   TranslatedCatchByTypeHandler() {
-    exists(handler.getParameter())
+    exists(stmt.getParameter())
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
@@ -438,11 +416,11 @@ class TranslatedCatchByTypeHandler extends TranslatedHandler {
 
   override Type getInstructionExceptionType(InstructionTag tag) {
     tag = CatchTag() and
-    result = handler.getParameter().getType()
+    result = stmt.getParameter().getType()
   }
 
   private TranslatedParameter getParameter() {
-    result = getTranslatedParameter(handler.getParameter())
+    result = getTranslatedParameter(stmt.getParameter())
   }
 }
 
@@ -451,7 +429,7 @@ class TranslatedCatchByTypeHandler extends TranslatedHandler {
  */
 class TranslatedCatchAnyHandler extends TranslatedHandler {
   TranslatedCatchAnyHandler() {
-    not exists(handler.getParameter())
+    not exists(stmt.getParameter())
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
@@ -471,11 +449,8 @@ class TranslatedCatchAnyHandler extends TranslatedHandler {
 }
 
 class TranslatedIfStmt extends TranslatedStmt, ConditionContext {
-  IfStmt ifStmt;
+  override IfStmt stmt;
 
-  TranslatedIfStmt() {
-    stmt = ifStmt
-  }
 
   override Instruction getFirstInstruction() {
     result = getCondition().getFirstInstruction()
@@ -488,19 +463,19 @@ class TranslatedIfStmt extends TranslatedStmt, ConditionContext {
   }
 
   private TranslatedCondition getCondition() {
-    result = getTranslatedCondition(ifStmt.getCondition().getFullyConverted())
+    result = getTranslatedCondition(stmt.getCondition().getFullyConverted())
   }
 
   private TranslatedStmt getThen() {
-    result = getTranslatedStmt(ifStmt.getThen())
+    result = getTranslatedStmt(stmt.getThen())
   }
 
   private TranslatedStmt getElse() {
-    result = getTranslatedStmt(ifStmt.getElse())
+    result = getTranslatedStmt(stmt.getElse())
   }
 
   private predicate hasElse() {
-    exists(ifStmt.getElse())
+    exists(stmt.getElse())
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag,
@@ -533,18 +508,14 @@ class TranslatedIfStmt extends TranslatedStmt, ConditionContext {
 }
 
 abstract class TranslatedLoop extends TranslatedStmt, ConditionContext {
-  Loop loop;
-
-  TranslatedLoop() {
-    loop = stmt
-  }
+  override Loop stmt;
 
   final TranslatedCondition getCondition() {
-    result = getTranslatedCondition(loop.getCondition().getFullyConverted())
+    result = getTranslatedCondition(stmt.getCondition().getFullyConverted())
   }
 
   final TranslatedStmt getBody() {
-    result = getTranslatedStmt(loop.getStmt())
+    result = getTranslatedStmt(stmt.getStmt())
   }
 
   final Instruction getFirstConditionInstruction() {
@@ -555,7 +526,7 @@ abstract class TranslatedLoop extends TranslatedStmt, ConditionContext {
   }
 
   final predicate hasCondition() {
-    exists(loop.getCondition())
+    exists(stmt.getCondition())
   }
 
   override TranslatedElement getChild(int id) {
@@ -611,11 +582,7 @@ class TranslatedDoStmt extends TranslatedLoop {
 }
 
 class TranslatedForStmt extends TranslatedLoop {
-  ForStmt forStmt;
-
-  TranslatedForStmt() {
-    forStmt = stmt
-  }
+  override ForStmt stmt;
 
   override TranslatedElement getChild(int id) {
     id = 0 and result = getInitialization() or
@@ -625,19 +592,19 @@ class TranslatedForStmt extends TranslatedLoop {
   }
 
   private TranslatedStmt getInitialization() {
-    result = getTranslatedStmt(forStmt.getInitialization())
+    result = getTranslatedStmt(stmt.getInitialization())
   }
 
   private predicate hasInitialization() {
-    exists(forStmt.getInitialization())
+    exists(stmt.getInitialization())
   }
   
   TranslatedExpr getUpdate() {
-    result = getTranslatedExpr(forStmt.getUpdate().getFullyConverted())
+    result = getTranslatedExpr(stmt.getUpdate().getFullyConverted())
   }
 
   private predicate hasUpdate() {
-    exists(forStmt.getUpdate())
+    exists(stmt.getUpdate())
   }
 
   override Instruction getFirstInstruction() {
@@ -664,11 +631,7 @@ class TranslatedForStmt extends TranslatedLoop {
 }
 
 class TranslatedJumpStmt extends TranslatedStmt {
-  JumpStmt jump;
-
-  TranslatedJumpStmt() {
-    stmt = jump
-  }
+  override JumpStmt stmt;
 
   override Instruction getFirstInstruction() {
     result = getInstruction(OnlyInstructionTag())
@@ -690,7 +653,7 @@ class TranslatedJumpStmt extends TranslatedStmt {
     EdgeKind kind) {
     tag = OnlyInstructionTag() and
     kind instanceof GotoEdge and
-    result = getTranslatedStmt(jump.getTarget()).getFirstInstruction()
+    result = getTranslatedStmt(stmt.getTarget()).getFirstInstruction()
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
@@ -699,18 +662,14 @@ class TranslatedJumpStmt extends TranslatedStmt {
 }
 
 class TranslatedSwitchStmt extends TranslatedStmt {
-  SwitchStmt switchStmt;
-
-  TranslatedSwitchStmt() {
-    switchStmt = stmt
-  }
+  override SwitchStmt stmt;
 
   private TranslatedExpr getExpr() {
-    result = getTranslatedExpr(switchStmt.getExpr().getFullyConverted())
+    result = getTranslatedExpr(stmt.getExpr().getFullyConverted())
   }
 
   private TranslatedStmt getBody() {
-    result = getTranslatedStmt(switchStmt.getStmt())
+    result = getTranslatedStmt(stmt.getStmt())
   }
 
   override Instruction getFirstInstruction() {
@@ -741,7 +700,7 @@ class TranslatedSwitchStmt extends TranslatedStmt {
     EdgeKind kind) {
     tag = SwitchBranchTag() and
     exists(SwitchCase switchCase |
-      switchCase = switchStmt.getASwitchCase() and
+      switchCase = stmt.getASwitchCase() and
       kind = getCaseEdge(switchCase) and
       result = getTranslatedStmt(switchCase).getFirstInstruction()
     )
