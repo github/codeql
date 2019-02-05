@@ -172,6 +172,25 @@ module Firebase {
   DataFlow::SourceNode snapshot() {
     result = snapshot(_)
   }
+
+  /**
+   * Gets a node that is passed as the callback to a `Reference.transaction` call.
+   */
+  DataFlow::SourceNode transactionCallback(DataFlow::TypeTracker t) {
+    t.start() and
+    result = ref().getAMethodCall("transaction").getArgument(0).getALocalSource()
+    or
+    exists (DataFlow::TypeTracker t2 |
+      result = transactionCallback(t2).backtrack(t2, t)
+    )
+  }
+
+  /**
+   * Gets a node that is passed as the callback to a `Reference.transaction` call.
+   */
+  DataFlow::SourceNode transactionCallback() {
+    result = transactionCallback(_)
+  }
   
   class FirebaseVal extends RemoteFlowSource {
     FirebaseVal() {
@@ -179,6 +198,8 @@ module Firebase {
         name = "val" or
         name = "exportVal"
       )
+      or
+      this = transactionCallback().(DataFlow::FunctionNode).getParameter(0)
     }
 
     override string getSourceType() {
