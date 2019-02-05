@@ -627,8 +627,8 @@ class NullGuardedDataFlowNode extends GuardedDataFlowNode {
 
 /** INTERNAL: Do not use. */
 module Internal {
-  private import ControlFlow::Internal
   private import semmle.code.csharp.controlflow.internal.PreBasicBlocks as PreBasicBlocks
+  private import semmle.code.csharp.controlflow.internal.PreSsa as PreSsa
 
   newtype TAbstractValue =
     TBooleanValue(boolean b) { b = true or b = false } or
