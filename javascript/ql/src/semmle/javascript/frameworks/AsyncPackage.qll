@@ -29,7 +29,10 @@ module AsyncPackage {
    * A call to `async.waterfall`.
    */
   class Waterfall extends DataFlow::InvokeNode {
-    Waterfall() { this = member("waterfall").getACall() }
+    Waterfall() {
+      this = member("waterfall").getACall() or
+      this = DataFlow::moduleImport("a-sync-waterfall").getACall()
+    }
 
     /**
      * Gets the array of tasks, if it can be found.
