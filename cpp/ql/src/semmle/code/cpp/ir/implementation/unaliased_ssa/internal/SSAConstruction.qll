@@ -40,20 +40,8 @@ cached private module Cached {
   }
 
   private IRVariable getNewIRVariable(OldIR::IRVariable var) {
-    result.getFunction() = var.getFunction() and
-    (
-      exists(OldIR::IRUserVariable userVar, IRUserVariable newUserVar |
-        userVar = var and
-        newUserVar.getVariable() = userVar.getVariable() and
-        result = newUserVar
-      ) or
-      exists(OldIR::IRTempVariable tempVar, IRTempVariable newTempVar |
-        tempVar = var and
-        newTempVar.getAST() = tempVar.getAST() and
-        newTempVar.getTag() = tempVar.getTag() and
-        result = newTempVar
-      )
-    )
+    // This is just a type cast. Both classes derive from the same newtype.
+    result = var
   }
 
   cached newtype TInstruction =
