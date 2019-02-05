@@ -133,6 +133,7 @@ module Vue {
     /**
      * Gets a node for a member of the `methods` option of this instance.
      */
+    pragma[noinline]
     private DataFlow::Node getAMethod() {
       exists(DataFlow::SourceNode methods |
         methods.flowsTo(getMethods()) and
@@ -143,6 +144,7 @@ module Vue {
     /**
      * Gets a node for a member of the `computed` option of this instance that matches `kind` ("get" or "set").
      */
+    pragma[noinline]
     private DataFlow::Node getAnAccessor(string kind) {
       exists(DataFlow::SourceNode computedObj, DataFlow::Node accessorObjOrGetter |
         computedObj.flowsTo(getComputed()) and
@@ -175,6 +177,7 @@ module Vue {
     /**
      * Gets the node for the life cycle hook of the `hookName` option of this instance.
      */
+    pragma[noinline]
     private DataFlow::Node getALifecycleHook(string hookName) {
       (
         hookName = "beforeCreate" or
