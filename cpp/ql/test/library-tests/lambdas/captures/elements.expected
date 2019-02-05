@@ -65,6 +65,34 @@
 | captures.cpp:10:13:10:13 | 1 |
 | captures.cpp:11:5:11:5 | return ... |
 | captures.cpp:12:3:12:3 | return ... |
+| captures.cpp:14:15:14:15 | c |
+| captures.cpp:14:15:14:15 | definition of c |
+| captures.cpp:14:21:14:21 | definition of x |
+| captures.cpp:14:21:14:21 | x |
+| captures.cpp:14:24:18:3 | { ... } |
+| captures.cpp:15:5:15:5 | (constructor) |
+| captures.cpp:15:5:15:5 | (constructor) |
+| captures.cpp:15:5:15:5 | (constructor) |
+| captures.cpp:15:5:15:5 | declaration of (null) |
+| captures.cpp:15:5:15:5 | declaration of (null) |
+| captures.cpp:15:5:15:5 | definition of (null) |
+| captures.cpp:15:5:15:5 | definition of operator= |
+| captures.cpp:15:5:15:5 | operator= |
+| captures.cpp:15:5:17:5 | [...](...){...} |
+| captures.cpp:15:5:17:5 | {...} |
+| captures.cpp:15:5:17:6 | ExprStmt |
+| captures.cpp:15:6:15:6 | definition of x |
+| captures.cpp:15:6:15:6 | x |
+| captures.cpp:15:6:15:6 | x |
+| captures.cpp:15:9:15:9 | definition of operator() |
+| captures.cpp:15:9:15:9 | operator() |
+| captures.cpp:15:9:17:5 | { ... } |
+| captures.cpp:16:7:16:7 | call to c |
+| captures.cpp:16:7:16:11 | ExprStmt |
+| captures.cpp:16:9:16:9 | 0 |
+| captures.cpp:16:13:16:49 | // `x` is unused, but still captured. |
+| captures.cpp:17:5:17:5 | return ... |
+| captures.cpp:18:3:18:3 | return ... |
 | end_pos.cpp:0:0:0:0 | end_pos.cpp |
 | end_pos.cpp:2:1:2:14 | #define OPEN { |
 | end_pos.cpp:3:6:3:10 | definition of igFun |
@@ -131,6 +159,8 @@
 | file://:0:0:0:0 | const lambda [] type at line 9, col. 5 *const |
 | file://:0:0:0:0 | const lambda [] type at line 9, col. 15 |
 | file://:0:0:0:0 | const lambda [] type at line 9, col. 15 & |
+| file://:0:0:0:0 | const lambda [] type at line 15, col. 5 |
+| file://:0:0:0:0 | const lambda [] type at line 15, col. 5 & |
 | file://:0:0:0:0 | declaration of 1st parameter |
 | file://:0:0:0:0 | declaration of 1st parameter |
 | file://:0:0:0:0 | declaration of 1st parameter |
@@ -142,6 +172,10 @@
 | file://:0:0:0:0 | declaration of 1st parameter |
 | file://:0:0:0:0 | declaration of 1st parameter |
 | file://:0:0:0:0 | declaration of 1st parameter |
+| file://:0:0:0:0 | declaration of 1st parameter |
+| file://:0:0:0:0 | declaration of 1st parameter |
+| file://:0:0:0:0 | declaration of 1st parameter |
+| file://:0:0:0:0 | decltype([...](...){...}) |
 | file://:0:0:0:0 | decltype([...](...){...}) |
 | file://:0:0:0:0 | decltype([...](...){...}) |
 | file://:0:0:0:0 | decltype([...](...){...}) |
@@ -164,9 +198,14 @@
 | file://:0:0:0:0 | lambda [] type at line 9, col. 5 * |
 | file://:0:0:0:0 | lambda [] type at line 9, col. 15 & |
 | file://:0:0:0:0 | lambda [] type at line 9, col. 15 && |
+| file://:0:0:0:0 | lambda [] type at line 15, col. 5 & |
+| file://:0:0:0:0 | lambda [] type at line 15, col. 5 && |
 | file://:0:0:0:0 | operator= |
 | file://:0:0:0:0 | operator= |
 | file://:0:0:0:0 | overflow_arg_area |
+| file://:0:0:0:0 | p#0 |
+| file://:0:0:0:0 | p#0 |
+| file://:0:0:0:0 | p#0 |
 | file://:0:0:0:0 | p#0 |
 | file://:0:0:0:0 | p#0 |
 | file://:0:0:0:0 | p#0 |
