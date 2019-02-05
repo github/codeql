@@ -1497,8 +1497,9 @@ new_array_allocated_type(
  * The field being initialized by an initializer expression within an aggregate
  * initializer for a class/struct/union.
  */
+#keyset[aggregate, field]
 aggregate_field_init(
-    unique int aggregate: @aggregateliteral ref,
+    int aggregate: @aggregateliteral ref,
     int initializer: @expr ref,
     int field: @membervariable ref
 );
@@ -1507,8 +1508,9 @@ aggregate_field_init(
  * The index of the element being initialized by an initializer expression
  * within an aggregate initializer for an array.
  */
+#keyset[aggregate, element_index]
 aggregate_array_init(
-    unique int aggregate: @aggregateliteral ref,
+    int aggregate: @aggregateliteral ref,
     int initializer: @expr ref,
     int element_index: int ref
 );
