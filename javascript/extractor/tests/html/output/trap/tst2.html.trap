@@ -174,8 +174,8 @@ hasLocation(#20037,#20052)
 scopes(#20053,3)
 scopenodes(#20037,#20053)
 scopenesting(#20053,#20000)
-isES2015Module(#20037)
 isModule(#20037)
+isES2015Module(#20037)
 #20054=@"var;{inAModule};{#20053}"
 variables(#20054,"inAModule",#20053)
 #20055=*
@@ -259,8 +259,8 @@ hasLocation(#20061,#20078)
 scopes(#20079,3)
 scopenodes(#20061,#20079)
 scopenesting(#20079,#20000)
-isES2015Module(#20061)
 isModule(#20061)
+isES2015Module(#20061)
 #20080=@"var;{f};{#20079}"
 variables(#20080,"f",#20079)
 #20081=@"local_type_name;{f};{#20079}"
