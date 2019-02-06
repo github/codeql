@@ -89,8 +89,6 @@ module JsonNET {
         attribute instanceof JsonObjectAttributeClass
         or
         attribute.hasName("JsonConverterAttribute")
-        or
-        attribute.hasQualifiedName("System.DataContractAttribute")
       )
       or
       this.getAConstructor().getAnAttribute().getType().hasName("JsonConstructorAttribute")
@@ -103,7 +101,7 @@ module JsonNET {
    * A field/property that can be serialized, either explicitly
    * or as a member of a serialized type.
    */
-  private class SerializedMember extends AssignableMember, TaintTracking::TaintedMember {
+  private class SerializedMember extends TaintTracking::TaintedMember {
     SerializedMember() {
       // This member has a Json attribute
       exists(Class attribute | attribute = this.(Attributable).getAnAttribute().getType() |
