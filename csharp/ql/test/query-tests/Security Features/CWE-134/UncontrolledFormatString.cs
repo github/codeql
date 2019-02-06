@@ -27,7 +27,7 @@ public class TaintedPathHandler : IHttpHandler
 
     void OnButtonClicked()
     {
-    	// BAD: Uncontrolled format string.
-    	String.Format(box1.Text, "Do not do this");
+        // BAD: Uncontrolled format string.
+        String.Format(box1.Text, "Do not do this");
     }
 }
