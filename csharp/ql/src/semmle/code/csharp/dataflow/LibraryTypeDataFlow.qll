@@ -238,25 +238,25 @@ class CallableFlowSinkArg extends CallableFlowSink, TCallableFlowSinkArg {
 }
 
 /** Gets the flow source for argument `i` of callable `callable`. */
-CallableFlowSourceArg getFlowSourceArg(SourceDeclarationCallable callable, int i) {
+private CallableFlowSourceArg getFlowSourceArg(SourceDeclarationCallable callable, int i) {
   i = result.getArgumentIndex() and
   hasArgumentPosition(callable, i)
 }
 
 /** Gets the flow sink for argument `i` of callable `callable`. */
-CallableFlowSinkArg getFlowSinkArg(SourceDeclarationCallable callable, int i) {
+private CallableFlowSinkArg getFlowSinkArg(SourceDeclarationCallable callable, int i) {
   i = result.getArgumentIndex() and
   hasArgumentPosition(callable, i)
 }
 
 /** Gets the flow source for argument `i` of delegate `callable`. */
-CallableFlowSourceDelegateArg getDelegateFlowSourceArg(SourceDeclarationCallable callable, int i) {
+private CallableFlowSourceDelegateArg getDelegateFlowSourceArg(SourceDeclarationCallable callable, int i) {
   i = result.getArgumentIndex() and
   hasDelegateArgumentPosition(callable, i)
 }
 
 /** Gets the flow sink for the `j`th argument of the delegate at argument `i` of `callable`. */
-CallableFlowSinkDelegateArg getDelegateFlowSinkArg(SourceDeclarationCallable callable, int i, int j) {
+private CallableFlowSinkDelegateArg getDelegateFlowSinkArg(SourceDeclarationCallable callable, int i, int j) {
   result = TCallableFlowSinkDelegateArg(i, j) and
   hasDelegateArgumentPosition2(callable, i, j)
 }
