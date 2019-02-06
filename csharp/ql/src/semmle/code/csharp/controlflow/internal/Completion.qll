@@ -178,6 +178,13 @@ private predicate isMatchingConstant(Expr e, boolean value) {
   )
 }
 
+private class Overflowable extends UnaryOperation {
+  Overflowable() {
+    not this instanceof UnaryBitwiseOperation and
+    this.getType() instanceof IntegralType
+  }
+}
+
 /** A control flow element that is inside a `try` block. */
 private class TriedControlFlowElement extends ControlFlowElement {
   TriedControlFlowElement() { this = any(TryStmt try).getATriedElement() }
@@ -185,20 +192,15 @@ private class TriedControlFlowElement extends ControlFlowElement {
   /**
    * Gets an exception class that is potentially thrown by this element, if any.
    */
-  ExceptionClass getAThrownException() {
-    this = any(UnaryOperation uo |
-        not uo instanceof UnaryBitwiseOperation and
-        uo.getType() instanceof IntegralType and
-        result instanceof SystemOverflowExceptionClass
-      )
+  Class getAThrownException() {
+    this instanceof Overflowable and
+    result instanceof SystemOverflowExceptionClass
     or
-    this = any(CastExpr ce |
-        ce.getType() instanceof IntegralType and
-        result instanceof SystemOverflowExceptionClass
-        or
-        invalidCastCandidate(ce) and
-        result instanceof SystemInvalidCastExceptionClass
-      )
+    this.(CastExpr).getType() instanceof IntegralType and
+    result instanceof SystemOverflowExceptionClass
+    or
+    invalidCastCandidate(this) and
+    result instanceof SystemInvalidCastExceptionClass
     or
     this instanceof Call and
     result instanceof SystemExceptionClass

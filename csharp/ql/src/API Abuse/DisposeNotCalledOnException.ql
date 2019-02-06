@@ -23,7 +23,7 @@ import semmle.code.csharp.frameworks.System
  * Gets an exception type that may be thrown during the execution of method `m`.
  * Assumes any exception may be thrown by library types.
  */
-ExceptionClass getAThrownException(Method m) {
+Class getAThrownException(Method m) {
   m.fromLibrary() and
   result = any(SystemExceptionClass sc)
   or

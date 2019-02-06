@@ -89,7 +89,7 @@ class VSTestAssertClass extends Class {
 }
 
 /** The `Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException` class. */
-class AssertFailedExceptionClass extends ExceptionClass {
+class AssertFailedExceptionClass extends Class {
   AssertFailedExceptionClass() {
     this.getNamespace() instanceof VSTestNamespace and
     this.hasName("AssertFailedException")
