@@ -93,7 +93,7 @@ class NamedElement extends Element, @dotnet_named_element {
   predicate compiledFromSource() {
     not this.fromSource() and
     exists(NamedElement other | other != this |
-      other.getLabel() = this.getLabel() and
+      this.matchesHandle(other) and
       other.fromSource()
     )
   }
