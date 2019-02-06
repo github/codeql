@@ -18,3 +18,11 @@ function f(o) {
 	return x;
 	function x() {}
 });
+
+(function(){
+	var {a = b, c = d} = e;
+	a + c;
+});
+(function(a = b) {
+	a;
+});
