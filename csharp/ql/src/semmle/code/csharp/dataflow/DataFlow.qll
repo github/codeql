@@ -9,6 +9,7 @@ module DataFlow {
   private import semmle.code.csharp.dataflow.CallContext
   private import semmle.code.csharp.dataflow.DelegateDataFlow
   private import semmle.code.csharp.dataflow.LibraryTypeDataFlow
+  private import semmle.code.csharp.frameworks.EntityFramework
   private import Internal::Cached
   private import dotnet
   private import cil
@@ -116,6 +117,15 @@ module DataFlow {
   predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
 
   predicate localFlowStep = Internal::LocalFlow::step/2;
+
+  /**
+   * A dataflow node that jumps between callables. This can be extended in framework code
+   * to add additional dataflow steps.
+   */
+  abstract class NonLocalJumpNode extends Node {
+    /** Gets a successor node that is potentially in another callable. */
+    abstract Node getAJumpSuccessor();
+  }
 
   /**
    * A data flow node augmented with a call context and a configuration. Only
@@ -1398,12 +1408,26 @@ module DataFlow {
        */
       cached
       predicate jumpStep(ExprNode pred, ExprNode succ) {
-        exists(FieldLike fl, FieldLikeRead flr | fl.isStatic() |
-          fl.getAnAssignedValue() = pred.getExpr() and
+        pred.(NonLocalJumpNode).getAJumpSuccessor() = succ
+      }
+
+      /** A dataflow node that has field-like dataflow. */
+      private class FieldLikeJumpNode extends NonLocalJumpNode, ExprNode {
+        FieldLike fl;
+
+        FieldLikeRead flr;
+
+        ExprNode succ;
+
+        FieldLikeJumpNode() {
+          fl.isStatic() and
+          fl.getAnAssignedValue() = this.getExpr() and
           fl.getAnAccess() = flr and
           flr = succ.getExpr() and
           hasNonlocalValue(flr)
-        )
+        }
+
+        override ExprNode getAJumpSuccessor() { result = succ }
       }
 
       /**
