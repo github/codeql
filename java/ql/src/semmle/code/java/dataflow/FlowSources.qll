@@ -19,6 +19,7 @@ import semmle.code.java.frameworks.android.Intent
 import semmle.code.java.frameworks.SpringWeb
 import semmle.code.java.frameworks.Guice
 import semmle.code.java.frameworks.struts.StrutsActions
+import semmle.code.java.frameworks.Thrift
 
 /** Class for `tainted` user input. */
 abstract class UserInput extends DataFlow::Node { }
@@ -78,6 +79,8 @@ class RemoteUserInput extends UserInput {
     )
     or
     exists(Struts2ActionSupportClass c | c.getASetterMethod().getField() = this.asExpr().(FieldRead).getField())
+    or
+    exists(ThriftIface i | i.getAnImplementingMethod().getAParameter() = this.asParameter())
   }
 
   /**
