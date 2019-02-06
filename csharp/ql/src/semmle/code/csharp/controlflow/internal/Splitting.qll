@@ -961,19 +961,28 @@ private module SuccSplits {
     )
   }
 
+  pragma[nomagic]
+  private predicate entryOfKind(
+    ControlFlowElement pred, ControlFlowElement succ, Completion c, SplitInternal split,
+    SplitKind sk
+  ) {
+    split.hasEntry(pred, succ, c) and
+    sk = split.getKind()
+  }
+
   /** Holds if `succSplits` should not have a split of kind `sk`. */
-  pragma[noinline]
+  pragma[nomagic]
   private predicate case2aNoneOfKind(
     ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c, SplitKind sk
   ) {
     // None inherited from predecessor
     case2aNoneInheritedOfKindForall(pred, predSplits, succ, c, sk, TSplitsNil()) and
     // None newly entered into
-    not exists(SplitInternal split | split.hasEntry(pred, succ, c) | split.getKind() = sk)
+    not entryOfKind(pred, succ, c, _, sk)
   }
 
   /** Holds if `succSplits` should not have a split of kind `sk` at rank `rnk`. */
-  pragma[noinline]
+  pragma[nomagic]
   private predicate case2aNoneAtRank(
     ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c, int rnk
   ) {
@@ -982,27 +991,42 @@ private module SuccSplits {
     )
   }
 
-  /** Gets a split that should be in `succSplits`. */
   pragma[nomagic]
-  private SplitInternal case2aSome(
+  private SplitInternal case2auxGetAPredecessorSplit(
     ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c
   ) {
     case2aux(pred, predSplits, succ, c) and
+    result = predSplits.getASplit()
+  }
+
+  /** Gets a split that should be in `succSplits`. */
+  pragma[nomagic]
+  private SplitInternal case2aSome(
+    ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c, SplitKind sk
+  ) {
     (
-      result = predSplits.getASplit() and
+      // Inherited from predecessor
+      result = case2auxGetAPredecessorSplit(pred, predSplits, succ, c) and
       result.hasSuccessor(pred, succ, c)
       or
-      result.hasEntry(pred, succ, c) and
-      case2aNoneInheritedOfKindForall(pred, predSplits, succ, c, result.getKind(), TSplitsNil())
-    )
+      // Newly entered into
+      exists(SplitKind sk0 |
+        case2aNoneInheritedOfKindForall(pred, predSplits, succ, c, sk0, TSplitsNil())
+      |
+        entryOfKind(pred, succ, c, result, sk0)
+      )
+    ) and
+    sk = result.getKind()
   }
 
   /** Gets a split that should be in `succSplits` at rank `rnk`. */
+  pragma[nomagic]
   SplitInternal case2aSomeAtRank(
     ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c, int rnk
   ) {
-    result = case2aSome(pred, predSplits, succ, c) and
-    rnk = result.getKind().getListRank(succ)
+    exists(SplitKind sk | result = case2aSome(pred, predSplits, succ, c, sk) |
+      rnk = sk.getListRank(succ)
+    )
   }
 
   /**
