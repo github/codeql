@@ -17,6 +17,7 @@ import semmle.code.java.frameworks.android.WebView
 import semmle.code.java.frameworks.JaxWS
 import semmle.code.java.frameworks.android.Intent
 import semmle.code.java.frameworks.SpringWeb
+import semmle.code.java.frameworks.Guice
 
 /** Class for `tainted` user input. */
 abstract class UserInput extends DataFlow::Node { }
@@ -69,6 +70,11 @@ class RemoteUserInput extends UserInput {
     )
     or
     this.asParameter().getAnAnnotation() instanceof SpringServletInputAnnotation
+    or
+    exists(GuiceRequestParametersAnnotation a |
+      a = this.asParameter().getAnAnnotation() or
+      a = this.asExpr().(FieldRead).getField().getAnAnnotation()
+    )
   }
 
   /**

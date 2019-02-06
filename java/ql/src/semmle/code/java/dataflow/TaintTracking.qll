@@ -12,6 +12,7 @@ private import DefUse
 private import semmle.code.java.security.SecurityTests
 private import semmle.code.java.security.Validation
 private import semmle.code.java.frameworks.android.Intent
+private import semmle.code.java.frameworks.Guice
 private import semmle.code.java.Maps
 
 module TaintTracking {
@@ -471,6 +472,8 @@ module TaintTracking {
     or
     m.getDeclaringType().hasQualifiedName("java.nio", "ByteBuffer") and
     m.hasName("get")
+    or
+    m = any(GuiceProvider gp).getAnOverridingGetMethod()
   }
 
   private class StringReplaceMethod extends Method {
