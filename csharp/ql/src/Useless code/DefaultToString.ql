@@ -72,7 +72,7 @@ class DefaultToStringType extends ValueOrRefType {
     result instanceof SourceLocation
     or
     not super.getLocation() instanceof SourceLocation and
-    result.hasLocationInfo("", 0, 0, 0, 0)
+    result instanceof EmptyLocation
   }
 }
 

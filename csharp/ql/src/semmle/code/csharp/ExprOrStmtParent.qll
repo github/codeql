@@ -372,7 +372,7 @@ module ExprOrStmtParentCached {
     result = min(Location l | l = e.getALocation() | l order by l.getFile().toString())
     or
     not exists(e.getALocation()) and
-    result.hasLocationInfo("", 0, 0, 0, 0)
+    result instanceof EmptyLocation
   }
 }
 private import ExprOrStmtParentCached
