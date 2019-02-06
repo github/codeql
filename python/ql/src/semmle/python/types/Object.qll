@@ -1,16 +1,6 @@
 import python
 private import semmle.python.pointsto.Base
-
-private cached predicate is_an_object(@py_object obj) {
-    /* CFG nodes for numeric literals, all of which have a @py_cobject for the value of that literal */
-    not obj.(ControlFlowNode).getNode() instanceof ImmutableLiteral
-    and
-    not (
-        /* @py_cobjects for modules which have a corresponding Python module */
-        exists(@py_cobject mod_type | py_special_objects(mod_type, "ModuleType") and py_cobjecttypes(obj, mod_type)) and
-        exists(Module m | py_cobjectnames(obj, m.getName()))
-    )
-}
+private import semmle.python.pointsto.Builtin
 
 private newtype TObject = 
     TBuiltinObject(@py_cobject obj) {
@@ -43,7 +33,7 @@ private newtype TObject =
 class Object extends TObject {
 
     /** INTERNAL -- Do not use */
-    @py_cobject asBuiltin() {
+    Builtin asBuiltin() {
         this = TBuiltinObject(result)
     }
 
@@ -53,11 +43,11 @@ class Object extends TObject {
     }
 
     Object getBuiltinClass() {
-        py_cobjecttypes(this.asBuiltin(), result.asBuiltin()) and not this = unknownValue()
+        this.asBuiltin().getType() = result.asBuiltin()
     }
 
     string getBuiltinName() {
-        py_cobjectnames(this.asBuiltin(), result)
+        result = this.asBuiltin().getName()
     }
 
     /** Gets an inferred type for this object, without using inter-procedural analysis.
@@ -103,8 +93,8 @@ class Object extends TObject {
 
     string toString() {
         not this = undefinedVariable() and not this = unknownValue() and
-        exists(ClassObject type, string typename, string objname |
-            py_cobjecttypes(this.asBuiltin(), type.asBuiltin()) and py_cobjectnames(this.asBuiltin(), objname) and typename = type.getName() |
+        exists(string typename, string objname |
+            typename = this.asBuiltin().getType().getName() and objname = this.asBuiltin().getName() and
             result = typename + " " + objname
         )
         or
@@ -127,7 +117,7 @@ class Object extends TObject {
         or
         this.getOrigin() instanceof Module and result = theModuleType()
         or
-        py_cobjecttypes(this.asBuiltin(), result.asBuiltin())
+        result.asBuiltin() = this.asBuiltin().getType()
     }
 
     private
@@ -268,9 +258,11 @@ private Object findByName3(string longName) {
 class NumericObject extends Object {
 
     NumericObject() {
-         py_cobjecttypes(this.asBuiltin(), theIntType().asBuiltin()) or 
-         py_cobjecttypes(this.asBuiltin(), theLongType().asBuiltin()) or
-         py_cobjecttypes(this.asBuiltin(), theFloatType().asBuiltin())
+        exists(string numtype |
+            numtype = "int" or numtype = "long" or numtype = "float"
+            |
+            this.asBuiltin().getType() = BuiltinModule::builtin(numtype)
+        )
     }
 
     /** Gets the Boolean value that this object
@@ -321,8 +313,11 @@ class NumericObject extends Object {
 class StringObject extends Object {
 
     StringObject() {
-        py_cobjecttypes(this.asBuiltin(), theUnicodeType().asBuiltin()) or
-        py_cobjecttypes(this.asBuiltin(), theBytesType().asBuiltin())
+        exists(string strtype |
+            strtype = "str" or strtype = "bytes" or strtype = "unicode"
+            |
+            this.asBuiltin().getType() = BuiltinModule::builtin(strtype)
+        )
     }
 
     /** Whether this string is composed entirely of ascii encodable characters */
@@ -339,7 +334,7 @@ class StringObject extends Object {
     /** Gets the text for this string */
     cached string getText() {
         exists(string quoted_string |
-            py_cobjectnames(this.asBuiltin(), quoted_string) and
+            quoted_string = this.asBuiltin().getName() and
             result = quoted_string.regexpCapture("[bu]'([\\s\\S]*)'", 1)
         )
     }
@@ -380,7 +375,7 @@ abstract class SequenceObject extends Object {
 class TupleObject extends SequenceObject {
 
     TupleObject() {
-        py_cobjecttypes(this.asBuiltin(), theTupleType().asBuiltin())
+        this.asBuiltin().getType() = BuiltinModule::builtin("tuple")
         or
         this.asCfgNode() instanceof TupleNode
         or
@@ -405,7 +400,7 @@ class NonEmptyTupleObject extends TupleObject {
 class ListObject extends SequenceObject {
 
     ListObject() {
-        py_cobjecttypes(this.asBuiltin(), theListType().asBuiltin())
+        this.asBuiltin().getType() = BuiltinModule::builtin("list")
         or
         this.asCfgNode() instanceof ListNode
     }
@@ -414,83 +409,81 @@ class ListObject extends SequenceObject {
 
 /** The `builtin` module */
 BuiltinModuleObject theBuiltinModuleObject() {
-    py_special_objects(result.asBuiltin(), "builtin_module_2") and major_version() = 2
-    or
-    py_special_objects(result.asBuiltin(), "builtin_module_3") and major_version() = 3
+    result.asBuiltin() = BuiltinModule::builtins()
 }
 
 /** The `sys` module */
 BuiltinModuleObject theSysModuleObject() {
-    py_special_objects(result.asBuiltin(), "sys")
+    result.asBuiltin() = BuiltinModule::sys()
 }
 
 Object builtin_object(string name) {
-    py_cmembers_versioned(theBuiltinModuleObject().asBuiltin(), name, result.asBuiltin(), major_version().toString())
+    result.asBuiltin() = BuiltinModule::builtin(name)
 }
 
 /** The built-in object None */
- Object theNoneObject() {
-    py_special_objects(result.asBuiltin(), "None")
+Object theNoneObject() {
+     result.asBuiltin() = Builtin::special("None")
 }
 
 /** The built-in object True */
- Object theTrueObject() {
-    py_special_objects(result.asBuiltin(), "True")
+Object theTrueObject() {
+    result.asBuiltin() = Builtin::special("True")
 }
 
 /** The built-in object False */
- Object theFalseObject() {
-    py_special_objects(result.asBuiltin(), "False")
+Object theFalseObject() {
+    result.asBuiltin() = Builtin::special("False")
 }
 
 /** The builtin function apply (Python 2 only) */
- Object theApplyFunction() {
+Object theApplyFunction() {
     result = builtin_object("apply")
 }
 
 /** The builtin function hasattr */
- Object theHasattrFunction() {
+Object theHasattrFunction() {
     result = builtin_object("hasattr")
 }
 
 /** The builtin function len */
- Object theLenFunction() {
+Object theLenFunction() {
     result = builtin_object("len")
 }
 
 /** The builtin function format */
- Object theFormatFunction() {
+Object theFormatFunction() {
     result = builtin_object("format")
 }
 
 /** The builtin function open */
- Object theOpenFunction() {
+Object theOpenFunction() {
     result = builtin_object("open")
 }
 
 /** The builtin function print (Python 2.7 upwards) */
- Object thePrintFunction() {
+Object thePrintFunction() {
     result = builtin_object("print")
 }
 
 /** The builtin function input (Python 2 only) */
- Object theInputFunction() {
+Object theInputFunction() {
     result = builtin_object("input")
 }
 
 /** The builtin function locals */
- Object theLocalsFunction() {
-    py_special_objects(result.asBuiltin(), "locals")
+Object theLocalsFunction() {
+    result.asBuiltin() = Builtin::special("locals")
 }
 
 /** The builtin function globals */
- Object theGlobalsFunction() {
-    py_special_objects(result.asBuiltin(), "globals")
+Object theGlobalsFunction() {
+    result.asBuiltin() = Builtin::special("globals")
 }
 
 /** The builtin function sys.exit */
- Object theExitFunctionObject() {
-    py_cmembers_versioned(theSysModuleObject().asBuiltin(), "exit", result.asBuiltin(), major_version().toString())
+Object theExitFunctionObject() {
+    result.asBuiltin() = BuiltinModule::sys().getAttribute("exit")
 }
 
 /** The NameError class */
@@ -525,7 +518,9 @@ Object theNotImplementedObject() {
 }
 
 Object theEmptyTupleObject() {
-    py_cobjecttypes(result.asBuiltin(), theTupleType().asBuiltin()) and not py_citems(result.asBuiltin(), _, _)
+    exists(Builtin empty |
+        empty = result.asBuiltin() and empty.getType() = BuiltinModule::builtin("tuple") and not exists(empty.getItem(_))
+    )
 }
 
 
@@ -555,7 +550,25 @@ private ClassObject string_literal(Expr e) {
     e instanceof Unicode and result = theUnicodeType()
 }
 
+
+private Object pseudoObject(string name) {
+    exists(@py_cobject cobj |
+        py_special_objects(cobj, name) and
+        result = TBuiltinObject(cobj)
+    )
+}
+
 Object theUnknownType() {
-    py_special_objects(result.asBuiltin(), "_semmle_unknown_type")
+    result = pseudoObject("_semmle_unknown_type")
+}
+
+/** Gets the pseudo-object representing the value referred to by an undefined variable */
+Object undefinedVariable() {
+    result = pseudoObject("_semmle_undefined_value")
+}
+
+/** Gets the pseudo-object representing an unknown value */
+Object unknownValue() {
+    result = pseudoObject("_1")
 }
 

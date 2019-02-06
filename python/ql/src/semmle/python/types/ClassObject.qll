@@ -2,11 +2,12 @@ import python
 private import semmle.python.pointsto.PointsTo
 private import semmle.python.pointsto.Base
 private import semmle.python.pointsto.MRO as MRO
+private import semmle.python.pointsto.Builtin
 
-predicate is_c_metaclass(Object o) {
-    py_special_objects(o.asBuiltin(), "type")
+predicate is_c_metaclass(Builtin o) {
+    o = Builtin::special("type")
     or
-    exists(Object sup | py_cmembers_versioned(o.asBuiltin(), ".super.", sup.asBuiltin(), major_version().toString()) and is_c_metaclass(sup))
+    exists(Builtin sup | sup = o.getType() | is_c_metaclass(sup))
 }
 
 
@@ -27,9 +28,9 @@ class ClassObject extends Object {
 
     ClassObject() {
         this.getOrigin() instanceof ClassExpr or
-        py_cobjecttypes(_, this.asBuiltin()) or
-        exists(Object meta | this.getBuiltinClass() = meta and is_c_metaclass(meta)) or
-        py_special_objects(this.asBuiltin(), "_semmle_unknown_type")
+        exists(Builtin obj | obj.getType() = this.asBuiltin()) or
+        exists(Builtin meta | this.asBuiltin().getType() = meta and is_c_metaclass(meta)) or
+        this = theUnknownType()
     }
 
     private predicate isStr() {

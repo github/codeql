@@ -549,16 +549,6 @@ predicate import_from_dot_in_init(ImportExprNode f) {
     )
 }
 
-/** Gets the pseudo-object representing the value referred to by an undefined variable */
-Object undefinedVariable() {
-    py_special_objects(result.asBuiltin(), "_semmle_undefined_value")
-}
-
-/** Gets the pseudo-object representing an unknown value */
-Object unknownValue() {
-    py_special_objects(result.asBuiltin(), "_1")
-}
-
 BuiltinCallable theTypeNewMethod() {
     py_cmembers_versioned(theTypeType().asBuiltin(), "__new__", result.asBuiltin(), major_version().toString())
 }

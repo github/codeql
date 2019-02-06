@@ -2720,7 +2720,7 @@ module PointsTo {
                 obj = unknownValue() and result = theUnknownType()
             )
             or
-            result = cls.getBuiltinClass() and is_c_metaclass(result)
+            result = cls.getBuiltinClass() and is_c_metaclass(result.asBuiltin())
             or
             exists(ControlFlowNode meta |
                 Types::six_add_metaclass(_, cls, meta) and
