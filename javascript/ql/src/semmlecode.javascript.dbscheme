@@ -128,8 +128,6 @@ case @toplevel.kind of
 
 isModule (int tl: @toplevel ref);
 isNodejs (int tl: @toplevel ref);
-isES2015Module (int tl: @toplevel ref);
-isClosureModule (int tl: @toplevel ref);
 
 // statements
 #keyset[parent, idx]

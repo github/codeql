@@ -1039,7 +1039,7 @@ module DataFlow {
     or
     exists(GlobalVarAccess va |
       nd = valueNode(va.(VarUse)) and
-      if Closure::isLibraryNamespacePath(va.getName()) then cause = "heap" else cause = "global"
+      cause = "global"
     )
     or
     exists(Expr e | e = nd.asExpr() and cause = "call" |
