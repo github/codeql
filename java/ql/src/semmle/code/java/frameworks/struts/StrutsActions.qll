@@ -124,3 +124,24 @@ class Struts2PrepareMethod extends Method {
     exists(Struts2ActionClass actionClass | this = actionClass.getPrepareMethod())
   }
 }
+
+/**
+ * A subclass of the Struts 2 `ActionSupport` class.
+ */
+class Struts2ActionSupportClass extends Class {
+  Struts2ActionSupportClass() {
+    this.getASupertype+().hasQualifiedName("com.opensymphony.xwork2", "ActionSupport")
+  }
+
+  /**
+   * Gets a setter method declared on a subclass of `ActionSupport`.
+   */
+  SetterMethod getASetterMethod() {
+    result.getDeclaringType() = this and
+    result.isPublic() and
+    exists(string name | result.getField().getName().toLowerCase() = name |
+      result.getName().toLowerCase().substring(3, result.getName().length()) = name and
+      result.getName().matches("set%")
+    )
+  }
+}
