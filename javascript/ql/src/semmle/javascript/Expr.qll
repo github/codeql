@@ -29,7 +29,10 @@ class ExprOrType extends @exprortype, Documentable {
       not exists(getOwnDocumentation()) and
       if getParent() instanceof Property
       then result = getParent().(Property).getDocumentation()
-      else result = getEnclosingStmt().getDocumentation()
+      else
+        if getParent() instanceof MethodDeclaration
+        then result = getParent().(MethodDeclaration).getDocumentation()
+        else result = getEnclosingStmt().getDocumentation()
     )
   }
 
