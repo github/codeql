@@ -22,6 +22,23 @@ module Shared {
 
   /** A sanitizer for XSS vulnerabilities. */
   abstract class Sanitizer extends DataFlow::Node { }
+
+  /**
+   * A regexp replacement involving an HTML meta-character, viewed as a sanitizer for
+   * XSS vulnerabilities.
+   *
+   * The XSS queries do not attempt to reason about correctness or completeness of sanitizers,
+   * so any such replacement stops taint propagation.
+   */
+  class MetacharEscapeSanitizer extends Sanitizer, DataFlow::MethodCallNode {
+    MetacharEscapeSanitizer() {
+      getMethodName() = "replace" and
+      exists(RegExpConstant c |
+        c.getLiteral() = getArgument(0).asExpr() and
+        c.getValue().regexpMatch("['\"&<>]")
+      )
+    }
+  }
 }
 
 /** Provides classes and predicates for the DOM-based XSS query. */
@@ -174,6 +191,15 @@ module DomBasedXss {
       )
     }
   }
+
+  /**
+   * A regexp replacement involving an HTML meta-character, viewed as a sanitizer for
+   * XSS vulnerabilities.
+   *
+   * The XSS queries do not attempt to reason about correctness or completeness of sanitizers,
+   * so any such replacement stops taint propagation.
+   */
+  private class MetacharEscapeSanitizer extends Sanitizer, Shared::MetacharEscapeSanitizer { }
 }
 
 /** Provides classes and predicates for the reflected XSS query. */
@@ -205,6 +231,15 @@ module ReflectedXss {
       )
     }
   }
+
+  /**
+   * A regexp replacement involving an HTML meta-character, viewed as a sanitizer for
+   * XSS vulnerabilities.
+   *
+   * The XSS queries do not attempt to reason about correctness or completeness of sanitizers,
+   * so any such replacement stops taint propagation.
+   */
+  private class MetacharEscapeSanitizer extends Sanitizer, Shared::MetacharEscapeSanitizer { }
 }
 
 /** Provides classes and predicates for the stored XSS query. */
@@ -219,7 +254,14 @@ module StoredXss {
   abstract class Sanitizer extends Shared::Sanitizer { }
 
   /** An arbitrary XSS sink, considered as a flow sink for stored XSS. */
-  private class AnySink extends Sink {
-    AnySink() { this instanceof Shared::Sink }
-  }
+  private class AnySink extends Sink { AnySink() { this instanceof Shared::Sink } }
+
+  /**
+   * A regexp replacement involving an HTML meta-character, viewed as a sanitizer for
+   * XSS vulnerabilities.
+   *
+   * The XSS queries do not attempt to reason about correctness or completeness of sanitizers,
+   * so any such replacement stops taint propagation.
+   */
+  private class MetacharEscapeSanitizer extends Sanitizer, Shared::MetacharEscapeSanitizer { }
 }
