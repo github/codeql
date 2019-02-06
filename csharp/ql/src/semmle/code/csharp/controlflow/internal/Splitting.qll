@@ -13,6 +13,9 @@ private import semmle.code.csharp.controlflow.Guards as Guards
 private import ControlFlow
 private import SuccessorTypes
 
+/** The maximum number of splits allowed for a given node. */
+private int maxSplits() { result = 7 }
+
 cached
 private module Cached {
   cached
@@ -41,11 +44,13 @@ private module Cached {
     TSplitsNil() or
     TSplitsCons(SplitInternal head, Splits tail) {
       exists(
-        ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c, int rnk
+        ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c, int rnk,
+        int numberOfSplits
       |
-        case2aFromRank(pred, predSplits, succ, tail, c, rnk + 1)
-      |
+        case2aFromRank(pred, predSplits, succ, tail, c, rnk + 1, numberOfSplits) and
         head = case2aSomeAtRank(pred, predSplits, succ, c, rnk)
+      |
+        numberOfSplits < maxSplits() or head.getKind().isMandatory()
       )
     }
 
@@ -92,6 +97,13 @@ abstract class SplitKind extends TSplitKind {
    * to represent sets of splits as ordered lists.
    */
   abstract int getListOrder();
+
+  /**
+   * Holds if a split of this kind is mandatory. That is, a split of this kind must
+   * be taken into account, regardless of whether we might exceed the maximum number
+   * of splits (`maxSplits()`).
+   */
+  abstract predicate isMandatory();
 
   /**
    * Gets the rank of this split kind among all the split kinds that apply to
@@ -264,6 +276,8 @@ module FinallySplitting {
   private class FinallySplitKind extends SplitKind, TFinallySplitKind {
     override int getListOrder() { result = 0 }
 
+    override predicate isMandatory() { any() }
+
     override string toString() { result = "Finally" }
   }
 
@@ -414,6 +428,8 @@ module ExceptionHandlerSplitting {
 
   private class ExceptionHandlerSplitKind extends SplitKind, TExceptionHandlerSplitKind {
     override int getListOrder() { result = 1 }
+
+    override predicate isMandatory() { any() }
 
     override string toString() { result = "ExceptionHandler" }
   }
@@ -710,6 +726,8 @@ module BooleanSplitting {
           )
       )
     }
+
+    override predicate isMandatory() { none() }
 
     override string toString() { result = kind.toString() }
   }
@@ -1046,28 +1064,33 @@ private module SuccSplits {
    */
   predicate case2aFromRank(
     ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits,
-    Completion c, int rnk
+    Completion c, int rnk, int numberOfSplits
   ) {
     case2aux(pred, predSplits, succ, c) and
     succSplits = TSplitsNil() and
-    rnk = max(any(SplitKind sk).getListRank(succ)) + 1
+    rnk = max(any(SplitKind sk).getListRank(succ)) + 1 and
+    numberOfSplits = 0
     or
-    case2aFromRank(pred, predSplits, succ, succSplits, c, rnk + 1) and
+    case2aFromRank(pred, predSplits, succ, succSplits, c, rnk + 1, numberOfSplits) and
     case2aNoneAtRank(pred, predSplits, succ, c, rnk)
     or
-    exists(Splits mid, SplitInternal split |
-      split = case2aCons(pred, predSplits, succ, mid, c, rnk)
+    exists(Splits mid, SplitInternal split, int numberOfSplitsMid |
+      split = case2aCons(pred, predSplits, succ, mid, c, rnk, numberOfSplitsMid)
     |
-      succSplits = TSplitsCons(split, mid)
+      if numberOfSplitsMid < maxSplits() or split.getKind().isMandatory()
+      then succSplits = TSplitsCons(split, mid) and numberOfSplits = numberOfSplitsMid + 1
+      else (
+        succSplits = mid and numberOfSplits = numberOfSplitsMid
+      )
     )
   }
 
   pragma[noinline]
   private SplitInternal case2aCons(
     ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits,
-    Completion c, int rnk
+    Completion c, int rnk, int numberOfSplits
   ) {
-    case2aFromRank(pred, predSplits, succ, succSplits, c, rnk + 1) and
+    case2aFromRank(pred, predSplits, succ, succSplits, c, rnk + 1, numberOfSplits) and
     result = case2aSomeAtRank(pred, predSplits, succ, c, rnk)
   }
 
@@ -1101,7 +1124,7 @@ private module SuccSplits {
     ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits,
     Completion c
   ) {
-    case2aFromRank(pred, predSplits, succ, succSplits, c, 1)
+    case2aFromRank(pred, predSplits, succ, succSplits, c, 1, _)
     or
     case2bForall(pred, predSplits, succ, c, TSplitsNil()) and
     succSplits = TSplitsNil()
