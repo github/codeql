@@ -1,0 +1,51 @@
+| x | tests/globalModule.js:3:1:3:1 | x |
+| x | tests/globalModuleDefault.js:3:1:3:1 | x |
+| x | tests/requireFromGlobalModule.js:10:1:10:1 | x |
+| x | tests/requireFromGlobalModule.js:11:1:11:1 | x |
+| x | tests/requireFromGlobalModule.js:13:1:13:1 | x |
+| x | tests/requireFromGlobalModule.js:14:1:14:1 | x |
+| x | tests/requireFromGlobalModule.js:16:1:16:1 | x |
+| x | tests/requireFromGlobalModule.js:17:1:17:1 | x |
+| x.y | tests/globalModule.js:3:1:3:3 | x.y |
+| x.y | tests/globalModuleDefault.js:3:1:3:3 | x.y |
+| x.y | tests/requireFromGlobalModule.js:10:1:10:3 | x.y |
+| x.y | tests/requireFromGlobalModule.js:11:1:11:3 | x.y |
+| x.y | tests/requireFromGlobalModule.js:13:1:13:3 | x.y |
+| x.y | tests/requireFromGlobalModule.js:14:1:14:3 | x.y |
+| x.y | tests/requireFromGlobalModule.js:16:1:16:3 | x.y |
+| x.y | tests/requireFromGlobalModule.js:17:1:17:3 | x.y |
+| x.y.z | tests/globalModule.js:3:1:3:5 | x.y.z |
+| x.y.z | tests/globalModuleDefault.js:3:1:3:5 | x.y.z |
+| x.y.z | tests/requireFromGlobalModule.js:10:1:10:5 | x.y.z |
+| x.y.z | tests/requireFromGlobalModule.js:11:1:11:5 | x.y.z |
+| x.y.z | tests/requireFromGlobalModule.js:13:1:13:5 | x.y.z |
+| x.y.z | tests/requireFromGlobalModule.js:14:1:14:5 | x.y.z |
+| x.y.z | tests/requireFromGlobalModule.js:16:1:16:5 | x.y.z |
+| x.y.z | tests/requireFromGlobalModule.js:17:1:17:5 | x.y.z |
+| x.y.z.es6 | tests/requireFromEs6.js:6:17:6:41 | goog.re ... z.es6') |
+| x.y.z.es6 | tests/requireFromGlobalModule.js:7:1:7:25 | goog.re ... z.es6') |
+| x.y.z.es6 | tests/requireFromGlobalModule.js:16:1:16:9 | x.y.z.es6 |
+| x.y.z.es6 | tests/requireFromGoogModule.js:6:17:6:41 | goog.re ... z.es6') |
+| x.y.z.es6default | tests/requireFromEs6.js:7:24:7:55 | goog.re ... fault') |
+| x.y.z.es6default | tests/requireFromGlobalModule.js:8:1:8:32 | goog.re ... fault') |
+| x.y.z.es6default | tests/requireFromGlobalModule.js:17:1:17:16 | x.y.z.es6default |
+| x.y.z.es6default | tests/requireFromGoogModule.js:7:24:7:55 | goog.re ... fault') |
+| x.y.z.global | tests/globalModule.js:3:16:5:1 | {\\n  fun() {}\\n} |
+| x.y.z.global | tests/requireFromEs6.js:3:20:3:47 | goog.re ... lobal') |
+| x.y.z.global | tests/requireFromGlobalModule.js:1:1:1:28 | goog.re ... lobal') |
+| x.y.z.global | tests/requireFromGlobalModule.js:10:1:10:12 | x.y.z.global |
+| x.y.z.global | tests/requireFromGoogModule.js:3:20:3:47 | goog.re ... lobal') |
+| x.y.z.global.fun | tests/globalModule.js:4:6:4:10 | () {} |
+| x.y.z.globaldefault | tests/globalModuleDefault.js:3:23:3:39 | function fun() {} |
+| x.y.z.globaldefault | tests/requireFromEs6.js:4:27:4:61 | goog.re ... fault') |
+| x.y.z.globaldefault | tests/requireFromGlobalModule.js:2:1:2:35 | goog.re ... fault') |
+| x.y.z.globaldefault | tests/requireFromGlobalModule.js:11:1:11:19 | x.y.z.globaldefault |
+| x.y.z.globaldefault | tests/requireFromGoogModule.js:4:27:4:61 | goog.re ... fault') |
+| x.y.z.goog | tests/requireFromEs6.js:9:18:9:43 | goog.re ... .goog') |
+| x.y.z.goog | tests/requireFromGlobalModule.js:4:1:4:26 | goog.re ... .goog') |
+| x.y.z.goog | tests/requireFromGlobalModule.js:13:1:13:10 | x.y.z.goog |
+| x.y.z.goog | tests/requireFromGoogModule.js:9:18:9:43 | goog.re ... .goog') |
+| x.y.z.googdefault | tests/requireFromEs6.js:10:25:10:57 | goog.re ... fault') |
+| x.y.z.googdefault | tests/requireFromGlobalModule.js:5:1:5:33 | goog.re ... fault') |
+| x.y.z.googdefault | tests/requireFromGlobalModule.js:14:1:14:17 | x.y.z.googdefault |
+| x.y.z.googdefault | tests/requireFromGoogModule.js:10:25:10:57 | goog.re ... fault') |
