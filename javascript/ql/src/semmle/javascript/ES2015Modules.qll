@@ -7,7 +7,8 @@ import javascript
  */
 class ES2015Module extends Module {
   ES2015Module() {
-    isES2015Module(this)
+    isModule(this) and
+    not isNodejs(this)
   }
 
   override ModuleScope getScope() { result.getScopeElement() = this }

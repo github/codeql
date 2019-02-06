@@ -306,7 +306,7 @@ public class ASTExtractor {
 		public V(Platform platform, SourceType sourceType) {
 			this.platform = platform;
 			this.sourceType = sourceType;
-			this.isStrict = sourceType.isStrictMode();
+			this.isStrict = sourceType == SourceType.MODULE;
 		}
 
 		private Label visit(INode child, Label parent, int childIndex) {
@@ -546,27 +546,21 @@ public class ASTExtractor {
 
 			isStrict = hasUseStrict(nd.getBody());
 
-			// Add platform-specific globals.
-			scopeManager.addVariables(platform.getPredefinedGlobals());
+			// if we're extracting a Node.js/ES2015 module, introduce module scope
+			if (platform == Platform.NODE) {
+				// add node.js-specific globals
+				scopeManager.addVariables("global", "process", "console", "Buffer");
 
-			// Introduce local scope if there is one.
-			if (sourceType.hasLocalScope()) {
 				Label moduleScopeKey = trapwriter.globalID("module;{" + locationManager.getFileLabel() + "}," + locationManager.getStartLine() + "," + locationManager.getStartColumn());
 				scopeManager.enterScope(3, moduleScopeKey, toplevelLabel);
-				scopeManager.addVariables(sourceType.getPredefinedLocals(platform, locationManager.getSourceFileExtension()));
+				// special variables aren't available in `.mjs` modules
+				if (!".mjs".equals(locationManager.getSourceFileExtension()))
+					scopeManager.addVariables("require", "module", "exports", "__filename", "__dirname", "arguments");
 				trapwriter.addTuple("isModule", toplevelLabel);
-			}
-
-			// Emit the specific source type.
-			switch (sourceType) {
-			case CLOSURE_MODULE:
-				trapwriter.addTuple("isClosureModule", toplevelLabel);
-				break;
-			case MODULE:
-				trapwriter.addTuple("isES2015Module", toplevelLabel);
-				break;
-			default:
-				break;
+			} else if (sourceType == SourceType.MODULE) {
+				Label moduleScopeKey = trapwriter.globalID("module;{" + locationManager.getFileLabel() + "}," + locationManager.getStartLine() + "," + locationManager.getStartColumn());
+				scopeManager.enterScope(3, moduleScopeKey, toplevelLabel);
+				trapwriter.addTuple("isModule", toplevelLabel);
 			}
 
 			// add all declared global (or module-scoped) names, both non-lexical and lexical
@@ -575,8 +569,8 @@ public class ASTExtractor {
 
 			visitAll(nd.getBody(), toplevelLabel);
 
-			// Leave the local scope again.
-			if (sourceType.hasLocalScope())
+			// if we're extracting a Node.js/ES2015 module, leave its scope
+			if (platform == Platform.NODE || sourceType == SourceType.MODULE)
 				scopeManager.leaveScope();
 
 			contextManager.leaveContainer();

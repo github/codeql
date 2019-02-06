@@ -49,7 +49,5 @@ where
   // don't flag assignments in externs
   not dead.(ASTNode).inExternsFile() and
   // don't flag exported variables
-  not any(ES2015Module m).exportsAs(v, _) and
-  // don't flag 'exports' assignments in closure modules
-  not any(Closure::ClosureModule mod).getExportsVariable() = v
+  not any(ES2015Module m).exportsAs(v, _)
 select dead, "This definition of " + v.getName() + " is useless, since its value is never read."

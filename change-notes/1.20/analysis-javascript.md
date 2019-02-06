@@ -13,8 +13,6 @@
 
 * Type inference for function calls has been improved. This may give additional results for queries that rely on type inference.
 
-* The [Closure-Library](https://github.com/google/closure-library/wiki/goog.module:-an-ES6-module-like-alternative-to-goog.provide) module system is now supported.
-
 ## New queries
 
 | **Query**                                     | **Tags**                                             | **Purpose**                                                                                                                                                                 |

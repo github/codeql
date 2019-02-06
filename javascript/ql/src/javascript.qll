@@ -8,7 +8,6 @@ import semmle.javascript.AST
 import semmle.javascript.BasicBlocks
 import semmle.javascript.CFG
 import semmle.javascript.Classes
-import semmle.javascript.Closure
 import semmle.javascript.Comments
 import semmle.javascript.Concepts
 import semmle.javascript.Constants
