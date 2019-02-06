@@ -37,6 +37,7 @@ private DataFlow::SourceNode domElementCreationOrQuery() {
   exists(string methodName |
     methodName = "createElement" or
     methodName = "createElementNS" or
+    methodName = "createRange" or
     methodName = "getElementById" or
     methodName = "querySelector"
   |

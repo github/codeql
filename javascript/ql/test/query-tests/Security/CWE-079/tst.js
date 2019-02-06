@@ -276,3 +276,12 @@ function jqueryLocation() {
 
     $("body").append(location); // NOT OK
 }
+
+
+function testCreateContextualFragment() {
+    var tainted = window.name;
+    var range = document.createRange();
+    range.selectNode(document.getElementsByTagName("div").item(0));
+    var documentFragment = range.createContextualFragment(tainted); // NOT OK
+    document.body.appendChild(documentFragment);
+}
