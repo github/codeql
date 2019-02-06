@@ -14,25 +14,6 @@ cached private module Cached {
     result.getFirstInstruction() = getNewInstruction(oldBlock.getFirstInstruction())
   }
 
-  cached newtype TInstructionTag =
-    WrappedInstructionTag(OldInstruction oldInstruction) {
-      not oldInstruction instanceof OldIR::PhiInstruction
-    } or
-    PhiTag(Alias::VirtualVariable vvar, OldBlock block) {
-      hasPhiNode(vvar, block)
-    } or
-    ChiTag(OldInstruction oldInstruction) {
-      not oldInstruction instanceof OldIR::PhiInstruction and
-      hasChiNode(_, oldInstruction)
-    } or
-    UnreachedTag()
-
-  cached class InstructionTagType extends TInstructionTag {
-    cached final string toString() {
-      result = "Tag"
-    }
-  }
-
   cached predicate functionHasIR(Function func) {
     exists(OldIR::FunctionIR funcIR |
       funcIR.getFunction() = func
@@ -40,7 +21,7 @@ cached private module Cached {
   }
 
   cached OldInstruction getOldInstruction(Instruction instr) {
-    instr.getTag() = WrappedInstructionTag(result)
+    instr = WrappedInstruction(result)
   }
 
   private Instruction getNewInstruction(OldInstruction instr) {
@@ -52,89 +33,34 @@ cached private module Cached {
    * corresponding to `instr` if there is no `Chi` node.
    */
   private Instruction getNewFinalInstruction(OldInstruction instr) {
-    result = getChiInstruction(instr)
+    result = Chi(instr)
     or
-    not exists(getChiInstruction(instr)) and
+    not exists(Chi(instr)) and
     result = getNewInstruction(instr)
   }
 
-  private PhiInstruction getPhiInstruction(Function func, OldBlock oldBlock,
-    Alias::VirtualVariable vvar) {
-    result.getFunction() = func and
-    result.getAST() = oldBlock.getFirstInstruction().getAST() and
-    result.getTag() = PhiTag(vvar, oldBlock)
-  }
-  
-  private ChiInstruction getChiInstruction (OldInstruction instr) {
-    hasChiNode(_, instr) and
-    result.getTag() = ChiTag(instr)
-  }
-
   private IRVariable getNewIRVariable(OldIR::IRVariable var) {
-    result.getFunction() = var.getFunction() and
-    (
-      exists(OldIR::IRUserVariable userVar, IRUserVariable newUserVar |
-        userVar = var and
-        newUserVar.getVariable() = userVar.getVariable() and
-        result = newUserVar
-      ) or
-      exists(OldIR::IRTempVariable tempVar, IRTempVariable newTempVar |
-        tempVar = var and
-        newTempVar.getAST() = tempVar.getAST() and
-        newTempVar.getTag() = tempVar.getTag() and
-        result = newTempVar
-      )
-    )
+    // This is just a type cast. Both classes derive from the same newtype.
+    result = var
   }
 
   cached newtype TInstruction =
-    MkInstruction(FunctionIR funcIR, Opcode opcode, Locatable ast,
-        InstructionTag tag, Type resultType, boolean isGLValue) {
-      hasInstruction(funcIR.getFunction(), opcode, ast, tag,
-        resultType, isGLValue)
+    WrappedInstruction(OldInstruction oldInstruction) {
+      not oldInstruction instanceof OldIR::PhiInstruction
+    } or
+    Phi(OldBlock block, Alias::VirtualVariable vvar) {
+      hasPhiNode(vvar, block)
+    } or
+    Chi(OldInstruction oldInstruction) {
+      not oldInstruction instanceof OldIR::PhiInstruction and
+      hasChiNode(_, oldInstruction)
+    } or
+    Unreached(Function function) {
+      exists(OldInstruction oldInstruction |
+        function = oldInstruction.getFunction() and
+        Reachability::isInfeasibleInstructionSuccessor(oldInstruction, _)
+      )
     }
-
-  private predicate hasInstruction(Function func, Opcode opcode, Locatable ast,
-      InstructionTag tag, Type resultType, boolean isGLValue) {
-    exists(OldInstruction instr |
-      instr.getFunction() = func and
-      instr.getOpcode() = opcode and
-      instr.getAST() = ast and
-      WrappedInstructionTag(instr) = tag and
-      instr.getResultType() = resultType and
-      if instr.isGLValue() then
-        isGLValue = true
-      else
-        isGLValue = false
-    ) or
-    exists(OldBlock block, Alias::VirtualVariable vvar |
-      hasPhiNode(vvar, block) and
-      block.getFunction() = func and
-      opcode instanceof Opcode::Phi and
-      ast = block.getFirstInstruction().getAST() and
-      tag = PhiTag(vvar, block) and
-      resultType = vvar.getType() and
-      isGLValue = false
-    ) or
-    exists(OldInstruction instr, Alias::VirtualVariable vvar |
-      hasChiNode(vvar, instr) and
-      instr.getFunction() = func and
-      opcode instanceof Opcode::Chi and
-      ast = instr.getAST() and
-      tag = ChiTag(instr) and
-      resultType = vvar.getType() and
-      isGLValue = false
-    ) or
-    exists(OldInstruction oldInstruction |
-      func = oldInstruction.getFunction() and
-      Reachability::isInfeasibleInstructionSuccessor(oldInstruction, _) and
-      tag = UnreachedTag() and
-      opcode instanceof Opcode::Unreached and
-      ast = func and
-      resultType instanceof VoidType and
-      isGLValue = false
-    )
-  }
 
   cached predicate hasTempVariable(Function func, Locatable ast, TempVariableTag tag,
       Type type) {
@@ -169,7 +95,7 @@ cached private module Cached {
               if defIndex >= 0 then
                 result = getNewFinalInstruction(defBlock.getInstruction(defIndex))
               else
-                result = getPhiInstruction(instruction.getFunction(), defBlock, vvar)
+                result = Phi(defBlock, vvar)
             )
           )
           else (
@@ -189,13 +115,14 @@ cached private module Cached {
       else 
         result = getNewInstruction(oldOperand.getDefinitionInstruction())
     ) or
-    instruction.getTag() = ChiTag(getOldInstruction(result)) and
+    instruction = Chi(getOldInstruction(result)) and
     tag instanceof ChiPartialOperandTag
     or
-    instruction instanceof UnmodeledUseInstruction and
-    tag instanceof UnmodeledUseOperandTag and
-    result  instanceof UnmodeledDefinitionInstruction and
-    instruction.getFunction() = result.getFunction()
+    exists(FunctionIR f |
+      tag instanceof UnmodeledUseOperandTag and
+      result = f.getUnmodeledDefinitionInstruction() and
+      instruction = f.getUnmodeledUseInstruction()
+    )
     or
     tag instanceof ChiTotalOperandTag and
     result = getChiInstructionTotalOperand(instruction)
@@ -207,21 +134,21 @@ cached private module Cached {
         OldBlock defBlock, int defRank, int defIndex, OldBlock predBlock |
       hasPhiNode(vvar, phiBlock) and
       predBlock = phiBlock.getAFeasiblePredecessor() and
-      instr.getTag() = PhiTag(vvar, phiBlock) and
+      instr = Phi(phiBlock, vvar) and
       newPredecessorBlock = getNewBlock(predBlock) and
       hasDefinitionAtRank(vvar, defBlock, defRank, defIndex) and
       definitionReachesEndOfBlock(vvar, defBlock, defRank, predBlock) and
       if defIndex >= 0 then
         result = getNewFinalInstruction(defBlock.getInstruction(defIndex))
       else
-        result = getPhiInstruction(instr.getFunction(), defBlock, vvar)
+        result = Phi(defBlock, vvar)
     )
   }
 
   cached Instruction getChiInstructionTotalOperand(ChiInstruction chiInstr) {
     exists(Alias::VirtualVariable vvar, OldInstruction oldInstr, OldBlock defBlock,
         int defRank, int defIndex, OldBlock useBlock, int useRank |
-      ChiTag(oldInstr) = chiInstr.getTag() and
+      chiInstr = Chi(oldInstr) and
       vvar = Alias::getResultMemoryAccess(oldInstr).getVirtualVariable() and
       hasDefinitionAtRank(vvar, defBlock, defRank, defIndex) and
       hasUseAtRank(vvar, useBlock, useRank, oldInstr) and
@@ -229,13 +156,13 @@ cached private module Cached {
       if defIndex >= 0 then
         result = getNewFinalInstruction(defBlock.getInstruction(defIndex))
       else
-        result = getPhiInstruction(chiInstr.getFunction(), defBlock, vvar)
+        result = Phi(defBlock, vvar)
     )
   }
 
   cached Instruction getPhiInstructionBlockStart(PhiInstruction instr) {
     exists(OldBlock oldBlock |
-      instr.getTag() = PhiTag(_, oldBlock) and
+      instr = Phi(oldBlock, _) and
       result = getNewInstruction(oldBlock.getFirstInstruction())
     )
   }
@@ -256,15 +183,14 @@ cached private module Cached {
   cached Instruction getInstructionSuccessor(Instruction instruction, EdgeKind kind) {
     if(hasChiNode(_, getOldInstruction(instruction)))
     then
-      result = getChiInstruction(getOldInstruction(instruction)) and
+      result = Chi(getOldInstruction(instruction)) and
       kind instanceof GotoEdge
     else (
       exists(OldInstruction oldInstruction |
         oldInstruction = getOldInstruction(instruction) and
         (
           if Reachability::isInfeasibleInstructionSuccessor(oldInstruction, kind) then (
-            result.getTag() = UnreachedTag() and
-            result.getFunction() = instruction.getFunction()
+            result = Unreached(instruction.getFunction())
           )
           else (
             result = getNewInstruction(oldInstruction.getSuccessor(kind))
@@ -272,10 +198,104 @@ cached private module Cached {
         )
       ) or
       exists(OldInstruction oldInstruction |
-        instruction = getChiInstruction(oldInstruction) and
+        instruction = Chi(oldInstruction) and
         result = getNewInstruction(oldInstruction.getSuccessor(kind))
       )
     )
+  }
+
+  cached Instruction getInstructionBackEdgeSuccessor(Instruction instruction, EdgeKind kind) {
+    exists(OldInstruction oldInstruction |
+      not Reachability::isInfeasibleInstructionSuccessor(oldInstruction, kind) and
+      // There is only one case for the translation into `result` because the
+      // SSA construction never inserts extra instructions _before_ an existing
+      // instruction.
+      getOldInstruction(result) = oldInstruction.getBackEdgeSuccessor(kind) and
+      // There are two cases for the translation into `instruction` because the
+      // SSA construction might have inserted a chi node _after_
+      // `oldInstruction`, in which case the back edge should come out of the
+      // chi node instead.
+      if hasChiNode(_, oldInstruction)
+      then instruction = Chi(oldInstruction)
+      else instruction = getNewInstruction(oldInstruction)
+    )
+  }
+
+  cached Locatable getInstructionAST(Instruction instruction) {
+    exists(OldInstruction oldInstruction |
+      instruction = WrappedInstruction(oldInstruction)
+      or
+      instruction = Chi(oldInstruction)
+    |
+      result = oldInstruction.getAST()
+    )
+    or
+    exists(OldBlock block |
+      instruction = Phi(block, _) and
+      result = block.getFirstInstruction().getAST()
+    )
+    or
+    instruction = Unreached(result)
+  }
+
+  cached predicate instructionHasType(Instruction instruction, Type type, boolean isGLValue) {
+    exists(OldInstruction oldInstruction |
+      instruction = WrappedInstruction(oldInstruction) and
+      type = oldInstruction.getResultType() and
+      if oldInstruction.isGLValue()
+      then isGLValue = true
+      else isGLValue = false
+    )
+    or
+    exists(OldInstruction oldInstruction, Alias::VirtualVariable vvar |
+      instruction = Chi(oldInstruction) and
+      hasChiNode(vvar, oldInstruction) and
+      type = vvar.getType() and
+      isGLValue = false
+    )
+    or
+    exists(Alias::VirtualVariable vvar |
+      instruction = Phi(_, vvar) and
+      type = vvar.getType() and
+      isGLValue = false
+    )
+    or
+    instruction = Unreached(_) and
+    type instanceof VoidType and
+    isGLValue = false
+  }
+
+  cached Opcode getInstructionOpcode(Instruction instruction) {
+    exists(OldInstruction oldInstruction |
+      instruction = WrappedInstruction(oldInstruction) and
+      result = oldInstruction.getOpcode()
+    )
+    or
+    instruction instanceof Chi and
+    result instanceof Opcode::Chi
+    or
+    instruction instanceof Phi and
+    result instanceof Opcode::Phi
+    or
+    instruction instanceof Unreached and
+    result instanceof Opcode::Unreached
+  }
+
+  cached FunctionIR getInstructionEnclosingFunctionIR(Instruction instruction) {
+    exists(OldInstruction oldInstruction |
+      instruction = WrappedInstruction(oldInstruction)
+      or
+      instruction = Chi(oldInstruction)
+    |
+      result.getFunction() = oldInstruction.getFunction()
+    )
+    or
+    exists(OldBlock block |
+      instruction = Phi(block, _) and
+      result.getFunction() = block.getFunction()
+    )
+    or
+    instruction = Unreached(result.getFunction())
   }
 
   cached IRVariable getInstructionVariable(Instruction instruction) {
@@ -328,13 +348,13 @@ cached private module Cached {
     )
     or
     exists(OldIR::Instruction oldInstruction |
-      instruction.getTag() = ChiTag(oldInstruction) and
+      instruction = Chi(oldInstruction) and
       result = getNewInstruction(oldInstruction)
     )
   }
 
   private predicate ssa_variableUpdate(Alias::VirtualVariable vvar,
-      OldInstruction instr, OldBlock block, int index) {
+      OldBlock block, int index, OldInstruction instr) {
     block.getInstruction(index) = instr and
     Alias::getResultMemoryAccess(instr).getVirtualVariable() = vvar
   }
@@ -352,11 +372,11 @@ cached private module Cached {
   }
 
   private predicate defUseRank(Alias::VirtualVariable vvar, OldBlock block, int rankIndex, int index) {
-    index = rank[rankIndex](int j | hasDefinition(vvar, block, j) or hasUse(vvar, _, block, j))
+    index = rank[rankIndex](int j | hasDefinition(vvar, block, j) or hasUse(vvar, block, j, _))
   }
 
-  private predicate hasUse(Alias::VirtualVariable vvar, OldInstruction use, OldBlock block,
-      int index) {
+  private predicate hasUse(Alias::VirtualVariable vvar, OldBlock block, int index,
+      OldInstruction use) {
     exists(Alias::MemoryAccess access |
       (
         access = Alias::getOperandMemoryAccess(use.getAnOperand())
@@ -374,10 +394,16 @@ cached private module Cached {
   }
 
   private predicate variableLiveOnEntryToBlock(Alias::VirtualVariable vvar, OldBlock block) {
-    exists (int index | hasUse(vvar, _, block, index) |
-      not exists (int j | ssa_variableUpdate(vvar, _, block, j) | j < index)
-    ) or
-    (variableLiveOnExitFromBlock(vvar, block) and not ssa_variableUpdate(vvar, _, block, _))
+    exists(int firstAccess |
+      hasUse(vvar, block, firstAccess, _) and
+      firstAccess = min(int index |
+          hasUse(vvar, block, index, _)
+          or
+          ssa_variableUpdate(vvar, block, index, _)
+        )
+    )
+    or
+    (variableLiveOnExitFromBlock(vvar, block) and not ssa_variableUpdate(vvar, block, _, _))
   }
 
   pragma[noinline]
@@ -404,7 +430,7 @@ cached private module Cached {
   private predicate hasUseAtRank(Alias::VirtualVariable vvar, OldBlock block, int rankIndex,
       OldInstruction use) {
     exists(int index |
-      hasUse(vvar, use, block, index) and
+      hasUse(vvar, block, index, use) and
       defUseRank(vvar, block, rankIndex, index)
     )
   }
@@ -517,11 +543,11 @@ cached private module CachedForDebugging {
       result = "NonSSA: " + oldInstr.getUniqueId()
     ) or
     exists(Alias::VirtualVariable vvar, OldBlock phiBlock |
-      instr.getTag() = PhiTag(vvar, phiBlock) and
+      instr = Phi(phiBlock, vvar) and
       result = "Phi Block(" + phiBlock.getUniqueId() + "): " + vvar.getUniqueId() 
     ) or
     (
-      instr.getTag() = UnreachedTag() and
+      instr = Unreached(_) and
       result = "Unreached"
     )
   }

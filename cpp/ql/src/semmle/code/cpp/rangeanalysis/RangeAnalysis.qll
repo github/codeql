@@ -559,47 +559,44 @@ private predicate boundedCastExpr(
 private predicate boundedInstruction(
   Instruction i, Bound b, int delta, boolean upper, boolean fromBackEdge, int origdelta, Reason reason
 ) {
-  isReducibleCFG(i.getFunction()) and
-  (
-    i instanceof PhiInstruction and
-    forex(PhiOperand op | op = i.getAnOperand() |
-      boundedPhiCandValidForEdge(i, b, delta, upper, fromBackEdge, origdelta, reason, op)
-    )
-    or
-    i = b.getInstruction(delta) and
-    (upper = true or upper = false) and
-    fromBackEdge = false and
-    origdelta = delta and
-    reason = TNoReason()
-    or
-    exists(Operand mid, int d1, int d2 |
-      boundFlowStep(i, mid, d1, upper) and
-      boundedNonPhiOperand(mid, b, d2, upper, fromBackEdge, origdelta, reason) and
-      delta = d1 + d2 and
-      not exists(getValue(getConstantValue(i)))
-    )
-    or
-    exists(Operand mid, int factor, int d |
-      boundFlowStepMul(i, mid, factor) and
-      boundedNonPhiOperand(mid, b, d, upper, fromBackEdge, origdelta, reason) and
-      b instanceof ZeroBound and
-      delta = d*factor and
-      not exists(getValue(getConstantValue(i)))
-    )
-    or
-    exists(Operand mid, int factor, int d |
-      boundFlowStepDiv(i, mid, factor) and
-      boundedNonPhiOperand(mid, b, d, upper, fromBackEdge, origdelta, reason) and
-      d >= 0 and
-      b instanceof ZeroBound and
-      delta = d / factor and
-      not exists(getValue(getConstantValue(i)))
-    )
-    or
-    exists(NarrowingCastInstruction cast |
-      cast = i and
-      safeNarrowingCast(cast, upper.booleanNot()) and
-      boundedCastExpr(cast, b, delta, upper, fromBackEdge, origdelta, reason)
-    )
+  i instanceof PhiInstruction and
+  forex(PhiOperand op | op = i.getAnOperand() |
+    boundedPhiCandValidForEdge(i, b, delta, upper, fromBackEdge, origdelta, reason, op)
+  )
+  or
+  i = b.getInstruction(delta) and
+  (upper = true or upper = false) and
+  fromBackEdge = false and
+  origdelta = delta and
+  reason = TNoReason()
+  or
+  exists(Operand mid, int d1, int d2 |
+    boundFlowStep(i, mid, d1, upper) and
+    boundedNonPhiOperand(mid, b, d2, upper, fromBackEdge, origdelta, reason) and
+    delta = d1 + d2 and
+    not exists(getValue(getConstantValue(i)))
+  )
+  or
+  exists(Operand mid, int factor, int d |
+    boundFlowStepMul(i, mid, factor) and
+    boundedNonPhiOperand(mid, b, d, upper, fromBackEdge, origdelta, reason) and
+    b instanceof ZeroBound and
+    delta = d*factor and
+    not exists(getValue(getConstantValue(i)))
+  )
+  or
+  exists(Operand mid, int factor, int d |
+    boundFlowStepDiv(i, mid, factor) and
+    boundedNonPhiOperand(mid, b, d, upper, fromBackEdge, origdelta, reason) and
+    d >= 0 and
+    b instanceof ZeroBound and
+    delta = d / factor and
+    not exists(getValue(getConstantValue(i)))
+  )
+  or
+  exists(NarrowingCastInstruction cast |
+    cast = i and
+    safeNarrowingCast(cast, upper.booleanNot()) and
+    boundedCastExpr(cast, b, delta, upper, fromBackEdge, origdelta, reason)
   )
 }

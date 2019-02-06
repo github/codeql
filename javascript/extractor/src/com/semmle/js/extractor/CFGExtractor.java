@@ -773,14 +773,18 @@ public class CFGExtractor {
 			public <Q, A> A accept(Visitor<Q, A> v, Q q) { return null; }
 		}
 
-		// associate statements with their (direct or indirect) labels
-		private final Map<Statement, Set<String>> loopLabels = new LinkedHashMap<Statement, Set<String>>();
+		// associate statements with their (direct or indirect) labels;
+		// per-function cache, cleared after each function
+		private Map<Statement, Set<String>> loopLabels = new LinkedHashMap<Statement, Set<String>>();
 
-		// cache the set of normal control flow successors
-		private final Map<Node, Object> followingCache = new LinkedHashMap<Node, Object>();
+		// cache the set of normal control flow successors;
+		// per-function cache, cleared after each function
+		private Map<Node, Object> followingCache = new LinkedHashMap<Node, Object>();
 
-		// map from a node in a chain of property accesses or calls to the successor info for the first node in the chain
-		private final Map<Chainable, SuccessorInfo> chainRootSuccessors = new LinkedHashMap<Chainable, SuccessorInfo>();
+		// map from a node in a chain of property accesses or calls to the successor info
+		// for the first node in the chain;
+		// per-function cache, cleared after each function
+		private Map<Chainable, SuccessorInfo> chainRootSuccessors = new LinkedHashMap<Chainable, SuccessorInfo>();
 
 		/**
 		 * Generate entry node.
@@ -1031,6 +1035,16 @@ public class CFGExtractor {
 
 		@Override
 		public Void visit(IFunction nd, SuccessorInfo i) {
+			// save per-function caches
+			Map<Statement, Set<String>> oldLoopLabels = loopLabels;
+			Map<Node, Object> oldFollowingCache = followingCache;
+			Map<Chainable, SuccessorInfo> oldChainRootSuccessors = chainRootSuccessors;
+
+			// clear caches
+			loopLabels = new LinkedHashMap<>();
+			followingCache = new LinkedHashMap<>();
+			chainRootSuccessors = new LinkedHashMap<>();
+
 			if (nd instanceof FunctionDeclaration && nd.hasDeclareKeyword()) {
 				// All 'declared' statements have a no-op CFG node, but their children should
 				// not be processed.
@@ -1039,6 +1053,12 @@ public class CFGExtractor {
 			}
 			buildFunctionCreation(nd, i);
 			buildFunctionBody(nd);
+
+			// restore caches
+			loopLabels = oldLoopLabels;
+			followingCache = oldFollowingCache;
+			chainRootSuccessors = oldChainRootSuccessors;
+
 			return null;
 		}
 

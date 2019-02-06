@@ -29,8 +29,8 @@ public class JSExtractor {
 		this.config = config;
 	}
 
-	// heuristic: if `import` or `export` appears at the beginning of a line, it's probably a module
-	private static final Pattern containsImportOrExport = Pattern.compile("(?m)^([ \t]*)(import|export)\\b");
+	// heuristic: if `import`, `export`, or `goog.module` appears at the beginning of a line, it's probably a module
+	private static final Pattern containsModuleIndicator = Pattern.compile("(?m)^([ \t]*)(import|export|goog\\.module)\\b");
 
 	public Pair<Label, LoCInfo> extract(TextualExtractor textualExtractor, String source, int toplevelKind, ScopeManager scopeManager) throws ParseError {
 		// if the file starts with `{ "<string>":` it won't parse as JavaScript; try parsing as JSON instead
@@ -69,9 +69,10 @@ public class JSExtractor {
 		if (sourceType != SourceType.AUTO)
 			return sourceType;
 		if (config.getEcmaVersion().compareTo(ECMAVersion.ECMA2015) >= 0) {
-			Matcher m = containsImportOrExport.matcher(source);
-			if (m.find() && (allowLeadingWS || m.group(1).isEmpty()))
-				return SourceType.MODULE;
+			Matcher m = containsModuleIndicator.matcher(source);
+			if (m.find() && (allowLeadingWS || m.group(1).isEmpty())) {
+				return m.group(2).startsWith("goog") ? SourceType.CLOSURE_MODULE : SourceType.MODULE;
+			}
 		}
 		return SourceType.SCRIPT;
 	}
@@ -89,17 +90,22 @@ public class JSExtractor {
 		LoCInfo loc;
 		if (ast != null) {
 			platform = getPlatform(platform, ast);
+			if (sourceType == SourceType.SCRIPT && platform == Platform.NODE) {
+				sourceType = SourceType.COMMONJS_MODULE;
+			}
 
 			lexicalExtractor = new LexicalExtractor(textualExtractor, parserRes.getTokens(), parserRes.getComments());
 			ASTExtractor scriptExtractor = new ASTExtractor(lexicalExtractor, scopeManager);
 			toplevelLabel = scriptExtractor.getToplevelLabel();
 
-			scriptExtractor.extract(ast, platform, sourceType, toplevelKind);
 			lexicalExtractor.extractComments(toplevelLabel);
 			loc = lexicalExtractor.extractLines(parserRes.getSource(), toplevelLabel);
 			lexicalExtractor.extractTokens(toplevelLabel);
-			new CFGExtractor(scriptExtractor).extract(ast);
 			new JSDocExtractor(textualExtractor).extract(lexicalExtractor.getComments());
+			lexicalExtractor.purge();
+
+			scriptExtractor.extract(ast, platform, sourceType, toplevelKind);
+			new CFGExtractor(scriptExtractor).extract(ast);
 		} else {
 			lexicalExtractor = new LexicalExtractor(textualExtractor, new ArrayList<Token>(), new ArrayList<Comment>());
 			ASTExtractor scriptExtractor = new ASTExtractor(lexicalExtractor, null);
@@ -123,7 +129,7 @@ public class JSExtractor {
 
 		if (config.isExterns())
 			textualExtractor.getTrapwriter().addTuple("isExterns", toplevelLabel);
-		if (platform == Platform.NODE && sourceType != SourceType.MODULE)
+		if (platform == Platform.NODE && sourceType == SourceType.COMMONJS_MODULE)
 			textualExtractor.getTrapwriter().addTuple("isNodejs", toplevelLabel);
 
 		return Pair.make(toplevelLabel, loc);

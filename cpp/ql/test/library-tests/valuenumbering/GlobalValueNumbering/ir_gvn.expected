@@ -446,7 +446,7 @@ test.cpp:
 #   56|         valnum = r5_3
 #   56|     m5_4(char *)        = Store                : r5_0, r5_3
 #   56|         valnum = r5_3
-#-----|   Goto -> Block 3
+#-----|   Goto (back edge) -> Block 3
 
 #   59|   Block 6
 #   59|     r6_0(glval<char *>) = VariableAddress[ptr] : 
@@ -480,7 +480,7 @@ test.cpp:
 #   62|         valnum = r8_3
 #   62|     m8_4(unsigned int)        = Store                   : r8_0, r8_3
 #   62|         valnum = r8_3
-#-----|   Goto -> Block 1
+#-----|   Goto (back edge) -> Block 1
 
 #   63|   Block 9
 #   63|     v9_0(void)                = NoOp                     : 

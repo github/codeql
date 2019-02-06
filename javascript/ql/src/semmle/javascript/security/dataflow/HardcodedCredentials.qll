@@ -41,9 +41,14 @@ module HardcodedCredentials {
    * A subclass of `Sink` that includes every `CredentialsExpr`
    * as a credentials sink.
    */
-  class DefaultCredentialsSink extends Sink {
-    DefaultCredentialsSink() { this.asExpr() instanceof CredentialsExpr }
+  class DefaultCredentialsSink extends Sink, DataFlow::ValueNode {
+    override CredentialsExpr astNode;
 
-    override string getKind() { result = this.asExpr().(CredentialsExpr).getCredentialsKind() }
+    DefaultCredentialsSink() {
+      // Don't flag an empty user name
+      not (astNode.getCredentialsKind() = "user name" and astNode.getStringValue() = "")
+    }
+
+    override string getKind() { result = astNode.getCredentialsKind() }
   }
 }

@@ -63,7 +63,8 @@ namespace Semmle.Autobuild
                         ToolsVersion = new Version(toolsVersion);
                         ValidToolsVersion = true;
                     }
-                    catch   // Generic catch clause - Version constructor throws about 5 different exceptions.
+                    catch  // lgtm[cs/catch-of-all-exceptions]
+                           // Generic catch clause - Version constructor throws about 5 different exceptions.
                     {
                         builder.Log(Severity.Warning, "Project {0} has invalid tools version {1}", path, toolsVersion);
                     }

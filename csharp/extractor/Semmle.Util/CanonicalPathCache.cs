@@ -136,7 +136,7 @@ namespace Semmle.Util
                         entries[0] :
                         Path.Combine(parentPath, name);
                 }
-                catch (Exception)
+                catch  // lgtm[cs/catch-of-all-exceptions]
                 {
                     // IO error or security error querying directory.
                     return Path.Combine(parentPath, name);

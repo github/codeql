@@ -17,21 +17,31 @@ import javascript
  * INTERNAL: Do not use directly.
  */
 module HeuristicNames {
-  /** A regular expression that identifies strings that look like they represent secret data that are not passwords. */
+  /** Gets a regular expression that identifies strings that look like they represent secret data that are not passwords. */
   string suspiciousNonPassword() { result = "(?is).*(secret|account|accnt|(?<!un)trusted).*" }
 
-  /** A regular expression that identifies strings that look like they represent secret data that are passwords. */
+  /** Gets a regular expression that identifies strings that look like they represent secret data that are passwords. */
   string suspiciousPassword() { result = "(?is).*(password|passwd).*" }
 
-  /** A regular expression that identifies strings that look like they represent secret data. */
+  /** Gets a regular expression that identifies strings that look like they represent secret data. */
   string suspicious() { result = suspiciousPassword() or result = suspiciousNonPassword() }
 
   /**
-   * A regular expression that identifies strings that look like they represent data that is
+   * Gets a regular expression that identifies strings that look like they represent data that is
    * hashed or encrypted.
    */
   string nonSuspicious() {
     result = "(?is).*(redact|censor|obfuscate|hash|md5|sha|((?<!un)(en))?(crypt|code)).*"
+  }
+
+  /**
+   * Gets a regular expression that identifies names that look like they represent credential information.
+   */
+  string suspiciousCredentials() {
+    result = "(?i).*pass(wd|word|code|phrase)(?!.*question).*" or
+    result = "(?i).*(puid|username|userid).*" or
+    result = "(?i).*(cert)(?!.*(format|name)).*" or
+    result = "(?i).*(auth(entication|ori[sz]ation)?)key.*"
   }
 }
 private import HeuristicNames
@@ -140,6 +150,15 @@ class AuthorizationCall extends SensitiveAction, DataFlow::CallNode {
       s.regexpMatch("(?i).*(login(?!fo)|(?<!un)auth(?!or\\b)|verify).*") and
       // but it does not start with `get` or `set`
       not s.regexpMatch("(?i)(get|set).*")
+    )
+  }
+}
+
+/** A call to a function whose name suggests that it encodes or encrypts its arguments. */
+class ProtectCall extends DataFlow::CallNode {
+  ProtectCall() {
+    exists(string s | getCalleeName().regexpMatch("(?i).*" + s + ".*") |
+      s = "protect" or s = "encode" or s = "encrypt"
     )
   }
 }

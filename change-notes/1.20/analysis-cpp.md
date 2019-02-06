@@ -26,4 +26,5 @@
 
 ## Changes to QL libraries
 
-There is a new `Namespace.isInline()` predicate, which holds if the namespace was declared as `inline namespace`.
+* There is a new `Namespace.isInline()` predicate, which holds if the namespace was declared as `inline namespace`.
+* The `Expr.isConstant()` predicate now also holds for _address constant expressions_, which are addresses that will be constant after the program has been linked. These address constants do not have a result for `Expr.getValue()`.

@@ -54,6 +54,9 @@ void skip_init() {
 void run_init() {
   int nonstatic;
   static int x1 = global_int;
+
+  // It makes no sense to initialize a static variable to the address of a
+  // non-static variable, but in principle it can be done:
   static int *x2 = &nonstatic;
 }
 

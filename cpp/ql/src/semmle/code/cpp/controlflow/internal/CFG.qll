@@ -461,38 +461,16 @@ private predicate skipInitializer(Initializer init) {
  */
 private predicate runtimeExprInStaticInitializer(Expr e) {
   inStaticInitializer(e) and
-  if
-    e instanceof AggregateLiteral
-    or
-    e instanceof PointerArithmeticOperation
-    or
-    // Extractor doesn't populate this specifier at the time of writing, so
-    // this case has not been tested. See CPP-314.
-    e.(FunctionCall).getTarget().hasSpecifier("constexpr")
+  if e instanceof AggregateLiteral
   then runtimeExprInStaticInitializer(e.getAChild())
-  else (
-    // Not constant
-    not e.isConstant() and
-    // Not a function address
-    not e instanceof FunctionAccess and
-    // Not a function address-of (same as above)
-    not e.(AddressOfExpr).getOperand() instanceof FunctionAccess and
-    // Not the address of a global variable
-    not exists(Variable v |
-      v.isStatic()
-      or
-      v instanceof GlobalOrNamespaceVariable
-    |
-      e.(AddressOfExpr).getOperand() = v.getAnAccess()
-    )
-  )
+  else not e.getFullyConverted().isConstant()
 }
 
 /** Holds if `e` is part of the initializer of a local static variable. */
 private predicate inStaticInitializer(Expr e) {
   exists(LocalVariable local |
     local.isStatic() and
-    e.(Node).getParentNode*() = local.getInitializer()
+    e.getParent+() = local.getInitializer()
   )
 }
 

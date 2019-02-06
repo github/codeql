@@ -8,7 +8,7 @@ import semmle.python.Files
  * column `startcol` of line `startline` to column `endcol` of line `endline`
  * in file `filepath`.
  *
- * For more information, see [LGTM locations](https://lgtm.com/help/ql/locations).
+ * For more information, see [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
  */
 external predicate defectResults(int id, string queryPath, string filepath, int startline,
                                  int startcol, int endline, int endcol, string message);

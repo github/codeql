@@ -1116,7 +1116,7 @@ ir.cpp:
 #  255|     r1_2(int)        = Load               : r1_1, m3_0
 #  255|     r1_3(int)        = Sub                : r1_2, r1_0
 #  255|     m1_4(int)        = Store              : r1_1, r1_3
-#-----|   Goto -> Block 3
+#-----|   Goto (back edge) -> Block 3
 
 #  257|   Block 2
 #  257|     v2_0(void) = NoOp         : 
@@ -1156,7 +1156,7 @@ ir.cpp:
 #  262|     r1_9(bool)       = CompareGT          : r1_7, r1_8
 #  262|     v1_10(void)      = ConditionalBranch  : r1_9
 #-----|   False -> Block 2
-#-----|   True -> Block 1
+#-----|   True (back edge) -> Block 1
 
 #  263|   Block 2
 #  263|     v2_0(void) = NoOp         : 
@@ -1175,7 +1175,7 @@ ir.cpp:
 
 #  268|   Block 1
 #  268|     v1_0(void) = NoOp : 
-#-----|   Goto -> Block 1
+#-----|   Goto (back edge) -> Block 1
 
 #  272| For_Init() -> void
 #  272|   Block 0
@@ -1189,7 +1189,7 @@ ir.cpp:
 
 #  274|   Block 1
 #  274|     v1_0(void) = NoOp : 
-#-----|   Goto -> Block 1
+#-----|   Goto (back edge) -> Block 1
 
 #  278| For_Condition() -> void
 #  278|   Block 0
@@ -1212,7 +1212,7 @@ ir.cpp:
 
 #  281|   Block 2
 #  281|     v2_0(void) = NoOp : 
-#-----|   Goto -> Block 1
+#-----|   Goto (back edge) -> Block 1
 
 #  278|   Block 3
 #  278|     v3_0(void) = Unreached : 
@@ -1235,7 +1235,7 @@ ir.cpp:
 #  287|     r1_4(int)        = Load               : r1_3, m1_0
 #  287|     r1_5(int)        = Add                : r1_4, r1_2
 #  287|     m1_6(int)        = Store              : r1_3, r1_5
-#-----|   Goto -> Block 1
+#-----|   Goto (back edge) -> Block 1
 
 #  292| For_InitCondition() -> void
 #  292|   Block 0
@@ -1258,7 +1258,7 @@ ir.cpp:
 
 #  294|   Block 2
 #  294|     v2_0(void) = NoOp : 
-#-----|   Goto -> Block 1
+#-----|   Goto (back edge) -> Block 1
 
 #  292|   Block 3
 #  292|     v3_0(void) = Unreached : 
@@ -1281,7 +1281,7 @@ ir.cpp:
 #  299|     r1_4(int)        = Load               : r1_3, m1_0
 #  299|     r1_5(int)        = Add                : r1_4, r1_2
 #  299|     m1_6(int)        = Store              : r1_3, r1_5
-#-----|   Goto -> Block 1
+#-----|   Goto (back edge) -> Block 1
 
 #  304| For_ConditionUpdate() -> void
 #  304|   Block 0
@@ -1310,7 +1310,7 @@ ir.cpp:
 #  306|     r2_3(int)        = Load               : r2_2, m1_0
 #  306|     r2_4(int)        = Add                : r2_3, r2_1
 #  306|     m2_5(int)        = Store              : r2_2, r2_4
-#-----|   Goto -> Block 1
+#-----|   Goto (back edge) -> Block 1
 
 #  309|   Block 3
 #  309|     v3_0(void) = NoOp         : 
@@ -1345,7 +1345,7 @@ ir.cpp:
 #  312|     r2_3(int)        = Load               : r2_2, m1_0
 #  312|     r2_4(int)        = Add                : r2_3, r2_1
 #  312|     m2_5(int)        = Store              : r2_2, r2_4
-#-----|   Goto -> Block 1
+#-----|   Goto (back edge) -> Block 1
 
 #  315|   Block 3
 #  315|     v3_0(void) = NoOp         : 
@@ -1379,7 +1379,7 @@ ir.cpp:
 #  318|     r2_2(int)        = Load               : r2_1, m1_0
 #  318|     r2_3(int)        = Add                : r2_2, r2_0
 #  318|     m2_4(int)        = Store              : r2_1, r2_3
-#-----|   Goto -> Block 1
+#-----|   Goto (back edge) -> Block 1
 
 #  319|   Block 3
 #  319|     r3_0(glval<int>) = VariableAddress[i] : 
@@ -1441,7 +1441,7 @@ ir.cpp:
 #  326|     r4_3(int)        = Load               : r4_2, m1_0
 #  326|     r4_4(int)        = Add                : r4_3, r4_1
 #  326|     m4_5(int)        = Store              : r4_2, r4_4
-#-----|   Goto -> Block 1
+#-----|   Goto (back edge) -> Block 1
 
 #  331|   Block 5
 #  331|     v5_0(void) = NoOp         : 
@@ -1479,7 +1479,7 @@ ir.cpp:
 
 #  334|   Block 3
 #  334|     v3_0(void) = NoOp : 
-#-----|   Goto -> Block 1
+#-----|   Goto (back edge) -> Block 1
 
 #  333|   Block 4
 #  333|     v4_0(void) = Unreached : 
@@ -1547,7 +1547,7 @@ ir.cpp:
 #  356|     r3_2(int)        = Load               : r3_1, m5_0
 #  356|     r3_3(int)        = Sub                : r3_2, r3_0
 #  356|     m3_4(int)        = Store              : r3_1, r3_3
-#-----|   Goto -> Block 5
+#-----|   Goto (back edge) -> Block 5
 
 #  357|   Block 4
 #  357|     v4_0(void) = NoOp         : 
@@ -1606,7 +1606,7 @@ ir.cpp:
 #  366|     r4_5(bool)       = CompareGT          : r4_3, r4_4
 #  366|     v4_6(void)       = ConditionalBranch  : r4_5
 #-----|   False -> Block 5
-#-----|   True -> Block 1
+#-----|   True (back edge) -> Block 1
 
 #  367|   Block 5
 #  367|     v5_0(void) = NoOp         : 
@@ -4395,7 +4395,7 @@ ir.cpp:
 
 #  979|   Block 1
 #  979|     v1_0(void) = NoOp : 
-#-----|   Goto -> Block 7
+#-----|   Goto (back edge) -> Block 7
 
 #  981|   Block 2
 #  981|     r2_0(glval<int>) = VariableAddress[z] : 
@@ -4415,7 +4415,7 @@ ir.cpp:
 
 #  981|   Block 3
 #  981|     v3_0(void) = NoOp : 
-#-----|   Goto -> Block 2
+#-----|   Goto (back edge) -> Block 2
 
 #  983|   Block 4
 #  983|     r4_0(glval<int *>) = VariableAddress[p] : 
@@ -4431,7 +4431,7 @@ ir.cpp:
 
 #  983|   Block 5
 #  983|     v5_0(void) = NoOp : 
-#-----|   Goto -> Block 4
+#-----|   Goto (back edge) -> Block 4
 
 #  985|   Block 6
 #  985|     v6_0(void) = NoOp         : 
@@ -4646,3 +4646,46 @@ ir.cpp:
 
 # 1049|   Block 2
 # 1049|     v2_0(void) = Unreached : 
+
+# 1058| chiNodeAtEndOfLoop(int, char *) -> void
+# 1058|   Block 0
+# 1058|     v0_0(void)          = EnterFunction          : 
+# 1058|     m0_1(unknown)       = AliasedDefinition      : 
+# 1058|     mu0_2(unknown)      = UnmodeledDefinition    : 
+# 1058|     r0_3(glval<int>)    = VariableAddress[n]     : 
+# 1058|     m0_4(int)           = InitializeParameter[n] : r0_3
+# 1058|     r0_5(glval<char *>) = VariableAddress[p]     : 
+# 1058|     m0_6(char *)        = InitializeParameter[p] : r0_5
+#-----|   Goto -> Block 3
+
+# 1060|   Block 1
+# 1060|     r1_0(char)          = Constant[0]        : 
+# 1060|     r1_1(glval<char *>) = VariableAddress[p] : 
+# 1060|     r1_2(char *)        = Load               : r1_1, m3_2
+# 1060|     r1_3(int)           = Constant[1]        : 
+# 1060|     r1_4(char *)        = PointerAdd[1]      : r1_2, r1_3
+# 1060|     m1_5(char *)        = Store              : r1_1, r1_4
+# 1060|     m1_6(char)          = Store              : r1_2, r1_0
+# 1060|     m1_7(unknown)       = Chi                : m3_0, m1_6
+#-----|   Goto (back edge) -> Block 3
+
+# 1061|   Block 2
+# 1061|     v2_0(void) = NoOp         : 
+# 1058|     v2_1(void) = ReturnVoid   : 
+# 1058|     v2_2(void) = UnmodeledUse : mu*
+# 1058|     v2_3(void) = ExitFunction : 
+
+# 1059|   Block 3
+# 1059|     m3_0(unknown)    = Phi                : from 0:m0_1, from 1:m1_7
+# 1059|     m3_1(int)        = Phi                : from 0:m0_4, from 1:m3_7
+# 1059|     m3_2(char *)     = Phi                : from 0:m0_6, from 1:m1_5
+# 1059|     r3_3(glval<int>) = VariableAddress[n] : 
+# 1059|     r3_4(int)        = Load               : r3_3, m3_1
+# 1059|     r3_5(int)        = Constant[1]        : 
+# 1059|     r3_6(int)        = Sub                : r3_4, r3_5
+# 1059|     m3_7(int)        = Store              : r3_3, r3_6
+# 1059|     r3_8(int)        = Constant[0]        : 
+# 1059|     r3_9(bool)       = CompareGT          : r3_4, r3_8
+# 1059|     v3_10(void)      = ConditionalBranch  : r3_9
+#-----|   False -> Block 2
+#-----|   True -> Block 1

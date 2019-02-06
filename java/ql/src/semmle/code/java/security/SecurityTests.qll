@@ -7,6 +7,7 @@ class NonSecurityTestClass extends TestClass {
   NonSecurityTestClass() {
     not exists(RefType s | this.getASupertype*().getSourceDeclaration() = s and s.fromSource() |
       s.getLocation().getFile().getAbsolutePath().matches("%semmle%") or
+      s.getLocation().getFile().getAbsolutePath().matches("%ql/java/ql/test/%") or
       s.getLocation().getFile().getAbsolutePath().matches("%CWE%")
     )
   }

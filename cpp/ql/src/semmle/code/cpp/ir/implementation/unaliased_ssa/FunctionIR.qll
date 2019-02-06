@@ -56,6 +56,11 @@ class FunctionIR extends TFunctionIR {
     result.getFunctionIR() = this
   }
 
+  pragma[noinline]
+  final UnmodeledUseInstruction getUnmodeledUseInstruction() {
+    result.getFunctionIR() = this
+  }
+
   /**
    * Gets the single return instruction for this function.
    */

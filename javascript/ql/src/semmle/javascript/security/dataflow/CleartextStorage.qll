@@ -53,14 +53,8 @@ module CleartextStorage {
     override string describe() { result = astNode.describe() }
   }
 
-  /** A call to any method whose name suggests that it encodes or encrypts the parameter. */
-  class ProtectSanitizer extends Sanitizer, DataFlow::ValueNode {
-    ProtectSanitizer() {
-      exists(string s | astNode.(CallExpr).getCalleeName().regexpMatch("(?i).*" + s + ".*") |
-        s = "protect" or s = "encode" or s = "encrypt"
-      )
-    }
-  }
+  /** A call to any function whose name suggests that it encodes or encrypts its arguments. */
+  class ProtectSanitizer extends Sanitizer { ProtectSanitizer() { this instanceof ProtectCall } }
 
   /**
    * An expression set as a value on a cookie instance.

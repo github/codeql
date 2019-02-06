@@ -426,3 +426,10 @@ class C(object):
         else:
             use(self.x)
             return lambda : use(self.x)
+
+
+def test_on_unknown_attr():
+    e = E()
+    y = 1
+    if e.attr:
+        use(y)

@@ -8,7 +8,7 @@ class C
         String.Format("{0} {1} {2}", 0, 1, 2);
 
         // BAD: Missing arg {0}
-        String.Format("", 1);
+        String.Format("X", 1);
 
         // BAD: Missing {1}
         String.Format("{0}", 1, 2);
@@ -36,6 +36,10 @@ class C
 
         // BAD: Would display "{0}"
         String.Format("{{0}}", 1);
+
+        // GOOD: Ignore the empty string as it's often used as the default value
+        // of GetResource().
+        String.Format("", 1);
     }
 
     object[] ps;

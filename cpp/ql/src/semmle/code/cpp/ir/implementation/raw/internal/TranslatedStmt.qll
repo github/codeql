@@ -632,7 +632,7 @@ class TranslatedForStmt extends TranslatedLoop {
     exists(forStmt.getInitialization())
   }
   
-  private TranslatedExpr getUpdate() {
+  TranslatedExpr getUpdate() {
     result = getTranslatedExpr(forStmt.getUpdate().getFullyConverted())
   }
 

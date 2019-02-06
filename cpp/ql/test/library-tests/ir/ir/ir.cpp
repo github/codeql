@@ -1055,4 +1055,9 @@ int DoWhileFalse() {
   return i;
 }
 
+void chiNodeAtEndOfLoop(int n, char *p) {
+  while (n-- > 0)
+    *p++ = 0;
+}
+
 // semmle-extractor-options: -std=c++17
