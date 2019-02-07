@@ -104,7 +104,7 @@ public class ExtractorConfig {
 
         /**
          * Returns the set of local variables in scope at the top-level of this module.
-         * <p/>
+         * <p>
          * If this source type has no local scope, the empty set is returned.
          */
         public Set<String> getPredefinedLocals(Platform platform, String extension) {
