@@ -1,7 +1,8 @@
 import python
 
-import semmle.python.web.bottle.General
+import semmle.python.web.falcon.General
 
-from BottleRoute route
+from FalconRoute route, string method
 
-select route.getUrl(), route.getFunction()
+select route.getUrl(), method, route.getHandlerFunction(method)
+

@@ -1,1 +1,2 @@
-fail
+| /hello | get | test.py:9:5:9:32 | Function on_get |
+| /hello | post | test.py:12:5:12:33 | Function on_post |
