@@ -82,7 +82,6 @@ Element getCollectionAssignmentTarget(Expr e) {
     ief = mc.getQualifier().getType().getSourceDeclaration() and
     m = mc.getTarget().getSourceDeclaration() and
     ief.callableFlow(source, sink, m, _) and
-    source.getCallable() = m and
     source.getArgumentIndex() = i and
     e = mc.getArgument(i)
   )
