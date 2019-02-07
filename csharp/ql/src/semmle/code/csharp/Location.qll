@@ -51,6 +51,9 @@ class Location extends @location {
   final int getEndColumn() { this.hasLocationInfo(_, _, _, _, result) }
 }
 
+/** An empty location. */
+class EmptyLocation extends Location { EmptyLocation() { this.hasLocationInfo("", 0, 0, 0, 0) } }
+
 /**
  * A location in source code, comprising of a source file and a segment of text
  * within the file.

@@ -370,17 +370,9 @@ module ExprOrStmtParentCached {
     or
     hasNoSourceLocation(e) and
     result = min(Location l | l = e.getALocation() | l order by l.getFile().toString())
-  }
-
-  cached
-  string getURL(Element e) {
-    exists(Location l, string path, int a, int b, int c, int d | l = bestLocation(e) |
-      l.hasLocationInfo(path, a, b, c, d) and
-      toUrl(path, a, b, c, d, result)
-    )
     or
-    not exists(bestLocation(e)) and
-    result = ""
+    not exists(e.getALocation()) and
+    result instanceof EmptyLocation
   }
 }
 private import ExprOrStmtParentCached
