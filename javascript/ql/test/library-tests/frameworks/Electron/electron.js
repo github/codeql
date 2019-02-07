@@ -1,7 +1,7 @@
 const {BrowserView, BrowserWindow, ClientRequest, net} = require('electron')
 
-new BrowserWindow({webPreferences: {}})
-new BrowserView({webPreferences: {}})
+var bw = new BrowserWindow({webPreferences: {}})
+var bv = new BrowserView({webPreferences: {}})
 
 function makeClientRequests() {
     net.request('https://example.com').end();
@@ -31,3 +31,10 @@ function makeClientRequests() {
     post.write('stuff');
     post.end('more stuff');
 }
+
+function foo(x) {
+    return x;
+}
+
+foo(bw);
+foo(bv);
