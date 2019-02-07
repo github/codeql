@@ -33,3 +33,5 @@
 | UselessConditionalGood.js:69:12:69:13 | xy | This use of variable 'xy' always evaluates to false. |
 | UselessConditionalGood.js:85:12:85:13 | xy | This use of variable 'xy' always evaluates to false. |
 | UselessConditionalGood.js:97:12:97:13 | xy | This use of variable 'xy' always evaluates to false. |
+| UselessConditionalGood.js:114:8:114:8 | p | This use of variable 'p' always evaluates to false. |
+| UselessConditionalGood.js:122:8:122:8 | p | This use of variable 'p' always evaluates to false. |
