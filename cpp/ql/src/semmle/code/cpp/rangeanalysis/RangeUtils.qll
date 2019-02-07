@@ -10,8 +10,8 @@ IntValue getConstantValue(Instruction instr) {
   result = instr.(IntegerConstantInstruction).getValue().toInt() or
   exists(BinaryInstruction binInstr, IntValue left, IntValue right |
     binInstr = instr and
-    left = getConstantValue(binInstr.getLeftOperand()) and
-    right = getConstantValue(binInstr.getRightOperand()) and
+    left = getConstantValue(binInstr.getLeft()) and
+    right = getConstantValue(binInstr.getRight()) and
     (
       binInstr instanceof AddInstruction and result = add(left, right) or
       binInstr instanceof SubInstruction and result = sub(left, right) or

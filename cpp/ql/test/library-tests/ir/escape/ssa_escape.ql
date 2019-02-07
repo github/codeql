@@ -12,7 +12,7 @@ predicate shouldEscape(IRAutomaticUserVariable var) {
 from IRAutomaticUserVariable var
 where
   exists(FunctionIR funcIR |
-    funcIR = var.getFunctionIR() and
+    funcIR = var.getEnclosingFunctionIR() and
     (
       (shouldEscape(var) and variableAddressEscapes(var)) or
       (not shouldEscape(var) and not variableAddressEscapes(var))

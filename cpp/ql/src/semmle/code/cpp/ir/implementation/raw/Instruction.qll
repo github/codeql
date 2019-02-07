@@ -123,7 +123,7 @@ module InstructionSanity {
   query predicate unexplainedLoop(Function f, Instruction instr) {
     exists(IRBlock block |
       instr.getBlock() = block and
-      block.getFunction() = f and
+      block.getEnclosingFunction() = f and
       block.getASuccessor+() = block
     ) and
     not exists(Loop l | l.getEnclosingFunction() = f) and
@@ -143,9 +143,9 @@ module InstructionSanity {
    * a different function.
    */
   query predicate operandAcrossFunctions(Operand operand, Instruction instr, Instruction defInstr) {
-    operand.getInstruction() = instr and
+    operand.getUseInstruction() = instr and
     operand.getDefinitionInstruction() = defInstr and
-    instr.getFunctionIR() != defInstr.getFunctionIR()
+    instr.getEnclosingFunctionIR() != defInstr.getEnclosingFunctionIR()
   }
 
   /**
@@ -169,7 +169,7 @@ module InstructionSanity {
   query predicate containsLoopOfForwardEdges(FunctionIR f) {
     exists(IRBlock block |
       forwardEdge+(block, block) and
-      block.getFunctionIR() = f
+      block.getEnclosingFunctionIR() = f
     )
   }
 
@@ -196,10 +196,10 @@ module InstructionSanity {
    */
   query predicate backEdgeCountMismatch(Function f, int fromInstr, int fromBlock) {
     fromInstr = count(Instruction i1, Instruction i2 |
-        i1.getFunction() = f and i1.getBackEdgeSuccessor(_) = i2
+        i1.getEnclosingFunction() = f and i1.getBackEdgeSuccessor(_) = i2
       ) and
     fromBlock = count(IRBlock b1, IRBlock b2 |
-        b1.getFunction() = f and b1.getBackEdgeSuccessor(_) = b2
+        b1.getEnclosingFunction() = f and b1.getBackEdgeSuccessor(_) = b2
       ) and
     fromInstr != fromBlock
   }
@@ -364,14 +364,14 @@ class Instruction extends Construction::TInstruction {
   /**
    * Gets the function that contains this instruction.
    */
-  final Function getFunction() {
-    result = getFunctionIR().getFunction()
+  final Function getEnclosingFunction() {
+    result = getEnclosingFunctionIR().getFunction()
   }
 
   /**
    * Gets the FunctionIR object that contains the IR for this instruction.
    */
-  final FunctionIR getFunctionIR() {
+  final FunctionIR getEnclosingFunctionIR() {
     result = Construction::getInstructionEnclosingFunctionIR(this)
   }
 
@@ -472,7 +472,7 @@ class Instruction extends Construction::TInstruction {
    * Gets all of this instruction's operands.
    */
   final Operand getAnOperand() {
-    result.getInstruction() = this
+    result.getUseInstruction() = this
   }
 
   /**
@@ -818,11 +818,11 @@ class BinaryInstruction extends Instruction {
     getOpcode() instanceof BinaryOpcode
   }
 
-  final Instruction getLeftOperand() {
+  final Instruction getLeft() {
     result = getAnOperand().(LeftOperand).getDefinitionInstruction()
   }
 
-  final Instruction getRightOperand() {
+  final Instruction getRight() {
     result = getAnOperand().(RightOperand).getDefinitionInstruction()
   }
   
@@ -948,7 +948,7 @@ class UnaryInstruction extends Instruction {
     getOpcode() instanceof UnaryOpcode
   }
 
-  final Instruction getOperand() {
+  final Instruction getUnary() {
     result = getAnOperand().(UnaryOperand).getDefinitionInstruction()
   }
 }
@@ -1075,7 +1075,7 @@ class RelationalInstruction extends CompareInstruction {
    * if the overall instruction evaluates to `true`; for example on
    * `x <= 20` this is the `20`, and on `y > 0` it is `y`.
    */
-  Instruction getGreaterOperand() {
+  Instruction getGreater() {
     none()
   }
 
@@ -1085,7 +1085,7 @@ class RelationalInstruction extends CompareInstruction {
    * if the overall instruction evaluates to `true`; for example on
    * `x <= 20` this is `x`, and on `y > 0` it is the `0`.
    */
-  Instruction getLesserOperand() {
+  Instruction getLesser() {
     none()
   }
 
@@ -1102,12 +1102,12 @@ class CompareLTInstruction extends RelationalInstruction {
     getOpcode() instanceof Opcode::CompareLT
   }
 
-  override Instruction getLesserOperand() {
-    result = getLeftOperand()
+  override Instruction getLesser() {
+    result = getLeft()
   }
 
-  override Instruction getGreaterOperand() {
-    result = getRightOperand()
+  override Instruction getGreater() {
+    result = getRight()
   }
 
   override predicate isStrict() {
@@ -1120,12 +1120,12 @@ class CompareGTInstruction extends RelationalInstruction {
     getOpcode() instanceof Opcode::CompareGT
   }
 
-  override Instruction getLesserOperand() {
-    result = getRightOperand()
+  override Instruction getLesser() {
+    result = getRight()
   }
 
-  override Instruction getGreaterOperand() {
-    result = getLeftOperand()
+  override Instruction getGreater() {
+    result = getLeft()
   }
 
   override predicate isStrict() {
@@ -1138,12 +1138,12 @@ class CompareLEInstruction extends RelationalInstruction {
     getOpcode() instanceof Opcode::CompareLE
   }
 
-  override Instruction getLesserOperand() {
-    result = getLeftOperand()
+  override Instruction getLesser() {
+    result = getLeft()
   }
 
-  override Instruction getGreaterOperand() {
-    result = getRightOperand()
+  override Instruction getGreater() {
+    result = getRight()
   }
 
   override predicate isStrict() {
@@ -1156,12 +1156,12 @@ class CompareGEInstruction extends RelationalInstruction {
     getOpcode() instanceof Opcode::CompareGE
   }
 
-  override Instruction getLesserOperand() {
-    result = getRightOperand()
+  override Instruction getLesser() {
+    result = getRight()
   }
 
-  override Instruction getGreaterOperand() {
-    result = getLeftOperand()
+  override Instruction getGreater() {
+    result = getLeft()
   }
 
   override predicate isStrict() {
@@ -1337,6 +1337,7 @@ class BufferMayWriteSideEffectInstruction extends SideEffectInstruction {
   BufferMayWriteSideEffectInstruction() {
     getOpcode() instanceof Opcode::BufferMayWriteSideEffect
   }
+
   override final MemoryAccessKind getResultMemoryAccess() {
     result instanceof BufferMayMemoryAccess
   }
@@ -1541,14 +1542,14 @@ class ChiInstruction extends Instruction {
    * Gets the operand that represents the previous state of all memory that might be aliased by the
    * memory write.
    */
-  final Instruction getTotalOperand() {
+  final Instruction getTotal() {
     result = getAnOperand().(ChiTotalOperand).getDefinitionInstruction()
   }
 
   /**
    * Gets the operand that represents the new value written by the memory write.
    */
-  final Instruction getPartialOperand() {
+  final Instruction getPartial() {
     result = getAnOperand().(ChiPartialOperand).getDefinitionInstruction()
   }
 }

@@ -20,7 +20,7 @@ private VirtualIRVariable getVirtualVariable(IRVariable var) {
 }
 
 private UnknownVirtualVariable getUnknownVirtualVariable(FunctionIR f) {
-  result.getFunctionIR() = f
+  result.getEnclosingFunctionIR() = f
 }
 
 class VirtualVariable extends TVirtualVariable {
@@ -81,7 +81,7 @@ class UnknownVirtualVariable extends VirtualVariable, TUnknownVirtualVariable {
     result instanceof UnknownType
   }
   
-  final FunctionIR getFunctionIR() {
+  final FunctionIR getEnclosingFunctionIR() {
     result = f
   }
 }
@@ -135,7 +135,7 @@ class VariableMemoryAccess extends TVariableMemoryAccess, MemoryAccess {
 
   final override VirtualVariable getVirtualVariable() {
     result = getVirtualVariable(var) or
-    not exists(getVirtualVariable(var)) and result = getUnknownVirtualVariable(var.getFunctionIR())
+    not exists(getVirtualVariable(var)) and result = getUnknownVirtualVariable(var.getEnclosingFunctionIR())
   }
   
   IntValue getOffset() {
@@ -254,11 +254,11 @@ MemoryAccess getResultMemoryAccess(Instruction instr) {
     result = getVariableMemoryAccess(var, i, instr.getResultSize())
   )
   else (
-    result = TUnknownMemoryAccess(TUnknownVirtualVariable(instr.getFunctionIR())) and
+    result = TUnknownMemoryAccess(TUnknownVirtualVariable(instr.getEnclosingFunctionIR())) and
     not instr instanceof UnmodeledDefinitionInstruction and
     not instr instanceof AliasedDefinitionInstruction
     or
-    result = TTotalUnknownMemoryAccess(TUnknownVirtualVariable(instr.getFunctionIR())) and
+    result = TTotalUnknownMemoryAccess(TUnknownVirtualVariable(instr.getEnclosingFunctionIR())) and
     instr instanceof AliasedDefinitionInstruction
   )
 }
@@ -274,7 +274,7 @@ MemoryAccess getOperandMemoryAccess(Operand operand) {
     size = operand.getDefinitionInstruction().getResultSize()
   )
   else (
-    result = TUnknownMemoryAccess(TUnknownVirtualVariable(operand.getInstruction().getFunctionIR())) and
-    not operand.getInstruction() instanceof UnmodeledUseInstruction
+    result = TUnknownMemoryAccess(TUnknownVirtualVariable(operand.getUseInstruction().getEnclosingFunctionIR())) and
+    not operand.getUseInstruction() instanceof UnmodeledUseInstruction
   )
 }

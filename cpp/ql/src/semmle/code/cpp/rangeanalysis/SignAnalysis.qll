@@ -132,7 +132,7 @@ private newtype CastKind = TWiden() or TSame() or TNarrow()
 private CastKind getCastKind(ConvertInstruction ci) {
   exists(int fromSize, int toSize |
     toSize = ci.getResultSize() and
-    fromSize = ci.getOperand().getResultSize()
+    fromSize = ci.getUnary().getResultSize()
     |
     fromSize < toSize and
     result = TWiden()
@@ -229,7 +229,7 @@ private predicate lowerBound(IRGuardCondition comp, Operand lowerbound, Operand 
       isStrict = false and
       adjustment = 1
     )  and
-    comp.ensuresLt(lowerbound, compared, adjustment, bounded.getInstruction().getBlock(), true)
+    comp.ensuresLt(lowerbound, compared, adjustment, bounded.getUseInstruction().getBlock(), true)
   )
 }
 
@@ -248,7 +248,7 @@ private predicate upperBound(IRGuardCondition comp, Operand upperbound, Operand 
       isStrict = false and
       adjustment = 1
     ) and
-    comp.ensuresLt(compared, upperbound, adjustment, bounded.getInstruction().getBlock(), true)
+    comp.ensuresLt(compared, upperbound, adjustment, bounded.getUseInstruction().getBlock(), true)
   )
 }
 
@@ -262,7 +262,7 @@ private predicate upperBound(IRGuardCondition comp, Operand upperbound, Operand 
 private predicate eqBound(IRGuardCondition guard, Operand eqbound, Operand bounded, boolean isEq) {
   exists(Operand compared |
     valueNumber(bounded.getDefinitionInstruction()) = valueNumber(compared.getDefinitionInstruction()) and
-    guard.ensuresEq(compared, eqbound, 0, bounded.getInstruction().getBlock(), isEq)
+    guard.ensuresEq(compared, eqbound, 0, bounded.getUseInstruction().getBlock(), isEq)
   )
 }
 
@@ -384,7 +384,7 @@ cached module SignAnalysisCached {
       or
       exists(ConvertInstruction ci, Instruction prior, boolean fromSigned, boolean toSigned |
         i = ci and
-        prior = ci.getOperand() and
+        prior = ci.getUnary() and
         (
           if ci.getResultType().(IntegralType).isSigned()
           then toSigned = true
