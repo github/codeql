@@ -1,4 +1,5 @@
 import csharp
+import semmle.code.csharp.controlflow.internal.PreSsa as PreSsa
 import ControlFlow::Internal
 
 class CallableWithSplitting extends Callable {

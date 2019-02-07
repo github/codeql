@@ -8,7 +8,7 @@ private import semmle.code.csharp.commons.Assertions
 private import semmle.code.csharp.commons.ComparisonTest
 private import semmle.code.csharp.commons.StructuralComparison::Internal
 private import semmle.code.csharp.controlflow.BasicBlocks
-private import semmle.code.csharp.controlflow.Completion
+private import semmle.code.csharp.controlflow.internal.Completion
 private import semmle.code.csharp.dataflow.Nullness
 private import semmle.code.csharp.frameworks.System
 
@@ -627,7 +627,8 @@ class NullGuardedDataFlowNode extends GuardedDataFlowNode {
 
 /** INTERNAL: Do not use. */
 module Internal {
-  private import ControlFlow::Internal
+  private import semmle.code.csharp.controlflow.internal.PreBasicBlocks as PreBasicBlocks
+  private import semmle.code.csharp.controlflow.internal.PreSsa as PreSsa
 
   newtype TAbstractValue =
     TBooleanValue(boolean b) { b = true or b = false } or
