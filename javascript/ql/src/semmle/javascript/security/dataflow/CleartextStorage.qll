@@ -50,6 +50,11 @@ module CleartextStorage {
   class SensitiveExprSource extends Source, DataFlow::ValueNode {
     override SensitiveExpr astNode;
 
+    SensitiveExprSource() {
+      // storing user names or account names in plaintext isn't usually a problem
+      astNode.getClassification() != SensitiveExpr::id()
+    }
+
     override string describe() { result = astNode.describe() }
   }
 
