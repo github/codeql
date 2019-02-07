@@ -992,7 +992,9 @@ module DataFlow {
    * flow through IIFE calls into account.
    */
   private AST::ValueNode defSourceNode(VarDef def) {
-    result = def.getSource() or localArgumentPassing(result, def)
+    result = def.getSource() or
+    result = def.getDestructuringSource() or
+    localArgumentPassing(result, def)
   }
 
   /**
