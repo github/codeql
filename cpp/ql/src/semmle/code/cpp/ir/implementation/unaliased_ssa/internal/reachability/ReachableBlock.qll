@@ -1,11 +1,10 @@
 private import ReachableBlockInternal
-private import semmle.code.cpp.ir.internal.IntegerConstant
 private import IR
 private import ConstantAnalysis
 
 predicate isInfeasibleInstructionSuccessor(Instruction instr, EdgeKind kind) {
   exists(int conditionValue |
-    conditionValue = getValue(getConstantValue(instr.(ConditionalBranchInstruction).getCondition())) and
+    conditionValue = getConstantValue(instr.(ConditionalBranchInstruction).getCondition()) and
     if conditionValue = 0 then
       kind instanceof TrueEdge
     else
