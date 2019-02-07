@@ -53,10 +53,10 @@ private newtype TPrintableIRNode =
     shouldPrintFunction(funcIR.getFunction())
   } or
   TPrintableIRBlock(IRBlock block) {
-    shouldPrintFunction(block.getFunction())
+    shouldPrintFunction(block.getEnclosingFunction())
   } or
   TPrintableInstruction(Instruction instr) {
-    shouldPrintFunction(instr.getFunction())
+    shouldPrintFunction(instr.getEnclosingFunction())
   }
 
 /**
@@ -185,7 +185,7 @@ class PrintableIRBlock extends PrintableIRNode, TPrintableIRBlock {
   }
 
   override final PrintableFunctionIR getParent() {
-    result.getFunctionIR() = block.getFunctionIR()
+    result.getFunctionIR() = block.getEnclosingFunctionIR()
   }
 
   override string getProperty(string key) {

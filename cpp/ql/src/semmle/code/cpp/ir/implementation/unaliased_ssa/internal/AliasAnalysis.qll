@@ -51,7 +51,7 @@ predicate operandIsConsumedWithoutEscaping(Operand operand) {
   // loaded/stored value could).
   operand instanceof AddressOperand or
   exists (Instruction instr |
-    instr = operand.getInstruction() and
+    instr = operand.getUseInstruction() and
     (
       // Neither operand of a Compare escapes.
       instr instanceof CompareInstruction or
@@ -82,7 +82,7 @@ IntValue getConstantValue(Instruction instr) {
 IntValue getPointerBitOffset(PointerOffsetInstruction instr) {
   exists(IntValue bitOffset |
     (
-      bitOffset = Ints::mul(Ints::mul(getConstantValue(instr.getRightOperand()),
+      bitOffset = Ints::mul(Ints::mul(getConstantValue(instr.getRight()),
         instr.getElementSize()), 8)
     ) and
     (
@@ -100,7 +100,7 @@ IntValue getPointerBitOffset(PointerOffsetInstruction instr) {
  */
 predicate operandIsPropagated(Operand operand, IntValue bitOffset) {
   exists(Instruction instr |
-    instr = operand.getInstruction() and
+    instr = operand.getUseInstruction() and
     (
       // Converting to a non-virtual base class adds the offset of the base class.
       exists(ConvertToBaseInstruction convert |
@@ -151,7 +151,7 @@ predicate operandEscapes(Operand operand) {
     operandIsConsumedWithoutEscaping(operand) or
     // The address is propagated to the result of the instruction, but that
     // result does not itself escape.
-    operandIsPropagated(operand, _) and not resultEscapes(operand.getInstruction())
+    operandIsPropagated(operand, _) and not resultEscapes(operand.getUseInstruction())
   )
 }
 
@@ -170,11 +170,11 @@ predicate resultEscapes(Instruction instr) {
  */
 private predicate automaticVariableAddressEscapes(IRAutomaticVariable var) {
   exists(FunctionIR funcIR |
-    funcIR = var.getFunctionIR() and
+    funcIR = var.getEnclosingFunctionIR() and
     // The variable's address escapes if the result of any
     // VariableAddressInstruction that computes the variable's address escapes.
     exists(VariableAddressInstruction instr |
-      instr.getFunctionIR() = funcIR and
+      instr.getEnclosingFunctionIR() = funcIR and
       instr.getVariable() = var and
       resultEscapes(instr)
     )

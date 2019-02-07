@@ -33,7 +33,7 @@ class IRBlockBase extends TIRBlock {
    */
   int getDisplayIndex() {
     this = rank[result + 1](IRBlock funcBlock |
-      funcBlock.getFunction() = getFunction() |
+      funcBlock.getEnclosingFunction() = getEnclosingFunction() |
       funcBlock order by funcBlock.getUniqueId()
     )
   }
@@ -63,12 +63,12 @@ class IRBlockBase extends TIRBlock {
     result = strictcount(getInstruction(_))
   }
 
-  final FunctionIR getFunctionIR() {
-    result = getFirstInstruction(this).getFunctionIR()
+  final FunctionIR getEnclosingFunctionIR() {
+    result = getFirstInstruction(this).getEnclosingFunctionIR()
   }
 
-  final Function getFunction() {
-    result = getFirstInstruction(this).getFunction()
+  final Function getEnclosingFunction() {
+    result = getFirstInstruction(this).getEnclosingFunction()
   }
 }
 
@@ -116,7 +116,7 @@ class IRBlock extends IRBlockBase {
    * Holds if this block is reachable from the entry point of its function
    */
   final predicate isReachableFromFunctionEntry() {
-    this = getFunctionIR().getEntryBlock() or
+    this = getEnclosingFunctionIR().getEntryBlock() or
     getAPredecessor().isReachableFromFunctionEntry()
   }
 }
