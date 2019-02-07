@@ -1,3 +1,243 @@
+| post | AccessorCalls.cs:5:23:5:25 | exit get_Item | AccessorCalls.cs:5:30:5:30 | access to parameter i |
+| post | AccessorCalls.cs:5:30:5:30 | access to parameter i | AccessorCalls.cs:5:23:5:25 | enter get_Item |
+| post | AccessorCalls.cs:5:33:5:35 | exit set_Item | AccessorCalls.cs:5:37:5:39 | {...} |
+| post | AccessorCalls.cs:5:37:5:39 | {...} | AccessorCalls.cs:5:33:5:35 | enter set_Item |
+| post | AccessorCalls.cs:7:32:7:34 | exit add_Event | AccessorCalls.cs:7:36:7:38 | {...} |
+| post | AccessorCalls.cs:7:36:7:38 | {...} | AccessorCalls.cs:7:32:7:34 | enter add_Event |
+| post | AccessorCalls.cs:7:40:7:45 | exit remove_Event | AccessorCalls.cs:7:47:7:49 | {...} |
+| post | AccessorCalls.cs:7:47:7:49 | {...} | AccessorCalls.cs:7:40:7:45 | enter remove_Event |
+| post | AccessorCalls.cs:10:10:10:11 | exit M1 | AccessorCalls.cs:16:9:16:23 | ... -= ... |
+| post | AccessorCalls.cs:11:5:17:5 | {...} | AccessorCalls.cs:10:10:10:11 | enter M1 |
+| post | AccessorCalls.cs:12:9:12:12 | this access | AccessorCalls.cs:12:9:12:32 | ...; |
+| post | AccessorCalls.cs:12:9:12:18 | access to field Field | AccessorCalls.cs:12:9:12:12 | this access |
+| post | AccessorCalls.cs:12:9:12:31 | ... = ... | AccessorCalls.cs:12:22:12:31 | access to field Field |
+| post | AccessorCalls.cs:12:9:12:32 | ...; | AccessorCalls.cs:11:5:17:5 | {...} |
+| post | AccessorCalls.cs:12:22:12:25 | this access | AccessorCalls.cs:12:9:12:18 | access to field Field |
+| post | AccessorCalls.cs:12:22:12:31 | access to field Field | AccessorCalls.cs:12:22:12:25 | this access |
+| post | AccessorCalls.cs:13:9:13:12 | this access | AccessorCalls.cs:13:9:13:30 | ...; |
+| post | AccessorCalls.cs:13:9:13:17 | access to property Prop | AccessorCalls.cs:13:9:13:12 | this access |
+| post | AccessorCalls.cs:13:9:13:29 | ... = ... | AccessorCalls.cs:13:21:13:29 | access to property Prop |
+| post | AccessorCalls.cs:13:9:13:30 | ...; | AccessorCalls.cs:12:9:12:31 | ... = ... |
+| post | AccessorCalls.cs:13:21:13:24 | this access | AccessorCalls.cs:13:9:13:17 | access to property Prop |
+| post | AccessorCalls.cs:13:21:13:29 | access to property Prop | AccessorCalls.cs:13:21:13:24 | this access |
+| post | AccessorCalls.cs:14:9:14:12 | this access | AccessorCalls.cs:14:9:14:26 | ...; |
+| post | AccessorCalls.cs:14:9:14:15 | access to indexer | AccessorCalls.cs:14:14:14:14 | 0 |
+| post | AccessorCalls.cs:14:9:14:25 | ... = ... | AccessorCalls.cs:14:19:14:25 | access to indexer |
+| post | AccessorCalls.cs:14:9:14:26 | ...; | AccessorCalls.cs:13:9:13:29 | ... = ... |
+| post | AccessorCalls.cs:14:14:14:14 | 0 | AccessorCalls.cs:14:9:14:12 | this access |
+| post | AccessorCalls.cs:14:19:14:22 | this access | AccessorCalls.cs:14:9:14:15 | access to indexer |
+| post | AccessorCalls.cs:14:19:14:25 | access to indexer | AccessorCalls.cs:14:24:14:24 | 1 |
+| post | AccessorCalls.cs:14:24:14:24 | 1 | AccessorCalls.cs:14:19:14:22 | this access |
+| post | AccessorCalls.cs:15:9:15:12 | this access | AccessorCalls.cs:15:9:15:24 | ...; |
+| post | AccessorCalls.cs:15:9:15:18 | access to event Event | AccessorCalls.cs:15:9:15:12 | this access |
+| post | AccessorCalls.cs:15:9:15:23 | ... += ... | AccessorCalls.cs:15:23:15:23 | access to parameter e |
+| post | AccessorCalls.cs:15:9:15:24 | ...; | AccessorCalls.cs:14:9:14:25 | ... = ... |
+| post | AccessorCalls.cs:15:23:15:23 | access to parameter e | AccessorCalls.cs:15:9:15:18 | access to event Event |
+| post | AccessorCalls.cs:16:9:16:12 | this access | AccessorCalls.cs:16:9:16:24 | ...; |
+| post | AccessorCalls.cs:16:9:16:18 | access to event Event | AccessorCalls.cs:16:9:16:12 | this access |
+| post | AccessorCalls.cs:16:9:16:23 | ... -= ... | AccessorCalls.cs:16:23:16:23 | access to parameter e |
+| post | AccessorCalls.cs:16:9:16:24 | ...; | AccessorCalls.cs:15:9:15:23 | ... += ... |
+| post | AccessorCalls.cs:16:23:16:23 | access to parameter e | AccessorCalls.cs:16:9:16:18 | access to event Event |
+| post | AccessorCalls.cs:19:10:19:11 | exit M2 | AccessorCalls.cs:25:9:25:25 | ... -= ... |
+| post | AccessorCalls.cs:20:5:26:5 | {...} | AccessorCalls.cs:19:10:19:11 | enter M2 |
+| post | AccessorCalls.cs:21:9:21:12 | this access | AccessorCalls.cs:21:9:21:36 | ...; |
+| post | AccessorCalls.cs:21:9:21:14 | access to field x | AccessorCalls.cs:21:9:21:12 | this access |
+| post | AccessorCalls.cs:21:9:21:20 | access to field Field | AccessorCalls.cs:21:9:21:14 | access to field x |
+| post | AccessorCalls.cs:21:9:21:35 | ... = ... | AccessorCalls.cs:21:24:21:35 | access to field Field |
+| post | AccessorCalls.cs:21:9:21:36 | ...; | AccessorCalls.cs:20:5:26:5 | {...} |
+| post | AccessorCalls.cs:21:24:21:27 | this access | AccessorCalls.cs:21:9:21:20 | access to field Field |
+| post | AccessorCalls.cs:21:24:21:29 | access to field x | AccessorCalls.cs:21:24:21:27 | this access |
+| post | AccessorCalls.cs:21:24:21:35 | access to field Field | AccessorCalls.cs:21:24:21:29 | access to field x |
+| post | AccessorCalls.cs:22:9:22:12 | this access | AccessorCalls.cs:22:9:22:34 | ...; |
+| post | AccessorCalls.cs:22:9:22:14 | access to field x | AccessorCalls.cs:22:9:22:12 | this access |
+| post | AccessorCalls.cs:22:9:22:19 | access to property Prop | AccessorCalls.cs:22:9:22:14 | access to field x |
+| post | AccessorCalls.cs:22:9:22:33 | ... = ... | AccessorCalls.cs:22:23:22:33 | access to property Prop |
+| post | AccessorCalls.cs:22:9:22:34 | ...; | AccessorCalls.cs:21:9:21:35 | ... = ... |
+| post | AccessorCalls.cs:22:23:22:26 | this access | AccessorCalls.cs:22:9:22:19 | access to property Prop |
+| post | AccessorCalls.cs:22:23:22:28 | access to field x | AccessorCalls.cs:22:23:22:26 | this access |
+| post | AccessorCalls.cs:22:23:22:33 | access to property Prop | AccessorCalls.cs:22:23:22:28 | access to field x |
+| post | AccessorCalls.cs:23:9:23:12 | this access | AccessorCalls.cs:23:9:23:30 | ...; |
+| post | AccessorCalls.cs:23:9:23:14 | access to field x | AccessorCalls.cs:23:9:23:12 | this access |
+| post | AccessorCalls.cs:23:9:23:17 | access to indexer | AccessorCalls.cs:23:16:23:16 | 0 |
+| post | AccessorCalls.cs:23:9:23:29 | ... = ... | AccessorCalls.cs:23:21:23:29 | access to indexer |
+| post | AccessorCalls.cs:23:9:23:30 | ...; | AccessorCalls.cs:22:9:22:33 | ... = ... |
+| post | AccessorCalls.cs:23:16:23:16 | 0 | AccessorCalls.cs:23:9:23:14 | access to field x |
+| post | AccessorCalls.cs:23:21:23:24 | this access | AccessorCalls.cs:23:9:23:17 | access to indexer |
+| post | AccessorCalls.cs:23:21:23:26 | access to field x | AccessorCalls.cs:23:21:23:24 | this access |
+| post | AccessorCalls.cs:23:21:23:29 | access to indexer | AccessorCalls.cs:23:28:23:28 | 1 |
+| post | AccessorCalls.cs:23:28:23:28 | 1 | AccessorCalls.cs:23:21:23:26 | access to field x |
+| post | AccessorCalls.cs:24:9:24:12 | this access | AccessorCalls.cs:24:9:24:26 | ...; |
+| post | AccessorCalls.cs:24:9:24:14 | access to field x | AccessorCalls.cs:24:9:24:12 | this access |
+| post | AccessorCalls.cs:24:9:24:20 | access to event Event | AccessorCalls.cs:24:9:24:14 | access to field x |
+| post | AccessorCalls.cs:24:9:24:25 | ... += ... | AccessorCalls.cs:24:25:24:25 | access to parameter e |
+| post | AccessorCalls.cs:24:9:24:26 | ...; | AccessorCalls.cs:23:9:23:29 | ... = ... |
+| post | AccessorCalls.cs:24:25:24:25 | access to parameter e | AccessorCalls.cs:24:9:24:20 | access to event Event |
+| post | AccessorCalls.cs:25:9:25:12 | this access | AccessorCalls.cs:25:9:25:26 | ...; |
+| post | AccessorCalls.cs:25:9:25:14 | access to field x | AccessorCalls.cs:25:9:25:12 | this access |
+| post | AccessorCalls.cs:25:9:25:20 | access to event Event | AccessorCalls.cs:25:9:25:14 | access to field x |
+| post | AccessorCalls.cs:25:9:25:25 | ... -= ... | AccessorCalls.cs:25:25:25:25 | access to parameter e |
+| post | AccessorCalls.cs:25:9:25:26 | ...; | AccessorCalls.cs:24:9:24:25 | ... += ... |
+| post | AccessorCalls.cs:25:25:25:25 | access to parameter e | AccessorCalls.cs:25:9:25:20 | access to event Event |
+| post | AccessorCalls.cs:28:10:28:11 | exit M3 | AccessorCalls.cs:32:9:32:17 | ...++ |
+| post | AccessorCalls.cs:29:5:33:5 | {...} | AccessorCalls.cs:28:10:28:11 | enter M3 |
+| post | AccessorCalls.cs:30:9:30:12 | this access | AccessorCalls.cs:30:9:30:21 | ...; |
+| post | AccessorCalls.cs:30:9:30:18 | access to field Field | AccessorCalls.cs:30:9:30:12 | this access |
+| post | AccessorCalls.cs:30:9:30:20 | ...++ | AccessorCalls.cs:30:9:30:18 | access to field Field |
+| post | AccessorCalls.cs:30:9:30:21 | ...; | AccessorCalls.cs:29:5:33:5 | {...} |
+| post | AccessorCalls.cs:31:9:31:12 | this access | AccessorCalls.cs:31:9:31:20 | ...; |
+| post | AccessorCalls.cs:31:9:31:17 | access to property Prop | AccessorCalls.cs:31:9:31:12 | this access |
+| post | AccessorCalls.cs:31:9:31:19 | ...++ | AccessorCalls.cs:31:9:31:17 | access to property Prop |
+| post | AccessorCalls.cs:31:9:31:20 | ...; | AccessorCalls.cs:30:9:30:20 | ...++ |
+| post | AccessorCalls.cs:32:9:32:12 | this access | AccessorCalls.cs:32:9:32:18 | ...; |
+| post | AccessorCalls.cs:32:9:32:15 | access to indexer | AccessorCalls.cs:32:14:32:14 | 0 |
+| post | AccessorCalls.cs:32:9:32:17 | ...++ | AccessorCalls.cs:32:9:32:15 | access to indexer |
+| post | AccessorCalls.cs:32:9:32:18 | ...; | AccessorCalls.cs:31:9:31:19 | ...++ |
+| post | AccessorCalls.cs:32:14:32:14 | 0 | AccessorCalls.cs:32:9:32:12 | this access |
+| post | AccessorCalls.cs:35:10:35:11 | exit M4 | AccessorCalls.cs:39:9:39:19 | ...++ |
+| post | AccessorCalls.cs:36:5:40:5 | {...} | AccessorCalls.cs:35:10:35:11 | enter M4 |
+| post | AccessorCalls.cs:37:9:37:12 | this access | AccessorCalls.cs:37:9:37:23 | ...; |
+| post | AccessorCalls.cs:37:9:37:14 | access to field x | AccessorCalls.cs:37:9:37:12 | this access |
+| post | AccessorCalls.cs:37:9:37:20 | access to field Field | AccessorCalls.cs:37:9:37:14 | access to field x |
+| post | AccessorCalls.cs:37:9:37:22 | ...++ | AccessorCalls.cs:37:9:37:20 | access to field Field |
+| post | AccessorCalls.cs:37:9:37:23 | ...; | AccessorCalls.cs:36:5:40:5 | {...} |
+| post | AccessorCalls.cs:38:9:38:12 | this access | AccessorCalls.cs:38:9:38:22 | ...; |
+| post | AccessorCalls.cs:38:9:38:14 | access to field x | AccessorCalls.cs:38:9:38:12 | this access |
+| post | AccessorCalls.cs:38:9:38:19 | access to property Prop | AccessorCalls.cs:38:9:38:14 | access to field x |
+| post | AccessorCalls.cs:38:9:38:21 | ...++ | AccessorCalls.cs:38:9:38:19 | access to property Prop |
+| post | AccessorCalls.cs:38:9:38:22 | ...; | AccessorCalls.cs:37:9:37:22 | ...++ |
+| post | AccessorCalls.cs:39:9:39:12 | this access | AccessorCalls.cs:39:9:39:20 | ...; |
+| post | AccessorCalls.cs:39:9:39:14 | access to field x | AccessorCalls.cs:39:9:39:12 | this access |
+| post | AccessorCalls.cs:39:9:39:17 | access to indexer | AccessorCalls.cs:39:16:39:16 | 0 |
+| post | AccessorCalls.cs:39:9:39:19 | ...++ | AccessorCalls.cs:39:9:39:17 | access to indexer |
+| post | AccessorCalls.cs:39:9:39:20 | ...; | AccessorCalls.cs:38:9:38:21 | ...++ |
+| post | AccessorCalls.cs:39:16:39:16 | 0 | AccessorCalls.cs:39:9:39:14 | access to field x |
+| post | AccessorCalls.cs:42:10:42:11 | exit M5 | AccessorCalls.cs:46:9:46:26 | ... = ... |
+| post | AccessorCalls.cs:43:5:47:5 | {...} | AccessorCalls.cs:42:10:42:11 | enter M5 |
+| post | AccessorCalls.cs:44:9:44:12 | this access | AccessorCalls.cs:44:9:44:18 | access to field Field |
+| post | AccessorCalls.cs:44:9:44:12 | this access | AccessorCalls.cs:44:9:44:33 | ...; |
+| post | AccessorCalls.cs:44:9:44:18 | access to field Field | AccessorCalls.cs:44:9:44:12 | this access |
+| post | AccessorCalls.cs:44:9:44:18 | access to field Field | AccessorCalls.cs:44:9:44:12 | this access |
+| post | AccessorCalls.cs:44:9:44:32 | ... + ... | AccessorCalls.cs:44:23:44:32 | access to field Field |
+| post | AccessorCalls.cs:44:9:44:32 | ... = ... | AccessorCalls.cs:44:9:44:32 | ... + ... |
+| post | AccessorCalls.cs:44:9:44:33 | ...; | AccessorCalls.cs:43:5:47:5 | {...} |
+| post | AccessorCalls.cs:44:23:44:26 | this access | AccessorCalls.cs:44:9:44:18 | access to field Field |
+| post | AccessorCalls.cs:44:23:44:32 | access to field Field | AccessorCalls.cs:44:23:44:26 | this access |
+| post | AccessorCalls.cs:45:9:45:12 | this access | AccessorCalls.cs:45:9:45:17 | access to property Prop |
+| post | AccessorCalls.cs:45:9:45:12 | this access | AccessorCalls.cs:45:9:45:31 | ...; |
+| post | AccessorCalls.cs:45:9:45:17 | access to property Prop | AccessorCalls.cs:45:9:45:12 | this access |
+| post | AccessorCalls.cs:45:9:45:17 | access to property Prop | AccessorCalls.cs:45:9:45:12 | this access |
+| post | AccessorCalls.cs:45:9:45:30 | ... + ... | AccessorCalls.cs:45:22:45:30 | access to property Prop |
+| post | AccessorCalls.cs:45:9:45:30 | ... = ... | AccessorCalls.cs:45:9:45:30 | ... + ... |
+| post | AccessorCalls.cs:45:9:45:31 | ...; | AccessorCalls.cs:44:9:44:32 | ... = ... |
+| post | AccessorCalls.cs:45:22:45:25 | this access | AccessorCalls.cs:45:9:45:17 | access to property Prop |
+| post | AccessorCalls.cs:45:22:45:30 | access to property Prop | AccessorCalls.cs:45:22:45:25 | this access |
+| post | AccessorCalls.cs:46:9:46:12 | this access | AccessorCalls.cs:46:9:46:15 | access to indexer |
+| post | AccessorCalls.cs:46:9:46:12 | this access | AccessorCalls.cs:46:9:46:27 | ...; |
+| post | AccessorCalls.cs:46:9:46:15 | access to indexer | AccessorCalls.cs:46:14:46:14 | 0 |
+| post | AccessorCalls.cs:46:9:46:15 | access to indexer | AccessorCalls.cs:46:14:46:14 | 0 |
+| post | AccessorCalls.cs:46:9:46:26 | ... + ... | AccessorCalls.cs:46:20:46:26 | access to indexer |
+| post | AccessorCalls.cs:46:9:46:26 | ... = ... | AccessorCalls.cs:46:9:46:26 | ... + ... |
+| post | AccessorCalls.cs:46:9:46:27 | ...; | AccessorCalls.cs:45:9:45:30 | ... = ... |
+| post | AccessorCalls.cs:46:14:46:14 | 0 | AccessorCalls.cs:46:9:46:12 | this access |
+| post | AccessorCalls.cs:46:14:46:14 | 0 | AccessorCalls.cs:46:9:46:12 | this access |
+| post | AccessorCalls.cs:46:20:46:23 | this access | AccessorCalls.cs:46:9:46:15 | access to indexer |
+| post | AccessorCalls.cs:46:20:46:26 | access to indexer | AccessorCalls.cs:46:25:46:25 | 0 |
+| post | AccessorCalls.cs:46:25:46:25 | 0 | AccessorCalls.cs:46:20:46:23 | this access |
+| post | AccessorCalls.cs:49:10:49:11 | exit M6 | AccessorCalls.cs:53:9:53:30 | ... = ... |
+| post | AccessorCalls.cs:50:5:54:5 | {...} | AccessorCalls.cs:49:10:49:11 | enter M6 |
+| post | AccessorCalls.cs:51:9:51:12 | this access | AccessorCalls.cs:51:9:51:20 | access to field Field |
+| post | AccessorCalls.cs:51:9:51:12 | this access | AccessorCalls.cs:51:9:51:37 | ...; |
+| post | AccessorCalls.cs:51:9:51:14 | access to field x | AccessorCalls.cs:51:9:51:12 | this access |
+| post | AccessorCalls.cs:51:9:51:14 | access to field x | AccessorCalls.cs:51:9:51:12 | this access |
+| post | AccessorCalls.cs:51:9:51:20 | access to field Field | AccessorCalls.cs:51:9:51:14 | access to field x |
+| post | AccessorCalls.cs:51:9:51:20 | access to field Field | AccessorCalls.cs:51:9:51:14 | access to field x |
+| post | AccessorCalls.cs:51:9:51:36 | ... + ... | AccessorCalls.cs:51:25:51:36 | access to field Field |
+| post | AccessorCalls.cs:51:9:51:36 | ... = ... | AccessorCalls.cs:51:9:51:36 | ... + ... |
+| post | AccessorCalls.cs:51:9:51:37 | ...; | AccessorCalls.cs:50:5:54:5 | {...} |
+| post | AccessorCalls.cs:51:25:51:28 | this access | AccessorCalls.cs:51:9:51:20 | access to field Field |
+| post | AccessorCalls.cs:51:25:51:30 | access to field x | AccessorCalls.cs:51:25:51:28 | this access |
+| post | AccessorCalls.cs:51:25:51:36 | access to field Field | AccessorCalls.cs:51:25:51:30 | access to field x |
+| post | AccessorCalls.cs:52:9:52:12 | this access | AccessorCalls.cs:52:9:52:19 | access to property Prop |
+| post | AccessorCalls.cs:52:9:52:12 | this access | AccessorCalls.cs:52:9:52:35 | ...; |
+| post | AccessorCalls.cs:52:9:52:14 | access to field x | AccessorCalls.cs:52:9:52:12 | this access |
+| post | AccessorCalls.cs:52:9:52:14 | access to field x | AccessorCalls.cs:52:9:52:12 | this access |
+| post | AccessorCalls.cs:52:9:52:19 | access to property Prop | AccessorCalls.cs:52:9:52:14 | access to field x |
+| post | AccessorCalls.cs:52:9:52:19 | access to property Prop | AccessorCalls.cs:52:9:52:14 | access to field x |
+| post | AccessorCalls.cs:52:9:52:34 | ... + ... | AccessorCalls.cs:52:24:52:34 | access to property Prop |
+| post | AccessorCalls.cs:52:9:52:34 | ... = ... | AccessorCalls.cs:52:9:52:34 | ... + ... |
+| post | AccessorCalls.cs:52:9:52:35 | ...; | AccessorCalls.cs:51:9:51:36 | ... = ... |
+| post | AccessorCalls.cs:52:24:52:27 | this access | AccessorCalls.cs:52:9:52:19 | access to property Prop |
+| post | AccessorCalls.cs:52:24:52:29 | access to field x | AccessorCalls.cs:52:24:52:27 | this access |
+| post | AccessorCalls.cs:52:24:52:34 | access to property Prop | AccessorCalls.cs:52:24:52:29 | access to field x |
+| post | AccessorCalls.cs:53:9:53:12 | this access | AccessorCalls.cs:53:9:53:17 | access to indexer |
+| post | AccessorCalls.cs:53:9:53:12 | this access | AccessorCalls.cs:53:9:53:31 | ...; |
+| post | AccessorCalls.cs:53:9:53:14 | access to field x | AccessorCalls.cs:53:9:53:12 | this access |
+| post | AccessorCalls.cs:53:9:53:14 | access to field x | AccessorCalls.cs:53:9:53:12 | this access |
+| post | AccessorCalls.cs:53:9:53:17 | access to indexer | AccessorCalls.cs:53:16:53:16 | 0 |
+| post | AccessorCalls.cs:53:9:53:17 | access to indexer | AccessorCalls.cs:53:16:53:16 | 0 |
+| post | AccessorCalls.cs:53:9:53:30 | ... + ... | AccessorCalls.cs:53:22:53:30 | access to indexer |
+| post | AccessorCalls.cs:53:9:53:30 | ... = ... | AccessorCalls.cs:53:9:53:30 | ... + ... |
+| post | AccessorCalls.cs:53:9:53:31 | ...; | AccessorCalls.cs:52:9:52:34 | ... = ... |
+| post | AccessorCalls.cs:53:16:53:16 | 0 | AccessorCalls.cs:53:9:53:14 | access to field x |
+| post | AccessorCalls.cs:53:16:53:16 | 0 | AccessorCalls.cs:53:9:53:14 | access to field x |
+| post | AccessorCalls.cs:53:22:53:25 | this access | AccessorCalls.cs:53:9:53:17 | access to indexer |
+| post | AccessorCalls.cs:53:22:53:27 | access to field x | AccessorCalls.cs:53:22:53:25 | this access |
+| post | AccessorCalls.cs:53:22:53:30 | access to indexer | AccessorCalls.cs:53:29:53:29 | 0 |
+| post | AccessorCalls.cs:53:29:53:29 | 0 | AccessorCalls.cs:53:22:53:27 | access to field x |
+| post | AccessorCalls.cs:56:10:56:11 | exit M7 | AccessorCalls.cs:58:9:58:85 | ... = ... |
+| post | AccessorCalls.cs:57:5:59:5 | {...} | AccessorCalls.cs:56:10:56:11 | enter M7 |
+| post | AccessorCalls.cs:58:9:58:45 | (..., ...) | AccessorCalls.cs:58:33:58:44 | (..., ...) |
+| post | AccessorCalls.cs:58:9:58:85 | ... = ... | AccessorCalls.cs:58:49:58:85 | (..., ...) |
+| post | AccessorCalls.cs:58:9:58:86 | ...; | AccessorCalls.cs:57:5:59:5 | {...} |
+| post | AccessorCalls.cs:58:10:58:13 | this access | AccessorCalls.cs:58:9:58:86 | ...; |
+| post | AccessorCalls.cs:58:10:58:19 | access to field Field | AccessorCalls.cs:58:10:58:13 | this access |
+| post | AccessorCalls.cs:58:22:58:25 | this access | AccessorCalls.cs:58:10:58:19 | access to field Field |
+| post | AccessorCalls.cs:58:22:58:30 | access to property Prop | AccessorCalls.cs:58:22:58:25 | this access |
+| post | AccessorCalls.cs:58:33:58:44 | (..., ...) | AccessorCalls.cs:58:37:58:43 | access to indexer |
+| post | AccessorCalls.cs:58:34:58:34 | access to parameter i | AccessorCalls.cs:58:22:58:30 | access to property Prop |
+| post | AccessorCalls.cs:58:37:58:40 | this access | AccessorCalls.cs:58:34:58:34 | access to parameter i |
+| post | AccessorCalls.cs:58:37:58:43 | access to indexer | AccessorCalls.cs:58:42:58:42 | 0 |
+| post | AccessorCalls.cs:58:42:58:42 | 0 | AccessorCalls.cs:58:37:58:40 | this access |
+| post | AccessorCalls.cs:58:49:58:85 | (..., ...) | AccessorCalls.cs:58:73:58:84 | (..., ...) |
+| post | AccessorCalls.cs:58:50:58:53 | this access | AccessorCalls.cs:58:9:58:45 | (..., ...) |
+| post | AccessorCalls.cs:58:50:58:59 | access to field Field | AccessorCalls.cs:58:50:58:53 | this access |
+| post | AccessorCalls.cs:58:62:58:65 | this access | AccessorCalls.cs:58:50:58:59 | access to field Field |
+| post | AccessorCalls.cs:58:62:58:70 | access to property Prop | AccessorCalls.cs:58:62:58:65 | this access |
+| post | AccessorCalls.cs:58:73:58:84 | (..., ...) | AccessorCalls.cs:58:77:58:83 | access to indexer |
+| post | AccessorCalls.cs:58:74:58:74 | 0 | AccessorCalls.cs:58:62:58:70 | access to property Prop |
+| post | AccessorCalls.cs:58:77:58:80 | this access | AccessorCalls.cs:58:74:58:74 | 0 |
+| post | AccessorCalls.cs:58:77:58:83 | access to indexer | AccessorCalls.cs:58:82:58:82 | 1 |
+| post | AccessorCalls.cs:58:82:58:82 | 1 | AccessorCalls.cs:58:77:58:80 | this access |
+| post | AccessorCalls.cs:61:10:61:11 | exit M8 | AccessorCalls.cs:63:9:63:97 | ... = ... |
+| post | AccessorCalls.cs:62:5:64:5 | {...} | AccessorCalls.cs:61:10:61:11 | enter M8 |
+| post | AccessorCalls.cs:63:9:63:51 | (..., ...) | AccessorCalls.cs:63:37:63:50 | (..., ...) |
+| post | AccessorCalls.cs:63:9:63:97 | ... = ... | AccessorCalls.cs:63:55:63:97 | (..., ...) |
+| post | AccessorCalls.cs:63:9:63:98 | ...; | AccessorCalls.cs:62:5:64:5 | {...} |
+| post | AccessorCalls.cs:63:10:63:13 | this access | AccessorCalls.cs:63:9:63:98 | ...; |
+| post | AccessorCalls.cs:63:10:63:15 | access to field x | AccessorCalls.cs:63:10:63:13 | this access |
+| post | AccessorCalls.cs:63:10:63:21 | access to field Field | AccessorCalls.cs:63:10:63:15 | access to field x |
+| post | AccessorCalls.cs:63:24:63:27 | this access | AccessorCalls.cs:63:10:63:21 | access to field Field |
+| post | AccessorCalls.cs:63:24:63:29 | access to field x | AccessorCalls.cs:63:24:63:27 | this access |
+| post | AccessorCalls.cs:63:24:63:34 | access to property Prop | AccessorCalls.cs:63:24:63:29 | access to field x |
+| post | AccessorCalls.cs:63:37:63:50 | (..., ...) | AccessorCalls.cs:63:41:63:49 | access to indexer |
+| post | AccessorCalls.cs:63:38:63:38 | access to parameter i | AccessorCalls.cs:63:24:63:34 | access to property Prop |
+| post | AccessorCalls.cs:63:41:63:44 | this access | AccessorCalls.cs:63:38:63:38 | access to parameter i |
+| post | AccessorCalls.cs:63:41:63:46 | access to field x | AccessorCalls.cs:63:41:63:44 | this access |
+| post | AccessorCalls.cs:63:41:63:49 | access to indexer | AccessorCalls.cs:63:48:63:48 | 0 |
+| post | AccessorCalls.cs:63:48:63:48 | 0 | AccessorCalls.cs:63:41:63:46 | access to field x |
+| post | AccessorCalls.cs:63:55:63:97 | (..., ...) | AccessorCalls.cs:63:83:63:96 | (..., ...) |
+| post | AccessorCalls.cs:63:56:63:59 | this access | AccessorCalls.cs:63:9:63:51 | (..., ...) |
+| post | AccessorCalls.cs:63:56:63:61 | access to field x | AccessorCalls.cs:63:56:63:59 | this access |
+| post | AccessorCalls.cs:63:56:63:67 | access to field Field | AccessorCalls.cs:63:56:63:61 | access to field x |
+| post | AccessorCalls.cs:63:70:63:73 | this access | AccessorCalls.cs:63:56:63:67 | access to field Field |
+| post | AccessorCalls.cs:63:70:63:75 | access to field x | AccessorCalls.cs:63:70:63:73 | this access |
+| post | AccessorCalls.cs:63:70:63:80 | access to property Prop | AccessorCalls.cs:63:70:63:75 | access to field x |
+| post | AccessorCalls.cs:63:83:63:96 | (..., ...) | AccessorCalls.cs:63:87:63:95 | access to indexer |
+| post | AccessorCalls.cs:63:84:63:84 | 0 | AccessorCalls.cs:63:70:63:80 | access to property Prop |
+| post | AccessorCalls.cs:63:87:63:90 | this access | AccessorCalls.cs:63:84:63:84 | 0 |
+| post | AccessorCalls.cs:63:87:63:92 | access to field x | AccessorCalls.cs:63:87:63:90 | this access |
+| post | AccessorCalls.cs:63:87:63:95 | access to indexer | AccessorCalls.cs:63:94:63:94 | 1 |
+| post | AccessorCalls.cs:63:94:63:94 | 1 | AccessorCalls.cs:63:87:63:92 | access to field x |
 | post | ArrayCreation.cs:3:11:3:12 | exit M1 | ArrayCreation.cs:3:19:3:28 | array creation of type Int32[] |
 | post | ArrayCreation.cs:3:19:3:28 | array creation of type Int32[] | ArrayCreation.cs:3:27:3:27 | 0 |
 | post | ArrayCreation.cs:3:27:3:27 | 0 | ArrayCreation.cs:3:11:3:12 | enter M1 |
@@ -2241,6 +2481,246 @@
 | post | cflow.cs:428:61:428:64 | null | cflow.cs:428:56:428:56 | access to parameter s |
 | post | cflow.cs:428:70:428:71 | "" | cflow.cs:428:46:428:50 | ... > ... |
 | post | cflow.cs:428:70:428:71 | "" | cflow.cs:428:56:428:64 | ... != ... |
+| pre | AccessorCalls.cs:5:23:5:25 | enter get_Item | AccessorCalls.cs:5:30:5:30 | access to parameter i |
+| pre | AccessorCalls.cs:5:30:5:30 | access to parameter i | AccessorCalls.cs:5:23:5:25 | exit get_Item |
+| pre | AccessorCalls.cs:5:33:5:35 | enter set_Item | AccessorCalls.cs:5:37:5:39 | {...} |
+| pre | AccessorCalls.cs:5:37:5:39 | {...} | AccessorCalls.cs:5:33:5:35 | exit set_Item |
+| pre | AccessorCalls.cs:7:32:7:34 | enter add_Event | AccessorCalls.cs:7:36:7:38 | {...} |
+| pre | AccessorCalls.cs:7:36:7:38 | {...} | AccessorCalls.cs:7:32:7:34 | exit add_Event |
+| pre | AccessorCalls.cs:7:40:7:45 | enter remove_Event | AccessorCalls.cs:7:47:7:49 | {...} |
+| pre | AccessorCalls.cs:7:47:7:49 | {...} | AccessorCalls.cs:7:40:7:45 | exit remove_Event |
+| pre | AccessorCalls.cs:10:10:10:11 | enter M1 | AccessorCalls.cs:11:5:17:5 | {...} |
+| pre | AccessorCalls.cs:11:5:17:5 | {...} | AccessorCalls.cs:12:9:12:32 | ...; |
+| pre | AccessorCalls.cs:12:9:12:12 | this access | AccessorCalls.cs:12:9:12:18 | access to field Field |
+| pre | AccessorCalls.cs:12:9:12:18 | access to field Field | AccessorCalls.cs:12:22:12:25 | this access |
+| pre | AccessorCalls.cs:12:9:12:31 | ... = ... | AccessorCalls.cs:13:9:13:30 | ...; |
+| pre | AccessorCalls.cs:12:9:12:32 | ...; | AccessorCalls.cs:12:9:12:12 | this access |
+| pre | AccessorCalls.cs:12:22:12:25 | this access | AccessorCalls.cs:12:22:12:31 | access to field Field |
+| pre | AccessorCalls.cs:12:22:12:31 | access to field Field | AccessorCalls.cs:12:9:12:31 | ... = ... |
+| pre | AccessorCalls.cs:13:9:13:12 | this access | AccessorCalls.cs:13:9:13:17 | access to property Prop |
+| pre | AccessorCalls.cs:13:9:13:17 | access to property Prop | AccessorCalls.cs:13:21:13:24 | this access |
+| pre | AccessorCalls.cs:13:9:13:29 | ... = ... | AccessorCalls.cs:14:9:14:26 | ...; |
+| pre | AccessorCalls.cs:13:9:13:30 | ...; | AccessorCalls.cs:13:9:13:12 | this access |
+| pre | AccessorCalls.cs:13:21:13:24 | this access | AccessorCalls.cs:13:21:13:29 | access to property Prop |
+| pre | AccessorCalls.cs:13:21:13:29 | access to property Prop | AccessorCalls.cs:13:9:13:29 | ... = ... |
+| pre | AccessorCalls.cs:14:9:14:12 | this access | AccessorCalls.cs:14:14:14:14 | 0 |
+| pre | AccessorCalls.cs:14:9:14:15 | access to indexer | AccessorCalls.cs:14:19:14:22 | this access |
+| pre | AccessorCalls.cs:14:9:14:25 | ... = ... | AccessorCalls.cs:15:9:15:24 | ...; |
+| pre | AccessorCalls.cs:14:9:14:26 | ...; | AccessorCalls.cs:14:9:14:12 | this access |
+| pre | AccessorCalls.cs:14:14:14:14 | 0 | AccessorCalls.cs:14:9:14:15 | access to indexer |
+| pre | AccessorCalls.cs:14:19:14:22 | this access | AccessorCalls.cs:14:24:14:24 | 1 |
+| pre | AccessorCalls.cs:14:19:14:25 | access to indexer | AccessorCalls.cs:14:9:14:25 | ... = ... |
+| pre | AccessorCalls.cs:14:24:14:24 | 1 | AccessorCalls.cs:14:19:14:25 | access to indexer |
+| pre | AccessorCalls.cs:15:9:15:12 | this access | AccessorCalls.cs:15:9:15:18 | access to event Event |
+| pre | AccessorCalls.cs:15:9:15:18 | access to event Event | AccessorCalls.cs:15:23:15:23 | access to parameter e |
+| pre | AccessorCalls.cs:15:9:15:23 | ... += ... | AccessorCalls.cs:16:9:16:24 | ...; |
+| pre | AccessorCalls.cs:15:9:15:24 | ...; | AccessorCalls.cs:15:9:15:12 | this access |
+| pre | AccessorCalls.cs:15:23:15:23 | access to parameter e | AccessorCalls.cs:15:9:15:23 | ... += ... |
+| pre | AccessorCalls.cs:16:9:16:12 | this access | AccessorCalls.cs:16:9:16:18 | access to event Event |
+| pre | AccessorCalls.cs:16:9:16:18 | access to event Event | AccessorCalls.cs:16:23:16:23 | access to parameter e |
+| pre | AccessorCalls.cs:16:9:16:23 | ... -= ... | AccessorCalls.cs:10:10:10:11 | exit M1 |
+| pre | AccessorCalls.cs:16:9:16:24 | ...; | AccessorCalls.cs:16:9:16:12 | this access |
+| pre | AccessorCalls.cs:16:23:16:23 | access to parameter e | AccessorCalls.cs:16:9:16:23 | ... -= ... |
+| pre | AccessorCalls.cs:19:10:19:11 | enter M2 | AccessorCalls.cs:20:5:26:5 | {...} |
+| pre | AccessorCalls.cs:20:5:26:5 | {...} | AccessorCalls.cs:21:9:21:36 | ...; |
+| pre | AccessorCalls.cs:21:9:21:12 | this access | AccessorCalls.cs:21:9:21:14 | access to field x |
+| pre | AccessorCalls.cs:21:9:21:14 | access to field x | AccessorCalls.cs:21:9:21:20 | access to field Field |
+| pre | AccessorCalls.cs:21:9:21:20 | access to field Field | AccessorCalls.cs:21:24:21:27 | this access |
+| pre | AccessorCalls.cs:21:9:21:35 | ... = ... | AccessorCalls.cs:22:9:22:34 | ...; |
+| pre | AccessorCalls.cs:21:9:21:36 | ...; | AccessorCalls.cs:21:9:21:12 | this access |
+| pre | AccessorCalls.cs:21:24:21:27 | this access | AccessorCalls.cs:21:24:21:29 | access to field x |
+| pre | AccessorCalls.cs:21:24:21:29 | access to field x | AccessorCalls.cs:21:24:21:35 | access to field Field |
+| pre | AccessorCalls.cs:21:24:21:35 | access to field Field | AccessorCalls.cs:21:9:21:35 | ... = ... |
+| pre | AccessorCalls.cs:22:9:22:12 | this access | AccessorCalls.cs:22:9:22:14 | access to field x |
+| pre | AccessorCalls.cs:22:9:22:14 | access to field x | AccessorCalls.cs:22:9:22:19 | access to property Prop |
+| pre | AccessorCalls.cs:22:9:22:19 | access to property Prop | AccessorCalls.cs:22:23:22:26 | this access |
+| pre | AccessorCalls.cs:22:9:22:33 | ... = ... | AccessorCalls.cs:23:9:23:30 | ...; |
+| pre | AccessorCalls.cs:22:9:22:34 | ...; | AccessorCalls.cs:22:9:22:12 | this access |
+| pre | AccessorCalls.cs:22:23:22:26 | this access | AccessorCalls.cs:22:23:22:28 | access to field x |
+| pre | AccessorCalls.cs:22:23:22:28 | access to field x | AccessorCalls.cs:22:23:22:33 | access to property Prop |
+| pre | AccessorCalls.cs:22:23:22:33 | access to property Prop | AccessorCalls.cs:22:9:22:33 | ... = ... |
+| pre | AccessorCalls.cs:23:9:23:12 | this access | AccessorCalls.cs:23:9:23:14 | access to field x |
+| pre | AccessorCalls.cs:23:9:23:14 | access to field x | AccessorCalls.cs:23:16:23:16 | 0 |
+| pre | AccessorCalls.cs:23:9:23:17 | access to indexer | AccessorCalls.cs:23:21:23:24 | this access |
+| pre | AccessorCalls.cs:23:9:23:29 | ... = ... | AccessorCalls.cs:24:9:24:26 | ...; |
+| pre | AccessorCalls.cs:23:9:23:30 | ...; | AccessorCalls.cs:23:9:23:12 | this access |
+| pre | AccessorCalls.cs:23:16:23:16 | 0 | AccessorCalls.cs:23:9:23:17 | access to indexer |
+| pre | AccessorCalls.cs:23:21:23:24 | this access | AccessorCalls.cs:23:21:23:26 | access to field x |
+| pre | AccessorCalls.cs:23:21:23:26 | access to field x | AccessorCalls.cs:23:28:23:28 | 1 |
+| pre | AccessorCalls.cs:23:21:23:29 | access to indexer | AccessorCalls.cs:23:9:23:29 | ... = ... |
+| pre | AccessorCalls.cs:23:28:23:28 | 1 | AccessorCalls.cs:23:21:23:29 | access to indexer |
+| pre | AccessorCalls.cs:24:9:24:12 | this access | AccessorCalls.cs:24:9:24:14 | access to field x |
+| pre | AccessorCalls.cs:24:9:24:14 | access to field x | AccessorCalls.cs:24:9:24:20 | access to event Event |
+| pre | AccessorCalls.cs:24:9:24:20 | access to event Event | AccessorCalls.cs:24:25:24:25 | access to parameter e |
+| pre | AccessorCalls.cs:24:9:24:25 | ... += ... | AccessorCalls.cs:25:9:25:26 | ...; |
+| pre | AccessorCalls.cs:24:9:24:26 | ...; | AccessorCalls.cs:24:9:24:12 | this access |
+| pre | AccessorCalls.cs:24:25:24:25 | access to parameter e | AccessorCalls.cs:24:9:24:25 | ... += ... |
+| pre | AccessorCalls.cs:25:9:25:12 | this access | AccessorCalls.cs:25:9:25:14 | access to field x |
+| pre | AccessorCalls.cs:25:9:25:14 | access to field x | AccessorCalls.cs:25:9:25:20 | access to event Event |
+| pre | AccessorCalls.cs:25:9:25:20 | access to event Event | AccessorCalls.cs:25:25:25:25 | access to parameter e |
+| pre | AccessorCalls.cs:25:9:25:25 | ... -= ... | AccessorCalls.cs:19:10:19:11 | exit M2 |
+| pre | AccessorCalls.cs:25:9:25:26 | ...; | AccessorCalls.cs:25:9:25:12 | this access |
+| pre | AccessorCalls.cs:25:25:25:25 | access to parameter e | AccessorCalls.cs:25:9:25:25 | ... -= ... |
+| pre | AccessorCalls.cs:28:10:28:11 | enter M3 | AccessorCalls.cs:29:5:33:5 | {...} |
+| pre | AccessorCalls.cs:29:5:33:5 | {...} | AccessorCalls.cs:30:9:30:21 | ...; |
+| pre | AccessorCalls.cs:30:9:30:12 | this access | AccessorCalls.cs:30:9:30:18 | access to field Field |
+| pre | AccessorCalls.cs:30:9:30:18 | access to field Field | AccessorCalls.cs:30:9:30:20 | ...++ |
+| pre | AccessorCalls.cs:30:9:30:20 | ...++ | AccessorCalls.cs:31:9:31:20 | ...; |
+| pre | AccessorCalls.cs:30:9:30:21 | ...; | AccessorCalls.cs:30:9:30:12 | this access |
+| pre | AccessorCalls.cs:31:9:31:12 | this access | AccessorCalls.cs:31:9:31:17 | access to property Prop |
+| pre | AccessorCalls.cs:31:9:31:17 | access to property Prop | AccessorCalls.cs:31:9:31:19 | ...++ |
+| pre | AccessorCalls.cs:31:9:31:19 | ...++ | AccessorCalls.cs:32:9:32:18 | ...; |
+| pre | AccessorCalls.cs:31:9:31:20 | ...; | AccessorCalls.cs:31:9:31:12 | this access |
+| pre | AccessorCalls.cs:32:9:32:12 | this access | AccessorCalls.cs:32:14:32:14 | 0 |
+| pre | AccessorCalls.cs:32:9:32:15 | access to indexer | AccessorCalls.cs:32:9:32:17 | ...++ |
+| pre | AccessorCalls.cs:32:9:32:17 | ...++ | AccessorCalls.cs:28:10:28:11 | exit M3 |
+| pre | AccessorCalls.cs:32:9:32:18 | ...; | AccessorCalls.cs:32:9:32:12 | this access |
+| pre | AccessorCalls.cs:32:14:32:14 | 0 | AccessorCalls.cs:32:9:32:15 | access to indexer |
+| pre | AccessorCalls.cs:35:10:35:11 | enter M4 | AccessorCalls.cs:36:5:40:5 | {...} |
+| pre | AccessorCalls.cs:36:5:40:5 | {...} | AccessorCalls.cs:37:9:37:23 | ...; |
+| pre | AccessorCalls.cs:37:9:37:12 | this access | AccessorCalls.cs:37:9:37:14 | access to field x |
+| pre | AccessorCalls.cs:37:9:37:14 | access to field x | AccessorCalls.cs:37:9:37:20 | access to field Field |
+| pre | AccessorCalls.cs:37:9:37:20 | access to field Field | AccessorCalls.cs:37:9:37:22 | ...++ |
+| pre | AccessorCalls.cs:37:9:37:22 | ...++ | AccessorCalls.cs:38:9:38:22 | ...; |
+| pre | AccessorCalls.cs:37:9:37:23 | ...; | AccessorCalls.cs:37:9:37:12 | this access |
+| pre | AccessorCalls.cs:38:9:38:12 | this access | AccessorCalls.cs:38:9:38:14 | access to field x |
+| pre | AccessorCalls.cs:38:9:38:14 | access to field x | AccessorCalls.cs:38:9:38:19 | access to property Prop |
+| pre | AccessorCalls.cs:38:9:38:19 | access to property Prop | AccessorCalls.cs:38:9:38:21 | ...++ |
+| pre | AccessorCalls.cs:38:9:38:21 | ...++ | AccessorCalls.cs:39:9:39:20 | ...; |
+| pre | AccessorCalls.cs:38:9:38:22 | ...; | AccessorCalls.cs:38:9:38:12 | this access |
+| pre | AccessorCalls.cs:39:9:39:12 | this access | AccessorCalls.cs:39:9:39:14 | access to field x |
+| pre | AccessorCalls.cs:39:9:39:14 | access to field x | AccessorCalls.cs:39:16:39:16 | 0 |
+| pre | AccessorCalls.cs:39:9:39:17 | access to indexer | AccessorCalls.cs:39:9:39:19 | ...++ |
+| pre | AccessorCalls.cs:39:9:39:19 | ...++ | AccessorCalls.cs:35:10:35:11 | exit M4 |
+| pre | AccessorCalls.cs:39:9:39:20 | ...; | AccessorCalls.cs:39:9:39:12 | this access |
+| pre | AccessorCalls.cs:39:16:39:16 | 0 | AccessorCalls.cs:39:9:39:17 | access to indexer |
+| pre | AccessorCalls.cs:42:10:42:11 | enter M5 | AccessorCalls.cs:43:5:47:5 | {...} |
+| pre | AccessorCalls.cs:43:5:47:5 | {...} | AccessorCalls.cs:44:9:44:33 | ...; |
+| pre | AccessorCalls.cs:44:9:44:12 | this access | AccessorCalls.cs:44:9:44:18 | access to field Field |
+| pre | AccessorCalls.cs:44:9:44:12 | this access | AccessorCalls.cs:44:9:44:18 | access to field Field |
+| pre | AccessorCalls.cs:44:9:44:18 | access to field Field | AccessorCalls.cs:44:9:44:12 | this access |
+| pre | AccessorCalls.cs:44:9:44:18 | access to field Field | AccessorCalls.cs:44:23:44:26 | this access |
+| pre | AccessorCalls.cs:44:9:44:32 | ... + ... | AccessorCalls.cs:44:9:44:32 | ... = ... |
+| pre | AccessorCalls.cs:44:9:44:32 | ... = ... | AccessorCalls.cs:45:9:45:31 | ...; |
+| pre | AccessorCalls.cs:44:9:44:33 | ...; | AccessorCalls.cs:44:9:44:12 | this access |
+| pre | AccessorCalls.cs:44:23:44:26 | this access | AccessorCalls.cs:44:23:44:32 | access to field Field |
+| pre | AccessorCalls.cs:44:23:44:32 | access to field Field | AccessorCalls.cs:44:9:44:32 | ... + ... |
+| pre | AccessorCalls.cs:45:9:45:12 | this access | AccessorCalls.cs:45:9:45:17 | access to property Prop |
+| pre | AccessorCalls.cs:45:9:45:12 | this access | AccessorCalls.cs:45:9:45:17 | access to property Prop |
+| pre | AccessorCalls.cs:45:9:45:17 | access to property Prop | AccessorCalls.cs:45:9:45:12 | this access |
+| pre | AccessorCalls.cs:45:9:45:17 | access to property Prop | AccessorCalls.cs:45:22:45:25 | this access |
+| pre | AccessorCalls.cs:45:9:45:30 | ... + ... | AccessorCalls.cs:45:9:45:30 | ... = ... |
+| pre | AccessorCalls.cs:45:9:45:30 | ... = ... | AccessorCalls.cs:46:9:46:27 | ...; |
+| pre | AccessorCalls.cs:45:9:45:31 | ...; | AccessorCalls.cs:45:9:45:12 | this access |
+| pre | AccessorCalls.cs:45:22:45:25 | this access | AccessorCalls.cs:45:22:45:30 | access to property Prop |
+| pre | AccessorCalls.cs:45:22:45:30 | access to property Prop | AccessorCalls.cs:45:9:45:30 | ... + ... |
+| pre | AccessorCalls.cs:46:9:46:12 | this access | AccessorCalls.cs:46:14:46:14 | 0 |
+| pre | AccessorCalls.cs:46:9:46:12 | this access | AccessorCalls.cs:46:14:46:14 | 0 |
+| pre | AccessorCalls.cs:46:9:46:15 | access to indexer | AccessorCalls.cs:46:9:46:12 | this access |
+| pre | AccessorCalls.cs:46:9:46:15 | access to indexer | AccessorCalls.cs:46:20:46:23 | this access |
+| pre | AccessorCalls.cs:46:9:46:26 | ... + ... | AccessorCalls.cs:46:9:46:26 | ... = ... |
+| pre | AccessorCalls.cs:46:9:46:26 | ... = ... | AccessorCalls.cs:42:10:42:11 | exit M5 |
+| pre | AccessorCalls.cs:46:9:46:27 | ...; | AccessorCalls.cs:46:9:46:12 | this access |
+| pre | AccessorCalls.cs:46:14:46:14 | 0 | AccessorCalls.cs:46:9:46:15 | access to indexer |
+| pre | AccessorCalls.cs:46:14:46:14 | 0 | AccessorCalls.cs:46:9:46:15 | access to indexer |
+| pre | AccessorCalls.cs:46:20:46:23 | this access | AccessorCalls.cs:46:25:46:25 | 0 |
+| pre | AccessorCalls.cs:46:20:46:26 | access to indexer | AccessorCalls.cs:46:9:46:26 | ... + ... |
+| pre | AccessorCalls.cs:46:25:46:25 | 0 | AccessorCalls.cs:46:20:46:26 | access to indexer |
+| pre | AccessorCalls.cs:49:10:49:11 | enter M6 | AccessorCalls.cs:50:5:54:5 | {...} |
+| pre | AccessorCalls.cs:50:5:54:5 | {...} | AccessorCalls.cs:51:9:51:37 | ...; |
+| pre | AccessorCalls.cs:51:9:51:12 | this access | AccessorCalls.cs:51:9:51:14 | access to field x |
+| pre | AccessorCalls.cs:51:9:51:12 | this access | AccessorCalls.cs:51:9:51:14 | access to field x |
+| pre | AccessorCalls.cs:51:9:51:14 | access to field x | AccessorCalls.cs:51:9:51:20 | access to field Field |
+| pre | AccessorCalls.cs:51:9:51:14 | access to field x | AccessorCalls.cs:51:9:51:20 | access to field Field |
+| pre | AccessorCalls.cs:51:9:51:20 | access to field Field | AccessorCalls.cs:51:9:51:12 | this access |
+| pre | AccessorCalls.cs:51:9:51:20 | access to field Field | AccessorCalls.cs:51:25:51:28 | this access |
+| pre | AccessorCalls.cs:51:9:51:36 | ... + ... | AccessorCalls.cs:51:9:51:36 | ... = ... |
+| pre | AccessorCalls.cs:51:9:51:36 | ... = ... | AccessorCalls.cs:52:9:52:35 | ...; |
+| pre | AccessorCalls.cs:51:9:51:37 | ...; | AccessorCalls.cs:51:9:51:12 | this access |
+| pre | AccessorCalls.cs:51:25:51:28 | this access | AccessorCalls.cs:51:25:51:30 | access to field x |
+| pre | AccessorCalls.cs:51:25:51:30 | access to field x | AccessorCalls.cs:51:25:51:36 | access to field Field |
+| pre | AccessorCalls.cs:51:25:51:36 | access to field Field | AccessorCalls.cs:51:9:51:36 | ... + ... |
+| pre | AccessorCalls.cs:52:9:52:12 | this access | AccessorCalls.cs:52:9:52:14 | access to field x |
+| pre | AccessorCalls.cs:52:9:52:12 | this access | AccessorCalls.cs:52:9:52:14 | access to field x |
+| pre | AccessorCalls.cs:52:9:52:14 | access to field x | AccessorCalls.cs:52:9:52:19 | access to property Prop |
+| pre | AccessorCalls.cs:52:9:52:14 | access to field x | AccessorCalls.cs:52:9:52:19 | access to property Prop |
+| pre | AccessorCalls.cs:52:9:52:19 | access to property Prop | AccessorCalls.cs:52:9:52:12 | this access |
+| pre | AccessorCalls.cs:52:9:52:19 | access to property Prop | AccessorCalls.cs:52:24:52:27 | this access |
+| pre | AccessorCalls.cs:52:9:52:34 | ... + ... | AccessorCalls.cs:52:9:52:34 | ... = ... |
+| pre | AccessorCalls.cs:52:9:52:34 | ... = ... | AccessorCalls.cs:53:9:53:31 | ...; |
+| pre | AccessorCalls.cs:52:9:52:35 | ...; | AccessorCalls.cs:52:9:52:12 | this access |
+| pre | AccessorCalls.cs:52:24:52:27 | this access | AccessorCalls.cs:52:24:52:29 | access to field x |
+| pre | AccessorCalls.cs:52:24:52:29 | access to field x | AccessorCalls.cs:52:24:52:34 | access to property Prop |
+| pre | AccessorCalls.cs:52:24:52:34 | access to property Prop | AccessorCalls.cs:52:9:52:34 | ... + ... |
+| pre | AccessorCalls.cs:53:9:53:12 | this access | AccessorCalls.cs:53:9:53:14 | access to field x |
+| pre | AccessorCalls.cs:53:9:53:12 | this access | AccessorCalls.cs:53:9:53:14 | access to field x |
+| pre | AccessorCalls.cs:53:9:53:14 | access to field x | AccessorCalls.cs:53:16:53:16 | 0 |
+| pre | AccessorCalls.cs:53:9:53:14 | access to field x | AccessorCalls.cs:53:16:53:16 | 0 |
+| pre | AccessorCalls.cs:53:9:53:17 | access to indexer | AccessorCalls.cs:53:9:53:12 | this access |
+| pre | AccessorCalls.cs:53:9:53:17 | access to indexer | AccessorCalls.cs:53:22:53:25 | this access |
+| pre | AccessorCalls.cs:53:9:53:30 | ... + ... | AccessorCalls.cs:53:9:53:30 | ... = ... |
+| pre | AccessorCalls.cs:53:9:53:30 | ... = ... | AccessorCalls.cs:49:10:49:11 | exit M6 |
+| pre | AccessorCalls.cs:53:9:53:31 | ...; | AccessorCalls.cs:53:9:53:12 | this access |
+| pre | AccessorCalls.cs:53:16:53:16 | 0 | AccessorCalls.cs:53:9:53:17 | access to indexer |
+| pre | AccessorCalls.cs:53:16:53:16 | 0 | AccessorCalls.cs:53:9:53:17 | access to indexer |
+| pre | AccessorCalls.cs:53:22:53:25 | this access | AccessorCalls.cs:53:22:53:27 | access to field x |
+| pre | AccessorCalls.cs:53:22:53:27 | access to field x | AccessorCalls.cs:53:29:53:29 | 0 |
+| pre | AccessorCalls.cs:53:22:53:30 | access to indexer | AccessorCalls.cs:53:9:53:30 | ... + ... |
+| pre | AccessorCalls.cs:53:29:53:29 | 0 | AccessorCalls.cs:53:22:53:30 | access to indexer |
+| pre | AccessorCalls.cs:56:10:56:11 | enter M7 | AccessorCalls.cs:57:5:59:5 | {...} |
+| pre | AccessorCalls.cs:57:5:59:5 | {...} | AccessorCalls.cs:58:9:58:86 | ...; |
+| pre | AccessorCalls.cs:58:9:58:45 | (..., ...) | AccessorCalls.cs:58:50:58:53 | this access |
+| pre | AccessorCalls.cs:58:9:58:85 | ... = ... | AccessorCalls.cs:56:10:56:11 | exit M7 |
+| pre | AccessorCalls.cs:58:9:58:86 | ...; | AccessorCalls.cs:58:10:58:13 | this access |
+| pre | AccessorCalls.cs:58:10:58:13 | this access | AccessorCalls.cs:58:10:58:19 | access to field Field |
+| pre | AccessorCalls.cs:58:10:58:19 | access to field Field | AccessorCalls.cs:58:22:58:25 | this access |
+| pre | AccessorCalls.cs:58:22:58:25 | this access | AccessorCalls.cs:58:22:58:30 | access to property Prop |
+| pre | AccessorCalls.cs:58:22:58:30 | access to property Prop | AccessorCalls.cs:58:34:58:34 | access to parameter i |
+| pre | AccessorCalls.cs:58:33:58:44 | (..., ...) | AccessorCalls.cs:58:9:58:45 | (..., ...) |
+| pre | AccessorCalls.cs:58:34:58:34 | access to parameter i | AccessorCalls.cs:58:37:58:40 | this access |
+| pre | AccessorCalls.cs:58:37:58:40 | this access | AccessorCalls.cs:58:42:58:42 | 0 |
+| pre | AccessorCalls.cs:58:37:58:43 | access to indexer | AccessorCalls.cs:58:33:58:44 | (..., ...) |
+| pre | AccessorCalls.cs:58:42:58:42 | 0 | AccessorCalls.cs:58:37:58:43 | access to indexer |
+| pre | AccessorCalls.cs:58:49:58:85 | (..., ...) | AccessorCalls.cs:58:9:58:85 | ... = ... |
+| pre | AccessorCalls.cs:58:50:58:53 | this access | AccessorCalls.cs:58:50:58:59 | access to field Field |
+| pre | AccessorCalls.cs:58:50:58:59 | access to field Field | AccessorCalls.cs:58:62:58:65 | this access |
+| pre | AccessorCalls.cs:58:62:58:65 | this access | AccessorCalls.cs:58:62:58:70 | access to property Prop |
+| pre | AccessorCalls.cs:58:62:58:70 | access to property Prop | AccessorCalls.cs:58:74:58:74 | 0 |
+| pre | AccessorCalls.cs:58:73:58:84 | (..., ...) | AccessorCalls.cs:58:49:58:85 | (..., ...) |
+| pre | AccessorCalls.cs:58:74:58:74 | 0 | AccessorCalls.cs:58:77:58:80 | this access |
+| pre | AccessorCalls.cs:58:77:58:80 | this access | AccessorCalls.cs:58:82:58:82 | 1 |
+| pre | AccessorCalls.cs:58:77:58:83 | access to indexer | AccessorCalls.cs:58:73:58:84 | (..., ...) |
+| pre | AccessorCalls.cs:58:82:58:82 | 1 | AccessorCalls.cs:58:77:58:83 | access to indexer |
+| pre | AccessorCalls.cs:61:10:61:11 | enter M8 | AccessorCalls.cs:62:5:64:5 | {...} |
+| pre | AccessorCalls.cs:62:5:64:5 | {...} | AccessorCalls.cs:63:9:63:98 | ...; |
+| pre | AccessorCalls.cs:63:9:63:51 | (..., ...) | AccessorCalls.cs:63:56:63:59 | this access |
+| pre | AccessorCalls.cs:63:9:63:97 | ... = ... | AccessorCalls.cs:61:10:61:11 | exit M8 |
+| pre | AccessorCalls.cs:63:9:63:98 | ...; | AccessorCalls.cs:63:10:63:13 | this access |
+| pre | AccessorCalls.cs:63:10:63:13 | this access | AccessorCalls.cs:63:10:63:15 | access to field x |
+| pre | AccessorCalls.cs:63:10:63:15 | access to field x | AccessorCalls.cs:63:10:63:21 | access to field Field |
+| pre | AccessorCalls.cs:63:10:63:21 | access to field Field | AccessorCalls.cs:63:24:63:27 | this access |
+| pre | AccessorCalls.cs:63:24:63:27 | this access | AccessorCalls.cs:63:24:63:29 | access to field x |
+| pre | AccessorCalls.cs:63:24:63:29 | access to field x | AccessorCalls.cs:63:24:63:34 | access to property Prop |
+| pre | AccessorCalls.cs:63:24:63:34 | access to property Prop | AccessorCalls.cs:63:38:63:38 | access to parameter i |
+| pre | AccessorCalls.cs:63:37:63:50 | (..., ...) | AccessorCalls.cs:63:9:63:51 | (..., ...) |
+| pre | AccessorCalls.cs:63:38:63:38 | access to parameter i | AccessorCalls.cs:63:41:63:44 | this access |
+| pre | AccessorCalls.cs:63:41:63:44 | this access | AccessorCalls.cs:63:41:63:46 | access to field x |
+| pre | AccessorCalls.cs:63:41:63:46 | access to field x | AccessorCalls.cs:63:48:63:48 | 0 |
+| pre | AccessorCalls.cs:63:41:63:49 | access to indexer | AccessorCalls.cs:63:37:63:50 | (..., ...) |
+| pre | AccessorCalls.cs:63:48:63:48 | 0 | AccessorCalls.cs:63:41:63:49 | access to indexer |
+| pre | AccessorCalls.cs:63:55:63:97 | (..., ...) | AccessorCalls.cs:63:9:63:97 | ... = ... |
+| pre | AccessorCalls.cs:63:56:63:59 | this access | AccessorCalls.cs:63:56:63:61 | access to field x |
+| pre | AccessorCalls.cs:63:56:63:61 | access to field x | AccessorCalls.cs:63:56:63:67 | access to field Field |
+| pre | AccessorCalls.cs:63:56:63:67 | access to field Field | AccessorCalls.cs:63:70:63:73 | this access |
+| pre | AccessorCalls.cs:63:70:63:73 | this access | AccessorCalls.cs:63:70:63:75 | access to field x |
+| pre | AccessorCalls.cs:63:70:63:75 | access to field x | AccessorCalls.cs:63:70:63:80 | access to property Prop |
+| pre | AccessorCalls.cs:63:70:63:80 | access to property Prop | AccessorCalls.cs:63:84:63:84 | 0 |
+| pre | AccessorCalls.cs:63:83:63:96 | (..., ...) | AccessorCalls.cs:63:55:63:97 | (..., ...) |
+| pre | AccessorCalls.cs:63:84:63:84 | 0 | AccessorCalls.cs:63:87:63:90 | this access |
+| pre | AccessorCalls.cs:63:87:63:90 | this access | AccessorCalls.cs:63:87:63:92 | access to field x |
+| pre | AccessorCalls.cs:63:87:63:92 | access to field x | AccessorCalls.cs:63:94:63:94 | 1 |
+| pre | AccessorCalls.cs:63:87:63:95 | access to indexer | AccessorCalls.cs:63:83:63:96 | (..., ...) |
+| pre | AccessorCalls.cs:63:94:63:94 | 1 | AccessorCalls.cs:63:87:63:95 | access to indexer |
 | pre | ArrayCreation.cs:3:11:3:12 | enter M1 | ArrayCreation.cs:3:27:3:27 | 0 |
 | pre | ArrayCreation.cs:3:19:3:28 | array creation of type Int32[] | ArrayCreation.cs:3:11:3:12 | exit M1 |
 | pre | ArrayCreation.cs:3:27:3:27 | 0 | ArrayCreation.cs:3:19:3:28 | array creation of type Int32[] |

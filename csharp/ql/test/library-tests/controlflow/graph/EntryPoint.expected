@@ -1,3 +1,15 @@
+| AccessorCalls.cs:5:23:5:25 | get_Item | AccessorCalls.cs:5:30:5:30 | access to parameter i |
+| AccessorCalls.cs:5:33:5:35 | set_Item | AccessorCalls.cs:5:37:5:39 | {...} |
+| AccessorCalls.cs:7:32:7:34 | add_Event | AccessorCalls.cs:7:36:7:38 | {...} |
+| AccessorCalls.cs:7:40:7:45 | remove_Event | AccessorCalls.cs:7:47:7:49 | {...} |
+| AccessorCalls.cs:10:10:10:11 | M1 | AccessorCalls.cs:11:5:17:5 | {...} |
+| AccessorCalls.cs:19:10:19:11 | M2 | AccessorCalls.cs:20:5:26:5 | {...} |
+| AccessorCalls.cs:28:10:28:11 | M3 | AccessorCalls.cs:29:5:33:5 | {...} |
+| AccessorCalls.cs:35:10:35:11 | M4 | AccessorCalls.cs:36:5:40:5 | {...} |
+| AccessorCalls.cs:42:10:42:11 | M5 | AccessorCalls.cs:43:5:47:5 | {...} |
+| AccessorCalls.cs:49:10:49:11 | M6 | AccessorCalls.cs:50:5:54:5 | {...} |
+| AccessorCalls.cs:56:10:56:11 | M7 | AccessorCalls.cs:57:5:59:5 | {...} |
+| AccessorCalls.cs:61:10:61:11 | M8 | AccessorCalls.cs:62:5:64:5 | {...} |
 | ArrayCreation.cs:3:11:3:12 | M1 | ArrayCreation.cs:3:27:3:27 | 0 |
 | ArrayCreation.cs:5:12:5:13 | M2 | ArrayCreation.cs:5:28:5:28 | 0 |
 | ArrayCreation.cs:7:11:7:12 | M3 | ArrayCreation.cs:7:19:7:36 | array creation of type Int32[] |
