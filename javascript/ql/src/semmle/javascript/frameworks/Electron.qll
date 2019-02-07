@@ -66,6 +66,15 @@ module Electron {
   }
 
   /**
+   * A reference to the `webContents` property of a browser object.
+   */
+  class WebContents extends DataFlow::SourceNode {
+    WebContents() {
+      this.(DataFlow::PropRead).accesses(any(BrowserObject bo), "webContents")
+    }
+  }
+
+  /**
    * A Node.js-style HTTP or HTTPS request made using an Electron module.
    */
   abstract class CustomElectronClientRequest extends NodeJSLib::CustomNodeJSClientRequest { }

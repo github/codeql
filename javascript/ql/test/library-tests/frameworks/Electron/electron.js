@@ -36,5 +36,5 @@ function foo(x) {
     return x;
 }
 
-foo(bw);
-foo(bv);
+foo(bw).webContents;
+foo(bv).webContents;

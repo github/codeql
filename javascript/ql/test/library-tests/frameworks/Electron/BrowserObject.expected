@@ -12,3 +12,5 @@
 | electron.js:40:5:40:6 | bv |
 | electron.ts:3:12:3:13 | bw |
 | electron.ts:3:40:3:41 | bv |
+| electron.ts:4:3:4:4 | bw |
+| electron.ts:5:3:5:4 | bv |
