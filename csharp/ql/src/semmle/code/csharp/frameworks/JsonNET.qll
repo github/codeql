@@ -49,26 +49,26 @@ module JsonNET {
       // ToString methods
       c = getAToStringMethod() and
       preservesValue = true and
-      source = any(CallableFlowSourceArg arg | arg.getCallable() = c and arg.getArgumentIndex() = 0) and
+      source = any(CallableFlowSourceArg arg | arg.getArgumentIndex() = 0) and
       sink instanceof CallableFlowSinkReturn
       or
       // Deserialize methods
       c = getADeserializeMethod() and
       preservesValue = false and
-      source = any(CallableFlowSourceArg arg | arg.getCallable() = c and arg.getArgumentIndex() = 0) and
+      source = any(CallableFlowSourceArg arg | arg.getArgumentIndex() = 0) and
       sink instanceof CallableFlowSinkReturn
       or
       // Serialize methods
       c = getASerializeMethod() and
       preservesValue = false and
-      source = any(CallableFlowSourceArg arg | arg.getCallable() = c and arg.getArgumentIndex() = 0) and
+      source = any(CallableFlowSourceArg arg | arg.getArgumentIndex() = 0) and
       sink instanceof CallableFlowSinkReturn
       or
       // Populate methods
       c = getAPopulateMethod() and
       preservesValue = false and
-      source = any(CallableFlowSourceArg arg | arg.getCallable() = c and arg.getArgumentIndex() = 0) and
-      sink = any(CallableFlowSinkArg arg | arg.getCallable() = c and arg.getArgumentIndex() = 1)
+      source = any(CallableFlowSourceArg arg | arg.getArgumentIndex() = 0) and
+      sink = any(CallableFlowSinkArg arg | arg.getArgumentIndex() = 1)
     }
   }
 
@@ -144,14 +144,14 @@ module JsonNET {
       // Serialize
       c = this.getSerializeMethod() and
       preservesValue = false and
-      source = any(CallableFlowSourceArg arg | arg.getCallable() = c and arg.getArgumentIndex() = 0) and
-      sink = any(CallableFlowSinkArg arg | arg.getCallable() = c and arg.getArgumentIndex() = 1)
+      source = any(CallableFlowSourceArg arg | arg.getArgumentIndex() = 0) and
+      sink = any(CallableFlowSinkArg arg | arg.getArgumentIndex() = 1)
       or
       // Deserialize
       c = this.getDeserializeMethod() and
       preservesValue = false and
-      source = any(CallableFlowSourceArg arg | arg.getCallable() = c and arg.getArgumentIndex() = 0) and
-      sink = any(CallableFlowSinkArg arg | arg.getCallable() = c and arg.getArgumentIndex() = 1)
+      source = any(CallableFlowSourceArg arg | arg.getArgumentIndex() = 0) and
+      sink = any(CallableFlowSinkArg arg | arg.getArgumentIndex() = 1)
     }
   }
 
@@ -203,7 +203,7 @@ module JsonNET {
       or
       // Parse method
       c = this.getParseMethod() and
-      source = any(CallableFlowSourceArg arg | arg.getCallable() = c and arg.getArgumentIndex() = 0) and
+      source = any(CallableFlowSourceArg arg | arg.getArgumentIndex() = 0) and
       sink instanceof CallableFlowSinkReturn and
       preservesValue = false
       or
@@ -211,7 +211,7 @@ module JsonNET {
       c = any(Operator op |
           op.getDeclaringType() = this.getABaseType*() and op.getReturnType() instanceof StringType
         ) and
-      source = any(CallableFlowSourceArg arg | arg.getCallable() = c and arg.getArgumentIndex() = 0) and
+      source = any(CallableFlowSourceArg arg | arg.getArgumentIndex() = 0) and
       sink instanceof CallableFlowSinkReturn and
       preservesValue = false
       or
