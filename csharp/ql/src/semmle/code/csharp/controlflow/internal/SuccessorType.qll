@@ -1,7 +1,12 @@
+/**
+ * INTERNAL: Do not use.
+ *
+ * Provides different types of control flow successor types.
+ */
+
 import csharp
 private import semmle.code.csharp.controlflow.internal.Completion
 
-/** Internal representation of types of control flow. */
 cached
 private newtype TSuccessorType =
   TSuccessorSuccessor() { ControlFlow::Internal::forceCachingInSameStage() } or
