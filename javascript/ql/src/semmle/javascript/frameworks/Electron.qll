@@ -11,7 +11,7 @@ module Electron {
   /**
    * A data flow node that may contain a `BrowserWindow` or `BrowserView` object.
    */
-  abstract private class BrowserObject extends DataFlow::Node { }
+  abstract class BrowserObject extends DataFlow::Node { }
 
   /**
    * An instantiation of `BrowserWindow` or `BrowserView`.
@@ -43,6 +43,17 @@ module Electron {
    */
   class BrowserView extends NewBrowserObject {
     BrowserView() { this = DataFlow::moduleMember("electron", "BrowserView").getAnInstantiation() }
+  }
+
+  /**
+   * An expression of type `BrowserWindow` or `BrowserView`.
+   */
+  private class BrowserObjectByType extends BrowserObject {
+    BrowserObjectByType() {
+      exists (string tp | tp = "BrowserWindow" or tp = "BrowserView" |
+        asExpr().getType().hasUnderlyingType("electron", tp)
+      )
+    }
   }
 
   /**
