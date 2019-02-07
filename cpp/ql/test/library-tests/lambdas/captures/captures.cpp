@@ -10,4 +10,10 @@ struct foo {
       b(x + 1);
     };
   }
+
+  static void c(int x) {
+    [x] {
+      c(0); // `x` is unused, but still captured.
+    };
+  }
 };
