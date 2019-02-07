@@ -895,6 +895,48 @@ module Internal {
     )
   }
 
+  pragma[noinline]
+  private predicate conditionalAssign0(
+    Guard guard, AbstractValue vGuard, PreSsa::Definition def, Expr e, PreSsa::Definition upd,
+    PreBasicBlocks::PreBasicBlock bbGuard
+  ) {
+    e = upd.getDefinition().getSource() and
+    upd = def.getAPhiInput() and
+    guard.preControlsDirect(upd.getBasicBlock(), vGuard) and
+    bbGuard.getAnElement() = guard and
+    bbGuard.strictlyDominates(def.getBasicBlock()) and
+    not guard.preControlsDirect(def.getBasicBlock(), vGuard)
+  }
+
+  pragma[noinline]
+  private predicate conditionalAssign1(
+    Guard guard, AbstractValue vGuard, PreSsa::Definition def, Expr e, PreSsa::Definition upd,
+    PreBasicBlocks::PreBasicBlock bbGuard, PreSsa::Definition other
+  ) {
+    conditionalAssign0(guard, vGuard, def, e, upd, bbGuard) and
+    other != upd and
+    other = def.getAPhiInput()
+  }
+
+  pragma[noinline]
+  private predicate conditionalAssign2(
+    Guard guard, AbstractValue vGuard, PreSsa::Definition def, Expr e, PreSsa::Definition upd,
+    PreBasicBlocks::PreBasicBlock bbGuard, PreSsa::Definition other
+  ) {
+    conditionalAssign1(guard, vGuard, def, e, upd, bbGuard, other) and
+    guard.preControlsDirect(other.getBasicBlock(), vGuard.getDualValue())
+  }
+
+  pragma[noinline]
+  private predicate conditionalAssign3(
+    Guard guard, AbstractValue vGuard, PreSsa::Definition def, Expr e, PreSsa::Definition upd,
+    PreBasicBlocks::PreBasicBlock bbGuard, PreSsa::Definition other
+  ) {
+    conditionalAssign1(guard, vGuard, def, e, upd, bbGuard, other) and
+    other.getBasicBlock().dominates(bbGuard) and
+    not PreSsa::ssaDefReachesEndOfBlock(guard.getConditionalSuccessor(vGuard), other, _)
+  }
+
   /**
    * Holds if the evaluation of `guard` to `vGuard` implies that `def` is assigned
    * expression `e`.
@@ -916,28 +958,25 @@ module Internal {
     )
     or
     exists(PreSsa::Definition upd, PreBasicBlocks::PreBasicBlock bbGuard |
-      e = upd.getDefinition().getSource() and
-      upd = def.getAPhiInput() and
-      guard.preControlsDirect(upd.getBasicBlock(), vGuard) and
-      bbGuard.getAnElement() = guard and
-      bbGuard.strictlyDominates(def.getBasicBlock()) and
-      not guard.preControlsDirect(def.getBasicBlock(), vGuard) and
-      forall(PreSsa::Definition other | other != upd and other = def.getAPhiInput() |
+      conditionalAssign0(guard, vGuard, def, e, upd, bbGuard)
+    |
+      forall(PreSsa::Definition other |
+        conditionalAssign1(guard, vGuard, def, e, upd, bbGuard, other)
+      |
         // For example:
         //   if (guard)
         //     upd = a;
         //   else
         //     other = b;
         //   def = phi(upd, other)
-        guard.preControlsDirect(other.getBasicBlock(), vGuard.getDualValue())
+        conditionalAssign2(guard, vGuard, def, e, upd, bbGuard, other)
         or
         // For example:
         //   other = a;
         //   if (guard)
         //       upd = b;
         //   def = phi(other, upd)
-        other.getBasicBlock().dominates(bbGuard) and
-        not PreSsa::ssaDefReachesEndOfBlock(guard.getConditionalSuccessor(vGuard), other, _)
+        conditionalAssign3(guard, vGuard, def, e, upd, bbGuard, other)
       )
     )
   }
