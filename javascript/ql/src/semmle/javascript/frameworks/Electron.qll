@@ -2,32 +2,46 @@ import javascript
 
 module Electron {
   /**
-   * A data flow node that is an Electron `webPreferences` property.
+   * A `webPreferences` object.
    */
   class WebPreferences extends DataFlow::ObjectLiteralNode {
-    WebPreferences() {
-      exists(BrowserObject bo | this = bo.getOptionArgument(0, "webPreferences").getALocalSource())
+    WebPreferences() { this = any(NewBrowserObject nbo).getWebPreferences() }
+  }
+
+  /**
+   * A data flow node that may contain a `BrowserWindow` or `BrowserView` object.
+   */
+  abstract private class BrowserObject extends DataFlow::Node { }
+
+  /**
+   * An instantiation of `BrowserWindow` or `BrowserView`.
+   */
+  abstract private class NewBrowserObject extends BrowserObject {
+    DataFlow::NewNode self;
+
+    NewBrowserObject() { this = self }
+
+    /**
+     * Gets the data flow node from which this instantiation takes its `webPreferences` object.
+     */
+    DataFlow::SourceNode getWebPreferences() {
+      result = self.getOptionArgument(0, "webPreferences").getALocalSource()
     }
   }
 
   /**
-   * A data flow node that creates a new `BrowserWindow` or `BrowserView`.
+   * An instantiation of `BrowserWindow`.
    */
-  abstract private class BrowserObject extends DataFlow::NewNode { }
-
-  /**
-   * A data flow node that creates a new `BrowserWindow`.
-   */
-  class BrowserWindow extends BrowserObject {
+  class BrowserWindow extends NewBrowserObject {
     BrowserWindow() {
       this = DataFlow::moduleMember("electron", "BrowserWindow").getAnInstantiation()
     }
   }
 
   /**
-   * A data flow node that creates a new `BrowserView`.
+   * An instantiation of `BrowserView`.
    */
-  class BrowserView extends BrowserObject {
+  class BrowserView extends NewBrowserObject {
     BrowserView() { this = DataFlow::moduleMember("electron", "BrowserView").getAnInstantiation() }
   }
 
@@ -68,7 +82,7 @@ module Electron {
 
     override DataFlow::Node getADataNode() {
       exists(string name | name = "write" or name = "end" |
-        result = this.(DataFlow::SourceNode).getAMethodCall(name).getArgument(0)
+        result = this.getAMethodCall(name).getArgument(0)
       )
     }
   }
