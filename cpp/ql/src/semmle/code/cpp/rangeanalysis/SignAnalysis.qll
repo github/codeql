@@ -316,16 +316,16 @@ private predicate zeroBoundOk(IRGuardCondition comp, Operand bound, Operand op) 
   eqBound(comp, bound, op, false) and TZero() != operandSign(bound)
 }
 
-private Sign binaryOpLhsSign(Instruction i) {
-  result = operandSign(i.getAnOperand().(LeftOperand))
+private Sign binaryOpLhsSign(BinaryInstruction i) {
+  result = operandSign(i.getLeftOperand())
 }
 
-private Sign binaryOpRhsSign(Instruction i) {
-  result = operandSign(i.getAnOperand().(RightOperand))
+private Sign binaryOpRhsSign(BinaryInstruction i) {
+  result = operandSign(i.getRightOperand())
 }
 
 pragma[noinline]
-private predicate binaryOpSigns(Instruction i, Sign lhs, Sign rhs) {
+private predicate binaryOpSigns(BinaryInstruction i, Sign lhs, Sign rhs) {
   lhs = binaryOpLhsSign(i) and
   rhs = binaryOpRhsSign(i)
 }

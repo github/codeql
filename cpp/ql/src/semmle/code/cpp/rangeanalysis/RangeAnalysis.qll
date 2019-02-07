@@ -288,8 +288,8 @@ private predicate boundFlowStep(Instruction i, NonPhiOperand op, int delta, bool
   exists(Operand x |
     exists(SubInstruction sub |
       i = sub and
-      sub.getAnOperand().(LeftOperand) = op and
-      sub.getAnOperand().(RightOperand) = x
+      sub.getLeftOperand() = op and
+      sub.getRightOperand() = x
     )
   |
     // `x` with constant value is covered by valueFlowStep
@@ -308,9 +308,9 @@ private predicate boundFlowStep(Instruction i, NonPhiOperand op, int delta, bool
         ) else if negative(x) then (upper = false and delta = 0) else none()
   )
   or
-  i.(RemInstruction).getAnOperand().(RightOperand) = op and positive(op) and delta = -1 and upper = true
+  i.(RemInstruction).getRightOperand() = op and positive(op) and delta = -1 and upper = true
   or
-  i.(RemInstruction).getAnOperand().(LeftOperand) = op and positive(op) and delta = 0 and upper = true
+  i.(RemInstruction).getLeftOperand() = op and positive(op) and delta = 0 and upper = true
   or
   i.(BitAndInstruction).getAnOperand() = op and positive(op) and delta = 0 and upper = true
   or
@@ -323,7 +323,7 @@ private predicate boundFlowStepMul(Instruction i1, Operand op, int factor) {
     i1.(MulInstruction).hasOperands(op, c.getAUse()) and factor = k
     or
     exists(ShiftLeftInstruction i |
-      i = i1 and i.getAnOperand().(LeftOperand) = op and i.getAnOperand().(RightOperand) = c.getAUse() and factor = 2.pow(k)
+      i = i1 and i.getLeftOperand() = op and i.getRightOperand() = c.getAUse() and factor = 2.pow(k)
     )
   )
 }
@@ -331,11 +331,11 @@ private predicate boundFlowStepMul(Instruction i1, Operand op, int factor) {
 private predicate boundFlowStepDiv(Instruction i1, Operand op, int factor) {
   exists(Instruction c, int k | k = getValue(getConstantValue(c)) and k > 0 |
     exists(DivInstruction i |
-      i = i1 and i.getAnOperand().(LeftOperand) = op and i.getRight() = c and factor = k
+      i = i1 and i.getLeftOperand() = op and i.getRight() = c and factor = k
     )
     or
     exists(ShiftRightInstruction i |
-      i = i1 and i.getAnOperand().(LeftOperand) = op and i.getRight() = c and factor = 2.pow(k)
+      i = i1 and i.getLeftOperand() = op and i.getRight() = c and factor = 2.pow(k)
     )
   )
 }

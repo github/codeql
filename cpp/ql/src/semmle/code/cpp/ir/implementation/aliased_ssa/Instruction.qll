@@ -665,8 +665,12 @@ class FieldAddressInstruction extends FieldInstruction {
     getOpcode() instanceof Opcode::FieldAddress
   }
 
+  final UnaryOperand getObjectAddressOperand() {
+    result = getAnOperand()
+  }
+
   final Instruction getObjectAddress() {
-    result = getAnOperand().(UnaryOperand).getDefinitionInstruction()
+    result = getObjectAddressOperand().getDefinitionInstruction()
   }
 }
 
@@ -710,8 +714,12 @@ class ReturnValueInstruction extends ReturnInstruction {
     getOpcode() instanceof Opcode::ReturnValue
   }
 
+  final ReturnValueOperand getReturnValueOperand() {
+    result = getAnOperand()
+  }
+  
   final Instruction getReturnValue() {
-    result = getAnOperand().(ReturnValueOperand).getDefinitionInstruction()
+    result = getReturnValueOperand().getDefinitionInstruction()
   }
 }
 
@@ -720,8 +728,12 @@ class CopyInstruction extends Instruction {
     getOpcode() instanceof CopyOpcode
   }
 
+  final CopySourceOperand getSourceValueOperand() {
+    result = getAnOperand()
+  }
+  
   final Instruction getSourceValue() {
-    result = getAnOperand().(CopySourceOperand).getDefinitionInstruction()
+    result = getSourceValueOperand().getDefinitionInstruction()
   }
 }
 
@@ -736,8 +748,12 @@ class LoadInstruction extends CopyInstruction {
     getOpcode() instanceof Opcode::Load
   }
 
+  final AddressOperand getSourceAddressOperand() {
+    result = getAnOperand()
+  }
+  
   final Instruction getSourceAddress() {
-    result = getAnOperand().(AddressOperand).getDefinitionInstruction()
+    result = getSourceAddressOperand().getDefinitionInstruction()
   }
 }
 
@@ -750,8 +766,12 @@ class StoreInstruction extends CopyInstruction {
     result instanceof IndirectMemoryAccess
   }
 
+  final AddressOperand getDestinationAddressOperand() {
+    result = getAnOperand()
+  }
+  
   final Instruction getDestinationAddress() {
-    result = getAnOperand().(AddressOperand).getDefinitionInstruction()
+    result = getDestinationAddressOperand().getDefinitionInstruction()
   }
 }
 
@@ -760,8 +780,12 @@ class ConditionalBranchInstruction extends Instruction {
     getOpcode() instanceof Opcode::ConditionalBranch
   }
 
+  final ConditionOperand getConditionOperand() {
+    result = getAnOperand()
+  }
+
   final Instruction getCondition() {
-    result = getAnOperand().(ConditionOperand).getDefinitionInstruction()
+    result = getConditionOperand().getDefinitionInstruction()
   }
 
   final Instruction getTrueSuccessor() {
@@ -818,21 +842,29 @@ class BinaryInstruction extends Instruction {
     getOpcode() instanceof BinaryOpcode
   }
 
+  final LeftOperand getLeftOperand() {
+    result = getAnOperand()
+  }
+  
+  final RightOperand getRightOperand() {
+    result = getAnOperand()
+  }
+
   final Instruction getLeft() {
-    result = getAnOperand().(LeftOperand).getDefinitionInstruction()
+    result = getLeftOperand().getDefinitionInstruction()
   }
 
   final Instruction getRight() {
-    result = getAnOperand().(RightOperand).getDefinitionInstruction()
+    result = getRightOperand().getDefinitionInstruction()
   }
   
   /**
    * Holds if this instruction's operands are `op1` and `op2`, in either order.
    */
   final predicate hasOperands(Operand op1, Operand op2) {
-    op1 = getAnOperand().(LeftOperand) and op2 = getAnOperand().(RightOperand)
+    op1 = getLeftOperand() and op2 = getRightOperand()
     or
-    op1 = getAnOperand().(RightOperand) and op2 = getAnOperand().(LeftOperand)
+    op1 = getRightOperand() and op2 = getLeftOperand()
   }
 }
 
@@ -948,8 +980,12 @@ class UnaryInstruction extends Instruction {
     getOpcode() instanceof UnaryOpcode
   }
 
+  final UnaryOperand getUnaryOperand() {
+    result = getAnOperand()
+  }
+  
   final Instruction getUnary() {
-    result = getAnOperand().(UnaryOperand).getDefinitionInstruction()
+    result = getUnaryOperand().getDefinitionInstruction()
   }
 }
 
@@ -1174,8 +1210,12 @@ class SwitchInstruction extends Instruction {
     getOpcode() instanceof Opcode::Switch
   }
 
+  final ConditionOperand getExpressionOperand() {
+    result = getAnOperand()
+  }
+
   final Instruction getExpression() {
-    result = getAnOperand().(ConditionOperand).getDefinitionInstruction()
+    result = getExpressionOperand().getDefinitionInstruction()
   }
 
   final Instruction getACaseSuccessor() {
@@ -1198,37 +1238,62 @@ class CallInstruction extends Instruction {
   }
 
   /**
+   * Gets the operand the specifies the target function of the call.
+   */
+  final CallTargetOperand getCallTargetOperand() {
+    result = getAnOperand()
+  }
+
+  /**
    * Gets the `Instruction` that computes the target function of the call. This is usually a
    * `FunctionAddress` instruction, but can also be an arbitrary instruction that produces a
    * function pointer.
    */
   final Instruction getCallTarget() {
-    result = getAnOperand().(CallTargetOperand).getDefinitionInstruction()
+    result = getCallTargetOperand().getDefinitionInstruction()
+  }
+
+  /**
+   * Gets all of the argument operands of the call, including the `this` pointer, if any.
+   */
+  final ArgumentOperand getAnArgumentOperand() {
+    result = getAnOperand()
   }
 
   /**
    * Gets all of the arguments of the call, including the `this` pointer, if any.
    */
   final Instruction getAnArgument() {
-    result = getAnOperand().(ArgumentOperand).getDefinitionInstruction()
+    result = getAnArgumentOperand().getDefinitionInstruction()
+  }
+
+  /**
+   * Gets the `this` pointer argument operand of the call, if any.
+   */
+  final ThisArgumentOperand getThisArgumentOperand() {
+    result = getAnOperand()
   }
 
   /**
    * Gets the `this` pointer argument of the call, if any.
    */
   final Instruction getThisArgument() {
-    result = getAnOperand().(ThisArgumentOperand).getDefinitionInstruction()
+    result = getThisArgumentOperand().getDefinitionInstruction()
+  }
+
+  /**
+   * Gets the argument operand at the specified index.
+   */
+  final PositionalArgumentOperand getPositionalArgumentOperand(int index) {
+    result = getAnOperand() and
+    result.getIndex() = index
   }
 
   /**
    * Gets the argument at the specified index.
    */
   final Instruction getPositionalArgument(int index) {
-    exists(PositionalArgumentOperand operand |
-      operand = getAnOperand() and
-      operand.getIndex() = index and
-      result = operand.getDefinitionInstruction()
-    )
+    result = getPositionalArgumentOperand(index).getDefinitionInstruction()
   }
 }
 
@@ -1361,17 +1426,31 @@ class ThrowValueInstruction extends ThrowInstruction {
   }
 
   /**
+   * Gets the address operand of the exception thrown by this instruction.
+   */
+  final AddressOperand getExceptionAddressOperand() {
+    result = getAnOperand()
+  }
+
+  /**
    * Gets the address of the exception thrown by this instruction.
    */
   final Instruction getExceptionAddress() {
-    result = getAnOperand().(AddressOperand).getDefinitionInstruction()
+    result = getExceptionAddressOperand().getDefinitionInstruction()
+  }
+
+  /**
+   * Gets the operand for the exception thrown by this instruction.
+   */
+  final ExceptionOperand getExceptionOperand() {
+    result = getAnOperand()
   }
 
   /**
    * Gets the exception thrown by this instruction.
    */
   final Instruction getException() {
-    result = getAnOperand().(ExceptionOperand).getDefinitionInstruction()
+    result = getExceptionOperand().getDefinitionInstruction()
   }
 }
 
@@ -1553,15 +1632,30 @@ class ChiInstruction extends Instruction {
    * Gets the operand that represents the previous state of all memory that might be aliased by the
    * memory write.
    */
+  final ChiTotalOperand getTotalOperand() {
+    result = getAnOperand()
+  }
+
+  /**
+   * Gets the operand that represents the previous state of all memory that might be aliased by the
+   * memory write.
+   */
   final Instruction getTotal() {
-    result = getAnOperand().(ChiTotalOperand).getDefinitionInstruction()
+    result = getTotalOperand().getDefinitionInstruction()
+  }
+
+  /**
+   * Gets the operand that represents the new value written by the memory write.
+   */
+  final ChiPartialOperand getPartialOperand() {
+    result = getAnOperand()
   }
 
   /**
    * Gets the operand that represents the new value written by the memory write.
    */
   final Instruction getPartial() {
-    result = getAnOperand().(ChiPartialOperand).getDefinitionInstruction()
+    result = getPartialOperand().getDefinitionInstruction()
   }
 }
 
