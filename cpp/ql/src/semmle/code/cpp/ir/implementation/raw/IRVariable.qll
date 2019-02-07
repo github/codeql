@@ -7,7 +7,7 @@ private import semmle.code.cpp.ir.internal.TIRVariable
 
 IRUserVariable getIRUserVariable(Function func, Variable var) {
   result.getVariable() = var and
-  result.getFunction() = func
+  result.getEnclosingFunction() = func
 }
 
 /**
@@ -47,14 +47,14 @@ abstract class IRVariable extends TIRVariable {
   /**
    * Gets the IR for the function that references this variable.
    */
-  final FunctionIR getFunctionIR() {
+  final FunctionIR getEnclosingFunctionIR() {
     result.getFunction() = func
   }
 
   /**
    * Gets the function that references this variable.
    */
-  final Function getFunction() {
+  final Function getEnclosingFunction() {
     result = func
   }
 }

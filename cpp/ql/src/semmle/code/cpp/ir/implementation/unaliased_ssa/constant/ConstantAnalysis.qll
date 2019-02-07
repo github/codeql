@@ -6,7 +6,7 @@ language[monotonicAggregates]
 int getConstantValue(Instruction instr) {
   result = instr.(IntegerConstantInstruction).getValue().toInt() or
   result = getBinaryInstructionValue(instr) or
-  result = neg(getConstantValue(instr.(NegateInstruction).getOperand())) or
+  result = neg(getConstantValue(instr.(NegateInstruction).getUnary())) or
   result = getConstantValue(instr.(CopyInstruction).getSourceValue()) or
   exists(PhiInstruction phi |
     phi = instr and
@@ -25,8 +25,8 @@ int getConstantValueToPhi(Instruction def) {
 
 pragma[noinline]
 private predicate binaryInstructionOperands(BinaryInstruction instr, int left, int right) {
-  left = getConstantValue(instr.getLeftOperand()) and
-  right = getConstantValue(instr.getRightOperand())
+  left = getConstantValue(instr.getLeft()) and
+  right = getConstantValue(instr.getRight())
 }
 
 pragma[noinline]

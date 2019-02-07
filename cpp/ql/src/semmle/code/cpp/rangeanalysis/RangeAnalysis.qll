@@ -144,7 +144,7 @@ private predicate boundFlowStepSsa(
 ) {
   exists(IRGuardCondition guard, boolean testIsTrue |
     guard = boundFlowCond(valueNumberOfOperand(op2), op1, delta, upper, testIsTrue) and
-    guard.controls(op2.getInstruction().getBlock(), testIsTrue) and
+    guard.controls(op2.getUseInstruction().getBlock(), testIsTrue) and
     reason = TCondReason(guard)
   )
 }
@@ -217,10 +217,10 @@ private predicate safeCast(IntegralType fromtyp, IntegralType totyp) {
 
 private class SafeCastInstruction extends ConvertInstruction {
   SafeCastInstruction() {
-    safeCast(getResultType(), getOperand().getResultType())
+    safeCast(getResultType(), getUnary().getResultType())
     or
     getResultType() instanceof PointerType and
-    getOperand().getResultType() instanceof PointerType
+    getUnary().getResultType() instanceof PointerType
   }
 }
 
@@ -269,8 +269,8 @@ private predicate boundFlowStep(Instruction i, NonPhiOperand op, int delta, bool
     i.(AddInstruction).getAnOperand() = x and
     op != x
     |
-    not exists(getValue(getConstantValue(op.getInstruction()))) and
-    not exists(getValue(getConstantValue(x.getInstruction()))) and
+    not exists(getValue(getConstantValue(op.getUseInstruction()))) and
+    not exists(getValue(getConstantValue(x.getUseInstruction()))) and
     if(strictlyPositive(x))
     then (
       upper = false and delta = 1
@@ -293,7 +293,7 @@ private predicate boundFlowStep(Instruction i, NonPhiOperand op, int delta, bool
     )
   |
     // `x` with constant value is covered by valueFlowStep
-    not exists(getValue(getConstantValue(x.getInstruction()))) and
+    not exists(getValue(getConstantValue(x.getUseInstruction()))) and
     if strictlyPositive(x)
     then (
       upper = true and delta = -1
@@ -331,11 +331,11 @@ private predicate boundFlowStepMul(Instruction i1, Operand op, int factor) {
 private predicate boundFlowStepDiv(Instruction i1, Operand op, int factor) {
   exists(Instruction c, int k | k = getValue(getConstantValue(c)) and k > 0 |
     exists(DivInstruction i |
-      i = i1 and i.getAnOperand().(LeftOperand) = op and i.getRightOperand() = c and factor = k
+      i = i1 and i.getAnOperand().(LeftOperand) = op and i.getRight() = c and factor = k
     )
     or
     exists(ShiftRightInstruction i |
-      i = i1 and i.getAnOperand().(LeftOperand) = op and i.getRightOperand() = c and factor = 2.pow(k)
+      i = i1 and i.getAnOperand().(LeftOperand) = op and i.getRight() = c and factor = 2.pow(k)
     )
   )
 }
@@ -387,7 +387,7 @@ private predicate boundFlowStepPhi(
   exists(IRGuardCondition guard, boolean testIsTrue |
     guard = boundFlowCond(valueNumberOfOperand(op2), op1, delta, upper, testIsTrue) and
     (
-      guard.hasBranchEdge(op2.getPredecessorBlock().getLastInstruction(), op2.getInstruction().getBlock(), testIsTrue)
+      guard.hasBranchEdge(op2.getPredecessorBlock().getLastInstruction(), op2.getUseInstruction().getBlock(), testIsTrue)
       or
       guard.controls(op2.getPredecessorBlock(), testIsTrue)
     ) and
@@ -431,7 +431,7 @@ private predicate unequalFlowStep(
 ) {
   exists(IRGuardCondition guard, boolean testIsTrue |
     guard = eqFlowCond(valueNumberOfOperand(op2), op1, delta, false, testIsTrue) and
-    guard.controls(op2.getInstruction().getBlock(), testIsTrue) and
+    guard.controls(op2.getUseInstruction().getBlock(), testIsTrue) and
     reason = TCondReason(guard)
   )
 }

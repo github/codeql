@@ -224,7 +224,7 @@ class TranslatedFunction extends TranslatedElement,
     (
       tag = UnmodeledUseTag() and
       operandTag instanceof UnmodeledUseOperandTag and
-      result.getFunction() = func and
+      result.getEnclosingFunction() = func and
       result.hasMemoryResult()
     ) or
     (

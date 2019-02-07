@@ -6,11 +6,11 @@ import semmle.code.cpp.ir.implementation.MemoryAccessKind
 private import semmle.code.cpp.ir.internal.OperandTag
 
 private newtype TOperand =
-  TNonPhiOperand(Instruction instr, OperandTag tag, Instruction defInstr) {
-    defInstr = Construction::getInstructionOperandDefinition(instr, tag)
+  TNonPhiOperand(Instruction useInstr, OperandTag tag, Instruction defInstr) {
+    defInstr = Construction::getInstructionOperandDefinition(useInstr, tag)
   } or
-  TPhiOperand(PhiInstruction instr, Instruction defInstr, IRBlock predecessorBlock) {
-    defInstr = Construction::getPhiInstructionOperandDefinition(instr, predecessorBlock)
+  TPhiOperand(PhiInstruction useInstr, Instruction defInstr, IRBlock predecessorBlock) {
+    defInstr = Construction::getPhiInstructionOperandDefinition(useInstr, predecessorBlock)
   }
 
 /**
@@ -22,13 +22,13 @@ class Operand extends TOperand {
   }
 
   Location getLocation() {
-    result = getInstruction().getLocation()
+    result = getUseInstruction().getLocation()
   }
 
   /**
    * Gets the `Instruction` that consumes this operand.
    */
-  Instruction getInstruction() {
+  Instruction getUseInstruction() {
     none()
   }
 
@@ -78,7 +78,7 @@ class Operand extends TOperand {
    */
   final AddressOperand getAddressOperand() {
     getMemoryAccess() instanceof IndirectMemoryAccess and
-    result.getInstruction() = getInstruction()
+    result.getUseInstruction() = getUseInstruction()
   }
 }
 
@@ -94,7 +94,7 @@ class NonPhiOperand extends Operand, TNonPhiOperand {
     this = TNonPhiOperand(instr, tag, defInstr)
   }
 
-  override final Instruction getInstruction() {
+  override final Instruction getUseInstruction() {
     result = instr
   }
 
@@ -353,20 +353,20 @@ class SideEffectOperand extends NonPhiOperand {
  * An operand of a `PhiInstruction`.
  */
 class PhiOperand extends Operand, TPhiOperand {
-  PhiInstruction instr;
+  PhiInstruction useInstr;
   Instruction defInstr;
   IRBlock predecessorBlock;
 
   PhiOperand() {
-    this = TPhiOperand(instr, defInstr, predecessorBlock)
+    this = TPhiOperand(useInstr, defInstr, predecessorBlock)
   }
 
   override string toString() {
     result = "Phi"
   }
 
-  override final PhiInstruction getInstruction() {
-    result = instr
+  override final PhiInstruction getUseInstruction() {
+    result = useInstr
   }
 
   override final Instruction getDefinitionInstruction() {

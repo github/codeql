@@ -57,7 +57,7 @@ cached private module Cached {
     } or
     Unreached(Function function) {
       exists(OldInstruction oldInstruction |
-        function = oldInstruction.getFunction() and
+        function = oldInstruction.getEnclosingFunction() and
         Reachability::isInfeasibleInstructionSuccessor(oldInstruction, _)
       )
     }
@@ -65,7 +65,7 @@ cached private module Cached {
   cached predicate hasTempVariable(Function func, Locatable ast, TempVariableTag tag,
       Type type) {
     exists(OldIR::IRTempVariable var |
-      var.getFunction() = func and
+      var.getEnclosingFunction() = func and
       var.getAST() = ast and
       var.getTag() = tag and
       var.getType() = type
@@ -99,7 +99,7 @@ cached private module Cached {
             )
           )
           else (
-            result = instruction.getFunctionIR().getUnmodeledDefinitionInstruction()
+            result = instruction.getEnclosingFunctionIR().getUnmodeledDefinitionInstruction()
           )
         ) or
         // Connect any definitions that are not being modeled in SSA to the
@@ -190,7 +190,7 @@ cached private module Cached {
         oldInstruction = getOldInstruction(instruction) and
         (
           if Reachability::isInfeasibleInstructionSuccessor(oldInstruction, kind) then (
-            result = Unreached(instruction.getFunction())
+            result = Unreached(instruction.getEnclosingFunction())
           )
           else (
             result = getNewInstruction(oldInstruction.getSuccessor(kind))
@@ -287,12 +287,12 @@ cached private module Cached {
       or
       instruction = Chi(oldInstruction)
     |
-      result.getFunction() = oldInstruction.getFunction()
+      result.getFunction() = oldInstruction.getEnclosingFunction()
     )
     or
     exists(OldBlock block |
       instruction = Phi(block, _) and
-      result.getFunction() = block.getFunction()
+      result.getFunction() = block.getEnclosingFunction()
     )
     or
     instruction = Unreached(result.getFunction())
@@ -553,7 +553,7 @@ cached private module CachedForDebugging {
   }
 
   private OldIR::IRTempVariable getOldTempVariable(IRTempVariable var) {
-    result.getFunction() = var.getFunction() and
+    result.getEnclosingFunction() = var.getEnclosingFunction() and
     result.getAST() = var.getAST() and
     result.getTag() = var.getTag()
   }
