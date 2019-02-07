@@ -188,4 +188,26 @@ module DomBasedXss {
 
     override string getVulnerabilityKind() { result = "HTML injection" }
   }
+
+
+  /**
+   * A write to the `template` option of a Vue instance, viewed as an XSS sink.
+   */
+  class VueTemplateSink extends DomBasedXss::Sink {
+    VueTemplateSink() { this = any(Vue::Instance i).getTemplate() }
+  }
+
+  /**
+   * The tag name argument to the `createElement` parameter of the
+   * `render` method of a Vue instance, viewed as an XSS sink.
+   */
+  class VueCreateElementSink extends DomBasedXss::Sink {
+    VueCreateElementSink() {
+      exists(Vue::Instance i, DataFlow::FunctionNode f |
+        f.flowsTo(i.getRender()) and
+        this = f.getParameter(0).getACall().getArgument(0)
+      )
+    }
+  }
+
 }

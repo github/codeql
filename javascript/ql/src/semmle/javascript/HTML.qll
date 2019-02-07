@@ -159,6 +159,40 @@ module HTML {
      * if it can be determined.
      */
     Script resolveSource() { result.getFile().getAbsolutePath() = resolveSourcePath() }
+
+    /**
+     * Gets the inline script of this script element, if any.
+     */
+    private InlineScript getInlineScript() {
+      exists(string f, Location l1, int sl1, int sc1, int el1, int ec1, Location l2, int sl2, int sc2, int el2, int ec2 |
+        l1 = getLocation() and
+        l2 = result.getLocation() and
+        l1.hasLocationInfo(f, sl1, sc1, el1, ec1) and
+        l2.hasLocationInfo(f, sl2, sc2, el2, ec2)
+        |
+        (
+          sl1 = sl2 and sc1 < sc2
+          or
+          sl1 < sl2
+        ) and
+        (
+          el1 = el2 and ec1 > ec2
+          or
+          el1 > el2
+        )
+      ) and
+      // the src attribute has precedence
+      not exists(getSourcePath())
+    }
+
+    /**
+     * Gets the script of this element, if it can be determined.
+     */
+    Script getScript() {
+      result = getInlineScript() or
+      result = resolveSource()
+    }
+
   }
 
   /**
