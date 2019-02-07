@@ -26,4 +26,6 @@
 
 ## Changes to QL libraries
 
+* The class `TrivialProperty` now includes library properties determined to be trivial using CIL analysis. This may increase the number of results for all queries that use data flow.
+
 ## Changes to the autobuilder
