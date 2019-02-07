@@ -4545,7 +4545,7 @@ ir.cpp:
 # 1049|     v2_6(void)       = UnmodeledUse             : mu*
 # 1049|     v2_7(void)       = ExitFunction             : 
 
-# 1058| chiNodeAtEndOfLoop(int, char *) -> void
+# 1058| void chiNodeAtEndOfLoop(int, char*)
 # 1058|   Block 0
 # 1058|     v0_0(void)          = EnterFunction          : 
 # 1058|     mu0_1(unknown)      = AliasedDefinition      : 

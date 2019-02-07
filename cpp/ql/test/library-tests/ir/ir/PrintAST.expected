@@ -6782,7 +6782,7 @@ ir.cpp:
 # 1055|       0: i
 # 1055|           Type = int
 # 1055|           ValueCategory = prvalue(load)
-# 1058| chiNodeAtEndOfLoop(int, char *) -> void
+# 1058| void chiNodeAtEndOfLoop(int, char*)
 # 1058|   params: 
 # 1058|     0: n
 # 1058|         Type = int
