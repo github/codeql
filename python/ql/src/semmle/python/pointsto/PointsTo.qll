@@ -120,7 +120,8 @@ module PointsTo {
             exists(Module init |
                 init = package.getInitModule().getModule() and
                 not exists(EssaVariable var | var.getAUse() = init.getANormalExit() and var.getSourceVariable().getName() = name) and
-                exists(EssaVariable var, Context context | var.getName() = "$" and
+                exists(EssaVariable var, Context context |
+                    isModuleStateVariable(var) and var.getAUse() = init.getANormalExit() and
                     context.isImport() and
                     SSA::ssa_variable_named_attribute_points_to(var, context, name, undefinedVariable(), _, _) and
                     origin = value and
@@ -148,7 +149,7 @@ module PointsTo {
             or
             not exists(EssaVariable var | var.getAUse() = m.getANormalExit() and var.getSourceVariable().getName() = name) and
             exists(EssaVariable var, PointsToContext imp |
-                var.getAUse() = m.getANormalExit() and var.getName() = "$" |
+                var.getAUse() = m.getANormalExit() and isModuleStateVariable(var) |
                 SSA::ssa_variable_named_attribute_points_to(var, imp, name, obj, cls, origin) and
                 imp.isImport() and obj != undefinedVariable()
             )
@@ -677,8 +678,8 @@ module PointsTo {
             or
             mod.getSourceModule() = f.getEnclosingModule() and
             not exists(EssaVariable var | var.getSourceVariable().getName() = name and var.getAUse() = f) and
-            exists(EssaVariable dollar | 
-                dollar.getName() = "$" and dollar.getAUse() = f and
+            exists(EssaVariable dollar |
+                isModuleStateVariable(dollar) and dollar.getAUse() = f and
                 SSA::ssa_variable_named_attribute_points_to(dollar, context, name, value, cls, orig)
             )
             or
@@ -1862,7 +1863,7 @@ module PointsTo {
             )
             or
             origin = def.getDefiningNode() and
-            def.getSourceVariable().getName() = "$" and
+            isModuleStateVariable(def.getVariable()) and
             context.isImport() and
             exists(PackageObject package |
                 package.getInitModule().getModule() = def.getScope() |
@@ -1973,7 +1974,7 @@ module PointsTo {
         /* Helper for import_star_named_attribute_points_to */
         pragma [noinline]
         private predicate star_variable_import_star_module(ImportStarRefinement def, ImportStarNode imp, PointsToContext context, ModuleObject mod) {
-            def.getSourceVariable().getName() = "$" and
+            isModuleStateVariable(def.getVariable()) and
             exists(ControlFlowNode fmod |
                 fmod = imp.getModule() and
                 imp = def.getDefiningNode() and
@@ -1993,7 +1994,7 @@ module PointsTo {
         /* Helper for ssa_star_variable_input_points_to */
         pragma [noinline]
         private predicate ssa_star_import_star_input(ImportStarRefinement def, EssaVariable var) {
-            def.getSourceVariable().getName() = "$" and var = def.getInput()
+            isModuleStateVariable(def.getVariable()) and var = def.getInput()
         }
 
         pragma [noinline]
@@ -2780,6 +2781,15 @@ module PointsTo {
             instances_always_true(class_base_type(cls, n))
         }
 
+    }
+
+    /** Get the ESSA pseudo-variable used to retain module state
+     * during module initialization. Module attributes are handled 
+     * as attributes of this variable, allowing the SSA form to track 
+     * mutations of the module during its creation.
+     */
+    private predicate isModuleStateVariable(EssaVariable var) {
+        var.getName() = "$" and var.getScope() instanceof Module
     }
 
     /** INTERNAL -- Public for testing only */
