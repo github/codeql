@@ -33,6 +33,7 @@
 | Mismatching new/free or malloc/delete (`cpp/new-free-mismatch`) | More correct results | Data flow through global variables for this query has been improved. |
 | Use of inherently dangerous function (`cpp/potential-buffer-overflow`) | Cleaned up | This query no longer catches uses of `gets`, and has been renamed 'Potential buffer overflow'. |
 | Use of potentially dangerous function (`cpp/potentially-dangerous-function`) | More correct results | This query now catches uses of `gets`. |
+| Potential buffer overflow (`cpp/potential-buffer-overflow`) | Deprecated | This query has been deprecated. Use Potentially overrunning write (`cpp/overrunning-write`) and Potentially overrunning write with float to string conversion (`cpp/overrunning-write-with-float`) instead. |
 
 ## Changes to QL libraries
 
