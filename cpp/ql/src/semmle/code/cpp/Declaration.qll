@@ -187,6 +187,27 @@ abstract class Declaration extends Locatable, @declaration {
   Class getDeclaringType() {
     this = result.getAMember()
   }
+
+  /**
+   * Gets a template argument used to instantiate this declaration from a template.
+   * When called on a template, this will return a template parameter.
+   */
+  final Type getATemplateArgument() {
+    result = getTemplateArgument(_)
+  }
+
+  /**
+   * Gets the `i`th template argument used to instantiate this declaration from a
+   * template. When called on a template, this will return the `i`th template parameter.
+   */
+  Type getTemplateArgument(int index) {
+    none()
+  }
+
+  /** Gets the number of template arguments for this declaration. */
+  final int getNumberOfTemplateArguments() {
+    result = count(int i | exists(getTemplateArgument(i)))
+  }
 }
 
 /**

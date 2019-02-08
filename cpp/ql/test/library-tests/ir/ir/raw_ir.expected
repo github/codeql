@@ -1,5 +1,5 @@
 bad_asts.cpp:
-#   14| Bad::CallBadMemberFunction() -> void
+#   14| void Bad::CallBadMemberFunction()
 #   14|   Block 0
 #   14|     v0_0(void)           = EnterFunction                   : 
 #   14|     mu0_1(unknown)       = AliasedDefinition               : 
@@ -19,7 +19,7 @@ bad_asts.cpp:
 #   14|     v0_15(void)          = UnmodeledUse                    : mu*
 #   14|     v0_16(void)          = ExitFunction                    : 
 
-#   22| Bad::Point::Point() -> void
+#   22| void Bad::Point::Point()
 #   22|   Block 0
 #   22|     v0_0(void)         = EnterFunction       : 
 #   22|     mu0_1(unknown)     = AliasedDefinition   : 
@@ -30,7 +30,7 @@ bad_asts.cpp:
 #   22|     v0_6(void)         = UnmodeledUse        : mu*
 #   22|     v0_7(void)         = ExitFunction        : 
 
-#   26| Bad::CallCopyConstructor(const Point &) -> void
+#   26| void Bad::CallCopyConstructor(Bad::Point const&)
 #   26|   Block 0
 #   26|     v0_0(void)           = EnterFunction          : 
 #   26|     mu0_1(unknown)       = AliasedDefinition      : 
@@ -49,7 +49,7 @@ bad_asts.cpp:
 #   26|     v0_14(void)          = ExitFunction           : 
 
 ir.cpp:
-#    1| Constants() -> void
+#    1| void Constants()
 #    1|   Block 0
 #    1|     v0_0(void)                       = EnterFunction            : 
 #    1|     mu0_1(unknown)                   = AliasedDefinition        : 
@@ -143,7 +143,7 @@ ir.cpp:
 #    1|     v0_89(void)                      = UnmodeledUse             : mu*
 #    1|     v0_90(void)                      = ExitFunction             : 
 
-#   43| Foo() -> void
+#   43| void Foo()
 #   43|   Block 0
 #   43|     v0_0(void)          = EnterFunction       : 
 #   43|     mu0_1(unknown)      = AliasedDefinition   : 
@@ -176,7 +176,7 @@ ir.cpp:
 #   43|     v0_28(void)         = UnmodeledUse        : mu*
 #   43|     v0_29(void)         = ExitFunction        : 
 
-#   50| IntegerOps(int, int) -> void
+#   50| void IntegerOps(int, int)
 #   50|   Block 0
 #   50|     v0_0(void)         = EnterFunction          : 
 #   50|     mu0_1(unknown)     = AliasedDefinition      : 
@@ -349,7 +349,7 @@ ir.cpp:
 #   50|     v0_168(void)       = UnmodeledUse           : mu*
 #   50|     v0_169(void)       = ExitFunction           : 
 
-#   87| IntegerCompare(int, int) -> void
+#   87| void IntegerCompare(int, int)
 #   87|   Block 0
 #   87|     v0_0(void)         = EnterFunction          : 
 #   87|     mu0_1(unknown)     = AliasedDefinition      : 
@@ -407,7 +407,7 @@ ir.cpp:
 #   87|     v0_53(void)        = UnmodeledUse           : mu*
 #   87|     v0_54(void)        = ExitFunction           : 
 
-#   98| IntegerCrement(int) -> void
+#   98| void IntegerCrement(int)
 #   98|   Block 0
 #   98|     v0_0(void)        = EnterFunction          : 
 #   98|     mu0_1(unknown)    = AliasedDefinition      : 
@@ -449,7 +449,7 @@ ir.cpp:
 #   98|     v0_37(void)       = UnmodeledUse           : mu*
 #   98|     v0_38(void)       = ExitFunction           : 
 
-#  107| IntegerCrement_LValue(int) -> void
+#  107| void IntegerCrement_LValue(int)
 #  107|   Block 0
 #  107|     v0_0(void)          = EnterFunction          : 
 #  107|     mu0_1(unknown)      = AliasedDefinition      : 
@@ -477,7 +477,7 @@ ir.cpp:
 #  107|     v0_23(void)         = UnmodeledUse           : mu*
 #  107|     v0_24(void)         = ExitFunction           : 
 
-#  114| FloatOps(double, double) -> void
+#  114| void FloatOps(double, double)
 #  114|   Block 0
 #  114|     v0_0(void)           = EnterFunction          : 
 #  114|     mu0_1(unknown)       = AliasedDefinition      : 
@@ -559,7 +559,7 @@ ir.cpp:
 #  114|     v0_77(void)          = UnmodeledUse           : mu*
 #  114|     v0_78(void)          = ExitFunction           : 
 
-#  133| FloatCompare(double, double) -> void
+#  133| void FloatCompare(double, double)
 #  133|   Block 0
 #  133|     v0_0(void)           = EnterFunction          : 
 #  133|     mu0_1(unknown)       = AliasedDefinition      : 
@@ -617,7 +617,7 @@ ir.cpp:
 #  133|     v0_53(void)          = UnmodeledUse           : mu*
 #  133|     v0_54(void)          = ExitFunction           : 
 
-#  144| FloatCrement(float) -> void
+#  144| void FloatCrement(float)
 #  144|   Block 0
 #  144|     v0_0(void)          = EnterFunction          : 
 #  144|     mu0_1(unknown)      = AliasedDefinition      : 
@@ -659,7 +659,7 @@ ir.cpp:
 #  144|     v0_37(void)         = UnmodeledUse           : mu*
 #  144|     v0_38(void)         = ExitFunction           : 
 
-#  153| PointerOps(int *, int) -> void
+#  153| void PointerOps(int*, int)
 #  153|   Block 0
 #  153|     v0_0(void)          = EnterFunction          : 
 #  153|     mu0_1(unknown)      = AliasedDefinition      : 
@@ -735,7 +735,7 @@ ir.cpp:
 #  153|     v0_71(void)         = UnmodeledUse           : mu*
 #  153|     v0_72(void)         = ExitFunction           : 
 
-#  171| ArrayAccess(int *, int) -> void
+#  171| void ArrayAccess(int*, int)
 #  171|   Block 0
 #  171|     v0_0(void)            = EnterFunction          : 
 #  171|     mu0_1(unknown)        = AliasedDefinition      : 
@@ -817,7 +817,7 @@ ir.cpp:
 #  171|     v0_77(void)           = UnmodeledUse           : mu*
 #  171|     v0_78(void)           = ExitFunction           : 
 
-#  187| StringLiteral(int) -> void
+#  187| void StringLiteral(int)
 #  187|   Block 0
 #  187|     v0_0(void)               = EnterFunction          : 
 #  187|     mu0_1(unknown)           = AliasedDefinition      : 
@@ -850,7 +850,7 @@ ir.cpp:
 #  187|     v0_28(void)              = UnmodeledUse           : mu*
 #  187|     v0_29(void)              = ExitFunction           : 
 
-#  193| PointerCompare(int *, int *) -> void
+#  193| void PointerCompare(int*, int*)
 #  193|   Block 0
 #  193|     v0_0(void)          = EnterFunction          : 
 #  193|     mu0_1(unknown)      = AliasedDefinition      : 
@@ -908,7 +908,7 @@ ir.cpp:
 #  193|     v0_53(void)         = UnmodeledUse           : mu*
 #  193|     v0_54(void)         = ExitFunction           : 
 
-#  204| PointerCrement(int *) -> void
+#  204| void PointerCrement(int*)
 #  204|   Block 0
 #  204|     v0_0(void)          = EnterFunction          : 
 #  204|     mu0_1(unknown)      = AliasedDefinition      : 
@@ -950,7 +950,7 @@ ir.cpp:
 #  204|     v0_37(void)         = UnmodeledUse           : mu*
 #  204|     v0_38(void)         = ExitFunction           : 
 
-#  213| CompoundAssignment() -> void
+#  213| void CompoundAssignment()
 #  213|   Block 0
 #  213|     v0_0(void)          = EnterFunction       : 
 #  213|     mu0_1(unknown)      = AliasedDefinition   : 
@@ -994,7 +994,7 @@ ir.cpp:
 #  213|     v0_39(void)         = UnmodeledUse        : mu*
 #  213|     v0_40(void)         = ExitFunction        : 
 
-#  230| UninitializedVariables() -> void
+#  230| void UninitializedVariables()
 #  230|   Block 0
 #  230|     v0_0(void)       = EnterFunction       : 
 #  230|     mu0_1(unknown)   = AliasedDefinition   : 
@@ -1010,7 +1010,7 @@ ir.cpp:
 #  230|     v0_11(void)      = UnmodeledUse        : mu*
 #  230|     v0_12(void)      = ExitFunction        : 
 
-#  235| Parameters(int, int) -> int
+#  235| int Parameters(int, int)
 #  235|   Block 0
 #  235|     v0_0(void)        = EnterFunction            : 
 #  235|     mu0_1(unknown)    = AliasedDefinition        : 
@@ -1031,7 +1031,7 @@ ir.cpp:
 #  235|     v0_16(void)       = UnmodeledUse             : mu*
 #  235|     v0_17(void)       = ExitFunction             : 
 
-#  239| IfStatements(bool, int, int) -> void
+#  239| void IfStatements(bool, int, int)
 #  239|   Block 0
 #  239|     v0_0(void)        = EnterFunction          : 
 #  239|     mu0_1(unknown)    = AliasedDefinition      : 
@@ -1093,7 +1093,7 @@ ir.cpp:
 #  240|     v7_0(void) = NoOp : 
 #-----|   Goto -> Block 1
 
-#  253| WhileStatements(int) -> void
+#  253| void WhileStatements(int)
 #  253|   Block 0
 #  253|     v0_0(void)       = EnterFunction          : 
 #  253|     mu0_1(unknown)   = AliasedDefinition      : 
@@ -1125,7 +1125,7 @@ ir.cpp:
 #-----|   False -> Block 2
 #-----|   True -> Block 1
 
-#  259| DoStatements(int) -> void
+#  259| void DoStatements(int)
 #  259|   Block 0
 #  259|     v0_0(void)       = EnterFunction          : 
 #  259|     mu0_1(unknown)   = AliasedDefinition      : 
@@ -1154,7 +1154,7 @@ ir.cpp:
 #  259|     v2_2(void) = UnmodeledUse : mu*
 #  259|     v2_3(void) = ExitFunction : 
 
-#  265| For_Empty() -> void
+#  265| void For_Empty()
 #  265|   Block 0
 #  265|     v0_0(void)       = EnterFunction       : 
 #  265|     mu0_1(unknown)   = AliasedDefinition   : 
@@ -1172,7 +1172,7 @@ ir.cpp:
 #  268|     v2_0(void) = NoOp : 
 #-----|   Goto (back edge) -> Block 2
 
-#  272| For_Init() -> void
+#  272| void For_Init()
 #  272|   Block 0
 #  272|     v0_0(void)       = EnterFunction       : 
 #  272|     mu0_1(unknown)   = AliasedDefinition   : 
@@ -1191,7 +1191,7 @@ ir.cpp:
 #  274|     v2_0(void) = NoOp : 
 #-----|   Goto (back edge) -> Block 2
 
-#  278| For_Condition() -> void
+#  278| void For_Condition()
 #  278|   Block 0
 #  278|     v0_0(void)       = EnterFunction       : 
 #  278|     mu0_1(unknown)   = AliasedDefinition   : 
@@ -1220,7 +1220,7 @@ ir.cpp:
 #  278|     v3_2(void) = UnmodeledUse : mu*
 #  278|     v3_3(void) = ExitFunction : 
 
-#  285| For_Update() -> void
+#  285| void For_Update()
 #  285|   Block 0
 #  285|     v0_0(void)       = EnterFunction       : 
 #  285|     mu0_1(unknown)   = AliasedDefinition   : 
@@ -1244,7 +1244,7 @@ ir.cpp:
 #  287|     mu2_5(int)       = Store              : r2_2, r2_4
 #-----|   Goto (back edge) -> Block 2
 
-#  292| For_InitCondition() -> void
+#  292| void For_InitCondition()
 #  292|   Block 0
 #  292|     v0_0(void)       = EnterFunction       : 
 #  292|     mu0_1(unknown)   = AliasedDefinition   : 
@@ -1273,7 +1273,7 @@ ir.cpp:
 #  292|     v3_2(void) = UnmodeledUse : mu*
 #  292|     v3_3(void) = ExitFunction : 
 
-#  298| For_InitUpdate() -> void
+#  298| void For_InitUpdate()
 #  298|   Block 0
 #  298|     v0_0(void)       = EnterFunction       : 
 #  298|     mu0_1(unknown)   = AliasedDefinition   : 
@@ -1297,7 +1297,7 @@ ir.cpp:
 #  299|     mu2_5(int)       = Store              : r2_2, r2_4
 #-----|   Goto (back edge) -> Block 2
 
-#  304| For_ConditionUpdate() -> void
+#  304| void For_ConditionUpdate()
 #  304|   Block 0
 #  304|     v0_0(void)       = EnterFunction       : 
 #  304|     mu0_1(unknown)   = AliasedDefinition   : 
@@ -1331,7 +1331,7 @@ ir.cpp:
 #  304|     v3_2(void) = UnmodeledUse : mu*
 #  304|     v3_3(void) = ExitFunction : 
 
-#  311| For_InitConditionUpdate() -> void
+#  311| void For_InitConditionUpdate()
 #  311|   Block 0
 #  311|     v0_0(void)       = EnterFunction       : 
 #  311|     mu0_1(unknown)   = AliasedDefinition   : 
@@ -1365,7 +1365,7 @@ ir.cpp:
 #  311|     v3_2(void) = UnmodeledUse : mu*
 #  311|     v3_3(void) = ExitFunction : 
 
-#  317| For_Break() -> void
+#  317| void For_Break()
 #  317|   Block 0
 #  317|     v0_0(void)       = EnterFunction       : 
 #  317|     mu0_1(unknown)   = AliasedDefinition   : 
@@ -1412,7 +1412,7 @@ ir.cpp:
 #  317|     v5_3(void) = UnmodeledUse : mu*
 #  317|     v5_4(void) = ExitFunction : 
 
-#  325| For_Continue_Update() -> void
+#  325| void For_Continue_Update()
 #  325|   Block 0
 #  325|     v0_0(void)       = EnterFunction       : 
 #  325|     mu0_1(unknown)   = AliasedDefinition   : 
@@ -1459,7 +1459,7 @@ ir.cpp:
 #  325|     v5_2(void) = UnmodeledUse : mu*
 #  325|     v5_3(void) = ExitFunction : 
 
-#  333| For_Continue_NoUpdate() -> void
+#  333| void For_Continue_NoUpdate()
 #  333|   Block 0
 #  333|     v0_0(void)       = EnterFunction       : 
 #  333|     mu0_1(unknown)   = AliasedDefinition   : 
@@ -1501,7 +1501,7 @@ ir.cpp:
 #  333|     v5_2(void) = UnmodeledUse : mu*
 #  333|     v5_3(void) = ExitFunction : 
 
-#  341| Dereference(int *) -> int
+#  341| int Dereference(int*)
 #  341|   Block 0
 #  341|     v0_0(void)          = EnterFunction            : 
 #  341|     mu0_1(unknown)      = AliasedDefinition        : 
@@ -1522,7 +1522,7 @@ ir.cpp:
 #  341|     v0_16(void)         = UnmodeledUse             : mu*
 #  341|     v0_17(void)         = ExitFunction             : 
 
-#  348| AddressOf() -> int *
+#  348| int* AddressOf()
 #  348|   Block 0
 #  348|     v0_0(void)         = EnterFunction            : 
 #  348|     mu0_1(unknown)     = AliasedDefinition        : 
@@ -1535,7 +1535,7 @@ ir.cpp:
 #  348|     v0_8(void)         = UnmodeledUse             : mu*
 #  348|     v0_9(void)         = ExitFunction             : 
 
-#  352| Break(int) -> void
+#  352| void Break(int)
 #  352|   Block 0
 #  352|     v0_0(void)       = EnterFunction          : 
 #  352|     mu0_1(unknown)   = AliasedDefinition      : 
@@ -1581,7 +1581,7 @@ ir.cpp:
 #-----|   False -> Block 4
 #-----|   True -> Block 1
 
-#  360| Continue(int) -> void
+#  360| void Continue(int)
 #  360|   Block 0
 #  360|     v0_0(void)       = EnterFunction          : 
 #  360|     mu0_1(unknown)   = AliasedDefinition      : 
@@ -1627,7 +1627,7 @@ ir.cpp:
 #  360|     v5_2(void) = UnmodeledUse : mu*
 #  360|     v5_3(void) = ExitFunction : 
 
-#  372| Call() -> void
+#  372| void Call()
 #  372|   Block 0
 #  372|     v0_0(void)           = EnterFunction             : 
 #  372|     mu0_1(unknown)       = AliasedDefinition         : 
@@ -1640,7 +1640,7 @@ ir.cpp:
 #  372|     v0_8(void)           = UnmodeledUse              : mu*
 #  372|     v0_9(void)           = ExitFunction              : 
 
-#  376| CallAdd(int, int) -> int
+#  376| int CallAdd(int, int)
 #  376|   Block 0
 #  376|     v0_0(void)           = EnterFunction            : 
 #  376|     mu0_1(unknown)       = AliasedDefinition        : 
@@ -1663,7 +1663,7 @@ ir.cpp:
 #  376|     v0_18(void)          = UnmodeledUse             : mu*
 #  376|     v0_19(void)          = ExitFunction             : 
 
-#  380| Comma(int, int) -> int
+#  380| int Comma(int, int)
 #  380|   Block 0
 #  380|     v0_0(void)            = EnterFunction             : 
 #  380|     mu0_1(unknown)        = AliasedDefinition         : 
@@ -1689,7 +1689,7 @@ ir.cpp:
 #  380|     v0_21(void)           = UnmodeledUse              : mu*
 #  380|     v0_22(void)           = ExitFunction              : 
 
-#  384| Switch(int) -> void
+#  384| void Switch(int)
 #  384|   Block 0
 #  384|     v0_0(void)       = EnterFunction          : 
 #  384|     mu0_1(unknown)   = AliasedDefinition      : 
@@ -1770,7 +1770,7 @@ ir.cpp:
 #  384|     v9_3(void) = UnmodeledUse : mu*
 #  384|     v9_4(void) = ExitFunction : 
 
-#  422| ReturnStruct(Point) -> Point
+#  422| Point ReturnStruct(Point)
 #  422|   Block 0
 #  422|     v0_0(void)         = EnterFunction            : 
 #  422|     mu0_1(unknown)     = AliasedDefinition        : 
@@ -1786,7 +1786,7 @@ ir.cpp:
 #  422|     v0_11(void)        = UnmodeledUse             : mu*
 #  422|     v0_12(void)        = ExitFunction             : 
 
-#  426| FieldAccess() -> void
+#  426| void FieldAccess()
 #  426|   Block 0
 #  426|     v0_0(void)          = EnterFunction       : 
 #  426|     mu0_1(unknown)      = AliasedDefinition   : 
@@ -1812,7 +1812,7 @@ ir.cpp:
 #  426|     v0_21(void)         = UnmodeledUse        : mu*
 #  426|     v0_22(void)         = ExitFunction        : 
 
-#  433| LogicalOr(bool, bool) -> void
+#  433| void LogicalOr(bool, bool)
 #  433|   Block 0
 #  433|     v0_0(void)        = EnterFunction          : 
 #  433|     mu0_1(unknown)    = AliasedDefinition      : 
@@ -1874,7 +1874,7 @@ ir.cpp:
 #  433|     v7_2(void) = UnmodeledUse : mu*
 #  433|     v7_3(void) = ExitFunction : 
 
-#  447| LogicalAnd(bool, bool) -> void
+#  447| void LogicalAnd(bool, bool)
 #  447|   Block 0
 #  447|     v0_0(void)        = EnterFunction          : 
 #  447|     mu0_1(unknown)    = AliasedDefinition      : 
@@ -1936,7 +1936,7 @@ ir.cpp:
 #  447|     v7_2(void) = UnmodeledUse : mu*
 #  447|     v7_3(void) = ExitFunction : 
 
-#  461| LogicalNot(bool, bool) -> void
+#  461| void LogicalNot(bool, bool)
 #  461|   Block 0
 #  461|     v0_0(void)        = EnterFunction          : 
 #  461|     mu0_1(unknown)    = AliasedDefinition      : 
@@ -1991,7 +1991,7 @@ ir.cpp:
 #  461|     v6_2(void) = UnmodeledUse : mu*
 #  461|     v6_3(void) = ExitFunction : 
 
-#  475| ConditionValues(bool, bool) -> void
+#  475| void ConditionValues(bool, bool)
 #  475|   Block 0
 #  475|     v0_0(void)        = EnterFunction          : 
 #  475|     mu0_1(unknown)    = AliasedDefinition      : 
@@ -2098,7 +2098,7 @@ ir.cpp:
 #  477|     mu12_2(bool)       = Store                       : r12_0, r12_1
 #-----|   Goto -> Block 11
 
-#  482| Conditional(bool, int, int) -> void
+#  482| void Conditional(bool, int, int)
 #  482|   Block 0
 #  482|     v0_0(void)         = EnterFunction          : 
 #  482|     mu0_1(unknown)     = AliasedDefinition      : 
@@ -2139,7 +2139,7 @@ ir.cpp:
 #  482|     v3_5(void)       = UnmodeledUse                 : mu*
 #  482|     v3_6(void)       = ExitFunction                 : 
 
-#  486| Conditional_LValue(bool) -> void
+#  486| void Conditional_LValue(bool)
 #  486|   Block 0
 #  486|     v0_0(void)         = EnterFunction          : 
 #  486|     mu0_1(unknown)     = AliasedDefinition      : 
@@ -2178,7 +2178,7 @@ ir.cpp:
 #  489|     mu3_2(int)       = Store                       : r3_1, r3_0
 #-----|   Goto -> Block 1
 
-#  492| Conditional_Void(bool) -> void
+#  492| void Conditional_Void(bool)
 #  492|   Block 0
 #  492|     v0_0(void)        = EnterFunction          : 
 #  492|     mu0_1(unknown)    = AliasedDefinition      : 
@@ -2209,7 +2209,7 @@ ir.cpp:
 #  493|     mu3_2(unknown)       = ^CallSideEffect           : mu0_2
 #-----|   Goto -> Block 1
 
-#  496| Nullptr() -> void
+#  496| void Nullptr()
 #  496|   Block 0
 #  496|     v0_0(void)          = EnterFunction       : 
 #  496|     mu0_1(unknown)      = AliasedDefinition   : 
@@ -2231,7 +2231,7 @@ ir.cpp:
 #  496|     v0_17(void)         = UnmodeledUse        : mu*
 #  496|     v0_18(void)         = ExitFunction        : 
 
-#  503| InitList(int, float) -> void
+#  503| void InitList(int, float)
 #  503|   Block 0
 #  503|     v0_0(void)          = EnterFunction          : 
 #  503|     mu0_1(unknown)      = AliasedDefinition      : 
@@ -2279,7 +2279,7 @@ ir.cpp:
 #  503|     v0_43(void)         = UnmodeledUse           : mu*
 #  503|     v0_44(void)         = ExitFunction           : 
 
-#  512| NestedInitList(int, float) -> void
+#  512| void NestedInitList(int, float)
 #  512|   Block 0
 #  512|     v0_0(void)          = EnterFunction             : 
 #  512|     mu0_1(unknown)      = AliasedDefinition         : 
@@ -2356,7 +2356,7 @@ ir.cpp:
 #  512|     v0_72(void)         = UnmodeledUse              : mu*
 #  512|     v0_73(void)         = ExitFunction              : 
 
-#  519| ArrayInit(int, float) -> void
+#  519| void ArrayInit(int, float)
 #  519|   Block 0
 #  519|     v0_0(void)           = EnterFunction          : 
 #  519|     mu0_1(unknown)       = AliasedDefinition      : 
@@ -2404,7 +2404,7 @@ ir.cpp:
 #  519|     v0_43(void)          = UnmodeledUse           : mu*
 #  519|     v0_44(void)          = ExitFunction           : 
 
-#  530| UnionInit(int, float) -> void
+#  530| void UnionInit(int, float)
 #  530|   Block 0
 #  530|     v0_0(void)          = EnterFunction          : 
 #  530|     mu0_1(unknown)      = AliasedDefinition      : 
@@ -2425,7 +2425,7 @@ ir.cpp:
 #  530|     v0_16(void)         = UnmodeledUse           : mu*
 #  530|     v0_17(void)         = ExitFunction           : 
 
-#  535| EarlyReturn(int, int) -> void
+#  535| void EarlyReturn(int, int)
 #  535|   Block 0
 #  535|     v0_0(void)       = EnterFunction          : 
 #  535|     mu0_1(unknown)   = AliasedDefinition      : 
@@ -2460,7 +2460,7 @@ ir.cpp:
 #  541|     v3_4(void)       = NoOp               : 
 #-----|   Goto -> Block 1
 
-#  543| EarlyReturnValue(int, int) -> int
+#  543| int EarlyReturnValue(int, int)
 #  543|   Block 0
 #  543|     v0_0(void)       = EnterFunction          : 
 #  543|     mu0_1(unknown)   = AliasedDefinition      : 
@@ -2501,7 +2501,7 @@ ir.cpp:
 #  548|     mu3_6(int)       = Store                    : r3_0, r3_5
 #-----|   Goto -> Block 1
 
-#  551| CallViaFuncPtr(..(*)(..)) -> int
+#  551| int CallViaFuncPtr(int(*)(int))
 #  551|   Block 0
 #  551|     v0_0(void)             = EnterFunction            : 
 #  551|     mu0_1(unknown)         = AliasedDefinition        : 
@@ -2520,7 +2520,7 @@ ir.cpp:
 #  551|     v0_14(void)            = UnmodeledUse             : mu*
 #  551|     v0_15(void)            = ExitFunction             : 
 
-#  560| EnumSwitch(E) -> int
+#  560| int EnumSwitch(E)
 #  560|   Block 0
 #  560|     v0_0(void)     = EnterFunction          : 
 #  560|     mu0_1(unknown) = AliasedDefinition      : 
@@ -2562,7 +2562,7 @@ ir.cpp:
 #  563|     mu4_3(int)       = Store                    : r4_1, r4_2
 #-----|   Goto -> Block 1
 
-#  571| InitArray() -> void
+#  571| void InitArray()
 #  571|   Block 0
 #  571|     v0_0(void)            = EnterFunction            : 
 #  571|     mu0_1(unknown)        = AliasedDefinition        : 
@@ -2626,7 +2626,7 @@ ir.cpp:
 #  571|     v0_59(void)           = UnmodeledUse             : mu*
 #  571|     v0_60(void)           = ExitFunction             : 
 
-#  584| VarArgs() -> void
+#  584| void VarArgs()
 #  584|   Block 0
 #  584|     v0_0(void)           = EnterFunction                   : 
 #  584|     mu0_1(unknown)       = AliasedDefinition               : 
@@ -2644,7 +2644,7 @@ ir.cpp:
 #  584|     v0_13(void)          = UnmodeledUse                    : mu*
 #  584|     v0_14(void)          = ExitFunction                    : 
 
-#  590| SetFuncPtr() -> void
+#  590| void SetFuncPtr()
 #  590|   Block 0
 #  590|     v0_0(void)              = EnterFunction                  : 
 #  590|     mu0_1(unknown)          = AliasedDefinition              : 
@@ -2666,7 +2666,7 @@ ir.cpp:
 #  590|     v0_17(void)             = UnmodeledUse                   : mu*
 #  590|     v0_18(void)             = ExitFunction                   : 
 
-#  615| DeclareObject() -> void
+#  615| void DeclareObject()
 #  615|   Block 0
 #  615|     v0_0(void)            = EnterFunction                 : 
 #  615|     mu0_1(unknown)        = AliasedDefinition             : 
@@ -2697,7 +2697,7 @@ ir.cpp:
 #  615|     v0_26(void)           = UnmodeledUse                  : mu*
 #  615|     v0_27(void)           = ExitFunction                  : 
 
-#  622| CallMethods(String &, String *, String) -> void
+#  622| void CallMethods(String&, String*, String)
 #  622|   Block 0
 #  622|     v0_0(void)             = EnterFunction          : 
 #  622|     mu0_1(unknown)         = AliasedDefinition      : 
@@ -2730,7 +2730,7 @@ ir.cpp:
 #  622|     v0_28(void)            = UnmodeledUse           : mu*
 #  622|     v0_29(void)            = ExitFunction           : 
 
-#  630| C::StaticMemberFunction(int) -> int
+#  630| int C::StaticMemberFunction(int)
 #  630|   Block 0
 #  630|     v0_0(void)       = EnterFunction            : 
 #  630|     mu0_1(unknown)   = AliasedDefinition        : 
@@ -2746,7 +2746,7 @@ ir.cpp:
 #  630|     v0_11(void)      = UnmodeledUse             : mu*
 #  630|     v0_12(void)      = ExitFunction             : 
 
-#  634| C::InstanceMemberFunction(int) -> int
+#  634| int C::InstanceMemberFunction(int)
 #  634|   Block 0
 #  634|     v0_0(void)        = EnterFunction            : 
 #  634|     mu0_1(unknown)    = AliasedDefinition        : 
@@ -2763,7 +2763,7 @@ ir.cpp:
 #  634|     v0_12(void)       = UnmodeledUse             : mu*
 #  634|     v0_13(void)       = ExitFunction             : 
 
-#  638| C::VirtualMemberFunction(int) -> int
+#  638| int C::VirtualMemberFunction(int)
 #  638|   Block 0
 #  638|     v0_0(void)        = EnterFunction            : 
 #  638|     mu0_1(unknown)    = AliasedDefinition        : 
@@ -2780,7 +2780,7 @@ ir.cpp:
 #  638|     v0_12(void)       = UnmodeledUse             : mu*
 #  638|     v0_13(void)       = ExitFunction             : 
 
-#  642| C::FieldAccess() -> void
+#  642| void C::FieldAccess()
 #  642|   Block 0
 #  642|     v0_0(void)        = EnterFunction       : 
 #  642|     mu0_1(unknown)    = AliasedDefinition   : 
@@ -2820,7 +2820,7 @@ ir.cpp:
 #  642|     v0_35(void)       = UnmodeledUse        : mu*
 #  642|     v0_36(void)       = ExitFunction        : 
 
-#  652| C::MethodCalls() -> void
+#  652| void C::MethodCalls()
 #  652|   Block 0
 #  652|     v0_0(void)            = EnterFunction                           : 
 #  652|     mu0_1(unknown)        = AliasedDefinition                       : 
@@ -2846,7 +2846,7 @@ ir.cpp:
 #  652|     v0_21(void)           = UnmodeledUse                            : mu*
 #  652|     v0_22(void)           = ExitFunction                            : 
 
-#  658| C::C() -> void
+#  658| void C::C()
 #  658|   Block 0
 #  658|     v0_0(void)            = EnterFunction           : 
 #  658|     mu0_1(unknown)        = AliasedDefinition       : 
@@ -2876,7 +2876,7 @@ ir.cpp:
 #  658|     v0_25(void)           = UnmodeledUse            : mu*
 #  658|     v0_26(void)           = ExitFunction            : 
 
-#  675| DerefReference(int &) -> int
+#  675| int DerefReference(int&)
 #  675|   Block 0
 #  675|     v0_0(void)         = EnterFunction            : 
 #  675|     mu0_1(unknown)     = AliasedDefinition        : 
@@ -2893,7 +2893,7 @@ ir.cpp:
 #  675|     v0_12(void)        = UnmodeledUse             : mu*
 #  675|     v0_13(void)        = ExitFunction             : 
 
-#  679| TakeReference() -> int &
+#  679| int& TakeReference()
 #  679|   Block 0
 #  679|     v0_0(void)         = EnterFunction            : 
 #  679|     mu0_1(unknown)     = AliasedDefinition        : 
@@ -2906,7 +2906,7 @@ ir.cpp:
 #  679|     v0_8(void)         = UnmodeledUse             : mu*
 #  679|     v0_9(void)         = ExitFunction             : 
 
-#  685| InitReference(int) -> void
+#  685| void InitReference(int)
 #  685|   Block 0
 #  685|     v0_0(void)             = EnterFunction                    : 
 #  685|     mu0_1(unknown)         = AliasedDefinition                : 
@@ -2931,7 +2931,7 @@ ir.cpp:
 #  685|     v0_20(void)            = UnmodeledUse                     : mu*
 #  685|     v0_21(void)            = ExitFunction                     : 
 
-#  691| ArrayReferences() -> void
+#  691| void ArrayReferences()
 #  691|   Block 0
 #  691|     v0_0(void)              = EnterFunction       : 
 #  691|     mu0_1(unknown)          = AliasedDefinition   : 
@@ -2954,7 +2954,7 @@ ir.cpp:
 #  691|     v0_18(void)             = UnmodeledUse        : mu*
 #  691|     v0_19(void)             = ExitFunction        : 
 
-#  697| FunctionReferences() -> void
+#  697| void FunctionReferences()
 #  697|   Block 0
 #  697|     v0_0(void)              = EnterFunction                  : 
 #  697|     mu0_1(unknown)          = AliasedDefinition              : 
@@ -2976,7 +2976,7 @@ ir.cpp:
 #  697|     v0_17(void)             = UnmodeledUse                   : mu*
 #  697|     v0_18(void)             = ExitFunction                   : 
 
-#  704| min<int>(int, int) -> int
+#  704| int min<int>(int, int)
 #  704|   Block 0
 #  704|     v0_0(void)        = EnterFunction            : 
 #  704|     mu0_1(unknown)    = AliasedDefinition        : 
@@ -3018,7 +3018,7 @@ ir.cpp:
 #  704|     v3_5(void)       = UnmodeledUse                 : mu*
 #  704|     v3_6(void)       = ExitFunction                 : 
 
-#  708| CallMin(int, int) -> int
+#  708| int CallMin(int, int)
 #  708|   Block 0
 #  708|     v0_0(void)           = EnterFunction            : 
 #  708|     mu0_1(unknown)       = AliasedDefinition        : 
@@ -3041,7 +3041,7 @@ ir.cpp:
 #  708|     v0_18(void)          = UnmodeledUse             : mu*
 #  708|     v0_19(void)          = ExitFunction             : 
 
-#  715| Outer<long>::Func<void *, char>(void *, char) -> long
+#  715| long Outer<long>::Func<void*, char>(void*, char)
 #  715|   Block 0
 #  715|     v0_0(void)          = EnterFunction            : 
 #  715|     mu0_1(unknown)      = AliasedDefinition        : 
@@ -3058,7 +3058,7 @@ ir.cpp:
 #  715|     v0_12(void)         = UnmodeledUse             : mu*
 #  715|     v0_13(void)         = ExitFunction             : 
 
-#  720| CallNestedTemplateFunc() -> double
+#  720| double CallNestedTemplateFunc()
 #  720|   Block 0
 #  720|     v0_0(void)           = EnterFunction            : 
 #  720|     mu0_1(unknown)       = AliasedDefinition        : 
@@ -3076,7 +3076,7 @@ ir.cpp:
 #  720|     v0_13(void)          = UnmodeledUse             : mu*
 #  720|     v0_14(void)          = ExitFunction             : 
 
-#  724| TryCatch(bool) -> void
+#  724| void TryCatch(bool)
 #  724|   Block 0
 #  724|     v0_0(void)        = EnterFunction          : 
 #  724|     mu0_1(unknown)    = AliasedDefinition      : 
@@ -3188,24 +3188,7 @@ ir.cpp:
 #  724|     v14_1(void) = ReturnVoid : 
 #-----|   Goto -> Block 1
 
-#  745| Base::Base(const Base &) -> void
-#  745|   Block 0
-#  745|     v0_0(void)           = EnterFunction            : 
-#  745|     mu0_1(unknown)       = AliasedDefinition        : 
-#  745|     mu0_2(unknown)       = UnmodeledDefinition      : 
-#  745|     r0_3(glval<Base>)    = InitializeThis           : 
-#-----|     r0_4(glval<Base &>)  = VariableAddress[p#0]     : 
-#-----|     mu0_5(Base &)        = InitializeParameter[p#0] : r0_4
-#  745|     r0_6(glval<String>)  = FieldAddress[base_s]     : r0_3
-#  745|     r0_7(glval<unknown>) = FunctionAddress[String]  : 
-#  745|     v0_8(void)           = Call                     : r0_7, this:r0_6
-#  745|     mu0_9(unknown)       = ^CallSideEffect          : mu0_2
-#  745|     v0_10(void)          = NoOp                     : 
-#  745|     v0_11(void)          = ReturnVoid               : 
-#  745|     v0_12(void)          = UnmodeledUse             : mu*
-#  745|     v0_13(void)          = ExitFunction             : 
-
-#  745| Base::operator=(const Base &) -> Base &
+#  745| Base& Base::operator=(Base const&)
 #  745|   Block 0
 #  745|     v0_0(void)           = EnterFunction              : 
 #  745|     mu0_1(unknown)       = AliasedDefinition          : 
@@ -3229,7 +3212,24 @@ ir.cpp:
 #  745|     v0_19(void)          = UnmodeledUse               : mu*
 #  745|     v0_20(void)          = ExitFunction               : 
 
-#  748| Base::Base() -> void
+#  745| void Base::Base(Base const&)
+#  745|   Block 0
+#  745|     v0_0(void)           = EnterFunction            : 
+#  745|     mu0_1(unknown)       = AliasedDefinition        : 
+#  745|     mu0_2(unknown)       = UnmodeledDefinition      : 
+#  745|     r0_3(glval<Base>)    = InitializeThis           : 
+#-----|     r0_4(glval<Base &>)  = VariableAddress[p#0]     : 
+#-----|     mu0_5(Base &)        = InitializeParameter[p#0] : r0_4
+#  745|     r0_6(glval<String>)  = FieldAddress[base_s]     : r0_3
+#  745|     r0_7(glval<unknown>) = FunctionAddress[String]  : 
+#  745|     v0_8(void)           = Call                     : r0_7, this:r0_6
+#  745|     mu0_9(unknown)       = ^CallSideEffect          : mu0_2
+#  745|     v0_10(void)          = NoOp                     : 
+#  745|     v0_11(void)          = ReturnVoid               : 
+#  745|     v0_12(void)          = UnmodeledUse             : mu*
+#  745|     v0_13(void)          = ExitFunction             : 
+
+#  748| void Base::Base()
 #  748|   Block 0
 #  748|     v0_0(void)           = EnterFunction           : 
 #  748|     mu0_1(unknown)       = AliasedDefinition       : 
@@ -3244,7 +3244,7 @@ ir.cpp:
 #  748|     v0_10(void)          = UnmodeledUse            : mu*
 #  748|     v0_11(void)          = ExitFunction            : 
 
-#  750| Base::~Base() -> void
+#  750| void Base::~Base()
 #  750|   Block 0
 #  750|     v0_0(void)           = EnterFunction            : 
 #  750|     mu0_1(unknown)       = AliasedDefinition        : 
@@ -3259,7 +3259,7 @@ ir.cpp:
 #  750|     v0_10(void)          = UnmodeledUse             : mu*
 #  750|     v0_11(void)          = ExitFunction             : 
 
-#  754| Middle::operator=(const Middle &) -> Middle &
+#  754| Middle& Middle::operator=(Middle const&)
 #  754|   Block 0
 #  754|     v0_0(void)             = EnterFunction                : 
 #  754|     mu0_1(unknown)         = AliasedDefinition            : 
@@ -3291,7 +3291,7 @@ ir.cpp:
 #  754|     v0_27(void)            = UnmodeledUse                 : mu*
 #  754|     v0_28(void)            = ExitFunction                 : 
 
-#  757| Middle::Middle() -> void
+#  757| void Middle::Middle()
 #  757|   Block 0
 #  757|     v0_0(void)           = EnterFunction                : 
 #  757|     mu0_1(unknown)       = AliasedDefinition            : 
@@ -3310,7 +3310,7 @@ ir.cpp:
 #  757|     v0_14(void)          = UnmodeledUse                 : mu*
 #  757|     v0_15(void)          = ExitFunction                 : 
 
-#  759| Middle::~Middle() -> void
+#  759| void Middle::~Middle()
 #  759|   Block 0
 #  759|     v0_0(void)            = EnterFunction                : 
 #  759|     mu0_1(unknown)        = AliasedDefinition            : 
@@ -3329,7 +3329,7 @@ ir.cpp:
 #  759|     v0_14(void)           = UnmodeledUse                 : mu*
 #  759|     v0_15(void)           = ExitFunction                 : 
 
-#  763| Derived::operator=(const Derived &) -> Derived &
+#  763| Derived& Derived::operator=(Derived const&)
 #  763|   Block 0
 #  763|     v0_0(void)              = EnterFunction                   : 
 #  763|     mu0_1(unknown)          = AliasedDefinition               : 
@@ -3361,7 +3361,7 @@ ir.cpp:
 #  763|     v0_27(void)             = UnmodeledUse                    : mu*
 #  763|     v0_28(void)             = ExitFunction                    : 
 
-#  766| Derived::Derived() -> void
+#  766| void Derived::Derived()
 #  766|   Block 0
 #  766|     v0_0(void)           = EnterFunction                   : 
 #  766|     mu0_1(unknown)       = AliasedDefinition               : 
@@ -3380,7 +3380,7 @@ ir.cpp:
 #  766|     v0_14(void)          = UnmodeledUse                    : mu*
 #  766|     v0_15(void)          = ExitFunction                    : 
 
-#  768| Derived::~Derived() -> void
+#  768| void Derived::~Derived()
 #  768|   Block 0
 #  768|     v0_0(void)            = EnterFunction                   : 
 #  768|     mu0_1(unknown)        = AliasedDefinition               : 
@@ -3399,7 +3399,7 @@ ir.cpp:
 #  768|     v0_14(void)           = UnmodeledUse                    : mu*
 #  768|     v0_15(void)           = ExitFunction                    : 
 
-#  775| MiddleVB1::MiddleVB1() -> void
+#  775| void MiddleVB1::MiddleVB1()
 #  775|   Block 0
 #  775|     v0_0(void)             = EnterFunction                   : 
 #  775|     mu0_1(unknown)         = AliasedDefinition               : 
@@ -3418,7 +3418,7 @@ ir.cpp:
 #  775|     v0_14(void)            = UnmodeledUse                    : mu*
 #  775|     v0_15(void)            = ExitFunction                    : 
 
-#  777| MiddleVB1::~MiddleVB1() -> void
+#  777| void MiddleVB1::~MiddleVB1()
 #  777|   Block 0
 #  777|     v0_0(void)             = EnterFunction                   : 
 #  777|     mu0_1(unknown)         = AliasedDefinition               : 
@@ -3437,7 +3437,7 @@ ir.cpp:
 #  777|     v0_14(void)            = UnmodeledUse                    : mu*
 #  777|     v0_15(void)            = ExitFunction                    : 
 
-#  784| MiddleVB2::MiddleVB2() -> void
+#  784| void MiddleVB2::MiddleVB2()
 #  784|   Block 0
 #  784|     v0_0(void)             = EnterFunction                   : 
 #  784|     mu0_1(unknown)         = AliasedDefinition               : 
@@ -3456,7 +3456,7 @@ ir.cpp:
 #  784|     v0_14(void)            = UnmodeledUse                    : mu*
 #  784|     v0_15(void)            = ExitFunction                    : 
 
-#  786| MiddleVB2::~MiddleVB2() -> void
+#  786| void MiddleVB2::~MiddleVB2()
 #  786|   Block 0
 #  786|     v0_0(void)             = EnterFunction                   : 
 #  786|     mu0_1(unknown)         = AliasedDefinition               : 
@@ -3475,7 +3475,7 @@ ir.cpp:
 #  786|     v0_14(void)            = UnmodeledUse                    : mu*
 #  786|     v0_15(void)            = ExitFunction                    : 
 
-#  793| DerivedVB::DerivedVB() -> void
+#  793| void DerivedVB::DerivedVB()
 #  793|   Block 0
 #  793|     v0_0(void)              = EnterFunction                        : 
 #  793|     mu0_1(unknown)          = AliasedDefinition                    : 
@@ -3502,7 +3502,7 @@ ir.cpp:
 #  793|     v0_22(void)             = UnmodeledUse                         : mu*
 #  793|     v0_23(void)             = ExitFunction                         : 
 
-#  795| DerivedVB::~DerivedVB() -> void
+#  795| void DerivedVB::~DerivedVB()
 #  795|   Block 0
 #  795|     v0_0(void)              = EnterFunction                        : 
 #  795|     mu0_1(unknown)          = AliasedDefinition                    : 
@@ -3529,7 +3529,7 @@ ir.cpp:
 #  795|     v0_22(void)             = UnmodeledUse                         : mu*
 #  795|     v0_23(void)             = ExitFunction                         : 
 
-#  799| HierarchyConversions() -> void
+#  799| void HierarchyConversions()
 #  799|   Block 0
 #  799|     v0_0(void)                 = EnterFunction                          : 
 #  799|     mu0_1(unknown)             = AliasedDefinition                      : 
@@ -3736,7 +3736,7 @@ ir.cpp:
 #  799|     v0_202(void)               = UnmodeledUse                           : mu*
 #  799|     v0_203(void)               = ExitFunction                           : 
 
-#  842| PolymorphicBase::PolymorphicBase() -> void
+#  842| void PolymorphicBase::PolymorphicBase()
 #  842|   Block 0
 #  842|     v0_0(void)                   = EnterFunction       : 
 #  842|     mu0_1(unknown)               = AliasedDefinition   : 
@@ -3747,7 +3747,7 @@ ir.cpp:
 #  842|     v0_6(void)                   = UnmodeledUse        : mu*
 #  842|     v0_7(void)                   = ExitFunction        : 
 
-#  846| PolymorphicDerived::PolymorphicDerived() -> void
+#  846| void PolymorphicDerived::PolymorphicDerived()
 #  846|   Block 0
 #  846|     v0_0(void)                      = EnterFunction                                       : 
 #  846|     mu0_1(unknown)                  = AliasedDefinition                                   : 
@@ -3762,7 +3762,7 @@ ir.cpp:
 #  846|     v0_10(void)                     = UnmodeledUse                                        : mu*
 #  846|     v0_11(void)                     = ExitFunction                                        : 
 
-#  846| PolymorphicDerived::~PolymorphicDerived() -> void
+#  846| void PolymorphicDerived::~PolymorphicDerived()
 #  846|   Block 0
 #  846|     v0_0(void)                      = EnterFunction                                       : 
 #  846|     mu0_1(unknown)                  = AliasedDefinition                                   : 
@@ -3777,7 +3777,7 @@ ir.cpp:
 #  846|     v0_10(void)                     = UnmodeledUse                                        : mu*
 #  846|     v0_11(void)                     = ExitFunction                                        : 
 
-#  849| DynamicCast() -> void
+#  849| void DynamicCast()
 #  849|   Block 0
 #  849|     v0_0(void)                         = EnterFunction                       : 
 #  849|     mu0_1(unknown)                     = AliasedDefinition                   : 
@@ -3829,7 +3829,7 @@ ir.cpp:
 #  849|     v0_47(void)                        = UnmodeledUse                        : mu*
 #  849|     v0_48(void)                        = ExitFunction                        : 
 
-#  867| String::String() -> void
+#  867| void String::String()
 #  867|   Block 0
 #  867|     v0_0(void)           = EnterFunction           : 
 #  867|     mu0_1(unknown)       = AliasedDefinition       : 
@@ -3845,7 +3845,7 @@ ir.cpp:
 #  867|     v0_11(void)          = UnmodeledUse            : mu*
 #  867|     v0_12(void)          = ExitFunction            : 
 
-#  871| ArrayConversions() -> void
+#  871| void ArrayConversions()
 #  871|   Block 0
 #  871|     v0_0(void)               = EnterFunction          : 
 #  871|     mu0_1(unknown)           = AliasedDefinition      : 
@@ -3892,7 +3892,7 @@ ir.cpp:
 #  871|     v0_42(void)              = UnmodeledUse           : mu*
 #  871|     v0_43(void)              = ExitFunction           : 
 
-#  883| FuncPtrConversions(..(*)(..), void *) -> void
+#  883| void FuncPtrConversions(int(*)(int), void*)
 #  883|   Block 0
 #  883|     v0_0(void)              = EnterFunction            : 
 #  883|     mu0_1(unknown)          = AliasedDefinition        : 
@@ -3916,7 +3916,7 @@ ir.cpp:
 #  883|     v0_19(void)             = UnmodeledUse             : mu*
 #  883|     v0_20(void)             = ExitFunction             : 
 
-#  888| VarArgUsage(int) -> void
+#  888| void VarArgUsage(int)
 #  888|   Block 0
 #  888|     v0_0(void)                     = EnterFunction          : 
 #  888|     mu0_1(unknown)                 = AliasedDefinition      : 
@@ -3960,7 +3960,7 @@ ir.cpp:
 #  888|     v0_39(void)                    = UnmodeledUse           : mu*
 #  888|     v0_40(void)                    = ExitFunction           : 
 
-#  900| CastToVoid(int) -> void
+#  900| void CastToVoid(int)
 #  900|   Block 0
 #  900|     v0_0(void)       = EnterFunction          : 
 #  900|     mu0_1(unknown)   = AliasedDefinition      : 
@@ -3974,7 +3974,7 @@ ir.cpp:
 #  900|     v0_9(void)       = UnmodeledUse           : mu*
 #  900|     v0_10(void)      = ExitFunction           : 
 
-#  904| ConstantConditions(int) -> void
+#  904| void ConstantConditions(int)
 #  904|   Block 0
 #  904|     v0_0(void)        = EnterFunction          : 
 #  904|     mu0_1(unknown)    = AliasedDefinition      : 
@@ -4013,7 +4013,7 @@ ir.cpp:
 #  906|     mu3_3(int)       = Store                        : r3_2, r3_1
 #-----|   Goto -> Block 1
 
-#  940| OperatorNew() -> void
+#  940| void OperatorNew()
 #  940|   Block 0
 #  940|     v0_0(void)            = EnterFunction                 : 
 #  940|     mu0_1(unknown)        = AliasedDefinition             : 
@@ -4075,7 +4075,7 @@ ir.cpp:
 #  940|     v0_57(void)           = UnmodeledUse                  : mu*
 #  940|     v0_58(void)           = ExitFunction                  : 
 
-#  950| OperatorNewArray(int) -> void
+#  950| void OperatorNewArray(int)
 #  950|   Block 0
 #  950|     v0_0(void)                           = EnterFunction                   : 
 #  950|     mu0_1(unknown)                       = AliasedDefinition               : 
@@ -4155,7 +4155,7 @@ ir.cpp:
 #  950|     v0_75(void)                          = UnmodeledUse                    : mu*
 #  950|     v0_76(void)                          = ExitFunction                    : 
 
-#  961| designatedInit() -> int
+#  961| int designatedInit()
 #  961|   Block 0
 #  961|     v0_0(void)              = EnterFunction            : 
 #  961|     mu0_1(unknown)          = AliasedDefinition        : 
@@ -4194,7 +4194,7 @@ ir.cpp:
 #  961|     v0_34(void)             = UnmodeledUse             : mu*
 #  961|     v0_35(void)             = ExitFunction             : 
 
-#  966| IfStmtWithDeclaration(int, int) -> void
+#  966| void IfStmtWithDeclaration(int, int)
 #  966|   Block 0
 #  966|     v0_0(void)         = EnterFunction          : 
 #  966|     mu0_1(unknown)     = AliasedDefinition      : 
@@ -4269,7 +4269,7 @@ ir.cpp:
 #  966|     v6_2(void) = UnmodeledUse : mu*
 #  966|     v6_3(void) = ExitFunction : 
 
-#  978| WhileStmtWithDeclaration(int, int) -> void
+#  978| void WhileStmtWithDeclaration(int, int)
 #  978|   Block 0
 #  978|     v0_0(void)       = EnterFunction          : 
 #  978|     mu0_1(unknown)   = AliasedDefinition      : 
@@ -4340,7 +4340,7 @@ ir.cpp:
 #-----|   False -> Block 2
 #-----|   True -> Block 1
 
-# 1005| ChiPhiNode(Point *, bool, bool) -> int
+# 1005| int ChiPhiNode(Point*, bool, bool)
 # 1005|   Block 0
 # 1005|     v0_0(void)           = EnterFunction               : 
 # 1005|     mu0_1(unknown)       = AliasedDefinition           : 
@@ -4421,7 +4421,7 @@ ir.cpp:
 # 1005|     v6_13(void)          = UnmodeledUse             : mu*
 # 1005|     v6_14(void)          = ExitFunction             : 
 
-# 1021| UnreachableViaGoto() -> int
+# 1021| int UnreachableViaGoto()
 # 1021|   Block 0
 # 1021|     v0_0(void)       = EnterFunction            : 
 # 1021|     mu0_1(unknown)   = AliasedDefinition        : 
@@ -4445,7 +4445,7 @@ ir.cpp:
 # 1023|     mu2_2(int)       = Store                    : r2_0, r2_1
 #-----|   Goto -> Block 1
 
-# 1028| UnreachableIf(bool) -> int
+# 1028| int UnreachableIf(bool)
 # 1028|   Block 0
 # 1028|     v0_0(void)         = EnterFunction          : 
 # 1028|     mu0_1(unknown)     = AliasedDefinition      : 
@@ -4514,7 +4514,7 @@ ir.cpp:
 # 1044|     mu7_2(int)       = Store                    : r7_0, r7_1
 #-----|   Goto -> Block 1
 
-# 1049| DoWhileFalse() -> int
+# 1049| int DoWhileFalse()
 # 1049|   Block 0
 # 1049|     v0_0(void)       = EnterFunction       : 
 # 1049|     mu0_1(unknown)   = AliasedDefinition   : 
@@ -4545,7 +4545,7 @@ ir.cpp:
 # 1049|     v2_6(void)       = UnmodeledUse             : mu*
 # 1049|     v2_7(void)       = ExitFunction             : 
 
-# 1058| chiNodeAtEndOfLoop(int, char *) -> void
+# 1058| void chiNodeAtEndOfLoop(int, char*)
 # 1058|   Block 0
 # 1058|     v0_0(void)          = EnterFunction          : 
 # 1058|     mu0_1(unknown)      = AliasedDefinition      : 

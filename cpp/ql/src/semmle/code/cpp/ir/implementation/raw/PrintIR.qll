@@ -1,6 +1,7 @@
 private import IR
 import cpp
 import semmle.code.cpp.ir.IRConfiguration
+private import semmle.code.cpp.Print
 
 private newtype TPrintIRConfiguration = MkPrintIRConfiguration()
 
@@ -130,7 +131,7 @@ class PrintableFunctionIR extends PrintableIRNode, TPrintableFunctionIR {
   }
 
   override string getLabel() {
-    result = funcIR.getFunction().getFullSignature()
+    result = getIdentityString(funcIR.getFunction())
   }
 
   override int getOrder() {
