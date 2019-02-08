@@ -1,71 +1,69 @@
 | AccessorCalls.cs:11:5:17:5 | {...} | AccessorCalls.cs:12:9:12:32 | ...; | semmle.label | successor |
-| AccessorCalls.cs:12:9:12:12 | this access | AccessorCalls.cs:12:9:12:18 | access to field Field | semmle.label | successor |
-| AccessorCalls.cs:12:9:12:18 | access to field Field | AccessorCalls.cs:12:22:12:25 | this access | semmle.label | successor |
+| AccessorCalls.cs:12:9:12:12 | this access | AccessorCalls.cs:12:22:12:25 | this access | semmle.label | successor |
 | AccessorCalls.cs:12:9:12:31 | ... = ... | AccessorCalls.cs:13:9:13:30 | ...; | semmle.label | successor |
 | AccessorCalls.cs:12:9:12:32 | ...; | AccessorCalls.cs:12:9:12:12 | this access | semmle.label | successor |
 | AccessorCalls.cs:12:22:12:25 | this access | AccessorCalls.cs:12:22:12:31 | access to field Field | semmle.label | successor |
 | AccessorCalls.cs:12:22:12:31 | access to field Field | AccessorCalls.cs:12:9:12:31 | ... = ... | semmle.label | successor |
-| AccessorCalls.cs:13:9:13:12 | this access | AccessorCalls.cs:13:9:13:17 | access to property Prop | semmle.label | successor |
-| AccessorCalls.cs:13:9:13:17 | access to property Prop | AccessorCalls.cs:13:21:13:24 | this access | semmle.label | successor |
+| AccessorCalls.cs:13:9:13:12 | this access | AccessorCalls.cs:13:21:13:24 | this access | semmle.label | successor |
+| AccessorCalls.cs:13:9:13:17 | access to property Prop | AccessorCalls.cs:13:9:13:29 | ... = ... | semmle.label | successor |
 | AccessorCalls.cs:13:9:13:29 | ... = ... | AccessorCalls.cs:14:9:14:26 | ...; | semmle.label | successor |
 | AccessorCalls.cs:13:9:13:30 | ...; | AccessorCalls.cs:13:9:13:12 | this access | semmle.label | successor |
 | AccessorCalls.cs:13:21:13:24 | this access | AccessorCalls.cs:13:21:13:29 | access to property Prop | semmle.label | successor |
-| AccessorCalls.cs:13:21:13:29 | access to property Prop | AccessorCalls.cs:13:9:13:29 | ... = ... | semmle.label | successor |
+| AccessorCalls.cs:13:21:13:29 | access to property Prop | AccessorCalls.cs:13:9:13:17 | access to property Prop | semmle.label | successor |
 | AccessorCalls.cs:14:9:14:12 | this access | AccessorCalls.cs:14:14:14:14 | 0 | semmle.label | successor |
-| AccessorCalls.cs:14:9:14:15 | access to indexer | AccessorCalls.cs:14:19:14:22 | this access | semmle.label | successor |
+| AccessorCalls.cs:14:9:14:15 | access to indexer | AccessorCalls.cs:14:9:14:25 | ... = ... | semmle.label | successor |
 | AccessorCalls.cs:14:9:14:25 | ... = ... | AccessorCalls.cs:15:9:15:24 | ...; | semmle.label | successor |
 | AccessorCalls.cs:14:9:14:26 | ...; | AccessorCalls.cs:14:9:14:12 | this access | semmle.label | successor |
-| AccessorCalls.cs:14:14:14:14 | 0 | AccessorCalls.cs:14:9:14:15 | access to indexer | semmle.label | successor |
+| AccessorCalls.cs:14:14:14:14 | 0 | AccessorCalls.cs:14:19:14:22 | this access | semmle.label | successor |
 | AccessorCalls.cs:14:19:14:22 | this access | AccessorCalls.cs:14:24:14:24 | 1 | semmle.label | successor |
-| AccessorCalls.cs:14:19:14:25 | access to indexer | AccessorCalls.cs:14:9:14:25 | ... = ... | semmle.label | successor |
+| AccessorCalls.cs:14:19:14:25 | access to indexer | AccessorCalls.cs:14:9:14:15 | access to indexer | semmle.label | successor |
 | AccessorCalls.cs:14:24:14:24 | 1 | AccessorCalls.cs:14:19:14:25 | access to indexer | semmle.label | successor |
-| AccessorCalls.cs:15:9:15:12 | this access | AccessorCalls.cs:15:9:15:18 | access to event Event | semmle.label | successor |
-| AccessorCalls.cs:15:9:15:18 | access to event Event | AccessorCalls.cs:15:23:15:23 | access to parameter e | semmle.label | successor |
+| AccessorCalls.cs:15:9:15:12 | this access | AccessorCalls.cs:15:23:15:23 | access to parameter e | semmle.label | successor |
+| AccessorCalls.cs:15:9:15:18 | access to event Event | AccessorCalls.cs:15:9:15:23 | ... += ... | semmle.label | successor |
 | AccessorCalls.cs:15:9:15:23 | ... += ... | AccessorCalls.cs:16:9:16:24 | ...; | semmle.label | successor |
 | AccessorCalls.cs:15:9:15:24 | ...; | AccessorCalls.cs:15:9:15:12 | this access | semmle.label | successor |
-| AccessorCalls.cs:15:23:15:23 | access to parameter e | AccessorCalls.cs:15:9:15:23 | ... += ... | semmle.label | successor |
-| AccessorCalls.cs:16:9:16:12 | this access | AccessorCalls.cs:16:9:16:18 | access to event Event | semmle.label | successor |
-| AccessorCalls.cs:16:9:16:18 | access to event Event | AccessorCalls.cs:16:23:16:23 | access to parameter e | semmle.label | successor |
+| AccessorCalls.cs:15:23:15:23 | access to parameter e | AccessorCalls.cs:15:9:15:18 | access to event Event | semmle.label | successor |
+| AccessorCalls.cs:16:9:16:12 | this access | AccessorCalls.cs:16:23:16:23 | access to parameter e | semmle.label | successor |
+| AccessorCalls.cs:16:9:16:18 | access to event Event | AccessorCalls.cs:16:9:16:23 | ... -= ... | semmle.label | successor |
 | AccessorCalls.cs:16:9:16:24 | ...; | AccessorCalls.cs:16:9:16:12 | this access | semmle.label | successor |
-| AccessorCalls.cs:16:23:16:23 | access to parameter e | AccessorCalls.cs:16:9:16:23 | ... -= ... | semmle.label | successor |
+| AccessorCalls.cs:16:23:16:23 | access to parameter e | AccessorCalls.cs:16:9:16:18 | access to event Event | semmle.label | successor |
 | AccessorCalls.cs:20:5:26:5 | {...} | AccessorCalls.cs:21:9:21:36 | ...; | semmle.label | successor |
 | AccessorCalls.cs:21:9:21:12 | this access | AccessorCalls.cs:21:9:21:14 | access to field x | semmle.label | successor |
-| AccessorCalls.cs:21:9:21:14 | access to field x | AccessorCalls.cs:21:9:21:20 | access to field Field | semmle.label | successor |
-| AccessorCalls.cs:21:9:21:20 | access to field Field | AccessorCalls.cs:21:24:21:27 | this access | semmle.label | successor |
+| AccessorCalls.cs:21:9:21:14 | access to field x | AccessorCalls.cs:21:24:21:27 | this access | semmle.label | successor |
 | AccessorCalls.cs:21:9:21:35 | ... = ... | AccessorCalls.cs:22:9:22:34 | ...; | semmle.label | successor |
 | AccessorCalls.cs:21:9:21:36 | ...; | AccessorCalls.cs:21:9:21:12 | this access | semmle.label | successor |
 | AccessorCalls.cs:21:24:21:27 | this access | AccessorCalls.cs:21:24:21:29 | access to field x | semmle.label | successor |
 | AccessorCalls.cs:21:24:21:29 | access to field x | AccessorCalls.cs:21:24:21:35 | access to field Field | semmle.label | successor |
 | AccessorCalls.cs:21:24:21:35 | access to field Field | AccessorCalls.cs:21:9:21:35 | ... = ... | semmle.label | successor |
 | AccessorCalls.cs:22:9:22:12 | this access | AccessorCalls.cs:22:9:22:14 | access to field x | semmle.label | successor |
-| AccessorCalls.cs:22:9:22:14 | access to field x | AccessorCalls.cs:22:9:22:19 | access to property Prop | semmle.label | successor |
-| AccessorCalls.cs:22:9:22:19 | access to property Prop | AccessorCalls.cs:22:23:22:26 | this access | semmle.label | successor |
+| AccessorCalls.cs:22:9:22:14 | access to field x | AccessorCalls.cs:22:23:22:26 | this access | semmle.label | successor |
+| AccessorCalls.cs:22:9:22:19 | access to property Prop | AccessorCalls.cs:22:9:22:33 | ... = ... | semmle.label | successor |
 | AccessorCalls.cs:22:9:22:33 | ... = ... | AccessorCalls.cs:23:9:23:30 | ...; | semmle.label | successor |
 | AccessorCalls.cs:22:9:22:34 | ...; | AccessorCalls.cs:22:9:22:12 | this access | semmle.label | successor |
 | AccessorCalls.cs:22:23:22:26 | this access | AccessorCalls.cs:22:23:22:28 | access to field x | semmle.label | successor |
 | AccessorCalls.cs:22:23:22:28 | access to field x | AccessorCalls.cs:22:23:22:33 | access to property Prop | semmle.label | successor |
-| AccessorCalls.cs:22:23:22:33 | access to property Prop | AccessorCalls.cs:22:9:22:33 | ... = ... | semmle.label | successor |
+| AccessorCalls.cs:22:23:22:33 | access to property Prop | AccessorCalls.cs:22:9:22:19 | access to property Prop | semmle.label | successor |
 | AccessorCalls.cs:23:9:23:12 | this access | AccessorCalls.cs:23:9:23:14 | access to field x | semmle.label | successor |
 | AccessorCalls.cs:23:9:23:14 | access to field x | AccessorCalls.cs:23:16:23:16 | 0 | semmle.label | successor |
-| AccessorCalls.cs:23:9:23:17 | access to indexer | AccessorCalls.cs:23:21:23:24 | this access | semmle.label | successor |
+| AccessorCalls.cs:23:9:23:17 | access to indexer | AccessorCalls.cs:23:9:23:29 | ... = ... | semmle.label | successor |
 | AccessorCalls.cs:23:9:23:29 | ... = ... | AccessorCalls.cs:24:9:24:26 | ...; | semmle.label | successor |
 | AccessorCalls.cs:23:9:23:30 | ...; | AccessorCalls.cs:23:9:23:12 | this access | semmle.label | successor |
-| AccessorCalls.cs:23:16:23:16 | 0 | AccessorCalls.cs:23:9:23:17 | access to indexer | semmle.label | successor |
+| AccessorCalls.cs:23:16:23:16 | 0 | AccessorCalls.cs:23:21:23:24 | this access | semmle.label | successor |
 | AccessorCalls.cs:23:21:23:24 | this access | AccessorCalls.cs:23:21:23:26 | access to field x | semmle.label | successor |
 | AccessorCalls.cs:23:21:23:26 | access to field x | AccessorCalls.cs:23:28:23:28 | 1 | semmle.label | successor |
-| AccessorCalls.cs:23:21:23:29 | access to indexer | AccessorCalls.cs:23:9:23:29 | ... = ... | semmle.label | successor |
+| AccessorCalls.cs:23:21:23:29 | access to indexer | AccessorCalls.cs:23:9:23:17 | access to indexer | semmle.label | successor |
 | AccessorCalls.cs:23:28:23:28 | 1 | AccessorCalls.cs:23:21:23:29 | access to indexer | semmle.label | successor |
 | AccessorCalls.cs:24:9:24:12 | this access | AccessorCalls.cs:24:9:24:14 | access to field x | semmle.label | successor |
-| AccessorCalls.cs:24:9:24:14 | access to field x | AccessorCalls.cs:24:9:24:20 | access to event Event | semmle.label | successor |
-| AccessorCalls.cs:24:9:24:20 | access to event Event | AccessorCalls.cs:24:25:24:25 | access to parameter e | semmle.label | successor |
+| AccessorCalls.cs:24:9:24:14 | access to field x | AccessorCalls.cs:24:25:24:25 | access to parameter e | semmle.label | successor |
+| AccessorCalls.cs:24:9:24:20 | access to event Event | AccessorCalls.cs:24:9:24:25 | ... += ... | semmle.label | successor |
 | AccessorCalls.cs:24:9:24:25 | ... += ... | AccessorCalls.cs:25:9:25:26 | ...; | semmle.label | successor |
 | AccessorCalls.cs:24:9:24:26 | ...; | AccessorCalls.cs:24:9:24:12 | this access | semmle.label | successor |
-| AccessorCalls.cs:24:25:24:25 | access to parameter e | AccessorCalls.cs:24:9:24:25 | ... += ... | semmle.label | successor |
+| AccessorCalls.cs:24:25:24:25 | access to parameter e | AccessorCalls.cs:24:9:24:20 | access to event Event | semmle.label | successor |
 | AccessorCalls.cs:25:9:25:12 | this access | AccessorCalls.cs:25:9:25:14 | access to field x | semmle.label | successor |
-| AccessorCalls.cs:25:9:25:14 | access to field x | AccessorCalls.cs:25:9:25:20 | access to event Event | semmle.label | successor |
-| AccessorCalls.cs:25:9:25:20 | access to event Event | AccessorCalls.cs:25:25:25:25 | access to parameter e | semmle.label | successor |
+| AccessorCalls.cs:25:9:25:14 | access to field x | AccessorCalls.cs:25:25:25:25 | access to parameter e | semmle.label | successor |
+| AccessorCalls.cs:25:9:25:20 | access to event Event | AccessorCalls.cs:25:9:25:25 | ... -= ... | semmle.label | successor |
 | AccessorCalls.cs:25:9:25:26 | ...; | AccessorCalls.cs:25:9:25:12 | this access | semmle.label | successor |
-| AccessorCalls.cs:25:25:25:25 | access to parameter e | AccessorCalls.cs:25:9:25:25 | ... -= ... | semmle.label | successor |
+| AccessorCalls.cs:25:25:25:25 | access to parameter e | AccessorCalls.cs:25:9:25:20 | access to event Event | semmle.label | successor |
 | AccessorCalls.cs:29:5:33:5 | {...} | AccessorCalls.cs:30:9:30:21 | ...; | semmle.label | successor |
 | AccessorCalls.cs:30:9:30:12 | this access | AccessorCalls.cs:30:9:30:18 | access to field Field | semmle.label | successor |
 | AccessorCalls.cs:30:9:30:18 | access to field Field | AccessorCalls.cs:30:9:30:20 | ...++ | semmle.label | successor |
@@ -96,31 +94,30 @@
 | AccessorCalls.cs:39:9:39:20 | ...; | AccessorCalls.cs:39:9:39:12 | this access | semmle.label | successor |
 | AccessorCalls.cs:39:16:39:16 | 0 | AccessorCalls.cs:39:9:39:17 | access to indexer | semmle.label | successor |
 | AccessorCalls.cs:43:5:47:5 | {...} | AccessorCalls.cs:44:9:44:33 | ...; | semmle.label | successor |
+| AccessorCalls.cs:44:9:44:12 | this access | AccessorCalls.cs:44:9:44:12 | this access | semmle.label | successor |
 | AccessorCalls.cs:44:9:44:12 | this access | AccessorCalls.cs:44:9:44:18 | access to field Field | semmle.label | successor |
-| AccessorCalls.cs:44:9:44:12 | this access | AccessorCalls.cs:44:9:44:18 | access to field Field | semmle.label | successor |
-| AccessorCalls.cs:44:9:44:18 | access to field Field | AccessorCalls.cs:44:9:44:12 | this access | semmle.label | successor |
 | AccessorCalls.cs:44:9:44:18 | access to field Field | AccessorCalls.cs:44:23:44:26 | this access | semmle.label | successor |
 | AccessorCalls.cs:44:9:44:32 | ... + ... | AccessorCalls.cs:44:9:44:32 | ... = ... | semmle.label | successor |
 | AccessorCalls.cs:44:9:44:32 | ... = ... | AccessorCalls.cs:45:9:45:31 | ...; | semmle.label | successor |
 | AccessorCalls.cs:44:9:44:33 | ...; | AccessorCalls.cs:44:9:44:12 | this access | semmle.label | successor |
 | AccessorCalls.cs:44:23:44:26 | this access | AccessorCalls.cs:44:23:44:32 | access to field Field | semmle.label | successor |
 | AccessorCalls.cs:44:23:44:32 | access to field Field | AccessorCalls.cs:44:9:44:32 | ... + ... | semmle.label | successor |
+| AccessorCalls.cs:45:9:45:12 | this access | AccessorCalls.cs:45:9:45:12 | this access | semmle.label | successor |
 | AccessorCalls.cs:45:9:45:12 | this access | AccessorCalls.cs:45:9:45:17 | access to property Prop | semmle.label | successor |
-| AccessorCalls.cs:45:9:45:12 | this access | AccessorCalls.cs:45:9:45:17 | access to property Prop | semmle.label | successor |
-| AccessorCalls.cs:45:9:45:17 | access to property Prop | AccessorCalls.cs:45:9:45:12 | this access | semmle.label | successor |
+| AccessorCalls.cs:45:9:45:17 | access to property Prop | AccessorCalls.cs:45:9:45:30 | ... = ... | semmle.label | successor |
 | AccessorCalls.cs:45:9:45:17 | access to property Prop | AccessorCalls.cs:45:22:45:25 | this access | semmle.label | successor |
-| AccessorCalls.cs:45:9:45:30 | ... + ... | AccessorCalls.cs:45:9:45:30 | ... = ... | semmle.label | successor |
+| AccessorCalls.cs:45:9:45:30 | ... + ... | AccessorCalls.cs:45:9:45:17 | access to property Prop | semmle.label | successor |
 | AccessorCalls.cs:45:9:45:30 | ... = ... | AccessorCalls.cs:46:9:46:27 | ...; | semmle.label | successor |
 | AccessorCalls.cs:45:9:45:31 | ...; | AccessorCalls.cs:45:9:45:12 | this access | semmle.label | successor |
 | AccessorCalls.cs:45:22:45:25 | this access | AccessorCalls.cs:45:22:45:30 | access to property Prop | semmle.label | successor |
 | AccessorCalls.cs:45:22:45:30 | access to property Prop | AccessorCalls.cs:45:9:45:30 | ... + ... | semmle.label | successor |
 | AccessorCalls.cs:46:9:46:12 | this access | AccessorCalls.cs:46:14:46:14 | 0 | semmle.label | successor |
 | AccessorCalls.cs:46:9:46:12 | this access | AccessorCalls.cs:46:14:46:14 | 0 | semmle.label | successor |
-| AccessorCalls.cs:46:9:46:15 | access to indexer | AccessorCalls.cs:46:9:46:12 | this access | semmle.label | successor |
+| AccessorCalls.cs:46:9:46:15 | access to indexer | AccessorCalls.cs:46:9:46:26 | ... = ... | semmle.label | successor |
 | AccessorCalls.cs:46:9:46:15 | access to indexer | AccessorCalls.cs:46:20:46:23 | this access | semmle.label | successor |
-| AccessorCalls.cs:46:9:46:26 | ... + ... | AccessorCalls.cs:46:9:46:26 | ... = ... | semmle.label | successor |
+| AccessorCalls.cs:46:9:46:26 | ... + ... | AccessorCalls.cs:46:9:46:15 | access to indexer | semmle.label | successor |
 | AccessorCalls.cs:46:9:46:27 | ...; | AccessorCalls.cs:46:9:46:12 | this access | semmle.label | successor |
-| AccessorCalls.cs:46:14:46:14 | 0 | AccessorCalls.cs:46:9:46:15 | access to indexer | semmle.label | successor |
+| AccessorCalls.cs:46:14:46:14 | 0 | AccessorCalls.cs:46:9:46:12 | this access | semmle.label | successor |
 | AccessorCalls.cs:46:14:46:14 | 0 | AccessorCalls.cs:46:9:46:15 | access to indexer | semmle.label | successor |
 | AccessorCalls.cs:46:20:46:23 | this access | AccessorCalls.cs:46:25:46:25 | 0 | semmle.label | successor |
 | AccessorCalls.cs:46:20:46:26 | access to indexer | AccessorCalls.cs:46:9:46:26 | ... + ... | semmle.label | successor |
@@ -128,9 +125,8 @@
 | AccessorCalls.cs:50:5:54:5 | {...} | AccessorCalls.cs:51:9:51:37 | ...; | semmle.label | successor |
 | AccessorCalls.cs:51:9:51:12 | this access | AccessorCalls.cs:51:9:51:14 | access to field x | semmle.label | successor |
 | AccessorCalls.cs:51:9:51:12 | this access | AccessorCalls.cs:51:9:51:14 | access to field x | semmle.label | successor |
+| AccessorCalls.cs:51:9:51:14 | access to field x | AccessorCalls.cs:51:9:51:12 | this access | semmle.label | successor |
 | AccessorCalls.cs:51:9:51:14 | access to field x | AccessorCalls.cs:51:9:51:20 | access to field Field | semmle.label | successor |
-| AccessorCalls.cs:51:9:51:14 | access to field x | AccessorCalls.cs:51:9:51:20 | access to field Field | semmle.label | successor |
-| AccessorCalls.cs:51:9:51:20 | access to field Field | AccessorCalls.cs:51:9:51:12 | this access | semmle.label | successor |
 | AccessorCalls.cs:51:9:51:20 | access to field Field | AccessorCalls.cs:51:25:51:28 | this access | semmle.label | successor |
 | AccessorCalls.cs:51:9:51:36 | ... + ... | AccessorCalls.cs:51:9:51:36 | ... = ... | semmle.label | successor |
 | AccessorCalls.cs:51:9:51:36 | ... = ... | AccessorCalls.cs:52:9:52:35 | ...; | semmle.label | successor |
@@ -140,11 +136,11 @@
 | AccessorCalls.cs:51:25:51:36 | access to field Field | AccessorCalls.cs:51:9:51:36 | ... + ... | semmle.label | successor |
 | AccessorCalls.cs:52:9:52:12 | this access | AccessorCalls.cs:52:9:52:14 | access to field x | semmle.label | successor |
 | AccessorCalls.cs:52:9:52:12 | this access | AccessorCalls.cs:52:9:52:14 | access to field x | semmle.label | successor |
+| AccessorCalls.cs:52:9:52:14 | access to field x | AccessorCalls.cs:52:9:52:12 | this access | semmle.label | successor |
 | AccessorCalls.cs:52:9:52:14 | access to field x | AccessorCalls.cs:52:9:52:19 | access to property Prop | semmle.label | successor |
-| AccessorCalls.cs:52:9:52:14 | access to field x | AccessorCalls.cs:52:9:52:19 | access to property Prop | semmle.label | successor |
-| AccessorCalls.cs:52:9:52:19 | access to property Prop | AccessorCalls.cs:52:9:52:12 | this access | semmle.label | successor |
+| AccessorCalls.cs:52:9:52:19 | access to property Prop | AccessorCalls.cs:52:9:52:34 | ... = ... | semmle.label | successor |
 | AccessorCalls.cs:52:9:52:19 | access to property Prop | AccessorCalls.cs:52:24:52:27 | this access | semmle.label | successor |
-| AccessorCalls.cs:52:9:52:34 | ... + ... | AccessorCalls.cs:52:9:52:34 | ... = ... | semmle.label | successor |
+| AccessorCalls.cs:52:9:52:34 | ... + ... | AccessorCalls.cs:52:9:52:19 | access to property Prop | semmle.label | successor |
 | AccessorCalls.cs:52:9:52:34 | ... = ... | AccessorCalls.cs:53:9:53:31 | ...; | semmle.label | successor |
 | AccessorCalls.cs:52:9:52:35 | ...; | AccessorCalls.cs:52:9:52:12 | this access | semmle.label | successor |
 | AccessorCalls.cs:52:24:52:27 | this access | AccessorCalls.cs:52:24:52:29 | access to field x | semmle.label | successor |
@@ -154,11 +150,11 @@
 | AccessorCalls.cs:53:9:53:12 | this access | AccessorCalls.cs:53:9:53:14 | access to field x | semmle.label | successor |
 | AccessorCalls.cs:53:9:53:14 | access to field x | AccessorCalls.cs:53:16:53:16 | 0 | semmle.label | successor |
 | AccessorCalls.cs:53:9:53:14 | access to field x | AccessorCalls.cs:53:16:53:16 | 0 | semmle.label | successor |
-| AccessorCalls.cs:53:9:53:17 | access to indexer | AccessorCalls.cs:53:9:53:12 | this access | semmle.label | successor |
+| AccessorCalls.cs:53:9:53:17 | access to indexer | AccessorCalls.cs:53:9:53:30 | ... = ... | semmle.label | successor |
 | AccessorCalls.cs:53:9:53:17 | access to indexer | AccessorCalls.cs:53:22:53:25 | this access | semmle.label | successor |
-| AccessorCalls.cs:53:9:53:30 | ... + ... | AccessorCalls.cs:53:9:53:30 | ... = ... | semmle.label | successor |
+| AccessorCalls.cs:53:9:53:30 | ... + ... | AccessorCalls.cs:53:9:53:17 | access to indexer | semmle.label | successor |
 | AccessorCalls.cs:53:9:53:31 | ...; | AccessorCalls.cs:53:9:53:12 | this access | semmle.label | successor |
-| AccessorCalls.cs:53:16:53:16 | 0 | AccessorCalls.cs:53:9:53:17 | access to indexer | semmle.label | successor |
+| AccessorCalls.cs:53:16:53:16 | 0 | AccessorCalls.cs:53:9:53:12 | this access | semmle.label | successor |
 | AccessorCalls.cs:53:16:53:16 | 0 | AccessorCalls.cs:53:9:53:17 | access to indexer | semmle.label | successor |
 | AccessorCalls.cs:53:22:53:25 | this access | AccessorCalls.cs:53:22:53:27 | access to field x | semmle.label | successor |
 | AccessorCalls.cs:53:22:53:27 | access to field x | AccessorCalls.cs:53:29:53:29 | 0 | semmle.label | successor |
@@ -167,16 +163,14 @@
 | AccessorCalls.cs:57:5:59:5 | {...} | AccessorCalls.cs:58:9:58:86 | ...; | semmle.label | successor |
 | AccessorCalls.cs:58:9:58:45 | (..., ...) | AccessorCalls.cs:58:50:58:53 | this access | semmle.label | successor |
 | AccessorCalls.cs:58:9:58:86 | ...; | AccessorCalls.cs:58:10:58:13 | this access | semmle.label | successor |
-| AccessorCalls.cs:58:10:58:13 | this access | AccessorCalls.cs:58:10:58:19 | access to field Field | semmle.label | successor |
-| AccessorCalls.cs:58:10:58:19 | access to field Field | AccessorCalls.cs:58:22:58:25 | this access | semmle.label | successor |
-| AccessorCalls.cs:58:22:58:25 | this access | AccessorCalls.cs:58:22:58:30 | access to property Prop | semmle.label | successor |
-| AccessorCalls.cs:58:22:58:30 | access to property Prop | AccessorCalls.cs:58:34:58:34 | access to parameter i | semmle.label | successor |
+| AccessorCalls.cs:58:10:58:13 | this access | AccessorCalls.cs:58:22:58:25 | this access | semmle.label | successor |
+| AccessorCalls.cs:58:22:58:25 | this access | AccessorCalls.cs:58:37:58:40 | this access | semmle.label | successor |
+| AccessorCalls.cs:58:22:58:30 | access to property Prop | AccessorCalls.cs:58:37:58:43 | access to indexer | semmle.label | successor |
 | AccessorCalls.cs:58:33:58:44 | (..., ...) | AccessorCalls.cs:58:9:58:45 | (..., ...) | semmle.label | successor |
-| AccessorCalls.cs:58:34:58:34 | access to parameter i | AccessorCalls.cs:58:37:58:40 | this access | semmle.label | successor |
 | AccessorCalls.cs:58:37:58:40 | this access | AccessorCalls.cs:58:42:58:42 | 0 | semmle.label | successor |
-| AccessorCalls.cs:58:37:58:43 | access to indexer | AccessorCalls.cs:58:33:58:44 | (..., ...) | semmle.label | successor |
-| AccessorCalls.cs:58:42:58:42 | 0 | AccessorCalls.cs:58:37:58:43 | access to indexer | semmle.label | successor |
-| AccessorCalls.cs:58:49:58:85 | (..., ...) | AccessorCalls.cs:58:9:58:85 | ... = ... | semmle.label | successor |
+| AccessorCalls.cs:58:37:58:43 | access to indexer | AccessorCalls.cs:58:9:58:85 | ... = ... | semmle.label | successor |
+| AccessorCalls.cs:58:42:58:42 | 0 | AccessorCalls.cs:58:33:58:44 | (..., ...) | semmle.label | successor |
+| AccessorCalls.cs:58:49:58:85 | (..., ...) | AccessorCalls.cs:58:22:58:30 | access to property Prop | semmle.label | successor |
 | AccessorCalls.cs:58:50:58:53 | this access | AccessorCalls.cs:58:50:58:59 | access to field Field | semmle.label | successor |
 | AccessorCalls.cs:58:50:58:59 | access to field Field | AccessorCalls.cs:58:62:58:65 | this access | semmle.label | successor |
 | AccessorCalls.cs:58:62:58:65 | this access | AccessorCalls.cs:58:62:58:70 | access to property Prop | semmle.label | successor |
@@ -190,18 +184,16 @@
 | AccessorCalls.cs:63:9:63:51 | (..., ...) | AccessorCalls.cs:63:56:63:59 | this access | semmle.label | successor |
 | AccessorCalls.cs:63:9:63:98 | ...; | AccessorCalls.cs:63:10:63:13 | this access | semmle.label | successor |
 | AccessorCalls.cs:63:10:63:13 | this access | AccessorCalls.cs:63:10:63:15 | access to field x | semmle.label | successor |
-| AccessorCalls.cs:63:10:63:15 | access to field x | AccessorCalls.cs:63:10:63:21 | access to field Field | semmle.label | successor |
-| AccessorCalls.cs:63:10:63:21 | access to field Field | AccessorCalls.cs:63:24:63:27 | this access | semmle.label | successor |
+| AccessorCalls.cs:63:10:63:15 | access to field x | AccessorCalls.cs:63:24:63:27 | this access | semmle.label | successor |
 | AccessorCalls.cs:63:24:63:27 | this access | AccessorCalls.cs:63:24:63:29 | access to field x | semmle.label | successor |
-| AccessorCalls.cs:63:24:63:29 | access to field x | AccessorCalls.cs:63:24:63:34 | access to property Prop | semmle.label | successor |
-| AccessorCalls.cs:63:24:63:34 | access to property Prop | AccessorCalls.cs:63:38:63:38 | access to parameter i | semmle.label | successor |
+| AccessorCalls.cs:63:24:63:29 | access to field x | AccessorCalls.cs:63:41:63:44 | this access | semmle.label | successor |
+| AccessorCalls.cs:63:24:63:34 | access to property Prop | AccessorCalls.cs:63:41:63:49 | access to indexer | semmle.label | successor |
 | AccessorCalls.cs:63:37:63:50 | (..., ...) | AccessorCalls.cs:63:9:63:51 | (..., ...) | semmle.label | successor |
-| AccessorCalls.cs:63:38:63:38 | access to parameter i | AccessorCalls.cs:63:41:63:44 | this access | semmle.label | successor |
 | AccessorCalls.cs:63:41:63:44 | this access | AccessorCalls.cs:63:41:63:46 | access to field x | semmle.label | successor |
 | AccessorCalls.cs:63:41:63:46 | access to field x | AccessorCalls.cs:63:48:63:48 | 0 | semmle.label | successor |
-| AccessorCalls.cs:63:41:63:49 | access to indexer | AccessorCalls.cs:63:37:63:50 | (..., ...) | semmle.label | successor |
-| AccessorCalls.cs:63:48:63:48 | 0 | AccessorCalls.cs:63:41:63:49 | access to indexer | semmle.label | successor |
-| AccessorCalls.cs:63:55:63:97 | (..., ...) | AccessorCalls.cs:63:9:63:97 | ... = ... | semmle.label | successor |
+| AccessorCalls.cs:63:41:63:49 | access to indexer | AccessorCalls.cs:63:9:63:97 | ... = ... | semmle.label | successor |
+| AccessorCalls.cs:63:48:63:48 | 0 | AccessorCalls.cs:63:37:63:50 | (..., ...) | semmle.label | successor |
+| AccessorCalls.cs:63:55:63:97 | (..., ...) | AccessorCalls.cs:63:24:63:34 | access to property Prop | semmle.label | successor |
 | AccessorCalls.cs:63:56:63:59 | this access | AccessorCalls.cs:63:56:63:61 | access to field x | semmle.label | successor |
 | AccessorCalls.cs:63:56:63:61 | access to field x | AccessorCalls.cs:63:56:63:67 | access to field Field | semmle.label | successor |
 | AccessorCalls.cs:63:56:63:67 | access to field Field | AccessorCalls.cs:63:70:63:73 | this access | semmle.label | successor |
@@ -228,41 +220,35 @@
 | ArrayCreation.cs:9:45:9:45 | 2 | ArrayCreation.cs:9:48:9:48 | 3 | semmle.label | successor |
 | ArrayCreation.cs:9:48:9:48 | 3 | ArrayCreation.cs:9:43:9:50 | { ..., ... } | semmle.label | successor |
 | Assignments.cs:4:5:15:5 | {...} | Assignments.cs:5:9:5:18 | ... ...; | semmle.label | successor |
-| Assignments.cs:5:9:5:18 | ... ...; | Assignments.cs:5:13:5:13 | access to local variable x | semmle.label | successor |
-| Assignments.cs:5:13:5:13 | access to local variable x | Assignments.cs:5:17:5:17 | 0 | semmle.label | successor |
+| Assignments.cs:5:9:5:18 | ... ...; | Assignments.cs:5:17:5:17 | 0 | semmle.label | successor |
 | Assignments.cs:5:13:5:17 | Int32 x = ... | Assignments.cs:6:9:6:15 | ...; | semmle.label | successor |
 | Assignments.cs:5:17:5:17 | 0 | Assignments.cs:5:13:5:17 | Int32 x = ... | semmle.label | successor |
-| Assignments.cs:6:9:6:9 | access to local variable x | Assignments.cs:6:9:6:9 | access to local variable x | semmle.label | successor |
 | Assignments.cs:6:9:6:9 | access to local variable x | Assignments.cs:6:14:6:14 | 1 | semmle.label | successor |
 | Assignments.cs:6:9:6:14 | ... + ... | Assignments.cs:6:9:6:14 | ... = ... | semmle.label | successor |
 | Assignments.cs:6:9:6:14 | ... = ... | Assignments.cs:8:9:8:22 | ... ...; | semmle.label | successor |
 | Assignments.cs:6:9:6:15 | ...; | Assignments.cs:6:9:6:9 | access to local variable x | semmle.label | successor |
 | Assignments.cs:6:14:6:14 | 1 | Assignments.cs:6:9:6:14 | ... + ... | semmle.label | successor |
-| Assignments.cs:8:9:8:22 | ... ...; | Assignments.cs:8:17:8:17 | access to local variable d | semmle.label | successor |
-| Assignments.cs:8:17:8:17 | access to local variable d | Assignments.cs:8:21:8:21 | 0 | semmle.label | successor |
+| Assignments.cs:8:9:8:22 | ... ...; | Assignments.cs:8:21:8:21 | 0 | semmle.label | successor |
 | Assignments.cs:8:17:8:21 | dynamic d = ... | Assignments.cs:9:9:9:15 | ...; | semmle.label | successor |
 | Assignments.cs:8:21:8:21 | 0 | Assignments.cs:8:21:8:21 | (...) ... | semmle.label | successor |
 | Assignments.cs:8:21:8:21 | (...) ... | Assignments.cs:8:17:8:21 | dynamic d = ... | semmle.label | successor |
-| Assignments.cs:9:9:9:9 | access to local variable d | Assignments.cs:9:9:9:9 | access to local variable d | semmle.label | successor |
 | Assignments.cs:9:9:9:9 | access to local variable d | Assignments.cs:9:14:9:14 | 2 | semmle.label | successor |
 | Assignments.cs:9:9:9:14 | ... = ... | Assignments.cs:11:9:11:34 | ... ...; | semmle.label | successor |
 | Assignments.cs:9:9:9:14 | dynamic call to operator - | Assignments.cs:9:9:9:14 | ... = ... | semmle.label | successor |
 | Assignments.cs:9:9:9:15 | ...; | Assignments.cs:9:9:9:9 | access to local variable d | semmle.label | successor |
 | Assignments.cs:9:14:9:14 | 2 | Assignments.cs:9:9:9:14 | dynamic call to operator - | semmle.label | successor |
-| Assignments.cs:11:9:11:34 | ... ...; | Assignments.cs:11:13:11:13 | access to local variable a | semmle.label | successor |
-| Assignments.cs:11:13:11:13 | access to local variable a | Assignments.cs:11:17:11:33 | object creation of type Assignments | semmle.label | successor |
+| Assignments.cs:11:9:11:34 | ... ...; | Assignments.cs:11:17:11:33 | object creation of type Assignments | semmle.label | successor |
 | Assignments.cs:11:13:11:33 | Assignments a = ... | Assignments.cs:12:9:12:18 | ...; | semmle.label | successor |
 | Assignments.cs:11:17:11:33 | object creation of type Assignments | Assignments.cs:11:13:11:33 | Assignments a = ... | semmle.label | successor |
-| Assignments.cs:12:9:12:9 | access to local variable a | Assignments.cs:12:9:12:9 | access to local variable a | semmle.label | successor |
 | Assignments.cs:12:9:12:9 | access to local variable a | Assignments.cs:12:14:12:17 | this access | semmle.label | successor |
 | Assignments.cs:12:9:12:17 | ... = ... | Assignments.cs:14:9:14:36 | ...; | semmle.label | successor |
 | Assignments.cs:12:9:12:17 | call to operator + | Assignments.cs:12:9:12:17 | ... = ... | semmle.label | successor |
 | Assignments.cs:12:9:12:18 | ...; | Assignments.cs:12:9:12:9 | access to local variable a | semmle.label | successor |
 | Assignments.cs:12:14:12:17 | this access | Assignments.cs:12:9:12:17 | call to operator + | semmle.label | successor |
-| Assignments.cs:14:9:14:13 | access to event Event | Assignments.cs:14:18:14:35 | (...) => ... | semmle.label | successor |
-| Assignments.cs:14:9:14:13 | this access | Assignments.cs:14:9:14:13 | access to event Event | semmle.label | successor |
+| Assignments.cs:14:9:14:13 | access to event Event | Assignments.cs:14:9:14:35 | ... += ... | semmle.label | successor |
+| Assignments.cs:14:9:14:13 | this access | Assignments.cs:14:18:14:35 | (...) => ... | semmle.label | successor |
 | Assignments.cs:14:9:14:36 | ...; | Assignments.cs:14:9:14:13 | this access | semmle.label | successor |
-| Assignments.cs:14:18:14:35 | (...) => ... | Assignments.cs:14:9:14:35 | ... += ... | semmle.label | successor |
+| Assignments.cs:14:18:14:35 | (...) => ... | Assignments.cs:14:9:14:13 | access to event Event | semmle.label | successor |
 | Assignments.cs:18:5:20:5 | {...} | Assignments.cs:19:16:19:16 | access to parameter x | semmle.label | successor |
 | Assignments.cs:19:16:19:16 | access to parameter x | Assignments.cs:19:9:19:17 | return ...; | semmle.label | successor |
 | BreakInTry.cs:4:5:18:5 | {...} | BreakInTry.cs:5:9:17:9 | try {...} ... | semmle.label | successor |
@@ -432,19 +418,16 @@
 | ConditionalAccess.cs:19:40:19:41 | access to parameter s1 | ConditionalAccess.cs:19:58:19:59 | access to parameter s2 | semmle.label | non-null |
 | ConditionalAccess.cs:19:58:19:59 | access to parameter s2 | ConditionalAccess.cs:19:43:19:60 | call to method CommaJoinWith | semmle.label | successor |
 | ConditionalAccess.cs:22:5:26:5 | {...} | ConditionalAccess.cs:23:9:23:39 | ... ...; | semmle.label | successor |
-| ConditionalAccess.cs:23:9:23:39 | ... ...; | ConditionalAccess.cs:23:13:23:13 | access to local variable j | semmle.label | successor |
-| ConditionalAccess.cs:23:13:23:13 | access to local variable j | ConditionalAccess.cs:23:26:23:29 | null | semmle.label | successor |
+| ConditionalAccess.cs:23:9:23:39 | ... ...; | ConditionalAccess.cs:23:26:23:29 | null | semmle.label | successor |
 | ConditionalAccess.cs:23:13:23:38 | Nullable<Int32> j = ... | ConditionalAccess.cs:24:9:24:38 | ... ...; | semmle.label | successor |
 | ConditionalAccess.cs:23:18:23:29 | (...) ... | ConditionalAccess.cs:23:13:23:38 | Nullable<Int32> j = ... | semmle.label | null |
 | ConditionalAccess.cs:23:26:23:29 | null | ConditionalAccess.cs:23:18:23:29 | (...) ... | semmle.label | successor |
-| ConditionalAccess.cs:24:9:24:38 | ... ...; | ConditionalAccess.cs:24:13:24:13 | access to local variable s | semmle.label | successor |
-| ConditionalAccess.cs:24:13:24:13 | access to local variable s | ConditionalAccess.cs:24:24:24:24 | access to parameter i | semmle.label | successor |
+| ConditionalAccess.cs:24:9:24:38 | ... ...; | ConditionalAccess.cs:24:24:24:24 | access to parameter i | semmle.label | successor |
 | ConditionalAccess.cs:24:13:24:37 | String s = ... | ConditionalAccess.cs:25:9:25:33 | ...; | semmle.label | successor |
 | ConditionalAccess.cs:24:18:24:24 | (...) ... | ConditionalAccess.cs:24:27:24:37 | call to method ToString | semmle.label | non-null |
 | ConditionalAccess.cs:24:24:24:24 | access to parameter i | ConditionalAccess.cs:24:18:24:24 | (...) ... | semmle.label | successor |
 | ConditionalAccess.cs:24:27:24:37 | call to method ToString | ConditionalAccess.cs:24:13:24:37 | String s = ... | semmle.label | successor |
-| ConditionalAccess.cs:25:9:25:9 | access to local variable s | ConditionalAccess.cs:25:13:25:14 | "" | semmle.label | successor |
-| ConditionalAccess.cs:25:9:25:33 | ...; | ConditionalAccess.cs:25:9:25:9 | access to local variable s | semmle.label | successor |
+| ConditionalAccess.cs:25:9:25:33 | ...; | ConditionalAccess.cs:25:13:25:14 | "" | semmle.label | successor |
 | ConditionalAccess.cs:25:13:25:14 | "" | ConditionalAccess.cs:25:31:25:31 | access to local variable s | semmle.label | non-null |
 | ConditionalAccess.cs:25:16:25:32 | call to method CommaJoinWith | ConditionalAccess.cs:25:9:25:32 | ... = ... | semmle.label | successor |
 | ConditionalAccess.cs:25:31:25:31 | access to local variable s | ConditionalAccess.cs:25:16:25:32 | call to method CommaJoinWith | semmle.label | successor |
@@ -465,8 +448,7 @@
 | Conditions.cs:8:13:8:13 | access to parameter x | Conditions.cs:8:13:8:15 | ...-- | semmle.label | successor |
 | Conditions.cs:8:13:8:16 | ...; | Conditions.cs:8:13:8:13 | access to parameter x | semmle.label | successor |
 | Conditions.cs:12:5:20:5 | {...} | Conditions.cs:13:9:13:18 | ... ...; | semmle.label | successor |
-| Conditions.cs:13:9:13:18 | ... ...; | Conditions.cs:13:13:13:13 | access to local variable x | semmle.label | successor |
-| Conditions.cs:13:13:13:13 | access to local variable x | Conditions.cs:13:17:13:17 | 0 | semmle.label | successor |
+| Conditions.cs:13:9:13:18 | ... ...; | Conditions.cs:13:17:13:17 | 0 | semmle.label | successor |
 | Conditions.cs:13:13:13:17 | Int32 x = ... | Conditions.cs:14:9:15:16 | if (...) ... | semmle.label | successor |
 | Conditions.cs:13:17:13:17 | 0 | Conditions.cs:13:13:13:17 | Int32 x = ... | semmle.label | successor |
 | Conditions.cs:14:9:15:16 | if (...) ... | Conditions.cs:14:13:14:13 | access to parameter b | semmle.label | successor |
@@ -489,8 +471,7 @@
 | Conditions.cs:18:17:18:20 | ...; | Conditions.cs:18:17:18:17 | access to local variable x | semmle.label | successor |
 | Conditions.cs:19:16:19:16 | access to local variable x | Conditions.cs:19:9:19:17 | return ...; | semmle.label | successor |
 | Conditions.cs:23:5:31:5 | {...} | Conditions.cs:24:9:24:18 | ... ...; | semmle.label | successor |
-| Conditions.cs:24:9:24:18 | ... ...; | Conditions.cs:24:13:24:13 | access to local variable x | semmle.label | successor |
-| Conditions.cs:24:13:24:13 | access to local variable x | Conditions.cs:24:17:24:17 | 0 | semmle.label | successor |
+| Conditions.cs:24:9:24:18 | ... ...; | Conditions.cs:24:17:24:17 | 0 | semmle.label | successor |
 | Conditions.cs:24:13:24:17 | Int32 x = ... | Conditions.cs:25:9:27:20 | if (...) ... | semmle.label | successor |
 | Conditions.cs:24:17:24:17 | 0 | Conditions.cs:24:13:24:17 | Int32 x = ... | semmle.label | successor |
 | Conditions.cs:25:9:27:20 | if (...) ... | Conditions.cs:25:13:25:14 | access to parameter b1 | semmle.label | successor |
@@ -510,20 +491,17 @@
 | Conditions.cs:29:13:29:16 | ...; | Conditions.cs:29:13:29:13 | access to local variable x | semmle.label | successor |
 | Conditions.cs:30:16:30:16 | access to local variable x | Conditions.cs:30:9:30:17 | return ...; | semmle.label | successor |
 | Conditions.cs:34:5:44:5 | {...} | Conditions.cs:35:9:35:18 | ... ...; | semmle.label | successor |
-| Conditions.cs:35:9:35:18 | ... ...; | Conditions.cs:35:13:35:13 | access to local variable x | semmle.label | successor |
-| Conditions.cs:35:13:35:13 | access to local variable x | Conditions.cs:35:17:35:17 | 0 | semmle.label | successor |
+| Conditions.cs:35:9:35:18 | ... ...; | Conditions.cs:35:17:35:17 | 0 | semmle.label | successor |
 | Conditions.cs:35:13:35:17 | Int32 x = ... | Conditions.cs:36:9:36:23 | ... ...; | semmle.label | successor |
 | Conditions.cs:35:17:35:17 | 0 | Conditions.cs:35:13:35:17 | Int32 x = ... | semmle.label | successor |
-| Conditions.cs:36:9:36:23 | ... ...; | Conditions.cs:36:13:36:14 | access to local variable b2 | semmle.label | successor |
-| Conditions.cs:36:13:36:14 | access to local variable b2 | Conditions.cs:36:18:36:22 | false | semmle.label | successor |
+| Conditions.cs:36:9:36:23 | ... ...; | Conditions.cs:36:18:36:22 | false | semmle.label | successor |
 | Conditions.cs:36:13:36:22 | Boolean b2 = ... | Conditions.cs:37:9:38:20 | if (...) ... | semmle.label | successor |
 | Conditions.cs:36:18:36:22 | false | Conditions.cs:36:13:36:22 | Boolean b2 = ... | semmle.label | successor |
 | Conditions.cs:37:9:38:20 | if (...) ... | Conditions.cs:37:13:37:14 | access to parameter b1 | semmle.label | successor |
 | Conditions.cs:37:13:37:14 | access to parameter b1 | Conditions.cs:38:13:38:20 | ...; | semmle.label | true |
 | Conditions.cs:37:13:37:14 | access to parameter b1 | Conditions.cs:39:9:40:16 | if (...) ... | semmle.label | false |
-| Conditions.cs:38:13:38:14 | access to local variable b2 | Conditions.cs:38:18:38:19 | access to parameter b1 | semmle.label | successor |
 | Conditions.cs:38:13:38:19 | ... = ... | Conditions.cs:39:9:40:16 | if (...) ... | semmle.label | successor |
-| Conditions.cs:38:13:38:20 | ...; | Conditions.cs:38:13:38:14 | access to local variable b2 | semmle.label | successor |
+| Conditions.cs:38:13:38:20 | ...; | Conditions.cs:38:18:38:19 | access to parameter b1 | semmle.label | successor |
 | Conditions.cs:38:18:38:19 | access to parameter b1 | Conditions.cs:38:13:38:19 | ... = ... | semmle.label | successor |
 | Conditions.cs:39:9:40:16 | if (...) ... | Conditions.cs:39:13:39:14 | access to local variable b2 | semmle.label | successor |
 | Conditions.cs:39:13:39:14 | access to local variable b2 | Conditions.cs:40:13:40:16 | ...; | semmle.label | true |
@@ -539,8 +517,7 @@
 | Conditions.cs:42:13:42:16 | ...; | Conditions.cs:42:13:42:13 | access to local variable x | semmle.label | successor |
 | Conditions.cs:43:16:43:16 | access to local variable x | Conditions.cs:43:9:43:17 | return ...; | semmle.label | successor |
 | Conditions.cs:47:5:55:5 | {...} | Conditions.cs:48:9:48:18 | ... ...; | semmle.label | successor |
-| Conditions.cs:48:9:48:18 | ... ...; | Conditions.cs:48:13:48:13 | access to local variable y | semmle.label | successor |
-| Conditions.cs:48:13:48:13 | access to local variable y | Conditions.cs:48:17:48:17 | 0 | semmle.label | successor |
+| Conditions.cs:48:9:48:18 | ... ...; | Conditions.cs:48:17:48:17 | 0 | semmle.label | successor |
 | Conditions.cs:48:13:48:17 | Int32 y = ... | Conditions.cs:49:9:53:9 | while (...) ... | semmle.label | successor |
 | Conditions.cs:48:17:48:17 | 0 | Conditions.cs:48:13:48:17 | Int32 y = ... | semmle.label | successor |
 | Conditions.cs:49:9:53:9 | while (...) ... | Conditions.cs:49:16:49:16 | access to parameter x | semmle.label | successor |
@@ -558,8 +535,7 @@
 | Conditions.cs:52:17:52:20 | ...; | Conditions.cs:52:17:52:17 | access to local variable y | semmle.label | successor |
 | Conditions.cs:54:16:54:16 | access to local variable y | Conditions.cs:54:9:54:17 | return ...; | semmle.label | successor |
 | Conditions.cs:58:5:68:5 | {...} | Conditions.cs:59:9:59:18 | ... ...; | semmle.label | successor |
-| Conditions.cs:59:9:59:18 | ... ...; | Conditions.cs:59:13:59:13 | access to local variable y | semmle.label | successor |
-| Conditions.cs:59:13:59:13 | access to local variable y | Conditions.cs:59:17:59:17 | 0 | semmle.label | successor |
+| Conditions.cs:59:9:59:18 | ... ...; | Conditions.cs:59:17:59:17 | 0 | semmle.label | successor |
 | Conditions.cs:59:13:59:17 | Int32 y = ... | Conditions.cs:60:9:64:9 | while (...) ... | semmle.label | successor |
 | Conditions.cs:59:17:59:17 | 0 | Conditions.cs:59:13:59:17 | Int32 y = ... | semmle.label | successor |
 | Conditions.cs:60:9:64:9 | while (...) ... | Conditions.cs:60:16:60:16 | access to parameter x | semmle.label | successor |
@@ -583,15 +559,13 @@
 | Conditions.cs:66:13:66:16 | ...; | Conditions.cs:66:13:66:13 | access to local variable y | semmle.label | successor |
 | Conditions.cs:67:16:67:16 | access to local variable y | Conditions.cs:67:9:67:17 | return ...; | semmle.label | successor |
 | Conditions.cs:71:5:84:5 | {...} | Conditions.cs:72:9:72:30 | ... ...; | semmle.label | successor |
-| Conditions.cs:72:9:72:30 | ... ...; | Conditions.cs:72:13:72:13 | access to local variable b | semmle.label | successor |
-| Conditions.cs:72:13:72:13 | access to local variable b | Conditions.cs:72:17:72:18 | access to parameter ss | semmle.label | successor |
+| Conditions.cs:72:9:72:30 | ... ...; | Conditions.cs:72:17:72:18 | access to parameter ss | semmle.label | successor |
 | Conditions.cs:72:13:72:29 | Boolean b = ... | Conditions.cs:73:9:73:18 | ... ...; | semmle.label | successor |
 | Conditions.cs:72:17:72:18 | access to parameter ss | Conditions.cs:72:17:72:25 | access to property Length | semmle.label | successor |
 | Conditions.cs:72:17:72:25 | access to property Length | Conditions.cs:72:29:72:29 | 0 | semmle.label | successor |
 | Conditions.cs:72:17:72:29 | ... > ... | Conditions.cs:72:13:72:29 | Boolean b = ... | semmle.label | successor |
 | Conditions.cs:72:29:72:29 | 0 | Conditions.cs:72:17:72:29 | ... > ... | semmle.label | successor |
-| Conditions.cs:73:9:73:18 | ... ...; | Conditions.cs:73:13:73:13 | access to local variable x | semmle.label | successor |
-| Conditions.cs:73:13:73:13 | access to local variable x | Conditions.cs:73:17:73:17 | 0 | semmle.label | successor |
+| Conditions.cs:73:9:73:18 | ... ...; | Conditions.cs:73:17:73:17 | 0 | semmle.label | successor |
 | Conditions.cs:73:13:73:17 | Int32 x = ... | Conditions.cs:74:27:74:28 | access to parameter ss | semmle.label | successor |
 | Conditions.cs:73:17:73:17 | 0 | Conditions.cs:73:13:73:17 | Int32 x = ... | semmle.label | successor |
 | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:75:9:80:9 | {...} | semmle.label | non-empty |
@@ -609,9 +583,8 @@
 | Conditions.cs:78:17:78:21 | ... > ... | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | semmle.label | false |
 | Conditions.cs:78:17:78:21 | ... > ... | Conditions.cs:79:17:79:26 | ...; | semmle.label | true |
 | Conditions.cs:78:21:78:21 | 0 | Conditions.cs:78:17:78:21 | ... > ... | semmle.label | successor |
-| Conditions.cs:79:17:79:17 | access to local variable b | Conditions.cs:79:21:79:25 | false | semmle.label | successor |
 | Conditions.cs:79:17:79:25 | ... = ... | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | semmle.label | successor |
-| Conditions.cs:79:17:79:26 | ...; | Conditions.cs:79:17:79:17 | access to local variable b | semmle.label | successor |
+| Conditions.cs:79:17:79:26 | ...; | Conditions.cs:79:21:79:25 | false | semmle.label | successor |
 | Conditions.cs:79:21:79:25 | false | Conditions.cs:79:17:79:25 | ... = ... | semmle.label | successor |
 | Conditions.cs:81:9:82:16 | if (...) ... | Conditions.cs:81:12:81:12 | access to local variable b | semmle.label | successor |
 | Conditions.cs:81:12:81:12 | access to local variable b | Conditions.cs:82:13:82:16 | ...; | semmle.label | true |
@@ -621,15 +594,13 @@
 | Conditions.cs:82:13:82:16 | ...; | Conditions.cs:82:13:82:13 | access to local variable x | semmle.label | successor |
 | Conditions.cs:83:16:83:16 | access to local variable x | Conditions.cs:83:9:83:17 | return ...; | semmle.label | successor |
 | Conditions.cs:87:5:100:5 | {...} | Conditions.cs:88:9:88:30 | ... ...; | semmle.label | successor |
-| Conditions.cs:88:9:88:30 | ... ...; | Conditions.cs:88:13:88:13 | access to local variable b | semmle.label | successor |
-| Conditions.cs:88:13:88:13 | access to local variable b | Conditions.cs:88:17:88:18 | access to parameter ss | semmle.label | successor |
+| Conditions.cs:88:9:88:30 | ... ...; | Conditions.cs:88:17:88:18 | access to parameter ss | semmle.label | successor |
 | Conditions.cs:88:13:88:29 | Boolean b = ... | Conditions.cs:89:9:89:18 | ... ...; | semmle.label | successor |
 | Conditions.cs:88:17:88:18 | access to parameter ss | Conditions.cs:88:17:88:25 | access to property Length | semmle.label | successor |
 | Conditions.cs:88:17:88:25 | access to property Length | Conditions.cs:88:29:88:29 | 0 | semmle.label | successor |
 | Conditions.cs:88:17:88:29 | ... > ... | Conditions.cs:88:13:88:29 | Boolean b = ... | semmle.label | successor |
 | Conditions.cs:88:29:88:29 | 0 | Conditions.cs:88:17:88:29 | ... > ... | semmle.label | successor |
-| Conditions.cs:89:9:89:18 | ... ...; | Conditions.cs:89:13:89:13 | access to local variable x | semmle.label | successor |
-| Conditions.cs:89:13:89:13 | access to local variable x | Conditions.cs:89:17:89:17 | 0 | semmle.label | successor |
+| Conditions.cs:89:9:89:18 | ... ...; | Conditions.cs:89:17:89:17 | 0 | semmle.label | successor |
 | Conditions.cs:89:13:89:17 | Int32 x = ... | Conditions.cs:90:27:90:28 | access to parameter ss | semmle.label | successor |
 | Conditions.cs:89:17:89:17 | 0 | Conditions.cs:89:13:89:17 | Int32 x = ... | semmle.label | successor |
 | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:91:9:98:9 | {...} | semmle.label | non-empty |
@@ -647,9 +618,8 @@
 | Conditions.cs:94:17:94:21 | ... > ... | Conditions.cs:95:17:95:26 | ...; | semmle.label | true |
 | Conditions.cs:94:17:94:21 | ... > ... | Conditions.cs:96:13:97:20 | if (...) ... | semmle.label | false |
 | Conditions.cs:94:21:94:21 | 0 | Conditions.cs:94:17:94:21 | ... > ... | semmle.label | successor |
-| Conditions.cs:95:17:95:17 | access to local variable b | Conditions.cs:95:21:95:25 | false | semmle.label | successor |
 | Conditions.cs:95:17:95:25 | ... = ... | Conditions.cs:96:13:97:20 | if (...) ... | semmle.label | successor |
-| Conditions.cs:95:17:95:26 | ...; | Conditions.cs:95:17:95:17 | access to local variable b | semmle.label | successor |
+| Conditions.cs:95:17:95:26 | ...; | Conditions.cs:95:21:95:25 | false | semmle.label | successor |
 | Conditions.cs:95:21:95:25 | false | Conditions.cs:95:17:95:25 | ... = ... | semmle.label | successor |
 | Conditions.cs:96:13:97:20 | if (...) ... | Conditions.cs:96:17:96:17 | access to local variable b | semmle.label | successor |
 | Conditions.cs:96:17:96:17 | access to local variable b | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | semmle.label | false |
@@ -659,15 +629,13 @@
 | Conditions.cs:97:17:97:20 | ...; | Conditions.cs:97:17:97:17 | access to local variable x | semmle.label | successor |
 | Conditions.cs:99:16:99:16 | access to local variable x | Conditions.cs:99:9:99:17 | return ...; | semmle.label | successor |
 | Conditions.cs:103:5:111:5 | {...} | Conditions.cs:104:9:104:29 | ... ...; | semmle.label | successor |
-| Conditions.cs:104:9:104:29 | ... ...; | Conditions.cs:104:13:104:13 | access to local variable x | semmle.label | successor |
-| Conditions.cs:104:13:104:13 | access to local variable x | Conditions.cs:104:17:104:17 | access to parameter b | semmle.label | successor |
+| Conditions.cs:104:9:104:29 | ... ...; | Conditions.cs:104:17:104:17 | access to parameter b | semmle.label | successor |
 | Conditions.cs:104:13:104:28 | String x = ... | Conditions.cs:105:9:106:20 | if (...) ... | semmle.label | successor |
 | Conditions.cs:104:17:104:17 | access to parameter b | Conditions.cs:104:17:104:28 | call to method ToString | semmle.label | successor |
 | Conditions.cs:104:17:104:28 | call to method ToString | Conditions.cs:104:13:104:28 | String x = ... | semmle.label | successor |
 | Conditions.cs:105:9:106:20 | if (...) ... | Conditions.cs:105:13:105:13 | access to parameter b | semmle.label | successor |
 | Conditions.cs:105:13:105:13 | access to parameter b | Conditions.cs:106:13:106:20 | ...; | semmle.label | true |
 | Conditions.cs:105:13:105:13 | access to parameter b | Conditions.cs:107:9:109:24 | if (...) ... | semmle.label | false |
-| Conditions.cs:106:13:106:13 | access to local variable x | Conditions.cs:106:13:106:13 | access to local variable x | semmle.label | successor |
 | Conditions.cs:106:13:106:13 | access to local variable x | Conditions.cs:106:18:106:19 | "" | semmle.label | successor |
 | Conditions.cs:106:13:106:19 | ... + ... | Conditions.cs:106:13:106:19 | ... = ... | semmle.label | successor |
 | Conditions.cs:106:13:106:19 | ... = ... | Conditions.cs:107:9:109:24 | if (...) ... | semmle.label | successor |
@@ -683,7 +651,6 @@
 | Conditions.cs:108:17:108:18 | !... | Conditions.cs:108:18:108:18 | access to parameter b | semmle.label | successor |
 | Conditions.cs:108:18:108:18 | access to parameter b | Conditions.cs:109:17:109:24 | ...; | semmle.label | false |
 | Conditions.cs:108:18:108:18 | access to parameter b | Conditions.cs:110:16:110:16 | access to local variable x | semmle.label | true |
-| Conditions.cs:109:17:109:17 | access to local variable x | Conditions.cs:109:17:109:17 | access to local variable x | semmle.label | successor |
 | Conditions.cs:109:17:109:17 | access to local variable x | Conditions.cs:109:22:109:23 | "" | semmle.label | successor |
 | Conditions.cs:109:17:109:23 | ... + ... | Conditions.cs:109:17:109:23 | ... = ... | semmle.label | successor |
 | Conditions.cs:109:17:109:23 | ... = ... | Conditions.cs:110:16:110:16 | access to local variable x | semmle.label | successor |
@@ -691,12 +658,10 @@
 | Conditions.cs:109:22:109:23 | "" | Conditions.cs:109:17:109:23 | ... + ... | semmle.label | successor |
 | Conditions.cs:110:16:110:16 | access to local variable x | Conditions.cs:110:9:110:17 | return ...; | semmle.label | successor |
 | Conditions.cs:114:5:124:5 | {...} | Conditions.cs:115:9:115:24 | ... ...; | semmle.label | successor |
-| Conditions.cs:115:9:115:24 | ... ...; | Conditions.cs:115:16:115:16 | access to local variable s | semmle.label | successor |
-| Conditions.cs:115:16:115:16 | access to local variable s | Conditions.cs:115:20:115:23 | null | semmle.label | successor |
+| Conditions.cs:115:9:115:24 | ... ...; | Conditions.cs:115:20:115:23 | null | semmle.label | successor |
 | Conditions.cs:115:16:115:23 | String s = ... | Conditions.cs:116:9:123:9 | for (...;...;...) ... | semmle.label | successor |
 | Conditions.cs:115:20:115:23 | null | Conditions.cs:115:16:115:23 | String s = ... | semmle.label | successor |
-| Conditions.cs:116:9:123:9 | for (...;...;...) ... | Conditions.cs:116:17:116:17 | access to local variable i | semmle.label | successor |
-| Conditions.cs:116:17:116:17 | access to local variable i | Conditions.cs:116:21:116:21 | 0 | semmle.label | successor |
+| Conditions.cs:116:9:123:9 | for (...;...;...) ... | Conditions.cs:116:21:116:21 | 0 | semmle.label | successor |
 | Conditions.cs:116:17:116:21 | Int32 i = ... | Conditions.cs:116:24:116:24 | access to local variable i | semmle.label | successor |
 | Conditions.cs:116:21:116:21 | 0 | Conditions.cs:116:17:116:21 | Int32 i = ... | semmle.label | successor |
 | Conditions.cs:116:24:116:24 | access to local variable i | Conditions.cs:116:28:116:31 | access to parameter args | semmle.label | successor |
@@ -706,8 +671,7 @@
 | Conditions.cs:116:41:116:41 | access to local variable i | Conditions.cs:116:41:116:43 | ...++ | semmle.label | successor |
 | Conditions.cs:116:41:116:43 | ...++ | Conditions.cs:116:24:116:24 | access to local variable i | semmle.label | successor |
 | Conditions.cs:117:9:123:9 | {...} | Conditions.cs:118:13:118:44 | ... ...; | semmle.label | successor |
-| Conditions.cs:118:13:118:44 | ... ...; | Conditions.cs:118:17:118:20 | access to local variable last | semmle.label | successor |
-| Conditions.cs:118:17:118:20 | access to local variable last | Conditions.cs:118:24:118:24 | access to local variable i | semmle.label | successor |
+| Conditions.cs:118:13:118:44 | ... ...; | Conditions.cs:118:24:118:24 | access to local variable i | semmle.label | successor |
 | Conditions.cs:118:17:118:43 | Boolean last = ... | Conditions.cs:119:13:120:23 | if (...) ... | semmle.label | successor |
 | Conditions.cs:118:24:118:24 | access to local variable i | Conditions.cs:118:29:118:32 | access to parameter args | semmle.label | successor |
 | Conditions.cs:118:24:118:43 | ... == ... | Conditions.cs:118:17:118:43 | Boolean last = ... | semmle.label | successor |
@@ -719,16 +683,14 @@
 | Conditions.cs:119:17:119:21 | !... | Conditions.cs:119:18:119:21 | access to local variable last | semmle.label | successor |
 | Conditions.cs:119:18:119:21 | access to local variable last | Conditions.cs:120:17:120:23 | ...; | semmle.label | false |
 | Conditions.cs:119:18:119:21 | access to local variable last | Conditions.cs:121:13:122:25 | if (...) ... | semmle.label | true |
-| Conditions.cs:120:17:120:17 | access to local variable s | Conditions.cs:120:21:120:22 | "" | semmle.label | successor |
 | Conditions.cs:120:17:120:22 | ... = ... | Conditions.cs:121:13:122:25 | if (...) ... | semmle.label | successor |
-| Conditions.cs:120:17:120:23 | ...; | Conditions.cs:120:17:120:17 | access to local variable s | semmle.label | successor |
+| Conditions.cs:120:17:120:23 | ...; | Conditions.cs:120:21:120:22 | "" | semmle.label | successor |
 | Conditions.cs:120:21:120:22 | "" | Conditions.cs:120:17:120:22 | ... = ... | semmle.label | successor |
 | Conditions.cs:121:13:122:25 | if (...) ... | Conditions.cs:121:17:121:20 | access to local variable last | semmle.label | successor |
 | Conditions.cs:121:17:121:20 | access to local variable last | Conditions.cs:116:41:116:41 | access to local variable i | semmle.label | false |
 | Conditions.cs:121:17:121:20 | access to local variable last | Conditions.cs:122:17:122:25 | ...; | semmle.label | true |
-| Conditions.cs:122:17:122:17 | access to local variable s | Conditions.cs:122:21:122:24 | null | semmle.label | successor |
 | Conditions.cs:122:17:122:24 | ... = ... | Conditions.cs:116:41:116:41 | access to local variable i | semmle.label | successor |
-| Conditions.cs:122:17:122:25 | ...; | Conditions.cs:122:17:122:17 | access to local variable s | semmle.label | successor |
+| Conditions.cs:122:17:122:25 | ...; | Conditions.cs:122:21:122:24 | null | semmle.label | successor |
 | Conditions.cs:122:21:122:24 | null | Conditions.cs:122:17:122:24 | ... = ... | semmle.label | successor |
 | Conditions.cs:130:5:141:5 | {...} | Conditions.cs:131:9:140:9 | while (...) ... | semmle.label | successor |
 | Conditions.cs:131:9:140:9 | while (...) ... | Conditions.cs:131:16:131:19 | true | semmle.label | successor |
@@ -906,20 +868,17 @@
 | Initializers.cs:4:27:4:27 | access to field H | Initializers.cs:4:31:4:31 | 2 | semmle.label | successor |
 | Initializers.cs:4:31:4:31 | 2 | Initializers.cs:4:27:4:31 | ... + ... | semmle.label | successor |
 | Initializers.cs:9:5:12:5 | {...} | Initializers.cs:10:9:10:54 | ... ...; | semmle.label | successor |
-| Initializers.cs:10:9:10:54 | ... ...; | Initializers.cs:10:13:10:13 | access to local variable i | semmle.label | successor |
-| Initializers.cs:10:13:10:13 | access to local variable i | Initializers.cs:10:34:10:35 | "" | semmle.label | successor |
+| Initializers.cs:10:9:10:54 | ... ...; | Initializers.cs:10:34:10:35 | "" | semmle.label | successor |
 | Initializers.cs:10:13:10:53 | Initializers i = ... | Initializers.cs:11:9:11:64 | ... ...; | semmle.label | successor |
-| Initializers.cs:10:17:10:53 | object creation of type Initializers | Initializers.cs:10:40:10:40 | access to field F | semmle.label | successor |
+| Initializers.cs:10:17:10:53 | object creation of type Initializers | Initializers.cs:10:44:10:44 | 0 | semmle.label | successor |
 | Initializers.cs:10:34:10:35 | "" | Initializers.cs:10:17:10:53 | object creation of type Initializers | semmle.label | successor |
 | Initializers.cs:10:38:10:53 | { ..., ... } | Initializers.cs:10:13:10:53 | Initializers i = ... | semmle.label | successor |
-| Initializers.cs:10:40:10:40 | access to field F | Initializers.cs:10:44:10:44 | 0 | semmle.label | successor |
-| Initializers.cs:10:40:10:44 | ... = ... | Initializers.cs:10:47:10:47 | access to property G | semmle.label | successor |
+| Initializers.cs:10:40:10:44 | ... = ... | Initializers.cs:10:51:10:51 | 1 | semmle.label | successor |
 | Initializers.cs:10:44:10:44 | 0 | Initializers.cs:10:40:10:44 | ... = ... | semmle.label | successor |
-| Initializers.cs:10:47:10:47 | access to property G | Initializers.cs:10:51:10:51 | 1 | semmle.label | successor |
+| Initializers.cs:10:47:10:47 | access to property G | Initializers.cs:10:47:10:51 | ... = ... | semmle.label | successor |
 | Initializers.cs:10:47:10:51 | ... = ... | Initializers.cs:10:38:10:53 | { ..., ... } | semmle.label | successor |
-| Initializers.cs:10:51:10:51 | 1 | Initializers.cs:10:47:10:51 | ... = ... | semmle.label | successor |
-| Initializers.cs:11:9:11:64 | ... ...; | Initializers.cs:11:13:11:14 | access to local variable iz | semmle.label | successor |
-| Initializers.cs:11:13:11:14 | access to local variable iz | Initializers.cs:11:18:11:63 | array creation of type Initializers[] | semmle.label | successor |
+| Initializers.cs:10:51:10:51 | 1 | Initializers.cs:10:47:10:47 | access to property G | semmle.label | successor |
+| Initializers.cs:11:9:11:64 | ... ...; | Initializers.cs:11:18:11:63 | array creation of type Initializers[] | semmle.label | successor |
 | Initializers.cs:11:18:11:63 | array creation of type Initializers[] | Initializers.cs:11:39:11:39 | access to local variable i | semmle.label | successor |
 | Initializers.cs:11:37:11:63 | { ..., ... } | Initializers.cs:11:13:11:63 | Initializers[] iz = ... | semmle.label | successor |
 | Initializers.cs:11:39:11:39 | access to local variable i | Initializers.cs:11:59:11:60 | "" | semmle.label | successor |
@@ -955,26 +914,22 @@
 | NullCoalescing.cs:11:57:11:58 | access to parameter b3 | NullCoalescing.cs:11:64:11:64 | 0 | semmle.label | true |
 | NullCoalescing.cs:11:57:11:58 | access to parameter b3 | NullCoalescing.cs:11:68:11:68 | 1 | semmle.label | false |
 | NullCoalescing.cs:14:5:18:5 | {...} | NullCoalescing.cs:15:9:15:32 | ... ...; | semmle.label | successor |
-| NullCoalescing.cs:15:9:15:32 | ... ...; | NullCoalescing.cs:15:13:15:13 | access to local variable j | semmle.label | successor |
-| NullCoalescing.cs:15:13:15:13 | access to local variable j | NullCoalescing.cs:15:17:15:31 | ... ?? ... | semmle.label | successor |
+| NullCoalescing.cs:15:9:15:32 | ... ...; | NullCoalescing.cs:15:17:15:31 | ... ?? ... | semmle.label | successor |
 | NullCoalescing.cs:15:13:15:31 | Int32 j = ... | NullCoalescing.cs:16:9:16:26 | ... ...; | semmle.label | successor |
 | NullCoalescing.cs:15:17:15:26 | (...) ... | NullCoalescing.cs:15:31:15:31 | 0 | semmle.label | null |
 | NullCoalescing.cs:15:17:15:31 | ... ?? ... | NullCoalescing.cs:15:23:15:26 | null | semmle.label | successor |
 | NullCoalescing.cs:15:23:15:26 | null | NullCoalescing.cs:15:17:15:26 | (...) ... | semmle.label | successor |
 | NullCoalescing.cs:15:31:15:31 | 0 | NullCoalescing.cs:15:13:15:31 | Int32 j = ... | semmle.label | successor |
-| NullCoalescing.cs:16:9:16:26 | ... ...; | NullCoalescing.cs:16:13:16:13 | access to local variable s | semmle.label | successor |
-| NullCoalescing.cs:16:13:16:13 | access to local variable s | NullCoalescing.cs:16:17:16:25 | ... ?? ... | semmle.label | successor |
+| NullCoalescing.cs:16:9:16:26 | ... ...; | NullCoalescing.cs:16:17:16:25 | ... ?? ... | semmle.label | successor |
 | NullCoalescing.cs:16:13:16:25 | String s = ... | NullCoalescing.cs:17:9:17:25 | ...; | semmle.label | successor |
 | NullCoalescing.cs:16:17:16:18 | "" | NullCoalescing.cs:16:13:16:25 | String s = ... | semmle.label | non-null |
 | NullCoalescing.cs:16:17:16:25 | ... ?? ... | NullCoalescing.cs:16:17:16:18 | "" | semmle.label | successor |
-| NullCoalescing.cs:17:9:17:9 | access to local variable j | NullCoalescing.cs:17:13:17:24 | ... ?? ... | semmle.label | successor |
-| NullCoalescing.cs:17:9:17:25 | ...; | NullCoalescing.cs:17:9:17:9 | access to local variable j | semmle.label | successor |
+| NullCoalescing.cs:17:9:17:25 | ...; | NullCoalescing.cs:17:13:17:24 | ... ?? ... | semmle.label | successor |
 | NullCoalescing.cs:17:13:17:19 | (...) ... | NullCoalescing.cs:17:9:17:24 | ... = ... | semmle.label | non-null |
 | NullCoalescing.cs:17:13:17:24 | ... ?? ... | NullCoalescing.cs:17:19:17:19 | access to parameter i | semmle.label | successor |
 | NullCoalescing.cs:17:19:17:19 | access to parameter i | NullCoalescing.cs:17:13:17:19 | (...) ... | semmle.label | successor |
 | Patterns.cs:6:5:43:5 | {...} | Patterns.cs:7:9:7:24 | ... ...; | semmle.label | successor |
-| Patterns.cs:7:9:7:24 | ... ...; | Patterns.cs:7:16:7:16 | access to local variable o | semmle.label | successor |
-| Patterns.cs:7:16:7:16 | access to local variable o | Patterns.cs:7:20:7:23 | null | semmle.label | successor |
+| Patterns.cs:7:9:7:24 | ... ...; | Patterns.cs:7:20:7:23 | null | semmle.label | successor |
 | Patterns.cs:7:16:7:23 | Object o = ... | Patterns.cs:8:9:18:9 | if (...) ... | semmle.label | successor |
 | Patterns.cs:7:20:7:23 | null | Patterns.cs:7:16:7:23 | Object o = ... | semmle.label | successor |
 | Patterns.cs:8:9:18:9 | if (...) ... | Patterns.cs:8:13:8:13 | access to local variable o | semmle.label | successor |
@@ -1057,72 +1012,57 @@
 | Patterns.cs:37:17:37:22 | break; | Patterns.cs:40:9:42:9 | switch (...) {...} | semmle.label | break |
 | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:40:17:40:17 | access to local variable o | semmle.label | successor |
 | Qualifiers.cs:11:5:31:5 | {...} | Qualifiers.cs:12:9:12:22 | ... ...; | semmle.label | successor |
-| Qualifiers.cs:12:9:12:22 | ... ...; | Qualifiers.cs:12:13:12:13 | access to local variable q | semmle.label | successor |
-| Qualifiers.cs:12:13:12:13 | access to local variable q | Qualifiers.cs:12:17:12:21 | this access | semmle.label | successor |
+| Qualifiers.cs:12:9:12:22 | ... ...; | Qualifiers.cs:12:17:12:21 | this access | semmle.label | successor |
 | Qualifiers.cs:12:13:12:21 | Qualifiers q = ... | Qualifiers.cs:13:9:13:21 | ...; | semmle.label | successor |
 | Qualifiers.cs:12:17:12:21 | access to field Field | Qualifiers.cs:12:13:12:21 | Qualifiers q = ... | semmle.label | successor |
 | Qualifiers.cs:12:17:12:21 | this access | Qualifiers.cs:12:17:12:21 | access to field Field | semmle.label | successor |
-| Qualifiers.cs:13:9:13:9 | access to local variable q | Qualifiers.cs:13:13:13:20 | this access | semmle.label | successor |
 | Qualifiers.cs:13:9:13:20 | ... = ... | Qualifiers.cs:14:9:14:21 | ...; | semmle.label | successor |
-| Qualifiers.cs:13:9:13:21 | ...; | Qualifiers.cs:13:9:13:9 | access to local variable q | semmle.label | successor |
+| Qualifiers.cs:13:9:13:21 | ...; | Qualifiers.cs:13:13:13:20 | this access | semmle.label | successor |
 | Qualifiers.cs:13:13:13:20 | access to property Property | Qualifiers.cs:13:9:13:20 | ... = ... | semmle.label | successor |
 | Qualifiers.cs:13:13:13:20 | this access | Qualifiers.cs:13:13:13:20 | access to property Property | semmle.label | successor |
-| Qualifiers.cs:14:9:14:9 | access to local variable q | Qualifiers.cs:14:13:14:20 | this access | semmle.label | successor |
 | Qualifiers.cs:14:9:14:20 | ... = ... | Qualifiers.cs:16:9:16:23 | ...; | semmle.label | successor |
-| Qualifiers.cs:14:9:14:21 | ...; | Qualifiers.cs:14:9:14:9 | access to local variable q | semmle.label | successor |
+| Qualifiers.cs:14:9:14:21 | ...; | Qualifiers.cs:14:13:14:20 | this access | semmle.label | successor |
 | Qualifiers.cs:14:13:14:20 | call to method Method | Qualifiers.cs:14:9:14:20 | ... = ... | semmle.label | successor |
 | Qualifiers.cs:14:13:14:20 | this access | Qualifiers.cs:14:13:14:20 | call to method Method | semmle.label | successor |
-| Qualifiers.cs:16:9:16:9 | access to local variable q | Qualifiers.cs:16:13:16:16 | this access | semmle.label | successor |
 | Qualifiers.cs:16:9:16:22 | ... = ... | Qualifiers.cs:17:9:17:26 | ...; | semmle.label | successor |
-| Qualifiers.cs:16:9:16:23 | ...; | Qualifiers.cs:16:9:16:9 | access to local variable q | semmle.label | successor |
+| Qualifiers.cs:16:9:16:23 | ...; | Qualifiers.cs:16:13:16:16 | this access | semmle.label | successor |
 | Qualifiers.cs:16:13:16:16 | this access | Qualifiers.cs:16:13:16:22 | access to field Field | semmle.label | successor |
 | Qualifiers.cs:16:13:16:22 | access to field Field | Qualifiers.cs:16:9:16:22 | ... = ... | semmle.label | successor |
-| Qualifiers.cs:17:9:17:9 | access to local variable q | Qualifiers.cs:17:13:17:16 | this access | semmle.label | successor |
 | Qualifiers.cs:17:9:17:25 | ... = ... | Qualifiers.cs:18:9:18:26 | ...; | semmle.label | successor |
-| Qualifiers.cs:17:9:17:26 | ...; | Qualifiers.cs:17:9:17:9 | access to local variable q | semmle.label | successor |
+| Qualifiers.cs:17:9:17:26 | ...; | Qualifiers.cs:17:13:17:16 | this access | semmle.label | successor |
 | Qualifiers.cs:17:13:17:16 | this access | Qualifiers.cs:17:13:17:25 | access to property Property | semmle.label | successor |
 | Qualifiers.cs:17:13:17:25 | access to property Property | Qualifiers.cs:17:9:17:25 | ... = ... | semmle.label | successor |
-| Qualifiers.cs:18:9:18:9 | access to local variable q | Qualifiers.cs:18:13:18:16 | this access | semmle.label | successor |
 | Qualifiers.cs:18:9:18:25 | ... = ... | Qualifiers.cs:20:9:20:24 | ...; | semmle.label | successor |
-| Qualifiers.cs:18:9:18:26 | ...; | Qualifiers.cs:18:9:18:9 | access to local variable q | semmle.label | successor |
+| Qualifiers.cs:18:9:18:26 | ...; | Qualifiers.cs:18:13:18:16 | this access | semmle.label | successor |
 | Qualifiers.cs:18:13:18:16 | this access | Qualifiers.cs:18:13:18:25 | call to method Method | semmle.label | successor |
 | Qualifiers.cs:18:13:18:25 | call to method Method | Qualifiers.cs:18:9:18:25 | ... = ... | semmle.label | successor |
-| Qualifiers.cs:20:9:20:9 | access to local variable q | Qualifiers.cs:20:13:20:23 | access to field StaticField | semmle.label | successor |
 | Qualifiers.cs:20:9:20:23 | ... = ... | Qualifiers.cs:21:9:21:27 | ...; | semmle.label | successor |
-| Qualifiers.cs:20:9:20:24 | ...; | Qualifiers.cs:20:9:20:9 | access to local variable q | semmle.label | successor |
+| Qualifiers.cs:20:9:20:24 | ...; | Qualifiers.cs:20:13:20:23 | access to field StaticField | semmle.label | successor |
 | Qualifiers.cs:20:13:20:23 | access to field StaticField | Qualifiers.cs:20:9:20:23 | ... = ... | semmle.label | successor |
-| Qualifiers.cs:21:9:21:9 | access to local variable q | Qualifiers.cs:21:13:21:26 | access to property StaticProperty | semmle.label | successor |
 | Qualifiers.cs:21:9:21:26 | ... = ... | Qualifiers.cs:22:9:22:27 | ...; | semmle.label | successor |
-| Qualifiers.cs:21:9:21:27 | ...; | Qualifiers.cs:21:9:21:9 | access to local variable q | semmle.label | successor |
+| Qualifiers.cs:21:9:21:27 | ...; | Qualifiers.cs:21:13:21:26 | access to property StaticProperty | semmle.label | successor |
 | Qualifiers.cs:21:13:21:26 | access to property StaticProperty | Qualifiers.cs:21:9:21:26 | ... = ... | semmle.label | successor |
-| Qualifiers.cs:22:9:22:9 | access to local variable q | Qualifiers.cs:22:13:22:26 | call to method StaticMethod | semmle.label | successor |
 | Qualifiers.cs:22:9:22:26 | ... = ... | Qualifiers.cs:24:9:24:35 | ...; | semmle.label | successor |
-| Qualifiers.cs:22:9:22:27 | ...; | Qualifiers.cs:22:9:22:9 | access to local variable q | semmle.label | successor |
+| Qualifiers.cs:22:9:22:27 | ...; | Qualifiers.cs:22:13:22:26 | call to method StaticMethod | semmle.label | successor |
 | Qualifiers.cs:22:13:22:26 | call to method StaticMethod | Qualifiers.cs:22:9:22:26 | ... = ... | semmle.label | successor |
-| Qualifiers.cs:24:9:24:9 | access to local variable q | Qualifiers.cs:24:13:24:34 | access to field StaticField | semmle.label | successor |
 | Qualifiers.cs:24:9:24:34 | ... = ... | Qualifiers.cs:25:9:25:38 | ...; | semmle.label | successor |
-| Qualifiers.cs:24:9:24:35 | ...; | Qualifiers.cs:24:9:24:9 | access to local variable q | semmle.label | successor |
+| Qualifiers.cs:24:9:24:35 | ...; | Qualifiers.cs:24:13:24:34 | access to field StaticField | semmle.label | successor |
 | Qualifiers.cs:24:13:24:34 | access to field StaticField | Qualifiers.cs:24:9:24:34 | ... = ... | semmle.label | successor |
-| Qualifiers.cs:25:9:25:9 | access to local variable q | Qualifiers.cs:25:13:25:37 | access to property StaticProperty | semmle.label | successor |
 | Qualifiers.cs:25:9:25:37 | ... = ... | Qualifiers.cs:26:9:26:38 | ...; | semmle.label | successor |
-| Qualifiers.cs:25:9:25:38 | ...; | Qualifiers.cs:25:9:25:9 | access to local variable q | semmle.label | successor |
+| Qualifiers.cs:25:9:25:38 | ...; | Qualifiers.cs:25:13:25:37 | access to property StaticProperty | semmle.label | successor |
 | Qualifiers.cs:25:13:25:37 | access to property StaticProperty | Qualifiers.cs:25:9:25:37 | ... = ... | semmle.label | successor |
-| Qualifiers.cs:26:9:26:9 | access to local variable q | Qualifiers.cs:26:13:26:37 | call to method StaticMethod | semmle.label | successor |
 | Qualifiers.cs:26:9:26:37 | ... = ... | Qualifiers.cs:28:9:28:41 | ...; | semmle.label | successor |
-| Qualifiers.cs:26:9:26:38 | ...; | Qualifiers.cs:26:9:26:9 | access to local variable q | semmle.label | successor |
+| Qualifiers.cs:26:9:26:38 | ...; | Qualifiers.cs:26:13:26:37 | call to method StaticMethod | semmle.label | successor |
 | Qualifiers.cs:26:13:26:37 | call to method StaticMethod | Qualifiers.cs:26:9:26:37 | ... = ... | semmle.label | successor |
-| Qualifiers.cs:28:9:28:9 | access to local variable q | Qualifiers.cs:28:13:28:34 | access to field StaticField | semmle.label | successor |
 | Qualifiers.cs:28:9:28:40 | ... = ... | Qualifiers.cs:29:9:29:47 | ...; | semmle.label | successor |
-| Qualifiers.cs:28:9:28:41 | ...; | Qualifiers.cs:28:9:28:9 | access to local variable q | semmle.label | successor |
+| Qualifiers.cs:28:9:28:41 | ...; | Qualifiers.cs:28:13:28:34 | access to field StaticField | semmle.label | successor |
 | Qualifiers.cs:28:13:28:34 | access to field StaticField | Qualifiers.cs:28:13:28:40 | access to field Field | semmle.label | successor |
 | Qualifiers.cs:28:13:28:40 | access to field Field | Qualifiers.cs:28:9:28:40 | ... = ... | semmle.label | successor |
-| Qualifiers.cs:29:9:29:9 | access to local variable q | Qualifiers.cs:29:13:29:37 | access to property StaticProperty | semmle.label | successor |
 | Qualifiers.cs:29:9:29:46 | ... = ... | Qualifiers.cs:30:9:30:47 | ...; | semmle.label | successor |
-| Qualifiers.cs:29:9:29:47 | ...; | Qualifiers.cs:29:9:29:9 | access to local variable q | semmle.label | successor |
+| Qualifiers.cs:29:9:29:47 | ...; | Qualifiers.cs:29:13:29:37 | access to property StaticProperty | semmle.label | successor |
 | Qualifiers.cs:29:13:29:37 | access to property StaticProperty | Qualifiers.cs:29:13:29:46 | access to property Property | semmle.label | successor |
 | Qualifiers.cs:29:13:29:46 | access to property Property | Qualifiers.cs:29:9:29:46 | ... = ... | semmle.label | successor |
-| Qualifiers.cs:30:9:30:9 | access to local variable q | Qualifiers.cs:30:13:30:37 | call to method StaticMethod | semmle.label | successor |
-| Qualifiers.cs:30:9:30:47 | ...; | Qualifiers.cs:30:9:30:9 | access to local variable q | semmle.label | successor |
+| Qualifiers.cs:30:9:30:47 | ...; | Qualifiers.cs:30:13:30:37 | call to method StaticMethod | semmle.label | successor |
 | Qualifiers.cs:30:13:30:37 | call to method StaticMethod | Qualifiers.cs:30:13:30:46 | call to method Method | semmle.label | successor |
 | Qualifiers.cs:30:13:30:46 | call to method Method | Qualifiers.cs:30:9:30:46 | ... = ... | semmle.label | successor |
 | Switch.cs:6:5:8:5 | {...} | Switch.cs:7:9:7:22 | switch (...) {...} | semmle.label | successor |
@@ -1271,14 +1211,12 @@
 | Switch.cs:120:16:120:17 | -... | Switch.cs:120:9:120:18 | return ...; | semmle.label | successor |
 | Switch.cs:120:17:120:17 | 1 | Switch.cs:120:16:120:17 | -... | semmle.label | successor |
 | TypeAccesses.cs:4:5:9:5 | {...} | TypeAccesses.cs:5:9:5:26 | ... ...; | semmle.label | successor |
-| TypeAccesses.cs:5:9:5:26 | ... ...; | TypeAccesses.cs:5:13:5:13 | access to local variable s | semmle.label | successor |
-| TypeAccesses.cs:5:13:5:13 | access to local variable s | TypeAccesses.cs:5:25:5:25 | access to parameter o | semmle.label | successor |
+| TypeAccesses.cs:5:9:5:26 | ... ...; | TypeAccesses.cs:5:25:5:25 | access to parameter o | semmle.label | successor |
 | TypeAccesses.cs:5:13:5:25 | String s = ... | TypeAccesses.cs:6:9:6:24 | ...; | semmle.label | successor |
 | TypeAccesses.cs:5:17:5:25 | (...) ... | TypeAccesses.cs:5:13:5:25 | String s = ... | semmle.label | successor |
 | TypeAccesses.cs:5:25:5:25 | access to parameter o | TypeAccesses.cs:5:17:5:25 | (...) ... | semmle.label | successor |
-| TypeAccesses.cs:6:9:6:9 | access to local variable s | TypeAccesses.cs:6:13:6:13 | access to parameter o | semmle.label | successor |
 | TypeAccesses.cs:6:9:6:23 | ... = ... | TypeAccesses.cs:7:9:7:25 | if (...) ... | semmle.label | successor |
-| TypeAccesses.cs:6:9:6:24 | ...; | TypeAccesses.cs:6:9:6:9 | access to local variable s | semmle.label | successor |
+| TypeAccesses.cs:6:9:6:24 | ...; | TypeAccesses.cs:6:13:6:13 | access to parameter o | semmle.label | successor |
 | TypeAccesses.cs:6:13:6:13 | access to parameter o | TypeAccesses.cs:6:13:6:23 | ... as ... | semmle.label | successor |
 | TypeAccesses.cs:6:13:6:23 | ... as ... | TypeAccesses.cs:6:9:6:23 | ... = ... | semmle.label | successor |
 | TypeAccesses.cs:7:9:7:25 | if (...) ... | TypeAccesses.cs:7:13:7:13 | access to parameter o | semmle.label | successor |
@@ -1287,17 +1225,14 @@
 | TypeAccesses.cs:7:13:7:22 | ... is ... | TypeAccesses.cs:8:9:8:28 | ... ...; | semmle.label | false |
 | TypeAccesses.cs:7:18:7:22 | Int32 j | TypeAccesses.cs:7:13:7:22 | ... is ... | semmle.label | successor |
 | TypeAccesses.cs:7:25:7:25 | ; | TypeAccesses.cs:8:9:8:28 | ... ...; | semmle.label | successor |
-| TypeAccesses.cs:8:9:8:28 | ... ...; | TypeAccesses.cs:8:13:8:13 | access to local variable t | semmle.label | successor |
-| TypeAccesses.cs:8:13:8:13 | access to local variable t | TypeAccesses.cs:8:17:8:27 | typeof(...) | semmle.label | successor |
+| TypeAccesses.cs:8:9:8:28 | ... ...; | TypeAccesses.cs:8:17:8:27 | typeof(...) | semmle.label | successor |
 | TypeAccesses.cs:8:17:8:27 | typeof(...) | TypeAccesses.cs:8:13:8:27 | Type t = ... | semmle.label | successor |
 | VarDecls.cs:6:5:11:5 | {...} | VarDecls.cs:7:9:10:9 | fixed(...) { ... } | semmle.label | successor |
-| VarDecls.cs:7:9:10:9 | fixed(...) { ... } | VarDecls.cs:7:22:7:23 | access to local variable c1 | semmle.label | successor |
-| VarDecls.cs:7:22:7:23 | access to local variable c1 | VarDecls.cs:7:27:7:33 | access to parameter strings | semmle.label | successor |
-| VarDecls.cs:7:22:7:36 | Char* c1 = ... | VarDecls.cs:7:39:7:40 | access to local variable c2 | semmle.label | successor |
+| VarDecls.cs:7:9:10:9 | fixed(...) { ... } | VarDecls.cs:7:27:7:33 | access to parameter strings | semmle.label | successor |
+| VarDecls.cs:7:22:7:36 | Char* c1 = ... | VarDecls.cs:7:44:7:50 | access to parameter strings | semmle.label | successor |
 | VarDecls.cs:7:27:7:33 | access to parameter strings | VarDecls.cs:7:35:7:35 | 0 | semmle.label | successor |
 | VarDecls.cs:7:27:7:36 | access to array element | VarDecls.cs:7:22:7:36 | Char* c1 = ... | semmle.label | successor |
 | VarDecls.cs:7:35:7:35 | 0 | VarDecls.cs:7:27:7:36 | access to array element | semmle.label | successor |
-| VarDecls.cs:7:39:7:40 | access to local variable c2 | VarDecls.cs:7:44:7:50 | access to parameter strings | semmle.label | successor |
 | VarDecls.cs:7:39:7:53 | Char* c2 = ... | VarDecls.cs:8:9:10:9 | {...} | semmle.label | successor |
 | VarDecls.cs:7:44:7:50 | access to parameter strings | VarDecls.cs:7:52:7:52 | 1 | semmle.label | successor |
 | VarDecls.cs:7:44:7:53 | access to array element | VarDecls.cs:7:39:7:53 | Char* c2 = ... | semmle.label | successor |
@@ -1306,11 +1241,9 @@
 | VarDecls.cs:9:20:9:28 | (...) ... | VarDecls.cs:9:13:9:29 | return ...; | semmle.label | successor |
 | VarDecls.cs:9:27:9:28 | access to local variable c1 | VarDecls.cs:9:20:9:28 | (...) ... | semmle.label | successor |
 | VarDecls.cs:14:5:17:5 | {...} | VarDecls.cs:15:9:15:30 | ... ...; | semmle.label | successor |
-| VarDecls.cs:15:9:15:30 | ... ...; | VarDecls.cs:15:16:15:17 | access to local variable s1 | semmle.label | successor |
-| VarDecls.cs:15:16:15:17 | access to local variable s1 | VarDecls.cs:15:21:15:21 | access to parameter s | semmle.label | successor |
-| VarDecls.cs:15:16:15:21 | String s1 = ... | VarDecls.cs:15:24:15:25 | access to local variable s2 | semmle.label | successor |
+| VarDecls.cs:15:9:15:30 | ... ...; | VarDecls.cs:15:21:15:21 | access to parameter s | semmle.label | successor |
+| VarDecls.cs:15:16:15:21 | String s1 = ... | VarDecls.cs:15:29:15:29 | access to parameter s | semmle.label | successor |
 | VarDecls.cs:15:21:15:21 | access to parameter s | VarDecls.cs:15:16:15:21 | String s1 = ... | semmle.label | successor |
-| VarDecls.cs:15:24:15:25 | access to local variable s2 | VarDecls.cs:15:29:15:29 | access to parameter s | semmle.label | successor |
 | VarDecls.cs:15:24:15:29 | String s2 = ... | VarDecls.cs:16:16:16:17 | access to local variable s1 | semmle.label | successor |
 | VarDecls.cs:15:29:15:29 | access to parameter s | VarDecls.cs:15:24:15:29 | String s2 = ... | semmle.label | successor |
 | VarDecls.cs:16:16:16:17 | access to local variable s1 | VarDecls.cs:16:21:16:22 | access to local variable s2 | semmle.label | successor |
@@ -1320,11 +1253,9 @@
 | VarDecls.cs:21:9:22:13 | using (...) {...} | VarDecls.cs:21:16:21:22 | object creation of type C | semmle.label | successor |
 | VarDecls.cs:21:16:21:22 | object creation of type C | VarDecls.cs:22:13:22:13 | ; | semmle.label | successor |
 | VarDecls.cs:22:13:22:13 | ; | VarDecls.cs:24:9:25:29 | using (...) {...} | semmle.label | successor |
-| VarDecls.cs:24:9:25:29 | using (...) {...} | VarDecls.cs:24:18:24:18 | access to local variable x | semmle.label | successor |
-| VarDecls.cs:24:18:24:18 | access to local variable x | VarDecls.cs:24:22:24:28 | object creation of type C | semmle.label | successor |
-| VarDecls.cs:24:18:24:28 | C x = ... | VarDecls.cs:24:31:24:31 | access to local variable y | semmle.label | successor |
+| VarDecls.cs:24:9:25:29 | using (...) {...} | VarDecls.cs:24:22:24:28 | object creation of type C | semmle.label | successor |
+| VarDecls.cs:24:18:24:28 | C x = ... | VarDecls.cs:24:35:24:41 | object creation of type C | semmle.label | successor |
 | VarDecls.cs:24:22:24:28 | object creation of type C | VarDecls.cs:24:18:24:28 | C x = ... | semmle.label | successor |
-| VarDecls.cs:24:31:24:31 | access to local variable y | VarDecls.cs:24:35:24:41 | object creation of type C | semmle.label | successor |
 | VarDecls.cs:24:31:24:41 | C y = ... | VarDecls.cs:25:20:25:28 | ... ? ... : ... | semmle.label | successor |
 | VarDecls.cs:24:35:24:41 | object creation of type C | VarDecls.cs:24:31:24:41 | C y = ... | semmle.label | successor |
 | VarDecls.cs:25:20:25:20 | access to parameter b | VarDecls.cs:25:24:25:24 | access to local variable x | semmle.label | true |
@@ -1333,14 +1264,12 @@
 | VarDecls.cs:25:24:25:24 | access to local variable x | VarDecls.cs:25:13:25:29 | return ...; | semmle.label | successor |
 | VarDecls.cs:25:28:25:28 | access to local variable y | VarDecls.cs:25:13:25:29 | return ...; | semmle.label | successor |
 | cflow.cs:6:5:35:5 | {...} | cflow.cs:7:9:7:28 | ... ...; | semmle.label | successor |
-| cflow.cs:7:9:7:28 | ... ...; | cflow.cs:7:13:7:13 | access to local variable a | semmle.label | successor |
-| cflow.cs:7:13:7:13 | access to local variable a | cflow.cs:7:17:7:20 | access to parameter args | semmle.label | successor |
+| cflow.cs:7:9:7:28 | ... ...; | cflow.cs:7:17:7:20 | access to parameter args | semmle.label | successor |
 | cflow.cs:7:13:7:27 | Int32 a = ... | cflow.cs:9:9:9:40 | ...; | semmle.label | successor |
 | cflow.cs:7:17:7:20 | access to parameter args | cflow.cs:7:17:7:27 | access to property Length | semmle.label | successor |
 | cflow.cs:7:17:7:27 | access to property Length | cflow.cs:7:13:7:27 | Int32 a = ... | semmle.label | successor |
-| cflow.cs:9:9:9:9 | access to local variable a | cflow.cs:9:13:9:29 | object creation of type ControlFlow | semmle.label | successor |
 | cflow.cs:9:9:9:39 | ... = ... | cflow.cs:11:9:12:49 | if (...) ... | semmle.label | successor |
-| cflow.cs:9:9:9:40 | ...; | cflow.cs:9:9:9:9 | access to local variable a | semmle.label | successor |
+| cflow.cs:9:9:9:40 | ...; | cflow.cs:9:13:9:29 | object creation of type ControlFlow | semmle.label | successor |
 | cflow.cs:9:13:9:29 | object creation of type ControlFlow | cflow.cs:9:38:9:38 | access to local variable a | semmle.label | successor |
 | cflow.cs:9:13:9:39 | call to method Switch | cflow.cs:9:9:9:39 | ... = ... | semmle.label | successor |
 | cflow.cs:9:38:9:38 | access to local variable a | cflow.cs:9:13:9:39 | call to method Switch | semmle.label | successor |
@@ -1375,8 +1304,7 @@
 | cflow.cs:22:18:22:23 | ... < ... | cflow.cs:20:9:22:9 | {...} | semmle.label | true |
 | cflow.cs:22:18:22:23 | ... < ... | cflow.cs:24:9:34:9 | for (...;...;...) ... | semmle.label | false |
 | cflow.cs:22:22:22:23 | 10 | cflow.cs:22:18:22:23 | ... < ... | semmle.label | successor |
-| cflow.cs:24:9:34:9 | for (...;...;...) ... | cflow.cs:24:18:24:18 | access to local variable i | semmle.label | successor |
-| cflow.cs:24:18:24:18 | access to local variable i | cflow.cs:24:22:24:22 | 1 | semmle.label | successor |
+| cflow.cs:24:9:34:9 | for (...;...;...) ... | cflow.cs:24:22:24:22 | 1 | semmle.label | successor |
 | cflow.cs:24:18:24:22 | Int32 i = ... | cflow.cs:24:25:24:25 | access to local variable i | semmle.label | successor |
 | cflow.cs:24:22:24:22 | 1 | cflow.cs:24:18:24:22 | Int32 i = ... | semmle.label | successor |
 | cflow.cs:24:25:24:25 | access to local variable i | cflow.cs:24:30:24:31 | 20 | semmle.label | successor |
@@ -1567,13 +1495,11 @@
 | cflow.cs:116:9:116:29 | ...; | cflow.cs:116:27:116:27 | access to parameter s | semmle.label | successor |
 | cflow.cs:116:27:116:27 | access to parameter s | cflow.cs:116:9:116:28 | call to method WriteLine | semmle.label | successor |
 | cflow.cs:120:5:124:5 | {...} | cflow.cs:121:9:121:18 | ... ...; | semmle.label | successor |
-| cflow.cs:121:9:121:18 | ... ...; | cflow.cs:121:13:121:13 | access to local variable x | semmle.label | successor |
-| cflow.cs:121:13:121:13 | access to local variable x | cflow.cs:121:17:121:17 | access to parameter s | semmle.label | successor |
+| cflow.cs:121:9:121:18 | ... ...; | cflow.cs:121:17:121:17 | access to parameter s | semmle.label | successor |
 | cflow.cs:121:13:121:17 | String x = ... | cflow.cs:122:9:122:20 | ...; | semmle.label | successor |
 | cflow.cs:121:17:121:17 | access to parameter s | cflow.cs:121:13:121:17 | String x = ... | semmle.label | successor |
-| cflow.cs:122:9:122:9 | access to local variable x | cflow.cs:122:13:122:13 | access to local variable x | semmle.label | successor |
 | cflow.cs:122:9:122:19 | ... = ... | cflow.cs:123:16:123:16 | access to local variable x | semmle.label | successor |
-| cflow.cs:122:9:122:20 | ...; | cflow.cs:122:9:122:9 | access to local variable x | semmle.label | successor |
+| cflow.cs:122:9:122:20 | ...; | cflow.cs:122:13:122:13 | access to local variable x | semmle.label | successor |
 | cflow.cs:122:13:122:13 | access to local variable x | cflow.cs:122:17:122:19 | " " | semmle.label | successor |
 | cflow.cs:122:13:122:19 | ... + ... | cflow.cs:122:9:122:19 | ... = ... | semmle.label | successor |
 | cflow.cs:122:17:122:19 | " " | cflow.cs:122:13:122:19 | ... + ... | semmle.label | successor |
@@ -1589,13 +1515,11 @@
 | cflow.cs:127:53:127:57 | access to field Field | cflow.cs:127:25:127:58 | return ...; | semmle.label | successor |
 | cflow.cs:127:53:127:57 | this access | cflow.cs:127:53:127:57 | access to field Field | semmle.label | successor |
 | cflow.cs:127:66:127:83 | {...} | cflow.cs:127:68:127:81 | ...; | semmle.label | successor |
-| cflow.cs:127:68:127:72 | access to field Field | cflow.cs:127:76:127:80 | access to parameter value | semmle.label | successor |
-| cflow.cs:127:68:127:72 | this access | cflow.cs:127:68:127:72 | access to field Field | semmle.label | successor |
+| cflow.cs:127:68:127:72 | this access | cflow.cs:127:76:127:80 | access to parameter value | semmle.label | successor |
 | cflow.cs:127:68:127:81 | ...; | cflow.cs:127:68:127:72 | this access | semmle.label | successor |
 | cflow.cs:127:76:127:80 | access to parameter value | cflow.cs:127:68:127:80 | ... = ... | semmle.label | successor |
 | cflow.cs:130:5:132:5 | {...} | cflow.cs:131:9:131:18 | ...; | semmle.label | successor |
-| cflow.cs:131:9:131:13 | access to field Field | cflow.cs:131:17:131:17 | access to parameter s | semmle.label | successor |
-| cflow.cs:131:9:131:13 | this access | cflow.cs:131:9:131:13 | access to field Field | semmle.label | successor |
+| cflow.cs:131:9:131:13 | this access | cflow.cs:131:17:131:17 | access to parameter s | semmle.label | successor |
 | cflow.cs:131:9:131:18 | ...; | cflow.cs:131:9:131:13 | this access | semmle.label | successor |
 | cflow.cs:131:17:131:17 | access to parameter s | cflow.cs:131:9:131:17 | ... = ... | semmle.label | successor |
 | cflow.cs:134:26:134:29 | call to constructor ControlFlow | cflow.cs:134:39:134:41 | {...} | semmle.label | successor |
@@ -1689,8 +1613,7 @@
 | cflow.cs:203:13:203:40 | call to method WriteLine | cflow.cs:206:9:206:19 | ... ...; | semmle.label | successor |
 | cflow.cs:203:13:203:41 | ...; | cflow.cs:203:31:203:39 | "Finally" | semmle.label | successor |
 | cflow.cs:203:31:203:39 | "Finally" | cflow.cs:203:13:203:40 | call to method WriteLine | semmle.label | successor |
-| cflow.cs:206:9:206:19 | ... ...; | cflow.cs:206:13:206:13 | access to local variable i | semmle.label | successor |
-| cflow.cs:206:13:206:13 | access to local variable i | cflow.cs:206:17:206:18 | 10 | semmle.label | successor |
+| cflow.cs:206:9:206:19 | ... ...; | cflow.cs:206:17:206:18 | 10 | semmle.label | successor |
 | cflow.cs:206:13:206:18 | Int32 i = ... | cflow.cs:207:9:230:9 | while (...) ... | semmle.label | successor |
 | cflow.cs:206:17:206:18 | 10 | cflow.cs:206:13:206:18 | Int32 i = ... | semmle.label | successor |
 | cflow.cs:207:9:230:9 | while (...) ... | cflow.cs:207:16:207:16 | access to local variable i | semmle.label | successor |
@@ -1787,15 +1710,13 @@
 | cflow.cs:244:35:244:35 | 1 | cflow.cs:244:17:244:36 | call to method WriteLine | semmle.label | successor |
 | cflow.cs:247:9:254:9 | try {...} ... | cflow.cs:248:9:250:9 | {...} | semmle.label | successor |
 | cflow.cs:248:9:250:9 | {...} | cflow.cs:249:13:249:41 | ... ...; | semmle.label | successor |
-| cflow.cs:249:13:249:41 | ... ...; | cflow.cs:249:17:249:20 | access to local variable temp | semmle.label | successor |
-| cflow.cs:249:17:249:20 | access to local variable temp | cflow.cs:249:24:249:24 | 0 | semmle.label | successor |
+| cflow.cs:249:13:249:41 | ... ...; | cflow.cs:249:24:249:24 | 0 | semmle.label | successor |
 | cflow.cs:249:24:249:24 | 0 | cflow.cs:249:24:249:24 | (...) ... | semmle.label | successor |
 | cflow.cs:249:24:249:24 | (...) ... | cflow.cs:249:28:249:40 | access to constant E | semmle.label | successor |
 | cflow.cs:249:24:249:40 | ... / ... | cflow.cs:249:17:249:40 | Double temp = ... | semmle.label | successor |
 | cflow.cs:249:28:249:40 | access to constant E | cflow.cs:249:24:249:40 | ... / ... | semmle.label | successor |
 | cflow.cs:258:5:288:5 | {...} | cflow.cs:259:9:259:18 | ... ...; | semmle.label | successor |
-| cflow.cs:259:9:259:18 | ... ...; | cflow.cs:259:13:259:13 | access to local variable x | semmle.label | successor |
-| cflow.cs:259:13:259:13 | access to local variable x | cflow.cs:259:17:259:17 | 0 | semmle.label | successor |
+| cflow.cs:259:9:259:18 | ... ...; | cflow.cs:259:17:259:17 | 0 | semmle.label | successor |
 | cflow.cs:259:13:259:17 | Int32 x = ... | cflow.cs:260:9:261:33 | for (...;...;...) ... | semmle.label | successor |
 | cflow.cs:259:17:259:17 | 0 | cflow.cs:259:13:259:17 | Int32 x = ... | semmle.label | successor |
 | cflow.cs:260:9:261:33 | for (...;...;...) ... | cflow.cs:260:16:260:16 | access to local variable x | semmle.label | successor |
@@ -1847,11 +1768,9 @@
 | cflow.cs:281:13:281:13 | access to local variable x | cflow.cs:281:13:281:15 | ...++ | semmle.label | successor |
 | cflow.cs:281:13:281:15 | ...++ | cflow.cs:278:16:278:16 | access to local variable x | semmle.label | successor |
 | cflow.cs:281:13:281:16 | ...; | cflow.cs:281:13:281:13 | access to local variable x | semmle.label | successor |
-| cflow.cs:284:9:287:9 | for (...;...;...) ... | cflow.cs:284:18:284:18 | access to local variable i | semmle.label | successor |
-| cflow.cs:284:18:284:18 | access to local variable i | cflow.cs:284:22:284:22 | 0 | semmle.label | successor |
-| cflow.cs:284:18:284:22 | Int32 i = ... | cflow.cs:284:25:284:25 | access to local variable j | semmle.label | successor |
+| cflow.cs:284:9:287:9 | for (...;...;...) ... | cflow.cs:284:22:284:22 | 0 | semmle.label | successor |
+| cflow.cs:284:18:284:22 | Int32 i = ... | cflow.cs:284:29:284:29 | 0 | semmle.label | successor |
 | cflow.cs:284:22:284:22 | 0 | cflow.cs:284:18:284:22 | Int32 i = ... | semmle.label | successor |
-| cflow.cs:284:25:284:25 | access to local variable j | cflow.cs:284:29:284:29 | 0 | semmle.label | successor |
 | cflow.cs:284:25:284:29 | Int32 j = ... | cflow.cs:284:32:284:32 | access to local variable i | semmle.label | successor |
 | cflow.cs:284:29:284:29 | 0 | cflow.cs:284:25:284:29 | Int32 j = ... | semmle.label | successor |
 | cflow.cs:284:32:284:32 | access to local variable i | cflow.cs:284:36:284:36 | access to local variable j | semmle.label | successor |
@@ -1870,14 +1789,12 @@
 | cflow.cs:286:31:286:35 | ... + ... | cflow.cs:286:13:286:36 | call to method WriteLine | semmle.label | successor |
 | cflow.cs:286:35:286:35 | access to local variable j | cflow.cs:286:31:286:35 | ... + ... | semmle.label | successor |
 | cflow.cs:291:5:294:5 | {...} | cflow.cs:292:9:292:38 | ... ...; | semmle.label | successor |
-| cflow.cs:292:9:292:38 | ... ...; | cflow.cs:292:24:292:24 | access to local variable y | semmle.label | successor |
-| cflow.cs:292:24:292:24 | access to local variable y | cflow.cs:292:28:292:37 | (...) => ... | semmle.label | successor |
+| cflow.cs:292:9:292:38 | ... ...; | cflow.cs:292:28:292:37 | (...) => ... | semmle.label | successor |
 | cflow.cs:292:24:292:37 | Func<Int32,Int32> y = ... | cflow.cs:293:9:293:62 | ... ...; | semmle.label | successor |
 | cflow.cs:292:28:292:37 | (...) => ... | cflow.cs:292:24:292:37 | Func<Int32,Int32> y = ... | semmle.label | successor |
 | cflow.cs:292:33:292:33 | access to parameter x | cflow.cs:292:37:292:37 | 1 | semmle.label | successor |
 | cflow.cs:292:37:292:37 | 1 | cflow.cs:292:33:292:37 | ... + ... | semmle.label | successor |
-| cflow.cs:293:9:293:62 | ... ...; | cflow.cs:293:24:293:24 | access to local variable z | semmle.label | successor |
-| cflow.cs:293:24:293:24 | access to local variable z | cflow.cs:293:28:293:61 | delegate(...) { ... } | semmle.label | successor |
+| cflow.cs:293:9:293:62 | ... ...; | cflow.cs:293:28:293:61 | delegate(...) { ... } | semmle.label | successor |
 | cflow.cs:293:28:293:61 | delegate(...) { ... } | cflow.cs:293:24:293:61 | Func<Int32,Int32> z = ... | semmle.label | successor |
 | cflow.cs:293:45:293:61 | {...} | cflow.cs:293:54:293:54 | access to parameter x | semmle.label | successor |
 | cflow.cs:293:54:293:54 | access to parameter x | cflow.cs:293:58:293:58 | 1 | semmle.label | successor |
@@ -1900,8 +1817,7 @@
 | cflow.cs:301:13:301:52 | ...; | cflow.cs:301:31:301:50 | "This should happen" | semmle.label | successor |
 | cflow.cs:301:31:301:50 | "This should happen" | cflow.cs:301:13:301:51 | call to method WriteLine | semmle.label | successor |
 | cflow.cs:305:5:317:5 | {...} | cflow.cs:306:9:306:57 | ... ...; | semmle.label | successor |
-| cflow.cs:306:9:306:57 | ... ...; | cflow.cs:306:13:306:13 | access to local variable b | semmle.label | successor |
-| cflow.cs:306:13:306:13 | access to local variable b | cflow.cs:306:17:306:56 | ... && ... | semmle.label | successor |
+| cflow.cs:306:9:306:57 | ... ...; | cflow.cs:306:17:306:56 | ... && ... | semmle.label | successor |
 | cflow.cs:306:13:306:56 | Boolean b = ... | cflow.cs:308:9:309:49 | if (...) ... | semmle.label | successor |
 | cflow.cs:306:17:306:21 | access to field Field | cflow.cs:306:17:306:28 | access to property Length | semmle.label | successor |
 | cflow.cs:306:17:306:21 | this access | cflow.cs:306:17:306:21 | access to field Field | semmle.label | successor |
@@ -1927,9 +1843,8 @@
 | cflow.cs:308:31:308:31 | 0 | cflow.cs:308:15:308:31 | ... == ... | semmle.label | successor |
 | cflow.cs:308:35:308:39 | false | cflow.cs:309:13:309:49 | ...; | semmle.label | false |
 | cflow.cs:308:43:308:46 | true | cflow.cs:311:9:316:9 | if (...) ... | semmle.label | true |
-| cflow.cs:309:13:309:13 | access to local variable b | cflow.cs:309:17:309:48 | ... ? ... : ... | semmle.label | successor |
 | cflow.cs:309:13:309:48 | ... = ... | cflow.cs:311:9:316:9 | if (...) ... | semmle.label | successor |
-| cflow.cs:309:13:309:49 | ...; | cflow.cs:309:13:309:13 | access to local variable b | semmle.label | successor |
+| cflow.cs:309:13:309:49 | ...; | cflow.cs:309:17:309:48 | ... ? ... : ... | semmle.label | successor |
 | cflow.cs:309:17:309:21 | access to field Field | cflow.cs:309:17:309:28 | access to property Length | semmle.label | successor |
 | cflow.cs:309:17:309:21 | this access | cflow.cs:309:17:309:21 | access to field Field | semmle.label | successor |
 | cflow.cs:309:17:309:28 | access to property Length | cflow.cs:309:33:309:33 | 0 | semmle.label | successor |
@@ -1963,10 +1878,9 @@
 | cflow.cs:320:5:333:5 | {...} | cflow.cs:321:9:332:36 | do ... while (...); | semmle.label | successor |
 | cflow.cs:321:9:332:36 | do ... while (...); | cflow.cs:322:9:332:9 | {...} | semmle.label | successor |
 | cflow.cs:322:9:332:9 | {...} | cflow.cs:323:13:323:25 | ...; | semmle.label | successor |
-| cflow.cs:323:13:323:17 | access to field Field | cflow.cs:323:13:323:17 | this access | semmle.label | successor |
 | cflow.cs:323:13:323:17 | access to field Field | cflow.cs:323:22:323:24 | "a" | semmle.label | successor |
 | cflow.cs:323:13:323:17 | this access | cflow.cs:323:13:323:17 | access to field Field | semmle.label | successor |
-| cflow.cs:323:13:323:17 | this access | cflow.cs:323:13:323:17 | access to field Field | semmle.label | successor |
+| cflow.cs:323:13:323:17 | this access | cflow.cs:323:13:323:17 | this access | semmle.label | successor |
 | cflow.cs:323:13:323:24 | ... + ... | cflow.cs:323:13:323:24 | ... = ... | semmle.label | successor |
 | cflow.cs:323:13:323:24 | ... = ... | cflow.cs:324:13:327:13 | if (...) ... | semmle.label | successor |
 | cflow.cs:323:13:323:25 | ...; | cflow.cs:323:13:323:17 | this access | semmle.label | successor |
@@ -2000,10 +1914,9 @@
 | cflow.cs:337:57:337:59 | "a" | cflow.cs:337:62:337:63 | 10 | semmle.label | successor |
 | cflow.cs:337:62:337:63 | 10 | cflow.cs:337:27:337:64 | call to method Repeat | semmle.label | successor |
 | cflow.cs:338:9:348:9 | {...} | cflow.cs:339:13:339:23 | ...; | semmle.label | successor |
-| cflow.cs:339:13:339:17 | access to field Field | cflow.cs:339:13:339:17 | this access | semmle.label | successor |
 | cflow.cs:339:13:339:17 | access to field Field | cflow.cs:339:22:339:22 | access to local variable x | semmle.label | successor |
 | cflow.cs:339:13:339:17 | this access | cflow.cs:339:13:339:17 | access to field Field | semmle.label | successor |
-| cflow.cs:339:13:339:17 | this access | cflow.cs:339:13:339:17 | access to field Field | semmle.label | successor |
+| cflow.cs:339:13:339:17 | this access | cflow.cs:339:13:339:17 | this access | semmle.label | successor |
 | cflow.cs:339:13:339:22 | ... + ... | cflow.cs:339:13:339:22 | ... = ... | semmle.label | successor |
 | cflow.cs:339:13:339:22 | ... = ... | cflow.cs:340:13:343:13 | if (...) ... | semmle.label | successor |
 | cflow.cs:339:13:339:23 | ...; | cflow.cs:339:13:339:17 | this access | semmle.label | successor |
@@ -2072,8 +1985,7 @@
 | cflow.cs:373:5:388:5 | {...} | cflow.cs:374:22:374:22 | 0 | semmle.label | successor |
 | cflow.cs:374:9:374:23 | yield return ...; | cflow.cs:375:9:378:9 | for (...;...;...) ... | semmle.label | successor |
 | cflow.cs:374:22:374:22 | 0 | cflow.cs:374:9:374:23 | yield return ...; | semmle.label | successor |
-| cflow.cs:375:9:378:9 | for (...;...;...) ... | cflow.cs:375:18:375:18 | access to local variable i | semmle.label | successor |
-| cflow.cs:375:18:375:18 | access to local variable i | cflow.cs:375:22:375:22 | 1 | semmle.label | successor |
+| cflow.cs:375:9:378:9 | for (...;...;...) ... | cflow.cs:375:22:375:22 | 1 | semmle.label | successor |
 | cflow.cs:375:18:375:22 | Int32 i = ... | cflow.cs:375:25:375:25 | access to local variable i | semmle.label | successor |
 | cflow.cs:375:22:375:22 | 1 | cflow.cs:375:18:375:22 | Int32 i = ... | semmle.label | successor |
 | cflow.cs:375:25:375:25 | access to local variable i | cflow.cs:375:29:375:30 | 10 | semmle.label | successor |

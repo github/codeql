@@ -601,20 +601,19 @@ module AssignableDefinitions {
     /** Gets the underlying call. */
     Call getCall() { result.getAnArgument() = aa }
 
+    private int getPosition() { aa = this.getCall().getArgument(result) }
+
     /**
      * Gets the index of this definition among the other definitions in the
      * `out`/`ref` assignment. For example, in `M(out x, ref y)` the index of
      * the definitions of `x` and `y` are 0 and 1, respectively.
      */
     int getIndex() {
-      exists(ControlFlow::BasicBlock bb, int i | bb.getNode(i).getElement() = aa |
-        i = rank[result + 1](int j, OutRefDefinition def |
-            bb.getNode(j).getElement() = def.getTargetAccess() and
-            this.getCall() = def.getCall()
-          |
-            j
-          )
-      )
+      this = rank[result + 1](OutRefDefinition def |
+          def.getCall() = this.getCall()
+        |
+          def order by def.getPosition()
+        )
     }
 
     override predicate isCertain() { not isUncertainRefCall(this.getTargetAccess()) }

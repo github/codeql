@@ -131,7 +131,6 @@
 | b (line 102): false | Conditions.cs:108:17:108:18 | [b (line 102): false] !... |
 | b (line 102): false | Conditions.cs:108:18:108:18 | [b (line 102): false] access to parameter b |
 | b (line 102): true | Conditions.cs:106:13:106:13 | [b (line 102): true] access to local variable x |
-| b (line 102): true | Conditions.cs:106:13:106:13 | [b (line 102): true] access to local variable x |
 | b (line 102): true | Conditions.cs:106:13:106:19 | [b (line 102): true] ... + ... |
 | b (line 102): true | Conditions.cs:106:13:106:19 | [b (line 102): true] ... = ... |
 | b (line 102): true | Conditions.cs:106:13:106:20 | [b (line 102): true] ...; |
@@ -153,7 +152,6 @@
 | inc (line 3): true | Conditions.cs:7:9:8:16 | [inc (line 3): true] if (...) ... |
 | inc (line 3): true | Conditions.cs:7:13:7:16 | [inc (line 3): true] !... |
 | inc (line 3): true | Conditions.cs:7:14:7:16 | [inc (line 3): true] access to parameter inc |
-| last (line 118): false | Conditions.cs:120:17:120:17 | [last (line 118): false] access to local variable s |
 | last (line 118): false | Conditions.cs:120:17:120:22 | [last (line 118): false] ... = ... |
 | last (line 118): false | Conditions.cs:120:17:120:23 | [last (line 118): false] ...; |
 | last (line 118): false | Conditions.cs:120:21:120:22 | [last (line 118): false] "" |
