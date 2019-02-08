@@ -35,8 +35,7 @@ causing logged sensitive information to be stored as well.
 
 <example>
 <p>
-The following example code stores user credentials (in this case, their account
-name) in a cookie in plain text:
+The following example code stores user credentials (in this case, their password) in a cookie in plain text:
 </p>
 <sample src="examples/CleartextStorage.js"/>
 <p>

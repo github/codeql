@@ -17,31 +17,56 @@ import javascript
  * INTERNAL: Do not use directly.
  */
 module HeuristicNames {
-  /** Gets a regular expression that identifies strings that look like they represent secret data that are not passwords. */
-  string suspiciousNonPassword() { result = "(?is).*(secret|account|accnt|(?<!un)trusted).*" }
-
-  /** Gets a regular expression that identifies strings that look like they represent secret data that are passwords. */
-  string suspiciousPassword() { result = "(?is).*(password|passwd).*" }
-
-  /** Gets a regular expression that identifies strings that look like they represent secret data. */
-  string suspicious() { result = suspiciousPassword() or result = suspiciousNonPassword() }
+  /**
+   * Gets a regular expression that identifies strings that may indicate the presence of secret
+   * or trusted data.
+   */
+  string maybeSecret() { result = "(?is).*((?<!is)secret|(?<!un|is)trusted).*" }
 
   /**
-   * Gets a regular expression that identifies strings that look like they represent data that is
-   * hashed or encrypted.
+   * Gets a regular expression that identifies strings that may indicate the presence of
+   * user names or other account information.
    */
-  string nonSuspicious() {
-    result = "(?is).*(redact|censor|obfuscate|hash|md5|sha|((?<!un)(en))?(crypt|code)).*"
+  string maybeAccountInfo() {
+    result = "(?is).*acc(ou)?nt.*" or
+    result = "(?is).*(puid|username|userid).*"
   }
 
   /**
-   * Gets a regular expression that identifies names that look like they represent credential information.
+   * Gets a regular expression that identifies strings that may indicate the presence of
+   * a password or an authorization key.
    */
-  string suspiciousCredentials() {
-    result = "(?i).*pass(wd|word|code|phrase)(?!.*question).*" or
-    result = "(?i).*(puid|username|userid).*" or
-    result = "(?i).*(cert)(?!.*(format|name)).*" or
-    result = "(?i).*(auth(entication|ori[sz]ation)?)key.*"
+  string maybePassword() {
+    result = "(?is).*pass(wd|word|code|phrase)(?!.*question).*" or
+    result = "(?is).*(auth(entication|ori[sz]ation)?)key.*"
+  }
+
+  /**
+   * Gets a regular expression that identifies strings that may indicate the presence of
+   * a certificate.
+   */
+  string maybeCertificate() { result = "(?is).*(cert)(?!.*(format|name)).*" }
+
+  /**
+   * Gets a regular expression that identifies strings that may indicate the presence
+   * of sensitive data, with `classification` describing the kind of sensitive data involved.
+   */
+  string maybeSensitive(SensitiveExpr::Classification classification) {
+    result = maybeSecret() and classification = SensitiveExpr::secret()
+    or
+    result = maybeAccountInfo() and classification = SensitiveExpr::id()
+    or
+    result = maybePassword() and classification = SensitiveExpr::password()
+    or
+    result = maybeCertificate() and classification = SensitiveExpr::certificate()
+  }
+
+  /**
+   * Gets a regular expression that identifies strings that may indicate the presence of data
+   * that is hashed or encrypted, and hence rendered non-sensitive.
+   */
+  string notSensitive() {
+    result = "(?is).*(redact|censor|obfuscate|hash|md5|sha|((?<!un)(en))?(crypt|code)).*"
   }
 }
 private import HeuristicNames
@@ -50,22 +75,60 @@ private import HeuristicNames
 abstract class SensitiveExpr extends Expr {
   /** Gets a human-readable description of this expression for use in alert messages. */
   abstract string describe();
+
+  /** Gets a classification of the kind of sensitive data this expression might contain. */
+  abstract SensitiveExpr::Classification getClassification();
+}
+
+module SensitiveExpr {
+  /**
+   * A classification of different kinds of sensitive data:
+   *
+   *   - secret: generic secret or trusted data;
+   *   - id: a user name or other account information;
+   *   - password: a password or authorization key;
+   *   - certificate: a certificate.
+   *
+   * While classifications are represented as strings, this should not be relied upon.
+   * Instead, use the predicates below to work with classifications.
+   */
+  class Classification extends string {
+    Classification() {
+      this = "secret" or this = "id" or this = "password" or this = "certificate"
+    }
+  }
+
+  /** Gets the classification for secret or trusted data. */
+  Classification secret() { result = "secret" }
+
+  /** Gets the classification for user names or other account information. */
+  Classification id() { result = "id" }
+
+  /** Gets the classification for passwords or authorization keys. */
+  Classification password() { result = "password" }
+
+  /** Gets the classification for certificates. */
+  Classification certificate() { result = "certificate" }
 }
 
 /** A function call that might produce sensitive data. */
 class SensitiveCall extends SensitiveExpr, InvokeExpr {
+  SensitiveExpr::Classification classification;
+
   SensitiveCall() {
-    this.getCalleeName() instanceof SensitiveDataFunctionName
+    classification = this.getCalleeName().(SensitiveDataFunctionName).getClassification()
     or
     // This is particularly to pick up methods with an argument like "password", which
     // may indicate a lookup.
     exists(string s | this.getAnArgument().mayHaveStringValue(s) |
-      s.regexpMatch(suspicious()) and
-      not s.regexpMatch(nonSuspicious())
+      s.regexpMatch(maybeSensitive(classification)) and
+      not s.regexpMatch(notSensitive())
     )
   }
 
   override string describe() { result = "a call to " + getCalleeName() }
+
+  override SensitiveExpr::Classification getClassification() { result = classification }
 }
 
 /** An access to a variable or property that might contain sensitive data. */
@@ -85,14 +148,17 @@ abstract class SensitiveVariableAccess extends SensitiveExpr {
 }
 
 /** A write to a location that might contain sensitive data. */
-abstract class SensitiveWrite extends DataFlow::Node { }
+abstract class SensitiveWrite extends DataFlow::Node {
+}
 
 /** A write to a variable or property that might contain sensitive data. */
 private class BasicSensitiveWrite extends SensitiveWrite {
+  SensitiveExpr::Classification classification;
+
   BasicSensitiveWrite() {
     exists(string name |
-      name.regexpMatch(suspicious()) and
-      not name.regexpMatch(nonSuspicious())
+      name.regexpMatch(maybeSensitive(classification)) and
+      not name.regexpMatch(notSensitive())
     |
       exists(DataFlow::PropWrite pwn |
         pwn.getPropertyName() = name and
@@ -110,13 +176,20 @@ private class BasicSensitiveWrite extends SensitiveWrite {
       )
     )
   }
+
+  /** Gets a classification of the kind of sensitive data the write might handle. */
+  SensitiveExpr::Classification getClassification() { result = classification }
 }
 
 /** An access to a variable or property that might contain sensitive data. */
 private class BasicSensitiveVariableAccess extends SensitiveVariableAccess {
+  SensitiveExpr::Classification classification;
+
   BasicSensitiveVariableAccess() {
-    name.regexpMatch(suspicious()) and not name.regexpMatch(nonSuspicious())
+    name.regexpMatch(maybeSensitive(classification)) and not name.regexpMatch(notSensitive())
   }
+
+  override SensitiveExpr::Classification getClassification() { result = classification }
 }
 
 /** A function name that suggests it may be sensitive. */
@@ -129,11 +202,18 @@ abstract class SensitiveFunctionName extends string {
 }
 
 /** A function name that suggests it may produce sensitive data. */
-abstract class SensitiveDataFunctionName extends SensitiveFunctionName { }
+abstract class SensitiveDataFunctionName extends SensitiveFunctionName {
+  /** Gets a classification of the kind of sensitive data this function may produce. */
+  abstract SensitiveExpr::Classification getClassification();
+}
 
 /** A method that might return sensitive data, based on the name. */
 class CredentialsFunctionName extends SensitiveDataFunctionName {
-  CredentialsFunctionName() { this.regexpMatch(suspicious()) }
+  SensitiveExpr::Classification classification;
+
+  CredentialsFunctionName() { this.regexpMatch(maybeSensitive(classification)) }
+
+  override SensitiveExpr::Classification getClassification() { result = classification }
 }
 
 /**
@@ -163,41 +243,10 @@ class ProtectCall extends DataFlow::CallNode {
   }
 }
 
-/**
- * Classes for expressions containing cleartext passwords.
- */
-private module CleartextPasswords {
-  bindingset[name]
-  private predicate isCleartextPasswordIndicator(string name) {
-    name.regexpMatch(suspiciousPassword()) and
-    not name.regexpMatch(nonSuspicious())
-  }
+/** An expression that might contain a clear-text password. */
+class CleartextPasswordExpr extends SensitiveExpr {
+  CleartextPasswordExpr() { this.(SensitiveExpr).getClassification() = SensitiveExpr::password() }
 
-  /** An expression that might contain a cleartext password. */
-  abstract class CleartextPasswordExpr extends SensitiveExpr { }
-
-  /** A function name that suggests it may produce a cleartext password. */
-  private class CleartextPasswordDataFunctionName extends SensitiveDataFunctionName {
-    CleartextPasswordDataFunctionName() { isCleartextPasswordIndicator(this) }
-  }
-
-  /** A call that might return a cleartext password. */
-  private class CleartextPasswordCallExpr extends CleartextPasswordExpr, SensitiveCall {
-    CleartextPasswordCallExpr() {
-      this.getCalleeName() instanceof CleartextPasswordDataFunctionName
-      or
-      // This is particularly to pick up methods with an argument like "password", which
-      // may indicate a lookup.
-      exists(string s |
-        this.getAnArgument().mayHaveStringValue(s) and
-        isCleartextPasswordIndicator(s)
-      )
-    }
-  }
-
-  /** An access to a variable or property that might contain a cleartext password. */
-  private class CleartextPasswordLookupExpr extends CleartextPasswordExpr, SensitiveVariableAccess {
-    CleartextPasswordLookupExpr() { isCleartextPasswordIndicator(name) }
-  }
+  override string describe() { none() }
+  override SensitiveExpr::Classification getClassification() { none() }
 }
-import CleartextPasswords

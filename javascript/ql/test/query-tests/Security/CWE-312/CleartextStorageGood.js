@@ -8,8 +8,8 @@ function encrypt(text){
 }
 
 var app = express();
-app.get('/', function (req, res) {
-  let accountName = req.param("AccountName");
+app.get('/remember-password', function (req, res) {
+  let pw = req.param("current_password");
   // GOOD: Encoding the value before setting it.
-  res.cookie("AccountName", encrypt(accountName));
+  res.cookie("password", encrypt(pw));
 });

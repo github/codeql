@@ -1,8 +1,8 @@
 var express = require('express');
 
 var app = express();
-app.get('/', function (req, res) {
-  let accountName = req.param("AccountName");
+app.get('/remember-password', function (req, res) {
+  let pw = req.param("current_password");
   // BAD: Setting a cookie value with cleartext sensitive data.
-  res.cookie("AccountName", accountName);
+  res.cookie("password", pw);
 });
