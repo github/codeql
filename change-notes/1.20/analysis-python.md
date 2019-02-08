@@ -29,7 +29,7 @@ Removes false positives seen when using Python 3.6, but not when using earlier v
 
  ## Changes to code extraction
 
- * *Series of bullet points*
+ * The extractor now parses all Python code from a single unified grammar. This means that almost all Python code will be successfully parsed, even if mutually incompatible Python code is present in the same project.
 
  ## Changes to QL libraries
 
