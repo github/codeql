@@ -2,8 +2,8 @@
  * @name Large object passed by value
  * @description An object larger than 64 bytes is passed by value to a function. Passing large objects by value unnecessarily use up scarce stack space, increase the cost of calling a function and can be a security risk. Use a const pointer to the object instead.
  * @kind problem
- * @problem.severity warning
- * @precision high
+ * @problem.severity recommendation
+ * @precision very-high
  * @id cpp/large-parameter
  * @tags efficiency
  *       readability
