@@ -19,7 +19,7 @@ import DeadStore
  */
 predicate deadStoreOfLocal(VarDef vd, PurelyLocalVariable v) {
   v = vd.getAVariable() and
-  exists(vd.getSource()) and
+  (exists(vd.getSource()) or exists(vd.getDestructuringSource())) and
   // the definition is not in dead code
   exists(ReachableBasicBlock rbb | vd = rbb.getANode()) and
   // but it has no associated SSA definition, that is, it is dead

@@ -12,6 +12,7 @@ import javascript
  * <tr><td><code>x = y</code><td><code>x = y</code><td><code>x</code><td><code>y</code></tr>
  * <tr><td><code>var a = b</code><td><code>var a = b</code><td><code>a</code><td><code>b</code></tr>
  * <tr><td><code>function f { ... }</code><td><code>f</code><td><code>f</code><td><code>function f { ... }</code></tr>
+ * <tr><td><code>function f ( x = y ){ ... }</code><td><code>x</code><td><code>x</code><td><code>y</code></tr>
  * <tr><td><code>class C { ... }</code><td><code>C</code><td><code>C</code><td><code>class C { ... }</code></tr>
  * <tr><td><code>namespace N { ... }</code><td><code>N</code><td><code>N</code><td><code>namespace N { ... }</code></tr>
  * <tr><td><code>enum E { ... }</code><td><code>E</code><td><code>E</code><td><code>enum E { ... }</code></tr>
@@ -42,6 +43,8 @@ private predicate defn(ControlFlowNode def, Expr lhs, AST::ValueNode rhs) {
   exists(EnumMember member | def = member.getIdentifier() |
     lhs = def and rhs = member.getInitializer()
   )
+  or
+  lhs = def and def.(Parameter).getDefault() = rhs
 }
 
 /**
@@ -187,9 +190,23 @@ class VarDef extends ControlFlowNode {
    * the value that this definition assigns to its target.
    *
    * This predicate is not defined for `VarDef`s where the source is implicit,
-   * such as `for-in` loops or parameters.
+   * such as `for-in` loops, parameters or destructuring assignments.
    */
-  AST::ValueNode getSource() { defn(this, _, result) }
+  AST::ValueNode getSource() {
+    exists(Expr target |
+      not target instanceof DestructuringPattern and defn(this, target, result)
+    )
+  }
+
+  /**
+   * Gets the source that this definition destructs, that is, the
+   * right hand side of a destructuring assignment.
+   */
+  AST::ValueNode getDestructuringSource() {
+    exists(Expr target |
+      target instanceof DestructuringPattern and defn(this, target, result)
+    )
+  }
 
   /**
    * Holds if this definition of `v` is overwritten by another definition, that is,

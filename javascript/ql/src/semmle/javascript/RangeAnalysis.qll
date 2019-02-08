@@ -104,7 +104,12 @@ module RangeAnalysis {
   pragma[noinline]
   private predicate hasUniquePredecessor(DataFlow::Node node) {
     isRelevant(node) and
-    strictcount(node.getAPredecessor()) = 1
+    strictcount(node.getAPredecessor()) = 1 and
+    // exclude parameters with default values
+    not exists (Parameter p |
+      DataFlow::parameterNode(p) = node and
+      exists(p.getDefault())
+    )
   }
 
   /**
