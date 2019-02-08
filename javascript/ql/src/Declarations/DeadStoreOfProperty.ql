@@ -154,6 +154,12 @@ where
     or
     // exclude result from js/overwritten-property
     assign2.getBase() instanceof DataFlow::ObjectLiteralNode
+    or
+    // exclude the implicit initialization of fields
+    exists (FieldDeclaration field |
+      assign1.getWriteNode() = field and
+      not exists(field.getInit())
+    )
   )
 select assign1.getWriteNode(),
   "This write to property '" + name + "' is useless, since $@ always overrides it.",
