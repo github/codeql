@@ -719,8 +719,15 @@ module ClassNode {
    */
   class FunctionStyleClass extends Range, DataFlow::ValueNode {
     override Function astNode;
+    AbstractFunction function;
 
-    FunctionStyleClass() { exists(getAPropertyReference("prototype")) }
+    FunctionStyleClass() {
+      function.getFunction() = astNode and
+      exists (DataFlow::PropRef read |
+        read.getPropertyName() = "prototype" and
+        read.getBase().analyze().getAValue() = function
+      )
+    }
 
     override string getName() { result = astNode.getName() }
 
@@ -771,14 +778,16 @@ module ClassNode {
     /**
      * Gets a reference to the prototype of this class.
      */
-    private DataFlow::SourceNode getAPrototypeReference() {
-      result = getAPropertyRead("prototype")
-      or
-      result = getAPropertySource("prototype")
-      or
-      exists(ExtendCall call |
-        call.getDestinationOperand() = getAPropertyRead("prototype") and
-        result = call.getASourceOperand()
+    DataFlow::SourceNode getAPrototypeReference() {
+      exists (DataFlow::SourceNode base | base.analyze().getAValue() = function |
+        result = base.getAPropertyRead("prototype")
+        or
+        result = base.getAPropertySource("prototype")
+        or
+        exists(ExtendCall call |
+          call.getDestinationOperand() = base.getAPropertyRead("prototype") and
+          result = call.getASourceOperand()
+        )
       )
     }
 
