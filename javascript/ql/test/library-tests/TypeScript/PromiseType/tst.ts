@@ -1,4 +1,4 @@
-import * as Q from "./q";
+import * as Q from "q";
 import { Thenable, IThenable } from "./es6-promise";
 import * as promise from "./promise";
 
