@@ -57,6 +57,12 @@ abstract class MemoryOperandTag extends OperandTag {
 abstract class RegisterOperandTag extends OperandTag {
 }
 
+/**
+ * A memory operand whose type may be different from the result type of its definition instruction.
+ */
+abstract class TypedOperandTag extends MemoryOperandTag {
+}
+
 // Note: individual subtypes are listed in the order that the operands should
 // appear in the operand list of the instruction when printing.
 
@@ -95,7 +101,7 @@ class BufferSizeOperand extends RegisterOperandTag, TBufferSizeOperand {
 /**
  * The operand representing the read side effect of a `SideEffectInstruction`.
  */
-class SideEffectOperandTag extends MemoryOperandTag, TSideEffectOperand {
+class SideEffectOperandTag extends TypedOperandTag, TSideEffectOperand {
   override final string toString() {
     result = "SideEffect"
   }
@@ -113,7 +119,7 @@ SideEffectOperandTag sideEffectOperand() {
  * The source value operand of an instruction that loads a value from memory (e.g. `Load`,
  * `ReturnValue`, `ThrowValue`).
  */
-class LoadOperandTag extends MemoryOperandTag, TLoadOperand {
+class LoadOperandTag extends TypedOperandTag, TLoadOperand {
   override final string toString() {
     result = "Load"
   }

@@ -2314,6 +2314,13 @@ class TranslatedThrowValueExpr extends TranslatedThrowExpr,
     )
   }
 
+  override final Type getInstructionOperandType(InstructionTag tag,
+      TypedOperandTag operandTag) {
+    tag = ThrowTag() and
+    operandTag instanceof LoadOperandTag and
+    result = getExceptionType()
+  }
+
   override Instruction getTargetAddress() {
     result = getInstruction(InitializerVariableAddressTag())
   }

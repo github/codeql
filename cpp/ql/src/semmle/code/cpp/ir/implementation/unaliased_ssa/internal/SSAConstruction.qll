@@ -128,6 +128,26 @@ cached private module Cached {
     result = getChiInstructionTotalOperand(instruction)
   }
 
+  cached Type getInstructionOperandType(Instruction instr, TypedOperandTag tag) {
+    exists(OldInstruction oldInstruction, OldIR::TypedOperand oldOperand |
+      oldInstruction = getOldInstruction(instr) and
+      oldOperand = oldInstruction.getAnOperand() and
+      tag = oldOperand.getOperandTag() and
+      result = oldOperand.getType()
+    )
+  }
+
+  cached int getInstructionOperandSize(Instruction instr, SideEffectOperandTag tag) {
+    exists(OldInstruction oldInstruction, OldIR::SideEffectOperand oldOperand |
+      oldInstruction = getOldInstruction(instr) and
+      oldOperand = oldInstruction.getAnOperand() and
+      tag = oldOperand.getOperandTag() and
+      // Only return a result for operands that need an explicit result size.
+      oldOperand.getType() instanceof UnknownType and
+      result = oldOperand.getSize()
+    )
+  }
+
   cached Instruction getPhiInstructionOperandDefinition(PhiInstruction instr,
       IRBlock newPredecessorBlock) {
     exists(Alias::VirtualVariable vvar, OldBlock phiBlock,

@@ -64,6 +64,22 @@ cached private module Cached {
       getInstructionTag(instruction), tag)
   }
 
+  cached Type getInstructionOperandType(Instruction instruction, TypedOperandTag tag) {
+    // For all `LoadInstruction`s, the operand type of the `LoadOperand` is the same as
+    // the result type of the load.
+    result = instruction.(LoadInstruction).getResultType() or
+    (
+      not instruction instanceof LoadInstruction and 
+      result = getInstructionTranslatedElement(instruction).getInstructionOperandType(
+        getInstructionTag(instruction), tag)
+    )
+  }
+
+  cached int getInstructionOperandSize(Instruction instruction, SideEffectOperandTag tag) {
+    result = getInstructionTranslatedElement(instruction).getInstructionOperandSize(
+      getInstructionTag(instruction), tag)
+  }
+  
   cached Instruction getPhiInstructionOperandDefinition(Instruction instruction,
       IRBlock predecessorBlock) {
     none()

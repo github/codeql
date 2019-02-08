@@ -63,6 +63,36 @@ class Operand extends TOperand {
   int getDumpSortOrder() {
     result = -1
   }
+
+  /**
+   * Gets the type of the value consumed by this operand. This is usually the same as the
+   * result type of the definition instruction consumed by this operand. For register operands,
+   * this is always the case. For some memory operands, the operand type may be different from
+   * the definition type, such as in the case of a partial read or a read from a pointer that
+   * has been cast to a different type.
+   */
+  Type getType() {
+    result = getDefinitionInstruction().getResultType()
+  }
+
+  /**
+   * Holds if the value consumed by this operand is a glvalue. If this
+   * holds, the value of the operand represents the address of a location,
+   * and the type of the location is given by `getType()`. If this does
+   * not hold, the value of the operand represents a value whose type is
+   * given by `getResultType()`.
+   */
+  predicate isGLValue() {
+    getDefinitionInstruction().isGLValue()
+  }
+
+  /**
+   * Gets the size of the value consumed by this operand, in bytes. If the operand does not have
+   * a known constant size, this predicate does not hold.
+   */
+  int getSize() {
+    result = getDefinitionInstruction().getResultSize()
+  }
 }
 
 /**
@@ -74,6 +104,11 @@ class MemoryOperand extends Operand {
       this = TNonPhiOperand(_, tag, _)
     ) or
     this = TPhiOperand(_, _, _)
+  }
+
+  override predicate isGLValue() {
+    // A `MemoryOperand` can never be a glvalue
+    none()
   }
 
   /**
@@ -109,16 +144,16 @@ class RegisterOperand extends Operand {
  * An operand that is not an operand of a `PhiInstruction`.
  */
 class NonPhiOperand extends Operand, TNonPhiOperand {
-  Instruction instr;
+  Instruction useInstr;
   Instruction defInstr;
   OperandTag tag;
 
   NonPhiOperand() {
-    this = TNonPhiOperand(instr, tag, defInstr)
+    this = TNonPhiOperand(useInstr, tag, defInstr)
   }
 
   override final Instruction getUseInstruction() {
-    result = instr
+    result = useInstr
   }
 
   override final Instruction getDefinitionInstruction() {
@@ -138,14 +173,20 @@ class NonPhiOperand extends Operand, TNonPhiOperand {
   }
 }
 
+class TypedOperand extends NonPhiOperand, MemoryOperand {
+  override TypedOperandTag tag;
+
+  override final Type getType() {
+    result = Construction::getInstructionOperandType(useInstr, tag)
+  }
+}
+
 /**
  * The address operand of an instruction that loads or stores a value from
  * memory (e.g. `Load`, `Store`).
  */
 class AddressOperand extends NonPhiOperand, RegisterOperand {
-  AddressOperand() {
-    this = TNonPhiOperand(_, addressOperand(), _)
-  }
+  override AddressOperandTag tag;
 
   override string toString() {
     result = "Address"
@@ -156,10 +197,8 @@ class AddressOperand extends NonPhiOperand, RegisterOperand {
  * The source value operand of an instruction that loads a value from memory (e.g. `Load`,
  * `ReturnValue`, `ThrowValue`).
  */
-class LoadOperand extends NonPhiOperand, MemoryOperand {
-  LoadOperand() {
-    this = TNonPhiOperand(_, loadOperand(), _)
-  }
+class LoadOperand extends TypedOperand {
+  override LoadOperandTag tag;
 
   override string toString() {
     result = "Load"
@@ -174,9 +213,7 @@ class LoadOperand extends NonPhiOperand, MemoryOperand {
  * The source value operand of a `Store` instruction.
  */
 class StoreValueOperand extends NonPhiOperand, RegisterOperand {
-  StoreValueOperand() {
-    this = TNonPhiOperand(_, storeValueOperand(), _)
-  }
+  override StoreValueOperandTag tag;
 
   override string toString() {
     result = "StoreValue"
@@ -187,9 +224,7 @@ class StoreValueOperand extends NonPhiOperand, RegisterOperand {
  * The sole operand of a unary instruction (e.g. `Convert`, `Negate`, `Copy`).
  */
 class UnaryOperand extends NonPhiOperand, RegisterOperand {
-  UnaryOperand() {
-    this = TNonPhiOperand(_, unaryOperand(), _)
-  }
+  override UnaryOperandTag tag;
 
   override string toString() {
     result = "Unary"
@@ -200,9 +235,7 @@ class UnaryOperand extends NonPhiOperand, RegisterOperand {
  * The left operand of a binary instruction (e.g. `Add`, `CompareEQ`).
  */
 class LeftOperand extends NonPhiOperand, RegisterOperand {
-  LeftOperand() {
-    this = TNonPhiOperand(_, leftOperand(), _)
-  }
+  override LeftOperandTag tag;
 
   override string toString() {
     result = "Left"
@@ -213,9 +246,7 @@ class LeftOperand extends NonPhiOperand, RegisterOperand {
  * The right operand of a binary instruction (e.g. `Add`, `CompareEQ`).
  */
 class RightOperand extends NonPhiOperand, RegisterOperand {
-  RightOperand() {
-    this = TNonPhiOperand(_, rightOperand(), _)
-  }
+  override RightOperandTag tag;
 
   override string toString() {
     result = "Right"
@@ -226,9 +257,7 @@ class RightOperand extends NonPhiOperand, RegisterOperand {
  * The condition operand of a `ConditionalBranch` or `Switch` instruction.
  */
 class ConditionOperand extends NonPhiOperand, RegisterOperand {
-  ConditionOperand() {
-    this = TNonPhiOperand(_, conditionOperand(), _)
-  }
+  override ConditionOperandTag tag;
 
   override string toString() {
     result = "Condition"
@@ -240,9 +269,7 @@ class ConditionOperand extends NonPhiOperand, RegisterOperand {
  * whose set of uses is unknown.
  */
 class UnmodeledUseOperand extends NonPhiOperand, MemoryOperand {
-  UnmodeledUseOperand() {
-    this = TNonPhiOperand(_, unmodeledUseOperand(), _)
-  }
+  override UnmodeledUseOperandTag tag;
 
   override string toString() {
     result = "UnmodeledUse"
@@ -257,9 +284,7 @@ class UnmodeledUseOperand extends NonPhiOperand, MemoryOperand {
  * The operand representing the target function of an `Call` instruction.
  */
 class CallTargetOperand extends NonPhiOperand, RegisterOperand {
-  CallTargetOperand() {
-    this = TNonPhiOperand(_, callTargetOperand(), _)
-  }
+  override CallTargetOperandTag tag;
 
   override string toString() {
     result = "CallTarget"
@@ -272,11 +297,7 @@ class CallTargetOperand extends NonPhiOperand, RegisterOperand {
  * implicit `this` argument, if any (represented by `ThisArgumentOperand`).
  */
 class ArgumentOperand extends NonPhiOperand, RegisterOperand {
-  ArgumentOperand() {
-    exists(ArgumentOperandTag argTag |
-      this = TNonPhiOperand(_, argTag, _)
-    )
-  }
+  override ArgumentOperandTag tag;
 }
 
 /**
@@ -284,9 +305,7 @@ class ArgumentOperand extends NonPhiOperand, RegisterOperand {
  * call.
  */
 class ThisArgumentOperand extends ArgumentOperand {
-  ThisArgumentOperand() {
-    this = TNonPhiOperand(_, thisArgumentOperand(), _)
-  }
+  override ThisArgumentOperandTag tag;
 
   override string toString() {
     result = "ThisArgument"
@@ -297,13 +316,11 @@ class ThisArgumentOperand extends ArgumentOperand {
  * An operand representing an argument to a function call.
  */
 class PositionalArgumentOperand extends ArgumentOperand {
+  override PositionalArgumentOperandTag tag;
   int argIndex;
 
   PositionalArgumentOperand() {
-    exists(PositionalArgumentOperandTag argTag |
-      this = TNonPhiOperand(_, argTag, _) and
-      argIndex = argTag.getArgIndex()
-    )
+    argIndex = tag.getArgIndex()
   }
 
   override string toString() {
@@ -318,34 +335,39 @@ class PositionalArgumentOperand extends ArgumentOperand {
   }
 }
 
-class SideEffectOperand extends NonPhiOperand, MemoryOperand {
-  SideEffectOperand() {
-    this = TNonPhiOperand(_, sideEffectOperand(), _)
+class SideEffectOperand extends TypedOperand {
+  override SideEffectOperandTag tag;
+
+  override final int getSize() {
+    if getType() instanceof UnknownType then
+      result = Construction::getInstructionOperandSize(useInstr, tag)
+    else
+      result = getType().getSize()
   }
-  
+
   override MemoryAccessKind getMemoryAccess() {
-    instr instanceof CallSideEffectInstruction and
+    useInstr instanceof CallSideEffectInstruction and
     result instanceof EscapedMemoryAccess
     or
-    instr instanceof CallReadSideEffectInstruction and
+    useInstr instanceof CallReadSideEffectInstruction and
     result instanceof EscapedMemoryAccess
     or
-    instr instanceof IndirectReadSideEffectInstruction and
+    useInstr instanceof IndirectReadSideEffectInstruction and
     result instanceof IndirectMemoryAccess
     or
-    instr instanceof BufferReadSideEffectInstruction and
+    useInstr instanceof BufferReadSideEffectInstruction and
     result instanceof BufferMemoryAccess
     or
-    instr instanceof IndirectWriteSideEffectInstruction and
+    useInstr instanceof IndirectWriteSideEffectInstruction and
     result instanceof IndirectMemoryAccess
     or
-    instr instanceof BufferWriteSideEffectInstruction and
+    useInstr instanceof BufferWriteSideEffectInstruction and
     result instanceof BufferMemoryAccess
     or
-    instr instanceof IndirectMayWriteSideEffectInstruction and
+    useInstr instanceof IndirectMayWriteSideEffectInstruction and
     result instanceof IndirectMayMemoryAccess
     or
-    instr instanceof BufferMayWriteSideEffectInstruction and
+    useInstr instanceof BufferMayWriteSideEffectInstruction and
     result instanceof BufferMayMemoryAccess
   }
 }
