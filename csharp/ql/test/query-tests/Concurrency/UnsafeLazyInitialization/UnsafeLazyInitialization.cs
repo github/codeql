@@ -31,7 +31,7 @@ class Program
                 if (obj1 == null)
                     obj1 = null;
 
-        // BAD
+        // GOOD: A value-type
         if (cond1)
             lock (mutex)
                 if (cond1)
@@ -132,9 +132,9 @@ class Program
         }
 
         // BAD: Field x should be volatile
-        if (struct1.x == 2)
+        if (struct1.x is null)
             lock (mutex)
-                if(struct1.x == 2)
+                if(struct1.x is null)
                     struct1.x = 3;
 
         // GOOD: Tuples are structs so cannot be volatile.
@@ -151,7 +151,7 @@ class Program
 
 struct Coord
 {
-    public int x, y;
+    public object x, y;
 
     public static bool operator==(Coord c1, Coord c2) => c1.x==c2.x && c1.y == c2.y;
     public static bool operator!=(Coord c1, Coord c2) => !(c1==c2);

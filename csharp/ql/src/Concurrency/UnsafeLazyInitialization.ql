@@ -3,7 +3,7 @@
  * @description A repeated check on a non-volatile field is not thread-safe on some platforms,
  *              and could result in unexpected behavior.
  * @kind problem
- * @problem.severity recommendation
+ * @problem.severity error
  * @precision medium
  * @id cs/unsafe-double-checked-lock
  * @tags correctness
@@ -40,5 +40,5 @@ where
   doubleCheckedLock(field, ifs) and
   not field.isVolatile() and
   exists(VariableWrite write | write = ifs.getThen().getAChild+() and write.getTarget() = field) and
-  not field.getType() instanceof Struct
+  field.getType() instanceof RefType
 select ifs, "Field $@ should be 'volatile' for this double-checked lock.", field, field.getName()
