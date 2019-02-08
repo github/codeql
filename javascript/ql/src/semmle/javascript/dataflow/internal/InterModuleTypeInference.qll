@@ -332,3 +332,48 @@ private class AnalyzedExportAssign extends AnalyzedPropertyWrite, DataFlow::Valu
     source = this
   }
 }
+
+/**
+ * Flow analysis for assignments to the `exports` variable in a Closure module.
+ */
+private class AnalyzedClosureExportAssign extends AnalyzedPropertyWrite, DataFlow::ValueNode {
+  override AssignExpr astNode;
+
+  Closure::ClosureModule mod;
+
+  AnalyzedClosureExportAssign() { astNode.getLhs() = mod.getExportsVariable().getAReference() }
+
+  override predicate writes(AbstractValue baseVal, string propName, DataFlow::AnalyzedNode source) {
+    baseVal = TAbstractModuleObject(astNode.getTopLevel()) and
+    propName = "exports" and
+    source = astNode.getRhs().flow()
+  }
+}
+
+/**
+ * Read of a global access path exported by a Closure library.
+ *
+ * This adds a direct flow edge to the assigned value.
+ */
+private class AnalyzedClosureGlobalAccessPath extends AnalyzedNode, AnalyzedPropertyRead {
+  string accessPath;
+
+  AnalyzedClosureGlobalAccessPath() { accessPath = Closure::getLibraryAccessPath(this) }
+
+  override AnalyzedNode localFlowPred() {
+    exists(DataFlow::PropWrite write |
+      Closure::getWrittenLibraryAccessPath(write) = accessPath and
+      result = write.getRhs()
+    )
+    or
+    result = AnalyzedNode.super.localFlowPred()
+  }
+
+  override predicate reads(AbstractValue base, string propName) {
+    exists(Closure::ClosureModule mod |
+      mod.getNamespaceId() = accessPath and
+      base = TAbstractModuleObject(mod) and
+      propName = "exports"
+    )
+  }
+}

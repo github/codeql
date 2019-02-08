@@ -1,1 +1,2 @@
+| exports.js:1:8:1:17 | * as dummy |
 | m/c.js:1:8:1:13 | * as b |
