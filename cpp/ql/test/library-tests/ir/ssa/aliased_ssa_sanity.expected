@@ -1,0 +1,13 @@
+missingOperand
+unexpectedOperand
+duplicateOperand
+missingPhiOperand
+instructionWithoutSuccessor
+ambiguousSuccessors
+unexplainedLoop
+unnecessaryPhiInstruction
+operandAcrossFunctions
+instructionWithoutUniqueBlock
+containsLoopOfForwardEdges
+lostReachability
+backEdgeCountMismatch
