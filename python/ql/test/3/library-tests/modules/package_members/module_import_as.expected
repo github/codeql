@@ -1,0 +1,9 @@
+| Module test | test |
+| Module test_package | test_package |
+| Module test_package.__init__ | test_package.__init__ |
+| Module test_package.module1 | test_package.module1 |
+| Module test_package.module2 | test_package.module2 |
+| Module test_package.module3 | test_package.module3 |
+| Module test_package.module4 | test_package.module4 |
+| Module test_package.module5 | test_package.module5 |
+| Module test_star | test_star |
