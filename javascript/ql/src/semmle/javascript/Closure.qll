@@ -198,7 +198,5 @@ module Closure {
   /**
    * Gets a dataflow node that refers to the given value exported from a Closure module.
    */
-  DataFlow::SourceNode moduleImport(string moduleName) {
-    getLibraryAccessPath(result) = moduleName
-  }
+  DataFlow::SourceNode moduleImport(string moduleName) { getLibraryAccessPath(result) = moduleName }
 }

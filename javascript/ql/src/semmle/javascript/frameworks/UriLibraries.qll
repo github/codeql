@@ -309,3 +309,88 @@ module querystring {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) { pred = src and succ = this }
   }
 }
+
+/**
+ * Provides steps for the `goog.Uri` class in the closure library.
+ */
+private module ClosureLibraryUri {
+  /**
+   * Taint step from an argument of a `goog.Uri` call to the return value.
+   */
+  private class ArgumentStep extends UriLibraryStep, DataFlow::InvokeNode {
+    int arg;
+
+    ArgumentStep() {
+      // goog.Uri constructor
+      this = Closure::moduleImport("goog.Uri").getAnInstantiation() and arg = 0
+      or
+      // static methods on goog.Uri
+      exists(string name | this = Closure::moduleImport("goog.Uri." + name).getACall() |
+        name = "parse" and arg = 0
+        or
+        name = "create" and
+        (arg = 0 or arg = 2 or arg = 4)
+        or
+        name = "resolve" and
+        (arg = 0 or arg = 1)
+      )
+      or
+      // static methods in goog.uri.utils
+      arg = 0 and
+      exists(string name | this = Closure::moduleImport("goog.uri.utils." + name).getACall() |
+        name = "appendParam" or // preserve taint from the original URI, but not from the appended param
+        name = "appendParams" or
+        name = "appendParamsFromMap" or
+        name = "appendPath" or
+        name = "getParamValue" or
+        name = "getParamValues" or
+        name = "getPath" or
+        name = "getPathAndAfter" or
+        name = "getQueryData" or
+        name = "parseQueryData" or
+        name = "removeFragment" or
+        name = "removeParam" or
+        name = "setParam" or
+        name = "setParamsFromMap" or
+        name = "setPath" or
+        name = "split"
+      )
+    }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      pred = getArgument(arg) and
+      succ = this
+    }
+  }
+
+  /**
+   * Taint steps through chainable setter calls.
+   *
+   * Setters mutate the URI object and return the same instance.
+   */
+  private class SetterCall extends DataFlow::MethodCallNode, UriLibraryStep {
+    DataFlow::NewNode uri;
+    string name;
+
+    SetterCall() {
+      exists(DataFlow::SourceNode base |
+        base = Closure::moduleImport("goog.Uri").getAnInstantiation() and
+        uri = base
+        or
+        base.(SetterCall).getUri() = uri
+      |
+        this = base.getAMethodCall(name) and
+        name.matches("set%")
+      )
+    }
+
+    DataFlow::NewNode getUri() { result = uri }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      pred = getReceiver() and succ = this
+      or
+      (name = "setDomain" or name = "setPath" or name = "setScheme") and
+      pred = getArgument(0) and succ = uri
+    }
+  }
+}
