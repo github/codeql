@@ -170,9 +170,11 @@ module Closure {
     isLibraryNamespacePath(result) and
     node = DataFlow::globalVarRef(result)
     or
-    isLibraryNamespacePath(result) and
-    exists(DataFlow::PropRead read | node = read |
-      result = getLibraryAccessPath(read.getBase().getALocalSource()) + "." + read.getPropertyName()
+    exists(DataFlow::SourceNode base, string basePath, string prop |
+      basePath = getLibraryAccessPath(base) and
+      isLibraryNamespacePath(basePath) and
+      node = base.getAPropertyRead(prop) and
+      result = basePath + "." + prop
     )
     or
     // Associate an access path with the immediate RHS of a store on a closure namespace.
@@ -194,16 +196,9 @@ module Closure {
   }
 
   /**
-   * Gets a dataflow node that refers to the given Closure module.
+   * Gets a dataflow node that refers to the given value exported from a Closure module.
    */
   DataFlow::SourceNode moduleImport(string moduleName) {
     getLibraryAccessPath(result) = moduleName
-  }
-
-  /**
-   * Gets a dataflow node that refers to the given member of a Closure module.
-   */
-  DataFlow::SourceNode moduleMember(string moduleName, string memberName) {
-    result = moduleImport(moduleName).getAPropertyRead(memberName)
   }
 }
