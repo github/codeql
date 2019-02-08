@@ -221,7 +221,7 @@ class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
           result = getInstruction(ConditionValueTrueTempAddressTag())
         ) or
         (
-          operandTag instanceof CopySourceOperandTag and
+          operandTag instanceof StoreValueOperandTag and
           result = getInstruction(ConditionValueTrueConstantTag())
         )
       )
@@ -234,7 +234,7 @@ class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
           result = getInstruction(ConditionValueFalseTempAddressTag())
         ) or
         (
-          operandTag instanceof CopySourceOperandTag and
+          operandTag instanceof StoreValueOperandTag and
           result = getInstruction(ConditionValueFalseConstantTag())
         )
       )
@@ -247,7 +247,7 @@ class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
           result = getInstruction(ConditionValueResultTempAddressTag())
         ) or
         (
-          operandTag instanceof CopySourceOperandTag and
+          operandTag instanceof LoadOperandTag and
           result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
         )
       )
@@ -352,7 +352,7 @@ class TranslatedLoad extends TranslatedExpr, TTranslatedLoad {
         result = getOperand().getResult()
       ) or
       (
-        operandTag instanceof CopySourceOperandTag and
+        operandTag instanceof LoadOperandTag and
         result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
       )
     )
@@ -482,7 +482,7 @@ abstract class TranslatedCrementOperation extends TranslatedNonConstantExpr {
           result = getOperand().getResult()
         ) or
         (
-          operandTag instanceof CopySourceOperandTag and
+          operandTag instanceof LoadOperandTag and
           result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
         )
       )
@@ -508,7 +508,7 @@ abstract class TranslatedCrementOperation extends TranslatedNonConstantExpr {
           result = getOperand().getResult()
         ) or
         (
-          operandTag instanceof CopySourceOperandTag and
+          operandTag instanceof StoreValueOperandTag and
           result = getInstruction(CrementOpTag())
         )
       )
@@ -785,9 +785,9 @@ class TranslatedThisExpr extends TranslatedNonConstantExpr {
   }
 
   override final Instruction getInstructionOperand(InstructionTag tag,
-    OperandTag operandTag) {
+      OperandTag operandTag) {
     tag = OnlyInstructionTag() and
-    operandTag instanceof CopySourceOperandTag and
+    operandTag instanceof UnaryOperandTag and
     result = getInitializeThisInstruction()
   }
 
@@ -1069,10 +1069,7 @@ class TranslatedUnaryExpr extends TranslatedSingleInstructionExpr {
       OperandTag operandTag) {
     tag = OnlyInstructionTag() and
     result = getOperand().getResult() and
-    if getOpcode() instanceof Opcode::CopyValue then
-      operandTag instanceof CopySourceOperandTag
-    else
-      operandTag instanceof UnaryOperandTag
+    operandTag instanceof UnaryOperandTag
   }
 
   override final Opcode getOpcode() {
@@ -1508,7 +1505,7 @@ class TranslatedAssignExpr extends TranslatedAssignment {
         result = getLeftOperand().getResult()
       ) or
       (
-        operandTag instanceof CopySourceOperandTag and
+        operandTag instanceof StoreValueOperandTag and
         result = getRightOperand().getResult()
       )
     )
@@ -1667,7 +1664,7 @@ class TranslatedAssignOperation extends TranslatedAssignment {
           result = getLeftOperand().getResult()
         ) or
         (
-          operandTag instanceof CopySourceOperandTag and
+          operandTag instanceof LoadOperandTag and
           result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
         )
       )
@@ -1708,7 +1705,7 @@ class TranslatedAssignOperation extends TranslatedAssignment {
           result = getLeftOperand().getResult()
         ) or
         (
-          operandTag instanceof CopySourceOperandTag and
+          operandTag instanceof StoreValueOperandTag and
           result = getStoredValue()
         )
       )
@@ -2107,7 +2104,7 @@ class TranslatedConditionalExpr extends TranslatedNonConstantExpr,
             result = getInstruction(ConditionValueTrueTempAddressTag())
           ) or
           (
-            operandTag instanceof CopySourceOperandTag and
+            operandTag instanceof StoreValueOperandTag and
             result = getThen().getResult()
           )
         )
@@ -2121,7 +2118,7 @@ class TranslatedConditionalExpr extends TranslatedNonConstantExpr,
             result = getInstruction(ConditionValueFalseTempAddressTag())
           ) or
           (
-            operandTag instanceof CopySourceOperandTag and
+            operandTag instanceof StoreValueOperandTag and
             result = getElse().getResult()
           )
         )
@@ -2134,7 +2131,7 @@ class TranslatedConditionalExpr extends TranslatedNonConstantExpr,
             result = getInstruction(ConditionValueResultTempAddressTag())
           ) or
           (
-            operandTag instanceof CopySourceOperandTag and
+            operandTag instanceof LoadOperandTag and
             result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
           )
         )
@@ -2311,7 +2308,7 @@ class TranslatedThrowValueExpr extends TranslatedThrowExpr,
         result = getInstruction(InitializerVariableAddressTag())
       ) or
       (
-        operandTag instanceof ExceptionOperandTag and
+        operandTag instanceof LoadOperandTag and
         result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
       )
     )

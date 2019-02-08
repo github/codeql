@@ -210,7 +210,7 @@ class TranslatedSimpleDirectInitialization extends
         result = getContext().getTargetAddress()
       ) or
       (
-        operandTag instanceof CopySourceOperandTag and
+        operandTag instanceof StoreValueOperandTag and
         result = getInitializer().getResult()
       )
     )
@@ -331,7 +331,7 @@ class TranslatedStringLiteralInitialization extends
           result = getInitializer().getResult()
         ) or
         (
-          operandTag instanceof CopySourceOperandTag and
+          operandTag instanceof LoadOperandTag and
           result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
         )
       )
@@ -344,7 +344,7 @@ class TranslatedStringLiteralInitialization extends
           result = getContext().getTargetAddress()
         ) or
         (
-          operandTag instanceof CopySourceOperandTag and
+          operandTag instanceof StoreValueOperandTag and
           result = getInstruction(InitializerLoadStringTag())
         )
       )
@@ -370,7 +370,7 @@ class TranslatedStringLiteralInitialization extends
           result = getInstruction(ZeroPadStringElementAddressTag())
         ) or
         (
-          operandTag instanceof CopySourceOperandTag and
+          operandTag instanceof StoreValueOperandTag and
           result = getInstruction(ZeroPadStringConstantTag())
         )
       )
@@ -634,7 +634,7 @@ class TranslatedFieldValueInitialization extends
           result = getInstruction(getFieldAddressTag())
         ) or
         (
-          operandTag instanceof CopySourceOperandTag and
+          operandTag instanceof StoreValueOperandTag and
           result = getInstruction(getFieldDefaultValueTag())
         )
       )
@@ -873,7 +873,7 @@ class TranslatedElementValueInitialization extends TranslatedElementInitializati
           result = getInstruction(getElementAddressTag())
         ) or
         (
-          operandTag instanceof CopySourceOperandTag and
+          operandTag instanceof StoreValueOperandTag and
           result = getInstruction(getElementDefaultValueTag())
         )
       )

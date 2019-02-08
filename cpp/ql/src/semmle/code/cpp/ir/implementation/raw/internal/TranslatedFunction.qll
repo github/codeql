@@ -241,7 +241,7 @@ class TranslatedFunction extends TranslatedElement,
           result = getInstruction(ReturnValueAddressTag())
         ) or
         (
-          operandTag instanceof ReturnValueOperandTag and
+          operandTag instanceof LoadOperandTag and
           result = getUnmodeledDefinitionInstruction()
         )
       )

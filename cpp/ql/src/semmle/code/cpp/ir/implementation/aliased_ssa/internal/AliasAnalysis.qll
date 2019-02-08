@@ -134,7 +134,7 @@ predicate operandIsPropagated(Operand operand, IntValue bitOffset) {
       // offset of the field.
       bitOffset = getFieldBitOffset(instr.(FieldAddressInstruction).getField()) or
       // A copy propagates the source value.
-      operand instanceof CopySourceOperand and bitOffset = 0
+      operand = instr.(CopyInstruction).getSourceValueOperand() and bitOffset = 0
     )
   )
 }

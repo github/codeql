@@ -29,12 +29,11 @@ module InstructionSanity {
             tag instanceof RightOperandTag
           )
         ) or
-        opcode instanceof CopyOpcode and tag instanceof CopySourceOperandTag or
         opcode instanceof MemoryAccessOpcode and tag instanceof AddressOperandTag or
         opcode instanceof BufferAccessOpcode and tag instanceof BufferSizeOperand or
         opcode instanceof OpcodeWithCondition and tag instanceof ConditionOperandTag or
-        opcode instanceof Opcode::ReturnValue and tag instanceof ReturnValueOperandTag or
-        opcode instanceof Opcode::ThrowValue and tag instanceof ExceptionOperandTag or
+        opcode instanceof OpcodeWithLoad and tag instanceof LoadOperandTag or
+        opcode instanceof Opcode::Store and tag instanceof StoreValueOperandTag or
         opcode instanceof Opcode::UnmodeledUse and tag instanceof UnmodeledUseOperandTag or
         opcode instanceof Opcode::Call and tag instanceof CallTargetOperandTag or
         opcode instanceof Opcode::Chi and tag instanceof ChiTotalOperandTag or
@@ -714,7 +713,7 @@ class ReturnValueInstruction extends ReturnInstruction {
     getOpcode() instanceof Opcode::ReturnValue
   }
 
-  final ReturnValueOperand getReturnValueOperand() {
+  final LoadOperand getReturnValueOperand() {
     result = getAnOperand()
   }
   
@@ -728,18 +727,22 @@ class CopyInstruction extends Instruction {
     getOpcode() instanceof CopyOpcode
   }
 
-  final CopySourceOperand getSourceValueOperand() {
-    result = getAnOperand()
+  Operand getSourceValueOperand() {
+    none()
   }
-  
+
   final Instruction getSourceValue() {
     result = getSourceValueOperand().getDefinitionInstruction()
   }
 }
 
-class CopyValueInstruction extends CopyInstruction {
+class CopyValueInstruction extends CopyInstruction, UnaryInstruction {
   CopyValueInstruction() {
     getOpcode() instanceof Opcode::CopyValue
+  }
+
+  override final UnaryOperand getSourceValueOperand() {
+    result = getAnOperand()
   }
 }
 
@@ -754,6 +757,10 @@ class LoadInstruction extends CopyInstruction {
   
   final Instruction getSourceAddress() {
     result = getSourceAddressOperand().getDefinitionInstruction()
+  }
+
+  override final LoadOperand getSourceValueOperand() {
+    result = getAnOperand()
   }
 }
 
@@ -772,6 +779,10 @@ class StoreInstruction extends CopyInstruction {
   
   final Instruction getDestinationAddress() {
     result = getDestinationAddressOperand().getDefinitionInstruction()
+  }
+
+  override final StoreValueOperand getSourceValueOperand() {
+    result = getAnOperand()
   }
 }
 
@@ -1442,7 +1453,7 @@ class ThrowValueInstruction extends ThrowInstruction {
   /**
    * Gets the operand for the exception thrown by this instruction.
    */
-  final ExceptionOperand getExceptionOperand() {
+  final LoadOperand getExceptionOperand() {
     result = getAnOperand()
   }
 

@@ -106,6 +106,11 @@ abstract class BuiltInOpcode extends Opcode {}
 abstract class SideEffectOpcode extends Opcode {}
 
 /**
+ * An opcode that reads a value from memory.
+ */
+abstract class OpcodeWithLoad extends MemoryAccessOpcode {}
+
+/**
  * An opcode that reads from a set of memory locations as a side effect.
  */
 abstract class ReadSideEffectOpcode extends SideEffectOpcode {}
@@ -133,10 +138,10 @@ module Opcode {
   class InitializeThis extends Opcode, TInitializeThis { override final string toString() { result = "InitializeThis" } }
   class EnterFunction extends Opcode, TEnterFunction { override final string toString() { result = "EnterFunction" } }
   class ExitFunction extends Opcode, TExitFunction { override final string toString() { result = "ExitFunction" } }
-  class ReturnValue extends ReturnOpcode, MemoryAccessOpcode, TReturnValue { override final string toString() { result = "ReturnValue" } }
+  class ReturnValue extends ReturnOpcode, OpcodeWithLoad, TReturnValue { override final string toString() { result = "ReturnValue" } }
   class ReturnVoid extends ReturnOpcode, TReturnVoid { override final string toString() { result = "ReturnVoid" } }
-  class CopyValue extends CopyOpcode, TCopyValue { override final string toString() { result = "CopyValue" } }
-  class Load extends CopyOpcode, MemoryAccessOpcode, TLoad { override final string toString() { result = "Load" } }
+  class CopyValue extends UnaryOpcode, CopyOpcode, TCopyValue { override final string toString() { result = "CopyValue" } }
+  class Load extends CopyOpcode, OpcodeWithLoad, TLoad { override final string toString() { result = "Load" } }
   class Store extends CopyOpcode, MemoryAccessOpcode, TStore { override final string toString() { result = "Store" } }
   class Add extends BinaryOpcode, TAdd { override final string toString() { result = "Add" } }
   class Sub extends BinaryOpcode, TSub { override final string toString() { result = "Sub" } }
@@ -177,7 +182,7 @@ module Opcode {
   class Call extends Opcode, TCall { override final string toString() { result = "Call" } }
   class CatchByType extends CatchOpcode, TCatchByType { override final string toString() { result = "CatchByType" } }
   class CatchAny extends CatchOpcode, TCatchAny { override final string toString() { result = "CatchAny" } }
-  class ThrowValue extends ThrowOpcode, MemoryAccessOpcode, TThrowValue { override final string toString() { result = "ThrowValue" } }
+  class ThrowValue extends ThrowOpcode, OpcodeWithLoad, TThrowValue { override final string toString() { result = "ThrowValue" } }
   class ReThrow extends ThrowOpcode, TReThrow { override final string toString() { result = "ReThrow" } }
   class Unwind extends Opcode, TUnwind { override final string toString() { result = "Unwind" } }
   class UnmodeledDefinition extends Opcode, TUnmodeledDefinition { override final string toString() { result = "UnmodeledDefinition" } }
