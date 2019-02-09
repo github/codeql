@@ -555,14 +555,15 @@ module DataFlow {
   }
 
   /**
-   * An instance field, seen as a property write.
+   * An instance field with an initializer, seen as a property write.
    */
   private class InstanceFieldAsPropWrite extends PropWrite, PropNode {
     override FieldDefinition prop;
 
     InstanceFieldAsPropWrite() {
       not prop.isStatic() and
-      not prop instanceof ParameterField
+      not prop instanceof ParameterField and
+      exists(prop.getInit())
     }
 
     override Node getBase() {
