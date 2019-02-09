@@ -7,6 +7,7 @@ import cpp
 import semmle.code.cpp.ir.implementation.EdgeKind
 import semmle.code.cpp.ir.implementation.MemoryAccessKind
 import semmle.code.cpp.ir.implementation.Opcode
+private import semmle.code.cpp.Print
 private import semmle.code.cpp.ir.implementation.Opcode
 private import semmle.code.cpp.ir.internal.OperandTag
 
@@ -89,6 +90,14 @@ module InstructionSanity {
     not exists(PhiOperand operand |
       operand = instr.getAnOperand() and
       operand.getPredecessorBlock() = pred
+    )
+  }
+
+  query predicate missingOperandType(Operand operand, string message) {
+    exists(Function func |
+      not exists(operand.getType()) and
+      func = operand.getUseInstruction().getEnclosingFunction() and
+      message = "Operand missing type in function '" + getIdentityString(func) + "'."
     )
   }
 
