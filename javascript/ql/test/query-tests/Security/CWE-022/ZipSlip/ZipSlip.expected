@@ -1,0 +1,5 @@
+nodes
+| ZipSlipBad.js:8:37:8:46 | entry.path |
+edges
+#select
+| ZipSlipBad.js:8:37:8:46 | entry.path | ZipSlipBad.js:8:37:8:46 | entry.path | ZipSlipBad.js:8:37:8:46 | entry.path | Unsanitized zip archive $@, which may contain '..', is used in a file system operation. | ZipSlipBad.js:8:37:8:46 | entry.path | item path |
