@@ -79,6 +79,8 @@ predicate filePathStep(ExprNode n1, ExprNode n2) {
     m.getDeclaringType() instanceof TypeFile and m.hasName("toPath")
     or
     m.getDeclaringType() instanceof TypePath and m.hasName("toAbsolutePath")
+    or
+    m.getDeclaringType() instanceof TypePath and m.hasName("toFile")
   )
 }
 
