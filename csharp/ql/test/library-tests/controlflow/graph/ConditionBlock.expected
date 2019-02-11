@@ -528,6 +528,10 @@
 | cflow.cs:234:17:234:33 | ... == ... | cflow.cs:244:17:244:37 | ...; | false |
 | cflow.cs:234:17:234:33 | ... == ... | cflow.cs:244:17:244:37 | [finally: exception(OutOfMemoryException)] ...; | false |
 | cflow.cs:234:17:234:33 | ... == ... | cflow.cs:244:17:244:37 | [finally: return] ...; | true |
+| cflow.cs:234:17:234:33 | ... == ... | cflow.cs:247:9:254:9 | try {...} ... | false |
+| cflow.cs:234:17:234:33 | ... == ... | cflow.cs:249:17:249:40 | Double temp = ... | false |
+| cflow.cs:234:17:234:33 | ... == ... | cflow.cs:249:24:249:40 | ... / ... | false |
+| cflow.cs:234:17:234:33 | ... == ... | cflow.cs:251:9:254:9 | catch {...} | false |
 | cflow.cs:236:17:236:33 | ... == ... | cflow.cs:237:17:237:49 | throw ...; | true |
 | cflow.cs:236:17:236:33 | ... == ... | cflow.cs:237:23:237:48 | object creation of type OutOfMemoryException | true |
 | cflow.cs:236:17:236:33 | ... == ... | cflow.cs:240:9:245:9 | {...} | false |
@@ -537,6 +541,10 @@
 | cflow.cs:236:17:236:33 | ... == ... | cflow.cs:243:13:244:37 | if (...) ... | false |
 | cflow.cs:236:17:236:33 | ... == ... | cflow.cs:244:17:244:37 | ...; | false |
 | cflow.cs:236:17:236:33 | ... == ... | cflow.cs:244:17:244:37 | [finally: exception(OutOfMemoryException)] ...; | true |
+| cflow.cs:236:17:236:33 | ... == ... | cflow.cs:247:9:254:9 | try {...} ... | false |
+| cflow.cs:236:17:236:33 | ... == ... | cflow.cs:249:17:249:40 | Double temp = ... | false |
+| cflow.cs:236:17:236:33 | ... == ... | cflow.cs:249:24:249:40 | ... / ... | false |
+| cflow.cs:236:17:236:33 | ... == ... | cflow.cs:251:9:254:9 | catch {...} | false |
 | cflow.cs:241:19:241:35 | ... == ... | cflow.cs:242:17:242:41 | ...; | false |
 | cflow.cs:241:19:241:35 | [finally: exception(Exception)] ... == ... | cflow.cs:242:17:242:41 | [finally: exception(Exception)] ...; | false |
 | cflow.cs:241:19:241:35 | [finally: exception(NullReferenceException)] ... == ... | cflow.cs:242:17:242:41 | [finally: exception(NullReferenceException)] ...; | false |
@@ -547,85 +555,85 @@
 | cflow.cs:243:17:243:32 | [finally: exception(NullReferenceException)] ... > ... | cflow.cs:244:17:244:37 | [finally: exception(NullReferenceException)] ...; | true |
 | cflow.cs:243:17:243:32 | [finally: exception(OutOfMemoryException)] ... > ... | cflow.cs:244:17:244:37 | [finally: exception(OutOfMemoryException)] ...; | true |
 | cflow.cs:243:17:243:32 | [finally: return] ... > ... | cflow.cs:244:17:244:37 | [finally: return] ...; | true |
-| cflow.cs:251:16:251:21 | ... < ... | cflow.cs:248:10:248:12 | exit For | false |
-| cflow.cs:251:16:251:21 | ... < ... | cflow.cs:252:13:252:33 | ...; | true |
-| cflow.cs:251:16:251:21 | ... < ... | cflow.cs:254:9:259:9 | for (...;...;...) ... | false |
-| cflow.cs:251:16:251:21 | ... < ... | cflow.cs:254:18:254:18 | access to local variable x | false |
-| cflow.cs:251:16:251:21 | ... < ... | cflow.cs:255:9:259:9 | {...} | false |
-| cflow.cs:251:16:251:21 | ... < ... | cflow.cs:258:17:258:22 | break; | false |
-| cflow.cs:251:16:251:21 | ... < ... | cflow.cs:262:9:267:9 | {...} | false |
-| cflow.cs:251:16:251:21 | ... < ... | cflow.cs:266:17:266:22 | break; | false |
-| cflow.cs:251:16:251:21 | ... < ... | cflow.cs:269:16:269:16 | access to local variable x | false |
-| cflow.cs:251:16:251:21 | ... < ... | cflow.cs:270:9:273:9 | {...} | false |
-| cflow.cs:251:16:251:21 | ... < ... | cflow.cs:275:9:278:9 | for (...;...;...) ... | false |
-| cflow.cs:251:16:251:21 | ... < ... | cflow.cs:275:32:275:32 | access to local variable i | false |
-| cflow.cs:251:16:251:21 | ... < ... | cflow.cs:276:9:278:9 | {...} | false |
-| cflow.cs:257:17:257:22 | ... > ... | cflow.cs:248:10:248:12 | exit For | true |
-| cflow.cs:257:17:257:22 | ... > ... | cflow.cs:254:18:254:18 | access to local variable x | false |
-| cflow.cs:257:17:257:22 | ... > ... | cflow.cs:258:17:258:22 | break; | true |
-| cflow.cs:257:17:257:22 | ... > ... | cflow.cs:262:9:267:9 | {...} | true |
-| cflow.cs:257:17:257:22 | ... > ... | cflow.cs:266:17:266:22 | break; | true |
-| cflow.cs:257:17:257:22 | ... > ... | cflow.cs:269:16:269:16 | access to local variable x | true |
-| cflow.cs:257:17:257:22 | ... > ... | cflow.cs:270:9:273:9 | {...} | true |
-| cflow.cs:257:17:257:22 | ... > ... | cflow.cs:275:9:278:9 | for (...;...;...) ... | true |
-| cflow.cs:257:17:257:22 | ... > ... | cflow.cs:275:32:275:32 | access to local variable i | true |
-| cflow.cs:257:17:257:22 | ... > ... | cflow.cs:276:9:278:9 | {...} | true |
-| cflow.cs:265:17:265:22 | ... > ... | cflow.cs:248:10:248:12 | exit For | true |
-| cflow.cs:265:17:265:22 | ... > ... | cflow.cs:266:17:266:22 | break; | true |
-| cflow.cs:265:17:265:22 | ... > ... | cflow.cs:269:16:269:16 | access to local variable x | true |
-| cflow.cs:265:17:265:22 | ... > ... | cflow.cs:270:9:273:9 | {...} | true |
-| cflow.cs:265:17:265:22 | ... > ... | cflow.cs:275:9:278:9 | for (...;...;...) ... | true |
-| cflow.cs:265:17:265:22 | ... > ... | cflow.cs:275:32:275:32 | access to local variable i | true |
-| cflow.cs:265:17:265:22 | ... > ... | cflow.cs:276:9:278:9 | {...} | true |
-| cflow.cs:269:16:269:21 | ... < ... | cflow.cs:248:10:248:12 | exit For | false |
-| cflow.cs:269:16:269:21 | ... < ... | cflow.cs:270:9:273:9 | {...} | true |
-| cflow.cs:269:16:269:21 | ... < ... | cflow.cs:275:9:278:9 | for (...;...;...) ... | false |
-| cflow.cs:269:16:269:21 | ... < ... | cflow.cs:275:32:275:32 | access to local variable i | false |
-| cflow.cs:269:16:269:21 | ... < ... | cflow.cs:276:9:278:9 | {...} | false |
-| cflow.cs:275:32:275:41 | ... < ... | cflow.cs:248:10:248:12 | exit For | false |
-| cflow.cs:275:32:275:41 | ... < ... | cflow.cs:276:9:278:9 | {...} | true |
-| cflow.cs:297:17:297:32 | ... > ... | cflow.cs:297:37:297:56 | !... | true |
-| cflow.cs:299:15:299:31 | ... == ... | cflow.cs:299:35:299:39 | false | true |
-| cflow.cs:299:15:299:31 | ... == ... | cflow.cs:299:43:299:46 | true | false |
-| cflow.cs:299:15:299:31 | ... == ... | cflow.cs:300:13:300:48 | ... = ... | true |
-| cflow.cs:299:15:299:31 | ... == ... | cflow.cs:300:37:300:41 | false | true |
-| cflow.cs:299:15:299:31 | ... == ... | cflow.cs:300:45:300:48 | true | true |
-| cflow.cs:300:17:300:33 | ... == ... | cflow.cs:300:37:300:41 | false | true |
-| cflow.cs:300:17:300:33 | ... == ... | cflow.cs:300:45:300:48 | true | false |
-| cflow.cs:302:15:302:31 | ... == ... | cflow.cs:302:37:302:62 | !... | true |
-| cflow.cs:302:15:302:31 | ... == ... | cflow.cs:302:61:302:61 | access to local variable b | true |
-| cflow.cs:302:40:302:56 | ... == ... | cflow.cs:302:61:302:61 | access to local variable b | true |
-| cflow.cs:315:17:315:32 | ... > ... | cflow.cs:316:13:318:13 | {...} | true |
-| cflow.cs:315:17:315:32 | ... > ... | cflow.cs:319:13:322:13 | if (...) ... | false |
-| cflow.cs:315:17:315:32 | ... > ... | cflow.cs:320:13:322:13 | {...} | false |
-| cflow.cs:319:17:319:32 | ... < ... | cflow.cs:320:13:322:13 | {...} | true |
-| cflow.cs:328:9:339:9 | foreach (... ... in ...) ... | cflow.cs:328:22:328:22 | String x | false |
-| cflow.cs:328:9:339:9 | foreach (... ... in ...) ... | cflow.cs:332:13:334:13 | {...} | false |
-| cflow.cs:328:9:339:9 | foreach (... ... in ...) ... | cflow.cs:335:13:338:13 | if (...) ... | false |
-| cflow.cs:328:9:339:9 | foreach (... ... in ...) ... | cflow.cs:336:13:338:13 | {...} | false |
-| cflow.cs:331:17:331:32 | ... > ... | cflow.cs:332:13:334:13 | {...} | true |
-| cflow.cs:331:17:331:32 | ... > ... | cflow.cs:335:13:338:13 | if (...) ... | false |
-| cflow.cs:331:17:331:32 | ... > ... | cflow.cs:336:13:338:13 | {...} | false |
-| cflow.cs:335:17:335:32 | ... < ... | cflow.cs:336:13:338:13 | {...} | true |
-| cflow.cs:344:23:344:39 | ... == ... | cflow.cs:344:43:344:45 | {...} | true |
-| cflow.cs:346:13:346:28 | ... > ... | cflow.cs:342:10:342:13 | exit Goto | false |
-| cflow.cs:346:13:346:28 | ... > ... | cflow.cs:346:31:346:41 | goto ...; | true |
-| cflow.cs:346:13:346:28 | ... > ... | cflow.cs:348:9:360:9 | switch (...) {...} | false |
-| cflow.cs:346:13:346:28 | ... > ... | cflow.cs:351:17:351:29 | goto default; | false |
-| cflow.cs:346:13:346:28 | ... > ... | cflow.cs:352:13:352:19 | case ...: | false |
-| cflow.cs:346:13:346:28 | ... > ... | cflow.cs:353:17:353:37 | ...; | false |
-| cflow.cs:346:13:346:28 | ... > ... | cflow.cs:355:13:355:19 | case ...: | false |
-| cflow.cs:346:13:346:28 | ... > ... | cflow.cs:356:17:356:27 | goto ...; | false |
-| cflow.cs:346:13:346:28 | ... > ... | cflow.cs:357:13:357:20 | default: | false |
-| cflow.cs:350:18:350:18 | 0 | cflow.cs:351:17:351:29 | goto default; | true |
-| cflow.cs:350:18:350:18 | 0 | cflow.cs:352:13:352:19 | case ...: | false |
-| cflow.cs:350:18:350:18 | 0 | cflow.cs:353:17:353:37 | ...; | false |
-| cflow.cs:350:18:350:18 | 0 | cflow.cs:355:13:355:19 | case ...: | false |
-| cflow.cs:350:18:350:18 | 0 | cflow.cs:356:17:356:27 | goto ...; | false |
-| cflow.cs:352:18:352:18 | 1 | cflow.cs:353:17:353:37 | ...; | true |
-| cflow.cs:352:18:352:18 | 1 | cflow.cs:355:13:355:19 | case ...: | false |
-| cflow.cs:352:18:352:18 | 1 | cflow.cs:356:17:356:27 | goto ...; | false |
-| cflow.cs:355:18:355:18 | 2 | cflow.cs:356:17:356:27 | goto ...; | true |
-| cflow.cs:366:25:366:30 | ... < ... | cflow.cs:367:9:369:9 | {...} | true |
-| cflow.cs:366:25:366:30 | ... < ... | cflow.cs:370:9:378:9 | try {...} ... | false |
-| cflow.cs:419:46:419:50 | ... > ... | cflow.cs:419:56:419:56 | access to parameter s | false |
+| cflow.cs:260:16:260:21 | ... < ... | cflow.cs:257:10:257:12 | exit For | false |
+| cflow.cs:260:16:260:21 | ... < ... | cflow.cs:261:13:261:33 | ...; | true |
+| cflow.cs:260:16:260:21 | ... < ... | cflow.cs:263:9:268:9 | for (...;...;...) ... | false |
+| cflow.cs:260:16:260:21 | ... < ... | cflow.cs:263:18:263:18 | access to local variable x | false |
+| cflow.cs:260:16:260:21 | ... < ... | cflow.cs:264:9:268:9 | {...} | false |
+| cflow.cs:260:16:260:21 | ... < ... | cflow.cs:267:17:267:22 | break; | false |
+| cflow.cs:260:16:260:21 | ... < ... | cflow.cs:271:9:276:9 | {...} | false |
+| cflow.cs:260:16:260:21 | ... < ... | cflow.cs:275:17:275:22 | break; | false |
+| cflow.cs:260:16:260:21 | ... < ... | cflow.cs:278:16:278:16 | access to local variable x | false |
+| cflow.cs:260:16:260:21 | ... < ... | cflow.cs:279:9:282:9 | {...} | false |
+| cflow.cs:260:16:260:21 | ... < ... | cflow.cs:284:9:287:9 | for (...;...;...) ... | false |
+| cflow.cs:260:16:260:21 | ... < ... | cflow.cs:284:32:284:32 | access to local variable i | false |
+| cflow.cs:260:16:260:21 | ... < ... | cflow.cs:285:9:287:9 | {...} | false |
+| cflow.cs:266:17:266:22 | ... > ... | cflow.cs:257:10:257:12 | exit For | true |
+| cflow.cs:266:17:266:22 | ... > ... | cflow.cs:263:18:263:18 | access to local variable x | false |
+| cflow.cs:266:17:266:22 | ... > ... | cflow.cs:267:17:267:22 | break; | true |
+| cflow.cs:266:17:266:22 | ... > ... | cflow.cs:271:9:276:9 | {...} | true |
+| cflow.cs:266:17:266:22 | ... > ... | cflow.cs:275:17:275:22 | break; | true |
+| cflow.cs:266:17:266:22 | ... > ... | cflow.cs:278:16:278:16 | access to local variable x | true |
+| cflow.cs:266:17:266:22 | ... > ... | cflow.cs:279:9:282:9 | {...} | true |
+| cflow.cs:266:17:266:22 | ... > ... | cflow.cs:284:9:287:9 | for (...;...;...) ... | true |
+| cflow.cs:266:17:266:22 | ... > ... | cflow.cs:284:32:284:32 | access to local variable i | true |
+| cflow.cs:266:17:266:22 | ... > ... | cflow.cs:285:9:287:9 | {...} | true |
+| cflow.cs:274:17:274:22 | ... > ... | cflow.cs:257:10:257:12 | exit For | true |
+| cflow.cs:274:17:274:22 | ... > ... | cflow.cs:275:17:275:22 | break; | true |
+| cflow.cs:274:17:274:22 | ... > ... | cflow.cs:278:16:278:16 | access to local variable x | true |
+| cflow.cs:274:17:274:22 | ... > ... | cflow.cs:279:9:282:9 | {...} | true |
+| cflow.cs:274:17:274:22 | ... > ... | cflow.cs:284:9:287:9 | for (...;...;...) ... | true |
+| cflow.cs:274:17:274:22 | ... > ... | cflow.cs:284:32:284:32 | access to local variable i | true |
+| cflow.cs:274:17:274:22 | ... > ... | cflow.cs:285:9:287:9 | {...} | true |
+| cflow.cs:278:16:278:21 | ... < ... | cflow.cs:257:10:257:12 | exit For | false |
+| cflow.cs:278:16:278:21 | ... < ... | cflow.cs:279:9:282:9 | {...} | true |
+| cflow.cs:278:16:278:21 | ... < ... | cflow.cs:284:9:287:9 | for (...;...;...) ... | false |
+| cflow.cs:278:16:278:21 | ... < ... | cflow.cs:284:32:284:32 | access to local variable i | false |
+| cflow.cs:278:16:278:21 | ... < ... | cflow.cs:285:9:287:9 | {...} | false |
+| cflow.cs:284:32:284:41 | ... < ... | cflow.cs:257:10:257:12 | exit For | false |
+| cflow.cs:284:32:284:41 | ... < ... | cflow.cs:285:9:287:9 | {...} | true |
+| cflow.cs:306:17:306:32 | ... > ... | cflow.cs:306:37:306:56 | !... | true |
+| cflow.cs:308:15:308:31 | ... == ... | cflow.cs:308:35:308:39 | false | true |
+| cflow.cs:308:15:308:31 | ... == ... | cflow.cs:308:43:308:46 | true | false |
+| cflow.cs:308:15:308:31 | ... == ... | cflow.cs:309:13:309:48 | ... = ... | true |
+| cflow.cs:308:15:308:31 | ... == ... | cflow.cs:309:37:309:41 | false | true |
+| cflow.cs:308:15:308:31 | ... == ... | cflow.cs:309:45:309:48 | true | true |
+| cflow.cs:309:17:309:33 | ... == ... | cflow.cs:309:37:309:41 | false | true |
+| cflow.cs:309:17:309:33 | ... == ... | cflow.cs:309:45:309:48 | true | false |
+| cflow.cs:311:15:311:31 | ... == ... | cflow.cs:311:37:311:62 | !... | true |
+| cflow.cs:311:15:311:31 | ... == ... | cflow.cs:311:61:311:61 | access to local variable b | true |
+| cflow.cs:311:40:311:56 | ... == ... | cflow.cs:311:61:311:61 | access to local variable b | true |
+| cflow.cs:324:17:324:32 | ... > ... | cflow.cs:325:13:327:13 | {...} | true |
+| cflow.cs:324:17:324:32 | ... > ... | cflow.cs:328:13:331:13 | if (...) ... | false |
+| cflow.cs:324:17:324:32 | ... > ... | cflow.cs:329:13:331:13 | {...} | false |
+| cflow.cs:328:17:328:32 | ... < ... | cflow.cs:329:13:331:13 | {...} | true |
+| cflow.cs:337:9:348:9 | foreach (... ... in ...) ... | cflow.cs:337:22:337:22 | String x | false |
+| cflow.cs:337:9:348:9 | foreach (... ... in ...) ... | cflow.cs:341:13:343:13 | {...} | false |
+| cflow.cs:337:9:348:9 | foreach (... ... in ...) ... | cflow.cs:344:13:347:13 | if (...) ... | false |
+| cflow.cs:337:9:348:9 | foreach (... ... in ...) ... | cflow.cs:345:13:347:13 | {...} | false |
+| cflow.cs:340:17:340:32 | ... > ... | cflow.cs:341:13:343:13 | {...} | true |
+| cflow.cs:340:17:340:32 | ... > ... | cflow.cs:344:13:347:13 | if (...) ... | false |
+| cflow.cs:340:17:340:32 | ... > ... | cflow.cs:345:13:347:13 | {...} | false |
+| cflow.cs:344:17:344:32 | ... < ... | cflow.cs:345:13:347:13 | {...} | true |
+| cflow.cs:353:23:353:39 | ... == ... | cflow.cs:353:43:353:45 | {...} | true |
+| cflow.cs:355:13:355:28 | ... > ... | cflow.cs:351:10:351:13 | exit Goto | false |
+| cflow.cs:355:13:355:28 | ... > ... | cflow.cs:355:31:355:41 | goto ...; | true |
+| cflow.cs:355:13:355:28 | ... > ... | cflow.cs:357:9:369:9 | switch (...) {...} | false |
+| cflow.cs:355:13:355:28 | ... > ... | cflow.cs:360:17:360:29 | goto default; | false |
+| cflow.cs:355:13:355:28 | ... > ... | cflow.cs:361:13:361:19 | case ...: | false |
+| cflow.cs:355:13:355:28 | ... > ... | cflow.cs:362:17:362:37 | ...; | false |
+| cflow.cs:355:13:355:28 | ... > ... | cflow.cs:364:13:364:19 | case ...: | false |
+| cflow.cs:355:13:355:28 | ... > ... | cflow.cs:365:17:365:27 | goto ...; | false |
+| cflow.cs:355:13:355:28 | ... > ... | cflow.cs:366:13:366:20 | default: | false |
+| cflow.cs:359:18:359:18 | 0 | cflow.cs:360:17:360:29 | goto default; | true |
+| cflow.cs:359:18:359:18 | 0 | cflow.cs:361:13:361:19 | case ...: | false |
+| cflow.cs:359:18:359:18 | 0 | cflow.cs:362:17:362:37 | ...; | false |
+| cflow.cs:359:18:359:18 | 0 | cflow.cs:364:13:364:19 | case ...: | false |
+| cflow.cs:359:18:359:18 | 0 | cflow.cs:365:17:365:27 | goto ...; | false |
+| cflow.cs:361:18:361:18 | 1 | cflow.cs:362:17:362:37 | ...; | true |
+| cflow.cs:361:18:361:18 | 1 | cflow.cs:364:13:364:19 | case ...: | false |
+| cflow.cs:361:18:361:18 | 1 | cflow.cs:365:17:365:27 | goto ...; | false |
+| cflow.cs:364:18:364:18 | 2 | cflow.cs:365:17:365:27 | goto ...; | true |
+| cflow.cs:375:25:375:30 | ... < ... | cflow.cs:376:9:378:9 | {...} | true |
+| cflow.cs:375:25:375:30 | ... < ... | cflow.cs:379:9:387:9 | try {...} ... | false |
+| cflow.cs:428:46:428:50 | ... > ... | cflow.cs:428:56:428:56 | access to parameter s | false |
