@@ -2,12 +2,12 @@ import python
 import semmle.python.web.Http
 import semmle.python.types.Extensions
 
-/** The flask module */
+/** The bottle module */
 ModuleObject theBottleModule() {
     result = ModuleObject::named("bottle")
 }
 
-/** The flask app class */
+/** The bottle.Bottle class */
 ClassObject theBottleClass() {
     result = ModuleObject::named("bottle").getAttribute("Bottle")
 }

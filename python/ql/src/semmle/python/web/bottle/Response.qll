@@ -6,7 +6,7 @@ import semmle.python.web.Http
 import semmle.python.web.bottle.General
 
 
-/** A django.http.response.Response object
+/** A bottle.Response object
  * This isn't really a "taint", but we use the value tracking machinery to
  * track the flow of response objects.
  */
@@ -19,7 +19,7 @@ class BottleResponse extends TaintKind {
 }
 
 private Object theBottleResponseObject() {
-    result = theBottleModule().getAttribute("request")
+    result = theBottleModule().getAttribute("response")
 }
 
 class BottleResponseBodyAssignment extends TaintSink {
@@ -32,7 +32,7 @@ class BottleResponseBodyAssignment extends TaintSink {
     }
 
     override predicate sinks(TaintKind kind) {
-        kind instanceof StringKind
+        kind instanceof UntrustedStringKind
     }
 
 }

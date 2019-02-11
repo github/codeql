@@ -1,6 +1,6 @@
 
 
-from bottle import Bottle, route, request, redirect
+from bottle import Bottle, route, request, redirect, response
 
 app = Bottle()
 
@@ -30,3 +30,7 @@ def unsafe(where="/right/url"):
 @route('/args')
 def unsafe2():
     redirect(request.query.where, code)
+
+@route('/xss')
+def maybe_xss():
+    response.body = "name is " + request.query.name

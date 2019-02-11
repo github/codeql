@@ -4,3 +4,4 @@
 | /other | test.py:17:1:17:12 | Function other |
 | /wrong/<where> | test.py:27:1:27:31 | Function unsafe |
 | /wrong/url | test.py:23:1:23:11 | Function safe |
+| /xss | test.py:35:1:35:16 | Function maybe_xss |
