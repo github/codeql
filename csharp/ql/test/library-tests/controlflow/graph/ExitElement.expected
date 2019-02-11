@@ -2192,22 +2192,13 @@
 | cflow.cs:247:9:254:9 | try {...} ... | cflow.cs:249:17:249:40 | Double temp = ... | normal |
 | cflow.cs:247:9:254:9 | try {...} ... | cflow.cs:253:13:253:13 | ; | normal |
 | cflow.cs:248:9:250:9 | {...} | cflow.cs:249:17:249:40 | Double temp = ... | normal |
-| cflow.cs:248:9:250:9 | {...} | cflow.cs:249:24:249:40 | ... / ... | throw(DivideByZeroException) |
-| cflow.cs:248:9:250:9 | {...} | cflow.cs:249:28:249:40 | access to constant E | throw(NullReferenceException) |
 | cflow.cs:249:13:249:41 | ... ...; | cflow.cs:249:17:249:40 | Double temp = ... | normal |
-| cflow.cs:249:13:249:41 | ... ...; | cflow.cs:249:24:249:40 | ... / ... | throw(DivideByZeroException) |
-| cflow.cs:249:13:249:41 | ... ...; | cflow.cs:249:28:249:40 | access to constant E | throw(NullReferenceException) |
 | cflow.cs:249:17:249:20 | access to local variable temp | cflow.cs:249:17:249:20 | access to local variable temp | normal |
 | cflow.cs:249:17:249:40 | Double temp = ... | cflow.cs:249:17:249:40 | Double temp = ... | normal |
-| cflow.cs:249:17:249:40 | Double temp = ... | cflow.cs:249:24:249:40 | ... / ... | throw(DivideByZeroException) |
-| cflow.cs:249:17:249:40 | Double temp = ... | cflow.cs:249:28:249:40 | access to constant E | throw(NullReferenceException) |
 | cflow.cs:249:24:249:24 | 0 | cflow.cs:249:24:249:24 | 0 | normal |
 | cflow.cs:249:24:249:24 | (...) ... | cflow.cs:249:24:249:24 | (...) ... | normal |
 | cflow.cs:249:24:249:40 | ... / ... | cflow.cs:249:24:249:40 | ... / ... | normal |
-| cflow.cs:249:24:249:40 | ... / ... | cflow.cs:249:24:249:40 | ... / ... | throw(DivideByZeroException) |
-| cflow.cs:249:24:249:40 | ... / ... | cflow.cs:249:28:249:40 | access to constant E | throw(NullReferenceException) |
 | cflow.cs:249:28:249:40 | access to constant E | cflow.cs:249:28:249:40 | access to constant E | normal |
-| cflow.cs:249:28:249:40 | access to constant E | cflow.cs:249:28:249:40 | access to constant E | throw(NullReferenceException) |
 | cflow.cs:251:9:254:9 | catch {...} | cflow.cs:253:13:253:13 | ; | normal |
 | cflow.cs:252:9:254:9 | {...} | cflow.cs:253:13:253:13 | ; | normal |
 | cflow.cs:253:13:253:13 | ; | cflow.cs:253:13:253:13 | ; | normal |

@@ -503,10 +503,7 @@
 | cflow.cs:244:17:244:37 | [finally: exception(NullReferenceException)] ...; | cflow.cs:244:17:244:36 | [finally: exception(NullReferenceException)] call to method WriteLine | 3 |
 | cflow.cs:244:17:244:37 | [finally: exception(OutOfMemoryException)] ...; | cflow.cs:244:17:244:36 | [finally: exception(OutOfMemoryException)] call to method WriteLine | 3 |
 | cflow.cs:244:17:244:37 | [finally: return] ...; | cflow.cs:244:17:244:36 | [finally: return] call to method WriteLine | 3 |
-| cflow.cs:247:9:254:9 | try {...} ... | cflow.cs:249:28:249:40 | access to constant E | 7 |
-| cflow.cs:249:17:249:40 | Double temp = ... | cflow.cs:249:17:249:40 | Double temp = ... | 1 |
-| cflow.cs:249:24:249:40 | ... / ... | cflow.cs:249:24:249:40 | ... / ... | 1 |
-| cflow.cs:251:9:254:9 | catch {...} | cflow.cs:253:13:253:13 | ; | 3 |
+| cflow.cs:247:9:254:9 | try {...} ... | cflow.cs:249:17:249:40 | Double temp = ... | 9 |
 | cflow.cs:257:10:257:12 | enter For | cflow.cs:260:9:261:33 | for (...;...;...) ... | 7 |
 | cflow.cs:257:10:257:12 | exit For | cflow.cs:257:10:257:12 | exit For | 1 |
 | cflow.cs:260:16:260:16 | access to local variable x | cflow.cs:260:16:260:21 | ... < ... | 3 |

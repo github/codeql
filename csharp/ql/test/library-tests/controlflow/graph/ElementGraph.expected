@@ -1576,11 +1576,7 @@
 | cflow.cs:249:24:249:24 | 0 | cflow.cs:249:24:249:24 | (...) ... | semmle.label | successor |
 | cflow.cs:249:24:249:24 | (...) ... | cflow.cs:249:28:249:40 | access to constant E | semmle.label | successor |
 | cflow.cs:249:24:249:40 | ... / ... | cflow.cs:249:17:249:40 | Double temp = ... | semmle.label | successor |
-| cflow.cs:249:24:249:40 | ... / ... | cflow.cs:251:9:254:9 | catch {...} | semmle.label | exception(DivideByZeroException) |
 | cflow.cs:249:28:249:40 | access to constant E | cflow.cs:249:24:249:40 | ... / ... | semmle.label | successor |
-| cflow.cs:249:28:249:40 | access to constant E | cflow.cs:251:9:254:9 | catch {...} | semmle.label | exception(NullReferenceException) |
-| cflow.cs:251:9:254:9 | catch {...} | cflow.cs:252:9:254:9 | {...} | semmle.label | successor |
-| cflow.cs:252:9:254:9 | {...} | cflow.cs:253:13:253:13 | ; | semmle.label | successor |
 | cflow.cs:258:5:288:5 | {...} | cflow.cs:259:9:259:18 | ... ...; | semmle.label | successor |
 | cflow.cs:259:9:259:18 | ... ...; | cflow.cs:259:13:259:13 | access to local variable x | semmle.label | successor |
 | cflow.cs:259:13:259:13 | access to local variable x | cflow.cs:259:17:259:17 | 0 | semmle.label | successor |

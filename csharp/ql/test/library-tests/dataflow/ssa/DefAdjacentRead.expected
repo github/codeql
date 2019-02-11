@@ -150,6 +150,7 @@
 | Test.cs:9:13:9:13 | y | Test.cs:19:13:19:17 | ... = ... | Test.cs:20:13:20:13 | access to local variable y |
 | Test.cs:39:22:39:22 | w | Test.cs:39:22:39:22 | Int32 w | Test.cs:41:23:41:23 | access to local variable w |
 | Test.cs:46:16:46:18 | in | Test.cs:46:16:46:18 | in | Test.cs:48:13:48:15 | access to parameter in |
+| Test.cs:62:16:62:16 | x | Test.cs:62:16:62:16 | x | Test.cs:66:28:66:28 | access to parameter x |
 | Test.cs:68:45:68:45 | e | Test.cs:68:45:68:45 | DivideByZeroException e | Test.cs:70:17:70:17 | access to local variable e |
 | Tuples.cs:5:9:5:13 | Field | Tuples.cs:20:9:20:34 | ... = ... | Tuples.cs:22:13:22:17 | access to field Field |
 | Tuples.cs:5:9:5:13 | Field | Tuples.cs:26:9:26:33 | ... = ... | Tuples.cs:27:13:27:17 | access to field Field |

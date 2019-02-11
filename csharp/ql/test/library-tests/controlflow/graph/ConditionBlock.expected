@@ -529,9 +529,6 @@
 | cflow.cs:234:17:234:33 | ... == ... | cflow.cs:244:17:244:37 | [finally: exception(OutOfMemoryException)] ...; | false |
 | cflow.cs:234:17:234:33 | ... == ... | cflow.cs:244:17:244:37 | [finally: return] ...; | true |
 | cflow.cs:234:17:234:33 | ... == ... | cflow.cs:247:9:254:9 | try {...} ... | false |
-| cflow.cs:234:17:234:33 | ... == ... | cflow.cs:249:17:249:40 | Double temp = ... | false |
-| cflow.cs:234:17:234:33 | ... == ... | cflow.cs:249:24:249:40 | ... / ... | false |
-| cflow.cs:234:17:234:33 | ... == ... | cflow.cs:251:9:254:9 | catch {...} | false |
 | cflow.cs:236:17:236:33 | ... == ... | cflow.cs:237:17:237:49 | throw ...; | true |
 | cflow.cs:236:17:236:33 | ... == ... | cflow.cs:237:23:237:48 | object creation of type OutOfMemoryException | true |
 | cflow.cs:236:17:236:33 | ... == ... | cflow.cs:240:9:245:9 | {...} | false |
@@ -542,9 +539,6 @@
 | cflow.cs:236:17:236:33 | ... == ... | cflow.cs:244:17:244:37 | ...; | false |
 | cflow.cs:236:17:236:33 | ... == ... | cflow.cs:244:17:244:37 | [finally: exception(OutOfMemoryException)] ...; | true |
 | cflow.cs:236:17:236:33 | ... == ... | cflow.cs:247:9:254:9 | try {...} ... | false |
-| cflow.cs:236:17:236:33 | ... == ... | cflow.cs:249:17:249:40 | Double temp = ... | false |
-| cflow.cs:236:17:236:33 | ... == ... | cflow.cs:249:24:249:40 | ... / ... | false |
-| cflow.cs:236:17:236:33 | ... == ... | cflow.cs:251:9:254:9 | catch {...} | false |
 | cflow.cs:241:19:241:35 | ... == ... | cflow.cs:242:17:242:41 | ...; | false |
 | cflow.cs:241:19:241:35 | [finally: exception(Exception)] ... == ... | cflow.cs:242:17:242:41 | [finally: exception(Exception)] ...; | false |
 | cflow.cs:241:19:241:35 | [finally: exception(NullReferenceException)] ... == ... | cflow.cs:242:17:242:41 | [finally: exception(NullReferenceException)] ...; | false |
