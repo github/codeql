@@ -147,7 +147,7 @@ module Closure {
    * Holds if `name` is a closure namespace, including proper namespace prefixes.
    */
   pragma[noinline]
-  predicate isLibraryNamespacePath(string name) {
+  predicate isClosureNamespace(string name) {
     exists(string namespace | namespace = any(ClosureNamespaceRef ref).getClosureNamespace() |
       name = namespace.substring(0, namespace.indexOf("."))
       or
@@ -158,13 +158,13 @@ module Closure {
   /**
    * Gets the closure namespace path addressed by the given dataflow node, if any.
    */
-  string getLibraryAccessPath(DataFlow::SourceNode node) {
-    isLibraryNamespacePath(result) and
+  string getClosureNamespaceFromSourceNode(DataFlow::SourceNode node) {
+    isClosureNamespace(result) and
     node = DataFlow::globalVarRef(result)
     or
     exists(DataFlow::SourceNode base, string basePath, string prop |
-      basePath = getLibraryAccessPath(base) and
-      isLibraryNamespacePath(basePath) and
+      basePath = getClosureNamespaceFromSourceNode(base) and
+      isClosureNamespace(basePath) and
       node = base.getAPropertyRead(prop) and
       result = basePath + "." + prop
     )
@@ -174,7 +174,7 @@ module Closure {
     // foo.bar = { baz() {} }
     exists(DataFlow::PropWrite write |
       node = write.getRhs() and
-      result = getWrittenLibraryAccessPath(write)
+      result = getWrittenClosureNamespace(write)
     )
     or
     result = node.(ClosureNamespaceAccess).getClosureNamespace()
@@ -183,12 +183,12 @@ module Closure {
   /**
    * Gets the closure namespace path written to by the given property write, if any.
    */
-  string getWrittenLibraryAccessPath(DataFlow::PropWrite node) {
-    result = getLibraryAccessPath(node.getBase().getALocalSource()) + "." + node.getPropertyName()
+  string getWrittenClosureNamespace(DataFlow::PropWrite node) {
+    result = getClosureNamespaceFromSourceNode(node.getBase().getALocalSource()) + "." + node.getPropertyName()
   }
 
   /**
    * Gets a dataflow node that refers to the given value exported from a Closure module.
    */
-  DataFlow::SourceNode moduleImport(string moduleName) { getLibraryAccessPath(result) = moduleName }
+  DataFlow::SourceNode moduleImport(string moduleName) { getClosureNamespaceFromSourceNode(result) = moduleName }
 }

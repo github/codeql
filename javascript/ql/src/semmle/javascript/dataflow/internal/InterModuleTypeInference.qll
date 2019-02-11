@@ -358,11 +358,11 @@ private class AnalyzedClosureExportAssign extends AnalyzedPropertyWrite, DataFlo
 private class AnalyzedClosureGlobalAccessPath extends AnalyzedNode, AnalyzedPropertyRead {
   string accessPath;
 
-  AnalyzedClosureGlobalAccessPath() { accessPath = Closure::getLibraryAccessPath(this) }
+  AnalyzedClosureGlobalAccessPath() { accessPath = Closure::getClosureNamespaceFromSourceNode(this) }
 
   override AnalyzedNode localFlowPred() {
     exists(DataFlow::PropWrite write |
-      Closure::getWrittenLibraryAccessPath(write) = accessPath and
+      Closure::getWrittenClosureNamespace(write) = accessPath and
       result = write.getRhs()
     )
     or
