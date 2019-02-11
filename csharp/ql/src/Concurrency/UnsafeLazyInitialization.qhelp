@@ -16,7 +16,7 @@ for example by computing the field twice.
 <li>Make the field volatile using the <code>volatile</code> keyword.</li>
 <li>Use the <code>System.Lazy</code> class, which is guaranteed to be thread-safe. 
 This can often lead to more elegant code.</li>
-<li>Use <code>System.Threading.LazyInitializer</code>.
+<li>Use <code>System.Threading.LazyInitializer</code>.</li>
 </ol>
 
 </recommendation>
