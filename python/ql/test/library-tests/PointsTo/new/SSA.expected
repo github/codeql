@@ -486,10 +486,12 @@
 | n_nesting.py:10 | C_5 = ScopeEntryDefinition | int 1 | builtin-class int |
 | n_nesting.py:10 | compile_ops_3 = ScopeEntryDefinition | *UNDEFINED* | *UNKNOWN TYPE* |
 | n_nesting.py:10 | inner_0 = FunctionExpr | Function inner | builtin-class function |
+| n_nesting.py:11 | C_6 = CallsiteRefinement(C_5) | int 1 | builtin-class int |
 | n_nesting.py:13 | C_7 = ScopeEntryDefinition | int 1 | builtin-class int |
 | n_nesting.py:13 | compile_ops_4 = Pi(compile_ops_1) [false] | bool True | builtin-class bool |
 | n_nesting.py:13 | compile_ops_5 = ScopeEntryDefinition | *UNDEFINED* | *UNKNOWN TYPE* |
 | n_nesting.py:13 | inner_1 = FunctionExpr | Function inner | builtin-class function |
+| n_nesting.py:14 | C_8 = CallsiteRefinement(C_7) | int 1 | builtin-class int |
 | n_nesting.py:15 | attrs_0 = Dict | Dict | builtin-class dict |
 | n_nesting.py:16 | compile_ops_6 = phi(compile_ops_2, compile_ops_4) | bool True | builtin-class bool |
 | n_nesting.py:16 | inner_2 = phi(inner_0, inner_1) | Function inner | builtin-class function |

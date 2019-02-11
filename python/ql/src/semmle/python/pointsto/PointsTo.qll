@@ -1713,14 +1713,23 @@ module PointsTo {
          */
         pragma [noinline]
         private predicate callsite_points_to(CallsiteRefinement def, PointsToContext context, Object value, ClassObject cls, ObjectOrCfg origin) {
-            exists(EssaVariable var, PointsToContext callee |
-                Flow::callsite_exit_value_transfer(var, callee, def, context) and
-                ssa_variable_points_to(var, callee, value, cls, origin)
+            exists(SsaSourceVariable srcvar |
+                srcvar = def.getSourceVariable() |
+                if srcvar instanceof EscapingAssignmentGlobalVariable then (
+                    /* If global variable can be reassigned, we need to track it through calls */
+                    exists(EssaVariable var, PointsToContext callee |
+                        Flow::callsite_exit_value_transfer(var, callee, def, context) and
+                        ssa_variable_points_to(var, callee, value, cls, origin)
+                    )
+                    or
+                    callsite_points_to_python(def, context, value, cls, origin)
+                    or
+                    callsite_points_to_builtin(def, context, value, cls, origin)
+                ) else (
+                    /* Otherwise we can assume its value (but not those of its attributes or members) has not changed. */
+                    ssa_variable_points_to(def.getInput(), context, value, cls, origin)
+                )
             )
-            or
-            callsite_points_to_python(def, context, value, cls, origin)
-            or
-            callsite_points_to_builtin(def, context, value, cls, origin)
         }
 
         pragma [noinline]
