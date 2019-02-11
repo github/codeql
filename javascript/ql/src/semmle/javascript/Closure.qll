@@ -16,6 +16,11 @@ module Closure {
   }
 
   /**
+   * A dataflow node that returns the value of a closure namespace.
+   */
+  abstract class ClosureNamespaceAccess extends ClosureNamespaceRef, DataFlow::SourceNode { }
+
+  /**
    * A call to a method on the `goog.` namespace, as a closure reference.
    */
   abstract private class DefaultNamespaceRef extends DataFlow::MethodCallNode, ClosureNamespaceRef {
@@ -44,7 +49,7 @@ module Closure {
   /**
    * A call to `goog.require`.
    */
-  class ClosureRequireCall extends DefaultNamespaceRef {
+  class ClosureRequireCall extends DefaultNamespaceRef, ClosureNamespaceAccess {
     ClosureRequireCall() { getMethodName() = "require" }
   }
 
@@ -172,7 +177,7 @@ module Closure {
       result = getWrittenLibraryAccessPath(write)
     )
     or
-    result = node.(ClosureRequireCall).getClosureNamespace()
+    result = node.(ClosureNamespaceAccess).getClosureNamespace()
   }
 
   /**
