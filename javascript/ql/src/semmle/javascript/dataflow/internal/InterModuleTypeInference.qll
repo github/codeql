@@ -371,7 +371,7 @@ private class AnalyzedClosureGlobalAccessPath extends AnalyzedNode, AnalyzedProp
 
   override predicate reads(AbstractValue base, string propName) {
     exists(Closure::ClosureModule mod |
-      mod.getNamespaceId() = accessPath and
+      mod.getClosureNamespace() = accessPath and
       base = TAbstractModuleObject(mod) and
       propName = "exports"
     )

@@ -38,9 +38,7 @@ module Closure {
     Expr getAnArgument() { result = getArgument(_) }
   }
 
-  abstract private class GoogNamespaceRef extends ExprOrStmt {
-    abstract string getNamespaceId();
-  }
+  abstract private class GoogNamespaceRef extends ExprOrStmt { abstract string getClosureNamespace(); }
 
   /**
    * A call to `goog.provide`.
@@ -49,7 +47,7 @@ module Closure {
     GoogProvide() { getFunctionName() = "provide" }
 
     /** Gets the identifier of the namespace created by this call. */
-    override string getNamespaceId() { result = getArgument(0).getStringValue() }
+    override string getClosureNamespace() { result = getArgument(0).getStringValue() }
   }
 
   /**
@@ -59,7 +57,7 @@ module Closure {
     GoogRequire() { getFunctionName() = "require" }
 
     /** Gets the identifier of the namespace imported by this call. */
-    override string getNamespaceId() { result = getArgument(0).getStringValue() }
+    override string getClosureNamespace() { result = getArgument(0).getStringValue() }
   }
 
   private class GoogRequireImport extends GoogRequire, Import {
@@ -80,7 +78,7 @@ module Closure {
     }
 
     /** Gets the identifier of the namespace imported by this call. */
-    override string getNamespaceId() { result = getArgument(0).getStringValue() }
+    override string getClosureNamespace() { result = getArgument(0).getStringValue() }
   }
 
   /**
@@ -97,12 +95,12 @@ module Closure {
     /**
      * Gets the namespace of this module.
      */
-    string getNamespaceId() { result = getModuleDeclaration().getNamespaceId() }
+    string getClosureNamespace() { result = getModuleDeclaration().getClosureNamespace() }
 
     override Module getAnImportedModule() {
       exists(GoogRequireImport imprt |
         imprt.getEnclosingModule() = this and
-        result.(ClosureModule).getNamespaceId() = imprt.getNamespaceId()
+        result.(ClosureModule).getClosureNamespace() = imprt.getClosureNamespace()
       )
     }
 
@@ -146,11 +144,11 @@ module Closure {
 
     /** Gets the identifier of a namespace required by this module. */
     string getARequiredNamespace() {
-      result = getAChildStmt().(ExprStmt).getExpr().(GoogRequire).getNamespaceId()
+      result = getAChildStmt().(ExprStmt).getExpr().(GoogRequire).getClosureNamespace()
     }
 
     /** Gets the identifer of a namespace provided by this module. */
-    string getAProvidedNamespace() { result = getAChildStmt().(GoogProvide).getNamespaceId() }
+    string getAProvidedNamespace() { result = getAChildStmt().(GoogProvide).getClosureNamespace() }
   }
 
   /**
@@ -158,7 +156,7 @@ module Closure {
    */
   pragma[noinline]
   predicate isLibraryNamespacePath(string name) {
-    exists(string namespace | namespace = any(GoogNamespaceRef provide).getNamespaceId() |
+    exists(string namespace | namespace = any(GoogNamespaceRef provide).getClosureNamespace() |
       name = namespace.substring(0, namespace.indexOf("."))
       or
       name = namespace
@@ -187,7 +185,7 @@ module Closure {
       result = getWrittenLibraryAccessPath(write)
     )
     or
-    result = node.asExpr().(GoogRequire).getNamespaceId()
+    result = node.asExpr().(GoogRequire).getClosureNamespace()
   }
 
   /**
