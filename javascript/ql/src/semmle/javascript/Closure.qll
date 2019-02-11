@@ -6,91 +6,68 @@ import javascript
 
 module Closure {
   /**
-   * A call to a function in the `goog` namespace such as `goog.provide` or `goog.load`.
+   * A reference to a Closure namespace.
    */
-  class GoogFunctionCall extends CallExpr {
-    GoogFunctionCall() {
-      exists(GlobalVariable gv | gv.getName() = "goog" |
-        this.getCallee().(DotExpr).getBase() = gv.getAnAccess()
-      )
+  abstract class ClosureNamespaceRef extends DataFlow::Node {
+    /**
+     * Gets the namespace being referenced.
+     */
+    abstract string getClosureNamespace();
+  }
+
+  /**
+   * A call to a method on the `goog.` namespace, as a closure reference.
+   */
+  abstract private class DefaultNamespaceRef extends DataFlow::MethodCallNode, ClosureNamespaceRef {
+    DefaultNamespaceRef() { this = DataFlow::globalVarRef("goog").getAMethodCall() }
+
+    override string getClosureNamespace() { result = getArgument(0).asExpr().getStringValue() }
+  }
+
+  /**
+   * Holds if `node` is the dataflow node for a top-level expression.
+   */
+  private predicate isTopLevelExpr(DataFlow::Node node) {
+    node.getTopLevel().getAChildStmt().(ExprStmt).getExpr().flow() = node
+  }
+
+  /**
+   * A top-level call to `goog.provide`.
+   */
+  class ClosureProvideCall extends DefaultNamespaceRef {
+    ClosureProvideCall() {
+      getMethodName() = "provide" and
+      isTopLevelExpr(this)
     }
-
-    /** Gets the name of the invoked function. */
-    string getFunctionName() { result = getCallee().(DotExpr).getPropertyName() }
-  }
-
-  /**
-   * An expression statement consisting of a call to a function
-   * in the `goog` namespace.
-   */
-  class GoogFunctionCallStmt extends ExprStmt {
-    GoogFunctionCallStmt() { super.getExpr() instanceof GoogFunctionCall }
-
-    override GoogFunctionCall getExpr() { result = super.getExpr() }
-
-    /** Gets the name of the invoked function. */
-    string getFunctionName() { result = getExpr().getFunctionName() }
-
-    /** Gets the `i`th argument to the invoked function. */
-    Expr getArgument(int i) { result = getExpr().getArgument(i) }
-
-    /** Gets an argument to the invoked function. */
-    Expr getAnArgument() { result = getArgument(_) }
-  }
-
-  abstract private class GoogNamespaceRef extends ExprOrStmt { abstract string getClosureNamespace(); }
-
-  /**
-   * A call to `goog.provide`.
-   */
-  class GoogProvide extends GoogFunctionCallStmt, GoogNamespaceRef {
-    GoogProvide() { getFunctionName() = "provide" }
-
-    /** Gets the identifier of the namespace created by this call. */
-    override string getClosureNamespace() { result = getArgument(0).getStringValue() }
   }
 
   /**
    * A call to `goog.require`.
    */
-  class GoogRequire extends GoogFunctionCall, GoogNamespaceRef {
-    GoogRequire() { getFunctionName() = "require" }
-
-    /** Gets the identifier of the namespace imported by this call. */
-    override string getClosureNamespace() { result = getArgument(0).getStringValue() }
-  }
-
-  private class GoogRequireImport extends GoogRequire, Import {
-    /** Gets the module in which this import appears. */
-    override Module getEnclosingModule() { result = getTopLevel() }
-
-    /** Gets the (unresolved) path that this import refers to. */
-    override PathExpr getImportedPath() { result = getArgument(0) }
+  class ClosureRequireCall extends DefaultNamespaceRef {
+    ClosureRequireCall() { getMethodName() = "require" }
   }
 
   /**
-   * A call to `goog.module` or `goog.declareModuleId`.
+   * A top-level call to `goog.module` or `goog.declareModuleId`.
    */
-  class GoogModuleDeclaration extends GoogFunctionCallStmt, GoogNamespaceRef {
-    GoogModuleDeclaration() {
-      getFunctionName() = "module" or
-      getFunctionName() = "declareModuleId"
+  class ClosureModuleDeclaration extends DefaultNamespaceRef {
+    ClosureModuleDeclaration() {
+      (getMethodName() = "module" or getMethodName() = "declareModuleId") and
+      isTopLevelExpr(this)
     }
-
-    /** Gets the identifier of the namespace imported by this call. */
-    override string getClosureNamespace() { result = getArgument(0).getStringValue() }
   }
 
   /**
    * A module using the Closure module system, declared using `goog.module()` or `goog.declareModuleId()`.
    */
   class ClosureModule extends Module {
-    ClosureModule() { getAChildStmt() instanceof GoogModuleDeclaration }
+    ClosureModule() { any(ClosureModuleDeclaration decl).getTopLevel() = this }
 
     /**
      * Gets the call to `goog.module` or `goog.declareModuleId` in this module.
      */
-    GoogModuleDeclaration getModuleDeclaration() { result = getAChildStmt() }
+    ClosureModuleDeclaration getModuleDeclaration() { result.getTopLevel() = this }
 
     /**
      * Gets the namespace of this module.
@@ -98,8 +75,8 @@ module Closure {
     string getClosureNamespace() { result = getModuleDeclaration().getClosureNamespace() }
 
     override Module getAnImportedModule() {
-      exists(GoogRequireImport imprt |
-        imprt.getEnclosingModule() = this and
+      exists(ClosureRequireCall imprt |
+        imprt.getTopLevel() = this and
         result.(ClosureModule).getClosureNamespace() = imprt.getClosureNamespace()
       )
     }
@@ -113,7 +90,7 @@ module Closure {
      * Has no result for ES6 modules using `goog.declareModuleId`.
      */
     Variable getExportsVariable() {
-      getModuleDeclaration().getFunctionName() = "module" and
+      getModuleDeclaration().getMethodName() = "module" and
       result = getScope().getVariable("exports")
     }
 
@@ -137,18 +114,28 @@ module Closure {
   class ClosureScript extends TopLevel {
     ClosureScript() {
       not this instanceof ClosureModule and
-      getAChildStmt() instanceof GoogProvide
-      or
-      getAChildStmt().(ExprStmt).getExpr() instanceof GoogRequire
+      (
+        any(ClosureProvideCall provide).getTopLevel() = this
+        or
+        any(ClosureRequireCall require).getTopLevel() = this
+      )
     }
 
     /** Gets the identifier of a namespace required by this module. */
     string getARequiredNamespace() {
-      result = getAChildStmt().(ExprStmt).getExpr().(GoogRequire).getClosureNamespace()
+      exists(ClosureRequireCall require |
+        require.getTopLevel() = this and
+        result = require.getClosureNamespace()
+      )
     }
 
     /** Gets the identifer of a namespace provided by this module. */
-    string getAProvidedNamespace() { result = getAChildStmt().(GoogProvide).getClosureNamespace() }
+    string getAProvidedNamespace() {
+      exists(ClosureProvideCall require |
+        require.getTopLevel() = this and
+        result = require.getClosureNamespace()
+      )
+    }
   }
 
   /**
@@ -156,7 +143,7 @@ module Closure {
    */
   pragma[noinline]
   predicate isLibraryNamespacePath(string name) {
-    exists(string namespace | namespace = any(GoogNamespaceRef provide).getClosureNamespace() |
+    exists(string namespace | namespace = any(ClosureNamespaceRef ref).getClosureNamespace() |
       name = namespace.substring(0, namespace.indexOf("."))
       or
       name = namespace
@@ -185,7 +172,7 @@ module Closure {
       result = getWrittenLibraryAccessPath(write)
     )
     or
-    result = node.asExpr().(GoogRequire).getClosureNamespace()
+    result = node.(ClosureRequireCall).getClosureNamespace()
   }
 
   /**
