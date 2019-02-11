@@ -16,6 +16,11 @@ abstract class ModuleObject extends Object {
         none()
     }
 
+    /** Gets the source scope corresponding to this module, if this is a Python module */
+    Module getSourceModule() {
+        none()
+    }
+
     Container getPath() {
         none()
     }
@@ -136,6 +141,10 @@ class PythonModuleObject extends ModuleObject {
         result = this.getOrigin()
     }
 
+    override Module getSourceModule() {
+        result = this.getOrigin()
+    }
+
     override Container getPath() {
         result = this.getModule().getFile()
     }
@@ -204,6 +213,10 @@ class PackageObject extends ModuleObject {
 
     override Module getModule() {
         result = this.getOrigin()
+    }
+
+    override Module getSourceModule() {
+        result = this.getModule().getInitModule()
     }
 
     override Container getPath() {

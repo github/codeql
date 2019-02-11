@@ -337,7 +337,7 @@ private predicate class_with_global_metaclass(Class cls, GlobalVariable metaclas
 
 /** Holds if this variable is implicitly defined */
 private predicate implicit_definition(Variable v) {
-    v.getId() = "*"
+    v.getId() = "*" or v.getId() = "$"
     or
     exists(ImportStar is | is.getScope() = v.getScope())
 }
