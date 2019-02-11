@@ -40,6 +40,10 @@ abstract class C implements I {
 	}
 }
 
+interface F {
+	void doSomething(int arg2);
+}
+
 public class Test {
 	// OK: external interface
 	public static void main(String[] args) {}
@@ -54,6 +58,13 @@ public class Test {
 	public static void foo(Object bar) {
 		throw new UnsupportedOperationException();
 	}
+
+	public static F getF() {
+		return Test::myFImplementation;
+	}
+
+	// OK: mentioned in member reference
+	private static void myFImplementation(int foo) {}
 	
 	// OK: native method
 	native int baz(int x);
