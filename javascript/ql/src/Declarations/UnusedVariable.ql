@@ -190,6 +190,10 @@ predicate unusedImports(ImportVarDeclProvider provider, string msg) {
 
 from ASTNode sel, string msg
 where
-  unusedNonImports(sel, msg) or
-  unusedImports(sel, msg)
+  (
+    unusedNonImports(sel, msg) or
+    unusedImports(sel, msg)
+  ) and
+  // avoid reporting if the definition is unreachable
+  sel.getFirstControlFlowNode().getBasicBlock() instanceof ReachableBasicBlock
 select sel, msg
