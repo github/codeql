@@ -16,7 +16,7 @@ module Closure {
   }
 
   /**
-   * A dataflow node that returns the value of a closure namespace.
+   * A data flow node that returns the value of a closure namespace.
    */
   abstract class ClosureNamespaceAccess extends ClosureNamespaceRef, DataFlow::SourceNode { }
 
@@ -30,7 +30,7 @@ module Closure {
   }
 
   /**
-   * Holds if `node` is the dataflow node for a top-level expression.
+   * Holds if `node` is the data flow node for a top-level expression.
    */
   private predicate isTopLevelExpr(DataFlow::Node node) {
     node.getTopLevel().getAChildStmt().(ExprStmt).getExpr().flow() = node
@@ -156,7 +156,7 @@ module Closure {
   }
 
   /**
-   * Gets the closure namespace path addressed by the given dataflow node, if any.
+   * Gets the closure namespace path addressed by the given data flow node, if any.
    */
   string getClosureNamespaceFromSourceNode(DataFlow::SourceNode node) {
     isClosureNamespace(result) and
@@ -188,7 +188,7 @@ module Closure {
   }
 
   /**
-   * Gets a dataflow node that refers to the given value exported from a Closure module.
+   * Gets a data flow node that refers to the given value exported from a Closure module.
    */
   DataFlow::SourceNode moduleImport(string moduleName) { getClosureNamespaceFromSourceNode(result) = moduleName }
 }
