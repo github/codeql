@@ -207,6 +207,8 @@ module SourceNode {
       this instanceof DataFlow::Impl::InvokeNodeDef
       or
       DataFlow::thisNode(this, _)
+      or
+      this = DataFlow::destructuredModuleImportNode(_)
     }
   }
 }

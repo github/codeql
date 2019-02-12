@@ -37,6 +37,9 @@ module DataFlow {
     TThisNode(StmtContainer f) { f.(Function).getThisBinder() = f or f instanceof TopLevel } or
     TUnusedParameterNode(SimpleParameter p) {
       not exists(SsaExplicitDefinition ssa | p = ssa.getDef())
+    } or
+    TDestructuredModuleImportNode(ImportDeclaration decl) {
+      decl.getASpecifier() instanceof NamedImportSpecifier
     }
 
   /**
@@ -343,6 +346,28 @@ module DataFlow {
   }
 
   /**
+   * A node referring to the module imported at a named ES2015 import declaration.
+   *
+   * Default imports and namespace imports do not fall into this category, as the
+   * SSA definition of the local variable is used as the source of the module instead.
+   */
+  private class DestructuredModuleImportNode extends Node, TDestructuredModuleImportNode {
+    ImportDeclaration imprt;
+
+    DestructuredModuleImportNode() { this = TDestructuredModuleImportNode(imprt) }
+
+    override BasicBlock getBasicBlock() { result = imprt.getBasicBlock() }
+
+    override predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      imprt.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+
+    override string toString() { result = imprt.toString() }
+  }
+
+  /**
    * A data flow node that reads or writes an object property or class member.
    *
    * The default subclasses do not model global variable references or variable
@@ -371,6 +396,12 @@ module DataFlow {
      * such as `e[computePropertyName()]` and for spread/rest properties.
      */
     abstract string getPropertyName();
+
+    /**
+     * Holds if this creates an alias for the property, as opposed to
+     * just being a read or write of the property.
+     */
+    predicate isES2015PropertyBinding() { none() }
 
     /**
      * Holds if this data flow node accesses property `p` on base node `base`.
@@ -660,6 +691,31 @@ module DataFlow {
   }
 
   /**
+   * A named import specifier seen as a property read on the imported module.
+   */
+  private class NamedImportSpecifierAsPropRead extends PropRead {
+    ImportDeclaration imprt;
+
+    NamedImportSpecifier spec;
+
+    NamedImportSpecifierAsPropRead() {
+      spec = imprt.getASpecifier() and
+      exists(SsaExplicitDefinition ssa |
+        ssa.getDef() = spec and
+        this = TSsaDefNode(ssa)
+      )
+    }
+
+    override Node getBase() { result = TDestructuredModuleImportNode(imprt) }
+
+    override Expr getPropertyNameExpr() { result = spec.getImported() }
+
+    override string getPropertyName() { result = spec.getImportedName() }
+
+    override predicate isES2015PropertyBinding() { any() }
+  }
+
+  /**
    * A data flow node representing an unused parameter.
    *
    * This case exists to ensure all parameters have a corresponding data-flow node.
@@ -874,6 +930,16 @@ module DataFlow {
    * Has no result if `container` is an arrow function.
    */
   DataFlow::ThisNode thisNode(StmtContainer container) { result = TThisNode(container) }
+
+  /**
+   * INTERNAL. DO NOT USE.
+   *
+   * Gets the data flow node holding the reference to the module being destructured at
+   * the given import declaration.
+   */
+  DataFlow::Node destructuredModuleImportNode(ImportDeclaration imprt) {
+    result = TDestructuredModuleImportNode(imprt)
+  }
 
   /**
    * A classification of flows that are not modeled, or only modeled incompletely, by
