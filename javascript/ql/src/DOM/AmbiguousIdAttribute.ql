@@ -8,7 +8,7 @@
  * @id js/duplicate-html-id
  * @tags maintainability
  *       correctness
- * @precision very-high
+ * @precision high
  */
 
 import javascript
