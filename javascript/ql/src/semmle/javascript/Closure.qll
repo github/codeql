@@ -30,7 +30,8 @@ module Closure {
   }
 
   /**
-   * Holds if `node` is the data flow node for a top-level expression.
+   * Holds if `node` is the data flow node corresponding to the expression in
+   * a top-level expression statement.
    */
   private predicate isTopLevelExpr(DataFlow::Node node) {
     node.getTopLevel().getAChildStmt().(ExprStmt).getExpr().flow() = node
