@@ -53,7 +53,7 @@ automatically thread-safe (Recommendation 3):</p>
 
 <references>
   <li>
-    MSDN: <a href=https://docs.microsoft.com/en-us/dotnet/api/system.lazy-1">Lazy<T> Class</T></a>.
+    MSDN: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.lazy-1">Lazy&lt;T&gt; Class</a>.
   </li>
   <li>
     MSDN: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.lazyinitializer.ensureinitialized">LazyInitializer.EnsureInitialized Method</a>.
