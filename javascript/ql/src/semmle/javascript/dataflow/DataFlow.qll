@@ -108,6 +108,9 @@ module DataFlow {
       b = analyze().getAValue().(AbstractBoolean).getBooleanValue()
     }
 
+    /** Gets the integer value of this node, if it is an integer constant. */
+    int getIntValue() { result = asExpr().getIntValue() }
+
     /**
      * Holds if this expression may refer to the initial value of parameter `p`.
      */
