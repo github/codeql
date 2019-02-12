@@ -33,7 +33,7 @@ namespace Semmle.Extraction
             // Optimization: only count the actual number of bytes if there is the possibility 
             // of the strings exceeding maxStringBytes
             return encoding.GetMaxByteCount(array.Sum(s => s.Length)) > maxStringBytes &&
-                array.Sum(s => encoding.GetByteCount(s)) > maxStringBytes;
+                array.Sum(encoding.GetByteCount) > maxStringBytes;
         }
 
         private static void WriteString(ITrapBuilder tb, string s) => tb.Append(EncodeString(s));
@@ -91,66 +91,60 @@ namespace Semmle.Extraction
             foreach (var a in Args)
             {
                 if (column > 0) tb.Append(", ");
-                if (a is Label l)
+                switch(a)
                 {
-                    l.AppendTo(tb);
+                    case Label l:
+                        l.AppendTo(tb);
+                        break;
+                    case IEntity e:
+                        e.Label.AppendTo(tb);
+                        break;
+                    case string s:
+                        tb.Append("\"");
+                        if (NeedsTruncation(s))
+                        {
+                            // Slow path
+                            int remaining = maxStringBytes;
+                            WriteTruncatedString(tb, s, ref remaining);
+                        }
+                        else
+                        {
+                            // Fast path
+                            WriteString(tb, s);
+                        }
+                        tb.Append("\"");
+                        break;
+                    case System.Enum en:
+                        tb.Append((int)a);
+                        break;
+                    case int i:
+                        tb.Append(i);
+                        break;
+                    case string[] array:
+                        tb.Append("\"");
+                        if (NeedsTruncation(array))
+                        {
+                            // Slow path
+                            int remaining = maxStringBytes;
+                            foreach (var element in array)
+                                WriteTruncatedString(tb, element, ref remaining);
+                        }
+                        else
+                        {
+                            // Fast path
+                            foreach (var element in array)
+                                WriteString(tb, element);
+                        }
+                        tb.Append("\"");
+                        break;
+                    case null:
+                        throw new InternalError("Attempt to write a null argument tuple {0} at column {1}",
+                            Name, column);
+                    default:
+                        throw new InternalError("Attempt to write an invalid argument type {0} in tuple {1} at column {2}",
+                            a.GetType(), Name, column);
                 }
-                else if (a is IEntity e)
-                {
-                    e.Label.AppendTo(tb);
-                }
-                else if (a is string s)
-                {
-                    tb.Append("\"");
-                    if (NeedsTruncation(s))
-                    {
-                        // Slow path
-                        int remaining = maxStringBytes;
-                        WriteTruncatedString(tb, s, ref remaining);
-                    }
-                    else
-                    {
-                        // Fast path
-                        WriteString(tb, s);
-                    }
-                    tb.Append("\"");
-                }
-                else if (a is System.Enum)
-                {
-                    tb.Append((int)a);
-                }
-                else if (a is int i)
-                {
-                    tb.Append(i);
-                }
-                else if(a is string[] array)
-                {
-                    tb.Append("\"");
-                    if (NeedsTruncation(array))
-                    {
-                        // Slow path
-                        int remaining = maxStringBytes;
-                        foreach (var element in array)
-                            WriteTruncatedString(tb, element, ref remaining);
-                    }
-                    else
-                    {
-                        // Fast path
-                        foreach (var element in array)
-                            WriteString(tb, element);
-                    }
-                    tb.Append("\"");
-                }
-                else if (a is null)
-                {
-                    throw new InternalError("Attempt to write a null argument tuple {0} at column {1}",
-                        Name, column);
-                }
-                else
-                {
-                    throw new InternalError("Attempt to write an invalid argument type {0} in tuple {1} at column {2}",
-                        a.GetType(), Name, column);
-                }
+
                 ++column;
             }
             tb.Append(")");
