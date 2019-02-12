@@ -24,7 +24,7 @@ namespace Semmle.BuildAnalyser
                 // Microsoft.Build is not cross platform.
                 ReadMsBuildProject(filename);
             }
-            catch
+            catch  // lgtm[cs/catch-of-all-exceptions]
             {
                 // There was some reason why the project couldn't be loaded.
                 // Fall back to reading the Xml document directly.

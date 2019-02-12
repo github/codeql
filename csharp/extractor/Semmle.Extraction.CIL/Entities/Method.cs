@@ -367,7 +367,7 @@ namespace Semmle.Extraction.CIL.Entities
                             decoded = new Instruction(cx, this, ilbytes, offset, child++);
                             offset += decoded.Width;
                         }
-                        catch
+                        catch  // lgtm[cs/catch-of-all-exceptions]
                         {
                             yield break;
                         }
