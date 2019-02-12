@@ -1,4 +1,3 @@
-| Array | T[] |
 | CBase | CBase |
 | CEverything | CEverything<S, T> |
 | CGenericBase | CGenericBase<T> |
@@ -9,7 +8,6 @@
 | CStringSub | CStringSub |
 | CSub | CSub |
 | CollatorOptions | CollatorOptions |
-| ConcatArray | ConcatArray<T> |
 | Function | Function |
 | IBase | IBase |
 | IEmpty | IEmpty |
@@ -22,5 +20,4 @@
 | NumberFormatOptions | NumberFormatOptions |
 | Object | Object |
 | RegExp | RegExp |
-| RegExpExecArray | RegExpExecArray |
 | RegExpMatchArray | RegExpMatchArray |
