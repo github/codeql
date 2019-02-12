@@ -7,6 +7,8 @@
 import javascript
 import AbstractValuesImpl
 
+import semmle.javascript.dataflow.CapturedNodes
+
 /**
  * Flow analysis for `this` expressions inside functions.
  */
@@ -225,6 +227,50 @@ private class TypeInferredCalleeWithAnalyzedReturnFlow extends CallWithNonLocalA
     exists(DataFlow::AnalyzedNode calleeNode |
       hasExplicitDefiniteCallee(this, calleeNode) and
       calleeNode.getALocalValue().(AbstractFunction).getFunction().flow() = fun
+    )
+  }
+
+  override AnalyzedFunction getACallee() { result = fun }
+}
+
+/**
+ * Holds if `call` uses `receiver` as its only receiver value.
+ */
+pragma[noinline]
+private predicate hasDefiniteReceiver(
+  DataFlow::MethodCallNode call, CapturedSource receiver
+) {
+  call = receiver.getAMethodCall() and
+  exists (DataFlow::AnalyzedNode receiverNode, AbstractValue abstractCapturedReceiver |
+    receiverNode = call.getReceiver() and
+    not receiverNode.getALocalValue().isIndefinite(_) and
+    abstractCapturedReceiver = receiver.analyze().getALocalValue() and
+    forall(DataFlow::AbstractValue v |
+      receiverNode.getALocalValue() = v |
+      v = abstractCapturedReceiver
+    )
+  )
+}
+
+/**
+ * Enables inter-procedural type inference for the return value of a
+ * method call to a flow-insensitively type-inferred callee.
+ */
+class TypeInferredMethodWithAnalyzedReturnFlow extends CallWithNonLocalAnalyzedReturnFlow {
+  DataFlow::FunctionNode fun;
+
+  TypeInferredMethodWithAnalyzedReturnFlow() {
+    exists(CapturedSource s, DataFlow::PropWrite w, string name |
+      this.(DataFlow::MethodCallNode).getMethodName() = name and
+      s.hasOwnProperty(name) and
+      hasDefiniteReceiver(this, s) and
+      w = s.getAPropertyWrite() and
+      fun.flowsTo(w.getRhs()) and
+      (
+        not exists(w.getPropertyName())
+        or
+        w.getPropertyName() = name
+      )
     )
   }
 
