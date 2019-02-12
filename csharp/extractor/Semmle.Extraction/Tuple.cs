@@ -114,7 +114,7 @@ namespace Semmle.Extraction
                         }
                         tb.Append("\"");
                         break;
-                    case System.Enum en:
+                    case System.Enum _:
                         tb.Append((int)a);
                         break;
                     case int i:
