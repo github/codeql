@@ -398,12 +398,6 @@ module DataFlow {
     abstract string getPropertyName();
 
     /**
-     * Holds if this creates an alias for the property, as opposed to
-     * just being a read or write of the property.
-     */
-    predicate isES2015PropertyBinding() { none() }
-
-    /**
      * Holds if this data flow node accesses property `p` on base node `base`.
      */
     pragma[noinline]
@@ -711,8 +705,6 @@ module DataFlow {
     override Expr getPropertyNameExpr() { result = spec.getImported() }
 
     override string getPropertyName() { result = spec.getImportedName() }
-
-    override predicate isES2015PropertyBinding() { any() }
   }
 
   /**
