@@ -14,7 +14,9 @@ private import semmle.code.csharp.dispatch.Dispatch
  * dynamic member access (`DynamicMemberAccess`), a dynamic accessor call
  * (`DynamicAccessorCall`), or a dynamic element access (`DynamicElementAccess`).
  */
-class DynamicExpr extends LateBindableExpr { DynamicExpr() { isLateBound() } }
+class DynamicExpr extends LateBindableExpr {
+  DynamicExpr() { isLateBound() }
+}
 
 /**
  * A constructor call where one of the arguments is a `dynamic` expression, for

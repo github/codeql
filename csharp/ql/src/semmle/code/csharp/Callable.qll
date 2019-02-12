@@ -389,7 +389,9 @@ class StaticConstructor extends Constructor {
  * }
  * ```
  */
-class InstanceConstructor extends Constructor { InstanceConstructor() { not this.isStatic() } }
+class InstanceConstructor extends Constructor {
+  InstanceConstructor() { not this.isStatic() }
+}
 
 /**
  * A destructor, for example `~C() { }` on line 2 in
@@ -599,7 +601,9 @@ class TrueOperator extends UnaryOperator {
  * a greater than operator (`GTOperator`), a less than or equals operator
  * (`LEOperator`), or a greater than or equals operator (`GEOperator`).
  */
-class BinaryOperator extends Operator { BinaryOperator() { this.getNumberOfParameters() = 2 } }
+class BinaryOperator extends Operator {
+  BinaryOperator() { this.getNumberOfParameters() = 2 }
+}
 
 /**
  * A user-defined addition operator (`+`), for example

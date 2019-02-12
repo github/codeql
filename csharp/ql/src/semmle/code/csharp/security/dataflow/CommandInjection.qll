@@ -38,7 +38,9 @@ module CommandInjection {
   }
 
   /** A source of remote user input. */
-  class RemoteSource extends Source { RemoteSource() { this instanceof RemoteFlowSource } }
+  class RemoteSource extends Source {
+    RemoteSource() { this instanceof RemoteFlowSource }
+  }
 
   /**
    * A sink in `System.Diagnostic.Process` or its related classes.

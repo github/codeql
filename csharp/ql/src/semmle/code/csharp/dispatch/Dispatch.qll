@@ -308,7 +308,9 @@ private module Internal {
 
     private predicate stepTC(Expr succ, Expr pred) = fastTC(stepExpr/2)(succ, pred)
 
-    private class Source extends Expr { Source() { not stepExpr(this, _) } }
+    private class Source extends Expr {
+      Source() { not stepExpr(this, _) }
+    }
 
     private class Sink extends Expr {
       Sink() {

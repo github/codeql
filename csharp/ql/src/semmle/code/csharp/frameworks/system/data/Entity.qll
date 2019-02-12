@@ -15,7 +15,9 @@ module SystemDataEntity {
   }
 
   /** A class in the `System.Data.Entity` namespace. */
-  class Class extends csharp::Class { Class() { this.getNamespace() instanceof Namespace } }
+  class Class extends csharp::Class {
+    Class() { this.getNamespace() instanceof Namespace }
+  }
 
   /** The `System.Data.Entity.DbSet` class. */
   class Database extends Class {
@@ -47,7 +49,9 @@ module SystemDataEntity {
   }
 
   /** The `System.Data.Entity.DbContext` class. */
-  class DbContext extends Class { DbContext() { this.hasName("DbContext") } }
+  class DbContext extends Class {
+    DbContext() { this.hasName("DbContext") }
+  }
 
   /** A user provided sub type of `DbContext`. */
   class CustomDbContext extends csharp::Class {
@@ -84,7 +88,9 @@ module SystemDataEntityInfrastructure {
   }
 
   /** A class in the `System.Data.Entity.Infrastructure` namespace. */
-  class Class extends csharp::Class { Class() { this.getNamespace() instanceof Namespace } }
+  class Class extends csharp::Class {
+    Class() { this.getNamespace() instanceof Namespace }
+  }
 
   /** A class that extends or is constructed from `System.Entity.Data.Infrastructure.DbRawSqlQuery`. */
   class DbRawSqlQuery extends Class {

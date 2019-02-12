@@ -43,9 +43,7 @@ class Callable extends Declaration, @dotnet_callable {
     result = concat(int p |
         exists(getParameter(p))
       |
-        getParameter(p).getType().getLabel(), ","
-        order by
-          p
+        getParameter(p).getType().getLabel(), "," order by p
       )
   }
 

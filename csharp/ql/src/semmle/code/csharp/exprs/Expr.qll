@@ -354,7 +354,9 @@ class Cast extends Expr {
  * }
  * ```
  */
-class ImplicitCast extends Cast { ImplicitCast() { this.isImplicit() } }
+class ImplicitCast extends Cast {
+  ImplicitCast() { this.isImplicit() }
+}
 
 /**
  * An explicit cast. For example, the explicit cast from `object` to `string`
@@ -366,17 +368,23 @@ class ImplicitCast extends Cast { ImplicitCast() { this.isImplicit() } }
  * }
  * ```
  */
-class ExplicitCast extends Cast { ExplicitCast() { not this instanceof ImplicitCast } }
+class ExplicitCast extends Cast {
+  ExplicitCast() { not this instanceof ImplicitCast }
+}
 
 /**
  * An `as` expression, for example `x as string`.
  */
-class AsExpr extends Cast, @as_expr { override string toString() { result = "... as ..." } }
+class AsExpr extends Cast, @as_expr {
+  override string toString() { result = "... as ..." }
+}
 
 /**
  * A cast expression, for example `(string) x`.
  */
-class CastExpr extends Cast, @cast_expr { override string toString() { result = "(...) ..." } }
+class CastExpr extends Cast, @cast_expr {
+  override string toString() { result = "(...) ..." }
+}
 
 /**
  * A `typeof` expression, for example `typeof(string)`.
@@ -701,4 +709,6 @@ class RefExpr extends Expr, @ref_expr {
  * (var name, _, _) = GetDetails();
  * ```
  */
-class DiscardExpr extends Expr, @discard_expr { override string toString() { result = "_" } }
+class DiscardExpr extends Expr, @discard_expr {
+  override string toString() { result = "_" }
+}

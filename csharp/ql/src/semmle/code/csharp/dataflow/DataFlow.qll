@@ -1516,7 +1516,9 @@ module DataFlow {
     /**
      * A data flow context describing flow into a callable via a call argument.
      */
-    abstract private class ArgumentContext extends Context { abstract DotNet::Expr getCall(); }
+    abstract private class ArgumentContext extends Context {
+      abstract DotNet::Expr getCall();
+    }
 
     /**
      * A data flow context describing flow into a callable via an explicit call argument.

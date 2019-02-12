@@ -13,8 +13,12 @@ module SystemXmlXPath {
   }
 
   /** A class in the `System.Xml.XPath` namespace. */
-  class Class extends csharp::Class { Class() { this.getNamespace() instanceof Namespace } }
+  class Class extends csharp::Class {
+    Class() { this.getNamespace() instanceof Namespace }
+  }
 
   /** The `System.Xml.XPath.XPathExpression` class. */
-  class XPathExpression extends Class { XPathExpression() { this.hasName("XPathExpression") } }
+  class XPathExpression extends Class {
+    XPathExpression() { this.hasName("XPathExpression") }
+  }
 }

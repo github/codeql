@@ -58,5 +58,7 @@ module CleartextStorage {
   /**
    * An external location sink.
    */
-  class ExternalSink extends Sink { ExternalSink() { this instanceof ExternalLocationSink } }
+  class ExternalSink extends Sink {
+    ExternalSink() { this instanceof ExternalLocationSink }
+  }
 }

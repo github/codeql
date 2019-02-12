@@ -165,7 +165,9 @@ class AspQuotedString extends AspAttribute, @asp_quoted_string {
 }
 
 /** Arbitrary text. It will be inserted into the document as is. */
-class AspText extends AspElement, @asp_text { override string toString() { result = getBody() } }
+class AspText extends AspElement, @asp_text {
+  override string toString() { result = getBody() }
+}
 
 /** An XML directive, such as a `DOCTYPE` declaration. */
 class AspXmlDirective extends AspElement, @asp_xml_directive {

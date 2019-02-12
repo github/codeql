@@ -302,7 +302,9 @@ predicate bbIPostDominates(BasicBlock dom, BasicBlock bb) =
  * An entry basic block, that is, a basic block whose first node is
  * the entry node of a callable.
  */
-class EntryBasicBlock extends BasicBlock { EntryBasicBlock() { entryBB(this) } }
+class EntryBasicBlock extends BasicBlock {
+  EntryBasicBlock() { entryBB(this) }
+}
 
 /** Holds if `bb` is an entry basic block. */
 private predicate entryBB(BasicBlock bb) { bb.getFirstNode() instanceof EntryPoint }
@@ -311,7 +313,9 @@ private predicate entryBB(BasicBlock bb) { bb.getFirstNode() instanceof EntryPoi
  * An exit basic block, that is, a basic block whose last node is
  * an exit node.
  */
-class ExitBasicBlock extends BasicBlock { ExitBasicBlock() { exitBB(this) } }
+class ExitBasicBlock extends BasicBlock {
+  ExitBasicBlock() { exitBB(this) }
+}
 
 /** Holds if `bb` is an exit basic block. */
 private predicate exitBB(BasicBlock bb) { not exists(bb.getLastNode().getASuccessor()) }
@@ -319,7 +323,9 @@ private predicate exitBB(BasicBlock bb) { not exists(bb.getLastNode().getASucces
 /**
  * A basic block with more than one predecessor.
  */
-class JoinBlock extends BasicBlock { JoinBlock() { getFirstNode().isJoin() } }
+class JoinBlock extends BasicBlock {
+  JoinBlock() { getFirstNode().isJoin() }
+}
 
 /** A basic block that terminates in a condition, splitting the subsequent control flow. */
 class ConditionBlock extends BasicBlock {

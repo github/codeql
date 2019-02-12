@@ -66,7 +66,10 @@ private module Cached {
       tailString = tail.toString() and
       if tailString = ""
       then result = headString
-      else if headString = "" then result = tailString else result = headString + ", " + tailString
+      else
+        if headString = ""
+        then result = tailString
+        else result = headString + ", " + tailString
     )
   }
 }

@@ -13,7 +13,9 @@ module JsonNET {
   }
 
   /** A class in `Newtonsoft.Json`. */
-  class JsonClass extends Class { JsonClass() { this.getParent() instanceof JsonNETNamespace } }
+  class JsonClass extends Class {
+    JsonClass() { this.getParent() instanceof JsonNETNamespace }
+  }
 
   /** The class `Newtonsoft.Json.JsonConvert`. */
   class JsonConvertClass extends JsonClass, LibraryTypeDataFlow {
