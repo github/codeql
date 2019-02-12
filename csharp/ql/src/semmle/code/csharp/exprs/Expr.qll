@@ -558,7 +558,7 @@ class ThrowElement extends ControlFlowElement, DotNet::Throw, @throw_element {
   override Expr getExpr() { result = this.getChild(0) }
 
   /** Gets the type of exception being thrown. */
-  ExceptionClass getThrownExceptionType() {
+  Class getThrownExceptionType() {
     result = getExpr().getType()
     or
     // Corner case: `throw null`
