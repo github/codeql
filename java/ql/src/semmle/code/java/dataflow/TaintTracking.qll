@@ -13,6 +13,7 @@ private import semmle.code.java.security.SecurityTests
 private import semmle.code.java.security.Validation
 private import semmle.code.java.frameworks.android.Intent
 private import semmle.code.java.frameworks.Guice
+private import semmle.code.java.frameworks.Protobuf
 private import semmle.code.java.Maps
 
 module TaintTracking {
@@ -474,6 +475,8 @@ module TaintTracking {
     m.hasName("get")
     or
     m = any(GuiceProvider gp).getAnOverridingGetMethod()
+    or
+    m = any(ProtobufMessageLite p).getAGetterMethod()
   }
 
   private class StringReplaceMethod extends Method {
@@ -577,6 +580,12 @@ module TaintTracking {
     or
     method.getDeclaringType().hasQualifiedName("javax.xml.transform.sax", "SAXSource") and
     method.hasName("sourceToInputSource") and
+    arg = 0
+    or
+    exists(ProtobufParser p | method = p.getAParseFromMethod()) and
+    arg = 0
+    or
+    exists(ProtobufMessageLite m | method = m.getAParseFromMethod()) and
     arg = 0
   }
 
