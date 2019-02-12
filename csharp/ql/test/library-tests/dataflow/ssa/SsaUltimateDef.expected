@@ -467,6 +467,7 @@
 | Test.cs:46:29:46:32 | out | Test.cs:56:9:56:19 | SSA phi(out) | Test.cs:54:13:54:20 | SSA def(out) |
 | Test.cs:56:13:56:17 | this.field | Test.cs:46:10:46:10 | SSA entry def(this.field) | Test.cs:46:10:46:10 | SSA entry def(this.field) |
 | Test.cs:56:13:56:17 | this.field | Test.cs:57:9:57:17 | SSA def(this.field) | Test.cs:57:9:57:17 | SSA def(this.field) |
+| Test.cs:62:16:62:16 | x | Test.cs:62:16:62:16 | SSA param(x) | Test.cs:62:16:62:16 | SSA param(x) |
 | Test.cs:68:45:68:45 | e | Test.cs:68:45:68:45 | [exception: DivideByZeroException] SSA def(e) | Test.cs:68:45:68:45 | [exception: DivideByZeroException] SSA def(e) |
 | Tuples.cs:10:14:10:14 | x | Tuples.cs:10:9:10:54 | SSA def(x) | Tuples.cs:10:9:10:54 | SSA def(x) |
 | Tuples.cs:10:14:10:14 | x | Tuples.cs:14:9:14:32 | SSA def(x) | Tuples.cs:14:9:14:32 | SSA def(x) |

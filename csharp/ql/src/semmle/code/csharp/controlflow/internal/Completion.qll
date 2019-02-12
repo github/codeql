@@ -207,7 +207,7 @@ private class TriedControlFlowElement extends ControlFlowElement {
     or
     this = any(MemberAccess ma |
         not ma.isConditional() and
-        ma.hasQualifier() and
+        ma.getQualifier() = any(Expr e | not e instanceof TypeAccess) and
         result instanceof SystemNullReferenceExceptionClass
       )
     or
@@ -236,7 +236,7 @@ private class TriedControlFlowElement extends ControlFlowElement {
       )
     or
     this = any(DivExpr de |
-        not de.getDenominator().getValue().toInt() != 0 and
+        not de.getDenominator().getValue().toFloat() != 0 and
         result instanceof SystemDivideByZeroExceptionClass
       )
     or
