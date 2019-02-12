@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+	<overview>
+		<p>
+			Unused object properties make code harder to maintain and use. Clients that are unaware that a
+			property is unused may perform nontrivial computations to compute a value that is ultimately
+			unused.
+		</p>
+
+	</overview>
+	<recommendation>
+		<p>Remove the unused property.</p>
+
+	</recommendation>
+	<example>
+
+		<p>
+			In this code, the function <code>f</code> initializes a property <code>prop_a</code> with a
+			call to the function <code>expensiveComputation</code>, but later on this property is never read.
+			Removing <code>prop</code> would improve code quality and performance.
+		</p>
+
+		<sample src="examples/UnusedProperty.js" />
+
+	</example>
+	<references>
+
+		<li>Coding Horror: <a href="http://blog.codinghorror.com/code-smells/">Code Smells</a>.</li>
+
+
+	</references>
+</qhelp>
