@@ -38,7 +38,9 @@ class SafeSnakeYamlConstruction extends ClassInstanceExpr {
 /**
  * The class `org.yaml.snakeyaml.Yaml`.
  */
-class Yaml extends RefType { Yaml() { this.hasQualifiedName("org.yaml.snakeyaml", "Yaml") } }
+class Yaml extends RefType {
+  Yaml() { this.hasQualifiedName("org.yaml.snakeyaml", "Yaml") }
+}
 
 private class SafeYamlConstructionFlowConfig extends DataFlow2::Configuration {
   SafeYamlConstructionFlowConfig() { this = "SnakeYaml::SafeYamlConstructionFlowConfig" }
