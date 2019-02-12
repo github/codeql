@@ -431,11 +431,6 @@ py_extracted_version(int module : @py_Module ref,
 /* <Field> Slice.stop = 3, expr */
 /* <Field> Slice.step = 4, expr */
 
-/* <Field> SpecialOperation.location = 0, location */
-/* <Field> SpecialOperation.parenthesised = 1, bool */
-/* <Field> SpecialOperation.name = 2, str */
-/* <Field> SpecialOperation.arguments = 3, expr_list */
-
 /* <Field> Starred.location = 0, location */
 /* <Field> Starred.parenthesised = 1, bool */
 /* <Field> Starred.value = 2, expr */
@@ -723,8 +718,7 @@ case @py_expr.kind of
 |   34 = @py_Await
 |   35 = @py_Fstring
 |   36 = @py_FormattedValue
-|   37 = @py_AssignExpr
-|   38 = @py_SpecialOperation;
+|   37 = @py_AssignExpr;
 
 case @py_expr_context.kind of
     0 = @py_AugLoad
@@ -795,7 +789,7 @@ case @py_unaryop.kind of
 
 @py_expr_context_parent = @py_Attribute | @py_List | @py_Name | @py_PlaceHolder | @py_Starred | @py_Subscript | @py_TemplateDottedNotation | @py_Tuple;
 
-@py_expr_list_parent = @py_Assign | @py_BoolExpr | @py_Call | @py_ClassExpr | @py_Compare | @py_Delete | @py_Fstring | @py_Function | @py_List | @py_Print | @py_Set | @py_SpecialOperation | @py_Tuple | @py_arguments | @py_comprehension;
+@py_expr_list_parent = @py_Assign | @py_BoolExpr | @py_Call | @py_ClassExpr | @py_Compare | @py_Delete | @py_Fstring | @py_Function | @py_List | @py_Print | @py_Set | @py_Tuple | @py_arguments | @py_comprehension;
 
 @py_expr_or_stmt = @py_expr | @py_stmt;
 
@@ -811,7 +805,7 @@ case @py_unaryop.kind of
 
 @py_str_list_parent = @py_Global | @py_Nonlocal;
 
-@py_str_parent = @py_Attribute | @py_Class | @py_ClassExpr | @py_FormattedValue | @py_Function | @py_FunctionExpr | @py_ImportExpr | @py_ImportMember | @py_Module | @py_SpecialOperation | @py_Str | @py_StringPart | @py_TemplateDottedNotation | @py_keyword | @py_str_list;
+@py_str_parent = @py_Attribute | @py_Class | @py_ClassExpr | @py_FormattedValue | @py_Function | @py_FunctionExpr | @py_ImportExpr | @py_ImportMember | @py_Module | @py_Str | @py_StringPart | @py_TemplateDottedNotation | @py_keyword | @py_str_list;
 
 @py_variable_parent = @py_Name | @py_PlaceHolder;
 
