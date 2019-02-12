@@ -1,10 +1,10 @@
-| method-calls.js:8:2:8:8 | o1.m1() | boolean, class, date, function, null, number, object, regular expression,string or undefined |
-| method-calls.js:9:2:9:8 | o1.m2() | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| method-calls.js:8:2:8:8 | o1.m1() | object |
+| method-calls.js:9:2:9:8 | o1.m2() | object |
 | method-calls.js:12:2:12:7 | o.m3() | boolean, class, date, function, null, number, object, regular expression,string or undefined |
 | method-calls.js:19:2:19:7 | o2.m() | boolean, class, date, function, null, number, object, regular expression,string or undefined |
-| method-calls.js:23:11:23:21 | {m: f1}.m() | boolean, class, date, function, null, number, object, regular expression,string or undefined |
-| method-calls.js:28:11:28:16 | o2.m() | boolean, class, date, function, null, number, object, regular expression,string or undefined |
-| method-calls.js:32:11:32:23 | ({m: f3}).m() | boolean, class, date, function, null, number, object, regular expression,string or undefined |
+| method-calls.js:23:11:23:21 | {m: f1}.m() | object |
+| method-calls.js:28:11:28:16 | o2.m() | object |
+| method-calls.js:32:11:32:23 | ({m: f3}).m() | object |
 | method-calls.js:37:11:37:16 | o4.m() | boolean, class, date, function, null, number, object, regular expression,string or undefined |
 | method-calls.js:43:12:43:16 | o.m() | boolean, class, date, function, null, number, object, regular expression,string or undefined |
 | method-calls.js:47:12:47:16 | o.m() | boolean, class, date, function, null, number, object, regular expression,string or undefined |
