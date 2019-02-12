@@ -50,6 +50,7 @@
 | tst.js:2:17:2:22 | "src1" | tst.js:4:15:4:29 | RegExp(source1) |
 | tst.js:2:17:2:22 | "src1" | tst.js:5:15:5:33 | new String(source1) |
 | tst.js:2:17:2:22 | "src1" | tst.js:6:15:6:33 | new String(source1) |
+| tst.js:2:17:2:22 | "src1" | tst.js:11:17:11:20 | m[0] |
 | tst.js:2:17:2:22 | "src1" | tst.js:14:15:14:32 | decodeURI(source1) |
 | tst.js:2:17:2:22 | "src1" | tst.js:15:15:15:41 | decodeU ... ource1) |
 | tst.js:2:17:2:22 | "src1" | tst.js:16:15:16:32 | encodeURI(source1) |
