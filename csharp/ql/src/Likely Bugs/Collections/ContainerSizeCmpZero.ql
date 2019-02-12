@@ -37,7 +37,9 @@ private predicate containerSizeAccess(PropertyAccess pa, string containerKind) {
   )
 }
 
-class ZeroLiteral extends Expr { ZeroLiteral() { getValue() = "0" } }
+class ZeroLiteral extends Expr {
+  ZeroLiteral() { getValue() = "0" }
+}
 
 /**
  * Whether `smaller` is checked to be no greater than `greater` by `e` being `trueOrFalse`
