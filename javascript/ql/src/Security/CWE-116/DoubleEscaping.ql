@@ -85,7 +85,7 @@ class Replacement extends DataFlow::Node {
     exists(DataFlow::MethodCallNode mcn |
       mcn = this and
       input = getStringValue(pattern) and
-      output = mcn.getArgument(1).asExpr().getStringValue()
+      output = mcn.getArgument(1).getStringValue()
     )
   }
 

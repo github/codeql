@@ -104,6 +104,6 @@ module StringConcatenation {
    */
   predicate isCoercion(DataFlow::Node node) {
     getNumOperand(node) = 2 and
-    getOperand(node, _).asExpr().getStringValue() = ""
+    getOperand(node, _).getStringValue() = ""
   }
 }

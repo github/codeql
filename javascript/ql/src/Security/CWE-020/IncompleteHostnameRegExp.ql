@@ -19,7 +19,7 @@ class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "IncompleteHostnameRegExpTracking" }
 
   override predicate isSource(DataFlow::Node source) {
-    isIncompleteHostNameRegExpPattern(source.asExpr().getStringValue(), _)
+    isIncompleteHostNameRegExpPattern(source.getStringValue(), _)
   }
 
   override predicate isSink(DataFlow::Node sink) { isInterpretedAsRegExp(sink) }

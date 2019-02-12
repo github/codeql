@@ -13,7 +13,7 @@ import javascript
  * Specifically, this holds if the string contains `?` or `#`.
  */
 private predicate hasSanitizingSubstring(DataFlow::Node nd) {
-  nd.asExpr().getStringValue().regexpMatch(".*[?#].*")
+  nd.getStringValue().regexpMatch(".*[?#].*")
   or
   hasSanitizingSubstring(StringConcatenation::getAnOperand(nd))
   or
@@ -48,7 +48,7 @@ predicate sanitizingPrefixEdge(DataFlow::Node source, DataFlow::Node sink) {
  * the `//` separating the (optional) scheme from the hostname.
  */
 private predicate hasHostnameSanitizingSubstring(DataFlow::Node nd) {
-  nd.asExpr().getStringValue().regexpMatch(".*([?#]|[^?#:/\\\\][/\\\\]).*")
+  nd.getStringValue().regexpMatch(".*([?#]|[^?#:/\\\\][/\\\\]).*")
   or
   hasHostnameSanitizingSubstring(StringConcatenation::getAnOperand(nd))
   or

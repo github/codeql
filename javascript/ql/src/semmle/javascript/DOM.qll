@@ -111,7 +111,7 @@ module DOM {
     /**
      * Gets the value of this attribute, if it can be determined.
      */
-    string getStringValue() { result = getValueNode().asExpr().getStringValue() }
+    string getStringValue() { result = getValueNode().getStringValue() }
 
     /**
      * Gets the DOM element this attribute belongs to.
