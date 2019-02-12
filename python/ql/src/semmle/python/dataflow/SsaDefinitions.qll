@@ -300,6 +300,15 @@ class EscapingGlobalVariable extends ModuleVariable {
 
 }
 
+class EscapingAssignmentGlobalVariable extends EscapingGlobalVariable {
+
+    EscapingAssignmentGlobalVariable() {
+        exists(NameNode n | n.defines(this) and not n.getScope() = this.getScope())
+    }
+
+}
+
+
 class SpecialSsaSourceVariable extends PythonSsaSourceVariable {
 
     SpecialSsaSourceVariable() {
