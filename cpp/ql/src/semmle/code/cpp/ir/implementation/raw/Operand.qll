@@ -21,10 +21,14 @@ class Operand extends TOperand {
     result = "Operand"
   }
 
-  Location getLocation() {
+  final Location getLocation() {
     result = getUseInstruction().getLocation()
   }
 
+  final FunctionIR getEnclosingFunctionIR() {
+    result = getUseInstruction().getEnclosingFunctionIR()
+  }
+  
   /**
    * Gets the `Instruction` that consumes this operand.
    */
@@ -91,7 +95,7 @@ class Operand extends TOperand {
    * a known constant size, this predicate does not hold.
    */
   int getSize() {
-    result = getDefinitionInstruction().getResultSize()
+    result = getType().getSize()
   }
 }
 
