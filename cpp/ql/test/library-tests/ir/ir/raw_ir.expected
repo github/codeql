@@ -2579,7 +2579,7 @@ ir.cpp:
 #  573|     r0_12(glval<char[4]>) = StringConstant["foo"]    : 
 #  573|     r0_13(char[4])        = Load                     : r0_12, mu0_2
 #  573|     mu0_14(char[4])       = Store                    : r0_11, r0_13
-#  574|     r0_15(glval<char[]>)  = VariableAddress[a_infer] : 
+#  574|     r0_15(glval<char[5]>) = VariableAddress[a_infer] : 
 #  574|     r0_16(glval<char[5]>) = StringConstant["blah"]   : 
 #  574|     r0_17(char[5])        = Load                     : r0_16, mu0_2
 #  574|     mu0_18(char[5])       = Store                    : r0_15, r0_17
@@ -4339,3 +4339,30 @@ ir.cpp:
 #  979|     v7_9(void)        = ConditionalBranch  : r7_8
 #-----|   False -> Block 2
 #-----|   True -> Block 1
+
+#  987| int PointerDecay(int[], int(float))
+#  987|   Block 0
+#  987|     v0_0(void)              = EnterFunction            : 
+#  987|     mu0_1(unknown)          = AliasedDefinition        : 
+#  987|     mu0_2(unknown)          = UnmodeledDefinition      : 
+#  987|     r0_3(glval<int *>)      = VariableAddress[a]       : 
+#  987|     mu0_4(int *)            = InitializeParameter[a]   : r0_3
+#  987|     r0_5(glval<..(*)(..)>)  = VariableAddress[fn]      : 
+#  987|     mu0_6(..(*)(..))        = InitializeParameter[fn]  : r0_5
+#  988|     r0_7(glval<int>)        = VariableAddress[#return] : 
+#  988|     r0_8(glval<int *>)      = VariableAddress[a]       : 
+#  988|     r0_9(int *)             = Load                     : r0_8, mu0_2
+#  988|     r0_10(int)              = Constant[0]              : 
+#  988|     r0_11(int *)            = PointerAdd[4]            : r0_9, r0_10
+#  988|     r0_12(int)              = Load                     : r0_11, mu0_2
+#  988|     r0_13(glval<..(*)(..)>) = VariableAddress[fn]      : 
+#  988|     r0_14(..(*)(..))        = Load                     : r0_13, mu0_2
+#  988|     r0_15(float)            = Constant[1.0]            : 
+#  988|     r0_16(int)              = Call                     : r0_14, r0_15
+#  988|     mu0_17(unknown)         = ^CallSideEffect          : mu0_2
+#  988|     r0_18(int)              = Add                      : r0_12, r0_16
+#  988|     mu0_19(int)             = Store                    : r0_7, r0_18
+#  987|     r0_20(glval<int>)       = VariableAddress[#return] : 
+#  987|     v0_21(void)             = ReturnValue              : r0_20, mu0_2
+#  987|     v0_22(void)             = UnmodeledUse             : mu*
+#  987|     v0_23(void)             = ExitFunction             : 

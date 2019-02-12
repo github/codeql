@@ -1,5 +1,6 @@
 import cpp
 private import semmle.code.cpp.ir.implementation.Opcode
+private import semmle.code.cpp.ir.internal.IRUtilities
 private import semmle.code.cpp.ir.internal.OperandTag
 private import InstructionTag
 private import TranslatedElement
@@ -104,14 +105,14 @@ abstract class TranslatedVariableDeclaration extends TranslatedElement, Initiali
     (
       tag = InitializerVariableAddressTag() and
       opcode instanceof Opcode::VariableAddress and
-      resultType = getVariable().getType().getUnspecifiedType() and
+      resultType = getVariableType(getVariable()) and
       isGLValue = true
     ) or
     (
       hasUninitializedInstruction() and
       tag = InitializerStoreTag() and
       opcode instanceof Opcode::Uninitialized and
-      resultType = getVariable().getType().getUnspecifiedType() and
+      resultType = getVariableType(getVariable()) and
       isGLValue = false
     )
   }
@@ -161,7 +162,7 @@ abstract class TranslatedVariableDeclaration extends TranslatedElement, Initiali
   }
 
   override Type getTargetType() {
-    result = getVariable().getType().getUnspecifiedType()
+    result = getVariableType(getVariable())
   }
 
   private TranslatedInitialization getInitialization() {
