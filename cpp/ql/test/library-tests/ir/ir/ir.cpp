@@ -984,6 +984,10 @@ void WhileStmtWithDeclaration(int x, int y) {
   }
 }
 
+int PointerDecay(int a[], int fn(float)) {
+  return a[0] + fn(1.0);
+}
+
 #if 0
 void OperatorDelete() {
   delete static_cast<int*>(nullptr);  // No destructor

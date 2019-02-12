@@ -2,6 +2,7 @@ private import internal.IRInternal
 import FunctionIR
 import cpp
 import semmle.code.cpp.ir.implementation.TempVariableTag
+private import semmle.code.cpp.ir.internal.IRUtilities
 private import semmle.code.cpp.ir.internal.TempVariableTag
 private import semmle.code.cpp.ir.internal.TIRVariable
 
@@ -70,7 +71,7 @@ abstract class IRUserVariable extends IRVariable {
   }
 
   override final Type getType() {
-    result = var.getType().getUnspecifiedType()
+    result = getVariableType(var)
   }
 
   override final Locatable getAST() {

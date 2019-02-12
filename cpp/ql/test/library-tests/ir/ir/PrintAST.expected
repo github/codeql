@@ -6591,3 +6591,39 @@ ir.cpp:
 #  983|               ValueCategory = prvalue(load)
 #  983|       1: { ... }
 #  985|     3: return ...
+#  987| int PointerDecay(int[], int(float))
+#  987|   params: 
+#  987|     0: a
+#  987|         Type = int[]
+#  987|     1: fn
+#  987|         Type = ..()(..)
+#  987|   body: { ... }
+#  988|     0: return ...
+#  988|       0: ... + ...
+#  988|           Type = int
+#  988|           ValueCategory = prvalue
+#  988|         0: access to array
+#  988|             Type = int
+#  988|             ValueCategory = prvalue(load)
+#  988|           0: a
+#  988|               Type = int *
+#  988|               ValueCategory = prvalue(load)
+#  988|           1: 0
+#  988|               Type = int
+#  988|               Value = 0
+#  988|               ValueCategory = prvalue
+#  988|         1: call to expression
+#  988|             Type = int
+#  988|             ValueCategory = prvalue
+#  988|           0: fn
+#  988|               Type = ..(*)(..)
+#  988|               ValueCategory = prvalue(load)
+#  988|           1: (float)...
+#  988|               Conversion = floating point conversion
+#  988|               Type = float
+#  988|               Value = 1.0
+#  988|               ValueCategory = prvalue
+#  988|             expr: 1.0
+#  988|                 Type = double
+#  988|                 Value = 1.0
+#  988|                 ValueCategory = prvalue
