@@ -10,9 +10,7 @@ string getTokenStringAtLine(File file, int line) {
   result = concat(Token tok |
       tok = getATokenAtLine(file, line)
     |
-      tok.toString().replaceAll(" ", "~") + " "
-      order by
-        tok.getLocation().getStartColumn()
+      tok.toString().replaceAll(" ", "~") + " " order by tok.getLocation().getStartColumn()
     )
 }
 

@@ -1,6 +1,8 @@
 import javascript
 
-abstract class Violation extends ASTNode { abstract string reason(); }
+abstract class Violation extends ASTNode {
+  abstract string reason();
+}
 
 class MissingContainer extends Violation, TypeExpr {
   MissingContainer() { not exists(getContainer()) }

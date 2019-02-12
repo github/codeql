@@ -38,9 +38,7 @@ Function getALikelyCallee(DataFlow::InvokeNode cs, boolean isNew) {
   result = min(Function callee, int imprecision |
       callee = cs.getACallee(imprecision)
     |
-      callee
-      order by
-        imprecision
+      callee order by imprecision
     ) and
   not cs.isUncertain() and
   not whitelistedCall(cs) and
@@ -89,9 +87,7 @@ DataFlow::InvokeNode getFirstInvocation(Function f, boolean isNew) {
   result = min(DataFlow::InvokeNode invk, string path, int line, int col |
       f = getALikelyCallee(invk, isNew) and invk.hasLocationInfo(path, line, col, _, _)
     |
-      invk
-      order by
-        path, line, col
+      invk order by path, line, col
     )
 }
 

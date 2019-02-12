@@ -12,8 +12,10 @@
 import javascript
 
 from Vue::Instance instance, DataFlow::Node def, DataFlow::FunctionNode arrow, ThisExpr dis
-where instance.getABoundFunction() = def and
-      arrow.flowsTo(def) and
-      arrow.asExpr() instanceof ArrowFunctionExpr and
-      arrow.asExpr() = dis.getEnclosingFunction()
-select def, "The $@ of this $@ it will not be bound to the Vue instance.", dis, "`this` variable", arrow, "arrow function"
+where
+  instance.getABoundFunction() = def and
+  arrow.flowsTo(def) and
+  arrow.asExpr() instanceof ArrowFunctionExpr and
+  arrow.asExpr() = dis.getEnclosingFunction()
+select def, "The $@ of this $@ it will not be bound to the Vue instance.", dis, "`this` variable",
+  arrow, "arrow function"

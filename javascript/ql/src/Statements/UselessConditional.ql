@@ -81,7 +81,7 @@ predicate isConstantBooleanReturnValue(Expr e) {
           ssa.getVariable().getAUse() = e
         )
       )
-      |
+    |
       ret.(BooleanLiteral).getValue() = b
     )
   )
