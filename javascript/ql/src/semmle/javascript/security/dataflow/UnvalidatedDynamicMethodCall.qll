@@ -101,7 +101,9 @@ module UnvalidatedDynamicMethodCall {
   /**
    * The page URL considered as a flow source for unvalidated dynamic method calls.
    */
-  class DocumentUrlAsSource extends Source { DocumentUrlAsSource() { isDocumentURL(asExpr()) } }
+  class DocumentUrlAsSource extends Source {
+    DocumentUrlAsSource() { isDocumentURL(asExpr()) }
+  }
 
   /**
    * A function invocation of an unsafe function, as a sink for remote unvalidated dynamic method calls.

@@ -764,7 +764,9 @@ module DataFlow {
     /**
      * A data flow node representing an explicit (that is, non-reflective) function call.
      */
-    class ExplicitCallNode extends CallNodeDef, ExplicitInvokeNode { override CallExpr astNode; }
+    class ExplicitCallNode extends CallNodeDef, ExplicitInvokeNode {
+      override CallExpr astNode;
+    }
 
     /**
      * A data flow node representing an explicit (that is, non-reflective) method call.
@@ -1005,7 +1007,7 @@ module DataFlow {
   private Node defSourceNode(VarDef def, SsaSourceVariable v) {
     exists(BindingPattern lhs, VarRef r |
       lhs = def.getTarget() and r = lhs.getABindingVarRef() and r.getVariable() = v
-      |
+    |
       // follow one step of the def-use chain if the lhs is a simple variable reference
       lhs = r and
       result = TValueNode(defSourceNode(def))

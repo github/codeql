@@ -43,7 +43,9 @@ module SqlInjection {
   }
 
   /** An SQL expression passed to an API call that executes SQL. */
-  class SqlInjectionExprSink extends Sink, DataFlow::ValueNode { override SQL::SqlString astNode; }
+  class SqlInjectionExprSink extends Sink, DataFlow::ValueNode {
+    override SQL::SqlString astNode;
+  }
 
   /** An expression that sanitizes a value for the purposes of SQL injection. */
   class SanitizerExpr extends Sanitizer, DataFlow::ValueNode {

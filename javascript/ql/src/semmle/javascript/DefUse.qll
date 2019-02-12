@@ -193,9 +193,7 @@ class VarDef extends ControlFlowNode {
    * such as `for-in` loops, parameters or destructuring assignments.
    */
   AST::ValueNode getSource() {
-    exists(Expr target |
-      not target instanceof DestructuringPattern and defn(this, target, result)
-    )
+    exists(Expr target | not target instanceof DestructuringPattern and defn(this, target, result))
   }
 
   /**
@@ -203,9 +201,7 @@ class VarDef extends ControlFlowNode {
    * right hand side of a destructuring assignment.
    */
   AST::ValueNode getDestructuringSource() {
-    exists(Expr target |
-      target instanceof DestructuringPattern and defn(this, target, result)
-    )
+    exists(Expr target | target instanceof DestructuringPattern and defn(this, target, result))
   }
 
   /**

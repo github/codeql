@@ -227,9 +227,7 @@ class ClassExpr extends @classexpr, ClassDefinition, Expr {
           result = min(ClassInitializedMember m |
               m = getClassInitializedMember()
             |
-              m
-              order by
-                m.getIndex()
+              m order by m.getIndex()
             )
         else result = this
   }
@@ -287,7 +285,9 @@ class SuperPropAccess extends PropAccess {
  *
  * See also ECMAScript 2015 Language Specification, Chapter 12.3.8.
  */
-class NewTargetExpr extends @newtargetexpr, Expr { override predicate isImpure() { none() } }
+class NewTargetExpr extends @newtargetexpr, Expr {
+  override predicate isImpure() { none() }
+}
 
 /**
  * A scope induced by a named class expression or class expression with type parameters.
@@ -432,12 +432,16 @@ class MemberDeclaration extends @property, Documentable {
 /**
  * A concrete member of a class, that is, a non-abstract, non-ambient field or method with a body.
  */
-class MemberDefinition extends MemberDeclaration { MemberDefinition() { isConcrete() } }
+class MemberDefinition extends MemberDeclaration {
+  MemberDefinition() { isConcrete() }
+}
 
 /**
  * A member signature declared in a class or interface, that is, an abstract or ambient field or method without a function body.
  */
-class MemberSignature extends MemberDeclaration { MemberSignature() { isSignature() } }
+class MemberSignature extends MemberDeclaration {
+  MemberSignature() { isSignature() }
+}
 
 /**
  * A method declaration in a class or interface, either a concrete definition or a signature without a body.

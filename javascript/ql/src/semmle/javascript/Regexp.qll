@@ -158,10 +158,14 @@ class RegExpSequence extends RegExpTerm, @regexp_seq {
 }
 
 /** A caret assertion `^` matching the beginning of a line. */
-class RegExpCaret extends RegExpTerm, @regexp_caret { override predicate isNullable() { any() } }
+class RegExpCaret extends RegExpTerm, @regexp_caret {
+  override predicate isNullable() { any() }
+}
 
 /** A dollar assertion `$` matching the end of a line. */
-class RegExpDollar extends RegExpTerm, @regexp_dollar { override predicate isNullable() { any() } }
+class RegExpDollar extends RegExpTerm, @regexp_dollar {
+  override predicate isNullable() { any() }
+}
 
 /** A word boundary assertion `\b`. */
 class RegExpWordBoundary extends RegExpTerm, @regexp_wordboundary {
@@ -210,7 +214,9 @@ class RegExpPlus extends RegExpQuantifier, @regexp_plus {
 }
 
 /** An optional term, that is, a term of the form `...?`. */
-class RegExpOpt extends RegExpQuantifier, @regexp_opt { override predicate isNullable() { any() } }
+class RegExpOpt extends RegExpQuantifier, @regexp_opt {
+  override predicate isNullable() { any() }
+}
 
 /** A range-quantified term, that is, a term of the form `...{m,n}`. */
 class RegExpRange extends RegExpQuantifier, @regexp_range {
@@ -227,7 +233,9 @@ class RegExpRange extends RegExpQuantifier, @regexp_range {
 }
 
 /** A dot regular expression `.`. */
-class RegExpDot extends RegExpTerm, @regexp_dot { override predicate isNullable() { none() } }
+class RegExpDot extends RegExpTerm, @regexp_dot {
+  override predicate isNullable() { none() }
+}
 
 /** A grouped regular expression, that is, a term of the form `(...)` or `(?:...)` */
 class RegExpGroup extends RegExpTerm, @regexp_group {

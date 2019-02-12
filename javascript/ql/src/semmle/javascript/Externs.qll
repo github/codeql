@@ -217,7 +217,9 @@ class ExternalFunction extends ExternalEntity, Function {
 /**
  * A `@constructor` tag.
  */
-class ConstructorTag extends JSDocTag { ConstructorTag() { getTitle() = "constructor" } }
+class ConstructorTag extends JSDocTag {
+  ConstructorTag() { getTitle() = "constructor" }
+}
 
 /** A JSDoc tag that refers to a named type. */
 abstract private class NamedTypeReferent extends JSDocTag {
@@ -256,17 +258,23 @@ private ExternalType sourceDecl(JSDocTypeExpr tp) {
 /**
  * An `@implements` tag.
  */
-class ImplementsTag extends NamedTypeReferent { ImplementsTag() { getTitle() = "implements" } }
+class ImplementsTag extends NamedTypeReferent {
+  ImplementsTag() { getTitle() = "implements" }
+}
 
 /**
  * An `@extends` tag.
  */
-class ExtendsTag extends NamedTypeReferent { ExtendsTag() { getTitle() = "extends" } }
+class ExtendsTag extends NamedTypeReferent {
+  ExtendsTag() { getTitle() = "extends" }
+}
 
 /**
  * A `@type` tag.
  */
-class ExternalTypeTag extends NamedTypeReferent { ExternalTypeTag() { getTitle() = "type" } }
+class ExternalTypeTag extends NamedTypeReferent {
+  ExternalTypeTag() { getTitle() = "type" }
+}
 
 /**
  * A constructor or interface function defined in an externs file.
@@ -306,14 +314,20 @@ class ExternalInterface extends ExternalType {
 /**
  * Externs definition for the Function object.
  */
-class FunctionExternal extends ExternalConstructor { FunctionExternal() { getName() = "Function" } }
+class FunctionExternal extends ExternalConstructor {
+  FunctionExternal() { getName() = "Function" }
+}
 
 /**
  * Externs definition for the Object object.
  */
-class ObjectExternal extends ExternalConstructor { ObjectExternal() { getName() = "Object" } }
+class ObjectExternal extends ExternalConstructor {
+  ObjectExternal() { getName() = "Object" }
+}
 
 /**
  * Externs definition for the Array object.
  */
-class ArrayExternal extends ExternalConstructor { ArrayExternal() { getName() = "Array" } }
+class ArrayExternal extends ExternalConstructor {
+  ArrayExternal() { getName() = "Array" }
+}

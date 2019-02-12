@@ -6,9 +6,7 @@ import javascript
  * An ECMAScript 2015 module.
  */
 class ES2015Module extends Module {
-  ES2015Module() {
-    isES2015Module(this)
-  }
+  ES2015Module() { isES2015Module(this) }
 
   override ModuleScope getScope() { result.getScopeElement() = this }
 

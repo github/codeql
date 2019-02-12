@@ -38,7 +38,9 @@ module XpathInjection {
   }
 
   /** A source of remote user input, considered as a flow source for XPath injection. */
-  class RemoteSource extends Source { RemoteSource() { this instanceof RemoteFlowSource } }
+  class RemoteSource extends Source {
+    RemoteSource() { this instanceof RemoteFlowSource }
+  }
 
   /**
    * The `expression` argument to `xpath.parse` or `xpath.select` (and similar) from

@@ -47,7 +47,9 @@ class GlobalScope extends Scope, @globalscope {
 }
 
 /** A local scope, that is, a scope that is not the global scope. */
-class LocalScope extends Scope { LocalScope() { not this instanceof GlobalScope } }
+class LocalScope extends Scope {
+  LocalScope() { not this instanceof GlobalScope }
+}
 
 /**
  * A scope induced by a Node.js or ES2015 module
@@ -263,7 +265,9 @@ class ExportVarAccess extends VarAccess, @export_varaccess {
 }
 
 /** A global variable. */
-class GlobalVariable extends Variable { GlobalVariable() { isGlobal() } }
+class GlobalVariable extends Variable {
+  GlobalVariable() { isGlobal() }
+}
 
 /** A local variable or a parameter. */
 class LocalVariable extends Variable {
@@ -290,10 +294,14 @@ class LocalVariable extends Variable {
 }
 
 /** A local variable that is not captured. */
-class PurelyLocalVariable extends LocalVariable { PurelyLocalVariable() { not isCaptured() } }
+class PurelyLocalVariable extends LocalVariable {
+  PurelyLocalVariable() { not isCaptured() }
+}
 
 /** An identifier that refers to a global variable. */
-class GlobalVarAccess extends VarAccess { GlobalVarAccess() { getVariable().isGlobal() } }
+class GlobalVarAccess extends VarAccess {
+  GlobalVarAccess() { getVariable().isGlobal() }
+}
 
 /**
  * A binding pattern, i.e., either an identifier or a destructuring pattern.
@@ -357,7 +365,9 @@ class VarDecl extends @vardecl, VarRef, LexicalDecl {
 }
 
 /** An identifier that declares a global variable. */
-class GlobalVarDecl extends VarDecl { GlobalVarDecl() { getVariable() instanceof GlobalVariable } }
+class GlobalVarDecl extends VarDecl {
+  GlobalVarDecl() { getVariable() instanceof GlobalVariable }
+}
 
 /** An array pattern. */
 class ArrayPattern extends DestructuringPattern, @arraypattern {

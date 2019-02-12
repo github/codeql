@@ -173,7 +173,9 @@ class Identifier extends @identifier, ExprOrType {
  * A statement or property label, that is, an identifier that
  * does not refer to a variable.
  */
-class Label extends @label, Identifier, Expr { override predicate isImpure() { none() } }
+class Label extends @label, Identifier, Expr {
+  override predicate isImpure() { none() }
+}
 
 /** A literal. */
 class Literal extends @literal, Expr {
@@ -445,7 +447,9 @@ class PropertySetter extends PropertyAccessor, @property_setter { }
  * `{ x: 42, ...others }`. The value of a spread property is always
  * a `SpreadElement`.
  */
-class SpreadProperty extends Property { SpreadProperty() { not exists(getNameExpr()) } }
+class SpreadProperty extends Property {
+  SpreadProperty() { not exists(getNameExpr()) }
+}
 
 /** A function expression. */
 class FunctionExpr extends @functionexpr, Expr, Function {
@@ -744,13 +748,19 @@ class NegExpr extends @negexpr, UnaryExpr {
 }
 
 /** A unary plus expression. */
-class PlusExpr extends @plusexpr, UnaryExpr { override string getOperator() { result = "+" } }
+class PlusExpr extends @plusexpr, UnaryExpr {
+  override string getOperator() { result = "+" }
+}
 
 /** A logical negation expression. */
-class LogNotExpr extends @lognotexpr, UnaryExpr { override string getOperator() { result = "!" } }
+class LogNotExpr extends @lognotexpr, UnaryExpr {
+  override string getOperator() { result = "!" }
+}
 
 /** A bitwise negation expression. */
-class BitNotExpr extends @bitnotexpr, UnaryExpr { override string getOperator() { result = "~" } }
+class BitNotExpr extends @bitnotexpr, UnaryExpr {
+  override string getOperator() { result = "~" }
+}
 
 /** A `typeof` expression. */
 class TypeofExpr extends @typeofexpr, UnaryExpr {
@@ -758,7 +768,9 @@ class TypeofExpr extends @typeofexpr, UnaryExpr {
 }
 
 /** A `void` expression. */
-class VoidExpr extends @voidexpr, UnaryExpr { override string getOperator() { result = "void" } }
+class VoidExpr extends @voidexpr, UnaryExpr {
+  override string getOperator() { result = "void" }
+}
 
 /** A `delete` expression. */
 class DeleteExpr extends @deleteexpr, UnaryExpr {
@@ -839,10 +851,14 @@ class EqualityTest extends @equalitytest, Comparison {
 }
 
 /** An equality test using `==`. */
-class EqExpr extends @eqexpr, EqualityTest { override string getOperator() { result = "==" } }
+class EqExpr extends @eqexpr, EqualityTest {
+  override string getOperator() { result = "==" }
+}
 
 /** An inequality test using `!=`. */
-class NEqExpr extends @neqexpr, EqualityTest { override string getOperator() { result = "!=" } }
+class NEqExpr extends @neqexpr, EqualityTest {
+  override string getOperator() { result = "!=" }
+}
 
 /** A strict equality test using `===`. */
 class StrictEqExpr extends @eqqexpr, EqualityTest {
@@ -855,22 +871,34 @@ class StrictNEqExpr extends @neqqexpr, EqualityTest {
 }
 
 /** A less-than expression. */
-class LTExpr extends @ltexpr, Comparison { override string getOperator() { result = "<" } }
+class LTExpr extends @ltexpr, Comparison {
+  override string getOperator() { result = "<" }
+}
 
 /** A less-than-or-equal expression. */
-class LEExpr extends @leexpr, Comparison { override string getOperator() { result = "<=" } }
+class LEExpr extends @leexpr, Comparison {
+  override string getOperator() { result = "<=" }
+}
 
 /** A greater-than expression. */
-class GTExpr extends @gtexpr, Comparison { override string getOperator() { result = ">" } }
+class GTExpr extends @gtexpr, Comparison {
+  override string getOperator() { result = ">" }
+}
 
 /** A greater-than-or-equal expression. */
-class GEExpr extends @geexpr, Comparison { override string getOperator() { result = ">=" } }
+class GEExpr extends @geexpr, Comparison {
+  override string getOperator() { result = ">=" }
+}
 
 /** A left-shift expression using `<<`. */
-class LShiftExpr extends @lshiftexpr, BinaryExpr { override string getOperator() { result = "<<" } }
+class LShiftExpr extends @lshiftexpr, BinaryExpr {
+  override string getOperator() { result = "<<" }
+}
 
 /** A right-shift expression using `>>`. */
-class RShiftExpr extends @rshiftexpr, BinaryExpr { override string getOperator() { result = ">>" } }
+class RShiftExpr extends @rshiftexpr, BinaryExpr {
+  override string getOperator() { result = ">>" }
+}
 
 /** An unsigned right-shift expression using `>>>`. */
 class URShiftExpr extends @urshiftexpr, BinaryExpr {
@@ -887,31 +915,49 @@ class AddExpr extends @addexpr, BinaryExpr {
 }
 
 /** A subtraction expression. */
-class SubExpr extends @subexpr, BinaryExpr { override string getOperator() { result = "-" } }
+class SubExpr extends @subexpr, BinaryExpr {
+  override string getOperator() { result = "-" }
+}
 
 /** A multiplication expression. */
-class MulExpr extends @mulexpr, BinaryExpr { override string getOperator() { result = "*" } }
+class MulExpr extends @mulexpr, BinaryExpr {
+  override string getOperator() { result = "*" }
+}
 
 /** A division expression. */
-class DivExpr extends @divexpr, BinaryExpr { override string getOperator() { result = "/" } }
+class DivExpr extends @divexpr, BinaryExpr {
+  override string getOperator() { result = "/" }
+}
 
 /** A modulo expression. */
-class ModExpr extends @modexpr, BinaryExpr { override string getOperator() { result = "%" } }
+class ModExpr extends @modexpr, BinaryExpr {
+  override string getOperator() { result = "%" }
+}
 
 /** An exponentiation expression. */
-class ExpExpr extends @expexpr, BinaryExpr { override string getOperator() { result = "**" } }
+class ExpExpr extends @expexpr, BinaryExpr {
+  override string getOperator() { result = "**" }
+}
 
 /** A bitwise 'or' expression. */
-class BitOrExpr extends @bitorexpr, BinaryExpr { override string getOperator() { result = "|" } }
+class BitOrExpr extends @bitorexpr, BinaryExpr {
+  override string getOperator() { result = "|" }
+}
 
 /** An exclusive 'or' expression. */
-class XOrExpr extends @xorexpr, BinaryExpr { override string getOperator() { result = "^" } }
+class XOrExpr extends @xorexpr, BinaryExpr {
+  override string getOperator() { result = "^" }
+}
 
 /** A bitwise 'and' expression. */
-class BitAndExpr extends @bitandexpr, BinaryExpr { override string getOperator() { result = "&" } }
+class BitAndExpr extends @bitandexpr, BinaryExpr {
+  override string getOperator() { result = "&" }
+}
 
 /** An `in` expression. */
-class InExpr extends @inexpr, BinaryExpr { override string getOperator() { result = "in" } }
+class InExpr extends @inexpr, BinaryExpr {
+  override string getOperator() { result = "in" }
+}
 
 /** An `instanceof` expression. */
 class InstanceofExpr extends @instanceofexpr, BinaryExpr {
@@ -1359,7 +1405,9 @@ class AwaitExpr extends @awaitexpr, Expr {
  * to the generator by the `next` method that most recently resumed execution
  * of the generator.
  */
-class FunctionSentExpr extends @functionsentexpr, Expr { override predicate isImpure() { none() } }
+class FunctionSentExpr extends @functionsentexpr, Expr {
+  override predicate isImpure() { none() }
+}
 
 /**
  * A decorator applied to a class, property or member definition.
@@ -1468,7 +1516,9 @@ private class LiteralDynamicImportPath extends PathExprInModule, ConstantString 
 /**
  * A call or member access that evaluates to `undefined` if its base operand evaluates to `undefined` or `null`.
  */
-class OptionalUse extends Expr, @optionalchainable { OptionalUse() { isOptionalChaining(this) } }
+class OptionalUse extends Expr, @optionalchainable {
+  OptionalUse() { isOptionalChaining(this) }
+}
 
 private class ChainElem extends Expr, @optionalchainable {
   /**

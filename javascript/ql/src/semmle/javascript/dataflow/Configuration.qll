@@ -909,12 +909,16 @@ class PathNode extends TPathNode {
 /**
  * A path node corresponding to a flow source.
  */
-class SourcePathNode extends PathNode { SourcePathNode() { isSource(nd, cfg, _) } }
+class SourcePathNode extends PathNode {
+  SourcePathNode() { isSource(nd, cfg, _) }
+}
 
 /**
  * A path node corresponding to a flow sink.
  */
-class SinkPathNode extends PathNode { SinkPathNode() { isSink(nd, cfg, _) } }
+class SinkPathNode extends PathNode {
+  SinkPathNode() { isSink(nd, cfg, _) }
+}
 
 /**
  * Provides the query predicates needed to include a graph in a path-problem query.

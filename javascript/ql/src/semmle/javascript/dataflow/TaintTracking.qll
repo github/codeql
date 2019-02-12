@@ -487,7 +487,6 @@ module TaintTracking {
       self.getNumArgument() = 1
     }
 
-
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       pred = self.getArgument(0) and
       succ = this
@@ -716,14 +715,16 @@ module TaintTracking {
    */
   class PositiveIndexOfSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
     MethodCallExpr indexOf;
+
     override RelationalComparison astNode;
 
     PositiveIndexOfSanitizer() {
       indexOf.getMethodName() = "indexOf" and
-      exists (int bound |
+      exists(int bound |
         astNode.getGreaterOperand() = indexOf and
         astNode.getLesserOperand().getIntValue() = bound and
-        bound >= 0)
+        bound >= 0
+      )
     }
 
     override predicate sanitizes(boolean outcome, Expr e) {

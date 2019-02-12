@@ -785,17 +785,23 @@ private class QUnitJS extends FrameworkLibraryWithGenericURL, FrameworkLibraryWi
 /**
  * The Mocha framework.
  */
-private class Mocha extends FrameworkLibraryWithGenericURL { Mocha() { this = "mocha" } }
+private class Mocha extends FrameworkLibraryWithGenericURL {
+  Mocha() { this = "mocha" }
+}
 
 /**
  * The Jasmine framework.
  */
-private class Jasmine extends FrameworkLibraryWithGenericURL { Jasmine() { this = "jasmine" } }
+private class Jasmine extends FrameworkLibraryWithGenericURL {
+  Jasmine() { this = "jasmine" }
+}
 
 /**
  * The Chai framework.
  */
-private class Chai extends FrameworkLibraryWithGenericURL { Chai() { this = "chai" } }
+private class Chai extends FrameworkLibraryWithGenericURL {
+  Chai() { this = "chai" }
+}
 
 /**
  * The Sinon.JS framework.

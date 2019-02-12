@@ -166,17 +166,23 @@ class YAMLBool extends YAMLScalar {
 /**
  * A YAML scalar representing the null value.
  */
-class YAMLNull extends YAMLScalar { YAMLNull() { hasStandardTypeTag("null") } }
+class YAMLNull extends YAMLScalar {
+  YAMLNull() { hasStandardTypeTag("null") }
+}
 
 /**
  * A YAML scalar representing a string value.
  */
-class YAMLString extends YAMLScalar { YAMLString() { hasStandardTypeTag("str") } }
+class YAMLString extends YAMLScalar {
+  YAMLString() { hasStandardTypeTag("str") }
+}
 
 /**
  * A YAML scalar representing a merge key.
  */
-class YAMLMergeKey extends YAMLScalar { YAMLMergeKey() { hasStandardTypeTag("merge") } }
+class YAMLMergeKey extends YAMLScalar {
+  YAMLMergeKey() { hasStandardTypeTag("merge") }
+}
 
 /**
  * A YAML scalar representing an `!include` directive.
@@ -286,7 +292,9 @@ class YAMLAliasNode extends YAMLNode, @yaml_alias_node {
 /**
  * A YAML document.
  */
-class YAMLDocument extends YAMLNode { YAMLDocument() { not exists(getParentNode()) } }
+class YAMLDocument extends YAMLNode {
+  YAMLDocument() { not exists(getParentNode()) }
+}
 
 /**
  * An error message produced by the YAML parser while processing a YAML file.

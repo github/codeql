@@ -147,10 +147,11 @@ module Vue {
     private DataFlow::Node getAnAccessor(string kind) {
       exists(DataFlow::SourceNode computedObj, DataFlow::Node accessorObjOrGetter |
         computedObj.flowsTo(getComputed()) and
-        computedObj.getAPropertyWrite().getRhs() = accessorObjOrGetter |
+        computedObj.getAPropertyWrite().getRhs() = accessorObjOrGetter
+      |
         result = accessorObjOrGetter and kind = "get"
         or
-        exists (DataFlow::SourceNode accessorObj |
+        exists(DataFlow::SourceNode accessorObj |
           accessorObj.flowsTo(accessorObjOrGetter) and
           result = accessorObj.getAPropertyWrite(kind).getRhs()
         )
@@ -164,9 +165,10 @@ module Vue {
       exists(DataFlow::SourceNode computedObj, DataFlow::SourceNode accessorObjOrGetter |
         computedObj.flowsTo(getComputed()) and
         accessorObjOrGetter.flowsTo(computedObj.getAPropertyWrite(name).getRhs())
-        |
-        result = accessorObjOrGetter and kind = "get" or
-        exists (DataFlow::SourceNode accessorObj |
+      |
+        result = accessorObjOrGetter and kind = "get"
+        or
+        exists(DataFlow::SourceNode accessorObj |
           accessorObj.flowsTo(accessorObjOrGetter) and
           result = accessorObj.getAPropertyWrite(kind).getRhs()
         )
@@ -243,7 +245,6 @@ module Vue {
     }
 
     override DataFlow::Node getOwnOption(string name) { result = def.getOptionArgument(0, name) }
-
   }
 
   /**
@@ -263,7 +264,6 @@ module Vue {
     }
 
     override DataFlow::Node getOwnOption(string name) { result = extend.getOptionArgument(0, name) }
-
   }
 
   /**
@@ -291,7 +291,6 @@ module Vue {
       or
       result = MkExtendedVue(extend).(ExtendedVue).getOption(name)
     }
-
   }
 
   /**
@@ -311,7 +310,6 @@ module Vue {
     }
 
     override DataFlow::Node getOwnOption(string name) { result = def.getOptionArgument(1, name) }
-
   }
 
   /**
@@ -365,5 +363,7 @@ module Vue {
   /**
    * A `.vue` file.
    */
-  class VueFile extends File { VueFile() { getExtension() = "vue" } }
+  class VueFile extends File {
+    VueFile() { getExtension() = "vue" }
+  }
 }
