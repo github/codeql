@@ -241,13 +241,21 @@ class TranslatedFunction extends TranslatedElement,
           result = getInstruction(ReturnValueAddressTag())
         ) or
         (
-          operandTag instanceof ReturnValueOperandTag and
+          operandTag instanceof LoadOperandTag and
           result = getUnmodeledDefinitionInstruction()
         )
       )
     )
   }
 
+  override final Type getInstructionOperandType(InstructionTag tag,
+      TypedOperandTag operandTag) {
+    tag = ReturnTag() and
+    not getReturnType() instanceof VoidType and
+    operandTag instanceof LoadOperandTag and
+    result = getReturnType()
+  }
+  
   override final IRVariable getInstructionVariable(InstructionTag tag) {
     tag = ReturnValueAddressTag() and
     result = getReturnVariable()

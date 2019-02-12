@@ -9,7 +9,9 @@ query predicate instructionBounds(Instruction i, Bound b, int delta, boolean upp
   (
     i.getAUse() instanceof ArgumentOperand
     or
-    i.getAUse() instanceof ReturnValueOperand
+    exists(ReturnValueInstruction retInstr |
+      retInstr.getReturnValueOperand() = i.getAUse()
+    )
   ) and
   (
     upper = true and

@@ -21,10 +21,14 @@ class Operand extends TOperand {
     result = "Operand"
   }
 
-  Location getLocation() {
+  final Location getLocation() {
     result = getUseInstruction().getLocation()
   }
 
+  final FunctionIR getEnclosingFunctionIR() {
+    result = getUseInstruction().getEnclosingFunctionIR()
+  }
+  
   /**
    * Gets the `Instruction` that consumes this operand.
    */
@@ -65,7 +69,54 @@ class Operand extends TOperand {
   }
 
   /**
-   * Gets the kind of memory access performed by the operand. Holds only for memory operands.
+   * Gets the type of the value consumed by this operand. This is usually the same as the
+   * result type of the definition instruction consumed by this operand. For register operands,
+   * this is always the case. For some memory operands, the operand type may be different from
+   * the definition type, such as in the case of a partial read or a read from a pointer that
+   * has been cast to a different type.
+   */
+  Type getType() {
+    result = getDefinitionInstruction().getResultType()
+  }
+
+  /**
+   * Holds if the value consumed by this operand is a glvalue. If this
+   * holds, the value of the operand represents the address of a location,
+   * and the type of the location is given by `getType()`. If this does
+   * not hold, the value of the operand represents a value whose type is
+   * given by `getResultType()`.
+   */
+  predicate isGLValue() {
+    getDefinitionInstruction().isGLValue()
+  }
+
+  /**
+   * Gets the size of the value consumed by this operand, in bytes. If the operand does not have
+   * a known constant size, this predicate does not hold.
+   */
+  int getSize() {
+    result = getType().getSize()
+  }
+}
+
+/**
+ * An operand that consumes a memory result (e.g. the `LoadOperand` on a `Load` instruction).
+ */
+class MemoryOperand extends Operand {
+  MemoryOperand() {
+    exists(MemoryOperandTag tag |
+      this = TNonPhiOperand(_, tag, _)
+    ) or
+    this = TPhiOperand(_, _, _)
+  }
+
+  override predicate isGLValue() {
+    // A `MemoryOperand` can never be a glvalue
+    none()
+  }
+
+  /**
+   * Gets the kind of memory access performed by the operand.
    */
   MemoryAccessKind getMemoryAccess() {
     none()
@@ -83,19 +134,30 @@ class Operand extends TOperand {
 }
 
 /**
+ * An operand that consumes a register (non-memory) result.
+ */
+class RegisterOperand extends Operand {
+  RegisterOperand() {
+    exists(RegisterOperandTag tag |
+      this = TNonPhiOperand(_, tag, _)
+    )
+  }
+}
+
+/**
  * An operand that is not an operand of a `PhiInstruction`.
  */
 class NonPhiOperand extends Operand, TNonPhiOperand {
-  Instruction instr;
+  Instruction useInstr;
   Instruction defInstr;
   OperandTag tag;
 
   NonPhiOperand() {
-    this = TNonPhiOperand(instr, tag, defInstr)
+    this = TNonPhiOperand(useInstr, tag, defInstr)
   }
 
   override final Instruction getUseInstruction() {
-    result = instr
+    result = useInstr
   }
 
   override final Instruction getDefinitionInstruction() {
@@ -115,14 +177,20 @@ class NonPhiOperand extends Operand, TNonPhiOperand {
   }
 }
 
+class TypedOperand extends NonPhiOperand, MemoryOperand {
+  override TypedOperandTag tag;
+
+  override final Type getType() {
+    result = Construction::getInstructionOperandType(useInstr, tag)
+  }
+}
+
 /**
  * The address operand of an instruction that loads or stores a value from
  * memory (e.g. `Load`, `Store`).
  */
-class AddressOperand extends NonPhiOperand {
-  AddressOperand() {
-    this = TNonPhiOperand(_, addressOperand(), _)
-  }
+class AddressOperand extends NonPhiOperand, RegisterOperand {
+  override AddressOperandTag tag;
 
   override string toString() {
     result = "Address"
@@ -130,31 +198,37 @@ class AddressOperand extends NonPhiOperand {
 }
 
 /**
- * The source value operand of an instruction that copies this value to its
- * result (e.g. `Copy`, `Load`, `Store`).
+ * The source value operand of an instruction that loads a value from memory (e.g. `Load`,
+ * `ReturnValue`, `ThrowValue`).
  */
-class CopySourceOperand extends NonPhiOperand {
-  CopySourceOperand() {
-    this = TNonPhiOperand(_, copySourceOperand(), _)
-  }
+class LoadOperand extends TypedOperand {
+  override LoadOperandTag tag;
 
   override string toString() {
-    result = "CopySource"
+    result = "Load"
   }
 
   override final MemoryAccessKind getMemoryAccess() {
-    instr.getOpcode() instanceof Opcode::Load and
     result instanceof IndirectMemoryAccess
   }
 }
 
 /**
- * The sole operand of a unary instruction (e.g. `Convert`, `Negate`).
+ * The source value operand of a `Store` instruction.
  */
-class UnaryOperand extends NonPhiOperand {
-  UnaryOperand() {
-    this = TNonPhiOperand(_, unaryOperand(), _)
+class StoreValueOperand extends NonPhiOperand, RegisterOperand {
+  override StoreValueOperandTag tag;
+
+  override string toString() {
+    result = "StoreValue"
   }
+}
+
+/**
+ * The sole operand of a unary instruction (e.g. `Convert`, `Negate`, `Copy`).
+ */
+class UnaryOperand extends NonPhiOperand, RegisterOperand {
+  override UnaryOperandTag tag;
 
   override string toString() {
     result = "Unary"
@@ -164,10 +238,8 @@ class UnaryOperand extends NonPhiOperand {
 /**
  * The left operand of a binary instruction (e.g. `Add`, `CompareEQ`).
  */
-class LeftOperand extends NonPhiOperand {
-  LeftOperand() {
-    this = TNonPhiOperand(_, leftOperand(), _)
-  }
+class LeftOperand extends NonPhiOperand, RegisterOperand {
+  override LeftOperandTag tag;
 
   override string toString() {
     result = "Left"
@@ -177,10 +249,8 @@ class LeftOperand extends NonPhiOperand {
 /**
  * The right operand of a binary instruction (e.g. `Add`, `CompareEQ`).
  */
-class RightOperand extends NonPhiOperand {
-  RightOperand() {
-    this = TNonPhiOperand(_, rightOperand(), _)
-  }
+class RightOperand extends NonPhiOperand, RegisterOperand {
+  override RightOperandTag tag;
 
   override string toString() {
     result = "Right"
@@ -188,46 +258,10 @@ class RightOperand extends NonPhiOperand {
 }
 
 /**
- * The return value operand of a `ReturnValue` instruction.
- */
-class ReturnValueOperand extends NonPhiOperand {
-  ReturnValueOperand() {
-    this = TNonPhiOperand(_, returnValueOperand(), _)
-  }
-
-  override string toString() {
-    result = "ReturnValue"
-  }
-
-  override final MemoryAccessKind getMemoryAccess() {
-    result instanceof IndirectMemoryAccess
-  }
-}
-
-/**
- * The exception thrown by a `ThrowValue` instruction.
- */
-class ExceptionOperand extends NonPhiOperand {
-  ExceptionOperand() {
-    this = TNonPhiOperand(_, exceptionOperand(), _)
-  }
-
-  override string toString() {
-    result = "Exception"
-  }
-
-  override final MemoryAccessKind getMemoryAccess() {
-    result instanceof IndirectMemoryAccess
-  }
-}
-
-/**
  * The condition operand of a `ConditionalBranch` or `Switch` instruction.
  */
-class ConditionOperand extends NonPhiOperand {
-  ConditionOperand() {
-    this = TNonPhiOperand(_, conditionOperand(), _)
-  }
+class ConditionOperand extends NonPhiOperand, RegisterOperand {
+  override ConditionOperandTag tag;
 
   override string toString() {
     result = "Condition"
@@ -238,10 +272,8 @@ class ConditionOperand extends NonPhiOperand {
  * An operand of the special `UnmodeledUse` instruction, representing a value
  * whose set of uses is unknown.
  */
-class UnmodeledUseOperand extends NonPhiOperand {
-  UnmodeledUseOperand() {
-    this = TNonPhiOperand(_, unmodeledUseOperand(), _)
-  }
+class UnmodeledUseOperand extends NonPhiOperand, MemoryOperand {
+  override UnmodeledUseOperandTag tag;
 
   override string toString() {
     result = "UnmodeledUse"
@@ -255,10 +287,8 @@ class UnmodeledUseOperand extends NonPhiOperand {
 /**
  * The operand representing the target function of an `Call` instruction.
  */
-class CallTargetOperand extends NonPhiOperand {
-  CallTargetOperand() {
-    this = TNonPhiOperand(_, callTargetOperand(), _)
-  }
+class CallTargetOperand extends NonPhiOperand, RegisterOperand {
+  override CallTargetOperandTag tag;
 
   override string toString() {
     result = "CallTarget"
@@ -270,12 +300,8 @@ class CallTargetOperand extends NonPhiOperand {
  * positional arguments (represented by `PositionalArgumentOperand`) and the
  * implicit `this` argument, if any (represented by `ThisArgumentOperand`).
  */
-class ArgumentOperand extends NonPhiOperand {
-  ArgumentOperand() {
-    exists(ArgumentOperandTag argTag |
-      this = TNonPhiOperand(_, argTag, _)
-    )
-  }
+class ArgumentOperand extends NonPhiOperand, RegisterOperand {
+  override ArgumentOperandTag tag;
 }
 
 /**
@@ -283,9 +309,7 @@ class ArgumentOperand extends NonPhiOperand {
  * call.
  */
 class ThisArgumentOperand extends ArgumentOperand {
-  ThisArgumentOperand() {
-    this = TNonPhiOperand(_, thisArgumentOperand(), _)
-  }
+  override ThisArgumentOperandTag tag;
 
   override string toString() {
     result = "ThisArgument"
@@ -296,13 +320,11 @@ class ThisArgumentOperand extends ArgumentOperand {
  * An operand representing an argument to a function call.
  */
 class PositionalArgumentOperand extends ArgumentOperand {
+  override PositionalArgumentOperandTag tag;
   int argIndex;
 
   PositionalArgumentOperand() {
-    exists(PositionalArgumentOperandTag argTag |
-      this = TNonPhiOperand(_, argTag, _) and
-      argIndex = argTag.getArgIndex()
-    )
+    argIndex = tag.getArgIndex()
   }
 
   override string toString() {
@@ -317,34 +339,39 @@ class PositionalArgumentOperand extends ArgumentOperand {
   }
 }
 
-class SideEffectOperand extends NonPhiOperand {
-  SideEffectOperand() {
-    this = TNonPhiOperand(_, sideEffectOperand(), _)
+class SideEffectOperand extends TypedOperand {
+  override SideEffectOperandTag tag;
+
+  override final int getSize() {
+    if getType() instanceof UnknownType then
+      result = Construction::getInstructionOperandSize(useInstr, tag)
+    else
+      result = getType().getSize()
   }
-  
+
   override MemoryAccessKind getMemoryAccess() {
-    instr instanceof CallSideEffectInstruction and
+    useInstr instanceof CallSideEffectInstruction and
     result instanceof EscapedMemoryAccess
     or
-    instr instanceof CallReadSideEffectInstruction and
+    useInstr instanceof CallReadSideEffectInstruction and
     result instanceof EscapedMemoryAccess
     or
-    instr instanceof IndirectReadSideEffectInstruction and
+    useInstr instanceof IndirectReadSideEffectInstruction and
     result instanceof IndirectMemoryAccess
     or
-    instr instanceof BufferReadSideEffectInstruction and
+    useInstr instanceof BufferReadSideEffectInstruction and
     result instanceof BufferMemoryAccess
     or
-    instr instanceof IndirectWriteSideEffectInstruction and
+    useInstr instanceof IndirectWriteSideEffectInstruction and
     result instanceof IndirectMemoryAccess
     or
-    instr instanceof BufferWriteSideEffectInstruction and
+    useInstr instanceof BufferWriteSideEffectInstruction and
     result instanceof BufferMemoryAccess
     or
-    instr instanceof IndirectMayWriteSideEffectInstruction and
+    useInstr instanceof IndirectMayWriteSideEffectInstruction and
     result instanceof IndirectMayMemoryAccess
     or
-    instr instanceof BufferMayWriteSideEffectInstruction and
+    useInstr instanceof BufferMayWriteSideEffectInstruction and
     result instanceof BufferMayMemoryAccess
   }
 }
@@ -352,7 +379,7 @@ class SideEffectOperand extends NonPhiOperand {
 /**
  * An operand of a `PhiInstruction`.
  */
-class PhiOperand extends Operand, TPhiOperand {
+class PhiOperand extends MemoryOperand, TPhiOperand {
   PhiInstruction useInstr;
   Instruction defInstr;
   IRBlock predecessorBlock;
@@ -394,18 +421,9 @@ class PhiOperand extends Operand, TPhiOperand {
 }
 
 /**
- * An operand that reads a value from memory.
- */
-class MemoryOperand extends Operand {
-  MemoryOperand() {
-    exists(getMemoryAccess())
-  }
-}
-
-/**
  * The total operand of a Chi node, representing the previous value of the memory.
  */
-class ChiTotalOperand extends Operand {
+class ChiTotalOperand extends MemoryOperand {
   ChiTotalOperand() {
     this = TNonPhiOperand(_, chiTotalOperand(), _)
   }
@@ -423,7 +441,7 @@ class ChiTotalOperand extends Operand {
 /**
  * The partial operand of a Chi node, representing the value being written to part of the memory.
  */
-class ChiPartialOperand extends Operand {
+class ChiPartialOperand extends MemoryOperand {
   ChiPartialOperand() {
     this = TNonPhiOperand(_, chiPartialOperand(), _)
   }

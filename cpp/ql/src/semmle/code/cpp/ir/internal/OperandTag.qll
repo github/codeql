@@ -12,12 +12,11 @@ private newtype TOperandTag =
   TAddressOperand() or
   TBufferSizeOperand() or
   TSideEffectOperand() or
-  TCopySourceOperand() or
+  TLoadOperand() or
+  TStoreValueOperand() or
   TUnaryOperand() or
   TLeftOperand() or
   TRightOperand() or
-  TReturnValueOperand() or
-  TExceptionOperand() or
   TConditionOperand() or
   TUnmodeledUseOperand() or
   TCallTargetOperand() or
@@ -46,6 +45,24 @@ abstract class OperandTag extends TOperandTag {
    }
 }
 
+/**
+ * An operand that consumes a memory result (e.g. the `LoadOperand` on a `Load` instruction).
+ */
+abstract class MemoryOperandTag extends OperandTag {
+}
+
+/**
+ * An operand that consumes a register (non-memory) result.
+ */
+abstract class RegisterOperandTag extends OperandTag {
+}
+
+/**
+ * A memory operand whose type may be different from the result type of its definition instruction.
+ */
+abstract class TypedOperandTag extends MemoryOperandTag {
+}
+
 // Note: individual subtypes are listed in the order that the operands should
 // appear in the operand list of the instruction when printing.
 
@@ -53,7 +70,7 @@ abstract class OperandTag extends TOperandTag {
  * The address operand of an instruction that loads or stores a value from
  * memory (e.g. `Load`, `Store`, `InitializeParameter`, `IndirectReadSideEffect`).
  */
-class AddressOperandTag extends OperandTag, TAddressOperand {
+class AddressOperandTag extends RegisterOperandTag, TAddressOperand {
   override final string toString() {
     result = "Address"
   }
@@ -71,7 +88,7 @@ AddressOperandTag addressOperand() {
  * The buffer size operand of an instruction that represents a read or write of
  * a buffer.
  */
-class BufferSizeOperand extends OperandTag, TBufferSizeOperand {
+class BufferSizeOperand extends RegisterOperandTag, TBufferSizeOperand {
   override final string toString() {
     result = "BufferSize"
   }
@@ -84,7 +101,7 @@ class BufferSizeOperand extends OperandTag, TBufferSizeOperand {
 /**
  * The operand representing the read side effect of a `SideEffectInstruction`.
  */
-class SideEffectOperandTag extends OperandTag, TSideEffectOperand {
+class SideEffectOperandTag extends TypedOperandTag, TSideEffectOperand {
   override final string toString() {
     result = "SideEffect"
   }
@@ -99,12 +116,12 @@ SideEffectOperandTag sideEffectOperand() {
 }
 
 /**
- * The source value operand of an instruction that copies this value to its
- * result (e.g. `Copy`, `Load`, `Store`).
+ * The source value operand of an instruction that loads a value from memory (e.g. `Load`,
+ * `ReturnValue`, `ThrowValue`).
  */
-class CopySourceOperandTag extends OperandTag, TCopySourceOperand {
+class LoadOperandTag extends TypedOperandTag, TLoadOperand {
   override final string toString() {
-    result = "CopySource"
+    result = "Load"
   }
 
   override final int getSortOrder() {
@@ -112,20 +129,37 @@ class CopySourceOperandTag extends OperandTag, TCopySourceOperand {
   }
 }
 
-CopySourceOperandTag copySourceOperand() {
-  result = TCopySourceOperand()
+LoadOperandTag loadOperand() {
+  result = TLoadOperand()
 }
 
 /**
- * The sole operand of a unary instruction (e.g. `Convert`, `Negate`).
+ * The source value operand of a `Store` instruction.
  */
-class UnaryOperandTag extends OperandTag, TUnaryOperand {
+class StoreValueOperandTag extends RegisterOperandTag, TStoreValueOperand {
+  override final string toString() {
+    result = "StoreValue"
+  }
+
+  override final int getSortOrder() {
+    result = 4
+  }
+}
+
+StoreValueOperandTag storeValueOperand() {
+  result = TStoreValueOperand()
+}
+
+/**
+ * The sole operand of a unary instruction (e.g. `Convert`, `Negate`, `Copy`).
+ */
+class UnaryOperandTag extends RegisterOperandTag, TUnaryOperand {
   override final string toString() {
     result = "Unary"
   }
 
   override final int getSortOrder() {
-    result = 4
+    result = 5
   }
 }
 
@@ -136,13 +170,13 @@ UnaryOperandTag unaryOperand() {
 /**
  * The left operand of a binary instruction (e.g. `Add`, `CompareEQ`).
  */
-class LeftOperandTag extends OperandTag, TLeftOperand {
+class LeftOperandTag extends RegisterOperandTag, TLeftOperand {
   override final string toString() {
     result = "Left"
   }
 
   override final int getSortOrder() {
-    result = 5
+    result = 6
   }
 }
 
@@ -153,13 +187,13 @@ LeftOperandTag leftOperand() {
 /**
  * The right operand of a binary instruction (e.g. `Add`, `CompareEQ`).
  */
-class RightOperandTag extends OperandTag, TRightOperand {
+class RightOperandTag extends RegisterOperandTag, TRightOperand {
   override final string toString() {
     result = "Right"
   }
 
   override final int getSortOrder() {
-    result = 6
+    result = 7
   }
 }
 
@@ -168,49 +202,15 @@ RightOperandTag rightOperand() {
 }
 
 /**
- * The return value operand of a `ReturnValue` instruction.
- */
-class ReturnValueOperandTag extends OperandTag, TReturnValueOperand {
-  override final string toString() {
-    result = "ReturnValue"
-  }
-
-  override final int getSortOrder() {
-    result = 7
-  }
-}
-
-ReturnValueOperandTag returnValueOperand() {
-  result = TReturnValueOperand()
-}
-
-/**
- * The exception thrown by a `ThrowValue` instruction.
- */
-class ExceptionOperandTag extends OperandTag, TExceptionOperand {
-  override final string toString() {
-    result = "Exception"
-  }
-
-  override final int getSortOrder() {
-    result = 8
-  }
-}
-
-ExceptionOperandTag exceptionOperand() {
-  result = TExceptionOperand()
-}
-
-/**
  * The condition operand of a `ConditionalBranch` or `Switch` instruction.
  */
-class ConditionOperandTag extends OperandTag, TConditionOperand {
+class ConditionOperandTag extends RegisterOperandTag, TConditionOperand {
   override final string toString() {
     result = "Condition"
   }
 
   override final int getSortOrder() {
-    result = 9
+    result = 8
   }
 }
 
@@ -222,13 +222,13 @@ ConditionOperandTag conditionOperand() {
  * An operand of the special `UnmodeledUse` instruction, representing a value
  * whose set of uses is unknown.
  */
-class UnmodeledUseOperandTag extends OperandTag, TUnmodeledUseOperand {
+class UnmodeledUseOperandTag extends MemoryOperandTag, TUnmodeledUseOperand {
   override final string toString() {
     result = "UnmodeledUse"
   }
 
   override final int getSortOrder() {
-    result = 10
+    result = 9
   }
 }
 
@@ -239,13 +239,13 @@ UnmodeledUseOperandTag unmodeledUseOperand() {
 /**
  * The operand representing the target function of an `Call` instruction.
  */
-class CallTargetOperandTag extends OperandTag, TCallTargetOperand {
+class CallTargetOperandTag extends RegisterOperandTag, TCallTargetOperand {
   override final string toString() {
     result = "CallTarget"
   }
 
   override final int getSortOrder() {
-    result = 11
+    result = 10
   }
 }
 
@@ -258,7 +258,7 @@ CallTargetOperandTag callTargetOperand() {
  * positional arguments (represented by `PositionalArgumentOperand`) and the
  * implicit `this` argument, if any (represented by `ThisArgumentOperand`).
  */
-abstract class ArgumentOperandTag extends OperandTag {
+abstract class ArgumentOperandTag extends RegisterOperandTag {
 }
 
 /**
@@ -275,7 +275,7 @@ class ThisArgumentOperandTag extends ArgumentOperandTag, TThisArgumentOperand {
   }
 
   override final int getSortOrder() {
-    result = 12
+    result = 11
   }
 
   override final string getLabel() {
@@ -303,7 +303,7 @@ class PositionalArgumentOperandTag extends ArgumentOperandTag,
   }
 
   override final int getSortOrder() {
-    result = 14 + argIndex
+    result = 12 + argIndex
   }
 
   final int getArgIndex() {
@@ -315,13 +315,13 @@ PositionalArgumentOperandTag positionalArgumentOperand(int argIndex) {
   result = TPositionalArgumentOperand(argIndex)
 }
 
-class ChiTotalOperandTag extends OperandTag, TChiTotalOperand {
+class ChiTotalOperandTag extends MemoryOperandTag, TChiTotalOperand {
   override final string toString() {
     result = "ChiTotal"
   }
 
   override final int getSortOrder() {
-    result = 14
+    result = 13
   }
 }
 
@@ -329,13 +329,13 @@ ChiTotalOperandTag chiTotalOperand() {
   result = TChiTotalOperand()
 }
 
-class ChiPartialOperandTag extends OperandTag, TChiPartialOperand {
+class ChiPartialOperandTag extends MemoryOperandTag, TChiPartialOperand {
   override final string toString() {
     result = "ChiPartial"
   }
 
   override final int getSortOrder() {
-    result = 15
+    result = 14
   }
 }
 

@@ -263,8 +263,7 @@ MemoryAccess getResultMemoryAccess(Instruction instr) {
   )
 }
 
-MemoryAccess getOperandMemoryAccess(Operand operand) {
-  exists(operand.getMemoryAccess()) and
+MemoryAccess getOperandMemoryAccess(MemoryOperand operand) {
   if exists(IRVariable var, IntValue i |
     resultPointsTo(operand.getAddressOperand().getDefinitionInstruction(), var, i)
   )

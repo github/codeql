@@ -2,6 +2,7 @@ missingOperand
 unexpectedOperand
 duplicateOperand
 missingPhiOperand
+missingOperandType
 instructionWithoutSuccessor
 ambiguousSuccessors
 unexplainedLoop
