@@ -28,7 +28,7 @@ IntValue getConstantValue(Instruction instr) {
 }
 
 predicate valueFlowStep(Instruction i, Operand op, int delta) {
-  i.getAnOperand().(CopySourceOperand) = op and delta = 0
+  i.(CopyInstruction).getSourceValueOperand() = op and delta = 0
   or
   exists(Operand x |
     i.(AddInstruction).getAnOperand() = op and

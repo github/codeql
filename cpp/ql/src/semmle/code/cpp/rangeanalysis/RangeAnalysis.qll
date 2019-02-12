@@ -379,7 +379,7 @@ private predicate boundedNonPhiOperand(NonPhiOperand op, Bound b, int delta, boo
 private predicate boundFlowStepPhi(
   PhiOperand op2, Operand op1, int delta, boolean upper, Reason reason
 ) {
-  op2.getDefinitionInstruction().getAnOperand().(CopySourceOperand) = op1 and
+  op2.getDefinitionInstruction().(CopyInstruction).getSourceValueOperand() = op1 and
   (upper = true or upper = false) and
   reason = TNoReason() and
   delta = 0

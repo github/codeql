@@ -398,7 +398,7 @@ cached module SignAnalysisCached {
         result = castSign(operandSign(ci.getAnOperand()), fromSigned, toSigned, getCastKind(ci))
       )
       or
-      result = operandSign(i.getAnOperand().(CopySourceOperand))
+      result = operandSign(i.(CopyInstruction).getSourceValueOperand())
       or
       result = operandSign(i.(BitComplementInstruction).getAnOperand()).bitnot()
       or
