@@ -1,6 +1,8 @@
 import semmle.javascript.dependencies.FrameworkLibraries
 
-class FooTools extends FrameworkLibrary { FooTools() { this = "footools" } }
+class FooTools extends FrameworkLibrary {
+  FooTools() { this = "footools" }
+}
 
 class FooToolsInstance extends FrameworkLibraryInstance {
   FooToolsInstance() {

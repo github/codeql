@@ -8,7 +8,9 @@ class TypeRef extends @typeref {
   Type getType() { typeref_type(this, result) }
 }
 
-class MissingType extends TypeRef { MissingType() { not exists(getType()) } }
+class MissingType extends TypeRef {
+  MissingType() { not exists(getType()) }
+}
 
 from
   Class class1, MissingType class2, MissingType class3, MissingType class4, MissingType class5,

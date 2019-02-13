@@ -123,4 +123,6 @@ module SyntacticConstants {
 /**
  * An expression that evaluates to a constant string.
  */
-class ConstantString extends ConstantExpr { ConstantString() { exists(getStringValue()) } }
+class ConstantString extends ConstantExpr {
+  ConstantString() { exists(getStringValue()) }
+}

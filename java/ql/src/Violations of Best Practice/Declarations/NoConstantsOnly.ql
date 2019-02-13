@@ -12,7 +12,9 @@
 
 import semmle.code.java.Member
 
-class ConstantField extends Field { ConstantField() { this.isStatic() and this.isFinal() } }
+class ConstantField extends Field {
+  ConstantField() { this.isStatic() and this.isFinal() }
+}
 
 pragma[noinline]
 predicate typeWithConstantField(RefType t) { exists(ConstantField f | f.getDeclaringType() = t) }

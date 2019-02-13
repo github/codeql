@@ -364,12 +364,16 @@ module Express {
   /**
    * An Express response expression.
    */
-  class ResponseExpr extends HTTP::Servers::StandardResponseExpr { override ResponseSource src; }
+  class ResponseExpr extends HTTP::Servers::StandardResponseExpr {
+    override ResponseSource src;
+  }
 
   /**
    * An Express request expression.
    */
-  class RequestExpr extends HTTP::Servers::StandardRequestExpr { override RequestSource src; }
+  class RequestExpr extends HTTP::Servers::StandardRequestExpr {
+    override RequestSource src;
+  }
 
   /**
    * An access to a user-controlled Express request input.

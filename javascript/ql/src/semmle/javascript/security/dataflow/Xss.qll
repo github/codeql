@@ -254,7 +254,9 @@ module StoredXss {
   abstract class Sanitizer extends Shared::Sanitizer { }
 
   /** An arbitrary XSS sink, considered as a flow sink for stored XSS. */
-  private class AnySink extends Sink { AnySink() { this instanceof Shared::Sink } }
+  private class AnySink extends Sink {
+    AnySink() { this instanceof Shared::Sink }
+  }
 
   /**
    * A regexp replacement involving an HTML meta-character, viewed as a sanitizer for

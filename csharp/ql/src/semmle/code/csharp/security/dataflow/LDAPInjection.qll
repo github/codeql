@@ -40,7 +40,9 @@ module LDAPInjection {
   }
 
   /** A source of remote user input. */
-  class RemoteSource extends Source { RemoteSource() { this instanceof RemoteFlowSource } }
+  class RemoteSource extends Source {
+    RemoteSource() { this instanceof RemoteFlowSource }
+  }
 
   /**
    * An argument that sets the `Path` property of a `DirectoryEntry` object that is a sink for LDAP

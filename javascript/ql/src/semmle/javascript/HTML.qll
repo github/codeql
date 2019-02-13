@@ -6,7 +6,9 @@ module HTML {
   /**
    * An HTML file.
    */
-  class HtmlFile extends File { HtmlFile() { getFileType().isHtml() } }
+  class HtmlFile extends File {
+    HtmlFile() { getFileType().isHtml() }
+  }
 
   /**
    * An HTML element like `<a href="semmle.com">Semmle</a>`.
@@ -115,7 +117,9 @@ module HTML {
   /**
    * An HTML `<html>` element.
    */
-  class DocumentElement extends Element { DocumentElement() { getName() = "html" } }
+  class DocumentElement extends Element {
+    DocumentElement() { getName() = "html" }
+  }
 
   /**
    * An HTML `<script>` element.
@@ -164,12 +168,15 @@ module HTML {
      * Gets the inline script of this script element, if any.
      */
     private InlineScript getInlineScript() {
-      exists(string f, Location l1, int sl1, int sc1, int el1, int ec1, Location l2, int sl2, int sc2, int el2, int ec2 |
+      exists(
+        string f, Location l1, int sl1, int sc1, int el1, int ec1, Location l2, int sl2, int sc2,
+        int el2, int ec2
+      |
         l1 = getLocation() and
         l2 = result.getLocation() and
         l1.hasLocationInfo(f, sl1, sc1, el1, ec1) and
         l2.hasLocationInfo(f, sl2, sc2, el2, ec2)
-        |
+      |
         (
           sl1 = sl2 and sc1 < sc2
           or
@@ -192,7 +199,6 @@ module HTML {
       result = getInlineScript() or
       result = resolveSource()
     }
-
   }
 
   /**

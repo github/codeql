@@ -167,7 +167,9 @@ class StrictModeDecl extends KnownDirective {
 }
 
 /** An asm.js directive. */
-class ASMJSDirective extends KnownDirective { ASMJSDirective() { getDirectiveText() = "use asm" } }
+class ASMJSDirective extends KnownDirective {
+  ASMJSDirective() { getDirectiveText() = "use asm" }
+}
 
 /** A Babel directive. */
 class BabelDirective extends KnownDirective {
@@ -205,7 +207,9 @@ class SystemJSDepsDirective extends KnownDirective {
 }
 
 /** A `bundle` directive. */
-class BundleDirective extends KnownDirective { BundleDirective() { getDirectiveText() = "bundle" } }
+class BundleDirective extends KnownDirective {
+  BundleDirective() { getDirectiveText() = "bundle" }
+}
 
 /** An `if` statement. */
 class IfStmt extends @ifstmt, ControlStmt {

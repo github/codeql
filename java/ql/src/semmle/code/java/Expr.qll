@@ -513,28 +513,44 @@ class AssignOp extends Assignment, @assignop {
 }
 
 /** A compound assignment expression using the `+=` operator. */
-class AssignAddExpr extends AssignOp, @assignaddexpr { override string getOp() { result = "+=" } }
+class AssignAddExpr extends AssignOp, @assignaddexpr {
+  override string getOp() { result = "+=" }
+}
 
 /** A compound assignment expression using the `-=` operator. */
-class AssignSubExpr extends AssignOp, @assignsubexpr { override string getOp() { result = "-=" } }
+class AssignSubExpr extends AssignOp, @assignsubexpr {
+  override string getOp() { result = "-=" }
+}
 
 /** A compound assignment expression using the `*=` operator. */
-class AssignMulExpr extends AssignOp, @assignmulexpr { override string getOp() { result = "*=" } }
+class AssignMulExpr extends AssignOp, @assignmulexpr {
+  override string getOp() { result = "*=" }
+}
 
 /** A compound assignment expression using the `/=` operator. */
-class AssignDivExpr extends AssignOp, @assigndivexpr { override string getOp() { result = "/=" } }
+class AssignDivExpr extends AssignOp, @assigndivexpr {
+  override string getOp() { result = "/=" }
+}
 
 /** A compound assignment expression using the `%=` operator. */
-class AssignRemExpr extends AssignOp, @assignremexpr { override string getOp() { result = "%=" } }
+class AssignRemExpr extends AssignOp, @assignremexpr {
+  override string getOp() { result = "%=" }
+}
 
 /** A compound assignment expression using the `&=` operator. */
-class AssignAndExpr extends AssignOp, @assignandexpr { override string getOp() { result = "&=" } }
+class AssignAndExpr extends AssignOp, @assignandexpr {
+  override string getOp() { result = "&=" }
+}
 
 /** A compound assignment expression using the `|=` operator. */
-class AssignOrExpr extends AssignOp, @assignorexpr { override string getOp() { result = "|=" } }
+class AssignOrExpr extends AssignOp, @assignorexpr {
+  override string getOp() { result = "|=" }
+}
 
 /** A compound assignment expression using the `^=` operator. */
-class AssignXorExpr extends AssignOp, @assignxorexpr { override string getOp() { result = "^=" } }
+class AssignXorExpr extends AssignOp, @assignxorexpr {
+  override string getOp() { result = "^=" }
+}
 
 /** A compound assignment expression using the `<<=` operator. */
 class AssignLShiftExpr extends AssignOp, @assignlshiftexpr {
@@ -643,37 +659,59 @@ class BinaryExpr extends Expr, @binaryexpr {
 }
 
 /** A binary expression using the `*` operator. */
-class MulExpr extends BinaryExpr, @mulexpr { override string getOp() { result = " * " } }
+class MulExpr extends BinaryExpr, @mulexpr {
+  override string getOp() { result = " * " }
+}
 
 /** A binary expression using the `/` operator. */
-class DivExpr extends BinaryExpr, @divexpr { override string getOp() { result = " / " } }
+class DivExpr extends BinaryExpr, @divexpr {
+  override string getOp() { result = " / " }
+}
 
 /** A binary expression using the `%` operator. */
-class RemExpr extends BinaryExpr, @remexpr { override string getOp() { result = " % " } }
+class RemExpr extends BinaryExpr, @remexpr {
+  override string getOp() { result = " % " }
+}
 
 /** A binary expression using the `+` operator. */
-class AddExpr extends BinaryExpr, @addexpr { override string getOp() { result = " + " } }
+class AddExpr extends BinaryExpr, @addexpr {
+  override string getOp() { result = " + " }
+}
 
 /** A binary expression using the `-` operator. */
-class SubExpr extends BinaryExpr, @subexpr { override string getOp() { result = " - " } }
+class SubExpr extends BinaryExpr, @subexpr {
+  override string getOp() { result = " - " }
+}
 
 /** A binary expression using the `<<` operator. */
-class LShiftExpr extends BinaryExpr, @lshiftexpr { override string getOp() { result = " << " } }
+class LShiftExpr extends BinaryExpr, @lshiftexpr {
+  override string getOp() { result = " << " }
+}
 
 /** A binary expression using the `>>` operator. */
-class RShiftExpr extends BinaryExpr, @rshiftexpr { override string getOp() { result = " >> " } }
+class RShiftExpr extends BinaryExpr, @rshiftexpr {
+  override string getOp() { result = " >> " }
+}
 
 /** A binary expression using the `>>>` operator. */
-class URShiftExpr extends BinaryExpr, @urshiftexpr { override string getOp() { result = " >>> " } }
+class URShiftExpr extends BinaryExpr, @urshiftexpr {
+  override string getOp() { result = " >>> " }
+}
 
 /** A binary expression using the `&` operator. */
-class AndBitwiseExpr extends BinaryExpr, @andbitexpr { override string getOp() { result = " & " } }
+class AndBitwiseExpr extends BinaryExpr, @andbitexpr {
+  override string getOp() { result = " & " }
+}
 
 /** A binary expression using the `|` operator. */
-class OrBitwiseExpr extends BinaryExpr, @orbitexpr { override string getOp() { result = " | " } }
+class OrBitwiseExpr extends BinaryExpr, @orbitexpr {
+  override string getOp() { result = " | " }
+}
 
 /** A binary expression using the `^` operator. */
-class XorBitwiseExpr extends BinaryExpr, @xorbitexpr { override string getOp() { result = " ^ " } }
+class XorBitwiseExpr extends BinaryExpr, @xorbitexpr {
+  override string getOp() { result = " ^ " }
+}
 
 /** A binary expression using the `&&` operator. */
 class AndLogicalExpr extends BinaryExpr, @andlogicalexpr {
@@ -686,22 +724,34 @@ class OrLogicalExpr extends BinaryExpr, @orlogicalexpr {
 }
 
 /** A binary expression using the `<` operator. */
-class LTExpr extends BinaryExpr, @ltexpr { override string getOp() { result = " < " } }
+class LTExpr extends BinaryExpr, @ltexpr {
+  override string getOp() { result = " < " }
+}
 
 /** A binary expression using the `>` operator. */
-class GTExpr extends BinaryExpr, @gtexpr { override string getOp() { result = " > " } }
+class GTExpr extends BinaryExpr, @gtexpr {
+  override string getOp() { result = " > " }
+}
 
 /** A binary expression using the `<=` operator. */
-class LEExpr extends BinaryExpr, @leexpr { override string getOp() { result = " <= " } }
+class LEExpr extends BinaryExpr, @leexpr {
+  override string getOp() { result = " <= " }
+}
 
 /** A binary expression using the `>=` operator. */
-class GEExpr extends BinaryExpr, @geexpr { override string getOp() { result = " >= " } }
+class GEExpr extends BinaryExpr, @geexpr {
+  override string getOp() { result = " >= " }
+}
 
 /** A binary expression using the `==` operator. */
-class EQExpr extends BinaryExpr, @eqexpr { override string getOp() { result = " == " } }
+class EQExpr extends BinaryExpr, @eqexpr {
+  override string getOp() { result = " == " }
+}
 
 /** A binary expression using the `!=` operator. */
-class NEExpr extends BinaryExpr, @neexpr { override string getOp() { result = " != " } }
+class NEExpr extends BinaryExpr, @neexpr {
+  override string getOp() { result = " != " }
+}
 
 /**
  * A bitwise expression.
@@ -852,16 +902,24 @@ class PreDecExpr extends UnaryAssignExpr, @predecexpr {
 }
 
 /** A unary minus expression. For example, `-i`. */
-class MinusExpr extends UnaryExpr, @minusexpr { override string toString() { result = "-..." } }
+class MinusExpr extends UnaryExpr, @minusexpr {
+  override string toString() { result = "-..." }
+}
 
 /** A unary plus expression. For example, `+i`. */
-class PlusExpr extends UnaryExpr, @plusexpr { override string toString() { result = "+..." } }
+class PlusExpr extends UnaryExpr, @plusexpr {
+  override string toString() { result = "+..." }
+}
 
 /** A bit negation expression. For example, `~x`. */
-class BitNotExpr extends UnaryExpr, @bitnotexpr { override string toString() { result = "~..." } }
+class BitNotExpr extends UnaryExpr, @bitnotexpr {
+  override string toString() { result = "~..." }
+}
 
 /** A logical negation expression. For example, `!b`. */
-class LogNotExpr extends UnaryExpr, @lognotexpr { override string toString() { result = "!..." } }
+class LogNotExpr extends UnaryExpr, @lognotexpr {
+  override string toString() { result = "!..." }
+}
 
 /** A cast expression. */
 class CastExpr extends Expr, @castexpr {
@@ -1286,7 +1344,9 @@ class LValue extends VarAccess {
  * a simple assignment, but it may occur as the destination of a compound assignment
  * or a unary assignment.
  */
-class RValue extends VarAccess { RValue() { this.isRValue() } }
+class RValue extends VarAccess {
+  RValue() { this.isRValue() }
+}
 
 /** A method access is an invocation of a method with a list of arguments. */
 class MethodAccess extends Expr, Call, @methodaccess {

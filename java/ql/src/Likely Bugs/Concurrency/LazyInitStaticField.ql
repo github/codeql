@@ -16,7 +16,9 @@
 import java
 
 /** A comparison (using `==`) with `null`. */
-class NullEQExpr extends EQExpr { NullEQExpr() { exists(NullLiteral l | l.getParent() = this) } }
+class NullEQExpr extends EQExpr {
+  NullEQExpr() { exists(NullLiteral l | l.getParent() = this) }
+}
 
 /** An assignment to a static field. */
 class StaticFieldInit extends AssignExpr {

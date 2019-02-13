@@ -20,7 +20,9 @@ module Ssa {
     }
 
     /** An instance field or property. */
-    class InstanceFieldOrProp extends FieldOrProp { InstanceFieldOrProp() { not this.isStatic() } }
+    class InstanceFieldOrProp extends FieldOrProp {
+      InstanceFieldOrProp() { not this.isStatic() }
+    }
 
     /** An access to a field or a property. */
     class FieldOrPropAccess extends AssignableAccess, QualifiableExpr {
@@ -1185,7 +1187,9 @@ module Ssa {
       )
     }
 
-    private class PrunedCallable extends Callable { PrunedCallable() { pruneFromRight(this) } }
+    private class PrunedCallable extends Callable {
+      PrunedCallable() { pruneFromRight(this) }
+    }
 
     private predicate callEdgePruned(PrunedCallable c1, PrunedCallable c2) { callEdge(c1, c2) }
 
@@ -1421,7 +1425,9 @@ module Ssa {
       )
     }
 
-    private class PrunedCallable extends Callable { PrunedCallable() { pruneFromRight(this) } }
+    private class PrunedCallable extends Callable {
+      PrunedCallable() { pruneFromRight(this) }
+    }
 
     private predicate callEdgePruned(PrunedCallable c1, PrunedCallable c2) { callEdge(c1, c2) }
 
@@ -1630,7 +1636,9 @@ module Ssa {
       )
     }
 
-    private class PrunedCallable extends Callable { PrunedCallable() { pruneFromRight(this) } }
+    private class PrunedCallable extends Callable {
+      PrunedCallable() { pruneFromRight(this) }
+    }
 
     private predicate callEdgePruned(PrunedCallable c1, PrunedCallable c2) { callEdge(c1, c2) }
 
@@ -2501,5 +2509,7 @@ module Ssa {
   }
 
   /** INTERNAL: Do not use. */
-  module Internal { import SsaDefReaches }
+  module Internal {
+    import SsaDefReaches
+  }
 }

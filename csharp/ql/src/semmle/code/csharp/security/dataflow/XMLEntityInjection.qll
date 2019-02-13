@@ -16,7 +16,9 @@ module XMLEntityInjection {
    */
   abstract class Source extends DataFlow::Node { }
 
-  class RemoteSource extends Source { RemoteSource() { this instanceof RemoteFlowSource } }
+  class RemoteSource extends Source {
+    RemoteSource() { this instanceof RemoteFlowSource }
+  }
 
   /**
    * A data flow sink for untrusted user input used in XML processing.

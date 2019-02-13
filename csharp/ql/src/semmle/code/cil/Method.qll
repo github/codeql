@@ -176,13 +176,19 @@ class Method extends DotNet::Callable, Element, Member, TypeContainer, DataFlowN
 }
 
 /** A destructor/finalizer. */
-class Destructor extends Method, DotNet::Destructor { Destructor() { this.isFinalizer() } }
+class Destructor extends Method, DotNet::Destructor {
+  Destructor() { this.isFinalizer() }
+}
 
 /** A constructor. */
-class Constructor extends Method, DotNet::Constructor { Constructor() { this.isConstructor() } }
+class Constructor extends Method, DotNet::Constructor {
+  Constructor() { this.isConstructor() }
+}
 
 /** A static/class constructor. */
-class StaticConstructor extends Constructor { StaticConstructor() { this.isStaticConstructor() } }
+class StaticConstructor extends Constructor {
+  StaticConstructor() { this.isStaticConstructor() }
+}
 
 /** An instance constructor. */
 class InstanceConstructor extends Constructor {

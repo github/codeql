@@ -4,7 +4,9 @@ import csharp
 import semmle.code.csharp.frameworks.Test
 
 /** The `Xunit` namespace. */
-class XUnitNamespace extends Namespace { XUnitNamespace() { this.hasQualifiedName("Xunit") } }
+class XUnitNamespace extends Namespace {
+  XUnitNamespace() { this.hasQualifiedName("Xunit") }
+}
 
 /** An xUnit test attribute. */
 class XUnitTestCaseAttribute extends Attribute {

@@ -93,9 +93,7 @@ module SensitiveExpr {
    * Instead, use the predicates below to work with classifications.
    */
   class Classification extends string {
-    Classification() {
-      this = "secret" or this = "id" or this = "password" or this = "certificate"
-    }
+    Classification() { this = "secret" or this = "id" or this = "password" or this = "certificate" }
   }
 
   /** Gets the classification for secret or trusted data. */
@@ -148,8 +146,7 @@ abstract class SensitiveVariableAccess extends SensitiveExpr {
 }
 
 /** A write to a location that might contain sensitive data. */
-abstract class SensitiveWrite extends DataFlow::Node {
-}
+abstract class SensitiveWrite extends DataFlow::Node { }
 
 /** A write to a variable or property that might contain sensitive data. */
 private class BasicSensitiveWrite extends SensitiveWrite {
@@ -248,5 +245,6 @@ class CleartextPasswordExpr extends SensitiveExpr {
   CleartextPasswordExpr() { this.(SensitiveExpr).getClassification() = SensitiveExpr::password() }
 
   override string describe() { none() }
+
   override SensitiveExpr::Classification getClassification() { none() }
 }

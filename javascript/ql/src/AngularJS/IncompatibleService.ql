@@ -134,9 +134,7 @@ where
       isCompatibleRequestedService(request, compatibleKind) and
       not isWildcardKind(compatibleKind)
     |
-      "'" + compatibleKind + "'", ", "
-      order by
-        compatibleKind
+      "'" + compatibleKind + "'", ", " order by compatibleKind
     ).regexpReplaceAll(",(?=[^,]+$)", " or") and
   (
     isServiceDirectiveOrFilterFunction(request) and

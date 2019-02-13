@@ -12,7 +12,9 @@
 
 import java
 
-class CharType extends PrimitiveType { CharType() { this.hasName("char") } }
+class CharType extends PrimitiveType {
+  CharType() { this.hasName("char") }
+}
 
 private Type getABranchType(ConditionalExpr ce) {
   result = ce.getTrueExpr().getType() or

@@ -38,7 +38,9 @@ module Closure {
     Expr getAnArgument() { result = getArgument(_) }
   }
 
-  abstract private class GoogNamespaceRef extends ExprOrStmt { abstract string getNamespaceId(); }
+  abstract private class GoogNamespaceRef extends ExprOrStmt {
+    abstract string getNamespaceId();
+  }
 
   /**
    * A call to `goog.provide`.

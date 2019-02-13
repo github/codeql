@@ -59,9 +59,7 @@ predicate regExpMatchesString(RegExpTerm t, string s) {
     s = concat(int i, RegExpTerm child |
         child = seq.getChild(i)
       |
-        any(string subs | regExpMatchesString(child, subs))
-        order by
-          i
+        any(string subs | regExpMatchesString(child, subs)) order by i
       )
   )
 }

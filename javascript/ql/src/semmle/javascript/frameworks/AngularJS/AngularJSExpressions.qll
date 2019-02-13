@@ -302,9 +302,7 @@ private module Lexer {
           op = "%" or
           op = "|"
         |
-          "\\Q" + op + "\\E", "|"
-          order by
-            op.length() desc
+          "\\Q" + op + "\\E", "|" order by op.length() desc
         )
     }
   }
@@ -392,9 +390,7 @@ abstract class NgAstNode extends TNode {
         child = getChild(idx) and
         not child instanceof Empty
       |
-        child.pp(), " "
-        order by
-          idx
+        child.pp(), " " order by idx
       )
   }
 

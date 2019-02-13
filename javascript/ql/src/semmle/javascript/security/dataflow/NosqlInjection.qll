@@ -76,5 +76,7 @@ module NosqlInjection {
   }
 
   /** An expression interpreted as a NoSQL query, viewed as a sink. */
-  class NosqlQuerySink extends Sink, DataFlow::ValueNode { override NoSQL::Query astNode; }
+  class NosqlQuerySink extends Sink, DataFlow::ValueNode {
+    override NoSQL::Query astNode;
+  }
 }

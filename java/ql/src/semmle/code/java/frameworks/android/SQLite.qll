@@ -4,7 +4,9 @@ class TypeSQLiteDatabase extends Class {
   TypeSQLiteDatabase() { hasQualifiedName("android.database.sqlite", "SQLiteDatabase") }
 }
 
-abstract class SQLiteRunner extends Method { abstract int sqlIndex(); }
+abstract class SQLiteRunner extends Method {
+  abstract int sqlIndex();
+}
 
 class ExecSqlMethod extends SQLiteRunner {
   ExecSqlMethod() {

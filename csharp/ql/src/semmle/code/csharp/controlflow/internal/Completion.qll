@@ -433,10 +433,14 @@ class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
 }
 
 /** A Boolean `true` completion. */
-class TrueCompletion extends BooleanCompletion { TrueCompletion() { getOuterValue() = true } }
+class TrueCompletion extends BooleanCompletion {
+  TrueCompletion() { getOuterValue() = true }
+}
 
 /** A Boolean `false` completion. */
-class FalseCompletion extends BooleanCompletion { FalseCompletion() { getOuterValue() = false } }
+class FalseCompletion extends BooleanCompletion {
+  FalseCompletion() { getOuterValue() = false }
+}
 
 /**
  * A completion that represents evaluation of an expression that is either

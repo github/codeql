@@ -12,10 +12,14 @@
 import java
 
 /** An expression of primitive type. */
-class PrimitiveExpr extends Expr { PrimitiveExpr() { this.getType() instanceof PrimitiveType } }
+class PrimitiveExpr extends Expr {
+  PrimitiveExpr() { this.getType() instanceof PrimitiveType }
+}
 
 /** An expression of boxed type. */
-class BoxedExpr extends Expr { BoxedExpr() { this.getType() instanceof BoxedType } }
+class BoxedExpr extends Expr {
+  BoxedExpr() { this.getType() instanceof BoxedType }
+}
 
 /**
  * Relate expressions and the variables they flow into in one step,

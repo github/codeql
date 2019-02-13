@@ -199,8 +199,7 @@ module Internal {
     Expr target;
 
     UndefinedNullCrashUse() {
-      exists (Expr thrower |
-        stripNotsAndParens(this, _) = thrower |
+      exists(Expr thrower | stripNotsAndParens(this, _) = thrower |
         thrower.(InvokeExpr).getCallee().getUnderlyingValue() = target
         or
         thrower.(PropAccess).getBase().getUnderlyingValue() = target
@@ -224,7 +223,8 @@ module Internal {
     Expr target;
 
     NonFunctionCallCrashUse() {
-      stripNotsAndParens(this, _).(InvokeExpr).getCallee().getUnderlyingValue() = target }
+      stripNotsAndParens(this, _).(InvokeExpr).getCallee().getUnderlyingValue() = target
+    }
 
     /**
      * Gets the subexpression that will cause an exception to be thrown if it is not a `function`.
@@ -276,9 +276,7 @@ module Internal {
         guardVar = stripNotsAndParens(this.asExpr(), polarity) and
         guardVar.getVariable() = useVar.getVariable()
       |
-        getAGuardedExpr(this.asExpr())
-            .(UndefinedNullCrashUse)
-            .getVulnerableSubexpression() = useVar and
+        getAGuardedExpr(this.asExpr()).(UndefinedNullCrashUse).getVulnerableSubexpression() = useVar and
         // exclude types whose truthiness depend on the value
         not isStringOrNumOrBool(guardVar.analyze().getAType())
       )
@@ -308,9 +306,7 @@ module Internal {
         test.getOperand() = guardVar and
         guardVar.getVariable() = useVar.getVariable()
       |
-        getAGuardedExpr(guard)
-            .(UndefinedNullCrashUse)
-            .getVulnerableSubexpression() = useVar
+        getAGuardedExpr(guard).(UndefinedNullCrashUse).getVulnerableSubexpression() = useVar
       )
     }
 
@@ -376,9 +372,7 @@ module Internal {
         test.getOperand() = guardVar and
         guardVar.getVariable() = useVar.getVariable()
       |
-        getAGuardedExpr(guard)
-            .(NonFunctionCallCrashUse)
-            .getVulnerableSubexpression() = useVar
+        getAGuardedExpr(guard).(NonFunctionCallCrashUse).getVulnerableSubexpression() = useVar
       ) and
       test.getTag() = "function"
     }

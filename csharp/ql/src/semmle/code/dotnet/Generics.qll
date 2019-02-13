@@ -31,9 +31,7 @@ abstract class UnboundGeneric extends Generic {
     result = concat(int i |
         exists(this.getTypeParameter(i))
       |
-        this.getTypeParameter(i).toStringWithTypes(), ", "
-        order by
-          i
+        this.getTypeParameter(i).toStringWithTypes(), ", " order by i
       )
   }
 }
@@ -58,9 +56,7 @@ abstract class ConstructedGeneric extends Generic {
     result = concat(int i |
         exists(this.getTypeArgument(i))
       |
-        this.getTypeArgument(i).toStringWithTypes(), ", "
-        order by
-          i
+        this.getTypeArgument(i).toStringWithTypes(), ", " order by i
       )
   }
 }

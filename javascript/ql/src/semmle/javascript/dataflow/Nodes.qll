@@ -218,7 +218,9 @@ class MethodCallNode extends CallNode {
 }
 
 /** A data flow node corresponding to a `new` expression. */
-class NewNode extends InvokeNode { override DataFlow::Impl::NewNodeDef impl; }
+class NewNode extends InvokeNode {
+  override DataFlow::Impl::NewNodeDef impl;
+}
 
 /** A data flow node corresponding to the `this` parameter in a function or `this` at the top-level. */
 class ThisNode extends DataFlow::Node, DataFlow::SourceNode {
@@ -554,7 +556,9 @@ class ClassNode extends DataFlow::SourceNode {
    *
    * Does not include methods from superclasses.
    */
-  FunctionNode getInstanceMethod(string name) { result = impl.getInstanceMember(name, MemberKind::method()) }
+  FunctionNode getInstanceMethod(string name) {
+    result = impl.getInstanceMember(name, MemberKind::method())
+  }
 
   /**
    * Gets an instance method declared in this class.
@@ -570,7 +574,9 @@ class ClassNode extends DataFlow::SourceNode {
    *
    * Does not include members from superclasses.
    */
-  FunctionNode getInstanceMember(string name, MemberKind kind) { result = impl.getInstanceMember(name, kind) }
+  FunctionNode getInstanceMember(string name, MemberKind kind) {
+    result = impl.getInstanceMember(name, kind)
+  }
 
   /**
    * Gets an instance method, getter, or setter with the given kind.
@@ -743,7 +749,7 @@ module ClassNode {
       kind = MemberKind::method() and
       result = getAPrototypeReference().getAPropertySource(name)
       or
-      exists (PropertyAccessor accessor |
+      exists(PropertyAccessor accessor |
         accessor = getAnAccessor(kind) and
         accessor.getName() = name and
         result = accessor.getInit().flow()
@@ -754,15 +760,13 @@ module ClassNode {
       kind = MemberKind::method() and
       result = getAPrototypeReference().getAPropertyWrite().getRhs().getALocalSource()
       or
-      exists (PropertyAccessor accessor |
+      exists(PropertyAccessor accessor |
         accessor = getAnAccessor(kind) and
         result = accessor.getInit().flow()
       )
     }
 
-    override FunctionNode getStaticMethod(string name) {
-      result = getAPropertySource(name)
-    }
+    override FunctionNode getStaticMethod(string name) { result = getAPropertySource(name) }
 
     override FunctionNode getAStaticMethod() {
       result = getAPropertyWrite().getRhs().getALocalSource()

@@ -578,9 +578,7 @@ module AssignableDefinitions {
       leaf = rank[result + 1](Expr leaf0 |
           exists(TTupleAssignmentDefinition(ae, leaf0))
         |
-          leaf0
-          order by
-            leaf0.getLocation().getStartLine(), leaf0.getLocation().getStartColumn()
+          leaf0 order by leaf0.getLocation().getStartLine(), leaf0.getLocation().getStartColumn()
         )
     }
 

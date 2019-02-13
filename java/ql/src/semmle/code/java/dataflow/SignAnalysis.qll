@@ -461,7 +461,10 @@ private Sign fieldSign(Field f) {
     else
       if f.hasName("MAX_VALUE")
       then result = TPos()
-      else if f.hasName("MIN_VALUE") then result = TNeg() else any()
+      else
+        if f.hasName("MIN_VALUE")
+        then result = TNeg()
+        else any()
 }
 
 /** Gets a possible sign for `e`. */

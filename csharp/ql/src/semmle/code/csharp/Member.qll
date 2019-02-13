@@ -339,7 +339,10 @@ class Parameterizable extends Declaration, @parameterizable {
       else
         if p.isRef()
         then prefix = "ref "
-        else if p.isParams() then prefix = "params " else prefix = ""
+        else
+          if p.isParams()
+          then prefix = "params "
+          else prefix = ""
     )
   }
 

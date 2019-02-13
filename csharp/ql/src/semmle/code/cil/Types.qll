@@ -52,10 +52,14 @@ class Enum extends ValueOrRefType {
 }
 
 /** A `class`. */
-class Class extends ValueOrRefType { Class() { this.isClass() } }
+class Class extends ValueOrRefType {
+  Class() { this.isClass() }
+}
 
 /** An `interface`. */
-class Interface extends ValueOrRefType { Interface() { this.isInterface() } }
+class Interface extends ValueOrRefType {
+  Interface() { this.isInterface() }
+}
 
 /** An array. */
 class ArrayType extends DotNet::ArrayType, Type, @cil_array_type {
@@ -277,4 +281,6 @@ class CharType extends IntegralType {
 }
 
 /** The type `System.Type`. */
-class SystemType extends ValueOrRefType { SystemType() { this.isSystemType("Type") } }
+class SystemType extends ValueOrRefType {
+  SystemType() { this.isSystemType("Type") }
+}

@@ -110,9 +110,7 @@ abstract private class GeneratedType extends ValueOrRefType, GeneratedElement {
               t = this.getAnInterestingBaseType() and
               (if t instanceof Class then i = 0 else i = 1)
             |
-              stubClassName(t), ", "
-              order by
-                i
+              stubClassName(t), ", " order by i
             )
       else result = ""
   }
@@ -265,7 +263,10 @@ private string stubAccessibility(Member m) {
       else
         if m.isPrivate()
         then result = "private "
-        else if m.isInternal() then result = "internal " else result = "unknown-accessibility"
+        else
+          if m.isInternal()
+          then result = "internal "
+          else result = "unknown-accessibility"
 }
 
 private string stubModifiers(Member m) {
@@ -285,7 +286,10 @@ private string stubOverride(Member m) {
     else
       if m.(Virtualizable).isAbstract()
       then result = "abstract "
-      else if m.(Virtualizable).isOverride() then result = "override " else result = ""
+      else
+        if m.(Virtualizable).isOverride()
+        then result = "override "
+        else result = ""
 }
 
 private string stubQualifiedNamePrefix(ValueOrRefType t) {
@@ -338,9 +342,7 @@ private string stubClassName(Type t) {
                               concat(int i, Type element |
                                 element = t.(TupleType).getElementType(i)
                               |
-                                stubClassName(element), ","
-                                order by
-                                  i
+                                stubClassName(element), "," order by i
                               ) + ")"
                         else
                           if t instanceof ValueOrRefType
@@ -358,9 +360,7 @@ private string stubGenericArguments(ValueOrRefType t) {
         concat(int n |
           exists(t.(UnboundGenericType).getTypeParameter(n))
         |
-          t.(UnboundGenericType).getTypeParameter(n).getName(), ","
-          order by
-            n
+          t.(UnboundGenericType).getTypeParameter(n).getName(), "," order by n
         ) + ">"
   else
     if t instanceof ConstructedType
@@ -369,9 +369,7 @@ private string stubGenericArguments(ValueOrRefType t) {
           concat(int n |
             exists(t.(ConstructedType).getTypeArgument(n))
           |
-            stubClassName(t.(ConstructedType).getTypeArgument(n)), ","
-            order by
-              n
+            stubClassName(t.(ConstructedType).getTypeArgument(n)), "," order by n
           ) + ">"
     else result = ""
 }
@@ -383,9 +381,7 @@ private string stubGenericMethodParams(Method m) {
         concat(int n, TypeParameter param |
           param = m.(UnboundGenericMethod).getTypeParameter(n)
         |
-          param.getName(), ","
-          order by
-            n
+          param.getName(), "," order by n
         ) + ">"
   else result = ""
 }
@@ -419,7 +415,10 @@ private string stubParameterModifiers(Parameter p) {
       else
         if p.isIn()
         then result = "" // Only C# 7.1 so ignore
-        else if p.hasExtensionMethodModifier() then result = "this " else result = ""
+        else
+          if p.hasExtensionMethodModifier()
+          then result = "this "
+          else result = ""
 }
 
 private string stubDefaultValue(Parameter p) {

@@ -152,9 +152,7 @@ private predicate rankedPhiInput(
   edge = rank[r](SsaReadPositionPhiInputEdge e |
       e.phiInput(phi, _)
     |
-      e
-      order by
-        getId(e.getOrigBlock())
+      e order by getId(e.getOrigBlock())
     )
 }
 

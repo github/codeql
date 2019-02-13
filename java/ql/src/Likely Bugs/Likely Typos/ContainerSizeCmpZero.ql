@@ -15,7 +15,9 @@ import semmle.code.java.Collections
 import semmle.code.java.Maps
 
 /** A union of the possible kinds of container size calls. */
-abstract class SizeOfContainer extends Expr { abstract string getContainerKind(); }
+abstract class SizeOfContainer extends Expr {
+  abstract string getContainerKind();
+}
 
 /** A read access to the `length` field of an array. */
 class ArrayLengthRead extends FieldRead, SizeOfContainer {

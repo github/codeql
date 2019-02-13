@@ -504,7 +504,9 @@ abstract class InitializerMethod extends Method { }
  * A static initializer is a method that contains all static
  * field initializations and static initializer blocks.
  */
-class StaticInitializer extends InitializerMethod { StaticInitializer() { hasName("<clinit>") } }
+class StaticInitializer extends InitializerMethod {
+  StaticInitializer() { hasName("<clinit>") }
+}
 
 /**
  * An instance initializer is a method that contains field initializations
@@ -604,4 +606,6 @@ class Field extends Member, ExprParent, @field, Variable {
 }
 
 /** An instance field. */
-class InstanceField extends Field { InstanceField() { not this.isStatic() } }
+class InstanceField extends Field {
+  InstanceField() { not this.isStatic() }
+}

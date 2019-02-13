@@ -14,7 +14,9 @@ module HardcodedCredentials {
   /**
    * A data flow sink for hardcoded credentials.
    */
-  abstract class Sink extends DataFlow::Node { abstract string getKind(); }
+  abstract class Sink extends DataFlow::Node {
+    abstract string getKind();
+  }
 
   /**
    * A sanitizer for hardcoded credentials.

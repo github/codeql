@@ -106,7 +106,7 @@ module RangeAnalysis {
     isRelevant(node) and
     strictcount(node.getAPredecessor()) = 1 and
     // exclude parameters with default values
-    not exists (Parameter p |
+    not exists(Parameter p |
       DataFlow::parameterNode(p) = node and
       exists(p.getDefault())
     )

@@ -30,7 +30,9 @@ class RuntimeMethod extends RuntimeCallable {
 }
 
 /** A run-time instance method. */
-class RuntimeInstanceMethod extends RuntimeMethod { RuntimeInstanceMethod() { not isStatic() } }
+class RuntimeInstanceMethod extends RuntimeMethod {
+  RuntimeInstanceMethod() { not isStatic() }
+}
 
 /** A run-time operator. */
 class RuntimeOperator extends Operator, RuntimeCallable { }

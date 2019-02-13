@@ -244,7 +244,9 @@ private module AsmCrypto {
  * A model of the browserid-crypto library.
  */
 private module BrowserIdCrypto {
-  private class Key extends CryptographicKey { Key() { this = any(Apply apply).getKey() } }
+  private class Key extends CryptographicKey {
+    Key() { this = any(Apply apply).getKey() }
+  }
 
   private class Apply extends CryptographicOperation {
     CryptographicAlgorithm algorithm; // non-functional
@@ -650,7 +652,9 @@ private module Forge {
     override CryptographicAlgorithm getAlgorithm() { result = algorithm }
   }
 
-  private class Key extends CryptographicKey { Key() { this = any(KeyCipher cipher).getKey() } }
+  private class Key extends CryptographicKey {
+    Key() { this = any(KeyCipher cipher).getKey() }
+  }
 }
 
 /**

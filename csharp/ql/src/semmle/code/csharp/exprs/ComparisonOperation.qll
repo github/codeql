@@ -21,12 +21,16 @@ class EqualityOperation extends ComparisonOperation, @equality_op_expr { }
 /**
  * An equals operation, for example `x == y`.
  */
-class EQExpr extends EqualityOperation, @eq_expr { override string getOperator() { result = "==" } }
+class EQExpr extends EqualityOperation, @eq_expr {
+  override string getOperator() { result = "==" }
+}
 
 /**
  * A not-equals operation, for example `x != y`.
  */
-class NEExpr extends EqualityOperation, @ne_expr { override string getOperator() { result = "!=" } }
+class NEExpr extends EqualityOperation, @ne_expr {
+  override string getOperator() { result = "!=" }
+}
 
 /**
  * A relational operation. Either a greater-than operation (`GTExpr`),

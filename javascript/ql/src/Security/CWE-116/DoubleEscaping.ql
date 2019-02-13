@@ -36,9 +36,7 @@ string getStringValue(RegExpLiteral rl) {
     result = strictconcat(RegExpTerm ch, int i |
         ch = root.(RegExpSequence).getChild(i)
       |
-        ch.(RegExpConstant).getValue()
-        order by
-          i
+        ch.(RegExpConstant).getValue() order by i
       )
   )
 }
