@@ -71,7 +71,7 @@ module Electron {
   }
 
   /**
-   * Provides classes and predicates for modelling Electron IPC.
+   * Provides classes and predicates for modelling Electron inter-process communication (IPC).
    */
   private module IPC {
     class Process extends string {
