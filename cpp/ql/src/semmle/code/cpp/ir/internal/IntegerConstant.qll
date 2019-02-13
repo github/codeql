@@ -32,6 +32,14 @@ predicate hasValue(IntValue n) {
 }
 
 /**
+ * Returns a string representation of `n`. If `n` does not have a known value, the result is "??".
+ */
+bindingset[n]
+string intValueToString(IntValue n) {
+  if hasValue(n) then result = n.toString() else result = "??"
+}
+
+/**
  * Holds if the value `f` is within the range of representable integers.
  */
 pragma[inline]
@@ -198,4 +206,52 @@ IntValue compareGE(IntValue a, IntValue b) {
 bindingset[a]
 IntValue neg(IntValue a) {
   result = -a  // -INT_MIN = INT_MIN, so this preserves unknown
+}
+
+/**
+ * Holds if `a` is equal to `b`. Does not hold if either `a` or `b` is unknown.
+ */
+bindingset[a, b]
+predicate isEQ(IntValue a, IntValue b) {
+  hasValue(a) and hasValue(b) and a = b
+}
+
+/**
+ * Holds if `a` is not equal to `b`. Does not hold if either `a` or `b` is unknown.
+ */
+bindingset[a, b]
+predicate isNE(IntValue a, IntValue b) {
+  hasValue(a) and hasValue(b) and a != b
+}
+
+/**
+ * Holds if `a` is less than `b`. Does not hold if either `a` or `b` is unknown.
+ */
+bindingset[a, b]
+predicate isLT(IntValue a, IntValue b) {
+  hasValue(a) and hasValue(b) and a < b
+}
+
+/**
+ * Holds if `a` is less than or equal to `b`. Does not hold if either `a` or `b` is unknown.
+ */
+bindingset[a, b]
+predicate isLE(IntValue a, IntValue b) {
+  hasValue(a) and hasValue(b) and a <= b
+}
+
+/**
+ * Holds if `a` is greater than `b`. Does not hold if either `a` or `b` is unknown.
+ */
+bindingset[a, b]
+predicate isGT(IntValue a, IntValue b) {
+  hasValue(a) and hasValue(b) and a > b
+}
+
+/**
+ * Holds if `a` is greater than or equal to `b`. Does not hold if either `a` or `b` is unknown.
+ */
+bindingset[a, b]
+predicate isGE(IntValue a, IntValue b) {
+  hasValue(a) and hasValue(b) and a >= b
 }

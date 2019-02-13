@@ -69,3 +69,36 @@ void chiNodeAtEndOfLoop(int n, char* p) {
   while (n-- > 0)
     * p++ = 0;
 }
+
+void Escape(void* p);
+
+void MustExactlyOverlap(Point a) {
+  Point b = a;
+}
+
+void MustExactlyOverlapEscaped(Point a) {
+  Point b = a;
+  Escape(&a);
+}
+
+void MustTotallyOverlap(Point a) {
+  int x = a.x;
+  int y = a.y;
+}
+
+void MustTotallyOverlapEscaped(Point a) {
+  int x = a.x;
+  int y = a.y;
+  Escape(&a);
+}
+
+void MayPartiallyOverlap(int x, int y) {
+  Point a = { x, y };
+  Point b = a;
+}
+
+void MayPartiallyOverlapEscaped(int x, int y) {
+  Point a = { x, y };
+  Point b = a;
+  Escape(&a);
+}

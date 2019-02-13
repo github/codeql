@@ -499,6 +499,16 @@ class Instruction extends Construction::TInstruction {
   }
 
   /**
+   * Returns the operand that holds the memory address to which the instruction stores its
+   * result, if any. For example, in `m3 = Store r1, r2`, the result of `getResultAddressOperand()`
+   * is `r1`.
+   */
+  final AddressOperand getResultAddressOperand() {
+    getResultMemoryAccess().usesAddressOperand() and
+    result.getUseInstruction() = this
+  }
+
+  /**
    * Holds if the result of this instruction is precisely modeled in SSA. Always
    * holds for a register result. For a memory result, a modeled result is
    * connected to its actual uses. An unmodeled result is connected to the
@@ -1340,7 +1350,7 @@ class CallSideEffectInstruction extends SideEffectInstruction {
   }
 
   override final MemoryAccessKind getResultMemoryAccess() {
-    result instanceof EscapedMemoryAccess
+    result instanceof EscapedMayMemoryAccess
   }
 }
 
