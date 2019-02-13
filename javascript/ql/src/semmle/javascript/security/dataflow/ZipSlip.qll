@@ -36,14 +36,25 @@ module ZipSlip {
   }
 
   /**
-   * An access to the filepath of an entry of a zipfile being extracted by
-   * npm module `unzip`.
+   * An access to the filepath of an entry of a zipfile being extracted
+   * by npm module `unzip`. For example, in
+   * ```javascript
+   * const unzip = require('unzip');
+   *
+   * fs.createReadStream('archive.zip')
+   *   .pipe(unzip.Parse())
+   *   .on('entry', entry => {
+   *      const path = entry.path;
+   *   });
+   * ```
+   * there is an `UnzipEntrySource` node corresponding to
+   * the expression `entry.path`.
    */
   class UnzipEntrySource extends Source {
     UnzipEntrySource() {
       exists(DataFlow::MethodCallNode pipe, DataFlow::MethodCallNode on |
         pipe.getMethodName() = "pipe"
-        and pipe.getArgument(0) = DataFlow::moduleImport("unzip").getAMemberCall("Parse")
+        and pipe.getArgument(0).getALocalSource() = DataFlow::moduleImport("unzip").getAMemberCall("Parse")
         and on = pipe.getAMemberCall("on")
         and this = on.getCallback(1).getParameter(0).getAPropertyRead("path"))
     }
@@ -69,6 +80,14 @@ module ZipSlip {
     }
   }
 
+  /**
+   * Gets a string which suffices to search for to ensure that a
+   * filepath will not refer to parent directories.
+   */
+  string getAParentDirName() {
+    result = any(string s | s = ".." or s = "../")
+  }
+
   /** A check that a path string does not include '..' */
   class NoParentDirSanitizerGuard extends SanitizerGuard {
     StringOps::Includes incl;
@@ -78,7 +97,7 @@ module ZipSlip {
     override predicate sanitizes(boolean outcome, Expr e) {
       incl.getPolarity().booleanNot() = outcome
       and incl.getBaseString().asExpr() = e
-      and incl.getSubstring().mayHaveStringValue("..")
+      and incl.getSubstring().mayHaveStringValue(getAParentDirName())
     }
   }
 }

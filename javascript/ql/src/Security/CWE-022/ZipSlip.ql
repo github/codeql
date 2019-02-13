@@ -4,7 +4,7 @@
  *              destination file path is within the destination directory can cause files outside
  *              the destination directory to be overwritten.
  * @kind path-problem
- * @id cs/zipslip
+ * @id js/zipslip
  * @problem.severity error
  * @precision high
  * @tags security
