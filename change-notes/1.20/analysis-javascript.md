@@ -33,6 +33,7 @@
 
 | **Query**                                  | **Expected impact**          | **Change**                                                                   |
 |--------------------------------------------|------------------------------|------------------------------------------------------------------------------|
+| Ambiguous HTML id attribute                | Fewer false-positive results | This rule now treats templates more conservatively. Its precision has been revised to 'high'. |
 | Client-side cross-site scripting           | More true-positive results, fewer false-positive results. | This rule now recognizes WinJS functions that are vulnerable to HTML injection. It no longer flags certain safe uses of jQuery, and recognizes custom sanitizers. |
 | Hard-coded credentials                     | Fewer false-positive results | This rule no longer flag the empty string as a hardcoded username. |
 | Insecure randomness | More results | This rule now flags insecure uses of `crypto.pseudoRandomBytes`. |
