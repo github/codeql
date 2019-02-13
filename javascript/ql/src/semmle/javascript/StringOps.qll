@@ -141,7 +141,7 @@ module StringOps {
       (
         substring.getALocalSource().getAPropertyRead("length").flowsTo(call.getArgument(1))
         or
-        substring.asExpr().getStringValue().length() = call.getArgument(1).asExpr().getIntValue()
+        substring.getStringValue().length() = call.getArgument(1).asExpr().getIntValue()
       )
     }
 

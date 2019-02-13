@@ -67,7 +67,7 @@ module DomBasedXss {
         // _may_ be interpreted as HTML
         not exists(DataFlow::Node prefix, string strval |
           isPrefixOfJQueryHtmlString(astNode, prefix) and
-          strval = prefix.asExpr().getStringValue() and
+          strval = prefix.getStringValue() and
           not strval.regexpMatch("\\s*<.*")
         ) and
         not isDocumentURL(astNode)

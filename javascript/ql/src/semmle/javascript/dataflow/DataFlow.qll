@@ -97,13 +97,22 @@ module DataFlow {
      */
     predicate accessesGlobal(string g) { globalVarRef(g).flowsTo(this) }
 
-    /** Holds if this node may evaluate to the string `s`. */
+    /** Holds if this node may evaluate to the string `s`, possibly through local data flow. */
     predicate mayHaveStringValue(string s) { getAPredecessor().mayHaveStringValue(s) }
+
+    /** Gets the string value of this node, if it is a string literal or constant string concatenation. */
+    string getStringValue() { result = asExpr().getStringValue() }
 
     /** Holds if this node may evaluate to the Boolean value `b`. */
     predicate mayHaveBooleanValue(boolean b) {
       b = analyze().getAValue().(AbstractBoolean).getBooleanValue()
     }
+
+    /** Gets the integer value of this node, if it is an integer constant. */
+    int getIntValue() { result = asExpr().getIntValue() }
+
+    /** Gets a function value that may reach this node. */
+    FunctionNode getAFunctionValue() { result.getAstNode() = analyze().getAValue().(AbstractCallable).getFunction() }
 
     /**
      * Holds if this expression may refer to the initial value of parameter `p`.
