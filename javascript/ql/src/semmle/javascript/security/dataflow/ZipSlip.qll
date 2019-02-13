@@ -18,9 +18,7 @@ module ZipSlip {
   /**
    * A sanitizer guard for unsafe zip extraction.
    */
-  abstract class SanitizerGuard extends
-    TaintTracking::SanitizerGuardNode,
-    DataFlow::ValueNode { }
+  abstract class SanitizerGuard extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode { }
 
   /** A taint tracking configuration for Zip Slip */
   class Configuration extends TaintTracking::Configuration {
@@ -53,10 +51,12 @@ module ZipSlip {
   class UnzipEntrySource extends Source {
     UnzipEntrySource() {
       exists(DataFlow::MethodCallNode pipe, DataFlow::MethodCallNode on |
-        pipe.getMethodName() = "pipe"
-        and pipe.getArgument(0).getALocalSource() = DataFlow::moduleImport("unzip").getAMemberCall("Parse")
-        and on = pipe.getAMemberCall("on")
-        and this = on.getCallback(1).getParameter(0).getAPropertyRead("path"))
+        pipe.getMethodName() = "pipe" and
+        pipe.getArgument(0).getALocalSource() = DataFlow::moduleImport("unzip")
+              .getAMemberCall("Parse") and
+        on = pipe.getAMemberCall("on") and
+        this = on.getCallback(1).getParameter(0).getAPropertyRead("path")
+      )
     }
   }
 
@@ -75,29 +75,25 @@ module ZipSlip {
 
   /** A sink that is a file path that gets written to. */
   class FileSystemWriteSink extends Sink {
-    FileSystemWriteSink() {
-      exists(FileSystemWriteAccess fsw | fsw.getAPathArgument() = this)
-    }
+    FileSystemWriteSink() { exists(FileSystemWriteAccess fsw | fsw.getAPathArgument() = this) }
   }
 
   /**
    * Gets a string which suffices to search for to ensure that a
    * filepath will not refer to parent directories.
    */
-  string getAParentDirName() {
-    result = any(string s | s = ".." or s = "../")
-  }
+  string getAParentDirName() { result = any(string s | s = ".." or s = "../") }
 
   /** A check that a path string does not include '..' */
   class NoParentDirSanitizerGuard extends SanitizerGuard {
     StringOps::Includes incl;
 
-    NoParentDirSanitizerGuard() {  this = incl  }
+    NoParentDirSanitizerGuard() { this = incl }
 
     override predicate sanitizes(boolean outcome, Expr e) {
-      incl.getPolarity().booleanNot() = outcome
-      and incl.getBaseString().asExpr() = e
-      and incl.getSubstring().mayHaveStringValue(getAParentDirName())
+      incl.getPolarity().booleanNot() = outcome and
+      incl.getBaseString().asExpr() = e and
+      incl.getSubstring().mayHaveStringValue(getAParentDirName())
     }
   }
 }
