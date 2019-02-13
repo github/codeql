@@ -39,7 +39,7 @@ module DataFlow {
       not exists(SsaExplicitDefinition ssa | p = ssa.getDef())
     } or
     TDestructuredModuleImportNode(ImportDeclaration decl) {
-      decl.getASpecifier() instanceof NamedImportSpecifier
+      exists(decl.getASpecifier().getImportedName())
     }
 
   /**
@@ -346,10 +346,7 @@ module DataFlow {
   }
 
   /**
-   * A node referring to the module imported at a named ES2015 import declaration.
-   *
-   * Default imports and namespace imports do not fall into this category, as the
-   * SSA definition of the local variable is used as the source of the module instead.
+   * A node referring to the module imported at a named or default ES2015 import declaration.
    */
   private class DestructuredModuleImportNode extends Node, TDestructuredModuleImportNode {
     ImportDeclaration imprt;
@@ -687,13 +684,14 @@ module DataFlow {
   /**
    * A named import specifier seen as a property read on the imported module.
    */
-  private class NamedImportSpecifierAsPropRead extends PropRead {
+  private class ImportSpecifierAsPropRead extends PropRead {
     ImportDeclaration imprt;
 
-    NamedImportSpecifier spec;
+    ImportSpecifier spec;
 
-    NamedImportSpecifierAsPropRead() {
+    ImportSpecifierAsPropRead() {
       spec = imprt.getASpecifier() and
+      exists(spec.getImportedName()) and
       exists(SsaExplicitDefinition ssa |
         ssa.getDef() = spec and
         this = TSsaDefNode(ssa)
