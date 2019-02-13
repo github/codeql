@@ -10,19 +10,6 @@ predicate is_c_metaclass(Object o) {
 }
 
 
-library class ObjectOrCfg extends @py_object {
-
-    string toString() {
-        /* Not to be displayed */
-        none()
-    }
-
-    ControlFlowNode getOrigin() {
-        result = this
-    }
-
-}
-
 /** A class whose instances represents Python classes.
  *  Instances of this class represent either builtin classes 
  *  such as `list` or `str`, or program-defined Python classes 
@@ -147,13 +134,19 @@ class ClassObject extends Object {
 
     /** Whether the named attribute refers to the object and origin */
     predicate attributeRefersTo(string name, Object obj, ControlFlowNode origin) {
-        PointsTo::Types::class_attribute_lookup(this, name, obj, _, origin)
+        exists(CfgOrigin orig |
+            origin = orig.toCfgNode() and
+            PointsTo::Types::class_attribute_lookup(this, name, obj, _, orig)
+        )
     }
 
     /** Whether the named attribute refers to the object, class and origin */
     predicate attributeRefersTo(string name, Object obj, ClassObject cls, ControlFlowNode origin) {
         not obj = unknownValue() and
-        PointsTo::Types::class_attribute_lookup(this, name, obj, cls, origin)
+        exists(CfgOrigin orig |
+            origin = orig.toCfgNode() and
+            PointsTo::Types::class_attribute_lookup(this, name, obj, cls, orig)
+        )
     }
 
     /** Whether this class has a attribute named `name`, either declared or inherited.*/

@@ -31,14 +31,84 @@ private import Filters as BaseFilters
 import semmle.dataflow.SSA
 private import MRO
 
-/** Get a `ControlFlowNode` from an object or `here`.
- * If the object is a ControlFlowNode then use that, otherwise fall back on `here`
- */
-pragma[inline]
-private ControlFlowNode origin_from_object_or_here(ObjectOrCfg object, ControlFlowNode here) {
-    result = object
-    or
-    not object instanceof ControlFlowNode and result = here
+/* Use this version for speed */
+library class CfgOrigin extends @py_object {
+
+    string toString() {
+        /* Not to be displayed */
+        none()
+    }
+
+    /** Get a `ControlFlowNode` from `this` or `here`.
+     * If `this` is a ControlFlowNode then use that, otherwise fall back on `here`
+     */
+    pragma[inline]
+    ControlFlowNode asCfgNodeOrHere(ControlFlowNode here) {
+        result = this
+        or
+        not this instanceof ControlFlowNode and result = here
+    }
+
+    ControlFlowNode toCfgNode() {
+        result = this
+    }
+
+    pragma[inline]
+    CfgOrigin fix(ControlFlowNode here) {
+        if this = unknownValue() then
+            result = here
+        else
+            result = this
+    }
+
+}
+
+/* Use this version for stronger type-checking */
+//private newtype TCfgOrigin =
+//    TUnknownOrigin()
+//    or
+//    TCfgOrigin(ControlFlowNode f)
+//
+//library class CfgOrigin extends TCfgOrigin {
+//
+//    string toString() {
+//        /* Not to be displayed */
+//        none()
+//    }
+//
+//    /** Get a `ControlFlowNode` from `this` or `here`.
+//     * If `this` is a ControlFlowNode then use that, otherwise fall back on `here`
+//     */
+//    pragma[inline]
+//    ControlFlowNode asCfgNodeOrHere(ControlFlowNode here) {
+//        this = TUnknownOrigin() and result = here
+//        or
+//        this = TCfgOrigin(result)
+//    }
+//
+//    ControlFlowNode toCfgNode() {
+//        this = TCfgOrigin(result)
+//    }
+//
+//    CfgOrigin fix(ControlFlowNode here) {
+//        this = TUnknownOrigin() and result = TCfgOrigin(here)
+//        or
+//        not this = TUnknownOrigin() and result = this
+//    }
+//}
+//
+
+
+module CfgOrigin {
+
+    CfgOrigin fromCfgNode(ControlFlowNode f) {
+        result = f
+    }
+
+    CfgOrigin unknown() {
+        result = unknownValue()
+    }
+
 }
 
 module PointsTo {
@@ -114,7 +184,7 @@ module PointsTo {
         /** INTERNAL -- Do not use.
          *
          * Holds if `package.name` points to `(value, cls, origin)`, where `package` is a package object. */
-        cached predicate package_attribute_points_to(PackageObject package, string name, Object value, ClassObject cls, ObjectOrCfg origin) {
+        cached predicate package_attribute_points_to(PackageObject package, string name, Object value, ClassObject cls, CfgOrigin origin) {
             py_module_attributes(package.getInitModule().getModule(), name, value, cls, origin)
             or
             exists(Module init |
@@ -131,20 +201,19 @@ module PointsTo {
             )
             or
             package.hasNoInitModule() and
-            value = package.submodule(name) and cls = theModuleType() and origin = value
+            value = package.submodule(name) and cls = theModuleType() and origin = CfgOrigin::fromCfgNode(value)
         }
 
         /** INTERNAL -- `Use m.attributeRefersTo(name, obj, origin)` instead.
          *
          * Holds if `m.name` points to `(value, cls, origin)`, where `m` is a (source) module. */
-        cached predicate py_module_attributes(Module m, string name, Object obj, ClassObject cls, ControlFlowNode origin) {
-            exists(EssaVariable var, ControlFlowNode exit, ObjectOrCfg orig, PointsToContext imp |
+        cached predicate py_module_attributes(Module m, string name, Object obj, ClassObject cls, CfgOrigin origin) {
+            exists(EssaVariable var, ControlFlowNode exit, PointsToContext imp |
                 exit =  m.getANormalExit() and var.getAUse() = exit and
                 var.getSourceVariable().getName() = name and
-                ssa_variable_points_to(var, imp, obj, cls, orig) and
+                ssa_variable_points_to(var, imp, obj, cls, origin) and
                 imp.isImport() and
-                obj != undefinedVariable() |
-                origin = origin_from_object_or_here(orig, exit)
+                obj != undefinedVariable()
             )
             or
             not exists(EssaVariable var | var.getAUse() = m.getANormalExit() and var.getSourceVariable().getName() = name) and
@@ -266,7 +335,7 @@ module PointsTo {
         }
 
         /** Holds if `var` refers to `(value, cls, origin)` given the context `context`. */
-        cached predicate ssa_variable_points_to(EssaVariable var, PointsToContext context, Object value, ClassObject cls, ObjectOrCfg origin) {
+        cached predicate ssa_variable_points_to(EssaVariable var, PointsToContext context, Object value, ClassObject cls, CfgOrigin origin) {
             SSA::ssa_definition_points_to(var.getDefinition(), context, value, cls, origin)
         }
 
@@ -417,12 +486,12 @@ module PointsTo {
         }
 
         /** Holds if `mod.name` points to `(value, cls, origin)`, where `mod` is a module object. */
-        predicate module_attribute_points_to(ModuleObject mod, string name, Object value, ClassObject cls, ObjectOrCfg origin) {
+        predicate module_attribute_points_to(ModuleObject mod, string name, Object value, ClassObject cls, CfgOrigin origin) {
             py_module_attributes(mod.getModule(), name, value, cls, origin)
             or
             package_attribute_points_to(mod, name, value, cls, origin)
             or
-            builtin_module_attribute(mod, name, value, cls) and origin = value
+            builtin_module_attribute(mod, name, value, cls) and origin = CfgOrigin::unknown()
         }
 
     }
@@ -461,7 +530,10 @@ module PointsTo {
         or
         attribute_load_points_to(f, context, value, cls, origin)
         or
-        getattr_points_to(f, context, value, cls, origin)
+        exists(CfgOrigin orig |
+            getattr_points_to(f, context, value, cls, orig) and
+            origin = orig.asCfgNodeOrHere(f)
+        )
         or
         if_exp_points_to(f, context, value, cls, origin)
         or
@@ -525,7 +597,7 @@ module PointsTo {
         result.getSourceVariable() instanceof GlobalVariable
     }
 
-    private predicate use_points_to_maybe_origin(NameNode f, PointsToContext context, Object value, ClassObject cls, ObjectOrCfg origin_or_obj) {
+    private predicate use_points_to_maybe_origin(NameNode f, PointsToContext context, Object value, ClassObject cls, CfgOrigin origin_or_obj) {
         ssa_variable_points_to(fast_local_variable(f), context, value, cls, origin_or_obj)
         or
         name_lookup_points_to_maybe_origin(f, context, value, cls, origin_or_obj)
@@ -539,7 +611,7 @@ module PointsTo {
         ssa_variable_points_to(name_local_variable(f), context, undefinedVariable(), _, _)
     }
 
-    private predicate name_lookup_points_to_maybe_origin(NameNode f, PointsToContext context, Object value, ClassObject cls, ObjectOrCfg origin_or_obj) {
+    private predicate name_lookup_points_to_maybe_origin(NameNode f, PointsToContext context, Object value, ClassObject cls, CfgOrigin origin_or_obj) {
         exists(EssaVariable var | var = name_local_variable(f) |
             ssa_variable_points_to(var, context, value, cls, origin_or_obj)
         )
@@ -548,22 +620,26 @@ module PointsTo {
         global_lookup_points_to_maybe_origin(f, context, value, cls, origin_or_obj)
     }
 
-    private predicate global_lookup_points_to_maybe_origin(NameNode f, PointsToContext context, Object value, ClassObject cls, ObjectOrCfg origin_or_obj) {
+    private predicate global_lookup_points_to_maybe_origin(NameNode f, PointsToContext context, Object value, ClassObject cls, CfgOrigin origin_or_obj) {
         ssa_variable_points_to(global_variable(f), context, value, cls, origin_or_obj)
         or
-        ssa_variable_points_to(global_variable(f), context, undefinedVariable(), _, _) and
-        potential_builtin_points_to(f, value, cls, origin_or_obj)
-        or
-        not exists(global_variable(f)) and context.appliesToScope(f.getScope()) and
-        potential_builtin_points_to(f, value, cls, origin_or_obj)
+        exists(ControlFlowNode origin |
+            origin_or_obj = CfgOrigin::fromCfgNode(origin)
+            |
+            ssa_variable_points_to(global_variable(f), context, undefinedVariable(), _, _) and
+            potential_builtin_points_to(f, value, cls, origin)
+            or
+            not exists(global_variable(f)) and context.appliesToScope(f.getScope()) and
+            potential_builtin_points_to(f, value, cls, origin)
+        )
     }
 
     /** Gets an object pointed to by a use (of a variable). */
     private predicate use_points_to(NameNode f, PointsToContext context, Object value, ClassObject cls, ControlFlowNode origin) {
-        exists(ObjectOrCfg origin_or_obj |
+        exists(CfgOrigin origin_or_obj |
             value != undefinedVariable() and
             use_points_to_maybe_origin(f, context, value, cls, origin_or_obj) |
-            origin = origin_from_object_or_here(origin_or_obj, f)
+            origin = origin_or_obj.asCfgNodeOrHere(f)
         )
     }
 
@@ -583,12 +659,15 @@ module PointsTo {
 
     /** Holds if `obj.name` points to `(value, cls, orig)`. */
     pragma [noinline]
-    private predicate class_or_module_attribute(Object obj, string name, Object value, ClassObject cls, ObjectOrCfg orig) {
+    private predicate class_or_module_attribute(Object obj, string name, Object value, ClassObject cls, CfgOrigin orig) {
         /* Normal class attributes */
         Types::class_attribute_lookup(obj, name, value, cls, orig) and cls != theStaticMethodType() and cls != theClassMethodType()
         or
         /* Static methods of the class */
-        exists(CallNode sm | Types::class_attribute_lookup(obj, name, sm, theStaticMethodType(), _) and sm.getArg(0) = value and cls = thePyFunctionType() and orig = value)
+        exists(CallNode sm | 
+            Types::class_attribute_lookup(obj, name, sm, theStaticMethodType(), _) and sm.getArg(0) = value and 
+            cls = thePyFunctionType() and orig = CfgOrigin::fromCfgNode(sm.getArg(0))
+        )
         or
         /* Module attributes */
         Layer::module_attribute_points_to(obj, name, value, cls, orig)
@@ -599,7 +678,10 @@ module PointsTo {
     private predicate instance_attribute_load_points_to(AttrNode f, PointsToContext context, Object value, ClassObject cls, ControlFlowNode origin) {
         f.isLoad() and
         exists(string name |
-            named_attribute_points_to(f.getObject(name), context, name, value, cls, origin)
+            exists(CfgOrigin orig |
+                origin = orig.asCfgNodeOrHere(f) and
+                named_attribute_points_to(f.getObject(name), context, name, value, cls, orig)
+            )
             or
             /* Static methods on the class of the instance */
             exists(CallNode sm, ClassObject icls |
@@ -634,10 +716,10 @@ module PointsTo {
     private predicate attribute_load_points_to(AttrNode f, PointsToContext context, Object value, ClassObject cls, ControlFlowNode origin) {
         instance_attribute_load_points_to(f, context, value, cls, origin)
         or
-        exists(Object cls_or_mod, string name, ObjectOrCfg orig |
+        exists(Object cls_or_mod, string name, CfgOrigin orig |
             receiver_object(f, context, cls_or_mod, name) and
             class_or_module_attribute(cls_or_mod, name, value, cls, orig) and
-            origin = origin_from_object_or_here(orig, f)
+            origin = orig.asCfgNodeOrHere(f)
         )
         or
         points_to(f.getObject(), context, unknownValue(), theUnknownType(), origin) and value = unknownValue() and cls = theUnknownType()
@@ -665,9 +747,9 @@ module PointsTo {
     /** Holds if `f` is a "from import" expression, `from mod import x` and points to `(value, cls, origin)`. */
     pragma [nomagic]
     private predicate from_import_points_to(ImportMemberNode f, PointsToContext context, Object value, ClassObject cls, ControlFlowNode origin) {
-        exists(string name, ModuleObject mod, ObjectOrCfg orig |
+        exists(string name, ModuleObject mod, CfgOrigin orig |
             points_to(f.getModule(name), context, mod, _, _) and
-            origin = origin_from_object_or_here(orig, f)
+            origin = orig.asCfgNodeOrHere(f)
             |
             mod.getSourceModule() = f.getEnclosingModule() and
             exists(EssaVariable var |
@@ -688,7 +770,7 @@ module PointsTo {
     }
 
     /** Holds if `f`  is of the form `getattr(x, "name")` and x.name points to `(value, cls, origin)`. */
-    private predicate getattr_points_to(CallNode f, PointsToContext context, Object value, ClassObject cls, ControlFlowNode origin) {
+    private predicate getattr_points_to(CallNode f, PointsToContext context, Object value, ClassObject cls, CfgOrigin origin) {
         exists(ControlFlowNode arg, string name |
             named_attribute_points_to(arg, context, name, value, cls, origin) and
             getattr(f, arg, name)
@@ -976,7 +1058,7 @@ module PointsTo {
         )
     }
 
-    predicate named_attribute_points_to(ControlFlowNode f, PointsToContext context, string name, Object value, ClassObject cls, ControlFlowNode origin) {
+    predicate named_attribute_points_to(ControlFlowNode f, PointsToContext context, string name, Object value, ClassObject cls, CfgOrigin origin) {
         exists(EssaVariable var |
             var.getAUse() = f |
             SSA::ssa_variable_named_attribute_points_to(var, context, name, value, cls, origin)
@@ -1382,7 +1464,7 @@ module PointsTo {
 
         /** Holds if the phi-function `phi` refers to `(value, cls, origin)` given the context `context`. */
         pragma [noinline]
-        private predicate ssa_phi_points_to(PhiFunction phi, PointsToContext context, Object value, ClassObject cls, ObjectOrCfg origin) {
+        private predicate ssa_phi_points_to(PhiFunction phi, PointsToContext context, Object value, ClassObject cls, CfgOrigin origin) {
             exists(EssaVariable input, BasicBlock pred |
                 input = phi.getInput(pred) and
                 ssa_variable_points_to(input, context, value, cls, origin)
@@ -1396,10 +1478,13 @@ module PointsTo {
         }
 
         /** Holds if the ESSA definition `def`  refers to `(value, cls, origin)` given the context `context`. */
-        predicate ssa_definition_points_to(EssaDefinition def, PointsToContext context, Object value, ClassObject cls, ObjectOrCfg origin) {
+        predicate ssa_definition_points_to(EssaDefinition def, PointsToContext context, Object value, ClassObject cls, CfgOrigin origin) {
             ssa_phi_points_to(def, context, value, cls, origin)
             or
-            ssa_node_definition_points_to(def, context, value, cls, origin)
+            exists(ControlFlowNode orig |
+                ssa_node_definition_points_to(def, context, value, cls, orig) and
+                origin = CfgOrigin::fromCfgNode(orig)
+            )
             or
             Filters::ssa_filter_definition_points_to(def, context, value, cls, origin)
             or
@@ -1407,7 +1492,7 @@ module PointsTo {
         }
 
         pragma [nomagic]
-        private predicate ssa_node_definition_points_to_unpruned(EssaNodeDefinition def, PointsToContext context, Object value, ClassObject cls, ObjectOrCfg origin) {
+        private predicate ssa_node_definition_points_to_unpruned(EssaNodeDefinition def, PointsToContext context, Object value, ClassObject cls, ControlFlowNode origin) {
             assignment_points_to(def, context, value, cls, origin)
             or
             parameter_points_to(def, context, value, cls, origin)
@@ -1416,11 +1501,11 @@ module PointsTo {
             or
             delete_points_to(def, context, value, cls, origin)
             or
+            module_name_points_to(def, context, value, cls, origin)
+            or
             scope_entry_points_to(def, context, value, cls, origin)
             or
             implicit_submodule_points_to(def, context, value, cls, origin)
-            or
-            module_name_points_to(def, context, value, cls, origin)
             or
             iteration_definition_points_to(def, context, value, cls, origin)
             /*
@@ -1434,13 +1519,13 @@ module PointsTo {
         }
 
         pragma [noinline]
-        private predicate ssa_node_definition_points_to(EssaNodeDefinition def, PointsToContext context, Object value, ClassObject cls, ObjectOrCfg origin) {
+        private predicate ssa_node_definition_points_to(EssaNodeDefinition def, PointsToContext context, Object value, ClassObject cls, ControlFlowNode origin) {
             reachable_definitions(def) and
             ssa_node_definition_points_to_unpruned(def, context, value, cls, origin)
         }
 
         pragma [noinline]
-        private predicate ssa_node_refinement_points_to(EssaNodeRefinement def, PointsToContext context, Object value, ClassObject cls, ObjectOrCfg origin) {
+        private predicate ssa_node_refinement_points_to(EssaNodeRefinement def, PointsToContext context, Object value, ClassObject cls, CfgOrigin origin) {
             method_callsite_points_to(def, context, value, cls, origin)
             or
             import_star_points_to(def, context, value, cls, origin)
@@ -1579,8 +1664,9 @@ module PointsTo {
                 neither_class_nor_static_method(scope)
             )
             or
-            exists(EssaVariable obj, PointsToContext caller |
-                ssa_variable_points_to(obj, caller, value, cls, origin) and
+            exists(EssaVariable obj, PointsToContext caller, CfgOrigin orig |
+                origin = orig.asCfgNodeOrHere(def.getDefiningNode()) and
+                ssa_variable_points_to(obj, caller, value, cls, orig) and
                 callsite_self_argument_transfer(obj, caller, def, context)
             )
             or
@@ -1636,7 +1722,7 @@ module PointsTo {
          * PointsTo isn't exactly how the interpreter works, but is the best approximation we can manage statically.
          */
         pragma [noinline]
-        private predicate implicit_submodule_points_to(ImplicitSubModuleDefinition def, PointsToContext context, Object value, ClassObject cls, ObjectOrCfg origin) {
+        private predicate implicit_submodule_points_to(ImplicitSubModuleDefinition def, PointsToContext context, Object value, ClassObject cls, ControlFlowNode origin) {
             exists(PackageObject package |
                 package.getInitModule().getModule() = def.getDefiningNode().getScope() |
                 value = package.submodule(def.getSourceVariable().getName()) and
@@ -1648,7 +1734,7 @@ module PointsTo {
 
         /** Implicit "definition" of `__name__` at the start of a module. */
         pragma [noinline]
-        private predicate module_name_points_to(ScopeEntryDefinition def, PointsToContext context, Object value, ClassObject cls, ObjectOrCfg origin) {
+        private predicate module_name_points_to(ScopeEntryDefinition def, PointsToContext context, Object value, ClassObject cls, ControlFlowNode origin) {
             def.getVariable().getName() = "__name__" and
             exists(Module m |
                 m = def.getScope()
@@ -1672,18 +1758,19 @@ module PointsTo {
 
         /** Definition of iteration variable in loop */
         pragma [noinline]
-        private predicate iteration_definition_points_to(IterationDefinition def, PointsToContext context, Object value, ClassObject cls, ObjectOrCfg origin) {
+        private predicate iteration_definition_points_to(IterationDefinition def, PointsToContext context, Object value, ClassObject cls, ControlFlowNode origin) {
             points_to(def.getSequence(), context, unknownValue(), _, _) and
             value = unknownValue() and cls = theUnknownType() and origin = def.getDefiningNode()
         }
 
         /** Points-to for implicit variable declarations at scope-entry. */
         pragma [noinline]
-        private predicate scope_entry_points_to(ScopeEntryDefinition def, PointsToContext context, Object value, ClassObject cls, ObjectOrCfg origin) {
+        private predicate scope_entry_points_to(ScopeEntryDefinition def, PointsToContext context, Object value, ClassObject cls, ControlFlowNode origin) {
             /* Transfer from another scope */
-            exists(EssaVariable var, PointsToContext outer |
+            exists(EssaVariable var, PointsToContext outer, CfgOrigin orig |
                 Flow::scope_entry_value_transfer(var, outer, def, context) and
-                ssa_variable_points_to(var, outer, value, cls, origin)
+                ssa_variable_points_to(var, outer, value, cls, orig) and
+                origin = orig.asCfgNodeOrHere(def.getDefiningNode())
             )
             or
             /* Undefined variable */
@@ -1703,7 +1790,7 @@ module PointsTo {
                 mod = def.getScope().getEnclosingModule() and
                 context.appliesToScope(def.getScope()) and
                 not exists(EssaVariable v | v.getSourceVariable() = var and v.getScope() = mod) and
-                builtin_name_points_to(var.getId(), value, cls) and origin = value
+                builtin_name_points_to(var.getId(), value, cls) and origin = def.getDefiningNode()
             )
         }
 
@@ -1712,7 +1799,7 @@ module PointsTo {
          * Where var may be redefined in call to `foo` if `var` escapes (is global or non-local).
          */
         pragma [noinline]
-        private predicate callsite_points_to(CallsiteRefinement def, PointsToContext context, Object value, ClassObject cls, ObjectOrCfg origin) {
+        private predicate callsite_points_to(CallsiteRefinement def, PointsToContext context, Object value, ClassObject cls, CfgOrigin origin) {
             exists(SsaSourceVariable srcvar |
                 srcvar = def.getSourceVariable() |
                 if srcvar instanceof EscapingAssignmentGlobalVariable then (
@@ -1733,7 +1820,7 @@ module PointsTo {
         }
 
         pragma [noinline]
-        private predicate callsite_points_to_python(CallsiteRefinement def, PointsToContext context, Object value, ClassObject cls, ObjectOrCfg origin) {
+        private predicate callsite_points_to_python(CallsiteRefinement def, PointsToContext context, Object value, ClassObject cls, CfgOrigin origin) {
             ssa_variable_points_to(def.getInput(), context, value, cls, origin) and
             exists(CallNode call, PythonSsaSourceVariable var |
                 call = def.getCall() and
@@ -1753,7 +1840,7 @@ module PointsTo {
         }
 
         pragma [noinline]
-        private predicate callsite_points_to_builtin(CallsiteRefinement def, PointsToContext context, Object value, ClassObject cls, ObjectOrCfg origin) {
+        private predicate callsite_points_to_builtin(CallsiteRefinement def, PointsToContext context, Object value, ClassObject cls, CfgOrigin origin) {
             ssa_variable_points_to(def.getInput(), context, value, cls, origin) and
             exists(CallNode call |
                 call = def.getCall() |
@@ -1763,51 +1850,55 @@ module PointsTo {
         }
 
         /** Pass through for `self` for the implicit re-definition of `self` in `self.foo()`. */
-        private predicate method_callsite_points_to(MethodCallsiteRefinement def, PointsToContext context, Object value, ClassObject cls, ObjectOrCfg origin) {
+        private predicate method_callsite_points_to(MethodCallsiteRefinement def, PointsToContext context, Object value, ClassObject cls, CfgOrigin origin) {
             /* The value of self remains the same, only the attributes may change */
             ssa_variable_points_to(def.getInput(), context, value, cls, origin)
         }
 
         /** Points-to for `from ... import *`. */
-        private predicate import_star_points_to(ImportStarRefinement def, PointsToContext context, Object value, ClassObject cls, ObjectOrCfg origin) {
-            exists(ModuleObject mod, string name |
-                Flow::module_and_name_for_import_star(mod, name, def, context) |
-                /* Attribute from imported module */
-                module_exports(mod, name) and
-                Layer::module_attribute_points_to(mod, name, value, cls, origin)
-            )
-            or
-            exists(EssaVariable var |
-                /* Retain value held before import */
-                Flow::variable_not_redefined_by_import_star(var, context, def) and
-                ssa_variable_points_to(var, context, value, cls, origin)
+        private predicate import_star_points_to(ImportStarRefinement def, PointsToContext context, Object value, ClassObject cls, CfgOrigin origin) {
+            exists(CfgOrigin orig |
+                origin = orig.fix(def.getDefiningNode())
+                |
+                exists(ModuleObject mod, string name |
+                    Flow::module_and_name_for_import_star(mod, name, def, context) |
+                    /* Attribute from imported module */
+                    module_exports(mod, name) and
+                    Layer::module_attribute_points_to(mod, name, value, cls, orig)
+                )
+                or
+                exists(EssaVariable var |
+                    /* Retain value held before import */
+                    Flow::variable_not_redefined_by_import_star(var, context, def) and
+                    ssa_variable_points_to(var, context, value, cls, orig)
+                )
             )
         }
 
         /** Attribute assignments have no effect as far as value tracking is concerned, except for `__class__`. */
         pragma [noinline]
-        private predicate attribute_assignment_points_to(AttributeAssignment def, PointsToContext context, Object value, ClassObject cls, ObjectOrCfg origin) {
+        private predicate attribute_assignment_points_to(AttributeAssignment def, PointsToContext context, Object value, ClassObject cls, CfgOrigin origin) {
             if def.getName() = "__class__" then
                 ssa_variable_points_to(def.getInput(), context, value, _, _) and points_to(def.getValue(), _, cls, _,_) and
-                origin = def.getDefiningNode()
+                origin = CfgOrigin::fromCfgNode(def.getDefiningNode())
             else
                 ssa_variable_points_to(def.getInput(), context, value, cls, origin)
         }
 
         /** Ignore the effects of calls on their arguments. PointsTo is an approximation, but attempting to improve accuracy would be very expensive for very little gain. */
         pragma [noinline]
-        private predicate argument_points_to(ArgumentRefinement def, PointsToContext context, Object value, ClassObject cls, ObjectOrCfg origin) {
+        private predicate argument_points_to(ArgumentRefinement def, PointsToContext context, Object value, ClassObject cls, CfgOrigin origin) {
             ssa_variable_points_to(def.getInput(), context, value, cls, origin)
         }
 
         /** Attribute deletions have no effect as far as value tracking is concerned. */
         pragma [noinline]
-        private predicate attribute_delete_points_to(EssaAttributeDeletion def, PointsToContext context, Object value, ClassObject cls, ObjectOrCfg origin) {
+        private predicate attribute_delete_points_to(EssaAttributeDeletion def, PointsToContext context, Object value, ClassObject cls, CfgOrigin origin) {
             ssa_variable_points_to(def.getInput(), context, value, cls, origin)
         }
 
         /* Data flow for attributes. These mirror the "normal" points-to predicates.
-         * For each points-to predicate `xxx_points_to(XXX def, PointsToContext context, Object value, ClassObject cls, ObjectOrCfg origin)`
+         * For each points-to predicate `xxx_points_to(XXX def, PointsToContext context, Object value, ClassObject cls, CfgOrigin origin)`
          * There is an equivalent predicate that tracks the values in attributes:
          * `xxx_named_attribute_points_to(XXX def, PointsToContext context, string name, Object value, ClassObject cls, ControlFlowNode origin)`
          *  */
@@ -1816,15 +1907,18 @@ module PointsTo {
          *
          * Hold if the attribute `name` of the ssa variable `var` refers to `(value, cls, origin)`.
          */
-        predicate ssa_variable_named_attribute_points_to(EssaVariable var, PointsToContext context, string name, Object value, ClassObject cls, ControlFlowNode origin) {
+        predicate ssa_variable_named_attribute_points_to(EssaVariable var, PointsToContext context, string name, Object value, ClassObject cls, CfgOrigin origin) {
             ssa_definition_named_attribute_points_to(var.getDefinition(), context, name, value, cls, origin)
         }
 
         /** Helper for `ssa_variable_named_attribute_points_to`. */
-        private predicate ssa_definition_named_attribute_points_to(EssaDefinition def, PointsToContext context, string name, Object value, ClassObject cls, ControlFlowNode origin) {
+        private predicate ssa_definition_named_attribute_points_to(EssaDefinition def, PointsToContext context, string name, Object value, ClassObject cls, CfgOrigin origin) {
             ssa_phi_named_attribute_points_to(def, context, name, value, cls, origin)
             or
-            ssa_node_definition_named_attribute_points_to(def, context, name, value, cls, origin)
+            exists(ControlFlowNode orig |
+                ssa_node_definition_named_attribute_points_to(def, context, name, value, cls, orig) and
+                origin = CfgOrigin::fromCfgNode(orig)
+            )
             or
             ssa_node_refinement_named_attribute_points_to(def, context, name, value, cls, origin)
             or
@@ -1833,7 +1927,7 @@ module PointsTo {
 
         /** Holds if the attribute `name` of the ssa phi-function definition `phi` refers to `(value, cls, origin)`. */
         pragma[noinline]
-        private predicate ssa_phi_named_attribute_points_to(PhiFunction phi, PointsToContext context, string name, Object value, ClassObject cls, ControlFlowNode origin) {
+        private predicate ssa_phi_named_attribute_points_to(PhiFunction phi, PointsToContext context, string name, Object value, ClassObject cls, CfgOrigin origin) {
             ssa_variable_named_attribute_points_to(phi.getAnInput(), context, name, value, cls, origin)
         }
 
@@ -1851,7 +1945,7 @@ module PointsTo {
 
         /** Helper for `ssa_definition_named_attribute_points_to`. */
         pragma[noinline]
-        private predicate ssa_node_refinement_named_attribute_points_to(EssaNodeRefinement def, PointsToContext context, string name, Object value, ClassObject cls, ControlFlowNode origin) {
+        private predicate ssa_node_refinement_named_attribute_points_to(EssaNodeRefinement def, PointsToContext context, string name, Object value, ClassObject cls, CfgOrigin origin) {
             attribute_assignment_named_attribute_points_to(def, context, name, value, cls, origin)
             or
             attribute_delete_named_attribute_points_to(def, context, name, value, cls, origin)
@@ -1865,9 +1959,10 @@ module PointsTo {
 
         pragma[noinline]
         private predicate scope_entry_named_attribute_points_to(ScopeEntryDefinition def, PointsToContext context, string name, Object value, ClassObject cls, ControlFlowNode origin) {
-            exists(EssaVariable var, PointsToContext outer |
+            exists(EssaVariable var, PointsToContext outer, CfgOrigin orig |
                 Flow::scope_entry_value_transfer(var, outer, def, context) and
-                ssa_variable_named_attribute_points_to(var, outer, name, value, cls, origin)
+                ssa_variable_named_attribute_points_to(var, outer, name, value, cls, orig) and
+                origin = orig.asCfgNodeOrHere(def.getDefiningNode())
             )
             or
             origin = def.getDefiningNode() and
@@ -1883,12 +1978,15 @@ module PointsTo {
 
         pragma[noinline]
         private predicate assignment_named_attribute_points_to(AssignmentDefinition def, PointsToContext context, string name, Object value, ClassObject cls, ControlFlowNode origin) {
-            named_attribute_points_to(def.getValue(), context, name, value, cls, origin)
+            exists(CfgOrigin orig |
+                named_attribute_points_to(def.getValue(), context, name, value, cls, orig) and
+                origin = orig.asCfgNodeOrHere(def.getDefiningNode())
+            )
         }
 
         pragma[noinline]
-        private predicate attribute_assignment_named_attribute_points_to(AttributeAssignment def, PointsToContext context, string name, Object value, ClassObject cls, ControlFlowNode origin) {
-            points_to(def.getValue(), context, value, cls, origin) and name = def.getName()
+        private predicate attribute_assignment_named_attribute_points_to(AttributeAssignment def, PointsToContext context, string name, Object value, ClassObject cls, CfgOrigin origin) {
+            points_to(def.getValue(), context, value, cls, origin.toCfgNode()) and name = def.getName()
             or
             ssa_variable_named_attribute_points_to(def.getInput(), context, name, value, cls, origin) and not name = def.getName()
         }
@@ -1917,10 +2015,10 @@ module PointsTo {
         }
 
         pragma[noinline]
-        private predicate argument_named_attribute_points_to(ArgumentRefinement def, PointsToContext context, string name, Object value, ClassObject cls, ObjectOrCfg origin) {
+        private predicate argument_named_attribute_points_to(ArgumentRefinement def, PointsToContext context, string name, Object value, ClassObject cls, CfgOrigin origin) {
             not two_args_first_arg_string(def, _, name) and ssa_variable_named_attribute_points_to(def.getInput(), context, name, value, cls, origin)
             or
-            sets_attribute(def, name) = true and points_to(def.getDefiningNode().(CallNode).getArg(2), context, value, cls, origin)
+            sets_attribute(def, name) = true and points_to(def.getDefiningNode().(CallNode).getArg(2), context, value, cls, origin.toCfgNode())
             or
             sets_attribute(def, name) = false and ssa_variable_named_attribute_points_to(def.getInput(), context, name, value, cls, origin)
         }
@@ -1938,7 +2036,7 @@ module PointsTo {
         }
 
         pragma[noinline]
-        private predicate self_callsite_named_attribute_points_to(SelfCallsiteRefinement def, PointsToContext context, string name, Object value, ClassObject cls, ObjectOrCfg origin) {
+        private predicate self_callsite_named_attribute_points_to(SelfCallsiteRefinement def, PointsToContext context, string name, Object value, ClassObject cls, CfgOrigin origin) {
             exists(EssaVariable var, PointsToContext callee |
                 ssa_variable_named_attribute_points_to(var, callee, name, value, cls, origin) and
                 callee_self_variable(var, callee, def, context)
@@ -1959,15 +2057,19 @@ module PointsTo {
 
         pragma [noinline]
         private predicate self_parameter_named_attribute_points_to(ParameterDefinition def, PointsToContext context, string name, Object value, ClassObject vcls, ControlFlowNode origin) {
-            context.isRuntime() and executes_in_runtime_context(def.getScope()) and
-            ssa_variable_named_attribute_points_to(preceding_self_variable(def), context, name, value, vcls, origin)
-            or
-            exists(FunctionObject meth, CallNode call, PointsToContext caller_context, ControlFlowNode obj |
-                meth.getFunction() = def.getScope() and
-                method_call(meth, caller_context, call) and
-                call.getFunction().(AttrNode).getObject() = obj and
-                context.fromCall(call, meth, caller_context) and
-                named_attribute_points_to(obj, caller_context, name, value, vcls, origin)
+            exists(CfgOrigin orig |
+                origin = orig.toCfgNode()
+                |
+                context.isRuntime() and executes_in_runtime_context(def.getScope()) and
+                ssa_variable_named_attribute_points_to(preceding_self_variable(def), context, name, value, vcls, orig)
+                or
+                exists(FunctionObject meth, CallNode call, PointsToContext caller_context, ControlFlowNode obj |
+                    meth.getFunction() = def.getScope() and
+                    method_call(meth, caller_context, call) and
+                    call.getFunction().(AttrNode).getObject() = obj and
+                    context.fromCall(call, meth, caller_context) and
+                    named_attribute_points_to(obj, caller_context, name, value, vcls, orig)
+                )
             )
         }
 
@@ -1975,7 +2077,7 @@ module PointsTo {
             none()
         }
 
-        private predicate attribute_delete_named_attribute_points_to(EssaAttributeDeletion def, PointsToContext context, string name, Object value, ClassObject cls, ControlFlowNode origin) {
+        private predicate attribute_delete_named_attribute_points_to(EssaAttributeDeletion def, PointsToContext context, string name, Object value, ClassObject cls, CfgOrigin origin) {
             none()
         }
 
@@ -1992,7 +2094,7 @@ module PointsTo {
 
         /* Helper for import_star_named_attribute_points_to */
         pragma [noinline, nomagic]
-        private predicate ssa_star_variable_input_points_to(ImportStarRefinement def, PointsToContext context, string name, Object value, ClassObject cls, ControlFlowNode origin) {
+        private predicate ssa_star_variable_input_points_to(ImportStarRefinement def, PointsToContext context, string name, Object value, ClassObject cls, CfgOrigin origin) {
             exists(EssaVariable var |
                 ssa_star_import_star_input(def, var) and
                 ssa_variable_named_attribute_points_to(var, context, name, value, cls, origin)
@@ -2006,20 +2108,18 @@ module PointsTo {
         }
 
         pragma [noinline]
-        private predicate import_star_named_attribute_points_to(ImportStarRefinement def, PointsToContext context, string name, Object value, ClassObject cls, ControlFlowNode origin) {
-            exists(ImportStarNode imp, ModuleObject mod |
+        private predicate import_star_named_attribute_points_to(ImportStarRefinement def, PointsToContext context, string name, Object value, ClassObject cls, CfgOrigin origin) {
+            exists(ImportStarNode imp, ModuleObject mod, CfgOrigin orig |
+                origin = orig.fix(imp) and
                 star_variable_import_star_module(def, imp, context, mod) |
                 /* Attribute from imported module */
                 module_exports_boolean(mod, name) = true and
-                exists(ObjectOrCfg obj |
-                    Layer::module_attribute_points_to(mod, name, value, cls, obj) and
-                    not exists(Variable v | v.getId() = name and v.getScope() = imp.getScope()) and
-                    origin = origin_from_object_or_here(obj, imp)
-                )
+                Layer::module_attribute_points_to(mod, name, value, cls, orig) and
+                not exists(Variable v | v.getId() = name and v.getScope() = imp.getScope())
                 or
                 /* Retain value held before import */
                 module_exports_boolean(mod, name) = false and
-                ssa_star_variable_input_points_to(def, context, name, value, cls, origin)
+                ssa_star_variable_input_points_to(def, context, name, value, cls, orig)
             )
         }
 
@@ -2250,9 +2350,9 @@ module PointsTo {
         }
 
         /** Holds if ESSA edge refinement, `def`, refers to `(value, cls, origin)`. */
-        predicate ssa_filter_definition_points_to(PyEdgeRefinement def, PointsToContext context, Object value, ClassObject cls, ObjectOrCfg origin) {
+        predicate ssa_filter_definition_points_to(PyEdgeRefinement def, PointsToContext context, Object value, ClassObject cls, CfgOrigin origin) {
             exists(ControlFlowNode test, ControlFlowNode use |
-                refinement_test(test, use, test_evaluates_boolean(test, use, context, value, cls, origin), def)
+                refinement_test(test, use, test_evaluates_boolean(test, use, context, value, cls, origin.toCfgNode()), def)
             )
             or
             /* If we can't understand the test, assume that value passes through.
@@ -2267,23 +2367,23 @@ module PointsTo {
 
         /** Holds if ESSA definition, `uniphi`, refers to `(value, cls, origin)`. */
         pragma [noinline]
-        predicate uni_edged_phi_points_to(SingleSuccessorGuard uniphi, PointsToContext context, Object value, ClassObject cls, ObjectOrCfg origin) {
+        predicate uni_edged_phi_points_to(SingleSuccessorGuard uniphi, PointsToContext context, Object value, ClassObject cls, CfgOrigin origin) {
             exists(ControlFlowNode test, ControlFlowNode use |
                 /* Because calls such as `len` may create a new variable, we need to go via the source variable
                  * That is perfectly safe as we are only dealing with calls that do not mutate their arguments.
                  */
                 use = uniphi.getInput().getSourceVariable().(Variable).getAUse() and
                 test = uniphi.getDefiningNode() and
-                uniphi.getSense() = test_evaluates_boolean(test, use, context, value, cls, origin)
+                uniphi.getSense() = test_evaluates_boolean(test, use, context, value, cls, origin.toCfgNode())
             )
         }
 
         /** Holds if the named attibute of ESSA edge refinement, `def`, refers to `(value, cls, origin)`. */
         pragma[noinline]
-        predicate ssa_filter_definition_named_attribute_points_to(PyEdgeRefinement def, PointsToContext context, string name, Object value, ClassObject cls, ObjectOrCfg origin) {
+        predicate ssa_filter_definition_named_attribute_points_to(PyEdgeRefinement def, PointsToContext context, string name, Object value, ClassObject cls, CfgOrigin origin) {
             exists(ControlFlowNode test, AttrNode use, boolean sense |
                 edge_refinement_attr_use_sense(def, test, use, name, sense) and
-                sense = test_evaluates_boolean(test, use, context, value, cls, origin)
+                sense = test_evaluates_boolean(test, use, context, value, cls, origin.toCfgNode())
             )
             or
             exists(EssaVariable input |
@@ -2512,7 +2612,7 @@ module PointsTo {
         }
 
         /** INTERNAL -- Use `ClassObject.declaredAttribute(name). instead. */
-        cached predicate class_declared_attribute(ClassObject owner, string name, Object value, ClassObject vcls, ObjectOrCfg origin) {
+        cached predicate class_declared_attribute(ClassObject owner, string name, Object value, ClassObject vcls, CfgOrigin origin) {
             /* Note that src_var must be a local variable, we aren't interested in the value that any global variable may hold */
              value != undefinedVariable() and
              exists(EssaVariable var, LocalVariable src_var |
@@ -2523,7 +2623,7 @@ module PointsTo {
             )
             or
             value = builtin_class_attribute(owner, name) and class_declares_attribute(owner, name) and
-            origin = value and vcls = builtin_object_type(value)
+            origin = CfgOrigin::unknown() and vcls = builtin_object_type(value)
         }
 
         private predicate interesting_class_attribute(ClassList mro, string name) {
@@ -2574,7 +2674,7 @@ module PointsTo {
 
         /** INTERNAL -- Use `ClassObject.attributeRefersTo(name, value, vlcs, origin). instead.
          */
-        cached predicate class_attribute_lookup(ClassObject cls, string name, Object value, ClassObject vcls, ObjectOrCfg origin) {
+        cached predicate class_attribute_lookup(ClassObject cls, string name, Object value, ClassObject vcls, CfgOrigin origin) {
            exists(ClassObject defn |
                defn = get_mro(cls).findDeclaringClass(name) and
                class_declared_attribute(defn, name, value, vcls, origin)
