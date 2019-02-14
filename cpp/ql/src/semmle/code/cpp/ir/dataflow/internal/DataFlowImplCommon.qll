@@ -237,7 +237,9 @@ import ImplCommon
  *    this dispatch target of `ma` implies a reduced set of dispatch origins
  *    to which data may flow if it should reach a `return` statement.
  */
-abstract class CallContext extends TCallContext { abstract string toString(); }
+abstract class CallContext extends TCallContext {
+  abstract string toString();
+}
 
 class CallContextAny extends CallContext, TAnyCallContext {
   override string toString() { result = "CcAny" }
