@@ -40,7 +40,8 @@ module DataFlow {
     } or
     TDestructuredModuleImportNode(ImportDeclaration decl) {
       exists(decl.getASpecifier().getImportedName())
-    }
+    } or
+    THtmlAttributeNode(HTML::Attribute attr)
 
   /**
    * A node in the data flow graph.
@@ -735,6 +736,27 @@ module DataFlow {
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
       p.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+  }
+
+  /**
+   * A data flow node representing an HTML attribute.
+   */
+  private class HtmlAttributeNode extends DataFlow::Node, THtmlAttributeNode {
+    HTML::Attribute attr;
+
+    HtmlAttributeNode() { this = THtmlAttributeNode(attr) }
+
+    override string toString() { result = attr.toString() }
+
+    override ASTNode getAstNode() { none() }
+
+    override BasicBlock getBasicBlock() { none() }
+
+    override predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      attr.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
   }
 
