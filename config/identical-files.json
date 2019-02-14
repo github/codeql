@@ -68,6 +68,10 @@
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/SSAConstruction.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/SSAConstruction.qll"
   ],
+  "C++ SSA PrintSSA": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/PrintSSA.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/PrintSSA.qll"
+  ],
   "C++ IR ValueNumber": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/gvn/ValueNumbering.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/gvn/ValueNumbering.qll",

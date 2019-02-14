@@ -128,7 +128,7 @@ class MemoryOperand extends Operand {
    * is `r1`.
    */
   final AddressOperand getAddressOperand() {
-    getMemoryAccess() instanceof IndirectMemoryAccess and
+    getMemoryAccess().usesAddressOperand() and
     result.getUseInstruction() = getUseInstruction()
   }
 }
@@ -351,10 +351,10 @@ class SideEffectOperand extends TypedOperand {
 
   override MemoryAccessKind getMemoryAccess() {
     useInstr instanceof CallSideEffectInstruction and
-    result instanceof EscapedMemoryAccess
+    result instanceof EscapedMayMemoryAccess
     or
     useInstr instanceof CallReadSideEffectInstruction and
-    result instanceof EscapedMemoryAccess
+    result instanceof EscapedMayMemoryAccess
     or
     useInstr instanceof IndirectReadSideEffectInstruction and
     result instanceof IndirectMemoryAccess
