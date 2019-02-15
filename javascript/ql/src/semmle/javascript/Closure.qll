@@ -68,7 +68,14 @@ module Closure {
    * A module using the Closure module system, declared using `goog.module()` or `goog.declareModuleId()`.
    */
   class ClosureModule extends Module {
-    ClosureModule() { any(ClosureModuleDeclaration decl).getTopLevel() = this }
+    ClosureModule() {
+      // Use AST-based predicate to cut recursive dependencies.
+      exists(MethodCallExpr call |
+        getAStmt().(ExprStmt).getExpr() = call and
+        call.getReceiver().(GlobalVarAccess).getName() = "goog" and
+        (call.getMethodName() = "module" or call.getMethodName() = "declareModuleId")
+      )
+    }
 
     /**
      * Gets the call to `goog.module` or `goog.declareModuleId` in this module.
