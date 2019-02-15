@@ -8,22 +8,52 @@ module Closure {
   /**
    * A reference to a Closure namespace.
    */
-  abstract class ClosureNamespaceRef extends DataFlow::Node {
+  class ClosureNamespaceRef extends DataFlow::Node {
+    ClosureNamespaceRef::Range range;
+
+    ClosureNamespaceRef() { this = range }
+
     /**
      * Gets the namespace being referenced.
      */
-    abstract string getClosureNamespace();
+    string getClosureNamespace() { result = range.getClosureNamespace() }
+  }
+
+  module ClosureNamespaceRef {
+    /**
+     * A reference to a Closure namespace.
+     *
+     * Can be subclassed to classify additional nodes as namespace references.
+     */
+    abstract class Range extends DataFlow::Node {
+      /**
+       * Gets the namespace being referenced.
+       */
+      abstract string getClosureNamespace();
+    }
   }
 
   /**
    * A data flow node that returns the value of a closure namespace.
    */
-  abstract class ClosureNamespaceAccess extends ClosureNamespaceRef { }
+  class ClosureNamespaceAccess extends ClosureNamespaceRef {
+    override ClosureNamespaceAccess::Range range;
+  }
+
+  module ClosureNamespaceAccess {
+    /**
+     * A data flow node that returns the value of a closure namespace.
+     *
+     * Can be subclassed to classify additional nodes as namespace accesses.
+     */
+    abstract class Range extends ClosureNamespaceRef::Range { }
+  }
 
   /**
    * A call to a method on the `goog.` namespace, as a closure reference.
    */
-  abstract private class DefaultNamespaceRef extends DataFlow::MethodCallNode, ClosureNamespaceRef {
+  abstract private class DefaultNamespaceRef extends DataFlow::MethodCallNode,
+    ClosureNamespaceRef::Range {
     DefaultNamespaceRef() { this = DataFlow::globalVarRef("goog").getAMethodCall() }
 
     override string getClosureNamespace() { result = getArgument(0).asExpr().getStringValue() }
@@ -40,28 +70,49 @@ module Closure {
   /**
    * A top-level call to `goog.provide`.
    */
-  class ClosureProvideCall extends DefaultNamespaceRef {
-    ClosureProvideCall() {
+  private class DefaultClosureProvideCall extends DefaultNamespaceRef {
+    DefaultClosureProvideCall() {
       getMethodName() = "provide" and
       isTopLevelExpr(this)
     }
   }
 
   /**
+   * A top-level call to `goog.provide`.
+   */
+  class ClosureProvideCall extends ClosureNamespaceRef, DataFlow::MethodCallNode {
+    override DefaultClosureProvideCall range;
+  }
+
+  /**
    * A call to `goog.require`.
    */
-  class ClosureRequireCall extends DefaultNamespaceRef, ClosureNamespaceAccess {
-    ClosureRequireCall() { getMethodName() = "require" }
+  private class DefaultClosureRequireCall extends DefaultNamespaceRef, ClosureNamespaceAccess::Range {
+    DefaultClosureRequireCall() { getMethodName() = "require" }
+  }
+
+  /**
+   * A call to `goog.require`.
+   */
+  class ClosureRequireCall extends ClosureNamespaceAccess, DataFlow::MethodCallNode {
+    override DefaultClosureRequireCall range;
   }
 
   /**
    * A top-level call to `goog.module` or `goog.declareModuleId`.
    */
-  class ClosureModuleDeclaration extends DefaultNamespaceRef {
-    ClosureModuleDeclaration() {
+  private class DefaultClosureModuleDeclaration extends DefaultNamespaceRef {
+    DefaultClosureModuleDeclaration() {
       (getMethodName() = "module" or getMethodName() = "declareModuleId") and
       isTopLevelExpr(this)
     }
+  }
+
+  /**
+   * A top-level call to `goog.module` or `goog.declareModuleId`.
+   */
+  class ClosureModuleDeclaration extends ClosureNamespaceRef, DataFlow::MethodCallNode {
+    override DefaultClosureModuleDeclaration range;
   }
 
   /**
@@ -192,11 +243,14 @@ module Closure {
    * Gets the closure namespace path written to by the given property write, if any.
    */
   string getWrittenClosureNamespace(DataFlow::PropWrite node) {
-    result = getClosureNamespaceFromSourceNode(node.getBase().getALocalSource()) + "." + node.getPropertyName()
+    result = getClosureNamespaceFromSourceNode(node.getBase().getALocalSource()) + "." +
+        node.getPropertyName()
   }
 
   /**
    * Gets a data flow node that refers to the given value exported from a Closure module.
    */
-  DataFlow::SourceNode moduleImport(string moduleName) { getClosureNamespaceFromSourceNode(result) = moduleName }
+  DataFlow::SourceNode moduleImport(string moduleName) {
+    getClosureNamespaceFromSourceNode(result) = moduleName
+  }
 }
