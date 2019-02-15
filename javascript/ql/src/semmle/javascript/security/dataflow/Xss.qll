@@ -203,7 +203,7 @@ module DomBasedXss {
    */
   class VHtmlSink extends DomBasedXss::Sink {
     HTML::Attribute attr;
-    VHtmlSink() { this = DataFlow::THtmlAttributeNode(attr) and attr.getName() = "v-html" }
+    VHtmlSink() { this.(DataFlow::HtmlAttributeNode).getAttribute() = attr and attr.getName() = "v-html" }
     HTML::Attribute getAttr() {
       result = attr
     }
