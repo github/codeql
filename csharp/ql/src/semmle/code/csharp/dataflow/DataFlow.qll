@@ -1436,7 +1436,7 @@ module DataFlow {
         TExprNode(ControlFlow::Nodes::ElementNode cfn) { cfn.getElement() instanceof Expr } or
         TSsaDefinitionNode(Ssa::Definition def) or
         TCilParameterNode(CIL::Parameter p) { p.getMethod().hasBody() } or
-        TCilExprNode(CIL::Expr e) or
+        TCilExprNode(CIL::Expr e) { e.getImplementation() instanceof CIL::BestImplementation } or
         TImplicitDelegateCallNode(DelegateArgumentToLibraryCallable arg) or
         TImplicitCapturedArgumentNode(Call c, LocalScopeVariable v) {
           exists(Ssa::ExplicitDefinition def | def.isCapturedVariableDefinitionFlowIn(_, c) |
