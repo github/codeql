@@ -360,13 +360,11 @@ private class AnalyzedClosureGlobalAccessPath extends AnalyzedNode, AnalyzedProp
 
   AnalyzedClosureGlobalAccessPath() { accessPath = Closure::getLibraryAccessPath(this) }
 
-  override AnalyzedNode localFlowPred() {
+  override AnalyzedNode globalFlowPred() {
     exists(DataFlow::PropWrite write |
       Closure::getWrittenLibraryAccessPath(write) = accessPath and
       result = write.getRhs()
     )
-    or
-    result = AnalyzedNode.super.localFlowPred()
   }
 
   override predicate reads(AbstractValue base, string propName) {

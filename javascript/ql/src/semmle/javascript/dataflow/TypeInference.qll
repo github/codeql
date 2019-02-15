@@ -48,6 +48,12 @@ class AnalyzedNode extends DataFlow::Node {
   AnalyzedNode localFlowPred() { result = getAPredecessor() }
 
   /**
+   * Gets another data flow node whose value flows into this node in a global step
+   * (this is, involvign global variables).
+   */
+  AnalyzedNode globalFlowPred() { none() }
+
+  /**
    * Gets an abstract value that this node may evaluate to at runtime.
    *
    * This predicate tracks flow through expressions, variables (both local
@@ -57,7 +63,9 @@ class AnalyzedNode extends DataFlow::Node {
    * instances is also performed.
    */
   cached
-  AbstractValue getAValue() { result = getALocalValue() }
+  AbstractValue getAValue() {
+    result = getALocalValue()
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -82,6 +90,9 @@ class AnalyzedNode extends DataFlow::Node {
     exists(DataFlow::Incompleteness cause |
       isIncomplete(cause) and result = TIndefiniteAbstractValue(cause)
     )
+    or
+    result = globalFlowPred().getALocalValue() and
+    shouldTrackGlobally(result)
   }
 
   /** Gets a type inferred for this node. */
@@ -282,3 +293,8 @@ private class AnalyzedAsyncFunction extends AnalyzedFunction {
 
   override AbstractValue getAReturnValue() { result = TAbstractOtherObject() }
 }
+
+/**
+ * Holds if the given value should be propagated along `globalFlowPred()` edges.
+ */
+private predicate shouldTrackGlobally(AbstractValue value) { value instanceof AbstractCallable }
