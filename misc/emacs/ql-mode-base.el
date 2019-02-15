@@ -13,8 +13,8 @@
 (defconst ql--at-type-regex "\\_<@\\w+\\>")
 (defconst ql--predicate-regex "\\(\\_<\\w+\\(\\+\\|\\*\\)?\\_>\\)\\s-*(")
 (defconst ql--primitive-type-regex (regexp-opt '("int" "string" "float" "boolean" "date") 'symbols))
-(defconst ql--annotation-regex (regexp-opt '("abstract" "cached" "external" "final" "transient" "library" "private" "deprecated" "override" "query" "language" "bindingset") 'words))
-(defconst ql--pragma-regex "\\<pragma *\\[ *[a-z, ]*\\]")
+(defconst ql--annotation-regex (regexp-opt '("abstract" "cached" "external" "final" "transient" "library" "private" "deprecated" "override" "query") 'words))
+(defconst ql--parameterized-annotation-regex "\\<\\(pragma\\|language\\|bindingset\\) *\\[ *[a-z, ]*\\]")
 (defconst ql--keywords
   '("and" "any" "as" "asc" "avg" "boolean" "by" "class" "concat" "count" "date" "desc" "else" "exists" "extends" "false" "float" "forall" "forex" "from" "if" "implies" "import" "in" "instanceof" "int" "max" "min" "module" "not" "none" "or" "order" "predicate" "rank" "result" "select" "strictconcat" "strictcount" "strictsum" "string" "sum" "super" "then" "this" "true" "where"
     )
@@ -25,7 +25,7 @@
     (,ql--primitive-type-regex . 'font-lock-type-face)
     (,ql--at-type-regex 0 'font-lock-type-face)
     (,ql--annotation-regex . 'font-lock-preprocessor-face)
-    (,ql--pragma-regex . 'font-lock-preprocessor-face))
+    (,ql--parameterized-annotation-regex . 'font-lock-preprocessor-face))
   )
 
 (defvar ql-mode-base-map
