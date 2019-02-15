@@ -18,7 +18,7 @@ module Closure {
   /**
    * A data flow node that returns the value of a closure namespace.
    */
-  abstract class ClosureNamespaceAccess extends ClosureNamespaceRef, DataFlow::SourceNode { }
+  abstract class ClosureNamespaceAccess extends ClosureNamespaceRef { }
 
   /**
    * A call to a method on the `goog.` namespace, as a closure reference.
