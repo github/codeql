@@ -408,7 +408,7 @@ module StringOps {
     /**
      * A call of form `_.endsWith(A, B)` or `ramda.endsWith(A, B)`.
      */
-    private class EndsWith_Library extends StartsWith, DataFlow::CallNode {
+    private class EndsWith_Library extends Range, DataFlow::CallNode {
       EndsWith_Library() {
         getNumArgument() = 2 and
         exists(DataFlow::SourceNode callee | this = callee.getACall() |
