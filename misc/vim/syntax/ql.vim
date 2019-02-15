@@ -1,5 +1,5 @@
 syn keyword qlKeyword       from where select predicate in as order by asc desc module result this super
-syn keyword qlAnnotation    abstract cached external final library noopt private deprecated override query pragma language bindingset noinline nomagic monotonicAggregates
+syn keyword qlAnnotation    abstract cached external final library noopt private deprecated override query pragma language bindingset noinline nomagic monotonicAggregates transient
 syn keyword qlLogic         not and or implies exists forall forex any none
 syn keyword qlConditional   if then else
 syn keyword qlType          int float string boolean date
