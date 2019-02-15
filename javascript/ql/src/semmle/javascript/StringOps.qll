@@ -422,4 +422,71 @@ module StringOps {
       override DataFlow::Node getSubstring() { result = getArgument(1) }
     }
   }
+
+  /**
+   * A data flow node that concatenates strings and returns the result.
+   */
+  class Concatenation extends DataFlow::Node {
+    Concatenation() {
+      exists(StringConcatenation::getAnOperand(this))
+    }
+
+    /**
+     * Gets the `n`th operand of this string concatenation.
+     */
+    DataFlow::Node getOperand(int n) {
+      result = StringConcatenation::getOperand(this, n)
+    }
+
+    /**
+     * Gets an operand of this string concatenation.
+     */
+    DataFlow::Node getAnOperand() {
+      result = StringConcatenation::getAnOperand(this)
+    }
+
+    /**
+     * Gets the number of operands of this string concatenation.
+     */
+    int getNumOperand() {
+      result = StringConcatenation::getNumOperand(this)
+    }
+
+    /**
+     * Gets the first operand of this string concatenation.
+     */
+    DataFlow::Node getFirstOperand() {
+      result = StringConcatenation::getFirstOperand(this)
+    }
+
+    /**
+     * Gets the last operand of this string concatenation
+     */
+    DataFlow::Node getLastOperand() {
+      result = StringConcatenation::getLastOperand(this)
+    }
+
+    /**
+     * Holds if this only acts as a string coercion, such as `"" + x`.
+     */
+    predicate isCoercion() {
+      StringConcatenation::isCoercion(this)
+    }
+
+    /**
+     * Holds if this is the root of a concatenation tree, that is,
+     * it is a concatenation operator that is not itself the immediate operand to
+     * another concatenation operator.
+     */
+    predicate isRoot() {
+      StringConcatenation::isRoot(this)
+    }
+
+    /**
+     * Gets the root of the concatenation tree in which this is an operator.
+     */
+    Concatenation getRoot() {
+      result = StringConcatenation::getRoot(this)
+    }
+  }
 }
