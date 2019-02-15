@@ -403,57 +403,83 @@ class ArrayCreationNode extends DataFlow::ValueNode, DataFlow::SourceNode {
  *
  * For compatibility with old transpilers, we treat `import * from '...'`
  * as a default import as well.
+ *
+ * Additional import nodes can be added by subclassing `ModuleImportNode::Range`.
  */
 class ModuleImportNode extends DataFlow::SourceNode {
-  string path;
+  ModuleImportNode::Range range;
 
-  ModuleImportNode() {
-    // `require("http")`
-    exists(Require req | req.getImportedPath().getValue() = path | this = DataFlow::valueNode(req))
-    or
-    // `import http = require("http")`
-    exists(ExternalModuleReference req | req.getImportedPath().getValue() = path |
-      this = DataFlow::valueNode(req)
-    )
-    or
-    // `import * as http from 'http'` or `import http from `http`'
-    exists(ImportDeclaration id, ImportSpecifier is, SsaExplicitDefinition ssa |
-      id.getImportedPath().getValue() = path and
-      is = id.getASpecifier() and
-      ssa.getDef() = is and
-      this = DataFlow::ssaDefinitionNode(ssa)
-    |
-      is instanceof ImportNamespaceSpecifier and
-      count(id.getASpecifier()) = 1
-      or
-      is.getImportedName() = "default"
-    )
-    or
-    // `import { createServer } from 'http'`
-    exists(ImportDeclaration id |
-      this = DataFlow::destructuredModuleImportNode(id) and
-      id.getImportedPath().getValue() = path
-    )
-    or
-    // declared AMD dependency
-    exists(AMDModuleDefinition amd |
-      this = DataFlow::parameterNode(amd.getDependencyParameter(path))
-    )
-    or
-    // AMD require
-    exists(AMDModuleDefinition amd, CallExpr req |
-      req = amd.getARequireCall() and
-      this = DataFlow::valueNode(req) and
-      path = req.getArgument(0).(ConstantString).getStringValue()
-    )
-  }
+  ModuleImportNode() { this = range }
 
   /** Gets the path of the imported module. */
-  string getPath() { result = path }
+  string getPath() { result = range.getPath() }
+}
+
+module ModuleImportNode {
+  /**
+   * Data flow node that refers to an imported module.
+   */
+  abstract class Range extends DataFlow::SourceNode {
+    /** Gets the path of the imported module. */
+    abstract string getPath();
+  }
+
+  private class DefaultRange extends Range {
+    string path;
+
+    DefaultRange() {
+      // `require("http")`
+      exists(Require req | req.getImportedPath().getValue() = path |
+        this = DataFlow::valueNode(req)
+      )
+      or
+      // `import http = require("http")`
+      exists(ExternalModuleReference req | req.getImportedPath().getValue() = path |
+        this = DataFlow::valueNode(req)
+      )
+      or
+      // `import * as http from 'http'` or `import http from `http`'
+      exists(ImportDeclaration id, ImportSpecifier is, SsaExplicitDefinition ssa |
+        id.getImportedPath().getValue() = path and
+        is = id.getASpecifier() and
+        ssa.getDef() = is and
+        this = DataFlow::ssaDefinitionNode(ssa)
+      |
+        is instanceof ImportNamespaceSpecifier and
+        count(id.getASpecifier()) = 1
+        or
+        is.getImportedName() = "default"
+      )
+      or
+      // `import { createServer } from 'http'`
+      exists(ImportDeclaration id |
+        this = DataFlow::destructuredModuleImportNode(id) and
+        id.getImportedPath().getValue() = path
+      )
+      or
+      // declared AMD dependency
+      exists(AMDModuleDefinition amd |
+        this = DataFlow::parameterNode(amd.getDependencyParameter(path))
+      )
+      or
+      // AMD require
+      exists(AMDModuleDefinition amd, CallExpr req |
+        req = amd.getARequireCall() and
+        this = DataFlow::valueNode(req) and
+        path = req.getArgument(0).(ConstantString).getStringValue()
+      )
+    }
+
+    /** Gets the path of the imported module. */
+    override string getPath() { result = path }
+  }
 }
 
 /**
- * Gets a (default) import of the module with the given path.
+ * Gets a (default) import of the module with the given path, such as `require("fs")`
+ * or `import * as fs from "fs"`.
+ *
+ * This predicate can be customized by subclassing `ModuleImportNode::Range`.
  */
 ModuleImportNode moduleImport(string path) { result.getPath() = path }
 
