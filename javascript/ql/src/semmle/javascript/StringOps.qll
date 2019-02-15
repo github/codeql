@@ -5,19 +5,20 @@
 import javascript
 
 module StringOps {
-  /**
-   * A expression that is equivalent to `A.startsWith(B)` or `!A.startsWith(B)`.
-   */
-  abstract class StartsWith extends DataFlow::Node {
+  class StartsWith extends DataFlow::Node {
+    StartsWith::Range range;
+
+    StartsWith() { range = this }
+
     /**
      * Gets the `A` in `A.startsWith(B)`.
      */
-    abstract DataFlow::Node getBaseString();
+    DataFlow::Node getBaseString() { result = range.getBaseString() }
 
     /**
      * Gets the `B` in `A.startsWith(B)`.
      */
-    abstract DataFlow::Node getSubstring();
+    DataFlow::Node getSubstring() { result = range.getSubstring() }
 
     /**
      * Gets the polarity of the check.
@@ -25,131 +26,156 @@ module StringOps {
      * If the polarity is `false` the check returns `true` if the string does not start
      * with the given substring.
      */
-    boolean getPolarity() { result = true }
+    boolean getPolarity() { result = range.getPolarity() }
   }
 
-  /**
-   * An expression of form `A.startsWith(B)`.
-   */
-  private class StartsWith_Native extends StartsWith, DataFlow::MethodCallNode {
-    StartsWith_Native() {
-      getMethodName() = "startsWith" and
-      getNumArgument() = 1
+  module StartsWith {
+    /**
+     * A expression that is equivalent to `A.startsWith(B)` or `!A.startsWith(B)`.
+     */
+    abstract class Range extends DataFlow::Node {
+      /**
+       * Gets the `A` in `A.startsWith(B)`.
+       */
+      abstract DataFlow::Node getBaseString();
+
+      /**
+       * Gets the `B` in `A.startsWith(B)`.
+       */
+      abstract DataFlow::Node getSubstring();
+
+      /**
+       * Gets the polarity of the check.
+       *
+       * If the polarity is `false` the check returns `true` if the string does not start
+       * with the given substring.
+       */
+      boolean getPolarity() { result = true }
     }
 
-    override DataFlow::Node getBaseString() { result = getReceiver() }
+    /**
+     * An expression of form `A.startsWith(B)`.
+     */
+    private class StartsWith_Native extends Range, DataFlow::MethodCallNode {
+      StartsWith_Native() {
+        getMethodName() = "startsWith" and
+        getNumArgument() = 1
+      }
 
-    override DataFlow::Node getSubstring() { result = getArgument(0) }
-  }
+      override DataFlow::Node getBaseString() { result = getReceiver() }
 
-  /**
-   * An expression of form `A.indexOf(B) === 0`.
-   */
-  private class StartsWith_IndexOfEquals extends StartsWith, DataFlow::ValueNode {
-    override EqualityTest astNode;
-
-    DataFlow::MethodCallNode indexOf;
-
-    StartsWith_IndexOfEquals() {
-      indexOf.getMethodName() = "indexOf" and
-      indexOf.getNumArgument() = 1 and
-      indexOf.flowsToExpr(astNode.getAnOperand()) and
-      astNode.getAnOperand().getIntValue() = 0
+      override DataFlow::Node getSubstring() { result = getArgument(0) }
     }
 
-    override DataFlow::Node getBaseString() { result = indexOf.getReceiver() }
+    /**
+     * An expression of form `A.indexOf(B) === 0`.
+     */
+    private class StartsWith_IndexOfEquals extends Range, DataFlow::ValueNode {
+      override EqualityTest astNode;
 
-    override DataFlow::Node getSubstring() { result = indexOf.getArgument(0) }
+      DataFlow::MethodCallNode indexOf;
 
-    override boolean getPolarity() { result = astNode.getPolarity() }
-  }
+      StartsWith_IndexOfEquals() {
+        indexOf.getMethodName() = "indexOf" and
+        indexOf.getNumArgument() = 1 and
+        indexOf.flowsToExpr(astNode.getAnOperand()) and
+        astNode.getAnOperand().getIntValue() = 0
+      }
 
-  /**
-   * An expression of form `A.indexOf(B)` coerced to a boolean.
-   *
-   * This is equivalent to `!A.startsWith(B)` since all return values other than zero map to `true`.
-   */
-  private class StartsWith_IndexOfCoercion extends StartsWith, DataFlow::MethodCallNode {
-    StartsWith_IndexOfCoercion() {
-      getMethodName() = "indexOf" and
-      getNumArgument() = 1 and
-      this.flowsToExpr(any(ConditionGuardNode guard).getTest()) // check for boolean coercion
+      override DataFlow::Node getBaseString() { result = indexOf.getReceiver() }
+
+      override DataFlow::Node getSubstring() { result = indexOf.getArgument(0) }
+
+      override boolean getPolarity() { result = astNode.getPolarity() }
     }
 
-    override DataFlow::Node getBaseString() { result = getReceiver() }
+    /**
+     * An expression of form `A.indexOf(B)` coerced to a boolean.
+     *
+     * This is equivalent to `!A.startsWith(B)` since all return values other than zero map to `true`.
+     */
+    private class StartsWith_IndexOfCoercion extends Range, DataFlow::MethodCallNode {
+      StartsWith_IndexOfCoercion() {
+        getMethodName() = "indexOf" and
+        getNumArgument() = 1 and
+        this.flowsToExpr(any(ConditionGuardNode guard).getTest()) // check for boolean coercion
+      }
 
-    override DataFlow::Node getSubstring() { result = getArgument(0) }
+      override DataFlow::Node getBaseString() { result = getReceiver() }
 
-    override boolean getPolarity() { result = false }
-  }
+      override DataFlow::Node getSubstring() { result = getArgument(0) }
 
-  /**
-   * A call of form `_.startsWith(A, B)` or `ramda.startsWith(A, B)`.
-   */
-  private class StartsWith_Library extends StartsWith, DataFlow::CallNode {
-    StartsWith_Library() {
-      getNumArgument() = 2 and
-      exists(DataFlow::SourceNode callee | this = callee.getACall() |
-        callee = LodashUnderscore::member("startsWith") or
-        callee = DataFlow::moduleMember("ramda", "startsWith")
-      )
+      override boolean getPolarity() { result = false }
     }
 
-    override DataFlow::Node getBaseString() { result = getArgument(0) }
+    /**
+     * A call of form `_.startsWith(A, B)` or `ramda.startsWith(A, B)`.
+     */
+    private class StartsWith_Library extends Range, DataFlow::CallNode {
+      StartsWith_Library() {
+        getNumArgument() = 2 and
+        exists(DataFlow::SourceNode callee | this = callee.getACall() |
+          callee = LodashUnderscore::member("startsWith") or
+          callee = DataFlow::moduleMember("ramda", "startsWith")
+        )
+      }
 
-    override DataFlow::Node getSubstring() { result = getArgument(1) }
-  }
+      override DataFlow::Node getBaseString() { result = getArgument(0) }
 
-  /**
-   * A comparison of form `x[0] === "k"` for some single-character constant `k`.
-   */
-  private class StartsWith_FirstCharacter extends StartsWith, DataFlow::ValueNode {
-    override EqualityTest astNode;
-
-    DataFlow::PropRead read;
-
-    Expr constant;
-
-    StartsWith_FirstCharacter() {
-      read.flowsTo(astNode.getAnOperand().flow()) and
-      read.getPropertyNameExpr().getIntValue() = 0 and
-      constant.getStringValue().length() = 1 and
-      astNode.getAnOperand() = constant
+      override DataFlow::Node getSubstring() { result = getArgument(1) }
     }
 
-    override DataFlow::Node getBaseString() { result = read.getBase() }
+    /**
+     * A comparison of form `x[0] === "k"` for some single-character constant `k`.
+     */
+    private class StartsWith_FirstCharacter extends Range, DataFlow::ValueNode {
+      override EqualityTest astNode;
 
-    override DataFlow::Node getSubstring() { result = constant.flow() }
+      DataFlow::PropRead read;
 
-    override boolean getPolarity() { result = astNode.getPolarity() }
-  }
+      Expr constant;
 
-  /**
-   * A comparison of form `x.substring(0, y.length) === y`.
-   */
-  private class StartsWith_Substring extends StartsWith, DataFlow::ValueNode {
-    override EqualityTest astNode;
+      StartsWith_FirstCharacter() {
+        read.flowsTo(astNode.getAnOperand().flow()) and
+        read.getPropertyNameExpr().getIntValue() = 0 and
+        constant.getStringValue().length() = 1 and
+        astNode.getAnOperand() = constant
+      }
 
-    DataFlow::MethodCallNode call;
+      override DataFlow::Node getBaseString() { result = read.getBase() }
 
-    DataFlow::Node substring;
+      override DataFlow::Node getSubstring() { result = constant.flow() }
 
-    StartsWith_Substring() {
-      astNode.hasOperands(call.asExpr(), substring.asExpr()) and
-      (call.getMethodName() = "substring" or call.getMethodName() = "substr") and
-      call.getNumArgument() = 2 and
-      (
-        substring.getALocalSource().getAPropertyRead("length").flowsTo(call.getArgument(1))
-        or
-        substring.getStringValue().length() = call.getArgument(1).asExpr().getIntValue()
-      )
+      override boolean getPolarity() { result = astNode.getPolarity() }
     }
 
-    override DataFlow::Node getBaseString() { result = call.getReceiver() }
+    /**
+     * A comparison of form `x.substring(0, y.length) === y`.
+     */
+    private class StartsWith_Substring extends Range, DataFlow::ValueNode {
+      override EqualityTest astNode;
 
-    override DataFlow::Node getSubstring() { result = substring }
+      DataFlow::MethodCallNode call;
 
-    override boolean getPolarity() { result = astNode.getPolarity() }
+      DataFlow::Node substring;
+
+      StartsWith_Substring() {
+        astNode.hasOperands(call.asExpr(), substring.asExpr()) and
+        (call.getMethodName() = "substring" or call.getMethodName() = "substr") and
+        call.getNumArgument() = 2 and
+        (
+          substring.getALocalSource().getAPropertyRead("length").flowsTo(call.getArgument(1))
+          or
+          substring.getStringValue().length() = call.getArgument(1).asExpr().getIntValue()
+        )
+      }
+
+      override DataFlow::Node getBaseString() { result = call.getReceiver() }
+
+      override DataFlow::Node getSubstring() { result = substring }
+
+      override boolean getPolarity() { result = astNode.getPolarity() }
+    }
   }
 
   /**
