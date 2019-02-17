@@ -63,18 +63,25 @@ predicate disposeReachableFromDisposableCreation(MethodCall disposeCall, Expr di
   disposeCall.getTarget() instanceof DisposeMethod
 }
 
-from MethodCall disposeCall, Expr disposableCreation, MethodCall callThatThrows
+class MethodCallThatMayThrow extends MethodCall {
+  MethodCallThatMayThrow() { exists(getAThrownException(this.getARuntimeTarget())) }
+}
+
+ControlFlowElement getACatchOrFinallyClauseChild() {
+  exists(TryStmt ts | result = ts.getACatchClause() or result = ts.getFinally())
+  or
+  result = getACatchOrFinallyClauseChild().getAChild()
+}
+
+from MethodCall disposeCall, Expr disposableCreation, MethodCallThatMayThrow callThatThrows
 where
   disposeReachableFromDisposableCreation(disposeCall, disposableCreation) and
   // The dispose call is not, itself, within a dispose method.
   not disposeCall.getEnclosingCallable() instanceof DisposeMethod and
   // Dispose call not within a finally or catch block
-  not exists(TryStmt ts |
-    ts.getACatchClause().getAChild*() = disposeCall or ts.getFinally().getAChild*() = disposeCall
-  ) and
+  not getACatchOrFinallyClauseChild() = disposeCall and
   // At least one method call exists between the allocation and disposal that could throw
   disposableCreation.getAReachableElement() = callThatThrows and
-  callThatThrows.getAReachableElement() = disposeCall and
-  exists(getAThrownException(callThatThrows.getARuntimeTarget()))
+  callThatThrows.getAReachableElement() = disposeCall
 select disposeCall, "Dispose missed if exception is thrown by $@.", callThatThrows,
   callThatThrows.toString()
