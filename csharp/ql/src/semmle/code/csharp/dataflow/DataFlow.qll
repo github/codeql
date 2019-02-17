@@ -710,6 +710,32 @@ module DataFlow {
       override CIL::Expr getArgument(int i) { result = call.getArgument(i) }
     }
 
+    private ControlFlowElement getAScope(boolean exactScope) {
+      exists(ExprStepConfiguration c |
+        c.stepsToExpr(_, _, result, exactScope, _) or
+        c.stepsToDefinition(_, _, result, exactScope, _)
+      )
+    }
+
+    private ControlFlowElement getANonExactScopeChild(ControlFlowElement scope) {
+      scope = getAScope(false) and
+      result = scope
+      or
+      result = getANonExactScopeChild(scope).getAChild()
+    }
+
+    pragma[noinline]
+    private ControlFlow::BasicBlock getABasicBlockInScope(
+      ControlFlowElement scope, boolean exactScope
+    ) {
+      result.getANode().getElement() = getANonExactScopeChild(scope) and
+      exactScope = false
+      or
+      scope = getAScope(true) and
+      result.getANode().getElement() = scope and
+      exactScope = true
+    }
+
     /**
      * A helper class for defining expression-based data flow steps, while properly
      * taking control flow into account.
@@ -745,6 +771,7 @@ module DataFlow {
         none()
       }
 
+      pragma[nomagic]
       private predicate reachesBasicBlockExprRec(
         Expr exprFrom, Expr exprTo, ControlFlowElement scope, boolean exactScope,
         boolean isSuccessor, ControlFlow::Nodes::ElementNode cfnFrom, ControlFlow::BasicBlock bb
@@ -769,20 +796,17 @@ module DataFlow {
         cfnFrom = exprFrom.getAControlFlowNode() and
         bb = cfnFrom.getBasicBlock()
         or
+        this.stepsToExpr(exprFrom, exprTo, scope, exactScope, isSuccessor) and
         exists(ControlFlowElement scope0, boolean exactScope0 |
           this
               .reachesBasicBlockExprRec(exprFrom, exprTo, scope0, exactScope0, isSuccessor, cfnFrom,
-                bb) and
-          this.stepsToExpr(exprFrom, exprTo, scope, exactScope, isSuccessor)
+                bb)
         |
-          exactScope0 = false and
-          bb.getANode().getElement() = scope0.getAChild*()
-          or
-          exactScope0 = true and
-          bb.getANode().getElement() = scope0
+          bb = getABasicBlockInScope(scope0, exactScope0)
         )
       }
 
+      pragma[nomagic]
       private predicate reachesBasicBlockDefinitionRec(
         Expr exprFrom, AssignableDefinition defTo, ControlFlowElement scope, boolean exactScope,
         boolean isSuccessor, ControlFlow::Nodes::ElementNode cfnFrom, ControlFlow::BasicBlock bb
@@ -809,17 +833,13 @@ module DataFlow {
         cfnFrom = exprFrom.getAControlFlowNode() and
         bb = cfnFrom.getBasicBlock()
         or
+        this.stepsToDefinition(exprFrom, defTo, scope, exactScope, isSuccessor) and
         exists(ControlFlowElement scope0, boolean exactScope0 |
           this
               .reachesBasicBlockDefinitionRec(exprFrom, defTo, scope0, exactScope0, isSuccessor,
-                cfnFrom, bb) and
-          this.stepsToDefinition(exprFrom, defTo, scope, exactScope, isSuccessor)
+                cfnFrom, bb)
         |
-          exactScope0 = false and
-          bb.getANode().getElement() = scope0.getAChild*()
-          or
-          exactScope0 = true and
-          bb.getANode().getElement() = scope0
+          bb = getABasicBlockInScope(scope0, exactScope0)
         )
       }
 
@@ -1030,13 +1050,20 @@ module DataFlow {
         )
       }
 
-      private Expr getALibraryFlowParent(Expr exprFrom, Expr exprTo, boolean preservesValue) {
+      private Expr getALibraryFlowParentFrom(Expr exprFrom, Expr exprTo, boolean preservesValue) {
         libraryFlow(exprFrom, exprTo, preservesValue) and
         result = exprFrom
         or
-        exists(Expr mid | mid = getALibraryFlowParent(exprFrom, exprTo, preservesValue) |
+        result.getAChildExpr() = getALibraryFlowParentFrom(exprFrom, exprTo, preservesValue)
+      }
+
+      private Expr getALibraryFlowParentTo(Expr exprFrom, Expr exprTo, boolean preservesValue) {
+        libraryFlow(exprFrom, exprTo, preservesValue) and
+        result = exprTo
+        or
+        exists(Expr mid | mid = getALibraryFlowParentTo(exprFrom, exprTo, preservesValue) |
           result.getAChildExpr() = mid and
-          not mid.getAChildExpr*() = exprTo
+          not mid = getALibraryFlowParentFrom(exprFrom, exprTo, preservesValue)
         )
       }
 
@@ -1045,8 +1072,8 @@ module DataFlow {
       ) {
         // To not pollute the definitions in `LibraryTypeDataFlow.qll` with syntactic scope,
         // simply use the nearest common parent expression for `exprFrom` and `exprTo`
-        scope = getALibraryFlowParent(exprFrom, exprTo, preservesValue) and
-        scope.getAChildExpr*() = exprTo and
+        scope = getALibraryFlowParentFrom(exprFrom, exprTo, preservesValue) and
+        scope = getALibraryFlowParentTo(exprFrom, exprTo, preservesValue) and
         // Similarly, for simplicity allow following both forwards and backwards edges from
         // `exprFrom` to `exprTo`
         (isSuccessor = true or isSuccessor = false)
@@ -1221,6 +1248,12 @@ module DataFlow {
       }
 
       pragma[noinline]
+      private predicate jumpStepCand1(Node pred, Node succ, Configuration config) {
+        nodeCand1(succ, config) and
+        jumpStep(pred, succ)
+      }
+
+      pragma[noinline]
       predicate flowIntoCallableStepCand1(
         CallNode call, ArgumentNode arg, ParameterNode p, Configuration config
       ) {
@@ -1249,9 +1282,8 @@ module DataFlow {
           localFlowStepCand1(mid, node, config)
         )
         or
-        nodeCand1(node, config) and
         exists(Node mid | nodeCandFwd2(mid, _, config) |
-          jumpStep(mid, node) and
+          jumpStepCand1(mid, node, config) and
           fromArg = false
         )
         or
