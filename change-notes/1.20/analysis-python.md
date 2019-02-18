@@ -35,3 +35,5 @@ Removes false positives seen when using Python 3.6, but not when using earlier v
  ## Changes to QL libraries
 
  * Added support for the `dill` pickle library.
+ * Added support for the bottle web framework.
+ 
