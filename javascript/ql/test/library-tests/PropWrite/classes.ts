@@ -7,3 +7,11 @@ class InstanceField {
 class ParameterField {
   constructor(public parameterField) {}
 }
+
+class ParameterFieldInit  {
+    constructor(public parameterField = {}) { parameterField + 42; }
+}
+
+class ParameterFieldInitUnused  {
+    constructor(public parameterField = {}) {}
+}
