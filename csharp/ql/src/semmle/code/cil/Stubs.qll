@@ -1,5 +1,5 @@
 /**
- * Provides classes and predicates relating to identifying stub code.
+ * Provides classes and predicates for identifying stub code.
  */
 
 import CIL
@@ -33,10 +33,10 @@ class BestImplementation extends MethodImplementation {
   BestImplementation() {
     not assemblyIsStub(this.getLocation()) and
     not exists(MethodImplementation better | this.getMethod() = better.getMethod() |
-      this.getNumberOfInstructions() > better.getNumberOfInstructions()
+      this.getNumberOfInstructions() < better.getNumberOfInstructions()
       or
       this.getNumberOfInstructions() = better.getNumberOfInstructions() and
-      this.getLocation().getFile().toString() < better.getLocation().getFile().toString()
+      this.getLocation().getFile().toString() > better.getLocation().getFile().toString()
     ) and
     exists(this.getAnInstruction())
   }

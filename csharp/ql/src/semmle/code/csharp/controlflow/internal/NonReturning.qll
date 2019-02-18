@@ -6,6 +6,8 @@
  */
 
 import csharp
+private import cil
+private import semmle.code.cil.CallableReturns
 private import semmle.code.csharp.ExprOrStmtParent
 private import semmle.code.csharp.commons.Assertions
 private import semmle.code.csharp.frameworks.System
@@ -37,6 +39,12 @@ private class ThrowingCall extends NonReturningCall {
     or
     exists(AssertMethod m | m = this.(FailingAssertion).getAssertMethod() |
       c.getExceptionClass() = m.getExceptionClass()
+    )
+    or
+    exists(CIL::Method m, CIL::Type ex |
+      this.getTarget().matchesHandle(m) and
+      alwaysThrowsException(m, ex) and
+      c.getExceptionClass().matchesHandle(ex)
     )
   }
 

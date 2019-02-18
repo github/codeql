@@ -1,0 +1,9 @@
+alwaysNull
+| dataflow.cs:54:21:54:35 | default(...) |
+| dataflow.cs:56:27:56:56 | access to property DeclaringMethod |
+alwaysNotNull
+| dataflow.cs:55:23:55:34 | default(...) |
+| dataflow.cs:56:27:56:30 | this access |
+| dataflow.cs:56:27:56:40 | call to method GetType |
+| dataflow.cs:57:30:57:33 | true |
+| dataflow.cs:57:30:57:44 | call to method ToString |

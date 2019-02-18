@@ -19,6 +19,7 @@
 
 import csharp
 private import ControlFlow
+private import internal.CallableReturns
 private import semmle.code.csharp.commons.Assertions
 private import semmle.code.csharp.commons.ComparisonTest
 private import semmle.code.csharp.controlflow.Guards as G
@@ -57,6 +58,14 @@ class AlwaysNullExpr extends Expr {
     this.(AssignExpr).getRValue() instanceof AlwaysNullExpr
     or
     this.(Cast).getExpr() instanceof AlwaysNullExpr
+    or
+    this instanceof DefaultValueExpr and this.getType() instanceof RefType
+    or
+    exists(Callable target |
+      this.(Call).getTarget() = target and
+      not target.(Virtualizable).isVirtual() and
+      alwaysNullCallable(target)
+    )
   }
 }
 
@@ -70,6 +79,12 @@ class NonNullExpr extends Expr {
     this instanceof G::NullGuardedExpr
     or
     exists(Ssa::Definition def | nonNullDef(def) | this = def.getARead())
+    or
+    exists(Callable target |
+      this.(Call).getTarget() = target and
+      not target.(Virtualizable).isVirtual() and
+      alwaysNotNullCallable(target)
+    )
   }
 }
 

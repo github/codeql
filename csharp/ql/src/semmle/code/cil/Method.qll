@@ -68,7 +68,7 @@ class Method extends DotNet::Callable, Element, Member, TypeContainer, DataFlowN
    */
   MethodImplementation getAnImplementation() { result.getMethod() = this }
 
-  /** Gets the "best" implementation of a method, if any. */
+  /** Gets the "best" implementation of this method, if any. */
   BestImplementation getImplementation() {
     result = getAnImplementation()
   }
@@ -183,9 +183,6 @@ class Method extends DotNet::Callable, Element, Member, TypeContainer, DataFlowN
   override predicate canReturn(DotNet::Expr expr) {
     exists(Return ret | ret.getImplementation().getMethod() = this and expr = ret.getExpr())
   }
-
-  /** Gets a string representing the disassembly of this method. There can be multiple implementations. */
-  string getADisassembly() { result = this.getAnImplementation().getDisassembly() }
 }
 
 /** A destructor/finalizer. */

@@ -644,7 +644,8 @@ module Internal {
     e instanceof ArrayCreation
     or
     e.hasValue() and
-    not e instanceof NullLiteral
+    not e instanceof NullLiteral and
+    not e instanceof DefaultValueExpr
     or
     e instanceof ThisAccess
     or
@@ -655,6 +656,8 @@ module Internal {
         mc.getTarget() = any(SystemObjectClass c).getGetTypeMethod() and
         not mc.isConditional()
       )
+    or
+    e.(DefaultValueExpr).getType() instanceof ValueType
   }
 
   /** Holds if expression `e2` is a non-`null` value whenever `e1` is. */

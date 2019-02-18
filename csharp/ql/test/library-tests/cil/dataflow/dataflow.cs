@@ -30,4 +30,30 @@ class Test
         var m1 = System.Math.DivRem(Math.Abs(-1), Math.Max(1, 2), out remainder);
         var m2 = "tainted".ToString().Contains("t");
     }
+
+    void DeadCode() { }
+
+    System.Reflection.Assembly assembly;
+
+    void CilAlwaysThrows()
+    {
+        assembly.GetModules(true);  // Throws NotImplementedException
+        DeadCode();
+    }
+
+    void Throw() => throw new InvalidCastException();
+
+    void CsAlwaysThrows()
+    {
+        Throw();
+        DeadCode();
+    }
+
+    void Nullness()
+    {
+        var @null = default(object);
+        var nonNull = default(int);
+        var nullFromCil = this.GetType().DeclaringMethod;
+        var nonNullFromCil = true.ToString();
+    }
 }
