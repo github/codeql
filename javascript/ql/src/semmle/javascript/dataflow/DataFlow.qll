@@ -583,7 +583,18 @@ module DataFlow {
 
     override string getPropertyName() { result = prop.getName() }
 
-    override Node getRhs() { result = parameterNode(prop.getParameter()) }
+    override Node getRhs() {
+      exists(Parameter param, Node paramNode |
+        param = prop.getParameter() and
+        parameterNode(paramNode, param)
+        |
+        result = paramNode
+        or
+        // special case: there is no SSA flow step for unused parameters
+        paramNode instanceof UnusedParameterNode and
+        result = param.getDefault().flow()
+      )
+    }
 
     override ControlFlowNode getWriteNode() { result = prop.getParameter() }
   }
