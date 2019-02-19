@@ -11,6 +11,7 @@ Example:
 
 (add-to-list 'load-path "~/ql/misc/emacs")
 (require 'ql-mode-base)
+(require 'dbscheme-mode)
 
 ; ...
 ```

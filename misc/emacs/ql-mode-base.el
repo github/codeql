@@ -5,7 +5,7 @@
 ;; A basic major mode for editing QL files, a more advanced major
 ;; mode is available for internal use at Semmle.
 ;;
-;; Provides syntax highlightning, comment support, and a mode-specific
+;; Provides syntax highlighting, comment support, and a mode-specific
 ;; keymap.
 
 ;;; Code:
