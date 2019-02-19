@@ -2063,6 +2063,16 @@ module PointsTo {
             )
         }
 
+        /** Maps the caller object/context to callee parameter/context for self in calls to methods */
+        private predicate self_in_method_call(ControlFlowNode obj, PointsToContext caller, ParameterDefinition self, PointsToContext callee) {
+            self.isSelf() and
+            exists(FunctionObject meth, CallNode call |
+                meth.getFunction() = self.getScope() and
+                callee.fromCall(call, meth, caller) and
+                call.getFunction().(AttrNode).getObject() = obj
+            )
+        }
+
         pragma [noinline]
         private predicate self_parameter_named_attribute_points_to(ParameterDefinition def, PointsToContext context, string name, Object value, ClassObject vcls, ControlFlowNode origin) {
             exists(CfgOrigin orig |
@@ -2071,11 +2081,8 @@ module PointsTo {
                 context.isRuntime() and executes_in_runtime_context(def.getScope()) and
                 ssa_variable_named_attribute_points_to(preceding_self_variable(def), context, name, value, vcls, orig)
                 or
-                exists(FunctionObject meth, CallNode call, PointsToContext caller_context, ControlFlowNode obj |
-                    meth.getFunction() = def.getScope() and
-                    method_call(meth, caller_context, call) and
-                    call.getFunction().(AttrNode).getObject() = obj and
-                    context.fromCall(call, meth, caller_context) and
+                exists(PointsToContext caller_context, ControlFlowNode obj |
+                    self_in_method_call(obj, caller_context, def, context) and
                     named_attribute_points_to(obj, caller_context, name, value, vcls, orig)
                 )
             )
