@@ -386,11 +386,7 @@ private predicate boundFlowStepPhi(
   or
   exists(IRGuardCondition guard, boolean testIsTrue |
     guard = boundFlowCond(valueNumberOfOperand(op2), op1, delta, upper, testIsTrue) and
-    (
-      guard.hasBranchEdge(op2.getPredecessorBlock().getLastInstruction(), op2.getUseInstruction().getBlock(), testIsTrue)
-      or
-      guard.controls(op2.getPredecessorBlock(), testIsTrue)
-    ) and
+    guard.controlsEdge(op2.getPredecessorBlock(), op2.getUseInstruction().getBlock(), testIsTrue) and
     reason = TCondReason(guard)
   )
 }
