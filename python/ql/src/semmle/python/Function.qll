@@ -174,6 +174,14 @@ class Function extends Function_, Scope, AstNode {
         Scope.super.contains(inner)
     }
 
+    /** Gets a control flow node for a return value of this function */
+    ControlFlowNode getAReturnValueFlowNode() {
+        exists(Return ret |
+            ret.getScope() = this and
+            ret.getValue() = result.getNode()
+        )
+    }
+
 }
 
 /** A def statement. Note that FunctionDef extends Assign as a function definition binds the newly created function */

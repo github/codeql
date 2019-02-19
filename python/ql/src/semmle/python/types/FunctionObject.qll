@@ -160,10 +160,7 @@ class PyFunctionObject extends FunctionObject {
 
     /** Gets a control flow node corresponding to the value of a return statement */
     ControlFlowNode getAReturnedNode() {
-        exists(Return ret |
-            ret.getScope() = this.getFunction() and
-            result.getNode() = ret.getValue()
-        )
+        result = this.getFunction().getAReturnValueFlowNode()
     }
 
     override string descriptiveString() {
