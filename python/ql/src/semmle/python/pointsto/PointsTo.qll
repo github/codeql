@@ -752,12 +752,6 @@ module PointsTo {
             origin = orig.asCfgNodeOrHere(f)
             |
             mod.getSourceModule() = f.getEnclosingModule() and
-            exists(EssaVariable var |
-                var.getSourceVariable().getName() = name and var.getAUse() = f and
-                ssa_variable_points_to(var, context, value, cls, orig)
-            )
-            or
-            mod.getSourceModule() = f.getEnclosingModule() and
             not exists(EssaVariable var | var.getSourceVariable().getName() = name and var.getAUse() = f) and
             exists(EssaVariable dollar |
                 isModuleStateVariable(dollar) and dollar.getAUse() = f and
@@ -766,6 +760,20 @@ module PointsTo {
             or
             not mod.getSourceModule() = f.getEnclosingModule() and
             Layer::module_attribute_points_to(mod, name, value, cls, orig)
+        )
+        or
+        exists(EssaVariable var, CfgOrigin orig |
+            var = ssa_variable_for_module_attribute(f, context) and
+            ssa_variable_points_to(var, context, value, cls, orig) and
+            origin = orig.asCfgNodeOrHere(f)
+        )
+    }
+
+    private EssaVariable ssa_variable_for_module_attribute(ImportMemberNode f, PointsToContext context) {
+        exists(string name, ModuleObject mod, Module m |
+            mod.getSourceModule() = m and m = f.getEnclosingModule() and m = result.getScope() and
+            points_to(f.getModule(name), context, mod, _, _) and
+            result.getSourceVariable().getName() = name and result.getAUse() = f
         )
     }
 
@@ -2055,6 +2063,16 @@ module PointsTo {
             )
         }
 
+        /** Maps the caller object/context to callee parameter/context for self in calls to methods */
+        private predicate self_in_method_call(ControlFlowNode obj, PointsToContext caller, ParameterDefinition self, PointsToContext callee) {
+            self.isSelf() and
+            exists(FunctionObject meth, CallNode call |
+                meth.getFunction() = self.getScope() and
+                callee.fromCall(call, meth, caller) and
+                call.getFunction().(AttrNode).getObject() = obj
+            )
+        }
+
         pragma [noinline]
         private predicate self_parameter_named_attribute_points_to(ParameterDefinition def, PointsToContext context, string name, Object value, ClassObject vcls, ControlFlowNode origin) {
             exists(CfgOrigin orig |
@@ -2063,11 +2081,8 @@ module PointsTo {
                 context.isRuntime() and executes_in_runtime_context(def.getScope()) and
                 ssa_variable_named_attribute_points_to(preceding_self_variable(def), context, name, value, vcls, orig)
                 or
-                exists(FunctionObject meth, CallNode call, PointsToContext caller_context, ControlFlowNode obj |
-                    meth.getFunction() = def.getScope() and
-                    method_call(meth, caller_context, call) and
-                    call.getFunction().(AttrNode).getObject() = obj and
-                    context.fromCall(call, meth, caller_context) and
+                exists(PointsToContext caller_context, ControlFlowNode obj |
+                    self_in_method_call(obj, caller_context, def, context) and
                     named_attribute_points_to(obj, caller_context, name, value, vcls, orig)
                 )
             )
