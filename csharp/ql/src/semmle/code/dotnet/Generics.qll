@@ -66,19 +66,24 @@ abstract class ConstructedGeneric extends Generic {
  *
  * Constructs the label suffix for a generic method or type.
  */
-string getGenericsLabel(Declaration d) {
-  result = "`" + d.(UnboundGeneric).getNumberOfTypeParameters()
+string getGenericsLabel(Generic g) {
+  result = "`" + g.(UnboundGeneric).getNumberOfTypeParameters()
   or
-  result = "<" + typeArgs(d) + ">"
-  or
-  not d instanceof Generic and result = ""
+  result = "<" + typeArgs(g) + ">"
+}
+
+pragma[noinline]
+private string getTypeArgumentLabel(ConstructedGeneric generic, int p) {
+  result = generic.getTypeArgument(p).getLabel()
+}
+
+pragma[noinline]
+private predicate isTypeArgumentPosition(ConstructedGeneric generic, int p) {
+  exists(generic.getTypeArgument(p))
 }
 
 language[monotonicAggregates]
+pragma[nomagic]
 private string typeArgs(ConstructedGeneric generic) {
-  result = concat(int p |
-      exists(generic.getTypeArgument(p))
-    |
-      generic.getTypeArgument(p).getLabel(), ","
-    )
+  result = concat(int p | isTypeArgumentPosition(generic, p) | getTypeArgumentLabel(generic, p), ",")
 }
