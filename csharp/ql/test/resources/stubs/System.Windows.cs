@@ -31,7 +31,7 @@ namespace System.Windows.Forms
         public char PasswordChar { get; set; }
         public bool UseSystemPasswordChar { get; set; }
     }
-    
+
     class RichTextBox : TextBoxBase
     {
         public string Rtf => null;
