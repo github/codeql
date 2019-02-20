@@ -24,7 +24,7 @@ predicate declaredInAll(Module m, StrConst name)
 
 predicate mutates_globals(PythonModuleObject m) {
     exists(CallNode globals |
-        globals = BuiltinFunctionObject::globals().getACall() and
+        globals = Object::builtin("globals").(FunctionObject).getACall() and
         globals.getScope() = m.getModule() |
         exists(AttrNode attr | attr.getObject() = globals)
         or

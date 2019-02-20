@@ -196,7 +196,7 @@ predicate function_can_never_return(FunctionObject func) {
         not exists(f.getAnExitNode())
     )
     or
-    func = BuiltinFunctionObject::sysExit()
+    func = ModuleObject::named("sys").attr("exit")
 }
 
 /** Python specific sub-class of generic EssaNodeDefinition */

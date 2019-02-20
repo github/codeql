@@ -376,107 +376,53 @@ class BuiltinFunctionObject extends BuiltinCallable {
 
 }
 
-module BuiltinFunctionObject {
-
-    /** The builtin function apply (Python 2 only) */
-    BuiltinFunctionObject apply() {
-        result = Object::builtin("apply")
-    }
-
-    /** The builtin function `hasattr` */
-    BuiltinFunctionObject hasattr() {
-        result = Object::builtin("hasattr")
-    }
-
-    /** The builtin function `len` */
-    BuiltinFunctionObject len() {
-        result = Object::builtin("len")
-    }
-
-    BuiltinFunctionObject format() {
-        result = Object::builtin("format")
-    }
-
-    /** The builtin function open */
-    BuiltinFunctionObject open() {
-        result = Object::builtin("open")
-    }
-
-    /** The builtin function print (Python 2.7 upwards) */
-    BuiltinFunctionObject print() {
-        result = Object::builtin("print")
-    }
-
-    /** The builtin function input (Python 2 only) */
-    BuiltinFunctionObject input() {
-        result = Object::builtin("input")
-    }
-
-    /** The builtin function locals */
-    BuiltinFunctionObject locals() {
-        py_special_objects(result, "locals")
-    }
-
-    /** The builtin function globals */
-    BuiltinFunctionObject globals() {
-        py_special_objects(result, "globals")
-    }
-
-    /** The builtin function sys.exit */
-    BuiltinFunctionObject sysExit() {
-        py_cmembers_versioned(theSysModuleObject(), "exit", result, major_version().toString())
-    }
-
-}
-
-
-/** DEPRECATED -- Use `BuiltinFunctionObject::apply()` instead. */
+/** DEPRECATED -- Use `Object::builtin("apply")` instead. */
 Object theApplyFunction() {
-    result = BuiltinFunctionObject::apply()
+    result = Object::builtin("apply")
 }
 
-/** DEPRECATED -- Use `BuiltinFunctionObject::hasattr()` instead. */
+/** DEPRECATED -- Use `Object::builtin("hasattr")` instead. */
 Object theHasattrFunction() {
-    result = BuiltinFunctionObject::hasattr()
+    result = Object::builtin("hasattr")
 }
 
-/** DEPRECATED -- Use `BuiltinFunctionObject::len()` instead. */
+/** DEPRECATED -- Use `Object::builtin("len")` instead. */
 Object theLenFunction() {
-    result = BuiltinFunctionObject::len()
+    result = Object::builtin("len")
 }
 
-/** DEPRECATED -- Use `BuiltinFunctionObject::format()` instead. */
+/** DEPRECATED -- Use `Object::builtin("format")` instead. */
 Object theFormatFunction() {
-    result = BuiltinFunctionObject::format()
+    result = Object::builtin("format")
 }
 
-/** DEPRECATED -- Use `BuiltinFunctionObject::open()` instead. */
+/** DEPRECATED -- Use `Object::builtin("open")` instead. */
 Object theOpenFunction() {
-    result = BuiltinFunctionObject::open()
+    result = Object::builtin("open")
 }
 
-/** DEPRECATED -- Use `BuiltinFunctionObject::print()` instead. */
+/** DEPRECATED -- Use `Object::builtin("print")` instead. */
 Object thePrintFunction() {
-    result = BuiltinFunctionObject::print()
+    result = Object::builtin("print")
 }
 
-/** DEPRECATED -- Use `BuiltinFunctionObject::input()` instead. */
+/** DEPRECATED -- Use `Object::builtin("input")` instead. */
 Object theInputFunction() {
-    result = BuiltinFunctionObject::input()
+    result = Object::builtin("input")
 }
 
-/** DEPRECATED -- Use `BuiltinFunctionObject::locals()` instead. */
+/** DEPRECATED -- Use `Object::builtin("locals")` instead. */
 Object theLocalsFunction() {
-    result = BuiltinFunctionObject::locals()
+    result = Object::builtin("locals")
 }
 
-/** DEPRECATED -- Use `BuiltinFunctionObject::globals()` instead. */
+/** DEPRECATED -- Use `Object::builtin("globals")()` instead. */
 Object theGlobalsFunction() {
-    result = BuiltinFunctionObject::globals()
+    result = Object::builtin("globals")
 }
 
-/** DEPRECATED -- Use `BuiltinFunctionObject::sysExit()` instead. */
+/** DEPRECATED -- Use `Object::builtin("sysExit()` instead. */
 Object theExitFunctionObject() {
-    result = BuiltinFunctionObject::sysExit()
+    result = ModuleObject::named("sys").attr("exit")
 }
 

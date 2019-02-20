@@ -18,7 +18,7 @@ predicate tracked_object(ControlFlowNode obj, string attr) {
 }
 
 predicate open_file(Object obj) {
-    obj.(CallNode).getFunction().refersTo(BuiltinFunctionObject::open())
+    obj.(CallNode).getFunction().refersTo(Object::builtin("open"))
 }
 
 predicate string_attribute_any(ControlFlowNode n, string attr) {
@@ -28,7 +28,7 @@ predicate string_attribute_any(ControlFlowNode n, string attr) {
         if major_version() = 2 then
             input = Object::builtin("raw_input")
         else
-            input = BuiltinFunctionObject::input()
+            input = Object::builtin("input")
     )
     or
     attr = "file-input" and
