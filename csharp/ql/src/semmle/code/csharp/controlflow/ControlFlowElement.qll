@@ -109,13 +109,17 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
     )
   }
 
+  private BasicBlock getAPossiblyControlledPredecessor0(ConditionalSuccessor s) {
+    this.immediatelyControlsBlockSplit(result, s)
+    or
+    result = this.getAPossiblyControlledPredecessor0(s).getASuccessor()
+  }
+
   pragma[nomagic]
   private JoinBlockPredecessor getAPossiblyControlledPredecessor(
     JoinBlock controlled, ConditionalSuccessor s
   ) {
-    exists(BasicBlock mid | this.immediatelyControlsBlockSplit(mid, s) |
-      result = mid.getASuccessor*()
-    ) and
+    result = this.getAPossiblyControlledPredecessor0(s) and
     result.getASuccessor() = controlled and
     not controlled.dominates(result)
   }
@@ -137,7 +141,7 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
     if controlled instanceof JoinBlock
     then
       this.isPossiblyControlledJoinBlock(controlled, s) and
-      forall(BasicBlock pred | pred = this.getAPossiblyControlledPredecessor(controlled, s) |
+      forex(BasicBlock pred | pred = this.getAPossiblyControlledPredecessor(controlled, s) |
         this.controlsBlock(pred, s)
       )
     else this.controlsBlockSplit(controlled.getAPredecessor(), s)
