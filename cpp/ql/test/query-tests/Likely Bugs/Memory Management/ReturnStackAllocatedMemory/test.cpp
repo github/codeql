@@ -5,6 +5,11 @@ public:
 	int a, b;
 };
 
+MyClass makeMyClass()
+{
+	return { 0, 0 }; // GOOD
+}
+
 MyClass *test1()
 {
 	MyClass mc;
@@ -23,45 +28,59 @@ MyClass *test2()
 MyClass *test3()
 {
 	MyClass mc;
+	MyClass *ptr = &mc;
+	ptr = nullptr;
+	return ptr; // GOOD [FALSE POSITIVE]
+}
+
+MyClass *test4()
+{
+	MyClass mc;
 	MyClass &ref = mc;
 
 	return &ref; // BAD [NOT DETECTED]
 }
 
-int *test4()
+MyClass &test5()
+{
+	MyClass mc;
+	return mc; // BAD [NOT DETECTED]
+}
+
+int *test6()
 {
 	MyClass mc;
 
 	return &(mc.a); // BAD [NOT DETECTED]
 }
 
-MyClass test6()
+MyClass test7()
 {
 	MyClass mc;
 
 	return mc; // GOOD
 }
 
-MyClass *test7()
+MyClass *test8()
 {
 	MyClass *mc = new MyClass;
 
 	return mc; // GOOD
 }
 
-MyClass test8()
+MyClass test9()
 {
 	return MyClass(); // GOOD
 }
 
-int test9()
+int test10()
 {
 	MyClass mc;
 
 	return mc.a; // GOOD
 }
 
-MyClass *test10()
+MyClass *test11()
 {
 	MyClass *ptr;
 
@@ -73,12 +92,12 @@ MyClass *test10()
 	return ptr; // BAD
 }
 
-MyClass *test11(MyClass *param)
+MyClass *test12(MyClass *param)
 {
 	return param; // GOOD
 }
 
-MyClass *test12()
+MyClass *test13()
 {
 	static MyClass mc;
 	MyClass &ref = mc;
