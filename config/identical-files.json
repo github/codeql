@@ -13,12 +13,14 @@
     "cpp/ql/src/semmle/code/cpp/ir/dataflow/internal/DataFlowImpl.qll",
     "cpp/ql/src/semmle/code/cpp/ir/dataflow/internal/DataFlowImpl2.qll",
     "cpp/ql/src/semmle/code/cpp/ir/dataflow/internal/DataFlowImpl3.qll",
-    "cpp/ql/src/semmle/code/cpp/ir/dataflow/internal/DataFlowImpl4.qll"
+    "cpp/ql/src/semmle/code/cpp/ir/dataflow/internal/DataFlowImpl4.qll",
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowImpl.qll"
   ],
   "DataFlow Java/C++ Common": [
     "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImplCommon.qll",
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/DataFlowImplCommon.qll",
-    "cpp/ql/src/semmle/code/cpp/ir/dataflow/internal/DataFlowImplCommon.qll"
+    "cpp/ql/src/semmle/code/cpp/ir/dataflow/internal/DataFlowImplCommon.qll",
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowImplCommon.qll"
   ],
   "C++ IR Instruction": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/Instruction.qll",
