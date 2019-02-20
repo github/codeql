@@ -52,18 +52,26 @@ predicate allocExprOrIndirect(Expr alloc, string kind) {
 }
 
 /**
+ * Holds if `v` is assigned value `e`, and `e` is not known to be `0`.
+ */
+private predicate nonNullGlobalAssignment(Variable v, Expr e) {
+  not v instanceof LocalScopeVariable and
+  v.getAnAssignedValue() = e and
+  not e.getValue().toInt() = 0
+}
+
+/**
  * Holds if `v` is a non-local variable which is assigned only with allocations of
  * type `kind` (it may also be assigned with NULL).
  */
 private predicate allocReachesVariable(Variable v, Expr alloc, string kind) {
-  not v instanceof LocalScopeVariable and
   exists(Expr mid |
-    v.getAnAssignedValue() = mid and
+    nonNullGlobalAssignment(v, mid) and
     allocReaches(mid, alloc, kind)
-  ) and forall(Expr mid |
-    v.getAnAssignedValue() = mid |
-    allocReaches(mid, _, kind) or
-    mid.getValue().toInt() = 0 // NULL
+  ) and
+  forall(Expr mid |
+    nonNullGlobalAssignment(v, mid) |
+    allocReaches(mid, _, kind)
   )
 }
 
