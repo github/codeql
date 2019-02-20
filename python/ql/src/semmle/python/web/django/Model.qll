@@ -8,7 +8,7 @@ import semmle.python.web.Http
 class DjangoModel extends ClassObject {
 
     DjangoModel() {
-        any(ModuleObject m | m.getName() = "django.db.models").getAttribute("Model") = this.getAnImproperSuperType()
+        any(ModuleObject m | m.getName() = "django.db.models").attr("Model") = this.getAnImproperSuperType()
     }
 
 }

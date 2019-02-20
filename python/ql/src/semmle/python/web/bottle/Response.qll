@@ -19,7 +19,7 @@ class BottleResponse extends TaintKind {
 }
 
 private Object theBottleResponseObject() {
-    result = theBottleModule().getAttribute("response")
+    result = theBottleModule().attr("response")
 }
 
 class BottleResponseBodyAssignment extends TaintSink {

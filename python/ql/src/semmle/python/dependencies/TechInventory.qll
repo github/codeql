@@ -21,7 +21,7 @@ abstract class ExternalPackage extends Object {
     abstract string getVersion();
 
     Object getAttribute(string name) {
-        result = this.(ModuleObject).getAttribute(name)
+        result = this.(ModuleObject).attr(name)
     }
 
     PackageObject getPackage() {

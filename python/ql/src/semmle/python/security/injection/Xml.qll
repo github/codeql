@@ -33,7 +33,7 @@ private class ExpatParser extends TaintKind {
 }
 
 private FunctionObject expatCreateParseFunction() {
-    result = ModuleObject::named("xml.parsers.expat").getAttribute("ParserCreate")
+    result = ModuleObject::named("xml.parsers.expat").attr("ParserCreate")
 }
 
 private class ExpatCreateParser extends TaintSource {
@@ -52,13 +52,13 @@ private class ExpatCreateParser extends TaintSource {
 }
 
 private FunctionObject xmlFromString() {
-    result = xmlElementTreeModule().getAttribute("fromstring")
+    result = xmlElementTreeModule().attr("fromstring")
     or
-    result = xmlMiniDomModule().getAttribute("parseString")
+    result = xmlMiniDomModule().attr("parseString")
     or
-    result = xmlPullDomModule().getAttribute("parseString")
+    result = xmlPullDomModule().attr("parseString")
     or
-    result = xmlSaxModule().getAttribute("parseString")
+    result = xmlSaxModule().attr("parseString")
 }
 
 /** A (potentially) malicious XML string. */

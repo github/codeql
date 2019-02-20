@@ -9,7 +9,7 @@ import semmle.python.security.strings.Basic
 import semmle.python.web.bottle.General
 
 FunctionObject bottle_redirect() {
-    result = theBottleModule().getAttribute("redirect")
+    result = theBottleModule().attr("redirect")
 }
 
 /**

@@ -192,7 +192,7 @@ private Object findByName1(string longName) {
     exists(string owner, string attrname |
         longName = owner + "." + attrname
         |
-        result = findByName0(owner).(ModuleObject).getAttribute(attrname)
+        result = findByName0(owner).(ModuleObject).attr(attrname)
         or
         result = findByName0(owner).(ClassObject).lookupAttribute(attrname)
     )
@@ -204,7 +204,7 @@ private Object findByName2(string longName) {
     exists(string owner, string attrname |
         longName = owner + "." + attrname
         |
-        result = findByName1(owner).(ModuleObject).getAttribute(attrname)
+        result = findByName1(owner).(ModuleObject).attr(attrname)
         or
         result = findByName1(owner).(ClassObject).lookupAttribute(attrname)
     )
@@ -216,7 +216,7 @@ private Object findByName3(string longName) {
     exists(string owner, string attrname |
         longName = owner + "." + attrname
         |
-        result = findByName2(owner).(ModuleObject).getAttribute(attrname)
+        result = findByName2(owner).(ModuleObject).attr(attrname)
         or
         result = findByName2(owner).(ClassObject).lookupAttribute(attrname)
     )

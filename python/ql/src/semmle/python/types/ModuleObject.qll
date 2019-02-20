@@ -33,9 +33,17 @@ abstract class ModuleObject extends Object {
     }
 
     /** Gets the named attribute of this module. Using attributeRefersTo() instead
-     * may provide better results for presentation. */
+     * may provide better results for presentation.
+     * */
     pragma [noinline]
     abstract Object getAttribute(string name);
+
+    /** Gets the named attribute of this module.
+     * Synonym for `getAttribute(name)` */
+    pragma [inline]
+    final Object attr(string name) {
+        result = this.getAttribute(name)
+    }
 
     /** Whether the named attribute of this module "refers-to" value, with a known origin.
      */

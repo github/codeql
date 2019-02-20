@@ -12,11 +12,11 @@
 import python
 
 FunctionObject ssl_wrap_socket() {
-    result = the_ssl_module().getAttribute("wrap_socket")
+    result = the_ssl_module().attr("wrap_socket")
 }
 
 ClassObject ssl_Context_class() {
-    result = the_ssl_module().getAttribute("SSLContext")
+    result = the_ssl_module().attr("SSLContext")
 }
 
 string insecure_version_name() {
@@ -69,20 +69,20 @@ predicate unsafe_ssl_wrap_socket_call(CallNode call, string method_name, string 
     insecure_version = insecure_version_name()
     and
     (
-        call.getArgByName("ssl_version").refersTo(the_ssl_module().getAttribute(insecure_version))
+        call.getArgByName("ssl_version").refersTo(the_ssl_module().attr(insecure_version))
         or
         probable_insecure_ssl_constant(call, insecure_version)
     )
 }
 
 ClassObject the_pyOpenSSL_Context_class() {
-    result = any(ModuleObject m | m.getName() = "pyOpenSSL.SSL").getAttribute("Context")
+    result = any(ModuleObject m | m.getName() = "pyOpenSSL.SSL").attr("Context")
 }
 
 predicate unsafe_pyOpenSSL_Context_call(CallNode call, string insecure_version) {
     call = the_pyOpenSSL_Context_class().getACall() and
     insecure_version = insecure_version_name() and
-    call.getArg(0).refersTo(the_pyOpenSSL_module().getAttribute(insecure_version))
+    call.getArg(0).refersTo(the_pyOpenSSL_module().attr(insecure_version))
 }
 
 from CallNode call, string method_name, string insecure_version

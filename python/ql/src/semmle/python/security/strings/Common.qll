@@ -7,7 +7,7 @@ predicate copy_call(ControlFlowNode fromnode, CallNode tonode) {
     or
     exists(ModuleObject copy, string name |
         name = "copy" or name = "deepcopy" |
-        copy.getAttribute(name).(FunctionObject).getACall() = tonode and
+        copy.attr(name).(FunctionObject).getACall() = tonode and
         tonode.getArg(0) = fromnode
     )
     or

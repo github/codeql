@@ -21,7 +21,7 @@ int minimumSecureKeySize(string algo) {
 
 predicate dsaRsaKeySizeArg(FunctionObject obj, string algorithm, string arg) {
     exists(ModuleObject mod |
-        mod.getAttribute(_) = obj |
+        mod.attr(_) = obj |
         algorithm = "DSA" and
         (
             mod.getName() = "cryptography.hazmat.primitives.asymmetric.dsa" and arg = "key_size"
@@ -44,7 +44,7 @@ predicate dsaRsaKeySizeArg(FunctionObject obj, string algorithm, string arg) {
 
 predicate ecKeySizeArg(FunctionObject obj, string arg) {
     exists(ModuleObject mod |
-        mod.getAttribute(_) = obj |
+        mod.attr(_) = obj |
         mod.getName() = "cryptography.hazmat.primitives.asymmetric.ec" and arg = "curve"
     )
 }

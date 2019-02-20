@@ -17,7 +17,7 @@ class DjangoResponse extends TaintKind {
 }
 
 private ClassObject theDjangoHttpResponseClass() {
-    result = any(ModuleObject m | m.getName() = "django.http.response").getAttribute("HttpResponse") and
+    result = any(ModuleObject m | m.getName() = "django.http.response").attr("HttpResponse") and
     not result = theDjangoHttpRedirectClass()
 }
 

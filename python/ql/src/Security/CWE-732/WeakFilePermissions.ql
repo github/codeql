@@ -35,12 +35,12 @@ string permissive_permission(int p) {
 }
 
 predicate chmod_call(CallNode call, FunctionObject chmod, NumericObject num) {
-    any(ModuleObject os | os.getName() = "os").getAttribute("chmod") = chmod and
+    any(ModuleObject os | os.getName() = "os").attr("chmod") = chmod and
     chmod.getACall() = call and call.getArg(1).refersTo(num)
 }
 
 predicate open_call(CallNode call, FunctionObject open, NumericObject num) {
-    any(ModuleObject os | os.getName() = "os").getAttribute("open") = open and
+    any(ModuleObject os | os.getName() = "os").attr("open") = open and
     open.getACall() = call and call.getArg(2).refersTo(num)
 }
 

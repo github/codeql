@@ -13,11 +13,11 @@
 import python
 
 FunctionObject ssl_wrap_socket() {
-    result = any(ModuleObject ssl | ssl.getName() = "ssl").getAttribute("wrap_socket")
+    result = any(ModuleObject ssl | ssl.getName() = "ssl").attr("wrap_socket")
 }
 
 ClassObject ssl_Context_class() {
-    result = any(ModuleObject ssl | ssl.getName() = "ssl").getAttribute("SSLContext")
+    result = any(ModuleObject ssl | ssl.getName() = "ssl").attr("SSLContext")
 }
 
 CallNode unsafe_call(string method_name) {

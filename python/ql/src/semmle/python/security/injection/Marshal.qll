@@ -12,7 +12,7 @@ import semmle.python.security.strings.Untrusted
 
 
 private FunctionObject marshalLoads() {
-    result = any(ModuleObject marshal | marshal.getName() = "marshal").getAttribute("loads")
+    result = ModuleObject::named("marshal").attr("loads")
 }
 
 

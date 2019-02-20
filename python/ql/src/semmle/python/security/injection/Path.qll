@@ -20,12 +20,12 @@ private class PathSanitizer extends Sanitizer {
 }
 
 private FunctionObject abspath() {
-    exists(ModuleObject os, ModuleObject os_path |
-        os.getName() = "os" and
-        os.getAttribute("path") = os_path |
-        os_path.getAttribute("abspath") = result
+    exists(ModuleObject os_path |
+        ModuleObject::named("os").attr("path") = os_path
+        |
+        os_path.attr("abspath") = result
         or
-        os_path.getAttribute("normpath") = result
+        os_path.attr("normpath") = result
     )
 }
 

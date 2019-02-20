@@ -34,7 +34,7 @@ predicate fewer_characters_than(StrConst str, string char, float fraction) {
 }
 
 predicate possible_reflective_name(string name) {
-    exists(any(ModuleObject m).getAttribute(name))
+    exists(any(ModuleObject m).attr(name))
     or
     exists(any(ClassObject c).lookupAttribute(name))
     or

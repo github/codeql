@@ -9,7 +9,7 @@ import semmle.python.security.strings.Basic
 import semmle.python.web.flask.General
 
 FunctionObject flask_redirect() {
-    result = theFlaskModule().getAttribute("redirect")
+    result = theFlaskModule().attr("redirect")
 }
 
 /**

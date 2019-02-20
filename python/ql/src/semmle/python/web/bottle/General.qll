@@ -9,7 +9,7 @@ ModuleObject theBottleModule() {
 
 /** The bottle.Bottle class */
 ClassObject theBottleClass() {
-    result = ModuleObject::named("bottle").getAttribute("Bottle")
+    result = ModuleObject::named("bottle").attr("Bottle")
 }
 
 /** Holds if `route` is routed to `func`
@@ -18,7 +18,7 @@ ClassObject theBottleClass() {
 predicate bottle_route(CallNode route_call, ControlFlowNode route, Function func) {
     exists(CallNode decorator_call, string name |
         route_call.getFunction().(AttrNode).getObject(name).refersTo(_, theBottleClass(), _) or
-        route_call.getFunction().refersTo(theBottleModule().getAttribute(name))
+        route_call.getFunction().refersTo(theBottleModule().attr(name))
         |
         (name = "route" or name = httpVerbLower()) and
         decorator_call.getFunction() = route_call and
@@ -73,7 +73,7 @@ class BottleRoutePointToExtension extends CustomPointsToFact {
 
     override predicate pointsTo(Context context, Object value, ClassObject cls, ControlFlowNode origin) {
         context.isImport() and
-        ModuleObject::named("bottle").getAttribute("Bottle").(ClassObject).attributeRefersTo(name, value, cls, origin)
+        ModuleObject::named("bottle").attr("Bottle").(ClassObject).attributeRefersTo(name, value, cls, origin)
     }
 }
 
