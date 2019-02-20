@@ -76,7 +76,7 @@ class Call extends DotNet::Call, Expr, @call {
    * }
    * ```
    */
-  pragma[nomagic]
+  cached
   override Expr getArgumentForParameter(DotNet::Parameter p) {
     getTarget().getAParameter() = p and
     (
