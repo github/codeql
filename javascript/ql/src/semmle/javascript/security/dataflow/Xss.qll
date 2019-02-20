@@ -127,13 +127,19 @@ module DomBasedXss {
   }
 
   /**
-   * An expression whose value is interpreted as HTML by a DOMParser.
+   * An expression whose value is interpreted as HTML.
    */
-  class DomParserSink extends Sink {
-    DomParserSink() {
+  class HtmlParserSink extends Sink {
+    HtmlParserSink() {
       exists(DataFlow::GlobalVarRefNode domParser |
         domParser.getName() = "DOMParser" and
         this = domParser.getAnInstantiation().getAMethodCall("parseFromString").getArgument(0)
+      )
+      or
+      exists(DataFlow::MethodCallNode ccf |
+        isDomValue(ccf.getReceiver().asExpr()) and
+        ccf.getMethodName() = "createContextualFragment" and
+        this = ccf.getArgument(0)
       )
     }
   }
