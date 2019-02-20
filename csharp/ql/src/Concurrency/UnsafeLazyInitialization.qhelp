@@ -59,9 +59,6 @@ automatically thread-safe (Recommendation 3):</p>
     MSDN: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.lazyinitializer.ensureinitialized">LazyInitializer.EnsureInitialized Method</a>.
   </li>
   <li>
-    MSDN: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.lazyinitializer.ensureinitialized">LazyInitializer.EnsureInitialized Method</a>.
-  </li>
-  <li>
     MSDN: <a href="https://msdn.microsoft.com/en-us/library/ff650316.aspx">Implementing Singleton in C#</a>.
   </li>
   <li>
