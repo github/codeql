@@ -1,6 +1,7 @@
 | test.cpp:17:2:17:12 | return ... | May return stack-allocated memory. |
 | test.cpp:25:2:25:12 | return ... | May return stack-allocated memory. |
-| test.cpp:33:2:33:12 | return ... | May return stack-allocated memory. |
+| test.cpp:47:2:47:11 | return ... | May return stack-allocated memory. |
+| test.cpp:54:2:54:16 | return ... | May return stack-allocated memory. |
 | test.cpp:92:2:92:12 | return ... | May return stack-allocated memory. |
 | test.cpp:112:2:112:12 | return ... | May return stack-allocated memory. |
 | test.cpp:119:2:119:19 | return ... | May return stack-allocated memory. |
