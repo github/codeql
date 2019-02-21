@@ -21,16 +21,18 @@ class DerivedClass(BaseClass):
         self.inst_attr
         self.shadowing
 
-#ODASA-3836
+
 def comprehensions_and_generators(seq):
     [y*y for y in seq]
     (y*y for y in seq)
     {y*y for y in seq}
     {y:y*y for y in seq}
 
-#ODASA-5391
+
 @decorator(x)
 class Decorated(object):
     pass
 
 d = Decorated()
+
+import package
