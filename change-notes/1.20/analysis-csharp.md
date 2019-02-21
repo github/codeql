@@ -33,6 +33,6 @@
 * Support has been added for EntityFrameworkCore, including
   - Stored data flow sources
   - Sinks for SQL expressions
-  - Dataflow through fields that are mapped to the database.
+  - Data flow through fields that are mapped to the database.
 
 ## Changes to the autobuilder

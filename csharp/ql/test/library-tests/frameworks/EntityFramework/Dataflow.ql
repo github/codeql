@@ -1,14 +1,11 @@
 import csharp
 import semmle.code.csharp.dataflow.TaintTracking
 
-class MyConfiguration extends TaintTracking::Configuration
-{
+class MyConfiguration extends TaintTracking::Configuration {
   MyConfiguration() { this = "EntityFramework dataflow" }
-  
-  override predicate isSource(DataFlow::Node node) {
-    node.asExpr().getValue() = "tainted"
-  }
-  
+
+  override predicate isSource(DataFlow::Node node) { node.asExpr().getValue() = "tainted" }
+
   override predicate isSink(DataFlow::Node node) {
     node.asExpr() = any(MethodCall c | c.getTarget().hasName("Sink")).getAnArgument()
   }

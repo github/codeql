@@ -23,9 +23,9 @@ namespace EFTests
         void FlowSources()
         {
             var p = new Person();
-            var id = p.Id;
-            var name = p.Name;
-            var age = p.Age;
+            var id = p.Id;  // Remote flow source
+            var name = p.Name;  // Remote flow source
+            var age = p.Age;  // Not a remote flow source
         }
 
         DbCommand command;
@@ -33,13 +33,13 @@ namespace EFTests
         async void SqlSinks()
         {
             // System.Data.Common.DbCommand.set_CommandText
-            command.CommandText = "";
-            
+            command.CommandText = "";  // SqlExpr
+
             // System.Data.SqlClient.SqlCommand.SqlCommand
-            new System.Data.SqlClient.SqlCommand("");
-            
-            this.Database.ExecuteSqlCommand("");
-            await this.Database.ExecuteSqlCommandAsync("");
+            new System.Data.SqlClient.SqlCommand("");  // SqlExpr
+
+            this.Database.ExecuteSqlCommand("");  // SqlExpr
+            await this.Database.ExecuteSqlCommandAsync("");  // SqlExpr
         }
 
         void TestDataFlow()
@@ -59,7 +59,6 @@ namespace EFTests
         void Sink(object @object)
         {
         }
-
     }
 
 }

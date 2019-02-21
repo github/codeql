@@ -185,8 +185,9 @@ module EntityFramework {
 
     MappedPropertyJumpNode() { this.asExpr() = property.getAnAssignedValue() }
 
-    override DataFlow::Node getAJumpSuccessor() {
-      result.asExpr().(PropertyRead).getTarget() = property
+    override DataFlow::Node getAJumpSuccessor(boolean preservesValue) {
+      result.asExpr().(PropertyRead).getTarget() = property and
+      preservesValue = false
     }
   }
 }
