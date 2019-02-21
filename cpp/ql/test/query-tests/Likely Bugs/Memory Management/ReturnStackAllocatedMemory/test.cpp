@@ -30,7 +30,7 @@ MyClass *test3()
 	MyClass mc;
 	MyClass *ptr = &mc;
 	ptr = nullptr;
-	return ptr; // GOOD [FALSE POSITIVE]
+	return ptr; // GOOD
 }
 
 MyClass *test4()
@@ -44,14 +44,14 @@ MyClass *test4()
 MyClass &test5()
 {
 	MyClass mc;
-	return mc; // BAD [NOT DETECTED]
+	return mc; // BAD
 }
 
 int *test6()
 {
 	MyClass mc;
 
-	return &(mc.a); // BAD [NOT DETECTED]
+	return &(mc.a); // BAD
 }
 
 MyClass test7()
