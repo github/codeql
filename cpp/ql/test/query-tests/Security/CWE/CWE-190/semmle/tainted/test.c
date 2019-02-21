@@ -71,7 +71,7 @@ int main(int argc, char** argv) {
     len5 = strlen(argv[1]);
     while (len5)
     {
-      len5--; // GOOD: can't underflow [FALSE POSITIVE]
+      len5--; // GOOD: can't underflow
     }
   }
 
@@ -81,7 +81,7 @@ int main(int argc, char** argv) {
     len6 = strlen(argv[1]);
     while (len6 != 0)
     {
-      len6--; // GOOD: can't underflow [FALSE POSITIVE]
+      len6--; // GOOD: can't underflow
     }
   }
 
@@ -91,7 +91,7 @@ int main(int argc, char** argv) {
     len7 = strlen(argv[1]);
     while ((len7) && (1))
     {
-      len7--; // GOOD: can't underflow [FALSE POSITIVE]
+      len7--; // GOOD: can't underflow
     }
   }
 
