@@ -6,7 +6,9 @@
  * @kind problem
  * @id cpp/return-stack-allocated-memory
  * @problem.severity warning
+ * @precision high
  * @tags reliability
+ *       external/cwe/cwe-825
  */
 
 import cpp
