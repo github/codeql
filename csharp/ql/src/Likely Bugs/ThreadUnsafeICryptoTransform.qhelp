@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Classes that implement <code>System.Security.Cryptography.ICryptoTransform</code> are not thread safe.</p>
+<p>Any object that implements <code>System.Security.Cryptography.ICryptoTransform</code> should not be used in concurrent threads as the instance members of such object are also not thread safe.</p>
+<p>Potential problems may not be evident at first, but can range from explicit errors such as exceptions, to incorrect results when sharing an instance of such object in multiple threads.</p>
+
+</overview>
+<recommendation>
+<p>Verify that the object is not being shared across threads.</p>
+<p>If it is shared accross instances. Consider changing the code to use a non-static object of type <code>System.Security.Cryptography.ICryptoTransform</code> instead.</p>
+<p>As an alternative, you could also look into using <code>ThreadStatic</code> attribute, but make sure you read the initialization remarks on the documentation.</p>
+
+</recommendation>
+<example>
+<p>This example demonstrates the dangers of using a static <code>System.Security.Cryptography.ICryptoTransform</code> in such a way that the results may be incorrect.</p>
+<sample src="ThreadUnsafeICryptoTransform.cs" />
+
+<p>A simple fix is to change the <code>_sha</code> field from being a static member to an instance one by removing the <code>static</code> keyword.</p>
+<sample src="ThreadUnSafeICryptoTransformFix.cs" />
+</example>
+
+<references>
+  <li>
+    Microsoft documentation, <a href="https://docs.microsoft.com/en-us/dotnet/api/system.threadstaticattribute?view=netframework-4.7.2">ThreadStaticAttribute Class</a>.
+  </li>
+  <li>
+    Stack Overflow, <a href="https://stackoverflow.com/questions/26592596/why-does-sha1-computehash-fail-under-high-load-with-many-threads">Why does SHA1.ComputeHash fail under high load with many threads?</a>.
+  </li>
+</references>
+
+</qhelp>
