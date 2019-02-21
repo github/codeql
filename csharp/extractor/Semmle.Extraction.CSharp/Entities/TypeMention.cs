@@ -36,7 +36,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     var nts = (NullableTypeSyntax)Syntax;
                     var nt = (NamedType)Type;
                     Emit(Loc ?? Syntax.GetLocation(), Parent, Type);
-                    Create(cx, nts.ElementType, this, nt.TypeArguments[0]);
+                    Create(cx, nts.ElementType, this, nt.symbol.IsReferenceType ? nt : nt.TypeArguments[0]);
                     return;
                 case SyntaxKind.TupleType:
                     var tts = (TupleTypeSyntax)Syntax;
