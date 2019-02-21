@@ -46,4 +46,4 @@ where
       )
     )
   )
-select r, "May return stack-allocated memory."
+select r, "May return stack-allocated memory from $@.", va, va.toString()
