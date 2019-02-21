@@ -16,8 +16,8 @@ private predicate isUnreachedBlock(IRBlock block) {
  * A Boolean condition in the AST that guards one or more basic blocks. This includes
  * operands of logical operators but not switch statements.
  */
-class GuardCondition extends Expr {
-  GuardCondition() {
+cached class GuardCondition extends Expr {
+  cached GuardCondition() {
     exists(IRGuardCondition ir | this = ir.getUnconvertedResultExpression())
     or
     // no binary operators in the IR
@@ -238,10 +238,10 @@ private class GuardConditionFromIR extends GuardCondition {
  * don't have an explicit representation in the IR, and therefore will not appear as
  * IRGuardConditions.
  */
-class IRGuardCondition extends Instruction {
+cached class IRGuardCondition extends Instruction {
     ConditionalBranchInstruction branch;
     
-    IRGuardCondition() {
+    cached IRGuardCondition() {
         branch = get_branch_for_condition(this)
     }
 
@@ -281,7 +281,7 @@ class IRGuardCondition extends Instruction {
           ne.controls(controlled, testIsTrue.booleanNot())) 
     }
 
-    predicate controlsEdge(IRBlock pred, IRBlock succ, boolean testIsTrue) {
+    cached predicate controlsEdge(IRBlock pred, IRBlock succ, boolean testIsTrue) {
       pred.getASuccessor() = succ and
       controls(pred, testIsTrue)
       or
