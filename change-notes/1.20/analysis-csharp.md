@@ -19,6 +19,7 @@
 | Use of default ToString() (`cs/call-to-object-tostring`) | Fewer results | Results have been removed when the object is an interface or an abstract class. |
 | Unused format argument (`cs/format-argument-unused`) | Fewer false positives | Results have been removed where the format string is empty. This is often used as a default value and is not an interesting result. |
 | Double-checked lock is not thread-safe (`cs/unsafe-double-checked-lock`) | Fewer false positives, more true positives | Results have been removed where the underlying field was not updated in the `lock` statement, or where the field is a `struct`. Results have been added where there are other statements inside the `lock` statement. |
+| Using a package with a known vulnerability (`cs/use-of-vulnerable-package`) | More results | This query detects packages vulnerable to CVE-2019-0657. |
 
 ## Changes to code extraction
 

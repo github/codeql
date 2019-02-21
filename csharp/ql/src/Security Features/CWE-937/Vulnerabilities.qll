@@ -312,3 +312,24 @@ class CVE_2018_0786 extends Vulnerability {
     fixed = "4.0.2"
   }
 }
+
+class CVE_2019_0657 extends Vulnerability {
+  CVE_2019_0657() { this = "CVE-2019-0657" }
+
+  override predicate matchesRange(string name, Version affected, Version fixed) {
+    name = "Microsoft.NETCore.App" and
+    (
+      affected = "2.1.0" and fixed = "2.1.8"
+      or
+      affected = "2.2.0" and fixed = "2.2.2"
+    )
+  }
+
+  override predicate matchesVersion(string name, Version affected, Version fixed) {
+    name = "System.Private.Uri" and
+    affected = "4.3.0" and
+    fixed = "4.3.1"
+  }
+
+  override string getUrl() { result = "https://github.com/dotnet/announcements/issues/97" }
+}
