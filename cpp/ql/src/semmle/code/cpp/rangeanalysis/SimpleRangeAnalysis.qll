@@ -45,6 +45,7 @@ import cpp
 private import RangeAnalysisUtils
 import RangeSSA
 import SimpleRangeAnalysisCached
+import NanAnalysis
 
 /**
  * This fixed set of lower bounds is used when the lower bounds of an
@@ -994,6 +995,25 @@ predicate unanalyzableDefBounds(
 }
 
 /**
+ * Holds if in the `branch` branch of a guard `guard` involving `v`,
+ * we know that `v` is not NaN, and therefore it is safe to make range
+ * inferences about `v`.
+ */
+bindingset[guard, v, branch]
+predicate nonNanGuardedVariable(ComparisonOperation guard, VariableAccess v, boolean branch) {
+  v.getType().getUnspecifiedType() instanceof IntegralType
+  or
+  v.getType().getUnspecifiedType() instanceof FloatingPointType and v instanceof NonNanVariableAccess
+  or
+  // The reason the following case is here is to ensure that when we say
+  // `if (x > 5) { ...then... } else { ...else... }`
+  // it is ok to conclude that `x > 5` in the `then`, (though not safe
+  // to conclude that x <= 5 in `else`) even if we had no prior
+  // knowledge of `x` not being `NaN`.
+  nanExcludingComparison(guard, branch)
+}
+
+/**
  * If the guard is a comparison of the form `p*v + q <CMP> r`, then this
  * predicate uses the bounds information for `r` to compute a lower bound
  * for `v`.
@@ -1004,10 +1024,12 @@ predicate lowerBoundFromGuard(
 ) {
   exists (float childLB, RelationStrictness strictness
   | boundFromGuard(guard, v, childLB, true, strictness, branch)
-  | if (strictness = Nonstrict() or
-        not (v.getType().getUnspecifiedType() instanceof IntegralType))
-      then lb = childLB
-      else lb = childLB+1)
+  | if nonNanGuardedVariable(guard, v, branch)
+    then (if (strictness = Nonstrict() or
+            not (v.getType().getUnspecifiedType() instanceof IntegralType))
+          then lb = childLB
+          else lb = childLB+1)
+    else lb = varMinVal(v.getTarget()))
 }
 
 /**
@@ -1021,10 +1043,12 @@ predicate upperBoundFromGuard(
 ) {
   exists (float childUB, RelationStrictness strictness
   | boundFromGuard(guard, v, childUB, false, strictness, branch)
-  | if (strictness = Nonstrict() or
-        not (v.getType().getUnspecifiedType() instanceof IntegralType))
-      then ub = childUB
-      else ub = childUB-1)
+  | if nonNanGuardedVariable(guard, v, branch)
+    then (if (strictness = Nonstrict() or
+            not (v.getType().getUnspecifiedType() instanceof IntegralType))
+          then ub = childUB
+          else ub = childUB-1)
+    else ub = varMaxVal(v.getTarget()))
 }
 
 /**
