@@ -11,10 +11,6 @@ import semmle.python.security.TaintTracking
 import semmle.python.security.strings.Untrusted
 
 
-private ModuleObject subprocessModule() {
-    result.getName() = "subprocess"
-}
-
 private ModuleObject osOrPopenModule() {
     result.getName() = "os" or
     result.getName() = "popen2"
@@ -22,7 +18,7 @@ private ModuleObject osOrPopenModule() {
 
 private Object makeOsCall() {
     exists(string name |
-        result = subprocessModule().getAttribute(name) |
+        result = ModuleObject::named("subprocess").attr(name) |
         name = "Popen" or
         name = "call" or 
         name = "check_call" or
@@ -79,7 +75,7 @@ class ShellCommand extends TaintSink {
         or
         exists(CallNode call, string name |
             call.getAnArg() = this and
-            call.getFunction().refersTo(osOrPopenModule().getAttribute(name)) |
+            call.getFunction().refersTo(osOrPopenModule().attr(name)) |
             name = "system" or
             name = "popen" or
             name.matches("popen_")

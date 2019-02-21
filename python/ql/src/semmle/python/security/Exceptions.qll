@@ -12,7 +12,7 @@ private ModuleObject theTracebackModule() {
 }
 
 private FunctionObject traceback_function(string name) {
-    result = theTracebackModule().getAttribute(name)
+    result = theTracebackModule().attr(name)
 }
 
 /**

@@ -7,7 +7,7 @@ class UnitTestClass extends TestScope {
     UnitTestClass() {
         exists(ClassObject c |
             this = c.getPyClass() |
-            c.getASuperType() = theUnitTestPackage().getAttribute(_)
+            c.getASuperType() = theUnitTestPackage().attr(_)
             or
             c.getASuperType().getName().toLowerCase() = "testcase"
         )

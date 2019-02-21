@@ -31,7 +31,7 @@ class RaisingNode extends ControlFlowNode {
     }
 
     private predicate quits() {
-        this.(CallNode).getFunction().refersTo(quitterObject(_))
+        this.(CallNode).getFunction().refersTo(Object::quitter(_))
     }
 
     /** Gets the type of an exception that may be raised
@@ -49,7 +49,7 @@ class RaisingNode extends ControlFlowNode {
 
     pragma[noinline]
     private ClassObject systemExitRaise() {
-        this.quits() and result = builtin_object("SystemExit")
+        this.quits() and result = Object::builtin("SystemExit")
     }
 
     pragma [noinline, nomagic]
@@ -62,7 +62,7 @@ class RaisingNode extends ControlFlowNode {
             (ex.refersTo(result) or ex.refersTo(_, result, _))
           )
           or
-          this.getNode() instanceof ImportExpr and result = builtin_object("ImportError")
+          this.getNode() instanceof ImportExpr and result = Object::builtin("ImportError")
           or
           this.getNode() instanceof Print and result = theIOErrorType()
           or

@@ -322,7 +322,7 @@ module PointsTo {
 
         /** Holds if `call` is of the form `getattr(arg, "name")`. */
         cached predicate getattr(CallNode call, ControlFlowNode arg, string name) {
-            points_to(call.getFunction(), _, builtin_object("getattr"), _, _) and
+            points_to(call.getFunction(), _, Object::builtin("getattr"), _, _) and
             call.getArg(1).getNode().(StrConst).getText() = name and
             arg = call.getArg(0)
         }
@@ -1110,9 +1110,9 @@ module PointsTo {
          pragma [noinline]
          predicate call_points_to_builtin_function(CallNode f, PointsToContext context, Object value, ClassObject cls, ControlFlowNode origin) {
              exists(BuiltinCallable b |
-                 b != builtin_object("isinstance") and
-                 b != builtin_object("issubclass") and
-                 b != builtin_object("callable") and
+                 b != Object::builtin("isinstance") and
+                 b != Object::builtin("issubclass") and
+                 b != Object::builtin("callable") and
                  f = get_a_call(b, context) and
                  cls = b.getAReturnType()
              ) and
@@ -2007,9 +2007,9 @@ module PointsTo {
             exists(ControlFlowNode func, Object obj |
                 two_args_first_arg_string(def, func, name) and
                 points_to(func, _, obj, _, _) |
-                obj = builtin_object("setattr") and result = true
+                obj = Object::builtin("setattr") and result = true
                 or
-                obj != builtin_object("setattr") and result = false
+                obj != Object::builtin("setattr") and result = false
             )
         }
 
@@ -2349,7 +2349,7 @@ module PointsTo {
             (
                 exists(CallNode call |
                     call = expr and
-                    points_to(call.getFunction(), context, theLenFunction(), _, _) and
+                    points_to(call.getFunction(), context, Object::builtin("len"), _, _) and
                     use = call.getArg(0) and
                     val.(SequenceObject).getLength() = result
                 )

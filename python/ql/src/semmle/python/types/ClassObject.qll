@@ -495,9 +495,9 @@ ClassObject theUnicodeType() {
 
 /** The builtin class '(x)range' */
 ClassObject theRangeType() {
-    result = builtin_object("xrange")
+    result = Object::builtin("xrange")
     or
-    major_version() = 3 and result = builtin_object("range")
+    major_version() = 3 and result = Object::builtin("range")
 }
 
 /** The builtin class for bytes. str in Python2, bytes in Python3 */
@@ -590,20 +590,20 @@ ClassObject theBuiltinPropertyType() {
 
 /** The builtin class 'IOError' */
 ClassObject theIOErrorType() {
-    result = builtin_object("IOError")
+    result = Object::builtin("IOError")
 }
 
 /** The builtin class 'super' */
 ClassObject theSuperType() {
-    result = builtin_object("super")
+    result = Object::builtin("super")
 }
 
 /** The builtin class 'StopIteration' */
 ClassObject theStopIterationType() {
-    result = builtin_object("StopIteration")
+    result = Object::builtin("StopIteration")
 }
 
 /** The builtin class 'NotImplementedError' */
 ClassObject theNotImplementedErrorType() {
-    result = builtin_object("NotImplementedError")
+    result = Object::builtin("NotImplementedError")
 }

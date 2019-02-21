@@ -12,9 +12,9 @@ import semmle.python.security.strings.Untrusted
 
 
 private FunctionObject exec_or_eval() {
-    result = builtin_object("exec")
+    result = Object::builtin("exec")
     or
-    result = builtin_object("eval")
+    result = Object::builtin("eval")
 }
 
 /** A taint sink that represents an argument to exec or eval that is vulnerable to malicious input.

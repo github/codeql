@@ -21,7 +21,7 @@ predicate shadows(Name d, GlobalVariable g, Scope scope, int line) {
         not exists(Import il, Import ig, Name gd | il.contains(d) and gd.defines(g) and ig.contains(gd)) and
         not exists(Assign a | a.getATarget() = d and a.getValue() = g.getAnAccess())
     ) and
-    not exists(builtin_object(g.getId())) and
+    not exists(Object::builtin(g.getId())) and
     d.getScope() = scope and
     d.getLocation().getStartLine() = line and
     exists(Name defn | defn.defines(g) |

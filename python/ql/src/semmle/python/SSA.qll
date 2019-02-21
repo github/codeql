@@ -201,7 +201,7 @@ private predicate gettext_installed() {
 }
 
 private predicate builtin_constant(string name) {
-    exists(builtin_object(name))
+    exists(Object::builtin(name))
     or
     name = "WindowsError"
     or

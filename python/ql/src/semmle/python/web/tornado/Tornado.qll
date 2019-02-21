@@ -3,7 +3,7 @@ import python
 import semmle.python.security.TaintTracking
 
 private ClassObject theTornadoRequestHandlerClass() {
-    result = any(ModuleObject m | m.getName() = "tornado.web").getAttribute("RequestHandler")
+    result = any(ModuleObject m | m.getName() = "tornado.web").attr("RequestHandler")
 }
 
 ClassObject aTornadoRequestHandlerClass() {

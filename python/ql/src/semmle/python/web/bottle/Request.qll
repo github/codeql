@@ -7,7 +7,7 @@ import semmle.python.web.Http
 import semmle.python.web.bottle.General
 
 private Object theBottleRequestObject() {
-    result = theBottleModule().getAttribute("request")
+    result = theBottleModule().attr("request")
 }
 
 class BottleRequestKind extends TaintKind {

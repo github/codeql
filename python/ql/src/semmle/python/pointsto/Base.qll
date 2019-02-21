@@ -196,7 +196,7 @@ predicate function_can_never_return(FunctionObject func) {
         not exists(f.getAnExitNode())
     )
     or
-    func = theExitFunctionObject()
+    func = ModuleObject::named("sys").attr("exit")
 }
 
 /** Python specific sub-class of generic EssaNodeDefinition */
@@ -570,13 +570,13 @@ predicate potential_builtin_points_to(NameNode f, Object value, ClassObject cls,
     (
         builtin_name_points_to(f.getId(), value, cls)
         or
-        not exists(builtin_object(f.getId())) and value = unknownValue() and cls = theUnknownType()
+        not exists(Object::builtin(f.getId())) and value = unknownValue() and cls = theUnknownType()
     )
 }
 
 pragma [noinline]
 predicate builtin_name_points_to(string name, Object value, ClassObject cls) {
-    value = builtin_object(name) and py_cobjecttypes(value, cls)
+    value = Object::builtin(name) and py_cobjecttypes(value, cls)
 }
 
 module BaseFlow {

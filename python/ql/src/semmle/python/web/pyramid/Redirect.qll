@@ -10,9 +10,9 @@ import semmle.python.security.strings.Basic
 private ClassObject redirectClass() {
     exists(ModuleObject ex |
         ex.getName() = "pyramid.httpexceptions" |
-        ex.getAttribute("HTTPFound") = result
+        ex.attr("HTTPFound") = result
         or
-        ex.getAttribute("HTTPTemporaryRedirect") = result
+        ex.attr("HTTPTemporaryRedirect") = result
     )
 }
 

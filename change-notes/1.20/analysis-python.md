@@ -8,6 +8,9 @@
 
 The constants `MULTILINE` and `VERBOSE` in `re` module, are now understood for Python 3.6 and upward. 
 Removes false positives seen when using Python 3.6, but not when using earlier versions.
+The API has been improved to declutter the global namespace and improve discoverability and readability.
+ * New predicates `ModuleObject::named(name)` and `ModuleObject.attr(name)` have been added, allowing more readable access to common objects. For example, `(any ModuleObject m | m.getName() = "sys").getAttribute("exit")` can be replaced with `ModuleObject::named("sys").attr("exit")`
+ * The API for accessing builtin functions has been improved. Predicates of the form `theXXXFunction()`, such as `theLenFunction()`, have been deprecated in favour of `Object::builtin(name)`.
 
  ## New queries
 
