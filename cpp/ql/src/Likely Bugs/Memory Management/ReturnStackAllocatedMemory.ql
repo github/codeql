@@ -6,45 +6,46 @@
  * @kind problem
  * @id cpp/return-stack-allocated-memory
  * @problem.severity warning
+ * @precision high
  * @tags reliability
+ *       external/cwe/cwe-825
  */
+
 import cpp
+import semmle.code.cpp.dataflow.EscapesTree
+import semmle.code.cpp.dataflow.DataFlow
 
-// an expression is possibly stack allocated if it is an aggregate literal
-// or a reference to a possibly stack allocated local variables
-predicate exprMaybeStackAllocated(Expr e) {
-     e instanceof AggregateLiteral
-  or varMaybeStackAllocated(e.(VariableAccess).getTarget())
+/**
+ * Holds if `n1` may flow to `n2`, ignoring flow through fields because these
+ * are currently modeled as an overapproximation that assumes all objects may
+ * alias.
+ */
+predicate conservativeDataFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
+  DataFlow::localFlowStep(n1, n2) and
+  not n2.asExpr() instanceof FieldAccess
 }
 
-// a local variable is possibly stack allocated if it is not static and
-// is initialized to/assigned a possibly stack allocated expression
-predicate varMaybeStackAllocated(LocalVariable lv) {
-  not lv.isStatic() and
-  (   lv.getType().getUnderlyingType() instanceof ArrayType
-   or exprMaybeStackAllocated(lv.getInitializer().getExpr())
-   or exists(AssignExpr a | a.getLValue().(VariableAccess).getTarget() = lv and
-                            exprMaybeStackAllocated(a.getRValue())))
-}
-
-// an expression possibly points to the stack if it takes the address of
-// a possibly stack allocated expression, if it is a reference to a local variable
-// that possibly points to the stack, or if it is a possibly stack allocated array
-// that is converted (implicitly or explicitly) to a pointer
-predicate exprMayPointToStack(Expr e) {
-     e instanceof AddressOfExpr and exprMaybeStackAllocated(e.(AddressOfExpr).getAnOperand())
-  or varMayPointToStack(e.(VariableAccess).getTarget())
-  or exprMaybeStackAllocated(e) and e.getType() instanceof ArrayType and e.getFullyConverted().getType() instanceof PointerType
-}
-
-// a local variable possibly points to the stack if it is initialized to/assigned to
-// an expression that possibly points to the stack
-predicate varMayPointToStack(LocalVariable lv) {
-     exprMayPointToStack(lv.getInitializer().getExpr())
-  or exists(AssignExpr a | a.getLValue().(VariableAccess).getTarget() = lv and
-                           exprMayPointToStack(a.getRValue()))
-}
-
-from ReturnStmt r
-where exprMayPointToStack(r.getExpr())
-select r, "May return stack-allocated memory."
+from LocalScopeVariable var, VariableAccess va, ReturnStmt r
+where
+  not var.isStatic() and
+  not var.getType().getUnspecifiedType() instanceof ReferenceType and
+  not r.isFromUninstantiatedTemplate(_) and
+  va = var.getAnAccess() and
+  (
+    // To check if the address escapes directly from `e` in `return e`, we need
+    // to check the fully-converted `e` in case there are implicit
+    // array-to-pointer conversions or reference conversions.
+    variableAddressEscapesTree(va, r.getExpr().getFullyConverted())
+    or
+    // The data flow library doesn't support conversions, so here we check that
+    // the address escapes into some expression `pointerToLocal`, which flows
+    // in a non-trivial way (one or more steps) to a returned expression.
+    exists(Expr pointerToLocal |
+      variableAddressEscapesTree(va, pointerToLocal.getFullyConverted()) and
+      conservativeDataFlowStep+(
+        DataFlow::exprNode(pointerToLocal),
+        DataFlow::exprNode(r.getExpr())
+      )
+    )
+  )
+select r, "May return stack-allocated memory from $@.", va, va.toString()

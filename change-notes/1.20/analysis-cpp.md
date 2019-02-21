@@ -11,12 +11,14 @@
 | Use of string copy function in a condition (`cpp/string-copy-return-value-as-boolean`) | correctness | This query identifies calls to string copy functions used in conditions, where it's likely that a different function was intended to be called. |
 | Lossy function result cast (`cpp/lossy-function-result-cast`) | correctness | Finds function calls whose result type is a floating point type, which are implicitly cast to an integral type.  Newly available but not displayed by default on LGTM. |
 | Array argument size mismatch (`cpp/array-arg-size-mismatch`) | reliability | Finds function calls where the size of an array being passed is smaller than the array size of the declared parameter.  Newly displayed on LGTM. |
+| Returning stack-allocated memory (`cpp/return-stack-allocated-memory`) | reliability, external/cwe/cwe-825 | Finds functions that may return a pointer or reference to stack-allocated memory. This query existed already but has been rewritten from scratch to make the error rate low enough for use on LGTM. Displayed by default. |
 
 ## Changes to existing queries
 
 | **Query**                  | **Expected impact**    | **Change**                                                       |
 |----------------------------|------------------------|------------------------------------------------------------------|
 | Array argument size mismatch (`cpp/array-arg-size-mismatch`) | Fewer false positives | An exception has been added to this query for variable sized arrays. |
+| Returning stack-allocated memory (`cpp/return-stack-allocated-memory`) | More correct results | Many more stack allocated expressions are now recognized. |
 | Suspicious add with sizeof (`cpp/suspicious-add-sizeof`) | Fewer false positives | Pointer arithmetic on `char * const` expressions (and other variations of `char *`) are now correctly excluded from the results. |
 | Suspicious pointer scaling (`cpp/suspicious-pointer-scaling`) | Fewer false positives | False positives involving types that are not uniquely named in the snapshot have been fixed. |
 | Call to memory access function may overflow buffer (`cpp/overflow-buffer`) | More correct results | Calls to `fread` are now examined by this query. |
