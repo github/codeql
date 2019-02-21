@@ -85,6 +85,18 @@ abstract class PointerArithmeticOpcode extends BinaryOpcode {}
 
 abstract class PointerOffsetOpcode extends PointerArithmeticOpcode {}
 
+abstract class ArithmeticOpcode extends Opcode {}
+
+abstract class BinaryArithmeticOpcode extends BinaryOpcode, ArithmeticOpcode {}
+
+abstract class UnaryArithmeticOpcode extends UnaryOpcode, ArithmeticOpcode {}
+
+abstract class BitwiseOpcode extends Opcode {}
+
+abstract class BinaryBitwiseOpcode extends BinaryOpcode, BitwiseOpcode {}
+
+abstract class UnaryBitwiseOpcode extends UnaryOpcode, BitwiseOpcode {}
+
 abstract class CompareOpcode extends BinaryOpcode {}
 
 abstract class RelationalOpcode extends CompareOpcode {}
@@ -143,18 +155,18 @@ module Opcode {
   class CopyValue extends UnaryOpcode, CopyOpcode, TCopyValue { override final string toString() { result = "CopyValue" } }
   class Load extends CopyOpcode, OpcodeWithLoad, TLoad { override final string toString() { result = "Load" } }
   class Store extends CopyOpcode, MemoryAccessOpcode, TStore { override final string toString() { result = "Store" } }
-  class Add extends BinaryOpcode, TAdd { override final string toString() { result = "Add" } }
-  class Sub extends BinaryOpcode, TSub { override final string toString() { result = "Sub" } }
-  class Mul extends BinaryOpcode, TMul { override final string toString() { result = "Mul" } }
-  class Div extends BinaryOpcode, TDiv { override final string toString() { result = "Div" } }
-  class Rem extends BinaryOpcode, TRem { override final string toString() { result = "Rem" } }
-  class Negate extends UnaryOpcode, TNegate { override final string toString() { result = "Negate" } }
-  class ShiftLeft extends BinaryOpcode, TShiftLeft { override final string toString() { result = "ShiftLeft" } }
-  class ShiftRight extends BinaryOpcode, TShiftRight { override final string toString() { result = "ShiftRight" } }
-  class BitAnd extends BinaryOpcode, TBitAnd { override final string toString() { result = "BitAnd" } }
-  class BitOr extends BinaryOpcode, TBitOr { override final string toString() { result = "BitOr" } }
-  class BitXor extends BinaryOpcode, TBitXor { override final string toString() { result = "BitXor" } }
-  class BitComplement extends UnaryOpcode, TBitComplement { override final string toString() { result = "BitComplement" } }
+  class Add extends BinaryArithmeticOpcode, TAdd { override final string toString() { result = "Add" } }
+  class Sub extends BinaryArithmeticOpcode, TSub { override final string toString() { result = "Sub" } }
+  class Mul extends BinaryArithmeticOpcode, TMul { override final string toString() { result = "Mul" } }
+  class Div extends BinaryArithmeticOpcode, TDiv { override final string toString() { result = "Div" } }
+  class Rem extends BinaryArithmeticOpcode, TRem { override final string toString() { result = "Rem" } }
+  class Negate extends UnaryArithmeticOpcode, TNegate { override final string toString() { result = "Negate" } }
+  class ShiftLeft extends BinaryBitwiseOpcode, TShiftLeft { override final string toString() { result = "ShiftLeft" } }
+  class ShiftRight extends BinaryBitwiseOpcode, TShiftRight { override final string toString() { result = "ShiftRight" } }
+  class BitAnd extends BinaryBitwiseOpcode, TBitAnd { override final string toString() { result = "BitAnd" } }
+  class BitOr extends BinaryBitwiseOpcode, TBitOr { override final string toString() { result = "BitOr" } }
+  class BitXor extends BinaryBitwiseOpcode, TBitXor { override final string toString() { result = "BitXor" } }
+  class BitComplement extends UnaryBitwiseOpcode, TBitComplement { override final string toString() { result = "BitComplement" } }
   class LogicalNot extends UnaryOpcode, TLogicalNot { override final string toString() { result = "LogicalNot" } }
   class CompareEQ extends CompareOpcode, TCompareEQ { override final string toString() { result = "CompareEQ" } }
   class CompareNE extends CompareOpcode, TCompareNE { override final string toString() { result = "CompareNE" } }

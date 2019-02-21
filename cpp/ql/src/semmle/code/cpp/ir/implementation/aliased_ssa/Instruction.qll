@@ -898,67 +898,87 @@ class BinaryInstruction extends Instruction {
   }
 }
 
-class AddInstruction extends BinaryInstruction {
+class ArithmeticInstruction extends Instruction {
+  ArithmeticInstruction() {
+    getOpcode() instanceof ArithmeticOpcode
+  }
+}
+
+class BinaryArithmeticInstruction extends ArithmeticInstruction, BinaryInstruction {}
+
+class UnaryArithmeticInstruction extends ArithmeticInstruction, UnaryInstruction {}
+
+class AddInstruction extends BinaryArithmeticInstruction {
   AddInstruction() {
     getOpcode() instanceof Opcode::Add
   }
 }
 
-class SubInstruction extends BinaryInstruction {
+class SubInstruction extends BinaryArithmeticInstruction {
   SubInstruction() {
     getOpcode() instanceof Opcode::Sub
   }
 }
 
-class MulInstruction extends BinaryInstruction {
+class MulInstruction extends BinaryArithmeticInstruction {
   MulInstruction() {
     getOpcode() instanceof Opcode::Mul
   }
 }
 
-class DivInstruction extends BinaryInstruction {
+class DivInstruction extends BinaryArithmeticInstruction {
   DivInstruction() {
     getOpcode() instanceof Opcode::Div
   }
 }
 
-class RemInstruction extends BinaryInstruction {
+class RemInstruction extends BinaryArithmeticInstruction {
   RemInstruction() {
     getOpcode() instanceof Opcode::Rem
   }
 }
 
-class NegateInstruction extends UnaryInstruction {
+class NegateInstruction extends UnaryArithmeticInstruction {
   NegateInstruction() {
     getOpcode() instanceof Opcode::Negate
   }
 }
 
-class BitAndInstruction extends BinaryInstruction {
+class BitwiseInstruction extends Instruction {
+  BitwiseInstruction() {
+    getOpcode() instanceof BitwiseOpcode
+  }
+}
+
+class BinaryBitwiseInstruction extends BitwiseInstruction, BinaryInstruction {}
+
+class UnaryBitwiseInstruction extends BitwiseInstruction, UnaryInstruction {}
+
+class BitAndInstruction extends BinaryBitwiseInstruction {
   BitAndInstruction() {
     getOpcode() instanceof Opcode::BitAnd
   }
 }
 
-class BitOrInstruction extends BinaryInstruction {
+class BitOrInstruction extends BinaryBitwiseInstruction {
   BitOrInstruction() {
     getOpcode() instanceof Opcode::BitOr
   }
 }
 
-class BitXorInstruction extends BinaryInstruction {
+class BitXorInstruction extends BinaryBitwiseInstruction {
   BitXorInstruction() {
     getOpcode() instanceof Opcode::BitXor
   }
 }
 
-class ShiftLeftInstruction extends BinaryInstruction {
+class ShiftLeftInstruction extends BinaryBitwiseInstruction {
   ShiftLeftInstruction() {
     getOpcode() instanceof Opcode::ShiftLeft
   }
 }
 
-class ShiftRightInstruction extends BinaryInstruction {
+class ShiftRightInstruction extends BinaryBitwiseInstruction {
   ShiftRightInstruction() {
     getOpcode() instanceof Opcode::ShiftRight
   }
@@ -1097,7 +1117,7 @@ class ConvertToDerivedInstruction extends InheritanceConversionInstruction {
   }
 }
 
-class BitComplementInstruction extends UnaryInstruction {
+class BitComplementInstruction extends UnaryBitwiseInstruction {
   BitComplementInstruction() {
     getOpcode() instanceof Opcode::BitComplement
   }
