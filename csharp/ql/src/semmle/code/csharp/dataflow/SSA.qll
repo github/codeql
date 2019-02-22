@@ -670,7 +670,9 @@ module Ssa {
 
     /** Holds if `v` occurs in `bb` or one of `bb`'s transitive successors. */
     private predicate blockPrecedesVar(TrackedVar v, BasicBlock bb) {
-      varOccursInBlock(v, bb.getASuccessor*())
+      varOccursInBlock(v, bb)
+      or
+      blockPrecedesVar(v, bb.getASuccessor())
     }
 
     /**
