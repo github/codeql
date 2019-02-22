@@ -1,5 +1,5 @@
 int source();
-void sink(...);
+void sink(...) {};
 
 void arithAssignments(int source1, int clean1) {
   sink(clean1); // clean
