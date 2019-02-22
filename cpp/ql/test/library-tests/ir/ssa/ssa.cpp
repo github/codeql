@@ -72,6 +72,22 @@ void chiNodeAtEndOfLoop(int n, char* p) {
 
 void Escape(void* p);
 
+void ScalarPhi(bool b) {
+  int x = 0;
+  int y = 1;
+  int z = 2;
+  if (b) {
+    x = 3;
+    y = 4;
+  }
+  else {
+    x = 5;
+  }
+  int x_merge = x;
+  int y_merge = y;
+  int z_merge = z;
+}
+
 void MustExactlyOverlap(Point a) {
   Point b = a;
 }
@@ -101,4 +117,16 @@ void MayPartiallyOverlapEscaped(int x, int y) {
   Point a = { x, y };
   Point b = a;
   Escape(&a);
+}
+
+void MergeMustExactlyOverlap(bool c, int x1, int x2) {
+  Point a = {};
+  if (c) {
+    a.x = x1;
+  }
+  else {
+    a.x = x2;
+  }
+  int x = a.x;
+  Point b = a;
 }
