@@ -60,7 +60,7 @@ class IRBlockBase extends TIRBlock {
   }
 
   final int getInstructionCount() {
-    result = strictcount(getInstruction(_))
+    result = getInstructionCount(this)
   }
 
   final FunctionIR getEnclosingFunctionIR() {
