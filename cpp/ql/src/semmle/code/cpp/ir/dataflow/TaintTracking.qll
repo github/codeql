@@ -146,6 +146,8 @@ module TaintTracking {
       or
       nodeTo instanceof FieldAddressInstruction
     )
+    or
+    nodeTo.(LoadInstruction).getSourceAddress() = nodeFrom
   }
 
   /**
