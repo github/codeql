@@ -16,10 +16,10 @@
 </recommendation>
 <example>
 <p>This example demonstrates the dangers of using a static <code>System.Security.Cryptography.ICryptoTransform</code> in such a way that the results may be incorrect.</p>
-<sample src="ThreadUnsafeICryptoTransform.cs" />
+<sample src="ThreadUnSafeICryptoTransformBad.cs" />
 
 <p>A simple fix is to change the <code>_sha</code> field from being a static member to an instance one by removing the <code>static</code> keyword.</p>
-<sample src="ThreadUnSafeICryptoTransformFix.cs" />
+<sample src="ThreadUnSafeICryptoTransformGood.cs" />
 </example>
 
 <references>

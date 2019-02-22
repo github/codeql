@@ -23,13 +23,13 @@ class ICryptoTransform extends Class {
 predicate usesICryptoTransformType( Type t ) {
   exists(  ICryptoTransform ict |
     ict = t
-    or usesICryptoTransformType( t.getAChild*() )
+    or usesICryptoTransformType( t.getAChild() )
   )
 }
 
 predicate hasICryptoTransformMember( Class c) {
   exists( Field f |
-    f = c.getAMember*()
+    f = c.getAMember()
     and ( 
       exists( ICryptoTransform ict | ict = f.getType() )
       or hasICryptoTransformMember(f.getType())
@@ -73,14 +73,6 @@ predicate hasICryptoTransformStaticMember( Class c, string msg) {
           and msg = "Static field " + f + " of type " + f.getType() + " makes usage of 'System.Security.Cryptography.ICryptoTransform', but it does not have an attribute [ThreadStatic]. The usage of this class is unsafe for concurrent threads."
         )
       )
-    )
-  )
-  or
-  exists( Field f |
-    f = c.getAMember*()
-    and not f.isStatic()
-    and ( hasICryptoTransformStaticMember( f.getType(), _ )
-      and msg = "Non-static field " + f + " of type " + f.getType() + " internally makes use of an static object that implements 'System.Security.Cryptography.ICryptoTransform'. This causes that usage of this class member is unsafe for concurrent threads."
     )
   )
   or ( hasICryptoTransformStaticMemberNested(c) 

@@ -66,11 +66,6 @@ public class StaticMember
     private static SHA1 _sha1 = SHA1.Create();
 }
 
-public class IndirectStatic
-{
-    StaticMember tc;
-}
-
 public class IndirectStatic2
 {
     static Nest02 _n = new Nest02();
@@ -79,6 +74,11 @@ public class IndirectStatic2
 /// <summary>
 /// Should not be flagged (thread safe)
 /// </summary>
+
+public class IndirectStatic
+{
+    StaticMember tc;
+}
 
 public class TokenCacheFP
 {
