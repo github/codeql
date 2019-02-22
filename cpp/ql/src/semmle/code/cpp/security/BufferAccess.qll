@@ -32,8 +32,9 @@ abstract class BufferAccess extends Expr {
  *  wmemcpy(dest, src, num)
  *  memmove(dest, src, num)
  *  wmemmove(dest, src, num)
- *  mempcpy(dest, src, num);
- *  wmempcpy(dest, src, num);
+ *  mempcpy(dest, src, num)
+ *  wmempcpy(dest, src, num)
+ *  RtlCopyMemoryNonTemporal(dest, src, num)
  */
 class MemcpyBA extends BufferAccess {
   MemcpyBA() {
@@ -42,7 +43,8 @@ class MemcpyBA extends BufferAccess {
     this.(FunctionCall).getTarget().getName() = "memmove" or
     this.(FunctionCall).getTarget().getName() = "wmemmove" or
     this.(FunctionCall).getTarget().getName() = "mempcpy" or
-    this.(FunctionCall).getTarget().getName() = "wmempcpy"
+    this.(FunctionCall).getTarget().getName() = "wmempcpy" or
+    this.(FunctionCall).getTarget().getName() = "RtlCopyMemoryNonTemporal"
   }
   
   override string getName() {
@@ -261,6 +263,30 @@ class MemsetBA extends BufferAccess {
     result =
       this.(FunctionCall).getArgument(2).getValue().toInt() *
       getPointedSize(this.(FunctionCall).getTarget().getParameter(0).getType())
+  }
+}
+
+/**
+ * Calls to `RtlSecureZeroMemory`.
+ *  RtlSecureZeroMemory(ptr, cnt)
+ */
+class ZeroMemoryBA extends BufferAccess {
+  ZeroMemoryBA() {
+    this.(FunctionCall).getTarget().getName() = "RtlSecureZeroMemory"
+  }
+  
+  override string getName() {
+    result = this.(FunctionCall).getTarget().getName()
+  }
+
+  override Expr getBuffer(string bufferDesc, int accessType) {
+    result = this.(FunctionCall).getArgument(0) and
+    bufferDesc = "destination buffer" and
+    accessType = 1
+  }
+
+  override int getSize() {
+    result = this.(FunctionCall).getArgument(1).getValue().toInt()
   }
 }
 
