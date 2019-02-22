@@ -34,6 +34,33 @@ module ZipSlip {
   }
 
   /**
+   * Holds if `node1` flows to `node2` in one step by virtue of
+   * `node2` being of the form `.pipe(node1)`. The reason this flow
+   * exists is that `.pipe` returns its argument to make chained
+   * stream operations work.
+   */
+  predicate pipeStep(DataFlow::Node node1, DataFlow::MethodCallNode node2) {
+      node2.getMethodName() = "pipe" and
+      node1 = node2.getArgument(0)
+  }
+
+  /**
+   * Holds if `node1` flows to `node2` in one step including the assumption that
+   * `x` flows to `.pipe(x)`
+   */
+  predicate stepsThroughPipe(DataFlow::Node node1, DataFlow::Node node2) {
+    DataFlow::localFlowStep(node1, node2) or pipeStep(node1, node2)
+  }
+
+  /**
+   * Holds if `node1` flows to `node2` including the assumption that
+   * `x` flows to `.pipe(x)`
+   */
+  predicate flowsThroughPipe(DataFlow::Node node1, DataFlow::Node node2) {
+    stepsThroughPipe*(node1, node2)
+  }
+
+  /**
    * An access to the filepath of an entry of a zipfile being extracted
    * by npm module `unzip`. For example, in
    * ```javascript
@@ -50,12 +77,10 @@ module ZipSlip {
    */
   class UnzipEntrySource extends Source {
     UnzipEntrySource() {
-      exists(DataFlow::MethodCallNode pipe, DataFlow::MethodCallNode on |
-        pipe.getMethodName() = "pipe" and
-        pipe.getArgument(0).getALocalSource() = DataFlow::moduleImport("unzip")
-              .getAMemberCall("Parse") and
-        on = pipe.getAMemberCall("on") and
-        this = on.getCallback(1).getParameter(0).getAPropertyRead("path")
+      exists(DataFlow::SourceNode parsed |
+        flowsThroughPipe(DataFlow::moduleImport("unzip").getAMemberCall("Parse"), parsed)
+        and
+        this = parsed.getAMemberCall("on").getCallback(1).getParameter(0).getAPropertyRead("path")
       )
     }
   }
