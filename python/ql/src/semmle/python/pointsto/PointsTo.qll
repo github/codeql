@@ -447,10 +447,13 @@ module PointsTo {
     private module Layer {
 
         /* Holds if BasicBlock `b` is reachable, given the context `context`. */
-       predicate reachableBlock(BasicBlock b, PointsToContext context) {
-            context.appliesToScope(b.getScope()) and
-            forall(ConditionBlock guard |
-                guard.controls(b, _) |
+        predicate reachableBlock(BasicBlock b, PointsToContext context) {
+            context.appliesToScope(b.getScope()) and not exists(ConditionBlock guard | guard.controls(b, _))
+            or
+            exists(ConditionBlock guard |
+                guard = b.getImmediatelyControllingBlock() and
+                reachableBlock(guard, context)
+                |
                 exists(Object value |
                     points_to(guard.getLastNode(), context, value, _, _)
                     |
@@ -1827,18 +1830,24 @@ module PointsTo {
             )
         }
 
-        pragma [noinline]
-        private predicate callsite_points_to_python(CallsiteRefinement def, PointsToContext context, Object value, ClassObject cls, CfgOrigin origin) {
-            ssa_variable_points_to(def.getInput(), context, value, cls, origin) and
-            exists(CallNode call, PythonSsaSourceVariable var |
+        /** Holds if `call`, in `context` is a call to a function that does not modify the refined variable */
+        private predicate call_to_safe_function(CallsiteRefinement def, PointsToContext context) {
+            exists(CallNode call |
                 call = def.getCall() and
-                var = def.getSourceVariable() and
                 context.untrackableCall(call) and
                 exists(PyFunctionObject modifier, Function f |
                     f = modifier.getFunction() and
                     call = get_a_call(modifier, context) and
-                    not modifies_escaping_variable(f, var)
+                    not modifies_escaping_variable(f, def.getSourceVariable())
                 )
+            )
+        }
+
+        private predicate callsite_points_to_python(CallsiteRefinement def, PointsToContext context, Object value, ClassObject cls, CfgOrigin origin) {
+            exists(EssaVariable input |
+                input = def.getInput() and
+                ssa_variable_points_to(input, context, value, cls, origin) and
+                call_to_safe_function(def, context)
             )
         }
 
@@ -2987,19 +2996,21 @@ class SuperBoundMethod extends Object {
 
     SuperCall superObject;
     string name;
+    ClassObject startType;
 
     cached
     SuperBoundMethod() {
         exists(ControlFlowNode object |
             this.(AttrNode).getObject(name) = object |
-            PointsTo::points_to(object, _, superObject, _, _)
+            PointsTo::points_to(object, _, superObject, _, _) and
+            startType = superObject.startType()
         )
     }
 
     FunctionObject getFunction(PointsToContext ctx) {
         exists(ClassList mro |
             mro = PointsTo::Types::get_mro(superObject.selfType(ctx)) |
-            result = mro.startingAt(superObject.startType()).getTail().lookup(name)
+            result = mro.startingAt(startType).getTail().lookup(name)
         )
     }
 
