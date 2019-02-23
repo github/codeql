@@ -2,11 +2,14 @@
 
 ## General improvements
 
-* Support for popular libraries has been improved. Consequently, queries may produce better results on code bases that use the following features:
-  - client-side code, for example [React](https://reactjs.org/) and [Vue](https://vuejs.org/)
-  - cookies and webstorage, for example [js-cookie](https://github.com/js-cookie/js-cookie)
-  - server-side code, for example [hapi](https://hapijs.com/)
-  - asynchronous code, for example [a-sync-waterfall](https://www.npmjs.com/package/a-sync-waterfall)
+* Support for many frameworks and libraries has been improved, in particular including the following:
+  - [a-sync-waterfall](https://www.npmjs.com/package/a-sync-waterfall)
+  - [Electron](https://electronjs.org)
+  - [hapi](https://hapijs.com/)
+  - [js-cookie](https://github.com/js-cookie/js-cookie)
+  - [React](https://reactjs.org/)
+  - [Vue](https://vuejs.org/)
+
 * File classification has been improved to recognize additional generated files, for example files from [HTML Tidy](html-tidy.org).
 
 * The taint tracking library now recognizes flow through persistent storage, class fields, and callbacks in certain cases. Handling of regular expressions has also been improved. This may give more results for the security queries.
