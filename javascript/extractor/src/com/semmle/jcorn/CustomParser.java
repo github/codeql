@@ -551,11 +551,13 @@ public class CustomParser extends FlowParser {
 		// chunk of E4X content and a Flow type annotation (both can start with `<?`)
 		// hence if we can't find the closing `?>` of a putative XML processing instruction
 		// we backtrack and try lexing as something else
+		// to avoid frequent backtracking, we only consider `<?xml ...?>` processing instructions;
+		// while other processing instructions are technically possible, they are unlikely in practice
 		if (this.options.e4x()) {
 			while (code == '<') {
-				if (charAt(this.pos+1) == '?') {
+				if (inputSubstring(this.pos+1, this.pos+5).equals("?xml")) {
 					int oldPos = this.pos;
-					this.pos += 2;
+					this.pos += 5;
 					if (!jsx_readUntil("?>")) {
 						// didn't find a closing `?>`, so backtrack
 						this.pos = oldPos;
