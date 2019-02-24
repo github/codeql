@@ -39,13 +39,12 @@ import com.semmle.js.ast.XMLAnyName;
 import com.semmle.js.ast.XMLAttributeSelector;
 import com.semmle.js.ast.XMLDotDotExpression;
 import com.semmle.js.ast.XMLFilterExpression;
-import com.semmle.js.ast.XMLQualifiedIdentifier;
 import com.semmle.util.data.Either;
 import com.semmle.util.data.Pair;
 
 /**
  * An extension of the standard jcorn parser with support for Mozilla-specific
- * language extension (most of JavaScript 1.8.5) and JScript language extensions.
+ * language extension (most of JavaScript 1.8.5 and E4X) and JScript language extensions.
  */
 public class CustomParser extends FlowParser {
 	public CustomParser(Options options, String input, int startPos) {
@@ -460,27 +459,7 @@ public class CustomParser extends FlowParser {
 			// attribute identifier
 			return parseAttributeIdentifier(new SourceLocation(start));
 		} else {
-			return parsePossiblyQualifiedIdentifier();
-		}
-	}
-
-	/**
-	 * Parse a wildcard identifier, a qualified identifier, or a plain identifier.
-	 */
-	protected Expression parsePossiblyQualifiedIdentifier() {
-		SourceLocation start = new SourceLocation(startLoc);
-		Expression res = parsePropertySelector(start);
-
-		if (!this.eat(doubleColon))
-			return res;
-
-		if (this.eat(TokenType.bracketL)) {
-			Expression e = parseExpression(false, null);
-			this.expect(TokenType.bracketR);
-			return this.finishNode(new XMLQualifiedIdentifier(start, res, e, true));
-		} else {
-			Expression e = parsePropertySelector(new SourceLocation(startLoc));
-			return this.finishNode(new XMLQualifiedIdentifier(start, res, e, false));
+			return parsePropertySelector(new SourceLocation(startLoc));
 		}
 	}
 
@@ -508,7 +487,7 @@ public class CustomParser extends FlowParser {
 			this.expect(TokenType.bracketR);
 			return this.finishNode(new XMLAttributeSelector(start, idx, true));
 		} else {
-			return this.finishNode(new XMLAttributeSelector(start, parsePossiblyQualifiedIdentifier(), false));
+			return this.finishNode(new XMLAttributeSelector(start, parsePropertySelector(new SourceLocation(startLoc)), false));
 		}
 	}
 

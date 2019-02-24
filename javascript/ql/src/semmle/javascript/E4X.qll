@@ -13,6 +13,9 @@ module E4X {
 
   /**
    * An E4X qualified identifier of the form `q::n` or `q::[expr]`.
+   *
+   * Note that qualified identifiers are not currently supported by the parser, so snapshots
+   * will not usually contain any.
    */
   class XMLQualifiedIdentifier extends Expr, @e4x_xml_qualident {
     /**
