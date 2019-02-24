@@ -1699,6 +1699,12 @@ public class Parser {
 		return parenExprs;
 	}
 
+	/**
+	 * Parse an expression that forms part of a comma-separated list of expressions between parentheses, adding
+	 * it to `parenExprs`.
+	 *
+	 * @return true if more expressions may follow this one, false if it must be the last one
+	 */
 	protected boolean parseParenthesisedExpression(DestructuringErrors refDestructuringErrors,
 			boolean allowTrailingComma, ParenthesisedExpressions parenExprs, boolean first) {
 		if (allowTrailingComma && this.afterTrailingComma(TokenType.parenR, true)) {
