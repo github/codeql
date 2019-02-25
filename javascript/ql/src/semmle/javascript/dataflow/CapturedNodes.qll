@@ -20,7 +20,11 @@ private predicate isEscape(DataFlow::Node escape, string cause) {
   or
   escape = any(ExportDeclaration e).getSourceNode(_) and cause = "export"
   or
-  any(WithStmt with).mayAffect(escape.asExpr()) and cause = "heap"
+  exists (WithStmt with, Assignment assign |
+    with.mayAffect(assign.getLhs()) and
+    assign.getRhs().flow() = escape and
+    cause = "heap"
+  )
 }
 
 private DataFlow::Node getAnEscape() {
