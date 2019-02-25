@@ -988,7 +988,17 @@ int PointerDecay(int a[], int fn(float)) {
   return a[0] + fn(1.0);
 }
 
-int ExprStmt(int x) {
+int ExprStmt(int b, int y, int z) {
+  int x = ({
+    int w;
+    if (b) {
+      w = y;
+    } else {
+      w = z;
+    }
+    w;
+  });
+
   return ({x;});
 }
 
