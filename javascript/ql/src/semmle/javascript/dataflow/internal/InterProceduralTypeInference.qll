@@ -238,7 +238,7 @@ private class TypeInferredCalleeWithAnalyzedReturnFlow extends CallWithNonLocalA
  */
 pragma[noinline]
 private predicate hasDefiniteReceiver(
-  DataFlow::MethodCallNode call, CapturedSource receiver
+  DataFlow::MethodCallNode call, LocalObject receiver
 ) {
   call = receiver.getAMethodCall() and
   exists (DataFlow::AnalyzedNode receiverNode, AbstractValue abstractCapturedReceiver |
@@ -260,7 +260,7 @@ private class TypeInferredMethodWithAnalyzedReturnFlow extends CallWithNonLocalA
   DataFlow::FunctionNode fun;
 
   TypeInferredMethodWithAnalyzedReturnFlow() {
-    exists(CapturedSource obj, DataFlow::PropWrite write, string name |
+    exists(LocalObject obj, DataFlow::PropWrite write, string name |
       this.(DataFlow::MethodCallNode).getMethodName() = name and
       obj.hasOwnProperty(name) and
       hasDefiniteReceiver(this, obj) and

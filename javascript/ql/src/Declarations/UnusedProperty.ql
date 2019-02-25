@@ -14,7 +14,7 @@ import UnusedVariable
 import UnusedParameter
 import Expressions.ExprHasNoEffect
 
-predicate hasUnknownPropertyRead(CapturedSource obj) {
+predicate hasUnknownPropertyRead(LocalObject obj) {
   // dynamic reads
   exists(DataFlow::PropRead r | obj.getAPropertyRead() = r | not exists(r.getPropertyName()))
   or
@@ -33,7 +33,7 @@ predicate hasUnknownPropertyRead(CapturedSource obj) {
 /**
  * Holds if `obj` flows to an expression that must have a specific type.
  */
-predicate flowsToTypeRestrictedExpression(CapturedSource obj) {
+predicate flowsToTypeRestrictedExpression(LocalObject obj) {
   exists (Expr restricted, TypeExpr type |
     obj.flowsToExpr(restricted) and
     not type.isAny() |
@@ -50,7 +50,7 @@ predicate flowsToTypeRestrictedExpression(CapturedSource obj) {
   )
 }
 
-from DataFlow::PropWrite write, CapturedSource obj, string name
+from DataFlow::PropWrite write, LocalObject obj, string name
 where
   write = obj.getAPropertyWrite(name) and
   not exists(obj.getAPropertyRead(name)) and
