@@ -42,7 +42,7 @@ private predicate exposedAsReceiver(DataFlow::SourceNode n) {
   n.flowsToExpr(any(FunctionBindExpr bind).getObject())
   or
   // technically, the builtin prototypes could have a `this`-using function through which this node escapes, but we ignore that here
-  // (we also ignore `o['__' + 'proto__"] = ...`)
+  // (we also ignore `o['__' + 'proto__'] = ...`)
   exists(n.getAPropertyWrite("__proto__"))
   or
   // could check the assigned value of all affected variables, but it is unlikely to matter in practice
@@ -51,7 +51,7 @@ private predicate exposedAsReceiver(DataFlow::SourceNode n) {
 
 /**
  * A source for which the flow is entirely captured by the dataflow library.
- * All uses of the node is represented by `this.flowsTo(_)` and friends.
+ * All uses of the node are modeled by `this.flowsTo(_)` and related predicates.
  */
 class CapturedSource extends DataFlow::SourceNode {
   CapturedSource() {

@@ -1,5 +1,5 @@
 /**
- * This library contains parts of the 'js/unused-local-variable' query implementation.
+ * Provides classes and predicates for the 'js/unused-local-variable' query.
  */
 
 import javascript
