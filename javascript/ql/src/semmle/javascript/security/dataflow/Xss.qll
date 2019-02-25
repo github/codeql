@@ -204,6 +204,10 @@ module DomBasedXss {
   class VHtmlSink extends DomBasedXss::Sink {
     HTML::Attribute attr;
     VHtmlSink() { this.(DataFlow::HtmlAttributeNode).getAttribute() = attr and attr.getName() = "v-html" }
+
+    /**
+     * Gets the HTML attribute of this sink.
+     */
     HTML::Attribute getAttr() {
       result = attr
     }
@@ -212,6 +216,10 @@ module DomBasedXss {
   /**
    * A taint propagating data flow edge through a string interpolation of a
    * Vue instance property to a `v-html` attribute.
+   *
+   * As an example, `<div v-html="prop"/>` reads the `prop` property
+   * of `inst = new Vue({ ..., data: { prop: source } })`, if the
+   * `div` element is part of the template for `inst`.
    */
   class VHtmlSourceWrite extends TaintTracking::AdditionalTaintStep {
     VHtmlSink attr;

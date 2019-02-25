@@ -416,7 +416,7 @@ module Vue {
   module Template {
     // Currently only supports HTML elements, but it may be possible to parse simple string templates later
     private newtype TElement =
-      MkHtmlElement(HTML::Element e) { exists(VueFile f | e.getFile() = f) }
+      MkHtmlElement(HTML::Element e) { e.getFile() instanceof VueFile }
 
     /**
      * An element of a template.
@@ -430,7 +430,7 @@ module Vue {
        * The location spans column `startcolumn` of line `startline` to
        * column `endcolumn` of line `endline` in file `filepath`.
        * For more information, see
-       * [LGTM locations](https://lgtm.com/help/ql/locations).
+       * [locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
        */
       predicate hasLocationInfo(
         string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -442,6 +442,11 @@ module Vue {
         endcolumn = 0
       }
 
+      /**
+       * Gets the name of this element.
+       *
+       * For example, the name of `<br>` is `br`.
+       */
       abstract string getName();
     }
 
@@ -461,6 +466,9 @@ module Vue {
 
       override string getName() { result = elem.getName() }
 
+      /**
+       * Gets the HTML element of this element.
+       */
       HTML::Element getElement() { result = elem }
     }
   }
