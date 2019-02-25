@@ -417,7 +417,7 @@ class ModuleImportNode extends DataFlow::SourceNode {
 
 module ModuleImportNode {
   /**
-   * Data flow node that refers to an imported module.
+   * A data flow node that refers to an imported module.
    */
   abstract class Range extends DataFlow::SourceNode {
     /** Gets the path of the imported module. */
@@ -479,7 +479,7 @@ module ModuleImportNode {
  * Gets a (default) import of the module with the given path, such as `require("fs")`
  * or `import * as fs from "fs"`.
  *
- * This predicate can be customized by subclassing `ModuleImportNode::Range`.
+ * This predicate can be extended by subclassing `ModuleImportNode::Range`.
  */
 ModuleImportNode moduleImport(string path) { result.getPath() = path }
 
