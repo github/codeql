@@ -5,6 +5,9 @@
 import javascript
 
 module StringOps {
+  /**
+   * A expression that is equivalent to `A.startsWith(B)` or `!A.startsWith(B)`.
+   */
   class StartsWith extends DataFlow::Node {
     StartsWith::Range range;
 
