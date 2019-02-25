@@ -3,6 +3,7 @@ import python
 import semmle.python.security.TaintTracking
 import semmle.python.security.strings.Basic
 import semmle.python.web.Http
+import semmle.python.security.injection.Sql
 
 /** A django model class */
 class DjangoModel extends ClassObject {
@@ -68,7 +69,7 @@ class DjangoModelObjects extends TaintSource {
 }
 
 /** A write to a field of a django model, which is a vulnerable to external data. */
-class DjangoModelFieldWrite extends TaintSink {
+class DjangoModelFieldWrite extends SqlInjectionSink {
 
     DjangoModelFieldWrite() {
         exists(AttrNode attr, DjangoModel model |
@@ -111,7 +112,7 @@ class DjangoModelDirectObjectReference extends TaintSink {
  * to be sent to the database, which is a security risk.
  */
 
-class DjangoModelRawCall extends TaintSink {
+class DjangoModelRawCall extends SqlInjectionSink {
 
     DjangoModelRawCall() {
         exists(CallNode raw_call, ControlFlowNode queryset |
@@ -136,7 +137,7 @@ class DjangoModelRawCall extends TaintSink {
  */
 
 
-class DjangoModelExtraCall extends TaintSink {
+class DjangoModelExtraCall extends SqlInjectionSink {
 
     DjangoModelExtraCall() {
         exists(CallNode extra_call, ControlFlowNode queryset |

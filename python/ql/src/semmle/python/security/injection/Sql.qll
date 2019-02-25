@@ -9,6 +9,7 @@ import python
 
 import semmle.python.security.TaintTracking
 import semmle.python.security.strings.Untrusted
+import semmle.python.security.SQL
 
 
 private StringObject first_part(ControlFlowNode command) {
@@ -48,11 +49,10 @@ abstract class DbCursor extends TaintKind {
 
 }
 
-
 /** A part of a string that appears to be a SQL command and is thus
  * vulnerable to malicious input.
  */
-class SimpleSqlStringInjection extends TaintSink {
+class SimpleSqlStringInjection extends SqlInjectionSink {
 
     override string toString() { result = "simple SQL string injection" }
 
@@ -76,7 +76,7 @@ abstract class DbConnectionSource extends TaintSource {
 /** A taint sink that is vulnerable to malicious SQL queries.
  * The `vuln` in `db.connection.execute(vuln)` and similar.
  */
-class DbConnectionExecuteArgument extends TaintSink {
+class DbConnectionExecuteArgument extends SqlInjectionSink {
 
     override string toString() { result = "db.connection.execute" }
 

@@ -1612,3 +1612,4 @@ private predicate sequence_call(ControlFlowNode fromnode, CallNode tonode) {
         cls.refersTo(theSetType())
     )
 }
+

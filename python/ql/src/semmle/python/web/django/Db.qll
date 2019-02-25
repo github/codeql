@@ -46,7 +46,7 @@ ClassObject theDjangoRawSqlClass() {
  * allows arbitrary SQL statements to be executed, which is a security risk.
  */
 
-class DjangoRawSqlSink extends TaintSink {
+class DjangoRawSqlSink extends SqlInjectionSink {
     DjangoRawSqlSink() {
         exists(CallNode call |
             call = theDjangoRawSqlClass().getACall() and
