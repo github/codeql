@@ -284,6 +284,9 @@ DataFlow::SourceNode globalObjectRef() {
   or
   // `require("global")`
   result = moduleImport("global")
+  or
+  // Closure library - based on AST to avoid recursion with Closure library model
+  result.asExpr().(DotExpr).getQualifiedName() = "goog.global"
 }
 
 /**
