@@ -18,6 +18,7 @@ module ClosureLibrary {
           name = "capitalize" or
           name = "collapseBreakingSpaces" or
           name = "collapseWhitespace" or
+          name = "format" or
           name = "makeSafe" or // makeSafe just guards against null and undefined
           name = "newLineOrBr" or
           name = "normalizeSpaces" or
