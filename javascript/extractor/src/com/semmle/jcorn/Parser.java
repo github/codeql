@@ -1478,7 +1478,7 @@ public class Parser {
 		}
 	}
 
-	private boolean isOnOptionalChain(boolean optional, Expression base) {
+	protected boolean isOnOptionalChain(boolean optional, Expression base) {
 		return optional || base instanceof Chainable && ((Chainable)base).isOnOptionalChain();
 	}
 
@@ -1691,25 +1691,38 @@ public class Parser {
 				first = false;
 			else
 				this.expect(TokenType.comma);
-			if (allowTrailingComma && this.afterTrailingComma(TokenType.parenR, true)) {
-				parenExprs.lastIsComma = true;
+			if (!parseParenthesisedExpression(refDestructuringErrors, allowTrailingComma, parenExprs, first))
 				break;
-			} else if (this.type == TokenType.ellipsis) {
-				parenExprs.spreadStart = this.start;
-				parenExprs.exprList.add(this.parseParenItem(this.parseRest(false), -1, null));
-				if (this.type == TokenType.comma)
-					this.raise(this.startLoc, "Comma is not permitted after the rest element");
-				break;
-			} else {
-				if (this.type == TokenType.parenL && parenExprs.innerParenStart == 0) {
-					parenExprs.innerParenStart = this.start;
-				}
-				parenExprs.exprList.add(this.parseMaybeAssign(false, refDestructuringErrors, this::parseParenItem));
-			}
 		}
 		parenExprs.endLoc = this.startLoc;
 		this.expect(TokenType.parenR);
 		return parenExprs;
+	}
+
+	/**
+	 * Parse an expression that forms part of a comma-separated list of expressions between parentheses, adding
+	 * it to `parenExprs`.
+	 *
+	 * @return true if more expressions may follow this one, false if it must be the last one
+	 */
+	protected boolean parseParenthesisedExpression(DestructuringErrors refDestructuringErrors,
+			boolean allowTrailingComma, ParenthesisedExpressions parenExprs, boolean first) {
+		if (allowTrailingComma && this.afterTrailingComma(TokenType.parenR, true)) {
+			parenExprs.lastIsComma = true;
+			return false;
+		} else if (this.type == TokenType.ellipsis) {
+			parenExprs.spreadStart = this.start;
+			parenExprs.exprList.add(this.parseParenItem(this.parseRest(false), -1, null));
+			if (this.type == TokenType.comma)
+				this.raise(this.startLoc, "Comma is not permitted after the rest element");
+			return false;
+		} else {
+			if (this.type == TokenType.parenL && parenExprs.innerParenStart == 0) {
+				parenExprs.innerParenStart = this.start;
+			}
+			parenExprs.exprList.add(this.parseMaybeAssign(false, refDestructuringErrors, this::parseParenItem));
+		}
+		return true;
 	}
 
 	protected Expression parseParenItem(Expression left, int startPos, Position startLoc) {
@@ -2099,8 +2112,10 @@ public class Parser {
 			if (this.inAsync && this.value.equals("await"))
 				this.raiseRecoverable(this.start, "Can not use 'await' as identifier inside an async function");
 			name = String.valueOf(this.value);
-		} else if (liberal && this.type.keyword != null) {
+		} else if (this.type.keyword != null) {
 			name = this.type.keyword;
+			if (!liberal)
+				raiseRecoverable(this.start, "Cannot use keyword '" + name + "' as an identifier.");
 		} else {
 			this.unexpected();
 		}
@@ -2257,9 +2272,6 @@ public class Parser {
 		if (this.options.ecmaVersion() < 6)
 			return this.parseIdent(false);
 
-		if (this.type == TokenType.name)
-			return this.parseIdent(false);
-
 		if (this.type == TokenType.bracketL) {
 			Position start = this.startLoc;
 			this.next();
@@ -2271,8 +2283,7 @@ public class Parser {
 		if (this.type == TokenType.braceL)
 			return this.parseObj(true, null);
 
-		this.unexpected();
-		return null;
+		return this.parseIdent(false);
 	}
 
 	protected List<Expression> parseBindingList(TokenType close, boolean allowEmpty, boolean allowTrailingComma, boolean allowNonIdent) {
@@ -2914,9 +2925,9 @@ public class Parser {
 			if (this.eat(TokenType.eq)) {
 				init = this.parseMaybeAssign(isFor, null, null);
 			} else if (kind.equals("const") && !(this.type == TokenType._in || (this.options.ecmaVersion() >= 6 && this.isContextual("of")))) {
-				this.unexpected();
+				this.raiseRecoverable(this.lastTokEnd, "Constant declarations require an initialization value");
 			} else if (!(id instanceof Identifier) && !(isFor && (this.type == TokenType._in || this.isContextual("of")))) {
-				this.raise(this.lastTokEnd, "Complex binding patterns require an initialization value");
+				this.raiseRecoverable(this.lastTokEnd, "Complex binding patterns require an initialization value");
 			}
 			declarations.add(this.finishNode(
 					new VariableDeclarator(new SourceLocation(varDeclStart), (IPattern) id, init, noTypeAnnotation, DeclarationFlags.none)));
@@ -2984,7 +2995,7 @@ public class Parser {
 		IFunction node;
 		SourceLocation loc = new SourceLocation(startLoc);
 		if (isStatement && id != null)
-			node = new FunctionDeclaration(loc, id, params, (BlockStatement) body, generator, async);
+			node = new FunctionDeclaration(loc, id, params, body, generator, async);
 		else
 			node = new FunctionExpression(loc, id, params, body, generator, async);
 		return this.finishNode(node);

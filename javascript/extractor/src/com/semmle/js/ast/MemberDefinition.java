@@ -18,7 +18,7 @@ public abstract class MemberDefinition<V extends Expression> extends Node {
 	/**
 	 * The name of the member.
 	 *
-	 * If {@link #isComputed} is false, this must be an {@link Identifier}, otherwise
+	 * If {@link #isComputed()} is false, this must be an {@link Identifier}, otherwise
 	 * it can be an arbitrary expression.
 	 */
 	private final Expression key;

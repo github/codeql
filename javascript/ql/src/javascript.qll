@@ -14,6 +14,7 @@ import semmle.javascript.Concepts
 import semmle.javascript.Constants
 import semmle.javascript.DefUse
 import semmle.javascript.DOM
+import semmle.javascript.E4X
 import semmle.javascript.EmailClients
 import semmle.javascript.Errors
 import semmle.javascript.ES2015Modules

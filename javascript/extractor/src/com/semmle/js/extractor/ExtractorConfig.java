@@ -207,6 +207,9 @@ public class ExtractorConfig {
     /** Should v8-specific language extensions be supported? */
     private boolean v8Extensions;
 
+    /** Should E4X syntax be supported? */
+    private boolean e4x;
+
     /** Should parse errors be reported as violations instead of aborting extraction? */
     private boolean tolerateParseErrors;
 
@@ -248,6 +251,7 @@ public class ExtractorConfig {
             this.v8Extensions = true;
         }
         this.typescriptMode = TypeScriptMode.NONE;
+        this.e4x = experimental;
         this.defaultEncoding = StandardCharsets.UTF_8.name();
     }
 
@@ -260,6 +264,7 @@ public class ExtractorConfig {
         this.jsx = that.jsx;
         this.esnext = that.esnext;
         this.v8Extensions = that.v8Extensions;
+        this.e4x = that.e4x;
         this.tolerateParseErrors = that.tolerateParseErrors;
         this.fileType = that.fileType;
         this.sourceType = that.sourceType;
@@ -337,6 +342,16 @@ public class ExtractorConfig {
     public ExtractorConfig withV8Extensions(boolean v8Extensions) {
         ExtractorConfig res = new ExtractorConfig(this);
         res.v8Extensions = v8Extensions;
+        return res;
+    }
+
+    public boolean isE4X() {
+        return e4x;
+    }
+
+    public ExtractorConfig withE4X(boolean e4x) {
+        ExtractorConfig res = new ExtractorConfig(this);
+        res.e4x = e4x;
         return res;
     }
 
@@ -440,14 +455,11 @@ public class ExtractorConfig {
 
     @Override
     public String toString() {
-        return "ExtractorConfig [ecmaVersion=" + ecmaVersion + ", externs="
-                + externs + ", platform=" + platform + ", mozExtensions="
-                + mozExtensions + ", jscript=" + jscript + ", jsx=" + jsx
-                + ", esnext=" + esnext + ", v8Extensions=" + v8Extensions
-                + ", tolerateParseErrors=" + tolerateParseErrors
-                + ", htmlHandling=" + htmlHandling + ", fileType=" + fileType
-                + ", sourceType=" + sourceType + ", extractLines="
-                + extractLines + ", typescript=" + typescriptMode
-                + ", defaultEncoding=" + defaultEncoding + "]";
+        return "ExtractorConfig [ecmaVersion=" + ecmaVersion + ", externs=" + externs + ", platform=" + platform
+                + ", mozExtensions=" + mozExtensions + ", jscript=" + jscript + ", jsx=" + jsx + ", esnext=" + esnext
+                + ", v8Extensions=" + v8Extensions + ", e4x=" + e4x + ", tolerateParseErrors=" + tolerateParseErrors
+                + ", htmlHandling=" + htmlHandling + ", fileType=" + fileType + ", sourceType=" + sourceType
+                + ", extractLines=" + extractLines + ", typescriptMode=" + typescriptMode + ", defaultEncoding="
+                + defaultEncoding + "]";
     }
 }

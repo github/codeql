@@ -257,7 +257,7 @@ public class ESNextParser extends JSXParser {
 		return member;
 	}
 
-	private List<Decorator> parseDecorators() {
+	public List<Decorator> parseDecorators() {
 		List<Decorator> result = new ArrayList<Decorator>();
 		while (this.type == at)
 			result.add(this.parseDecorator());
@@ -267,8 +267,21 @@ public class ESNextParser extends JSXParser {
 	private Decorator parseDecorator() {
 		Position start = startLoc;
 		this.next();
-		Decorator decorator = new Decorator(new SourceLocation(start), this.parseMaybeAssign(false, null, null));
+		Expression body = parseDecoratorBody();
+		Decorator decorator = new Decorator(new SourceLocation(start), body);
 		return this.finishNode(decorator);
+	}
+
+	protected Expression parseDecoratorBody() {
+		Expression base;
+		int startPos = this.start;
+		Position startLoc = this.startLoc;
+		if (this.type == TokenType.parenL) {
+			base = parseParenExpression();
+		} else {
+			base = parseIdent(true);
+		}
+		return parseSubscripts(base, startPos, startLoc, false);
 	}
 
 	/*

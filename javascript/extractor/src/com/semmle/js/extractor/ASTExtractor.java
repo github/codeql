@@ -90,6 +90,10 @@ import com.semmle.js.ast.VariableDeclaration;
 import com.semmle.js.ast.VariableDeclarator;
 import com.semmle.js.ast.WhileStatement;
 import com.semmle.js.ast.WithStatement;
+import com.semmle.js.ast.XMLAttributeSelector;
+import com.semmle.js.ast.XMLDotDotExpression;
+import com.semmle.js.ast.XMLFilterExpression;
+import com.semmle.js.ast.XMLQualifiedIdentifier;
 import com.semmle.js.ast.YieldExpression;
 import com.semmle.js.ast.jsx.IJSXName;
 import com.semmle.js.ast.jsx.JSXAttribute;
@@ -1876,6 +1880,37 @@ public class ASTExtractor {
 		public Label visit(RestTypeExpr nd, Context c) {
 			Label key = super.visit(nd, c);
 			visit(nd.getArrayType(), key, 0, IdContext.typeBind);
+			return key;
+		}
+
+		@Override
+		public Label visit(XMLAttributeSelector nd, Context c) {
+			Label key = super.visit(nd, c);
+			visit(nd.getAttribute(), key, 0, IdContext.label);
+			return key;
+		}
+
+		@Override
+		public Label visit(XMLFilterExpression nd, Context c) {
+			Label key = super.visit(nd, c);
+			visit(nd.getLeft(), key, 0);
+			visit(nd.getRight(), key, 1);
+			return key;
+		}
+
+		@Override
+		public Label visit(XMLQualifiedIdentifier nd, Context c) {
+			Label key = super.visit(nd, c);
+			visit(nd.getLeft(), key, 0);
+			visit(nd.getRight(), key, 1, nd.isComputed() ? IdContext.varBind : IdContext.label);
+			return key;
+		}
+
+		@Override
+		public Label visit(XMLDotDotExpression nd, Context c) {
+			Label key = super.visit(nd, c);
+			visit(nd.getLeft(), key, 0);
+			visit(nd.getRight(), key, 1, IdContext.label);
 			return key;
 		}
 	}

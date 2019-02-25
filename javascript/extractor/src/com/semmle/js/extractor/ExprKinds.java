@@ -20,6 +20,11 @@ import com.semmle.js.ast.MemberExpression;
 import com.semmle.js.ast.MetaProperty;
 import com.semmle.js.ast.UnaryExpression;
 import com.semmle.js.ast.UpdateExpression;
+import com.semmle.js.ast.XMLAnyName;
+import com.semmle.js.ast.XMLAttributeSelector;
+import com.semmle.js.ast.XMLDotDotExpression;
+import com.semmle.js.ast.XMLFilterExpression;
+import com.semmle.js.ast.XMLQualifiedIdentifier;
 import com.semmle.js.ast.jsx.JSXIdentifier;
 import com.semmle.js.ast.jsx.JSXMemberExpression;
 import com.semmle.js.ast.jsx.JSXSpreadAttribute;
@@ -265,6 +270,31 @@ public class ExprKinds {
 			@Override
 			public Integer visit(DecoratorList nd, Void c) {
 				return 104;
+			}
+
+			@Override
+			public Integer visit(XMLAnyName nd, Void c) {
+				return 108;
+			}
+
+			@Override
+			public Integer visit(XMLAttributeSelector nd, Void c) {
+				return nd.isComputed() ? 110 : 109;
+			}
+
+			@Override
+			public Integer visit(XMLFilterExpression nd, Void c) {
+				return 111;
+			}
+
+			@Override
+			public Integer visit(XMLQualifiedIdentifier nd, Void c) {
+				return nd.isComputed() ? 113 : 112;
+			}
+
+			@Override
+			public Integer visit(XMLDotDotExpression nd, Void c) {
+				return 114;
 			}
 		}, null);
 		if (kind == null)

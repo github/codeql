@@ -174,4 +174,9 @@ public interface Visitor<C, R> {
 	public R visit(ImportTypeExpr nd, C c);
 	public R visit(OptionalTypeExpr nd, C c);
 	public R visit(RestTypeExpr nd, C c);
+	public R visit(XMLAnyName nd, C c);
+	public R visit(XMLAttributeSelector nd, C c);
+	public R visit(XMLFilterExpression nd, C c);
+	public R visit(XMLQualifiedIdentifier nd, C c);
+	public R visit(XMLDotDotExpression nd, C c);
 }

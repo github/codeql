@@ -37,6 +37,8 @@ public class JcornWrapper {
 			options.esnext(true);
 		if (config.isV8Extensions())
 			options.v8Extensions(true);
+		if (config.isE4X())
+			options.e4x(true);
 
 		Program program = null;
 		List<ParseError> errors = new ArrayList<>();

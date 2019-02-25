@@ -1078,8 +1078,14 @@ module DataFlow {
     nd.asExpr() instanceof ExternalModuleReference and
     cause = "import"
     or
-    nd.asExpr() instanceof PropAccess and
-    cause = "heap"
+    exists (Expr e | e = nd.asExpr() and cause = "heap" |
+      e instanceof PropAccess or
+      e instanceof E4X::XMLAnyName or
+      e instanceof E4X::XMLAttributeSelector or
+      e instanceof E4X::XMLDotDotExpression or
+      e instanceof E4X::XMLFilterExpression or
+      e instanceof E4X::XMLQualifiedIdentifier
+    )
     or
     exists(Expr e | e = nd.asExpr() |
       (e instanceof YieldExpr or e instanceof FunctionSentExpr) and
