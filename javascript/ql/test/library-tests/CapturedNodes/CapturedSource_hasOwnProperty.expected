@@ -5,7 +5,7 @@
 | method-calls.js:23:11:23:17 | {m: f1} | m |
 | method-calls.js:27:11:27:17 | {m: f2} | m |
 | method-calls.js:32:12:32:18 | {m: f3} | m |
-| method-calls.js:36:15:36:21 | {m: f2} | m |
+| method-calls.js:36:15:36:21 | {m: f4} | m |
 | method-calls.js:42:16:42:28 | {m: () => 42} | m |
 | method-calls.js:46:17:46:29 | {m: () => 42} | m |
 | method-calls.js:50:16:50:28 | {m: () => 42} | m |
