@@ -37,6 +37,9 @@ module DataFlow {
     TThisNode(StmtContainer f) { f.(Function).getThisBinder() = f or f instanceof TopLevel } or
     TUnusedParameterNode(SimpleParameter p) {
       not exists(SsaExplicitDefinition ssa | p = ssa.getDef())
+    } or
+    TDestructuredModuleImportNode(ImportDeclaration decl) {
+      exists(decl.getASpecifier().getImportedName())
     }
 
   /**
@@ -349,6 +352,25 @@ module DataFlow {
     }
 
     override string toString() { result = "reflective call" }
+  }
+
+  /**
+   * A node referring to the module imported at a named or default ES2015 import declaration.
+   */
+  private class DestructuredModuleImportNode extends Node, TDestructuredModuleImportNode {
+    ImportDeclaration imprt;
+
+    DestructuredModuleImportNode() { this = TDestructuredModuleImportNode(imprt) }
+
+    override BasicBlock getBasicBlock() { result = imprt.getBasicBlock() }
+
+    override predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      imprt.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+
+    override string toString() { result = imprt.toString() }
   }
 
   /**
@@ -669,6 +691,30 @@ module DataFlow {
   }
 
   /**
+   * A named import specifier seen as a property read on the imported module.
+   */
+  private class ImportSpecifierAsPropRead extends PropRead {
+    ImportDeclaration imprt;
+
+    ImportSpecifier spec;
+
+    ImportSpecifierAsPropRead() {
+      spec = imprt.getASpecifier() and
+      exists(spec.getImportedName()) and
+      exists(SsaExplicitDefinition ssa |
+        ssa.getDef() = spec and
+        this = TSsaDefNode(ssa)
+      )
+    }
+
+    override Node getBase() { result = TDestructuredModuleImportNode(imprt) }
+
+    override Expr getPropertyNameExpr() { result = spec.getImported() }
+
+    override string getPropertyName() { result = spec.getImportedName() }
+  }
+
+  /**
    * A data flow node representing an unused parameter.
    *
    * This case exists to ensure all parameters have a corresponding data-flow node.
@@ -885,6 +931,16 @@ module DataFlow {
    * Has no result if `container` is an arrow function.
    */
   DataFlow::ThisNode thisNode(StmtContainer container) { result = TThisNode(container) }
+
+  /**
+   * INTERNAL. DO NOT USE.
+   *
+   * Gets the data flow node holding the reference to the module being destructured at
+   * the given import declaration.
+   */
+  DataFlow::Node destructuredModuleImportNode(ImportDeclaration imprt) {
+    result = TDestructuredModuleImportNode(imprt)
+  }
 
   /**
    * A classification of flows that are not modeled, or only modeled incompletely, by

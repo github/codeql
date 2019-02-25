@@ -1038,4 +1038,6 @@
 | (return (root https://www.npmjs.com/package/m2)) | src/m3/tst3.js:4:1:4:11 | new A("me") | false |
 | (return (root https://www.npmjs.com/package/m2)) | src/m3/tst3.js:5:1:5:11 | new A("me") | false |
 | (root https://www.npmjs.com/package/m1) | src/m3/index.js:1:10:1:22 | require("m1") | false |
+| (root https://www.npmjs.com/package/m2) | src/m3/tst2.js:1:1:1:25 | import  ... m "m2"; | false |
+| (root https://www.npmjs.com/package/m2) | src/m3/tst3.js:1:1:1:19 | import A from "m2"; | false |
 | (root https://www.npmjs.com/package/m2) | src/m3/tst3.js:1:8:1:8 | A | false |

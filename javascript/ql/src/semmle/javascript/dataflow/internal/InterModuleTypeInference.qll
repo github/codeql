@@ -176,6 +176,25 @@ private class AnalyzedNamespaceImport extends AnalyzedImport {
 }
 
 /**
+ * Flow analysis for namespace imports.
+ */
+private class AnalyzedDestructuredImport extends AnalyzedPropertyRead {
+  Module imported;
+
+  AnalyzedDestructuredImport() {
+    exists(ImportDeclaration id |
+      this = DataFlow::destructuredModuleImportNode(id) and
+      imported = id.getImportedModule()
+    )
+  }
+
+  override predicate reads(AbstractValue base, string propName) {
+    base = TAbstractModuleObject(imported) and
+    propName = "exports"
+  }
+}
+
+/**
  * Flow analysis for `require` calls, interpreted as an implicit read of
  * the `module.exports` property of the imported module.
  */

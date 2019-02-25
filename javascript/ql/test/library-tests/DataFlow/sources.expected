@@ -12,6 +12,7 @@
 | sources.js:3:2:5:1 | functio ... x+19;\\n} |
 | sources.js:3:11:3:11 | x |
 | tst.js:1:1:1:0 | this |
+| tst.js:1:1:1:24 | import  ... m 'fs'; |
 | tst.js:1:10:1:11 | fs |
 | tst.js:16:1:20:9 | (functi ... ("arg") |
 | tst.js:16:2:16:1 | this |

@@ -429,6 +429,12 @@ class ModuleImportNode extends DataFlow::SourceNode {
       is.getImportedName() = "default"
     )
     or
+    // `import { createServer } from 'http'`
+    exists(ImportDeclaration id |
+      this = DataFlow::destructuredModuleImportNode(id) and
+      id.getImportedPath().getValue() = path
+    )
+    or
     // declared AMD dependency
     exists(AMDModuleDefinition amd |
       this = DataFlow::parameterNode(amd.getDependencyParameter(path))
@@ -458,14 +464,6 @@ ModuleImportNode moduleImport(string path) { result.getPath() = path }
  */
 DataFlow::SourceNode moduleMember(string path, string m) {
   result = moduleImport(path).getAPropertyRead(m)
-  or
-  exists(ImportDeclaration id, ImportSpecifier is, SsaExplicitDefinition ssa |
-    id.getImportedPath().getValue() = path and
-    is = id.getASpecifier() and
-    is.getImportedName() = m and
-    ssa.getDef() = is and
-    result = DataFlow::ssaDefinitionNode(ssa)
-  )
 }
 
 /**
