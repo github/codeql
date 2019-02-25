@@ -985,7 +985,7 @@ module DataFlow {
   }
 
   /**
-   * Holds if data can flow from `node1` to `node2` in one local step.
+   * Holds if data can flow from `pred` to `succ` in one local step.
    */
   cached
   predicate localFlowStep(Node pred, Node succ) {
