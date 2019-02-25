@@ -35,15 +35,13 @@ module ClosureLibrary {
           name = "trim" or
           name = "trimLeft" or
           name = "trimRight" or
+          name = "truncate" or
+          name = "truncateMiddle" or
           name = "unescapeEntities" or
           name = "urlDecode" or
           name = "urlEncode" or
           name = "whitespaceEscape"
         )
-        or
-        (name = "truncate" or name = "truncateMiddle") and
-        pred = getArgument(0) and
-        not getArgument(1).getIntValue() < 8 // length of <script>
         or
         name = "unescapeEntitiesWithDocument" and
         pred = getArgument(0)
