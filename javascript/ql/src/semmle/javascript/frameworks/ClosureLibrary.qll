@@ -38,8 +38,6 @@ module ClosureLibrary {
           name = "truncate" or
           name = "truncateMiddle" or
           name = "unescapeEntities" or
-          name = "urlDecode" or
-          name = "urlEncode" or
           name = "whitespaceEscape"
         )
         or
