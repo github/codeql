@@ -11,6 +11,8 @@
 | Function | specifiers2pp.cpp:8:7:8:7 | MyClass | MyClass | extern |
 | Function | specifiers2pp.cpp:8:7:8:7 | MyClass | MyClass | inline |
 | Function | specifiers2pp.cpp:8:7:8:7 | MyClass | MyClass | inline |
+| Function | specifiers2pp.cpp:8:7:8:7 | MyClass | MyClass | is_constexpr |
+| Function | specifiers2pp.cpp:8:7:8:7 | MyClass | MyClass | is_constexpr |
 | Function | specifiers2pp.cpp:8:7:8:7 | MyClass | MyClass | public |
 | Function | specifiers2pp.cpp:8:7:8:7 | MyClass | MyClass | public |
 | Function | specifiers2pp.cpp:8:7:8:7 | operator= | operator= | extern |
@@ -41,6 +43,8 @@
 | Function | specifiers2pp.cpp:24:7:24:7 | MyClass2 | MyClass2 | inline |
 | Function | specifiers2pp.cpp:24:7:24:7 | MyClass2 | MyClass2 | inline |
 | Function | specifiers2pp.cpp:24:7:24:7 | MyClass2 | MyClass2 | inline |
+| Function | specifiers2pp.cpp:24:7:24:7 | MyClass2 | MyClass2 | is_constexpr |
+| Function | specifiers2pp.cpp:24:7:24:7 | MyClass2 | MyClass2 | is_constexpr |
 | Function | specifiers2pp.cpp:24:7:24:7 | MyClass2 | MyClass2 | public |
 | Function | specifiers2pp.cpp:24:7:24:7 | MyClass2 | MyClass2 | public |
 | Function | specifiers2pp.cpp:24:7:24:7 | MyClass2 | MyClass2 | public |
