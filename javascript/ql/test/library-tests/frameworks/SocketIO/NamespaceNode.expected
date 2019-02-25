@@ -1,0 +1,27 @@
+| tst.js:25:10:25:19 | io.sockets |
+| tst.js:26:1:26:10 | io.of("/") |
+| tst.js:27:1:27:12 | ns.use(auth) |
+| tst.js:28:1:28:11 | ns.to(room) |
+| tst.js:29:1:29:11 | ns.in(room) |
+| tst.js:30:1:30:28 | ns.emit ... event') |
+| tst.js:31:1:31:20 | ns.send('a message') |
+| tst.js:32:1:32:21 | ns.writ ... ssage') |
+| tst.js:33:1:33:14 | ns.clients(cb) |
+| tst.js:34:1:34:17 | ns.compress(true) |
+| tst.js:35:1:35:16 | ns.binary(false) |
+| tst.js:36:1:36:12 | io.use(auth) |
+| tst.js:37:1:37:11 | io.to(room) |
+| tst.js:38:1:38:11 | io.in(room) |
+| tst.js:39:1:39:31 | io.emit ... ssage') |
+| tst.js:40:1:40:20 | io.send('a message') |
+| tst.js:41:1:41:21 | io.writ ... ssage') |
+| tst.js:42:1:42:14 | io.clients(cb) |
+| tst.js:43:1:43:17 | io.compress(true) |
+| tst.js:44:1:44:16 | io.binary(false) |
+| tst.js:45:1:45:7 | ns.json |
+| tst.js:46:1:46:11 | ns.volatile |
+| tst.js:47:1:47:8 | ns.local |
+| tst.js:50:1:66:2 | io.on(' ... cal;\\n}) |
+| tst.js:67:1:67:35 | io.on(' ...  => {}) |
+| tst.js:68:1:68:32 | ns.on(' ...  => {}) |
+| tst.js:69:1:73:2 | ns.on(' ... {});\\n}) |
