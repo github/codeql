@@ -1,5 +1,5 @@
 /**
- * Provides classes for the nodes that the dataflow library can reason about soundly.
+ * Provides classes for the local objects that the dataflow library can reason about soundly.
  */
 
 import javascript
