@@ -203,14 +203,15 @@ module DomBasedXss {
    */
   class VHtmlSink extends DomBasedXss::Sink {
     HTML::Attribute attr;
-    VHtmlSink() { this.(DataFlow::HtmlAttributeNode).getAttribute() = attr and attr.getName() = "v-html" }
+
+    VHtmlSink() {
+      this.(DataFlow::HtmlAttributeNode).getAttribute() = attr and attr.getName() = "v-html"
+    }
 
     /**
      * Gets the HTML attribute of this sink.
      */
-    HTML::Attribute getAttr() {
-      result = attr
-    }
+    HTML::Attribute getAttr() { result = attr }
   }
 
   /**
@@ -226,7 +227,10 @@ module DomBasedXss {
 
     VHtmlSourceWrite() {
       exists(Vue::Instance instance, string expr |
-        attr.getAttr().getRoot() = instance.getTemplateElement().(Vue::Template::HtmlElement).getElement() and
+        attr.getAttr().getRoot() = instance
+              .getTemplateElement()
+              .(Vue::Template::HtmlElement)
+              .getElement() and
         expr = attr.getAttr().getValue() and
         // only support for simple identifier expressions
         expr.regexpMatch("(?i)[a-z0-9_]+") and

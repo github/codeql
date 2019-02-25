@@ -392,7 +392,6 @@ module Vue {
    * A taint propagating data flow edge through a Vue instance property.
    */
   class InstanceHeapStep extends TaintTracking::AdditionalTaintStep {
-
     DataFlow::Node src;
 
     InstanceHeapStep() {
@@ -404,19 +403,16 @@ module Vue {
       )
     }
 
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      pred = src and succ = this
-    }
-
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) { pred = src and succ = this }
   }
 
   /*
    * Provides classes for working with Vue templates.
    */
+
   module Template {
     // Currently only supports HTML elements, but it may be possible to parse simple string templates later
-    private newtype TElement =
-      MkHtmlElement(HTML::Element e) { e.getFile() instanceof VueFile }
+    private newtype TElement = MkHtmlElement(HTML::Element e) { e.getFile() instanceof VueFile }
 
     /**
      * An element of a template.
@@ -472,5 +468,4 @@ module Vue {
       HTML::Element getElement() { result = elem }
     }
   }
-
 }

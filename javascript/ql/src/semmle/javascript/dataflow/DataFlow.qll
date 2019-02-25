@@ -116,7 +116,9 @@ module DataFlow {
     int getIntValue() { result = asExpr().getIntValue() }
 
     /** Gets a function value that may reach this node. */
-    FunctionNode getAFunctionValue() { result.getAstNode() = analyze().getAValue().(AbstractCallable).getFunction() }
+    FunctionNode getAFunctionValue() {
+      result.getAstNode() = analyze().getAValue().(AbstractCallable).getFunction()
+    }
 
     /**
      * Holds if this expression may refer to the initial value of parameter `p`.
@@ -1155,7 +1157,7 @@ module DataFlow {
     nd.asExpr() instanceof ExternalModuleReference and
     cause = "import"
     or
-    exists (Expr e | e = nd.asExpr() and cause = "heap" |
+    exists(Expr e | e = nd.asExpr() and cause = "heap" |
       e instanceof PropAccess or
       e instanceof E4X::XMLAnyName or
       e instanceof E4X::XMLAttributeSelector or
