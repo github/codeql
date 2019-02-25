@@ -40,7 +40,7 @@ class FalconResponseBodySink extends TaintSink {
     }
 
     override predicate sinks(TaintKind kind) {
-        kind instanceof ExternalStringKind
+        kind instanceof StringKind
     }
 
 }

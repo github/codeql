@@ -16,6 +16,10 @@ private predicate api_route(CallNode route_call, ControlFlowNode route, ClassObj
     route_call.getArg(1).refersTo(_, resource, _)
 }
 
+private predicate route(FalconRoute route, Function target, string funcname) {
+    route.getResourceClass().lookupAttribute("on_" + funcname).(FunctionObject).getFunction() = target
+}
+
 class FalconRoute extends ControlFlowNode {
 
     FalconRoute() {
@@ -33,28 +37,24 @@ class FalconRoute extends ControlFlowNode {
         api_route(this, _, result)
     }
 
-    FalconHandlerFunction getHandlerFunction() {
-        result = this.getResourceClass().lookupAttribute(_).(FunctionObject).getFunction()
-    }
-
     FalconHandlerFunction getHandlerFunction(string method) {
-        result = this.getResourceClass().lookupAttribute("on_" + method).(FunctionObject).getFunction()
+        route(this, result, method)
     }
 
 }
 
 class FalconHandlerFunction extends Function {
 
-    string method;
-
     FalconHandlerFunction() {
-        exists(ClassObject resource |
-            resource.lookupAttribute("on_" + method).(FunctionObject).getFunction() = this
-        )
+        route(_, this, _)
+    }
+
+    private string methodName() {
+        route(_, this, result)
     }
 
     string getMethod() {
-        result = method.toUpperCase()
+        result = this.methodName().toUpperCase()
     }
 
     Parameter getRequest() {
