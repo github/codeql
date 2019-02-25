@@ -8,6 +8,8 @@ private import TranslatedDeclarationEntry
 private import TranslatedElement
 private import TranslatedFunction
 private import TranslatedInitialization
+private import TranslatedFunction
+private import TranslatedStmt
 import TranslatedCall
 
 /**
@@ -2725,5 +2727,38 @@ class TranslatedLambdaExpr extends TranslatedNonConstantExpr, InitializationCont
 
   private TranslatedInitialization getInitialization() {
     result = getTranslatedInitialization(expr.getChild(0).getFullyConverted())
+  }
+}
+
+class TranslatedStmtExpr extends TranslatedNonConstantExpr {
+  override StmtExpr expr;
+  
+  override final Instruction getFirstInstruction() {
+    result = getStmt().getFirstInstruction()
+  }
+  
+  override final TranslatedElement getChild(int id) {
+    id = 0 and result = getStmt()
+  }
+  
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    none()
+  }
+  
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    result = getParent().getChildSuccessor(this)
+  }
+  
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType,
+        boolean isGLValue) {
+    none()
+  }
+  
+  override Instruction getResult() {
+    result = getTranslatedExpr(expr.getResultExpr()).getResult()
+  }
+  
+  TranslatedStmt getStmt() {
+    result = getTranslatedStmt(expr.getStmt())
   }
 }
