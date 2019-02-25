@@ -1,5 +1,5 @@
 import javascript
-import semmle.javascript.dataflow.CapturedNodes
+import semmle.javascript.dataflow.LocalObjects
 
 from LocalObject src, string name
 where src.hasOwnProperty(name)

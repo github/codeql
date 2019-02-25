@@ -9,7 +9,7 @@
  */
 
 import javascript
-import semmle.javascript.dataflow.CapturedNodes
+import semmle.javascript.dataflow.LocalObjects
 import UnusedVariable
 import UnusedParameter
 import Expressions.ExprHasNoEffect
