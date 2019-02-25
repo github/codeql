@@ -35,17 +35,19 @@ module ClosureLibrary {
           name = "trim" or
           name = "trimLeft" or
           name = "trimRight" or
-          name = "truncate" or
-          name = "truncateMiddle" or
           name = "unescapeEntities" or
           name = "whitespaceEscape"
         )
         or
-        name = "unescapeEntitiesWithDocument" and
-        pred = getArgument(0)
+        pred = getArgument(0) and
+        (
+          name = "truncate" or
+          name = "truncateMiddle" or
+          name = "unescapeEntitiesWithDocument"
+        )
       )
     }
-    
+
     override predicate step(Node src, Node dst) {
       src = pred and
       dst = this
