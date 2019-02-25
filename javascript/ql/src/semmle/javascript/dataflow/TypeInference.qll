@@ -49,7 +49,7 @@ class AnalyzedNode extends DataFlow::Node {
 
   /**
    * Gets another data flow node whose value flows into this node in a global step
-   * (this is, involvign global variables).
+   * (this is, involving global variables).
    */
   AnalyzedNode globalFlowPred() { none() }
 
@@ -76,7 +76,7 @@ class AnalyzedNode extends DataFlow::Node {
    * and global), IIFEs, ES6-style imports that can be resolved uniquely, and
    * the properties of CommonJS `module` and `exports` objects. No
    * tracking through the properties of object literals and function/class
-   * instances is performed.
+   * instances is performed, other than those accounted for by `globalFlowPred`.
    */
   cached
   AbstractValue getALocalValue() {
