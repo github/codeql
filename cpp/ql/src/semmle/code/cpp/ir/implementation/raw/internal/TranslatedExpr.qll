@@ -2730,6 +2730,10 @@ class TranslatedLambdaExpr extends TranslatedNonConstantExpr, InitializationCont
   }
 }
 
+/**
+ * The IR translation of `StmtExpr` (the GNU statement expression extension to C/C++), such as
+ * ``` ({ doSomething(); a + b; })```
+ */
 class TranslatedStmtExpr extends TranslatedNonConstantExpr {
   override StmtExpr expr;
   
@@ -2746,6 +2750,7 @@ class TranslatedStmtExpr extends TranslatedNonConstantExpr {
   }
   
   override Instruction getChildSuccessor(TranslatedElement child) {
+    child = getStmt() and
     result = getParent().getChildSuccessor(this)
   }
   
@@ -2755,7 +2760,7 @@ class TranslatedStmtExpr extends TranslatedNonConstantExpr {
   }
   
   override Instruction getResult() {
-    result = getTranslatedExpr(expr.getResultExpr()).getResult()
+    result = getTranslatedExpr(expr.getResultExpr().getFullyConverted()).getResult()
   }
   
   TranslatedStmt getStmt() {
