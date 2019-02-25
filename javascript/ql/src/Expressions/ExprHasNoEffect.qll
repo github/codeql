@@ -1,5 +1,5 @@
 /**
- * This library contains parts of the 'js/useless-expression' query implementation.
+ * Provides classes and predicates for the 'js/useless-expression' query.
  */
 
 import javascript

@@ -1,5 +1,5 @@
 /**
- * This library contains the majority of the 'js/unused-parameter' query implementation.
+ * Provides classes and predicates for the 'js/unused-parameter' query.
  *
  * In order to suppress alerts that are similar to the 'js/unused-parameter' alerts,
  * `isAnAccidentallyUnusedParameter` should be used since it holds iff that alert is active.

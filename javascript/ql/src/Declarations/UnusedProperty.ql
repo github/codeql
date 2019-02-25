@@ -30,9 +30,12 @@ predicate hasUnknownPropertyRead(CapturedSource obj) {
   exists(obj.getAPropertyRead("propertyIsEnumerable"))
 }
 
-predicate flowsToTypeRestrictedExpression(CapturedSource n) {
+/**
+ * Holds if `obj` flows to an expression that must have a specific type.
+ */
+predicate flowsToTypeRestrictedExpression(CapturedSource obj) {
   exists (Expr restricted, TypeExpr type |
-    n.flowsToExpr(restricted) and
+    obj.flowsToExpr(restricted) and
     not type.isAny() |
     exists (TypeAssertion assertion |
       type = assertion.getTypeAnnotation() and
@@ -47,14 +50,15 @@ predicate flowsToTypeRestrictedExpression(CapturedSource n) {
   )
 }
 
-from DataFlow::PropWrite w, CapturedSource n, string name
+from DataFlow::PropWrite write, CapturedSource obj, string name
 where
-  w = n.getAPropertyWrite(name) and
-  not exists(n.getAPropertyRead(name)) and
-  not w.getBase().analyze().getAValue() != n.analyze().getAValue() and
-  not hasUnknownPropertyRead(n) and
+  write = obj.getAPropertyWrite(name) and
+  not exists(obj.getAPropertyRead(name)) and
+  // `obj` is the only base object for the write: it is not spurious
+  not write.getBase().analyze().getAValue() != obj.analyze().getAValue() and
+  not hasUnknownPropertyRead(obj) and
   // avoid reporting if the definition is unreachable
-  w.getAstNode().getFirstControlFlowNode().getBasicBlock() instanceof ReachableBasicBlock and
+  write.getAstNode().getFirstControlFlowNode().getBasicBlock() instanceof ReachableBasicBlock and
   // avoid implicitly read properties
   not (
     name = "toString" or
@@ -62,13 +66,13 @@ where
     name.matches("@@%") // @@iterator, for example
   ) and
   // avoid flagging properties that a type system requires
-  not flowsToTypeRestrictedExpression(n) and
+  not flowsToTypeRestrictedExpression(obj) and
   // flagged by js/unused-local-variable
-  not exists(UnusedLocal l | l.getAnAssignedExpr().getUnderlyingValue().flow() = n) and
+  not exists(UnusedLocal l | l.getAnAssignedExpr().getUnderlyingValue().flow() = obj) and
   // flagged by js/unused-parameter
   not exists(Parameter p | isAnAccidentallyUnusedParameter(p) |
-    p.getDefault().getUnderlyingValue().flow() = n
+    p.getDefault().getUnderlyingValue().flow() = obj
   ) and
   // flagged by js/useless-expression
-  not inVoidContext(n.asExpr())
-select w, "Unused property " + name + "."
+  not inVoidContext(obj.asExpr())
+select write, "Unused property " + name + "."

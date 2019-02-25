@@ -256,20 +256,22 @@ private predicate hasDefiniteReceiver(
  * Enables inter-procedural type inference for the return value of a
  * method call to a flow-insensitively type-inferred callee.
  */
-class TypeInferredMethodWithAnalyzedReturnFlow extends CallWithNonLocalAnalyzedReturnFlow {
+private class TypeInferredMethodWithAnalyzedReturnFlow extends CallWithNonLocalAnalyzedReturnFlow {
   DataFlow::FunctionNode fun;
 
   TypeInferredMethodWithAnalyzedReturnFlow() {
-    exists(CapturedSource s, DataFlow::PropWrite w, string name |
+    exists(CapturedSource obj, DataFlow::PropWrite write, string name |
       this.(DataFlow::MethodCallNode).getMethodName() = name and
-      s.hasOwnProperty(name) and
-      hasDefiniteReceiver(this, s) and
-      w = s.getAPropertyWrite() and
-      fun.flowsTo(w.getRhs()) and
+      obj.hasOwnProperty(name) and
+      hasDefiniteReceiver(this, obj) and
+      // include all potential callees
+      // by construction, there are no unknown methods on `obj`
+      write = obj.getAPropertyWrite() and
+      fun.flowsTo(write.getRhs()) and
       (
-        not exists(w.getPropertyName())
+        not exists(write.getPropertyName())
         or
-        w.getPropertyName() = name
+        write.getPropertyName() = name
       )
     )
   }
