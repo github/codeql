@@ -34,30 +34,16 @@ module ZipSlip {
   }
 
   /**
-   * Holds if `node1` flows to `node2` in one step by virtue of
-   * `node2` being of the form `.pipe(node1)`. The reason this flow
-   * exists is that `.pipe` returns its argument to make chained
-   * stream operations work.
+   * Gets a node that can be a parsed zip archive.
    */
-  predicate pipeStep(DataFlow::Node node1, DataFlow::MethodCallNode node2) {
-      node2.getMethodName() = "pipe" and
-      node1 = node2.getArgument(0)
-  }
-
-  /**
-   * Holds if `node1` flows to `node2` in one step including the assumption that
-   * `x` flows to `.pipe(x)`
-   */
-  predicate stepsThroughPipe(DataFlow::Node node1, DataFlow::Node node2) {
-    DataFlow::localFlowStep(node1, node2) or pipeStep(node1, node2)
-  }
-
-  /**
-   * Holds if `node1` flows to `node2` including the assumption that
-   * `x` flows to `.pipe(x)`
-   */
-  predicate flowsThroughPipe(DataFlow::Node node1, DataFlow::Node node2) {
-    stepsThroughPipe*(node1, node2)
+  DataFlow::SourceNode parsedArchive() {
+    result = DataFlow::moduleImport("unzip").getAMemberCall("Parse")
+    or
+    // `streamProducer.pipe(unzip.Parse())` is a typical (but not
+    // universal) pattern when using nodejs streams, whose return
+    // value is the parsed stream.
+    exists(DataFlow::MethodCallNode pipe | pipe.getMethodName() = "pipe"
+      and parsedArchive().flowsTo(pipe.getArgument(0)))
   }
 
   /**
@@ -77,11 +63,7 @@ module ZipSlip {
    */
   class UnzipEntrySource extends Source {
     UnzipEntrySource() {
-      exists(DataFlow::SourceNode parsed |
-        flowsThroughPipe(DataFlow::moduleImport("unzip").getAMemberCall("Parse"), parsed)
-        and
-        this = parsed.getAMemberCall("on").getCallback(1).getParameter(0).getAPropertyRead("path")
-      )
+      this = parsedArchive().getAMemberCall("on").getCallback(1).getParameter(0).getAPropertyRead("path")
     }
   }
 
@@ -107,7 +89,7 @@ module ZipSlip {
    * Gets a string which suffices to search for to ensure that a
    * filepath will not refer to parent directories.
    */
-  string getAParentDirName() { result = any(string s | s = ".." or s = "../") }
+  string getAParentDirName() { result = ".." or result = "../" }
 
   /** A check that a path string does not include '..' */
   class NoParentDirSanitizerGuard extends SanitizerGuard {
