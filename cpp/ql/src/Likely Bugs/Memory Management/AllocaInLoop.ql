@@ -3,7 +3,6 @@
  * @description Using alloca in a loop can lead to a stack overflow
  * @kind problem
  * @problem.severity warning
- * @precision medium
  * @id cpp/alloca-in-loop
  * @tags reliability
  *       correctness
