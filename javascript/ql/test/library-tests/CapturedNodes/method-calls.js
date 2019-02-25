@@ -15,7 +15,9 @@
 
 	var o2 = {};
 	o2.m = function() { return {}; };
-	// not analyzed precisely: `m` may be in the prototype since `m` is not in the initializer, and we do not attempt to reason flow sensitively beyond that at the moment
+	// not analyzed precisely: `m` may be in the prototype since `m`
+	// is not in the initializer, and we do not attempt to reason flow
+	// sensitively beyond that at the moment
 	o2.m();
 });
 (function(){
@@ -34,7 +36,9 @@
 
 	function f4(){return {};}
 	var { o4 } = {m: f4};
-	var v4 = o4.m(); // not analyzed precisely: o4 is from a destructuring assignment (and is even `undefined` in this case
+	// not analyzed precisely: o4 is from a destructuring assignment
+	// (and it is even `undefined` in this case)
+	var v4 = o4.m();
 	v4 === true;
 });
 
@@ -51,7 +55,9 @@
 		var v3 = o.m(); // not analyzed precisely: `o.m` may be `unknown`
 	})({m: unknown});
 	(function(o = {m: () => 42}){
-		var v4 = o.m(); // not analyzed precisely: we only support unique receivers at the moment
+		// not analyzed precisely: we only support unique receivers at
+		// the moment
+		var v4 = o.m();
 	})({m: () => true});
 
 });

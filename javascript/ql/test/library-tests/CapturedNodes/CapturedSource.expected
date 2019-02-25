@@ -1,14 +1,14 @@
 | method-calls.js:2:11:7:2 | {\\n\\t\\tm1: ... }; }\\n\\t} |
 | method-calls.js:11:23:11:24 | {} |
 | method-calls.js:16:11:16:12 | {} |
-| method-calls.js:23:11:23:17 | {m: f1} |
-| method-calls.js:27:11:27:17 | {m: f2} |
-| method-calls.js:32:12:32:18 | {m: f3} |
-| method-calls.js:36:15:36:21 | {m: f4} |
-| method-calls.js:42:16:42:28 | {m: () => 42} |
-| method-calls.js:46:17:46:29 | {m: () => 42} |
-| method-calls.js:50:16:50:28 | {m: () => 42} |
-| method-calls.js:53:16:53:28 | {m: () => 42} |
+| method-calls.js:25:11:25:17 | {m: f1} |
+| method-calls.js:29:11:29:17 | {m: f2} |
+| method-calls.js:34:12:34:18 | {m: f3} |
+| method-calls.js:38:15:38:21 | {m: f4} |
+| method-calls.js:46:16:46:28 | {m: () => 42} |
+| method-calls.js:50:17:50:29 | {m: () => 42} |
+| method-calls.js:54:16:54:28 | {m: () => 42} |
+| method-calls.js:57:16:57:28 | {m: () => 42} |
 | tst.js:3:18:3:19 | {} |
 | tst.js:4:18:4:36 | { f: function(){} } |
 | tst.js:5:18:5:34 | { [unknown]: 42 } |
