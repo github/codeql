@@ -6,8 +6,7 @@
 
 import javascript
 import AbstractValuesImpl
-
-import semmle.javascript.dataflow.CapturedNodes
+import semmle.javascript.dataflow.LocalObjects
 
 /**
  * Flow analysis for `this` expressions inside functions.
