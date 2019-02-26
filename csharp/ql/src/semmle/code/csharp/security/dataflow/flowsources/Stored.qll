@@ -6,6 +6,7 @@ import csharp
 private import semmle.code.csharp.frameworks.system.data.Common
 private import semmle.code.csharp.frameworks.system.data.Entity
 private import semmle.code.csharp.frameworks.EntityFramework
+private import semmle.code.csharp.frameworks.NHibernate
 private import semmle.code.csharp.frameworks.Sql
 
 /** A data flow source of stored user input. */
@@ -48,6 +49,9 @@ class DbDataReaderPropertyStoredFlowSource extends StoredFlowSource {
 }
 
 /** A read of a mapped property. */
-class EntityFrameworkMappedProperty extends StoredFlowSource {
-  EntityFrameworkMappedProperty() { this instanceof EntityFramework::StoredFlowSource }
+class ORMMappedProperty extends StoredFlowSource {
+  ORMMappedProperty() {
+    this instanceof EntityFramework::StoredFlowSource or
+    this instanceof NHibernate::StoredFlowSource
+  }
 }

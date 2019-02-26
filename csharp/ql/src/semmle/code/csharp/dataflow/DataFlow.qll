@@ -10,6 +10,7 @@ module DataFlow {
   private import semmle.code.csharp.dataflow.DelegateDataFlow
   private import semmle.code.csharp.dataflow.LibraryTypeDataFlow
   private import semmle.code.csharp.frameworks.EntityFramework
+  private import semmle.code.csharp.frameworks.NHibernate
   private import Internal::Cached
   private import dotnet
   private import cil
