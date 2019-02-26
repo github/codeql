@@ -20,7 +20,7 @@ module ZipSlip {
    */
   abstract class SanitizerGuard extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode { }
 
-  /** A taint tracking configuration for Zip Slip */
+  /** A taint tracking configuration for unsafe zip extraction. */
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "ZipSlip" }
 
@@ -36,51 +36,54 @@ module ZipSlip {
   /**
    * Gets a node that can be a parsed zip archive.
    */
-  DataFlow::SourceNode parsedArchive() {
+  private DataFlow::SourceNode parsedArchive() {
     result = DataFlow::moduleImport("unzip").getAMemberCall("Parse")
     or
     // `streamProducer.pipe(unzip.Parse())` is a typical (but not
     // universal) pattern when using nodejs streams, whose return
     // value is the parsed stream.
-    exists(DataFlow::MethodCallNode pipe | pipe.getMethodName() = "pipe"
-      and parsedArchive().flowsTo(pipe.getArgument(0)))
+    exists(DataFlow::MethodCallNode pipe |
+      pipe.getMethodName() = "pipe" and
+      parsedArchive().flowsTo(pipe.getArgument(0))
+    )
   }
 
-  /**
-   * An access to the filepath of an entry of a zipfile being extracted
-   * by npm module `unzip`. For example, in
-   * ```javascript
-   * const unzip = require('unzip');
-   *
-   * fs.createReadStream('archive.zip')
-   *   .pipe(unzip.Parse())
-   *   .on('entry', entry => {
-   *      const path = entry.path;
-   *   });
-   * ```
-   * there is an `UnzipEntrySource` node corresponding to
-   * the expression `entry.path`.
-   */
+  /** A zip archive entry path access, as a source for unsafe zip extraction. */
   class UnzipEntrySource extends Source {
+    // For example, in
+    // ```javascript
+    // const unzip = require('unzip');
+    //
+    // fs.createReadStream('archive.zip')
+    //   .pipe(unzip.Parse())
+    //   .on('entry', entry => {
+    //      const path = entry.path;
+    //   });
+    // ```
+    // there is an `UnzipEntrySource` node corresponding to
+    // the expression `entry.path`.
     UnzipEntrySource() {
-      this = parsedArchive().getAMemberCall("on").getCallback(1).getParameter(0).getAPropertyRead("path")
+      this = parsedArchive()
+            .getAMemberCall("on")
+            .getCallback(1)
+            .getParameter(0)
+            .getAPropertyRead("path")
     }
   }
 
-  /**
-   * A sink that is the path that a createWriteStream gets created at.
-   * This is not covered by FileSystemWriteSink, because it is
-   * required that a write actually takes place to the stream.
-   * However, we want to consider even the bare createWriteStream to
-   * be a zipslip vulnerability since it may truncate an existing file.
-   */
+  /** A call to `fs.createWriteStream`, as a sink for unsafe zip extraction. */
   class CreateWriteStreamSink extends Sink {
     CreateWriteStreamSink() {
+      // This is not covered by `FileSystemWriteSink`, because it is
+      // required that a write actually takes place to the stream.
+      // However, we want to consider even the bare createWriteStream
+      // to be a zipslip vulnerability since it may truncate an
+      // existing file.
       this = DataFlow::moduleImport("fs").getAMemberCall("createWriteStream").getArgument(0)
     }
   }
 
-  /** A sink that is a file path that gets written to. */
+  /** A file path of a file write, as a sink for unsafe zip extraction. */
   class FileSystemWriteSink extends Sink {
     FileSystemWriteSink() { exists(FileSystemWriteAccess fsw | fsw.getAPathArgument() = this) }
   }
@@ -89,7 +92,7 @@ module ZipSlip {
    * Gets a string which suffices to search for to ensure that a
    * filepath will not refer to parent directories.
    */
-  string getAParentDirName() { result = ".." or result = "../" }
+  private string getAParentDirName() { result = ".." or result = "../" }
 
   /** A check that a path string does not include '..' */
   class NoParentDirSanitizerGuard extends SanitizerGuard {
