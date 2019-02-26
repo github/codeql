@@ -185,6 +185,35 @@ private class Overflowable extends UnaryOperation {
   }
 }
 
+private class SystemType extends ValueOrRefType {
+  SystemType() { this.getNamespace() instanceof SystemNamespace }
+}
+
+private class SystemTypeMention extends TypeMention {
+  SystemTypeMention() { this.getType() instanceof SystemType }
+
+  Assembly getSystemAssembly() { result = this.getType().getALocation() }
+
+  Assembly getAssembly() { result = this.getTarget().(ControlFlowElement).getAssembly() }
+}
+
+/**
+ * Holds if assembly `a` was definitely compiled with core library `core`.
+ *
+ * The analysis is conservative, as it requires mentioning of a (non-special)
+ * core type inside assembly `a`.
+ */
+pragma[noinline]
+private predicate assemblyCompiledWithCoreLib(Assembly a, Assembly core) {
+  exists(SystemTypeMention stm | a = stm.getAssembly() |
+    core = stm.getSystemAssembly() and
+    // Special built-in types like `object` and `int` are collapsed into one entity
+    // in the presence of multiple core libraries, so such entities cannot be used
+    // to determine the actual core library used at compilation
+    strictcount(stm.getSystemAssembly()) = 1
+  )
+}
+
 /** A control flow element that is inside a `try` block. */
 private class TriedControlFlowElement extends ControlFlowElement {
   TriedControlFlowElement() { this = any(TryStmt try).getATriedElement() }
@@ -192,7 +221,7 @@ private class TriedControlFlowElement extends ControlFlowElement {
   /**
    * Gets an exception class that is potentially thrown by this element, if any.
    */
-  Class getAThrownException() {
+  private Class getAThrownException0() {
     this instanceof Overflowable and
     result instanceof SystemOverflowExceptionClass
     or
@@ -248,6 +277,17 @@ private class TriedControlFlowElement extends ControlFlowElement {
     or
     this instanceof StringLiteral and
     result instanceof SystemOutOfMemoryExceptionClass
+  }
+
+  private Assembly getCoreLib() { assemblyCompiledWithCoreLib(this.getAssembly(), result) }
+
+  Class getAThrownException() {
+    result = this.getAThrownException0() and
+    (
+      not exists(this.getCoreLib())
+      or
+      this.getCoreLib() = result.getALocation()
+    )
   }
 }
 
