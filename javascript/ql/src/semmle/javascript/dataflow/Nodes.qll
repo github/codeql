@@ -650,6 +650,15 @@ class ClassNode extends DataFlow::SourceNode {
           .(AbstractCallable)
           .getFunction()
   }
+
+  /**
+   * Gets the receiver of an instance member or constructor of this class.
+   */
+  DataFlow::SourceNode getAReceiverNode() {
+    result = getConstructor().getReceiver()
+    or
+    result = getAnInstanceMember().getReceiver()
+  }
 }
 
 module ClassNode {
