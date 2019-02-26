@@ -115,3 +115,14 @@ private predicate os_path_join(ControlFlowNode fromnode, CallNode tonode) {
         tonode = path_join.getACall() and tonode.getAnArg() = fromnode 
     )
 }
+
+/** A kind of "taint", representing a dictionary mapping str->"taint" */
+class StringDictKind extends DictKind {
+
+    StringDictKind() {
+        this.getValue() instanceof StringKind
+    }
+
+}
+
+

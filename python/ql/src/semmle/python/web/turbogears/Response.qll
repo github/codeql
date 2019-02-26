@@ -1,7 +1,7 @@
 import python
 
 import semmle.python.security.TaintTracking
-import semmle.python.security.strings.Untrusted
+import semmle.python.security.strings.Basic
 
 import TurboGears
 
@@ -17,7 +17,7 @@ class ControllerMethodReturnValue extends TaintSink {
     }
 
     override predicate sinks(TaintKind kind) {
-        kind instanceof ExternalStringKind
+        kind instanceof StringKind
     }
 
 }
@@ -32,7 +32,7 @@ class ControllerMethodTemplatedReturnValue extends TaintSink {
     }
 
     override predicate sinks(TaintKind kind) {
-        kind instanceof ExternalStringDictKind
+        kind instanceof StringDictKind
     }
 
 }
