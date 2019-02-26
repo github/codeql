@@ -23,6 +23,8 @@
 | Suspicious pointer scaling (`cpp/suspicious-pointer-scaling`) | Fewer false positives | False positives involving types that are not uniquely named in the snapshot have been fixed. |
 | Call to memory access function may overflow buffer (`cpp/overflow-buffer`) | More correct results | Calls to `fread` are now examined by this query. |
 | Lossy function result cast (`cpp/lossy-function-result-cast`) | Fewer false positive results | The whitelist of rounding functions built into this query has been expanded. |
+| Memory is never freed (`cpp/memory-never-freed`) | More correct results | Support for more Microsoft-specific memory allocation/de-allocation functions has been added. |
+| Memory may not be freed (`cpp/memory-may-not-be-freed`) | More correct results | Support for more Microsoft-specific memory allocation/de-allocation functions has been added. |
 | Unused static variable (`cpp/unused-static-variable`) | Fewer false positive results | Variables with the attribute `unused` are now excluded from the query. |
 | Resource not released in destructor (`cpp/resource-not-released-in-destructor`) | Fewer false positive results | Fix false positives where a resource is released via a virtual method call, function pointer, or lambda. |
 | 'new[]' array freed with 'delete' (`cpp/new-array-delete-mismatch`) | More correct results | Data flow through global variables for this query has been improved. |
