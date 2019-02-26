@@ -54,8 +54,10 @@ private predicate exposedAsReceiver(DataFlow::SourceNode n) {
 }
 
 /**
- * A source that is entirely local, i.e. the dataflow library models all of its flow.
- * All uses of the node are modeled by `this.flowsTo(_)` and related predicates.
+ * An object that is entirely local, in the sense that the dataflow
+ * library models all of its flow.
+ *
+ * All uses of this node are modeled by `this.flowsTo(_)` and related predicates.
  */
 class LocalObject extends DataFlow::SourceNode {
   LocalObject() {
