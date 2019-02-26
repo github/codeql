@@ -27,6 +27,8 @@
 | test.cpp:366:7:366:7 | x | test.cpp:362:4:362:9 | call to source |
 | test.cpp:397:10:397:18 | globalVar | test.cpp:395:17:395:22 | call to source |
 | test.cpp:423:10:423:14 | field | test.cpp:421:13:421:18 | call to source |
+| test.cpp:449:8:449:10 | tmp | test.cpp:447:7:447:9 | tmp |
+| test.cpp:456:8:456:10 | tmp | test.cpp:453:7:453:9 | tmp |
 | true_upon_entry.cpp:21:8:21:8 | x | true_upon_entry.cpp:17:11:17:16 | call to source |
 | true_upon_entry.cpp:29:8:29:8 | x | true_upon_entry.cpp:27:9:27:14 | call to source |
 | true_upon_entry.cpp:39:8:39:8 | x | true_upon_entry.cpp:33:11:33:16 | call to source |
