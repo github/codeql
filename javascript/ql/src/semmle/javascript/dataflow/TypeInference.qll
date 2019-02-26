@@ -48,7 +48,7 @@ class AnalyzedNode extends DataFlow::Node {
   AnalyzedNode localFlowPred() { result = getAPredecessor() }
 
   /**
-   * INTERNAL. DO NOT USE.
+   * INTERNAL. Do not use.
    *
    * Gets another data flow node whose value flows into this node in a global step
    * (this is, involving global variables).
