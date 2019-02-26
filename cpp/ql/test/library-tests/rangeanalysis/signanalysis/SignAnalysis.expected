@@ -25,6 +25,14 @@
 | minmax.c:18:37:18:37 | Load: x | positive strictlyPositive |
 | minmax.c:18:40:18:40 | Load: y | positive strictlyPositive |
 | minmax.c:18:43:18:43 | Load: z | positive strictlyPositive |
+| minmax.c:20:2:24:3 | Store: ... = ... | positive |
+| minmax.c:22:18:22:22 | Store: ... = ... | positive strictlyPositive |
+| minmax.c:22:22:22:22 | Load: x | positive strictlyPositive |
+| minmax.c:23:3:23:3 | Load: t | positive |
+| minmax.c:23:3:23:3 | Phi: t | positive |
+| minmax.c:26:37:26:37 | Load: x | positive strictlyPositive |
+| minmax.c:26:40:26:40 | Load: y | positive strictlyPositive |
+| minmax.c:26:43:26:43 | Load: z | positive |
 | test.c:7:10:7:10 | Phi: p | positive |
 | test.c:8:5:8:19 | Store: ... = ... | positive strictlyPositive |
 | test.c:8:13:8:17 | Load: count | positive |
