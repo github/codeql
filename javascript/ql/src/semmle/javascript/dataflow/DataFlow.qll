@@ -40,7 +40,8 @@ module DataFlow {
     } or
     TDestructuredModuleImportNode(ImportDeclaration decl) {
       exists(decl.getASpecifier().getImportedName())
-    }
+    } or
+    THtmlAttributeNode(HTML::Attribute attr)
 
   /**
    * A node in the data flow graph.
@@ -115,7 +116,9 @@ module DataFlow {
     int getIntValue() { result = asExpr().getIntValue() }
 
     /** Gets a function value that may reach this node. */
-    FunctionNode getAFunctionValue() { result.getAstNode() = analyze().getAValue().(AbstractCallable).getFunction() }
+    FunctionNode getAFunctionValue() {
+      result.getAstNode() = analyze().getAValue().(AbstractCallable).getFunction()
+    }
 
     /**
      * Holds if this expression may refer to the initial value of parameter `p`.
@@ -739,6 +742,26 @@ module DataFlow {
   }
 
   /**
+   * A data flow node representing an HTML attribute.
+   */
+  class HtmlAttributeNode extends DataFlow::Node, THtmlAttributeNode {
+    HTML::Attribute attr;
+
+    HtmlAttributeNode() { this = THtmlAttributeNode(attr) }
+
+    override string toString() { result = attr.toString() }
+
+    override predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      attr.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+
+    /** Gets the attribute corresponding to this data flow node. */
+    HTML::Attribute getAttribute() { result = attr }
+  }
+
+  /**
    * Provides classes representing various kinds of calls.
    *
    * Subclass the classes in this module to introduce new kinds of calls. If you want to
@@ -1134,7 +1157,7 @@ module DataFlow {
     nd.asExpr() instanceof ExternalModuleReference and
     cause = "import"
     or
-    exists (Expr e | e = nd.asExpr() and cause = "heap" |
+    exists(Expr e | e = nd.asExpr() and cause = "heap" |
       e instanceof PropAccess or
       e instanceof E4X::XMLAnyName or
       e instanceof E4X::XMLAttributeSelector or

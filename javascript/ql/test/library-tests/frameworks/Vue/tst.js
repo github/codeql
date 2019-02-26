@@ -95,3 +95,11 @@ new Vue({
 		data: f,
 	});
 });
+(function() {
+	new Vue({
+		data: { dataA: 42 },
+		methods: {
+			m: function() { this.dataA; }
+		}
+	});
+});
