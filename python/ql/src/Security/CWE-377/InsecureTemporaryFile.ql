@@ -25,7 +25,7 @@ FunctionObject temporary_name_function(string mod, string function) {
     result = any(ModuleObject m | m.getName() = mod).getAttribute(function)
 }
 
-from CallNode c, string mod, string function
+from Call c, string mod, string function
 where
-    temporary_name_function(mod, function).getACall() = c
+    temporary_name_function(mod, function).getACall().getNode() = c
 select c, "Call to deprecated function $@.$@ may be insecure.", mod, function

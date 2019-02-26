@@ -1,3 +1,3 @@
-| InsecureTemporaryFile.py:5:16:5:23 | ControlFlowNode for mktemp() | Call to deprecated function $@.$@ may be insecure. | tempfile | mktemp |
-| InsecureTemporaryFile.py:11:16:11:27 | ControlFlowNode for Attribute() | Call to deprecated function $@.$@ may be insecure. | os | tempnam |
-| InsecureTemporaryFile.py:17:16:17:26 | ControlFlowNode for Attribute() | Call to deprecated function $@.$@ may be insecure. | os | tmpnam |
+| InsecureTemporaryFile.py:5:16:5:23 | mktemp() | Call to deprecated function $@.$@ may be insecure. | tempfile | mktemp |
+| InsecureTemporaryFile.py:11:16:11:27 | Attribute() | Call to deprecated function $@.$@ may be insecure. | os | tempnam |
+| InsecureTemporaryFile.py:17:16:17:26 | Attribute() | Call to deprecated function $@.$@ may be insecure. | os | tmpnam |
