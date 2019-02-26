@@ -8,6 +8,7 @@
   - [hapi](https://hapijs.com/)
   - [js-cookie](https://github.com/js-cookie/js-cookie)
   - [React](https://reactjs.org/)
+  - [socket.io](http://socket.io)
   - [Vue](https://vuejs.org/)
 
 * File classification has been improved to recognize additional generated files, for example files from [HTML Tidy](html-tidy.org).
