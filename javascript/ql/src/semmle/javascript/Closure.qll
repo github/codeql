@@ -223,9 +223,15 @@ module Closure {
     or
     exists(DataFlow::SourceNode base, string basePath, string prop |
       basePath = getClosureNamespaceFromSourceNode(base) and
-      isClosureNamespace(basePath) and
       node = base.getAPropertyRead(prop) and
-      result = basePath + "." + prop
+      result = basePath + "." + prop and
+      // ensure finiteness
+      (
+        isClosureNamespace(basePath)
+        or
+        // direct access, no indirection
+        node.(DataFlow::PropRead).getBase() = base
+      )
     )
     or
     // Associate an access path with the immediate RHS of a store on a closure namespace.
