@@ -19,13 +19,9 @@ class TurboGearsControllerMethod extends Function {
     TurboGearsControllerMethod() {
         aTurboGearsControllerClass().getPyClass() = this.getScope() and
         decorator = this.getADecorator().getAFlowNode() and
-        /* Is decorated with @expose or @expose(path) */
+        /* Is decorated with @expose() or @expose(path) */
         (
-            decorator.(NameNode).getId() = "expose"
-            or
             decorator.(CallNode).getFunction().(NameNode).getId() = "expose"
-            or
-            decorator.refersTo(ModuleObject::named("tg").getAttribute("expose"))
             or
             decorator.refersTo(_, ModuleObject::named("tg").getAttribute("expose"), _)
         )
