@@ -823,7 +823,7 @@ class TranslatedAsmStmt extends TranslatedStmt {
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-    Type resultType, boolean isGLValue) {
+      Type resultType, boolean isGLValue) {
     tag = OnlyInstructionTag() and
     opcode instanceof Opcode::InlineAsm and
     resultType instanceof UnknownType and
@@ -845,7 +845,7 @@ class TranslatedAsmStmt extends TranslatedStmt {
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag,
-    EdgeKind kind) {
+      EdgeKind kind) {
     tag = OnlyInstructionTag() and
     result = getParent().getChildSuccessor(this) and
     kind instanceof GotoEdge
