@@ -41,7 +41,7 @@ public class Main {
 	 * such a way that it may produce different tuples for the same file under the same
 	 * {@link ExtractorConfig}.
 	 */
-	public static final String EXTRACTOR_VERSION = "2019-01-17";
+	public static final String EXTRACTOR_VERSION = "2019-02-04";
 
 	public static final Pattern NEWLINE = Pattern.compile("\n");
 
@@ -332,7 +332,7 @@ public class Main {
 		argsParser.addFlag(P_EXPERIMENTAL, 0, "Enable experimental support for pending ECMAScript proposals "
 				+ "(public class fields, function.sent, decorators, export extensions, function bind, "
 				+ "parameter-less catch, dynamic import, numeric separators, bigints), "
-				+ "as well as other language extensions (JScript, Mozilla and v8-specific extensions) and full HTML extraction.");
+				+ "as well as other language extensions (E4X, JScript, Mozilla and v8-specific extensions) and full HTML extraction.");
 		argsParser.addFlag(P_EXTERNS, 0, "Extract the given JavaScript files as Closure-style externs.");
 		argsParser.addFlag(P_EXTRACT_PROGRAM_TEXT, 0, "Extract a representation of the textual content of the program "
 				+ "(in addition to its syntactic structure).");

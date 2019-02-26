@@ -15,7 +15,9 @@ class WebControl extends RefType {
   WebControl() { this.getBaseClass*() instanceof SystemWebUIControlClass }
 }
 
-class WebPage extends RefType { WebPage() { this.getBaseClass*() instanceof SystemWebUIPageClass } }
+class WebPage extends RefType {
+  WebPage() { this.getBaseClass*() instanceof SystemWebUIPageClass }
+}
 
 /**
  * Holds if `f` is an auto-disposed web control.

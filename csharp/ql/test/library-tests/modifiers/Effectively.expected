@@ -15,3 +15,9 @@
 | Modifiers.cs:41:20:41:21 | F1 | internal |
 | Modifiers.cs:43:26:43:27 | F2 | internal |
 | Modifiers.cs:47:30:47:31 | F4 | internal |
+| Modifiers.cs:52:19:52:19 | S | public |
+| Modifiers.cs:54:20:54:21 | P1 | public |
+| Modifiers.cs:54:36:54:38 | get_P1 | public |
+| Modifiers.cs:54:52:54:54 | set_P1 | public |
+| Modifiers.cs:55:20:55:21 | P2 | public |
+| Modifiers.cs:55:36:55:38 | get_P2 | public |

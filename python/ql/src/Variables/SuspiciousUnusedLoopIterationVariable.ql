@@ -47,8 +47,8 @@ predicate one_item_only(For f) {
 predicate points_to_call_to_range(ControlFlowNode f) {
     /* (x)range is a function in Py2 and a class in Py3, so we must treat it as a plain object */ 
     exists(Object range, Object call |
-        range = builtin_object("range") or
-        range = builtin_object("xrange")
+        range = Object::builtin("range") or
+        range = Object::builtin("xrange")
     |
         f.refersTo(call) and
         call.(CallNode).getFunction().refersTo(range)

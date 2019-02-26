@@ -12,7 +12,7 @@ class PyramidRequest extends BaseWebobRequest {
     }
 
     override ClassObject getClass() {
-        result = any(ModuleObject m | m.getName() = "pyramid.request").getAttribute("Request")
+        result = any(ModuleObject m | m.getName() = "pyramid.request").attr("Request")
     }
 
 }

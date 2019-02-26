@@ -20,7 +20,7 @@ private ModuleObject pickleModule() {
 }
 
 private FunctionObject pickleLoads() {
-    result = pickleModule().getAttribute("loads")
+    result = pickleModule().attr("loads")
 }
 
 /** `pickle.loads(untrusted)` vulnerability. */

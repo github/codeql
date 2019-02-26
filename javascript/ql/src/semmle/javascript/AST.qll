@@ -212,7 +212,9 @@ class JavaScriptURL extends @javascript_url, CodeInAttribute { }
 /**
  * A toplevel syntactic entity containing Closure-style externs definitions.
  */
-class Externs extends TopLevel { Externs() { isExterns() } }
+class Externs extends TopLevel {
+  Externs() { isExterns() }
+}
 
 /** A program element that is either an expression or a statement. */
 class ExprOrStmt extends @exprorstmt, ControlFlowNode, ASTNode { }

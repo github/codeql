@@ -5,7 +5,9 @@ import java
  * top-level children (usually, in fact, there is only one) is
  * a tag with the name "coverage".
  */
-class CloverReport extends XMLFile { CloverReport() { this.getAChild().getName() = "coverage" } }
+class CloverReport extends XMLFile {
+  CloverReport() { this.getAChild().getName() = "coverage" }
+}
 
 /**
  * The Clover "coverage" tag contains one or more "projects".

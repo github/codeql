@@ -15,7 +15,7 @@ abstract class AssertMethod extends Method {
   final Parameter getAssertedParameter() { result = this.getParameter(this.getAssertionIndex()) }
 
   /** Gets the exception being thrown if the assertion fails, if any. */
-  abstract ExceptionClass getExceptionClass();
+  abstract Class getExceptionClass();
 }
 
 /** A positive assertion method. */
@@ -122,7 +122,7 @@ class SystemDiagnosticsDebugAssertTrueMethod extends AssertTrueMethod {
 
   override int getAssertionIndex() { result = 0 }
 
-  override ExceptionClass getExceptionClass() {
+  override Class getExceptionClass() {
     // A failing assertion generates a message box, see
     // https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.debug.assert
     none()
@@ -182,7 +182,7 @@ class ForwarderAssertMethod extends AssertMethod {
 
   override int getAssertionIndex() { result = p.getPosition() }
 
-  override ExceptionClass getExceptionClass() {
+  override Class getExceptionClass() {
     result = this.getUnderlyingAssertMethod().getExceptionClass()
   }
 

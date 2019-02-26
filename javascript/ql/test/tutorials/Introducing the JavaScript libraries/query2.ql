@@ -1,6 +1,8 @@
 import javascript
 
-class CommaToken extends PunctuatorToken { CommaToken() { getValue() = "," } }
+class CommaToken extends PunctuatorToken {
+  CommaToken() { getValue() = "," }
+}
 
 from CommaToken comma
 where comma.getNextToken() instanceof CommaToken

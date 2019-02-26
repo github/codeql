@@ -9,13 +9,11 @@ hasLocation(#10000,#10002)
 #20000=@"global_scope"
 scopes(#20000,0)
 #20001=@"script;{#10000},1,1"
-toplevels(#20001,0)
-#20002=@"loc,{#10000},1,1,1,69"
-locations_default(#20002,#10000,1,1,1,69)
-hasLocation(#20001,#20002)
-#20003=*
-lines(#20003,#20001,"type Asyncify = <A, B, C>((A, B) => C) => (A, B, Callback<C>) => void","")
-hasLocation(#20003,#20002)
+#20002=*
+lines(#20002,#20001,"type Asyncify = <A, B, C>((A, B) => C) => (A, B, Callback<C>) => void","")
+#20003=@"loc,{#10000},1,1,1,69"
+locations_default(#20003,#10000,1,1,1,69)
+hasLocation(#20002,#20003)
 numlines(#20001,1,1,0)
 #20004=*
 tokeninfo(#20004,6,#20001,0,"type")
@@ -182,6 +180,8 @@ tokeninfo(#20068,0,#20001,32,"")
 #20069=@"loc,{#10000},1,70,1,69"
 locations_default(#20069,#10000,1,70,1,69)
 hasLocation(#20068,#20069)
+toplevels(#20001,0)
+hasLocation(#20001,#20003)
 #20070=*
 entry_cfg_node(#20070,#20001)
 #20071=@"loc,{#10000},1,1,1,0"

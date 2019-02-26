@@ -1,6 +1,8 @@
 import csharp
 
-class SourceDeclaration extends Declaration { SourceDeclaration() { this.isSourceDeclaration() } }
+class SourceDeclaration extends Declaration {
+  SourceDeclaration() { this.isSourceDeclaration() }
+}
 
 /** A parameter that has come from source code. */
 class SourceParameter extends SourceDeclaration, Parameter { }

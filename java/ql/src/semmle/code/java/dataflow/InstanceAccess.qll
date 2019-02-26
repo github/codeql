@@ -243,7 +243,9 @@ class InstanceAccessExt extends TInstanceAccessExt {
 /**
  * An access to an object's own instance.
  */
-class OwnInstanceAccess extends InstanceAccessExt { OwnInstanceAccess() { isOwnInstanceAccess() } }
+class OwnInstanceAccess extends InstanceAccessExt {
+  OwnInstanceAccess() { isOwnInstanceAccess() }
+}
 
 /**
  * An access to an enclosing instance.

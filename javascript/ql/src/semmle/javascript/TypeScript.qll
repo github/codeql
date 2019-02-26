@@ -652,7 +652,9 @@ class PredefinedTypeExpr extends KeywordTypeExpr {
 /**
  * A use of the `this` type.
  */
-class ThisTypeExpr extends KeywordTypeExpr { ThisTypeExpr() { isThis() } }
+class ThisTypeExpr extends KeywordTypeExpr {
+  ThisTypeExpr() { isThis() }
+}
 
 /**
  * A possibly qualified name that is used as part of a type, such as `Date` or `http.ServerRequest`.
@@ -1472,7 +1474,9 @@ class MappedTypeScope extends @mappedtypescope, Scope {
  * Initializers of enum members are resolved in this scope since they can reference
  * previously-defined enum members by their unqualified name.
  */
-class EnumScope extends @enumscope, Scope { override string toString() { result = "enum scope" } }
+class EnumScope extends @enumscope, Scope {
+  override string toString() { result = "enum scope" }
+}
 
 /**
  * Scope induced by a declaration of form `declare module "X" {...}`.
@@ -1566,9 +1570,7 @@ class ReferenceTypesImport extends ReferenceImport {
     result = min(Folder nodeModules, int distance |
         findNodeModulesFolder(getFile().getParentContainer(), nodeModules, distance)
       |
-        nodeModules.getFolder("@types").getFolder(value).getFile("index.d.ts")
-        order by
-          distance
+        nodeModules.getFolder("@types").getFolder(value).getFile("index.d.ts") order by distance
       )
   }
 }

@@ -8,7 +8,7 @@ private import semmle.code.csharp.commons.Assertions
 private import semmle.code.csharp.commons.ComparisonTest
 private import semmle.code.csharp.commons.StructuralComparison::Internal
 private import semmle.code.csharp.controlflow.BasicBlocks
-private import semmle.code.csharp.controlflow.Completion
+private import semmle.code.csharp.controlflow.internal.Completion
 private import semmle.code.csharp.dataflow.Nullness
 private import semmle.code.csharp.frameworks.System
 
@@ -48,16 +48,13 @@ module AbstractValues {
 
     override predicate branch(ControlFlowElement cfe, ConditionalSuccessor s, Expr e) {
       s.(BooleanSuccessor).getValue() = this.getValue() and
-      exists(BooleanCompletion c |
-        s.matchesCompletion(c) |
+      exists(BooleanCompletion c | s.matchesCompletion(c) |
         c.isValidFor(cfe) and
         e = cfe
       )
     }
 
-    override BooleanValue getDualValue() {
-      result.getValue() = this.getValue().booleanNot()
-    }
+    override BooleanValue getDualValue() { result.getValue() = this.getValue().booleanNot() }
 
     override Expr getAnExpr() {
       result.getType() instanceof BoolType and
@@ -74,13 +71,9 @@ module AbstractValues {
     /** Gets the underlying integer value. */
     int getValue() { this = TIntegerValue(result) }
 
-    override predicate branch(ControlFlowElement cfe, ConditionalSuccessor s, Expr e) {
-      none()
-    }
+    override predicate branch(ControlFlowElement cfe, ConditionalSuccessor s, Expr e) { none() }
 
-    override BooleanValue getDualValue() {
-      none()
-    }
+    override BooleanValue getDualValue() { none() }
 
     override Expr getAnExpr() {
       result.getValue().toInt() = this.getValue() and
@@ -103,8 +96,7 @@ module AbstractValues {
 
     override predicate branch(ControlFlowElement cfe, ConditionalSuccessor s, Expr e) {
       this = TNullValue(s.(NullnessSuccessor).getValue()) and
-      exists(NullnessCompletion c |
-        s.matchesCompletion(c) |
+      exists(NullnessCompletion c | s.matchesCompletion(c) |
         c.isValidFor(cfe) and
         e = cfe
       )
@@ -115,20 +107,14 @@ module AbstractValues {
     }
 
     override DereferenceableExpr getAnExpr() {
-      if this.isNull() then
-        result instanceof AlwaysNullExpr
-      else
-        exists(Expr e |
-          nonNullValue(e) |
-          nonNullValueImplied*(e, result)
-        )
+      if this.isNull()
+      then result instanceof AlwaysNullExpr
+      else exists(Expr e | nonNullValue(e) | nonNullValueImplied*(e, result))
     }
 
     override predicate isSingleton() { this.isNull() }
 
-    override string toString() {
-      if this.isNull() then result = "null" else result = "non-null"
-    }
+    override string toString() { if this.isNull() then result = "null" else result = "non-null" }
   }
 
   /** A value that represents match or non-match against a specific `case` statement. */
@@ -141,8 +127,7 @@ module AbstractValues {
 
     override predicate branch(ControlFlowElement cfe, ConditionalSuccessor s, Expr e) {
       this = TMatchValue(_, s.(MatchingSuccessor).getValue()) and
-      exists(MatchingCompletion c, SwitchStmt ss, CaseStmt cs |
-        s.matchesCompletion(c) |
+      exists(MatchingCompletion c, SwitchStmt ss, CaseStmt cs | s.matchesCompletion(c) |
         c.isValidFor(cfe) and
         switchMatching(ss, cs, cfe) and
         e = ss.getCondition() and
@@ -152,9 +137,9 @@ module AbstractValues {
 
     override MatchValue getDualValue() {
       result = any(MatchValue mv |
-        mv.getCaseStmt() = this.getCaseStmt() and
-        if this.isMatch() then not mv.isMatch() else mv.isMatch()
-      )
+          mv.getCaseStmt() = this.getCaseStmt() and
+          if this.isMatch() then not mv.isMatch() else mv.isMatch()
+        )
     }
 
     override Expr getAnExpr() { none() }
@@ -162,8 +147,7 @@ module AbstractValues {
     override predicate isSingleton() { none() }
 
     override string toString() {
-      exists(string s |
-        s = this.getCaseStmt().toString() |
+      exists(string s | s = this.getCaseStmt().toString() |
         if this.isMatch() then result = "match " + s else result = "non-match " + s
       )
     }
@@ -176,8 +160,7 @@ module AbstractValues {
 
     override predicate branch(ControlFlowElement cfe, ConditionalSuccessor s, Expr e) {
       this = TEmptyCollectionValue(s.(EmptinessSuccessor).getValue()) and
-      exists(EmptinessCompletion c, ForeachStmt fs |
-        s.matchesCompletion(c) |
+      exists(EmptinessCompletion c, ForeachStmt fs | s.matchesCompletion(c) |
         c.isValidFor(cfe) and
         foreachEmptiness(fs, cfe) and
         e = fs.getIterableExpr()
@@ -192,9 +175,7 @@ module AbstractValues {
 
     override predicate isSingleton() { none() }
 
-    override string toString() {
-      if this.isEmpty() then result = "empty" else result = "non-empty"
-    }
+    override string toString() { if this.isEmpty() then result = "empty" else result = "non-empty" }
   }
 }
 private import AbstractValues
@@ -212,7 +193,8 @@ class DereferenceableExpr extends Expr {
       // incorrectly `int`, while it should have been `int?`. We apply
       // `getNullEquivParent()` as a workaround
       this = getNullEquivParent*(e) and
-      t = e.getType() |
+      t = e.getType()
+    |
       t instanceof NullableType and
       isNullableType = true
       or
@@ -222,9 +204,7 @@ class DereferenceableExpr extends Expr {
   }
 
   /** Holds if this expression has a nullable type `T?`. */
-  predicate hasNullableType() {
-    isNullableType = true
-  }
+  predicate hasNullableType() { isNullableType = true }
 
   /**
    * Gets an expression that directly tests whether this expression is `null`.
@@ -237,23 +217,22 @@ class DereferenceableExpr extends Expr {
    * expression `x` is guaranteed to be non-`null`.
    */
   private Expr getABooleanNullCheck(BooleanValue v, boolean isNull) {
-    exists(boolean branch |
-      branch = v.getValue() |
+    exists(boolean branch | branch = v.getValue() |
       // Comparison with `null`, for example `x != null`
       exists(ComparisonTest ct, ComparisonKind ck, NullLiteral nl |
         ct.getExpr() = result and
         ct.getAnArgument() = this and
         ct.getAnArgument() = nl and
         this != nl and
-        ck = ct.getComparisonKind() |
+        ck = ct.getComparisonKind()
+      |
         ck.isEquality() and isNull = branch
         or
         ck.isInequality() and isNull = branch.booleanNot()
       )
       or
       // Comparison with a non-`null` value, for example `x?.Length > 0`
-      exists(ComparisonTest ct, ComparisonKind ck, Expr e |
-        ct.getExpr() = result |
+      exists(ComparisonTest ct, ComparisonKind ck, Expr e | ct.getExpr() = result |
         ct.getAnArgument() = this and
         ct.getAnArgument() = e and
         e = any(NullValue nv | not nv.isNull()).getAnExpr() and
@@ -264,8 +243,7 @@ class DereferenceableExpr extends Expr {
       )
       or
       // Call to `string.IsNullOrEmpty()` or `string.IsNullOrWhiteSpace()`
-      exists(MethodCall mc, string name |
-        result = mc |
+      exists(MethodCall mc, string name | result = mc |
         mc.getTarget() = any(SystemStringClass c).getAMethod(name) and
         name.regexpMatch("IsNullOr(Empty|WhiteSpace)") and
         mc.getArgument(0) = this and
@@ -274,27 +252,28 @@ class DereferenceableExpr extends Expr {
       )
       or
       result = any(IsExpr ie |
-        ie.getExpr() = this and
-        if ie.(IsConstantExpr).getConstant() instanceof NullLiteral then
-          // E.g. `x is null`
-          isNull = branch
-        else (
-          // E.g. `x is string` or `x is ""`
-          branch = true and isNull = false
-          or
-          // E.g. `x is string` where `x` has type `string`
-          ie = any(IsTypeExpr ite | ite.getCheckedType() = ite.getExpr().getType()) and
-          branch = false and
-          isNull = true
+          ie.getExpr() = this and
+          if ie.(IsConstantExpr).getConstant() instanceof NullLiteral
+          then
+            // E.g. `x is null`
+            isNull = branch
+          else (
+            // E.g. `x is string` or `x is ""`
+            branch = true and isNull = false
+            or
+            // E.g. `x is string` where `x` has type `string`
+            ie = any(IsTypeExpr ite | ite.getCheckedType() = ite.getExpr().getType()) and
+            branch = false and
+            isNull = true
+          )
         )
-      )
       or
       this.hasNullableType() and
       result = any(PropertyAccess pa |
-        pa.getQualifier() = this and
-        pa.getTarget().hasName("HasValue") and
-        if branch = true then isNull = false else isNull = true
-      )
+          pa.getQualifier() = this and
+          pa.getTarget().hasName("HasValue") and
+          if branch = true then isNull = false else isNull = true
+        )
       or
       isCustomNullCheck(result, this, v, isNull)
     )
@@ -326,22 +305,24 @@ class DereferenceableExpr extends Expr {
       cs = v.getCaseStmt() and
       this = ss.getCondition() and
       result = this and
-      cs = ss.getACase() |
+      cs = ss.getACase()
+    |
       // E.g. `case string`
       cs instanceof TypeCase and
       v.isMatch() and
       isNull = false
       or
       cs = any(ConstCase cc |
-        if cc.getExpr() instanceof NullLiteral then
-          // `case null`
-          if v.isMatch() then isNull = true else isNull = false
-        else (
-          // E.g. `case ""`
-          v.isMatch() and
-          isNull = false
+          if cc.getExpr() instanceof NullLiteral
+          then
+            // `case null`
+            if v.isMatch() then isNull = true else isNull = false
+          else (
+            // E.g. `case ""`
+            v.isMatch() and
+            isNull = false
+          )
         )
-      )
     )
   }
 
@@ -356,14 +337,13 @@ class DereferenceableExpr extends Expr {
    * `x` is guaranteed to be `null`.
    */
   private Expr getANullnessNullCheck(NullValue v, boolean isNull) {
-    exists(NullnessCompletion c |
-      c.isValidFor(this) |
+    exists(NullnessCompletion c | c.isValidFor(this) |
       result = this and
-      if c.isNull() then (
+      if c.isNull()
+      then (
         v.isNull() and
         isNull = true
-      )
-      else (
+      ) else (
         not v.isNull() and
         isNull = false
       )
@@ -417,9 +397,7 @@ class AccessOrCallExpr extends Expr {
    * An expression can have more than one SSA qualifier in the presence
    * of control flow splitting.
    */
-  Ssa::Definition getAnSsaQualifier(ControlFlow::Node cfn) {
-    result = getAnSsaQualifier(this, cfn)
-  }
+  Ssa::Definition getAnSsaQualifier(ControlFlow::Node cfn) { result = getAnSsaQualifier(this, cfn) }
 }
 
 private Declaration getDeclarationTarget(Expr e) {
@@ -484,7 +462,9 @@ private AssignableAccess getATrackedAccess(Ssa::Definition def, ControlFlow::Nod
  */
 class GuardedExpr extends AccessOrCallExpr {
   private Guard g;
+
   private AccessOrCallExpr sub0;
+
   private AbstractValue v0;
 
   GuardedExpr() { isGuardedByExpr(this, g, sub0, v0) }
@@ -511,9 +491,7 @@ class GuardedExpr extends AccessOrCallExpr {
    * expression is guarded by a structurally equal expression having abstract
    * value `v`.
    */
-  predicate mustHaveValue(AbstractValue v) {
-    exists(Expr e | e = this.getAGuard(e, v))
-  }
+  predicate mustHaveValue(AbstractValue v) { exists(Expr e | e = this.getAGuard(e, v)) }
 
   /**
    * Holds if this expression is guarded by expression `cond`, which must
@@ -549,7 +527,9 @@ class GuardedExpr extends AccessOrCallExpr {
  */
 class GuardedControlFlowNode extends ControlFlow::Nodes::ElementNode {
   private Guard g;
+
   private AccessOrCallExpr sub0;
+
   private AbstractValue v0;
 
   GuardedControlFlowNode() { isGuardedByNode(this, g, sub0, v0) }
@@ -576,9 +556,7 @@ class GuardedControlFlowNode extends ControlFlow::Nodes::ElementNode {
    * control flow node is guarded by a structurally equal expression having
    * abstract value `v`.
    */
-  predicate mustHaveValue(AbstractValue v) {
-    exists(Expr e | e = this.getAGuard(e, v))
-  }
+  predicate mustHaveValue(AbstractValue v) { exists(Expr e | e = this.getAGuard(e, v)) }
 }
 
 /**
@@ -601,12 +579,13 @@ class GuardedControlFlowNode extends ControlFlow::Nodes::ElementNode {
  */
 class GuardedDataFlowNode extends DataFlow::ExprNode {
   private Guard g;
+
   private AccessOrCallExpr sub0;
+
   private AbstractValue v0;
 
   GuardedDataFlowNode() {
-    exists(ControlFlow::Nodes::ElementNode cfn |
-      exists(this.getExprAtNode(cfn)) |
+    exists(ControlFlow::Nodes::ElementNode cfn | exists(this.getExprAtNode(cfn)) |
       isGuardedByNode(cfn, g, sub0, v0)
     )
   }
@@ -633,40 +612,29 @@ class GuardedDataFlowNode extends DataFlow::ExprNode {
    * data flow node is guarded by a structurally equal expression having
    * abstract value `v`.
    */
-  predicate mustHaveValue(AbstractValue v) {
-    exists(Expr e | e = this.getAGuard(e, v))
-  }
+  predicate mustHaveValue(AbstractValue v) { exists(Expr e | e = this.getAGuard(e, v)) }
 }
 
 /** An expression guarded by a `null` check. */
 class NullGuardedExpr extends GuardedExpr {
-  NullGuardedExpr() {
-    this.mustHaveValue(any(NullValue v | not v.isNull()))
-  }
+  NullGuardedExpr() { this.mustHaveValue(any(NullValue v | not v.isNull())) }
 }
 
 /** A data flow node guarded by a `null` check. */
 class NullGuardedDataFlowNode extends GuardedDataFlowNode {
-  NullGuardedDataFlowNode() {
-    this.mustHaveValue(any(NullValue v | not v.isNull()))
-  }
+  NullGuardedDataFlowNode() { this.mustHaveValue(any(NullValue v | not v.isNull())) }
 }
 
 /** INTERNAL: Do not use. */
 module Internal {
-  private import ControlFlow::Internal
+  private import semmle.code.csharp.controlflow.internal.PreBasicBlocks as PreBasicBlocks
+  private import semmle.code.csharp.controlflow.internal.PreSsa as PreSsa
 
   newtype TAbstractValue =
-    TBooleanValue(boolean b) { b = true or b = false }
-    or
-    TIntegerValue(int i) {
-      i = any(Expr e).getValue().toInt()
-    }
-    or
-    TNullValue(boolean b) { b = true or b = false }
-    or
-    TMatchValue(CaseStmt cs, boolean b) { b = true or b = false }
-    or
+    TBooleanValue(boolean b) { b = true or b = false } or
+    TIntegerValue(int i) { i = any(Expr e).getValue().toInt() } or
+    TNullValue(boolean b) { b = true or b = false } or
+    TMatchValue(CaseStmt cs, boolean b) { b = true or b = false } or
     TEmptyCollectionValue(boolean b) { b = true or b = false }
 
   /** Holds if expression `e` is a non-`null` value. */
@@ -682,6 +650,11 @@ module Internal {
     or
     e instanceof AddExpr and
     e.getType() instanceof StringType
+    or
+    e = any(MethodCall mc |
+        mc.getTarget() = any(SystemObjectClass c).getGetTypeMethod() and
+        not mc.isConditional()
+      )
   }
 
   /** Holds if expression `e2` is a non-`null` value whenever `e1` is. */
@@ -698,20 +671,20 @@ module Internal {
    */
   Expr getNullEquivParent(Expr e) {
     result = any(QualifiableExpr qe |
-      qe.isConditional() and
-      (
-        e = qe.getQualifier()
-        or
-        e = qe.(ExtensionMethodCall).getArgument(0)
-      ) and
-      (
-        // The accessed declaration must have a value type in order
-        // for `only if` to hold
-        result.(FieldAccess).getTarget().getType() instanceof ValueType
-        or
-        result.(Call).getTarget().getReturnType() instanceof ValueType
+        qe.isConditional() and
+        (
+          e = qe.getQualifier()
+          or
+          e = qe.(ExtensionMethodCall).getArgument(0)
+        ) and
+        (
+          // The accessed declaration must have a value type in order
+          // for `only if` to hold
+          result.(FieldAccess).getTarget().getType() instanceof ValueType
+          or
+          result.(Call).getTarget().getReturnType() instanceof ValueType
+        )
       )
-    )
     or
     // In C#, `null + 1` has type `int?` with value `null`
     exists(BinaryArithmeticOperation bao, Expr o |
@@ -730,14 +703,12 @@ module Internal {
    */
   Expr getANullImplyingChild(Expr e) {
     e = any(QualifiableExpr qe |
-      qe.isConditional() and
-      result = qe.getQualifier()
-    )
+        qe.isConditional() and
+        result = qe.getQualifier()
+      )
     or
     // In C#, `null + 1` has type `int?` with value `null`
-    e = any(BinaryArithmeticOperation bao |
-      result = bao.getAnOperand()
-    )
+    e = any(BinaryArithmeticOperation bao | result = bao.getAnOperand())
   }
 
   /** An expression whose value may control the execution of another element. */
@@ -763,7 +734,8 @@ module Internal {
     /** Holds if basic block `bb` only is reached when this guard has abstract value `v`. */
     predicate controls(BasicBlock bb, AbstractValue v) {
       exists(ControlFlowElement cfe, ConditionalSuccessor s, AbstractValue v0, Guard g |
-        cfe.controlsBlock(bb, s) |
+        cfe.controlsBlock(bb, s)
+      |
         v0.branch(cfe, s, g) and
         impliesSteps(g, v0, this, v)
       )
@@ -780,8 +752,7 @@ module Internal {
       |
         a.strictlyDominates(cfn.getBasicBlock())
         or
-        exists(BasicBlock bb, int i, int j |
-          bb.getNode(i) = a.getAControlFlowNode() |
+        exists(BasicBlock bb, int i, int j | bb.getNode(i) = a.getAControlFlowNode() |
           bb.getNode(j) = cfn and
           j > i
         )
@@ -793,8 +764,7 @@ module Internal {
      * because of an assertion.
      */
     predicate assertionControlsElement(ControlFlowElement cfe, AbstractValue v) {
-      forex(ControlFlow::Node cfn |
-        cfn = cfe.getAControlFlowNode() |
+      forex(ControlFlow::Node cfn | cfn = cfe.getAControlFlowNode() |
         this.assertionControlsNode(cfn, v)
       )
     }
@@ -804,16 +774,14 @@ module Internal {
      * not taking implications into account.
      */
     predicate preControlsDirect(PreBasicBlocks::PreBasicBlock bb, AbstractValue v) {
-      exists(PreBasicBlocks::ConditionBlock cb, ConditionalSuccessor s |
-        cb.controls(bb, s) |
+      exists(PreBasicBlocks::ConditionBlock cb, ConditionalSuccessor s | cb.controls(bb, s) |
         v.branch(cb.getLastElement(), s, this)
       )
     }
 
     /** Holds if pre-basic-block `bb` only is reached when this guard has abstract value `v`. */
     predicate preControls(PreBasicBlocks::PreBasicBlock bb, AbstractValue v) {
-      exists(AbstractValue v0, Guard g |
-        g.preControlsDirect(bb, v0) |
+      exists(AbstractValue v0, Guard g | g.preControlsDirect(bb, v0) |
         preImpliesSteps(g, v0, this, v)
       )
     }
@@ -821,7 +789,8 @@ module Internal {
     /** Gets the successor block that is reached when this guard has abstract value `v`. */
     PreBasicBlocks::PreBasicBlock getConditionalSuccessor(AbstractValue v) {
       exists(PreBasicBlocks::ConditionBlock pred, ConditionalSuccessor s |
-        v.branch(pred.getLastElement(), s, this) |
+        v.branch(pred.getLastElement(), s, this)
+      |
         result = pred.getASuccessorByType(s)
       )
     }
@@ -849,10 +818,10 @@ module Internal {
 
   private Expr stripConditionalExpr(Expr e) {
     e = any(ConditionalExpr ce |
-      result = stripConditionalExpr(ce.getThen())
-      or
-      result = stripConditionalExpr(ce.getElse())
-    )
+        result = stripConditionalExpr(ce.getThen())
+        or
+        result = stripConditionalExpr(ce.getElse())
+      )
     or
     not e instanceof ConditionalExpr and
     result = e
@@ -878,7 +847,8 @@ module Internal {
     predicate nullGuardedReturn(Expr ret, boolean isNull) {
       canReturn(p.getCallable(), ret) and
       exists(PreBasicBlocks::PreBasicBlock bb, NullValue nv |
-        this.getARead().(Guard).preControls(bb, nv) |
+        this.getARead().(Guard).preControls(bb, nv)
+      |
         ret = bb.getAnElement() and
         if nv.isNull() then isNull = true else isNull = false
       )
@@ -890,18 +860,17 @@ module Internal {
    * `p` belongs, and `ret` having Boolean value `retVal` allows the conclusion
    * that the parameter `p` either is `null` or non-`null`, as specified by `isNull`.
    */
-  private predicate validReturnInCustomNullCheck(Expr ret, Parameter p, BooleanValue retVal, boolean isNull) {
-    exists(Callable c |
-      canReturn(c, ret) |
+  private predicate validReturnInCustomNullCheck(
+    Expr ret, Parameter p, BooleanValue retVal, boolean isNull
+  ) {
+    exists(Callable c | canReturn(c, ret) |
       p.getCallable() = c and
       c.getReturnType() instanceof BoolType
     ) and
-    exists(PreSsaImplicitParameterDefinition def |
-      p = def.getParameter() |
+    exists(PreSsaImplicitParameterDefinition def | p = def.getParameter() |
       def.nullGuardedReturn(ret, isNull)
       or
-      exists(NullValue nv |
-        preImpliesSteps(ret, retVal, def.getARead(), nv) |
+      exists(NullValue nv | preImpliesSteps(ret, retVal, def.getARead(), nv) |
         if nv.isNull() then isNull = true else isNull = false
       )
     )
@@ -922,54 +891,93 @@ module Internal {
     forex(Expr ret |
       canReturn(result, ret) and
       not ret.(BoolLiteral).getBoolValue() = retVal.getValue().booleanNot()
-      |
+    |
       validReturnInCustomNullCheck(ret, p, retVal, isNull)
     )
+  }
+
+  pragma[noinline]
+  private predicate conditionalAssign0(
+    Guard guard, AbstractValue vGuard, PreSsa::Definition def, Expr e, PreSsa::Definition upd,
+    PreBasicBlocks::PreBasicBlock bbGuard
+  ) {
+    e = upd.getDefinition().getSource() and
+    upd = def.getAPhiInput() and
+    guard.preControlsDirect(upd.getBasicBlock(), vGuard) and
+    bbGuard.getAnElement() = guard and
+    bbGuard.strictlyDominates(def.getBasicBlock()) and
+    not guard.preControlsDirect(def.getBasicBlock(), vGuard)
+  }
+
+  pragma[noinline]
+  private predicate conditionalAssign1(
+    Guard guard, AbstractValue vGuard, PreSsa::Definition def, Expr e, PreSsa::Definition upd,
+    PreBasicBlocks::PreBasicBlock bbGuard, PreSsa::Definition other
+  ) {
+    conditionalAssign0(guard, vGuard, def, e, upd, bbGuard) and
+    other != upd and
+    other = def.getAPhiInput()
+  }
+
+  pragma[noinline]
+  private predicate conditionalAssign2(
+    Guard guard, AbstractValue vGuard, PreSsa::Definition def, Expr e, PreSsa::Definition upd,
+    PreBasicBlocks::PreBasicBlock bbGuard, PreSsa::Definition other
+  ) {
+    conditionalAssign1(guard, vGuard, def, e, upd, bbGuard, other) and
+    guard.preControlsDirect(other.getBasicBlock(), vGuard.getDualValue())
+  }
+
+  pragma[noinline]
+  private predicate conditionalAssign3(
+    Guard guard, AbstractValue vGuard, PreSsa::Definition def, Expr e, PreSsa::Definition upd,
+    PreBasicBlocks::PreBasicBlock bbGuard, PreSsa::Definition other
+  ) {
+    conditionalAssign1(guard, vGuard, def, e, upd, bbGuard, other) and
+    other.getBasicBlock().dominates(bbGuard) and
+    not PreSsa::ssaDefReachesEndOfBlock(guard.getConditionalSuccessor(vGuard), other, _)
   }
 
   /**
    * Holds if the evaluation of `guard` to `vGuard` implies that `def` is assigned
    * expression `e`.
    */
-  private predicate conditionalAssign(Guard guard, AbstractValue vGuard, PreSsa::Definition def, Expr e) {
+  private predicate conditionalAssign(
+    Guard guard, AbstractValue vGuard, PreSsa::Definition def, Expr e
+  ) {
     // For example:
     //   v = guard ? e : x;
-    exists(ConditionalExpr c |
-      c = def.getDefinition().getSource() |
+    exists(ConditionalExpr c | c = def.getDefinition().getSource() |
       guard = c.getCondition() and
       vGuard = any(BooleanValue bv |
-        bv.getValue() = true and
-        e = c.getThen()
-        or
-        bv.getValue() = false and
-        e = c.getElse()
-      )
+          bv.getValue() = true and
+          e = c.getThen()
+          or
+          bv.getValue() = false and
+          e = c.getElse()
+        )
     )
     or
     exists(PreSsa::Definition upd, PreBasicBlocks::PreBasicBlock bbGuard |
-      e = upd.getDefinition().getSource() and
-      upd = def.getAPhiInput() and
-      guard.preControlsDirect(upd.getBasicBlock(), vGuard) and
-      bbGuard.getAnElement() = guard and
-      bbGuard.strictlyDominates(def.getBasicBlock()) and
-      not guard.preControlsDirect(def.getBasicBlock(), vGuard) and
+      conditionalAssign0(guard, vGuard, def, e, upd, bbGuard)
+    |
       forall(PreSsa::Definition other |
-        other != upd and other = def.getAPhiInput() |
+        conditionalAssign1(guard, vGuard, def, e, upd, bbGuard, other)
+      |
         // For example:
         //   if (guard)
         //     upd = a;
         //   else
         //     other = b;
         //   def = phi(upd, other)
-        guard.preControlsDirect(other.getBasicBlock(), vGuard.getDualValue())
+        conditionalAssign2(guard, vGuard, def, e, upd, bbGuard, other)
         or
         // For example:
         //   other = a;
         //   if (guard)
         //       upd = b;
         //   def = phi(other, upd)
-        other.getBasicBlock().dominates(bbGuard) and
-        not PreSsa::ssaDefReachesEndOfBlock(guard.getConditionalSuccessor(vGuard), other, _)
+        conditionalAssign3(guard, vGuard, def, e, upd, bbGuard, other)
       )
     )
   }
@@ -978,7 +986,9 @@ module Internal {
    * Holds if the evaluation of `guard` to `vGuard` implies that `def` is assigned
    * an expression with abstract value `vDef`.
    */
-  private predicate conditionalAssignVal(Expr guard, AbstractValue vGuard, PreSsa::Definition def, AbstractValue vDef) {
+  private predicate conditionalAssignVal(
+    Expr guard, AbstractValue vGuard, PreSsa::Definition def, AbstractValue vDef
+  ) {
     conditionalAssign(guard, vGuard, def, vDef.getAnExpr())
   }
 
@@ -998,24 +1008,24 @@ module Internal {
    * expression `x` is guaranteed to be equal to `""`.
    */
   private Expr getABooleanEqualityCheck(Expr e1, BooleanValue v, Expr e2) {
-    exists(boolean branch |
-      branch = v.getValue() |
+    exists(boolean branch | branch = v.getValue() |
       exists(ComparisonTest ct, ComparisonKind ck |
         ct.getExpr() = result and
         ct.getAnArgument() = e1 and
         ct.getAnArgument() = e2 and
         e2 != e1 and
-        ck = ct.getComparisonKind() |
+        ck = ct.getComparisonKind()
+      |
         ck.isEquality() and branch = true
         or
         ck.isInequality() and branch = false
       )
       or
       result = any(IsExpr ie |
-        ie.getExpr() = e1 and
-        e2 = ie.(IsConstantExpr).getConstant() and
-        branch = true
-      )
+          ie.getExpr() = e1 and
+          e2 = ie.(IsConstantExpr).getConstant() and
+          branch = true
+        )
     )
   }
 
@@ -1042,8 +1052,7 @@ module Internal {
    * then `o` is guaranteed to be equal to `""`.
    */
   private Expr getAMatchingEqualityCheck(Expr e1, MatchValue v, Expr e2) {
-    exists(SwitchStmt ss, ConstCase cc |
-      cc = v.getCaseStmt() |
+    exists(SwitchStmt ss, ConstCase cc | cc = v.getCaseStmt() |
       e1 = ss.getCondition() and
       result = e1 and
       cc = ss.getACase() and
@@ -1078,10 +1087,11 @@ module Internal {
    * Holds if the evaluation of `guard` to `vGuard` implies that `def` does not
    * have the value `vDef`.
    */
-  private predicate guardImpliesNotEqual(Expr guard, AbstractValue vGuard, PreSsa::Definition def, AbstractValue vDef) {
+  private predicate guardImpliesNotEqual(
+    Expr guard, AbstractValue vGuard, PreSsa::Definition def, AbstractValue vDef
+  ) {
     relevantEq(def, vDef) and
-    exists(AssignableRead ar |
-      ar = def.getARead() |
+    exists(AssignableRead ar | ar = def.getARead() |
       // For example:
       //   if (de == null); vGuard = TBooleanValue(false); vDef = TNullValue(true)
       // but not
@@ -1094,7 +1104,8 @@ module Internal {
       // or
       //   if (de == null); vGuard = TBooleanValue(true); vDef = TNullValue(false)
       exists(NullValue nv |
-        guard = ar.(DereferenceableExpr).getANullCheck(vGuard, any(boolean b | nv = TNullValue(b))) |
+        guard = ar.(DereferenceableExpr).getANullCheck(vGuard, any(boolean b | nv = TNullValue(b)))
+      |
         vDef = nv.getDualValue()
       )
       or
@@ -1115,8 +1126,7 @@ module Internal {
     |
       not exists(input.getDefinition().getSource())
       or
-      exists(Expr e |
-        e = stripConditionalExpr(input.getDefinition().getSource()) |
+      exists(Expr e | e = stripConditionalExpr(input.getDefinition().getSource()) |
         not e = any(AbstractValue v).getAnExpr()
       )
     )
@@ -1133,7 +1143,8 @@ module Internal {
     fromBackEdge = false
     or
     exists(PreSsa::Definition input, PreBasicBlocks::PreBasicBlock pred, boolean fbe |
-      input = def.getAPhiInput() |
+      input = def.getAPhiInput()
+    |
       pred = def.getBasicBlock().getAPredecessor() and
       PreSsa::ssaDefReachesEndOfBlock(pred, input, _) and
       result = getADefinition(input, fbe) and
@@ -1146,10 +1157,11 @@ module Internal {
    * `fromBackEdge` indicates whether the flow from `e` to `def` goes through a
    * back edge.
    */
-  private predicate possibleValue(PreSsa::Definition def, boolean fromBackEdge, Expr e, AbstractValue v) {
+  private predicate possibleValue(
+    PreSsa::Definition def, boolean fromBackEdge, Expr e, AbstractValue v
+  ) {
     not hasPossibleUnknownValue(def) and
-    exists(PreSsa::Definition input |
-      input = getADefinition(def, fromBackEdge) |
+    exists(PreSsa::Definition input | input = getADefinition(def, fromBackEdge) |
       e = stripConditionalExpr(input.getDefinition().getSource()) and
       v.getAnExpr() = e
     )
@@ -1176,7 +1188,9 @@ module Internal {
    * Holds if `guard` having abstract value `vGuard` implies that `def` has
    * abstract value `vDef`.
    */
-  private predicate guardImpliesEqual(Guard guard, AbstractValue vGuard, PreSsa::Definition def, AbstractValue vDef) {
+  private predicate guardImpliesEqual(
+    Guard guard, AbstractValue vGuard, PreSsa::Definition def, AbstractValue vDef
+  ) {
     guard = getAnEqualityCheck(def.getARead(), vGuard, vDef.getAnExpr())
   }
 
@@ -1184,17 +1198,15 @@ module Internal {
    * A helper class for calculating structurally equal access/call expressions.
    */
   private class ConditionOnExprComparisonConfig extends InternalStructuralComparisonConfiguration {
-    ConditionOnExprComparisonConfig() {
-      this = "ConditionOnExprComparisonConfig"
-    }
+    ConditionOnExprComparisonConfig() { this = "ConditionOnExprComparisonConfig" }
 
     override predicate candidate(Element x, Element y) {
       exists(BasicBlock bb, Declaration d |
         candidateAux(x, d, bb) and
         y = any(AccessOrCallExpr e |
-          e.getAControlFlowNode().getBasicBlock() = bb and
-          e.getTarget() = d
-        )
+            e.getAControlFlowNode().getBasicBlock() = bb and
+            e.getTarget() = d
+          )
       )
     }
 
@@ -1203,11 +1215,10 @@ module Internal {
      * is a sub expression of a condition that controls whether basic block
      * `bb` is reached.
      */
-    pragma [noinline]
+    pragma[noinline]
     private predicate candidateAux(AccessOrCallExpr e, Declaration target, BasicBlock bb) {
       target = e.getTarget() and
-      exists(Guard g |
-        e = g.getAChildExpr*() |
+      exists(Guard g | e = g.getAChildExpr*() |
         g.controls(bb, _)
         or
         g.assertionControlsElement(bb.getANode().getElement(), _)
@@ -1215,18 +1226,23 @@ module Internal {
     }
   }
 
-  private cached module Cached {
+  cached
+  private module Cached {
     pragma[noinline]
-    private predicate isGuardedByNode0(ControlFlow::Node cfn, AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub, AbstractValue v) {
+    private predicate isGuardedByNode0(
+      ControlFlow::Node cfn, AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub,
+      AbstractValue v
+    ) {
       cfn = guarded.getAControlFlowNode() and
       g.controls(cfn.getBasicBlock(), v) and
       exists(ConditionOnExprComparisonConfig c | c.same(sub, guarded))
     }
 
     pragma[noinline]
-    private predicate isGuardedByExpr1(AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub, AbstractValue v) {
-      forex(ControlFlow::Node cfn |
-        cfn = guarded.getAControlFlowNode() |
+    private predicate isGuardedByExpr1(
+      AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub, AbstractValue v
+    ) {
+      forex(ControlFlow::Node cfn | cfn = guarded.getAControlFlowNode() |
         isGuardedByNode0(cfn, guarded, g, sub, v)
       )
       or
@@ -1235,17 +1251,20 @@ module Internal {
     }
 
     cached
-    predicate isGuardedByExpr(AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub, AbstractValue v) {
+    predicate isGuardedByExpr(
+      AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub, AbstractValue v
+    ) {
       isGuardedByExpr1(guarded, g, sub, v) and
       sub = g.getAChildExpr*() and
-      forall(Ssa::Definition def |
-        def = sub.getAnSsaQualifier(_) |
+      forall(Ssa::Definition def | def = sub.getAnSsaQualifier(_) |
         def = guarded.getAnSsaQualifier(_)
       )
     }
 
     pragma[noinline]
-    private predicate isGuardedByNode1(ControlFlow::Nodes::ElementNode guarded, Guard g, AccessOrCallExpr sub, AbstractValue v) {
+    private predicate isGuardedByNode1(
+      ControlFlow::Nodes::ElementNode guarded, Guard g, AccessOrCallExpr sub, AbstractValue v
+    ) {
       isGuardedByNode0(guarded, _, g, sub, v)
       or
       g.assertionControlsNode(guarded, v) and
@@ -1253,13 +1272,15 @@ module Internal {
     }
 
     cached
-    predicate isGuardedByNode(ControlFlow::Nodes::ElementNode guarded, Guard g, AccessOrCallExpr sub, AbstractValue v) {
+    predicate isGuardedByNode(
+      ControlFlow::Nodes::ElementNode guarded, Guard g, AccessOrCallExpr sub, AbstractValue v
+    ) {
       isGuardedByNode1(guarded, g, sub, v) and
       sub = g.getAChildExpr*() and
-      forall(Ssa::Definition def |
-        def = sub.getAnSsaQualifier(_) |
+      forall(Ssa::Definition def | def = sub.getAnSsaQualifier(_) |
         exists(ControlFlow::Node cfn |
-          def = guarded.getElement().(AccessOrCallExpr).getAnSsaQualifier(cfn) |
+          def = guarded.getElement().(AccessOrCallExpr).getAnSsaQualifier(cfn)
+        |
           cfn.getBasicBlock() = guarded.getBasicBlock()
         )
       )
@@ -1276,10 +1297,8 @@ module Internal {
     predicate impliesStep(Guard g1, AbstractValue v1, Guard g2, AbstractValue v2) {
       preImpliesStep(g1, v1, g2, v2)
       or
-      forex(ControlFlow::Node cfn |
-        cfn = g1.getAControlFlowNode() |
-        exists(Ssa::ExplicitDefinition def |
-          def.getADefinition().getSource() = g2 |
+      forex(ControlFlow::Node cfn | cfn = g1.getAControlFlowNode() |
+        exists(Ssa::ExplicitDefinition def | def.getADefinition().getSource() = g2 |
           g1 = def.getAReadAtNode(cfn) and
           v1 = g1.getAValue() and
           v2 = v1
@@ -1292,7 +1311,8 @@ module Internal {
   // The predicates in this module should be cached in the same stage as the cache stage
   // in ControlFlowGraph.qll. This is to avoid recomputation of pre-basic-blocks and
   // pre-SSA predicates
-  cached module CachedWithCFG {
+  cached
+  module CachedWithCFG {
     cached
     predicate isCustomNullCheck(Call call, Expr arg, BooleanValue v, boolean isNull) {
       exists(Callable callable, Parameter p |
@@ -1312,24 +1332,24 @@ module Internal {
     cached
     predicate preImpliesStep(Guard g1, AbstractValue v1, Guard g2, AbstractValue v2) {
       g1 = any(BinaryOperation bo |
-        (
-          bo instanceof BitwiseAndExpr or
-          bo instanceof LogicalAndExpr
-        ) and
-        g2 = bo.getAnOperand() and
-        v1 = TBooleanValue(true) and
-        v2 = v1
-      )
+          (
+            bo instanceof BitwiseAndExpr or
+            bo instanceof LogicalAndExpr
+          ) and
+          g2 = bo.getAnOperand() and
+          v1 = TBooleanValue(true) and
+          v2 = v1
+        )
       or
       g1 = any(BinaryOperation bo |
-        (
-          bo instanceof BitwiseOrExpr or
-          bo instanceof LogicalOrExpr
-        ) and
-        g2 = bo.getAnOperand() and
-        v1 = TBooleanValue(false) and
-        v2 = v1
-      )
+          (
+            bo instanceof BitwiseOrExpr or
+            bo instanceof LogicalOrExpr
+          ) and
+          g2 = bo.getAnOperand() and
+          v1 = TBooleanValue(false) and
+          v2 = v1
+        )
       or
       g2 = g1.(LogicalNotExpr).getOperand() and
       v2 = TBooleanValue(v1.(BooleanValue).getValue().booleanNot())
@@ -1339,7 +1359,8 @@ module Internal {
         b = boolLit.getBoolValue() and
         g2 = ct.getAnArgument() and
         g1 = ct.getExpr() and
-        v2 = TBooleanValue(v1.(BooleanValue).getValue().booleanXor(polarity).booleanXor(b)) |
+        v2 = TBooleanValue(v1.(BooleanValue).getValue().booleanXor(polarity).booleanXor(b))
+      |
         ct.getComparisonKind().isEquality() and
         polarity = true
         or
@@ -1376,14 +1397,13 @@ module Internal {
       or
       v1 = g1.getAValue() and
       v1 = any(MatchValue mv |
-        mv.isMatch() and
-        g2 = g1 and
-        v2.getAnExpr() = mv.getCaseStmt().(ConstCase).getExpr() and
-        v1 != v2
-      )
+          mv.isMatch() and
+          g2 = g1 and
+          v2.getAnExpr() = mv.getCaseStmt().(ConstCase).getExpr() and
+          v1 != v2
+        )
       or
-      exists(boolean isNull |
-        g1 = g2.(DereferenceableExpr).getANullCheck(v1, isNull) |
+      exists(boolean isNull | g1 = g2.(DereferenceableExpr).getANullCheck(v1, isNull) |
         v2 = any(NullValue nv | if nv.isNull() then isNull = true else isNull = false) and
         (g1 != g2 or v1 != v2)
       )
@@ -1410,8 +1430,7 @@ module Internal {
       v1 = g1.getAValue() and
       v2 = v1.(NullValue)
       or
-      exists(PreSsa::Definition def |
-        def.getDefinition().getSource() = g2 |
+      exists(PreSsa::Definition def | def.getDefinition().getSource() = g2 |
         g1 = def.getARead() and
         v1 = g1.getAValue() and
         v2 = v1
@@ -1452,8 +1471,7 @@ module Internal {
     v1 = v2 and
     v1 = g1.getAValue()
     or
-    exists(Expr mid, AbstractValue vMid |
-      preImpliesSteps(g1, v1, mid, vMid) |
+    exists(Expr mid, AbstractValue vMid | preImpliesSteps(g1, v1, mid, vMid) |
       preImpliesStep(mid, vMid, g2, v2)
     )
   }
@@ -1470,8 +1488,7 @@ module Internal {
     v1 = v2 and
     v1 = g1.getAValue()
     or
-    exists(Expr mid, AbstractValue vMid |
-      impliesSteps(g1, v1, mid, vMid) |
+    exists(Expr mid, AbstractValue vMid | impliesSteps(g1, v1, mid, vMid) |
       impliesStep(mid, vMid, g2, v2)
     )
   }

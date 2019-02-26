@@ -25,9 +25,13 @@ Stmt getASuccessorStmt(Stmt s) {
   result = findSuccessorStmt(s.getAControlFlowNode().getASuccessor())
 }
 
-class IfThenStmt extends IfStmt { IfThenStmt() { not exists(Stmt s | getElse() = s) } }
+class IfThenStmt extends IfStmt {
+  IfThenStmt() { not exists(Stmt s | getElse() = s) }
+}
 
-class IfThenElseStmt extends IfStmt { IfThenElseStmt() { exists(Stmt s | getElse() = s) } }
+class IfThenElseStmt extends IfStmt {
+  IfThenElseStmt() { exists(Stmt s | getElse() = s) }
+}
 
 Stmt getTrailingBody(Stmt s) {
   result = s.(ForStmt).getBody() or

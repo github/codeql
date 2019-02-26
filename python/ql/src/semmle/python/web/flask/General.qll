@@ -8,16 +8,16 @@ ModuleObject theFlaskModule() {
 
 /** The flask app class */
 ClassObject theFlaskClass() {
-    result = theFlaskModule().getAttribute("Flask")
+    result = theFlaskModule().attr("Flask")
 }
 
 /** The flask MethodView class */
 ClassObject theFlaskMethodViewClass() {
-    result = any(ModuleObject m | m.getName() = "flask.views").getAttribute("MethodView")
+    result = any(ModuleObject m | m.getName() = "flask.views").attr("MethodView")
 }
 
 ClassObject theFlaskReponseClass() {
-    result = theFlaskModule().getAttribute("Response")
+    result = theFlaskModule().attr("Response")
 }
 
 /** Holds if `route` is routed to `func`

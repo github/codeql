@@ -242,7 +242,7 @@ namespace Semmle.Autobuild
                 {
                     actions.DirectoryDelete(dir, true);
                 }
-                catch
+                catch  // lgtm[cs/catch-of-all-exceptions]
                 {
                     return FailureCode;
                 }
@@ -262,7 +262,7 @@ namespace Semmle.Autobuild
                 {
                     actions.FileDelete(file);
                 }
-                catch
+                catch  // lgtm[cs/catch-of-all-exceptions]
                 {
                     return FailureCode;
                 }

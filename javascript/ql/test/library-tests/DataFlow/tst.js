@@ -103,4 +103,12 @@ var vs2 = ( for (v of o) v );     // generator comprehensions are not analysed
 })([ 19, 23, 0 ]);
 
 x ?? y;                           // flow through short-circuiting operator
+
+(function(){
+	var {v1a, v1b = o1b, v1c = o1c} = o1d;
+	v1a + v1b + v1c;
+
+	var [v2a, v2b = o2b, v2c = o2c] = o2d;
+	v2a + v2b + v2c;
+});
 // semmle-extractor-options: --experimental

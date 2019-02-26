@@ -240,11 +240,38 @@ private class SuperAgentUrlRequest extends CustomClientRequest {
  * A model of a URL request made using the `XMLHttpRequest` browser class.
  */
 private class XMLHttpRequest extends CustomClientRequest {
-  XMLHttpRequest() { this = DataFlow::globalVarRef("XMLHttpRequest").getAnInstantiation() }
+  XMLHttpRequest() {
+    this = DataFlow::globalVarRef("XMLHttpRequest").getAnInstantiation()
+    or
+    // closure shim for XMLHttpRequest
+    this = Closure::moduleImport("goog.net.XmlHttp").getAnInstantiation()
+  }
 
   override DataFlow::Node getUrl() { result = getAMethodCall("open").getArgument(1) }
 
   override DataFlow::Node getHost() { none() }
 
   override DataFlow::Node getADataNode() { result = getAMethodCall("send").getArgument(0) }
+}
+
+/**
+ * A model of a URL request made using the `XhrIo` class from the closure library.
+ */
+private class ClosureXhrIoRequest extends CustomClientRequest {
+  ClosureXhrIoRequest() {
+    exists(DataFlow::SourceNode xhrIo | xhrIo = Closure::moduleImport("goog.net.XhrIo") |
+      this = xhrIo.getAMethodCall("send")
+      or
+      this = xhrIo.getAnInstantiation().getAMethodCall("send")
+    )
+  }
+
+  override DataFlow::Node getUrl() { result = getArgument(0) }
+
+  override DataFlow::Node getHost() { none() }
+
+  override DataFlow::Node getADataNode() {
+    result = getArgument(2) or
+    result = getArgument(3)
+  }
 }

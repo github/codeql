@@ -409,7 +409,7 @@ function handlePrepareFilesCommand(command: PrepareFilesCommand) {
 
 function reset() {
     state = new State();
-    state.typeTable.restrictedExpansion = getEnvironmentVariable("SEMMLE_TYPESCRIPT_NO_EXPANSION", Boolean, false);
+    state.typeTable.restrictedExpansion = getEnvironmentVariable("SEMMLE_TYPESCRIPT_NO_EXPANSION", Boolean, true);
 }
 
 function getEnvironmentVariable<T>(name: string, parse: (x: string) => T, defaultValue: T) {

@@ -106,6 +106,7 @@
 | b_condition.py:88 | ControlFlowNode for y | 87 |
 | b_condition.py:90 | ControlFlowNode for x | 87 |
 | b_condition.py:90 | ControlFlowNode for y | 87 |
+| b_condition.py:92 | ControlFlowNode for x | 87 |
 | b_condition.py:93 | ControlFlowNode for use | 93 |
 | b_condition.py:93 | ControlFlowNode for use() | 93 |
 | b_condition.py:93 | ControlFlowNode for y | 87 |
@@ -115,6 +116,7 @@
 | b_condition.py:96 | ControlFlowNode for y | 87 |
 | b_condition.py:97 | ControlFlowNode for use | 97 |
 | b_condition.py:97 | ControlFlowNode for use() | 97 |
+| b_condition.py:97 | ControlFlowNode for x | 87 |
 | b_condition.py:99 | ControlFlowNode for use | 99 |
 | b_condition.py:99 | ControlFlowNode for use() | 99 |
 | b_condition.py:102 | ControlFlowNode for a | 101 |
@@ -225,3 +227,9 @@
 | r_regressions.py:52 | ControlFlowNode for msg | 51 |
 | r_regressions.py:64 | ControlFlowNode for do_validation | 64 |
 | r_regressions.py:64 | ControlFlowNode for do_validation() | 64 |
+| r_regressions.py:90 | ControlFlowNode for Attribute | 90 |
+| r_regressions.py:90 | ControlFlowNode for Attribute() | 90 |
+| r_regressions.py:102 | ControlFlowNode for unrelated_call | 102 |
+| r_regressions.py:102 | ControlFlowNode for unrelated_call() | 102 |
+| r_regressions.py:107 | ControlFlowNode for Attribute | 106 |
+| r_regressions.py:107 | ControlFlowNode for x | 106 |

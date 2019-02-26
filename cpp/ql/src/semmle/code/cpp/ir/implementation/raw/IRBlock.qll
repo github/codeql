@@ -33,7 +33,7 @@ class IRBlockBase extends TIRBlock {
    */
   int getDisplayIndex() {
     this = rank[result + 1](IRBlock funcBlock |
-      funcBlock.getFunction() = getFunction() |
+      funcBlock.getEnclosingFunction() = getEnclosingFunction() |
       funcBlock order by funcBlock.getUniqueId()
     )
   }
@@ -60,15 +60,15 @@ class IRBlockBase extends TIRBlock {
   }
 
   final int getInstructionCount() {
-    result = strictcount(getInstruction(_))
+    result = getInstructionCount(this)
   }
 
-  final FunctionIR getFunctionIR() {
-    result = getFirstInstruction(this).getFunctionIR()
+  final FunctionIR getEnclosingFunctionIR() {
+    result = getFirstInstruction(this).getEnclosingFunctionIR()
   }
 
-  final Function getFunction() {
-    result = getFirstInstruction(this).getFunction()
+  final Function getEnclosingFunction() {
+    result = getFirstInstruction(this).getEnclosingFunction()
   }
 }
 
@@ -88,6 +88,10 @@ class IRBlock extends IRBlockBase {
 
   final IRBlock getSuccessor(EdgeKind kind) {
     blockSuccessor(this, result, kind)
+  }
+
+  final IRBlock getBackEdgeSuccessor(EdgeKind kind) {
+    backEdgeSuccessor(this, result, kind)
   }
 
   final predicate immediatelyDominates(IRBlock block) {
@@ -112,7 +116,7 @@ class IRBlock extends IRBlockBase {
    * Holds if this block is reachable from the entry point of its function
    */
   final predicate isReachableFromFunctionEntry() {
-    this = getFunctionIR().getEntryBlock() or
+    this = getEnclosingFunctionIR().getEntryBlock() or
     getAPredecessor().isReachableFromFunctionEntry()
   }
 }
@@ -132,7 +136,10 @@ private predicate startsBasicBlock(Instruction instr) {
     exists(Instruction predecessor, EdgeKind kind |
       instr = predecessor.getSuccessor(kind) and
       not kind instanceof GotoEdge
-    )  // Incoming edge is not a GotoEdge
+    ) or  // Incoming edge is not a GotoEdge
+    exists(Instruction predecessor |
+      instr = Construction::getInstructionBackEdgeSuccessor(predecessor, _)
+    )  // A back edge enters this instruction
   )
 }
 
@@ -152,24 +159,13 @@ private cached module Cached {
     not startsBasicBlock(i2)
   }
 
-  /** Gets the index of `i` in its `IRBlock`. */
-  private int getMemberIndex(Instruction i) {
-    startsBasicBlock(i) and
-    result = 0
-    or
-    exists(Instruction iPrev |
-      adjacentInBlock(iPrev, i) and
-      result = getMemberIndex(iPrev) + 1
-    )
-  }
+  /** Holds if `i` is the `index`th instruction the block starting with `first`. */
+  private Instruction getInstructionFromFirst(Instruction first, int index) =
+    shortestDistances(startsBasicBlock/1, adjacentInBlock/2)(first, result, index)
 
   /** Holds if `i` is the `index`th instruction in `block`. */
   cached Instruction getInstruction(TIRBlock block, int index) {
-    exists(Instruction first |
-      block = MkIRBlock(first) and
-      index = getMemberIndex(result) and
-      adjacentInBlock*(first, result)
-    )
+    result = getInstructionFromFirst(getFirstInstruction(block), index)
   }
 
   cached int getInstructionCount(TIRBlock block) {
@@ -180,6 +176,41 @@ private cached module Cached {
     exists(Instruction predLast, Instruction succFirst |
       predLast = getInstruction(pred, getInstructionCount(pred) - 1) and
       succFirst = predLast.getSuccessor(kind) and
+      succ = MkIRBlock(succFirst)
+    )
+  }
+
+  cached predicate backEdgeSuccessor(TIRBlock pred, TIRBlock succ, EdgeKind kind) {
+    backEdgeSuccessorRaw(pred, succ, kind)
+    or
+    forwardEdgeRaw+(pred, pred) and
+    blockSuccessor(pred, succ, kind)
+  }
+
+  /**
+   * Holds if there is an edge from `pred` to `succ` that is not a back edge.
+   */
+  private predicate forwardEdgeRaw(TIRBlock pred, TIRBlock succ) {
+    exists(EdgeKind kind |
+      blockSuccessor(pred, succ, kind) and
+      not backEdgeSuccessorRaw(pred, succ, kind)
+    )
+  }
+
+  /**
+   * Holds if the `kind`-edge from `pred` to `succ` is a back edge according to
+   * `Construction`.
+   *
+   * There could be loops of non-back-edges if there is a flaw in the IR
+   * construction or back-edge detection, and this could cause non-termination
+   * of subsequent analysis. To prevent that, a subsequent predicate further
+   * classifies all edges as back edges if they are involved in a loop of
+   * non-back-edges.
+   */
+  private predicate backEdgeSuccessorRaw(TIRBlock pred, TIRBlock succ, EdgeKind kind) {
+    exists(Instruction predLast, Instruction succFirst |
+      predLast = getInstruction(pred, getInstructionCount(pred) - 1) and
+      succFirst = Construction::getInstructionBackEdgeSuccessor(predLast, kind) and
       succ = MkIRBlock(succFirst)
     )
   }

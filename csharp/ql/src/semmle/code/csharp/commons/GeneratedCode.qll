@@ -17,7 +17,9 @@ class FeatureFile extends GeneratedCodeFile {
 }
 
 /** An auto-generated XAML code file. */
-class XamlFile extends GeneratedCodeFile { XamlFile() { this.getBaseName().matches("%.g.cs") } }
+class XamlFile extends GeneratedCodeFile {
+  XamlFile() { this.getBaseName().matches("%.g.cs") }
+}
 
 /** An auto-generated XSD code file. */
 class AutogenXsdFile extends GeneratedCodeFile {

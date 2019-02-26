@@ -25,7 +25,9 @@ class TypeShiroWCPermission extends RefType {
   }
 }
 
-abstract class PermissionsConstruction extends Top { abstract Expr getInput(); }
+abstract class PermissionsConstruction extends Top {
+  abstract Expr getInput();
+}
 
 class PermissionsCheckMethodAccess extends MethodAccess, PermissionsConstruction {
   PermissionsCheckMethodAccess() {

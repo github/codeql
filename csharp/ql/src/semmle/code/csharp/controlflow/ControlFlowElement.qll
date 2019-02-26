@@ -51,9 +51,13 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
   predicate isLive() { exists(this.getAControlFlowNode()) }
 
   /** Holds if the current element is reachable from `src`. */
+  // potentially very large predicate, so must be inlined
+  pragma[inline]
   predicate reachableFrom(ControlFlowElement src) { this = src.getAReachableElement() }
 
   /** Gets an element that is reachable from this element. */
+  // potentially very large predicate, so must be inlined
+  pragma[inline]
   ControlFlowElement getAReachableElement() {
     // Reachable in same basic block
     exists(BasicBlock bb, int i, int j |

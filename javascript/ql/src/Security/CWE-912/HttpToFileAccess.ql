@@ -3,6 +3,7 @@
  * @description Writing user-controlled data directly to the file system allows arbitrary file upload and might indicate a backdoor.
  * @kind path-problem
  * @problem.severity warning
+ * @precision medium
  * @id js/http-to-file-access
  * @tags security
  *       external/cwe/cwe-912

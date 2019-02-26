@@ -119,13 +119,15 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
   override StmtContainer getEnclosingContainer() { result = getEnclosingStmt().getContainer() }
 
   /** Gets the number of lines in this function. */
-  int getNumberOfLines() { numlines(this, result, _, _) }
+  int getNumberOfLines() {
+    exists(int sl, int el | getLocation().hasLocationInfo(_, sl, _, el, _) | result = el - sl + 1)
+  }
 
   /** Gets the number of lines containing code in this function. */
-  int getNumberOfLinesOfCode() { numlines(this, _, result, _) }
+  int getNumberOfLinesOfCode() { result = LinesOfCode::getNumCodeLines(this) }
 
   /** Gets the number of lines containing comments in this function. */
-  int getNumberOfLinesOfComments() { numlines(this, _, _, result) }
+  int getNumberOfLinesOfComments() { result = LinesOfComments::getNumCommentLines(this) }
 
   /** Gets the cyclomatic complexity of this function. */
   int getCyclomaticComplexity() {
@@ -339,6 +341,118 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
    * This predicate is only populated for files extracted with full TypeScript extraction.
    */
   CanonicalFunctionName getCanonicalName() { ast_node_symbol(this, result) }
+}
+
+/**
+ * Provides predicates for computing lines-of-code information for functions.
+ */
+private module LinesOfCode {
+  /**
+   * Holds if `tk` is interesting for the purposes of counting lines of code, that is, it might
+   * contribute a line of code that isn't covered by any other token.
+   *
+   * A token is interesting if it is the first token on its line, or if it spans multiple lines.
+   */
+  private predicate isInteresting(Token tk) {
+    exists(int sl, int el | tk.getLocation().hasLocationInfo(_, sl, _, el, _) |
+      not tk.getPreviousToken().getLocation().getEndLine() = sl
+      or
+      sl != el
+    )
+  }
+
+  /**
+   * Gets the `i`th token in toplevel `tl`, but only if it is interesting.
+   */
+  pragma[noinline]
+  private Token getInterestingToken(TopLevel tl, int i) {
+    result.getTopLevel() = tl and
+    result.getIndex() = i and
+    isInteresting(result)
+  }
+
+  /**
+   * Holds if `f` covers tokens between indices `start` and `end` (inclusive) in toplevel `tl`.
+   */
+  predicate tokenRange(Function f, TopLevel tl, int start, int end) {
+    tl = f.getTopLevel() and
+    start = f.getFirstToken().getIndex() and
+    end = f.getLastToken().getIndex()
+  }
+
+  /**
+   * Gets an interesting token belonging to `f`.
+   */
+  private Token getAnInterestingToken(Function f) {
+    result = f.getFirstToken()
+    or
+    exists(TopLevel tl, int start, int end | tokenRange(f, tl, start, end) |
+      result = getInterestingToken(tl, [start .. end])
+    )
+  }
+
+  /**
+   * Gets the line number of a line covered by `f` that contains at least one token.
+   */
+  private int getACodeLine(Function f) {
+    exists(Location loc | loc = getAnInterestingToken(f).getLocation() |
+      result in [loc.getStartLine() .. loc.getEndLine()]
+    )
+  }
+
+  /**
+   * Gets the number of lines of code of `f`.
+   *
+   * Note the special handling of empty locations; this is needed to correctly deal with
+   * synthetic constructors.
+   */
+  int getNumCodeLines(Function f) {
+    if f.getLocation().isEmpty() then result = 0 else result = count(getACodeLine(f))
+  }
+}
+
+/**
+ * Provides predicates for computing lines-of-comments information for functions.
+ */
+private module LinesOfComments {
+  /**
+   * Holds if `tk` is interesting for the purposes of counting comments, that is,
+   * if it is preceded by a comment.
+   */
+  private predicate isInteresting(Token tk) { exists(Comment c | tk = c.getNextToken()) }
+
+  /**
+   * Gets the `i`th token in `tl`, if it is interesting.
+   */
+  pragma[noinline]
+  private Token getToken(TopLevel tl, int i) {
+    result.getTopLevel() = tl and
+    result.getIndex() = i and
+    isInteresting(result)
+  }
+
+  /**
+   * Gets a comment inside function `f`.
+   */
+  private Comment getAComment(Function f) {
+    exists(TopLevel tl, int start, int end | LinesOfCode::tokenRange(f, tl, start, end) |
+      result.getNextToken() = getToken(tl, [start + 1 .. end])
+    )
+  }
+
+  /**
+   * Gets a line covered by `f` on which at least one comment appears.
+   */
+  private int getACommentLine(Function f) {
+    exists(Location loc | loc = getAComment(f).getLocation() |
+      result in [loc.getStartLine() .. loc.getEndLine()]
+    )
+  }
+
+  /**
+   * Gets the number of lines with at least one comment in `f`.
+   */
+  int getNumCommentLines(Function f) { result = count(getACommentLine(f)) }
 }
 
 /**

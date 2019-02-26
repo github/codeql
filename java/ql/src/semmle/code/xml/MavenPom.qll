@@ -291,10 +291,14 @@ class PomElement extends XMLElement {
 }
 
 /** An XML element named "groupId", as found in Maven POM XML files. */
-class Group extends PomElement { Group() { this.getName() = "groupId" } }
+class Group extends PomElement {
+  Group() { this.getName() = "groupId" }
+}
 
 /** An XML element named "artifactId", as found in Maven POM XML files. */
-class Artifact extends PomElement { Artifact() { this.getName() = "artifactId" } }
+class Artifact extends PomElement {
+  Artifact() { this.getName() = "artifactId" }
+}
 
 /** An XML element named "parent", as found in Maven POM XML files. */
 class Parent extends ProtoPom {
@@ -304,13 +308,19 @@ class Parent extends ProtoPom {
 }
 
 /** An XML element named "version", as found in Maven POM XML files. */
-class Version extends PomElement { Version() { this.getName() = "version" } }
+class Version extends PomElement {
+  Version() { this.getName() = "version" }
+}
 
 /** An XML element named "name", as found in Maven POM XML files. */
-class Named extends PomElement { Named() { this.getName() = "name" } }
+class Named extends PomElement {
+  Named() { this.getName() = "name" }
+}
 
 /** An XML element named "scope", as found in Maven POM XML files. */
-class Scope extends PomElement { Scope() { this.getName() = "scope" } }
+class Scope extends PomElement {
+  Scope() { this.getName() = "scope" }
+}
 
 /** An XML element named "dependencies", as found in Maven POM XML files. */
 class Dependencies extends PomElement {
@@ -350,7 +360,9 @@ class PomProperties extends PomElement {
  * An XML element that is the child of a PomProperties element, as found in Maven POM XML files.
  * Represents a single property.
  */
-class PomProperty extends PomElement { PomProperty() { getParent() instanceof PomProperties } }
+class PomProperty extends PomElement {
+  PomProperty() { getParent() instanceof PomProperties }
+}
 
 /**
  * A folder that represents a maven local repository using the standard layout. Any folder called

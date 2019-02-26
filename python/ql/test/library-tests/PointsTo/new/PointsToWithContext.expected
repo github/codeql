@@ -403,6 +403,7 @@
 | i_imports.py:18 | ControlFlowNode for sys | Module sys | builtin-class module | 17 | import |
 | i_imports.py:23 | ControlFlowNode for ImportExpr | Module code | builtin-class module | 23 | import |
 | i_imports.py:23 | ControlFlowNode for code | Module code | builtin-class module | 23 | import |
+| i_imports.py:24 | ControlFlowNode for Attribute | Module code.package | builtin-class module | 0 | import |
 | i_imports.py:24 | ControlFlowNode for Attribute | Module code.package.x | builtin-class module | 0 | import |
 | i_imports.py:24 | ControlFlowNode for code | Module code | builtin-class module | 23 | import |
 | i_imports.py:27 | ControlFlowNode for ImportExpr | Module code.test_package | builtin-class module | 27 | import |
@@ -998,6 +999,13 @@
 | r_regressions.py:97 | ControlFlowNode for _names | tuple object | builtin-class tuple | 95 | import |
 | r_regressions.py:98 | ControlFlowNode for ImportExpr | Module time | builtin-class module | 98 | import |
 | r_regressions.py:98 | ControlFlowNode for t | Module time | builtin-class module | 98 | import |
+| r_regressions.py:100 | ControlFlowNode for C | class C | builtin-class type | 49 | import |
+| r_regressions.py:100 | ControlFlowNode for C() | C() | class C | 100 | import |
+| r_regressions.py:100 | ControlFlowNode for gv | C() | class C | 100 | import |
+| r_regressions.py:104 | ControlFlowNode for gv | C() | class C | 100 | import |
+| r_regressions.py:106 | ControlFlowNode for FunctionExpr | Function mod_gv | builtin-class function | 106 | import |
+| r_regressions.py:106 | ControlFlowNode for mod_gv | Function mod_gv | builtin-class function | 106 | import |
+| r_regressions.py:107 | ControlFlowNode for gv | C() | class C | 100 | runtime |
 | s_scopes.py:4 | ControlFlowNode for True | bool True | builtin-class bool | 4 | import |
 | s_scopes.py:4 | ControlFlowNode for float | bool True | builtin-class bool | 4 | import |
 | s_scopes.py:7 | ControlFlowNode for C2 | class C2 | builtin-class type | 7 | import |

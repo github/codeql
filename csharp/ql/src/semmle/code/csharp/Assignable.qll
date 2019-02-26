@@ -402,17 +402,14 @@ module AssignableInternal {
      * `a`, if any.
      */
     cached
-    Expr getAccessorCallValueArgument(Access a) {
-      a.getTarget() instanceof DeclarationWithAccessors and
-      (
-        exists(AssignExpr ae | tupleAssignmentDefinition(ae, a) |
-          tupleAssignmentPair(ae, a, result)
-        )
-        or
-        exists(Assignment ass | a = ass.getLValue() |
-          result = ass.getRValue() and
-          not ass.(AssignOperation).hasExpandedAssignment()
-        )
+    Expr getAccessorCallValueArgument(AccessorCall ac) {
+      exists(AssignExpr ae | tupleAssignmentDefinition(ae, ac) |
+        tupleAssignmentPair(ae, ac, result)
+      )
+      or
+      exists(Assignment ass | ac = ass.getLValue() |
+        result = ass.getRValue() and
+        not ass.(AssignOperation).hasExpandedAssignment()
       )
     }
   }
@@ -581,9 +578,7 @@ module AssignableDefinitions {
       leaf = rank[result + 1](Expr leaf0 |
           exists(TTupleAssignmentDefinition(ae, leaf0))
         |
-          leaf0
-          order by
-            leaf0.getLocation().getStartLine(), leaf0.getLocation().getStartColumn()
+          leaf0 order by leaf0.getLocation().getStartLine(), leaf0.getLocation().getStartColumn()
         )
     }
 

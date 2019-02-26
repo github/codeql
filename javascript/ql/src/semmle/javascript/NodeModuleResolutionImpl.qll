@@ -112,4 +112,6 @@ class MainModulePath extends PathExpr, @json_string {
   }
 }
 
-module MainModulePath { MainModulePath of(PackageJSON pkg) { result.getPackageJSON() = pkg } }
+module MainModulePath {
+  MainModulePath of(PackageJSON pkg) { result.getPackageJSON() = pkg }
+}

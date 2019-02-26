@@ -88,7 +88,12 @@ class Parameter extends DotNet::Parameter, StackVariable, @cil_parameter {
   override string toStringWithTypes() { result = getPrefix() + getType().toStringWithTypes() }
 
   private string getPrefix() {
-    if isOut() then result = "out " else if isRef() then result = "ref " else result = ""
+    if isOut()
+    then result = "out "
+    else
+      if isRef()
+      then result = "ref "
+      else result = ""
   }
 
   override Location getLocation() { result = getMethod().getLocation() }

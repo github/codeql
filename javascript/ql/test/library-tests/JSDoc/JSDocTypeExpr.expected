@@ -51,6 +51,10 @@
 | T | @return | 0 |
 | T | @return | 0 |
 | T | @return | 0 |
+| T1 | @param | 0 |
+| T2 | @param | 0 |
+| T3 | @param | 0 |
+| T4 | @param | 0 |
 | U | A.<U> | 0 |
 | X | @extends | 0 |
 | X | Foo.<X> | 0 |

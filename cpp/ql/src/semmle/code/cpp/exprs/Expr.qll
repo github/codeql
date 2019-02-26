@@ -2,6 +2,7 @@
 import semmle.code.cpp.Element
 private import semmle.code.cpp.Enclosing
 private import semmle.code.cpp.internal.ResolveClass
+private import semmle.code.cpp.internal.AddressConstantExpression
 
 /**
  * A C/C++ expression.
@@ -84,7 +85,12 @@ class Expr extends StmtParent, @expr {
   string getValueText() { exists(@value v | values(v,_,result) and valuebind(v,underlyingElement(this))) }
   
   /** Holds if this expression has a value that can be determined at compile time. */
-  predicate isConstant() { valuebind(_,underlyingElement(this)) }
+  cached
+  predicate isConstant() {
+    valuebind(_,underlyingElement(this))
+    or
+    addressConstantExpression(this)
+  }
 
   /**
    * Holds if this expression is side-effect free (conservative

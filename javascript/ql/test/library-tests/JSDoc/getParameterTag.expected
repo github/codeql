@@ -1,0 +1,15 @@
+| tst.js:146:37:146:44 | groupNum | groupNum | tst.js:142:4:142:9 | @param | groupNum | number |
+| tst.js:146:47:146:50 | term | term | tst.js:143:4:143:9 | @param | term | (string\|number\|null) |
+| tst.js:166:59:166:65 | element | element | tst.js:163:4:163:9 | @param | element | Element |
+| tst.js:220:28:220:28 | x | x | tst.js:219:5:219:10 | @param | x | goog.NumberLike |
+| tst.js:256:30:256:30 | t | t | tst.js:255:5:255:10 | @param | t | T |
+| tst.js:266:16:266:16 | t | t | tst.js:262:4:262:9 | @param | t | T |
+| tst.js:295:22:295:25 | fooY | fooY | tst.js:294:5:294:10 | @param | fooY | Foo.<Y> |
+| tst.js:307:31:307:31 | t | t | tst.js:306:5:306:10 | @param | t | T |
+| tst.js:343:21:343:21 | a | a | tst.js:339:4:339:9 | @param | a | T |
+| tst.js:360:15:360:19 | array | array | tst.js:357:4:357:9 | @param | array | Array.<number> |
+| tst.js:360:22:360:23 | fn | fn | tst.js:358:4:358:9 | @param | fn | function (x: !number, y: !number): number |
+| tst.js:366:27:366:27 | p | p | tst.js:364:6:364:11 | @param | p | T1 |
+| tst.js:371:15:371:15 | p | p | tst.js:369:6:369:11 | @param | p | T2 |
+| tst.js:378:15:378:15 | p | p | tst.js:376:6:376:11 | @param | p | T3 |
+| tst.js:383:15:383:15 | p | p | tst.js:381:6:381:11 | @param | p | T4 |

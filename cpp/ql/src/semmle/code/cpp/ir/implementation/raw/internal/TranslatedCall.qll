@@ -112,9 +112,18 @@ abstract class TranslatedCall extends TranslatedExpr {
     ) or
     (
       tag = CallSideEffectTag() and
+      hasSideEffect() and
       operandTag instanceof SideEffectOperandTag and
       result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
     )
+  }
+
+  override final Type getInstructionOperandType(InstructionTag tag,
+      TypedOperandTag operandTag) {
+    tag = CallSideEffectTag() and
+    hasSideEffect() and
+    operandTag instanceof SideEffectOperandTag and
+    result instanceof UnknownType
   }
 
   override final Instruction getResult() {
@@ -209,6 +218,12 @@ abstract class TranslatedCall extends TranslatedExpr {
   private predicate hasSideEffect() {
     hasReadSideEffect() or hasWriteSideEffect()
   }
+
+  override Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) {
+      hasSideEffect() and
+      tag = CallSideEffectTag() and
+      result = getResult()
+  }
 }
 
 /**
@@ -255,26 +270,22 @@ abstract class TranslatedDirectCall extends TranslatedCall {
  */
 abstract class TranslatedCallExpr extends TranslatedNonConstantExpr,
     TranslatedCall {
-  Call call;
-
-  TranslatedCallExpr() {
-    expr = call
-  }
+  override Call expr;
 
   override final Type getCallResultType() {
     result = getResultType()
   }
 
   override final predicate hasArguments() {
-    exists(call.getArgument(0))
+    exists(expr.getArgument(0))
   }
 
   override final TranslatedExpr getQualifier() {
-    result = getTranslatedExpr(call.getQualifier().getFullyConverted())
+    result = getTranslatedExpr(expr.getQualifier().getFullyConverted())
   }
 
   override final TranslatedExpr getArgument(int index) {
-    result = getTranslatedExpr(call.getArgument(index).getFullyConverted())
+    result = getTranslatedExpr(expr.getArgument(index).getFullyConverted())
   }
 }
 
@@ -282,14 +293,11 @@ abstract class TranslatedCallExpr extends TranslatedNonConstantExpr,
  * Represents the IR translation of a call through a function pointer.
  */
 class TranslatedExprCall extends TranslatedCallExpr {
-  ExprCall exprCall;
+  override ExprCall expr;
 
-  TranslatedExprCall() {
-    expr = exprCall
-  }
 
   override TranslatedExpr getCallTarget() {
-    result = getTranslatedExpr(exprCall.getExpr().getFullyConverted())
+    result = getTranslatedExpr(expr.getExpr().getFullyConverted())
   }
 }
 
@@ -297,22 +305,18 @@ class TranslatedExprCall extends TranslatedCallExpr {
  * Represents the IR translation of a direct function call.
  */
 class TranslatedFunctionCall extends TranslatedCallExpr, TranslatedDirectCall {
-  FunctionCall funcCall;
-
-  TranslatedFunctionCall() {
-    expr = funcCall
-  }
+  override FunctionCall expr;
 
   override Function getInstructionFunction(InstructionTag tag) {
-    tag = CallTargetTag() and result = funcCall.getTarget()
+    tag = CallTargetTag() and result = expr.getTarget()
   }
 
   override predicate hasReadSideEffect() {
-    not funcCall.getTarget().(SideEffectFunction).neverReadsMemory()
+    not expr.getTarget().(SideEffectFunction).neverReadsMemory()
   }
 
   override predicate hasWriteSideEffect() {
-    not funcCall.getTarget().(SideEffectFunction).neverWritesMemory()
+    not expr.getTarget().(SideEffectFunction).neverWritesMemory()
   }
 }
 
@@ -321,8 +325,8 @@ class TranslatedFunctionCall extends TranslatedCallExpr, TranslatedDirectCall {
  */
 class TranslatedStructorCall extends TranslatedFunctionCall {
   TranslatedStructorCall() {
-    funcCall instanceof ConstructorCall or
-    funcCall instanceof DestructorCall
+    expr instanceof ConstructorCall or
+    expr instanceof DestructorCall
   }
 
   override Instruction getQualifierResult() {

@@ -589,7 +589,9 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
 }
 
 /** A type that is the same as its source declaration. */
-class SrcRefType extends RefType { SrcRefType() { this.isSourceDeclaration() } }
+class SrcRefType extends RefType {
+  SrcRefType() { this.isSourceDeclaration() }
+}
 
 /** A class declaration. */
 class Class extends RefType, @class {
@@ -863,7 +865,9 @@ class PrimitiveType extends Type, @primitive {
 }
 
 /** The type of the `null` literal. */
-class NullType extends Type, @primitive { NullType() { this.hasName("<nulltype>") } }
+class NullType extends Type, @primitive {
+  NullType() { this.hasName("<nulltype>") }
+}
 
 /** The `void` type. */
 class VoidType extends Type, @primitive {

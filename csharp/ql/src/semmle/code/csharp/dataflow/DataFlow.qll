@@ -65,29 +65,24 @@ module DataFlow {
 
     override DotNet::Type getType() { result = this.getExpr().getType() }
 
-    override DotNet::Callable getEnclosingCallable() { result = this.getExpr().getEnclosingCallable() }
+    override DotNet::Callable getEnclosingCallable() {
+      result = this.getExpr().getEnclosingCallable()
+    }
 
     override string toString() {
-      exists(ControlFlow::Nodes::ElementNode cfn |
-        this = TExprNode(cfn) |
-        result = cfn.toString()
-      )
+      exists(ControlFlow::Nodes::ElementNode cfn | this = TExprNode(cfn) | result = cfn.toString())
       or
       this = TCilExprNode(_) and
       result = "CIL expression"
     }
 
     override Location getLocation() {
-      exists(ControlFlow::Nodes::ElementNode cfn |
-        this = TExprNode(cfn) |
+      exists(ControlFlow::Nodes::ElementNode cfn | this = TExprNode(cfn) |
         result = cfn.getLocation()
       )
       or
       result.getFile().isPdbSourceFile() and
-      exists(CIL::Expr e |
-        this = TCilExprNode(e) |
-        result = e.getALocation()
-      )
+      exists(CIL::Expr e | this = TCilExprNode(e) | result = e.getALocation())
     }
   }
 
@@ -118,9 +113,7 @@ module DataFlow {
    * Holds if data flows from `source` to `sink` in zero or more local
    * (intra-procedural) steps.
    */
-  predicate localFlow(Node source, Node sink) {
-    localFlowStep*(source, sink)
-  }
+  predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
 
   predicate localFlowStep = Internal::LocalFlow::step/2;
 
@@ -131,6 +124,7 @@ module DataFlow {
    */
   class PathNode extends Internal::TFlowGraphNode {
     Node node;
+
     Configuration config;
 
     PathNode() {
@@ -151,9 +145,7 @@ module DataFlow {
     Configuration getConfiguration() { result = config }
 
     /** Gets a successor path node, if any. */
-    PathNode getASuccessor() {
-      result = this.(Internal::FlowGraphNode).getASuccessor()
-    }
+    PathNode getASuccessor() { result = this.(Internal::FlowGraphNode).getASuccessor() }
   }
 
   /**
@@ -250,7 +242,9 @@ module DataFlow {
      * `p` via call `call` must be taken into account in the analysis, but
      * only in call context `cc`.
      */
-    predicate isAdditionalFlowStepIntoCall(Node call, Node arg, DotNet::Parameter p, CallContext cc) { none() }
+    predicate isAdditionalFlowStepIntoCall(Node call, Node arg, DotNet::Parameter p, CallContext cc) {
+      none()
+    }
 
     /**
      * INTERNAL: Do not use.
@@ -259,14 +253,14 @@ module DataFlow {
      * `call` must be taken into account in the analysis, but only in call
      * context `cc`.
      */
-    predicate isAdditionalFlowStepOutOfCall(Node call, Node ret, Node out, CallContext cc) { none() }
+    predicate isAdditionalFlowStepOutOfCall(Node call, Node ret, Node out, CallContext cc) {
+      none()
+    }
 
     /**
      * Holds if data may flow from `source` to `sink` for this configuration.
      */
-    predicate hasFlow(Node source, Node sink) {
-      Internal::flowsTo(_, source, _, sink, this)
-    }
+    predicate hasFlow(Node source, Node sink) { Internal::flowsTo(_, source, _, sink, this) }
 
     /**
      * Holds if data may flow from `source` to `sink` for this configuration.
@@ -312,7 +306,8 @@ module DataFlow {
      */
     predicate explicitParameterNode(SsaDefinitionNode node, Parameter p) {
       exists(Ssa::ExplicitDefinition def, AssignableDefinitions::ImplicitParameterDefinition pdef |
-        node = TSsaDefinitionNode(def) |
+        node = TSsaDefinitionNode(def)
+      |
         pdef = def.getADefinition() and
         p = pdef.getParameter()
       )
@@ -346,8 +341,7 @@ module DataFlow {
      * captured local scope variable `v`.
      */
     predicate implicitCapturedParameterNode(SsaDefinitionNode node, LocalScopeVariable v) {
-      exists(Ssa::ImplicitEntryDefinition def |
-        node = TSsaDefinitionNode(def) |
+      exists(Ssa::ImplicitEntryDefinition def | node = TSsaDefinitionNode(def) |
         def.getSourceVariable().getAssignable() = v
       )
     }
@@ -379,7 +373,7 @@ module DataFlow {
     }
 
     /** A data flow node that represents a call. */
-    private abstract class CallNode extends Node {
+    abstract private class CallNode extends Node {
       DotNet::Expr call;
 
       /** Gets the underlying call expression. */
@@ -389,9 +383,7 @@ module DataFlow {
        * Gets the argument call context corresponding to the `i`th argument
        * of this call.
        */
-      ArgumentCallContext getCallContext(int i) {
-        result.isArgument(call, i)
-      }
+      ArgumentCallContext getCallContext(int i) { result.isArgument(call, i) }
 
       /**
        * Gets the argument call context corresponding to the implicit parameter for
@@ -405,8 +397,7 @@ module DataFlow {
     /** A data flow node that represents an explicit call. */
     private class ExplicitCallNode extends CallNode, ExprNode {
       ExplicitCallNode() {
-        call = this.getExpr()
-        and
+        call = this.getExpr() and
         (call instanceof NonDelegateCall or call instanceof DelegateCall)
       }
     }
@@ -437,7 +428,7 @@ module DataFlow {
     }
 
     /** A data flow node that represents the output of a call. */
-    private abstract class OutNode extends Node { }
+    abstract private class OutNode extends Node { }
 
     /**
      * A data flow node that represents the explicit output of a call.
@@ -448,14 +439,15 @@ module DataFlow {
       ExplicitOutNode() {
         exists(DotNet::Expr e |
           e = this.asExpr() and
-          not e.getType() instanceof VoidType |
+          not e.getType() instanceof VoidType
+        |
           e instanceof NonDelegateCall or
           e instanceof DelegateCall
         )
         or
         this.(SsaDefinitionNode).getDefinition() = any(Ssa::ExplicitDefinition def |
-          def.getADefinition() instanceof AssignableDefinitions::OutRefDefinition
-        )
+            def.getADefinition() instanceof AssignableDefinitions::OutRefDefinition
+          )
       }
     }
 
@@ -488,9 +480,9 @@ module DataFlow {
     }
 
     /** A data flow node that represents a call argument. */
-    private abstract class ArgumentNode extends Node {
+    abstract private class ArgumentNode extends Node {
       /** Gets the context corresponding to this argument node. */
-      bindingset [config]
+      bindingset[config]
       abstract ArgumentContext getContext(Configuration config);
 
       /** Holds if this argument node does not have an associated control flow node. */
@@ -500,8 +492,7 @@ module DataFlow {
     /** A data flow node that represents an explicit call argument. */
     private class ExplicitArgumentNode extends ArgumentNode {
       ExplicitArgumentNode() {
-        exists(DotNet::Expr e |
-          e = this.asExpr() |
+        exists(DotNet::Expr e | e = this.asExpr() |
           e = any(NonDelegateCall ndc).getArgument(_) or
           e = any(DelegateCall dc).getAnArgument()
         )
@@ -513,8 +504,7 @@ module DataFlow {
        * Holds if this argument occurs at position `pos` in call `call`.
        */
       predicate isArgumentOf(CallNode call, int pos, Configuration config) {
-        exists(ExplicitParameterNode p |
-          flowIntoCallableStep(call, this, p, _, config) |
+        exists(ExplicitParameterNode p | flowIntoCallableStep(call, this, p, _, config) |
           pos = p.getParameter().getPosition()
         )
       }
@@ -523,13 +513,12 @@ module DataFlow {
        * Gets the argument call context corresponding to this explicit argument.
        */
       ArgumentCallContext getArgumentCallContext(Configuration config) {
-        exists(CallNode call, int pos |
-           this.isArgumentOf(call, pos, config) |
-           result = call.getCallContext(pos)
-         )
+        exists(CallNode call, int pos | this.isArgumentOf(call, pos, config) |
+          result = call.getCallContext(pos)
+        )
       }
 
-      bindingset [config]
+      bindingset[config]
       override ExplicitArgumentContext getContext(Configuration config) {
         result.getCallContext() = this.getArgumentCallContext(config)
       }
@@ -558,6 +547,7 @@ module DataFlow {
      */
     private class ImplicitCapturedArgumentNode extends ArgumentNode, TImplicitCapturedArgumentNode {
       Call c;
+
       LocalScopeVariable v;
 
       ImplicitCapturedArgumentNode() { this = TImplicitCapturedArgumentNode(c, v) }
@@ -573,13 +563,12 @@ module DataFlow {
        * using one or more calls.
        */
       predicate flowsIn(Ssa::ImplicitEntryDefinition def) {
-        exists(Ssa::ExplicitDefinition edef |
-          edef.isCapturedVariableDefinitionFlowIn(def, c) |
+        exists(Ssa::ExplicitDefinition edef | edef.isCapturedVariableDefinitionFlowIn(def, c) |
           v = def.getSourceVariable().getAssignable()
         )
       }
 
-      bindingset [config]
+      bindingset[config]
       override ImplicitCapturedArgumentContext getContext(Configuration config) {
         result.getArgument() = this and
         exists(config) // eliminate warning
@@ -599,7 +588,7 @@ module DataFlow {
     /**
      * A data flow node that represents a value returned by a callable.
      */
-    private abstract class ReturnNode extends Node { }
+    abstract private class ReturnNode extends Node { }
 
     /**
      * A data flow node that represents an expression returned explicitly by a callable.
@@ -608,8 +597,7 @@ module DataFlow {
      */
     private class ExplicitReturnNode extends ReturnNode, ExprNode {
       ExplicitReturnNode() {
-        exists(DotNet::Callable c, DotNet::Expr e |
-          e = this.getExpr() |
+        exists(DotNet::Callable c, DotNet::Expr e | e = this.getExpr() |
           c.canReturn(e) or
           c.(Callable).canYieldReturn(e) or
           callableReturnsOutOrRef(c, _, e)
@@ -652,36 +640,37 @@ module DataFlow {
       }
     }
 
-   /**
-    * Gets a source declaration of callable `c` that has a body.
-    * If the callable has both CIL and source code, return only the source
-    * code version.
-    */
+    /**
+     * Gets a source declaration of callable `c` that has a body.
+     * If the callable has both CIL and source code, return only the source
+     * code version.
+     */
     private DotNet::Callable getCallableForDataFlow(DotNet::Callable c) {
-      result.hasBody()
-      and
-      exists(DotNet::Callable sourceDecl |
-        sourceDecl = c.getSourceDeclaration() |
-        if sourceDecl.getFile().fromSource() then
+      result.hasBody() and
+      exists(DotNet::Callable sourceDecl | sourceDecl = c.getSourceDeclaration() |
+        if sourceDecl.getFile().fromSource()
+        then
           // C# callable with C# implementation in the database
           result = sourceDecl
-        else if sourceDecl instanceof CIL::Callable then
-          // CIL callable with C# implementation in the database
-          sourceDecl.matchesHandle(result.(Callable))
-          or
-          // CIL callable without C# implementation in the database
-          not sourceDecl.matchesHandle(any(Callable k)) and
-          result = sourceDecl
         else
-          // C# callable without C# implementation in the database
-          sourceDecl.matchesHandle(result.(CIL::Callable))
+          if sourceDecl instanceof CIL::Callable
+          then
+            // CIL callable with C# implementation in the database
+            sourceDecl.matchesHandle(result.(Callable))
+            or
+            // CIL callable without C# implementation in the database
+            not sourceDecl.matchesHandle(any(Callable k)) and
+            result = sourceDecl
+          else
+            // C# callable without C# implementation in the database
+            sourceDecl.matchesHandle(result.(CIL::Callable))
       )
     }
 
     /**
      * A non-delegate call. Either a C# call or a CIL call.
      */
-    private abstract class NonDelegateCall extends DotNet::Expr {
+    abstract private class NonDelegateCall extends DotNet::Expr {
       /**
        * Gets a run-time target of this call. A target is always a source
        * declaration, and if the callable has both CIL and source code, only
@@ -696,17 +685,13 @@ module DataFlow {
     private class CSharpCall extends NonDelegateCall, Expr {
       DispatchCall dc;
 
-      CSharpCall() {
-        this = dc.getCall()
-      }
+      CSharpCall() { this = dc.getCall() }
 
       override DotNet::Callable getARuntimeTarget() {
         result = getCallableForDataFlow(dc.getADynamicTarget())
       }
 
-      override Expr getArgument(int i) {
-        result = dc.getArgument(i)
-      }
+      override Expr getArgument(int i) { result = dc.getArgument(i) }
     }
 
     private class CilCall extends NonDelegateCall {
@@ -722,9 +707,7 @@ module DataFlow {
         result = getCallableForDataFlow(call.getTarget().getAnOverrider*())
       }
 
-      override CIL::Expr getArgument(int i) {
-        result = call.getArgument(i)
-      }
+      override CIL::Expr getArgument(int i) { result = call.getArgument(i) }
     }
 
     /**
@@ -742,7 +725,12 @@ module DataFlow {
        * indicates whether a transitive child of `scope` is allowed
        * (`exactScope = false`).
        */
-      predicate stepsToExpr(Expr exprFrom, Expr exprTo, ControlFlowElement scope, boolean exactScope, boolean isSuccessor) { none() }
+      predicate stepsToExpr(
+        Expr exprFrom, Expr exprTo, ControlFlowElement scope, boolean exactScope,
+        boolean isSuccessor
+      ) {
+        none()
+      }
 
       /**
        * Holds if data can flow from expression `exprFrom` to definition `defTo`,
@@ -750,11 +738,20 @@ module DataFlow {
        * specified by `isSuccesor`) inside the scope `scope`. The Bolean `exactScope`
        * indicates whether a transitive child of `scope` is allowed (`exactScope = false`).
        */
-      predicate stepsToDefinition(Expr exprFrom, AssignableDefinition defTo, ControlFlowElement scope, boolean exactScope, boolean isSuccessor) { none() }
+      predicate stepsToDefinition(
+        Expr exprFrom, AssignableDefinition defTo, ControlFlowElement scope, boolean exactScope,
+        boolean isSuccessor
+      ) {
+        none()
+      }
 
-      private predicate reachesBasicBlockExprRec(Expr exprFrom, Expr exprTo, ControlFlowElement scope, boolean exactScope, boolean isSuccessor, ControlFlow::Nodes::ElementNode cfnFrom, ControlFlow::BasicBlock bb) {
+      private predicate reachesBasicBlockExprRec(
+        Expr exprFrom, Expr exprTo, ControlFlowElement scope, boolean exactScope,
+        boolean isSuccessor, ControlFlow::Nodes::ElementNode cfnFrom, ControlFlow::BasicBlock bb
+      ) {
         exists(ControlFlow::BasicBlock mid |
-          this.reachesBasicBlockExpr(exprFrom, exprTo, scope, exactScope, isSuccessor, cfnFrom, mid) |
+          this.reachesBasicBlockExpr(exprFrom, exprTo, scope, exactScope, isSuccessor, cfnFrom, mid)
+        |
           isSuccessor = true and
           bb = mid.getASuccessor()
           or
@@ -764,13 +761,18 @@ module DataFlow {
       }
 
       pragma[nomagic]
-      private predicate reachesBasicBlockExpr(Expr exprFrom, Expr exprTo, ControlFlowElement scope, boolean exactScope, boolean isSuccessor, ControlFlow::Nodes::ElementNode cfnFrom, ControlFlow::BasicBlock bb) {
+      private predicate reachesBasicBlockExpr(
+        Expr exprFrom, Expr exprTo, ControlFlowElement scope, boolean exactScope,
+        boolean isSuccessor, ControlFlow::Nodes::ElementNode cfnFrom, ControlFlow::BasicBlock bb
+      ) {
         this.stepsToExpr(exprFrom, exprTo, scope, exactScope, isSuccessor) and
         cfnFrom = exprFrom.getAControlFlowNode() and
         bb = cfnFrom.getBasicBlock()
         or
         exists(ControlFlowElement scope0, boolean exactScope0 |
-          this.reachesBasicBlockExprRec(exprFrom, exprTo, scope0, exactScope0, isSuccessor, cfnFrom, bb) and
+          this
+              .reachesBasicBlockExprRec(exprFrom, exprTo, scope0, exactScope0, isSuccessor, cfnFrom,
+                bb) and
           this.stepsToExpr(exprFrom, exprTo, scope, exactScope, isSuccessor)
         |
           exactScope0 = false and
@@ -781,9 +783,15 @@ module DataFlow {
         )
       }
 
-      private predicate reachesBasicBlockDefinitionRec(Expr exprFrom, AssignableDefinition defTo, ControlFlowElement scope, boolean exactScope, boolean isSuccessor, ControlFlow::Nodes::ElementNode cfnFrom, ControlFlow::BasicBlock bb) {
+      private predicate reachesBasicBlockDefinitionRec(
+        Expr exprFrom, AssignableDefinition defTo, ControlFlowElement scope, boolean exactScope,
+        boolean isSuccessor, ControlFlow::Nodes::ElementNode cfnFrom, ControlFlow::BasicBlock bb
+      ) {
         exists(ControlFlow::BasicBlock mid |
-          this.reachesBasicBlockDefinition(exprFrom, defTo, scope, exactScope, isSuccessor, cfnFrom, mid) |
+          this
+              .reachesBasicBlockDefinition(exprFrom, defTo, scope, exactScope, isSuccessor, cfnFrom,
+                mid)
+        |
           isSuccessor = true and
           bb = mid.getASuccessor()
           or
@@ -791,16 +799,20 @@ module DataFlow {
           bb = mid.getAPredecessor()
         )
       }
-      
 
       pragma[nomagic]
-      private predicate reachesBasicBlockDefinition(Expr exprFrom, AssignableDefinition defTo, ControlFlowElement scope, boolean exactScope, boolean isSuccessor, ControlFlow::Nodes::ElementNode cfnFrom, ControlFlow::BasicBlock bb) {
+      private predicate reachesBasicBlockDefinition(
+        Expr exprFrom, AssignableDefinition defTo, ControlFlowElement scope, boolean exactScope,
+        boolean isSuccessor, ControlFlow::Nodes::ElementNode cfnFrom, ControlFlow::BasicBlock bb
+      ) {
         this.stepsToDefinition(exprFrom, defTo, scope, exactScope, isSuccessor) and
         cfnFrom = exprFrom.getAControlFlowNode() and
         bb = cfnFrom.getBasicBlock()
         or
         exists(ControlFlowElement scope0, boolean exactScope0 |
-          this.reachesBasicBlockDefinitionRec(exprFrom, defTo, scope0, exactScope0, isSuccessor, cfnFrom, bb) and
+          this
+              .reachesBasicBlockDefinitionRec(exprFrom, defTo, scope0, exactScope0, isSuccessor,
+                cfnFrom, bb) and
           this.stepsToDefinition(exprFrom, defTo, scope, exactScope, isSuccessor)
         |
           exactScope0 = false and
@@ -812,16 +824,24 @@ module DataFlow {
       }
 
       private predicate hasExprStep(ExprNode nodeFrom, ExprNode nodeTo) {
-        exists(Expr exprFrom, Expr exprTo, ControlFlow::Nodes::ElementNode cfnFrom, ControlFlow::BasicBlock bb |
-          this.reachesBasicBlockExpr(exprFrom, exprTo, _, _, _, cfnFrom, bb) |
+        exists(
+          Expr exprFrom, Expr exprTo, ControlFlow::Nodes::ElementNode cfnFrom,
+          ControlFlow::BasicBlock bb
+        |
+          this.reachesBasicBlockExpr(exprFrom, exprTo, _, _, _, cfnFrom, bb)
+        |
           exprFrom = nodeFrom.asExprAtNode(cfnFrom) and
           exprTo = nodeTo.asExprAtNode(bb.getANode())
         )
       }
 
       private predicate hasSsaDefinitionStep(ExprNode nodeFrom, SsaDefinitionNode nodeTo) {
-        exists(Expr exprFrom, AssignableDefinition defTo, Ssa::ExplicitDefinition ssaDef, ControlFlow::Nodes::ElementNode cfnFrom, ControlFlow::BasicBlock bb |
-          this.reachesBasicBlockDefinition(exprFrom, defTo, _, _, _, cfnFrom, bb) |
+        exists(
+          Expr exprFrom, AssignableDefinition defTo, Ssa::ExplicitDefinition ssaDef,
+          ControlFlow::Nodes::ElementNode cfnFrom, ControlFlow::BasicBlock bb
+        |
+          this.reachesBasicBlockDefinition(exprFrom, defTo, _, _, _, cfnFrom, bb)
+        |
           exprFrom = nodeFrom.asExprAtNode(cfnFrom) and
           ssaDef.getADefinition() = defTo and
           ssaDef.getBasicBlock() = bb and
@@ -844,7 +864,10 @@ module DataFlow {
       private class LocalExprStepConfiguration extends ExprStepConfiguration {
         LocalExprStepConfiguration() { this = "LocalExprStepConfiguration" }
 
-        override predicate stepsToExpr(Expr exprFrom, Expr exprTo, ControlFlowElement scope, boolean exactScope, boolean isSuccessor) {
+        override predicate stepsToExpr(
+          Expr exprFrom, Expr exprTo, ControlFlowElement scope, boolean exactScope,
+          boolean isSuccessor
+        ) {
           exactScope = false and
           (
             // Flow using library code
@@ -855,9 +878,9 @@ module DataFlow {
             isSuccessor = true
             or
             exprTo = any(ConditionalExpr ce |
-              exprFrom = ce.getThen() or
-              exprFrom = ce.getElse()
-            ) and
+                exprFrom = ce.getThen() or
+                exprFrom = ce.getElse()
+              ) and
             scope = exprTo and
             isSuccessor = false
             or
@@ -871,15 +894,18 @@ module DataFlow {
             or
             // An `=` expression, where the result of the expression is used
             exprTo = any(AssignExpr ae |
-              ae.getParent() instanceof Expr and
-              exprFrom = ae.getRValue()
-            ) and
+                ae.getParent() instanceof Expr and
+                exprFrom = ae.getRValue()
+              ) and
             scope = exprTo and
             isSuccessor = true
           )
         }
 
-        override predicate stepsToDefinition(Expr exprFrom, AssignableDefinition def, ControlFlowElement scope, boolean exactScope, boolean isSuccessor) {
+        override predicate stepsToDefinition(
+          Expr exprFrom, AssignableDefinition def, ControlFlowElement scope, boolean exactScope,
+          boolean isSuccessor
+        ) {
           // Flow from source to definition
           exactScope = false and
           def.getSource() = exprFrom and
@@ -891,7 +917,10 @@ module DataFlow {
             isSuccessor = false
             or
             exists(SwitchStmt ss |
-              ss = def.(AssignableDefinitions::TypeCasePatternDefinition).getTypeCase().getSwitchStmt() and
+              ss = def
+                    .(AssignableDefinitions::TypeCasePatternDefinition)
+                    .getTypeCase()
+                    .getSwitchStmt() and
               isSuccessor = true
             |
               scope = ss.getCondition()
@@ -914,27 +943,31 @@ module DataFlow {
         or
         // Flow from SSA definition to first read
         exists(Ssa::Definition def, ControlFlow::Node cfn |
-          def = nodeFrom.(SsaDefinitionNode).getDefinition() |
+          def = nodeFrom.(SsaDefinitionNode).getDefinition()
+        |
           nodeTo.asExprAtNode(cfn) = def.getAFirstReadAtNode(cfn)
         )
         or
         // Flow from read to next read
         exists(ControlFlow::Node cfnFrom, ControlFlow::Node cfnTo |
-          Ssa::Internal::adjacentReadPairSameVar(cfnFrom, cfnTo) |
+          Ssa::Internal::adjacentReadPairSameVar(cfnFrom, cfnTo)
+        |
           nodeFrom = TExprNode(cfnFrom) and
           nodeTo = TExprNode(cfnTo)
         )
         or
         // Flow into SSA pseudo definition
         exists(Ssa::Definition def, Ssa::PseudoDefinition pseudo |
-          localFlowSsaInput(nodeFrom, def) |
+          localFlowSsaInput(nodeFrom, def)
+        |
           pseudo = nodeTo.(SsaDefinitionNode).getDefinition() and
           def = pseudo.getAnInput()
         )
         or
         // Flow into uncertain SSA definition
         exists(Ssa::Definition def, UncertainExplicitSsaDefinition uncertain |
-          localFlowSsaInput(nodeFrom, def) |
+          localFlowSsaInput(nodeFrom, def)
+        |
           uncertain = nodeTo.(SsaDefinitionNode).getDefinition() and
           def = uncertain.getPriorDefinition()
         )
@@ -952,7 +985,8 @@ module DataFlow {
       }
 
       predicate localFlowStepCil(Node nodeFrom, Node nodeTo) {
-        asCilDataFlowNode(nodeFrom).getALocalFlowSucc(asCilDataFlowNode(nodeTo), any(CIL::Untainted t))
+        asCilDataFlowNode(nodeFrom)
+            .getALocalFlowSucc(asCilDataFlowNode(nodeTo), any(CIL::Untainted t))
       }
 
       /**
@@ -967,8 +1001,8 @@ module DataFlow {
           this instanceof Ssa::ExplicitDefinition
           or
           this = any(Ssa::ImplicitQualifierDefinition qdef |
-            qdef.getQualifierDefinition() instanceof UncertainExplicitSsaDefinition
-          )
+              qdef.getQualifierDefinition() instanceof UncertainExplicitSsaDefinition
+            )
         }
       }
 
@@ -981,16 +1015,16 @@ module DataFlow {
         def = nodeFrom.(SsaDefinitionNode).getDefinition() and
         not exists(def.getARead())
         or
-        exists(AssignableRead read, ControlFlow::Node cfn |
-          read = nodeFrom.asExprAtNode(cfn) |
+        exists(AssignableRead read, ControlFlow::Node cfn | read = nodeFrom.asExprAtNode(cfn) |
           def.getALastReadAtNode(cfn) = read
         )
       }
 
-      private predicate localFlowCapturedVarStep(SsaDefinitionNode nodeFrom, ImplicitCapturedArgumentNode nodeTo) {
+      private predicate localFlowCapturedVarStep(
+        SsaDefinitionNode nodeFrom, ImplicitCapturedArgumentNode nodeTo
+      ) {
         // Flow from SSA definition to implicit captured variable argument
-        exists(Ssa::ExplicitDefinition def, Call call |
-          def = nodeFrom.getDefinition() |
+        exists(Ssa::ExplicitDefinition def, Call call | def = nodeFrom.getDefinition() |
           def.isCapturedVariableDefinitionFlowIn(_, call) and
           nodeTo = TImplicitCapturedArgumentNode(call, def.getSourceVariable().getAssignable())
         )
@@ -1000,14 +1034,15 @@ module DataFlow {
         libraryFlow(exprFrom, exprTo, preservesValue) and
         result = exprFrom
         or
-        exists(Expr mid |
-          mid = getALibraryFlowParent(exprFrom, exprTo, preservesValue) |
+        exists(Expr mid | mid = getALibraryFlowParent(exprFrom, exprTo, preservesValue) |
           result.getAChildExpr() = mid and
           not mid.getAChildExpr*() = exprTo
         )
       }
 
-      predicate libraryFlow(Expr exprFrom, Expr exprTo, Expr scope, boolean isSuccessor, boolean preservesValue) {
+      predicate libraryFlow(
+        Expr exprFrom, Expr exprTo, Expr scope, boolean isSuccessor, boolean preservesValue
+      ) {
         // To not pollute the definitions in `LibraryTypeDataFlow.qll` with syntactic scope,
         // simply use the nearest common parent expression for `exprFrom` and `exprTo`
         scope = getALibraryFlowParent(exprFrom, exprTo, preservesValue) and
@@ -1025,7 +1060,7 @@ module DataFlow {
       /**
        * Holds if data may flow in one local step from `pred` to `succ`.
        */
-      bindingset [config]
+      bindingset[config]
       predicate localFlowStep(Node pred, Node succ, Configuration config) {
         localFlowStepNoConfig(pred, succ) or
         config.isAdditionalFlowStep(pred, succ)
@@ -1059,7 +1094,7 @@ module DataFlow {
         )
       }
 
-      pragma [noinline]
+      pragma[noinline]
       private predicate localFlowStepCand(Node node1, Node node2, Configuration config) {
         localFlowStep(node1, node2, config) and
         Pruning::nodeCand(node2, config)
@@ -1086,7 +1121,7 @@ module DataFlow {
        * Holds if `node1` can step to `node2` in one or more local steps and this
        * path can occur as a maximal subsequence of local steps in a data flow path.
        */
-      pragma [noinline]
+      pragma[noinline]
       predicate localFlowBigStep(Node node1, Node node2, Configuration config) {
         localFlowStepPlus(node1, node2, config) and
         localFlowExit(node2, config)
@@ -1108,23 +1143,15 @@ module DataFlow {
         (
           config.isSource(node)
           or
-          exists(Node mid |
-            nodeCandFwd1(mid, config) |
-            LocalFlow::localFlowStep(mid, node, config)
-          )
+          exists(Node mid | nodeCandFwd1(mid, config) | LocalFlow::localFlowStep(mid, node, config))
           or
-          exists(Node mid |
-            nodeCandFwd1(mid, config) |
-            jumpStep(mid, node)
-          )
+          exists(Node mid | nodeCandFwd1(mid, config) | jumpStep(mid, node))
           or
-          exists(ArgumentNode arg |
-            nodeCandFwd1(arg, config) |
+          exists(ArgumentNode arg | nodeCandFwd1(arg, config) |
             flowIntoCallableStep(_, arg, node, _, config)
           )
           or
-          exists(Node mid |
-            nodeCandFwd1(mid, config) |
+          exists(Node mid | nodeCandFwd1(mid, config) |
             flowOutOfCallableStep(_, mid, node, _, config)
           )
         )
@@ -1139,25 +1166,15 @@ module DataFlow {
         (
           config.isSink(node)
           or
-          exists(Node mid |
-            nodeCand1(mid, config) |
-            LocalFlow::localFlowStep(node, mid, config)
-          )
+          exists(Node mid | nodeCand1(mid, config) | LocalFlow::localFlowStep(node, mid, config))
           or
-          exists(Node mid |
-            nodeCand1(mid, config) |
-            jumpStep(node, mid)
-          )
+          exists(Node mid | nodeCand1(mid, config) | jumpStep(node, mid))
           or
-          exists(ParameterNode p |
-            nodeCand1(p, config) |
+          exists(ParameterNode p | nodeCand1(p, config) |
             flowIntoCallableStep(_, node, p, _, config)
           )
           or
-          exists(Node mid |
-            nodeCand1(mid, config) |
-            flowOutOfCallableStep(_, node, mid, _, config)
-          )
+          exists(Node mid | nodeCand1(mid, config) | flowOutOfCallableStep(_, node, mid, _, config))
         )
       }
 
@@ -1170,14 +1187,12 @@ module DataFlow {
         nodeCand1(node, config) and
         p = node
         or
-        exists(Node mid |
-          simpleParameterFlow(p, mid, config) |
+        exists(Node mid | simpleParameterFlow(p, mid, config) |
           nodeCand1(mid, config) and
           LocalFlow::localFlowStep(mid, node, config)
         )
         or
-        exists(ArgumentNode arg |
-          simpleParameterFlow(p, arg, config) |
+        exists(ArgumentNode arg | simpleParameterFlow(p, arg, config) |
           nodeCand1(arg, config) and
           simpleArgumentFlowsThrough(arg, node, config)
         )
@@ -1188,28 +1203,35 @@ module DataFlow {
        * part of a path from a source to a sink, taking simple call contexts into
        * consideration.
        */
-      private predicate simpleArgumentFlowsThrough(ArgumentNode arg, OutNode out, Configuration config) {
+      private predicate simpleArgumentFlowsThrough(
+        ArgumentNode arg, OutNode out, Configuration config
+      ) {
         exists(CallNode call, ParameterNode p, ReturnNode ret |
-          simpleParameterFlow(p, ret, config) |
+          simpleParameterFlow(p, ret, config)
+        |
           flowIntoCallableStepCand1(call, arg, p, config) and
           flowOutOfCallableStepCand1(call, ret, out, config)
         )
       }
 
-      pragma [noinline]
+      pragma[noinline]
       private predicate localFlowStepCand1(Node pred, Node succ, Configuration config) {
         nodeCand1(succ, config) and
         LocalFlow::localFlowStep(pred, succ, config)
       }
 
-      pragma [noinline]
-      predicate flowIntoCallableStepCand1(CallNode call, ArgumentNode arg, ParameterNode p, Configuration config) {
+      pragma[noinline]
+      predicate flowIntoCallableStepCand1(
+        CallNode call, ArgumentNode arg, ParameterNode p, Configuration config
+      ) {
         nodeCand1(p, config) and
         flowIntoCallableStep(call, arg, p, _, config)
       }
 
-      pragma [noinline]
-      private predicate flowOutOfCallableStepCand1(CallNode call, ReturnNode ret, OutNode out, Configuration config) {
+      pragma[noinline]
+      private predicate flowOutOfCallableStepCand1(
+        CallNode call, ReturnNode ret, OutNode out, Configuration config
+      ) {
         nodeCand1(out, config) and
         flowOutOfCallableStep(call, ret, out, _, config)
       }
@@ -1223,50 +1245,49 @@ module DataFlow {
         config.isSource(node) and
         fromArg = false
         or
-        exists(Node mid |
-          nodeCandFwd2(mid, fromArg, config) |
+        exists(Node mid | nodeCandFwd2(mid, fromArg, config) |
           localFlowStepCand1(mid, node, config)
         )
         or
         nodeCand1(node, config) and
-        exists(Node mid |
-          nodeCandFwd2(mid, _, config) |
+        exists(Node mid | nodeCandFwd2(mid, _, config) |
           jumpStep(mid, node) and
           fromArg = false
         )
         or
-        exists(ArgumentNode arg |
-          nodeCandFwd2(arg, _, config) |
+        exists(ArgumentNode arg | nodeCandFwd2(arg, _, config) |
           flowIntoCallableStepCand1(_, arg, node, config) and
           fromArg = true
         )
         or
-        exists(ReturnNode ret |
-          nodeCandFwd2(ret, false, config) |
+        exists(ReturnNode ret | nodeCandFwd2(ret, false, config) |
           flowOutOfCallableStepCand1(_, ret, node, config) and
           fromArg = false
         )
         or
-        exists(ArgumentNode arg |
-          nodeCandFwd2(arg, fromArg, config) |
+        exists(ArgumentNode arg | nodeCandFwd2(arg, fromArg, config) |
           simpleArgumentFlowsThrough(arg, node, config)
         )
       }
 
-      pragma [noinline]
+      pragma[noinline]
       private predicate localFlowStepCandFwd2(Node pred, Node succ, Configuration config) {
         nodeCandFwd2(pred, _, config) and
         LocalFlow::localFlowStep(pred, succ, config)
       }
 
-      pragma [noinline]
-      private predicate flowIntoCallableStepCandFwd2(ArgumentNode arg, ParameterNode p, Configuration config) {
+      pragma[noinline]
+      private predicate flowIntoCallableStepCandFwd2(
+        ArgumentNode arg, ParameterNode p, Configuration config
+      ) {
         nodeCandFwd2(arg, _, config) and
         flowIntoCallableStep(_, arg, p, _, config)
       }
 
-      pragma [noinline]
-      private predicate flowOutOfCallableStepCandFwd2(CallNode call, ReturnNode ret, OutNode out, CallContext cc, Configuration config) {
+      pragma[noinline]
+      private predicate flowOutOfCallableStepCandFwd2(
+        CallNode call, ReturnNode ret, OutNode out, CallContext cc, Configuration config
+      ) {
         nodeCandFwd2(ret, _, config) and
         flowOutOfCallableStep(call, ret, out, cc, config)
       }
@@ -1280,33 +1301,28 @@ module DataFlow {
         config.isSink(node) and
         isReturned = false
         or
-        exists(Node mid |
-          nodeCand2(mid, isReturned, config) |
+        exists(Node mid | nodeCand2(mid, isReturned, config) |
           localFlowStepCandFwd2(node, mid, config)
         )
         or
         nodeCandFwd2(node, _, config) and
-        exists(Node mid |
-          nodeCand2(mid, _, config) |
+        exists(Node mid | nodeCand2(mid, _, config) |
           jumpStep(node, mid) and
           isReturned = false
         )
         or
-        exists(ParameterNode param |
-          nodeCand2(param, false, config) |
+        exists(ParameterNode param | nodeCand2(param, false, config) |
           flowIntoCallableStepCandFwd2(node, param, config) and
           isReturned = false
         )
         or
-        exists(OutNode out |
-          nodeCand2(out, _, config) |
+        exists(OutNode out | nodeCand2(out, _, config) |
           flowOutOfCallableStepCandFwd2(_, node, out, _, config) and
           isReturned = true
         )
         or
         nodeCandFwd2(node, _, config) and
-        exists(OutNode out |
-          nodeCand2(out, isReturned, config) |
+        exists(OutNode out | nodeCand2(out, isReturned, config) |
           simpleArgumentFlowsThrough(node, out, config)
         )
       }
@@ -1315,41 +1331,31 @@ module DataFlow {
        * Holds if `node` is part of a path from a source to a sink in the
        * configuration `config`, taking simple call contexts into consideration.
        */
-      predicate nodeCand(Node node, Configuration config) {
-        nodeCand2(node, _, config)
-      }
+      predicate nodeCand(Node node, Configuration config) { nodeCand2(node, _, config) }
     }
 
     // A workaround to avoid eager joining on configurations
-    private bindingset[config, result] Configuration unbind(Configuration config) {
-      result >= config and result <= config
-    }
+    bindingset[config, result]
+    private Configuration unbind(Configuration config) { result >= config and result <= config }
 
     /**
      * A collection of cached types and predicates to be evaluated in the
      * same stage.
      */
-    cached module Cached {
-      cached predicate forceCachingInSameStage() { any() }
+    cached
+    module Cached {
+      cached
+      predicate forceCachingInSameStage() { any() }
 
-      cached newtype TNode =
-        TExprNode(ControlFlow::Nodes::ElementNode cfn) {
-          cfn.getElement() instanceof Expr
-        }
-        or
-        TSsaDefinitionNode(Ssa::Definition def)
-        or
-        TCilParameterNode(CIL::Parameter p) {
-          p.getMethod().hasBody()
-        }
-        or
-        TCilExprNode(CIL::Expr e)
-        or
-        TImplicitDelegateCallNode(DelegateArgumentToLibraryCallable arg)
-        or
+      cached
+      newtype TNode =
+        TExprNode(ControlFlow::Nodes::ElementNode cfn) { cfn.getElement() instanceof Expr } or
+        TSsaDefinitionNode(Ssa::Definition def) or
+        TCilParameterNode(CIL::Parameter p) { p.getMethod().hasBody() } or
+        TCilExprNode(CIL::Expr e) or
+        TImplicitDelegateCallNode(DelegateArgumentToLibraryCallable arg) or
         TImplicitCapturedArgumentNode(Call c, LocalScopeVariable v) {
-          exists(Ssa::ExplicitDefinition def |
-            def.isCapturedVariableDefinitionFlowIn(_, c) |
+          exists(Ssa::ExplicitDefinition def | def.isCapturedVariableDefinitionFlowIn(_, c) |
             v = def.getSourceVariable().getAssignable()
           )
         }
@@ -1358,9 +1364,9 @@ module DataFlow {
        * Holds if `pred` can flow to `succ`, by jumping from one callable to
        * another.
        */
-      cached predicate jumpStep(ExprNode pred, ExprNode succ) {
-        exists(FieldLike fl, FieldLikeRead flr |
-          fl.isStatic() |
+      cached
+      predicate jumpStep(ExprNode pred, ExprNode succ) {
+        exists(FieldLike fl, FieldLikeRead flr | fl.isStatic() |
           fl.getAnAssignedValue() = pred.getExpr() and
           fl.getAnAccess() = flr and
           flr = succ.getExpr() and
@@ -1376,14 +1382,19 @@ module DataFlow {
        * Additional steps specified by the configuration are *not* taken into
        * account.
        */
-      cached predicate flowIntoCallableStepNoConfig(CallNode call, ArgumentNode arg, ParameterNode p, CallContext cc) {
+      cached
+      predicate flowIntoCallableStepNoConfig(
+        CallNode call, ArgumentNode arg, ParameterNode p, CallContext cc
+      ) {
         flowIntoCallableExplicitStep(call, arg, p.getParameter(), cc)
         or
         flowIntoCallableCapturedVarStep(call, arg, p) and
         cc instanceof EmptyCallContext
       }
 
-      private predicate flowIntoCallableExplicitStep(CallNode call, ArgumentNode arg, DotNet::Parameter p, CallContext cc) {
+      private predicate flowIntoCallableExplicitStep(
+        CallNode call, ArgumentNode arg, DotNet::Parameter p, CallContext cc
+      ) {
         flowIntoCallableNonDelegateCall(call.asExpr(), arg.asExpr(), p) and
         cc instanceof EmptyCallContext
         or
@@ -1397,7 +1408,9 @@ module DataFlow {
        * `call`, which can reach implicit captured variable parameter `p`, using
        * zero or more additional calls.
        */
-      private predicate flowIntoCallableCapturedVarStep(CallNode call, ImplicitCapturedArgumentNode arg, ImplicitCapturedParameterNode p) {
+      private predicate flowIntoCallableCapturedVarStep(
+        CallNode call, ImplicitCapturedArgumentNode arg, ImplicitCapturedParameterNode p
+      ) {
         arg.flowsIn(p.getDefinition()) and
         call.asExpr() = arg.getCall()
       }
@@ -1410,14 +1423,19 @@ module DataFlow {
        * Additional steps specified by the configuration are *not* taken into
        * account.
        */
-      cached predicate flowOutOfCallableStepNoConfig(CallNode call, ReturnNode ret, OutNode out, CallContext cc) {
+      cached
+      predicate flowOutOfCallableStepNoConfig(
+        CallNode call, ReturnNode ret, OutNode out, CallContext cc
+      ) {
         flowOutOfCallableExplicitStep(call, ret, out, cc)
         or
         flowOutOfCallableCapturedVarStep(call, ret, out) and
         cc instanceof EmptyCallContext
       }
 
-      private predicate flowOutOfCallableExplicitStep(CallNode call, ReturnNode ret, OutNode out, CallContext cc) {
+      private predicate flowOutOfCallableExplicitStep(
+        CallNode call, ReturnNode ret, OutNode out, CallContext cc
+      ) {
         flowOutOfCallableNonDelegateCall(call.asExpr(), ret.asExpr(), out) and
         cc instanceof EmptyCallContext
         or
@@ -1430,29 +1448,26 @@ module DataFlow {
        * `call` using zero or more additional calls, and `out` is the corresponding
        * implicit output.
        */
-      private predicate flowOutOfCallableCapturedVarStep(CallNode call, ImplicitCapturedReturnNode ret, ImplicitCapturedOutNode out) {
+      private predicate flowOutOfCallableCapturedVarStep(
+        CallNode call, ImplicitCapturedReturnNode ret, ImplicitCapturedOutNode out
+      ) {
         ret.flowsOut(out.getDefinition()) and
         call.asExpr() = out.getCall()
       }
     }
 
     private newtype TContext =
-      TNoContext()
-      or
+      TNoContext() or
       TExplicitArgumentContext(ArgumentCallContext acc) {
-        exists(ExplicitArgumentNode arg, Configuration config |
-          Pruning::nodeCand(arg, config) |
+        exists(ExplicitArgumentNode arg, Configuration config | Pruning::nodeCand(arg, config) |
           acc = arg.getArgumentCallContext(config)
         )
-      }
-      or
+      } or
       TImplicitCapturedArgumentContext(ImplicitCapturedArgumentNode arg) {
         Pruning::nodeCand(arg, _)
-      }
-      or
+      } or
       TReturnContext(CallNode call, DotNet::Callable callable) {
-        exists(ReturnNode ret, Configuration config |
-          Pruning::nodeCand(ret, config) |
+        exists(ReturnNode ret, Configuration config | Pruning::nodeCand(ret, config) |
           callable = ret.getEnclosingCallable() and
           flowOutOfCallableStep(call, ret, _, _, config)
         )
@@ -1464,7 +1479,7 @@ module DataFlow {
      * argument (`ArgumentContext`), or a context describing flow out of a
      * callable via a returned expression (`ReturnContext`).
      */
-    private abstract class Context extends TContext {
+    abstract private class Context extends TContext {
       /** Gets a textual representation of this context. */
       abstract string toString();
 
@@ -1472,24 +1487,22 @@ module DataFlow {
        * Holds if flow out of a callable is allowed to go via the call
        * `call` in this context.
        */
-      bindingset [call, config]
+      bindingset[call, config]
       predicate flowOutAllowedToCall(DotNet::Expr call, Configuration config) {
         // This context poses no restriction
-        this instanceof NoContext
-        or
+        this instanceof NoContext or
         // Data in this context is from a call, so flow back out must be through
         // the same call
         this.(ExplicitArgumentContext).getCallContext().isArgument(call, _) or
-        this.(ImplicitCapturedArgumentContext).getArgument().getCall() = call
-        or
+        this.(ImplicitCapturedArgumentContext).getArgument().getCall() = call or
         // Data in this context is itself the result of a call, and the callable
         // from which data was returned may only be a valid target in a certain
         // call context, in which case flow further out must respect that call
         // context
         this = any(ReturnContext rc |
-          not exists(rc.getARequiredContext(config)) or
-          rc.getARequiredContext(config).(ArgumentCallContext).isArgument(call, _)
-        )
+            not exists(rc.getARequiredContext(config)) or
+            rc.getARequiredContext(config).(ArgumentCallContext).isArgument(call, _)
+          )
       }
     }
 
@@ -1497,15 +1510,13 @@ module DataFlow {
      * A data flow context with no information.
      */
     private class NoContext extends Context, TNoContext {
-      override string toString() {
-        result = "<none>"
-      }
+      override string toString() { result = "<none>" }
     }
 
     /**
      * A data flow context describing flow into a callable via a call argument.
      */
-    private abstract class ArgumentContext extends Context {
+    abstract private class ArgumentContext extends Context {
       abstract DotNet::Expr getCall();
     }
 
@@ -1515,44 +1526,29 @@ module DataFlow {
     private class ExplicitArgumentContext extends ArgumentContext, TExplicitArgumentContext {
       ArgumentCallContext acc;
 
-      ExplicitArgumentContext() {
-        this = TExplicitArgumentContext(acc)
-      }
+      ExplicitArgumentContext() { this = TExplicitArgumentContext(acc) }
 
-      ArgumentCallContext getCallContext() {
-        result = acc
-      }
+      ArgumentCallContext getCallContext() { result = acc }
 
-      override DotNet::Expr getCall() {
-        acc.isArgument(result, _)
-      }
+      override DotNet::Expr getCall() { acc.isArgument(result, _) }
 
-      override string toString() {
-        result = acc.toString()
-      }
+      override string toString() { result = acc.toString() }
     }
 
     /**
      * A data flow context describing flow into a callable via an implicit captured variable call argument.
      */
-    private class ImplicitCapturedArgumentContext extends ArgumentContext, TImplicitCapturedArgumentContext {
+    private class ImplicitCapturedArgumentContext extends ArgumentContext,
+      TImplicitCapturedArgumentContext {
       ImplicitCapturedArgumentNode arg;
 
-      ImplicitCapturedArgumentContext() {
-        this = TImplicitCapturedArgumentContext(arg)
-      }
+      ImplicitCapturedArgumentContext() { this = TImplicitCapturedArgumentContext(arg) }
 
-      ImplicitCapturedArgumentNode getArgument() {
-        result = arg
-      }
+      ImplicitCapturedArgumentNode getArgument() { result = arg }
 
-      override Expr getCall() {
-        result = arg.getCall()
-      }
+      override Expr getCall() { result = arg.getCall() }
 
-      override string toString() {
-        result = arg.toString()
-      }
+      override string toString() { result = arg.toString() }
     }
 
     /**
@@ -1561,11 +1557,10 @@ module DataFlow {
      */
     private class ReturnContext extends Context, TReturnContext {
       CallNode call;
+
       DotNet::Callable callable;
 
-      ReturnContext() {
-        this = TReturnContext(call, callable)
-      }
+      ReturnContext() { this = TReturnContext(call, callable) }
 
       /**
        * Gets a call context required for the flow out to the data described by this
@@ -1575,15 +1570,14 @@ module DataFlow {
         result = getARequiredContext0(call, callable, config)
       }
 
-      override string toString() {
-        result = call.toString()
-      }
+      override string toString() { result = call.toString() }
     }
 
-    pragma [noinline]
-    private ArgumentCallContext getARequiredContext0(CallNode call, DotNet::Callable callable, Configuration config) {
-      exists(ReturnNode ret |
-        flowOutOfCallableStep(call, ret, _, result, config) |
+    pragma[noinline]
+    private ArgumentCallContext getARequiredContext0(
+      CallNode call, DotNet::Callable callable, Configuration config
+    ) {
+      exists(ReturnNode ret | flowOutOfCallableStep(call, ret, _, result, config) |
         callable = ret.getEnclosingCallable()
       )
     }
@@ -1596,8 +1590,7 @@ module DataFlow {
         ctx instanceof NoContext
         or
         // A step from an existing flow graph node
-        exists(FlowGraphNode mid |
-          flowStep(mid, node, ctx) |
+        exists(FlowGraphNode mid | flowStep(mid, node, ctx) |
           config = mid.getConfiguration() and
           Pruning::nodeCand(node, unbind(config))
         )
@@ -1609,7 +1602,9 @@ module DataFlow {
      */
     class FlowGraphNode extends TFlowGraphNode0 {
       Node node;
+
       Context ctx;
+
       Configuration config;
 
       FlowGraphNode() { this = TFlowGraphNode0(node, ctx, config) }
@@ -1630,9 +1625,7 @@ module DataFlow {
       }
 
       /** Gets the enclosing callable of this node. */
-      DotNet::Callable getEnclosingCallable() {
-        result = this.getNode().getEnclosingCallable()
-      }
+      DotNet::Callable getEnclosingCallable() { result = this.getNode().getEnclosingCallable() }
 
       /** Gets a textual representation of this node. */
       string toString() { result = this.getNode().toString() }
@@ -1655,9 +1648,7 @@ module DataFlow {
      * A flow graph node corresponding to a sink.
      */
     private class FlowGraphNodeSink extends FlowGraphNode {
-      FlowGraphNodeSink() {
-        this.getConfiguration().isSink(this.getNode())
-      }
+      FlowGraphNodeSink() { this.getConfiguration().isSink(this.getNode()) }
     }
 
     /**
@@ -1678,17 +1669,17 @@ module DataFlow {
       flowThroughCallable(mid, node, ctx)
     }
 
-    pragma [noinline]
+    pragma[noinline]
     private predicate flowIntoCallable0(FlowGraphNode mid, ArgumentNode arg, ParameterNode p) {
       exists(Context outerctx, CallContext cc, Configuration config |
         config = mid.getConfiguration() and
         flowIntoCallableStep(_, arg, p, cc, config) and
         arg = mid.getNode() and
-        outerctx = mid.getContext() |
+        outerctx = mid.getContext()
+      |
         cc instanceof EmptyCallContext
         or
-        exists(DotNet::Expr call |
-          cc.(ArgumentCallContext).isArgument(call, _) |
+        exists(DotNet::Expr call | cc.(ArgumentCallContext).isArgument(call, _) |
           outerctx.flowOutAllowedToCall(call, config)
         )
       )
@@ -1699,14 +1690,15 @@ module DataFlow {
      * after entering the callable is `innerctx`.
      */
     private predicate flowIntoCallable(FlowGraphNode mid, ParameterNode p, ArgumentContext innerctx) {
-      exists(ArgumentNode arg |
-        flowIntoCallable0(mid, arg, p) |
+      exists(ArgumentNode arg | flowIntoCallable0(mid, arg, p) |
         innerctx = arg.getContext(mid.getConfiguration())
       )
     }
 
-    pragma [noinline]
-    private predicate flowOutOfCallable0(FlowGraphNode mid, CallNode call, OutNode out, DotNet::Callable callable, Context innerctx) {
+    pragma[noinline]
+    private predicate flowOutOfCallable0(
+      FlowGraphNode mid, CallNode call, OutNode out, DotNet::Callable callable, Context innerctx
+    ) {
       flowOutOfCallableStep(call, mid.getNode(), out, _, mid.getConfiguration()) and
       innerctx = mid.getContext() and
       not innerctx instanceof ArgumentContext and
@@ -1717,25 +1709,31 @@ module DataFlow {
      * Holds if data may flow from `mid` out of a callable to `out`. The context
      * after leaving the callable is `outerctx`.
      */
-    pragma [noinline]
+    pragma[noinline]
     private predicate flowOutOfCallable(FlowGraphNode mid, OutNode out, ReturnContext outerctx) {
       exists(CallNode call, DotNet::Callable callable, Context innerctx |
         flowOutOfCallable0(mid, call, out, callable, innerctx) and
-        outerctx = TReturnContext(call, callable) |
+        outerctx = TReturnContext(call, callable)
+      |
         innerctx.flowOutAllowedToCall(call.getCall(), mid.getConfiguration())
       )
     }
 
-    private predicate paramFlowsThroughExplicit(CallNode call, ExplicitParameterNode p, ExplicitArgumentContext innerctx, FlowGraphNode mid, ReturnNode ret) {
-      exists(int i |
-        innerctx.getCallContext() = call.getCallContext(i) |
+    private predicate paramFlowsThroughExplicit(
+      CallNode call, ExplicitParameterNode p, ExplicitArgumentContext innerctx, FlowGraphNode mid,
+      ReturnNode ret
+    ) {
+      exists(int i | innerctx.getCallContext() = call.getCallContext(i) |
         mid.getNode() = ret and
         mid.getContext() = innerctx and
         mid.getEnclosingCallable().getParameter(i) = p.getParameter()
       )
     }
 
-    private predicate paramFlowsThroughImplicit(CallNode call, ImplicitCapturedParameterNode p, ImplicitCapturedArgumentContext innerctx, FlowGraphNode mid, ReturnNode ret) {
+    private predicate paramFlowsThroughImplicit(
+      CallNode call, ImplicitCapturedParameterNode p, ImplicitCapturedArgumentContext innerctx,
+      FlowGraphNode mid, ReturnNode ret
+    ) {
       innerctx.getArgument() = call.getImplicitCapturedArgument(p.getVariable()) and
       mid.getNode() = ret and
       mid.getContext() = innerctx and
@@ -1743,11 +1741,13 @@ module DataFlow {
     }
 
     /** Holds if data may flow from `p` to a a node `out` returned by the callable. */
-    private predicate paramFlowsThrough(CallNode call, ParameterNode p, OutNode out, ArgumentContext innerctx, CallContext cc) {
+    private predicate paramFlowsThrough(
+      CallNode call, ParameterNode p, OutNode out, ArgumentContext innerctx, CallContext cc
+    ) {
       exists(FlowGraphNode mid, ReturnNode ret |
         paramFlowsThroughExplicit(call, p, innerctx, mid, ret) or
         paramFlowsThroughImplicit(call, p, innerctx, mid, ret)
-        |
+      |
         flowOutOfCallableStep(call, ret, out, cc, mid.getConfiguration())
       )
     }
@@ -1760,18 +1760,17 @@ module DataFlow {
     private predicate flowThroughCallable0(FlowGraphNode mid, OutNode out, Context ctx) {
       exists(CallNode call, ParameterNode p, ArgumentContext innerctx, CallContext cc |
         flowIntoCallable(mid, p, innerctx) and
-        paramFlowsThrough(call, p, out, innerctx, cc) |
+        paramFlowsThrough(call, p, out, innerctx, cc)
+      |
         // Data in `mid` is from a call, so that call must match the required call (if any),
         // and the context after flow through `call` must be recovered
         exists(ArgumentContext ac |
           ac = mid.getContext() and
-          ctx = ac |
+          ctx = ac
+        |
           cc instanceof EmptyCallContext
           or
-          exists(DotNet::Expr e |
-            cc.(ArgumentCallContext).isArgument(e, _) |
-            ac.getCall() = e
-          )
+          exists(DotNet::Expr e | cc.(ArgumentCallContext).isArgument(e, _) | ac.getCall() = e)
         )
         or
         // Data in `mid` is *not* from a call, so the context after flow through `call`
@@ -1787,12 +1786,13 @@ module DataFlow {
     }
 
     pragma[nomagic]
-    private predicate flowThroughCallable1(FlowGraphNode mid, OutNode out, ControlFlow::Nodes::ElementNode cfn, Context ctx) {
+    private predicate flowThroughCallable1(
+      FlowGraphNode mid, OutNode out, ControlFlow::Nodes::ElementNode cfn, Context ctx
+    ) {
       flowThroughCallable0(mid, out, ctx) and
       exists(mid.getNode().asExprAtNode(cfn))
       or
-      exists(ControlFlow::Nodes::ElementNode cfnMid |
-        flowThroughCallable1(mid, out, cfnMid, ctx) |
+      exists(ControlFlow::Nodes::ElementNode cfnMid | flowThroughCallable1(mid, out, cfnMid, ctx) |
         cfn = cfnMid.getASuccessor() and
         flowThroughCallable1Scope(out, cfn.getElement())
       )
@@ -1806,8 +1806,7 @@ module DataFlow {
     private predicate flowThroughCallable(FlowGraphNode mid, OutNode out, Context ctx) {
       // If both `mid` and `out` have associated control flow nodes, the latter
       // must be reachable from the former
-      exists(ControlFlow::Node cfn |
-        flowThroughCallable1(mid, out, cfn, ctx) |
+      exists(ControlFlow::Node cfn | flowThroughCallable1(mid, out, cfn, ctx) |
         exists(out.asExprAtNode(cfn))
       )
       or
@@ -1824,8 +1823,11 @@ module DataFlow {
      *
      * Will only have results if `config` has non-empty sources and sinks.
      */
-    pragma [nomagic]
-    predicate flowsTo(FlowGraphNodeSource flowsource, Node source, FlowGraphNodeSink flowsink, Node sink, Configuration config) {
+    pragma[nomagic]
+    predicate flowsTo(
+      FlowGraphNodeSource flowsource, Node source, FlowGraphNodeSink flowsink, Node sink,
+      Configuration config
+    ) {
       flowsource.getConfiguration() = config and
       flowsource.getNode() = source and
       flowsource.getASuccessor*() = flowsink and
@@ -1837,9 +1839,11 @@ module DataFlow {
         this = "FlowThroughCallableLibraryOutRefStepConfiguration"
       }
 
-      override predicate stepsToDefinition(Expr exprFrom, AssignableDefinition defTo, ControlFlowElement scope, boolean exactScope, boolean isSuccessor) {
-        exists(MethodCall mc, Parameter outRef |
-          libraryFlowOutRef(mc, exprFrom, outRef, _) |
+      override predicate stepsToDefinition(
+        Expr exprFrom, AssignableDefinition defTo, ControlFlowElement scope, boolean exactScope,
+        boolean isSuccessor
+      ) {
+        exists(MethodCall mc, Parameter outRef | libraryFlowOutRef(mc, exprFrom, outRef, _) |
           defTo.getTargetAccess() = mc.getArgumentForParameter(outRef) and
           defTo instanceof AssignableDefinitions::OutRefDefinition and
           scope = mc and
@@ -1862,7 +1866,9 @@ module DataFlow {
      * `mc = Int32.TryParse("42", out i)`, `arg = "42"`, and `node` is the access
      * to `i` in `out i`.
      */
-    predicate flowThroughCallableLibraryOutRef(MethodCall mc, ExprNode arg, SsaDefinitionNode node, boolean preservesValue) {
+    predicate flowThroughCallableLibraryOutRef(
+      MethodCall mc, ExprNode arg, SsaDefinitionNode node, boolean preservesValue
+    ) {
       libraryFlowOutRef(mc, arg.getExpr(), _, preservesValue) and
       any(FlowThroughCallableLibraryOutRefStepConfiguration x).hasStep(arg, node)
     }
@@ -1879,7 +1885,9 @@ module DataFlow {
      * `delegate = y => { ... }`, `out = x.Select(y => { ... })`, and
      * `preservesValue = false`.
      */
-    predicate flowOutOfDelegateLibraryCall(ImplicitDelegateCallNode delegate, OutNode out, boolean preservesValue) {
+    predicate flowOutOfDelegateLibraryCall(
+      ImplicitDelegateCallNode delegate, OutNode out, boolean preservesValue
+    ) {
       exists(Call call, int i |
         libraryFlowDelegateCallOut(call, _, out.asExpr(), preservesValue, i) and
         delegate.getCall() = call.getArgument(i)
@@ -1894,9 +1902,7 @@ module DataFlow {
     }
 
     private class FieldLikeRead extends AssignableRead {
-      FieldLikeRead() {
-        this.getTarget() instanceof FieldLike
-      }
+      FieldLikeRead() { this.getTarget() instanceof FieldLike }
     }
 
     /**
@@ -1909,7 +1915,7 @@ module DataFlow {
       exists(Ssa::Definition def, Ssa::ImplicitDefinition idef |
         def.getARead() = flr and
         idef = def.getAnUltimateDefinition()
-        |
+      |
         idef instanceof Ssa::ImplicitEntryDefinition or
         idef instanceof Ssa::ImplicitCallDefinition
       )
@@ -1922,8 +1928,10 @@ module DataFlow {
      *
      * Additional steps specified by the configuration are taken into account.
      */
-    bindingset [config]
-    predicate flowIntoCallableStep(CallNode call, ArgumentNode arg, ParameterNode p, CallContext cc, Configuration config) {
+    bindingset[config]
+    predicate flowIntoCallableStep(
+      CallNode call, ArgumentNode arg, ParameterNode p, CallContext cc, Configuration config
+    ) {
       flowIntoCallableStepNoConfig(call, arg, p, cc) or
       config.isAdditionalFlowStepIntoCall(call, arg, p.getParameter(), cc)
     }
@@ -1935,8 +1943,10 @@ module DataFlow {
      *
      * Additional steps specified by the configuration are taken into account.
      */
-    bindingset [config]
-    predicate flowOutOfCallableStep(CallNode call, ReturnNode ret, OutNode out, CallContext cc, Configuration config) {
+    bindingset[config]
+    predicate flowOutOfCallableStep(
+      CallNode call, ReturnNode ret, OutNode out, CallContext cc, Configuration config
+    ) {
       flowOutOfCallableStepNoConfig(call, ret, out, cc) or
       config.isAdditionalFlowStepOutOfCall(call, ret, out, cc)
     }
@@ -1945,7 +1955,9 @@ module DataFlow {
      * Holds if `arg` is an argument of the non-delegate call `call`,
      * which resolves to a callable with corresponding parameter `p`.
      */
-    predicate flowIntoCallableNonDelegateCall(NonDelegateCall call, DotNet::Expr arg, DotNet::Parameter p) {
+    predicate flowIntoCallableNonDelegateCall(
+      NonDelegateCall call, DotNet::Expr arg, DotNet::Parameter p
+    ) {
       exists(DotNet::Callable callable |
         callable = call.getARuntimeTarget() and
         p = callable.getAParameter() and
@@ -1958,7 +1970,9 @@ module DataFlow {
      * which resolves to a callable in call context `cc`, with
      * corresponding parameter `p`.
      */
-    private predicate flowIntoCallableDelegateCall(DelegateCall call, Expr arg, Parameter p, CallContext cc) {
+    private predicate flowIntoCallableDelegateCall(
+      DelegateCall call, Expr arg, Parameter p, CallContext cc
+    ) {
       exists(Callable callable |
         callable = call.getARuntimeTarget(cc) and
         arg = call.getRuntimeArgumentForParameter(p) and
@@ -1978,7 +1992,10 @@ module DataFlow {
      *
      * `arg = x`, `p = y`, `call = x.Select(y => { ... })`.
      */
-    predicate flowIntoCallableLibraryCall(Call call, ArgumentNode arg, ImplicitDelegateCallNode delegate, Parameter p, boolean preservesValue, CallContext cc) {
+    predicate flowIntoCallableLibraryCall(
+      Call call, ArgumentNode arg, ImplicitDelegateCallNode delegate, Parameter p,
+      boolean preservesValue, CallContext cc
+    ) {
       exists(Callable callable, int i, int j |
         libraryFlowDelegateCallIn(call, _, arg.asExpr(), preservesValue, i, j) and
         delegate.getCall() = call.getArgument(j) and
@@ -1986,15 +2003,18 @@ module DataFlow {
       )
       or
       exists(Callable callable, int i, int j, int k |
-        libraryFlowDelegateCallOutIn(call, _, preservesValue, i, j, k) |
+        libraryFlowDelegateCallOutIn(call, _, preservesValue, i, j, k)
+      |
         callable = flowIntoCallableLibraryCall0(delegate, j, p, cc) and
         delegate.getCall() = call.getArgument(k) and
         arg.(ImplicitDelegateCallNode).getCall() = call.getArgument(i)
       )
     }
 
-    pragma [noinline]
-    private Callable flowIntoCallableLibraryCall0(ImplicitDelegateCallNode arg, int i, Parameter p, CallContext cc) {
+    pragma[noinline]
+    private Callable flowIntoCallableLibraryCall0(
+      ImplicitDelegateCallNode arg, int i, Parameter p, CallContext cc
+    ) {
       result = arg.getArgument().getARuntimeTarget(cc) and
       p = result.getParameter(i)
     }
@@ -2006,15 +2026,15 @@ module DataFlow {
      * a relevant `out`/`ref` argument).
      */
     predicate flowOutOfCallableNonDelegateCall(NonDelegateCall call, DotNet::Expr ret, OutNode out) {
-      exists(DotNet::Callable callable |
-        callable = call.getARuntimeTarget() |
+      exists(DotNet::Callable callable | callable = call.getARuntimeTarget() |
         // ordinary return value
         callable.canReturn(ret) and
         call = out.asExpr()
         or
         // return via out/ref parameter
         exists(Parameter outRef, AssignableDefinitions::OutRefDefinition def |
-          callableReturnsOutOrRef(callable.getSourceDeclaration(), outRef.getSourceDeclaration(), ret) and
+          callableReturnsOutOrRef(callable.getSourceDeclaration(), outRef.getSourceDeclaration(),
+            ret) and
           def = out.(SsaDefinitionNode).getDefinition().(Ssa::ExplicitDefinition).getADefinition() and
           def.getTargetAccess() = call.(Call).getArgumentForParameter(outRef)
         )
@@ -2026,8 +2046,7 @@ module DataFlow {
      * which the delegate call `call` resolves.
      */
     private predicate flowOutOfCallableDelegateCall(CallNode call, Expr ret, CallContext cc) {
-      exists(Callable target |
-        target.getSourceDeclaration().canReturn(ret) |
+      exists(Callable target | target.getSourceDeclaration().canReturn(ret) |
         target = call.asExpr().(DelegateCall).getARuntimeTarget(cc) or
         target = call.(ImplicitDelegateCallNode).getArgument().getARuntimeTarget(cc)
       )

@@ -70,11 +70,11 @@ predicate correct_raise(string name, ClassObject ex) {
 predicate preferred_raise(string name, ClassObject ex) {
     attribute_method(name) and ex = theAttributeErrorType()
     or
-    indexing_method(name) and ex = builtin_object("LookupError")
+    indexing_method(name) and ex = Object::builtin("LookupError")
     or
     ordering_method(name) and ex = theTypeErrorType()
     or
-    arithmetic_method(name) and ex = builtin_object("ArithmeticError")
+    arithmetic_method(name) and ex = Object::builtin("ArithmeticError")
 }
 
 predicate no_need_to_raise(string name, string message) {

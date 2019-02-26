@@ -195,7 +195,7 @@ class BasicBlock extends ControlFlowNodeBase {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [LGTM locations](https://lgtm.com/help/ql/locations).
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
    *
    * Yields no result if this basic block spans multiple source files.
    */

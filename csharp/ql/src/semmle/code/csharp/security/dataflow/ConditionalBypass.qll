@@ -45,7 +45,9 @@ module UserControlledBypassOfSensitiveMethod {
   }
 
   /** A source of remote user input. */
-  class RemoteSource extends Source { RemoteSource() { this instanceof RemoteFlowSource } }
+  class RemoteSource extends Source {
+    RemoteSource() { this instanceof RemoteFlowSource }
+  }
 
   /** The result of a reverse dns may be user-controlled. */
   class ReverseDnsSource extends Source {

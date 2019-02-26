@@ -1,8 +1,12 @@
 import java
 
-class TypeIntent extends Class { TypeIntent() { hasQualifiedName("android.content", "Intent") } }
+class TypeIntent extends Class {
+  TypeIntent() { hasQualifiedName("android.content", "Intent") }
+}
 
-class TypeActivity extends Class { TypeActivity() { hasQualifiedName("android.app", "Activity") } }
+class TypeActivity extends Class {
+  TypeActivity() { hasQualifiedName("android.app", "Activity") }
+}
 
 class TypeContext extends RefType {
   TypeContext() { hasQualifiedName("android.content", "Context") }

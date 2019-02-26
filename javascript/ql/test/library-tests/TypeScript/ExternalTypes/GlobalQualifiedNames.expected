@@ -6,6 +6,5 @@
 | ModernGlobals.ModernSubclass | ModernSubclass |
 | Object | Object |
 | RegExp | RegExp |
-| RegExpExecArray | RegExpExecArray |
 | RegExpMatchArray | RegExpMatchArray |
 | __Legacy.LegacyClass | LegacyClass |

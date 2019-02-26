@@ -112,7 +112,7 @@ namespace Semmle.Autobuild
                     var o = JObject.Parse(File.ReadAllText(path));
                     version = (string)o["sdk"]["version"];
                 }
-                catch
+                catch  // lgtm[cs/catch-of-all-exceptions]
                 {
                     // not a valid global.json file
                     continue;

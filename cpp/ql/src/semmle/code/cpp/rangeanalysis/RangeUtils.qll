@@ -10,8 +10,8 @@ IntValue getConstantValue(Instruction instr) {
   result = instr.(IntegerConstantInstruction).getValue().toInt() or
   exists(BinaryInstruction binInstr, IntValue left, IntValue right |
     binInstr = instr and
-    left = getConstantValue(binInstr.getLeftOperand()) and
-    right = getConstantValue(binInstr.getRightOperand()) and
+    left = getConstantValue(binInstr.getLeft()) and
+    right = getConstantValue(binInstr.getRight()) and
     (
       binInstr instanceof AddInstruction and result = add(left, right) or
       binInstr instanceof SubInstruction and result = sub(left, right) or
@@ -28,7 +28,7 @@ IntValue getConstantValue(Instruction instr) {
 }
 
 predicate valueFlowStep(Instruction i, Operand op, int delta) {
-  i.getAnOperand().(CopySourceOperand) = op and delta = 0
+  i.(CopyInstruction).getSourceValueOperand() = op and delta = 0
   or
   exists(Operand x |
     i.(AddInstruction).getAnOperand() = op and
@@ -39,8 +39,8 @@ predicate valueFlowStep(Instruction i, Operand op, int delta) {
   )
   or
   exists(Operand x |
-    i.(SubInstruction).getAnOperand().(LeftOperand) = op and
-    i.(SubInstruction).getAnOperand().(RightOperand) = x
+    i.(SubInstruction).getLeftOperand() = op and
+    i.(SubInstruction).getRightOperand() = x
     |
     delta = -getValue(getConstantValue(x.getDefinitionInstruction()))
   )
@@ -55,32 +55,15 @@ predicate valueFlowStep(Instruction i, Operand op, int delta) {
   )
   or
   exists(Operand x |
-    i.(PointerSubInstruction).getAnOperand().(LeftOperand) = op and
-    i.(PointerSubInstruction).getAnOperand().(RightOperand) = x
+    i.(PointerSubInstruction).getLeftOperand() = op and
+    i.(PointerSubInstruction).getRightOperand() = x
     |
     delta = i.(PointerSubInstruction).getElementSize() * 
       -getValue(getConstantValue(x.getDefinitionInstruction()))
   )
 }
 
-predicate isReducibleCFG(Function f) {
-  not exists(LabelStmt l, GotoStmt goto |
-    goto.getTarget() = l and
-    l.getLocation().isBefore(goto.getLocation()) and
-    l.getEnclosingFunction() = f
-  ) and
-  not exists(LabelStmt ls, Loop l |
-    ls.getParent*() = l and
-    l.getEnclosingFunction() = f
-  ) and
-  not exists(SwitchCase cs |
-    cs.getSwitchStmt().getStmt() != cs.getParentStmt() and
-    cs.getEnclosingFunction() = f
-  )
-}
-
 predicate backEdge(PhiInstruction phi, PhiOperand op) {
   phi.getAnOperand() = op and
-  phi.getBlock().dominates(op.getPredecessorBlock())
-  // TODO: identify backedges during IR construction
+  phi.getBlock() = op.getPredecessorBlock().getBackEdgeSuccessor(_)
 }

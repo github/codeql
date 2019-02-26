@@ -28,13 +28,13 @@ class Declaration extends DotNet::Declaration, Element, @cil_declaration {
   final predicate isSourceDeclaration() { this = getSourceDeclaration() }
 }
 
-private CS::Declaration toCSharpNonTypeParameter(Declaration d) { result.getLabel() = d.getLabel() }
+private CS::Declaration toCSharpNonTypeParameter(Declaration d) { result.matchesHandle(d) }
 
 private CS::TypeParameter toCSharpTypeParameter(TypeParameter tp) {
   toCSharpTypeParameterJoin(tp, result.getIndex(), result.getGeneric())
 }
 
-pragma[noinline, nomagic]
+pragma[nomagic]
 private predicate toCSharpTypeParameterJoin(TypeParameter tp, int i, CS::UnboundGeneric ug) {
   exists(TypeContainer tc |
     tp.getIndex() = i and

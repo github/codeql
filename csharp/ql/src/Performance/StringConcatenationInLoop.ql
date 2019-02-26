@@ -12,7 +12,9 @@
 import csharp
 
 // any use of + that has string type
-class StringCat extends AddExpr { StringCat() { this.getType() instanceof StringType } }
+class StringCat extends AddExpr {
+  StringCat() { this.getType() instanceof StringType }
+}
 
 /**
  * Holds if `e` is an assignment of the form

@@ -36,9 +36,7 @@ string getStringValue(RegExpLiteral rl) {
     result = strictconcat(RegExpTerm ch, int i |
         ch = root.(RegExpSequence).getChild(i)
       |
-        ch.(RegExpConstant).getValue()
-        order by
-          i
+        ch.(RegExpConstant).getValue() order by i
       )
   )
 }
@@ -85,7 +83,7 @@ class Replacement extends DataFlow::Node {
     exists(DataFlow::MethodCallNode mcn |
       mcn = this and
       input = getStringValue(pattern) and
-      output = mcn.getArgument(1).asExpr().getStringValue()
+      output = mcn.getArgument(1).getStringValue()
     )
   }
 

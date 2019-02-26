@@ -308,7 +308,7 @@ public class E
     {
         if (l.HasValue)
         {
-            e.Long = l.Value; // GOOD
+            e.Long = l.Value; // GOOD (false positive)
         }
         return;
     }

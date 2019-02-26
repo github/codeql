@@ -42,6 +42,25 @@ private class SsaVarAccessAnalysis extends DataFlow::AnalyzedValueNode {
 }
 
 /**
+ * Flow analysis for accesses to SSA variables.
+ *
+ * Unlike `SsaVarAccessAnalysis`, this only contributes to `getAValue()`, not `getALocalValue()`.
+ */
+private class SsaVarAccessWithNonLocalAnalysis extends SsaVarAccessAnalysis {
+  DataFlow::AnalyzedValueNode src;
+
+  SsaVarAccessWithNonLocalAnalysis() {
+    exists(VarDef varDef |
+      varDef = def.(SsaExplicitDefinition).getDef() and
+      varDef.getSource().flow() = src and
+      src instanceof CallWithNonLocalAnalyzedReturnFlow
+    )
+  }
+
+  override AbstractValue getAValue() { result = src.getAValue() }
+}
+
+/**
  * Flow analysis for `VarDef`s.
  */
 class AnalyzedVarDef extends VarDef {
@@ -124,7 +143,7 @@ private class AnalyzedParameter extends AnalyzedVarDef, @vardecl {
 
   override DataFlow::AnalyzedNode getRhs() {
     getFunction().argumentPassing(this, result.asExpr()) or
-    result = this.(Parameter).getDefault().analyze()
+    result = AnalyzedVarDef.super.getRhs()
   }
 
   override AbstractValue getAnRhsValue() {

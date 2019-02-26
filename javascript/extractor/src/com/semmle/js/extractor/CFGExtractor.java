@@ -91,6 +91,11 @@ import com.semmle.js.ast.VariableDeclarator;
 import com.semmle.js.ast.Visitor;
 import com.semmle.js.ast.WhileStatement;
 import com.semmle.js.ast.WithStatement;
+import com.semmle.js.ast.XMLAnyName;
+import com.semmle.js.ast.XMLAttributeSelector;
+import com.semmle.js.ast.XMLDotDotExpression;
+import com.semmle.js.ast.XMLFilterExpression;
+import com.semmle.js.ast.XMLQualifiedIdentifier;
 import com.semmle.js.ast.YieldExpression;
 import com.semmle.js.ast.jsx.IJSXName;
 import com.semmle.js.ast.jsx.JSXAttribute;
@@ -508,6 +513,26 @@ public class CFGExtractor {
 			return nd.getRight().accept(this, null);
 		}
 
+		@Override
+		public Node visit(XMLAttributeSelector nd, Void c) {
+			return nd.getAttribute().accept(this, c);
+		}
+
+		@Override
+		public Node visit(XMLFilterExpression nd, Void c) {
+			return nd.getLeft().accept(this, c);
+		}
+
+		@Override
+		public Node visit(XMLQualifiedIdentifier nd, Void c) {
+			return nd.getLeft().accept(this, c);
+		}
+
+		@Override
+		public Node visit(XMLDotDotExpression nd, Void c) {
+			return nd.getLeft().accept(this, c);
+		}
+
 		public static Node of(Node nd) {
 			return nd.accept(new First(), null);
 		}
@@ -773,14 +798,18 @@ public class CFGExtractor {
 			public <Q, A> A accept(Visitor<Q, A> v, Q q) { return null; }
 		}
 
-		// associate statements with their (direct or indirect) labels
-		private final Map<Statement, Set<String>> loopLabels = new LinkedHashMap<Statement, Set<String>>();
+		// associate statements with their (direct or indirect) labels;
+		// per-function cache, cleared after each function
+		private Map<Statement, Set<String>> loopLabels = new LinkedHashMap<Statement, Set<String>>();
 
-		// cache the set of normal control flow successors
-		private final Map<Node, Object> followingCache = new LinkedHashMap<Node, Object>();
+		// cache the set of normal control flow successors;
+		// per-function cache, cleared after each function
+		private Map<Node, Object> followingCache = new LinkedHashMap<Node, Object>();
 
-		// map from a node in a chain of property accesses or calls to the successor info for the first node in the chain
-		private final Map<Chainable, SuccessorInfo> chainRootSuccessors = new LinkedHashMap<Chainable, SuccessorInfo>();
+		// map from a node in a chain of property accesses or calls to the successor info
+		// for the first node in the chain;
+		// per-function cache, cleared after each function
+		private Map<Chainable, SuccessorInfo> chainRootSuccessors = new LinkedHashMap<Chainable, SuccessorInfo>();
 
 		/**
 		 * Generate entry node.
@@ -1031,6 +1060,16 @@ public class CFGExtractor {
 
 		@Override
 		public Void visit(IFunction nd, SuccessorInfo i) {
+			// save per-function caches
+			Map<Statement, Set<String>> oldLoopLabels = loopLabels;
+			Map<Node, Object> oldFollowingCache = followingCache;
+			Map<Chainable, SuccessorInfo> oldChainRootSuccessors = chainRootSuccessors;
+
+			// clear caches
+			loopLabels = new LinkedHashMap<>();
+			followingCache = new LinkedHashMap<>();
+			chainRootSuccessors = new LinkedHashMap<>();
+
 			if (nd instanceof FunctionDeclaration && nd.hasDeclareKeyword()) {
 				// All 'declared' statements have a no-op CFG node, but their children should
 				// not be processed.
@@ -1039,6 +1078,12 @@ public class CFGExtractor {
 			}
 			buildFunctionCreation(nd, i);
 			buildFunctionBody(nd);
+
+			// restore caches
+			loopLabels = oldLoopLabels;
+			followingCache = oldFollowingCache;
+			chainRootSuccessors = oldChainRootSuccessors;
+
 			return null;
 		}
 
@@ -1942,6 +1987,40 @@ public class CFGExtractor {
 		@Override
 		public Void visit(DecoratorList nd, SuccessorInfo c) {
 			seq(nd.getDecorators(), nd);
+			succ(nd, c.getAllSuccessors());
+			return null;
+		}
+
+		@Override
+		public Void visit(XMLAnyName nd, SuccessorInfo c) {
+			succ(nd, c.getAllSuccessors());
+			return null;
+		}
+
+		@Override
+		public Void visit(XMLAttributeSelector nd, SuccessorInfo c) {
+			seq(nd.getAttribute(), nd);
+			succ(nd, c.getAllSuccessors());
+			return null;
+		}
+
+		@Override
+		public Void visit(XMLFilterExpression nd, SuccessorInfo c) {
+			seq(nd.getLeft(), nd.getRight(), nd);
+			succ(nd, c.getAllSuccessors());
+			return null;
+		}
+
+		@Override
+		public Void visit(XMLQualifiedIdentifier nd, SuccessorInfo c) {
+			seq(nd.getLeft(), nd.getRight(), nd);
+			succ(nd, c.getAllSuccessors());
+			return null;
+		}
+
+		@Override
+		public Void visit(XMLDotDotExpression nd, SuccessorInfo c) {
+			seq(nd.getLeft(), nd.getRight(), nd);
 			succ(nd, c.getAllSuccessors());
 			return null;
 		}

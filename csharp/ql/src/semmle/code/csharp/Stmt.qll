@@ -644,7 +644,9 @@ class JumpStmt extends Stmt, @jump_stmt { }
  * }
  * ```
  */
-class BreakStmt extends JumpStmt, @break_stmt { override string toString() { result = "break;" } }
+class BreakStmt extends JumpStmt, @break_stmt {
+  override string toString() { result = "break;" }
+}
 
 /**
  * A `continue` statement, for example line 4 in
@@ -1262,7 +1264,9 @@ class LocalConstantDeclStmt extends LocalVariableDeclStmt, @const_decl_stmt {
  * }
  * ```
  */
-class EmptyStmt extends Stmt, @empty_stmt { override string toString() { result = ";" } }
+class EmptyStmt extends Stmt, @empty_stmt {
+  override string toString() { result = ";" }
+}
 
 /**
  * An `unsafe` statement, for example

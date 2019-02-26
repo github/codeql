@@ -15,5 +15,7 @@ module SystemLinq {
   }
 
   /** A class in the `System.Linq` namespace. */
-  class Class extends csharp::Class { Class() { this.getNamespace() instanceof Namespace } }
+  class Class extends csharp::Class {
+    Class() { this.getNamespace() instanceof Namespace }
+  }
 }

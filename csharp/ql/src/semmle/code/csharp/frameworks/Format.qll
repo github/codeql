@@ -149,7 +149,8 @@ class InvalidFormatString extends StringLiteral {
     result = this.getValue().regexpFind(getValidFormatRegex(), 0, 0).length()
   }
 
-  override string getURL() {
+  /** Gets the URL of this element. */
+  string getURL() {
     exists(
       string filepath, int startline, int startcolumn, int endline, int endcolumn,
       int oldstartcolumn, int padding

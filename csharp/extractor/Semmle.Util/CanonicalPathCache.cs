@@ -136,7 +136,7 @@ namespace Semmle.Util
                         entries[0] :
                         Path.Combine(parentPath, name);
                 }
-                catch (Exception)
+                catch  // lgtm[cs/catch-of-all-exceptions]
                 {
                     // IO error or security error querying directory.
                     return Path.Combine(parentPath, name);
@@ -175,7 +175,7 @@ namespace Semmle.Util
             {
                 return GetRealPath(path);
             }
-            catch
+            catch  // lgtm[cs/catch-of-all-exceptions]
             {
                 // File does not exist
                 return ConstructCanonicalPath(path, cache);
@@ -248,7 +248,7 @@ namespace Semmle.Util
                             (PathStrategy)new GetFinalPathNameByHandleStrategy() :
                             (PathStrategy)new PosixSymlinkStrategy();
                     }
-                    catch (Exception)
+                    catch  // lgtm[cs/catch-of-all-exceptions]
                     {
                         // Failed to late-bind a suitable library.
                         logger.Log(Severity.Warning, "Preserving symlinks in canonical paths");

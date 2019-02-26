@@ -377,6 +377,7 @@
 | Test.cs:46:16:46:18 | in | Test.cs:46:16:46:18 | SSA param(in) | Test.cs:48:13:48:15 | access to parameter in |
 | Test.cs:56:13:56:17 | this.field | Test.cs:46:10:46:10 | SSA entry def(this.field) | Test.cs:56:13:56:17 | access to field field |
 | Test.cs:56:13:56:17 | this.field | Test.cs:57:9:57:17 | SSA def(this.field) | Test.cs:58:13:58:17 | access to field field |
+| Test.cs:62:16:62:16 | x | Test.cs:62:16:62:16 | SSA param(x) | Test.cs:66:28:66:28 | access to parameter x |
 | Test.cs:68:45:68:45 | e | Test.cs:68:45:68:45 | [exception: DivideByZeroException] SSA def(e) | Test.cs:70:17:70:17 | access to local variable e |
 | Tuples.cs:10:14:10:14 | x | Tuples.cs:10:9:10:54 | SSA def(x) | Tuples.cs:11:13:11:13 | access to local variable x |
 | Tuples.cs:10:14:10:14 | x | Tuples.cs:14:9:14:32 | SSA def(x) | Tuples.cs:15:13:15:13 | access to local variable x |

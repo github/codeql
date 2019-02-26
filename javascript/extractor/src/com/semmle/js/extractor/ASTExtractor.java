@@ -90,6 +90,10 @@ import com.semmle.js.ast.VariableDeclaration;
 import com.semmle.js.ast.VariableDeclarator;
 import com.semmle.js.ast.WhileStatement;
 import com.semmle.js.ast.WithStatement;
+import com.semmle.js.ast.XMLAttributeSelector;
+import com.semmle.js.ast.XMLDotDotExpression;
+import com.semmle.js.ast.XMLFilterExpression;
+import com.semmle.js.ast.XMLQualifiedIdentifier;
 import com.semmle.js.ast.YieldExpression;
 import com.semmle.js.ast.jsx.IJSXName;
 import com.semmle.js.ast.jsx.JSXAttribute;
@@ -306,7 +310,7 @@ public class ASTExtractor {
 		public V(Platform platform, SourceType sourceType) {
 			this.platform = platform;
 			this.sourceType = sourceType;
-			this.isStrict = sourceType == SourceType.MODULE;
+			this.isStrict = sourceType.isStrictMode();
 		}
 
 		private Label visit(INode child, Label parent, int childIndex) {
@@ -546,21 +550,27 @@ public class ASTExtractor {
 
 			isStrict = hasUseStrict(nd.getBody());
 
-			// if we're extracting a Node.js/ES2015 module, introduce module scope
-			if (platform == Platform.NODE) {
-				// add node.js-specific globals
-				scopeManager.addVariables("global", "process", "console", "Buffer");
+			// Add platform-specific globals.
+			scopeManager.addVariables(platform.getPredefinedGlobals());
 
+			// Introduce local scope if there is one.
+			if (sourceType.hasLocalScope()) {
 				Label moduleScopeKey = trapwriter.globalID("module;{" + locationManager.getFileLabel() + "}," + locationManager.getStartLine() + "," + locationManager.getStartColumn());
 				scopeManager.enterScope(3, moduleScopeKey, toplevelLabel);
-				// special variables aren't available in `.mjs` modules
-				if (!".mjs".equals(locationManager.getSourceFileExtension()))
-					scopeManager.addVariables("require", "module", "exports", "__filename", "__dirname", "arguments");
+				scopeManager.addVariables(sourceType.getPredefinedLocals(platform, locationManager.getSourceFileExtension()));
 				trapwriter.addTuple("isModule", toplevelLabel);
-			} else if (sourceType == SourceType.MODULE) {
-				Label moduleScopeKey = trapwriter.globalID("module;{" + locationManager.getFileLabel() + "}," + locationManager.getStartLine() + "," + locationManager.getStartColumn());
-				scopeManager.enterScope(3, moduleScopeKey, toplevelLabel);
-				trapwriter.addTuple("isModule", toplevelLabel);
+			}
+
+			// Emit the specific source type.
+			switch (sourceType) {
+			case CLOSURE_MODULE:
+				trapwriter.addTuple("isClosureModule", toplevelLabel);
+				break;
+			case MODULE:
+				trapwriter.addTuple("isES2015Module", toplevelLabel);
+				break;
+			default:
+				break;
 			}
 
 			// add all declared global (or module-scoped) names, both non-lexical and lexical
@@ -569,8 +579,8 @@ public class ASTExtractor {
 
 			visitAll(nd.getBody(), toplevelLabel);
 
-			// if we're extracting a Node.js/ES2015 module, leave its scope
-			if (platform == Platform.NODE || sourceType == SourceType.MODULE)
+			// Leave the local scope again.
+			if (sourceType.hasLocalScope())
 				scopeManager.leaveScope();
 
 			contextManager.leaveContainer();
@@ -823,7 +833,6 @@ public class ASTExtractor {
 
 			contextManager.leaveContainer();
 			scopeManager.leaveScope();
-			lexicalExtractor.emitNumlines(key, nd.getLoc().getStart(), nd.getLoc().getEnd());
 		}
 
 		private void extractParameterDefaultsAndTypes(IFunction nd, Label key, int paramCount) {
@@ -1871,6 +1880,37 @@ public class ASTExtractor {
 		public Label visit(RestTypeExpr nd, Context c) {
 			Label key = super.visit(nd, c);
 			visit(nd.getArrayType(), key, 0, IdContext.typeBind);
+			return key;
+		}
+
+		@Override
+		public Label visit(XMLAttributeSelector nd, Context c) {
+			Label key = super.visit(nd, c);
+			visit(nd.getAttribute(), key, 0, IdContext.label);
+			return key;
+		}
+
+		@Override
+		public Label visit(XMLFilterExpression nd, Context c) {
+			Label key = super.visit(nd, c);
+			visit(nd.getLeft(), key, 0);
+			visit(nd.getRight(), key, 1);
+			return key;
+		}
+
+		@Override
+		public Label visit(XMLQualifiedIdentifier nd, Context c) {
+			Label key = super.visit(nd, c);
+			visit(nd.getLeft(), key, 0);
+			visit(nd.getRight(), key, 1, nd.isComputed() ? IdContext.varBind : IdContext.label);
+			return key;
+		}
+
+		@Override
+		public Label visit(XMLDotDotExpression nd, Context c) {
+			Label key = super.visit(nd, c);
+			visit(nd.getLeft(), key, 0);
+			visit(nd.getRight(), key, 1, IdContext.label);
 			return key;
 		}
 	}

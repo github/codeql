@@ -1,10 +1,10 @@
 /**
  * Provides classes and predicates for reasoning about string-manipulating expressions.
  */
+
 import javascript
 
 module StringOps {
-
   /**
    * A expression that is equivalent to `A.startsWith(B)` or `!A.startsWith(B)`.
    */
@@ -37,13 +37,9 @@ module StringOps {
       getNumArgument() = 1
     }
 
-    override DataFlow::Node getBaseString() {
-      result = getReceiver()
-    }
+    override DataFlow::Node getBaseString() { result = getReceiver() }
 
-    override DataFlow::Node getSubstring() {
-      result = getArgument(0)
-    }
+    override DataFlow::Node getSubstring() { result = getArgument(0) }
   }
 
   /**
@@ -51,6 +47,7 @@ module StringOps {
    */
   private class StartsWith_IndexOfEquals extends StartsWith, DataFlow::ValueNode {
     override EqualityTest astNode;
+
     DataFlow::MethodCallNode indexOf;
 
     StartsWith_IndexOfEquals() {
@@ -60,17 +57,11 @@ module StringOps {
       astNode.getAnOperand().getIntValue() = 0
     }
 
-    override DataFlow::Node getBaseString() {
-      result = indexOf.getReceiver()
-    }
+    override DataFlow::Node getBaseString() { result = indexOf.getReceiver() }
 
-    override DataFlow::Node getSubstring() {
-      result = indexOf.getArgument(0)
-    }
+    override DataFlow::Node getSubstring() { result = indexOf.getArgument(0) }
 
-    override boolean getPolarity() {
-      result = astNode.getPolarity()
-    }
+    override boolean getPolarity() { result = astNode.getPolarity() }
   }
 
   /**
@@ -85,17 +76,11 @@ module StringOps {
       this.flowsToExpr(any(ConditionGuardNode guard).getTest()) // check for boolean coercion
     }
 
-    override DataFlow::Node getBaseString() {
-      result = getReceiver()
-    }
+    override DataFlow::Node getBaseString() { result = getReceiver() }
 
-    override DataFlow::Node getSubstring() {
-      result = getArgument(0)
-    }
+    override DataFlow::Node getSubstring() { result = getArgument(0) }
 
-    override boolean getPolarity() {
-      result = false
-    }
+    override boolean getPolarity() { result = false }
   }
 
   /**
@@ -104,19 +89,15 @@ module StringOps {
   private class StartsWith_Library extends StartsWith, DataFlow::CallNode {
     StartsWith_Library() {
       getNumArgument() = 2 and
-      exists (DataFlow::SourceNode callee | this = callee.getACall() |
+      exists(DataFlow::SourceNode callee | this = callee.getACall() |
         callee = LodashUnderscore::member("startsWith") or
         callee = DataFlow::moduleMember("ramda", "startsWith")
       )
     }
 
-    override DataFlow::Node getBaseString() {
-      result = getArgument(0)
-    }
+    override DataFlow::Node getBaseString() { result = getArgument(0) }
 
-    override DataFlow::Node getSubstring() {
-      result = getArgument(1)
-    }
+    override DataFlow::Node getSubstring() { result = getArgument(1) }
   }
 
   /**
@@ -124,7 +105,9 @@ module StringOps {
    */
   private class StartsWith_FirstCharacter extends StartsWith, DataFlow::ValueNode {
     override EqualityTest astNode;
+
     DataFlow::PropRead read;
+
     Expr constant;
 
     StartsWith_FirstCharacter() {
@@ -134,17 +117,11 @@ module StringOps {
       astNode.getAnOperand() = constant
     }
 
-    override DataFlow::Node getBaseString() {
-      result = read.getBase()
-    }
+    override DataFlow::Node getBaseString() { result = read.getBase() }
 
-    override DataFlow::Node getSubstring() {
-      result = constant.flow()
-    }
+    override DataFlow::Node getSubstring() { result = constant.flow() }
 
-    override boolean getPolarity() {
-      result = astNode.getPolarity()
-    }
+    override boolean getPolarity() { result = astNode.getPolarity() }
   }
 
   /**
@@ -152,7 +129,9 @@ module StringOps {
    */
   private class StartsWith_Substring extends StartsWith, DataFlow::ValueNode {
     override EqualityTest astNode;
+
     DataFlow::MethodCallNode call;
+
     DataFlow::Node substring;
 
     StartsWith_Substring() {
@@ -162,21 +141,15 @@ module StringOps {
       (
         substring.getALocalSource().getAPropertyRead("length").flowsTo(call.getArgument(1))
         or
-        substring.asExpr().getStringValue().length() = call.getArgument(1).asExpr().getIntValue()
+        substring.getStringValue().length() = call.getArgument(1).asExpr().getIntValue()
       )
     }
 
-    override DataFlow::Node getBaseString() {
-      result = call.getReceiver()
-    }
+    override DataFlow::Node getBaseString() { result = call.getReceiver() }
 
-    override DataFlow::Node getSubstring() {
-      result = substring
-    }
+    override DataFlow::Node getSubstring() { result = substring }
 
-    override boolean getPolarity() {
-      result = astNode.getPolarity()
-    }
+    override boolean getPolarity() { result = astNode.getPolarity() }
   }
 
   /**
@@ -209,13 +182,9 @@ module StringOps {
       getNumArgument() = 1
     }
 
-    override DataFlow::Node getBaseString() {
-      result = getReceiver()
-    }
+    override DataFlow::Node getBaseString() { result = getReceiver() }
 
-    override DataFlow::Node getSubstring() {
-      result = getArgument(0)
-    }
+    override DataFlow::Node getSubstring() { result = getArgument(0) }
   }
 
   /**
@@ -223,19 +192,15 @@ module StringOps {
    */
   private class Includes_Library extends Includes, DataFlow::CallNode {
     Includes_Library() {
-      exists (string name |
+      exists(string name |
         this = LodashUnderscore::member(name).getACall() and
         (name = "includes" or name = "include" or name = "contains")
       )
     }
 
-    override DataFlow::Node getBaseString() {
-      result = getArgument(0)
-    }
+    override DataFlow::Node getBaseString() { result = getArgument(0) }
 
-    override DataFlow::Node getSubstring() {
-      result = getArgument(1)
-    }
+    override DataFlow::Node getSubstring() { result = getArgument(1) }
   }
 
   /**
@@ -243,10 +208,11 @@ module StringOps {
    */
   private class Includes_IndexOfEquals extends Includes, DataFlow::ValueNode {
     MethodCallExpr indexOf;
+
     override EqualityTest astNode;
 
     Includes_IndexOfEquals() {
-      exists (Expr index | astNode.hasOperands(indexOf, index) |
+      exists(Expr index | astNode.hasOperands(indexOf, index) |
         // one operand is of the form `whitelist.indexOf(x)`
         indexOf.getMethodName() = "indexOf" and
         // and the other one is -1
@@ -254,17 +220,11 @@ module StringOps {
       )
     }
 
-    override DataFlow::Node getBaseString() {
-      result = indexOf.getReceiver().flow()
-    }
+    override DataFlow::Node getBaseString() { result = indexOf.getReceiver().flow() }
 
-    override DataFlow::Node getSubstring() {
-      result = indexOf.getArgument(0).flow()
-    }
+    override DataFlow::Node getSubstring() { result = indexOf.getArgument(0).flow() }
 
-    override boolean getPolarity() {
-      result = astNode.getPolarity().booleanNot()
-    }
+    override boolean getPolarity() { result = astNode.getPolarity().booleanNot() }
   }
 
   /**
@@ -272,15 +232,18 @@ module StringOps {
    */
   private class Includes_IndexOfRelational extends Includes, DataFlow::ValueNode {
     MethodCallExpr indexOf;
+
     override RelationalComparison astNode;
+
     boolean polarity;
 
     Includes_IndexOfRelational() {
-      exists (Expr lesser, Expr greater |
+      exists(Expr lesser, Expr greater |
         astNode.getLesserOperand() = lesser and
         astNode.getGreaterOperand() = greater and
         indexOf.getMethodName() = "indexOf" and
-        indexOf.getNumArgument() = 1 |
+        indexOf.getNumArgument() = 1
+      |
         polarity = true and
         greater = indexOf and
         (
@@ -299,17 +262,11 @@ module StringOps {
       )
     }
 
-    override DataFlow::Node getBaseString() {
-      result = indexOf.getReceiver().flow()
-    }
+    override DataFlow::Node getBaseString() { result = indexOf.getReceiver().flow() }
 
-    override DataFlow::Node getSubstring() {
-      result = indexOf.getArgument(0).flow()
-    }
+    override DataFlow::Node getSubstring() { result = indexOf.getArgument(0).flow() }
 
-    override boolean getPolarity() {
-      result = polarity
-    }
+    override boolean getPolarity() { result = polarity }
   }
 
   /**
@@ -317,6 +274,7 @@ module StringOps {
    */
   private class Includes_IndexOfBitwise extends Includes, DataFlow::ValueNode {
     MethodCallExpr indexOf;
+
     override BitNotExpr astNode;
 
     Includes_IndexOfBitwise() {
@@ -324,13 +282,9 @@ module StringOps {
       indexOf.getMethodName() = "indexOf"
     }
 
-    override DataFlow::Node getBaseString() {
-      result = indexOf.getReceiver().flow()
-    }
+    override DataFlow::Node getBaseString() { result = indexOf.getReceiver().flow() }
 
-    override DataFlow::Node getSubstring() {
-      result = indexOf.getArgument(0).flow()
-    }
+    override DataFlow::Node getSubstring() { result = indexOf.getArgument(0).flow() }
   }
 
   /**
@@ -365,13 +319,9 @@ module StringOps {
       getNumArgument() = 1
     }
 
-    override DataFlow::Node getBaseString() {
-      result = getReceiver()
-    }
+    override DataFlow::Node getBaseString() { result = getReceiver() }
 
-    override DataFlow::Node getSubstring() {
-      result = getArgument(0)
-    }
+    override DataFlow::Node getSubstring() { result = getArgument(0) }
   }
 
   /**
@@ -380,18 +330,14 @@ module StringOps {
   private class EndsWith_Library extends StartsWith, DataFlow::CallNode {
     EndsWith_Library() {
       getNumArgument() = 2 and
-      exists (DataFlow::SourceNode callee | this = callee.getACall() |
+      exists(DataFlow::SourceNode callee | this = callee.getACall() |
         callee = LodashUnderscore::member("endsWith") or
         callee = DataFlow::moduleMember("ramda", "endsWith")
       )
     }
 
-    override DataFlow::Node getBaseString() {
-      result = getArgument(0)
-    }
+    override DataFlow::Node getBaseString() { result = getArgument(0) }
 
-    override DataFlow::Node getSubstring() {
-      result = getArgument(1)
-    }
+    override DataFlow::Node getSubstring() { result = getArgument(1) }
   }
 }

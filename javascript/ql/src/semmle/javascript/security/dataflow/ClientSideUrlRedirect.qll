@@ -27,7 +27,9 @@ module ClientSideUrlRedirect {
    * A flow label for values that represent the URL of the current document, and
    * hence are only partially user-controlled.
    */
-  class DocumentUrl extends DataFlow::FlowLabel { DocumentUrl() { this = "document.url" } }
+  class DocumentUrl extends DataFlow::FlowLabel {
+    DocumentUrl() { this = "document.url" }
+  }
 
   /**
    * A taint-tracking configuration for reasoning about unvalidated URL redirections.

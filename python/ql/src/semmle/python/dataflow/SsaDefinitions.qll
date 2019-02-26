@@ -300,6 +300,15 @@ class EscapingGlobalVariable extends ModuleVariable {
 
 }
 
+class EscapingAssignmentGlobalVariable extends EscapingGlobalVariable {
+
+    EscapingAssignmentGlobalVariable() {
+        exists(NameNode n | n.defines(this) and not n.getScope() = this.getScope())
+    }
+
+}
+
+
 class SpecialSsaSourceVariable extends PythonSsaSourceVariable {
 
     SpecialSsaSourceVariable() {
@@ -337,7 +346,7 @@ private predicate class_with_global_metaclass(Class cls, GlobalVariable metaclas
 
 /** Holds if this variable is implicitly defined */
 private predicate implicit_definition(Variable v) {
-    v.getId() = "*"
+    v.getId() = "*" or v.getId() = "$"
     or
     exists(ImportStar is | is.getScope() = v.getScope())
 }

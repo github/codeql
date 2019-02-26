@@ -7,7 +7,9 @@ import csharp
 /**
  * A `Web.config` file.
  */
-class WebConfigXML extends XMLFile { WebConfigXML() { getName().matches("%Web.config") } }
+class WebConfigXML extends XMLFile {
+  WebConfigXML() { getName().matches("%Web.config") }
+}
 
 /** A `<configuration>` tag in an ASP.NET configuration file. */
 class ConfigurationXMLElement extends XMLElement {

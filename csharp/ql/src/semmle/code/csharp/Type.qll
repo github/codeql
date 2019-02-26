@@ -684,7 +684,9 @@ class Class extends RefType, @class_type { }
  * new { X = 0, Y = 0 };
  * ```
  */
-class AnonymousClass extends Class { AnonymousClass() { this.getName().matches("<%") } }
+class AnonymousClass extends Class {
+  AnonymousClass() { this.getName().matches("<%") }
+}
 
 /**
  * The `object` type, `System.Object`.
@@ -891,9 +893,7 @@ class TupleType extends ValueType, @tuple_type {
         concat(int i |
           exists(getElement(i))
         |
-          getElement(i).getType().toStringWithTypes(), ", "
-          order by
-            i
+          getElement(i).getType().toStringWithTypes(), ", " order by i
         ) + ")"
   }
 

@@ -17,7 +17,7 @@ import semmle.python.web.Http
 FunctionObject requestFunction() {
     exists(ModuleObject req |
         req.getName() = "requests" and
-        result = req.getAttribute(httpVerbLower())
+        result = req.attr(httpVerbLower())
     )
 }
 

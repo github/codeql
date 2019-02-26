@@ -1,0 +1,16 @@
+Language,Variants,Compilers,Extensions
+C/C++,"C89, C99, C11, C++98, C++03, C++11, C++14, C++17","Clang extensions (up to Clang 6.0)
+
+GNU extensions (up to GCC 7.3), 
+
+Microsoft extensions (up to VS 2017)","``.cpp``, ``.c++``, ``.cxx``, ``.hpp``, ``.hh``, ``.h++``, ``.hxx``, ``.c``, ``.cc``, ``.h``"
+C#,C# up to 7.2 together with .NET versions up to 4.7.1,"Microsoft Visual Studio up to 2017, 
+
+.NET Core up to 2.1","``.sln``, ``.csproj``, ``.cs``, ``.cshtml``, ``.xaml``"
+COBOL,ANSI 85 or newer [1]_.,Not applicable,"``.cbl``, ``.CBL``, ``.cpy``, ``.CPY``, ``.copy``, ``.COPY``"
+Java,"Java 11 [2]_. or lower","javac (OpenJDK and Oracle JDK)
+
+Eclipse compiler for Java (ECJ) batch compiler",``.java``
+JavaScript,ECMAScript 2018 or lower,Not applicable,"``.js``, ``.jsx``, ``.mjs``, ``.es``, ``.es6``, ``.htm``, ``.html``, ``.xhm``, ``.xhtml``, ``.vue``, ``.json`` [3]_."
+Python,"2.7, 3.5, 3.6, 3.7",Not applicable,``.py``
+TypeScript [4]_.,"2.6, 2.7, 2.8, 2.9, 3.0, 3.1",Standard TypeScript compiler,"``.ts``, ``.tsx``"

@@ -37,6 +37,9 @@ module DataFlow {
     TThisNode(StmtContainer f) { f.(Function).getThisBinder() = f or f instanceof TopLevel } or
     TUnusedParameterNode(SimpleParameter p) {
       not exists(SsaExplicitDefinition ssa | p = ssa.getDef())
+    } or
+    TDestructuredModuleImportNode(ImportDeclaration decl) {
+      exists(decl.getASpecifier().getImportedName())
     }
 
   /**
@@ -97,13 +100,22 @@ module DataFlow {
      */
     predicate accessesGlobal(string g) { globalVarRef(g).flowsTo(this) }
 
-    /** Holds if this node may evaluate to the string `s`. */
+    /** Holds if this node may evaluate to the string `s`, possibly through local data flow. */
     predicate mayHaveStringValue(string s) { getAPredecessor().mayHaveStringValue(s) }
+
+    /** Gets the string value of this node, if it is a string literal or constant string concatenation. */
+    string getStringValue() { result = asExpr().getStringValue() }
 
     /** Holds if this node may evaluate to the Boolean value `b`. */
     predicate mayHaveBooleanValue(boolean b) {
       b = analyze().getAValue().(AbstractBoolean).getBooleanValue()
     }
+
+    /** Gets the integer value of this node, if it is an integer constant. */
+    int getIntValue() { result = asExpr().getIntValue() }
+
+    /** Gets a function value that may reach this node. */
+    FunctionNode getAFunctionValue() { result.getAstNode() = analyze().getAValue().(AbstractCallable).getFunction() }
 
     /**
      * Holds if this expression may refer to the initial value of parameter `p`.
@@ -115,7 +127,7 @@ module DataFlow {
      * The location spans column `startcolumn` of line `startline` to
      * column `endcolumn` of line `endline` in file `filepath`.
      * For more information, see
-     * [LGTM locations](https://lgtm.com/help/ql/locations).
+     * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
      */
     predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -343,6 +355,25 @@ module DataFlow {
   }
 
   /**
+   * A node referring to the module imported at a named or default ES2015 import declaration.
+   */
+  private class DestructuredModuleImportNode extends Node, TDestructuredModuleImportNode {
+    ImportDeclaration imprt;
+
+    DestructuredModuleImportNode() { this = TDestructuredModuleImportNode(imprt) }
+
+    override BasicBlock getBasicBlock() { result = imprt.getBasicBlock() }
+
+    override predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      imprt.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+
+    override string toString() { result = imprt.toString() }
+  }
+
+  /**
    * A data flow node that reads or writes an object property or class member.
    *
    * The default subclasses do not model global variable references or variable
@@ -475,13 +506,35 @@ module DataFlow {
    * A static member definition, viewed as a data flow node that adds
    * a property to the class.
    */
-  private class ClassMemberAsPropWrite extends PropWrite, PropNode {
+  private class StaticClassMemberAsPropWrite extends PropWrite, PropNode {
     override MemberDefinition prop;
 
-    override Node getBase() {
-      prop.isStatic() and
-      result = valueNode(prop.getDeclaringClass())
+    StaticClassMemberAsPropWrite() { prop.isStatic() }
+
+    override Node getBase() { result = valueNode(prop.getDeclaringClass()) }
+
+    override Expr getPropertyNameExpr() { result = prop.getNameExpr() }
+
+    override string getPropertyName() { result = prop.getName() }
+
+    override Node getRhs() {
+      not prop instanceof AccessorMethodDefinition and
+      result = valueNode(prop.getInit())
     }
+
+    override ControlFlowNode getWriteNode() { result = prop }
+  }
+
+  /**
+   * An instance method definition, viewed as a data flow node that adds
+   * a property to an unseen value.
+   */
+  private class InstanceMethodAsPropWrite extends PropWrite, PropNode {
+    override MethodDefinition prop;
+
+    InstanceMethodAsPropWrite() { not prop.isStatic() }
+
+    override Node getBase() { none() } // The prototype has no DataFlow node
 
     override Expr getPropertyNameExpr() { result = prop.getNameExpr() }
 
@@ -509,6 +562,50 @@ module DataFlow {
     override string getPropertyName() { result = prop.getName() }
 
     override Node getRhs() { result = valueNode(prop.getValue()) }
+
+    override ControlFlowNode getWriteNode() { result = prop }
+  }
+
+  /**
+   * A field induced by an initializing constructor parameter, seen as a property write (TypeScript only).
+   */
+  private class ParameterFieldAsPropWrite extends PropWrite, PropNode {
+    override ParameterField prop;
+
+    override Node getBase() {
+      result = thisNode(prop.getDeclaringClass().getConstructor().getBody())
+    }
+
+    override Expr getPropertyNameExpr() { result = prop.getNameExpr() }
+
+    override string getPropertyName() { result = prop.getName() }
+
+    override Node getRhs() { result = parameterNode(prop.getParameter()) }
+
+    override ControlFlowNode getWriteNode() { result = prop.getParameter() }
+  }
+
+  /**
+   * An instance field with an initializer, seen as a property write.
+   */
+  private class InstanceFieldAsPropWrite extends PropWrite, PropNode {
+    override FieldDefinition prop;
+
+    InstanceFieldAsPropWrite() {
+      not prop.isStatic() and
+      not prop instanceof ParameterField and
+      exists(prop.getInit())
+    }
+
+    override Node getBase() {
+      result = thisNode(prop.getDeclaringClass().getConstructor().getBody())
+    }
+
+    override Expr getPropertyNameExpr() { result = prop.getNameExpr() }
+
+    override string getPropertyName() { result = prop.getName() }
+
+    override Node getRhs() { result = valueNode(prop.getInit()) }
 
     override ControlFlowNode getWriteNode() { result = prop }
   }
@@ -591,6 +688,30 @@ module DataFlow {
     override Expr getPropertyNameExpr() { none() }
 
     override string getPropertyName() { none() }
+  }
+
+  /**
+   * A named import specifier seen as a property read on the imported module.
+   */
+  private class ImportSpecifierAsPropRead extends PropRead {
+    ImportDeclaration imprt;
+
+    ImportSpecifier spec;
+
+    ImportSpecifierAsPropRead() {
+      spec = imprt.getASpecifier() and
+      exists(spec.getImportedName()) and
+      exists(SsaExplicitDefinition ssa |
+        ssa.getDef() = spec and
+        this = TSsaDefNode(ssa)
+      )
+    }
+
+    override Node getBase() { result = TDestructuredModuleImportNode(imprt) }
+
+    override Expr getPropertyNameExpr() { result = spec.getImported() }
+
+    override string getPropertyName() { result = spec.getImportedName() }
   }
 
   /**
@@ -698,7 +819,9 @@ module DataFlow {
     /**
      * A data flow node representing an explicit (that is, non-reflective) function call.
      */
-    class ExplicitCallNode extends CallNodeDef, ExplicitInvokeNode { override CallExpr astNode; }
+    class ExplicitCallNode extends CallNodeDef, ExplicitInvokeNode {
+      override CallExpr astNode;
+    }
 
     /**
      * A data flow node representing an explicit (that is, non-reflective) method call.
@@ -810,6 +933,16 @@ module DataFlow {
   DataFlow::ThisNode thisNode(StmtContainer container) { result = TThisNode(container) }
 
   /**
+   * INTERNAL. DO NOT USE.
+   *
+   * Gets the data flow node holding the reference to the module being destructured at
+   * the given import declaration.
+   */
+  DataFlow::Node destructuredModuleImportNode(ImportDeclaration imprt) {
+    result = TDestructuredModuleImportNode(imprt)
+  }
+
+  /**
    * A classification of flows that are not modeled, or only modeled incompletely, by
    * `DataFlowNode`:
    *
@@ -852,7 +985,7 @@ module DataFlow {
   }
 
   /**
-   * Holds if data can flow from `node1` to `node2` in one local step.
+   * Holds if data can flow from `pred` to `succ` in one local step.
    */
   cached
   predicate localFlowStep(Node pred, Node succ) {
@@ -927,7 +1060,9 @@ module DataFlow {
    * flow through IIFE calls into account.
    */
   private AST::ValueNode defSourceNode(VarDef def) {
-    result = def.getSource() or localArgumentPassing(result, def)
+    result = def.getSource() or
+    result = def.getDestructuringSource() or
+    localArgumentPassing(result, def)
   }
 
   /**
@@ -943,9 +1078,13 @@ module DataFlow {
       result = TValueNode(defSourceNode(def))
       or
       // handle destructuring assignments
-      exists(PropertyPattern pp | r = pp.getValuePattern() | result = TPropNode(pp))
+      exists(PropertyPattern pp | r = pp.getValuePattern() |
+        result = TPropNode(pp) or result = pp.getDefault().flow()
+      )
       or
       result = TElementPatternNode(_, r)
+      or
+      exists(ArrayPattern ap, int i | ap.getElement(i) = r and result = ap.getDefault(i).flow())
     )
   }
 
@@ -974,7 +1113,7 @@ module DataFlow {
     or
     exists(GlobalVarAccess va |
       nd = valueNode(va.(VarUse)) and
-      cause = "global"
+      if Closure::isClosureNamespace(va.getName()) then cause = "heap" else cause = "global"
     )
     or
     exists(Expr e | e = nd.asExpr() and cause = "call" |
@@ -995,8 +1134,14 @@ module DataFlow {
     nd.asExpr() instanceof ExternalModuleReference and
     cause = "import"
     or
-    nd.asExpr() instanceof PropAccess and
-    cause = "heap"
+    exists (Expr e | e = nd.asExpr() and cause = "heap" |
+      e instanceof PropAccess or
+      e instanceof E4X::XMLAnyName or
+      e instanceof E4X::XMLAttributeSelector or
+      e instanceof E4X::XMLDotDotExpression or
+      e instanceof E4X::XMLFilterExpression or
+      e instanceof E4X::XMLQualifiedIdentifier
+    )
     or
     exists(Expr e | e = nd.asExpr() |
       (e instanceof YieldExpr or e instanceof FunctionSentExpr) and

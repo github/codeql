@@ -162,14 +162,14 @@ predicate function_object_sanity(string clsname, string problem, string what) {
 
 predicate multiple_origins_per_object(Object obj) {
     not obj.isC() and not obj instanceof ModuleObject and
-    exists(ControlFlowNode use | strictcount(ControlFlowNode orig | use.refersTo(obj, orig)) > 1)
+    exists(ControlFlowNode use, Context ctx | strictcount(ControlFlowNode orig | use.refersTo(ctx, obj, _, orig)) > 1)
 }
 
 predicate intermediate_origins(ControlFlowNode use, ControlFlowNode inter, Object obj) {
-    exists(ControlFlowNode orig | 
+    exists(ControlFlowNode orig, Context ctx |
         not inter = orig |
-        use.refersTo(obj, inter) and
-        inter.refersTo(obj, orig) and
+        use.refersTo(ctx, obj, _, inter) and
+        inter.refersTo(ctx, obj, _, orig) and
         // It can sometimes happen that two different modules (e.g. cPickle and Pickle)
         // have the same attribute, but different origins.
         not strictcount(Object val | inter.(AttrNode).getObject().refersTo(val)) > 1

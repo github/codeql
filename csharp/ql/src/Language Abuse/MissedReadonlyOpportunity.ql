@@ -26,9 +26,7 @@ predicate isReadonlyCompatibleDefinition(AssignableDefinition def, Field f) {
 }
 
 predicate canBeReadonly(Field f) {
-  forex(AssignableDefinition def | defTargetsField(def, f) |
-    isReadonlyCompatibleDefinition(def, f)
-  )
+  forex(AssignableDefinition def | defTargetsField(def, f) | isReadonlyCompatibleDefinition(def, f))
 }
 
 from Field f
@@ -36,5 +34,5 @@ where
   canBeReadonly(f) and
   not f.isConst() and
   not f.isReadOnly() and
-  (f.isEffectivelyPrivate() or f.isEffectivelyInternal())
+  not f.isEffectivelyPublic()
 select f, "Field '" + f.getName() + "' can be 'readonly'."

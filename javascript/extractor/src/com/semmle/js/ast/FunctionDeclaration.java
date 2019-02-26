@@ -17,26 +17,26 @@ import com.semmle.ts.ast.TypeParameter;
  * </pre>
  */
 public class FunctionDeclaration extends Statement implements IFunction {
-	private final AFunction<BlockStatement> fn;
+	private final AFunction<? extends Node> fn;
 	private final boolean hasDeclareKeyword;
 	private int symbol = -1;
 
-	public FunctionDeclaration(SourceLocation loc, Identifier id, List<Expression> params, BlockStatement body, boolean generator,
+	public FunctionDeclaration(SourceLocation loc, Identifier id, List<Expression> params, Node body, boolean generator,
 			boolean async) {
-		this(loc, new AFunction<BlockStatement>(id, params, body, generator, async, Collections.emptyList(), Collections.emptyList(),
+		this(loc, new AFunction<>(id, params, body, generator, async, Collections.emptyList(), Collections.emptyList(),
 				Collections.emptyList(), null, null),
 				false);
 	}
 
 	public FunctionDeclaration(SourceLocation loc, Identifier id,
-			List<Expression> params, BlockStatement body, boolean generator, boolean async, boolean hasDeclareKeyword,
+			List<Expression> params, Node body, boolean generator, boolean async, boolean hasDeclareKeyword,
 			List<TypeParameter> typeParameters, List<ITypeExpression> parameterTypes, ITypeExpression returnType,
 			ITypeExpression thisParameterType) {
-		this(loc, new AFunction<BlockStatement>(id, params, body, generator, async, typeParameters, parameterTypes, Collections.emptyList(),
+		this(loc, new AFunction<>(id, params, body, generator, async, typeParameters, parameterTypes, Collections.emptyList(),
 				returnType, thisParameterType), hasDeclareKeyword);
 	}
 
-	private FunctionDeclaration(SourceLocation loc, AFunction<BlockStatement> fn, boolean hasDeclareKeyword) {
+	private FunctionDeclaration(SourceLocation loc, AFunction<Node> fn, boolean hasDeclareKeyword) {
 		super("FunctionDeclaration", loc);
 		this.fn = fn;
 		this.hasDeclareKeyword = hasDeclareKeyword;
@@ -56,7 +56,7 @@ public class FunctionDeclaration extends Statement implements IFunction {
 	@Override public boolean hasDefault(int i)     { return fn.hasDefault(i);  }
 	@Override public Expression getDefault(int i)  { return fn.getDefault(i);  }
 	@Override public IPattern getRest()            { return fn.getRest();      }
-	@Override public BlockStatement getBody()      { return fn.getBody();      }
+	@Override public Node getBody()                { return fn.getBody();      }
 	@Override public boolean hasRest()             { return fn.hasRest();      }
 	public boolean hasId()                         { return fn.hasId();        }
 	public boolean isGenerator()                   { return fn.isGenerator();  }

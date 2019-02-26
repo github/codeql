@@ -40,7 +40,7 @@ class FunctionIR extends TFunctionIR {
    */
   pragma[noinline]
   final EnterFunctionInstruction getEnterFunctionInstruction() {
-    result.getFunctionIR() = this
+    result.getEnclosingFunctionIR() = this
   }
 
   /**
@@ -48,12 +48,17 @@ class FunctionIR extends TFunctionIR {
    */
   pragma[noinline]
   final ExitFunctionInstruction getExitFunctionInstruction() {
-    result.getFunctionIR() = this
+    result.getEnclosingFunctionIR() = this
   }
 
   pragma[noinline]
   final UnmodeledDefinitionInstruction getUnmodeledDefinitionInstruction() {
-    result.getFunctionIR() = this
+    result.getEnclosingFunctionIR() = this
+  }
+
+  pragma[noinline]
+  final UnmodeledUseInstruction getUnmodeledUseInstruction() {
+    result.getEnclosingFunctionIR() = this
   }
 
   /**
@@ -61,7 +66,7 @@ class FunctionIR extends TFunctionIR {
    */
   pragma[noinline]
   final ReturnInstruction getReturnInstruction() {
-    result.getFunctionIR() = this
+    result.getEnclosingFunctionIR() = this
   }
 
   /**
@@ -70,7 +75,7 @@ class FunctionIR extends TFunctionIR {
    */
   pragma[noinline]
   final IRReturnVariable getReturnVariable() {
-    result.getFunctionIR() = this
+    result.getEnclosingFunctionIR() = this
   }
   
   /**
@@ -85,13 +90,13 @@ class FunctionIR extends TFunctionIR {
    * Gets all instructions in this function.
    */
   final Instruction getAnInstruction() {
-    result.getFunctionIR() = this
+    result.getEnclosingFunctionIR() = this
   }
 
   /**
    * Gets all blocks in this function.
    */
   final IRBlock getABlock() {
-    result.getFunctionIR() = this
+    result.getEnclosingFunctionIR() = this
   }
 }

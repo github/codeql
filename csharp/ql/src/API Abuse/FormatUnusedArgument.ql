@@ -15,6 +15,7 @@ import semmle.code.csharp.frameworks.Format
 from FormatCall format, int unused, ValidFormatString src
 where
   src = format.getAFormatSource() and
-  unused = format.getAnUnusedArgument(src)
+  unused = format.getAnUnusedArgument(src) and
+  not src.getValue() = ""
 select format, "The $@ ignores $@.", src, "format string", format.getSuppliedExpr(unused),
   "this supplied value"

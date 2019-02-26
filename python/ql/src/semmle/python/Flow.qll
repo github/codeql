@@ -1023,6 +1023,20 @@ class BasicBlock extends @py_flow_node {
     predicate likelyReachable() {
         start_bb_likely_reachable(this)
     }
+
+    /** Gets the `ConditionBlock`, if any, that controls this block and
+     * does not control any other `ConditionBlock`s that control this block.
+     * That is the `ConditionBlock` that is closest dominator.
+     */
+    ConditionBlock getImmediatelyControllingBlock() {
+        result = this.nonControllingImmediateDominator*().getImmediateDominator()
+    }
+
+    private BasicBlock nonControllingImmediateDominator() {
+        result = this.getImmediateDominator() and
+        not result.(ConditionBlock).controls(this, _)
+    }
+
 }
 
 private predicate start_bb_likely_reachable(BasicBlock b) {

@@ -176,6 +176,25 @@ private class AnalyzedNamespaceImport extends AnalyzedImport {
 }
 
 /**
+ * Flow analysis for namespace imports.
+ */
+private class AnalyzedDestructuredImport extends AnalyzedPropertyRead {
+  Module imported;
+
+  AnalyzedDestructuredImport() {
+    exists(ImportDeclaration id |
+      this = DataFlow::destructuredModuleImportNode(id) and
+      imported = id.getImportedModule()
+    )
+  }
+
+  override predicate reads(AbstractValue base, string propName) {
+    base = TAbstractModuleObject(imported) and
+    propName = "exports"
+  }
+}
+
+/**
  * Flow analysis for `require` calls, interpreted as an implicit read of
  * the `module.exports` property of the imported module.
  */
@@ -330,5 +349,52 @@ private class AnalyzedExportAssign extends AnalyzedPropertyWrite, DataFlow::Valu
     baseVal = TAbstractModuleObject(exportAssign.getTopLevel()) and
     propName = "exports" and
     source = this
+  }
+}
+
+/**
+ * Flow analysis for assignments to the `exports` variable in a Closure module.
+ */
+private class AnalyzedClosureExportAssign extends AnalyzedPropertyWrite, DataFlow::ValueNode {
+  override AssignExpr astNode;
+
+  Closure::ClosureModule mod;
+
+  AnalyzedClosureExportAssign() { astNode.getLhs() = mod.getExportsVariable().getAReference() }
+
+  override predicate writes(AbstractValue baseVal, string propName, DataFlow::AnalyzedNode source) {
+    baseVal = TAbstractModuleObject(astNode.getTopLevel()) and
+    propName = "exports" and
+    source = astNode.getRhs().flow()
+  }
+}
+
+/**
+ * Read of a global access path exported by a Closure library.
+ *
+ * This adds a direct flow edge to the assigned value.
+ */
+private class AnalyzedClosureGlobalAccessPath extends AnalyzedNode, AnalyzedPropertyRead {
+  string accessPath;
+
+  AnalyzedClosureGlobalAccessPath() {
+    accessPath = Closure::getClosureNamespaceFromSourceNode(this)
+  }
+
+  override AnalyzedNode localFlowPred() {
+    exists(DataFlow::PropWrite write |
+      Closure::getWrittenClosureNamespace(write) = accessPath and
+      result = write.getRhs()
+    )
+    or
+    result = AnalyzedNode.super.localFlowPred()
+  }
+
+  override predicate reads(AbstractValue base, string propName) {
+    exists(Closure::ClosureModule mod |
+      mod.getClosureNamespace() = accessPath and
+      base = TAbstractModuleObject(mod) and
+      propName = "exports"
+    )
   }
 }

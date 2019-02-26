@@ -100,3 +100,7 @@
 | tst.js:352:4:352:9 | @param | param | tst.js:351:1:353:3 | /**\\n *  ... ger\\n */ | 0 | [int] an integer | (none) | (none) |
 | tst.js:357:4:357:9 | @param | param | tst.js:356:1:359:3 | /**\\n *  ... ion\\n */ | 0 | the array to sort\n | array | Array.<number> |
 | tst.js:358:4:358:9 | @param | param | tst.js:356:1:359:3 | /**\\n *  ... ion\\n */ | 1 | the comparator function | fn | function (x: !number, y: !number): number |
+| tst.js:364:6:364:11 | @param | param | tst.js:363:3:365:5 | /**\\n    ... p\\n   */ | 0 | (none) | p | T1 |
+| tst.js:369:6:369:11 | @param | param | tst.js:368:3:370:5 | /**\\n    ... p\\n   */ | 0 | (none) | p | T2 |
+| tst.js:376:6:376:11 | @param | param | tst.js:375:3:377:5 | /**\\n    ... p\\n   */ | 0 | (none) | p | T3 |
+| tst.js:381:6:381:11 | @param | param | tst.js:380:3:382:5 | /**\\n    ... p\\n   */ | 0 | (none) | p | T4 |

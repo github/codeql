@@ -140,4 +140,41 @@ async function awaitFlow(){
         return;
 
 });
+
+(function () {
+	function p() {
+		return {};
+	}
+	if (p()) { // NOT OK
+	}
+	var v = p();
+	if (v) { // NOT OK
+	}
+	if (v) { // NOT OK, but not detected due to SSA limitations
+	}
+});
+
+(function() {
+	function findOrThrow() {
+		var e = find();
+		if (e) return e;
+		throw new Error();
+	}
+	if(findOrThrow()){ // NOT OK
+	}
+	var v = findOrThrow();
+	if (v) { // NOT OK
+	}
+	if (v) { // NOT OK, but not detected due to SSA limitations
+	}
+});
+
+(function () {
+	function f(){ return { v: unkown };}
+	f();
+	var { v } = f();
+	if (v) { // OK
+	}
+});
+
 // semmle-extractor-options: --experimental

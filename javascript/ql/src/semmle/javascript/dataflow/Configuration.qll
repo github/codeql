@@ -708,7 +708,7 @@ private predicate summarizedHigherOrderCall(
  * - The flow label mapping of the summary corresponds to the transformation from `arg` to the
  *   invocation of the callback.
  */
-predicate higherOrderCall(
+private predicate higherOrderCall(
   DataFlow::Node arg, DataFlow::SourceNode callback, int i, DataFlow::Configuration cfg,
   PathSummary summary
 ) {
@@ -897,7 +897,7 @@ class PathNode extends TPathNode {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [LGTM locations](https://lgtm.com/help/ql/locations).
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -909,12 +909,16 @@ class PathNode extends TPathNode {
 /**
  * A path node corresponding to a flow source.
  */
-class SourcePathNode extends PathNode { SourcePathNode() { isSource(nd, cfg, _) } }
+class SourcePathNode extends PathNode {
+  SourcePathNode() { isSource(nd, cfg, _) }
+}
 
 /**
  * A path node corresponding to a flow sink.
  */
-class SinkPathNode extends PathNode { SinkPathNode() { isSink(nd, cfg, _) } }
+class SinkPathNode extends PathNode {
+  SinkPathNode() { isSink(nd, cfg, _) }
+}
 
 /**
  * Provides the query predicates needed to include a graph in a path-problem query.

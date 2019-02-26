@@ -15,7 +15,9 @@ module SystemLinqExpressions {
   }
 
   /** A class in the `System.Linq.Expressions` namespace. */
-  class Class extends csharp::Class { Class() { this.getNamespace() instanceof Namespace } }
+  class Class extends csharp::Class {
+    Class() { this.getNamespace() instanceof Namespace }
+  }
 
   /** The `Expression<TDelegate>` class. */
   class ExpressionDelegate extends Class, csharp::UnboundGenericClass {

@@ -21,9 +21,7 @@ predicate constantInCharacterClass(RegExpCharacterClass recc, int i, RegExpConst
   cc = rank[i](RegExpConstant cc2, int j |
       cc2 = recc.getChild(j) and cc2.isCharacter() and cc2.getValue() = val
     |
-      cc2
-      order by
-        j
+      cc2 order by j
     )
 }
 

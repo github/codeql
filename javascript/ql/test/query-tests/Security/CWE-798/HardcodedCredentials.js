@@ -134,3 +134,13 @@
 (function(){
     require("cookie-session")({ secret: "cookie-session secret" });
 })()
+
+(function(){
+    var request = require('request');
+    request.get(url, { // OK
+        'auth': {
+            'user': '',
+            'pass': process.env.PASSWORD
+        }
+    });
+})();

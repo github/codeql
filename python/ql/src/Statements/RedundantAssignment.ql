@@ -39,14 +39,14 @@ predicate maybe_defined_in_outer_scope(Name n) {
 }
 
 Variable relevant_var(Name n) {
-	n.getVariable() = result and
-	(corresponding(n, _) or corresponding(_, n))
+    n.getVariable() = result and
+    (corresponding(n, _) or corresponding(_, n))
 }
 
 predicate same_name(Name n1, Name n2) {
     corresponding(n1, n2) and
     relevant_var(n1) = relevant_var(n2) and
-    not exists(builtin_object(n1.getId())) and
+    not exists(Object::builtin(n1.getId())) and
     not maybe_defined_in_outer_scope(n2)
 }
 

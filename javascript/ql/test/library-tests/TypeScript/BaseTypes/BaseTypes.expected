@@ -13,5 +13,4 @@
 | IMulti | IGenericBase |
 | IStringSub | IGenericBase |
 | ISub | IBase |
-| RegExpExecArray | Array |
 | RegExpMatchArray | Array |

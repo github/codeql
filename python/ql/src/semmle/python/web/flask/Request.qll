@@ -5,7 +5,7 @@ import semmle.python.web.Http
 import semmle.python.web.flask.General
 
 private Object theFlaskRequestObject() {
-    result = theFlaskModule().getAttribute("request")
+    result = theFlaskModule().attr("request")
 
 }
 

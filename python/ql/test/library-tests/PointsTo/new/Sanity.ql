@@ -95,9 +95,11 @@ predicate ssa_sanity(string clsname, string problem, string what) {
         not exists(m.getName()) and
         problem = "does not have a name"
         or
+        not m.isPackage() and
         not exists(Variable v | v.getId() = "__name__" and v.getScope() = m) and
         problem = "does not have a __name__ variable"
         or
+        not m.isPackage() and
         not exists(PyNodeDefinition def |
             def.getDefiningNode().getScope() = m and
             def.getVariable().getName() = "__name__"

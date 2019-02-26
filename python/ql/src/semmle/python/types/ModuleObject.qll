@@ -16,6 +16,11 @@ abstract class ModuleObject extends Object {
         none()
     }
 
+    /** Gets the source scope corresponding to this module, if this is a Python module */
+    Module getSourceModule() {
+        none()
+    }
+
     Container getPath() {
         none()
     }
@@ -28,9 +33,17 @@ abstract class ModuleObject extends Object {
     }
 
     /** Gets the named attribute of this module. Using attributeRefersTo() instead
-     * may provide better results for presentation. */
+     * may provide better results for presentation.
+     * */
     pragma [noinline]
     abstract Object getAttribute(string name);
+
+    /** Gets the named attribute of this module.
+     * Synonym for `getAttribute(name)` */
+    pragma [inline]
+    final Object attr(string name) {
+        result = this.getAttribute(name)
+    }
 
     /** Whether the named attribute of this module "refers-to" value, with a known origin.
      */
@@ -136,6 +149,10 @@ class PythonModuleObject extends ModuleObject {
         result = this.getOrigin()
     }
 
+    override Module getSourceModule() {
+        result = this.getOrigin()
+    }
+
     override Container getPath() {
         result = this.getModule().getFile()
     }
@@ -165,11 +182,17 @@ class PythonModuleObject extends ModuleObject {
     }
 
     override predicate attributeRefersTo(string name, Object value, ControlFlowNode origin) {
-         PointsTo::py_module_attributes(this.getModule(), name, value, _, origin)
+        exists(CfgOrigin orig |
+            origin = orig.toCfgNode() and
+            PointsTo::py_module_attributes(this.getModule(), name, value, _, orig)
+        )
     }
 
     override predicate attributeRefersTo(string name, Object value, ClassObject cls, ControlFlowNode origin) {
-         PointsTo::py_module_attributes(this.getModule(), name, value, cls, origin)
+        exists(CfgOrigin orig |
+            origin = orig.toCfgNode() and
+            PointsTo::py_module_attributes(this.getModule(), name, value, cls, orig)
+        )
     }
 
 }
@@ -204,6 +227,10 @@ class PackageObject extends ModuleObject {
 
     override Module getModule() {
         result = this.getOrigin()
+    }
+
+    override Module getSourceModule() {
+        result = this.getModule().getInitModule()
     }
 
     override Container getPath() {
@@ -247,11 +274,17 @@ class PackageObject extends ModuleObject {
     }
 
     override predicate attributeRefersTo(string name, Object value, ControlFlowNode origin) {
-        PointsTo::package_attribute_points_to(this, name, value, _, origin)
+        exists(CfgOrigin orig |
+            origin = orig.toCfgNode() and
+            PointsTo::package_attribute_points_to(this, name, value, _, orig)
+        )
     }
 
     override predicate attributeRefersTo(string name, Object value, ClassObject cls, ControlFlowNode origin) {
-        PointsTo::package_attribute_points_to(this, name, value, cls, origin)
+        exists(CfgOrigin orig |
+            origin = orig.toCfgNode() and
+            PointsTo::package_attribute_points_to(this, name, value, cls, orig)
+        )
     }
 
     Location getLocation() {

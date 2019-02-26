@@ -1,4 +1,5 @@
 import cpp
+private import semmle.code.cpp.Print
 
 private newtype TPrintASTConfiguration = MkPrintASTConfiguration()
 
@@ -490,7 +491,7 @@ class FunctionNode extends ASTNode {
   }
 
   override string toString() {
-    result = func.getFullSignature()
+    result = getIdentityString(func)
   }
 
   override PrintASTNode getChild(int childIndex) {
@@ -528,7 +529,7 @@ class FunctionNode extends ASTNode {
         file,
         line,
         column,
-        function.getFullSignature()
+        getIdentityString(function)
     )
   }
   

@@ -30,7 +30,9 @@ class ReadRef extends Expr, @cil_read_ref { }
 class ReadRefAccess extends ReadAccess, ReadRef { }
 
 /** An instruction that writes a variable. */
-class WriteAccess extends VariableAccess, @cil_write_access { Expr getExpr() { none() } }
+class WriteAccess extends VariableAccess, @cil_write_access {
+  Expr getExpr() { none() }
+}
 
 /** An instruction that accesses a parameter. */
 class ParameterAccess extends StackVariableAccess, @cil_arg_access {

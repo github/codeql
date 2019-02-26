@@ -400,13 +400,17 @@ private predicate entryBB(BasicBlock bb) {
  * An exit basic block, that is, a basic block whose last node is
  * the exit node of a callable.
  */
-class ExitBasicBlock extends BasicBlock { ExitBasicBlock() { exitBB(this) } }
+class ExitBasicBlock extends BasicBlock {
+  ExitBasicBlock() { exitBB(this) }
+}
 
 /** Holds if `bb` is an exit basic block. */
 private predicate exitBB(BasicBlock bb) { bb.getLastNode() instanceof ControlFlow::Nodes::ExitNode }
 
 /** A basic block with more than one predecessor. */
-class JoinBlock extends BasicBlock { JoinBlock() { getFirstNode().isJoin() } }
+class JoinBlock extends BasicBlock {
+  JoinBlock() { getFirstNode().isJoin() }
+}
 
 /** A basic block that is an immediate predecessor of a join block. */
 class JoinBlockPredecessor extends BasicBlock {

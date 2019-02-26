@@ -294,7 +294,7 @@ private module Internal {
       |
         succ.(AssignableRead) = a.getAnAccess() and
         pred = a.getAnAssignedValue() and
-        a = any(Modifiable m | m.isEffectivelyInternal() or m.isEffectivelyPrivate())
+        a = any(Modifiable m | not m.isEffectivelyPublic())
       )
     }
 
@@ -308,7 +308,9 @@ private module Internal {
 
     private predicate stepTC(Expr succ, Expr pred) = fastTC(stepExpr/2)(succ, pred)
 
-    private class Source extends Expr { Source() { not stepExpr(this, _) } }
+    private class Source extends Expr {
+      Source() { not stepExpr(this, _) }
+    }
 
     private class Sink extends Expr {
       Sink() {
@@ -477,7 +479,7 @@ private module Internal {
 
     override Expr getArgument(int i) { result = getCall().getArgument(i) }
 
-    override Expr getQualifier() { result = getCall().getAccess().getQualifier() }
+    override Expr getQualifier() { result = getCall().(MemberAccess).getQualifier() }
 
     override Accessor getAStaticTarget() { result = getCall().getTarget() }
 

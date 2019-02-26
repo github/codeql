@@ -1,53 +1,53 @@
-#-----| __va_list_tag::operator=(__va_list_tag &&) -> __va_list_tag &
-#-----|   params: 
-#-----|     0: p#0
-#-----|         Type = __va_list_tag &&
-#-----| __va_list_tag::operator=(const __va_list_tag &) -> __va_list_tag &
+#-----| __va_list_tag& __va_list_tag::operator=(__va_list_tag const&)
 #-----|   params: 
 #-----|     0: p#0
 #-----|         Type = const __va_list_tag &
-#-----| operator delete(void *, unsigned long) -> void
+#-----| __va_list_tag& __va_list_tag::operator=(__va_list_tag&&)
+#-----|   params: 
+#-----|     0: p#0
+#-----|         Type = __va_list_tag &&
+#-----| void operator delete(void*, unsigned long)
 #-----|   params: 
 #-----|     0: p#0
 #-----|         Type = void *
 #-----|     1: p#1
 #-----|         Type = unsigned long
-#-----| operator delete[](void *, unsigned long) -> void
+#-----| void operator delete[](void*, unsigned long)
 #-----|   params: 
 #-----|     0: p#0
 #-----|         Type = void *
 #-----|     1: p#1
 #-----|         Type = unsigned long
-#-----| operator new(unsigned long) -> void *
+#-----| void* operator new(unsigned long)
 #-----|   params: 
 #-----|     0: p#0
 #-----|         Type = unsigned long
-#-----| operator new(unsigned long, align_val_t) -> void *
+#-----| void* operator new(unsigned long, std::align_val_t)
 #-----|   params: 
 #-----|     0: p#0
 #-----|         Type = unsigned long
 #-----|     1: p#1
 #-----|         Type = align_val_t
-#-----| operator new[](unsigned long) -> void *
+#-----| void* operator new[](unsigned long)
 #-----|   params: 
 #-----|     0: p#0
 #-----|         Type = unsigned long
-#-----| operator new[](unsigned long, align_val_t) -> void *
+#-----| void* operator new[](unsigned long, std::align_val_t)
 #-----|   params: 
 #-----|     0: p#0
 #-----|         Type = unsigned long
 #-----|     1: p#1
 #-----|         Type = align_val_t
 bad_asts.cpp:
-#    5| Bad::S::operator=(S &&) -> S &
-#    5|   params: 
-#-----|     0: p#0
-#-----|         Type = S &&
-#    5| Bad::S::operator=(const S &) -> S &
+#    5| Bad::S& Bad::S::operator=(Bad::S const&)
 #    5|   params: 
 #-----|     0: p#0
 #-----|         Type = const S &
-#    9| Bad::S::MemberFunction(int) -> int
+#    5| Bad::S& Bad::S::operator=(Bad::S&&)
+#    5|   params: 
+#-----|     0: p#0
+#-----|         Type = S &&
+#    9| int Bad::S::MemberFunction(int)
 #    9|   params: 
 #    9|     0: y
 #    9|         Type = int
@@ -71,7 +71,7 @@ bad_asts.cpp:
 #   10|         1: y
 #   10|             Type = int
 #   10|             ValueCategory = prvalue(load)
-#    9| MemberFunction(int) -> int
+#    9| int MemberFunction(int)
 #    9|   params: 
 #    9|     0: y
 #    9|         Type = int
@@ -96,7 +96,7 @@ bad_asts.cpp:
 #   10|         1: y
 #   10|             Type = int
 #   10|             ValueCategory = prvalue(load)
-#   14| Bad::CallBadMemberFunction() -> void
+#   14| void Bad::CallBadMemberFunction()
 #   14|   params: 
 #   14|   body: { ... }
 #   15|     0: declaration
@@ -118,11 +118,15 @@ bad_asts.cpp:
 #   16|             Value = 1
 #   16|             ValueCategory = prvalue
 #   17|     2: return ...
-#   19| Bad::Point::Point(Point &&) -> void
+#   19| Bad::Point& Bad::Point::operator=(Bad::Point const&)
+#   19|   params: 
+#-----|     0: p#0
+#-----|         Type = const Point &
+#   19| Bad::Point& Bad::Point::operator=(Bad::Point&&)
 #   19|   params: 
 #-----|     0: p#0
 #-----|         Type = Point &&
-#   19| Bad::Point::Point(const Point &) -> void
+#   19| void Bad::Point::Point(Bad::Point const&)
 #   19|   params: 
 #-----|     0: p#0
 #-----|         Type = const Point &
@@ -141,20 +145,16 @@ bad_asts.cpp:
 #   19|           ValueCategory = prvalue
 #   19|   body: { ... }
 #   19|     0: return ...
-#   19| Bad::Point::operator=(Point &&) -> Point &
+#   19| void Bad::Point::Point(Bad::Point&&)
 #   19|   params: 
 #-----|     0: p#0
 #-----|         Type = Point &&
-#   19| Bad::Point::operator=(const Point &) -> Point &
-#   19|   params: 
-#-----|     0: p#0
-#-----|         Type = const Point &
-#   22| Bad::Point::Point() -> void
+#   22| void Bad::Point::Point()
 #   22|   params: 
 #   22|   initializations: 
 #   22|   body: { ... }
 #   23|     0: return ...
-#   26| Bad::CallCopyConstructor(const Point &) -> void
+#   26| void Bad::CallCopyConstructor(Bad::Point const&)
 #   26|   params: 
 #   26|     0: a
 #   26|         Type = const Point &
@@ -175,7 +175,7 @@ bad_asts.cpp:
 #   27|                   ValueCategory = prvalue(load)
 #   28|     1: return ...
 ir.cpp:
-#    1| Constants() -> void
+#    1| void Constants()
 #    1|   params: 
 #    1|   body: { ... }
 #    2|     0: declaration
@@ -492,7 +492,7 @@ ir.cpp:
 #   40|               Value = 1.0
 #   40|               ValueCategory = prvalue
 #   41|     28: return ...
-#   43| Foo() -> void
+#   43| void Foo()
 #   43|   params: 
 #   43|   body: { ... }
 #   44|     0: declaration
@@ -569,7 +569,7 @@ ir.cpp:
 #   47|                 Type = short
 #   47|                 ValueCategory = prvalue(load)
 #   48|     4: return ...
-#   50| IntegerOps(int, int) -> void
+#   50| void IntegerOps(int, int)
 #   50|   params: 
 #   50|     0: x
 #   50|         Type = int
@@ -910,7 +910,7 @@ ir.cpp:
 #   84|                   Type = int
 #   84|                   ValueCategory = prvalue(load)
 #   85|     26: return ...
-#   87| IntegerCompare(int, int) -> void
+#   87| void IntegerCompare(int, int)
 #   87|   params: 
 #   87|     0: x
 #   87|         Type = int
@@ -1017,7 +1017,7 @@ ir.cpp:
 #   95|               Type = int
 #   95|               ValueCategory = prvalue(load)
 #   96|     7: return ...
-#   98| IntegerCrement(int) -> void
+#   98| void IntegerCrement(int)
 #   98|   params: 
 #   98|     0: x
 #   98|         Type = int
@@ -1078,7 +1078,7 @@ ir.cpp:
 #  104|               Type = int
 #  104|               ValueCategory = lvalue
 #  105|     5: return ...
-#  107| IntegerCrement_LValue(int) -> void
+#  107| void IntegerCrement_LValue(int)
 #  107|   params: 
 #  107|     0: x
 #  107|         Type = int
@@ -1125,7 +1125,7 @@ ir.cpp:
 #  111|                   Type = int
 #  111|                   ValueCategory = lvalue
 #  112|     3: return ...
-#  114| FloatOps(double, double) -> void
+#  114| void FloatOps(double, double)
 #  114|   params: 
 #  114|     0: x
 #  114|         Type = double
@@ -1276,7 +1276,7 @@ ir.cpp:
 #  130|               Type = double
 #  130|               ValueCategory = prvalue(load)
 #  131|     12: return ...
-#  133| FloatCompare(double, double) -> void
+#  133| void FloatCompare(double, double)
 #  133|   params: 
 #  133|     0: x
 #  133|         Type = double
@@ -1383,7 +1383,7 @@ ir.cpp:
 #  141|               Type = double
 #  141|               ValueCategory = prvalue(load)
 #  142|     7: return ...
-#  144| FloatCrement(float) -> void
+#  144| void FloatCrement(float)
 #  144|   params: 
 #  144|     0: x
 #  144|         Type = float
@@ -1444,7 +1444,7 @@ ir.cpp:
 #  150|               Type = float
 #  150|               ValueCategory = lvalue
 #  151|     5: return ...
-#  153| PointerOps(int *, int) -> void
+#  153| void PointerOps(int*, int)
 #  153|   params: 
 #  153|     0: p
 #  153|         Type = int *
@@ -1587,7 +1587,7 @@ ir.cpp:
 #  168|                 Type = int *
 #  168|                 ValueCategory = prvalue(load)
 #  169|     11: return ...
-#  171| ArrayAccess(int *, int) -> void
+#  171| void ArrayAccess(int*, int)
 #  171|   params: 
 #  171|     0: p
 #  171|         Type = int *
@@ -1741,7 +1741,7 @@ ir.cpp:
 #  184|             Type = int
 #  184|             ValueCategory = prvalue(load)
 #  185|     10: return ...
-#  187| StringLiteral(int) -> void
+#  187| void StringLiteral(int)
 #  187|   params: 
 #  187|     0: i
 #  187|         Type = int
@@ -1792,7 +1792,7 @@ ir.cpp:
 #  190|                 Type = int
 #  190|                 ValueCategory = prvalue(load)
 #  191|     3: return ...
-#  193| PointerCompare(int *, int *) -> void
+#  193| void PointerCompare(int*, int*)
 #  193|   params: 
 #  193|     0: p
 #  193|         Type = int *
@@ -1899,7 +1899,7 @@ ir.cpp:
 #  201|               Type = int *
 #  201|               ValueCategory = prvalue(load)
 #  202|     7: return ...
-#  204| PointerCrement(int *) -> void
+#  204| void PointerCrement(int*)
 #  204|   params: 
 #  204|     0: p
 #  204|         Type = int *
@@ -1960,7 +1960,7 @@ ir.cpp:
 #  210|               Type = int *
 #  210|               ValueCategory = lvalue
 #  211|     5: return ...
-#  213| CompoundAssignment() -> void
+#  213| void CompoundAssignment()
 #  213|   params: 
 #  213|   body: { ... }
 #  215|     0: declaration
@@ -2041,7 +2041,7 @@ ir.cpp:
 #  227|             Value = 2.0
 #  227|             ValueCategory = prvalue
 #  228|     7: return ...
-#  230| UninitializedVariables() -> void
+#  230| void UninitializedVariables()
 #  230|   params: 
 #  230|   body: { ... }
 #  231|     0: declaration
@@ -2055,7 +2055,7 @@ ir.cpp:
 #  232|               Type = int
 #  232|               ValueCategory = prvalue(load)
 #  233|     2: return ...
-#  235| Parameters(int, int) -> int
+#  235| int Parameters(int, int)
 #  235|   params: 
 #  235|     0: x
 #  235|         Type = int
@@ -2072,7 +2072,7 @@ ir.cpp:
 #  236|         1: y
 #  236|             Type = int
 #  236|             ValueCategory = prvalue(load)
-#  239| IfStatements(bool, int, int) -> void
+#  239| void IfStatements(bool, int, int)
 #  239|   params: 
 #  239|     0: b
 #  239|         Type = bool
@@ -2135,7 +2135,7 @@ ir.cpp:
 #  250|               Value = 7
 #  250|               ValueCategory = prvalue
 #  251|     3: return ...
-#  253| WhileStatements(int) -> void
+#  253| void WhileStatements(int)
 #  253|   params: 
 #  253|     0: n
 #  253|         Type = int
@@ -2164,7 +2164,7 @@ ir.cpp:
 #  255|                 Value = 1
 #  255|                 ValueCategory = prvalue
 #  257|     1: return ...
-#  259| DoStatements(int) -> void
+#  259| void DoStatements(int)
 #  259|   params: 
 #  259|     0: n
 #  259|         Type = int
@@ -2193,7 +2193,7 @@ ir.cpp:
 #  261|                 Value = 1
 #  261|                 ValueCategory = prvalue
 #  263|     1: return ...
-#  265| For_Empty() -> void
+#  265| void For_Empty()
 #  265|   params: 
 #  265|   body: { ... }
 #  266|     0: declaration
@@ -2202,7 +2202,7 @@ ir.cpp:
 #  267|     1: for(...;...;...) ...
 #  267|       3: { ... }
 #  268|         0: ;
-#  272| For_Init() -> void
+#  272| void For_Init()
 #  272|   params: 
 #  272|   body: { ... }
 #  273|     0: for(...;...;...) ...
@@ -2216,7 +2216,7 @@ ir.cpp:
 #  273|                 ValueCategory = prvalue
 #  273|       3: { ... }
 #  274|         0: ;
-#  278| For_Condition() -> void
+#  278| void For_Condition()
 #  278|   params: 
 #  278|   body: { ... }
 #  279|     0: declaration
@@ -2241,7 +2241,7 @@ ir.cpp:
 #  280|       3: { ... }
 #  281|         0: ;
 #  283|     2: return ...
-#  285| For_Update() -> void
+#  285| void For_Update()
 #  285|   params: 
 #  285|   body: { ... }
 #  286|     0: declaration
@@ -2265,7 +2265,7 @@ ir.cpp:
 #  287|             ValueCategory = prvalue
 #  287|       3: { ... }
 #  288|         0: ;
-#  292| For_InitCondition() -> void
+#  292| void For_InitCondition()
 #  292|   params: 
 #  292|   body: { ... }
 #  293|     0: for(...;...;...) ...
@@ -2290,7 +2290,7 @@ ir.cpp:
 #  293|       3: { ... }
 #  294|         0: ;
 #  296|     1: return ...
-#  298| For_InitUpdate() -> void
+#  298| void For_InitUpdate()
 #  298|   params: 
 #  298|   body: { ... }
 #  299|     0: for(...;...;...) ...
@@ -2314,7 +2314,7 @@ ir.cpp:
 #  299|             ValueCategory = prvalue
 #  299|       3: { ... }
 #  300|         0: ;
-#  304| For_ConditionUpdate() -> void
+#  304| void For_ConditionUpdate()
 #  304|   params: 
 #  304|   body: { ... }
 #  305|     0: declaration
@@ -2349,7 +2349,7 @@ ir.cpp:
 #  306|       3: { ... }
 #  307|         0: ;
 #  309|     2: return ...
-#  311| For_InitConditionUpdate() -> void
+#  311| void For_InitConditionUpdate()
 #  311|   params: 
 #  311|   body: { ... }
 #  312|     0: for(...;...;...) ...
@@ -2384,7 +2384,7 @@ ir.cpp:
 #  312|       3: { ... }
 #  313|         0: ;
 #  315|     1: return ...
-#  317| For_Break() -> void
+#  317| void For_Break()
 #  317|   params: 
 #  317|   body: { ... }
 #  318|     0: for(...;...;...) ...
@@ -2432,7 +2432,7 @@ ir.cpp:
 #  320|             0: break;
 #  322|     1: label ...:
 #  323|     2: return ...
-#  325| For_Continue_Update() -> void
+#  325| void For_Continue_Update()
 #  325|   params: 
 #  325|   body: { ... }
 #  326|     0: for(...;...;...) ...
@@ -2480,7 +2480,7 @@ ir.cpp:
 #  328|             0: continue;
 #  326|         1: label ...:
 #  331|     1: return ...
-#  333| For_Continue_NoUpdate() -> void
+#  333| void For_Continue_NoUpdate()
 #  333|   params: 
 #  333|   body: { ... }
 #  334|     0: for(...;...;...) ...
@@ -2518,7 +2518,7 @@ ir.cpp:
 #  336|             0: continue;
 #  334|         1: label ...:
 #  339|     1: return ...
-#  341| Dereference(int *) -> int
+#  341| int Dereference(int*)
 #  341|   params: 
 #  341|     0: p
 #  341|         Type = int *
@@ -2544,7 +2544,7 @@ ir.cpp:
 #  343|         0: p
 #  343|             Type = int *
 #  343|             ValueCategory = prvalue(load)
-#  348| AddressOf() -> int *
+#  348| int* AddressOf()
 #  348|   params: 
 #  348|   body: { ... }
 #  349|     0: return ...
@@ -2554,7 +2554,7 @@ ir.cpp:
 #  349|         0: g
 #  349|             Type = int
 #  349|             ValueCategory = lvalue
-#  352| Break(int) -> void
+#  352| void Break(int)
 #  352|   params: 
 #  352|     0: n
 #  352|         Type = int
@@ -2596,7 +2596,7 @@ ir.cpp:
 #  356|                 ValueCategory = prvalue
 #  357|     1: label ...:
 #  358|     2: return ...
-#  360| Continue(int) -> void
+#  360| void Continue(int)
 #  360|   params: 
 #  360|     0: n
 #  360|         Type = int
@@ -2639,15 +2639,15 @@ ir.cpp:
 #  365|                 ValueCategory = prvalue
 #  361|         2: label ...:
 #  367|     1: return ...
-#  369| VoidFunc() -> void
+#  369| void VoidFunc()
 #  369|   params: 
-#  370| Add(int, int) -> int
+#  370| int Add(int, int)
 #  370|   params: 
 #  370|     0: x
 #  370|         Type = int
 #  370|     1: y
 #  370|         Type = int
-#  372| Call() -> void
+#  372| void Call()
 #  372|   params: 
 #  372|   body: { ... }
 #  373|     0: ExprStmt
@@ -2655,7 +2655,7 @@ ir.cpp:
 #  373|           Type = void
 #  373|           ValueCategory = prvalue
 #  374|     1: return ...
-#  376| CallAdd(int, int) -> int
+#  376| int CallAdd(int, int)
 #  376|   params: 
 #  376|     0: x
 #  376|         Type = int
@@ -2672,7 +2672,7 @@ ir.cpp:
 #  377|         1: y
 #  377|             Type = int
 #  377|             ValueCategory = prvalue(load)
-#  380| Comma(int, int) -> int
+#  380| int Comma(int, int)
 #  380|   params: 
 #  380|     0: x
 #  380|         Type = int
@@ -2695,7 +2695,7 @@ ir.cpp:
 #  381|           1: y
 #  381|               Type = int
 #  381|               ValueCategory = prvalue(load)
-#  384| Switch(int) -> void
+#  384| void Switch(int)
 #  384|   params: 
 #  384|     0: x
 #  384|         Type = int
@@ -2825,23 +2825,23 @@ ir.cpp:
 #  408|                 ValueCategory = prvalue
 #  409|     2: label ...:
 #  410|     3: return ...
-#  412| Point::operator=(Point &&) -> Point &
-#  412|   params: 
-#-----|     0: p#0
-#-----|         Type = Point &&
-#  412| Point::operator=(const Point &) -> Point &
+#  412| Point& Point::operator=(Point const&)
 #  412|   params: 
 #-----|     0: p#0
 #-----|         Type = const Point &
-#  417| Rect::operator=(Rect &&) -> Rect &
-#  417|   params: 
+#  412| Point& Point::operator=(Point&&)
+#  412|   params: 
 #-----|     0: p#0
-#-----|         Type = Rect &&
-#  417| Rect::operator=(const Rect &) -> Rect &
+#-----|         Type = Point &&
+#  417| Rect& Rect::operator=(Rect const&)
 #  417|   params: 
 #-----|     0: p#0
 #-----|         Type = const Rect &
-#  422| ReturnStruct(Point) -> Point
+#  417| Rect& Rect::operator=(Rect&&)
+#  417|   params: 
+#-----|     0: p#0
+#-----|         Type = Rect &&
+#  422| Point ReturnStruct(Point)
 #  422|   params: 
 #  422|     0: pt
 #  422|         Type = Point
@@ -2850,7 +2850,7 @@ ir.cpp:
 #  423|       0: pt
 #  423|           Type = Point
 #  423|           ValueCategory = prvalue(load)
-#  426| FieldAccess() -> void
+#  426| void FieldAccess()
 #  426|   params: 
 #  426|   body: { ... }
 #  427|     0: declaration
@@ -2900,7 +2900,7 @@ ir.cpp:
 #  430|                   Type = Point
 #  430|                   ValueCategory = lvalue
 #  431|     4: return ...
-#  433| LogicalOr(bool, bool) -> void
+#  433| void LogicalOr(bool, bool)
 #  433|   params: 
 #  433|     0: a
 #  433|         Type = bool
@@ -2967,7 +2967,7 @@ ir.cpp:
 #  443|                 Value = 5
 #  443|                 ValueCategory = prvalue
 #  445|     3: return ...
-#  447| LogicalAnd(bool, bool) -> void
+#  447| void LogicalAnd(bool, bool)
 #  447|   params: 
 #  447|     0: a
 #  447|         Type = bool
@@ -3034,7 +3034,7 @@ ir.cpp:
 #  457|                 Value = 5
 #  457|                 ValueCategory = prvalue
 #  459|     3: return ...
-#  461| LogicalNot(bool, bool) -> void
+#  461| void LogicalNot(bool, bool)
 #  461|   params: 
 #  461|     0: a
 #  461|         Type = bool
@@ -3104,7 +3104,7 @@ ir.cpp:
 #  471|                 Value = 3
 #  471|                 ValueCategory = prvalue
 #  473|     3: return ...
-#  475| ConditionValues(bool, bool) -> void
+#  475| void ConditionValues(bool, bool)
 #  475|   params: 
 #  475|     0: a
 #  475|         Type = bool
@@ -3169,7 +3169,7 @@ ir.cpp:
 #  479|                   Type = bool
 #  479|                   ValueCategory = prvalue(load)
 #  480|     4: return ...
-#  482| Conditional(bool, int, int) -> void
+#  482| void Conditional(bool, int, int)
 #  482|   params: 
 #  482|     0: a
 #  482|         Type = bool
@@ -3195,7 +3195,7 @@ ir.cpp:
 #  483|                 Type = int
 #  483|                 ValueCategory = prvalue(load)
 #  484|     1: return ...
-#  486| Conditional_LValue(bool) -> void
+#  486| void Conditional_LValue(bool)
 #  486|   params: 
 #  486|     0: a
 #  486|         Type = bool
@@ -3230,7 +3230,7 @@ ir.cpp:
 #  489|             Value = 5
 #  489|             ValueCategory = prvalue
 #  490|     3: return ...
-#  492| Conditional_Void(bool) -> void
+#  492| void Conditional_Void(bool)
 #  492|   params: 
 #  492|     0: a
 #  492|         Type = bool
@@ -3249,7 +3249,7 @@ ir.cpp:
 #  493|             Type = void
 #  493|             ValueCategory = prvalue
 #  494|     1: return ...
-#  496| Nullptr() -> void
+#  496| void Nullptr()
 #  496|   params: 
 #  496|   body: { ... }
 #  497|     0: declaration
@@ -3311,7 +3311,7 @@ ir.cpp:
 #  500|               Value = 0
 #  500|               ValueCategory = prvalue
 #  501|     4: return ...
-#  503| InitList(int, float) -> void
+#  503| void InitList(int, float)
 #  503|   params: 
 #  503|     0: x
 #  503|         Type = int
@@ -3369,7 +3369,7 @@ ir.cpp:
 #  509|               Value = 0
 #  509|               ValueCategory = prvalue
 #  510|     5: return ...
-#  512| NestedInitList(int, float) -> void
+#  512| void NestedInitList(int, float)
 #  512|   params: 
 #  512|     0: x
 #  512|         Type = int
@@ -3456,7 +3456,7 @@ ir.cpp:
 #  516|                   Type = int
 #  516|                   ValueCategory = prvalue(load)
 #  517|     4: return ...
-#  519| ArrayInit(int, float) -> void
+#  519| void ArrayInit(int, float)
 #  519|   params: 
 #  519|     0: x
 #  519|         Type = int
@@ -3502,15 +3502,15 @@ ir.cpp:
 #  522|                 Type = int
 #  522|                 ValueCategory = prvalue(load)
 #  523|     3: return ...
-#  525| U::operator=(U &&) -> U &
-#  525|   params: 
-#-----|     0: p#0
-#-----|         Type = U &&
-#  525| U::operator=(const U &) -> U &
+#  525| U& U::operator=(U const&)
 #  525|   params: 
 #-----|     0: p#0
 #-----|         Type = const U &
-#  530| UnionInit(int, float) -> void
+#  525| U& U::operator=(U&&)
+#  525|   params: 
+#-----|     0: p#0
+#-----|         Type = U &&
+#  530| void UnionInit(int, float)
 #  530|   params: 
 #  530|     0: x
 #  530|         Type = int
@@ -3532,7 +3532,7 @@ ir.cpp:
 #  531|                   Type = float
 #  531|                   ValueCategory = prvalue(load)
 #  533|     1: return ...
-#  535| EarlyReturn(int, int) -> void
+#  535| void EarlyReturn(int, int)
 #  535|   params: 
 #  535|     0: x
 #  535|         Type = int
@@ -3562,7 +3562,7 @@ ir.cpp:
 #  540|             Type = int
 #  540|             ValueCategory = prvalue(load)
 #  541|     2: return ...
-#  543| EarlyReturnValue(int, int) -> int
+#  543| int EarlyReturnValue(int, int)
 #  543|   params: 
 #  543|     0: x
 #  543|         Type = int
@@ -3594,7 +3594,7 @@ ir.cpp:
 #  548|         1: y
 #  548|             Type = int
 #  548|             ValueCategory = prvalue(load)
-#  551| CallViaFuncPtr(..(*)(..)) -> int
+#  551| int CallViaFuncPtr(int(*)(int))
 #  551|   params: 
 #  551|     0: pfn
 #  551|         Type = ..(*)(..)
@@ -3610,7 +3610,7 @@ ir.cpp:
 #  552|             Type = int
 #  552|             Value = 5
 #  552|             ValueCategory = prvalue
-#  560| EnumSwitch(E) -> int
+#  560| int EnumSwitch(E)
 #  560|   params: 
 #  560|     0: e
 #  560|         Type = E
@@ -3664,7 +3664,7 @@ ir.cpp:
 #  567|                 Type = int
 #  567|                 Value = 1
 #  567|                 ValueCategory = prvalue
-#  571| InitArray() -> void
+#  571| void InitArray()
 #  571|   params: 
 #  571|   body: { ... }
 #  572|     0: declaration
@@ -3759,11 +3759,11 @@ ir.cpp:
 #  579|                   Value = 0
 #  579|                   ValueCategory = prvalue
 #  580|     8: return ...
-#  582| VarArgFunction(const char *) -> void
+#  582| void VarArgFunction(char const*)
 #  582|   params: 
 #  582|     0: s
 #  582|         Type = const char *
-#  584| VarArgs() -> void
+#  584| void VarArgs()
 #  584|   params: 
 #  584|   body: { ... }
 #  585|     0: ExprStmt
@@ -3789,11 +3789,11 @@ ir.cpp:
 #  585|               Value = "string"
 #  585|               ValueCategory = lvalue
 #  586|     1: return ...
-#  588| FuncPtrTarget(int) -> int
+#  588| int FuncPtrTarget(int)
 #  588|   params: 
 #  588|     0: p#0
 #  588|         Type = int
-#  590| SetFuncPtr() -> void
+#  590| void SetFuncPtr()
 #  590|   params: 
 #  590|   body: { ... }
 #  591|     0: declaration
@@ -3852,33 +3852,33 @@ ir.cpp:
 #  594|                     Type = ..()(..)
 #  594|                     ValueCategory = lvalue
 #  595|     4: return ...
-#  599| String::String(const String &) -> void
+#  599| void String::String(String const&)
 #  599|   params: 
 #  599|     0: p#0
 #  599|         Type = const String &
-#  600| String::String(String &&) -> void
+#  600| void String::String(String&&)
 #  600|   params: 
 #  600|     0: p#0
 #  600|         Type = String &&
-#  601| String::String(const char *) -> void
+#  601| void String::String(char const*)
 #  601|   params: 
 #  601|     0: p#0
 #  601|         Type = const char *
-#  602| String::~String() -> void
+#  602| void String::~String()
 #  602|   params: 
-#  604| String::operator=(const String &) -> String &
+#  604| String& String::operator=(String const&)
 #  604|   params: 
 #  604|     0: p#0
 #  604|         Type = const String &
-#  605| String::operator=(String &&) -> String &
+#  605| String& String::operator=(String&&)
 #  605|   params: 
 #  605|     0: p#0
 #  605|         Type = String &&
-#  607| String::c_str() -> const char *
+#  607| char const* String::c_str() const
 #  607|   params: 
-#  613| ReturnObject() -> String
+#  613| String ReturnObject()
 #  613|   params: 
-#  615| DeclareObject() -> void
+#  615| void DeclareObject()
 #  615|   params: 
 #  615|   body: { ... }
 #  616|     0: declaration
@@ -3924,7 +3924,7 @@ ir.cpp:
 #  619|                   Value = "test"
 #  619|                   ValueCategory = lvalue
 #  620|     4: return ...
-#  622| CallMethods(String &, String *, String) -> void
+#  622| void CallMethods(String&, String*, String)
 #  622|   params: 
 #  622|     0: r
 #  622|         Type = String &
@@ -3970,25 +3970,25 @@ ir.cpp:
 #  625|               Type = String
 #  625|               ValueCategory = lvalue
 #  626|     3: return ...
-#  628| C::C(C &&) -> void
-#  628|   params: 
-#-----|     0: p#0
-#-----|         Type = C &&
-#  628| C::C(const C &) -> void
+#  628| C& C::operator=(C const&)
 #  628|   params: 
 #-----|     0: p#0
 #-----|         Type = const C &
-#  628| C::operator=(C &&) -> C &
+#  628| C& C::operator=(C&&)
 #  628|   params: 
 #-----|     0: p#0
 #-----|         Type = C &&
-#  628| C::operator=(const C &) -> C &
+#  628| void C::C(C const&)
 #  628|   params: 
 #-----|     0: p#0
 #-----|         Type = const C &
-#  628| C::~C() -> void
+#  628| void C::C(C&&)
 #  628|   params: 
-#  630| C::StaticMemberFunction(int) -> int
+#-----|     0: p#0
+#-----|         Type = C &&
+#  628| void C::~C()
+#  628|   params: 
+#  630| int C::StaticMemberFunction(int)
 #  630|   params: 
 #  630|     0: x
 #  630|         Type = int
@@ -3997,7 +3997,7 @@ ir.cpp:
 #  631|       0: x
 #  631|           Type = int
 #  631|           ValueCategory = prvalue(load)
-#  634| C::InstanceMemberFunction(int) -> int
+#  634| int C::InstanceMemberFunction(int)
 #  634|   params: 
 #  634|     0: x
 #  634|         Type = int
@@ -4006,7 +4006,7 @@ ir.cpp:
 #  635|       0: x
 #  635|           Type = int
 #  635|           ValueCategory = prvalue(load)
-#  638| C::VirtualMemberFunction(int) -> int
+#  638| int C::VirtualMemberFunction(int)
 #  638|   params: 
 #  638|     0: x
 #  638|         Type = int
@@ -4015,7 +4015,7 @@ ir.cpp:
 #  639|       0: x
 #  639|           Type = int
 #  639|           ValueCategory = prvalue(load)
-#  642| C::FieldAccess() -> void
+#  642| void C::FieldAccess()
 #  642|   params: 
 #  642|   body: { ... }
 #  643|     0: ExprStmt
@@ -4115,7 +4115,7 @@ ir.cpp:
 #-----|               Type = C *
 #-----|               ValueCategory = prvalue(load)
 #  650|     7: return ...
-#  652| C::MethodCalls() -> void
+#  652| void C::MethodCalls()
 #  652|   params: 
 #  652|   body: { ... }
 #  653|     0: ExprStmt
@@ -4158,7 +4158,7 @@ ir.cpp:
 #  655|             Value = 2
 #  655|             ValueCategory = prvalue
 #  656|     3: return ...
-#  658| C::C() -> void
+#  658| void C::C()
 #  658|   params: 
 #  658|   initializations: 
 #  659|     0: constructor init of field m_a
@@ -4208,7 +4208,7 @@ ir.cpp:
 #  662|               ValueCategory = lvalue
 #  663|   body: { ... }
 #  664|     0: return ...
-#  675| DerefReference(int &) -> int
+#  675| int DerefReference(int&)
 #  675|   params: 
 #  675|     0: r
 #  675|         Type = int &
@@ -4220,7 +4220,7 @@ ir.cpp:
 #  676|         expr: r
 #  676|             Type = int &
 #  676|             ValueCategory = prvalue(load)
-#  679| TakeReference() -> int &
+#  679| int& TakeReference()
 #  679|   params: 
 #  679|   body: { ... }
 #  680|     0: return ...
@@ -4230,9 +4230,9 @@ ir.cpp:
 #  680|         expr: g
 #  680|             Type = int
 #  680|             ValueCategory = lvalue
-#  683| ReturnReference() -> String &
+#  683| String& ReturnReference()
 #  683|   params: 
-#  685| InitReference(int) -> void
+#  685| void InitReference(int)
 #  685|   params: 
 #  685|     0: x
 #  685|         Type = int
@@ -4278,7 +4278,7 @@ ir.cpp:
 #  688|                     Type = String &
 #  688|                     ValueCategory = prvalue
 #  689|     3: return ...
-#  691| ArrayReferences() -> void
+#  691| void ArrayReferences()
 #  691|   params: 
 #  691|   body: { ... }
 #  692|     0: declaration
@@ -4315,7 +4315,7 @@ ir.cpp:
 #  694|                 Value = 5
 #  694|                 ValueCategory = prvalue
 #  695|     3: return ...
-#  697| FunctionReferences() -> void
+#  697| void FunctionReferences()
 #  697|   params: 
 #  697|   body: { ... }
 #  698|     0: declaration
@@ -4353,7 +4353,7 @@ ir.cpp:
 #  700|             Value = 5
 #  700|             ValueCategory = prvalue
 #  701|     3: return ...
-#  704| min<T>(T, T) -> T
+#  704| T min<T>(T, T)
 #  704|   params: 
 #  704|     0: x
 #  704|         Type = T
@@ -4386,7 +4386,7 @@ ir.cpp:
 #  705|         2: y
 #  705|             Type = T
 #  705|             ValueCategory = lvalue
-#  704| min<int>(int, int) -> int
+#  704| int min<int>(int, int)
 #  704|   params: 
 #  704|     0: x
 #  704|         Type = int
@@ -4415,7 +4415,7 @@ ir.cpp:
 #  705|         2: y
 #  705|             Type = int
 #  705|             ValueCategory = prvalue(load)
-#  708| CallMin(int, int) -> int
+#  708| int CallMin(int, int)
 #  708|   params: 
 #  708|     0: x
 #  708|         Type = int
@@ -4432,15 +4432,15 @@ ir.cpp:
 #  709|         1: y
 #  709|             Type = int
 #  709|             ValueCategory = prvalue(load)
-#  713| Outer<long>::operator=(Outer<long> &&) -> Outer<long> &
-#  713|   params: 
-#-----|     0: p#0
-#-----|         Type = Outer<long> &&
-#  713| Outer<long>::operator=(const Outer<long> &) -> Outer<long> &
+#  713| Outer<long>& Outer<long>::operator=(Outer<long> const&)
 #  713|   params: 
 #-----|     0: p#0
 #-----|         Type = const Outer<long> &
-#  715| Outer<T>::Func<U, V>(U, V) -> T
+#  713| Outer<long>& Outer<long>::operator=(Outer<long>&&)
+#  713|   params: 
+#-----|     0: p#0
+#-----|         Type = Outer<long> &&
+#  715| T Outer<T>::Func<U, V>(U, V)
 #  715|   params: 
 #  715|     0: x
 #  715|         Type = U
@@ -4452,13 +4452,13 @@ ir.cpp:
 #  716|           Type = T
 #  716|           Value = 0
 #  716|           ValueCategory = prvalue
-#  715| Outer<long>::Func<U, V>(U, V) -> long
+#  715| long Outer<long>::Func<U, V>(U, V)
 #  715|   params: 
 #  715|     0: x
 #  715|         Type = U
 #  715|     1: y
 #  715|         Type = V
-#  715| Outer<long>::Func<void *, char>(void *, char) -> long
+#  715| long Outer<long>::Func<void*, char>(void*, char)
 #  715|   params: 
 #  715|     0: x
 #  715|         Type = void *
@@ -4470,7 +4470,7 @@ ir.cpp:
 #  716|           Type = long
 #  716|           Value = 0
 #  716|           ValueCategory = prvalue
-#  720| CallNestedTemplateFunc() -> double
+#  720| double CallNestedTemplateFunc()
 #  720|   params: 
 #  720|   body: { ... }
 #  721|     0: return ...
@@ -4494,7 +4494,7 @@ ir.cpp:
 #  721|               Type = char
 #  721|               Value = 111
 #  721|               ValueCategory = prvalue
-#  724| TryCatch(bool) -> void
+#  724| void TryCatch(bool)
 #  724|   params: 
 #  724|     0: b
 #  724|         Type = bool
@@ -4599,20 +4599,7 @@ ir.cpp:
 #  741|                 Type = void
 #  741|                 ValueCategory = prvalue
 #  743|     1: return ...
-#  745| Base::Base(const Base &) -> void
-#  745|   params: 
-#-----|     0: p#0
-#-----|         Type = const Base &
-#  745|   initializations: 
-#  745|     0: constructor init of field base_s
-#  745|         Type = String
-#  745|         ValueCategory = prvalue
-#  745|       0: call to String
-#  745|           Type = void
-#  745|           ValueCategory = prvalue
-#  745|   body: { ... }
-#  745|     0: return ...
-#  745| Base::operator=(const Base &) -> Base &
+#  745| Base& Base::operator=(Base const&)
 #  745|   params: 
 #-----|     0: p#0
 #-----|         Type = const Base &
@@ -4655,7 +4642,20 @@ ir.cpp:
 #-----|           0: this
 #-----|               Type = Base *
 #-----|               ValueCategory = prvalue(load)
-#  748| Base::Base() -> void
+#  745| void Base::Base(Base const&)
+#  745|   params: 
+#-----|     0: p#0
+#-----|         Type = const Base &
+#  745|   initializations: 
+#  745|     0: constructor init of field base_s
+#  745|         Type = String
+#  745|         ValueCategory = prvalue
+#  745|       0: call to String
+#  745|           Type = void
+#  745|           ValueCategory = prvalue
+#  745|   body: { ... }
+#  745|     0: return ...
+#  748| void Base::Base()
 #  748|   params: 
 #  748|   initializations: 
 #  748|     0: constructor init of field base_s
@@ -4666,7 +4666,7 @@ ir.cpp:
 #  748|           ValueCategory = prvalue
 #  748|   body: { ... }
 #  749|     0: return ...
-#  750| Base::~Base() -> void
+#  750| void Base::~Base()
 #  750|   params: 
 #  750|   body: { ... }
 #  751|     0: return ...
@@ -4680,11 +4680,7 @@ ir.cpp:
 #  751|         -1: base_s
 #  751|             Type = String
 #  751|             ValueCategory = lvalue
-#  754| Middle::Middle(const Middle &) -> void
-#  754|   params: 
-#-----|     0: p#0
-#-----|         Type = const Middle &
-#  754| Middle::operator=(const Middle &) -> Middle &
+#  754| Middle& Middle::operator=(Middle const&)
 #  754|   params: 
 #-----|     0: p#0
 #-----|         Type = const Middle &
@@ -4760,7 +4756,11 @@ ir.cpp:
 #-----|           0: this
 #-----|               Type = Middle *
 #-----|               ValueCategory = prvalue(load)
-#  757| Middle::Middle() -> void
+#  754| void Middle::Middle(Middle const&)
+#  754|   params: 
+#-----|     0: p#0
+#-----|         Type = const Middle &
+#  757| void Middle::Middle()
 #  757|   params: 
 #  757|   initializations: 
 #  757|     0: call to Base
@@ -4774,7 +4774,7 @@ ir.cpp:
 #  757|           ValueCategory = prvalue
 #  757|   body: { ... }
 #  758|     0: return ...
-#  759| Middle::~Middle() -> void
+#  759| void Middle::~Middle()
 #  759|   params: 
 #  759|   body: { ... }
 #  760|     0: return ...
@@ -4791,11 +4791,7 @@ ir.cpp:
 #  760|     1: call to ~Base
 #  760|         Type = void
 #  760|         ValueCategory = prvalue
-#  763| Derived::Derived(const Derived &) -> void
-#  763|   params: 
-#-----|     0: p#0
-#-----|         Type = const Derived &
-#  763| Derived::operator=(const Derived &) -> Derived &
+#  763| Derived& Derived::operator=(Derived const&)
 #  763|   params: 
 #-----|     0: p#0
 #-----|         Type = const Derived &
@@ -4871,7 +4867,11 @@ ir.cpp:
 #-----|           0: this
 #-----|               Type = Derived *
 #-----|               ValueCategory = prvalue(load)
-#  766| Derived::Derived() -> void
+#  763| void Derived::Derived(Derived const&)
+#  763|   params: 
+#-----|     0: p#0
+#-----|         Type = const Derived &
+#  766| void Derived::Derived()
 #  766|   params: 
 #  766|   initializations: 
 #  766|     0: call to Middle
@@ -4885,7 +4885,7 @@ ir.cpp:
 #  766|           ValueCategory = prvalue
 #  766|   body: { ... }
 #  767|     0: return ...
-#  768| Derived::~Derived() -> void
+#  768| void Derived::~Derived()
 #  768|   params: 
 #  768|   body: { ... }
 #  769|     0: return ...
@@ -4902,15 +4902,15 @@ ir.cpp:
 #  769|     1: call to ~Middle
 #  769|         Type = void
 #  769|         ValueCategory = prvalue
-#  772| MiddleVB1::MiddleVB1(const MiddleVB1 &) -> void
+#  772| MiddleVB1& MiddleVB1::operator=(MiddleVB1 const&)
 #  772|   params: 
 #-----|     0: p#0
 #-----|         Type = const MiddleVB1 &
-#  772| MiddleVB1::operator=(const MiddleVB1 &) -> MiddleVB1 &
+#  772| void MiddleVB1::MiddleVB1(MiddleVB1 const&)
 #  772|   params: 
 #-----|     0: p#0
 #-----|         Type = const MiddleVB1 &
-#  775| MiddleVB1::MiddleVB1() -> void
+#  775| void MiddleVB1::MiddleVB1()
 #  775|   params: 
 #  775|   initializations: 
 #  775|     0: call to Base
@@ -4924,7 +4924,7 @@ ir.cpp:
 #  775|           ValueCategory = prvalue
 #  775|   body: { ... }
 #  776|     0: return ...
-#  777| MiddleVB1::~MiddleVB1() -> void
+#  777| void MiddleVB1::~MiddleVB1()
 #  777|   params: 
 #  777|   body: { ... }
 #  778|     0: return ...
@@ -4941,15 +4941,15 @@ ir.cpp:
 #  778|     1: call to ~Base
 #  778|         Type = void
 #  778|         ValueCategory = prvalue
-#  781| MiddleVB2::MiddleVB2(const MiddleVB2 &) -> void
+#  781| MiddleVB2& MiddleVB2::operator=(MiddleVB2 const&)
 #  781|   params: 
 #-----|     0: p#0
 #-----|         Type = const MiddleVB2 &
-#  781| MiddleVB2::operator=(const MiddleVB2 &) -> MiddleVB2 &
+#  781| void MiddleVB2::MiddleVB2(MiddleVB2 const&)
 #  781|   params: 
 #-----|     0: p#0
 #-----|         Type = const MiddleVB2 &
-#  784| MiddleVB2::MiddleVB2() -> void
+#  784| void MiddleVB2::MiddleVB2()
 #  784|   params: 
 #  784|   initializations: 
 #  784|     0: call to Base
@@ -4963,7 +4963,7 @@ ir.cpp:
 #  784|           ValueCategory = prvalue
 #  784|   body: { ... }
 #  785|     0: return ...
-#  786| MiddleVB2::~MiddleVB2() -> void
+#  786| void MiddleVB2::~MiddleVB2()
 #  786|   params: 
 #  786|   body: { ... }
 #  787|     0: return ...
@@ -4980,15 +4980,15 @@ ir.cpp:
 #  787|     1: call to ~Base
 #  787|         Type = void
 #  787|         ValueCategory = prvalue
-#  790| DerivedVB::DerivedVB(const DerivedVB &) -> void
+#  790| DerivedVB& DerivedVB::operator=(DerivedVB const&)
 #  790|   params: 
 #-----|     0: p#0
 #-----|         Type = const DerivedVB &
-#  790| DerivedVB::operator=(const DerivedVB &) -> DerivedVB &
+#  790| void DerivedVB::DerivedVB(DerivedVB const&)
 #  790|   params: 
 #-----|     0: p#0
 #-----|         Type = const DerivedVB &
-#  793| DerivedVB::DerivedVB() -> void
+#  793| void DerivedVB::DerivedVB()
 #  793|   params: 
 #  793|   initializations: 
 #  793|     0: call to Base
@@ -5008,7 +5008,7 @@ ir.cpp:
 #  793|           ValueCategory = prvalue
 #  793|   body: { ... }
 #  794|     0: return ...
-#  795| DerivedVB::~DerivedVB() -> void
+#  795| void DerivedVB::~DerivedVB()
 #  795|   params: 
 #  795|   body: { ... }
 #  796|     0: return ...
@@ -5031,7 +5031,7 @@ ir.cpp:
 #  796|     3: call to ~Base
 #  796|         Type = void
 #  796|         ValueCategory = prvalue
-#  799| HierarchyConversions() -> void
+#  799| void HierarchyConversions()
 #  799|   params: 
 #  799|   body: { ... }
 #  800|     0: declaration
@@ -5632,22 +5632,30 @@ ir.cpp:
 #  839|               Type = DerivedVB *
 #  839|               ValueCategory = prvalue(load)
 #  840|     34: return ...
-#  842| PolymorphicBase::PolymorphicBase() -> void
+#  842| PolymorphicBase& PolymorphicBase::operator=(PolymorphicBase const&)
+#  842|   params: 
+#-----|     0: p#0
+#-----|         Type = const PolymorphicBase &
+#  842| void PolymorphicBase::PolymorphicBase()
 #  842|   params: 
 #  842|   initializations: 
 #  842|   body: { ... }
 #  842|     0: return ...
-#  842| PolymorphicBase::PolymorphicBase(const PolymorphicBase &) -> void
+#  842| void PolymorphicBase::PolymorphicBase(PolymorphicBase const&)
 #  842|   params: 
 #-----|     0: p#0
 #-----|         Type = const PolymorphicBase &
-#  842| PolymorphicBase::operator=(const PolymorphicBase &) -> PolymorphicBase &
-#  842|   params: 
-#-----|     0: p#0
-#-----|         Type = const PolymorphicBase &
-#  843| PolymorphicBase::~PolymorphicBase() -> void
+#  843| void PolymorphicBase::~PolymorphicBase()
 #  843|   params: 
-#  846| PolymorphicDerived::PolymorphicDerived() -> void
+#  846| PolymorphicDerived& PolymorphicDerived::operator=(PolymorphicDerived const&)
+#  846|   params: 
+#-----|     0: p#0
+#-----|         Type = const PolymorphicDerived &
+#  846| PolymorphicDerived& PolymorphicDerived::operator=(PolymorphicDerived&&)
+#  846|   params: 
+#-----|     0: p#0
+#-----|         Type = PolymorphicDerived &&
+#  846| void PolymorphicDerived::PolymorphicDerived()
 #  846|   params: 
 #  846|   initializations: 
 #  846|     0: call to PolymorphicBase
@@ -5655,23 +5663,15 @@ ir.cpp:
 #  846|         ValueCategory = prvalue
 #  846|   body: { ... }
 #  846|     0: return ...
-#  846| PolymorphicDerived::PolymorphicDerived(PolymorphicDerived &&) -> void
-#  846|   params: 
-#-----|     0: p#0
-#-----|         Type = PolymorphicDerived &&
-#  846| PolymorphicDerived::PolymorphicDerived(const PolymorphicDerived &) -> void
+#  846| void PolymorphicDerived::PolymorphicDerived(PolymorphicDerived const&)
 #  846|   params: 
 #-----|     0: p#0
 #-----|         Type = const PolymorphicDerived &
-#  846| PolymorphicDerived::operator=(PolymorphicDerived &&) -> PolymorphicDerived &
+#  846| void PolymorphicDerived::PolymorphicDerived(PolymorphicDerived&&)
 #  846|   params: 
 #-----|     0: p#0
 #-----|         Type = PolymorphicDerived &&
-#  846| PolymorphicDerived::operator=(const PolymorphicDerived &) -> PolymorphicDerived &
-#  846|   params: 
-#-----|     0: p#0
-#-----|         Type = const PolymorphicDerived &
-#  846| PolymorphicDerived::~PolymorphicDerived() -> void
+#  846| void PolymorphicDerived::~PolymorphicDerived()
 #  846|   params: 
 #-----|   body: { ... }
 #-----|     0: return ...
@@ -5679,7 +5679,7 @@ ir.cpp:
 #  846|     0: call to ~PolymorphicBase
 #  846|         Type = void
 #  846|         ValueCategory = prvalue
-#  849| DynamicCast() -> void
+#  849| void DynamicCast()
 #  849|   params: 
 #  849|   body: { ... }
 #  850|     0: declaration
@@ -5795,7 +5795,7 @@ ir.cpp:
 #  864|                 Type = PolymorphicDerived *
 #  864|                 ValueCategory = prvalue(load)
 #  865|     10: return ...
-#  867| String::String() -> void
+#  867| void String::String()
 #  867|   params: 
 #  867|   initializations: 
 #  868|     0: call to String
@@ -5810,7 +5810,7 @@ ir.cpp:
 #  868|             ValueCategory = lvalue
 #  868|   body: { ... }
 #  869|     0: return ...
-#  871| ArrayConversions() -> void
+#  871| void ArrayConversions()
 #  871|   params: 
 #  871|   body: { ... }
 #  872|     0: declaration
@@ -5945,7 +5945,7 @@ ir.cpp:
 #  880|               Value = "test"
 #  880|               ValueCategory = lvalue
 #  881|     9: return ...
-#  883| FuncPtrConversions(..(*)(..), void *) -> void
+#  883| void FuncPtrConversions(int(*)(int), void*)
 #  883|   params: 
 #  883|     0: pfn
 #  883|         Type = ..(*)(..)
@@ -5981,7 +5981,7 @@ ir.cpp:
 #  885|               Type = void *
 #  885|               ValueCategory = prvalue(load)
 #  886|     2: return ...
-#  888| VarArgUsage(int) -> void
+#  888| void VarArgUsage(int)
 #  888|   params: 
 #  888|     0: x
 #  888|         Type = int
@@ -6072,7 +6072,7 @@ ir.cpp:
 #  897|               Type = __va_list_tag[1]
 #  897|               ValueCategory = lvalue
 #  898|     8: return ...
-#  900| CastToVoid(int) -> void
+#  900| void CastToVoid(int)
 #  900|   params: 
 #  900|     0: x
 #  900|         Type = int
@@ -6086,7 +6086,7 @@ ir.cpp:
 #  901|             Type = int
 #  901|             ValueCategory = lvalue
 #  902|     1: return ...
-#  904| ConstantConditions(int) -> void
+#  904| void ConstantConditions(int)
 #  904|   params: 
 #  904|     0: x
 #  904|         Type = int
@@ -6129,19 +6129,19 @@ ir.cpp:
 #  906|                 Type = int
 #  906|                 ValueCategory = prvalue(load)
 #  907|     2: return ...
-#  915| operator new(size_t, float) -> void *
+#  915| void* operator new(size_t, float)
 #  915|   params: 
 #  915|     0: p#0
 #  915|         Type = size_t
 #  915|     1: p#1
 #  915|         Type = float
-#  916| operator new[](size_t, float) -> void *
+#  916| void* operator new[](size_t, float)
 #  916|   params: 
 #  916|     0: p#0
 #  916|         Type = size_t
 #  916|     1: p#1
 #  916|         Type = float
-#  917| operator new(size_t, align_val_t, float) -> void *
+#  917| void* operator new(size_t, std::align_val_t, float)
 #  917|   params: 
 #  917|     0: p#0
 #  917|         Type = size_t
@@ -6149,7 +6149,7 @@ ir.cpp:
 #  917|         Type = align_val_t
 #  917|     2: p#2
 #  917|         Type = float
-#  918| operator new[](size_t, align_val_t, float) -> void *
+#  918| void* operator new[](size_t, std::align_val_t, float)
 #  918|   params: 
 #  918|     0: p#0
 #  918|         Type = size_t
@@ -6157,19 +6157,19 @@ ir.cpp:
 #  918|         Type = align_val_t
 #  918|     2: p#2
 #  918|         Type = float
-#  919| operator delete(void *, float) -> void
+#  919| void operator delete(void*, float)
 #  919|   params: 
 #  919|     0: p#0
 #  919|         Type = void *
 #  919|     1: p#1
 #  919|         Type = float
-#  920| operator delete[](void *, float) -> void
+#  920| void operator delete[](void*, float)
 #  920|   params: 
 #  920|     0: p#0
 #  920|         Type = void *
 #  920|     1: p#1
 #  920|         Type = float
-#  921| operator delete(void *, align_val_t, float) -> void
+#  921| void operator delete(void*, std::align_val_t, float)
 #  921|   params: 
 #  921|     0: p#0
 #  921|         Type = void *
@@ -6177,7 +6177,7 @@ ir.cpp:
 #  921|         Type = align_val_t
 #  921|     2: p#2
 #  921|         Type = float
-#  922| operator delete[](void *, align_val_t, float) -> void
+#  922| void operator delete[](void*, std::align_val_t, float)
 #  922|   params: 
 #  922|     0: p#0
 #  922|         Type = void *
@@ -6185,63 +6185,63 @@ ir.cpp:
 #  922|         Type = align_val_t
 #  922|     2: p#2
 #  922|         Type = float
-#  924| SizedDealloc::operator=(SizedDealloc &&) -> SizedDealloc &
-#  924|   params: 
-#-----|     0: p#0
-#-----|         Type = SizedDealloc &&
-#  924| SizedDealloc::operator=(const SizedDealloc &) -> SizedDealloc &
+#  924| SizedDealloc& SizedDealloc::operator=(SizedDealloc const&)
 #  924|   params: 
 #-----|     0: p#0
 #-----|         Type = const SizedDealloc &
-#  926| SizedDealloc::operator new(size_t) -> void *
+#  924| SizedDealloc& SizedDealloc::operator=(SizedDealloc&&)
+#  924|   params: 
+#-----|     0: p#0
+#-----|         Type = SizedDealloc &&
+#  926| void* SizedDealloc::operator new(size_t)
 #  926|   params: 
 #  926|     0: p#0
 #  926|         Type = size_t
-#  927| SizedDealloc::operator new[](size_t) -> void *
+#  927| void* SizedDealloc::operator new[](size_t)
 #  927|   params: 
 #  927|     0: p#0
 #  927|         Type = size_t
-#  928| SizedDealloc::operator delete(void *, size_t) -> void
+#  928| void SizedDealloc::operator delete(void*, size_t)
 #  928|   params: 
 #  928|     0: p#0
 #  928|         Type = void *
 #  928|     1: p#1
 #  928|         Type = size_t
-#  929| SizedDealloc::operator delete[](void *, size_t) -> void
+#  929| void SizedDealloc::operator delete[](void*, size_t)
 #  929|   params: 
 #  929|     0: p#0
 #  929|         Type = void *
 #  929|     1: p#1
 #  929|         Type = size_t
-#  932| Overaligned::operator=(Overaligned &&) -> Overaligned &
-#  932|   params: 
-#-----|     0: p#0
-#-----|         Type = Overaligned &&
-#  932| Overaligned::operator=(const Overaligned &) -> Overaligned &
+#  932| Overaligned& Overaligned::operator=(Overaligned const&)
 #  932|   params: 
 #-----|     0: p#0
 #-----|         Type = const Overaligned &
-#  936| DefaultCtorWithDefaultParam::DefaultCtorWithDefaultParam(DefaultCtorWithDefaultParam &&) -> void
-#  936|   params: 
+#  932| Overaligned& Overaligned::operator=(Overaligned&&)
+#  932|   params: 
 #-----|     0: p#0
-#-----|         Type = DefaultCtorWithDefaultParam &&
-#  936| DefaultCtorWithDefaultParam::DefaultCtorWithDefaultParam(const DefaultCtorWithDefaultParam &) -> void
-#  936|   params: 
-#-----|     0: p#0
-#-----|         Type = const DefaultCtorWithDefaultParam &
-#  936| DefaultCtorWithDefaultParam::operator=(DefaultCtorWithDefaultParam &&) -> DefaultCtorWithDefaultParam &
-#  936|   params: 
-#-----|     0: p#0
-#-----|         Type = DefaultCtorWithDefaultParam &&
-#  936| DefaultCtorWithDefaultParam::operator=(const DefaultCtorWithDefaultParam &) -> DefaultCtorWithDefaultParam &
+#-----|         Type = Overaligned &&
+#  936| DefaultCtorWithDefaultParam& DefaultCtorWithDefaultParam::operator=(DefaultCtorWithDefaultParam const&)
 #  936|   params: 
 #-----|     0: p#0
 #-----|         Type = const DefaultCtorWithDefaultParam &
-#  937| DefaultCtorWithDefaultParam::DefaultCtorWithDefaultParam(double) -> void
+#  936| DefaultCtorWithDefaultParam& DefaultCtorWithDefaultParam::operator=(DefaultCtorWithDefaultParam&&)
+#  936|   params: 
+#-----|     0: p#0
+#-----|         Type = DefaultCtorWithDefaultParam &&
+#  936| void DefaultCtorWithDefaultParam::DefaultCtorWithDefaultParam(DefaultCtorWithDefaultParam const&)
+#  936|   params: 
+#-----|     0: p#0
+#-----|         Type = const DefaultCtorWithDefaultParam &
+#  936| void DefaultCtorWithDefaultParam::DefaultCtorWithDefaultParam(DefaultCtorWithDefaultParam&&)
+#  936|   params: 
+#-----|     0: p#0
+#-----|         Type = DefaultCtorWithDefaultParam &&
+#  937| void DefaultCtorWithDefaultParam::DefaultCtorWithDefaultParam(double)
 #  937|   params: 
 #  937|     0: d
 #  937|         Type = double
-#  940| OperatorNew() -> void
+#  940| void OperatorNew()
 #  940|   params: 
 #  940|   body: { ... }
 #  941|     0: ExprStmt
@@ -6332,7 +6332,7 @@ ir.cpp:
 #  947|             Value = 0
 #  947|             ValueCategory = prvalue
 #  948|     7: return ...
-#  950| OperatorNewArray(int) -> void
+#  950| void OperatorNewArray(int)
 #  950|   params: 
 #  950|     0: n
 #  950|         Type = int
@@ -6443,7 +6443,7 @@ ir.cpp:
 #  958|             Type = int
 #  958|             ValueCategory = prvalue(load)
 #  959|     8: return ...
-#  961| designatedInit() -> int
+#  961| int designatedInit()
 #  961|   params: 
 #  961|   body: { ... }
 #  962|     0: declaration
@@ -6475,7 +6475,7 @@ ir.cpp:
 #  963|             Type = int
 #  963|             Value = 900
 #  963|             ValueCategory = prvalue
-#  966| IfStmtWithDeclaration(int, int) -> void
+#  966| void IfStmtWithDeclaration(int, int)
 #  966|   params: 
 #  966|     0: x
 #  966|         Type = int
@@ -6551,7 +6551,7 @@ ir.cpp:
 #  974|                     Value = 2
 #  974|                     ValueCategory = prvalue
 #  976|     1: return ...
-#  978| WhileStmtWithDeclaration(int, int) -> void
+#  978| void WhileStmtWithDeclaration(int, int)
 #  978|   params: 
 #  978|     0: x
 #  978|         Type = int
@@ -6591,194 +6591,39 @@ ir.cpp:
 #  983|               ValueCategory = prvalue(load)
 #  983|       1: { ... }
 #  985|     3: return ...
-# 1005| ChiPhiNode(Point *, bool, bool) -> int
-# 1005|   params: 
-# 1005|     0: p
-# 1005|         Type = Point *
-# 1005|     1: which1
-# 1005|         Type = bool
-# 1005|     2: which2
-# 1005|         Type = bool
-# 1005|   body: { ... }
-# 1006|     0: if (...) ... 
-# 1006|       0: which1
-# 1006|           Type = bool
-# 1006|           ValueCategory = prvalue(load)
-# 1006|       1: { ... }
-# 1007|         0: ExprStmt
-# 1007|           0: ... ++
-# 1007|               Type = int
-# 1007|               ValueCategory = prvalue
-# 1007|             0: x
-# 1007|                 Type = int
-# 1007|                 ValueCategory = lvalue
-# 1007|               -1: p
-# 1007|                   Type = Point *
-# 1007|                   ValueCategory = prvalue(load)
-# 1008|       2: { ... }
-# 1009|         0: ExprStmt
-# 1009|           0: ... ++
-# 1009|               Type = int
-# 1009|               ValueCategory = prvalue
-# 1009|             0: y
-# 1009|                 Type = int
-# 1009|                 ValueCategory = lvalue
-# 1009|               -1: p
-# 1009|                   Type = Point *
-# 1009|                   ValueCategory = prvalue(load)
-# 1012|     1: if (...) ... 
-# 1012|       0: which2
-# 1012|           Type = bool
-# 1012|           ValueCategory = prvalue(load)
-# 1012|       1: { ... }
-# 1013|         0: ExprStmt
-# 1013|           0: ... ++
-# 1013|               Type = int
-# 1013|               ValueCategory = prvalue
-# 1013|             0: x
-# 1013|                 Type = int
-# 1013|                 ValueCategory = lvalue
-# 1013|               -1: p
-# 1013|                   Type = Point *
-# 1013|                   ValueCategory = prvalue(load)
-# 1014|       2: { ... }
-# 1015|         0: ExprStmt
-# 1015|           0: ... ++
-# 1015|               Type = int
-# 1015|               ValueCategory = prvalue
-# 1015|             0: y
-# 1015|                 Type = int
-# 1015|                 ValueCategory = lvalue
-# 1015|               -1: p
-# 1015|                   Type = Point *
-# 1015|                   ValueCategory = prvalue(load)
-# 1018|     2: return ...
-# 1018|       0: ... + ...
-# 1018|           Type = int
-# 1018|           ValueCategory = prvalue
-# 1018|         0: x
-# 1018|             Type = int
-# 1018|             ValueCategory = prvalue(load)
-# 1018|           -1: p
-# 1018|               Type = Point *
-# 1018|               ValueCategory = prvalue(load)
-# 1018|         1: y
-# 1018|             Type = int
-# 1018|             ValueCategory = prvalue(load)
-# 1018|           -1: p
-# 1018|               Type = Point *
-# 1018|               ValueCategory = prvalue(load)
-# 1021| UnreachableViaGoto() -> int
-# 1021|   params: 
-# 1021|   body: { ... }
-# 1022|     0: goto ...
-# 1023|     1: return ...
-# 1023|       0: 1
-# 1023|           Type = int
-# 1023|           Value = 1
-# 1023|           ValueCategory = prvalue
-# 1024|     2: label ...:
-# 1025|     3: return ...
-# 1025|       0: 0
-# 1025|           Type = int
-# 1025|           Value = 0
-# 1025|           ValueCategory = prvalue
-# 1028| UnreachableIf(bool) -> int
-# 1028|   params: 
-# 1028|     0: b
-# 1028|         Type = bool
-# 1028|   body: { ... }
-# 1029|     0: declaration
-# 1029|       0: definition of x
-# 1029|           Type = int
-# 1029|         init: initializer for x
-# 1029|           expr: 5
-# 1029|               Type = int
-# 1029|               Value = 5
-# 1029|               ValueCategory = prvalue
-# 1030|     1: declaration
-# 1030|       0: definition of y
-# 1030|           Type = int
-# 1030|         init: initializer for y
-# 1030|           expr: 10
-# 1030|               Type = int
-# 1030|               Value = 10
-# 1030|               ValueCategory = prvalue
-# 1031|     2: if (...) ... 
-# 1031|       0: b
-# 1031|           Type = bool
-# 1031|           ValueCategory = prvalue(load)
-# 1031|       1: { ... }
-# 1032|         0: if (...) ... 
-# 1032|           0: ... == ...
-# 1032|               Type = bool
-# 1032|               ValueCategory = prvalue
-# 1032|             0: x
-# 1032|                 Type = int
-# 1032|                 ValueCategory = prvalue(load)
-# 1032|             1: y
-# 1032|                 Type = int
-# 1032|                 ValueCategory = prvalue(load)
-# 1032|           1: { ... }
-# 1033|             0: return ...
-# 1033|               0: 1
-# 1033|                   Type = int
-# 1033|                   Value = 1
-# 1033|                   ValueCategory = prvalue
-# 1035|           2: { ... }
-# 1036|             0: return ...
-# 1036|               0: 0
-# 1036|                   Type = int
-# 1036|                   Value = 0
-# 1036|                   ValueCategory = prvalue
-# 1039|       2: { ... }
-# 1040|         0: if (...) ... 
-# 1040|           0: ... < ...
-# 1040|               Type = bool
-# 1040|               ValueCategory = prvalue
-# 1040|             0: x
-# 1040|                 Type = int
-# 1040|                 ValueCategory = prvalue(load)
-# 1040|             1: y
-# 1040|                 Type = int
-# 1040|                 ValueCategory = prvalue(load)
-# 1040|           1: { ... }
-# 1041|             0: return ...
-# 1041|               0: 0
-# 1041|                   Type = int
-# 1041|                   Value = 0
-# 1041|                   ValueCategory = prvalue
-# 1043|           2: { ... }
-# 1044|             0: return ...
-# 1044|               0: 1
-# 1044|                   Type = int
-# 1044|                   Value = 1
-# 1044|                   ValueCategory = prvalue
-# 1049| DoWhileFalse() -> int
-# 1049|   params: 
-# 1049|   body: { ... }
-# 1050|     0: declaration
-# 1050|       0: definition of i
-# 1050|           Type = int
-# 1050|         init: initializer for i
-# 1050|           expr: 0
-# 1050|               Type = int
-# 1050|               Value = 0
-# 1050|               ValueCategory = prvalue
-# 1051|     1: do (...) ...
-# 1053|       0: 0
-# 1053|           Type = bool
-# 1053|           Value = 0
-# 1053|           ValueCategory = prvalue
-# 1051|       1: { ... }
-# 1052|         0: ExprStmt
-# 1052|           0: ... ++
-# 1052|               Type = int
-# 1052|               ValueCategory = prvalue
-# 1052|             0: i
-# 1052|                 Type = int
-# 1052|                 ValueCategory = lvalue
-# 1055|     2: return ...
-# 1055|       0: i
-# 1055|           Type = int
-# 1055|           ValueCategory = prvalue(load)
+#  987| int PointerDecay(int[], int(float))
+#  987|   params: 
+#  987|     0: a
+#  987|         Type = int[]
+#  987|     1: fn
+#  987|         Type = ..()(..)
+#  987|   body: { ... }
+#  988|     0: return ...
+#  988|       0: ... + ...
+#  988|           Type = int
+#  988|           ValueCategory = prvalue
+#  988|         0: access to array
+#  988|             Type = int
+#  988|             ValueCategory = prvalue(load)
+#  988|           0: a
+#  988|               Type = int *
+#  988|               ValueCategory = prvalue(load)
+#  988|           1: 0
+#  988|               Type = int
+#  988|               Value = 0
+#  988|               ValueCategory = prvalue
+#  988|         1: call to expression
+#  988|             Type = int
+#  988|             ValueCategory = prvalue
+#  988|           0: fn
+#  988|               Type = ..(*)(..)
+#  988|               ValueCategory = prvalue(load)
+#  988|           1: (float)...
+#  988|               Conversion = floating point conversion
+#  988|               Type = float
+#  988|               Value = 1.0
+#  988|               ValueCategory = prvalue
+#  988|             expr: 1.0
+#  988|                 Type = double
+#  988|                 Value = 1.0
+#  988|                 ValueCategory = prvalue

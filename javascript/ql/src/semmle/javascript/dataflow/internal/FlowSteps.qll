@@ -288,7 +288,9 @@ predicate receiverPropWrite(Function f, string prop, DataFlow::Node rhs) {
 /**
  * A utility class that is equivalent to `boolean` but does not require type joining.
  */
-class Boolean extends boolean { Boolean() { this = true or this = false } }
+class Boolean extends boolean {
+  Boolean() { this = true or this = false }
+}
 
 /**
  * A summary of an inter-procedural data flow path.

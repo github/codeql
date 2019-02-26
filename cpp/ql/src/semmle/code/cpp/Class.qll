@@ -584,25 +584,11 @@ class Class extends UserType {
   }
 
   /**
-   * Gets a template argument used to instantiate this class from a class
-   * template. When called on a class template, this will return a template
-   * parameter.
-   */
-  Type getATemplateArgument() {
-    exists(int i | this.getTemplateArgument(i) = result )
-  }
-
-  /** Gets the number of template arguments for this class. */
-  int getNumberOfTemplateArguments() {
-    result = count(int i | exists(getTemplateArgument(i)))
-  }
-
-  /**
    * Gets the `i`th template argument used to instantiate this class from a
    * class template. When called on a class template, this will return the
    * `i`th template parameter.
    */
-  Type getTemplateArgument(int i) {
+  override Type getTemplateArgument(int i) {
     class_template_argument(underlyingElement(this),i,unresolveElement(result))
   }
 
@@ -886,8 +872,19 @@ class TemplateClass extends Class {
  * A class that is an instantiation of a template.
  */
 class ClassTemplateInstantiation extends Class {
+  TemplateClass tc;
+
   ClassTemplateInstantiation() {
-    exists(TemplateClass tc | tc.getAnInstantiation() = this)
+    tc.getAnInstantiation() = this
+  }
+
+  /**
+   * Gets the class template from which this instantiation was instantiated.
+   *
+   * Example: For `std::vector<float>`, returns `std::vector<T>`.
+   */
+  TemplateClass getTemplate() {
+    result = tc
   }
 }
 

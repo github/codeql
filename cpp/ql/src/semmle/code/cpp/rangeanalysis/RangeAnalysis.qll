@@ -144,7 +144,7 @@ private predicate boundFlowStepSsa(
 ) {
   exists(IRGuardCondition guard, boolean testIsTrue |
     guard = boundFlowCond(valueNumberOfOperand(op2), op1, delta, upper, testIsTrue) and
-    guard.controls(op2.getInstruction().getBlock(), testIsTrue) and
+    guard.controls(op2.getUseInstruction().getBlock(), testIsTrue) and
     reason = TCondReason(guard)
   )
 }
@@ -217,10 +217,10 @@ private predicate safeCast(IntegralType fromtyp, IntegralType totyp) {
 
 private class SafeCastInstruction extends ConvertInstruction {
   SafeCastInstruction() {
-    safeCast(getResultType(), getOperand().getResultType())
+    safeCast(getResultType(), getUnary().getResultType())
     or
     getResultType() instanceof PointerType and
-    getOperand().getResultType() instanceof PointerType
+    getUnary().getResultType() instanceof PointerType
   }
 }
 
@@ -269,8 +269,8 @@ private predicate boundFlowStep(Instruction i, NonPhiOperand op, int delta, bool
     i.(AddInstruction).getAnOperand() = x and
     op != x
     |
-    not exists(getValue(getConstantValue(op.getInstruction()))) and
-    not exists(getValue(getConstantValue(x.getInstruction()))) and
+    not exists(getValue(getConstantValue(op.getUseInstruction()))) and
+    not exists(getValue(getConstantValue(x.getUseInstruction()))) and
     if(strictlyPositive(x))
     then (
       upper = false and delta = 1
@@ -288,12 +288,12 @@ private predicate boundFlowStep(Instruction i, NonPhiOperand op, int delta, bool
   exists(Operand x |
     exists(SubInstruction sub |
       i = sub and
-      sub.getAnOperand().(LeftOperand) = op and
-      sub.getAnOperand().(RightOperand) = x
+      sub.getLeftOperand() = op and
+      sub.getRightOperand() = x
     )
   |
     // `x` with constant value is covered by valueFlowStep
-    not exists(getValue(getConstantValue(x.getInstruction()))) and
+    not exists(getValue(getConstantValue(x.getUseInstruction()))) and
     if strictlyPositive(x)
     then (
       upper = true and delta = -1
@@ -308,9 +308,9 @@ private predicate boundFlowStep(Instruction i, NonPhiOperand op, int delta, bool
         ) else if negative(x) then (upper = false and delta = 0) else none()
   )
   or
-  i.(RemInstruction).getAnOperand().(RightOperand) = op and positive(op) and delta = -1 and upper = true
+  i.(RemInstruction).getRightOperand() = op and positive(op) and delta = -1 and upper = true
   or
-  i.(RemInstruction).getAnOperand().(LeftOperand) = op and positive(op) and delta = 0 and upper = true
+  i.(RemInstruction).getLeftOperand() = op and positive(op) and delta = 0 and upper = true
   or
   i.(BitAndInstruction).getAnOperand() = op and positive(op) and delta = 0 and upper = true
   or
@@ -323,7 +323,7 @@ private predicate boundFlowStepMul(Instruction i1, Operand op, int factor) {
     i1.(MulInstruction).hasOperands(op, c.getAUse()) and factor = k
     or
     exists(ShiftLeftInstruction i |
-      i = i1 and i.getAnOperand().(LeftOperand) = op and i.getAnOperand().(RightOperand) = c.getAUse() and factor = 2.pow(k)
+      i = i1 and i.getLeftOperand() = op and i.getRightOperand() = c.getAUse() and factor = 2.pow(k)
     )
   )
 }
@@ -331,11 +331,11 @@ private predicate boundFlowStepMul(Instruction i1, Operand op, int factor) {
 private predicate boundFlowStepDiv(Instruction i1, Operand op, int factor) {
   exists(Instruction c, int k | k = getValue(getConstantValue(c)) and k > 0 |
     exists(DivInstruction i |
-      i = i1 and i.getAnOperand().(LeftOperand) = op and i.getRightOperand() = c and factor = k
+      i = i1 and i.getLeftOperand() = op and i.getRight() = c and factor = k
     )
     or
     exists(ShiftRightInstruction i |
-      i = i1 and i.getAnOperand().(LeftOperand) = op and i.getRightOperand() = c and factor = 2.pow(k)
+      i = i1 and i.getLeftOperand() = op and i.getRight() = c and factor = 2.pow(k)
     )
   )
 }
@@ -379,18 +379,14 @@ private predicate boundedNonPhiOperand(NonPhiOperand op, Bound b, int delta, boo
 private predicate boundFlowStepPhi(
   PhiOperand op2, Operand op1, int delta, boolean upper, Reason reason
 ) {
-  op2.getDefinitionInstruction().getAnOperand().(CopySourceOperand) = op1 and
+  op2.getDefinitionInstruction().(CopyInstruction).getSourceValueOperand() = op1 and
   (upper = true or upper = false) and
   reason = TNoReason() and
   delta = 0
   or
   exists(IRGuardCondition guard, boolean testIsTrue |
     guard = boundFlowCond(valueNumberOfOperand(op2), op1, delta, upper, testIsTrue) and
-    (
-      guard.hasBranchEdge(op2.getPredecessorBlock().getLastInstruction(), op2.getInstruction().getBlock(), testIsTrue)
-      or
-      guard.controls(op2.getPredecessorBlock(), testIsTrue)
-    ) and
+    guard.controlsEdge(op2.getPredecessorBlock(), op2.getUseInstruction().getBlock(), testIsTrue) and
     reason = TCondReason(guard)
   )
 }
@@ -431,7 +427,7 @@ private predicate unequalFlowStep(
 ) {
   exists(IRGuardCondition guard, boolean testIsTrue |
     guard = eqFlowCond(valueNumberOfOperand(op2), op1, delta, false, testIsTrue) and
-    guard.controls(op2.getInstruction().getBlock(), testIsTrue) and
+    guard.controls(op2.getUseInstruction().getBlock(), testIsTrue) and
     reason = TCondReason(guard)
   )
 }
@@ -559,47 +555,44 @@ private predicate boundedCastExpr(
 private predicate boundedInstruction(
   Instruction i, Bound b, int delta, boolean upper, boolean fromBackEdge, int origdelta, Reason reason
 ) {
-  isReducibleCFG(i.getFunction()) and
-  (
-    i instanceof PhiInstruction and
-    forex(PhiOperand op | op = i.getAnOperand() |
-      boundedPhiCandValidForEdge(i, b, delta, upper, fromBackEdge, origdelta, reason, op)
-    )
-    or
-    i = b.getInstruction(delta) and
-    (upper = true or upper = false) and
-    fromBackEdge = false and
-    origdelta = delta and
-    reason = TNoReason()
-    or
-    exists(Operand mid, int d1, int d2 |
-      boundFlowStep(i, mid, d1, upper) and
-      boundedNonPhiOperand(mid, b, d2, upper, fromBackEdge, origdelta, reason) and
-      delta = d1 + d2 and
-      not exists(getValue(getConstantValue(i)))
-    )
-    or
-    exists(Operand mid, int factor, int d |
-      boundFlowStepMul(i, mid, factor) and
-      boundedNonPhiOperand(mid, b, d, upper, fromBackEdge, origdelta, reason) and
-      b instanceof ZeroBound and
-      delta = d*factor and
-      not exists(getValue(getConstantValue(i)))
-    )
-    or
-    exists(Operand mid, int factor, int d |
-      boundFlowStepDiv(i, mid, factor) and
-      boundedNonPhiOperand(mid, b, d, upper, fromBackEdge, origdelta, reason) and
-      d >= 0 and
-      b instanceof ZeroBound and
-      delta = d / factor and
-      not exists(getValue(getConstantValue(i)))
-    )
-    or
-    exists(NarrowingCastInstruction cast |
-      cast = i and
-      safeNarrowingCast(cast, upper.booleanNot()) and
-      boundedCastExpr(cast, b, delta, upper, fromBackEdge, origdelta, reason)
-    )
+  i instanceof PhiInstruction and
+  forex(PhiOperand op | op = i.getAnOperand() |
+    boundedPhiCandValidForEdge(i, b, delta, upper, fromBackEdge, origdelta, reason, op)
+  )
+  or
+  i = b.getInstruction(delta) and
+  (upper = true or upper = false) and
+  fromBackEdge = false and
+  origdelta = delta and
+  reason = TNoReason()
+  or
+  exists(Operand mid, int d1, int d2 |
+    boundFlowStep(i, mid, d1, upper) and
+    boundedNonPhiOperand(mid, b, d2, upper, fromBackEdge, origdelta, reason) and
+    delta = d1 + d2 and
+    not exists(getValue(getConstantValue(i)))
+  )
+  or
+  exists(Operand mid, int factor, int d |
+    boundFlowStepMul(i, mid, factor) and
+    boundedNonPhiOperand(mid, b, d, upper, fromBackEdge, origdelta, reason) and
+    b instanceof ZeroBound and
+    delta = d*factor and
+    not exists(getValue(getConstantValue(i)))
+  )
+  or
+  exists(Operand mid, int factor, int d |
+    boundFlowStepDiv(i, mid, factor) and
+    boundedNonPhiOperand(mid, b, d, upper, fromBackEdge, origdelta, reason) and
+    d >= 0 and
+    b instanceof ZeroBound and
+    delta = d / factor and
+    not exists(getValue(getConstantValue(i)))
+  )
+  or
+  exists(NarrowingCastInstruction cast |
+    cast = i and
+    safeNarrowingCast(cast, upper.booleanNot()) and
+    boundedCastExpr(cast, b, delta, upper, fromBackEdge, origdelta, reason)
   )
 }

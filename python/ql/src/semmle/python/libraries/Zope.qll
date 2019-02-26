@@ -8,7 +8,7 @@ class ZopeInterfaceMethod extends PyFunctionObject {
     /** Holds if this method belongs to a class that sub-classes `zope.interface.Interface` */
     ZopeInterfaceMethod() {
         exists(Object interface, ClassObject owner |
-            ModuleObject::named("zope.interface").getAttribute("Interface") = interface and
+            interface = ModuleObject::named("zope.interface").attr("Interface") and
             owner.declaredAttribute(_) = this and
             owner.getAnImproperSuperType().getABaseType() = interface
         )

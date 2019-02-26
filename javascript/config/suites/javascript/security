@@ -14,6 +14,7 @@
 + semmlecode-javascript-queries/Security/CWE-116/IncompleteSanitization.ql: /Security/CWE/CWE-116
 + semmlecode-javascript-queries/Security/CWE-116/DoubleEscaping.ql: /Security/CWE/CWE-116
 + semmlecode-javascript-queries/Security/CWE-134/TaintedFormatString.ql: /Security/CWE/CWE-134
++ semmlecode-javascript-queries/Security/CWE-201/PostMessageStar.ql: /Security/CWE/CWE-201
 + semmlecode-javascript-queries/Security/CWE-209/StackTraceExposure.ql: /Security/CWE/CWE-209
 + semmlecode-javascript-queries/Security/CWE-312/CleartextStorage.ql: /Security/CWE/CWE-312
 + semmlecode-javascript-queries/Security/CWE-312/CleartextLogging.ql: /Security/CWE/CWE-312

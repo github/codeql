@@ -1,6 +1,7 @@
 import cpp
 import semmle.code.cpp.ir.implementation.raw.IR
 private import semmle.code.cpp.ir.implementation.Opcode
+private import semmle.code.cpp.ir.internal.IRUtilities
 private import semmle.code.cpp.ir.internal.OperandTag
 private import semmle.code.cpp.ir.internal.TempVariableTag
 private import InstructionTag
@@ -224,7 +225,7 @@ class TranslatedFunction extends TranslatedElement,
     (
       tag = UnmodeledUseTag() and
       operandTag instanceof UnmodeledUseOperandTag and
-      result.getFunction() = func and
+      result.getEnclosingFunction() = func and
       result.hasMemoryResult()
     ) or
     (
@@ -241,13 +242,21 @@ class TranslatedFunction extends TranslatedElement,
           result = getInstruction(ReturnValueAddressTag())
         ) or
         (
-          operandTag instanceof ReturnValueOperandTag and
+          operandTag instanceof LoadOperandTag and
           result = getUnmodeledDefinitionInstruction()
         )
       )
     )
   }
 
+  override final Type getInstructionOperandType(InstructionTag tag,
+      TypedOperandTag operandTag) {
+    tag = ReturnTag() and
+    not getReturnType() instanceof VoidType and
+    operandTag instanceof LoadOperandTag and
+    result = getReturnType()
+  }
+  
   override final IRVariable getInstructionVariable(InstructionTag tag) {
     tag = ReturnValueAddressTag() and
     result = getReturnVariable()
@@ -369,13 +378,13 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
     (
       tag = InitializerVariableAddressTag() and
       opcode instanceof Opcode::VariableAddress and
-      resultType = param.getType().getUnspecifiedType() and
+      resultType = getVariableType(param) and
       isGLValue = true
     ) or
     (
       tag = InitializerStoreTag() and
       opcode instanceof Opcode::InitializeParameter and
-      resultType = param.getType().getUnspecifiedType() and
+      resultType = getVariableType(param) and
       isGLValue = false
     )
   }

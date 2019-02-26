@@ -109,7 +109,9 @@ module UnsafeDynamicMethodAccess {
   /**
    * The page URL considered as a flow source for unsafe dynamic method access.
    */
-  class DocumentUrlAsSource extends Source { DocumentUrlAsSource() { isDocumentURL(asExpr()) } }
+  class DocumentUrlAsSource extends Source {
+    DocumentUrlAsSource() { isDocumentURL(asExpr()) }
+  }
 
   /**
    * A function invocation of an unsafe function, as a sink for remote unsafe dynamic method access.

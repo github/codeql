@@ -348,21 +348,21 @@ class BuiltinFunctionObject extends BuiltinCallable {
     override ClassObject getAReturnType() {
         /* Enumerate the types of a few builtin functions, that the CPython analysis misses.
         */
-        this = builtin_object("hex") and result = theStrType()
+        this = Object::builtin("hex") and result = theStrType()
         or
-        this = builtin_object("oct") and result = theStrType()
+        this = Object::builtin("oct") and result = theStrType()
         or
-        this = builtin_object("intern") and result = theStrType()
+        this = Object::builtin("intern") and result = theStrType()
         or
         /* Fix a few minor inaccuracies in the CPython analysis */ 
         ext_rettype(this, result) and not (
-            this = builtin_object("__import__") and result = theNoneType()
+            this = Object::builtin("__import__") and result = theNoneType()
             or
-            this = builtin_object("compile") and result = theNoneType()
+            this = Object::builtin("compile") and result = theNoneType()
             or
-            this = builtin_object("sum")
+            this = Object::builtin("sum")
             or
-            this = builtin_object("filter")
+            this = Object::builtin("filter")
         )
     }
 
@@ -376,4 +376,53 @@ class BuiltinFunctionObject extends BuiltinCallable {
 
 }
 
+/** DEPRECATED -- Use `Object::builtin("apply")` instead. */
+Object theApplyFunction() {
+    result = Object::builtin("apply")
+}
+
+/** DEPRECATED -- Use `Object::builtin("hasattr")` instead. */
+Object theHasattrFunction() {
+    result = Object::builtin("hasattr")
+}
+
+/** DEPRECATED -- Use `Object::builtin("len")` instead. */
+Object theLenFunction() {
+    result = Object::builtin("len")
+}
+
+/** DEPRECATED -- Use `Object::builtin("format")` instead. */
+Object theFormatFunction() {
+    result = Object::builtin("format")
+}
+
+/** DEPRECATED -- Use `Object::builtin("open")` instead. */
+Object theOpenFunction() {
+    result = Object::builtin("open")
+}
+
+/** DEPRECATED -- Use `Object::builtin("print")` instead. */
+Object thePrintFunction() {
+    result = Object::builtin("print")
+}
+
+/** DEPRECATED -- Use `Object::builtin("input")` instead. */
+Object theInputFunction() {
+    result = Object::builtin("input")
+}
+
+/** DEPRECATED -- Use `Object::builtin("locals")` instead. */
+Object theLocalsFunction() {
+    result = Object::builtin("locals")
+}
+
+/** DEPRECATED -- Use `Object::builtin("globals")()` instead. */
+Object theGlobalsFunction() {
+    result = Object::builtin("globals")
+}
+
+/** DEPRECATED -- Use `Object::builtin("sysExit()` instead. */
+Object theExitFunctionObject() {
+    result = ModuleObject::named("sys").attr("exit")
+}
 

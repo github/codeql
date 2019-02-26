@@ -22,7 +22,6 @@ import com.semmle.js.ast.Expression;
 import com.semmle.js.ast.ExpressionStatement;
 import com.semmle.js.ast.FieldDefinition;
 import com.semmle.js.ast.Identifier;
-import com.semmle.js.ast.ImportDeclaration;
 import com.semmle.js.ast.ImportSpecifier;
 import com.semmle.js.ast.Literal;
 import com.semmle.js.ast.MethodDefinition;
@@ -78,6 +77,8 @@ public class FlowParser extends ESNextParser {
 		private Function<Token, Void> onToken;
 		private boolean inType, noAnonFunctionType;
 		private List<Token> tokens = new ArrayList<Token>();
+		private Function<SyntaxError, ?> onRecoverableError;
+		private List<SyntaxError> errors = new ArrayList<SyntaxError>();
 
 		private State() {
 			this.exprAllowed = FlowParser.this.exprAllowed;
@@ -103,6 +104,10 @@ public class FlowParser extends ESNextParser {
 			// buffer tokens while we are in speculative mode
 			this.onToken = options.onToken();
 			options.onToken((tk) -> { tokens.add(tk); return null; });
+
+			// buffer recoverable errors while we are in speculative mode
+			this.onRecoverableError = options.onRecoverableError();
+			options.onRecoverableError((err) -> { errors.add(err); return null; });
 		}
 
 		private void reset() {
@@ -125,6 +130,7 @@ public class FlowParser extends ESNextParser {
 			options.onToken(this.onToken);
 			FlowParser.this.inType = this.inType;
 			FlowParser.this.noAnonFunctionType = this.noAnonFunctionType;
+			options.onRecoverableError(this.onRecoverableError);
 		}
 
 		private void commit() {
@@ -133,6 +139,12 @@ public class FlowParser extends ESNextParser {
 			if (this.onToken != null)
 				for (Token tk : tokens)
 					this.onToken.apply(tk);
+
+			// commit buffered syntax errors
+			options.onRecoverableError(this.onRecoverableError);
+			if (this.onRecoverableError != null)
+				for (SyntaxError err : errors)
+					this.onRecoverableError.apply(err);
 		}
 	}
 

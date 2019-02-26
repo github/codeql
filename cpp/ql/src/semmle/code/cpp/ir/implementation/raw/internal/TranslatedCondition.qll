@@ -75,11 +75,7 @@ abstract class TranslatedFlexibleCondition extends TranslatedCondition,
 }
 
 class TranslatedParenthesisCondition extends TranslatedFlexibleCondition {
-  ParenthesisExpr paren;
-
-  TranslatedParenthesisCondition() {
-    paren = expr
-  }
+  override ParenthesisExpr expr;
 
   final override Instruction getChildTrueSuccessor(TranslatedCondition child) {
     child = getOperand() and
@@ -92,16 +88,12 @@ class TranslatedParenthesisCondition extends TranslatedFlexibleCondition {
   }
 
   final override TranslatedCondition getOperand() {
-    result = getTranslatedCondition(paren.getExpr())
+    result = getTranslatedCondition(expr.getExpr())
   }
 }
 
 class TranslatedNotCondition extends TranslatedFlexibleCondition {
-  NotExpr notExpr;
-
-  TranslatedNotCondition() {
-    notExpr = expr
-  }
+  override NotExpr expr;
 
   override Instruction getChildTrueSuccessor(TranslatedCondition child) {
     child = getOperand() and
@@ -114,7 +106,7 @@ class TranslatedNotCondition extends TranslatedFlexibleCondition {
   }
   
   override TranslatedCondition getOperand() {
-    result = getTranslatedCondition(notExpr.getOperand().getFullyConverted())
+    result = getTranslatedCondition(expr.getOperand().getFullyConverted())
   }
 }
 
@@ -131,11 +123,7 @@ abstract class TranslatedNativeCondition extends TranslatedCondition,
 
 abstract class TranslatedBinaryLogicalOperation extends
   TranslatedNativeCondition, ConditionContext {
-  BinaryLogicalOperation op;
-
-  TranslatedBinaryLogicalOperation() {
-    op = expr
-  }
+  override BinaryLogicalOperation expr;
 
   override final TranslatedElement getChild(int id) {
     id = 0 and result = getLeftOperand() or
@@ -157,17 +145,17 @@ abstract class TranslatedBinaryLogicalOperation extends
   }
 
   final TranslatedCondition getLeftOperand() {
-    result = getTranslatedCondition(op.getLeftOperand().getFullyConverted())
+    result = getTranslatedCondition(expr.getLeftOperand().getFullyConverted())
   }
 
   final TranslatedCondition getRightOperand() {
-    result = getTranslatedCondition(op.getRightOperand().getFullyConverted())
+    result = getTranslatedCondition(expr.getRightOperand().getFullyConverted())
   }
 }
 
 class TranslatedLogicalAndExpr extends TranslatedBinaryLogicalOperation {
   TranslatedLogicalAndExpr() {
-    op instanceof LogicalAndExpr
+    expr instanceof LogicalAndExpr
   }
 
   override Instruction getChildTrueSuccessor(TranslatedCondition child) {
@@ -188,9 +176,7 @@ class TranslatedLogicalAndExpr extends TranslatedBinaryLogicalOperation {
 }
 
 class TranslatedLogicalOrExpr extends TranslatedBinaryLogicalOperation {
-  TranslatedLogicalOrExpr() {
-    op instanceof LogicalOrExpr
-  }
+  override LogicalOrExpr expr;
 
   override Instruction getChildTrueSuccessor(TranslatedCondition child) {
     (child = getLeftOperand() or child = getRightOperand()) and

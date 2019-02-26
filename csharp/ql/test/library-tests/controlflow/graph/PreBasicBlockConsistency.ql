@@ -1,5 +1,5 @@
 import csharp
-import ControlFlow::Internal::PreBasicBlocks
+import semmle.code.csharp.controlflow.internal.PreBasicBlocks
 
 predicate bbStartInconsistency(ControlFlowElement cfe) {
   exists(ControlFlow::BasicBlock bb | bb.getFirstNode() = cfe.getAControlFlowNode()) and

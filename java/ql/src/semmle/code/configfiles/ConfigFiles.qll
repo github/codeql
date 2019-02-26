@@ -67,4 +67,6 @@ class ConfigValue extends @configValue, ConfigLocatable {
 }
 
 /** A Java property is a name-value pair in a `.properties` file. */
-class JavaProperty extends ConfigPair { JavaProperty() { getFile().getExtension() = "properties" } }
+class JavaProperty extends ConfigPair {
+  JavaProperty() { getFile().getExtension() = "properties" }
+}
