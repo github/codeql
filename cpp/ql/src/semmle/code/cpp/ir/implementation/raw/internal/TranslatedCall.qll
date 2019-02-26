@@ -218,6 +218,12 @@ abstract class TranslatedCall extends TranslatedExpr {
   private predicate hasSideEffect() {
     hasReadSideEffect() or hasWriteSideEffect()
   }
+
+  override Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) {
+      hasSideEffect() and
+      tag = CallSideEffectTag() and
+      result = getResult()
+  }
 }
 
 /**
