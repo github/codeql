@@ -1,6 +1,6 @@
 | tst.js:30:1:30:28 | ns.emit ... event') | tst.js:30:18:30:27 | 'an event' |
 | tst.js:31:1:31:20 | ns.send('a message') | tst.js:31:9:31:19 | 'a message' |
-| tst.js:32:1:32:21 | ns.writ ... ssage') | tst.js:32:10:32:20 | 'a message' |
+| tst.js:32:1:32:22 | ns2.wri ... ssage') | tst.js:32:11:32:21 | 'a message' |
 | tst.js:39:1:39:31 | io.emit ... ssage') | tst.js:39:20:39:30 | 'a message' |
 | tst.js:40:1:40:20 | io.send('a message') | tst.js:40:9:40:19 | 'a message' |
 | tst.js:41:1:41:21 | io.writ ... ssage') | tst.js:41:10:41:20 | 'a message' |

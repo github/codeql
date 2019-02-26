@@ -1,0 +1,4 @@
+| socket.io namespace with path '/' | tst.js:1:12:1:33 | socket.io server | / |
+| socket.io namespace with path '/' | tst.js:4:13:4:24 | socket.io server | / |
+| socket.io namespace with path '/' | tst.js:6:13:6:27 | socket.io server | / |
+| socket.io namespace with path '/foo' | tst.js:1:12:1:33 | socket.io server | /foo |

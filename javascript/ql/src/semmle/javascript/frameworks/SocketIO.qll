@@ -27,17 +27,24 @@ module SocketIO {
     result = "setMaxListeners"
   }
 
+  /** Gets a data flow node that creates a new socket.io server. */
+  private DataFlow::SourceNode newServer() {
+    result = DataFlow::moduleImport("socket.io").getAnInvocation()
+    or
+    // alias for `Server`
+    result = DataFlow::moduleImport("socket.io").getAMemberCall("listen")
+  }
+
   /** A data flow node that may produce (that is, create or return) a socket.io server. */
   class ServerNode extends DataFlow::SourceNode {
+    ServerObject srv;
+
     ServerNode() {
-      // server creation
-      this = DataFlow::moduleImport("socket.io").getAnInvocation()
-      or
-      // alias for `Server`
-      this = DataFlow::moduleImport("socket.io").getAMemberCall("listen")
+      this = newServer() and
+      srv = MkServer(this)
       or
       // invocation of a chainable method
-      exists(DataFlow::MethodCallNode mcn, string m |
+      exists(ServerNode base, DataFlow::MethodCallNode mcn, string m |
         m = "adapter" or
         m = "attach" or
         m = "bind" or
@@ -48,22 +55,34 @@ module SocketIO {
         m = "serveClient" or
         m = "set"
       |
-        mcn = any(ServerNode srv).getAMethodCall(m) and
+        mcn = base.getAMethodCall(m) and
         // exclude getter versions
         not mcn.getNumArgument() = 0 and
-        this = mcn
+        this = mcn and
+        srv = base.getServer()
       )
     }
+
+    /** Gets the server to which this node refers. */
+    ServerObject getServer() { result = srv }
   }
 
   /** A data flow node that may produce a namespace object. */
   class NamespaceNode extends DataFlow::SourceNode {
+    NamespaceObject ns;
+
     NamespaceNode() {
       // namespace lookup
       exists(ServerNode srv |
-        this = srv.getAPropertyRead("sockets")
+        this = srv.getAPropertyRead("sockets") and
+        ns = srv.getServer().getDefaultNamespace()
         or
-        this = srv.getAMethodCall("of")
+        exists(DataFlow::MethodCallNode mcn, string path |
+          mcn = srv.getAMethodCall("of") and
+          mcn.getArgument(0).mayHaveStringValue(path) and
+          this = mcn and
+          ns = MkNamespace(srv.getServer(), path)
+        )
       )
       or
       // invocation of a chainable method
@@ -79,29 +98,44 @@ module SocketIO {
         m = "write" or
         m = chainableEventEmitterMethod()
       |
-        this = any(NamespaceNode ns).getAMethodCall(m)
+        exists(NamespaceNode base |
+          this = base.getAMethodCall(m) and
+          ns = base.getNamespace()
+        )
         or
         // server objects forward these methods to their default namespace
-        this = any(ServerNode srv).getAMethodCall(m)
+        exists(ServerNode srv |
+          this = srv.getAMethodCall(m) and
+          ns = srv.getServer().getDefaultNamespace()
+        )
       )
       or
       // invocation of chainable getter method
-      exists(string m |
+      exists(NamespaceNode base, string m |
         m = "json" or
         m = "local" or
         m = "volatile"
       |
-        this = any(NamespaceNode base).getAPropertyRead(m)
+        this = base.getAPropertyRead(m) and
+        ns = base.getNamespace()
       )
     }
+
+    /** Gets the namespace to which this node refers. */
+    NamespaceObject getNamespace() { result = ns }
   }
 
   /** A data flow node that may produce a socket object. */
   class SocketNode extends DataFlow::SourceNode {
+    NamespaceObject ns;
+
     SocketNode() {
       // callback accepting a socket
       exists(DataFlow::SourceNode base, string connect, DataFlow::MethodCallNode on |
-        (base instanceof ServerNode or base instanceof NamespaceNode) and
+        (
+          ns = base.(ServerNode).getServer().getDefaultNamespace() or
+          ns = base.(NamespaceNode).getNamespace()
+        ) and
         (connect = "connect" or connect = "connection")
       |
         on = base.getAMethodCall("on") and
@@ -110,7 +144,7 @@ module SocketIO {
       )
       or
       // invocation of a chainable method
-      exists(string m |
+      exists(SocketNode base, string m |
         m = "binary" or
         m = "compress" or
         m = "disconnect" or
@@ -124,19 +158,24 @@ module SocketIO {
         m = "write" or
         m = chainableEventEmitterMethod()
       |
-        this = any(SocketNode base).getAMethodCall(m)
+        this = base.getAMethodCall(m) and
+        ns = base.getNamespace()
       )
       or
       // invocation of a chainable getter method
-      exists(string m |
+      exists(SocketNode base, string m |
         m = "broadcast" or
         m = "json" or
         m = "local" or
         m = "volatile"
       |
-        this = any(SocketNode base).getAPropertyRead(m)
+        this = base.getAPropertyRead(m) and
+        ns = base.getNamespace()
       )
     }
+
+    /** Gets the namespace to which this socket belongs. */
+    NamespaceObject getNamespace() { result = ns }
   }
 
   /**
@@ -211,6 +250,15 @@ module SocketIO {
      */
     SocketNode getSocket() { result = base }
 
+    /**
+     * Gets the namespace to which data is sent.
+     */
+    NamespaceObject getNamespace() {
+      result = base.(ServerNode).getServer().getDefaultNamespace() or
+      result = base.(NamespaceNode).getNamespace() or
+      result = base.(SocketNode).getNamespace()
+    }
+
     /** Gets the event name associated with the data, if it can be determined. */
     string getEventName() {
       if firstDataIndex = 1 then getArgument(0).mayHaveStringValue(result) else result = "message"
@@ -235,5 +283,65 @@ module SocketIO {
       exists(getSocket()) and
       result = getLastArgument().getALocalSource()
     }
+  }
+
+  /** A socket.io server, identified by its creation site. */
+  private newtype TServer = MkServer(DataFlow::SourceNode nd) { nd = newServer() }
+
+  /** A socket.io namespace, identified by its server and its path. */
+  private newtype TNamespace =
+    MkNamespace(ServerObject srv, string path) {
+      path = "/"
+      or
+      exists(ServerNode nd | nd.getServer() = srv |
+        nd.getAMethodCall("of").getArgument(0).mayHaveStringValue(path)
+      )
+    }
+
+  /** A socket.io server. */
+  class ServerObject extends TServer {
+    DataFlow::SourceNode origin;
+
+    ServerObject() { this = MkServer(origin) }
+
+    /** Gets the data flow node where this server is created. */
+    DataFlow::SourceNode getOrigin() { result = origin }
+
+    /** Gets the default namespace of this server. */
+    NamespaceObject getDefaultNamespace() { result = MkNamespace(this, "/") }
+
+    /**
+     * Holds if this server is created at the specified location.
+     * The location spans column `startcolumn` of line `startline` to
+     * column `endcolumn` of line `endline` in file `filepath`.
+     * For more information, see
+     * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+     */
+    predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      origin.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+
+    /** Gets a textual representation of this server. */
+    string toString() { result = "socket.io server" }
+  }
+
+  /** A socket.io namespace. */
+  class NamespaceObject extends TNamespace {
+    ServerObject srv;
+
+    string path;
+
+    NamespaceObject() { this = MkNamespace(srv, path) }
+
+    /** Gets the server to which this namespace belongs. */
+    ServerObject getServer() { result = srv }
+
+    /** Gets the path of this namespace. */
+    string getPath() { result = path }
+
+    /** Gets a textual representation of this namespace. */
+    string toString() { result = "socket.io namespace with path '" + path + "'" }
   }
 }

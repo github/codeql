@@ -1,4 +1,4 @@
 import javascript
 
 from SocketIO::ServerNode srv
-select srv
+select srv, srv.getServer()
