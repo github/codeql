@@ -1,6 +1,6 @@
 /**
  * @name Insecure temporary file
- * @description Creating a temporary file name may be insecure.
+ * @description Creating a temporary file using this method may be insecure.
  * @id py/insecure-temporary-file
  * @problem.severity error
  * @sub-severity high
