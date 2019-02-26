@@ -355,6 +355,13 @@ private module ClosureLibraryUri {
         name = "setPath" or
         name = "split"
       )
+      or
+      // static methods in goog.string
+      arg = 0 and
+      exists(string name | this = Closure::moduleImport("goog.string." + name).getACall() |
+        name = "urlDecode" or
+        name = "urlEncode"
+      )
     }
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {

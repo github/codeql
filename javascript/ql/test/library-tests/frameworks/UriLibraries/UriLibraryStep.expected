@@ -22,6 +22,8 @@
 | closureUri.js:18:1:18:39 | uri.set ... heme(z) | closureUri.js:18:38:18:38 | z | closureUri.js:5:11:5:20 | new Uri(x) |
 | closureUri.js:22:1:22:25 | utils.a ... uri, z) | closureUri.js:22:19:22:21 | uri | closureUri.js:22:1:22:25 | utils.a ... uri, z) |
 | closureUri.js:23:1:23:18 | utils.getPath(uri) | closureUri.js:23:15:23:17 | uri | closureUri.js:23:1:23:18 | utils.getPath(uri) |
+| closureUri.js:27:1:27:23 | stringU ... code(x) | closureUri.js:27:22:27:22 | x | closureUri.js:27:1:27:23 | stringU ... code(x) |
+| closureUri.js:28:1:28:23 | stringU ... code(x) | closureUri.js:28:22:28:22 | x | closureUri.js:28:1:28:23 | stringU ... code(x) |
 | punycode.js:3:9:3:26 | punycode.decode(x) | punycode.js:3:25:3:25 | x | punycode.js:3:9:3:26 | punycode.decode(x) |
 | punycode.js:5:5:5:22 | punycode.encode(x) | punycode.js:5:21:5:21 | x | punycode.js:5:5:5:22 | punycode.encode(x) |
 | punycode.js:7:5:7:25 | punycod ... code(x) | punycode.js:7:24:7:24 | x | punycode.js:7:5:7:25 | punycod ... code(x) |

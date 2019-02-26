@@ -21,3 +21,8 @@ let utils = goog.require('goog.uri.utils');
 
 utils.appendParam(uri, z);
 utils.getPath(uri);
+
+let stringUtil = goog.require('goog.string');
+
+stringUtil.urlEncode(x);
+stringUtil.urlDecode(x);
