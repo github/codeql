@@ -83,7 +83,12 @@ class InvokeNode extends DataFlow::SourceNode {
   /** Gets an abstract value representing possible callees of this call site. */
   AbstractValue getACalleeValue() { result = InvokeNode::getACalleeValue(this) }
 
-  /** Gets a potential callee of this call site. */
+  /**
+   * Gets a potential callee of this call site.
+   *
+   * To alter the call graph as seen by the interprocedural data flow libraries, override
+   * the `getACallee(int imprecision)` predicate instead.
+   */
   Function getACallee() { result = InvokeNode::getACallee(this) }
 
   /**
@@ -93,6 +98,9 @@ class InvokeNode extends DataFlow::SourceNode {
    *
    * Callees with imprecision zero, in particular, have either been derived without
    * considering global variables, or are calls to a global variable within the same file.
+   *
+   * This predicate can be overridden to alter the call graph used by the interprocedural
+   * data flow libraries.
    */
   Function getACallee(int imprecision) { result = InvokeNode::getACallee(this, imprecision) }
 

@@ -55,4 +55,5 @@
 * `DataFlow::SourceNode` is no longer an abstract class; to add new source nodes, extend `DataFlow::SourceNode::Range` instead.
 * Subclasses of `DataFlow::PropRead` are no longer automatically made source nodes; you now need to additionally define a corresponding subclass of `DataFlow::SourceNode::Range` to achieve this.
 * The deprecated libraries `semmle.javascript.DataFlow` and `semmle.javascript.dataflow.CallGraph` have been removed; they are both superseded by `semmle.javascript.dataflow.DataFlow`.
+* Overriding `DataFlow::InvokeNode.getACallee()` no longer affects the call graph seen by the interprocedural data flow libraries. To do this, the 1-argument version `getACallee(int imprecision)` can be overridden instead.
 * The predicate `DataFlow::returnedPropWrite` was intended for internal use only and is no longer available.
