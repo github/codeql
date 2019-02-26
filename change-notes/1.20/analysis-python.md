@@ -38,5 +38,7 @@ The API has been improved to declutter the global namespace and improve discover
  ## Changes to QL libraries
 
  * Added support for the `dill` pickle library.
- * Added support for the bottle web framework.
+ * Added support for the `bottle` web framework.
+ * Added support for the `turbogears` web framework.
+
  
