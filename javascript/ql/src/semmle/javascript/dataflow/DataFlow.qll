@@ -1079,6 +1079,16 @@ module DataFlow {
   }
 
   /**
+   * Holds if there is a step from `pred` to `succ` through a field accessed through `this` in a class.
+   */
+  predicate localFieldStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists (ClassNode cls, string prop |
+      pred = cls.getAReceiverNode().getAPropertyWrite(prop).getRhs() and
+      succ = cls.getAReceiverNode().getAPropertyRead(prop)
+    )
+  }
+
+  /**
    * Gets the data flow node representing the source of definition `def`, taking
    * flow through IIFE calls into account.
    */
